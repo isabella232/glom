@@ -71,7 +71,7 @@ Glib::ustring Box_DB_Table::get_primarykey_name()
   }
   else
   {
-    std::cout << "Box_DB_Table::get_primarykey_name(): not found in " << m_Fields.size() << " fields." << std::endl;
+    std::cout << "Box_DB_Table::get_primarykey_name(): not found for table " << m_strTableName << " in " << m_Fields.size() << " fields." << std::endl;
   }
 
   return strResult;

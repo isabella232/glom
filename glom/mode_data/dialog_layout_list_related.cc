@@ -121,7 +121,7 @@ void Dialog_Layout_List_Related::update_ui(bool including_relationship_list)
    
     m_entry_table_title->set_text( m_relationship.get_title() );
 
-    Document_Glom::type_mapLayoutGroupSequence mapGroups = document->get_relationship_data_layout_groups_plus_new_fields(m_layout_name, m_relationship.get_from_table(), m_relationship.get_name());
+    Document_Glom::type_mapLayoutGroupSequence mapGroups = document->get_relationship_data_layout_groups_plus_new_fields(m_layout_name, m_relationship);
 
     //If no information is stored in the document, then start with something:
     
@@ -161,14 +161,16 @@ void Dialog_Layout_List_Related::update_ui(bool including_relationship_list)
       LayoutGroup::type_map_const_items items = group.get_items();
       for(LayoutGroup::type_map_const_items::const_iterator iter = items.begin(); iter != items.end(); ++iter)
       {
-        const LayoutItem* item = iter->second;
+        const LayoutItem_Field* item = dynamic_cast<const LayoutItem_Field*>(iter->second);
+        if(item)
+        {
+          Gtk::TreeModel::iterator iterTree = m_model_fields->append();
+          Gtk::TreeModel::Row row = *iterTree;
 
-        Gtk::TreeModel::iterator iterTree = m_model_fields->append();
-        Gtk::TreeModel::Row row = *iterTree;
-
-        row[m_ColumnsFields.m_col_name] = item->get_name();
-        row[m_ColumnsFields.m_col_sequence] = field_sequence;
-        ++field_sequence;
+          row[m_ColumnsFields.m_col_name] = item->get_name(); //item->m_field.get_name() is not filled-in yet.
+          row[m_ColumnsFields.m_col_sequence] = field_sequence;
+          ++field_sequence;
+        }
       }
     }
 
@@ -271,7 +273,7 @@ void Dialog_Layout_List_Related::save_to_document()
       Glib::ustring relationship_name = m_combo_relationship_name->get_active_text();
       if(!relationship_name.empty())
       {
-        m_document->set_relationship_data_layout_groups(m_layout_name, m_table_name, relationship_name, mapGroups);
+        m_document->set_relationship_data_layout_groups(m_layout_name, m_relationship, mapGroups);
         m_modified = false;
       }
       

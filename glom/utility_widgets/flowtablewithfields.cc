@@ -297,6 +297,7 @@ void FlowTableWithFields::set_field_value(const Glib::ustring& id, const Gnome::
     Box_Data_List_Related* portal = dynamic_cast<Box_Data_List_Related*>(*iter);
     if(portal)
     {
+      g_warning("flow table: before refreshing portal");
       portal->refresh_db_details(value /* foreign key value */, Gnome::Gda::Value() /* TODO */);
     }
   }
@@ -356,7 +357,8 @@ FlowTableWithFields::type_list_widgets FlowTableWithFields::get_portals(const Gl
     Box_Data_List_Related* pPortal = *iter;
     if(pPortal)
     {
-      //TODO.
+      if(pPortal->get_relationship().get_from_field() == from_key)
+        result.push_back(pPortal);
     }
   }
  

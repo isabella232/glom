@@ -78,9 +78,9 @@ Box_Data_List_Related::~Box_Data_List_Related()
 void Box_Data_List_Related::init_db_details(const Relationship& relationship)
 {
   m_relationship = relationship;
-  
+
   m_Label.set_markup("<b>" + relationship.get_title_or_name() + "</b>");
-  
+
   bool found = get_fields_for_table_one_field(relationship.get_to_table(), relationship.get_to_field(), m_key_field /* output parameter */);
   if(!found)
   {
@@ -108,8 +108,10 @@ void Box_Data_List_Related::fill_from_database()
 {
   bool allow_add = true;
  
+g_warning("Box_Data_List_Related::fill_from_database");
   if(!m_strWhereClause.empty())
   {
+g_warning("Box_Data_List_Related::fill_from_database before calling base");
     Box_Data_List::fill_from_database();
 
      
@@ -164,7 +166,7 @@ void Box_Data_List_Related::on_record_added(const Gnome::Gda::Value& primary_key
     else
     {
       //Create the link by setting the foreign key:
-      m_AddDel.set_value(iter, iKey, key_value);
+      m_AddDel.set_value(iter, iKey, m_key_value);
 
       on_adddel_user_changed(iter, iKey); //Update the database.
     }
@@ -218,13 +220,48 @@ void Box_Data_List_Related::enable_buttons()
 
 Box_Data_List_Related::type_vecFields Box_Data_List_Related::get_fields_to_show() const
 {
-  //For now, show the same fields that are shown when this is the main table:
-  if(m_strTableName.empty())
+  type_vecFields result;
+
+  const Document_Glom* document = get_document();
+  if(document)
   {
-    return type_vecFields();
+
+    Document_Glom::type_mapLayoutGroupSequence mapGroups = document->get_relationship_data_layout_groups_plus_new_fields(m_layout_name, m_relationship);
+
+    if(mapGroups.empty())
+    {
+      //Start with a suitable default set of fields:
+      result = get_table_fields_to_show(m_relationship.get_to_table());
+    }
+    else
+    {
+      type_vecFields all_db_fields = get_fields_for_table(m_relationship.get_to_table());
+
+      for(Document_Glom::type_mapLayoutGroupSequence::const_iterator iter = mapGroups.begin(); iter != mapGroups.end(); ++iter)
+      {
+        const LayoutGroup& group = iter->second;
+    
+        //Add the group's fields:
+        LayoutGroup::type_map_const_items items = group.get_items();
+        for(LayoutGroup::type_map_const_items::const_iterator iter = items.begin(); iter != items.end(); ++iter)
+        {
+          const LayoutItem_Field* item = dynamic_cast<const LayoutItem_Field*>(iter->second);
+          if(item)
+          {
+            type_vecFields::const_iterator iterFind = std::find_if(all_db_fields.begin(), all_db_fields.end(), predicate_FieldHasName<Field>(item->get_name())); //item->m_field->get_name() is not filled in yet.
+  
+            //If the field does not exist anymore then we won't try to show it:
+            if(iterFind != all_db_fields.end() )
+            {
+              result.push_back(*iterFind);
+            }
+          }
+        }
+      }
+    }
   }
-  else
-    return get_table_fields_to_show(m_strTableName);
+
+  return result;
 }
 
 void Box_Data_List_Related::show_layout_dialog()

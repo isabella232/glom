@@ -68,11 +68,11 @@ public:
   
   virtual void set_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& table_name, const type_mapLayoutGroupSequence& groups);
 
-  virtual void set_relationship_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& table_name, const Glib::ustring& relationship_name, const type_mapLayoutGroupSequence& groups);
+  virtual void set_relationship_data_layout_groups(const Glib::ustring& layout_name, const Relationship& relationship, const type_mapLayoutGroupSequence& groups);
     
   virtual type_mapLayoutGroupSequence get_data_layout_groups_plus_new_fields(const Glib::ustring& layout_name, const Glib::ustring& table_name) const;
 
-  virtual type_mapLayoutGroupSequence get_relationship_data_layout_groups_plus_new_fields(const Glib::ustring& layout_name, const Glib::ustring& table_name, const Glib::ustring& relationship_name) const;
+  virtual type_mapLayoutGroupSequence get_relationship_data_layout_groups_plus_new_fields(const Glib::ustring& layout_name, const Relationship& relationship) const;
         
   ///When a field name is changed, change it in the relationships and fields data:
   virtual void change_field_name(const Glib::ustring& table_name, const Glib::ustring& strFieldNameOld, const Glib::ustring& strFieldNameNew);

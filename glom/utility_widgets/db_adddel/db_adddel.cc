@@ -159,6 +159,23 @@ void DbAddDel::on_MenuPopup_activate_layout()
   signal_user_requested_layout().emit();
 }
 
+void DbAddDel::on_MenuPopup_activate_Add()
+{
+  if(m_auto_add)
+  {
+    Gtk::TreeModel::iterator iter = get_item_placeholder();
+    if(iter)
+    {
+      guint first_visible = get_count_hidden_system_columns();
+      select_item(iter, first_visible, true /* start_editing */);
+    }
+  }
+  else
+  {
+    signal_user_requested_add().emit(); //Let the client code add the row explicitly, if it wants.
+  }
+}
+
 void DbAddDel::on_MenuPopup_activate_Delete()
 {
   finish_editing();
@@ -189,6 +206,10 @@ void DbAddDel::setup_menu()
   m_refActionGroup->add(m_refContextDelete,
     sigc::mem_fun(*this, &DbAddDel::on_MenuPopup_activate_Delete) );
 
+  m_refContextAdd =  Gtk::Action::create("ContextAdd", Gtk::Stock::ADD);
+  m_refActionGroup->add(m_refContextAdd,
+    sigc::mem_fun(*this, &DbAddDel::on_MenuPopup_activate_Add) );
+
   m_refContextLayout =  Gtk::Action::create("ContextLayout", gettext("Layout"));
   m_refActionGroup->add(m_refContextLayout,
     sigc::mem_fun(*this, &DbAddDel::on_MenuPopup_activate_layout) );
@@ -215,6 +236,7 @@ void DbAddDel::setup_menu()
         "<ui>"
         "  <popup name='ContextMenu'>"
         "    <menuitem action='ContextEdit'/>"
+        "    <menuitem action='ContextAdd'/>"
         "    <menuitem action='ContextDelete'/>"
         "    <menuitem action='ContextLayout'/>"        
         "  </popup>"

@@ -411,10 +411,10 @@ void Document_Glom::set_tables(const type_listTableInfo& tables)
   
 }
 
-Document_Glom::type_mapLayoutGroupSequence Document_Glom::get_relationship_data_layout_groups_plus_new_fields(const Glib::ustring& layout_name, const Glib::ustring& table_name, const Glib::ustring& relationship_name) const
+Document_Glom::type_mapLayoutGroupSequence Document_Glom::get_relationship_data_layout_groups_plus_new_fields(const Glib::ustring& layout_name, const Relationship& relationship) const
 {
   //TODO: Use an actual relationship_name instead of concatenating:
-  return get_data_layout_groups_plus_new_fields(layout_name, table_name + "_related_" + relationship_name); 
+  return get_data_layout_groups_plus_new_fields(layout_name, relationship.get_from_table() + "_related_" + relationship.get_name()); 
 }
 
 Document_Glom::type_mapLayoutGroupSequence Document_Glom::get_data_layout_groups_plus_new_fields(const Glib::ustring& layout_name, const Glib::ustring& table_name) const
@@ -454,27 +454,29 @@ Document_Glom::type_mapLayoutGroupSequence Document_Glom::get_data_layout_groups
     for(type_vecFields::const_iterator iter = all_fields.begin(); iter != all_fields.end(); ++iter)
     {
       const Glib::ustring field_name = iter->get_name();
-
-      //See whether it's already in the result:
-      //TODO_Performance: There is a lot of iterating and comparison here:
-      bool found = false; //TODO: This is horrible.
-      for(type_mapLayoutGroupSequence::const_iterator iterFind = result.begin(); iterFind != result.end(); ++iterFind)
+      if(!field_name.empty())
       {
-        if(iterFind->second.has_field(field_name))
+        //See whether it's already in the result:
+        //TODO_Performance: There is a lot of iterating and comparison here:
+        bool found = false; //TODO: This is horrible.
+        for(type_mapLayoutGroupSequence::const_iterator iterFind = result.begin(); iterFind != result.end(); ++iterFind)
         {
-          found = true;
-          break;
+          if(iterFind->second.has_field(field_name))
+          {
+            found = true;
+            break;
+          }
         }
-      }
-
-      if(!found)
-      {
-        LayoutItem_Field layout_item;
-        layout_item.set_name(field_name);
-        //layout_item.m_sequence = sequence;  add_item() will fill this.
-        layout_item.m_hidden = false;
-
-        pTopLevel->add_item(layout_item);
+  
+        if(!found)
+        {
+          LayoutItem_Field layout_item;
+          layout_item.set_name(field_name);
+          //layout_item.m_sequence = sequence;  add_item() will fill this.
+          layout_item.m_hidden = false;
+  
+          pTopLevel->add_item(layout_item);
+        }
       }
     }
   }
@@ -500,10 +502,10 @@ Document_Glom::type_mapLayoutGroupSequence Document_Glom::get_data_layout_groups
   return type_mapLayoutGroupSequence(); //not found
 }
 
-void Document_Glom::set_relationship_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& table_name, const Glib::ustring& relationship_name, const type_mapLayoutGroupSequence& groups)
+void Document_Glom::set_relationship_data_layout_groups(const Glib::ustring& layout_name, const Relationship& relationship, const type_mapLayoutGroupSequence& groups)
 {
   //TODO: Use an actual relationship_name instead of concatenating:
-  set_data_layout_groups(layout_name, table_name + "_related_" + relationship_name, groups);
+  set_data_layout_groups(layout_name, relationship.get_from_table() + "_related_" + relationship.get_name(), groups);
 }
 
 void Document_Glom::set_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& table_name, const type_mapLayoutGroupSequence& groups)

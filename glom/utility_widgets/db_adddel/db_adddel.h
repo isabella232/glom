@@ -234,6 +234,7 @@ protected:
   virtual bool on_button_press_event_Popup(GdkEventButton* event);
 
   virtual void on_MenuPopup_activate_Edit();
+  virtual void on_MenuPopup_activate_Add();
   virtual void on_MenuPopup_activate_Delete();
   virtual void on_MenuPopup_activate_layout();
 
@@ -284,7 +285,7 @@ protected:
   Gtk::Menu* m_pMenuPopup;
   Glib::RefPtr<Gtk::ActionGroup> m_refActionGroup;
   Glib::RefPtr<Gtk::UIManager> m_refUIManager;
-  Glib::RefPtr<Gtk::Action> m_refContextEdit, m_refContextDelete, m_refContextLayout;
+  Glib::RefPtr<Gtk::Action> m_refContextEdit, m_refContextAdd, m_refContextDelete, m_refContextLayout;
 
   bool m_bAllowUserActions;
 

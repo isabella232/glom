@@ -91,14 +91,13 @@ void Box_Data_List::fill_from_database()
       if(!m_strWhereClause.empty())
         strWhereClausePiece = " WHERE " + m_strWhereClause;
 
-      type_vecFields listFieldsToShow = get_fields_to_show();
-      m_Fields = listFieldsToShow; //Store the fields for later:
+      m_Fields = get_fields_to_show();
       if(!m_Fields.empty())
       {
         Glib::ustring sql_part_fields;
-        for(type_vecFields::const_iterator iter =  listFieldsToShow.begin(); iter != listFieldsToShow.end(); ++iter)
+        for(type_vecFields::const_iterator iter =  m_Fields.begin(); iter != m_Fields.end(); ++iter)
         {
-          if(iter != listFieldsToShow.begin())
+          if(iter != m_Fields.begin())
             sql_part_fields += ",";
 
           sql_part_fields += iter->get_name();
@@ -138,7 +137,7 @@ void Box_Data_List::fill_from_database()
               {
                 Gtk::TreeModel::iterator tree_iter = m_AddDel.add_item(key);
 
-                type_vecFields::const_iterator iterFields = listFieldsToShow.begin();
+                type_vecFields::const_iterator iterFields = m_Fields.begin();
 
                 //each field:
                 guint cols_count = result->get_n_columns();
@@ -167,7 +166,7 @@ void Box_Data_List::fill_from_database()
             }
           }
           else
-            g_warning("Box_Data_List::fill_from_database(): primary key not found in table %s", m_strTableName.c_str());
+            g_warning("Box_Data_List::fill_from_database(): primary key not found in visible fields for table %s", m_strTableName.c_str());
         }
       } //If !m_Fields.empty()
     }
