@@ -71,16 +71,17 @@ void Box_Data_List::fill_from_database()
 {
   Bakery::BusyCursor(*get_app_window());
  
-  Box_DB_Table::fill_from_database();
-
-  m_AddDel.remove_all();
-
-  //Field Names:
-  fill_column_titles();
-   
   try
   {
     sharedptr<SharedConnection> sharedconnection = connect_to_server();
+
+    Box_DB_Table::fill_from_database();
+
+    m_AddDel.remove_all();
+
+    //Field Names:
+    fill_column_titles();
+   
     if(sharedconnection)
     {    
       Glib::RefPtr<Gnome::Gda::Connection> connection = sharedconnection->get_gda_connection();
@@ -165,18 +166,19 @@ void Box_Data_List::fill_from_database()
         }
       } //If !m_Fields.empty()
     }
+   
+    //Select first record:
+    Glib::RefPtr<Gtk::TreeModel> refModel = m_AddDel.get_model();
+    if(refModel)
+      m_AddDel.select_item(refModel->children().begin());
+ 
+    fill_end();
+
   }
   catch(std::exception& ex)
   {
     handle_error(ex);
   }
-   
-  //Select first record:
-  Glib::RefPtr<Gtk::TreeModel> refModel = m_AddDel.get_model();
-  if(refModel)
-    m_AddDel.select_item(refModel->children().begin());
- 
-  fill_end();
 }
 
 void Box_Data_List::on_adddel_user_requested_add()

@@ -64,8 +64,14 @@ void Notebook_Data::init_db_details(const Glib::ustring& strTableName, const Gli
 {
   //strWhereClause is only used as a result of a find.
 
-  m_Box_List.init_db_details(strTableName, strWhereClause);
-  m_Box_Details.init_db_details(strTableName, m_Box_List.get_primary_key_value_selected());
+  //Performance optimisation:
+  //Keep the connection open during all these operations:
+  {
+    sharedptr<SharedConnection> sharedconnection = connect_to_server();
+  
+    m_Box_List.init_db_details(strTableName, strWhereClause);
+    m_Box_Details.init_db_details(strTableName, m_Box_List.get_primary_key_value_selected());
+  }
 
   //Select List as default:
   set_current_page(m_iPage_List);

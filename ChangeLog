@@ -1,5 +1,12 @@
 2005-02-16  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/mode_data/box_data_list.cc, box_data_details.cc: 
+	init_db_details(): Get shared connection earlier and keep it longer, 
+	so that we make fewer individual connections when getting data from 
+	the database. This make things faster.
+
+2005-02-16  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/utility_widgets/addedel/adddel.cc: get_column_field(): Return 
 	the id, which is the field name, not the name, which is the field 
 	title. This allows data entry in the list view when field titles 

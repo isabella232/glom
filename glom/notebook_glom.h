@@ -29,7 +29,7 @@
 
 class Notebook_Glom :
   public Gtk::Notebook,
-  public View_Composite_Glom
+  public Base_DB
 {
 public: 
   Notebook_Glom();

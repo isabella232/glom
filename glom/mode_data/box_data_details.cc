@@ -161,25 +161,26 @@ void Box_Data_Details::fill_from_database()
 {
   Bakery::BusyCursor(*get_app_window());
 
-  Box_DB_Table::fill_from_database();
-         
-  type_vecFields listFieldsToShow = get_fields_to_show();
-  m_Fields =  listFieldsToShow;
-  if(!listFieldsToShow.empty())
+  try
   {
-    fill_from_database_layout(); //TODO: Only do this when the layout has changed.
+    //TODO: This should keep the connection open, so we don't need to 
+    //reconnect many times..
+    sharedptr<SharedConnection> sharedconnection = connect_to_server();
 
-    Field field_primary_key;
-    bool primary_key_found  = get_field_primary_key(field_primary_key);
 
-    if(primary_key_found && !GlomConversions::value_is_empty(m_primary_key_value)) //If there is a record to show:
+    Box_DB_Table::fill_from_database();
+         
+    type_vecFields listFieldsToShow = get_fields_to_show();
+    m_Fields =  listFieldsToShow;
+    if(!listFieldsToShow.empty())
     {
-      try
-      {
-        //TODO: This should keep the connection open, so we don't need to 
-        //reconnect many times, but it does not seem to be working.
-        sharedptr<SharedConnection> sharedconnection = connect_to_server();
+      fill_from_database_layout(); //TODO: Only do this when the layout has changed.
 
+      Field field_primary_key;
+      bool primary_key_found  = get_field_primary_key(field_primary_key);
+
+      if(primary_key_found && !GlomConversions::value_is_empty(m_primary_key_value)) //If there is a record to show:
+      {
         if(sharedconnection)
         {
           Glib::RefPtr<Gnome::Gda::Connection> connection = sharedconnection->get_gda_connection();
@@ -219,21 +220,22 @@ void Box_Data_Details::fill_from_database()
           }
         }
       }
-      catch(std::exception& ex)
+      else
       {
-        handle_error(ex);
+        //Show blank record:
+        //TODO
       }
-    }
-    else
-    {
-      //Show blank record:
-      //TODO
-    }
-  } //if(!listFieldsToShow.empty())
+    } //if(!listFieldsToShow.empty())
 
-  //fill_related();
+    //fill_related();
 
-  fill_end();
+    fill_end();
+
+  }
+  catch(std::exception& ex)
+  {
+    handle_error(ex);
+  }
 }
 
 /*
