@@ -1,3 +1,10 @@
+2005-02-16  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/utility_widgets/addedel/adddel.cc: get_column_field(): Return 
+	the id, which is the field name, not the name, which is the field 
+	title. This allows data entry in the list view when field titles 
+	are not equal to the names.
+
 2005-02-15  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/connectionpool.cc: Actually use the host details, so people 

@@ -73,8 +73,9 @@ void SharedConnection::close()
 {
   if(m_gda_connection)
     m_gda_connection.clear();
-    
-   //Tell the connection pool that we have finished with this connection.
+  
+  
+  //Tell the connection pool that we have finished with this connection.
   //It might want to close it, or keep it open if somebody else is using it.
   //It might even give it to someone else while it is waiting for that other person to finish with it.
   m_signal_finished.emit();

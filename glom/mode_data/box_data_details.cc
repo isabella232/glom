@@ -176,6 +176,8 @@ void Box_Data_Details::fill_from_database()
     {
       try
       {
+        //TODO: This should keep the connection open, so we don't need to 
+        //reconnect many times, but it does not seem to be working.
         sharedptr<SharedConnection> sharedconnection = connect_to_server();
 
         if(sharedconnection)

@@ -863,7 +863,7 @@ Glib::ustring AddDel::get_column_field(guint column_index) const
 {
   Glib::ustring result;
   if(column_index < m_ColumnTypes.size())
-    result = m_ColumnTypes[column_index].m_name;
+    result = m_ColumnTypes[column_index].m_id;
 
   return result;
 }

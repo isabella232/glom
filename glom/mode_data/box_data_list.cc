@@ -145,12 +145,17 @@ void Box_Data_List::fill_from_database()
                   Gnome::Gda::Value value = result->get_value_at(uiCol, result_row);
                   guint index = 0;
 
+                  //g_warning("list fill: field_name=%s", iterFields->get_name().c_str());
+                  //g_warning("  value_as_string=%s", value.to_string().c_str());
+
                   //TODO_Performance: This searches m_Fields again each time:
                   bool test = get_field_column_index(iterFields->get_name(), index);
                   ++iterFields;
 
                   if(test)
                     m_AddDel.set_value(tree_iter, index, value);
+		  else
+		    g_warning("  get_field_column_index failed.");
                 }
               }
             }
@@ -319,6 +324,8 @@ void Box_Data_List::on_adddel_user_reordered_columns()
 
 void Box_Data_List::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, guint col)
 {
+  g_warning("on_adddel_user_changed():");
+  
   const Gnome::Gda::Value primary_key_value = get_primary_key_value(row);
   if(!GlomConversions::value_is_empty(primary_key_value)) //If the record's primary key is filled in:
   {
@@ -347,6 +354,14 @@ void Box_Data_List::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, 
           //Get-and-set values for lookup fields, if this field triggers those relationships:
           do_lookups(row, field, field_value, field_primary_key, primary_key_value);
         }
+        else
+        {
+          g_warning("Box_Data_List::on_adddel_user_changed(): get_fields_for_table_one_field() failed: m_strTableName=%s, field_name=%s", m_strTableName.c_str(), field_name.c_str());
+        }
+      }
+      else
+      {
+        g_warning("Box_Data_List::on_adddel_user_changed(): primary key not found");
       }
     }
     catch(const std::exception& ex)
