@@ -1,0 +1,8 @@
+application/x-glom
+	description=Glom
+	category=Office/Databases
+	default_action_type=application
+	default_application_id=glom
+	short_list_application_ids_for_novice_user_level=glom
+	short_list_application_ids_for_intermediate_user_level=glom
+	short_list_application_ids_for_advanced_user_level=glom
