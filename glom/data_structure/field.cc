@@ -157,14 +157,21 @@ Glib::ustring Field::get_title_or_name() const
 Glib::ustring Field::sql(const Gnome::Gda::Value& value)
 {
   Glib::ustring str = value.to_string();
-  if(value.get_value_type() == Gnome::Gda::VALUE_TYPE_STRING)
+  switch(value.get_value_type())
   {
-     str = "'" + str + "'";
-  }
-  else
-  {
-    if(str.empty())
-      str = "NULL";
+    case(Gnome::Gda::VALUE_TYPE_STRING):
+    case(Gnome::Gda::VALUE_TYPE_DATE):
+    case(Gnome::Gda::VALUE_TYPE_TIME):         
+    {
+      str = "'" + str + "'"; //Add single-quotes.
+      break;
+    }
+    default:
+    {
+      if(str.empty())
+        str = "NULL";
+      break;
+    }
   }
      
   return str; //TODO_port: Actually escape it.

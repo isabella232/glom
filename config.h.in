@@ -3,6 +3,9 @@
 /* always defined to indicate that i18n is enabled */
 #undef ENABLE_NLS
 
+/* The domain name to use with gettext. */
+#undef GETTEXT_PACKAGE
+
 /* "definition of GLOM_DTD_INSTALL_DIR" */
 #undef GLOM_DTD_INSTALL_DIR
 

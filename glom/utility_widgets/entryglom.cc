@@ -20,7 +20,7 @@
 
 #include "entryglom.h"
 #include <gtkmm/messagedialog.h>
-
+#include <sstream> //For stringstream
 
 EntryGlom::EntryGlom(Field::glom_field_type glom_type)
 : m_glom_type(glom_type)
@@ -43,7 +43,7 @@ void EntryGlom::check_for_change()
     }
     else
     {
-      Gtk::MessageDialog dialog(gettext("The data has an incorrect format")); //TODO: Improve this warning. Mention the field name and what format it should have.
+      //TODO: problems with focus-out-event: Gtk::MessageDialog dialog(gettext("The data has an incorrect format")); //TODO: Improve this warning. Mention the field name and what format it should have.
 
       /* TODO:
       Gtk::Window* pWindowApp = get_app_window();
@@ -51,7 +51,7 @@ void EntryGlom::check_for_change()
         dialog.set_transient_for(*pWindowApp);
       */
 
-       dialog.run();
+       //dialog.run();
     }
   }
 }
@@ -93,7 +93,81 @@ void EntryGlom::on_insert_text(const Glib::ustring& text, int* position)
   Gtk::Entry::on_insert_text(text, position);
 }  
 
-void EntryGlom::set_text(const Glib::ustring &text)
+//static
+Glib::ustring EntryGlom::format_time(const tm& tm_data)
+{
+  //This is based on the code in Glib::Date::format_string(), which only deals with dates, but not times:
+
+  const std::string locale_format = Glib::locale_from_utf8("%X"); //%x means "is replaced by the locale's appropriate time representation".
+  gsize bufsize = std::max<gsize>(2 * locale_format.size(), 128);
+
+  do
+  {
+    const Glib::ScopedPtr<char> buf (static_cast<char*>(g_malloc(bufsize)));
+
+    // Set the first byte to something other than '\0', to be able to
+    // recognize whether strftime actually failed or just returned "".
+    buf.get()[0] = '\1';
+    const gsize len = strftime(buf.get(), bufsize, locale_format.c_str(), &tm_data);
+
+    if(len != 0 || buf.get()[0] == '\0')
+    {
+      g_assert(len < bufsize);
+      return Glib::locale_to_utf8(std::string(buf.get(), len));
+    }
+  }
+  while((bufsize *= 2) <= 65536);
+
+  // This error is quite unlikely (unless strftime is buggy).
+  g_warning("EntryGlom::format_time(): maximum size of strftime buffer exceeded, giving up");
+
+  return Glib::ustring();
+}
+
+void EntryGlom::set_value(const Gnome::Gda::Value& value)
+{
+  if(value.get_value_type() == Gnome::Gda::VALUE_TYPE_NULL) //The type can be null for any of the actual field types.
+  {
+    set_text("");
+    return;
+  }
+    
+  if(m_glom_type == Field::TYPE_DATE)
+  {
+    Gnome::Gda::Date gda_date = value.get_date();
+    Glib::Date date((Glib::Date::Day)gda_date.day, (Glib::Date::Month)gda_date.month, (Glib::Date::Year)gda_date.year);
+    set_text( date.format_string("%x") ); //%x means "is replaced by the locale's appropriate date representation".
+  }
+  else if(m_glom_type == Field::TYPE_TIME)
+  {
+    Gnome::Gda::Time gda_time = value.get_time();
+
+    tm the_c_time = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    the_c_time.tm_hour = gda_time.hour;
+    the_c_time.tm_min = gda_time.minute;
+    the_c_time.tm_sec = gda_time.second;
+            
+    set_text( format_time( the_c_time ) );
+  }
+  else if(m_glom_type == Field::TYPE_NUMERIC)
+  {
+    const GdaNumeric* gda_numeric = value.get_numeric();
+    Glib::ustring text;
+    if(gda_numeric && gda_numeric->number) //A char*. TODO: Do we need to look at the other fields?
+      text = gda_numeric->number; //What formatting does this use?
+
+    g_warning("EntryGlom::set_value(): GdaNumeric::number=%s", text.c_str());
+
+    set_text( text );
+  }
+  else
+  {
+    //TODO: Do-locale specific display of the value types.
+    set_text(value.to_string());
+  }
+}
+
+void EntryGlom::set_text(const Glib::ustring& text)
 {
   m_old_text = text;
 
@@ -109,6 +183,7 @@ bool EntryGlom::validate_text() const
     //Try to parse the inputted date, according to the current locale.
     Glib::Date date;
     date.set_parse(text);
+
     return date.valid();
   }
   else if(m_glom_type == Field::TYPE_TIME)
@@ -120,6 +195,73 @@ bool EntryGlom::validate_text() const
   
   return true;
   
+}
+
+Gnome::Gda::Value EntryGlom::get_value() const
+{
+  Glib::ustring text = get_text();
+
+  //Put a NULL in the database for empty dates, times, and numerics, because 0 would be an actual value.
+  //But we use "" for strings, because the distinction between NULL and "" would not be clear to users.
+  if(text.empty())
+  {
+    if( (m_glom_type ==  Field::TYPE_DATE) || (m_glom_type ==  Field::TYPE_TIME) || (m_glom_type ==  Field::TYPE_NUMERIC) )
+    {
+      Gnome::Gda::Value null_value;
+      return null_value;
+    }
+  }
+  
+  if(m_glom_type == Field::TYPE_DATE)
+  {
+    //Try to parse the inputted date, according to the current locale.
+    Glib::Date date;
+    date.set_parse(text);
+    if(date.valid())
+    {
+      Gnome::Gda::Date gda_date = {0, 0, 0};
+
+      gda_date.year = date.get_year();
+      gda_date.month = date.get_month();
+      gda_date.day = date.get_day();
+      return Gnome::Gda::Value(gda_date);
+    }
+    else
+    {
+      text = ""; //The input is invalid, and should already have been checked with check_valid().
+    }
+  }
+  else if(m_glom_type == Field::TYPE_TIME)
+  {
+    //Try to parse the inputted date, according to the current locale.
+    std::stringstream the_stream; //TODO: Imbue it with the locale?
+    the_stream << text;
+    time_t the_time;
+    the_stream >> the_time;  //TODO: Does this throw any exception if the text is an invalid time?
+    tm tm_time = *(gmtime(&the_time)); //TODO: Or should we use localtime instead?
+
+    //TODO: Check validity somhow.
+    
+    Gnome::Gda::Time gda_time = {0, 0, 0, 0};
+
+    gda_time.hour = tm_time.tm_hour;
+    gda_time.minute = tm_time.tm_min;
+    gda_time.second = tm_time.tm_sec;
+    return Gnome::Gda::Value(gda_time);
+  }
+  else if(m_glom_type == Field::TYPE_NUMERIC)
+  {
+    //Try to parse the inputted number, according to the current locale.
+    std::stringstream the_stream; //TODO: Imbue it with the locale?
+    the_stream << text;
+    float the_number;
+    the_stream >> the_number;  //TODO: Does this throw any exception if the text is an invalid time?
+  
+    return Gnome::Gda::Value(the_number);
+  }
+    
+  //TODO: Do locale-specific, and strongly-typed conversion:
+  return Gnome::Gda::Value(text);
 }
 
 

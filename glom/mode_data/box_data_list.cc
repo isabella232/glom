@@ -98,8 +98,6 @@ void Box_Data_List::fill_from_database()
         //Field contents:
         m_AddDel.remove_all();
 
-        //g_warning("Box_Data_List::fill_from_database() size=%d", result.size());
-
         //each row:
         guint rows_count = result->get_n_rows();
         if(rows_count)

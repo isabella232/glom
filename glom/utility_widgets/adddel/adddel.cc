@@ -306,6 +306,12 @@ void AddDel::remove_all()
   }
 }
 
+Gnome::Gda::Value AddDel::get_value_as_value(guint row, guint col)
+{
+  //TODO: Do type-specific and locale-specific conversions:
+  return Gnome::Gda::Value( get_value(row, col) );
+}
+
 Glib::ustring AddDel::get_value(guint row, guint col)
 {
   Glib::ustring value;
@@ -748,6 +754,12 @@ void AddDel::set_item_title(guint row, const Glib::ustring& strValue)
       add_blank();
     }
   }
+}
+
+void AddDel::set_value(guint row, guint col, const Gnome::Gda::Value& value)
+{
+  //TODO: Do type-specifc and locale-specific conversion:
+  set_value(row, col, value.to_string());
 }
 
 void AddDel::set_value(guint row, guint col, const Glib::ustring& strValue)

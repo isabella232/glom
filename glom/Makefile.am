@@ -4,7 +4,8 @@ gladedir = $(datadir)/glom/glade/
 
 # We define GLOM_GLADEDIR so that we can get the installed .glade file at runtime.
 INCLUDES = $(GLOM_CFLAGS) \
-           -DGLOM_GLADEDIR=\""$(gladedir)/"\"
+           -DGLOM_GLADEDIR=\""$(gladedir)/"\" \
+           -DLOCALEDIR=\""$(datadir)/locale"\"
 
 bin_PROGRAMS = glom
 

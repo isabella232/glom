@@ -33,12 +33,19 @@ public:
 
   //Override this so we can store the text to compare later.
   //This is not virtual, so you must not use it via Gtk::Entry.
-  void set_text(const Glib::ustring& text);
+  void set_text(const Glib::ustring& text); //override
 
+  /** Set the text from a Gnome::Gda::Value.
+   */
+  void set_value(const Gnome::Gda::Value& value);
+
+  Gnome::Gda::Value get_value() const;
   
   typedef sigc::signal<void> type_signal_edited;
   type_signal_edited signal_edited();
 
+  static Glib::ustring format_time(const tm& tm_data);
+  
 protected:
   ///Check whether the entered text is appropriate for the field type.
   virtual bool validate_text() const;

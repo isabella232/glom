@@ -174,9 +174,7 @@ void Box_Data_Details::fill_from_database()
               {
                 //Field value:
                 Gnome::Gda::Value value = result->get_value_at(i, row_number);
-                const Glib::ustring& strValue = m_Fields[i].value_to_string(value); //TODO: Handle the actual value type.
-
-                pEntry->set_text(strValue);
+                pEntry->set_value(value);
               }
             }
           }
@@ -448,12 +446,12 @@ void Box_Data_Details::on_flowtable_field_edited(Glib::ustring id)
   if(m_ignore_signals)
     return;
     
-  Gtk::Entry* entry = m_FlowTable.get_field(id);
+  EntryGlom* entry = m_FlowTable.get_field(id);
   if(entry)
   {
      const Glib::ustring& strPrimaryKey_Name = get_PrimaryKey_Name();
      const Glib::ustring& strFieldName = id;
-     const Glib::ustring& strFieldValue = entry->get_text();
+     const Gnome::Gda::Value field_value = entry->get_value();
 
      if(strPrimaryKey_Name.size())
      {
@@ -474,7 +472,7 @@ void Box_Data_Details::on_flowtable_field_edited(Glib::ustring id)
          try
          {
            Glib::ustring strQuery = "UPDATE " + m_strTableName;
-           strQuery += " SET " +  /* get_table_name() + "." +*/ strFieldName + " = " + field.sql(strFieldValue);
+           strQuery += " SET " +  /* get_table_name() + "." +*/ strFieldName + " = " + field.sql(field_value);
            strQuery += " WHERE " + get_table_name() + "." + strPrimaryKey_Name + " = " + fieldInfoPK.sql(get_primary_key_value());
            bool bTest = Query_execute(strQuery);
 

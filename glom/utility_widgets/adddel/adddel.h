@@ -26,6 +26,8 @@
   */
 
 #include "gtkmm.h"
+#include "../../data_structure/field.h"
+#include <libgdamm.h>
 
 #include <vector>
 #include <map>
@@ -83,6 +85,7 @@ public:
 
   virtual void remove_all();
 
+  virtual Gnome::Gda::Value get_value_as_value(guint row, guint col = 0);
   virtual Glib::ustring get_value(guint row, guint col = 0);
   virtual bool get_value_as_bool(guint row, guint col = 0);
   virtual Glib::ustring get_value_selected(guint col = 0);
@@ -94,6 +97,7 @@ public:
 
   virtual guint get_count() const;
 
+  virtual void set_value(guint row, guint col, const Gnome::Gda::Value& value);  
   virtual void set_value(guint row, guint col, const Glib::ustring& strValue);
   virtual void set_value(guint row, guint col, unsigned long ulValue);
   virtual void set_value(guint row, guint col, bool bVal);

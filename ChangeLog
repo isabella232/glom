@@ -1,3 +1,15 @@
+2004-06-11  Murray Cumming  <murrayc@.com>
+
+	* Do locale-specific display and parsing of dates, times, and numbers 
+	in the Data Details.
+	* glom/utility_widgets/entryglom.[h|cc]: Added Gda::Value-based 
+	get_value() and set_value(), which show and parse the text based on 
+	the field type and the locale, though there are still some TODOS in 
+	the code.
+	* glom/mode_data/box_data_details.cc: Use EntryGlom::set/get_value() 
+	instead of set/get_text(), so we delegate parsing/representation to 
+	the EntryGlom.
+
 2004-06-10  Adam Weinberger  <adamw@gnome.org>
 
 	* configure.in: Added en_CA to ALL_LINGUAS.
