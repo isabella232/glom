@@ -30,6 +30,7 @@ DTD for glom documents.
   key CDATA #REQUIRED
   other_table CDATA #REQUIRED
   other_key CDATA #REQUIRED
+  auto_create CDATA #REQUIRED
 >
 
 <!ELEMENT fields (field | field_view)* >

@@ -30,29 +30,33 @@ public:
   Relationship();
   Relationship(const Relationship& src);
   virtual ~Relationship();
-  
+
   Relationship& operator=(const Relationship& src);
-  
+
   bool operator==(const Relationship& src) const;
-  
+
   virtual Glib::ustring get_name() const;
   virtual void set_name(const Glib::ustring& strVal);
 
   virtual Glib::ustring get_title() const;
   virtual void set_title(const Glib::ustring& strVal);
-  
+
   Glib::ustring get_title_or_name() const;
-    
+
   virtual Glib::ustring get_from_table() const;
   virtual Glib::ustring get_from_field() const;
   virtual Glib::ustring get_to_table() const;
   virtual Glib::ustring get_to_field() const;
-  
+
   virtual void set_from_table(const Glib::ustring& strVal);
   virtual void set_from_field(const Glib::ustring& strVal);
   virtual void set_to_table(const Glib::ustring& strVal);
   virtual void set_to_field(const Glib::ustring& strVal);
-  
+
+  ///Whether related records will be created automatically.
+  virtual bool get_auto_create() const;
+  virtual void set_auto_create(bool val);
+
 protected:
   Glib::ustring m_strName, m_strTitle;
 
@@ -60,6 +64,7 @@ protected:
   Glib::ustring m_strFrom_Field;
   Glib::ustring m_strTo_Table;
   Glib::ustring m_strTo_Field;
+  bool m_auto_create;
 };
 
 #endif

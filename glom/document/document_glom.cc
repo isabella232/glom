@@ -256,7 +256,7 @@ void Document_Glom::change_field_name(const Glib::ustring& table_name, const Gli
             iterRels->set_from_field(strFieldNameNew);
           }
         }
-        
+
         if(iterRels->get_to_table() == table_name)
         {
           if(iterRels->get_to_field() == strFieldNameOld)
@@ -264,10 +264,10 @@ void Document_Glom::change_field_name(const Glib::ustring& table_name, const Gli
             //Change it:
             iterRels->set_to_field(strFieldNameNew);
           }
-        }               
+        }
       }
     }
-    
+
     //Look at each layout:
     //TODO: Remember to change it in other layouts when we add the ability to show fields from other tables.
     for(DocumentTableInfo::type_layouts::iterator iterLayouts = iterFindTable->second.m_layouts.begin(); iterLayouts != iterFindTable->second.m_layouts.end(); ++iterLayouts)
@@ -849,6 +849,7 @@ bool Document_Glom::load_after()
                 relationship.set_from_field( get_node_attribute_value(nodeChild, "key") );
                 relationship.set_to_table( get_node_attribute_value(nodeChild, "other_table") );
                 relationship.set_to_field( get_node_attribute_value(nodeChild, "other_key") );
+                relationship.set_auto_create( get_node_attribute_value_as_bool(nodeChild, "auto_create") );
 
                 doctableinfo.m_relationships.push_back(relationship);
               }
@@ -1038,6 +1039,7 @@ bool Document_Glom::save_before()
           set_node_attribute_value(elemRelationship, "key", relationship.get_from_field());
           set_node_attribute_value(elemRelationship, "other_table", relationship.get_to_table());
           set_node_attribute_value(elemRelationship, "other_key", relationship.get_to_field());
+          set_node_attribute_value_as_bool(elemRelationship, "auto_create", relationship.get_auto_create());
         }
 
 

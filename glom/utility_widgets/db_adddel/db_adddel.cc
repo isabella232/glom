@@ -126,9 +126,10 @@ DbAddDel::on_MenuPopup_activate_Edit()
     {
       //Discover whether it's the last (empty) row:
       if(get_is_placeholder_row(iter))
-      {        
+      {
         //This is a new entry:
-        signal_user_added()(iter);
+        if(m_allow_add)
+          signal_user_added()(iter);
 
         /*
         bool bRowAdded = true;
@@ -209,11 +210,12 @@ void DbAddDel::setup_menu()
   m_refContextAdd =  Gtk::Action::create("ContextAdd", Gtk::Stock::ADD);
   m_refActionGroup->add(m_refContextAdd,
     sigc::mem_fun(*this, &DbAddDel::on_MenuPopup_activate_Add) );
+  m_refContextAdd->set_sensitive(m_allow_add);
 
   m_refContextLayout =  Gtk::Action::create("ContextLayout", gettext("Layout"));
   m_refActionGroup->add(m_refContextLayout,
     sigc::mem_fun(*this, &DbAddDel::on_MenuPopup_activate_layout) );
-    
+
   //TODO: This does not work until this widget is in a container in the window:s
   App_Glom* pApp = get_application();
   if(pApp)
@@ -239,7 +241,7 @@ void DbAddDel::setup_menu()
         "    <menuitem action='ContextLayout'/>"        
         "  </popup>"
         "</ui>";
-        
+
     m_refUIManager->add_ui_from_string(ui_info);
   }
   catch(const Glib::Error& ex)
@@ -263,7 +265,7 @@ void DbAddDel::setup_menu()
     m_refContextEdit->set_sensitive(false);
     m_refContextDelete->set_sensitive(false);
   }
-  
+ 
   if(pApp)
     m_refContextLayout->set_sensitive(pApp->get_userlevel() == AppState::USERLEVEL_DEVELOPER);
 }
@@ -311,15 +313,21 @@ Gtk::TreeModel::iterator DbAddDel::get_item_placeholder()
     return add_item_placeholder();
   }
 }
-  
+
 Gtk::TreeModel::iterator DbAddDel::add_item_placeholder()
 {
-  Gtk::TreeModel::iterator iter = m_refListStore->append();
+  Gtk::TreeModel::iterator iter;
+
+  //Placeholder rows are for adding new records.
+  if(!m_allow_add)
+    return iter;
+
+  iter = m_refListStore->append();
   if(iter)
   {
     Gtk::TreeModel::Row row = *iter;
     row[*m_modelcolumn_key] = Gnome::Gda::Value(); //Remove temporary key value.
-    
+
     m_refListStore->set_is_placeholder(iter, true);
     //row[*m_modelcolumn_placeholder] =  true; //This will be unset when set_value() is used to put real data in this column.
   }
@@ -860,6 +868,7 @@ void DbAddDel::set_column_choices(guint col, const type_vecStrings& vecStrings)
 void DbAddDel::set_allow_add(bool val)
 {
   m_allow_add = val;
+  m_refContextAdd->set_sensitive(val);
 }
 
 void DbAddDel::set_allow_delete(bool val)
@@ -1067,10 +1076,10 @@ void DbAddDel::on_treeview_cell_edited_bool(const Glib::ustring& path_string, in
 void DbAddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const Glib::ustring& new_text, int model_column_index)
 {
   //Note:: model_column_index is actually the AddDel column index, not the TreeModel column index.
-  
+
   if(path_string.empty())
     return;
-  
+
   Gtk::TreePath path(path_string);
 
   //Get the row from the path:
@@ -1080,10 +1089,10 @@ void DbAddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const G
     Gtk::TreeModel::Row row = *iter;
 
     const int treemodel_column_index = model_column_index + get_count_hidden_system_columns();
-    
+
     Gnome::Gda::Value valOld;
     row.get_value(treemodel_column_index, valOld);
-    
+
     //Store the user's new text in the model:
     //row.set_value(treemodel_column_index, new_text);
 
@@ -1091,17 +1100,17 @@ void DbAddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const G
     bool bIsAdd = false;
     bool bIsChange = false;
     bool do_signal = true;
-    
+
     if(get_allow_user_actions()) //If add is possible:
     {
       if(get_is_placeholder_row(iter))
       {
         bool bPreventUserSignals = get_prevent_user_signals();
         set_prevent_user_signals(true); //Stops extra signal_user_changed.
-        
+
         //Mark this row as no longer a placeholder, because it has data now. The client code must set an actual key for this in the signal_user_added() or m_signal_user_changed signal handlers.
         set_value_key(iter, Gnome::Gda::Value("glom_unknown"));
-        
+
         add_item_placeholder(); //Add the next blank for the next user add.
         set_prevent_user_signals(bPreventUserSignals);
 
@@ -1132,7 +1141,7 @@ void DbAddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const G
             if(refTreeSelection)
             {
               refTreeSelection->select(row); //TODO: This does not seem to work.
-    
+
               if(!path.empty())
               {
                 Gtk::TreeView::Column* pColumn = m_TreeView.get_column(model_column_index);
@@ -1144,20 +1153,20 @@ void DbAddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const G
                     //TreeView::set_cursor(), or start_editing() would get the old value back from the model again
                     //so we do something similar without getting the old value:
                     m_TreeView.set_cursor(path, *pColumn, *pCell, true /* start_editing */); //This highlights the cell, and starts the editing.
-                    
+
                     //This is based on gtk_tree_view_start_editing():
                     //TODO: This does not actually work. I emailed gtk-list about how to do this.
                     /*
                     pCell->stop_editing();
                     pCell->property_text() = "test"; //new_text; //Allow the user to start with the bad text that he entered so far.
-                    
+
                     Gdk::Rectangle background_area;
                     m_TreeView.get_background_area(path, *pColumn, background_area);
-                                    
+
                     Gdk::Rectangle cell_area;
                     m_TreeView.get_cell_area(path, *pColumn, background_area); 
                     */
-                  }          
+                  }
                 }
               }
               else
@@ -1174,15 +1183,16 @@ void DbAddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const G
         //Store the value in the model:
         row.set_value(treemodel_column_index, value);
       }
-        
+
       if(!bIsAdd)
         bIsChange = true;
-  
+
       //Fire appropriate signal:
       if(bIsAdd)
       {
-        //Signal that a new key was added"        
-        m_signal_user_added.emit(row);
+        //Signal that a new key was added"
+        if(m_allow_add)
+          m_signal_user_added.emit(row);
       }
       else if(bIsChange)
       {

@@ -21,6 +21,7 @@
 #include "relationship.h"
 
 Relationship::Relationship()
+: m_auto_create(false)
 {
 }
 
@@ -41,6 +42,7 @@ Relationship& Relationship::operator=(const Relationship& src)
   m_strFrom_Field = src.m_strFrom_Field;
   m_strTo_Table = src.m_strTo_Table;
   m_strTo_Field = src.m_strTo_Field;
+  m_auto_create = src.m_auto_create;
 
   return *this;
 }
@@ -53,6 +55,7 @@ bool Relationship::operator==(const Relationship& src) const
   bEqual = bEqual && (m_strTo_Table == src.m_strTo_Table);
   bEqual = bEqual && (m_strTo_Field == src.m_strTo_Field);
   bEqual = bEqual && (m_strName == src.m_strName);
+  bEqual = bEqual && (m_auto_create == src.m_auto_create);
 
   return bEqual;
 }
@@ -123,4 +126,14 @@ Glib::ustring Relationship::get_title_or_name() const
     return m_strName;
   else
     return m_strTitle;
+}
+
+bool Relationship::get_auto_create() const
+{
+  return m_auto_create;
+}
+
+void Relationship::set_auto_create(bool val)
+{
+  m_auto_create = val;
 }

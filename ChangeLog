@@ -1,3 +1,28 @@
+2005-03-14  Murray Cumming  <murrayc@murrayc.com>
+
+	* examples/example_smallbusiness.glom:
+	* glom/glom_document.dtd:
+	* glom/document/document_glom.cc:
+	* glom/data_structure/relationship.cc:
+	* glom/data_structure/relationship.h:
+	Add get/set_auto_create() to specify whether 
+	details and lists view should automatically 
+	create related fields when the user enters 
+	data into a record that does not yet exist.
+	* glom/mode_design/box_db_table_relationships.cc:
+	* glom/mode_design/box_db_table_relationships.h:
+	on_adddel_user_activated(): Do not clear the 
+	to_field when the user clicks on it.
+	* glom/utility_widgets/db_adddel/db_adddel.cc:
+	If allow_add is false, deactivate the Add 
+	context menu item, and do not add new-record 
+	placeholder rows.
+	* glom/mode_data/box_data_list_related.cc:
+        Set DbAddDel::set_allow_add() according to the 
+	relationship.
+
+0.8.15:
+
 2005-03-14  Murray Cumming <murrayc@murrayc.com>
 
 	* glom/mode_data/box_data.cc:

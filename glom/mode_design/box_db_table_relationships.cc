@@ -42,6 +42,7 @@ void Box_DB_Table_Relationships::init()
   m_colFromField = m_AddDel.add_column(gettext("From Field"), AddDelColumnInfo::STYLE_Choices);
   m_colToTable = m_AddDel.add_column(gettext("Table"), AddDelColumnInfo::STYLE_Choices);
   m_colToField = m_AddDel.add_column(gettext("To Field"), AddDelColumnInfo::STYLE_Choices);
+  m_colAutoCreate = m_AddDel.add_column(gettext("Automatic Record Creation"),  AddDelColumnInfo::STYLE_Boolean);
 
   //Connect signals:
   m_AddDel.signal_user_activated().connect(sigc::mem_fun(*this, &Box_DB_Table_Relationships::on_adddel_user_activated));
@@ -102,6 +103,7 @@ void Box_DB_Table_Relationships::fill_from_database()
        //To Field:
        m_AddDel.set_value(iterTree, m_colToField, relationship.get_to_field());
 
+       m_AddDel.set_value(iterTree, m_colAutoCreate, relationship.get_auto_create());
     }
   }
 
@@ -125,6 +127,7 @@ void Box_DB_Table_Relationships::save_to_document()
       relationship.set_from_field(m_AddDel.get_value(iter, m_colFromField));
       relationship.set_to_table(m_AddDel.get_value(iter, m_colToTable));
       relationship.set_to_field(m_AddDel.get_value(iter, m_colToField));
+      relationship.set_auto_create(m_AddDel.get_value_as_bool(iter, m_colAutoCreate));
 
       vecRelationships.push_back(relationship);
     }
@@ -145,7 +148,7 @@ void Box_DB_Table_Relationships::on_adddel_user_changed(const Gtk::TreeModel::it
     Glib::ustring new_name = m_AddDel.get_value(row, m_colName);
     if(!new_name.empty())
       m_AddDel.set_value_key(row, new_name);
-      
+
     //Update the title, if there is none already:
     Glib::ustring title = m_AddDel.get_value(row, m_colTitle);
     if(title.empty())
@@ -169,7 +172,9 @@ void Box_DB_Table_Relationships::on_adddel_user_activated(const Gtk::TreeModel::
   if(col == m_colToField)
   {
     Bakery::BusyCursor(*get_app_window());
-        
+
+    const Glib::ustring old_to_field = m_AddDel.get_value(row, m_colToField);
+
     const Glib::ustring table_name = m_AddDel.get_value(row, m_colToTable);
 
     if(!table_name.empty())
@@ -181,7 +186,7 @@ void Box_DB_Table_Relationships::on_adddel_user_activated(const Gtk::TreeModel::
       if(sharedconnection)
       {
         Glib::RefPtr<Gnome::Gda::Connection> connection = sharedconnection->get_gda_connection();
-     
+
         type_vecStrings vecFields = util_vecStrings_from_Fields(get_fields_for_table(table_name));
 
         //This would cause a lot of tedious re-filling:
@@ -189,6 +194,9 @@ void Box_DB_Table_Relationships::on_adddel_user_activated(const Gtk::TreeModel::
         //fill_from_database();
 
         m_AddDel.set_column_choices(m_colToField, vecFields);
+
+        //Attempt to set the previous value:
+        m_AddDel.set_value(row, m_colToField, old_to_field);
       }
     }
 

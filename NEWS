@@ -1,3 +1,10 @@
+0.8.16:
+
+* Relationships:
+  - Allow the developer to specify whether related records 
+  should be created automatically.
+  - Do not clear the To Field column when the user clicks on it.
+
 0.8.15:
 
 * Related Fields:
