@@ -26,10 +26,12 @@ Dialog_ChooseField::Dialog_ChooseField(BaseObjectType* cobject, const Glib::RefP
 : Gtk::Dialog(cobject),
   m_combo_relationship(0),
   m_button_select(0),
+  m_checkbutton_editable(0),
   m_treeview(0),
   m_document(0)
 {
   refGlade->get_widget("button_select", m_button_select);
+  refGlade->get_widget("checkbutton_editable", m_checkbutton_editable);
   refGlade->get_widget_derived("combobox_relationship", m_combo_relationship);
   m_combo_relationship->signal_changed().connect(sigc::mem_fun(*this, &Dialog_ChooseField::on_combo_relationship_changed));
 
@@ -84,12 +86,16 @@ void Dialog_ChooseField::set_document(Document_Glom* document, const Glib::ustri
   {
     m_treeview->get_selection()->select(iterFound);
   }
+
+  m_checkbutton_editable->set_active( field.get_editable() );
 }
 
 void Dialog_ChooseField::set_document(Document_Glom* document, const Glib::ustring& table_name)
 {
   m_document = document;
   m_table_name = table_name;
+
+  m_checkbutton_editable->set_active( true ); //An appropriate default.
  
   if(!m_document)
   {
@@ -171,6 +177,8 @@ bool Dialog_ChooseField::get_field_chosen(LayoutItem_Field& field) const
     relationship_name.clear();
 
   field.set_relationship_name(relationship_name);
+
+  field.set_editable( m_checkbutton_editable->get_active() );
 
   //Field:
   Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = m_treeview->get_selection();

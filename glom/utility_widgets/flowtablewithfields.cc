@@ -73,6 +73,8 @@ void FlowTableWithFields::add_layout_item(const LayoutItem& item)
       //Do not allow editing of auto-increment fields:
       if(field->m_field.get_field_info().get_auto_increment())
         set_field_editable(*field, false);
+      else
+        set_field_editable(*field, field->get_editable());
     }
     else
     {
@@ -305,7 +307,7 @@ Gnome::Gda::Value FlowTableWithFields::get_field_value(const LayoutItem_Field& f
   g_warning("FlowTableWithFields::get_field_value(): returning null");
   return Gnome::Gda::Value(); //null.
 }
- 
+
 void FlowTableWithFields::set_field_editable(const LayoutItem_Field& field, bool editable)
 {
   type_list_widgets list_widgets = get_field(field);

@@ -430,9 +430,9 @@ guint Box_Data::generate_next_auto_increment(const Glib::ustring& table_name, co
 
 /** Get the fields that are in related tables, via a relationship using @a field_name changes.
  */
-Box_Data::type_list_lookups Box_Data::get_related_fields(const Glib::ustring& field_name) const
+Box_Data::type_vecLayoutFields Box_Data::get_related_fields(const Glib::ustring& field_name) const
 {
-  type_list_lookups result;
+  type_vecLayoutFields result;
 
   const Document_Glom* document = dynamic_cast<const Document_Glom*>(get_document());
   if(document)
@@ -452,7 +452,7 @@ Box_Data::type_list_lookups Box_Data::get_related_fields(const Glib::ustring& fi
           if(relationship.get_from_field() == field_name)
           {
             //Add it:
-            result.push_back( type_pairFieldTrigger(layout_field, relationship) );
+            result.push_back(layout_field);
           }
         }
       }

@@ -76,7 +76,7 @@ The name will be either "list" or "details".
   relationship CDATA #OPTIONAL
   group CDATA #OPTIONAL
   sequence CDATA #REQUIRED
-  hide CDATA #OPTIONAL
+  editable CDATA #OPTIONAL
 >
 
 <!ELEMENT data_layout_portal EMPTY >

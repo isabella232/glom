@@ -138,7 +138,7 @@ bool Document_Glom::get_relationship(const Glib::ustring& table_name, const Glib
       {
         relationship = *iter;
         return true; //found
-      }        
+      }
     }
   }
    
@@ -474,7 +474,7 @@ Document_Glom::type_mapLayoutGroupSequence Document_Glom::get_data_layout_groups
           layout_item.set_name(field_name);
           //layout_item.set_table_name(table_name); //TODO: Allow viewing of fields through relationships.
           //layout_item.m_sequence = sequence;  add_item() will fill this.
-          layout_item.m_hidden = false;
+
 
           pTopLevel->add_item(layout_item);
         }
@@ -685,13 +685,14 @@ void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Gl
     if(element)
     {
       const guint sequence = get_node_attribute_value_as_decimal(element, "sequence");
-      
+
       if(element->get_name() == "data_layout_item")
       {
         LayoutItem_Field item;
 
         item.set_name( get_node_attribute_value(element, "name") );
         item.set_relationship_name( get_node_attribute_value(element, "relationship") );
+        item.set_editable( get_node_attribute_value_as_bool(element, "editable") );
         //item.set_table_name(table_name);
 
         item.m_sequence = sequence;
@@ -840,7 +841,7 @@ bool Document_Glom::load_after()
                 const Glib::ustring relationship_name = get_node_attribute_value(nodeChild, "name");
 
                 relationship.set_from_table( table_name );
-                relationship.set_name( relationship_name );
+                relationship.set_name( relationship_name );;
 
                 const Glib::ustring relationship_title = get_node_attribute_value(nodeChild, "title");
                 relationship.set_title( relationship_title );
@@ -932,6 +933,7 @@ void Document_Glom::save_before_layout_group(xmlpp::Element* node, const LayoutG
         xmlpp::Element* nodeItem = child->add_child("data_layout_item");
         nodeItem->set_attribute("name", item->get_name());
         nodeItem->set_attribute("relationship", field->get_relationship_name());
+        set_node_attribute_value_as_bool(nodeItem, "editable", item->get_editable());
 
         set_node_attribute_value_as_decimal(nodeItem, "sequence", item->m_sequence);
       }

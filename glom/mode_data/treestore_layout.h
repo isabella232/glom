@@ -43,12 +43,13 @@ public:
   public:
 
     ModelColumns()
-    { add(m_col_type); add(m_col_name); add(m_col_relationship_name); add(m_col_title); add(m_col_sequence); add(m_col_columns_count); add(m_col_relationship); }
+    { add(m_col_type); add(m_col_name); add(m_col_relationship_name); add(m_col_title); add(m_col_editable); add(m_col_sequence); add(m_col_columns_count); add(m_col_relationship); }
 
     Gtk::TreeModelColumn<enumType> m_col_type;
     Gtk::TreeModelColumn<Glib::ustring> m_col_name;
     Gtk::TreeModelColumn<Glib::ustring> m_col_relationship_name; //Only for fields
     Gtk::TreeModelColumn<Glib::ustring> m_col_title; //only for groups
+    Gtk::TreeModelColumn<bool> m_col_editable; 
     Gtk::TreeModelColumn<guint> m_col_sequence;
     Gtk::TreeModelColumn<guint> m_col_columns_count; //Only for groups.
     Gtk::TreeModelColumn<Glib::ustring> m_col_relationship; //Only for portals.
@@ -61,7 +62,6 @@ public:
   virtual void fill_sequences();
   virtual void fill_sequences(const iterator& iter);
 
-  
 protected:
   //Overridden virtual functions:
   virtual bool row_draggable_vfunc(const Gtk::TreeModel::Path& path) const;

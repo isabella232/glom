@@ -81,7 +81,7 @@ protected:
 
   /** Get the fields that are in related tables, via a relationship using @a field_name changes.
   */
-  type_list_lookups get_related_fields(const Glib::ustring& field_name) const;
+  type_vecLayoutFields get_related_fields(const Glib::ustring& field_name) const;
 
   /** Get the value of the @a source_field from the @a relationship, using the @a key_value.
    */

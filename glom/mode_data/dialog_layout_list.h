@@ -49,6 +49,7 @@ protected:
   virtual void on_button_field_down();
   virtual void on_button_add_field();
   virtual void on_button_delete();
+  virtual void on_button_edit_field();
   virtual void on_treeview_fields_selection_changed();
   virtual void on_cell_data_name(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter);
 

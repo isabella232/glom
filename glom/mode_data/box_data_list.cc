@@ -437,20 +437,7 @@ void Box_Data_List::refresh_related_fields(const Gtk::TreeModel::iterator& row, 
   //Get values for lookup fields, if this field triggers those relationships:
   //TODO_performance: There is a LOT of iterating and copying here.
   const Glib::ustring strFieldName = field_changed.get_name();
-  type_list_lookups related_fields = get_related_fields(strFieldName); //TODO: Unnecessary intermediate step.
-  type_vecLayoutFields fieldsToGet;
-  for(type_list_lookups::const_iterator iter = related_fields.begin(); iter != related_fields.end(); ++iter)
-  {
-    const LayoutItem_Field& layout_item = iter->first;
-
-    fieldsToGet.push_back(layout_item);
-
-    //const Relationship relationship = iter->second;
-    //const Field& field_to_refresh = layout_Item.m_field;
-
-    //Gnome::Gda::Value value_new;
-    //m_AddDel.set_value(row, layout_item, value_new);
-  }
+  type_vecLayoutFields fieldsToGet = get_related_fields(strFieldName);
 
   if(!fieldsToGet.empty())
   {

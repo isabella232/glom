@@ -22,14 +22,14 @@
 
 LayoutItem::LayoutItem()
 : m_sequence(0),
-  m_hidden(false)
+  m_editable(true)
 {
 }
 
 LayoutItem::LayoutItem(const LayoutItem& src)
 : m_sequence(src.m_sequence),
-  m_hidden(src.m_hidden),
-  m_name(src.m_name)
+  m_name(src.m_name),
+  m_editable(src.m_editable)
 {
 }
 
@@ -41,7 +41,7 @@ LayoutItem& LayoutItem::operator=(const LayoutItem& src)
 {
   m_name = src.m_name;
   m_sequence = src.m_sequence;
-  m_hidden = src.m_hidden;
+  m_editable = src.m_editable;
 
   return *this;
 }
@@ -50,9 +50,20 @@ void LayoutItem::set_name(const Glib::ustring& name)
 {
   m_name = name;
 }
-  
+
 Glib::ustring LayoutItem::get_name() const
 {
   return m_name;
 }
+
+bool LayoutItem::get_editable() const
+{
+  return m_editable;
+}
+
+void LayoutItem::set_editable(bool val)
+{
+  m_editable = val;
+}
+
 

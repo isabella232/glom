@@ -1,3 +1,15 @@
+0.8.15:
+
+* Related Fields:
+  Details and List views can now show fields from related records.
+  Just choose the relationship when you choose the field on 
+  the layout. This even works in Related Records portals.
+* Non-editable fields:
+  When choosing a field for a layout, you can specify whether 
+  editing of the field should be allowed.
+* Dialogs are more HIG-compliant, using secondary text.
+* Now requires gtkmm 2.6 instead of 2.4.
+
 0.8.14:
 
 * Details View: Adding records works even when a field appears

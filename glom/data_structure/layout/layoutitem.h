@@ -40,11 +40,15 @@ public:
   virtual void set_name(const Glib::ustring& name);
   virtual Glib::ustring get_name() const; //For use with our std::find_if() predicate.
 
+  virtual bool get_editable() const;
+  virtual void set_editable(bool val);
+
   guint m_sequence;
-  bool m_hidden;
+  //bool m_hidden;
 
 protected:
   Glib::ustring m_name;
+  bool m_editable;
 };
 
 #endif //GLOM_DATASTRUCTURE_LAYOUTITEM_H

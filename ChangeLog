@@ -1,5 +1,18 @@
 2005-03-14  Murray Cumming <murrayc@murrayc.com>
 
+	* glom/mode_data/box_data.cc:
+	* glom/mode_data/box_data.h:
+	* glom/mode_data/box_data_details.cc:
+	* glom/mode_data/box_data_details.h:
+	* glom/mode_data/box_data_list.cc:
+	Box_Data_List::refresh_related_fields(): Now 
+	related fields are updated in the details view 
+	when the key value changes in the record.
+	Dialog_Layout_List: The edit button now edits the 
+	properties of the current layout field.
+
+2005-03-14  Murray Cumming <murrayc@murrayc.com>
+
 	* glom/mode_data/box_data_list.cc:
         refresh_related_fields(): The list view now updates 
 	the displayed value of related fields when you 

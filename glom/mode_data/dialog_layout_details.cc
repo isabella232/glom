@@ -143,6 +143,7 @@ void Dialog_Layout_Details::fill_group(const Gtk::TreeModel::iterator& iter, Lay
     for(Gtk::TreeModel::iterator iterChild = row.children().begin(); iterChild != row.children().end(); ++iterChild)
     {
       Gtk::TreeModel::Row rowChild = *iterChild;
+
       if(rowChild[m_model_items->m_columns.m_col_type] == TreeStore_Layout::TYPE_GROUP)
       {
         //Recurse:
@@ -162,6 +163,8 @@ void Dialog_Layout_Details::fill_group(const Gtk::TreeModel::iterator& iter, Lay
         LayoutItem_Field field;
         field.set_name( rowChild[m_model_items->m_columns.m_col_name] );
         field.set_relationship_name( rowChild[m_model_items->m_columns.m_col_relationship_name] );
+
+        field.set_editable( rowChild[m_model_items->m_columns.m_col_editable] );
 
         group.add_item(field);
       }
@@ -221,6 +224,8 @@ void Dialog_Layout_Details::add_group(const Gtk::TreeModel::iterator& parent, co
             row[m_model_items->m_columns.m_col_type] = TreeStore_Layout::TYPE_FIELD;
             row[m_model_items->m_columns.m_col_name] = field->get_name();
             row[m_model_items->m_columns.m_col_relationship_name] = field->get_relationship_name();
+
+            row[m_model_items->m_columns.m_col_editable] = field->get_editable();
           }
         }
       }
@@ -649,11 +654,14 @@ void Dialog_Layout_Details::on_button_field_edit()
           LayoutItem_Field field;
           field.set_name( row[m_model_items->m_columns.m_col_name] ); //Start with this one selected.
           field.set_relationship_name( row[m_model_items->m_columns.m_col_relationship_name] );
+          field.set_editable( row[m_model_items->m_columns.m_col_editable] );
           bool test = offer_field_list(field);
           if(test)
           {
             row[m_model_items->m_columns.m_col_name] = field.get_name();
             row[m_model_items->m_columns.m_col_relationship_name] = field.get_relationship_name();
+
+            row[m_model_items->m_columns.m_col_editable] = field.get_editable();
           }
 
           break;
@@ -760,6 +768,10 @@ void Dialog_Layout_Details::on_cell_data_name(Gtk::CellRenderer* renderer, const
           markup = relationship + "::";
 
         markup += row[m_model_items->m_columns.m_col_name];
+
+        //Just for debugging:
+       // if(!row[m_model_items->m_columns.m_col_editable])
+       //  markup += " *";
       }
 
       renderer_text->property_markup() = markup;

@@ -577,6 +577,9 @@ void Box_Data_Details::on_flowtable_field_edited(const LayoutItem_Field& layout_
         //Get-and-set values for lookup fields, if this field triggers those relationships:
         do_lookups(layout_field, field_value, primary_key_field, primary_key_value);
 
+        //Show new values for related fields:
+        refresh_related_fields(layout_field, field_value, primary_key_field, primary_key_value);
+
         //TODO: Display new values for related fields.
 
         //If this is a foreign key then refresh the related records:
@@ -641,6 +644,48 @@ void Box_Data_Details::on_flowtable_field_edited(const LayoutItem_Field& layout_
       }
     }
   } //if(get_primary_key_value().size())
+}
+
+void Box_Data_Details::refresh_related_fields(const LayoutItem_Field& field_changed, const Gnome::Gda::Value& /* field_value */, const Field& primary_key, const Gnome::Gda::Value& primary_key_value)
+{
+  if(field_changed.get_has_relationship_name())
+    return; //TODO: Handle these too.
+
+  //Get values for lookup fields, if this field triggers those relationships:
+  //TODO_performance: There is a LOT of iterating and copying here.
+  const Glib::ustring strFieldName = field_changed.get_name();
+  type_vecLayoutFields fieldsToGet = get_related_fields(strFieldName);
+
+  if(!fieldsToGet.empty())
+  {
+    const Glib::ustring query = build_sql_select(m_strTableName, fieldsToGet, primary_key, primary_key_value);
+
+    Glib::RefPtr<Gnome::Gda::DataModel> result = Query_execute(query);
+    if(!result)
+      handle_error();
+    else
+    {
+      //Field contents:
+      if(result->get_n_rows())
+      {
+        type_vecLayoutFields::const_iterator iterFields = fieldsToGet.begin();
+
+        guint cols_count = result->get_n_columns();
+        for(guint uiCol = 0; uiCol < cols_count; uiCol++)
+        {
+          const Gnome::Gda::Value value = result->get_value_at(uiCol, 0 /* row */);
+          const LayoutItem_Field& layout_item = *iterFields;
+
+          //g_warning("list fill: field_name=%s", iterFields->get_name().c_str());
+          //g_warning("  value_as_string=%s", value.to_string().c_str());
+
+          m_FlowTable.set_field_value(layout_item, value);
+
+          ++iterFields;
+        }
+      }
+    }
+  }
 }
 
 void Box_Data_Details::do_lookups(const LayoutItem_Field& field_changed, const Gnome::Gda::Value& field_value, const Field& primary_key, const Gnome::Gda::Value& primary_key_value)

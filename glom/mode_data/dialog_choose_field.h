@@ -39,7 +39,6 @@ public:
    * @param field The starting field information.
    */
   virtual void set_document(Document_Glom* document, const Glib::ustring& table_name, const LayoutItem_Field& field);
- 
   virtual void set_document(Document_Glom* document, const Glib::ustring& table_name);
 
 
@@ -69,6 +68,7 @@ protected:
 
   Combo_TextGlade* m_combo_relationship;
   Gtk::Button* m_button_select;
+  Gtk::CheckButton* m_checkbutton_editable;
   Gtk::TreeView* m_treeview;
   Glib::RefPtr<Gtk::ListStore> m_model;
 
