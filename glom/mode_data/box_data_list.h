@@ -22,6 +22,7 @@
 #define BOX_DATA_LIST_H
 
 #include "box_data.h"
+#include <glom/utility_widgets/db_adddel/db_adddel_withbuttons.h>
 
 class Box_Data_List : public Box_Data
 {
@@ -68,7 +69,7 @@ protected:
   virtual bool get_field_column_index(const Glib::ustring& field_name, guint& index) const;
   
   //Member widgers:
-  mutable AddDel_WithButtons m_AddDel; //mutable because its get_ methods aren't const.
+  mutable DbAddDel_WithButtons m_AddDel; //mutable because its get_ methods aren't const.
 
   bool m_has_one_or_more_records;
 
