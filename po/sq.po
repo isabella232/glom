@@ -1,14 +1,14 @@
 # Përkthimi i mesazheve të glom në shqip
 # This file is distributed under the same license as the glome package.
-# Copyright (C) 2004 Free Software Foundation, Inc.
-# Laurent Dhima <laurenti@alblinux.net>, 2004.
+# Copyright (C) 2004, 2005 Free Software Foundation, Inc.
+# Laurent Dhima <laurenti@alblinux.net>, 2004, 2005.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: glom HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-01-05 10:19+0100\n"
-"PO-Revision-Date: 2004-08-18 15:02+0200\n"
+"POT-Creation-Date: 2005-02-22 03:20+0100\n"
+"PO-Revision-Date: 2005-02-22 11:18+0100\n"
 "Last-Translator: Laurent Dhima <laurenti@alblinux.net>\n"
 "Language-Team: Albanian <gnome-albanian-perkthyesit@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -40,9 +40,8 @@ msgid "<b>Select Field</b>"
 msgstr "<b>Zgjidh Fushën</b>"
 
 #: glom/glom.glade.h:7
-#, fuzzy
 msgid "<b>Select Relationship</b>"
-msgstr "<b>Zgjidh Fushën</b>"
+msgstr "<b>Zgjidh marëdhënien</b>"
 
 #: glom/glom.glade.h:8
 msgid "<b>Table: </b>"
@@ -70,6 +69,9 @@ msgid ""
 "\n"
 "Please enter the connection details for your database server."
 msgstr ""
+"<span weight=\"bold\" size=\"larger\">Lidhu tek Serveri</span>\n"
+"\n"
+"Shkruaj të dhënat e lidhjes për serverin tuaj të databazës."
 
 #: glom/glom.glade.h:16
 msgid ""
@@ -79,6 +81,11 @@ msgid ""
 "incorrect user name or password, or maybe the postgres database server is "
 "not running."
 msgstr ""
+"<span weight=\"bold\" size=\"larger\">Lidhja Dështoi</span>\n"
+"\n"
+"Glom nuk arriti të lidhej me serverin e databazës suaj. Ndoshta keni dhënë "
+"një emër përdoruesi apo fjalëkalim të gabuar, ose ndoshta serveri postgres "
+"nuk është në ekzekutim."
 
 #: glom/glom.glade.h:19
 msgid ""
@@ -87,6 +94,10 @@ msgid ""
 "Glom could not create the new database. Maybe you do not have the necessary "
 "access rights. Please contact your system administrator."
 msgstr ""
+"<span weight=\"bold\" size=\"larger\">Krijimi i databazës dështoi</span>\n"
+"\n"
+"Glom nuk arriti të krijojë databazën e re. Ndoshta të mungojnë të drejtat e duhura "
+"të hyrjes. Lidhu me administratorin e sistemit tuaj."
 
 #: glom/glom.glade.h:22
 msgid ""
@@ -95,6 +106,10 @@ msgid ""
 "The database does not yet exist on the database server. Would you like to "
 "create the database with an empty structure?"
 msgstr ""
+"<span weight=\"bold\" size=\"larger\">Databaza nuk ekziston</span>\n"
+"\n"
+"Databaza nuk ekziston në server. Dëshiron të krijosh databazën me një strukturë "
+"bosh?"
 
 #: glom/glom.glade.h:25
 msgid ""
@@ -117,6 +132,10 @@ msgid ""
 "Please choose a name and title for the new database. The name should not "
 "contain any spaces."
 msgstr ""
+"<span weight=\"bold\" size=\"larger\">Databazë e re</span>\n"
+"\n"
+"Zgjidh emrin dhe titullin për databazën e re. Emri nuk duhet të përmbajë "
+"asnjë lloj hapësire."
 
 #: glom/glom.glade.h:32
 msgid ""
@@ -149,7 +168,7 @@ msgstr ""
 
 #: glom/glom.glade.h:42
 msgid "Add Related"
-msgstr ""
+msgstr "Shto relacion"
 
 #: glom/glom.glade.h:43
 msgid "Add _Group"
@@ -169,16 +188,15 @@ msgstr "Lidhu"
 
 #: glom/glom.glade.h:47
 msgid "Create"
-msgstr ""
+msgstr "Krijo"
 
 #: glom/glom.glade.h:48
 msgid "Data"
 msgstr "Të dhëna"
 
 #: glom/glom.glade.h:49
-#, fuzzy
 msgid "Database"
-msgstr "Të dhëna"
+msgstr "Databazë"
 
 #: glom/glom.glade.h:50
 msgid "Default Value"
@@ -265,9 +283,8 @@ msgid "Select Field"
 msgstr "Zgjidh fushën"
 
 #: glom/glom.glade.h:71
-#, fuzzy
 msgid "Select Relationship"
-msgstr "Marrëdhënie"
+msgstr "Zgjidh marrëdhëniet"
 
 #: glom/glom.glade.h:72
 msgid "Show hidden tables"
@@ -285,8 +302,7 @@ msgstr "Prova"
 msgid ""
 "The field value will be the return value of the python function, which you "
 "implement here."
-msgstr ""
-"Vlera e fushës do të pasqyrojë vlerën e funksionit python, që plotësuat këtu."
+msgstr "Vlera e fushës do të pasqyrojë vlerën e funksionit python, që plotësuat këtu."
 
 #: glom/glom.glade.h:76
 msgid "Title"
@@ -312,5 +328,3 @@ msgstr "shembull formatimi të dhënash"
 msgid "table name"
 msgstr "emri i tabelës"
 
-#~ msgid "<b>Databases</b>"
-#~ msgstr "<b>Databazat</b>"
