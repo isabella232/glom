@@ -8,6 +8,11 @@ SUBDIRS = po glom docs macros
 GnomeApplicationsdir = $(datadir)/gnome/apps/Applications
 GnomeApplications_DATA = glom.desktop
 
+# This is the old MIME-type system.
+# GNOME 2.6 seems to require that we register with both the old and the new MIME-type systems.
+mimeinfodir = $(datadir)/mime-info
+mimeinfo_DATA = glom.keys glom.mime
+
 # Install the glom.xml MIME-type registration file, so that the files can be recognised as the $
 # correct MIME-type:
 MimeDatabasedir = $(datadir)/mime/packages
@@ -20,5 +25,6 @@ appreg_DATA = glom.applications
 install-data-hook: 
 	-update-mime-database "$(DESTDIR)${datadir}/mime"
 
-EXTRA_DIST = $(GnomeApplications_DATA) $(MimeDatabase_DATA) $(appreg_DATA)
+EXTRA_DIST = $(GnomeApplications_DATA) $(MimeDatabase_DATA) $(appreg_DATA) $(mimeinfo_DATA)
+
 

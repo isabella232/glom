@@ -5,6 +5,7 @@
 * Edit buttons are now stock Open buttons.
 * Renaming of tables: The new names are stored in the 
   document so you can rename again, and use the renamed table.
+  (Murray Cumming)
 
 0.8.4:
 
