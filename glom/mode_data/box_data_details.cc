@@ -126,7 +126,7 @@ void Box_Data_Details::init_db_details(const Glib::ustring& strTableName, const 
 
   get_field_primary_key_for_table(strTableName, m_field_primary_key);
 
-  Box_DB_Table::init_db_details(strTableName);
+  Box_Data::init_db_details(strTableName);
 }
 
 void Box_Data_Details::refresh_db_details(const Gnome::Gda::Value& primary_key_value)
@@ -175,39 +175,64 @@ void Box_Data_Details::fill_from_database()
     Box_DB_Table::fill_from_database();
 
     m_Fields = get_fields_to_show();
-    type_vecFields fieldsToGet = m_Fields;
+    type_vecLayoutFields fieldsToGet = m_Fields;
+
 
     if(!fieldsToGet.empty())
     {
       fill_from_database_layout(); //TODO: Only do this when the layout has changed.
 
       //Add extra possibly-non-visible columns that we need:
-      fieldsToGet.push_back(m_field_primary_key); //Actually listFieldsToGet.
+      LayoutItem_Field layout_item;
+      layout_item.set_name(m_field_primary_key.get_name());
+      layout_item.m_field = m_field_primary_key;
+      fieldsToGet.push_back(layout_item);
 
       //g_warning("primary_key name = %s", m_field_primary_key.get_name().c_str());
       const int index_primary_key = fieldsToGet.size() - 1;
 
       if(!GlomConversions::value_is_empty(m_primary_key_value)) //If there is a record to show:
       {
+
         if(sharedconnection)
         {
           Glib::RefPtr<Gnome::Gda::Connection> connection = sharedconnection->get_gda_connection();
 
+
           Glib::ustring sql_part_fields;
-          for(type_vecFields::const_iterator iter =  fieldsToGet.begin(); iter != fieldsToGet.end(); ++iter)
+          for(type_vecLayoutFields::const_iterator iter =  fieldsToGet.begin(); iter != fieldsToGet.end(); ++iter)
           {
             if(iter != fieldsToGet.begin())
               sql_part_fields += ",";
 
+            /*
+            Glib::ustring relationship_name = iter->get_relationship_name();
+            if(relationship_name.empty())
+            {
+              sql_part_fields += ( m_table_name + ".");
+            }
+            else
+            {
+              Relationship relationship;
+              bool test = m_document->get_relationship(m_table_name, relationship_name, relationship);
+              if(test)
+                sql_part_fields += ( relationship.get_to_table() + "." );
+            }
+            */
+            //sql_part_fields += ( iter->get_table_name() + "." );
+
             sql_part_fields += iter->get_name();
           }
+
 
           std::stringstream query;
           query << "SELECT " << sql_part_fields << " FROM " << m_strTableName << " WHERE " << get_table_name() + "." + m_field_primary_key.get_name() << " = " << m_field_primary_key.sql(m_primary_key_value);
           Glib::RefPtr<Gnome::Gda::DataModel> result = connection->execute_single_command(query.str());
 
+
           if(result && result->get_n_rows())
           {
+
             const Document_Glom* pDoc = dynamic_cast<const Document_Glom*>(get_document());
             if(pDoc)
             {
@@ -224,7 +249,7 @@ void Box_Data_Details::fill_from_database()
               //Get field values to show:
               for(int i = 0; i < cols_count; ++i)
               {
-                const Field& field = fieldsToGet[i];
+                const Field& field = fieldsToGet[i].m_field;
 
                 //Field value:
                 Gnome::Gda::Value value = result->get_value_at(i, row_number);
@@ -237,9 +262,14 @@ void Box_Data_Details::fill_from_database()
       else
       {
         //Show blank record:
-        //TODO
+        g_warning("Details: primary key value is empty");
       }
     } //if(!fieldsToGet.empty())
+    else
+    {
+       g_warning("Details: fieldsToGet is empty.");
+    }
+
 
     //fill_related();
 

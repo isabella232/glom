@@ -57,17 +57,18 @@ protected:
   virtual void postgres_add_column(const Field& field, bool not_extras = false);
   virtual void postgres_change_column(const Field& field_old, const Field& field);
   virtual void postgres_change_column_type(const Field& field_old, const Field& field);
-  
+
   /** @param set_anyway If this is true, then set the extra details even if @field_old has the same properties.
    */
   virtual void postgres_change_column_extras(const Field& field_old, const Field& field, bool set_anyway = false);
-  
+
   mutable AddDel_WithButtons m_AddDel; //mutable because its get_ methods aren't const.
- 
+
   guint m_colName, m_colTitle, m_colType, m_colUnique, m_colPrimaryKey;
 
   Dialog_FieldDefinition* m_pDialog;
   Field m_Field_BeingEdited;
+  type_vecFields m_vecFields;
 };
 
 #endif

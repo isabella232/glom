@@ -117,10 +117,10 @@ void Box_DB_Table_Definition::fill_from_database()
 
     Field::type_map_type_names mapFieldTypes = Field::get_type_names_ui();
 
-    for(type_vecFields::iterator iter = m_Fields.begin(); iter != m_Fields.end(); iter++)
-    {       
+    for(type_vecFields::iterator iter = m_vecFields.begin(); iter != m_vecFields.end(); iter++)
+    {
       const Field& field = *iter;
-             
+
       //Name:
       Gtk::TreeModel::iterator iter= m_AddDel.add_item(field.get_name());
       fill_field_row(iter, field);
@@ -170,7 +170,7 @@ void Box_DB_Table_Definition::on_adddel_delete(const Gtk::TreeModel::iterator& r
   Gtk::TreeModel::iterator iterAfterEnd = rowEnd;
   if(iterAfterEnd != m_AddDel.get_model()->children().end())
     ++iterAfterEnd;
-    
+
   for(Gtk::TreeModel::iterator iter = rowStart; iter != iterAfterEnd; ++iter)
   {
     Glib::ustring strName = m_AddDel.get_value_key(iter);
@@ -192,18 +192,18 @@ void Box_DB_Table_Definition::on_adddel_changed(const Gtk::TreeModel::iterator& 
   {
     //Glom-specific stuff: //TODO_portiter
     const Glib::ustring strFieldNameBeingEdited = m_AddDel.get_value_key(row);
-    
+ 
     pDoc->get_field(m_strTableName, strFieldNameBeingEdited, m_Field_BeingEdited);
 
     //Get DB field info: (TODO: This might be unnecessary).
-    type_vecFields::const_iterator iterFind = std::find_if( m_Fields.begin(), m_Fields.end(), predicate_FieldHasName<Field>(strFieldNameBeingEdited) );
-    if(iterFind != m_Fields.end()) //If it was found:
+    type_vecFields::const_iterator iterFind = std::find_if( m_vecFields.begin(), m_vecFields.end(), predicate_FieldHasName<Field>(strFieldNameBeingEdited) );
+    if(iterFind != m_vecFields.end()) //If it was found:
     {
       m_Field_BeingEdited = *iterFind;
 
       //Get new field definition:
       Field fieldNew = get_field_definition(row);
-       
+
       //Change it:
       if(m_Field_BeingEdited != fieldNew) //If it has really changed.
       {
@@ -226,11 +226,11 @@ void Box_DB_Table_Definition::on_adddel_changed(const Gtk::TreeModel::iterator& 
 void Box_DB_Table_Definition::on_adddel_edit(const Gtk::TreeModel::iterator& row)
 {
   m_Field_BeingEdited = get_field_definition(row);
-  
+
   m_pDialog->set_field(m_Field_BeingEdited, m_strTableName);
- 
+
   //m_pDialog->set_modified(false); //Disable [Apply] at start.
-  
+
   m_pDialog->show_all();
 }
 
@@ -264,7 +264,7 @@ Field Box_DB_Table_Definition::get_field_definition(const Gtk::TreeModel::iterat
   //DB field definition:
 
   //Start with original definitions, so that we preserve things like UNSIGNED.
-  //TODO maybe use document's fieldinfo instead of m_Fields.
+  //TODO maybe use document's fieldinfo instead of m_vecFields.
   Field field_temp;
   bool test = get_fields_for_table_one_field(m_strTableName, strFieldNameBeforeEdit, field_temp);
   if(test)
@@ -298,7 +298,7 @@ Field Box_DB_Table_Definition::get_field_definition(const Gtk::TreeModel::iterat
     //Put it together:
     fieldResult.set_field_info(fieldInfo);
   }
-        
+
   return fieldResult;
 }
 
@@ -333,7 +333,7 @@ void Box_DB_Table_Definition::on_Properties_apply()
 void Box_DB_Table_Definition::change_definition(const Field& fieldOld, Field field)
 {
   Bakery::BusyCursor(*get_app_window());
-    
+
   //DB field defintion:
 
   postgres_change_column(fieldOld, field);
@@ -362,15 +362,15 @@ void Box_DB_Table_Definition::change_definition(const Field& fieldOld, Field fie
    //MySQL does this all with ALTER_TABLE, with "CHANGE" followed by the same details used with "CREATE TABLE",
    //MySQL also makes it easier to change the type.
    // but Postgres uses various subcommands, such as  "ALTER COLUMN", and "RENAME".
-  
-    
+
+ 
   //Extra Glom field definitions:
   Document_Glom* pDoc = static_cast<Document_Glom*>(get_document());
   if(pDoc)
   {
     //Get Table's fields:
     Document_Glom::type_vecFields vecFields = pDoc->get_table_fields(m_strTableName);
-    
+
     //Find old field:
     const Glib::ustring field_name_old = fieldOld.get_name();
     Document_Glom::type_vecFields::iterator iterFind = std::find_if( vecFields.begin(), vecFields.end(), predicate_FieldHasName<Field>(field_name_old) );
@@ -407,7 +407,7 @@ void Box_DB_Table_Definition::change_definition(const Field& fieldOld, Field fie
 
 void Box_DB_Table_Definition::fill_fields()
 {
-  m_Fields = get_fields_for_table(m_strTableName);
+  m_vecFields = get_fields_for_table(m_strTableName);
 }
 
 void  Box_DB_Table_Definition::postgres_add_column(const Field& field, bool not_extras)
@@ -427,19 +427,19 @@ void  Box_DB_Table_Definition::postgres_change_column(const Field& field_old, co
 {
   Gnome::Gda::FieldAttributes field_info = field.get_field_info();
   Gnome::Gda::FieldAttributes field_info_old = field_old.get_field_info();
-  
+
   //If the underlying data type has changed:
   if( field_info.get_gdatype() != field_info_old.get_gdatype() )
   {
     postgres_change_column_type(field_old, field); //This will also change everything else at the same time.
   }
   else
-  {      
+  {
     //Change other stuff, without changing the type:
     postgres_change_column_extras(field_old, field);
   }
 }
-  
+
 void  Box_DB_Table_Definition::postgres_change_column_type(const Field& field_old, const Field& field)
 {
   sharedptr<SharedConnection> sharedconnection = connect_to_server();
@@ -448,7 +448,7 @@ void  Box_DB_Table_Definition::postgres_change_column_type(const Field& field_ol
     Glib::RefPtr<Gnome::Gda::Connection> gda_connection = sharedconnection->get_gda_connection();
 
     bool new_column_created = false;
-    
+
     //If the datatype has changed:
     if(field.get_field_info().get_gdatype() != field_old.get_field_info().get_gdatype())
     {
@@ -466,7 +466,7 @@ void  Box_DB_Table_Definition::postgres_change_column_type(const Field& field_ol
       {
         //TODO: Warn about a delay, and possible loss of precision, before actually doing this.
         //TODO: Try to use a unique name for the temp column:
-     
+
         Field fieldTemp = field;
         fieldTemp.set_name("glom_temp_column");
         postgres_add_column(fieldTemp); //This might also involves several commands.
@@ -509,8 +509,7 @@ void  Box_DB_Table_Definition::postgres_change_column_type(const Field& field_ol
             break;
           }
         }
-          
-          
+
         Glib::RefPtr<Gnome::Gda::DataModel> datamodel = Query_execute( "UPDATE " + m_strTableName + " SET  " + fieldTemp.get_name() + " = " + conversion_command );  //TODO: Not full type details.
         if(datamodel)
         {
@@ -606,7 +605,7 @@ void Box_DB_Table_Definition::postgres_change_column_extras(const Field& field_o
 
   }
   */
-    
+ 
    /*
     //If the not-nullness has changed:
     if( set_anyway ||  (field.get_field_info().get_allow_null() != field_old.get_field_info().get_allow_null()) )
@@ -614,9 +613,7 @@ void Box_DB_Table_Definition::postgres_change_column_extras(const Field& field_o
       Glib::ustring nullness = (field.get_field_info().get_allow_null() ? "NULL" : "NOT NULL");
       Query_execute(  "ALTER TABLE " + m_strTableName + " ALTER COLUMN " + field.get_name() + "  SET " + nullness);
     }
-  */
-   
-  
+  */ 
 }
 
 

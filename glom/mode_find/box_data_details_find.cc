@@ -46,8 +46,7 @@ void Box_Data_Details_Find::fill_from_database()
 
   Box_DB_Table::fill_from_database();
 
-  type_vecFields listFieldsToShow = get_fields_to_show();
-  m_Fields =  listFieldsToShow;
+  m_Fields = get_fields_to_show();
 
   fill_from_database_layout(); //TODO: Only do this when the layout has changed.
 }

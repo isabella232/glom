@@ -41,16 +41,28 @@ Box_Data::~Box_Data()
 {
 }
 
+void Box_Data::init_db_details(const Glib::ustring& strTableName, const Glib::ustring& strWhereClause)
+{
+  m_strWhereClause = strWhereClause;
 
+  Box_DB_Table::init_db_details(strTableName);
+}
+
+void Box_Data::refresh_db_details(const Glib::ustring& strWhereClause)
+{
+  m_strWhereClause = strWhereClause;
+
+  Box_DB_Table::refresh_db_details();
+}
 
 Glib::ustring Box_Data::get_WhereClause() const
 {
   Glib::ustring strClause;
 
   //Look at each field entry and build e.g. 'Name = "Bob"'
-  for(type_vecFields::const_iterator iter = m_Fields.begin(); iter != m_Fields.end(); ++iter)
+  for(type_vecLayoutFields::const_iterator iter = m_Fields.begin(); iter != m_Fields.end(); ++iter)
   {
-    const Field& field = *iter;
+    const Field field = iter->m_field;
     Glib::ustring strClausePart;
   
     const Gnome::Gda::Value data = get_entered_field_data(field);
@@ -58,7 +70,7 @@ Glib::ustring Box_Data::get_WhereClause() const
     if(!GlomConversions::value_is_empty(data))
     {
       bool use_this_field = true;
-      if(iter->get_glom_type() == Field::TYPE_BOOLEAN) //TODO: We need an intermediate state for boolean fields, so that they can be ignored in searches.
+      if(field.get_glom_type() == Field::TYPE_BOOLEAN) //TODO: We need an intermediate state for boolean fields, so that they can be ignored in searches.
       {
         if(!data.get_bool())
           use_this_field = false;
@@ -92,8 +104,13 @@ Glib::RefPtr<Gnome::Gda::DataModel> Box_Data::record_new(bool use_entered_data, 
   get_field_primary_key(fieldPrimaryKey);
 
   const Glib::ustring primary_key_name = fieldPrimaryKey.get_name();
- 
-  type_vecFields fieldsToAdd = m_Fields;
+
+  //Get a vector of fields from the vector of layout items:
+  type_vecFields fieldsToAdd;
+  for(type_vecLayoutFields::const_iterator iter = m_Fields.begin(); iter != m_Fields.begin(); ++iter)
+  {
+    fieldsToAdd.push_back(iter->m_field);
+  }
 
   //Add the primary key if it is not normally shown:
   type_vecFields::const_iterator iterFindPrimary = std::find_if(fieldsToAdd.begin(), fieldsToAdd.end(), predicate_FieldHasName<Field>(primary_key_name));
@@ -228,17 +245,17 @@ void Box_Data::on_dialog_layout_hide()
   fill_from_database();
 }
 
-Box_Data::type_vecFields Box_Data::get_fields_to_show() const
+Box_Data::type_vecLayoutFields Box_Data::get_fields_to_show() const
 {
   if(m_strTableName.empty())
   {
-    return type_vecFields();
+    return type_vecLayoutFields();
   }
   else
     return get_table_fields_to_show(m_strTableName);
 }
 
-void Box_Data::get_table_fields_to_show_add_group(const Glib::ustring& table_name, const type_vecFields& all_db_fields, const LayoutGroup& group, Box_Data::type_vecFields& vecFields) const
+void Box_Data::get_table_fields_to_show_add_group(const Glib::ustring& table_name, const type_vecFields& all_db_fields, const LayoutGroup& group, Box_Data::type_vecLayoutFields& vecFields) const
 {
   //g_warning("Box_Data::get_table_fields_to_show_add_group(): table_name=%s, all_db_fields.size()=%d, group.name=%s", table_name.c_str(), all_db_fields.size(), group.get_name().c_str());
 
@@ -257,7 +274,9 @@ void Box_Data::get_table_fields_to_show_add_group(const Glib::ustring& table_nam
       //If the field does not exist anymore then we won't try to show it:
       if(iterFind != all_db_fields.end() )
       {
-         vecFields.push_back(*iterFind);
+         LayoutItem_Field layout_item = *field; //TODO_Performance: Reduce the copying here.
+         layout_item.m_field = *iterFind; //Fill the LayoutItem with the full field information.
+         vecFields.push_back(layout_item);
       }
     }
     else
@@ -268,7 +287,7 @@ void Box_Data::get_table_fields_to_show_add_group(const Glib::ustring& table_nam
         //Recurse:
         get_table_fields_to_show_add_group(table_name, all_db_fields, *item_group, vecFields);
       }
-    }      
+    }
   }
 
   if(vecFields.empty())
@@ -278,13 +297,13 @@ void Box_Data::get_table_fields_to_show_add_group(const Glib::ustring& table_nam
 }
 
 
-Box_Data::type_vecFields Box_Data::get_table_fields_to_show(const Glib::ustring& table_name) const
+Box_Data::type_vecLayoutFields Box_Data::get_table_fields_to_show(const Glib::ustring& table_name) const
 {
   //Get field definitions from the database, with corrections from the document:
   type_vecFields all_fields = get_fields_for_table(table_name);
 
   //Get fields that the document says we should show:
-  type_vecFields result;
+  type_vecLayoutFields result;
   const Document_Glom* pDoc = dynamic_cast<const Document_Glom*>(get_document());
   if(pDoc)
   {
@@ -292,24 +311,32 @@ Box_Data::type_vecFields Box_Data::get_table_fields_to_show(const Glib::ustring&
     if(mapGroupSequence.empty())
     {
       //No field sequence has been saved in the document, so we use all fields by default, so we start with something visible:
-   
+
       //Start with the Primary Key as the first field:
       guint iPrimaryKey = 0;
       bool bPrimaryKeyFound = get_field_primary_key_index(all_fields, iPrimaryKey);
       Glib::ustring primary_key_field_name;
       if(bPrimaryKeyFound)
       {
-        primary_key_field_name = all_fields[iPrimaryKey].get_name();
-        result.push_back( all_fields[iPrimaryKey] );
+        LayoutItem_Field layout_item;
+        layout_item.set_name(primary_key_field_name);
+        layout_item.m_field = all_fields[iPrimaryKey];
+        result.push_back(layout_item);
       }
 
       //Add the rest:
       for(type_vecFields::const_iterator iter = all_fields.begin(); iter != all_fields.end(); ++iter)
       {
-        Field field_info = *iter;
+        const Field& field_info = *iter;
 
         if(iter->get_name() != primary_key_field_name) //We already added the primary key.
-          result.push_back(field_info);
+        {
+          LayoutItem_Field layout_item;
+          layout_item.set_name(iter->get_name());
+          layout_item.m_field = field_info;
+
+          result.push_back(layout_item);
+        }
       }
     }
     else
@@ -369,21 +396,22 @@ Box_Data::type_list_lookups Box_Data::get_lookup_fields(const Glib::ustring& fie
   const Document_Glom* document = dynamic_cast<const Document_Glom*>(get_document());
   if(document)
   {
-    for(type_vecFields::const_iterator iter = m_Fields.begin(); iter != m_Fields.end();  ++iter)
+    for(type_vecLayoutFields::const_iterator iter = m_Fields.begin(); iter != m_Fields.end();  ++iter)
     {
+      const Field& field = iter->m_field;
       //Examine each field that looks up its data from a relationship:
-      if(iter->get_is_lookup())
+      if(field.get_is_lookup())
       {
         //Get the relationship information:
         Relationship relationship;
-        bool test = document->get_relationship(m_strTableName, iter->get_lookup_relationship(), relationship);
+        bool test = document->get_relationship(m_strTableName, field.get_lookup_relationship(), relationship);
         if(test)
         {
           //If the relationship is triggererd by the specified field:
           if(relationship.get_from_field() == field_name)
           {
             //Add it:
-            result.push_back( type_pairFieldTrigger(*iter, relationship) );
+            result.push_back( type_pairFieldTrigger(field, relationship) );
           }
         }
       }
@@ -476,13 +504,38 @@ bool Box_Data::get_field_primary_key_index(const type_vecFields& fields, guint& 
 {
   //Initialize input parameter:
   field_column = 0;
-  
+
   //TODO_performance: Cache the primary key?
   guint col = 0;
   guint cols_count = fields.size();
   while(col < cols_count)
   {
     if(fields[col].get_field_info().get_primary_key())
+    {
+      field_column = col;
+      return true;
+    }
+    else
+    {
+      ++col;
+    }
+  }
+
+  return false; //Not found.
+}
+
+//static:
+bool Box_Data::get_field_primary_key_index(const type_vecLayoutFields& fields, guint& field_column)
+{
+  //Initialize input parameter:
+  field_column = 0;
+
+  //TODO_performance: Cache the primary key?
+  guint col = 0;
+  guint cols_count = fields.size();
+  while(col < cols_count)
+  {
+    if(fields[col].m_field.get_field_info().get_primary_key())
     {
       field_column = col;
       return true;
@@ -508,5 +561,19 @@ bool Box_Data::record_delete(const Gnome::Gda::Value& primary_key_value)
   else
   {
     return false; //no primary key
+  }
+}
+
+bool Box_Data::get_field(const Glib::ustring& name, Field& field) const
+{
+  type_vecLayoutFields::const_iterator iterFind = std::find_if( m_Fields.begin(), m_Fields.end(), predicate_FieldHasName<LayoutItem_Field>(name) );
+  if(iterFind != m_Fields.end()) //If it was found:
+  {
+    field = iterFind->m_field;
+    return true;
+  }
+  else
+  {
+    return false; //not found.
   }
 }

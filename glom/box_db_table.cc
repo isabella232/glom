@@ -41,19 +41,16 @@ Glib::ustring Box_DB_Table::get_table_name()
   return m_strTableName;
 }
 
-void Box_DB_Table::init_db_details(const Glib::ustring& strTableName, const Glib::ustring& strWhereClause /* = "" */)
+void Box_DB_Table::init_db_details(const Glib::ustring& strTableName)
 {
   m_strTableName = strTableName;
-  m_strWhereClause = strWhereClause;
 
   fill_fields();
   fill_from_database();
 }
 
-void Box_DB_Table::refresh_db_details(const Glib::ustring& strWhereClause)
+void Box_DB_Table::refresh_db_details()
 {
-  m_strWhereClause = strWhereClause;
-
   fill_from_database();
 }
 
@@ -73,20 +70,6 @@ Gnome::Gda::Value Box_DB_Table::get_entered_field_data(const Field& /* field */)
 void Box_DB_Table::set_entered_field_data(const Field& /* field */, const Gnome::Gda::Value& /* value */)
 {
   //Override this.
-}
-
-bool Box_DB_Table::get_field(const Glib::ustring& name, Field& field) const
-{
-  type_vecFields::const_iterator iterFind = std::find_if( m_Fields.begin(), m_Fields.end(), predicate_FieldHasName<Field>(name) );
-  if(iterFind != m_Fields.end()) //If it was found:
-  {
-    field = *iterFind;
-    return true;
-  }
-  else
-  {
-    return false; //not found.
-  }
 }
 
 bool Box_DB_Table::get_field_primary_key_for_table(const Glib::ustring table_name, Field& field) const

@@ -33,10 +33,10 @@ public:
   Box_DB_Table();
   Box_DB_Table(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
   virtual ~Box_DB_Table();
-  
-  virtual void init_db_details(const Glib::ustring& strTableName, const Glib::ustring& strWhereClause = Glib::ustring());
-  virtual void refresh_db_details(const Glib::ustring& strWhereClause = Glib::ustring());
-   
+
+  virtual void init_db_details(const Glib::ustring& strTableName);
+  virtual void refresh_db_details();
+
   virtual Glib::ustring get_table_name();
 
   //TODO: Put this somewhere more sensible:
@@ -53,27 +53,16 @@ protected:
   virtual Gnome::Gda::Value get_entered_field_data(const Field& field) const;
   virtual void set_entered_field_data(const Field& field, const Gnome::Gda::Value& value);
 
-
-  bool get_field(const Glib::ustring& name, Field& field) const;
-
   bool get_field_primary_key_for_table(const Glib::ustring table_name, Field& field) const;
   //static bool get_field_primary_key(const type_vecFields& fields, Field& field);
 
   unsigned long get_last_auto_increment_value(const Glib::RefPtr<Gnome::Gda::DataModel>& data_model, const Glib::ustring field_name);
 
 
-
-  static type_vecFields get_fields_for_datamodel(const Glib::RefPtr<Gnome::Gda::DataModel>& data_model);
-  
+  static type_vecFields get_fields_for_datamodel(const Glib::RefPtr<Gnome::Gda::DataModel>& data_model); 
   static Glib::ustring postgres_get_field_definition_for_sql(const Gnome::Gda::FieldAttributes& field_info);
 
   Glib::ustring m_strTableName;
-  Glib::ustring m_strWhereClause;
-
-  type_vecFields m_Fields;
-
-
-
 };
 
 #endif //BOX_DB_TABLE_H

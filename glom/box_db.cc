@@ -30,7 +30,7 @@ Box_DB::Box_DB()
   m_Button_Cancel(Gtk::Stock::CANCEL)
 {
   m_pDocument = 0;
-  
+
   set_border_width(6);
   set_spacing(6);
 
@@ -62,8 +62,6 @@ Box_DB::Box_DB(BaseObjectType* cobject)
 Box_DB::~Box_DB()
 {
 }
-
-
 
 void Box_DB::on_Button_Cancel()
 {

@@ -1,5 +1,34 @@
 2005-03-12  Murray Cumming <murrayc@murrayc.com>
 
+	* glom/box_db.cc:
+	* glom/box_db_table.cc:
+	* glom/box_db_table.h:
+	* glom/mode_data/box_data.cc:
+	* glom/mode_data/box_data.h:
+	* glom/mode_data/box_data_details.cc:
+	* glom/mode_data/box_data_list.cc:
+	* glom/mode_data/box_data_list.h:
+	* glom/mode_data/box_data_list_related.cc:
+	* glom/mode_data/box_data_list_related.h:
+	* glom/mode_data/dialog_layout.cc:
+	* glom/mode_data/dialog_layout.h:
+	* glom/mode_data/dialog_layout_details.cc:
+	* glom/mode_data/dialog_layout_details.h:
+	* glom/mode_data/dialog_layout_list.cc:
+	* glom/mode_data/dialog_layout_list.h:
+	* glom/mode_data/dialog_layout_list_related.cc:
+	* glom/mode_design/fields/box_db_table_definition.cc:
+	* glom/mode_design/fields/box_db_table_definition.h:
+	* glom/mode_find/box_data_details_find.cc:
+	* glom/mode_find/box_data_list_find.cc:
+        Store vector of layouts instead of vector of fields 
+        for list and details views. Field Chooser dialog 
+        also uses layout items so it can edit the full 
+        field information, including the relationship, 
+        and the formatting in future.
+
+2005-03-12  Murray Cumming <murrayc@murrayc.com>
+
 	* glom/mode_data/dialog_choose_field.cc:
 	* glom/mode_data/dialog_choose_field.h:
 	* glom/mode_data/dialog_layout_list_related.cc:

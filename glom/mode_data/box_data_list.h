@@ -64,7 +64,7 @@ protected:
   virtual void on_adddel_user_requested_delete(const Gtk::TreeModel::iterator& rowStart, const Gtk::TreeModel::iterator& rowEnd);
   virtual void on_adddel_user_added(const Gtk::TreeModel::iterator& row);
   virtual void on_adddel_user_reordered_columns();
-  
+
   virtual void on_adddel_user_requested_layout();
 
   virtual void on_adddel_user_changed(const Gtk::TreeModel::iterator& row, guint col);

@@ -242,9 +242,9 @@ void Box_Data_List_Related::enable_buttons()
 {
 }
 
-Box_Data_List_Related::type_vecFields Box_Data_List_Related::get_fields_to_show() const
+Box_Data_List_Related::type_vecLayoutFields Box_Data_List_Related::get_fields_to_show() const
 {
-  type_vecFields result;
+  type_vecLayoutFields result;
 
   const Document_Glom* document = get_document();
   if(document)
@@ -264,7 +264,7 @@ Box_Data_List_Related::type_vecFields Box_Data_List_Related::get_fields_to_show(
       for(Document_Glom::type_mapLayoutGroupSequence::const_iterator iter = mapGroups.begin(); iter != mapGroups.end(); ++iter)
       {
         const LayoutGroup& group = iter->second;
-    
+
         //Add the group's fields:
         LayoutGroup::type_map_const_items items = group.get_items();
         for(LayoutGroup::type_map_const_items::const_iterator iter = items.begin(); iter != items.end(); ++iter)
@@ -277,7 +277,9 @@ Box_Data_List_Related::type_vecFields Box_Data_List_Related::get_fields_to_show(
             //If the field does not exist anymore then we won't try to show it:
             if(iterFind != all_db_fields.end() )
             {
-              result.push_back(*iterFind);
+              LayoutItem_Field layout_item = *item; //TODO_Performance: Reduce the copying.
+              layout_item.m_field = *iterFind; //Fill in the full field information for later.
+              result.push_back(layout_item);
             }
           }
         }

@@ -229,7 +229,7 @@ void Dialog_Layout_Details::add_group(const Gtk::TreeModel::iterator& parent, co
   }
 }
 
-void Dialog_Layout_Details::set_document(const Glib::ustring& layout, Document_Glom* document, const Glib::ustring& table_name, const type_vecFields& table_fields)
+void Dialog_Layout_Details::set_document(const Glib::ustring& layout, Document_Glom* document, const Glib::ustring& table_name, const type_vecLayoutFields& table_fields)
 {
   m_modified = false;
 
@@ -254,9 +254,9 @@ void Dialog_Layout_Details::set_document(const Glib::ustring& layout, Document_G
       group.m_columns_count = 2;
 
       guint field_sequence = 1; //0 means no sequence
-      for(type_vecFields::const_iterator iter = table_fields.begin(); iter != table_fields.end(); ++iter)
+      for(type_vecLayoutFields::const_iterator iter = table_fields.begin(); iter != table_fields.end(); ++iter)
       {
-        LayoutItem_Field item;
+        LayoutItem_Field item = *iter;
         item.set_name(iter->get_name());
         item.set_table_name(m_table_name);
         item.m_sequence = field_sequence;

@@ -86,7 +86,7 @@ Dialog_Layout_List_Related::~Dialog_Layout_List_Related()
 
 void Dialog_Layout_List_Related::set_document(const Glib::ustring& layout, Document_Glom* document, const Glib::ustring& parent_table_name, const Glib::ustring& relationship_name)
 {
-  type_vecFields empty_fields; //Just to satisfy the base class.
+  type_vecLayoutFields empty_fields; //Just to satisfy the base class.
   Dialog_Layout::set_document(layout, document, parent_table_name, empty_fields);
   //m_table_name is now actually the parent_table_name.
 
@@ -128,13 +128,13 @@ void Dialog_Layout_List_Related::update_ui(bool including_relationship_list)
     if(mapGroups.empty())
     {
       const Glib::ustring table_name = m_relationship.get_to_table();
-      type_vecFields table_fields = document->get_table_fields(table_name);
+      Document_Glom::type_vecFields table_fields = document->get_table_fields(table_name);
 
       LayoutGroup group;
       group.set_name("main");
 
       guint field_sequence = 1; //0 means no sequence
-      for(type_vecFields::const_iterator iter = table_fields.begin(); iter != table_fields.end(); ++iter)
+      for(Document_Glom::type_vecFields::const_iterator iter = table_fields.begin(); iter != table_fields.end(); ++iter)
       {
         LayoutItem_Field item;
         item.set_name(iter->get_name());
@@ -279,7 +279,7 @@ void Dialog_Layout_List_Related::save_to_document()
         m_document->set_relationship_data_layout_groups(m_layout_name, m_relationship, mapGroups);
         m_modified = false;
       }
-      
+
       //Save the relationship title, which will be used elsewhere too:
       m_relationship.set_title(m_entry_table_title->get_text());
       m_document->set_relationship(m_table_name, m_relationship);

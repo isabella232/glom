@@ -71,7 +71,7 @@ Box_Data_List::~Box_Data_List()
 void Box_Data_List::fill_from_database()
 {
   Bakery::BusyCursor(*get_app_window());
- 
+
   try
   {
     sharedptr<SharedConnection> sharedconnection = connect_to_server();
@@ -82,9 +82,9 @@ void Box_Data_List::fill_from_database()
 
     //Field Names:
     fill_column_titles();
-   
+
     if(sharedconnection)
-    {    
+    {
       Glib::RefPtr<Gnome::Gda::Connection> connection = sharedconnection->get_gda_connection();
 
       Glib::ustring strWhereClausePiece;
@@ -94,14 +94,19 @@ void Box_Data_List::fill_from_database()
       m_Fields = get_fields_to_show();
 
       //Add extra possibly-non-visible columns that we need:
-      type_vecFields fieldsToGet = m_Fields;
-      fieldsToGet.push_back(m_AddDel.get_key_field());
+      type_vecLayoutFields fieldsToGet = m_Fields;
+
+      LayoutItem_Field layout_item;
+      Field field_key = m_AddDel.get_key_field();
+      layout_item.set_name(field_key.get_name());
+      layout_item.m_field = field_key;
+      fieldsToGet.push_back(layout_item);
       const int index_primary_key = fieldsToGet.size() - 1;
 
       if(!fieldsToGet.empty())
       {
         Glib::ustring sql_part_fields;
-        for(type_vecFields::const_iterator iter =  fieldsToGet.begin(); iter != fieldsToGet.end(); ++iter)
+        for(type_vecLayoutFields::const_iterator iter = fieldsToGet.begin(); iter != fieldsToGet.end(); ++iter)
         {
           if(iter != fieldsToGet.begin())
             sql_part_fields += ",";
@@ -140,7 +145,7 @@ void Box_Data_List::fill_from_database()
 
               Gtk::TreeModel::iterator tree_iter = m_AddDel.add_item(value_primary_key);
 
-              type_vecFields::const_iterator iterFields = fieldsToGet.begin();
+              type_vecLayoutFields::const_iterator iterFields = fieldsToGet.begin();
 
               //each field:
               //We use cols_count -1 because we have an extra field for the primary_key.
@@ -199,7 +204,7 @@ void Box_Data_List::on_adddel_user_requested_add()
     {
       index_field_to_edit = index_primary_key;
 
-      Field fieldPrimaryKey = m_Fields[index_primary_key];
+      Field fieldPrimaryKey = m_Fields[index_primary_key].m_field;
       if(fieldPrimaryKey.get_field_info().get_auto_increment())
       {
         //Start editing in the first cell that is not the primary key:
@@ -571,12 +576,12 @@ void Box_Data_List::fill_column_titles()
         m_AddDel.set_key_field(field_primary_key);
 
 
-    type_vecFields listFieldsToShow = get_fields_to_show();
+    type_vecLayoutFields listFieldsToShow = get_fields_to_show();
 
     //Add a column for each table field:
-    for(type_vecFields::const_iterator iter =  listFieldsToShow.begin(); iter != listFieldsToShow.end(); ++iter)
+    for(type_vecLayoutFields::const_iterator iter =  listFieldsToShow.begin(); iter != listFieldsToShow.end(); ++iter)
     {
-      m_AddDel.add_column(*iter);
+      m_AddDel.add_column(iter->m_field);
     }
   }
 
@@ -597,10 +602,10 @@ bool Box_Data_List::get_field_column_index(const Glib::ustring& field_name, guin
 {
   //Initialize output parameter:
   index = 0;
-  
+
   //Get the index of the field with this name:
   guint i = 0;
-  for(type_vecFields::const_iterator iter = m_Fields.begin(); iter != m_Fields.end(); ++iter)
+  for(type_vecLayoutFields::const_iterator iter = m_Fields.begin(); iter != m_Fields.end(); ++iter)
   {
     if(iter->get_name() == field_name)
     {

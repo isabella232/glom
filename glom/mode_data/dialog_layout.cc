@@ -42,16 +42,15 @@ Dialog_Layout::~Dialog_Layout()
 {
 }
 
-void Dialog_Layout::set_document(const Glib::ustring& layout, Document_Glom* document, const Glib::ustring& table_name, const type_vecFields& /* table_fields */)
+void Dialog_Layout::set_document(const Glib::ustring& layout, Document_Glom* document, const Glib::ustring& table_name, const type_vecLayoutFields& /* table_fields */)
 {
   m_modified = false;
 
-  m_layout_name = layout;
-  
+  m_layout_name = layout; 
   m_document = document;
   m_table_name = table_name;
-  
-  m_modified = false;  
+
+  m_modified = false;
 }
 
 void Dialog_Layout::move_treeview_selection_up(Gtk::TreeView* treeview, const Gtk::TreeModelColumn<guint>& sequence_column)

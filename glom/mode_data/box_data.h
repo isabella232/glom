@@ -30,6 +30,11 @@ public:
   Box_Data();
   virtual ~Box_Data();
 
+  virtual void init_db_details(const Glib::ustring& strTableName, const Glib::ustring& strWhereClause = Glib::ustring());
+  virtual void refresh_db_details(const Glib::ustring& strWhereClause = Glib::ustring());
+
+  typedef std::vector<LayoutItem_Field> type_vecLayoutFields;
+
   virtual Glib::ustring get_WhereClause() const;
 
   virtual void set_unstored_data(bool bVal);
@@ -38,7 +43,7 @@ public:
   virtual bool confirm_discard_unstored_data() const;
 
   virtual void show_layout_dialog();
-  
+
   //Signals:
 
   //signal_find: Used by _Find sub-classes.
@@ -48,13 +53,13 @@ public:
 
   //g++ 3.4 needs this to be public when used from Box_Data_Details. I'm not sure why. murrayc.
   virtual void on_dialog_layout_hide();
-    
+
 protected:
   virtual void fill_from_database(); //override.
 
-  virtual type_vecFields get_fields_to_show() const;
-  type_vecFields get_table_fields_to_show(const Glib::ustring& table_name) const;
-  void get_table_fields_to_show_add_group(const Glib::ustring& table_name, const type_vecFields& all_db_fields, const LayoutGroup& group, Box_Data::type_vecFields& vecFields) const;
+  virtual type_vecLayoutFields get_fields_to_show() const;
+  type_vecLayoutFields get_table_fields_to_show(const Glib::ustring& table_name) const;
+  void get_table_fields_to_show_add_group(const Glib::ustring& table_name, const type_vecFields& all_db_fields, const LayoutGroup& group, Box_Data::type_vecLayoutFields& vecFields) const;
 
   /** Get the layout groups, with the Field information filled in.
    */
@@ -78,12 +83,15 @@ protected:
   guint generate_next_auto_increment(const Glib::ustring& table_name, const Glib::ustring field_name);
 
   virtual bool get_field_primary_key(Field& field) const = 0;
+  virtual bool get_field(const Glib::ustring& name, Field& field) const;
+
 
   //Signal handlers:
   virtual void on_Button_Find(); //only used by _Find sub-classes. Should be MI.
 
- static bool get_field_primary_key_index(const type_vecFields& fields, guint& field_column);
- 
+  static bool get_field_primary_key_index(const type_vecFields& fields, guint& field_column);
+  static bool get_field_primary_key_index(const type_vecLayoutFields& fields, guint& field_column);
+
   Gtk::Button m_Button_Find; //only used by _Find sub-classes. Should be MI.
   Gtk::Label m_Label_FindStatus;
 
@@ -91,6 +99,10 @@ protected:
 
   Dialog_Layout* m_pDialogLayout;
   Glib::ustring m_layout_name;
+
+  Glib::ustring m_strWhereClause;
+
+  type_vecLayoutFields m_Fields;
 };
 
 #endif
