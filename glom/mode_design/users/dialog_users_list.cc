@@ -340,13 +340,27 @@ void Dialog_UsersList::on_button_user_edit()
 
       dialog->set_transient_for(*this);
 
+      //TODO: Do this in the derived class:
       dialog->m_entry_user->set_text( row[m_model_columns_users.m_col_name] );
       dialog->m_entry_user->set_sensitive(false); //They can edit the password, but not the name. TODO: Allow editing of name?
+
+      //Fill groups:
+      dialog->m_combo_group->clear_text();
+
+      type_vecStrings group_list = get_database_groups();
+      for(type_vecStrings::const_iterator iter = group_list.begin(); iter != group_list.end(); ++iter)
+      {
+         dialog->m_combo_group->append_text(*iter);
+      }
+
+      dialog->m_combo_group->set_active_text(m_combo_group->get_active_text());
+      dialog->m_combo_group->set_sensitive(false); //TODO: Allow, and handle, changes to this.
+
 
       int response = dialog->run();
 
       const Glib::ustring user = dialog->m_entry_user->get_text();
-      const Glib::ustring password = dialog->m_entry_password->get_text();
+      const Glib::ustring password = dialog->m_entry_password->get_text(); //TODO: Check the confirmation.
 
       delete dialog;
 
@@ -357,6 +371,11 @@ void Dialog_UsersList::on_button_user_edit()
       {
         Glib::ustring strQuery = "ALTER USER " + user + " PASSWORD '" + password + "'" ;
         Glib::RefPtr<Gnome::Gda::DataModel> data_model = Query_execute(strQuery);
+
+        //Change the password in the current connection, if this is the current user.
+         ConnectionPool* connection_pool = ConnectionPool::get_instance();
+         if(connection_pool->get_user() == user)
+           connection_pool->set_password(password);
 
         fill_list();
       }
