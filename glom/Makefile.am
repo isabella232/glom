@@ -12,7 +12,9 @@ INCLUDES = $(GLOM_CFLAGS) $(PYTHON_INCLUDES) \
            -DLIBDIR=\""$(libdir)"\" \
            -DDATADIR=\""$(datadir)"\"
 
-noinst_PROGRAMS = glom test_pyembed
+bin_PROGRAMS = glom
+noinst_PROGRAMS = test_pyembed
+
 
 glom_SOURCES = main.cc \
                application.cc application.h \
