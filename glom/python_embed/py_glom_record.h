@@ -21,7 +21,7 @@
 #ifndef GLOM_PYTHON_GLOM_RECORD_H
 #define GLOM_PYTHON_GLOM_RECORD_H
 
-#include "boost/python.hpp"
+//#include "boost/python.hpp"
 #include "../data_structure/field.h"
 #include <glibmm/ustring.h>
 
@@ -35,11 +35,13 @@ protected:
   int m_test;
 };
 
+/*
 BOOST_PYTHON_MODULE(PyGlom)
 {
     boost::python::class_<PyGlomRecord>("Record")
         .def("get_test", &PyGlomRecord::get_test)
     ;
 }
+*/
 
 #endif //GLOM_PYTHON_GLOM_RECORD_H
