@@ -3,21 +3,24 @@ Large, independent, tasks:
 - Add ability to have calculation fields, if Postgres can do that.
 - Add ability to translate table titles and field titles.
 
+Little tasks:
+- Make the Details view (FlowTable) look different when in developer mode.
+  (Add lines around the HBoxes.)
+- Allow editing of the Details view by drag-and-drop, right-clicking (like Glade),
+  as well as the current treeview hierarchy.
+
+  
 User Level:
 - Do not allow developer mode if the postgres permissions are low.
 
 
-
-Data:
-- Properly handle NULL values in non-text fields.
 
 
 
 Bugs:
 
 
-- Data Mode: Details tab: Finish 'Related Records' Notebook page.
-- Find Mode: Use Data layouts.
+- Data Mode: Details tab: Finish 'Related Records' Notebook page - put it in a separate tab.
 - Reports Mode: Add a 'Reports' mode.
 - Users Mode: How do we get access info programmatically?
 

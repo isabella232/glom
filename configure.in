@@ -4,7 +4,7 @@ AC_INIT(glom/main.cc)
 AM_CONFIG_HEADER(config.h)
 
 # Package name and version number:
-AM_INIT_AUTOMAKE(glom, 0.8.7)
+AM_INIT_AUTOMAKE(glom, 0.8.8)
 
 AM_MAINTAINER_MODE
 
@@ -60,6 +60,7 @@ AC_OUTPUT(Makefile \
         docs/user-guide/C/figures/Makefile \
   glom/Makefile \
     glom/data_structure/Makefile \
+      glom/data_structure/layout/Makefile \
     glom/document/Makefile \
     glom/mode_data/Makefile \
     glom/mode_design/Makefile \

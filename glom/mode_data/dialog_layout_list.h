@@ -18,23 +18,17 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef GLOM_MODE_DATA_DIALOG_LAYOUT_H
-#define GLOM_MODE_DATA_DIALOG_LAYOUT_H
+#ifndef GLOM_MODE_DATA_DIALOG_LAYOUT_LIST_H
+#define GLOM_MODE_DATA_DIALOG_LAYOUT_LIST_H
 
-#include <gtkmm/dialog.h>
-#include "../utility_widgets/dialog_properties.h"
-#include "../document/document_glom.h"
-#include "../box_db.h"
-#include "../utility_widgets/adddel/cellrendererlist.h"
+#include "dialog_layout.h"
 
-class Dialog_Layout : public Gtk::Dialog
+class Dialog_Layout_List : public Dialog_Layout
 {
 public:
-  Dialog_Layout(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
-  virtual ~Dialog_Layout();
+  Dialog_Layout_List(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  virtual ~Dialog_Layout_List();
 
-  typedef std::vector< Field > type_vecFields;
-  
   /**
    * @param layout "list" or "details"
    * @param document The document, so that the dialog can load the previous layout, and save changes.
@@ -44,29 +38,42 @@ public:
   virtual void set_document(const Glib::ustring& layout, Document_Glom* document, const Glib::ustring& table_name, const type_vecFields& table_fields);
 
 protected:
- 
-  virtual void treeview_fill_sequences(const Glib::RefPtr<Gtk::TreeModel> model, const Gtk::TreeModelColumn<guint>& sequence_column);
+
+  //Enable/disable buttons, depending on treeview selection:
   virtual void enable_buttons();
-    
+
   virtual void save_to_document();
 
-  void move_treeview_selection_down(Gtk::TreeView* treeview, const Gtk::TreeModelColumn<guint>& sequence_column);
-  void move_treeview_selection_up(Gtk::TreeView* treeview, const Gtk::TreeModelColumn<guint>& sequence_column);
-    
   //signal handlers:
-  virtual void on_treemodel_row_changed(const Gtk::TreeModel::Path& path, const Gtk::TreeModel::iterator& iter);
-  virtual void on_entry_table_title_changed();
-  virtual void on_button_close();
+  virtual void on_button_field_up();
+  virtual void on_button_field_down();
+  virtual void on_button_add_field();
+  virtual void on_button_delete();
+  virtual void on_treeview_fields_selection_changed();
 
-  Gtk::Label* m_label_table_name;
-  Gtk::Entry* m_entry_table_title;;
-      
-  Glib::ustring m_table_name;
-  Glib::ustring m_layout_name;
+  //Tree model columns:
+  class ModelColumns_Fields : public Gtk::TreeModel::ColumnRecord
+  {
+  public:
 
+    ModelColumns_Fields()
+    { add(m_col_name); add(m_col_sequence); }
 
-  Document_Glom* m_document;  
-  bool m_modified;
+    Gtk::TreeModelColumn<Glib::ustring> m_col_name;
+    Gtk::TreeModelColumn<guint> m_col_sequence;
+  };
+
+  ModelColumns_Fields m_ColumnsFields;
+
+  //Tree model columns:
+  Gtk::TreeView* m_treeview_fields;
+  Gtk::Button* m_button_field_up;
+  Gtk::Button* m_button_field_down;
+  Gtk::Button* m_button_field_add;
+  Gtk::Button* m_button_field_delete;
+  Gtk::Button* m_button_field_edit;
+
+  Glib::RefPtr<Gtk::ListStore> m_model_fields;
 };
 
-#endif //GLOM_MODE_DATA_DIALOG_LAYOUT_H
+#endif //GLOM_MODE_DATA_DIALOG_LAYOUT_LIST_H

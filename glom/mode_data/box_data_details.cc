@@ -22,6 +22,7 @@
 #include "../data_structure/field.h"
 #include "../data_structure/relationship.h"
 #include "../data_structure/glomconversions.h"
+#include "dialog_layout_details.h"
 #include <sstream> //For stringstream
 #include <libintl.h>
 
@@ -38,7 +39,19 @@ Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
 {
   m_layout_name = "details";
 
-  m_FlowTable.set_columns_count(2);
+  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_data_layout_details"); //TODO: Use a generic layout dialog?
+  if(refXml)
+  {
+    Dialog_Layout_Details* dialog = 0;
+    refXml->get_widget_derived("window_data_layout_details", dialog);
+    if(dialog)
+    {
+      m_pDialogLayout = dialog;
+      m_pDialogLayout->signal_hide().connect( sigc::mem_fun(*this, &Box_Data::on_dialog_layout_hide) );
+    }
+  }
+  
+  m_FlowTable.set_columns_count(1); //Sub-groups will have multiple columns (by default, there is one sub-group, with 2 columns).
   m_FlowTable.set_padding(6);
   
   m_strHint = gettext("When you change the data in a field the database is updated immediately.\n Click [New] to add a new record.\n Leave automatic ID fields empty - they will be filled for you.");
@@ -127,48 +140,12 @@ void Box_Data_Details::fill_from_database_layout()
                           
   Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
   if(document)
-  {          
-    Document_Glom::type_mapLayoutGroupSequence layout_groups = document->get_data_layout_groups_plus_new_fields("details", m_strTableName);
+  {
+    //This map of layout groups will also contain the field information from the database:
+    Document_Glom::type_mapLayoutGroupSequence layout_groups = get_data_layout_groups("details");
     for(Document_Glom::type_mapLayoutGroupSequence::const_iterator iter = layout_groups.begin(); iter != layout_groups.end(); ++iter)
     {
-      const LayoutGroup& group = iter->second;
-  
-      if(!group.m_others)
-      {
-        FlowTableWithFields::type_map_field_sequence fields;
-
-        //Get the fields:
-        guint sequence = 0;
-        for(LayoutGroup::type_map_items::const_iterator iterItems = group.m_map_items.begin(); iterItems != group.m_map_items.end(); ++iterItems)
-        {
-          Field field;
-          bool found = get_fields_for_table_one_field(m_strTableName, iterItems->second.m_field_name, field);
-          if(found)
-          {
-            fields[sequence] = field;
-            ++sequence;
-          }
-        }
-            
-        m_FlowTable.add_group(group.m_group_name, group.m_title, fields);
-      }
-      else
-      {
-        //Add the extra fields:
-        for(LayoutGroup::type_map_items::const_iterator iterItems = group.m_map_items.begin(); iterItems != group.m_map_items.end(); ++iterItems)
-        {
-          Field field;
-          bool found = get_fields_for_table_one_field(m_strTableName, iterItems->second.m_field_name, field);
-          if(found)
-          {
-            m_FlowTable.add_field(field); //This could add it to a sub-flowtable, or the main flow-table.
-           
-            //Do not allow editing of auto-increment fields:
-            if(field.get_field_info().get_auto_increment())
-              m_FlowTable.set_field_editable(field, false);
-          }
-        }
-      }
+      m_FlowTable.add_layout_group(iter->second);
     }
   }
       
@@ -217,7 +194,7 @@ void Box_Data_Details::fill_from_database()
           if(pDoc)
           {
             //Get glom-specific field info:
-            Document_Glom::type_vecFields vecFields = pDoc->get_table_fields(m_strTableName);
+            //Document_Glom::type_vecFields vecFields = pDoc->get_table_fields(m_strTableName);
 
             const int row_number = 0; //The only row.
             const int cols_count = result->get_n_columns();
@@ -227,7 +204,9 @@ void Box_Data_Details::fill_from_database()
 
               //Field value:
               Gnome::Gda::Value value = result->get_value_at(i, row_number);
+              g_warning("debug 1");
               m_FlowTable.set_field_value(field, value);
+                g_warning("debug 2");
             }
           }
         }
@@ -500,14 +479,13 @@ Box_Data_Details::type_signal_user_requested_related_details Box_Data_Details::s
   return m_signal_user_requested_related_details;
 }
 
-void Box_Data_Details::on_flowtable_field_edited(Glib::ustring id)
+void Box_Data_Details::on_flowtable_field_edited(const Glib::ustring& id, const Gnome::Gda::Value& field_value)
 {
   if(m_ignore_signals)
     return;
     
    const Glib::ustring strPrimaryKey_Name = get_primarykey_name();
    const Glib::ustring strFieldName = id;
-   const Gnome::Gda::Value field_value = m_FlowTable.get_field_value(id);
 
    if(!strPrimaryKey_Name.empty())
    {
@@ -539,6 +517,9 @@ void Box_Data_Details::on_flowtable_field_edited(Glib::ustring id)
          }
          else
          {
+           //Set the value in all instances of this field in the layout (The field might be on the layout more than once):
+           m_FlowTable.set_field_value(field, field_value);
+           
            //Get-and-set values for lookup fields, if this field triggers those relationships:
            do_lookups(field, field_value, fieldInfoPK, primary_key_value);
 

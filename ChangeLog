@@ -1,3 +1,28 @@
+0.8.8:
+	
+2004-08-09  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/data_structure/: Added layouts sub-directory, and moved layout 
+	classes into it. Created a polymorphic heirarchy of layout items - 
+	currently LayoutItem_Field and LayoutGroup for fields and groups of 
+	fields.
+	* glom/data_structure/layoutgroup.[h|cc]: Removed m_others. Designers 
+	must put fields in a top-level group with no title, and that's the 
+	default.
+        * glom/document/document_glom.[h}cc]: Allow nested layout groups.
+	* glom/mode_data/dialog_layout_details.[h|cc]: Use only one TreeView 
+	instead of 2, using a TreeStore instead of a ListStore, to show fields 
+	inside groups, and with nested groups. Allow the user to specify the 
+	number of columns for the groups.
+	* glom/mode_data/: Added treestore_layout.[h|cc], so that we can 
+	override the vfunc to control whether items can be dragged into other 
+	items.
+
+2004-07-28  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/utility_widgets/flowtablewithfields.cc: add_field(): 
+	Right-align the labels. TODO: Does not actually work.
+
 2004-07-18  Murray Cumming  <murrayc@murrayc.com>
 
 	* docs/user-guide/C/glom.xml: Explain how to use glom as an Operator 

@@ -22,9 +22,15 @@
 #include "gtk/gtkwidget.h"
 #include "gdk/gdktypes.h"
 
+FlowTable::FlowTableItem::FlowTableItem()
+: m_expand_second(false)
+{
+}
+
 FlowTable::FlowTable()
 : m_columns_count(1),
-  m_padding(0)
+  m_padding(0),
+  m_design_mode(false)
 {
   set_flags(Gtk::NO_WINDOW);
   set_redraw_on_allocate(false);
@@ -32,6 +38,11 @@ FlowTable::FlowTable()
 
 FlowTable::~FlowTable()
 {
+}
+
+void FlowTable::set_design_mode(bool value)
+{
+  m_design_mode = value;
 }
 
 void FlowTable::add(Gtk::Widget& first, Gtk::Widget& second)
@@ -57,6 +68,10 @@ void FlowTable::add(Gtk::Widget& first)
 
 void FlowTable::set_columns_count(guint value)
 {
+  //Silently correct an invalid value:
+  if(value == 0)
+    value = 1;
+    
   m_columns_count = value;
 }
 

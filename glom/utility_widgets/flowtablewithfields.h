@@ -22,6 +22,8 @@
 #define GLOM_UTILITYWIDGETS_FLOWTABLEWITHFIELDS_H
 
 #include "flowtable.h"
+#include "../data_structure/layout/layoutgroup.h"
+#include "../data_structure/layout/layoutitem_field.h"
 #include "../data_structure/field.h"
 #include <map>
 #include <list>
@@ -44,6 +46,9 @@ public:
 
   typedef std::map<int, Field> type_map_field_sequence;
   virtual void add_group(const Glib::ustring& group_name, const Glib::ustring& group_title, const type_map_field_sequence& fields);
+
+  virtual void add_layout_item(const LayoutItem& group);
+  virtual void add_layout_group(const LayoutGroup& group);
   
 
   virtual void set_field_editable(const Field& field, bool editable = true);
@@ -53,30 +58,35 @@ public:
   virtual void set_field_value(const Field& field, const Gnome::Gda::Value& value);
   virtual void set_field_value(const Glib::ustring& id, const Gnome::Gda::Value& value);
 
-     
-  virtual Gtk::Widget* get_field(const Glib::ustring& id);  
-  virtual const Gtk::Widget* get_field(const Glib::ustring& id) const;
-  
-  virtual Gtk::Widget* get_field(const Field& field);
-  virtual const Gtk::Widget* get_field(const Field& field) const;
+
+  typedef std::list<Gtk::Widget*> type_list_widgets;
+  typedef std::list<const Gtk::Widget*> type_list_const_widgets;
       
   virtual void change_group(const Glib::ustring& id, const Glib::ustring& new_group);
 
+  virtual void set_design_mode(bool value = true);
+  
   virtual void remove_all();
 
   /** For instance,
-   * void on_flowtable_field_edited(Glib::ustring id);
+   * void on_flowtable_field_edited(const Glib::ustring& id, const Gnome::Gda::Value& value);
    */
-  typedef sigc::signal<void, Glib::ustring> type_signal_field_edited;
+  typedef sigc::signal<void, const Glib::ustring&, const Gnome::Gda::Value&> type_signal_field_edited;
   type_signal_field_edited signal_field_edited();
 
 
 protected:
 
+  virtual type_list_widgets get_field(const Glib::ustring& id);
+  virtual type_list_const_widgets get_field(const Glib::ustring& id) const;
+
+  virtual type_list_widgets get_field(const Field& field);
+  virtual type_list_const_widgets get_field(const Field& field) const;
+
   int get_suitable_width(Field::glom_field_type field_type);
-  void on_entry_edited( const Glib::ustring& id);
-  void on_checkbutton_toggled( const Glib::ustring& id);
-  
+  void on_entry_edited(const Gnome::Gda::Value& value, Glib::ustring id);
+  void on_flowtable_entry_edited(const Glib::ustring& id, const Gnome::Gda::Value& value);
+    
   class Info
   {
   public:

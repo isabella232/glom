@@ -223,12 +223,8 @@ void Document_Glom::change_field_name(const Glib::ustring& table_name, const Gli
       //Look at each group:
       for(type_mapLayoutGroupSequence::iterator iterGroup = iterLayouts->second.begin(); iterGroup != iterLayouts->second.end(); ++iterGroup)
       {
-        //Look at each item:
-        for(LayoutGroup::type_map_items::iterator iterItem = iterGroup->second.m_map_items.begin(); iterItem != iterGroup->second.m_map_items.end(); ++iterItem)
-        {
-          if(iterItem->second.m_field_name == strFieldNameOld)
-            iterItem->second.m_field_name = strFieldNameNew; //Change it.
-        }
+        //Change the field if it is in this group:    
+        iterGroup->second.change_field_item_name(strFieldNameOld, strFieldNameNew);
       }
     }
    
@@ -368,64 +364,64 @@ Document_Glom::type_mapLayoutGroupSequence Document_Glom::get_data_layout_groups
   type_mapLayoutGroupSequence result = get_data_layout_groups(layout_name, table_name);
 
 
-  //Add extra fields that are not mentioned in the layout. (They should at least be in the layout as hidden)
-
-  //Get the Others group. We will add new fields into this one:
-  LayoutGroup* pGroupOthers = 0;
-  for(type_mapLayoutGroupSequence::iterator iterGroups = result.begin(); iterGroups != result.end(); ++iterGroups)
+  //If there are no fields in the layout, then add a default:
+  bool create_default = false;
+  if(result.empty())
+    create_default = true;
+  //TODO: Also set create_default is all groups have no fields.
+  
+  if(create_default)
   {
-    if(iterGroups->second.m_others)
-      pGroupOthers = &(iterGroups->second);
-  }
-
-  //Add it if necessary:
-  if(!pGroupOthers)
-  {
-    //Get next available sequence:
-    guint sequence = 1; //0 means no sequence
-     if(!result.empty())
-       sequence = result.rbegin()->first;
-    ++sequence;
-
-    LayoutGroup others;
-    others.m_group_name = "others";
-    others.m_others = true;
-    result[sequence] = others;
-    pGroupOthers = &(result[sequence]);
-  }
-      
-  //Discover new fields, and add them:
-  type_vecFields all_fields = get_table_fields(table_name);
-  for(type_vecFields::const_iterator iter = all_fields.begin(); iter != all_fields.end(); ++iter)
-  {
-    const Glib::ustring field_name = iter->get_name();
-
-    //See whether it's already in the result:
-    //TODO_Performance: There is a lot of iterating and comparison here:
-    bool found = false; //TODO: This is horrible.
-    for(type_mapLayoutGroupSequence::const_iterator iterFind = result.begin(); iterFind != result.end(); ++iterFind)
+    //Get the last top-level group. We will add new fields into this one:
+    //TODO_Performance: There must be a better way to do this:
+    LayoutGroup* pTopLevel = 0;
+    for(type_mapLayoutGroupSequence::iterator iterGroups = result.begin(); iterGroups != result.end(); ++iterGroups)
     {
-      if(iterFind->second.has_field(field_name))
+      pTopLevel = &(iterGroups->second);
+    }
+
+    //Add one if necessary:
+    if(!pTopLevel)
+    {
+      LayoutGroup group;
+      group.set_name("main");
+      group.m_sequence = 1;
+      group.m_columns_count = 1;
+      result[1] = group;
+      pTopLevel = &(result[1]);
+    }
+
+    //Discover new fields, and add them:
+    type_vecFields all_fields = get_table_fields(table_name);
+    for(type_vecFields::const_iterator iter = all_fields.begin(); iter != all_fields.end(); ++iter)
+    {
+      const Glib::ustring field_name = iter->get_name();
+
+      //See whether it's already in the result:
+      //TODO_Performance: There is a lot of iterating and comparison here:
+      bool found = false; //TODO: This is horrible.
+      for(type_mapLayoutGroupSequence::const_iterator iterFind = result.begin(); iterFind != result.end(); ++iterFind)
       {
-        found = true;
-        break;
+        if(iterFind->second.has_field(field_name))
+        {
+          found = true;
+          break;
+        }
+      }
+
+      if(!found)
+      {
+        LayoutItem_Field layout_item;
+        layout_item.set_name(field_name);
+        //layout_item.m_sequence = sequence;  add_item() will fill this.
+        layout_item.m_hidden = false;
+
+        pTopLevel->add_item(layout_item);
       }
     }
-
-    if(!found)
-    {
-      LayoutItem layout_item;
-      layout_item.m_field_name = field_name;
-      //layout_item.m_sequence = sequence;  add_item() will fill this.
-      layout_item.m_hidden = false;
-
-      pGroupOthers->add_item(layout_item);
-    }
   }
 
-  return result;
-
-  
+  return result;  
 }
   
 Document_Glom::type_mapLayoutGroupSequence Document_Glom::get_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& table_name) const
@@ -573,6 +569,42 @@ void Document_Glom::set_modified(bool value)
       }
     }
   }
+}
+
+void Document_Glom::load_after_layout_group(const xmlpp::Element* node, LayoutGroup& group)
+{
+  //Get the group details:
+  group.set_name( get_node_attribute_value(node, "name") );
+  group.m_title = get_node_attribute_value(node, "title");
+  group.m_columns_count = get_node_attribute_value_as_decimal(node, "columns_count");
+
+  group.m_sequence = get_node_attribute_value_as_decimal(node, "sequence");
+  
+  //Get the child items:
+  xmlpp::Node::NodeList listNodes = node->get_children(); 
+  for(xmlpp::Node::NodeList::iterator iter = listNodes.begin(); iter != listNodes.end(); ++iter)
+  {
+    const xmlpp::Element* element = dynamic_cast<const xmlpp::Element*>(*iter);
+
+    if(element->get_name() == "data_layout_item")
+    {
+      LayoutItem_Field item;
+
+      item.set_name( get_node_attribute_value(element, "name") );
+
+      const guint sequence = get_node_attribute_value_as_decimal(element, "sequence");
+      item.m_sequence = sequence;
+      group.add_item(item, sequence);
+    }
+    else if(element->get_name() == "data_layout_group")
+    {
+      LayoutGroup child_group;
+      //Recurse:
+      load_after_layout_group(element, child_group);
+
+      group.add_item(child_group);
+    }
+  }                          
 }
 
 bool Document_Glom::load_after()
@@ -733,32 +765,9 @@ bool Document_Glom::load_after()
                       if(!group_name.empty())
                       {
                         LayoutGroup group;
-                      
-                        //Get the group details:
-                        group.m_group_name = group_name;
-                        group.m_title = get_node_attribute_value(node, "title");
-                        group.m_others = get_node_attribute_value_as_bool(node, "others");
-                      
-                        //Get the fields:
-                        xmlpp::Node::NodeList listNodesFields = node->get_children("data_layout_item");
-                        for(xmlpp::Node::NodeList::iterator iter = listNodesFields.begin(); iter != listNodesFields.end(); ++iter)
-                        {           
-                          const xmlpp::Element* node_field = dynamic_cast<const xmlpp::Element*>(*iter);
-                      
-                          LayoutItem item;
-                      
-                          item.m_field_name =  get_node_attribute_value(node_field, "name");
-                          item.m_group = group.m_group_name; //TODO: This is a duplication of information.
-                      
-                          const guint sequence = get_node_attribute_value_as_decimal(node_field, "sequence");
-                          item.m_sequence = sequence;
-                          group.m_map_items[sequence] = item;
-                        }
-                           
-                        guint sequence = get_node_attribute_value_as_decimal(node, "sequence");
-                        group.m_sequence = sequence;
-                        
-                        layout_groups[sequence] = group;  
+                        load_after_layout_group(node, group);
+
+                        layout_groups[group.m_sequence] = group;
                       }
                     }
                   }
@@ -775,6 +784,41 @@ bool Document_Glom::load_after()
   }
   
   return result;
+}
+
+void Document_Glom::save_before_layout_group(xmlpp::Element* node, const LayoutGroup& group)
+{
+  xmlpp::Element* child = node->add_child("data_layout_group");
+  
+  child->set_attribute("name", group.get_name());
+  child->set_attribute("title", group.m_title);
+  set_node_attribute_value_as_decimal(child, "columns_count", group.m_columns_count);
+
+  set_node_attribute_value_as_decimal(child, "sequence", group.m_sequence);
+
+  //Add the child items:
+  LayoutGroup::type_map_const_items items = group.get_items();
+  for(LayoutGroup::type_map_const_items::const_iterator iterItems = items.begin(); iterItems != items.end(); ++iterItems)
+  {
+    const LayoutItem* item = iterItems->second;
+    const LayoutGroup* child_group = dynamic_cast<const LayoutGroup*>(item);
+    if(child_group) //If it is a group
+    {
+      //recurse:
+      save_before_layout_group(child, *child_group);
+    }
+    else
+    {
+      const LayoutItem_Field* field = dynamic_cast<const LayoutItem_Field*>(item);
+      if(field) //If it is a field
+      {
+        xmlpp::Element* nodeItem = child->add_child("data_layout_item");
+        nodeItem->set_attribute("name", item->get_name());
+
+        set_node_attribute_value_as_decimal(nodeItem, "sequence", item->m_sequence);
+      }
+    }
+  }        
 }
 
 bool Document_Glom::save_before()
@@ -873,23 +917,7 @@ bool Document_Glom::save_before()
           const type_mapLayoutGroupSequence& group_sequence = iter->second;
           for(type_mapLayoutGroupSequence::const_iterator iterGroups = group_sequence.begin(); iterGroups != group_sequence.end(); ++iterGroups)
           {
-            xmlpp::Element* child = nodeGroups->add_child("data_layout_group");
-            child->set_attribute("name", iterGroups->second.m_group_name);
-            child->set_attribute("title", iterGroups->second.m_title);
-            set_node_attribute_value_as_bool(child, "others", iterGroups->second.m_others);
-
-            set_node_attribute_value_as_decimal(child, "sequence", iterGroups->second.m_sequence);
-
-            //Add the fields:
-            for(LayoutGroup::type_map_items::const_iterator iterItems = iterGroups->second.m_map_items.begin(); iterItems != iterGroups->second.m_map_items.end(); ++iterItems)
-            {
-              const LayoutItem& item = iterItems->second;
-
-              xmlpp::Element* nodeItem = child->add_child("data_layout_item");
-              nodeItem->set_attribute("name", item.m_field_name);
-
-              set_node_attribute_value_as_decimal(nodeItem, "sequence", item.m_sequence);
-            }
+            save_before_layout_group(nodeGroups, iterGroups->second);
           }
         }
       }

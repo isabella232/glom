@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-07-12 15:16+0200\n"
+"POT-Creation-Date: 2004-08-09 00:37+0200\n"
 "PO-Revision-Date: 2004-06-09 18:34+0100\n"
 "Last-Translator: Alberto Paro <alberto@paro.homeunix.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -39,12 +39,13 @@ msgid "<b>Fields</b>"
 msgstr "Campi"
 
 #: glom/glom.glade.h:6
-msgid "<b>Groups</b>"
+msgid "<b>Mode: </b>"
 msgstr ""
 
 #: glom/glom.glade.h:7
-msgid "<b>Mode: </b>"
-msgstr ""
+#, fuzzy
+msgid "<b>Select Field</b>"
+msgstr "Campi"
 
 #: glom/glom.glade.h:8
 msgid "<b>Table: </b>"
@@ -96,131 +97,154 @@ msgid ""
 msgstr ""
 
 #: glom/glom.glade.h:27
-msgid "Auto-increment"
+msgid "Add _Group"
 msgstr ""
 
 #: glom/glom.glade.h:28
-msgid "Calculate value"
+msgid "Auto-increment"
 msgstr ""
 
 #: glom/glom.glade.h:29
-msgid "Connect"
+msgid "Calculate value"
 msgstr ""
 
 #: glom/glom.glade.h:30
+msgid "Connect"
+msgstr ""
+
+#: glom/glom.glade.h:31
 msgid "Data"
 msgstr "Data"
 
-#: glom/glom.glade.h:31
+#: glom/glom.glade.h:32
 msgid "Default Value"
 msgstr ""
 
-#: glom/glom.glade.h:32
+#: glom/glom.glade.h:33
+#, fuzzy
+msgid "Details Layout"
+msgstr "Dettagli"
+
+#: glom/glom.glade.h:34
 msgid "Edit"
 msgstr "Modifica"
 
-#: glom/glom.glade.h:33
+#: glom/glom.glade.h:35
 msgid "Edit Definition"
 msgstr ""
 
-#: glom/glom.glade.h:34
+#: glom/glom.glade.h:36
 msgid "Extra"
 msgstr ""
 
-#: glom/glom.glade.h:35
+#: glom/glom.glade.h:37
 msgid "Field"
 msgstr "Campo"
 
-#: glom/glom.glade.h:36
+#: glom/glom.glade.h:38
 msgid "Field Calculation"
 msgstr ""
 
-#: glom/glom.glade.h:37
+#: glom/glom.glade.h:39
 msgid "Field Definition"
 msgstr ""
 
-#: glom/glom.glade.h:38
+#: glom/glom.glade.h:40
 msgid "Field Definitions"
 msgstr ""
 
-#: glom/glom.glade.h:39
+#: glom/glom.glade.h:41
 msgid "Glom"
 msgstr ""
 
-#: glom/glom.glade.h:40
+#: glom/glom.glade.h:42
 msgid "Host"
 msgstr ""
 
-#: glom/glom.glade.h:41
+#: glom/glom.glade.h:43
 #, fuzzy
-msgid "Layout"
+msgid "List Layout"
 msgstr "_Design Layout"
 
-#: glom/glom.glade.h:42
+#: glom/glom.glade.h:44
 msgid "Lookup value when a field changes."
 msgstr ""
 
-#: glom/glom.glade.h:43
+#: glom/glom.glade.h:45
 msgid "Name"
 msgstr "Nome"
 
-#: glom/glom.glade.h:44
+#: glom/glom.glade.h:46
 msgid "None selected"
 msgstr ""
 
-#: glom/glom.glade.h:45
+#: glom/glom.glade.h:47
 msgid "Password"
 msgstr ""
 
-#: glom/glom.glade.h:46
+#: glom/glom.glade.h:48
 msgid "Primary Key"
 msgstr ""
 
-#: glom/glom.glade.h:47
+#: glom/glom.glade.h:49
 #, fuzzy
 msgid "Relationship"
 msgstr "Relazioni"
 
-#: glom/glom.glade.h:48
+#: glom/glom.glade.h:50
 msgid "Revert"
 msgstr ""
 
-#: glom/glom.glade.h:49
+#: glom/glom.glade.h:51
+#, fuzzy
+msgid "Select"
+msgstr "Cancella"
+
+#: glom/glom.glade.h:52
+msgid "Select Field"
+msgstr ""
+
+#: glom/glom.glade.h:53
 msgid "Show hidden tables"
 msgstr ""
 
-#: glom/glom.glade.h:50
+#: glom/glom.glade.h:54
+#, fuzzy
+msgid "Table:"
+msgstr "Tabella"
+
+#: glom/glom.glade.h:55
 #, fuzzy
 msgid "Test"
 msgstr "Tabelle"
 
-#: glom/glom.glade.h:51
+#: glom/glom.glade.h:56
 msgid ""
 "The field value will be the return value of the python function, which you "
 "implement here."
 msgstr ""
 
-#: glom/glom.glade.h:52
+#: glom/glom.glade.h:57
 msgid "Title"
 msgstr "Titolo"
 
-#: glom/glom.glade.h:53
+#: glom/glom.glade.h:58
 msgid "Type"
 msgstr "Tipo"
 
-#: glom/glom.glade.h:54
+#: glom/glom.glade.h:59
 msgid "Unique"
 msgstr ""
 
-#: glom/glom.glade.h:55
+#: glom/glom.glade.h:60
 msgid "User"
 msgstr ""
 
-#: glom/glom.glade.h:56
+#: glom/glom.glade.h:61
 msgid "example data format"
 msgstr ""
 
-#: glom/glom.glade.h:57
+#: glom/glom.glade.h:62
 msgid "table name"
 msgstr ""
 
@@ -335,9 +359,6 @@ msgstr ""
 #~ msgid "List"
 #~ msgstr "Lista"
 
-#~ msgid "Details"
-#~ msgstr "Dettagli"
-
 #~ msgid ""
 #~ "Click [Edit] to edit the field definition in more detail.\n"
 #~ "Use the Mode menu to see Data or perform a Find."
@@ -354,9 +375,6 @@ msgstr ""
 #~ "Questo campo database e' stato creato o editato fuori da Glom. Ha un data "
 #~ "type che non e' sopportato da Glom. Il tuo system administrator potrebbe "
 #~ "essere in grado di correggere questo problema."
-
-#~ msgid "Table"
-#~ msgstr "Tabella"
 
 #~ msgid ""
 #~ "Enter the search criteria and click [Find]\n"
@@ -412,9 +430,6 @@ msgstr ""
 #~ msgstr ""
 #~ "Non puoi aprire questa tabella, perche' non ci sono informazioni su "
 #~ "questa tabella in questo documento."
-
-#~ msgid "Delete"
-#~ msgstr "Cancella"
 
 #~ msgid "Choose columns"
 #~ msgstr "Scegli colonne"

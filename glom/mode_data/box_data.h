@@ -51,7 +51,13 @@ protected:
 
   type_vecFields get_fields_to_show() const;
   type_vecFields get_table_fields_to_show(const Glib::ustring& table_name) const;
+  void get_table_fields_to_show_add_group(const Glib::ustring& table_name, const type_vecFields& all_db_fields, const LayoutGroup& group, Box_Data::type_vecFields& vecFields) const;
 
+  /** Get the layout groups, with the Field information filled in.
+   */
+  Document_Glom::type_mapLayoutGroupSequence get_data_layout_groups(const Glib::ustring& layout);
+  void fill_layout_group_field_info(LayoutGroup& group);
+  
   typedef std::pair<Field, Relationship> type_pairFieldTrigger;
   typedef std::list<type_pairFieldTrigger> type_list_lookups;
 

@@ -60,10 +60,11 @@ The name will be either "list" or "details".
   name CDATA #REQUIRED
 >
 
-<!ELEMENT data_layout_group (data_layout_item)* >
+<!ELEMENT data_layout_group (data_layout_group | data_layout_item)* >
 <!ATTLIST data_layout_group
   name CDATA #REQUIRED
   sequence CDATA #REQUIRED
+  columns_count #REQUIRED
 >
 
 <!ELEMENT data_layout_item EMPTY >

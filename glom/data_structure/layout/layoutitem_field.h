@@ -18,34 +18,29 @@
  * Boston, MA 02111-1307, USA.
  */
  
+#ifndef GLOM_DATASTRUCTURE_LAYOUTITEM_FIELD_H
+#define GLOM_DATASTRUCTURE_LAYOUTITEM_FIELD_H
+
 #include "layoutitem.h"
+#include "../field.h"
 
-LayoutItem::LayoutItem()
-: m_sequence(0),
-  m_hidden(false)
+class LayoutItem_Field : public LayoutItem
 {
-}
+public:
 
-LayoutItem::LayoutItem(const LayoutItem& src)
-: m_field_name(src.m_field_name),
-  m_sequence(src.m_sequence),
-  m_group(src.m_group),
-  m_hidden(src.m_hidden)
-{
-}
+  LayoutItem_Field();
+  LayoutItem_Field(const LayoutItem_Field& src);
+  LayoutItem_Field& operator=(const LayoutItem_Field& src);
+  virtual ~LayoutItem_Field();
 
-LayoutItem& LayoutItem::operator=(const LayoutItem& src)
-{
-  m_field_name = src.m_field_name;
-  m_sequence = src.m_sequence;
-  m_group = src.m_group;
-  m_hidden = src.m_hidden;
+  virtual LayoutItem* clone();
 
-  return *this;
-}
+  //This is filled in by looking at the database structure:
+  Field m_field;
+  //TODO: This might occasionally be different on different layouts: Glib::ustring m_title;
+};
 
-Glib::ustring LayoutItem::get_name() const
-{
-  return m_field_name;
-}
+#endif //GLOM_DATASTRUCTURE_LAYOUTITEM_FIELD_H
+
+
 

@@ -18,28 +18,41 @@
  * Boston, MA 02111-1307, USA.
  */
  
-#ifndef GLOM_DATASTRUCTURE_LAYOUTITEM_H
-#define GLOM_DATASTRUCTURE_LAYOUTITEM_H
+#include "layoutitem.h"
 
-#include <glibmm/ustring.h>
-
-class LayoutItem
+LayoutItem::LayoutItem()
+: m_sequence(0),
+  m_hidden(false)
 {
-public:
+}
 
-  LayoutItem();
-  LayoutItem(const LayoutItem& src);
-  LayoutItem& operator=(const LayoutItem& src);
+LayoutItem::LayoutItem(const LayoutItem& src)
+: m_sequence(src.m_sequence),
+  m_hidden(src.m_hidden),
+  m_name(src.m_name)
+{
+}
 
-  Glib::ustring get_name() const; //For use with our std::find_if() predicate.
+LayoutItem::~LayoutItem()
+{
+}
+
+LayoutItem& LayoutItem::operator=(const LayoutItem& src)
+{
+  m_name = src.m_name;
+  m_sequence = src.m_sequence;
+  m_hidden = src.m_hidden;
+
+  return *this;
+}
+
+void LayoutItem::set_name(const Glib::ustring& name)
+{
+  m_name = name;
+}
   
-  Glib::ustring m_field_name;
-  guint m_sequence;
-  Glib::ustring m_group;
-  bool m_hidden;
-};
-
-#endif //GLOM_DATASTRUCTURE_LAYOUTITEM_H
-
-
+Glib::ustring LayoutItem::get_name() const
+{
+  return m_name;
+}
 

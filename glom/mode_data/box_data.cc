@@ -20,6 +20,7 @@
 
 #include "box_data.h"
 #include "../data_structure/glomconversions.h"
+#include "../data_structure/layout/layoutitem_field.h"
 #include "../glom_python.h"
 #include "config.h"
 #include <libintl.h>
@@ -30,13 +31,7 @@ Box_Data::Box_Data()
 {
   m_bUnstoredData = false;
    
-  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_data_layout"); //TODO: Use a generic layout dialog?
-  if(refXml)
-  {
-    refXml->get_widget_derived("window_data_layout", m_pDialogLayout);
-    if(m_pDialogLayout)
-      m_pDialogLayout->signal_hide().connect( sigc::mem_fun(*this, &Box_Data::on_dialog_layout_hide) );
-  }
+
     
   //Connect signals:
   m_Button_Find.signal_clicked().connect(sigc::mem_fun(*this, &Box_Data::on_Button_Find));
@@ -62,8 +57,18 @@ Glib::ustring Box_Data::get_WhereClause() const
     
     if(!GlomConversions::value_is_empty(data))
     {
-      //TODO: "table.name"
-      strClausePart = field.get_name() + " LIKE " +  field.sql(data); //% is mysql wildcard for 0 or more characters.
+      bool use_this_field = true;
+      if(iter->get_glom_type() == Field::TYPE_BOOLEAN) //TODO: We need an intermediate state for boolean fields, so that they can be ignored in searches.
+      {
+        if(!data.get_bool())
+          use_this_field = false;
+      }
+
+      if(use_this_field)
+      {
+        //TODO: "table.name"
+        strClausePart = field.get_name() + " LIKE " +  field.sql(data); //% is mysql wildcard for 0 or more characters.
+      }
     }
 
     if(!strClausePart.empty())
@@ -206,6 +211,39 @@ Box_Data::type_vecFields Box_Data::get_fields_to_show() const
   return get_table_fields_to_show(m_strTableName);
 }
 
+void Box_Data::get_table_fields_to_show_add_group(const Glib::ustring& table_name, const type_vecFields& all_db_fields, const LayoutGroup& group, Box_Data::type_vecFields& vecFields) const
+{
+  LayoutGroup::type_map_const_items items = group.get_items();
+  for(LayoutGroup::type_map_const_items::const_iterator iterItems = items.begin(); iterItems != items.end(); ++iterItems)
+  {
+    const LayoutItem* item = iterItems->second;
+
+    const LayoutItem_Field* field = dynamic_cast<const LayoutItem_Field*>(item);
+    if(field)
+    {
+      //Get the field info:
+      const Glib::ustring field_name = item->get_name();
+      type_vecFields::const_iterator iterFind = std::find_if(all_db_fields.begin(), all_db_fields.end(), predicate_FieldHasName<Field>(field_name));
+
+      //If the field does not exist anymore then we won't try to show it:
+      if(iterFind != all_db_fields.end() )
+      {
+         vecFields.push_back(*iterFind);
+      }
+    }
+    else
+    {
+      const LayoutGroup* item_group = dynamic_cast<const LayoutGroup*>(item);
+      if(item_group)
+      {
+        //Recurse:
+        get_table_fields_to_show_add_group(table_name, all_db_fields, *item_group, vecFields);
+      }
+    }      
+  }
+}
+
+
 Box_Data::type_vecFields Box_Data::get_table_fields_to_show(const Glib::ustring& table_name) const
 {
   //Get field definitions from the database, with corrections from the document:
@@ -252,22 +290,8 @@ Box_Data::type_vecFields Box_Data::get_table_fields_to_show(const Glib::ustring&
         if(true) //!group.m_hidden)
         {
           //Get the fields:
-          for(LayoutGroup::type_map_items::const_iterator iterItems = group.m_map_items.begin(); iterItems != group.m_map_items.end(); ++iterItems)
-          {
-            const LayoutItem& item = iterItems->second;
-            
-            //Get the field info:
-            Glib::ustring field_name = item.m_field_name;
-            type_vecFields::const_iterator iterFind = std::find_if(all_fields.begin(), all_fields.end(), predicate_FieldHasName<Field>(field_name));
-
-            //If the field does not exist anymore then we won't try to show it:
-            if(iterFind != all_fields.end() )
-            {
-               result.push_back(*iterFind);
-            }
-          }
+          get_table_fields_to_show_add_group(table_name, all_fields, group, result);
         }
-        
       }
     }
   }
@@ -356,7 +380,54 @@ Gnome::Gda::Value Box_Data::get_lookup_value(const Relationship& relationship, c
   return result;
 }
   
+Document_Glom::type_mapLayoutGroupSequence Box_Data::get_data_layout_groups(const Glib::ustring& layout)
+{
+  Document_Glom::type_mapLayoutGroupSequence layout_groups;
+  
+  Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
+  if(document)
+  {
+    //Get the layout information from the document:
+    layout_groups = document->get_data_layout_groups_plus_new_fields(layout, m_strTableName);
 
+    //Fill in the field information for the fields mentioned in the layout:
+    for(Document_Glom::type_mapLayoutGroupSequence::iterator iterGroups = layout_groups.begin(); iterGroups != layout_groups.end(); ++iterGroups)
+    {
+      fill_layout_group_field_info(iterGroups->second);
+    }
+  }
+
+  return layout_groups;
+}
+
+void Box_Data::fill_layout_group_field_info(LayoutGroup& group)
+{      
+  LayoutGroup::type_map_items items = group.get_items();
+  for(LayoutGroup::type_map_items::iterator iter = items.begin(); iter != items.end(); ++iter)
+  {
+    LayoutItem* item = iter->second;
+    LayoutItem_Field* item_field = dynamic_cast<LayoutItem_Field*>(item);
+    if(item_field) //If is a field rather than some other layout item
+    {
+      //Get the field info:
+      Field field;
+      bool found = get_fields_for_table_one_field(m_strTableName, item_field->get_name(), field);
+      if(found)
+      {
+        item_field->m_field = field; //TODO_Performance: Just use this as the output arg?
+      }
+    }
+    else
+    {
+      LayoutGroup* item_group = dynamic_cast<LayoutGroup*>(item);
+      if(item_group) //If it is a group
+      {
+        //recurse, to fill the fields info in this group:
+        fill_layout_group_field_info(*item_group);
+      }
+    }
+  }
+}
 
 
   

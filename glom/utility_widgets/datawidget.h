@@ -46,7 +46,7 @@ public:
 
   virtual void set_editable(bool editable = true);
 
-  typedef sigc::signal<void> type_signal_edited;
+  typedef sigc::signal<void, const Gnome::Gda::Value&> type_signal_edited;
   type_signal_edited signal_edited();
 
 protected:

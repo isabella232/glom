@@ -20,6 +20,7 @@
 
 #include "box_data_list.h"
 #include "../data_structure/glomconversions.h"
+#include "dialog_layout_list.h"
 #include <sstream> //For stringstream
 #include <libintl.h>
 
@@ -27,6 +28,18 @@ Box_Data_List::Box_Data_List()
 : m_has_one_or_more_records(false)
 {
   m_layout_name = "list";
+
+  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_data_layout_list"); //TODO: Use a generic layout dialog?
+  if(refXml)
+  {
+    Dialog_Layout_List* dialog = 0;
+    refXml->get_widget_derived("window_data_layout_list", dialog);
+    if(dialog)
+    {
+      m_pDialogLayout = dialog;
+      m_pDialogLayout->signal_hide().connect( sigc::mem_fun(*this, &Box_Data::on_dialog_layout_hide) );
+    }
+  }
   
   m_strHint = gettext("When you change the data in a field the database is updated immediately.\n Click [Add] or enter data into the last row to add a new record.\n Leave automatic ID fields empty - they will be filled for you.\nOnly the first 100 records are shown.");
 
@@ -45,7 +58,7 @@ Box_Data_List::Box_Data_List()
 
 
   //Groups are not very helpful for a list view:
-  m_pDialogLayout->set_show_groups(false);
+  //m_pDialogLayout->set_show_groups(false);
  
 }
 
@@ -267,23 +280,22 @@ void Box_Data_List::on_adddel_user_reordered_columns()
   if(pDoc)
   {
     LayoutGroup group;
-    group.m_group_name = "others";
-    group.m_others = true;
+    group.set_name("toplevel");
     
     AddDel::type_vecStrings vec_field_names = m_AddDel.get_columns_order();
 
     guint index = 0;
     for(AddDel::type_vecStrings::iterator iter = vec_field_names.begin(); iter != vec_field_names.end(); ++iter)
     {
-      LayoutItem layout_item;
-      layout_item.m_field_name = *iter;
+      LayoutItem_Field layout_item;
+      layout_item.set_name(*iter);
       layout_item.m_sequence = index;
-      group.m_map_items[index] = layout_item; 
+      group.add_item(layout_item, index); 
       ++index;
     }
 
     Document_Glom::type_mapLayoutGroupSequence mapGroups;
-    mapGroups[0] = group;
+    mapGroups[1] = group;
     
     pDoc->set_data_layout_groups("list", m_strTableName, mapGroups);  
   }

@@ -61,7 +61,7 @@ DataWidget::~DataWidget()
 
 void DataWidget::on_widget_edited()
 {
-  m_signal_edited.emit();
+  m_signal_edited.emit(get_value());
 }
 
 DataWidget::type_signal_edited DataWidget::signal_edited()

@@ -25,7 +25,7 @@
 #include <bakery/View/View_Composite.h>
 #include "../data_structure/relationship.h"
 #include "../data_structure/field.h"
-#include "../data_structure/layoutgroup.h"
+#include "../data_structure/layout/layoutgroup.h"
 #include "../data_structure/tableinfo.h"
 #include "../appstate.h"
 #include <vector>
@@ -101,6 +101,9 @@ protected:
   virtual bool load_after();
   virtual bool save_before();
 
+  virtual void load_after_layout_group(const xmlpp::Element* node, LayoutGroup& group);
+  virtual void save_before_layout_group(xmlpp::Element* node, const LayoutGroup& group);
+  
   virtual void on_app_state_userlevel_changed(AppState::userlevels userleve);
   
   static bool get_node_attribute_value_as_bool(const xmlpp::Element* node, const Glib::ustring& strAttributeName);

@@ -41,6 +41,10 @@ public:
    */
   virtual void set_padding(guint padding);
 
+  /** Show extra UI that is useful in RAD tools:
+   */
+  virtual void set_design_mode(bool value = true);
+  
   void remove_all();
 
 protected:
@@ -64,8 +68,11 @@ protected:
   class FlowTableItem
   {
   public:
+    FlowTableItem();
+    
     Gtk::Widget* m_first;
     Gtk::Widget* m_second;
+    bool m_expand_second;
   };
   
   typedef std::vector<FlowTableItem> type_vecChildren;
@@ -80,6 +87,7 @@ protected:
   type_vecChildren m_children;
   guint m_columns_count;
   guint m_padding;
+  bool m_design_mode;
 
 };
 

@@ -39,12 +39,86 @@ FlowTableWithFields::~FlowTableWithFields()
 {
 }
 
+void FlowTableWithFields::add_layout_item(const LayoutItem& item)
+{
+  const LayoutItem* pItem = &item;
+
+  //Get derived type and do the appropriate thing:
+  const LayoutGroup* group = dynamic_cast<const LayoutGroup*>(pItem);
+  if(group)
+    add_layout_group(*group);
+  else
+  {
+    const LayoutItem_Field* field = dynamic_cast<const LayoutItem_Field*>(pItem);
+    if(field)
+    {                          
+      add_field(field->m_field); \
+
+      //Do not allow editing of auto-increment fields:
+      if(field->m_field.get_field_info().get_auto_increment())
+        set_field_editable(field->m_field, false);
+    }
+  } 
+}
+
+void FlowTableWithFields::add_layout_group(const LayoutGroup& group)
+{
+  if(true)//!fields.empty() && !group_name.empty())
+  {
+    Gtk::Frame* frame = Gtk::manage( new Gtk::Frame );
+
+    if(!group.m_title.empty())
+    {
+      Gtk::Label* label = Gtk::manage( new Gtk::Label );
+      label->set_text("<b>" + group.m_title + "</b>" );
+      label->set_use_markup();
+      label->show();
+      frame->set_label_widget(*label);
+    }
+
+    frame->set_shadow_type(Gtk::SHADOW_NONE); //HIG-style
+    frame->show();
+
+    Gtk::Alignment* alignment = Gtk::manage( new Gtk::Alignment );
+
+    if(!group.m_title.empty()) //Don't indent if it has no title, to allow use of groups just for positioning.
+      alignment->set_padding(6, 0, 6, 0);
+
+    alignment->show();
+    frame->add(*alignment);
+
+    FlowTableWithFields* flow_table = Gtk::manage( new FlowTableWithFields() );
+
+    flow_table->set_columns_count(group.m_columns_count);
+    flow_table->set_padding(6);
+    flow_table->show();
+    alignment->add(*flow_table);
+
+    LayoutGroup::type_map_const_items items = group.get_items(); 
+    for(LayoutGroup::type_map_const_items::const_iterator iter = items.begin(); iter != items.end(); ++iter)
+    {
+      const LayoutItem* item = iter->second;
+      if(item)
+      {
+        flow_table->add_layout_item(*item);
+      }
+    }
+
+    add(*frame);
+
+    m_sub_flow_tables.push_back(flow_table);
+
+    //Connect signal:
+    flow_table->signal_field_edited().connect( sigc::mem_fun(*this, &FlowTableWithFields::on_flowtable_entry_edited) );
+  }
+}
+  
 void FlowTableWithFields::add_group(const Glib::ustring& /* group_name */, const Glib::ustring& group_title, const type_map_field_sequence& fields)
 {
   if(true)//!fields.empty() && !group_name.empty())
   {
     Gtk::Frame* frame = Gtk::manage( new Gtk::Frame );
-   
+
     if(!group_title.empty())
     {
       Gtk::Label* label = Gtk::manage( new Gtk::Label );
@@ -54,24 +128,24 @@ void FlowTableWithFields::add_group(const Glib::ustring& /* group_name */, const
       frame->set_label_widget(*label);
     }
 
-    frame->set_shadow_type(Gtk::SHADOW_NONE); //HIG-style 
+    frame->set_shadow_type(Gtk::SHADOW_NONE); //HIG-style
     frame->show();
 
     Gtk::Alignment* alignment = Gtk::manage( new Gtk::Alignment );
 
     if(!group_title.empty()) //Don't indent if it has no title, to allow use of groups just for positioning.
       alignment->set_padding(6, 0, 6, 0);
-      
+
     alignment->show();
     frame->add(*alignment);
-    
+
     FlowTableWithFields* flow_table = Gtk::manage( new FlowTableWithFields() );
-    
+
     flow_table->set_columns_count(1);
     flow_table->set_padding(6);
     flow_table->show();
     alignment->add(*flow_table);
-    
+
     for(type_map_field_sequence::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
     {
       //Gtk::Entry* debug = Gtk::manage(new Gtk::Entry() );
@@ -79,13 +153,13 @@ void FlowTableWithFields::add_group(const Glib::ustring& /* group_name */, const
       //debug->show();
       flow_table->add_field(iter->second);
     }
-   
+
     add(*frame);
 
     m_sub_flow_tables.push_back(flow_table);
 
     //Connect signal:
-    flow_table->signal_field_edited().connect( sigc::mem_fun(*this, &FlowTableWithFields::on_entry_edited) );
+    flow_table->signal_field_edited().connect( sigc::mem_fun(*this, &FlowTableWithFields::on_flowtable_entry_edited) );
   }
 }
   
@@ -106,12 +180,14 @@ void FlowTableWithFields::add_field(const Field& field, const Glib::ustring& gro
 
     //Add a label, if one is necessary:
     Gtk::Label* label = info.m_second->get_label();
-    if(!label->get_text().empty())
+    if(label && !label->get_text().empty())
     {
       info.m_first->add( *label );
+      label->set_alignment(Gtk::ALIGN_RIGHT, Gtk::ALIGN_CENTER); //Align right.
       label->show();
+      
       info.m_first->show();
-      info.m_first->set(Gtk::ALIGN_RIGHT);
+      info.m_first->set(Gtk::ALIGN_RIGHT, Gtk::ALIGN_CENTER);
       info.m_first->show_all_children(); //This does not seem to work, so we show the label explicitly.
     }
 
@@ -149,10 +225,15 @@ void FlowTableWithFields::set_field_value(const Field& field, const Gnome::Gda::
 
 void FlowTableWithFields::set_field_value(const Glib::ustring& id, const Gnome::Gda::Value& value)
 {
-  Gtk::Widget* widget = get_field(id);
-  DataWidget* datawidget = dynamic_cast<DataWidget*>(widget);
-  if(datawidget)
-    datawidget->set_value(value);
+  type_list_widgets list_widgets = get_field(id);
+  for(type_list_widgets::iterator iter = list_widgets.begin(); iter != list_widgets.end(); ++iter)
+  {
+    DataWidget* datawidget = dynamic_cast<DataWidget*>(*iter);
+    if(datawidget)
+    {
+      datawidget->set_value(value);
+    }
+  }
 }
 
 Gnome::Gda::Value FlowTableWithFields::get_field_value(const Field& field) const
@@ -162,72 +243,105 @@ Gnome::Gda::Value FlowTableWithFields::get_field_value(const Field& field) const
 
 Gnome::Gda::Value FlowTableWithFields::get_field_value(const Glib::ustring& id) const
 {
-  const Gtk::Widget* widget = get_field(id);
-  const DataWidget* datawidget = dynamic_cast<const DataWidget*>(widget);
-  if(datawidget)
-    return datawidget->get_value();
-  else
+  type_list_const_widgets list_widgets = get_field(id);
+  if(!list_widgets.empty())
   {
-    return Gnome::Gda::Value(); //null.
+    const DataWidget* datawidget = dynamic_cast<const DataWidget*>(*(list_widgets.begin()));
+    
+    if(datawidget)
+      return datawidget->get_value();
   }
+    
+  return Gnome::Gda::Value(); //null.
 }
  
 void FlowTableWithFields::set_field_editable(const Field& field, bool editable)
 {
-  Gtk::Widget* widget = get_field(field);
-  DataWidget* datawidget = dynamic_cast<DataWidget*>(widget);
-  if(datawidget)
-    datawidget->set_editable(editable);
+  type_list_widgets list_widgets = get_field(field);
+  for(type_list_widgets::iterator iter = list_widgets.begin(); iter != list_widgets.end(); ++iter)
+  {
+    DataWidget* datawidget = dynamic_cast<DataWidget*>(*iter);
+    if(datawidget)
+    {
+      datawidget->set_editable(editable);
+    }
+  }
 }
 
 
-Gtk::Widget* FlowTableWithFields::get_field(const Field& field)
+FlowTableWithFields::type_list_widgets FlowTableWithFields::get_field(const Field& field)
 {
   return get_field(field.get_name());
 }
 
-const Gtk::Widget* FlowTableWithFields::get_field(const Field& field) const
+FlowTableWithFields::type_list_const_widgets FlowTableWithFields::get_field(const Field& field) const
 {
   return get_field(field.get_name());
 }
 
-const Gtk::Widget* FlowTableWithFields::get_field(const Glib::ustring& id) const
+FlowTableWithFields::type_list_const_widgets FlowTableWithFields::get_field(const Glib::ustring& id) const
 {
-  const Gtk::Widget* widget = 0;
+  type_list_const_widgets result;
+  
+  type_mapFields::const_iterator iterFind = m_mapFields.find(id);
+  if(iterFind != m_mapFields.end())
+  {
+    const Info& info = iterFind->second;
+    if(info.m_checkbutton)
+      result.push_back(info.m_checkbutton);
+    else
+      result.push_back(info.m_second);
+  }
+
+  //Check the sub-flowtables:
+  for(type_sub_flow_tables::const_iterator iter = m_sub_flow_tables.begin(); iter != m_sub_flow_tables.end(); ++iter)
+  {
+    const FlowTableWithFields* subtable = *iter;
+    if(subtable)
+    {
+      type_list_const_widgets sub_list = subtable->get_field(id);
+      if(!sub_list.empty())
+      {
+        //Add to the main result:
+        result.insert(result.end(), sub_list.begin(), sub_list.end());
+      }
+    }
+  }
+
+  return result;
+}
+
+FlowTableWithFields::type_list_widgets FlowTableWithFields::get_field(const Glib::ustring& id)
+{
+  //TODO: Avoid duplication
+  type_list_widgets result;
 
   type_mapFields::const_iterator iterFind = m_mapFields.find(id);
   if(iterFind != m_mapFields.end())
   {
     const Info& info = iterFind->second;
     if(info.m_checkbutton)
-      widget = info.m_checkbutton;
+      result.push_back(info.m_checkbutton);
     else
-      widget = info.m_second;
+      result.push_back(info.m_second);
   }
 
-  if(widget)
-    return widget;
-  else
+  //Check the sub-flowtables:
+  for(type_sub_flow_tables::const_iterator iter = m_sub_flow_tables.begin(); iter != m_sub_flow_tables.end(); ++iter)
   {
-    //Check the sub-flowtables:
-    for(type_sub_flow_tables::const_iterator iter = m_sub_flow_tables.begin(); iter != m_sub_flow_tables.end(); ++iter)
+    FlowTableWithFields* subtable = *iter;
+    if(subtable)
     {
-      FlowTableWithFields* subtable = *iter;
-      if(subtable)
-        widget = subtable->get_field(id);
-
-      if(widget)
-        return widget;
+      type_list_widgets sub_list = subtable->get_field(id);
+      if(!sub_list.empty())
+      {
+        //Add to the main result:
+        result.insert(result.end(), sub_list.begin(), sub_list.end());
+      }
     }
   }
 
-  return 0; //Not found.
-}
-
-Gtk::Widget* FlowTableWithFields::get_field(const Glib::ustring& id)
-{
-  const FlowTableWithFields* pThis = this;
-  return const_cast<Gtk::Widget*>(pThis->get_field(id)); 
+  return result;
 }
 
 void FlowTableWithFields::change_group(const Glib::ustring& /* id */, const Glib::ustring& /*new_group */)
@@ -247,16 +361,28 @@ FlowTableWithFields::type_signal_field_edited FlowTableWithFields::signal_field_
   return m_signal_field_edited;
 }
 
-void FlowTableWithFields::on_entry_edited(const Glib::ustring& id)
+void FlowTableWithFields::on_entry_edited(const Gnome::Gda::Value& value, Glib::ustring id)
 {
-  m_signal_field_edited.emit(id);
+  m_signal_field_edited.emit(id, value); 
 }
 
-void FlowTableWithFields::on_checkbutton_toggled(const Glib::ustring& id)
+void FlowTableWithFields::on_flowtable_entry_edited(const Glib::ustring& id, const Gnome::Gda::Value& value)
 {
-  m_signal_field_edited.emit(id);
+  m_signal_field_edited.emit(id, value);
 }
 
+void FlowTableWithFields::set_design_mode(bool value)
+{
+  FlowTable::set_design_mode(value);
+
+  //Set the mode in the sub-flowtables:
+  for(type_sub_flow_tables::iterator iter = m_sub_flow_tables.begin(); iter != m_sub_flow_tables.end(); ++iter)
+  {
+    FlowTableWithFields* subtable = *iter;
+    if(subtable)
+      subtable->set_design_mode(value);
+  }
+}
 
 
 

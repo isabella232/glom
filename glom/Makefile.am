@@ -30,6 +30,7 @@ glom_SOURCES = main.cc \
 
 glom_LDADD = document/libdocument.a \
              data_structure/libdata_structure.a \
+             data_structure/layout/libdata_structure_layout.a \
              mode_data/libmode_data.a \
              mode_find/libmode_find.a \
              mode_design/libmode_design.a \

@@ -18,33 +18,35 @@
  * Boston, MA 02111-1307, USA.
  */
  
-#ifndef GLOM_DATASTRUCTURE_LAYOUTGROUP_H
-#define GLOM_DATASTRUCTURE_LAYOUTGROUP_H
+#include "layoutitem_field.h"
 
-#include "layoutitem.h"
-#include <map>
-
-class LayoutGroup
+LayoutItem_Field::LayoutItem_Field()
 {
-public:
+}
 
-  LayoutGroup();
-  LayoutGroup(const LayoutGroup& src);
-  LayoutGroup& operator=(const LayoutGroup& src);
+LayoutItem_Field::LayoutItem_Field(const LayoutItem_Field& src)
+: LayoutItem(src),
+  m_field(src.m_field)
+{
+}
 
-  bool has_field(const Glib::ustring& field_name) const;
-  void add_item(const LayoutItem& item);
+LayoutItem_Field::~LayoutItem_Field()
+{
+}
+
+LayoutItem* LayoutItem_Field::clone()
+{
+  return new LayoutItem_Field(*this);
+}
+
+
+LayoutItem_Field& LayoutItem_Field::operator=(const LayoutItem_Field& src)
+{
+  LayoutItem::operator=(src);
+
+  m_field = src.m_field;
   
-  Glib::ustring m_group_name;
-  Glib::ustring m_title;
-  guint m_sequence;
-  bool m_others; //If this is just the place where we put ungrouped fields;
-
-  typedef std::map<int, LayoutItem> type_map_items;
-  type_map_items m_map_items; 
-};
-
-#endif //GLOM_DATASTRUCTURE_LAYOUTGROUP_H
-
+  return *this;
+}
 
 

@@ -1,3 +1,15 @@
+0.8.8:
+
+* Details Layout: Simpler, hierarchical layout. This allows 
+  more complex layouts, and allows fields to appear more than 
+  once on the same layout.
+* Documentation: Added user manual, though it looks a 
+  bit strange in yelp at the moment.
+* Relationships:
+  - Avoid crash when fields of differerent types are used in
+  relationships.
+  - Actually delete relationships when the delete button is pressed.
+
 0.8.7:
 
 * Field Definition:

@@ -80,7 +80,7 @@ protected:
   //Signal handler: The last arg is bind-ed.
   virtual void on_related_user_requested_details(Gnome::Gda::Value key_value, Glib::ustring strTableName);
 
-  virtual void on_flowtable_field_edited(Glib::ustring id);
+  virtual void on_flowtable_field_edited(const Glib::ustring& id, const Gnome::Gda::Value& value);
 
    
   Gnome::Gda::Value m_primary_key_value;
