@@ -1,5 +1,11 @@
 2004-07-08  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/document/document_glom.cc: load_after(): Load the field 
+	calculation from the field node rather than the lookup node, because 
+	that is where we saved it.
+
+2004-07-08  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/main.cc, application.[h|cc]: Make the application quit if the 
 	user presses cancel on the new-or-existing dialog.
 

@@ -185,7 +185,6 @@ void Document_Glom::change_field_name(const Glib::ustring& table_name, const Gli
     type_vecFields::iterator iterFind = std::find_if( vecFields.begin(), vecFields.end(), predicate_FieldHasName<Field>(strFieldNameOld) );
     if(iterFind != vecFields.end()) //If it was found:
     {
-      g_warning("changed field");
       //Change it:
       iterFind->set_name(strFieldNameNew);
     }
@@ -652,7 +651,7 @@ bool Document_Glom::load_after()
                   field.set_lookup_field( get_node_attribute_value(nodeLookup, "field") );
                 }
 
-                field.set_calculation( get_node_attribute_value(nodeLookup, "calculation") );
+                field.set_calculation( get_node_attribute_value(nodeChild, "calculation") );
                 
                 //Field Type:
                 const Glib::ustring field_type = get_node_attribute_value(nodeChild, "type");
