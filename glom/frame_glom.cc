@@ -86,6 +86,7 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
     Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_design");
 
     refXml->get_widget_derived("window_design", m_pDialog_Relationships);
+    m_pDialog_Relationships->set_title("Relationships");
   }
   catch(const Gnome::Glade::XmlError& ex)
   {
