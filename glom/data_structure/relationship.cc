@@ -36,6 +36,7 @@ Relationship::~Relationship()
 Relationship& Relationship::operator=(const Relationship& src)
 {
   m_strName = src.m_strName;
+  m_strTitle = src.m_strTitle;  
   m_strFrom_Table = src.m_strFrom_Table;
   m_strFrom_Field = src.m_strFrom_Field;
   m_strTo_Table = src.m_strTo_Table;
@@ -47,6 +48,7 @@ Relationship& Relationship::operator=(const Relationship& src)
 bool Relationship::operator==(const Relationship& src) const
 {
   bool bEqual = (m_strFrom_Table == src.m_strFrom_Table);
+  bEqual = bEqual && (m_strTitle == src.m_strTitle);
   bEqual = bEqual && (m_strFrom_Field == src.m_strFrom_Field);
   bEqual = bEqual && (m_strTo_Table == src.m_strTo_Table);
   bEqual = bEqual && (m_strTo_Field == src.m_strTo_Field);
@@ -105,3 +107,20 @@ void Relationship::set_name(const Glib::ustring& strVal)
   m_strName = strVal;
 }
 
+Glib::ustring Relationship::get_title() const
+{
+  return m_strTitle;
+}
+
+void Relationship::set_title(const Glib::ustring& strVal)
+{
+  m_strTitle = strVal;
+}
+
+Glib::ustring Relationship::get_title_or_name() const
+{
+  if(m_strTitle.empty())
+    return m_strName;
+  else
+    return m_strTitle;
+}

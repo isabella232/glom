@@ -31,8 +31,11 @@ Dialog_Layout_List_Related::Dialog_Layout_List_Related(BaseObjectType* cobject, 
   m_button_field_down(0),
   m_button_field_add(0),
   m_button_field_delete(0),
-  m_button_field_edit(0)
+  m_button_field_edit(0),
+  m_combo_relationship_name(0)
 {
+  refGlade->get_widget_derived("combo_relationship_name", m_combo_relationship_name);
+
   refGlade->get_widget("treeview_fields", m_treeview_fields);
   if(m_treeview_fields)
   {
@@ -80,26 +83,42 @@ Dialog_Layout_List_Related::~Dialog_Layout_List_Related()
 {
 }
 
-void Dialog_Layout_List_Related::set_document(const Glib::ustring& layout, Document_Glom* document, const Glib::ustring& table_name, const type_vecFields& table_fields)
+void Dialog_Layout_List_Related::set_document(const Glib::ustring& layout, Document_Glom* document, const Glib::ustring& parent_table_name, const Glib::ustring& relationship_name)
 {
   m_modified = false;
 
-  Dialog_Layout::set_document(layout, document, table_name, table_fields);
-  
+  type_vecFields empty_fields; //Just to satisfy the base class.
+  Dialog_Layout::set_document(layout, document, parent_table_name, empty_fields);
+  //m_table_name is now actually the parent_table_name.
 
   //Update the tree models from the document
   if(document)
   {
-    //Set the table name and title:
-    m_label_table_name->set_text(table_name);
-    m_entry_table_title->set_text( document->get_table_title(table_name) );
+    //Fill the relationships combo:
+    m_combo_relationship_name->clear_text();
+    Document_Glom::type_vecRelationships vecRelationships = document->get_relationships(parent_table_name);
 
-    Document_Glom::type_mapLayoutGroupSequence mapGroups = document->get_data_layout_groups_plus_new_fields(layout, m_table_name);
+    for(Document_Glom::type_vecRelationships::iterator iter = vecRelationships.begin(); iter != vecRelationships.end(); ++iter)
+    {
+      m_combo_relationship_name->append_text(iter->get_name());
+    }
+      
+    //Set the table name and title:
+    m_combo_relationship_name->set_active_text(relationship_name); 
+    
+    bool found = document->get_relationship(parent_table_name, relationship_name, m_relationship);
+    if(found)
+      m_entry_table_title->set_text( m_relationship.get_title() );
+
+    //TODO: Use the relationship fields:
+    Document_Glom::type_mapLayoutGroupSequence mapGroups = document->get_relationship_data_layout_groups_plus_new_fields(layout, parent_table_name, relationship_name);
 
     //If no information is stored in the document, then start with something:
-
+    
     if(mapGroups.empty())
     {
+      type_vecFields table_fields = document->get_table_fields(m_relationship.get_to_table());
+      
       LayoutGroup group;
       group.set_name("main");
 
@@ -239,12 +258,35 @@ void Dialog_Layout_List_Related::save_to_document()
 
     if(m_document)
     {
-      m_document->set_data_layout_groups(m_layout_name, m_table_name, mapGroups);
-      m_modified = false;
+      Glib::ustring relationship_name = m_combo_relationship_name->get_active_text();
+      if(!relationship_name.empty())
+      {
+        m_document->set_relationship_data_layout_groups(m_layout_name, m_table_name, relationship_name, mapGroups);
+        m_modified = false;
+      }
+      
+      //Save the relationship title, which will be used elsewhere too:
+      m_relationship.set_title(m_entry_table_title->get_text());
+      m_document->set_relationship(m_table_name, m_relationship);
     }
   }
 }
 
+void Dialog_Layout_List_Related::on_combo_relationship_changed()
+{
+  Glib::ustring relationship_name = m_combo_relationship_name->get_active_text();
+  if(!relationship_name.empty())
+  {
+    if(m_document)
+    {
+      //Refresh everything for the new relationship:
+      set_document(m_layout_name, m_document, m_table_name /* actually the parent table name */, relationship_name);
+      
+      m_modified = true;
+    }
+  }
+}
+ 
 void Dialog_Layout_List_Related::on_treeview_fields_selection_changed()
 {
   enable_buttons();
@@ -261,7 +303,7 @@ void Dialog_Layout_List_Related::on_button_add_field()
 
     if(dialog)
     {
-      dialog->set_document(m_document, m_table_name);
+      dialog->set_document(m_document, m_relationship.get_to_table());
       int response = dialog->run();
       if(response == Gtk::RESPONSE_OK)
       {

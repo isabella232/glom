@@ -238,7 +238,6 @@ void Box_Data_List::on_adddel_user_requested_edit(const Gtk::TreeModel::iterator
 
 void Box_Data_List::on_adddel_user_requested_layout()
 {
-  g_warning("on_adddel_user_requested_layout");
   show_layout_dialog();
 }
 

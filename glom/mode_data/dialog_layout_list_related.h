@@ -22,6 +22,7 @@
 #define GLOM_MODE_DATA_DIALOG_LAYOUT_LIST_RELATED_H
 
 #include "dialog_layout.h"
+#include "../mode_design/fields/combo_textglade.h"
 
 class Dialog_Layout_List_Related : public Dialog_Layout
 {
@@ -35,7 +36,7 @@ public:
    * @param table_name The table name.
    * @param table_fields: The actual fields in the table, in case the document does not yet know about them all.
    */
-  virtual void set_document(const Glib::ustring& layout, Document_Glom* document, const Glib::ustring& table_name, const type_vecFields& table_fields);
+  virtual void set_document(const Glib::ustring& layout, Document_Glom* document, const Glib::ustring& parent_table_name, const Glib::ustring& relationship_name);
 
 protected:
 
@@ -50,6 +51,7 @@ protected:
   virtual void on_button_add_field();
   virtual void on_button_delete();
   virtual void on_treeview_fields_selection_changed();
+  virtual void on_combo_relationship_changed();
 
   //Tree model columns:
   class ModelColumns_Fields : public Gtk::TreeModel::ColumnRecord
@@ -72,6 +74,8 @@ protected:
   Gtk::Button* m_button_field_add;
   Gtk::Button* m_button_field_delete;
   Gtk::Button* m_button_field_edit;
+  Combo_TextGlade* m_combo_relationship_name;
+  Relationship m_relationship;
 
   Glib::RefPtr<Gtk::ListStore> m_model_fields;
 };

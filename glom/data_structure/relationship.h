@@ -37,7 +37,12 @@ public:
   
   virtual Glib::ustring get_name() const;
   virtual void set_name(const Glib::ustring& strVal);
+
+  virtual Glib::ustring get_title() const;
+  virtual void set_title(const Glib::ustring& strVal);
   
+  Glib::ustring get_title_or_name() const;
+    
   virtual Glib::ustring get_from_table() const;
   virtual Glib::ustring get_from_field() const;
   virtual Glib::ustring get_to_table() const;
@@ -49,7 +54,7 @@ public:
   virtual void set_to_field(const Glib::ustring& strVal);
   
 protected:
-  Glib::ustring m_strName;
+  Glib::ustring m_strName, m_strTitle;
 
   Glib::ustring m_strFrom_Table;
   Glib::ustring m_strFrom_Field;

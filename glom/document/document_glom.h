@@ -54,6 +54,8 @@ public:
 
   virtual bool get_relationship(const Glib::ustring& table_name, const Glib::ustring& relationship_name, Relationship& relationship) const;
   
+  void set_relationship(const Glib::ustring& table_name, const Relationship& relationship);
+  
   typedef std::vector<Field> type_vecFields;
   virtual type_vecFields get_table_fields(const Glib::ustring& table_name) const;
   virtual void set_table_fields(const Glib::ustring& table_name, const type_vecFields& vecFields);
@@ -63,10 +65,14 @@ public:
 
   typedef std::map<guint, LayoutGroup> type_mapLayoutGroupSequence;
   virtual type_mapLayoutGroupSequence get_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& table_name) const;
+  
   virtual void set_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& table_name, const type_mapLayoutGroupSequence& groups);
 
+  virtual void set_relationship_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& table_name, const Glib::ustring& relationship_name, const type_mapLayoutGroupSequence& groups);
+    
   virtual type_mapLayoutGroupSequence get_data_layout_groups_plus_new_fields(const Glib::ustring& layout_name, const Glib::ustring& table_name) const;
 
+  virtual type_mapLayoutGroupSequence get_relationship_data_layout_groups_plus_new_fields(const Glib::ustring& layout_name, const Glib::ustring& table_name, const Glib::ustring& relationship_name) const;
         
   ///When a field name is changed, change it in the relationships and fields data:
   virtual void change_field_name(const Glib::ustring& table_name, const Glib::ustring& strFieldNameOld, const Glib::ustring& strFieldNameNew);

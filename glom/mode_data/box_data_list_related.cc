@@ -24,6 +24,7 @@
 #include <libintl.h>
 
 Box_Data_List_Related::Box_Data_List_Related()
+: m_pDialogLayoutRelated(0)
 {
   set_size_request(200, -1); //TODO: Somehow we should use all the available space, or allow the developer to control this.
 
@@ -46,34 +47,39 @@ Box_Data_List_Related::Box_Data_List_Related()
   
   m_layout_name = "list_related"; //TODO: We need a unique name when 2 portals use the same table.
   
+  //Delete the dialog from the base class, because we don't use it.
+  if(m_pDialogLayout)
+    delete m_pDialogLayout;
+        
   Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_data_layout_list_related");
   if(refXml)
   {
-    /*
     Dialog_Layout_List_Related* dialog = 0;
     refXml->get_widget_derived("window_data_layout_list_related", dialog);
     if(dialog)
     {
-      //Delete the dialog from the base class:
-      if(m_pDialogLayout)
-        delete m_pDialogLayout;
-        
       //Use the new dialog:
-      m_pDialogLayout = dialog;
-      m_pDialogLayout->signal_hide().connect( sigc::mem_fun(*this, &Box_Data::on_dialog_layout_hide) );
+      m_pDialogLayoutRelated = dialog;
+      m_pDialogLayoutRelated->signal_hide().connect( sigc::mem_fun(*this, &Box_Data::on_dialog_layout_hide) );
     }
-    */
   }
 
 }
 
 Box_Data_List_Related::~Box_Data_List_Related()
 {
+  if(m_pDialogLayoutRelated)
+  {
+    delete m_pDialogLayoutRelated;
+    m_pDialogLayoutRelated = 0;
+  }
 }
 
 void Box_Data_List_Related::init_db_details(const Relationship& relationship)
 {
-  m_Label.set_markup("<b>" + relationship.get_name() + "</b>");
+  m_relationship = relationship;
+  
+  m_Label.set_markup("<b>" + relationship.get_title_or_name() + "</b>");
   
   bool found = get_fields_for_table_one_field(relationship.get_to_table(), relationship.get_to_field(), m_key_field /* output parameter */);
   if(!found)
@@ -221,3 +227,26 @@ Box_Data_List_Related::type_vecFields Box_Data_List_Related::get_fields_to_show(
     return get_table_fields_to_show(m_strTableName);
 }
 
+void Box_Data_List_Related::show_layout_dialog()
+{
+  if(m_pDialogLayoutRelated)
+  {
+    m_pDialogLayoutRelated->set_document(m_layout_name, get_document(), m_relationship.get_from_table(), m_relationship.get_name());
+    m_pDialogLayoutRelated->show();
+  }
+}
+
+void Box_Data_List_Related::on_dialog_layout_hide()
+{
+  //Get the new relationship information, in case it has changed:
+  Document_Glom* document = get_document();
+  if(document)
+  {
+    document->get_relationship(m_relationship.get_from_table(), m_relationship.get_name(), m_relationship);
+    
+    //Update the UI:
+    m_Label.set_markup("<b>" + m_relationship.get_title_or_name() + "</b>");
+  }
+  
+  Box_Data::on_dialog_layout_hide();
+}

@@ -74,6 +74,8 @@ protected:
   Gtk::Button* m_button_field_edit;
 
   Glib::RefPtr<Gtk::ListStore> m_model_fields;
+  
+  Gtk::Label* m_label_table_name;
 };
 
 #endif //GLOM_MODE_DATA_DIALOG_LAYOUT_LIST_H

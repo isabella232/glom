@@ -1,3 +1,19 @@
+2005-03-07  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/mode_design/box_db_table_relationship.[h|cc]: Show/edit the 
+	relationship titles here too.
+	* glom/mode_data/box_data_list_related.cc: on_dialog_layout_hide():
+	Update the relationship title in case it has changed.
+
+2005-03-07  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/Document/document_glom.[h.cc]: Load/save relationship titles.
+	* glom/data_structure/Relationship.[h|cc]: Added get/set_title() and 
+	get_title_or_name().
+	* glom/mode_data/dialog_layout_list_related.[h|cc]: Actually choose 
+	fields from the related table.
+	
+
 2005-03-06  Murray Cumming  <murrayc@localhost.localdomain>
 
 	* glom/mode_data/box_data_list_related.cc: Constructor: Set a new 

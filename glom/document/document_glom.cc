@@ -91,6 +91,35 @@ void Document_Glom::set_connection_database(const Glib::ustring& strVal)
   }
 }
 
+void Document_Glom::set_relationship(const Glib::ustring& table_name, const Relationship& relationship)
+{
+  //Find the existing relationship:
+  type_tables::iterator iterFind = m_tables.find(table_name);
+  if(iterFind != m_tables.end())
+  {
+    DocumentTableInfo& info = iterFind->second;
+    
+    //Look for the relationship with this name:
+    bool existing = false;
+    const Glib::ustring relationship_name = relationship.get_name();
+  
+    for(type_vecRelationships::iterator iter = info.m_relationships.begin(); iter != info.m_relationships.end(); ++iter)
+    {
+      if(iter->get_name() == relationship_name)
+      {
+        *iter = relationship;
+        existing = true;
+      }        
+    }
+    
+    if(!existing)
+    {
+      //Add a new one if it's not there.
+      info.m_relationships.push_back(relationship);
+    }
+  }
+  
+}
 
 bool Document_Glom::get_relationship(const Glib::ustring& table_name, const Glib::ustring& relationship_name, Relationship& relationship) const
 {
@@ -212,7 +241,7 @@ void Document_Glom::change_field_name(const Glib::ustring& table_name, const Gli
       iterFind->set_name(strFieldNameNew);
     }
     
-    //Find any relationships or layouts that use this fieldt
+    //Find any relationships or layouts that use this field
     //Look at each table:
     for(type_tables::iterator iter = m_tables.begin(); iter != m_tables.end(); ++iter)
     {
@@ -382,6 +411,12 @@ void Document_Glom::set_tables(const type_listTableInfo& tables)
   
 }
 
+Document_Glom::type_mapLayoutGroupSequence Document_Glom::get_relationship_data_layout_groups_plus_new_fields(const Glib::ustring& layout_name, const Glib::ustring& table_name, const Glib::ustring& relationship_name) const
+{
+  //TODO: Use an actual relationship_name instead of concatenating:
+  return get_data_layout_groups_plus_new_fields(layout_name, table_name + "_related_" + relationship_name); 
+}
+
 Document_Glom::type_mapLayoutGroupSequence Document_Glom::get_data_layout_groups_plus_new_fields(const Glib::ustring& layout_name, const Glib::ustring& table_name) const
 {
   type_mapLayoutGroupSequence result = get_data_layout_groups(layout_name, table_name);
@@ -463,6 +498,12 @@ Document_Glom::type_mapLayoutGroupSequence Document_Glom::get_data_layout_groups
   }
      
   return type_mapLayoutGroupSequence(); //not found
+}
+
+void Document_Glom::set_relationship_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& table_name, const Glib::ustring& relationship_name, const type_mapLayoutGroupSequence& groups)
+{
+  //TODO: Use an actual relationship_name instead of concatenating:
+  set_data_layout_groups(layout_name, table_name + "_related_" + relationship_name, groups);
 }
 
 void Document_Glom::set_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& table_name, const type_mapLayoutGroupSequence& groups)
@@ -795,6 +836,10 @@ bool Document_Glom::load_after()
                 
                 relationship.set_from_table( table_name );
                 relationship.set_name( relationship_name );
+                
+                const Glib::ustring relationship_title = get_node_attribute_value(nodeChild, "title");
+                relationship.set_title( relationship_title );
+                
                 relationship.set_from_field( get_node_attribute_value(nodeChild, "key") );
                 relationship.set_to_table( get_node_attribute_value(nodeChild, "other_table") );
                 relationship.set_to_field( get_node_attribute_value(nodeChild, "other_key") );
@@ -981,6 +1026,7 @@ bool Document_Glom::save_before()
 
           xmlpp::Element* elemRelationship = elemRelationships->add_child("relationship");
           set_node_attribute_value(elemRelationship, "name", relationship.get_name());
+          set_node_attribute_value(elemRelationship, "title", relationship.get_title());
           set_node_attribute_value(elemRelationship, "key", relationship.get_from_field());
           set_node_attribute_value(elemRelationship, "other_table", relationship.get_to_table());
           set_node_attribute_value(elemRelationship, "other_key", relationship.get_to_field());

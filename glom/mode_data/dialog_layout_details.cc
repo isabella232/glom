@@ -34,8 +34,11 @@ Dialog_Layout_Details::Dialog_Layout_Details(BaseObjectType* cobject, const Glib
   m_button_field_add_group(0),
   m_button_add_related(0),
   m_button_field_delete(0),
-  m_button_field_edit(0)
+  m_button_field_edit(0),
+  m_label_table_name(0)
 {
+  refGlade->get_widget("label_table_name", m_label_table_name);
+
   refGlade->get_widget("treeview_fields", m_treeview_fields);
   if(m_treeview_fields)
   {

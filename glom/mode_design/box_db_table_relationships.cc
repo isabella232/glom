@@ -37,6 +37,7 @@ void Box_DB_Table_Relationships::init()
 {
   pack_start(m_AddDel);
   m_colName = m_AddDel.add_column(gettext("Name"));
+  m_colTitle = m_AddDel.add_column(gettext("Title"));
 
   m_colFromField = m_AddDel.add_column(gettext("From Field"), AddDelColumnInfo::STYLE_Choices);
   m_colToTable = m_AddDel.add_column(gettext("Table"), AddDelColumnInfo::STYLE_Choices);
@@ -88,6 +89,9 @@ void Box_DB_Table_Relationships::fill_from_database()
        Gtk::TreeModel::iterator iterTree = m_AddDel.add_item(relationship.get_name());
        m_AddDel.set_value(iterTree, m_colName, relationship.get_name());
        
+       //Title:
+       m_AddDel.set_value(iterTree, m_colTitle, relationship.get_title());
+       
        //From Field:
        m_AddDel.set_value(iterTree, m_colFromField, relationship.get_from_field());
 
@@ -116,6 +120,7 @@ void Box_DB_Table_Relationships::save_to_document()
     {
       Relationship relationship;
       relationship.set_name(name);
+      relationship.set_title(m_AddDel.get_value(iter, m_colTitle));
       relationship.set_from_table(m_strTableName);
       relationship.set_from_field(m_AddDel.get_value(iter, m_colFromField));
       relationship.set_to_table(m_AddDel.get_value(iter, m_colToTable));
@@ -140,6 +145,14 @@ void Box_DB_Table_Relationships::on_adddel_user_changed(const Gtk::TreeModel::it
     Glib::ustring new_name = m_AddDel.get_value(row, m_colName);
     if(!new_name.empty())
       m_AddDel.set_value_key(row, new_name);
+      
+    //Update the title, if there is none already:
+    Glib::ustring title = m_AddDel.get_value(row, m_colTitle);
+    if(title.empty())
+    {
+      title = Base_DB::util_title_from_string(new_name);
+      m_AddDel.set_value(row, m_colTitle, title);
+    }
   }
   else if(col == m_colToTable)
   {

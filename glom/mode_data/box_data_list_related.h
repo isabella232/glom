@@ -23,6 +23,8 @@
 
 #include "box_data_list.h"
 
+class Dialog_Layout_List_Related;
+
 class Box_Data_List_Related : public Box_Data_List
 {
 public: 
@@ -43,6 +45,8 @@ public:
   virtual Relationship get_relationship() const;
   virtual Field get_key_field() const;
 
+  virtual void show_layout_dialog();
+    
   sigc::signal<void, Gnome::Gda::Value> signal_record_added;
 
 protected:
@@ -51,6 +55,7 @@ protected:
 
   virtual void on_adddel_user_added(const Gtk::TreeModel::iterator& row); //Override.
   virtual void on_record_added(const Gnome::Gda::Value& primary_key_value); //Override. Not a signal handler.
+  virtual void on_dialog_layout_hide(); //override.
 
   virtual void enable_buttons();
   
@@ -58,6 +63,7 @@ protected:
   Gtk::Frame m_Frame;
   Gtk::Alignment m_Alignment;
   Gtk::Label m_Label;
+  Dialog_Layout_List_Related* m_pDialogLayoutRelated;
   
   Relationship m_relationship; //The relationship of the parent table to this one.
   Field m_key_field;

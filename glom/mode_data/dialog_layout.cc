@@ -24,7 +24,6 @@
 
 Dialog_Layout::Dialog_Layout(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
 : Gtk::Dialog(cobject),
-  m_label_table_name(0),
   m_entry_table_title(0),
   m_document(0),
   m_modified(false)
@@ -33,7 +32,6 @@ Dialog_Layout::Dialog_Layout(BaseObjectType* cobject, const Glib::RefPtr<Gnome::
   refGlade->get_widget("button_close", button);
   button->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout::on_button_close) );
 
-  refGlade->get_widget("label_table_name", m_label_table_name);
   refGlade->get_widget("entry_table_title", m_entry_table_title);
   m_entry_table_title->signal_changed().connect( sigc::mem_fun(*this, &Dialog_Layout::on_entry_table_title_changed) );
  
@@ -52,14 +50,6 @@ void Dialog_Layout::set_document(const Glib::ustring& layout, Document_Glom* doc
   
   m_document = document;
   m_table_name = table_name;
-
-  //Update the tree models from the document
-  if(document)
-  {
-    //Set the table name and title:
-    m_label_table_name->set_text(table_name);
-    m_entry_table_title->set_text( document->get_table_title(table_name) );
-  }
   
   m_modified = false;  
 }
@@ -141,12 +131,7 @@ void Dialog_Layout::on_button_close()
 
 void Dialog_Layout::save_to_document()
 {
-  if(m_modified)
-  {
-    //Set the table name and title:
-    if(m_document)
-      m_document->set_table_title( m_table_name, m_entry_table_title->get_text() );
-  }
+ 
 }
 
 

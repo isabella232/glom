@@ -46,7 +46,7 @@ protected:
   virtual void on_adddel_user_changed(const Gtk::TreeModel::iterator& row, guint col);
   virtual void on_adddel_user_requested_delete(const Gtk::TreeModel::iterator& rowStart, const Gtk::TreeModel::iterator& rowEnd);
  
-  guint m_colName, m_colFromField, m_colToTable, m_colToField;
+  guint m_colName, m_colTitle, m_colFromField, m_colToTable, m_colToField;
 
   mutable AddDel_WithButtons m_AddDel; //mutable because its get_ methods aren't const.
   Gtk::Button m_Button_Guess;

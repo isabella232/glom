@@ -79,6 +79,7 @@ protected:
   Gtk::Button* m_button_add_related;
   Gtk::Button* m_button_field_delete;
   Gtk::Button* m_button_field_edit;
+  Gtk::Label* m_label_table_name;
 
   Glib::RefPtr<TreeStore_Layout> m_model_items;
 };

@@ -31,8 +31,11 @@ Dialog_Layout_List::Dialog_Layout_List(BaseObjectType* cobject, const Glib::RefP
   m_button_field_down(0),
   m_button_field_add(0),
   m_button_field_delete(0),
-  m_button_field_edit(0)
+  m_button_field_edit(0),
+  m_label_table_name(0)
 {
+  refGlade->get_widget("label_table_name", m_label_table_name);
+
   refGlade->get_widget("treeview_fields", m_treeview_fields);
   if(m_treeview_fields)
   {
@@ -207,6 +210,10 @@ void Dialog_Layout_List::save_to_document()
   
   if(m_modified)
   {
+    //Set the table name and title:
+    if(m_document)
+      m_document->set_table_title( m_table_name, m_entry_table_title->get_text() );
+  
     //Get the data from the TreeView and store it in the document:
 
     //Get the groups and their fields:
