@@ -751,6 +751,7 @@ bool Document_Glom::load_after()
                           item.m_group = group.m_group_name; //TODO: This is a duplication of information.
                       
                           const guint sequence = get_node_attribute_value_as_decimal(node_field, "sequence");
+                          item.m_sequence = sequence;
                           group.m_map_items[sequence] = item;
                         }
                            

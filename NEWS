@@ -1,6 +1,10 @@
 * Field Definition:
   - Add Boolean field type, which is displayed as a checkbox.
   - Default values can be the result of python calculations.
+  - Default values are validated according to the field type.
+* Pressing cancel on the initial dialog closes the application.
+
+
   
 0.8.6:
 

@@ -1,3 +1,8 @@
+2004-07-09  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/document/document_glom.cc: save_before(): Store the layout item 
+	sequence, so that the layout is not lost after a couple of saves.
+
 2004-07-08  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/document/document_glom.cc: load_after(): Load the field 
