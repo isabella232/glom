@@ -22,10 +22,6 @@
 #define RELATIONSHIP_H
 
 
-/**
-  *@author Murray Cumming
-  */
-
 #include <glibmm/ustring.h>
 
 class Relationship

@@ -50,8 +50,8 @@ protected:
   virtual void on_size_allocate(Gtk::Allocation& allocation);
   virtual GtkType child_type_vfunc() const;
   virtual void on_add(Gtk::Widget* child);
-  virtual void on_remove(Gtk::Widget* child);
   virtual void forall_vfunc(gboolean include_internals, GtkCallback callback, gpointer callback_data);
+  virtual void on_remove(Gtk::Widget* child);
 
   
   int get_column_height(guint start_widget, guint widget_count, int& total_width);
@@ -72,7 +72,7 @@ protected:
 
   int get_item_requested_height(const FlowTableItem& item);
   void get_item_requested_width(const FlowTableItem& item, int& first, int& second);
-  void get_item_max_width(guint start, int height, int& first_max_width, int& second_max_width); //TODO: maybe combine this with code in get_minimum_column_height().
+  void get_item_max_width(guint start, int height, int& first_max_width, int& second_max_width, int& singles_max_width); //TODO: maybe combine this with code in get_minimum_column_height().
 
   bool child_is_visible(Gtk::Widget* widget);
   void assign_child(Gtk::Widget* widget, int x, int y);

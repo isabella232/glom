@@ -184,8 +184,8 @@ Box_Data::type_vecFields Box_Data::get_table_fields_to_show(const Glib::ustring&
   const Document_Glom* pDoc = dynamic_cast<const Document_Glom*>(get_document());
   if(pDoc)
   {
-    Document_Glom::type_mapFieldSequence mapFieldSequence =  pDoc->get_data_layout_plus_new_fields(m_layout_name, table_name);
-    if(mapFieldSequence.empty())
+    Document_Glom::type_mapLayoutGroupSequence mapGroupSequence =  pDoc->get_data_layout_groups_plus_new_fields(m_layout_name, table_name);
+    if(mapGroupSequence.empty())
     {
       //No field sequence has been saved in the document, so we use all fields by default, so we start with something visible:
    
@@ -213,20 +213,26 @@ Box_Data::type_vecFields Box_Data::get_table_fields_to_show(const Glib::ustring&
       type_vecFields vecFieldsInDocument = pDoc->get_table_fields(table_name);
       
       //We will show the fields that the document says we should:
-      for(Document_Glom::type_mapFieldSequence::const_iterator iter = mapFieldSequence.begin(); iter != mapFieldSequence.end(); ++iter)
+      for(Document_Glom::type_mapLayoutGroupSequence::const_iterator iter = mapGroupSequence.begin(); iter != mapGroupSequence.end(); ++iter)
       {
-        LayoutItem item = iter->second;
+        const LayoutGroup& group = iter->second;
 
-        if(!item.m_hidden)
+        if(true) //!group.m_hidden)
         {
-           //Get the field info:
-          Glib::ustring field_name = item.m_field_name;
-          type_vecFields::const_iterator iterFind = std::find_if(all_fields.begin(), all_fields.end(), predicate_FieldHasName<Field>(field_name));
-
-          //If the field does not exist anymore then we won't try to show it:
-          if(iterFind != all_fields.end() )
+          //Get the fields:
+          for(LayoutGroup::type_map_items::const_iterator iterItems = group.m_map_items.begin(); iterItems != group.m_map_items.end(); ++iterItems)
           {
-             result.push_back(*iterFind);
+            const LayoutItem& item = iterItems->second;
+            
+            //Get the field info:
+            Glib::ustring field_name = item.m_field_name;
+            type_vecFields::const_iterator iterFind = std::find_if(all_fields.begin(), all_fields.end(), predicate_FieldHasName<Field>(field_name));
+
+            //If the field does not exist anymore then we won't try to show it:
+            if(iterFind != all_fields.end() )
+            {
+               result.push_back(*iterFind);
+            }
           }
         }
         

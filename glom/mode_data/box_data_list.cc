@@ -252,21 +252,25 @@ void Box_Data_List::on_AddDel_user_reordered_columns()
   Document_Glom* pDoc = dynamic_cast<Document_Glom*>(get_document());
   if(pDoc)
   {
+    LayoutGroup group;
+    group.m_group_name = "others";
+    
     AddDel::type_vecStrings vec_field_names = m_AddDel.get_columns_order();
 
-    Document_Glom::type_mapFieldSequence mapFieldSequence;
     guint index = 0;
     for(AddDel::type_vecStrings::iterator iter = vec_field_names.begin(); iter != vec_field_names.end(); ++iter)
     {
       LayoutItem layout_item;
       layout_item.m_field_name = *iter;
       layout_item.m_sequence = index;
-      mapFieldSequence[index] = layout_item; 
+      group.m_map_items[index] = layout_item; 
       ++index;
     }
-  
-    pDoc->set_data_layout_list(m_strTableName, mapFieldSequence);
+
+    Document_Glom::type_mapLayoutGroupSequence mapGroups;
+    mapGroups[0] = group;
     
+    pDoc->set_data_layout_groups("list", m_strTableName, mapGroups);  
   }
 }
 

@@ -54,7 +54,7 @@ protected:
   //Enable/disable buttons, depending on treeview selection:
   virtual void enable_buttons();
   virtual void fill_cellrenderer_groups();
-  virtual void fill_groups();
+  //virtual void fill_groups();
   virtual void fill_groups_fields();
   virtual void treeview_fill_sequences(const Glib::RefPtr<Gtk::TreeModel> model, const Gtk::TreeModelColumn<guint>& sequence_column);
   
@@ -100,9 +100,10 @@ protected:
   public:
 
     ModelColumns_Groups()
-    { add(m_col_name); add(m_col_sequence); add(m_col_fields); }
+    { add(m_col_name); add(m_col_title), add(m_col_sequence); add(m_col_fields); }
 
     Gtk::TreeModelColumn<Glib::ustring> m_col_name;
+    Gtk::TreeModelColumn<Glib::ustring> m_col_title;
     Gtk::TreeModelColumn<guint> m_col_sequence;
     Gtk::TreeModelColumn<Glib::ustring> m_col_fields; //A "list" of fields in this group.
   };

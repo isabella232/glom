@@ -435,3 +435,42 @@ Base_DB::type_vecFields Base_DB::get_fields_for_table(const Glib::ustring& table
 
 }
 
+bool Base_DB::util_string_has_whitespace(const Glib::ustring& text)
+{
+ for(Glib::ustring::const_iterator iter = text.begin(); iter != text.end(); ++iter)
+ {
+   if(Glib::Unicode::isspace(*iter))
+     return true; //White space was found.
+ }
+
+ return false; //No white space found.
+}
+
+Glib::ustring Base_DB::util_title_from_string(const Glib::ustring& text)
+{
+  Glib::ustring result;
+
+  bool capitalise_next_char = true;
+  for(Glib::ustring::const_iterator iter = text.begin(); iter != text.end(); ++iter)
+  {
+    
+    const gunichar& ch = *iter;
+    if(ch == '_') //Replace _ with space.
+    {
+      capitalise_next_char = true; //Capitalise all words.
+      result += " ";
+    }
+    else
+    {
+      if(capitalise_next_char)
+        result += Glib::Unicode::toupper(*iter);
+      else
+        result += *iter;
+
+      capitalise_next_char = false;
+    }
+  }
+
+  return result;
+}
+

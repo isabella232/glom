@@ -118,14 +118,73 @@ void Box_Data_Details::init_db_details_blank()
   init_db_details( Gnome::Gda::Value() );
 }
 
+void Box_Data_Details::fill_from_database_layout()
+{
+  Bakery::BusyCursor(*get_app_window());
+
+  //Remove existing child widgets:
+  m_FlowTable.remove_all();
+            
+  Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
+  if(document)
+  {            
+    Document_Glom::type_mapLayoutGroupSequence layout_groups = document->get_data_layout_groups_plus_new_fields("details", m_strTableName);
+    for(Document_Glom::type_mapLayoutGroupSequence::const_iterator iter = layout_groups.begin(); iter != layout_groups.end(); ++iter)
+    {
+      const LayoutGroup& group = iter->second;
+ 
+      if(group.m_group_name != "others")
+      {
+        FlowTableWithFields::type_map_field_sequence fields;
+
+        //Get the fields:
+        guint sequence = 0;
+        for(LayoutGroup::type_map_items::const_iterator iterItems = group.m_map_items.begin(); iterItems != group.m_map_items.end(); ++iterItems)
+        {
+          Field field;
+          bool found = get_fields_for_table_one_field(m_strTableName, iterItems->second.m_field_name, field);
+          if(found)
+          {
+            fields[sequence] = field;
+            ++sequence;
+          }
+        }
+            
+        m_FlowTable.add_group(group.m_group_name, group.m_title, fields);
+      }
+      else
+      {
+        //Add the extra fields:
+        for(LayoutGroup::type_map_items::const_iterator iterItems = group.m_map_items.begin(); iterItems != group.m_map_items.end(); ++iterItems)
+        {
+          Field field;
+          bool found = get_fields_for_table_one_field(m_strTableName, iterItems->second.m_field_name, field);
+          if(found)
+          {
+            m_FlowTable.add_field(field); //This could add it to a sub-flowtable, or the main flow-table.
+            EntryGlom* pEntry = m_FlowTable.get_field(field);
+
+            //Do not allow editing of auto-increment fields:
+            if(field.get_field_info().get_auto_increment())
+              pEntry->set_editable(false);
+          }
+        }
+      }
+    }
+  }
+      
+}
+
 void Box_Data_Details::fill_from_database()
 {
   Bakery::BusyCursor(*get_app_window());
-        
-  Box_DB_Table::fill_from_database();
 
+  Box_DB_Table::fill_from_database();
+         
   type_vecFields listFieldsToShow = get_fields_to_show();
   m_Fields =  listFieldsToShow;
+
+  fill_from_database_layout(); //TODO: Only do this when the layout has changed.
 
   Field field_primary_key;
   bool primary_key_found  = get_field_primary_key(field_primary_key);
@@ -161,9 +220,6 @@ void Box_Data_Details::fill_from_database()
             //Get glom-specific field info:
             Document_Glom::type_vecFields vecFields = pDoc->get_table_fields(m_strTableName);
 
-            //Remove existing child widgets:
-            m_FlowTable.remove_all();
-
             const int row_number = 0; //The only row.
             const int cols_count = result->get_n_columns();
             for(int i = 0; i < cols_count; i ++)
@@ -171,21 +227,6 @@ void Box_Data_Details::fill_from_database()
               const Field field = m_Fields[i];
                 
               EntryGlom* pEntry = m_FlowTable.get_field(field);        
-              if(!pEntry) //Create a widget for the field if one does not exist already:
-              {
-                m_FlowTable.add_field(field);
-
-                Gtk::Label* m_debug = Gtk::manage( new Gtk::Label("debug debug debug") );
-                m_debug->show();
-                m_FlowTable.add(*m_debug);
-                
-                pEntry = m_FlowTable.get_field(field);
-
-                //Do not allow editing of auto-increment fields:
-                if(field.get_field_info().get_auto_increment())
-                  pEntry->set_editable(false);     
-              }
-
               if(pEntry)
               {
                 //Field value:

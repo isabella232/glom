@@ -444,7 +444,10 @@ void Document_Glom::change_field_name(const Glib::ustring& strTableName, const G
               {
                 const Glib::ustring& strAttName = "key";
                 if(get_node_attribute_value(nodeRelationship, strAttName) == strFieldNameOld)
+                {
                   set_node_attribute_value(nodeRelationship, strAttName, strFieldNameNew);
+                  set_modified();
+                }
               }
 
               //Change the other_key attribute if necessary:
@@ -453,9 +456,12 @@ void Document_Glom::change_field_name(const Glib::ustring& strTableName, const G
                 const Glib::ustring& strAttName = "other_table";
                 if(get_node_attribute_value(nodeRelationship, strAttName) == strTableName)
                 {
-                   const Glib::ustring& strAttName = "other_key";
+                  const Glib::ustring& strAttName = "other_key";
                   if(get_node_attribute_value(nodeRelationship, strAttName) == strFieldNameOld)
+                  {
                     set_node_attribute_value(nodeRelationship, strAttName, strFieldNameNew);
+                    set_modified();
+                  }
                 }
               }
             }
@@ -487,6 +493,7 @@ void Document_Glom::change_table_name(const Glib::ustring& strTableNameOld, cons
         {
           //Change the table name:
           set_node_attribute_value(elemTable, "name", strTableNameNew);
+          set_modified();
         }
         else
         {
@@ -505,7 +512,10 @@ void Document_Glom::change_table_name(const Glib::ustring& strTableNameOld, cons
               {
                 const Glib::ustring& strAttName = "other_table";
                 if(get_node_attribute_value(nodeRelationship, strAttName) == strTableNameOld)
+                {
                   set_node_attribute_value(nodeRelationship, strAttName, strTableNameNew);
+                  set_modified();
+                }
               }
             }
           }
@@ -518,15 +528,6 @@ void Document_Glom::change_table_name(const Glib::ustring& strTableNameOld, cons
 
 }
 
-Document_Glom::type_mapFieldSequence Document_Glom::get_data_layout_list(const Glib::ustring& strTableName) const
-{
-  return get_data_layout("list", strTableName);
-}
-
-Document_Glom::type_mapFieldSequence Document_Glom::get_data_layout_details(const Glib::ustring& strTableName) const
-{
-  return get_data_layout("details", strTableName);
-}
 
 xmlpp::Element* Document_Glom::get_node_data_layout(const Glib::ustring& layout_name, const Glib::ustring& strTableName)
 {
@@ -542,7 +543,17 @@ const xmlpp::Element* Document_Glom::get_node_data_layout(const Glib::ustring& l
     const xmlpp::Element* nodeDataLayouts = get_node_child_named(nodeTable, "data_layouts");
     if(nodeDataLayouts)
     {
-       return get_node_child_named(nodeDataLayouts, "data_layout_" + layout_name);
+      //Look at each data_layout to find the one with this name:
+      xmlpp::Node::NodeList listNodes = nodeDataLayouts->get_children("data_layout");
+      for(xmlpp::Node::NodeList::iterator iter = listNodes.begin(); iter != listNodes.end(); ++iter)
+      {
+         xmlpp::Element* node = dynamic_cast<xmlpp::Element*>(*iter);
+         if(node)
+         {
+           if(get_node_attribute_value(node, "name") == layout_name)
+            return node;
+         }
+      }
     }
   }
   
@@ -551,105 +562,29 @@ const xmlpp::Element* Document_Glom::get_node_data_layout(const Glib::ustring& l
 
 xmlpp::Element* Document_Glom::get_node_data_layout_with_add(const Glib::ustring& layout_name, const Glib::ustring& strTableName)
 {
-  xmlpp::Element* nodeTable = get_node_table_with_add(strTableName);
-  if(nodeTable)
+  xmlpp::Element* node = get_node_data_layout(layout_name, strTableName);
+  if(node)
+    return node;
+  else
   {
-    xmlpp::Element* nodeDataLayouts = get_node_child_named_with_add(nodeTable, "data_layouts");
-    if(nodeDataLayouts)
+    xmlpp::Element* nodeTable = get_node_table_with_add(strTableName);
+    if(nodeTable)
     {
-       return get_node_child_named_with_add(nodeDataLayouts, "data_layout_" + layout_name);
+      xmlpp::Element* nodeDataLayouts = get_node_child_named_with_add(nodeTable, "data_layouts");
+      if(nodeDataLayouts)
+      {
+         xmlpp::Element* node = nodeDataLayouts->add_child("data_layout");
+         set_node_attribute_value(node, "name", layout_name);
+         set_modified();
+         return node;
+      }
     }
   }
 
   return 0;
 }
 
-  
-Document_Glom::type_mapFieldSequence Document_Glom::get_data_layout(const Glib::ustring& layout_name, const Glib::ustring& strTableName) const
-{
-  type_mapFieldSequence result;
 
-  const xmlpp::Element* nodeDataLayoutList = get_node_data_layout(layout_name, strTableName);
-  if(nodeDataLayoutList)
-  {
-    //Get its children:
-    xmlpp::Node::NodeList listNodes = nodeDataLayoutList->get_children("data_layout_item");
-    for(xmlpp::Node::NodeList::iterator iter = listNodes.begin(); iter != listNodes.end(); ++iter)
-    {
-       xmlpp::Element* node = dynamic_cast<xmlpp::Element*>(*iter);
-       if(node)
-       {
-         const Glib::ustring name = get_node_attribute_value(node, "name");
-       
-         if(!name.empty())
-         {
-           const guint sequence = get_node_attribute_value_as_decimal(node, "sequence");
-           const bool hidden = get_node_attribute_value_as_bool(node, "hidden");
-           const Glib::ustring group = get_node_attribute_value(node, "group");
-         
-           LayoutItem layout_item;
-           layout_item.m_field_name = name;
-           layout_item.m_sequence = sequence;
-           layout_item.m_hidden = hidden;
-           layout_item.m_group = group;
-
-           result[sequence] = layout_item;
-         }
-       }
-    }
-  }
-
-  return result;
-}
-
-void Document_Glom::set_data_layout_list(const Glib::ustring& strTableName, const type_mapFieldSequence& sequence)
-{
-  set_data_layout("list", strTableName, sequence);
-}
-
-void Document_Glom::set_data_layout_details(const Glib::ustring& strTableName, const type_mapFieldSequence& sequence)
-{
-  set_data_layout("details", strTableName, sequence);
-}
-
-void Document_Glom::set_data_layout(const Glib::ustring& layout_name, const Glib::ustring& strTableName, const type_mapFieldSequence& sequence)
-{
-  xmlpp::Element* nodeDataLayoutList = get_node_data_layout_with_add(layout_name, strTableName);
-  if(nodeDataLayoutList)
-  {
-    //Remove all its children:
-    xmlpp::Node::NodeList listNodes = nodeDataLayoutList->get_children("data_layout_item");
-    for(xmlpp::Node::NodeList::iterator iter = listNodes.begin(); iter != listNodes.end(); ++iter)
-    {
-       xmlpp::Node* node = *iter;
-       nodeDataLayoutList->remove_child(node);
-    }
-
-    //Add the new children:
-
-    //Fields, with sequence:
-    for(type_mapFieldSequence::const_iterator iter = sequence.begin(); iter != sequence.end(); ++iter)
-    {
-      const guint sequence = iter->first;
-      const Glib::ustring field_name = (iter->second).m_field_name;
-
-      xmlpp::Element* child = nodeDataLayoutList->add_child("data_layout_item");
-
-      //Get text representation of int:
-      std::stringstream thestream;
-      thestream << sequence;
-      Glib::ustring sequence_string = thestream.str();
-
-      child->set_attribute("sequence", sequence_string);
-      child->set_attribute("name", field_name);
-      set_node_attribute_value_as_bool(child, "hidden", (iter->second).m_hidden);
-      child->set_attribute("group", iter->second.m_group);
-    }
-
-  }
-
-  set_modified();
-}
 
 bool Document_Glom::get_node_attribute_value_as_bool(const xmlpp::Element* node, const Glib::ustring& strAttributeName)
 {
@@ -663,6 +598,17 @@ void Document_Glom::set_node_attribute_value_as_bool(xmlpp::Element* node, const
   set_node_attribute_value(node, strAttributeName, strValue);
 }
 
+void Document_Glom::set_node_attribute_value_as_decimal(xmlpp::Element* node, const Glib::ustring& strAttributeName, int value)
+{
+  //Get text representation of int:
+  std::stringstream thestream;
+  thestream.imbue( std::locale::classic() ); //The C locale.
+  thestream << value;
+  const Glib::ustring sequence_string = thestream.str();
+      
+  set_node_attribute_value(node, strAttributeName, sequence_string);
+}
+
 guint Document_Glom::get_node_attribute_value_as_decimal(const xmlpp::Element* node, const Glib::ustring& strAttributeName)
 {
   guint result = 0;
@@ -673,7 +619,8 @@ guint Document_Glom::get_node_attribute_value_as_decimal(const xmlpp::Element* n
   {
     //Visible fields, with sequence:
     std::stringstream thestream;
-    thestream << value_string;
+    thestream.imbue( std::locale::classic() ); //The C locale.
+    thestream.str(value_string);
     thestream >> result;
   }
 
@@ -733,6 +680,7 @@ void Document_Glom::set_tables(const type_listTableInfo& tables)
           set_node_attribute_value_as_bool(nodeChild, "hidden", iterFind->m_hidden);
           set_node_attribute_value(nodeChild, "title", iterFind->m_title);
           set_node_attribute_value_as_bool(nodeChild, "default", iterFind->m_default);
+          set_modified();
         }
       }
     }
@@ -740,33 +688,115 @@ void Document_Glom::set_tables(const type_listTableInfo& tables)
   
 }
 
-Document_Glom::type_mapLayoutGroupSequence Document_Glom::get_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& strTableName)
+Document_Glom::type_mapLayoutGroupSequence Document_Glom::get_data_layout_groups_plus_new_fields(const Glib::ustring& layout_name, const Glib::ustring& strTableName) const
+{
+  type_mapLayoutGroupSequence result = get_data_layout_groups(layout_name, strTableName);
+
+
+  //Add extra fields that are not mentioned in the layout. (They should at least be in the layout as hidden)
+
+  //Get the Others group. We will add new fields into this one:
+  LayoutGroup* pGroupOthers = 0;
+  for(type_mapLayoutGroupSequence::iterator iterGroups = result.begin(); iterGroups != result.end(); ++iterGroups)
+  {
+    if(iterGroups->second.m_group_name == "others")
+      pGroupOthers = &(iterGroups->second);
+  }
+
+  //Add it if necessary:
+  if(!pGroupOthers)
+  {
+    //Get next available sequence:
+    guint sequence = 1; //0 means no sequence
+     if(!result.empty())
+       sequence = result.rbegin()->first;
+    ++sequence;
+
+    LayoutGroup others;
+    others.m_group_name = "others";
+    result[sequence] = others;
+    pGroupOthers = &(result[sequence]);
+  }
+      
+  //Discover new fields, and add them:
+  type_vecFields all_fields = get_table_fields(strTableName);
+  for(type_vecFields::const_iterator iter = all_fields.begin(); iter != all_fields.end(); ++iter)
+  {
+    const Glib::ustring field_name = iter->get_name();
+
+    //See whether it's already in the result:
+    //TODO_Performance: There is a lot of iterating and comparison here:
+    bool found = false; //TODO: This is horrible.
+    for(type_mapLayoutGroupSequence::const_iterator iterFind = result.begin(); iterFind != result.end(); ++iterFind)
+    {
+      if(iterFind->second.has_field(field_name))
+      {
+        found = true;
+        break;
+      }
+    }
+
+    if(!found)
+    {
+      LayoutItem layout_item;
+      layout_item.m_field_name = field_name;
+      //layout_item.m_sequence = sequence;  add_item() will fill this.
+      layout_item.m_hidden = false;
+
+      pGroupOthers->add_item(layout_item);
+    }
+  }
+
+  return result;
+
+  
+}
+  
+Document_Glom::type_mapLayoutGroupSequence Document_Glom::get_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& strTableName) const
 {
   type_mapLayoutGroupSequence result;
 
-  xmlpp::Element* nodeDataLayoutList = get_node_data_layout(layout_name, strTableName);
+  const xmlpp::Element* nodeDataLayoutList = get_node_data_layout(layout_name, strTableName);
   if(nodeDataLayoutList)
   {
-    xmlpp::Element* nodeGroups = get_node_child_named(nodeDataLayoutList, "data_layout_groups");
+    const xmlpp::Element* nodeGroups = get_node_child_named(nodeDataLayoutList, "data_layout_groups");
     if(nodeGroups)
     {
       //Look at all its children:
       xmlpp::Node::NodeList listNodes = nodeGroups->get_children("data_layout_group");
       for(xmlpp::Node::NodeList::iterator iter = listNodes.begin(); iter != listNodes.end(); ++iter)
       {
-         xmlpp::Element* node = dynamic_cast<xmlpp::Element*>(*iter);
+         const xmlpp::Element* node = dynamic_cast<const xmlpp::Element*>(*iter);
          if(node)
          {
-          Glib::ustring name = get_node_attribute_value(node, "name");
-          if(!name.empty())
+          const Glib::ustring group_name = get_node_attribute_value(node, "name");
+          if(!group_name.empty())
           {
-            LayoutGroup item;
-            item.m_group_name = get_node_attribute_value(node, "name");;
+            LayoutGroup group;
 
+            //Get the group details:
+            group.m_group_name = group_name;
+            group.m_title = get_node_attribute_value(node, "title");
+  
+            //Get the fields:
+            xmlpp::Node::NodeList listNodesFields = node->get_children("data_layout_item");
+            for(xmlpp::Node::NodeList::iterator iter = listNodesFields.begin(); iter != listNodesFields.end(); ++iter)
+            {           
+              const xmlpp::Element* node_field = dynamic_cast<const xmlpp::Element*>(*iter);
+
+              LayoutItem item;
+
+              item.m_field_name =  get_node_attribute_value(node_field, "name");
+              item.m_group = group.m_group_name; //TODO: This is a duplication of information.
+
+              const guint sequence = get_node_attribute_value_as_decimal(node_field, "sequence");
+              group.m_map_items[sequence] = item;
+            }
+                 
             guint sequence = get_node_attribute_value_as_decimal(node, "sequence");
-            item.m_sequence = sequence;
+            group.m_sequence = sequence;
             
-            result[sequence] = item;
+            result[sequence] = group;  
           }
         }
       }
@@ -797,17 +827,26 @@ void Document_Glom::set_data_layout_groups(const Glib::ustring& layout_name, con
       {
         xmlpp::Element* child = nodeGroups->add_child("data_layout_group");
 
-        child->set_attribute("name", iter->second.m_group_name);
+        child->set_attribute("name", iter->second.m_group_name);    
+        child->set_attribute("title", iter->second.m_title);
 
+        set_node_attribute_value_as_decimal(child, "sequence", iter->second.m_sequence);
 
-        //Get text representation of int:
-        std::stringstream thestream;
-        thestream <<  iter->second.m_sequence;
-        Glib::ustring sequence_string = thestream.str();
-      
-        child->set_attribute("sequence", sequence_string);
+        //Add the fields:
+        for(LayoutGroup::type_map_items::const_iterator iterItems = iter->second.m_map_items.begin(); iterItems != iter->second.m_map_items.end(); ++iterItems)
+        {
+          const LayoutItem& item = iterItems->second;
+
+          xmlpp::Element* nodeItem = child->add_child("data_layout_item");
+          nodeItem->set_attribute("name", item.m_field_name);
+  
+          set_node_attribute_value_as_decimal(nodeItem, "sequence", item.m_sequence);          
+        }
+        
       }
     }
+
+    set_modified();
   }
 }
 
@@ -827,7 +866,10 @@ void Document_Glom::set_table_title(const Glib::ustring& table_name, const Glib:
 {
   xmlpp::Element* nodeTable = get_node_table_with_add(table_name);
   if(nodeTable)
+  {
     set_node_attribute_value(nodeTable, "title", value);
+    set_modified();
+  }
 }
 
 bool Document_Glom::get_table_is_known(const Glib::ustring& table_name) const
@@ -835,6 +877,7 @@ bool Document_Glom::get_table_is_known(const Glib::ustring& table_name) const
   return ( get_node_table(table_name) != 0);
 }
 
+/*
 Document_Glom::type_mapFieldSequence Document_Glom::get_data_layout_plus_new_fields(const Glib::ustring& layout_name, const Glib::ustring& strTableName) const
 {
   type_mapFieldSequence result = get_data_layout(layout_name, strTableName);
@@ -877,6 +920,7 @@ Document_Glom::type_mapFieldSequence Document_Glom::get_data_layout_plus_new_fie
   
   return result; 
 }
+*/
 
 AppState::userlevels Document_Glom::get_userlevel() const
 {

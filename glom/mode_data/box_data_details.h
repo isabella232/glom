@@ -58,6 +58,7 @@ public:
    
 protected:
   virtual void fill_from_database(); //override.
+  virtual void fill_from_database_layout();
   virtual void fill_related();
 
   void do_lookups(const Field& field_changed, const Gnome::Gda::Value& field_value, const Field& primary_key, const Gnome::Gda::Value& primary_key_value);

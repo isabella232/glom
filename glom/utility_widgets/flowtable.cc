@@ -283,12 +283,12 @@ void FlowTable::assign_child(Gtk::Widget* widget, int x, int y)
   widget->size_allocate(child_allocation);
 }
 
-void FlowTable::get_item_max_width(guint start, int height, int& first_max_width, int& second_max_width)
+void FlowTable::get_item_max_width(guint start, int height, int& first_max_width, int& second_max_width, int& singles_max_width)
 {
   //Initialize output parameters:
   first_max_width = 0;
   second_max_width = 0;
-  int singles_max_width = 0;
+  singles_max_width = 0;
   
   if(m_children.empty())
     return;
@@ -366,8 +366,9 @@ void FlowTable::on_size_allocate(Gtk::Allocation& allocation)
 
   //Discover the widths of the different parts of the first column:
   int first_max_width = 0;
-  int second_max_width= 0;
-  get_item_max_width(0, allocation.get_height(), first_max_width, second_max_width);  //TODO: Give the 2nd part of the column a bit more if the total needed is less than the allocation given.
+  int second_max_width = 0;
+  int singles_max_width = 0;
+  get_item_max_width(0, allocation.get_height(), first_max_width, second_max_width, singles_max_width);  //TODO: Give the 2nd part of the column a bit more if the total needed is less than the allocation given.
   //Calculate where the columns should start on the x axis.
   int column_x_start = allocation.get_x();
   
@@ -390,13 +391,16 @@ void FlowTable::on_size_allocate(Gtk::Allocation& allocation)
     {
       //start a new column:
       column_child_y_start = allocation.get_y();
-      column_x_start += column_x_start_second + second_max_width + m_padding;
-
+      column_x_start += column_x_start_second + second_max_width;
+      column_x_start += MAX(column_x_start, column_x_start_second + singles_max_width); //Maybe the single items take up even more width.
+      column_x_start += m_padding;
+      
       {
         //Discover the widths of the different parts of this column:
-        int first_max_width = 0;
-        int second_max_width= 0;
-        get_item_max_width(i, allocation.get_height(), first_max_width, second_max_width);
+        first_max_width = 0;
+        second_max_width= 0;
+        singles_max_width = 0;
+        get_item_max_width(i, allocation.get_height(), first_max_width, second_max_width, singles_max_width);
 
         column_x_start_second = column_x_start + first_max_width;
         if(first_max_width > 0) //Add padding between first and second sub sets of items, if there is a first set.
@@ -471,20 +475,40 @@ void FlowTable::on_add(Gtk::Widget* child)
 }
 
 
-void FlowTable::on_remove(Gtk::Widget* /* child */)
+void FlowTable::on_remove(Gtk::Widget* child)
 {
-  //TODO:
-  /*
-  type_vecChildren::iterator iterFind = std::find(m_children.begin(), m_children.end(), child);
-  if(iterFind != m_children.end())
+  if(child)
   {
-    m_children.erase(iterFind);
+    const bool visible = child->is_visible();
 
-    gtk_widget_unparent(child->gobj());
+  //g_warning("FlowTable::on_remove");
+    for(type_vecChildren::iterator iter = m_children.begin(); iter != m_children.end(); ++iter)
+    {
+      FlowTableItem& item = *iter;
 
-    //This is protected, but should be public: child.unparent();
+      if(item.m_first == child)
+      {
+            //g_warning("FlowTable::on_remove unparenting first");
+        gtk_widget_unparent(item.m_first->gobj()); //This is protected, but should be public: child.unparent();
+        item.m_first = 0;
+         
+       if(visible)
+          queue_resize();
+      }
+
+      if(item.m_second == child)
+      {
+        //g_warning("FlowTable::on_remove unparenting second");
+        gtk_widget_unparent(item.m_second->gobj()); //This is protected, but should be public: child.unparent();
+        item.m_second = 0;
+        
+        if(visible)
+          queue_resize();
+      }
+    }
   }
-  */
+
+ //g_warning("FlowTable::on_remove end");
 }
 
 

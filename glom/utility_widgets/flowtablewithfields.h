@@ -25,6 +25,7 @@
 #include "entryglom.h"
 #include "../data_structure/field.h"
 #include <map>
+#include <list>
 
 class FlowTableWithFields : public FlowTable
 {
@@ -38,7 +39,12 @@ public:
    * @param group The title of the group in which this field should be shown, if any.
    */
   virtual void add_field(const Field& field, const Glib::ustring& group = Glib::ustring());
-  virtual void remove_field(const Glib::ustring& id); 
+  virtual void remove_field(const Glib::ustring& id);
+
+  typedef std::map<int, Field> type_map_field_sequence;
+  virtual void add_group(const Glib::ustring& group_name, const Glib::ustring& group_title, const type_map_field_sequence& fields);
+  
+  
   virtual EntryGlom* get_field(const Glib::ustring& id);
   virtual EntryGlom* get_field(const Field& field);
     
@@ -69,6 +75,10 @@ protected:
 
   typedef std::map<Glib::ustring, Info> type_mapFields; //Map of IDs to full info.
   type_mapFields m_mapFields;
+
+  //Remember the nested FlowTables, so that we can search them for fields too:
+  typedef std::list< FlowTableWithFields* > type_sub_flow_tables;
+  type_sub_flow_tables m_sub_flow_tables;
 
   type_signal_field_edited m_signal_field_edited;
 };

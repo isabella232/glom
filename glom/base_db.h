@@ -56,7 +56,13 @@ public:
   typedef std::vector< Field > type_vecFields;
 
   static type_vecFields get_fields_for_table_from_database(const Glib::ustring& table_name);
-    
+
+  /** Create an appropriate title for an ID string.
+   * For instance, date_of_birth would become Date Of Birth.
+   */
+  static Glib::ustring util_title_from_string(const Glib::ustring& text);
+
+  
 protected:
   typedef std::vector<Glib::ustring> type_vecStrings;
   type_vecStrings get_table_names();
@@ -68,9 +74,11 @@ protected:
 
   virtual void on_userlevel_changed(AppState::userlevels userlevel);
 
-  Glib::ustring util_string_from_decimal(guint decimal);
-  guint util_decimal_from_string(const Glib::ustring& str);
+  static Glib::ustring util_string_from_decimal(guint decimal);
+  static guint util_decimal_from_string(const Glib::ustring& str);
 
+  static bool util_string_has_whitespace(const Glib::ustring& text);
+  
   static type_vecStrings util_vecStrings_from_Fields(const type_vecFields& fields);
   
   virtual void handle_error(const std::exception& ex); //TODO_port: This is probably useless now.

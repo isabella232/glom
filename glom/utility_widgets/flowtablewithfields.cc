@@ -30,6 +30,54 @@ FlowTableWithFields::~FlowTableWithFields()
 {
 }
 
+void FlowTableWithFields::add_group(const Glib::ustring& /* group_name */, const Glib::ustring& group_title, const type_map_field_sequence& fields)
+{
+  if(true)//!fields.empty() && !group_name.empty())
+  {
+    Gtk::Frame* frame = Gtk::manage( new Gtk::Frame );
+
+   
+    if(!group_title.empty())
+    {
+      Gtk::Label* label = Gtk::manage( new Gtk::Label );
+      label->set_text("<b>" + group_title + "</b>" );
+      label->set_use_markup();
+      label->show();
+      frame->set_label_widget(*label);
+    }
+
+    frame->set_shadow_type(Gtk::SHADOW_NONE); //HIG-style 
+    frame->show();
+
+    Gtk::Alignment* alignment = Gtk::manage( new Gtk::Alignment );
+
+    if(!group_title.empty()) //Don't indent if it has no title, to allow use of groups just for positioning.
+      alignment->set_padding(6, 0, 6, 0);
+      
+    alignment->show();
+    frame->add(*alignment);
+    
+    FlowTableWithFields* flow_table = Gtk::manage( new FlowTableWithFields() );
+    
+    flow_table->set_columns_count(1);
+    flow_table->set_padding(6);
+    flow_table->show();
+    alignment->add(*flow_table);
+    
+    for(type_map_field_sequence::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
+    {
+      //Gtk::Entry* debug = Gtk::manage(new Gtk::Entry() );
+      //flow_table->add(*debug);
+      //debug->show();
+      flow_table->add_field(iter->second);
+    }
+   
+    add(*frame);
+
+    m_sub_flow_tables.push_back(flow_table);
+  }
+}
+  
 void FlowTableWithFields::add_field(const Field& field, const Glib::ustring& group)
 {
   Glib::ustring id = field.get_name();
@@ -82,7 +130,24 @@ void FlowTableWithFields::remove_field(const Glib::ustring& id)
 
 EntryGlom* FlowTableWithFields::get_field(const Field& field)
 {
-  return get_field(field.get_name());
+  EntryGlom* entry = get_field(field.get_name());
+  if(entry)
+    return entry;
+  else
+  {
+    //Check the sub-flowtables:
+    for(type_sub_flow_tables::iterator iter = m_sub_flow_tables.begin(); iter != m_sub_flow_tables.end(); ++iter)
+    {
+      FlowTableWithFields* subtable = *iter;
+      if(subtable)
+        entry = subtable->get_field(field);
+        
+      if(entry)
+        return entry;
+    }
+  }
+
+  return 0;
 }
 
 EntryGlom* FlowTableWithFields::get_field(const Glib::ustring& id)
@@ -105,6 +170,7 @@ void FlowTableWithFields::change_group(const Glib::ustring& /* id */, const Glib
 void FlowTableWithFields::remove_all()
 {
   m_mapFields.clear();
+  m_sub_flow_tables.clear();
   FlowTable::remove_all();
 }
 

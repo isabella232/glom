@@ -22,7 +22,7 @@
 #define GLOM_DATASTRUCTURE_LAYOUTGROUP_H
 
 #include "layoutitem.h"
-#include <list>
+#include <map>
 
 class LayoutGroup
 {
@@ -31,12 +31,16 @@ public:
   LayoutGroup();
   LayoutGroup(const LayoutGroup& src);
   LayoutGroup& operator=(const LayoutGroup& src);
+
+  bool has_field(const Glib::ustring& field_name) const;
+  void add_item(const LayoutItem& item);
   
   Glib::ustring m_group_name;
+  Glib::ustring m_title;
   guint m_sequence;
 
-  typedef std::list<LayoutItem> type_listItems;
-  type_listItems m_list_items; 
+  typedef std::map<int, LayoutItem> type_map_items;
+  type_map_items m_map_items; 
 };
 
 #endif //GLOM_DATASTRUCTURE_LAYOUTGROUP_H

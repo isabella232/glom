@@ -1,3 +1,12 @@
+2004-06-30  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/utility_widgets/flowtablewithfields.cc: Added add_group() and 
+	used it in mode_data/box_table_data.cc fill_layout(). Layout groups 
+	are now shown inside a HIG-style frame.
+	* glom/navigation/box_tables.cc on_AddDel_add(), and
+	  glom/mode_design/fields/box_db_tabledefnition.cc on_AddDel_add(): 
+	Create a default title for tables and fields.
+
 2004-06-29  Gareth Owen  <gowen72@yahoo.com>
 
 	* configure.in: Added en_GB to ALL_LINGUAS

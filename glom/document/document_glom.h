@@ -57,22 +57,26 @@ public:
 
   virtual bool get_field(const Glib::ustring& strTableName, const Glib::ustring& strFieldName, Field& fieldResult) const;
 
-  typedef std::map<guint, LayoutItem> type_mapFieldSequence;
+  //typedef std::map<guint, LayoutItem> type_mapFieldSequence;
     
-  virtual type_mapFieldSequence get_data_layout_plus_new_fields(const Glib::ustring& layout_name, const Glib::ustring& strTableName) const;
+  //virtual type_mapFieldSequence get_data_layout_plus_new_fields(const Glib::ustring& layout_name, const Glib::ustring& strTableName) const;
     
   //typedef std::list<Glib::ustring> type_listStrings;
-  virtual type_mapFieldSequence get_data_layout(const Glib::ustring& layout_name, const Glib::ustring& strTableName) const;
-  virtual type_mapFieldSequence get_data_layout_list(const Glib::ustring& strTableName) const;
-  virtual type_mapFieldSequence get_data_layout_details(const Glib::ustring& strTableName) const;
+  //virtual type_mapFieldSequence get_data_layout(const Glib::ustring& layout_name, const Glib::ustring& strTableName) const;
+  //virtual type_mapFieldSequence get_data_layout_list(const Glib::ustring& strTableName) const;
+  //virtual type_mapFieldSequence get_data_layout_details(const Glib::ustring& strTableName) const;
 
   typedef std::map<guint, LayoutGroup> type_mapLayoutGroupSequence;
-  virtual type_mapLayoutGroupSequence get_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& strTableName);
+  virtual type_mapLayoutGroupSequence get_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& strTableName) const;
   virtual void set_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& strTableName, const type_mapLayoutGroupSequence& groups);
-    
+
+  virtual type_mapLayoutGroupSequence get_data_layout_groups_plus_new_fields(const Glib::ustring& layout_name, const Glib::ustring& strTableName) const;
+
+  /*    
   virtual void set_data_layout(const Glib::ustring& layout_name, const Glib::ustring& strTableName, const type_mapFieldSequence& sequence);    
   virtual void set_data_layout_list(const Glib::ustring& strTableName, const type_mapFieldSequence& sequence);
   virtual void set_data_layout_details(const Glib::ustring& strTableName, const type_mapFieldSequence& sequence);
+  */
         
   //When a field name is changed, change it in the relationships and fields data:
   virtual void change_field_name(const Glib::ustring& strTableName, const Glib::ustring& strFieldNameOld, const Glib::ustring& strFieldNameNew);
@@ -116,6 +120,7 @@ protected:
   static bool get_node_attribute_value_as_bool(const xmlpp::Element* node, const Glib::ustring& strAttributeName);
   static void set_node_attribute_value_as_bool(xmlpp::Element* node, const Glib::ustring& strAttributeName, bool value = true);
 
+  static void set_node_attribute_value_as_decimal(xmlpp::Element* node, const Glib::ustring& strAttributeName, int value);
   static guint get_node_attribute_value_as_decimal(const xmlpp::Element* node, const Glib::ustring& strAttributeName);
 
   AppState m_app_state;

@@ -187,6 +187,7 @@ void Box_Tables::on_AddDel_Add(const Gtk::TreeModel::iterator& row)
     //Show the new information for this whole row:
     TableInfo table_info;
     table_info.m_name = table_name;
+    table_info.m_title = util_title_from_string( table_name ); //Start with a title that might be appropriate.
     fill_table_row(row, table_info);
     
     //Save the field information directly into the database, because we can not get all the correct information from the database.

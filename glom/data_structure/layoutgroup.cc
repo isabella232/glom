@@ -27,16 +27,42 @@ LayoutGroup::LayoutGroup()
 
 LayoutGroup::LayoutGroup(const LayoutGroup& src)
 : m_group_name(src.m_group_name),
+  m_title(src.m_title),
   m_sequence(src.m_sequence),
-  m_list_items(src.m_list_items)
+  m_map_items(src.m_map_items)
 {
 }
 
 LayoutGroup& LayoutGroup::operator=(const LayoutGroup& src)
 {
   m_group_name = src.m_group_name;
+  m_title = src.m_title;
   m_sequence = src.m_sequence;
-  m_list_items = src.m_list_items;
+  m_map_items = src.m_map_items;
 
   return *this;
 }
+
+bool LayoutGroup::has_field(const Glib::ustring& field_name) const
+{
+  for(type_map_items::const_iterator iter = m_map_items.begin(); iter != m_map_items.end(); ++iter)
+  {
+    if(iter->second.m_field_name == field_name)
+      return true;
+  }
+
+  return false;
+}
+
+void LayoutGroup::add_item(const LayoutItem& item)
+{
+  //Get next available sequence:
+  guint sequence = 0;
+   if(!m_map_items.empty())
+     sequence = m_map_items.rbegin()->first;
+  ++sequence;
+
+  m_map_items[sequence] = item;
+  m_map_items[sequence].m_sequence = sequence;
+}
+
