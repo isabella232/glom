@@ -21,6 +21,7 @@
 #include "frame_glom.h"
 #include "application.h"
 #include "appstate.h"
+#include "mode_design/dialog_users_list.h"
 #include <libintl.h>
 
 Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
@@ -642,7 +643,21 @@ void Frame_Glom::on_menu_developer_relationships()
 
 void Frame_Glom::on_menu_developer_users()
 {
+  Dialog_UsersList* dialog = 0;
+  try
+  {
+    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_users");
 
+    refXml->get_widget_derived("window_users", dialog);
+  }
+  catch(const Gnome::Glade::XmlError& ex)
+  {
+    std::cerr << ex.what() << std::endl;
+  }
+
+  dialog->set_transient_for(*get_app_window());
+  dialog->run();
+  delete dialog;
 }
 
 void Frame_Glom::on_menu_developer_layout()
@@ -711,7 +726,7 @@ bool Frame_Glom::connection_request_password_and_attempt()
           return false;
         }
       }
-      
+
       //Try again.
     }
     else

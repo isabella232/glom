@@ -1,3 +1,17 @@
+2005-03-19  Murray Cumming <murrayc@murrayc.com>
+
+	* glom/Makefile.am:
+	* glom/frame_glom.cc:
+	* glom/glom.glade:
+	* glom/mode_data/box_data.cc:
+	* glom/mode_design/Makefile.am:
+	* glom/mode_design/dialog_user.cc:
+	* glom/mode_design/dialog_user.h:
+	* glom/mode_design/dialog_users_list.cc:
+	* glom/mode_design/dialog_users_list.h:
+	Added very simple user administration, available
+	from the Developer menu.
+
 2005-03-18  Murray Cumming <murrayc@murrayc.com>
 
 	* examples/example_smallbusiness.glom:

@@ -228,7 +228,7 @@ bool Box_Data::confirm_discard_unstored_data() const
     //TODO: dialog.set_transient_for(*this);
     int iButton = dialog.run();
 
-    return (iButton == 0); //0 for YES, 1 for NO.
+    return (iButton == Gtk::RESPONSE_OK);
   }
   else
   {
