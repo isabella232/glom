@@ -1,3 +1,7 @@
+2004-11-06  Amanpreet Singh Alam <aalam@redhat.com>
+
+	* configure.in: pa [Punjabi] is added tp ALL_LINGUAS
+
 2004-10-29  Mike Castle  <dalgoda@ix.netcom.com>
 
 	* Added lots of libintl.h includes to fix build on some platforms.
