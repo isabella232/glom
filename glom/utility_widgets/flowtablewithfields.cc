@@ -133,7 +133,7 @@ void FlowTableWithFields::add_layout_group(const LayoutGroup& group)
     FlowTableWithFields* flow_table = Gtk::manage( new FlowTableWithFields() );
     add_view(flow_table); //Allow these sub-flowtables to access the document too.
     flow_table->set_table(m_table_name);
-    
+
     flow_table->set_columns_count(group.m_columns_count);
     flow_table->set_padding(6);
     flow_table->show();
@@ -216,60 +216,57 @@ void FlowTableWithFields::add_field(const LayoutItem_Field& layoutitem_field)
 {
   Field field = layoutitem_field.m_field;
   const Glib::ustring id = field.get_name();
-  type_mapFields::iterator iterFind = m_mapFields.find(id);
-  if(iterFind == m_mapFields.end()) //If it is not already there.
+
+  Info info;
+  info.m_field = field;
+
+  //Add the entry or checkbox (handled by the DataWidget)
+  DataWidget* pDataWidget = Gtk::manage(new DataWidget(field.get_glom_type(), field.get_title_or_name()) );
+  pDataWidget->set_layout_item(layoutitem_field.clone());
+  add_layoutwidgetbase(pDataWidget);
+  add_view(pDataWidget); //So it can get the document.
+
+  info.m_second = pDataWidget; 
+  info.m_second->show_all();
+
+  info.m_first = Gtk::manage(new Gtk::Alignment());
+
+  //Add a label, if one is necessary:
+  Gtk::Label* label = info.m_second->get_label();
+  if(label && !label->get_text().empty())
   {
-    Info info;
-    info.m_field = field;
-
-    //Add the entry or checkbox (handled by the DataWidget)
-    DataWidget* pDataWidget = Gtk::manage(new DataWidget(field.get_glom_type(), field.get_title_or_name()) );
-    pDataWidget->set_layout_item(layoutitem_field.clone());
-    add_layoutwidgetbase(pDataWidget);
-    add_view(pDataWidget); //So it can get the document.
-
-    info.m_second = pDataWidget; 
-    info.m_second->show_all();
-
-    info.m_first = Gtk::manage(new Gtk::Alignment());
-
-    //Add a label, if one is necessary:
-    Gtk::Label* label = info.m_second->get_label();
-    if(label && !label->get_text().empty())
-    {
-      info.m_first->add( *label );
-      label->set_alignment(Gtk::ALIGN_RIGHT, Gtk::ALIGN_CENTER); //Align right.
-      label->show();
-      
-      info.m_first->show();
-      info.m_first->set(Gtk::ALIGN_RIGHT, Gtk::ALIGN_CENTER);
-      info.m_first->show_all_children(); //This does not seem to work, so we show the label explicitly.
-    }
-
-    //info.m_group = layoutitem_field.m_group;
-
-    add(*(info.m_first), *(info.m_second));
-
-    info.m_second->signal_edited().connect( sigc::bind(sigc::mem_fun(*this, &FlowTableWithFields::on_entry_edited), id)  );
-  
-    m_mapFields[id] = info;
+    info.m_first->add( *label );
+    label->set_alignment(Gtk::ALIGN_RIGHT, Gtk::ALIGN_CENTER); //Align right.
+    label->show();
+    
+    info.m_first->show();
+    info.m_first->set(Gtk::ALIGN_RIGHT, Gtk::ALIGN_CENTER);
+    info.m_first->show_all_children(); //This does not seem to work, so we show the label explicitly.
   }
-  else
-    g_warning("FlowTableWithFields::add_field: The ID exists already: %s", id.c_str());
+
+  //info.m_group = layoutitem_field.m_group;
+
+  add(*(info.m_first), *(info.m_second));
+
+  info.m_second->signal_edited().connect( sigc::bind(sigc::mem_fun(*this, &FlowTableWithFields::on_entry_edited), id)  );
+
+  m_listFields.push_back(info);
 }
 
 void FlowTableWithFields::remove_field(const Glib::ustring& id)
 {
-  type_mapFields::iterator iterFind = m_mapFields.find(id);
-  if(iterFind != m_mapFields.end())
+  for(type_listFields::iterator iter = m_listFields.begin(); iter != m_listFields.end(); ++iter)
   {
-    Info info = iterFind->second;
-    remove(*(info.m_first));
-    
-    delete info.m_first;
-    delete info.m_second; //It is removed at the same time.
+    if(iter->m_field.get_name() == id)
+    {
+      Info info = *iter;
+      remove(*(info.m_first));
 
-    m_mapFields.erase(iterFind);
+      delete info.m_first;
+      delete info.m_second; //It is removed at the same time.
+
+      iter = m_listFields.erase(iter);
+    }
   } 
 }
 
@@ -351,7 +348,7 @@ FlowTableWithFields::type_list_widgets FlowTableWithFields::get_portals(const Gl
   type_list_widgets result;
 
   //Check the single-item widgets:
-   for(type_portals::iterator iter = m_portals.begin(); iter != m_portals.end(); ++iter)
+   for(type_portals::const_iterator iter = m_portals.begin(); iter != m_portals.end(); ++iter)
   {
     //*iter is a FlowTableItem.
     Box_Data_List_Related* pPortal = *iter;
@@ -383,15 +380,17 @@ FlowTableWithFields::type_list_widgets FlowTableWithFields::get_portals(const Gl
 FlowTableWithFields::type_list_const_widgets FlowTableWithFields::get_field(const Glib::ustring& id) const
 {
   type_list_const_widgets result;
-  
-  type_mapFields::const_iterator iterFind = m_mapFields.find(id);
-  if(iterFind != m_mapFields.end())
+
+  for(type_listFields::const_iterator iter = m_listFields.begin(); iter != m_listFields.end(); ++iter)
   {
-    const Info& info = iterFind->second;
-    if(info.m_checkbutton)
-      result.push_back(info.m_checkbutton);
-    else
-      result.push_back(info.m_second);
+    if(iter->m_field.get_name() == id)
+    {
+      const Info& info = *iter;
+      if(info.m_checkbutton)
+        result.push_back(info.m_checkbutton);
+      else
+        result.push_back(info.m_second);
+    }
   }
 
   //Check the sub-flowtables:
@@ -417,14 +416,16 @@ FlowTableWithFields::type_list_widgets FlowTableWithFields::get_field(const Glib
   //TODO: Avoid duplication
   type_list_widgets result;
 
-  type_mapFields::const_iterator iterFind = m_mapFields.find(id);
-  if(iterFind != m_mapFields.end())
+  for(type_listFields::const_iterator iter = m_listFields.begin(); iter != m_listFields.end(); ++iter)
   {
-    const Info& info = iterFind->second;
-    if(info.m_checkbutton)
-      result.push_back(info.m_checkbutton);
-    else
-      result.push_back(info.m_second);
+    if(iter->m_field.get_name() == id)
+    {
+      const Info& info = *iter;
+      if(info.m_checkbutton)
+        result.push_back(info.m_checkbutton);
+      else
+        result.push_back(info.m_second);
+    }
   }
 
   //Check the sub-flowtables:
@@ -453,7 +454,7 @@ void FlowTableWithFields::change_group(const Glib::ustring& /* id */, const Glib
 void FlowTableWithFields::remove_all()
 {
   //TODO: Release the fields memory, and the portal memory.
-  m_mapFields.clear();
+  m_listFields.clear();
 
   for(type_sub_flow_tables::iterator iter = m_sub_flow_tables.begin(); iter != m_sub_flow_tables.end(); ++iter)
   {

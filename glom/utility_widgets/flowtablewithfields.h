@@ -123,8 +123,8 @@ protected:
     Gtk::CheckButton* m_checkbutton; //Used instead of first and second if it's a bool.
   };
 
-  typedef std::map<Glib::ustring, Info> type_mapFields; //Map of IDs to full info.
-  type_mapFields m_mapFields;
+  typedef std::list<Info> type_listFields; //Map of IDs to full info.
+  type_listFields m_listFields;
 
   //Remember the nested FlowTables, so that we can search them for fields too:
   typedef std::list< FlowTableWithFields* > type_sub_flow_tables;

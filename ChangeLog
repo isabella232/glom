@@ -1,5 +1,13 @@
 2005-03-10  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/utility_widgets/flowtable_withfields.[h|cc]: Use a list of 
+	field info instead of a map, and search through it all instead of 
+	using the map key, so we can have the same field more than once in 
+	a group. Otherwise, people change a field and see it disappear if it 
+	is already there.
+
+2005-03-10  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/mode_data/box_data_details.cc: on_flowtable_layout_changed(): 
 	Update the data as well as the structure, because updating the 
 	structure clears the widgets.
