@@ -68,7 +68,7 @@ bool App_Glom::init(const Glib::ustring& document_uri)
   if(document_uri.empty())
   {
     Document_Glom* pDocument = static_cast<Document_Glom*>(get_document());
-    if(pDocument->get_connection_database().empty()) //If it is a new (default) document.
+    if(pDocument && pDocument->get_connection_database().empty()) //If it is a new (default) document.
     {
       return offer_new_or_existing();
     }
@@ -567,9 +567,6 @@ bool App_Glom::offer_new_or_existing()
               return false; //The user cancelled.
             }            
           } /* while() */
-
-          delete dialog;
-          dialog = 0;
             
           return true; //File successfully created.
         }
