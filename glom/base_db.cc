@@ -818,9 +818,7 @@ Base_DB::type_vecStrings Base_DB::get_groups_of_user(const Glib::ustring& user) 
   for(type_vecStrings::const_iterator iter = groups.begin(); iter != groups.end(); ++iter)
   {
     //See whether the user is in this group:
-    type_vecStrings users = get_database_users(*iter);
-    type_vecStrings::const_iterator iterFind = std::find(users.begin(), users.end(), user);
-    if(iterFind != users.end())
+    if(get_user_is_in_group(user, *iter))
     {
       //Add the group to the result:
       result.push_back(*iter);
@@ -828,6 +826,13 @@ Base_DB::type_vecStrings Base_DB::get_groups_of_user(const Glib::ustring& user) 
   }
 
   return result;
+}
+
+bool Base_DB::get_user_is_in_group(const Glib::ustring& user, const Glib::ustring& group) const
+{
+  const type_vecStrings users = get_database_users(group);
+  type_vecStrings::const_iterator iterFind = std::find(users.begin(), users.end(), user);
+  return (iterFind != users.end());
 }
 
 Privileges Base_DB::get_current_privs(const Glib::ustring& table_name) const

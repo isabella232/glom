@@ -147,8 +147,7 @@ sharedptr<SharedConnection> ConnectionPool::connect()
       //Create a new connection:
 
       m_GdaClient = Gnome::Gda::Client::create();
-       
-      //We must specify _some_ database even when we just want to create a database.
+             //We must specify _some_ database even when we just want to create a database.
       //This _might_ be different on some systems. I hope not. murrayc
       const Glib::ustring default_database = "template1"; 
       if(m_GdaClient)
@@ -157,31 +156,31 @@ sharedptr<SharedConnection> ConnectionPool::connect()
         //m_GdaDataSourceInfo->
 
         Glib::ustring cnc_string = "HOST=" + get_host() + ";USER=" + m_user + ";PASSWORD=" + m_password;
-      
+
         if(!m_database.empty())
           cnc_string += (";DATABASE=" + m_database);
-	else
-	  cnc_string += (";DATABASE=" + default_database);
+        else
+          cnc_string += (";DATABASE=" + default_database);
 
-        //std::cout << "connecting: cnc string: " << cnc_string << std::endl;
+        std::cout << "connecting: cnc string: " << cnc_string << std::endl;
 
         //*m_refGdaConnection = m_GdaClient->open_connection(m_GdaDataSourceInfo.get_name(), m_GdaDataSourceInfo.get_username(), m_GdaDataSourceInfo.get_password() );
         m_refGdaConnection = m_GdaClient->open_connection_from_string("PostgreSQL", cnc_string);
         if(m_refGdaConnection)
         {
           //g_warning("ConnectionPool: connection opened");
-          
+
           //Create the fieldtypes member if it has not already been done:
           if(!m_pFieldTypes)
             m_pFieldTypes = new FieldTypes(m_refGdaConnection);
-            
+
           //Open the database, if one has been specified:
           /* This does not seem to work in libgda's postgres provider, so we specify it in the cnc_string instead:
           std::cout << "  database = " << m_database << std::endl;
           if(!m_database.empty())
             m_refGdaConnection->change_database(m_database);
           */
-          
+
           return connect(); //Call this method recursively. This time m_refGdaConnection exists.
         }
         else
@@ -192,14 +191,14 @@ sharedptr<SharedConnection> ConnectionPool::connect()
           if(!m_database.empty())
           {
              std::cout << "  ConnectionPool::connect() Attempting to connect without specifying the database." << std::endl;
-             
+
              //If the connection failed while looking for a database,
              //then try connecting without the database:
              Glib::ustring cnc_string = "HOST=" + get_host() + ";USER=" + m_user + ";PASSWORD=" + m_password;
-	     cnc_string += (";DATABASE=" + default_database);
-             
-             //std::cout << "connecting: cnc string: " << cnc_string << std::endl;
-              
+             cnc_string += (";DATABASE=" + default_database);
+
+             std::cout << "connecting: cnc string: " << cnc_string << std::endl;
+
              Glib::RefPtr<Gnome::Gda::Connection> gda_connection =  m_GdaClient->open_connection_from_string("PostgreSQL", cnc_string);
              if(gda_connection) //If we could connect without specifying the database.
                bJustDatabaseMissing = true;
@@ -214,7 +213,7 @@ sharedptr<SharedConnection> ConnectionPool::connect()
             g_warning("  (Connection succeeds, but not to the specific database).");
           else
             g_warning("  (Could not connect even to the default database.)");
-            
+
           throw ExceptionConnection(bJustDatabaseMissing ? ExceptionConnection::FAILURE_NO_DATABASE : ExceptionConnection::FAILURE_NO_SERVER);
         }
       }

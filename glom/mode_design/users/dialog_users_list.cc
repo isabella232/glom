@@ -444,7 +444,6 @@ bool Dialog_UsersList::warn_about_empty_standard_group()
   {
     if(m_model_users->children().size() == 1)
     {
-
       Gtk::MessageDialog dialog(gettext("<b>Developer group may not be empty.</b>"), true, Gtk::MESSAGE_WARNING);
       dialog.set_secondary_text(gettext("The developer group must contain at least one user."));
       dialog.set_transient_for(*this);

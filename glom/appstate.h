@@ -23,7 +23,7 @@
 
 #include <glibmm.h>
 
-/** This is a singleton - Use get_instance().
+/** There is one instance per document.
  * This is for storing volatile application state.
  * It is not for configuration that should be the same after the application is closed and restarted - use gconf for that.
  */
@@ -42,7 +42,7 @@ public:
   /** Returns whether we are in developer mode.
    * Some functionality will be deactivated when not in developer mode.
    */
- virtual userlevels get_userlevel() const;
+  virtual userlevels get_userlevel() const;
 
   /** This will cause the userlevel_changed signal to be emitted.
   */
@@ -50,7 +50,7 @@ public:
 
   /// Use this to set the initial UI state:
   virtual void emit_userlevel_changed();
-  
+
   typedef sigc::signal<void, userlevels> type_signal_userlevel_changed;
 
   /// The user interface should handle this signal and alter itself accordingly.

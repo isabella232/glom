@@ -41,7 +41,7 @@ void AppState::set_userlevel(userlevels value)
   if(m_userlevel != value)
   {
     m_userlevel = value;
-    
+
     //Tell the UI to respond accordingly:
     m_signal_userlevel_changed.emit(value);
   }

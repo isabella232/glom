@@ -633,7 +633,7 @@ AppState::userlevels Document_Glom::get_userlevel(userLevelReason& reason) const
 {
   //Initialize output parameter:
   reason = USER_LEVEL_REASON_UNKNOWN;
-  
+
   if(get_read_only())
   {
     reason = USER_LEVEL_REASON_FILE_READ_ONLY;

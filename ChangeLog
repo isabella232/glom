@@ -1,5 +1,14 @@
 2005-03-22  Murray Cumming <murrayc@murrayc.com>
 
+	* glom/base_db.cc:
+	* glom/base_db.h:
+	* glom/frame_glom.cc:
+	on_menu_userlevel_Developer(): Prevent 
+	developer mode if the user is not in the 
+	developer group.
+
+2005-03-22  Murray Cumming <murrayc@murrayc.com>
+
 	* glom/mode_design/users/dialog_user.cc:
 	* glom/mode_design/users/dialog_user.h:
 	* glom/mode_design/users/dialog_users_list.cc:

@@ -82,6 +82,7 @@ protected:
   Glib::ustring get_user_visible_group_name(const Glib::ustring& group_name) const;
 
   type_vecStrings get_groups_of_user(const Glib::ustring& user) const;
+  bool get_user_is_in_group(const Glib::ustring& user, const Glib::ustring& group) const;
   Privileges get_current_privs(const Glib::ustring& table_name) const;
 
   virtual void fill_from_database();
