@@ -669,18 +669,35 @@ bool Frame_Glom::connection_request_password_and_attempt()
 
     if(response == Gtk::RESPONSE_OK)
     {
-      sharedptr<SharedConnection> sharedconnection = m_pDialogConnection->connect_to_server_with_connection_settings();
-      if(!sharedconnection)
+      try
       {
-        //Warn the user, and let him try again:
-        int response = m_pDialogConnectionFailed->run();
-        m_pDialogConnectionFailed->hide();
-
-        if(response != Gtk::RESPONSE_OK)
-          return false; //The user cancelled.
+        sharedptr<SharedConnection> sharedconnection = m_pDialogConnection->connect_to_server_with_connection_settings();
+        return true; //Succeeeded, because no exception was thrown.
       }
-      else
-        return true;
+      catch(const ExceptionConnection& ex)
+      {
+        g_warning("Frame_Glom::connection_request_password_and_attempt(): caught exception.");
+         
+        if(ex.get_failure_type() == ExceptionConnection::FAILURE_NO_SERVER)
+        {
+          //Warn the user, and let him try again:
+          int response = m_pDialogConnectionFailed->run();
+          m_pDialogConnectionFailed->hide();
+
+          if(response != Gtk::RESPONSE_OK)
+            return false; //The user cancelled.
+        }
+        else
+        {
+          g_warning("Frame_Glom::connection_request_password_and_attempt(): rethrowing exception.");
+
+          //The connection to the server is OK, but the specified database does not exist:
+          throw ex; //Pass it on for the caller to handle.
+          return false;
+        }
+      }
+      
+      //Try again.
     }
     else
       return false; //The user cancelled.
@@ -689,8 +706,17 @@ bool Frame_Glom::connection_request_password_and_attempt()
 
 bool Frame_Glom::create_database(const Glib::ustring& database_name)
 {
-  //Ask for connection details:                   
-  if(connection_request_password_and_attempt()) //If it succeeded and the user did not cancel.
+  //Ask for connection details:
+  bool connection_possible = false;
+  try
+  {                   
+    connection_possible = connection_request_password_and_attempt(); //If it succeeded and the user did not cancel.
+  }
+  catch(const ExceptionConnection& ex)
+  {
+  }
+
+  if(connection_possible)
   {
     //This must now succeeed, because we've already tried it once:
     sharedptr<SharedConnection> sharedconnection = m_pDialogConnection->connect_to_server_with_connection_settings();

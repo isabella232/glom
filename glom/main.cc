@@ -83,7 +83,8 @@ main(int argc, char* argv[])
   }
   catch(const std::exception& ex)
   {
-    std::cerr << "Glom: exception: \n" << ex.what() << std::endl;
+    //If this happens then comment out the try/catch, and let the debugger show the call stack.
+    std::cerr << "Glom: exception: \n  " << ex.what() << std::endl;
   }
 
   //We use python for calculated-fields:

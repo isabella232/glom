@@ -25,6 +25,25 @@
 #include "sharedptr.h"
 #include "data_structure/fieldtypes.h"
 
+class ExceptionConnection : public std::exception
+{
+public:
+  enum failure_type
+  {                                         
+    FAILURE_NO_SERVER, //Either there was no attempt to connect to a specific database, or the connection failed both with and without specifying the database.
+    FAILURE_NO_DATABASE //Connection without specifying the database was possible.
+  };
+  
+  ExceptionConnection(failure_type failure);
+  virtual ~ExceptionConnection() throw();
+  
+  virtual const char* what();
+
+  virtual failure_type get_failure_type() const;
+
+protected:
+  failure_type m_failure_type;
+};
 
 /** When the SharedConnection is destroyed, it will inform the connection pool,
  * so that the connection pool can keep track of who is using the connection,
@@ -74,7 +93,10 @@ public:
   /** This method will return a SharedConnection, either by opening a new connection or returning an already-open connection.
    * When that SharedConnection is destroyed, or when SharedConnection::close() is called, then the ConnectionPool will be informed.
    * The connection will only be closed when all SharedConnections have finished with their connections.
+   *
    * @result a shareptr to a SharedConnection. This sharedptr will be null if the connection failed.
+   *
+   * @throws an ExceptionConnection when the connection fails.
    */
   sharedptr<SharedConnection> connect();
 

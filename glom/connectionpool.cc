@@ -20,6 +20,26 @@
  
 #include "connectionpool.h"
 
+
+ExceptionConnection::ExceptionConnection(failure_type failure)
+: m_failure_type(failure)
+{
+}
+
+ExceptionConnection::~ExceptionConnection() throw()
+{
+}
+
+const char* ExceptionConnection::what()
+{
+  return "Glom database connection failed.";
+}
+
+ExceptionConnection::failure_type ExceptionConnection::get_failure_type() const
+{
+  return m_failure_type;
+}
+  
 SharedConnection::SharedConnection()
 {
 }
@@ -159,7 +179,26 @@ sharedptr<SharedConnection> ConnectionPool::connect()
         }
         else
         {
-          std::cerr << "ConnectionPool::connect() connection failed" << std::endl;
+          bool bJustDatabaseMissing = false;
+          if(!m_database.empty())
+          {
+             std::cout << "ConnectionPool::connect() Attempting to connect without specifying the database." << std::endl;
+             
+             //If the connection failed while looking for a database,
+             //then try connecting without the database:
+             Glib::ustring cnc_string = "USER=" + m_user + ";PASSWORD=" + m_password; //TODO: Host
+             
+             Glib::RefPtr<Gnome::Gda::Connection> gda_connection =  m_GdaClient->open_connection_from_string("PostgreSQL", cnc_string);
+             if(gda_connection) //If we could connect without specifying the database.
+               bJustDatabaseMissing = true;
+             else
+             {
+                 std::cerr << "  ConnectionPool::connect() connection also failed when not specifying database." << std::endl;
+             }
+          }
+
+          g_warning("ConnectionPool::connect() throwing exception.");
+          throw ExceptionConnection(bJustDatabaseMissing ? ExceptionConnection::FAILURE_NO_DATABASE : ExceptionConnection::FAILURE_NO_SERVER);
         }
       }
     }

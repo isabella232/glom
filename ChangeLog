@@ -1,3 +1,16 @@
+2004-12-03  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/connection_pool.[h|cc]: Define ExceptionConnection, derived 
+	from std::exception. connect(): When attempting to connect to a 
+	specific database, try to connect to the server in general. Throw 
+	an exception that tells the caller that the connection details are OK, 
+	but that the database does not exist yet.
+	* glom/application.cc: on_document_load(): If the connection fails 
+	only because the database does not exist yet, then offer to recreate 
+	it. Recreation is not actually implemented, however.
+	Return true/false (requires bakery 2.3.11) so that the document 
+	will be closed if the user cancels a dialog during loading.
+
 0.8.9:
 
 2004-11-30  Murray Cumming  <murrayc@murrayc_debian>

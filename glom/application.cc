@@ -23,6 +23,7 @@
 #include <libgnome/gnome-help.h> //For gnome_help_display
 #include "config.h" //For VERSION.
 #include <cstdio>
+#include <memory> //For std::auto_ptr<>
 #include <libintl.h>
 
 
@@ -324,13 +325,15 @@ void App_Glom::init_create_document()
   type_base::init_create_document(); //Sets window title. Doesn't recreate doc.
 }
 
-void App_Glom::on_document_load()
+bool App_Glom::on_document_load()
 {
   //Link to the database described in the document.
   //Need to ask user for user/password:
   //m_pFrame->load_from_document();
   Document_Glom* pDocument = static_cast<Document_Glom*>(get_document());
-  if(pDocument)
+  if(!pDocument)
+    return false;
+  else
   {
     //Connect signals:
     pDocument->signal_userlevel_changed().connect( sigc::mem_fun(*this, &App_Glom::on_userlevel_changed) );
@@ -346,7 +349,9 @@ void App_Glom::on_document_load()
     {
       //Read the connection information from the document:
       ConnectionPool* connection_pool = ConnectionPool::get_instance();
-      if(connection_pool)
+      if(!connection_pool)
+        return false; //Impossible anyway.
+      else
       {
         //Set the connection details in the ConnectionPool singleton.
         //The ConnectionPool will now use these every time it tries to connect.
@@ -357,17 +362,52 @@ void App_Glom::on_document_load()
         connection_pool->set_ready_to_connect(); //Box_DB::connect_to_server() will now attempt the connection-> Shared instances of m_Connection will also be usable.
 
         //Attempt to connect to the specified database:
-        bool test = m_pFrame->connection_request_password_and_attempt();
-        if(!test)
-          return; //Failed. TODO: Close the document?
+        try
+        {
+          bool test = m_pFrame->connection_request_password_and_attempt();
+          if(!test)
+            return false; //Failed. Close the document.
+        }
+        catch(const ExceptionConnection& ex)
+        {
+          g_warning("App_Glom::on_document_load(): caught exception.");
+          
+          if(ex.get_failure_type() == ExceptionConnection::FAILURE_NO_DATABASE) //This is the only FALURE_* type that connection_request_password_and_attempt() throws.
+          {
+            //The connection to the server is OK, but the database is not there yet.
+            //Ask the user if he wants to create it.
+            //For instance, it might be an example document, whose database does not exist on his server yet.
+            
+            Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_recreate_database");
+            Gtk::Dialog* dialog = 0;
+            refXml->get_widget("dialog_recreate_database", dialog);
+            if(dialog)
+            {
+              int response = dialog->run();
+              delete dialog;
+              dialog = 0;
+              
+              if(response == Gtk::RESPONSE_CANCEL)
+                return false; //Close the document.
+              else
+              {
+                //TODO: Recreate the database, using the information saved in the document:
+                Frame_Glom::show_ok_dialog(gettext("Database recreation"), gettext("Sorry. This functionality has not been implemented yet."), *this);
+                return false; //Give up on this document.
+              }
+            }
+          }
+        }
+
+        //Switch to operator mode when opening new documents:
+        pDocument->set_userlevel(AppState::USERLEVEL_OPERATOR);
+
+        //Open default table, or show list of tables instead:
+        m_pFrame->do_menu_Navigate_Table(true /* open the default if there is one */);    
       }
-
-      //Switch to operator mode when opening new documents:
-      pDocument->set_userlevel(AppState::USERLEVEL_OPERATOR);
-
-      //Open default table, or show list of tables instead:
-      m_pFrame->do_menu_Navigate_Table(true /* open the default if there is one */);    
     }
+
+    return true; //Loading of the document into the application succeeded.
   }
 }
 
@@ -454,6 +494,8 @@ bool App_Glom::offer_new_or_existing()
         refXml->get_widget_derived("dialog_new_database", dialog);
         if(dialog)
         {
+          std::auto_ptr<Dialog_NewDatabase> dialog_owner(dialog); //This will delete the dialog even when we return in the middle of this function.
+          
           //Set suitable defaults:
           const Glib::ustring filename = document->get_name(); //Get the filename without the path and extension.
           dialog->set_input(filename, Base_DB::util_title_from_string( filename ) );
@@ -461,8 +503,8 @@ bool App_Glom::offer_new_or_existing()
           bool keep_asking = true;
           while(keep_asking)
           {
-            int response = dialog->run(); //TODO: Allow the user to cancel.
-            dialog->hide();
+            int response = dialog->run();
+
             if(response == Gtk::RESPONSE_OK)
             {
               Glib::ustring db_name;
@@ -508,7 +550,10 @@ bool App_Glom::offer_new_or_existing()
               return false; //The user cancelled.
             }            
           } /* while() */
-          
+
+          delete dialog;
+          dialog = 0;
+            
           return true; //File successfully created.
         }
        }
