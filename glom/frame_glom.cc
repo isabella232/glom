@@ -269,22 +269,20 @@ void Frame_Glom::show_table(const Glib::ustring& strTableName)
     App_Glom* pApp = dynamic_cast<App_Glom*>(get_app_window());
     if(pApp)
       on_userlevel_changed(pApp->get_userlevel());
-
-    Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
-          
+ 
     switch(m_Mode)
     {
       case(MODE_Data):
       {
         strMode = gettext("Data");
-        m_Notebook_Data.init_db_details( document->get_connection_database(), m_strTableName);
+        m_Notebook_Data.init_db_details(m_strTableName);
         set_mode_widget(m_Notebook_Data);
         break;
       }
       case(MODE_Find):
       {
         strMode = gettext("Find");
-        m_Notebook_Find.init_db_details( document->get_connection_database(), m_strTableName);
+        m_Notebook_Find.init_db_details(m_strTableName);
         set_mode_widget(m_Notebook_Find);
         break;
       }
@@ -383,7 +381,7 @@ void Frame_Glom::do_menu_Navigate_Table(bool open_default)
   }
   else
   {
-    m_pBox_Tables->init_db_details( get_document()->get_connection_database());
+    m_pBox_Tables->init_db_details();
 
     Glib::ustring default_table_name;
     if(open_default)
@@ -458,8 +456,7 @@ void Frame_Glom::on_Notebook_Find(Glib::ustring strWhereClause)
 {
   on_menu_Mode_Data();
 
-  Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
-  m_Notebook_Data.init_db_details( document->get_connection_database(), m_strTableName, strWhereClause);
+  m_Notebook_Data.init_db_details(m_strTableName, strWhereClause);
   m_Notebook_Data.select_page_for_find_results();
 }
 
@@ -609,7 +606,7 @@ void Frame_Glom::on_menu_developer_fields()
   else
   {
     m_pDialog_Fields->set_transient_for(*get_app_window());
-    m_pDialog_Fields->init_db_details( get_document()->get_connection_database(), m_strTableName);
+    m_pDialog_Fields->init_db_details(m_strTableName);
     m_pDialog_Fields->show();
   }
 }
@@ -624,7 +621,7 @@ void Frame_Glom::on_menu_developer_relationships()
   else
   {
     m_pDialog_Relationships->set_transient_for(*get_app_window());
-    m_pDialog_Relationships->init_db_details( get_document()->get_connection_database(), m_strTableName);
+    m_pDialog_Relationships->init_db_details(m_strTableName);
     m_pDialog_Relationships->show();
   }
 }

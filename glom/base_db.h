@@ -37,8 +37,12 @@ class Base_DB :
 public:
   Base_DB();
   virtual ~Base_DB();
-  
-  virtual void init_db_details(const Glib::ustring& strDatabaseName);
+
+  /// Specify the structure of what will be shown.
+  virtual void init_db_details();
+
+  /// Specify what actual data will be shown:
+  virtual void refresh_db_details();
 
   /** Returns whether we are in developer mode.
    * Some functionality will be deactivated when not in developer mode.
@@ -47,8 +51,6 @@ public:
   virtual void set_userlevel(AppState::userlevels value);
    
   static sharedptr<SharedConnection> connect_to_server();
-  
-  virtual Glib::ustring get_database_name();
 
   virtual void set_document(Document_Glom* pDocument); //View override
   virtual void load_from_document(); //View override
@@ -84,10 +86,6 @@ protected:
   
   virtual void handle_error(const std::exception& ex); //TODO_port: This is probably useless now.
   virtual bool handle_error();
-
-
-  //Member data:
-  Glib::ustring m_strDatabaseName;
 };
 
 #endif //BASE_DB_H

@@ -103,8 +103,8 @@ void Box_Tables::fill_from_database()
   
 
   //gettext("Server: ") +  m_strServerName + ", " + 
-  Glib::ustring strTitle = Glib::ustring("<b>") + gettext("Tables from Database: ") + get_database_name() + "</b>";
-  m_pLabelFrameTitle->set_markup(strTitle);
+  //Glib::ustring strTitle = Glib::ustring("<b>") + gettext("Tables from Database: ") + get_database_name() + "</b>";
+  //m_pLabelFrameTitle->set_markup(strTitle);
 
   //Get the list of hidden tables:
 

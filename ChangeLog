@@ -1,3 +1,22 @@
+2004-12-22  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/base_db.[h|]cc], and all its derived classes: 
+	init_db_details(): Remove the database_name parameter, because we 
+	only every use one database now, and it is specified in the connection.
+	Also split init_db_details() into init_db_details() and 
+	refresh_init_details(), so we can refresh the data without 
+	rebuilding the whole structure.
+	* glom/mode_data/box_data_list_related.[h|cc]: Added 
+	get_relationship().
+	* glom/utility_widgets/flowtable_withfields.[h|cc]: Added protected 
+	get_portals() to get all the related records portals whose from_key 
+	is the specified field. set_field_value(): Look for portals that 
+	should refresh when the field value changes, and refresh them.
+	Make FlowTableWithFields inherit from View_Composite_Glom, so that 
+	it can be a sub-view, so that it can access the document, so that it 
+	can get the full Relationship details instead of just the relationship 
+	name.
+
 2004-12-10  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/mode_data/dialog_layout_details.cc: save_to_document(): Set 

@@ -30,22 +30,28 @@ Box_Data_List_Related::~Box_Data_List_Related()
 {
 }
 
-void Box_Data_List_Related::init_db_details(const Glib::ustring& strDatabaseName,  const Relationship& relationship, const Gnome::Gda::Value& foreign_key_value, const Gnome::Gda::Value&  /* from_table_primary_key_value */)
+void Box_Data_List_Related::init_db_details(const Relationship& relationship)
+{
+  bool found = get_fields_for_table_one_field(relationship.get_to_table(), relationship.get_to_field(), m_key_field /* output parameter */);
+  if(!found)
+  {
+    g_warning("Box_Data_List_Related::init_db_details(): key_field not found.");
+  }
+}
+
+void Box_Data_List_Related::refresh_db_details(const Gnome::Gda::Value& foreign_key_value, const Gnome::Gda::Value& /* from_table_primary_key_value */)
 {
   m_key_value = foreign_key_value;
 
-  bool found = get_fields_for_table_one_field(relationship.get_to_table(), relationship.get_to_field(), m_key_field);
-  if(found)
-  {           
-    if(!GlomConversions::value_is_empty(m_key_value))
-    {
-      Glib::ustring strWhereClause = m_key_field.get_name() + " = " + m_key_field.sql(m_key_value);
+  if(!GlomConversions::value_is_empty(m_key_value))
+  {
+    Glib::ustring strWhereClause = m_key_field.get_name() + " = " + m_key_field.sql(m_key_value);
 
-      Box_Data_List::init_db_details(strDatabaseName, relationship.get_to_table(), strWhereClause);
-    }
-    //TODO: Clear the list if there is no key value?
+    Box_Data_List::refresh_db_details(strWhereClause);
   }
+  //TODO: Clear the list if there is no key value?
 }
+ 
 
 void Box_Data_List_Related::fill_from_database()
 {
@@ -114,6 +120,11 @@ void Box_Data_List_Related::on_record_added(const Gnome::Gda::Value& primary_key
   }
 }
 
+Relationship Box_Data_List_Related::get_relationship() const
+{
+  return m_relationship;
+}
+ 
 Field Box_Data_List_Related::get_key_field() const
 {
   return m_key_field;

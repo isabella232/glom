@@ -41,15 +41,22 @@ Glib::ustring Box_DB_Table::get_table_name()
   return m_strTableName;
 }
 
-void Box_DB_Table::init_db_details(const Glib::ustring& strDatabaseName, const Glib::ustring& strTableName, const Glib::ustring& strWhereClause /* = "" */)
+void Box_DB_Table::init_db_details(const Glib::ustring& strTableName, const Glib::ustring& strWhereClause /* = "" */)
 {
-  m_strDatabaseName = strDatabaseName;
   m_strTableName = strTableName;
   m_strWhereClause = strWhereClause;
 
   fill_fields();
   fill_from_database();
 }
+
+void Box_DB_Table::refresh_db_details(const Glib::ustring& strWhereClause)
+{
+  m_strWhereClause = strWhereClause;
+
+  fill_from_database();
+}
+ 
 
 Glib::ustring Box_DB_Table::get_primarykey_name()
 {

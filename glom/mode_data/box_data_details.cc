@@ -39,6 +39,8 @@ Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
 {
   m_layout_name = "details";
 
+  add_view(&m_FlowTable); //Allow this to access the document too.
+
   Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_data_layout_details"); //TODO: Use a generic layout dialog?
   if(refXml)
   {
@@ -116,21 +118,21 @@ Gnome::Gda::Value Box_Data_Details::get_primary_key_value() const
   return m_primary_key_value;
 }
 
-void Box_Data_Details::init_db_details(const Glib::ustring& strDatabaseName, const Glib::ustring& strTableName, const Gnome::Gda::Value& primary_key_value)
+void Box_Data_Details::init_db_details(const Glib::ustring& strTableName, const Gnome::Gda::Value& primary_key_value)
 {
   m_primary_key_value = primary_key_value;
 
-  Box_DB_Table::init_db_details(strDatabaseName, strTableName);
+  Box_DB_Table::init_db_details(strTableName);
 }
 
-void Box_Data_Details::init_db_details(const Gnome::Gda::Value& primary_key_value)
+void Box_Data_Details::refresh_db_details(const Gnome::Gda::Value& primary_key_value)
 {
-  init_db_details(get_database_name(), get_table_name(), primary_key_value);
+  init_db_details(get_table_name(), primary_key_value);
 }
 
-void Box_Data_Details::init_db_details_blank()
+void Box_Data_Details::refresh_db_details_blank()
 {
-  init_db_details( Gnome::Gda::Value() );
+  refresh_db_details( Gnome::Gda::Value() );
 }
 
 void Box_Data_Details::fill_from_database_layout()
@@ -143,6 +145,8 @@ void Box_Data_Details::fill_from_database_layout()
   Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
   if(document)
   {
+    m_FlowTable.set_table(m_strTableName); //This allows portals to get full Relationship information
+    
     //This map of layout groups will also contain the field information from the database:
     Document_Glom::type_mapLayoutGroupSequence layout_groups = get_data_layout_groups("details");
     for(Document_Glom::type_mapLayoutGroupSequence::const_iterator iter = layout_groups.begin(); iter != layout_groups.end(); ++iter)
@@ -295,7 +299,7 @@ void Box_Data_Details::fill_related()
            bool test = get_fields_for_table_one_field(m_strTableName, from_field, field);
            if(test)
            {
-             pBox->init_db_details(get_database_name(), relationship, value, m_primary_key_value);
+             pBox->init_db_details(relationship, value, m_primary_key_value);
              pBox->show_all();
 
 
@@ -337,14 +341,14 @@ void Box_Data_Details::on_button_new()
         if(parsed)
         {
           record_new(false /* use entered field data */, primary_key_value);
-          init_db_details(primary_key_value);
+          refresh_db_details(primary_key_value);
         }
       }
       else
       {
         //It's not an auto-increment primary key,
         //so just blank the fields ready for a primary key later.
-        init_db_details_blank(); //shows blank record.
+        refresh_db_details_blank(); //shows blank record.
       }
     }
 

@@ -31,13 +31,28 @@ FlowTableWithFields::Info::Info()
 {
 }
 
-FlowTableWithFields::FlowTableWithFields()
+FlowTableWithFields::FlowTableWithFields(const Glib::ustring& table_name)
+: m_table_name(table_name)
 {
-  
 }
 
 FlowTableWithFields::~FlowTableWithFields()
 {
+}
+
+void FlowTableWithFields::set_table(const Glib::ustring& table_name)
+{
+  m_table_name = table_name;
+
+  //Recurse:
+  for(type_sub_flow_tables::iterator iter = m_sub_flow_tables.begin(); iter != m_sub_flow_tables.end(); ++iter)
+  {
+    FlowTableWithFields* subtable = *iter;
+    if(subtable)
+    {
+      subtable->set_table(table_name);
+    }
+  }
 }
 
 void FlowTableWithFields::add_layout_item(const LayoutItem& item)
@@ -64,9 +79,20 @@ void FlowTableWithFields::add_layout_item(const LayoutItem& item)
       const LayoutItem_Portal* portal = dynamic_cast<const LayoutItem_Portal*>(pItem);
       if(portal)
       {
-        Gtk::Widget* portal_box = Gtk::manage(new Gtk::Label("TODO: " + portal->get_relationship()));//Gtk::manage(new Box_Data_List_Related);
-        portal_box->show();
-        add(*portal_box);
+        Document_Glom* pDocument = static_cast<Document_Glom*>(get_document());
+        if(pDocument)
+        {
+          Relationship relationship;
+          bool found = pDocument->get_relationship(m_table_name, portal->get_relationship(), relationship);
+          if(found)
+          {
+            Box_Data_List_Related* portal_box = Gtk::manage(new Box_Data_List_Related);
+             
+            portal_box->init_db_details(relationship);
+            portal_box->show();
+            add(*portal_box);
+          }
+        }
       }
     }
   }
@@ -99,7 +125,9 @@ void FlowTableWithFields::add_layout_group(const LayoutGroup& group)
     frame->add(*alignment);
 
     FlowTableWithFields* flow_table = Gtk::manage( new FlowTableWithFields() );
-
+    add_view(flow_table); //Allow these sub-flowtables to access the document too.
+    flow_table->set_table(m_table_name);
+    
     flow_table->set_columns_count(group.m_columns_count);
     flow_table->set_padding(6);
     flow_table->show();
@@ -236,6 +264,7 @@ void FlowTableWithFields::set_field_value(const Field& field, const Gnome::Gda::
 
 void FlowTableWithFields::set_field_value(const Glib::ustring& id, const Gnome::Gda::Value& value)
 {
+  //Set widgets which should show the value of this field:
   type_list_widgets list_widgets = get_field(id);
   for(type_list_widgets::iterator iter = list_widgets.begin(); iter != list_widgets.end(); ++iter)
   {
@@ -243,6 +272,17 @@ void FlowTableWithFields::set_field_value(const Glib::ustring& id, const Gnome::
     if(datawidget)
     {
       datawidget->set_value(value);
+    }
+  }
+
+  //Refresh widgets which should show the related records for relationships that use this field:
+  type_list_widgets list_portals = get_portals(id /* from_key field name */);
+  for(type_list_widgets::iterator iter = list_portals.begin(); iter != list_portals.end(); ++iter)
+  {
+    Box_Data_List_Related* portal = dynamic_cast<Box_Data_List_Related*>(*iter);
+    if(portal)
+    {
+      portal->refresh_db_details(value /* foreign key value */, Gnome::Gda::Value() /* TODO */);
     }
   }
 }
@@ -288,6 +328,39 @@ FlowTableWithFields::type_list_widgets FlowTableWithFields::get_field(const Fiel
 FlowTableWithFields::type_list_const_widgets FlowTableWithFields::get_field(const Field& field) const
 {
   return get_field(field.get_name());
+}
+
+FlowTableWithFields::type_list_widgets FlowTableWithFields::get_portals(const Glib::ustring& from_key)
+{
+  type_list_widgets result;
+
+  //Check the single-item widgets:
+  //TODO: We could maybe make this more efficient by storing an extra list of portals when we add them.
+  for(type_vecChildren::iterator iter = m_children.begin(); iter != m_children.end(); ++iter)
+  {
+    //*iter is a FlowTableItem.
+    Box_Data_List_Related* pPortal = dynamic_cast<Box_Data_List_Related*>(iter->m_first);
+    if(pPortal)
+    {
+    }
+  }
+ 
+  //Check the sub-flowtables:
+  for(type_sub_flow_tables::const_iterator iter = m_sub_flow_tables.begin(); iter != m_sub_flow_tables.end(); ++iter)
+  {
+    FlowTableWithFields* subtable = *iter;
+    if(subtable)
+    {
+      type_list_widgets sub_list = subtable->get_portals(from_key);
+      if(!sub_list.empty())
+      {
+        //Add to the main result:
+        result.insert(result.end(), sub_list.begin(), sub_list.end());
+      }
+    }
+  }
+
+  return result;
 }
 
 FlowTableWithFields::type_list_const_widgets FlowTableWithFields::get_field(const Glib::ustring& id) const

@@ -33,9 +33,9 @@ public:
   virtual ~Box_Data_Details();
 
   
-  virtual void init_db_details(const Glib::ustring& strDatabaseName, const Glib::ustring& strTableName, const Gnome::Gda::Value& primary_key_value);
-  virtual void init_db_details(const Gnome::Gda::Value& primary_key_value);
-  virtual void init_db_details_blank();
+  virtual void init_db_details(const Glib::ustring& strTableName, const Gnome::Gda::Value& primary_key_value);
+  virtual void refresh_db_details(const Gnome::Gda::Value& primary_key_value);
+  virtual void refresh_db_details_blank();
   
   virtual Gnome::Gda::Value get_primary_key_value() const; //Actual primary key value of this record.
   virtual Gnome::Gda::Value get_primary_key_value_selected(); //Value in the primary key's cell.

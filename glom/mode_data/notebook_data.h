@@ -31,7 +31,7 @@ public:
   Notebook_Data();
   virtual ~Notebook_Data();
   
-  virtual void init_db_details(const Glib::ustring& strDatabaseName, const Glib::ustring& strTableName, const Glib::ustring& strWhereClause = "");
+  virtual void init_db_details(const Glib::ustring& strTableName, const Glib::ustring& strWhereClause = Glib::ustring());
 
   virtual void select_page_for_find_results(); //Details for 1, List for > 1.
 

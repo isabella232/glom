@@ -34,10 +34,13 @@ Base_DB::~Base_DB()
 {
 }
 
-void Base_DB::init_db_details(const Glib::ustring& strDatabaseName)
+void Base_DB::init_db_details()
 {
-  m_strDatabaseName = strDatabaseName;
+  fill_from_database();
+}
 
+void Base_DB::refresh_db_details()
+{
   fill_from_database();
 }
 
@@ -65,12 +68,6 @@ sharedptr<SharedConnection> Base_DB::connect_to_server()
   }
 
   return result;
-}
-
-
-Glib::ustring Base_DB::get_database_name()
-{
-  return m_strDatabaseName;
 }
 
 void Base_DB::handle_error(const std::exception& ex)

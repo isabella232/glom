@@ -26,16 +26,22 @@
 #include "../data_structure/layout/layoutitem_field.h"
 #include "../data_structure/layout/layoutitem_portal.h"
 #include "../data_structure/field.h"
+#include "../document/document_glom.h"
 #include <map>
 #include <list>
 
 class DataWidget;
 
-class FlowTableWithFields : public FlowTable
+class FlowTableWithFields
+  : public FlowTable,
+    public View_Composite_Glom
 {
 public: 
-  FlowTableWithFields();
+  FlowTableWithFields(const Glib::ustring& table_name = Glib::ustring());
   virtual ~FlowTableWithFields();
+
+  ///The table name is needed to discover details of relationships.
+  virtual void set_table(const Glib::ustring& table_name);
 
   /** Add a field.
    * @param title The title to show to the left of the entry.
@@ -84,6 +90,9 @@ protected:
   virtual type_list_widgets get_field(const Field& field);
   virtual type_list_const_widgets get_field(const Field& field) const;
 
+  ///Get portals whose relationships have @a from_key as the from_key.
+  virtual type_list_widgets get_portals(const Glib::ustring& from_key);
+
   int get_suitable_width(Field::glom_field_type field_type);
   void on_entry_edited(const Gnome::Gda::Value& value, Glib::ustring id);
   void on_flowtable_entry_edited(const Glib::ustring& id, const Gnome::Gda::Value& value);
@@ -107,6 +116,8 @@ protected:
   //Remember the nested FlowTables, so that we can search them for fields too:
   typedef std::list< FlowTableWithFields* > type_sub_flow_tables;
   type_sub_flow_tables m_sub_flow_tables;
+
+  Glib::ustring m_table_name;
 
   type_signal_field_edited m_signal_field_edited;
 };

@@ -29,8 +29,18 @@ public:
   Box_Data_List_Related();
   virtual ~Box_Data_List_Related();
 
-  virtual void init_db_details(const Glib::ustring& strDatabaseName, const Relationship& relationship, const Gnome::Gda::Value& foreign_key_value,  const Gnome::Gda::Value& from_table_primary_key_value);
+  /**
+   * @param Relationship: The relationship used by the parent table to get rows from this table.
+   */
+  virtual void init_db_details(const Relationship& relationship);
 
+  /**
+   * @param foreign_key_value: The value that should be found in this table.
+   * @param from_table_primary_key_value The primary key of the parent record's table, used to associate new related records.
+   */
+  virtual void refresh_db_details(const Gnome::Gda::Value& foreign_key_value, const Gnome::Gda::Value& from_table_primary_key_value);
+  
+  virtual Relationship get_relationship() const;
   virtual Field get_key_field() const;
 
   sigc::signal<void, Gnome::Gda::Value> signal_record_added;
@@ -44,6 +54,7 @@ protected:
   virtual void enable_buttons();
   
 protected:
+  Relationship m_relationship; //The relationship of the parent table to this one.
   Field m_key_field;
   Gnome::Gda::Value m_key_value;
 };

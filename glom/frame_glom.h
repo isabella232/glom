@@ -36,6 +36,8 @@
 #include "mode_design/dialog_relationships.h"
 #include "dialog_connection.h"
 
+#include "mode_data/box_data_list_related.h" //only for m_HackToFixLinkerError.
+
 class Frame_Glom :
   public PlaceHolder,
   //public Bakery::View_Composite<Document_Glom>,
@@ -131,6 +133,9 @@ protected:
 
   Dialog_Connection* m_pDialogConnection;
   Gtk::Dialog* m_pDialogConnectionFailed;
+
+  Box_Data_List_Related m_HackToFixLinkerError; //The implementation of this class does not seem to be in the library unless I do this. murrayc.
+
 };
 
 #endif //FRAME_GLOM_H

@@ -16,12 +16,6 @@ install=false
 install_location=
 type=DATA
 
-[./ChangeLog.~1.84.~]
-dist=true
-install=false
-install_location=
-type=DATA
-
 [./INSTALL]
 dist=true
 install=false
@@ -29,8 +23,8 @@ install_location=
 type=DATA
 
 [./Makefile.am]
-files=./glom.kdevprj,./AUTHORS,./omf.make,./configure.in,./README,./glom.applications,./glom.desktop,./acinclude.m4,./config.h.in,./TODO,./glom.lsm,./ChangeLog,./ChangeLog.~1.84.~,./glom.keys,./glom.mime,./NEWS,./autogen.sh,./COPYING,./INSTALL,./glom.xml,./xmldocs.make,./mkinstalldirs,./intltool-extract.in,./intltool-merge.in,./intltool-update.in,./config.guess,./config.sub,./ltmain.sh,./aclocal.m4,./configure,./install-sh,./missing,./depcomp,./config.log,./stamp-h1,./libtool,./config.status,./config.h,./intltool-extract,./intltool-merge,./intltool-update,
-sub_dirs=glom,po,docs,macros,autom4te.cache,
+files=./AUTHORS,./COPYING,./ChangeLog,./INSTALL,./NEWS,./README,./TODO,./acinclude.m4,./autogen.sh,./config.h.in,./configure.in,./glom.applications,./glom.desktop,./glom.kdevprj,./glom.keys,./glom.lsm,./glom.mime,./glom.xml,./omf.make,./xmldocs.make,./mkinstalldirs,./intltool-extract.in,./intltool-merge.in,./intltool-update.in,./config.guess,./config.sub,./ltmain.sh,./aclocal.m4,./configure,./install-sh,./missing,./depcomp,./config.log,./stamp-h1,./libtool,./config.status,./config.h,./intltool-extract,./intltool-merge,./intltool-update,
+sub_dirs=docs,glom,examples,macros,po,autom4te.cache,
 type=normal
 
 [./NEWS]
@@ -262,7 +256,7 @@ author=murrayc
 email=murrayc@murrayc_debian
 kdevprj_version=1.3
 lfv_open_groups=
-makefiles=./Makefile.am,glom/Makefile.am,glom/mode_data/Makefile.am,glom/utility_widgets/Makefile.am,glom/utility_widgets/addedel/Makefile.am,glom/utility_widgets/addedel/eggcolumnchooser/Makefile.am,glom/utility_widgets/adddel/Makefile.am,glom/utility_widgets/adddel/eggcolumnchooser/Makefile.am,glom/mode_design/Makefile.am,glom/mode_design/fields/Makefile.am,glom/data_structure/Makefile.am,glom/data_structure/layout/Makefile.am,glom/navigation/Makefile.am,glom/document/Makefile.am,glom/mode_find/Makefile.am,po/Makefile.am,docs/Makefile.am,docs/user-guide/Makefile.am,docs/user-guide/C/Makefile.am,docs/user-guide/C/figures/Makefile.am,docs/website/Makefile.am,docs/website/screenshots/Makefile.am,macros/Makefile.am,autom4te.cache/Makefile.am,
+makefiles=./Makefile.am,docs/Makefile.am,docs/user-guide/Makefile.am,docs/user-guide/C/Makefile.am,docs/user-guide/C/figures/Makefile.am,docs/website/Makefile.am,docs/website/screenshots/Makefile.am,glom/Makefile.am,glom/data_structure/Makefile.am,glom/data_structure/layout/Makefile.am,glom/document/Makefile.am,glom/mode_data/Makefile.am,glom/mode_design/Makefile.am,glom/mode_design/fields/Makefile.am,glom/mode_find/Makefile.am,glom/navigation/Makefile.am,glom/utility_widgets/Makefile.am,glom/utility_widgets/adddel/Makefile.am,glom/utility_widgets/adddel/eggcolumnchooser/Makefile.am,examples/Makefile.am,macros/Makefile.am,po/Makefile.am,autom4te.cache/Makefile.am,
 project_name=glom
 project_type=normal_empty
 sub_dir=glom/
@@ -316,7 +310,7 @@ install_location=
 type=DATA
 
 [docs/Makefile.am]
-files=docs/overview.txt,docs/developer_documentation.txt,
+files=docs/developer_documentation.txt,docs/overview.txt,
 sub_dirs=user-guide,website,
 type=normal
 
@@ -333,7 +327,7 @@ install_location=
 type=DATA
 
 [docs/user-guide/C/Makefile.am]
-files=docs/user-guide/C/legal.xml,docs/user-guide/C/glom-C.omf,docs/user-guide/C/glom.xml,docs/user-guide/C/glom-C.omf.out,docs/user-guide/C/omf_timestamp,
+files=docs/user-guide/C/glom-C.omf,docs/user-guide/C/glom.xml,docs/user-guide/C/legal.xml,docs/user-guide/C/glom-C.omf.out,docs/user-guide/C/omf_timestamp,
 sub_dirs=figures,
 type=normal
 
@@ -394,7 +388,7 @@ install_location=
 type=DATA
 
 [docs/website/screenshots/Makefile.am]
-files=docs/website/screenshots/glom_design_fields_dialog_lookup.png,docs/website/screenshots/glom_data_details.png,docs/website/screenshots/thumbnail_glom_design_fields_dialog_calculated.png,docs/website/screenshots/glom_design_fields_dialog.png,docs/website/screenshots/glom_design_layout_list.png,docs/website/screenshots/glom_design_fields.png,docs/website/screenshots/glom_design_fields_dialog_calculated.png,docs/website/screenshots/glom_data_details_related.png,docs/website/screenshots/glom_design_layout_details.png,docs/website/screenshots/glom_data_list.png,docs/website/screenshots/glom_design_relationships.png,
+files=docs/website/screenshots/glom_data_details.png,docs/website/screenshots/glom_data_details_related.png,docs/website/screenshots/glom_data_list.png,docs/website/screenshots/glom_design_fields.png,docs/website/screenshots/glom_design_fields_dialog.png,docs/website/screenshots/glom_design_fields_dialog_calculated.png,docs/website/screenshots/glom_design_fields_dialog_lookup.png,docs/website/screenshots/glom_design_layout_details.png,docs/website/screenshots/glom_design_layout_list.png,docs/website/screenshots/glom_design_relationships.png,docs/website/screenshots/thumbnail_glom_design_fields_dialog_calculated.png,
 sub_dirs=
 type=normal
 
@@ -464,9 +458,20 @@ install=false
 install_location=
 type=DATA
 
+[examples/Makefile.am]
+files=examples/README,
+sub_dirs=
+type=normal
+
+[examples/README]
+dist=true
+install=false
+install_location=
+type=DATA
+
 [glom/Makefile.am]
-files=glom/connectionpool.cc,glom/appstate.h,glom/main.cc,glom/box_db.cc,glom/test_pyembed_singleline.cc,glom/connectionpool.h,glom/notebook_glom.cc,glom/frame_glom.h,glom/test_pyembed.cc,glom/application.cc,glom/base_db.h,glom/dialog_invalid_data.cc,glom/box_db_table.h,glom/dialog_glom.h,glom/sharedptr.h,glom/test.glom,glom/box_db.h,glom/appstate.cc,glom/glom.glade,glom/application.h,glom/glom_python.h,glom/dialog_invalid_data.h,glom/notebook_glom.h,glom/dialog_glom.cc,glom/base_db.cc,glom/glom_document.dtd,glom/glom_python.cc,glom/frame_glom.cc,glom/box_db_table.cc,glom/test_pyembed,
-sub_dirs=mode_data,utility_widgets,mode_design,data_structure,navigation,document,mode_find,
+files=glom/application.cc,glom/application.h,glom/appstate.cc,glom/appstate.h,glom/base_db.cc,glom/base_db.h,glom/box_db.cc,glom/box_db.h,glom/box_db_table.cc,glom/box_db_table.h,glom/connectionpool.cc,glom/connectionpool.h,glom/dialog_connection.cc,glom/dialog_connection.h,glom/dialog_glom.cc,glom/dialog_glom.h,glom/dialog_invalid_data.cc,glom/dialog_invalid_data.h,glom/dialog_new_database.cc,glom/dialog_new_database.h,glom/frame_glom.cc,glom/frame_glom.h,glom/glom.glade,glom/glom_document.dtd,glom/glom_python.cc,glom/glom_python.h,glom/main.cc,glom/notebook_glom.cc,glom/notebook_glom.h,glom/sharedptr.h,glom/test.glom,glom/test_pyembed.cc,glom/test_pyembed_singleline.cc,glom/test_pyembed,
+sub_dirs=data_structure,document,mode_data,mode_design,mode_find,navigation,utility_widgets,
 type=prog_main
 
 [glom/application.cc]
@@ -542,7 +547,7 @@ install_location=
 type=HEADER
 
 [glom/data_structure/Makefile.am]
-files=glom/data_structure/fieldtypes.cc,glom/data_structure/field.cc,glom/data_structure/glomconversions.h,glom/data_structure/glomconversions.cc,glom/data_structure/tableinfo.h,glom/data_structure/tableinfo.cc,glom/data_structure/fieldtypes.h,glom/data_structure/field.h,glom/data_structure/relationship.h,glom/data_structure/relationship.cc,
+files=glom/data_structure/field.cc,glom/data_structure/field.h,glom/data_structure/fieldtypes.cc,glom/data_structure/fieldtypes.h,glom/data_structure/glomconversions.cc,glom/data_structure/glomconversions.h,glom/data_structure/relationship.cc,glom/data_structure/relationship.h,glom/data_structure/tableinfo.cc,glom/data_structure/tableinfo.h,
 sub_dirs=layout,
 type=normal
 
@@ -583,7 +588,7 @@ install_location=
 type=HEADER
 
 [glom/data_structure/layout/Makefile.am]
-files=glom/data_structure/layout/layoutgroup.h,glom/data_structure/layout/layoutgroup.cc,glom/data_structure/layout/layoutitem.h,glom/data_structure/layout/layoutitem_field.cc,glom/data_structure/layout/layoutitem_field.h,glom/data_structure/layout/layoutitem.cc,
+files=glom/data_structure/layout/layoutgroup.cc,glom/data_structure/layout/layoutgroup.h,glom/data_structure/layout/layoutitem.cc,glom/data_structure/layout/layoutitem.h,glom/data_structure/layout/layoutitem_field.cc,glom/data_structure/layout/layoutitem_field.h,glom/data_structure/layout/layoutitem_portal.cc,glom/data_structure/layout/layoutitem_portal.h,
 sub_dirs=
 type=normal
 
@@ -623,6 +628,18 @@ install=false
 install_location=
 type=HEADER
 
+[glom/data_structure/layout/layoutitem_portal.cc]
+dist=true
+install=false
+install_location=
+type=SOURCE
+
+[glom/data_structure/layout/layoutitem_portal.h]
+dist=true
+install=false
+install_location=
+type=HEADER
+
 [glom/data_structure/relationship.cc]
 dist=true
 install=false
@@ -647,6 +664,18 @@ install=false
 install_location=
 type=HEADER
 
+[glom/dialog_connection.cc]
+dist=true
+install=false
+install_location=
+type=SOURCE
+
+[glom/dialog_connection.h]
+dist=true
+install=false
+install_location=
+type=HEADER
+
 [glom/dialog_glom.cc]
 dist=true
 install=false
@@ -666,6 +695,18 @@ install_location=
 type=SOURCE
 
 [glom/dialog_invalid_data.h]
+dist=true
+install=false
+install_location=
+type=HEADER
+
+[glom/dialog_new_database.cc]
+dist=true
+install=false
+install_location=
+type=SOURCE
+
+[glom/dialog_new_database.h]
 dist=true
 install=false
 install_location=
@@ -731,7 +772,7 @@ install_location=
 type=SOURCE
 
 [glom/mode_data/Makefile.am]
-files=glom/mode_data/box_data_details.h,glom/mode_data/dialog_layout_list.cc,glom/mode_data/box_data_list_related.h,glom/mode_data/box_data_list_related.cc,glom/mode_data/treestore_layout.cc,glom/mode_data/box_data_list.h,glom/mode_data/notebook_data.cc,glom/mode_data/dialog_layout.h,glom/mode_data/treestore_layout.h,glom/mode_data/notebook_data.h,glom/mode_data/box_data_details.cc,glom/mode_data/box_data.cc,glom/mode_data/box_data.h,glom/mode_data/dialog_layout_details.cc,glom/mode_data/dialog_choose_field.h,glom/mode_data/dialog_layout.cc,glom/mode_data/box_data_list.cc,glom/mode_data/dialog_layout_details.h,glom/mode_data/dialog_choose_field.cc,glom/mode_data/dialog_layout_list.h,
+files=glom/mode_data/box_data.cc,glom/mode_data/box_data.h,glom/mode_data/box_data_details.cc,glom/mode_data/box_data_details.h,glom/mode_data/box_data_list.cc,glom/mode_data/box_data_list.h,glom/mode_data/box_data_list_related.cc,glom/mode_data/box_data_list_related.h,glom/mode_data/dialog_choose_field.cc,glom/mode_data/dialog_choose_field.h,glom/mode_data/dialog_choose_relationship.cc,glom/mode_data/dialog_choose_relationship.h,glom/mode_data/dialog_layout.cc,glom/mode_data/dialog_layout.h,glom/mode_data/dialog_layout_details.cc,glom/mode_data/dialog_layout_details.h,glom/mode_data/dialog_layout_list.cc,glom/mode_data/dialog_layout_list.h,glom/mode_data/notebook_data.cc,glom/mode_data/notebook_data.h,glom/mode_data/treestore_layout.cc,glom/mode_data/treestore_layout.h,
 sub_dirs=
 type=normal
 
@@ -790,6 +831,18 @@ install_location=
 type=SOURCE
 
 [glom/mode_data/dialog_choose_field.h]
+dist=true
+install=false
+install_location=
+type=HEADER
+
+[glom/mode_data/dialog_choose_relationship.cc]
+dist=true
+install=false
+install_location=
+type=SOURCE
+
+[glom/mode_data/dialog_choose_relationship.h]
 dist=true
 install=false
 install_location=
@@ -856,7 +909,7 @@ install_location=
 type=HEADER
 
 [glom/mode_design/Makefile.am]
-files=glom/mode_design/dialog_relationships.cc,glom/mode_design/box_db_table_relationships.cc,glom/mode_design/dialog_design.cc,glom/mode_design/box_db_table_relationships.h,glom/mode_design/dialog_fields.h,glom/mode_design/dialog_relationships.h,glom/mode_design/dialog_design.h,glom/mode_design/dialog_fields.cc,
+files=glom/mode_design/box_db_table_relationships.cc,glom/mode_design/box_db_table_relationships.h,glom/mode_design/dialog_design.cc,glom/mode_design/dialog_design.h,glom/mode_design/dialog_fields.cc,glom/mode_design/dialog_fields.h,glom/mode_design/dialog_relationships.cc,glom/mode_design/dialog_relationships.h,
 sub_dirs=fields,
 type=normal
 
@@ -909,7 +962,7 @@ install_location=
 type=HEADER
 
 [glom/mode_design/fields/Makefile.am]
-files=glom/mode_design/fields/combo_lookup_relationship.h,glom/mode_design/fields/dialog_fielddefinition.cc,glom/mode_design/fields/combo_textglade.h,glom/mode_design/fields/combo_fieldtype.cc,glom/mode_design/fields/dialog_fielddefinition.h,glom/mode_design/fields/combo_fieldtype.h,glom/mode_design/fields/dialog_fieldcalculation.cc,glom/mode_design/fields/box_db_table_definition.h,glom/mode_design/fields/combo_textglade.cc,glom/mode_design/fields/combo_lookup_relationship.cc,glom/mode_design/fields/box_db_table_definition.cc,glom/mode_design/fields/dialog_fieldcalculation.h,
+files=glom/mode_design/fields/box_db_table_definition.cc,glom/mode_design/fields/box_db_table_definition.h,glom/mode_design/fields/combo_fieldtype.cc,glom/mode_design/fields/combo_fieldtype.h,glom/mode_design/fields/combo_lookup_relationship.cc,glom/mode_design/fields/combo_lookup_relationship.h,glom/mode_design/fields/combo_textglade.cc,glom/mode_design/fields/combo_textglade.h,glom/mode_design/fields/dialog_fieldcalculation.cc,glom/mode_design/fields/dialog_fieldcalculation.h,glom/mode_design/fields/dialog_fielddefinition.cc,glom/mode_design/fields/dialog_fielddefinition.h,
 sub_dirs=
 type=normal
 
@@ -986,7 +1039,7 @@ install_location=
 type=HEADER
 
 [glom/mode_find/Makefile.am]
-files=glom/mode_find/box_data_details_find.cc,glom/mode_find/notebook_find.cc,glom/mode_find/notebook_find.h,glom/mode_find/box_data_details_find.h,glom/mode_find/box_data_list_find.cc,glom/mode_find/box_data_list_find.h,
+files=glom/mode_find/box_data_details_find.cc,glom/mode_find/box_data_details_find.h,glom/mode_find/box_data_list_find.cc,glom/mode_find/box_data_list_find.h,glom/mode_find/notebook_find.cc,glom/mode_find/notebook_find.h,
 sub_dirs=
 type=normal
 
@@ -1027,21 +1080,9 @@ install_location=
 type=HEADER
 
 [glom/navigation/Makefile.am]
-files=glom/navigation/box_databases.cc,glom/navigation/box_tables.cc,glom/navigation/box_tables.h,glom/navigation/box_databases.h,
+files=glom/navigation/box_tables.cc,glom/navigation/box_tables.h,
 sub_dirs=
 type=normal
-
-[glom/navigation/box_databases.cc]
-dist=true
-install=false
-install_location=
-type=SOURCE
-
-[glom/navigation/box_databases.h]
-dist=true
-install=false
-install_location=
-type=HEADER
 
 [glom/navigation/box_tables.cc]
 dist=true
@@ -1098,12 +1139,12 @@ install_location=
 type=SOURCE
 
 [glom/utility_widgets/Makefile.am]
-files=glom/utility_widgets/dialog_properties.h,glom/utility_widgets/flowtable.h,glom/utility_widgets/entryglom.cc,glom/utility_widgets/alignment_justified.h,glom/utility_widgets/datawidget.h,glom/utility_widgets/table_columns.h,glom/utility_widgets/entryglom.h,glom/utility_widgets/table_columns.cc,glom/utility_widgets/flowtablewithfields.h,glom/utility_widgets/alignment_justified.cc,glom/utility_widgets/test_flowtable.cc,glom/utility_widgets/entry_numerical.h,glom/utility_widgets/datawidget.cc,glom/utility_widgets/placeholder.h,glom/utility_widgets/flowtable.cc,glom/utility_widgets/placeholder.cc,glom/utility_widgets/entry_numerical.cc,glom/utility_widgets/dialog_properties.cc,glom/utility_widgets/flowtablewithfields.cc,glom/utility_widgets/test,
-sub_dirs=addedel,adddel,
+files=glom/utility_widgets/alignment_justified.cc,glom/utility_widgets/alignment_justified.h,glom/utility_widgets/datawidget.cc,glom/utility_widgets/datawidget.h,glom/utility_widgets/dialog_properties.cc,glom/utility_widgets/dialog_properties.h,glom/utility_widgets/entry_numerical.cc,glom/utility_widgets/entry_numerical.h,glom/utility_widgets/entryglom.cc,glom/utility_widgets/entryglom.h,glom/utility_widgets/flowtable.cc,glom/utility_widgets/flowtable.h,glom/utility_widgets/flowtablewithfields.cc,glom/utility_widgets/flowtablewithfields.h,glom/utility_widgets/placeholder.cc,glom/utility_widgets/placeholder.h,glom/utility_widgets/table_columns.cc,glom/utility_widgets/table_columns.h,glom/utility_widgets/test_flowtable.cc,glom/utility_widgets/test,
+sub_dirs=adddel,
 type=normal
 
 [glom/utility_widgets/adddel/Makefile.am]
-files=glom/utility_widgets/adddel/cellrendererpopup.cc,glom/utility_widgets/adddel/treeviewcolumn_glom.cc,glom/utility_widgets/adddel/popupentry.cc,glom/utility_widgets/adddel/adddel_withbuttons.h,glom/utility_widgets/adddel/adddel.h,glom/utility_widgets/adddel/treeviewcolumn_glom.h,glom/utility_widgets/adddel/cellrendererpopup.h,glom/utility_widgets/adddel/cellrendererlist.cc,glom/utility_widgets/adddel/popupentry.h,glom/utility_widgets/adddel/adddel.cc,glom/utility_widgets/adddel/adddel_withbuttons.cc,glom/utility_widgets/adddel/cellrendererlist.h,
+files=glom/utility_widgets/adddel/adddel.cc,glom/utility_widgets/adddel/adddel.h,glom/utility_widgets/adddel/adddel_withbuttons.cc,glom/utility_widgets/adddel/adddel_withbuttons.h,glom/utility_widgets/adddel/cellrendererlist.cc,glom/utility_widgets/adddel/cellrendererlist.h,glom/utility_widgets/adddel/cellrendererpopup.cc,glom/utility_widgets/adddel/cellrendererpopup.h,glom/utility_widgets/adddel/popupentry.cc,glom/utility_widgets/adddel/popupentry.h,glom/utility_widgets/adddel/treeviewcolumn_glom.cc,glom/utility_widgets/adddel/treeviewcolumn_glom.h,
 sub_dirs=eggcolumnchooser,
 type=normal
 
@@ -1156,7 +1197,7 @@ install_location=
 type=HEADER
 
 [glom/utility_widgets/adddel/eggcolumnchooser/Makefile.am]
-files=glom/utility_widgets/adddel/eggcolumnchooser/eggcolumnmodel.c,glom/utility_widgets/adddel/eggcolumnchooser/eggcolumnmodel.h,glom/utility_widgets/adddel/eggcolumnchooser/eggcolumnchooserdialog.c,glom/utility_widgets/adddel/eggcolumnchooser/eggcolumnchooserdialog.h,
+files=glom/utility_widgets/adddel/eggcolumnchooser/eggcolumnchooserdialog.c,glom/utility_widgets/adddel/eggcolumnchooser/eggcolumnchooserdialog.h,glom/utility_widgets/adddel/eggcolumnchooser/eggcolumnmodel.c,glom/utility_widgets/adddel/eggcolumnchooser/eggcolumnmodel.h,
 sub_dirs=
 type=normal
 
@@ -1207,14 +1248,6 @@ dist=true
 install=false
 install_location=
 type=HEADER
-
-[glom/utility_widgets/addedel/Makefile.am]
-sub_dirs=eggcolumnchooser,
-type=normal
-
-[glom/utility_widgets/addedel/eggcolumnchooser/Makefile.am]
-sub_dirs=
-type=normal
 
 [glom/utility_widgets/alignment_justified.cc]
 dist=true
@@ -1354,7 +1387,7 @@ install_location=
 type=DATA
 
 [po/Makefile.am]
-files=po/gu.po,po/sv.po,po/pt_BR.po,po/pt.po,po/it.po,po/es.po,po/de.po,po/tr.po,po/cs.po,po/nl.po,po/ChangeLog,po/POTFILES.in,po/sq.po,po/en_GB.po,po/fr.po,po/en_CA.po,po/POTFILES,po/cs.gmo,po/de.gmo,po/en_CA.gmo,po/en_GB.gmo,po/fr.gmo,po/es.gmo,po/gu.gmo,po/it.gmo,po/nl.gmo,po/pt.gmo,po/pt_BR.gmo,po/sq.gmo,po/sv.gmo,po/tr.gmo,
+files=po/ChangeLog,po/POTFILES,po/POTFILES.in,po/cs.po,po/de.po,po/en_CA.po,po/en_GB.po,po/es.po,po/fr.po,po/gu.po,po/it.po,po/nl.po,po/pa.po,po/pt.po,po/pt_BR.po,po/sq.po,po/sv.po,po/tr.po,po/zh_CN.po,po/cs.gmo,po/de.gmo,po/en_CA.gmo,po/en_GB.gmo,po/fr.gmo,po/es.gmo,po/gu.gmo,po/it.gmo,po/nl.gmo,po/pa.gmo,po/pt.gmo,po/pt_BR.gmo,po/sq.gmo,po/sv.gmo,po/tr.gmo,po/zh_CN.gmo,
 sub_dirs=
 type=po
 
@@ -1478,6 +1511,18 @@ install=false
 install_location=
 type=DATA
 
+[po/pa.gmo]
+dist=true
+install=false
+install_location=
+type=DATA
+
+[po/pa.po]
+dist=true
+install=false
+install_location=
+type=DATA
+
 [po/pt.gmo]
 dist=true
 install=false
@@ -1533,6 +1578,18 @@ install_location=
 type=DATA
 
 [po/tr.po]
+dist=true
+install=false
+install_location=
+type=DATA
+
+[po/zh_CN.gmo]
+dist=true
+install=false
+install_location=
+type=DATA
+
+[po/zh_CN.po]
 dist=true
 install=false
 install_location=

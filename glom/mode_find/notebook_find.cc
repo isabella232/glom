@@ -45,12 +45,12 @@ Notebook_Find::~Notebook_Find()
 {
 }
 
-void Notebook_Find::init_db_details(const Glib::ustring& strDatabaseName, const Glib::ustring& strTableName)
+void Notebook_Find::init_db_details(const Glib::ustring& strTableName)
 {
-  m_Box_List.init_db_details(strDatabaseName, strTableName);
+  m_Box_List.init_db_details(strTableName);
 
   Gnome::Gda::Value primary_key_value; //It's ignored anyway.
-  m_Box_Details.init_db_details(strDatabaseName, strTableName, primary_key_value);
+  m_Box_Details.init_db_details(strTableName, primary_key_value);
 }
 
 void Notebook_Find::on_page_find(Glib::ustring strWhereClause)

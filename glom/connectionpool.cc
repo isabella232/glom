@@ -148,7 +148,7 @@ sharedptr<SharedConnection> ConnectionPool::connect()
        
       if(m_GdaClient)
       {
-        //m_GdaDataSourceInfo = Gnome::Gda::DataaSourceInfo(); //init_db_details it.
+        //m_GdaDataSourceInfo = Gnome::Gda::DataSourceInfo(); //init_db_details it.
         //m_GdaDataSourceInfo->
 
         Glib::ustring cnc_string = "USER=" + m_user + ";PASSWORD=" + m_password; //TODO: Host
