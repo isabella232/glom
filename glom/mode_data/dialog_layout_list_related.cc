@@ -124,12 +124,12 @@ void Dialog_Layout_List_Related::update_ui(bool including_relationship_list)
     Document_Glom::type_mapLayoutGroupSequence mapGroups = document->get_relationship_data_layout_groups_plus_new_fields(m_layout_name, m_relationship);
 
     //If no information is stored in the document, then start with something:
-    
+
     if(mapGroups.empty())
     {
       const Glib::ustring table_name = m_relationship.get_to_table();
       type_vecFields table_fields = document->get_table_fields(table_name);
-      
+
       LayoutGroup group;
       group.set_name("main");
 

@@ -1,5 +1,14 @@
 2005-03-12  Murray Cumming <murrayc@murrayc.com>
 
+	* glom/mode_data/dialog_choose_field.cc:
+	* glom/mode_data/dialog_choose_field.h:
+	* glom/mode_data/dialog_layout_list_related.cc:
+	Changing the selected relationship when 
+	choosing a field now changes the list of 
+	available fields.
+
+2005-03-12  Murray Cumming <murrayc@murrayc.com>
+
 	* examples/example_smallbusiness.glom:
 	* glom/data_structure/layout/layoutgroup.h:
 	* glom/data_structure/layout/layoutitem_field.cc:

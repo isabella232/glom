@@ -31,6 +31,8 @@ Dialog_ChooseField::Dialog_ChooseField(BaseObjectType* cobject, const Glib::RefP
 {
   refGlade->get_widget("button_select", m_button_select);
   refGlade->get_widget_derived("combobox_relationship", m_combo_relationship);
+  m_combo_relationship->signal_changed().connect(sigc::mem_fun(*this, &Dialog_ChooseField::on_combo_relationship_changed));
+
   refGlade->get_widget("treeview_fields", m_treeview);
 
   if(m_treeview)
@@ -113,7 +115,6 @@ void Dialog_ChooseField::set_document(Document_Glom* document, const Glib::ustri
 
     for(Document_Glom::type_vecRelationships::iterator iter = vecRelationships.begin(); iter != vecRelationships.end(); ++iter)
     {
-      g_warning("debug: adding relationship: %s", iter->get_name().c_str());
       m_combo_relationship->append_text(iter->get_name());
     }
 
@@ -188,4 +189,37 @@ bool Dialog_ChooseField::get_field_chosen(LayoutItem_Field& field) const
 void Dialog_ChooseField::on_row_activated(const Gtk::TreePath& /* path */, Gtk::TreeViewColumn* /* view_column */)
 {
   response(Gtk::RESPONSE_OK);
+}
+
+void Dialog_ChooseField::on_combo_relationship_changed()
+{
+  Glib::ustring relationship_name = m_combo_relationship->get_active_text();
+
+  Document_Glom* pDocument = m_document;
+  if(pDocument)
+  {
+    //Show the list of fields from this relationship:
+
+    Document_Glom::type_vecFields vecFields;
+    if(relationship_name == m_table_name)
+      vecFields = pDocument->get_table_fields(m_table_name);
+    else
+    {
+      Relationship relationship;
+      pDocument->get_relationship(m_table_name, relationship_name, relationship);
+
+      vecFields = pDocument->get_table_fields(relationship.get_to_table());
+    }
+
+    m_model->clear();
+    for(Document_Glom::type_vecFields::const_iterator iter = vecFields.begin(); iter != vecFields.end(); ++iter)
+    {
+      Gtk::TreeModel::iterator iterRow = m_model->append();
+      Gtk::TreeModel::Row row = *iterRow;
+      row[m_ColumnsFields.m_col_name] = iter->get_name();
+      row[m_ColumnsFields.m_col_title] = iter->get_title();
+      row[m_ColumnsFields.m_col_field] = *iter;
+    }
+
+  }
 }

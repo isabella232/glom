@@ -49,7 +49,8 @@ public:
 
 protected:
 
-  void on_row_activated(const Gtk::TreePath& path, Gtk::TreeViewColumn* view_column);
+  virtual void on_row_activated(const Gtk::TreePath& path, Gtk::TreeViewColumn* view_column);
+  virtual void on_combo_relationship_changed();
 
   //Tree model columns:
   class ModelColumns_Fields : public Gtk::TreeModel::ColumnRecord
