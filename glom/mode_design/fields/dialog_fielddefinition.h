@@ -22,6 +22,7 @@
 #define DIALOG_FIELDDEFINITION_H
 
 #include "combo_textglade.h"
+#include "combo_lookup_relationship.h"
 #include "combo_fieldtype.h"
 #include <gtkmm.h>
 #include "../../utility_widgets/table_columns.h"
@@ -65,7 +66,7 @@ protected:
   Gtk::VBox* m_pBox_DefaultValue;
   Gtk::CheckButton* m_pCheck_Lookup;
   Gtk::Table* m_pTable_Lookup;
-  Combo_TextGlade* m_pCombo_LookupRelationship;
+  Combo_LookupRelationship* m_pCombo_LookupRelationship;
   Combo_TextGlade* m_pCombo_LookupField;
 
   Gtk::Entry* m_pEntry_Title;

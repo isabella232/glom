@@ -89,6 +89,8 @@ public:
   virtual Glib::ustring get_table_title(const Glib::ustring& table_name) const;
   virtual void set_table_title(const Glib::ustring& table_name, const Glib::ustring value);
 
+  virtual Glib::ustring get_default_table() const;
+  
   virtual AppState::userlevels get_userlevel() const;
 
   /** This is transitory information, not saved to disk.

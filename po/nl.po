@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GNOME 2.8\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-06-12 19:47+0200\n"
+"POT-Creation-Date: 2004-06-17 13:22+0200\n"
 "PO-Revision-Date: 2004-06-13 01:43+0200\n"
 "Last-Translator: Tino Meinen <a.t.meinen@chello.nl>\n"
 "Language-Team: Dutch <vertaling@nl.linux.org>\n"
@@ -70,7 +70,9 @@ msgid ""
 msgstr ""
 "<span weight=\"bold\" size=\"larger\">Ongeldig formaat</span>\n"
 "\n"
-"De data in het veld werd niet herkend. Probeer de data te verbeteren of te herstellen naar de vorige waarde. Hier volgt een voorbeeld van correct opgemaakte data voor dit veld.\n"
+"De data in het veld werd niet herkend. Probeer de data te verbeteren of te "
+"herstellen naar de vorige waarde. Hier volgt een voorbeeld van correct "
+"opgemaakte data voor dit veld.\n"
 
 #: glom/glom.glade.h:16
 msgid ""
@@ -82,9 +84,11 @@ msgid ""
 "\n"
 "Or would you like to create a new document, to design a new database?\n"
 msgstr ""
-"<span weight=\"bold\" size=\"larger\">Bestaand document openen, of nieuw document aanmaken</span>\n"
+"<span weight=\"bold\" size=\"larger\">Bestaand document openen, of nieuw "
+"document aanmaken</span>\n"
 "\n"
-"Wilt u een bestaand document openen, om te verbinden met een bestaande database?\n"
+"Wilt u een bestaand document openen, om te verbinden met een bestaande "
+"database?\n"
 "\n"
 "Of wilt u een nieuw document aanmaken, om een nieuwe database te ontwerpen?\n"
 
@@ -141,50 +145,58 @@ msgid "Layout"
 msgstr "Indeling"
 
 #: glom/glom.glade.h:35
+msgid "Lookup value when a field changes."
+msgstr ""
+
+#: glom/glom.glade.h:36
 msgid "Name"
 msgstr "Naam"
 
-#: glom/glom.glade.h:36
+#: glom/glom.glade.h:37
 msgid "None selected"
 msgstr "Niets geselecteerd"
 
-#: glom/glom.glade.h:37
+#: glom/glom.glade.h:38
 msgid "Password"
 msgstr "Wachtwoord"
 
 # toets?
-#: glom/glom.glade.h:38
+#: glom/glom.glade.h:39
 msgid "Primary Key"
 msgstr "Hoofdsleutel"
 
-#: glom/glom.glade.h:39
+#: glom/glom.glade.h:40
+msgid "Relationship"
+msgstr ""
+
+#: glom/glom.glade.h:41
 msgid "Revert"
 msgstr "Terugzetten"
 
-#: glom/glom.glade.h:40
+#: glom/glom.glade.h:42
 msgid "Show hidden tables"
 msgstr "Verborgen tabellen tonen"
 
-#: glom/glom.glade.h:41
+#: glom/glom.glade.h:43
 msgid "Title"
 msgstr "Titel"
 
-#: glom/glom.glade.h:42
+#: glom/glom.glade.h:44
 msgid "Type"
 msgstr "Type"
 
-#: glom/glom.glade.h:43
+#: glom/glom.glade.h:45
 msgid "Unique"
 msgstr "Uniek"
 
-#: glom/glom.glade.h:44
+#: glom/glom.glade.h:46
 msgid "User"
 msgstr "Gebruiker"
 
-#: glom/glom.glade.h:45
+#: glom/glom.glade.h:47
 msgid "example data format"
 msgstr "voorbeeld dataformaat"
 
-#: glom/glom.glade.h:46
+#: glom/glom.glade.h:48
 msgid "table name"
 msgstr "tabelnaam"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glom VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-06-14 14:45+0200\n"
+"POT-Creation-Date: 2004-06-17 13:22+0200\n"
 "PO-Revision-Date: 2004-06-14 19:30+0200\n"
 "Last-Translator: Miloslav Trmac <mitr@volny.cz>\n"
 "Language-Team: Czech <cs@li.org>\n"
@@ -70,7 +70,8 @@ msgid ""
 msgstr ""
 "<span weight=\"bold\" size=\"larger\">Neplatný formát</span>\n"
 "\n"
-"Data v poli nebyla rozpoznána. Zkuste prosím opravit data nebo se vrátit k předchozí hodnotě. Zde je příklad správně formátovaných dat pro toto pole.\n"
+"Data v poli nebyla rozpoznána. Zkuste prosím opravit data nebo se vrátit k "
+"předchozí hodnotě. Zde je příklad správně formátovaných dat pro toto pole.\n"
 
 #: glom/glom.glade.h:16
 msgid ""
@@ -82,7 +83,8 @@ msgid ""
 "\n"
 "Or would you like to create a new document, to design a new database?\n"
 msgstr ""
-"<span weight=\"bold\" size=\"larger\">Otevřít existující dokument nebo vytvořit nový</span>\n"
+"<span weight=\"bold\" size=\"larger\">Otevřít existující dokument nebo "
+"vytvořit nový</span>\n"
 "\n"
 "Chcete otevřít existující dkument, připojit se k existující databázi?\n"
 "\n"
@@ -141,49 +143,57 @@ msgid "Layout"
 msgstr "Rozložení"
 
 #: glom/glom.glade.h:35
+msgid "Lookup value when a field changes."
+msgstr ""
+
+#: glom/glom.glade.h:36
 msgid "Name"
 msgstr "Název"
 
-#: glom/glom.glade.h:36
+#: glom/glom.glade.h:37
 msgid "None selected"
 msgstr "Nic nevybráno"
 
-#: glom/glom.glade.h:37
+#: glom/glom.glade.h:38
 msgid "Password"
 msgstr "Heslo"
 
-#: glom/glom.glade.h:38
+#: glom/glom.glade.h:39
 msgid "Primary Key"
 msgstr "Primární klíč"
 
-#: glom/glom.glade.h:39
+#: glom/glom.glade.h:40
+msgid "Relationship"
+msgstr ""
+
+#: glom/glom.glade.h:41
 msgid "Revert"
 msgstr "Vrátit"
 
-#: glom/glom.glade.h:40
+#: glom/glom.glade.h:42
 msgid "Show hidden tables"
 msgstr "Zobrazovat skryté tabulky"
 
-#: glom/glom.glade.h:41
+#: glom/glom.glade.h:43
 msgid "Title"
 msgstr "Nadpis"
 
-#: glom/glom.glade.h:42
+#: glom/glom.glade.h:44
 msgid "Type"
 msgstr "Typ"
 
-#: glom/glom.glade.h:43
+#: glom/glom.glade.h:45
 msgid "Unique"
 msgstr "Jedinečný"
 
-#: glom/glom.glade.h:44
+#: glom/glom.glade.h:46
 msgid "User"
 msgstr "Uživatel"
 
-#: glom/glom.glade.h:45
+#: glom/glom.glade.h:47
 msgid "example data format"
 msgstr "ukázkový formát data"
 
-#: glom/glom.glade.h:46
+#: glom/glom.glade.h:48
 msgid "table name"
 msgstr "název tabulky"

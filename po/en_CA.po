@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glom\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-06-12 16:01+0200\n"
+"POT-Creation-Date: 2004-06-17 13:22+0200\n"
 "PO-Revision-Date: 2004-06-10 19:52-0700\n"
 "Last-Translator: Adam Weinberger <adamw@gnome.org>\n"
 "Language-Team: English/Canada <adamw@FreeBSD.org>\n"
@@ -140,50 +140,58 @@ msgid "Layout"
 msgstr "Layout"
 
 #: glom/glom.glade.h:35
+msgid "Lookup value when a field changes."
+msgstr ""
+
+#: glom/glom.glade.h:36
 msgid "Name"
 msgstr "Name"
 
-#: glom/glom.glade.h:36
+#: glom/glom.glade.h:37
 msgid "None selected"
 msgstr "None selected"
 
-#: glom/glom.glade.h:37
+#: glom/glom.glade.h:38
 msgid "Password"
 msgstr "Password"
 
-#: glom/glom.glade.h:38
+#: glom/glom.glade.h:39
 msgid "Primary Key"
 msgstr "Primary Key"
 
-#: glom/glom.glade.h:39
+#: glom/glom.glade.h:40
+msgid "Relationship"
+msgstr ""
+
+#: glom/glom.glade.h:41
 msgid "Revert"
 msgstr ""
 
-#: glom/glom.glade.h:40
+#: glom/glom.glade.h:42
 msgid "Show hidden tables"
 msgstr "Show hidden tables"
 
-#: glom/glom.glade.h:41
+#: glom/glom.glade.h:43
 msgid "Title"
 msgstr "Title"
 
-#: glom/glom.glade.h:42
+#: glom/glom.glade.h:44
 msgid "Type"
 msgstr "Type"
 
-#: glom/glom.glade.h:43
+#: glom/glom.glade.h:45
 msgid "Unique"
 msgstr "Unique"
 
-#: glom/glom.glade.h:44
+#: glom/glom.glade.h:46
 msgid "User"
 msgstr "User"
 
-#: glom/glom.glade.h:45
+#: glom/glom.glade.h:47
 msgid "example data format"
 msgstr ""
 
-#: glom/glom.glade.h:46
+#: glom/glom.glade.h:48
 msgid "table name"
 msgstr "table name"
 

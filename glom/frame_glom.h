@@ -60,6 +60,7 @@ public:
   virtual void on_menu_Navigate_Database();
   virtual void do_menu_Navigate_Database(bool bUseList = true);
   virtual void on_menu_Navigate_Table();
+  virtual void do_menu_Navigate_Table(bool open_default = false);
 
   virtual void on_menu_developer_fields();
   virtual void on_menu_developer_relationships();

@@ -912,6 +912,27 @@ void Document_Glom::emit_userlevel_changed()
   m_signal_userlevel_changed.emit(m_app_state.get_userlevel());
 }
 
+Glib::ustring Document_Glom::get_default_table() const
+{
+  const xmlpp::Element* nodeRoot = get_node_document();
+  if(nodeRoot)
+  {
+    //Look at each "table" node.
+    xmlpp::Node::NodeList listNodes = nodeRoot->get_children("table");
+    for(xmlpp::Node::NodeList::const_iterator iter = listNodes.begin(); iter != listNodes.end(); iter++)
+    {
+      const xmlpp::Element* nodeChild = dynamic_cast<const xmlpp::Element*>(*iter);
+      if(nodeChild)
+      {
+        if(get_node_attribute_value_as_bool(nodeChild, "default"))
+          return get_node_attribute_value(nodeChild, "name");
+      }
+    }
+  }
+  
+  return ""; //There is no default table.
+}
+
  
 
   

@@ -155,7 +155,7 @@ void Frame_Glom::on_Box_Databases_selected(Glib::ustring strName)
   if(pApp)
     pApp->on_database_selected(true);
 
-  on_menu_Navigate_Table();
+  do_menu_Navigate_Table(true /* open default */);
 }
 
 void Frame_Glom::on_Box_Tables_selected(Glib::ustring strName)
@@ -338,6 +338,11 @@ void Frame_Glom::do_menu_Navigate_Database(bool bUseList /* = true */)
 
 void Frame_Glom::on_menu_Navigate_Table()
 {
+  do_menu_Navigate_Table(); 
+}
+
+void Frame_Glom::do_menu_Navigate_Table(bool open_default)
+{
   if(get_document()->get_connection_database().size() == 0)
   {
     show_ok_dialog(gettext("You must choose a database first.\n Use the Navigation|Database menu item, or load a previous document."));
@@ -345,8 +350,24 @@ void Frame_Glom::on_menu_Navigate_Table()
   else
   {
     m_pBox_Tables->init_db_details( get_document()->get_connection_database());
-    //m_pDialog_Tables->set_policy(false, true, false); //TODO_port
-    m_pDialog_Tables->show();
+
+    Glib::ustring default_table_name;
+    if(open_default)
+    {
+      default_table_name = get_document()->get_default_table();
+    }
+    
+    if(!default_table_name.empty())
+    {
+      //Show the default table, and let the user navigate to another table manually if he wants:
+      show_table(default_table_name);
+    }
+    else
+    {
+      //Let the user choose a table:
+      //m_pDialog_Tables->set_policy(false, true, false); //TODO_port
+      m_pDialog_Tables->show();
+    }
   }
 }
 

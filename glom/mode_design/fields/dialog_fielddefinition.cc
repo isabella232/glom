@@ -114,7 +114,7 @@ void Dialog_FieldDefinition::set_field(const Field& field, const Glib::ustring& 
 
    for(Document_Glom::type_vecRelationships::iterator iter = vecRelationships.begin(); iter != vecRelationships.end(); ++iter)
    {
-     m_pCombo_LookupRelationship->append_text(iter->get_name());
+     m_pCombo_LookupRelationship->append_text(iter->get_name(), iter->get_from_field());
    }
   }
   
@@ -244,12 +244,10 @@ void Dialog_FieldDefinition::on_combo_lookup_relationship_changed()
         if(!to_table.empty())
         {
           //Get the fields in the other table, and add them to the combo:
-          type_vecStrings vecFields = util_vecStrings_from_Fields(get_fields_for_table(m_table_name));
-          m_pCombo_LookupField->clear_text();
-
-          for(type_vecStrings::iterator iter = vecFields.begin(); iter != vecFields.end(); ++iter)
+          type_vecFields fields_in_to_table = get_fields_for_table(to_table);
+          for(type_vecFields::iterator iter = fields_in_to_table.begin(); iter != fields_in_to_table.end(); ++iter)
           {
-            m_pCombo_LookupField->append_text(*iter);
+            m_pCombo_LookupField->append_text(iter->get_name());
           }
         }
       }
