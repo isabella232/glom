@@ -38,7 +38,6 @@ public:
    * @param group The title of the group in which this field should be shown, if any.
    */
   virtual void add_field(const Field& field, const Glib::ustring& group = "");
-  virtual void add_field(const Glib::ustring& title, const Glib::ustring& id, const Glib::ustring& group = "");
   virtual void remove_field(const Glib::ustring& id); 
   virtual EntryGlom* get_field(const Glib::ustring& id);
   virtual EntryGlom* get_field(const Field& field);
@@ -56,14 +55,13 @@ public:
 
 protected:
 
+  int get_suitable_width(FieldType::enumTypes field_type);
   void on_entry_edited( const Glib::ustring& id);
 
   class Info
   {
   public:
-    Field field; //Store the field information so we know the title, ID, and type.
-    Glib::ustring m_title;
-    Glib::ustring m_id;
+    Field m_field; //Store the field information so we know the title, ID, and type.
     Glib::ustring m_group;
     Gtk::Alignment* m_first;
     EntryGlom* m_second;

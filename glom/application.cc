@@ -256,9 +256,7 @@ void App_Glom::on_document_load()
       }
 
       //Switch to operator mode when opening new documents:
-      g_warning("debug 1");
       pDocument->set_userlevel(AppState::USERLEVEL_OPERATOR);
-      g_warning("debug 2");
             
       m_pFrame->do_menu_Navigate_Database(false); //false = don't show list, just open the current database after connecting.
     }

@@ -1,3 +1,9 @@
+2004-06-10  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/utility_widgets/flowtable_withstyles.[h|cc]: Use PangoLayout to 
+	calculate an appropriate width for fields of different types. Need to 
+	do locale-specific stuff here though.
+
 2004-06-10  Gustavo Noronha Silva  <kov@debian.org>
 
 	* configure.in: added pt_BR to ALL_LINGUAS

@@ -238,7 +238,6 @@ Glib::ustring Field::get_default_value_as_string() const
     if(value.get_value_type() == Gnome::Gda::VALUE_TYPE_STRING)
     {
        result = value.get_string();
-       g_warning("resut as string: %s", result.c_str());
     }
     else
       result = value.to_string();

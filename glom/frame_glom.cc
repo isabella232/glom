@@ -404,22 +404,16 @@ void Frame_Glom::on_Notebook_Find(Glib::ustring strWhereClause)
 
 void Frame_Glom::on_userlevel_changed(AppState::userlevels userlevel)
 {
-g_warning("Frame_Glom::on_userlevel_changed");
-
   //show user level:
   Glib::ustring user_level_name = gettext("Operator");
   if(userlevel == AppState::USERLEVEL_DEVELOPER)
     user_level_name = gettext("Developer");
 
- g_warning("Frame_Glom::on_userlevel_changed: userlevel=%s", user_level_name.c_str());
     
   if(m_pLabel_UserLevel)
     m_pLabel_UserLevel->set_text(user_level_name);
 
-  show_table_title();
-
-
-  
+  show_table_title(); 
 }
 
 void Frame_Glom::show_table_title()

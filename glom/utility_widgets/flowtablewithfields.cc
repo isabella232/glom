@@ -31,18 +31,16 @@ FlowTableWithFields::~FlowTableWithFields()
 
 void FlowTableWithFields::add_field(const Field& field, const Glib::ustring& group)
 {
-  add_field(field.get_title_or_name(), field.get_name(), group);
-}
-
-void FlowTableWithFields::add_field(const Glib::ustring& title, const Glib::ustring& id, const Glib::ustring& group)
-{
+  Glib::ustring id = field.get_name();
   type_mapFields::iterator iterFind = m_mapFields.find(id);
-  if(iterFind == m_mapFields.end())
+  if(iterFind == m_mapFields.end()) //If it is not already there.
   {
     Info info;
+    info.m_field = field;
+    
     info.m_first = Gtk::manage(new Gtk::Alignment());
 
-    Gtk::Label* label = Gtk::manage(new Gtk::Label(title));
+    Gtk::Label* label = Gtk::manage(new Gtk::Label(field.get_title_or_name()));
     info.m_first->add( *label );
     label->show();
     info.m_first->show();
@@ -50,10 +48,10 @@ void FlowTableWithFields::add_field(const Glib::ustring& title, const Glib::ustr
     info.m_first->show_all_children(); //This does not seem to work, so we show the label explicitly.
     
     info.m_second = Gtk::manage(new EntryGlom() );
+    int width = get_suitable_width(field.get_field_type().get_glom_type());
+    info.m_second->set_size_request(width, -1 /* auto */);
     info.m_second->show_all();                            
-   
-    info.m_title = title;
-    info.m_id = id;
+
     info.m_group = group;
 
     m_mapFields[id] = info;
@@ -116,9 +114,55 @@ FlowTableWithFields::type_signal_field_edited FlowTableWithFields::signal_field_
 
 void FlowTableWithFields::on_entry_edited(const Glib::ustring& id)
 {
-g_warning("on_entry_edited");
   m_signal_field_edited.emit(id);
 }
+
+int FlowTableWithFields::get_suitable_width(FieldType::enumTypes field_type)
+{
+  int result = 150;
+
+  Glib::ustring example_text;
+  switch(field_type)
+  {
+    case(FieldType::TYPE_DATE):
+    {
+      example_text = "99-99-9999"; //TODO: Get suitable text for the date as displayed in the locale.
+      break;
+    }
+    case(FieldType::TYPE_TIME):
+    {
+      example_text = "99:99:99"; //TODO: Get suitable text for the time as displayed in the locale.
+      break;
+    }
+    case(FieldType::TYPE_NUMERIC):
+    {
+      example_text = "9999999999"; 
+      break;
+    }
+    case(FieldType::TYPE_TEXT):
+    {
+      example_text = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+      break;
+    }
+    default:
+    {
+      break;
+    }
+  }
+
+  if(!example_text.empty())
+  {
+    Glib::RefPtr<Pango::Layout> refLayout = create_pango_layout(example_text);
+    int width = 0;
+    int height = 0;
+    refLayout->get_pixel_size(width, height);
+    result = width;
+  }
+
+  return result;
+}
+
+
 
 
 
