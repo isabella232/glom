@@ -259,8 +259,7 @@ bool DbAddDel::on_button_press_event_Popup(GdkEventButton *event)
     pApp->add_developer_action(m_refContextLayout); //So that it can be disabled when not in developer mode.
     pApp->update_userlevel_ui(); //Update our action's sensitivity. 
   }
-  
-  
+
   GdkModifierType mods;
   gdk_window_get_pointer( Gtk::Widget::gobj()->window, 0, 0, &mods );
   if(mods & GDK_BUTTON3_MASK)
@@ -1212,27 +1211,30 @@ void DbAddDel::on_treeview_button_press_event(GdkEventButton* event)
     Gtk::TreeView::Column* pColumn = 0;
     int cell_x = 0;
     int cell_y = 0;  
-    m_TreeView.get_path_at_pos((int)event->x, (int)event->y, path, pColumn, cell_x, cell_y);
-    
+    bool row_exists = m_TreeView.get_path_at_pos((int)event->x, (int)event->y, path, pColumn, cell_x, cell_y);
+
     //Get the row:
-    Gtk::TreeModel::iterator iterRow = m_refListStore->get_iter(path);
-    if(iterRow)
+    if(row_exists)
     {
-      //Get the column:
-      int tree_col = 0;
-      int col_index = get_count_hidden_system_columns();
-
-      typedef std::vector<Gtk::TreeView::Column*> type_vecTreeViewColumns;
-      type_vecTreeViewColumns vecColumns = m_TreeView.get_columns();
-      for(type_vecTreeViewColumns::const_iterator iter = vecColumns.begin(); iter != vecColumns.end(); iter++)
+      Gtk::TreeModel::iterator iterRow = m_refListStore->get_iter(path);
+      if(iterRow)
       {
-        if(*iter == pColumn)
-          tree_col = col_index; //Found.
+        //Get the column:
+        int tree_col = 0;
+        int col_index = get_count_hidden_system_columns();
 
-        col_index++;
+        typedef std::vector<Gtk::TreeView::Column*> type_vecTreeViewColumns;
+        type_vecTreeViewColumns vecColumns = m_TreeView.get_columns();
+        for(type_vecTreeViewColumns::const_iterator iter = vecColumns.begin(); iter != vecColumns.end(); iter++)
+        {
+          if(*iter == pColumn)
+            tree_col = col_index; //Found.
+
+          col_index++;
+        }
+
+        signal_user_activated().emit(iterRow, tree_col);
       }
-    
-      signal_user_activated().emit(iterRow, tree_col);
     }
   }
 

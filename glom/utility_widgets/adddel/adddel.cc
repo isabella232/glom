@@ -1237,27 +1237,30 @@ void AddDel::on_treeview_button_press_event(GdkEventButton* event)
     Gtk::TreeView::Column* pColumn = 0;
     int cell_x = 0;
     int cell_y = 0;  
-    m_TreeView.get_path_at_pos((int)event->x, (int)event->y, path, pColumn, cell_x, cell_y);
-    
-    //Get the row:
-    Gtk::TreeModel::iterator iterRow = m_refListStore->get_iter(path);
-    if(iterRow)
+    bool row_exists = m_TreeView.get_path_at_pos((int)event->x, (int)event->y, path, pColumn, cell_x, cell_y);
+
+    if(row_exists)
     {
-      //Get the column:
-      int tree_col = 0;
-      int col_index = get_count_hidden_system_columns();
-
-      typedef std::vector<Gtk::TreeView::Column*> type_vecTreeViewColumns;
-      type_vecTreeViewColumns vecColumns = m_TreeView.get_columns();
-      for(type_vecTreeViewColumns::const_iterator iter = vecColumns.begin(); iter != vecColumns.end(); iter++)
+      //Get the row:
+      Gtk::TreeModel::iterator iterRow = m_refListStore->get_iter(path);
+      if(iterRow)
       {
-        if(*iter == pColumn)
-          tree_col = col_index; //Found.
-
-        col_index++;
+        //Get the column:
+        int tree_col = 0;
+        int col_index = get_count_hidden_system_columns();
+  
+        typedef std::vector<Gtk::TreeView::Column*> type_vecTreeViewColumns;
+        type_vecTreeViewColumns vecColumns = m_TreeView.get_columns();
+        for(type_vecTreeViewColumns::const_iterator iter = vecColumns.begin(); iter != vecColumns.end(); iter++)
+        {
+          if(*iter == pColumn)
+            tree_col = col_index; //Found.
+  
+          col_index++;
+        }
+      
+        signal_user_activated().emit(iterRow, tree_col);
       }
-    
-      signal_user_activated().emit(iterRow, tree_col);
     }
   }
 
