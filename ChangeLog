@@ -1,3 +1,9 @@
+0.8.10:
+	
+2004-12-06  Murray Cumming  <murrayc@murrayc_debian>
+
+	* glom/glom.glade: Gave lots of dialogs default buttons.
+
 2004-12-06  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/data_structure/glom_conversions.cc: get_text_for_gda_value(): 

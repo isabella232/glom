@@ -2340,6 +2340,7 @@
 	    <widget class="GtkButton" id="okbutton1">
 	      <property name="visible">True</property>
 	      <property name="can_default">True</property>
+	      <property name="has_default">True</property>
 	      <property name="can_focus">True</property>
 	      <property name="label">gtk-open</property>
 	      <property name="use_stock">True</property>
@@ -2709,6 +2710,7 @@ Or would you like to create a new document, to design a new database?
 	    <widget class="GtkButton" id="button4">
 	      <property name="visible">True</property>
 	      <property name="can_default">True</property>
+	      <property name="has_default">True</property>
 	      <property name="can_focus">True</property>
 	      <property name="label">gtk-ok</property>
 	      <property name="use_stock">True</property>
@@ -3480,6 +3482,7 @@ Information text.
 	    <widget class="GtkButton" id="button_ok">
 	      <property name="visible">True</property>
 	      <property name="can_default">True</property>
+	      <property name="has_default">True</property>
 	      <property name="can_focus">True</property>
 	      <property name="label">gtk-ok</property>
 	      <property name="use_stock">True</property>
@@ -3729,6 +3732,7 @@ Please choose a name and title for the new database. The name should not contain
 	    <widget class="GtkButton" id="button13">
 	      <property name="visible">True</property>
 	      <property name="can_default">True</property>
+	      <property name="has_default">True</property>
 	      <property name="can_focus">True</property>
 	      <property name="relief">GTK_RELIEF_NORMAL</property>
 	      <property name="focus_on_click">True</property>
@@ -4117,6 +4121,7 @@ Please enter the connection details for your database server.</property>
 	    <widget class="GtkButton" id="button16">
 	      <property name="visible">True</property>
 	      <property name="can_default">True</property>
+	      <property name="has_default">True</property>
 	      <property name="can_focus">True</property>
 	      <property name="label">gtk-ok</property>
 	      <property name="use_stock">True</property>
@@ -4247,6 +4252,7 @@ Glom could not connect to the database server. Maybe you entered an incorrect us
 	    <widget class="GtkButton" id="button18">
 	      <property name="visible">True</property>
 	      <property name="can_default">True</property>
+	      <property name="has_default">True</property>
 	      <property name="can_focus">True</property>
 	      <property name="label">gtk-ok</property>
 	      <property name="use_stock">True</property>
@@ -4390,6 +4396,7 @@ Glom could not create the new database. Maybe you do not have the necessary acce
 	    <widget class="GtkButton" id="button21">
 	      <property name="visible">True</property>
 	      <property name="can_default">True</property>
+	      <property name="has_default">True</property>
 	      <property name="can_focus">True</property>
 	      <property name="relief">GTK_RELIEF_NORMAL</property>
 	      <property name="focus_on_click">True</property>

@@ -1,3 +1,14 @@
+0.8.10:
+
+* Added an example document.
+* Offer to create databases on the server based on documents,
+  such as examples.
+* Don't display empty dates, times, and numbers as "NULL".
+* Specify empty dates and times to server in SQL as "NULL", not 
+  as empty strings.
+* Dialogs have default buttons. 
+* Avoided a few crashes.
+
 0.8.9:
 
 * Really save details of new tables in the document.
