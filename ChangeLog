@@ -1,3 +1,8 @@
+2004-12-24  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/dialog_connection.cc: #included libintl.h to fix build on some 
+	systems. Bug 161936 from Mike Castle.
+
 2004-12-22  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/base_db.[h|]cc], and all its derived classes: 

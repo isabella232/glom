@@ -20,6 +20,7 @@
  
 #include "dialog_connection.h"
 #include "box_db.h" //For Box_DB::connect_to_server().
+#include <libintl.h>
 
 Dialog_Connection::Dialog_Connection(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
 : Gtk::Dialog(cobject),
