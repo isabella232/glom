@@ -21,6 +21,7 @@
 #include "box_data_details.h"
 #include "../data_structure/field.h"
 #include "../data_structure/relationship.h"
+#include "../data_structure/glomconversions.h"
 #include <sstream> //For stringstream
 #include <libintl.h>
 
@@ -95,21 +96,26 @@ Box_Data_Details::~Box_Data_Details()
 {
 }
 
-Glib::ustring Box_Data_Details::get_primary_key_value() const
+Gnome::Gda::Value Box_Data_Details::get_primary_key_value() const
 {
-  return m_strPrimaryKeyValue;
+  return m_primary_key_value;
 }
 
-void Box_Data_Details::init_db_details(const Glib::ustring& strDatabaseName, const Glib::ustring& strTableName, const Glib::ustring& strPrimaryKeyValue)
+void Box_Data_Details::init_db_details(const Glib::ustring& strDatabaseName, const Glib::ustring& strTableName, const Gnome::Gda::Value& primary_key_value)
 {
-  m_strPrimaryKeyValue = strPrimaryKeyValue;
+  m_primary_key_value = primary_key_value;
 
   Box_DB_Table::init_db_details(strDatabaseName, strTableName);
 }
 
-void Box_Data_Details::init_db_details(const Glib::ustring& strPrimaryKeyValue)
+void Box_Data_Details::init_db_details(const Gnome::Gda::Value& primary_key_value)
 {
-  init_db_details(get_database_name(), get_table_name(), strPrimaryKeyValue);
+  init_db_details(get_database_name(), get_table_name(), primary_key_value);
+}
+
+void Box_Data_Details::init_db_details_blank()
+{
+  init_db_details( Gnome::Gda::Value() );
 }
 
 void Box_Data_Details::fill_from_database()
@@ -120,10 +126,11 @@ void Box_Data_Details::fill_from_database()
 
   type_vecFields listFieldsToShow = get_fields_to_show();
   m_Fields =  listFieldsToShow;
-  
-  const Glib::ustring strPrimaryKeyName = get_PrimaryKey_Name();
 
-  if(strPrimaryKeyName.size() && m_strPrimaryKeyValue.size()) //If there is a record to show:
+  Field field_primary_key;
+  bool primary_key_found  = get_field_primary_key(field_primary_key);
+
+  if(primary_key_found && !GlomConversions::value_is_empty(m_primary_key_value)) //If there is a record to show:
   {
     try
     {
@@ -143,7 +150,7 @@ void Box_Data_Details::fill_from_database()
         }
 
         std::stringstream query;
-        query << "SELECT " << sql_part_fields << " FROM " << m_strTableName << " WHERE " << get_table_name() + "." + get_PrimaryKey_Name() << " = " << m_strPrimaryKeyValue;
+        query << "SELECT " << sql_part_fields << " FROM " << m_strTableName << " WHERE " << get_table_name() + "." + get_PrimaryKey_Name() << " = " << field_primary_key.sql(m_primary_key_value);
         Glib::RefPtr<Gnome::Gda::DataModel> result = connection->execute_single_command(query.str());
 
         if(result && result->get_n_rows())
@@ -245,27 +252,28 @@ void Box_Data_Details::fill_related()
            add_view(pBox); //So that it knows about the Document.
            m_Notebook_Related.pages().push_back( Gtk::Notebook_Helpers::TabElem(*pBox, relationship.get_name()) );
 
-           Gtk::Entry* pEntry = m_FlowTable.get_field(from_field);
+           EntryGlom* pEntry = m_FlowTable.get_field(from_field);
            if(pEntry)
            {
-             Glib::ustring strKeyValue = pEntry->get_text();
+             Gnome::Gda::Value value = pEntry->get_value();
 
-             Field field = get_fields_for_table_one_field(m_strTableName,  from_field);
+             Field field;
+             bool test = get_fields_for_table_one_field(m_strTableName, from_field, field);
+             if(test)
+             {
+               pBox->init_db_details(get_database_name(), relationship, value, m_primary_key_value);
+               pBox->show_all();
 
-             if(strKeyValue.size()) //Don't use NULL as a key value.
-               strKeyValue = field.sql(strKeyValue); //Quote/Escape it if necessary.
-
-             pBox->init_db_details(get_database_name(), relationship, strKeyValue, m_strPrimaryKeyValue);
-             pBox->show_all();
-
-             //Connect signals:
-             pBox->signal_record_added.connect( sigc::bind(
-               sigc::mem_fun(*this, &Box_Data_Details::on_related_record_added), relationship.get_from_field() )
-             );
-
-             pBox->signal_user_requested_details().connect( sigc::bind(
-               sigc::mem_fun(*this, &Box_Data_Details::on_related_user_requested_details), relationship.get_to_table() )
-             );
+            
+               //Connect signals:
+               pBox->signal_record_added.connect( sigc::bind(
+                 sigc::mem_fun(*this, &Box_Data_Details::on_related_record_added), relationship.get_from_field() )
+               );
+    
+               pBox->signal_user_requested_details().connect( sigc::bind(
+                 sigc::mem_fun(*this, &Box_Data_Details::on_related_user_requested_details), relationship.get_to_table() )
+               );
+             }
            }
          }
        }
@@ -278,26 +286,30 @@ void Box_Data_Details::on_button_new()
 {
   if(confirm_discard_unstored_data())
   {
-    const Glib::ustring strPrimaryKeyName = get_PrimaryKey_Name();
-    Field field;
-    bool test = get_field(strPrimaryKeyName, field);
-    if(test)
+    Field field_primary_key;
+    bool primary_key_found  = get_field_primary_key(field_primary_key);
+    if(primary_key_found)
     {
-      Gnome::Gda::FieldAttributes fieldinfo = field.get_field_info();
+      Gnome::Gda::FieldAttributes fieldinfo = field_primary_key.get_field_info();
       if(fieldinfo.get_auto_increment()) //If the primary key is an auto-increment:
       {
         //Just make a new record, and show it:
-        guint generated_id = generate_next_auto_increment(m_strTableName, strPrimaryKeyName);
-        Glib::ustring strPrimaryKeyValue = util_string_from_decimal(generated_id);
+        guint generated_id = generate_next_auto_increment(m_strTableName, field_primary_key.get_name()); //TODO: This should return a Gda::Value
 
-        record_new(strPrimaryKeyValue);
-        init_db_details(strPrimaryKeyValue);
+        //TODO: Create the Gda::Value directly from the integer.
+        bool parsed = false; 
+        Gnome::Gda::Value primary_key_value = GlomConversions::parse_value(field_primary_key.get_glom_type(), util_string_from_decimal(generated_id), parsed);
+        if(parsed)
+        {
+          record_new(primary_key_value);
+          init_db_details(primary_key_value);
+        }
       }
       else
       {
         //It's not an auto-increment primary key,
         //so just blank the fields ready for a primary key later.
-        init_db_details(""); //shows blank record.
+        init_db_details_blank(); //shows blank record.
       }
     }
 
@@ -306,7 +318,7 @@ void Box_Data_Details::on_button_new()
 
 void Box_Data_Details::on_button_del()
 {
-  if(get_primary_key_value().size() == 0)
+  if( GlomConversions::value_is_empty(get_primary_key_value()) )
   {
     //Tell user that a primary key is needed to delete a record:
     Gtk::MessageDialog dialog(gettext("This record can not be deleted because there is no primary key."));
@@ -314,13 +326,13 @@ void Box_Data_Details::on_button_del()
   }
   else
   {
-    bool bTest = record_delete(m_strPrimaryKeyValue);
+    bool bTest = record_delete(m_primary_key_value);
 
     if(bTest)
     {
       //Tell the list that it has been deleted:
       //It will go to the next (or last) record,
-      signal_record_deleted().emit(m_strPrimaryKeyValue);
+      signal_record_deleted().emit(m_primary_key_value);
     }
   }
 }
@@ -364,7 +376,7 @@ Field Box_Data_Details::get_Entered_Field(guint index) const
   return FieldResult;
 }
 
-Glib::ustring Box_Data_Details::get_primary_key_value_selected()
+Gnome::Gda::Value Box_Data_Details::get_primary_key_value_selected()
 {
 
   Glib::ustring strResult;
@@ -375,15 +387,15 @@ Glib::ustring Box_Data_Details::get_primary_key_value_selected()
     strResult = m_AddDel.get_value(uiRow);
 
 */
-  return strResult;
+  return Gnome::Gda::Value(strResult);
 }
 
-void Box_Data_Details::on_related_user_requested_details(Glib::ustring strKeyValue, Glib::ustring strTableName)
+void Box_Data_Details::on_related_user_requested_details(Gnome::Gda::Value key_value, Glib::ustring strTableName)
 {
-  signal_user_requested_related_details().emit(strTableName, strKeyValue);
+  signal_user_requested_related_details().emit(strTableName, key_value);
 }
 
-void Box_Data_Details::on_related_record_added(Glib::ustring /* strKeyValue */, Glib::ustring /* strFromKeyName */)
+void Box_Data_Details::on_related_record_added(Gnome::Gda::Value /* strKeyValue */, Glib::ustring /* strFromKeyName */)
 {
   //Prevent deletion of Related boxes.
   //One of them emitted this signal, and is probably still being edited.
@@ -449,8 +461,8 @@ void Box_Data_Details::on_flowtable_field_edited(Glib::ustring id)
   EntryGlom* entry = m_FlowTable.get_field(id);
   if(entry)
   {
-     const Glib::ustring& strPrimaryKey_Name = get_PrimaryKey_Name();
-     const Glib::ustring& strFieldName = id;
+     const Glib::ustring strPrimaryKey_Name = get_PrimaryKey_Name();
+     const Glib::ustring strFieldName = id;
      const Gnome::Gda::Value field_value = entry->get_value();
 
      if(strPrimaryKey_Name.size())
@@ -460,8 +472,8 @@ void Box_Data_Details::on_flowtable_field_edited(Glib::ustring id)
        if(!test)
          g_warning("Box_Data_Details::on_flowtable_field_edited(): field not found");
 
-       Glib::ustring primary_key_value = get_primary_key_value();
-       if(!primary_key_value.empty()) //If there is a primary key value:
+       Gnome::Gda::Value primary_key_value = get_primary_key_value();
+       if(!GlomConversions::value_is_empty(primary_key_value)) //If there is a primary key value:
        {
          Field field;
          bool test = get_field(strFieldName, field);
@@ -483,6 +495,9 @@ void Box_Data_Details::on_flowtable_field_edited(Glib::ustring id)
            }
            else
            {
+             //Get-and-set values for lookup fields, if this field triggers those relationships:
+             do_lookups(field, field_value, fieldInfoPK, primary_key_value);
+             
              //If this is a foreign key then refresh the related records:
              bool bIsForeignKey = false;
              Document_Glom::type_vecRelationships vecRelationships = m_pDocument->get_relationships(m_strTableName);
@@ -544,6 +559,43 @@ void Box_Data_Details::on_flowtable_field_edited(Glib::ustring id)
      } //if(strPrimaryKey_Name.size())
   }
 }
+
+void Box_Data_Details::do_lookups(const Field& field_changed, const Gnome::Gda::Value& field_value, const Field& primary_key, const Gnome::Gda::Value& primary_key_value)
+{
+   //Get values for lookup fields, if this field triggers those relationships:
+   //TODO_performance: There is a LOT of iterating and copying here.
+   const Glib::ustring strFieldName = field_changed.get_name();
+   type_list_lookups lookups = get_lookup_fields(strFieldName);
+   for(type_list_lookups::const_iterator iter = lookups.begin(); iter != lookups.end(); ++iter)
+   {
+     const Relationship relationship = iter->second;
+     const Field field_lookup = iter->first;
+     const Glib::ustring field_lookup_name = field_lookup.get_name();
+
+     Field field_source;
+     bool test = get_fields_for_table_one_field(relationship.get_to_table(), field_lookup.get_lookup_field(), field_source);
+     if(test)
+     {
+       Gnome::Gda::Value value = get_lookup_value(iter->second /* relationship */,  field_source /* the field to look in to get the value */, field_value /* Value of to and from fields */);
+
+       //Add it to the view:
+       EntryGlom* entry = m_FlowTable.get_field(field_lookup_name);
+       if(entry)
+         entry->set_value(value);
+
+       //Add it to the database (even if it is not shown in the view)
+       Glib::ustring strQuery = "UPDATE " + m_strTableName;
+       strQuery += " SET " + field_lookup_name + " = " + field_lookup.sql(value);
+       strQuery += " WHERE " + primary_key.get_name() + " = " + primary_key.sql(primary_key_value);
+       Query_execute(strQuery);  //TODO: Handle errors
+
+       //TODO: Handle lookups triggered by these fields (recursively)? TODO: Check for infinitely looping lookups.
+     }
+   }
+
+}
+
+
 
 
 

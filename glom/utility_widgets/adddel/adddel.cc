@@ -337,6 +337,12 @@ Glib::ustring AddDel::get_value_key_selected()
   return get_value_selected(m_col_key);
 }
 
+Gnome::Gda::Value AddDel::get_value_key_selected_as_value()
+{
+  bool parsed = false;
+  return GlomConversions::parse_value(m_key_field.get_glom_type(), get_value_key_selected(), parsed);
+}
+
 Glib::ustring AddDel::get_value_selected(guint col)
 {
   Glib::ustring strValue = get_value(get_item_selected(), col);
@@ -1463,6 +1469,12 @@ Glib::ustring AddDel::get_value_key(const Gtk::TreeModel::iterator& iter)
   return get_value(iter, m_col_key);
 }
 
+Gnome::Gda::Value AddDel::get_value_key_as_value(const Gtk::TreeModel::iterator& iter)
+{
+  bool parsed = false;
+  return GlomConversions::parse_value(m_key_field.get_glom_type(), get_value_key(iter), parsed);
+}
+
 
 void AddDel::set_value_key(const Gtk::TreeModel::iterator& iter, const Glib::ustring& strValue)
 {
@@ -1487,6 +1499,24 @@ bool AddDel::get_is_placeholder_row(const Gtk::TreeModel::iterator& iter) const
   iter->get_value(m_col_placeholder, val);
 
   return val;
+}
+
+bool AddDel::get_model_column_index(guint view_column_index, guint& model_column_index)
+{
+  //Initialize output parameter:
+  model_column_index = 0;
+
+  const guint hidden = get_count_hidden_system_columns();
+  const guint count = m_ColumnTypes.size();
+  if(hidden > count)
+    return false; //This should never happen.
+  
+  if(view_column_index >=  (count - hidden))
+    return false;
+
+  model_column_index = view_column_index + hidden; //There are 2 hidden columns at the start.
+
+  return true;
 }
 
 bool AddDel::get_view_column_index(guint model_column_index, guint& view_column_index)
@@ -1520,6 +1550,11 @@ guint AddDel::get_count_hidden_system_columns()
 void AddDel::set_rules_hint(bool val)
 {
   m_TreeView.set_rules_hint(val);
+}
+
+void AddDel::set_key_type(const Field& field)
+{
+  m_key_field = field;
 }
   
       

@@ -23,32 +23,29 @@
 
 #include "box_data_list.h"
 
-/**
-  *@author Murray Cumming
-  */
-
 class Box_Data_List_Related : public Box_Data_List
 {
 public: 
   Box_Data_List_Related();
   virtual ~Box_Data_List_Related();
 
-  virtual void init_db_details(const Glib::ustring& strDatabaseName, const Relationship& relationship, const Glib::ustring& strForeignKeyValue,  const Glib::ustring& from_table_primary_key_value);
+  virtual void init_db_details(const Glib::ustring& strDatabaseName, const Relationship& relationship, const Gnome::Gda::Value& foreign_key_value,  const Gnome::Gda::Value& from_table_primary_key_value);
 
   virtual Glib::ustring get_KeyField() const;
 
-  sigc::signal<void, Glib::ustring> signal_record_added;
+  sigc::signal<void, Gnome::Gda::Value> signal_record_added;
 
 protected:
   virtual void fill_from_database(); //Override.
 
   virtual void on_AddDel_user_added(const Gtk::TreeModel::iterator& row); //Override.
-  virtual void on_record_added(const Glib::ustring& strPrimaryKeyValue); //Override. Not a signal handler.
+  virtual void on_record_added(const Gnome::Gda::Value& primary_key_value); //Override. Not a signal handler.
 
   virtual void enable_buttons();
   
 protected:
-  Glib::ustring m_strKeyField, m_strKeyValue;
+  Glib::ustring m_strKeyField;
+  Gnome::Gda::Value m_key_value;
 };
 
 #endif

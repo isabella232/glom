@@ -19,6 +19,7 @@
  */
 
 #include "box_data_list_related.h"
+#include "../data_structure/glomconversions.h"
 #include <libintl.h>
 
 Box_Data_List_Related::Box_Data_List_Related()
@@ -29,17 +30,17 @@ Box_Data_List_Related::~Box_Data_List_Related()
 {
 }
 
-void Box_Data_List_Related::init_db_details(const Glib::ustring& strDatabaseName,  const Relationship& relationship, const Glib::ustring& strForeignKeyValue, const Glib::ustring&  /* from_table_primary_key_value */)
+void Box_Data_List_Related::init_db_details(const Glib::ustring& strDatabaseName,  const Relationship& relationship, const Gnome::Gda::Value& foreign_key_value, const Gnome::Gda::Value&  /* from_table_primary_key_value */)
 {
   m_strKeyField = relationship.get_to_field();
-  m_strKeyValue = strForeignKeyValue;
+  m_key_value = foreign_key_value;
 
   //TODO:
   //At the moment strForeignKeyValue must be SQLized already.
 
   Glib::ustring strWhereClause;
-  if(!m_strKeyField.empty() && !m_strKeyValue.empty())
-    strWhereClause = m_strKeyField + " = " + m_strKeyValue; //TODO: escape them.
+  if(!m_strKeyField.empty() && !GlomConversions::value_is_empty(m_key_value))
+    strWhereClause = m_strKeyField + " = " + m_key_value.to_string(); //TODO: Use field.sql().
 
   Box_Data_List::init_db_details(strDatabaseName, relationship.get_to_table(), strWhereClause);
 }
@@ -57,9 +58,13 @@ void Box_Data_List_Related::fill_from_database()
     if(m_has_one_or_more_records) //This was set by Box_Data_List::fill_from_database().
     {
       //Is the to_field unique? If so, there can not be more than one.
-      Field field_to = get_fields_for_table_one_field(m_strTableName, m_strKeyField);
-      if(field_to.get_field_info().get_unique_key()) //automatically true if it is a primary key
-        allow_add = false;
+      Field field_to;
+      bool test = get_fields_for_table_one_field(m_strTableName, m_strKeyField, field_to);
+      if(test)
+      {
+        if(field_to.get_field_info().get_unique_key()) //automatically true if it is a primary key
+          allow_add = false;
+      }
     }
 
     //TODO: Disable add if the from_field already has a value and the to_field is auto-incrementing because
@@ -80,10 +85,10 @@ void Box_Data_List_Related::fill_from_database()
   m_AddDel.set_allow_add(allow_add);
 }
 
-void Box_Data_List_Related::on_record_added(const Glib::ustring& strPrimaryKeyValue)
+void Box_Data_List_Related::on_record_added(const Gnome::Gda::Value& primary_key_value)
 {
   //Get row of new record:
-  Gtk::TreeModel::iterator iter = m_AddDel.get_row(strPrimaryKeyValue);
+  Gtk::TreeModel::iterator iter = m_AddDel.get_row(primary_key_value.to_string());
   if(iter)
   {
     guint iKey = 0;
@@ -91,22 +96,22 @@ void Box_Data_List_Related::on_record_added(const Glib::ustring& strPrimaryKeyVa
     if(!bTest)
        std::cout << "Box_Data_List_Related::on_record_added() field not found: " << m_strKeyField << std::endl;
 
-    Glib::ustring strKeyValue = m_AddDel.get_value(iter, m_first_col + iKey);
-    Box_Data_List::on_record_added(strPrimaryKeyValue); //adds blank row.
+    Gnome::Gda::Value key_value = m_AddDel.get_value_as_value(iter, m_first_col + iKey);
+    Box_Data_List::on_record_added(key_value); //adds blank row.
 
 
     //Make sure that the new related record is related,
     //by setting the foreign key:
     //If it's not auto-generated.
-    if(!strKeyValue.empty())
+    if(!GlomConversions::value_is_empty(key_value))
     {
       //It was auto-generated. Tell the parent about it, so it can make a link.
-      signal_record_added.emit(strKeyValue);
+      signal_record_added.emit(key_value);
     }
     else
     {
       //Create the link by setting the foreign key:
-      m_AddDel.set_value(iter, m_first_col + iKey, m_strKeyValue);
+      m_AddDel.set_value(iter, m_first_col + iKey, key_value);
 
       on_AddDel_user_changed(iter, m_first_col + iKey); //Update the database.
     }

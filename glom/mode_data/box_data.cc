@@ -19,6 +19,7 @@
  */
 
 #include "box_data.h"
+#include "../data_structure/glomconversions.h"
 #include "config.h"
 #include <libintl.h>
 
@@ -56,12 +57,12 @@ Glib::ustring Box_Data::get_WhereClause() const
     const Field& field = get_Entered_Field(i);
     Glib::ustring strClausePart;
 
-    const Glib::ustring strData = field.get_data();
-    if(strData.size())
+    const Gnome::Gda::Value data = field.get_data();
+    if(!GlomConversions::value_is_empty(data))
     {
       Gnome::Gda::FieldAttributes fieldInfo = field.get_field_info();
       //TODO: "table.name"
-      strClausePart = fieldInfo.get_name() + " LIKE " +  field.sql("%" + strData + "%"); //% is mysql wildcard for 0 or more characters.
+      strClausePart = fieldInfo.get_name() + " LIKE " +  field.sql(data); //% is mysql wildcard for 0 or more characters.
     }
 
     if(strClausePart.size())
@@ -257,33 +258,67 @@ guint Box_Data::generate_next_auto_increment(const Glib::ustring& table_name, co
   return result;
 }
 
-Box_Data::type_vecRelationships Box_Data::get_relationships_triggered_by(const Glib::ustring& field_name) const
+/** Get the fields whose values should be looked up when @a field_name changes, with
+ * the relationship used to lookup the value.
+ */
+Box_Data::type_list_lookups Box_Data::get_lookup_fields(const Glib::ustring& field_name) const
 {
-  type_vecRelationships result;
+  type_list_lookups result;
 
-  //Get all relationships for which the from_field is the specified field:
-  type_vecRelationships relationships = get_document()->get_relationships(m_strTableName);
-  for(type_vecRelationships::iterator iter = relationships.begin(); iter != relationships.end();  ++iter)
+  const Document_Glom* document = dynamic_cast<const Document_Glom*>(get_document());
+  if(document)
   {
-    if(iter->get_from_field() == field_name)
-      result.push_back(*iter);
+    for(type_vecFields::const_iterator iter = m_Fields.begin(); iter != m_Fields.end();  ++iter)
+    {
+      //Examine each field that looks up its data from a relationship:
+      if(iter->get_is_lookup())
+      {
+        //Get the relationship information:
+        Relationship relationship;
+        bool test = document->get_relationship(m_strTableName, iter->get_lookup_relationship(), relationship);
+        if(test)
+        {
+          //If the relationship is triggererd by the specified field:
+          if(relationship.get_from_field() == field_name)
+          {
+            //Add it:
+            result.push_back( type_pairFieldTrigger(*iter, relationship) );
+          }
+        }
+      }
+    }
   }
-  
+
   return result;
 }
 
-Box_Data::type_vecFields Box_Data::get_lookup_fields(const Glib::ustring& relationship_name) const
+Gnome::Gda::Value Box_Data::get_lookup_value(const Relationship& relationship, const Field& source_field, const Gnome::Gda::Value& key_value)
 {
-  type_vecFields result;
+  Gnome::Gda::Value result;
   
-  for(type_vecFields::const_iterator iter = m_Fields.begin(); iter != m_Fields.end();  ++iter)
+  Field to_key_field;
+  bool test = get_fields_for_table_one_field(relationship.get_to_table(), relationship.get_to_field(), to_key_field);
+  if(test)
   {
-    if(iter->get_lookup_relationship() == relationship_name)
-      result.push_back(*iter);
+    Glib::ustring strQuery = "SELECT " + relationship.get_to_table() + "." + source_field.get_name() + " FROM " +  relationship.get_to_table();
+    strQuery += " WHERE " + relationship.get_to_field() + " = " + to_key_field.sql(key_value);
+
+    Glib::RefPtr<Gnome::Gda::DataModel> data_model = Query_execute(strQuery);
+    if(data_model && data_model->get_n_rows())
+    {
+      //There should be only 1 row. Well, there could be more but we will ignore them.
+      result = data_model->get_value_at(0, 0);
+    }
+    else
+    {
+      handle_error();
+    }
   }
 
   return result;
 }
+  
+
 
 
   

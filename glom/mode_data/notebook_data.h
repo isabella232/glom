@@ -44,8 +44,8 @@ public:
 protected:
 
   //Signal handlers:
-  virtual void on_Details_user_requested_details(Glib::ustring strPrimaryKeyValue);
-  virtual void on_Details_user_requested_related_details(Glib::ustring strTableName, Glib::ustring strPrimaryKeyValue);
+  virtual void on_Details_user_requested_details(Gnome::Gda::Value primary_key_value);
+  virtual void on_Details_user_requested_related_details(Glib::ustring strTableName, Gnome::Gda::Value primary_key_value);
 
   //Member widgets:
   Box_Data_List m_Box_List;

@@ -79,7 +79,7 @@ void Base_DB::handle_error(const std::exception& ex)
   dialog.run();
 }
 
-void Base_DB::handle_error()
+bool Base_DB::handle_error()
 {
   sharedptr<SharedConnection> sharedconnection = connect_to_server();
   if(sharedconnection)
@@ -89,19 +89,27 @@ void Base_DB::handle_error()
     typedef std::list< Glib::RefPtr<Gnome::Gda::Error> > type_list_errors;
     type_list_errors list_errors = gda_connection->get_errors();
 
-    Glib::ustring error_details;
-    for(type_list_errors::iterator iter = list_errors.begin(); iter != list_errors.end(); ++iter)
+    if(!list_errors.empty())
     {
-      if(iter != list_errors.begin())
-        error_details += "\n"; //Add newline after each error.
+      Glib::ustring error_details;
+      for(type_list_errors::iterator iter = list_errors.begin(); iter != list_errors.end(); ++iter)
+      {
+        if(iter != list_errors.begin())
+          error_details += "\n"; //Add newline after each error.
 
-      error_details += (*iter)->get_description();
-      std::cerr << "Internal error: " << error_details << std::endl;
+        error_details += (*iter)->get_description();
+        std::cerr << "Internal error: " << error_details << std::endl;
+      }
+
+      Gtk::MessageDialog dialog(Glib::ustring("Internal error:\n") + error_details, Gtk::MESSAGE_WARNING );
+      dialog.run();
+
+      return true; //There really was an error.
     }
-
-    Gtk::MessageDialog dialog(Glib::ustring("Internal error:\n") + error_details, Gtk::MESSAGE_WARNING );
-    dialog.run();
   }
+
+   //There was no error. libgda just did not return any data, and has no concept of an empty datamodel.
+   return false;
 }
 
 
@@ -410,19 +418,14 @@ Base_DB::type_vecFields Base_DB::get_fields_for_table(const Glib::ustring& table
     for(type_vecFields::iterator iter = fieldsDatabase.begin(); iter != fieldsDatabase.end(); ++iter)
     {
       Glib::ustring field_name = iter->get_name();
-      g_warning("debug: database field_name = %s", field_name.c_str());
       
        //Look in the result so far:
        type_vecFields::const_iterator iterFind = std::find_if(result.begin(), result.end(), predicate_FieldHasName<Field>(field_name));
 
        //Add it if it is not there:
        if(iterFind == result.end() )
-       {
-         g_warning(" adding");
          result.push_back(*iter);
-       }
-       else
-         g_warning(" not addiing");
+
     }
 
     return result;

@@ -71,19 +71,19 @@ void Notebook_Data::init_db_details(const Glib::ustring& strDatabaseName, const 
   set_current_page(m_iPage_List);
 }
 
-void Notebook_Data::on_Details_user_requested_details(Glib::ustring strPrimaryKeyValue)
+void Notebook_Data::on_Details_user_requested_details(Gnome::Gda::Value primary_key_value)
 {
-  m_Box_Details.init_db_details(strPrimaryKeyValue); //Uses existing connection, database, and table.
+  m_Box_Details.init_db_details(primary_key_value); //Uses existing connection, database, and table.
   set_current_page(m_iPage_Details);
 }
 
-void Notebook_Data::on_Details_user_requested_related_details(Glib::ustring strTableName, Glib::ustring strPrimaryKeyValue)
+void Notebook_Data::on_Details_user_requested_related_details(Glib::ustring strTableName, Gnome::Gda::Value primary_key_value)
 {
   //Show a different table:
   init_db_details(m_Box_Details.get_database_name(), strTableName);
 
   //Show the specific record:
-  on_Details_user_requested_details(strPrimaryKeyValue);
+  on_Details_user_requested_details(primary_key_value);
 }
 
 void Notebook_Data::select_page_for_find_results()

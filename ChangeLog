@@ -1,4 +1,4 @@
-2004-06-17  Murray Cumming  <murrayc@murrayc.com>
+2004-06-18  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/utility_widgets/adddel.cc add_column(Field): Make the column 
 	non-editable if it is an auto-increment field, because the user should 
@@ -12,6 +12,13 @@
 	definition window update correctly after deleting a field.
 	* glom/frame_glom.cc: Update the data view when the fields window 
 	is closed, because the structure might have changed.
+	* glom/data_structure/glomconversions.cc: parse_value(): When parsing 
+	a string as a number, create a GdaNumeric-based GdaValue instead of a 
+	float, because that is the numeric type that we are using eveywhere. 
+	Actually, maybe it's not the best type.
+	* All over the place: Fixed lots of primary_key arguments to be 
+	Gnome::Gda::Values rather than strings, and therefore made sure that 
+	Field::sql() was used with them.
 
 2004-06-17  Murray Cumming  <murrayc@murrayc.com>
 

@@ -26,21 +26,19 @@
 #include "../utility_widgets/placeholder.h"
 #include "../utility_widgets/flowtablewithfields.h"
 
-/**
-  *@author Murray Cumming
-  */
-
 class Box_Data_Details : public Box_Data
 {
 public: 
   Box_Data_Details(bool bWithNavButtons = true);
   virtual ~Box_Data_Details();
+
   
-  virtual void init_db_details(const Glib::ustring& strDatabaseName, const Glib::ustring& strTableName, const Glib::ustring& strPrimaryKeyValue);
-  virtual void init_db_details(const Glib::ustring& strPrimaryKeyValue);
+  virtual void init_db_details(const Glib::ustring& strDatabaseName, const Glib::ustring& strTableName, const Gnome::Gda::Value& primary_key_value);
+  virtual void init_db_details(const Gnome::Gda::Value& primary_key_value);
+  virtual void init_db_details_blank();
   
-  virtual Glib::ustring get_primary_key_value() const; //Actual primary key value of this record.
-  virtual Glib::ustring get_primary_key_value_selected(); //Value in the primary key's cell.
+  virtual Gnome::Gda::Value get_primary_key_value() const; //Actual primary key value of this record.
+  virtual Gnome::Gda::Value get_primary_key_value_selected(); //Value in the primary key's cell.
     
   virtual Field get_Entered_Field(guint index) const;
   
@@ -52,15 +50,18 @@ public:
   type_signal_void signal_nav_next();
   type_signal_void signal_nav_last();
   
-  typedef sigc::signal<void, Glib::ustring> type_signal_record_deleted; //arg is PrimaryKey.
+  typedef sigc::signal<void, Gnome::Gda::Value> type_signal_record_deleted; //arg is PrimaryKey.   //TODO: pass by const ref?
   type_signal_record_deleted signal_record_deleted();
   
-  typedef sigc::signal<void, Glib::ustring, Glib::ustring> type_signal_user_requested_related_details; //args are TableName, PrimaryKey.
+  typedef sigc::signal<void, Glib::ustring, Gnome::Gda::Value> type_signal_user_requested_related_details; //args are TableName, PrimaryKey.
   type_signal_user_requested_related_details signal_user_requested_related_details();
    
 protected:
   virtual void fill_from_database(); //override.
   virtual void fill_related();
+
+  void do_lookups(const Field& field_changed, const Gnome::Gda::Value& field_value, const Field& primary_key, const Gnome::Gda::Value& primary_key_value);
+
 
   //Signal handlers:
   virtual void on_button_new();
@@ -72,15 +73,15 @@ protected:
   virtual void on_button_nav_last();
 
   //Signal handler: The last 2 args are bind-ed.
-  virtual void on_related_record_added(Glib::ustring strKeyValue, Glib::ustring strFromKeyName);
+  virtual void on_related_record_added(Gnome::Gda::Value key_value, Glib::ustring strFromKeyName);
 
   //Signal handler: The last arg is bind-ed.
-  virtual void on_related_user_requested_details(Glib::ustring strKeyValue, Glib::ustring strTableName);
+  virtual void on_related_user_requested_details(Gnome::Gda::Value key_value, Glib::ustring strTableName);
 
   virtual void on_flowtable_field_edited(Glib::ustring id);
 
    
-  Glib::ustring m_strPrimaryKeyValue;
+  Gnome::Gda::Value m_primary_key_value;
 
   //Member widgets:
   Gtk::VPaned m_Paned;

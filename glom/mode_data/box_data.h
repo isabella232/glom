@@ -24,10 +24,6 @@
 #include "../box_db_table.h"
 #include "dialog_layout.h"
 
-/**
-  *@author Murray Cumming
-  */
-
 class Box_Data : public Box_DB_Table
 {
 public: 
@@ -56,12 +52,17 @@ protected:
   type_vecFields get_fields_to_show() const;
   type_vecFields get_table_fields_to_show(const Glib::ustring& table_name) const;
 
-  typedef Document_Glom::type_vecRelationships type_vecRelationships;
-  type_vecRelationships get_relationships_triggered_by(const Glib::ustring& field_name) const;
+  typedef std::pair<Field, Relationship> type_pairFieldTrigger;
+  typedef std::list<type_pairFieldTrigger> type_list_lookups;
 
-  type_vecFields get_lookup_fields(const Glib::ustring& relationship_name) const;
+  /** Get the fields whose values should be looked up when @a field_name changes, with
+   * the relationship used to lookup the value.
+   */
+  type_list_lookups get_lookup_fields(const Glib::ustring& field_name) const;
 
-  static Glib::ustring value_to_string(const Gnome::Gda::Value& value);
+  /** Get the value of the @a source_field from the @a relationship, using the @a key_value.
+   */
+  Gnome::Gda::Value get_lookup_value(const Relationship& relationship, const Field& source_field, const Gnome::Gda::Value & key_value);
   
   virtual bool record_new_from_entered(); //New record with all entered field values.
   guint generate_next_auto_increment(const Glib::ustring& table_name, const Glib::ustring field_name);

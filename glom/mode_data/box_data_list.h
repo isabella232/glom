@@ -29,15 +29,15 @@ public:
   Box_Data_List();
   virtual ~Box_Data_List();
 
-  virtual Glib::ustring get_primary_key_value(const Gtk::TreeModel::iterator& row);
-  virtual Glib::ustring get_primary_key_value_selected();
+  virtual Gnome::Gda::Value get_primary_key_value(const Gtk::TreeModel::iterator& row);
+  virtual Gnome::Gda::Value get_primary_key_value_selected();
   
   virtual Field get_Entered_Field(guint index);
   
   virtual guint get_records_count() const;
     
   //Primary Key value:
-  typedef sigc::signal<void, Glib::ustring> type_signal_user_requested_details;
+  typedef sigc::signal<void, Gnome::Gda::Value> type_signal_user_requested_details;
   type_signal_user_requested_details signal_user_requested_details();
 
   //Signal Handlers:
@@ -45,11 +45,13 @@ public:
   virtual void on_details_nav_previous();
   virtual void on_details_nav_next();
   virtual void on_details_nav_last();
-  virtual void on_Details_record_deleted(Glib::ustring strPrimaryKey);
+  virtual void on_Details_record_deleted(Gnome::Gda::Value primary_key_value);
 
 protected:
   virtual void fill_from_database(); //override.
   virtual void fill_column_titles();
+
+  void do_lookups(const Gtk::TreeModel::iterator& row, const Field& field_changed, const Gnome::Gda::Value& field_value, const Field& primary_key, const Gnome::Gda::Value& primary_key_value);
 
   //Signal handlers:
   virtual void on_AddDel_user_requested_add();
@@ -60,8 +62,9 @@ protected:
 
   virtual void on_AddDel_user_changed(const Gtk::TreeModel::iterator& row, guint col);
 
-  virtual void on_record_added(const Glib::ustring& strPrimaryKey); //Not a signal handler. To be overridden.
+  virtual void on_record_added(const Gnome::Gda::Value& primary_key_value); //Not a signal handler. To be overridden.
 
+  virtual bool get_field_column_index(const Glib::ustring& field_name, guint& index) const;
   
   //Member widgers:
   mutable AddDel_WithButtons m_AddDel; //mutable because its get_ methods aren't const.

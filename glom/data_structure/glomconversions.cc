@@ -237,8 +237,25 @@ Gnome::Gda::Value GlomConversions::parse_value(Field::glom_field_type glom_type,
     double the_number = 0;
     the_stream >> the_number;  //TODO: Does this throw any exception if the text is an invalid time?
 
+    GdaNumeric gda_numeric = {0, 0, 0};
+    
+    //Then generate a canonical representation of the number:
+    Glib::ustring number_canonical_text;
+    std::stringstream clocale_stream;
+    clocale_stream.imbue( std::locale::classic() ); //The C locale.
+    clocale_stream << the_number;
+    number_canonical_text = clocale_stream.str(); //Avoid << because it does implicit character conversion (though that might not be a problem here. Not sure). murrayc
+
+    //TODO: What about the precision and width values?
+    /* From the postgres docs:
+    *  The scale of a numeric is the count of decimal digits in the fractional part, to the right of the decimal point.
+    * The precision of a numeric is the total count of significant digits in the whole number, that is, the number of digits to both sides of the decimal point.
+    * So the number 23.5141 has a precision of 6 and a scale of 4. Integers can be considered to have a scale of zero.
+    */
+    gda_numeric.number = g_strdup(number_canonical_text.c_str());
+
     success = true; //Can this ever fail?
-    return Gnome::Gda::Value(the_number);
+    return Gnome::Gda::Value(&gda_numeric);
   }
 
   success = true;
@@ -416,5 +433,29 @@ tm GlomConversions::parse_tm(const Glib::ustring& text, const std::locale& local
   return the_c_time;
 }
 */
+
+bool GlomConversions::value_is_empty(const Gnome::Gda::Value& value)
+{
+  switch(value.get_value_type())
+  {
+    case(Gnome::Gda::VALUE_TYPE_NULL):
+      return true;
+    case(Gnome::Gda::VALUE_TYPE_STRING):
+      return value.get_string().empty();
+    default:
+      return false; //None of the other types can be empty. (An empty numeric, date, or time type shows up as a null.
+  }
+}
+
+Gnome::Gda::Value GlomConversions::get_empty_value(Field::glom_field_type field_type)
+{
+  switch(field_type)
+  {
+    case(Field::TYPE_TEXT):
+      return Gnome::Gda::Value( Glib::ustring() ); //Use an empty string instead of a null for text fields, because the distinction is confusing for users, and gives no advantages.
+    default:
+      return Gnome::Gda::Value(); //A NULL instance, because there is no suitable empty value for numeric, date, or time fields.
+  }
+}
 
   

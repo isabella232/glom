@@ -47,7 +47,7 @@ Field& Field::operator=(const Field& src)
 {
   m_glom_type = src.m_glom_type;
   m_field_info = src.m_field_info;
-  m_strData = src.m_strData;
+  m_data = src.m_data;
 
   m_strTitle = src.m_strTitle;
   m_strLookupRelationship = src.m_strLookupRelationship;
@@ -60,7 +60,7 @@ bool Field::operator==(const Field& src) const
 {
   bool bResult = (m_field_info == src.m_field_info);
   bResult = bResult && (m_glom_type == src.m_glom_type);
-  bResult = bResult && (m_strData == src.m_strData);
+  bResult = bResult && (m_data == src.m_data);
 
   bResult = bResult && (m_strTitle == src.m_strTitle);
   bResult = bResult && (m_strLookupRelationship == src.m_strLookupRelationship);
@@ -97,14 +97,14 @@ void Field::set_field_info(const Gnome::Gda::FieldAttributes& fieldInfo)
   set_glom_type( get_glom_type_for_gda_type(fieldInfo.get_gdatype()) );
 }
 
-Glib::ustring Field::get_data() const
+Gnome::Gda::Value Field::get_data() const
 {
-  return m_strData;
+  return m_data;
 }
 
-void Field::set_data(const Glib::ustring& strData)
+void Field::set_data(const Gnome::Gda::Value& data)
 {
-  m_strData = strData;
+  m_data = data;
 }
 
 Glib::ustring Field::get_title() const
@@ -190,12 +190,13 @@ Glib::ustring Field::sql(const Gnome::Gda::Value& value) const
   return str;
 }
 
+/*
 Glib::ustring Field::sql(const Glib::ustring& str) const
 {
 //TODO: This method should not be used in future = sql(Value) would be more type-safe.
 
   glom_field_type type = get_glom_type();
-  if( (type == Field::TYPE_TEXT) || (type == Field::TYPE_DATE) || (type == Field::TYPE_TIME) ) //TODO: We really need to think about locales and canonical formats for dates and times.
+  if( (type == Field::TYPE_TEXT) || (type == Field::TYPE_DATE) || (type == Field::TYPE_TIME) )
     return "'" + str + "'"; //TODO: special characters?
   else
   {
@@ -205,6 +206,7 @@ Glib::ustring Field::sql(const Glib::ustring& str) const
      return str;
   }
 }
+*/
 
 Glib::ustring Field::get_name() const
 {

@@ -19,6 +19,7 @@
  */
 
 #include "box_data_list.h"
+#include "../data_structure/glomconversions.h"
 #include <sstream> //For stringstream
 #include <libintl.h>
 
@@ -173,15 +174,14 @@ void Box_Data_List::on_AddDel_user_requested_add()
 
 void Box_Data_List::on_AddDel_user_requested_edit(const Gtk::TreeModel::iterator& row)
 {
-  Glib::ustring strPrimaryKeyValue = m_AddDel.get_value_key(row); //The primary key is in the key.
+  Gnome::Gda::Value primary_key_value = m_AddDel.get_value_key_as_value(row); //The primary key is in the key.
 
-  signal_user_requested_details().emit(strPrimaryKeyValue);
+  signal_user_requested_details().emit(primary_key_value);
 }
 
 void Box_Data_List::on_AddDel_user_requested_delete(const Gtk::TreeModel::iterator& rowStart, const Gtk::TreeModel::iterator&  /* rowEnd TODO */)
 {
-  Glib::ustring strPrimaryKeyValue = m_AddDel.get_value_key(rowStart); //The primary key is in the key.
-  record_delete(strPrimaryKeyValue);
+  record_delete( get_primary_key_value(rowStart) );
 
   //Remove the row:
   m_AddDel.remove_item(rowStart);
@@ -189,7 +189,7 @@ void Box_Data_List::on_AddDel_user_requested_delete(const Gtk::TreeModel::iterat
 
 void Box_Data_List::on_AddDel_user_added(const Gtk::TreeModel::iterator& row)
 {
-  Glib::ustring strPrimaryKeyValue;
+  Gnome::Gda::Value primary_key_value;
 
   const Glib::ustring& strPrimaryKeyName = get_PrimaryKey_Name();
   Field field;
@@ -201,19 +201,21 @@ void Box_Data_List::on_AddDel_user_added(const Gtk::TreeModel::iterator& row)
   if(field.get_field_info().get_auto_increment())
   {
     //Auto-increment is awkward (we can't get the last-generated ID) with postgres, so we auto-generate it ourselves;
-    generated_id = generate_next_auto_increment(m_strTableName, strPrimaryKeyName);
-    strPrimaryKeyValue = util_string_from_decimal(generated_id);
-    //strPrimaryKeyValue = "0"; //Auto-generates
+    generated_id = generate_next_auto_increment(m_strTableName, strPrimaryKeyName);  //TODO: return a Gnome::Gda::Value of an appropriate type.
+    Glib::ustring strPrimaryKeyValue = util_string_from_decimal(generated_id);
+
+    bool parsed = false;
+    primary_key_value = GlomConversions::parse_value(field.get_glom_type(), strPrimaryKeyValue, parsed);
   }
   else
   {
-    strPrimaryKeyValue = get_primary_key_value(row);
+    primary_key_value = get_primary_key_value(row);
   }
 
   sharedptr<SharedConnection> sharedconnection = connect_to_server(); //Keep it alive while we need the data_model.
   if(sharedconnection)
   {      
-    Glib::RefPtr<Gnome::Gda::DataModel> data_model = record_new(strPrimaryKeyValue);
+    Glib::RefPtr<Gnome::Gda::DataModel> data_model = record_new(primary_key_value);
     if(data_model)
     {
       guint primary_key_field_index = 0;
@@ -226,19 +228,12 @@ void Box_Data_List::on_AddDel_user_added(const Gtk::TreeModel::iterator& row)
         //If it's an auto-increment, then get the value and show it:
         if(fieldInfo.get_auto_increment())
         {
-          unsigned long ulAutoID = generated_id; //get_last_auto_increment_value(data_model, fieldinfo.get_name());
-          if(ulAutoID)
-          {
-            m_AddDel.set_value_key(row, util_string_from_decimal(ulAutoID)); //The AddDel key is always a string.
-            m_AddDel.set_value(row, primary_key_model_col_index, ulAutoID);
-          }
-          else
-            handle_error();
+            m_AddDel.set_value_key(row, primary_key_value.to_string()); //The AddDel key is always a string.
+            m_AddDel.set_value(row, primary_key_model_col_index, primary_key_value);
         }
 
         //Allow derived class to respond to record addition.
-        strPrimaryKeyValue = m_AddDel.get_value_key(row);
-        on_record_added(strPrimaryKeyValue);
+        on_record_added(primary_key_value);
       }
     }
     else
@@ -277,8 +272,8 @@ void Box_Data_List::on_AddDel_user_reordered_columns()
 
 void Box_Data_List::on_AddDel_user_changed(const Gtk::TreeModel::iterator& row, guint col)
 {
-  const Glib::ustring& strPrimaryKeyValue = get_primary_key_value(row);
-  if(!strPrimaryKeyValue.empty()) //If the record's primary key is filled in:
+  const Gnome::Gda::Value primary_key_value = get_primary_key_value(row);
+  if(!GlomConversions::value_is_empty(primary_key_value)) //If the record's primary key is filled in:
   {
     //Just update the record:
     try
@@ -293,33 +288,17 @@ void Box_Data_List::on_AddDel_user_changed(const Gtk::TreeModel::iterator& row, 
         {
           const guint changed_field_col_index = col - m_first_col;
           
-          const Glib::ustring strPrimaryKey_Name = field_primary_key.get_name();
           const Field field = m_Fields[changed_field_col_index];
-          const Glib::ustring strFieldName = field.get_name();
 
-          const Gnome::Gda::Value strFieldValue = m_AddDel.get_value_as_value(row, col);
-
+          const Gnome::Gda::Value field_value = m_AddDel.get_value_as_value(row, col);               
           Glib::ustring strQuery = "UPDATE " + m_strTableName;
-          strQuery += " SET " + strFieldName + " = " + field.sql(strFieldValue);
+          strQuery += " SET " +  field.get_name() + " = " + field.sql(field_value);
 
-          strQuery += " WHERE " + strPrimaryKey_Name + " = " + field_primary_key.sql(strPrimaryKeyValue);
-          /* bool bTest = */ Query_execute(strQuery);  //TODO: Handle errors
+          strQuery += " WHERE " + field_primary_key.get_name() + " = " + field_primary_key.sql(primary_key_value);
+          Query_execute(strQuery);  //TODO: Handle errors
 
-          //Get values for lookup fields, if this field triggers those relationships:
-          type_vecRelationships triggered_relationships = get_relationships_triggered_by(strFieldName);
-          for(type_vecRelationships::const_iterator iter = triggered_relationships.begin(); iter != triggered_relationships.end(); ++iter)
-          {
-            type_vecFields lookup_fields = get_lookup_fields(iter->get_name());
-            for(type_vecFields::const_iterator iterFields = lookup_fields.begin(); iterFields != lookup_fields.end(); ++iterFields)
-            {
-              g_warning("Triggered field: %s", iterFields->get_name().c_str());
-            }
-            
-          }
-
-          
-          //if(!bTest)
-          //  fill_from_database(); //Replace with correct values. //TODO: Just replace this one row
+          //Get-and-set values for lookup fields, if this field triggers those relationships:
+          do_lookups(row, field, field_value, field_primary_key, primary_key_value);
         }
       }
     }
@@ -340,11 +319,49 @@ void Box_Data_List::on_AddDel_user_changed(const Gtk::TreeModel::iterator& row, 
     {
       on_AddDel_user_added(row);
 
-       const Glib::ustring& strPrimaryKeyValue = get_primary_key_value(row);
-       if(strPrimaryKeyValue.size()) //If the Add succeeeded:
+       const Glib::ustring strPrimaryKeyValue = get_primary_key_value(row).to_string(); //TODO_Value
+       if(!strPrimaryKeyValue.empty()) //If the Add succeeeded:
          on_AddDel_user_changed(row, col); //Change this field in the new record.
     }
   }
+
+}
+
+void Box_Data_List::do_lookups(const Gtk::TreeModel::iterator& row, const Field& field_changed, const Gnome::Gda::Value& field_value, const Field& primary_key, const Gnome::Gda::Value& primary_key_value)
+{
+   //Get values for lookup fields, if this field triggers those relationships:
+   //TODO_performance: There is a LOT of iterating and copying here.
+   const Glib::ustring strFieldName = field_changed.get_name();
+   type_list_lookups lookups = get_lookup_fields(strFieldName);
+   for(type_list_lookups::const_iterator iter = lookups.begin(); iter != lookups.end(); ++iter)
+   {
+     const Relationship relationship = iter->second;
+     const Field field_lookup = iter->first;
+     const Glib::ustring field_lookup_name = field_lookup.get_name();
+
+     Field field_source;
+     bool test = get_fields_for_table_one_field(relationship.get_to_table(), field_lookup.get_lookup_field(), field_source);
+     if(test)
+     {
+       Gnome::Gda::Value value = get_lookup_value(iter->second /* relationship */,  field_source /* the field to look in to get the value */, field_value /* Value of to and from fields */);
+
+       //Add it to the view:
+       guint column_index = 0;
+       bool test = get_field_column_index(field_lookup_name, column_index);
+       if(test)
+       {
+         m_AddDel.set_value(row, column_index, value);
+       }
+
+       //Add it to the database (even if it is not shown in the view)
+       Glib::ustring strQuery = "UPDATE " + m_strTableName;
+       strQuery += " SET " + field_lookup_name + " = " + field_lookup.sql(value);
+       strQuery += " WHERE " + primary_key.get_name() + " = " + primary_key.sql(primary_key_value);
+       Query_execute(strQuery);  //TODO: Handle errors
+
+       //TODO: Handle lookups triggered by these fields (recursively)? TODO: Check for infinitely looping lookups.
+     }
+   }
 
 }
 
@@ -352,7 +369,7 @@ void Box_Data_List::on_details_nav_first()
 {
   m_AddDel.select_item(m_AddDel.get_model()->children().begin(), m_first_col);
 
-  signal_user_requested_details().emit(m_AddDel.get_value_key_selected());
+  signal_user_requested_details().emit(m_AddDel.get_value_key_selected_as_value());
 }
 
 void Box_Data_List::on_details_nav_previous()
@@ -366,7 +383,7 @@ void Box_Data_List::on_details_nav_previous()
       iter--;
 
       m_AddDel.select_item(iter, m_first_col);
-      signal_user_requested_details().emit(m_AddDel.get_value_key_selected());
+      signal_user_requested_details().emit(m_AddDel.get_value_key_selected_as_value());
     }
   }
 }
@@ -382,26 +399,25 @@ void Box_Data_List::on_details_nav_next()
       iter++;    
       m_AddDel.select_item(iter, m_first_col);
 
-      signal_user_requested_details().emit(m_AddDel.get_value_key_selected());
+      signal_user_requested_details().emit(m_AddDel.get_value_key_selected_as_value());
     }
   }
 }
 
 void Box_Data_List::on_details_nav_last()
 {
-  Gtk::TreeModel::iterator iter = m_AddDel.get_model()->children().end();
-  iter--;
+  Gtk::TreeModel::iterator iter = m_AddDel.get_last_row();
   if(iter)
   {
     m_AddDel.select_item(iter, m_first_col);
-    signal_user_requested_details().emit(m_AddDel.get_value_key_selected());
+    signal_user_requested_details().emit(m_AddDel.get_value_key_selected_as_value());
   }
 }
 
-void Box_Data_List::on_Details_record_deleted(Glib::ustring strPrimaryKey)
+void Box_Data_List::on_Details_record_deleted(Gnome::Gda::Value primary_key_value)
 {
   //Find out which row is affected:
-  Gtk::TreeModel::iterator iter = m_AddDel.get_row(strPrimaryKey);
+  Gtk::TreeModel::iterator iter = m_AddDel.get_row(primary_key_value.to_string());
   if(iter)
   {
     //Remove the row:
@@ -431,15 +447,26 @@ void Box_Data_List::on_Details_record_deleted(Glib::ustring strPrimaryKey)
   }
 }
 
-Glib::ustring Box_Data_List::get_primary_key_value(const Gtk::TreeModel::iterator& row)
+Gnome::Gda::Value Box_Data_List::get_primary_key_value(const Gtk::TreeModel::iterator& row)
 {
-  //The primary key is stored in the hidden key column (as well as maybe in another visible column);
-  return m_AddDel.get_value_key(row);
+  Field field_primary_key;
+  bool test = get_field_primary_key(field_primary_key);
+  if(test)
+  {
+    const Glib::ustring str_value = m_AddDel.get_value_key(row);
+    bool parsed = false;
+    Gnome::Gda::Value value = GlomConversions::parse_value(field_primary_key.get_glom_type(), str_value, parsed);
+    if(parsed)
+      return value;
+  }
+
+  
+  return Gnome::Gda::Value(); //failed.
 }
 
-Glib::ustring Box_Data_List::get_primary_key_value_selected()
+Gnome::Gda::Value Box_Data_List::get_primary_key_value_selected()
 {
-  return m_AddDel.get_value_key_selected();
+  return Gnome::Gda::Value(m_AddDel.get_value_key_selected_as_value());
 }
 
 Field Box_Data_List::get_Entered_Field(guint index)
@@ -482,11 +509,14 @@ void Box_Data_List::fill_column_titles()
         m_first_col = col; //Remember for later.
         first_col_added = true;
       }
+
+      if(iter->get_field_info().get_primary_key())
+        m_AddDel.set_key_type(*iter);
     }
   }
 }
 
-void Box_Data_List::on_record_added(const Glib::ustring& /* strPrimaryKey */)
+void Box_Data_List::on_record_added(const Gnome::Gda::Value& /* strPrimaryKey */)
 {
 g_warning("on_record_added");
   //Overridden by Box_Data_List_Related.
@@ -496,4 +526,24 @@ g_warning("on_record_added");
 Box_Data_List::type_signal_user_requested_details Box_Data_List::signal_user_requested_details()
 {
   return m_signal_user_requested_details;
+}
+
+bool Box_Data_List::get_field_column_index(const Glib::ustring& field_name, guint& index) const
+{
+  //Initialize output parameter:
+  index = 0;
+  
+  //Get the index of the field with this name:
+  guint i = 0;
+  for(type_vecFields::const_iterator iter = m_Fields.begin(); iter != m_Fields.end(); ++iter)
+  {
+    if(iter->get_name() == field_name)
+    {
+      return m_AddDel.get_model_column_index(i, index); //Add the extra model columns to get the model column index from the field column index
+    }
+      
+    ++i;
+  }
+
+  return false; //failure.
 }

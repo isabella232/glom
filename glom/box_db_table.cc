@@ -19,6 +19,7 @@
  */
 
 #include "box_db_table.h"
+#include "data_structure/glomconversions.h"
 #include <sstream>
 
 Box_DB_Table::Box_DB_Table()
@@ -129,11 +130,13 @@ void Box_DB_Table::fill_fields()
 */
 }
 
-bool Box_DB_Table::record_delete(const Glib::ustring& strPrimaryKeyValue)
+bool Box_DB_Table::record_delete(const Gnome::Gda::Value& primary_key_value)
 {
-  if(strPrimaryKeyValue.size())
+  Field field_primary_key;
+  bool test = get_field_primary_key(field_primary_key);
+  if(test && !GlomConversions::value_is_empty(primary_key_value))
   {
-    return Query_execute( "DELETE FROM " + m_strTableName + " WHERE " + get_table_name() + "." + get_PrimaryKey_Name() + " = " + strPrimaryKeyValue );
+    return Query_execute( "DELETE FROM " + m_strTableName + " WHERE " + m_strTableName + "." + field_primary_key.get_name() + " = " + field_primary_key.sql(primary_key_value) );
   }
   else
   {
@@ -141,14 +144,19 @@ bool Box_DB_Table::record_delete(const Glib::ustring& strPrimaryKeyValue)
   }
 }
 
-Glib::RefPtr<Gnome::Gda::DataModel> Box_DB_Table::record_new(Glib::ustring strPrimaryKeyValue /* = "" */)
+Glib::RefPtr<Gnome::Gda::DataModel> Box_DB_Table::record_new(Gnome::Gda::Value primary_key_value)
 {
-  if(strPrimaryKeyValue.size() == 0)
-  {
-    strPrimaryKeyValue = "0"; //To auto-increment.
-  }
+g_warning("Box_DB_Table::record_new()");
+//TODO: I don't think this method is ever called. murrayc.
 
-  return Query_execute( "INSERT INTO " + m_strTableName + " (" + get_PrimaryKey_Name() + ") VALUES (" + strPrimaryKeyValue + ")" );
+  Field field_primary_key;
+  bool test = get_field_primary_key(field_primary_key);
+  if(test && !GlomConversions::value_is_empty(primary_key_value))
+  {   
+    return Query_execute( "INSERT INTO " + m_strTableName + " (" + get_PrimaryKey_Name() + ") VALUES (" + field_primary_key.sql(primary_key_value) + ")" );
+  }
+  else
+    return Glib::RefPtr<Gnome::Gda::DataModel>();
 }
 
 guint Box_DB_Table::get_Entered_Field_count() const
@@ -211,6 +219,36 @@ bool Box_DB_Table::get_field_primary_key(const type_vecFields& fields, guint& fi
     if(fields[col].get_field_info().get_primary_key())
     {
       field_column = col;
+      return true;
+    }
+    else
+    {
+      ++col;
+    }
+  }
+
+  return false; //Not found.
+}
+
+bool Box_DB_Table::get_field_primary_key(Field& field) const
+{
+ return get_field_primary_key(m_Fields, field);
+}
+
+//static:
+bool Box_DB_Table::get_field_primary_key(const type_vecFields& fields, Field& field)
+{
+  //Initialize input parameter:
+  field = Field();
+
+  //TODO_performance: Cache the primary key?
+  guint col = 0;
+  guint cols_count = fields.size();
+  while(col < cols_count)
+  {
+    if(fields[col].get_field_info().get_primary_key())
+    {
+      field = fields[col];
       return true;
     }
     else
@@ -298,16 +336,20 @@ Box_DB_Table::type_map_valuetypes Box_DB_Table::get_field_type_names()
   return mapTypes;
 }
 
-Field Box_DB_Table::get_fields_for_table_one_field(const Glib::ustring& table_name, const Glib::ustring& field_name) const
+bool Box_DB_Table::get_fields_for_table_one_field(const Glib::ustring& table_name, const Glib::ustring& field_name, Field& field) const
 {
-  Field result;
+  //Initialize output parameter:
+  Field result = Field();
 
   type_vecFields fields =  get_fields_for_table(table_name);
   type_vecFields::iterator iter = std::find_if(fields.begin(), fields.end(), predicate_FieldHasName<Field>(field_name));
   if(iter != fields.end()) //TODO: Handle error?
-    result = *iter;  
+  {
+    field = *iter;
+    return true;
+  }
 
-  return result;
+  return false;
 }
 
 

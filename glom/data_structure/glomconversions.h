@@ -40,6 +40,9 @@ namespace GlomConversions
 
   Glib::ustring format_tm(const tm& tm_data, const std::locale& locale, char format);
   //static tm parse_tm(const Glib::ustring& text, const std::locale& locale, char format);
+
+  bool value_is_empty(const Gnome::Gda::Value& value);
+  Gnome::Gda::Value get_empty_value(Field::glom_field_type field_type);
 };
 
 #endif //GLOM_DATASTRUCTURE_GLOMCONVERSIONS_H

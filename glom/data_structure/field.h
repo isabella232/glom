@@ -85,8 +85,9 @@ public:
   /// Ignores any part of FieldAttributes that libgda does not properly fill.
   virtual bool field_info_from_database_is_equal(const Gnome::Gda::FieldAttributes& field);
 
-  virtual Glib::ustring get_data() const;
-  virtual void set_data(const Glib::ustring& strData);
+  //These are not used much:
+  virtual Gnome::Gda::Value get_data() const;
+  virtual void set_data(const Gnome::Gda::Value& value);
 
   virtual Glib::ustring get_title() const;
   virtual void set_title(const Glib::ustring& strTitle);
@@ -108,7 +109,7 @@ public:
 
   /** Escape the string so that it can be used in a SQL command.
    */
- Glib::ustring sql(const Glib::ustring& str) const;
+ //Glib::ustring sql(const Glib::ustring& str) const;
 
   /** Escape the value so that it can be used in a SQL command.
    */
@@ -147,7 +148,7 @@ protected:
   glom_field_type m_glom_type;
   Gnome::Gda::FieldAttributes m_field_info;
 
-  Glib::ustring m_strData;
+  Gnome::Gda::Value m_data; //Not used much.
   Glib::ustring m_strTitle;
   Glib::ustring m_strLookupRelationship, m_strLookupField;
 };

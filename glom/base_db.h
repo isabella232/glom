@@ -72,10 +72,9 @@ protected:
   guint util_decimal_from_string(const Glib::ustring& str);
 
   static type_vecStrings util_vecStrings_from_Fields(const type_vecFields& fields);
-
-    
+  
   virtual void handle_error(const std::exception& ex); //TODO_port: This is probably useless now.
-  virtual void handle_error();
+  virtual bool handle_error();
 
   virtual Glib::RefPtr<Gnome::Gda::DataModel> Query_execute(const Glib::ustring& strQuery);
 

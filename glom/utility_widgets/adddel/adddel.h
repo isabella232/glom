@@ -21,10 +21,6 @@
 #ifndef ADDDEL_H
 #define ADDDEL_H
 
-/**
-  *@author Murray Cumming
-  */
-
 #include "gtkmm.h"
 #include "../../data_structure/field.h"
 #include <libgdamm.h>
@@ -98,13 +94,18 @@ public:
    */
   virtual Glib::ustring get_value_key(const Gtk::TreeModel::iterator& iter);
 
+  /** Get the row's hidden key
+   */
+  virtual Gnome::Gda::Value get_value_key_as_value(const Gtk::TreeModel::iterator& iter);
+
   /** Set the row's hidden key
    */
   virtual void set_value_key(const Gtk::TreeModel::iterator& iter, const Glib::ustring& strValue);
 
   virtual Glib::ustring get_value_selected(guint col);
   virtual Glib::ustring get_value_key_selected();
-
+  virtual Gnome::Gda::Value get_value_key_selected_as_value();
+  
   virtual Gtk::TreeModel::iterator get_item_selected();
 
   virtual bool select_item(const Gtk::TreeModel::iterator& iter, guint column, bool start_editing = false);  //bool indicates success.
@@ -130,6 +131,8 @@ public:
   virtual void set_select_text(const Glib::ustring& strVal);
   virtual Glib::ustring get_select_text() const;
 
+  //Use this in order to use get_value_key_as_value().
+  virtual void set_key_type(const Field& field);
  
   virtual guint add_column(const AddDelColumnInfo& column_info);
   virtual guint add_column(const Glib::ustring& strTitle, AddDelColumnInfo::enumStyles style = AddDelColumnInfo::STYLE_Text, bool editable = true, bool visible = true);
@@ -200,6 +203,11 @@ public:
 
   typedef sigc::signal<void> type_signal_user_reordered_columns;
   type_signal_user_reordered_columns signal_user_reordered_columns();
+
+  bool get_model_column_index(guint view_column_index, guint& model_column_index);
+
+  virtual Gtk::TreeModel::iterator get_last_row();
+  virtual Gtk::TreeModel::iterator get_last_row() const;
   
 protected:
 
@@ -214,8 +222,7 @@ protected:
   ///Add a blank row, or return the existing blank row if there already is one.
   virtual Gtk::TreeModel::iterator get_next_available_row_with_add_if_necessary();
   virtual void add_blank();
-  virtual Gtk::TreeModel::iterator get_last_row();
-  virtual Gtk::TreeModel::iterator get_last_row() const;
+
   
   //Signal handlers:
   virtual void on_treeview_cell_edited(const Glib::ustring& path_string, const Glib::ustring& new_text, int model_column_index);
@@ -290,6 +297,8 @@ protected:
   bool m_auto_add;
   bool m_allow_add;
   bool m_allow_delete;
+
+  Field m_key_field;
   
   //signals:
   type_signal_user_added m_signal_user_added;
