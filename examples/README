@@ -1,0 +1,6 @@
+These are examples of databases that could be created with Glom. You might even use an example as a starting point for your own database.
+
+When you open these Glom documents, Glom will offer to create the database on your database server.
+
+* example_smallbusiness:
+Staff, Products, Invoices, Purchase Orders

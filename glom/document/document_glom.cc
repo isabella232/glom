@@ -603,6 +603,9 @@ void Document_Glom::set_modified(bool value)
 
 void Document_Glom::load_after_layout_group(const xmlpp::Element* node, LayoutGroup& group)
 {
+  if(!node)
+    return;
+    
   //Get the group details:
   group.set_name( get_node_attribute_value(node, "name") );
   group.m_title = get_node_attribute_value(node, "title");
@@ -615,24 +618,26 @@ void Document_Glom::load_after_layout_group(const xmlpp::Element* node, LayoutGr
   for(xmlpp::Node::NodeList::iterator iter = listNodes.begin(); iter != listNodes.end(); ++iter)
   {
     const xmlpp::Element* element = dynamic_cast<const xmlpp::Element*>(*iter);
-
-    if(element->get_name() == "data_layout_item")
+    if(element)
     {
-      LayoutItem_Field item;
+      if(element->get_name() == "data_layout_item")
+      {
+        LayoutItem_Field item;
 
-      item.set_name( get_node_attribute_value(element, "name") );
+        item.set_name( get_node_attribute_value(element, "name") );
 
-      const guint sequence = get_node_attribute_value_as_decimal(element, "sequence");
-      item.m_sequence = sequence;
-      group.add_item(item, sequence);
-    }
-    else if(element->get_name() == "data_layout_group")
-    {
-      LayoutGroup child_group;
-      //Recurse:
-      load_after_layout_group(element, child_group);
+        const guint sequence = get_node_attribute_value_as_decimal(element, "sequence");
+        item.m_sequence = sequence;
+        group.add_item(item, sequence);
+      }
+      else if(element->get_name() == "data_layout_group")
+      {
+        LayoutGroup child_group;
+        //Recurse:
+        load_after_layout_group(element, child_group);
 
-      group.add_item(child_group);
+        group.add_item(child_group);
+      }
     }
   }                          
 }
