@@ -13,8 +13,7 @@ libutility_widgets_a_SOURCES = alignment_justified.cc alignment_justified.h \
                                placeholder.cc placeholder.h \
                                table_columns.cc table_columns.h
 
-libutility_widgets_a_LIBADD = adddel/libutility_widgets_adddel.a \
-                              db_adddel/libutility_widgets_db_adddel.a
+libutility_widgets_a_LIBADD = adddel/libutility_widgets_adddel.a db_adddel/libutility_widgets_db_adddel.a
 
 
 noinst_PROGRAMS = test

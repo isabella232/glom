@@ -135,8 +135,6 @@ protected:
   Gtk::Dialog* m_pDialogConnectionFailed;
 
   Box_Data_List_Related m_HackToFixLinkerError; //The implementation of this class does not seem to be in the library unless I do this. murrayc.
-  DbAddDel_WithButtons m_HackToFixLinkerError2; //ditto.
-
 };
 
 #endif //FRAME_GLOM_H
