@@ -116,7 +116,7 @@ msgid ""
 "This data can not be stored in the database because you have not provided a primary key.\n"
 "Do you really want to discard this data?"
 msgstr ""
-"Questa informazione non può essere salvata nel database perche tu non hai fornito una chiave primaria.\n"
+"Questa informazione non puo' essere salvata nel database perche tu non hai fornito una chiave primaria.\n"
 "Vuoi abbandonare la modifica?"
 
 #: glom/Mode_Data/Box_Data_Details.cc:42
@@ -125,7 +125,7 @@ msgid ""
 " Click [New] to add a new record.\n"
 " Leave automatic ID fields empty - they will be filled for you."
 msgstr ""
-"Quando tu cambi un dato in un campo il database è aggiornato immediatamente.\n"
+"Quando tu cambi un dato in un campo il database e' aggiornato immediatamente.\n"
 " Clicca [Nuovo] per Aggiungere un nuovo record.\n"
 " Lascia i campi ID automatici vuoti - saranno riempiti per te."
 
@@ -137,7 +137,7 @@ msgstr "<b>Records Correlati</b>"
 #. Tell user that a primary key is needed to delete a record:
 #: glom/Mode_Data/Box_Data_Details.cc:318
 msgid "This record can not be deleted because there is no primary key."
-msgstr "Questo record non può essere cancellato perchè non c'è nessuna chiave primaria."
+msgstr "Questo record non puo' essere cancellato perche' non c'e' nessuna chiave primaria."
 
 #: glom/Mode_Data/Box_Data_List.cc:29
 msgid ""
@@ -148,7 +148,7 @@ msgid ""
 msgstr ""
 "Quando tu cambi un dato in un campo il database e' aggiornato immediatamente.\n"
 "Premi [Aaggiungi] o inserisci data nell'ultima riga per aggiungere un nuovo record.\n"
-"Lascia i campi ID automatici vuoti - saranno riempiti per te.\ Soltanto i primi 100 record sono mostrati."
+"Lascia i campi ID automatici vuoti - saranno riempiti per te.\n Soltanto i primi 100 record sono mostrati."
 
 #. Tell user that they can't do that:
 #: glom/Mode_Data/Box_Data_List_Related.cc:146
@@ -158,8 +158,8 @@ msgid ""
 "because the relationship uses a unique key."
 msgstr ""
 "Hai tentato di aggiungere un nuovo record relazionato, \n"
-"ma ci può solo essere un record relazionato, \n"
-"perchè la relazione usa una chiave univoca."
+"ma ci puo' solo essere un record relazionato, \n"
+"perche' la relazione usa una chiave univoca."
 
 #. Add Pages:
 #: glom/Mode_Data/Notebook_Data.cc:26
@@ -179,7 +179,7 @@ msgid ""
 "Click [Edit] to edit the field definition in more detail.\n"
 "Use the Mode menu to see Data or perform a Find."
 msgstr ""
-"Premi [Modifica] per modificare la definizione del campo più in dettaglio.\n"
+"Premi [Modifica] per modificare la definizione del campo piu' in dettaglio.\n"
 "Usa il menu Modo per vedere i dati o per pare una ricerca."
 
 #: glom/Mode_Design/Fields/Box_DB_Table_Definition.cc:35
@@ -199,7 +199,7 @@ msgstr "Tipo"
 #: glom/Mode_Design/Fields/Box_DB_Table_Definition.cc:175
 #: glom/Mode_Design/Fields/Box_DB_Table_Definition.cc:272
 msgid "This database field was created or edited outside of Glom. It has a data type that is not supported by Glom. Your system administrator may be able to correct this."
-msgstr "Questo campo database  è stato creato o editato fuori da Glom. Ha un data type che non è sopportato da Glom. Il tuo system administrator potrebbe essere in grado di correggere questo problema."
+msgstr "Questo campo database e' stato creato o editato fuori da Glom. Ha un data type che non e' sopportato da Glom. Il tuo system administrator potrebbe essere in grado di correggere questo problema."
 
 #: glom/Mode_Design/Box_DB_Table_Relationships.cc:28
 #: glom/Mode_Design/Box_DB_Table_Relationships.cc:30
@@ -225,7 +225,7 @@ msgid ""
 " Glom will then change to Data mode to display the results."
 msgstr ""
 "Inserisci il criterio di ricerca e premi [Trova]\n"
-"Glom cambierà poi al modo Data per mostrare i risultati."
+"Glom cambiera' poi al modo Data per mostrare i risultati."
 
 #: glom/Navigation/Box_DataBases.cc:29
 msgid "Select a database and click [Edit]. You may create a new database by entering the name in the last row."
@@ -286,7 +286,7 @@ msgstr ""
 #. TODO: Do not show tables that are not in the document.
 #: glom/Navigation/Box_Tables.cc:216
 msgid "You can not open this table, because there is no information about this table in the document."
-msgstr "Non puoi aprire questa tabella, perchè non ci sono informazioni su questa tabella in questo documento."
+msgstr "Non puoi aprire questa tabella, perche' non ci sono informazioni su questa tabella in questo documento."
 
 #: glom/Utility_Widgets/AddDel/AddDel.cc:71
 msgid "Edit"

@@ -1,3 +1,9 @@
+2004-06-11  Murray Cumming  <murrayc@murrayc.com>
+
+	* po/: Update it.po from Albert Paro.
+	* configure.in: Re-enabled it.po now that the invalid multibyte 
+	sequences are fixed.
+
 2004-06-11  Murray Cumming  <murrayc@.com>
 
 	* Do locale-specific display and parsing of dates, times, and numbers 
