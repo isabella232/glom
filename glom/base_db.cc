@@ -720,6 +720,12 @@ void Base_DB::add_standard_groups()
     {
       set_table_privileges(devgroup, iter->m_name, priv_ignored, true /* developer privileges */);
     }
+
+    //Make sure that it is in the database too:
+    GroupInfo group_info;
+    group_info.m_name = GLOM_STANDARD_GROUP_NAME_DEVELOPER;
+    group_info.m_developer = true;
+    get_document()->set_group(group_info);
   }
 }
 
@@ -797,6 +803,71 @@ Glib::ustring Base_DB::get_user_visible_group_name(const Glib::ustring& group_na
   const Glib::ustring prefix = "glom_";
   if(result.substr(0, prefix.size()) == prefix)
     result = result.substr(prefix.size());
+
+  return result;
+}
+
+Base_DB::type_vecStrings Base_DB::get_groups_of_user(const Glib::ustring& user)
+{
+  //TODO_Performance
+
+  type_vecStrings result;
+
+  //Look at each group:
+  type_vecStrings groups = get_database_groups();
+  for(type_vecStrings::const_iterator iter = groups.begin(); iter != groups.end(); ++iter)
+  {
+    //See whether the user is in this group:
+    type_vecStrings users = get_database_users(*iter);
+    type_vecStrings::const_iterator iterFind = std::find(users.begin(), users.end(), user);
+    if(iterFind != users.end())
+    {
+      //Add the group to the result:
+      result.push_back(*iter);
+    }
+  }
+
+  return result;
+}
+
+Privileges Base_DB::get_current_privs(const Glib::ustring& table_name)
+{
+  //TODO_Performance: There's lots of database access here.
+  //We could maybe replace some with the postgres has_table_* function().
+
+  Privileges result;
+
+  ConnectionPool* connection_pool = ConnectionPool::get_instance();
+  const Glib::ustring current_user = connection_pool->get_user();
+
+  //Is the user in the special developers group?
+  /*
+  type_vecStrings developers = get_database_users(GLOM_STANDARD_GROUP_NAME_DEVELOPER);
+  type_vecStrings::const_iterator iterFind = std::find(developers.begin(), developers.end(), current_user);
+  if(iterFind != developers.end())
+  {
+    result.m_developer = true;
+  }
+  */
+
+  //Get the "true" rights for any groups that the user is in:
+  type_vecStrings groups = get_groups_of_user(current_user);
+  for(type_vecStrings::const_iterator iter =groups.begin(); iter != groups.end(); ++iter)
+  {
+    Privileges privs = get_table_privileges(*iter, table_name);
+
+    if(privs.m_view)
+      result.m_view = true;
+
+    if(privs.m_edit)
+      result.m_edit = true;
+
+    if(privs.m_create)
+      result.m_create = true;
+
+    if(privs.m_delete)
+      result.m_delete = true;
+  }
 
   return result;
 }

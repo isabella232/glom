@@ -28,7 +28,7 @@
 #include "../data_structure/layout/layoutgroup.h"
 #include "../data_structure/layout/layoutitem_portal.h"
 #include "../data_structure/tableinfo.h"
-#include "../data_structure/privileges.h"
+#include "../data_structure/groupinfo.h"
 #include "../appstate.h"
 #include <vector>
 #include <map>
@@ -104,23 +104,11 @@ public:
   virtual Glib::ustring get_database_title() const;
   virtual void set_database_title(const Glib::ustring& title);
 
-  class GroupInfo
-  {
-  public:
-    Glib::ustring m_name;
-    bool m_developer; //m_privs is ignored if this is true.
-
-    typedef std::map<Glib::ustring, Privileges> type_map_table_privileges;
-    type_map_table_privileges m_map_privileges;
-
-    //typedef std::vector<Glib::ustring> type_users;
-    //type_users m_users;
-  };
-
+  /// These are only used when recreating a database from an example file. The actualy access-control is on the server, of course.
   typedef std::list<GroupInfo> type_list_groups;
   type_list_groups get_groups() const;
 
-  ///This adds the group if necessary.
+  /// This adds the group if necessary.
   void set_group(GroupInfo& group);
 
   void remove_group(const Glib::ustring& group_name);

@@ -386,6 +386,11 @@ void Dialog_GroupsList::fill_table_list(const Glib::ustring& group_name)
   Document_Glom* pDocument = get_document();
   if(pDocument)
   {
+     // Make sure that these are in the document,
+     // so that the correct groups will be created if we recreate the database from the document:
+     GroupInfo group_info;
+     group_info.m_name = group_name;
+
     Document_Glom::type_listTableInfo table_list = pDocument->get_tables();
 
     for(Document_Glom::type_listTableInfo::const_iterator iter = table_list.begin(); iter != table_list.end(); ++iter)
@@ -402,7 +407,12 @@ void Dialog_GroupsList::fill_table_list(const Glib::ustring& group_name)
       row[m_model_columns_tables.m_col_edit] = privs.m_edit;
       row[m_model_columns_tables.m_col_create] = privs.m_create;
       row[m_model_columns_tables.m_col_delete] = privs.m_delete;
+
+
+      group_info.m_map_privileges[table_name] = privs;
     }
+
+     pDocument->set_group(group_info);
   }
 }
 

@@ -1,3 +1,23 @@
+2005-03-22  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/application.cc: recreate_database():
+	Add the developer group and make the user a 
+	member of it.
+	* glom/base_db.cc:
+	* glom/base_db.h:
+	Added get_current_privs().
+	* glom/data_structure/Makefile.am:
+	* glom/data_structure/groupinfo.cc:
+	* glom/data_structure/groupinfo.h:
+	* glom/document/document_glom.cc:
+	* glom/document/document_glom.h:
+	Moved GroupInfo class out of Document_Glom.
+	* glom/mode_design/users/dialog_groups_list.cc:
+	Set the groups in the document when we get 
+	them from the database. But just in case 
+	we need to recreate the database from the 
+	document.
+
 2005-03-21  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/document/document_glom.cc:

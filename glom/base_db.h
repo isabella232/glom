@@ -66,6 +66,7 @@ public:
   static Glib::ustring util_title_from_string(const Glib::ustring& text);
 
   virtual Glib::RefPtr<Gnome::Gda::DataModel> Query_execute(const Glib::ustring& strQuery);
+  void add_standard_groups();
 
 protected:
   typedef std::vector<Glib::ustring> type_vecStrings;
@@ -77,9 +78,10 @@ protected:
   type_vecStrings get_database_users(const Glib::ustring& group_name = Glib::ustring());
   Privileges get_table_privileges(const Glib::ustring& group_name, const Glib::ustring& table_name);
   void set_table_privileges(const Glib::ustring& group_name, const Glib::ustring& table_name, const Privileges& privs, bool developer_privs = false);
-  void add_standard_groups();
   Glib::ustring get_user_visible_group_name(const Glib::ustring& group_name) const;
 
+  type_vecStrings get_groups_of_user(const Glib::ustring& user);
+  Privileges get_current_privs(const Glib::ustring& table_name);
 
   virtual void fill_from_database();
   virtual void fill_end(); //Call this from the end of fill_from_database() overrides.

@@ -974,6 +974,25 @@ bool Document_Glom::load_after()
                 GroupInfo group_info;
 
                 group_info.m_name = get_node_attribute_value(node, "name");
+                group_info.m_developer = get_node_attribute_value_as_bool(node, "developer");
+
+                xmlpp::Node::NodeList listTablePrivs = nodeGroups->get_children("table_privs");
+                for(xmlpp::Node::NodeList::iterator iter = listTablePrivs.begin(); iter != listTablePrivs.end(); ++iter)
+                {
+                  xmlpp::Element* node = dynamic_cast<xmlpp::Element*>(*iter);
+                  if(node)
+                  {
+                    const Glib::ustring table_name = get_node_attribute_value(node, "table_name");
+
+                    Privileges privs;
+                    privs.m_view = get_node_attribute_value_as_bool(node, "priv_view");
+                    privs.m_edit = get_node_attribute_value_as_bool(node, "priv_edit");
+                    privs.m_create = get_node_attribute_value_as_bool(node, "priv_create");
+                    privs.m_delete = get_node_attribute_value_as_bool(node, "priv_delete");
+
+                    group_info.m_map_privileges[table_name] = privs;
+                  }
+                }
 
                 m_groups[group_info.m_name] = group_info;
               }
@@ -1156,12 +1175,29 @@ bool Document_Glom::save_before()
     //Add groups:
     xmlpp::Element* nodeGroups = nodeRoot->add_child("groups");
 
+    nodeGroups->add_child_comment("These are only used when recreating a database from an example file. The actualy access-control is on the server, of course.");
+
     for(type_map_groups::const_iterator iter = m_groups.begin(); iter != m_groups.end(); ++iter)
     {
       const GroupInfo& group_info = iter->second;
 
       xmlpp::Element* nodeGroup = nodeGroups->add_child("group");
       nodeGroup->set_attribute("name", group_info.m_name);
+      set_node_attribute_value_as_bool(nodeGroup, "developer", group_info.m_developer);
+
+      //The privilieges for each table, for this group:
+      for(GroupInfo::type_map_table_privileges::const_iterator iter = group_info.m_map_privileges.begin(); iter != group_info.m_map_privileges.end(); ++iter)
+      {
+        xmlpp::Element* nodeTablePrivs = nodeGroups->add_child("table_privs");
+
+        set_node_attribute_value(nodeTablePrivs, "table_name", iter->first);
+
+        const Privileges& privs = iter->second;
+        set_node_attribute_value_as_bool(nodeTablePrivs, "priv_view", privs.m_view);
+        set_node_attribute_value_as_bool(nodeTablePrivs, "priv_edit", privs.m_edit);
+        set_node_attribute_value_as_bool(nodeTablePrivs, "priv_create", privs.m_create);
+        set_node_attribute_value_as_bool(nodeTablePrivs, "priv_delete", privs.m_delete);
+      }
     }
 
   }
@@ -1206,8 +1242,21 @@ Document_Glom::type_list_groups Document_Glom::get_groups() const
 ///This adds the group if necessary.
 void Document_Glom::set_group(GroupInfo& group)
 {
-  m_groups[group.m_name] = group;
-  set_modified();
+  type_map_groups::iterator iter = m_groups.find(group.m_name);
+  if(iter != m_groups.end())
+  {
+    //Add it if necesary:
+    m_groups[group.m_name] = group;
+    set_modified();
+  }
+  else
+  {
+    if(iter->second != group)
+    {
+      iter->second = group;
+      set_modified();
+    }
+  }
 }
 
 void Document_Glom::remove_group(const Glib::ustring& group_name)

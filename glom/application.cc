@@ -741,7 +741,7 @@ bool App_Glom::recreate_database(bool& user_cancelled)
       Gnome::Gda::FieldAttributes info = field.get_field_info();
       info.set_gdatype( Field::get_gda_type_for_glom_type(field.get_glom_type()) );
       field.set_field_info(info);
-      
+
       Glib::ustring sql_field_description = field.get_name() + " " + field.get_sql_type();
 
       if(field.get_field_info().get_primary_key())
@@ -771,14 +771,22 @@ bool App_Glom::recreate_database(bool& user_cancelled)
     {
       table_creation_succeeded = false;
     }
-    
+
     if(!table_creation_succeeded)
     {
       g_warning("App_Glom::recreate_database(): CREATE TABLE failed with the newly-created database.");
       return false;
     }
-      
+
   } //for(tables)
+
+
+  //Create the developer group, and make this user a member of it:
+  //If we got this far then the user must really have developer privileges already:
+  m_pFrame->add_standard_groups();
+
+  Glib::ustring strQuery = "ALTER GROUP " GLOM_STANDARD_GROUP_NAME_DEVELOPER " ADD USER " + connection_pool->get_user();
+  m_pFrame->Query_execute(strQuery);
 
   return true; //All tables created successfully.
 }
