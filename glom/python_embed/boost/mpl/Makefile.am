@@ -1,6 +1,6 @@
 INCLUDES = -I@top_srcdir@/ $(GLOM_CFLAGS) $(PYTHON_INCLUDES)
 
-SUBDIRS = aux_
+SUBDIRS = aux_ limits list map math multiset set vector
 
 noinst_LIBRARIES = libpython_embed_boost_mpl.a
 libpython_embed_boost_mpl_a_SOURCES = accumulate.hpp clear_fwd.hpp for_each.hpp iter_fold_if.hpp \

@@ -4,8 +4,8 @@ SUBDIRS = config preprocessor range_c
 
 noinst_LIBRARIES = libpython_embed_boost_mpl_aux.a
 libpython_embed_boost_mpl_aux_a_SOURCES = adl_barrier.hpp erase_impl.hpp insert_impl.hpp msvc_type.hpp \
-  reverse_fold_impl.hpp advance_backward.hpp erase_key_impl.hpp insert_range_impl.hpp na_assert.hpp \ 
-  reverse_iter_fold_impl.hpp advance_forward.hpp filter_iter.hpp integral_wrapper.hpp na_fwd.hpp \ 
+  reverse_fold_impl.hpp advance_backward.hpp erase_key_impl.hpp insert_range_impl.hpp na_assert.hpp \
+  reverse_iter_fold_impl.hpp advance_forward.hpp filter_iter.hpp integral_wrapper.hpp na_fwd.hpp \
   sequence_wrapper.hpp apply_1st.hpp find_if_pred.hpp is_msvc_eti_arg.hpp na.hpp shift_op.hpp \
   arg_typedef.hpp fold_impl_body.hpp iter_apply.hpp na_spec.hpp single_element_iter.hpp \
   arithmetic_op.hpp fold_impl.hpp iter_fold_if_impl.hpp nested_type_wknd.hpp size_impl.hpp \
