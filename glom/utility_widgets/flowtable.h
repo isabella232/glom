@@ -47,9 +47,12 @@ public:
   
   void remove_all();
 
+
 protected:
 
   //Overrides:
+
+  //Handle child widgets:
   virtual void on_size_request(Gtk::Requisition* requisition);
   virtual void on_size_allocate(Gtk::Allocation& allocation);
   virtual GtkType child_type_vfunc() const;
@@ -57,6 +60,10 @@ protected:
   virtual void forall_vfunc(gboolean include_internals, GtkCallback callback, gpointer callback_data);
   virtual void on_remove(Gtk::Widget* child);
 
+  //Do extra drawing:
+  virtual void on_realize();
+  virtual void on_unrealize();
+  virtual bool on_expose_event(GdkEventExpose* event);
   
   int get_column_height(guint start_widget, guint widget_count, int& total_width);
 
@@ -73,22 +80,35 @@ protected:
     Gtk::Widget* m_first;
     Gtk::Widget* m_second;
     bool m_expand_second;
+
+    //Cache the positions, so we can use them in on_expose_event:
+    Gtk::Allocation m_first_allocation;
+    Gtk::Allocation m_second_allocation;
   };
   
   typedef std::vector<FlowTableItem> type_vecChildren;
 
   int get_item_requested_height(const FlowTableItem& item);
   void get_item_requested_width(const FlowTableItem& item, int& first, int& second);
-  void get_item_max_width(guint start, int height, int& first_max_width, int& second_max_width, int& singles_max_width); //TODO: maybe combine this with code in get_minimum_column_height().
+  void get_item_max_width(guint start, guint height, guint& first_max_width, guint& second_max_width, guint& singles_max_width); //TODO: maybe combine this with code in get_minimum_column_height().
 
   bool child_is_visible(Gtk::Widget* widget);
-  void assign_child(Gtk::Widget* widget, int x, int y);
+  Gtk::Allocation assign_child(Gtk::Widget* widget, int x, int y);
   
   type_vecChildren m_children;
   guint m_columns_count;
   guint m_padding;
   bool m_design_mode;
 
+  //Lines to draw in on_expose_event:
+  typedef std::pair<Gdk::Point, Gdk::Point> type_line;
+  typedef std::vector<type_line> type_vecLines;
+  type_vecLines m_lines_vertical;
+  type_vecLines m_lines_horizontal;
+  
+  //For drawing:
+  Glib::RefPtr<Gdk::Window> m_refGdkWindow;
+  Glib::RefPtr<Gdk::GC> m_refGC;
 };
 
 #endif //GLOM_UTILITYWIDGETS_FLOWTABLE_H

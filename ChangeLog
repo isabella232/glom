@@ -1,3 +1,15 @@
+2004-11-14  Murray Cumming  <murrayc@murrayc.com>
+
+	* utility_widgets/flowtable.[h|cc]: Draw some simple dotted lines 
+	between the items to make the design mode look different than the data 
+	mode.
+	* mode_data/box_data_details.[h|cc]: Override on_userlevel_changed() 
+	to call FlowTable::set_design_mode(), to show or hide the lines. This 
+	doesn't quite work - it draws more lines immediately after switching 
+	to developer mode, but less when just switching tabs.
+	* Document_Glom::get_table_info_with_add(): Set the table name of the 
+	new info when it adds, so that we actually remember new tables.
+
 2004-11-06  Amanpreet Singh Alam <aalam@redhat.com>
 
 	* configure.in: pa [Punjabi] is added tp ALL_LINGUAS

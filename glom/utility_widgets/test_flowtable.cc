@@ -37,6 +37,8 @@ main(int argc, char* argv[])
   button1.set_text("debug");
 
   FlowTable inner_table;
+  inner_table.set_padding(20);
+  inner_table.set_design_mode();
   inner_table.set_columns_count(1);
   inner_table.show();
   flowtable.add(inner_table);
@@ -79,6 +81,7 @@ main(int argc, char* argv[])
   button10.show();
 
   window.add(flowtable);
+  flowtable.set_design_mode();
   flowtable.show();
 
 

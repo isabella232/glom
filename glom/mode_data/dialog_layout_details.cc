@@ -643,22 +643,27 @@ void Dialog_Layout_Details::on_cell_data_columns_count(Gtk::CellRenderer* render
 
 void Dialog_Layout_Details::on_treeview_cell_edited_text(const Glib::ustring& path_string, const Glib::ustring& new_text, const Gtk::TreeModelColumn<Glib::ustring>& model_column)
 {
- Gtk::TreePath path(path_string);
-
-  //Get the row from the path:
-  Gtk::TreeModel::iterator iter = m_model_fields->get_iter(path);
-  if(iter)
+  if(!path_string.empty())
   {
-    //Store the user's new text in the model:
-    Gtk::TreeRow row = *iter;
-    row[model_column] = new_text;
+    Gtk::TreePath path(path_string);
+
+    //Get the row from the path:
+    Gtk::TreeModel::iterator iter = m_model_fields->get_iter(path);
+    if(iter)
+    {
+      //Store the user's new text in the model:
+      Gtk::TreeRow row = *iter;
+      row[model_column] = new_text;
+    }
   }
 }
   
 void Dialog_Layout_Details::on_treeview_cell_edited_numeric(const Glib::ustring& path_string, const Glib::ustring& new_text, const Gtk::TreeModelColumn<guint>& model_column)
 {
   //This is used on numerical model columns:
-
+  if(path_string.empty())
+    return;
+    
   Gtk::TreePath path(path_string);
 
   //Get the row from the path:

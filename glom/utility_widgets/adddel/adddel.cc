@@ -1042,6 +1042,9 @@ Glib::ustring AddDel::treeview_get_key(const Gtk::TreeModel::iterator& row)
 
 void AddDel::on_treeview_cell_edited_bool(const Glib::ustring& path_string, int model_column_index)
 {
+  if(path_string.empty())
+    return;
+    
   Gtk::TreePath path(path_string);
 
   //Get the row from the path:
@@ -1114,6 +1117,9 @@ void AddDel::on_treeview_cell_edited_bool(const Glib::ustring& path_string, int 
 
 void AddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const Glib::ustring& new_text, int model_column_index)
 {
+  if(path_string.empty())
+    return;
+  
   Gtk::TreePath path(path_string);
 
   //Get the row from the path:

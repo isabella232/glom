@@ -617,6 +617,11 @@ void Box_Data_Details::do_lookups(const Field& field_changed, const Gnome::Gda::
 
 }
 
+void Box_Data_Details::on_userlevel_changed(AppState::userlevels user_level)
+{
+  m_FlowTable.set_design_mode( user_level == AppState::USERLEVEL_DEVELOPER );
+}
+
 
 
 

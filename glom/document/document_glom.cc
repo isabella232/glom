@@ -143,13 +143,16 @@ Document_Glom::type_vecFields Document_Glom::get_table_fields(const Glib::ustrin
   if(iterFind != m_tables.end())
     return iterFind->second.m_fields;
   else
-    return type_vecFields(); 
+  {
+    g_warning("Document_Glom::get_table_fields: table not found in document: %s", table_name.c_str());
+    return type_vecFields();
+  }
 }
 
 void Document_Glom::set_table_fields(const Glib::ustring& table_name, const type_vecFields& vecFields)
 {
   if(!table_name.empty())
-  {
+  { 
     DocumentTableInfo& info = get_table_info_with_add(table_name);
     info.m_fields = vecFields;
 
@@ -462,6 +465,7 @@ Document_Glom::DocumentTableInfo& Document_Glom::get_table_info_with_add(const G
   else
   {
     m_tables[table_name] = DocumentTableInfo();
+    m_tables[table_name].m_info.m_name = table_name;
     return get_table_info_with_add(table_name);
   }
 }
@@ -562,7 +566,6 @@ void Document_Glom::set_modified(bool value)
            test = write_to_disk();
            if(test)
            {
-             g_warning("Document_Glom::set_modified(): saved");
              set_modified(false);
            }
          }
@@ -841,8 +844,13 @@ bool Document_Glom::save_before()
     {
       const DocumentTableInfo& doctableinfo = iter->second;
 
+      if(doctableinfo.m_info.m_name.empty())
+        g_warning("Document_Glom::save_before(): table name is empty.");
+        
       if(!doctableinfo.m_info.m_name.empty())
       {
+        g_warning("Saving info about table: %s", doctableinfo.m_info.m_name.c_str());
+
         xmlpp::Element* nodeTable = nodeRoot->add_child("table");
         set_node_attribute_value(nodeTable, "name", doctableinfo.m_info.m_name);
         set_node_attribute_value(nodeTable, "title", doctableinfo.m_info.m_title);
