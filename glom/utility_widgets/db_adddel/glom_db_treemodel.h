@@ -29,10 +29,9 @@ class DbTreeModelRow
 {
 public:
   DbTreeModelRow();
-  
+
   bool m_placeholder;
-  int m_debug;
-  
+
   typedef Gnome::Gda::Value DbValue;
   typedef std::vector< DbValue > type_vec_values;
   type_vec_values m_db_values;
@@ -44,14 +43,15 @@ class DbTreeModel
 {
 public:
   typedef unsigned int size_type;
-  
+  typedef std::vector<Field> type_vec_fields;
+
 protected:
   //Create a TreeModel with @a columns_count number of columns, each of type Glib::ustring.
-  DbTreeModel(const Gtk::TreeModelColumnRecord& columns);
+  DbTreeModel(const Gtk::TreeModelColumnRecord& columns, const Glib::ustring& table_name, const type_vec_fields& column_fields);
   virtual ~DbTreeModel();
   
 public:
-  static Glib::RefPtr<DbTreeModel> create(const Gtk::TreeModelColumnRecord& columns);
+  static Glib::RefPtr<DbTreeModel> create(const Gtk::TreeModelColumnRecord& columns, const Glib::ustring& table_name, const type_vec_fields& column_fields);
   
   typedef DbTreeModelRow::DbValue DbValue;
   
@@ -157,6 +157,8 @@ private:
 
    //The data:
    unsigned int m_columns_count;
+   Glib::ustring m_table_name;
+   type_vec_fields m_column_fields;
    mutable typeListOfRows m_rows;
 
    //Column information:

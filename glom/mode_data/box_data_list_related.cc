@@ -107,11 +107,9 @@ void Box_Data_List_Related::refresh_db_details(const Gnome::Gda::Value& foreign_
 void Box_Data_List_Related::fill_from_database()
 {
   bool allow_add = true;
- 
-g_warning("Box_Data_List_Related::fill_from_database");
+
   if(!m_strWhereClause.empty())
   {
-g_warning("Box_Data_List_Related::fill_from_database before calling base");
     Box_Data_List::fill_from_database();
 
      
@@ -152,7 +150,7 @@ void Box_Data_List_Related::on_record_added(const Gnome::Gda::Value& primary_key
     if(!bTest)
        std::cout << "Box_Data_List_Related::on_record_added() field not found: " << m_key_field.get_name() << std::endl;
 
-    Gnome::Gda::Value key_value = m_AddDel.get_value_as_value(iter, iKey);
+    Gnome::Gda::Value key_value = m_AddDel.get_value(iter, iKey);
     Box_Data_List::on_record_added(key_value); //adds blank row.
 
     //Make sure that the new related record is related,

@@ -117,7 +117,10 @@ public:
 
   Glib::ustring get_calculation() const;
   void set_calculation(const Glib::ustring& calculation);
-  
+
+  void set_visible(bool val = true);
+  bool get_visible() const;
+
   typedef std::map<glom_field_type, Glib::ustring> type_map_type_names;
 
   /// Get canonical type names for internal use, such as in the XML of the document.
@@ -162,6 +165,7 @@ protected:
   Glib::ustring m_strTitle;
   Glib::ustring m_strLookupRelationship, m_strLookupField;
   Glib::ustring m_calculation;
+  bool m_visible; //Whether it will be shown to the user.
 };
 
 #endif //GLOM_DATASTRUCTURE_FIELD_H

@@ -32,7 +32,8 @@ bool Field::m_maps_inited = false;
 
 
 Field::Field()
-: m_glom_type(TYPE_INVALID)
+: m_glom_type(TYPE_INVALID),
+  m_visible(true)
 {
 }
 
@@ -57,6 +58,8 @@ Field& Field::operator=(const Field& src)
 
   m_calculation = src.m_calculation;
 
+  m_visible = src.m_visible;
+
   return *this;
 }
 
@@ -71,6 +74,8 @@ bool Field::operator==(const Field& src) const
   bResult = bResult && (m_strLookupField == src.m_strLookupField);
 
   bResult = bResult && (m_calculation == src.m_calculation);
+
+  bResult = bResult && (m_visible == src.m_visible);
   
   return bResult;
 }
@@ -431,7 +436,12 @@ void Field::set_calculation(const Glib::ustring& calculation)
   m_calculation = calculation;
 }
 
-  
+void Field::set_visible(bool val)
+{
+  m_visible = val;
+}
 
-
-  
+bool Field::get_visible() const
+{
+  return m_visible;
+}

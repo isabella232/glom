@@ -58,7 +58,7 @@ void Box_DB_Table::refresh_db_details(const Glib::ustring& strWhereClause)
 }
  
 
-Glib::ustring Box_DB_Table::get_primarykey_name()
+Glib::ustring Box_DB_Table::get_primary_key_name()
 {
   Glib::ustring strResult;
 
@@ -71,7 +71,7 @@ Glib::ustring Box_DB_Table::get_primarykey_name()
   }
   else
   {
-    std::cout << "Box_DB_Table::get_primarykey_name(): not found for table " << m_strTableName << " in " << m_Fields.size() << " fields." << std::endl;
+    std::cout << "Box_DB_Table::get_primary_key_name(): not found for table " << m_strTableName << " in " << m_Fields.size() << " fields." << std::endl;
   }
 
   return strResult;
@@ -120,6 +120,26 @@ bool Box_DB_Table::get_field(const Glib::ustring& name, Field& field) const
   {
     return false; //not found.
   }
+}
+
+bool Box_DB_Table::get_field_primary_key(const Glib::ustring table_name, Field& field) const
+{
+  const Document_Glom* document = get_document();
+  if(document)
+  {
+    //TODO_Performance:
+    Document_Glom::type_vecFields fields = document->get_table_fields(table_name);
+    for(Document_Glom::type_vecFields::iterator iter = fields.begin(); iter != fields.end(); ++iter)
+    {
+      if(iter->get_field_info().get_primary_key())
+      {
+        field = *iter;
+        return true;
+      }
+    }
+  }
+
+  return false;
 }
 
 bool Box_DB_Table::get_field_primary_key(guint& field_column) const
@@ -182,6 +202,7 @@ bool Box_DB_Table::get_field_primary_key(const type_vecFields& fields, Field& fi
   return false; //Not found.
 }
 
+/*
 bool Box_DB_Table::get_field_index(const Glib::ustring& name, guint& field_index) const
 {
   //Initialize input parameter:
@@ -203,6 +224,7 @@ bool Box_DB_Table::get_field_index(const Glib::ustring& name, guint& field_index
 
   return false; //Not found.
 }
+*/
 
 unsigned long Box_DB_Table::get_last_auto_increment_value(const Glib::RefPtr<Gnome::Gda::DataModel>& data_model, const Glib::ustring /* field_name */)
 {

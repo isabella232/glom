@@ -64,6 +64,7 @@ protected:
 
   void do_lookups(const Field& field_changed, const Gnome::Gda::Value& field_value, const Field& primary_key, const Gnome::Gda::Value& primary_key_value);
 
+  virtual Glib::ustring get_primary_key_name();
 
   //Signal handlers:
   virtual void on_button_new();
@@ -85,7 +86,7 @@ protected:
 
   virtual void on_flowtable_field_edited(const Glib::ustring& id, const Gnome::Gda::Value& value);
 
-   
+  Field m_field_primary_key;
   Gnome::Gda::Value m_primary_key_value;
 
   //Member widgets:

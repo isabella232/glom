@@ -22,8 +22,7 @@
 #include "glom_db_treemodel.h"
 
 DbTreeModelRow::DbTreeModelRow()
-: m_placeholder(false),
-  m_debug(0)
+: m_placeholder(false)
 {
 
 }
@@ -68,10 +67,12 @@ DbTreeModel::GlueItem* DbTreeModel::GlueList::get_existing_item(const typeListOf
 //Intialize static variable:
 bool DbTreeModel::m_iface_initialized = false;
 
-DbTreeModel::DbTreeModel(const Gtk::TreeModelColumnRecord& columns)
+DbTreeModel::DbTreeModel(const Gtk::TreeModelColumnRecord& columns, const Glib::ustring& table_name, const type_vec_fields& column_fields)
 : Glib::ObjectBase( typeid(DbTreeModel) ), //register a custom GType.
   Glib::Object(), //The custom GType is actually registered here.
   m_columns_count(0),
+  m_table_name(table_name),
+  m_column_fields(column_fields),
   m_stamp(1), //When the model's stamp != the iterator's stamp then that iterator is invalid and should be ignored. Also, 0=invalid
   m_pGlueList(0)
 {
@@ -86,6 +87,8 @@ DbTreeModel::DbTreeModel(const Gtk::TreeModelColumnRecord& columns)
 
   //The Column information that can be used with TreeView::append(), TreeModel::iterator[], etc.
   m_columns_count = columns.size();
+
+  g_assert(m_columns_count != column_fields.size());
 }
 
 DbTreeModel::~DbTreeModel()
@@ -94,9 +97,9 @@ DbTreeModel::~DbTreeModel()
 }
 
 //static:
-Glib::RefPtr<DbTreeModel> DbTreeModel::create(const Gtk::TreeModelColumnRecord& columns)
+Glib::RefPtr<DbTreeModel> DbTreeModel::create(const Gtk::TreeModelColumnRecord& columns, const Glib::ustring& table_name, const type_vec_fields& column_fields)
 {
-  return Glib::RefPtr<DbTreeModel>( new DbTreeModel(columns) );
+  return Glib::RefPtr<DbTreeModel>( new DbTreeModel(columns, table_name, column_fields) );
 }
 
 Gtk::TreeModelFlags DbTreeModel::get_flags_vfunc() const
@@ -380,7 +383,6 @@ DbTreeModel::iterator DbTreeModel::append()
   //Get a std::list iterator to the last element:
   typeListOfRows::iterator row_iter = m_rows.end();
   --row_iter;
-  row_iter->m_debug = existing_size;
  
   //Create the row:
   row_iter->m_db_values.resize(m_columns_count); 

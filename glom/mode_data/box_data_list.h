@@ -53,6 +53,8 @@ protected:
   virtual void fill_from_database(); //override.
   virtual void fill_column_titles();
 
+  virtual Glib::ustring get_primary_key_name(); //override
+
   void do_lookups(const Gtk::TreeModel::iterator& row, const Field& field_changed, const Gnome::Gda::Value& field_value, const Field& primary_key, const Gnome::Gda::Value& primary_key_value);
 
   //Signal handlers:

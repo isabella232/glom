@@ -88,8 +88,7 @@ void Box_Data::on_Button_Find()
 
 Glib::RefPtr<Gnome::Gda::DataModel> Box_Data::record_new(bool use_entered_data, Gnome::Gda::Value primary_key_value)
 {
-  const Glib::ustring primary_key_name = get_primarykey_name();
-
+  const Glib::ustring primary_key_name = get_primary_key_name();
 
   //Calculate any necessary field values and enter them:
   for(type_vecFields::const_iterator iter = m_Fields.begin(); iter != m_Fields.end(); ++iter)

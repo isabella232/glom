@@ -1,5 +1,19 @@
 2005-03-08  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/utility_widgets/db_adddel/db_adddel.[h|cc]: Remove as_value
+	from method names because they are all by value. Added 
+	get/set_key_field() so it is easy to know the primary key for the 
+	table.
+	* glom/utility_widgets/db_adddel/glom_db_treemodel.[h|cc]: create() 
+	now takes a list of fields - one for each column. This should allow 
+	us to construct a SQL query from the model itself in future.
+	* glom/mode_data/box_data_list.[h|cc]: Store the primary key field 
+	in the AddDel.
+	* glom/mode_data/box_data_details.[h|cc]: Store the primary key field 
+	in a member variable, instead of iterating for it every time.
+
+2005-03-08  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/utility_widgets/flowtable_withfields.cc: get_portals(): 
 	Actually add relevant portals to the list.
 	* glom/mode_data/box_data_list_related.cc: on_record_added(): When 

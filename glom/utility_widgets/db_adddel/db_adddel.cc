@@ -369,7 +369,7 @@ void DbAddDel::remove_all()
 }
 
 
-Gnome::Gda::Value DbAddDel::get_value_as_value(const Gtk::TreeModel::iterator& iter, guint col)
+Gnome::Gda::Value DbAddDel::get_value(const Gtk::TreeModel::iterator& iter, guint col)
 {
   Gnome::Gda::Value value;
 
@@ -387,7 +387,7 @@ Gnome::Gda::Value DbAddDel::get_value_as_value(const Gtk::TreeModel::iterator& i
   return value;
 }
 
-Gnome::Gda::Value DbAddDel::get_value_key_selected_as_value()
+Gnome::Gda::Value DbAddDel::get_value_key_selected()
 {
   Gtk::TreeModel::iterator iter = get_item_selected();
   if(iter)
@@ -399,9 +399,9 @@ Gnome::Gda::Value DbAddDel::get_value_key_selected_as_value()
     return Gnome::Gda::Value();
 }
 
-Gnome::Gda::Value DbAddDel::get_value_selected_as_value(guint col)
+Gnome::Gda::Value DbAddDel::get_value_selected(guint col)
 {
-  return get_value_as_value(get_item_selected(), col);
+  return get_value(get_item_selected(), col);
 }
 
 Gtk::TreeModel::iterator DbAddDel::get_item_selected()
@@ -580,6 +580,7 @@ void DbAddDel::construct_specified_columns()
   //record.add(*m_modelcolumn_placeholder);
     
   //Database columns:
+  type_model_store::type_vec_fields fields;
   {       
     type_vecModelColumns::size_type i = 0;
     for(type_ColumnTypes::iterator iter = m_ColumnTypes.begin(); iter != m_ColumnTypes.end(); ++iter)
@@ -590,19 +591,21 @@ void DbAddDel::construct_specified_columns()
       vecModelColumns[i] = pModelColumn;
 
       record.add( *pModelColumn );
+
+      fields.push_back(iter->m_field);
+
       i++;
     }
   }
 
   //Create the model from the ColumnRecord:
-  m_refListStore = type_model_store::create(record);
-  
+  m_refListStore = type_model_store::create(record, "TODO: table_name", fields);
+
   m_TreeView.set_model(m_refListStore);
 
   //Remove all View columns:
   m_TreeView.remove_all_columns();
 
-  
   //Add new View Colums:
   int model_column_index = 0; //Not including the hidden internal columns.
   int view_column_index = 0;
@@ -1448,7 +1451,7 @@ Gtk::TreeModel::iterator DbAddDel::get_last_row()
   return iter;
 }
 
-Gnome::Gda::Value DbAddDel::get_value_key_as_value(const Gtk::TreeModel::iterator& iter)
+Gnome::Gda::Value DbAddDel::get_value_key(const Gtk::TreeModel::iterator& iter)
 {
   return treeview_get_key(iter);
 }
@@ -1525,14 +1528,19 @@ void DbAddDel::set_rules_hint(bool val)
   m_TreeView.set_rules_hint(val);
 }
 
-void DbAddDel::set_key_type(const Field& field)
+Field DbAddDel::get_key_field() const
+{
+  return m_key_field;
+}
+
+void DbAddDel::set_key_field(const Field& field)
 {
   m_key_field = field;
 }
 
 void DbAddDel::treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter, int model_column_index)
 {
-  Gnome::Gda::Value value = get_value_as_value(iter, model_column_index);
+  Gnome::Gda::Value value = get_value(iter, model_column_index);
   
   DbAddDelColumnInfo& column_info = m_ColumnTypes[model_column_index];
   switch(column_info.m_field.get_glom_type())

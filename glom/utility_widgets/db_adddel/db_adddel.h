@@ -76,11 +76,11 @@ public:
 
   virtual void remove_all();
 
-  virtual Gnome::Gda::Value get_value_as_value(const Gtk::TreeModel::iterator& iter, guint col );
+  virtual Gnome::Gda::Value get_value(const Gtk::TreeModel::iterator& iter, guint col );
 
   /** Get the row's hidden key
    */
-  virtual Gnome::Gda::Value get_value_key_as_value(const Gtk::TreeModel::iterator& iter);
+  virtual Gnome::Gda::Value get_value_key(const Gtk::TreeModel::iterator& iter);
 
   /** Set the row's hidden key
    */
@@ -89,8 +89,8 @@ public:
   /** @param col A value returned from add_column().
    * @result The value on the selected row.
    */
-  virtual Gnome::Gda::Value get_value_selected_as_value(guint col);
-  virtual Gnome::Gda::Value get_value_key_selected_as_value();
+  virtual Gnome::Gda::Value get_value_selected(guint col);
+  virtual Gnome::Gda::Value get_value_key_selected();
   
   virtual Gtk::TreeModel::iterator get_item_selected();
 
@@ -125,8 +125,8 @@ public:
    */
   virtual bool get_is_placeholder_row(const Gtk::TreeModel::iterator& iter) const;
 
-  //Use this in order to use get_value_key_as_value().
-  virtual void set_key_type(const Field& field);
+  virtual Field get_key_field() const;
+  virtual void set_key_field(const Field& field);
  
   /** @result The index of the new column.
    */

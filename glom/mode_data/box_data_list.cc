@@ -230,7 +230,7 @@ void Box_Data_List::on_adddel_user_requested_add()
 
 void Box_Data_List::on_adddel_user_requested_edit(const Gtk::TreeModel::iterator& row)
 {
-  Gnome::Gda::Value primary_key_value = m_AddDel.get_value_key_as_value(row); //The primary key is in the key.
+  Gnome::Gda::Value primary_key_value = m_AddDel.get_value_key(row); //The primary key is in the key.
 
   signal_user_requested_details().emit(primary_key_value);
 }
@@ -264,7 +264,7 @@ void Box_Data_List::on_adddel_user_added(const Gtk::TreeModel::iterator& row)
 {
   Gnome::Gda::Value primary_key_value;
 
-  const Glib::ustring& strPrimaryKeyName = get_primarykey_name();
+  const Glib::ustring& strPrimaryKeyName = get_primary_key_name();
   Field field;
   bool found = get_field(strPrimaryKeyName, field);
   if(!found)
@@ -364,7 +364,7 @@ void Box_Data_List::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, 
         bool test = get_fields_for_table_one_field(m_strTableName, field_name, field);
         if(test)
         {        
-          const Gnome::Gda::Value field_value = m_AddDel.get_value_as_value(row, col);
+          const Gnome::Gda::Value field_value = m_AddDel.get_value(row, col);
              
           Glib::ustring strQuery = "UPDATE " + m_strTableName;
           strQuery += " SET " +  field.get_name() + " = " + field.sql(field_value);
@@ -397,7 +397,7 @@ void Box_Data_List::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, 
 
     Field field_primary_key;
 
-    bool found = get_field(get_primarykey_name(), field_primary_key);
+    bool found = get_field(get_primary_key_name(), field_primary_key);
     if(found && field_primary_key.get_field_info().get_auto_increment())
     {
       on_adddel_user_added(row);
@@ -452,7 +452,7 @@ void Box_Data_List::on_details_nav_first()
 {
   m_AddDel.select_item(m_AddDel.get_model()->children().begin());
 
-  signal_user_requested_details().emit(m_AddDel.get_value_key_selected_as_value());
+  signal_user_requested_details().emit(m_AddDel.get_value_key_selected());
 }
 
 void Box_Data_List::on_details_nav_previous()
@@ -466,7 +466,7 @@ void Box_Data_List::on_details_nav_previous()
       iter--;
 
       m_AddDel.select_item(iter);
-      signal_user_requested_details().emit(m_AddDel.get_value_key_selected_as_value());
+      signal_user_requested_details().emit(m_AddDel.get_value_key_selected());
     }
   }
 }
@@ -482,7 +482,7 @@ void Box_Data_List::on_details_nav_next()
       iter++;    
       m_AddDel.select_item(iter);
 
-      signal_user_requested_details().emit(m_AddDel.get_value_key_selected_as_value());
+      signal_user_requested_details().emit(m_AddDel.get_value_key_selected());
     }
   }
 }
@@ -493,7 +493,7 @@ void Box_Data_List::on_details_nav_last()
   if(iter)
   {
     m_AddDel.select_item(iter);
-    signal_user_requested_details().emit(m_AddDel.get_value_key_selected_as_value());
+    signal_user_requested_details().emit(m_AddDel.get_value_key_selected());
   }
 }
 
@@ -532,12 +532,12 @@ void Box_Data_List::on_Details_record_deleted(Gnome::Gda::Value primary_key_valu
 
 Gnome::Gda::Value Box_Data_List::get_primary_key_value(const Gtk::TreeModel::iterator& row)
 {
-  return m_AddDel.get_value_key_as_value(row);
+  return m_AddDel.get_value_key(row);
 }
 
 Gnome::Gda::Value Box_Data_List::get_primary_key_value_selected()
 {
-  return Gnome::Gda::Value(m_AddDel.get_value_key_selected_as_value());
+  return Gnome::Gda::Value(m_AddDel.get_value_key_selected());
 }
 
 Gnome::Gda::Value Box_Data_List::get_entered_field_data(const Field& field) const
@@ -547,7 +547,7 @@ Gnome::Gda::Value Box_Data_List::get_entered_field_data(const Field& field) cons
   guint index = 0;
   bool test = get_field_column_index(field.get_name(), index);
   if(test)
-    return m_AddDel.get_value_selected_as_value(index);
+    return m_AddDel.get_value_selected(index);
   else
     return Gnome::Gda::Value(); //null.
 }
@@ -582,7 +582,7 @@ void Box_Data_List::fill_column_titles()
       m_AddDel.add_column(*iter);
 
       if(iter->get_field_info().get_primary_key())
-        m_AddDel.set_key_type(*iter);
+        m_AddDel.set_key_field(*iter);
     }
   }
 }
@@ -617,4 +617,9 @@ bool Box_Data_List::get_field_column_index(const Glib::ustring& field_name, guin
 
   g_warning("Box_Data_List::get_field_column_index(): field not found.");
   return false; //failure.
+}
+
+Glib::ustring Box_Data_List::get_primary_key_name()
+{
+  return m_AddDel.get_key_field().get_name();
 }

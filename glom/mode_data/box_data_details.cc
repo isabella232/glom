@@ -124,6 +124,8 @@ void Box_Data_Details::init_db_details(const Glib::ustring& strTableName, const 
 {
   m_primary_key_value = primary_key_value;
 
+  get_field_primary_key(strTableName, m_field_primary_key);
+
   Box_DB_Table::init_db_details(strTableName);
 }
 
@@ -197,7 +199,7 @@ void Box_Data_Details::fill_from_database()
           }
 
           std::stringstream query;
-          query << "SELECT " << sql_part_fields << " FROM " << m_strTableName << " WHERE " << get_table_name() + "." + get_primarykey_name() << " = " << field_primary_key.sql(m_primary_key_value);
+          query << "SELECT " << sql_part_fields << " FROM " << m_strTableName << " WHERE " << get_table_name() + "." + get_primary_key_name() << " = " << field_primary_key.sql(m_primary_key_value);
           Glib::RefPtr<Gnome::Gda::DataModel> result = connection->execute_single_command(query.str());
 
           if(result && result->get_n_rows())
@@ -515,8 +517,8 @@ void Box_Data_Details::on_flowtable_field_edited(const Glib::ustring& id, const 
 {
   if(m_ignore_signals)
     return;
-    
-   const Glib::ustring strPrimaryKey_Name = get_primarykey_name();
+
+   const Glib::ustring strPrimaryKey_Name = get_primary_key_name();
    const Glib::ustring strFieldName = id;
 
    if(!strPrimaryKey_Name.empty())
@@ -656,7 +658,10 @@ void Box_Data_Details::on_userlevel_changed(AppState::userlevels user_level)
   m_FlowTable.set_design_mode( user_level == AppState::USERLEVEL_DEVELOPER );
 }
 
-
+Glib::ustring Box_Data_Details::get_primary_key_name()
+{
+  return m_field_primary_key.get_name();
+}
 
 
 
