@@ -1,15 +1,15 @@
 # Czech translation of glom.
 # Copyright (C) 2004 glom'S COPYRIGHT HOLDER
-# Copyright (C) 2004 Miloslav Trmac <mitr@volny.cz>
+# Copyright (C) 2004, 2005 Miloslav Trmac <mitr@volny.cz>
 # This file is distributed under the same license as the glom package.
-# Miloslav Trmac <mitr@volny.cz>, 2004.
+# Miloslav Trmac <mitr@volny.cz>, 2004, 2005.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: glom VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-01-05 10:19+0100\n"
-"PO-Revision-Date: 2004-12-11 22:17+0100\n"
+"POT-Creation-Date: 2005-03-11 12:03+0100\n"
+"PO-Revision-Date: 2005-03-11 15:32+0100\n"
 "Last-Translator: Miloslav Trmac <mitr@volny.cz>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -17,24 +17,24 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: glom/glom.glade.h:1
-msgid "*"
-msgstr "*"
-
-#: glom/glom.glade.h:2
 msgid "<b>Connection</b>"
 msgstr "<b>Připojení</b>"
 
-#: glom/glom.glade.h:3
+#: glom/glom.glade.h:2
 msgid "<b>Field Definitions</b>"
 msgstr "<b>Definice polí</b>"
 
-#: glom/glom.glade.h:4
+#: glom/glom.glade.h:3
 msgid "<b>Fields</b>"
 msgstr "<b>Pole</b>"
 
-#: glom/glom.glade.h:5
+#: glom/glom.glade.h:4
 msgid "<b>Mode: </b>"
 msgstr "<b>Režim: </b>"
+
+#: glom/glom.glade.h:5
+msgid "<b>Relationship: </b>"
+msgstr "<b>Vztah:</b>"
 
 #: glom/glom.glade.h:6
 msgid "<b>Select Field</b>"
@@ -264,38 +264,42 @@ msgid "Primary Key"
 msgstr "Primární klíč"
 
 #: glom/glom.glade.h:67
+msgid "Related Records Layout"
+msgstr "Rozložení souvisejících záznamů"
+
+#: glom/glom.glade.h:68
 msgid "Relationship"
 msgstr "Vztah"
 
-#: glom/glom.glade.h:68
+#: glom/glom.glade.h:69
 msgid "Revert"
 msgstr "Vrátit"
 
-#: glom/glom.glade.h:69
+#: glom/glom.glade.h:70
 msgid "Select"
 msgstr "Vybrat"
 
-#: glom/glom.glade.h:70
+#: glom/glom.glade.h:71
 msgid "Select Field"
 msgstr "Zvolte pole"
 
-#: glom/glom.glade.h:71
+#: glom/glom.glade.h:72
 msgid "Select Relationship"
 msgstr "Zvolte vztah"
 
-#: glom/glom.glade.h:72
+#: glom/glom.glade.h:73
 msgid "Show hidden tables"
 msgstr "Zobrazovat skryté tabulky"
 
-#: glom/glom.glade.h:73
+#: glom/glom.glade.h:74
 msgid "Table:"
 msgstr "Tabulka:"
 
-#: glom/glom.glade.h:74
+#: glom/glom.glade.h:75
 msgid "Test"
 msgstr "Test"
 
-#: glom/glom.glade.h:75
+#: glom/glom.glade.h:76
 msgid ""
 "The field value will be the return value of the python function, which you "
 "implement here."
@@ -303,27 +307,27 @@ msgstr ""
 "Hodnota tohoto pole bude návratová hodnota funkce v pythonu, kterou zde "
 "implementujete."
 
-#: glom/glom.glade.h:76
+#: glom/glom.glade.h:77
 msgid "Title"
 msgstr "Nadpis"
 
-#: glom/glom.glade.h:77
+#: glom/glom.glade.h:78
 msgid "Type"
 msgstr "Typ"
 
-#: glom/glom.glade.h:78
+#: glom/glom.glade.h:79
 msgid "Unique"
 msgstr "Jedinečný"
 
-#: glom/glom.glade.h:79
+#: glom/glom.glade.h:80
 msgid "User"
 msgstr "Uživatel"
 
-#: glom/glom.glade.h:80
+#: glom/glom.glade.h:81
 msgid "example data format"
 msgstr "ukázkový formát data"
 
-#: glom/glom.glade.h:81
+#: glom/glom.glade.h:82
 msgid "table name"
 msgstr "název tabulky"
 
