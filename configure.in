@@ -42,6 +42,10 @@ AC_DEFINE_UNQUOTED([ISO_CODES_PREFIX],["`$PKG_CONFIG --variable=prefix iso-codes
 # Get the CFLAGS and LIBS for python's embedding API:
 AM_CHECK_PYTHON_HEADERS(,[AC_MSG_ERROR(could not find Python headers)])
 
+# Get the CLAGS and LIBS for boost:
+# TODO: Actually find it properly.
+BOOST_CFLAGS = -I/usr/include
+BOOST_LIBS = -L/usr/lib -lboost_python
 # Install path for DTD (e.g. /usr/local/share/glom):
 
 #I would like to use this line, but it doesn't fully evaluate.
@@ -53,7 +57,7 @@ GLOM_DTD_INSTALL_DIR="\"${prefix}/share/${PACKAGE}\""
 AC_DEFINE_UNQUOTED(GLOM_DTD_INSTALL_DIR, $GLOM_DTD_INSTALL_DIR, "definition of GLOM_DTD_INSTALL_DIR")
 
 # Evaluate the --enable-warnings=level option.
-GLOM_ARG_ENABLE_WARNINGS()
+# Disable this, because boost is not warning-safe: GLOM_ARG_ENABLE_WARNINGS()
 
 # Generate Makefiles, configuration files and scripts:
 AC_OUTPUT(Makefile \
@@ -76,29 +80,6 @@ AC_OUTPUT(Makefile \
         glom/utility_widgets/adddel/eggcolumnchooser/Makefile \
       glom/utility_widgets/db_adddel/Makefile \
       glom/python_embed/Makefile \
-      glom/python_embed/boost/Makefile \
-      glom/python_embed/boost/config/Makefile \
-      glom/python_embed/boost/config/abi/Makefile \
-      glom/python_embed/boost/config/compiler/Makefile \
-      glom/python_embed/boost/config/platform/Makefile \
-      glom/python_embed/boost/config/stdlib/Makefile \
-      glom/python_embed/boost/python/Makefile \
-      glom/python_embed/boost/python/converter/Makefile \
-      glom/python_embed/boost/python/detail/Makefile \
-      glom/python_embed/boost/python/object/Makefile \
-      glom/python_embed/boost/mpl/Makefile \
-      glom/python_embed/boost/mpl/aux_/Makefile \
-      glom/python_embed/boost/mpl/aux_/config/Makefile \
-      glom/python_embed/boost/mpl/aux_/range_c/Makefile \
-      glom/python_embed/boost/mpl/aux_/preprocessor/Makefile \
-      glom/python_embed/boost/mpl/limits/Makefile \
-      glom/python_embed/boost/mpl/list/Makefile \
-      glom/python_embed/boost/mpl/map/Makefile \
-      glom/python_embed/boost/mpl/math/Makefile \
-      glom/python_embed/boost/mpl/multiset/Makefile \
-      glom/python_embed/boost/mpl/set/Makefile \
-      glom/python_embed/boost/mpl/vector/Makefile \
-      glom/python_embed/boost/mpl/vector/aux_/Makefile \
     po/Makefile.in \
   macros/Makefile \
   examples/Makefile

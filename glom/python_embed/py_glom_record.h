@@ -22,10 +22,10 @@
 #define GLOM_PYTHON_GLOM_RECORD_H
 
 //For an installed boost:
-//#include <boost/python.hpp>
+#include <boost/python.hpp>
 
 //For a copied version of boost:
-#include "boost/python.hpp"
+//#include "boost/python.hpp"
 
 #include "../data_structure/field.h"
 #include <glibmm/ustring.h>
