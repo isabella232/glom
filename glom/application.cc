@@ -39,6 +39,9 @@ App_Glom::App_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml
   
   add_mime_type("application/x-glom"); //TODO: make this actually work - we need to register it properly.
   
+  //Hide the toolbar because it doesn't contain anything useful for this app.
+  m_HandleBox_Toolbar.hide();
+  
   show_all_children();
 }
 
@@ -63,6 +66,9 @@ void App_Glom::init()
     offer_new_or_existing();
   }
   
+  //Hide the toolbar because it doesn't contain anything useful for this app.
+  m_HandleBox_Toolbar.hide();
+  
   //show_all();
 }
 
@@ -75,9 +81,10 @@ void App_Glom::init_layout()
   Gtk::MenuBar* pMenuBar = static_cast<Gtk::MenuBar*>(m_refUIManager->get_widget("/Bakery_MainMenu"));
   m_pBoxTop->pack_start(*pMenuBar, Gtk::PACK_SHRINK);
 
-  Gtk::Toolbar* pToolBar = static_cast<Gtk::Toolbar*>(m_refUIManager->get_widget("/Bakery_ToolBar"));
-  m_HandleBox_Toolbar.add(*pToolBar);
-  m_HandleBox_Toolbar.show();
+  //Do not create the toolbar because it doesn't contain anything useful for this app.
+  //Gtk::Toolbar* pToolBar = static_cast<Gtk::Toolbar*>(m_refUIManager->get_widget("/Bakery_ToolBar"));
+  //m_HandleBox_Toolbar.add(*pToolBar);
+  //m_HandleBox_Toolbar.show();
 
   add_accel_group(m_refUIManager->get_accel_group());
 
@@ -384,10 +391,3 @@ AppState::userlevels App_Glom::get_userlevel() const
   else
     return AppState::USERLEVEL_DEVELOPER; //This should never happen.
 }
-
-
-
-
-
-
-

@@ -1,4 +1,9 @@
-2004-07-04  Murray Cumming  <murrayc@localhost.com>
+2004-07-04  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/applciation,cc init_layout(): Do not create the toolbar, 
+	because it is not useful for this application.
+
+2004-07-04  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/navigation/box_db_tables.cc: save_to_document(): Only save 
 	something when something has been modified.
