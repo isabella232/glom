@@ -156,31 +156,11 @@ Glib::RefPtr<Gnome::Gda::DataModel> Box_DB_Table::record_new(Gnome::Gda::Value p
     return Glib::RefPtr<Gnome::Gda::DataModel>();
 }
 
-guint Box_DB_Table::get_Entered_Field_count() const
-{
-  return m_Fields.size();
-}
-
-Field Box_DB_Table::get_Entered_Field(guint index) const
+Gnome::Gda::Value Box_DB_Table::get_entered_field_data(const Field& /* field */) const
 {
   //Override this to use Field::set_data() too.
-  Field fieldResult;
 
-  //Glom-specific information:
-  const Document_Glom* pDoc = dynamic_cast<const Document_Glom*>(get_document());
-  if(pDoc)
-  {
-    const Glib::ustring& strFieldName = m_Fields[index].get_name();
-    pDoc->get_field(m_strTableName, strFieldName, fieldResult);
-  }
-
-  //DB field definition:
-  if(index < get_Entered_Field_count())
-  {
-    fieldResult = m_Fields[index];
-  }
-
-  return fieldResult;
+  return Gnome::Gda::Value(); //null
 }
 
 bool Box_DB_Table::get_field(const Glib::ustring& name, Field& field) const

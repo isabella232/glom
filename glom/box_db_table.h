@@ -53,8 +53,7 @@ protected:
   virtual bool record_delete(const Gnome::Gda::Value& primary_key_value);
   virtual Glib::RefPtr<Gnome::Gda::DataModel> record_new(Gnome::Gda::Value primary_key_value);
 
-  virtual guint get_Entered_Field_count() const;
-  virtual Field get_Entered_Field(guint index) const;
+  virtual Gnome::Gda::Value get_entered_field_data(const Field& field) const;
 
 
   

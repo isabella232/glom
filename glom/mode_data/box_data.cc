@@ -52,14 +52,14 @@ Glib::ustring Box_Data::get_WhereClause() const
   Glib::ustring strClause;
 
   //Look at each field entry and build e.g. 'Name = "Bob"'
-  for(guint i = 0; i < get_Entered_Field_count(); i++)
+  for(type_vecFields::const_iterator iter = m_Fields.begin(); iter != m_Fields.end(); ++iter)
   {
-    const Field& field = get_Entered_Field(i);
+    const Field& field = *iter;
     Glib::ustring strClausePart;
 
      g_warning("Box_Data::get_WhereClause(): field: name=%s", field.get_name().c_str());
      
-    const Gnome::Gda::Value data = field.get_data();
+    const Gnome::Gda::Value data = get_entered_field_data(field);
     if(!GlomConversions::value_is_empty(data))
     {
       Gnome::Gda::FieldAttributes fieldInfo = field.get_field_info();
@@ -91,12 +91,13 @@ bool Box_Data::record_new_from_entered()
   Glib::ustring strNames;
   Glib::ustring strValues;
 
-  guint iCount = get_Entered_Field_count();
-  for(guint i = 0; i < iCount; i++)
+  for(type_vecFields::const_iterator iter = m_Fields.begin(); iter != m_Fields.end(); ++iter)
   {
-    Field field = get_Entered_Field(i);
+    const Field& field = *iter;
+    Gnome::Gda::Value value = get_entered_field_data(field);
+      
     Gnome::Gda::FieldAttributes fieldInfo = field.get_field_info();
-    Glib::ustring strFieldValue = field.sql(field.get_data());
+    Glib::ustring strFieldValue = field.sql(value);
 
     if(!strFieldValue.empty())
     {
@@ -106,7 +107,7 @@ bool Box_Data::record_new_from_entered()
         strValues += ", ";
       }
 
-      strNames += field.get_field_info().get_name();;
+      strNames += field.get_name();;
       strValues += strFieldValue;
     }
   }

@@ -133,10 +133,15 @@ EntryGlom* FlowTableWithFields::get_field(const Field& field)
   return get_field(field.get_name());
 }
 
-EntryGlom* FlowTableWithFields::get_field(const Glib::ustring& id)
+const EntryGlom* FlowTableWithFields::get_field(const Field& field) const
+{
+  return get_field(field.get_name());
+}
+
+const EntryGlom* FlowTableWithFields::get_field(const Glib::ustring& id) const
 {
   EntryGlom* entry = 0;
-  
+
   type_mapFields::const_iterator iterFind = m_mapFields.find(id);
   if(iterFind != m_mapFields.end())
   {
@@ -149,7 +154,7 @@ EntryGlom* FlowTableWithFields::get_field(const Glib::ustring& id)
   else
   {
     //Check the sub-flowtables:
-    for(type_sub_flow_tables::iterator iter = m_sub_flow_tables.begin(); iter != m_sub_flow_tables.end(); ++iter)
+    for(type_sub_flow_tables::const_iterator iter = m_sub_flow_tables.begin(); iter != m_sub_flow_tables.end(); ++iter)
     {
       FlowTableWithFields* subtable = *iter;
       if(subtable)
@@ -161,6 +166,12 @@ EntryGlom* FlowTableWithFields::get_field(const Glib::ustring& id)
   }
 
   return 0; //Not found.
+}
+
+EntryGlom* FlowTableWithFields::get_field(const Glib::ustring& id)
+{
+  const FlowTableWithFields* pThis = this;
+  return const_cast<EntryGlom*>(pThis->get_field(id)); 
 }
 
 void FlowTableWithFields::change_group(const Glib::ustring& /* id */, const Glib::ustring& /*new_group */)

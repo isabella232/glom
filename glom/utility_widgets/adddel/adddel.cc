@@ -349,6 +349,11 @@ Glib::ustring AddDel::get_value_selected(guint col)
   return strValue;
 }
 
+Gnome::Gda::Value AddDel::get_value_selected_as_value(guint col)
+{
+  return get_value_as_value(get_item_selected(), col);
+}
+
 Gtk::TreeModel::iterator AddDel::get_item_selected()
 {
   Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = m_TreeView.get_selection();

@@ -46,8 +46,11 @@ public:
   
   
   virtual EntryGlom* get_field(const Glib::ustring& id);
+  virtual const EntryGlom* get_field(const Glib::ustring& id) const;
+  
   virtual EntryGlom* get_field(const Field& field);
-    
+  virtual const EntryGlom* get_field(const Field& field) const;
+      
   virtual void change_group(const Glib::ustring& id, const Glib::ustring& new_group);
 
   virtual void remove_all();

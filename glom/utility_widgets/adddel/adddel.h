@@ -103,6 +103,7 @@ public:
   virtual void set_value_key(const Gtk::TreeModel::iterator& iter, const Glib::ustring& strValue);
 
   virtual Glib::ustring get_value_selected(guint col);
+  virtual Gnome::Gda::Value get_value_selected_as_value(guint col);
   virtual Glib::ustring get_value_key_selected();
   virtual Gnome::Gda::Value get_value_key_selected_as_value();
   

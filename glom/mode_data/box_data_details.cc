@@ -422,19 +422,13 @@ void Box_Data_Details::on_button_nav_last()
     signal_nav_last().emit();
 }
 
-Field Box_Data_Details::get_Entered_Field(guint index) const
+Gnome::Gda::Value Box_Data_Details::get_entered_field_data(const Field& field) const
 {
-  //Get Gnome::Gda::FieldAttributes from base:
-  Field FieldResult = Box_Data::get_Entered_Field(index);
- /* TODO_port
-  //Get text from widget:
-  if(index < get_Entered_Field_count())
-  {
-    const Glib::ustring& strData = m_AddDel.get_value(index);
-    FieldResult.set_data(strData);
-  }
-  */
-  return FieldResult;
+  const EntryGlom* entry = m_FlowTable.get_field(field);
+  if(entry)
+    return entry->get_value();
+  else
+    return Gnome::Gda::Value(); //null.
 }
 
 Gnome::Gda::Value Box_Data_Details::get_primary_key_value_selected()
@@ -470,7 +464,7 @@ void Box_Data_Details::on_related_record_added(Gnome::Gda::Value /* strKeyValue 
  /* TODO_port
   guint iKey = 0;
   bool bTest = get_field_index(strFromKeyName, iKey);
-  Glib::ustring strFromKeyValue = get_Entered_Field(iKey).get_data();
+  Glib::ustring strFromKeyValue = get_entered_field_data(iKey).get_data();
 
   if(strFromKeyValue.size() == 0)
   {

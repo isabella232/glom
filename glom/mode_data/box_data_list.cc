@@ -473,18 +473,16 @@ Gnome::Gda::Value Box_Data_List::get_primary_key_value_selected()
   return Gnome::Gda::Value(m_AddDel.get_value_key_selected_as_value());
 }
 
-Field Box_Data_List::get_Entered_Field(guint index)
+Gnome::Gda::Value Box_Data_List::get_entered_field_data(const Field& field)
 {
-  //Get Gnome::Gda::FieldAttributes from base:
-  Field FieldResult = Box_Data::get_Entered_Field(index);
-
   //Get text from widget:
-  if(index < get_Entered_Field_count())
-  {
-    const Glib::ustring strData = m_AddDel.get_value_selected(index);
-  }
 
-  return FieldResult;
+  guint index = 0;
+  bool test = get_field_column_index(field.get_name(), index);
+  if(test)
+    return m_AddDel.get_value_selected_as_value(index);
+  else
+    return Gnome::Gda::Value(); //null.
 }
 
 guint Box_Data_List::get_records_count() const

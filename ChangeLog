@@ -1,5 +1,12 @@
 2004-07-02  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/mode_data/box_data.[h|cc] and derived classes: Change 
+	get_Entered_Field to get_entered_field_data() which takes a Field and 
+	returns a Gnome::Gda::Value. This makes Find mode work for the Details 
+	view at least.
+
+2004-07-02  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/mode_find/: Make the find mode show some widgets, by 
 	re-activating some old code and adding the boxes and notebooks to the 
 	Bakery composite View so that they know about the document.
