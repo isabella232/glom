@@ -208,7 +208,10 @@ void Box_Data::on_dialog_layout_hide()
 
 Box_Data::type_vecFields Box_Data::get_fields_to_show() const
 {
-  return get_table_fields_to_show(m_strTableName);
+  if(m_strTableName.empty())
+    return type_vecFields();
+  else
+    return get_table_fields_to_show(m_strTableName);
 }
 
 void Box_Data::get_table_fields_to_show_add_group(const Glib::ustring& table_name, const type_vecFields& all_db_fields, const LayoutGroup& group, Box_Data::type_vecFields& vecFields) const
@@ -387,13 +390,16 @@ Document_Glom::type_mapLayoutGroupSequence Box_Data::get_data_layout_groups(cons
   Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
   if(document)
   {
-    //Get the layout information from the document:
-    layout_groups = document->get_data_layout_groups_plus_new_fields(layout, m_strTableName);
-
-    //Fill in the field information for the fields mentioned in the layout:
-    for(Document_Glom::type_mapLayoutGroupSequence::iterator iterGroups = layout_groups.begin(); iterGroups != layout_groups.end(); ++iterGroups)
+    if(!m_strTableName.empty())
     {
-      fill_layout_group_field_info(iterGroups->second);
+      //Get the layout information from the document:
+      layout_groups = document->get_data_layout_groups_plus_new_fields(layout, m_strTableName);
+
+      //Fill in the field information for the fields mentioned in the layout:
+      for(Document_Glom::type_mapLayoutGroupSequence::iterator iterGroups = layout_groups.begin(); iterGroups != layout_groups.end(); ++iterGroups)
+      {
+        fill_layout_group_field_info(iterGroups->second);
+      }
     }
   }
 

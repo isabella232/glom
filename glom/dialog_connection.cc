@@ -26,11 +26,13 @@ Dialog_Connection::Dialog_Connection(BaseObjectType* cobject, const Glib::RefPtr
   Base_DB(),
   m_entry_host(0),
   m_entry_user(0),
-  m_entry_password(0)
+  m_entry_password(0),
+  m_label_database(0)
 {
   refGlade->get_widget("entry_host", m_entry_host);
   refGlade->get_widget("entry_user", m_entry_user);
   refGlade->get_widget("entry_password", m_entry_password);
+  refGlade->get_widget("label_database", m_label_database);
 }
 
 Dialog_Connection::~Dialog_Connection()
@@ -48,7 +50,6 @@ sharedptr<SharedConnection> Dialog_Connection::connect_to_server_with_connection
   {
     //Set the connection details in the ConnectionPool singleton.
     //The ConnectionPool will now use these every time it tries to connect.
-    g_warning("Dialog_Connection::connect_to_server_with_connection_settings(): database in doc=%s", m_pDocument->get_connection_database().c_str());
     connection_pool->set_database(m_pDocument->get_connection_database());
     
     connection_pool->set_host(m_entry_host->get_text());
@@ -56,7 +57,6 @@ sharedptr<SharedConnection> Dialog_Connection::connect_to_server_with_connection
     connection_pool->set_password(m_entry_password->get_text());
     if(m_pDocument)
     {
-      g_warning("before set_database: %s", m_pDocument->get_connection_database().c_str());
       connection_pool->set_database(m_pDocument->get_connection_database());
     }
     
@@ -94,6 +94,14 @@ void Dialog_Connection::load_from_document()
     }
 
     m_entry_user->set_text(user);
+
+    //Show the database to be opened, or created.
+    //TODO: In future, we can hide this completely.
+    Glib::ustring database = m_pDocument->get_connection_database();
+    if(database.empty())
+      database = gettext("Not yet created.");
+
+    m_label_database->set_text(database);
   }
   else
     g_warning("ialog_Connection::load_from_document(): no document");

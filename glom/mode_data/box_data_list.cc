@@ -173,32 +173,44 @@ void Box_Data_List::fill_from_database()
 void Box_Data_List::on_adddel_user_requested_add()
 {
   Gtk::TreeModel::iterator iter = m_AddDel.get_item_placeholder();
-
-  //Start editing in the primary key or the first cell if the primary key is auto-incremented (because there is no point in editing an auto-generated value)..
-  guint index_primary_key = 0;
-  bool bPresent = get_field_primary_key(index_primary_key); //If there is no primary key then the default of 0 is OK.
-  guint index_field_to_edit = 0;
-  if(bPresent)
+  if(iter)
   {
-    index_field_to_edit = index_primary_key;
-    
-    Field fieldPrimaryKey = m_Fields[index_primary_key];
-    if(fieldPrimaryKey.get_field_info().get_auto_increment())
+    //Start editing in the primary key or the first cell if the primary key is auto-incremented (because there is no point in editing an auto-generated value)..
+    guint index_primary_key = 0;
+    bool bPresent = get_field_primary_key(index_primary_key); //If there is no primary key then the default of 0 is OK.
+    guint index_field_to_edit = 0;
+    if(bPresent)
     {
-      //Start editing in the first cell that is not the primary key:
-      if(index_primary_key == 0)
+      index_field_to_edit = index_primary_key;
+
+      Field fieldPrimaryKey = m_Fields[index_primary_key];
+      if(fieldPrimaryKey.get_field_info().get_auto_increment())
       {
-        index_field_to_edit += 1; //TODO: Check that there is > 1 column.
+        //Start editing in the first cell that is not the primary key:
+        if(index_primary_key == 0)
+        {
+          index_field_to_edit += 1;
+        }
+        else
+          index_field_to_edit = 0;
       }
-      else
-        index_field_to_edit = 0;
+    }
+
+    if(index_field_to_edit < m_Fields.size())
+    {
+      guint treemodel_column = 0;
+      bool test = get_field_column_index(m_Fields[index_field_to_edit].get_name(), treemodel_column);
+      if(test)
+        m_AddDel.select_item(iter, treemodel_column, true /* start_editing */);
+    }
+    else
+    {
+      //The only keys are non-editable, so just add a row:
+      on_adddel_user_added(iter);
+      m_AddDel.select_item(iter); //without start_editing.
+      //g_warning("Box_Data_List::on_adddel_user_requested_add(): index_field_to_edit does not exist: %d", index_field_to_edit);
     }
   }
-
-  guint treemodel_column = 0;
-  bool test = get_field_column_index(m_Fields[index_field_to_edit].get_name(), treemodel_column);
-  if(test)
-    m_AddDel.select_item(iter, treemodel_column, true /* start_editing */);
 }
 
 void Box_Data_List::on_adddel_user_requested_edit(const Gtk::TreeModel::iterator& row)
@@ -549,7 +561,6 @@ void Box_Data_List::fill_column_titles()
 
 void Box_Data_List::on_record_added(const Gnome::Gda::Value& /* strPrimaryKey */)
 {
-g_warning("on_record_added");
   //Overridden by Box_Data_List_Related.
   //m_AddDel.add_item(strPrimaryKey); //Add blank row.
 }

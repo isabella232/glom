@@ -415,7 +415,7 @@ bool AddDel::select_item(const Gtk::TreeModel::iterator& iter, guint column, boo
            g_warning("AddDel::select_item:TreeViewColumn not found.");
       }
       else
-           g_warning("AddDel::select_item:TreeViewColumn index not found.");
+           g_warning("AddDel::select_item:TreeViewColumn index not found. column=%d", column);
     }
 
     bResult = true;

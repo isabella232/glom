@@ -80,8 +80,11 @@ public:
 
   static void show_ok_dialog(const Glib::ustring& title, const Glib::ustring& message, Gtk::Window& parent);
 
+  //Show the dialog to request the password, and check whether it works.
+  virtual bool connection_request_password_and_attempt();
+  
   ///Create the database for new documents, showing the Connection dialog
-  bool create_database(const Glib::ustring& database_name);
+  virtual bool create_database(const Glib::ustring& database_name);
   
 protected:
 
@@ -126,6 +129,7 @@ protected:
   Dialog_Relationships* m_pDialog_Relationships;
 
   Dialog_Connection* m_pDialogConnection;
+  Gtk::Dialog* m_pDialogConnectionFailed;
 };
 
 #endif //FRAME_GLOM_H

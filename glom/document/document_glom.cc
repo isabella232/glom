@@ -139,12 +139,20 @@ void Document_Glom::set_relationships(const Glib::ustring& table_name, const typ
 
 Document_Glom::type_vecFields Document_Glom::get_table_fields(const Glib::ustring& table_name) const
 {
-  type_tables::const_iterator iterFind = m_tables.find(table_name);
-  if(iterFind != m_tables.end())
-    return iterFind->second.m_fields;
+  if(!table_name.empty())
+  {
+    type_tables::const_iterator iterFind = m_tables.find(table_name);
+    if(iterFind != m_tables.end())
+      return iterFind->second.m_fields;
+    else
+    {
+      g_warning("Document_Glom::get_table_fields: table not found in document: %s", table_name.c_str());
+      return type_vecFields();
+    }
+  }
   else
   {
-    g_warning("Document_Glom::get_table_fields: table not found in document: %s", table_name.c_str());
+    g_warning("Document_Glom::get_table_fields: table name is empty.");
     return type_vecFields();
   }
 }

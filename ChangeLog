@@ -1,6 +1,15 @@
+2004-11-29  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/frame.cc create_database(): Show an informative dialog if the 
+	connection fails.
+	* glom/glom.glade: Add the dialog_error_connection dialog.
+	* glom/mode_data/box_data_list.cc: on_adddel_user_requested_add(): 
+	Prevent crash when there is only one field and it is auto-generating. 
+	And actually add a row in this case without requiring data entry.
+	
 2004-11-28  Murray Cumming  <murrayc@murrayc.com>
 
-	* glom/connectoin_pool.cc: connect(): specify the database name in the 
+	* glom/connection_pool.cc: connect(): specify the database name in the 
 	connection string, when it is wanted, instead of using 
 	change_database(), because libgda needs that.
 

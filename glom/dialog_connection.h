@@ -24,6 +24,7 @@
 #include <libglademm.h>
 #include <gtkmm/dialog.h>
 #include <gtkmm/entry.h>
+#include <gtkmm/label.h>
 #include "base_db.h"
 #include "connectionpool.h"
 
@@ -40,9 +41,10 @@ public:
   virtual void load_from_document(); //override
   
 protected:
-  Gtk::Entry* m_entry_host;
+  Gtk::Entry* m_entry_host;             
   Gtk::Entry* m_entry_user;
   Gtk::Entry* m_entry_password;
+  Gtk::Label* m_label_database;
 };
 
 #endif //GLOM_DIALOG_CONNECTION_H

@@ -33,8 +33,8 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
   m_pDialog_Tables(0),
   m_pDialog_Fields(0),
   m_pDialog_Relationships(0),
-  m_pDialogConnection(0)
-
+  m_pDialogConnection(0),
+  m_pDialogConnectionFailed(0)
 {
   //Load widgets from glade file:
   refGlade->get_widget("label_table_name", m_pLabel_Table);
@@ -95,6 +95,19 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
     std::cerr << ex.what() << std::endl;
   }
 
+  try
+  {
+    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_error_connection");
+
+    refXml->get_widget("dialog_error_connection", m_pDialogConnectionFailed);
+  }
+  catch(const Gnome::Glade::XmlError& ex)
+  {
+    std::cerr << ex.what() << std::endl;
+  }
+  
+  
+
   m_Mode = MODE_None;
   m_Mode_Previous = MODE_None;
 
@@ -130,9 +143,35 @@ Frame_Glom::~Frame_Glom()
 {
   if(m_pDialog_Tables)
   {
-      delete m_pDialog_Tables;
-      m_pDialog_Tables = 0;
+    delete m_pDialog_Tables;
+    m_pDialog_Tables = 0;
   }
+
+  if(m_pDialogConnection)
+  {
+    delete m_pDialogConnection;
+    m_pDialogConnection = 0;
+  }
+
+  if(m_pDialogConnectionFailed)
+  {
+    delete m_pDialogConnectionFailed;
+    m_pDialogConnectionFailed = 0;
+  }
+
+  if(m_pDialog_Relationships)
+  {
+    delete m_pDialog_Relationships;
+    m_pDialog_Relationships = 0;
+  }
+
+  if(m_pDialog_Relationships)
+  {
+    delete m_pDialog_Relationships;
+    m_pDialog_Relationships = 0;
+  }
+
+  
 }
 
 void Frame_Glom::set_databases_selected(const Glib::ustring& strName)
@@ -618,7 +657,7 @@ void Frame_Glom::on_menu_developer_recreate_structure()
 {
 }
 
-bool Frame_Glom::create_database(const Glib::ustring& database_name)
+bool Frame_Glom::connection_request_password_and_attempt()
 {
   while(true) //Loop until a return
   {
@@ -630,28 +669,63 @@ bool Frame_Glom::create_database(const Glib::ustring& database_name)
     if(response == Gtk::RESPONSE_OK)
     {
       sharedptr<SharedConnection> sharedconnection = m_pDialogConnection->connect_to_server_with_connection_settings();
-      if(sharedconnection)
+      if(!sharedconnection)
       {
-        Bakery::BusyCursor(*get_app_window());
+        //Warn the user, and let him try again:
+        int response = m_pDialogConnectionFailed->run();
+        m_pDialogConnectionFailed->hide();
 
-        Glib::RefPtr<Gnome::Gda::Connection> connection = sharedconnection->get_gda_connection();
-        if(connection)
+        if(response != Gtk::RESPONSE_OK)
+          return false; //The user cancelled.
+      }
+      else
+        return true;
+    }
+    else
+      return false; //The user cancelled.
+  }
+}
+
+bool Frame_Glom::create_database(const Glib::ustring& database_name)
+{
+  //Ask for connection details:                   
+  if(connection_request_password_and_attempt()) //If it succeeded and the user did not cancel.
+  {
+    //This must now succeeed, because we've already tried it once:
+    sharedptr<SharedConnection> sharedconnection = m_pDialogConnection->connect_to_server_with_connection_settings();
+    if(sharedconnection)
+    {
+      Bakery::BusyCursor(*get_app_window());
+
+      Glib::RefPtr<Gnome::Gda::Connection> connection = sharedconnection->get_gda_connection();
+      if(connection)
+      {
+        bool result = connection->create_database(database_name);
+        if(result)
+          return true; // It succeeded.
+        else
         {
-          bool result = connection->create_database(database_name);
-          if(result)
-            return true; // It succeeded.
-          else
+          //Tell the user:
+          Gtk::Dialog* dialog = 0;
+          try
           {
-            //Back to the start of the while() loop, to try again
-            //TODO: handle_error();
+            Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_error_create_database");
+
+            refXml->get_widget("dialog_error_create_database", dialog);
           }
+          catch(const Gnome::Glade::XmlError& ex)
+          {
+            std::cerr << ex.what() << std::endl;
+          }
+
+          dialog->run();
+          delete dialog;
+          return false; //Failed. //TODO: Allow the user to try with a different user name?
         }
       }
     }
-    else
-      return false; //Failed, because the user cancelled.
   }
-
+ 
   return false;
 }
 
