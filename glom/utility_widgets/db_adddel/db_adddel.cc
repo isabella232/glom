@@ -21,7 +21,7 @@
 #include "db_adddel.h"
 #include <algorithm> //For std::find.
 #include <libintl.h>
-#include "cellrendererlist.h"
+#include "../adddel/cellrendererlist.h"
 #include "db_treeviewcolumn_glom.h"
 #include "../../data_structure/glomconversions.h"
 #include "../../dialog_invalid_data.h"
