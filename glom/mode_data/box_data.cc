@@ -350,7 +350,7 @@ Box_Data::type_vecLayoutFields Box_Data::get_table_fields_to_show(const Glib::us
     return type_vecLayoutFields();
 }
 
-Box_Data::type_vecLayoutFields Box_Data::get_table_fields_to_show(const Glib::ustring& table_name, const Document_Glom::type_mapLayoutGroupSequence& mapGroupSequence) const
+Box_Data::type_vecLayoutFields Box_Data::(const Glib::ustring& table_name, const Document_Glom::type_mapLayoutGroupSequence& mapGroupSequence) const
 {
   //Get field definitions from the database, with corrections from the document:
   type_vecFields all_fields = get_fields_for_table(table_name);
@@ -375,6 +375,9 @@ Box_Data::type_vecLayoutFields Box_Data::get_table_fields_to_show(const Glib::us
         LayoutItem_Field layout_item;
         layout_item.set_name(primary_key_field_name);
         layout_item.m_field = all_fields[iPrimaryKey];
+
+        //Don't use thousands separators with ID numbers:
+        layout_item.m_numeric_format.m_use_thousands_separator = false;
 
         layout_item.set_editable(true); //A sensible default.
 
