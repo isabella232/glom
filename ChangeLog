@@ -1,5 +1,9 @@
 2004-06-20  Murray Cumming  <murrayc@murrayc.com>
 
+	* configure.in, docs/user-guide: Added skeleton for the user guide. 
+
+2004-06-20  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/mode_design/fields/box_db_table_definition.cc: 
 	get_field_definition(): Prevent crash - do not try to use a 
 	TreeModel::iterator as the index to a vector.

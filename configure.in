@@ -52,6 +52,9 @@ GLOM_ARG_ENABLE_WARNINGS()
 # Generate Makefiles, configuration files and scripts:
 AC_OUTPUT(Makefile \
   docs/Makefile \
+    docs/user-guide/Makefile \
+      docs/user-guide/C/Makefile \
+        docs/user-guide/C/figures/Makefile \
   glom/Makefile \
     glom/data_structure/Makefile \
     glom/document/Makefile \
