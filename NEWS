@@ -1,3 +1,7 @@
+* List and Details: When defining the layout, developers
+  can specify numeric formatting, such as decimal places,
+  and currency symbols.
+
 0.8.18:
 
 * The binary will be installed, fixing the problem in 
