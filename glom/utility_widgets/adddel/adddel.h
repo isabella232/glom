@@ -121,12 +121,12 @@ public:
 
 
 
-  virtual bool get_is_first_row(const Gtk::TreeModel::iterator& iter);
-  virtual bool get_is_last_row(const Gtk::TreeModel::iterator& iter);
+  virtual bool get_is_first_row(const Gtk::TreeModel::iterator& iter) const;
+  virtual bool get_is_last_row(const Gtk::TreeModel::iterator& iter) const;
 
   /** @result Whether this is a blank row where date for a new row should be entered
    */
-  virtual bool get_is_placeholder_row(const Gtk::TreeModel::iterator& iter);
+  virtual bool get_is_placeholder_row(const Gtk::TreeModel::iterator& iter) const;
   
   virtual void set_select_text(const Glib::ustring& strVal);
   virtual Glib::ustring get_select_text() const;

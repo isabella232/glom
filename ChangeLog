@@ -5,7 +5,7 @@
 	This is a hidden TreeModel column. There is also a bool placeholder 
 	column, used to mark the blank row that is for the user to add a new 
 	row. This scheme should make it easier to handle reorderered rows, and 
-	it allows us to get a uniquq identifier for a changed row even when 
+	it allows us to get a unique identifier for a changed row even when 
 	responding to a change an it is the first row (such as a field name) 
 	that has changed.
 

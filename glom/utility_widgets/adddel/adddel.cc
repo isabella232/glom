@@ -1352,12 +1352,12 @@ Glib::RefPtr<const Gtk::TreeModel> AddDel::get_model() const
   return m_refListStore;
 }
 
-bool AddDel::get_is_first_row(const Gtk::TreeModel::iterator& iter)
+bool AddDel::get_is_first_row(const Gtk::TreeModel::iterator& iter) const
 {
   return iter == get_model()->children().begin();
 }
 
-bool AddDel::get_is_last_row(const Gtk::TreeModel::iterator& iter)
+bool AddDel::get_is_last_row(const Gtk::TreeModel::iterator& iter) const
 {
   return iter == get_last_row();
 }
@@ -1449,7 +1449,7 @@ void AddDel::set_value_key(const Gtk::TreeModel::iterator& iter, const Glib::ust
   return set_value(iter, m_col_key, strValue);
 }
 
-bool AddDel::get_is_placeholder_row(const Gtk::TreeModel::iterator& iter)
+bool AddDel::get_is_placeholder_row(const Gtk::TreeModel::iterator& iter) const
 {
   if(!get_is_last_row(iter))
     return false;

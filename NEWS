@@ -1,3 +1,10 @@
+0.8.2:
+
+* Navigation / Tables : Fixed strange focus bug when adding tables,
+  but I don't know how.
+* Code cleanup: AddDel widget is now iterator-based.
+(Murray Cumming)
+
 0.8.1:
 
 * Details and List views: Dates, times, and numbers are now displayed 
