@@ -1,3 +1,9 @@
+2004-07-02  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/mode_find/: Make the find mode show some widgets, by 
+	re-activating some old code and adding the boxes and notebooks to the 
+	Bakery composite View so that they know about the document.
+
 2004-07-01  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/navigation/box_db_tables.cc: on_AddDel_changed(): Update the 

@@ -124,15 +124,15 @@ void Box_Data_Details::fill_from_database_layout()
 
   //Remove existing child widgets:
   m_FlowTable.remove_all();
-            
+                          
   Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
   if(document)
-  {            
+  {          
     Document_Glom::type_mapLayoutGroupSequence layout_groups = document->get_data_layout_groups_plus_new_fields("details", m_strTableName);
     for(Document_Glom::type_mapLayoutGroupSequence::const_iterator iter = layout_groups.begin(); iter != layout_groups.end(); ++iter)
     {
       const LayoutGroup& group = iter->second;
- 
+  
       if(group.m_group_name != "others")
       {
         FlowTableWithFields::type_map_field_sequence fields;

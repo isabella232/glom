@@ -23,15 +23,11 @@
 
 #include "../mode_data/box_data_details.h"
 
-/**
-  *@author Murray Cumming
-  */
-
 class Box_Data_Details_Find : public Box_Data_Details
 {
 public: 
-	Box_Data_Details_Find();
-	virtual ~Box_Data_Details_Find();
+  Box_Data_Details_Find();
+  virtual ~Box_Data_Details_Find();
 
 protected:
 

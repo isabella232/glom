@@ -126,7 +126,8 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
   add_view(m_pDialog_Fields); //Also a composite view.
   add_view(m_pDialog_Relationships); //Also a composite view.
   add_view(&m_Notebook_Data); //Also a composite view.
-
+  add_view(&m_Notebook_Find); //Also a composite view.
+  
   on_userlevel_changed(AppState::USERLEVEL_OPERATOR); //A default to show before a document is created or loaded.
   show_all();
 }

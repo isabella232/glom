@@ -57,6 +57,8 @@ Glib::ustring Box_Data::get_WhereClause() const
     const Field& field = get_Entered_Field(i);
     Glib::ustring strClausePart;
 
+     g_warning("Box_Data::get_WhereClause(): field: name=%s", field.get_name().c_str());
+     
     const Gnome::Gda::Value data = field.get_data();
     if(!GlomConversions::value_is_empty(data))
     {
@@ -69,6 +71,7 @@ Glib::ustring Box_Data::get_WhereClause() const
       strClause += strClausePart + " ";
   }
 
+  g_warning("Box_Data::get_WhereClause(): %s", strClause.c_str());
   return strClause;
 }
 

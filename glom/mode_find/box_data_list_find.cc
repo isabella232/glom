@@ -39,61 +39,14 @@ Box_Data_List_Find::~Box_Data_List_Find()
 
 void Box_Data_List_Find::fill_from_database()
 {
-g_warning("Box_Data_List_Find::Fill");
-
   Bakery::BusyCursor(*get_app_window());
-    
+
   Box_DB_Table::fill_from_database();
 
-  try
-  {
-    sharedptr<SharedConnection> sharedconnection = connect_to_server();
-    if(sharedconnection)
-    {
-      Glib::RefPtr<Gnome::Gda::Connection> connection = sharedconnection->get_gda_connection();
-    
-      Glib::RefPtr<Gnome::Gda::DataModel> result;
+  m_AddDel.remove_all();
 
-      //Field Names:
-      m_AddDel.remove_all_columns();
+  //Field Names:
+  fill_column_titles();
 
-      //Primary Key:
-      guint iKey = 0;
-      bool bKeyFound = get_field_primary_key(iKey);
-
-      guint uiCol = 0;
-
-      if(bKeyFound)
-      {
-        const Glib::ustring& strKey = m_Fields[iKey].get_name();
-        m_AddDel.add_column(strKey, strKey); //TODO: Use the field title.
-        uiCol++;
-      }
-
-      //Other fields
-      for(guint i = 0; i < m_Fields.size(); i++)
-      {
-        bool bDo = true;
-        if(bKeyFound && (i == iKey))
-          bDo = false;
-
-        if(bDo)
-        {
-          const Glib::ustring& strName = m_Fields[i].get_name();
-          m_AddDel.add_column(strName, strName); //TODO: Use the field title.
-          uiCol++;
-        }
-      }
-      
-    }
-
-
-    //m_AddDel.remove_all();
-  }
-  catch(std::exception& ex)
-  {
-    handle_error(ex);
-  }
-
-  fill_end();
+  m_AddDel.add_item("find");
 }

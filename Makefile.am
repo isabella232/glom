@@ -17,6 +17,8 @@ MimeDatabase_DATA = glom.xml
 appregdir = $(datadir)/application-registry
 appreg_DATA = glom.applications
 
+install-data-hook: 
+	-update-mime-database "$(DESTDIR)${datadir}/mime"
 
 EXTRA_DIST = $(GnomeApplications_DATA) $(MimeDatabase_DATA) $(appreg_DATA)
 

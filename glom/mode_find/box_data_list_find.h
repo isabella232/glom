@@ -23,10 +23,6 @@
 
 #include "../mode_data/box_data_list.h"
 
-/**
-  *@author Murray Cumming
-  */
-
 class Box_Data_List_Find : public Box_Data_List
 {
 public: 

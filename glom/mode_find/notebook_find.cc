@@ -22,28 +22,34 @@
 
 Notebook_Find::Notebook_Find()
 {
-/*
+
   pages().push_back(Gtk::Notebook_Helpers::TabElem(m_Box_List, gettext("List")));
   pages().push_back(Gtk::Notebook_Helpers::TabElem(m_Box_Details, gettext("Details")));
 
   set_current_page(1); //Show the details page by default. It's more obvious for a Find.
+  //TODO: Show the same layout that is being edited at the time that the mode was changed.
 
   //Connect Signals:
   m_Box_List.signal_find.connect(sigc::mem_fun(*this, &Notebook_Find::on_page_find));
   m_Box_Details.signal_find.connect(sigc::mem_fun(*this, &Notebook_Find::on_page_find));
 
+  //Fill composite view:
+  add_view(&m_Box_List);
+  add_view(&m_Box_Details);
+  
   show_all_children();
-*/
 }
 
 Notebook_Find::~Notebook_Find()
 {
 }
 
-void Notebook_Find::init_db_details(const Glib::ustring& /*strDatabaseName */, const Glib::ustring& /* strTableName */)
+void Notebook_Find::init_db_details(const Glib::ustring& strDatabaseName, const Glib::ustring& strTableName)
 {
-  //m_Box_List.init_db_details(pConnection, strDatabaseName, strTableName);
-  //m_Box_Details.init_db_details(pConnection, strDatabaseName, strTableName, "");
+  m_Box_List.init_db_details(strDatabaseName, strTableName);
+
+  Gnome::Gda::Value primary_key_value; //It's ignored anyway.
+  m_Box_Details.init_db_details(strDatabaseName, strTableName, primary_key_value);
 }
 
 void Notebook_Find::on_page_find(Glib::ustring strWhereClause)

@@ -27,7 +27,7 @@ Box_Data_Details_Find::Box_Data_Details_Find()
    m_strHint = gettext("Enter the search criteria and click [Find]\n Glom will then change to Data mode to display the results.");
 
   //Instead of nav buttons:
-  m_HBox.pack_end(m_Button_Find, Gtk::PACK_EXPAND_WIDGET);
+  m_HBox.pack_end(m_Button_Find, Gtk::PACK_SHRINK);
 
   show_all();
 }
@@ -40,23 +40,14 @@ Box_Data_Details_Find::~Box_Data_Details_Find()
 
 void Box_Data_Details_Find::fill_from_database()
 {
-/* TOOD_port
+  Bakery::BusyCursor(*get_app_window());
+
   Box_DB_Table::fill_from_database();
 
-  for(guint i = 0; i < m_Fields.size(); i ++)
-  {
-    //Field value:
-    guint uiRow = i;
-    if(uiRow >= m_AddDel.get_count())
-      uiRow = m_AddDel.add_item();
+  type_vecFields listFieldsToShow = get_fields_to_show();
+  m_Fields =  listFieldsToShow;
 
-    //Field name:
-    const Glib::ustring& strFieldName = m_Fields[i].get_name();
-    m_AddDel.set_item_title(uiRow, strFieldName);
-  }
-
-  */
-  fill_end();
+  fill_from_database_layout(); //TODO: Only do this when the layout has changed.
 }
 
 void Box_Data_Details_Find::fill_related()
