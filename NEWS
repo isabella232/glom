@@ -1,12 +1,30 @@
 0.8.11:
 
-* Navigation: Show table titles instead of names when in 
-  operator mode.
-* Details Layout: Allow adding of related records in the 
-  middle of the layout, and no longer show them automatically 
-  in a notebook.
-  (Murray Cumming)
-* gcc 3.4.3 build fix. (Christian Krause)
+* Postgres connection:
+  - Connect to the template1 database when creating new databases, 
+    because recent (?) versions of postgres require this.
+  - Don't ignore the host name.
+  - Added postgres_setup.txt and a non-libgda test to help 
+    investigate connection problems.
+  - Share connections more, without re-connecting, to increase speed.
+* List Layout:
+  - Fix bug that prevented data entry of fields that have 
+    human-readable titles.
+* Layout Design:
+  - Fix loss of layout groups when loading.
+  - Allow adding of related records (half-finished) in the 
+    middle of the layout, and no longer show them automatically 
+    in a notebook.
+    (It's really time to make this feel like glade.)
+* Navigation:
+  - Show table titles instead of name when in Operator mode.
+* Build:
+  - Distribute the intltool files.
+    http://bugzilla.gnome.org/show_bug.cgi?id=162932 (Cezar)
+  - #include libintl.h in more files, required on some systems.
+    http://bugzilla.gnome.org/show_bug.cgi?id=162932 (Mike Castle)
+  - Fix Glib::wrap() build error with gcc 3.4.3.
+    http://bugzilla.gnome.org/show_bug.cgi?id=160245 (Christian Krause)
 
 0.8.10:
 
