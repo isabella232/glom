@@ -111,3 +111,20 @@ void Notebook_Data::do_menu_developer_layout()
   } 
 }
 
+enum dataview
+{
+  DATA_VIEW_Details,
+  DATA_VIEW_List
+};
+
+Notebook_Data::dataview Notebook_Data::get_current_view() const
+{
+  const int current_page = get_current_page();
+
+  dataview result = DATA_VIEW_Details;
+  if(current_page == 1)
+    result = DATA_VIEW_List;
+
+  return result;
+}
+

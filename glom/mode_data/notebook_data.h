@@ -25,10 +25,6 @@
 #include "box_data_list.h"
 #include "box_data_details.h"
 
-/**
-  *@author Murray Cumming
-  */
-
 class Notebook_Data : public Notebook_Glom
 {
 public: 
@@ -40,6 +36,14 @@ public:
   virtual void select_page_for_find_results(); //Details for 1, List for > 1.
 
   virtual void do_menu_developer_layout(); //override
+
+  enum dataview
+  {
+    DATA_VIEW_Details,
+    DATA_VIEW_List
+  };
+  
+  virtual dataview get_current_view() const;
   
 protected:
 

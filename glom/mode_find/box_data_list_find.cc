@@ -48,5 +48,14 @@ void Box_Data_List_Find::fill_from_database()
   //Field Names:
   fill_column_titles();
 
+  type_vecFields listFieldsToShow = get_fields_to_show();
+  m_Fields = listFieldsToShow; //Store the fields for later:
+
   m_AddDel.add_item("find");
 }
+
+void Box_Data_List_Find::on_AddDel_user_changed(const Gtk::TreeModel::iterator& /* row */, guint /* col */)
+{
+  //Just block the implementation in the base class.
+}
+ 

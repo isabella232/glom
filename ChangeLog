@@ -1,5 +1,11 @@
 2004-07-02  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/mode_find/box_data_list_find.cc fill_from_database(): Save the
+	fields into m_Fields, so that get_WhereClause() knows about them. Find 
+	in the List view now works.
+
+2004-07-02  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/utility_widgets/flowtablewithfields: Handle field_edited 
 	signal of sub-flowtables so that glom responds to editing of a field 
 	in a group on the Details view.

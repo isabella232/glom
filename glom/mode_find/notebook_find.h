@@ -21,7 +21,7 @@
 #ifndef NOTEBOOK_FIND_H
 #define NOTEBOOK_FIND_H
 
-#include "../notebook_glom.h"
+#include "../mode_data/notebook_data.h"
 #include "box_data_list_find.h"
 #include "box_data_details_find.h"
 

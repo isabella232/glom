@@ -60,6 +60,7 @@ Glib::ustring Box_Data::get_WhereClause() const
      g_warning("Box_Data::get_WhereClause(): field: name=%s", field.get_name().c_str());
      
     const Gnome::Gda::Value data = get_entered_field_data(field);
+    
     if(!GlomConversions::value_is_empty(data))
     {
       Gnome::Gda::FieldAttributes fieldInfo = field.get_field_info();

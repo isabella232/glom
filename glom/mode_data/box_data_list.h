@@ -32,7 +32,7 @@ public:
   virtual Gnome::Gda::Value get_primary_key_value(const Gtk::TreeModel::iterator& row);
   virtual Gnome::Gda::Value get_primary_key_value_selected();
   
-  virtual Gnome::Gda::Value get_entered_field_data(const Field& field);
+  virtual Gnome::Gda::Value get_entered_field_data(const Field& field) const;
   
   virtual guint get_records_count() const;
     
