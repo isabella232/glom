@@ -21,6 +21,7 @@
 #include "dialog_relationships.h"
 #include "../box_db_table.h"
 //#include <libgnome/gnome-i18n.h>
+#include <libintl.h>
 
 
 Dialog_Relationships::Dialog_Relationships(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)

@@ -1,3 +1,7 @@
+2004-10-29  Mike Castle  <dalgoda@ix.netcom.com>
+
+	* Added lots of libintl.h includes to fix build on some platforms.
+
 2004-10-18  Baris Cicek <baris@teamforce.name.tr>
 
 	* configure.in:  Added tr to ALL_LINGUAS

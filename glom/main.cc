@@ -24,6 +24,7 @@
 //#include <gnome.h>
 #include <gtkmm/main.h>
 #include <libgnome/gnome-init.h> // For gnome_program_init().
+#include <libintl.h>
 
 
 

@@ -21,6 +21,7 @@
 #include "dialog_design.h"
 #include "../box_db_table.h"
 //#include <libgnome/gnome-i18n.h>
+#include <libintl.h>
 
 
 Dialog_Design::Dialog_Design(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)

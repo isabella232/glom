@@ -19,6 +19,7 @@
  */
 
 #include "notebook_find.h"
+#include <libintl.h>
 
 Notebook_Find::Notebook_Find()
 {

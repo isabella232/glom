@@ -21,6 +21,7 @@
 #include "field.h"
 #include "../connectionpool.h"
 #include "glomconversions.h"
+#include <libintl.h>
 
 //Initialize static data:
 Field::type_map_gda_type_to_glom_type Field::m_map_gda_type_to_glom_type;
