@@ -366,6 +366,9 @@ void Dialog_GroupsList::fill_group_list()
     Gtk::TreeModel::Row row = *iterTree;
 
     row[m_model_columns_groups.m_col_name] = *iter;
+
+    if(*iter == GLOM_STANDARD_GROUP_NAME_DEVELOPER)
+      row[m_model_columns_groups.m_col_description] = gettext("Full access.");
   }
 
   //Select the first item, so that there is always something in the tables TreeView:
@@ -442,10 +445,13 @@ void Dialog_GroupsList::treeview_append_bool_column(Gtk::TreeView& treeview, con
   pCellRenderer->signal_toggled().connect( slot_toggled );
 }
 
-void Dialog_GroupsList::set_table_privilege(const Glib::ustring& table_name, const Glib::ustring& group_name, bool grant, enumPriv priv)
+bool Dialog_GroupsList::set_table_privilege(const Glib::ustring& table_name, const Glib::ustring& group_name, bool grant, enumPriv priv)
 {
   if(group_name.empty() || table_name.empty())
-    return;
+    return false;
+
+  if(group_name == GLOM_STANDARD_GROUP_NAME_DEVELOPER)
+    return false;
 
   //Change the permission in the database:
 
@@ -479,7 +485,9 @@ void Dialog_GroupsList::set_table_privilege(const Glib::ustring& table_name, con
 
   strQuery += " GROUP " + group_name;
 
-  Query_execute(strQuery);
+  Query_execute(strQuery); //TODO: Handle errors.
+
+  return true;
 }
 
 void Dialog_GroupsList::on_treeview_tables_toggled_view(const Glib::ustring& path_string)
@@ -499,9 +507,10 @@ void Dialog_GroupsList::on_treeview_tables_toggled_view(const Glib::ustring& pat
     const Glib::ustring group_name = get_selected_group();
     const Glib::ustring table_name = row[m_model_columns_tables.m_col_name];
 
-    set_table_privilege(table_name, group_name, bActive, PRIV_VIEW);
+    bool test = set_table_privilege(table_name, group_name, bActive, PRIV_VIEW);
 
-    row[m_model_columns_tables.m_col_view] = bActive;
+    if(test)
+      row[m_model_columns_tables.m_col_view] = bActive;
   }
 }
 
@@ -522,9 +531,10 @@ void Dialog_GroupsList::on_treeview_tables_toggled_edit(const Glib::ustring& pat
     const Glib::ustring group_name = get_selected_group();
     const Glib::ustring table_name = row[m_model_columns_tables.m_col_name];
 
-    set_table_privilege(table_name, group_name, bActive, PRIV_EDIT);
+    bool test = set_table_privilege(table_name, group_name, bActive, PRIV_EDIT);
 
-    row[m_model_columns_tables.m_col_edit] = bActive;
+    if(test)
+      row[m_model_columns_tables.m_col_edit] = bActive;
   }
 }
 
@@ -545,9 +555,10 @@ void Dialog_GroupsList::on_treeview_tables_toggled_create(const Glib::ustring& p
     const Glib::ustring group_name = get_selected_group();
     const Glib::ustring table_name = row[m_model_columns_tables.m_col_name];
 
-    set_table_privilege(table_name, group_name, bActive, PRIV_CREATE);
+    bool test = set_table_privilege(table_name, group_name, bActive, PRIV_CREATE);
 
-    row[m_model_columns_tables.m_col_create] = bActive;
+    if(test)
+      row[m_model_columns_tables.m_col_create] = bActive;
   }
 }
 
@@ -568,9 +579,10 @@ void Dialog_GroupsList::on_treeview_tables_toggled_delete(const Glib::ustring& p
     const Glib::ustring group_name = get_selected_group();
     const Glib::ustring table_name = row[m_model_columns_tables.m_col_name];
 
-    set_table_privilege(table_name, group_name, bActive, PRIV_DELETE);
+    bool test = set_table_privilege(table_name, group_name, bActive, PRIV_DELETE);
 
-    row[m_model_columns_tables.m_col_delete] = bActive;
+    if(test)
+      row[m_model_columns_tables.m_col_delete] = bActive;
   }
 }
 

@@ -69,7 +69,7 @@ Dialog_UsersList::Dialog_UsersList(BaseObjectType* cobject, const Glib::RefPtr<G
   refGlade->get_widget("button_add", m_button_user_add);
   m_button_user_add->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_UsersList::on_button_user_add) );
 
- refGlade->get_widget("button_remove", m_button_user_remove);
+  refGlade->get_widget("button_remove", m_button_user_remove);
   m_button_user_remove->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_UsersList::on_button_user_remove) );
 
   refGlade->get_widget("button_new", m_button_user_new);
@@ -181,18 +181,21 @@ void Dialog_UsersList::on_button_user_remove()
     Gtk::TreeModel::iterator iter = refTreeSelection->get_selected();
     if(iter)
     {
-      Gtk::TreeModel::Row row = *iter;
-
-      const Glib::ustring user = row[m_model_columns_users.m_col_name];
-      if(!user.empty())
+      if(warn_about_empty_standard_group())
       {
-        Glib::ustring strQuery = "ALTER GROUP " + m_combo_group->get_active_text() + " DROP USER " + user;
-        Query_execute(strQuery);
+        Gtk::TreeModel::Row row = *iter;
 
-        fill_list();
+        const Glib::ustring user = row[m_model_columns_users.m_col_name];
+        if(!user.empty())
+        {
+          Glib::ustring strQuery = "ALTER GROUP " + m_combo_group->get_active_text() + " DROP USER " + user;
+          Query_execute(strQuery);
+
+          fill_list();
+        }
+
+        //m_modified = true;
       }
-
-      //m_modified = true;
     }
   }
 }
@@ -206,28 +209,31 @@ void Dialog_UsersList::on_button_user_delete()
     Gtk::TreeModel::iterator iter = refTreeSelection->get_selected();
     if(iter)
     {
-      Gtk::TreeModel::Row row = *iter;
-
-      const Glib::ustring user = row[m_model_columns_users.m_col_name];
-      if(!user.empty())
+      if(warn_about_empty_standard_group())
       {
-        Gtk::MessageDialog dialog(gettext("<b>Delete User</b>"), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_OK_CANCEL);
-        dialog.set_secondary_text(gettext("Are your sure that you wish to delete this user?"));
-        dialog.set_transient_for(*this);
+        Gtk::TreeModel::Row row = *iter;
 
-        int response = dialog.run();
-        dialog.hide();
-
-        if(response == Gtk::RESPONSE_OK)
+        const Glib::ustring user = row[m_model_columns_users.m_col_name];
+        if(!user.empty())
         {
-          Glib::ustring strQuery = "DROP USER " + user;
-          Query_execute(strQuery);
+          Gtk::MessageDialog dialog(gettext("<b>Delete User</b>"), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_OK_CANCEL);
+          dialog.set_secondary_text(gettext("Are your sure that you wish to delete this user?"));
+          dialog.set_transient_for(*this);
 
-          fill_list();
+          int response = dialog.run();
+          dialog.hide();
+
+          if(response == Gtk::RESPONSE_OK)
+          {
+            Glib::ustring strQuery = "DROP USER " + user;
+            Query_execute(strQuery);
+
+            fill_list();
+          }
         }
+  
+        //m_modified = true;
       }
-
-      //m_modified = true;
     }
   }
 }
@@ -318,7 +324,6 @@ void Dialog_UsersList::on_button_user_edit()
     Gtk::TreeModel::iterator iter = refTreeSelection->get_selected();
     if(iter)
     {
-      //Do something different for each type of item:
       Gtk::TreeModel::Row row = *iter;
 
       Dialog_User* dialog = 0;
@@ -413,6 +418,25 @@ void Dialog_UsersList::on_combo_group_changed()
   fill_list();
 }
 
+bool Dialog_UsersList::warn_about_empty_standard_group()
+{
+  //Prevent removal of the last developer:
+  if(m_combo_group->get_active_text() == GLOM_STANDARD_GROUP_NAME_DEVELOPER)
+  {
+    if(m_model_users->children().size() == 1)
+    {
+
+      Gtk::MessageDialog dialog(gettext("<b>Developer group may not be empty.</b>"), true, Gtk::MESSAGE_WARNING);
+      dialog.set_secondary_text(gettext("The developer group must contain at least one user."));
+      dialog.set_transient_for(*this);
+      dialog.run();
+
+      return false;
+    }
+  }
+
+  return true;
+}
 
 
 
