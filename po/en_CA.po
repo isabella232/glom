@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glom\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-11-30 19:42+0100\n"
-"PO-Revision-Date: 2004-11-24 19:52-0400\n"
+"POT-Creation-Date: 2004-12-03 00:39-0500\n"
+"PO-Revision-Date: 2004-12-03 19:52-0400\n"
 "Last-Translator: Adam Weinberger <adamw@gnome.org>\n"
 "Language-Team: English/Canada <adamw@FreeBSD.org>\n"
 "MIME-Version: 1.0\n"
@@ -78,6 +78,11 @@ msgid ""
 "incorrect user name or password, or maybe the postgres database server is "
 "not running."
 msgstr ""
+"<span weight=\"bold\" size=\"larger\">Connection Failed</span>\n"
+"\n"
+"Glom could not connect to the database server. Maybe you entered an "
+"incorrect username or password, or maybe the postgres database server is "
+"not running."
 
 #: glom/glom.glade.h:18
 msgid ""
@@ -86,6 +91,10 @@ msgid ""
 "Glom could not create the new database. Maybe you do not have the necessary "
 "access rights. Please contact your system administrator."
 msgstr ""
+"<span weight=\"bold\" size=\"larger\">Database creation failed</span>\n"
+"\n"
+"Glom could not create the new database. Ensure that you have the necessary "
+"access rights. Please contact your system administrator."
 
 #: glom/glom.glade.h:21
 msgid ""
@@ -162,9 +171,8 @@ msgid "Data"
 msgstr "Data"
 
 #: glom/glom.glade.h:43
-#, fuzzy
 msgid "Database"
-msgstr "Data"
+msgstr "Database"
 
 #: glom/glom.glade.h:44
 msgid "Default Value"
