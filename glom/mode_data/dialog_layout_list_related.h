@@ -36,7 +36,7 @@ public:
    * @param table_name The table name.
    * @param table_fields: The actual fields in the table, in case the document does not yet know about them all.
    */
-  virtual void set_document(const Glib::ustring& layout, Document_Glom* document, const Glib::ustring& parent_table_name, const Glib::ustring& relationship_name);
+  virtual void set_document(const Glib::ustring& layout, Document_Glom* document, const Relationship& relationship);
   virtual void update_ui(bool including_relationships_list = true);
 
   virtual Glib::ustring get_relationship_name() const;

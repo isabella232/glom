@@ -254,7 +254,6 @@ Box_Data_List_Related::type_vecLayoutFields Box_Data_List_Related::get_fields_to
   if(document)
   {
     Document_Glom::type_mapLayoutGroupSequence mapGroups = document->get_relationship_data_layout_groups_plus_new_fields(m_layout_name, m_relationship);
-
     return get_table_fields_to_show(m_relationship.get_to_table(), mapGroups);
   }
 
@@ -265,7 +264,7 @@ void Box_Data_List_Related::show_layout_dialog()
 {
   if(m_pDialogLayoutRelated)
   {
-    m_pDialogLayoutRelated->set_document(m_layout_name, get_document(), m_relationship.get_from_table(), m_relationship.get_name());
+    m_pDialogLayoutRelated->set_document(m_layout_name, get_document(), m_relationship);
     m_pDialogLayoutRelated->show();
   }
 }
@@ -295,3 +294,4 @@ void Box_Data_List_Related::on_dialog_layout_hide()
     }
   }
 }
+

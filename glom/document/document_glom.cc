@@ -462,25 +462,29 @@ void Document_Glom::set_tables(const type_listTableInfo& tables)
       info.m_hidden = iterfind->m_hidden;
       info.m_title = iterfind->m_title;
       info.m_default = iterfind->m_default;
-      
+
       something_changed = true;
     }
   }
 
   if(something_changed)
     set_modified();
-  
+
 }
 
 Document_Glom::type_mapLayoutGroupSequence Document_Glom::get_relationship_data_layout_groups_plus_new_fields(const Glib::ustring& layout_name, const Relationship& relationship) const
 {
   //TODO: Use an actual relationship_name instead of concatenating:
-  return get_data_layout_groups_plus_new_fields(layout_name, relationship.get_from_table() + "_related_" + relationship.get_name()); 
+  return get_data_layout_groups_plus_new_fields(layout_name + "_related_" + relationship.get_name(), relationship.get_from_table(), relationship.get_to_table());
 }
 
-Document_Glom::type_mapLayoutGroupSequence Document_Glom::get_data_layout_groups_plus_new_fields(const Glib::ustring& layout_name, const Glib::ustring& table_name) const
+Document_Glom::type_mapLayoutGroupSequence Document_Glom::get_data_layout_groups_plus_new_fields(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name, const Glib::ustring& table_name) const
 {
-  type_mapLayoutGroupSequence result = get_data_layout_groups(layout_name, table_name);
+  Glib::ustring child_table_name = table_name;
+  if(child_table_name.empty())
+    child_table_name = parent_table_name;
+
+  type_mapLayoutGroupSequence result = get_data_layout_groups(layout_name, parent_table_name);
 
 
   //If there are no fields in the layout, then add a default:
@@ -491,6 +495,8 @@ Document_Glom::type_mapLayoutGroupSequence Document_Glom::get_data_layout_groups
 
   if(create_default)
   {
+    g_warning("Document_Glom::get_data_layout_groups_plus_new_field(): Creating default layout for table %s, for layout %s", parent_table_name.c_str(), layout_name.c_str());
+
     //Get the last top-level group. We will add new fields into this one:
     //TODO_Performance: There must be a better way to do this:
     LayoutGroup* pTopLevel = 0;
@@ -511,7 +517,7 @@ Document_Glom::type_mapLayoutGroupSequence Document_Glom::get_data_layout_groups
     }
 
     //Discover new fields, and add them:
-    type_vecFields all_fields = get_table_fields(table_name);
+    type_vecFields all_fields = get_table_fields(child_table_name);
     for(type_vecFields::const_iterator iter = all_fields.begin(); iter != all_fields.end(); ++iter)
     {
       const Glib::ustring field_name = iter->get_name();
@@ -533,7 +539,7 @@ Document_Glom::type_mapLayoutGroupSequence Document_Glom::get_data_layout_groups
         {
           LayoutItem_Field layout_item;
           layout_item.set_name(field_name);
-          //layout_item.set_table_name(table_name); //TODO: Allow viewing of fields through relationships.
+          //layout_item.set_table_name(child_table_name); //TODO: Allow viewing of fields through relationships.
           //layout_item.m_sequence = sequence;  add_item() will fill this.
 
 
@@ -567,7 +573,7 @@ Document_Glom::type_mapLayoutGroupSequence Document_Glom::get_data_layout_groups
 void Document_Glom::set_relationship_data_layout_groups(const Glib::ustring& layout_name, const Relationship& relationship, const type_mapLayoutGroupSequence& groups)
 {
   //TODO: Use an actual relationship_name instead of concatenating:
-  set_data_layout_groups(layout_name, relationship.get_from_table() + "_related_" + relationship.get_name(), groups);
+  set_data_layout_groups(layout_name + "_related_" + relationship.get_name(), relationship.get_from_table(), groups);
 }
 
 void Document_Glom::set_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& table_name, const type_mapLayoutGroupSequence& groups)

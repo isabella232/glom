@@ -1480,6 +1480,9 @@ void AddDel::set_value_key(const Gtk::TreeModel::iterator& iter, const Glib::ust
 
 bool AddDel::get_is_placeholder_row(const Gtk::TreeModel::iterator& iter) const
 {
+  if(!iter)
+    return false;
+
   if(!get_is_last_row(iter))
     return false;
 

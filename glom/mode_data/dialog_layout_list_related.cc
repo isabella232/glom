@@ -91,14 +91,13 @@ Dialog_Layout_List_Related::~Dialog_Layout_List_Related()
 {
 }
 
-void Dialog_Layout_List_Related::set_document(const Glib::ustring& layout, Document_Glom* document, const Glib::ustring& parent_table_name, const Glib::ustring& relationship_name)
+void Dialog_Layout_List_Related::set_document(const Glib::ustring& layout, Document_Glom* document, const Relationship& relationship)
 {
   type_vecLayoutFields empty_fields; //Just to satisfy the base class.
-  Dialog_Layout::set_document(layout, document, parent_table_name, empty_fields);
+  Dialog_Layout::set_document(layout, document, relationship.get_from_table(), empty_fields);
   //m_table_name is now actually the parent_table_name.
 
-  if(document)
-    document->get_relationship(parent_table_name, relationship_name, m_relationship);
+  m_relationship = relationship;
 
   update_ui();
 }

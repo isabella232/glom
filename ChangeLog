@@ -1,5 +1,21 @@
 2005-03-29  Murray Cumming <murrayc@murrayc.com>
 
+	* examples/example_smallbusiness.glom:
+	* glom/base_db.cc:
+	* glom/document/document_glom.cc:
+	* glom/document/document_glom.h:
+	* glom/mode_data/box_data.cc:
+	* glom/mode_data/box_data_list_related.cc:
+	* glom/mode_data/dialog_layout_list_related.cc:
+	* glom/mode_data/dialog_layout_list_related.h:
+	When creating default related records layouts, get 
+	the list of fields from the related table, not the 
+	parent table. Store the related records layout in 
+	the parent table's table part of the document, 
+	instead of pretending that it is a special table.
+
+2005-03-29  Murray Cumming <murrayc@murrayc.com>
+
 	* glom/mode_data/box_data.cc: get_table_fields_to_show():
 	When creating default layouts, do not use the 1000s 
 	separator with primary key IDs.

@@ -388,9 +388,9 @@ Base_DB::type_vecFields Base_DB::get_fields_for_table_from_database(const Glib::
 
   if(result.empty())
   {
-    g_warning("Base_DB::get_fields_for_table_from_database(): returning empty result.");
+    //g_warning("Base_DB::get_fields_for_table_from_database(): returning empty result.");
   }
-  
+
   return result;
 }
 
@@ -407,7 +407,7 @@ Base_DB::type_vecFields Base_DB::get_fields_for_table(const Glib::ustring& table
     type_vecFields result;
 
     type_vecFields fieldsDocument = pDoc->get_table_fields(table_name);
-  
+
     //Look at each field in the database:
     for(type_vecFields::iterator iter = fieldsDocument.begin(); iter != fieldsDocument.end(); ++iter)
     {
@@ -438,12 +438,12 @@ Base_DB::type_vecFields Base_DB::get_fields_for_table(const Glib::ustring& table
         result.push_back(*iter);
       }
     }
-  
+
     //Add any fields that are in the database, but not in the document:
     for(type_vecFields::iterator iter = fieldsDatabase.begin(); iter != fieldsDatabase.end(); ++iter)
     {
       Glib::ustring field_name = iter->get_name();
-      
+
        //Look in the result so far:
        type_vecFields::const_iterator iterFind = std::find_if(result.begin(), result.end(), predicate_FieldHasName<Field>(field_name));
 

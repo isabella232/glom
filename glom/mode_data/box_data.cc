@@ -334,7 +334,7 @@ void Box_Data::get_table_fields_to_show_add_group(const Glib::ustring& table_nam
 
   if(vecFields.empty())
   {
-    g_warning("Box_Data::get_table_fields_to_show_add_group(): Returning empty list.");
+    //g_warning("Box_Data::get_table_fields_to_show_add_group(): Returning empty list.");
   } 
 }
 
@@ -429,7 +429,7 @@ Box_Data::type_vecLayoutFields Box_Data::get_table_fields_to_show(const Glib::us
 
   if(result.empty())
   {
-    g_warning("Box_Data::get_table_fields_to_show_add_group(): Returning empty list.");
+    //g_warning("Box_Data::get_table_fields_to_show_add_group(): Returning empty list.");
   }
 
   return result;

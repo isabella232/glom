@@ -72,7 +72,12 @@ public:
 
   virtual void set_relationship_data_layout_groups(const Glib::ustring& layout_name, const Relationship& relationship, const type_mapLayoutGroupSequence& groups);
 
-  virtual type_mapLayoutGroupSequence get_data_layout_groups_plus_new_fields(const Glib::ustring& layout_name, const Glib::ustring& table_name) const;
+  /**
+   * @para The layout_name, such as "details", "list", or "related_invoice_lines".
+   * @para parent_table_name The name of the table on whose layout the layout appears.
+   * @para table_name The name of the related table, if this is a related layout.
+   */
+  virtual type_mapLayoutGroupSequence get_data_layout_groups_plus_new_fields(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name, const Glib::ustring& table_name = Glib::ustring()) const;
 
   virtual type_mapLayoutGroupSequence get_relationship_data_layout_groups_plus_new_fields(const Glib::ustring& layout_name, const Relationship& relationship) const;
 

@@ -1479,13 +1479,18 @@ Gtk::TreeModel::iterator DbAddDel::get_last_row() const
 Gtk::TreeModel::iterator DbAddDel::get_last_row()
 {
   //TODO_performance: Hopefully there is a better way to do this.
-  Gtk::TreeModel::iterator iter = get_model()->children().begin();
-  guint size = get_model()->children().size();
-  if(size > 1)
+  Gtk::TreeModel::iterator iter;
+
+  if(m_refListStore)
   {
-    for(guint i = 0; i < (size -1); ++i)
+    iter = m_refListStore->children().begin();
+    guint size = m_refListStore->children().size();
+    if(size > 1)
     {
-      ++iter;
+      for(guint i = 0; i < (size -1); ++i)
+      {
+        ++iter;
+      }
     }
   }
 

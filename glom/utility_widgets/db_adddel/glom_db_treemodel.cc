@@ -78,8 +78,8 @@ DbTreeModel::DbTreeModel(const Gtk::TreeModelColumnRecord& columns, const Glib::
 {
   if(!m_iface_initialized)
   {
-    GType gtype = G_OBJECT_TYPE(gobj());  //The custom GType created in the Object constructor, from the typeid.
-    Gtk::TreeModel::add_interface( gtype );
+    //GType gtype = G_OBJECT_TYPE(gobj());  //The custom GType created in the Object constructor, from the typeid.
+    //Gtk::TreeModel::add_interface( gtype );
 
     m_iface_initialized = true; //Prevent us from calling add_interface() on the same gtype again.
   }
@@ -379,11 +379,11 @@ DbTreeModel::iterator DbTreeModel::append()
   const size_type existing_size = m_rows.size();
   //g_warning("DbTreeModel::append(): existing_size = %d", existing_size);
   m_rows.resize(existing_size + 1);
-    
+
   //Get a std::list iterator to the last element:
   typeListOfRows::iterator row_iter = m_rows.end();
   --row_iter;
- 
+
   //Create the row:
   row_iter->m_db_values.resize(m_columns_count); 
 
@@ -392,7 +392,7 @@ DbTreeModel::iterator DbTreeModel::append()
       // Set the data in the row cells:
       // It is more likely that you would be reusing existing data from some other data structure,
       // instead of generating the data here.
-      
+
       //char buffer[20]; //You could use a std::stringstream instead.
       //g_snprintf(buffer, sizeof(buffer), "%d, %d", row_number, column_number);
 
@@ -402,9 +402,9 @@ DbTreeModel::iterator DbTreeModel::append()
   //Create the iterator to the new row:
   iterator iter;
   create_iterator(row_iter, iter);
-  
+
   row_inserted(get_path(iter), iter); //Allow the TreeView to respond to the addition.
-    
+
   return iter;
 }
 
@@ -416,23 +416,23 @@ void DbTreeModel::set_value_impl(const iterator& row, int column, const Glib::Va
     typeListOfRows::iterator row_iter = get_data_row_iter_from_tree_row_iter(row);
 
     //TODO: Check column against get_n_columns() too, though it could hurt performance.
-    
-  
+
+
     //Cast it to the specific value type.
     //It can't work with anything else anyway.
     typedef Glib::Value< DbValue > ValueDbValue;
-    
+
     const ValueDbValue* pDbValue = static_cast<const ValueDbValue*>(&value);
     if(!pDbValue)
       g_warning("DbTreeModel::set_value_impl(): value is not a Value< DbValue >.");
     else
     {
       //g_warning("set_value_impl: value=%s", pDbValue->get().to_string().c_str());
-      
+
       DbValue& refValue = row_iter->m_db_values[column];
-      
+
       refValue = pDbValue->get();
-      
+
       //TODO: Performance: get_path() is really slow.
       row_changed( get_path(row), row);
     }
