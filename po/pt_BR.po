@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glom\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-11-30 19:42+0100\n"
+"POT-Creation-Date: 2005-01-05 10:19+0100\n"
 "PO-Revision-Date: 2004-08-12 13:17-0300\n"
 "Last-Translator: João Paulo Gomes Vanzuita <joaopaulo99@terra.com.br>\n"
 "Language-Team: Portuguese/Brazil <gnome-l10n-br@listas.cipsga.org.br>\n"
@@ -40,33 +40,38 @@ msgid "<b>Select Field</b>"
 msgstr "<b>Selecionar Campos</b>"
 
 #: glom/glom.glade.h:7
+#, fuzzy
+msgid "<b>Select Relationship</b>"
+msgstr "<b>Selecionar Campos</b>"
+
+#: glom/glom.glade.h:8
 msgid "<b>Table: </b>"
 msgstr "<b>Tabela: </b>"
 
-#: glom/glom.glade.h:8
+#: glom/glom.glade.h:9
 msgid "<b>Tables in database</b>"
 msgstr "<b>Tabelas no banco de dados</b>"
 
-#: glom/glom.glade.h:9
+#: glom/glom.glade.h:10
 msgid "<b>Title:</b>"
 msgstr "<b>Título:</b>"
 
-#: glom/glom.glade.h:10
+#: glom/glom.glade.h:11
 msgid "<b>User Level: </b>"
 msgstr "<b>Nível do Usuário: </b>"
 
-#: glom/glom.glade.h:11
+#: glom/glom.glade.h:12
 msgid "<b>def calculate_field_value():</b>"
 msgstr "<b>def calculate_field_value():</b>"
 
-#: glom/glom.glade.h:12
+#: glom/glom.glade.h:13
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Connect to Server</span>\n"
 "\n"
 "Please enter the connection details for your database server."
 msgstr ""
 
-#: glom/glom.glade.h:15
+#: glom/glom.glade.h:16
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Connection Failed</span>\n"
 "\n"
@@ -75,7 +80,7 @@ msgid ""
 "not running."
 msgstr ""
 
-#: glom/glom.glade.h:18
+#: glom/glom.glade.h:19
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Database creation failed</span>\n"
 "\n"
@@ -83,7 +88,15 @@ msgid ""
 "access rights. Please contact your system administrator."
 msgstr ""
 
-#: glom/glom.glade.h:21
+#: glom/glom.glade.h:22
+msgid ""
+"<span weight=\"bold\" size=\"larger\">Database does not exist</span>\n"
+"\n"
+"The database does not yet exist on the database server. Would you like to "
+"create the database with an empty structure?"
+msgstr ""
+
+#: glom/glom.glade.h:25
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Invalid format</span>\n"
 "\n"
@@ -97,7 +110,7 @@ msgstr ""
 "ou reverter os valores anteriores. Aqui está um exemplo de dados "
 "corretamente formatados para esse campo.\n"
 
-#: glom/glom.glade.h:25
+#: glom/glom.glade.h:29
 msgid ""
 "<span weight=\"bold\" size=\"larger\">New Database</span>\n"
 "\n"
@@ -105,7 +118,7 @@ msgid ""
 "contain any spaces."
 msgstr ""
 
-#: glom/glom.glade.h:28
+#: glom/glom.glade.h:32
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Open existing document, or create new "
 "document</span>\n"
@@ -124,7 +137,7 @@ msgstr ""
 "Ou gostaria de criar um novo documento, para desenhar um novo banco de "
 "dados?\n"
 
-#: glom/glom.glade.h:34
+#: glom/glom.glade.h:38
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Title</span>\n"
 "\n"
@@ -134,128 +147,141 @@ msgstr ""
 "\n"
 "Texto de informação.\n"
 
-#: glom/glom.glade.h:38
+#: glom/glom.glade.h:42
+msgid "Add Related"
+msgstr ""
+
+#: glom/glom.glade.h:43
 msgid "Add _Group"
 msgstr "Adicionar _Grupo"
 
-#: glom/glom.glade.h:39
+#: glom/glom.glade.h:44
 msgid "Auto-increment"
 msgstr "Auto-incrementar"
 
-#: glom/glom.glade.h:40
+#: glom/glom.glade.h:45
 msgid "Calculate value"
 msgstr "Calcular valor"
 
-#: glom/glom.glade.h:41
+#: glom/glom.glade.h:46
 msgid "Connect"
 msgstr "Conectar"
 
-#: glom/glom.glade.h:42
+#: glom/glom.glade.h:47
+msgid "Create"
+msgstr ""
+
+#: glom/glom.glade.h:48
 msgid "Data"
 msgstr "Dados"
 
-#: glom/glom.glade.h:43
+#: glom/glom.glade.h:49
 #, fuzzy
 msgid "Database"
 msgstr "Dados"
 
-#: glom/glom.glade.h:44
+#: glom/glom.glade.h:50
 msgid "Default Value"
 msgstr "Valor Padrão"
 
-#: glom/glom.glade.h:45
+#: glom/glom.glade.h:51
 msgid "Details Layout"
 msgstr "Layout dos Detalhes"
 
-#: glom/glom.glade.h:46
+#: glom/glom.glade.h:52
 msgid "Edit"
 msgstr "Editar"
 
-#: glom/glom.glade.h:47
+#: glom/glom.glade.h:53
 msgid "Edit Definition"
 msgstr "Definição de Edição"
 
-#: glom/glom.glade.h:48
+#: glom/glom.glade.h:54
 msgid "Extra"
 msgstr "Extra"
 
-#: glom/glom.glade.h:49
+#: glom/glom.glade.h:55
 msgid "Field"
 msgstr "Campo"
 
-#: glom/glom.glade.h:50
+#: glom/glom.glade.h:56
 msgid "Field Calculation"
 msgstr "Cálculo do Campo"
 
-#: glom/glom.glade.h:51
+#: glom/glom.glade.h:57
 msgid "Field Definition"
 msgstr "Definição do Campo"
 
-#: glom/glom.glade.h:52
+#: glom/glom.glade.h:58
 msgid "Field Definitions"
 msgstr "Definições dos Campos"
 
-#: glom/glom.glade.h:53
+#: glom/glom.glade.h:59
 msgid "Glom"
 msgstr "Glom"
 
-#: glom/glom.glade.h:54
+#: glom/glom.glade.h:60
 msgid "Host"
 msgstr "Host"
 
-#: glom/glom.glade.h:55
+#: glom/glom.glade.h:61
 msgid "List Layout"
 msgstr "Layout da Lista"
 
-#: glom/glom.glade.h:56
+#: glom/glom.glade.h:62
 msgid "Lookup value when a field changes."
 msgstr "Consulta o valor quando um campo for alterado."
 
-#: glom/glom.glade.h:57
+#: glom/glom.glade.h:63
 msgid "Name"
 msgstr "Nome"
 
-#: glom/glom.glade.h:58
+#: glom/glom.glade.h:64
 msgid "None selected"
 msgstr "Nada selecionado"
 
-#: glom/glom.glade.h:59
+#: glom/glom.glade.h:65
 msgid "Password"
 msgstr "Senha"
 
-#: glom/glom.glade.h:60
+#: glom/glom.glade.h:66
 msgid "Primary Key"
 msgstr "Chave Primária"
 
-#: glom/glom.glade.h:61
+#: glom/glom.glade.h:67
 msgid "Relationship"
 msgstr "Relacionamento"
 
-#: glom/glom.glade.h:62
+#: glom/glom.glade.h:68
 msgid "Revert"
 msgstr "Reverter"
 
-#: glom/glom.glade.h:63
+#: glom/glom.glade.h:69
 msgid "Select"
 msgstr "Selecionar"
 
-#: glom/glom.glade.h:64
+#: glom/glom.glade.h:70
 msgid "Select Field"
 msgstr "Selecionar Campo"
 
-#: glom/glom.glade.h:65
+#: glom/glom.glade.h:71
+#, fuzzy
+msgid "Select Relationship"
+msgstr "Relacionamento"
+
+#: glom/glom.glade.h:72
 msgid "Show hidden tables"
 msgstr "Mostrar tabelas ocultas"
 
-#: glom/glom.glade.h:66
+#: glom/glom.glade.h:73
 msgid "Table:"
 msgstr "Tabela:"
 
-#: glom/glom.glade.h:67
+#: glom/glom.glade.h:74
 msgid "Test"
 msgstr "Testar"
 
-#: glom/glom.glade.h:68
+#: glom/glom.glade.h:75
 msgid ""
 "The field value will be the return value of the python function, which you "
 "implement here."
@@ -263,27 +289,27 @@ msgstr ""
 "O valor do campo será o valor de retorno da função em python, que você "
 "implementa aqui."
 
-#: glom/glom.glade.h:69
+#: glom/glom.glade.h:76
 msgid "Title"
 msgstr "Título"
 
-#: glom/glom.glade.h:70
+#: glom/glom.glade.h:77
 msgid "Type"
 msgstr "Tipo"
 
-#: glom/glom.glade.h:71
+#: glom/glom.glade.h:78
 msgid "Unique"
 msgstr "Único"
 
-#: glom/glom.glade.h:72
+#: glom/glom.glade.h:79
 msgid "User"
 msgstr "Usuário"
 
-#: glom/glom.glade.h:73
+#: glom/glom.glade.h:80
 msgid "example data format"
 msgstr "formato de dados de exemplo"
 
-#: glom/glom.glade.h:74
+#: glom/glom.glade.h:81
 msgid "table name"
 msgstr "nome da tabela"
 

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glom HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-12-04 03:31+0100\n"
+"POT-Creation-Date: 2005-01-05 10:19+0100\n"
 "PO-Revision-Date: 2004-12-04 16:04+0800\n"
 "Last-Translator: Funda Wang <fundawang@linux.net.cn>\n"
 "Language-Team: zh_CN <i18n-translation@lists.linux.net.cn>\n"
@@ -40,26 +40,31 @@ msgid "<b>Select Field</b>"
 msgstr "<b>选择字段</b>"
 
 #: glom/glom.glade.h:7
+#, fuzzy
+msgid "<b>Select Relationship</b>"
+msgstr "<b>选择字段</b>"
+
+#: glom/glom.glade.h:8
 msgid "<b>Table: </b>"
 msgstr "<b>表：</b>"
 
-#: glom/glom.glade.h:8
+#: glom/glom.glade.h:9
 msgid "<b>Tables in database</b>"
 msgstr "<b>数据库中的表</b>"
 
-#: glom/glom.glade.h:9
+#: glom/glom.glade.h:10
 msgid "<b>Title:</b>"
 msgstr "<b>标题：</b>"
 
-#: glom/glom.glade.h:10
+#: glom/glom.glade.h:11
 msgid "<b>User Level: </b>"
 msgstr "<b>用户级别：</b>"
 
-#: glom/glom.glade.h:11
+#: glom/glom.glade.h:12
 msgid "<b>def calculate_field_value():</b>"
 msgstr "<b>def calculate_field_value()：</b>"
 
-#: glom/glom.glade.h:12
+#: glom/glom.glade.h:13
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Connect to Server</span>\n"
 "\n"
@@ -69,7 +74,7 @@ msgstr ""
 "\n"
 "请输入您数据库服务器的连接细节。"
 
-#: glom/glom.glade.h:15
+#: glom/glom.glade.h:16
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Connection Failed</span>\n"
 "\n"
@@ -78,7 +83,7 @@ msgid ""
 "not running."
 msgstr ""
 
-#: glom/glom.glade.h:18
+#: glom/glom.glade.h:19
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Database creation failed</span>\n"
 "\n"
@@ -86,7 +91,15 @@ msgid ""
 "access rights. Please contact your system administrator."
 msgstr ""
 
-#: glom/glom.glade.h:21
+#: glom/glom.glade.h:22
+msgid ""
+"<span weight=\"bold\" size=\"larger\">Database does not exist</span>\n"
+"\n"
+"The database does not yet exist on the database server. Would you like to "
+"create the database with an empty structure?"
+msgstr ""
+
+#: glom/glom.glade.h:25
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Invalid format</span>\n"
 "\n"
@@ -95,7 +108,7 @@ msgid ""
 "for this field.\n"
 msgstr ""
 
-#: glom/glom.glade.h:25
+#: glom/glom.glade.h:29
 msgid ""
 "<span weight=\"bold\" size=\"larger\">New Database</span>\n"
 "\n"
@@ -103,7 +116,7 @@ msgid ""
 "contain any spaces."
 msgstr ""
 
-#: glom/glom.glade.h:28
+#: glom/glom.glade.h:32
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Open existing document, or create new "
 "document</span>\n"
@@ -114,7 +127,7 @@ msgid ""
 "Or would you like to create a new document, to design a new database?\n"
 msgstr ""
 
-#: glom/glom.glade.h:34
+#: glom/glom.glade.h:38
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Title</span>\n"
 "\n"
@@ -124,152 +137,165 @@ msgstr ""
 "\n"
 "信息文本。\n"
 
-#: glom/glom.glade.h:38
+#: glom/glom.glade.h:42
+msgid "Add Related"
+msgstr ""
+
+#: glom/glom.glade.h:43
 msgid "Add _Group"
 msgstr "添加组(_G)"
 
-#: glom/glom.glade.h:39
+#: glom/glom.glade.h:44
 msgid "Auto-increment"
 msgstr "自动增加"
 
-#: glom/glom.glade.h:40
+#: glom/glom.glade.h:45
 msgid "Calculate value"
 msgstr "计算值"
 
-#: glom/glom.glade.h:41
+#: glom/glom.glade.h:46
 msgid "Connect"
 msgstr "连接"
 
-#: glom/glom.glade.h:42
+#: glom/glom.glade.h:47
+msgid "Create"
+msgstr ""
+
+#: glom/glom.glade.h:48
 msgid "Data"
 msgstr "数据"
 
-#: glom/glom.glade.h:43
+#: glom/glom.glade.h:49
 msgid "Database"
 msgstr "数据库"
 
-#: glom/glom.glade.h:44
+#: glom/glom.glade.h:50
 msgid "Default Value"
 msgstr "默认值"
 
-#: glom/glom.glade.h:45
+#: glom/glom.glade.h:51
 msgid "Details Layout"
 msgstr "细节布局"
 
-#: glom/glom.glade.h:46
+#: glom/glom.glade.h:52
 msgid "Edit"
 msgstr "编辑"
 
-#: glom/glom.glade.h:47
+#: glom/glom.glade.h:53
 msgid "Edit Definition"
 msgstr "编辑定义"
 
-#: glom/glom.glade.h:48
+#: glom/glom.glade.h:54
 msgid "Extra"
 msgstr "额外"
 
-#: glom/glom.glade.h:49
+#: glom/glom.glade.h:55
 msgid "Field"
 msgstr "字段"
 
-#: glom/glom.glade.h:50
+#: glom/glom.glade.h:56
 msgid "Field Calculation"
 msgstr "字段计算"
 
-#: glom/glom.glade.h:51
+#: glom/glom.glade.h:57
 msgid "Field Definition"
 msgstr "字段定义"
 
-#: glom/glom.glade.h:52
+#: glom/glom.glade.h:58
 msgid "Field Definitions"
 msgstr "字段定义"
 
-#: glom/glom.glade.h:53
+#: glom/glom.glade.h:59
 msgid "Glom"
 msgstr "Glom"
 
-#: glom/glom.glade.h:54
+#: glom/glom.glade.h:60
 msgid "Host"
 msgstr "主机"
 
-#: glom/glom.glade.h:55
+#: glom/glom.glade.h:61
 msgid "List Layout"
 msgstr "列表布局"
 
-#: glom/glom.glade.h:56
+#: glom/glom.glade.h:62
 msgid "Lookup value when a field changes."
 msgstr "字段更改时查阅值。"
 
-#: glom/glom.glade.h:57
+#: glom/glom.glade.h:63
 msgid "Name"
 msgstr "名称"
 
-#: glom/glom.glade.h:58
+#: glom/glom.glade.h:64
 msgid "None selected"
 msgstr "没有选中"
 
-#: glom/glom.glade.h:59
+#: glom/glom.glade.h:65
 msgid "Password"
 msgstr "密码"
 
-#: glom/glom.glade.h:60
+#: glom/glom.glade.h:66
 msgid "Primary Key"
 msgstr "主键"
 
-#: glom/glom.glade.h:61
+#: glom/glom.glade.h:67
 msgid "Relationship"
 msgstr "关系"
 
-#: glom/glom.glade.h:62
+#: glom/glom.glade.h:68
 msgid "Revert"
 msgstr ""
 
-#: glom/glom.glade.h:63
+#: glom/glom.glade.h:69
 msgid "Select"
 msgstr "选择"
 
-#: glom/glom.glade.h:64
+#: glom/glom.glade.h:70
 msgid "Select Field"
 msgstr "选择字段"
 
-#: glom/glom.glade.h:65
+#: glom/glom.glade.h:71
+#, fuzzy
+msgid "Select Relationship"
+msgstr "关系"
+
+#: glom/glom.glade.h:72
 msgid "Show hidden tables"
 msgstr "显示隐藏表"
 
-#: glom/glom.glade.h:66
+#: glom/glom.glade.h:73
 msgid "Table:"
 msgstr "表："
 
-#: glom/glom.glade.h:67
+#: glom/glom.glade.h:74
 msgid "Test"
 msgstr "测试"
 
-#: glom/glom.glade.h:68
+#: glom/glom.glade.h:75
 msgid ""
 "The field value will be the return value of the python function, which you "
 "implement here."
 msgstr ""
 
-#: glom/glom.glade.h:69
+#: glom/glom.glade.h:76
 msgid "Title"
 msgstr "标题"
 
-#: glom/glom.glade.h:70
+#: glom/glom.glade.h:77
 msgid "Type"
 msgstr "类型"
 
-#: glom/glom.glade.h:71
+#: glom/glom.glade.h:78
 msgid "Unique"
 msgstr "唯一"
 
-#: glom/glom.glade.h:72
+#: glom/glom.glade.h:79
 msgid "User"
 msgstr "用户"
 
-#: glom/glom.glade.h:73
+#: glom/glom.glade.h:80
 msgid "example data format"
 msgstr "示例数据格式"
 
-#: glom/glom.glade.h:74
+#: glom/glom.glade.h:81
 msgid "table name"
 msgstr "表名"

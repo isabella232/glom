@@ -25,6 +25,10 @@ appreg_DATA = glom.applications
 install-data-hook: 
 	-update-mime-database "$(DESTDIR)${datadir}/mime"
 
-EXTRA_DIST = $(GnomeApplications_DATA) $(MimeDatabase_DATA) $(appreg_DATA) $(mimeinfo_DATA)
+EXTRA_DIST = $(GnomeApplications_DATA) $(MimeDatabase_DATA) $(appreg_DATA) $(mimeinfo_DATA) \
+             autogen.sh \
+             intltool-extract.in intltool-merge.in intltool-update.in
+
+# (See http://cvs.gnome.org/lxr/source/intltool/README about these intltool files)
 
 

@@ -156,7 +156,7 @@ sharedptr<SharedConnection> ConnectionPool::connect()
         if(!m_database.empty())
           cnc_string += (";DATABASE=" + m_database);
 
-        //std::cout << "connecting: cnc string: " << cnc_string << std::endl;
+        std::cout << "connecting: cnc string: " << cnc_string << std::endl;
 
         //*m_refGdaConnection = m_GdaClient->open_connection(m_GdaDataSourceInfo.get_name(), m_GdaDataSourceInfo.get_username(), m_GdaDataSourceInfo.get_password() );
         m_refGdaConnection = m_GdaClient->open_connection_from_string("PostgreSQL", cnc_string);
@@ -190,6 +190,8 @@ sharedptr<SharedConnection> ConnectionPool::connect()
              //then try connecting without the database:
              Glib::ustring cnc_string = "USER=" + m_user + ";PASSWORD=" + m_password; //TODO: Host
              
+             std::cout << "connecting: cnc string: " << cnc_string << std::endl;
+              
              Glib::RefPtr<Gnome::Gda::Connection> gda_connection =  m_GdaClient->open_connection_from_string("PostgreSQL", cnc_string);
              if(gda_connection) //If we could connect without specifying the database.
                bJustDatabaseMissing = true;

@@ -1,3 +1,9 @@
+2005-01-05  Murray Cumming  <murrayc@murrayc.com>
+
+	* Makefile.am: Add intltool-extract.in, intltool-merge.in, 
+	intltool-update.in to EXTRA_DIST, possibly fixing the build on some 
+	platforms. Bug #162932.
+
 2004-12-26  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/mode_data/box_data_list_related.cc: constructor: Show the 
