@@ -181,41 +181,46 @@ void Box_Data_Details::fill_from_database()
     {
       fill_from_database_layout(); //TODO: Only do this when the layout has changed.
 
-      //Add extra possibly-non-visible columns that we need:
-      LayoutItem_Field layout_item;
-      layout_item.set_name(m_field_primary_key.get_name());
-      layout_item.m_field = m_field_primary_key;
-      fieldsToGet.push_back(layout_item);
-
-      //g_warning("primary_key name = %s", m_field_primary_key.get_name().c_str());
-      const int index_primary_key = fieldsToGet.size() - 1;
-
-      const Glib::ustring query = build_sql_select(m_strTableName, fieldsToGet, m_field_primary_key, m_primary_key_value);
-      Glib::RefPtr<Gnome::Gda::DataModel> result = Query_execute(query);
-
-      if(result && result->get_n_rows())
+      //Do not try to show the data if the user may not view it:
+      Privileges table_privs = get_current_privs(m_strTableName);
+      if(table_privs.m_view)
       {
-        const Document_Glom* pDoc = dynamic_cast<const Document_Glom*>(get_document());
-        if(pDoc)
+        //Add extra possibly-non-visible columns that we need:
+        LayoutItem_Field layout_item;
+        layout_item.set_name(m_field_primary_key.get_name());
+        layout_item.m_field = m_field_primary_key;
+        fieldsToGet.push_back(layout_item);
+
+        //g_warning("primary_key name = %s", m_field_primary_key.get_name().c_str());
+        const int index_primary_key = fieldsToGet.size() - 1;
+
+        const Glib::ustring query = build_sql_select(m_strTableName, fieldsToGet, m_field_primary_key, m_primary_key_value);
+        Glib::RefPtr<Gnome::Gda::DataModel> result = Query_execute(query);
+
+        if(result && result->get_n_rows())
         {
-          //Get glom-specific field info:
-          //Document_Glom::type_vecFields vecFields = pDoc->get_table_fields(m_strTableName);
-
-          const int row_number = 0; //The only row.
-          const int cols_count = result->get_n_columns();
-
-          //Get special possibly-non-visible field values:
-          if(index_primary_key < cols_count)
-            m_primary_key_value = result->get_value_at(index_primary_key, row_number);
-
-          //Get field values to show:
-          for(int i = 0; i < cols_count; ++i)
+          const Document_Glom* pDoc = dynamic_cast<const Document_Glom*>(get_document());
+          if(pDoc)
           {
-            const LayoutItem_Field& layout_item = fieldsToGet[i];
+            //Get glom-specific field info:
+            //Document_Glom::type_vecFields vecFields = pDoc->get_table_fields(m_strTableName);
 
-            //Field value:
-            Gnome::Gda::Value value = result->get_value_at(i, row_number);
-            m_FlowTable.set_field_value(layout_item, value);
+            const int row_number = 0; //The only row.
+            const int cols_count = result->get_n_columns();
+
+            //Get special possibly-non-visible field values:
+            if(index_primary_key < cols_count)
+              m_primary_key_value = result->get_value_at(index_primary_key, row_number);
+
+            //Get field values to show:
+            for(int i = 0; i < cols_count; ++i)
+            {
+              const LayoutItem_Field& layout_item = fieldsToGet[i];
+
+              //Field value:
+              Gnome::Gda::Value value = result->get_value_at(i, row_number);
+              m_FlowTable.set_field_value(layout_item, value);
+            }
           }
         }
       }

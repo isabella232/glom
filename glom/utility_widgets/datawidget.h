@@ -53,6 +53,7 @@ public:
   virtual Gnome::Gda::Value get_value() const;
 
   virtual void set_editable(bool editable = true);
+  virtual void set_viewable(bool viewable = true);
 
   virtual bool offer_field_list(const Glib::ustring& table_name, LayoutItem_Field& field);
 

@@ -296,6 +296,7 @@ void Box_Data::get_table_fields_to_show_add_group(const Glib::ustring& table_nam
 
             //TODO_Performance: We do this once for each related field, even if there are 2 from the same table:
             const Privileges privs_related = get_current_privs(relationship.get_to_table());
+            layout_item.m_priv_view = privs_related.m_view;
             layout_item.m_priv_edit = privs_related.m_edit;
 
             vecFields.push_back(layout_item);
@@ -313,6 +314,7 @@ void Box_Data::get_table_fields_to_show_add_group(const Glib::ustring& table_nam
           layout_item.m_field = *iterFind; //Fill the LayoutItem with the full field information.
 
           //Prevent editing of the field if the user may not edit this table:
+          layout_item.m_priv_view = table_privs.m_view;
           layout_item.m_priv_edit = table_privs.m_edit;
 
           vecFields.push_back(layout_item);
@@ -377,6 +379,7 @@ Box_Data::type_vecLayoutFields Box_Data::get_table_fields_to_show(const Glib::us
         layout_item.set_editable(true); //A sensible default.
 
         //Prevent editing of the field if the user may not edit this table:
+        layout_item.m_priv_view = table_privs.m_view;
         layout_item.m_priv_edit = table_privs.m_edit;
 
         result.push_back(layout_item);
@@ -396,6 +399,7 @@ Box_Data::type_vecLayoutFields Box_Data::get_table_fields_to_show(const Glib::us
           layout_item.set_editable(true); //A sensible default.
 
           //Prevent editing of the field if the user may not edit this table:
+          layout_item.m_priv_view = table_privs.m_view;
           layout_item.m_priv_edit = table_privs.m_edit;
 
           result.push_back(layout_item);
@@ -607,6 +611,7 @@ void Box_Data::fill_layout_group_field_info(LayoutGroup& group, const Privileges
 
             //TODO_Performance: Don't do this repeatedly for the same table.
             const Privileges privs = get_current_privs(relationship.get_to_table());
+            item_field->m_priv_view = privs.m_view;
             item_field->m_priv_edit = privs.m_edit;
           }
         }
@@ -619,6 +624,7 @@ void Box_Data::fill_layout_group_field_info(LayoutGroup& group, const Privileges
         if(found)
         {
           item_field->m_field = field; //TODO_Performance: Just use this as the output arg?
+          item_field->m_priv_view = table_privs.m_view;
           item_field->m_priv_edit = table_privs.m_edit;
         }
       }

@@ -21,13 +21,15 @@
 #include "layoutitem_field.h"
 
 LayoutItem_Field::LayoutItem_Field()
-: m_priv_edit(false)
+: m_priv_view(false),
+  m_priv_edit(false)
 {
 }
 
 LayoutItem_Field::LayoutItem_Field(const LayoutItem_Field& src)
 : LayoutItem(src),
   m_field(src.m_field),
+  m_priv_view(src.m_priv_view),
   m_priv_edit(src.m_priv_edit),
   //m_table_name(src.m_table_name),
   m_relationship_name(src.m_relationship_name)
@@ -49,6 +51,7 @@ LayoutItem_Field& LayoutItem_Field::operator=(const LayoutItem_Field& src)
   LayoutItem::operator=(src);
 
   m_field = src.m_field;
+  m_priv_view = src.m_priv_view;
   m_priv_edit = src.m_priv_edit;
 
   //m_table_name = src.m_table_name;

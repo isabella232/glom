@@ -197,6 +197,20 @@ int DataWidget::get_suitable_width(Field::glom_field_type field_type)
   return result;
 }
 
+void DataWidget::set_viewable(bool viewable)
+{
+  Gtk::Widget* child = get_child();
+  Gtk::Entry* entry = dynamic_cast<Gtk::Entry*>(child);
+  if(entry)
+    entry->set_visibility(viewable); //TODO: This is not an ideal way to show non-viewable fields..
+  else
+  {
+    Gtk::CheckButton* checkbutton = dynamic_cast<Gtk::CheckButton*>(child);
+    if(checkbutton)
+      checkbutton->property_inconsistent() = !viewable;
+  }
+}
+
 void DataWidget::set_editable(bool editable)
 {
   Gtk::Widget* child = get_child();

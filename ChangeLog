@@ -1,3 +1,23 @@
+2005-03-22  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/data_structure/layout/layoutitem_field.cc:
+	* glom/data_structure/layout/layoutitem_field.h:
+	Store priv_view when we store priv_edit.
+	* glom/mode_data/box_data.cc:
+	* glom/mode_data/box_data_details.cc:
+	* glom/mode_data/box_data_list.cc:
+	Do not get records if the table may not be viewed 
+	by the current user.
+	* glom/utility_widgets/datawidget.cc:
+	* glom/utility_widgets/datawidget.h:
+	Make field contents non-visible if necessary, 
+	though we do not even fill them with data in 
+	that case anyway.
+	* glom/mode_design/users/dialog_groups_list.cc:
+	When setting view to false, set everything else 
+	to false too, because anything else would be 
+	stupid.
+
 2005-03-22  Murray Cumming <murrayc@murrayc.com>
 
 	* glom/base_db.cc:

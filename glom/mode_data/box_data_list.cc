@@ -87,82 +87,87 @@ void Box_Data_List::fill_from_database()
     //{
       //Glib::RefPtr<Gnome::Gda::Connection> connection = sharedconnection->get_gda_connection();
 
-    Glib::ustring strWhereClausePiece;
-    if(!m_strWhereClause.empty())
-      strWhereClausePiece = " WHERE " + m_strWhereClause;
-
-    m_Fields = get_fields_to_show();
-
-    //Add extra possibly-non-visible columns that we need:
-    type_vecLayoutFields fieldsToGet = m_Fields;
-
-    LayoutItem_Field layout_item;
-    Field field_key = m_AddDel.get_key_field();
-    layout_item.set_name(field_key.get_name());
-    layout_item.m_field = field_key;
-    fieldsToGet.push_back(layout_item);
-    const int index_primary_key = fieldsToGet.size() - 1;
-
-    if(!fieldsToGet.empty())
+    //Do not try to show the data if the user may not view it:
+    Privileges table_privs = get_current_privs(m_strTableName);
+    if(table_privs.m_view)
     {
-      const Glib::ustring query = build_sql_select_with_where_clause(m_strTableName, fieldsToGet, m_strWhereClause);
+      Glib::ustring strWhereClausePiece;
+      if(!m_strWhereClause.empty())
+        strWhereClausePiece = " WHERE " + m_strWhereClause;
 
-      Glib::RefPtr<Gnome::Gda::DataModel> result = Query_execute(query);
-      if(!result)
-        handle_error();
-      else
+      m_Fields = get_fields_to_show();
+
+      //Add extra possibly-non-visible columns that we need:
+      type_vecLayoutFields fieldsToGet = m_Fields;
+
+      LayoutItem_Field layout_item;
+      Field field_key = m_AddDel.get_key_field();
+      layout_item.set_name(field_key.get_name());
+      layout_item.m_field = field_key;
+      fieldsToGet.push_back(layout_item);
+      const int index_primary_key = fieldsToGet.size() - 1;
+
+      if(!fieldsToGet.empty())
       {
-        //Field contents:
-        m_AddDel.remove_all();
+        const Glib::ustring query = build_sql_select_with_where_clause(m_strTableName, fieldsToGet, m_strWhereClause);
 
-        //each row:
-        guint rows_count = result->get_n_rows();
-        if(rows_count)
-          m_has_one_or_more_records = true; //Save it for later.
-
-        if(rows_count > 100)
-          rows_count = 100; //Don't get more than 100. TODO: Get other rows dynamically.
-
-        for(guint result_row = 0; result_row < (rows_count); result_row++)
+        Glib::RefPtr<Gnome::Gda::DataModel> result = Query_execute(query);
+        if(!result)
+          handle_error();
+        else
         {
-          Gnome::Gda::Value key = result->get_value_at(index_primary_key, result_row);
-          //It is usually an integer.
-          if(GlomConversions::value_is_empty(key))
-            g_warning("Box_Data_List::fill_from_database(): primary key value is empty");
-          else
+          //Field contents:
+          m_AddDel.remove_all();
+
+          //each row:
+          guint rows_count = result->get_n_rows();
+          if(rows_count)
+            m_has_one_or_more_records = true; //Save it for later.
+
+          if(rows_count > 100)
+            rows_count = 100; //Don't get more than 100. TODO: Get other rows dynamically.
+
+          for(guint result_row = 0; result_row < (rows_count); result_row++)
           {
-            Gnome::Gda::Value value_primary_key = result->get_value_at(index_primary_key, result_row);
-
-            Gtk::TreeModel::iterator tree_iter = m_AddDel.add_item(value_primary_key);
-
-            type_vecLayoutFields::const_iterator iterFields = fieldsToGet.begin();
-
-            //each field:
-            //We use cols_count -1 because we have an extra field for the primary_key.
-            guint cols_count = result->get_n_columns() - 1;
-            for(guint uiCol = 0; uiCol < cols_count; uiCol++)
+            Gnome::Gda::Value key = result->get_value_at(index_primary_key, result_row);
+            //It is usually an integer.
+            if(GlomConversions::value_is_empty(key))
+              g_warning("Box_Data_List::fill_from_database(): primary key value is empty");
+            else
             {
-              const Gnome::Gda::Value value = result->get_value_at(uiCol, result_row);
-              const LayoutItem_Field& layout_item = *iterFields;
+              Gnome::Gda::Value value_primary_key = result->get_value_at(index_primary_key, result_row);
 
-              //g_warning("list fill: field_name=%s", iterFields->get_name().c_str());
-              //g_warning("  value_as_string=%s", value.to_string().c_str());
+              Gtk::TreeModel::iterator tree_iter = m_AddDel.add_item(value_primary_key);
 
-              m_AddDel.set_value(tree_iter, layout_item, value);
-               //g_warning("addedel size=%d", m_AddDel.get_count());
+              type_vecLayoutFields::const_iterator iterFields = fieldsToGet.begin();
 
-              ++iterFields;
+              //each field:
+              //We use cols_count -1 because we have an extra field for the primary_key.
+              guint cols_count = result->get_n_columns() - 1;
+              for(guint uiCol = 0; uiCol < cols_count; uiCol++)
+              {
+                const Gnome::Gda::Value value = result->get_value_at(uiCol, result_row);
+                const LayoutItem_Field& layout_item = *iterFields;
+
+                //g_warning("list fill: field_name=%s", iterFields->get_name().c_str());
+                //g_warning("  value_as_string=%s", value.to_string().c_str());
+
+                m_AddDel.set_value(tree_iter, layout_item, value);
+                //g_warning("addedel size=%d", m_AddDel.get_count());
+
+                ++iterFields;
+              }
             }
           }
         }
-      }
-    } //If !fieldsToGet.empty()
+      } //If !fieldsToGet.empty()
 
+      //Select first record:
+      Glib::RefPtr<Gtk::TreeModel> refModel = m_AddDel.get_model();
+      if(refModel)
+        m_AddDel.select_item(refModel->children().begin());
 
-    //Select first record:
-    Glib::RefPtr<Gtk::TreeModel> refModel = m_AddDel.get_model();
-    if(refModel)
-      m_AddDel.select_item(refModel->children().begin());
+    } //privs
 
     fill_end();
 

@@ -49,6 +49,7 @@ public:
   bool get_editable_and_allowed() const;
 
   //Not saved to the document:
+  bool m_priv_view;
   bool m_priv_edit;
 
 protected:
