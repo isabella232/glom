@@ -1,3 +1,9 @@
+0.8.14:
+
+* Details View: Adding records works even when a field appears
+  more than once in the layout.
+* List View: Deleting records works again.
+
 0.8.13:
 
 * Details:
