@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glom.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-06-23 14:50+0200\n"
+"POT-Creation-Date: 2004-07-12 15:16+0200\n"
 "PO-Revision-Date: 2004-07-10 20:10+0200\n"
 "Last-Translator: Laurent Dhima <laurenti@alblinux.net>\n"
 "Language-Team: Albanian <gnome-albanian-perkthyesit@lists.sourceforge.net>\n"
@@ -15,12 +15,10 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#. GRUT modified this item
 #: glom/glom.glade.h:1
 msgid "*"
 msgstr "*"
 
-#. GRUT modified this item
 #: glom/glom.glade.h:2
 msgid "<b>Connection</b>"
 msgstr "<b>Lidhja</b>"
@@ -62,6 +60,10 @@ msgid "<b>User Level: </b>"
 msgstr "<b>Niveli i përdoruesit: </b>"
 
 #: glom/glom.glade.h:12
+msgid "<b>def calculate_field_value():</b>"
+msgstr ""
+
+#: glom/glom.glade.h:13
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Invalid format</span>\n"
 "\n"
@@ -71,11 +73,11 @@ msgid ""
 msgstr ""
 "<span weight=\"bold\" size=\"larger\">Format i pavlefshëm</span>\n"
 "\n"
-"Të dhënat e fushave nuk janë të organizuara. Ju lutem përpiquni të korrigjoni "
-"të dhënat ose kthehuni tek vlerat e vjetra. Këtu keni një shembull me të dhënat "
-"e formatuara me korrektësi për këtë fushë.\n"
+"Të dhënat e fushave nuk janë të organizuara. Ju lutem përpiquni të "
+"korrigjoni të dhënat ose kthehuni tek vlerat e vjetra. Këtu keni një "
+"shembull me të dhënat e formatuara me korrektësi për këtë fushë.\n"
 
-#: glom/glom.glade.h:16
+#: glom/glom.glade.h:17
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Open existing document, or create new "
 "document</span>\n"
@@ -85,15 +87,16 @@ msgid ""
 "\n"
 "Or would you like to create a new document, to design a new database?\n"
 msgstr ""
-"<span weight=\"bold\" size=\"larger\">Hap një dokument ekzistues, ose krijoni një "
-"dokument të ri</span>\n"
+"<span weight=\"bold\" size=\"larger\">Hap një dokument ekzistues, ose "
+"krijoni një dokument të ri</span>\n"
 "\n"
 "Dëshironi të hapni një dokument ekzistues, për t'u lidhur me një databazë "
 "ekzistuese?\n"
 "\n"
-"Apo dëshironi të krijoni një dokument të ri, për të projektuar një databazë të re?\n"
+"Apo dëshironi të krijoni një dokument të ri, për të projektuar një databazë "
+"të re?\n"
 
-#: glom/glom.glade.h:22
+#: glom/glom.glade.h:23
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Title</span>\n"
 "\n"
@@ -103,122 +106,130 @@ msgstr ""
 "\n"
 "Teksti informues.\n"
 
-#: glom/glom.glade.h:26
+#: glom/glom.glade.h:27
 msgid "Auto-increment"
 msgstr "Auto-increment"
 
-#. GRUT modified this item
-#: glom/glom.glade.h:27
+#: glom/glom.glade.h:28
+#, fuzzy
+msgid "Calculate value"
+msgstr "Vlera e prezgjedhur"
+
+#: glom/glom.glade.h:29
 msgid "Connect"
 msgstr "Lidhu"
 
-#. GRUT modified this item
-#: glom/glom.glade.h:28
+#: glom/glom.glade.h:30
 msgid "Data"
 msgstr "Të dhëna"
 
-#: glom/glom.glade.h:29
+#: glom/glom.glade.h:31
 msgid "Default Value"
 msgstr "Vlera e prezgjedhur"
 
-#. GRUT modified this item
-#: glom/glom.glade.h:30
+#: glom/glom.glade.h:32
 msgid "Edit"
 msgstr "Ndrysho"
 
-#: glom/glom.glade.h:31
+#: glom/glom.glade.h:33
 msgid "Edit Definition"
 msgstr "Ndrysho përcaktimin"
 
-#: glom/glom.glade.h:32
+#: glom/glom.glade.h:34
 msgid "Extra"
 msgstr "Shtesë"
 
-#. GRUT modified this item
-#: glom/glom.glade.h:33
+#: glom/glom.glade.h:35
 msgid "Field"
 msgstr "Fusha"
 
-#: glom/glom.glade.h:34
+#: glom/glom.glade.h:36
+#, fuzzy
+msgid "Field Calculation"
+msgstr "Përcaktimi i fushës"
+
+#: glom/glom.glade.h:37
 msgid "Field Definition"
 msgstr "Përcaktimi i fushës"
 
-#: glom/glom.glade.h:35
+#: glom/glom.glade.h:38
 msgid "Field Definitions"
 msgstr "Përcaktimet e fushës"
 
-#: glom/glom.glade.h:36
+#: glom/glom.glade.h:39
 msgid "Glom"
 msgstr "Glom"
 
-#. GRUT modified this item
-#: glom/glom.glade.h:37
+#: glom/glom.glade.h:40
 msgid "Host"
 msgstr "Host"
 
-#. GRUT modified this item
-#: glom/glom.glade.h:38
+#: glom/glom.glade.h:41
 msgid "Layout"
 msgstr "Planimetria"
 
-#: glom/glom.glade.h:39
+#: glom/glom.glade.h:42
 msgid "Lookup value when a field changes."
 msgstr "Kontrollo vlerat kur ndryshon një fushë."
 
-#. GRUT modified this item
-#: glom/glom.glade.h:40
+#: glom/glom.glade.h:43
 msgid "Name"
 msgstr "Emri"
 
-#: glom/glom.glade.h:41
+#: glom/glom.glade.h:44
 msgid "None selected"
 msgstr "Asnjë zgjedhje"
 
-#. GRUT modified this item
-#: glom/glom.glade.h:42
+#: glom/glom.glade.h:45
 msgid "Password"
 msgstr "Fjalëkalimi"
 
-#: glom/glom.glade.h:43
+#: glom/glom.glade.h:46
 msgid "Primary Key"
 msgstr "Kyçi primar"
 
-#: glom/glom.glade.h:44
+#: glom/glom.glade.h:47
 msgid "Relationship"
 msgstr "Relationship"
 
-#. GRUT modified this item
-#: glom/glom.glade.h:45
+#: glom/glom.glade.h:48
 msgid "Revert"
 msgstr "Rikthe"
 
-#: glom/glom.glade.h:46
+#: glom/glom.glade.h:49
 msgid "Show hidden tables"
 msgstr "Shfaq tabelat e fshehura"
 
-#: glom/glom.glade.h:47
+#: glom/glom.glade.h:50
+msgid "Test"
+msgstr ""
+
+#: glom/glom.glade.h:51
+msgid ""
+"The field value will be the return value of the python function, which you "
+"implement here."
+msgstr ""
+
+#: glom/glom.glade.h:52
 msgid "Title"
 msgstr "Titulli"
 
-#. GRUT modified this item
-#: glom/glom.glade.h:48
+#: glom/glom.glade.h:53
 msgid "Type"
 msgstr "Lloji"
 
-#: glom/glom.glade.h:49
+#: glom/glom.glade.h:54
 msgid "Unique"
 msgstr "Unique"
 
-#. GRUT modified this item
-#: glom/glom.glade.h:50
+#: glom/glom.glade.h:55
 msgid "User"
 msgstr "Përdoruesi"
 
-#: glom/glom.glade.h:51
+#: glom/glom.glade.h:56
 msgid "example data format"
 msgstr "shembull formatimi të dhënash"
 
-#: glom/glom.glade.h:52
+#: glom/glom.glade.h:57
 msgid "table name"
 msgstr "emri i tabelës"
-

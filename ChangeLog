@@ -1,3 +1,11 @@
+0.8.7:
+
+2004-07-12  Murray Cumming  <murrayc@murrayc.com>
+
+	* configure.in: Depend on bakery 2.3.8, because that has a fix to 
+	prevent the crash when changing user levels on the details view when 
+	there are related records.
+
 2004-07-09  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/utility_widgets/flowtable.cc: get_item_max_width(): Don't 

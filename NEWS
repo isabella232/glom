@@ -8,6 +8,9 @@
 * Details view:
   - Corrected widget layout problems.
   - Do not lose the layout groups after a while.
+  - Fix crash when changing user level, with related records.
+(Murray Cumming)
+* Added Albanian translation. (Laurent Dhima)
   
 0.8.6:
 
