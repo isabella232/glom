@@ -1,6 +1,16 @@
 2005-03-29  Murray Cumming <murrayc@murrayc.com>
 
 	* examples/example_smallbusiness.glom:
+	* glom/glom.glade:
+	* glom/mode_data/dialog_layout_list_related.cc:
+	* glom/mode_data/dialog_layout_list_related.h:
+	Allow layout field editing (editable, numeric formatting, 
+	etc) of related records lists, like we already have for 
+	normal lists.
+
+2005-03-29  Murray Cumming <murrayc@murrayc.com>
+
+	* examples/example_smallbusiness.glom:
 	* glom/base_db.cc:
 	* glom/document/document_glom.cc:
 	* glom/document/document_glom.h:

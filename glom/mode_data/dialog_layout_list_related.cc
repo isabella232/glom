@@ -77,13 +77,12 @@ Dialog_Layout_List_Related::Dialog_Layout_List_Related(BaseObjectType* cobject, 
   refGlade->get_widget("button_field_delete", m_button_field_delete);
   m_button_field_delete->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout_List_Related::on_button_delete) );
 
-   
   refGlade->get_widget("button_field_add", m_button_field_add);
   m_button_field_add->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout_List_Related::on_button_add_field) );
 
   refGlade->get_widget("button_field_edit", m_button_field_edit);
+  m_button_field_edit->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout_List_Related::on_button_edit_field) );
 
-  
   show_all_children();
 }
 
@@ -406,6 +405,63 @@ void Dialog_Layout_List_Related::on_cell_data_name(Gtk::CellRenderer* renderer, 
 
       renderer_text->property_editable() = false; //Names can never be edited.
     }
+  }
+}
+
+void Dialog_Layout_List_Related::on_button_edit_field()
+{
+  try
+  {
+    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_choose_field");
+
+    Dialog_ChooseField* dialog = 0;
+    refXml->get_widget_derived("dialog_choose_field", dialog);
+
+    if(dialog)
+    {
+      Glib::RefPtr<Gtk::TreeView::Selection> refTreeSelection = m_treeview_fields->get_selection();
+      if(refTreeSelection)
+      {
+        //TODO: Handle multiple-selection:
+        Gtk::TreeModel::iterator iter = refTreeSelection->get_selected();
+        if(iter)
+        {
+          Gtk::TreeModel::Row row = *iter;
+          const LayoutItem_Field& field = row[m_ColumnsFields.m_col_layout_item];
+
+          dialog->set_document(m_document, m_relationship.get_to_table(), field);
+          dialog->set_transient_for(*this);
+          int response = dialog->run();
+          if(response == Gtk::RESPONSE_OK)
+          {
+            //Get the chosen field:
+            LayoutItem_Field field;
+            dialog->get_field_chosen(field);
+
+            //Set the field details in the layout treeview:
+
+            row[m_ColumnsFields.m_col_layout_item] = field;
+
+            //Scroll to, and select, the new row:
+            /*
+            Glib::RefPtr<Gtk::TreeView::Selection> refTreeSelection = m_treeview_fields->get_selection();
+            if(refTreeSelection)
+              refTreeSelection->select(iter);
+
+            m_treeview_fields->scroll_to_row( Gtk::TreeModel::Path(iter) );
+
+            treeview_fill_sequences(m_model_fields, m_ColumnsFields.m_col_sequence); //The document should have checked this already, but it does not hurt to check again.
+            */
+          }
+        }
+      }
+    }
+
+    delete dialog;
+  }
+  catch(const Gnome::Glade::XmlError& ex)
+  {
+    std::cerr << ex.what() << std::endl;
   }
 }
 
