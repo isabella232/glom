@@ -158,7 +158,6 @@ bool DbTreeModel::iter_next_vfunc(const iterator& iter, iterator& iter_next) con
     //Make the iter_next GtkTreeIter represent the next row:
     ++row_iter;
     
-    //g_warning("iter_next_vfunc: returning next.");
     create_iterator(row_iter, iter_next);
     
     return true; //success
@@ -379,7 +378,7 @@ void DbTreeModel::remember_glue_item(GlueItem* item) const
 DbTreeModel::iterator DbTreeModel::append()
 {
   const size_type existing_size = m_rows.size();
-  g_warning("DbTreeModel::append(): existing_size = %d", existing_size);
+  //g_warning("DbTreeModel::append(): existing_size = %d", existing_size);
   m_rows.resize(existing_size + 1);
     
   //Get a std::list iterator to the last element:
@@ -426,7 +425,7 @@ void DbTreeModel::set_value_impl(const iterator& row, int column, const Glib::Va
       g_warning("DbTreeModel::set_value_impl(): value is not a Value< DbValue >.");
     else
     {
-      g_warning("set_value_impl: value=%s", pDbValue->get().to_string().c_str());
+      //g_warning("set_value_impl: value=%s", pDbValue->get().to_string().c_str());
       
       DbValue& refValue = row_iter->m_db_values[column];
       
@@ -481,7 +480,6 @@ bool DbTreeModel::get_is_placeholder(const TreeModel::iterator& iter) const
     }
   }
   
-  g_warning("  DbTreeModel::set_is_placeholder(): returning false");  
   return false;
 }
 

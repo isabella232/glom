@@ -635,7 +635,7 @@ void DbAddDel::construct_specified_columns()
 
 void DbAddDel::set_value(const Gtk::TreeModel::iterator& iter, guint col, const Gnome::Gda::Value& value)
 {
-  g_warning("DbAddDel::set_value begin");
+  //g_warning("DbAddDel::set_value begin");
   
   InnerIgnore innerIgnore(this);
 
@@ -661,7 +661,7 @@ void DbAddDel::set_value(const Gtk::TreeModel::iterator& iter, guint col, const 
     add_blank();
   }
   
-  g_warning("DbAddDel::set_value end");
+  //g_warning("DbAddDel::set_value end");
 }
 
 void DbAddDel::set_value_selected(guint col, const Gnome::Gda::Value& value)
@@ -1301,13 +1301,7 @@ bool DbAddDel::get_is_first_row(const Gtk::TreeModel::iterator& iter) const
 
 bool DbAddDel::get_is_last_row(const Gtk::TreeModel::iterator& iter) const
 {
-  Gtk::TreeModel::iterator iter2 = get_last_row();
-  Gtk::TreeModel::iterator iter3 = get_last_row();
-  if(iter2 != iter3)
-  {
-     g_warning("get_is_last_row(): iter is not equal to itself");
-  }
-    
+  //TODO: Avoid this. iter::operator() might not work properly with our custom tree model.
   return iter == get_last_row();
 }
 
@@ -1420,25 +1414,19 @@ void DbAddDel::set_value_key(const Gtk::TreeModel::iterator& iter, const Gnome::
 
 bool DbAddDel::get_is_placeholder_row(const Gtk::TreeModel::iterator& iter) const
 {
-  g_warning("DbAddDel::get_is_placeholder_row()");
+  //g_warning("DbAddDel::get_is_placeholder_row()");
 
   if(!get_is_last_row(iter))
   {
-    g_warning("  DbAddDel::get_is_placeholder_row(): false: !is_last_row");
-
     return false;
   }
 
   if(iter == m_refListStore->children().end())
   {
-    g_warning("  DbAddDel::get_is_placeholder_row(): false: is_end");
-
     return false;
   }
 
-  g_warning("  DbAddDel::get_is_placeholder_row(): calling model");
-
-  return m_refListStore->get_is_placeholder(iter);
+  return  m_refListStore->get_is_placeholder(iter);
   //Gtk::TreeModel::Row row = *iter;
   //return row[*m_modelcolumn_placeholder];
 }
@@ -1501,6 +1489,10 @@ void DbAddDel::treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gt
     {
       //TODO: Maybe we should have custom cellrenderers for time, date, and numbers.
       Gtk::CellRendererText* pDerived = dynamic_cast<Gtk::CellRendererText*>(renderer);
+      
+      Glib::ustring debugtext = GlomConversions::get_text_for_gda_value(column_info.m_field.get_glom_type(), value);
+      g_warning("rendering value as %s", debugtext.c_str());
+      
       pDerived->property_text() = GlomConversions::get_text_for_gda_value(column_info.m_field.get_glom_type(), value);
   
       break;
