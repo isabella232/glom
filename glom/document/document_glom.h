@@ -47,7 +47,7 @@ public:
   virtual Glib::ustring get_connection_database();
 
   typedef std::vector<Relationship> type_vecRelationships;
-  virtual type_vecRelationships get_relationships(const Glib::ustring& strTableName);
+  virtual type_vecRelationships get_relationships(const Glib::ustring& strTableName) const;
   virtual void set_relationships(const Glib::ustring& strTableName, type_vecRelationships vecRelationships);
 
   virtual bool get_relationship(const Glib::ustring& table_name, const Glib::ustring& relationship_name, Relationship& relationship) const;

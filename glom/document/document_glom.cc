@@ -121,14 +121,14 @@ bool Document_Glom::get_relationship(const Glib::ustring& table_name, const Glib
 }
 
   
-Document_Glom::type_vecRelationships Document_Glom::get_relationships(const Glib::ustring& strTableName)
+Document_Glom::type_vecRelationships Document_Glom::get_relationships(const Glib::ustring& strTableName) const
 {
   type_vecRelationships vecResult;
 
-  xmlpp::Element* nodeTable = get_node_table(strTableName);
+  const xmlpp::Element* nodeTable = get_node_table(strTableName);
   if(nodeTable)
   {
-    xmlpp::Element* nodeRelationships = get_node_child_named_with_add(nodeTable, "relationships");
+    const xmlpp::Element* nodeRelationships = get_node_child_named(nodeTable, "relationships");
     if(nodeRelationships)
     {
       xmlpp::Node::NodeList listNodes = nodeRelationships->get_children();

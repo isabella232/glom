@@ -42,11 +42,6 @@ public:
   typedef std::map<Gnome::Gda::ValueType, Glib::ustring> type_map_valuetypes;
   static type_map_valuetypes get_field_type_names();
 
-  static type_vecFields get_fields_for_table_from_database(const Glib::ustring& table_name);
-
-  /** Gets the fields from the database, and adds any missing information by looking in the document.
-  */
-  type_vecFields get_fields_for_table(const Glib::ustring& table_name) const;
 
   Field get_fields_for_table_one_field(const Glib::ustring& table_name, const Glib::ustring& field_name) const;      
 

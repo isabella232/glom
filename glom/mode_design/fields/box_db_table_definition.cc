@@ -166,7 +166,11 @@ void Box_DB_Table_Definition::on_AddDel_add(const Gtk::TreeModel::iterator& row)
 
 void Box_DB_Table_Definition::on_AddDel_delete(const Gtk::TreeModel::iterator& rowStart, const Gtk::TreeModel::iterator&  rowEnd)
 {
-  for(Gtk::TreeModel::iterator iter = rowStart; iter != rowEnd; ++iter)
+  Gtk::TreeModel::iterator iterAfterEnd = rowEnd;
+  if(iterAfterEnd != m_AddDel.get_model()->children().end())
+    ++iterAfterEnd;
+    
+  for(Gtk::TreeModel::iterator iter = rowStart; iter != iterAfterEnd; ++iter)
   {
     Glib::ustring strName = m_AddDel.get_value_key(iter);
     if(!strName.empty())
@@ -175,6 +179,7 @@ void Box_DB_Table_Definition::on_AddDel_delete(const Gtk::TreeModel::iterator& r
     }
   }
 
+  fill_fields();
   fill_from_database();
 }
 

@@ -54,6 +54,8 @@ public:
   virtual void load_from_document(); //View override
 
   typedef std::vector< Field > type_vecFields;
+
+  static type_vecFields get_fields_for_table_from_database(const Glib::ustring& table_name);
     
 protected:
   typedef std::vector<Glib::ustring> type_vecStrings;
@@ -70,7 +72,7 @@ protected:
   guint util_decimal_from_string(const Glib::ustring& str);
 
   static type_vecStrings util_vecStrings_from_Fields(const type_vecFields& fields);
-  static type_vecFields get_fields_for_table_from_database(const Glib::ustring& table_name);
+
     
   virtual void handle_error(const std::exception& ex); //TODO_port: This is probably useless now.
   virtual void handle_error();

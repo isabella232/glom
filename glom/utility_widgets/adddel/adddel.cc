@@ -815,6 +815,10 @@ guint AddDel::add_column(const Field& field, AddDelColumnInfo::enumStyles style,
   column_info.m_editable = editable;
   column_info.m_visible = visible;
 
+  //Make it non-editable if it is auto-generated:
+  if(field.get_field_info().get_auto_increment())
+    column_info.m_editable = false;
+
   return add_column(column_info);
 }
   

@@ -75,6 +75,7 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
     Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_design");
 
     refXml->get_widget_derived("window_design", m_pDialog_Fields);
+    m_pDialog_Fields->signal_hide().connect( sigc::mem_fun(*this, &Frame_Glom::on_developer_dialog_hide));
   }
   catch(const Gnome::Glade::XmlError& ex)
   {
@@ -87,6 +88,7 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
 
     refXml->get_widget_derived("window_design", m_pDialog_Relationships);
     m_pDialog_Relationships->set_title("Relationships");
+    m_pDialog_Relationships->signal_hide().connect( sigc::mem_fun(*this, &Frame_Glom::on_developer_dialog_hide));
   }
   catch(const Gnome::Glade::XmlError& ex)
   {
@@ -212,7 +214,7 @@ bool Frame_Glom::set_mode(enumModes mode)
 void Frame_Glom::alert_no_table()
 {
   //Ask user to choose a table first:
-  show_ok_dialog(gettext("You must choose a database table first.\n Use the Navigation menu, or load a previous document."));
+  show_ok_dialog(gettext("No database chosen"), gettext("You must choose a database table first.\n Use the Navigation menu, or load a previous document."));
 }
 
 void Frame_Glom::show_table(const Glib::ustring& strTableName)
@@ -345,7 +347,7 @@ void Frame_Glom::do_menu_Navigate_Table(bool open_default)
 {
   if(get_document()->get_connection_database().size() == 0)
   {
-    show_ok_dialog(gettext("You must choose a database first.\n Use the Navigation|Database menu item, or load a previous document."));
+    show_ok_dialog(gettext("No database chosen"), gettext("You must choose a database first.\n Use the Navigation|Database menu item, or load a previous document."));
   }
   else
   {
@@ -400,19 +402,25 @@ Gtk::Window* Frame_Glom::get_app_window()
 
 }
 
-void Frame_Glom::show_ok_dialog(const Glib::ustring& strMessage)
+void Frame_Glom::show_ok_dialog(const Glib::ustring& title, const Glib::ustring& message)
 {
-  //I wrote a method for this so that I wouldn't have to repeat this code.
-  //However, not all of this code is really necessary,
-  //because get_app_window() should always succeed.
+  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_information");
+  Gtk::Dialog* dialog = 0;
+  refXml->get_widget("dialog_information", dialog);
 
-  Gtk::MessageDialog dialog(strMessage);
+  Gtk::Label* label = 0;
+  refXml->get_widget("label_text", label);
+
+  Glib::ustring text = "<span weight=\"bold\" size=\"larger\">" + title + "</span>\n\n" + message;
+  label->set_text(text);
+  label->set_use_markup();
 
   Gtk::Window* pWindowApp = get_app_window();
   if(pWindowApp)
-   dialog.set_transient_for(*pWindowApp);
+   dialog->set_transient_for(*pWindowApp);
 
-  dialog.run();
+  dialog->run();
+  delete dialog;
 }
 
 void Frame_Glom::on_Notebook_Find(Glib::ustring strWhereClause)
@@ -469,7 +477,7 @@ void Frame_Glom::update_table_in_document_from_database()
   typedef Box_DB_Table::type_vecFields type_vecFields;
 
   //Get the fields information from the database:
-  type_vecFields fieldsDatabase = Box_DB_Table::get_fields_for_table_from_database(m_strTableName);
+  Base_DB::type_vecFields fieldsDatabase = Base_DB::get_fields_for_table_from_database(m_strTableName);
 
   Document_Glom* pDoc = dynamic_cast<const Document_Glom*>(get_document());
   if(pDoc)
@@ -480,7 +488,7 @@ void Frame_Glom::update_table_in_document_from_database()
     //and add to, or update Document's list of fields:
     type_vecFields fieldsDocument = pDoc->get_table_fields(m_strTableName);
     
-    for(type_vecFields::const_iterator iter = fieldsDatabase.begin(); iter != fieldsDatabase.end(); ++iter)
+    for(Base_DB::type_vecFields::const_iterator iter = fieldsDatabase.begin(); iter != fieldsDatabase.end(); ++iter)
     {
       const Field& field_database = *iter;
 
@@ -606,5 +614,12 @@ void Frame_Glom::on_menu_developer_layout()
       notebook_current->do_menu_developer_layout();
   }
 }
+
+void Frame_Glom::on_developer_dialog_hide()
+{
+  //The dababase structure might have changed, so refresh the data view:
+  show_table(m_strTableName);
+}
+
 
 

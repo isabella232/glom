@@ -371,6 +371,8 @@ Base_DB::type_vecFields Base_DB::get_fields_for_table(const Glib::ustring& table
     return fieldsDatabase; //This should never happen.
   else
   {
+    type_vecFields result;
+
     type_vecFields fieldsDocument = pDoc->get_table_fields(table_name);
 
     //Look at each field in the database:
@@ -382,8 +384,7 @@ Base_DB::type_vecFields Base_DB::get_fields_for_table(const Glib::ustring& table
       //This is in the document as well, but it _might_ have changed.
       type_vecFields::const_iterator iterFindDatabase = std::find_if(fieldsDatabase.begin(), fieldsDatabase.end(), predicate_FieldHasName<Field>(field_name));
 
-      //TODO: What shall we do about fields that don't exist in the database anymore?
-      if(iterFindDatabase != fieldsDatabase.end() )
+      if(iterFindDatabase != fieldsDatabase.end() ) //Ignore fields that don't exist in the database anymore.
       {
         Gnome::Gda::FieldAttributes field_info_document = iter->get_field_info();
 
@@ -400,6 +401,8 @@ Base_DB::type_vecFields Base_DB::get_fields_for_table(const Glib::ustring& table
         field_info.set_default_value( field_info_document.get_default_value() );
 
         iter->set_field_info(field_info);
+
+        result.push_back(*iter);
       }
     }
 
@@ -407,16 +410,22 @@ Base_DB::type_vecFields Base_DB::get_fields_for_table(const Glib::ustring& table
     for(type_vecFields::iterator iter = fieldsDatabase.begin(); iter != fieldsDatabase.end(); ++iter)
     {
       Glib::ustring field_name = iter->get_name();
-
+      g_warning("debug: database field_name = %s", field_name.c_str());
+      
        //Look in the result so far:
-       type_vecFields::const_iterator iterFindDatabase = std::find_if(fieldsDocument.begin(), fieldsDocument.end(), predicate_FieldHasName<Field>(field_name));
+       type_vecFields::const_iterator iterFind = std::find_if(result.begin(), result.end(), predicate_FieldHasName<Field>(field_name));
 
        //Add it if it is not there:
-       if(iterFindDatabase == fieldsDocument.end() )
-         fieldsDocument.push_back(*iter);
+       if(iterFind == result.end() )
+       {
+         g_warning(" adding");
+         result.push_back(*iter);
+       }
+       else
+         g_warning(" not addiing");
     }
 
-    return fieldsDocument;
+    return result;
   }
 
 }

@@ -36,10 +36,6 @@
 #include "mode_design/dialog_fields.h"
 #include "mode_design/dialog_relationships.h"
 
-/**
-  *@author Murray Cumming
-  */
-
 class Frame_Glom :
   public PlaceHolder,
   public Bakery::View_Composite<Document_Glom>
@@ -67,6 +63,8 @@ public:
   virtual void on_menu_developer_users();     
   virtual void on_menu_developer_layout();
 
+  virtual void on_developer_dialog_hide();
+
   virtual void set_document(Document_Glom* pDocument); //View override
   virtual void load_from_document(); //View override
 
@@ -93,7 +91,7 @@ protected:
   virtual Gtk::Window* get_app_window();
   virtual const Gtk::Window* get_app_window() const;
   
-  virtual void show_ok_dialog(const Glib::ustring& strMessage);
+  virtual void show_ok_dialog(const Glib::ustring& title, const Glib::ustring& message);
   virtual void alert_no_table();
   
   //Signal handlers:

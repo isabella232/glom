@@ -1,5 +1,20 @@
 2004-06-17  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/utility_widgets/adddel.cc add_column(Field): Make the column 
+	non-editable if it is an auto-increment field, because the user should 
+	never change or create those values.
+	* glom/glom.glade: Create a HIG information dialog. Use it in 
+	glom/frame_glom.cc show_ok_dialog().
+	* glom/mode_design/box_db_tabledefinition.cc: on_AddDel_del(): Correct 
+	for loop, so that we actually delete the field.
+	* glom/base_db: get_fields_for_table(): Ignore any fields that are no 
+	longer in the database. Among other things, this makes the field 
+	definition window update correctly after deleting a field.
+	* glom/frame_glom.cc: Update the data view when the fields window 
+	is closed, because the structure might have changed.
+
+2004-06-17  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/document/document_glom.[h|cc]: Added get_default_table().
 	* glom/frame_glom.cc: on_Box_Databases_selected(): open the default 
 	table instead of showing the list of tables, if there is a default 

@@ -257,6 +257,34 @@ guint Box_Data::generate_next_auto_increment(const Glib::ustring& table_name, co
   return result;
 }
 
+Box_Data::type_vecRelationships Box_Data::get_relationships_triggered_by(const Glib::ustring& field_name) const
+{
+  type_vecRelationships result;
+
+  //Get all relationships for which the from_field is the specified field:
+  type_vecRelationships relationships = get_document()->get_relationships(m_strTableName);
+  for(type_vecRelationships::iterator iter = relationships.begin(); iter != relationships.end();  ++iter)
+  {
+    if(iter->get_from_field() == field_name)
+      result.push_back(*iter);
+  }
+  
+  return result;
+}
+
+Box_Data::type_vecFields Box_Data::get_lookup_fields(const Glib::ustring& relationship_name) const
+{
+  type_vecFields result;
+  
+  for(type_vecFields::const_iterator iter = m_Fields.begin(); iter != m_Fields.end();  ++iter)
+  {
+    if(iter->get_lookup_relationship() == relationship_name)
+      result.push_back(*iter);
+  }
+
+  return result;
+}
+
 
   
   

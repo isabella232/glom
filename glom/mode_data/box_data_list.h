@@ -23,10 +23,6 @@
 
 #include "box_data.h"
 
-/**
-  *@author Murray Cumming
-  */
-
 class Box_Data_List : public Box_Data
 {
 public: 

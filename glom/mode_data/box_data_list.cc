@@ -294,18 +294,32 @@ void Box_Data_List::on_AddDel_user_changed(const Gtk::TreeModel::iterator& row, 
           const guint changed_field_col_index = col - m_first_col;
           
           const Glib::ustring strPrimaryKey_Name = field_primary_key.get_name();
-          const Glib::ustring strFieldName = m_Fields[changed_field_col_index].get_name();
+          const Field field = m_Fields[changed_field_col_index];
+          const Glib::ustring strFieldName = field.get_name();
 
           const Gnome::Gda::Value strFieldValue = m_AddDel.get_value_as_value(row, col);
 
           Glib::ustring strQuery = "UPDATE " + m_strTableName;
-          strQuery += " SET " + strFieldName + " = " + m_Fields[changed_field_col_index].sql(strFieldValue);
+          strQuery += " SET " + strFieldName + " = " + field.sql(strFieldValue);
 
           strQuery += " WHERE " + strPrimaryKey_Name + " = " + field_primary_key.sql(strPrimaryKeyValue);
-          bool bTest = Query_execute(strQuery);
+          /* bool bTest = */ Query_execute(strQuery);  //TODO: Handle errors
 
-          if(!bTest)
-            fill_from_database(); //Replace with correct values. //TODO: Just replace this one row
+          //Get values for lookup fields, if this field triggers those relationships:
+          type_vecRelationships triggered_relationships = get_relationships_triggered_by(strFieldName);
+          for(type_vecRelationships::const_iterator iter = triggered_relationships.begin(); iter != triggered_relationships.end(); ++iter)
+          {
+            type_vecFields lookup_fields = get_lookup_fields(iter->get_name());
+            for(type_vecFields::const_iterator iterFields = lookup_fields.begin(); iterFields != lookup_fields.end(); ++iterFields)
+            {
+              g_warning("Triggered field: %s", iterFields->get_name().c_str());
+            }
+            
+          }
+
+          
+          //if(!bTest)
+          //  fill_from_database(); //Replace with correct values. //TODO: Just replace this one row
         }
       }
     }

@@ -56,6 +56,11 @@ protected:
   type_vecFields get_fields_to_show() const;
   type_vecFields get_table_fields_to_show(const Glib::ustring& table_name) const;
 
+  typedef Document_Glom::type_vecRelationships type_vecRelationships;
+  type_vecRelationships get_relationships_triggered_by(const Glib::ustring& field_name) const;
+
+  type_vecFields get_lookup_fields(const Glib::ustring& relationship_name) const;
+
   static Glib::ustring value_to_string(const Gnome::Gda::Value& value);
   
   virtual bool record_new_from_entered(); //New record with all entered field values.
