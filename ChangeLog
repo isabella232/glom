@@ -1,3 +1,7 @@
+2004-08-20  Francisco Javier F. Serrador  <serrador@cvs.gnome.org>
+
+	* configure.in: Added es to ALL_LINGUAS
+
 2004-08-11  Ankit Patel <ankit@redhat.com>
 
 	* configure.in : Added "gu" to ALL_LINGUAS.
