@@ -35,7 +35,6 @@ void FlowTableWithFields::add_group(const Glib::ustring& /* group_name */, const
   if(true)//!fields.empty() && !group_name.empty())
   {
     Gtk::Frame* frame = Gtk::manage( new Gtk::Frame );
-
    
     if(!group_title.empty())
     {
@@ -75,6 +74,9 @@ void FlowTableWithFields::add_group(const Glib::ustring& /* group_name */, const
     add(*frame);
 
     m_sub_flow_tables.push_back(flow_table);
+
+    //Connect signal:
+    flow_table->signal_field_edited().connect( sigc::mem_fun(*this, &FlowTableWithFields::on_entry_edited) );
   }
 }
   

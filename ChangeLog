@@ -1,5 +1,11 @@
 2004-07-02  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/utility_widgets/flowtablewithfields: Handle field_edited 
+	signal of sub-flowtables so that glom responds to editing of a field 
+	in a group on the Details view.
+
+2004-07-02  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/mode_data/box_data.[h|cc] and derived classes: Change 
 	get_Entered_Field to get_entered_field_data() which takes a Field and 
 	returns a Gnome::Gda::Value. This makes Find mode work for the Details 
