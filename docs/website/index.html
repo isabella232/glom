@@ -25,7 +25,7 @@ Power through simplicity.</h2></center>
   <p>Glom-specific data such as the relationship definitions is saved in the
   Glom document. Glom re-connects to the database server when it loads a previous
   Glom document. The document is in XML format.</p>
-  <p>Glom uses the <a href="http://www.postgres.org/">PostgresSQL</a> database backend but it can not edit databases that it did not create, because it uses only a simple subset of Postgres functionality.</p>
+  <p>Glom uses the <a href="http://www.postgres.org/">PostgreSQL</a> database backend but it can not edit databases that it did not create, because it uses only a simple subset of Postgres functionality.</p>
 
   <p>Here are some <a href="screenshots/">screenshots</a>, and <a href="http://cvs.gnome.org/viewcvs/*checkout*/glom/NEWS">news</a> about recent changes.</p>
   <p>Development is at an early stage, so it's not a complete database solution yet. The
@@ -54,13 +54,13 @@ Power through simplicity.</h2></center>
 <h2>Implementation</h2>
 
   <p>Glom is built using gtkmm, the C++ wrapper for GTK+. It uses the Document/View model from Bakery, and its Document_XML subclass, which uses the libxml++ C++ XML parser. It uses Python for custom field calculations.
-  <p>PostgresSQL databases are accessed via libgda.</p>
+  <p>PostgreSQL databases are accessed via libgda.</p>
 
 <h2><a name="RequiredLibraries"></a>Required Libraries</h2>
 <p>
 <ul>
   <li><a href="http://bakery.sourceforge.net/">Bakery 2.4</a> (requires libxml++, gtkmm, libglademm, gconfmm, and gnome-vfsmm)</li> 
-  <li><a href="http://www.gtkmm.org/">libgdamm 2</a> (using <a href="http://www.postgres.org/">PostgresSQL</a>) </li>
+  <li><a href="http://www.gtkmm.org/">libgdamm 2</a> (using <a href="http://www.postgres.org/">PostgreSQL</a>) </li>
   <li><a href="http://www.python.org/">Python >=2.2</a></li>
   </ul>
 </p>
