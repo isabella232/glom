@@ -481,7 +481,6 @@ void Document_Glom::change_table_name(const Glib::ustring& strTableNameOld, cons
   xmlpp::Element* nodeRoot = get_node_document();
   if(nodeRoot)
   {
-
     //Get the <tables> nodes:
     xmlpp::Node::NodeList listNodes = nodeRoot->get_children("table");
     for(xmlpp::Node::NodeList::const_iterator iter = listNodes.begin(); iter != listNodes.end(); iter++)

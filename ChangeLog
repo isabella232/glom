@@ -1,3 +1,11 @@
+2004-07-01  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/navigation/box_db_tables.cc: on_AddDel_changed(): Update the 
+	document properly when a table is renamed, so that glom does not 
+	complain that it knows nothing about the table. Also, update the 
+	AddDel with the new table name as they key, so that it does not try 
+	to operate on the old table name.
+
 0.8.4:
 
 2004-06-30  Murray Cumming  <murrayc@murrayc.com>

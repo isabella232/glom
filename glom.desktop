@@ -1,8 +1,10 @@
 [Desktop Entry]
+Encoding=UTF-8
 Name=Glom
 Name[de]=Glom
 Comment=A Database GUI environment.
 Comment[de]=Eine GUI fuer Datenbanken.
 Exec=glom
-Terminal=0
+Terminal=false
 Type=Application
+Categories=Application;GNOME;Office;

@@ -336,16 +336,28 @@ void Box_Tables::on_AddDel_changed(const Gtk::TreeModel::iterator& row, guint co
         //Rename the table:
         if(iButtonClicked == Gtk::RESPONSE_OK)
         {
-          Query_execute( "ALTER TABLE " + table_name + " RENAME TO " + table_name_new);
-          set_modified();
-          //fill_from_database(); //We should not modify the model structure in a cellrenderer signal handler.
+          bool test = Query_execute( "ALTER TABLE " + table_name + " RENAME TO " + table_name_new);
+          if(test)
+          {
+            //Change the AddDel item's key:
+            m_AddDel.set_value_key(row, table_name_new);
+            
+            set_modified();
+
+            //Tell the document that this table's name has changed:
+            Document_Glom* document = get_document();
+            if(document)
+              document->change_table_name(table_name, table_name_new);
+
+            //fill_from_database(); //We should not modify the model structure in a cellrenderer signal handler.
+          }
         }
       }
     }
   }
 }
 
-void  Box_Tables::on_userlevel_changed(AppState::userlevels /* userlevel */)
+void Box_Tables::on_userlevel_changed(AppState::userlevels /* userlevel */)
 {
   fill_from_database();
 }

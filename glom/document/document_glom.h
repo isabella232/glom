@@ -78,9 +78,10 @@ public:
   virtual void set_data_layout_details(const Glib::ustring& strTableName, const type_mapFieldSequence& sequence);
   */
         
-  //When a field name is changed, change it in the relationships and fields data:
+  ///When a field name is changed, change it in the relationships and fields data:
   virtual void change_field_name(const Glib::ustring& strTableName, const Glib::ustring& strFieldNameOld, const Glib::ustring& strFieldNameNew);
-  //When a table name is changed, change it in the relationships and tables data:
+
+  ///When a table name is changed, change it in the relationships and tables data:
   virtual void change_table_name(const Glib::ustring& strTableNameOld, const Glib::ustring& strTableNameNew);
 
   typedef std::list<TableInfo> type_listTableInfo;
