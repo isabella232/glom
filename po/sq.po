@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glom.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-07-12 15:16+0200\n"
+"POT-Creation-Date: 2004-07-28 03:33+0200\n"
 "PO-Revision-Date: 2004-07-10 20:10+0200\n"
 "Last-Translator: Laurent Dhima <laurenti@alblinux.net>\n"
 "Language-Team: Albanian <gnome-albanian-perkthyesit@lists.sourceforge.net>\n"
@@ -188,9 +188,10 @@ msgstr "Fjalëkalimi"
 msgid "Primary Key"
 msgstr "Kyçi primar"
 
+#. GRUT modified this item
 #: glom/glom.glade.h:47
 msgid "Relationship"
-msgstr "Relationship"
+msgstr "Marrëdhënie"
 
 #: glom/glom.glade.h:48
 msgid "Revert"
@@ -200,9 +201,10 @@ msgstr "Rikthe"
 msgid "Show hidden tables"
 msgstr "Shfaq tabelat e fshehura"
 
+#. GRUT modified this item
 #: glom/glom.glade.h:50
 msgid "Test"
-msgstr ""
+msgstr "Prova"
 
 #: glom/glom.glade.h:51
 msgid ""
@@ -233,3 +235,4 @@ msgstr "shembull formatimi të dhënash"
 #: glom/glom.glade.h:57
 msgid "table name"
 msgstr "emri i tabelës"
+
