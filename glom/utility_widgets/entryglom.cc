@@ -21,6 +21,7 @@
 #include "entryglom.h"
 #include "../data_structure/glomconversions.h"
 #include <gtkmm/messagedialog.h>
+#include "../dialog_invalid_data.h"
 #include <sstream> //For stringstream
 
 #include <locale>     // for locale, time_put
@@ -48,13 +49,14 @@ void EntryGlom::check_for_change()
     }
     else
     {
-      Gtk::MessageDialog dialog(gettext("The data has an incorrect format")); //TODO: Improve this warning. Mention the field name and what format it should have.  Offer "try again" or "revert"
-
-      Gtk::Window* pWindowApp = dynamic_cast<Gtk::Window*>(get_toplevel());
-      if(pWindowApp)
-        dialog.set_transient_for(*pWindowApp);
-
-      dialog.run();
+      //Tell the user and offer to revert or try again:
+      bool revert = glom_show_dialog_invalid_date(m_glom_type);
+      if(revert)
+      {
+        set_text(m_old_text);
+      }
+      else
+        grab_focus(); //Force the user back into the same field, so that the field can be checked again and eventually corrected or reverted.
     }
   }
 }

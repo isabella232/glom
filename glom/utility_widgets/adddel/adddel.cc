@@ -24,6 +24,7 @@
 #include "cellrendererlist.h"
 #include "treeviewcolumn_glom.h"
 #include "../../data_structure/glomconversions.h"
+#include "../../dialog_invalid_data.h"
 #include <iostream> //For debug output.
 
 #include "eggcolumnchooser/eggcolumnchooserdialog.h"
@@ -688,7 +689,7 @@ void AddDel::construct_specified_columns()
 
             //Connect to its signal:
             pCellRenderer->signal_edited().connect(
-              sigc::bind( sigc::mem_fun(*this, &AddDel::on_treeview_cell_edited), model_column_index ) );
+              sigc::bind( sigc::mem_fun(*this, &AddDel::on_treeview_cell_edited), model_column_index) );
           }
         }
         else
@@ -1162,6 +1163,7 @@ void AddDel::on_treeview_cell_edited_bool(const Glib::ustring& path_string, int 
     else if(bIsChange)
     {
       //Existing item changed:
+
       m_signal_user_changed.emit(row_number, model_column_index);
     }
     
@@ -1228,8 +1230,45 @@ void AddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const Gli
       //Check that it has really changed - get the last value.
       if(new_text != strTextOld)
       {
+        bool do_signal = true;
+        
+        const Field::glom_field_type field_type = m_ColumnTypes[model_column_index].m_field_type;
+        if(field_type != Field::TYPE_INVALID) //If a field type was specified for this column.
+        {
+          //Make sure that the entered data is suitable for this field type:
+          bool success = false;
+          Glib::ustring text = get_value(row_number, model_column_index);
+          Gnome::Gda::Value value = GlomConversions::parse_value(field_type, new_text, success);
+          if(!success)
+          {
+             //Tell the user and offer to revert or try again:
+             bool revert = glom_show_dialog_invalid_date(field_type);
+             if(revert)
+             {
+               //Revert the data:
+               row.set_value(model_column_index, strTextOld);
+             }
+             else
+             {
+               //Reactivate the cell so that the data can be corrected.
+
+                Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = m_TreeView.get_selection();
+                if(refTreeSelection)
+                {
+                  refTreeSelection->select(row); //TODO: This does not seem to work.
+        
+                 Gtk::TreeModel::Path path = m_refListStore->get_path(row);
+                 Gtk::TreeView::Column* pColumn = m_TreeView.get_column(model_column_index); //TODO: This might the the view column index, not the model column index.
+                 m_TreeView.set_cursor(path, *pColumn, true /* start_editing */); //This highlights the cell, but does not seem to actually start the editing.
+               }
+             }
+
+             do_signal = false;
+          }
+        }
+
+        if(do_signal)
           m_signal_user_changed.emit(row_number, model_column_index);
-          //new_text = "";
       }
     }
   }

@@ -19,6 +19,7 @@ glom_SOURCES = main.cc \
                frame_glom.h frame_glom.cc \
                notebook_glom.h notebook_glom.cc \
                connectionpool.h connectionpool.cc \
+               dialog_invalid_data.h dialog_invalid_data.cc \
                sharedptr.h
 
 glom_LDADD = document/libdocument.a \

@@ -1,5 +1,14 @@
 2004-06-12  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/dialog_data_invalid.[h|cc}, glom.glade: New dialog to show 
+	when the user enters incorrect data, with advice, and offer to revert.
+	glom/utility_widgets/entryglom.cc: check_for_changes(): Show the new 
+	dialog, and put the focus back in the entry if the user tries again.
+	* glom/utility_widgets/adddel/adddel.cc: on_treeview_cell_edited(): 
+	Do the same, though the cell is obviously not reactivated properly.
+	
+2004-06-12  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/utility_widgets/entryglom.cc: check_for_change(): Complain 
 	about unparseable data (such as dates and times) instead of sending 
 	garbage to the database. This dialog should be improved (see comments) 
