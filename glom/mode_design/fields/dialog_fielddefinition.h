@@ -21,10 +21,10 @@
 #ifndef DIALOG_FIELDDEFINITION_H
 #define DIALOG_FIELDDEFINITION_H
 
+#include <gtkmm.h>
 #include "combo_textglade.h"
 #include "combo_lookup_relationship.h"
 #include "combo_fieldtype.h"
-#include <gtkmm.h>
 #include "../../utility_widgets/table_columns.h"
 #include "../../utility_widgets/entry_numerical.h"
 #include "../../utility_widgets/dialog_properties.h"

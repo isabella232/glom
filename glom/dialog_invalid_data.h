@@ -21,10 +21,10 @@
 #ifndef GLOM_DIALOG_INVALIDDATA_H
 #define GLOM_DIALOG_INVALIDDATA_H
 
-#include <libglademm.h>
 #include <gtkmm/dialog.h>
 #include <gtkmm/entry.h>
 #include "data_structure/field.h"
+#include <libglademm.h>
 
 /** Show the dialog.
  * @result true if the data in the field should be reverted.
