@@ -22,8 +22,6 @@
 #include "application.h"
 
 Notebook_Glom::Notebook_Glom()
-: m_special_menus_merge_id(0),
-  m_special_menus_actiongroup_added(false)
 {
   m_uiPreviousPage = 0;
 
@@ -103,7 +101,7 @@ Gtk::Window* Notebook_Glom::get_app_window()
 
 void Notebook_Glom::show_hint()
 {
-  gint iPageCurrent = get_current_page();
+  int iPageCurrent = get_current_page();
 
   Gtk::Widget* pChild  = get_nth_page(iPageCurrent);
   if(pChild)
@@ -114,34 +112,7 @@ void Notebook_Glom::show_hint()
   }
 }
 
-void Notebook_Glom::merge_special_menus(const Glib::RefPtr<Gtk::UIManager>& ui_manager)
+void Notebook_Glom::do_menu_developer_layout()
 {
-  if(m_actiongroup_special_menus)
-  {
-    if(!m_special_menus_actiongroup_added)
-    {
-      //Now we know the ui_manager, so we can add the actiongroup.
-      //It is not actually shown until the ui string is merged in.
-      ui_manager->insert_action_group(m_actiongroup_special_menus);
-      m_special_menus_actiongroup_added = true;
-    }
-
-     try
-     {
-       m_special_menus_merge_id = ui_manager->add_ui_from_string(m_special_menus_ui_string);
-     }
-     catch(const Glib::Error& ex)
-     {
-       std::cerr << "building menus failed: " <<  ex.what();
-     }
-  }
+  //Override this.
 }
-
-void Notebook_Glom::unmerge_special_menus(const Glib::RefPtr<Gtk::UIManager>& ui_manager)
-{
-  if(m_actiongroup_special_menus)
-  {
-    ui_manager->remove_ui(m_special_menus_merge_id);
-  }
-}
-

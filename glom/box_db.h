@@ -41,6 +41,7 @@ class Box_DB :
 {
 public: 
   Box_DB();
+  Box_DB(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
 
   ///For use with libglademm's get_widget_derived():
   Box_DB(BaseObjectType* cobject);

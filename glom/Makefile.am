@@ -11,6 +11,7 @@ bin_PROGRAMS = glom
 glom_SOURCES = main.cc \
                application.cc application.h \
                appstate.cc appstate.h \
+               base_db.h base_db.cc \
                box_db.h box_db.cc \
                box_db_table.h box_db_table.cc \
                dialog_glom.h dialog_glom.cc \

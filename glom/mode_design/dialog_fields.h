@@ -18,28 +18,23 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef DIALOG_GLOM_H
-#define DIALOG_GLOM_H
+#ifndef DIALOG_FIELDS_H
+#define DIALOG_FIELDS_H
 
-#include "box_db.h"
-#include <gtkmm/dialog.h>
-#include <gtkmm/button.h>
+#include "dialog_design.h"
+#include "fields/box_db_table_definition.h"
 
-
-class Dialog_Glom :
-  public Gtk::Dialog
+class Dialog_Fields : public Dialog_Design
 {
-public: 
-  Dialog_Glom(Box_DB* pBox);
-  virtual ~Dialog_Glom();
+public:
+  Dialog_Fields(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  virtual ~Dialog_Fields();
 
-  //Signal handlers:
-  virtual void on_Box_cancelled();
-
+  virtual void initialize(const Glib::ustring& strDatabaseName, const Glib::ustring& strTableName);
+    
 protected:
 
-  //Member widgets:
-  Box_DB* m_pBox;
+  Box_DB_Table_Definition* m_box;
 };
 
-#endif
+#endif //DIALOG_FIELDS_H

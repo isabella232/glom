@@ -31,8 +31,11 @@ class Box_DB_Table_Relationships : public Box_DB_Table
 {
 public: 
   Box_DB_Table_Relationships();
+  Box_DB_Table_Relationships(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
   virtual ~Box_DB_Table_Relationships();
 
+  void init(); //avoid duplication in constructors.
+  
   virtual void save_to_document(); //override.
 
 protected:

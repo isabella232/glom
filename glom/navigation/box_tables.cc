@@ -137,7 +137,7 @@ void Box_Tables::fill_from_database()
 
           m_AddDel.set_value(uiRow, m_colHidden, hidden);
           m_AddDel.set_value(uiRow, m_colTitle, title);
-          m_AddDel.set_value(uiRow, m_colTitle, is_default);
+          m_AddDel.set_value(uiRow, m_colDefault, is_default);
         }
     }
   }

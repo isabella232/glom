@@ -31,6 +31,7 @@ class Box_DB_Table : public Box_DB
 {
 public: 
   Box_DB_Table();
+  Box_DB_Table(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
   virtual ~Box_DB_Table();
   
   virtual void initialize(const Glib::ustring& strDatabaseName, const Glib::ustring& strTableName, const Glib::ustring& strWhereClause = "");

@@ -21,7 +21,7 @@
 #ifndef GLOM_DIALOG_PROPERTIES_H
 #define GLOM_DIALOG_PROPERTIES_H
 
-#include <gtkmm.h>
+#include <gtkmm/window.h>
 #include "placeholder.h"
 
 /**

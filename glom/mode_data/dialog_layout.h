@@ -21,7 +21,7 @@
 #ifndef DIALOG_LAYOUT_H
 #define DIALOG_LAYOUT_H
 
-#include <gtkmm.h>
+#include <gtkmm/dialog.h>
 #include "../utility_widgets/dialog_properties.h"
 #include "../document/document_glom.h"
 #include "../box_db.h"

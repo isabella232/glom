@@ -38,14 +38,14 @@ public:
   virtual void initialize(const Glib::ustring& strDatabaseName, const Glib::ustring& strTableName, const Glib::ustring& strWhereClause = "");
 
   virtual void select_page_for_find_results(); //Details for 1, List for > 1.
+
+  virtual void do_menu_developer_layout(); //override
   
 protected:
 
   //Signal handlers:
   virtual void on_Details_user_requested_details(Glib::ustring strPrimaryKeyValue);
   virtual void on_Details_user_requested_related_details(Glib::ustring strTableName, Glib::ustring strPrimaryKeyValue);
-
-  virtual void on_menu_Developer_Layout();
 
   //Member widgets:
   Box_Data_List m_Box_List;

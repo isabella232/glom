@@ -18,31 +18,40 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef TABLE_COLUMNS_H
-#define TABLE_COLUMNS_H
+#include "dialog_fields.h"
+#include "../box_db_table.h"
+//#include <libgnome/gnome-i18n.h>
 
-#include "gtkmm/table.h"
-#include "alignment_justified.h"
-#include <vector>
 
-class Table_Columns : public Gtk::Table
+Dialog_Fields::Dialog_Fields(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
+: Dialog_Design(cobject, refGlade),
+  m_box(0)
 {
-public: 
-  Table_Columns();
-  virtual ~Table_Columns();
+  refGlade->get_widget_derived("vbox_placeholder", m_box);
+
+  m_label_frame->set_text( gettext("<b>Field Definitions</b>") );
+  m_label_frame->set_use_markup();
   
-  void set_column_justification(guint col, Gtk::Justification justification);
+  //Fill composite view:
+  add_view(m_box);
   
-  void add_row(Gtk::Widget& widgetA, Gtk::Widget& widgetB);
-  void add_row(const Glib::ustring& strText, Gtk::Widget& widgetB);
-  
-  void add_row(Gtk::Widget& widgetA); //Span 2 columns.
+  show_all_children();
+}
+
+Dialog_Fields::~Dialog_Fields()
+{
+}
+
+void Dialog_Fields::initialize(const Glib::ustring& strDatabaseName, const Glib::ustring& strTableName)
+{
+  if(m_box)
+  {
+    m_box->load_from_document();
+
+    Dialog_Design::initialize(strDatabaseName, strTableName);
     
-protected:
-  typedef std::vector<Gtk::Justification> type_vecJustification;
-  type_vecJustification m_vecJustification;
+    m_box->initialize(strDatabaseName, strTableName);
+  }
+}
 
-  guint m_uiNextRow;
-};
 
-#endif

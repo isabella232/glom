@@ -24,6 +24,17 @@
 
 Box_DB_Table_Definition::Box_DB_Table_Definition()
 {
+  init();
+}
+
+Box_DB_Table_Definition::Box_DB_Table_Definition(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
+: Box_DB_Table(cobject, refGlade)
+{
+  init();
+}
+
+void Box_DB_Table_Definition::init()
+{
   m_strHint = gettext("Click [Edit] to edit the field definition in more detail.\nUse the Mode menu to see Data or perform a Find.");
 
   Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_field_definition_edit");
@@ -35,7 +46,7 @@ Box_DB_Table_Definition::Box_DB_Table_Definition()
   m_AddDel.add_column(gettext("Name"));
 
   m_colTitle = m_AddDel.add_column(gettext("Title"));
-    
+
   m_colType = m_AddDel.add_column(gettext("Type"), AddDelColumnInfo::STYLE_Choices);
   m_AddDel.set_column_width(m_colType, 100); //TODO: Auto-size columns.
 

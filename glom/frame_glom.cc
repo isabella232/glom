@@ -31,7 +31,9 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
   m_pBox_Databases(0),
   m_pBox_Tables(0),
   m_pDialog_Databases(0),
-  m_pDialog_Tables(0)
+  m_pDialog_Tables(0),
+  m_pDialog_Fields(0),
+  m_pDialog_Relationships(0)
 
 {
   //Load widgets from glade file:
@@ -66,6 +68,28 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
   {
     std::cerr << ex.what() << std::endl;
   }
+
+  try
+  {
+    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_design");
+
+    refXml->get_widget_derived("window_design", m_pDialog_Fields);
+  }
+  catch(const Gnome::Glade::XmlError& ex)
+  {
+    std::cerr << ex.what() << std::endl;
+  }
+
+  try
+  {
+    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_design");
+
+    refXml->get_widget_derived("window_design", m_pDialog_Relationships);
+  }
+  catch(const Gnome::Glade::XmlError& ex)
+  {
+    std::cerr << ex.what() << std::endl;
+  }
   
 
   m_Mode = MODE_None;
@@ -85,9 +109,6 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
   m_pDialog_Tables->set_default_size(300, 400);
   m_pBox_Tables->show_all();
 
-   //m_Notebook_Data.set_border(6);
-  //m_Notebook_Design.set_border(6);
-
   //Connect signals:
   m_pBox_Databases->signal_selected.connect(sigc::mem_fun(*this, &Frame_Glom::on_Box_Databases_selected));
   m_pBox_Tables->signal_selected.connect(sigc::mem_fun(*this, &Frame_Glom::on_Box_Tables_selected));
@@ -99,7 +120,8 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
   //This means that set_document and load/save are delegated to these children:
   add_view(m_pBox_Databases);
   add_view(m_pBox_Tables);
-  add_view(&m_Notebook_Design); //Also a composite view.
+  add_view(m_pDialog_Fields); //Also a composite view.
+  add_view(m_pDialog_Relationships); //Also a composite view.
   add_view(&m_Notebook_Data); //Also a composite view.
 
   on_userlevel_changed(AppState::USERLEVEL_OPERATOR); //A default to show before a document is created or loaded.
@@ -158,8 +180,6 @@ void Frame_Glom::set_mode_widget(Gtk::Widget& widget)
     if(notebook_current)
     {
       m_pBox_Mode->remove();
-
-      notebook_current->unmerge_special_menus(ui_manager);
     }
 
     m_pBox_Mode->add(widget);
@@ -170,8 +190,6 @@ void Frame_Glom::set_mode_widget(Gtk::Widget& widget)
     if(pNotebook)
     {
       pNotebook->show_hint();
-
-      pNotebook->merge_special_menus(ui_manager);
     }
   }
 }
@@ -182,7 +200,7 @@ bool Frame_Glom::set_mode(enumModes mode)
 
   //Choose a default mode, if necessary:
   if(mode == MODE_None)
-    mode = MODE_Design;
+    mode = MODE_Data;
 
   m_Mode_Previous = m_Mode;
   m_Mode = mode;
@@ -217,13 +235,6 @@ void Frame_Glom::show_table(const Glib::ustring& strTableName)
     
     switch(m_Mode)
     {
-      case(MODE_Design):
-      {
-        strMode = gettext("Design");
-        m_Notebook_Design.initialize( m_pBox_Databases->get_databaseName(), m_strTableName);
-        set_mode_widget(m_Notebook_Design);
-        break;
-      }
       case(MODE_Data):
       {
         strMode = gettext("Data");
@@ -268,12 +279,6 @@ void Frame_Glom::on_menu_UserLevel_Operator()
     document->set_userlevel(AppState::USERLEVEL_OPERATOR);
 }
 
-void Frame_Glom::on_menu_Mode_Design()
-{
-  if(set_mode(MODE_Design))
-    show_table(m_strTableName);
-}
-
 void Frame_Glom::on_menu_Mode_Data()
 {
   if(set_mode(MODE_Data))
@@ -284,12 +289,6 @@ void Frame_Glom::on_menu_Mode_Find()
 {
   if(set_mode(MODE_Find))
     show_table(m_strTableName);
-}
-
-void Frame_Glom::on_menu_Mode_Users()
-{
-  set_mode(MODE_Users);
-  //on_Box_Tables_selected(m_strTableName);
 }
 
 void Frame_Glom::on_menu_Navigate_Database()
@@ -390,18 +389,6 @@ void Frame_Glom::on_userlevel_changed(AppState::userlevels userlevel)
 
   m_pLabel_UserLevel->set_text(user_level_name);
 
-  //Make sure that we are not in a mode that we shouldn't be:
-  if(userlevel !=  AppState::USERLEVEL_DEVELOPER)
-  {
-    if( (m_Mode == MODE_Design) || (m_Mode == MODE_Users) )
-    {
-      //on_menu_Mode_Data(); //This would not activate the radio menu item.
-      App_Glom* pApp = dynamic_cast<App_Glom*>(get_app_window());
-        if(pApp)
-          pApp->set_mode_data();
-    }
-  }
-
   show_table_title();
 }
 
@@ -490,7 +477,6 @@ void Frame_Glom::update_table_in_document_from_database()
       type_vecFields::iterator iterFindDatabase = std::find_if( fieldsDatabase.begin(), fieldsDatabase.end(), predicate_FieldHasName<Field>( field.get_name() ) );
       if(iterFindDatabase != fieldsDatabase.end()) //If it was found
       {
-        g_warning("field found: %s", field.get_name().c_str());
         fieldsActual.push_back(field);
       }
       else
@@ -504,8 +490,6 @@ void Frame_Glom::update_table_in_document_from_database()
 }
 void Frame_Glom::load_from_document()
 {
-g_warning(" Frame_Glom::load_from_document()");
-
   Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
   if(document)
   {
@@ -516,6 +500,32 @@ g_warning(" Frame_Glom::load_from_document()");
     //Call base class:
     View_Composite_Glom::load_from_document();
   }
+}
+
+void Frame_Glom::on_menu_developer_fields()
+{
+  m_pDialog_Fields->set_transient_for(*get_app_window());
+  m_pDialog_Fields->initialize( m_pBox_Databases->get_databaseName(), m_strTableName);
+  m_pDialog_Fields->show();
+}
+
+void Frame_Glom::on_menu_developer_relationships()
+{
+  m_pDialog_Relationships->set_transient_for(*get_app_window());
+  m_pDialog_Relationships->initialize( m_pBox_Databases->get_databaseName(), m_strTableName);
+  m_pDialog_Relationships->show();
+}
+
+void Frame_Glom::on_menu_developer_users()
+{
+
+}
+
+void Frame_Glom::on_menu_developer_layout()
+{
+  Notebook_Glom* notebook_current = dynamic_cast<Notebook_Glom*>(m_pBox_Mode->get_child());
+  if(notebook_current)
+    notebook_current->do_menu_developer_layout();
 }
 
 

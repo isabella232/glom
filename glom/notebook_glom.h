@@ -25,7 +25,6 @@
 #include "document/document_glom.h"
 
 /**Notebook with document methods.
-  *@author Murray Cumming
   */
 
 class Notebook_Glom :
@@ -35,9 +34,6 @@ class Notebook_Glom :
 public: 
   Notebook_Glom();
   virtual ~Notebook_Glom();
-
-  void merge_special_menus(const Glib::RefPtr<Gtk::UIManager>& ui_manager);
-  void unmerge_special_menus(const Glib::RefPtr<Gtk::UIManager>& ui_manager);
   
   virtual void show_hint();
   
@@ -45,7 +41,9 @@ public:
   //Page number
   //typedef sigc::signal<void, guint> type_signal_leave_page;
  // type_signal_leave_page signal_leave_page();
-  
+
+ virtual void do_menu_developer_layout();
+    
 protected:
 
   Gtk::Window* get_app_window();
@@ -58,11 +56,6 @@ protected:
 
   guint m_uiPreviousPage;
   bool m_destructor_in_progress; //A hack to prevent calling wrap() on dead C instances.
-
-  Glib::RefPtr<Gtk::ActionGroup> m_actiongroup_special_menus;
-  Gtk::UIManager::ui_merge_id m_special_menus_merge_id;
-  Glib::ustring m_special_menus_ui_string;
-  bool m_special_menus_actiongroup_added; //This allows us to delay this until we know what uimanager will be used. 
 };
 
 #endif

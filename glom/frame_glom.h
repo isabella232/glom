@@ -31,9 +31,10 @@
 #include "navigation/box_tables.h"
 
 #include "mode_data/notebook_data.h"
-#include "mode_design/notebook_design.h"
 #include "mode_find/notebook_find.h"
 
+#include "mode_design/dialog_fields.h"
+#include "mode_design/dialog_relationships.h"
 
 /**
   *@author Murray Cumming
@@ -53,31 +54,33 @@ public:
   virtual void on_menu_UserLevel_Developer();
   virtual void on_menu_UserLevel_Operator();
       
-  virtual void on_menu_Mode_Design();
   virtual void on_menu_Mode_Data();
   virtual void on_menu_Mode_Find();
-  virtual void on_menu_Mode_Users();
 
   virtual void on_menu_Navigate_Database();
   virtual void do_menu_Navigate_Database(bool bUseList = true);
   virtual void on_menu_Navigate_Table();
 
+  virtual void on_menu_developer_fields();
+  virtual void on_menu_developer_relationships();
+  virtual void on_menu_developer_users();     
+  virtual void on_menu_developer_layout();
+  
   virtual void load_from_document(); //View override
 
   enum enumModes
   {
     MODE_None, //at the start.
-    MODE_Design,
     MODE_Data,
     MODE_Find,
-    MODE_Users
   };
   enumModes m_Mode;
   enumModes m_Mode_Previous; // see comments in set_mode_widget().
 
 protected:
 
-  
+  //virtual void set_document(Document_Glom* pDocument); //override
+     
   void show_table(const Glib::ustring& strTableName);
   void show_table_title();
   void update_table_in_document_from_database();
@@ -107,14 +110,16 @@ protected:
   Box_DataBases* m_pBox_Databases;
   Box_Tables* m_pBox_Tables;
 
-  Notebook_Design m_Notebook_Design;
   Notebook_Data m_Notebook_Data;
   Notebook_Find m_Notebook_Find;
 
+  //Navigation:
   Dialog_Glom* m_pDialog_Databases;
   Dialog_Glom* m_pDialog_Tables;
 
-  //Glib::RefPtr<Gnome::Glade::Xml> m_refXml;
+  //Developer:
+  Dialog_Fields* m_pDialog_Fields;
+  Dialog_Relationships* m_pDialog_Relationships;
 };
 
 #endif //FRAME_GLOM_H

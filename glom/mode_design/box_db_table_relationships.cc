@@ -18,9 +18,21 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#include <libglademm.h>
 #include "box_db_table_relationships.h"
 
 Box_DB_Table_Relationships::Box_DB_Table_Relationships()
+{
+  init();
+}
+
+Box_DB_Table_Relationships::Box_DB_Table_Relationships(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
+: Box_DB_Table(cobject, refGlade)
+{
+  init();
+}
+
+void Box_DB_Table_Relationships::init()
 {
   pack_start(m_AddDel);
   m_colName = m_AddDel.add_column(gettext("Name"));
@@ -32,6 +44,8 @@ Box_DB_Table_Relationships::Box_DB_Table_Relationships()
   //Connect signals:
   m_AddDel.signal_user_activated().connect(sigc::mem_fun(*this, &Box_DB_Table_Relationships::on_AddDel_user_activated));
   m_AddDel.signal_user_changed().connect(sigc::mem_fun(*this, &Box_DB_Table_Relationships::on_AddDel_user_changed));
+
+  show_all_children();
 }
 
 Box_DB_Table_Relationships::~Box_DB_Table_Relationships()
@@ -155,7 +169,6 @@ void Box_DB_Table_Relationships::on_AddDel_user_activated(guint row, guint col)
         Glib::RefPtr<Gnome::Gda::Connection> connection = sharedconnection->get_gda_connection();
      
         type_vecStrings vecFields = util_vecStrings_from_Fields(get_fields_for_table(strTableName));
-        g_warning("Table=%s, fields size=%d", strTableName.c_str(), vecFields.size());
 
         //This would cause a lot of tedious re-filling:
         //m_AddDel.set_column_choices(m_colToField, vecFields);

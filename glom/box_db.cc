@@ -38,6 +38,20 @@ Box_DB::Box_DB()
   m_Button_Cancel.signal_clicked().connect(sigc::mem_fun(*this, &Box_DB::on_Button_Cancel));
 }
 
+Box_DB::Box_DB(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& /* refGlade */)
+: Gtk::VBox(cobject),
+  m_Box_Buttons(false, 6),
+  m_Button_Cancel(Gtk::Stock::CANCEL)
+{
+  m_pDocument = 0;
+
+  set_border_width(6);
+  set_spacing(6);
+
+  //Connect signals:
+  m_Button_Cancel.signal_clicked().connect(sigc::mem_fun(*this, &Box_DB::on_Button_Cancel));
+}
+
 Box_DB::Box_DB(BaseObjectType* cobject)
 : Gtk::VBox(cobject),
   m_Box_Buttons(false, 6),
@@ -150,10 +164,11 @@ void Box_DB::load_from_document()
 {
   if(m_pDocument)
   {
+    //TODO: Stop this from being connected multiple times.
     m_pDocument->signal_userlevel_changed().connect( sigc::mem_fun(*this, &Box_DB::on_userlevel_changed) );
     on_userlevel_changed(m_pDocument->get_userlevel());
     
-    fill_from_database(); //virtual.
+    fill_from_database(); //virtual. //TODO: This often causes a 2nd fill.
 
     //Call base class:
     View_Composite_Glom::load_from_document();

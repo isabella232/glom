@@ -781,8 +781,9 @@ Glib::ustring Document_Glom::get_table_title(const Glib::ustring& table_name) co
   
   const xmlpp::Element* nodeTable = get_node_table(table_name);
   if(nodeTable)
+  {
     result = get_node_attribute_value(nodeTable, "title");
-
+  }
   return result;
 }
 

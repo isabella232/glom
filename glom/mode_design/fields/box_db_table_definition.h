@@ -33,9 +33,11 @@ class Box_DB_Table_Definition : public Box_DB_Table
 {
 public: 
   Box_DB_Table_Definition();
+  Box_DB_Table_Definition(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
   virtual ~Box_DB_Table_Definition();
-  
+
 protected:
+  void init(); //Avoid duplicating code in constructors.
   virtual void fill_from_database();
   virtual void fill_fields();
 

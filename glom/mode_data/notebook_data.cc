@@ -52,26 +52,6 @@ Notebook_Data::Notebook_Data()
   add_view(&m_Box_List);
   add_view(&m_Box_Details);
 
-
-  //Build actions:
-  m_actiongroup_special_menus = Gtk::ActionGroup::create("Glom_Mode_Data_Actions");
-
-  m_actiongroup_special_menus->add( Gtk::Action::create("GlomAction_Menu_Developers_Layout_Data", gettext("_Design Layout")),
-    sigc::mem_fun(*this, &Notebook_Data::on_menu_Developer_Layout)  );
-  
-  //Build part of the menu structure, to be merged in by using the "Bakery_MenuPH_Others" placeholder:
-  m_special_menus_ui_string =
-    "<ui>"
-    "  <menubar name='Bakery_MainMenu'>"
-    "      <menu action='Glom_Menu_Developer'>"
-    "         <placeholder name='Glom_Menu_Developer_PH'>"
-    "           <menuitem action='GlomAction_Menu_Developers_Layout_Data' />"
-    "        </placeholder>"
-    "      </menu>"
-    "  </menubar>"
-    "</ui>";
-    
-
   show_all_children();
 }
 
@@ -117,7 +97,7 @@ void Notebook_Data::select_page_for_find_results()
   }
 }
 
-void Notebook_Data::on_menu_Developer_Layout()
+void Notebook_Data::do_menu_developer_layout()
 {
   int iPageCurrent = get_current_page();
 

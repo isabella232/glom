@@ -19,6 +19,7 @@
  */
 
 #include "table_columns.h"
+#include <gtkmm/label.h>
 
 Table_Columns::Table_Columns()
 {

@@ -23,7 +23,11 @@
 
 Box_DB_Table::Box_DB_Table()
 {
- 
+}
+
+Box_DB_Table::Box_DB_Table(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
+: Box_DB(cobject, refGlade)
+{
 }
 
 Box_DB_Table::~Box_DB_Table()

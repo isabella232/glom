@@ -21,7 +21,7 @@
 #ifndef ALIGNMENT_JUSTIFIED_H
 #define ALIGNMENT_JUSTIFIED_H
 
-#include <gtkmm.h>
+#include <gtkmm/alignment.h>
 
 /**
   *@author Murray Cumming

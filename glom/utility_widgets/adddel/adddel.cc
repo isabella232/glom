@@ -353,7 +353,7 @@ Glib::ustring AddDel::get_value_selected(guint col)
 
 guint AddDel::get_item_selected()
 {
-  gint iRow = 0;
+  int iRow = 0;
   Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = m_TreeView.get_selection();
   if(refTreeSelection)
   {
@@ -958,8 +958,8 @@ void AddDel::finish_editing()
 //  bool bIgnoreSheetSignals = get_ignore_treeview_signals(); //The deactivate signals seems to cause the current cell to revert to it's previsous value.
 //  set_ignore_treeview_signals();
 //
-//  gint row = 0;
-//  gint col = 0;
+//  int row = 0;
+//  int col = 0;
 //  m_Sheet.get_active_cell(row, col);
 //  m_Sheet.set_active_cell(row, col);
 //
@@ -981,8 +981,8 @@ void AddDel::reactivate()
 {
 //  //The sheet does not seem to get updated until one of its cells is activated:
 //
-//  gint row = 0;
-//  gint col = 0;
+//  int row = 0;
+//  int col = 0;
 //  m_Sheet.get_active_cell(row, col);
 //
 //  //Activate 0,0 if none is currently active.

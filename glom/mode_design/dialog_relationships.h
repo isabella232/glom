@@ -18,26 +18,23 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include "notebook_design.h"
+#ifndef DIALOG_RELATIONSHIPS_H
+#define DIALOG_RELATIONSHIPS_H
 
-Notebook_Design::Notebook_Design()
+#include "dialog_design.h"
+#include "box_db_table_relationships.h"
+
+class Dialog_Relationships : public Dialog_Design
 {
-  pages().push_back( Gtk::Notebook_Helpers::TabElem(m_Box_Fields, gettext("Fields")) );
-  pages().push_back( Gtk::Notebook_Helpers::TabElem(m_Box_Relationships, gettext("Relationships")) );
+public:
+  Dialog_Relationships(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  virtual ~Dialog_Relationships();
 
-  //Fill composite view:
-  add_view(&m_Box_Fields);
-  add_view(&m_Box_Relationships);
+  virtual void initialize(const Glib::ustring& strDatabaseName, const Glib::ustring& strTableName);
+    
+protected:
 
-  show_all_children();
-}
+  Box_DB_Table_Relationships* m_box;
+};
 
-Notebook_Design::~Notebook_Design()
-{
-}
-
-void Notebook_Design::initialize(const Glib::ustring& strDatabaseName, const Glib::ustring& strTableName)
-{
-  m_Box_Fields.initialize(strDatabaseName, strTableName);
-  m_Box_Relationships.initialize(strDatabaseName, strTableName);
-}
+#endif //DIALOG_RELATIONSHIPS_H

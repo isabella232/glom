@@ -125,11 +125,6 @@ void App_Glom::init_menus()
   m_refActionGroup_Others->add(action);
   Gtk::RadioAction::Group group_mode;
 
-  action = Gtk::RadioAction::create(group_mode, "GlomAction_Menu_Mode_Design", gettext("_Design"));
-  m_listDeveloperActions.push_back(action);
-  m_refActionGroup_Others->add(action,
-                        sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_Mode_Design) );
-
   //We remember this action, so that it can be explicitly activated later.
   m_action_mode_data = Gtk::RadioAction::create(group_mode, "GlomAction_Menu_Mode_Data", gettext("D_ata"));
   m_refActionGroup_Others->add(m_action_mode_data,
@@ -139,8 +134,25 @@ void App_Glom::init_menus()
 
   action = Gtk::Action::create("Glom_Menu_Developer", gettext("_Developer"));
   m_listDeveloperActions.push_back(action);
-   m_refActionGroup_Others->add(action);
+  m_refActionGroup_Others->add(action);
 
+  action = Gtk::Action::create("GlomAction_Menu_Developer_Fields", gettext("_Fields"));
+  m_listDeveloperActions.push_back(action);  
+  m_refActionGroup_Others->add(action, sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_fields) );
+
+  action = Gtk::Action::create("GlomAction_Menu_Developer_Relationships", gettext("_Relationships"));
+  m_listDeveloperActions.push_back(action);
+  m_refActionGroup_Others->add(action, sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_relationships) );
+
+  action = Gtk::Action::create("GlomAction_Menu_Developer_Users", gettext("_Users"));
+  m_listDeveloperActions.push_back(action);
+  m_refActionGroup_Others->add(action, sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_users));
+
+  action = Gtk::Action::create("GlomAction_Menu_Developer_Layout", gettext("_Layout"));
+  m_listDeveloperActions.push_back(action);
+  m_refActionGroup_Others->add(action, sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_layout));
+
+  
   m_refUIManager->insert_action_group(m_refActionGroup_Others);
 
   //Build part of the menu structure, to be merged in by using the "Bakery_MenuPH_Others" placeholder:
@@ -157,11 +169,14 @@ void App_Glom::init_menus()
     "        <menuitem action='GlomAction_Menu_UserLevel_Operator' />"
     "      </menu>"
     "      <menu action='Glom_Menu_Mode'>"
-    "        <menuitem action='GlomAction_Menu_Mode_Design' />"
     "        <menuitem action='GlomAction_Menu_Mode_Data' />"
     "        <menuitem action='GlomAction_Menu_Mode_Find' />"
     "      </menu>"
-     "      <menu action='Glom_Menu_Developer'>"
+    "      <menu action='Glom_Menu_Developer'>"
+    "        <menuitem action='GlomAction_Menu_Developer_Fields' />"
+    "        <menuitem action='GlomAction_Menu_Developer_Relationships' />"    
+    "        <menuitem action='GlomAction_Menu_Developer_Users' />"
+    "        <menuitem action='GlomAction_Menu_Developer_Layout' />"           
     "         <placeholder name='Glom_Menu_Developer_PH' />"
     "      </menu>"
     "    </placeholder>"

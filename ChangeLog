@@ -1,3 +1,9 @@
+2004-06-09  Murray Cumming  <murrayc@murrayc.com>
+
+	* Mode menu: removed the Design Mode.
+	* Developer menu: Added Fields, Relatationships, Users, and Layout, to 
+	show the same functionality in secondary windows.
+
 2004-06-09  Christian Rose  <menthos@menthos.com>
 
 	* configure.in: Added "sv" to ALL_LINGUAS.
