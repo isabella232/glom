@@ -32,8 +32,6 @@ public:
   virtual void set_allow_add(bool val = true); //override
   virtual void set_allow_delete(bool val = true); //override
   virtual void set_allow_user_actions(bool bVal = true); //override
-
-  virtual void set_select_text(const Glib::ustring& strVal); //override
   
 protected:
   virtual void setup_buttons();

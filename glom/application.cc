@@ -458,8 +458,16 @@ void App_Glom::statusbar_clear()
   statusbar_set_text("");
 }
 
-void App_Glom::on_userlevel_changed(AppState::userlevels userlevel)
+
+void App_Glom::on_userlevel_changed(AppState::userlevels /* userlevel */)
 {
+  update_userlevel_ui();
+}
+
+void App_Glom::update_userlevel_ui()
+{
+  AppState::userlevels userlevel = get_userlevel();
+  
   //Disable/Enable developer actions:
   for(type_listActions::iterator iter = m_listDeveloperActions.begin(); iter != m_listDeveloperActions.end(); ++iter)
   {
@@ -782,4 +790,24 @@ AppState::userlevels App_Glom::get_userlevel() const
   }
   else
     return AppState::USERLEVEL_DEVELOPER; //This should never happen.
+}
+
+void App_Glom::add_developer_action(const Glib::RefPtr<Gtk::Action>& refAction)
+{
+  //Prevent it from being added twice:
+  remove_developer_action(refAction);
+  
+  m_listDeveloperActions.push_back(refAction);
+}
+
+void App_Glom::remove_developer_action(const Glib::RefPtr<Gtk::Action>& refAction)
+{
+  for(type_listActions::iterator iter = m_listDeveloperActions.begin(); iter != m_listDeveloperActions.end(); ++iter)
+  {
+    if(*iter == refAction)
+    {
+      m_listDeveloperActions.erase(iter);
+      break;
+    }
+  }
 }

@@ -29,6 +29,7 @@
 #include <vector>
 #include <map>
 
+class App_Glom;
 
 class DbAddDelColumnInfo
 {
@@ -63,8 +64,6 @@ public:
 
   virtual void set_allow_add(bool val = true);
   virtual void set_allow_delete(bool val = true);
-    
-  virtual void set_allow_column_chooser(bool value = true);
   
   virtual Gtk::TreeModel::iterator add_item(const Gnome::Gda::Value& valKey); //Return index of new row.
 
@@ -125,9 +124,6 @@ public:
   /** @result Whether this is a blank row where date for a new row should be entered
    */
   virtual bool get_is_placeholder_row(const Gtk::TreeModel::iterator& iter) const;
-  
-  virtual void set_select_text(const Glib::ustring& strVal);
-  virtual Glib::ustring get_select_text() const;
 
   //Use this in order to use get_value_key_as_value().
   virtual void set_key_type(const Field& field);
@@ -189,6 +185,9 @@ public:
   typedef sigc::signal<void, const Gtk::TreeModel::iterator&, const Gtk::TreeModel::iterator&> type_signal_user_requested_delete;
   type_signal_user_requested_delete signal_user_requested_delete();
 
+ typedef sigc::signal<void> type_signal_user_requested_layout;
+ type_signal_user_requested_layout signal_user_requested_layout();
+    
   //row number.
   typedef sigc::signal<void, const Gtk::TreeModel::iterator&> type_signal_user_requested_edit;
   type_signal_user_requested_edit signal_user_requested_edit();
@@ -236,17 +235,11 @@ protected:
 
   virtual void on_MenuPopup_activate_Edit();
   virtual void on_MenuPopup_activate_Delete();
-  virtual void on_MenuPopup_activate_ChooseColumns();
+  virtual void on_MenuPopup_activate_layout();
 
   virtual void on_treeview_button_press_event(GdkEventButton* event);
 
   virtual bool on_treeview_columnheader_button_press_event(GdkEventButton* event);
-
-  /** Set the menu to popup when the user right-clicks on the column titles.
-   * This method does not take ownership of the Gtk::Menu.
-   */
-  virtual void set_column_header_popup(Gtk::Menu& popup);
-
 
 
   bool get_prevent_user_signals() const;
@@ -264,6 +257,8 @@ protected:
 
   //The column_id is extra information that we can use later to discover what the column shows, even when columns have been reordered.
   guint treeview_append_column(const Glib::ustring& title, Gtk::CellRenderer& cellrenderer, int model_column_index);
+  
+  App_Glom* get_application();
 
   static Glib::ustring string_escape_underscores(const Glib::ustring& text);
   
@@ -286,9 +281,10 @@ protected:
   typedef std::vector<DbAddDelColumnInfo> type_ColumnTypes;
   type_ColumnTypes m_ColumnTypes;
 
-  Gtk::Menu m_MenuPopup;
-
-  Glib::ustring m_strSelectText; //e.g. 'Edit', 'Use'.
+  Gtk::Menu* m_pMenuPopup;
+  Glib::RefPtr<Gtk::ActionGroup> m_refActionGroup;
+  Glib::RefPtr<Gtk::UIManager> m_refUIManager;
+  Glib::RefPtr<Gtk::Action> m_refContextEdit, m_refContextDelete, m_refContextLayout;
 
   bool m_bAllowUserActions;
 
@@ -297,8 +293,6 @@ protected:
   
   type_vecStrings m_vecColumnIDs; //We give each ViewColumn a special ID, so we know where they are after a reorder.
   
-  Gtk::Menu* m_pColumnHeaderPopup;
-  bool m_allow_column_chooser;
   bool m_auto_add;
   bool m_allow_add;
   bool m_allow_delete;
@@ -311,9 +305,10 @@ protected:
   type_signal_user_requested_delete m_signal_user_requested_delete;
   type_signal_user_requested_edit m_signal_user_requested_edit;
   type_signal_user_requested_add m_signal_user_requested_add;
+  type_signal_user_requested_layout m_signal_user_requested_layout;
   type_signal_user_activated m_signal_user_activated;
   type_signal_user_reordered_columns m_signal_user_reordered_columns;
-
+  
   //An instance of InnerIgnore remembers the ignore settings,
   //then restores them when it goes out of scope and is destroyed.
   class InnerIgnore

@@ -126,15 +126,4 @@ void AddDel_WithButtons::setup_buttons()
   }
 }
 
-void AddDel_WithButtons::set_select_text(const Glib::ustring& strVal)
-{
-  AddDel::set_select_text(strVal);
-
-  //Change button label:
-  Gtk::Label* pLabel = dynamic_cast<Gtk::Label*>(m_Button_Edit.get_child());
-  if(pLabel)
-    pLabel->set_text(get_select_text());
-
-  //TODO: Change popup menu item
-}
 

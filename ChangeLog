@@ -1,3 +1,12 @@
+2005-03-06  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/mode_data/box_db_list.cc: on_adddel_user_requested_delete(): 
+	Ask the user whether he really wants to delete the record.
+	* glom/utilities/db_adddel.[h|cc]: Add a layout item to the right 
+	click menu, so that people can right click to edit list layouts and 
+	related records layouts. Still need to give related records layouts 
+	an id other than their underlying table.
+
 2005-03-04  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/application.cc: on_document_load(): Warn if the user recreates 

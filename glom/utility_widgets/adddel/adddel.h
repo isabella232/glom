@@ -124,8 +124,6 @@ public:
    */
   virtual bool get_is_placeholder_row(const Gtk::TreeModel::iterator& iter) const;
   
-  virtual void set_select_text(const Glib::ustring& strVal);
-  virtual Glib::ustring get_select_text() const;
  
   virtual guint add_column(const AddDelColumnInfo& column_info);
   virtual guint add_column(const Glib::ustring& strTitle, AddDelColumnInfo::enumStyles style = AddDelColumnInfo::STYLE_Text, bool editable = true, bool visible = true);
@@ -276,8 +274,6 @@ protected:
   type_ColumnTypes m_ColumnTypes;
 
   Gtk::Menu m_MenuPopup;
-
-  Glib::ustring m_strSelectText; //e.g. 'Edit', 'Use'.
 
   bool m_bAllowUserActions;
 

@@ -45,7 +45,6 @@ Box_Data_List::Box_Data_List()
 
   pack_start(m_AddDel);
   m_AddDel.set_auto_add(false); //We want to add the row ourselves when the user clicks the Add button, because the default behaviour there is not suitable.
-  m_AddDel.set_allow_column_chooser();
   m_AddDel.set_rules_hint(); //Use alternating row colors when the theme does that.
   
   //Connect signals:
@@ -55,6 +54,8 @@ Box_Data_List::Box_Data_List()
   m_AddDel.signal_user_added().connect(sigc::mem_fun(*this, &Box_Data_List::on_adddel_user_added));
   m_AddDel.signal_user_changed().connect(sigc::mem_fun(*this, &Box_Data_List::on_adddel_user_changed));
   m_AddDel.signal_user_reordered_columns().connect(sigc::mem_fun(*this, &Box_Data_List::on_adddel_user_reordered_columns));
+  
+  m_AddDel.signal_user_requested_layout().connect(sigc::mem_fun(*this, &Box_Data_List::on_adddel_user_requested_layout));
 
 
   //Groups are not very helpful for a list view:
@@ -235,12 +236,30 @@ void Box_Data_List::on_adddel_user_requested_edit(const Gtk::TreeModel::iterator
   signal_user_requested_details().emit(primary_key_value);
 }
 
+void Box_Data_List::on_adddel_user_requested_layout()
+{
+  g_warning("on_adddel_user_requested_layout");
+  show_layout_dialog();
+}
+
 void Box_Data_List::on_adddel_user_requested_delete(const Gtk::TreeModel::iterator& rowStart, const Gtk::TreeModel::iterator&  /* rowEnd TODO */)
 {
-  record_delete( get_primary_key_value(rowStart) );
+  if(rowStart)
+  {
+    //Ask the user for confirmation:
+    Gtk::MessageDialog dialog(gettext("Are you sure that you would like to delete this record? The data in this record will then be permanently lost."), false, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE);
+    dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+    dialog.add_button(Gtk::Stock::DELETE, Gtk::RESPONSE_OK);
+    
+    int response = dialog.run();
+    if(response == Gtk::RESPONSE_OK)
+    {
+      record_delete( get_primary_key_value(rowStart) );
 
-  //Remove the row:
-  m_AddDel.remove_item(rowStart);
+      //Remove the row:
+      m_AddDel.remove_item(rowStart);
+    }
+  }
 }
 
 void Box_Data_List::on_adddel_user_added(const Gtk::TreeModel::iterator& row)

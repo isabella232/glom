@@ -41,8 +41,13 @@ public:
   /** Changes the mode to Data mode, as if the user had selected the Data Mode menu item.
    */
   virtual void set_mode_data();
-
+  
+  virtual void add_developer_action(const Glib::RefPtr<Gtk::Action>& refAction);
+  virtual void remove_developer_action(const Glib::RefPtr<Gtk::Action>& refAction);
+  
   virtual AppState::userlevels get_userlevel() const;
+  
+  virtual void update_userlevel_ui();
     
 protected:
   virtual void init_layout(); //override.

@@ -77,8 +77,6 @@ AddDel::AddDel()
 
   m_bAllowUserActions = true;
 
-  m_strSelectText = gettext("Edit");
-
   //Start with a useful default TreeModel:
   //set_columns_count(1);
   //construct_specified_columns();
@@ -183,7 +181,7 @@ void AddDel::setup_menu()
   m_MenuPopup.items().clear();
 
   //Add new menu items:
-  Gtk::Menu_Helpers::MenuElem menuItem_Edit(m_strSelectText);
+  Gtk::Menu_Helpers::MenuElem menuItem_Edit(gettext("Edit"));
   m_MenuPopup.items().push_back(menuItem_Edit);
   m_MenuPopup.items().back().signal_activate().connect(sigc::mem_fun(*this, &AddDel::on_MenuPopup_activate_Edit));
 
@@ -890,16 +888,6 @@ void AddDel::set_allow_user_actions(bool bVal)
 bool AddDel::get_allow_user_actions() const
 {
   return m_bAllowUserActions;
-}
-
-void AddDel::set_select_text(const Glib::ustring& strVal)
-{
-  m_strSelectText = strVal;
-}
-
-Glib::ustring AddDel::get_select_text() const
-{
-  return m_strSelectText;
 }
 
 void AddDel::set_show_column_titles(bool bVal)

@@ -25,6 +25,7 @@
 #include "db_treeviewcolumn_glom.h"
 #include "../../data_structure/glomconversions.h"
 #include "../../dialog_invalid_data.h"
+#include "../../application.h"
 #include <iostream> //For debug output.
 
 DbAddDelColumnInfo::DbAddDelColumnInfo()
@@ -54,8 +55,7 @@ DbAddDelColumnInfo& DbAddDelColumnInfo::operator=(const DbAddDelColumnInfo& src)
 
 DbAddDel::DbAddDel()
 : m_modelcolumn_key(0),
-  m_pColumnHeaderPopup(0),
-  m_allow_column_chooser(false),
+  m_pMenuPopup(0),
   m_auto_add(true),
   m_allow_add(true),
   m_allow_delete(true)
@@ -66,8 +66,6 @@ DbAddDel::DbAddDel()
   set_spacing(6);
 
   m_bAllowUserActions = true;
-
-  m_strSelectText = gettext("Edit");
 
   //Start with a useful default TreeModel:
   //set_columns_count(1);
@@ -108,6 +106,13 @@ DbAddDel::~DbAddDel()
   
   //if(m_modelcolumn_placeholder)
   //  delete m_modelcolumn_placeholder;
+  
+  App_Glom* pApp = get_application();
+  if(pApp)
+  {
+    pApp->remove_developer_action(m_refContextLayout);
+  }
+   
 }
 
 void
@@ -148,14 +153,10 @@ DbAddDel::on_MenuPopup_activate_Edit()
   }
 }
 
-void DbAddDel::on_MenuPopup_activate_ChooseColumns()
+void DbAddDel::on_MenuPopup_activate_layout()
 {
-/*
-  GtkDialog* pDialog = GTK_DIALOG( egg_column_chooser_dialog_new(m_TreeView.gobj()) );
-  gtk_widget_show_all( GTK_WIDGET(pDialog) );
-  gtk_dialog_run(pDialog); //It will delete itself. The C API is funny like that.
-  pDialog = 0;
-*/
+  finish_editing();
+  signal_user_requested_layout().emit();
 }
 
 void DbAddDel::on_MenuPopup_activate_Delete()
@@ -176,38 +177,96 @@ void DbAddDel::on_MenuPopup_activate_Delete()
 
 void DbAddDel::setup_menu()
 {
-  //Clear existing menu items:
-  m_MenuPopup.items().clear();
+  m_refActionGroup = Gtk::ActionGroup::create();
 
-  //Add new menu items:
-  Gtk::Menu_Helpers::MenuElem menuItem_Edit(m_strSelectText);
-  m_MenuPopup.items().push_back(menuItem_Edit);
-  m_MenuPopup.items().back().signal_activate().connect(sigc::mem_fun(*this, &DbAddDel::on_MenuPopup_activate_Edit));
+  m_refActionGroup->add(Gtk::Action::create("ContextMenu", "Context Menu") );
+
+  m_refContextEdit =  Gtk::Action::create("ContextEdit", Gtk::Stock::EDIT);
+  m_refActionGroup->add(m_refContextEdit,
+    sigc::mem_fun(*this, &DbAddDel::on_MenuPopup_activate_Edit) );
+
+  m_refContextDelete =  Gtk::Action::create("ContextDelete", Gtk::Stock::DELETE);
+  m_refActionGroup->add(m_refContextDelete,
+    sigc::mem_fun(*this, &DbAddDel::on_MenuPopup_activate_Delete) );
+
+  m_refContextLayout =  Gtk::Action::create("ContextLayout", gettext("Layout"));
+  m_refActionGroup->add(m_refContextLayout,
+    sigc::mem_fun(*this, &DbAddDel::on_MenuPopup_activate_layout) );
+    
+  //TODO: This does not work until this widget is in a container in the window:s
+  App_Glom* pApp = get_application();
+  if(pApp)
+  {
+    pApp->add_developer_action(m_refContextLayout); //So that it can be disabled when not in developer mode.
+    pApp->update_userlevel_ui(); //Update our action's sensitivity. 
+  }
+ 
+   
+  m_refUIManager = Gtk::UIManager::create();
+  
+  m_refUIManager->insert_action_group(m_refActionGroup);
+ 
+  //TODO: add_accel_group(m_refUIManager->get_accel_group());
+
+  
+  try
+  {
+    Glib::ustring ui_info = 
+        "<ui>"
+        "  <popup name='ContextMenu'>"
+        "    <menuitem action='ContextEdit'/>"
+        "    <menuitem action='ContextDelete'/>"
+        "    <menuitem action='ContextLayout'/>"        
+        "  </popup>"
+        "</ui>";
+        
+    m_refUIManager->add_ui_from_string(ui_info);
+  }
+  catch(const Glib::Error& ex)
+  {
+    std::cerr << "building menus failed: " <<  ex.what();
+  }
+
+  //Get the menu:
+  m_pMenuPopup = dynamic_cast<Gtk::Menu*>( m_refUIManager->get_widget("/ContextMenu") ); 
+  if(!m_pMenuPopup)
+    g_warning("menu not found");
+
 
   if(get_allow_user_actions())
   {
-    Gtk::Menu_Helpers::MenuElem menuItem_Delete(gettext("Delete"));
-    m_MenuPopup.items().push_back(menuItem_Delete);
-    m_MenuPopup.items().back().signal_activate().connect(sigc::mem_fun(*this, &DbAddDel::on_MenuPopup_activate_Delete));
+    m_refContextEdit->set_sensitive();
+    m_refContextDelete->set_sensitive();
+  }
+  else
+  {
+    m_refContextEdit->set_sensitive(false);
+    m_refContextDelete->set_sensitive(false);
   }
   
-  if(m_allow_column_chooser)
-  {
-    Gtk::Menu_Helpers::MenuElem menuitem_ChooseColumns(gettext("Choose columns"));
-    m_MenuPopup.items().push_back(menuitem_ChooseColumns);
-    m_MenuPopup.items().back().signal_activate().connect(sigc::mem_fun(*this, &DbAddDel::on_MenuPopup_activate_ChooseColumns));
-  }
-
+  if(pApp)
+    m_refContextLayout->set_sensitive(pApp->get_userlevel() == AppState::USERLEVEL_DEVELOPER);
+  
 }
 
 bool DbAddDel::on_button_press_event_Popup(GdkEventButton *event)
 {
+  //Enable/Disable items.
+  //We did this earlier, but get_application is more likely to work now:
+  App_Glom* pApp = get_application();
+  if(pApp)
+  {
+    pApp->add_developer_action(m_refContextLayout); //So that it can be disabled when not in developer mode.
+    pApp->update_userlevel_ui(); //Update our action's sensitivity. 
+  }
+  
+  
   GdkModifierType mods;
   gdk_window_get_pointer( Gtk::Widget::gobj()->window, 0, 0, &mods );
   if(mods & GDK_BUTTON3_MASK)
   {
     //Give user choices of actions on this item:
-    m_MenuPopup.popup(event->button, event->time);
+    m_pMenuPopup->popup(event->button, event->time);
   }
   else
   {
@@ -767,16 +826,6 @@ bool DbAddDel::get_allow_user_actions() const
   return m_bAllowUserActions;
 }
 
-void DbAddDel::set_select_text(const Glib::ustring& strVal)
-{
-  m_strSelectText = strVal;
-}
-
-Glib::ustring DbAddDel::get_select_text() const
-{
-  return m_strSelectText;
-}
-
 void DbAddDel::set_show_column_titles(bool bVal)
 {
   m_TreeView.set_headers_visible(bVal);
@@ -1107,6 +1156,11 @@ DbAddDel::type_signal_user_changed DbAddDel::signal_user_changed()
   return m_signal_user_changed;
 }
 
+DbAddDel::type_signal_user_requested_layout DbAddDel::signal_user_requested_layout()
+{
+  return m_signal_user_requested_layout;
+}
+
 DbAddDel::type_signal_user_requested_delete DbAddDel::signal_user_requested_delete()
 {
   return m_signal_user_requested_delete;
@@ -1190,17 +1244,8 @@ bool DbAddDel::on_treeview_columnheader_button_press_event(GdkEventButton* event
   //If this is a right-click with the mouse:
   if( (event->type == GDK_BUTTON_PRESS) && (event->button == 3) )
   {
-    if(m_pColumnHeaderPopup)
-    {
-      m_pColumnHeaderPopup->popup(event->button, event->time);
-      return true; //It has been handled.
-    }
-    else
-    {
-      //Default popup:
-      //TODO: We might want to disable this sometimes, because it could be useless sometimes.
-      
-    }
+    
+    
   }
 
   return false;
@@ -1268,16 +1313,6 @@ DbAddDel::type_vecStrings DbAddDel::get_columns_order() const
 {
   //This list is rebuilt in on_treeview_columns_changed, but maybe we could just build it here.
   return m_vecColumnIDs;
-}
-
-void DbAddDel::set_column_header_popup(Gtk::Menu& popup)
-{
-  m_pColumnHeaderPopup = &popup;
-}
-
- void DbAddDel::set_allow_column_chooser(bool value)
-{
-  m_allow_column_chooser = value;
 }
 
 void DbAddDel::set_auto_add(bool value)
@@ -1497,6 +1532,14 @@ void DbAddDel::treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gt
       break;
     } 
   }
+}
+
+App_Glom* DbAddDel::get_application()
+{
+  Gtk::Container* pWindow = get_toplevel();
+  //TODO: This only works when the child widget is already in its parent.
+  
+  return dynamic_cast<App_Glom*>(pWindow);
 }
   
       
