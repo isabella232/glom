@@ -7473,4 +7473,4 @@ AC_DEFUN(PKG_CHECK_MODULES, [
 
 
 
-m4_include([macros/macros.m4])
+m4_include([./macros/macros.m4])

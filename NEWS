@@ -4,6 +4,7 @@
   - Fields: Fix crash when opening the edit dialog.
   - Relationships: Fix editing, and actually save the relationships.
 * Beginnings of user documentation.
+* Updated German translation (Hendrik Brandt)
 
 0.8.2:
 

@@ -17,4 +17,5 @@ appregdir = $(datadir)/application-registry
 appreg_DATA = glom.applications
 
 
-EXTRA_DIST = $(GnomeApplications_DATA) $(MimeDatabase_DATA)
+EXTRA_DIST = $(GnomeApplications_DATA) $(MimeDatabase_DATA) $(appreg_DATA)
+
