@@ -19,6 +19,7 @@
  */
 
 #include "box_tables.h"
+#include <libintl.h>
 
 Box_Tables::Box_Tables(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
 : Box_DB(cobject),

@@ -21,7 +21,7 @@
 #include "dialog_fielddefinition.h"
 #include "../../box_db_table.h"
 //#include <libgnome/gnome-i18n.h>
-
+#include <libintl.h>
 
 Dialog_FieldDefinition::Dialog_FieldDefinition(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
 : Dialog_Properties(cobject, refGlade)

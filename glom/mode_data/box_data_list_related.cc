@@ -19,6 +19,7 @@
  */
 
 #include "box_data_list_related.h"
+#include <libintl.h>
 
 Box_Data_List_Related::Box_Data_List_Related()
 {

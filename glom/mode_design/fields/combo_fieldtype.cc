@@ -21,6 +21,7 @@
 #include "combo_fieldtype.h"
 #include "../../box_db_table.h"
 #include <gtk/gtkliststore.h> //For debugging.
+#include <libintl.h>
 
 Combo_FieldType::Combo_FieldType(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
 : Gtk::ComboBox(cobject)

@@ -20,6 +20,7 @@
  
 #include "box_databases.h"
 #include "config.h" //To get MYSQL_INSTALL_PREFIX
+#include <libintl.h>
 
 Box_DataBases::Box_DataBases(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
 : Box_DB(cobject)

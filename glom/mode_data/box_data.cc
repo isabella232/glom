@@ -20,6 +20,7 @@
 
 #include "box_data.h"
 #include "config.h"
+#include <libintl.h>
 
 Box_Data::Box_Data()
 : m_Button_Find(gettext("Find")),

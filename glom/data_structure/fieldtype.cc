@@ -19,6 +19,7 @@
  */
 
 #include "fieldtype.h"
+#include <libintl.h>
 
 //Initialize static data:
 FieldType::type_map_gda_type_to_glom_type FieldType::m_map_gda_type_to_glom_type;

@@ -19,6 +19,7 @@
  */
 
 #include "notebook_data.h"
+#include <libintl.h>
 
 Notebook_Data::Notebook_Data()
 {

@@ -20,6 +20,7 @@
 
 #include <libglademm.h>
 #include "box_db_table_relationships.h"
+#include <libintl.h>
 
 Box_DB_Table_Relationships::Box_DB_Table_Relationships()
 {

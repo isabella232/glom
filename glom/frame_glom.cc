@@ -21,6 +21,7 @@
 #include "frame_glom.h"
 #include "application.h"
 #include "appstate.h"
+#include <libintl.h>
 
 Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
 : PlaceHolder(cobject, refGlade),

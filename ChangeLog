@@ -1,5 +1,12 @@
 2004-06-10  Murray Cumming  <murrayc@murrayc.com>
 
+	* po/il.po: Italian translation from Alberto Paro.
+	* various headers: Alberto Paro added includes for libintl.h because 
+	he says gettext() is not defined without them. It is strange that it 
+	works for me, but they do no harm. I need to look at this properly.
+
+2004-06-10  Murray Cumming  <murrayc@murrayc.com>
+
 	* po/de.po: German translation from Hendrik Brandt.
 
 2004-06-09  Murray Cumming  <murrayc@murrayc.com>

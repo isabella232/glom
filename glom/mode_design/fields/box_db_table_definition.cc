@@ -20,7 +20,7 @@
 
 #include "box_db_table_definition.h"
 #include "../../../config.h"
-
+#include <libintl.h>
 
 Box_DB_Table_Definition::Box_DB_Table_Definition()
 {

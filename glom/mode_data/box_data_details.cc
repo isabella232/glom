@@ -22,6 +22,7 @@
 #include "../data_structure/field.h"
 #include "../data_structure/relationship.h"
 #include <sstream> //For stringstream
+#include <libintl.h>
 
 Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
 : m_HBox(false, 6),

@@ -20,6 +20,7 @@
 
 #include "box_data_list.h"
 #include <sstream> //For stringstream
+#include <libintl.h>
 
 Box_Data_List::Box_Data_List()
 : m_has_one_or_more_records(false)

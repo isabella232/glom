@@ -19,6 +19,7 @@
  */
 
 #include "box_data_list_find.h"
+#include <libintl.h>
 
 Box_Data_List_Find::Box_Data_List_Find()
 : m_HBox(false, 6)

@@ -21,6 +21,7 @@
 #include "application.h"
 #include "config.h" //For VERSION.
 #include <cstdio>
+#include <libintl.h>
 
 App_Glom::App_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
 : type_base(cobject, "Glom"),

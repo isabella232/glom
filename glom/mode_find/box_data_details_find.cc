@@ -19,6 +19,7 @@
  */
 
 #include "box_data_details_find.h"
+#include <libintl.h>
 
 Box_Data_Details_Find::Box_Data_Details_Find()
 : Box_Data_Details(false)

@@ -20,7 +20,7 @@
 
 #include "adddel.h"
 #include <algorithm> //For std::find.
-//#include <libgnome/gnome-i18n.h>
+#include <libintl.h>
 #include "cellrendererlist.h"
 #include "treeviewcolumn_glom.h"
 #include <iostream> //For debug output.
