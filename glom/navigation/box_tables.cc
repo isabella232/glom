@@ -290,7 +290,7 @@ void Box_Tables::on_show_hidden_toggled()
   fill_from_database();
 }
 
-void Box_Tables::on_AddDel_changed(const Gtk::TreeModel::iterator& /* row TODO */, guint column)
+void Box_Tables::on_AddDel_changed(const Gtk::TreeModel::iterator& row, guint column)
 {
   if(get_userlevel() == AppState::USERLEVEL_DEVELOPER)
   {
@@ -307,8 +307,22 @@ void Box_Tables::on_AddDel_changed(const Gtk::TreeModel::iterator& /* row TODO *
     } 
     else if(column == m_colTableName)
     {
-      g_warning("Box_Tables: renaming of tables is not yet implemented."); //TODO
-      fill_from_database();
+      Glib::ustring table_name = m_AddDel.get_value_key(row);
+      Glib::ustring table_name_new = m_AddDel.get_value(row, m_colTableName);
+      if(!table_name.empty() && !table_name_new.empty())
+      {
+        Glib::ustring strMsg = gettext("Are you sure that you want to rename this table?");  //TODO: Show old and new names?
+        Gtk::MessageDialog dialog(strMsg);
+        int iButtonClicked = dialog.run();
+
+        //Rename the table:
+        if(iButtonClicked == Gtk::RESPONSE_OK)
+        {
+          Query_execute( "ALTER TABLE " + table_name + " RENAME TO " + table_name_new);
+          set_modified();
+          fill_from_database();
+        }
+      }
     }
   }
 }
