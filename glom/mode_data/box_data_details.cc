@@ -204,9 +204,7 @@ void Box_Data_Details::fill_from_database()
 
               //Field value:
               Gnome::Gda::Value value = result->get_value_at(i, row_number);
-              g_warning("debug 1");
               m_FlowTable.set_field_value(field, value);
-                g_warning("debug 2");
             }
           }
         }

@@ -1,3 +1,12 @@
+0.8.9:
+
+2004-11-30  Murray Cumming  <murrayc@murrayc_debian>
+
+	* glom/application.cc: offer_new_or_existing(): Respond to cancel of 
+	the new-database dialog.
+	* glom/frame_glom.cc: alert_no_table(): Update the message. See the 
+	TODO.
+
 2004-11-29  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/frame.cc create_database(): Show an informative dialog if the 

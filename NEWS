@@ -9,7 +9,7 @@
 * Show the database title in the window title bar, instead of 
   the filename.
 (Murray Cumming)
-* Fix a internationalization build problem. (Mike Castle)
+* Fix an internationalization build problem. (Mike Castle)
 * Added translations: 
   - Gujarati (Ankit Patel)
   - Punjabi (Amanpreet Singh Alam)

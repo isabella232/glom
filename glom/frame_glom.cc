@@ -239,7 +239,10 @@ void Frame_Glom::alert_no_table()
   //Ask user to choose a table first:
   Gtk::Window* pWindowApp = get_app_window();
   if(pWindowApp)
-    show_ok_dialog(gettext("No database chosen"), gettext("You must choose a database table first.\n Use the Navigation menu, or load a previous document."), *pWindowApp);
+  {
+    //TODO: Obviously this document should have been deleted when the database-creation was cancelled.
+    show_ok_dialog(gettext("No database"), gettext("This document does not specify any database. Maybe the document creation was cancelled before the database could be created."), *pWindowApp);
+  }
 }
 
 void Frame_Glom::show_table(const Glib::ustring& strTableName)
@@ -376,9 +379,7 @@ void Frame_Glom::do_menu_Navigate_Table(bool open_default)
 {
   if(get_document()->get_connection_database().empty())
   {
-    Gtk::Window* pWindowApp = get_app_window();
-    if(pWindowApp)
-      show_ok_dialog(gettext("No database chosen"), gettext("You must choose a database first.\n Use the Navigation|Database menu item, or load a previous document."), *pWindowApp);
+    alert_no_table();
   }
   else
   {

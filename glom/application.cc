@@ -502,7 +502,11 @@ bool App_Glom::offer_new_or_existing()
                 g_warning(" App_Glom::offer_new_or_existing(): db_name is empty.");
                 //And ask again, by going back to the start of the while() loop.
               }
-            } /* if(response) */            
+            } /* if(response) */
+            else
+            {
+              return false; //The user cancelled.
+            }            
           } /* while() */
           
           return true; //File successfully created.
