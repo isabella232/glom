@@ -46,6 +46,11 @@ public:
   Field m_field;
   //TODO: This might occasionally be different on different layouts: Glib::ustring m_title;
 
+  bool get_editable_and_allowed() const;
+
+  //Not saved to the document:
+  bool m_priv_edit;
+
 protected:
   //Glib::ustring m_table_name; //If m_relationship_name is not used.
   Glib::ustring m_relationship_name;

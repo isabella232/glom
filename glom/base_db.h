@@ -65,7 +65,8 @@ public:
    */
   static Glib::ustring util_title_from_string(const Glib::ustring& text);
 
-  virtual Glib::RefPtr<Gnome::Gda::DataModel> Query_execute(const Glib::ustring& strQuery);
+  //This is const because const means not changing this instance, not whether we change the database.
+  virtual Glib::RefPtr<Gnome::Gda::DataModel> Query_execute(const Glib::ustring& strQuery) const;
   void add_standard_groups();
 
 protected:
@@ -74,14 +75,14 @@ protected:
 
   type_vecFields get_fields_for_table(const Glib::ustring& table_name) const;
 
-  type_vecStrings get_database_groups();
-  type_vecStrings get_database_users(const Glib::ustring& group_name = Glib::ustring());
-  Privileges get_table_privileges(const Glib::ustring& group_name, const Glib::ustring& table_name);
+  type_vecStrings get_database_groups() const;
+  type_vecStrings get_database_users(const Glib::ustring& group_name = Glib::ustring()) const;
+  Privileges get_table_privileges(const Glib::ustring& group_name, const Glib::ustring& table_name) const;
   void set_table_privileges(const Glib::ustring& group_name, const Glib::ustring& table_name, const Privileges& privs, bool developer_privs = false);
   Glib::ustring get_user_visible_group_name(const Glib::ustring& group_name) const;
 
-  type_vecStrings get_groups_of_user(const Glib::ustring& user);
-  Privileges get_current_privs(const Glib::ustring& table_name);
+  type_vecStrings get_groups_of_user(const Glib::ustring& user) const;
+  Privileges get_current_privs(const Glib::ustring& table_name) const;
 
   virtual void fill_from_database();
   virtual void fill_end(); //Call this from the end of fill_from_database() overrides.
@@ -101,8 +102,8 @@ protected:
   static type_vecStrings pg_list_separate(const Glib::ustring& str);
 
 
-  virtual void handle_error(const std::exception& ex); //TODO_port: This is probably useless now.
-  virtual bool handle_error();
+  virtual void handle_error(const std::exception& ex) const; //TODO_port: This is probably useless now.
+  virtual bool handle_error() const;
 
 };
 

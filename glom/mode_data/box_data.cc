@@ -247,7 +247,7 @@ void Box_Data::show_layout_dialog()
 
 void Box_Data::on_dialog_layout_hide()
 {
-  //Re-fill view, in case the layout has changed;
+  //Re-fill view, in case the layout has changed:
   fill_from_database();
 }
 
@@ -261,7 +261,7 @@ Box_Data::type_vecLayoutFields Box_Data::get_fields_to_show() const
     return get_table_fields_to_show(m_strTableName);
 }
 
-void Box_Data::get_table_fields_to_show_add_group(const Glib::ustring& table_name, const type_vecFields& all_db_fields, const LayoutGroup& group, Box_Data::type_vecLayoutFields& vecFields) const
+void Box_Data::get_table_fields_to_show_add_group(const Glib::ustring& table_name, const Privileges& table_privs, const type_vecFields& all_db_fields, const LayoutGroup& group, Box_Data::type_vecLayoutFields& vecFields) const
 {
   //g_warning("Box_Data::get_table_fields_to_show_add_group(): table_name=%s, all_db_fields.size()=%d, group.name=%s", table_name.c_str(), all_db_fields.size(), group.get_name().c_str());
 
@@ -294,6 +294,10 @@ void Box_Data::get_table_fields_to_show_add_group(const Glib::ustring& table_nam
             LayoutItem_Field layout_item = *item_field; //TODO_Performance: Reduce the copying.
             layout_item.m_field = field; //Fill in the full field information for later.
 
+            //TODO_Performance: We do this once for each related field, even if there are 2 from the same table:
+            const Privileges privs_related = get_current_privs(relationship.get_to_table());
+            layout_item.m_priv_edit = privs_related.m_edit;
+
             vecFields.push_back(layout_item);
           }
         }
@@ -307,6 +311,10 @@ void Box_Data::get_table_fields_to_show_add_group(const Glib::ustring& table_nam
         {
           LayoutItem_Field layout_item = *item_field; //TODO_Performance: Reduce the copying here.
           layout_item.m_field = *iterFind; //Fill the LayoutItem with the full field information.
+
+          //Prevent editing of the field if the user may not edit this table:
+          layout_item.m_priv_edit = table_privs.m_edit;
+
           vecFields.push_back(layout_item);
         }
       }
@@ -317,7 +325,7 @@ void Box_Data::get_table_fields_to_show_add_group(const Glib::ustring& table_nam
       if(item_group)
       {
         //Recurse:
-        get_table_fields_to_show_add_group(table_name, all_db_fields, *item_group, vecFields);
+        get_table_fields_to_show_add_group(table_name, table_privs, all_db_fields, *item_group, vecFields);
       }
     }
   }
@@ -345,6 +353,8 @@ Box_Data::type_vecLayoutFields Box_Data::get_table_fields_to_show(const Glib::us
   //Get field definitions from the database, with corrections from the document:
   type_vecFields all_fields = get_fields_for_table(table_name);
 
+  const Privileges table_privs = get_current_privs(table_name);
+
   //Get fields that the document says we should show:
   type_vecLayoutFields result;
   const Document_Glom* pDoc = dynamic_cast<const Document_Glom*>(get_document());
@@ -363,6 +373,12 @@ Box_Data::type_vecLayoutFields Box_Data::get_table_fields_to_show(const Glib::us
         LayoutItem_Field layout_item;
         layout_item.set_name(primary_key_field_name);
         layout_item.m_field = all_fields[iPrimaryKey];
+
+        layout_item.set_editable(true); //A sensible default.
+
+        //Prevent editing of the field if the user may not edit this table:
+        layout_item.m_priv_edit = table_privs.m_edit;
+
         result.push_back(layout_item);
       }
 
@@ -376,6 +392,11 @@ Box_Data::type_vecLayoutFields Box_Data::get_table_fields_to_show(const Glib::us
           LayoutItem_Field layout_item;
           layout_item.set_name(iter->get_name());
           layout_item.m_field = field_info;
+
+          layout_item.set_editable(true); //A sensible default.
+
+          //Prevent editing of the field if the user may not edit this table:
+          layout_item.m_priv_edit = table_privs.m_edit;
 
           result.push_back(layout_item);
         }
@@ -393,7 +414,7 @@ Box_Data::type_vecLayoutFields Box_Data::get_table_fields_to_show(const Glib::us
         if(true) //!group.m_hidden)
         {
           //Get the fields:
-          get_table_fields_to_show_add_group(table_name, all_fields, group, result);
+          get_table_fields_to_show_add_group(table_name, table_privs, all_fields, group, result);
         }
       }
     }
@@ -535,7 +556,7 @@ Gnome::Gda::Value Box_Data::get_lookup_value(const Relationship& relationship, c
 Document_Glom::type_mapLayoutGroupSequence Box_Data::get_data_layout_groups(const Glib::ustring& layout)
 {
   Document_Glom::type_mapLayoutGroupSequence layout_groups;
-  
+
   Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
   if(document)
   {
@@ -544,10 +565,12 @@ Document_Glom::type_mapLayoutGroupSequence Box_Data::get_data_layout_groups(cons
       //Get the layout information from the document:
       layout_groups = document->get_data_layout_groups_plus_new_fields(layout, m_strTableName);
 
+      const Privileges table_privs = get_current_privs(m_strTableName);
+
       //Fill in the field information for the fields mentioned in the layout:
       for(Document_Glom::type_mapLayoutGroupSequence::iterator iterGroups = layout_groups.begin(); iterGroups != layout_groups.end(); ++iterGroups)
       {
-        fill_layout_group_field_info(iterGroups->second);
+        fill_layout_group_field_info(iterGroups->second, table_privs);
       }
     }
   }
@@ -555,7 +578,7 @@ Document_Glom::type_mapLayoutGroupSequence Box_Data::get_data_layout_groups(cons
   return layout_groups;
 }
 
-void Box_Data::fill_layout_group_field_info(LayoutGroup& group)
+void Box_Data::fill_layout_group_field_info(LayoutGroup& group, const Privileges& table_privs)
 { 
   const Document_Glom* document = get_document();
 
@@ -581,6 +604,10 @@ void Box_Data::fill_layout_group_field_info(LayoutGroup& group)
           if(test)
           {
             item_field->m_field = field;
+
+            //TODO_Performance: Don't do this repeatedly for the same table.
+            const Privileges privs = get_current_privs(relationship.get_to_table());
+            item_field->m_priv_edit = privs.m_edit;
           }
         }
       }
@@ -592,6 +619,7 @@ void Box_Data::fill_layout_group_field_info(LayoutGroup& group)
         if(found)
         {
           item_field->m_field = field; //TODO_Performance: Just use this as the output arg?
+          item_field->m_priv_edit = table_privs.m_edit;
         }
       }
     }
@@ -601,7 +629,7 @@ void Box_Data::fill_layout_group_field_info(LayoutGroup& group)
       if(item_group) //If it is a group
       {
         //recurse, to fill the fields info in this group:
-        fill_layout_group_field_info(*item_group);
+        fill_layout_group_field_info(*item_group, table_privs);
       }
     }
   }

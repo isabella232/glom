@@ -70,7 +70,7 @@ sharedptr<SharedConnection> Base_DB::connect_to_server()
   return result;
 }
 
-void Base_DB::handle_error(const std::exception& ex)
+void Base_DB::handle_error(const std::exception& ex) const
 {
   Gtk::MessageDialog dialog(gettext("<b>Internal error</b>"), true, Gtk::MESSAGE_WARNING );
   dialog.set_secondary_text(ex.what());
@@ -78,7 +78,7 @@ void Base_DB::handle_error(const std::exception& ex)
   dialog.run();
 }
 
-bool Base_DB::handle_error()
+bool Base_DB::handle_error() const
 {
   sharedptr<SharedConnection> sharedconnection = connect_to_server();
   if(sharedconnection)
@@ -114,7 +114,7 @@ bool Base_DB::handle_error()
 }
 
 
-Glib::RefPtr<Gnome::Gda::DataModel> Base_DB::Query_execute(const Glib::ustring& strQuery)
+Glib::RefPtr<Gnome::Gda::DataModel> Base_DB::Query_execute(const Glib::ustring& strQuery) const
 {
   Glib::RefPtr<Gnome::Gda::DataModel> result;
 
@@ -496,7 +496,7 @@ Glib::ustring Base_DB::util_title_from_string(const Glib::ustring& text)
   return result;
 }
 
-Base_DB::type_vecStrings Base_DB::get_database_groups()
+Base_DB::type_vecStrings Base_DB::get_database_groups() const
 {
   type_vecStrings result;
 
@@ -516,7 +516,7 @@ Base_DB::type_vecStrings Base_DB::get_database_groups()
   return result;
 }
 
-Base_DB::type_vecStrings Base_DB::get_database_users(const Glib::ustring& group_name)
+Base_DB::type_vecStrings Base_DB::get_database_users(const Glib::ustring& group_name) const
 {
   type_vecStrings result;
 
@@ -630,7 +630,7 @@ void Base_DB::set_table_privileges(const Glib::ustring& group_name, const Glib::
   Query_execute(strQuery);
 }
 
-Privileges Base_DB::get_table_privileges(const Glib::ustring& group_name, const Glib::ustring& table_name)
+Privileges Base_DB::get_table_privileges(const Glib::ustring& group_name, const Glib::ustring& table_name) const
 {
   Privileges result;
 
@@ -807,7 +807,7 @@ Glib::ustring Base_DB::get_user_visible_group_name(const Glib::ustring& group_na
   return result;
 }
 
-Base_DB::type_vecStrings Base_DB::get_groups_of_user(const Glib::ustring& user)
+Base_DB::type_vecStrings Base_DB::get_groups_of_user(const Glib::ustring& user) const
 {
   //TODO_Performance
 
@@ -830,7 +830,7 @@ Base_DB::type_vecStrings Base_DB::get_groups_of_user(const Glib::ustring& user)
   return result;
 }
 
-Privileges Base_DB::get_current_privs(const Glib::ustring& table_name)
+Privileges Base_DB::get_current_privs(const Glib::ustring& table_name) const
 {
   //TODO_Performance: There's lots of database access here.
   //We could maybe replace some with the postgres has_table_* function().
@@ -852,7 +852,7 @@ Privileges Base_DB::get_current_privs(const Glib::ustring& table_name)
 
   //Get the "true" rights for any groups that the user is in:
   type_vecStrings groups = get_groups_of_user(current_user);
-  for(type_vecStrings::const_iterator iter =groups.begin(); iter != groups.end(); ++iter)
+  for(type_vecStrings::const_iterator iter = groups.begin(); iter != groups.end(); ++iter)
   {
     Privileges privs = get_table_privileges(*iter, table_name);
 

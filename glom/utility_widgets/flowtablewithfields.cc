@@ -80,7 +80,7 @@ void FlowTableWithFields::add_layout_item_at_position(const LayoutItem& item, co
       if(field->m_field.get_field_info().get_auto_increment())
         set_field_editable(*field, false);
       else
-        set_field_editable(*field, field->get_editable());
+        set_field_editable(*field, field->get_editable_and_allowed());
     }
     else
     {
@@ -612,6 +612,7 @@ void FlowTableWithFields::on_datawidget_layout_item_added(TreeStore_Layout::enum
     bool test = pDataWidget->offer_field_list(m_table_name, layout_item_field);
     if(test)
     {
+      //TODO: privileges.
       add_layout_item_at_position(layout_item_field, iterAfter);
     }
   }

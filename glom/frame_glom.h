@@ -52,7 +52,7 @@ public:
 
   virtual void on_menu_userlevel_Developer(const Glib::RefPtr<Gtk::RadioAction>& action, const Glib::RefPtr<Gtk::RadioAction>& operator_action);
   virtual void on_menu_userlevel_Operator(const Glib::RefPtr<Gtk::RadioAction>& action);
-      
+
   virtual void on_menu_Mode_Data();
   virtual void on_menu_Mode_Find();
 
@@ -85,26 +85,26 @@ public:
 
   //Show the dialog to request the password, and check whether it works.
   virtual bool connection_request_password_and_attempt();
-  
+
   ///Create the database for new documents, showing the Connection dialog
   virtual bool create_database(const Glib::ustring& database_name, bool request_password = true);
-  
+
 protected:
 
   //virtual void set_document(Document_Glom* pDocument); //override
-     
+
   void show_table(const Glib::ustring& strTableName);
   void show_table_title();
   void update_table_in_document_from_database();
-  
+
   virtual void set_mode_widget(Gtk::Widget& widget); //e.g. show the design mode notebook.
   virtual bool set_mode(enumModes mode); //bool indicates that there was a change.
 
   virtual Gtk::Window* get_app_window();
   virtual const Gtk::Window* get_app_window() const;
-  
+
   virtual void alert_no_table();
-  
+
   //Signal handlers:
   virtual void on_Notebook_Find(Glib::ustring strWhereClause);
   virtual void on_userlevel_changed(AppState::userlevels userlevel);
@@ -116,9 +116,9 @@ protected:
   Gtk::Label* m_pLabel_Table;
   Gtk::Label* m_pLabel_Mode;
   Gtk::Label* m_pLabel_userlevel;
-    
+
   PlaceHolder* m_pBox_Mode; //Contains e.g. design mode notebook.
-  
+
   Box_Tables* m_pBox_Tables;
 
   Notebook_Data m_Notebook_Data;

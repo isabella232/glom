@@ -21,12 +21,14 @@
 #include "layoutitem_field.h"
 
 LayoutItem_Field::LayoutItem_Field()
+: m_priv_edit(false)
 {
 }
 
 LayoutItem_Field::LayoutItem_Field(const LayoutItem_Field& src)
 : LayoutItem(src),
   m_field(src.m_field),
+  m_priv_edit(src.m_priv_edit),
   //m_table_name(src.m_table_name),
   m_relationship_name(src.m_relationship_name)
 {
@@ -47,6 +49,8 @@ LayoutItem_Field& LayoutItem_Field::operator=(const LayoutItem_Field& src)
   LayoutItem::operator=(src);
 
   m_field = src.m_field;
+  m_priv_edit = src.m_priv_edit;
+
   //m_table_name = src.m_table_name;
   m_relationship_name = src.m_relationship_name;
 
@@ -80,5 +84,7 @@ void LayoutItem_Field::set_relationship_name(const Glib::ustring& relationship_n
   m_relationship_name = relationship_name;
 }
 
-
-
+bool LayoutItem_Field::get_editable_and_allowed() const
+{
+  return m_editable && m_priv_edit;
+}

@@ -579,7 +579,8 @@ void DbAddDel::construct_specified_columns()
 
   //We must recreate these standard modelcolumns, because we can not reuse them
   if(m_modelcolumn_key)
-    delete m_modelcolumn_key; 
+    delete m_modelcolumn_key;
+
   m_modelcolumn_key = new Gtk::TreeModelColumn<Gnome::Gda::Value>;
 
   //if(m_modelcolumn_placeholder)
@@ -643,14 +644,14 @@ void DbAddDel::construct_specified_columns()
           {
             pCellRendererDerived->append_list_item(*iter);
           }
-          
+
           pCellRenderer = pCellRendererDerived;
 
           break;
         }
-        
+
    */
-   
+
     /* Possible types:
     TYPE_INVALID,
     TYPE_NUMERIC,
@@ -659,7 +660,7 @@ void DbAddDel::construct_specified_columns()
     TYPE_TIME,
     TYPE_BOOLEAN
     */
-  
+
         case(Field::TYPE_BOOLEAN):
         {
           pCellRenderer = Gtk::manage( new Gtk::CellRendererToggle() );
@@ -771,18 +772,20 @@ void DbAddDel::remove_all_columns()
   m_ColumnTypes.clear();
 }
 
-guint DbAddDel::add_column(const LayoutItem_Field& field, bool editable, bool visible)
+guint DbAddDel::add_column(const LayoutItem_Field& field)
 {
   InnerIgnore innerIgnore(this); //Stop on_treeview_columns_changed() from doing anything when it is called just because we add a new column.
 
   DbAddDelColumnInfo column_info;
   column_info.m_field = field;
-  column_info.m_editable = editable;
-  column_info.m_visible = visible;
+  //column_info.m_editable = editable;
+  //column_info.m_visible = visible;
 
   //Make it non-editable if it is auto-generated:
   if(field.m_field.get_field_info().get_auto_increment())
     column_info.m_editable = false;
+  else
+    column_info.m_editable = field.get_editable_and_allowed();
 
   m_ColumnTypes.push_back(column_info);
 

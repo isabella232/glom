@@ -130,7 +130,7 @@ public:
  
   /** @result The index of the new column.
    */
-  virtual guint add_column(const LayoutItem_Field& field, bool editable = true, bool visible = true);
+  virtual guint add_column(const LayoutItem_Field& field);
 
   virtual guint get_columns_count() const;
 

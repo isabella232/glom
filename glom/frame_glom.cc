@@ -44,7 +44,7 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
   refGlade->get_widget_derived("vbox_mode", m_pBox_Mode);
 
   //m_pLabel_Mode->set_text(gettext("No database selected.\n Use the Navigation menu, or open a previous Glom document."));
-  
+
   //Load the Glade file and instantiate its widgets to get the dialog stuff:
 
   try
@@ -58,7 +58,7 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
     std::cerr << ex.what() << std::endl;
   }
 
-  
+
   try
   {
     Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "box_navigation_tables");
@@ -106,8 +106,7 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
   {
     std::cerr << ex.what() << std::endl;
   }
-  
-  
+
 
   m_Mode = MODE_None;
   m_Mode_Previous = MODE_None;
@@ -135,7 +134,7 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
   add_view(m_pDialogConnection); //Also a composite view.
   add_view(&m_Notebook_Data); //Also a composite view.
   add_view(&m_Notebook_Find); //Also a composite view.
-  
+
   on_userlevel_changed(AppState::USERLEVEL_OPERATOR); //A default to show before a document is created or loaded.
   show_all();
 }
@@ -481,7 +480,6 @@ void Frame_Glom::on_userlevel_changed(AppState::userlevels userlevel)
   if(userlevel == AppState::USERLEVEL_DEVELOPER)
     user_level_name = gettext("Developer");
 
-    
   if(m_pLabel_userlevel)
     m_pLabel_userlevel->set_text(user_level_name);
 
@@ -516,22 +514,22 @@ void Frame_Glom::update_table_in_document_from_database()
   //The database should never change without the knowledge of the document anyway, so this should be unnecessary.
 
   //TODO_performance: There are a lot of temporary Field and FieldAttributes instances here, with a lot of string copying.
-  
+
   //For instance, changed field details, or new fields, or removed fields.
   typedef Box_DB_Table::type_vecFields type_vecFields;
 
   //Get the fields information from the database:
   Base_DB::type_vecFields fieldsDatabase = Base_DB::get_fields_for_table_from_database(m_strTableName);
-  
+
   Document_Glom* pDoc = dynamic_cast<const Document_Glom*>(get_document());
   if(pDoc)
   {
     bool document_must_to_be_updated = false;
-    
+
     //Get the fields information from the document.
     //and add to, or update Document's list of fields:
     type_vecFields fieldsDocument = pDoc->get_table_fields(m_strTableName);
-    
+
     for(Base_DB::type_vecFields::const_iterator iter = fieldsDatabase.begin(); iter != fieldsDatabase.end(); ++iter)
     {
       const Field& field_database = *iter;
@@ -580,7 +578,7 @@ void Frame_Glom::update_table_in_document_from_database()
         document_must_to_be_updated = true; //Something changed.
       }
     }
-          
+
     if(document_must_to_be_updated)
       pDoc->set_table_fields(m_strTableName, fieldsActual);
   }
@@ -657,10 +655,15 @@ void Frame_Glom::on_menu_developer_users()
   dialog->set_transient_for(*get_app_window());
 
   add_view(dialog); //Give it access to the document.
-  dialog->load_from_document(); //Updat the UI now that it has the document.
+  dialog->load_from_document(); //Update the UI now that it has the document.
 
   dialog->run();
   delete dialog;
+
+  //Update the Details and List layouts, in case the permissions have changed:
+  //TODO: Also update them somehow if another user has changed them,
+  //or respond to the failed SQL nicely.
+  show_table(m_strTableName);
 }
 
 void Frame_Glom::on_menu_developer_layout()
@@ -773,7 +776,7 @@ bool Frame_Glom::create_database(const Glib::ustring& database_name, bool reques
     catch(const ExceptionConnection& ex)
     {
       g_warning("debug Frame_Glom::create_database() Connection failed.");
- 
+
       return false;
     }
 
@@ -813,13 +816,12 @@ bool Frame_Glom::create_database(const Glib::ustring& database_name, bool reques
       }
     }
   }
- 
+
   return false;
 }
 
 
 
- 
 
 
 
