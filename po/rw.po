@@ -1,0 +1,487 @@
+# translation of glom to Kinyarwanda.
+# Copyright (C) 2005 Free Software Foundation, Inc.
+# This file is distributed under the same license as the glom package.
+# Steve Murphy <murf@e-tools.com>, 2005
+# Steve performed initial rough translation from compendium built from translations provided by the following translators:
+# Philibert Ndandali  <ndandali@yahoo.fr>, 2005.
+# Viateur MUGENZI <muvia1@yahoo.fr>, 2005.
+# Noëlla Mupole <s24211045@tuks.co.za>, 2005.
+# Carole Karema <karemacarole@hotmail.com>, 2005.
+# JEAN BAPTISTE NGENDAHAYO <ngenda_denis@yahoo.co.uk>, 2005.
+# Augustin KIBERWA  <akiberwa@yahoo.co.uk>, 2005.
+# Donatien NSENGIYUMVA <ndonatienuk@yahoo.co.uk>, 2005..
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: glom HEAD\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2005-04-01 13:50-0700\n"
+"PO-Revision-Date: 2005-03-31 20:55-0700\n"
+"Last-Translator: Steve Murphy <murf@e-tools.com>\n"
+"Language-Team: Kinyarwanda <translation-team-rw@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"ULL NAME <EMAIL@ADDRESS>\n"
+
+#: glom/glom.glade.h:1
+#, fuzzy
+msgid "<b>Connection</b>"
+msgstr "<B B"
+
+#: glom/glom.glade.h:2
+#, fuzzy
+msgid "<b>Field Definitions</b>"
+msgstr "<B B"
+
+#: glom/glom.glade.h:3
+#, fuzzy
+msgid "<b>Fields</b>"
+msgstr "<B B"
+
+#: glom/glom.glade.h:4
+#, fuzzy
+msgid "<b>Group:</b>"
+msgstr "<b> Itsinda</ b>"
+
+#: glom/glom.glade.h:5
+#, fuzzy
+msgid "<b>Groups</b>"
+msgstr "<B B"
+
+#: glom/glom.glade.h:6
+#, fuzzy
+msgid "<b>Mode:</b>"
+msgstr "<B B"
+
+#: glom/glom.glade.h:7
+#, fuzzy
+msgid "<b>Numeric Formatting</b>"
+msgstr "<B B"
+
+#: glom/glom.glade.h:8
+#, fuzzy
+msgid "<b>Relationship:</b>"
+msgstr "<B B"
+
+#: glom/glom.glade.h:9
+#, fuzzy
+msgid "<b>Select Field</b>"
+msgstr "<B B"
+
+#: glom/glom.glade.h:10
+#, fuzzy
+msgid "<b>Select Relationship</b>"
+msgstr "<B B"
+
+#: glom/glom.glade.h:11
+#, fuzzy
+msgid "<b>Table:</b>"
+msgstr "<B B"
+
+#: glom/glom.glade.h:12
+#, fuzzy
+msgid "<b>Tables in database</b>"
+msgstr "<B in Ububikoshingiro B"
+
+#: glom/glom.glade.h:13
+#, fuzzy
+msgid "<b>Tables</b>"
+msgstr "<B B"
+
+#: glom/glom.glade.h:14
+#, fuzzy
+msgid "<b>Title:</b>"
+msgstr "<B B"
+
+#: glom/glom.glade.h:15
+#, fuzzy
+msgid "<b>User Level:</b>"
+msgstr "<B B"
+
+#: glom/glom.glade.h:16
+msgid "<b>User</b>"
+msgstr "<b>Ukoresha</b>"
+
+#: glom/glom.glade.h:17
+#, fuzzy
+msgid "<b>Users</b>"
+msgstr "<B B"
+
+#: glom/glom.glade.h:18
+#, fuzzy
+msgid "<b>def calculate_field_value():</b>"
+msgstr "<B B"
+
+#: glom/glom.glade.h:19
+#, fuzzy
+msgid ""
+"<span weight=\"bold\" size=\"larger\">Add User To Group</span>\n"
+"\n"
+"Which user should be added to this group?"
+msgstr ""
+"<Uburemere UTSINDAGIYE Ingano Kinini Ukoresha: Kyongewe Kuri iyi Itsinda"
+
+#: glom/glom.glade.h:22
+#, fuzzy
+msgid ""
+"<span weight=\"bold\" size=\"larger\">Connect to Server</span>\n"
+"\n"
+"Please enter the connection details for your database server."
+msgstr ""
+"<Uburemere UTSINDAGIYE Ingano Kinini Kuri Injiza i Ukwihuza Birambuye "
+"kugirango Ububikoshingiro Seriveri"
+
+#: glom/glom.glade.h:25
+#, fuzzy
+msgid ""
+"<span weight=\"bold\" size=\"larger\">Connection Failed</span>\n"
+"\n"
+"Glom could not connect to the database server. Maybe you entered an "
+"incorrect user name or password, or maybe the postgres database server is "
+"not running."
+msgstr ""
+"<Uburemere UTSINDAGIYE Ingano Kinini OYA Kwihuza Kuri i Ububikoshingiro "
+"Seriveri Ukoresha: Izina: Cyangwa Ijambobanga... Cyangwa i Ububikoshingiro "
+"Seriveri ni OYA"
+
+#: glom/glom.glade.h:28
+#, fuzzy
+msgid ""
+"<span weight=\"bold\" size=\"larger\">Create Group</span>\n"
+"\n"
+"What name should this group have?"
+msgstr "<Uburemere UTSINDAGIYE Ingano Kinini Izina: iyi Itsinda"
+
+#: glom/glom.glade.h:31
+#, fuzzy
+msgid ""
+"<span weight=\"bold\" size=\"larger\">Database creation failed</span>\n"
+"\n"
+"Glom could not create the new database. Maybe you do not have the necessary "
+"access rights. Please contact your system administrator."
+msgstr "<Shakishauyoboraurwungano."
+
+#: glom/glom.glade.h:34
+#, fuzzy
+msgid ""
+"<span weight=\"bold\" size=\"larger\">Database does not exist</span>\n"
+"\n"
+"The database does not yet exist on the database server. Would you like to "
+"create the database with an empty structure?"
+msgstr ""
+"<Uburemere UTSINDAGIYE Ingano Kinini OYA Ububikoshingiro OYA ku i "
+"Ububikoshingiro Seriveri nka Kuri Kurema i Ububikoshingiro Na: ubusa "
+"Imiterere"
+
+#: glom/glom.glade.h:37
+#, fuzzy
+msgid ""
+"<span weight=\"bold\" size=\"larger\">Invalid format</span>\n"
+"\n"
+"The data in the field was not recognised. Please try to correct the data or "
+"revert to the previous value. Here is an example of correctly-formatted data "
+"for this field.\n"
+msgstr ""
+"<Uburemere UTSINDAGIYE Ingano Kinini Imiterere Ibyatanzwe in i Umwanya OYA "
+"Kuri i Ibyatanzwe Cyangwa Kugaruza Kuri i Ibanjirije Agaciro ni Urugero Bya "
+"Byahanaguwe Ibyatanzwe kugirango iyi Umwanya"
+
+#: glom/glom.glade.h:41
+#, fuzzy
+msgid ""
+"<span weight=\"bold\" size=\"larger\">New Database</span>\n"
+"\n"
+"Please choose a name and title for the new database. The name should not "
+"contain any spaces."
+msgstr ""
+"<Uburemere UTSINDAGIYE Ingano Kinini Guhitamo a Izina: Na Umutwe kugirango i "
+"Gishya Ububikoshingiro Izina: OYA Imyanya"
+
+#: glom/glom.glade.h:44
+#, fuzzy
+msgid ""
+"<span weight=\"bold\" size=\"larger\">Open existing document, or create new "
+"document</span>\n"
+"\n"
+"Would you like to open an existing document, to connect to an existing "
+"database?\n"
+"\n"
+"Or would you like to create a new document, to design a new database?\n"
+msgstr ""
+"<Uburemere UTSINDAGIYE Ingano Kinini Inyandiko Cyangwa Kurema Gishya "
+"Inyandiko nka Kuri Gufungura Inyandiko Kuri Kwihuza Kuri Ububikoshingiro nka "
+"Kuri Kurema a Gishya Inyandiko Kuri Ihangagishusho a Gishya Ububikoshingiro"
+
+#: glom/glom.glade.h:50
+#, fuzzy
+msgid ""
+"<span weight=\"bold\" size=\"larger\">Title</span>\n"
+"\n"
+"Information text.\n"
+msgstr "<Uburemere UTSINDAGIYE Ingano Kinini Umwandiko"
+
+#: glom/glom.glade.h:54
+msgid "Add Related"
+msgstr ""
+
+#: glom/glom.glade.h:55
+#, fuzzy
+msgid "Add _Group"
+msgstr "Ongera itsinda"
+
+#: glom/glom.glade.h:56
+msgid "Allow Editing"
+msgstr ""
+
+#: glom/glom.glade.h:57
+#, fuzzy
+msgid "Auto-increment"
+msgstr "Iyongeragaciro"
+
+#: glom/glom.glade.h:58
+#, fuzzy
+msgid "Calculate value"
+msgstr "Agaciro"
+
+#: glom/glom.glade.h:59
+msgid "Choose User"
+msgstr ""
+
+#: glom/glom.glade.h:60
+#, fuzzy
+msgid "Confirm Password"
+msgstr "Kwemeza ijambobanga"
+
+#: glom/glom.glade.h:61
+msgid "Connect"
+msgstr "Kwihuza"
+
+# sch/source\ui\dlg\dlggraut.src:DLG_CHART_WIZ.PB_EXECUTE.text
+#: glom/glom.glade.h:62
+msgid "Create"
+msgstr "Kurema"
+
+# wizards/source\formwizard\dbwizres.src:RID_DB_GROUP_WIZARD_START_+_2.text
+#: glom/glom.glade.h:63
+msgid "Create Group"
+msgstr "Kurema Itsinda"
+
+#: glom/glom.glade.h:64
+#, fuzzy
+msgid "Currency Symbol"
+msgstr "Ikimenyetso cy'ifaranga"
+
+#: glom/glom.glade.h:65
+msgid "Data"
+msgstr "Ibyatanzwe"
+
+# #-#-#-#-#  officecfg.pot (PACKAGE VERSION)  #-#-#-#-#
+# officecfg/registry\schema\org\openoffice\Office\Writer.xcs:....Label.Inscription.Database.text
+# #-#-#-#-#  officecfg.pot (PACKAGE VERSION)  #-#-#-#-#
+# officecfg/registry\schema\org\openoffice\Office\Writer.xcs:....Envelope.Inscription.Database.text
+#: glom/glom.glade.h:66
+msgid "Database"
+msgstr "Ububikoshingiro"
+
+#: glom/glom.glade.h:67
+#, fuzzy
+msgid "Decimal Places"
+msgstr "Ahagenewe ibinyacumi"
+
+#: glom/glom.glade.h:68
+#, fuzzy
+msgid "Default Value"
+msgstr "Agaciro mburabuzi"
+
+#: glom/glom.glade.h:69
+msgid "Details Layout"
+msgstr ""
+
+# #-#-#-#-#  dbaccess.pot (PACKAGE VERSION)  #-#-#-#-#
+# #-#-#-#-#  dbaccess.pot (PACKAGE VERSION)  #-#-#-#-#
+# #-#-#-#-#  dbaccess.pot (PACKAGE VERSION)  #-#-#-#-#
+# #-#-#-#-#  dbaccess.pot (PACKAGE VERSION)  #-#-#-#-#
+#: glom/glom.glade.h:70
+msgid "Edit"
+msgstr "Kwandika"
+
+#: glom/glom.glade.h:71
+#, fuzzy
+msgid "Extra"
+msgstr "Birenga"
+
+# wizards/source\formwizard\dbwizres.src:RID_DB_REPORT_WIZARD_START_+_71.text
+#: glom/glom.glade.h:72
+msgid "Field"
+msgstr "Umwanya"
+
+#: glom/glom.glade.h:73
+msgid "Field Calculation"
+msgstr ""
+
+#: glom/glom.glade.h:74
+msgid "Field Definition"
+msgstr ""
+
+#: glom/glom.glade.h:75
+msgid "Field Definitions"
+msgstr ""
+
+#: glom/glom.glade.h:76
+msgid "Glom"
+msgstr ""
+
+# #-#-#-#-#  sc.pot (PACKAGE VERSION)  #-#-#-#-#
+# sc/source\ui\src\globstr.src:RID_GLOBSTR.STR_UNDO_MAKEOUTLINE.text
+# #-#-#-#-#  sc.pot (PACKAGE VERSION)  #-#-#-#-#
+# sc/source\ui\src\miscdlgs.src:RID_SCDLG_GROUP.text
+#: glom/glom.glade.h:77
+msgid "Group"
+msgstr "Itsinda"
+
+#: glom/glom.glade.h:78
+#, fuzzy
+msgid "Group Name"
+msgstr "Izina ry'Itsinda:"
+
+# sc/source\ui\src\subtdlg.src:RID_SCPAGE_SUBT_OPTIONS.FL_GROUP.text
+#: glom/glom.glade.h:79
+msgid "Groups"
+msgstr "Amatsinda"
+
+# svx/source\options\optinet2.src:RID_SVXPAGE_INET_SCRIPTING.LB_NETACCESS.3.text
+#: glom/glom.glade.h:80
+msgid "Host"
+msgstr "Ubuturo"
+
+#: glom/glom.glade.h:81
+#, fuzzy
+msgid ""
+"If this is not selected then a thousands separator will not be used, even if "
+"your locale would normally use one. If it is selected then a thousands "
+"separator will be used only if your locale normally uses one."
+msgstr ""
+"iyi ni OYA Byahiswemo Hanyuma a Mutandukanya OYA ATARIIGIHARWE NIBA Umwanya "
+"Gukoresha ni Byahiswemo Hanyuma a Mutandukanya NIBA Umwanya"
+
+#: glom/glom.glade.h:82
+msgid "List Layout"
+msgstr ""
+
+#: glom/glom.glade.h:83
+#, fuzzy
+msgid "Lookup value when a field changes."
+msgstr "Agaciro Ryari: a Umwanya Amahinduka"
+
+#: glom/glom.glade.h:84
+msgid "Name"
+msgstr "Izina"
+
+# sw/source\ui\wizard\wizbmp.src:STR_Lgo_NoSelect.text
+#: glom/glom.glade.h:85
+msgid "None selected"
+msgstr " Nta nakimwe cyatoranyijwe"
+
+# desktop/source\app\ssodlg.src:DLG_SSOLOGIN.FT_PASSWORD.text
+#: glom/glom.glade.h:86
+msgid "Password"
+msgstr "Ijambobanga"
+
+# #-#-#-#-#  dbaccess.pot (PACKAGE VERSION)  #-#-#-#-#
+# #-#-#-#-#  dbaccess.pot (PACKAGE VERSION)  #-#-#-#-#
+#: glom/glom.glade.h:87
+msgid "Primary Key"
+msgstr "Urufunguzo shingiro"
+
+#: glom/glom.glade.h:88
+msgid "Related Records Layout"
+msgstr ""
+
+#: glom/glom.glade.h:89
+msgid "Relationship"
+msgstr ""
+
+#: glom/glom.glade.h:90
+msgid "Revert"
+msgstr "Kugaruza"
+
+# basctl/source\basicide\tbxctl.src:RID_TOOLBOX.SID_INSERT_SELECT.text
+#: glom/glom.glade.h:91
+msgid "Select"
+msgstr "Guhitamo"
+
+#: glom/glom.glade.h:92
+msgid "Select Field"
+msgstr ""
+
+#: glom/glom.glade.h:93
+msgid "Select Relationship"
+msgstr ""
+
+#: glom/glom.glade.h:94
+#, fuzzy
+msgid "Show hidden tables"
+msgstr "gihishwe Imbonerahamwe"
+
+# #-#-#-#-#  dbaccess.pot (PACKAGE VERSION)  #-#-#-#-#
+# #-#-#-#-#  dbaccess.pot (PACKAGE VERSION)  #-#-#-#-#
+#: glom/glom.glade.h:95
+#, fuzzy
+msgid "Table:"
+msgstr "imbonerahamwe#"
+
+# sc/source\ui\src\scfuncs.src:RID_SC_FUNCTION_DESCRIPTIONS1.SC_OPCODE_IF.2.text
+#: glom/glom.glade.h:96
+msgid "Test"
+msgstr "Igerageza"
+
+#: glom/glom.glade.h:97
+#, fuzzy
+msgid ""
+"The field value will be the return value of the python function, which you "
+"implement here."
+msgstr "Umwanya Agaciro i Garuka Agaciro Bya i Umumaro"
+
+#: glom/glom.glade.h:98
+msgid "Title"
+msgstr "Umutwe"
+
+# filter/source\xsltdialog\xmlfilterdialogstrings.src:STR_COLUMN_HEADER_TYPE.text
+#: glom/glom.glade.h:99
+msgid "Type"
+msgstr "Ubwoko"
+
+#: glom/glom.glade.h:100
+#, fuzzy
+msgid "Unique"
+msgstr "Cyo nyine"
+
+#: glom/glom.glade.h:101
+#, fuzzy
+msgid "Use 1000s separator"
+msgstr "Mutandukanya"
+
+# #-#-#-#-#  svx.pot (PACKAGE VERSION)  #-#-#-#-#
+# svx/source\dialog\chardlg.src:RID_SVXSTR_COLOR_USER.text
+# #-#-#-#-#  svx.pot (PACKAGE VERSION)  #-#-#-#-#
+# svx/source\dialog\page.src:RID_SVXSTRARY_PAPERSIZE_STD.13.text
+# #-#-#-#-#  svx.pot (PACKAGE VERSION)  #-#-#-#-#
+# svx/source\dialog\page.src:RID_SVXSTRARY_PAPERSIZE_DRAW.16.text
+#: glom/glom.glade.h:102
+msgid "User"
+msgstr "Ukoresha"
+
+#: glom/glom.glade.h:103
+msgid "Users"
+msgstr ""
+
+#: glom/glom.glade.h:104
+#, fuzzy
+msgid "example data format"
+msgstr "Urugero Ibyatanzwe Imiterere"
+
+#: glom/glom.glade.h:105
+#, fuzzy
+msgid "table name"
+msgstr "Izina ry'imbonerahamwe"
