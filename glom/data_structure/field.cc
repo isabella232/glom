@@ -53,6 +53,8 @@ Field& Field::operator=(const Field& src)
   m_strLookupRelationship = src.m_strLookupRelationship;
   m_strLookupField = src.m_strLookupField;
 
+  m_calculation = src.m_calculation;
+
   return *this;
 }
 
@@ -66,6 +68,8 @@ bool Field::operator==(const Field& src) const
   bResult = bResult && (m_strLookupRelationship == src.m_strLookupRelationship);
   bResult = bResult && (m_strLookupField == src.m_strLookupField);
 
+  bResult = bResult && (m_calculation == src.m_calculation);
+  
   return bResult;
 }
 
@@ -395,6 +399,16 @@ Field::glom_field_type Field::get_type_for_name(const Glib::ustring& glom_type)
   }
 
   return result;
+}
+
+Glib::ustring Field::get_calculation() const
+{
+  return m_calculation;
+}
+
+void Field::set_calculation(const Glib::ustring& calculation)
+{
+  m_calculation = calculation;
 }
 
   

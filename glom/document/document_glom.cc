@@ -374,7 +374,7 @@ Document_Glom::type_mapLayoutGroupSequence Document_Glom::get_data_layout_groups
   LayoutGroup* pGroupOthers = 0;
   for(type_mapLayoutGroupSequence::iterator iterGroups = result.begin(); iterGroups != result.end(); ++iterGroups)
   {
-    if(iterGroups->second.m_group_name == "others")
+    if(iterGroups->second.m_others)
       pGroupOthers = &(iterGroups->second);
   }
 
@@ -389,6 +389,7 @@ Document_Glom::type_mapLayoutGroupSequence Document_Glom::get_data_layout_groups
 
     LayoutGroup others;
     others.m_group_name = "others";
+    others.m_others = true;
     result[sequence] = others;
     pGroupOthers = &(result[sequence]);
   }
@@ -576,7 +577,7 @@ void Document_Glom::set_modified(bool value)
 
 bool Document_Glom::load_after()
 {
-  bool result = Bakery::Document_XML::load_after();	
+  bool result = Bakery::Document_XML::load_after();  
 
   if(result)
   {
@@ -644,7 +645,7 @@ bool Document_Glom::load_after()
                 field_info.set_default_value( Gnome::Gda::Value (get_node_attribute_value(nodeChild, "default_value")) );
                  
                 field.set_field_info(field_info);
-                
+
                 //Get lookup information, if present.
                 xmlpp::Element* nodeLookup = get_node_child_named(nodeChild, "field_lookup");
                 if(nodeLookup)
@@ -652,6 +653,8 @@ bool Document_Glom::load_after()
                   field.set_lookup_relationship( get_node_attribute_value(nodeLookup, "relationship") );
                   field.set_lookup_field( get_node_attribute_value(nodeLookup, "field") );
                 }
+
+                field.set_calculation( get_node_attribute_value(nodeLookup, "calculation") );
                 
                 //Field Type:
                 const Glib::ustring field_type = get_node_attribute_value(nodeChild, "type");
@@ -730,6 +733,7 @@ bool Document_Glom::load_after()
                         //Get the group details:
                         group.m_group_name = group_name;
                         group.m_title = get_node_attribute_value(node, "title");
+                        group.m_others = get_node_attribute_value_as_bool(node, "others");
                       
                         //Get the fields:
                         xmlpp::Node::NodeList listNodesFields = node->get_children("data_layout_item");
@@ -760,9 +764,9 @@ bool Document_Glom::load_after()
             }
           } //if(nodeDataLayouts)
 
-		    }
-		  }
-	  }
+        }
+      }
+    }
   }
   
   return result;
@@ -815,6 +819,8 @@ bool Document_Glom::save_before()
           set_node_attribute_value_as_bool(elemField, "auto_increment", field_info.get_auto_increment());
           set_node_attribute_value(elemField, "default_value", field_info.get_default_value().to_string());
 
+          set_node_attribute_value(elemField, "calculation", field.get_calculation());
+
           Glib::ustring field_type;
           Field::type_map_type_names::const_iterator iterTypes = type_names.find( field.get_glom_type() );
           if(iterTypes != type_names.end())
@@ -865,6 +871,7 @@ bool Document_Glom::save_before()
             xmlpp::Element* child = nodeGroups->add_child("data_layout_group");
             child->set_attribute("name", iterGroups->second.m_group_name);
             child->set_attribute("title", iterGroups->second.m_title);
+            set_node_attribute_value_as_bool(child, "others", iterGroups->second.m_others);
 
             set_node_attribute_value_as_decimal(child, "sequence", iterGroups->second.m_sequence);
 
@@ -885,5 +892,5 @@ bool Document_Glom::save_before()
     } //for m_tables
   }
   
-  return Bakery::Document_XML::save_before();	
+  return Bakery::Document_XML::save_before();  
 }

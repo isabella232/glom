@@ -50,7 +50,7 @@ App_Glom::~App_Glom()
 
 }
 
-void App_Glom::init()
+void App_Glom::init(const Glib::ustring& document_uri)
 {
   type_vecStrings vecAuthors;
   vecAuthors.push_back("Murray Cumming <murrayc@murrayc.com>");
@@ -60,14 +60,24 @@ void App_Glom::init()
 
   //m_pFrame->set_shadow_type(Gtk::SHADOW_IN);
 
-  Document_Glom* pDocument = static_cast<Document_Glom*>(get_document());
-  if(pDocument->get_connection_database().empty()) //If it is a new (default) document.
-  {
-    offer_new_or_existing();
-  }
-  
   //Hide the toolbar because it doesn't contain anything useful for this app.
   m_HandleBox_Toolbar.hide();
+  
+  if(document_uri.empty())
+  {
+    Document_Glom* pDocument = static_cast<Document_Glom*>(get_document());
+    if(pDocument->get_connection_database().empty()) //If it is a new (default) document.
+    {
+      offer_new_or_existing();
+    }
+  }
+  else
+  {
+    bool test = open_document(document_uri);
+    if(!test)
+      offer_new_or_existing();
+  }
+  
   
   //show_all();
 }
@@ -166,6 +176,10 @@ void App_Glom::init_menus()
   m_listDeveloperActions.push_back(action);
   m_refActionGroup_Others->add(action, sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_layout));
 
+  action = Gtk::Action::create("GlomAction_Menu_Developer_RecreateStructure", gettext("_Recreate Database Structure"));
+  m_listDeveloperActions.push_back(action);
+  m_refActionGroup_Others->add(action, sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_recreate_structure));
+
   
   m_refUIManager->insert_action_group(m_refActionGroup_Others);
 
@@ -191,6 +205,8 @@ void App_Glom::init_menus()
     "        <menuitem action='GlomAction_Menu_Developer_Relationships' />"    
     "        <menuitem action='GlomAction_Menu_Developer_Layout' />"
     "        <menuitem action='GlomAction_Menu_Developer_Users' />"
+    "        <separator /> "
+    "        <menuitem action='GlomAction_Menu_Developer_RecreateStructure' />"
     "      </menu>"
     "    </placeholder>"
     "  </menubar>"
@@ -206,12 +222,14 @@ void App_Glom::init_menus()
 
 void App_Glom::on_menu_userlevel_developer()
 {
-  m_pFrame->on_menu_userlevel_Developer(m_action_menu_userlevel_developer);
+  if(m_pFrame)
+    m_pFrame->on_menu_userlevel_Developer(m_action_menu_userlevel_developer);
 }
 
 void App_Glom::on_menu_userlevel_operator()
 {
-  m_pFrame->on_menu_userlevel_Developer(m_action_menu_userlevel_operator);
+  if(m_pFrame)
+    m_pFrame->on_menu_userlevel_Operator(m_action_menu_userlevel_operator);
 }
 
 Bakery::App* App_Glom::new_instance() //Override

@@ -1,5 +1,13 @@
 2004-07-05  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/main.cc: Accept a URI on the command line, and use it
+	to open an existing document if any.
+	* glom/application.[h|cc]: Add URI parameter to init(), and use it.
+	* glom/data_structure/layoutgroup.[h|cc]: Add boolean m_others 
+	member variable and use it instead of checking the group name.
+
+2004-07-05  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/navigation/box_databases.cc: Use the UNIX user name by default, 
 	because it is often the same as the postgres user name.
 

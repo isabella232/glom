@@ -3,18 +3,13 @@ Large, independent, tasks:
 - Add ability to have calculation fields, if Postgres can do that.
 - Add ability to translate table titles and field titles.
 
-Document/Database linking:
--  Offer only "existing" document when not in developer mode.
-- Automatically save changes (when in developer mode) without asking.
-
 User Level:
 - Do not allow developer mode if the postgres permissions are low.
 
 
 
 Data:
-- Properly handle NULL values in non-text fields. (maybe done already)
-- Details: Use groups of fields.
+- Properly handle NULL values in non-text fields.
 
 
 
@@ -30,6 +25,7 @@ Bugs:
 
 Fields:
 - Indexed [X].
+- boolean
 - View fields from relationship.
 - Choices - static lists and from relationships.
   style:

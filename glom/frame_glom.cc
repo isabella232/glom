@@ -277,7 +277,7 @@ void Frame_Glom::show_table(const Glib::ustring& strTableName)
 
 void Frame_Glom::on_menu_userlevel_Developer(const Glib::RefPtr<Gtk::RadioAction>& action)
 {
-  if(action->get_active())
+  if(action && action->get_active())
   {
     Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
     if(document)
@@ -291,7 +291,7 @@ void Frame_Glom::on_menu_userlevel_Developer(const Glib::RefPtr<Gtk::RadioAction
 
 void Frame_Glom::on_menu_userlevel_Operator(const Glib::RefPtr<Gtk::RadioAction>& action)
 {
-  if(action->get_active())
+  if(action &&  action->get_active())
   {
     Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
     if(document)
@@ -621,6 +621,11 @@ void Frame_Glom::on_developer_dialog_hide()
   //The dababase structure might have changed, so refresh the data view:
   show_table(m_strTableName);
 }
+
+void Frame_Glom::on_menu_developer_recreate_structure()
+{
+}
+ 
 
 
 

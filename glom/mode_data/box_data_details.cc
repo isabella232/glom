@@ -133,7 +133,7 @@ void Box_Data_Details::fill_from_database_layout()
     {
       const LayoutGroup& group = iter->second;
   
-      if(group.m_group_name != "others")
+      if(!group.m_others)
       {
         FlowTableWithFields::type_map_field_sequence fields;
 

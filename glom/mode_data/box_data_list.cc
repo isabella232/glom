@@ -254,6 +254,7 @@ void Box_Data_List::on_adddel_user_reordered_columns()
   {
     LayoutGroup group;
     group.m_group_name = "others";
+    group.m_others = true;
     
     AddDel::type_vecStrings vec_field_names = m_AddDel.get_columns_order();
 

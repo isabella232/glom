@@ -21,6 +21,10 @@
 //#include <gnome.h>
 #include <gtkmm/main.h>
 #include <libgnome/gnome-init.h> // For gnome_program_init().
+
+//We use Python for calculated fields.
+//#include <Python.h>
+
 #include "config.h" //For VERSION.
 
 #include "application.h"
@@ -36,6 +40,20 @@ main(int argc, char* argv[])
 
   Gnome::Gda::init("glom", VERSION, argc, argv);
 
+  //Get command-line parameters, if any:
+  Glib::ustring input_uri;
+  if(argc > 1 )
+  {
+    input_uri = argv[1];
+
+    //Ignore arguements starting with "--", or "-".
+    if(input_uri.size() && input_uri[0] == '-')
+      input_uri = Glib::ustring();
+  }
+
+  //We use python for calculated-fields:
+  //PyInitialize();
+  
   try
   {
     //Initialize gnome_program, so that we can use gnome_help_display().    
@@ -51,7 +69,9 @@ main(int argc, char* argv[])
     refXml->get_widget_derived("window_main", pApp_Glom);
 
     pApp_Glom->set_command_line_args(argc, argv);
-    pApp_Glom->init(); //Sets it up and shows it.
+
+    g_warning("file: %s", input_uri.c_str());
+    pApp_Glom->init(input_uri); //Sets it up and shows it.
 
     Gtk::Main::run();
   }
@@ -60,6 +80,9 @@ main(int argc, char* argv[])
     std::cerr << "Glom: exception: \n" << ex.what() << std::endl;
   }
 
+  //We use python for calculated-fields:
+  //PyFinalize();
+  
   return 0;
 }
 

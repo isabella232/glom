@@ -109,17 +109,20 @@ public:
 
   /** Escape the string so that it can be used in a SQL command.
    */
- //Glib::ustring sql(const Glib::ustring& str) const;
+  //Glib::ustring sql(const Glib::ustring& str) const;
 
   /** Escape the value so that it can be used in a SQL command.
    */
- Glib::ustring sql(const Gnome::Gda::Value& value) const;
+  Glib::ustring sql(const Gnome::Gda::Value& value) const;
 
   /** Get text to show to the user.
    */
   Glib::ustring value_to_string(const Gnome::Gda::Value& value) const;
 
 
+  Glib::ustring get_calculation() const;
+  void set_calculation(const Glib::ustring& calculation);
+  
   typedef std::map<glom_field_type, Glib::ustring> type_map_type_names;
   static type_map_type_names get_type_names();
   static type_map_type_names get_usable_type_names();
@@ -129,7 +132,8 @@ public:
 
   static glom_field_type get_glom_type_for_gda_type(Gnome::Gda::ValueType gda_type);
   static Gnome::Gda::ValueType get_gda_type_for_glom_type(Field::glom_field_type glom_type);
-      
+
+
 protected:
 
   static void init_map();
@@ -151,6 +155,7 @@ protected:
   Gnome::Gda::Value m_data; //Not used much.
   Glib::ustring m_strTitle;
   Glib::ustring m_strLookupRelationship, m_strLookupField;
+  Glib::ustring m_calculation;
 };
 
 #endif //GLOM_DATASTRUCTURE_FIELD_H

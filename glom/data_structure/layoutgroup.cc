@@ -21,7 +21,8 @@
 #include "layoutgroup.h"
 
 LayoutGroup::LayoutGroup()
-: m_sequence(0)
+: m_sequence(0),
+  m_others(false)
 {
 }
 
@@ -29,6 +30,7 @@ LayoutGroup::LayoutGroup(const LayoutGroup& src)
 : m_group_name(src.m_group_name),
   m_title(src.m_title),
   m_sequence(src.m_sequence),
+  m_others(src.m_others),
   m_map_items(src.m_map_items)
 {
 }
@@ -38,6 +40,7 @@ LayoutGroup& LayoutGroup::operator=(const LayoutGroup& src)
   m_group_name = src.m_group_name;
   m_title = src.m_title;
   m_sequence = src.m_sequence;
+  m_others = src.m_others;
   m_map_items = src.m_map_items;
 
   return *this;

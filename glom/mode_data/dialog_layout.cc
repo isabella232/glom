@@ -180,6 +180,7 @@ void Dialog_Layout::set_document(const Glib::ustring& layout, Document_Glom* doc
     {
       LayoutGroup group;
       group.m_group_name = "others";
+      group.m_others = true;
 
       guint field_sequence = 1; //0 means no sequence
       for(type_vecFields::const_iterator iter = table_fields.begin(); iter != table_fields.end(); ++iter)
@@ -209,12 +210,15 @@ void Dialog_Layout::set_document(const Glib::ustring& layout, Document_Glom* doc
       const LayoutGroup& group = iter->second;
 
       //Add the group:
-      Gtk::TreeModel::iterator iterTreeGroups = m_model_groups->append();
-      Gtk::TreeModel::Row rowGroups = *iterTreeGroups;
-      rowGroups[m_ColumnsGroups.m_col_name] = group.m_group_name;
-      rowGroups[m_ColumnsGroups.m_col_title] = group.m_title;
-      rowGroups[m_ColumnsGroups.m_col_sequence] = group_sequence;
-      ++group_sequence;
+      if(!group.m_others)
+      {
+        Gtk::TreeModel::iterator iterTreeGroups = m_model_groups->append();
+        Gtk::TreeModel::Row rowGroups = *iterTreeGroups;
+        rowGroups[m_ColumnsGroups.m_col_name] = group.m_group_name;
+        rowGroups[m_ColumnsGroups.m_col_title] = group.m_title;
+        rowGroups[m_ColumnsGroups.m_col_sequence] = group_sequence;
+        ++group_sequence;
+      }
          
       //Add the group's fields:
       for(LayoutGroup::type_map_items::const_iterator iter = group.m_map_items.begin(); iter != group.m_map_items.end(); ++iter)
@@ -228,7 +232,9 @@ void Dialog_Layout::set_document(const Glib::ustring& layout, Document_Glom* doc
         row[m_ColumnsFields.m_col_sequence] = field_sequence;
         ++field_sequence;
 
-        row[m_ColumnsFields.m_col_group] = group.m_group_name; //item.m_group;
+        if(!group.m_others)
+          row[m_ColumnsFields.m_col_group] = group.m_group_name; //item.m_group;
+          
         row[m_ColumnsFields.m_col_hidden] = item.m_hidden; 
       }
 
@@ -410,7 +416,18 @@ void Dialog_Layout::on_button_group_add()
 
 void Dialog_Layout::on_button_group_delete()
 {
-  fill_cellrenderer_groups();
+  Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = m_treeview_groups->get_selection();
+  if(refTreeSelection)
+  {
+    Gtk::TreeModel::iterator iter = refTreeSelection->get_selected();
+    if(iter)
+    {
+      m_model_groups->erase(iter);
+ 
+      fill_cellrenderer_groups();
+      m_modified = true;
+    }
+  }
 }
   
 void Dialog_Layout::on_button_group_up()
@@ -558,6 +575,32 @@ void Dialog_Layout::save_to_document()
         group.m_sequence = group_sequence;
         mapGroups[group_sequence] = group;
         ++group_sequence;
+      }
+    }
+
+    //Add any fields that have no group:
+    guint field_sequence = 1; //0 means no sequence
+    for(Gtk::TreeModel::iterator iterFields = m_model_fields->children().begin(); iterFields != m_model_fields->children().end(); ++iterFields)
+    {
+      Gtk::TreeModel::Row row = *iterFields;
+        
+      LayoutGroup others;
+      others.m_group_name = "others";
+      others.m_others = true;
+      others.m_sequence = group_sequence;
+      
+      const Glib::ustring group_name = row[m_ColumnsFields.m_col_group];
+      if(group_name.empty())
+      {
+        LayoutItem item;
+        item.m_field_name = row[m_ColumnsFields.m_col_name];
+        item.m_group = group_name;
+        item.m_sequence = field_sequence;
+        item.m_hidden = row[m_ColumnsFields.m_col_hidden];
+        
+        others.m_map_items[field_sequence] = item; //Add it to the group:
+
+        ++field_sequence;
       }
     }
 

@@ -38,6 +38,7 @@ public:
   Glib::ustring m_group_name;
   Glib::ustring m_title;
   guint m_sequence;
+  bool m_others; //If this is just the place where we put ungrouped fields;
 
   typedef std::map<int, LayoutItem> type_map_items;
   type_map_items m_map_items; 

@@ -31,7 +31,7 @@ public:
   App_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
   virtual ~App_Glom();
 
-  virtual void init(); //override
+  virtual void init(const Glib::ustring& document_uri = Glib::ustring()); //override
 
   virtual void statusbar_set_text(const Glib::ustring& strText);
   virtual void statusbar_clear();
