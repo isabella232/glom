@@ -54,7 +54,7 @@ public:
 
   //typedef sigc::signal<void, Glib::ustring, Gnome::Gda::Value> type_signal_user_requested_related_details; //args are TableName, PrimaryKey.
   //type_signal_user_requested_related_details signal_user_requested_related_details();
- 
+
 protected:
   virtual void fill_from_database(); //override.
   virtual void fill_from_database_layout();

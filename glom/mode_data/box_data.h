@@ -61,7 +61,7 @@ protected:
   virtual Glib::ustring build_sql_select(const Glib::ustring& table_name, const type_vecLayoutFields& fieldsToGet, const Field& primary_key_field, const Gnome::Gda::Value& primary_key_value);
   virtual Glib::ustring build_sql_select_with_where_clause(const Glib::ustring& table_name, const type_vecLayoutFields& fieldsToGet, const Glib::ustring& where_clause);
   virtual bool get_related_record_exists(const Relationship& relationship, const Field& key_field, const Gnome::Gda::Value& key_value);
-
+  virtual bool add_related_record_for_field(const LayoutItem_Field& layout_item_parent, const Relationship& relationship, const Field& primary_key_field, const Gnome::Gda::Value& primary_key_value_provided);
 
   type_vecLayoutFields get_table_fields_to_show(const Glib::ustring& table_name) const;
   type_vecLayoutFields get_table_fields_to_show(const Glib::ustring& table_name, const Document_Glom::type_mapLayoutGroupSequence& mapGroupSequence) const;
@@ -93,6 +93,7 @@ protected:
   Gnome::Gda::Value generate_next_auto_increment(const Glib::ustring& table_name, const Glib::ustring field_name);
 
   virtual bool get_field_primary_key(Field& field) const = 0;
+  virtual Gnome::Gda::Value get_primary_key_value_selected() = 0;
   virtual bool get_field(const Glib::ustring& name, Field& field) const;
 
   ///Get the table name. It's either the current table or the relationship's to_table:

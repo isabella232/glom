@@ -1,6 +1,23 @@
 2005-03-15  Murray Cumming <murrayc@murrayc.com>
 
 	* glom/mode_data/box_data.cc:
+	* glom/mode_data/box_data.h:
+	* glom/mode_data/box_data_details.cc:
+	* glom/mode_data/box_data_details.h:
+	* glom/mode_data/box_data_list.cc:
+	Moved the related record creation/warning 
+	code from 
+	Box_Data_Details::on_flowtable_field_edited() 
+	into the base Box_Data class, as 
+	Box_Data::add_related_record_for_field(), and
+	used it from 
+	Box_Data_List::on_adddell_user_changed().
+	This means that automatic creation of related 
+	records works from the List view too.
+
+2005-03-15  Murray Cumming <murrayc@murrayc.com>
+
+	* glom/mode_data/box_data.cc:
 	confirm_discard_unstored_data(): The buttons 
 	argument of MessageDialog is not a flag - really 
 	show both buttons.

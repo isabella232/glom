@@ -378,38 +378,44 @@ void Box_Data_List::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, 
             layout_item.set_name(relationship.get_from_field());
 
             primary_key_value = get_entered_field_data(layout_item);
-            //TODO: If the primary_key is empty, or not yet valid, should we create a new record. It probably has to be anoption in the relationship.
+
+            bool test = add_related_record_for_field(layout_field, relationship, primary_key_field, primary_key_value);
+            if(!test)
+              return;
+
+            //Get the new primary_key_value if it has been created:
+            primary_key_value = get_entered_field_data(layout_item);
+
+            //Now that the related record exists, the following code to set the value of the other field in the related field can succeed.
           }
           else
           {
-            g_warning("Box_Data_Details::on_flowtable_field_edited(): key not found for edited related field.");
+            g_warning("Box_Data_List::on_flowtable_field_edited(): key not found for edited related field.");
           }
         }
       }
 
-      if(!GlomConversions::value_is_empty(primary_key_value)) //TODO: Prevent us from discard fields that have been entered before the primary key, if no primary key is ever entered.
+      //Update the field in the record (the record with this primary key):
+      const Gnome::Gda::Value field_value = m_AddDel.get_value(row, layout_field);
+      const Field& field = layout_field.m_field;
+      const Glib::ustring strFieldName = layout_field.get_name();
+
+      Glib::ustring strQuery = "UPDATE " + table_name;
+      strQuery += " SET " +  /* table_name + "." + postgres does not seem to like the table name here */ strFieldName + " = " + field.sql(field_value);
+      strQuery += " WHERE " + table_name + "." + primary_key_field.get_name() + " = " + primary_key_field.sql(primary_key_value);
+      bool bTest = Query_execute(strQuery);
+      if(!bTest)
       {
-        const Gnome::Gda::Value field_value = m_AddDel.get_value(row, layout_field);
-        const Field& field = layout_field.m_field;
-        const Glib::ustring strFieldName = layout_field.get_name();
+        //Update failed.
+        fill_from_database(); //Replace with correct values.
+      }
+      else
+      {
+        //Get-and-set values for lookup fields, if this field triggers those relationships:
+        do_lookups(row, layout_field, field_value, primary_key_field, primary_key_value);
 
-        Glib::ustring strQuery = "UPDATE " + table_name;
-        strQuery += " SET " +  /* table_name + "." + postgres does not seem to like the table name here */ strFieldName + " = " + field.sql(field_value);
-        strQuery += " WHERE " + table_name + "." + primary_key_field.get_name() + " = " + primary_key_field.sql(primary_key_value);
-        bool bTest = Query_execute(strQuery);
-        if(!bTest)
-        {
-          //Update failed.
-          fill_from_database(); //Replace with correct values.
-        }
-        else
-        {
-          //Get-and-set values for lookup fields, if this field triggers those relationships:
-          do_lookups(row, layout_field, field_value, primary_key_field, primary_key_value);
-
-          //Update related fields, if this field is used in the relationship:
-          refresh_related_fields(row, layout_field, field_value, primary_key_field, primary_key_value);
-        }
+        //Update related fields, if this field is used in the relationship:
+        refresh_related_fields(row, layout_field, field_value, primary_key_field, primary_key_value);
       }
     }
     catch(const std::exception& ex)

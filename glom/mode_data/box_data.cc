@@ -799,3 +799,103 @@ bool Box_Data::get_related_record_exists(const Relationship& relationship, const
 
   return result;
 }
+
+bool Box_Data::add_related_record_for_field(const LayoutItem_Field& layout_item_parent, const Relationship& relationship, const Field& primary_key_field, const Gnome::Gda::Value& primary_key_value_provided)
+{
+  Gnome::Gda::Value primary_key_value = primary_key_value_provided;
+
+  const bool related_record_exists = get_related_record_exists(relationship, primary_key_field, primary_key_value);
+  if(related_record_exists)
+  {
+    //No problem, the SQL command below will update this value in the related table.
+  }
+  else
+  {
+    //To store the entered data in the related field, we would first have to create a related record.
+    if(!relationship.get_auto_create())
+    {
+      //Warn the user:
+      //TODO: Make the field insensitive until it can receive data, so people never see this dialog.
+      Gtk::MessageDialog dialog(gettext("<b>Related Record Does Not Exist</b>"), true);
+      dialog.set_secondary_text(gettext("Data may not be entered into this related field, because the related record does not yet exist, and the relationship does not allow automatic creation of new related records."));
+      dialog.set_transient_for(*get_app_window());
+      dialog.run();
+
+      //Clear the field again, discarding the entered data.
+      set_entered_field_data(layout_item_parent, Gnome::Gda::Value());
+
+      return false;
+    }
+    else
+    {
+      const bool key_is_auto_increment = primary_key_field.get_field_info().get_auto_increment();
+
+      //If we would have to set an otherwise auto-increment key to add the record.
+      if( key_is_auto_increment && !GlomConversions::value_is_empty(primary_key_value) )
+      {
+        //Warn the user:
+        //TODO: Make the field insensitive until it can receive data, so people never see this dialog.
+        Gtk::MessageDialog dialog(gettext("<b>Related Record Can Not Be Created</b>"), true);
+        //TODO: This is a very complex error message:
+        dialog.set_secondary_text(gettext("Data may not be entered into this related field, because the related record does not yet exist, and the key in the related record is auto-generated and therefore can not be created with the key value in this record."));
+        dialog.set_transient_for(*get_app_window());
+        dialog.run();
+
+        //Clear the field again, discarding the entered data.
+        set_entered_field_data(layout_item_parent, Gnome::Gda::Value());
+
+        return false;
+      }
+      else
+      {
+        //TODO: Calculate values, and do lookups?
+
+        //Create the related record:
+        if(key_is_auto_increment)
+        {
+          primary_key_value = generate_next_auto_increment(relationship.get_to_table(), primary_key_field.get_name());
+
+          //Generate the new key value;
+        }
+
+        const Glib::ustring strQuery = "INSERT INTO " + relationship.get_to_table() + " (" + primary_key_field.get_name() + ") VALUES (" + primary_key_field.sql(primary_key_value) + ")";
+        bool test = Query_execute(strQuery);
+        if(test)
+        {
+          if(key_is_auto_increment)
+          {
+            //Set the key in the parent table
+            LayoutItem_Field item_from_key;
+            item_from_key.set_name(relationship.get_from_field());
+
+            //Show the new from key in the parent table's layout:
+            set_entered_field_data(item_from_key, primary_key_value);
+
+            //Set it in the database too:
+            Field field_from_key;
+            bool test = get_fields_for_table_one_field(relationship.get_from_table(), relationship.get_from_field(), field_from_key); //TODO_Performance.
+            if(test)
+            {
+              Field parent_primary_key_field;
+              bool test = get_field_primary_key(parent_primary_key_field);
+              if(!test)
+                return false;
+              else
+              {
+                const Gnome::Gda::Value parent_primary_key_value = get_primary_key_value_selected();
+
+                const Glib::ustring strQuery = "UPDATE  " + relationship.get_from_table() + " SET " + relationship.get_from_field() + " = " + primary_key_field.sql(primary_key_value) +
+                  " WHERE " + relationship.get_from_table() + "." + parent_primary_key_field.get_name() + " = " + parent_primary_key_field.sql(parent_primary_key_value);
+                bool test = Query_execute(strQuery);
+                return test;
+              }
+            }
+          }
+        }
+      }
+    }
+
+  }
+
+  return true;
+}
