@@ -37,7 +37,7 @@ public:
    * @param id The unique identifier for this field, to use with get_field().
    * @param group The title of the group in which this field should be shown, if any.
    */
-  virtual void add_field(const Field& field, const Glib::ustring& group = "");
+  virtual void add_field(const Field& field, const Glib::ustring& group = Glib::ustring());
   virtual void remove_field(const Glib::ustring& id); 
   virtual EntryGlom* get_field(const Glib::ustring& id);
   virtual EntryGlom* get_field(const Field& field);
@@ -46,7 +46,7 @@ public:
 
   virtual void remove_all();
 
-  /** For intance,
+  /** For instance,
    * void on_flowtable_field_edited(Glib::ustring id);
    */
   typedef sigc::signal<void, Glib::ustring> type_signal_field_edited;

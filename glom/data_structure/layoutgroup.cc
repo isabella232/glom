@@ -27,7 +27,8 @@ LayoutGroup::LayoutGroup()
 
 LayoutGroup::LayoutGroup(const LayoutGroup& src)
 : m_group_name(src.m_group_name),
-  m_sequence(src.m_sequence)
+  m_sequence(src.m_sequence),
+  m_list_items(src.m_list_items)
 {
 }
 
@@ -35,6 +36,7 @@ LayoutGroup& LayoutGroup::operator=(const LayoutGroup& src)
 {
   m_group_name = src.m_group_name;
   m_sequence = src.m_sequence;
+  m_list_items = src.m_list_items;
 
   return *this;
 }

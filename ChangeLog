@@ -1,3 +1,9 @@
+2004-06-27  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/utility_widgets/flowtable.cc: get_minimum_column_height(), 
+	get_column_height(): Make single items take up the whole width, 
+	instead of affecting the width of the first sub-column.
+
 2004-06-26  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/box_db.[h|cc]: Add get_default_button() virtual method, and 

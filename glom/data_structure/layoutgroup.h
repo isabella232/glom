@@ -21,7 +21,8 @@
 #ifndef GLOM_DATASTRUCTURE_LAYOUTGROUP_H
 #define GLOM_DATASTRUCTURE_LAYOUTGROUP_H
 
-#include <glibmm/ustring.h>
+#include "layoutitem.h"
+#include <list>
 
 class LayoutGroup
 {
@@ -33,6 +34,9 @@ public:
   
   Glib::ustring m_group_name;
   guint m_sequence;
+
+  typedef std::list<LayoutItem> type_listItems;
+  type_listItems m_list_items; 
 };
 
 #endif //GLOM_DATASTRUCTURE_LAYOUTGROUP_H

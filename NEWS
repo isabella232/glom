@@ -1,3 +1,10 @@
+0.8.4:
+
+* Connection dialog: The connect button is now activated when you press return in the password entry.
+* Some build improvements.
+* Added Portugese translation (Duarte Loreto)
+
+
 0.8.3:
 
 * Design:

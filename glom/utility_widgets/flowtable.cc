@@ -47,7 +47,12 @@ void FlowTable::add(Gtk::Widget& first, Gtk::Widget& second)
 
 void FlowTable::add(Gtk::Widget& first)
 {
-  type_base::add(first);
+  FlowTableItem item;
+  item.m_first = &first;
+  item.m_second = 0;
+  m_children.push_back(item);
+
+  gtk_widget_set_parent(first.gobj(), GTK_WIDGET(gobj()));
 }
 
 void FlowTable::set_columns_count(guint value)
@@ -119,44 +124,58 @@ int FlowTable::get_item_requested_height(const FlowTableItem& item)
 
 int FlowTable::get_column_height(guint start_widget, guint widget_count, int& total_width)
 {
-    //init_db_details output parameter:
-    total_width = 0;
-  
-    //Just add the heights together:
-    int column_height = 0;
-    int column_width_first = 0;
-    int column_width_second = 0;
-    guint i = 0;
-    for(i = start_widget; i < (start_widget+widget_count);  ++i)
+  //init_db_details output parameter:
+  total_width = 0;
+
+  //Just add the heights together:
+  int column_height = 0;
+  int column_width_first = 0;
+  int column_width_second = 0;
+  int column_width_singles = 0;
+  guint i = 0;
+  for(i = start_widget; i < (start_widget+widget_count);  ++i)
+  {
+    FlowTableItem item = m_children[i];
+    int item_height = get_item_requested_height(item);
+
+    int item_width_first = 0;
+    int item_width_second = 0;
+    get_item_requested_width(item, item_width_first, item_width_second);
+
+    column_height += item_height;
+
+    //Add the padding if it's not the first widget, and if one is visible:
+    if( (i != start_widget) && item_height)
     {
-      FlowTableItem item = m_children[i];
-      int item_height = get_item_requested_height(item);
-      
-      int item_width_first = 0;
-      int item_width_second = 0;
-      get_item_requested_width(item, item_width_first, item_width_second);
+      column_height += m_padding;
+    }
 
-      column_height += item_height;
-
-      //Add the padding if it's not the first widget, and if one is visible:
-      if( (i != start_widget) && item_height)
-      {
-        column_height += m_padding;
-      }
-
-      if(item_height) //If one was visible.
+    if(item_height) //If one was visible.
+    {
+      if(child_is_visible(item.m_second))
       {
         column_width_first =MAX(column_width_first, item_width_first);
         column_width_second =MAX(column_width_second, item_width_second);
       }
-
+      else
+      {
+        //If there is only a first widget and no second one, then that first widget should take up the whole width,
+        //instead of increasing the width for the first sub-column:
+        column_width_singles = MAX(column_width_singles, item_width_first);
+      }
     }
 
-     total_width = column_width_first +  column_width_second;
-     if( (column_width_first > 0) && (column_width_second > 0) ) //Add padding if necessary.
-       total_width += m_padding;
-       
-    return column_height;
+  }
+
+   total_width = column_width_first +  column_width_second;
+
+   //See whether the single items need even more space:
+   total_width = MAX(total_width, column_width_singles);
+
+   if( (column_width_first > 0) && (column_width_second > 0) ) //Add padding if necessary.
+     total_width += m_padding;
+
+  return column_height;
 }  
 
 int FlowTable::get_minimum_column_height(guint start_widget, guint columns_count, int& total_width)
@@ -269,6 +288,7 @@ void FlowTable::get_item_max_width(guint start, int height, int& first_max_width
   //Initialize output parameters:
   first_max_width = 0;
   second_max_width = 0;
+  int singles_max_width = 0;
   
   if(m_children.empty())
     return;
@@ -291,11 +311,23 @@ void FlowTable::get_item_max_width(guint start, int height, int& first_max_width
     }
 
     int item_first_width = 0;
+    int singles_width = 0;
     if(child_is_visible(first))
     {
       Gtk::Requisition child_requisition;
-      gtk_widget_size_request(const_cast<GtkWidget*>(first->gobj()), &child_requisition); //TODO: This parameter should not be const: child->size_request(child_requisition);     
-      item_first_width = child_requisition.width;
+      gtk_widget_size_request(const_cast<GtkWidget*>(first->gobj()), &child_requisition); //TODO: This parameter should not be const: child->size_request(child_requisition);
+
+      if(child_is_visible(second))
+      {
+        //There are 2 widgets so put one in each sub-column, lined up with the widgets in the other rows:
+        item_first_width = child_requisition.width;
+      }
+      else
+      {
+        //There is only one widget, so let it take up the whole space and not affect the widths of the sub-columns:
+        singles_width = child_requisition.width;
+      }
+
       height_item = MAX(height_item, child_requisition.height);
       first_item_added = true;
     }
@@ -315,6 +347,7 @@ void FlowTable::get_item_max_width(guint start, int height, int& first_max_width
     {
       first_max_width = MAX(first_max_width, item_first_width);
       second_max_width = MAX(second_max_width, item_second_width);
+      singles_max_width = MAX(singles_max_width, singles_width);
     }
 
     ++i;
@@ -351,8 +384,6 @@ void FlowTable::on_size_allocate(Gtk::Allocation& allocation)
 
     int item_height = get_item_requested_height(item);
 
-  
-   
     //Start a new column if necessary:
     int bottom = allocation.get_y() + allocation.get_height();   
     if( (column_child_y_start + item_height) > bottom)
@@ -376,22 +407,34 @@ void FlowTable::on_size_allocate(Gtk::Allocation& allocation)
     bool something_added = false;
     
     Gtk::Widget* first = item.m_first;
-    if(child_is_visible(first))
-    {
-      //Assign sign space to the child:
-      
-      //Make all the left edges line up:
-      assign_child(first, column_x_start, column_child_y_start);
-      something_added = true;
-    }
-
     Gtk::Widget* second = item.m_second;
     if(child_is_visible(second))
     {
-      //Assign sign space to the child:
+      //Place the 2 items so that they line up with the 2 items in other rows:
+      if(child_is_visible(first))
+      {
+        //Assign space to the child:
 
-      //Make all the left edges line up:
-      assign_child(second, column_x_start_second, column_child_y_start);
+        //Make all the left edges line up:
+        assign_child(first, column_x_start, column_child_y_start);
+        something_added = true;
+      }
+
+      if(child_is_visible(second))
+      {
+        //Assign space to the child:
+
+        //Make all the left edges line up:
+        assign_child(second, column_x_start_second, column_child_y_start);
+        something_added = true;
+      }
+    }
+    else if(child_is_visible(first))
+    {
+      //There is only one item - so let it take up the whole width of the column:
+        
+      //Assign space to the child:
+      assign_child(first, column_x_start, column_child_y_start);
       something_added = true;
     }
 

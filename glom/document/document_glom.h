@@ -25,7 +25,6 @@
 #include <bakery/View/View_Composite.h>
 #include "../data_structure/relationship.h"
 #include "../data_structure/field.h"
-#include "../data_structure/layoutitem.h"
 #include "../data_structure/layoutgroup.h"
 #include "../data_structure/tableinfo.h"
 #include "../appstate.h"

@@ -174,6 +174,11 @@ void Box_Data_Details::fill_from_database()
               if(!pEntry) //Create a widget for the field if one does not exist already:
               {
                 m_FlowTable.add_field(field);
+
+                Gtk::Label* m_debug = Gtk::manage( new Gtk::Label("debug debug debug") );
+                m_debug->show();
+                m_FlowTable.add(*m_debug);
+                
                 pEntry = m_FlowTable.get_field(field);
 
                 //Do not allow editing of auto-increment fields:

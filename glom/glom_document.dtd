@@ -52,9 +52,19 @@ DTD for glom documents.
 
 <!ELEMENT data_layouts (data_layout_details | data_layout_list)* >
 
-<!ELEMENT data_layout_details (data_layout_item | data_layout_groups)*>
+<!--
+The name will be either "list" or "details".
+-->
+<!ELEMENT data_layout (data_layout_group)*>
+<!ATTLIST data_layout
+  name CDATA #REQUIRED
+>
 
-<!ELEMENT data_layout_list (data_layout_item)*>
+<!ELEMENT data_layout_group (data_layout_item)* >
+<!ATTLIST data_layout_group
+  name CDATA #REQUIRED
+  sequence CDATA #REQUIRED
+>
 
 <!ELEMENT data_layout_item EMPTY >
 <!ATTLIST data_layout_item
@@ -62,12 +72,4 @@ DTD for glom documents.
   group CDATA #OPTIONAL
   sequence CDATA #REQUIRED
   hide CDATA #OPTIONAL
->
-
-<!ELEMENT data_layout_groups (data_layout_group)*>
-
-<!ELEMENT data_layout_group EMPTY >
-<!ATTLIST data_layout_group
-  name CDATA #REQUIRED
-  sequence CDATA #REQUIRED
 >

@@ -23,9 +23,6 @@
 
 #include <gtkmm.h>
 
-/**
-  *@author Murray Cumming
-  */
 
 class FlowTable : public Gtk::Container
 {
