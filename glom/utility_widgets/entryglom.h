@@ -45,9 +45,6 @@ public:
   type_signal_edited signal_edited();
  
 protected:
-
-  ///Check whether the entered text is appropriate for the field type.
-  virtual bool validate_text() const;
   
   //Overrides of default signal handlers:
   virtual void on_changed(); //From Gtk::Entry.

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glom\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-06-12 05:08+0200\n"
+"POT-Creation-Date: 2004-06-12 16:01+0200\n"
 "PO-Revision-Date: 2004-06-10 19:52-0700\n"
 "Last-Translator: Adam Weinberger <adamw@gnome.org>\n"
 "Language-Team: English/Canada <adamw@FreeBSD.org>\n"
@@ -62,6 +62,15 @@ msgstr "<b>User Level: </b>"
 
 #: glom/glom.glade.h:12
 msgid ""
+"<span weight=\"bold\" size=\"larger\">Invalid format</span>\n"
+"\n"
+"The data in the field was not recognised. Please try to correct the data or "
+"revert to the previous value. Here is an example of correctly-formatted data "
+"for this field.\n"
+msgstr ""
+
+#: glom/glom.glade.h:16
+msgid ""
 "<span weight=\"bold\" size=\"larger\">Open existing document, or create new "
 "document</span>\n"
 "\n"
@@ -78,98 +87,105 @@ msgstr ""
 "\n"
 "Or would you like to create a new document, to design a new database?\n"
 
-#: glom/glom.glade.h:18
+#: glom/glom.glade.h:22
 msgid "Auto-increment"
 msgstr "Auto-increment"
 
-#: glom/glom.glade.h:19
+#: glom/glom.glade.h:23
 msgid "Connect"
 msgstr "Connect"
 
-#: glom/glom.glade.h:20
+#: glom/glom.glade.h:24
 msgid "Data"
 msgstr "Data"
 
-#: glom/glom.glade.h:21
+#: glom/glom.glade.h:25
 msgid "Default Value"
 msgstr "Default Value"
 
-#: glom/glom.glade.h:22
+#: glom/glom.glade.h:26
 msgid "Edit"
 msgstr "Edit"
 
-#: glom/glom.glade.h:23
+#: glom/glom.glade.h:27
 msgid "Edit Definition"
 msgstr "Edit Definition"
 
-#: glom/glom.glade.h:24
+#: glom/glom.glade.h:28
 msgid "Extra"
 msgstr "Extra"
 
-#: glom/glom.glade.h:25
+#: glom/glom.glade.h:29
 msgid "Field"
 msgstr "Field"
 
-#: glom/glom.glade.h:26
+#: glom/glom.glade.h:30
 msgid "Field Definition"
 msgstr "Field Definition"
 
-#: glom/glom.glade.h:27
+#: glom/glom.glade.h:31
 msgid "Field Definitions"
 msgstr "Field Definitions"
 
-#: glom/glom.glade.h:28
+#: glom/glom.glade.h:32
 msgid "Glom"
 msgstr "Glom"
 
-#: glom/glom.glade.h:29
+#: glom/glom.glade.h:33
 msgid "Host"
 msgstr "Host"
 
-#: glom/glom.glade.h:30
+#: glom/glom.glade.h:34
 msgid "Layout"
 msgstr "Layout"
 
-#: glom/glom.glade.h:31
+#: glom/glom.glade.h:35
 msgid "Name"
 msgstr "Name"
 
-#: glom/glom.glade.h:32
+#: glom/glom.glade.h:36
 msgid "None selected"
 msgstr "None selected"
 
-#: glom/glom.glade.h:33
+#: glom/glom.glade.h:37
 msgid "Password"
 msgstr "Password"
 
-#: glom/glom.glade.h:34
+#: glom/glom.glade.h:38
 msgid "Primary Key"
 msgstr "Primary Key"
 
-#: glom/glom.glade.h:35
+#: glom/glom.glade.h:39
+msgid "Revert"
+msgstr ""
+
+#: glom/glom.glade.h:40
 msgid "Show hidden tables"
 msgstr "Show hidden tables"
 
-#: glom/glom.glade.h:36
-msgid "Some help text."
-msgstr "Some help text."
-
-#: glom/glom.glade.h:37
+#: glom/glom.glade.h:41
 msgid "Title"
 msgstr "Title"
 
-#: glom/glom.glade.h:38
+#: glom/glom.glade.h:42
 msgid "Type"
 msgstr "Type"
 
-#: glom/glom.glade.h:39
+#: glom/glom.glade.h:43
 msgid "Unique"
 msgstr "Unique"
 
-#: glom/glom.glade.h:40
+#: glom/glom.glade.h:44
 msgid "User"
 msgstr "User"
 
-#: glom/glom.glade.h:41
+#: glom/glom.glade.h:45
+msgid "example data format"
+msgstr ""
+
+#: glom/glom.glade.h:46
 msgid "table name"
 msgstr "table name"
+
+#~ msgid "Some help text."
+#~ msgstr "Some help text."

@@ -119,20 +119,6 @@ void EntryGlom::set_text(const Glib::ustring& text)
   Gtk::Entry::set_text(text);
 }
 
-bool EntryGlom::validate_text() const
-{  
-  bool success = false;
-  Gnome::Gda::Value value = GlomConversions::parse_value(m_glom_type, get_text(), success);
-  if(!success)
-  {
-    g_warning("EntryGlom::validate_text(): Not valid: text=%s", get_text().c_str());
-    return false;
-  }
-  
-  return true;
-}
-
-
 Gnome::Gda::Value EntryGlom::get_value() const
 {
   bool success = false;

@@ -36,7 +36,6 @@ Glib::ustring GlomConversions::format_time(const tm& tm_data, const std::locale&
 {
   if(iso_format)
   {
-    g_warning("formatting for iso");
     return format_tm(tm_data, locale, 'T' /* I see no iso-format time in the list, but this looks like the standard C-locale format. murrayc*/);
   }
   else
@@ -77,7 +76,6 @@ Glib::ustring GlomConversions::format_tm(const tm& tm_data, const std::locale& l
   tp.put(the_stream /* iter to beginning of stream */, the_stream, ' ' /* fill */, &tm_data, format, 0 /* 'E' */ /* use locale's alternative format */);
 
   Glib::ustring text = the_stream.str();
-  g_warning("GlomConversions::format_tm(): result=%s", text.c_str());
 
   if(locale == std::locale("") /* The user's current locale */)
   {
@@ -139,8 +137,6 @@ Glib::ustring GlomConversions::get_text_for_gda_value(Field::glom_field_type glo
     the_c_time.tm_mon = gda_date.month - 1; //C months start at 0.
     the_c_time.tm_mday = gda_date.day; //starts at 1
 
-    g_warning("GlomConversions::get_text_for_gda_value() the_c_time: tm_year=%d, tm_mon=%d, tm_mday=%d",  the_c_time.tm_year, the_c_time.tm_mon, the_c_time.tm_mday);
-
     return format_date(the_c_time, locale, iso_format);
 
     /*
@@ -171,18 +167,16 @@ Glib::ustring GlomConversions::get_text_for_gda_value(Field::glom_field_type glo
     std::stringstream the_stream;
     the_stream.imbue( std::locale::classic() ); //The C locale.
     the_stream.str(text_in_c_locale); //Avoid using << because Glib::ustinrg does implicit character conversion with that.
-    g_warning("debug: the_stream.str()=%s", the_stream.str().c_str());
+   
     double number = 0;
     the_stream >> number;
-    g_warning("debug: number=%f", number);
-
+  
     //Get the locale-specific text representation:
     std::stringstream another_stream;
     another_stream.imbue(locale); //Tell it to parse stuff as per this locale.
     another_stream << number;
     Glib::ustring text;
     text = another_stream.str();  //Avoid using << because Glib::ustinrg does implicit character conversion with that.
-     g_warning("debug: localized text=%s", text.c_str());
      
     if(locale == std::locale("") /* The user's current locale */)
     {
@@ -220,8 +214,7 @@ Gnome::Gda::Value GlomConversions::parse_value(Field::glom_field_type glom_type,
     gda_date.year = the_c_time.tm_year + 1900; //The C time starts at 1900.
     gda_date.month = the_c_time.tm_mon + 1; //The C month starts at 0.
     gda_date.day = the_c_time.tm_mday; //THe C mday starts at 1.
-    g_warning("GlomConversions::get_value() date: year=%d, month=%d, day=%d",  gda_date.year, gda_date.month, gda_date.day);
-
+  
     return Gnome::Gda::Value(gda_date);
   }
   else if(glom_type == Field::TYPE_TIME)

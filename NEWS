@@ -1,12 +1,14 @@
 0.8.1:
 
-* Removed Design Mode - Added items to the Developer menu instead.
 * Details and List views: Dates, times, and numbers are now displayed 
   and parsed according to the current locale.
+  (Murray Cumming, Daniel Elstner)
+* Removed Design Mode - Added items to the Developer menu instead.
 * Details view: The entry widgets for Date, time, and number fields now 
   have more suitable widths, so it looks nicer.
 * User Level is now per-document (or per-instance) instead of per-application.
 * The User Level is forced to Operator if the document is read-only.
+* Do not show the help text because it's annoying.
   (Murray Cumming)
 * Added internationalization support, with the following translations:
   Italian (Alberto Paro)
