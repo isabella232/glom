@@ -860,8 +860,6 @@ bool Document_Glom::save_before()
         
       if(!doctableinfo.m_info.m_name.empty())
       {
-        g_warning("Saving info about table: %s", doctableinfo.m_info.m_name.c_str());
-
         xmlpp::Element* nodeTable = nodeRoot->add_child("table");
         set_node_attribute_value(nodeTable, "name", doctableinfo.m_info.m_name);
         set_node_attribute_value(nodeTable, "title", doctableinfo.m_info.m_title);

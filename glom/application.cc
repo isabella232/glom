@@ -352,7 +352,9 @@ void App_Glom::on_document_load()
         //The ConnectionPool will now use these every time it tries to connect.
         connection_pool->set_host(pDocument->get_connection_server());
         connection_pool->set_user(pDocument->get_connection_user());
-
+        g_warning("App_Glom::on_document_load(): before set_database");
+        connection_pool->set_database(pDocument->get_connection_database());
+        
         connection_pool->set_ready_to_connect(); //Box_DB::connect_to_server() will now attempt the connection-> Shared instances of m_Connection will also be usable.
       }
 
@@ -474,6 +476,15 @@ bool App_Glom::offer_new_or_existing()
                 if(db_created)
                 {
                   keep_asking = false;
+                  g_warning("db_name=%s", db_name.c_str());
+                  document->set_connection_database(db_name); //Select the database that was just created.
+
+                  ConnectionPool* connection_pool = ConnectionPool::get_instance();
+                  if(connection_pool)
+                  {
+                    connection_pool->set_database(db_name); //The rest has been set while creating the database.
+                  }
+
                   document->set_database_title(db_title);
                   m_pFrame->set_databases_selected(db_name);
                 }

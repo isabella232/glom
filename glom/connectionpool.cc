@@ -132,6 +132,10 @@ sharedptr<SharedConnection> ConnectionPool::connect()
         //m_GdaDataSourceInfo->
 
         Glib::ustring cnc_string = "USER=" + m_user + ";PASSWORD=" + m_password; //TODO: Host
+      
+        if(!m_database.empty())
+          cnc_string += (";DATABASE=" + m_database);
+
         //std::cout << "connecting: cnc string: " << cnc_string << std::endl;
 
         //*m_refGdaConnection = m_GdaClient->open_connection(m_GdaDataSourceInfo.get_name(), m_GdaDataSourceInfo.get_username(), m_GdaDataSourceInfo.get_password() );
@@ -145,8 +149,11 @@ sharedptr<SharedConnection> ConnectionPool::connect()
             m_pFieldTypes = new FieldTypes(m_refGdaConnection);
             
           //Open the database, if one has been specified:
+          /* This does not seem to work in libgda's postgres provider, so we specify it in the cnc_string instead:
+          std::cout << "  database = " << m_database << std::endl;
           if(!m_database.empty())
             m_refGdaConnection->change_database(m_database);
+          */
           
           return connect(); //Call this method recursively. This time m_refGdaConnection exists.
         }

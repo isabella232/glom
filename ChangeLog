@@ -1,6 +1,12 @@
 2004-11-28  Murray Cumming  <murrayc@murrayc.com>
 
-	* glom/data_structure/connection_pool.[h|cc]: Added get/set_database() 
+	* glom/connectoin_pool.cc: connect(): specify the database name in the 
+	connection string, when it is wanted, instead of using 
+	change_database(), because libgda needs that.
+
+2004-11-28  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/connection_pool.[h|cc]: Added get/set_database() 
 	because postgres seems to need this specified at connection time.
 	* glom/dialog_connection.cc: Use ConnectionPool::set_database().
 	* Removed several extra ;s that g++ 3.4 complains about.

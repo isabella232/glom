@@ -360,6 +360,7 @@ void Frame_Glom::do_menu_Navigate_Table(bool open_default)
     {
       //Let the user choose a table:
       //m_pDialog_Tables->set_policy(false, true, false); //TODO_port
+      //m_pDialog_Tables->load_from_document(); //Refresh
       m_pDialog_Tables->show();
     }
   }

@@ -48,11 +48,18 @@ sharedptr<SharedConnection> Dialog_Connection::connect_to_server_with_connection
   {
     //Set the connection details in the ConnectionPool singleton.
     //The ConnectionPool will now use these every time it tries to connect.
+    g_warning("Dialog_Connection::connect_to_server_with_connection_settings(): database in doc=%s", m_pDocument->get_connection_database().c_str());
     connection_pool->set_database(m_pDocument->get_connection_database());
     
     connection_pool->set_host(m_entry_host->get_text());
     connection_pool->set_user(m_entry_user->get_text());
     connection_pool->set_password(m_entry_password->get_text());
+    if(m_pDocument)
+    {
+      g_warning("before set_database: %s", m_pDocument->get_connection_database().c_str());
+      connection_pool->set_database(m_pDocument->get_connection_database());
+    }
+    
     connection_pool->set_ready_to_connect(); //Box_DB::connect_to_server() will now attempt the connection-> Shared instances of m_Connection will also be usable.
 
     result = Box_DB::connect_to_server();
