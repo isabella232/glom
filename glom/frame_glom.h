@@ -38,7 +38,8 @@
 
 class Frame_Glom :
   public PlaceHolder,
-  public Bakery::View_Composite<Document_Glom>
+  //public Bakery::View_Composite<Document_Glom>,
+  public Base_DB //Inherits from View_Composite.
 {
 public: 
   Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
@@ -84,7 +85,7 @@ public:
   virtual bool connection_request_password_and_attempt();
   
   ///Create the database for new documents, showing the Connection dialog
-  virtual bool create_database(const Glib::ustring& database_name);
+  virtual bool create_database(const Glib::ustring& database_name, bool request_password = true);
   
 protected:
 

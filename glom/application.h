@@ -63,6 +63,8 @@ protected:
 
   virtual Bakery::App* new_instance(); //Override
 
+  virtual bool recreate_database(); //return indicates success.
+  
   typedef Bakery::App_WithDoc_Gtk type_base;
 
   //Widgets:

@@ -209,13 +209,17 @@ void Box_Data::on_dialog_layout_hide()
 Box_Data::type_vecFields Box_Data::get_fields_to_show() const
 {
   if(m_strTableName.empty())
+  {
     return type_vecFields();
+  }
   else
     return get_table_fields_to_show(m_strTableName);
 }
 
 void Box_Data::get_table_fields_to_show_add_group(const Glib::ustring& table_name, const type_vecFields& all_db_fields, const LayoutGroup& group, Box_Data::type_vecFields& vecFields) const
 {
+  //g_warning("Box_Data::get_table_fields_to_show_add_group(): table_name=%s, all_db_fields.size()=%d, group.name=%s", table_name.c_str(), all_db_fields.size(), group.get_name().c_str());
+
   LayoutGroup::type_map_const_items items = group.get_items();
   for(LayoutGroup::type_map_const_items::const_iterator iterItems = items.begin(); iterItems != items.end(); ++iterItems)
   {
@@ -244,6 +248,11 @@ void Box_Data::get_table_fields_to_show_add_group(const Glib::ustring& table_nam
       }
     }      
   }
+
+  if(vecFields.empty())
+  {
+    g_warning("Box_Data::get_table_fields_to_show_add_group(): Returning empty list.");
+  } 
 }
 
 
@@ -299,6 +308,11 @@ Box_Data::type_vecFields Box_Data::get_table_fields_to_show(const Glib::ustring&
     }
   }
 
+  if(result.empty())
+  {
+    g_warning("Box_Data::get_table_fields_to_show_add_group(): Returning empty list.");
+  }
+  
   return result;
 }
 

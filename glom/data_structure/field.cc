@@ -241,6 +241,11 @@ Glib::ustring Field::get_sql_type() const
       }
     }
 
+    if(strType == "unknowntype")
+    {
+      g_warning("Field::get_sql_type(): returning unknowntype for field name=%s , glom_type=%d, gda_type=%d", get_name().c_str(), get_glom_type(), m_field_info.get_gdatype());
+    }
+    
     return strType;
   }
 }
@@ -287,6 +292,11 @@ Gnome::Gda::ValueType Field::get_gda_type_for_glom_type(Field::glom_field_type g
   if(iterFind != m_map_glom_type_to_gda_type.end())
     ideal_gda_type = iterFind->second;
 
+  if(ideal_gda_type == Gnome::Gda::VALUE_TYPE_UNKNOWN)
+  {
+    g_warning("Field::get_gda_type_for_glom_type(): Returning VALUE_TYPE_UNKNOWN for glom_type=%d", glom_type);
+  }
+  
   return ideal_gda_type;
 }
 

@@ -95,6 +95,14 @@ Glib::ustring FieldTypes::get_string_name_for_gdavaluetype(Gnome::Gda::ValueType
   type_mapGdaTypesToSchemaStrings::const_iterator iterFind = m_mapGdaTypesToSchemaStrings.find(field_type);
   if(iterFind == m_mapGdaTypesToSchemaStrings.end())
   {
+    g_warning("FieldTypes::get_string_name_for_gdavaluetype(): returning unknowntype for field_type=%d", field_type);
+
+    g_warning("  possible types are: ");
+    for(type_mapGdaTypesToSchemaStrings::const_iterator iter = m_mapGdaTypesToSchemaStrings.begin(); iter != m_mapGdaTypesToSchemaStrings.end(); ++iter)
+    {
+      g_warning("    gdatype=%d, sqltype=%s", iter->first, iter->second.c_str());
+    }
+    
     return "unknowntype";
   }
   else

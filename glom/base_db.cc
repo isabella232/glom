@@ -285,7 +285,11 @@ Base_DB::type_vecFields Base_DB::get_fields_for_table_from_database(const Glib::
   Bakery::BusyCursor(*get_app_window());
 
   sharedptr<SharedConnection> sharedconnection = connect_to_server();
-  if(sharedconnection)
+  if(!sharedconnection)
+  {
+    g_warning("Base_DB::get_fields_for_table_from_database(): connection failed.");
+  }
+  else  
   {
     Glib::RefPtr<Gnome::Gda::Connection> connection = sharedconnection->get_gda_connection();
 
@@ -294,11 +298,20 @@ Base_DB::type_vecFields Base_DB::get_fields_for_table_from_database(const Glib::
     param_list.add_parameter(param_table_name);
 
     Glib::RefPtr<Gnome::Gda::DataModel> data_model_fields = connection->get_schema(Gnome::Gda::CONNECTION_SCHEMA_FIELDS, param_list);
-    if(data_model_fields && (data_model_fields->get_n_columns() == 0))
+
+    if(!data_model_fields)
+    {
+      std::cerr << "Base_DB_Table_Definition::fill_fields(): libgda reported empty fields schema data_model for the table." << std::endl;
+    } 
+    else if(data_model_fields->get_n_columns() == 0)
     {
       std::cerr << "Base_DB_Table_Definition::fill_fields(): libgda reported 0 fields for the table." << std::endl;
     }
-    else if(data_model_fields)
+    else if(data_model_fields->get_n_rows() == 0)
+    {
+      g_warning("Base_DB::get_fields_for_table_from_database(): data_model_fields->get_n_rows() == 0: The table probably does not exist in the specified database.");
+    }
+    else
     {
       guint row = 0;
       guint rows_count = data_model_fields->get_n_rows();
@@ -368,6 +381,11 @@ Base_DB::type_vecFields Base_DB::get_fields_for_table_from_database(const Glib::
     }
   }
 
+  if(result.empty())
+  {
+    g_warning("Base_DB::get_fields_for_table_from_database(): returning empty result.");
+  }
+  
   return result;
 }
 
@@ -384,7 +402,7 @@ Base_DB::type_vecFields Base_DB::get_fields_for_table(const Glib::ustring& table
     type_vecFields result;
 
     type_vecFields fieldsDocument = pDoc->get_table_fields(table_name);
-
+  
     //Look at each field in the database:
     for(type_vecFields::iterator iter = fieldsDocument.begin(); iter != fieldsDocument.end(); ++iter)
     {
@@ -415,7 +433,7 @@ Base_DB::type_vecFields Base_DB::get_fields_for_table(const Glib::ustring& table
         result.push_back(*iter);
       }
     }
-
+  
     //Add any fields that are in the database, but not in the document:
     for(type_vecFields::iterator iter = fieldsDatabase.begin(); iter != fieldsDatabase.end(); ++iter)
     {
@@ -427,7 +445,6 @@ Base_DB::type_vecFields Base_DB::get_fields_for_table(const Glib::ustring& table
        //Add it if it is not there:
        if(iterFind == result.end() )
          result.push_back(*iter);
-
     }
 
     return result;

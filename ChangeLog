@@ -1,3 +1,8 @@
+2004-12-05  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/application.[h|cc]: Add recreate_database() and use it from 
+	on_document_load() instead of showing the not-yet-implemented dialog.
+
 2004-12-03  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/connection_pool.[h|cc]: Define ExceptionConnection, derived 

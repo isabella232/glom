@@ -90,71 +90,74 @@ void Box_Data_List::fill_from_database()
 
       type_vecFields listFieldsToShow = get_fields_to_show();
       m_Fields = listFieldsToShow; //Store the fields for later:
-      Glib::ustring sql_part_fields;
-      for(type_vecFields::const_iterator iter =  listFieldsToShow.begin(); iter != listFieldsToShow.end(); ++iter)
+      if(!m_Fields.empty())
       {
-        if(iter != listFieldsToShow.begin())
-          sql_part_fields += ",";
-          
-        sql_part_fields += iter->get_name();
-      }
-       
-      //TODO: Remove hardcoded Limit 100.
-      std::stringstream query;
-      query << "SELECT " << sql_part_fields << " FROM " << m_strTableName << strWhereClausePiece; // << " LIMIT 100";
-      Glib::RefPtr<Gnome::Gda::DataModel> result = Query_execute(query.str());
-      if(!result)
-        handle_error();
-      else
-      {
-        //Field contents:
-        m_AddDel.remove_all();
-
-        //each row:
-        guint rows_count = result->get_n_rows();
-        if(rows_count)
-          m_has_one_or_more_records = true; //Save it for later.
-          
-        if(rows_count > 100)
-          rows_count = 100; //Don't get more than 100. TODO: Get other rows dynamically.
-
-        guint primary_key_field_index = 0;
-        bool primary_key_found = get_field_primary_key(primary_key_field_index);
-        if(primary_key_found)
+        Glib::ustring sql_part_fields;
+        for(type_vecFields::const_iterator iter =  listFieldsToShow.begin(); iter != listFieldsToShow.end(); ++iter)
         {
-          for(guint result_row = 0; result_row < rows_count; result_row++)
+          if(iter != listFieldsToShow.begin())
+            sql_part_fields += ",";
+
+          sql_part_fields += iter->get_name();
+        }
+
+        //TODO: Remove hardcoded Limit 100.
+        std::stringstream query;
+        query << "SELECT " << sql_part_fields << " FROM " << m_strTableName << strWhereClausePiece; // << " LIMIT 100";
+        Glib::RefPtr<Gnome::Gda::DataModel> result = Query_execute(query.str());
+        if(!result)
+          handle_error();
+        else
+        {
+          //Field contents:
+          m_AddDel.remove_all();
+
+          //each row:
+          guint rows_count = result->get_n_rows();
+          if(rows_count)
+            m_has_one_or_more_records = true; //Save it for later.
+
+          if(rows_count > 100)
+            rows_count = 100; //Don't get more than 100. TODO: Get other rows dynamically.
+
+          guint primary_key_field_index = 0;
+          bool primary_key_found = get_field_primary_key(primary_key_field_index);
+          if(primary_key_found)
           {
-            
-            Gnome::Gda::Value value = result->get_value_at(primary_key_field_index, result_row);
-            Glib::ustring key = value.to_string(); //It is actually an integer, but that should not matter.
-            if(key.empty())
-              g_warning("Box_Data_List::fill_from_database(): primary key value is empty");
-            else
+            for(guint result_row = 0; result_row < rows_count; result_row++)
             {
-              Gtk::TreeModel::iterator tree_iter = m_AddDel.add_item(key);
 
-              type_vecFields::const_iterator iterFields = listFieldsToShow.begin();
-
-              //each field:
-              guint cols_count = result->get_n_columns();
-              for(guint uiCol = 0; uiCol < cols_count; uiCol++)
+              Gnome::Gda::Value value = result->get_value_at(primary_key_field_index, result_row);
+              Glib::ustring key = value.to_string(); //It is actually an integer, but that should not matter.
+              if(key.empty())
+                g_warning("Box_Data_List::fill_from_database(): primary key value is empty");
+              else
               {
-                Gnome::Gda::Value value = result->get_value_at(uiCol, result_row);
-                guint index = 0;
-                
-                //TODO_Performance: This searches m_Fields again each time:
-                bool test = get_field_column_index(iterFields->get_name(), index);
-                ++iterFields;
-                
-                if(test)
-                  m_AddDel.set_value(tree_iter, index, value);
+                Gtk::TreeModel::iterator tree_iter = m_AddDel.add_item(key);
+
+                type_vecFields::const_iterator iterFields = listFieldsToShow.begin();
+
+                //each field:
+                guint cols_count = result->get_n_columns();
+                for(guint uiCol = 0; uiCol < cols_count; uiCol++)
+                {
+                  Gnome::Gda::Value value = result->get_value_at(uiCol, result_row);
+                  guint index = 0;
+
+                  //TODO_Performance: This searches m_Fields again each time:
+                  bool test = get_field_column_index(iterFields->get_name(), index);
+                  ++iterFields;
+
+                  if(test)
+                    m_AddDel.set_value(tree_iter, index, value);
+                }
               }
             }
           }
+          else
+            g_warning("Box_Data_List::fill_from_database(): primary key not found in table %s", m_strTableName.c_str());
         }
-        else
-          g_warning("Box_Data_List::fill_from_database(): primary key not found in table %s", m_strTableName.c_str());
-      }
+      } //If !m_Fields.empty()
     }
   }
   catch(std::exception& ex)

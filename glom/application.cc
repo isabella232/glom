@@ -246,10 +246,11 @@ void App_Glom::init_menus()
   m_listDeveloperActions.push_back(action);
   m_refActionGroup_Others->add(action, sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_layout));
 
+  /*
   action = Gtk::Action::create("GlomAction_Menu_Developer_RecreateStructure", gettext("_Recreate Database Structure"));
   m_listDeveloperActions.push_back(action);
   m_refActionGroup_Others->add(action, sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_recreate_structure));
-
+  */
   
   m_refUIManager->insert_action_group(m_refActionGroup_Others);
 
@@ -274,8 +275,6 @@ void App_Glom::init_menus()
     "        <menuitem action='GlomAction_Menu_Developer_Relationships' />"    
     "        <menuitem action='GlomAction_Menu_Developer_Layout' />"
     "        <menuitem action='GlomAction_Menu_Developer_Users' />"
-    "        <separator /> "
-    "        <menuitem action='GlomAction_Menu_Developer_RecreateStructure' />"
     "      </menu>"
     "    </placeholder>"
     "  </menubar>"
@@ -369,9 +368,7 @@ bool App_Glom::on_document_load()
             return false; //Failed. Close the document.
         }
         catch(const ExceptionConnection& ex)
-        {
-          g_warning("App_Glom::on_document_load(): caught exception.");
-          
+        { 
           if(ex.get_failure_type() == ExceptionConnection::FAILURE_NO_DATABASE) //This is the only FALURE_* type that connection_request_password_and_attempt() throws.
           {
             //The connection to the server is OK, but the database is not there yet.
@@ -391,9 +388,29 @@ bool App_Glom::on_document_load()
                 return false; //Close the document.
               else
               {
+                bool test = recreate_database();
+
+                if(!test)
+                {
+                  //Tell the user:
+                  Gtk::Dialog* dialog = 0;
+                  try
+                  {
+                    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_error_create_database");
+
+                    refXml->get_widget("dialog_error_create_database", dialog);
+                  }
+                  catch(const Gnome::Glade::XmlError& ex)
+                  {
+                    std::cerr << ex.what() << std::endl;
+                  }
+
+                  return false;
+                }
+                  
                 //TODO: Recreate the database, using the information saved in the document:
-                Frame_Glom::show_ok_dialog(gettext("Database recreation"), gettext("Sorry. This functionality has not been implemented yet."), *this);
-                return false; //Give up on this document.
+                //Frame_Glom::show_ok_dialog(gettext("Database recreation"), gettext("Sorry. This functionality has not been implemented yet."), *this);
+                //return false; //Give up on this document.
               }
             }
           }
@@ -612,6 +629,113 @@ void App_Glom::on_menu_help_contents()
 {
   gnome_help_display("glom", 0, 0);
 }
+
+bool App_Glom::recreate_database()
+{
+  //Create a database, based on the information in the current document:
+  Document_Glom* pDocument = static_cast<Document_Glom*>(get_document());
+  if(!pDocument)
+    return false;
+
+  ConnectionPool* connection_pool = ConnectionPool::get_instance();
+  if(!connection_pool)
+    return false; //Impossible anyway.
+  
+  //Check whether the database exists already.
+  const Glib::ustring db_name = pDocument->get_connection_database();
+  if(db_name.empty())
+    return false;
+    
+  connection_pool->set_database(db_name);
+  try
+  {
+    connection_pool->set_ready_to_connect(); //This has succeeded already.
+    sharedptr<SharedConnection> sharedconnection = connection_pool->connect();
+    g_warning("App_Glom::recreate_database(): Failed because database exists already.");
+
+    return false; //Connection to the database succeeded, because no exception was thrown. so the database exists already.
+  }
+  catch(const ExceptionConnection& ex)
+  {
+    if(ex.get_failure_type() == ExceptionConnection::FAILURE_NO_SERVER)
+    {
+      g_warning("App_Glom::recreate_database(): Failed because connection to server failed, without specifying a databse.");
+      return false;
+    }
+  }
+
+ //Create the database:
+  connection_pool->set_database( Glib::ustring() );
+  bool db_created = m_pFrame->create_database(db_name, false /* Don't ask for password etc again. */);
+  
+  if(!db_created)
+    return false;
+  else
+    connection_pool->set_database(db_name); //Specify the new database when connection from now on.
+               
+  sharedptr<SharedConnection> sharedconnection;
+  try
+  {
+    sharedconnection = connection_pool->connect();
+    connection_pool->set_database(db_name); //The database was successfully created, so specify it when connection from now on.
+  }
+  catch(const ExceptionConnection& ex)
+  {
+    g_warning("App_Glom::recreate_database(): Failed because connection to server failed, without specifying a database.");
+    return false;
+  }
+
+  Bakery::BusyCursor(*this);
+   
+  //Create each table:
+  Document_Glom::type_listTableInfo tables = pDocument->get_tables();
+  for(Document_Glom::type_listTableInfo::const_iterator iter = tables.begin(); iter != tables.end(); ++iter)
+  {
+    const TableInfo& table_info = *iter;
+    const Glib::ustring table_name = table_info.get_name();
+
+    //Create SQL to describe all fields in this table:
+    Glib::ustring sql_fields;
+    Document_Glom::type_vecFields fields = pDocument->get_table_fields(table_name);
+    for(Document_Glom::type_vecFields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
+    {
+      //Create SQL to describe this field:
+      Field field = *iter;
+     
+      //The field has no gda type, so we set that:
+      //This usually comes from the database, but that's a bit strange.
+      Gnome::Gda::FieldAttributes info = field.get_field_info();
+      info.set_gdatype( Field::get_gda_type_for_glom_type(field.get_glom_type()) );
+      field.set_field_info(info);
+      
+      Glib::ustring sql_field_description = field.get_name() + " " + field.get_sql_type();
+
+      if(field.get_field_info().get_primary_key())
+        sql_field_description += " NOT NULL  PRIMARY KEY";
+
+      //Append it:
+      if(!sql_fields.empty())
+        sql_fields += ", ";
+
+      sql_fields += sql_field_description;
+    }
+
+    if(sql_fields.empty())
+    {
+      g_warning("App_Glom::recreate_database(): sql_fields is empty.");
+    }
+
+    //Actually create the table
+    Glib::RefPtr<Gnome::Gda::DataModel> data_model = m_pFrame->Query_execute( "CREATE TABLE \"" + table_name + "\" (" + sql_fields + ")" );
+    if(!data_model)
+      return false;
+      
+  } //for(tables)
+
+  return true; //All tables created successfully.
+}
+
+  
 
 AppState::userlevels App_Glom::get_userlevel() const
 {

@@ -143,7 +143,14 @@ Document_Glom::type_vecFields Document_Glom::get_table_fields(const Glib::ustrin
   {
     type_tables::const_iterator iterFind = m_tables.find(table_name);
     if(iterFind != m_tables.end())
+    {
+      if(iterFind->second.m_fields.empty())
+      {
+         g_warning("Document_Glom::get_table_fields: table found, but m_fields is empty");
+      }
+      
       return iterFind->second.m_fields;
+    }
     else
     {
       g_warning("Document_Glom::get_table_fields: table not found in document: %s", table_name.c_str());
@@ -160,7 +167,12 @@ Document_Glom::type_vecFields Document_Glom::get_table_fields(const Glib::ustrin
 void Document_Glom::set_table_fields(const Glib::ustring& table_name, const type_vecFields& vecFields)
 {
   if(!table_name.empty())
-  { 
+  {
+    if(vecFields.empty())
+    {
+      g_warning("Document_Glom::set_table_fields(): vecFields is empty: table_name=%s", table_name.c_str());
+    }
+      
     DocumentTableInfo& info = get_table_info_with_add(table_name);
     info.m_fields = vecFields;
 
@@ -707,7 +719,7 @@ bool Document_Glom::load_after()
                 
                 //Field Type:
                 const Glib::ustring field_type = get_node_attribute_value(nodeChild, "type");
-                
+      
                 //Get the type enum for this string representation of the type:
                 Field::glom_field_type field_type_enum = Field::TYPE_INVALID;
                 for(Field::type_map_type_names::const_iterator iter = type_names.begin(); iter !=type_names.end(); ++iter)
@@ -718,15 +730,16 @@ bool Document_Glom::load_after()
                     break;
                   }
                 }
-                
-                field.set_glom_type( field_type_enum );
-
+                        
                 //Default value:
                 const Glib::ustring default_value_text = get_node_attribute_value(nodeChild, "default_value");
                 //Interpret the text as per the field type:
                 bool success = false;
                 field_info.set_default_value( GlomConversions::parse_value(field_type_enum, default_value_text, success, true /* iso_format */) );
                 field.set_field_info(field_info);
+
+                //We set this after set_field_info(), because that gets a glom type from the (not-specified) gdatype. Yes, that's strange, and should probably be more explicit.
+                field.set_glom_type( field_type_enum );
                              
                 doctableinfo.m_fields.push_back(field);
               }

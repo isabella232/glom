@@ -62,7 +62,8 @@ public:
    */
   static Glib::ustring util_title_from_string(const Glib::ustring& text);
 
-  
+  virtual Glib::RefPtr<Gnome::Gda::DataModel> Query_execute(const Glib::ustring& strQuery);
+    
 protected:
   typedef std::vector<Glib::ustring> type_vecStrings;
   type_vecStrings get_table_names();
@@ -83,8 +84,6 @@ protected:
   
   virtual void handle_error(const std::exception& ex); //TODO_port: This is probably useless now.
   virtual bool handle_error();
-
-  virtual Glib::RefPtr<Gnome::Gda::DataModel> Query_execute(const Glib::ustring& strQuery);
 
 
   //Member data:

@@ -179,10 +179,12 @@ sharedptr<SharedConnection> ConnectionPool::connect()
         }
         else
         {
+          std::cout << "ConnectionPool::connect() Attempt to connect to database failed: " << m_database << std::endl;
+
           bool bJustDatabaseMissing = false;
           if(!m_database.empty())
           {
-             std::cout << "ConnectionPool::connect() Attempting to connect without specifying the database." << std::endl;
+             std::cout << "  ConnectionPool::connect() Attempting to connect without specifying the database." << std::endl;
              
              //If the connection failed while looking for a database,
              //then try connecting without the database:
@@ -193,7 +195,7 @@ sharedptr<SharedConnection> ConnectionPool::connect()
                bJustDatabaseMissing = true;
              else
              {
-                 std::cerr << "  ConnectionPool::connect() connection also failed when not specifying database." << std::endl;
+                 std::cerr << "    ConnectionPool::connect() connection also failed when not specifying database." << std::endl;
              }
           }
 

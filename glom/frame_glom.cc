@@ -511,7 +511,7 @@ void Frame_Glom::update_table_in_document_from_database()
 
   //Get the fields information from the database:
   Base_DB::type_vecFields fieldsDatabase = Base_DB::get_fields_for_table_from_database(m_strTableName);
-
+  
   Document_Glom* pDoc = dynamic_cast<const Document_Glom*>(get_document());
   if(pDoc)
   {
@@ -565,8 +565,9 @@ void Frame_Glom::update_table_in_document_from_database()
         fieldsActual.push_back(field);
       }
       else
+      {
         document_must_to_be_updated = true; //Something changed.
-      
+      }
     }
           
     if(document_must_to_be_updated)
@@ -704,22 +705,42 @@ bool Frame_Glom::connection_request_password_and_attempt()
   }
 }
 
-bool Frame_Glom::create_database(const Glib::ustring& database_name)
+bool Frame_Glom::create_database(const Glib::ustring& database_name, bool request_password)
 {
   //Ask for connection details:
   bool connection_possible = false;
   try
-  {                   
-    connection_possible = connection_request_password_and_attempt(); //If it succeeded and the user did not cancel.
+  {
+    if(request_password)
+      connection_possible = connection_request_password_and_attempt(); //If it succeeded and the user did not cancel.
+    else
+      connection_possible = true; //Assume that connection details are already coorect.
   }
   catch(const ExceptionConnection& ex)
   {
+     g_warning("debug Frame_Glom::create_database() 1 exception caught");
+ 
+    //connection_possible stays false.
   }
 
   if(connection_possible)
   {
-    //This must now succeeed, because we've already tried it once:
-    sharedptr<SharedConnection> sharedconnection = m_pDialogConnection->connect_to_server_with_connection_settings();
+    //This must now succeed, because we've already tried it once:
+    sharedptr<SharedConnection> sharedconnection;
+    try
+    {
+      if(request_password)
+        sharedconnection = m_pDialogConnection->connect_to_server_with_connection_settings();
+      else
+        sharedconnection = ConnectionPool::get_instance()->connect();
+    }
+    catch(const ExceptionConnection& ex)
+    {
+      g_warning("debug Frame_Glom::create_database() Connection failed.");
+ 
+      return false;
+    }
+      
     if(sharedconnection)
     {
       Bakery::BusyCursor(*get_app_window());
@@ -729,7 +750,10 @@ bool Frame_Glom::create_database(const Glib::ustring& database_name)
       {
         bool result = connection->create_database(database_name);
         if(result)
+        {
+          g_warning("Frame_Glom::create_database(): Succeeded: database_name=%s", database_name.c_str());
           return true; // It succeeded.
+        }
         else
         {
           //Tell the user:

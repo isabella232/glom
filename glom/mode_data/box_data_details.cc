@@ -159,67 +159,69 @@ void Box_Data_Details::fill_from_database()
          
   type_vecFields listFieldsToShow = get_fields_to_show();
   m_Fields =  listFieldsToShow;
-
-  fill_from_database_layout(); //TODO: Only do this when the layout has changed.
-
-  Field field_primary_key;
-  bool primary_key_found  = get_field_primary_key(field_primary_key);
-
-  if(primary_key_found && !GlomConversions::value_is_empty(m_primary_key_value)) //If there is a record to show:
+  if(!listFieldsToShow.empty())
   {
-    try
+    fill_from_database_layout(); //TODO: Only do this when the layout has changed.
+
+    Field field_primary_key;
+    bool primary_key_found  = get_field_primary_key(field_primary_key);
+
+    if(primary_key_found && !GlomConversions::value_is_empty(m_primary_key_value)) //If there is a record to show:
     {
-      sharedptr<SharedConnection> sharedconnection = connect_to_server();
-     
-      if(sharedconnection)
+      try
       {
-        Glib::RefPtr<Gnome::Gda::Connection> connection = sharedconnection->get_gda_connection();
-        
-        Glib::ustring sql_part_fields;
-        for(type_vecFields::const_iterator iter =  listFieldsToShow.begin(); iter != listFieldsToShow.end(); ++iter)
+        sharedptr<SharedConnection> sharedconnection = connect_to_server();
+
+        if(sharedconnection)
         {
-          if(iter != listFieldsToShow.begin())
-            sql_part_fields += ",";
+          Glib::RefPtr<Gnome::Gda::Connection> connection = sharedconnection->get_gda_connection();
 
-          sql_part_fields += iter->get_name();
-        }
-
-        std::stringstream query;
-        query << "SELECT " << sql_part_fields << " FROM " << m_strTableName << " WHERE " << get_table_name() + "." + get_primarykey_name() << " = " << field_primary_key.sql(m_primary_key_value);
-        Glib::RefPtr<Gnome::Gda::DataModel> result = connection->execute_single_command(query.str());
-
-        if(result && result->get_n_rows())
-        {
-          const Document_Glom* pDoc = dynamic_cast<const Document_Glom*>(get_document());
-          if(pDoc)
+          Glib::ustring sql_part_fields;
+          for(type_vecFields::const_iterator iter =  listFieldsToShow.begin(); iter != listFieldsToShow.end(); ++iter)
           {
-            //Get glom-specific field info:
-            //Document_Glom::type_vecFields vecFields = pDoc->get_table_fields(m_strTableName);
+            if(iter != listFieldsToShow.begin())
+              sql_part_fields += ",";
 
-            const int row_number = 0; //The only row.
-            const int cols_count = result->get_n_columns();
-            for(int i = 0; i < cols_count; ++i)
+            sql_part_fields += iter->get_name();
+          }
+
+          std::stringstream query;
+          query << "SELECT " << sql_part_fields << " FROM " << m_strTableName << " WHERE " << get_table_name() + "." + get_primarykey_name() << " = " << field_primary_key.sql(m_primary_key_value);
+          Glib::RefPtr<Gnome::Gda::DataModel> result = connection->execute_single_command(query.str());
+
+          if(result && result->get_n_rows())
+          {
+            const Document_Glom* pDoc = dynamic_cast<const Document_Glom*>(get_document());
+            if(pDoc)
             {
-              const Field& field = m_Fields[i];
+              //Get glom-specific field info:
+              //Document_Glom::type_vecFields vecFields = pDoc->get_table_fields(m_strTableName);
 
-              //Field value:
-              Gnome::Gda::Value value = result->get_value_at(i, row_number);
-              m_FlowTable.set_field_value(field, value);
+              const int row_number = 0; //The only row.
+              const int cols_count = result->get_n_columns();
+              for(int i = 0; i < cols_count; ++i)
+              {
+                const Field& field = m_Fields[i];
+
+                //Field value:
+                Gnome::Gda::Value value = result->get_value_at(i, row_number);
+                m_FlowTable.set_field_value(field, value);
+              }
             }
           }
         }
       }
+      catch(std::exception& ex)
+      {
+        handle_error(ex);
+      }
     }
-    catch(std::exception& ex)
+    else
     {
-      handle_error(ex);
+      //Show blank record:
+      //TODO
     }
-  }
-  else
-  {
-    //Show blank record:
-    //TODO
-  }
+  } //if(!listFieldsToShow.empty())
 
   fill_related();
 
