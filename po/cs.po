@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glom VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-03-25 19:21+0100\n"
-"PO-Revision-Date: 2005-03-26 01:14+0100\n"
+"POT-Creation-Date: 2005-03-31 03:25+0200\n"
+"PO-Revision-Date: 2005-03-31 10:49+0200\n"
 "Last-Translator: Miloslav Trmac <mitr@volny.cz>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -29,23 +29,23 @@ msgid "<b>Fields</b>"
 msgstr "<b>Pole</b>"
 
 #: glom/glom.glade.h:4
-msgid "<b>Group: </b>"
-msgstr "<b>Skupina: </b>"
+msgid "<b>Group:</b>"
+msgstr "<b>Skupina:</b>"
 
 #: glom/glom.glade.h:5
 msgid "<b>Groups</b>"
 msgstr "<b>Skupiny</b>"
 
 #: glom/glom.glade.h:6
-msgid "<b>Mode: </b>"
-msgstr "<b>Režim: </b>"
+msgid "<b>Mode:</b>"
+msgstr "<b>Režim:</b>"
 
 #: glom/glom.glade.h:7
 msgid "<b>Numeric Formatting</b>"
 msgstr "<b>Formátování čísel</b>"
 
 #: glom/glom.glade.h:8
-msgid "<b>Relationship: </b>"
+msgid "<b>Relationship:</b>"
 msgstr "<b>Vztah:</b>"
 
 #: glom/glom.glade.h:9
@@ -57,8 +57,8 @@ msgid "<b>Select Relationship</b>"
 msgstr "<b>Zvolte vztah</b>"
 
 #: glom/glom.glade.h:11
-msgid "<b>Table: </b>"
-msgstr "<b>Tabulka: </b>"
+msgid "<b>Table:</b>"
+msgstr "<b>Tabulka:</b>"
 
 #: glom/glom.glade.h:12
 msgid "<b>Tables in database</b>"
@@ -73,8 +73,8 @@ msgid "<b>Title:</b>"
 msgstr "<b>Nadpis:</b>"
 
 #: glom/glom.glade.h:15
-msgid "<b>User Level: </b>"
-msgstr "<b>Úroveň uživatele: </b>"
+msgid "<b>User Level:</b>"
+msgstr "<b>Úroveň uživatele:</b>"
 
 #: glom/glom.glade.h:16
 msgid "<b>User</b>"
@@ -248,52 +248,52 @@ msgid "Create Group"
 msgstr "Vytvořit skupinu"
 
 #: glom/glom.glade.h:64
+msgid "Currency Symbol"
+msgstr "Symbol měny"
+
+#: glom/glom.glade.h:65
 msgid "Data"
 msgstr "Data"
 
-#: glom/glom.glade.h:65
+#: glom/glom.glade.h:66
 msgid "Database"
 msgstr "Databáze"
 
-#: glom/glom.glade.h:66
+#: glom/glom.glade.h:67
+msgid "Decimal Places"
+msgstr "Desetinná místa"
+
+#: glom/glom.glade.h:68
 msgid "Default Value"
 msgstr "Implicitní hodnota"
 
-#: glom/glom.glade.h:67
+#: glom/glom.glade.h:69
 msgid "Details Layout"
 msgstr "Podrobné rozložení"
 
-#: glom/glom.glade.h:68
+#: glom/glom.glade.h:70
 msgid "Edit"
 msgstr "Upravit"
 
-#: glom/glom.glade.h:69
-msgid "Edit Definition"
-msgstr "Upravit definici"
-
-#: glom/glom.glade.h:70
+#: glom/glom.glade.h:71
 msgid "Extra"
 msgstr "Extra"
 
-#: glom/glom.glade.h:71
+#: glom/glom.glade.h:72
 msgid "Field"
 msgstr "Pole"
 
-#: glom/glom.glade.h:72
+#: glom/glom.glade.h:73
 msgid "Field Calculation"
 msgstr "Výpočet pole"
 
-#: glom/glom.glade.h:73
+#: glom/glom.glade.h:74
 msgid "Field Definition"
 msgstr "Definice pole"
 
-#: glom/glom.glade.h:74
+#: glom/glom.glade.h:75
 msgid "Field Definitions"
 msgstr "Definice pole"
-
-#: glom/glom.glade.h:75
-msgid "Format"
-msgstr "Formát"
 
 #: glom/glom.glade.h:76
 msgid "Glom"
@@ -316,66 +316,73 @@ msgid "Host"
 msgstr "Počítač"
 
 #: glom/glom.glade.h:81
+msgid ""
+"If this is not selected then a thousands separator will not be used, even if "
+"your locale would normally use one. If it is selected then a thousands "
+"separator will be used only if your locale normally uses one."
+msgstr "Pokud toto není vybráno, nebude používán oddělovač tisíců, i když by jej vaše locale normálně používalo. Je-li toto vybráno, bude používán oddělovač tisíců, jen pokud jej vaše locale normálně používá."
+
+#: glom/glom.glade.h:82
 msgid "List Layout"
 msgstr "Rozložení seznamu"
 
-#: glom/glom.glade.h:82
+#: glom/glom.glade.h:83
 msgid "Lookup value when a field changes."
 msgstr "Vyhledat hodnotu, když se pole změní."
 
-#: glom/glom.glade.h:83
+#: glom/glom.glade.h:84
 msgid "Name"
 msgstr "Název"
 
-#: glom/glom.glade.h:84
+#: glom/glom.glade.h:85
 msgid "None selected"
 msgstr "Nic nevybráno"
 
-#: glom/glom.glade.h:85
+#: glom/glom.glade.h:86
 msgid "Password"
 msgstr "Heslo"
 
-#: glom/glom.glade.h:86
+#: glom/glom.glade.h:87
 msgid "Primary Key"
 msgstr "Primární klíč"
 
-#: glom/glom.glade.h:87
+#: glom/glom.glade.h:88
 msgid "Related Records Layout"
 msgstr "Rozložení souvisejících záznamů"
 
-#: glom/glom.glade.h:88
+#: glom/glom.glade.h:89
 msgid "Relationship"
 msgstr "Vztah"
 
-#: glom/glom.glade.h:89
+#: glom/glom.glade.h:90
 msgid "Revert"
 msgstr "Vrátit"
 
-#: glom/glom.glade.h:90
+#: glom/glom.glade.h:91
 msgid "Select"
 msgstr "Vybrat"
 
-#: glom/glom.glade.h:91
+#: glom/glom.glade.h:92
 msgid "Select Field"
 msgstr "Zvolte pole"
 
-#: glom/glom.glade.h:92
+#: glom/glom.glade.h:93
 msgid "Select Relationship"
 msgstr "Zvolte vztah"
 
-#: glom/glom.glade.h:93
+#: glom/glom.glade.h:94
 msgid "Show hidden tables"
 msgstr "Zobrazovat skryté tabulky"
 
-#: glom/glom.glade.h:94
+#: glom/glom.glade.h:95
 msgid "Table:"
 msgstr "Tabulka:"
 
-#: glom/glom.glade.h:95
+#: glom/glom.glade.h:96
 msgid "Test"
 msgstr "Test"
 
-#: glom/glom.glade.h:96
+#: glom/glom.glade.h:97
 msgid ""
 "The field value will be the return value of the python function, which you "
 "implement here."
@@ -383,34 +390,43 @@ msgstr ""
 "Hodnota tohoto pole bude návratová hodnota funkce v pythonu, kterou zde "
 "implementujete."
 
-#: glom/glom.glade.h:97
+#: glom/glom.glade.h:98
 msgid "Title"
 msgstr "Nadpis"
 
-#: glom/glom.glade.h:98
+#: glom/glom.glade.h:99
 msgid "Type"
 msgstr "Typ"
 
-#: glom/glom.glade.h:99
+#: glom/glom.glade.h:100
 msgid "Unique"
 msgstr "Jedinečný"
 
-#: glom/glom.glade.h:100
+#: glom/glom.glade.h:101
+msgid "Use 1000s separator"
+msgstr "Používat oddělovač tisíců"
+
+#: glom/glom.glade.h:102
 msgid "User"
 msgstr "Uživatel"
 
-#: glom/glom.glade.h:101
-msgid "User "
-msgstr "Uživatel "
-
-#: glom/glom.glade.h:102
+#: glom/glom.glade.h:103
 msgid "Users"
 msgstr "Uživatelé"
 
-#: glom/glom.glade.h:103
+#: glom/glom.glade.h:104
 msgid "example data format"
 msgstr "ukázkový formát data"
 
-#: glom/glom.glade.h:104
+#: glom/glom.glade.h:105
 msgid "table name"
 msgstr "název tabulky"
+
+#~ msgid "Edit Definition"
+#~ msgstr "Upravit definici"
+
+#~ msgid "Format"
+#~ msgstr "Formát"
+
+#~ msgid "User "
+#~ msgstr "Uživatel "
