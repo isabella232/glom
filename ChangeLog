@@ -1,3 +1,19 @@
+2005-03-14  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/mode_data/box_data.cc:
+	* glom/mode_data/box_data.h:
+	* glom/mode_data/box_data_details.cc:
+	* glom/mode_data/box_data_list.cc:
+	* glom/mode_data/box_data_list.h:
+	* glom/mode_data/box_data_list_related.cc:
+	* glom/utility_widgets/db_adddel/db_adddel.cc:
+	* glom/utility_widgets/db_adddel/db_adddel.h:
+	Db_AddDel::set_value(), and get_value() now 
+	identify the column by a LayoutItem_Field 
+	instead of a numerical index, so at least 
+	the inefficient index discovery is restricted 
+	to one method in Db_AddDel.
+
 2005-03-14  Murray Cumming <murrayc@murrayc.com>
 
 	* glom/mode_data/box_data_details.cc:

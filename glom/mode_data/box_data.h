@@ -71,13 +71,17 @@ protected:
   Document_Glom::type_mapLayoutGroupSequence get_data_layout_groups(const Glib::ustring& layout);
   void fill_layout_group_field_info(LayoutGroup& group);
 
-  typedef std::pair<Field, Relationship> type_pairFieldTrigger;
+  typedef std::pair<LayoutItem_Field, Relationship> type_pairFieldTrigger;
   typedef std::list<type_pairFieldTrigger> type_list_lookups;
 
   /** Get the fields whose values should be looked up when @a field_name changes, with
    * the relationship used to lookup the value.
    */
   type_list_lookups get_lookup_fields(const Glib::ustring& field_name) const;
+
+  /** Get the fields that are in related tables, via a relationship using @a field_name changes.
+  */
+  type_list_lookups get_related_fields(const Glib::ustring& field_name) const;
 
   /** Get the value of the @a source_field from the @a relationship, using the @a key_value.
    */

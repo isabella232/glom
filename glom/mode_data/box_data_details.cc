@@ -645,14 +645,19 @@ void Box_Data_Details::on_flowtable_field_edited(const LayoutItem_Field& layout_
 
 void Box_Data_Details::do_lookups(const LayoutItem_Field& field_changed, const Gnome::Gda::Value& field_value, const Field& primary_key, const Gnome::Gda::Value& primary_key_value)
 {
+   if(field_changed.get_has_relationship_name())
+    return; //TODO: Handle these too.
+
    //Get values for lookup fields, if this field triggers those relationships:
    //TODO_performance: There is a LOT of iterating and copying here.
    const Glib::ustring strFieldName = field_changed.get_name();
    type_list_lookups lookups = get_lookup_fields(strFieldName);
    for(type_list_lookups::const_iterator iter = lookups.begin(); iter != lookups.end(); ++iter)
    {
+     const LayoutItem_Field& layout_Item = iter->first;
+
      const Relationship relationship = iter->second;
-     const Field field_lookup = iter->first;
+     const Field& field_lookup = layout_Item.m_field;
      const Glib::ustring field_lookup_name = field_lookup.get_name();
 
      Field field_source;

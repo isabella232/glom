@@ -153,14 +153,12 @@ void Box_Data_List_Related::on_record_added(const Gnome::Gda::Value& primary_key
   Gtk::TreeModel::iterator iter = m_AddDel.get_row(primary_key_value);
   if(iter)
   {
-    guint iKey = 0;
     Gnome::Gda::Value key_value;
     //m_key_field is the field in this table that must match another field in the parent table.
-    bool primary_key_is_visible = get_field_column_index(m_key_field.get_name(), iKey);
-    if(primary_key_is_visible)
-    {
-      key_value = m_AddDel.get_value(iter, iKey);
-    }
+    LayoutItem_Field layout_item;
+    layout_item.set_name(m_key_field.get_name());
+    layout_item.m_field = m_key_field;
+    key_value = m_AddDel.get_value(iter, layout_item);
 
     Box_Data_List::on_record_added(key_value); //adds blank row.
 
@@ -185,10 +183,14 @@ void Box_Data_List_Related::on_record_added(const Gnome::Gda::Value& primary_key
       strQuery += " SET " +  /* get_table_name() + "." +*/ m_key_field.get_name() + " = " + m_key_field.sql(m_key_value);
       strQuery += " WHERE " + get_table_name() + "." + field_primary_key.get_name() + " = " + field_primary_key.sql(primary_key_value);
       bool test = Query_execute(strQuery);
-      if(test && primary_key_is_visible)
+      if(test)
       {
         //Show it on the view, if it's visible:
-        m_AddDel.set_value(iter, iKey, m_key_value);
+        LayoutItem_Field layout_item;
+        layout_item.set_name( field_primary_key.get_name() );
+        layout_item.m_field = field_primary_key;
+
+        m_AddDel.set_value(iter, layout_item, m_key_value);
       }
 
       //on_adddel_user_changed(iter, iKey); //Update the database.

@@ -331,7 +331,7 @@ Gtk::TreeModel::iterator DbAddDel::add_item(const Gnome::Gda::Value& valKey)
 {
   if(!(get_model()))
     return Gtk::TreeModel::iterator();
-    
+
   Gtk::TreeModel::iterator result = get_next_available_row_with_add_if_necessary();
 
   if(result)
@@ -366,7 +366,7 @@ void DbAddDel::remove_all()
 }
 
 
-Gnome::Gda::Value DbAddDel::get_value(const Gtk::TreeModel::iterator& iter, guint col)
+Gnome::Gda::Value DbAddDel::get_value(const Gtk::TreeModel::iterator& iter, const LayoutItem_Field& layout_item)
 {
   Gnome::Gda::Value value;
 
@@ -376,8 +376,13 @@ Gnome::Gda::Value DbAddDel::get_value(const Gtk::TreeModel::iterator& iter, guin
 
     if(treerow)
     {
-      const guint col_real = col + get_count_hidden_system_columns();
-      treerow.get_value(col_real, value);
+      guint col = 0;
+      bool test = get_column_index(layout_item, col);
+      if(test)
+      {
+        const guint col_real = col + get_count_hidden_system_columns();
+        treerow.get_value(col_real, value);
+      }
     }
   }
 
@@ -396,9 +401,9 @@ Gnome::Gda::Value DbAddDel::get_value_key_selected()
     return Gnome::Gda::Value();
 }
 
-Gnome::Gda::Value DbAddDel::get_value_selected(guint col)
+Gnome::Gda::Value DbAddDel::get_value_selected(const LayoutItem_Field& layout_item)
 {
-  return get_value(get_item_selected(), col);
+  return get_value(get_item_selected(), layout_item);
 }
 
 Gtk::TreeModel::iterator DbAddDel::get_item_selected()
@@ -656,16 +661,16 @@ void DbAddDel::construct_specified_columns()
         default:
         {
           pCellRenderer = Gtk::manage( new Gtk::CellRendererText() );
-          
+
           break;
         }
       } //switch
-      
+
       ++cols_count;
-      
+
       //Add the ViewColumn
       treeview_append_column(column_name, *pCellRenderer, model_column_index);
-     
+
       if(column_info.m_editable)
       {
         Gtk::CellRendererText* pCellRenderer = dynamic_cast<Gtk::CellRendererText*>(m_TreeView.get_column_cell_renderer(view_column_index));
@@ -713,10 +718,10 @@ void DbAddDel::construct_specified_columns()
   m_TreeView.columns_autosize();
 }
 
-void DbAddDel::set_value(const Gtk::TreeModel::iterator& iter, guint col, const Gnome::Gda::Value& value)
+void DbAddDel::set_value(const Gtk::TreeModel::iterator& iter, const LayoutItem_Field& layout_item, const Gnome::Gda::Value& value)
 {
   //g_warning("DbAddDel::set_value begin");
-  
+
   InnerIgnore innerIgnore(this);
 
   if(!m_refListStore)
@@ -726,14 +731,19 @@ void DbAddDel::set_value(const Gtk::TreeModel::iterator& iter, guint col, const 
     Gtk::TreeModel::Row treerow = *iter;
     if(treerow)
     {
-      guint treemodel_col = col + get_count_hidden_system_columns();
-      treerow.set_value(treemodel_col, value);
-
-      //Mark this row as not a placeholder because it has real data now.
-      if(!(GlomConversions::value_is_empty(value)))
+      guint col = 0;
+      bool test = get_column_index(layout_item, col);
+      if(test)
       {
-         //treerow.set_value(m_col_key, Glib::ustring("placeholder debug value setted"));
-         //treerow.set_value(m_col_placeholder, false);
+        guint treemodel_col = col + get_count_hidden_system_columns();
+        treerow.set_value(treemodel_col, value);
+
+        //Mark this row as not a placeholder because it has real data now.
+        if(!(GlomConversions::value_is_empty(value)))
+        {
+          //treerow.set_value(m_col_key, Glib::ustring("placeholder debug value setted"));
+          //treerow.set_value(m_col_placeholder, false);
+        }
       }
     }
 
@@ -744,9 +754,9 @@ void DbAddDel::set_value(const Gtk::TreeModel::iterator& iter, guint col, const 
   //g_warning("DbAddDel::set_value end");
 }
 
-void DbAddDel::set_value_selected(guint col, const Gnome::Gda::Value& value)
+void DbAddDel::set_value_selected(const LayoutItem_Field& layout_item, const Gnome::Gda::Value& value)
 {
-  set_value(get_item_selected(), col, value);
+  set_value(get_item_selected(), layout_item, value);
 }
 
 void DbAddDel::remove_all_columns()
@@ -776,6 +786,30 @@ guint DbAddDel::add_column(const LayoutItem_Field& field, bool editable, bool vi
   //m_TreeView.set_model(m_refListStore);
 
   return m_ColumnTypes.size() - 1;
+}
+
+bool DbAddDel::get_column_index(const LayoutItem_Field& layout_item, guint& index) const
+{
+  //TODO_Performance: Replace all this looping by a cache/map:
+
+  //TODO: Handle multiple appearances of the same field:
+
+  //Initialize output parameter:
+  index = 0;
+
+  guint i = 0;
+  for(type_ColumnTypes::const_iterator iter = m_ColumnTypes.begin(); iter != m_ColumnTypes.end(); ++iter)
+  {
+    if(iter->m_field.get_name() == layout_item.get_name())
+    {
+      index = i;
+      return true;
+    }
+
+    ++i;
+  }
+
+  return false;
 }
 
 LayoutItem_Field DbAddDel::get_column_field(guint column_index) const
@@ -1457,14 +1491,14 @@ void DbAddDel::set_value_key(const Gtk::TreeModel::iterator& iter, const Gnome::
   if(iter)
   {
     Gtk::TreeModel::Row row = *iter;
-  
+
     if(!(GlomConversions::value_is_empty(value)))
     {
       //This is not a placeholder anymore, if it every was:
       m_refListStore->set_is_placeholder(iter, false);
       //row[*m_modelcolumn_placeholder] = false;
     }
-  
+
     row[*m_modelcolumn_key] = value;
   }
 }
@@ -1503,7 +1537,7 @@ bool DbAddDel::get_view_column_index(guint model_column_index, guint& view_colum
 
   if(model_column_index >=  m_ColumnTypes.size())
     return false;
-    
+
   if( !(m_ColumnTypes[model_column_index].m_visible) )
     return false;
 
@@ -1535,7 +1569,10 @@ void DbAddDel::set_key_field(const Field& field)
 
 void DbAddDel::treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter, int model_column_index)
 {
-  Gnome::Gda::Value value = get_value(iter, model_column_index);
+  const guint col_real = model_column_index + get_count_hidden_system_columns();
+  Gtk::TreeModel::Row treerow = *iter;
+  Gnome::Gda::Value value;
+  treerow->get_value(col_real, value);
 
   DbAddDelColumnInfo& column_info = m_ColumnTypes[model_column_index];
   switch(column_info.m_field.m_field.get_glom_type())

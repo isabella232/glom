@@ -76,7 +76,7 @@ public:
 
   virtual void remove_all();
 
-  virtual Gnome::Gda::Value get_value(const Gtk::TreeModel::iterator& iter, guint col );
+  virtual Gnome::Gda::Value get_value(const Gtk::TreeModel::iterator& iter, const LayoutItem_Field& layout_item);
 
   /** Get the row's hidden key
    */
@@ -89,7 +89,7 @@ public:
   /** @param col A value returned from add_column().
    * @result The value on the selected row.
    */
-  virtual Gnome::Gda::Value get_value_selected(guint col);
+  virtual Gnome::Gda::Value get_value_selected(const LayoutItem_Field& layout_item);
   virtual Gnome::Gda::Value get_value_key_selected();
 
   virtual Gtk::TreeModel::iterator get_item_selected();
@@ -107,16 +107,16 @@ public:
 
   /** 
    * @param iter The row to be changed. 
-   * @param col A value returned from add_column().
+   * @param layout_item Describes the column(s) whose values should be changed.
    * @param value The new value.
    */
-  virtual void set_value(const Gtk::TreeModel::iterator& iter, guint col, const Gnome::Gda::Value& value);
+  virtual void set_value(const Gtk::TreeModel::iterator& iter, const LayoutItem_Field& layout_item, const Gnome::Gda::Value& value);
 
   /** 
    * @param col A value returned from add_column().
    * @param value The new value.
    */
-  virtual void set_value_selected(guint col, const Gnome::Gda::Value& value);
+  virtual void set_value_selected(const LayoutItem_Field& layout_item, const Gnome::Gda::Value& value);
 
   virtual bool get_is_first_row(const Gtk::TreeModel::iterator& iter) const;
   virtual bool get_is_last_row(const Gtk::TreeModel::iterator& iter) const;
@@ -208,6 +208,8 @@ public:
   virtual Gtk::TreeModel::iterator get_last_row() const;
 
 protected:
+
+  virtual bool get_column_index(const LayoutItem_Field& layout_item, guint& index) const;
 
   /** Get an iterator to the blank row in which the user should add data for the new row.
    * You can then add the row to your underlying data store when some data has been filled, by handling signal_user_changed.

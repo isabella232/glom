@@ -142,24 +142,16 @@ void Box_Data_List::fill_from_database()
             guint cols_count = result->get_n_columns() - 1;
             for(guint uiCol = 0; uiCol < cols_count; uiCol++)
             {
-              Gnome::Gda::Value value = result->get_value_at(uiCol, result_row);
-              guint index = 0;
+              const Gnome::Gda::Value value = result->get_value_at(uiCol, result_row);
+              const LayoutItem_Field& layout_item = *iterFields;
 
               //g_warning("list fill: field_name=%s", iterFields->get_name().c_str());
               //g_warning("  value_as_string=%s", value.to_string().c_str());
 
-              //TODO_Performance: This searches fieldsToGet again each time:
-              const Glib::ustring field_name = iterFields->get_name();
-              bool test = get_field_column_index(field_name, index);
-              ++iterFields;
+              m_AddDel.set_value(tree_iter, layout_item, value);
+               //g_warning("addedel size=%d", m_AddDel.get_count());
 
-              if(test)
-              {
-                m_AddDel.set_value(tree_iter, index, value);
-                //g_warning("addedel size=%d", m_AddDel.get_count());
-              }
-              else
-                g_warning("  get_field_column_index failed: field name=%s", field_name.c_str());
+              ++iterFields;
             }
           }
         }
@@ -290,16 +282,14 @@ void Box_Data_List::on_adddel_user_added(const Gtk::TreeModel::iterator& row)
       m_AddDel.set_value_key(row, primary_key_value);
 
       //Show the primary key in the row, if the primary key is visible:
-      guint primary_key_model_col_index = 0;
-      bool test = get_field_column_index(field_primary_key.get_name(), primary_key_model_col_index);
-      if(test)
+      const Gnome::Gda::FieldAttributes fieldInfo = field_primary_key.get_field_info();
+      //If it's an auto-increment, then get the value and show it:
+      if(fieldInfo.get_auto_increment())
       {
-        const Gnome::Gda::FieldAttributes fieldInfo = field_primary_key.get_field_info();
-        //If it's an auto-increment, then get the value and show it:
-        if(fieldInfo.get_auto_increment())
-        {
-          m_AddDel.set_value(row, primary_key_model_col_index, primary_key_value);
-        }
+        LayoutItem_Field layout_item;
+        layout_item.set_name(field_primary_key.get_name());
+        layout_item.m_field = field_primary_key;
+        m_AddDel.set_value(row, layout_item, primary_key_value);
       }
 
       //Allow derived class to respond to record addition.
@@ -338,7 +328,7 @@ void Box_Data_List::on_adddel_user_reordered_columns()
 
     Document_Glom::type_mapLayoutGroupSequence mapGroups;
     mapGroups[1] = group;
-    
+
     pDoc->set_data_layout_groups("list", m_strTableName, mapGroups);  
   }
 }
@@ -395,7 +385,7 @@ void Box_Data_List::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, 
       }
 
 
-      const Gnome::Gda::Value field_value = m_AddDel.get_value(row, col);
+      const Gnome::Gda::Value field_value = m_AddDel.get_value(row, layout_field);
       const Field& field = layout_field.m_field;
       const Glib::ustring strFieldName = layout_field.get_name();
 
@@ -413,7 +403,8 @@ void Box_Data_List::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, 
         //Get-and-set values for lookup fields, if this field triggers those relationships:
         do_lookups(row, layout_field, field_value, primary_key_field, primary_key_value);
 
-        //TODO: Display new values for related fields.
+        //Update related fields, if this field is used in the relationship:
+        refresh_related_fields(row, layout_field, field_value, primary_key_field, primary_key_value);
       }
     }
     catch(const std::exception& ex)
@@ -438,17 +429,42 @@ void Box_Data_List::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, 
 
 }
 
+void Box_Data_List::refresh_related_fields(const Gtk::TreeModel::iterator& row, const LayoutItem_Field& field_changed, const Gnome::Gda::Value& /* field_value */, const Field& /* primary_key */, const Gnome::Gda::Value& /* primary_key_value */)
+{
+  if(field_changed.get_has_relationship_name())
+    return; //TODO: Handle these too.
+
+   //Get values for lookup fields, if this field triggers those relationships:
+   //TODO_performance: There is a LOT of iterating and copying here.
+   const Glib::ustring strFieldName = field_changed.get_name();
+   type_list_lookups lookups = get_related_fields(strFieldName);
+   for(type_list_lookups::const_iterator iter = lookups.begin(); iter != lookups.end(); ++iter)
+   {
+     const LayoutItem_Field& layout_item = iter->first;
+
+     //const Relationship relationship = iter->second;
+     //const Field& field_to_refresh = layout_Item.m_field;
+
+     Gnome::Gda::Value value_new; //TODO:
+     m_AddDel.set_value(row, layout_item, value_new);
+   }
+}
+
 void Box_Data_List::do_lookups(const Gtk::TreeModel::iterator& row, const LayoutItem_Field& field_changed, const Gnome::Gda::Value& field_value, const Field& primary_key, const Gnome::Gda::Value& primary_key_value)
 {
+   if(field_changed.get_has_relationship_name())
+    return; //TODO: Handle these too.
+
    //Get values for lookup fields, if this field triggers those relationships:
    //TODO_performance: There is a LOT of iterating and copying here.
    const Glib::ustring strFieldName = field_changed.get_name();
    type_list_lookups lookups = get_lookup_fields(strFieldName);
    for(type_list_lookups::const_iterator iter = lookups.begin(); iter != lookups.end(); ++iter)
    {
+     const LayoutItem_Field& layout_Item = iter->first;
+
      const Relationship relationship = iter->second;
-     const Field field_lookup = iter->first;
-     const Glib::ustring field_lookup_name = field_lookup.get_name();
+     const Field& field_lookup = layout_Item.m_field;
 
      Field field_source;
      bool test = get_fields_for_table_one_field(relationship.get_to_table(), field_lookup.get_lookup_field(), field_source);
@@ -457,16 +473,11 @@ void Box_Data_List::do_lookups(const Gtk::TreeModel::iterator& row, const Layout
        Gnome::Gda::Value value = get_lookup_value(iter->second /* relationship */,  field_source /* the field to look in to get the value */, field_value /* Value of to and from fields */);
 
        //Add it to the view:
-       guint column_index = 0;
-       bool test = get_field_column_index(field_lookup_name, column_index);
-       if(test)
-       {
-         m_AddDel.set_value(row, column_index, value);
-       }
+       m_AddDel.set_value(row, layout_Item, value);
 
        //Add it to the database (even if it is not shown in the view)
        Glib::ustring strQuery = "UPDATE " + m_strTableName;
-       strQuery += " SET " + field_lookup_name + " = " + field_lookup.sql(value);
+       strQuery += " SET " + field_lookup.get_name() + " = " + field_lookup.sql(value);
        strQuery += " WHERE " + primary_key.get_name() + " = " + primary_key.sql(primary_key_value);
        Query_execute(strQuery);  //TODO: Handle errors
 
@@ -570,23 +581,12 @@ Gnome::Gda::Value Box_Data_List::get_primary_key_value_selected()
 
 Gnome::Gda::Value Box_Data_List::get_entered_field_data(const LayoutItem_Field& field) const
 {
-  //Get text from widget:
-
-  //TODO: The AddDel should be able to identify the column by LayoutItem_Field:
-  guint index = 0;
-  bool test = get_field_column_index(field.get_name(), index);
-  if(test)
-    return m_AddDel.get_value_selected(index);
-  else
-    return Gnome::Gda::Value(); //null.
+  return m_AddDel.get_value_selected(field);
 }
 
 void Box_Data_List::set_entered_field_data(const LayoutItem_Field& field, const Gnome::Gda::Value& value)
 {
-  guint index = 0;
-  bool test = get_field_column_index(field.get_name(), index);
-  if(test)
-    return m_AddDel.set_value_selected(index, value);
+  return m_AddDel.set_value_selected(field, value);
 }
 
 guint Box_Data_List::get_records_count() const

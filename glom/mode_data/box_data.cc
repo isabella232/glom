@@ -428,6 +428,40 @@ guint Box_Data::generate_next_auto_increment(const Glib::ustring& table_name, co
   return result;
 }
 
+/** Get the fields that are in related tables, via a relationship using @a field_name changes.
+ */
+Box_Data::type_list_lookups Box_Data::get_related_fields(const Glib::ustring& field_name) const
+{
+  type_list_lookups result;
+
+  const Document_Glom* document = dynamic_cast<const Document_Glom*>(get_document());
+  if(document)
+  {
+    for(type_vecLayoutFields::const_iterator iter = m_Fields.begin(); iter != m_Fields.end();  ++iter)
+    {
+      const LayoutItem_Field& layout_field = *iter;
+      //Examine each field that looks up its data from a relationship:
+      if(layout_field.get_has_relationship_name())
+      {
+        //Get the relationship information:
+        Relationship relationship;
+        bool test = document->get_relationship(m_strTableName, layout_field.get_relationship_name(), relationship);
+        if(test)
+        {
+          //If the relationship uses the specified field:
+          if(relationship.get_from_field() == field_name)
+          {
+            //Add it:
+            result.push_back( type_pairFieldTrigger(layout_field, relationship) );
+          }
+        }
+      }
+    }
+  }
+
+  return result;
+}
+
 /** Get the fields whose values should be looked up when @a field_name changes, with
  * the relationship used to lookup the value.
  */
@@ -453,7 +487,10 @@ Box_Data::type_list_lookups Box_Data::get_lookup_fields(const Glib::ustring& fie
           if(relationship.get_from_field() == field_name)
           {
             //Add it:
-            result.push_back( type_pairFieldTrigger(field, relationship) );
+            LayoutItem_Field item;
+            item.set_name(field.get_name());
+            item.m_field = field;
+            result.push_back( type_pairFieldTrigger(item, relationship) );
           }
         }
       }
