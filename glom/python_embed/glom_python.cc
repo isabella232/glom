@@ -19,6 +19,7 @@
  */
 
 //We need to include this before anything else, to avoid redefinitions:
+#include "py_glom_record.h"
 #include <Python.h>
 #include "compile.h" /* for the PyCodeObject */
 #include "eval.h" /* for PyEval_EvalCode */
@@ -71,11 +72,16 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
 
   //We did this in main(): Py_Initialize();
 
-  PyObject* pMain = PyImport_AddModule("__main__");
-  PyObject* pDict = PyModule_GetDict(pMain);
+  boost::python::object main_module((
+        boost::python::handle<>(boost::python::borrowed(PyImport_AddModule("__main__")))));
+  //PyObject* pMain = PyImport_AddModule("__main__");
+
+  // Retrieve the main module's namespace
+  boost::python::object main_namespace( main_module.attr("__dict__") );
+  //PyObject* pDict = PyModule_GetDict(pMain);
 
   //Create the function definition:
-  PyObject* pyValue = PyRun_String(func_def.c_str(), Py_file_input, pDict, pDict);
+  PyObject* pyValue = PyRun_String(func_def.c_str(), Py_file_input, main_namespace.ptr(), main_namespace.ptr());
   if(pyValue)
   {
     Py_DECREF(pyValue);
@@ -84,8 +90,11 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
 
   //Call the function:
   {
+    //TODO: Use PyObject_CallObject(pFunc, pArgs), passing the PyGlomRecord as a parameter.
+    //  return boost::python::call<std::string>(func, x, y);
+
     Glib::ustring call_func = "glom_calc_field_value()";
-    PyObject* pyValue = PyRun_String(call_func.c_str(), Py_eval_input, pDict, pDict);
+    PyObject* pyValue = PyRun_String(call_func.c_str(), Py_eval_input, main_namespace.ptr(), main_namespace.ptr());
     if(!pyValue)
     {
       g_warning("pyValue was null");

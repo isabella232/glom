@@ -1,7 +1,7 @@
 gladedir = $(datadir)/glom/glade/
 
 # We define GLOM_GLADEDIR so that we can get the installed .glade file at runtime.
-INCLUDES = -I@top_srcdir@/ $(GLOM_CFLAGS) $(PYTHON_INCLUDES) \
+INCLUDES = -I@top_srcdir@/ $(GLOM_CFLAGS) $(PYTHON_INCLUDES) $(BOOST_CFLAGS) \
                     -DGLOM_GLADEDIR=\""$(gladedir)/"\"
 
 

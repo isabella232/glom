@@ -40,12 +40,13 @@ protected:
   int m_test;
 };
 
-
+/*
 BOOST_PYTHON_MODULE(PyGlom)
 {
     boost::python::class_<PyGlomRecord>("Record")
         .def("get_test", &PyGlomRecord::get_test)
     ;
 }
+*/
 
 #endif //GLOM_PYTHON_GLOM_RECORD_H

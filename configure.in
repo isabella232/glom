@@ -44,8 +44,11 @@ AM_CHECK_PYTHON_HEADERS(,[AC_MSG_ERROR(could not find Python headers)])
 
 # Get the CLAGS and LIBS for boost:
 # TODO: Actually find it properly.
-BOOST_CFLAGS = -I/usr/include
-BOOST_LIBS = -L/usr/lib -lboost_python
+BOOST_CFLAGS=-I/usr/include
+BOOST_LIBS="-L/usr/lib -lboost_python"
+AC_SUBST(BOOST_CFLAGS)
+AC_SUBST(BOOST_LIBS)
+
 # Install path for DTD (e.g. /usr/local/share/glom):
 
 #I would like to use this line, but it doesn't fully evaluate.

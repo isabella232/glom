@@ -4,7 +4,7 @@ gladedir = $(datadir)/glom/glade/
 
 # We define GLOM_GLADEDIR so that we can get the installed .glade file at runtime.
 # We define PREFIX, SYSCONFDIR, LIBDIR, and DATADIR for the GNOME_PROGRAM_STANDARD_PROPERTIES macro.
-INCLUDES = $(GLOM_CFLAGS) $(PYTHON_INCLUDES) \
+INCLUDES = $(GLOM_CFLAGS) $(PYTHON_INCLUDES) $(BOOST_CFLAGS) \
            -DGLOM_GLADEDIR=\""$(gladedir)/"\" \
            -DLOCALEDIR=\""$(datadir)/locale"\" \
            -DPREFIX=\""$(prefix)"\" \
@@ -46,7 +46,7 @@ glom_LDADD = document/libdocument.a \
              utility_widgets/db_adddel/libutility_widgets_db_adddel.a \
              data_structure/libdata_structure.a \
              python_embed/libpython_embed.a \
-             $(GLOM_LIBS) $(PYTHON_LDFLAGS) -lutil
+             $(GLOM_LIBS) $(PYTHON_LDFLAGS) $(BOOST_LIBS) -lutil
 
 #             python_embed/boost/config/libpython_embed_boost_config.a 
 #             python_embed/boost/python/libpython_embed_boost_python.a 

@@ -1,3 +1,7 @@
+This is the GLOM_DEPEND_ON_BOOST branch, where I will try to use 
+boost::python without copying the boost source code into glom, 
+because I can not get it to build inside glom.
+
 0.8.19:
 
 2005-03-31  Murray Cumming <murrayc@murrayc.com>
