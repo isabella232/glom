@@ -541,6 +541,13 @@ Glib::ustring Document_Glom::get_default_table() const
     if(iter->second.m_info.m_default)
       return iter->second.m_info.m_name;
   }
+
+  //If there is only one table then pretend that is the default:
+  if(m_tables.size() == 1)
+  {
+    type_tables::const_iterator iter = m_tables.begin();
+    return iter->second.m_info.m_name;
+  }
   
   return Glib::ustring();
 }
@@ -618,7 +625,9 @@ bool Document_Glom::load_after()
   {
     const xmlpp::Element* nodeRoot = get_node_document();
     if(nodeRoot)
-    {    
+    {
+      m_database_title = get_node_attribute_value(nodeRoot, "database_title");
+          
       const xmlpp::Element* nodeConnection = get_node_child_named(nodeRoot, "connection");
       if(nodeConnection)
       {
@@ -829,6 +838,8 @@ bool Document_Glom::save_before()
   xmlpp::Element* nodeRoot = get_node_document();
   if(nodeRoot)
   {
+    set_node_attribute_value(nodeRoot, "database_title", m_database_title);
+    
     xmlpp::Element* nodeConnection = get_node_child_named_with_add(nodeRoot, "connection");
     set_node_attribute_value(nodeConnection, "server", m_connection_server); 
     set_node_attribute_value(nodeConnection, "user", m_connection_user); 
@@ -934,4 +945,27 @@ bool Document_Glom::save_before()
   }
   
   return Bakery::Document_XML::save_before();  
+}
+
+Glib::ustring Document_Glom::get_database_title() const
+{
+  return m_database_title;
+}
+
+void Document_Glom::set_database_title(const Glib::ustring& title)
+{
+  if(m_database_title != title)
+  {
+    m_database_title = title;
+    set_modified();
+  }
+}
+  
+Glib::ustring Document_Glom::get_name() const
+{
+  //Show the database title in the window title bar:
+  if(m_database_title.empty())
+    return Bakery::Document_XML::get_name();
+  else
+    return m_database_title;
 }

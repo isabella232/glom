@@ -4,6 +4,10 @@
 * Enforce one database per document - ask for a new database name 
   when creating a new document instead of allowing the user 
   to choose an existing database.
+* When there is still only one table, open it without asking the 
+  user to choose a table, as if it is the default table.
+* Show the database title in the window title bar, instead of 
+  the filename.
 (Murray Cumming)
 * Fix a internationalization build problem. (Mike Castle)
 * Added translations: 

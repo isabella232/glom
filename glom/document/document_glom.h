@@ -82,8 +82,13 @@ public:
   virtual Glib::ustring get_table_title(const Glib::ustring& table_name) const;
   virtual void set_table_title(const Glib::ustring& table_name, const Glib::ustring& value);
 
-  virtual Glib::ustring get_default_table() const;
+  virtual Glib::ustring get_name() const; //override.
   
+  virtual Glib::ustring get_default_table() const;
+
+  virtual Glib::ustring get_database_title() const;
+  virtual void set_database_title(const Glib::ustring& title);
+    
   virtual AppState::userlevels get_userlevel() const;
 
   /** This is transitory information, not saved to disk.
@@ -134,6 +139,8 @@ protected:
   
   typedef std::map<Glib::ustring, DocumentTableInfo> type_tables;
   type_tables m_tables;
+
+  Glib::ustring m_database_title;
 };
 
 //The base View for this document;

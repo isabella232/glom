@@ -4,6 +4,9 @@ DTD for glom documents.
 -->
 
 <!ELEMENT glom_document (connection?, table*) >
+<!ATTLIST glom_document
+  database_title CDATA #OPTIONAL
+>
 
 <!ELEMENT connection EMPTY >
 <!ATTLIST connection

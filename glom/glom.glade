@@ -3483,7 +3483,7 @@ Information text.
 	  </child>
 
 	  <child>
-	    <widget class="GtkButton" id="button14">
+	    <widget class="GtkButton" id="button_ok">
 	      <property name="visible">True</property>
 	      <property name="can_default">True</property>
 	      <property name="can_focus">True</property>
@@ -3539,7 +3539,7 @@ Information text.
 		  <property name="can_focus">True</property>
 		  <property name="label" translatable="yes">&lt;span weight=&quot;bold&quot; size=&quot;larger&quot;&gt;New Database&lt;/span&gt;
 
-Please choose a name and title for the new database. The name should contain contain any spaces.</property>
+Please choose a name and title for the new database. The name should not contain any spaces.</property>
 		  <property name="use_underline">False</property>
 		  <property name="use_markup">True</property>
 		  <property name="justify">GTK_JUSTIFY_LEFT</property>

@@ -46,8 +46,10 @@ public:
     
 protected:
   virtual void init_layout(); //override.
+  virtual void init_menus_file(); //override.
   virtual void init_menus(); //override.
   virtual void init_menus_help(); //override
+  virtual void init_toolbars(); //override
   virtual void init_create_document(); //override
   virtual void on_document_load(); //override.
 

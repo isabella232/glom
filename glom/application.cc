@@ -62,7 +62,7 @@ bool App_Glom::init(const Glib::ustring& document_uri)
   //m_pFrame->set_shadow_type(Gtk::SHADOW_IN);
 
   //Hide the toolbar because it doesn't contain anything useful for this app.
-  m_HandleBox_Toolbar.hide();
+  //m_HandleBox_Toolbar.hide();
   
   if(document_uri.empty())
   {
@@ -99,11 +99,85 @@ void App_Glom::init_layout()
 
   add_accel_group(m_refUIManager->get_accel_group());
 
-  m_pBoxTop->pack_start(m_HandleBox_Toolbar, Gtk::PACK_SHRINK);
+  //m_pBoxTop->pack_start(m_HandleBox_Toolbar, Gtk::PACK_SHRINK);
 
   //Add placeholder, to be used by add():
   //m_pBoxTop->pack_start(m_VBox_PlaceHolder);
   //m_VBox_PlaceHolder.show();
+}
+
+void App_Glom::init_toolbars()
+{
+  //We override this because
+  //a) We don't want a toolbar, and
+  //b) The default toolbar layout has actions that we don't have.
+  
+/*
+  //Build part of the menu structure, to be merged in by using the "PH" placeholders:
+  static const Glib::ustring ui_description =
+    "<ui>"
+    "  <toolbar name='Bakery_ToolBar'>"
+    "    <placeholder name='Bakery_ToolBarItemsPH'>"
+    "      <toolitem action='BakeryAction_File_New' />"
+    "      <toolitem action='BakeryAction_File_Open' />"
+    "      <toolitem action='BakeryAction_File_Save' />"
+    "    </placeholder>"
+    "  </toolbar>"
+    "</ui>";
+
+  add_ui_from_string(ui_description);
+*/
+}
+
+void App_Glom::init_menus_file()
+{
+  //Overridden to remove the Save and Save-As menu items,
+  //because all changes are saved immediately and automatically.
+  
+  // File menu
+
+  //Build actions:
+  m_refFileActionGroup = Gtk::ActionGroup::create("BakeryFileActions");
+
+  m_refFileActionGroup->add(Gtk::Action::create("BakeryAction_Menu_File", gettext("_File")));
+  m_refFileActionGroup->add(Gtk::Action::create("BakeryAction_Menu_File_RecentFiles", gettext("_Recent Files")));
+
+  //File actions
+  m_refFileActionGroup->add(Gtk::Action::create("BakeryAction_File_New", Gtk::Stock::NEW),
+                        sigc::mem_fun((App&)*this, &App::on_menu_file_new));
+  m_refFileActionGroup->add(Gtk::Action::create("BakeryAction_File_Open", Gtk::Stock::OPEN),
+                        sigc::mem_fun((App_WithDoc&)*this, &App_WithDoc::on_menu_file_open));
+
+  m_refFileActionGroup->add(Gtk::Action::create("BakeryAction_File_Close", Gtk::Stock::CLOSE),
+                        sigc::mem_fun((App_WithDoc&)*this, &App_WithDoc::on_menu_file_close));
+  m_refFileActionGroup->add(Gtk::Action::create("BakeryAction_File_Exit", Gtk::Stock::QUIT),
+                        sigc::mem_fun((App&)*this, &App::on_menu_file_exit));
+
+  m_refUIManager->insert_action_group(m_refFileActionGroup);
+
+  //Build part of the menu structure, to be merged in by using the "PH" placeholders:
+  static const Glib::ustring ui_description =
+    "<ui>"
+    "  <menubar name='Bakery_MainMenu'>"
+    "    <placeholder name='Bakery_MenuPH_File'>"
+    "      <menu action='BakeryAction_Menu_File'>"
+    "        <menuitem action='BakeryAction_File_New' />"
+    "        <menuitem action='BakeryAction_File_Open' />"
+    "        <menu action='BakeryAction_Menu_File_RecentFiles'>"
+    "        </menu>"
+    "        <separator/>"
+    "        <menuitem action='BakeryAction_File_Close' />"
+    "        <menuitem action='BakeryAction_File_Exit' />"
+    "      </menu>"
+    "    </placeholder>"
+    "  </menubar>"
+    "</ui>";
+
+  //Add menu:
+  add_ui_from_string(ui_description);
+
+  //Add recent-files submenu:
+  init_menus_file_recentfiles("/Bakery_MainMenu/Bakery_MenuPH_File/BakeryAction_Menu_File/BakeryAction_Menu_File_RecentFiles");
 }
 
 void App_Glom::init_menus()
@@ -113,10 +187,6 @@ void App_Glom::init_menus()
 
   //Build actions:
   m_refActionGroup_Others = Gtk::ActionGroup::create("GlomOthersActions");
-
-  //We save some action in m_listDeveloperActions - these will all be enabled/disabled when the userlevel changes.
-  m_listDeveloperActions.push_back(m_action_save);
-  m_listDeveloperActions.push_back(m_action_saveas);
   
   //"Navigate" menu:
   m_refActionGroup_Others->add( Gtk::Action::create("Glom_Menu_Navigate", gettext("_Navigate")) );
@@ -378,28 +448,50 @@ bool App_Glom::offer_new_or_existing()
         refXml->get_widget_derived("dialog_new_database", dialog);
         if(dialog)
         {
-          int response = dialog->run(); //TODO: Allow the user to cancel.
-          dialog->hide();
-          if(response == Gtk::RESPONSE_OK)
-          {
-            Glib::ustring db_name = dialog->m_entry_name->get_text();
-            Glib::ustring db_title = dialog->m_entry_title->get_text();
+          //Set suitable defaults:
+          const Glib::ustring filename = document->get_name(); //Get the filename without the path and extension.
+          dialog->set_input(filename, Base_DB::util_title_from_string( filename ) );
 
-            if(!db_name.empty()) //TODO: Don't activate the OK button when name is empty.
+          bool keep_asking = true;
+          while(keep_asking)
+          {
+            int response = dialog->run(); //TODO: Allow the user to cancel.
+            dialog->hide();
+            if(response == Gtk::RESPONSE_OK)
             {
-              bool db_created = m_pFrame->create_database(db_name);
-              if(db_created)
+              Glib::ustring db_name;
+              Glib::ustring db_title;
+              dialog->get_input(db_name, db_title);
+
+              //Prefix glom_ to the database name, so it's more obvious
+              //for the system administrator.
+              //This database name should never be user-visible again, either prefixed or not prefixed.
+              db_name = "glom_" + db_name;
+
+              if(!db_name.empty()) //The dialog prevents this anyway.
               {
-                m_pFrame->set_databases_selected(db_name);
+                bool db_created = m_pFrame->create_database(db_name);
+                if(db_created)
+                {
+                  keep_asking = false;
+                  document->set_database_title(db_title);
+                  m_pFrame->set_databases_selected(db_name);
+                }
+                else
+                {
+                  Gtk::MessageDialog dialog(gettext("The new database could not be created. Please try again."), Gtk::MESSAGE_WARNING );
+                  dialog.run();
+                }
               }
               else
-                return false;        
-            }
-            else
-              return false;
-            
-            return true; //File successfully created.
-          }
+              {
+                g_warning(" App_Glom::offer_new_or_existing(): db_name is empty.");
+                //And ask again, by going back to the start of the while() loop.
+              }
+            } /* if(response) */            
+          } /* while() */
+          
+          return true; //File successfully created.
         }
        }
   
