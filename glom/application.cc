@@ -669,12 +669,12 @@ bool App_Glom::recreate_database(bool& user_cancelled)
   ConnectionPool* connection_pool = ConnectionPool::get_instance();
   if(!connection_pool)
     return false; //Impossible anyway.
-  
+
   //Check whether the database exists already.
   const Glib::ustring db_name = pDocument->get_connection_database();
   if(db_name.empty())
     return false;
-    
+
   connection_pool->set_database(db_name);
   try
   {
@@ -692,21 +692,21 @@ bool App_Glom::recreate_database(bool& user_cancelled)
       g_warning("App_Glom::recreate_database(): Failed because connection to server failed, without specifying a databse.");
       return false;
     }
-    
+
     //Otherwise continue, because we expected connect() to fail if the db does not exist yet.
   }
 
  //Create the database:
   connection_pool->set_database( Glib::ustring() );
   bool db_created = m_pFrame->create_database(db_name, false /* Don't ask for password etc again. */);
-  
+
   if(!db_created)
   {
     return false;
   }
   else
     connection_pool->set_database(db_name); //Specify the new database when connection from now on.
-               
+
   sharedptr<SharedConnection> sharedconnection;
   try
   {
@@ -720,7 +720,7 @@ bool App_Glom::recreate_database(bool& user_cancelled)
   }
 
   Bakery::BusyCursor(*this);
-   
+
   //Create each table:
   Document_Glom::type_listTableInfo tables = pDocument->get_tables();
   for(Document_Glom::type_listTableInfo::const_iterator iter = tables.begin(); iter != tables.end(); ++iter)
@@ -735,7 +735,7 @@ bool App_Glom::recreate_database(bool& user_cancelled)
     {
       //Create SQL to describe this field:
       Field field = *iter;
-     
+
       //The field has no gda type, so we set that:
       //This usually comes from the database, but that's a bit strange.
       Gnome::Gda::FieldAttributes info = field.get_field_info();

@@ -372,7 +372,7 @@ bool AddDel::select_item(const Gtk::TreeModel::iterator& iter, guint column, boo
 {
   if(!m_refListStore)
     return false;
-   
+
   InnerIgnore innerIgnore(this); //see comments for InnerIgnore class
 
   bool bResult = false;
@@ -383,7 +383,7 @@ bool AddDel::select_item(const Gtk::TreeModel::iterator& iter, guint column, boo
     if(refTreeSelection)
     {
       refTreeSelection->select(iter);
-          
+
       Gtk::TreeModel::Path path = m_refListStore->get_path(iter);
 
       guint view_column_index = 0;

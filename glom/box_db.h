@@ -41,16 +41,16 @@ public:
 
   ///For use with libglademm's get_widget_derived():
   Box_DB(BaseObjectType* cobject);
-  
+
   virtual ~Box_DB();
-  
+
   Gtk::Window* get_app_window();
   const Gtk::Window* get_app_window() const;
-  
+
   void show_hint(); //Public so that it can be called *after* this widget is added to its container.
 
   void set_button_cancel(Gtk::Button& button);
-  
+
   //Signals:
   sigc::signal<void, Glib::ustring> signal_selected; //When an item is selected.
   sigc::signal<void> signal_cancelled; //When the cancel button is clicked.
@@ -68,7 +68,6 @@ protected:
   //Member data:
   Glib::ustring m_strHint; //Help text.
 
-  
   Gtk::HBox m_Box_Buttons;
   Gtk::Button m_Button_Cancel; //Derived classes can use it if it's necessary.
 };

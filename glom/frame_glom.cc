@@ -21,7 +21,7 @@
 #include "frame_glom.h"
 #include "application.h"
 #include "appstate.h"
-#include "mode_design/dialog_users_list.h"
+#include "mode_design/users/dialog_groups_list.h"
 #include <libintl.h>
 
 Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
@@ -172,7 +172,6 @@ Frame_Glom::~Frame_Glom()
     m_pDialog_Relationships = 0;
   }
 
-  
 }
 
 void Frame_Glom::set_databases_selected(const Glib::ustring& strName)
@@ -403,7 +402,7 @@ void Frame_Glom::do_menu_Navigate_Table(bool open_default)
     {
       default_table_name = get_document()->get_default_table();
     }
-    
+
     if(!default_table_name.empty())
     {
       //Show the default table, and let the user navigate to another table manually if he wants:
@@ -643,12 +642,12 @@ void Frame_Glom::on_menu_developer_relationships()
 
 void Frame_Glom::on_menu_developer_users()
 {
-  Dialog_UsersList* dialog = 0;
+  Dialog_GroupsList* dialog = 0;
   try
   {
-    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_users");
+    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_groups");
 
-    refXml->get_widget_derived("window_users", dialog);
+    refXml->get_widget_derived("window_groups", dialog);
   }
   catch(const Gnome::Glade::XmlError& ex)
   {
@@ -656,6 +655,10 @@ void Frame_Glom::on_menu_developer_users()
   }
 
   dialog->set_transient_for(*get_app_window());
+
+  add_view(dialog); //Give it access to the document.
+  dialog->load_from_document(); //Updat the UI now that it has the document.
+
   dialog->run();
   delete dialog;
 }

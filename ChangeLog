@@ -1,3 +1,40 @@
+2005-03-21  Murray Cumming <murrayc@murrayc.com>
+
+	* configure.in:
+	* glom/Makefile.am:
+	* glom/application.cc:
+	* glom/base_db.cc:
+	* glom/base_db.h:
+	* glom/box_db.h:
+	* glom/data_structure/Makefile.am:
+	* glom/data_structure/tableinfo.h:
+	* glom/document/document_glom.cc:
+	* glom/document/document_glom.h:
+	* glom/frame_glom.cc:
+	* glom/glom.glade:
+	* glom/mode_design/Makefile.am:
+	* glom/mode_design/dialog_user.cc:
+	* glom/mode_design/dialog_user.h:
+	* glom/mode_design/dialog_users_list.cc:
+	* glom/mode_design/dialog_users_list.h:
+	* glom/mode_design/fields/combo_textglade.cc:
+	* glom/mode_design/fields/combo_textglade.h:
+	* glom/mode_design/users/Makefile.am:
+	* glom/mode_design/users/dialog_choose_user.cc:
+	* glom/mode_design/users/dialog_choose_user.h:
+	* glom/mode_design/users/dialog_groups_list.cc:
+	* glom/mode_design/users/dialog_groups_list.h:
+	* glom/mode_design/users/dialog_new_group.cc:
+	* glom/mode_design/users/dialog_new_group.h:
+	* glom/mode_design/users/dialog_user.cc:
+	* glom/mode_design/users/dialog_user.h:
+	* glom/mode_design/users/dialog_users_list.cc:
+	* glom/mode_design/users/dialog_users_list.h:
+	* glom/navigation/box_tables.cc:
+	* glom/utility_widgets/adddel/adddel.cc:
+	User management is now group-based, with 
+	users in groups, and permissions for each group.
+
 2005-03-19  Murray Cumming <murrayc@murrayc.com>
 
 	* glom/Makefile.am:

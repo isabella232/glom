@@ -28,6 +28,7 @@ Dialog_User::Dialog_User(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glad
   //refGlade->get_widget("label_table_name", m_label_table_name);
 
   refGlade->get_widget("entry_user", m_entry_user);
+  refGlade->get_widget("combobox_group", m_combo_group);
   refGlade->get_widget("entry_password", m_entry_password);
   refGlade->get_widget("entry_password_confirm", m_entry_password_confirm);
 

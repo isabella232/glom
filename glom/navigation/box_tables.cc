@@ -30,8 +30,6 @@ Box_Tables::Box_Tables(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
   m_colTitle(0),
   m_colDefault(0)
 {
-  m_strHint = gettext("Select a table and click [Edit]. You may create a new table by entering the name in the last row.");
-
   //Get the Glade-instantiated widgets, and connect signal handlers:
   Gtk::Button* pButtonCancel = 0;
   refGlade->get_widget("button_cancel", pButtonCancel);
@@ -42,10 +40,10 @@ Box_Tables::Box_Tables(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
   pAligmentPlaceholder->add(m_AddDel);
 
   refGlade->get_widget("label_frame_title", m_pLabelFrameTitle);
-  
+
   refGlade->get_widget("checkbutton_show_hidden", m_pCheckButtonShowHidden);
   m_pCheckButtonShowHidden->signal_toggled().connect(sigc::mem_fun(*this, &Box_Tables::on_show_hidden_toggled));
-  
+
   m_AddDel.signal_user_added().connect(sigc::mem_fun(*this, &Box_Tables::on_adddel_Add));
   m_AddDel.signal_user_requested_delete().connect(sigc::mem_fun(*this, &Box_Tables::on_adddel_Delete));
   m_AddDel.signal_user_requested_edit().connect(sigc::mem_fun(*this, &Box_Tables::on_adddel_Edit));
@@ -69,13 +67,13 @@ void Box_Tables::fill_table_row(const Gtk::TreeModel::iterator& iter, const Tabl
     m_AddDel.set_value(iter, m_colDefault, table_info.m_default);
   }
 }
-  
+
 void Box_Tables::fill_from_database()
 {
   Bakery::BusyCursor(*get_app_window());
 
   Box_DB::fill_from_database();
-    
+
   //Enable/Disable extra widgets:
   bool developer_mode = (get_userlevel() == AppState::USERLEVEL_DEVELOPER);
 
@@ -84,7 +82,7 @@ void Box_Tables::fill_from_database()
     set_size_request(400, -1);
   else
     set_size_request(-1, -1);
-  
+
   m_pCheckButtonShowHidden->set_sensitive(developer_mode); //Operators have no choice - they can't see hidden tables ever.
   if(!developer_mode)
     m_pCheckButtonShowHidden->set_active(false); //Operators have no choice - they can't see hidden tables ever.
@@ -100,7 +98,7 @@ void Box_Tables::fill_from_database()
   m_colHidden = m_AddDel.add_column(gettext("Hidden"), AddDelColumnInfo::STYLE_Boolean, editable, visible_extras);
   m_colTitle =  m_AddDel.add_column(gettext("Title"), AddDelColumnInfo::STYLE_Text, editable, true);
   m_colDefault =  m_AddDel.add_column(gettext("Default"), AddDelColumnInfo::STYLE_Boolean,  editable, visible_extras);
-  
+
 
   //gettext("Server: ") +  m_strServerName + ", " + 
   //Glib::ustring strTitle = Glib::ustring("<b>") + gettext("Tables from Database: ") + get_database_name() + "</b>";
@@ -114,8 +112,8 @@ void Box_Tables::fill_from_database()
     listTablesDocument = m_pDocument->get_tables();
   }
   else
-    g_warning("debug: m_pDocument is null");
-  
+    g_warning("Box_Tables::fill_from_database(): m_pDocument is null");
+
   //Get the list of tables in the database, from the server:
   sharedptr<SharedConnection> sharedconnection = connect_to_server();
   if(sharedconnection)
@@ -157,7 +155,7 @@ void Box_Tables::fill_from_database()
           TableInfo table_info;
           table_info.m_name = strName;
           table_info.m_hidden = true;
-          
+
           Gtk::TreeModel::iterator iter = m_AddDel.add_item(strName);
           fill_table_row(iter, table_info);
         }

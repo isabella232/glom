@@ -23,7 +23,8 @@
 
 #include <gtkmm.h>
 #include <libglademm.h>
-#include "../base_db.h"
+#include "../../base_db.h"
+#include "../fields/combo_textglade.h"
 
 class Dialog_UsersList
   : public Gtk::Dialog,
@@ -33,13 +34,7 @@ public:
   Dialog_UsersList(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
   virtual ~Dialog_UsersList();
 
-  /**
-   * @param layout "list" or "details"
-   * @param document The document, so that the dialog can load the previous layout, and save changes.
-   * @param table_name The table name.
-   * @param table_fields: The actual fields in the table, in case the document does not yet know about them all.
-   */
-  //virtual void set_document(const Glib::ustring& layout, Document_Glom* document, const Glib::ustring& table_name, const type_vecLayoutFields& table_fields);
+  virtual void set_group(const Glib::ustring& group_name);
 
 protected:
 
@@ -51,32 +46,38 @@ protected:
   virtual void save_to_document();
 
   //signal handlers:
-  virtual void on_button_delete();
-  virtual void on_button_add();
-  virtual void on_button_edit();
-  virtual void on_treeview_selection_changed();
+  virtual void on_button_user_delete();
+  virtual void on_button_user_add();
+  virtual void on_button_user_remove();
+  virtual void on_button_user_new();
+  virtual void on_button_user_edit();
+  virtual void on_treeview_users_selection_changed();
+  virtual void on_combo_group_changed();
 
  // virtual void on_treeview_cell_edited_text(const Glib::ustring& path_string, const Glib::ustring& new_text, const Gtk::TreeModelColumn<Glib::ustring>& model_column);
  // virtual void on_treeview_cell_edited_numeric(const Glib::ustring& path_string, const Glib::ustring& new_text, const Gtk::TreeModelColumn<guint>& model_column);
 
-  class ModelColumns : public Gtk::TreeModel::ColumnRecord
+  class ModelColumnsUsers : public Gtk::TreeModel::ColumnRecord
   {
   public:
 
-    ModelColumns()
-    { add(m_col_user); }
+    ModelColumnsUsers()
+    { add(m_col_name); }
 
-    Gtk::TreeModelColumn<Glib::ustring> m_col_user;
+    Gtk::TreeModelColumn<Glib::ustring> m_col_name;
   };
 
-  ModelColumns m_model_columns;
+  ModelColumnsUsers m_model_columns_users;
 
   Gtk::TreeView* m_treeview_users;
-  Gtk::Button* m_button_add;
-  Gtk::Button* m_button_delete;
-  Gtk::Button* m_button_edit;
+  Combo_TextGlade* m_combo_group;
+  Gtk::Button* m_button_user_add;
+  Gtk::Button* m_button_user_remove;
+  Gtk::Button* m_button_user_new;
+  Gtk::Button* m_button_user_delete;
+  Gtk::Button* m_button_user_edit;
 
-  Glib::RefPtr<Gtk::ListStore> m_model_items;
+  Glib::RefPtr<Gtk::ListStore> m_model_users;
 };
 
 #endif //GLOM_MODE_DESIGN_DIALOG_USERS_LIST_H

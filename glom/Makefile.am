@@ -37,6 +37,7 @@ glom_LDADD = document/libdocument.a \
              mode_find/libmode_find.a \
              mode_design/libmode_design.a \
              mode_design/fields/libmode_design_fields.a \
+             mode_design/users/libmode_design_users.a \
              navigation/libnavigation.a \
              utility_widgets/libutility_widgets.a \
              utility_widgets/adddel/libutility_widgets_adddel.a \

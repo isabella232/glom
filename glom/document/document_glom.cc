@@ -98,27 +98,26 @@ void Document_Glom::set_relationship(const Glib::ustring& table_name, const Rela
   if(iterFind != m_tables.end())
   {
     DocumentTableInfo& info = iterFind->second;
-    
+
     //Look for the relationship with this name:
     bool existing = false;
     const Glib::ustring relationship_name = relationship.get_name();
-  
+
     for(type_vecRelationships::iterator iter = info.m_relationships.begin(); iter != info.m_relationships.end(); ++iter)
     {
       if(iter->get_name() == relationship_name)
       {
         *iter = relationship;
         existing = true;
-      }        
+      } 
     }
-    
+
     if(!existing)
     {
       //Add a new one if it's not there.
       info.m_relationships.push_back(relationship);
     }
   }
-  
 }
 
 bool Document_Glom::get_relationship(const Glib::ustring& table_name, const Glib::ustring& relationship_name, Relationship& relationship) const
@@ -378,7 +377,7 @@ Document_Glom::type_listTableInfo Document_Glom::get_tables() const
   {
     result.push_back(iter->second.m_info);
   }
-        
+
   return result;
 }
 

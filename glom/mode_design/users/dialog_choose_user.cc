@@ -18,29 +18,31 @@
  * Boston, MA 02111-1307, USA.
  */
  
-#ifndef GLOM_DATASTRUCTURE_TABLEINFO_H
-#define GLOM_DATASTRUCTURE_TABLEINFO_H
+#include "dialog_choose_user.h"
 
-#include <glibmm/ustring.h>
-
-class TableInfo
+Dialog_ChooseUser::Dialog_ChooseUser(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
+: Gtk::Dialog(cobject),
+  m_combo_name(0)
 {
-public:
+  refGlade->get_widget_derived("combo_user_name", m_combo_name);
+}
 
-  TableInfo();
-  TableInfo(const TableInfo& src);
-  TableInfo& operator=(const TableInfo& src);
+Dialog_ChooseUser::~Dialog_ChooseUser()
+{
+}
 
-  Glib::ustring get_name() const; //For the predicate, when using std::find_if().
+void Dialog_ChooseUser::set_user_list(const type_vecStrings& users)
+{
+  for(type_vecStrings::const_iterator iter = users.begin(); iter != users.end(); ++iter)
+  {
+    m_combo_name->append_text(*iter);
+  }
 
-  Glib::ustring m_name;
-  guint m_sequence; //TODO: Use this?
-  Glib::ustring m_title;
-  bool m_hidden;
-  bool m_default;
-};
+  m_combo_name->set_first_active();
+}
 
-#endif //GLOM_DATASTRUCTURE_TABLEINFO_H
-
-
+Glib::ustring Dialog_ChooseUser::get_user() const
+{
+  return m_combo_name->get_active_text();
+}
 

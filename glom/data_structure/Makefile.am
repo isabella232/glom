@@ -7,8 +7,5 @@ libdata_structure_a_SOURCES = field.h field.cc \
                               relationship.h relationship.cc \
                               fieldtypes.h fieldtypes.cc \
                               tableinfo.h tableinfo.cc \
-                              glomconversions.h glomconversions.cc
-                              
-                              
-
-                              
+                              glomconversions.h glomconversions.cc \
+                              privileges.h privileges.cc

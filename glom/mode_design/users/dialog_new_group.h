@@ -17,30 +17,22 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
- 
-#ifndef GLOM_DATASTRUCTURE_TABLEINFO_H
-#define GLOM_DATASTRUCTURE_TABLEINFO_H
 
-#include <glibmm/ustring.h>
+#ifndef GLOM_MODE_DESIGN_USERS_DIALOG_NEWGROUP_H
+#define GLOM_MODE_DESIGN_USERS_DIALOG_NEWGROUP_H
 
-class TableInfo
+#include <libglademm.h>
+#include <gtkmm/dialog.h>
+#include <gtkmm/entry.h>
+
+class Dialog_NewGroup : public Gtk::Dialog
 {
 public:
+  Dialog_NewGroup(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  virtual ~Dialog_NewGroup();
 
-  TableInfo();
-  TableInfo(const TableInfo& src);
-  TableInfo& operator=(const TableInfo& src);
-
-  Glib::ustring get_name() const; //For the predicate, when using std::find_if().
-
-  Glib::ustring m_name;
-  guint m_sequence; //TODO: Use this?
-  Glib::ustring m_title;
-  bool m_hidden;
-  bool m_default;
+  Gtk::Entry* m_entry_name;
 };
 
-#endif //GLOM_DATASTRUCTURE_TABLEINFO_H
-
-
+#endif //GLOM_MODE_DESIGN_USERS_DIALOG_NEWGROUP_H
 

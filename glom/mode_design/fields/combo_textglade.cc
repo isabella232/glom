@@ -114,6 +114,13 @@ bool Combo_TextGlade::on_row_separator(const Glib::RefPtr<Gtk::TreeModel>& /* mo
   return row[m_text_columns.m_separator];
 }
 
+///This ensures that something is selected:
+void Combo_TextGlade::set_first_active()
+{
+  Gtk::TreeModel::iterator iter = m_model->children().begin();
+  set_active(iter);
+}
+
 
 
 

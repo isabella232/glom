@@ -26,6 +26,7 @@
 #include "document/document_glom.h"
 #include "connectionpool.h"
 #include "appstate.h"
+#include "data_structure/privileges.h"
 #include "bakery/View/View.h"
 #include <bakery/Utilities/BusyCursor.h>
 
@@ -49,7 +50,7 @@ public:
    */
   virtual AppState::userlevels get_userlevel() const;
   virtual void set_userlevel(AppState::userlevels value);
-   
+
   static sharedptr<SharedConnection> connect_to_server();
 
   virtual void set_document(Document_Glom* pDocument); //View override
@@ -65,12 +66,16 @@ public:
   static Glib::ustring util_title_from_string(const Glib::ustring& text);
 
   virtual Glib::RefPtr<Gnome::Gda::DataModel> Query_execute(const Glib::ustring& strQuery);
-    
+
 protected:
   typedef std::vector<Glib::ustring> type_vecStrings;
   type_vecStrings get_table_names();
 
   type_vecFields get_fields_for_table(const Glib::ustring& table_name) const;
+
+  type_vecStrings get_database_groups();
+  type_vecStrings get_database_users(const Glib::ustring& group_name = Glib::ustring());
+  Privileges get_table_privileges(const Glib::ustring& group_name, const Glib::ustring& table_name);
 
   virtual void fill_from_database();
   virtual void fill_end(); //Call this from the end of fill_from_database() overrides.
@@ -81,11 +86,18 @@ protected:
   static guint util_decimal_from_string(const Glib::ustring& str);
 
   static bool util_string_has_whitespace(const Glib::ustring& text);
-  
+
   static type_vecStrings util_vecStrings_from_Fields(const type_vecFields& fields);
-  
+
+  //Utlility functions to help with the odd formats of postgres internal catalog fields:
+  static Glib::ustring string_trim(const Glib::ustring& str, const Glib::ustring& to_remove);
+  static type_vecStrings string_separate(const Glib::ustring& str, const Glib::ustring& separator);
+  static type_vecStrings pg_list_separate(const Glib::ustring& str);
+
+
   virtual void handle_error(const std::exception& ex); //TODO_port: This is probably useless now.
   virtual bool handle_error();
+
 };
 
 #endif //BASE_DB_H

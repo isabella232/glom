@@ -172,7 +172,11 @@ Base_DB::type_vecStrings Base_DB::get_table_names()
         Glib::ustring table_name;
         if(value.get_value_type() ==  Gnome::Gda::VALUE_TYPE_STRING)
         {
-          result.push_back( value.get_string() );
+          table_name = value.get_string();
+
+          //Ignore the pga_* tables that pgadmin adds when you use it:
+          if(table_name.substr(0, 4) != "pga_")
+            result.push_back( table_name );
         }
       }
     }
@@ -492,3 +496,216 @@ Glib::ustring Base_DB::util_title_from_string(const Glib::ustring& text)
   return result;
 }
 
+Base_DB::type_vecStrings Base_DB::get_database_groups()
+{
+  type_vecStrings result;
+
+  Glib::ustring strQuery = "SELECT pg_group.groname FROM pg_group";
+  Glib::RefPtr<Gnome::Gda::DataModel> data_model = Query_execute(strQuery);
+  if(data_model)
+  {
+    const int rows_count = data_model->get_n_rows();
+    for(int row = 0; row < rows_count; ++row)
+    {
+      const Gnome::Gda::Value value = data_model->get_value_at(0, row);
+      const Glib::ustring name = value.get_string();
+      result.push_back(name);
+    }
+  }
+
+  return result;
+}
+
+Base_DB::type_vecStrings Base_DB::get_database_users(const Glib::ustring& group_name)
+{
+  type_vecStrings result;
+
+  if(group_name.empty())
+  {
+    //pg_shadow contains the users. pg_users is a view of pg_shadow without the password.
+    Glib::ustring strQuery = "SELECT pg_shadow.usename FROM pg_shadow";
+    Glib::RefPtr<Gnome::Gda::DataModel> data_model = Query_execute(strQuery);
+    if(data_model)
+    {
+      const int rows_count = data_model->get_n_rows();
+      for(int row = 0; row < rows_count; ++row)
+      {
+        const Gnome::Gda::Value value = data_model->get_value_at(0, row);
+        const Glib::ustring name = value.get_string();
+        result.push_back(name);
+      }
+    }
+  }
+  else
+  {
+    Glib::ustring strQuery = "SELECT pg_group.groname, pg_group.grolist FROM pg_group WHERE pg_group.groname = '" + group_name + "'";
+    Glib::RefPtr<Gnome::Gda::DataModel> data_model = Query_execute(strQuery);
+    if(data_model && data_model->get_n_rows())
+    {
+      const int rows_count = data_model->get_n_rows();
+      for(int row = 0; row < rows_count; ++row)
+      {
+        const Gnome::Gda::Value value = data_model->get_value_at(1, row); //Column 1 is the /* the user list.
+        //pg_group is a string, formatted, bizarrely, like so: "{100, 101}".
+
+        Glib::ustring group_list;
+        if(!value.is_null())
+          group_list = value.get_string();
+
+        type_vecStrings vecUserIds = pg_list_separate(group_list);
+        for(type_vecStrings::const_iterator iter = vecUserIds.begin(); iter != vecUserIds.end(); ++iter)
+        {
+          //TODO_Performance: Can we do this in one SQL SELECT?
+          Glib::ustring strQuery = "SELECT pg_user.usename FROM pg_user WHERE pg_user.usesysid = '" + *iter + "'";
+          Glib::RefPtr<Gnome::Gda::DataModel> data_model = Query_execute(strQuery);
+          if(data_model)
+          {
+            const Gnome::Gda::Value value = data_model->get_value_at(0, 0); 
+           result.push_back(value.get_string());
+          }
+        }
+
+      }
+    }
+  }
+
+  return result;
+}
+
+Privileges Base_DB::get_table_privileges(const Glib::ustring& group_name, const Glib::ustring& table_name)
+{
+  Privileges result;
+
+  //Get the permissions:
+  Glib::ustring strQuery = "SELECT pg_class.relacl FROM pg_class WHERE pg_class.relname = '" + table_name + "'";
+  Glib::RefPtr<Gnome::Gda::DataModel> data_model = Query_execute(strQuery);
+  if(data_model && data_model->get_n_rows())
+  {
+    const Gnome::Gda::Value value = data_model->get_value_at(0, 0);
+    Glib::ustring access_details;
+    if(!value.is_null())
+      access_details = value.get_string();
+
+    //Parse the strange postgres permissions format:
+    const type_vecStrings vecItems = pg_list_separate(access_details);
+    for(type_vecStrings::const_iterator iterItems = vecItems.begin(); iterItems != vecItems.end(); ++iterItems)
+    {
+      Glib::ustring item = *iterItems;
+      item = string_trim(item, "\""); //Remove quotes from front and back.
+
+      //Find group permissions, ignoring user permissions:
+      const Glib::ustring strgroup = "group ";
+      Glib::ustring::size_type posFind = item.find(strgroup);
+      if(posFind == 0)
+      {
+        //It is a group permision:
+        item = item.substr(strgroup.size());
+
+        //Get the parts before and after the =:
+        const type_vecStrings vecParts = string_separate(item, "=");
+        if(vecParts.size() == 2)
+        {
+          const Glib::ustring this_group_name = vecParts[0];
+          if(this_group_name == group_name) //Only look at permissions for the requested group.
+          {
+            Glib::ustring group_permissions = vecParts[1];
+
+            //Get the part before the /user_who_granted_the_privileges:
+            const type_vecStrings vecParts = string_separate(group_permissions, "/");
+            if(!vecParts.empty())
+              group_permissions = vecParts[0];
+
+            //g_warning("  group=%s", group_name.c_str());
+            //g_warning("  permisisons=%s", group_permissions.c_str());
+
+            //Iterate through the characters:
+            for(Glib::ustring::iterator iter = group_permissions.begin(); iter != group_permissions.end(); ++iter)
+            {
+              gunichar chperm = *iter;
+              Glib::ustring perm(1, chperm);
+
+              //See http://www.postgresql.org/docs/8.0/interactive/sql-grant.html
+              if(perm == "r")
+                result.m_view = true;
+              else if (perm == "w")
+                result.m_edit = true;
+              else if (perm == "a")
+                result.m_create = true;
+              else if (perm == "d")
+                result.m_delete = true;
+            }
+          }
+        }
+      }
+
+    }
+  }
+
+  return result;
+}
+
+
+Glib::ustring Base_DB::string_trim(const Glib::ustring& str, const Glib::ustring& to_remove)
+{
+   Glib::ustring result = str;
+
+   //Remove from the start:
+   Glib::ustring::size_type posOpenBracket = result.find(to_remove);
+   if(posOpenBracket == 0)
+   {
+//g_warning("string_trim: before start trim: %s", result.c_str());
+      result = result.substr(to_remove.size());
+//g_warning("string_trim: after start trim: %s", result.c_str());
+   }
+
+   //Remove from the end:
+   Glib::ustring::size_type posCloseBracket = result.rfind(to_remove);
+   if(posCloseBracket == (result.size() - to_remove.size()))
+   {
+     //g_warning("string_trim: before end trim: %s", result.c_str());
+    result = result.substr(0, posCloseBracket);
+     //g_warning("string_trim: after end trim: %s", result.c_str());
+   }
+
+  return result;
+}
+
+Base_DB::type_vecStrings Base_DB::string_separate(const Glib::ustring& str, const Glib::ustring& separator)
+{
+  type_vecStrings result;
+
+  Glib::ustring unprocessed = str;
+  while(!unprocessed.empty())
+  {
+    Glib::ustring::size_type posComma = unprocessed.find(separator);
+
+    Glib::ustring item;
+    if(posComma != Glib::ustring::npos)
+    {
+      item = unprocessed.substr(0, posComma);
+      unprocessed = unprocessed.substr(posComma + separator.size());
+    }
+    else
+    {
+        item = unprocessed;
+        unprocessed.clear();
+    }
+
+    if(!item.empty())
+      result.push_back(item);
+
+    unprocessed = string_trim(unprocessed, " ");
+  }
+
+  return result;
+}
+
+Base_DB::type_vecStrings Base_DB::pg_list_separate(const Glib::ustring& str)
+{
+  //Remove the first { and the last }:
+  Glib::ustring without_brackets = string_trim(str, "{");
+  without_brackets = string_trim(without_brackets, "}");
+
+  //Get the comma-separated items:
+  return string_separate(without_brackets, ",");
+}

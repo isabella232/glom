@@ -20,19 +20,25 @@
 
 #include "dialog_users_list.h"
 #include "dialog_user.h"
+#include "dialog_choose_user.h"
 //#include <libgnome/gnome-i18n.h>
 #include <libintl.h>
 
 Dialog_UsersList::Dialog_UsersList(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
 : Gtk::Dialog(cobject),
   m_treeview_users(0),
-  m_button_add(0),
-  m_button_delete(0),
-  m_button_edit(0)
+  m_combo_group(0),
+  m_button_user_add(0),
+  m_button_user_remove(0),
+  m_button_user_new(0),
+  m_button_user_delete(0),
+  m_button_user_edit(0)
 {
-  //refGlade->get_widget("label_table_name", m_label_table_name);
+  refGlade->get_widget_derived("combobox_group", m_combo_group);
+  m_combo_group->signal_changed().connect(sigc::mem_fun(*this, &Dialog_UsersList::on_combo_group_changed));
 
-  refGlade->get_widget("treeview", m_treeview_users);
+
+  refGlade->get_widget("treeview_users", m_treeview_users);
   if(m_treeview_users)
   {
     m_treeview_users->set_reorderable();
@@ -42,80 +48,35 @@ Dialog_UsersList::Dialog_UsersList(BaseObjectType* cobject, const Glib::RefPtr<G
     Glib::RefPtr<Gtk::TreeView::Selection> refSelection = m_treeview_users->get_selection();
     if(refSelection)
     {
-      refSelection->signal_changed().connect( sigc::mem_fun(*this, &Dialog_UsersList::on_treeview_selection_changed) );
+      refSelection->signal_changed().connect( sigc::mem_fun(*this, &Dialog_UsersList::on_treeview_users_selection_changed) );
     }
 
-    m_model_items = Gtk::ListStore::create(m_model_columns);
+    m_model_users = Gtk::ListStore::create(m_model_columns_users);
 
     fill_list();
 
-    m_treeview_users->set_model(m_model_items);
+    m_treeview_users->set_model(m_model_users);
 
 
     // Append the View columns:
-    m_treeview_users->append_column(gettext("User"), m_model_columns.m_col_user);
-
-    // Use set_cell_data_func() to give more control over the cell attributes depending on the row:
-
-    //Name column:
-    /*
-    Gtk::TreeView::Column* column_name = Gtk::manage( new Gtk::TreeView::Column(gettext("Name")) );
-    m_treeview_users->append_column(*column_name);
-
-    Gtk::CellRendererText* renderer_name = Gtk::manage(new Gtk::CellRendererText);
-    column_name->pack_start(*renderer_name);
-    column_name->set_cell_data_func(*renderer_name, sigc::mem_fun(*this, &Dialog_UsersList::on_cell_data_name));
-
-    //Connect to its signal:
-    renderer_name->property_editable() = true;
-    renderer_name->signal_edited().connect(
-      sigc::bind( sigc::mem_fun(*this, &Dialog_UsersList::on_treeview_cell_edited_text), m_model_items->m_columns.m_col_name) );
-
-
-    //Title column:
-    Gtk::TreeView::Column* column_title = Gtk::manage( new Gtk::TreeView::Column(gettext("Title")) );
-    m_treeview_users->append_column(*column_title);
-
-    Gtk::CellRendererText* renderer_title = Gtk::manage(new Gtk::CellRendererText);
-    column_title->pack_start(*renderer_title);
-    column_title->set_cell_data_func(*renderer_title, sigc::mem_fun(*this, &Dialog_UsersList::on_cell_data_title));
-
-    //Connect to its signal:
-    renderer_title->signal_edited().connect(
-      sigc::bind( sigc::mem_fun(*this, &Dialog_UsersList::on_treeview_cell_edited_text), m_model_items->m_columns.m_col_title) );
-
-
-    //Columns-count column:
-    Gtk::TreeView::Column* column_count = Gtk::manage( new Gtk::TreeView::Column(gettext("Columns Count")) );
-    m_treeview_users->append_column(*column_count);
-
-    Gtk::CellRendererText* renderer_count = Gtk::manage(new Gtk::CellRendererText);
-    column_count->pack_start(*renderer_count);
-    column_count->set_cell_data_func(*renderer_count, sigc::mem_fun(*this, &Dialog_UsersList::on_cell_data_columns_count));
-
-    //Connect to its signal:
-    renderer_count->signal_edited().connect(
-      sigc::bind( sigc::mem_fun(*this, &Dialog_UsersList::on_treeview_cell_edited_numeric), m_model_items->m_columns.m_col_columns_count) );
-
-    //Respond to changes of selection:
-    Glib::RefPtr<Gtk::TreeView::Selection> refSelection = m_treeview_users->get_selection();
-    if(refSelection)
-    {
-      refSelection->signal_changed().connect( sigc::mem_fun(*this, &Dialog_UsersList::on_treeview_fields_selection_changed) );
-    }
-
-    m_model_items->signal_row_changed().connect( sigc::mem_fun(*this, &Dialog_UsersList::on_treemodel_row_changed) );
-    */
+    m_treeview_users->append_column(gettext("User"), m_model_columns_users.m_col_name);
   }
 
-  refGlade->get_widget("button_delete", m_button_delete);
-  m_button_delete->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_UsersList::on_button_delete) );
 
-  refGlade->get_widget("button_add", m_button_add);
-  m_button_add->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_UsersList::on_button_add) );
+  refGlade->get_widget("button_delete", m_button_user_delete);
+  m_button_user_delete->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_UsersList::on_button_user_delete) );
 
-  refGlade->get_widget("button_edit", m_button_edit);
-  m_button_edit->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_UsersList::on_button_edit) );
+  refGlade->get_widget("button_add", m_button_user_add);
+  m_button_user_add->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_UsersList::on_button_user_add) );
+
+ refGlade->get_widget("button_remove", m_button_user_remove);
+  m_button_user_remove->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_UsersList::on_button_user_remove) );
+
+  refGlade->get_widget("button_new", m_button_user_new);
+  m_button_user_new->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_UsersList::on_button_user_new) );
+
+  refGlade->get_widget("button_edit", m_button_user_edit);
+  m_button_user_edit->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_UsersList::on_button_user_edit) );
 
   enable_buttons();
 
@@ -168,7 +129,7 @@ void Dialog_UsersList::set_document(const Glib::ustring& layout, Document_Glom* 
     //Show the field layout
     typedef std::list< Glib::ustring > type_listStrings;
 
-    m_model_items->clear();
+    m_model_users->clear();
 
     //guint field_sequence = 1; //0 means no sequence
     //guint group_sequence = 1; //0 means no sequence
@@ -179,7 +140,7 @@ void Dialog_UsersList::set_document(const Glib::ustring& layout, Document_Glom* 
       add_group(Gtk::TreeModel::iterator(), group);
     }
 
-    //treeview_fill_sequences(m_model_items, m_model_items->m_columns.m_col_sequence); //The document should have checked this already, but it does not hurt to check again.
+    //treeview_fill_sequences(m_model_users, m_model_users->m_columns.m_col_sequence); //The document should have checked this already, but it does not hurt to check again.
   }
 
   //Open all the groups:
@@ -199,22 +160,20 @@ void Dialog_UsersList::enable_buttons()
     Gtk::TreeModel::iterator iter = refSelection->get_selected();
     if(iter)
     {
-      m_button_edit->set_sensitive(true);
-      m_button_delete->set_sensitive(true);
+      m_button_user_edit->set_sensitive(true);
+      m_button_user_delete->set_sensitive(true);
     }
     else
     {
       //Disable all buttons that act on a selection:
-      m_button_edit->set_sensitive(false);
-      m_button_delete->set_sensitive(false);
+      m_button_user_edit->set_sensitive(false);
+      m_button_user_delete->set_sensitive(false);
     }
   }
 
 }
 
-
-
-void Dialog_UsersList::on_button_delete()
+void Dialog_UsersList::on_button_user_remove()
 {
   Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = m_treeview_users->get_selection();
   if(refTreeSelection)
@@ -224,7 +183,32 @@ void Dialog_UsersList::on_button_delete()
     {
       Gtk::TreeModel::Row row = *iter;
 
-      const Glib::ustring user = row[m_model_columns.m_col_user];
+      const Glib::ustring user = row[m_model_columns_users.m_col_name];
+      if(!user.empty())
+      {
+        Glib::ustring strQuery = "ALTER GROUP " + m_combo_group->get_active_text() + " DROP USER " + user;
+        Query_execute(strQuery);
+
+        fill_list();
+      }
+
+      //m_modified = true;
+    }
+  }
+}
+
+
+void Dialog_UsersList::on_button_user_delete()
+{
+  Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = m_treeview_users->get_selection();
+  if(refTreeSelection)
+  {
+    Gtk::TreeModel::iterator iter = refTreeSelection->get_selected();
+    if(iter)
+    {
+      Gtk::TreeModel::Row row = *iter;
+
+      const Glib::ustring user = row[m_model_columns_users.m_col_name];
       if(!user.empty())
       {
         Gtk::MessageDialog dialog(gettext("<b>Delete User</b>"), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_OK_CANCEL);
@@ -248,7 +232,45 @@ void Dialog_UsersList::on_button_delete()
   }
 }
 
-void Dialog_UsersList::on_button_add()
+void Dialog_UsersList::on_button_user_add()
+{
+  Dialog_ChooseUser* dialog = 0;
+  try
+  {
+    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_choose_user");
+
+    refXml->get_widget_derived("dialog_choose_user", dialog);
+  }
+  catch(const Gnome::Glade::XmlError& ex)
+  {
+    std::cerr << ex.what() << std::endl;
+  }
+
+  dialog->set_transient_for(*this);
+
+  //Fill it with the list of users:
+  dialog->set_user_list( get_database_users() );
+
+  int response = dialog->run();
+
+  const Glib::ustring user = dialog->get_user();
+
+  delete dialog;
+
+  if(response != Gtk::RESPONSE_OK)
+    return;
+
+  if(!user.empty())
+  {
+    //Add it to the group:
+    Glib::ustring strQuery = "ALTER GROUP " + m_combo_group->get_active_text() + " ADD USER " + user;
+    Query_execute(strQuery);
+
+    fill_list();
+  }
+}
+
+void Dialog_UsersList::on_button_user_new()
 {
   Dialog_User* dialog = 0;
   try
@@ -263,23 +285,31 @@ void Dialog_UsersList::on_button_add()
   }
 
   dialog->set_transient_for(*this);
-  dialog->run();
+  int response = dialog->run();
 
   const Glib::ustring user = dialog->m_entry_user->get_text();
   const Glib::ustring password = dialog->m_entry_password->get_text();
 
   delete dialog;
 
+  if(response != Gtk::RESPONSE_OK)
+    return;
+
   if(!user.empty() && !password.empty())
   {
+    //Create the user:
     Glib::ustring strQuery = "CREATE USER " + user + " PASSWORD '" + password + "'" ;
     Glib::RefPtr<Gnome::Gda::DataModel> data_model = Query_execute(strQuery);
+
+    //Add it to the group:
+    strQuery = "ALTER GROUP " + m_combo_group->get_active_text() + " ADD USER " + user;
+    data_model = Query_execute(strQuery);
 
     fill_list();
   }
 }
 
-void Dialog_UsersList::on_button_edit()
+void Dialog_UsersList::on_button_user_edit()
 {
   //Get the selected item:
   Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = m_treeview_users->get_selection();
@@ -305,15 +335,18 @@ void Dialog_UsersList::on_button_edit()
 
       dialog->set_transient_for(*this);
 
-      dialog->m_entry_user->set_text( row[m_model_columns.m_col_user] );
+      dialog->m_entry_user->set_text( row[m_model_columns_users.m_col_name] );
       dialog->m_entry_user->set_sensitive(false); //They can edit the password, but not the name. TODO: Allow editing of name?
 
-      dialog->run();
+      int response = dialog->run();
 
       const Glib::ustring user = dialog->m_entry_user->get_text();
       const Glib::ustring password = dialog->m_entry_password->get_text();
 
       delete dialog;
+
+      if(response != Gtk::RESPONSE_OK)
+        return;
 
       if(!user.empty() && !password.empty())
       {
@@ -336,7 +369,8 @@ void Dialog_UsersList::save_to_document()
   //}
 }
 
-void Dialog_UsersList::on_treeview_selection_changed()
+
+void Dialog_UsersList::on_treeview_users_selection_changed()
 {
   enable_buttons();
 }
@@ -344,31 +378,40 @@ void Dialog_UsersList::on_treeview_selection_changed()
 void Dialog_UsersList::fill_list()
 {
   //Fill the model rows:
-  m_model_items->clear();
+  m_model_users->clear();
 
-  //pg_shadow contains the users. pg_users is a view of pg_shadow without the password.
-  Glib::ustring strQuery = "SELECT pg_shadow.usename FROM pg_shadow";
-  Glib::RefPtr<Gnome::Gda::DataModel> data_model = Query_execute(strQuery);
-  if(data_model)
+  if(m_combo_group)
   {
-    const int rows_count = data_model->get_n_rows();
-    for(int row = 0; row < rows_count; ++row)
+    const Glib::ustring group_name = m_combo_group->get_active_text();
+    type_vecStrings user_list = get_database_users(group_name);
+    for(type_vecStrings::const_iterator iter = user_list.begin(); iter != user_list.end(); ++iter)
     {
-        const Gnome::Gda::Value value = data_model->get_value_at(0, row);
-        const Glib::ustring name = value.get_string();
+      Gtk::TreeModel::iterator iterTree = m_model_users->append();
+      Gtk::TreeModel::Row row = *iterTree;
 
-        Gtk::TreeModel::iterator iter = m_model_items->append();
-        Gtk::TreeModel::Row row = *iter;
-        row[m_model_columns.m_col_user] = name;
+      row[m_model_columns_users.m_col_name] = *iter;
     }
-  }
-  else
-  {
-    handle_error();
   }
 }
 
+void Dialog_UsersList::set_group(const Glib::ustring& group_name)
+{
+  //Fill the list of groups:
+  m_combo_group->clear_text();
 
+  type_vecStrings group_list = get_database_groups();
+  for(type_vecStrings::const_iterator iter = group_list.begin(); iter != group_list.end(); ++iter)
+  {
+    m_combo_group->append_text(*iter);
+  }
+
+  m_combo_group->set_active_text(group_name);
+}
+
+void Dialog_UsersList::on_combo_group_changed()
+{
+  fill_list();
+}
 
 
 

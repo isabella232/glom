@@ -45,6 +45,9 @@ public:
   void clear_text();
   void set_active_text(const Glib::ustring& text);
 
+  ///This ensures that something is selected:
+  void set_first_active();
+
 protected:
 
   //This determines whether each row should be shown as a separator.

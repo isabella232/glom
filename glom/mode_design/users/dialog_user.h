@@ -39,6 +39,7 @@ public:
   //virtual void set_document(const Glib::ustring& layout, Document_Glom* document, const Glib::ustring& table_name, const type_vecLayoutFields& table_fields);
 
   Gtk::Entry* m_entry_user;
+  Gtk::ComboBox* m_combo_group;
   Gtk::Entry* m_entry_password;
   Gtk::Entry* m_entry_password_confirm;
 
