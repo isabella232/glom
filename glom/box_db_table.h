@@ -40,7 +40,6 @@ public:
 
   //TODO: Put this somewhere more sensible:
   typedef std::map<Gnome::Gda::ValueType, Glib::ustring> type_map_valuetypes;
-  static type_map_valuetypes get_field_type_names();
 
 
   bool get_fields_for_table_one_field(const Glib::ustring& table_name, const Glib::ustring& field_name, Field& field) const;      

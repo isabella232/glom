@@ -28,6 +28,12 @@
 #include <ctime>     // for struct tm
 #include <iostream>   // for cout, endl
 
+EntryGlom::EntryGlom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& /* refGlade */)
+: Gtk::Entry(cobject),
+  m_glom_type(Field::TYPE_TEXT)
+{
+}
+  
 EntryGlom::EntryGlom(Field::glom_field_type glom_type)
 : m_glom_type(glom_type)
 {
@@ -36,6 +42,12 @@ EntryGlom::EntryGlom(Field::glom_field_type glom_type)
 EntryGlom::~EntryGlom()
 {
 }
+
+void EntryGlom::set_glom_type(Field::glom_field_type glom_type)
+{
+  m_glom_type = glom_type;
+}
+ 
 
 void EntryGlom::check_for_change()
 {

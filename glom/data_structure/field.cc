@@ -26,6 +26,7 @@
 Field::type_map_gda_type_to_glom_type Field::m_map_gda_type_to_glom_type;
 Field::type_map_glom_type_to_gda_type Field::m_map_glom_type_to_gda_type;
 Field::type_map_type_names Field::m_map_type_names;
+Field::type_map_type_names Field::m_map_type_names_ui;
 bool Field::m_maps_inited = false;
 
 
@@ -181,6 +182,11 @@ Glib::ustring Field::sql(const Gnome::Gda::Value& value) const
       str =  GlomConversions::get_text_for_gda_value(m_glom_type, value, std::locale() /* SQL uses the C locale */); //No quotes for numbers.
       break;
     }
+    case(Gnome::Gda::VALUE_TYPE_BOOLEAN):
+    {
+      str = ( value.get_bool() ? "TRUE" : "FALSE" );
+      break;
+    }
     default:
     {
       str = value.to_string();
@@ -193,24 +199,6 @@ Glib::ustring Field::sql(const Gnome::Gda::Value& value) const
      
   return str;
 }
-
-/*
-Glib::ustring Field::sql(const Glib::ustring& str) const
-{
-//TODO: This method should not be used in future = sql(Value) would be more type-safe.
-
-  glom_field_type type = get_glom_type();
-  if( (type == Field::TYPE_TEXT) || (type == Field::TYPE_DATE) || (type == Field::TYPE_TIME) )
-    return "'" + str + "'"; //TODO: special characters?
-  else
-  {
-    if(str.empty())
-      return "NULL";
-    else
-     return str;
-  }
-}
-*/
 
 Glib::ustring Field::get_name() const
 {
@@ -260,34 +248,6 @@ bool Field::field_info_from_database_is_equal(const Gnome::Gda::FieldAttributes&
   return temp == field; 
 }
 
-Glib::ustring Field::get_default_value_as_string() const
-{
-  Glib::ustring result;
-  Gnome::Gda::Value value = m_field_info.get_default_value();
-
-  if(value.is_null())
-    result = "";
-  else
-  {
-    if(value.get_value_type() == Gnome::Gda::VALUE_TYPE_STRING)
-    {
-       result = value.get_string();
-    }
-    else
-      result = value.to_string();
-  }
-
-  return result;
-}
-
-Glib::ustring Field::value_to_string(const Gnome::Gda::Value& value) const
-{
-  if(value.is_null())
-    return "";
-  else
-    return value.to_string();
-}
-
 Field::glom_field_type Field::get_glom_type_for_gda_type(Gnome::Gda::ValueType gda_type)
 {
   init_map();
@@ -334,20 +294,37 @@ void Field::init_map()
     m_map_gda_type_to_glom_type[Gnome::Gda::VALUE_TYPE_STRING] = TYPE_TEXT;
     m_map_gda_type_to_glom_type[Gnome::Gda::VALUE_TYPE_TIME] = TYPE_TIME;
     m_map_gda_type_to_glom_type[Gnome::Gda::VALUE_TYPE_DATE] = TYPE_DATE;
-
+    m_map_gda_type_to_glom_type[Gnome::Gda::VALUE_TYPE_BOOLEAN] = TYPE_BOOLEAN;
+    
     m_map_glom_type_to_gda_type[TYPE_NUMERIC] = Gnome::Gda::VALUE_TYPE_NUMERIC;
     m_map_glom_type_to_gda_type[TYPE_TEXT] = Gnome::Gda::VALUE_TYPE_STRING;
     m_map_glom_type_to_gda_type[TYPE_TIME] = Gnome::Gda::VALUE_TYPE_TIME;
     m_map_glom_type_to_gda_type[TYPE_DATE] = Gnome::Gda::VALUE_TYPE_DATE;
+    m_map_glom_type_to_gda_type[TYPE_BOOLEAN] = Gnome::Gda::VALUE_TYPE_BOOLEAN;
+    
+    m_map_type_names_ui[TYPE_INVALID] = gettext("Invalid");
+    m_map_type_names_ui[TYPE_NUMERIC] = gettext("Number");
+    m_map_type_names_ui[TYPE_TEXT] = gettext("Text");
+    m_map_type_names_ui[TYPE_TIME] = gettext("Time");
+    m_map_type_names_ui[TYPE_DATE] = gettext("Date");    
+    m_map_type_names_ui[TYPE_BOOLEAN] = gettext("Boolean");
 
-    m_map_type_names[TYPE_INVALID] = gettext("Invalid");
-    m_map_type_names[TYPE_NUMERIC] = gettext("Number");
-    m_map_type_names[TYPE_TEXT] = gettext("Text");
-    m_map_type_names[TYPE_TIME] = gettext("Time");
-    m_map_type_names[TYPE_DATE] = gettext("Date");
-
+    m_map_type_names[TYPE_INVALID] = "Invalid";
+    m_map_type_names[TYPE_NUMERIC] = "Number";
+    m_map_type_names[TYPE_TEXT] = "Text";
+    m_map_type_names[TYPE_TIME] = "Time";
+    m_map_type_names[TYPE_DATE] = "Date";
+    m_map_type_names[TYPE_BOOLEAN] = "Boolean";
+    
     m_maps_inited = true;
   }
+}
+
+//static:
+Field::type_map_type_names Field::get_type_names_ui()
+{
+  init_map();
+  return m_map_type_names_ui;
 }
 
 //static:
@@ -362,18 +339,18 @@ Field::type_map_type_names Field::get_usable_type_names()
 {
   init_map();
 
-  type_map_type_names result =  m_map_type_names;
+  type_map_type_names result =  m_map_type_names_ui;
 
   //Remove INVALID, because it's not something that a user can use for a field type.
-  type_map_type_names::iterator iter = m_map_type_names.find(TYPE_INVALID);
-  if(iter != m_map_type_names.end())
-    m_map_type_names.erase(iter);
+  type_map_type_names::iterator iter = result.find(TYPE_INVALID);
+  if(iter != result.end())
+    result.erase(iter);
 
   return result;
 }
 
 //static:
-Glib::ustring Field::get_type_name(glom_field_type glom_type)
+Glib::ustring Field::get_type_name_ui(glom_field_type glom_type)
 {
   Glib::ustring result = "Invalid";
 
@@ -385,11 +362,11 @@ Glib::ustring Field::get_type_name(glom_field_type glom_type)
 }
 
 //static:
-Field::glom_field_type Field::get_type_for_name(const Glib::ustring& glom_type)
+Field::glom_field_type Field::get_type_for_ui_name(const Glib::ustring& glom_type)
 {
   glom_field_type result = TYPE_INVALID;
 
-  for(type_map_type_names::iterator iter = m_map_type_names.begin(); iter != m_map_type_names.end(); ++iter)
+  for(type_map_type_names::iterator iter = m_map_type_names_ui.begin(); iter != m_map_type_names_ui.end(); ++iter)
   {
     if(iter->second == glom_type)
     {

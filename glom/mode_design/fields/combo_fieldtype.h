@@ -89,10 +89,6 @@ protected:
   ModelColumns m_Columns;
 
   Glib::RefPtr<Gtk::ListStore> m_refTreeModel;
-    
-  //Map of field types to their string representations:
-  typedef std::map<Field::glom_field_type, Glib::ustring> type_map_valuetypes;
-  type_map_valuetypes m_mapTypes;
 };
 
 #endif //COMBO_FIELDTYPE_HH

@@ -19,7 +19,16 @@
  */
  
 #include "flowtablewithfields.h"
+#include "entryglom.h"
+#include <gtkmm/checkbutton.h>
 #include "../data_structure/glomconversions.h"
+
+FlowTableWithFields::Info::Info()
+: m_first(0),
+  m_second(0),
+  m_checkbutton(0)
+{
+}
 
 FlowTableWithFields::FlowTableWithFields()
 {
@@ -82,34 +91,49 @@ void FlowTableWithFields::add_group(const Glib::ustring& /* group_name */, const
   
 void FlowTableWithFields::add_field(const Field& field, const Glib::ustring& group)
 {
-  Glib::ustring id = field.get_name();
+  const Glib::ustring id = field.get_name();
   type_mapFields::iterator iterFind = m_mapFields.find(id);
   if(iterFind == m_mapFields.end()) //If it is not already there.
   {
     Info info;
     info.m_field = field;
-    
-    info.m_first = Gtk::manage(new Gtk::Alignment());
 
-    Gtk::Label* label = Gtk::manage(new Gtk::Label(field.get_title_or_name()));
-    info.m_first->add( *label );
-    label->show();
-    info.m_first->show();
-    info.m_first->set(Gtk::ALIGN_RIGHT);
-    info.m_first->show_all_children(); //This does not seem to work, so we show the label explicitly.
-    
-    info.m_second = Gtk::manage(new EntryGlom(field.get_glom_type()) );
-    int width = get_suitable_width(field.get_glom_type());
-    info.m_second->set_size_request(width, -1 /* auto */);
-    info.m_second->show_all();                            
+    if(info.m_field.get_glom_type() == Field::TYPE_BOOLEAN)
+    {
+      //Add a checkbutton. We don't need a label, because the checkbutton has that already.
+      info.m_checkbutton = Gtk::manage( new Gtk::CheckButton( field.get_title_or_name() ) );
+      add( *(info.m_checkbutton) );
+      info.m_checkbutton->show();
 
-    info.m_group = group;
+      info.m_checkbutton->signal_toggled().connect( sigc::bind(sigc::mem_fun(*this, &FlowTableWithFields::on_checkbutton_toggled), id)  );
+
+    }
+    else
+    {
+      //Add a label and an entry:
+      
+      info.m_first = Gtk::manage(new Gtk::Alignment());
+
+      Gtk::Label* label = Gtk::manage(new Gtk::Label(field.get_title_or_name()));
+      info.m_first->add( *label );
+      label->show();
+      info.m_first->show();
+      info.m_first->set(Gtk::ALIGN_RIGHT);
+      info.m_first->show_all_children(); //This does not seem to work, so we show the label explicitly.
+
+      info.m_second = Gtk::manage(new EntryGlom(field.get_glom_type()) );
+      int width = get_suitable_width(field.get_glom_type());
+      info.m_second->set_size_request(width, -1 /* auto */);
+      info.m_second->show_all();
+
+      info.m_group = group;
+
+      add(*(info.m_first), *(info.m_second));
+
+      info.m_second->signal_edited().connect( sigc::bind(sigc::mem_fun(*this, &FlowTableWithFields::on_entry_edited), id)  );
+    }
 
     m_mapFields[id] = info;
-
-    add(*(info.m_first), *(info.m_second));
-
-    info.m_second->signal_edited().connect( sigc::bind(sigc::mem_fun(*this, &FlowTableWithFields::on_entry_edited), id)  );
   }
   else
     g_warning("FlowTableWithFields::add_field: The ID exists already.");
@@ -130,29 +154,89 @@ void FlowTableWithFields::remove_field(const Glib::ustring& id)
   } 
 }
 
-EntryGlom* FlowTableWithFields::get_field(const Field& field)
+void FlowTableWithFields::set_field_value(const Field& field, const Gnome::Gda::Value& value)
+{
+  set_field_value(field.get_name(), value);
+}
+
+void FlowTableWithFields::set_field_value(const Glib::ustring& id, const Gnome::Gda::Value& value)
+{
+  Gtk::Widget* widget = get_field(id);
+  EntryGlom* entry = dynamic_cast<EntryGlom*>(widget);
+  if(entry)
+    entry->set_value(value);
+  else
+  {
+    Gtk::CheckButton* checkbutton = dynamic_cast<Gtk::CheckButton*>(widget);
+    if(checkbutton)
+      checkbutton->set_active( value.get_bool() );
+  }
+}
+
+Gnome::Gda::Value FlowTableWithFields::get_field_value(const Field& field) const
+{
+  return get_field_value(field.get_name());
+}
+
+Gnome::Gda::Value FlowTableWithFields::get_field_value(const Glib::ustring& id) const
+{
+  const Gtk::Widget* widget = get_field(id);
+  const EntryGlom* entry = dynamic_cast<const EntryGlom*>(widget);
+  if(entry)
+    return entry->get_value();
+  else
+  {
+    const Gtk::CheckButton* checkbutton = dynamic_cast<const Gtk::CheckButton*>(widget);
+    if(checkbutton)
+    {
+      return Gnome::Gda::Value(checkbutton->get_active());
+    }
+    else
+      return Gnome::Gda::Value(); //null.
+  }
+}
+ 
+void FlowTableWithFields::set_field_editable(const Field& field, bool editable)
+{
+  Gtk::Widget* widget = get_field(field);
+  Gtk::Entry* entry = dynamic_cast<Gtk::Entry*>(widget);
+  if(entry)
+    entry->set_editable(editable);
+  else
+  {
+    Gtk::CheckButton* checkbutton = dynamic_cast<Gtk::CheckButton*>(widget);
+    if(checkbutton)
+      checkbutton->set_sensitive(editable);
+  }
+}
+
+
+Gtk::Widget* FlowTableWithFields::get_field(const Field& field)
 {
   return get_field(field.get_name());
 }
 
-const EntryGlom* FlowTableWithFields::get_field(const Field& field) const
+const Gtk::Widget* FlowTableWithFields::get_field(const Field& field) const
 {
   return get_field(field.get_name());
 }
 
-const EntryGlom* FlowTableWithFields::get_field(const Glib::ustring& id) const
+const Gtk::Widget* FlowTableWithFields::get_field(const Glib::ustring& id) const
 {
-  EntryGlom* entry = 0;
+  const Gtk::Widget* widget = 0;
 
   type_mapFields::const_iterator iterFind = m_mapFields.find(id);
   if(iterFind != m_mapFields.end())
   {
-    Info info = iterFind->second;
-    entry = info.m_second;
+    const Info& info = iterFind->second;
+    if(info.m_checkbutton)
+      widget = info.m_checkbutton;
+    else
+      widget = info.m_second;
   }
 
-  if(entry)
-    return entry;
+  if(widget)
+    return widget;
   else
   {
     //Check the sub-flowtables:
@@ -160,20 +244,20 @@ const EntryGlom* FlowTableWithFields::get_field(const Glib::ustring& id) const
     {
       FlowTableWithFields* subtable = *iter;
       if(subtable)
-        entry = subtable->get_field(id);
+        widget = subtable->get_field(id);
 
-      if(entry)
-        return entry;
+      if(widget)
+        return widget;
     }
   }
 
   return 0; //Not found.
 }
 
-EntryGlom* FlowTableWithFields::get_field(const Glib::ustring& id)
+Gtk::Widget* FlowTableWithFields::get_field(const Glib::ustring& id)
 {
   const FlowTableWithFields* pThis = this;
-  return const_cast<EntryGlom*>(pThis->get_field(id)); 
+  return const_cast<Gtk::Widget*>(pThis->get_field(id)); 
 }
 
 void FlowTableWithFields::change_group(const Glib::ustring& /* id */, const Glib::ustring& /*new_group */)
@@ -194,6 +278,11 @@ FlowTableWithFields::type_signal_field_edited FlowTableWithFields::signal_field_
 }
 
 void FlowTableWithFields::on_entry_edited(const Glib::ustring& id)
+{
+  m_signal_field_edited.emit(id);
+}
+
+void FlowTableWithFields::on_checkbutton_toggled(const Glib::ustring& id)
 {
   m_signal_field_edited.emit(id);
 }

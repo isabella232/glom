@@ -23,14 +23,17 @@
 
 #include <gtkmm/entry.h>
 #include "../data_structure/field.h"
+#include <libglademm.h>
 
 class EntryGlom : public Gtk::Entry
 {
 public:
-  EntryGlom(Field::glom_field_type glom_type);
+  explicit EntryGlom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  explicit EntryGlom(Field::glom_field_type glom_type = Field::TYPE_TEXT);
   virtual ~EntryGlom();
 
-
+  void set_glom_type(Field::glom_field_type glom_type);
+  
   //Override this so we can store the text to compare later.
   //This is not virtual, so you must not use it via Gtk::Entry.
   void set_text(const Glib::ustring& text); //override

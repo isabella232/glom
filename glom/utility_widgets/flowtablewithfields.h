@@ -22,10 +22,11 @@
 #define GLOM_UTILITYWIDGETS_FLOWTABLEWITHFIELDS_H
 
 #include "flowtable.h"
-#include "entryglom.h"
 #include "../data_structure/field.h"
 #include <map>
 #include <list>
+
+class EntryGlom;
 
 class FlowTableWithFields : public FlowTable
 {
@@ -44,12 +45,20 @@ public:
   typedef std::map<int, Field> type_map_field_sequence;
   virtual void add_group(const Glib::ustring& group_name, const Glib::ustring& group_title, const type_map_field_sequence& fields);
   
+
+  virtual void set_field_editable(const Field& field, bool editable = true);
+
+  virtual Gnome::Gda::Value get_field_value(const Field& field) const;
+  virtual Gnome::Gda::Value get_field_value(const Glib::ustring& id) const;
+  virtual void set_field_value(const Field& field, const Gnome::Gda::Value& value);
+  virtual void set_field_value(const Glib::ustring& id, const Gnome::Gda::Value& value);
+
+     
+  virtual Gtk::Widget* get_field(const Glib::ustring& id);  
+  virtual const Gtk::Widget* get_field(const Glib::ustring& id) const;
   
-  virtual EntryGlom* get_field(const Glib::ustring& id);
-  virtual const EntryGlom* get_field(const Glib::ustring& id) const;
-  
-  virtual EntryGlom* get_field(const Field& field);
-  virtual const EntryGlom* get_field(const Field& field) const;
+  virtual Gtk::Widget* get_field(const Field& field);
+  virtual const Gtk::Widget* get_field(const Field& field) const;
       
   virtual void change_group(const Glib::ustring& id, const Glib::ustring& new_group);
 
@@ -66,14 +75,19 @@ protected:
 
   int get_suitable_width(Field::glom_field_type field_type);
   void on_entry_edited( const Glib::ustring& id);
-
+  void on_checkbutton_toggled( const Glib::ustring& id);
+  
   class Info
   {
   public:
+    Info();
+    
     Field m_field; //Store the field information so we know the title, ID, and type.
     Glib::ustring m_group;
+
     Gtk::Alignment* m_first;
     EntryGlom* m_second;
+    Gtk::CheckButton* m_checkbutton; //Used instead of first and second if it's a bool.
   };
 
   typedef std::map<Glib::ustring, Info> type_mapFields; //Map of IDs to full info.
@@ -85,5 +99,6 @@ protected:
 
   type_signal_field_edited m_signal_field_edited;
 };
+
 
 #endif //GLOM_UTILITYWIDGETS_FLOWTABLEWITHFIELDS_H

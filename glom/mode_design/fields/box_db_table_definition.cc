@@ -93,7 +93,7 @@ void Box_DB_Table_Definition::fill_field_row(const Gtk::TreeModel::iterator& ite
   //Type:
   Field::glom_field_type fieldType = Field::get_glom_type_for_gda_type(fieldinfo.get_gdatype()); //Could be TYPE_INVALID if the gda type is not one of ours.
 
-  Glib::ustring strType = Field::get_type_name( fieldType );
+  Glib::ustring strType = Field::get_type_name_ui( fieldType );
   m_AddDel.set_value(iter, m_colType, strType);
 
   //Unique:
@@ -115,7 +115,7 @@ void Box_DB_Table_Definition::fill_from_database()
     //Fields:
     m_AddDel.remove_all();
 
-    Field::type_map_type_names mapFieldTypes = Field::get_type_names();
+    Field::type_map_type_names mapFieldTypes = Field::get_type_names_ui();
 
     for(type_vecFields::iterator iter = m_Fields.begin(); iter != m_Fields.end(); iter++)
     {       
@@ -281,7 +281,7 @@ Field Box_DB_Table_Definition::get_field_definition(const Gtk::TreeModel::iterat
     //Type:
     const Glib::ustring& strType = m_AddDel.get_value(row, m_colType);
 
-    Field::glom_field_type glom_type =  Field::get_type_for_name(strType);
+    Field::glom_field_type glom_type =  Field::get_type_for_ui_name(strType);
     Gnome::Gda::ValueType fieldType = Field::get_gda_type_for_glom_type(glom_type);
 
     //Unique:
@@ -481,6 +481,11 @@ void  Box_DB_Table_Definition::postgres_change_column_type(const Field& field_ol
         Glib::ustring conversion_command;
         switch(field.get_glom_type())
         {
+          case Field::TYPE_BOOLEAN: //CAST does not work if the destination type is numeric.
+          {
+            conversion_command = "FALSE"; //TODO: Find a way to convert: "to_number( " + field_old.get_name() + ", '999999999.99' )";
+            break;
+          }
           case Field::TYPE_NUMERIC: //CAST does not work if the destination type is numeric.
           {
             conversion_command = "to_number( " + field_old.get_name() + ", '999999999.99' )";

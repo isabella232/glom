@@ -19,6 +19,7 @@
  */
 
 #include "document_glom.h"
+#include "../data_structure/glomconversions.h"
 //#include "config.h" //To get GLOM_DTD_INSTALL_DIR - dependent on configure prefix.
 #include <algorithm> //For std::find_if().
 #include <sstream> //For stringstream
@@ -621,7 +622,7 @@ bool Document_Glom::load_after()
           const xmlpp::Element* nodeFields = get_node_child_named(nodeTable, "fields");
           if(nodeFields)
           {
-            const Field::type_map_type_names type_names = Field::get_usable_type_names();
+            const Field::type_map_type_names type_names = Field::get_type_names();
             
             //Loop through Field child nodes:
             xmlpp::Node::NodeList listNodes = nodeFields->get_children("field");
@@ -642,9 +643,6 @@ bool Document_Glom::load_after()
                 field_info.set_primary_key( get_node_attribute_value_as_bool(nodeChild, "primary_key") );
                 field_info.set_unique_key( get_node_attribute_value_as_bool(nodeChild, "unique") );
                 field_info.set_auto_increment( get_node_attribute_value_as_bool(nodeChild, "auto_increment") );           
-                field_info.set_default_value( Gnome::Gda::Value (get_node_attribute_value(nodeChild, "default_value")) );
-                 
-                field.set_field_info(field_info);
 
                 //Get lookup information, if present.
                 xmlpp::Element* nodeLookup = get_node_child_named(nodeChild, "field_lookup");
@@ -671,7 +669,14 @@ bool Document_Glom::load_after()
                 }
                 
                 field.set_glom_type( field_type_enum );
-                 
+
+                //Default value:
+                const Glib::ustring default_value_text = get_node_attribute_value(nodeChild, "default_value");
+                //Interpret the text as per the field type:
+                bool success = false;
+                field_info.set_default_value( GlomConversions::parse_value(field_type_enum, default_value_text, success, true /* iso_format */) );
+                field.set_field_info(field_info);
+                             
                 doctableinfo.m_fields.push_back(field);
               }
             }
@@ -803,7 +808,7 @@ bool Document_Glom::save_before()
         //Fields:
         xmlpp::Element* elemFields = nodeTable->add_child("fields");
 
-        const Field::type_map_type_names type_names = Field::get_usable_type_names();
+        const Field::type_map_type_names type_names = Field::get_type_names();
 
         for(type_vecFields::const_iterator iter = doctableinfo.m_fields.begin(); iter != doctableinfo.m_fields.end(); ++iter)
         {

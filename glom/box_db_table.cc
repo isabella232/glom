@@ -223,40 +223,6 @@ unsigned long Box_DB_Table::get_last_auto_increment_value(const Glib::RefPtr<Gno
     return 0;
 }
 
-//static
-Box_DB_Table::type_map_valuetypes Box_DB_Table::get_field_type_names()
-{
-  //TODO: Performance: Cache this map, and/or pass it by reference:
-  type_map_valuetypes mapTypes;
-  
-  mapTypes[Gnome::Gda::VALUE_TYPE_NULL] = Gnome::Gda::Value::type_to_string(Gnome::Gda::VALUE_TYPE_NULL);
-  mapTypes[Gnome::Gda::VALUE_TYPE_BIGINT] = Gnome::Gda::Value::type_to_string(Gnome::Gda::VALUE_TYPE_BIGINT);
-  mapTypes[Gnome::Gda::VALUE_TYPE_BIGUINT] = Gnome::Gda::Value::type_to_string(Gnome::Gda::VALUE_TYPE_BIGUINT);
-  mapTypes[Gnome::Gda::VALUE_TYPE_BINARY] = Gnome::Gda::Value::type_to_string(Gnome::Gda::VALUE_TYPE_BINARY);
-  mapTypes[Gnome::Gda::VALUE_TYPE_BOOLEAN] = Gnome::Gda::Value::type_to_string(Gnome::Gda::VALUE_TYPE_BOOLEAN);
-  mapTypes[Gnome::Gda::VALUE_TYPE_DATE] = Gnome::Gda::Value::type_to_string(Gnome::Gda::VALUE_TYPE_DATE);
-  mapTypes[Gnome::Gda::VALUE_TYPE_DOUBLE] = Gnome::Gda::Value::type_to_string(Gnome::Gda::VALUE_TYPE_DOUBLE);
-  mapTypes[Gnome::Gda::VALUE_TYPE_GEOMETRIC_POINT] = Gnome::Gda::Value::type_to_string(Gnome::Gda::VALUE_TYPE_GEOMETRIC_POINT);
-  mapTypes[Gnome::Gda::VALUE_TYPE_GOBJECT] = Gnome::Gda::Value::type_to_string(Gnome::Gda::VALUE_TYPE_GOBJECT);
-  mapTypes[Gnome::Gda::VALUE_TYPE_INTEGER] = Gnome::Gda::Value::type_to_string(Gnome::Gda::VALUE_TYPE_INTEGER);
-  mapTypes[Gnome::Gda::VALUE_TYPE_LIST] = Gnome::Gda::Value::type_to_string(Gnome::Gda::VALUE_TYPE_LIST);
-  mapTypes[Gnome::Gda::VALUE_TYPE_MONEY] = Gnome::Gda::Value::type_to_string(Gnome::Gda::VALUE_TYPE_MONEY);
-  mapTypes[Gnome::Gda::VALUE_TYPE_NUMERIC] = Gnome::Gda::Value::type_to_string(Gnome::Gda::VALUE_TYPE_NUMERIC);
-  mapTypes[Gnome::Gda::VALUE_TYPE_SINGLE] = Gnome::Gda::Value::type_to_string(Gnome::Gda::VALUE_TYPE_SINGLE);
-  mapTypes[Gnome::Gda::VALUE_TYPE_SMALLINT] = Gnome::Gda::Value::type_to_string(Gnome::Gda::VALUE_TYPE_SMALLINT);
-  mapTypes[Gnome::Gda::VALUE_TYPE_SMALLUINT] = Gnome::Gda::Value::type_to_string(Gnome::Gda::VALUE_TYPE_SMALLUINT);
-  mapTypes[Gnome::Gda::VALUE_TYPE_STRING] = Gnome::Gda::Value::type_to_string(Gnome::Gda::VALUE_TYPE_STRING);
-  mapTypes[Gnome::Gda::VALUE_TYPE_TIME] = Gnome::Gda::Value::type_to_string(Gnome::Gda::VALUE_TYPE_TIME);
-  mapTypes[Gnome::Gda::VALUE_TYPE_TIMESTAMP] = Gnome::Gda::Value::type_to_string(Gnome::Gda::VALUE_TYPE_TIMESTAMP);
-  mapTypes[Gnome::Gda::VALUE_TYPE_TINYINT] = Gnome::Gda::Value::type_to_string(Gnome::Gda::VALUE_TYPE_TINYINT);
-  mapTypes[Gnome::Gda::VALUE_TYPE_TINYUINT] = Gnome::Gda::Value::type_to_string(Gnome::Gda::VALUE_TYPE_TINYUINT);
-  mapTypes[Gnome::Gda::VALUE_TYPE_TYPE] = Gnome::Gda::Value::type_to_string(Gnome::Gda::VALUE_TYPE_TYPE);
-  mapTypes[Gnome::Gda::VALUE_TYPE_UINTEGER] = Gnome::Gda::Value::type_to_string(Gnome::Gda::VALUE_TYPE_UINTEGER);
-  mapTypes[Gnome::Gda::VALUE_TYPE_UNKNOWN] = Gnome::Gda::Value::type_to_string(Gnome::Gda::VALUE_TYPE_UNKNOWN);
-
-  return mapTypes;
-}
-
 bool Box_DB_Table::get_fields_for_table_one_field(const Glib::ustring& table_name, const Glib::ustring& field_name, Field& field) const
 {
   //Initialize output parameter:

@@ -28,8 +28,10 @@
 #include "../../utility_widgets/table_columns.h"
 #include "../../utility_widgets/entry_numerical.h"
 #include "../../utility_widgets/dialog_properties.h"
+#include "../../utility_widgets/entryglom.h"
 #include "../../data_structure/field.h"
 #include "../../base_db.h"
+
 
 class Dialog_FieldDefinition
  : public Dialog_Properties,
@@ -60,7 +62,7 @@ protected:
   Combo_FieldType* m_pCombo_Type;
   Gtk::CheckButton* m_pCheck_Unique;
   Gtk::CheckButton* m_pCheck_NotNull;
-  Gtk::Entry* m_pEntry_Default;
+  EntryGlom* m_pEntry_Default;
   Gtk::Label* m_pLabel_Default;
   Gtk::CheckButton* m_pCheck_PrimaryKey;
   Gtk::CheckButton* m_pCheck_AutoIncrement;

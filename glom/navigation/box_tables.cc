@@ -78,8 +78,15 @@ void Box_Tables::fill_from_database()
     
   //Enable/Disable extra widgets:
   bool developer_mode = (get_userlevel() == AppState::USERLEVEL_DEVELOPER);
+
+  //Developers see more columns, so make it bigger:
+  if(developer_mode)
+    set_size_request(400, -1);
+  else
+    set_size_request(-1, -1);
+  
   m_pCheckButtonShowHidden->set_sensitive(developer_mode); //Operators have no choice - they can't see hidden tables ever.
-  if( get_userlevel() != AppState::USERLEVEL_DEVELOPER)
+  if(!developer_mode)
     m_pCheckButtonShowHidden->set_active(false); //Operators have no choice - they can't see hidden tables ever.
 
   m_AddDel.remove_all();

@@ -36,7 +36,7 @@ Dialog_FieldDefinition::Dialog_FieldDefinition(BaseObjectType* cobject, const Gl
   refGlade->get_widget("checkbutton_primarykey",  m_pCheck_PrimaryKey);
   refGlade->get_widget("checkbutton_autoincrement",  m_pCheck_AutoIncrement);  
 
-  refGlade->get_widget("entry_default_value_simple",  m_pEntry_Default);
+  refGlade->get_widget_derived("entry_default_value_simple",  m_pEntry_Default);
   refGlade->get_widget("label_default_value_simple",  m_pLabel_Default);
 
   refGlade->get_widget("box_default_value",  m_pBox_DefaultValue);
@@ -103,10 +103,14 @@ void Dialog_FieldDefinition::set_field(const Field& field, const Glib::ustring& 
     disable_default_value = true;
 
   //Default value: simple:
-  Glib::ustring default_value;
+  Gnome::Gda::Value default_value;
   if(!disable_default_value)
-    default_value = m_Field.get_default_value_as_string();
-  m_pEntry_Default->set_text(default_value);
+  {
+    default_value = m_Field.get_field_info().get_default_value();
+       g_warning("default_value.gdavaluetype=%d", default_value.get_value_type());
+  }
+  m_pEntry_Default->set_glom_type(m_Field.get_glom_type());
+  m_pEntry_Default->set_value(default_value);
 
   //Default value: lookup:
 
@@ -172,8 +176,7 @@ Field Dialog_FieldDefinition::get_field() const
   if(!fieldInfo.get_auto_increment()) //Ignore default_values for auto_increment fields - it's just some obscure postgres code.
   {
     //Simple default value:
-    Glib::ustring default_value = m_pEntry_Default->get_text();
-    fieldInfo.set_default_value( Gnome::Gda::Value(default_value) );
+    fieldInfo.set_default_value( m_pEntry_Default->get_value() );
   }
 
   //Lookup:
@@ -261,6 +264,10 @@ void Dialog_FieldDefinition::on_check_calculate_toggled()
 
 void Dialog_FieldDefinition::on_combo_lookup_relationship_changed()
 {
+  //Get the fields that are avaiable from the new relationship:
+  
+  m_pCombo_LookupField->clear_text();
+  
   //Get the relationship name:
   const Glib::ustring relationship_name = m_pCombo_LookupRelationship->get_active_text();
   if(!relationship_name.empty())

@@ -1,3 +1,7 @@
+* Field Definition:
+  - Add Boolean field type, which is displayed as a checkbox.
+  - Default values can be the result of python calculations.
+  
 0.8.6:
 
 * Creating new documents works again.

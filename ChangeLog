@@ -1,3 +1,28 @@
+2004-07-08  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/data_structure/glomconversions: parse_value(): Return success 
+	when parsing empty date, time, and numbers as nulls.
+	* glom/mode_design/fields/dialog_fielddefinition.cc: 
+	on_combo_lookup_relationship_changed(): Clear the list of fields 
+	before adding more.
+	* glom/utility_widgets/flowtablewithfields.cc: Add a checkbox instead 
+	of an entryglom if it is a boolean field.
+
+2004-07-07  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/navigation/box_tables.cc: fill_from_database(): make the window 
+	bigger when in developer mode, because there is more to see.
+	* glom/mode_design/fields/dialog_fielddefinition.[h|cc]: Use an 
+	EntryGlom instead of an Entry for the default value, so that it gets 
+	validated and internationalized and so that the value does not get 
+	interpreted as a string. This should deal with NULL properly.
+	* glom/utilty_widgets/entryglom.[h|cc]: Add methods to get and set 
+	values so that code does not need to get the specific widget.
+	* glom/data_structure/field.[h|cc]: Have both canonical and 
+	translated field type names, and make this clearer in the API. This 
+	allows us to use the english names in the XML document, but show the 
+	translated names in the user-interface.
+
 2004-07-06  Murray Cumming  <murrayc@murrayc.com>
 
 	* Embed python for calculated fields:

@@ -58,7 +58,8 @@ public:
     TYPE_NUMERIC,
     TYPE_TEXT,
     TYPE_DATE,
-    TYPE_TIME
+    TYPE_TIME,
+    TYPE_BOOLEAN
   };
   
   Field();
@@ -79,6 +80,7 @@ public:
   virtual glom_field_type get_glom_type() const;
   virtual void set_glom_type(glom_field_type fieldtype);
 
+  //TODO_Performance: Lots of code calls this just to call one of its methods:
   virtual Gnome::Gda::FieldAttributes get_field_info() const;
   virtual void set_field_info(const Gnome::Gda::FieldAttributes& fieldInfo);
 
@@ -105,8 +107,6 @@ public:
 
   Glib::ustring get_sql_type() const;
 
-  Glib::ustring get_default_value_as_string() const;
-
   /** Escape the string so that it can be used in a SQL command.
    */
   //Glib::ustring sql(const Glib::ustring& str) const;
@@ -115,20 +115,25 @@ public:
    */
   Glib::ustring sql(const Gnome::Gda::Value& value) const;
 
-  /** Get text to show to the user.
-   */
-  Glib::ustring value_to_string(const Gnome::Gda::Value& value) const;
-
-
   Glib::ustring get_calculation() const;
   void set_calculation(const Glib::ustring& calculation);
   
   typedef std::map<glom_field_type, Glib::ustring> type_map_type_names;
+
+  /// Get canonical type names for internal use, such as in the XML of the document.
   static type_map_type_names get_type_names();
+
+  /// Get translated type names.
+  static type_map_type_names get_type_names_ui();
+
+  /// Get translated type names of types that should be offered to the user.
   static type_map_type_names get_usable_type_names();
 
-  static Glib::ustring get_type_name(glom_field_type glom_type);
-  static glom_field_type get_type_for_name(const Glib::ustring& glom_type);
+  /// Get the translated name for a glom type.
+  static Glib::ustring get_type_name_ui(glom_field_type glom_type);
+
+  /// Get the type from a translated name.
+  static glom_field_type get_type_for_ui_name(const Glib::ustring& glom_type);
 
   static glom_field_type get_glom_type_for_gda_type(Gnome::Gda::ValueType gda_type);
   static Gnome::Gda::ValueType get_gda_type_for_glom_type(Field::glom_field_type glom_type);
@@ -146,7 +151,8 @@ protected:
   typedef std::map<glom_field_type, Gnome::Gda::ValueType> type_map_glom_type_to_gda_type;
   static type_map_glom_type_to_gda_type m_map_glom_type_to_gda_type;
 
-  static type_map_type_names m_map_type_names;
+  static type_map_type_names m_map_type_names; //These are canonical, for internal use.
+  static type_map_type_names m_map_type_names_ui; //These are translated.
   static bool m_maps_inited;
   
   glom_field_type m_glom_type;
