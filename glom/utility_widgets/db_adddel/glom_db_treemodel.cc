@@ -47,7 +47,8 @@ DbTreeModel::GlueList::~GlueList()
   for(type_listOfGlue::iterator iter = m_list.begin(); iter != m_list.end(); ++iter)
   {
     DbTreeModel::GlueItem* pItem = *iter;
-    delete pItem;
+    if(pItem)
+      delete pItem;
   }
 }
 
@@ -287,15 +288,16 @@ void DbTreeModel::create_iterator(const typeListOfRows::iterator& row_iter, DbTr
   
     GlueItem* pItem = m_pGlueList->get_existing_item(row_iter);
     if(!pItem)
+    {
       pItem = new GlueItem(row_iter);
+      remember_glue_item(pItem);
+    }
   
     //Store the GlueItem in the GtkTreeIter.
     //This will be deleted in the GlueList destructor,
     //which will be called when the old GtkTreeIters are marked as invalid,
     //when the stamp value changes. 
     iter.gobj()->user_data = (void*)pItem;
-  
-    remember_glue_item(pItem);
   }
 }
 
