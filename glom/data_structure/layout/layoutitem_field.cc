@@ -65,6 +65,11 @@ void LayoutItem_Field::set_table_name(const Glib::ustring& table_name)
 }
 */
 
+bool LayoutItem_Field::get_has_relationship_name() const
+{
+  return !m_relationship_name.empty();
+}
+
 Glib::ustring LayoutItem_Field::get_relationship_name() const
 {
   return m_relationship_name;

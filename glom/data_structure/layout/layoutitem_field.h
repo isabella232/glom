@@ -38,6 +38,7 @@ public:
   //virtual Glib::ustring get_table_name() const;
   //virtual void set_table_name(const Glib::ustring& table_name);
 
+  virtual bool get_has_relationship_name() const;
   virtual Glib::ustring get_relationship_name() const;
   virtual void set_relationship_name(const Glib::ustring& relationship_name);
 

@@ -395,12 +395,11 @@ void Dialog_Layout_List_Related::on_cell_data_name(Gtk::CellRenderer* renderer, 
 
       //Indicate that it's a field in another table.
       const LayoutItem_Field item = row[m_ColumnsFields.m_col_layout_item]; //TODO_performance: Reduce copying.
-      const Glib::ustring relationship = item.get_relationship_name();
 
       Glib::ustring markup;
 
-      if(!relationship.empty())
-        markup = relationship + "::";
+      if(item.get_has_relationship_name())
+        markup = item.get_relationship_name() + "::";
 
       markup += item.get_name();
 

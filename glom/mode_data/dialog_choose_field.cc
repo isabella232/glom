@@ -58,9 +58,11 @@ void Dialog_ChooseField::set_document(Document_Glom* document, const Glib::ustri
   set_document(document, table_name);
 
   //Select the current relationship at the start:
-  Glib::ustring relationship_name = field.get_relationship_name();
-  if(!relationship_name.empty())
-    m_combo_relationship->set_active_text(relationship_name);
+
+  if(field.get_has_relationship_name())
+  {
+    m_combo_relationship->set_active_text( field.get_relationship_name() );
+  }
   else
     m_combo_relationship->set_active_text(table_name);
 

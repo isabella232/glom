@@ -517,8 +517,7 @@ void Box_Data_Details::on_flowtable_field_edited(const LayoutItem_Field& layout_
     Field primary_key_field;
     Gnome::Gda::Value primary_key_value;
 
-    const Glib::ustring relationship_name = layout_field.get_relationship_name();
-    if(relationship_name.empty())
+    if(!layout_field.get_has_relationship_name())
     {
       table_name = get_table_name();
       primary_key_field = m_field_primary_key;
@@ -528,6 +527,7 @@ void Box_Data_Details::on_flowtable_field_edited(const LayoutItem_Field& layout_
     {
       //If it's a related field then discover the actual table that it's in,
       //plus how to identify the record in that table.
+      const Glib::ustring relationship_name = layout_field.get_relationship_name();
 
       Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
 

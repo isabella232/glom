@@ -58,14 +58,14 @@ Box_DB_Table_Relationships::~Box_DB_Table_Relationships()
 void Box_DB_Table_Relationships::fill_from_database()
 {
   Bakery::BusyCursor(*get_app_window());
-    
+
   Box_DB_Table::fill_from_database();
 
   //Get relationships from the document:
   Document_Glom::type_vecRelationships vecRelationships = m_pDocument->get_relationships(m_strTableName);
 
   m_AddDel.remove_all();
-  
+
   sharedptr<SharedConnection> sharedconnection = connect_to_server();
   if(sharedconnection)
   {

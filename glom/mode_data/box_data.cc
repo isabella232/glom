@@ -152,8 +152,7 @@ Glib::RefPtr<Gnome::Gda::DataModel> Box_Data::record_new(bool use_entered_data, 
   {
     const LayoutItem_Field& layout_item = *iter;
     const Glib::ustring field_name = layout_item.get_name();
-    const Glib::ustring relationship_name = layout_item.get_relationship_name();
-    if(relationship_name.empty()) //TODO: Allow people to add a related record also by entering new data in a related field of the related record.
+    if(!layout_item.get_has_relationship_name()) //TODO: Allow people to add a related record also by entering new data in a related field of the related record.
     {
       type_map_added::const_iterator iterFind = map_added.find(field_name);
       if(iterFind == map_added.end()) //If it was not added already
@@ -279,10 +278,10 @@ void Box_Data::get_table_fields_to_show_add_group(const Glib::ustring& table_nam
       //Get the field info:
       const Glib::ustring field_name = item->get_name();
 
-      const Glib::ustring relationship_name = item_field->get_relationship_name();
-      if(!relationship_name.empty()) //If it's a field in a related table.
+      if(item_field->get_has_relationship_name()) //If it's a field in a related table.
       {
         //Get the full field information:
+        const Glib::ustring relationship_name = item_field->get_relationship_name();
         Relationship relationship;
         bool test = document->get_relationship(table_name, relationship_name, relationship);
         if(test)
@@ -524,10 +523,11 @@ void Box_Data::fill_layout_group_field_info(LayoutGroup& group)
     LayoutItem_Field* item_field = dynamic_cast<LayoutItem_Field*>(item);
     if(item_field) //If is a field rather than some other layout item
     {
-      const Glib::ustring relationship_name = item_field->get_relationship_name();
-      if(!relationship_name.empty()) //If it's a field in a related table.
+
+      if(item_field->get_has_relationship_name()) //If it's a field in a related table.
       {
         //Get the full field information:
+        const Glib::ustring relationship_name = item_field->get_relationship_name();
         Relationship relationship;
         bool test = document->get_relationship(m_strTableName, relationship_name, relationship);
         if(test)
@@ -670,13 +670,14 @@ Glib::ustring Box_Data::build_sql_select_with_where_clause(const Glib::ustring& 
     if(iter != fieldsToGet.begin())
       sql_part_fields += ", ";
 
-    Glib::ustring relationship_name = iter->get_relationship_name();
-    if(relationship_name.empty())
+
+    if(!iter->get_has_relationship_name())
     {
       sql_part_fields += ( table_name + "." );
     }
     else
     {
+      Glib::ustring relationship_name = iter->get_relationship_name();
       Relationship relationship;
       bool test = document->get_relationship(table_name, relationship_name, relationship);
       if(test)
@@ -718,11 +719,11 @@ Glib::ustring Box_Data::build_sql_select_with_where_clause(const Glib::ustring& 
 
 Glib::ustring Box_Data::get_layout_item_table_name(const LayoutItem_Field& layout_item, const Glib::ustring table_name)
 {
-  const Glib::ustring relationship_name = layout_item.get_relationship_name();
-  if(relationship_name.empty())
+  if(!layout_item.get_has_relationship_name())
     return table_name;
   else
   {
+    const Glib::ustring relationship_name = layout_item.get_relationship_name();
     Relationship relationship;
     Document_Glom* document = get_document();
     bool test = document->get_relationship(table_name, relationship_name, relationship);
