@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glom VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-08-09 00:37+0200\n"
-"PO-Revision-Date: 2004-07-07 13:11+0200\n"
+"POT-Creation-Date: 2004-08-10 19:32+0200\n"
+"PO-Revision-Date: 2004-08-10 23:56+0200\n"
 "Last-Translator: Miloslav Trmac <mitr@volny.cz>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -41,9 +41,8 @@ msgid "<b>Mode: </b>"
 msgstr "<b>Režim: </b>"
 
 #: glom/glom.glade.h:7
-#, fuzzy
 msgid "<b>Select Field</b>"
-msgstr "<b>Pole</b>"
+msgstr "<b>Zvolte pole</b>"
 
 #: glom/glom.glade.h:8
 msgid "<b>Table: </b>"
@@ -107,7 +106,7 @@ msgstr ""
 
 #: glom/glom.glade.h:27
 msgid "Add _Group"
-msgstr ""
+msgstr "Přidat _skupinu"
 
 #: glom/glom.glade.h:28
 msgid "Auto-increment"
@@ -130,9 +129,8 @@ msgid "Default Value"
 msgstr "Implicitní hodnota"
 
 #: glom/glom.glade.h:33
-#, fuzzy
 msgid "Details Layout"
-msgstr "Rozložení"
+msgstr "Podrobné rozložení"
 
 #: glom/glom.glade.h:34
 msgid "Edit"
@@ -171,9 +169,8 @@ msgid "Host"
 msgstr "Počítač"
 
 #: glom/glom.glade.h:43
-#, fuzzy
 msgid "List Layout"
-msgstr "Rozložení"
+msgstr "Rozložení seznamu"
 
 #: glom/glom.glade.h:44
 msgid "Lookup value when a field changes."
@@ -205,20 +202,19 @@ msgstr "Vrátit"
 
 #: glom/glom.glade.h:51
 msgid "Select"
-msgstr ""
+msgstr "Vybrat"
 
 #: glom/glom.glade.h:52
 msgid "Select Field"
-msgstr ""
+msgstr "Zvolte pole"
 
 #: glom/glom.glade.h:53
 msgid "Show hidden tables"
 msgstr "Zobrazovat skryté tabulky"
 
 #: glom/glom.glade.h:54
-#, fuzzy
 msgid "Table:"
-msgstr "<b>Tabulka: </b>"
+msgstr "Tabulka:"
 
 #: glom/glom.glade.h:55
 msgid "Test"
