@@ -54,7 +54,7 @@ type_list_currencies get_list_of_currency_symbols()
           currency.m_symbol = nodeEntry->get_attribute("letter_code")->get_value();
 
           Glib::ustring name = gettext(nodeEntry->get_attribute("currency_name")->get_value().c_str());
-          const char* pchTranslatedName = dgettext("iso-4217", name.c_str());
+          const char* pchTranslatedName = dgettext("iso_4217", name.c_str());
           if(pchTranslatedName)
             name = pchTranslatedName;
 

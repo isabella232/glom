@@ -32,8 +32,8 @@ public:
 
   typedef Gtk::Container type_base;
 
-  virtual void add(Gtk::Widget& first, Gtk::Widget& second);
-  virtual void add(Gtk::Widget& first); //override
+  virtual void add(Gtk::Widget& first, Gtk::Widget& second, bool expand_second = false);
+  virtual void add(Gtk::Widget& first, bool expand = false); //override
 
   virtual void remove(Gtk::Widget& first); //override
 
@@ -81,6 +81,7 @@ protected:
 
     Gtk::Widget* m_first;
     Gtk::Widget* m_second;
+    bool m_expand_first;
     bool m_expand_second;
 
     //Cache the positions, so we can use them in on_expose_event:
@@ -95,7 +96,9 @@ protected:
   void get_item_max_width(guint start, guint height, guint& first_max_width, guint& second_max_width, guint& singles_max_width); //TODO: maybe combine this with code in get_minimum_column_height().
 
   bool child_is_visible(Gtk::Widget* widget);
+
   Gtk::Allocation assign_child(Gtk::Widget* widget, int x, int y);
+  Gtk::Allocation assign_child(Gtk::Widget* widget, int x, int y, int width, int height);
 
   type_vecChildren m_children;
   guint m_columns_count;

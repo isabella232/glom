@@ -23,7 +23,8 @@
 #include "gdk/gdktypes.h"
 
 FlowTable::FlowTableItem::FlowTableItem()
-: m_expand_second(false)
+: m_expand_first(false),
+  m_expand_second(false)
 {
 }
 
@@ -47,21 +48,23 @@ void FlowTable::set_design_mode(bool value)
   queue_draw(); //because this changes how the widget would be drawn.
 }
 
-void FlowTable::add(Gtk::Widget& first, Gtk::Widget& second)
+void FlowTable::add(Gtk::Widget& first, Gtk::Widget& second, bool expand_second)
 {
   FlowTableItem item;
   item.m_first = &first;
   item.m_second = &second;
+  item.m_expand_second = expand_second;
   m_children.push_back(item);
 
   gtk_widget_set_parent(first.gobj(), GTK_WIDGET(gobj()));
   gtk_widget_set_parent(second.gobj(), GTK_WIDGET(gobj()));
 }
 
-void FlowTable::add(Gtk::Widget& first)
+void FlowTable::add(Gtk::Widget& first, bool expand)
 {
   FlowTableItem item;
   item.m_first = &first;
+  item.m_expand_first = expand;
   item.m_second = 0;
   m_children.push_back(item);
 
@@ -73,7 +76,7 @@ void FlowTable::set_columns_count(guint value)
   //Silently correct an invalid value:
   if(value == 0)
     value = 1;
-    
+
   m_columns_count = value;
 }
 
@@ -82,7 +85,7 @@ void FlowTable::get_item_requested_width(const FlowTableItem& item, int& first, 
   //Initialize output paramters:
   first = 0;
   second = 0;
-  
+ 
   Gtk::Widget* first_widget = item.m_first;
   Gtk::Widget* second_widget = item.m_second;
 
@@ -121,7 +124,7 @@ int FlowTable::get_item_requested_height(const FlowTableItem& item)
       // Ask the child how much space it needs:
       Gtk::Requisition child_requisition;
       first->size_request(child_requisition);  //TODO: This method should be const:
-  
+
       max_child_height = child_requisition.height;
     }
 
@@ -130,7 +133,7 @@ int FlowTable::get_item_requested_height(const FlowTableItem& item)
       // Ask the child how much space it needs:
       Gtk::Requisition child_requisition;
       second->size_request(child_requisition);  //TODO: This method should be const:
-  
+
       max_child_height = MAX(max_child_height, child_requisition.height);
     }
 
@@ -198,13 +201,13 @@ int FlowTable::get_column_height(guint start_widget, guint widget_count, int& to
 }  
 
 int FlowTable::get_minimum_column_height(guint start_widget, guint columns_count, int& total_width)
-{  
+{
   //init_db_details output parameter:
   total_width = 0;
-  
+
   //Discover how best (least column height) to arrange these widgets in these columns, keeping them in sequence,
   //and then say how high the columns must best.
-  
+
   if(columns_count == 1)
   {
     //Just add the heights together:
@@ -221,13 +224,13 @@ int FlowTable::get_minimum_column_height(guint start_widget, guint columns_count
     bool at_least_one_combination_checked = false;
 
     const guint count_items_remaining = m_children.size() - start_widget;
-    
+
     for(guint first_column_widgets_count = 1;  first_column_widgets_count < count_items_remaining; ++first_column_widgets_count)
     {
       int first_column_width = 0;
       int first_column_height = get_column_height(start_widget, first_column_widgets_count, first_column_width);
       int minimum_column_height_sofar = first_column_height;
-        
+
       int others_column_width = 0;
       const guint others_column_start_widget =  start_widget + first_column_widgets_count;
       //Call this function recursively to get the minimum column height in the other columns, when these widgets are in the first column:
@@ -273,28 +276,22 @@ void FlowTable::on_size_request(Gtk::Requisition* requisition)
   //by examing every possible sequential arrangement of the widgets in this fixed number of columsn:
   int total_width = 0;
   const int column_height = get_minimum_column_height(0, m_columns_count, total_width); //This calls itself recursively.
-  
+
   requisition->height = column_height;
   requisition->width = total_width;
 }
 
-
 //Give it whatever height/width it wants, at this location:
-Gtk::Allocation FlowTable::assign_child(Gtk::Widget* widget, int x, int y)
+Gtk::Allocation FlowTable::assign_child(Gtk::Widget* widget, int x, int y, int width, int height)
 {
-  //Discover how much space this child needs:
-  Gtk::Requisition child_requisition_request;
-  widget->size_request(child_requisition_request);  //TODO: This method should be const:
-
   //Assign sign space to the child:
   Gtk::Allocation child_allocation;
 
   child_allocation.set_x(x);
   child_allocation.set_y(y);
 
-  //Give it as much space as it wants:
-  child_allocation.set_width(child_requisition_request.width);
-  child_allocation.set_height(child_requisition_request.height);
+  child_allocation.set_width(width);
+  child_allocation.set_height(height);
 
   //g_warning("  assigning: x=%d, y=%d, width=%d, height=%d", x, y, child_requisition_request.width, child_requisition_request.height);
   //g_warning("    far x=%d, far y=%d", x+child_requisition_request.width , y+child_requisition_request.height);
@@ -304,13 +301,24 @@ Gtk::Allocation FlowTable::assign_child(Gtk::Widget* widget, int x, int y)
   return child_allocation; //Return this so we can cache it.
 }
 
+//Give it whatever height/width it wants, at this location:
+Gtk::Allocation FlowTable::assign_child(Gtk::Widget* widget, int x, int y)
+{
+  //Discover how much space this child needs:
+  Gtk::Requisition child_requisition_request;
+  widget->size_request(child_requisition_request);  //TODO: This method should be const:
+
+  //Give it as much space as it wants:
+  return assign_child(widget, x, y, child_requisition_request.width, child_requisition_request.height);
+}
+
 void FlowTable::get_item_max_width(guint start, guint height, guint& first_max_width, guint& second_max_width, guint& singles_max_width)
 {
   //Initialize output parameters:
   first_max_width = 0;
   second_max_width = 0;
   singles_max_width = 0;
-  
+
   if(m_children.empty())
     return;
 
@@ -366,7 +374,7 @@ void FlowTable::get_item_max_width(guint start, guint height, guint& first_max_w
 
     if(height_item)
       height_item += padding_above;
-          
+
     height_so_far += height_item;
     if(height_so_far <= height) //Don't remember the width details if the widgets are too high for the end of this column:
     {
@@ -387,22 +395,22 @@ void FlowTable::on_size_allocate(Gtk::Allocation& allocation)
 {
   //Do something with the space that we have actually been given:
   //(We will not be given heights or widths less than we have requested, though we might get more)
-      
+
   set_allocation(allocation);
 
   //This will be used in on_expose_event():
   m_lines_horizontal.clear();
   m_lines_vertical.clear();
-  
+
   //Discover the widths of the different parts of the first column:
   guint first_max_width = 0;
   guint second_max_width = 0;
   guint singles_max_width = 0;
   get_item_max_width(0, allocation.get_height(), first_max_width, second_max_width, singles_max_width);  //TODO: Give the 2nd part of the column a bit more if the total needed is less than the allocation given.
-           
+
   //Calculate where the columns should start on the x axis.
   int column_x_start = allocation.get_x();
-   
+
   int column_x_start_second = column_x_start + first_max_width;
   if(first_max_width > 0) //Add padding between first and second sub sets of items, if there is a first set.
     column_x_start_second += m_padding;
@@ -410,9 +418,9 @@ void FlowTable::on_size_allocate(Gtk::Allocation& allocation)
   //Used for drawing horizontal lines:
   guint column_max_width = MAX(first_max_width + m_padding + second_max_width, singles_max_width);
 
-  
+
   int column_child_y_start = allocation.get_y();
-      
+
   guint count = m_children.size();
   for(guint i = 0; i < count; ++i)
   {
@@ -443,7 +451,7 @@ void FlowTable::on_size_allocate(Gtk::Allocation& allocation)
         singles_max_width = 0;
 
         get_item_max_width(i, allocation.get_height(), first_max_width, second_max_width, singles_max_width);
-       
+
         column_x_start_second = column_x_start + first_max_width;
         if(first_max_width > 0) //Add padding between first and second sub sets of items, if there is a first set.
           column_x_start_second += m_padding;
@@ -454,7 +462,7 @@ void FlowTable::on_size_allocate(Gtk::Allocation& allocation)
     }
 
     bool something_added = false;
-    
+ 
     Gtk::Widget* first = item.m_first;
     Gtk::Widget* second = item.m_second;
     if(child_is_visible(second))
@@ -480,10 +488,14 @@ void FlowTable::on_size_allocate(Gtk::Allocation& allocation)
     }
     else if(child_is_visible(first))
     {
-      //There is only one item - so let it take up the whole width of the column:
-        
+      //There is only one item - so let it take up the whole width of the column, if requested:
+
       //Assign space to the child:
-      item.m_first_allocation = assign_child(first, column_x_start, column_child_y_start);
+      if(!(item.m_expand_first))
+        item.m_first_allocation = assign_child(first, column_x_start, column_child_y_start);
+      else
+        item.m_first_allocation = assign_child(first, column_x_start, column_child_y_start, column_max_width, item_height);
+
       something_added = true;
     }
 
@@ -541,7 +553,7 @@ void FlowTable::on_remove(Gtk::Widget* child)
             //g_warning("FlowTable::on_remove unparenting first");
         gtk_widget_unparent(item.m_first->gobj()); //This is protected, but should be public: child.unparent();
         item.m_first = 0;
-         
+
        if(visible)
           queue_resize();
       }
@@ -551,7 +563,7 @@ void FlowTable::on_remove(Gtk::Widget* child)
         //g_warning("FlowTable::on_remove unparenting second");
         gtk_widget_unparent(item.m_second->gobj()); //This is protected, but should be public: child.unparent();
         item.m_second = 0;
-        
+
         if(visible)
           queue_resize();
       }
@@ -567,7 +579,7 @@ void FlowTable::forall_vfunc(gboolean /* include_internals */, GtkCallback callb
   for(type_vecChildren::const_iterator iter = m_children.begin(); iter != m_children.end(); ++iter)
   {
     FlowTableItem item = *iter;
-    
+
     Gtk::Widget* first = item.m_first;
     if(first)
       callback(first->gobj(), callback_data);
@@ -595,7 +607,7 @@ void FlowTable::remove(Gtk::Widget& first)
   //Gtk::Container::remove() does this too. We need to do it here too:
   if(first.is_managed_())
     first.reference();
-  
+
   gtk_widget_unparent(first.gobj());
 
   for(type_vecChildren::iterator iter = m_children.begin(); iter != m_children.end(); ++iter)
@@ -618,10 +630,10 @@ void FlowTable::remove_all()
     if(iter->m_first)
     {
       Gtk::Widget* widget = iter->m_first;
-      
+
       if(widget->is_managed_())
         widget->reference();
-      
+
       gtk_widget_unparent(widget->gobj());
     }
 
@@ -631,12 +643,12 @@ void FlowTable::remove_all()
 
       if(widget->is_managed_())
         widget->reference();
-        
+
       gtk_widget_unparent(widget->gobj());
     }
-    
+
   }
-   
+
   m_children.clear(); 
 }
 
@@ -655,7 +667,7 @@ void FlowTable::on_unrealize()
 {
   m_refGdkWindow.clear();
   m_refGC.clear();
- 
+
   Gtk::Container::on_unrealize();
 }
 

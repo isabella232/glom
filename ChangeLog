@@ -1,3 +1,16 @@
+2005-03-31  Murray Cumming <murrayc@murrayc.com>
+
+	* glom/data_structure/iso_codes.cc:
+	Use the correct name with dgettext(), using a _ 
+	instead of a -. CUrrency names are therefore now 
+	translated.
+	* glom/utility_widgets/flowtable.cc:
+	* glom/utility_widgets/flowtable.h:
+	* glom/utility_widgets/flowtablewithfields.cc:
+	Add optional expand parameter to FlowTable::add() and 
+	use it for portals and groups in FlowTableWithFields. 
+	Does not quite work yet though.
+
 2005-03-30  Murray Cumming <murrayc@murrayc.com>
 
 	* configure.in:

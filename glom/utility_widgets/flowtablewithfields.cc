@@ -100,7 +100,7 @@ void FlowTableWithFields::add_layout_item_at_position(const LayoutItem& item, co
             portal_box->init_db_details(relationship);
             portal_box->set_layout_item(portal->clone(), relationship.get_to_table());
             portal_box->show();
-            add(*portal_box);
+            add(*portal_box, true /* expand */);
 
             m_portals.push_back(portal_box);
             add_layoutwidgetbase(portal_box, add_before);
@@ -163,7 +163,7 @@ void FlowTableWithFields::add_layout_group_at_position(const LayoutGroup& group,
       }
     }
 
-    add(*frame);
+    add(*frame, true /* expand */);
 
     m_sub_flow_tables.push_back(flow_table);
     flow_table->set_layout_item(group.clone(), m_table_name);

@@ -357,7 +357,7 @@ bool App_Glom::on_document_load()
         connection_pool->set_host(pDocument->get_connection_server());
         connection_pool->set_user(pDocument->get_connection_user());
         connection_pool->set_database(pDocument->get_connection_database());
-        
+
         connection_pool->set_ready_to_connect(); //Box_DB::connect_to_server() will now attempt the connection-> Shared instances of m_Connection will also be usable.
 
         //Attempt to connect to the specified database:
@@ -374,7 +374,7 @@ bool App_Glom::on_document_load()
             //The connection to the server is OK, but the database is not there yet.
             //Ask the user if he wants to create it.
             //For instance, it might be an example document, whose database does not exist on his server yet.
-            
+
             Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_recreate_database");
             Gtk::Dialog* dialog = 0;
             refXml->get_widget("dialog_recreate_database", dialog);
@@ -384,7 +384,7 @@ bool App_Glom::on_document_load()
               dialog->set_transient_for(*this);
               delete dialog;
               dialog = 0;
-              
+
               if(response == Gtk::RESPONSE_CANCEL)
                 return false; //Close the document.
               else
