@@ -111,6 +111,7 @@ void Dialog_Layout_List::set_document(const Glib::ustring& layout, Document_Glom
       {
         LayoutItem_Field item;
         item.set_name(iter->get_name());
+        item.set_table_name(table_name); //TODO: Support view fields in other tables.
         item.m_sequence = field_sequence;
 
         group.add_item(item, field_sequence);
@@ -234,6 +235,7 @@ void Dialog_Layout_List::save_to_document()
       {
         LayoutItem_Field item;
         item.set_name(field_name);
+        item.set_table_name(m_table_name); //TODO: Support view fields in other tables.
         item.m_sequence = field_sequence;
 
         others.add_item(item, field_sequence); //Add it to the group:

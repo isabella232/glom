@@ -40,8 +40,10 @@ Dialog_ChooseField::Dialog_ChooseField(BaseObjectType* cobject, const Glib::RefP
 
     m_treeview->append_column( gettext("Name"), m_ColumnsFields.m_col_name );
     m_treeview->append_column( gettext("Title"), m_ColumnsFields.m_col_title );
+
+    m_treeview->signal_row_activated().connect( sigc::mem_fun(*this, &Dialog_ChooseField::on_row_activated) );
   }
-  
+
   show_all_children();
 }
 
@@ -49,10 +51,44 @@ Dialog_ChooseField::~Dialog_ChooseField()
 {
 }
 
+void Dialog_ChooseField::set_document(Document_Glom* document, const Glib::ustring& table_name, const Field& field)
+{
+  set_document(document, table_name);
+
+  //Select the current field at the start:
+  const Glib::ustring field_name = field.get_name();
+
+  //Get the iterator for the row:
+  Gtk::TreeModel::iterator iterFound = m_model->children().end();
+  for(Gtk::TreeModel::iterator iter = m_model->children().begin(); iter != m_model->children().end(); ++iter)
+  {
+    if(field_name == (*iter)[m_ColumnsFields.m_col_name])
+    {
+      iterFound = iter;
+      break;
+    }
+  }
+
+  if(iterFound != m_model->children().end())
+  {
+    m_treeview->get_selection()->select(iterFound);
+  }
+}
+
 void Dialog_ChooseField::set_document(Document_Glom* document, const Glib::ustring& table_name)
 {
   m_document = document;
   m_table_name = table_name;
+ 
+  if(!m_document)
+  {
+    g_warning("Dialog_ChooseField::set_document(): document is null");
+  }
+
+  if(table_name.empty())
+  {
+    g_warning("Dialog_ChooseField::set_document(): table_name is empty");
+  }
 
   //Update the tree models from the document
   if(document)
@@ -76,6 +112,8 @@ void Dialog_ChooseField::set_document(Document_Glom* document, const Glib::ustri
 
 void Dialog_ChooseField::select_item(const Field& field)
 {
+  //TODO: We do this in set_document() as well.
+
   //Find any items with the same name:
   for(Gtk::TreeModel::iterator iter = m_model->children().begin(); iter != m_model->children().end(); ++iter)
   {
@@ -107,6 +145,11 @@ bool Dialog_ChooseField::get_field_chosen(Field& field) const
       return true;
     }
   }
-    
+
   return false;
+}
+
+void Dialog_ChooseField::on_row_activated(const Gtk::TreePath& /* path */, Gtk::TreeViewColumn* /* view_column */)
+{
+  response(Gtk::RESPONSE_OK);
 }

@@ -36,14 +36,20 @@ public:
   /**
    * @param document The document, so that the dialog can load the previous layout, and save changes.
    * @param table_name The table name.
+   * @param field The starting field information.
    */
+  virtual void set_document(Document_Glom* document, const Glib::ustring& table_name, const Field& field);
+ 
   virtual void set_document(Document_Glom* document, const Glib::ustring& table_name);
 
+
   void select_item(const Field& field);
-    
+
   bool get_field_chosen(Field& field) const;
-  
+
 protected:
+
+  void on_row_activated(const Gtk::TreePath& path, Gtk::TreeViewColumn* view_column);
 
   //Tree model columns:
   class ModelColumns_Fields : public Gtk::TreeModel::ColumnRecord

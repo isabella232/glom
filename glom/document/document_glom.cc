@@ -665,7 +665,7 @@ void Document_Glom::set_modified(bool value)
   }
 }
 
-void Document_Glom::load_after_layout_group(const xmlpp::Element* node, LayoutGroup& group)
+void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Glib::ustring table_name, LayoutGroup& group)
 {
   if(!node)
     return;
@@ -691,6 +691,7 @@ void Document_Glom::load_after_layout_group(const xmlpp::Element* node, LayoutGr
         LayoutItem_Field item;
 
         item.set_name( get_node_attribute_value(element, "name") );
+        item.set_table_name(table_name);
 
         item.m_sequence = sequence;
         group.add_item(item, sequence);
@@ -699,7 +700,7 @@ void Document_Glom::load_after_layout_group(const xmlpp::Element* node, LayoutGr
       {
         LayoutGroup child_group;
         //Recurse:
-        load_after_layout_group(element, child_group);
+        load_after_layout_group(element, table_name, child_group);
 
         group.add_item(child_group);
       }
@@ -880,7 +881,7 @@ bool Document_Glom::load_after()
                       if(!group_name.empty())
                       {
                         LayoutGroup group;
-                        load_after_layout_group(node, group);
+                        load_after_layout_group(node, table_name, group);
 
                         layout_groups[group.m_sequence] = group;
                       }

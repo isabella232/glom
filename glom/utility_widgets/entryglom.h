@@ -21,9 +21,11 @@
 #ifndef GLOM_UTILITY_WIDGETS_ENTRY_GLOM_H
 #define GLOM_UTILITY_WIDGETS_ENTRY_GLOM_H
 
-#include <gtkmm/entry.h>
+#include <gtkmm.h>
 #include "../data_structure/field.h"
 #include <libglademm.h>
+
+class App_Glom;
 
 class EntryGlom
 : public Gtk::Entry
@@ -34,7 +36,7 @@ public:
   virtual ~EntryGlom();
 
   void set_glom_type(Field::glom_field_type glom_type);
-  
+ 
   //Override this so we can store the text to compare later.
   //This is not virtual, so you must not use it via Gtk::Entry.
   void set_text(const Glib::ustring& text); //override
@@ -44,12 +46,15 @@ public:
   void set_value(const Gnome::Gda::Value& value);
 
   Gnome::Gda::Value get_value() const;
-  
+
   typedef sigc::signal<void> type_signal_edited;
   type_signal_edited signal_edited();
- 
+
+  typedef sigc::signal<void> type_signal_user_requested_layout;
+  type_signal_user_requested_layout signal_user_requested_layout(); 
+
 protected:
-  
+
   //Overrides of default signal handlers:
   virtual void on_changed(); //From Gtk::Entry.
   virtual void on_activate(); //From Gtk::Entry.
@@ -57,12 +62,23 @@ protected:
   virtual void on_insert_text(const Glib::ustring& text, int* position); //From Gtk::Editable
 
   virtual void check_for_change();
-    
+
+  virtual void setup_menu();
+  virtual bool on_button_press_event(GdkEventButton *event); //override
+  virtual void on_menupopup_activate_layout();
+
+  virtual App_Glom* get_application();
+
   type_signal_edited m_signal_edited;
+  type_signal_user_requested_layout m_signal_user_requested_layout;
 
   Glib::ustring m_old_text;
   Field::glom_field_type m_glom_type; //Store the type so we can validate the text accordingly.
 
+  Gtk::Menu* m_pMenuPopup;
+  Glib::RefPtr<Gtk::ActionGroup> m_refActionGroup;
+  Glib::RefPtr<Gtk::UIManager> m_refUIManager;
+  Glib::RefPtr<Gtk::Action> m_refContextLayout;
 };
 
 #endif //GLOM_UTILITY_WIDGETS_ENTRY_GLOM_H

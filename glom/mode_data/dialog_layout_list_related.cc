@@ -127,7 +127,8 @@ void Dialog_Layout_List_Related::update_ui(bool including_relationship_list)
     
     if(mapGroups.empty())
     {
-      type_vecFields table_fields = document->get_table_fields(m_relationship.get_to_table());
+      const Glib::ustring table_name = m_relationship.get_to_table();
+      type_vecFields table_fields = document->get_table_fields(table_name);
       
       LayoutGroup group;
       group.set_name("main");
@@ -137,6 +138,7 @@ void Dialog_Layout_List_Related::update_ui(bool including_relationship_list)
       {
         LayoutItem_Field item;
         item.set_name(iter->get_name());
+        item.set_table_name(table_name);
         item.m_sequence = field_sequence;
 
         group.add_item(item, field_sequence);
@@ -258,6 +260,7 @@ void Dialog_Layout_List_Related::save_to_document()
       {
         LayoutItem_Field item;
         item.set_name(field_name);
+        item.set_table_name(m_table_name);
         item.m_sequence = field_sequence;
 
         others.add_item(item, field_sequence); //Add it to the group:

@@ -22,7 +22,9 @@
 #include "../data_structure/glomconversions.h"
 #include <gtkmm/messagedialog.h>
 #include "../dialog_invalid_data.h"
-#include <sstream> //For stringstream
+#include "../data_structure/glomconversions.h"
+#include "../application.h"
+//#include <sstream> //For stringstream
 
 #include <locale>     // for locale, time_put
 #include <ctime>     // for struct tm
@@ -30,13 +32,17 @@
 
 EntryGlom::EntryGlom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& /* refGlade */)
 : Gtk::Entry(cobject),
-  m_glom_type(Field::TYPE_TEXT)
+  m_glom_type(Field::TYPE_TEXT),
+  m_pMenuPopup(0)
 {
+  setup_menu();
 }
   
 EntryGlom::EntryGlom(Field::glom_field_type glom_type)
-: m_glom_type(glom_type)
+: m_glom_type(glom_type),
+  m_pMenuPopup(0)
 {
+  setup_menu();
 }
 
 EntryGlom::~EntryGlom()
@@ -114,9 +120,7 @@ void EntryGlom::on_changed()
 void EntryGlom::on_insert_text(const Glib::ustring& text, int* position)
 {
   Gtk::Entry::on_insert_text(text, position);
-}  
-
-
+}
 
 void EntryGlom::set_value(const Gnome::Gda::Value& value)
 {
@@ -137,6 +141,102 @@ Gnome::Gda::Value EntryGlom::get_value() const
   return GlomConversions::parse_value(m_glom_type, get_text(), success);
 }
 
+EntryGlom::type_signal_user_requested_layout EntryGlom::signal_user_requested_layout()
+{
+  return m_signal_user_requested_layout;
+}
+
+void EntryGlom::setup_menu()
+{
+  m_refActionGroup = Gtk::ActionGroup::create();
+
+  m_refActionGroup->add(Gtk::Action::create("ContextMenu", "Context Menu") );
+
+  m_refContextLayout =  Gtk::Action::create("ContextLayout", gettext("Choose Field"));
+  m_refActionGroup->add(m_refContextLayout,
+    sigc::mem_fun(*this, &EntryGlom::on_menupopup_activate_layout) );
+
+  //TODO: This does not work until this widget is in a container in the window:s
+  App_Glom* pApp = get_application();
+  if(pApp)
+  {
+    pApp->add_developer_action(m_refContextLayout); //So that it can be disabled when not in developer mode.
+    pApp->update_userlevel_ui(); //Update our action's sensitivity. 
+  }
+
+  m_refUIManager = Gtk::UIManager::create();
+
+  m_refUIManager->insert_action_group(m_refActionGroup);
+
+  //TODO: add_accel_group(m_refUIManager->get_accel_group());
+
+  try
+  {
+    Glib::ustring ui_info = 
+        "<ui>"
+        "  <popup name='ContextMenu'>"
+        "    <menuitem action='ContextLayout'/>"
+        "  </popup>"
+        "</ui>";
+
+    m_refUIManager->add_ui_from_string(ui_info);
+  }
+  catch(const Glib::Error& ex)
+  {
+    std::cerr << "building menus failed: " <<  ex.what();
+  }
+
+  //Get the menu:
+  m_pMenuPopup = dynamic_cast<Gtk::Menu*>( m_refUIManager->get_widget("/ContextMenu") ); 
+  if(!m_pMenuPopup)
+    g_warning("menu not found");
 
 
-  
+  if(pApp)
+    m_refContextLayout->set_sensitive(pApp->get_userlevel() == AppState::USERLEVEL_DEVELOPER);
+}
+
+bool EntryGlom::on_button_press_event(GdkEventButton *event)
+{
+  //Enable/Disable items.
+  //We did this earlier, but get_application is more likely to work now:
+  App_Glom* pApp = get_application();
+  if(pApp)
+  {
+    pApp->add_developer_action(m_refContextLayout); //So that it can be disabled when not in developer mode.
+    pApp->update_userlevel_ui(); //Update our action's sensitivity. 
+
+    //Only show this popup in developer mode, so operators still see the default GtkEntry context menu.
+    //TODO: It would be better to add it somehow to the standard context menu.
+    if(pApp->get_userlevel() == AppState::USERLEVEL_DEVELOPER)
+    {
+      GdkModifierType mods;
+      gdk_window_get_pointer( Gtk::Widget::gobj()->window, 0, 0, &mods );
+      if(mods & GDK_BUTTON3_MASK)
+      {
+        //Give user choices of actions on this item:
+        m_pMenuPopup->popup(event->button, event->time);
+        return true; //We handled this event.
+      }
+    }
+
+  }
+
+  return Gtk::Entry::on_button_press_event(event);
+}
+
+void EntryGlom::on_menupopup_activate_layout()
+{
+  //finish_editing();
+
+  //Ask the parent widget to show the layout dialog:
+  signal_user_requested_layout().emit();
+}
+
+App_Glom* EntryGlom::get_application()
+{
+  Gtk::Container* pWindow = get_toplevel();
+  //TODO: This only works when the child widget is already in its parent.
+
+  return dynamic_cast<App_Glom*>(pWindow);
+}

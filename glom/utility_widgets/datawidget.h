@@ -41,7 +41,7 @@ public:
 
   virtual Gtk::Label* get_label();
   virtual const Gtk::Label* get_label() const;
-  
+
   //Override this so we can store the text to compare later.
   //This is not virtual, so you must not use it via Gtk::Entry.
   //virtual void set_text(const Glib::ustring& text); //override
@@ -60,7 +60,8 @@ protected:
 
   //Overrides of default signal handlers:
   virtual void on_widget_edited(); //From Gtk::Entry, or Gtk::CheckButton.
-  virtual bool on_button_press_event_popup(GdkEventButton* event);
+  virtual bool on_button_press_event(GdkEventButton* event); //override.
+  virtual void on_child_user_requested_layout();
   virtual void on_menupopup_activate_layout();
   virtual bool offer_field_list(const Glib::ustring& table_name, Field& field);
 

@@ -2,6 +2,8 @@ INCLUDES = -I@top_srcdir@/ $(GLOM_CFLAGS)
 
 SUBDIRS = adddel db_adddel
 
+gladedir = $(datadir)/glom/glade/
+
 # We define GLOM_GLADEDIR so that we can get the installed .glade file at runtime.
 INCLUDES = $(GLOM_CFLAGS) $(PYTHON_INCLUDES) \
            -DGLOM_GLADEDIR=\""$(gladedir)/"\" \

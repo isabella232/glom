@@ -26,7 +26,8 @@ LayoutItem_Field::LayoutItem_Field()
 
 LayoutItem_Field::LayoutItem_Field(const LayoutItem_Field& src)
 : LayoutItem(src),
-  m_field(src.m_field)
+  m_field(src.m_field),
+  m_table_name(src.m_table_name)
 {
 }
 

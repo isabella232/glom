@@ -171,7 +171,7 @@ public:
   Glib::RefPtr<const Gtk::TreeModel> get_model() const;
 
   virtual void set_rules_hint(bool val = true);
-      
+
   //Signals:
   //row number.
   typedef sigc::signal<void, const Gtk::TreeModel::iterator&> type_signal_user_added;

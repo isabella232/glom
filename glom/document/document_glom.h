@@ -126,7 +126,7 @@ protected:
   virtual bool load_after();
   virtual bool save_before();
 
-  virtual void load_after_layout_group(const xmlpp::Element* node, LayoutGroup& group);
+  virtual void load_after_layout_group(const xmlpp::Element* node, const Glib::ustring table_name, LayoutGroup& group);
   virtual void save_before_layout_group(xmlpp::Element* node, const LayoutGroup& group);
   
   virtual void on_app_state_userlevel_changed(AppState::userlevels userleve);

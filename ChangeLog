@@ -1,3 +1,11 @@
+2005-03-10  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/mode_data/entry_glom.[h|cc]: Show a Choose Field context menu 
+	when in developer mode, and signal to the DataWidget when it has been 
+	selected.
+	* glom/mode_data/dialog_choose_field.[h|cc]: set_document(): Select 
+	the current field at the start. Make double-click choose a field.
+
 2005-03-09  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/mode_data/datawidget.[h|cc]: Attempt to add a context menu 

@@ -161,6 +161,7 @@ void Dialog_Layout_Details::fill_group(const Gtk::TreeModel::iterator& iter, Lay
         //Add field:
         LayoutItem_Field field;
         field.set_name( rowChild[m_model_items->m_columns.m_col_name] );
+        field.set_table_name(m_table_name);
 
         group.add_item(field);
       }
@@ -257,6 +258,7 @@ void Dialog_Layout_Details::set_document(const Glib::ustring& layout, Document_G
       {
         LayoutItem_Field item;
         item.set_name(iter->get_name());
+        item.set_table_name(m_table_name);
         item.m_sequence = field_sequence;
 
         group.add_item(item, field_sequence);
@@ -497,7 +499,7 @@ bool Dialog_Layout_Details::offer_field_list(Field& field)
 
     if(dialog)
     {
-      dialog->set_document(m_document, m_table_name);
+      dialog->set_document(m_document, m_table_name, field);
       int response = dialog->run();
       if(response == Gtk::RESPONSE_OK)
       {

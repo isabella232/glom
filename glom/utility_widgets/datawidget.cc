@@ -35,7 +35,10 @@ DataWidget::DataWidget(Field::glom_field_type glom_type, const Glib::ustring& ti
   {
     Gtk::CheckButton* checkbutton = Gtk::manage( new Gtk::CheckButton( title ) );
     checkbutton->show();
-    checkbutton->signal_toggled().connect( sigc::mem_fun(*this, &DataWidget::on_widget_edited)  );
+    checkbutton->signal_toggled().connect( sigc::mem_fun(*this, &DataWidget::on_widget_edited)  )
+
+    //TODO: entry->signal_user_requested_layout().connect( sigc::mem_fun(*this, &DataWidget::on_child_user_requested_layout );
+;
     child = checkbutton;
 
     m_label.set_text( Glib::ustring() ); //It is not used.
@@ -50,7 +53,11 @@ DataWidget::DataWidget(Field::glom_field_type glom_type, const Glib::ustring& ti
     int width = get_suitable_width(glom_type);
     entry->set_size_request(width, -1 /* auto */);
     entry->show_all();
+
     entry->signal_edited().connect( sigc::mem_fun(*this, &DataWidget::on_widget_edited)  );
+
+    entry->signal_user_requested_layout().connect( sigc::mem_fun(*this, &DataWidget::on_child_user_requested_layout) );
+
     child = entry;
   }
 
@@ -60,7 +67,6 @@ DataWidget::DataWidget(Field::glom_field_type glom_type, const Glib::ustring& ti
   setup_menu();
 
   set_events(Gdk::BUTTON_PRESS_MASK);
-  signal_button_press_event().connect(sigc::mem_fun(*this, &DataWidget::on_button_press_event_popup), true);
 }
 
 DataWidget::~DataWidget()
@@ -203,7 +209,7 @@ void DataWidget::setup_menu()
 
   m_refActionGroup->add(Gtk::Action::create("ContextMenu", "Context Menu") );
 
-  m_refContextLayout =  Gtk::Action::create("ContextLayout", gettext("Layout"));
+  m_refContextLayout =  Gtk::Action::create("ContextLayout", gettext("Choose Field"));
   m_refActionGroup->add(m_refContextLayout,
     sigc::mem_fun(*this, &DataWidget::on_menupopup_activate_layout) );
 
@@ -247,8 +253,10 @@ void DataWidget::setup_menu()
     m_refContextLayout->set_sensitive(pApp->get_userlevel() == AppState::USERLEVEL_DEVELOPER);
 }
 
-bool DataWidget::on_button_press_event_popup(GdkEventButton *event)
+bool DataWidget::on_button_press_event(GdkEventButton *event)
 {
+  g_warning("DataWidget::on_button_press_event_popup");
+
   //Enable/Disable items.
   //We did this earlier, but get_application is more likely to work now:
   App_Glom* pApp = get_application();
@@ -256,20 +264,23 @@ bool DataWidget::on_button_press_event_popup(GdkEventButton *event)
   {
     pApp->add_developer_action(m_refContextLayout); //So that it can be disabled when not in developer mode.
     pApp->update_userlevel_ui(); //Update our action's sensitivity. 
+
+    //Only show this popup in developer mode, so operators still see the default GtkEntry context menu.
+    //TODO: It would be better to add it somehow to the standard context menu.
+    if(pApp->get_userlevel() == AppState::USERLEVEL_DEVELOPER)
+    {
+      GdkModifierType mods;
+      gdk_window_get_pointer( Gtk::Widget::gobj()->window, 0, 0, &mods );
+      if(mods & GDK_BUTTON3_MASK)
+      {
+        //Give user choices of actions on this item:
+        m_pMenuPopup->popup(event->button, event->time);
+        return true; //We handled this event.
+      }
+    }
   }
 
-  GdkModifierType mods;
-  gdk_window_get_pointer( Gtk::Widget::gobj()->window, 0, 0, &mods );
-  if(mods & GDK_BUTTON3_MASK)
-  {
-    //Give user choices of actions on this item:
-    m_pMenuPopup->popup(event->button, event->time);
-    return true; //We handled this event.
-  }
-  else
-  {
-    return false; //We did not handle this event.
-  }
+  return Gtk::EventBox::on_button_press_event(event);
 }
 
 bool DataWidget::offer_field_list(const Glib::ustring& table_name, Field& field)
@@ -285,7 +296,7 @@ bool DataWidget::offer_field_list(const Glib::ustring& table_name, Field& field)
 
     if(dialog)
     {
-      dialog->set_document(get_document(), table_name);
+      dialog->set_document(get_document(), table_name, field);
       int response = dialog->run();
       if(response == Gtk::RESPONSE_OK)
       {
@@ -312,6 +323,7 @@ void DataWidget::on_menupopup_activate_layout()
   if(layoutField)
   {
     Field field;
+    field.set_name(layoutField->get_name()); //So that the current field will be selected.
     bool test = offer_field_list(layoutField->get_table_name(), field);
     if(test)
     {
@@ -319,6 +331,11 @@ void DataWidget::on_menupopup_activate_layout()
       signal_layout_changed().emit();
     }
   }
+}
+
+void DataWidget::on_child_user_requested_layout()
+{
+  on_menupopup_activate_layout();
 }
 
 App_Glom* DataWidget::get_application()
