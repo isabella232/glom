@@ -24,7 +24,9 @@ glom_SOURCES = main.cc \
                frame_glom.h frame_glom.cc \
                notebook_glom.h notebook_glom.cc \
                connectionpool.h connectionpool.cc \
+               dialog_connection.h dialog_connection.cc \
                dialog_invalid_data.h dialog_invalid_data.cc \
+               dialog_new_database.h dialog_new_database.cc \
                glom_python.h glom_python.cc \
                sharedptr.h
 

@@ -19,6 +19,7 @@
  */
 
 #include "application.h"
+#include "dialog_new_database.h"
 #include <libgnome/gnome-help.h> //For gnome_help_display
 #include "config.h" //For VERSION.
 #include <cstdio>
@@ -36,7 +37,7 @@ App_Glom::App_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml
   refGlade->get_widget("bakery_vbox", m_pBoxTop);
   refGlade->get_widget_derived("vbox_frame", m_pFrame); //This one is derived. There's a lot happening here.
   refGlade->get_widget("label_hint", m_pStatus);
-  
+ 
   add_mime_type("application/x-glom"); //TODO: make this actually work - we need to register it properly.
   
   //Hide the toolbar because it doesn't contain anything useful for this app.
@@ -120,14 +121,13 @@ void App_Glom::init_menus()
   //"Navigate" menu:
   m_refActionGroup_Others->add( Gtk::Action::create("Glom_Menu_Navigate", gettext("_Navigate")) );
 
-  Glib::RefPtr<Gtk::Action> action = Gtk::Action::create("GlomAction_Menu_Navigate_Database", gettext("_Database"));
-  m_listDeveloperActions.push_back(action);
-  m_refActionGroup_Others->add(action,
-                        sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_Navigate_Database) );
+//  Glib::RefPtr<Gtk::Action> action = Gtk::Action::create("GlomAction_Menu_Navigate_Database", gettext("_Database"));
+//  m_listDeveloperActions.push_back(action);
+//  m_refActionGroup_Others->add(action,
+//                        sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_Navigate_Database) );
 
 
-  action = Gtk::Action::create("GlomAction_Menu_Navigate_Table", gettext("_Table"));
-  m_listWithDatabaseActions.push_back(action); //Remember it so we can disable/enable it when a database has been selected.
+  Glib::RefPtr<Gtk::Action> action = Gtk::Action::create("GlomAction_Menu_Navigate_Table", gettext("_Table"));
   m_refActionGroup_Others->add(action,
                         sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_Navigate_Table) );
 
@@ -145,7 +145,6 @@ void App_Glom::init_menus()
 
   //"Mode" menu:
   action =  Gtk::Action::create("Glom_Menu_Mode", gettext("_Mode"));
-  m_listWithDatabaseActions.push_back(action);
   m_refActionGroup_Others->add(action);
   Gtk::RadioAction::Group group_mode;
 
@@ -189,7 +188,6 @@ void App_Glom::init_menus()
     "  <menubar name='Bakery_MainMenu'>"
     "    <placeholder name='Bakery_MenuPH_Others'>"
     "      <menu action='Glom_Menu_Navigate'>"
-    "        <menuitem action='GlomAction_Menu_Navigate_Database' />"
     "        <menuitem action='GlomAction_Menu_Navigate_Table' />"
     "     </menu>"
     "      <menu action='Glom_Menu_Mode'>"
@@ -216,8 +214,6 @@ void App_Glom::init_menus()
   add_ui_from_string(ui_description);
 
   init_menus_help();
-
-  on_database_selected(false);
 }
 
 void App_Glom::on_menu_userlevel_developer()
@@ -293,7 +289,8 @@ void App_Glom::on_document_load()
       //Switch to operator mode when opening new documents:
       pDocument->set_userlevel(AppState::USERLEVEL_OPERATOR);
 
-      m_pFrame->do_menu_Navigate_Database(false); //false = don't show list, just open the current database after connecting.
+      //Open default table, or show list of tables instead:
+      m_pFrame->do_menu_Navigate_Table(true /* open the default if there is one */);    
     }
   }
 }
@@ -328,16 +325,6 @@ void App_Glom::on_userlevel_changed(AppState::userlevels userlevel)
   {
     if(!m_action_menu_userlevel_operator->get_active())
       m_action_menu_userlevel_operator->set_active();
-  }
-}
-
-void App_Glom::on_database_selected(bool database_selected)
-{
-  //Disable/Enable developer actions:
-  for(type_listActions::iterator iter = m_listWithDatabaseActions.begin(); iter != m_listWithDatabaseActions.end(); ++iter)
-  {
-    Glib::RefPtr<Gtk::Action> action = *iter;
-     action->set_sensitive ( database_selected );
   }
 }
 
@@ -382,9 +369,41 @@ bool App_Glom::offer_new_or_existing()
       //Make sure that the user can do something with his new document:
       document->set_userlevel(AppState::USERLEVEL_DEVELOPER);
 
-      //There is already an empty document, but this allows the user to fill it by connecting and creating tables:
-      m_pFrame->do_menu_Navigate_Database();
-      return true;
+      //Each new document must have an associated new database,
+      //so ask the user for the name of one to create:
+      Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_new_database");
+      if(refXml)
+      {
+        Dialog_NewDatabase* dialog = 0;
+        refXml->get_widget_derived("dialog_new_database", dialog);
+        if(dialog)
+        {
+          int response = dialog->run(); //TODO: Allow the user to cancel.
+          dialog->hide();
+          if(response == Gtk::RESPONSE_OK)
+          {
+            Glib::ustring db_name = dialog->m_entry_name->get_text();
+            Glib::ustring db_title = dialog->m_entry_title->get_text();
+
+            if(!db_name.empty()) //TODO: Don't activate the OK button when name is empty.
+            {
+              bool db_created = m_pFrame->create_database(db_name);
+              if(db_created)
+              {
+                m_pFrame->set_databases_selected(db_name);
+              }
+              else
+                return false;        
+            }
+            else
+              return false;
+            
+            return true; //File successfully created.
+          }
+        }
+       }
+  
+      return false; //Creation of new document failed.
     }
     else
     {

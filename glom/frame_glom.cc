@@ -29,12 +29,11 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
   m_pLabel_Mode(0),
   m_pLabel_userlevel(0),
   m_pBox_Mode(0),
-  m_pBox_Databases(0),
   m_pBox_Tables(0),
-  m_pDialog_Databases(0),
   m_pDialog_Tables(0),
   m_pDialog_Fields(0),
-  m_pDialog_Relationships(0)
+  m_pDialog_Relationships(0),
+  m_pDialogConnection(0)
 
 {
   //Load widgets from glade file:
@@ -46,18 +45,19 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
   //m_pLabel_Mode->set_text(gettext("No database selected.\n Use the Navigation menu, or open a previous Glom document."));
   
   //Load the Glade file and instantiate its widgets to get the dialog stuff:
+
   try
   {
-    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "box_navigation_connection");
+    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_connection");
 
-    refXml->get_widget_derived("box_navigation_connection", m_pBox_Databases);
-    m_pDialog_Databases = new Dialog_Glom(m_pBox_Databases);
+    refXml->get_widget_derived("dialog_connection", m_pDialogConnection);
   }
   catch(const Gnome::Glade::XmlError& ex)
   {
     std::cerr << ex.what() << std::endl;
   }
 
+  
   try
   {
     Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "box_navigation_tables");
@@ -99,11 +99,6 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
   m_Mode_Previous = MODE_None;
 
   Gtk::Window* pWindow = get_app_window();
-  if(pWindow)
-    m_pDialog_Databases->set_transient_for(*pWindow);
-
-  m_pDialog_Databases->get_vbox()->pack_start(*m_pBox_Databases);
-  m_pBox_Databases->show_all();
 
   if(pWindow)
     m_pDialog_Tables->set_transient_for(*pWindow);
@@ -113,7 +108,6 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
   m_pBox_Tables->show_all();
 
   //Connect signals:
-  m_pBox_Databases->signal_selected.connect(sigc::mem_fun(*this, &Frame_Glom::on_box_databases_selected));
   m_pBox_Tables->signal_selected.connect(sigc::mem_fun(*this, &Frame_Glom::on_box_tables_selected));
 
   
@@ -121,10 +115,10 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
 
   //Fill Composite View:
   //This means that set_document and load/save are delegated to these children:
-  add_view(m_pBox_Databases);
   add_view(m_pBox_Tables);
   add_view(m_pDialog_Fields); //Also a composite view.
   add_view(m_pDialog_Relationships); //Also a composite view.
+  add_view(m_pDialogConnection); //Also a composite view.
   add_view(&m_Notebook_Data); //Also a composite view.
   add_view(&m_Notebook_Find); //Also a composite view.
   
@@ -134,12 +128,6 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
 
 Frame_Glom::~Frame_Glom()
 {
-  if(m_pDialog_Databases)
-  {
-      delete m_pDialog_Databases;
-      m_pDialog_Databases = 0;
-  }
-
   if(m_pDialog_Tables)
   {
       delete m_pDialog_Tables;
@@ -147,16 +135,11 @@ Frame_Glom::~Frame_Glom()
   }
 }
 
-void Frame_Glom::on_box_databases_selected(Glib::ustring strName)
+void Frame_Glom::set_databases_selected(const Glib::ustring& strName)
 {
-  m_pDialog_Databases->hide(); //cause_close();
+  //m_pDialog_Databases->hide(); //cause_close();
 
   get_document()->set_connection_database(strName);
-
-  //Enable more menus:
-  App_Glom* pApp = dynamic_cast<App_Glom*>(get_app_window());
-  if(pApp)
-    pApp->on_database_selected(true);
 
   do_menu_Navigate_Table(true /* open default */);
 }
@@ -244,20 +227,22 @@ void Frame_Glom::show_table(const Glib::ustring& strTableName)
     App_Glom* pApp = dynamic_cast<App_Glom*>(get_app_window());
     if(pApp)
       on_userlevel_changed(pApp->get_userlevel());
-    
+
+    Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
+          
     switch(m_Mode)
     {
       case(MODE_Data):
       {
         strMode = gettext("Data");
-        m_Notebook_Data.init_db_details( m_pBox_Databases->get_database_name(), m_strTableName);
+        m_Notebook_Data.init_db_details( document->get_connection_database(), m_strTableName);
         set_mode_widget(m_Notebook_Data);
         break;
       }
       case(MODE_Find):
       {
         strMode = gettext("Find");
-        m_Notebook_Find.init_db_details( m_pBox_Databases->get_database_name(), m_strTableName);
+        m_Notebook_Find.init_db_details( document->get_connection_database(), m_strTableName);
         set_mode_widget(m_Notebook_Find);
         break;
       }
@@ -317,12 +302,13 @@ void Frame_Glom::on_menu_Mode_Find()
     show_table(m_strTableName);
 }
 
+/*
 void Frame_Glom::on_menu_Navigate_Database()
 {
   do_menu_Navigate_Database();
 }
 
-void Frame_Glom::do_menu_Navigate_Database(bool bUseList /* = true */)
+void Frame_Glom::do_menu_Navigate_Database(bool bUseList)
 {
   m_pBox_Databases->set_use_list(bUseList);
   m_pBox_Databases->load_from_document();
@@ -340,6 +326,7 @@ void Frame_Glom::do_menu_Navigate_Database(bool bUseList /* = true */)
   //m_frame.add(*m_pBox_Databases);
   //m_frame.show_all();
 }
+*/
 
 void Frame_Glom::on_menu_Navigate_Table()
 {
@@ -429,7 +416,9 @@ void Frame_Glom::show_ok_dialog(const Glib::ustring& title, const Glib::ustring&
 void Frame_Glom::on_Notebook_Find(Glib::ustring strWhereClause)
 {
   on_menu_Mode_Data();
-  m_Notebook_Data.init_db_details( m_pBox_Databases->get_database_name(), m_strTableName, strWhereClause);
+
+  Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
+  m_Notebook_Data.init_db_details( document->get_connection_database(), m_strTableName, strWhereClause);
   m_Notebook_Data.select_page_for_find_results();
 }
 
@@ -578,7 +567,7 @@ void Frame_Glom::on_menu_developer_fields()
   else
   {
     m_pDialog_Fields->set_transient_for(*get_app_window());
-    m_pDialog_Fields->init_db_details( m_pBox_Databases->get_database_name(), m_strTableName);
+    m_pDialog_Fields->init_db_details( get_document()->get_connection_database(), m_strTableName);
     m_pDialog_Fields->show();
   }
 }
@@ -593,7 +582,7 @@ void Frame_Glom::on_menu_developer_relationships()
   else
   {
     m_pDialog_Relationships->set_transient_for(*get_app_window());
-    m_pDialog_Relationships->init_db_details( m_pBox_Databases->get_database_name(), m_strTableName);
+    m_pDialog_Relationships->init_db_details( get_document()->get_connection_database(), m_strTableName);
     m_pDialog_Relationships->show();
   }
 }
@@ -627,6 +616,46 @@ void Frame_Glom::on_developer_dialog_hide()
 void Frame_Glom::on_menu_developer_recreate_structure()
 {
 }
+
+bool Frame_Glom::create_database(const Glib::ustring& database_name)
+{
+  while(true) //Loop until a return
+  {
+    //Ask for connection details:
+    m_pDialogConnection->load_from_document(); //Get good defaults.
+    int response = m_pDialogConnection->run();
+    m_pDialogConnection->hide();
+
+    if(response == Gtk::RESPONSE_OK)
+    {
+      sharedptr<SharedConnection> sharedconnection = m_pDialogConnection->connect_to_server_with_connection_settings();
+      if(sharedconnection)
+      {
+        Bakery::BusyCursor(*get_app_window());
+
+        Glib::RefPtr<Gnome::Gda::Connection> connection = sharedconnection->get_gda_connection();
+        if(connection)
+        {
+          bool result = connection->create_database(database_name);
+          if(result)
+            return true; // It succeeded.
+          else
+          {
+            //Back to the start of the while() loop, to try again
+            //TODO: handle_error();
+          }
+        }
+      }
+    }
+    else
+      return false; //Failed, because the user cancelled.
+  }
+
+  return false;
+}
+
+
+
  
 
 

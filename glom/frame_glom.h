@@ -27,7 +27,6 @@
 
 #include "dialog_glom.h"
 
-#include "navigation/box_databases.h"
 #include "navigation/box_tables.h"
 
 #include "mode_data/notebook_data.h"
@@ -35,6 +34,7 @@
 
 #include "mode_design/dialog_fields.h"
 #include "mode_design/dialog_relationships.h"
+#include "dialog_connection.h"
 
 class Frame_Glom :
   public PlaceHolder,
@@ -44,7 +44,7 @@ public:
   Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
   virtual ~Frame_Glom();
 
-  virtual void on_box_databases_selected(Glib::ustring strName);
+  virtual void set_databases_selected(const Glib::ustring& strName);
   virtual void on_box_tables_selected(Glib::ustring strName);
 
   virtual void on_menu_userlevel_Developer(const Glib::RefPtr<Gtk::RadioAction>& action);
@@ -53,8 +53,8 @@ public:
   virtual void on_menu_Mode_Data();
   virtual void on_menu_Mode_Find();
 
-  virtual void on_menu_Navigate_Database();
-  virtual void do_menu_Navigate_Database(bool bUseList = true);
+  //virtual void on_menu_Navigate_Database();
+  //virtual void do_menu_Navigate_Database(bool bUseList = true);
   virtual void on_menu_Navigate_Table();
   virtual void do_menu_Navigate_Table(bool open_default = false);
 
@@ -80,6 +80,9 @@ public:
 
   static void show_ok_dialog(const Glib::ustring& title, const Glib::ustring& message, Gtk::Window& parent);
 
+  ///Create the database for new documents, showing the Connection dialog
+  bool create_database(const Glib::ustring& database_name);
+  
 protected:
 
   //virtual void set_document(Document_Glom* pDocument); //override
@@ -110,19 +113,19 @@ protected:
     
   PlaceHolder* m_pBox_Mode; //Contains e.g. design mode notebook.
   
-  Box_DataBases* m_pBox_Databases;
   Box_Tables* m_pBox_Tables;
 
   Notebook_Data m_Notebook_Data;
   Notebook_Find m_Notebook_Find;
 
   //Navigation:
-  Dialog_Glom* m_pDialog_Databases;
   Dialog_Glom* m_pDialog_Tables;
 
   //Developer:
   Dialog_Fields* m_pDialog_Fields;
   Dialog_Relationships* m_pDialog_Relationships;
+
+  Dialog_Connection* m_pDialogConnection;
 };
 
 #endif //FRAME_GLOM_H

@@ -1,3 +1,15 @@
+2004-11-19  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/: Added dialog_new_database.[h|cc], to request database name 
+	and title.
+	* glom/: Added dialog_connection.[h|cc]: to replace 
+	glom/navigation/box_databases.[h|cc].
+	* glom/frame.[h|cc]: Added create_database().
+	* glom/application.[h|cc]: Ask for a new database name when creating 
+	new documents, and do not allow the user to navigate to a different 
+	database.
+	* glom/glom.glade: UI for the 2 new dialogs.
+
 2004-11-17  Murray Cumming  <murrayc@murrayc.com>
 
 	* utility_widgets/Makefile.am: Use noinst_PROGRAMS instead of 

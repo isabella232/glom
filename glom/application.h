@@ -24,7 +24,6 @@
 #include "bakery/bakery.h"
 #include "frame_glom.h"
 
-
 class App_Glom : public Bakery::App_WithDoc_Gtk
 {
 public:
@@ -38,8 +37,6 @@ public:
 
   /// Get the UIManager so we can merge new menus in.
   Glib::RefPtr<Gtk::UIManager> get_ui_manager();
-
-  virtual void on_database_selected(bool database_selected);
 
   /** Changes the mode to Data mode, as if the user had selected the Data Mode menu item.
    */
@@ -72,7 +69,6 @@ protected:
 
   typedef std::list< Glib::RefPtr<Gtk::Action> > type_listActions; 
   type_listActions m_listDeveloperActions; //Only enabled when in developer mode.
-  type_listActions m_listWithDatabaseActions;  //Only enabled when a database has been selected.
   Glib::RefPtr<Gtk::Action> m_action_mode_data;
   Glib::RefPtr<Gtk::RadioAction> m_action_menu_userlevel_developer, m_action_menu_userlevel_operator;
   
