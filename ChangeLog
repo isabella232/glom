@@ -1,5 +1,11 @@
 2005-03-29  Murray Cumming <murrayc@murrayc.com>
 
+	* glom/mode_data/box_data.cc: get_table_fields_to_show():
+	When creating default layouts, do not use the 1000s 
+	separator with primary key IDs.
+
+2005-03-29  Murray Cumming <murrayc@murrayc.com>
+
 	* glom/data_structure/Makefile.am:
 	* glom/data_structure/numeric_format.cc:
 	* glom/data_structure/numeric_format.h:

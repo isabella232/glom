@@ -350,7 +350,7 @@ Box_Data::type_vecLayoutFields Box_Data::get_table_fields_to_show(const Glib::us
     return type_vecLayoutFields();
 }
 
-Box_Data::type_vecLayoutFields Box_Data::(const Glib::ustring& table_name, const Document_Glom::type_mapLayoutGroupSequence& mapGroupSequence) const
+Box_Data::type_vecLayoutFields Box_Data::get_table_fields_to_show(const Glib::ustring& table_name, const Document_Glom::type_mapLayoutGroupSequence& mapGroupSequence) const
 {
   //Get field definitions from the database, with corrections from the document:
   type_vecFields all_fields = get_fields_for_table(table_name);
