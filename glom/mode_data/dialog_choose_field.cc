@@ -110,6 +110,7 @@ void Dialog_ChooseField::set_document(Document_Glom* document, const Glib::ustri
   }
 }
 
+/*
 void Dialog_ChooseField::select_item(const Field& field)
 {
   //TODO: We do this in set_document() as well.
@@ -128,6 +129,7 @@ void Dialog_ChooseField::select_item(const Field& field)
     }
   }
 }
+*/
 
 bool Dialog_ChooseField::get_field_chosen(Field& field) const
 {

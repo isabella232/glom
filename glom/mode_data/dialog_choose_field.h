@@ -43,7 +43,7 @@ public:
   virtual void set_document(Document_Glom* document, const Glib::ustring& table_name);
 
 
-  void select_item(const Field& field);
+  //void select_item(const Field& field);
 
   bool get_field_chosen(Field& field) const;
 

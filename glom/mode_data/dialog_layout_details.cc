@@ -469,6 +469,7 @@ bool Dialog_Layout_Details::offer_relationship_list(Relationship& relationship)
     {
       dialog->set_document(m_document, m_table_name);
       int response = dialog->run();
+      dialog->hide();
       if(response == Gtk::RESPONSE_OK)
       {
         //Get the chosen relationship:

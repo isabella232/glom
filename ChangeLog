@@ -1,5 +1,11 @@
 2005-03-10  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/mode_data/box_data_details.cc: on_flowtable_layout_changed(): 
+	Update the data as well as the structure, because updating the 
+	structure clears the widgets.
+
+2005-03-10  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/mode_data/entry_glom.[h|cc]: Show a Choose Field context menu 
 	when in developer mode, and signal to the DataWidget when it has been 
 	selected.

@@ -298,6 +298,7 @@ bool DataWidget::offer_field_list(const Glib::ustring& table_name, Field& field)
     {
       dialog->set_document(get_document(), table_name, field);
       int response = dialog->run();
+      dialog->hide();
       if(response == Gtk::RESPONSE_OK)
       {
         //Get the chosen field:

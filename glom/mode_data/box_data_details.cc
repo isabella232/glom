@@ -516,6 +516,9 @@ void Box_Data_Details::on_flowtable_layout_changed()
 
   //Build the view again from the new layout:
   fill_from_database_layout();
+
+  //And fill it with data:
+  fill_from_database();
 }
 
 void Box_Data_Details::on_flowtable_field_edited(const Glib::ustring& id, const Gnome::Gda::Value& field_value)
