@@ -1,3 +1,27 @@
+2005-03-30  Murray Cumming <murrayc@murrayc.com>
+
+	* configure.in:
+	Depend on latest bakery, so we can use util_bold_message().
+	* glom/application.cc:
+	* glom/base_db.cc:
+	* glom/frame_glom.cc:
+	* glom/mode_data/box_data.cc:
+	* glom/mode_data/box_data_details.cc:
+	* glom/mode_data/box_data_list.cc:
+	* glom/mode_data/box_data_list_related.cc:
+	* glom/mode_data/dialog_layout_details.cc:
+	* glom/mode_data/dialog_layout_list.cc:
+	* glom/mode_data/dialog_layout_list_related.cc:
+	* glom/mode_design/dialog_fields.cc:
+	* glom/mode_design/dialog_relationships.cc:
+	* glom/mode_design/fields/box_db_table_definition.cc:
+	* glom/mode_design/users/dialog_groups_list.cc:
+	* glom/mode_design/users/dialog_users_list.cc:
+	* glom/navigation/box_tables.cc:
+	* glom/utility_widgets/flowtablewithfields.cc:
+	Use util_bold_message() to avoid marking pango markup for 
+	translation.
+
 2005-03-30  Christian Rose  <menthos@menthos.com>
 
 	* glom/glom.glade: Removed unnecessary trailing spaces from

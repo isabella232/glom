@@ -22,6 +22,7 @@
 #include "../data_structure/glomconversions.h"
 #include "../data_structure/layout/layoutitem_field.h"
 #include "../python_embed/glom_python.h"
+#include <bakery/App/App_Gtk.h> //For util_bold_message().
 #include "config.h"
 #include <libintl.h>
 
@@ -223,7 +224,7 @@ bool Box_Data::confirm_discard_unstored_data() const
   if(get_unstored_data())
   {
     //Ask user to confirm loss of data:
-    Gtk::MessageDialog dialog(gettext("<b>No primary key value</b>"), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_OK_CANCEL );
+    Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(gettext("No primary key value")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_OK_CANCEL );
     dialog.set_secondary_text(gettext("This data can not be stored in the database because you have not provided a primary key.\nDo you really want to discard this data?"));
     //TODO: dialog.set_transient_for(*this);
     int iButton = dialog.run();
@@ -853,7 +854,7 @@ bool Box_Data::add_related_record_for_field(const LayoutItem_Field& layout_item_
     {
       //Warn the user:
       //TODO: Make the field insensitive until it can receive data, so people never see this dialog.
-      Gtk::MessageDialog dialog(gettext("<b>Related Record Does Not Exist</b>"), true);
+      Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(gettext("Related Record Does Not Exist")), true);
       dialog.set_secondary_text(gettext("Data may not be entered into this related field, because the related record does not yet exist, and the relationship does not allow automatic creation of new related records."));
       dialog.set_transient_for(*get_app_window());
       dialog.run();
@@ -872,7 +873,7 @@ bool Box_Data::add_related_record_for_field(const LayoutItem_Field& layout_item_
       {
         //Warn the user:
         //TODO: Make the field insensitive until it can receive data, so people never see this dialog.
-        Gtk::MessageDialog dialog(gettext("<b>Related Record Can Not Be Created</b>"), true);
+        Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(gettext("Related Record Can Not Be Created")), true);
         //TODO: This is a very complex error message:
         dialog.set_secondary_text(gettext("Data may not be entered into this related field, because the related record does not yet exist, and the key in the related record is auto-generated and therefore can not be created with the key value in this record."));
         dialog.set_transient_for(*get_app_window());

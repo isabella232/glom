@@ -24,6 +24,7 @@
 #include "../data_structure/glomconversions.h"
 #include "../mode_data/box_data_list_related.h"
 #include "../mode_data/dialog_choose_relationship.h"
+#include <bakery/App/App_Gtk.h> //For util_bold_message().
 
 FlowTableWithFields::Info::Info()
 : m_first(0),
@@ -126,7 +127,7 @@ void FlowTableWithFields::add_layout_group_at_position(const LayoutGroup& group,
     if(!group.m_title.empty())
     {
       Gtk::Label* label = Gtk::manage( new Gtk::Label );
-      label->set_text("<b>" + group.m_title + "</b>" );
+      label->set_text( Bakery::App_Gtk::util_bold_message(group.m_title) );
       label->set_use_markup();
       label->show();
       frame->set_label_widget(*label);
@@ -183,7 +184,7 @@ void FlowTableWithFields::add_group(const Glib::ustring& group_name, const Glib:
     if(!group_title.empty())
     {
       Gtk::Label* label = Gtk::manage( new Gtk::Label );
-      label->set_text("<b>" + group_title + "</b>" );
+      label->set_text("<b>" + group_title + "") );
       label->set_use_markup();
       label->show();
       frame->set_label_widget(*label);

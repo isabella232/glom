@@ -19,6 +19,7 @@
  */
 
 #include "box_db_table_definition.h"
+#include <bakery/App/App_Gtk.h> //For util_bold_message().
 #include "../../../config.h"
 #include <libintl.h>
 
@@ -211,7 +212,7 @@ void Box_DB_Table_Definition::on_adddel_changed(const Gtk::TreeModel::iterator& 
        //Refuse to edit field definitions that were not created by glom:
        if(Field::get_glom_type_for_gda_type( m_Field_BeingEdited.get_field_info().get_gdatype() )  == Field::TYPE_INVALID)
        {
-         Gtk::MessageDialog dialog(gettext("<b>Invalid database structure</b>"), true);
+         Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(gettext("Invalid database structure")), true);
          dialog.set_secondary_text(gettext("This database field was created or edited outside of Glom. It has a data type that is not supported by Glom. Your system administrator may be able to correct this."));
          //TODO: dialog.set_transient_for(*get_application());
          dialog.run();
@@ -312,7 +313,7 @@ void Box_DB_Table_Definition::on_Properties_apply()
     //Refuse to edit field definitions that were not created by glom:
     if( Field::get_glom_type_for_gda_type(m_Field_BeingEdited.get_field_info().get_gdatype()) == Field::TYPE_INVALID )
     {
-      Gtk::MessageDialog dialog(gettext("<b>Invalid database structure</b>"), true);
+      Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(gettext("Invalid database structure")), true);
          dialog.set_secondary_text(gettext("This database field was created or edited outside of Glom. It has a data type that is not supported by Glom. Your system administrator may be able to correct this."));
       //TODO: dialog.set_transient_for(*get_app_window());
       dialog.run();

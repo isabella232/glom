@@ -19,6 +19,7 @@
  */
 
 #include "box_tables.h"
+#include <bakery/App/App_Gtk.h> //For util_bold_message().
 #include <libintl.h>
 
 Box_Tables::Box_Tables(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
@@ -101,7 +102,7 @@ void Box_Tables::fill_from_database()
 
 
   //gettext("Server: ") +  m_strServerName + ", " + 
-  //Glib::ustring strTitle = Glib::ustring("<b>") + gettext("Tables from Database: ") + get_database_name() + "</b>";
+  //Glib::ustring strTitle = Glib::ustring("<b>") + gettext("Tables from Database: ") + get_database_name() + "");
   //m_pLabelFrameTitle->set_markup(strTitle);
 
   //Get the list of hidden tables:
@@ -241,7 +242,7 @@ void Box_Tables::on_adddel_Delete(const Gtk::TreeModel::iterator& rowStart, cons
         {
           //Ask the user to confirm:
           Glib::ustring strMsg = gettext("Are you sure that you want to delete this table?\nTable name: ") + table_name;
-          Gtk::MessageDialog dialog(gettext("<b>Delete Table</b>"), true);
+          Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(gettext("Delete Table")), true);
           dialog.set_secondary_text(strMsg);
           dialog.set_transient_for(*get_app_window());
           int iButtonClicked = dialog.run();
@@ -276,7 +277,7 @@ void Box_Tables::on_adddel_Edit(const Gtk::TreeModel::iterator& row)
     if(!m_pDocument->get_table_is_known(table_name))
     {
        //TODO: Do not show tables that are not in the document.
-       Gtk::MessageDialog dialog(gettext("<b>Unknown Table</b>"), true);
+       Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(gettext("Unknown Table")), true);
        dialog.set_secondary_text(gettext("You can not open this table, because there is no information about this table in the document."));
        dialog.set_transient_for(*get_app_window());
        dialog.run();

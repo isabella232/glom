@@ -322,7 +322,7 @@ void Frame_Glom::on_menu_userlevel_Developer(const Glib::RefPtr<Gtk::RadioAction
       //If this was not possible then revert the menu:
       if(!test)
       {
-        Gtk::MessageDialog dialog(gettext("<b>Developer mode not available.</b>"), true, Gtk::MESSAGE_WARNING);
+        Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(gettext("Developer mode not available.")), true, Gtk::MESSAGE_WARNING);
         dialog.set_secondary_text(gettext("Developer mode is not available. Check that you have sufficient database access rights and that the glom file is not read-only."));
         dialog.set_transient_for(*get_app_window());
         dialog.run();

@@ -22,6 +22,7 @@
 #include "dialog_choose_field.h"
 #include "dialog_choose_relationship.h"
 //#include <libgnome/gnome-i18n.h>
+#include <bakery/App/App_Gtk.h> //For util_bold_message().
 #include <libintl.h>
 #include <sstream> //For stringstream
 
@@ -752,7 +753,7 @@ void Dialog_Layout_Details::on_cell_data_name(Gtk::CellRenderer* renderer, const
       if(is_group)
       {
         //Make group names bold:
-        markup = "<b>" + row[m_model_items->m_columns.m_col_name] + "</b>";
+        markup = Bakery::App_Gtk::util_bold_message( row[m_model_items->m_columns.m_col_name] );
       }
       else if(is_relationship)
       {

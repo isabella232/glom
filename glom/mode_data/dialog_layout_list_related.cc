@@ -20,6 +20,7 @@
 
 #include "dialog_layout_list_related.h"
 #include "dialog_choose_field.h"
+#include <bakery/App/App_Gtk.h> //For util_bold_message().
 
 //#include <libgnome/gnome-i18n.h>
 #include <libintl.h>

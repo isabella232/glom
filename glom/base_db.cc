@@ -72,7 +72,7 @@ sharedptr<SharedConnection> Base_DB::connect_to_server()
 
 void Base_DB::handle_error(const std::exception& ex) const
 {
-  Gtk::MessageDialog dialog(gettext("<b>Internal error</b>"), true, Gtk::MESSAGE_WARNING );
+  Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(gettext("Internal error")), true, Gtk::MESSAGE_WARNING );
   dialog.set_secondary_text(ex.what());
   //TODO: dialog.set_transient_for(*get_application());
   dialog.run();
@@ -100,7 +100,7 @@ bool Base_DB::handle_error() const
         std::cerr << "Internal error: " << error_details << std::endl;
       }
 
-      Gtk::MessageDialog dialog(Glib::ustring("<b>Internal error</b>"), true, Gtk::MESSAGE_WARNING );
+      Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(gettext("Internal error")), true, Gtk::MESSAGE_WARNING );
       dialog.set_secondary_text(error_details);
       //TODO: dialog.set_transient_for(*get_application());
       dialog.run();

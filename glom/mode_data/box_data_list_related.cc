@@ -21,6 +21,7 @@
 #include "box_data_list_related.h"
 #include "dialog_layout_list_related.h"
 #include "../data_structure/glomconversions.h"
+#include <bakery/App/App_Gtk.h> //For util_bold_message().
 #include <libintl.h>
 
 Box_Data_List_Related::Box_Data_List_Related()
@@ -79,7 +80,7 @@ void Box_Data_List_Related::init_db_details(const Relationship& relationship)
 {
   m_relationship = relationship;
 
-  m_Label.set_markup("<b>" + relationship.get_title_or_name() + "</b>");
+  m_Label.set_markup(Bakery::App_Gtk::util_bold_message( relationship.get_title_or_name() ));
 
   bool found = get_fields_for_table_one_field(relationship.get_to_table(), relationship.get_to_field(), m_key_field /* output parameter */);
   if(!found)
@@ -234,7 +235,7 @@ void Box_Data_List_Related::on_adddel_user_added(const Gtk::TreeModel::iterator&
   else
   {
     //Tell user that they can't do that:
-    Gtk::MessageDialog dialog(gettext("<b>Extra related records not possible.</b>"), true, Gtk::MESSAGE_WARNING);
+    Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(gettext("Extra related records not possible.")), true, Gtk::MESSAGE_WARNING);
     dialog.set_secondary_text(gettext("You attempted to add a new related record, but there can only be one related record, because the relationship uses a unique key.")),
     dialog.set_transient_for(*get_app_window());
     dialog.run();

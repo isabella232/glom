@@ -23,6 +23,7 @@
 #include "../data_structure/relationship.h"
 #include "../data_structure/glomconversions.h"
 #include "dialog_layout_details.h"
+#include <bakery/App/App_Gtk.h> //For util_bold_message().
 #include <sstream> //For stringstream
 #include <libintl.h>
 
@@ -66,7 +67,7 @@ Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
 
   //Related records:
   /*
-  m_Label_Related.set_text(gettext("<b>Related Records</b>"));
+  m_Label_Related.set_text(Bakery::App_Gtk::util_bold_message(gettext("Related Records")));
   m_Label_Related.set_use_markup(true);
   m_Frame_Related.set_label_widget(m_Label_Related);
   m_Frame_Related.set_shadow_type(Gtk::SHADOW_NONE);  
@@ -359,7 +360,7 @@ void Box_Data_Details::on_button_del()
   if( GlomConversions::value_is_empty(get_primary_key_value()) )
   {
     //Tell user that a primary key is needed to delete a record:
-    Gtk::MessageDialog dialog(gettext("<b>No primary key value.</b>"), true);
+    Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(gettext("No primary key value.")), true);
     dialog.set_secondary_text(gettext("This record can not be deleted because there is no primary key."));
     dialog.set_transient_for(*get_app_window());
     dialog.run();
@@ -632,7 +633,7 @@ void Box_Data_Details::on_flowtable_field_edited(const LayoutItem_Field& layout_
       if(strFieldName == m_field_primary_key.get_name()) //If edited field is the primary key.
       {
         //Warn user that they can't choose their own primary key:
-        Gtk::MessageDialog dialog(gettext("<b>Primary key auto increments</b>"), true);
+        Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(gettext("Primary key auto increments")), true);
         dialog.set_secondary_text(gettext("The primary key is auto-incremented.\n You may not enter your own primary key value."));
         dialog.set_transient_for(*get_app_window());
         dialog.run();

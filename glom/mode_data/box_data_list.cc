@@ -21,6 +21,7 @@
 #include "box_data_list.h"
 #include "../data_structure/glomconversions.h"
 #include "dialog_layout_list.h"
+#include <bakery/App/App_Gtk.h> //For util_bold_message().
 #include <sstream> //For stringstream
 #include <libintl.h>
 
@@ -243,7 +244,7 @@ void Box_Data_List::on_adddel_user_requested_delete(const Gtk::TreeModel::iterat
   if(rowStart)
   {
     //Ask the user for confirmation:
-    Gtk::MessageDialog dialog(gettext("<b>Delete record</b>"), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE);
+    Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(gettext("Delete record")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE);
     dialog.set_secondary_text(gettext("Are you sure that you would like to delete this record? The data in this record will then be permanently lost."));
     dialog.set_transient_for(*get_app_window());
     dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);

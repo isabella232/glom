@@ -23,6 +23,7 @@
 #include "dialog_users_list.h"
 #include "dialog_new_group.h"
 //#include <libgnome/gnome-i18n.h>
+#include <bakery/App/App_Gtk.h> //For util_bold_message().
 #include <libintl.h>
 
 Dialog_GroupsList::Dialog_GroupsList(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
@@ -211,7 +212,7 @@ void Dialog_GroupsList::on_button_group_delete()
       if(!user.empty())
       {
         //TODO: Prevent deletion of standard groups
-        Gtk::MessageDialog dialog(gettext("<b>Delete Group</b>"), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_OK_CANCEL);
+        Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(gettext("Delete Group")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_OK_CANCEL);
         dialog.set_secondary_text(gettext("Are your sure that you wish to delete this group?"));
         dialog.set_transient_for(*this);
 

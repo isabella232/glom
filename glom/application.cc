@@ -395,13 +395,13 @@ bool App_Glom::on_document_load()
                 if(test)
                 {
                   //If the database was successfully recreated.
-                  
+
                   //Warn about read-only files, such as installed example files.
                   Document_Glom::userLevelReason reason = Document_Glom::USER_LEVEL_REASON_UNKNOWN;
                   AppState::userlevels userlevel = pDocument->get_userlevel(reason);
                   if( (userlevel == AppState::USERLEVEL_OPERATOR) && (reason == Document_Glom::USER_LEVEL_REASON_FILE_READ_ONLY) )
                   {
-                    Gtk::MessageDialog dialog(gettext("<b>Creating from read-only file.</b>"), true,  Gtk::MESSAGE_WARNING);
+                    Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(gettext("Creating from read-only file.")), true,  Gtk::MESSAGE_WARNING);
                     dialog.set_secondary_text(gettext("This file is read only, so you will not be able to enter Developer mode to make design changes. Maybe this file is an installed example file. Therefore, you might want to create your own writeable copy of this file."));
                     dialog.set_transient_for(*this);
                     dialog.run();
@@ -411,7 +411,7 @@ bool App_Glom::on_document_load()
                 else
                 {
                   //If the database was not successfully recreated:
-                  
+
                   if(!user_cancelled)
                   {
                     //Tell the user:

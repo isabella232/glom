@@ -21,6 +21,7 @@
 #include "dialog_fields.h"
 #include "../box_db_table.h"
 //#include <libgnome/gnome-i18n.h>
+#include <bakery/App/App_Gtk.h> //For util_bold_message().
 #include <libintl.h>
 
 
@@ -30,7 +31,7 @@ Dialog_Fields::Dialog_Fields(BaseObjectType* cobject, const Glib::RefPtr<Gnome::
 {
   refGlade->get_widget_derived("vbox_placeholder", m_box);
 
-  m_label_frame->set_text( gettext("<b>Field Definitions</b>") );
+  m_label_frame->set_text( Bakery::App_Gtk::util_bold_message(gettext("Field Definitions")) );
   m_label_frame->set_use_markup();
   
   //Fill composite view:
