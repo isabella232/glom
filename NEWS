@@ -1,6 +1,8 @@
 0.8.9:
 
 * Really save details of new tables in the document.
+* Create the tables inside the specified database, instead of 
+  putting them all in the user's default postgress database.
 * Enforce one database per document - ask for a new database name 
   when creating a new document instead of allowing the user 
   to choose an existing database.

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glom.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-08-11 11:33+0200\n"
+"POT-Creation-Date: 2004-11-30 19:42+0100\n"
 "PO-Revision-Date: 2004-08-11 16:45+0530\n"
 "Last-Translator: Ankit Patel <ankit@redhat.com>\n"
 "Language-Team: Gujarati\n"
@@ -15,7 +15,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.3.1\n"
-"Plural-Forms: Plural-Forms: nplurals=2; plural=(n!=1);\n\n"
+"Plural-Forms: Plural-Forms: nplurals=2; plural=(n!=1);\n"
+"\n"
 
 #: glom/glom.glade.h:1
 msgid "*"
@@ -26,46 +27,66 @@ msgid "<b>Connection</b>"
 msgstr "<b>જોડાણ</b>"
 
 #: glom/glom.glade.h:3
-msgid "<b>Databases</b>"
-msgstr "<b>ડેટાબેઝો</b>"
-
-#: glom/glom.glade.h:4
 msgid "<b>Field Definitions</b>"
 msgstr "<b>ક્ષેત્રની વ્યાખ્યાઓ</b>"
 
-#: glom/glom.glade.h:5
+#: glom/glom.glade.h:4
 msgid "<b>Fields</b>"
 msgstr "<b>ક્ષેત્રો</b>"
 
-#: glom/glom.glade.h:6
+#: glom/glom.glade.h:5
 msgid "<b>Mode: </b>"
 msgstr "<b>સ્થિતિ: </b>"
 
-#: glom/glom.glade.h:7
+#: glom/glom.glade.h:6
 msgid "<b>Select Field</b>"
 msgstr "<b>ક્ષેત્ર પસંદ કરો</b>"
 
-#: glom/glom.glade.h:8
+#: glom/glom.glade.h:7
 msgid "<b>Table: </b>"
 msgstr "<b>કોષ્ટક: </b>"
 
-#: glom/glom.glade.h:9
+#: glom/glom.glade.h:8
 msgid "<b>Tables in database</b>"
 msgstr "<b>ડેટાબેઝમાં કોષ્ટકો</b>"
 
-#: glom/glom.glade.h:10
+#: glom/glom.glade.h:9
 msgid "<b>Title:</b>"
 msgstr "<b>શીર્ષક:</b>"
 
-#: glom/glom.glade.h:11
+#: glom/glom.glade.h:10
 msgid "<b>User Level: </b>"
 msgstr "<b>વપરાશકર્તા સ્તર: </b>"
 
-#: glom/glom.glade.h:12
+#: glom/glom.glade.h:11
 msgid "<b>def calculate_field_value():</b>"
 msgstr "<b>def calculate_field_value():</b>"
 
-#: glom/glom.glade.h:13
+#: glom/glom.glade.h:12
+msgid ""
+"<span weight=\"bold\" size=\"larger\">Connect to Server</span>\n"
+"\n"
+"Please enter the connection details for your database server."
+msgstr ""
+
+#: glom/glom.glade.h:15
+msgid ""
+"<span weight=\"bold\" size=\"larger\">Connection Failed</span>\n"
+"\n"
+"Glom could not connect to the database server. Maybe you entered an "
+"incorrect user name or password, or maybe the postgres database server is "
+"not running."
+msgstr ""
+
+#: glom/glom.glade.h:18
+msgid ""
+"<span weight=\"bold\" size=\"larger\">Database creation failed</span>\n"
+"\n"
+"Glom could not create the new database. Maybe you do not have the necessary "
+"access rights. Please contact your system administrator."
+msgstr ""
+
+#: glom/glom.glade.h:21
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Invalid format</span>\n"
 "\n"
@@ -75,9 +96,18 @@ msgid ""
 msgstr ""
 "<span weight=\"bold\" size=\"larger\">અયોગ્ય બંધારણ</span>\n"
 "\n"
-"ક્ષેત્રમાં માહિતી ઓળખાયેલ નથી. મહેરબાની કરીને માહિતી ખરી કરો અથવા પહેલાની કિંમત પાછી મેળવો. અંહિ આ ક્ષેત્રમાં યોગ્ય બંધારણવાળી માહિતીનું ઉદાહરણ છે.\n"
+"ક્ષેત્રમાં માહિતી ઓળખાયેલ નથી. મહેરબાની કરીને માહિતી ખરી કરો અથવા પહેલાની કિંમત પાછી "
+"મેળવો. અંહિ આ ક્ષેત્રમાં યોગ્ય બંધારણવાળી માહિતીનું ઉદાહરણ છે.\n"
 
-#: glom/glom.glade.h:17
+#: glom/glom.glade.h:25
+msgid ""
+"<span weight=\"bold\" size=\"larger\">New Database</span>\n"
+"\n"
+"Please choose a name and title for the new database. The name should not "
+"contain any spaces."
+msgstr ""
+
+#: glom/glom.glade.h:28
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Open existing document, or create new "
 "document</span>\n"
@@ -94,7 +124,7 @@ msgstr ""
 "\n"
 "અથવા શું તમે નવો ડેટાબેઝ બનાવવા માટે નવું દસ્તાવેજ બનાવવા માંગો છો?\n"
 
-#: glom/glom.glade.h:23
+#: glom/glom.glade.h:34
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Title</span>\n"
 "\n"
@@ -104,149 +134,156 @@ msgstr ""
 "\n"
 "જાણકારી લખાણ.\n"
 
-#: glom/glom.glade.h:27
+#: glom/glom.glade.h:38
 msgid "Add _Group"
 msgstr "જૂથ ઉમેરો (_G)"
 
-#: glom/glom.glade.h:28
+#: glom/glom.glade.h:39
 msgid "Auto-increment"
 msgstr "આપોઆપ-વધારો"
 
-#: glom/glom.glade.h:29
+#: glom/glom.glade.h:40
 msgid "Calculate value"
 msgstr "કિંમત ગણો"
 
-#: glom/glom.glade.h:30
+#: glom/glom.glade.h:41
 msgid "Connect"
 msgstr "જોડો"
 
-#: glom/glom.glade.h:31
+#: glom/glom.glade.h:42
 msgid "Data"
 msgstr "માહિતી"
 
-#: glom/glom.glade.h:32
+#: glom/glom.glade.h:43
+#, fuzzy
+msgid "Database"
+msgstr "માહિતી"
+
+#: glom/glom.glade.h:44
 msgid "Default Value"
 msgstr "મૂળભુત કિંમત"
 
-#: glom/glom.glade.h:33
+#: glom/glom.glade.h:45
 msgid "Details Layout"
 msgstr "વિગતો દેખાવ"
 
-#: glom/glom.glade.h:34
+#: glom/glom.glade.h:46
 msgid "Edit"
 msgstr "ફેરફાર કરો"
 
-#: glom/glom.glade.h:35
+#: glom/glom.glade.h:47
 msgid "Edit Definition"
 msgstr "વ્યાખ્યામાં ફેરફાર કરો"
 
-#: glom/glom.glade.h:36
+#: glom/glom.glade.h:48
 msgid "Extra"
 msgstr "વધારાનું"
 
-#: glom/glom.glade.h:37
+#: glom/glom.glade.h:49
 msgid "Field"
 msgstr "ક્ષેત્ર"
 
-#: glom/glom.glade.h:38
+#: glom/glom.glade.h:50
 msgid "Field Calculation"
 msgstr "ક્ષેત્રની ગણતરી"
 
-#: glom/glom.glade.h:39
+#: glom/glom.glade.h:51
 msgid "Field Definition"
 msgstr "ક્ષેત્રની વ્યાખ્યા"
 
-#: glom/glom.glade.h:40
+#: glom/glom.glade.h:52
 msgid "Field Definitions"
 msgstr "ક્ષેત્રની વ્યાખ્યાઓ"
 
-#: glom/glom.glade.h:41
+#: glom/glom.glade.h:53
 msgid "Glom"
 msgstr "ગ્લુમ"
 
-#: glom/glom.glade.h:42
+#: glom/glom.glade.h:54
 msgid "Host"
 msgstr "યજમાન"
 
-#: glom/glom.glade.h:43
+#: glom/glom.glade.h:55
 msgid "List Layout"
 msgstr "યાદીનો દેખાવ"
 
-#: glom/glom.glade.h:44
+#: glom/glom.glade.h:56
 msgid "Lookup value when a field changes."
 msgstr "જ્યારે ક્ષેત્ર બદલાય ત્યારની દેખીતી કિંમતો."
 
-#: glom/glom.glade.h:45
+#: glom/glom.glade.h:57
 msgid "Name"
 msgstr "નામ"
 
-#: glom/glom.glade.h:46
+#: glom/glom.glade.h:58
 msgid "None selected"
 msgstr "કંઈ પસંદ નથી"
 
-#: glom/glom.glade.h:47
+#: glom/glom.glade.h:59
 msgid "Password"
 msgstr "પાસવર્ડ"
 
-#: glom/glom.glade.h:48
+#: glom/glom.glade.h:60
 msgid "Primary Key"
 msgstr "પ્રાથમિક કી"
 
-#: glom/glom.glade.h:49
+#: glom/glom.glade.h:61
 msgid "Relationship"
 msgstr "સંબંધ"
 
-#: glom/glom.glade.h:50
+#: glom/glom.glade.h:62
 msgid "Revert"
 msgstr "ફેરવો"
 
-#: glom/glom.glade.h:51
+#: glom/glom.glade.h:63
 msgid "Select"
 msgstr "પસંદ કરો"
 
-#: glom/glom.glade.h:52
+#: glom/glom.glade.h:64
 msgid "Select Field"
 msgstr "ક્ષેત્ર પસંદ કરો"
 
-#: glom/glom.glade.h:53
+#: glom/glom.glade.h:65
 msgid "Show hidden tables"
 msgstr "છુપા કોષ્ટકો બતાવો"
 
-#: glom/glom.glade.h:54
+#: glom/glom.glade.h:66
 msgid "Table:"
 msgstr "કોષ્ટક:"
 
-#: glom/glom.glade.h:55
+#: glom/glom.glade.h:67
 msgid "Test"
 msgstr "ચકાસણી"
 
-#: glom/glom.glade.h:56
+#: glom/glom.glade.h:68
 msgid ""
 "The field value will be the return value of the python function, which you "
 "implement here."
 msgstr "પાયથોન વિધેય કે જે તમે અંહિ, અમલમાં મૂક્યું છે તેની મળતી કિંમત એ ક્ષેત્રની કિંમત હશે."
 
-#: glom/glom.glade.h:57
+#: glom/glom.glade.h:69
 msgid "Title"
 msgstr "શીર્ષક"
 
-#: glom/glom.glade.h:58
+#: glom/glom.glade.h:70
 msgid "Type"
 msgstr "પ્રકાર"
 
-#: glom/glom.glade.h:59
+#: glom/glom.glade.h:71
 msgid "Unique"
 msgstr "અનન્ય"
 
-#: glom/glom.glade.h:60
+#: glom/glom.glade.h:72
 msgid "User"
 msgstr "વપરાશકર્તા"
 
-#: glom/glom.glade.h:61
+#: glom/glom.glade.h:73
 msgid "example data format"
 msgstr "ઉદાહરણ માહિતી બંધારણ"
 
-#: glom/glom.glade.h:62
+#: glom/glom.glade.h:74
 msgid "table name"
 msgstr "કોષ્ટક નામ"
 
+#~ msgid "<b>Databases</b>"
+#~ msgstr "<b>ડેટાબેઝો</b>"

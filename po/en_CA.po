@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glom\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-11-24 21:09-0500\n"
+"POT-Creation-Date: 2004-11-30 19:42+0100\n"
 "PO-Revision-Date: 2004-11-24 19:52-0400\n"
 "Last-Translator: Adam Weinberger <adamw@gnome.org>\n"
 "Language-Team: English/Canada <adamw@FreeBSD.org>\n"
@@ -72,6 +72,23 @@ msgstr ""
 
 #: glom/glom.glade.h:15
 msgid ""
+"<span weight=\"bold\" size=\"larger\">Connection Failed</span>\n"
+"\n"
+"Glom could not connect to the database server. Maybe you entered an "
+"incorrect user name or password, or maybe the postgres database server is "
+"not running."
+msgstr ""
+
+#: glom/glom.glade.h:18
+msgid ""
+"<span weight=\"bold\" size=\"larger\">Database creation failed</span>\n"
+"\n"
+"Glom could not create the new database. Maybe you do not have the necessary "
+"access rights. Please contact your system administrator."
+msgstr ""
+
+#: glom/glom.glade.h:21
+msgid ""
 "<span weight=\"bold\" size=\"larger\">Invalid format</span>\n"
 "\n"
 "The data in the field was not recognised. Please try to correct the data or "
@@ -84,7 +101,7 @@ msgstr ""
 "revert to the previous value. Here is an example of correctly-formatted data "
 "for this field.\n"
 
-#: glom/glom.glade.h:19
+#: glom/glom.glade.h:25
 msgid ""
 "<span weight=\"bold\" size=\"larger\">New Database</span>\n"
 "\n"
@@ -95,27 +112,27 @@ msgstr ""
 "\n"
 "Please choose a name and title for the new database. The name should not "
 "contain any spaces."
-
-#: glom/glom.glade.h:22
-msgid ""
-"<span weight=\"bold\" size=\"larger\">Open existing document, or create new "
-"document</span>\n"
-"\n"
-"Would you like to open an existing document, to connect to an existing "
-"database?\n"
-"\n"
-"Or would you like to create a new document, to design a new database?\n"
-msgstr ""
-"<span weight=\"bold\" size=\"larger\">Open existing document, or create new "
-"document</span>\n"
-"\n"
-"Would you like to open an existing document, to connect to an existing "
-"database?\n"
-"\n"
-"Or would you like to create a new document, to design a new database?\n"
 
 #: glom/glom.glade.h:28
 msgid ""
+"<span weight=\"bold\" size=\"larger\">Open existing document, or create new "
+"document</span>\n"
+"\n"
+"Would you like to open an existing document, to connect to an existing "
+"database?\n"
+"\n"
+"Or would you like to create a new document, to design a new database?\n"
+msgstr ""
+"<span weight=\"bold\" size=\"larger\">Open existing document, or create new "
+"document</span>\n"
+"\n"
+"Would you like to open an existing document, to connect to an existing "
+"database?\n"
+"\n"
+"Or would you like to create a new document, to design a new database?\n"
+
+#: glom/glom.glade.h:34
+msgid ""
 "<span weight=\"bold\" size=\"larger\">Title</span>\n"
 "\n"
 "Information text.\n"
@@ -124,123 +141,128 @@ msgstr ""
 "\n"
 "Information text.\n"
 
-#: glom/glom.glade.h:32
+#: glom/glom.glade.h:38
 msgid "Add _Group"
 msgstr "Add _Group"
 
-#: glom/glom.glade.h:33
+#: glom/glom.glade.h:39
 msgid "Auto-increment"
 msgstr "Auto-increment"
 
-#: glom/glom.glade.h:34
+#: glom/glom.glade.h:40
 msgid "Calculate value"
 msgstr "Calculate value"
 
-#: glom/glom.glade.h:35
+#: glom/glom.glade.h:41
 msgid "Connect"
 msgstr "Connect"
 
-#: glom/glom.glade.h:36
+#: glom/glom.glade.h:42
 msgid "Data"
 msgstr "Data"
 
-#: glom/glom.glade.h:37
+#: glom/glom.glade.h:43
+#, fuzzy
+msgid "Database"
+msgstr "Data"
+
+#: glom/glom.glade.h:44
 msgid "Default Value"
 msgstr "Default Value"
 
-#: glom/glom.glade.h:38
+#: glom/glom.glade.h:45
 msgid "Details Layout"
 msgstr "Details Layout"
 
-#: glom/glom.glade.h:39
+#: glom/glom.glade.h:46
 msgid "Edit"
 msgstr "Edit"
 
-#: glom/glom.glade.h:40
+#: glom/glom.glade.h:47
 msgid "Edit Definition"
 msgstr "Edit Definition"
 
-#: glom/glom.glade.h:41
+#: glom/glom.glade.h:48
 msgid "Extra"
 msgstr "Extra"
 
-#: glom/glom.glade.h:42
+#: glom/glom.glade.h:49
 msgid "Field"
 msgstr "Field"
 
-#: glom/glom.glade.h:43
+#: glom/glom.glade.h:50
 msgid "Field Calculation"
 msgstr "Field Calculation"
 
-#: glom/glom.glade.h:44
+#: glom/glom.glade.h:51
 msgid "Field Definition"
 msgstr "Field Definition"
 
-#: glom/glom.glade.h:45
+#: glom/glom.glade.h:52
 msgid "Field Definitions"
 msgstr "Field Definitions"
 
-#: glom/glom.glade.h:46
+#: glom/glom.glade.h:53
 msgid "Glom"
 msgstr "Glom"
 
-#: glom/glom.glade.h:47
+#: glom/glom.glade.h:54
 msgid "Host"
 msgstr "Host"
 
-#: glom/glom.glade.h:48
+#: glom/glom.glade.h:55
 msgid "List Layout"
 msgstr "List Layout"
 
-#: glom/glom.glade.h:49
+#: glom/glom.glade.h:56
 msgid "Lookup value when a field changes."
 msgstr "Lookup value when a field changes."
 
-#: glom/glom.glade.h:50
+#: glom/glom.glade.h:57
 msgid "Name"
 msgstr "Name"
 
-#: glom/glom.glade.h:51
+#: glom/glom.glade.h:58
 msgid "None selected"
 msgstr "None selected"
 
-#: glom/glom.glade.h:52
+#: glom/glom.glade.h:59
 msgid "Password"
 msgstr "Password"
 
-#: glom/glom.glade.h:53
+#: glom/glom.glade.h:60
 msgid "Primary Key"
 msgstr "Primary Key"
 
-#: glom/glom.glade.h:54
+#: glom/glom.glade.h:61
 msgid "Relationship"
 msgstr "Relationship"
 
-#: glom/glom.glade.h:55
+#: glom/glom.glade.h:62
 msgid "Revert"
 msgstr "Revert"
 
-#: glom/glom.glade.h:56
+#: glom/glom.glade.h:63
 msgid "Select"
 msgstr "Select"
 
-#: glom/glom.glade.h:57
+#: glom/glom.glade.h:64
 msgid "Select Field"
 msgstr "Select Field"
 
-#: glom/glom.glade.h:58
+#: glom/glom.glade.h:65
 msgid "Show hidden tables"
 msgstr "Show hidden tables"
 
-#: glom/glom.glade.h:59
+#: glom/glom.glade.h:66
 msgid "Table:"
 msgstr "Table:"
 
-#: glom/glom.glade.h:60
+#: glom/glom.glade.h:67
 msgid "Test"
 msgstr "Test"
 
-#: glom/glom.glade.h:61
+#: glom/glom.glade.h:68
 msgid ""
 "The field value will be the return value of the python function, which you "
 "implement here."
@@ -248,26 +270,26 @@ msgstr ""
 "The field value will be the return value of the python function, which you "
 "implement here."
 
-#: glom/glom.glade.h:62
+#: glom/glom.glade.h:69
 msgid "Title"
 msgstr "Title"
 
-#: glom/glom.glade.h:63
+#: glom/glom.glade.h:70
 msgid "Type"
 msgstr "Type"
 
-#: glom/glom.glade.h:64
+#: glom/glom.glade.h:71
 msgid "Unique"
 msgstr "Unique"
 
-#: glom/glom.glade.h:65
+#: glom/glom.glade.h:72
 msgid "User"
 msgstr "User"
 
-#: glom/glom.glade.h:66
+#: glom/glom.glade.h:73
 msgid "example data format"
 msgstr "example data format"
 
-#: glom/glom.glade.h:67
+#: glom/glom.glade.h:74
 msgid "table name"
 msgstr "table name"
