@@ -53,7 +53,7 @@ void Box_Data_List_Find::fill_from_database()
   type_vecFields listFieldsToShow = get_fields_to_show();
   m_Fields = listFieldsToShow; //Store the fields for later:
 
-  m_AddDel.add_item("find");
+  m_AddDel.add_item(Gnome::Gda::Value("find"));
 }
 
 void Box_Data_List_Find::on_adddel_user_changed(const Gtk::TreeModel::iterator& /* row */, guint /* col */)

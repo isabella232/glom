@@ -1,3 +1,14 @@
+2005-02-17  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/utility_widgets/adddel/: No longer uses Fields and Gda::Values
+	at all.
+	* glom/utility_widgets/db_addel/: A version of AddDel that deals with 
+	Fields and their Gda::Values, and nothing else.
+	* glom/mode_data/box_data_list.[h|cc]: Use DbAddDel instead of AddDel, 
+	which deals with Values directly.
+	* glom/data_structure/glomconversions.cc: parse_data() Prevent 
+	0 days and months, to avoid postgres errors.
+
 0.8.11:
 
 2005-02-16  Murray Cumming  <murrayc@murrayc.com>

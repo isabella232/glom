@@ -36,19 +36,7 @@ public:
   DbAddDelColumnInfo(const DbAddDelColumnInfo& src);
   DbAddDelColumnInfo& operator=(const DbAddDelColumnInfo& src);
 
-  //If we need any more complicated style (e.g. number of decimal digits) then we will need a separate DbAddDelStyle class.
-  enum enumStyles
-  {
-    STYLE_Text,
-    STYLE_Numerical, //TODO: Right-justify
-    STYLE_Boolean,
-    STYLE_Choices
-  };
-  
-  enumStyles m_style;
-  Glib::ustring m_name;
-  Glib::ustring m_id;
-  Field::glom_field_type m_field_type; //If any.
+  Field m_field;
 
   typedef std::vector<Glib::ustring> type_vecStrings;
   type_vecStrings m_choices;
@@ -56,6 +44,8 @@ public:
   bool m_editable;
   bool m_visible;
 };
+
+class DbTreeViewColumnGlom;
 
 //For adding/deleting/selecting multi-columned lists of items.
 //This was also an abstraction layer against the strangeness of GtkSheet, though it now uses Gtk::TreeView instead.
@@ -75,7 +65,7 @@ public:
     
   virtual void set_allow_column_chooser(bool value = true);
   
-  virtual Gtk::TreeModel::iterator add_item(const Glib::ustring& strKey); //Return index of new row.
+  virtual Gtk::TreeModel::iterator add_item(const Gnome::Gda::Value& valKey); //Return index of new row.
 
   /** Get an iterator to the blank row in which the user should add data for the new row.
    * You can then add the row to your underlying data store when some data has been filled, by handling signal_user_changed.
@@ -87,12 +77,6 @@ public:
   virtual void remove_all();
 
   virtual Gnome::Gda::Value get_value_as_value(const Gtk::TreeModel::iterator& iter, guint col );
-  virtual Glib::ustring get_value(const Gtk::TreeModel::iterator& iter, guint col);
-  virtual bool get_value_as_bool(const Gtk::TreeModel::iterator& iter, guint col);
-
-  /** Get the row's hidden key
-   */
-  virtual Glib::ustring get_value_key(const Gtk::TreeModel::iterator& iter);
 
   /** Get the row's hidden key
    */
@@ -100,28 +84,38 @@ public:
 
   /** Set the row's hidden key
    */
-  virtual void set_value_key(const Gtk::TreeModel::iterator& iter, const Glib::ustring& strValue);
+  virtual void set_value_key(const Gtk::TreeModel::iterator& iter, const Gnome::Gda::Value& value);
 
-  virtual Glib::ustring get_value_selected(guint col);
+  /** @param col A value returned from add_column().
+   * @result The value on the selected row.
+   */
   virtual Gnome::Gda::Value get_value_selected_as_value(guint col);
-  virtual Glib::ustring get_value_key_selected();
   virtual Gnome::Gda::Value get_value_key_selected_as_value();
   
   virtual Gtk::TreeModel::iterator get_item_selected();
 
+  /** 
+   * @param iter The row to be selected. 
+   * @param column A value returned from add_column().
+   * @param start_editing Whether editing should start in the cell.
+   * @result Whether the row was successfully selected.
+   */
   virtual bool select_item(const Gtk::TreeModel::iterator& iter, guint column, bool start_editing = false);  //bool indicates success.
   virtual bool select_item(const Gtk::TreeModel::iterator& iter);
   
-  //Select row with this key value:
-  virtual bool select_item(const Glib::ustring& strItemText, guint column, bool start_editing = false);
-  
   virtual guint get_count() const;
 
+  /** 
+   * @param iter The row to be changed. 
+   * @param col A value returned from add_column().
+   * @param value The new value.
+   */
   virtual void set_value(const Gtk::TreeModel::iterator& iter, guint col, const Gnome::Gda::Value& value);
-  virtual void set_value(const Gtk::TreeModel::iterator& iter, guint col, const Glib::ustring& strValue);
-  virtual void set_value(const Gtk::TreeModel::iterator& iter, guint col, unsigned long ulValue);
-  virtual void set_value(const Gtk::TreeModel::iterator& iter, guint col, bool bVal);
 
+  /** 
+   * @param col A value returned from add_column().
+   * @param value The new value.
+   */
   virtual void set_value_selected(guint col, const Gnome::Gda::Value& value);
 
   virtual bool get_is_first_row(const Gtk::TreeModel::iterator& iter) const;
@@ -137,10 +131,9 @@ public:
   //Use this in order to use get_value_key_as_value().
   virtual void set_key_type(const Field& field);
  
-  virtual guint add_column(const DbAddDelColumnInfo& column_info);
-  virtual guint add_column(const Glib::ustring& strTitle, DbAddDelColumnInfo::enumStyles style = DbAddDelColumnInfo::STYLE_Text, bool editable = true, bool visible = true);
-  virtual guint add_column(const Glib::ustring& strTitle, const Glib::ustring& column_id, DbAddDelColumnInfo::enumStyles style = DbAddDelColumnInfo::STYLE_Text, bool editable = true, bool visible = true);
-  virtual guint add_column(const Field& field, DbAddDelColumnInfo::enumStyles style = DbAddDelColumnInfo::STYLE_Text, bool editable = true, bool visible = true);
+  /** @result The index of the new column.
+   */
+  virtual guint add_column(const Field& field, bool editable = true, bool visible = true);
 
   virtual guint get_columns_count() const;
 
@@ -165,7 +158,7 @@ public:
 
   virtual void set_show_column_titles(bool bVal = true);
 
-  virtual Gtk::TreeModel::iterator get_row(const Glib::ustring& key);
+  virtual Gtk::TreeModel::iterator get_row(const Gnome::Gda::Value& key);
 
   virtual void finish_editing(); //Closes active edit controls and commits the data to the cell.
   //virtual void reactivate(); //Sheet doesn't seem to update unless a cell is active.
@@ -222,7 +215,7 @@ protected:
   virtual Gtk::TreeModel::iterator add_item_placeholder(); //Return index of new row.
   
   virtual void setup_menu();
-  virtual Glib::ustring treeview_get_key(const Gtk::TreeModel::iterator& row);
+  virtual Gnome::Gda::Value treeview_get_key(const Gtk::TreeModel::iterator& row);
 
   ///Add a blank row, or return the existing blank row if there already is one.
   virtual Gtk::TreeModel::iterator get_next_available_row_with_add_if_necessary();
@@ -230,6 +223,8 @@ protected:
 
   
   //Signal handlers:
+  void treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter, int model_column_index);
+
   virtual void on_treeview_cell_edited(const Glib::ustring& path_string, const Glib::ustring& new_text, int model_column_index);
   virtual void on_treeview_cell_edited_bool(const Glib::ustring& path_string, int model_column_index);
   
@@ -259,15 +254,15 @@ protected:
   void set_ignore_treeview_signals(bool bVal = true);
   bool get_ignore_treeview_signals() const;
 
+  /** @param model_column_index A value returned from add_column().
+   * @param view_column_index The index of the corresponding view column.
+   */
   bool get_view_column_index(guint model_column_index, guint& view_column_index);
+  
   guint get_count_hidden_system_columns();
 
   //The column_id is extra information that we can use later to discover what the column shows, even when columns have been reordered.
-  guint treeview_append_column(const Glib::ustring& title, Gtk::CellRenderer& cellrenderer, const Gtk::TreeModelColumnBase& model_column, const Glib::ustring& column_id);
-
-  template<class T_ModelColumnType>
-  guint treeview_append_column(const Glib::ustring& title, const Gtk::TreeModelColumn<T_ModelColumnType>& column, const Glib::ustring& column_id);
-
+  guint treeview_append_column(const Glib::ustring& title, Gtk::CellRenderer& cellrenderer, int model_column_index);
 
   static Glib::ustring string_escape_underscores(const Glib::ustring& text);
   
@@ -279,9 +274,13 @@ protected:
   Gtk::TreeView m_TreeView;
   Gtk::TreeModel::ColumnRecord m_ColumnRecord;
   Glib::RefPtr<Gtk::ListStore> m_refListStore;
-  guint m_col_key; //The index of the hidden model column.
-  guint m_col_placeholder; //The index of the placeholder-marker model column.
-   
+  
+  //Hidden internal columns:
+  Gtk::TreeModelColumn<Gnome::Gda::Value>* m_modelcolumn_key;
+  Gtk::TreeModelColumn<bool>* m_modelcolumn_placeholder; //placeholder-marker model column.
+    
+  
+  //Columns, not including the hidden internal columns:
   typedef std::vector<DbAddDelColumnInfo> type_ColumnTypes;
   type_ColumnTypes m_ColumnTypes;
 
@@ -296,7 +295,6 @@ protected:
   
   type_vecStrings m_vecColumnIDs; //We give each ViewColumn a special ID, so we know where they are after a reorder.
   
-  Glib::ustring m_strTextActiveCell; //value before the change
   Gtk::Menu* m_pColumnHeaderPopup;
   bool m_allow_column_chooser;
   bool m_auto_add;
@@ -335,14 +333,7 @@ protected:
   };
 */
 };
-
-template<class T_ModelColumnType>
-guint DbAddDel::treeview_append_column(const Glib::ustring& title, const Gtk::TreeModelColumn<T_ModelColumnType>& column, const Glib::ustring& column_id)
-{
-  Gtk::CellRenderer* pCellRenderer = manage( Gtk::CellRenderer_Generation::generate_cellrenderer<T_ModelColumnType>() );
-  return treeview_append_column(title, *pCellRenderer, column, column_id);
-}
-  
+ 
 
 
 

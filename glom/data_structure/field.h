@@ -74,7 +74,7 @@ public:
   /// This forwards to the Gnome::Gda::FieldAttributes::get_name, so that we can use it in the same predicate template.
   virtual Glib::ustring get_name() const;
 
-   /// This forwards to the Gnome::Gda::FieldAttributes::set_name, for convenience
+  /// This forwards to the Gnome::Gda::FieldAttributes::set_name, for convenience
   virtual void set_name(const Glib::ustring& value);
 
   virtual glom_field_type get_glom_type() const;

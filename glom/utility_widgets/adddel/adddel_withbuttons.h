@@ -21,10 +21,6 @@
 #ifndef ADDDEL_WITHBUTTONS_H
 #define ADDDEL_WITHBUTTONS_H
 
-/**
-  *@author Murray Cumming
-  */
-
 #include "adddel.h"
 
 class AddDel_WithButtons : public AddDel

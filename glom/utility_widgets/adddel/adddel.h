@@ -86,7 +86,6 @@ public:
 
   virtual void remove_all();
 
-  virtual Gnome::Gda::Value get_value_as_value(const Gtk::TreeModel::iterator& iter, guint col );
   virtual Glib::ustring get_value(const Gtk::TreeModel::iterator& iter, guint col);
   virtual bool get_value_as_bool(const Gtk::TreeModel::iterator& iter, guint col);
 
@@ -94,18 +93,12 @@ public:
    */
   virtual Glib::ustring get_value_key(const Gtk::TreeModel::iterator& iter);
 
-  /** Get the row's hidden key
-   */
-  virtual Gnome::Gda::Value get_value_key_as_value(const Gtk::TreeModel::iterator& iter);
-
   /** Set the row's hidden key
    */
   virtual void set_value_key(const Gtk::TreeModel::iterator& iter, const Glib::ustring& strValue);
 
   virtual Glib::ustring get_value_selected(guint col);
-  virtual Gnome::Gda::Value get_value_selected_as_value(guint col);
   virtual Glib::ustring get_value_key_selected();
-  virtual Gnome::Gda::Value get_value_key_selected_as_value();
   
   virtual Gtk::TreeModel::iterator get_item_selected();
 
@@ -133,14 +126,11 @@ public:
   
   virtual void set_select_text(const Glib::ustring& strVal);
   virtual Glib::ustring get_select_text() const;
-
-  //Use this in order to use get_value_key_as_value().
-  virtual void set_key_type(const Field& field);
  
   virtual guint add_column(const AddDelColumnInfo& column_info);
   virtual guint add_column(const Glib::ustring& strTitle, AddDelColumnInfo::enumStyles style = AddDelColumnInfo::STYLE_Text, bool editable = true, bool visible = true);
   virtual guint add_column(const Glib::ustring& strTitle, const Glib::ustring& column_id, AddDelColumnInfo::enumStyles style = AddDelColumnInfo::STYLE_Text, bool editable = true, bool visible = true);
-  virtual guint add_column(const Field& field, AddDelColumnInfo::enumStyles style = AddDelColumnInfo::STYLE_Text, bool editable = true, bool visible = true);
+
 
   virtual guint get_columns_count() const;
 
@@ -302,8 +292,6 @@ protected:
   bool m_auto_add;
   bool m_allow_add;
   bool m_allow_delete;
-
-  Field m_key_field;
   
   //signals:
   type_signal_user_added m_signal_user_added;
@@ -327,13 +315,6 @@ protected:
     bool m_bPreventUserSignals, m_bIgnoreSheetSignals;
   };
 
-/*
-  class DynamicColumnRecord : public Gtk::TreeModel::ColumnRecord
-  {
-    typedef std::vector<Gtk::TreeModelColumnBase> type_vecColumns;
-    type_vecColumns m_vecColumns;
-  };
-*/
 };
 
 template<class T_ModelColumnType>

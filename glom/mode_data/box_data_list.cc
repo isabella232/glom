@@ -129,9 +129,9 @@ void Box_Data_List::fill_from_database()
             for(guint result_row = 0; result_row < rows_count; result_row++)
             {
 
-              Gnome::Gda::Value value = result->get_value_at(primary_key_field_index, result_row);
-              Glib::ustring key = value.to_string(); //It is actually an integer, but that should not matter.
-              if(key.empty())
+              Gnome::Gda::Value key = result->get_value_at(primary_key_field_index, result_row);
+              //It is usually an integer.
+              if(GlomConversions::value_is_empty(key))
                 g_warning("Box_Data_List::fill_from_database(): primary key value is empty");
               else
               {
@@ -150,13 +150,14 @@ void Box_Data_List::fill_from_database()
                   //g_warning("  value_as_string=%s", value.to_string().c_str());
 
                   //TODO_Performance: This searches m_Fields again each time:
-                  bool test = get_field_column_index(iterFields->get_name(), index);
+                  const Glib::ustring field_name = iterFields->get_name();
+                  bool test = get_field_column_index(field_name, index);
                   ++iterFields;
 
                   if(test)
                     m_AddDel.set_value(tree_iter, index, value);
 		  else
-		    g_warning("  get_field_column_index failed.");
+		    g_warning("  get_field_column_index failed: field name=%s", field_name.c_str());
                 }
               }
             }
@@ -278,7 +279,7 @@ void Box_Data_List::on_adddel_user_added(const Gtk::TreeModel::iterator& row)
         //If it's an auto-increment, then get the value and show it:
         if(fieldInfo.get_auto_increment())
         {
-          m_AddDel.set_value_key(row, primary_key_value.to_string()); //The AddDel key is always a string.
+          m_AddDel.set_value_key(row, primary_key_value); //The AddDel key is always a string.
           m_AddDel.set_value(row, primary_key_model_col_index, primary_key_value);
         }
 
@@ -325,9 +326,7 @@ void Box_Data_List::on_adddel_user_reordered_columns()
 }
 
 void Box_Data_List::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, guint col)
-{
-  g_warning("on_adddel_user_changed():");
-  
+{ 
   const Gnome::Gda::Value primary_key_value = get_primary_key_value(row);
   if(!GlomConversions::value_is_empty(primary_key_value)) //If the record's primary key is filled in:
   {
@@ -383,8 +382,8 @@ void Box_Data_List::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, 
     {
       on_adddel_user_added(row);
 
-       const Glib::ustring strPrimaryKeyValue = get_primary_key_value(row).to_string(); //TODO_Value
-       if(!strPrimaryKeyValue.empty()) //If the Add succeeeded:
+       const Gnome::Gda::Value primaryKeyValue = get_primary_key_value(row); //TODO_Value
+       if(!(GlomConversions::value_is_empty(primaryKeyValue))) //If the Add succeeeded:
          on_adddel_user_changed(row, col); //Change this field in the new record.
     }
   }
@@ -481,7 +480,7 @@ void Box_Data_List::on_details_nav_last()
 void Box_Data_List::on_Details_record_deleted(Gnome::Gda::Value primary_key_value)
 {
   //Find out which row is affected:
-  Gtk::TreeModel::iterator iter = m_AddDel.get_row(primary_key_value.to_string());
+  Gtk::TreeModel::iterator iter = m_AddDel.get_row(primary_key_value);
   if(iter)
   {
     //Remove the row:
@@ -513,19 +512,7 @@ void Box_Data_List::on_Details_record_deleted(Gnome::Gda::Value primary_key_valu
 
 Gnome::Gda::Value Box_Data_List::get_primary_key_value(const Gtk::TreeModel::iterator& row)
 {
-  Field field_primary_key;
-  bool test = get_field_primary_key(field_primary_key);
-  if(test)
-  {
-    const Glib::ustring str_value = m_AddDel.get_value_key(row);
-    bool parsed = false;
-    Gnome::Gda::Value value = GlomConversions::parse_value(field_primary_key.get_glom_type(), str_value, parsed);
-    if(parsed)
-      return value;
-  }
-
-  
-  return Gnome::Gda::Value(); //failed.
+  return m_AddDel.get_value_key_as_value(row);
 }
 
 Gnome::Gda::Value Box_Data_List::get_primary_key_value_selected()

@@ -22,24 +22,20 @@
 #include <algorithm> //For std::find.
 #include <libintl.h>
 #include "cellrendererlist.h"
-#include "treeviewcolumn_glom.h"
+#include "db_treeviewcolumn_glom.h"
 #include "../../data_structure/glomconversions.h"
 #include "../../dialog_invalid_data.h"
 #include <iostream> //For debug output.
 
 DbAddDelColumnInfo::DbAddDelColumnInfo()
-: m_style(STYLE_Text),
-  m_field_type(Field::TYPE_INVALID),
+:
   m_editable(true),
   m_visible(true)
 {
 }
 
 DbAddDelColumnInfo::DbAddDelColumnInfo(const DbAddDelColumnInfo& src)
-: m_style(src.m_style),
-  m_name(src.m_name),
-  m_id(src.m_id),
-  m_field_type(src.m_field_type),
+: m_field(src.m_field),
   m_choices(src.m_choices),
   m_editable(src.m_editable),
   m_visible(src.m_visible)
@@ -48,10 +44,7 @@ DbAddDelColumnInfo::DbAddDelColumnInfo(const DbAddDelColumnInfo& src)
 
 DbAddDelColumnInfo& DbAddDelColumnInfo::operator=(const DbAddDelColumnInfo& src)
 {
-  m_style = src.m_style;;
-  m_name = src.m_name;
-  m_id = src.m_id;
-  m_field_type = src.m_field_type;
+  m_field = src.m_field;
   m_choices = src.m_choices;
   m_editable = src.m_editable;
   m_visible = src.m_visible;
@@ -60,7 +53,7 @@ DbAddDelColumnInfo& DbAddDelColumnInfo::operator=(const DbAddDelColumnInfo& src)
 }
 
 DbAddDel::DbAddDel()
-:  m_col_key(0),
+: m_modelcolumn_key(0),
   m_pColumnHeaderPopup(0),
   m_allow_column_chooser(false),
   m_auto_add(true),
@@ -110,6 +103,11 @@ DbAddDel::DbAddDel()
 
 DbAddDel::~DbAddDel()
 {
+  if(m_modelcolumn_key)
+    delete m_modelcolumn_key;
+  
+  if(m_modelcolumn_placeholder)
+    delete m_modelcolumn_placeholder;
 }
 
 void
@@ -242,15 +240,19 @@ Gtk::TreeModel::iterator DbAddDel::add_item_placeholder()
   Gtk::TreeModel::iterator iter = m_refListStore->append();
   if(iter)
   {
-    iter->set_value(m_col_key, Glib::ustring("")); //Remove temporary key value.
-    iter->set_value(m_col_placeholder, true); //This will be unset when set_value() is used to put real data in this column.
+    Gtk::TreeModel::Row row = *iter;
+    row[*m_modelcolumn_key] = Gnome::Gda::Value(); //Remove temporary key value.
+    row[*m_modelcolumn_placeholder] =  true; //This will be unset when set_value() is used to put real data in this column.
   }
 
   return iter;
 }
 
-Gtk::TreeModel::iterator DbAddDel::add_item(const Glib::ustring& strKey)
+Gtk::TreeModel::iterator DbAddDel::add_item(const Gnome::Gda::Value& valKey)
 {
+  if(!(get_model()))
+    return Gtk::TreeModel::iterator();
+    
   Gtk::TreeModel::iterator result = get_next_available_row_with_add_if_necessary();
 
   if(result)
@@ -258,8 +260,8 @@ Gtk::TreeModel::iterator DbAddDel::add_item(const Glib::ustring& strKey)
     Gtk::TreeModel::Row treerow = *result;
     if(treerow)
     {
-      result->set_value(m_col_key, strKey);
-      result->set_value(m_col_placeholder, false);
+      treerow[*m_modelcolumn_key] = valKey;
+      treerow[*m_modelcolumn_placeholder] =  false; 
     }
   }
 
@@ -286,13 +288,7 @@ void DbAddDel::remove_all()
 
 Gnome::Gda::Value DbAddDel::get_value_as_value(const Gtk::TreeModel::iterator& iter, guint col)
 {
-  bool success = false;
-  return GlomConversions::parse_value(m_ColumnTypes[col].m_field_type, get_value(iter, col), success );
-}
-
-Glib::ustring DbAddDel::get_value(const Gtk::TreeModel::iterator& iter, guint col)
-{
-  Glib::ustring value;
+  Gnome::Gda::Value value;
 
   if(m_refListStore)
   {
@@ -300,52 +296,24 @@ Glib::ustring DbAddDel::get_value(const Gtk::TreeModel::iterator& iter, guint co
 
     if(treerow)
     {
-      const guint col_real = col;
-      //Get different types of data, depending on the column:
-      if(m_ColumnTypes[col_real].m_style == DbAddDelColumnInfo::STYLE_Boolean)
-      {
-        bool bValue = false;
-        treerow.get_value(col_real, bValue);
-
-        //Create a string representation of the value:
-        value = bValue  ? "true" : "false";
-      }
-      else
-      {
-        treerow.get_value(col_real, value);
-      }
+      const guint col_real = col + get_count_hidden_system_columns();
+      treerow.get_value(col_real, value);
     }
   }
-
-  //TODO: This is a hack. We need to deal with NULL explicitly:
-  if(value == "NULL")
-    value = "";
 
   return value;
 }
 
-bool DbAddDel::get_value_as_bool(const Gtk::TreeModel::iterator& iter, guint col)
-{
-//TODO: I doubt that this works. It should really get the value from the treeview as a bool. murrayc
-  Glib::ustring strValue = get_value(iter, col);
-  return (strValue == "true");   
-}
-
-Glib::ustring DbAddDel::get_value_key_selected()
-{
-  return get_value_selected(m_col_key);
-}
-
 Gnome::Gda::Value DbAddDel::get_value_key_selected_as_value()
 {
-  bool parsed = false;
-  return GlomConversions::parse_value(m_key_field.get_glom_type(), get_value_key_selected(), parsed);
-}
-
-Glib::ustring DbAddDel::get_value_selected(guint col)
-{
-  Glib::ustring strValue = get_value(get_item_selected(), col);
-  return strValue;
+  Gtk::TreeModel::iterator iter = get_item_selected();
+  if(iter)
+  {
+    Gtk::TreeModel::Row row = *iter;
+    return row[*m_modelcolumn_key];
+  }
+  else
+    return Gnome::Gda::Value();
 }
 
 Gnome::Gda::Value DbAddDel::get_value_selected_as_value(guint col)
@@ -364,12 +332,14 @@ Gtk::TreeModel::iterator DbAddDel::get_item_selected()
   return m_refListStore->children().end();
 }
 
-Gtk::TreeModel::iterator DbAddDel::get_row(const Glib::ustring& key)
+
+Gtk::TreeModel::iterator DbAddDel::get_row(const Gnome::Gda::Value& key)
 {
   for(Gtk::TreeModel::iterator iter = m_refListStore->children().begin(); iter != m_refListStore->children().end(); ++iter)
   {
-    const Glib::ustring strTemp = get_value(iter, m_col_key);
-    if(strTemp == key)
+    Gtk::TreeModel::Row row = *iter;
+    const Gnome::Gda::Value& valTemp = row[*m_modelcolumn_key];
+    if(valTemp == key)
     {
       return iter;
     }
@@ -421,17 +391,6 @@ bool DbAddDel::select_item(const Gtk::TreeModel::iterator& iter, guint column, b
   }
 
   return bResult;
-}
-
-bool DbAddDel::select_item(const Glib::ustring& strItemText, guint column, bool start_editing)
-{
-  Gtk::TreeModel::iterator iter = get_row(strItemText);
-  if(iter)
-  {
-    return select_item(iter, column, start_editing);
-  }
-
-  return false; //failed
 }
 
 guint DbAddDel::get_count() const
@@ -515,38 +474,34 @@ void DbAddDel::construct_specified_columns()
   if(m_ColumnTypes.empty())
     return;
 
-  typedef std::vector< Gtk::TreeModelColumnBase* > type_vecModelColumns;
+  typedef Gtk::TreeModelColumn<Gnome::Gda::Value> type_modelcolumn_value;
+  typedef std::vector< type_modelcolumn_value* > type_vecModelColumns;
   type_vecModelColumns vecModelColumns(m_ColumnTypes.size(), 0);
 
   //Create the Gtk ColumnRecord:
 
   Gtk::TreeModel::ColumnRecord record;
-  {
+  
+  //Hidden internal columns:
+  
+  //We must recreate these standard modelcolumns, because we can not reuse them
+  if(m_modelcolumn_key)
+    delete m_modelcolumn_key; 
+  m_modelcolumn_key = new Gtk::TreeModelColumn<Gnome::Gda::Value>;
+  
+  if(m_modelcolumn_placeholder)
+    delete m_modelcolumn_placeholder;
+  m_modelcolumn_placeholder = new Gtk::TreeModelColumn<bool>;
+    
+  record.add(*m_modelcolumn_key);
+  record.add(*m_modelcolumn_placeholder);
+    
+  //Database columns:
+  {       
     type_vecModelColumns::size_type i = 0;
     for(type_ColumnTypes::iterator iter = m_ColumnTypes.begin(); iter != m_ColumnTypes.end(); ++iter)
     {
-      Gtk::TreeModelColumnBase* pModelColumn = 0;
-
-      DbAddDelColumnInfo column_info = *iter;
-      switch(column_info.m_style)
-      {
-        //Create an appropriate type of Model Column:
-        case(DbAddDelColumnInfo::STYLE_Boolean):
-        {
-          pModelColumn = new Gtk::TreeModelColumn<bool>();
-          break;
-        }
-        case(DbAddDelColumnInfo::STYLE_Numerical):
-        {
-          pModelColumn = new Gtk::TreeModelColumn<int>(); //TODO: Actually there are many different numeric types.
-          break;
-        }
-        default:
-        {
-          pModelColumn = new Gtk::TreeModelColumn<Glib::ustring>();
-          break;
-        }
-      }
+      type_modelcolumn_value* pModelColumn = new type_modelcolumn_value;
 
       //Store it so we can use it and delete it later:
       vecModelColumns[i] = pModelColumn;
@@ -563,68 +518,71 @@ void DbAddDel::construct_specified_columns()
   //Remove all View columns:
   m_TreeView.remove_all_columns();
 
+  
   //Add new View Colums:
-  int model_column_index = 0;
+  int model_column_index = 0; //Not including the hidden internal columns.
   int view_column_index = 0;
   for(type_vecModelColumns::iterator iter = vecModelColumns.begin(); iter != vecModelColumns.end(); ++iter)
   {
-    type_vecModelColumns::value_type& pModelColumn = *iter;
-
-    if(m_ColumnTypes[model_column_index].m_visible)
+    DbAddDelColumnInfo& column_info = m_ColumnTypes[model_column_index];
+    if(column_info.m_visible)
     {
-      const Glib::ustring column_name = m_ColumnTypes[model_column_index].m_name;
-      const Glib::ustring column_id = m_ColumnTypes[model_column_index].m_id;
+      const Glib::ustring column_name = column_info.m_field.get_title_or_name();
+      const Glib::ustring column_id = column_info.m_field.get_name();
 
       int cols_count = 0;
-      switch(m_ColumnTypes[model_column_index].m_style)
+      Gtk::CellRenderer* pCellRenderer = 0;
+      switch(column_info.m_field.get_glom_type())
       {
+  /*
         case(DbAddDelColumnInfo::STYLE_Choices):
         {
           //Use a custom CellRenderer:
-          CellRendererList* pCellRenderer = Gtk::manage( new CellRendererList() );
+          CellRendererList* pCellRendererDerived = Gtk::manage( new CellRendererList() );
 
           //Add the choices:
-          const type_vecStrings vecStrings = m_ColumnTypes[model_column_index].m_choices;
+          const type_vecStrings vecStrings = column_info.m_choices;
           for(type_vecStrings::const_iterator iter = vecStrings.begin(); iter != vecStrings.end(); ++iter)
           {
-            pCellRenderer->append_list_item(*iter);
+            pCellRendererDerived->append_list_item(*iter);
           }
-
-          // Append the View column.
-          // We use a derived Gtk::TreeViewColumn so that we can store extra information in it.
-          // This means that we must reimplement the code from the convenience template methods from gtkmm.
-          cols_count = treeview_append_column( string_escape_underscores(column_name), *pCellRenderer,  *pModelColumn, column_id);
+          
+          pCellRenderer = pCellRendererDerived;
 
           break;
         }
-        case(DbAddDelColumnInfo::STYLE_Boolean):
+        
+   */
+   
+    /* Possible types:
+    TYPE_INVALID,
+    TYPE_NUMERIC,
+    TYPE_TEXT,
+    TYPE_DATE,
+    TYPE_TIME,
+    TYPE_BOOLEAN
+    */
+  
+        case(Field::TYPE_BOOLEAN):
         {
-          //Use whatever standard CellRenderer gtkmm thinks is appropriate:
-
-          //Cast to the derived type, because append_column<> is templated, and needs the type at compile-time
-          //to use the correct specialization:
-
-          Gtk::TreeModelColumn<bool>* pModelColumnDerived = static_cast< Gtk::TreeModelColumn<bool>* >(pModelColumn);
-          if(pModelColumnDerived)
-            cols_count = treeview_append_column(string_escape_underscores(column_name), *pModelColumnDerived, column_id);
+          pCellRenderer = Gtk::manage( new Gtk::CellRendererToggle() );
 
           break;
         }
         default:
         {
-          //Use whatever standard CellRenderer gtkmm thinks is appropriate:
-
-          //Cast to the derived type, because append_column<> is templated, and needs the type at compile-time
-          //to use the correct specialization:
-          Gtk::TreeModelColumn<Glib::ustring>* pModelColumnDerived = static_cast< Gtk::TreeModelColumn<Glib::ustring>* >(pModelColumn);
-          if(pModelColumnDerived)
-            cols_count = treeview_append_column(string_escape_underscores(column_name), *pModelColumnDerived, column_id);
-
+          pCellRenderer = Gtk::manage( new Gtk::CellRendererText() );
+          
           break;
         }
       } //switch
-
-      if(m_ColumnTypes[model_column_index].m_editable)
+      
+      ++cols_count;
+      
+      //Add the ViewColumn
+      treeview_append_column(column_name, *pCellRenderer, model_column_index);
+     
+      if(column_info.m_editable)
       {
         Gtk::CellRendererText* pCellRenderer = dynamic_cast<Gtk::CellRendererText*>(m_TreeView.get_column_cell_renderer(view_column_index));
         if(pCellRenderer)
@@ -664,26 +622,8 @@ void DbAddDel::construct_specified_columns()
   //Delete the vector's items:
   for(type_vecModelColumns::iterator iter = vecModelColumns.begin(); iter != vecModelColumns.end(); ++iter)
   {
-     Gtk::TreeModelColumnBase* pModelColumn = *iter;
-     switch(m_ColumnTypes[model_column_index].m_style)
-     {
-       //Cast it to the derived type, so we can delete it properly.
-       //This is necessary because TreeModelColumnBase's destructor is not virtual.
-       case(DbAddDelColumnInfo::STYLE_Boolean):
-       {
-         Gtk::TreeModelColumn<bool>* pModelColumnDerived = static_cast< Gtk::TreeModelColumn<bool>* >(pModelColumn);
-         delete pModelColumnDerived;
-         break;
-       }
-       default:
-       {
-         Gtk::TreeModelColumn<Glib::ustring>* pModelColumnDerived = static_cast< Gtk::TreeModelColumn<Glib::ustring>* >(pModelColumn);
-         delete pModelColumnDerived;
-         break;
-       }
-
-       *iter = 0;
-     }
+     type_modelcolumn_value* pModelColumn = *iter;
+     delete pModelColumn;
   }
 
   m_TreeView.columns_autosize();
@@ -691,25 +631,6 @@ void DbAddDel::construct_specified_columns()
 
 void DbAddDel::set_value(const Gtk::TreeModel::iterator& iter, guint col, const Gnome::Gda::Value& value)
 {
-  //Different model columns have different types of data:
-  switch(m_ColumnTypes[col].m_style)
-  {
-    case(DbAddDelColumnInfo::STYLE_Boolean):
-    {
-      g_warning("DbAddDel::set_value(): boolean column being set as bool.");
-      set_value(iter, col, value.get_bool());
-      break;
-    }
-    default:
-    {
-      set_value( iter, col, GlomConversions::get_text_for_gda_value(m_ColumnTypes[col].m_field_type, value) );
-      break;
-    }
-  }
-}
-
-void DbAddDel::set_value(const Gtk::TreeModel::iterator& iter, guint col, const Glib::ustring& strValue)
-{
   InnerIgnore innerIgnore(this);
 
   if(!m_refListStore)
@@ -719,70 +640,14 @@ void DbAddDel::set_value(const Gtk::TreeModel::iterator& iter, guint col, const 
     Gtk::TreeModel::Row treerow = *iter;
     if(treerow)
     {
-      //Different model columns have different types of data:
-      switch(m_ColumnTypes[col].m_style)
-      {
-        case(DbAddDelColumnInfo::STYLE_Boolean):
-        {
-          bool bValue = (strValue == "true");
-          treerow.set_value(col, bValue);
-          break;
-        }
-        default:
-        {
-          treerow.set_value(col, strValue);
-          break;
-        }
-      }
+      guint treemodel_col = col + get_count_hidden_system_columns();
+      treerow.set_value(treemodel_col, value);
 
       //Mark this row as not a placeholder because it has real data now.
-      if( (col != m_col_key) && (col != m_col_placeholder) )
+      if(!(GlomConversions::value_is_empty(value)))
       {
-        if(!strValue.empty())
-        {
-           //treerow.set_value(m_col_key, Glib::ustring("placeholder debug value setted"));
-           //treerow.set_value(m_col_placeholder, false);
-        }
-      }
-    }
-
-    //Add extra blank if necessary:
-    add_blank();
-  }
-}
-
-void DbAddDel::set_value(const Gtk::TreeModel::iterator& iter, guint col, unsigned long ulValue)
-{
-  gchar pchValue[10] = {0};
-  sprintf(pchValue, "%d", (guint)ulValue);
-  set_value(iter, col, Glib::ustring(pchValue));
-}
-
-void DbAddDel::set_value(const Gtk::TreeModel::iterator& iter, guint col, bool bVal)
-{
-  InnerIgnore innerIgnore(this);
-
-  if(!m_refListStore)
-    g_warning("DbAddDel::set_value: No model.");
-  else
-  {
-    Gtk::TreeModel::Row treerow = *iter;
-    if(treerow)
-    {
-      //Different model columns have different types of data:
-      switch(m_ColumnTypes[col].m_style)
-      {
-        case(DbAddDelColumnInfo::STYLE_Boolean):
-        {
-          treerow.set_value(col, bVal);
-          break;
-        }
-        default:
-        {
-          Glib::ustring strValue = (bVal ? "true" : "false");
-          treerow.set_value(col, strValue);
-          break;
-        }
+         //treerow.set_value(m_col_key, Glib::ustring("placeholder debug value setted"));
+         //treerow.set_value(m_col_placeholder, false);
       }
     }
 
@@ -799,15 +664,21 @@ void DbAddDel::set_value_selected(guint col, const Gnome::Gda::Value& value)
 void DbAddDel::remove_all_columns()
 {
   m_ColumnTypes.clear();
-
-  //Add the hidden key.ID columns
-  //Make these visible (with true) if you want to debug problems.
-  m_col_key = add_column("Glom Hidden Key", DbAddDelColumnInfo::STYLE_Text, false /* not editable */, false /* not visible */);
-  m_col_placeholder = add_column("Glom Hidden Placeholder", DbAddDelColumnInfo::STYLE_Boolean, true /* not editable */, false /* not visible */);
 }
 
-guint DbAddDel::add_column(const DbAddDelColumnInfo& column_info)
+guint DbAddDel::add_column(const Field& field, bool editable, bool visible)
 {
+  InnerIgnore innerIgnore(this); //Stop on_treeview_columns_changed() from doing anything when it is called just because we add a new column.
+
+  DbAddDelColumnInfo column_info;
+  column_info.m_field = field;
+  column_info.m_editable = editable;
+  column_info.m_visible = visible;
+
+  //Make it non-editable if it is auto-generated:
+  if(field.get_field_info().get_auto_increment())
+    column_info.m_editable = false;
+
   m_ColumnTypes.push_back(column_info);
 
   //Generate appropriate model columns:
@@ -816,53 +687,15 @@ guint DbAddDel::add_column(const DbAddDelColumnInfo& column_info)
   //Tell the View to use the model:
   //m_TreeView.set_model(m_refListStore);
 
-  return m_ColumnTypes.size()-1;
-}
+  return m_ColumnTypes.size() - 1;
   
-guint DbAddDel::add_column(const Glib::ustring& strTitle, DbAddDelColumnInfo::enumStyles style, bool editable, bool visible)
-{
-  //Use the title as the column_id:
-  return add_column(strTitle, strTitle, style, editable, visible);
-}
-
-guint DbAddDel::add_column(const Field& field, DbAddDelColumnInfo::enumStyles style, bool editable, bool visible)
-{
-  InnerIgnore innerIgnore(this); //Stop on_treeview_columns_changed() from doing anything when it is called just because we add a new column.
-
-  DbAddDelColumnInfo column_info;
-  column_info.m_name = field.get_title_or_name();
-  column_info.m_style = style; //TODO: //Use field types instead, or make this dependent on them..
-  column_info.m_id = field.get_name();
-  column_info.m_field_type = field.get_glom_type();
-  column_info.m_editable = editable;
-  column_info.m_visible = visible;
-
-  //Make it non-editable if it is auto-generated:
-  if(field.get_field_info().get_auto_increment())
-    column_info.m_editable = false;
-
-  return add_column(column_info);
-}
-  
-guint DbAddDel::add_column(const Glib::ustring& strTitle, const Glib::ustring& column_id, DbAddDelColumnInfo::enumStyles style, bool editable, bool visible)
-{
-  InnerIgnore innerIgnore(this); //Stop on_treeview_columns_changed() from doing anything when it is called just because we add a new column.
-
-  DbAddDelColumnInfo column_info;
-  column_info.m_name = strTitle;
-  column_info.m_style = style;
-  column_info.m_id = column_id;
-  column_info.m_editable = editable;
-  column_info.m_visible = visible;
-
-  return add_column(column_info);
 }
 
 Glib::ustring DbAddDel::get_column_field(guint column_index) const
 {
   Glib::ustring result;
   if(column_index < m_ColumnTypes.size())
-    result = m_ColumnTypes[column_index].m_id;
+    result = m_ColumnTypes[column_index].m_field.get_name();
 
   return result;
 }
@@ -1024,16 +857,18 @@ DbAddDel::InnerIgnore::~InnerIgnore()
   m_pOuter = false;
 }
 
-Glib::ustring DbAddDel::treeview_get_key(const Gtk::TreeModel::iterator& row)
+Gnome::Gda::Value DbAddDel::treeview_get_key(const Gtk::TreeModel::iterator& row)
 {
-  Glib::ustring value;
+  Gnome::Gda::Value value;
 
   if(m_refListStore)
   {
-    Gtk::TreeModel::Row treerow = m_refListStore->children()[row];
+    Gtk::TreeModel::Row treerow = *row;
 
     if(treerow)
-      treerow.get_value(m_col_key, value);
+    {
+      return treerow[*m_modelcolumn_key];
+    }
   }
 
   return value;
@@ -1041,6 +876,8 @@ Glib::ustring DbAddDel::treeview_get_key(const Gtk::TreeModel::iterator& row)
 
 void DbAddDel::on_treeview_cell_edited_bool(const Glib::ustring& path_string, int model_column_index)
 {
+  //Note:: model_column_index is actually the AddDel column index, not the TreeModel column index.
+  
   if(path_string.empty())
     return;
     
@@ -1052,12 +889,16 @@ void DbAddDel::on_treeview_cell_edited_bool(const Glib::ustring& path_string, in
   {
     Gtk::TreeModel::Row row = *iter;
 
-    bool value_old = false;
-    row.get_value(model_column_index, value_old);
+    int tree_model_column_index = model_column_index + get_count_hidden_system_columns();
+    
+    Gnome::Gda::Value value_old;
+    row.get_value(tree_model_column_index, value_old);
 
-    bool value_new = !value_old;
+    bool bValueNew = !(value_old.get_bool());
+    Gnome::Gda::Value value_new;
+    value_new.set(bValueNew);
     //Store the user's new value in the model:
-    row.set_value(model_column_index, value_new);
+    row.set_value(tree_model_column_index, value_new);
 
     //TODO: Did it really change?
     
@@ -1098,7 +939,7 @@ void DbAddDel::on_treeview_cell_edited_bool(const Glib::ustring& path_string, in
     if(bIsAdd)
     {
       //Change it back, so that we ignore it:
-      row.set_value(model_column_index, value_old);
+      row.set_value(tree_model_column_index, value_old);
          
       //Signal that a new key was added:
       //We will ignore editing of bool values in the blank row. It seems like a bad way to start a new record.
@@ -1116,6 +957,8 @@ void DbAddDel::on_treeview_cell_edited_bool(const Glib::ustring& path_string, in
 
 void DbAddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const Glib::ustring& new_text, int model_column_index)
 {
+  //Note:: model_column_index is actually the AddDel column index, not the TreeModel column index.
+  
   if(path_string.empty())
     return;
   
@@ -1127,19 +970,19 @@ void DbAddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const G
   {
     Gtk::TreeModel::Row row = *iter;
 
-    Glib::ustring strTextOld;
-    row.get_value(model_column_index, strTextOld);
-
+    const int treemodel_column_index = model_column_index + get_count_hidden_system_columns();
+    
+    Gnome::Gda::Value valOld;
+    row.get_value(treemodel_column_index, valOld);
+    
     //Store the user's new text in the model:
-    row.set_value(model_column_index, new_text);
-
-    if(strTextOld == new_text)
-      return; //This is not actually an edit.
+    //row.set_value(treemodel_column_index, new_text);
 
     //Is it an add or a change?:
     bool bIsAdd = false;
     bool bIsChange = false;
-
+    bool do_signal = true;
+    
     if(get_allow_user_actions()) //If add is possible:
     {
       if(get_is_placeholder_row(iter))
@@ -1148,7 +991,7 @@ void DbAddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const G
         set_prevent_user_signals(true); //Stops extra signal_user_changed.
         
         //Mark this row as no longer a placeholder, because it has data now. The client code must set an actual key for this in the signal_user_added() or m_signal_user_changed signal handlers.
-        set_value_key(iter, "glom_unknown");
+        set_value_key(iter, Gnome::Gda::Value("glom_unknown"));
         
         add_item_placeholder(); //Add the next blank for the next user add.
         set_prevent_user_signals(bPreventUserSignals);
@@ -1157,66 +1000,90 @@ void DbAddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const G
       }
     }
 
-    if(!bIsAdd)
-      bIsChange = true;
-
-    //Fire appropriate signal:
-    if(bIsAdd)
+    const Field::glom_field_type field_type = m_ColumnTypes[model_column_index].m_field.get_glom_type();
+    if(field_type != Field::TYPE_INVALID) //If a field type was specified for this column.
     {
-        //Signal that a new key was added"        
-        m_signal_user_added.emit(row);
-    }
-    else if(bIsChange)
-    {
-      //Existing item changed:
-      //Check that it has really changed - get the last value.
-      if(new_text != strTextOld)
+      //Make sure that the entered data is suitable for this field type:
+      bool success = false;
+      Gnome::Gda::Value value = GlomConversions::parse_value(field_type, new_text, success);
+      if(!success)
       {
-        bool do_signal = true;
-        
-        const Field::glom_field_type field_type = m_ColumnTypes[model_column_index].m_field_type;
-        if(field_type != Field::TYPE_INVALID) //If a field type was specified for this column.
-        {
-          //Make sure that the entered data is suitable for this field type:
-          bool success = false;
-          Glib::ustring text = get_value(row, model_column_index);
-          Gnome::Gda::Value value = GlomConversions::parse_value(field_type, new_text, success);
-          if(!success)
+          //Tell the user and offer to revert or try again:
+          bool revert = glom_show_dialog_invalid_date(field_type);
+          if(revert)
           {
-             //Tell the user and offer to revert or try again:
-             bool revert = glom_show_dialog_invalid_date(field_type);
-             if(revert)
-             {
-               //Revert the data:
-               row.set_value(model_column_index, strTextOld);
-             }
-             else
-             {
-               //Reactivate the cell so that the data can be corrected.
-
-                Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = m_TreeView.get_selection();
-                if(refTreeSelection)
-                {
-                  refTreeSelection->select(row); //TODO: This does not seem to work.
-        
-                 Gtk::TreeModel::Path path = m_refListStore->get_path(row);
-                 Gtk::TreeView::Column* pColumn = m_TreeView.get_column(model_column_index); //TODO: This might the the view column index, not the model column index.
-                 m_TreeView.set_cursor(path, *pColumn, true /* start_editing */); //This highlights the cell, but does not seem to actually start the editing.
-               }
-             }
-
-             do_signal = false;
+            //Revert the data:
+            row.set_value(treemodel_column_index, valOld);
           }
           else
           {
-            //Actually show the canonical text representation, so that the user sees how his input was interpreted:
-            Glib::ustring text_canonical = GlomConversions::get_text_for_gda_value(field_type, value);
-            row.set_value(model_column_index, text_canonical);
-          }
-        }
+            //Reactivate the cell so that the data can be corrected.
 
-        if(do_signal)
-          m_signal_user_changed.emit(row, model_column_index);
+            Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = m_TreeView.get_selection();
+            if(refTreeSelection)
+            {
+              refTreeSelection->select(row); //TODO: This does not seem to work.
+    
+              if(!path.empty())
+              {
+                Gtk::TreeView::Column* pColumn = m_TreeView.get_column(model_column_index);
+                if(pColumn)
+                {
+                  Gtk::CellRendererText* pCell = dynamic_cast<Gtk::CellRendererText*>(pColumn->get_first_cell_renderer());
+                  if(pCell)
+                  {
+                    //TreeView::set_cursor(), or start_editing() would get the old value back from the model again
+                    //so we do something similar without getting the old value:
+                    m_TreeView.set_cursor(path, *pColumn, *pCell, true /* start_editing */); //This highlights the cell, and starts the editing.
+                    
+                    //This is based on gtk_tree_view_start_editing():
+                    //TODO: This does not actually work. I emailed gtk-list about how to do this.
+                    /*
+                    pCell->stop_editing();
+                    pCell->property_text() = "test"; //new_text; //Allow the user to start with the bad text that he entered so far.
+                    
+                    Gdk::Rectangle background_area;
+                    m_TreeView.get_background_area(path, *pColumn, background_area);
+                                    
+                    Gdk::Rectangle cell_area;
+                    m_TreeView.get_cell_area(path, *pColumn, background_area); 
+                    */
+                  }          
+                }
+              }
+              else
+              {
+                g_warning("DbAddDel::on_treeview_cell_edited(): path is invalid.");
+              }
+            }
+          }
+
+          do_signal = false;
+      }
+      else
+      {
+        //Store the value in the model:
+        row.set_value(treemodel_column_index, value);
+      }
+        
+      if(!bIsAdd)
+        bIsChange = true;
+  
+      //Fire appropriate signal:
+      if(bIsAdd)
+      {
+        //Signal that a new key was added"        
+        m_signal_user_added.emit(row);
+      }
+      else if(bIsChange)
+      {
+        //Existing item changed:
+        //Check that it has really changed - get the last value.
+        if(value != valOld)
+        {
+          if(do_signal)
+            m_signal_user_changed.emit(row, model_column_index);
+        }
       }
     }
   }
@@ -1336,11 +1203,14 @@ bool DbAddDel::on_treeview_column_drop(Gtk::TreeView* /* treeview */, Gtk::TreeV
   return true;
 }
 
-guint DbAddDel::treeview_append_column(const Glib::ustring& title, Gtk::CellRenderer& cellrenderer, const Gtk::TreeModelColumnBase& model_column, const Glib::ustring& column_id)
+guint DbAddDel::treeview_append_column(const Glib::ustring& title, Gtk::CellRenderer& cellrenderer, int model_column_index)
 {
-  TreeViewColumnGlom* pViewColumn = Gtk::manage( new TreeViewColumnGlom(title, cellrenderer) );
-  pViewColumn->set_renderer(cellrenderer, model_column); //render it via the default "text" property.
+  DbTreeViewColumnGlom* pViewColumn = Gtk::manage( new DbTreeViewColumnGlom(title, cellrenderer) );
   guint cols_count = m_TreeView.append_column(*pViewColumn);
+
+  //Tell the TreeView how to render the Gnome::Gda::Values:
+  pViewColumn->set_cell_data_func(cellrenderer, 
+    sigc::bind( sigc::mem_fun(*this, &DbAddDel::treeviewcolumn_on_cell_data), model_column_index) );
 
   //Allow the column to be reordered by dragging and dropping the column header:
   pViewColumn->set_reorderable();
@@ -1352,6 +1222,7 @@ guint DbAddDel::treeview_append_column(const Glib::ustring& title, Gtk::CellRend
   pViewColumn->set_min_width(100);
 
   //Save the extra ID, using the title if the column_id is empty:
+  Glib::ustring column_id = m_ColumnTypes[model_column_index].m_field.get_name();
   pViewColumn->set_column_id( (column_id.empty() ? title : column_id) );
 
   //TODO pViewColumn->signal_button_press_event().connect( sigc::mem_fun(*this, &DbAddDel::on_treeview_columnheader_button_press_event) );
@@ -1371,7 +1242,7 @@ void DbAddDel::on_treeview_columns_changed()
 
     for(type_vecViewColumns::iterator iter = vecViewColumns.begin(); iter != vecViewColumns.end(); ++iter)
     {
-      TreeViewColumnGlom* pViewColumn = dynamic_cast<TreeViewColumnGlom*>(*iter);
+      DbTreeViewColumnGlom* pViewColumn = dynamic_cast<DbTreeViewColumnGlom*>(*iter);
       if(pViewColumn)
       {
         const Glib::ustring column_id = pViewColumn->get_column_id();
@@ -1470,18 +1341,24 @@ Gtk::TreeModel::iterator DbAddDel::get_next_available_row_with_add_if_necessary(
 
 Gtk::TreeModel::iterator DbAddDel::get_last_row() const
 {
-  //TODO_performance: Hopefully there is a better way to do this.
-  Gtk::TreeModel::iterator iter = get_model()->children().begin();
-  guint size = get_model()->children().size();
-  if(size > 1)
+  Glib::RefPtr<const Gtk::TreeModel> refModel = get_model();
+  if(!refModel)
+    return Gtk::TreeModel::iterator();
+  else
   {
-    for(guint i = 0; i < (size -1); ++i)
+    //TODO_performance: Hopefully there is a better way to do this.
+    Gtk::TreeModel::iterator iter = get_model()->children().begin();
+    guint size = get_model()->children().size();
+    if(size > 1)
     {
-      ++iter;
+      for(guint i = 0; i < (size -1); ++i)
+      {
+        ++iter;
+      }
     }
+  
+    return iter;
   }
-
-  return iter;
 }
 
 Gtk::TreeModel::iterator DbAddDel::get_last_row()
@@ -1500,27 +1377,26 @@ Gtk::TreeModel::iterator DbAddDel::get_last_row()
   return iter;
 }
 
-Glib::ustring DbAddDel::get_value_key(const Gtk::TreeModel::iterator& iter)
-{
-  return get_value(iter, m_col_key);
-}
-
 Gnome::Gda::Value DbAddDel::get_value_key_as_value(const Gtk::TreeModel::iterator& iter)
 {
-  bool parsed = false;
-  return GlomConversions::parse_value(m_key_field.get_glom_type(), get_value_key(iter), parsed);
+  return treeview_get_key(iter);
 }
 
 
-void DbAddDel::set_value_key(const Gtk::TreeModel::iterator& iter, const Glib::ustring& strValue)
+void DbAddDel::set_value_key(const Gtk::TreeModel::iterator& iter, const Gnome::Gda::Value& value)
 {
-  if(!strValue.empty())
+  if(iter)
   {
-    //This is not a placeholder anymore, if it every was:
-    iter->set_value(m_col_placeholder, false);
-  }
+    Gtk::TreeModel::Row row = *iter;
   
-  iter->set_value(m_col_key, strValue);
+    if(!(GlomConversions::value_is_empty(value)))
+    {
+      //This is not a placeholder anymore, if it every was:
+      row[*m_modelcolumn_placeholder] = false;
+    }
+  
+    row[*m_modelcolumn_key] = value;
+  }
 }
 
 bool DbAddDel::get_is_placeholder_row(const Gtk::TreeModel::iterator& iter) const
@@ -1531,26 +1407,14 @@ bool DbAddDel::get_is_placeholder_row(const Gtk::TreeModel::iterator& iter) cons
   if(iter == m_refListStore->children().end())
     return false;
 
-  bool val = false;
-  iter->get_value(m_col_placeholder, val);
-
-  return val;
+  Gtk::TreeModel::Row row = *iter;
+  return row[*m_modelcolumn_placeholder];
 }
 
 bool DbAddDel::get_model_column_index(guint view_column_index, guint& model_column_index)
 {
-  //Initialize output parameter:
-  model_column_index = 0;
-
-  const guint hidden = get_count_hidden_system_columns();
-  const guint count = m_ColumnTypes.size();
-  if(hidden > count)
-    return false; //This should never happen.
-  
-  if(view_column_index >=  (count - hidden))
-    return false;
-
-  model_column_index = view_column_index + hidden; //There are 2 hidden columns at the start.
+//TODO: Remove this function. We should never seem to expose the underlying TreeModel modelcolumn index anyway.
+  model_column_index = view_column_index;
 
   return true;
 }
@@ -1566,21 +1430,14 @@ bool DbAddDel::get_view_column_index(guint model_column_index, guint& view_colum
   if( !(m_ColumnTypes[model_column_index].m_visible) )
     return false;
 
-  view_column_index = model_column_index - get_count_hidden_system_columns(); //There are 2 hidden columns at the start.
+  view_column_index = model_column_index;
 
   return true;
 }
 
 guint DbAddDel::get_count_hidden_system_columns()
 {
- guint hidden_count = 0;
-  if(!(m_ColumnTypes[m_col_key].m_visible))
-    ++hidden_count;
-
-  if(!(m_ColumnTypes[m_col_placeholder].m_visible))
-    ++hidden_count;
-
-  return hidden_count;
+  return 2; //The key and the placeholder boolean.
 }
 
 void DbAddDel::set_rules_hint(bool val)
@@ -1591,6 +1448,31 @@ void DbAddDel::set_rules_hint(bool val)
 void DbAddDel::set_key_type(const Field& field)
 {
   m_key_field = field;
+}
+
+void DbAddDel::treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter, int model_column_index)
+{
+  Gnome::Gda::Value value = get_value_as_value(iter, model_column_index);
+  
+  DbAddDelColumnInfo& column_info = m_ColumnTypes[model_column_index];
+  switch(column_info.m_field.get_glom_type())
+  {
+    case(Field::TYPE_BOOLEAN):
+    {
+      Gtk::CellRendererToggle* pDerived = dynamic_cast<Gtk::CellRendererToggle*>(renderer);
+      pDerived->set_active( value.get_bool() ); 
+  
+      break;
+    }
+    default:
+    {
+      //TODO: Maybe we should have custom cellrenderers for time, date, and numbers.
+      Gtk::CellRendererText* pDerived = dynamic_cast<Gtk::CellRendererText*>(renderer);
+      pDerived->property_text() = GlomConversions::get_text_for_gda_value(column_info.m_field.get_glom_type(), value);
+  
+      break;
+    } 
+  }
 }
   
       

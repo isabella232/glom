@@ -293,7 +293,7 @@ tm GlomConversions::parse_date(const Glib::ustring& text, const std::locale& loc
    * When not, I get just zeros.
    */
   tm the_c_time = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-
+  
   std::ios_base::iostate err = std::ios_base::goodbit;  //The initialization is essential because time_get seems to a) not initialize this output argument and b) check its value.
 
   //For some reason, the stream must be instantiated after we get the facet. This is a worryingly strange "bug".
@@ -316,7 +316,6 @@ tm GlomConversions::parse_date(const Glib::ustring& text, const std::locale& loc
   if(err != std::ios_base::failbit)
   {
     success = true;
-    return the_c_time;
   }
   else
   {
@@ -331,15 +330,27 @@ tm GlomConversions::parse_date(const Glib::ustring& text, const std::locale& loc
       the_c_time.tm_mday = date.get_day(); //starts at 1
 
       success = true;
-      return the_c_time;
     }
     else //It really really failed.
     {
+      //Note that 0 would be invalid for some of these.
       tm blank_time = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+      blank_time.tm_mday = 1;
+      blank_time.tm_mon = 1;
+      the_c_time = blank_time;
       success = false;
-      return blank_time;
     }
   }
+  
+    
+  //Prevent some nonsense values:
+  if(the_c_time.tm_mday == 0)
+    the_c_time.tm_mday = 1;
+    
+  if(the_c_time.tm_mon == 0)
+      the_c_time.tm_mon = 1;
+      
+  return the_c_time;
 }
 
 

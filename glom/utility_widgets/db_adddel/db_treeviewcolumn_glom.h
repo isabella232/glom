@@ -18,16 +18,16 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef ADDDEL_TREEVIEWCOLUMN_GLOM_H
-#define ADDDEL_TREEVIEWCOLUMN_GLOM_H
+#ifndef GLOM_DB_ADDDEL_TREEVIEWCOLUMN_GLOM_H
+#define GLOM_DB_ADDDEL_TREEVIEWCOLUMN_GLOM_H
 
 #include <gtkmm/treeviewcolumn.h>
 
-class TreeViewColumnGlom : public Gtk::TreeViewColumn
+class DbTreeViewColumnGlom : public Gtk::TreeViewColumn
 {
 public:
-  TreeViewColumnGlom(const Glib::ustring& title, Gtk::CellRenderer& cell);
-  virtual ~TreeViewColumnGlom();
+  DbTreeViewColumnGlom(const Glib::ustring& title, Gtk::CellRenderer& cell);
+  virtual ~DbTreeViewColumnGlom();
 
   virtual Glib::ustring get_column_id() const;
   virtual void set_column_id(const Glib::ustring& value);
@@ -36,4 +36,4 @@ protected:
   Glib::ustring m_column_id; 
 };
 
-#endif //ADDDEL_TREEVIEWCOLUMN_GLOM_H
+#endif //GLOM_DB_ADDDEL_TREEVIEWCOLUMN_GLOM_H

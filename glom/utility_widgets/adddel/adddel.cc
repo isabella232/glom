@@ -285,12 +285,6 @@ void AddDel::remove_all()
 }
 
 
-Gnome::Gda::Value AddDel::get_value_as_value(const Gtk::TreeModel::iterator& iter, guint col)
-{
-  bool success = false;
-  return GlomConversions::parse_value(m_ColumnTypes[col].m_field_type, get_value(iter, col), success );
-}
-
 Glib::ustring AddDel::get_value(const Gtk::TreeModel::iterator& iter, guint col)
 {
   Glib::ustring value;
@@ -337,22 +331,12 @@ Glib::ustring AddDel::get_value_key_selected()
   return get_value_selected(m_col_key);
 }
 
-Gnome::Gda::Value AddDel::get_value_key_selected_as_value()
-{
-  bool parsed = false;
-  return GlomConversions::parse_value(m_key_field.get_glom_type(), get_value_key_selected(), parsed);
-}
-
 Glib::ustring AddDel::get_value_selected(guint col)
 {
   Glib::ustring strValue = get_value(get_item_selected(), col);
   return strValue;
 }
 
-Gnome::Gda::Value AddDel::get_value_selected_as_value(guint col)
-{
-  return get_value_as_value(get_item_selected(), col);
-}
 
 Gtk::TreeModel::iterator AddDel::get_item_selected()
 {
@@ -824,25 +808,6 @@ guint AddDel::add_column(const Glib::ustring& strTitle, AddDelColumnInfo::enumSt
 {
   //Use the title as the column_id:
   return add_column(strTitle, strTitle, style, editable, visible);
-}
-
-guint AddDel::add_column(const Field& field, AddDelColumnInfo::enumStyles style, bool editable, bool visible)
-{
-  InnerIgnore innerIgnore(this); //Stop on_treeview_columns_changed() from doing anything when it is called just because we add a new column.
-
-  AddDelColumnInfo column_info;
-  column_info.m_name = field.get_title_or_name();
-  column_info.m_style = style; //TODO: //Use field types instead, or make this dependent on them..
-  column_info.m_id = field.get_name();
-  column_info.m_field_type = field.get_glom_type();
-  column_info.m_editable = editable;
-  column_info.m_visible = visible;
-
-  //Make it non-editable if it is auto-generated:
-  if(field.get_field_info().get_auto_increment())
-    column_info.m_editable = false;
-
-  return add_column(column_info);
 }
   
 guint AddDel::add_column(const Glib::ustring& strTitle, const Glib::ustring& column_id, AddDelColumnInfo::enumStyles style, bool editable, bool visible)
@@ -1506,12 +1471,6 @@ Glib::ustring AddDel::get_value_key(const Gtk::TreeModel::iterator& iter)
   return get_value(iter, m_col_key);
 }
 
-Gnome::Gda::Value AddDel::get_value_key_as_value(const Gtk::TreeModel::iterator& iter)
-{
-  bool parsed = false;
-  return GlomConversions::parse_value(m_key_field.get_glom_type(), get_value_key(iter), parsed);
-}
-
 
 void AddDel::set_value_key(const Gtk::TreeModel::iterator& iter, const Glib::ustring& strValue)
 {
@@ -1589,10 +1548,6 @@ void AddDel::set_rules_hint(bool val)
   m_TreeView.set_rules_hint(val);
 }
 
-void AddDel::set_key_type(const Field& field)
-{
-  m_key_field = field;
-}
   
       
 

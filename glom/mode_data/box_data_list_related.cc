@@ -113,7 +113,7 @@ void Box_Data_List_Related::fill_from_database()
 void Box_Data_List_Related::on_record_added(const Gnome::Gda::Value& primary_key_value)
 {
   //Get row of new record:
-  Gtk::TreeModel::iterator iter = m_AddDel.get_row(primary_key_value.to_string());
+  Gtk::TreeModel::iterator iter = m_AddDel.get_row(primary_key_value);
   if(iter)
   {
     guint iKey = 0;
