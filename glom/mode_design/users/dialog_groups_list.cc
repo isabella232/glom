@@ -52,10 +52,18 @@ Dialog_GroupsList::Dialog_GroupsList(BaseObjectType* cobject, const Glib::RefPtr
   m_treeview_tables->set_model(m_model_tables);
 
   // Append the View columns:
-  m_treeview_groups->append_column(gettext("Name"), m_model_columns_groups.m_col_name);
+
+  //Groups:
+  Gtk::CellRendererText* pCell = Gtk::manage(new Gtk::CellRendererText);
+  Gtk::TreeView::Column* pViewColumn = Gtk::manage(new Gtk::TreeView::Column(gettext("Name"), *pCell) );
+  pViewColumn->set_cell_data_func(*pCell, sigc::mem_fun(*this, &Dialog_GroupsList::on_cell_data_group_name));
+  m_treeview_groups->append_column(*pViewColumn);
+
   m_treeview_groups->append_column(gettext("Description"), m_model_columns_groups.m_col_description);
 
 
+
+  //Tables:
   m_treeview_tables->append_column(gettext("Table"), m_model_columns_tables.m_col_name);
 
   treeview_append_bool_column(*m_treeview_tables, gettext("View"), m_model_columns_tables.m_col_view,
@@ -554,9 +562,27 @@ void Dialog_GroupsList::on_treeview_tables_toggled_delete(const Glib::ustring& p
   }
 }
 
+void Dialog_GroupsList::on_cell_data_group_name(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter)
+{
+ //Set the view's cell properties depending on the model's data:
+  Gtk::CellRendererText* renderer_text = dynamic_cast<Gtk::CellRendererText*>(renderer);
+  if(renderer_text)
+  {
+    if(iter)
+    {
+      Gtk::TreeModel::Row row = *iter;
 
+      Glib::ustring name = row[m_model_columns_groups.m_col_name];
 
+      //Remove the special prefix:
+      const Glib::ustring prefix = "glom_";
+      if(name.substr(0, prefix.size()) == prefix)
+        name = name.substr(prefix.size());
 
+      renderer_text->property_text() = name;
+    }
+  }
+}
 
 
 

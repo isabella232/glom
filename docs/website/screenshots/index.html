@@ -34,6 +34,7 @@
 <li><a href="#developer_layout_details_related">Designing the Details Layout - Related Records</a></li>
 <li><a href="#developer_layout_list">Designing the List Layout</a></li>
 <li><a href="#developer_layout_related_fields">Designing the Layout - Related Fields</a></li>
+<li><a href="#developer_groups">Designing Users and Groups</a></li>
 </ul>
 </p>
 
@@ -56,12 +57,14 @@
   <img src="glom_data_list.png" />
   <p>The list view shows all records in the table, or all currently-found records. When you enter data in the fields it is saved immediately. Choose Edit, or double-click, to see a record in detail.</p>
    <p><i>Developers can choose what fields to show by <a href="#developer_layout_list">designing the layout</a>.</i></p>
+   <p><i>Developers can choose who may view or edit these records, as well as who can create or delete records here, by <a href="#developer_groups">designing the users and groups</a>.</i></p>
 
 <h3><a name="operator_detailsview" />The Details View</h3>
 
   <img src="glom_data_details.png" />
   <p>The details view shows the whole record, with the fields arranged conveniently.</p>
   <p><i>Developers can choose what fields to show by <a href="#developer_layout_details">designing the layout</a>.</i></p>
+   <p><i>Developers can choose who may view or edit these records, as well as who can create or delete records here, by <a href="#developer_groups">designing the users and groups</a>.</i></p>
 
 <h3><a name="operator_detailsview" />The Details View - related records</h3>
 
@@ -108,6 +111,7 @@
 
   <img src="glom_design_layout_details.png" />
   <p>There are no complicated display options - dates and times are displayed and interpreted appropriately according to the user's current locale, but are always stored in the database in standard ISO format. And boolean fields are represented by a check box.</p>
+   <p>You can can choose who may view or edit records in this table, as well as who may create or delete records, by <a href="#developer_groups">designing the users and groups</a>.</p>
 
 <h3><a name="developer_layout_details_related" />Designing the Details Layout - Related Records</h3>
 
@@ -124,4 +128,10 @@
   <img src="glom_design_layout_details_related_fields.png" />
   <p>Both the Details and List layouts may contain fields from related tables. Just choose the <a href="#developer_relationships">relationship</a>, and then choose from the list of fields in the related table.</p>
   <p>Note that you can prevent editing of fields. For instance, maybe you don't want to edit the customer's name via the Invoice details, because this would then be seen on every other Invoice for that customer.</p>
+
+<h3><a name="developer_groups" />Designing Users and Groups</h3>
+
+  <img src="glom_design_groups.png" />
+  <p>Not everyone should have equal access to all parts of the system, so you can assign users to groups which have appropriate permissions. For instance, people in the Personnel Department are allowed to create and delete records in the Staff table, but are not allowed to edit records in the Products table.</p>
+
 </body></html>

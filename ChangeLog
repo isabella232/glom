@@ -1,3 +1,11 @@
+2005-03-21  Murray Cumming <murrayc@murrayc.com>
+
+	* docs/website/screenshots/glom_design_groups.png:
+	* docs/website/screenshots/index.html:
+	Add a section to show the Groups window.
+	* glom/glom.glade:
+	Use SCROLLBARS_AUTOMATIC on some ScrolledWindows.
+
 2005-03-21  Murray Cumming  <murrayc@murrayc.com>
 
 	* examples/example_smallbusiness.glom:
