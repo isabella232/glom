@@ -703,7 +703,7 @@
 	      <child>
 		<widget class="GtkLabel" id="label38">
 		  <property name="visible">True</property>
-		  <property name="label" translatable="yes">&lt;b&gt;User Level: &lt;/b&gt;</property>
+		  <property name="label" translatable="yes">&lt;b&gt;User Level:&lt;/b&gt;</property>
 		  <property name="use_underline">False</property>
 		  <property name="use_markup">True</property>
 		  <property name="justify">GTK_JUSTIFY_LEFT</property>
@@ -774,7 +774,7 @@
 	      <child>
 		<widget class="GtkLabel" id="label23">
 		  <property name="visible">True</property>
-		  <property name="label" translatable="yes">&lt;b&gt;Table: &lt;/b&gt;</property>
+		  <property name="label" translatable="yes">&lt;b&gt;Table:&lt;/b&gt;</property>
 		  <property name="use_underline">False</property>
 		  <property name="use_markup">True</property>
 		  <property name="justify">GTK_JUSTIFY_LEFT</property>
@@ -850,7 +850,7 @@
 	      <child>
 		<widget class="GtkLabel" id="label22">
 		  <property name="visible">True</property>
-		  <property name="label" translatable="yes">&lt;b&gt;Mode: &lt;/b&gt;</property>
+		  <property name="label" translatable="yes">&lt;b&gt;Mode:&lt;/b&gt;</property>
 		  <property name="use_underline">False</property>
 		  <property name="use_markup">True</property>
 		  <property name="justify">GTK_JUSTIFY_LEFT</property>
@@ -965,7 +965,7 @@
 	  <child>
 	    <widget class="GtkLabel" id="label40">
 	      <property name="visible">True</property>
-	      <property name="label" translatable="yes">&lt;b&gt;Table: &lt;/b&gt;</property>
+	      <property name="label" translatable="yes">&lt;b&gt;Table:&lt;/b&gt;</property>
 	      <property name="use_underline">False</property>
 	      <property name="use_markup">True</property>
 	      <property name="justify">GTK_JUSTIFY_LEFT</property>
@@ -1461,7 +1461,7 @@
 	  <child>
 	    <widget class="GtkLabel" id="label40">
 	      <property name="visible">True</property>
-	      <property name="label" translatable="yes">&lt;b&gt;Table: &lt;/b&gt;</property>
+	      <property name="label" translatable="yes">&lt;b&gt;Table:&lt;/b&gt;</property>
 	      <property name="use_underline">False</property>
 	      <property name="use_markup">True</property>
 	      <property name="justify">GTK_JUSTIFY_LEFT</property>
@@ -1809,7 +1809,7 @@
 	  <child>
 	    <widget class="GtkLabel" id="label40">
 	      <property name="visible">True</property>
-	      <property name="label" translatable="yes">&lt;b&gt;Relationship: &lt;/b&gt;</property>
+	      <property name="label" translatable="yes">&lt;b&gt;Relationship:&lt;/b&gt;</property>
 	      <property name="use_underline">False</property>
 	      <property name="use_markup">True</property>
 	      <property name="justify">GTK_JUSTIFY_LEFT</property>
@@ -3037,7 +3037,7 @@ Or would you like to create a new document, to design a new database?
 		      <child>
 			<widget class="GtkLabel" id="label45">
 			  <property name="visible">True</property>
-			  <property name="label" translatable="yes">&lt;b&gt;Table: &lt;/b&gt;</property>
+			  <property name="label" translatable="yes">&lt;b&gt;Table:&lt;/b&gt;</property>
 			  <property name="use_underline">False</property>
 			  <property name="use_markup">True</property>
 			  <property name="justify">GTK_JUSTIFY_LEFT</property>
@@ -6241,7 +6241,7 @@ The database does not yet exist on the database server. Would you like to create
 	      <child>
 		<widget class="GtkLabel" id="label85">
 		  <property name="visible">True</property>
-		  <property name="label" translatable="yes">&lt;b&gt;Group: &lt;/b&gt;</property>
+		  <property name="label" translatable="yes">&lt;b&gt;Group:&lt;/b&gt;</property>
 		  <property name="use_underline">False</property>
 		  <property name="use_markup">True</property>
 		  <property name="justify">GTK_JUSTIFY_LEFT</property>
@@ -7283,7 +7283,7 @@ Which user should be added to this group?</property>
 	      <child>
 		<widget class="GtkLabel" id="label102">
 		  <property name="visible">True</property>
-		  <property name="label" translatable="yes">User </property>
+		  <property name="label" translatable="yes">User</property>
 		  <property name="use_underline">False</property>
 		  <property name="use_markup">False</property>
 		  <property name="justify">GTK_JUSTIFY_LEFT</property>

@@ -1,3 +1,8 @@
+2005-03-30  Christian Rose  <menthos@menthos.com>
+
+	* glom/glom.glade: Removed unnecessary trailing spaces from
+	translateable messages (bug #172109).
+
 2005-03-30  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/python_embed/py_glom_record.h:
