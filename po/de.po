@@ -1,20 +1,21 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
-#, fuzzy
+# German translation of glom.
+# Copyright (C) 2004 THE glom'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the glom package.
+# Hendrik Brandt <eru@gmx.li>, 2004.
+# , fuzzy
+# 
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: glom 0.8\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2004-06-06 20:05+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: 2004-06-08 18:03+0200\n"
+"Last-Translator: Hendrik Brandt <eru@gmx.li>\n"
+"Language-Team: German <gnome-de@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
+"Content-Transfer-Encoding: 8bit"
 
 #. Ask user to choose a table first:
 #: glom/Frame_Glom.cc:202
@@ -22,28 +23,34 @@ msgid ""
 "You must choose a database table first.\n"
 " Use the Navigation menu, or load a previous document."
 msgstr ""
+"Sie müssen zunächst eine Datenbanktabelle auswählen.\n"
+" Benutzen Sie dazu das Menü »Navigation« oder öffnen Sie ein bereits vorhandenes Dokument."
 
 #: glom/Frame_Glom.cc:226
+#, fuzzy
 msgid "Design"
-msgstr ""
+msgstr "Aufbau"
 
 #: glom/Frame_Glom.cc:233
 msgid "Data"
-msgstr ""
+msgstr "Daten"
 
 #: glom/Frame_Glom.cc:240 glom/Mode_Data/Box_Data.cc:25
 msgid "Find"
-msgstr ""
+msgstr "Finden"
 
 #: glom/Frame_Glom.cc:248
 msgid "Unknown"
-msgstr ""
+msgstr "Unbekannt"
 
 #: glom/Frame_Glom.cc:331
 msgid ""
 "You must choose a database first.\n"
 " Use the Navigation|Database menu item, or load a previous document."
 msgstr ""
+"Sie müssen zunächst eine Datenbank auswählen.\n"
+" Benutzen Sie dazu den Menüpunkt »Navigation - Datenbank« oder öffnen Sie ein "
+"bereits vorhandenes Dokument."
 
 #. show user level:
 #: glom/Frame_Glom.cc:395
@@ -52,37 +59,37 @@ msgstr ""
 
 #: glom/Frame_Glom.cc:397
 msgid "Developer"
-msgstr ""
+msgstr "Entwickler"
 
 #: glom/application.cc:57
 msgid "(C) 2000-2004 Murray Cumming"
-msgstr ""
+msgstr "(c) 2000-2004 Murray Cumming"
 
 #: glom/application.cc:57
 msgid "A Database GUI"
-msgstr ""
+msgstr "Eine grafische Datenbankschnittstelle"
 
 #. "Navigate" menu:
 #: glom/application.cc:107
 msgid "_Navigate"
-msgstr ""
+msgstr "_Navigieren"
 
 #: glom/application.cc:109
 msgid "_Database"
-msgstr ""
+msgstr "_Datenbank"
 
 #: glom/application.cc:115
 msgid "_Table"
-msgstr ""
+msgstr "_Tabelle"
 
 #. "UserLevel" menu:
 #: glom/application.cc:121
 msgid "_User Level"
-msgstr ""
+msgstr "Ben_utzerebene"
 
 #: glom/application.cc:123 glom/application.cc:146
 msgid "_Developer"
-msgstr ""
+msgstr "_Entwickler"
 
 #: glom/application.cc:125
 msgid "_Operator"
@@ -91,20 +98,20 @@ msgstr ""
 #. "Mode" menu:
 #: glom/application.cc:129
 msgid "_Mode"
-msgstr ""
+msgstr "_Modus"
 
 #: glom/application.cc:134
 msgid "_Design"
-msgstr ""
+msgstr "_Aufbau"
 
 #. We remember this action, so that it can be explicitly activated later.
 #: glom/application.cc:140
 msgid "D_ata"
-msgstr ""
+msgstr "D_aten"
 
 #: glom/application.cc:143
 msgid "_Find"
-msgstr ""
+msgstr "_Finden"
 
 #. Ask user to confirm loss of data:
 #: glom/Mode_Data/Box_Data.cc:143
@@ -113,23 +120,28 @@ msgid ""
 "primary key.\n"
 "Do you really want to discard this data?"
 msgstr ""
+"Diese Daten können nicht in die Datenbank abgelegt werden, da Sie keinen"
+"Primärschlüssel angegeben haben.\n"
+"Wollen Sie diese Daten wirklich verwerfen?"
 
 #: glom/Mode_Data/Box_Data_Details.cc:42
 msgid ""
 "When you change the data in a field the database is updated immediately.\n"
 " Click [New] to add a new record.\n"
 " Leave automatic ID fields empty - they will be filled for you."
-msgstr ""
+msgstr "Wenn Sie die Daten eines Feldes ändern, wird die Datenbank umgehend aktualisiert.\n"
+" Wählen Sie »Neu« um einen neuen Datensatz anzulegen.\n"
+" Lassen Sie Felder mit automatischer ID leer - deren Werte werden von selbst für Sie eingetragen."
 
 #. Related records:
 #: glom/Mode_Data/Box_Data_Details.cc:51
 msgid "<b>Related Records</b>"
-msgstr ""
+msgstr "<b>Bezugsdatensätze</b>"
 
 #. Tell user that a primary key is needed to delete a record:
 #: glom/Mode_Data/Box_Data_Details.cc:318
 msgid "This record can not be deleted because there is no primary key."
-msgstr ""
+msgstr "Dieser Datensatz kann nicht gelöscht werden, da es keinen Primärschlüssel gibt."
 
 #: glom/Mode_Data/Box_Data_List.cc:29
 msgid ""
@@ -138,6 +150,11 @@ msgid ""
 " Leave automatic ID fields empty - they will be filled for you.\n"
 "Only the first 100 records are shown."
 msgstr ""
+"Wenn Sie die Daten eines Feldes ändern, wird die Datenbank umgehend aktualisiert.\n"
+" Klicken Sie auf »Hinzufügen« oder geben Sie Daten in die letzte Reihe ein um einen neuen"
+"Datensatz anzulegen.\n"
+" Lassen Sie Felder mit automatischer ID leer - deren Werte werden von selbst für Sie eingetragen.\n"
+"Es werden nur die 100 ersten Datensätze angezeigt."
 
 #. Tell user that they can't do that:
 #: glom/Mode_Data/Box_Data_List_Related.cc:146
@@ -146,39 +163,45 @@ msgid ""
 "but there can only be one related record, \n"
 "because the relationship uses a unique key."
 msgstr ""
+"Offenbar wollten Sie einen neuen Bezugsdatensatz hinzufügen;\n"
+"es kann jedoch nur einen Bezugsdatensatz geben, \n"
+"da diese Beziehung einen eindeutigen Schlüssel benutzt."
 
 #. Add Pages:
 #: glom/Mode_Data/Notebook_Data.cc:26
 msgid "List"
-msgstr ""
+msgstr "Liste"
 
 #: glom/Mode_Data/Notebook_Data.cc:29
 msgid "Details"
-msgstr ""
+msgstr "Details"
 
 #: glom/Mode_Data/Notebook_Data.cc:59
+#, fuzzy
 msgid "_Design Layout"
-msgstr ""
+msgstr "_Aufbauskizze"
 
 #: glom/Mode_Design/Fields/Box_DB_Table_Definition.cc:27
 msgid ""
 "Click [Edit] to edit the field definition in more detail.\n"
 "Use the Mode menu to see Data or perform a Find."
 msgstr ""
+"Klicken Sie auf »Bearbeiten« um die Felddefinitionen im Detail zu bearbeiten.\n"
+"Verwenden Sie das Menü »Modus« um Daten zu sehen oder eine Suche durchzuführen."
 
 #: glom/Mode_Design/Fields/Box_DB_Table_Definition.cc:35
 #: glom/Mode_Design/Box_DB_Table_Relationships.cc:26
 msgid "Name"
-msgstr ""
+msgstr "Name"
 
 #: glom/Mode_Design/Fields/Box_DB_Table_Definition.cc:37
 #: glom/Navigation/Box_Tables.cc:58
 msgid "Title"
-msgstr ""
+msgstr "Titel"
 
 #: glom/Mode_Design/Fields/Box_DB_Table_Definition.cc:39
 msgid "Type"
-msgstr ""
+msgstr "Typ"
 
 #: glom/Mode_Design/Fields/Box_DB_Table_Definition.cc:175
 #: glom/Mode_Design/Fields/Box_DB_Table_Definition.cc:272
@@ -187,23 +210,26 @@ msgid ""
 "type that is not supported by Glom. Your system administrator may be able to "
 "correct this."
 msgstr ""
+"Dieses Datenbankfeld wurde außerhalb von Glom erzeugt oder bearbeitet. "
+"Es hat einen von Glom nicht unterstützen Datentyp. "
+"Ihr Systemadministrator könnte möglicherweise diesen Fehler beheben."
 
 #: glom/Mode_Design/Box_DB_Table_Relationships.cc:28
 #: glom/Mode_Design/Box_DB_Table_Relationships.cc:30
 msgid "Field"
-msgstr ""
+msgstr "Feld"
 
 #: glom/Mode_Design/Box_DB_Table_Relationships.cc:29
 msgid "Table"
-msgstr ""
+msgstr "Tabelle"
 
 #: glom/Mode_Design/Notebook_Design.cc:25
 msgid "Fields"
-msgstr ""
+msgstr "Felder"
 
 #: glom/Mode_Design/Notebook_Design.cc:26
 msgid "Relationships"
-msgstr ""
+msgstr "Beziehungen"
 
 #: glom/Mode_Find/Box_Data_Details_Find.cc:26
 #: glom/Mode_Find/Box_Data_List_Find.cc:26
@@ -211,53 +237,64 @@ msgid ""
 "Enter the search criteria and click [Find]\n"
 " Glom will then change to Data mode to display the results."
 msgstr ""
+"Geben Sie das Suchkriterium ein und klicken Sie auf »Finden«\n"
+" Glom wird dann in den Datenmodus wechseln, um das Ergebnis anzuzeigen."
 
 #: glom/Navigation/Box_DataBases.cc:29
 msgid ""
 "Select a database and click [Edit]. You may create a new database by "
 "entering the name in the last row."
 msgstr ""
+"Wählen Sie eine Datenbank und klicken Sie auf »Bearbeiten«. Sie können eine neue "
+"Datenbank anlegen indem Sie deren Name in die letzte Reihe eintragen."
 
 #: glom/Navigation/Box_DataBases.cc:54
 msgid "Databases"
-msgstr ""
+msgstr "Datenbanken"
 
 #: glom/Navigation/Box_DataBases.cc:111
 msgid ""
 "\n"
 "The user or password might be wrong,"
 msgstr ""
+"\n"
+"Der Benutzername oder das Passwort könnten falsch sein,"
 
 #: glom/Navigation/Box_DataBases.cc:112
+#, fuzzy
 msgid ""
 "\n"
 "or you might need to start your database backend."
 msgstr ""
+"\n"
+"oder es ist notwendig, dass Sie das Datenbank-Backend starten."
 
 #. Ask the user to confirm:
 #: glom/Navigation/Box_DataBases.cc:188
 msgid "Are you sure that you want to delete this database?"
-msgstr ""
+msgstr "Sind Sie sicher, dass Sie diese Datenbank löschen wollen?"
 
 #: glom/Navigation/Box_Tables.cc:30
 msgid ""
 "Select a table and click [Edit]. You may create a new table by entering the "
 "name in the last row."
 msgstr ""
+"Wählen Sie eine Tabelle und klicken Sie auf »Bearbeiten«. "
+"Sie können eine neue Tabelle anlegen, indem Sie deren Name in die letzte Reihe eintragen."
 
 #: glom/Navigation/Box_Tables.cc:52
 msgid "Tables"
-msgstr ""
+msgstr "Tabellen"
 
 #. Be carefule not to use these columns unless we are in developer mode.
 #: glom/Navigation/Box_Tables.cc:57
 msgid "Hidden"
-msgstr ""
+msgstr "Versteckt"
 
 #. gettext("Server: ") +  m_strServerName + ", " +
 #: glom/Navigation/Box_Tables.cc:79
 msgid "Tables from Database: "
-msgstr ""
+msgstr "Datenbanktabellen:"
 
 #. Ask the user to confirm:
 #: glom/Navigation/Box_Tables.cc:190
@@ -265,22 +302,26 @@ msgid ""
 "Are you sure that you want to delete this table?\n"
 "Table name: "
 msgstr ""
+"Sind Sie sicher, dass Sie diese Tabelle löschen möchten?\n"
+"Tabellenname:"
 
 #. TODO: Do not show tables that are not in the document.
 #: glom/Navigation/Box_Tables.cc:216
 msgid ""
 "You can not open this table, because there is no information about this "
 "table in the document."
-msgstr ""
+msgstr "Sie können diese Tabelle nicht öffnen, da keine Informationen über diese"
+"Tabelle im Dokument vorhanden sind."
 
 #: glom/Utility_Widgets/AddDel/AddDel.cc:71
 msgid "Edit"
-msgstr ""
+msgstr "Bearbeiten"
 
 #: glom/Utility_Widgets/AddDel/AddDel.cc:193
 msgid "Delete"
-msgstr ""
+msgstr "Löschen"
 
 #: glom/Utility_Widgets/AddDel/AddDel.cc:200
 msgid "Choose columns"
-msgstr ""
+msgstr "Spalte auswählen"
+
