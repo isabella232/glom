@@ -31,8 +31,7 @@ Power through simplicity.</h2></center>
   <p>Development is at an early stage, so it's not a complete database solution yet. The
   following future functionality should complete it:
   <ul>
-    <li>Virtual view fields (e.g. 'show the current price of this product in
-      this field').</li>
+    <li>User/Group Administration</li>
     <li>Printing</li>
     <li>Reports</li>
   </ul>
@@ -44,25 +43,28 @@ Power through simplicity.</h2></center>
 
 <h2>Warning</h2>
 
-  This is not stable or tested. It might completely destroy your data. I offer
-  no guarantees and accept no responsibility.
-<h2>Download</h2>
+  <p>This is not stable or tested. It might completely destroy your data. I offer
+  no guarantees and accept no responsibility.</p>
 
-  You can download Glom from <a href="http://ftp.gnome.org/pub/GNOME/sources/glom/">here</a>.
+<h2>Download</h2>
+  <p>You can download Glom from <a href="http://ftp.gnome.org/pub/GNOME/sources/glom/">here</a>.</p>
+
   <p>See <a href="#RequiredLibraries">Required Libraries</a>.</p>
 
 <h2>Implementation</h2>
 
-  Glom is built using gtkmm, the C++ wrapper for GTK+. It uses the Document/View model from Bakery, and its Document_XML
-  subclass, which uses the libxml++ C++ XML parser. It uses Python for custom field calculations.
+  <p>Glom is built using gtkmm, the C++ wrapper for GTK+. It uses the Document/View model from Bakery, and its Document_XML subclass, which uses the libxml++ C++ XML parser. It uses Python for custom field calculations.
   <p>PostgresSQL databases are accessed via libgda.</p>
 
 <h2><a name="RequiredLibraries"></a>Required Libraries</h2>
+<p>
 <ul>
   <li><a href="http://bakery.sourceforge.net/">Bakery 2.4</a> (requires libxml++, gtkmm, libglademm, gconfmm, and gnome-vfsmm)</li> 
   <li><a href="http://www.gtkmm.org/">libgdamm 2</a> (using <a href="http://www.postgres.org/">PostgresSQL</a>) </li>
   <li><a href="http://www.python.org/">Python >=2.2</a></li>
   </ul>
+</p>
+
 <p>In general, the latest versions are required. Later, you should be able to get all of these from your distro. When building from source, the configure script will
 complain if you have the wrong versions.</p>
 <h2>Development</h2>

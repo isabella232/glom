@@ -376,6 +376,7 @@ void Box_Data_List::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, 
             layout_item.set_name(relationship.get_from_field());
 
             primary_key_value = get_entered_field_data(layout_item);
+            //TODO: If the primary_key is empty, or not yet valid, should we create a new record. It probably has to be anoption in the relationship.
           }
           else
           {
