@@ -275,7 +275,7 @@ void Frame_Glom::show_table(const Glib::ustring& strTableName)
   show_all();
 }
 
-void Frame_Glom::on_menu_userlevel_Developer(Glib::RefPtr<Gtk::RadioAction> action)
+void Frame_Glom::on_menu_userlevel_Developer(const Glib::RefPtr<Gtk::RadioAction>& action)
 {
   if(action->get_active())
   {
@@ -289,7 +289,7 @@ void Frame_Glom::on_menu_userlevel_Developer(Glib::RefPtr<Gtk::RadioAction> acti
   }
 }
 
-void Frame_Glom::on_menu_userlevel_Operator(Glib::RefPtr<Gtk::RadioAction> action)
+void Frame_Glom::on_menu_userlevel_Operator(const Glib::RefPtr<Gtk::RadioAction>& action)
 {
   if(action->get_active())
   {

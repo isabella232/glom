@@ -64,7 +64,7 @@ void Box_Tables::fill_table_row(const Gtk::TreeModel::iterator& iter, const Tabl
   {
     m_AddDel.set_value_key(iter, table_info.m_name);
     m_AddDel.set_value(iter, m_colTableName, table_info.m_name);
-    m_AddDel.set_value(iter, m_colHidden, table_info.m_name);
+    m_AddDel.set_value(iter, m_colHidden, table_info.m_hidden);
     m_AddDel.set_value(iter, m_colTitle, table_info.m_title);
     m_AddDel.set_value(iter, m_colDefault, table_info.m_default);
   }
@@ -217,21 +217,35 @@ void Box_Tables::on_adddel_Delete(const Gtk::TreeModel::iterator& rowStart, cons
   bool something_changed = false;
   for(Gtk::TreeModel::iterator iter = rowStart; iter != iterAfter; ++iter)
   {
-    Glib::ustring strName = m_AddDel.get_value_key(iter);
+    Glib::ustring table_name = m_AddDel.get_value_key(iter);
 
-    if(!strName.empty())
+    if(!table_name.empty())
     {
-      //Ask the user to confirm:
-      Glib::ustring strMsg = gettext("Are you sure that you want to delete this table?\nTable name: ")
-                          + strName;
-      Gtk::MessageDialog dialog(strMsg);
-      int iButtonClicked = dialog.run();
-
-      //Delete the table:
-      if(iButtonClicked == Gtk::RESPONSE_OK)
+      if(m_pDocument)
       {
-        Query_execute( "DROP TABLE " + strName);
-        something_changed = true;
+        //Don't open a table that the document does not know about, because we need information from the document:
+        if(!m_pDocument->get_table_is_known(table_name))
+        {
+           //TODO: Do not show tables that are not in the document.
+           Gtk::MessageDialog dialog(gettext("You can not delete this table, because there is no information about this table in the document."));
+           dialog.set_transient_for(*get_app_window());
+           dialog.run();
+        }
+        else
+        {
+          //Ask the user to confirm:
+          Glib::ustring strMsg = gettext("Are you sure that you want to delete this table?\nTable name: ")
+                              + table_name;
+          Gtk::MessageDialog dialog(strMsg);
+          int iButtonClicked = dialog.run();
+
+          //Delete the table:
+          if(iButtonClicked == Gtk::RESPONSE_OK)
+          {
+            Query_execute( "DROP TABLE " + table_name);
+            something_changed = true;
+          }
+        }
       }
     }
   }

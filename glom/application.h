@@ -57,6 +57,8 @@ protected:
   virtual void offer_new_or_existing();
 
   virtual void on_menu_help_contents();
+  virtual void on_menu_userlevel_developer();
+  virtual void on_menu_userlevel_operator();
 
   virtual void on_userlevel_changed(AppState::userlevels userlevel);
 

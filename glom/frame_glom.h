@@ -47,8 +47,8 @@ public:
   virtual void on_box_databases_selected(Glib::ustring strName);
   virtual void on_box_tables_selected(Glib::ustring strName);
 
-  virtual void on_menu_userlevel_Developer(Glib::RefPtr<Gtk::RadioAction> action);
-  virtual void on_menu_userlevel_Operator(Glib::RefPtr<Gtk::RadioAction> action);
+  virtual void on_menu_userlevel_Developer(const Glib::RefPtr<Gtk::RadioAction>& action);
+  virtual void on_menu_userlevel_Operator(const Glib::RefPtr<Gtk::RadioAction>& action);
       
   virtual void on_menu_Mode_Data();
   virtual void on_menu_Mode_Find();

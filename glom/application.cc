@@ -127,11 +127,11 @@ void App_Glom::init_menus()
 
   m_action_menu_userlevel_developer = Gtk::RadioAction::create(group_userlevel, "GlomAction_Menu_userlevel_Developer", gettext("_Developer"));
   m_refActionGroup_Others->add(m_action_menu_userlevel_developer,
-                        sigc::bind( sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_userlevel_Developer), m_action_menu_userlevel_developer) );
+                        sigc::mem_fun(*this, &App_Glom::on_menu_userlevel_developer) );
 
   m_action_menu_userlevel_operator =  Gtk::RadioAction::create(group_userlevel, "GlomAction_Menu_userlevel_Operator", gettext("_Operator"));
   m_refActionGroup_Others->add(m_action_menu_userlevel_operator,
-                        sigc::bind( sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_userlevel_Operator), m_action_menu_userlevel_operator) );
+                          sigc::mem_fun(*this, &App_Glom::on_menu_userlevel_operator) );
 
   //"Mode" menu:
   action =  Gtk::Action::create("Glom_Menu_Mode", gettext("_Mode"));
@@ -204,6 +204,15 @@ void App_Glom::init_menus()
   on_database_selected(false);
 }
 
+void App_Glom::on_menu_userlevel_developer()
+{
+  m_pFrame->on_menu_userlevel_Developer(m_action_menu_userlevel_developer);
+}
+
+void App_Glom::on_menu_userlevel_operator()
+{
+  m_pFrame->on_menu_userlevel_Developer(m_action_menu_userlevel_operator);
+}
 
 Bakery::App* App_Glom::new_instance() //Override
 {

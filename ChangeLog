@@ -1,5 +1,16 @@
 2004-07-05  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/application.[h|cc]: Add intermediate signal handlers for the 
+	User Level menu items because use of sigc::bind with RefPtrs might be 
+	causing crashes.
+
+2004-07-05  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/navigation/box_tables.cc: fill_from_database(): Correct typo so 
+	that the hidden status is shown correctly.
+
+2004-07-05  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/glade.glom: In Table Navigation, change Cancel button to a close
 	button, because this window is opened to edit as well as to navigate.
 	* glom/navigatin/box_tables.cc: Make sure that changes are saved to 
