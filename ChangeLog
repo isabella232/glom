@@ -1,5 +1,12 @@
 2004-06-11  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/utility_widgets/flowtable_withfields.cc: get_suitable_width(): 
+	Use static locale-specific conversion function from EntryGlom to get 
+	example text so that the number, date, and time fields have suitable 
+	widths in all locales.
+
+2004-06-11  Murray Cumming  <murrayc@murrayc.com>
+
 	* po/: Update it.po from Albert Paro.
 	* configure.in: Re-enabled it.po now that the invalid multibyte 
 	sequences are fixed.

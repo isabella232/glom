@@ -124,21 +124,27 @@ Glib::ustring EntryGlom::format_time(const tm& tm_data)
   return Glib::ustring();
 }
 
+//static:
+
 void EntryGlom::set_value(const Gnome::Gda::Value& value)
+{
+  set_text(get_text_for_gda_value(m_glom_type, value));
+}
+
+Glib::ustring EntryGlom::get_text_for_gda_value(Field::glom_field_type glom_type, const Gnome::Gda::Value& value)
 {
   if(value.get_value_type() == Gnome::Gda::VALUE_TYPE_NULL) //The type can be null for any of the actual field types.
   {
-    set_text("");
-    return;
+    return Glib::ustring();
   }
     
-  if(m_glom_type == Field::TYPE_DATE)
+  if(glom_type == Field::TYPE_DATE)
   {
     Gnome::Gda::Date gda_date = value.get_date();
     Glib::Date date((Glib::Date::Day)gda_date.day, (Glib::Date::Month)gda_date.month, (Glib::Date::Year)gda_date.year);
-    set_text( date.format_string("%x") ); //%x means "is replaced by the locale's appropriate date representation".
+    return date.format_string("%x"); //%x means "is replaced by the locale's appropriate date representation".
   }
-  else if(m_glom_type == Field::TYPE_TIME)
+  else if(glom_type == Field::TYPE_TIME)
   {
     Gnome::Gda::Time gda_time = value.get_time();
 
@@ -147,23 +153,20 @@ void EntryGlom::set_value(const Gnome::Gda::Value& value)
     the_c_time.tm_min = gda_time.minute;
     the_c_time.tm_sec = gda_time.second;
             
-    set_text( format_time( the_c_time ) );
+    return format_time( the_c_time );
   }
-  else if(m_glom_type == Field::TYPE_NUMERIC)
+  else if(glom_type == Field::TYPE_NUMERIC)
   {
     const GdaNumeric* gda_numeric = value.get_numeric();
     Glib::ustring text;
     if(gda_numeric && gda_numeric->number) //A char*. TODO: Do we need to look at the other fields?
       text = gda_numeric->number; //What formatting does this use?
 
-    g_warning("EntryGlom::set_value(): GdaNumeric::number=%s", text.c_str());
-
-    set_text( text );
+    return text;
   }
   else
   {
-    //TODO: Do-locale specific display of the value types.
-    set_text(value.to_string());
+    return value.to_string();
   }
 }
 

@@ -44,6 +44,7 @@ public:
   typedef sigc::signal<void> type_signal_edited;
   type_signal_edited signal_edited();
 
+  static Glib::ustring get_text_for_gda_value(Field::glom_field_type glom_type, const Gnome::Gda::Value& value);
   static Glib::ustring format_time(const tm& tm_data);
   
 protected:

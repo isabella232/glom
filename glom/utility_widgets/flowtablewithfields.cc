@@ -126,17 +126,25 @@ int FlowTableWithFields::get_suitable_width(Field::glom_field_type field_type)
   {
     case(Field::TYPE_DATE):
     {
-      example_text = "99-99-9999"; //TODO: Get suitable text for the date as displayed in the locale.
+      Gnome::Gda::Date date = {0, 0, 0};
+      date.day = 31;
+      date.month = 12;
+      date.year = 2000;        
+      example_text = EntryGlom::get_text_for_gda_value(field_type, Gnome::Gda::Value(date));
       break;
     }
     case(Field::TYPE_TIME):
     {
-      example_text = "99:99:99"; //TODO: Get suitable text for the time as displayed in the locale.
+      Gnome::Gda::Time time = {0, 0, 0, 0};
+      time.hour = 24;      
+      time.minute = 59;
+      time.second = 59;
+      example_text = EntryGlom::get_text_for_gda_value(field_type, Gnome::Gda::Value(time));
       break;
     }
     case(Field::TYPE_NUMERIC):
     {
-      example_text = "9999999999"; 
+      example_text = "9999999999";
       break;
     }
     case(Field::TYPE_TEXT):
@@ -150,13 +158,18 @@ int FlowTableWithFields::get_suitable_width(Field::glom_field_type field_type)
     }
   }
 
+
   if(!example_text.empty())
   {
+    //Get the width required for this string in the current font:
     Glib::RefPtr<Pango::Layout> refLayout = create_pango_layout(example_text);
     int width = 0;
     int height = 0;
     refLayout->get_pixel_size(width, height);
     result = width;
+    
+    //Add a bit more:
+    result += 10;
   }
 
   return result;
