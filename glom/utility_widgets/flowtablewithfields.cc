@@ -93,7 +93,7 @@ void FlowTableWithFields::add_layout_item(const LayoutItem& item)
             add(*portal_box);
             
             m_portals.push_back(portal_box);
-            //TODO: add_view(portal_box);
+            add_view(portal_box);
           }
         }
       }

@@ -25,9 +25,6 @@
 #include "box_data_list_find.h"
 #include "box_data_details_find.h"
 
-/**
-  *@author Murray Cumming
-  */
 
 class Notebook_Find : public Notebook_Glom
 {

@@ -47,6 +47,7 @@ public:
 
 protected:
   virtual void fill_from_database(); //Override.
+  virtual type_vecFields get_fields_to_show() const; //override
 
   virtual void on_adddel_user_added(const Gtk::TreeModel::iterator& row); //Override.
   virtual void on_record_added(const Gnome::Gda::Value& primary_key_value); //Override. Not a signal handler.
@@ -54,6 +55,10 @@ protected:
   virtual void enable_buttons();
   
 protected:
+  Gtk::Frame m_Frame;
+  Gtk::Alignment m_Alignment;
+  Gtk::Label m_Label;
+  
   Relationship m_relationship; //The relationship of the parent table to this one.
   Field m_key_field;
   Gnome::Gda::Value m_key_value;

@@ -24,6 +24,24 @@
 
 Box_Data_List_Related::Box_Data_List_Related()
 {
+  set_size_request(200, -1); //TODO: Somehow we should use all the available space, or allow the developer to control this.
+
+  //m_Frame.set_label_widget(m_Label_Related);
+  m_Frame.set_shadow_type(Gtk::SHADOW_NONE);
+
+  m_Frame.add(m_Alignment);
+  m_Frame.show();
+
+  m_Frame.set_label_widget(m_Label);
+  m_Label.show();
+
+  m_Alignment.set_padding(6 /* top */, 0, 12 /* left */, 0);
+  m_Alignment.show();
+
+  remove(m_AddDel);
+  m_Alignment.add(m_AddDel);
+  m_AddDel.show();
+  add(m_Frame);
 }
 
 Box_Data_List_Related::~Box_Data_List_Related()
@@ -32,11 +50,15 @@ Box_Data_List_Related::~Box_Data_List_Related()
 
 void Box_Data_List_Related::init_db_details(const Relationship& relationship)
 {
+  m_Label.set_markup("<b>" + relationship.get_name() + "</b>");
+  
   bool found = get_fields_for_table_one_field(relationship.get_to_table(), relationship.get_to_field(), m_key_field /* output parameter */);
   if(!found)
   {
     g_warning("Box_Data_List_Related::init_db_details(): key_field not found.");
   }
+
+  Box_Data_List::init_db_details(relationship.get_to_table());
 }
 
 void Box_Data_List_Related::refresh_db_details(const Gnome::Gda::Value& foreign_key_value, const Gnome::Gda::Value& /* from_table_primary_key_value */)
@@ -163,5 +185,16 @@ void Box_Data_List_Related::on_adddel_user_added(const Gtk::TreeModel::iterator&
 
 void Box_Data_List_Related::enable_buttons()
 {
+}
+
+Box_Data_List_Related::type_vecFields Box_Data_List_Related::get_fields_to_show() const
+{
+  //For now, show the same fields that are shown when this is the main table:
+  if(m_strTableName.empty())
+  {
+    return type_vecFields();
+  }
+  else
+    return get_table_fields_to_show(m_strTableName);
 }
 
