@@ -40,7 +40,7 @@ Document_Glom::Document_Glom()
   //Set default database name:
   //This is also the XML attribute default value,
   //but that isn't available for new documents.
-  if(get_connection_server().size() == 0)
+  if(get_connection_server().empty())
     set_connection_server("localhost");
 
   m_app_state.signal_userlevel_changed().connect( sigc::mem_fun(*this, &Document_Glom::on_app_state_userlevel_changed) );

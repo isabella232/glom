@@ -73,7 +73,7 @@ void Box_Data_List::fill_from_database()
       Glib::RefPtr<Gnome::Gda::Connection> connection = sharedconnection->get_gda_connection();
 
       Glib::ustring strWhereClausePiece;
-      if(m_strWhereClause.size())
+      if(!m_strWhereClause.empty())
         strWhereClausePiece = " WHERE " + m_strWhereClause;
 
       type_vecFields listFieldsToShow = get_fields_to_show();

@@ -345,7 +345,7 @@ void Frame_Glom::on_menu_Navigate_Table()
 
 void Frame_Glom::do_menu_Navigate_Table(bool open_default)
 {
-  if(get_document()->get_connection_database().size() == 0)
+  if(get_document()->get_connection_database().empty())
   {
     show_ok_dialog(gettext("No database chosen"), gettext("You must choose a database first.\n Use the Navigation|Database menu item, or load a previous document."));
   }

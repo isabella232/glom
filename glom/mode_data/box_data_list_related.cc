@@ -49,7 +49,7 @@ void Box_Data_List_Related::fill_from_database()
 {
   bool allow_add = true;
  
-  if(m_strWhereClause.size())
+  if(!m_strWhereClause.empty())
   {
     Box_Data_List::fill_from_database();
 

@@ -1049,7 +1049,7 @@ void AddDel::on_treeview_cell_edited_bool(const Glib::ustring& path_string, int 
           //New item in the blank row:
           /*
           Glib::ustring strValue = get_value(row);
-          if(strValue.size())
+          if(!strValue.empty())
           {
             bool bPreventUserSignals = get_prevent_user_signals();
             set_prevent_user_signals(true); //Stops extra signal_user_changed.

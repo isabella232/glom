@@ -8,7 +8,8 @@ SUBDIRS = po glom docs macros
 GnomeApplicationsdir = $(datadir)/gnome/apps/Applications
 GnomeApplications_DATA = glom.desktop
 
-# Install the glom.xml MIME-type registration file, so that the files can be recognised as the correct MIME-type:
+# Install the glom.xml MIME-type registration file, so that the files can be recognised as the $
+# correct MIME-type:
 MimeDatabasedir = $(datadir)/mime/packages
 MimeDatabase_DATA = glom.xml
 

@@ -270,7 +270,7 @@ void FlowTable::get_item_max_width(guint start, int height, int& first_max_width
   first_max_width = 0;
   second_max_width = 0;
   
-  if(m_children.size() == 0)
+  if(m_children.empty())
     return;
 
   int height_so_far = 0;

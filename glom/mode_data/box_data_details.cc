@@ -469,7 +469,7 @@ void Box_Data_Details::on_flowtable_field_edited(Glib::ustring id)
      const Glib::ustring strFieldName = id;
      const Gnome::Gda::Value field_value = entry->get_value();
 
-     if(strPrimaryKey_Name.size())
+     if(!strPrimaryKey_Name.empty())
      {
        Field fieldInfoPK;
        bool test = get_field(strPrimaryKey_Name, fieldInfoPK);

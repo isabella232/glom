@@ -1,4 +1,4 @@
-# Initialization macros:
+b# Initialization macros:
 AC_INIT(glom/main.cc)
 
 AM_CONFIG_HEADER(config.h)

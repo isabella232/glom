@@ -99,7 +99,7 @@ void Box_DB_Table::fill_fields()
 
         //g_warning("Box_DB_Table::fill_fields(): size=%d", m_Fields.size());
 
-        if(m_Fields.size() == 0)
+        if(m_Fields.empty())
         {
           //No records were returned.
           if(bTriedNew)
@@ -452,7 +452,7 @@ Glib::ustring Box_DB_Table::postgres_get_field_definition_for_sql(const Gnome::G
   //Default:
   Gnome::Gda::Value valueDefault = field_info.get_default_value();
   const Glib::ustring& strDefault =  valueDefault.to_string();
-  if(strDefault.size() && strDefault != "NULL")
+  if(!strDefault.empty() && strDefault != "NULL")
     strResult += " DEFAULT " + strDefault; //TODO: Quote/Escape it if necessary.
       
   //Primary Key:

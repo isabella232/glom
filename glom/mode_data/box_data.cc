@@ -65,7 +65,7 @@ Glib::ustring Box_Data::get_WhereClause() const
       strClausePart = fieldInfo.get_name() + " LIKE " +  field.sql(data); //% is mysql wildcard for 0 or more characters.
     }
 
-    if(strClausePart.size())
+    if(!strClausePart.empty())
       strClause += strClausePart + " ";
   }
 
@@ -95,9 +95,9 @@ bool Box_Data::record_new_from_entered()
     Gnome::Gda::FieldAttributes fieldInfo = field.get_field_info();
     Glib::ustring strFieldValue = field.sql(field.get_data());
 
-    if(strFieldValue.size())
+    if(!strFieldValue.empty())
     {
-      if(strNames.size())
+      if(!strNames.empty())
       {
         strNames += ", ";
         strValues += ", ";
@@ -109,7 +109,7 @@ bool Box_Data::record_new_from_entered()
   }
 
   //Put it all together to create the record with these field values:
-  if(strNames.size() && strValues.size())
+  if(!strNames.empty() && !strValues.empty())
   {
     Glib::ustring strQuery = "INSERT INTO " + m_strTableName + " (" + strNames + ") VALUES (" + strValues + ")";
     return Query_execute(strQuery);

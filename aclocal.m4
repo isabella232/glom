@@ -1353,7 +1353,7 @@ AC_DEFUN([AM_GLIB_DEFINE_LOCALEDIR],[GLIB_DEFINE_LOCALEDIR($@)])
 
 ll## intltool.m4 - Configure intltool for the target system. -*-Shell-script-*-
 
-dnl AC_PROG_INTLTOOL([MINIMUM-VERSION])
+dnl AC_PROG_INTLTOOL([MINIMUM-VERSION], [no-xml])
 # serial 1 AC_PROG_INTLTOOL
 AC_DEFUN([AC_PROG_INTLTOOL],
 [
@@ -1426,10 +1426,13 @@ fi
 if test -z "`$INTLTOOL_PERL -v | fgrep '5.' 2> /dev/null`"; then
    AC_MSG_ERROR([perl 5.x required for intltool])
 fi
-if `$INTLTOOL_PERL -e "require XML::Parser" 2>/dev/null`; then
-:
-else
-   AC_MSG_ERROR([XML::Parser perl module is required for intltool])
+if test "x$2" != "xno-xml"; then
+   AC_MSG_CHECKING([for XML::Parser])
+   if `$INTLTOOL_PERL -e "require XML::Parser" 2>/dev/null`; then
+       AC_MSG_RESULT([ok])
+   else
+       AC_MSG_ERROR([XML::Parser perl module is required for intltool])
+   fi
 fi
 
 # Remove file type tags (using []) from po/POTFILES.
