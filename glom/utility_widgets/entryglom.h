@@ -45,9 +45,20 @@ public:
   type_signal_edited signal_edited();
 
   static Glib::ustring get_text_for_gda_value(Field::glom_field_type glom_type, const Gnome::Gda::Value& value);
+  static Glib::ustring get_text_for_gda_value(Field::glom_field_type glom_type, const Gnome::Gda::Value& value, const std::locale& locale, bool iso_format = false);
   static Glib::ustring format_time(const tm& tm_data);
-  
+  static Glib::ustring format_time(const tm& tm_data, const std::locale& locale, bool iso_format = false);
+  static Glib::ustring format_date(const tm& tm_data);
+  static Glib::ustring format_date(const tm& tm_data, const std::locale& locale, bool iso_format = false);
+
+  static Gnome::Gda::Value parse_value(Field::glom_field_type glom_type, const Glib::ustring& text);
+  static tm parse_date(const Glib::ustring& text);
+  static tm parse_date(const Glib::ustring& text, const std::locale& locale);
+  static tm parse_time(const Glib::ustring& text);
+  static tm parse_time(const Glib::ustring& text, const std::locale& locale);
+    
 protected:
+
   ///Check whether the entered text is appropriate for the field type.
   virtual bool validate_text() const;
   
@@ -58,7 +69,10 @@ protected:
   virtual void on_insert_text(const Glib::ustring& text, int* position); //From Gtk::Editable
 
   virtual void check_for_change();
-  
+
+  static Glib::ustring format_tm(const tm& tm_data, const std::locale& locale, char format);
+  //static tm parse_tm(const Glib::ustring& text, const std::locale& locale, char format);
+    
   type_signal_edited m_signal_edited;
 
   Glib::ustring m_old_text;

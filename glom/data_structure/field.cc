@@ -20,6 +20,7 @@
 
 #include "field.h"
 #include "../connectionpool.h"
+#include "../utility_widgets/entryglom.h"
 
 //Initialize static data:
 Field::type_map_gda_type_to_glom_type Field::m_map_gda_type_to_glom_type;
@@ -153,28 +154,40 @@ Glib::ustring Field::get_title_or_name() const
   }
 }
 
-//static:
-Glib::ustring Field::sql(const Gnome::Gda::Value& value)
+Glib::ustring Field::sql(const Gnome::Gda::Value& value) const
 {
-  Glib::ustring str = value.to_string();
+  Glib::ustring str;
   switch(value.get_value_type())
   {
     case(Gnome::Gda::VALUE_TYPE_STRING):
+    {
+      str = "'" + value.to_string() + "'"; //Add single-quotes. Actually escape it.
+    }
     case(Gnome::Gda::VALUE_TYPE_DATE):
     case(Gnome::Gda::VALUE_TYPE_TIME):         
     {
-      str = "'" + str + "'"; //Add single-quotes.
+      str = EntryGlom::get_text_for_gda_value(m_glom_type, value, std::locale() /* SQL uses the C locale */, true /* ISO standard */);
+      if(str != "NULL")
+         str = "'" + str + "'"; //Add single-quotes.
+         
+      break;
+    }
+    case(Gnome::Gda::VALUE_TYPE_NUMERIC):
+    {
+      str =  EntryGlom::get_text_for_gda_value(m_glom_type, value, std::locale() /* SQL uses the C locale */); //No quotes for numbers.
       break;
     }
     default:
     {
-      if(str.empty())
-        str = "NULL";
+      str = value.to_string();
+      if(str.empty() && (m_glom_type != Field::TYPE_TEXT))
+        str = "NULL"; //This has probably been handled in get_text_for_gda_value() anyway.
+  
       break;
     }
   }
      
-  return str; //TODO_port: Actually escape it.
+  return str;
 }
 
 Glib::ustring Field::sql(const Glib::ustring& str) const

@@ -112,7 +112,7 @@ public:
 
   /** Escape the value so that it can be used in a SQL command.
    */
-  static Glib::ustring sql(const Gnome::Gda::Value& value);
+ Glib::ustring sql(const Gnome::Gda::Value& value) const;
 
   /** Get text to show to the user.
    */

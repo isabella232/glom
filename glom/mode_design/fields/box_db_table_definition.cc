@@ -566,7 +566,7 @@ void Box_DB_Table_Definition::postgres_change_column_extras(const Field& field_o
     {
       if(set_anyway || (default_value != default_value_old))
       {
-        Glib::RefPtr<Gnome::Gda::DataModel>  datamodel = Query_execute( "ALTER TABLE " + m_strTableName + " ALTER COLUMN "+ field_info.get_name() + " SET DEFAULT " + Field::sql(field_info.get_default_value()) );
+        Glib::RefPtr<Gnome::Gda::DataModel> datamodel = Query_execute( "ALTER TABLE " + m_strTableName + " ALTER COLUMN "+ field_info.get_name() + " SET DEFAULT " + field.sql(field_info.get_default_value()) );
         if(!datamodel)
         {
           handle_error();

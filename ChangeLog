@@ -1,3 +1,13 @@
+2004-06-12  Murray Cumming  <murrayc@murrayc_debian>
+
+	* glom/utility_widgets/flowtable_withfields.cc: Change all parsing to 
+	use C++ streams and facets, and rearranged them into generic 
+	conversion routines that can be used elsewhere and should be moved 
+	elsewhere too. Added conversions to ISO formats, fo use in SQL 
+	statments.
+	* glom/data_structure/field.cc: sql(): Use these conversion routines 
+	to get text representations for SQL.
+
 2004-06-11  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/utility_widgets/flowtable_withfields.cc: get_suitable_width(): 
