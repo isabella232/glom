@@ -290,11 +290,15 @@ void Box_Tables::save_to_document()
       {
         TableInfo table_info;
         table_info.m_name = m_AddDel.get_value(iter, m_colTableName);
-        table_info.m_hidden  = m_AddDel.get_value_as_bool(iter, m_colHidden);
-        table_info.m_title  = m_AddDel.get_value(iter, m_colTitle);
-        table_info.m_default  = m_AddDel.get_value_as_bool(iter, m_colDefault);
 
-        listTables.push_back(table_info);
+        if(!table_info.m_name.empty())
+        {
+          table_info.m_hidden  = m_AddDel.get_value_as_bool(iter, m_colHidden);
+          table_info.m_title  = m_AddDel.get_value(iter, m_colTitle);
+          table_info.m_default  = m_AddDel.get_value_as_bool(iter, m_colDefault);
+
+          listTables.push_back(table_info);
+        }
       }
 
       if(m_pDocument)

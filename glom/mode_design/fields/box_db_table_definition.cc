@@ -388,7 +388,9 @@ void Box_DB_Table_Definition::change_definition(const Field& fieldOld, Field fie
 
     //Update field names where they are used in relationships.
     if(field_name_old != field.get_name())
+    {
       pDoc->change_field_name(m_strTableName, field_name_old, field.get_name());
+    }
   }
 
 

@@ -175,7 +175,7 @@ bool Document_Glom::get_field(const Glib::ustring& table_name, const Glib::ustri
 
 
 void Document_Glom::change_field_name(const Glib::ustring& table_name, const Glib::ustring& strFieldNameOld, const Glib::ustring& strFieldNameNew)
-{
+{      
   type_tables::iterator iterFindTable = m_tables.find(table_name);
   if(iterFindTable != m_tables.end())
   {
@@ -184,6 +184,7 @@ void Document_Glom::change_field_name(const Glib::ustring& table_name, const Gli
     type_vecFields::iterator iterFind = std::find_if( vecFields.begin(), vecFields.end(), predicate_FieldHasName<Field>(strFieldNameOld) );
     if(iterFind != vecFields.end()) //If it was found:
     {
+      g_warning("changed field");
       //Change it:
       iterFind->set_name(strFieldNameNew);
     }
@@ -203,7 +204,7 @@ void Document_Glom::change_field_name(const Glib::ustring& table_name, const Gli
             iterRels->set_from_field(strFieldNameNew);
           }
         }
-
+        
         if(iterRels->get_to_table() == table_name)
         {
           if(iterRels->get_to_field() == strFieldNameOld)
@@ -552,12 +553,17 @@ void Document_Glom::set_modified(bool value)
       {
         //This rebuilds the whole XML DOM and saves the whole document,
         //so we need to be careful not to call set_modified() too often.
-        bool test = save();
-        if(test)
-        {
-          g_warning("Document_Glom::set_modified(): saved");
-          set_modified(false);
-        }
+
+         bool test = save_before();
+         if(test)
+         {
+           test = write_to_disk();
+           if(test)
+           {
+             g_warning("Document_Glom::set_modified(): saved");
+             set_modified(false);
+           }
+         }
       }
     }
   }
@@ -776,94 +782,97 @@ bool Document_Glom::save_before()
     for(type_tables::const_iterator iter = m_tables.begin(); iter != m_tables.end(); ++iter)
     {
       const DocumentTableInfo& doctableinfo = iter->second;
-      
-      xmlpp::Element* nodeTable = nodeRoot->add_child("table");
-      set_node_attribute_value(nodeTable, "name", doctableinfo.m_info.m_name);
-      set_node_attribute_value(nodeTable, "title", doctableinfo.m_info.m_title);
-      set_node_attribute_value_as_bool(nodeTable, "hidden", doctableinfo.m_info.m_hidden);   
-      set_node_attribute_value_as_bool(nodeTable, "default", doctableinfo.m_info.m_default);
-      
-      //Fields:
-      xmlpp::Element* elemFields = nodeTable->add_child("fields");
-  
-      const Field::type_map_type_names type_names = Field::get_usable_type_names();
-            
-      for(type_vecFields::const_iterator iter = doctableinfo.m_fields.begin(); iter != doctableinfo.m_fields.end(); ++iter)
-      {
-        const Field& field = *iter;
 
-        xmlpp::Element* elemField = elemFields->add_child("field");
-        set_node_attribute_value(elemField, "name", field.get_field_info().get_name());
-        set_node_attribute_value(elemField, "title", field.get_title());
-    
-        const Gnome::Gda::FieldAttributes field_info = field.get_field_info();
-        set_node_attribute_value_as_bool(elemField, "primary_key", field_info.get_primary_key());
-        set_node_attribute_value_as_bool(elemField, "unique", field_info.get_unique_key());
-        set_node_attribute_value_as_bool(elemField, "auto_increment", field_info.get_auto_increment());
-        set_node_attribute_value(elemField, "default_value", field_info.get_default_value().to_string());
-    
-        Glib::ustring field_type;
-        Field::type_map_type_names::const_iterator iterTypes = type_names.find( field.get_glom_type() );
-        if(iterTypes != type_names.end())
-          field_type = iterTypes->second;
-        
-        set_node_attribute_value(elemField, "type", field_type);
-                    
-        //Add Lookup sub-node:
-        if(field.get_is_lookup())
+      if(!doctableinfo.m_info.m_name.empty())
+      {
+        xmlpp::Element* nodeTable = nodeRoot->add_child("table");
+        set_node_attribute_value(nodeTable, "name", doctableinfo.m_info.m_name);
+        set_node_attribute_value(nodeTable, "title", doctableinfo.m_info.m_title);
+        set_node_attribute_value_as_bool(nodeTable, "hidden", doctableinfo.m_info.m_hidden);
+        set_node_attribute_value_as_bool(nodeTable, "default", doctableinfo.m_info.m_default);
+
+        //Fields:
+        xmlpp::Element* elemFields = nodeTable->add_child("fields");
+
+        const Field::type_map_type_names type_names = Field::get_usable_type_names();
+
+        for(type_vecFields::const_iterator iter = doctableinfo.m_fields.begin(); iter != doctableinfo.m_fields.end(); ++iter)
         {
-          xmlpp::Element* elemFieldLookup = elemField->add_child("field_lookup");
-          set_node_attribute_value(elemFieldLookup, "relationship", field.get_lookup_relationship());
-          set_node_attribute_value(elemFieldLookup, "field", field.get_lookup_field());
-        }
-      }
-      
-      //Relationships:
-      //Add new <relationships> node:
-      xmlpp::Element* elemRelationships = nodeTable->add_child("relationships");
-    
-      //Add each <relationship> node:
-      for(type_vecRelationships::const_iterator iter = doctableinfo.m_relationships.begin(); iter != doctableinfo.m_relationships.end(); iter++)
-      {
-        const Relationship& relationship = *iter;
-        
-        xmlpp::Element* elemRelationship = elemRelationships->add_child("relationship");
-        set_node_attribute_value(elemRelationship, "name", relationship.get_name());
-        set_node_attribute_value(elemRelationship, "key", relationship.get_from_field());
-        set_node_attribute_value(elemRelationship, "other_table", relationship.get_to_table());
-        set_node_attribute_value(elemRelationship, "other_key", relationship.get_to_field());
-      }
-  
-      
-      //Layouts:
-      xmlpp::Element* nodeDataLayouts = nodeTable->add_child("data_layouts"); 
-       
-      //Add the groups:
-      for(DocumentTableInfo::type_layouts::const_iterator iter = doctableinfo.m_layouts.begin(); iter != doctableinfo.m_layouts.end(); ++iter)
-      {
-        xmlpp::Element* nodeLayout = nodeDataLayouts->add_child("data_layout");
-        nodeLayout->set_attribute("name", iter->first);
+          const Field& field = *iter;
 
-        xmlpp::Element* nodeGroups = nodeLayout->add_child("data_layout_groups");
-     
-        const type_mapLayoutGroupSequence& group_sequence = iter->second;
-        for(type_mapLayoutGroupSequence::const_iterator iterGroups = group_sequence.begin(); iterGroups != group_sequence.end(); ++iterGroups)
-        { 
-          xmlpp::Element* child = nodeGroups->add_child("data_layout_group");
-          child->set_attribute("name", iterGroups->second.m_group_name);    
-          child->set_attribute("title", iterGroups->second.m_title);
+          xmlpp::Element* elemField = elemFields->add_child("field");
+          set_node_attribute_value(elemField, "name", field.get_field_info().get_name());
+          set_node_attribute_value(elemField, "title", field.get_title());
 
-          set_node_attribute_value_as_decimal(child, "sequence", iterGroups->second.m_sequence);
-  
-          //Add the fields:
-          for(LayoutGroup::type_map_items::const_iterator iterItems = iterGroups->second.m_map_items.begin(); iterItems != iterGroups->second.m_map_items.end(); ++iterItems)
+          const Gnome::Gda::FieldAttributes field_info = field.get_field_info();
+          set_node_attribute_value_as_bool(elemField, "primary_key", field_info.get_primary_key());
+          set_node_attribute_value_as_bool(elemField, "unique", field_info.get_unique_key());
+          set_node_attribute_value_as_bool(elemField, "auto_increment", field_info.get_auto_increment());
+          set_node_attribute_value(elemField, "default_value", field_info.get_default_value().to_string());
+
+          Glib::ustring field_type;
+          Field::type_map_type_names::const_iterator iterTypes = type_names.find( field.get_glom_type() );
+          if(iterTypes != type_names.end())
+            field_type = iterTypes->second;
+
+          set_node_attribute_value(elemField, "type", field_type);
+
+          //Add Lookup sub-node:
+          if(field.get_is_lookup())
           {
-            const LayoutItem& item = iterItems->second;
-  
-            xmlpp::Element* nodeItem = child->add_child("data_layout_item");
-            nodeItem->set_attribute("name", item.m_field_name);
-    
-            set_node_attribute_value_as_decimal(nodeItem, "sequence", item.m_sequence);          
+            xmlpp::Element* elemFieldLookup = elemField->add_child("field_lookup");
+            set_node_attribute_value(elemFieldLookup, "relationship", field.get_lookup_relationship());
+            set_node_attribute_value(elemFieldLookup, "field", field.get_lookup_field());
+          }
+        }
+
+        //Relationships:
+        //Add new <relationships> node:
+        xmlpp::Element* elemRelationships = nodeTable->add_child("relationships");
+
+        //Add each <relationship> node:
+        for(type_vecRelationships::const_iterator iter = doctableinfo.m_relationships.begin(); iter != doctableinfo.m_relationships.end(); iter++)
+        {
+          const Relationship& relationship = *iter;
+
+          xmlpp::Element* elemRelationship = elemRelationships->add_child("relationship");
+          set_node_attribute_value(elemRelationship, "name", relationship.get_name());
+          set_node_attribute_value(elemRelationship, "key", relationship.get_from_field());
+          set_node_attribute_value(elemRelationship, "other_table", relationship.get_to_table());
+          set_node_attribute_value(elemRelationship, "other_key", relationship.get_to_field());
+        }
+
+
+        //Layouts:
+        xmlpp::Element* nodeDataLayouts = nodeTable->add_child("data_layouts");
+
+        //Add the groups:
+        for(DocumentTableInfo::type_layouts::const_iterator iter = doctableinfo.m_layouts.begin(); iter != doctableinfo.m_layouts.end(); ++iter)
+        {
+          xmlpp::Element* nodeLayout = nodeDataLayouts->add_child("data_layout");
+          nodeLayout->set_attribute("name", iter->first);
+
+          xmlpp::Element* nodeGroups = nodeLayout->add_child("data_layout_groups");
+
+          const type_mapLayoutGroupSequence& group_sequence = iter->second;
+          for(type_mapLayoutGroupSequence::const_iterator iterGroups = group_sequence.begin(); iterGroups != group_sequence.end(); ++iterGroups)
+          {
+            xmlpp::Element* child = nodeGroups->add_child("data_layout_group");
+            child->set_attribute("name", iterGroups->second.m_group_name);
+            child->set_attribute("title", iterGroups->second.m_title);
+
+            set_node_attribute_value_as_decimal(child, "sequence", iterGroups->second.m_sequence);
+
+            //Add the fields:
+            for(LayoutGroup::type_map_items::const_iterator iterItems = iterGroups->second.m_map_items.begin(); iterItems != iterGroups->second.m_map_items.end(); ++iterItems)
+            {
+              const LayoutItem& item = iterItems->second;
+
+              xmlpp::Element* nodeItem = child->add_child("data_layout_item");
+              nodeItem->set_attribute("name", item.m_field_name);
+
+              set_node_attribute_value_as_decimal(nodeItem, "sequence", item.m_sequence);
+            }
           }
         }
       }

@@ -1,5 +1,11 @@
 2004-07-05  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/document/Document_Glom.cc: set_modified(): Call save_before() 
+	and write_to_disk() instead of save() because that gets all the data 
+	from the views again.
+
+2004-07-05  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/document/Document_Glom.cc: set_modified(): Do nothing if the 
 	modified status is already what it would be set to, to prevent 
 	infinite loops.
