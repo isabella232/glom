@@ -1,3 +1,11 @@
+2005-03-21  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/document/document_glom.cc:
+	* glom/document/document_glom.h:
+	* glom/glom_document.dtd:
+	Add API to get/set the groups, and load/save 
+	them in the XML. Not used yet.
+
 2005-03-21  Murray Cumming <murrayc@murrayc.com>
 
 	* docs/website/screenshots/glom_design_groups.png:

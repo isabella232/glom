@@ -574,12 +574,7 @@ void Dialog_GroupsList::on_cell_data_group_name(Gtk::CellRenderer* renderer, con
 
       Glib::ustring name = row[m_model_columns_groups.m_col_name];
 
-      //Remove the special prefix:
-      const Glib::ustring prefix = "glom_";
-      if(name.substr(0, prefix.size()) == prefix)
-        name = name.substr(prefix.size());
-
-      renderer_text->property_text() = name;
+      renderer_text->property_text() = get_user_visible_group_name(name);
     }
   }
 }

@@ -78,6 +78,7 @@ protected:
   Privileges get_table_privileges(const Glib::ustring& group_name, const Glib::ustring& table_name);
   void set_table_privileges(const Glib::ustring& group_name, const Glib::ustring& table_name, const Privileges& privs, bool developer_privs = false);
   void add_standard_groups();
+  Glib::ustring get_user_visible_group_name(const Glib::ustring& group_name) const;
 
 
   virtual void fill_from_database();

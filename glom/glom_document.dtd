@@ -3,7 +3,7 @@
 DTD for glom documents.
 -->
 
-<!ELEMENT glom_document (connection?, table*) >
+<!ELEMENT glom_document (connection?, table*, groups?) >
 <!ATTLIST glom_document
   database_title CDATA #OPTIONAL
 >
@@ -14,6 +14,21 @@ DTD for glom documents.
   user CDATA #REQUIRED
   database CDATA #REQUIRED
 >
+
+<!ELEMENT groups (group*) >
+<!ATTLIST groups
+>
+
+<!ELEMENT group EMPTY >
+<!ATTLIST group
+  name CDATA #REQUIRED
+  priv_developer CDATA #OPTIONAL
+  priv_view CDATA #OPTIONAL
+  priv_edit CDATA #OPTIONAL
+  priv_create CDATA #OPTIONAL
+  priv_delete CDATA #OPTIONAL
+>
+
 
 <!ELEMENT table (fields | relationships | data_layouts)* >
 <!ATTLIST table

@@ -452,9 +452,9 @@ void Document_Glom::set_tables(const type_listTableInfo& tables)
   for(type_tables::iterator iter = m_tables.begin(); iter != m_tables.end(); iter++)
   {
     const DocumentTableInfo& doctableinfo = iter->second;
-    
+
     const Glib::ustring table_name = doctableinfo.m_info.m_name;
-  
+
     type_listTableInfo::const_iterator iterfind = std::find_if(tables.begin(), tables.end(), predicate_FieldHasName<TableInfo>(table_name));
     if(iterfind != tables.end())
     {
@@ -776,7 +776,7 @@ void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Gl
         group.add_item(item, sequence);
       }
     }
-  }                          
+  }
 }
 
 bool Document_Glom::load_after()
@@ -958,7 +958,29 @@ bool Document_Glom::load_after()
             }
           } //if(nodeDataLayouts)
 
-        }
+
+          //Groups:
+          m_groups.clear();
+
+          const xmlpp::Element* nodeGroups = get_node_child_named(nodeRoot, "groups");
+          if(nodeGroups)
+          {
+            xmlpp::Node::NodeList listNodes = nodeGroups->get_children("group");
+            for(xmlpp::Node::NodeList::iterator iter = listNodes.begin(); iter != listNodes.end(); ++iter)
+            {
+              xmlpp::Element* node = dynamic_cast<xmlpp::Element*>(*iter);
+              if(node)
+              {
+                GroupInfo group_info;
+
+                group_info.m_name = get_node_attribute_value(node, "name");
+
+                m_groups[group_info.m_name] = group_info;
+              }
+            }
+          }
+
+        } //root
       }
     }
   }
@@ -969,7 +991,7 @@ bool Document_Glom::load_after()
 void Document_Glom::save_before_layout_group(xmlpp::Element* node, const LayoutGroup& group)
 {
   xmlpp::Element* child = node->add_child("data_layout_group");
-  
+
   child->set_attribute("name", group.get_name());
   child->set_attribute("title", group.m_title);
   set_node_attribute_value_as_decimal(child, "columns_count", group.m_columns_count);
@@ -1010,9 +1032,9 @@ void Document_Glom::save_before_layout_group(xmlpp::Element* node, const LayoutG
           set_node_attribute_value_as_decimal(nodeItem, "sequence", item->m_sequence);
         }
       }
-        
+
     }
-  }        
+  } 
 }
 
 bool Document_Glom::save_before()
@@ -1124,8 +1146,26 @@ bool Document_Glom::save_before()
       }
 
     } //for m_tables
+
+
+    //Remove existing groups:
+    listNodes = nodeRoot->get_children("groups");
+    for(xmlpp::Node::NodeList::iterator iter = listNodes.begin(); iter != listNodes.end(); ++iter)
+      nodeRoot->remove_child(*iter);
+
+    //Add groups:
+    xmlpp::Element* nodeGroups = nodeRoot->add_child("groups");
+
+    for(type_map_groups::const_iterator iter = m_groups.begin(); iter != m_groups.end(); ++iter)
+    {
+      const GroupInfo& group_info = iter->second;
+
+      xmlpp::Element* nodeGroup = nodeGroups->add_child("group");
+      nodeGroup->set_attribute("name", group_info.m_name);
+    }
+
   }
-  
+
   return Bakery::Document_XML::save_before();  
 }
 
@@ -1150,4 +1190,32 @@ Glib::ustring Document_Glom::get_name() const
     return Bakery::Document_XML::get_name();
   else
     return m_database_title;
+}
+
+Document_Glom::type_list_groups Document_Glom::get_groups() const
+{
+  type_list_groups result;
+  for(type_map_groups::const_iterator iter = m_groups.begin(); iter != m_groups.end(); ++iter)
+  {
+    result.push_back(iter->second);
+  }
+
+  return result;
+}
+
+///This adds the group if necessary.
+void Document_Glom::set_group(GroupInfo& group)
+{
+  m_groups[group.m_name] = group;
+  set_modified();
+}
+
+void Document_Glom::remove_group(const Glib::ustring& group_name)
+{
+  type_map_groups::iterator iter = m_groups.find(group_name);
+  if(iter != m_groups.end())
+  {
+    m_groups.erase(iter);
+    set_modified();
+  }
 }

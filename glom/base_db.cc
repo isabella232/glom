@@ -705,13 +705,13 @@ Privileges Base_DB::get_table_privileges(const Glib::ustring& group_name, const 
 void Base_DB::add_standard_groups()
 {
   //Add the glom_developer group if it does not exist:
-  const Glib::ustring devgroup = "glom_developer";
+  const Glib::ustring devgroup = GLOM_STANDARD_GROUP_NAME_DEVELOPER;
 
   const type_vecStrings vecGroups = get_database_groups();
   type_vecStrings::const_iterator iterFind = std::find(vecGroups.begin(), vecGroups.end(), devgroup);
   if(iterFind == vecGroups.end())
   {
-    Query_execute("CREATE GROUP glom_developer");
+    Query_execute("CREATE GROUP " GLOM_STANDARD_GROUP_NAME_DEVELOPER);
     Privileges priv_ignored;
 
     Document_Glom::type_listTableInfo table_list = get_document()->get_tables();
@@ -787,4 +787,16 @@ Base_DB::type_vecStrings Base_DB::pg_list_separate(const Glib::ustring& str)
 
   //Get the comma-separated items:
   return string_separate(without_brackets, ",");
+}
+
+Glib::ustring Base_DB::get_user_visible_group_name(const Glib::ustring& group_name) const
+{
+  Glib::ustring result = group_name;
+
+  //Remove the special prefix:
+  const Glib::ustring prefix = "glom_";
+  if(result.substr(0, prefix.size()) == prefix)
+    result = result.substr(prefix.size());
+
+  return result;
 }

@@ -389,7 +389,7 @@ void Dialog_UsersList::fill_list()
       Gtk::TreeModel::iterator iterTree = m_model_users->append();
       Gtk::TreeModel::Row row = *iterTree;
 
-      row[m_model_columns_users.m_col_name] = *iter;
+      row[m_model_columns_users.m_col_name] = get_user_visible_group_name(*iter);
     }
   }
 }
