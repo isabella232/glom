@@ -148,7 +148,7 @@ void Box_Data_List::fill_from_database()
 
 void Box_Data_List::on_AddDel_user_requested_add()
 {
-  Gtk::TreeModel::iterator iter = m_AddDel.add_item_placeholder();
+  Gtk::TreeModel::iterator iter = m_AddDel.get_item_placeholder();
 
   //Start editing in the primary key or the first cell if the primary key is auto-incremented (because there is no point in editing an auto-generated value)..
   guint index_primary_key = 0;
@@ -173,7 +173,7 @@ void Box_Data_List::on_AddDel_user_requested_add()
 void Box_Data_List::on_AddDel_user_requested_edit(const Gtk::TreeModel::iterator& row)
 {
   Glib::ustring strPrimaryKeyValue = m_AddDel.get_value_key(row); //The primary key is in the key.
-  g_warning("Box_Data_List::on_AddDel_user_requested_edit(): %s", strPrimaryKeyValue.c_str());
+
   signal_user_requested_details().emit(strPrimaryKeyValue);
 }
 
@@ -471,10 +471,11 @@ void Box_Data_List::fill_column_titles()
   }
 }
 
-void Box_Data_List::on_record_added(const Glib::ustring& strPrimaryKey)
+void Box_Data_List::on_record_added(const Glib::ustring& /* strPrimaryKey */)
 {
+g_warning("on_record_added");
   //Overridden by Box_Data_List_Related.
-  m_AddDel.add_item(strPrimaryKey); //Add blank row.
+  //m_AddDel.add_item(strPrimaryKey); //Add blank row.
 }
 
 Box_Data_List::type_signal_user_requested_details Box_Data_List::signal_user_requested_details()

@@ -78,6 +78,33 @@ Box_DB_Table_Definition::~Box_DB_Table_Definition()
 {
 }
 
+void Box_DB_Table_Definition::fill_field_row(const Gtk::TreeModel::iterator& iter, const Field& field)
+{
+  m_AddDel.set_value_key(iter, field.get_name());
+  
+  m_AddDel.set_value(iter, m_colName, field.get_name());
+
+  Glib::ustring title = field.get_title();
+  m_AddDel.set_value(iter, m_colTitle, title);
+
+  Gnome::Gda::FieldAttributes fieldinfo = field.get_field_info();
+
+  //Type:
+  Field::glom_field_type fieldType = Field::get_glom_type_for_gda_type(fieldinfo.get_gdatype()); //Could be TYPE_INVALID if the gda type is not one of ours.
+
+  Glib::ustring strType = Field::get_type_name( fieldType );
+  m_AddDel.set_value(iter, m_colType, strType);
+
+  //Unique:
+  bool bUnique = fieldinfo.get_unique_key();
+
+  m_AddDel.set_value(iter, m_colUnique, bUnique);
+
+  //Primary Key:
+  bool bPrimaryKey = fieldinfo.get_primary_key();
+  m_AddDel.set_value(iter, m_colPrimaryKey, bPrimaryKey);
+}
+
 void Box_DB_Table_Definition::fill_from_database()
 {
   Box_DB_Table::fill_from_database();
@@ -95,27 +122,7 @@ void Box_DB_Table_Definition::fill_from_database()
              
       //Name:
       Gtk::TreeModel::iterator iter= m_AddDel.add_item(field.get_name());
-      m_AddDel.set_value(iter, m_colName, field.get_name());
-      
-      Glib::ustring title = field.get_title();
-      m_AddDel.set_value(iter, m_colTitle, title);      
-
-      Gnome::Gda::FieldAttributes fieldinfo = field.get_field_info();
-      
-      //Type:
-      Field::glom_field_type fieldType = Field::get_glom_type_for_gda_type(fieldinfo.get_gdatype()); //Could be TYPE_INVALID if the gda type is not one of ours.
-
-      Glib::ustring strType = Field::get_type_name( fieldType );
-      m_AddDel.set_value(iter, m_colType, strType);
-
-      //Unique:
-      bool bUnique = fieldinfo.get_unique_key();
-    
-      m_AddDel.set_value(iter, m_colUnique, bUnique);
-
-      //Primary Key:
-      bool bPrimaryKey = fieldinfo.get_primary_key();
-      m_AddDel.set_value(iter, m_colPrimaryKey, bPrimaryKey);
+      fill_field_row(iter, field);
     }
   }
   catch(std::exception& ex)
@@ -132,14 +139,26 @@ void Box_DB_Table_Definition::on_AddDel_add(const Gtk::TreeModel::iterator& row)
   if(!strName.empty())
   {
     bool bTest = Query_execute( "ALTER TABLE " + m_strTableName + " ADD " + strName + " NUMERIC" ); //TODO: Get schema type for Field::TYPE_NUMERIC
-
-    fill_fields();
-
-    fill_from_database();
-
     if(bTest)
     {
-      m_AddDel.select_item(strName, m_colTitle, true); //Start editing the title
+      //Show the new field (fill in the other cells):
+      
+      fill_fields();
+
+      //fill_from_database(); //We can not change the structure in a cell renderer signal handler.
+
+      //This must match the SQL statement above:
+      Field field;
+      field.set_name(strName);
+      field.set_glom_type(Field::TYPE_NUMERIC);
+
+      Gnome::Gda::FieldAttributes field_info = field.get_field_info();
+      field_info.set_gdatype( Field::get_gda_type_for_glom_type(Field::TYPE_NUMERIC) );
+      field.set_field_info(field_info);
+      
+      fill_field_row(row, field);
+      
+      //m_AddDel.select_item(row, m_colTitle, true); //Start editing the title
     }
   }
 }
@@ -175,10 +194,9 @@ void Box_DB_Table_Definition::on_AddDel_changed(const Gtk::TreeModel::iterator& 
     {
       m_Field_BeingEdited = *iterFind;
 
-
       //Get new field definition:
       Field fieldNew = get_field_definition(row);
-
+       
       //Change it:
       if(m_Field_BeingEdited != fieldNew) //If it has really changed.
       {
@@ -237,8 +255,8 @@ Field Box_DB_Table_Definition::get_field_definition(const Gtk::TreeModel::iterat
 
   //Start with original definitions, so that we preserve things like UNSIGNED.
   //TODO maybe use document's fieldinfo instead of m_Fields.
-  Field field = m_Fields[row];
-  Gnome::Gda::FieldAttributes fieldInfo = field.get_field_info();
+  Field field_temp = m_Fields[row];
+  Gnome::Gda::FieldAttributes fieldInfo = field_temp.get_field_info();
 
   //Name:
   Glib::ustring strName = m_AddDel.get_value(row, m_colName);
@@ -246,7 +264,7 @@ Field Box_DB_Table_Definition::get_field_definition(const Gtk::TreeModel::iterat
 
   //Title:
   Glib::ustring title = m_AddDel.get_value(row, m_colTitle);
-  field.set_title(title);
+  fieldResult.set_title(title);
 
   //Type:
   const Glib::ustring& strType = m_AddDel.get_value(row, m_colType);
@@ -266,7 +284,7 @@ Field Box_DB_Table_Definition::get_field_definition(const Gtk::TreeModel::iterat
 
   //Put it together:
   fieldResult.set_field_info(fieldInfo);
-
+      
   return fieldResult;
 }
 
@@ -289,6 +307,9 @@ void Box_DB_Table_Definition::on_Properties_apply()
       change_definition(m_Field_BeingEdited, field_New);
       m_Field_BeingEdited = field_New;
     }
+
+    //Update the list:
+    fill_from_database();
   }
 
   m_pDialog->hide();
@@ -383,7 +404,7 @@ void Box_DB_Table_Definition::change_definition(const Field& fieldOld, Field fie
   //Update UI:
 
   fill_fields();
-  fill_from_database();
+  //fill_from_database(); //We should not change the database definition in a cell renderer signal handler.
 
   //Select the same field again:
   m_AddDel.select_item(field.get_name(), m_colName, false);
@@ -393,8 +414,6 @@ void Box_DB_Table_Definition::fill_fields()
 {
   m_Fields = get_fields_for_table(m_strTableName);
 }
-
-
 
 void  Box_DB_Table_Definition::postgres_add_column(const Field& field, bool not_extras)
 {

@@ -36,6 +36,8 @@ public:
 protected:
   virtual void fill_from_database(); //override
 
+  virtual void fill_table_row(const Gtk::TreeModel::iterator& iter, const TableInfo& table_info);
+
   virtual void save_to_document();
 
   //Signal handlers:

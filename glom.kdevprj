@@ -131,12 +131,12 @@ type=DATA
 
 [Config for BinMakefileAm]
 addcxxflags=
-bin_program=glom --g-fatal-warnings
+bin_program=glom
 cflags=
 cppflags=
 cxxflags=\s-O0
 ldadd=
-ldflags=\s
+ldflags=\s\s
 libtool_dir=
 path_to_bin_program=./glom
 

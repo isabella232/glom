@@ -1,5 +1,17 @@
 2004-06-15  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/utility_widgets/adddel/adddel.[h|cc]: Simplifified the code for 
+	the placeholder row a bit.
+	* glom/navigation/box_db_tables.cc, 
+	glom/mode_design/fields/box_table_field_definitions.cc: Fixed some odd 
+	focus errors (hopefully) caused by rebuilding the TreeModel in a 
+	CellRenderer signal handler.
+	* glom/mode_design/fields/box_table_field_definitions.cc:
+	get_field_definition(): Store the field title in the result, not in 
+	the temporary field instance, so that new titles are really saved.
+
+2004-06-15  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/navigation/box_tables.cc: on_AddDel_changed(): Implement 
 	renaming of tables.
 

@@ -78,14 +78,14 @@ public:
   virtual void set_allow_delete(bool val = true);
     
   virtual void set_allow_column_chooser(bool value = true);
+  
+  virtual Gtk::TreeModel::iterator add_item(const Glib::ustring& strKey); //Return index of new row.
 
   /** Get an iterator to the blank row in which the user should add data for the new row.
    * You can then add the row to your underlying data store when some data has been filled, by handling signal_user_changed.
    */
-  virtual Gtk::TreeModel::iterator add_item_placeholder(); //Return index of new row.
+  virtual Gtk::TreeModel::iterator get_item_placeholder(); //Return index of the placeholder row.
   
-  virtual Gtk::TreeModel::iterator add_item(const Glib::ustring& strKey); //Return index of new row.
-
   virtual void remove_item(const Gtk::TreeModel::iterator& iter);
 
   virtual void remove_all();
@@ -201,6 +201,12 @@ public:
   type_signal_user_reordered_columns signal_user_reordered_columns();
   
 protected:
+
+  /** Get an iterator to the blank row in which the user should add data for the new row.
+   * You can then add the row to your underlying data store when some data has been filled, by handling signal_user_changed.
+   */
+  virtual Gtk::TreeModel::iterator add_item_placeholder(); //Return index of new row.
+  
   virtual void setup_menu();
   virtual Glib::ustring treeview_get_key(const Gtk::TreeModel::iterator& row);
 

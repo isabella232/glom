@@ -59,6 +59,18 @@ Box_Tables::~Box_Tables()
 {
 }
 
+void Box_Tables::fill_table_row(const Gtk::TreeModel::iterator& iter, const TableInfo& table_info)
+{
+  if(iter)
+  {
+    m_AddDel.set_value_key(iter, table_info.m_name);
+    m_AddDel.set_value(iter, m_colTableName, table_info.m_name);
+    m_AddDel.set_value(iter, m_colHidden, table_info.m_name);
+    m_AddDel.set_value(iter, m_colTitle, table_info.m_title);
+    m_AddDel.set_value(iter, m_colDefault, table_info.m_default);
+  }
+}
+  
 void Box_Tables::fill_from_database()
 {
   Bakery::BusyCursor(*get_app_window());
@@ -115,31 +127,23 @@ void Box_Tables::fill_from_database()
 
       //Check whether it should be hidden:
       Document_Glom::type_listTableInfo::iterator iterFind = std::find_if(listTables.begin(), listTables.end(), predicate_FieldHasName<TableInfo>(strName));
-      bool hidden = false;
-      Glib::ustring title;
-      bool is_default = false;
       if(iterFind != listTables.end())
       {
-        hidden = iterFind->m_hidden;
-        title = iterFind->m_title;
-        is_default = iterFind->m_default;
-      }
+        bool hidden = iterFind->m_hidden;
 
-      bool bAddIt = true;
-      if(hidden && !developer_mode)  //Don't add hidden tables unless we are in developer mode:
-        bAddIt = false;
+        bool bAddIt = true;
+        if(hidden && !developer_mode)  //Don't add hidden tables unless we are in developer mode:
+          bAddIt = false;
 
-      if(hidden && !m_pCheckButtonShowHidden->get_active()) //Don't add hidden tables if that checkbox is unset.
-        bAddIt = false;
+        if(hidden && !m_pCheckButtonShowHidden->get_active()) //Don't add hidden tables if that checkbox is unset.
+          bAddIt = false;
 
-      if(bAddIt)
-      {
+        if(bAddIt)
+        {
           Gtk::TreeModel::iterator iter = m_AddDel.add_item(strName);
-          m_AddDel.set_value(iter, m_colTableName, strName);
-          m_AddDel.set_value(iter, m_colHidden, hidden);
-          m_AddDel.set_value(iter, m_colTitle, title);
-          m_AddDel.set_value(iter, m_colDefault, is_default);
+          fill_table_row(iter, *iterFind);
         }
+      }
     }
   }
 
@@ -153,20 +157,26 @@ void Box_Tables::fill_from_database()
 
 void Box_Tables::on_AddDel_Add(const Gtk::TreeModel::iterator& row)
 {
+g_warning(" Box_Tables::on_AddDel_Add");
   Glib::ustring table_name = m_AddDel.get_value(row, m_colTableName);
   if(!table_name.empty())
   {
     Glib::ustring primary_key_name =   table_name + "_id";
 
     //Create a table with 1 "ID" field:
-    #if 0 //MSYQL:
-    Query_execute( "CREATE TABLE " + table_name + " (" + primary_key_name + " INT NOT NULL AUTO_INCREMENT PRIMARY KEY)" );
-    Query_execute( "INSERT INTO " + table_name + " VALUES (0)" );
-    #else
+   //MSYQL:
+    //Query_execute( "CREATE TABLE " + table_name + " (" + primary_key_name + " INT NOT NULL AUTO_INCREMENT PRIMARY KEY)" );
+    //Query_execute( "INSERT INTO " + table_name + " VALUES (0)" );
+
     //PostgresSQL:
     //Query_execute( "CREATE TABLE " + table_name + " (" + primary_key_name + " serial NOT NULL  PRIMARY KEY)" );
     Query_execute( "CREATE TABLE " + table_name + " (" + primary_key_name + " numeric NOT NULL  PRIMARY KEY)" );
 
+    //Show the new information for this whole row:
+    TableInfo table_info;
+    table_info.m_name = table_name;
+    fill_table_row(row, table_info);
+    
     //Save the field information directly into the database, because we can not get all the correct information from the database.
     //Otherwise some information would be forgotten:
     Field field_primary_key;
@@ -184,14 +194,13 @@ void Box_Tables::on_AddDel_Add(const Gtk::TreeModel::iterator& row)
      if(m_pDocument)
         m_pDocument->set_table_fields(table_name, fields);
 
-    //Query_execute( "INSERT INTO " + strName + " VALUES (0)" );
-    #endif
-
     save_to_document();
-    fill_from_database();
+    //fill_from_database(); //We should not modify the model structure in a cellrenderer signal handler.
 
     m_modified = true;
   }
+
+g_warning(" Box_Tables::on_AddDel_Add end");
 }
 
 void Box_Tables::on_AddDel_Delete(const Gtk::TreeModel::iterator& rowStart, const Gtk::TreeModel::iterator& rowEnd)
@@ -320,7 +329,7 @@ void Box_Tables::on_AddDel_changed(const Gtk::TreeModel::iterator& row, guint co
         {
           Query_execute( "ALTER TABLE " + table_name + " RENAME TO " + table_name_new);
           set_modified();
-          fill_from_database();
+          //fill_from_database(); //We should not modify the model structure in a cellrenderer signal handler.
         }
       }
     }

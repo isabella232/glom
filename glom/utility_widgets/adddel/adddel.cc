@@ -224,9 +224,23 @@ bool AddDel::on_button_press_event_Popup(GdkEventButton *event)
   return true;
 }
 
+Gtk::TreeModel::iterator AddDel::get_item_placeholder()
+{
+  //Get the existing placeholder row, or add one if necessary:
+  Gtk::TreeModel::iterator iter = get_last_row();
+  if( get_is_placeholder_row(iter) )
+  {
+    return iter;
+  }
+  else
+  {
+    return add_item_placeholder();
+  }
+}
+  
 Gtk::TreeModel::iterator AddDel::add_item_placeholder()
 {
-  Gtk::TreeModel::iterator iter = add_item("glom_new_row_placeholder"); //Just a temporary value.
+  Gtk::TreeModel::iterator iter = m_refListStore->append();
   if(iter)
   {
     iter->set_value(m_col_key, Glib::ustring("")); //Remove temporary key value.
@@ -245,8 +259,8 @@ Gtk::TreeModel::iterator AddDel::add_item(const Glib::ustring& strKey)
     Gtk::TreeModel::Row treerow = *result;
     if(treerow)
     {
-      treerow.set_value(m_col_key, strKey);
-      treerow.set_value(m_col_placeholder, false);
+      result->set_value(m_col_key, strKey);
+      result->set_value(m_col_placeholder, false);
     }
   }
 
@@ -441,13 +455,7 @@ void AddDel::add_blank()
   }
 
   if(bAddNewBlank)
-  {
-    Gtk::TreeModel::iterator iter = m_refListStore->append(); //Add the next blank for the next user add.
-    if(iter)
-    {
-      iter->set_value(m_col_placeholder, true); //Mark this one as a placeholder.
-    }
-  }
+    add_item_placeholder();
 
   set_prevent_user_signals(bPreventUserSignals);
 }
@@ -671,6 +679,7 @@ void AddDel::set_value(const Gtk::TreeModel::iterator& iter, guint col, const Gn
   {
     case(AddDelColumnInfo::STYLE_Boolean):
     {
+      g_warning("AddDel::set_value(): boolean column being set as bool.");
       set_value(iter, col, value.get_bool());
       break;
     }
@@ -713,7 +722,10 @@ void AddDel::set_value(const Gtk::TreeModel::iterator& iter, guint col, const Gl
       if( (col != m_col_key) && (col != m_col_placeholder) )
       {
         if(!strValue.empty())
-           treerow.set_value(m_col_placeholder, false);
+        {
+           //treerow.set_value(m_col_key, Glib::ustring("placeholder debug value setted"));
+           //treerow.set_value(m_col_placeholder, false);
+        }
       }
     }
 
@@ -769,7 +781,7 @@ void AddDel::remove_all_columns()
   //Add the hidden key.ID columns
   //Make these visible (with true) if you want to debug problems.
   m_col_key = add_column("Glom Hidden Key", AddDelColumnInfo::STYLE_Text, false /* not editable */, false /* not visible */);
-  m_col_placeholder = add_column("Glom Hidden Key", AddDelColumnInfo::STYLE_Boolean, false /* not editable */, false /* not visible */);
+  m_col_placeholder = add_column("Glom Hidden Placeholder", AddDelColumnInfo::STYLE_Boolean, true /* not editable */, false /* not visible */);
 }
 
 guint AddDel::add_column(const AddDelColumnInfo& column_info)
@@ -1003,7 +1015,9 @@ void AddDel::on_treeview_cell_edited_bool(const Glib::ustring& path_string, int 
     bool value_new = !value_old;
     //Store the user's new value in the model:
     row.set_value(model_column_index, value_new);
-  
+
+    //TODO: Did it really change?
+    
     //Is this an add or a change?:
 
     bool bIsAdd = false;
@@ -1059,7 +1073,6 @@ void AddDel::on_treeview_cell_edited_bool(const Glib::ustring& path_string, int 
 
 void AddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const Glib::ustring& new_text, int model_column_index)
 {
-
   Gtk::TreePath path(path_string);
 
   //Get the row from the path:
@@ -1073,6 +1086,9 @@ void AddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const Gli
 
     //Store the user's new text in the model:
     row.set_value(model_column_index, new_text);
+
+    if(strTextOld == new_text)
+      return; //This is not actually an edit.
 
     //Is it an add or a change?:
     bool bIsAdd = false;
@@ -1101,7 +1117,7 @@ void AddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const Gli
     //Fire appropriate signal:
     if(bIsAdd)
     {
-        //Signal that a new key was added:
+        //Signal that a new key was added"        
         m_signal_user_added.emit(row);
     }
     else if(bIsChange)
@@ -1380,8 +1396,7 @@ Gtk::TreeModel::iterator AddDel::get_next_available_row_with_add_if_necessary()
     if(iter != get_model()->children().end())
     {
       //Look at the last row:
-      Glib::ustring strValue = get_value_key(iter);
-      if( strValue.empty() || (strValue == "glom_new_row_placeholder")) //TODO: Check all columns?
+      if( get_is_placeholder_row(iter))
       {
         result = iter;
       }
@@ -1447,7 +1462,13 @@ Glib::ustring AddDel::get_value_key(const Gtk::TreeModel::iterator& iter)
 
 void AddDel::set_value_key(const Gtk::TreeModel::iterator& iter, const Glib::ustring& strValue)
 {
-  return set_value(iter, m_col_key, strValue);
+  if(!strValue.empty())
+  {
+    //This is not a placeholder anymore, if it every was:
+    iter->set_value(m_col_placeholder, false);
+  }
+  
+  iter->set_value(m_col_key, strValue);
 }
 
 bool AddDel::get_is_placeholder_row(const Gtk::TreeModel::iterator& iter) const
@@ -1460,6 +1481,7 @@ bool AddDel::get_is_placeholder_row(const Gtk::TreeModel::iterator& iter) const
 
   bool val = false;
   iter->get_value(m_col_placeholder, val);
+
   return val;
 }
 

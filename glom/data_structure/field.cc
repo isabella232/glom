@@ -144,7 +144,7 @@ bool Field::get_is_lookup() const
 
 Glib::ustring Field::get_title_or_name() const
 {
-  if(m_strTitle.size())
+  if(!m_strTitle.empty())
   {
     return m_strTitle;
   }
