@@ -1,5 +1,12 @@
 2004-12-06  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/data_structure/glom_conversions.cc: get_text_for_gda_value(): 
+	return empty string instead of NULL, because this the result is meant 
+	for user display, not for SQL.
+	* glom/data_structure/field.cc: sql(): Return NULL for non-text null.
+
+2004-12-06  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/Document/document_glom.cc: load_after_layout_group(): Check for 
 	null pointers to avoid crash when opening some documents.
 

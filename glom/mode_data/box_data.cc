@@ -133,7 +133,7 @@ Glib::RefPtr<Gnome::Gda::DataModel> Box_Data::record_new(bool use_entered_data, 
     }
 
     Glib::ustring strFieldValue = field.sql(value);
-
+    
     if(!strFieldValue.empty())
     {
       if(!strNames.empty())

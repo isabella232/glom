@@ -25,8 +25,10 @@
 
 namespace GlomConversions
 {
+  ///Get text for display to the user.
   Glib::ustring get_text_for_gda_value(Field::glom_field_type glom_type, const Gnome::Gda::Value& value);
   Glib::ustring get_text_for_gda_value(Field::glom_field_type glom_type, const Gnome::Gda::Value& value, const std::locale& locale, bool iso_format = false);
+
   Glib::ustring format_time(const tm& tm_data);
   Glib::ustring format_time(const tm& tm_data, const std::locale& locale, bool iso_format = false);
   Glib::ustring format_date(const tm& tm_data);

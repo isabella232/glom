@@ -125,7 +125,7 @@ Glib::ustring GlomConversions::get_text_for_gda_value(Field::glom_field_type glo
 {
   if(value.get_value_type() == Gnome::Gda::VALUE_TYPE_NULL) //The type can be null for any of the actual field types.
   {
-    return Glib::ustring();
+    return "";
   }
 
   if(glom_type == Field::TYPE_DATE)

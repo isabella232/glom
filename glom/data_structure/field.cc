@@ -162,8 +162,32 @@ Glib::ustring Field::get_title_or_name() const
 
 Glib::ustring Field::sql(const Gnome::Gda::Value& value) const
 {
-  Glib::ustring str;
+  if(value.is_null())
+  {
+    switch(get_glom_type())
+    {
+      case(TYPE_TEXT):
+      {
+        return "''"; //We want to ignore the concept of NULL strings, and deal only with empty strings.
+        break;
+      }
+      case(TYPE_DATE):
+      case(TYPE_TIME):
+      case(TYPE_NUMERIC):
+      {
+        return "NULL";
+        break;
+      }
+      default:
+      {
+        //Don't deal with these here.
+        break;
+      }
+    }
+  }
 
+  Glib::ustring str;
+   
   switch(get_glom_type())
   {
     case(TYPE_TEXT):
