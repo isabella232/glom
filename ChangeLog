@@ -1,3 +1,8 @@
+2004-07-13  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/mode_design/tables_relationships.[h|cc]: Actually delete 
+	relationships when the Delete button is pressed.
+
 0.8.7:
 
 2004-07-12  Murray Cumming  <murrayc@murrayc.com>

@@ -45,6 +45,7 @@ void Box_DB_Table_Relationships::init()
   //Connect signals:
   m_AddDel.signal_user_activated().connect(sigc::mem_fun(*this, &Box_DB_Table_Relationships::on_adddel_user_activated));
   m_AddDel.signal_user_changed().connect(sigc::mem_fun(*this, &Box_DB_Table_Relationships::on_adddel_user_changed));
+  m_AddDel.signal_user_requested_delete().connect(sigc::mem_fun(*this, &Box_DB_Table_Relationships::on_adddel_user_requested_delete));
 
   show_all_children();
 }
@@ -152,9 +153,6 @@ void Box_DB_Table_Relationships::on_adddel_user_changed(const Gtk::TreeModel::it
 
 void Box_DB_Table_Relationships::on_adddel_user_activated(const Gtk::TreeModel::iterator& row, guint col)
 {
-
- g_warning("on_adddel_user_activated setting to field col=%d", col);
- 
   if(col == m_colToField)
   {
     Bakery::BusyCursor(*get_app_window());
@@ -177,7 +175,6 @@ void Box_DB_Table_Relationships::on_adddel_user_activated(const Gtk::TreeModel::
         //m_AddDel.set_column_choices(m_colToField, vecFields);
         //fill_from_database();
 
-        g_warning("setting to field col=%d, choices.size=%d", m_colToField, vecFields.size());
         m_AddDel.set_column_choices(m_colToField, vecFields);
       }
     }
@@ -185,4 +182,10 @@ void Box_DB_Table_Relationships::on_adddel_user_activated(const Gtk::TreeModel::
   }
 }
 
+void Box_DB_Table_Relationships::on_adddel_user_requested_delete(const Gtk::TreeModel::iterator& rowStart, const Gtk::TreeModel::iterator& /* rowEnd TODO */)
+{
+  //Remove the row:
+  m_AddDel.remove_item(rowStart);
 
+  set_modified();
+}
