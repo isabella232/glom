@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glom\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-07-12 15:16+0200\n"
-"PO-Revision-Date: 2004-06-10 19:52-0700\n"
+"POT-Creation-Date: 2004-08-03 21:31-0400\n"
+"PO-Revision-Date: 2004-08-03 19:52-0700\n"
 "Last-Translator: Adam Weinberger <adamw@gnome.org>\n"
 "Language-Team: English/Canada <adamw@FreeBSD.org>\n"
 "MIME-Version: 1.0\n"
@@ -62,7 +62,7 @@ msgstr "<b>User Level: </b>"
 
 #: glom/glom.glade.h:12
 msgid "<b>def calculate_field_value():</b>"
-msgstr ""
+msgstr "<b>def calculate_field_value():</b>"
 
 #: glom/glom.glade.h:13
 msgid ""
@@ -72,6 +72,11 @@ msgid ""
 "revert to the previous value. Here is an example of correctly-formatted data "
 "for this field.\n"
 msgstr ""
+"<span weight=\"bold\" size=\"larger\">Invalid format</span>\n"
+"\n"
+"The data in the field was not recognized. Please try to correct the data or "
+"revert to the previous value. Here is an example of correctly-formatted data "
+"for this field.\n"
 
 #: glom/glom.glade.h:17
 msgid ""
@@ -97,15 +102,17 @@ msgid ""
 "\n"
 "Information text.\n"
 msgstr ""
+"<span weight=\"bold\" size=\"larger\">Title</span>\n"
+"\n"
+"Information text.\n"
 
 #: glom/glom.glade.h:27
 msgid "Auto-increment"
 msgstr "Auto-increment"
 
 #: glom/glom.glade.h:28
-#, fuzzy
 msgid "Calculate value"
-msgstr "Default Value"
+msgstr "Calculate value"
 
 #: glom/glom.glade.h:29
 msgid "Connect"
@@ -136,9 +143,8 @@ msgid "Field"
 msgstr "Field"
 
 #: glom/glom.glade.h:36
-#, fuzzy
 msgid "Field Calculation"
-msgstr "Field Definition"
+msgstr "Field Calculation"
 
 #: glom/glom.glade.h:37
 msgid "Field Definition"
@@ -162,7 +168,7 @@ msgstr "Layout"
 
 #: glom/glom.glade.h:42
 msgid "Lookup value when a field changes."
-msgstr ""
+msgstr "Lookup value when a field changes."
 
 #: glom/glom.glade.h:43
 msgid "Name"
@@ -182,11 +188,11 @@ msgstr "Primary Key"
 
 #: glom/glom.glade.h:47
 msgid "Relationship"
-msgstr ""
+msgstr "Relationship"
 
 #: glom/glom.glade.h:48
 msgid "Revert"
-msgstr ""
+msgstr "Revert"
 
 #: glom/glom.glade.h:49
 msgid "Show hidden tables"
@@ -194,13 +200,15 @@ msgstr "Show hidden tables"
 
 #: glom/glom.glade.h:50
 msgid "Test"
-msgstr ""
+msgstr "Test"
 
 #: glom/glom.glade.h:51
 msgid ""
 "The field value will be the return value of the python function, which you "
 "implement here."
 msgstr ""
+"The field value will be the return value of the python function, which you "
+"implement here."
 
 #: glom/glom.glade.h:52
 msgid "Title"
@@ -220,11 +228,8 @@ msgstr "User"
 
 #: glom/glom.glade.h:56
 msgid "example data format"
-msgstr ""
+msgstr "example data format"
 
 #: glom/glom.glade.h:57
 msgid "table name"
 msgstr "table name"
-
-#~ msgid "Some help text."
-#~ msgstr "Some help text."
