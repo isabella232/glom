@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GNOME 2.8\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-06-18 23:27+0200\n"
-"PO-Revision-Date: 2004-06-13 01:43+0200\n"
+"POT-Creation-Date: 2004-07-03 20:53+0200\n"
+"PO-Revision-Date: 2004-07-04 01:27+0200\n"
 "Last-Translator: Tino Meinen <a.t.meinen@chello.nl>\n"
 "Language-Team: Dutch <vertaling@nl.linux.org>\n"
 "MIME-Version: 1.0\n"
@@ -98,6 +98,9 @@ msgid ""
 "\n"
 "Information text.\n"
 msgstr ""
+"<span weight=\"bold\" size=\"larger\">Titel</span>\n"
+"\n"
+"Tekst met informatie.\n"
 
 #: glom/glom.glade.h:26
 msgid "Auto-increment"
@@ -153,7 +156,7 @@ msgstr "Indeling"
 
 #: glom/glom.glade.h:39
 msgid "Lookup value when a field changes."
-msgstr ""
+msgstr "Opzoekwaarde wanneer een veld verandert."
 
 #: glom/glom.glade.h:40
 msgid "Name"
@@ -174,7 +177,7 @@ msgstr "Hoofdsleutel"
 
 #: glom/glom.glade.h:44
 msgid "Relationship"
-msgstr ""
+msgstr "Relatie"
 
 #: glom/glom.glade.h:45
 msgid "Revert"
