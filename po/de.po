@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glom HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-12-09 17:08+0100\n"
-"PO-Revision-Date: 2004-12-09 17:16+0100\n"
+"POT-Creation-Date: 2004-12-21 17:59+0100\n"
+"PO-Revision-Date: 2004-12-21 18:01+0100\n"
 "Last-Translator: Hendrik Brandt <heb@gnome-de.org>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -42,26 +42,30 @@ msgid "<b>Select Field</b>"
 msgstr "<b>Feld auswählen</b>"
 
 #: glom/glom.glade.h:7
+msgid "<b>Select Relationship</b>"
+msgstr "<b>Beziehung auswählen</b>"
+
+#: glom/glom.glade.h:8
 msgid "<b>Table: </b>"
 msgstr "<b>Tabelle: </b>"
 
-#: glom/glom.glade.h:8
+#: glom/glom.glade.h:9
 msgid "<b>Tables in database</b>"
 msgstr "<b>Datenbanktabellen</b>"
 
-#: glom/glom.glade.h:9
+#: glom/glom.glade.h:10
 msgid "<b>Title:</b>"
 msgstr "<b>Titel:</b>"
 
-#: glom/glom.glade.h:10
+#: glom/glom.glade.h:11
 msgid "<b>User Level: </b>"
 msgstr "<b>Benutzersicht: </b>"
 
-#: glom/glom.glade.h:11
+#: glom/glom.glade.h:12
 msgid "<b>def calculate_field_value():</b>"
 msgstr "<b>def calculate_field_value():</b>"
 
-#: glom/glom.glade.h:12
+#: glom/glom.glade.h:13
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Connect to Server</span>\n"
 "\n"
@@ -69,10 +73,10 @@ msgid ""
 msgstr ""
 "<span weight=\"bold\" size=\"larger\">Mit Server verbinden</span>\n"
 "\n"
-"Bitte geben Sie die notwendigen Angaben ein, um sich mit Ihrem Datenbank-Server zu verbinden."
-""
+"Bitte geben Sie die notwendigen Angaben ein, um sich mit Ihrem Datenbank-"
+"Server zu verbinden."
 
-#: glom/glom.glade.h:15
+#: glom/glom.glade.h:16
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Connection Failed</span>\n"
 "\n"
@@ -82,25 +86,25 @@ msgid ""
 msgstr ""
 "<span weight=\"bold\" size=\"larger\">Verbindung fehlgeschlagen</span>\n"
 "\n"
-"Glom konnte sich nicht mit dem Datenbank-Server verbinden. Eventuell haben Sie "
-"einen falschen Benutzernamen oder ein ungültiges Passwort eingegeben, möglich wäre auch,"
-"dass der Postgres-Datenbnk-Server nicht läuft."
-""
+"Glom konnte sich nicht mit dem Datenbank-Server verbinden. Eventuell haben "
+"Sie einen falschen Benutzernamen oder ein ungültiges Passwort eingegeben, "
+"möglich wäre auch,dass der Postgres-Datenbnk-Server nicht läuft."
 
-#: glom/glom.glade.h:18
+#: glom/glom.glade.h:19
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Database creation failed</span>\n"
 "\n"
 "Glom could not create the new database. Maybe you do not have the necessary "
 "access rights. Please contact your system administrator."
 msgstr ""
-"<span weight=\"bold\" size=\"larger\">Fehler beim Erstellen der Datenbank</span>\n"
+"<span weight=\"bold\" size=\"larger\">Fehler beim Erstellen der Datenbank</"
+"span>\n"
 "\n"
-"Glom konnte die neue Datenbank nicht erstellen. Eventuell haben Sie nicht die "
-"notwendigen Zugriffsrechte. Bitte setzen Sie sich mit Ihrem Systemadministrator in Verbindung."
-""
+"Glom konnte die neue Datenbank nicht erstellen. Eventuell haben Sie nicht "
+"die notwendigen Zugriffsrechte. Bitte setzen Sie sich mit Ihrem "
+"Systemadministrator in Verbindung."
 
-#: glom/glom.glade.h:21
+#: glom/glom.glade.h:22
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Database does not exist</span>\n"
 "\n"
@@ -109,11 +113,10 @@ msgid ""
 msgstr ""
 "<span weight=\"bold\" size=\"larger\">Datenbank existiert nicht</span>\n"
 "\n"
-"Die angegebene Datenbank exisitiert nicht auf dem Datenbank-Server. Möchten Sie eine "
-"neue leere Datenbank anlegen?"
-""
+"Die angegebene Datenbank exisitiert nicht auf dem Datenbank-Server. Möchten "
+"Sie eine neue leere Datenbank anlegen?"
 
-#: glom/glom.glade.h:24
+#: glom/glom.glade.h:25
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Invalid format</span>\n"
 "\n"
@@ -127,7 +130,7 @@ msgstr ""
 "zukorrigieren, oder stellen Sie den ursprünglichen Wert wieder her.Hier ist "
 "ein Beispiel für richtig formatierte Daten dieses Feldes.\n"
 
-#: glom/glom.glade.h:28
+#: glom/glom.glade.h:29
 msgid ""
 "<span weight=\"bold\" size=\"larger\">New Database</span>\n"
 "\n"
@@ -138,9 +141,8 @@ msgstr ""
 "\n"
 "Bitte wählen Sie einen Namen und eine Beschreibung für die neue Datenbank. "
 "Der Name darf keine Leerzeichen enthalten."
-""
 
-#: glom/glom.glade.h:31
+#: glom/glom.glade.h:32
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Open existing document, or create new "
 "document</span>\n"
@@ -159,7 +161,7 @@ msgstr ""
 "Oder möchten Sie ein neues Dokument anlegen, um eine neue Datenbank zu "
 "erstellen?\n"
 
-#: glom/glom.glade.h:37
+#: glom/glom.glade.h:38
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Title</span>\n"
 "\n"
@@ -169,131 +171,139 @@ msgstr ""
 "\n"
 "Erläutender Text.\n"
 
-#: glom/glom.glade.h:41
+#: glom/glom.glade.h:42
+msgid "Add Related"
+msgstr "Beziehung hinzufügen"
+
+#: glom/glom.glade.h:43
 msgid "Add _Group"
 msgstr "_Gruppe hinzufügen"
 
-#: glom/glom.glade.h:42
+#: glom/glom.glade.h:44
 msgid "Auto-increment"
 msgstr "Zähler automatisch erhöhen"
 
-#: glom/glom.glade.h:43
+#: glom/glom.glade.h:45
 msgid "Calculate value"
 msgstr "Wert berechnen"
 
-#: glom/glom.glade.h:44
+#: glom/glom.glade.h:46
 msgid "Connect"
 msgstr "Verbinden"
 
-#: glom/glom.glade.h:45
+#: glom/glom.glade.h:47
 msgid "Create"
 msgstr "Anlegen"
 
-#: glom/glom.glade.h:46
+#: glom/glom.glade.h:48
 msgid "Data"
 msgstr "Daten"
 
-#: glom/glom.glade.h:47
+#: glom/glom.glade.h:49
 msgid "Database"
 msgstr "Datenbank"
 
-#: glom/glom.glade.h:48
+#: glom/glom.glade.h:50
 msgid "Default Value"
 msgstr "Vorgabewert"
 
-#: glom/glom.glade.h:49
+#: glom/glom.glade.h:51
 msgid "Details Layout"
 msgstr "Aufbau im Detail"
 
-#: glom/glom.glade.h:50
+#: glom/glom.glade.h:52
 msgid "Edit"
 msgstr "Bearbeiten"
 
-#: glom/glom.glade.h:51
+#: glom/glom.glade.h:53
 msgid "Edit Definition"
 msgstr "Definition bearbeiten"
 
-#: glom/glom.glade.h:52
+#: glom/glom.glade.h:54
 msgid "Extra"
 msgstr "Zusatz"
 
-#: glom/glom.glade.h:53
+#: glom/glom.glade.h:55
 msgid "Field"
 msgstr "Feld"
 
-#: glom/glom.glade.h:54
+#: glom/glom.glade.h:56
 msgid "Field Calculation"
 msgstr "Feldberechnung"
 
-#: glom/glom.glade.h:55
+#: glom/glom.glade.h:57
 msgid "Field Definition"
 msgstr "Felddefinition"
 
-#: glom/glom.glade.h:56
+#: glom/glom.glade.h:58
 msgid "Field Definitions"
 msgstr "Felddefinitionen"
 
-#: glom/glom.glade.h:57
+#: glom/glom.glade.h:59
 msgid "Glom"
 msgstr "Glom"
 
-#: glom/glom.glade.h:58
+#: glom/glom.glade.h:60
 msgid "Host"
 msgstr "Host"
 
-#: glom/glom.glade.h:59
+#: glom/glom.glade.h:61
 msgid "List Layout"
 msgstr "Aufbau auflisten"
 
-#: glom/glom.glade.h:60
+#: glom/glom.glade.h:62
 msgid "Lookup value when a field changes."
 msgstr "Wert suchen, wenn sich ein Feld ändert."
 
-#: glom/glom.glade.h:61
+#: glom/glom.glade.h:63
 msgid "Name"
 msgstr "Name"
 
-#: glom/glom.glade.h:62
+#: glom/glom.glade.h:64
 msgid "None selected"
 msgstr "Nichts markiert"
 
-#: glom/glom.glade.h:63
+#: glom/glom.glade.h:65
 msgid "Password"
 msgstr "Passwort"
 
-#: glom/glom.glade.h:64
+#: glom/glom.glade.h:66
 msgid "Primary Key"
 msgstr "Primärschlüssel"
 
-#: glom/glom.glade.h:65
+#: glom/glom.glade.h:67
 msgid "Relationship"
 msgstr "Beziehung"
 
-#: glom/glom.glade.h:66
+#: glom/glom.glade.h:68
 msgid "Revert"
 msgstr "Rückgängig"
 
-#: glom/glom.glade.h:67
+#: glom/glom.glade.h:69
 msgid "Select"
 msgstr "Auswählen"
 
-#: glom/glom.glade.h:68
+#: glom/glom.glade.h:70
 msgid "Select Field"
 msgstr "Feld auswählen"
 
-#: glom/glom.glade.h:69
+#: glom/glom.glade.h:71
+msgid "Select Relationship"
+msgstr "Beziehung auswählen"
+
+#: glom/glom.glade.h:72
 msgid "Show hidden tables"
 msgstr "Versteckte Tabellen anzeigen"
 
-#: glom/glom.glade.h:70
+#: glom/glom.glade.h:73
 msgid "Table:"
 msgstr "Tabelle:"
 
-#: glom/glom.glade.h:71
+#: glom/glom.glade.h:74
 msgid "Test"
 msgstr "Test"
 
-#: glom/glom.glade.h:72
+#: glom/glom.glade.h:75
 msgid ""
 "The field value will be the return value of the python function, which you "
 "implement here."
@@ -301,27 +311,27 @@ msgstr ""
 "Das Feld hat erhält den Wert, der von der Python-Funktion zurückgeliefert "
 "wird, die Sie hier implementieren."
 
-#: glom/glom.glade.h:73
+#: glom/glom.glade.h:76
 msgid "Title"
 msgstr "Titel"
 
-#: glom/glom.glade.h:74
+#: glom/glom.glade.h:77
 msgid "Type"
 msgstr "Typ"
 
-#: glom/glom.glade.h:75
+#: glom/glom.glade.h:78
 msgid "Unique"
 msgstr "Eindeutig"
 
-#: glom/glom.glade.h:76
+#: glom/glom.glade.h:79
 msgid "User"
 msgstr "Benutzer"
 
-#: glom/glom.glade.h:77
+#: glom/glom.glade.h:80
 msgid "example data format"
 msgstr "Beispieldatenformatierung"
 
-#: glom/glom.glade.h:78
+#: glom/glom.glade.h:81
 msgid "table name"
 msgstr "Tabellenname"
 
