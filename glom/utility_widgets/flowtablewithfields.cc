@@ -91,6 +91,9 @@ void FlowTableWithFields::add_layout_item(const LayoutItem& item)
             portal_box->init_db_details(relationship);
             portal_box->show();
             add(*portal_box);
+            
+            m_portals.push_back(portal_box);
+            add_view(portal_box);
           }
         }
       }
@@ -437,7 +440,21 @@ void FlowTableWithFields::remove_all()
 {
   //TODO: Release the fields memory, and the portal memory.
   m_mapFields.clear();
+ 
+  for(type_sub_flow_tables::iterator iter = m_sub_flow_tables.begin(); iter != m_sub_flow_tables.end(); ++iter)
+  {
+    remove_view(*iter);
+    delete *iter;
+  }
   m_sub_flow_tables.clear();
+
+  for(type_portals::iterator iter = m_portals.begin(); iter != m_portals.end(); ++iter)
+  {
+    remove_view(*iter);
+    delete *iter;
+  }
+  m_portals.clear();
+  
   FlowTable::remove_all();
 }
 

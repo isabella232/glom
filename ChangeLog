@@ -1,5 +1,12 @@
 2004-12-24  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/utility_widgets/flowtable_withfields.[h|cc]: Keep a list of 
+	the portals, so we don't have to dynamic_cast the standard children() 
+	list so much. Use Bakery::View::remove_view() and delete in 
+	remove_all().
+
+2004-12-24  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/dialog_connection.cc: #included libintl.h to fix build on some 
 	systems. Bug 161936 from Mike Castle.
 

@@ -27,6 +27,7 @@
 #include "../data_structure/layout/layoutitem_portal.h"
 #include "../data_structure/field.h"
 #include "../document/document_glom.h"
+#include "../mode_data/box_data_list_related.h"
 #include <map>
 #include <list>
 
@@ -116,6 +117,9 @@ protected:
   //Remember the nested FlowTables, so that we can search them for fields too:
   typedef std::list< FlowTableWithFields* > type_sub_flow_tables;
   type_sub_flow_tables m_sub_flow_tables;
+
+  typedef std::list< Box_Data_List_Related* > type_portals;
+  type_portals m_portals;
 
   Glib::ustring m_table_name;
 
