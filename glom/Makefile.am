@@ -4,7 +4,7 @@ gladedir = $(datadir)/glom/glade/
 
 # We define GLOM_GLADEDIR so that we can get the installed .glade file at runtime.
 # We define PREFIX, SYSCONFDIR, LIBDIR, and DATADIR for the GNOME_PROGRAM_STANDARD_PROPERTIES macro.
-INCLUDES = $(GLOM_CFLAGS) \
+INCLUDES = $(GLOM_CFLAGS) $(PYTHON_INCLUDES) \
            -DGLOM_GLADEDIR=\""$(gladedir)/"\" \
            -DLOCALEDIR=\""$(datadir)/locale"\" \
            -DPREFIX=\""$(prefix)"\" \
@@ -12,7 +12,7 @@ INCLUDES = $(GLOM_CFLAGS) \
            -DLIBDIR=\""$(libdir)"\" \
            -DDATADIR=\""$(datadir)"\"
 
-bin_PROGRAMS = glom
+bin_PROGRAMS = glom test_pyembed
 
 glom_SOURCES = main.cc \
                application.cc application.h \
@@ -25,6 +25,7 @@ glom_SOURCES = main.cc \
                notebook_glom.h notebook_glom.cc \
                connectionpool.h connectionpool.cc \
                dialog_invalid_data.h dialog_invalid_data.cc \
+               glom_python.h glom_python.cc \
                sharedptr.h
 
 glom_LDADD = document/libdocument.a \
@@ -36,8 +37,15 @@ glom_LDADD = document/libdocument.a \
              navigation/libnavigation.a \
              utility_widgets/libutility_widgets.a \
              utility_widgets/adddel/libutility_widgets_adddel.a \
-			 utility_widgets/adddel/eggcolumnchooser/libutility_widgets_adddel_eggcolumnchooserdialog.a \
-             $(GLOM_LIBS)
+             utility_widgets/adddel/eggcolumnchooser/libutility_widgets_adddel_eggcolumnchooserdialog.a \
+             $(GLOM_LIBS) $(PYTHON_LDFLAGS) -lutil
+
+#libutil seems to be a fairly standard GNU library, and python needs it for openpty() and forkpty().
+
+
+test_pyembed_SOURCES = test_pyembed.cc
+test_pyembed_LDADD = $(GLOM_LIBS) $(PYTHON_LDFLAGS) -lutil
+
 
 #Install the .dtd file:
 glomdatadir = $(pkgdatadir)
@@ -49,3 +57,5 @@ glomdata_DATA = glom_document.dtd
 glade_DATA = glom.glade
 
 EXTRA_DIST = glom_document.dtd $(glade_DATA)
+
+

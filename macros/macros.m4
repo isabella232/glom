@@ -16,9 +16,9 @@ AC_DEFUN([GLOM_ARG_ENABLE_WARNINGS],
   glom_warning_flags=''
 
   case "$glom_enable_warnings" in
-    minimum|yes) glom_warning_flags='-Wall';;
-    maximum)     glom_warning_flags='-pedantic -W -Wall';;
-    hardcore)    glom_warning_flags='-pedantic -W -Wall -Werror';;
+    minimum|yes) glom_warning_flags='-Wall -Wno-long-long';;
+    maximum)     glom_warning_flags='-pedantic -W -Wall -Wno-long-long';;
+    hardcore)    glom_warning_flags='-pedantic -W -Wall -Wno-long-long -Werror';;
   esac
 
   glom_use_flags=''

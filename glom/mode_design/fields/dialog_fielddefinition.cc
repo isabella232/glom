@@ -19,6 +19,7 @@
  */
 
 #include "dialog_fielddefinition.h"
+#include "dialog_fieldcalculation.h"
 #include "../../box_db_table.h"
 //#include <libgnome/gnome-i18n.h>
 #include <libintl.h>
@@ -44,12 +45,19 @@ Dialog_FieldDefinition::Dialog_FieldDefinition(BaseObjectType* cobject, const Gl
   refGlade->get_widget_derived("combobox_lookup_relationship",  m_pCombo_LookupRelationship);
   refGlade->get_widget_derived("combobox_lookup_field",  m_pCombo_LookupField);
 
+  refGlade->get_widget("checkbutton_calculate",  m_pCheck_Calculate);
+  refGlade->get_widget("alignment_calculate",  m_pAlignment_Calculate);
+  refGlade->get_widget("textview_calculate",  m_pTextView_Calculation);
+  refGlade->get_widget("button_edit_calculation",  m_pButton_EditCalculation);
 
   //Connect signals:
   m_pCombo_Type->signal_changed().connect( sigc::mem_fun(*this, &Dialog_FieldDefinition::on_combo_type_changed) );
   m_pCombo_LookupRelationship->signal_changed().connect( sigc::mem_fun(*this, &Dialog_FieldDefinition::on_combo_lookup_relationship_changed) );
   m_pCheck_Lookup->signal_toggled().connect( sigc::mem_fun(*this, &Dialog_FieldDefinition::on_check_lookup_toggled) );
 
+  m_pCheck_Calculate->signal_toggled().connect( sigc::mem_fun(*this, &Dialog_FieldDefinition::on_check_calculate_toggled) );
+  m_pButton_EditCalculation->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_FieldDefinition::on_button_edit_calculation) );
+  
   //TODO:
   //Connect every widget to on_anything_changed():
   //foreachgettext( (GtkCallback)(&on_foreach), this); //Crashes several levels down.
@@ -128,7 +136,15 @@ void Dialog_FieldDefinition::set_field(const Field& field, const Glib::ustring& 
   if(!disable_default_value)
     lookup_field_name = m_Field.get_lookup_field();
   m_pCombo_LookupField->set_active_text(lookup_field_name);
-    
+
+
+  //Calculation:
+  const Glib::ustring calculation = field.get_calculation();
+  m_pCheck_Calculate->set_active(!calculation.empty());
+  on_check_lookup_toggled();
+  
+  m_pTextView_Calculation->get_buffer()->set_text(calculation);
+          
   m_pEntry_Title->set_text(field.get_title());
 
   set_blocked(false);
@@ -172,6 +188,10 @@ Field Dialog_FieldDefinition::get_field() const
     lookup_field = m_pCombo_LookupField->get_active_text();
   field.set_lookup_field(lookup_field);
 
+
+  //Calculation:
+  if(m_pCheck_Calculate)
+    field.set_calculation(m_pTextView_Calculation->get_buffer()->get_text());
    
   Gnome::Gda::FieldAttributes field_info_copy = fieldInfo;
     
@@ -215,6 +235,9 @@ void Dialog_FieldDefinition::enforce_constraints()
   {
     m_pBox_DefaultValue->set_sensitive(true);
   }
+
+  bool enable_calc = m_pCheck_Calculate->get_active();
+  m_pAlignment_Calculate->set_sensitive(enable_calc);
 }
 
 void Dialog_FieldDefinition::on_check_lookup_toggled()
@@ -225,6 +248,16 @@ void Dialog_FieldDefinition::on_check_lookup_toggled()
   //re-disable it if it was not meant to be enabled:
   enforce_constraints();
 }
+
+void Dialog_FieldDefinition::on_check_calculate_toggled()
+{
+  bool enable = m_pCheck_Calculate->get_active();
+  m_pAlignment_Calculate->set_sensitive(enable);
+
+  //re-disable it if it was not meant to be enabled:
+  enforce_constraints();
+}
+
 
 void Dialog_FieldDefinition::on_combo_lookup_relationship_changed()
 {
@@ -255,5 +288,30 @@ void Dialog_FieldDefinition::on_combo_lookup_relationship_changed()
   }
 
 }
+
+void Dialog_FieldDefinition::on_button_edit_calculation()
+{
+  //TODO: Share a global instance, to make this quicker?
+  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_field_calculation");
+  if(refXml)
+  {
+    Dialog_FieldCalculation* dialog = 0;
+    refXml->get_widget_derived("window_field_calculation", dialog);
+    if(dialog)
+    {
+      m_Field.set_calculation( m_pTextView_Calculation->get_buffer()->get_text() );
+      dialog->set_field(m_Field, m_table_name);
+      int response = dialog->run();
+      if(response == Gtk::RESPONSE_OK)
+      {
+        m_pTextView_Calculation->get_buffer()->set_text( dialog->get_field().get_calculation() );
+      }
+      
+      delete dialog;
+    }
+  }
+}
+
+
 
 

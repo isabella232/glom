@@ -18,12 +18,14 @@
  * Boston, MA 02111-1307, USA.
  */
 
+//We use Python for calculated fields.
+#include <Python.h> //Include it before anything else to avoid "_POSIX_C_SOURCE redefined".
+
 //#include <gnome.h>
 #include <gtkmm/main.h>
 #include <libgnome/gnome-init.h> // For gnome_program_init().
 
-//We use Python for calculated fields.
-//#include <Python.h>
+
 
 #include "config.h" //For VERSION.
 
@@ -52,7 +54,7 @@ main(int argc, char* argv[])
   }
 
   //We use python for calculated-fields:
-  //PyInitialize();
+  Py_Initialize();
   
   try
   {
@@ -80,7 +82,7 @@ main(int argc, char* argv[])
   }
 
   //We use python for calculated-fields:
-  //PyFinalize();
+  Py_Finalize();
   
   return 0;
 }

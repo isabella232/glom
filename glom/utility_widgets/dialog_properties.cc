@@ -82,6 +82,14 @@ void Dialog_Properties::widget_connect_changed_signal(Gtk::Widget& widget)
       {
         pToggleButton->signal_toggled().connect( sigc::mem_fun(*this, &Dialog_Properties::on_anything_changed) );
       }
+      else
+      {
+        Gtk::TextView* pTextView = dynamic_cast<Gtk::TextView*>(&widget);
+        if(pTextView)
+        {
+          pTextView->get_buffer()->signal_changed().connect( sigc::mem_fun(*this, &Dialog_Properties::on_anything_changed) );
+        }
+      }
     }
   }
 }

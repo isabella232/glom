@@ -1,4 +1,4 @@
-INCLUDES = -I@top_srcdir@/ $(GLOM_CFLAGS)
+INCLUDES = -I@top_srcdir@/ $(GLOM_CFLAGS) $(PYTHON_INCLUDES)
 
 SUBDIRS = fields
 

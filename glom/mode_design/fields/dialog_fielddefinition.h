@@ -48,6 +48,8 @@ protected:
   void on_combo_type_changed();
   void on_combo_lookup_relationship_changed();
   void on_check_lookup_toggled();
+  void on_check_calculate_toggled();
+  void on_button_edit_calculation();
   
   //void on_foreach(Gtk::Widget& widget);
 
@@ -69,6 +71,11 @@ protected:
   Combo_LookupRelationship* m_pCombo_LookupRelationship;
   Combo_TextGlade* m_pCombo_LookupField;
 
+  Gtk::CheckButton* m_pCheck_Calculate;
+  Gtk::Alignment* m_pAlignment_Calculate;
+  Gtk::TextView* m_pTextView_Calculation;
+  Gtk::Button* m_pButton_EditCalculation;
+     
   Gtk::Entry* m_pEntry_Title;
 
   Field m_Field;

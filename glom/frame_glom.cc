@@ -215,7 +215,9 @@ bool Frame_Glom::set_mode(enumModes mode)
 void Frame_Glom::alert_no_table()
 {
   //Ask user to choose a table first:
-  show_ok_dialog(gettext("No database chosen"), gettext("You must choose a database table first.\n Use the Navigation menu, or load a previous document."));
+  Gtk::Window* pWindowApp = get_app_window();
+  if(pWindowApp)
+    show_ok_dialog(gettext("No database chosen"), gettext("You must choose a database table first.\n Use the Navigation menu, or load a previous document."), *pWindowApp);
 }
 
 void Frame_Glom::show_table(const Glib::ustring& strTableName)
@@ -348,7 +350,9 @@ void Frame_Glom::do_menu_Navigate_Table(bool open_default)
 {
   if(get_document()->get_connection_database().empty())
   {
-    show_ok_dialog(gettext("No database chosen"), gettext("You must choose a database first.\n Use the Navigation|Database menu item, or load a previous document."));
+    Gtk::Window* pWindowApp = get_app_window();
+    if(pWindowApp)
+      show_ok_dialog(gettext("No database chosen"), gettext("You must choose a database first.\n Use the Navigation|Database menu item, or load a previous document."), *pWindowApp);
   }
   else
   {
@@ -403,7 +407,7 @@ Gtk::Window* Frame_Glom::get_app_window()
 
 }
 
-void Frame_Glom::show_ok_dialog(const Glib::ustring& title, const Glib::ustring& message)
+void Frame_Glom::show_ok_dialog(const Glib::ustring& title, const Glib::ustring& message, Gtk::Window& parent)
 {
   Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_information");
   Gtk::Dialog* dialog = 0;
@@ -416,9 +420,7 @@ void Frame_Glom::show_ok_dialog(const Glib::ustring& title, const Glib::ustring&
   label->set_text(text);
   label->set_use_markup();
 
-  Gtk::Window* pWindowApp = get_app_window();
-  if(pWindowApp)
-   dialog->set_transient_for(*pWindowApp);
+  dialog->set_transient_for(parent);
 
   dialog->run();
   delete dialog;

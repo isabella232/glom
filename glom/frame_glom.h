@@ -78,6 +78,8 @@ public:
   enumModes m_Mode;
   enumModes m_Mode_Previous; // see comments in set_mode_widget().
 
+  static void show_ok_dialog(const Glib::ustring& title, const Glib::ustring& message, Gtk::Window& parent);
+
 protected:
 
   //virtual void set_document(Document_Glom* pDocument); //override
@@ -92,7 +94,6 @@ protected:
   virtual Gtk::Window* get_app_window();
   virtual const Gtk::Window* get_app_window() const;
   
-  virtual void show_ok_dialog(const Glib::ustring& title, const Glib::ustring& message);
   virtual void alert_no_table();
   
   //Signal handlers:

@@ -1,3 +1,23 @@
+2004-07-06  Murray Cumming  <murrayc@murrayc.com>
+
+	* Embed python for calculated fields:
+	* scripts/macros.m4: GLOM_ARG_ENABLE_WARNINGS: Add -Wno-long-long so 
+	that the C++ compiler does not complain about the long longs in the 
+	python headers.
+	* Added acinclude.m4, copied from pygtk, with additions from the 
+	version in Plannet. Used the AM_CHECK_PYTHON_INCLUDES macro in 
+	configure.in to detect the python headers and libs.
+	* glom/glade.glom: Added widgets for field calculation to the 
+	Field Definition dialog.
+	* glom/mode_design/fields/dialog_fielddefinition.[h|cc]: Load and save 
+	the field calculation.
+	* glom/mode_design/fields/: Added dialog_fieldcalculation.[h|cc] that 
+	can be opened from the Field Definition window to edit and test the 
+	python code.
+	* glom/: Added glom_python.[h|cc]: With a function that can evaluate 
+	arbitrary python code as if it is a python function definition.
+	* glom/main.cc: Intialize and terminate the python runtime.
+
 0.8.6:
 
 2004-07-05  Murray Cumming  <murrayc@murrayc.com>
