@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glom VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-12-07 11:08+0100\n"
-"PO-Revision-Date: 2004-12-07 18:05+0100\n"
+"POT-Creation-Date: 2004-12-11 19:09+0100\n"
+"PO-Revision-Date: 2004-12-11 22:17+0100\n"
 "Last-Translator: Miloslav Trmac <mitr@volny.cz>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -41,26 +41,30 @@ msgid "<b>Select Field</b>"
 msgstr "<b>Zvolte pole</b>"
 
 #: glom/glom.glade.h:7
+msgid "<b>Select Relationship</b>"
+msgstr "<b>Zvolte vztah</b>"
+
+#: glom/glom.glade.h:8
 msgid "<b>Table: </b>"
 msgstr "<b>Tabulka: </b>"
 
-#: glom/glom.glade.h:8
+#: glom/glom.glade.h:9
 msgid "<b>Tables in database</b>"
 msgstr "<b>Tabulky v databázi</b>"
 
-#: glom/glom.glade.h:9
+#: glom/glom.glade.h:10
 msgid "<b>Title:</b>"
 msgstr "<b>Nadpis:</b>"
 
-#: glom/glom.glade.h:10
+#: glom/glom.glade.h:11
 msgid "<b>User Level: </b>"
 msgstr "<b>Úroveň uživatele: </b>"
 
-#: glom/glom.glade.h:11
+#: glom/glom.glade.h:12
 msgid "<b>def calculate_field_value():</b>"
 msgstr "<b>def calculate_field_value():</b>"
 
-#: glom/glom.glade.h:12
+#: glom/glom.glade.h:13
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Connect to Server</span>\n"
 "\n"
@@ -70,7 +74,7 @@ msgstr ""
 "\n"
 "Zadejte prosím podrobnosti o připojení k vašemu databázovému serveru."
 
-#: glom/glom.glade.h:15
+#: glom/glom.glade.h:16
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Connection Failed</span>\n"
 "\n"
@@ -83,7 +87,7 @@ msgstr ""
 "Glom se nemohl připojit k databázovému serveru. Možná jste zadali nesprávné "
 "jméno uživatele nebo heslo, nebo možná neběží server databáze postgres."
 
-#: glom/glom.glade.h:18
+#: glom/glom.glade.h:19
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Database creation failed</span>\n"
 "\n"
@@ -95,7 +99,7 @@ msgstr ""
 "Glom nemohl vytvořit novou databázi. Možná nemáte potřebná oprávnění. "
 "Kontaktujte prosím vašeho správce systému."
 
-#: glom/glom.glade.h:21
+#: glom/glom.glade.h:22
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Database does not exist</span>\n"
 "\n"
@@ -104,9 +108,10 @@ msgid ""
 msgstr ""
 "<span weight=\"bold\" size=\"larger\">Databáze neexistuje</span>\n"
 "\n"
-"Databáze ještě na databázovém serveru neexistuje. Chcete vytvořit databázi s prázdnou strukturou?"
+"Databáze ještě na databázovém serveru neexistuje. Chcete vytvořit databázi s "
+"prázdnou strukturou?"
 
-#: glom/glom.glade.h:24
+#: glom/glom.glade.h:25
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Invalid format</span>\n"
 "\n"
@@ -119,7 +124,7 @@ msgstr ""
 "Data v poli nebyla rozpoznána. Zkuste prosím opravit data nebo se vrátit k "
 "předchozí hodnotě. Zde je příklad správně formátovaných dat pro toto pole.\n"
 
-#: glom/glom.glade.h:28
+#: glom/glom.glade.h:29
 msgid ""
 "<span weight=\"bold\" size=\"larger\">New Database</span>\n"
 "\n"
@@ -131,7 +136,7 @@ msgstr ""
 "Zvolte prosím název a nadpis nové databáze. Název by neměl obsahovat žádné "
 "mezery."
 
-#: glom/glom.glade.h:31
+#: glom/glom.glade.h:32
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Open existing document, or create new "
 "document</span>\n"
@@ -148,7 +153,7 @@ msgstr ""
 "\n"
 "Nebo chcete vytvořit nový dokument, navrhnout novou databázi?\n"
 
-#: glom/glom.glade.h:37
+#: glom/glom.glade.h:38
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Title</span>\n"
 "\n"
@@ -158,131 +163,139 @@ msgstr ""
 "\n"
 "Informující text.\n"
 
-#: glom/glom.glade.h:41
+#: glom/glom.glade.h:42
+msgid "Add Related"
+msgstr "Přidat vztah"
+
+#: glom/glom.glade.h:43
 msgid "Add _Group"
 msgstr "Přidat _skupinu"
 
-#: glom/glom.glade.h:42
+#: glom/glom.glade.h:44
 msgid "Auto-increment"
 msgstr "Automaticky-inkrementovat"
 
-#: glom/glom.glade.h:43
+#: glom/glom.glade.h:45
 msgid "Calculate value"
 msgstr "Vypočítat hodnotu"
 
-#: glom/glom.glade.h:44
+#: glom/glom.glade.h:46
 msgid "Connect"
 msgstr "Připojit"
 
-#: glom/glom.glade.h:45
+#: glom/glom.glade.h:47
 msgid "Create"
 msgstr "Vytvořit"
 
-#: glom/glom.glade.h:46
+#: glom/glom.glade.h:48
 msgid "Data"
 msgstr "Data"
 
-#: glom/glom.glade.h:47
+#: glom/glom.glade.h:49
 msgid "Database"
 msgstr "Databáze"
 
-#: glom/glom.glade.h:48
+#: glom/glom.glade.h:50
 msgid "Default Value"
 msgstr "Implicitní hodnota"
 
-#: glom/glom.glade.h:49
+#: glom/glom.glade.h:51
 msgid "Details Layout"
 msgstr "Podrobné rozložení"
 
-#: glom/glom.glade.h:50
+#: glom/glom.glade.h:52
 msgid "Edit"
 msgstr "Upravit"
 
-#: glom/glom.glade.h:51
+#: glom/glom.glade.h:53
 msgid "Edit Definition"
 msgstr "Upravit definici"
 
-#: glom/glom.glade.h:52
+#: glom/glom.glade.h:54
 msgid "Extra"
 msgstr "Extra"
 
-#: glom/glom.glade.h:53
+#: glom/glom.glade.h:55
 msgid "Field"
 msgstr "Pole"
 
-#: glom/glom.glade.h:54
+#: glom/glom.glade.h:56
 msgid "Field Calculation"
 msgstr "Výpočet pole"
 
-#: glom/glom.glade.h:55
+#: glom/glom.glade.h:57
 msgid "Field Definition"
 msgstr "Definice pole"
 
-#: glom/glom.glade.h:56
+#: glom/glom.glade.h:58
 msgid "Field Definitions"
 msgstr "Definice pole"
 
-#: glom/glom.glade.h:57
+#: glom/glom.glade.h:59
 msgid "Glom"
 msgstr "Glom"
 
-#: glom/glom.glade.h:58
+#: glom/glom.glade.h:60
 msgid "Host"
 msgstr "Počítač"
 
-#: glom/glom.glade.h:59
+#: glom/glom.glade.h:61
 msgid "List Layout"
 msgstr "Rozložení seznamu"
 
-#: glom/glom.glade.h:60
+#: glom/glom.glade.h:62
 msgid "Lookup value when a field changes."
 msgstr "Vyhledat hodnotu, když se pole změní."
 
-#: glom/glom.glade.h:61
+#: glom/glom.glade.h:63
 msgid "Name"
 msgstr "Název"
 
-#: glom/glom.glade.h:62
+#: glom/glom.glade.h:64
 msgid "None selected"
 msgstr "Nic nevybráno"
 
-#: glom/glom.glade.h:63
+#: glom/glom.glade.h:65
 msgid "Password"
 msgstr "Heslo"
 
-#: glom/glom.glade.h:64
+#: glom/glom.glade.h:66
 msgid "Primary Key"
 msgstr "Primární klíč"
 
-#: glom/glom.glade.h:65
+#: glom/glom.glade.h:67
 msgid "Relationship"
 msgstr "Vztah"
 
-#: glom/glom.glade.h:66
+#: glom/glom.glade.h:68
 msgid "Revert"
 msgstr "Vrátit"
 
-#: glom/glom.glade.h:67
+#: glom/glom.glade.h:69
 msgid "Select"
 msgstr "Vybrat"
 
-#: glom/glom.glade.h:68
+#: glom/glom.glade.h:70
 msgid "Select Field"
 msgstr "Zvolte pole"
 
-#: glom/glom.glade.h:69
+#: glom/glom.glade.h:71
+msgid "Select Relationship"
+msgstr "Zvolte vztah"
+
+#: glom/glom.glade.h:72
 msgid "Show hidden tables"
 msgstr "Zobrazovat skryté tabulky"
 
-#: glom/glom.glade.h:70
+#: glom/glom.glade.h:73
 msgid "Table:"
 msgstr "Tabulka:"
 
-#: glom/glom.glade.h:71
+#: glom/glom.glade.h:74
 msgid "Test"
 msgstr "Test"
 
-#: glom/glom.glade.h:72
+#: glom/glom.glade.h:75
 msgid ""
 "The field value will be the return value of the python function, which you "
 "implement here."
@@ -290,27 +303,27 @@ msgstr ""
 "Hodnota tohoto pole bude návratová hodnota funkce v pythonu, kterou zde "
 "implementujete."
 
-#: glom/glom.glade.h:73
+#: glom/glom.glade.h:76
 msgid "Title"
 msgstr "Nadpis"
 
-#: glom/glom.glade.h:74
+#: glom/glom.glade.h:77
 msgid "Type"
 msgstr "Typ"
 
-#: glom/glom.glade.h:75
+#: glom/glom.glade.h:78
 msgid "Unique"
 msgstr "Jedinečný"
 
-#: glom/glom.glade.h:76
+#: glom/glom.glade.h:79
 msgid "User"
 msgstr "Uživatel"
 
-#: glom/glom.glade.h:77
+#: glom/glom.glade.h:80
 msgid "example data format"
 msgstr "ukázkový formát data"
 
-#: glom/glom.glade.h:78
+#: glom/glom.glade.h:81
 msgid "table name"
 msgstr "název tabulky"
 
