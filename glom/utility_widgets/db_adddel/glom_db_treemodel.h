@@ -23,7 +23,7 @@
 
 #include <gtkmm/treemodel.h>
 #include <gtkmm/treepath.h>
-#include <glom/data_structure/field.h>
+#include "../..//data_structure/field.h"
 
 class DbTreeModelRow
 {

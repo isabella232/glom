@@ -1,3 +1,12 @@
+0.8.12:
+
+* Postgres connection:
+  - Really use the template1 database when creating new databases.
+  - Slightly better error handling.
+* Obscure internals:
+  - Use a custom GdaValue-based treemodel for the List view,
+    allowing us to get data on-demand in future.
+ 
 0.8.11:
 
 * Postgres connection:

@@ -1,3 +1,16 @@
+0.8.12:
+
+2005-02-19  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/connection_pool.cc: connect(): Do not forget the DATABASE= 
+	part of the connection string when connecting to the default templat1 
+	database. Otherewise it gets added to the password. Stupid me.
+	* glom/application.cc: recreate_database() Added a user_cancelled 
+	output parameter, so we only show the error dialog when it's a real 
+	error.
+	* glom/glom_frame.cc: create_database(): Added more error checking 
+	and debug output to investigate problems.
+
 2005-02-19  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/utility_widgets/db_addel/glom_db_treemodel.[h|cc]: Make this 

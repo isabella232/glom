@@ -669,6 +669,7 @@ bool Frame_Glom::connection_request_password_and_attempt()
     {
       try
       {
+        //TODO: Remove any previous database setting?
         sharedptr<SharedConnection> sharedconnection = m_pDialogConnection->connect_to_server_with_connection_settings();
         return true; //Succeeeded, because no exception was thrown.
       }
@@ -715,12 +716,16 @@ bool Frame_Glom::create_database(const Glib::ustring& database_name, bool reques
   }
   catch(const ExceptionConnection& ex)
   {
-     g_warning("debug Frame_Glom::create_database() 1 exception caught");
- 
-    //connection_possible stays false.
+     connection_possible = false;
+     g_warning("debug Frame_Glom::create_database() exception caught: connection failed be");
   }
 
-  if(connection_possible)
+  if(!connection_possible)
+  {
+    g_warning("debug Frame_Glom::create_database(): connection was not possible.");
+    return false;
+  }
+  else
   {
     //This must now succeed, because we've already tried it once:
     sharedptr<SharedConnection> sharedconnection;

@@ -22,7 +22,7 @@
 #define BOX_DATA_LIST_H
 
 #include "box_data.h"
-#include <glom/utility_widgets/db_adddel/db_adddel_withbuttons.h>
+#include "../utility_widgets/db_adddel/db_adddel_withbuttons.h"
 
 class Box_Data_List : public Box_Data
 {

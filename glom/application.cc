@@ -388,23 +388,27 @@ bool App_Glom::on_document_load()
                 return false; //Close the document.
               else
               {
-                bool test = recreate_database();
+                bool user_cancelled = false;
+                bool test = recreate_database(user_cancelled);
 
                 if(!test)
                 {
-                  //Tell the user:
-                  Gtk::Dialog* dialog = 0;
-                  try
+                  if(!user_cancelled)
                   {
-                    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_error_create_database");
-
-                    refXml->get_widget("dialog_error_create_database", dialog);
+                    //Tell the user:
+                    Gtk::Dialog* dialog = 0;
+                    try
+                    {
+                      Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_error_create_database");
+  
+                      refXml->get_widget("dialog_error_create_database", dialog);
+                    }
+                    catch(const Gnome::Glade::XmlError& ex)
+                    {
+                      std::cerr << ex.what() << std::endl;
+                    }
                   }
-                  catch(const Gnome::Glade::XmlError& ex)
-                  {
-                    std::cerr << ex.what() << std::endl;
-                  }
-
+  
                   return false;
                 }
                   
@@ -627,7 +631,7 @@ void App_Glom::on_menu_help_contents()
   gnome_help_display("glom", 0, 0);
 }
 
-bool App_Glom::recreate_database()
+bool App_Glom::recreate_database(bool& user_cancelled)
 {
   //Create a database, based on the information in the current document:
   Document_Glom* pDocument = static_cast<Document_Glom*>(get_document());
@@ -655,10 +659,13 @@ bool App_Glom::recreate_database()
   catch(const ExceptionConnection& ex)
   {
     if(ex.get_failure_type() == ExceptionConnection::FAILURE_NO_SERVER)
-    {
+    { 
+      user_cancelled = true; //Eventually, the user will cancel after retrying.
       g_warning("App_Glom::recreate_database(): Failed because connection to server failed, without specifying a databse.");
       return false;
     }
+    
+    //Otherwise continue, because we expected connect() to fail if the db does not exist yet.
   }
 
  //Create the database:
@@ -666,7 +673,9 @@ bool App_Glom::recreate_database()
   bool db_created = m_pFrame->create_database(db_name, false /* Don't ask for password etc again. */);
   
   if(!db_created)
+  {
     return false;
+  }
   else
     connection_pool->set_database(db_name); //Specify the new database when connection from now on.
                
@@ -678,7 +687,7 @@ bool App_Glom::recreate_database()
   }
   catch(const ExceptionConnection& ex)
   {
-    g_warning("App_Glom::recreate_database(): Failed because connection to server failed, without specifying a database.");
+    g_warning("App_Glom::recreate_database(): Failed to connect to the newly-created database.");
     return false;
   }
 
@@ -723,9 +732,23 @@ bool App_Glom::recreate_database()
     }
 
     //Actually create the table
-    Glib::RefPtr<Gnome::Gda::DataModel> data_model = m_pFrame->Query_execute( "CREATE TABLE \"" + table_name + "\" (" + sql_fields + ")" );
-    if(!data_model)
+    bool table_creation_succeeded = true;
+    try
+    {
+      Glib::RefPtr<Gnome::Gda::DataModel> data_model = m_pFrame->Query_execute( "CREATE TABLE \"" + table_name + "\" (" + sql_fields + ")" );
+      if(!data_model)
+        table_creation_succeeded = false;
+    }
+    catch(const ExceptionConnection& ex)
+    {
+      table_creation_succeeded = false;
+    }
+    
+    if(!table_creation_succeeded)
+    {
+      g_warning("App_Glom::recreate_database(): CREATE TABLE failed with the newly-created database.");
       return false;
+    }
       
   } //for(tables)
 
