@@ -209,7 +209,9 @@ public:
 
 protected:
 
-  virtual bool get_column_index(const LayoutItem_Field& layout_item, guint& index) const;
+  typedef std::list<guint> type_list_indexes;
+  ///Return the column indexes of any columns that display this field.
+  virtual type_list_indexes get_column_index(const LayoutItem_Field& layout_item) const;
 
   /** Get an iterator to the blank row in which the user should add data for the new row.
    * You can then add the row to your underlying data store when some data has been filled, by handling signal_user_changed.

@@ -1,3 +1,13 @@
+2005-03-14  Murray Cumming <murrayc@murrayc.com>
+
+	* glom/mode_data/box_data_list.cc:
+	* glom/utility_widgets/db_adddel/db_adddel.cc:
+	* glom/utility_widgets/db_adddel/db_adddel.h:
+	Db_AddDel::get_column_index() now returns a 
+	list of indexes, so that set_value() updates 
+	the value in all columns when a field is present 
+	more than once.
+
 2005-03-14  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/mode_data/box_data.cc:

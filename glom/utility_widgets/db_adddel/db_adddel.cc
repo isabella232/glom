@@ -376,11 +376,12 @@ Gnome::Gda::Value DbAddDel::get_value(const Gtk::TreeModel::iterator& iter, cons
 
     if(treerow)
     {
-      guint col = 0;
-      bool test = get_column_index(layout_item, col);
-      if(test)
+      type_list_indexes list_indexes = get_column_index(layout_item);
+      if(!list_indexes.empty())
       {
-        const guint col_real = col + get_count_hidden_system_columns();
+        type_list_indexes::const_iterator iter = list_indexes.begin(); //Just get the first displayed instance of this field.
+
+        const guint col_real = *iter + get_count_hidden_system_columns();
         treerow.get_value(col_real, value);
       }
     }
@@ -731,11 +732,10 @@ void DbAddDel::set_value(const Gtk::TreeModel::iterator& iter, const LayoutItem_
     Gtk::TreeModel::Row treerow = *iter;
     if(treerow)
     {
-      guint col = 0;
-      bool test = get_column_index(layout_item, col);
-      if(test)
+      type_list_indexes list_indexes = get_column_index(layout_item);
+      for(type_list_indexes::const_iterator iter = list_indexes.begin(); iter != list_indexes.end(); ++iter)
       {
-        guint treemodel_col = col + get_count_hidden_system_columns();
+        guint treemodel_col = *iter + get_count_hidden_system_columns();
         treerow.set_value(treemodel_col, value);
 
         //Mark this row as not a placeholder because it has real data now.
@@ -788,28 +788,27 @@ guint DbAddDel::add_column(const LayoutItem_Field& field, bool editable, bool vi
   return m_ColumnTypes.size() - 1;
 }
 
-bool DbAddDel::get_column_index(const LayoutItem_Field& layout_item, guint& index) const
+DbAddDel::type_list_indexes DbAddDel::get_column_index(const LayoutItem_Field& layout_item) const
 {
   //TODO_Performance: Replace all this looping by a cache/map:
 
-  //TODO: Handle multiple appearances of the same field:
+  type_list_indexes list_indexes;
 
-  //Initialize output parameter:
-  index = 0;
+  const Glib::ustring field_name = layout_item.get_name();
+  const Glib::ustring relationship_name = layout_item.get_relationship_name();
 
   guint i = 0;
   for(type_ColumnTypes::const_iterator iter = m_ColumnTypes.begin(); iter != m_ColumnTypes.end(); ++iter)
   {
-    if(iter->m_field.get_name() == layout_item.get_name())
+    if( (iter->m_field.get_name() == field_name) && (iter->m_field.get_relationship_name() == relationship_name) )
     {
-      index = i;
-      return true;
+      list_indexes.push_back(i);
     }
 
     ++i;
   }
 
-  return false;
+  return list_indexes;
 }
 
 LayoutItem_Field DbAddDel::get_column_field(guint column_index) const

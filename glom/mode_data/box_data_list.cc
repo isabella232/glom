@@ -335,8 +335,8 @@ void Box_Data_List::on_adddel_user_reordered_columns()
 
 void Box_Data_List::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, guint col)
 {
-  const Gnome::Gda::Value primary_key_value = get_primary_key_value(row);
-  if(!GlomConversions::value_is_empty(primary_key_value)) //If the record's primary key is filled in:
+  const Gnome::Gda::Value parent_primary_key_value = get_primary_key_value(row);
+  if(!GlomConversions::value_is_empty(parent_primary_key_value)) //If the record's primary key is filled in:
   {
     //Just update the record:
     try
@@ -350,8 +350,8 @@ void Box_Data_List::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, 
       if(!layout_field.get_has_relationship_name())
       {
         table_name = m_strTableName;
-        primary_key_field = m_AddDel.get_key_field();;
-        primary_key_value = primary_key_value;
+        primary_key_field = m_AddDel.get_key_field();
+        primary_key_value = parent_primary_key_value;
       }
       else
       {
