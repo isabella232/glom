@@ -1,9 +1,13 @@
 0.8.4:
 
 * Connection dialog: The connect button is now activated when you press return in the password entry.
+* Data Details: Groups of fields are now shown together in a HIG-style frame.
+* Design: field, table, and layout group titles now have defaults, by replacing white space and 
+  capitalizing.
 * Some build improvements.
+  (Murray Cumming)
 * Added Portugese translation (Duarte Loreto)
-
+* Added British English translation (Gareth Owen)
 
 0.8.3:
 
