@@ -22,7 +22,8 @@
 #include "glom_db_treemodel.h"
 
 DbTreeModelRow::DbTreeModelRow()
-: m_placeholder(false)
+: m_placeholder(false),
+  m_debug(0)
 {
 
 }
@@ -79,11 +80,6 @@ DbTreeModel::DbTreeModel(const Gtk::TreeModelColumnRecord& columns)
 
   //The Column information that can be used with TreeView::append(), TreeModel::iterator[], etc.
   m_columns_count = columns.size();
-  m_listModelColumns.resize(m_columns_count);
-  for(unsigned int column_number = 0; column_number < m_columns_count; ++column_number)
-  {
-    m_column_record.add( m_listModelColumns[column_number] );
-  }
 }
 
 DbTreeModel::~DbTreeModel()
@@ -109,8 +105,8 @@ int DbTreeModel::get_n_columns_vfunc() const
 
 GType DbTreeModel::get_column_type_vfunc(int index) const
 {
-  if(index <= (int)m_listModelColumns.size())
-    return m_listModelColumns[index].type();
+  if(index < (int)m_columns_count)
+    return typeModelColumn::ValueType::value_type();
   else
     return 0;
 }
@@ -119,7 +115,7 @@ void DbTreeModel::get_value_vfunc(const TreeModel::iterator& iter, int column, G
 {
   if(check_treeiter_validity(iter))
   {
-    if(column <= (int)m_listModelColumns.size())
+    if(column < (int)m_columns_count)
     {
       //Get the correct ValueType from the Gtk::TreeModel::Column's type, so we don't have to repeat it here:
       typeModelColumn::ValueType value_specific;
@@ -148,10 +144,6 @@ bool DbTreeModel::iter_next_vfunc(const iterator& iter, iterator& iter_next) con
 { 
   if( check_treeiter_validity(iter) )
   {
-    //initialize the iterator:
-    iter_next = iterator();
-    iter_next.set_stamp(m_stamp);
-    
     //Get the current row:
     typeListOfRows::iterator row_iter = get_data_row_iter_from_tree_row_iter(iter);
         
@@ -181,7 +173,7 @@ bool DbTreeModel::iter_has_child_vfunc(const iterator& /* iter */) const
 int DbTreeModel::iter_n_children_vfunc(const iterator& iter) const
 {
   if(!check_treeiter_validity(iter))
-    return 0;
+    return iter_n_root_children_vfunc();
     
   return 0; //There are no children
 }
@@ -189,6 +181,11 @@ int DbTreeModel::iter_n_children_vfunc(const iterator& iter) const
 int DbTreeModel::iter_n_root_children_vfunc() const
 {
   return m_rows.size();
+}
+
+void DbTreeModel::invalidate_iter(iterator& iter) const
+{
+  iter.set_stamp(0);
 }
 
 bool DbTreeModel::iter_nth_child_vfunc(const iterator& parent, int /* n */, iterator& iter) const
@@ -207,9 +204,6 @@ bool DbTreeModel::iter_nth_root_child_vfunc(int n, iterator& iter) const
 {
   if(n < (int)m_rows.size())
   {
-    iter = iterator(); //clear the input parameter.
-    iter.set_stamp(m_stamp);
-
     //Store the row_index in the GtkTreeIter:
     //See also iter_next_vfunc()
     
@@ -236,11 +230,11 @@ bool DbTreeModel::iter_parent_vfunc(const iterator& child, iterator& iter) const
 {
   if(!check_treeiter_validity(child))
   {
-    iter = iterator(); //Set is as invalid, as the TreeModel documentation says that it should be.
+    invalidate_iter(iter); //Set is as invalid, as the TreeModel documentation says that it should be.
     return false;
   }
 
-  iter = iterator(); //Set is as invalid, as the TreeModel documentation says that it should be.
+  invalidate_iter(iter); //Set is as invalid, as the TreeModel documentation says that it should be.
   return false; //There are no children, so no parents.
 }
 
@@ -256,7 +250,6 @@ Gtk::TreeModel::Path DbTreeModel::get_path_vfunc(const iterator& iter) const
    }
    
    Gtk::TreeModel::Path path;
-   g_warning("DbTreeModel::get_path_vfunc(): returning %d", index);
    path.push_back(index);
    return path;
 }
@@ -302,25 +295,22 @@ void DbTreeModel::create_iterator(const typeListOfRows::iterator& row_iter, DbTr
 
 bool DbTreeModel::get_iter_vfunc(const Path& path, iterator& iter) const
 {
+  //g_warning("DbTreeModel::get_iter_vfunc(): path=%s", path.to_string().c_str());
+  
    unsigned sz = path.size();
    if(!sz)
    {
-     iter = iterator(); //Set is as invalid, as the TreeModel documentation says that it should be.
+     invalidate_iter(iter); //Set is as invalid, as the TreeModel documentation says that it should be.
      return false;
    }
 
    if(sz > 1) //There are no children.
    {
-     iter = iterator(); //Set is as invalid, as the TreeModel documentation says that it should be.
+     invalidate_iter(iter); //Set is as invalid, as the TreeModel documentation says that it should be.
      return false; 
    }
 
    return iter_nth_root_child_vfunc(path[0], iter);
-}
-
-Gtk::TreeModelColumn< DbTreeModel::DbValue >& DbTreeModel::get_model_column(int column)
-{
-  return m_listModelColumns[column];
 }
 
 DbTreeModel::typeListOfRows::iterator DbTreeModel::get_data_row_iter_from_tree_row_iter(const iterator& iter) const
@@ -384,6 +374,7 @@ DbTreeModel::iterator DbTreeModel::append()
   //Get a std::list iterator to the last element:
   typeListOfRows::iterator row_iter = m_rows.end();
   --row_iter;
+  row_iter->m_debug = existing_size;
  
   //Create the row:
   row_iter->m_db_values.resize(m_columns_count); 
@@ -403,6 +394,9 @@ DbTreeModel::iterator DbTreeModel::append()
   //Create the iterator to the new row:
   iterator iter;
   create_iterator(row_iter, iter);
+  
+  row_inserted(get_path(iter), iter); //Allow the TreeView to respond to the addition.
+    
   return iter;
 }
 
@@ -430,6 +424,9 @@ void DbTreeModel::set_value_impl(const iterator& row, int column, const Glib::Va
       DbValue& refValue = row_iter->m_db_values[column];
       
       refValue = pDbValue->get();
+      
+      //TODO: Performance: get_path() is really slow.
+      row_changed( get_path(row), row);
     }
   }
 }
@@ -444,7 +441,10 @@ DbTreeModel::iterator DbTreeModel::erase(const iterator& iter)
     typeListOfRows::iterator row_iter = get_data_row_iter_from_tree_row_iter(iter);
    
     //Remove the row.
+    Gtk::TreePath path_deleted = get_path(iter);
     typeListOfRows::iterator iterNextRow = m_rows.erase(row_iter);
+    
+    row_deleted(path_deleted);
     
     //Return an iterator to the next row:
     create_iterator(iterNextRow, iter_result);

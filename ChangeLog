@@ -1,5 +1,12 @@
 2005-02-19  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/utility_widgets/db_addel/glom_db_treemodel.[h|cc]: Make this 
+	actually work, by calling row_inserted(), row_deleted(), and 
+	row_changed() in the appropriate places. This needs some speed 
+	optimisation and probably has some memory leaks of the GlueItems. 
+
+2005-02-19  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/utility_widgets/db_adddel/db_adddel.[h|cc]: Use the 
 	Gda::Value-based treemodel. It almost works.
 

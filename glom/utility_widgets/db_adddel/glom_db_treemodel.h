@@ -31,6 +31,7 @@ public:
   DbTreeModelRow();
   
   bool m_placeholder;
+  int m_debug;
   
   typedef Gnome::Gda::Value DbValue;
   typedef std::vector< DbValue > type_vec_values;
@@ -65,8 +66,6 @@ public:
   iterator erase(const iterator& iter);
   
   void clear();
-  
-  Gtk::TreeModelColumn< DbValue >& get_model_column(int column);
   
   /** Creates a new row at the end.
    * The row will be empty - to fill in values, you need to dereference the returned iterator and use Row::operator[] or Row::set_value().
@@ -111,6 +110,7 @@ private:
    typedef std::list< typeRow > typeListOfRows; //Y rows.
    
    void create_iterator(const typeListOfRows::iterator& row_iter, DbTreeModel::iterator& iter) const;
+   void invalidate_iter(iterator& iter) const;
 
    //This maps the GtkTreeIters to potential paths:
    //Each GlueItem might be stored in more than one GtkTreeIter,
@@ -163,10 +163,6 @@ private:
    ColumnRecord m_column_record;
 
    typedef Gtk::TreeModelColumn< DbValue > typeModelColumn;
-   // Usually you would have different types for each column -
-   // then you would want a vector of pointers to the model columns.
-   typedef std::vector< typeModelColumn > typeListOfModelColumns;
-   typeListOfModelColumns m_listModelColumns;
 
    int m_stamp; //When the model's stamp and the TreeIter's stamp are equal, the TreeIter is valid.
    mutable GlueList* m_pGlueList;

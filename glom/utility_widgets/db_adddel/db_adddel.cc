@@ -1491,7 +1491,6 @@ void DbAddDel::treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gt
       Gtk::CellRendererText* pDerived = dynamic_cast<Gtk::CellRendererText*>(renderer);
       
       Glib::ustring debugtext = GlomConversions::get_text_for_gda_value(column_info.m_field.get_glom_type(), value);
-      g_warning("rendering value as %s", debugtext.c_str());
       
       pDerived->property_text() = GlomConversions::get_text_for_gda_value(column_info.m_field.get_glom_type(), value);
   
