@@ -177,7 +177,7 @@ Document_Glom::type_vecFields Document_Glom::get_table_fields(const Glib::ustrin
       {
          g_warning("Document_Glom::get_table_fields: table found, but m_fields is empty");
       }
-      
+
       return iterFind->second.m_fields;
     }
     else
@@ -188,7 +188,7 @@ Document_Glom::type_vecFields Document_Glom::get_table_fields(const Glib::ustrin
   }
   else
   {
-    g_warning("Document_Glom::get_table_fields: table name is empty.");
+    //g_warning("Document_Glom::get_table_fields: table name is empty.");
     return type_vecFields();
   }
 }

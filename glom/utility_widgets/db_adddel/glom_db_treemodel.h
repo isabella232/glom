@@ -49,24 +49,24 @@ protected:
   //Create a TreeModel with @a columns_count number of columns, each of type Glib::ustring.
   DbTreeModel(const Gtk::TreeModelColumnRecord& columns, const Glib::ustring& table_name, const type_vec_fields& column_fields);
   virtual ~DbTreeModel();
-  
+
 public:
   static Glib::RefPtr<DbTreeModel> create(const Gtk::TreeModelColumnRecord& columns, const Glib::ustring& table_name, const type_vec_fields& column_fields);
-  
+
   typedef DbTreeModelRow::DbValue DbValue;
-  
+
   virtual void set_is_placeholder(const TreeModel::iterator& iter, bool val);
   virtual bool get_is_placeholder(const TreeModel::iterator& iter) const;
 
-  
+
   /** Removes the given row from the list store.
    * @param iter The iterator to the row to be removed.
    * @result An iterator to the next row, or end() if there is none.
    */
   iterator erase(const iterator& iter);
-  
+
   void clear();
-  
+
   /** Creates a new row at the end.
    * The row will be empty - to fill in values, you need to dereference the returned iterator and use Row::operator[] or Row::set_value().
    *

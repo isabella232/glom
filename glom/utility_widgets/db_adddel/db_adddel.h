@@ -280,7 +280,7 @@ protected:
   Glib::RefPtr<type_model_store> m_refListStore;
 
   //Hidden internal columns:
-  Gtk::TreeModelColumn<Gnome::Gda::Value>* m_modelcolumn_key;   
+  Gtk::TreeModelColumn<Gnome::Gda::Value>* m_modelcolumn_key; 
 
   //Columns, not including the hidden internal columns:
   typedef std::vector<DbAddDelColumnInfo> type_ColumnTypes;

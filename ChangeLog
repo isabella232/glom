@@ -1,6 +1,21 @@
 2005-03-14  Murray Cumming <murrayc@murrayc.com>
 
-	* examples/example_smallbusiness.glom:
+	* glom/document/document_glom.cc:
+	* glom/mode_data/box_data_list.cc:
+	* glom/utility_widgets/db_adddel/db_adddel.cc:
+	* glom/utility_widgets/db_adddel/db_adddel.h:
+	* glom/utility_widgets/db_adddel/glom_db_treemodel.cc:
+	* glom/utility_widgets/db_adddel/glom_db_treemodel.h:
+        Glom_Db_TreeModel::on_treeview_cell_edited(): 
+	Do not set a bogus key value when a column is the 
+	first to get a value, and do not mark it as no 
+	longer a placeholder. This prevents a crash 
+	when adding two field values without yet entereing 
+	a primary value. But the primary key value is still 
+	not used when it is entered. 
+
+2005-03-14  Murray Cumming <murrayc@murrayc.com>
+
 	* glom/box_db_table.h:
 	* glom/data_structure/field.h:
 	* glom/mode_data/box_data.cc:

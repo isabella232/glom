@@ -487,7 +487,7 @@ bool DbTreeModel::get_is_placeholder(const TreeModel::iterator& iter) const
        return dataRowIter->m_placeholder;
     }
   }
-  
+
   return false;
 }
 

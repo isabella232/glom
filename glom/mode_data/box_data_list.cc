@@ -264,40 +264,46 @@ void Box_Data_List::on_adddel_user_added(const Gtk::TreeModel::iterator& row)
   }
   else
   {
-    primary_key_value = get_primary_key_value(row);
+    //This only works when the primary key is already stored: primary_key_value = get_primary_key_value(row);
+    LayoutItem_Field layout_item;
+    layout_item.set_name(field_primary_key.get_name());
+    layout_item.m_field = field_primary_key;
+    primary_key_value = get_entered_field_data(layout_item);
   }
 
-  sharedptr<SharedConnection> sharedconnection = connect_to_server(); //Keep it alive while we need the data_model.
-  if(sharedconnection)
+  if(!GlomConversions::value_is_empty(primary_key_value))
   {
-    Glib::RefPtr<Gnome::Gda::DataModel> data_model = record_new(true /* use entered field data*/, primary_key_value);
-    if(data_model)
+    sharedptr<SharedConnection> sharedconnection = connect_to_server(); //Keep it alive while we need the data_model.
+    if(sharedconnection)
     {
-      //Save the primary key value for later use:
-      m_AddDel.set_value_key(row, primary_key_value);
-
-      //Show the primary key in the row, if the primary key is visible:
-      const Gnome::Gda::FieldAttributes fieldInfo = field_primary_key.get_field_info();
-      //If it's an auto-increment, then get the value and show it:
-      if(fieldInfo.get_auto_increment())
+      Glib::RefPtr<Gnome::Gda::DataModel> data_model = record_new(true /* use entered field data*/, primary_key_value);
+      if(data_model)
       {
-        LayoutItem_Field layout_item;
-        layout_item.set_name(field_primary_key.get_name());
-        layout_item.m_field = field_primary_key;
-        m_AddDel.set_value(row, layout_item, primary_key_value);
-      }
+        //Save the primary key value for later use:
+        m_AddDel.set_value_key(row, primary_key_value);
 
-      //Allow derived class to respond to record addition.
-      on_record_added(primary_key_value);
+        //Show the primary key in the row, if the primary key is visible:
+        const Gnome::Gda::FieldAttributes fieldInfo = field_primary_key.get_field_info();
+        //If it's an auto-increment, then get the value and show it:
+        if(fieldInfo.get_auto_increment())
+        {
+          LayoutItem_Field layout_item;
+          layout_item.set_name(field_primary_key.get_name());
+          layout_item.m_field = field_primary_key;
+          m_AddDel.set_value(row, layout_item, primary_key_value);
+        }
+
+        on_record_added(primary_key_value);
+      }
+      else
+        handle_error();
     }
     else
-      handle_error();
-  }
-  else
-  {
-    //Add Record failed.
-    //Replace with correct values:
-    fill_from_database();
+    {
+      //Add Record failed.
+      //Replace with correct values:
+      fill_from_database();
+    }
   }
 }
 
@@ -380,27 +386,29 @@ void Box_Data_List::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, 
         }
       }
 
-
-      const Gnome::Gda::Value field_value = m_AddDel.get_value(row, layout_field);
-      const Field& field = layout_field.m_field;
-      const Glib::ustring strFieldName = layout_field.get_name();
-
-      Glib::ustring strQuery = "UPDATE " + table_name;
-      strQuery += " SET " +  /* table_name + "." + postgres does not seem to like the table name here */ strFieldName + " = " + field.sql(field_value);
-      strQuery += " WHERE " + table_name + "." + primary_key_field.get_name() + " = " + primary_key_field.sql(primary_key_value);
-      bool bTest = Query_execute(strQuery);
-      if(!bTest)
+      if(!GlomConversions::value_is_empty(primary_key_value)) //TODO: Prevent us from discard fields that have been entered before the primary key, if no primary key is ever entered.
       {
-        //Update failed.
-        fill_from_database(); //Replace with correct values.
-      }
-      else
-      {
-        //Get-and-set values for lookup fields, if this field triggers those relationships:
-        do_lookups(row, layout_field, field_value, primary_key_field, primary_key_value);
+        const Gnome::Gda::Value field_value = m_AddDel.get_value(row, layout_field);
+        const Field& field = layout_field.m_field;
+        const Glib::ustring strFieldName = layout_field.get_name();
 
-        //Update related fields, if this field is used in the relationship:
-        refresh_related_fields(row, layout_field, field_value, primary_key_field, primary_key_value);
+        Glib::ustring strQuery = "UPDATE " + table_name;
+        strQuery += " SET " +  /* table_name + "." + postgres does not seem to like the table name here */ strFieldName + " = " + field.sql(field_value);
+        strQuery += " WHERE " + table_name + "." + primary_key_field.get_name() + " = " + primary_key_field.sql(primary_key_value);
+        bool bTest = Query_execute(strQuery);
+        if(!bTest)
+        {
+          //Update failed.
+          fill_from_database(); //Replace with correct values.
+        }
+        else
+        {
+          //Get-and-set values for lookup fields, if this field triggers those relationships:
+          do_lookups(row, layout_field, field_value, primary_key_field, primary_key_value);
+
+          //Update related fields, if this field is used in the relationship:
+          refresh_related_fields(row, layout_field, field_value, primary_key_field, primary_key_value);
+        }
       }
     }
     catch(const std::exception& ex)

@@ -994,10 +994,10 @@ Gnome::Gda::Value DbAddDel::treeview_get_key(const Gtk::TreeModel::iterator& row
 void DbAddDel::on_treeview_cell_edited_bool(const Glib::ustring& path_string, int model_column_index)
 {
   //Note:: model_column_index is actually the AddDel column index, not the TreeModel column index.
-  
+
   if(path_string.empty())
     return;
-    
+
   Gtk::TreePath path(path_string);
 
   //Get the row from the path:
@@ -1007,7 +1007,7 @@ void DbAddDel::on_treeview_cell_edited_bool(const Glib::ustring& path_string, in
     Gtk::TreeModel::Row row = *iter;
 
     int tree_model_column_index = model_column_index + get_count_hidden_system_columns();
-    
+
     Gnome::Gda::Value value_old;
     row.get_value(tree_model_column_index, value_old);
 
@@ -1108,9 +1108,10 @@ void DbAddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const G
         set_prevent_user_signals(true); //Stops extra signal_user_changed.
 
         //Mark this row as no longer a placeholder, because it has data now. The client code must set an actual key for this in the signal_user_added() or m_signal_user_changed signal handlers.
-        set_value_key(iter, Gnome::Gda::Value("glom_unknown"));
+        //m_refListStore->set_is_placeholder(iter, false);
+        //Don't mark this as not a placeholder, because it's still a placeholder until it has a key value.
 
-        add_item_placeholder(); //Add the next blank for the next user add.
+        add_item_placeholder(); //Add the next blank for the next user add, if necessary.
         set_prevent_user_signals(bPreventUserSignals);
 
         bIsAdd = true; //Signal that a new key was added.
