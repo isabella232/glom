@@ -24,6 +24,7 @@
 #include "eval.h" /* for PyEval_EvalCode */
 
 #include "glom_python.h"
+#include "data_structure/glomconversions.h"
 #include <list>
 #include <glib.h> //For g_warning().
 
@@ -50,7 +51,7 @@ std::list<Glib::ustring> ustring_tokenize(const Glib::ustring& msg, const Glib::
   return result;
 }
 
-Glib::ustring glom_evaluate_python_function_implementation(const Glib::ustring& func_impl)
+Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field_type result_type, const Glib::ustring& func_impl)
 {
   Glib::ustring result;
   
@@ -119,5 +120,9 @@ Glib::ustring glom_evaluate_python_function_implementation(const Glib::ustring& 
 
   //We did this in main(): Py_Finalize();
 
-  return result;
+  //TODO: Get the Value as a PyValue and convert directly to a Gnome::Gda::Value without parsing text:
+  bool success = false;
+  Gnome::Gda::Value valueResult = GlomConversions::parse_value(result_type, result, success, true /* iso_format */);
+
+  return valueResult;
 }

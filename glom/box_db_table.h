@@ -50,9 +50,10 @@ protected:
   virtual Glib::ustring get_primarykey_name();
 
   virtual bool record_delete(const Gnome::Gda::Value& primary_key_value);
-  virtual Glib::RefPtr<Gnome::Gda::DataModel> record_new(Gnome::Gda::Value primary_key_value);
+  //virtual Glib::RefPtr<Gnome::Gda::DataModel> record_new(Gnome::Gda::Value primary_key_value);
 
   virtual Gnome::Gda::Value get_entered_field_data(const Field& field) const;
+  virtual void set_entered_field_data(const Field& field, const Gnome::Gda::Value& value);
 
 
   

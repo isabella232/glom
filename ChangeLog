@@ -1,5 +1,18 @@
 2004-07-08  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/glom_python.cc: Make 
+	glom_evaluate_python_function_implementation() return a Value instead 
+	of a string, and take a field type parameter.
+	* glom/box_db_table.cc: Remove record_new().
+	* glom/mode_data/box_data.cc: Rename record_new_from_entered() to 
+	record_new() with an optional use_entered bool parameter, and use this 
+	everywhere instead of record_new_from_entered. This means that the 
+	first value entered in a new record in the list view will not be 
+	forgotten. Also, this now sets the default value from calculations 
+	where that is specified.
+
+2004-07-08  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/utility_widgets/: Added datawidget.[h|cc]: This widget can hold 
 	either an EntryGlom or a checkbox, depending on the field type. Used 
 	this in the Field Definition dialog and the FlowTableWithFields for the

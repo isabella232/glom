@@ -20,6 +20,7 @@
 
 #include "box_db_table.h"
 #include "data_structure/glomconversions.h"
+#include "glom_python.h"
 #include <sstream>
 
 Box_DB_Table::Box_DB_Table()
@@ -88,23 +89,16 @@ bool Box_DB_Table::record_delete(const Gnome::Gda::Value& primary_key_value)
   }
 }
 
-Glib::RefPtr<Gnome::Gda::DataModel> Box_DB_Table::record_new(Gnome::Gda::Value primary_key_value)
-{
-  Field field_primary_key;
-  bool test = get_field_primary_key(field_primary_key);
-  if(test && !GlomConversions::value_is_empty(primary_key_value))
-  {   
-    return Query_execute( "INSERT INTO " + m_strTableName + " (" + get_primarykey_name() + ") VALUES (" + field_primary_key.sql(primary_key_value) + ")" );
-  }
-  else
-    return Glib::RefPtr<Gnome::Gda::DataModel>();
-}
-
 Gnome::Gda::Value Box_DB_Table::get_entered_field_data(const Field& /* field */) const
 {
   //Override this to use Field::set_data() too.
 
   return Gnome::Gda::Value(); //null
+}
+
+void Box_DB_Table::set_entered_field_data(const Field& /* field */, const Gnome::Gda::Value& /* value */)
+{
+  //Override this.
 }
 
 bool Box_DB_Table::get_field(const Glib::ustring& name, Field& field) const

@@ -20,6 +20,7 @@
 
 #include "box_data.h"
 #include "../data_structure/glomconversions.h"
+#include "../glom_python.h"
 #include "config.h"
 #include <libintl.h>
 
@@ -61,9 +62,8 @@ Glib::ustring Box_Data::get_WhereClause() const
     
     if(!GlomConversions::value_is_empty(data))
     {
-      Gnome::Gda::FieldAttributes fieldInfo = field.get_field_info();
       //TODO: "table.name"
-      strClausePart = fieldInfo.get_name() + " LIKE " +  field.sql(data); //% is mysql wildcard for 0 or more characters.
+      strClausePart = field.get_name() + " LIKE " +  field.sql(data); //% is mysql wildcard for 0 or more characters.
     }
 
     if(!strClausePart.empty())
@@ -81,10 +81,30 @@ void Box_Data::on_Button_Find()
   signal_find.emit(get_WhereClause());
 }
 
-bool Box_Data::record_new_from_entered()
+Glib::RefPtr<Gnome::Gda::DataModel> Box_Data::record_new(bool use_entered_data, Gnome::Gda::Value primary_key_value)
 {
-  //This should not be used it the table has an auto-increment primary key:
+  const Glib::ustring primary_key_name = get_primarykey_name();
 
+
+  //Calculate any necessary field values and enter them:
+  for(type_vecFields::const_iterator iter = m_Fields.begin(); iter != m_Fields.end(); ++iter)
+  {
+    const Field& field = *iter;
+
+    //If the user did not enter something in this field:
+    Gnome::Gda::Value value = get_entered_field_data(field);
+    if(GlomConversions::value_is_empty(value)) //This deals with empty strings too.
+    {
+      //If the default value should be calculated, then calculate it:
+      const Glib::ustring calculation = field.get_calculation(); //TODO_Performance: Use a get_has_calculation() method.
+      if(!calculation.empty())
+      {
+        Gnome::Gda::Value value = glom_evaluate_python_function_implementation(field.get_glom_type(), calculation);
+        set_entered_field_data(field, value);
+      }
+    }
+  }
+  
   //Get all entered field name/value pairs:
   Glib::ustring strNames;
   Glib::ustring strValues;
@@ -92,9 +112,21 @@ bool Box_Data::record_new_from_entered()
   for(type_vecFields::const_iterator iter = m_Fields.begin(); iter != m_Fields.end(); ++iter)
   {
     const Field& field = *iter;
-    Gnome::Gda::Value value = get_entered_field_data(field);
-      
-    Gnome::Gda::FieldAttributes fieldInfo = field.get_field_info();
+    const Glib::ustring field_name = field.get_name();
+
+    Gnome::Gda::Value value;
+
+    //Use the specified (generated) primary key value, if there is one:
+    if(primary_key_name == field_name && !GlomConversions::value_is_empty(primary_key_value))
+    {
+      value = primary_key_value;
+    }
+    else
+    {
+      if(use_entered_data || !field.get_calculation().empty()) //TODO_Performance: Use a get_has_calculation() method.
+        value = get_entered_field_data(field);
+    }
+
     Glib::ustring strFieldValue = field.sql(value);
 
     if(!strFieldValue.empty())
@@ -105,7 +137,7 @@ bool Box_Data::record_new_from_entered()
         strValues += ", ";
       }
 
-      strNames += field.get_name();;
+      strNames += field_name;
       strValues += strFieldValue;
     }
   }
@@ -117,9 +149,7 @@ bool Box_Data::record_new_from_entered()
     return Query_execute(strQuery);
   }
   else
-  {
-    return false; //failed.
-  }
+    return Glib::RefPtr<Gnome::Gda::DataModel>();
 }
 
 void Box_Data::set_unstored_data(bool bVal)

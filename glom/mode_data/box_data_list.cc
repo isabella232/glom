@@ -215,7 +215,7 @@ void Box_Data_List::on_adddel_user_added(const Gtk::TreeModel::iterator& row)
   sharedptr<SharedConnection> sharedconnection = connect_to_server(); //Keep it alive while we need the data_model.
   if(sharedconnection)
   {      
-    Glib::RefPtr<Gnome::Gda::DataModel> data_model = record_new(primary_key_value);
+    Glib::RefPtr<Gnome::Gda::DataModel> data_model = record_new(true /* use entered field data*/, primary_key_value);
     if(data_model)
     {
       guint primary_key_field_index = 0;
@@ -228,8 +228,8 @@ void Box_Data_List::on_adddel_user_added(const Gtk::TreeModel::iterator& row)
         //If it's an auto-increment, then get the value and show it:
         if(fieldInfo.get_auto_increment())
         {
-            m_AddDel.set_value_key(row, primary_key_value.to_string()); //The AddDel key is always a string.
-            m_AddDel.set_value(row, primary_key_model_col_index, primary_key_value);
+          m_AddDel.set_value_key(row, primary_key_value.to_string()); //The AddDel key is always a string.
+          m_AddDel.set_value(row, primary_key_model_col_index, primary_key_value);
         }
 
         //Allow derived class to respond to record addition.
@@ -484,6 +484,14 @@ Gnome::Gda::Value Box_Data_List::get_entered_field_data(const Field& field) cons
     return m_AddDel.get_value_selected_as_value(index);
   else
     return Gnome::Gda::Value(); //null.
+}
+
+void Box_Data_List::set_entered_field_data(const Field& field, const Gnome::Gda::Value& value)
+{
+  guint index = 0;
+  bool test = get_field_column_index(field.get_name(), index);
+  if(test)
+    return m_AddDel.set_value_selected(index, value);
 }
 
 guint Box_Data_List::get_records_count() const

@@ -64,7 +64,7 @@ protected:
    */
   Gnome::Gda::Value get_lookup_value(const Relationship& relationship, const Field& source_field, const Gnome::Gda::Value & key_value);
   
-  virtual bool record_new_from_entered(); //New record with all entered field values.
+  virtual Glib::RefPtr<Gnome::Gda::DataModel> record_new(bool use_entered_data = true, Gnome::Gda::Value primary_key_value = Gnome::Gda::Value()); //New record with all entered field values.
   guint generate_next_auto_increment(const Glib::ustring& table_name, const Glib::ustring field_name);
 
   //Signal handlers:

@@ -33,6 +33,7 @@ public:
   virtual Gnome::Gda::Value get_primary_key_value_selected();
   
   virtual Gnome::Gda::Value get_entered_field_data(const Field& field) const;
+  virtual void set_entered_field_data(const Field& field, const Gnome::Gda::Value& value);
   
   virtual guint get_records_count() const;
     

@@ -353,7 +353,7 @@ void Box_Data_Details::on_button_new()
         Gnome::Gda::Value primary_key_value = GlomConversions::parse_value(field_primary_key.get_glom_type(), util_string_from_decimal(generated_id), parsed);
         if(parsed)
         {
-          record_new(primary_key_value);
+          record_new(false /* use entered field data */, primary_key_value);
           init_db_details(primary_key_value);
         }
       }
@@ -416,6 +416,11 @@ void Box_Data_Details::on_button_nav_last()
 Gnome::Gda::Value Box_Data_Details::get_entered_field_data(const Field& field) const
 {
   return m_FlowTable.get_field_value(field);
+}
+
+void Box_Data_Details::set_entered_field_data(const Field& field, const Gnome::Gda::Value& value)
+{
+  m_FlowTable.set_field_value(field, value);
 }
 
 Gnome::Gda::Value Box_Data_Details::get_primary_key_value_selected()
@@ -583,7 +588,7 @@ void Box_Data_Details::on_flowtable_field_edited(Glib::ustring id)
            //Create new record with this primary key,
            //and all the other field values too.
            //see comments after 'else':
-           record_new_from_entered();
+           record_new(true /* use entered field data */);
          }
          else
          {

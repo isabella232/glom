@@ -121,6 +121,7 @@ public:
   virtual void set_value(const Gtk::TreeModel::iterator& iter, guint col, unsigned long ulValue);
   virtual void set_value(const Gtk::TreeModel::iterator& iter, guint col, bool bVal);
 
+  virtual void set_value_selected(guint col, const Gnome::Gda::Value& value);
 
   virtual bool get_is_first_row(const Gtk::TreeModel::iterator& iter) const;
   virtual bool get_is_last_row(const Gtk::TreeModel::iterator& iter) const;
