@@ -159,9 +159,9 @@ Glib::RefPtr<Gnome::Gda::DataModel> Box_Data::record_new(bool use_entered_data, 
       if(iterFind == map_added.end()) //If it was not added already
       {
         Gnome::Gda::Value value;
-  
+
         const Field& field = layout_item.m_field;
-  
+
         //Use the specified (generated) primary key value, if there is one:
         if(primary_key_name == field_name && !GlomConversions::value_is_empty(primary_key_value))
         {

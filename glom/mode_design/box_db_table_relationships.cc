@@ -104,7 +104,7 @@ void Box_DB_Table_Relationships::fill_from_database()
 
     }
   }
-  
+
   fill_end();
 }
 

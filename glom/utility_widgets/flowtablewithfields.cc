@@ -302,6 +302,7 @@ Gnome::Gda::Value FlowTableWithFields::get_field_value(const LayoutItem_Field& f
       return datawidget->get_value();
   }
 
+  g_warning("FlowTableWithFields::get_field_value(): returning null");
   return Gnome::Gda::Value(); //null.
 }
  

@@ -532,18 +532,18 @@ void Box_Data_Details::on_flowtable_field_edited(const LayoutItem_Field& layout_
       Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
 
       Relationship relationship;
-      bool test = document->get_relationship(table_name, relationship_name, relationship);
+      bool test = document->get_relationship(get_table_name(), relationship_name, relationship);
       if(test)
       {
         table_name = relationship.get_to_table();
         const Glib::ustring to_field_name = relationship.get_to_field();
+        //Get the key field in the other table (the table that we will change)
         bool test = get_fields_for_table_one_field(table_name, to_field_name, primary_key_field); //TODO_Performance.
         if(test)
         {
+          //Get the value of the corresponding key in the current table (that identifies the record in the table that we will change)
           LayoutItem_Field layout_item;
-          layout_item.set_name(to_field_name);
-          layout_item.m_field = primary_key_field;
-          layout_item.set_relationship_name(relationship_name);
+          layout_item.set_name(relationship.get_from_field());
 
           primary_key_value = get_entered_field_data(layout_item);
         }
@@ -559,7 +559,7 @@ void Box_Data_Details::on_flowtable_field_edited(const LayoutItem_Field& layout_
     //Update the field in the record (the record with this primary key):
     try
     {
-      Glib::ustring strQuery = "UPDATE " + m_strTableName;
+      Glib::ustring strQuery = "UPDATE " + table_name;
       strQuery += " SET " +  /* table_name + "." + postgres does not seem to like the table name here */ strFieldName + " = " + field.sql(field_value);
       strQuery += " WHERE " + table_name + "." + primary_key_field.get_name() + " = " + primary_key_field.sql(primary_key_value);
       bool bTest = Query_execute(strQuery);
