@@ -87,12 +87,12 @@ void FlowTableWithFields::add_layout_item(const LayoutItem& item)
           if(found)
           {
             Box_Data_List_Related* portal_box = Gtk::manage(new Box_Data_List_Related);
-             
+
             portal_box->init_db_details(relationship);
             portal_box->set_layout_item(portal->clone());
             portal_box->show();
             add(*portal_box);
-            
+
             m_portals.push_back(portal_box);
             add_layoutwidgetbase(portal_box);
 
@@ -221,8 +221,7 @@ void FlowTableWithFields::add_field(const LayoutItem_Field& layoutitem_field)
   info.m_field = field;
 
   //Add the entry or checkbox (handled by the DataWidget)
-  DataWidget* pDataWidget = Gtk::manage(new DataWidget(field.get_glom_type(), field.get_title_or_name()) );
-  pDataWidget->set_layout_item(layoutitem_field.clone());
+  DataWidget* pDataWidget = Gtk::manage(new DataWidget(layoutitem_field) );
   add_layoutwidgetbase(pDataWidget);
   add_view(pDataWidget); //So it can get the document.
 

@@ -145,7 +145,7 @@ void Box_Data_Details::fill_from_database_layout()
 
   //Remove existing child widgets:
   m_FlowTable.remove_all();
-                          
+ 
   Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
   if(document)
   {
@@ -191,44 +191,69 @@ void Box_Data_Details::fill_from_database()
       //g_warning("primary_key name = %s", m_field_primary_key.get_name().c_str());
       const int index_primary_key = fieldsToGet.size() - 1;
 
+      Document_Glom* document = get_document();
+
       if(!GlomConversions::value_is_empty(m_primary_key_value)) //If there is a record to show:
       {
-
         if(sharedconnection)
         {
           Glib::RefPtr<Gnome::Gda::Connection> connection = sharedconnection->get_gda_connection();
 
 
           Glib::ustring sql_part_fields;
+
+          typedef std::list<Glib::ustring> type_list_strings;
+          type_list_strings list_tables;
+
           for(type_vecLayoutFields::const_iterator iter =  fieldsToGet.begin(); iter != fieldsToGet.end(); ++iter)
           {
             if(iter != fieldsToGet.begin())
-              sql_part_fields += ",";
+              sql_part_fields += ", ";
 
-            /*
             Glib::ustring relationship_name = iter->get_relationship_name();
             if(relationship_name.empty())
             {
-              sql_part_fields += ( m_table_name + ".");
+              sql_part_fields += ( m_strTableName + "." );
             }
             else
             {
               Relationship relationship;
-              bool test = m_document->get_relationship(m_table_name, relationship_name, relationship);
+              bool test = document->get_relationship(m_strTableName, relationship_name, relationship);
               if(test)
                 sql_part_fields += ( relationship.get_to_table() + "." );
             }
-            */
+
             //sql_part_fields += ( iter->get_table_name() + "." );
 
             sql_part_fields += iter->get_name();
+
+
+            //Add to the list of used table names:
+            Glib::ustring table_name = iter->get_table_name();
+            if(table_name.empty())
+              table_name = m_strTableName;
+
+            type_list_strings::const_iterator iterFind = std::find(list_tables.begin(), list_tables.end(), table_name);
+            if(iterFind == list_tables.end()) //If the table is not yet in the list:
+              list_tables.push_back(table_name);
+
           }
 
+          //Build the list of tables:
+          Glib::ustring sql_part_tables;
+          for(type_list_strings::const_iterator iter = list_tables.begin(); iter != list_tables.end(); ++iter)
+          {
+            if(iter != list_tables.begin())
+              sql_part_tables += ", ";
 
-          std::stringstream query;
-          query << "SELECT " << sql_part_fields << " FROM " << m_strTableName << " WHERE " << get_table_name() + "." + m_field_primary_key.get_name() << " = " << m_field_primary_key.sql(m_primary_key_value);
-          Glib::RefPtr<Gnome::Gda::DataModel> result = connection->execute_single_command(query.str());
+            sql_part_tables += *iter;
+          }
 
+          Glib::ustring query =  "SELECT " + sql_part_fields + 
+            " FROM " + sql_part_tables + 
+            " WHERE " + m_strTableName + "." + m_field_primary_key.get_name() + " = " + m_field_primary_key.sql(m_primary_key_value);
+
+          Glib::RefPtr<Gnome::Gda::DataModel> result = Query_execute(query);
 
           if(result && result->get_n_rows())
           {
@@ -262,14 +287,8 @@ void Box_Data_Details::fill_from_database()
       else
       {
         //Show blank record:
-        g_warning("Details: primary key value is empty");
       }
     } //if(!fieldsToGet.empty())
-    else
-    {
-       g_warning("Details: fieldsToGet is empty.");
-    }
-
 
     //fill_related();
 

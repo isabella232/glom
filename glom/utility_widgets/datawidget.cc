@@ -24,21 +24,30 @@
 #include "../application.h"
 #include "../mode_data/dialog_choose_field.h"
 
-
-
+/*
 DataWidget::DataWidget(Field::glom_field_type glom_type, const Glib::ustring& title)
 : m_glom_type(glom_type),
   m_pMenuPopup(0)
+*/
+
+DataWidget::DataWidget(const LayoutItem_Field& field)
+: m_pMenuPopup(0)
 {
+  g_warning("DataWidget::DataWidget(): name = %s, title = %s", field.get_name().c_str(), field.m_field.get_title().c_str());
+
+  Field::glom_field_type glom_type = field.m_field.get_glom_type();
+  set_layout_item(field.clone()); //takes ownership
+
   Gtk::Widget* child = 0;
+  const Glib::ustring title = field.m_field.get_title_or_name();
   if(glom_type == Field::TYPE_BOOLEAN)
   {
     Gtk::CheckButton* checkbutton = Gtk::manage( new Gtk::CheckButton( title ) );
     checkbutton->show();
-    checkbutton->signal_toggled().connect( sigc::mem_fun(*this, &DataWidget::on_widget_edited)  )
+    checkbutton->signal_toggled().connect( sigc::mem_fun(*this, &DataWidget::on_widget_edited)  );
 
     //TODO: entry->signal_user_requested_layout().connect( sigc::mem_fun(*this, &DataWidget::on_child_user_requested_layout );
-;
+
     child = checkbutton;
 
     m_label.set_text( Glib::ustring() ); //It is not used.

@@ -259,24 +259,50 @@ void Box_Data::get_table_fields_to_show_add_group(const Glib::ustring& table_nam
 {
   //g_warning("Box_Data::get_table_fields_to_show_add_group(): table_name=%s, all_db_fields.size()=%d, group.name=%s", table_name.c_str(), all_db_fields.size(), group.get_name().c_str());
 
+  const Document_Glom* document = get_document();
+
   LayoutGroup::type_map_const_items items = group.get_items();
   for(LayoutGroup::type_map_const_items::const_iterator iterItems = items.begin(); iterItems != items.end(); ++iterItems)
   {
     const LayoutItem* item = iterItems->second;
 
-    const LayoutItem_Field* field = dynamic_cast<const LayoutItem_Field*>(item);
-    if(field)
+    const LayoutItem_Field* item_field = dynamic_cast<const LayoutItem_Field*>(item);
+    if(item_field)
     {
       //Get the field info:
       const Glib::ustring field_name = item->get_name();
-      type_vecFields::const_iterator iterFind = std::find_if(all_db_fields.begin(), all_db_fields.end(), predicate_FieldHasName<Field>(field_name));
 
-      //If the field does not exist anymore then we won't try to show it:
-      if(iterFind != all_db_fields.end() )
+      const Glib::ustring relationship_name = item_field->get_relationship_name();
+      if(!relationship_name.empty()) //If it's a field in a related table.
       {
-         LayoutItem_Field layout_item = *field; //TODO_Performance: Reduce the copying here.
-         layout_item.m_field = *iterFind; //Fill the LayoutItem with the full field information.
-         vecFields.push_back(layout_item);
+        //Get the full field information:
+        Relationship relationship;
+        bool test = document->get_relationship(table_name, relationship_name, relationship);
+        if(test)
+        {
+          Field field;
+          //TODO: get_fields_for_table_one_field() is probably very inefficient
+          bool test = get_fields_for_table_one_field(relationship.get_to_table(), item->get_name(), field);
+          if(test)
+          {
+            LayoutItem_Field layout_item = *item_field; //TODO_Performance: Reduce the copying.
+            layout_item.m_field = field; //Fill in the full field information for later.
+            g_warning("get_table_fields_to_show_add_group(): related field: name=%s, title=%s", layout_item.get_name().c_str(), layout_item.m_field.get_title().c_str());
+            vecFields.push_back(layout_item);
+          }
+        }
+      }
+      else //It's a regular field in the table:
+      {
+        type_vecFields::const_iterator iterFind = std::find_if(all_db_fields.begin(), all_db_fields.end(), predicate_FieldHasName<Field>(field_name));
+  
+        //If the field does not exist anymore then we won't try to show it:
+        if(iterFind != all_db_fields.end() )
+        {
+          LayoutItem_Field layout_item = *item_field; //TODO_Performance: Reduce the copying here.
+          layout_item.m_field = *iterFind; //Fill the LayoutItem with the full field information.
+          vecFields.push_back(layout_item);
+        }
       }
     }
     else
@@ -424,7 +450,7 @@ Box_Data::type_list_lookups Box_Data::get_lookup_fields(const Glib::ustring& fie
 Gnome::Gda::Value Box_Data::get_lookup_value(const Relationship& relationship, const Field& source_field, const Gnome::Gda::Value& key_value)
 {
   Gnome::Gda::Value result;
-  
+ 
   Field to_key_field;
   bool test = get_fields_for_table_one_field(relationship.get_to_table(), relationship.get_to_field(), to_key_field);
   if(test)
@@ -471,7 +497,9 @@ Document_Glom::type_mapLayoutGroupSequence Box_Data::get_data_layout_groups(cons
 }
 
 void Box_Data::fill_layout_group_field_info(LayoutGroup& group)
-{      
+{ 
+  const Document_Glom* document = get_document();
+
   LayoutGroup::type_map_items items = group.get_items();
   for(LayoutGroup::type_map_items::iterator iter = items.begin(); iter != items.end(); ++iter)
   {
@@ -479,12 +507,32 @@ void Box_Data::fill_layout_group_field_info(LayoutGroup& group)
     LayoutItem_Field* item_field = dynamic_cast<LayoutItem_Field*>(item);
     if(item_field) //If is a field rather than some other layout item
     {
-      //Get the field info:
-      Field field;
-      bool found = get_fields_for_table_one_field(m_strTableName, item_field->get_name(), field);
-      if(found)
+      const Glib::ustring relationship_name = item_field->get_relationship_name();
+      if(!relationship_name.empty()) //If it's a field in a related table.
       {
-        item_field->m_field = field; //TODO_Performance: Just use this as the output arg?
+        //Get the full field information:
+        Relationship relationship;
+        bool test = document->get_relationship(m_strTableName, relationship_name, relationship);
+        if(test)
+        {
+          Field field;
+          //TODO: get_fields_for_table_one_field() is probably very inefficient
+          bool test = get_fields_for_table_one_field(relationship.get_to_table(), item->get_name(), field);
+          if(test)
+          {
+            item_field->m_field = field;
+          }
+        }
+      }
+      else
+      {
+        //Get the field info:
+        Field field;
+        bool found = get_fields_for_table_one_field(m_strTableName, item_field->get_name(), field);
+        if(found)
+        {
+          item_field->m_field = field; //TODO_Performance: Just use this as the output arg?
+        }
       }
     }
     else

@@ -272,14 +272,38 @@ Box_Data_List_Related::type_vecLayoutFields Box_Data_List_Related::get_fields_to
           const LayoutItem_Field* item = dynamic_cast<const LayoutItem_Field*>(iter->second);
           if(item)
           {
-            type_vecFields::const_iterator iterFind = std::find_if(all_db_fields.begin(), all_db_fields.end(), predicate_FieldHasName<Field>(item->get_name())); //item->m_field->get_name() is not filled in yet.
-  
-            //If the field does not exist anymore then we won't try to show it:
-            if(iterFind != all_db_fields.end() )
+            Glib::ustring relationship_name = item->get_relationship_name();
+            if(!relationship_name.empty()) //If it's a field in a related table (a related field, itself in a list of related records)
             {
-              LayoutItem_Field layout_item = *item; //TODO_Performance: Reduce the copying.
-              layout_item.m_field = *iterFind; //Fill in the full field information for later.
-              result.push_back(layout_item);
+              //Get the full field information:
+
+              Relationship relationship;
+              bool test = document->get_relationship(m_relationship.get_to_table(), relationship_name, relationship);
+              if(test)
+              {
+                Field field;
+                //TODO: get_fields_for_table_one_field() is probably very inefficient
+                bool test = get_fields_for_table_one_field(relationship.get_to_table(), item->get_name(), field);
+                if(test)
+                {
+                  LayoutItem_Field layout_item = *item; //TODO_Performance: Reduce the copying.
+                  layout_item.m_field = field; //Fill in the full field information for later.
+                  result.push_back(layout_item);
+                }
+              }
+            }
+            else //It's a regular field in the table:
+            {
+              //Get the full field information:
+              type_vecFields::const_iterator iterFind = std::find_if(all_db_fields.begin(), all_db_fields.end(), predicate_FieldHasName<Field>(item->get_name())); //item->m_field->get_name() is not filled in yet.
+
+              //If the field does not exist anymore then we won't try to show it:
+              if(iterFind != all_db_fields.end() )
+              {
+                LayoutItem_Field layout_item = *item; //TODO_Performance: Reduce the copying.
+                layout_item.m_field = *iterFind; //Fill in the full field information for later.
+                result.push_back(layout_item);
+              }
             }
           }
         }

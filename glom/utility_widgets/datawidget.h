@@ -26,6 +26,7 @@
 #include <gtkmm/label.h>
 #include "../data_structure/field.h"
 #include "../document/document_glom.h"
+#include "../data_structure/layout/layoutitem_field.h"
 
 class App_Glom;
 
@@ -36,7 +37,7 @@ class DataWidget
 {
 public:
   //explicit DataWidget(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
-  explicit DataWidget(Field::glom_field_type glom_type = Field::TYPE_TEXT, const Glib::ustring& title = Glib::ustring());
+  explicit DataWidget(const LayoutItem_Field& field);
   virtual ~DataWidget();
 
   virtual Gtk::Label* get_label();
@@ -71,7 +72,6 @@ protected:
 
   type_signal_edited m_signal_edited;
 
-  Field::glom_field_type m_glom_type; //Store the type so we can validate the text accordingly.
   Gtk::Label m_label;
 
   Gtk::Menu* m_pMenuPopup;

@@ -149,7 +149,7 @@ bool Box_DB_Table::get_fields_for_table_one_field(const Glib::ustring& table_nam
   //Initialize output parameter:
   Field result = Field();
 
-  type_vecFields fields =  get_fields_for_table(table_name);
+  type_vecFields fields = get_fields_for_table(table_name);
   type_vecFields::iterator iter = std::find_if(fields.begin(), fields.end(), predicate_FieldHasName<Field>(field_name));
   if(iter != fields.end()) //TODO: Handle error?
   {

@@ -162,6 +162,7 @@ void Dialog_Layout_Details::fill_group(const Gtk::TreeModel::iterator& iter, Lay
         LayoutItem_Field field;
         field.set_name( rowChild[m_model_items->m_columns.m_col_name] );
         field.set_table_name(m_table_name);
+        field.set_relationship_name( rowChild[m_model_items->m_columns.m_col_relationship_name] );
 
         group.add_item(field);
       }
@@ -220,6 +221,7 @@ void Dialog_Layout_Details::add_group(const Gtk::TreeModel::iterator& parent, co
             Gtk::TreeModel::Row row = *iterField;
             row[m_model_items->m_columns.m_col_type] = TreeStore_Layout::TYPE_FIELD;
             row[m_model_items->m_columns.m_col_name] = field->get_name();
+            row[m_model_items->m_columns.m_col_relationship_name] = field->get_relationship_name();
           }
         }
       }
@@ -668,7 +670,7 @@ void Dialog_Layout_Details::on_button_field_edit()
           {
             row[m_model_items->m_columns.m_col_relationship] = relationship.get_name();
           }
-          
+
           break;
         }
       }
@@ -752,12 +754,20 @@ void Dialog_Layout_Details::on_cell_data_name(Gtk::CellRenderer* renderer, const
         markup = gettext("Related: ") + row[m_model_items->m_columns.m_col_relationship];
       }
       else
-        markup = row[m_model_items->m_columns.m_col_name];
+      {
+        //It's a field:
+
+        //Indicate that it's a field in another table.
+        const Glib::ustring relationship = row[m_model_items->m_columns.m_col_relationship_name];
+        if(!relationship.empty())
+          markup = relationship + "::";
+
+        markup += row[m_model_items->m_columns.m_col_name];
+      }
 
       renderer_text->property_markup() = markup;
 
-      renderer_text->property_editable() = row[m_model_items->m_columns.m_col_type] != TreeStore_Layout::TYPE_PORTAL; //Portals can only be edited via the Edit button.
- 
+      renderer_text->property_editable() = false; //Names can never be edited.
     }
   }
 }
