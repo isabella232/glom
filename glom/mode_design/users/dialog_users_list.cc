@@ -272,6 +272,15 @@ void Dialog_UsersList::on_button_user_add()
     Glib::ustring strQuery = "ALTER GROUP " + m_combo_group->get_active_text() + " ADD USER " + user;
     Query_execute(strQuery);
 
+    //Remove any user rights, so that all rights come from the user's presence in the group:
+    Document_Glom::type_listTableInfo table_list = get_document()->get_tables();
+
+    for(Document_Glom::type_listTableInfo::const_iterator iter = table_list.begin(); iter != table_list.end(); ++iter)
+    {
+      Glib::ustring strQuery = "REVOKE ALL PRIVILEGES ON " + iter->get_name() + " FROM " + user;
+      Query_execute(strQuery);
+    }
+
     fill_list();
   }
 }
