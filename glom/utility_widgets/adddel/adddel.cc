@@ -767,6 +767,7 @@ void AddDel::remove_all_columns()
   m_ColumnTypes.clear();
 
   //Add the hidden key.ID columns
+  //Make these visible (with true) if you want to debug problems.
   m_col_key = add_column("Glom Hidden Key", AddDelColumnInfo::STYLE_Text, false /* not editable */, false /* not visible */);
   m_col_placeholder = add_column("Glom Hidden Key", AddDelColumnInfo::STYLE_Boolean, false /* not editable */, false /* not visible */);
 }

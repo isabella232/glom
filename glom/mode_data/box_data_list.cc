@@ -104,13 +104,13 @@ void Box_Data_List::fill_from_database()
         if(rows_count > 100)
           rows_count = 100; //Don't get more than 100. TODO: Get other rows dynamically.
 
-        guint primary_key_col_index = 0;
-        bool primary_key_found = get_field_primary_key(primary_key_col_index);
+        guint primary_key_field_index = 0;
+        bool primary_key_found = get_field_primary_key(primary_key_field_index);
         if(primary_key_found)
         {
           for(guint result_row = 0; result_row < rows_count; result_row++)
           {
-            Gnome::Gda::Value value = result->get_value_at(primary_key_col_index, result_row);
+            Gnome::Gda::Value value = result->get_value_at(primary_key_field_index, result_row);
             Glib::ustring key = value.to_string(); //It is actually an integer, but that should not matter.
             if(key.empty())
               g_warning("Box_Data_List::fill_from_database(): primary key value is empty");
@@ -151,40 +151,35 @@ void Box_Data_List::on_AddDel_user_requested_add()
   Gtk::TreeModel::iterator iter = m_AddDel.add_item_placeholder();
 
   //Start editing in the primary key or the first cell if the primary key is auto-incremented (because there is no point in editing an auto-generated value)..
-  guint treemodel_column = m_first_col;
-  guint uiColPrimaryKey = 0;
-  bool bPresent = get_field_primary_key(uiColPrimaryKey); //If there is no primary key then the default of 0 is OK.
+  guint index_primary_key = 0;
+  bool bPresent = get_field_primary_key(index_primary_key); //If there is no primary key then the default of 0 is OK.
   if(bPresent)
   {
-    Field fieldPrimaryKey = m_Fields[uiColPrimaryKey];
+    Field fieldPrimaryKey = m_Fields[index_primary_key];
     if(fieldPrimaryKey.get_field_info().get_auto_increment())
     {
       //Start editing in the first cell that is not the primary key:
-      if(uiColPrimaryKey == m_first_col)
-        treemodel_column = m_first_col + 1; //TODO: Check that there is > 1 column.
-      else
+      if(index_primary_key == 0)
       {
-        treemodel_column = m_first_col;
+        index_primary_key += 1; //TODO: Check that there is > 1 column.
       }
-    }
-    else
-    {
-      treemodel_column = uiColPrimaryKey; //Start editing in the primary key, because it needs the user to give it a value.
     }
   }
 
+  guint treemodel_column = m_first_col + index_primary_key;
   m_AddDel.select_item(iter, treemodel_column, true /* start_editing */);
 }
 
 void Box_Data_List::on_AddDel_user_requested_edit(const Gtk::TreeModel::iterator& row)
 {
-  Glib::ustring strPrimaryKeyValue = get_primary_key_value(row);
+  Glib::ustring strPrimaryKeyValue = m_AddDel.get_value_key(row); //The primary key is in the key.
+  g_warning("Box_Data_List::on_AddDel_user_requested_edit(): %s", strPrimaryKeyValue.c_str());
   signal_user_requested_details().emit(strPrimaryKeyValue);
 }
 
 void Box_Data_List::on_AddDel_user_requested_delete(const Gtk::TreeModel::iterator& rowStart, const Gtk::TreeModel::iterator&  /* rowEnd TODO */)
 {
-  Glib::ustring strPrimaryKeyValue = m_AddDel.get_value_key(rowStart);
+  Glib::ustring strPrimaryKeyValue = m_AddDel.get_value_key(rowStart); //The primary key is in the key.
   record_delete(strPrimaryKeyValue);
 
   //Remove the row:
@@ -220,22 +215,30 @@ void Box_Data_List::on_AddDel_user_added(const Gtk::TreeModel::iterator& row)
     Glib::RefPtr<Gnome::Gda::DataModel> data_model = record_new(strPrimaryKeyValue);
     if(data_model)
     {
-      Gnome::Gda::FieldAttributes fieldInfo = field.get_field_info();
-      //If it's an auto-increment, then get the value and show it:
-      if(fieldInfo.get_auto_increment())
-      { 
-        unsigned long ulAutoID = generated_id; //get_last_auto_increment_value(data_model, fieldinfo.get_name());
-        if(ulAutoID)
-        {
-          m_AddDel.set_value(row, 0, ulAutoID);
-        }
-        else
-          handle_error();
-      }
+      guint primary_key_field_index = 0;
+      bool test = get_field_primary_key(primary_key_field_index);
+      if(test)
+      {
+        guint primary_key_model_col_index = m_first_col + primary_key_field_index;
 
-      //Allow derived class to respond to record addition.
-      strPrimaryKeyValue = m_AddDel.get_value(row, 0);
-      on_record_added(strPrimaryKeyValue);
+        Gnome::Gda::FieldAttributes fieldInfo = field.get_field_info();
+        //If it's an auto-increment, then get the value and show it:
+        if(fieldInfo.get_auto_increment())
+        {
+          unsigned long ulAutoID = generated_id; //get_last_auto_increment_value(data_model, fieldinfo.get_name());
+          if(ulAutoID)
+          {
+            m_AddDel.set_value_key(row, util_string_from_decimal(ulAutoID)); //The AddDel key is always a string.
+            m_AddDel.set_value(row, primary_key_model_col_index, ulAutoID);
+          }
+          else
+            handle_error();
+        }
+
+        //Allow derived class to respond to record addition.
+        strPrimaryKeyValue = m_AddDel.get_value_key(row);
+        on_record_added(strPrimaryKeyValue);
+      }
     }
     else
       handle_error();
@@ -279,24 +282,30 @@ void Box_Data_List::on_AddDel_user_changed(const Gtk::TreeModel::iterator& row, 
     //Just update the record:
     try
     {
-      guint primary_key_col = 0;
-      bool bPresent = get_field_primary_key(primary_key_col);
+      guint primary_key_field_index = 0;
+      bool bPresent = get_field_primary_key(primary_key_field_index);
       if(bPresent)
       {
-        Field field_primary_key = m_Fields[primary_key_col];
+        Field field_primary_key = m_Fields[primary_key_field_index];
 
-        const Glib::ustring strPrimaryKey_Name = field_primary_key.get_name();
-        const Glib::ustring strFieldName = m_Fields[col].get_name();
-        const Gnome::Gda::Value strFieldValue = m_AddDel.get_value_as_value(row, col);
+        if(col >= m_first_col)
+        {
+          const guint changed_field_col_index = col - m_first_col;
+          
+          const Glib::ustring strPrimaryKey_Name = field_primary_key.get_name();
+          const Glib::ustring strFieldName = m_Fields[changed_field_col_index].get_name();
 
-        Glib::ustring strQuery = "UPDATE " + m_strTableName;
-        strQuery += " SET " + strFieldName + " = " + m_Fields[col].sql(strFieldValue);
+          const Gnome::Gda::Value strFieldValue = m_AddDel.get_value_as_value(row, col);
 
-        strQuery += " WHERE " + strPrimaryKey_Name + " = " + field_primary_key.sql(strPrimaryKeyValue);
-        bool bTest = Query_execute(strQuery);
+          Glib::ustring strQuery = "UPDATE " + m_strTableName;
+          strQuery += " SET " + strFieldName + " = " + m_Fields[changed_field_col_index].sql(strFieldValue);
 
-        if(!bTest)
-          fill_from_database(); //Replace with correct values. //TODO: Just replace this one row
+          strQuery += " WHERE " + strPrimaryKey_Name + " = " + field_primary_key.sql(strPrimaryKeyValue);
+          bool bTest = Query_execute(strQuery);
+
+          if(!bTest)
+            fill_from_database(); //Replace with correct values. //TODO: Just replace this one row
+        }
       }
     }
     catch(const std::exception& ex)

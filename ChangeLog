@@ -1,5 +1,11 @@
 2004-06-15  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/mode_data/box_data_list.cc: Corrected problems with the 
+	AddDel changes: Adding a record works again, and editing a list record 
+	shows the correct record in the Details view.
+
+2004-06-15  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/utility_widgets/adddel.[h|cc]: add_item(), remove_item(), 
 	get_row() now use a key value instead of the value in the first column.
 	This is a hidden TreeModel column. There is also a bool placeholder 
