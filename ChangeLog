@@ -1,3 +1,11 @@
+2005-02-10  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/connection_pool.cc: connect(): Specify the template1 default 
+	database when we do not want to specify a database, because that seems 
+	to fail with newer versions of postgres, or on some systems, though 
+	I am not sure where it works and where it does not. Hopefully this 
+	template1 name is used on all distros.
+
 2005-01-05  Murray Cumming  <murrayc@murrayc.com>
 
 	* Makefile.am: Add intltool-extract.in, intltool-merge.in, 

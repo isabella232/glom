@@ -146,6 +146,9 @@ sharedptr<SharedConnection> ConnectionPool::connect()
 
       m_GdaClient = Gnome::Gda::Client::create();
        
+      //We must specify _some_ database even when we just want to create a database.
+      //This _might_ be different on some systems. I hope not. murrayc
+      const Glib::ustring default_database = "template1"; 
       if(m_GdaClient)
       {
         //m_GdaDataSourceInfo = Gnome::Gda::DataSourceInfo(); //init_db_details it.
@@ -155,6 +158,8 @@ sharedptr<SharedConnection> ConnectionPool::connect()
       
         if(!m_database.empty())
           cnc_string += (";DATABASE=" + m_database);
+	else
+	  cnc_string += default_database;
 
         std::cout << "connecting: cnc string: " << cnc_string << std::endl;
 
@@ -188,7 +193,9 @@ sharedptr<SharedConnection> ConnectionPool::connect()
              
              //If the connection failed while looking for a database,
              //then try connecting without the database:
-             Glib::ustring cnc_string = "USER=" + m_user + ";PASSWORD=" + m_password; //TODO: Host
+             Glib::ustring cnc_string = "USER=" + m_user + ";PASSWORD=" + m_password;
+	     cnc_string += (";DATABASE=" + default_database);
+	     //TODO: Host
              
              std::cout << "connecting: cnc string: " << cnc_string << std::endl;
               
