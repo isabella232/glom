@@ -42,7 +42,7 @@ void Box_DB_Table_Relationships::init()
   m_colFromField = m_AddDel.add_column(gettext("From Field"), AddDelColumnInfo::STYLE_Choices);
   m_colToTable = m_AddDel.add_column(gettext("Table"), AddDelColumnInfo::STYLE_Choices);
   m_colToField = m_AddDel.add_column(gettext("To Field"), AddDelColumnInfo::STYLE_Choices);
-  m_colAutoCreate = m_AddDel.add_column(gettext("Automatic Record Creation"),  AddDelColumnInfo::STYLE_Boolean);
+  m_colAutoCreate = m_AddDel.add_column(gettext("Automatic Creation"),  AddDelColumnInfo::STYLE_Boolean);
 
   //Connect signals:
   m_AddDel.signal_user_activated().connect(sigc::mem_fun(*this, &Box_DB_Table_Relationships::on_adddel_user_activated));

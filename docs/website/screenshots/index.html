@@ -98,8 +98,11 @@
 <h3><a name="developer_relationships" />Designing Relationships</h3>
 
   <img src="glom_design_relationships.png" />
-  <p>The tables in a relational database are related, so that the data from one table can be used by another table. A relationship can be used to <a href="#developer_fields_lookup">lookup</a> data from a field in another table, or to 
-show a list of <a href="#developer_layout_details_related">related records</a>.</p> 
+  <p>The tables in a relational database are related, so that the data from one table can be used by another table. A relationship can be used to <a href="#developer_fields_lookup">lookup</a> data from a field in another table, or to show a list of <a href="#developer_layout_details_related">related records</a>.</p> 
+  <p>You can specify whether the relationship should automatically create related records. For instance,
+<ul>
+<li>You would want to automatically create new Invoice Lines from the Invoice details, via the <a href="developer_layout_details_related">related records</a>, without first creating the records in the Invoice Lines table itself.</li>
+<li>When you show the customer's name on the Invoice, using a <a href="developer_layout_related_fields">related field</a>, you probably don't want to create a new customer record by entering data in to the related field. Of course, if you don't even want to edit an existing customer name record via the Invoice then you can just make the <a href="developer_layout_related_fields">related field</a> non-editable.</li>
 
 <h3><a name="developer_layout_details" />Designing the Details Layout</h3>
 
@@ -120,5 +123,5 @@ show a list of <a href="#developer_layout_details_related">related records</a>.<
 
   <img src="glom_design_layout_details_related_fields.png" />
   <p>Both the Details and List layouts may contain fields from related tables. Just choose the <a href="#developer_relationships">relationship</a>, and then choose from the list of fields in the related table.</p>
-
+  <p>Note that you can prevent editing of fields. For instance, maybe you don't want to edit the customer's name via the Invoice details, because this would then be seen on every other Invoice for that customer.</p>
 </body></html>

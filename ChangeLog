@@ -1,4 +1,6 @@
-2005-03-15  Murray Cumming <murrayc@murrayc.com>
+0.8.16:
+
+2005-03-15 Murray Cumming <murrayc@murrayc.com>
 
 	* glom/mode_data/box_data.cc:
 	* glom/mode_data/box_data.h:

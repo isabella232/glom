@@ -1,9 +1,17 @@
 0.8.16:
 
 * Relationships:
-  - Allow the developer to specify whether related records 
+  -  Allow the developer to specify whether related records 
   should be created automatically.
   - Do not clear the To Field column when the user clicks on it.
+* Details/List views:
+  - Automatic creation of related records:
+  When you enter a value in a related field, when their is 
+  not yet a key value to identify the related record, a 
+  record can be create automatically, and the key value 
+  will be filled in for you.
+  - Developers may set fields on the layout as non-editable.
+
 
 0.8.15:
 
