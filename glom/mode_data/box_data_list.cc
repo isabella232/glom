@@ -252,6 +252,7 @@ void Box_Data_List::on_adddel_user_requested_delete(const Gtk::TreeModel::iterat
 
 void Box_Data_List::on_adddel_user_added(const Gtk::TreeModel::iterator& row)
 {
+ g_warning("Box_Data_List::on_adddel_user_added");
   Gnome::Gda::Value primary_key_value;
 
   Field field_primary_key = m_AddDel.get_key_field();
@@ -336,6 +337,7 @@ void Box_Data_List::on_adddel_user_reordered_columns()
 
 void Box_Data_List::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, guint col)
 {
+g_warning("Box_Data_List::on_adddel_user_changed");
   const Gnome::Gda::Value parent_primary_key_value = get_primary_key_value(row);
   if(!GlomConversions::value_is_empty(parent_primary_key_value)) //If the record's primary key is filled in:
   {

@@ -101,6 +101,8 @@ void Box_Data::on_Button_Find()
 
 Glib::RefPtr<Gnome::Gda::DataModel> Box_Data::record_new(bool use_entered_data, const Gnome::Gda::Value& primary_key_value)
 {
+  g_warning("Box_Data::record_new(): primary_key_value=%s", primary_key_value.to_string().c_str());
+
   Field fieldPrimaryKey;
   get_field_primary_key(fieldPrimaryKey);
 
@@ -411,7 +413,7 @@ Gnome::Gda::Value Box_Data::generate_next_auto_increment(const Glib::ustring& ta
 {
   //This is a workaround for postgres problems. Ideally, we need to use the postgres serial type and find out how to get the generated value after we add a row.
 
-  guint result = 0;
+  double result = 0;
   Glib::RefPtr<Gnome::Gda::DataModel> data_model = Query_execute("SELECT max(" + field_name + ") FROM " + table_name);
   if(!data_model && data_model->get_n_rows())
     handle_error();
@@ -419,13 +421,20 @@ Gnome::Gda::Value Box_Data::generate_next_auto_increment(const Glib::ustring& ta
   {
     //The result should be 1 row with 1 column
     Gnome::Gda::Value value = data_model->get_value_at(0, 0);
+    g_warning("Box_Data::generate_next_auto_increment(): value=%s, value_type=%d", value.to_string().c_str(), value.get_value_type());
 
-    //It probably has a specific numeric type, but I am being lazy. murrayc
+    //It's a Gnome::Gda::Value::TYPE_NUMERIC, but the GdaNumeric struct is not easy to handle, so let's hack around it:
+    //if(value.is_number())
+    //  result = value.get_integer();
+    //else
     result = util_decimal_from_string(value.to_string());
-    ++result;
+
+    ++result; 
   }
 
-  return Gnome::Gda::Value(result);
+  //Get a string representation of the number, so we can put it back in a NUMERIC Gda::Value:
+
+  return GlomConversions::parse_value(result);
 }
 
 /** Get the fields that are in related tables, via a relationship using @a field_name changes.

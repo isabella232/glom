@@ -34,6 +34,7 @@ namespace GlomConversions
   Glib::ustring format_date(const tm& tm_data);
   Glib::ustring format_date(const tm& tm_data, const std::locale& locale, bool iso_format = false);
 
+  Gnome::Gda::Value parse_value(double number);
   Gnome::Gda::Value parse_value(Field::glom_field_type glom_type, const Glib::ustring& text, bool& success, bool iso_format = false);
   tm parse_date(const Glib::ustring& text, bool& success);
   tm parse_date(const Glib::ustring& text, const std::locale& locale, bool& success);

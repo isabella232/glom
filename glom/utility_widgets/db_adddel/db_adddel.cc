@@ -1465,10 +1465,10 @@ Gtk::TreeModel::iterator DbAddDel::get_last_row() const
       {
         ++iter;
       }
-      
+
       //g_warning("DbAddDel::get_last_row(): size=%d, i=%d", size, i);
     }
-    
+
     return iter;
   }
 }

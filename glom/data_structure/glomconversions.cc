@@ -167,10 +167,10 @@ Glib::ustring GlomConversions::get_text_for_gda_value(Field::glom_field_type glo
     std::stringstream the_stream;
     the_stream.imbue( std::locale::classic() ); //The C locale.
     the_stream.str(text_in_c_locale); //Avoid using << because Glib::ustinrg does implicit character conversion with that.
-   
+
     double number = 0;
     the_stream >> number;
-  
+
     //Get the locale-specific text representation:
     std::stringstream another_stream;
     another_stream.imbue(locale); //Tell it to parse stuff as per this locale.
@@ -193,10 +193,34 @@ Glib::ustring GlomConversions::get_text_for_gda_value(Field::glom_field_type glo
   }
 }
 
+Gnome::Gda::Value GlomConversions::parse_value(double number)
+{
+  //This is just a way to get a NUMERIC Gda::Value from a numeric type:
+  //Try to parse the inputted number, according to the current locale.
+
+  GdaNumeric gda_numeric = {0, 0, 0};
+
+  //Then generate a canonical representation of the number:
+  std::stringstream clocale_stream;
+  clocale_stream.imbue( std::locale::classic() ); //The C locale.
+  clocale_stream << number;
+  Glib::ustring number_canonical_text = clocale_stream.str(); //Avoid << because it does implicit character conversion (though that might not be a problem here. Not sure). murrayc
+
+  //TODO: What about the precision and width values?
+  /* From the postgres docs:
+  *  The scale of a numeric is the count of decimal digits in the fractional part, to the right of the decimal point.
+  * The precision of a numeric is the total count of significant digits in the whole number, that is, the number of digits to both sides of the decimal point.
+  * So the number 23.5141 has a precision of 6 and a scale of 4. Integers can be considered to have a scale of zero.
+  */
+  gda_numeric.number = g_strdup(number_canonical_text.c_str());
+
+  return Gnome::Gda::Value(&gda_numeric);
+}
+
 Gnome::Gda::Value GlomConversions::parse_value(Field::glom_field_type glom_type, const Glib::ustring& text, bool& success, bool iso_format)
 {
   std::locale the_locale = (iso_format ? std::locale::classic() :  std::locale("") /* The user's current locale */);
-  
+
   //Put a NULL in the database for empty dates, times, and numerics, because 0 would be an actual value.
   //But we use "" for strings, because the distinction between NULL and "" would not be clear to users.
   if(text.empty())
@@ -241,13 +265,13 @@ Gnome::Gda::Value GlomConversions::parse_value(Field::glom_field_type glom_type,
     the_stream >> the_number;  //TODO: Does this throw any exception if the text is an invalid time?
 
     GdaNumeric gda_numeric = {0, 0, 0};
-    
+
     //Then generate a canonical representation of the number:
-    Glib::ustring number_canonical_text;
+
     std::stringstream clocale_stream;
     clocale_stream.imbue( std::locale::classic() ); //The C locale.
     clocale_stream << the_number;
-    number_canonical_text = clocale_stream.str(); //Avoid << because it does implicit character conversion (though that might not be a problem here. Not sure). murrayc
+    Glib::ustring  number_canonical_text = clocale_stream.str(); //Avoid << because it does implicit character conversion (though that might not be a problem here. Not sure). murrayc
 
     //TODO: What about the precision and width values?
     /* From the postgres docs:
