@@ -1,4 +1,4 @@
-SUBDIRS = data_structure Document Mode_Data Mode_Design Mode_Find Navigation utility_widgets
+SUBDIRS = data_structure document mode_data mode_design mode_find navigation utility_widgets
 
 gladedir = $(datadir)/glom/glade/
 
@@ -13,13 +13,13 @@ glom_SOURCES = main.cc \
                appstate.cc appstate.h \
                box_db.h box_db.cc \
                box_db_table.h box_db_table.cc \
-               dialog_glom.h Dialog_Glom.cc \
+               dialog_glom.h dialog_glom.cc \
                frame_glom.h frame_glom.cc \
                notebook_glom.h notebook_glom.cc \
                connectionpool.h connectionpool.cc \
                sharedptr.h
 
-glom_LDADD = Document/libdocument.a \
+glom_LDADD = document/libdocument.a \
              data_structure/libdata_structure.a \
              mode_data/libmode_data.a \
              mode_find/libmode_find.a \

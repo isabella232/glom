@@ -1,6 +1,6 @@
 INCLUDES = -I@top_srcdir@/ $(GLOM_CFLAGS)
 
-SUBDIRS = AddDel
+SUBDIRS = adddel
 
 noinst_LIBRARIES = libutility_widgets.a
 libutility_widgets_a_SOURCES = alignment_justified.cc alignment_justified.h \

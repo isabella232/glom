@@ -48,4 +48,4 @@ Glib::ustring LayoutItem::get_name() const
 {
   return m_field_name;
 }
-  
+

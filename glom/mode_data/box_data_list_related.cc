@@ -18,7 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include "Box_Data_List_Related.h"
+#include "box_data_list_related.h"
 
 Box_Data_List_Related::Box_Data_List_Related()
 {

@@ -21,7 +21,7 @@
 #ifndef BOX_DATA_DETAILS_FIND_H
 #define BOX_DATA_DETAILS_FIND_H
 
-#include "../mode_data/box_data_Details.h"
+#include "../mode_data/box_data_details.h"
 
 /**
   *@author Murray Cumming

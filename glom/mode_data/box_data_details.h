@@ -22,7 +22,7 @@
 #define BOX_DATA_DETAILS_H
 
 #include "box_data.h"
-#include "Box_Data_List_Related.h"
+#include "box_data_list_related.h"
 #include "../utility_widgets/placeholder.h"
 #include "../utility_widgets/flowtablewithfields.h"
 

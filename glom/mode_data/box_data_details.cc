@@ -18,7 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include "box_data_Details.h"
+#include "box_data_details.h"
 #include "../data_structure/field.h"
 #include "../data_structure/relationship.h"
 #include <sstream> //For stringstream

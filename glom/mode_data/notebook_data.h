@@ -23,7 +23,7 @@
 
 #include "../notebook_glom.h"
 #include "box_data_list.h"
-#include "box_data_Details.h"
+#include "box_data_details.h"
 
 /**
   *@author Murray Cumming

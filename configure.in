@@ -43,15 +43,15 @@ AC_DEFINE_UNQUOTED(GLOM_DTD_INSTALL_DIR, $GLOM_DTD_INSTALL_DIR, "definition of G
 AC_OUTPUT(Makefile \
   docs/Makefile \
   glom/Makefile \
-    glom/Data_Structure/Makefile \
-    glom/Document/Makefile \
-    glom/Mode_Data/Makefile \
-    glom/Mode_Design/Makefile \
-      glom/Mode_Design/Fields/Makefile \
-    glom/Mode_Find/Makefile \
-    glom/Navigation/Makefile \
-    glom/Utility_Widgets/Makefile \
-      glom/Utility_Widgets/AddDel/Makefile \
-        glom/Utility_Widgets/AddDel/eggcolumnchooser/Makefile \
+    glom/data_structure/Makefile \
+    glom/document/Makefile \
+    glom/mode_data/Makefile \
+    glom/mode_design/Makefile \
+      glom/mode_design/fields/Makefile \
+    glom/mode_find/Makefile \
+    glom/navigation/Makefile \
+    glom/utility_widgets/Makefile \
+      glom/utility_widgets/adddel/Makefile \
+        glom/utility_widgets/adddel/eggcolumnchooser/Makefile \
     po/Makefile.in
 )
