@@ -22,7 +22,7 @@
 #define GLOM_MODE_DATA_DIALOG_LAYOUT_LIST_RELATED_H
 
 #include "dialog_layout.h"
-#include "../mode_design/fields/combo_textglade.h"
+#include "../utility_widgets/combo_textglade.h"
 
 class Dialog_Layout_List_Related : public Dialog_Layout
 {

@@ -22,7 +22,7 @@
 #define DIALOG_FIELDDEFINITION_H
 
 #include <gtkmm.h>
-#include "combo_textglade.h"
+#include "../../utility_widgets/combo_textglade.h"
 #include "combo_lookup_relationship.h"
 #include "combo_fieldtype.h"
 #include "../../utility_widgets/table_columns.h"

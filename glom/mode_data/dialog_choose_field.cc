@@ -35,6 +35,12 @@ Dialog_ChooseField::Dialog_ChooseField(BaseObjectType* cobject, const Glib::RefP
   refGlade->get_widget_derived("combobox_relationship", m_combo_relationship);
   m_combo_relationship->signal_changed().connect(sigc::mem_fun(*this, &Dialog_ChooseField::on_combo_relationship_changed));
 
+  //Numeric formatting:
+  refGlade->get_widget("frame_numeric_format", m_frame_numeric_format);
+  refGlade->get_widget_derived("combobox_numeric_format", m_combo_numeric_format);
+  m_frame_numeric_format->hide(); //Hide it for now, until we make it work.
+
+
   refGlade->get_widget("treeview_fields", m_treeview);
 
   if(m_treeview)

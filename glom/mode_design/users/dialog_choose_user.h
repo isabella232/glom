@@ -24,7 +24,7 @@
 #include <libglademm.h>
 #include <gtkmm/dialog.h>
 #include <gtkmm/entry.h>
-#include "../fields/combo_textglade.h"
+#include "../../utility_widgets/combo_textglade.h"
 
 class Dialog_ChooseUser : public Gtk::Dialog
 {

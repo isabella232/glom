@@ -19,7 +19,8 @@ libutility_widgets_a_SOURCES = alignment_justified.cc alignment_justified.h \
                                entryglom.h entryglom.cc \
                                placeholder.cc placeholder.h \
                                table_columns.cc table_columns.h \
-                               layoutwidgetbase.cc layoutwidgetbase.h
+                               layoutwidgetbase.cc layoutwidgetbase.h \
+                               combo_textglade.h combo_textglade.cc
 
 libutility_widgets_a_LIBADD = adddel/libutility_widgets_adddel.a db_adddel/libutility_widgets_db_adddel.a
 

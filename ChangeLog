@@ -1,5 +1,17 @@
 2005-03-24  Murray Cumming <murrayc@murrayc.com>
 
+	* glom/glom.glade:
+	* glom/mode_design/users/dialog_users_list.cc:
+	* glom/mode_design/users/dialog_users_list.h:
+	The beginnings of UI for numeric formatting, 
+	hidden for now.
+	* glom/utility_widgets/Makefile.am:
+	* glom/utility_widgets/combo_textglade.cc:
+	* glom/utility_widgets/combo_textglade.h:
+	Moved these here from glom/mode_design/fields/.
+
+2005-03-24  Murray Cumming <murrayc@murrayc.com>
+
 	* glom/mode_design/users/dialog_users_list.cc:
 	on_button_user_add(): Revoke all user 
 	privileges when adding a user to a group, so 

@@ -24,7 +24,7 @@
 #include <gtkmm.h>
 #include <libglademm.h>
 #include "../../base_db.h"
-#include "../fields/combo_textglade.h"
+#include "../../utility_widgets/combo_textglade.h"
 
 class Dialog_UsersList
   : public Gtk::Dialog,

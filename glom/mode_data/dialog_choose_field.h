@@ -25,7 +25,7 @@
 #include "../utility_widgets/dialog_properties.h"
 #include "../document/document_glom.h"
 #include "../box_db.h"
-#include "../mode_design/fields/combo_textglade.h"
+#include "../utility_widgets/combo_textglade.h"
 
 class Dialog_ChooseField : public Gtk::Dialog
 {
@@ -71,6 +71,9 @@ protected:
   Gtk::CheckButton* m_checkbutton_editable;
   Gtk::TreeView* m_treeview;
   Glib::RefPtr<Gtk::ListStore> m_model;
+
+  Gtk::Frame* m_frame_numeric_format;
+  Combo_TextGlade* m_combo_numeric_format;
 
   Glib::ustring m_table_name;
 

@@ -23,7 +23,7 @@
 
 #include <gtkmm.h>
 #include <libglademm.h>
-#include "../fields/combo_textglade.h"
+#include "../../utility_widgets/combo_textglade.h"
 
 class Dialog_User : public Gtk::Dialog
 {
