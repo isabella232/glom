@@ -281,7 +281,7 @@ void Box_Tables::save_to_document()
 {
   if(get_userlevel() == AppState::USERLEVEL_DEVELOPER)
   {
-    if(true); //m_modified
+    if(m_modified)
     {
       //Save the hidden tables. TODO_usermode: Only if we are in developer mode.
       Document_Glom::type_listTableInfo listTables;
@@ -361,4 +361,3 @@ void Box_Tables::on_userlevel_changed(AppState::userlevels /* userlevel */)
 {
   fill_from_database();
 }
-

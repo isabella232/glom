@@ -74,6 +74,8 @@ void Document_Glom::set_connection_user(const Glib::ustring& strVal)
 
 void Document_Glom::set_connection_server(const Glib::ustring& strVal)
 {
+  
+  g_warning("set_connection_server: strVal=%s, m_connection_server = %s", strVal.c_str(), m_connection_server.c_str());
   if(strVal != m_connection_server)
   {
     m_connection_server = strVal;
@@ -127,10 +129,13 @@ Document_Glom::type_vecRelationships Document_Glom::get_relationships(const Glib
 
 void Document_Glom::set_relationships(const Glib::ustring& table_name, const type_vecRelationships& vecRelationships)
 {
-  DocumentTableInfo& info = get_table_info_with_add(table_name);
-  info.m_relationships = vecRelationships;
+  if(!table_name.empty())
+  {
+    DocumentTableInfo& info = get_table_info_with_add(table_name);
+    info.m_relationships = vecRelationships;
 
-  set_modified();
+    set_modified();
+  }
 }
 
 Document_Glom::type_vecFields Document_Glom::get_table_fields(const Glib::ustring& table_name) const
@@ -144,10 +149,13 @@ Document_Glom::type_vecFields Document_Glom::get_table_fields(const Glib::ustrin
 
 void Document_Glom::set_table_fields(const Glib::ustring& table_name, const type_vecFields& vecFields)
 {
-  DocumentTableInfo& info = get_table_info_with_add(table_name);
-  info.m_fields = vecFields;
+  if(!table_name.empty())
+  {
+    DocumentTableInfo& info = get_table_info_with_add(table_name);
+    info.m_fields = vecFields;
 
-  set_modified();
+    set_modified();
+  }
 }
 
 bool Document_Glom::get_field(const Glib::ustring& table_name, const Glib::ustring& strFieldName, Field& fieldResult) const
@@ -321,7 +329,6 @@ Document_Glom::type_listTableInfo Document_Glom::get_tables() const
 
   for(type_tables::const_iterator iter = m_tables.begin(); iter != m_tables.end(); ++iter)
   {
-    g_warning("get_tables: %s", iter->second.m_info.m_name.c_str()); 
     result.push_back(iter->second.m_info);
   }
         
@@ -426,7 +433,9 @@ Document_Glom::type_mapLayoutGroupSequence Document_Glom::get_data_layout_groups
     //Look for the layout with this name:
     DocumentTableInfo::type_layouts::const_iterator iter = info.m_layouts.find(layout_name);
     if(iter != info.m_layouts.end())
+    {
       return iter->second; //found   
+    }
   }
      
   return type_mapLayoutGroupSequence(); //not found
@@ -434,9 +443,12 @@ Document_Glom::type_mapLayoutGroupSequence Document_Glom::get_data_layout_groups
 
 void Document_Glom::set_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& table_name, const type_mapLayoutGroupSequence& groups)
 {
-  DocumentTableInfo& info = get_table_info_with_add(table_name);
-  info.m_layouts[layout_name] = groups;
-  set_modified();
+  if(!table_name.empty())
+  {
+    DocumentTableInfo& info = get_table_info_with_add(table_name);
+    info.m_layouts[layout_name] = groups;
+    set_modified();
+  }
 }
 
 Document_Glom::DocumentTableInfo& Document_Glom::get_table_info_with_add(const Glib::ustring& table_name)
@@ -464,11 +476,14 @@ Glib::ustring Document_Glom::get_table_title(const Glib::ustring& table_name) co
 
 void Document_Glom::set_table_title(const Glib::ustring& table_name, const Glib::ustring& value)
 {
-  DocumentTableInfo& info = get_table_info_with_add(table_name);
-  if(info.m_info.m_title != value)
+  if(!table_name.empty())
   {
-    info.m_info.m_title = value;
-    set_modified();
+    DocumentTableInfo& info = get_table_info_with_add(table_name);
+    if(info.m_info.m_title != value)
+    {
+      info.m_info.m_title = value;
+      set_modified();
+    }
   }
 }
 
@@ -528,8 +543,10 @@ void Document_Glom::set_modified(bool value)
   if(value)
   {
     //Using this with --g-fatal-warnings will help us to see unnecessary set_modified(true) calls.
-    g_warning("Document_Glom::set_modified");
+    g_warning("Document_Glom::set_modified: %d", (int)value);
   }
+  
+  Bakery::Document_XML::set_modified(value);
 }
 
 bool Document_Glom::load_after()
@@ -812,7 +829,7 @@ bool Document_Glom::save_before()
       {
         xmlpp::Element* nodeLayout = nodeDataLayouts->add_child("data_layout");
         nodeLayout->set_attribute("name", iter->first);
-
+g_warning("save: adding group: %s", iter->first.c_str());
         xmlpp::Element* nodeGroups = nodeLayout->add_child("data_layout_groups");
      
         const type_mapLayoutGroupSequence& group_sequence = iter->second;
