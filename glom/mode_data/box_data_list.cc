@@ -24,8 +24,7 @@
 #include <libintl.h>
 
 Box_Data_List::Box_Data_List()
-: m_has_one_or_more_records(false),
-  m_first_col(0)
+: m_has_one_or_more_records(false)
 {
   m_layout_name = "list";
   
@@ -112,6 +111,7 @@ void Box_Data_List::fill_from_database()
         {
           for(guint result_row = 0; result_row < rows_count; result_row++)
           {
+            
             Gnome::Gda::Value value = result->get_value_at(primary_key_field_index, result_row);
             Glib::ustring key = value.to_string(); //It is actually an integer, but that should not matter.
             if(key.empty())
@@ -120,12 +120,21 @@ void Box_Data_List::fill_from_database()
             {
               Gtk::TreeModel::iterator tree_iter = m_AddDel.add_item(key);
 
+              type_vecFields::const_iterator iterFields = listFieldsToShow.begin();
+
               //each field:
               guint cols_count = result->get_n_columns();
               for(guint uiCol = 0; uiCol < cols_count; uiCol++)
               {
                 Gnome::Gda::Value value = result->get_value_at(uiCol, result_row);
-                m_AddDel.set_value(tree_iter, m_first_col + uiCol, value);
+                guint index = 0;
+                
+                //TODO_Performance: This searches m_Fields again each time:
+                bool test = get_field_column_index(iterFields->get_name(), index);
+                ++iterFields;
+                
+                if(test)
+                  m_AddDel.set_value(tree_iter, index, value);
               }
             }
           }
@@ -143,7 +152,7 @@ void Box_Data_List::fill_from_database()
   //Select first record:
   Glib::RefPtr<Gtk::TreeModel> refModel = m_AddDel.get_model();
   if(refModel)
-    m_AddDel.select_item(refModel->children().begin(), m_first_col);
+    m_AddDel.select_item(refModel->children().begin());
  
   fill_end();
 }
@@ -155,21 +164,28 @@ void Box_Data_List::on_adddel_user_requested_add()
   //Start editing in the primary key or the first cell if the primary key is auto-incremented (because there is no point in editing an auto-generated value)..
   guint index_primary_key = 0;
   bool bPresent = get_field_primary_key(index_primary_key); //If there is no primary key then the default of 0 is OK.
+  guint index_field_to_edit = 0;
   if(bPresent)
   {
+    index_field_to_edit = index_primary_key;
+    
     Field fieldPrimaryKey = m_Fields[index_primary_key];
     if(fieldPrimaryKey.get_field_info().get_auto_increment())
     {
       //Start editing in the first cell that is not the primary key:
       if(index_primary_key == 0)
       {
-        index_primary_key += 1; //TODO: Check that there is > 1 column.
+        index_field_to_edit += 1; //TODO: Check that there is > 1 column.
       }
+      else
+        index_field_to_edit = 0;
     }
   }
 
-  const guint treemodel_column = m_first_col + index_primary_key;
-  m_AddDel.select_item(iter, treemodel_column, true /* start_editing */);
+  guint treemodel_column = 0;
+  bool test = get_field_column_index(m_Fields[index_field_to_edit].get_name(), treemodel_column);
+  if(test)
+    m_AddDel.select_item(iter, treemodel_column, true /* start_editing */);
 }
 
 void Box_Data_List::on_adddel_user_requested_edit(const Gtk::TreeModel::iterator& row)
@@ -218,13 +234,11 @@ void Box_Data_List::on_adddel_user_added(const Gtk::TreeModel::iterator& row)
     Glib::RefPtr<Gnome::Gda::DataModel> data_model = record_new(true /* use entered field data*/, primary_key_value);
     if(data_model)
     {
-      guint primary_key_field_index = 0;
-      bool test = get_field_primary_key(primary_key_field_index);
+      guint primary_key_model_col_index = 0;
+      bool test = get_field_column_index(field.get_name(), primary_key_model_col_index);
       if(test)
       {
-        guint primary_key_model_col_index = m_first_col + primary_key_field_index;
-
-        Gnome::Gda::FieldAttributes fieldInfo = field.get_field_info();
+        const Gnome::Gda::FieldAttributes fieldInfo = field.get_field_info();
         //If it's an auto-increment, then get the value and show it:
         if(fieldInfo.get_auto_increment())
         {
@@ -289,13 +303,13 @@ void Box_Data_List::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, 
       {
         Field field_primary_key = m_Fields[primary_key_field_index];
 
-        if(col >= m_first_col)
-        {
-          const guint changed_field_col_index = col - m_first_col;
-          
-          const Field field = m_Fields[changed_field_col_index];
-
-          const Gnome::Gda::Value field_value = m_AddDel.get_value_as_value(row, col);               
+        const Glib::ustring field_name = m_AddDel.get_column_field(col);
+        Field field;
+        bool test = get_fields_for_table_one_field(m_strTableName, field_name, field);
+        if(test)
+        {        
+          const Gnome::Gda::Value field_value = m_AddDel.get_value_as_value(row, col);
+             
           Glib::ustring strQuery = "UPDATE " + m_strTableName;
           strQuery += " SET " +  field.get_name() + " = " + field.sql(field_value);
 
@@ -372,7 +386,7 @@ void Box_Data_List::do_lookups(const Gtk::TreeModel::iterator& row, const Field&
 
 void Box_Data_List::on_details_nav_first()
 {
-  m_AddDel.select_item(m_AddDel.get_model()->children().begin(), m_first_col);
+  m_AddDel.select_item(m_AddDel.get_model()->children().begin());
 
   signal_user_requested_details().emit(m_AddDel.get_value_key_selected_as_value());
 }
@@ -387,7 +401,7 @@ void Box_Data_List::on_details_nav_previous()
     {
       iter--;
 
-      m_AddDel.select_item(iter, m_first_col);
+      m_AddDel.select_item(iter);
       signal_user_requested_details().emit(m_AddDel.get_value_key_selected_as_value());
     }
   }
@@ -402,7 +416,7 @@ void Box_Data_List::on_details_nav_next()
     if( !m_AddDel.get_is_last_row(iter) )
     {
       iter++;    
-      m_AddDel.select_item(iter, m_first_col);
+      m_AddDel.select_item(iter);
 
       signal_user_requested_details().emit(m_AddDel.get_value_key_selected_as_value());
     }
@@ -414,7 +428,7 @@ void Box_Data_List::on_details_nav_last()
   Gtk::TreeModel::iterator iter = m_AddDel.get_last_row();
   if(iter)
   {
-    m_AddDel.select_item(iter, m_first_col);
+    m_AddDel.select_item(iter);
     signal_user_requested_details().emit(m_AddDel.get_value_key_selected_as_value());
   }
 }
@@ -511,15 +525,9 @@ void Box_Data_List::fill_column_titles()
     type_vecFields listFieldsToShow = get_fields_to_show();
 
     //Add a column for each table field:
-    bool first_col_added = false;
     for(type_vecFields::const_iterator iter =  listFieldsToShow.begin(); iter != listFieldsToShow.end(); ++iter)
     {
-      guint col = m_AddDel.add_column(*iter);
-      if(!first_col_added)
-      {
-        m_first_col = col; //Remember for later.
-        first_col_added = true;
-      }
+      m_AddDel.add_column(*iter);
 
       if(iter->get_field_info().get_primary_key())
         m_AddDel.set_key_type(*iter);
@@ -556,5 +564,6 @@ bool Box_Data_List::get_field_column_index(const Glib::ustring& field_name, guin
     ++i;
   }
 
+  g_warning("Box_Data_List::get_field_column_index(): field not found.");
   return false; //failure.
 }

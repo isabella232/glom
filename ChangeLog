@@ -1,3 +1,15 @@
+2004-07-18  Murray Cumming  <murrayc@murrayc.com>
+
+	* docs/user-guide/C/glom.xml: Explain how to use glom as an Operator 
+	and as a Developer.
+
+2004-07-13  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/data_structure/field.cc: sql(): Create sql text representation 
+	depending on the expected value type rather than the actual value 
+	type, to prevent SQL errors when using relationships between fields of 
+	different types.
+
 2004-07-13  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/mode_design/tables_relationships.[h|cc]: Actually delete 

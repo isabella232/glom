@@ -71,7 +71,6 @@ protected:
   mutable AddDel_WithButtons m_AddDel; //mutable because its get_ methods aren't const.
 
   bool m_has_one_or_more_records;
-  guint m_first_col;
 
   type_signal_user_requested_details m_signal_user_requested_details;
 };

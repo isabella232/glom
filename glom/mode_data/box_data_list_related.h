@@ -31,7 +31,7 @@ public:
 
   virtual void init_db_details(const Glib::ustring& strDatabaseName, const Relationship& relationship, const Gnome::Gda::Value& foreign_key_value,  const Gnome::Gda::Value& from_table_primary_key_value);
 
-  virtual Glib::ustring get_KeyField() const;
+  virtual Field get_key_field() const;
 
   sigc::signal<void, Gnome::Gda::Value> signal_record_added;
 
@@ -44,7 +44,7 @@ protected:
   virtual void enable_buttons();
   
 protected:
-  Glib::ustring m_strKeyField;
+  Field m_key_field;
   Gnome::Gda::Value m_key_value;
 };
 

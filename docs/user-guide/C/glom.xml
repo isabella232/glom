@@ -2,7 +2,7 @@
 <!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" 
 "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" [
   <!ENTITY legal SYSTEM "legal.xml">
-  <!ENTITY appversion "0,8">
+  <!ENTITY appversion "0.8">
   <!ENTITY manrevision "0.1">
   <!ENTITY date "20 June 2004">
   <!ENTITY app "Glom">
@@ -181,9 +181,7 @@
 		fileref="figures/start.png" format="PNG"/> 
 	    </imageobject>
 	    <textobject> 
-	      <phrase>Shows &app; main window. Contains titlebar, menubar,
-	      toolbar, display area, and
-	      scrollbars. Menubar contains File, Edit, View, and Help menus.
+	      <phrase>Shows &app; main window.
 	      </phrase> 
 	    </textobject> 
 	  </mediaobject> 
@@ -195,10 +193,128 @@
 <!-- ================ Usage ================================ -->
 <!-- Use this section to describe how to use the application to perform the tasks for 
   which the application is designed. -->
-  <sect1 id="glom-usage"> 
-    <title>Usage</title> 
-    <para></para>
+
+
+    <sect1>
+    <title>Using Glom as an Operator</title>
+    <para>To open an existing glom document, either open that document from the File Manager, or choose Glom from the Applications menu, and then choose the document when asked. Glom will ask you for a user name and password to access the database. Your administrator will provide your user name and password.</para>
+
+    <para>When you open an existing document, Glom will be in <literal>Operator</literal> <literal>user level</literal>. This user level allows you to find and edit records, but does not allow you to change the fundamental structure of the database.</para>
+
+    <sect2>
+    <title>Navigation</title>
+    <para>Each database has several tables. To look at a different table, choose <literal>Table</literal> from the <literal>Navigate</literal> menu. Then double-click on the table, or select it and click the <literal>Open</literal> button.</para>
+    </sect2>
+
+    <sect2>
+    <title>Entering Data</title>
+    <para>When in <literal>Data Mode</literal>, you can enter information into either the <literal>List</literal> or <literal>Details</literal> view. The List view shows many records at once, but does not show every field. The details view shows only one record, and shows all the fields arranged suitably.</para>
+    <para>When you enter data into a field it will be saved into the database immediately after you finish editing the field. If it is a date or time field then the data format will be checked for you.</para> 
+    <para>To create a new record just click the <literal>New</literal> button. A new record will be created with blank fields for you to fill in.</para>
+    </sect2>
+
+    <sect2>
+    <title>Finding Data</title>
+    <para>Choose <literal>Find Mode</literal> from the Mode menu. The fields in the List and Details views will now be empty, and a Find button will appear at the bottom of the window.</para>
+    <para>Enter information, or part of the information, into a field to find records with that information in that field. For instance, enter Jim into a name field to find records with &quot;Jim&quot; or &quot;Jimmy&quot; in the name.</para> 
+    <para>When you press the <literal>Find</literal> button, glom will search for records and then display them. If only one record is found then it will show you that record in the Details view. If several records are found then it will show you those records in the List view.</para>
+    </sect2>
+
+
+    </sect1>
+
+    <sect1>
+    <title>Using Glom as a Developer</title>
+    <para>When you create a new document, Glom will be in the <literal>Developer</literal> <literal>user level</literal>. You can also change to the Developer user level after opening an existing document, with the <literal>User Level</literal> menu. Glom will only allow this if the administrator has allowed it.</para>
+
+    <sect2>
+    <title>Adding Tables</title>
+    <para>You can see the list of existing tables by choosing <literal>Table</literal> from the <literal>Navigate</literal> menu. You will also see this window after connecting to a database server, after creating a new document. To create a new table, click the <literal>Add</literal> button and enter the name for the new table. This name should not contain any spaces or special characters. Glom will suggest a human-readable title for this table. <literal>Operators</literal> will see this title instead of the actual table name. You can also marka a tables as <literal>hidden</literal> from Operators. For instance, Operators should see &quot;Invoice Lines&quot; as related records from the &quot;Invoices&quot; table, but they should never be able to navigate directly to the &quot;Invoice Lines&quot; table.</para>
+    <para>You can also specify one table as the <literal>default table</literal>. This table will be shown whenever an operator opens an existing document, without asking him to select a table from the list.</para>
+    <para>You can also use this window to rename an existing table.</para>
+    <para>Click the <literal>Open</literal> button to look at the selected table.</para>
+    </sect2>
+
+    <sect2>
+    <title>Editing Fields</title>
+    <para>Choose <literal>Fields</literal> from the <literal>Developer</literal> menu. This shows the list of fields in the table. New tables automatically have a primary key field, but you can change this field if necessary.</para>
+    <para>Click the <literal>Add</literal> button to add a new field, then enter the name of the new field. The name should not contain spaces or special characters. Glom will guess an appropriate human-readable title for this field, but you can edit this. <literal>Operators</literal> will see this title instead of the actual field name.</para> 
+    <para>To specify more field details, select the field and click the <literal>Details</literal> button.</para>
+
+    <figure id="developer-editing-fields"> 
+	<title>Editing Fields</title> 
+	<screenshot> 
+	  <mediaobject> 
+	    <imageobject><imagedata
+		fileref="figures/glom_design_fields.png" format="PNG"/> 
+	    </imageobject>
+	    <textobject> 
+	      <phrase>Editing the table's fields.
+	      </phrase> 
+	    </textobject> 
+	  </mediaobject> 
+	</screenshot> 
+     </figure>
+
+
+    <sect3>
+    <title>Primary Keys</title>
+    <para>Each table must have one, and only one, <literal>Primary Key</literal>. The value in this field will be unique, meaning that each value in this field will appear in only one record in the table. For instance, each record in a &quot;Customers&quot; table would have a &quot;Customer ID&quot;. This value will be used to refer to that customer from other tables, such as &quot;Projects&quot; and &quot;Invoices&quot; records. See the <link linkend="sec-developer-relationships">Creating Relationships</link> section to see how you can relate tables together.</para>
+    </sect3> 
+
+    <sect3>
+    <title>Field Types</title>
+    <para>Glom offers a few simple field types:
+    <orderedlist>
+<listitem><simpara>Number</simpara></listitem>
+<listitem><simpara>Text</simpara></listitem>
+<listitem><simpara>Date</simpara></listitem>
+<listitem><simpara>Time</simpara></listitem>
+<listitem><simpara>Boolean - either true or false</simpara></listitem>
+</orderedlist>
+    </para>
+    </sect3>
+  
+    <sect3>
+    <title>Calculated Fields</title>
+    <para>Field values can be calculated in terms of other fields, using the Python programming language. This calculation should be the implementation of a python function, which should return a value. The return value will be used as the value of the field. This value will be recalculated every time one of the source fields changes. TODO: This only works for default values at the moment, and you can not use field values in the calculation yet.</para>
+    <para>You can also use calculations to specify a default value for fields, by selecting the <literal>Default Value</literal> tab in the <literal>Field Details</literal> window, clicking on the <literal>Calculate Value</literal> check box, and then entering a Python calculation. You can test this calculation in the <literal>Edit</literal> window.</para>  
+    </sect3>
+
+    </sect2>
+
+    <sect2>
+    <title>Arranging Layouts</title>
+    <para>Each table has <literal>List</literal> and <literal>Details</literal> views, and by default these show all fields in the table, in order of creation. You can edit the layout by choosing <literal>Layout</literal> from the <literal>Developer</literal> menu.</para>
+    <para>For the <literal>List</literal> view, you can specify the sequence of field columns, and whether some fields are hidden.</para>
+    <para>For the <literal>Details</literal> view, you can create groups of fields, and give these groups titles. You can then place fields in these groups and specify the sequence fo fields in these groups. You can also specify the sequence of these groups. For instance, in a &quot;Contacts&quot; table, you might create a &quot;Name&quot; group, and place the &quot;title&quot;, &quot;first_name&quot; and  &quot;last_name&quot; fields in that group. You might have other groups for the &quot;Address&quot; fields.</para>
+
+    <para>Date and Time fields will be displayed, and entered, in the correct format according to the user's locale, but stored in the database in a canonical form. Therefore, a German user can enter a date in the German format, but this will later be displayed to a U.S. user in the U.S. format.</para> 
+    </sect2>
+
+    <sect2 id="sec-developer-relationships">
+    <title>Creating Relationships</title>
+    <para>Tables in the Database are often related together. For instance, an &quot;Invoices&quot; table might have a &quot;Customer ID&quot; field. A value in this field would specify a record in the &quot;Customers&quot; table with the same value. Glom can show extra information, such as the customer name, from that related record. Or it can show a list of several related records - for instance, several related &quot;Invoice Lines&quot; that are related to a record in the &quot;Invoice&quot; record.</para>
+    <para>To create relationships, choose <literal>Relationships</literal> from the <literal>Developer</literal> menu. This will show the list of existing relationships. Click the <literal>Add</literal> button to create a new relationship, and enter a name for it. You should then choose a field in the current table, and a field in another table to which it should be related. This relationship will find any records in the other table for which the values in both fields are equal.</para>
+   <para>You can use the relationship in the following places.
+
+<orderedlist>
+<listitem><simpara>To show a related field on the List or Details view.</simpara></listitem>
+<listitem><simpara>To show a list of related records on the Details view.</simpara></listitem>
+<listitem><simpara>To lookup a value from a field in a related record. For instance, to copy the current price of a &quot;Product&quot; into the &quot;Price&quot; field of an &quot;Invoice Line&quot; record.</simpara></listitem>
+<listitem><simpara>To calculate a field value.</simpara></listitem>
+</orderedlist>
+   </para>
+   </sect2> 
+
+   <sect2>
+   <title>Users Administration</title>
+   <para>To define the <literal>Operators</literal> who can use your database, and to specify what access they have to the various tables, choose <literal>Users</literal> from the <literal>Developer</literal> menu. TODO: Implement the User adminstration.</para> 
+   </sect2>
+  
   </sect1>
+
+
 <!-- Customization/Settings not yet implemented...
   <- ============= Customization ============================= ->
   <- Use this section to describe how to customize the application. ->
@@ -603,6 +719,20 @@
       any later version. A copy of this license can be found at this
       <ulink url="ghelp:gpl" type="help">link</ulink>, or in the file
       COPYING included with the source code of this program. </para>
-  </sect1> 
+  </sect1>
 
+  <appendix id="sec-concepts">
+  <title>Concepts</title>
+  <para>Glom is easy to use, but you must understand the following basic concepts.
+<orderedlist>
+<listitem><simpara><literal>Database</literal>: Each glom document allows access to one database.</simpara></listitem>
+<listitem><simpara><literal>Table</literal>: Each database contains several tables, such as &quot;Customers&quot; and &quot;Invoices&quot; tables.</simpara></listitem>
+<listitem><simpara><literal>Field</literal>: Each table has several fields, such as &quot;Customer ID&quot;, &quot;First Name&quot;, and &quot;Date of Birth&quot; fields. In other documents and applications, fields are sometimes called &quot;Columns&quot;</simpara></listitem>
+<listitem><simpara><literal>Records</literal>: Each table contains several records, each of which has values for each of the fields. For instance, the &quot;Customers&quot; table will have a record for each customer. In other documents and applications, records are sometimes called <literal>Rows</literal>.</simpara></listitem>
+<listitem><simpara><literal>Relationships</literal>: Each table might be related to other tables, via fields in both tables. For instance, a &quot;Customers&quot; table could have a relationship to the &quot;Invoices&quot; table, so that people could see all the invoices for that customer. Only developers need to understand this concept. In other documents and applications, relationships are sometimes called &quot;Joins&quot;.</simpara></listitem> 
+</orderedlist>
+  </para>
+  </appendix>
+
+ 
 </article>

@@ -162,14 +162,18 @@ Glib::ustring Field::get_title_or_name() const
 Glib::ustring Field::sql(const Gnome::Gda::Value& value) const
 {
   Glib::ustring str;
-  switch(value.get_value_type())
+
+  switch(get_glom_type())
   {
-    case(Gnome::Gda::VALUE_TYPE_STRING):
+    case(TYPE_TEXT):
     {
-      str = "'" + value.to_string() + "'"; //Add single-quotes. Actually escape it.
+      if(value.is_null())
+        return "''"; //We want to ignore the concept of NULL strings, and deal only with empty strings.
+      else
+        str = "'" + value.to_string() + "'"; //Add single-quotes. Actually escape it.
     }
-    case(Gnome::Gda::VALUE_TYPE_DATE):
-    case(Gnome::Gda::VALUE_TYPE_TIME):         
+    case(TYPE_DATE):
+    case(TYPE_TIME):
     {
       str = GlomConversions::get_text_for_gda_value(m_glom_type, value, std::locale() /* SQL uses the C locale */, true /* ISO standard */);
       if(str != "NULL")
@@ -177,14 +181,18 @@ Glib::ustring Field::sql(const Gnome::Gda::Value& value) const
          
       break;
     }
-    case(Gnome::Gda::VALUE_TYPE_NUMERIC):
+    case(TYPE_NUMERIC):
     {
       str =  GlomConversions::get_text_for_gda_value(m_glom_type, value, std::locale() /* SQL uses the C locale */); //No quotes for numbers.
       break;
     }
-    case(Gnome::Gda::VALUE_TYPE_BOOLEAN):
+    case(TYPE_BOOLEAN):
     {
-      str = ( value.get_bool() ? "TRUE" : "FALSE" );
+      if(value.get_value_type() == Gnome::Gda::VALUE_TYPE_BOOLEAN)
+        str = ( value.get_bool() ? "TRUE" : "FALSE" );
+      else
+        str = "FALSE";
+
       break;
     }
     default:

@@ -110,7 +110,8 @@ public:
   virtual Gtk::TreeModel::iterator get_item_selected();
 
   virtual bool select_item(const Gtk::TreeModel::iterator& iter, guint column, bool start_editing = false);  //bool indicates success.
-
+  virtual bool select_item(const Gtk::TreeModel::iterator& iter);
+  
   //Select row with this key value:
   virtual bool select_item(const Glib::ustring& strItemText, guint column, bool start_editing = false);
   
@@ -143,6 +144,8 @@ public:
 
   virtual guint get_columns_count() const;
 
+  virtual Glib::ustring get_column_field(guint column_index) const;
+  
   typedef AddDelColumnInfo::type_vecStrings type_vecStrings;
 
   /** Retrieves the column order, even after they have been reordered by the user.

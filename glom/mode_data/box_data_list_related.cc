@@ -32,17 +32,19 @@ Box_Data_List_Related::~Box_Data_List_Related()
 
 void Box_Data_List_Related::init_db_details(const Glib::ustring& strDatabaseName,  const Relationship& relationship, const Gnome::Gda::Value& foreign_key_value, const Gnome::Gda::Value&  /* from_table_primary_key_value */)
 {
-  m_strKeyField = relationship.get_to_field();
   m_key_value = foreign_key_value;
 
-  //TODO:
-  //At the moment strForeignKeyValue must be SQLized already.
+  bool found = get_fields_for_table_one_field(relationship.get_to_table(), relationship.get_to_field(), m_key_field);
+  if(found)
+  {           
+    if(!GlomConversions::value_is_empty(m_key_value))
+    {
+      Glib::ustring strWhereClause = m_key_field.get_name() + " = " + m_key_field.sql(m_key_value);
 
-  Glib::ustring strWhereClause;
-  if(!m_strKeyField.empty() && !GlomConversions::value_is_empty(m_key_value))
-    strWhereClause = m_strKeyField + " = " + m_key_value.to_string(); //TODO: Use field.sql().
-
-  Box_Data_List::init_db_details(strDatabaseName, relationship.get_to_table(), strWhereClause);
+      Box_Data_List::init_db_details(strDatabaseName, relationship.get_to_table(), strWhereClause);
+    }
+    //TODO: Clear the list if there is no key value?
+  }
 }
 
 void Box_Data_List_Related::fill_from_database()
@@ -58,13 +60,8 @@ void Box_Data_List_Related::fill_from_database()
     if(m_has_one_or_more_records) //This was set by Box_Data_List::fill_from_database().
     {
       //Is the to_field unique? If so, there can not be more than one.
-      Field field_to;
-      bool test = get_fields_for_table_one_field(m_strTableName, m_strKeyField, field_to);
-      if(test)
-      {
-        if(field_to.get_field_info().get_unique_key()) //automatically true if it is a primary key
-          allow_add = false;
-      }
+      if(m_key_field.get_field_info().get_unique_key()) //automatically true if it is a primary key
+        allow_add = false;
     }
 
     //TODO: Disable add if the from_field already has a value and the to_field is auto-incrementing because
@@ -92,13 +89,12 @@ void Box_Data_List_Related::on_record_added(const Gnome::Gda::Value& primary_key
   if(iter)
   {
     guint iKey = 0;
-    bool bTest = get_field_index(m_strKeyField, iKey);
+    bool bTest = get_field_column_index(m_key_field.get_name(), iKey);
     if(!bTest)
-       std::cout << "Box_Data_List_Related::on_record_added() field not found: " << m_strKeyField << std::endl;
+       std::cout << "Box_Data_List_Related::on_record_added() field not found: " << m_key_field.get_name() << std::endl;
 
-    Gnome::Gda::Value key_value = m_AddDel.get_value_as_value(iter, m_first_col + iKey);
+    Gnome::Gda::Value key_value = m_AddDel.get_value_as_value(iter, iKey);
     Box_Data_List::on_record_added(key_value); //adds blank row.
-
 
     //Make sure that the new related record is related,
     //by setting the foreign key:
@@ -111,16 +107,16 @@ void Box_Data_List_Related::on_record_added(const Gnome::Gda::Value& primary_key
     else
     {
       //Create the link by setting the foreign key:
-      m_AddDel.set_value(iter, m_first_col + iKey, key_value);
+      m_AddDel.set_value(iter, iKey, key_value);
 
-      on_adddel_user_changed(iter, m_first_col + iKey); //Update the database.
+      on_adddel_user_changed(iter, iKey); //Update the database.
     }
   }
 }
 
-Glib::ustring Box_Data_List_Related::get_KeyField() const
+Field Box_Data_List_Related::get_key_field() const
 {
-  return m_strKeyField;
+  return m_key_field;
 }
 
 void Box_Data_List_Related::on_adddel_user_added(const Gtk::TreeModel::iterator& row)
@@ -131,31 +127,26 @@ void Box_Data_List_Related::on_adddel_user_added(const Gtk::TreeModel::iterator&
 
   bool bAllowAdd = true;
 
-  Field field;
-  bool test = get_field(m_strKeyField, field);
-  if(test)
+  const Gnome::Gda::FieldAttributes fieldInfo = m_key_field.get_field_info();
+  if(fieldInfo.get_unique_key() || fieldInfo.get_primary_key())
   {
-    Gnome::Gda::FieldAttributes fieldInfo = field.get_field_info();
-    if(fieldInfo.get_unique_key() || fieldInfo.get_primary_key())
-    {
-      if(m_AddDel.get_count() > 0) //If there is already 1 record
-        bAllowAdd = false;
-    }
+    if(m_AddDel.get_count() > 0) //If there is already 1 record
+      bAllowAdd = false;
+  }
 
-    if(bAllowAdd)
-    {
-      Box_Data_List::on_adddel_user_added(row);
-    }
-    else
-    {
-      //Tell user that they can't do that:
-      Gtk::MessageDialog dialog(gettext("You attempted to add a new related record, \nbut there can only be one related record, \nbecause the relationship uses a unique key."),
-        Gtk::MESSAGE_WARNING);
-      dialog.run();
+  if(bAllowAdd)
+  {
+    Box_Data_List::on_adddel_user_added(row);
+  }
+  else
+  {
+    //Tell user that they can't do that:
+    Gtk::MessageDialog dialog(gettext("You attempted to add a new related record, \nbut there can only be one related record, \nbecause the relationship uses a unique key."),
+      Gtk::MESSAGE_WARNING);
+    dialog.run();
 
-      //Replace with correct values:
-      fill_from_database();
-    }
+    //Replace with correct values:
+    fill_from_database();
   }
 }
 

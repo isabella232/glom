@@ -379,6 +379,13 @@ Gtk::TreeModel::iterator AddDel::get_row(const Glib::ustring& key)
   return  m_refListStore->children().end();
 }
 
+bool AddDel::select_item(const Gtk::TreeModel::iterator& iter)
+{
+  guint col_first = 0;
+  get_model_column_index(0, col_first);
+  return select_item(iter, col_first);
+}
+
 bool AddDel::select_item(const Gtk::TreeModel::iterator& iter, guint column, bool start_editing)
 {
   if(!m_refListStore)
@@ -850,6 +857,15 @@ guint AddDel::add_column(const Glib::ustring& strTitle, const Glib::ustring& col
   column_info.m_visible = visible;
 
   return add_column(column_info);
+}
+
+Glib::ustring AddDel::get_column_field(guint column_index) const
+{
+  Glib::ustring result;
+  if(column_index < m_ColumnTypes.size())
+    result = m_ColumnTypes[column_index].m_name;
+
+  return result;
 }
 
 bool AddDel::get_prevent_user_signals() const
