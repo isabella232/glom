@@ -1,3 +1,10 @@
+2004-07-04  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/document/Document_Glom.[h|cc]: Cache all the data in 
+	member variables and only deal with the XML DOM when loading and 
+	saving, in overrides of load_before() and save_after(). This makes the 
+	code nicer and faster.
+
 2004-07-02  Murray Cumming  <murrayc@murrayc.com>
 
 	* Renamed all the ugly on_AddDel_* methods to slightly less ugly 

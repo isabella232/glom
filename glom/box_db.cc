@@ -94,6 +94,9 @@ const Gtk::Window* Box_DB::get_app_window() const
   
 Gtk::Window* Box_DB::get_app_window()
 {
+  return dynamic_cast<Gtk::Window*>(get_toplevel());
+/*
+
   Gtk::Widget* pWidget = get_parent();
   while(pWidget)
   {
@@ -112,6 +115,7 @@ Gtk::Window* Box_DB::get_app_window()
   }
 
   return 0; //not found.
+*/
 }
 
 void Box_DB::show_hint()

@@ -37,6 +37,8 @@ public:
   Document_Glom();
   virtual ~Document_Glom();
 
+  virtual void set_modified(bool value = true);
+
   virtual void set_connection_server(const Glib::ustring& strVal);
   virtual void set_connection_user(const Glib::ustring& strVal);
   virtual void set_connection_database(const Glib::ustring& strVal);
@@ -46,40 +48,27 @@ public:
   virtual Glib::ustring get_connection_database();
 
   typedef std::vector<Relationship> type_vecRelationships;
-  virtual type_vecRelationships get_relationships(const Glib::ustring& strTableName) const;
-  virtual void set_relationships(const Glib::ustring& strTableName, type_vecRelationships vecRelationships);
+  virtual type_vecRelationships get_relationships(const Glib::ustring& table_name) const;
+  virtual void set_relationships(const Glib::ustring& table_name, const type_vecRelationships& vecRelationships);
 
   virtual bool get_relationship(const Glib::ustring& table_name, const Glib::ustring& relationship_name, Relationship& relationship) const;
   
   typedef std::vector<Field> type_vecFields;
-  virtual type_vecFields get_table_fields(const Glib::ustring& strTableName) const;
-  virtual void set_table_fields(const Glib::ustring& strTableName, type_vecFields vecFields);
+  virtual type_vecFields get_table_fields(const Glib::ustring& table_name) const;
+  virtual void set_table_fields(const Glib::ustring& table_name, const type_vecFields& vecFields);
 
-  virtual bool get_field(const Glib::ustring& strTableName, const Glib::ustring& strFieldName, Field& fieldResult) const;
+  virtual bool get_field(const Glib::ustring& table_name, const Glib::ustring& strFieldName, Field& fieldResult) const;
 
-  //typedef std::map<guint, LayoutItem> type_mapFieldSequence;
-    
-  //virtual type_mapFieldSequence get_data_layout_plus_new_fields(const Glib::ustring& layout_name, const Glib::ustring& strTableName) const;
-    
-  //typedef std::list<Glib::ustring> type_listStrings;
-  //virtual type_mapFieldSequence get_data_layout(const Glib::ustring& layout_name, const Glib::ustring& strTableName) const;
-  //virtual type_mapFieldSequence get_data_layout_list(const Glib::ustring& strTableName) const;
-  //virtual type_mapFieldSequence get_data_layout_details(const Glib::ustring& strTableName) const;
 
   typedef std::map<guint, LayoutGroup> type_mapLayoutGroupSequence;
-  virtual type_mapLayoutGroupSequence get_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& strTableName) const;
-  virtual void set_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& strTableName, const type_mapLayoutGroupSequence& groups);
+  virtual type_mapLayoutGroupSequence get_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& table_name) const;
+  virtual void set_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& table_name, const type_mapLayoutGroupSequence& groups);
 
-  virtual type_mapLayoutGroupSequence get_data_layout_groups_plus_new_fields(const Glib::ustring& layout_name, const Glib::ustring& strTableName) const;
+  virtual type_mapLayoutGroupSequence get_data_layout_groups_plus_new_fields(const Glib::ustring& layout_name, const Glib::ustring& table_name) const;
 
-  /*    
-  virtual void set_data_layout(const Glib::ustring& layout_name, const Glib::ustring& strTableName, const type_mapFieldSequence& sequence);    
-  virtual void set_data_layout_list(const Glib::ustring& strTableName, const type_mapFieldSequence& sequence);
-  virtual void set_data_layout_details(const Glib::ustring& strTableName, const type_mapFieldSequence& sequence);
-  */
         
   ///When a field name is changed, change it in the relationships and fields data:
-  virtual void change_field_name(const Glib::ustring& strTableName, const Glib::ustring& strFieldNameOld, const Glib::ustring& strFieldNameNew);
+  virtual void change_field_name(const Glib::ustring& table_name, const Glib::ustring& strFieldNameOld, const Glib::ustring& strFieldNameNew);
 
   ///When a table name is changed, change it in the relationships and tables data:
   virtual void change_table_name(const Glib::ustring& strTableNameOld, const Glib::ustring& strTableNameNew);
@@ -91,7 +80,7 @@ public:
   virtual bool get_table_is_known(const Glib::ustring& table_name) const;
     
   virtual Glib::ustring get_table_title(const Glib::ustring& table_name) const;
-  virtual void set_table_title(const Glib::ustring& table_name, const Glib::ustring value);
+  virtual void set_table_title(const Glib::ustring& table_name, const Glib::ustring& value);
 
   virtual Glib::ustring get_default_table() const;
   
@@ -101,23 +90,19 @@ public:
    */
   virtual void set_userlevel(AppState::userlevels userlevel);
   
-  typedef sigc::signal<void,  AppState::userlevels> type_signal_userlevel_changed;
+  typedef sigc::signal<void, AppState::userlevels> type_signal_userlevel_changed;
   type_signal_userlevel_changed signal_userlevel_changed();
 
   virtual void emit_userlevel_changed();
     
 protected:
+ 
+  //Overrides:
+  virtual bool load_after();
+  virtual bool save_before();
+
   virtual void on_app_state_userlevel_changed(AppState::userlevels userleve);
   
-  virtual xmlpp::Element* get_node_connection(); //Gets <connection>
-  virtual const xmlpp::Element* get_node_table(const Glib::ustring& strTableName) const;
-  virtual xmlpp::Element* get_node_table(const Glib::ustring& strTableName);
-  virtual xmlpp::Element* get_node_table_with_add(const Glib::ustring& strTableName);
-
-  xmlpp::Element* get_node_data_layout(const Glib::ustring& layout_name, const Glib::ustring& strTableName) ;
-  const xmlpp::Element* get_node_data_layout(const Glib::ustring& layout_name, const Glib::ustring& strTableName)  const;
-  xmlpp::Element* get_node_data_layout_with_add(const Glib::ustring& layout_name, const Glib::ustring& strTableName) ;
-
   static bool get_node_attribute_value_as_bool(const xmlpp::Element* node, const Glib::ustring& strAttributeName);
   static void set_node_attribute_value_as_bool(xmlpp::Element* node, const Glib::ustring& strAttributeName, bool value = true);
 
@@ -126,6 +111,26 @@ protected:
 
   AppState m_app_state;
   type_signal_userlevel_changed m_signal_userlevel_changed;
+
+  Glib::ustring m_connection_server, m_connection_user, m_connection_database;
+  
+  class DocumentTableInfo
+  {
+  public:
+    TableInfo m_info;
+      
+    type_vecFields m_fields;
+    type_vecRelationships m_relationships;
+      
+    //Map layout names to layouts:
+    typedef std::map<Glib::ustring, type_mapLayoutGroupSequence> type_layouts;
+    type_layouts m_layouts;
+  };
+  
+  DocumentTableInfo& get_table_info_with_add(const Glib::ustring& table_name);
+  
+  typedef std::map<Glib::ustring, DocumentTableInfo> type_tables;
+  type_tables m_tables;
 };
 
 //The base View for this document;

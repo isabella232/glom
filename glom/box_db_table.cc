@@ -71,63 +71,7 @@ Glib::ustring Box_DB_Table::get_primarykey_name()
 
 void Box_DB_Table::fill_fields()
 {
-/*
-  try
-  {
-    Bakery::BusyCursor(*get_app_window());
 
-    sharedptr<SharedConnection> sharedconnection = connect_to_server();
-    if(sharedconnection)
-    {
-      Glib::RefPtr<Gnome::Gda::Connection> connection = sharedconnection->get_gda_connection();
-
-      bool bKeepTrying = true;
-      bool bTriedNew = false;
-      while(bKeepTrying)
-      {
-        //Don't use WHERE clause for list of fields.
-        Glib::ustring strWhereClausePiece;
-        //if(m_strWhereClause.size())
-          //strWhereClausePiece = " WHERE " + m_strWhereClause;
-
-        //TODO_port: We should probably just get the schema here:
-        Gnome::Gda::Command command("SELECT * FROM " + m_strTableName + strWhereClausePiece + " LIMIT 1"); //LIMIT 1 means we get only the first row.
-        //std::cout << query.str() << std::endl;
-
-        Glib::RefPtr<Gnome::Gda::DataModel> result = connection->execute_single_command(command);
-        m_Fields = get_fields_for_datamodel(result);
-
-        //g_warning("Box_DB_Table::fill_fields(): size=%d", m_Fields.size());
-
-        if(m_Fields.empty())
-        {
-          //No records were returned.
-          if(bTriedNew)
-          {
-            bKeepTrying = false; //Still can't get fields.
-          }
-          else
-          {
-            //Add 1 record in order to get the field info.
-            //We can only get the fields with records.
-            //TODO_port: This is probably not true with libgdamm.
-            record_new();
-            //We can only get the fields with records.
-            bTriedNew = true; //Only try this once.
-          }
-        }
-        else
-        {
-          bKeepTrying = false; //Succeeded.
-        }
-      }
-    }
-  }
-  catch(std::exception& ex)
-  {
-    handle_error(ex);
-  }
-*/
 }
 
 bool Box_DB_Table::record_delete(const Gnome::Gda::Value& primary_key_value)
