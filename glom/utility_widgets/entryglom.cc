@@ -259,7 +259,7 @@ Gnome::Gda::Value EntryGlom::get_value() const
     the_stream << text;
     float the_number;
     the_stream >> the_number;  //TODO: Does this throw any exception if the text is an invalid time?
-  
+    g_warning("
     return Gnome::Gda::Value(the_number);
   }
     

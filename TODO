@@ -1,3 +1,8 @@
+Large, independent, tasks:
+- UI for administration of postgres users.
+- Add ability to have calculation fields, if Postgres can do that.
+- Add ability to translate table titles and field titles.
+
 Document/Database linking:
 -  Offer only "existing" document when not in developer mode.
 - Automatically save changes (when in developer mode) without asking.
