@@ -1,3 +1,12 @@
+2005-03-14  Murray Cumming <murrayc@murrayc.com>
+
+	* glom/mode_data/box_data_details.cc:
+	* glom/mode_data/box_data_list.cc:
+	* glom/mode_data/box_data_list.h:
+ 	on_adddel_user_changed(): Editing of related fields 
+	in the list view now works, using mostly copy/pasted 
+	code from Box_Data_List::on_flowtable_field_edited().
+
 2005-03-14  Murray Cumming, <murrayc@murrayc.com>
 
 	* glom/data_structure/layout/layoutitem_field.cc:

@@ -40,13 +40,13 @@ Box_Data_List::Box_Data_List()
       m_pDialogLayout->signal_hide().connect( sigc::mem_fun(*this, &Box_Data::on_dialog_layout_hide) );
     }
   }
-  
+
   m_strHint = gettext("When you change the data in a field the database is updated immediately.\n Click [Add] or enter data into the last row to add a new record.\n Leave automatic ID fields empty - they will be filled for you.\nOnly the first 100 records are shown.");
 
   pack_start(m_AddDel);
   m_AddDel.set_auto_add(false); //We want to add the row ourselves when the user clicks the Add button, because the default behaviour there is not suitable.
   m_AddDel.set_rules_hint(); //Use alternating row colors when the theme does that.
-  
+
   //Connect signals:
   m_AddDel.signal_user_requested_add().connect(sigc::mem_fun(*this, &Box_Data_List::on_adddel_user_requested_add)); //Only emitted when m_AddDel.set_auto_add(false) is used.
   m_AddDel.signal_user_requested_edit().connect(sigc::mem_fun(*this, &Box_Data_List::on_adddel_user_requested_edit));
@@ -54,7 +54,7 @@ Box_Data_List::Box_Data_List()
   m_AddDel.signal_user_added().connect(sigc::mem_fun(*this, &Box_Data_List::on_adddel_user_added));
   m_AddDel.signal_user_changed().connect(sigc::mem_fun(*this, &Box_Data_List::on_adddel_user_changed));
   m_AddDel.signal_user_reordered_columns().connect(sigc::mem_fun(*this, &Box_Data_List::on_adddel_user_reordered_columns));
-  
+
   m_AddDel.signal_user_requested_layout().connect(sigc::mem_fun(*this, &Box_Data_List::on_adddel_user_requested_layout));
 
 
@@ -344,40 +344,76 @@ void Box_Data_List::on_adddel_user_reordered_columns()
 }
 
 void Box_Data_List::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, guint col)
-{ 
+{
   const Gnome::Gda::Value primary_key_value = get_primary_key_value(row);
   if(!GlomConversions::value_is_empty(primary_key_value)) //If the record's primary key is filled in:
   {
     //Just update the record:
     try
     {
-      Field field_primary_key = m_AddDel.get_key_field();
+      LayoutItem_Field layout_field = m_AddDel.get_column_field(col);
 
-      LayoutItem_Field layout_item = m_AddDel.get_column_field(col);
-      const Glib::ustring field_name = layout_item.get_name();
+      Glib::ustring table_name = m_strTableName;
+      Field primary_key_field;
+      Gnome::Gda::Value primary_key_value;
 
-      Glib::ustring table_name = get_layout_item_table_name(layout_item, m_strTableName);
-
-      Field field;
-      bool test = get_fields_for_table_one_field(table_name, field_name, field);
-      if(test)
+      if(!layout_field.get_has_relationship_name())
       {
-        const Gnome::Gda::Value field_value = m_AddDel.get_value(row, col);
-
-        Glib::ustring strQuery = "UPDATE " + m_strTableName;
-        strQuery += " SET " +  field.get_name() + " = " + field.sql(field_value);
-
-        strQuery += " WHERE " + field_primary_key.get_name() + " = " + field_primary_key.sql(primary_key_value);
-        Query_execute(strQuery);  //TODO: Handle errors
-
-        //Get-and-set values for lookup fields, if this field triggers those relationships:
-        do_lookups(row, field, field_value, field_primary_key, primary_key_value);
-
-        //TODO: Display new values for related fields.
+        table_name = m_strTableName;
+        primary_key_field = m_AddDel.get_key_field();;
+        primary_key_value = primary_key_value;
       }
       else
       {
-        g_warning("Box_Data_List::on_adddel_user_changed(): get_fields_for_table_one_field() failed: m_strTableName=%s, field_name=%s", m_strTableName.c_str(), field_name.c_str());
+        //If it's a related field then discover the actual table that it's in,
+        //plus how to identify the record in that table.
+        const Glib::ustring relationship_name = layout_field.get_relationship_name();
+
+        Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
+
+        Relationship relationship;
+        bool test = document->get_relationship(m_strTableName, relationship_name, relationship);
+        if(test)
+        {
+          table_name = relationship.get_to_table();
+          const Glib::ustring to_field_name = relationship.get_to_field();
+          //Get the key field in the other table (the table that we will change)
+          bool test = get_fields_for_table_one_field(table_name, to_field_name, primary_key_field); //TODO_Performance.
+          if(test)
+          {
+            //Get the value of the corresponding key in the current table (that identifies the record in the table that we will change)
+            LayoutItem_Field layout_item;
+            layout_item.set_name(relationship.get_from_field());
+
+            primary_key_value = get_entered_field_data(layout_item);
+          }
+          else
+          {
+            g_warning("Box_Data_Details::on_flowtable_field_edited(): key not found for edited related field.");
+          }
+        }
+      }
+
+
+      const Gnome::Gda::Value field_value = m_AddDel.get_value(row, col);
+      const Field& field = layout_field.m_field;
+      const Glib::ustring strFieldName = layout_field.get_name();
+
+      Glib::ustring strQuery = "UPDATE " + table_name;
+      strQuery += " SET " +  /* table_name + "." + postgres does not seem to like the table name here */ strFieldName + " = " + field.sql(field_value);
+      strQuery += " WHERE " + table_name + "." + primary_key_field.get_name() + " = " + primary_key_field.sql(primary_key_value);
+      bool bTest = Query_execute(strQuery);
+      if(!bTest)
+      {
+        //Update failed.
+        fill_from_database(); //Replace with correct values.
+      }
+      else
+      {
+        //Get-and-set values for lookup fields, if this field triggers those relationships:
+        do_lookups(row, layout_field, field_value, primary_key_field, primary_key_value);
+
+        //TODO: Display new values for related fields.
       }
     }
     catch(const std::exception& ex)
@@ -402,7 +438,7 @@ void Box_Data_List::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, 
 
 }
 
-void Box_Data_List::do_lookups(const Gtk::TreeModel::iterator& row, const Field& field_changed, const Gnome::Gda::Value& field_value, const Field& primary_key, const Gnome::Gda::Value& primary_key_value)
+void Box_Data_List::do_lookups(const Gtk::TreeModel::iterator& row, const LayoutItem_Field& field_changed, const Gnome::Gda::Value& field_value, const Field& primary_key, const Gnome::Gda::Value& primary_key_value)
 {
    //Get values for lookup fields, if this field triggers those relationships:
    //TODO_performance: There is a LOT of iterating and copying here.

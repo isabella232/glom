@@ -552,7 +552,7 @@ void Box_Data_Details::on_flowtable_field_edited(const LayoutItem_Field& layout_
           g_warning("Box_Data_Details::on_flowtable_field_edited(): key not found for edited related field.");
         }
       }
-    } 
+    }
 
     const Field& field = layout_field.m_field;
 
@@ -575,7 +575,7 @@ void Box_Data_Details::on_flowtable_field_edited(const LayoutItem_Field& layout_
         m_FlowTable.set_field_value(layout_field, field_value);
 
         //Get-and-set values for lookup fields, if this field triggers those relationships:
-        do_lookups(layout_field, field_value, m_field_primary_key, primary_key_value);
+        do_lookups(layout_field, field_value, primary_key_field, primary_key_value);
 
         //TODO: Display new values for related fields.
 

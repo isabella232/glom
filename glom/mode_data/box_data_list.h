@@ -56,7 +56,7 @@ protected:
   virtual bool get_field_primary_key_index(guint& field_column) const; //TODO: visible 
   virtual bool get_field_primary_key(Field& field) const;
 
-  void do_lookups(const Gtk::TreeModel::iterator& row, const Field& field_changed, const Gnome::Gda::Value& field_value, const Field& primary_key, const Gnome::Gda::Value& primary_key_value);
+  void do_lookups(const Gtk::TreeModel::iterator& row, const LayoutItem_Field& field_changed, const Gnome::Gda::Value& field_value, const Field& primary_key, const Gnome::Gda::Value& primary_key_value);
 
   //Signal handlers:
   virtual void on_adddel_user_requested_add();
