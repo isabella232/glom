@@ -766,6 +766,7 @@ void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Gl
         numeric_format.m_use_thousands_separator = get_node_attribute_value_as_bool(element, "format_thousands_separator");
         numeric_format.m_decimal_places_restricted = get_node_attribute_value_as_bool(element, "format_decimal_places_restricted");
         numeric_format.m_decimal_places = get_node_attribute_value_as_decimal(element, "format_decimal_places");
+        numeric_format.m_currency_symbol = get_node_attribute_value(element, "format_currency_symbol");
 
         item.m_numeric_format = numeric_format;
 
@@ -1055,6 +1056,7 @@ void Document_Glom::save_before_layout_group(xmlpp::Element* node, const LayoutG
         set_node_attribute_value_as_bool(nodeItem, "format_thousands_separator",  field->m_numeric_format.m_use_thousands_separator);
         set_node_attribute_value_as_bool(nodeItem, "format_decimal_places_restricted", field->m_numeric_format.m_decimal_places_restricted);
         set_node_attribute_value_as_decimal(nodeItem, "format_decimal_places", field->m_numeric_format.m_decimal_places);
+        set_node_attribute_value(nodeItem, "format_currency_symbol", field->m_numeric_format.m_currency_symbol);
 
         set_node_attribute_value_as_decimal(nodeItem, "sequence", item->m_sequence);
       }

@@ -1,3 +1,18 @@
+2005-03-29  Murray Cumming  <murrayc@murrayc.com>
+
+	* examples/example_smallbusiness.glom:
+	* glom/data_structure/numeric_format.cc:
+	* glom/data_structure/numeric_format.h:
+	Add a currency_symbol member.
+	* glom/document/document_glom.cc:
+	Load/Save the currency symbol part of the 
+	numeric format.
+	* glom/glom.glade:
+	* glom/mode_data/dialog_choose_field.cc:
+	* glom/mode_data/dialog_choose_field.h:
+	Add a currency_symbol ComboBoxEntry. It 
+	is not used yet.
+
 2005-03-29  Murray Cumming <murrayc@murrayc.com>
 
 	* examples/example_smallbusiness.glom:

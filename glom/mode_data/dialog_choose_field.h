@@ -77,6 +77,7 @@ protected:
   Gtk::CheckButton* m_checkbox_format_use_thousands;
   Gtk::CheckButton* m_checkbox_format_use_decimal_places;
   Gtk::Entry* m_entry_format_decimal_places;
+  Gtk::ComboBoxEntry* m_entry_currency_symbol;
 
   Glib::ustring m_table_name;
 

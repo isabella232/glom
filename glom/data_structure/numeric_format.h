@@ -37,6 +37,7 @@ public:
   bool operator==(const NumericFormat& src) const;
   bool operator!=(const NumericFormat& src) const;
 
+  Glib::ustring m_currency_symbol;
   bool m_use_thousands_separator; //Setting this to false would override the locale, if it used a 1000s separator.
   bool m_decimal_places_restricted;
   guint m_decimal_places;
