@@ -261,6 +261,12 @@ Gnome::Gda::Value GlomConversions::parse_value(double number)
 
 Gnome::Gda::Value GlomConversions::parse_value(Field::glom_field_type glom_type, const Glib::ustring& text, bool& success, bool iso_format)
 {
+  NumericFormat ignore_format;
+  return parse_value(glom_type, text, ignore_format, success, iso_format);
+}
+
+Gnome::Gda::Value GlomConversions::parse_value(Field::glom_field_type glom_type, const Glib::ustring& text, const NumericFormat& numeric_format, bool& success, bool iso_format)
+{
   std::locale the_locale = (iso_format ? std::locale::classic() :  std::locale("") /* The user's current locale */);
 
   //Put a NULL in the database for empty dates, times, and numerics, because 0 would be an actual value.
@@ -299,10 +305,21 @@ Gnome::Gda::Value GlomConversions::parse_value(Field::glom_field_type glom_type,
   }
   else if(glom_type == Field::TYPE_NUMERIC)
   {
+    Glib::ustring text_to_parse = text;
+
+    if(!(numeric_format.m_currency_symbol.empty()))
+    {
+      //Remove the currency symbol:
+      if(text_to_parse.substr(0, numeric_format.m_currency_symbol.size()) == numeric_format.m_currency_symbol)
+        text_to_parse = text_to_parse.substr(numeric_format.m_currency_symbol.size());
+    }
+
+    //text_to_parse = Base_DB::string_trim(text_to_parse, " ");
+
     //Try to parse the inputted number, according to the current locale.
     std::stringstream the_stream;
     the_stream.imbue( the_locale ); //Parse it as per the current locale.
-    the_stream.str(text); //Avoid << because it does implicit character conversion (though that might not be a problem here. Not sure). murrayc
+    the_stream.str(text_to_parse); //Avoid << because it does implicit character conversion (though that might not be a problem here. Not sure). murrayc
     double the_number = 0;
     the_stream >> the_number;  //TODO: Does this throw any exception if the text is an invalid time?
 

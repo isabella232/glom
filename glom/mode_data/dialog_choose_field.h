@@ -26,6 +26,7 @@
 #include "../document/document_glom.h"
 #include "../box_db.h"
 #include "../utility_widgets/combo_textglade.h"
+#include "../utility_widgets/comboentry_currency.h"
 
 class Dialog_ChooseField : public Gtk::Dialog
 {
@@ -77,7 +78,7 @@ protected:
   Gtk::CheckButton* m_checkbox_format_use_thousands;
   Gtk::CheckButton* m_checkbox_format_use_decimal_places;
   Gtk::Entry* m_entry_format_decimal_places;
-  Gtk::ComboBoxEntry* m_entry_currency_symbol;
+  ComboEntry_Currency* m_entry_currency_symbol;
 
   Glib::ustring m_table_name;
 

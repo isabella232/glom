@@ -1,3 +1,27 @@
+2005-03-30  Murray Cumming  <murrayc@murrayc.com>
+
+	* config.h.in:
+	* configure.in:
+	Depend on iso-codes and define the prefix for its files in 
+	config.h.
+	* glom/Makefile.am:
+	* glom/data_structure/Makefile.am:
+	* glom/data_structure/glomconversions.cc:
+	* glom/data_structure/glomconversions.h:
+	* glom/data_structure/iso_codes.cc:
+	* glom/data_structure/iso_codes.h:
+	Added a Currency class, and get_list_of_currency_symbols().
+	* glom/mode_data/dialog_choose_field.cc:
+	* glom/mode_data/dialog_choose_field.h:
+	* glom/utility_widgets/Makefile.am:
+	* glom/utility_widgets/comboentry_currency.cc:
+	* glom/utility_widgets/comboentry_currency.h:
+	Use a ComboBoxEntry for the currencies on the 
+	Field Layout dialog.
+	* glom/utility_widgets/entry_numerical.cc:
+	* glom/utility_widgets/entry_numerical.h:
+	Removed this, because it's not used.
+
 2005-03-29  Murray Cumming  <murrayc@murrayc.com>
 
 	* examples/example_smallbusiness.glom:

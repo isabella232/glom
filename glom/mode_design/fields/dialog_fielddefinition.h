@@ -26,7 +26,7 @@
 #include "combo_lookup_relationship.h"
 #include "combo_fieldtype.h"
 #include "../../utility_widgets/table_columns.h"
-#include "../../utility_widgets/entry_numerical.h"
+//#include "../../utility_widgets/entry_numerical.h"
 #include "../../utility_widgets/dialog_properties.h"
 #include "../../utility_widgets/datawidget.h"
 #include "../../data_structure/field.h"

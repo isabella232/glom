@@ -40,7 +40,7 @@ Dialog_ChooseField::Dialog_ChooseField(BaseObjectType* cobject, const Glib::RefP
   refGlade->get_widget("checkbutton_format_thousands", m_checkbox_format_use_thousands);
   refGlade->get_widget("checkbutton_format_use_decimal_places", m_checkbox_format_use_decimal_places);
   refGlade->get_widget("entry_format_decimal_places", m_entry_format_decimal_places);
-  refGlade->get_widget("entry_currency_symbol", m_entry_currency_symbol);
+  refGlade->get_widget_derived("entry_currency_symbol", m_entry_currency_symbol);
 
   refGlade->get_widget("treeview_fields", m_treeview);
 

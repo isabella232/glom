@@ -45,6 +45,7 @@ glom_LDADD = document/libdocument.a \
              utility_widgets/adddel/libutility_widgets_adddel.a \
              utility_widgets/adddel/eggcolumnchooser/libutility_widgets_adddel_eggcolumnchooserdialog.a \
              utility_widgets/db_adddel/libutility_widgets_db_adddel.a \
+             data_structure/libdata_structure.a \
              $(GLOM_LIBS) $(PYTHON_LDFLAGS) -lutil
 
 #libutil seems to be a fairly standard GNU library, and python needs it for openpty() and forkpty().

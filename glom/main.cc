@@ -90,7 +90,7 @@ main(int argc, char* argv[])
     //Initialize gnome_program, so that we can use gnome_help_display().    
     gnome_program_init (PACKAGE, VERSION, LIBGNOME_MODULE, argc, argv,
                             GNOME_PROGRAM_STANDARD_PROPERTIES, 0);
-                            
+ 
     Gtk::Main mainInstance(argc, argv, context);
     Bakery::init();
 

@@ -1,6 +1,6 @@
 /* Glom
  *
- * Copyright (C) 2001-2004 Murray Cumming
+ * Copyright (C) 2001-2005 Murray Cumming
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -18,26 +18,26 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef ENTRY_NUMERICAL_H
-#define ENTRY_NUMERICAL_H
+#ifndef GLOM_DATASTRUCTURE_ISO_CODES_H
+#define GLOM_DATASTRUCTURE_ISO_CODES_H
 
-#include <gtkmm/entry.h>
+#include "../data_structure/field.h"
+#include "../data_structure/numeric_format.h"
 
-/**
-  *@author Murray Cumming
-  */
-
-//Gtk::Entry with methods to get/set in terms of numbers.
-//This makes code a little easier to read.
-//TODO: Prevent non-number characters.
-class Entry_Numerical : public Gtk::Entry
+namespace IsoCodes
 {
-public: 
-  Entry_Numerical();
-  virtual ~Entry_Numerical();
-  
-  virtual guint get_value_as_guint();
-  virtual void set_value(guint uiVal);
+
+class Currency
+{
+public:
+  Glib::ustring m_symbol;
+  Glib::ustring m_name;
 };
 
-#endif
+typedef std::list<Currency> type_list_currencies;
+type_list_currencies get_list_of_currency_symbols();
+
+}
+
+#endif //GLOM_DATASTRUCTURE_ISO_CODES_H
+
