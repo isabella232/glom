@@ -31,7 +31,7 @@ public:
   App_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
   virtual ~App_Glom();
 
-  virtual void init(const Glib::ustring& document_uri = Glib::ustring()); //override
+  virtual bool init(const Glib::ustring& document_uri = Glib::ustring()); //override
 
   virtual void statusbar_set_text(const Glib::ustring& strText);
   virtual void statusbar_clear();
@@ -54,7 +54,7 @@ protected:
   virtual void init_create_document(); //override
   virtual void on_document_load(); //override.
 
-  virtual void offer_new_or_existing();
+  virtual bool offer_new_or_existing();
 
   virtual void on_menu_help_contents();
   virtual void on_menu_userlevel_developer();

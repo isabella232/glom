@@ -72,9 +72,13 @@ main(int argc, char* argv[])
 
     pApp_Glom->set_command_line_args(argc, argv);
 
-    pApp_Glom->init(input_uri); //Sets it up and shows it.
-
-    Gtk::Main::run();
+    bool test = pApp_Glom->init(input_uri); //Sets it up and shows it.
+    if(test) //The user could cancel the offer of a new or existing database.
+    {
+      Gtk::Main::run();
+    }
+    else
+      delete pApp_Glom;
   }
   catch(const std::exception& ex)
   {

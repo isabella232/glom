@@ -1,5 +1,10 @@
 2004-07-08  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/main.cc, application.[h|cc]: Make the application quit if the 
+	user presses cancel on the new-or-existing dialog.
+
+2004-07-08  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/glom_python.cc: Make 
 	glom_evaluate_python_function_implementation() return a Value instead 
 	of a string, and take a field type parameter.

@@ -50,7 +50,7 @@ App_Glom::~App_Glom()
 
 }
 
-void App_Glom::init(const Glib::ustring& document_uri)
+bool App_Glom::init(const Glib::ustring& document_uri)
 {
   type_vecStrings vecAuthors;
   vecAuthors.push_back("Murray Cumming <murrayc@murrayc.com>");
@@ -68,17 +68,17 @@ void App_Glom::init(const Glib::ustring& document_uri)
     Document_Glom* pDocument = static_cast<Document_Glom*>(get_document());
     if(pDocument->get_connection_database().empty()) //If it is a new (default) document.
     {
-      offer_new_or_existing();
+      return offer_new_or_existing();
     }
   }
   else
   {
     bool test = open_document(document_uri);
     if(!test)
-      offer_new_or_existing();
+      return offer_new_or_existing();
   }
   
-  
+  return true;
   //show_all();
 }
 
@@ -346,7 +346,7 @@ Glib::RefPtr<Gtk::UIManager> App_Glom::get_ui_manager()
   return m_refUIManager;
 }
 
-void App_Glom::offer_new_or_existing()
+bool App_Glom::offer_new_or_existing()
 {
   //Offer to load an existing document, or start a new one.
   Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_existing_or_new");
@@ -354,7 +354,7 @@ void App_Glom::offer_new_or_existing()
   refXml->get_widget("dialog_existing_or_new", dialog);
   dialog->set_transient_for(*this);
   
-  guint response_id = dialog->run();
+  int response_id = dialog->run();
   delete dialog;
   dialog = 0;
   
@@ -367,7 +367,7 @@ void App_Glom::offer_new_or_existing()
     if(document->get_file_uri().empty())
     {
       //Ask again:
-      offer_new_or_existing();
+      return offer_new_or_existing();
     }
   }
   else if(response_id == 2) //New
@@ -384,17 +384,24 @@ void App_Glom::offer_new_or_existing()
 
       //There is already an empty document, but this allows the user to fill it by connecting and creating tables:
       m_pFrame->do_menu_Navigate_Database();
+      return true;
     }
     else
     {
       //Ask again:
-      offer_new_or_existing();
+      return offer_new_or_existing();
     }
+  }
+  else if(response_id == Gtk::RESPONSE_CANCEL)
+  {
+    return false; //close the window to close the application, because they need to choose a new or existing document.
   }
   else
   {
     //Do nothing. TODO: Do something?
   }
+
+  return true;
 }
 
 void App_Glom::set_mode_data()
