@@ -168,7 +168,7 @@ void Box_Data_List::on_AddDel_user_requested_add()
     }
   }
 
-  guint treemodel_column = m_first_col + index_primary_key;
+  const guint treemodel_column = m_first_col + index_primary_key;
   m_AddDel.select_item(iter, treemodel_column, true /* start_editing */);
 }
 

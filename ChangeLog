@@ -1,4 +1,10 @@
-	2004-06-19  Murray Cumming  <murrayc@murrayc.com>
+2004-06-20  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/mode_design/fields/box_db_table_definition.cc: 
+	get_field_definition(): Prevent crash - do not try to use a 
+	TreeModel::iterator as the index to a vector.
+
+2004-06-19  Murray Cumming  <murrayc@murrayc.com>
 
 	* Added glom.applications, to register glom as capable of opening 
 	glom files.

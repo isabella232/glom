@@ -1,3 +1,9 @@
+0.8.3:
+
+* Design:
+  - Fields: Fix crash when opening the edit dialog.
+  - Relationships: Fix editing, and actually save the relationships.
+
 0.8.2:
 
 * Navigation / Tables : Fixed focus bug when adding tables.

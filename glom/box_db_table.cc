@@ -146,9 +146,6 @@ bool Box_DB_Table::record_delete(const Gnome::Gda::Value& primary_key_value)
 
 Glib::RefPtr<Gnome::Gda::DataModel> Box_DB_Table::record_new(Gnome::Gda::Value primary_key_value)
 {
-g_warning("Box_DB_Table::record_new()");
-//TODO: I don't think this method is ever called. murrayc.
-
   Field field_primary_key;
   bool test = get_field_primary_key(field_primary_key);
   if(test && !GlomConversions::value_is_empty(primary_key_value))

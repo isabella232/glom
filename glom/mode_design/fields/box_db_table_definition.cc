@@ -238,14 +238,15 @@ Field Box_DB_Table_Definition::get_field_definition(const Gtk::TreeModel::iterat
 
   //Get old field definition (to preserve anything that the user doesn't have access to):
 
+  const Glib::ustring strFieldNameBeforeEdit = m_AddDel.get_value_key(row);
+
   //Glom field definition:
   Document_Glom* pDoc = static_cast<Document_Glom*>(get_document());
   if(pDoc)
   {
-    const Glib::ustring& strFieldNameBeforeEdit = m_AddDel.get_value(row, 0);
-
     Document_Glom::type_vecFields vecFields= pDoc->get_table_fields(m_strTableName);
     Document_Glom::type_vecFields::iterator iterFind = std::find_if( vecFields.begin(), vecFields.end(), predicate_FieldHasName<Field>(strFieldNameBeforeEdit) );
+
     if(iterFind != vecFields.end()) //If it was found:
     {
       fieldResult = *iterFind;
@@ -257,40 +258,45 @@ Field Box_DB_Table_Definition::get_field_definition(const Gtk::TreeModel::iterat
     }
   }
 
+
   //DB field definition:
 
   //Start with original definitions, so that we preserve things like UNSIGNED.
   //TODO maybe use document's fieldinfo instead of m_Fields.
-  Field field_temp = m_Fields[row];
-  Gnome::Gda::FieldAttributes fieldInfo = field_temp.get_field_info();
+  Field field_temp;
+  bool test = get_fields_for_table_one_field(m_strTableName, strFieldNameBeforeEdit, field_temp);
+  if(test)
+  {
+    Gnome::Gda::FieldAttributes fieldInfo = field_temp.get_field_info();
 
-  //Name:
-  Glib::ustring strName = m_AddDel.get_value(row, m_colName);
-  fieldInfo.set_name(strName);
+    //Name:
+    Glib::ustring strName = m_AddDel.get_value(row, m_colName);
+    fieldInfo.set_name(strName);
 
-  //Title:
-  Glib::ustring title = m_AddDel.get_value(row, m_colTitle);
-  fieldResult.set_title(title);
+    //Title:
+    Glib::ustring title = m_AddDel.get_value(row, m_colTitle);
+    fieldResult.set_title(title);
 
-  //Type:
-  const Glib::ustring& strType = m_AddDel.get_value(row, m_colType);
+    //Type:
+    const Glib::ustring& strType = m_AddDel.get_value(row, m_colType);
 
-  Field::glom_field_type glom_type =  Field::get_type_for_name(strType);
-  Gnome::Gda::ValueType fieldType = Field::get_gda_type_for_glom_type(glom_type);
-  
-  //Unique:
-  bool bUnique = m_AddDel.get_value_as_bool(row, m_colUnique);
-  fieldInfo.set_unique_key(bUnique);
+    Field::glom_field_type glom_type =  Field::get_type_for_name(strType);
+    Gnome::Gda::ValueType fieldType = Field::get_gda_type_for_glom_type(glom_type);
 
-  //Primary Key:
-  bool bPrimaryKey = m_AddDel.get_value_as_bool(row, m_colPrimaryKey);
-  fieldInfo.set_primary_key(bPrimaryKey);
+    //Unique:
+    bool bUnique = m_AddDel.get_value_as_bool(row, m_colUnique);
+    fieldInfo.set_unique_key(bUnique);
 
-  fieldInfo.set_gdatype(fieldType);
+    //Primary Key:
+    bool bPrimaryKey = m_AddDel.get_value_as_bool(row, m_colPrimaryKey);
+    fieldInfo.set_primary_key(bPrimaryKey);
 
-  //Put it together:
-  fieldResult.set_field_info(fieldInfo);
-      
+    fieldInfo.set_gdatype(fieldType);
+
+    //Put it together:
+    fieldResult.set_field_info(fieldInfo);
+  }
+        
   return fieldResult;
 }
 
