@@ -22,7 +22,7 @@
 #define GLOM_DB_ADDDEL_H
 
 #include "gtkmm.h"
-#include "../../data_structure/field.h"
+#include "../../data_structure/layout/layoutitem_field.h"
 #include <libgdamm.h>
 #include "glom_db_treemodel.h"
 
@@ -38,7 +38,7 @@ public:
   DbAddDelColumnInfo(const DbAddDelColumnInfo& src);
   DbAddDelColumnInfo& operator=(const DbAddDelColumnInfo& src);
 
-  Field m_field;
+  LayoutItem_Field m_field;
 
   typedef std::vector<Glib::ustring> type_vecStrings;
   type_vecStrings m_choices;
@@ -64,14 +64,14 @@ public:
 
   virtual void set_allow_add(bool val = true);
   virtual void set_allow_delete(bool val = true);
-  
+
   virtual Gtk::TreeModel::iterator add_item(const Gnome::Gda::Value& valKey); //Return index of new row.
 
   /** Get an iterator to the blank row in which the user should add data for the new row.
    * You can then add the row to your underlying data store when some data has been filled, by handling signal_user_changed.
    */
   virtual Gtk::TreeModel::iterator get_item_placeholder(); //Return index of the placeholder row.
-  
+
   virtual void remove_item(const Gtk::TreeModel::iterator& iter);
 
   virtual void remove_all();
@@ -91,7 +91,7 @@ public:
    */
   virtual Gnome::Gda::Value get_value_selected(guint col);
   virtual Gnome::Gda::Value get_value_key_selected();
-  
+
   virtual Gtk::TreeModel::iterator get_item_selected();
 
   /** 
@@ -102,7 +102,7 @@ public:
    */
   virtual bool select_item(const Gtk::TreeModel::iterator& iter, guint column, bool start_editing = false);  //bool indicates success.
   virtual bool select_item(const Gtk::TreeModel::iterator& iter);
-  
+
   virtual guint get_count() const;
 
   /** 
@@ -130,19 +130,19 @@ public:
  
   /** @result The index of the new column.
    */
-  virtual guint add_column(const Field& field, bool editable = true, bool visible = true);
+  virtual guint add_column(const LayoutItem_Field& field, bool editable = true, bool visible = true);
 
   virtual guint get_columns_count() const;
 
-  virtual Glib::ustring get_column_field(guint column_index) const;
-  
+  virtual LayoutItem_Field get_column_field(guint column_index) const;
+
   typedef DbAddDelColumnInfo::type_vecStrings type_vecStrings;
 
   /** Retrieves the column order, even after they have been reordered by the user.
    * @result a vector of column_id. These column_ids were provided in the call to add_column().
    */
   virtual type_vecStrings get_columns_order() const;
-  
+
   virtual void remove_all_columns();
   //virtual void set_columns_count(guint count);
   //virtual void set_column_title(guint col, const Glib::ustring& strText);
@@ -150,7 +150,7 @@ public:
 
   /// For popup cells.
   virtual void set_column_choices(guint col, const type_vecStrings& vecStrings);
-   
+
   virtual void construct_specified_columns(); //Delay actual use of set_column_*() stuff until this method is called.
 
   virtual void set_show_column_titles(bool bVal = true);
@@ -185,9 +185,9 @@ public:
   typedef sigc::signal<void, const Gtk::TreeModel::iterator&, const Gtk::TreeModel::iterator&> type_signal_user_requested_delete;
   type_signal_user_requested_delete signal_user_requested_delete();
 
- typedef sigc::signal<void> type_signal_user_requested_layout;
- type_signal_user_requested_layout signal_user_requested_layout();
-    
+  typedef sigc::signal<void> type_signal_user_requested_layout;
+  type_signal_user_requested_layout signal_user_requested_layout();
+
   //row number.
   typedef sigc::signal<void, const Gtk::TreeModel::iterator&> type_signal_user_requested_edit;
   type_signal_user_requested_edit signal_user_requested_edit();
@@ -206,14 +206,14 @@ public:
 
   virtual Gtk::TreeModel::iterator get_last_row();
   virtual Gtk::TreeModel::iterator get_last_row() const;
-  
+
 protected:
 
   /** Get an iterator to the blank row in which the user should add data for the new row.
    * You can then add the row to your underlying data store when some data has been filled, by handling signal_user_changed.
    */
   virtual Gtk::TreeModel::iterator add_item_placeholder(); //Return index of new row.
-  
+
   virtual void setup_menu();
   virtual Gnome::Gda::Value treeview_get_key(const Gtk::TreeModel::iterator& row);
 
@@ -221,13 +221,13 @@ protected:
   virtual Gtk::TreeModel::iterator get_next_available_row_with_add_if_necessary();
   virtual void add_blank();
 
-  
+
   //Signal handlers:
   void treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter, int model_column_index);
 
   virtual void on_treeview_cell_edited(const Glib::ustring& path_string, const Glib::ustring& new_text, int model_column_index);
   virtual void on_treeview_cell_edited_bool(const Glib::ustring& path_string, int model_column_index);
-  
+
   virtual bool on_treeview_column_drop(Gtk::TreeView* treeview, Gtk::TreeViewColumn* column, Gtk::TreeViewColumn* prev_column, Gtk::TreeViewColumn* next_column);
   virtual void on_treeview_columns_changed();
 
@@ -253,16 +253,16 @@ protected:
    * @param view_column_index The index of the corresponding view column.
    */
   bool get_view_column_index(guint model_column_index, guint& view_column_index);
-  
+
   guint get_count_hidden_system_columns();
 
   //The column_id is extra information that we can use later to discover what the column shows, even when columns have been reordered.
   guint treeview_append_column(const Glib::ustring& title, Gtk::CellRenderer& cellrenderer, int model_column_index);
-  
+
   App_Glom* get_application();
 
   static Glib::ustring string_escape_underscores(const Glib::ustring& text);
-  
+
   typedef Gtk::VBox type_base;
 
   //Member widgets:
@@ -270,14 +270,14 @@ protected:
 
   Gtk::TreeView m_TreeView;
   Gtk::TreeModel::ColumnRecord m_ColumnRecord;
-  
+
   //typedef Gtk::ListStore type_model_store;
   typedef DbTreeModel type_model_store;
   Glib::RefPtr<type_model_store> m_refListStore;
-    
+
   //Hidden internal columns:
   Gtk::TreeModelColumn<Gnome::Gda::Value>* m_modelcolumn_key;   
-  
+
   //Columns, not including the hidden internal columns:
   typedef std::vector<DbAddDelColumnInfo> type_ColumnTypes;
   type_ColumnTypes m_ColumnTypes;
@@ -291,15 +291,15 @@ protected:
 
   bool m_bPreventUserSignals;
   bool m_bIgnoreSheetSignals;
-  
+
   type_vecStrings m_vecColumnIDs; //We give each ViewColumn a special ID, so we know where they are after a reorder.
-  
+
   bool m_auto_add;
   bool m_allow_add;
   bool m_allow_delete;
 
   Field m_key_field;
-  
+
   //signals:
   type_signal_user_added m_signal_user_added;
   type_signal_user_changed m_signal_user_changed;
@@ -309,7 +309,7 @@ protected:
   type_signal_user_requested_layout m_signal_user_requested_layout;
   type_signal_user_activated m_signal_user_activated;
   type_signal_user_reordered_columns m_signal_user_reordered_columns;
-  
+
   //An instance of InnerIgnore remembers the ignore settings,
   //then restores them when it goes out of scope and is destroyed.
   class InnerIgnore

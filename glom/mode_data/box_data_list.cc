@@ -353,11 +353,15 @@ void Box_Data_List::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, 
     {
       Field field_primary_key = m_AddDel.get_key_field();
 
-      const Glib::ustring field_name = m_AddDel.get_column_field(col);
+      LayoutItem_Field layout_item = m_AddDel.get_column_field(col);
+      const Glib::ustring field_name = layout_item.get_name();
+
+      Glib::ustring table_name = get_layout_item_table_name(layout_item, m_strTableName);
+
       Field field;
-      bool test = get_fields_for_table_one_field(m_strTableName, field_name, field);
+      bool test = get_fields_for_table_one_field(table_name, field_name, field);
       if(test)
-      {        
+      {
         const Gnome::Gda::Value field_value = m_AddDel.get_value(row, col);
 
         Glib::ustring strQuery = "UPDATE " + m_strTableName;
@@ -528,10 +532,11 @@ Gnome::Gda::Value Box_Data_List::get_primary_key_value_selected()
   return Gnome::Gda::Value(m_AddDel.get_value_key_selected());
 }
 
-Gnome::Gda::Value Box_Data_List::get_entered_field_data(const Field& field) const
+Gnome::Gda::Value Box_Data_List::get_entered_field_data(const LayoutItem_Field& field) const
 {
   //Get text from widget:
 
+  //TODO: The AddDel should be able to identify the column by LayoutItem_Field:
   guint index = 0;
   bool test = get_field_column_index(field.get_name(), index);
   if(test)
@@ -540,7 +545,7 @@ Gnome::Gda::Value Box_Data_List::get_entered_field_data(const Field& field) cons
     return Gnome::Gda::Value(); //null.
 }
 
-void Box_Data_List::set_entered_field_data(const Field& field, const Gnome::Gda::Value& value)
+void Box_Data_List::set_entered_field_data(const LayoutItem_Field& field, const Gnome::Gda::Value& value)
 {
   guint index = 0;
   bool test = get_field_column_index(field.get_name(), index);
@@ -573,7 +578,7 @@ void Box_Data_List::fill_column_titles()
     //Add a column for each table field:
     for(type_vecLayoutFields::const_iterator iter =  listFieldsToShow.begin(); iter != listFieldsToShow.end(); ++iter)
     {
-      m_AddDel.add_column(iter->m_field);
+      m_AddDel.add_column(*iter);
     }
   }
 

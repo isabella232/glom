@@ -60,14 +60,14 @@ void Box_DB_Table::fill_fields()
 
 }
 
-Gnome::Gda::Value Box_DB_Table::get_entered_field_data(const Field& /* field */) const
+Gnome::Gda::Value Box_DB_Table::get_entered_field_data(const LayoutItem_Field& /* field */) const
 {
   //Override this to use Field::set_data() too.
 
   return Gnome::Gda::Value(); //null
 }
 
-void Box_DB_Table::set_entered_field_data(const Field& /* field */, const Gnome::Gda::Value& /* value */)
+void Box_DB_Table::set_entered_field_data(const LayoutItem_Field& /* field */, const Gnome::Gda::Value& /* value */)
 {
   //Override this.
 }

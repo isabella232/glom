@@ -72,7 +72,7 @@ void FlowTableWithFields::add_layout_item(const LayoutItem& item)
 
       //Do not allow editing of auto-increment fields:
       if(field->m_field.get_field_info().get_auto_increment())
-        set_field_editable(field->m_field, false);
+        set_field_editable(*field, false);
     }
     else
     {
@@ -214,11 +214,8 @@ void FlowTableWithFields::add_group(const Glib::ustring& group_name, const Glib:
 
 void FlowTableWithFields::add_field(const LayoutItem_Field& layoutitem_field, const Glib::ustring& table_name)
 {
-  Field field = layoutitem_field.m_field;
-  const Glib::ustring id = field.get_name();
-
   Info info;
-  info.m_field = field;
+  info.m_field = layoutitem_field;
 
   //Add the entry or checkbox (handled by the DataWidget)
   DataWidget* pDataWidget = Gtk::manage(new DataWidget(layoutitem_field, table_name) );
@@ -237,7 +234,7 @@ void FlowTableWithFields::add_field(const LayoutItem_Field& layoutitem_field, co
     info.m_first->add( *label );
     label->set_alignment(Gtk::ALIGN_RIGHT, Gtk::ALIGN_CENTER); //Align right.
     label->show();
-    
+
     info.m_first->show();
     info.m_first->set(Gtk::ALIGN_RIGHT, Gtk::ALIGN_CENTER);
     info.m_first->show_all_children(); //This does not seem to work, so we show the label explicitly.
@@ -247,7 +244,7 @@ void FlowTableWithFields::add_field(const LayoutItem_Field& layoutitem_field, co
 
   add(*(info.m_first), *(info.m_second));
 
-  info.m_second->signal_edited().connect( sigc::bind(sigc::mem_fun(*this, &FlowTableWithFields::on_entry_edited), id)  );
+  info.m_second->signal_edited().connect( sigc::bind(sigc::mem_fun(*this, &FlowTableWithFields::on_entry_edited), layoutitem_field)  ); //TODO:  Is it a good idea to bind the LayoutItem? sigc::bind() probably stores a copy at this point.
 
   m_listFields.push_back(info);
 }
@@ -269,15 +266,10 @@ void FlowTableWithFields::remove_field(const Glib::ustring& id)
   } 
 }
 
-void FlowTableWithFields::set_field_value(const Field& field, const Gnome::Gda::Value& value)
-{
-  set_field_value(field.get_name(), value);
-}
-
-void FlowTableWithFields::set_field_value(const Glib::ustring& id, const Gnome::Gda::Value& value)
+void FlowTableWithFields::set_field_value(const LayoutItem_Field& field, const Gnome::Gda::Value& value)
 {
   //Set widgets which should show the value of this field:
-  type_list_widgets list_widgets = get_field(id);
+  type_list_widgets list_widgets = get_field(field);
   for(type_list_widgets::iterator iter = list_widgets.begin(); iter != list_widgets.end(); ++iter)
   {
     DataWidget* datawidget = dynamic_cast<DataWidget*>(*iter);
@@ -288,7 +280,7 @@ void FlowTableWithFields::set_field_value(const Glib::ustring& id, const Gnome::
   }
 
   //Refresh widgets which should show the related records for relationships that use this field:
-  type_list_widgets list_portals = get_portals(id /* from_key field name */);
+  type_list_widgets list_portals = get_portals(field /* from_key field name */);
   for(type_list_widgets::iterator iter = list_portals.begin(); iter != list_portals.end(); ++iter)
   {
     Box_Data_List_Related* portal = dynamic_cast<Box_Data_List_Related*>(*iter);
@@ -299,26 +291,21 @@ void FlowTableWithFields::set_field_value(const Glib::ustring& id, const Gnome::
   }
 }
 
-Gnome::Gda::Value FlowTableWithFields::get_field_value(const Field& field) const
+Gnome::Gda::Value FlowTableWithFields::get_field_value(const LayoutItem_Field& field) const
 {
-  return get_field_value(field.get_name());
-}
-
-Gnome::Gda::Value FlowTableWithFields::get_field_value(const Glib::ustring& id) const
-{
-  type_list_const_widgets list_widgets = get_field(id);
+  type_list_const_widgets list_widgets = get_field(field);
   if(!list_widgets.empty())
   {
     const DataWidget* datawidget = dynamic_cast<const DataWidget*>(*(list_widgets.begin()));
-    
+
     if(datawidget)
       return datawidget->get_value();
   }
-    
+
   return Gnome::Gda::Value(); //null.
 }
  
-void FlowTableWithFields::set_field_editable(const Field& field, bool editable)
+void FlowTableWithFields::set_field_editable(const LayoutItem_Field& field, bool editable)
 {
   type_list_widgets list_widgets = get_field(field);
   for(type_list_widgets::iterator iter = list_widgets.begin(); iter != list_widgets.end(); ++iter)
@@ -332,19 +319,11 @@ void FlowTableWithFields::set_field_editable(const Field& field, bool editable)
 }
 
 
-FlowTableWithFields::type_list_widgets FlowTableWithFields::get_field(const Field& field)
-{
-  return get_field(field.get_name());
-}
-
-FlowTableWithFields::type_list_const_widgets FlowTableWithFields::get_field(const Field& field) const
-{
-  return get_field(field.get_name());
-}
-
-FlowTableWithFields::type_list_widgets FlowTableWithFields::get_portals(const Glib::ustring& from_key)
+FlowTableWithFields::type_list_widgets FlowTableWithFields::get_portals(const LayoutItem_Field& from_key)
 {
   type_list_widgets result;
+
+  const Glib::ustring from_key_name = from_key.get_name();
 
   //Check the single-item widgets:
    for(type_portals::const_iterator iter = m_portals.begin(); iter != m_portals.end(); ++iter)
@@ -353,11 +332,11 @@ FlowTableWithFields::type_list_widgets FlowTableWithFields::get_portals(const Gl
     Box_Data_List_Related* pPortal = *iter;
     if(pPortal)
     {
-      if(pPortal->get_relationship().get_from_field() == from_key)
+      if(pPortal->get_relationship().get_from_field() == from_key_name)
         result.push_back(pPortal);
     }
   }
- 
+
   //Check the sub-flowtables:
   for(type_sub_flow_tables::const_iterator iter = m_sub_flow_tables.begin(); iter != m_sub_flow_tables.end(); ++iter)
   {
@@ -376,13 +355,15 @@ FlowTableWithFields::type_list_widgets FlowTableWithFields::get_portals(const Gl
   return result;
 }
 
-FlowTableWithFields::type_list_const_widgets FlowTableWithFields::get_field(const Glib::ustring& id) const
+FlowTableWithFields::type_list_const_widgets FlowTableWithFields::get_field(const LayoutItem_Field& layout_item) const
 {
   type_list_const_widgets result;
 
+  const Glib::ustring layout_item_name = layout_item.get_name();
+  const Glib::ustring layout_item_relationship_name = layout_item.get_relationship_name();
   for(type_listFields::const_iterator iter = m_listFields.begin(); iter != m_listFields.end(); ++iter)
   {
-    if(iter->m_field.get_name() == id)
+    if( (iter->m_field.get_name() == layout_item_name) && (iter->m_field.get_relationship_name() == layout_item_relationship_name) )
     {
       const Info& info = *iter;
       if(info.m_checkbutton)
@@ -398,7 +379,7 @@ FlowTableWithFields::type_list_const_widgets FlowTableWithFields::get_field(cons
     const FlowTableWithFields* subtable = *iter;
     if(subtable)
     {
-      type_list_const_widgets sub_list = subtable->get_field(id);
+      type_list_const_widgets sub_list = subtable->get_field(layout_item);
       if(!sub_list.empty())
       {
         //Add to the main result:
@@ -410,14 +391,16 @@ FlowTableWithFields::type_list_const_widgets FlowTableWithFields::get_field(cons
   return result;
 }
 
-FlowTableWithFields::type_list_widgets FlowTableWithFields::get_field(const Glib::ustring& id)
+FlowTableWithFields::type_list_widgets FlowTableWithFields::get_field(const LayoutItem_Field& layout_item)
 {
   //TODO: Avoid duplication
   type_list_widgets result;
 
+  const Glib::ustring layout_item_name = layout_item.get_name();
+  const Glib::ustring layout_item_relationship_name = layout_item.get_relationship_name();
   for(type_listFields::const_iterator iter = m_listFields.begin(); iter != m_listFields.end(); ++iter)
   {
-    if(iter->m_field.get_name() == id)
+    if( (iter->m_field.get_name() == layout_item_name) && (iter->m_field.get_relationship_name() == layout_item_relationship_name) )
     {
       const Info& info = *iter;
       if(info.m_checkbutton)
@@ -433,7 +416,7 @@ FlowTableWithFields::type_list_widgets FlowTableWithFields::get_field(const Glib
     FlowTableWithFields* subtable = *iter;
     if(subtable)
     {
-      type_list_widgets sub_list = subtable->get_field(id);
+      type_list_widgets sub_list = subtable->get_field(layout_item);
       if(!sub_list.empty())
       {
         //Add to the main result:
@@ -489,14 +472,14 @@ FlowTableWithFields::type_signal_field_edited FlowTableWithFields::signal_field_
   return m_signal_field_edited;
 }
 
-void FlowTableWithFields::on_entry_edited(const Gnome::Gda::Value& value, Glib::ustring id)
+void FlowTableWithFields::on_entry_edited(const Gnome::Gda::Value& value, LayoutItem_Field field)
 {
-  m_signal_field_edited.emit(id, value); 
+  m_signal_field_edited.emit(field, value);
 }
 
-void FlowTableWithFields::on_flowtable_entry_edited(const Glib::ustring& id, const Gnome::Gda::Value& value)
+void FlowTableWithFields::on_flowtable_entry_edited(const LayoutItem_Field& field, const Gnome::Gda::Value& value)
 {
-  m_signal_field_edited.emit(id, value);
+  m_signal_field_edited.emit(field, value);
 }
 
 void FlowTableWithFields::set_design_mode(bool value)

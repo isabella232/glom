@@ -58,14 +58,14 @@ public:
 
   virtual void add_layout_item(const LayoutItem& group);
   virtual void add_layout_group(const LayoutGroup& group);
-  
 
-  virtual void set_field_editable(const Field& field, bool editable = true);
 
-  virtual Gnome::Gda::Value get_field_value(const Field& field) const;
-  virtual Gnome::Gda::Value get_field_value(const Glib::ustring& id) const;
-  virtual void set_field_value(const Field& field, const Gnome::Gda::Value& value);
-  virtual void set_field_value(const Glib::ustring& id, const Gnome::Gda::Value& value);
+  virtual void set_field_editable(const LayoutItem_Field& field, bool editable = true);
+
+  virtual Gnome::Gda::Value get_field_value(const LayoutItem_Field& field) const;
+  //virtual Gnome::Gda::Value get_field_value(const Glib::ustring& id) const;
+  virtual void set_field_value(const LayoutItem_Field& field, const Gnome::Gda::Value& value);
+  //virtual void set_field_value(const Glib::ustring& id, const Gnome::Gda::Value& value);
 
 
   typedef std::list<Gtk::Widget*> type_list_widgets;
@@ -86,37 +86,34 @@ public:
   virtual void get_layout_group(LayoutGroup& group);
 
   /** For instance,
-   * void on_flowtable_field_edited(const Glib::ustring& id, const Gnome::Gda::Value& value);
+   * void on_flowtable_field_edited(const LayoutItem_Field& field, const Gnome::Gda::Value& value);
    */
-  typedef sigc::signal<void, const Glib::ustring&, const Gnome::Gda::Value&> type_signal_field_edited;
+  typedef sigc::signal<void, const LayoutItem_Field&, const Gnome::Gda::Value&> type_signal_field_edited;
   type_signal_field_edited signal_field_edited();
 
 
 protected:
 
-  virtual type_list_widgets get_field(const Glib::ustring& id);
-  virtual type_list_const_widgets get_field(const Glib::ustring& id) const;
-
-  virtual type_list_widgets get_field(const Field& field);
-  virtual type_list_const_widgets get_field(const Field& field) const;
+  virtual type_list_widgets get_field(const LayoutItem_Field& field);
+  virtual type_list_const_widgets get_field(const LayoutItem_Field& field) const;
 
   ///Get portals whose relationships have @a from_key as the from_key.
-  virtual type_list_widgets get_portals(const Glib::ustring& from_key);
+  virtual type_list_widgets get_portals(const LayoutItem_Field& from_key);
 
   int get_suitable_width(Field::glom_field_type field_type);
-  void on_entry_edited(const Gnome::Gda::Value& value, Glib::ustring id);
-  void on_flowtable_entry_edited(const Glib::ustring& id, const Gnome::Gda::Value& value);
+  void on_entry_edited(const Gnome::Gda::Value& value,  LayoutItem_Field field);
+  void on_flowtable_entry_edited(const LayoutItem_Field& field, const Gnome::Gda::Value& value);
 
   /// Remember the layout widget so we can iterate through them later.
   void add_layoutwidgetbase(LayoutWidgetBase* layout_widget);
   void on_layoutwidget_changed();
-    
+
   class Info
   {
   public:
     Info();
-    
-    Field m_field; //Store the field information so we know the title, ID, and type.
+
+    LayoutItem_Field m_field; //Store the field information so we know the title, ID, and type.
     Glib::ustring m_group;
 
     Gtk::Alignment* m_first;

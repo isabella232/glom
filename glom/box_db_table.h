@@ -50,8 +50,8 @@ protected:
 
   //virtual Glib::RefPtr<Gnome::Gda::DataModel> record_new(Gnome::Gda::Value primary_key_value);
 
-  virtual Gnome::Gda::Value get_entered_field_data(const Field& field) const;
-  virtual void set_entered_field_data(const Field& field, const Gnome::Gda::Value& value);
+  virtual Gnome::Gda::Value get_entered_field_data(const LayoutItem_Field& field) const;
+  virtual void set_entered_field_data(const LayoutItem_Field& field, const Gnome::Gda::Value& value);
 
   bool get_field_primary_key_for_table(const Glib::ustring table_name, Field& field) const;
   //static bool get_field_primary_key(const type_vecFields& fields, Field& field);

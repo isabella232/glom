@@ -211,11 +211,11 @@ void Box_Data_Details::fill_from_database()
           //Get field values to show:
           for(int i = 0; i < cols_count; ++i)
           {
-            const Field& field = fieldsToGet[i].m_field;
+            const LayoutItem_Field& layout_item = fieldsToGet[i];
 
             //Field value:
             Gnome::Gda::Value value = result->get_value_at(i, row_number);
-            m_FlowTable.set_field_value(field, value);
+            m_FlowTable.set_field_value(layout_item, value);
           }
         }
       }
@@ -395,12 +395,12 @@ void Box_Data_Details::on_button_nav_last()
     signal_nav_last().emit();
 }
 
-Gnome::Gda::Value Box_Data_Details::get_entered_field_data(const Field& field) const
+Gnome::Gda::Value Box_Data_Details::get_entered_field_data(const LayoutItem_Field& field) const
 {
   return m_FlowTable.get_field_value(field);
 }
 
-void Box_Data_Details::set_entered_field_data(const Field& field, const Gnome::Gda::Value& value)
+void Box_Data_Details::set_entered_field_data(const LayoutItem_Field& field, const Gnome::Gda::Value& value)
 {
   m_FlowTable.set_field_value(field, value);
 }
@@ -503,27 +503,65 @@ void Box_Data_Details::on_flowtable_layout_changed()
   fill_from_database();
 }
 
-void Box_Data_Details::on_flowtable_field_edited(const Glib::ustring& id, const Gnome::Gda::Value& field_value)
+void Box_Data_Details::on_flowtable_field_edited(const LayoutItem_Field& layout_field, const Gnome::Gda::Value& field_value)
 {
   if(m_ignore_signals)
     return;
 
-  const Glib::ustring strFieldName = id;
+  const Glib::ustring strFieldName = layout_field.get_name();
 
   Gnome::Gda::Value primary_key_value = get_primary_key_value();
   if(!GlomConversions::value_is_empty(primary_key_value)) //If there is a primary key value:
   {
-    Field field;
-    bool test = get_field(strFieldName, field);
-    if(!test)
-      g_warning("Box_Data_Details::on_flowtable_field_edited: field not found");
+    Glib::ustring table_name;
+    Field primary_key_field;
+    Gnome::Gda::Value primary_key_value;
+
+    const Glib::ustring relationship_name = layout_field.get_relationship_name();
+    if(relationship_name.empty())
+    {
+      table_name = get_table_name();
+      primary_key_field = m_field_primary_key;
+      primary_key_value = get_primary_key_value();
+    }
+    else
+    {
+      //If it's a related field then discover the actual table that it's in,
+      //plus how to identify the record in that table.
+
+      Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
+
+      Relationship relationship;
+      bool test = document->get_relationship(table_name, relationship_name, relationship);
+      if(test)
+      {
+        table_name = relationship.get_to_table();
+        const Glib::ustring to_field_name = relationship.get_to_field();
+        bool test = get_fields_for_table_one_field(table_name, to_field_name, primary_key_field); //TODO_Performance.
+        if(test)
+        {
+          LayoutItem_Field layout_item;
+          layout_item.set_name(to_field_name);
+          layout_item.m_field = primary_key_field;
+          layout_item.set_relationship_name(relationship_name);
+
+          primary_key_value = get_entered_field_data(layout_item);
+        }
+        else
+        {
+          g_warning("Box_Data_Details::on_flowtable_field_edited(): key not found for edited related field.");
+        }
+      }
+    } 
+
+    const Field& field = layout_field.m_field;
 
     //Update the field in the record (the record with this primary key):
     try
     {
       Glib::ustring strQuery = "UPDATE " + m_strTableName;
-      strQuery += " SET " +  /* get_table_name() + "." +*/ strFieldName + " = " + field.sql(field_value);
-      strQuery += " WHERE " + get_table_name() + "." + m_field_primary_key.get_name() + " = " + m_field_primary_key.sql(get_primary_key_value());
+      strQuery += " SET " +  /* table_name + "." + postgres does not seem to like the table name here */ strFieldName + " = " + field.sql(field_value);
+      strQuery += " WHERE " + table_name + "." + primary_key_field.get_name() + " = " + primary_key_field.sql(primary_key_value);
       bool bTest = Query_execute(strQuery);
 
       if(!bTest)
@@ -534,10 +572,10 @@ void Box_Data_Details::on_flowtable_field_edited(const Glib::ustring& id, const 
       else
       {
         //Set the value in all instances of this field in the layout (The field might be on the layout more than once):
-        m_FlowTable.set_field_value(field, field_value);
+        m_FlowTable.set_field_value(layout_field, field_value);
 
         //Get-and-set values for lookup fields, if this field triggers those relationships:
-        do_lookups(field, field_value, m_field_primary_key, primary_key_value);
+        do_lookups(layout_field, field_value, m_field_primary_key, primary_key_value);
 
         //TODO: Display new values for related fields.
 
@@ -605,7 +643,7 @@ void Box_Data_Details::on_flowtable_field_edited(const Glib::ustring& id, const 
   } //if(get_primary_key_value().size())
 }
 
-void Box_Data_Details::do_lookups(const Field& field_changed, const Gnome::Gda::Value& field_value, const Field& primary_key, const Gnome::Gda::Value& primary_key_value)
+void Box_Data_Details::do_lookups(const LayoutItem_Field& field_changed, const Gnome::Gda::Value& field_value, const Field& primary_key, const Gnome::Gda::Value& primary_key_value)
 {
    //Get values for lookup fields, if this field triggers those relationships:
    //TODO_performance: There is a LOT of iterating and copying here.
@@ -624,7 +662,10 @@ void Box_Data_Details::do_lookups(const Field& field_changed, const Gnome::Gda::
        Gnome::Gda::Value value = get_lookup_value(iter->second /* relationship */,  field_source /* the field to look in to get the value */, field_value /* Value of to and from fields */);
 
        //Add it to the view:
-       m_FlowTable.set_field_value(field_lookup_name, value);
+       LayoutItem_Field layout_item;
+       layout_item.set_name(field_lookup_name);
+       //TODO? layout_item.set_relationship_name();
+       m_FlowTable.set_field_value(layout_item, value);
 
        //Add it to the database (even if it is not shown in the view)
        Glib::ustring strQuery = "UPDATE " + m_strTableName;

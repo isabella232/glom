@@ -62,13 +62,14 @@ Glib::ustring Box_Data::get_WhereClause() const
   //Look at each field entry and build e.g. 'Name = "Bob"'
   for(type_vecLayoutFields::const_iterator iter = m_Fields.begin(); iter != m_Fields.end(); ++iter)
   {
-    const Field field = iter->m_field;
     Glib::ustring strClausePart;
-  
-    const Gnome::Gda::Value data = get_entered_field_data(field);
-    
+
+    const Gnome::Gda::Value data = get_entered_field_data(*iter);
+
     if(!GlomConversions::value_is_empty(data))
     {
+      const Field field = iter->m_field;
+
       bool use_this_field = true;
       if(field.get_glom_type() == Field::TYPE_BOOLEAN) //TODO: We need an intermediate state for boolean fields, so that they can be ignored in searches.
       {
@@ -105,35 +106,36 @@ Glib::RefPtr<Gnome::Gda::DataModel> Box_Data::record_new(bool use_entered_data, 
 
   const Glib::ustring primary_key_name = fieldPrimaryKey.get_name();
 
-  //Get a vector of fields from the vector of layout items:
-  type_vecFields fieldsToAdd;
-  for(type_vecLayoutFields::const_iterator iter = m_Fields.begin(); iter != m_Fields.begin(); ++iter)
-  {
-    fieldsToAdd.push_back(iter->m_field);
-  }
+  type_vecLayoutFields fieldsToAdd = m_Fields;
 
   //Add the primary key if it is not normally shown:
-  type_vecFields::const_iterator iterFindPrimary = std::find_if(fieldsToAdd.begin(), fieldsToAdd.end(), predicate_FieldHasName<Field>(primary_key_name));
+  type_vecLayoutFields::const_iterator iterFindPrimary = std::find_if(fieldsToAdd.begin(), fieldsToAdd.end(), predicate_FieldHasName<LayoutItem_Field>(primary_key_name));
   if(iterFindPrimary == fieldsToAdd.end())
   {
-    fieldsToAdd.push_back(fieldPrimaryKey);
+    LayoutItem_Field layout_item;
+    layout_item.set_name(primary_key_name);
+    layout_item.m_field = fieldPrimaryKey;
+
+    fieldsToAdd.push_back(layout_item);
   }
 
   //Calculate any necessary field values and enter them:
-  for(type_vecFields::const_iterator iter = fieldsToAdd.begin(); iter != fieldsToAdd.end(); ++iter)
+  for(type_vecLayoutFields::const_iterator iter = m_Fields.begin(); iter != m_Fields.begin(); ++iter)
   {
-    const Field& field = *iter;
+    const LayoutItem_Field& layout_item = *iter;
 
     //If the user did not enter something in this field:
-    Gnome::Gda::Value value = get_entered_field_data(field);
+    Gnome::Gda::Value value = get_entered_field_data(layout_item);
     if(GlomConversions::value_is_empty(value)) //This deals with empty strings too.
     {
+      const Field& field = layout_item.m_field;
+
       //If the default value should be calculated, then calculate it:
       const Glib::ustring calculation = field.get_calculation(); //TODO_Performance: Use a get_has_calculation() method.
       if(!calculation.empty())
       {
         Gnome::Gda::Value value = glom_evaluate_python_function_implementation(field.get_glom_type(), calculation);
-        set_entered_field_data(field, value);
+        set_entered_field_data(layout_item, value);
       }
     }
   }
@@ -146,41 +148,46 @@ Glib::RefPtr<Gnome::Gda::DataModel> Box_Data::record_new(bool use_entered_data, 
   typedef std::map<Glib::ustring, bool> type_map_added;
   type_map_added map_added;
 
-  for(type_vecFields::const_iterator iter = fieldsToAdd.begin(); iter != fieldsToAdd.end(); ++iter)
+  for(type_vecLayoutFields::const_iterator iter = fieldsToAdd.begin(); iter != fieldsToAdd.end(); ++iter)
   {
-    const Field& field = *iter;
-    const Glib::ustring field_name = field.get_name();
-
-    type_map_added::const_iterator iterFind = map_added.find(field_name);
-    if(iterFind == map_added.end()) //If it was not added already
+    const LayoutItem_Field& layout_item = *iter;
+    const Glib::ustring field_name = layout_item.get_name();
+    const Glib::ustring relationship_name = layout_item.get_relationship_name();
+    if(relationship_name.empty()) //TODO: Allow people to add a related record also by entering new data in a related field of the related record.
     {
-      Gnome::Gda::Value value;
-
-      //Use the specified (generated) primary key value, if there is one:
-      if(primary_key_name == field_name && !GlomConversions::value_is_empty(primary_key_value))
+      type_map_added::const_iterator iterFind = map_added.find(field_name);
+      if(iterFind == map_added.end()) //If it was not added already
       {
-        value = primary_key_value;
-      }
-      else
-      {
-        if(use_entered_data || !field.get_calculation().empty()) //TODO_Performance: Use a get_has_calculation() method.
-          value = get_entered_field_data(field);
-      }
-
-      Glib::ustring strFieldValue = field.sql(value);
-
-      if(!strFieldValue.empty())
-      {
-        if(!strNames.empty())
+        Gnome::Gda::Value value;
+  
+        const Field& field = layout_item.m_field;
+  
+        //Use the specified (generated) primary key value, if there is one:
+        if(primary_key_name == field_name && !GlomConversions::value_is_empty(primary_key_value))
         {
-          strNames += ", ";
-          strValues += ", ";
+          value = primary_key_value;
+        }
+        else
+        {
+          if(use_entered_data || !field.get_calculation().empty()) //TODO_Performance: Use a get_has_calculation() method.
+            value = get_entered_field_data(layout_item);
         }
 
-        strNames += field_name;
-        strValues += strFieldValue;
+        Glib::ustring strFieldValue = field.sql(value);
 
-        map_added[field_name] = true;
+        if(!strFieldValue.empty())
+        {
+          if(!strNames.empty())
+          {
+            strNames += ", ";
+            strValues += ", ";
+          }
+
+          strNames += field_name;
+          strValues += strFieldValue;
+
+          map_added[field_name] = true;
+        }
       }
     }
   }
@@ -413,7 +420,7 @@ guint Box_Data::generate_next_auto_increment(const Glib::ustring& table_name, co
   {
     //The result should be 1 row with 1 column
     Gnome::Gda::Value value = data_model->get_value_at(0, 0);
-    
+
     //It probably has a specific numeric type, but I am being lazy. murrayc
     result = util_decimal_from_string(value.to_string());
     ++result;
@@ -696,8 +703,9 @@ Glib::ustring Box_Data::build_sql_select_with_where_clause(const Glib::ustring& 
   {
     const Relationship& relationship = *iter;
     sql_part_leftouterjoin += " LEFT OUTER JOIN " + relationship.get_to_table() +
-      " ON " + relationship.get_from_table() + "." + relationship.get_from_field() + " = " +
-      relationship.get_to_table() + "." + relationship.get_to_field();
+      " ON (" + relationship.get_from_table() + "." + relationship.get_from_field() + " = " +
+      relationship.get_to_table() + "." + relationship.get_to_field() +
+      ")";
   }
 
   result += sql_part_leftouterjoin;
@@ -706,4 +714,21 @@ Glib::ustring Box_Data::build_sql_select_with_where_clause(const Glib::ustring& 
     result += " WHERE " + where_clause;
 
   return result;
+}
+
+Glib::ustring Box_Data::get_layout_item_table_name(const LayoutItem_Field& layout_item, const Glib::ustring table_name)
+{
+  const Glib::ustring relationship_name = layout_item.get_relationship_name();
+  if(relationship_name.empty())
+    return table_name;
+  else
+  {
+    Relationship relationship;
+    Document_Glom* document = get_document();
+    bool test = document->get_relationship(table_name, relationship_name, relationship);
+    if(test)
+     return relationship.get_to_table();
+  }
+
+  return Glib::ustring();
 }

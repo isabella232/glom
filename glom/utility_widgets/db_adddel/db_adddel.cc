@@ -561,24 +561,24 @@ void DbAddDel::construct_specified_columns()
   //Create the Gtk ColumnRecord:
 
   Gtk::TreeModel::ColumnRecord record;
-  
+
   //Hidden internal columns:
-  
+
   //We must recreate these standard modelcolumns, because we can not reuse them
   if(m_modelcolumn_key)
     delete m_modelcolumn_key; 
   m_modelcolumn_key = new Gtk::TreeModelColumn<Gnome::Gda::Value>;
-  
+
   //if(m_modelcolumn_placeholder)
   //  delete m_modelcolumn_placeholder;
   //m_modelcolumn_placeholder = new Gtk::TreeModelColumn<bool>;
-    
+
   record.add(*m_modelcolumn_key);
   //record.add(*m_modelcolumn_placeholder);
-    
+
   //Database columns:
   type_model_store::type_vec_fields fields;
-  {       
+  {
     type_vecModelColumns::size_type i = 0;
     for(type_ColumnTypes::iterator iter = m_ColumnTypes.begin(); iter != m_ColumnTypes.end(); ++iter)
     {
@@ -589,7 +589,7 @@ void DbAddDel::construct_specified_columns()
 
       record.add( *pModelColumn );
 
-      fields.push_back(iter->m_field);
+      fields.push_back(iter->m_field.m_field);
 
       i++;
     }
@@ -611,12 +611,12 @@ void DbAddDel::construct_specified_columns()
     DbAddDelColumnInfo& column_info = m_ColumnTypes[model_column_index];
     if(column_info.m_visible)
     {
-      const Glib::ustring column_name = column_info.m_field.get_title_or_name();
+      const Glib::ustring column_name = column_info.m_field.m_field.get_title_or_name();
       const Glib::ustring column_id = column_info.m_field.get_name();
 
       int cols_count = 0;
       Gtk::CellRenderer* pCellRenderer = 0;
-      switch(column_info.m_field.get_glom_type())
+      switch(column_info.m_field.m_field.get_glom_type())
       {
   /*
         case(DbAddDelColumnInfo::STYLE_Choices):
@@ -754,7 +754,7 @@ void DbAddDel::remove_all_columns()
   m_ColumnTypes.clear();
 }
 
-guint DbAddDel::add_column(const Field& field, bool editable, bool visible)
+guint DbAddDel::add_column(const LayoutItem_Field& field, bool editable, bool visible)
 {
   InnerIgnore innerIgnore(this); //Stop on_treeview_columns_changed() from doing anything when it is called just because we add a new column.
 
@@ -764,7 +764,7 @@ guint DbAddDel::add_column(const Field& field, bool editable, bool visible)
   column_info.m_visible = visible;
 
   //Make it non-editable if it is auto-generated:
-  if(field.get_field_info().get_auto_increment())
+  if(field.m_field.get_field_info().get_auto_increment())
     column_info.m_editable = false;
 
   m_ColumnTypes.push_back(column_info);
@@ -776,16 +776,14 @@ guint DbAddDel::add_column(const Field& field, bool editable, bool visible)
   //m_TreeView.set_model(m_refListStore);
 
   return m_ColumnTypes.size() - 1;
-  
 }
 
-Glib::ustring DbAddDel::get_column_field(guint column_index) const
+LayoutItem_Field DbAddDel::get_column_field(guint column_index) const
 {
-  Glib::ustring result;
   if(column_index < m_ColumnTypes.size())
-    result = m_ColumnTypes[column_index].m_field.get_name();
+    return m_ColumnTypes[column_index].m_field;
 
-  return result;
+  return LayoutItem_Field();
 }
 
 bool DbAddDel::get_prevent_user_signals() const
@@ -1078,7 +1076,7 @@ void DbAddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const G
       }
     }
 
-    const Field::glom_field_type field_type = m_ColumnTypes[model_column_index].m_field.get_glom_type();
+    const Field::glom_field_type field_type = m_ColumnTypes[model_column_index].m_field.m_field.get_glom_type();
     if(field_type != Field::TYPE_INVALID) //If a field type was specified for this column.
     {
       //Make sure that the entered data is suitable for this field type:
@@ -1538,26 +1536,24 @@ void DbAddDel::set_key_field(const Field& field)
 void DbAddDel::treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter, int model_column_index)
 {
   Gnome::Gda::Value value = get_value(iter, model_column_index);
-  
+
   DbAddDelColumnInfo& column_info = m_ColumnTypes[model_column_index];
-  switch(column_info.m_field.get_glom_type())
+  switch(column_info.m_field.m_field.get_glom_type())
   {
     case(Field::TYPE_BOOLEAN):
     {
       Gtk::CellRendererToggle* pDerived = dynamic_cast<Gtk::CellRendererToggle*>(renderer);
       pDerived->set_active( value.get_bool() ); 
-  
+
       break;
     }
     default:
     {
       //TODO: Maybe we should have custom cellrenderers for time, date, and numbers.
       Gtk::CellRendererText* pDerived = dynamic_cast<Gtk::CellRendererText*>(renderer);
-      
-      Glib::ustring debugtext = GlomConversions::get_text_for_gda_value(column_info.m_field.get_glom_type(), value);
-      
-      pDerived->property_text() = GlomConversions::get_text_for_gda_value(column_info.m_field.get_glom_type(), value);
-  
+
+      pDerived->property_text() = GlomConversions::get_text_for_gda_value(column_info.m_field.m_field.get_glom_type(), value);
+
       break;
     } 
   }

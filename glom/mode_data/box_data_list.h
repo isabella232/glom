@@ -32,12 +32,12 @@ public:
 
   virtual Gnome::Gda::Value get_primary_key_value(const Gtk::TreeModel::iterator& row);
   virtual Gnome::Gda::Value get_primary_key_value_selected();
-  
-  virtual Gnome::Gda::Value get_entered_field_data(const Field& field) const;
-  virtual void set_entered_field_data(const Field& field, const Gnome::Gda::Value& value);
-  
+
+  virtual Gnome::Gda::Value get_entered_field_data(const LayoutItem_Field& field) const;
+  virtual void set_entered_field_data(const LayoutItem_Field& field, const Gnome::Gda::Value& value);
+
   virtual guint get_records_count() const;
-    
+
   //Primary Key value:
   typedef sigc::signal<void, Gnome::Gda::Value> type_signal_user_requested_details;
   type_signal_user_requested_details signal_user_requested_details();

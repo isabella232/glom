@@ -88,10 +88,10 @@ void Box_DB_Table_Relationships::fill_from_database()
        //Name:
        Gtk::TreeModel::iterator iterTree = m_AddDel.add_item(relationship.get_name());
        m_AddDel.set_value(iterTree, m_colName, relationship.get_name());
-       
+
        //Title:
        m_AddDel.set_value(iterTree, m_colTitle, relationship.get_title());
-       
+
        //From Field:
        m_AddDel.set_value(iterTree, m_colFromField, relationship.get_from_field());
 
