@@ -59,7 +59,10 @@ void EntryGlom::check_for_change()
   {
     //Validate the input:
     bool success = false;
-    Gnome::Gda::Value value = GlomConversions::parse_value(m_glom_type, get_text(), success);
+
+    const LayoutItem_Field* layout_item = dynamic_cast<const LayoutItem_Field*>(get_layout_item());
+    Gnome::Gda::Value value = GlomConversions::parse_value(m_glom_type, get_text(), layout_item->m_numeric_format, success);
+
     if(success)
     {
       //Actually show the canonical text:
@@ -80,7 +83,6 @@ void EntryGlom::check_for_change()
   }
 }
 
-  
 EntryGlom::type_signal_edited EntryGlom::signal_edited()
 {
   return m_signal_edited;
@@ -137,7 +139,9 @@ void EntryGlom::set_text(const Glib::ustring& text)
 Gnome::Gda::Value EntryGlom::get_value() const
 {
   bool success = false;
-  return GlomConversions::parse_value(m_glom_type, get_text(), success);
+
+  const LayoutItem_Field* layout_item = dynamic_cast<const LayoutItem_Field*>(get_layout_item());
+  return GlomConversions::parse_value(m_glom_type, get_text(), layout_item->m_numeric_format, success);
 }
 
 EntryGlom::type_signal_user_requested_layout EntryGlom::signal_user_requested_layout()

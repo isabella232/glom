@@ -1,3 +1,16 @@
+2005-03-30  Murray Cumming <murrayc@murrayc.com>
+
+	* glom/data_structure/glomconversions.cc:
+	* glom/data_structure/glomconversions.h:
+	Added util_trim_string().
+	* glom/utility_widgets/db_adddel/db_adddel.cc:
+	on_treeview_cell_edited(): Use the numeric_format
+	when parsing.
+	* glom/utility_widgets/entryglom.cc:
+	get_value(), check_for_change(): Use the 
+	numeric_format when parsing the value, so that currency 
+	symbols can be ignored.
+
 2005-03-30  Murray Cumming  <murrayc@murrayc.com>
 
 	* config.h.in:

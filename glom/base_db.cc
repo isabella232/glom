@@ -475,7 +475,6 @@ Glib::ustring Base_DB::util_title_from_string(const Glib::ustring& text)
   bool capitalise_next_char = true;
   for(Glib::ustring::const_iterator iter = text.begin(); iter != text.end(); ++iter)
   {
-    
     const gunichar& ch = *iter;
     if(ch == '_') //Replace _ with space.
     {

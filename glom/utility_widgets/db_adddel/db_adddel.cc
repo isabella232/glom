@@ -1071,7 +1071,6 @@ void DbAddDel::on_treeview_cell_edited_bool(const Glib::ustring& path_string, in
 
       m_signal_user_changed.emit(row, model_column_index);
     }
-    
   }
 }
 
@@ -1126,7 +1125,7 @@ void DbAddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const G
     {
       //Make sure that the entered data is suitable for this field type:
       bool success = false;
-      Gnome::Gda::Value value = GlomConversions::parse_value(field_type, new_text, success);
+      Gnome::Gda::Value value = GlomConversions::parse_value(field_type, new_text, m_ColumnTypes[model_column_index].m_field.m_numeric_format, success);
       if(!success)
       {
           //Tell the user and offer to revert or try again:

@@ -215,6 +215,11 @@ Glib::ustring GlomConversions::get_text_for_gda_value(Field::glom_field_type glo
         another_stream << std::fixed;
         another_stream << std::setprecision(numeric_format.m_decimal_places); //precision means number of decimal places when using std::fixed.
       }
+
+      if(!(numeric_format.m_currency_symbol.empty()))
+      {
+        another_stream << numeric_format.m_currency_symbol << " ";
+      }
     }
 
     another_stream << number;
@@ -305,14 +310,19 @@ Gnome::Gda::Value GlomConversions::parse_value(Field::glom_field_type glom_type,
   }
   else if(glom_type == Field::TYPE_NUMERIC)
   {
-    Glib::ustring text_to_parse = text;
+    Glib::ustring text_to_parse = util_trim_whitespace(text);
 
     if(!(numeric_format.m_currency_symbol.empty()))
     {
       //Remove the currency symbol:
+      const Glib::ustring prefix = text_to_parse.substr(0, numeric_format.m_currency_symbol.size());
       if(text_to_parse.substr(0, numeric_format.m_currency_symbol.size()) == numeric_format.m_currency_symbol)
+      {
         text_to_parse = text_to_parse.substr(numeric_format.m_currency_symbol.size());
+        text_to_parse = util_trim_whitespace(text_to_parse); //remove any whitespace between the currency symbol and the number.
+      }
     }
+
 
     //text_to_parse = Base_DB::string_trim(text_to_parse, " ");
 
@@ -559,4 +569,47 @@ Gnome::Gda::Value GlomConversions::get_empty_value(Field::glom_field_type field_
   }
 }
 
-  
+Glib::ustring GlomConversions::util_trim_whitespace(const Glib::ustring& text)
+{
+  //TODO_Performance:
+
+  Glib::ustring result = text;
+
+  //Find non-whitespace from front:
+  Glib::ustring::size_type posFront = Glib::ustring::npos;
+  Glib::ustring::size_type pos = 0;
+  for(Glib::ustring::iterator iter = result.begin(); iter != result.end(); ++iter)
+  {
+    if(!Glib::Unicode::isspace(*iter))
+    {
+      posFront = pos;
+      break;
+    }
+
+    ++pos;
+  }
+
+  //Remove the white space from the front:
+  result = result.substr(posFront);
+
+
+ //Find non-whitespace from back:
+  Glib::ustring::size_type posBack = Glib::ustring::npos;
+  pos = 0;
+  for(Glib::ustring::reverse_iterator iter = result.rend(); iter != result.rbegin(); ++iter)
+  {
+    if(!Glib::Unicode::isspace(*iter))
+    {
+      posBack = pos;
+      break;
+    }
+
+    ++pos;
+  }
+
+  //Remove the white space from the front:
+  result = result.substr(0, result.size() - posBack);
+
+  return result;
+}
+
