@@ -635,6 +635,8 @@ void DbAddDel::construct_specified_columns()
 
 void DbAddDel::set_value(const Gtk::TreeModel::iterator& iter, guint col, const Gnome::Gda::Value& value)
 {
+  g_warning("DbAddDel::set_value begin");
+  
   InnerIgnore innerIgnore(this);
 
   if(!m_refListStore)
@@ -658,6 +660,8 @@ void DbAddDel::set_value(const Gtk::TreeModel::iterator& iter, guint col, const 
     //Add extra blank if necessary:
     add_blank();
   }
+  
+  g_warning("DbAddDel::set_value end");
 }
 
 void DbAddDel::set_value_selected(guint col, const Gnome::Gda::Value& value)
@@ -1297,6 +1301,13 @@ bool DbAddDel::get_is_first_row(const Gtk::TreeModel::iterator& iter) const
 
 bool DbAddDel::get_is_last_row(const Gtk::TreeModel::iterator& iter) const
 {
+  Gtk::TreeModel::iterator iter2 = get_last_row();
+  Gtk::TreeModel::iterator iter3 = get_last_row();
+  if(iter2 != iter3)
+  {
+     g_warning("get_is_last_row(): iter is not equal to itself");
+  }
+    
   return iter == get_last_row();
 }
 
@@ -1353,15 +1364,17 @@ Gtk::TreeModel::iterator DbAddDel::get_last_row() const
     //TODO_performance: Hopefully there is a better way to do this.
     Gtk::TreeModel::iterator iter = get_model()->children().begin();
     guint size = get_model()->children().size();
-    g_warning("DbAddDel::get_last_row(): size=%d", size);
     if(size > 1)
     {
-      for(guint i = 0; i < (size -1); ++i)
+      guint i = 0;
+      for(i = 0; i < (size -1); ++i)
       {
         ++iter;
       }
+      
+      //g_warning("DbAddDel::get_last_row(): size=%d, i=%d", size, i);
     }
-  
+    
     return iter;
   }
 }

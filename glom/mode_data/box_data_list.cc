@@ -155,7 +155,10 @@ void Box_Data_List::fill_from_database()
                   ++iterFields;
 
                   if(test)
+                  {
                     m_AddDel.set_value(tree_iter, index, value);
+                    //g_warning("addedel size=%d", m_AddDel.get_count());
+                  }
 		  else
 		    g_warning("  get_field_column_index failed: field name=%s", field_name.c_str());
                 }

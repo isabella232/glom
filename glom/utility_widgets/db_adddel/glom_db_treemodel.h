@@ -110,7 +110,7 @@ private:
    //because std::list iterators are not all invalidated when we erase an element from the middle.
    typedef std::list< typeRow > typeListOfRows; //Y rows.
    
-   iterator create_iterator(const typeListOfRows::iterator& row_iter) const;
+   void create_iterator(const typeListOfRows::iterator& row_iter, DbTreeModel::iterator& iter) const;
 
    //This maps the GtkTreeIters to potential paths:
    //Each GlueItem might be stored in more than one GtkTreeIter,
@@ -139,6 +139,11 @@ private:
    public:
      GlueList();
      ~GlueList();
+     
+     //We must reuse GlueItems instead of having 2 that contain equal iterators,
+     //because Gtk::TreeIter::iterator::operator() unfortunately does only
+     //a pointer comparison, without allowing us to implement specific logic.
+     GlueItem* get_existing_item(const typeListOfRows::iterator& row_iter);
 
      //This is just a list of stuff to delete later:
      typedef std::list<GlueItem*> type_listOfGlue;
