@@ -19,6 +19,7 @@
  */
 
 #include "box_data_list_related.h"
+#include "dialog_layout_list_related.h"
 #include "../data_structure/glomconversions.h"
 #include <libintl.h>
 
@@ -44,6 +45,26 @@ Box_Data_List_Related::Box_Data_List_Related()
   add(m_Frame);
   
   m_layout_name = "list_related"; //TODO: We need a unique name when 2 portals use the same table.
+  
+  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_data_layout_list_related");
+  if(refXml)
+  {
+    /*
+    Dialog_Layout_List_Related* dialog = 0;
+    refXml->get_widget_derived("window_data_layout_list_related", dialog);
+    if(dialog)
+    {
+      //Delete the dialog from the base class:
+      if(m_pDialogLayout)
+        delete m_pDialogLayout;
+        
+      //Use the new dialog:
+      m_pDialogLayout = dialog;
+      m_pDialogLayout->signal_hide().connect( sigc::mem_fun(*this, &Box_Data::on_dialog_layout_hide) );
+    }
+    */
+  }
+
 }
 
 Box_Data_List_Related::~Box_Data_List_Related()

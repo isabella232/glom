@@ -1,3 +1,12 @@
+2005-03-06  Murray Cumming  <murrayc@localhost.localdomain>
+
+	* glom/mode_data/box_data_list_related.cc: Constructor: Set a new 
+	layout name, so that the portals layouts are not confused with the 
+	standard layouts for those tables in the document. Use the new 
+	layout dialog.
+	* glom/mode_data/: Add dialog_layout_list_related.[h|cc].
+	* glom/glom.glade: Define the new dialog.
+
 2005-03-06  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/mode_data/box_db_list.cc: on_adddel_user_requested_delete(): 
