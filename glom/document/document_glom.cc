@@ -338,7 +338,8 @@ void Document_Glom::set_tables(const type_listTableInfo& tables)
 {
   //TODO: Avoid adding information about tables that we don't know about - that should be done explicitly.
   //Look at each "table".
-  
+
+  bool something_changed = false;
   for(type_tables::iterator iter = m_tables.begin(); iter != m_tables.end(); iter++)
   {
     const DocumentTableInfo& doctableinfo = iter->second;
@@ -352,9 +353,13 @@ void Document_Glom::set_tables(const type_listTableInfo& tables)
       info.m_hidden = iterfind->m_hidden;
       info.m_title = iterfind->m_title;
       info.m_default = iterfind->m_default;
-      set_modified();
+      
+      something_changed = true;
     }
   }
+
+  if(something_changed)
+    set_modified();
   
 }
 

@@ -58,8 +58,6 @@ protected:
   guint m_colDefault;
   
   mutable AddDel_WithButtons m_AddDel; //mutable because its get_ methods aren't const.
-
-  bool m_modified;
 };
 
 #endif //BOX_TABLES_H

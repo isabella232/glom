@@ -1,5 +1,13 @@
 2004-07-05  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/glade.glom: In Table Navigation, change Cancel button to a close
+	button, because this window is opened to edit as well as to navigate.
+	* glom/navigatin/box_tables.cc: Make sure that changes are saved to 
+	the document immediately, because we no longer automatically ask 
+	all views to save into the document before writing to disk.
+
+2004-07-05  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/document/Document_Glom.cc: set_modified(): Call save_before() 
 	and write_to_disk() instead of save() because that gets all the data 
 	from the views again.

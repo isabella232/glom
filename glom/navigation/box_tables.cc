@@ -28,8 +28,7 @@ Box_Tables::Box_Tables(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
   m_colTableName(0),
   m_colHidden(0),
   m_colTitle(0),
-  m_colDefault(0),
-  m_modified(false)
+  m_colDefault(0)
 {
   m_strHint = gettext("Select a table and click [Edit]. You may create a new table by entering the name in the last row.");
 
@@ -164,8 +163,6 @@ void Box_Tables::fill_from_database()
 
   m_AddDel.set_allow_add(developer_mode);
   m_AddDel.set_allow_delete(developer_mode);
-      
-  m_modified = false;
 }
 
 void Box_Tables::on_adddel_Add(const Gtk::TreeModel::iterator& row)
@@ -209,8 +206,6 @@ void Box_Tables::on_adddel_Add(const Gtk::TreeModel::iterator& row)
 
     save_to_document();
     //fill_from_database(); //We should not modify the model structure in a cellrenderer signal handler.
-
-    m_modified = true;
   }
 }
 
@@ -246,8 +241,6 @@ void Box_Tables::on_adddel_Delete(const Gtk::TreeModel::iterator& rowStart, cons
     save_to_document();
 
     fill_from_database();
-
-    m_modified = true;
   }
 }
 
@@ -281,30 +274,27 @@ void Box_Tables::save_to_document()
 {
   if(get_userlevel() == AppState::USERLEVEL_DEVELOPER)
   {
-    if(m_modified)
+    //Save the hidden tables. TODO_usermode: Only if we are in developer mode.
+    Document_Glom::type_listTableInfo listTables;
+
+    for(Gtk::TreeModel::iterator iter = m_AddDel.get_model()->children().begin(); iter != m_AddDel.get_model()->children().end(); ++iter)
     {
-      //Save the hidden tables. TODO_usermode: Only if we are in developer mode.
-      Document_Glom::type_listTableInfo listTables;
+      TableInfo table_info;
+      table_info.m_name = m_AddDel.get_value(iter, m_colTableName);
 
-      for(Gtk::TreeModel::iterator iter = m_AddDel.get_model()->children().begin(); iter != m_AddDel.get_model()->children().end(); ++iter)
+      if(!table_info.m_name.empty())
       {
-        TableInfo table_info;
-        table_info.m_name = m_AddDel.get_value(iter, m_colTableName);
+        table_info.m_hidden  = m_AddDel.get_value_as_bool(iter, m_colHidden);
+        table_info.m_title  = m_AddDel.get_value(iter, m_colTitle);
+        table_info.m_default  = m_AddDel.get_value_as_bool(iter, m_colDefault);
 
-        if(!table_info.m_name.empty())
-        {
-          table_info.m_hidden  = m_AddDel.get_value_as_bool(iter, m_colHidden);
-          table_info.m_title  = m_AddDel.get_value(iter, m_colTitle);
-          table_info.m_default  = m_AddDel.get_value_as_bool(iter, m_colDefault);
-
-          listTables.push_back(table_info);
-        }
+        listTables.push_back(table_info);
       }
+    }
 
-      if(m_pDocument)
-        m_pDocument->set_tables( listTables); //TODO: Don't save all new tables - just the ones already in the document.
-      }
-   }
+    if(m_pDocument)
+      m_pDocument->set_tables( listTables); //TODO: Don't save all new tables - just the ones already in the document.
+  }
 }
 
 void Box_Tables::on_show_hidden_toggled()
@@ -320,12 +310,10 @@ void Box_Tables::on_adddel_changed(const Gtk::TreeModel::iterator& row, guint co
     {
       save_to_document();
       //TODO: This causes a crash. fill_from_database(); //Hide/show the table.
-      m_modified = true;
     }
     else if( (column == m_colTitle) || (column == m_colDefault) )
     {
       save_to_document();
-      m_modified = true;
     } 
     else if(column == m_colTableName)
     {
