@@ -1,4 +1,9 @@
-2004-06-12  Murray Cumming  <murrayc@murrayc_debian>
+2004-06-12  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/data_structure/glomconversions.cc: Simplify the time_get and 
+	time_put code by using the default template iterators.
+	
+2004-06-12  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/data_structure/glomconversions.cc: Various corrections from 
 	Daniel Elstner (king of C++). Also fallback to parsing time in the C 

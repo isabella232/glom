@@ -69,8 +69,8 @@ Glib::ustring GlomConversions::format_tm(const tm& tm_data, const std::locale& l
   the_stream.imbue(locale); //Make it format things for this locale. (Actually, I don't know if this is necessary, because we mention the locale in the time_put<> constructor.
 
   // Get a time_put face:
-  typedef std::ostreambuf_iterator<char, std::char_traits<char> > type_iterator;
-  typedef std::time_put<char, type_iterator> type_time_put;
+  typedef std::time_put<char> type_time_put;
+  typedef type_time_put::iter_type type_iterator;
   const type_time_put& tp = std::use_facet<type_time_put>(locale);
 
   //type_iterator begin(the_stream);
@@ -284,8 +284,10 @@ tm GlomConversions::parse_date(const Glib::ustring& text, const std::locale& loc
   the_stream << text;
 
   // Get a time_get facet:
-  typedef std::istreambuf_iterator<char, std::char_traits<char> > type_iterator;
-  typedef std::time_get<char, type_iterator> type_time_get;
+ 
+  typedef std::time_get<char> type_time_get;
+  typedef type_time_get::iter_type type_iterator;
+
   const type_time_get& tg = std::use_facet<type_time_get>(locale);
 
   type_iterator the_begin(the_stream);
