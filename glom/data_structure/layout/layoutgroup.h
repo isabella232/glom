@@ -35,14 +35,14 @@ public:
   LayoutGroup& operator=(const LayoutGroup& src);
   virtual ~LayoutGroup();
 
-  virtual LayoutItem* clone();
+  virtual LayoutItem* clone() const;
   
   bool has_field(const Glib::ustring& field_name) const;
 
-  void add_item(const LayoutItem_Field& item);
-  void add_item(const LayoutItem_Field& item, guint sequence);
-  void add_item(const LayoutGroup& item);
-  void add_item(const LayoutGroup& item, guint sequence);
+  void add_item(const LayoutItem& item);
+  void add_item(const LayoutItem& item, guint sequence);
+//  void add_item(const LayoutGroup& item);
+//  void add_item(const LayoutGroup& item, guint sequence);
   
   void change_field_item_name(const Glib::ustring& field_name, const Glib::ustring& field_name_new);
     

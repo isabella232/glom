@@ -24,6 +24,7 @@
 #include "flowtable.h"
 #include "../data_structure/layout/layoutgroup.h"
 #include "../data_structure/layout/layoutitem_field.h"
+#include "../data_structure/layout/layoutitem_portal.h"
 #include "../data_structure/field.h"
 #include <map>
 #include <list>

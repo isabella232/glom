@@ -63,6 +63,7 @@ Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
   m_Paned.add(m_FlowTable);
 
   //Related records:
+  /*
   m_Label_Related.set_text(gettext("<b>Related Records</b>"));
   m_Label_Related.set_use_markup(true);
   m_Frame_Related.set_label_widget(m_Label_Related);
@@ -73,6 +74,7 @@ Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
   m_Notebook_Related.set_border_width(6);
   m_Alignment_Related.add(m_Notebook_Related);
   m_Paned.add(m_Frame_Related);
+  */
 
   //Add or delete record:
   m_HBox.pack_start(m_Button_New, Gtk::PACK_SHRINK);
@@ -223,11 +225,12 @@ void Box_Data_Details::fill_from_database()
     }
   } //if(!listFieldsToShow.empty())
 
-  fill_related();
+  //fill_related();
 
   fill_end();
 }
 
+/*
 void Box_Data_Details::fill_related()
 {
   if(!m_bDoNotRefreshRelated)
@@ -312,6 +315,7 @@ void Box_Data_Details::fill_related()
   }
 
 }
+*/
 
 void Box_Data_Details::on_button_new()
 {
@@ -416,10 +420,12 @@ Gnome::Gda::Value Box_Data_Details::get_primary_key_value_selected()
   return Gnome::Gda::Value(strResult);
 }
 
+/*
 void Box_Data_Details::on_related_user_requested_details(Gnome::Gda::Value key_value, Glib::ustring strTableName)
 {
   signal_user_requested_related_details().emit(strTableName, key_value);
 }
+*/
 
 void Box_Data_Details::on_related_record_added(Gnome::Gda::Value /* strKeyValue */, Glib::ustring /* strFromKeyName */)
 {
@@ -474,10 +480,12 @@ Box_Data_Details::type_signal_record_deleted Box_Data_Details::signal_record_del
   return m_signal_record_deleted; 
 }
 
+/*
 Box_Data_Details::type_signal_user_requested_related_details Box_Data_Details::signal_user_requested_related_details()
 {
   return m_signal_user_requested_related_details;
 }
+*/
 
 void Box_Data_Details::on_flowtable_field_edited(const Glib::ustring& id, const Gnome::Gda::Value& field_value)
 {
@@ -524,6 +532,7 @@ void Box_Data_Details::on_flowtable_field_edited(const Glib::ustring& id, const 
            do_lookups(field, field_value, fieldInfoPK, primary_key_value);
 
            //If this is a foreign key then refresh the related records:
+           /*
            bool bIsForeignKey = false;
            Document_Glom::type_vecRelationships vecRelationships = m_pDocument->get_relationships(m_strTableName);
            for(Document_Glom::type_vecRelationships::iterator iter = vecRelationships.begin(); iter != vecRelationships.end(); iter++)
@@ -539,6 +548,7 @@ void Box_Data_Details::on_flowtable_field_edited(const Glib::ustring& id, const 
 
            if(bIsForeignKey)
              fill_related();
+           */
          }
 
        }

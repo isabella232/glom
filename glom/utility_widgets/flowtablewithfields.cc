@@ -22,6 +22,7 @@
 #include "datawidget.h"
 #include <gtkmm/checkbutton.h>
 #include "../data_structure/glomconversions.h"
+#include "../mode_data/box_data_list_related.h"
 
 FlowTableWithFields::Info::Info()
 : m_first(0),
@@ -52,13 +53,23 @@ void FlowTableWithFields::add_layout_item(const LayoutItem& item)
     const LayoutItem_Field* field = dynamic_cast<const LayoutItem_Field*>(pItem);
     if(field)
     {                          
-      add_field(field->m_field); \
+      add_field(field->m_field);
 
       //Do not allow editing of auto-increment fields:
       if(field->m_field.get_field_info().get_auto_increment())
         set_field_editable(field->m_field, false);
     }
-  } 
+    else
+    {
+      const LayoutItem_Portal* portal = dynamic_cast<const LayoutItem_Portal*>(pItem);
+      if(portal)
+      {
+        Gtk::Widget* portal_box = Gtk::manage(new Gtk::Label("TODO: " + portal->get_relationship()));//Gtk::manage(new Box_Data_List_Related);
+        portal_box->show();
+        add(*portal_box);
+      }
+    }
+  }
 }
 
 void FlowTableWithFields::add_layout_group(const LayoutGroup& group)
@@ -200,7 +211,7 @@ void FlowTableWithFields::add_field(const Field& field, const Glib::ustring& gro
     m_mapFields[id] = info;
   }
   else
-    g_warning("FlowTableWithFields::add_field: The ID exists already.");
+    g_warning("FlowTableWithFields::add_field: The ID exists already: %s", id.c_str());
 }
 
 void FlowTableWithFields::remove_field(const Glib::ustring& id)
@@ -351,6 +362,7 @@ void FlowTableWithFields::change_group(const Glib::ustring& /* id */, const Glib
 
 void FlowTableWithFields::remove_all()
 {
+  //TODO: Release the fields memory, and the portal memory.
   m_mapFields.clear();
   m_sub_flow_tables.clear();
   FlowTable::remove_all();

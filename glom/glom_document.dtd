@@ -63,7 +63,7 @@ The name will be either "list" or "details".
   name CDATA #REQUIRED
 >
 
-<!ELEMENT data_layout_group (data_layout_group | data_layout_item)* >
+<!ELEMENT data_layout_group (data_layout_group | data_layout_item | data_layout_portal)* >
 <!ATTLIST data_layout_group
   name CDATA #REQUIRED
   sequence CDATA #REQUIRED
@@ -74,6 +74,14 @@ The name will be either "list" or "details".
 <!ATTLIST data_layout_item
   name CDATA #REQUIRED
   group CDATA #OPTIONAL
+  sequence CDATA #REQUIRED
+  hide CDATA #OPTIONAL
+>
+
+<!ELEMENT data_layout_portal EMPTY >
+<!ATTLIST data_layout_portal
+  name CDATA #REQUIRED
+  relationship CDATA #REQUIRED
   sequence CDATA #REQUIRED
   hide CDATA #OPTIONAL
 >

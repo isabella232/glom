@@ -22,7 +22,7 @@
 #define BOX_DATA_DETAILS_H
 
 #include "box_data.h"
-#include "box_data_list_related.h"
+//#include "box_data_list_related.h"
 #include "../utility_widgets/placeholder.h"
 #include "../utility_widgets/flowtablewithfields.h"
 
@@ -54,13 +54,13 @@ public:
   typedef sigc::signal<void, Gnome::Gda::Value> type_signal_record_deleted; //arg is PrimaryKey.   //TODO: pass by const ref?
   type_signal_record_deleted signal_record_deleted();
   
-  typedef sigc::signal<void, Glib::ustring, Gnome::Gda::Value> type_signal_user_requested_related_details; //args are TableName, PrimaryKey.
-  type_signal_user_requested_related_details signal_user_requested_related_details();
+  //typedef sigc::signal<void, Glib::ustring, Gnome::Gda::Value> type_signal_user_requested_related_details; //args are TableName, PrimaryKey.
+  //type_signal_user_requested_related_details signal_user_requested_related_details();
    
 protected:
   virtual void fill_from_database(); //override.
   virtual void fill_from_database_layout();
-  virtual void fill_related();
+  //virtual void fill_related();
 
   void do_lookups(const Field& field_changed, const Gnome::Gda::Value& field_value, const Field& primary_key, const Gnome::Gda::Value& primary_key_value);
 
@@ -80,7 +80,7 @@ protected:
   virtual void on_related_record_added(Gnome::Gda::Value key_value, Glib::ustring strFromKeyName);
 
   //Signal handler: The last arg is bind-ed.
-  virtual void on_related_user_requested_details(Gnome::Gda::Value key_value, Glib::ustring strTableName);
+  //virtual void on_related_user_requested_details(Gnome::Gda::Value key_value, Glib::ustring strTableName);
 
   virtual void on_flowtable_field_edited(const Glib::ustring& id, const Gnome::Gda::Value& value);
 
@@ -93,11 +93,13 @@ protected:
   Gtk::Button m_Button_New;
   Gtk::Button m_Button_Del;
 
+  /*
   Gtk::Frame m_Frame_Related;
   Gtk::Alignment m_Alignment_Related;
   Gtk::Label m_Label_Related;
   Gtk::Notebook m_Notebook_Related;
-
+  */
+  
   Gtk::Button m_Button_Nav_First;
   Gtk::Button m_Button_Nav_Prev;
   Gtk::Button m_Button_Nav_Next;
@@ -105,10 +107,10 @@ protected:
   FlowTableWithFields m_FlowTable;
 
   guint m_ColumnName, m_ColumnValue;
-  bool m_bDoNotRefreshRelated;
+  bool m_bDoNotRefreshRelated; //Stops us from refreshing related records in response to an addition of a related record.
   bool m_ignore_signals;
 
-  type_signal_user_requested_related_details m_signal_user_requested_related_details;
+  //type_signal_user_requested_related_details m_signal_user_requested_related_details;
 
   type_signal_void m_signal_nav_first;
   type_signal_void m_signal_nav_prev;

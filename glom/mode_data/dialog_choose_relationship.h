@@ -18,8 +18,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef GLOM_MODE_DATA_DIALOG_CHOOSE_FIELD_H
-#define GLOM_MODE_DATA_DIALOG_CHOOSE_FIELD_H
+#ifndef GLOM_MODE_DATA_DIALOG_CHOOSE_RELATIONSHIP_H
+#define GLOM_MODE_DATA_DIALOG_CHOOSE_RELATIONSHIP_H
 
 #include <gtkmm/dialog.h>
 #include "../utility_widgets/dialog_properties.h"
@@ -27,11 +27,11 @@
 #include "../box_db.h"
 #include "../utility_widgets/adddel/cellrendererlist.h"
 
-class Dialog_ChooseField : public Gtk::Dialog
+class Dialog_ChooseRelationship : public Gtk::Dialog
 {
 public:
-  Dialog_ChooseField(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
-  virtual ~Dialog_ChooseField();
+  Dialog_ChooseRelationship(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  virtual ~Dialog_ChooseRelationship();
 
   /**
    * @param document The document, so that the dialog can load the previous layout, and save changes.
@@ -39,26 +39,26 @@ public:
    */
   virtual void set_document(Document_Glom* document, const Glib::ustring& table_name);
 
-  void select_item(const Field& field);
-    
-  bool get_field_chosen(Field& field) const;
+  void select_item(const Relationship& relationship);
   
+  bool get_relationship_chosen(Relationship& field) const;
+
 protected:
 
   //Tree model columns:
-  class ModelColumns_Fields : public Gtk::TreeModel::ColumnRecord
+  class ModelColumns_Relationships : public Gtk::TreeModel::ColumnRecord
   {
   public:
 
-    ModelColumns_Fields()
-    { add(m_col_name); add(m_col_title); add(m_col_field); }
+    ModelColumns_Relationships()
+    { add(m_col_name); /* add(m_col_title); */ add(m_col_relationship); }
 
     Gtk::TreeModelColumn<Glib::ustring> m_col_name;
-    Gtk::TreeModelColumn<Glib::ustring> m_col_title;
-    Gtk::TreeModelColumn<Field> m_col_field;
+    //Gtk::TreeModelColumn<Glib::ustring> m_col_title;
+    Gtk::TreeModelColumn<Relationship> m_col_relationship;
   };
 
-  ModelColumns_Fields m_ColumnsFields;
+  ModelColumns_Relationships m_ColumnsRelationships;
 
   Gtk::Label* m_label_table_name;
   Gtk::Button* m_button_select;
@@ -70,4 +70,4 @@ protected:
   Document_Glom* m_document;
 };
 
-#endif //GLOM_MODE_DATA_DIALOG_CHOOSE_FIELD_H
+#endif //GLOM_MODE_DATA_DIALOG_CHOOSE_RELATIONSHIP_H

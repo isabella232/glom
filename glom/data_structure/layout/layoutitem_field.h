@@ -33,7 +33,7 @@ public:
   LayoutItem_Field& operator=(const LayoutItem_Field& src);
   virtual ~LayoutItem_Field();
 
-  virtual LayoutItem* clone();
+  virtual LayoutItem* clone() const;
 
   //This is filled in by looking at the database structure:
   Field m_field;

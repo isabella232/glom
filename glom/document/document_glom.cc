@@ -620,13 +620,14 @@ void Document_Glom::load_after_layout_group(const xmlpp::Element* node, LayoutGr
     const xmlpp::Element* element = dynamic_cast<const xmlpp::Element*>(*iter);
     if(element)
     {
+      const guint sequence = get_node_attribute_value_as_decimal(element, "sequence");
+      
       if(element->get_name() == "data_layout_item")
       {
         LayoutItem_Field item;
 
         item.set_name( get_node_attribute_value(element, "name") );
 
-        const guint sequence = get_node_attribute_value_as_decimal(element, "sequence");
         item.m_sequence = sequence;
         group.add_item(item, sequence);
       }
@@ -637,6 +638,14 @@ void Document_Glom::load_after_layout_group(const xmlpp::Element* node, LayoutGr
         load_after_layout_group(element, child_group);
 
         group.add_item(child_group);
+      }
+      else if(element->get_name() == "data_layout_portal")
+      {
+        LayoutItem_Portal item;
+        item.set_relationship( get_node_attribute_value(element, "relationship") );
+
+        item.m_sequence = sequence;
+        group.add_item(item, sequence);
       }
     }
   }                          
@@ -855,6 +864,18 @@ void Document_Glom::save_before_layout_group(xmlpp::Element* node, const LayoutG
 
         set_node_attribute_value_as_decimal(nodeItem, "sequence", item->m_sequence);
       }
+      else
+      {
+        const LayoutItem_Portal* portal = dynamic_cast<const LayoutItem_Portal*>(item);
+        if(portal) //If it is a portal
+        {
+          xmlpp::Element* nodeItem = child->add_child("data_layout_portal");
+          nodeItem->set_attribute("relationship", portal->get_relationship());
+
+          set_node_attribute_value_as_decimal(nodeItem, "sequence", item->m_sequence);
+        }
+      }
+        
     }
   }        
 }

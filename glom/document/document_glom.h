@@ -26,6 +26,7 @@
 #include "../data_structure/relationship.h"
 #include "../data_structure/field.h"
 #include "../data_structure/layout/layoutgroup.h"
+#include "../data_structure/layout/layoutitem_portal.h"
 #include "../data_structure/tableinfo.h"
 #include "../appstate.h"
 #include <vector>

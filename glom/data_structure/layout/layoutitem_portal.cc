@@ -18,36 +18,47 @@
  * Boston, MA 02111-1307, USA.
  */
  
-#ifndef GLOM_DATASTRUCTURE_LAYOUTITEM_H
-#define GLOM_DATASTRUCTURE_LAYOUTITEM_H
+#include "layoutitem_portal.h"
 
-#include <glibmm/ustring.h>
-
-class LayoutItem
+LayoutItem_Portal::LayoutItem_Portal()
 {
-public:
+}
 
-  LayoutItem();
-  LayoutItem(const LayoutItem& src);
-  LayoutItem& operator=(const LayoutItem& src);
-  virtual ~LayoutItem();
+LayoutItem_Portal::LayoutItem_Portal(const LayoutItem_Portal& src)
+: LayoutItem(src),
+  m_relationship_name(src.m_relationship_name)
+{
+}
 
-  /** Create a new copied instance.
-   * This allows us to deep-copy a list of LayoutItems.
-   */
-  virtual LayoutItem* clone() const = 0;
+LayoutItem_Portal::~LayoutItem_Portal()
+{
+}
 
-  virtual void set_name(const Glib::ustring& name);
-  virtual Glib::ustring get_name() const; //For use with our std::find_if() predicate.
+LayoutItem* LayoutItem_Portal::clone() const
+{
+  return new LayoutItem_Portal(*this);
+}
+
+
+LayoutItem_Portal& LayoutItem_Portal::operator=(const LayoutItem_Portal& src)
+{
+  LayoutItem::operator=(src);
+
+  m_relationship_name = src.m_relationship_name;
   
-  guint m_sequence;
-  bool m_hidden;
+  return *this;
+}
 
-protected:
-  Glib::ustring m_name;
-};
 
-#endif //GLOM_DATASTRUCTURE_LAYOUTITEM_H
+Glib::ustring LayoutItem_Portal::get_relationship() const
+{         
+  return m_relationship_name;
+}
 
+void LayoutItem_Portal::set_relationship(const Glib::ustring& relationship)
+{
+  m_relationship_name = relationship;
+}
+  
 
 

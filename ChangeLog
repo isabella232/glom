@@ -1,3 +1,22 @@
+2004-12-10  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/mode_data/dialog_layout_details.cc: save_to_document(): Set 
+	the sequences of top-level groups, so they do not all get the default 
+	zero, so that they all get loaded again, without replacing each other.
+	* glom/glom.glade: dialog_design_layout: Added an Add Related button.
+	Added dialog_choose_relationship.
+	* glom/mode_data/treestore_layout.[h|cc]: Change the is_group model 
+	column to a enumed type column, so that items can be 1 of more than 
+	2 things.
+	* glom/mode_data/dialog_layout_details.cc: Use the Add Related button, 
+	and the changed model column type.
+	* glom/mode_data/: Added dialog_choose_relationship.[h|cc].
+	* glom/data_structures/: Added layoutitem_related.[h|cc].
+	* glom/document/document_glom.[h|cc]: save_before(), load_after(): 
+	Load and save the new layout item type.
+	* glom/navigation/box_tables.cc: fill_from_database(): Show the table 
+	title instead of the name when in operator mode.
+
 2004-12-08  Murray Cumming  <murrayc@murrayc.com>
 
 	* docs/Makefile: Upload to my dreamhost account instead of sourceforge,

@@ -34,7 +34,7 @@ LayoutItem_Field::~LayoutItem_Field()
 {
 }
 
-LayoutItem* LayoutItem_Field::clone()
+LayoutItem* LayoutItem_Field::clone() const
 {
   return new LayoutItem_Field(*this);
 }

@@ -55,7 +55,7 @@ void Box_Data_Details_Find::fill_from_database()
 void Box_Data_Details_Find::fill_related()
 {
   //Clear existing pages:
-  m_Notebook_Related.pages().clear();
+  //m_Notebook_Related.pages().clear();
 
   //Get relationships from the document:
   Document_Glom::type_vecRelationships vecRelationships = m_pDocument->get_relationships(m_strTableName);

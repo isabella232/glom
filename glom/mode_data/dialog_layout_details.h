@@ -48,6 +48,10 @@ protected:
   virtual void enable_buttons();
 
   virtual void save_to_document();
+
+  bool offer_relationship_list(Relationship& relationship);
+  bool offer_field_list(Field& field);
+  Gtk::TreeModel::iterator get_selected_group_parent() const;
   
   //signal handlers:
   virtual void on_button_field_up();
@@ -55,6 +59,7 @@ protected:
   virtual void on_button_field_delete();
   virtual void on_button_field_add();  
   virtual void on_button_field_add_group();
+  virtual void on_button_add_related();
   virtual void on_button_field_edit();  
   virtual void on_treeview_fields_selection_changed();
 
@@ -71,10 +76,11 @@ protected:
   Gtk::Button* m_button_field_down;
   Gtk::Button* m_button_field_add;
   Gtk::Button* m_button_field_add_group;
+  Gtk::Button* m_button_add_related;
   Gtk::Button* m_button_field_delete;
   Gtk::Button* m_button_field_edit;
 
-  Glib::RefPtr<TreeStore_Layout> m_model_fields;
+  Glib::RefPtr<TreeStore_Layout> m_model_items;
 };
 
 #endif //GLOM_MODE_DATA_DIALOG_LAYOUT_DETAILS_H

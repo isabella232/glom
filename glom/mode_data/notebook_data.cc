@@ -37,7 +37,7 @@ Notebook_Data::Notebook_Data()
   m_Box_List.signal_user_requested_details().connect(sigc::mem_fun(*this, &Notebook_Data::on_Details_user_requested_details));
 
   //Allow Details's Related Records to ask Details to show a record.
-  m_Box_Details.signal_user_requested_related_details().connect(sigc::mem_fun(*this, &Notebook_Data::on_Details_user_requested_related_details));
+  //m_Box_Details.signal_user_requested_related_details().connect(sigc::mem_fun(*this, &Notebook_Data::on_Details_user_requested_related_details));
 
     
   //Allow Details to ask List to ask Details to show a different record:

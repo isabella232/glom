@@ -76,7 +76,7 @@ bool TreeStore_Layout::row_drop_possible_vfunc(const Gtk::TreeModel::Path& dest,
     if(iter_dragged)
     {
       Gtk::TreeModel::Row row = *iter_dragged;
-      return row[m_columns.m_col_is_group]; //Only groups can be dragged to the top-level.
+      return row[m_columns.m_col_type] == TYPE_GROUP; //Only groups can be dragged to the top-level.
     }   
   }
   else
@@ -89,7 +89,7 @@ bool TreeStore_Layout::row_drop_possible_vfunc(const Gtk::TreeModel::Path& dest,
     if(iter_dest_parent)
     {
       Gtk::TreeModel::Row row_parent = *iter_dest_parent;
-      return row_parent[m_columns.m_col_is_group]; //Only groups can contain other items.
+      return row_parent[m_columns.m_col_type] == TYPE_GROUP; //Only groups can contain other items.
     }
   }
 

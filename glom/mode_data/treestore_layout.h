@@ -30,19 +30,27 @@ protected:
   
 public:
 
+   enum enumType
+   {
+     TYPE_FIELD,
+     TYPE_GROUP,
+     TYPE_PORTAL
+   };
+    
    //Tree model columns:  
   class ModelColumns : public Gtk::TreeModel::ColumnRecord
   {
   public:
 
     ModelColumns()
-    { add(m_col_is_group); add(m_col_name); add(m_col_title); add(m_col_sequence); add(m_col_columns_count); }
-
-    Gtk::TreeModelColumn<bool> m_col_is_group;
+    { add(m_col_type); add(m_col_name); add(m_col_title); add(m_col_sequence); add(m_col_columns_count); add(m_col_relationship); }
+    
+    Gtk::TreeModelColumn<enumType> m_col_type;
     Gtk::TreeModelColumn<Glib::ustring> m_col_name;
     Gtk::TreeModelColumn<Glib::ustring> m_col_title; //only for groups
     Gtk::TreeModelColumn<guint> m_col_sequence;
     Gtk::TreeModelColumn<guint> m_col_columns_count; //Only for groups.
+    Gtk::TreeModelColumn<Glib::ustring> m_col_relationship; //Only for portals.
   };
 
   ModelColumns m_columns;

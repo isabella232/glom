@@ -94,13 +94,12 @@ void Box_Tables::fill_from_database()
   //Add the columns:
   m_AddDel.remove_all_columns();
 
-  bool editable = developer_mode;
-  m_colTableName = m_AddDel.add_column(gettext("Tables"), AddDelColumnInfo::STYLE_Text, editable);
-
-  bool visible_extras = developer_mode;
-  m_colHidden = m_AddDel.add_column(gettext("Hidden"), AddDelColumnInfo::STYLE_Boolean, true, visible_extras);
-  m_colTitle =  m_AddDel.add_column(gettext("Title"), AddDelColumnInfo::STYLE_Text, true, visible_extras);
-  m_colDefault =  m_AddDel.add_column(gettext("Default"), AddDelColumnInfo::STYLE_Boolean,  true, visible_extras);
+  const bool editable = developer_mode;
+  const bool visible_extras = developer_mode;
+  m_colTableName = m_AddDel.add_column(gettext("Tables"), AddDelColumnInfo::STYLE_Text, editable, visible_extras);
+  m_colHidden = m_AddDel.add_column(gettext("Hidden"), AddDelColumnInfo::STYLE_Boolean, editable, visible_extras);
+  m_colTitle =  m_AddDel.add_column(gettext("Title"), AddDelColumnInfo::STYLE_Text, editable, true);
+  m_colDefault =  m_AddDel.add_column(gettext("Default"), AddDelColumnInfo::STYLE_Boolean,  editable, visible_extras);
   
 
   //gettext("Server: ") +  m_strServerName + ", " + 

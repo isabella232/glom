@@ -1,3 +1,13 @@
+0.8.11:
+
+* Navigation: Show table titles instead of names when in 
+  operator mode.
+* Details Layout: Allow adding of related records in the 
+  middle of the layout, and no longer show them automatically 
+  in a notebook.
+  (Murray Cumming)
+* gcc 3.4.3 build fix. (Christian Krause)
+
 0.8.10:
 
 * Added an example document.
