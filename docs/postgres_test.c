@@ -39,7 +39,7 @@ main(int argc, char **argv)
         if (argc > 1)
                 conninfo = argv[1];
         else
-                conninfo = "host=localhost user=murrayc dbname=template1";
+                conninfo = "host=192.168.1.101 dbname=template1 user=murrayc password=luftballons";
 
         /* Make a connection to the database */
         conn = PQconnectdb(conninfo);

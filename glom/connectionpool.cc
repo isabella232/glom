@@ -154,7 +154,7 @@ sharedptr<SharedConnection> ConnectionPool::connect()
         //m_GdaDataSourceInfo = Gnome::Gda::DataSourceInfo(); //init_db_details it.
         //m_GdaDataSourceInfo->
 
-        Glib::ustring cnc_string = "USER=" + m_user + ";PASSWORD=" + m_password; //TODO: Host
+        Glib::ustring cnc_string = "HOST=" + get_host() + ";USER=" + m_user + ";PASSWORD=" + m_password;
       
         if(!m_database.empty())
           cnc_string += (";DATABASE=" + m_database);
@@ -193,9 +193,8 @@ sharedptr<SharedConnection> ConnectionPool::connect()
              
              //If the connection failed while looking for a database,
              //then try connecting without the database:
-             Glib::ustring cnc_string = "USER=" + m_user + ";PASSWORD=" + m_password;
+             Glib::ustring cnc_string = "HOST=" + get_host() + ";USER=" + m_user + ";PASSWORD=" + m_password;
 	     cnc_string += (";DATABASE=" + default_database);
-	     //TODO: Host
              
              std::cout << "connecting: cnc string: " << cnc_string << std::endl;
               

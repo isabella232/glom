@@ -1,3 +1,8 @@
+2005-02-15  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/connectionpool.cc: Actually use the host details, so people 
+	can connect to postgres servers that are not on the local host.
+
 2005-02-10  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/connection_pool.cc: connect(): Specify the template1 default 

@@ -1,14 +1,19 @@
 Each distro has a different default configuration for Postgres. These notes should help you to make postgres work with Glom. If you can improve this advice, then do tell us.
 
 
-*** Fedora Core 3:
 
-** To create a user that can create databases:
+
+** Creating the user.
+
+[1] To create a user that can create databases:
 
 [murrayc@localhost]$ su
 Password:
-[root@localhost docs]# su postgres
-bash-3.00$ createuser
+[root@localhost]# su postgres
+  (Or "sudo su postgres" on Ubuntu)
+
+bash-3.00$ createuser -P
+  (-P means "assign password")
 Enter name of user to add: murrayc
 Shall the new user be allowed to create databases? (y/n) y
 Shall the new user be allowed to create more new users? (y/n) y
@@ -20,15 +25,24 @@ bash-3.00$
 
 As root, edit
 /var/lib/pgsql/data/postgresql.conf
+  (In Fedora Core 3)
+or
+/var/lib/pgsql/data/postgresql.conf:
+  (In Debian and Ubuntu
 
 Change
 #tcpip_socket = false
 to
 tcpip_socket = true
+(Debian and Ubuntu seem to have this already, but Fedora sets it to false by default.)
 
 
 As root, edit
 /var/lib/pgsql/data/pg_hba.conf:
+  (In Fedora Core 3)
+or
+/var/lib/pgsql/data/pg_hba.conf:
+  (In Debian and Ubuntu)
 
 Uncomment the 2 existing host lines:
 
@@ -36,21 +50,6 @@ Uncomment the 2 existing host lines:
 host    all         all         127.0.0.1         255.255.255.255   trust
 # IPv6-style local connections:
 host    all         all         ::1               ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff        trust
-
-Add this:
-
-# Upstream default configuration
-#
-# The following configuration is the upstream default, which allows
-# unrestricted access to amy database by any user on the local machine.
-# 
-# TYPE  DATABASE    USER        IP-ADDRESS        IP-MASK           METHOD
-#
-local   all         all                                             trust
-# IPv4-style local connections:
-host    all         all         127.0.0.1         255.255.255.255   trust
-
-
 
 
 
