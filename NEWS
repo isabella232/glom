@@ -1,3 +1,10 @@
+0.8.1:
+
+* Removed Design Mode - Added items to the Developer menu instead.
+* Details and List views: Dates, times, and numbers are now displayed 
+  and parsed according to the current locale.
+
+
 0.8.0:
 
 * Now uses Postgres instead of MySQL, due to the MySQL license changes.

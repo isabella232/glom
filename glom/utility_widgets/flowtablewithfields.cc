@@ -19,6 +19,7 @@
  */
  
 #include "flowtablewithfields.h"
+#include "../data_structure/glomconversions.h"
 
 FlowTableWithFields::FlowTableWithFields()
 {
@@ -130,7 +131,7 @@ int FlowTableWithFields::get_suitable_width(Field::glom_field_type field_type)
       date.day = 31;
       date.month = 12;
       date.year = 2000;        
-      example_text = EntryGlom::get_text_for_gda_value(field_type, Gnome::Gda::Value(date));
+      example_text = GlomConversions::get_text_for_gda_value(field_type, Gnome::Gda::Value(date));
       break;
     }
     case(Field::TYPE_TIME):
@@ -139,7 +140,7 @@ int FlowTableWithFields::get_suitable_width(Field::glom_field_type field_type)
       time.hour = 24;      
       time.minute = 59;
       time.second = 59;
-      example_text = EntryGlom::get_text_for_gda_value(field_type, Gnome::Gda::Value(time));
+      example_text = GlomConversions::get_text_for_gda_value(field_type, Gnome::Gda::Value(time));
       break;
     }
     case(Field::TYPE_NUMERIC):

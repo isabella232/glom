@@ -20,7 +20,7 @@
 
 #include "field.h"
 #include "../connectionpool.h"
-#include "../utility_widgets/entryglom.h"
+#include "glomconversions.h"
 
 //Initialize static data:
 Field::type_map_gda_type_to_glom_type Field::m_map_gda_type_to_glom_type;
@@ -166,7 +166,7 @@ Glib::ustring Field::sql(const Gnome::Gda::Value& value) const
     case(Gnome::Gda::VALUE_TYPE_DATE):
     case(Gnome::Gda::VALUE_TYPE_TIME):         
     {
-      str = EntryGlom::get_text_for_gda_value(m_glom_type, value, std::locale() /* SQL uses the C locale */, true /* ISO standard */);
+      str = GlomConversions::get_text_for_gda_value(m_glom_type, value, std::locale() /* SQL uses the C locale */, true /* ISO standard */);
       if(str != "NULL")
          str = "'" + str + "'"; //Add single-quotes.
          
@@ -174,7 +174,7 @@ Glib::ustring Field::sql(const Gnome::Gda::Value& value) const
     }
     case(Gnome::Gda::VALUE_TYPE_NUMERIC):
     {
-      str =  EntryGlom::get_text_for_gda_value(m_glom_type, value, std::locale() /* SQL uses the C locale */); //No quotes for numbers.
+      str =  GlomConversions::get_text_for_gda_value(m_glom_type, value, std::locale() /* SQL uses the C locale */); //No quotes for numbers.
       break;
     }
     default:

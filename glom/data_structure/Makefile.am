@@ -6,7 +6,8 @@ libdata_structure_a_SOURCES = field.h field.cc \
                               fieldtypes.h fieldtypes.cc \
                               layoutitem.h layoutitem.cc \
                               layoutgroup.h layoutgroup.cc \
-                              tableinfo.h tableinfo.cc
+                              tableinfo.h tableinfo.cc \
+                              glomconversions.h glomconversions.cc
                               
                               
 

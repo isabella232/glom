@@ -52,6 +52,7 @@ public:
   enumStyles m_style;
   Glib::ustring m_name;
   Glib::ustring m_id;
+  Field::glom_field_type m_field_type; //If any.
 
   typedef std::vector<Glib::ustring> type_vecStrings;
   type_vecStrings m_choices;
@@ -109,6 +110,8 @@ public:
   virtual guint add_column(const AddDelColumnInfo& column_info);
   virtual guint add_column(const Glib::ustring& strTitle, AddDelColumnInfo::enumStyles style = AddDelColumnInfo::STYLE_Text, bool editable = true, bool visible = true);
   virtual guint add_column(const Glib::ustring& strTitle, const Glib::ustring& column_id, AddDelColumnInfo::enumStyles style = AddDelColumnInfo::STYLE_Text, bool editable = true, bool visible = true);
+  virtual guint add_column(const Field& field, AddDelColumnInfo::enumStyles style = AddDelColumnInfo::STYLE_Text, bool editable = true, bool visible = true);
+
   virtual guint get_columns_count() const;
 
   typedef AddDelColumnInfo::type_vecStrings type_vecStrings;

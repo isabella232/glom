@@ -114,9 +114,7 @@ void Box_Data_List::fill_from_database()
           for(guint uiCol = 0; uiCol < cols_count; uiCol++)
           {
             Gnome::Gda::Value value = result->get_value_at(uiCol, result_row);
-            const Glib::ustring& strData = m_Fields[uiCol].value_to_string(value); //TODO: Use a strongly-typed AddDel set_value() API.
-
-            m_AddDel.set_value(uiRow, uiCol, strData);
+            m_AddDel.set_value(uiRow, uiCol, value);
           }
         }
       }
@@ -274,9 +272,9 @@ void Box_Data_List::on_AddDel_user_changed(guint row, guint col)
       {
         Field field_primary_key = m_Fields[primary_key_col];
 
-        const Glib::ustring& strPrimaryKey_Name = field_primary_key.get_name();
-        const Glib::ustring& strFieldName = m_Fields[col].get_name();
-        const Glib::ustring& strFieldValue = m_AddDel.get_value(row, col);
+        const Glib::ustring strPrimaryKey_Name = field_primary_key.get_name();
+        const Glib::ustring strFieldName = m_Fields[col].get_name();
+        const Gnome::Gda::Value strFieldValue = m_AddDel.get_value_as_value(row, col);
 
         Glib::ustring strQuery = "UPDATE " + m_strTableName;
         strQuery += " SET " + strFieldName + " = " + m_Fields[col].sql(strFieldValue);
@@ -445,10 +443,7 @@ void Box_Data_List::fill_column_titles()
 
     for(type_vecFields::const_iterator iter =  listFieldsToShow.begin(); iter != listFieldsToShow.end(); ++iter)
     {
-      const Glib::ustring strName = iter->get_name();
-      const Glib::ustring strFieldTitle = iter->get_title_or_name();
-
-      m_AddDel.add_column(strFieldTitle, strName);
+      m_AddDel.add_column(*iter);
     }
   } //if(pDoc)
 }

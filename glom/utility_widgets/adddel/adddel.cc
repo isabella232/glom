@@ -23,6 +23,7 @@
 #include <libintl.h>
 #include "cellrendererlist.h"
 #include "treeviewcolumn_glom.h"
+#include "../../data_structure/glomconversions.h"
 #include <iostream> //For debug output.
 
 #include "eggcolumnchooser/eggcolumnchooserdialog.h"
@@ -30,6 +31,7 @@
 
 AddDelColumnInfo::AddDelColumnInfo()
 : m_style(STYLE_Text),
+  m_field_type(Field::TYPE_INVALID),
   m_editable(true),
   m_visible(true)
 {
@@ -39,6 +41,7 @@ AddDelColumnInfo::AddDelColumnInfo(const AddDelColumnInfo& src)
 : m_style(src.m_style),
   m_name(src.m_name),
   m_id(src.m_id),
+  m_field_type(src.m_field_type),
   m_choices(src.m_choices),
   m_editable(src.m_editable),
   m_visible(src.m_visible)
@@ -50,6 +53,7 @@ AddDelColumnInfo& AddDelColumnInfo::operator=(const AddDelColumnInfo& src)
   m_style = src.m_style;;
   m_name = src.m_name;
   m_id = src.m_id;
+  m_field_type = src.m_field_type;
   m_choices = src.m_choices;
   m_editable = src.m_editable;
   m_visible = src.m_visible;
@@ -308,8 +312,7 @@ void AddDel::remove_all()
 
 Gnome::Gda::Value AddDel::get_value_as_value(guint row, guint col)
 {
-  //TODO: Do type-specific and locale-specific conversions:
-  return Gnome::Gda::Value( get_value(row, col) );
+  return GlomConversions::parse_value(m_ColumnTypes[col].m_field_type, get_value(row, col) );
 }
 
 Glib::ustring AddDel::get_value(guint row, guint col)
@@ -758,8 +761,20 @@ void AddDel::set_item_title(guint row, const Glib::ustring& strValue)
 
 void AddDel::set_value(guint row, guint col, const Gnome::Gda::Value& value)
 {
-  //TODO: Do type-specifc and locale-specific conversion:
-  set_value(row, col, value.to_string());
+  //Different model columns have different types of data:
+  switch(m_ColumnTypes[col].m_style)
+  {
+    case(AddDelColumnInfo::STYLE_Boolean):
+    {
+      set_value(row, col, value.get_bool());
+      break;
+    }
+    default:
+    {
+      set_value( row, col, GlomConversions::get_text_for_gda_value(m_ColumnTypes[col].m_field_type, value) );
+      break;
+    }
+  }
 }
 
 void AddDel::set_value(guint row, guint col, const Glib::ustring& strValue)
@@ -873,6 +888,21 @@ guint AddDel::add_column(const Glib::ustring& strTitle, AddDelColumnInfo::enumSt
   return add_column(strTitle, strTitle, style, editable, visible);
 }
 
+guint AddDel::add_column(const Field& field, AddDelColumnInfo::enumStyles style, bool editable, bool visible)
+{
+  InnerIgnore innerIgnore(this); //Stop on_treeview_columns_changed() from doing anything when it is called just because we add a new column.
+
+  AddDelColumnInfo column_info;
+  column_info.m_name = field.get_title_or_name();
+  column_info.m_style = style; //TODO: //Use field types instead, or make this dependent on them..
+  column_info.m_id = field.get_name();
+  column_info.m_field_type = field.get_glom_type();
+  column_info.m_editable = editable;
+  column_info.m_visible = visible;
+
+  return add_column(column_info);
+}
+  
 guint AddDel::add_column(const Glib::ustring& strTitle, const Glib::ustring& column_id, AddDelColumnInfo::enumStyles style, bool editable, bool visible)
 {
   InnerIgnore innerIgnore(this); //Stop on_treeview_columns_changed() from doing anything when it is called just because we add a new column.

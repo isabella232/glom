@@ -1,5 +1,17 @@
 2004-06-12  Murray Cumming  <murrayc@murrayc_debian>
 
+	* Moved generic parse/format routines to 
+	glom/data_structure/glomconversions.[h|cc] from 
+	glom/utility_widgets/entryglom.[h|cc].
+	* glom/utility_widgets/adddel/adddel.[h|cc]: Add add_column() override 
+	that takes a Field. Add set_value(Gda::Value) and get_value_as_value() 
+	methods that use the glomconversions.
+	* glom/mode_data/box_data_list.cc: fill_from_database(), 
+	on_adddel_changed(): Use the GdaValue-based AddDel API so that dates, 
+	times, and numbers are shown and parsed as per the locale.
+	
+2004-06-12  Murray Cumming  <murrayc@murrayc_debian>
+
 	* glom/utility_widgets/flowtable_withfields.cc: Change all parsing to 
 	use C++ streams and facets, and rearranged them into generic 
 	conversion routines that can be used elsewhere and should be moved 
