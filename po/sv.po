@@ -1,6 +1,6 @@
 # Swedish translation of glom.
-# Copyright (C) 2004 Free Software Foundation, Inc.
-# Christian Rose <menthos@menthos.com>, 2004.
+# Copyright (C) 2004, 2005 Free Software Foundation, Inc.
+# Christian Rose <menthos@menthos.com>, 2004, 2005.
 #
 # $Id$
 #
@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glom\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-01-05 10:19+0100\n"
-"PO-Revision-Date: 2004-06-09 13:32+0200\n"
+"POT-Creation-Date: 2005-03-30 15:44+0200\n"
+"PO-Revision-Date: 2005-03-30 15:44+0200\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -17,64 +17,95 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: glom/glom.glade.h:1
-msgid "*"
-msgstr "*"
-
-#: glom/glom.glade.h:2
 msgid "<b>Connection</b>"
 msgstr "<b>Anslutning</b>"
 
-#: glom/glom.glade.h:3
-#, fuzzy
+#: glom/glom.glade.h:2
 msgid "<b>Field Definitions</b>"
-msgstr "Fältdefinition"
+msgstr "<b>Fältdefinitioner</b>"
 
-#: glom/glom.glade.h:4
+#: glom/glom.glade.h:3
 msgid "<b>Fields</b>"
 msgstr "<b>Fält</b>"
 
+#: glom/glom.glade.h:4
+msgid "<b>Group: </b>"
+msgstr "<b>Grupp: </b>"
+
 #: glom/glom.glade.h:5
+msgid "<b>Groups</b>"
+msgstr "<b>Grupper</b>"
+
+#: glom/glom.glade.h:6
 msgid "<b>Mode: </b>"
 msgstr "<b>Läge: </b>"
 
-#: glom/glom.glade.h:6
+#: glom/glom.glade.h:7
+msgid "<b>Numeric Formatting</b>"
+msgstr "<b>Numerisk formatering</b>"
+
+#: glom/glom.glade.h:8
+#, fuzzy
+msgid "<b>Relationship: </b>"
+msgstr "<b>Fält</b>"
+
+#: glom/glom.glade.h:9
 #, fuzzy
 msgid "<b>Select Field</b>"
 msgstr "<b>Fält</b>"
 
-#: glom/glom.glade.h:7
+#: glom/glom.glade.h:10
 #, fuzzy
 msgid "<b>Select Relationship</b>"
 msgstr "<b>Fält</b>"
 
-#: glom/glom.glade.h:8
+#: glom/glom.glade.h:11
 msgid "<b>Table: </b>"
 msgstr "<b>Tabell: </b>"
 
-#: glom/glom.glade.h:9
+#: glom/glom.glade.h:12
 msgid "<b>Tables in database</b>"
 msgstr "<b>Tabeller i databasen</b>"
 
-#: glom/glom.glade.h:10
+#: glom/glom.glade.h:13
+msgid "<b>Tables</b>"
+msgstr "<b>Tabeller</b>"
+
+#: glom/glom.glade.h:14
 msgid "<b>Title:</b>"
 msgstr "<b>Titel:</b>"
 
-#: glom/glom.glade.h:11
+#: glom/glom.glade.h:15
 msgid "<b>User Level: </b>"
 msgstr "<b>Användarnivå: </b>"
 
-#: glom/glom.glade.h:12
+#: glom/glom.glade.h:16
+msgid "<b>User</b>"
+msgstr "<b>Användare</b>"
+
+#: glom/glom.glade.h:17
+msgid "<b>Users</b>"
+msgstr "<b>Användare</b>"
+
+#: glom/glom.glade.h:18
 msgid "<b>def calculate_field_value():</b>"
 msgstr ""
 
-#: glom/glom.glade.h:13
+#: glom/glom.glade.h:19
+msgid ""
+"<span weight=\"bold\" size=\"larger\">Add User To Group</span>\n"
+"\n"
+"Which user should be added to this group?"
+msgstr ""
+
+#: glom/glom.glade.h:22
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Connect to Server</span>\n"
 "\n"
 "Please enter the connection details for your database server."
 msgstr ""
 
-#: glom/glom.glade.h:16
+#: glom/glom.glade.h:25
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Connection Failed</span>\n"
 "\n"
@@ -83,7 +114,14 @@ msgid ""
 "not running."
 msgstr ""
 
-#: glom/glom.glade.h:19
+#: glom/glom.glade.h:28
+msgid ""
+"<span weight=\"bold\" size=\"larger\">Create Group</span>\n"
+"\n"
+"What name should this group have?"
+msgstr ""
+
+#: glom/glom.glade.h:31
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Database creation failed</span>\n"
 "\n"
@@ -91,7 +129,7 @@ msgid ""
 "access rights. Please contact your system administrator."
 msgstr ""
 
-#: glom/glom.glade.h:22
+#: glom/glom.glade.h:34
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Database does not exist</span>\n"
 "\n"
@@ -99,7 +137,7 @@ msgid ""
 "create the database with an empty structure?"
 msgstr ""
 
-#: glom/glom.glade.h:25
+#: glom/glom.glade.h:37
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Invalid format</span>\n"
 "\n"
@@ -108,7 +146,7 @@ msgid ""
 "for this field.\n"
 msgstr ""
 
-#: glom/glom.glade.h:29
+#: glom/glom.glade.h:41
 msgid ""
 "<span weight=\"bold\" size=\"larger\">New Database</span>\n"
 "\n"
@@ -116,7 +154,7 @@ msgid ""
 "contain any spaces."
 msgstr ""
 
-#: glom/glom.glade.h:32
+#: glom/glom.glade.h:44
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Open existing document, or create new "
 "document</span>\n"
@@ -134,189 +172,274 @@ msgstr ""
 "\n"
 "Eller vill du skapa ett nytt dokument, för att konstruera en ny databas?\n"
 
-#: glom/glom.glade.h:38
+#: glom/glom.glade.h:50
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Title</span>\n"
 "\n"
 "Information text.\n"
 msgstr ""
 
-#: glom/glom.glade.h:42
+#: glom/glom.glade.h:54
 msgid "Add Related"
-msgstr ""
+msgstr "Lägg till relaterad"
 
-#: glom/glom.glade.h:43
-#, fuzzy
+#: glom/glom.glade.h:55
 msgid "Add _Group"
-msgstr "Grupper"
+msgstr "Lägg till _grupp"
 
-#: glom/glom.glade.h:44
+#: glom/glom.glade.h:56
+msgid "Allow Editing"
+msgstr "Tillåt redigering"
+
+#: glom/glom.glade.h:57
 msgid "Auto-increment"
 msgstr "Öka automatiskt"
 
-#: glom/glom.glade.h:45
-#, fuzzy
+#: glom/glom.glade.h:58
 msgid "Calculate value"
-msgstr "Standardvärde"
+msgstr "Beräkna värde"
 
-#: glom/glom.glade.h:46
+#: glom/glom.glade.h:59
+msgid "Choose User"
+msgstr "Välj användare"
+
+#: glom/glom.glade.h:60
+msgid "Confirm Password"
+msgstr "Bekräfta lösenord"
+
+#: glom/glom.glade.h:61
 msgid "Connect"
 msgstr "Anslut"
 
-#: glom/glom.glade.h:47
-#, fuzzy
+#: glom/glom.glade.h:62
 msgid "Create"
-msgstr "Aggregat"
+msgstr "Skapa"
 
-#: glom/glom.glade.h:48
+#: glom/glom.glade.h:63
+msgid "Create Group"
+msgstr "Skapa grupp"
+
+#: glom/glom.glade.h:64
+msgid "Currency Symbol"
+msgstr "Valutasymbol"
+
+#: glom/glom.glade.h:65
 msgid "Data"
 msgstr "Data"
 
-#: glom/glom.glade.h:49
+#: glom/glom.glade.h:66
 msgid "Database"
 msgstr "Databas"
 
-#: glom/glom.glade.h:50
+#: glom/glom.glade.h:67
+msgid "Decimal Places"
+msgstr "Decimalplatser"
+
+#: glom/glom.glade.h:68
 msgid "Default Value"
 msgstr "Standardvärde"
 
-#: glom/glom.glade.h:51
-#, fuzzy
+#: glom/glom.glade.h:69
 msgid "Details Layout"
-msgstr "Layout"
+msgstr "Detaljlayout"
 
-#: glom/glom.glade.h:52
+#: glom/glom.glade.h:70
 msgid "Edit"
 msgstr "Redigera"
 
-#: glom/glom.glade.h:53
-msgid "Edit Definition"
-msgstr "Redigera definition"
-
-#: glom/glom.glade.h:54
+#: glom/glom.glade.h:71
 msgid "Extra"
 msgstr "Extra"
 
-#: glom/glom.glade.h:55
+#: glom/glom.glade.h:72
 msgid "Field"
 msgstr "Fält"
 
-#: glom/glom.glade.h:56
-#, fuzzy
+#: glom/glom.glade.h:73
 msgid "Field Calculation"
-msgstr "Fältdefinition"
+msgstr "Fältberäkning"
 
-#: glom/glom.glade.h:57
+#: glom/glom.glade.h:74
 msgid "Field Definition"
 msgstr "Fältdefinition"
 
-#: glom/glom.glade.h:58
-#, fuzzy
+#: glom/glom.glade.h:75
 msgid "Field Definitions"
-msgstr "Fältdefinition"
+msgstr "Fältdefinitioner"
 
-#: glom/glom.glade.h:59
+#: glom/glom.glade.h:76
 msgid "Glom"
 msgstr "Glom"
 
-#: glom/glom.glade.h:60
+#: glom/glom.glade.h:77
+msgid "Group"
+msgstr "Grupp"
+
+#: glom/glom.glade.h:78
+msgid "Group Name"
+msgstr "Gruppnamn"
+
+#: glom/glom.glade.h:79
+msgid "Groups"
+msgstr "Grupper"
+
+#: glom/glom.glade.h:80
 msgid "Host"
 msgstr "Värd"
 
-#: glom/glom.glade.h:61
-#, fuzzy
-msgid "List Layout"
-msgstr "Layout"
-
-#: glom/glom.glade.h:62
-msgid "Lookup value when a field changes."
+#: glom/glom.glade.h:81
+msgid ""
+"If this is not selected then a thousands separator will not be used, even if "
+"your locale would normally use one. If it is selected then a thousands "
+"separator will be used only if your locale normally uses one."
 msgstr ""
 
-#: glom/glom.glade.h:63
+#: glom/glom.glade.h:82
+msgid "List Layout"
+msgstr "Listlayout"
+
+#: glom/glom.glade.h:83
+msgid "Lookup value when a field changes."
+msgstr "Slå upp värde då ett fält ändras."
+
+#: glom/glom.glade.h:84
 msgid "Name"
 msgstr "Namn"
 
-#: glom/glom.glade.h:64
+#: glom/glom.glade.h:85
 msgid "None selected"
 msgstr "Ingen markerad"
 
-#: glom/glom.glade.h:65
+#: glom/glom.glade.h:86
 msgid "Password"
 msgstr "Lösenord"
 
-#: glom/glom.glade.h:66
+#: glom/glom.glade.h:87
 msgid "Primary Key"
 msgstr "Primärnyckel"
 
-#: glom/glom.glade.h:67
+#: glom/glom.glade.h:88
+msgid "Related Records Layout"
+msgstr "Layout för relaterade poster"
+
+#: glom/glom.glade.h:89
 msgid "Relationship"
-msgstr ""
+msgstr "Relation"
 
-#: glom/glom.glade.h:68
-#, fuzzy
+#: glom/glom.glade.h:90
 msgid "Revert"
-msgstr "Allvarlighet"
+msgstr "Återställ"
 
-#: glom/glom.glade.h:69
+#: glom/glom.glade.h:91
 msgid "Select"
-msgstr ""
+msgstr "Välj"
 
-#: glom/glom.glade.h:70
+#: glom/glom.glade.h:92
 msgid "Select Field"
-msgstr ""
+msgstr "Urvalsfält"
 
-#: glom/glom.glade.h:71
+#: glom/glom.glade.h:93
 msgid "Select Relationship"
-msgstr ""
+msgstr "Urvalsrelation"
 
-#: glom/glom.glade.h:72
+#: glom/glom.glade.h:94
 msgid "Show hidden tables"
 msgstr "Visa dolda tabeller"
 
-#: glom/glom.glade.h:73
+#: glom/glom.glade.h:95
 msgid "Table:"
 msgstr "Tabell:"
 
-#: glom/glom.glade.h:74
-#, fuzzy
+#: glom/glom.glade.h:96
 msgid "Test"
-msgstr "Typer"
+msgstr "Testa"
 
-#: glom/glom.glade.h:75
+#: glom/glom.glade.h:97
 msgid ""
 "The field value will be the return value of the python function, which you "
 "implement here."
 msgstr ""
 
-#: glom/glom.glade.h:76
+#: glom/glom.glade.h:98
 msgid "Title"
 msgstr "Titel"
 
-#: glom/glom.glade.h:77
+#: glom/glom.glade.h:99
 msgid "Type"
 msgstr "Typ"
 
-#: glom/glom.glade.h:78
+#: glom/glom.glade.h:100
 msgid "Unique"
 msgstr "Unik"
 
-#: glom/glom.glade.h:79
+#: glom/glom.glade.h:101
+msgid "Use 1000s separator"
+msgstr "Använd tusentalsavgränsare"
+
+#: glom/glom.glade.h:102
 msgid "User"
 msgstr "Användare"
 
-#: glom/glom.glade.h:80
-msgid "example data format"
-msgstr ""
+#: glom/glom.glade.h:103
+msgid "User "
+msgstr "Användare "
 
-#: glom/glom.glade.h:81
+#: glom/glom.glade.h:104
+msgid "Users"
+msgstr "Användare"
+
+#: glom/glom.glade.h:105
+msgid "example data format"
+msgstr "exempeldataformat"
+
+#: glom/glom.glade.h:106
 msgid "table name"
 msgstr "tabellnamn"
 
+#~ msgid "Field definitions"
+#~ msgstr "Fältdefinitioner"
+
+#~ msgid "<b>Field Definition</b>"
+#~ msgstr "<b>Fältdefinitioner</b>"
+
+#~ msgid "Field definition"
+#~ msgstr "Fältdefinition"
+
+#~ msgid "<b>Groups:</b>"
+#~ msgstr "<b>Grupper:</b>"
+
+#~ msgid "Group: "
+#~ msgstr "Grupp: "
+
+#~ msgid "Group:"
+#~ msgstr "Grupp:"
+
+#~ msgid "Groups: "
+#~ msgstr "Grupper: "
+
+#~ msgid "<b>Group:</b>"
+#~ msgstr "<b>Grupp:</b>"
+
+#~ msgid "Groups:"
+#~ msgstr "Grupper:"
+
+#~ msgid "Numeric Formatting"
+#~ msgstr "Numerisk formatering"
+
+#~ msgid "<b>Table</b>"
+#~ msgstr "<b>Tabell</b>"
+
+#~ msgid "Password:"
+#~ msgstr "Lösenord:"
+
+#~ msgid "*"
+#~ msgstr "*"
+
+#~ msgid "Edit Definition"
+#~ msgstr "Redigera definition"
+
 #~ msgid "<b>Databases</b>"
 #~ msgstr "<b>Databaser</b>"
-
-#~ msgid "<b>Groups</b>"
-#~ msgstr "<b>Grupper</b>"
 
 #~ msgid "Some help text."
 #~ msgstr "Någon hjälptext."
@@ -333,17 +456,11 @@ msgstr "tabellnamn"
 #~ msgid "Mode:"
 #~ msgstr "Läge: "
 
-#~ msgid "<b>Table:</b>"
-#~ msgstr "<b>Tabell:</b>"
-
 #~ msgid "Tables in database"
 #~ msgstr "Tabeller i databasen"
 
 #~ msgid "Title:"
 #~ msgstr "Titel:"
-
-#~ msgid "<b>User Level:</b>"
-#~ msgstr "<b>Användarnivå:</b>"
 
 #~ msgid "User Level: "
 #~ msgstr "Användarnivå: "
@@ -353,9 +470,6 @@ msgstr "tabellnamn"
 
 #~ msgid "Definition"
 #~ msgstr "Definition"
-
-#~ msgid "Users"
-#~ msgstr "Användare"
 
 #~ msgid "Table name"
 #~ msgstr "Tabellnamn"
