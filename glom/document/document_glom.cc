@@ -520,8 +520,18 @@ bool Document_Glom::get_table_is_known(const Glib::ustring& table_name) const
 
 AppState::userlevels Document_Glom::get_userlevel() const
 {
+  userLevelReason reason;
+  return get_userlevel(reason);
+}
+
+AppState::userlevels Document_Glom::get_userlevel(userLevelReason& reason) const
+{
+  //Initialize output parameter:
+  reason = USER_LEVEL_REASON_UNKNOWN;
+  
   if(get_read_only())
   {
+    reason = USER_LEVEL_REASON_FILE_READ_ONLY;
     return AppState::USERLEVEL_OPERATOR; //A read-only document can not be changed, so there's no point in being in developer mode. This is one way to control the user level on purpose.
   }
   else if(m_file_uri.empty()) //If it has never been saved then this is a new default document, so the user created it, so the user can be a developer.
@@ -544,9 +554,19 @@ void Document_Glom::on_app_state_userlevel_changed(AppState::userlevels userleve
   m_signal_userlevel_changed.emit(userlevel);
 }
 
-void Document_Glom::set_userlevel(AppState::userlevels userlevel)
+bool Document_Glom::set_userlevel(AppState::userlevels userlevel)
 {
-  m_app_state.set_userlevel(userlevel);
+  //Prevent incorrect user level:
+  if((userlevel == AppState::USERLEVEL_DEVELOPER) && get_read_only())
+  {
+    m_app_state.set_userlevel(AppState::USERLEVEL_OPERATOR);
+    return false;
+  }
+  else
+  { 
+    m_app_state.set_userlevel(userlevel);
+    return true;
+  }
 }
 
 void Document_Glom::emit_userlevel_changed()

@@ -302,7 +302,7 @@ void Frame_Glom::show_table(const Glib::ustring& strTableName)
   show_all();
 }
 
-void Frame_Glom::on_menu_userlevel_Developer(const Glib::RefPtr<Gtk::RadioAction>& action)
+void Frame_Glom::on_menu_userlevel_Developer(const Glib::RefPtr<Gtk::RadioAction>& action, const Glib::RefPtr<Gtk::RadioAction>& operator_action)
 {
   if(action && action->get_active())
   {
@@ -311,7 +311,19 @@ void Frame_Glom::on_menu_userlevel_Developer(const Glib::RefPtr<Gtk::RadioAction
     {
       //Avoid double signals:
       //if(document->get_userlevel() != AppState::USERLEVEL_DEVELOPER)
-        document->set_userlevel(AppState::USERLEVEL_DEVELOPER);
+      bool test = document->set_userlevel(AppState::USERLEVEL_DEVELOPER);
+        
+      //If this was not possible then revert the menu:
+      if(!test)
+      {
+        Gtk::MessageDialog dialog(gettext("Developer mode is not available. Check that you have sufficient database access rights and that the glom file is not read-only."), Gtk::MESSAGE_WARNING);
+        dialog.run();
+        
+        //This causes an endless loop, but it is not recursive so we can't block it.
+        //TODO: Submit GTK+ bug.
+        //action->set_active(false);
+        operator_action->set_active();
+      }
     }
   }
 }

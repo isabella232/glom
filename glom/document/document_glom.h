@@ -89,12 +89,25 @@ public:
 
   virtual Glib::ustring get_database_title() const;
   virtual void set_database_title(const Glib::ustring& title);
+  
+  enum userLevelReason
+  {
+    USER_LEVEL_REASON_UNKNOWN,
+    USER_LEVEL_REASON_FILE_READ_ONLY,
+    USER_LEVEL_REASON_DATABASE_ACCESS_LEVEL
+  };
+  
+  /**
+   * @param reason The reason that the user is not a developer, if he is not.
+   * @result Whether the user is a developer.
+   */
+  virtual AppState::userlevels get_userlevel(userLevelReason& reason) const;
     
   virtual AppState::userlevels get_userlevel() const;
 
   /** This is transitory information, not saved to disk.
    */
-  virtual void set_userlevel(AppState::userlevels userlevel);
+  virtual bool set_userlevel(AppState::userlevels userlevel);
   
   typedef sigc::signal<void, AppState::userlevels> type_signal_userlevel_changed;
   type_signal_userlevel_changed signal_userlevel_changed();

@@ -289,7 +289,7 @@ void App_Glom::init_menus()
 void App_Glom::on_menu_userlevel_developer()
 {
   if(m_pFrame)
-    m_pFrame->on_menu_userlevel_Developer(m_action_menu_userlevel_developer);
+    m_pFrame->on_menu_userlevel_Developer(m_action_menu_userlevel_developer, m_action_menu_userlevel_operator);
 }
 
 void App_Glom::on_menu_userlevel_operator()
@@ -391,8 +391,24 @@ bool App_Glom::on_document_load()
                 bool user_cancelled = false;
                 bool test = recreate_database(user_cancelled);
 
-                if(!test)
+                if(test)
                 {
+                  //If the database was successfully recreated.
+                  
+                  //Warn about read-only files, such as installed example files.
+                  Document_Glom::userLevelReason reason = Document_Glom::USER_LEVEL_REASON_UNKNOWN;
+                  AppState::userlevels userlevel = pDocument->get_userlevel(reason);
+                  if( (userlevel == AppState::USERLEVEL_OPERATOR) && (reason == Document_Glom::USER_LEVEL_REASON_FILE_READ_ONLY) )
+                  {
+                    Gtk::MessageDialog dialog(gettext("This file is read only, so you will not be able to enter Developer mode to make design changes. Maybe this file is an installed example file. Therefore, you might want to create your own writeable copy of this file."), Gtk::MESSAGE_WARNING );
+                    dialog.run();
+                    //TODO: Store a magic number in the database (a special table) and the file to check for mismatches.
+                  }
+                }
+                else
+                {
+                  //If the database was not successfully recreated:
+                  
                   if(!user_cancelled)
                   {
                     //Tell the user:

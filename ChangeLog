@@ -1,3 +1,11 @@
+2005-03-04  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/application.cc: on_document_load(): Warn if the user recreates 
+	a database using a read-only installed example file.
+	* glom/frame_glom.cc: on_menu_userlevel_Developer(): If developer 
+	mode is not possible then warn the user and set it back to operator 
+	mode.
+
 0.8.12:
 
 2005-02-19  Murray Cumming  <murrayc@murrayc.com>
