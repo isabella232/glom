@@ -1,5 +1,11 @@
 2004-07-04  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/document/Document_Glom.cc: When in developer mode, save all 
+	changes immediately and automatically. Lets see how much disk activity 
+	this creates.
+
+2004-07-04  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/applciation,cc init_layout(): Do not create the toolbar, 
 	because it is not useful for this application.
 

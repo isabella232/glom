@@ -540,23 +540,34 @@ Glib::ustring Document_Glom::get_default_table() const
 
 void Document_Glom::set_modified(bool value)
 {
+ 
+  Bakery::Document_XML::set_modified(value);
+
   if(value)
   {
-    //Using this with --g-fatal-warnings will help us to see unnecessary set_modified(true) calls.
-    g_warning("Document_Glom::set_modified: %d", (int)value);
+    g_warning("Document_Glom::set_modified(): saving");
+
+    //Save changes automatically
+    //(when in developer mode - no changes should even be possible when not in developer mode)
+    if(get_userlevel() == AppState::USERLEVEL_DEVELOPER)
+    {
+      //This rebuilds the whole XML DOM and saves the whole document,
+      //so we need to be careful not to call set_modified() too often.
+      bool test = save();
+      if(test)
+        set_modified(false);
+    }
   }
-  
-  Bakery::Document_XML::set_modified(value);
 }
 
 bool Document_Glom::load_after()
 {
   bool result = Bakery::Document_XML::load_after();	
-	
+
   if(result)
   {
     const xmlpp::Element* nodeRoot = get_node_document();
-	  if(nodeRoot)
+    if(nodeRoot)
     {    
       const xmlpp::Element* nodeConnection = get_node_child_named(nodeRoot, "connection");
       if(nodeConnection)
@@ -569,7 +580,7 @@ bool Document_Glom::load_after()
   
       //Tables:
       m_tables.clear();
-	 
+ 
       //Look at each "table" node.
       xmlpp::Node::NodeList listNodes = nodeRoot->get_children("table");
       for(xmlpp::Node::NodeList::const_iterator iter = listNodes.begin(); iter != listNodes.end(); iter++)
