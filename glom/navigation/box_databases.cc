@@ -24,6 +24,7 @@
 
 Box_DataBases::Box_DataBases(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
 : Box_DB(cobject),
+  m_button_connect(0),
   m_col_name(0)
 {
   m_AddDel.set_show_column_titles(false);
@@ -35,8 +36,7 @@ Box_DataBases::Box_DataBases(BaseObjectType* cobject, const Glib::RefPtr<Gnome::
   refGlade->get_widget("entry_connection_user", m_Entry_User);
   refGlade->get_widget("entry_connection_password", m_Entry_Password);
 
-  Gtk::Button* pButtonConnect = 0;
-  refGlade->get_widget("button_connect", pButtonConnect);
+  refGlade->get_widget("button_connect", m_button_connect);
   refGlade->get_widget("expander_tables", m_Expander_Tables);
 
   Gtk::Button* pButtonCancel = 0;
@@ -48,7 +48,7 @@ Box_DataBases::Box_DataBases(BaseObjectType* cobject, const Glib::RefPtr<Gnome::
       
   m_bUseList = false; //set to true later by call to set_use_list().
 
-  pButtonConnect->signal_clicked().connect(sigc::mem_fun(*this, &Box_DataBases::on_button_connect));
+  m_button_connect->signal_clicked().connect(sigc::mem_fun(*this, &Box_DataBases::on_button_connect));
 
   pAligmentPlaceholder->add(m_AddDel);
 
@@ -270,6 +270,12 @@ void Box_DataBases::on_AddDel_Changed(const Gtk::TreeModel::iterator& /* row */,
 {
   //TODO: Get the old value and change the database name to the new value.
 }
+
+Gtk::Widget* Box_DataBases::get_default_button()
+{
+  return m_button_connect;
+}
+
 
 
 

@@ -36,6 +36,8 @@ public:
 
   virtual void load_from_document(); //override
 
+  virtual Gtk::Widget* get_default_button();
+
 protected:
 
   sharedptr<SharedConnection> connect_to_server_with_connection_settings() const;
@@ -59,6 +61,7 @@ protected:
   Gtk::Entry* m_Entry_User;
   Gtk::Entry* m_Entry_Password;
   Gtk::Expander* m_Expander_Tables;
+  Gtk::Button* m_button_connect;
 
   //Member widgets:
   mutable AddDel_WithButtons m_AddDel; //mutable because its get_ methods aren't const.

@@ -62,6 +62,8 @@ public:
   //Signal handlers:
   virtual void on_Button_Cancel();
 
+  virtual Gtk::Widget* get_default_button();
+
 
 protected:
 

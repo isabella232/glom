@@ -27,7 +27,7 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
 : PlaceHolder(cobject, refGlade),
   m_pLabel_Table(0),
   m_pLabel_Mode(0),
-  m_pLabel_UserLevel(0),
+  m_pLabel_userlevel(0),
   m_pBox_Mode(0),
   m_pBox_Databases(0),
   m_pBox_Tables(0),
@@ -40,7 +40,7 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
   //Load widgets from glade file:
   refGlade->get_widget("label_table_name", m_pLabel_Table);
   refGlade->get_widget("label_mode", m_pLabel_Mode);
-  refGlade->get_widget("label_user_level", m_pLabel_UserLevel);
+  refGlade->get_widget("label_user_level", m_pLabel_userlevel);
   refGlade->get_widget_derived("vbox_mode", m_pBox_Mode);
 
   //m_pLabel_Mode->set_text(gettext("No database selected.\n Use the Navigation menu, or open a previous Glom document."));
@@ -113,8 +113,8 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
   m_pBox_Tables->show_all();
 
   //Connect signals:
-  m_pBox_Databases->signal_selected.connect(sigc::mem_fun(*this, &Frame_Glom::on_Box_Databases_selected));
-  m_pBox_Tables->signal_selected.connect(sigc::mem_fun(*this, &Frame_Glom::on_Box_Tables_selected));
+  m_pBox_Databases->signal_selected.connect(sigc::mem_fun(*this, &Frame_Glom::on_box_databases_selected));
+  m_pBox_Tables->signal_selected.connect(sigc::mem_fun(*this, &Frame_Glom::on_box_tables_selected));
 
   
   m_Notebook_Find.signal_find.connect(sigc::mem_fun(*this, &Frame_Glom::on_Notebook_Find));
@@ -146,7 +146,7 @@ Frame_Glom::~Frame_Glom()
   }
 }
 
-void Frame_Glom::on_Box_Databases_selected(Glib::ustring strName)
+void Frame_Glom::on_box_databases_selected(Glib::ustring strName)
 {
   m_pDialog_Databases->hide(); //cause_close();
 
@@ -160,7 +160,7 @@ void Frame_Glom::on_Box_Databases_selected(Glib::ustring strName)
   do_menu_Navigate_Table(true /* open default */);
 }
 
-void Frame_Glom::on_Box_Tables_selected(Glib::ustring strName)
+void Frame_Glom::on_box_tables_selected(Glib::ustring strName)
 {
   m_pDialog_Tables->hide(); //cause_close();
 
@@ -260,7 +260,7 @@ void Frame_Glom::show_table(const Glib::ustring& strTableName)
       }
       default:
       {
-        std::cout << "Frame_Glom::on_Box_Tables_selected(): Unexpected mode" << std::endl;
+        std::cout << "Frame_Glom::on_box_tables_selected(): Unexpected mode" << std::endl;
         strMode = gettext("Unknown");
         break;
       }
@@ -274,7 +274,7 @@ void Frame_Glom::show_table(const Glib::ustring& strTableName)
   show_all();
 }
 
-void Frame_Glom::on_menu_UserLevel_Developer(Glib::RefPtr<Gtk::RadioAction> action)
+void Frame_Glom::on_menu_userlevel_Developer(Glib::RefPtr<Gtk::RadioAction> action)
 {
   if(action->get_active())
   {
@@ -288,7 +288,7 @@ void Frame_Glom::on_menu_UserLevel_Developer(Glib::RefPtr<Gtk::RadioAction> acti
   }
 }
 
-void Frame_Glom::on_menu_UserLevel_Operator(Glib::RefPtr<Gtk::RadioAction> action)
+void Frame_Glom::on_menu_userlevel_Operator(Glib::RefPtr<Gtk::RadioAction> action)
 {
   if(action->get_active())
   {
@@ -438,8 +438,8 @@ void Frame_Glom::on_userlevel_changed(AppState::userlevels userlevel)
     user_level_name = gettext("Developer");
 
     
-  if(m_pLabel_UserLevel)
-    m_pLabel_UserLevel->set_text(user_level_name);
+  if(m_pLabel_userlevel)
+    m_pLabel_userlevel->set_text(user_level_name);
 
   show_table_title(); 
 }

@@ -115,16 +115,16 @@ void App_Glom::init_menus()
                         sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_Navigate_Table) );
 
   //"UserLevel" menu:
-  m_refActionGroup_Others->add(Gtk::Action::create("Glom_Menu_UserLevel", gettext("_User Level")));
+  m_refActionGroup_Others->add(Gtk::Action::create("Glom_Menu_userlevel", gettext("_User Level")));
   Gtk::RadioAction::Group group_userlevel;
 
-  m_action_menu_userlevel_developer = Gtk::RadioAction::create(group_userlevel, "GlomAction_Menu_UserLevel_Developer", gettext("_Developer"));
+  m_action_menu_userlevel_developer = Gtk::RadioAction::create(group_userlevel, "GlomAction_Menu_userlevel_Developer", gettext("_Developer"));
   m_refActionGroup_Others->add(m_action_menu_userlevel_developer,
-                        sigc::bind( sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_UserLevel_Developer), m_action_menu_userlevel_developer) );
+                        sigc::bind( sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_userlevel_Developer), m_action_menu_userlevel_developer) );
 
-  m_action_menu_userlevel_operator =  Gtk::RadioAction::create(group_userlevel, "GlomAction_Menu_UserLevel_Operator", gettext("_Operator"));
+  m_action_menu_userlevel_operator =  Gtk::RadioAction::create(group_userlevel, "GlomAction_Menu_userlevel_Operator", gettext("_Operator"));
   m_refActionGroup_Others->add(m_action_menu_userlevel_operator,
-                        sigc::bind( sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_UserLevel_Operator), m_action_menu_userlevel_operator) );
+                        sigc::bind( sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_userlevel_Operator), m_action_menu_userlevel_operator) );
 
   //"Mode" menu:
   action =  Gtk::Action::create("Glom_Menu_Mode", gettext("_Mode"));
@@ -175,9 +175,9 @@ void App_Glom::init_menus()
     "        <menuitem action='GlomAction_Menu_Mode_Data' />"
     "        <menuitem action='GlomAction_Menu_Mode_Find' />"
     "      </menu>"
-    "      <menu action='Glom_Menu_UserLevel'>"
-    "        <menuitem action='GlomAction_Menu_UserLevel_Developer' />"
-    "        <menuitem action='GlomAction_Menu_UserLevel_Operator' />"
+    "      <menu action='Glom_Menu_userlevel'>"
+    "        <menuitem action='GlomAction_Menu_userlevel_Developer' />"
+    "        <menuitem action='GlomAction_Menu_userlevel_Operator' />"
     "      </menu>"
     "      <menu action='Glom_Menu_Developer'>"
     "        <menuitem action='GlomAction_Menu_Developer_Fields' />"

@@ -191,7 +191,7 @@ void Box_Data_List::on_AddDel_user_added(const Gtk::TreeModel::iterator& row)
 {
   Gnome::Gda::Value primary_key_value;
 
-  const Glib::ustring& strPrimaryKeyName = get_PrimaryKey_Name();
+  const Glib::ustring& strPrimaryKeyName = get_primarykey_name();
   Field field;
   bool found = get_field(strPrimaryKeyName, field);
   if(!found)
@@ -314,7 +314,7 @@ void Box_Data_List::on_AddDel_user_changed(const Gtk::TreeModel::iterator& row, 
 
     Field field_primary_key;
 
-    bool found = get_field(get_PrimaryKey_Name(), field_primary_key);
+    bool found = get_field(get_primarykey_name(), field_primary_key);
     if(found && field_primary_key.get_field_info().get_auto_increment())
     {
       on_AddDel_user_added(row);

@@ -44,11 +44,11 @@ public:
   Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
   virtual ~Frame_Glom();
 
-  virtual void on_Box_Databases_selected(Glib::ustring strName);
-  virtual void on_Box_Tables_selected(Glib::ustring strName);
+  virtual void on_box_databases_selected(Glib::ustring strName);
+  virtual void on_box_tables_selected(Glib::ustring strName);
 
-  virtual void on_menu_UserLevel_Developer(Glib::RefPtr<Gtk::RadioAction> action);
-  virtual void on_menu_UserLevel_Operator(Glib::RefPtr<Gtk::RadioAction> action);
+  virtual void on_menu_userlevel_Developer(Glib::RefPtr<Gtk::RadioAction> action);
+  virtual void on_menu_userlevel_Operator(Glib::RefPtr<Gtk::RadioAction> action);
       
   virtual void on_menu_Mode_Data();
   virtual void on_menu_Mode_Find();
@@ -104,7 +104,7 @@ protected:
   //Child widgets:
   Gtk::Label* m_pLabel_Table;
   Gtk::Label* m_pLabel_Mode;
-  Gtk::Label* m_pLabel_UserLevel;
+  Gtk::Label* m_pLabel_userlevel;
     
   PlaceHolder* m_pBox_Mode; //Contains e.g. design mode notebook.
   

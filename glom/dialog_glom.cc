@@ -28,9 +28,14 @@ Dialog_Glom::Dialog_Glom(Box_DB* pBox)
 
   if(m_pBox)
   {
-    m_pBox->signal_cancelled.connect(sigc::mem_fun(*this, &Dialog_Glom::on_Box_cancelled));
+    m_pBox->signal_cancelled.connect(sigc::mem_fun(*this, &Dialog_Glom::on_box_cancelled));
     m_pBox->show();
   }
+
+  //Set the default button, if there is one:
+  Gtk::Widget* default_button = m_pBox->get_default_button();
+  if(default_button)
+    set_default(*default_button);
 
   set_has_separator(false);
 }
@@ -39,7 +44,7 @@ Dialog_Glom::~Dialog_Glom()
 {
 }
 
-void Dialog_Glom::on_Box_cancelled()
+void Dialog_Glom::on_box_cancelled()
 {
   hide();
 }

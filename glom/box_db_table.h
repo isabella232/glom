@@ -48,7 +48,7 @@ public:
 protected:
   virtual void fill_fields();
 
-  virtual Glib::ustring get_PrimaryKey_Name();
+  virtual Glib::ustring get_primarykey_name();
 
   virtual bool record_delete(const Gnome::Gda::Value& primary_key_value);
   virtual Glib::RefPtr<Gnome::Gda::DataModel> record_new(Gnome::Gda::Value primary_key_value);

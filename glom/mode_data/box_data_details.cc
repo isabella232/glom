@@ -150,7 +150,7 @@ void Box_Data_Details::fill_from_database()
         }
 
         std::stringstream query;
-        query << "SELECT " << sql_part_fields << " FROM " << m_strTableName << " WHERE " << get_table_name() + "." + get_PrimaryKey_Name() << " = " << field_primary_key.sql(m_primary_key_value);
+        query << "SELECT " << sql_part_fields << " FROM " << m_strTableName << " WHERE " << get_table_name() + "." + get_primarykey_name() << " = " << field_primary_key.sql(m_primary_key_value);
         Glib::RefPtr<Gnome::Gda::DataModel> result = connection->execute_single_command(query.str());
 
         if(result && result->get_n_rows())
@@ -465,7 +465,7 @@ void Box_Data_Details::on_flowtable_field_edited(Glib::ustring id)
   EntryGlom* entry = m_FlowTable.get_field(id);
   if(entry)
   {
-     const Glib::ustring strPrimaryKey_Name = get_PrimaryKey_Name();
+     const Glib::ustring strPrimaryKey_Name = get_primarykey_name();
      const Glib::ustring strFieldName = id;
      const Gnome::Gda::Value field_value = entry->get_value();
 

@@ -34,7 +34,7 @@ public:
   virtual ~Dialog_Glom();
 
   //Signal handlers:
-  virtual void on_Box_cancelled();
+  virtual void on_box_cancelled();
 
 protected:
 

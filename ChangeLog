@@ -1,3 +1,10 @@
+2004-06-26  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/box_db.[h|cc]: Add get_default_button() virtual method, and 
+	add implementation in glom/navigation/box_databases.cc, and used it in 
+	constructor Dialog_Glom, so that the connect button is the default 
+	button, so you can just press return in the password box to connect.
+
 2004-06-25  Murray Cumming  <murrayc@murrayc.com>
 
 	* configure.in: Removed AC_CONFIG_AUX_DIRS(), which was causing 

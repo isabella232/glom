@@ -50,7 +50,7 @@ void Box_DB_Table::init_db_details(const Glib::ustring& strDatabaseName, const G
   fill_from_database();
 }
 
-Glib::ustring Box_DB_Table::get_PrimaryKey_Name()
+Glib::ustring Box_DB_Table::get_primarykey_name()
 {
   Glib::ustring strResult;
 
@@ -63,7 +63,7 @@ Glib::ustring Box_DB_Table::get_PrimaryKey_Name()
   }
   else
   {
-    std::cout << "Box_DB_Table::get_PrimaryKey_Name(): not found in " << m_Fields.size() << " fields." << std::endl;
+    std::cout << "Box_DB_Table::get_primarykey_name(): not found in " << m_Fields.size() << " fields." << std::endl;
   }
 
   return strResult;
@@ -150,7 +150,7 @@ Glib::RefPtr<Gnome::Gda::DataModel> Box_DB_Table::record_new(Gnome::Gda::Value p
   bool test = get_field_primary_key(field_primary_key);
   if(test && !GlomConversions::value_is_empty(primary_key_value))
   {   
-    return Query_execute( "INSERT INTO " + m_strTableName + " (" + get_PrimaryKey_Name() + ") VALUES (" + field_primary_key.sql(primary_key_value) + ")" );
+    return Query_execute( "INSERT INTO " + m_strTableName + " (" + get_primarykey_name() + ") VALUES (" + field_primary_key.sql(primary_key_value) + ")" );
   }
   else
     return Glib::RefPtr<Gnome::Gda::DataModel>();

@@ -124,4 +124,9 @@ void Box_DB::set_button_cancel(Gtk::Button& button)
   button.signal_clicked().connect(sigc::mem_fun(*this, &Box_DB::on_Button_Cancel));
 }
 
+Gtk::Widget* Box_DB::get_default_button()
+{
+  return 0; //Override this if the box has a default button.
+}
+
 
