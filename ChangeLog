@@ -1,5 +1,10 @@
 2005-03-08  Murray Cumming  <murrayc@murrayc.com>
 
+	* examples/example_small_business.glom: Invoices table: Make the 
+	contact name lookup a name from the contacts table.
+
+2005-03-08  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/mode_data/: More use of the stored primary key fields 
 	instead of getting them from the list of fields via their index. This 
 	means that the primary key can still be used when it is not shown.
