@@ -1,5 +1,14 @@
+0.8.17:
+
+* User/Groups Administration: 
+  Choosing the Developer/Users menu now allows you to 
+  create groups and specify view/edit/create/delete 
+  access rights for each table for each group.
+* Developer mode: Now only possible for users who are in 
+  the developer group.
 * Details view: You can now right-click on a field to add
   a field, group, or related records.
+* Ignore pga_* tables created by pgadmin. 
 
 0.8.16:
 
