@@ -655,8 +655,8 @@ Glib::ustring Box_Data::build_sql_select_with_where_clause(const Glib::ustring& 
 
   Glib::ustring sql_part_fields;
 
-  typedef std::list<Glib::ustring> type_list_strings;
-  type_list_strings list_tables;
+  typedef std::list<Relationship> type_list_relationships;
+  type_list_relationships list_relationships;
 
   for(type_vecLayoutFields::const_iterator iter =  fieldsToGet.begin(); iter != fieldsToGet.end(); ++iter)
   {
@@ -664,10 +664,8 @@ Glib::ustring Box_Data::build_sql_select_with_where_clause(const Glib::ustring& 
       sql_part_fields += ", ";
 
     Glib::ustring relationship_name = iter->get_relationship_name();
-    Glib::ustring field_table_name;
     if(relationship_name.empty())
     {
-      field_table_name = table_name;
       sql_part_fields += ( table_name + "." );
     }
     else
@@ -676,37 +674,33 @@ Glib::ustring Box_Data::build_sql_select_with_where_clause(const Glib::ustring& 
       bool test = document->get_relationship(table_name, relationship_name, relationship);
       if(test)
       {
-        field_table_name = relationship.get_to_table();
+        const Glib::ustring field_table_name = relationship.get_to_table();
         sql_part_fields += ( field_table_name + "." );
+
+        //Add the relationship to the list:
+        type_list_relationships::const_iterator iterFind = std::find_if(list_relationships.begin(), list_relationships.end(), predicate_FieldHasName<Relationship>( relationship_name ) );
+        if(iterFind == list_relationships.end()) //If the table is not yet in the list:
+          list_relationships.push_back(relationship);
       }
     }
 
-    //sql_part_fields += ( iter->get_table_name() + "." );
-
     sql_part_fields += iter->get_name();
-
-    //Add to the list of used table names:
-    if(field_table_name.empty())
-      field_table_name = table_name;
-
-    type_list_strings::const_iterator iterFind = std::find(list_tables.begin(), list_tables.end(), field_table_name);
-    if(iterFind == list_tables.end()) //If the table is not yet in the list:
-      list_tables.push_back(field_table_name);
-
-  }
-
-  //Build the list of tables:
-  Glib::ustring sql_part_tables;
-  for(type_list_strings::const_iterator iter = list_tables.begin(); iter != list_tables.end(); ++iter)
-  {
-    if(iter != list_tables.begin())
-      sql_part_tables += ", ";
-
-    sql_part_tables += *iter;
   }
 
   result =  "SELECT " + sql_part_fields +
-    " FROM " + sql_part_tables;
+    " FROM " + table_name;
+
+  //LEFT OUTER JOIN will get the field values from the other tables, and give us our fields for this table even if there is no corresponding value in the other table.
+  Glib::ustring sql_part_leftouterjoin; 
+  for(type_list_relationships::const_iterator iter = list_relationships.begin(); iter != list_relationships.end(); ++iter)
+  {
+    const Relationship& relationship = *iter;
+    sql_part_leftouterjoin += " LEFT OUTER JOIN " + relationship.get_to_table() +
+      " ON " + relationship.get_from_table() + "." + relationship.get_from_field() + " = " +
+      relationship.get_to_table() + "." + relationship.get_to_field();
+  }
+
+  result += sql_part_leftouterjoin;
 
   if(!where_clause.empty())
     result += " WHERE " + where_clause;

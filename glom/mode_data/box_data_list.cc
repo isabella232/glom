@@ -359,7 +359,7 @@ void Box_Data_List::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, 
       if(test)
       {        
         const Gnome::Gda::Value field_value = m_AddDel.get_value(row, col);
-            
+
         Glib::ustring strQuery = "UPDATE " + m_strTableName;
         strQuery += " SET " +  field.get_name() + " = " + field.sql(field_value);
 
@@ -368,6 +368,8 @@ void Box_Data_List::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, 
 
         //Get-and-set values for lookup fields, if this field triggers those relationships:
         do_lookups(row, field, field_value, field_primary_key, primary_key_value);
+
+        //TODO: Display new values for related fields.
       }
       else
       {

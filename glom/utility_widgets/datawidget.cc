@@ -33,8 +33,6 @@ DataWidget::DataWidget(Field::glom_field_type glom_type, const Glib::ustring& ti
 DataWidget::DataWidget(const LayoutItem_Field& field, const Glib::ustring& table_name)
 : m_pMenuPopup(0)
 {
-  g_warning("DataWidget::DataWidget(): name = %s, title = %s", field.get_name().c_str(), field.m_field.get_title().c_str());
-
   Field::glom_field_type glom_type = field.m_field.get_glom_type();
   set_layout_item(field.clone(), table_name); //takes ownership
 

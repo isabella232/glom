@@ -1,6 +1,16 @@
 2005-03-13  Murray Cumming <murrayc@murrayc.com>
 
 	* examples/example_smallbusiness.glom:
+	* glom/mode_data/box_data.cc:
+	build_sql_select_with_where_clause(): 
+	Use a LEFT OUTER JOIN for the related fields,
+	because this does not hide records from 
+	the parent table when the key values are bogus,
+	and does not give us duplicate records.
+
+2005-03-13  Murray Cumming <murrayc@murrayc.com>
+
+	* examples/example_smallbusiness.glom:
 	* glom/data_structure/layout/layoutitem.h:
 	* glom/data_structure/layout/layoutitem_field.cc:
 	* glom/data_structure/layout/layoutitem_field.h:
