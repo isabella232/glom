@@ -39,9 +39,9 @@ void Combo_FieldType::init()
   set_model(m_refTreeModel);
     
   //Set Type choices:
-  FieldType::type_map_type_names map_names = FieldType::get_usable_type_names();
+  Field::type_map_type_names map_names = Field::get_usable_type_names();
     
-  for(FieldType::type_map_type_names::iterator iter = map_names.begin(); iter != map_names.end(); iter++)
+  for(Field::type_map_type_names::iterator iter = map_names.begin(); iter != map_names.end(); iter++)
   {
     Gtk::TreeModel::iterator iterModel = m_refTreeModel->append();
     if(iterModel)
@@ -66,7 +66,7 @@ Combo_FieldType::~Combo_FieldType()
   
 }
 
-void Combo_FieldType::set_field_type(FieldType::enumTypes fieldType)
+void Combo_FieldType::set_field_type(Field::glom_field_type fieldType)
 {
   const Gtk::TreeModel::Children& children = m_refTreeModel->children();
    for(Gtk::TreeModel::iterator iter = children.begin(); iter != children.end(); ++iter)
@@ -82,9 +82,9 @@ void Combo_FieldType::set_field_type(FieldType::enumTypes fieldType)
    }
 }
 
-FieldType::enumTypes Combo_FieldType::get_field_type() const
+Field::glom_field_type Combo_FieldType::get_field_type() const
 {
-  FieldType::enumTypes result = FieldType::TYPE_INVALID;
+  Field::glom_field_type result = Field::TYPE_INVALID;
 
   //Get the active row:
   Gtk::TreeModel::iterator active_row  = get_active();

@@ -52,9 +52,9 @@ void Box_DB_Table_Definition::init()
 
   //Set Type choices:
 
-  FieldType::type_map_type_names mapFieldTypes = FieldType::get_usable_type_names();
+  Field::type_map_type_names mapFieldTypes = Field::get_usable_type_names();
   AddDel::type_vecStrings vecTypes;
-  for(FieldType::type_map_type_names ::iterator iter = mapFieldTypes.begin(); iter != mapFieldTypes.end();++iter)
+  for(Field::type_map_type_names ::iterator iter = mapFieldTypes.begin(); iter != mapFieldTypes.end();++iter)
   {
     const Glib::ustring& strName = (*iter).second;
     vecTypes.push_back(strName);
@@ -88,7 +88,7 @@ void Box_DB_Table_Definition::fill_from_database()
     //Fields:
     m_AddDel.remove_all();
 
-    FieldType::type_map_type_names mapFieldTypes = FieldType::get_type_names();
+    Field::type_map_type_names mapFieldTypes = Field::get_type_names();
 
     for(type_vecFields::iterator iter = m_Fields.begin(); iter != m_Fields.end(); iter++)
     {       
@@ -101,11 +101,11 @@ void Box_DB_Table_Definition::fill_from_database()
       m_AddDel.set_value(uiRow, m_colTitle, title);      
 
       Gnome::Gda::FieldAttributes fieldinfo = field.get_field_info();
+      
       //Type:
-      FieldType fieldtypetemp( fieldinfo.get_gdatype() );
-      FieldType::enumTypes fieldType = fieldtypetemp.get_glom_type(); //Could be TYPE_INVALID if the gda type is not one of ours.
+      Field::glom_field_type fieldType = Field::get_glom_type_for_gda_type(fieldinfo.get_gdatype()); //Could be TYPE_INVALID if the gda type is not one of ours.
 
-      Glib::ustring strType = FieldType::get_type_name( fieldType );
+      Glib::ustring strType = Field::get_type_name( fieldType );
       m_AddDel.set_value(uiRow, m_colType, strType);
 
       //Unique:
@@ -131,7 +131,7 @@ void Box_DB_Table_Definition::on_AddDel_add(guint row)
   Glib::ustring strName = m_AddDel.get_value(row);
   if(strName.size())
   {
-    bool bTest = Query_execute( "ALTER TABLE " + m_strTableName + " ADD " + strName + " NUMERIC" ); //TODO: Get schema type for FieldType::TYPE_NUMERIC
+    bool bTest = Query_execute( "ALTER TABLE " + m_strTableName + " ADD " + strName + " NUMERIC" ); //TODO: Get schema type for Field::TYPE_NUMERIC
 
     fill_fields();
 
@@ -180,8 +180,7 @@ void Box_DB_Table_Definition::on_AddDel_changed(guint row, guint /* col */)
     {
       //If we are changing a non-glom type:
      //Refuse to edit field definitions that were not created by glom:
-     FieldType fieldtype(m_Field_BeingEdited.get_field_info().get_gdatype());
-     if(fieldtype.get_glom_type() == FieldType::TYPE_INVALID)
+     if(Field::get_glom_type_for_gda_type( m_Field_BeingEdited.get_field_info().get_gdatype() )  == Field::TYPE_INVALID)
      {
        Gtk::MessageDialog dialog(gettext("This database field was created or edited outside of Glom. It has a data type that is not supported by Glom. Your system administrator may be able to correct this."));
        dialog.set_transient_for(*get_app_window());
@@ -247,12 +246,9 @@ Field Box_DB_Table_Definition::get_field_definition(guint row)
   //Type:
   const Glib::ustring& strType = m_AddDel.get_value(row, m_colType);
 
-  FieldType::enumTypes enumType =  FieldType::get_type_for_name(strType);
-
-  FieldType fieldtypetemp(enumType);
-  fieldResult.set_field_type(fieldtypetemp);
-  Gnome::Gda::ValueType fieldType = fieldtypetemp.get_gda_type();;
-
+  Field::glom_field_type glom_type =  Field::get_type_for_name(strType);
+  Gnome::Gda::ValueType fieldType = Field::get_gda_type_for_glom_type(glom_type);
+  
   //Unique:
   bool bUnique = m_AddDel.get_value_as_bool(row, m_colUnique);
   fieldInfo.set_unique_key(bUnique);
@@ -277,8 +273,7 @@ void Box_DB_Table_Definition::on_Properties_apply()
   {
     //If we are changing a non-glom type:
     //Refuse to edit field definitions that were not created by glom:
-    FieldType fieldtype(m_Field_BeingEdited.get_field_info().get_gdatype());
-    if( fieldtype.get_glom_type() == FieldType::TYPE_INVALID )
+    if( Field::get_glom_type_for_gda_type(m_Field_BeingEdited.get_field_info().get_gdatype()) == Field::TYPE_INVALID )
     {
       Gtk::MessageDialog dialog(gettext("This database field was created or edited outside of Glom. It has a data type that is not supported by Glom. Your system administrator may be able to correct this."));
       dialog.set_transient_for(*get_app_window());
@@ -452,26 +447,34 @@ void  Box_DB_Table_Definition::postgres_change_column_type(const Field& field_ol
       {
         //TODO: Warn about a delay, and possible loss of precision, before actually doing this.
         //TODO: Try to use a unique name for the temp column:
-
+     
         Field fieldTemp = field;
         fieldTemp.set_name("glom_temp_column");
         postgres_add_column(fieldTemp); //This might also involves several commands.
 
-        
+
+        //TODO: postgres seems to give an error if the data can not be converted (for instance if the text is not a numeric digit when converting to numeric) instead of using 0.
+        /*
+        Maybe, for instance:
+        http://groups.google.de/groups?hl=en&lr=&ie=UTF-8&frame=right&th=a7a62337ad5a8f13&seekm=23739.1073660245%40sss.pgh.pa.us#link5
+        UPDATE _table
+        SET _bbb = to_number(substring(_aaa from 1 for 5), '99999')
+        WHERE _aaa <> '     ';  
+        */
         Glib::ustring conversion_command;
-        switch(field.get_field_type().get_glom_type())
+        switch(field.get_glom_type())
         {
-          case FieldType::TYPE_NUMERIC: //CAST does not work if the destination type is numeric.
+          case Field::TYPE_NUMERIC: //CAST does not work if the destination type is numeric.
           {
             conversion_command = "to_number( " + field_old.get_name() + ", '999999999.99' )";
             break;
           }
-          case FieldType::TYPE_DATE: //CAST does not work if the destination type is numeric.
+          case Field::TYPE_DATE: //CAST does not work if the destination type is numeric.
           {
             conversion_command = "to_date( " + field_old.get_name() + ", 'YYYYMMDD' )"; //TODO: standardise date storage format.
             break;
           }
-          case FieldType::TYPE_TIME: //CAST does not work if the destination type is numeric.
+          case Field::TYPE_TIME: //CAST does not work if the destination type is numeric.
           {
             conversion_command = "to_timestamp( " + field_old.get_name() + ", 'HHMMSS' )";  //TODO: standardise time storage format.
             break;

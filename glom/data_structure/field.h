@@ -21,7 +21,6 @@
 #ifndef GLOM_DATASTRUCTURE_FIELD_H
 #define GLOM_DATASTRUCTURE_FIELD_H
 
-#include "fieldtype.h"
 #include <libgdamm.h>
 
 //Predicate, for use with std::find_if():
@@ -53,6 +52,15 @@ protected:
 class Field
 {
 public:
+  enum glom_field_type
+  {
+    TYPE_INVALID,
+    TYPE_NUMERIC,
+    TYPE_TEXT,
+    TYPE_DATE,
+    TYPE_TIME
+  };
+  
   Field();
   Field(const Field& src);
   virtual ~Field();
@@ -68,8 +76,8 @@ public:
    /// This forwards to the Gnome::Gda::FieldAttributes::set_name, for convenience
   virtual void set_name(const Glib::ustring& value);
 
-  virtual FieldType get_field_type() const;
-  virtual void set_field_type(const FieldType& fieldtype);
+  virtual glom_field_type get_glom_type() const;
+  virtual void set_glom_type(glom_field_type fieldtype);
 
   virtual Gnome::Gda::FieldAttributes get_field_info() const;
   virtual void set_field_info(const Gnome::Gda::FieldAttributes& fieldInfo);
@@ -111,8 +119,32 @@ public:
   Glib::ustring value_to_string(const Gnome::Gda::Value& value) const;
 
 
+  typedef std::map<glom_field_type, Glib::ustring> type_map_type_names;
+  static type_map_type_names get_type_names();
+  static type_map_type_names get_usable_type_names();
+
+  static Glib::ustring get_type_name(glom_field_type glom_type);
+  static glom_field_type get_type_for_name(const Glib::ustring& glom_type);
+
+  static glom_field_type get_glom_type_for_gda_type(Gnome::Gda::ValueType gda_type);
+  static Gnome::Gda::ValueType get_gda_type_for_glom_type(Field::glom_field_type glom_type);
+      
 protected:
-  FieldType m_FieldType;
+
+  static void init_map();
+
+  //The glom type to be used for the gda type:
+  typedef std::map<Gnome::Gda::ValueType, glom_field_type> type_map_gda_type_to_glom_type;
+  static type_map_gda_type_to_glom_type m_map_gda_type_to_glom_type;
+
+  //The gda type to be used for the glom type:
+  typedef std::map<glom_field_type, Gnome::Gda::ValueType> type_map_glom_type_to_gda_type;
+  static type_map_glom_type_to_gda_type m_map_glom_type_to_gda_type;
+
+  static type_map_type_names m_map_type_names;
+  static bool m_maps_inited;
+  
+  glom_field_type m_glom_type;
   Gnome::Gda::FieldAttributes m_field_info;
 
   Glib::ustring m_strData;

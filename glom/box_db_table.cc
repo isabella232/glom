@@ -525,8 +525,8 @@ Glib::ustring Box_DB_Table::postgres_get_field_definition_for_sql(const Gnome::G
   
    /*
   //Optinal type details: (M, D), UNSIGNED
-  FieldType::enumTypeOptionals optionals = fieldType.get_TypeOptionals();
-  if(optionals != FieldType::TYPE_OPTIONALS_None)
+  Field::enumTypeOptionals optionals = fieldType.get_TypeOptionals();
+  if(optionals != Field::TYPE_OPTIONALS_None)
   {
   Glib::ustring strOptionals;
 
@@ -535,7 +535,7 @@ Glib::ustring Box_DB_Table::postgres_get_field_definition_for_sql(const Gnome::G
     Glib::ustring strM(pchM);
 
 
-  if(optionals == FieldType::TYPE_OPTIONALS_M_D)
+  if(optionals == Field::TYPE_OPTIONALS_M_D)
   {
     if( (fieldType.get_MaxLength() != 0) && ( fieldType.get_DecimalsCount() != 0) ) //0 here means use default, so don't specify.
     {
@@ -547,7 +547,7 @@ Glib::ustring Box_DB_Table::postgres_get_field_definition_for_sql(const Gnome::G
     }
 
   }
-  else if(optionals == FieldType::TYPE_OPTIONALS_M_S)
+  else if(optionals == Field::TYPE_OPTIONALS_M_S)
   {
     if( fieldType.get_MaxLength() != 0 ) //0 here means use default, so don't specify.
       strOptionals = "(" + strM + ")";
@@ -555,7 +555,7 @@ Glib::ustring Box_DB_Table::postgres_get_field_definition_for_sql(const Gnome::G
       if(!(fieldType.get_Signed()))
         strOptionals += " UNSIGNED";
   }
-  else if(optionals == FieldType::TYPE_OPTIONALS_M)
+  else if(optionals == Field::TYPE_OPTIONALS_M)
   {
       if( fieldType.get_MaxLength() != 0 ) //0 here means use default, so don't specify.
       strOptionals = "(" + strM + ")";

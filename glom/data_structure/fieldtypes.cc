@@ -85,7 +85,7 @@ Gnome::Gda::ValueType FieldTypes::get_gdavalue_for_schema_type_string(const Glib
 {
   type_mapSchemaStringsToGdaTypes::const_iterator iterFind = m_mapSchemaStringsToGdaTypes.find(schema_type_string);
   if(iterFind == m_mapSchemaStringsToGdaTypes.end())
-    return Gnome::Gda::VALUE_TYPE_NULL;
+    return Gnome::Gda::VALUE_TYPE_UNKNOWN;
   else
     return iterFind->second;
 }
@@ -95,8 +95,7 @@ Glib::ustring FieldTypes::get_string_name_for_gdavaluetype(Gnome::Gda::ValueType
   type_mapGdaTypesToSchemaStrings::const_iterator iterFind = m_mapGdaTypesToSchemaStrings.find(field_type);
   if(iterFind == m_mapGdaTypesToSchemaStrings.end())
   {
-    g_warning("FieldTypes::get_string_name_for_gdavaluetype(): No string found for gdatype %d.",  field_type);
-    return "Unknowntype";
+    return "unknowntype";
   }
   else
     return iterFind->second;

@@ -55,7 +55,7 @@ public:
 
 protected:
 
-  int get_suitable_width(FieldType::enumTypes field_type);
+  int get_suitable_width(Field::glom_field_type field_type);
   void on_entry_edited( const Glib::ustring& id);
 
   class Info

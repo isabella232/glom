@@ -154,7 +154,7 @@ Document_Glom::type_vecFields Document_Glom::get_table_fields(const Glib::ustrin
 {
   type_vecFields vecResult;
 
-  FieldType::type_map_type_names type_names = FieldType::get_usable_type_names();
+  Field::type_map_type_names type_names = Field::get_usable_type_names();
 
   const xmlpp::Element* nodeTable = get_node_table(strTableName);
   if(nodeTable)
@@ -202,8 +202,8 @@ Document_Glom::type_vecFields Document_Glom::get_table_fields(const Glib::ustrin
            const Glib::ustring field_type = get_node_attribute_value(nodeChild, "type");
 
            //Get the type enum for this string representation of the type:
-           FieldType::enumTypes field_type_enum = FieldType::TYPE_INVALID;
-           for(FieldType::type_map_type_names::const_iterator iter = type_names.begin(); iter !=type_names.end(); ++iter)
+           Field::glom_field_type field_type_enum = Field::TYPE_INVALID;
+           for(Field::type_map_type_names::const_iterator iter = type_names.begin(); iter !=type_names.end(); ++iter)
            {
              if(iter->second == field_type)
              {
@@ -212,7 +212,7 @@ Document_Glom::type_vecFields Document_Glom::get_table_fields(const Glib::ustrin
              }
            }
 
-           field.set_field_type( FieldType(field_type_enum) );
+           field.set_glom_type( field_type_enum );
              
 
            vecResult.push_back(field);
@@ -238,7 +238,7 @@ void Document_Glom::set_table_fields(const Glib::ustring& strTableName, type_vec
   //Add new <relationships> node:
   xmlpp::Element* elemFields = nodeTable->add_child("fields");
 
-  FieldType::type_map_type_names type_names = FieldType::get_usable_type_names();
+  Field::type_map_type_names type_names = Field::get_usable_type_names();
 
   //Add each <field> node:
   for(type_vecFields::iterator iter = vecFields.begin(); iter != vecFields.end(); iter++)
@@ -256,7 +256,7 @@ void Document_Glom::set_table_fields(const Glib::ustring& strTableName, type_vec
     set_node_attribute_value(elemField, "default_value", field_info.get_default_value().to_string());
 
     Glib::ustring field_type;
-    FieldType::type_map_type_names::iterator iterTypes = type_names.find( field.get_field_type().get_glom_type() );
+    Field::type_map_type_names::iterator iterTypes = type_names.find( field.get_glom_type() );
     if(iterTypes != type_names.end())
       field_type = iterTypes->second;
     

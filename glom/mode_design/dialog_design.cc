@@ -53,7 +53,6 @@ void Dialog_Design::init_db_details(const Glib::ustring& /*strDatabaseName*/, co
      if(document)
      {
        Glib::ustring table_title = document->get_table_title(strTableName);
-       g_warning("table_title = %s", table_title.c_str());
        if(table_title.empty())
          table_label = strTableName;
        else

@@ -21,7 +21,7 @@
 #ifndef COMBO_FIELDTYPE_HH
 #define COMBO_FIELDTYPE_HH
 
-#include "../../data_structure/fieldtype.h"
+#include "../../data_structure/field.h"
 #include <libglademm.h>
 #include <gtkmm/combobox.h>
 #include <gtkmm/liststore.h>
@@ -67,8 +67,8 @@ public:
   virtual ~Combo_FieldType();
 
   //set/get the text in terms of enumerated type:
-  virtual void set_field_type(FieldType::enumTypes fieldType);
-  virtual FieldType::enumTypes get_field_type() const;
+  virtual void set_field_type(Field::glom_field_type fieldType);
+  virtual Field::glom_field_type get_field_type() const;
 
 protected:
 
@@ -83,7 +83,7 @@ protected:
     { add(m_col_name); add(m_col_type); }
 
     Gtk::TreeModelColumn<Glib::ustring> m_col_name;
-    Gtk::TreeModelColumn<FieldType::enumTypes> m_col_type;
+    Gtk::TreeModelColumn<Field::glom_field_type> m_col_type;
   };
 
   ModelColumns m_Columns;
@@ -91,7 +91,7 @@ protected:
   Glib::RefPtr<Gtk::ListStore> m_refTreeModel;
     
   //Map of field types to their string representations:
-  typedef std::map<FieldType::enumTypes, Glib::ustring> type_map_valuetypes;
+  typedef std::map<Field::glom_field_type, Glib::ustring> type_map_valuetypes;
   type_map_valuetypes m_mapTypes;
 };
 

@@ -1,3 +1,8 @@
+2004-06-11  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/data_structure/: Removed fieldtype.[h|cc] to simplify things, 
+	moving some of the static functions into the Field class.
+
 2004-06-10  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/utility_widgets/flowtable_withstyles.[h|cc]: Use PangoLayout to 

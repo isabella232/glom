@@ -24,6 +24,8 @@
 
 #include <libgdamm.h>
 
+/* This class maps the SQL type names (seen in libgda schema datamodels, and in SQL) to the Gda Types.
+ */
 class FieldTypes
 {
 public:

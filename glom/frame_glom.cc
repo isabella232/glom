@@ -273,8 +273,6 @@ void Frame_Glom::show_table(const Glib::ustring& strTableName)
 
 void Frame_Glom::on_menu_UserLevel_Developer(Glib::RefPtr<Gtk::RadioAction> action)
 {
-g_warning("Frame_Glom::on_menu_UserLevel_Developer()");
-
   if(action->get_active())
   {
     Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());

@@ -22,11 +22,12 @@
 #define GLOM_UTILITY_WIDGETS_ENTRY_GLOM_H
 
 #include <gtkmm/entry.h>
+#include "../data_structure/field.h"
 
 class EntryGlom : public Gtk::Entry
 {
 public:
-  EntryGlom();
+  EntryGlom(Field::glom_field_type glom_type);
   virtual ~EntryGlom();
 
 
@@ -44,12 +45,14 @@ protected:
   virtual void on_changed(); //From Gtk::Entry.
   virtual void on_activate(); //From Gtk::Entry.
   virtual bool on_focus_out_event(GdkEventFocus* event); //From Gtk::Widget
+  virtual void on_insert_text(const Glib::ustring& text, int* position); //From Gtk::Editable
 
   virtual void check_for_change();
   
   type_signal_edited m_signal_edited;
 
   Glib::ustring m_old_text;
+  Field::glom_field_type m_glom_type; //Store the type so we can validate the text accordingly.
 
 };
 

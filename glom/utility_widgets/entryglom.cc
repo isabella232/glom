@@ -21,7 +21,8 @@
 #include "entryglom.h"
 
 
-EntryGlom::EntryGlom()
+EntryGlom::EntryGlom(Field::glom_field_type glom_type)
+: m_glom_type(glom_type)
 {
 }
 
@@ -68,8 +69,13 @@ void EntryGlom::on_changed()
   //The text is being edited, but the user has not finished yet.
   
   //Call base class:
-  return Gtk::Entry::on_changed();
+  Gtk::Entry::on_changed();
 }
+
+void EntryGlom::on_insert_text(const Glib::ustring& text, int* position)
+{
+  Gtk::Entry::on_insert_text(text, position);
+}  
 
 void EntryGlom::set_text(const Glib::ustring &text)
 {

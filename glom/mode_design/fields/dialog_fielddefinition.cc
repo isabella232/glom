@@ -71,7 +71,7 @@ void Dialog_FieldDefinition::set_field(const Field& field)
   const Gnome::Gda::FieldAttributes& fieldInfo = field.get_field_info();
 
   m_pEntry_Name->set_text(fieldInfo.get_name());
-  m_pCombo_Type->set_field_type( field.get_field_type().get_glom_type() );
+  m_pCombo_Type->set_field_type( field.get_glom_type() );
 
   m_pCheck_Unique->set_active(fieldInfo.get_unique_key());
   m_pCheck_PrimaryKey->set_active(fieldInfo.get_primary_key());
@@ -111,8 +111,7 @@ Field Dialog_FieldDefinition::get_field() const
 
   fieldInfo.set_name(m_pEntry_Name->get_text());
 
-  FieldType fieldtypetemp( m_pCombo_Type->get_field_type() );
-  fieldInfo.set_gdatype(fieldtypetemp.get_gda_type());
+  fieldInfo.set_gdatype( Field::get_gda_type_for_glom_type( m_pCombo_Type->get_field_type() ) );
 
   fieldInfo.set_unique_key(m_pCheck_Unique->get_active());
   fieldInfo.set_primary_key(m_pCheck_PrimaryKey->get_active());
@@ -128,7 +127,7 @@ Field Dialog_FieldDefinition::get_field() const
     
   //Optional type details:
   /* TODO_port:
-  if(Gnome::Gda::FieldAttributes::FieldType::get_TypeCategory(m_pCombo_Type->get_field_type()) == mysqlcppapi::FieldType::TYPE_CATEGORY_Numeric)
+  if(Gnome::Gda::FieldAttributes::FieldType::get_TypeCategory(m_pCombo_Type->get_field_type()) == mysqlcppapi::Field::TYPE_CATEGORY_Numeric)
   {
     fieldType.set_MaxLength( m_Entry_TypeDetails_M.get_value_as_guint() );
   }
@@ -159,7 +158,7 @@ void Dialog_FieldDefinition::on_combo_type_changed()
   //m_Frame_TypeDetails.remove();
 
   //Use FieldType static method to categorise field type:
- // FieldType::enumTypes fieldType = m_pCombo_Type->get_field_type();
+ // glom_field_type fieldType = m_pCombo_Type->get_field_type();
 
 }
 

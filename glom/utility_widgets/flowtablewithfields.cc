@@ -47,8 +47,8 @@ void FlowTableWithFields::add_field(const Field& field, const Glib::ustring& gro
     info.m_first->set(Gtk::ALIGN_RIGHT);
     info.m_first->show_all_children(); //This does not seem to work, so we show the label explicitly.
     
-    info.m_second = Gtk::manage(new EntryGlom() );
-    int width = get_suitable_width(field.get_field_type().get_glom_type());
+    info.m_second = Gtk::manage(new EntryGlom(field.get_glom_type()) );
+    int width = get_suitable_width(field.get_glom_type());
     info.m_second->set_size_request(width, -1 /* auto */);
     info.m_second->show_all();                            
 
@@ -117,29 +117,29 @@ void FlowTableWithFields::on_entry_edited(const Glib::ustring& id)
   m_signal_field_edited.emit(id);
 }
 
-int FlowTableWithFields::get_suitable_width(FieldType::enumTypes field_type)
+int FlowTableWithFields::get_suitable_width(Field::glom_field_type field_type)
 {
   int result = 150;
 
   Glib::ustring example_text;
   switch(field_type)
   {
-    case(FieldType::TYPE_DATE):
+    case(Field::TYPE_DATE):
     {
       example_text = "99-99-9999"; //TODO: Get suitable text for the date as displayed in the locale.
       break;
     }
-    case(FieldType::TYPE_TIME):
+    case(Field::TYPE_TIME):
     {
       example_text = "99:99:99"; //TODO: Get suitable text for the time as displayed in the locale.
       break;
     }
-    case(FieldType::TYPE_NUMERIC):
+    case(Field::TYPE_NUMERIC):
     {
       example_text = "9999999999"; 
       break;
     }
-    case(FieldType::TYPE_TEXT):
+    case(Field::TYPE_TEXT):
     {
       example_text = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
       break;

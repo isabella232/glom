@@ -177,7 +177,7 @@ void Box_Tables::on_AddDel_Add(guint row)
   field_info.set_auto_increment();
   field_info.set_allow_null(false);
   field_primary_key.set_field_info(field_info);
-  field_primary_key.set_field_type(FieldType(FieldType::TYPE_NUMERIC));
+  field_primary_key.set_glom_type(Field::TYPE_NUMERIC);
   
   type_vecFields fields;
   fields.push_back(field_primary_key);
