@@ -1,3 +1,5 @@
+0.8.6:
+
 2004-07-05  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/main.cc: Accept a URI on the command line, and use it

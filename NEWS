@@ -1,3 +1,18 @@
+0.8.6:
+
+* Creating new documents works again.
+* Auto-save documents, when in developer mode, 
+  instead of asking.
+* Navigation:
+  - Database: Default to the linux user name.
+  - Tables: Show the hidden status correctly.
+* MIME type registration: Use both old and new system, 
+  as needed by GNOME 2.6.
+* Allow a file to be specified on the command line.
+* Removed useless toolbar.
+  (Murray Cumming)
+* Added French translation. (Christophe Merlet)
+
 0.8.5:
 
 * Data Details: Editing works again.

@@ -70,7 +70,6 @@ main(int argc, char* argv[])
 
     pApp_Glom->set_command_line_args(argc, argv);
 
-    g_warning("file: %s", input_uri.c_str());
     pApp_Glom->init(input_uri); //Sets it up and shows it.
 
     Gtk::Main::run();
