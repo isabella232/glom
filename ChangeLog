@@ -1,5 +1,19 @@
 2004-06-20  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/application.[h|cc]: Added on override of on_menu_help_init() to 
+	merge in a menu item for the user guide. Called gnome_help_display() in
+	the menu signal handler to show the docs.
+	* glom/main.cc: Call gnome_program_init() so that gnome_help_display() 
+	has the information that it needs. Hopefully this coexists with our
+	Gtk::Main initialisation.
+	* configure.in: Depend on libgnome, because that is where 
+	gnome_help_display is. That is not good but at least it is not 
+	libgnomeui.
+	* Makefile.am: Add some defines needed by gnome_program_init() - see 
+	comments in Makefile.am.
+
+2004-06-20  Murray Cumming  <murrayc@murrayc.com>
+
 	* configure.in, docs/user-guide: Added skeleton for the user guide. 
 
 2004-06-20  Murray Cumming  <murrayc@murrayc.com>

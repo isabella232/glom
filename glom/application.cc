@@ -19,9 +19,11 @@
  */
 
 #include "application.h"
+#include <libgnome/gnome-help.h> //For gnome_help_display
 #include "config.h" //For VERSION.
 #include <cstdio>
 #include <libintl.h>
+
 
 App_Glom::App_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
 : Gtk::Window(cobject), //It's a virtual base class, so we have to call the specific constructor to prevent the default constructor from being called.
@@ -342,6 +344,36 @@ void App_Glom::set_mode_data()
   m_action_mode_data->activate();
 }
 
+
+void App_Glom::init_menus_help()
+{
+  //Call base class:
+  App_WithDoc_Gtk::init_menus_help();
+  m_refHelpActionGroup->add( Gtk::Action::create("BakeryAction_Help_Contents",
+                        gettext("_Contents"), gettext("Help with the application")),
+                        sigc::mem_fun(*this, &App_Glom::on_menu_help_contents) );
+
+  //Build part of the menu structure, to be merged in by using the "PH" plaeholders:
+  static const Glib::ustring ui_description =
+    "<ui>"
+    "  <menubar name='Bakery_MainMenu'>"
+    "    <placeholder name='Bakery_MenuPH_Help'>"
+    "      <menu action='BakeryAction_Menu_Help'>"
+    "        <menuitem action='BakeryAction_Help_Contents' />"
+    "      </menu>"
+    "    </placeholder>"
+    "  </menubar>"
+    "</ui>";
+
+  //Add menu:
+  add_ui_from_string(ui_description);
+}
+
+void App_Glom::on_menu_help_contents()
+{
+  gnome_help_display("glom", 0, 0);
+}
+
 AppState::userlevels App_Glom::get_userlevel() const
 {
   const Document_Glom* document = dynamic_cast<const Document_Glom*>(get_document());
@@ -352,6 +384,10 @@ AppState::userlevels App_Glom::get_userlevel() const
   else
     return AppState::USERLEVEL_DEVELOPER; //This should never happen.
 }
+
+
+
+
 
 
 

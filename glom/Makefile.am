@@ -3,9 +3,14 @@ SUBDIRS = data_structure document mode_data mode_design mode_find navigation uti
 gladedir = $(datadir)/glom/glade/
 
 # We define GLOM_GLADEDIR so that we can get the installed .glade file at runtime.
+# We define PREFIX, SYSCONFDIR, LIBDIR, and DATADIR for the GNOME_PROGRAM_STANDARD_PROPERTIES macro.
 INCLUDES = $(GLOM_CFLAGS) \
            -DGLOM_GLADEDIR=\""$(gladedir)/"\" \
-           -DLOCALEDIR=\""$(datadir)/locale"\"
+           -DLOCALEDIR=\""$(datadir)/locale"\" \
+           -DPREFIX=\""$(prefix)"\" \   
+           -DSYSCONFDIR=\""$(sysconfdir)"\" \
+           -DLIBDIR=\""$(libdir)"\" \
+           -DDATADIR=\""$(datadir)"\"
 
 bin_PROGRAMS = glom
 

@@ -50,10 +50,13 @@ public:
 protected:
   virtual void init_layout(); //override.
   virtual void init_menus(); //override.
+  virtual void init_menus_help(); //override
   virtual void init_create_document(); //override
   virtual void on_document_load(); //override.
 
   virtual void offer_new_or_existing();
+
+  virtual void on_menu_help_contents();
 
   virtual void on_userlevel_changed(AppState::userlevels userlevel);
 
