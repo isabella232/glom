@@ -502,7 +502,9 @@ AppState::userlevels Document_Glom::get_userlevel() const
     return AppState::USERLEVEL_DEVELOPER;
   }
   else
+  {
     return m_app_state.get_userlevel();
+  }
 }
 
 Document_Glom::type_signal_userlevel_changed Document_Glom::signal_userlevel_changed()
@@ -538,22 +540,24 @@ Glib::ustring Document_Glom::get_default_table() const
 
 void Document_Glom::set_modified(bool value)
 {
- 
-  Bakery::Document_XML::set_modified(value);
-
-  if(value)
+  if(value != get_modified()) //Prevent endless loops
   {
-    //Save changes automatically
-    //(when in developer mode - no changes should even be possible when not in developer mode)
-    if(get_userlevel() == AppState::USERLEVEL_DEVELOPER)
+    Bakery::Document_XML::set_modified(value);
+
+    if(value)
     {
-      //This rebuilds the whole XML DOM and saves the whole document,
-      //so we need to be careful not to call set_modified() too often.
-      bool test = save();
-      if(test)
+      //Save changes automatically
+      //(when in developer mode - no changes should even be possible when not in developer mode)
+      if(get_userlevel() == AppState::USERLEVEL_DEVELOPER)
       {
-        g_warning("Document_Glom::set_modified(): saved");
-        set_modified(false);
+        //This rebuilds the whole XML DOM and saves the whole document,
+        //so we need to be careful not to call set_modified() too often.
+        bool test = save();
+        if(test)
+        {
+          g_warning("Document_Glom::set_modified(): saved");
+          set_modified(false);
+        }
       }
     }
   }

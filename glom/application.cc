@@ -334,11 +334,35 @@ void App_Glom::offer_new_or_existing()
   if(response_id ==1) //Open
   {
     on_menu_file_open();
+
+    //Check that a document was opened:
+    Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
+    if(document->get_file_uri().empty())
+    {
+      //Ask again:
+      offer_new_or_existing();
+    }
   }
   else if(response_id == 2) //New
   {
-    //There is already an empty document, but this allows the user to fill it by connecting and creating tables:
-    m_pFrame->do_menu_Navigate_Database();
+    //Each document must have a location, so ask the user for one.
+    offer_saveas();
+
+    //Check that the document was given a location:
+    Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
+    if(!document->get_file_uri().empty())
+    {
+      //Make sure that the user can do something with his new document:
+      document->set_userlevel(AppState::USERLEVEL_DEVELOPER);
+
+      //There is already an empty document, but this allows the user to fill it by connecting and creating tables:
+      m_pFrame->do_menu_Navigate_Database();
+    }
+    else
+    {
+      //Ask again:
+      offer_new_or_existing();
+    }
   }
   else
   {
