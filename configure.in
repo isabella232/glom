@@ -4,7 +4,7 @@ AC_INIT(glom/main.cc)
 AM_CONFIG_HEADER(config.h)
 
 # Package name and version number:
-AM_INIT_AUTOMAKE(glom, 0.8.18)
+AM_INIT_AUTOMAKE(glom, 0.8.19)
 
 AM_MAINTAINER_MODE
 
@@ -91,6 +91,14 @@ AC_OUTPUT(Makefile \
       glom/python_embed/boost/mpl/aux_/config/Makefile \
       glom/python_embed/boost/mpl/aux_/range_c/Makefile \
       glom/python_embed/boost/mpl/aux_/preprocessor/Makefile \
+      glom/python_embed/boost/mpl/limits/Makefile \
+      glom/python_embed/boost/mpl/list/Makefile \
+      glom/python_embed/boost/mpl/map/Makefile \
+      glom/python_embed/boost/mpl/math/Makefile \
+      glom/python_embed/boost/mpl/multiset/Makefile \
+      glom/python_embed/boost/mpl/set/Makefile \
+      glom/python_embed/boost/mpl/vector/Makefile \
+      glom/python_embed/boost/mpl/vector/aux_/Makefile \
     po/Makefile.in \
   macros/Makefile \
   examples/Makefile

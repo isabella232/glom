@@ -1,6 +1,6 @@
 INCLUDES = -I@top_srcdir@/ $(GLOM_CFLAGS) $(PYTHON_INCLUDES)
 
-SUBDIRS = 
+SUBDIRS = boost
 
 noinst_LIBRARIES = libpython_embed.a
 libpython_embed_a_SOURCES = glom_python.h glom_python.cc \

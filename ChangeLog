@@ -1,3 +1,10 @@
+0.8.19:
+
+2005-03-31  Murray Cumming <murrayc@murrayc.com>
+
+	* glom/python/embed/boost/mpl/: Added extra directories 
+	from boost, to fix the build.
+
 2005-03-31  Murray Cumming <murrayc@murrayc.com>
 
 	* glom/utility_widgets/flowtable.cc:

@@ -1,6 +1,18 @@
+0.8.19:
+
 * List and Details: When defining the layout, developers
   can specify numeric formatting, such as decimal places,
   and currency symbols.
+* Details: Related Records now use all available layout 
+  width, instead of having a fixed width.
+  (Murray Cumming)
+* Translations:
+  - Pango markup and spaces not marked for translation.
+    (Christian Rose)
+  - Added Swedish (Christian Rose).
+  - Updated Albanian (Laurent Dhima),
+    Canadian English (Adam Weinberger),
+    Czech (Miloslav Trmac),
 
 0.8.18:
 
