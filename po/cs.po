@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glom VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-11-30 19:42+0100\n"
-"PO-Revision-Date: 2004-11-24 12:53+0100\n"
+"POT-Creation-Date: 2004-12-01 11:32+0100\n"
+"PO-Revision-Date: 2004-12-01 19:33+0100\n"
 "Last-Translator: Miloslav Trmac <mitr@volny.cz>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -78,6 +78,9 @@ msgid ""
 "incorrect user name or password, or maybe the postgres database server is "
 "not running."
 msgstr ""
+"<span weight=\"bold\" size=\"larger\">Připojení selhalo</span>\n"
+"\n"
+"Glom se nemohl připojit k databázovému serveru. Možná jste zadali nesprávné jméno uživatele nebo heslo, nebo možná neběží server databáze postgres."
 
 #: glom/glom.glade.h:18
 msgid ""
@@ -86,6 +89,9 @@ msgid ""
 "Glom could not create the new database. Maybe you do not have the necessary "
 "access rights. Please contact your system administrator."
 msgstr ""
+"<span weight=\"bold\" size=\"larger\">Tvorba databáze selhala</span>\n"
+"\n"
+"Glom nemohl vytvořit novou databázi. Možná nemáte potřebná oprávnění. Kontaktujte prosím vašeho správce systému."
 
 #: glom/glom.glade.h:21
 msgid ""
@@ -160,9 +166,8 @@ msgid "Data"
 msgstr "Data"
 
 #: glom/glom.glade.h:43
-#, fuzzy
 msgid "Database"
-msgstr "<b>Databáze</b>"
+msgstr "Databáze"
 
 #: glom/glom.glade.h:44
 msgid "Default Value"
