@@ -176,14 +176,14 @@ Box_Data::type_vecFields Box_Data::get_fields_to_show() const
 Box_Data::type_vecFields Box_Data::get_table_fields_to_show(const Glib::ustring& table_name) const
 {
   //Get field definitions from the database, with corrections from the document:
-  type_vecFields all_fields = get_fields_for_table(m_strTableName);
+  type_vecFields all_fields = get_fields_for_table(table_name);
 
   //Get fields that the document says we should show:
   type_vecFields result;
   const Document_Glom* pDoc = dynamic_cast<const Document_Glom*>(get_document());
   if(pDoc)
   {
-    Document_Glom::type_mapFieldSequence mapFieldSequence =  pDoc->get_data_layout_plus_new_fields(m_layout_name, m_strTableName);
+    Document_Glom::type_mapFieldSequence mapFieldSequence =  pDoc->get_data_layout_plus_new_fields(m_layout_name, table_name);
     if(mapFieldSequence.empty())
     {
       //No field sequence has been saved in the document, so we use all fields by default, so we start with something visible:
@@ -209,7 +209,7 @@ Box_Data::type_vecFields Box_Data::get_table_fields_to_show(const Glib::ustring&
     }
     else
     {
-      type_vecFields vecFieldsInDocument = pDoc->get_table_fields(m_strTableName);
+      type_vecFields vecFieldsInDocument = pDoc->get_table_fields(table_name);
       
       //We will show the fields that the document says we should:
       for(Document_Glom::type_mapFieldSequence::const_iterator iter = mapFieldSequence.begin(); iter != mapFieldSequence.end(); ++iter)

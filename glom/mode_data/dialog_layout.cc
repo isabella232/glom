@@ -34,13 +34,13 @@ Dialog_Layout::Dialog_Layout(BaseObjectType* cobject, const Glib::RefPtr<Gnome::
   m_button_group_up(0),
   m_button_group_down(0),
   m_button_group_add(0),
-  m_button_group_delete(0),      
-  m_document(0),
-  m_modified(false),
+  m_button_group_delete(0),
   m_frame_groups(0),
   m_treeviewcolumn_field_groups(0),
   m_label_table_name(0),
-  m_entry_table_title(0)
+  m_entry_table_title(0),
+  m_document(0),
+  m_modified(false)
 {
   refGlade->get_widget("treeview_fields", m_treeview_fields);
   if(m_treeview_fields)
@@ -291,7 +291,6 @@ void Dialog_Layout::enable_buttons()
 
 
       //Disable Down if It can't go any lower.
-      bool enable_false = true;  
       Gtk::TreeModel::iterator iterNext = iter;
       iterNext++;
 
@@ -329,7 +328,6 @@ void Dialog_Layout::enable_buttons()
 
 
       //Disable Down if It can't go any lower.
-      bool enable_false = true;
       Gtk::TreeModel::iterator iterNext = iter;
       iterNext++;
 
@@ -681,7 +679,7 @@ void Dialog_Layout::set_show_groups(bool val)
     m_treeviewcolumn_field_groups->set_visible(val);  
 }
 
-void Dialog_Layout::on_treemodel_row_changed(const Gtk::TreeModel::Path& path, const Gtk::TreeModel::iterator& iter)
+void Dialog_Layout::on_treemodel_row_changed(const Gtk::TreeModel::Path& /* path */, const Gtk::TreeModel::iterator& /* iter */)
 {
   m_modified = true;
 }

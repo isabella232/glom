@@ -24,8 +24,8 @@
 #include <libintl.h>
 
 App_Glom::App_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
-: type_base(cobject, "Glom"),
-  Gtk::Window(cobject), //It's a virtual base class, so we have to call the specific constructor to prevent the default constructor from being called.
+: Gtk::Window(cobject), //It's a virtual base class, so we have to call the specific constructor to prevent the default constructor from being called.
+  type_base(cobject, "Glom"),
   m_pBoxTop(0),
   m_pFrame(0),
   m_pStatus(0)

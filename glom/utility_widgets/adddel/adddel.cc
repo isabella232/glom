@@ -127,7 +127,7 @@ AddDel::on_MenuPopup_activate_Edit()
 
       if(strValue.size())
       {
-        bool bNewEntryPos = row == m_refListStore->children().size() - 1;
+        bool bNewEntryPos = (row == (int)m_refListStore->children().size() - 1);
         if(strValue_Old.size() && bNewEntryPos)
         {
           //This is a new entry:
@@ -354,7 +354,6 @@ Glib::ustring AddDel::get_value_selected(guint col)
 
 guint AddDel::get_item_selected()
 {
-  int iRow = 0;
   Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = m_TreeView.get_selection();
   if(refTreeSelection)
   {
@@ -388,7 +387,7 @@ bool AddDel::get_row_number(const Glib::ustring& strItemText, guint& row)
 
 bool AddDel::select_item(guint row, bool start_editing)
 {
-  select_item(row, get_first_column(), start_editing);
+  return select_item(row, get_first_column(), start_editing);
 }
 
 bool AddDel::select_item(guint row, guint column, bool start_editing)
@@ -954,7 +953,7 @@ void AddDel::set_show_column_titles(bool bVal)
 }
 
 
-void AddDel::set_column_width(guint col, guint width)
+void AddDel::set_column_width(guint /* col */, guint /*width*/)
 {
 //  if( col < (guint)m_Sheet.get_columns_count())
 //    m_Sheet.set_column_width(col, width);
@@ -1079,12 +1078,12 @@ void AddDel::on_treeview_cell_edited_bool(const Glib::ustring& path_string, int 
     bool bIsAdd = false;
     bool bIsChange = false;
 
-    guint iCount = m_refListStore->children().size();
+    int iCount = m_refListStore->children().size();
     if(iCount)
     {
       if(get_allow_user_actions()) //If add is possible:
       {
-        if( (model_column_index == get_first_column() ) && (row_number == (iCount - 1)) ) //If it's the last row:
+        if( (model_column_index == (int)get_first_column() ) && (row_number == (iCount - 1)) ) //If it's the last row:
         {
           //We will ignore editing of bool values in the blank row. It seems like a bad way to start a new record.
           //New item in the blank row:
@@ -1149,12 +1148,12 @@ void AddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const Gli
     bool bIsAdd = false;
     bool bIsChange = false;
 
-    guint iCount = m_refListStore->children().size();
+    int iCount = m_refListStore->children().size();
     if(iCount)
     {
       if(get_allow_user_actions()) //If add is possible:
       {
-        if( (model_column_index == get_first_column() ) && (row_number == (iCount - 1)) ) //If it's the last row:
+        if( (model_column_index == (int)get_first_column() ) && (row_number == (iCount - 1)) ) //If it's the last row:
         {
           //New item in the blank row:
           Glib::ustring strValue = get_value(row_number);
@@ -1231,7 +1230,7 @@ AddDel::type_signal_user_reordered_columns AddDel::signal_user_reordered_columns
 int AddDel::row_number_from_iterator(const Gtk::TreeModel::iterator iter)
 {
   //This is a bit hacky. We should probably just use iterator in the interface.
-  int result;
+  int result = 0;
 
   Gtk::TreeModel::Path path(iter);
   typedef std::vector<int> type_vecInts;

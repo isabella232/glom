@@ -1,7 +1,7 @@
 ## top-level Makefile.am
 
 #Build in these directories:
-SUBDIRS = po glom docs
+SUBDIRS = po glom docs macros
 
 
 #Gnome install information:

@@ -23,6 +23,7 @@
 
 #include "flowtable.h"
 #include "entryglom.h"
+#include "../data_structure/field.h"
 #include <map>
 
 class FlowTableWithFields : public FlowTable
@@ -36,10 +37,13 @@ public:
    * @param id The unique identifier for this field, to use with get_field().
    * @param group The title of the group in which this field should be shown, if any.
    */
-  virtual void add_field(const Glib::ustring& title, const Glib::ustring& id, const Glib::ustring group = "");
-  virtual void remove_field(const Glib::ustring id); 
+  virtual void add_field(const Field& field, const Glib::ustring& group = "");
+  virtual void add_field(const Glib::ustring& title, const Glib::ustring& id, const Glib::ustring& group = "");
+  virtual void remove_field(const Glib::ustring& id); 
   virtual EntryGlom* get_field(const Glib::ustring& id);
-  virtual void change_group(const Glib::ustring id, const Glib::ustring new_group);
+  virtual EntryGlom* get_field(const Field& field);
+    
+  virtual void change_group(const Glib::ustring& id, const Glib::ustring& new_group);
 
   virtual void remove_all();
 
@@ -57,6 +61,7 @@ protected:
   class Info
   {
   public:
+    Field field; //Store the field information so we know the title, ID, and type.
     Glib::ustring m_title;
     Glib::ustring m_id;
     Glib::ustring m_group;

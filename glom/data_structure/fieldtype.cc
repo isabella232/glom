@@ -59,11 +59,6 @@ FieldType::FieldType(Gnome::Gda::ValueType gda_type)
   if(iterFind == m_map_glom_type_to_gda_type.end())
     ideal_gda_type = iterFind->second;
 }
-
-FieldType::FieldType(Glib::ustring underlying_type, bool& underlying_change_required)
-{
-  //TODO.
-}
     
 FieldType::FieldType(const FieldType& src)
 {

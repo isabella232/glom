@@ -32,11 +32,6 @@
 #include <vector>
 #include <map>
 
-/**
-  *@author Murray Cumming
-  */
-
-
 class Document_Glom : public Bakery::Document_XML
 {
 public: 

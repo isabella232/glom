@@ -180,7 +180,7 @@ void Box_DataBases::on_AddDel_Edit(guint row)
   signal_selected.emit(strValue);
 }
 
-void Box_DataBases::on_AddDel_Delete(guint rowStart, guint rowEnd)
+void Box_DataBases::on_AddDel_Delete(guint rowStart, guint /* rowEnd TODO */)
 {
   Glib::ustring strValue = m_AddDel.get_value(rowStart);
   if(strValue.size())
@@ -265,7 +265,7 @@ Box_DataBases::type_vecStrings Box_DataBases::get_database_names()
   return result;
 }
 
-void Box_DataBases::on_AddDel_Changed(guint row, guint number)
+void Box_DataBases::on_AddDel_Changed(guint /* row */, guint /* number */)
 {
   //TODO: Get the old value and change the database name to the new value.
 }

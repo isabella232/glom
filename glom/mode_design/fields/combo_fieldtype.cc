@@ -23,7 +23,7 @@
 #include <gtk/gtkliststore.h> //For debugging.
 #include <libintl.h>
 
-Combo_FieldType::Combo_FieldType(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
+Combo_FieldType::Combo_FieldType(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& /* refGlade */)
 : Gtk::ComboBox(cobject)
 {
   init();

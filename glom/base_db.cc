@@ -195,8 +195,9 @@ void Base_DB::set_userlevel(AppState::userlevels value)
   }
 }
 
-void Base_DB::on_userlevel_changed(AppState::userlevels userlevel)
+void Base_DB::on_userlevel_changed(AppState::userlevels /* userlevel */)
 {
+  //Override this in derived classes.
 }
 
 Glib::ustring Base_DB::util_string_from_decimal(guint decimal)

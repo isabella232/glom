@@ -214,7 +214,7 @@ protected:
   guint treeview_append_column(const Glib::ustring title, Gtk::CellRenderer& cellrenderer, const Gtk::TreeModelColumnBase& model_column, const Glib::ustring& column_id);
 
   template<class T_ModelColumnType>
-  guint AddDel::treeview_append_column(const Glib::ustring title, const Gtk::TreeModelColumn<T_ModelColumnType>& column, const Glib::ustring& column_id);
+  guint treeview_append_column(const Glib::ustring title, const Gtk::TreeModelColumn<T_ModelColumnType>& column, const Glib::ustring& column_id);
 
 
   static Glib::ustring string_escape_underscores(const Glib::ustring& text);

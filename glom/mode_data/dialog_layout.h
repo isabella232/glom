@@ -127,16 +127,13 @@ protected:
       
   Glib::RefPtr<Gtk::ListStore> m_model_fields, m_model_groups;
 
-  Document_Glom* m_document;
   Glib::ustring m_table_name;
   Glib::ustring m_layout_name;
 
   CellRendererList m_cellrenderer_field_group;
-  
+
+  Document_Glom* m_document;  
   bool m_modified;
-
-
-
 };
 
 #endif //DIALOG_LAYOUT_H

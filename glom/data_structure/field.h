@@ -104,7 +104,7 @@ public:
 
   /** Escape the value so that it can be used in a SQL command.
    */
-  static Glib::ustring Field::sql(const Gnome::Gda::Value& value);
+  static Glib::ustring sql(const Gnome::Gda::Value& value);
 
   /** Get text to show to the user.
    */

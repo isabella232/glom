@@ -386,7 +386,7 @@ Box_DB_Table::type_vecFields Box_DB_Table::get_fields_for_table_from_database(co
     DATAMODEL_FIELDS_COL_PRIMARYKEY = 5,
     DATAMODEL_FIELDS_COL_UNIQUEINDEX = 6,
     DATAMODEL_FIELDS_COL_REFERENCES = 7,
-    DATAMODEL_FIELDS_COL_DEFAULTVALUE = 8,
+    DATAMODEL_FIELDS_COL_DEFAULTVALUE = 8
   };
 
   Bakery::BusyCursor(*get_app_window());

@@ -280,7 +280,7 @@ void Box_Tables::on_show_hidden_toggled()
   fill_from_database();
 }
 
-void Box_Tables::on_AddDel_changed(guint row, guint column)
+void Box_Tables::on_AddDel_changed(guint /* row TODO */, guint column)
 {
   if(get_userlevel() == AppState::USERLEVEL_DEVELOPER)
   {
@@ -297,13 +297,13 @@ void Box_Tables::on_AddDel_changed(guint row, guint column)
     } 
     else if(column == m_colTableName)
     {
-      g_warning("Box_Tables: renaming of tables is not yet implemented.");
+      g_warning("Box_Tables: renaming of tables is not yet implemented."); //TODO
       fill_from_database();
     }
   }
 }
 
-void  Box_Tables::on_userlevel_changed(AppState::userlevels userlevel)
+void  Box_Tables::on_userlevel_changed(AppState::userlevels /* userlevel */)
 {
   fill_from_database();
 }

@@ -17,9 +17,12 @@ AM_SANITY_CHECK
 #Internationalisation:
 GETTEXT_PACKAGE=glom
 AC_SUBST(GETTEXT_PACKAGE)
-ALL_LINGUAS="de it sv"
+ALL_LINGUAS="de sv"
 AM_GLIB_GNU_GETTEXT
 AC_PROG_INTLTOOL
+
+AC_CONFIG_AUX_DIR(macros)
+AC_SUBST([ACLOCAL_AMFLAGS], ['-I macros ${ACLOCAL_FLAGS}'])
 
 AC_LANG_CPLUSPLUS
 
@@ -39,6 +42,9 @@ AC_SUBST(GLOM_LIBS)
 GLOM_DTD_INSTALL_DIR="\"${prefix}/share/${PACKAGE}\""
 AC_DEFINE_UNQUOTED(GLOM_DTD_INSTALL_DIR, $GLOM_DTD_INSTALL_DIR, "definition of GLOM_DTD_INSTALL_DIR")
 
+# Evaluate the --enable-warnings=level option.
+GLOM_ARG_ENABLE_WARNINGS()
+
 # Generate Makefiles, configuration files and scripts:
 AC_OUTPUT(Makefile \
   docs/Makefile \
@@ -54,4 +60,5 @@ AC_OUTPUT(Makefile \
       glom/utility_widgets/adddel/Makefile \
         glom/utility_widgets/adddel/eggcolumnchooser/Makefile \
     po/Makefile.in
+  macros/Makefile
 )

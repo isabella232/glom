@@ -71,8 +71,6 @@ protected:
   virtual void on_button_nav_next();
   virtual void on_button_nav_last();
 
-  virtual void on_AddDel_user_changed(guint row, guint col);
-
   //Signal handler: The last 2 args are bind-ed.
   virtual void on_related_record_added(Glib::ustring strKeyValue, Glib::ustring strFromKeyName);
 

@@ -73,7 +73,7 @@ public:
   {
     MODE_None, //at the start.
     MODE_Data,
-    MODE_Find,
+    MODE_Find
   };
   enumModes m_Mode;
   enumModes m_Mode_Previous; // see comments in set_mode_widget().

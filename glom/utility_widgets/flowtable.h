@@ -57,12 +57,12 @@ protected:
   virtual void forall_vfunc(gboolean include_internals, GtkCallback callback, gpointer callback_data);
 
   
-  guint get_column_height(guint start_widget, guint widget_count, guint& total_width);
+  int get_column_height(guint start_widget, guint widget_count, int& total_width);
 
   /** 
    * @result The height when the children are arranged optimally (so that the height is minimum).
    */
-  guint get_minimum_column_height(guint start_widget, guint columns_count, guint& total_width);
+  int get_minimum_column_height(guint start_widget, guint columns_count, int& total_width);
 
   class FlowTableItem
   {
@@ -73,16 +73,13 @@ protected:
   
   typedef std::vector<FlowTableItem> type_vecChildren;
 
-  guint get_item_requested_height(const FlowTableItem& item);
-  void get_item_requested_width(const FlowTableItem& item, guint& first, guint& second);
-  void get_item_max_width(guint start, guint height, guint& first_max_width, guint& second_max_width); //TODO: maybe combine this with code in get_minimum_column_height().
+  int get_item_requested_height(const FlowTableItem& item);
+  void get_item_requested_width(const FlowTableItem& item, int& first, int& second);
+  void get_item_max_width(guint start, int height, int& first_max_width, int& second_max_width); //TODO: maybe combine this with code in get_minimum_column_height().
 
   bool child_is_visible(Gtk::Widget* widget);
-  void FlowTable::assign_child(Gtk::Widget* widget, guint x, guint y);
+  void assign_child(Gtk::Widget* widget, int x, int y);
   
- 
-  
-
   type_vecChildren m_children;
   guint m_columns_count;
   guint m_padding;

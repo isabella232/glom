@@ -171,7 +171,7 @@ void Box_Data_List::on_AddDel_user_requested_edit(guint row)
   signal_user_requested_details().emit(strPrimaryKeyValue);
 }
 
-void Box_Data_List::on_AddDel_user_requested_delete(guint rowStart, guint rowEnd)
+void Box_Data_List::on_AddDel_user_requested_delete(guint rowStart, guint /* rowEnd TODO */)
 {
   guint iRow = m_AddDel.get_item_selected();
 
@@ -455,7 +455,7 @@ void Box_Data_List::fill_column_titles()
   } //if(pDoc)
 }
 
-void Box_Data_List::on_record_added(const Glib::ustring& strPrimaryKey)
+void Box_Data_List::on_record_added(const Glib::ustring& /* strPrimaryKey */)
 {
   //Overridden by Box_Data_List_Related.
   m_AddDel.add_item(); //Add blank row.

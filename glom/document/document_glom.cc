@@ -256,7 +256,6 @@ void Document_Glom::set_table_fields(const Glib::ustring& strTableName, type_vec
     set_node_attribute_value(elemField, "default_value", field_info.get_default_value().to_string());
 
     Glib::ustring field_type;
-    FieldType::enumTypes field_type_enum = FieldType::TYPE_INVALID;
     FieldType::type_map_type_names::iterator iterTypes = type_names.find( field.get_field_type().get_glom_type() );
     if(iterTypes != type_names.end())
       field_type = iterTypes->second;

@@ -158,7 +158,7 @@ void Box_DB_Table_Definition::on_AddDel_delete(guint rowStart, guint rowEnd)
   fill_from_database();
 }
 
-void Box_DB_Table_Definition::on_AddDel_changed(guint row, guint col)
+void Box_DB_Table_Definition::on_AddDel_changed(guint row, guint /* col */)
 {
   //Get old field definition:
   Document_Glom* pDoc = static_cast<Document_Glom*>(get_document());
@@ -399,14 +399,14 @@ void Box_DB_Table_Definition::fill_fields()
 void  Box_DB_Table_Definition::postgres_add_column(const Field& field, bool not_extras)
 {
   bool bTest = Query_execute(  "ALTER TABLE " + m_strTableName + " ADD " + field.get_name() + " " +  field.get_sql_type() );
-
-  if(not_extras)
+  if(bTest)
   {
-    //We must do this separately:
-    postgres_change_column_extras(field, field, true /* set them even though the fields are the same */);
+    if(not_extras)
+    {
+      //We must do this separately:
+      postgres_change_column_extras(field, field, true /* set them even though the fields are the same */);
+    }
   }
-
-   
 }
 
 void  Box_DB_Table_Definition::postgres_change_column(const Field& field_old, const Field& field)

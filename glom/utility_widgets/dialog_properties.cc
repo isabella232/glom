@@ -54,8 +54,9 @@ void Dialog_Properties::on_button_cancel()
   hide();
 }
 
-void Dialog_Properties::add(Gtk::Widget& widget)
+void Dialog_Properties::add(Gtk::Widget& /*widget */)
 {
+  //TODO: Remove this method?
   //Connect the widgets signals:
   //on_foreach_connect(widget);
 }

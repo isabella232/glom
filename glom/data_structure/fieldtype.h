@@ -40,7 +40,6 @@ public:
   FieldType();
   FieldType(enumTypes glom_field_type);
   FieldType(Gnome::Gda::ValueType gda_type);
-  FieldType(Glib::ustring underlying_type, bool& underlying_change_required);
   FieldType(const FieldType& src);
   virtual ~FieldType();
 

@@ -159,22 +159,15 @@ void Box_Data_Details::fill_from_database()
             
             const int row_number = 0; //The only row.
             const int cols_count = result->get_n_columns();
-            for(guint i = 0; i < cols_count; i ++)
+            for(int i = 0; i < cols_count; i ++)
             {
-              //Field name:
-              Glib::ustring strFieldName = m_Fields[i].get_name();
-              Glib::ustring strFieldTitle = strFieldName;
+              const Field field = m_Fields[i];
                 
-              EntryGlom* pEntry = m_FlowTable.get_field(strFieldName);        
+              EntryGlom* pEntry = m_FlowTable.get_field(field);        
               if(!pEntry) //Create a widget for the field if one does not exist already:
               {
-                //See if a field title has been specified:
-                Document_Glom::type_vecFields::iterator iterFind = std::find_if( vecFields.begin(), vecFields.end(), predicate_FieldHasName<Field>(strFieldName) );
-                if(iterFind != vecFields.end()) //if it is there:
-                  strFieldTitle = iterFind->get_title_or_name();
-
-                m_FlowTable.add_field(strFieldTitle, strFieldName);
-                pEntry = m_FlowTable.get_field(strFieldName);
+                m_FlowTable.add_field(field);
+                pEntry = m_FlowTable.get_field(field);
               }
 
               if(pEntry)
@@ -234,8 +227,8 @@ void Box_Data_Details::fill_related()
     {
        const Relationship& relationship = *iter;
 
-       bool bMakeRelatedTab = true;
-       guint rowKey = 0;
+       //bool bMakeRelatedTab = true;
+       //guint rowKey = 0;
 
        Glib::ustring from_field = relationship.get_from_field();
        if(!from_field.empty())
@@ -290,22 +283,24 @@ void Box_Data_Details::on_button_new()
     const Glib::ustring strPrimaryKeyName = get_PrimaryKey_Name();
     Field field;
     bool test = get_field(strPrimaryKeyName, field);
-
-    Gnome::Gda::FieldAttributes fieldinfo = field.get_field_info();
-    if(fieldinfo.get_auto_increment()) //If the primary key is an auto-increment:
+    if(test)
     {
-      //Just make a new record, and show it:
-      guint generated_id = generate_next_auto_increment(m_strTableName, strPrimaryKeyName);
-      Glib::ustring strPrimaryKeyValue = util_string_from_decimal(generated_id);
+      Gnome::Gda::FieldAttributes fieldinfo = field.get_field_info();
+      if(fieldinfo.get_auto_increment()) //If the primary key is an auto-increment:
+      {
+        //Just make a new record, and show it:
+        guint generated_id = generate_next_auto_increment(m_strTableName, strPrimaryKeyName);
+        Glib::ustring strPrimaryKeyValue = util_string_from_decimal(generated_id);
 
-      record_new(strPrimaryKeyValue);
-      init_db_details(strPrimaryKeyValue);
-    }
-    else
-    {
-      //It's not an auto-increment primary key,
-      //so just blank the fields ready for a primary key later.
-      init_db_details(""); //shows blank record.
+        record_new(strPrimaryKeyValue);
+        init_db_details(strPrimaryKeyValue);
+      }
+      else
+      {
+        //It's not an auto-increment primary key,
+        //so just blank the fields ready for a primary key later.
+        init_db_details(""); //shows blank record.
+      }
     }
 
   } //if(confirm_discard_unstored_data())
@@ -371,141 +366,6 @@ Field Box_Data_Details::get_Entered_Field(guint index) const
   return FieldResult;
 }
 
-void Box_Data_Details::on_AddDel_user_changed(guint row, guint col)
-{
-/*
-  if(row < m_Fields.size())
-  {
-    const Glib::ustring& strPrimaryKey_Name = get_PrimaryKey_Name();
-    const Glib::ustring& strFieldName = m_Fields[row].get_name();
-    const Glib::ustring& strFieldValue = m_AddDel.get_value(row);
-
-    if(strPrimaryKey_Name.size())
-    {
-      Gnome::Gda::FieldAttributes fieldInfoPK;
-      bool test = get_field(strPrimaryKey_Name, fieldInfoPK);
-
-      if(get_primary_key_value().size()) //If there is a primary key value:
-      {
-        //Update the field in the record (the record with this primary key):
-        try
-        {
-          Glib::ustring strQuery = "UPDATE " + m_strTableName;
-          strQuery += " SET " +  get_table_name() + "." + strFieldName + " = " + Field::sql(strFieldValue);
-          strQuery += " WHERE " + get_table_name() + "." + strPrimaryKey_Name + " = " + Field::sql(get_primary_key_value());
-          bool bTest = Query_execute(strQuery);
-
-          if(!bTest)
-          {
-            //Update failed.
-            fill_from_database(); //Replace with correct values.
-          }
-          else
-          {
-            //If this is a foreign key then refresh the related records:
-            bool bIsForeignKey = false;
-            Document_Glom::type_vecRelationships vecRelationships = m_pDocument->get_relationships(m_strTableName);
-            for(Document_Glom::type_vecRelationships::iterator iter = vecRelationships.begin(); iter != vecRelationships.end(); iter++)
-            {
-              const Relationship& relationship = *iter;
-
-              if(relationship.get_from_field() == strFieldName)
-              {
-                bIsForeignKey = true;
-                break;
-              }
-            }
-
-            if(bIsForeignKey)
-              fill_related();
-          }
-
-        }
-        catch(const std::exception& ex)
-        {
-          handle_error(ex);
-        }
-      }
-      else
-      {
-        //There is no current primary key:
-
-        if(fieldInfoPK.get_auto_increment()) //If the primary key is an auto-increment:
-        {
-          if(strFieldName == strPrimaryKey_Name) //If edited field is the primary key.
-          {
-            //Warn user that they can't choose their own primary key:
-            Gtk::MessageDialog dialog ("The primary key is auto-incremented.\n You may not enter your own primary key value.");
-            dialog.run();
-          }
-          else
-          {
-            //The edited field is not the primary key:
-
-            //Create new record:
-            bool bTest = record_new();
-
-            if(bTest)
-            {
-              try
-              {
-                //Get new auto-generated primary key:
-                sharedptr<SharedConnection> sharedconnection = connect_to_server();
-                if(sharedconnection)
-                {
-                  Glib::RefPtr<Gnome::Gda::Connection> connection = sharedconnection->get_gda_connection();
-                  unsigned long ulAutoID = get_last_auto_increment_value();
-
-                  if(ulAutoID)
-                  {
-                    gchar pchAutoID[10] = {0};
-                    sprintf(pchAutoID, "%d", (guint)ulAutoID);
-                    Glib::ustring strAutoID(pchAutoID);
-
-                    //Show the new record:
-                    init_db_details(strAutoID);
-
-                    //Set the edited field in the new record:
-                    m_AddDel.set_value(row, col, strFieldValue);
-
-                    //Update the field value in the database:
-                    on_AddDel_user_changed(row, col);
-                  }
-                }
-              }
-              catch(const std::exception& ex)
-              {
-                handle_error(ex);
-              }
-            }
-          } //if(strFieldName == strPrimaryKey_Name)
-        }
-        else
-        {
-          //It is not auto-generated:
-
-          if(strFieldName == strPrimaryKey_Name) //if it is the primary key that' being edited.
-          {
-            //Create new record with this primary key,
-            //and all the other field values too.
-            //see comments after 'else':
-            record_new_from_entered();
-          }
-          else
-          {
-            //The record does not exist yet.
-            //The values in the other fields will have to wait
-            //until the primary key is set by the user.
-
-            set_unstored_data(true); //Cause a warning if this is never put into the database.
-          }
-        }
-      } //if(get_primary_key_value().size())
-    } //if(strPrimaryKey_Name.size())
-  }
-  */
-}
-
 Glib::ustring Box_Data_Details::get_primary_key_value_selected()
 {
 
@@ -525,7 +385,7 @@ void Box_Data_Details::on_related_user_requested_details(Glib::ustring strKeyVal
   signal_user_requested_related_details().emit(strTableName, strKeyValue);
 }
 
-void Box_Data_Details::on_related_record_added(Glib::ustring strKeyValue, Glib::ustring strFromKeyName)
+void Box_Data_Details::on_related_record_added(Glib::ustring /* strKeyValue */, Glib::ustring /* strFromKeyName */)
 {
   //Prevent deletion of Related boxes.
   //One of them emitted this signal, and is probably still being edited.
@@ -599,14 +459,17 @@ void Box_Data_Details::on_flowtable_field_edited(Glib::ustring id)
      {
        Field fieldInfoPK;
        bool test = get_field(strPrimaryKey_Name, fieldInfoPK);
-
+       if(!test)
+         g_warning("Box_Data_Details::on_flowtable_field_edited(): field not found");
 
        Glib::ustring primary_key_value = get_primary_key_value();
        if(!primary_key_value.empty()) //If there is a primary key value:
        {
          Field field;
          bool test = get_field(strFieldName, field);
-       
+         if(!test)
+           g_warning("Box_Data_Details::on_flowtable_field_edited: field not found");
+           
          //Update the field in the record (the record with this primary key):
          try
          {

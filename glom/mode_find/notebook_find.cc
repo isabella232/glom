@@ -40,7 +40,7 @@ Notebook_Find::~Notebook_Find()
 {
 }
 
-void Notebook_Find::init_db_details(Glib::ustring strDatabaseName, Glib::ustring strTableName)
+void Notebook_Find::init_db_details(const Glib::ustring& /*strDatabaseName */, const Glib::ustring& /* strTableName */)
 {
   //m_Box_List.init_db_details(pConnection, strDatabaseName, strTableName);
   //m_Box_Details.init_db_details(pConnection, strDatabaseName, strTableName, "");

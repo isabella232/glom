@@ -1,5 +1,11 @@
 2004-06-10  Murray Cumming  <murrayc@murrayc.com>
 
+	* Added macros/macros.m4, and used the macro in configure.in, to add 
+	--enable-warnings configure options, and used them by default in 
+	autogen.sh. So now it builds with warnings by default.
+
+2004-06-10  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/navigation/box_tables.cc: Handle AddDel::signal_user_changed so
 	that changes are saved immediately. It does not update the list of 
 	non-hidden tables properly yet though. The AddDel columns are no 

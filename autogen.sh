@@ -37,6 +37,19 @@ fi
 # This might not be necessary with newer autotools:
 rm -f config.cache
 
+enable_warnings=
+
+srcdir=`dirname $0`
+
+case "$*" in
+    *--enable-warnings*|*--disable-warnings*)
+        ;;
+    *)  # enable -Werror by default when building with gcc3
+        ${CXX:-"g++"} --version 2>/dev/null | grep '(GCC) 3\.[0-9]\+\.[0-9]' >/dev/null 2>&1 \
+            && enable_warnings='--enable-warnings=hardcore'
+        ;;
+esac
+
 # We use glib-gettextize, which apparently does not add the intl directory 
 # (containing a local copy of libintl code), and therefore has a slightly different Makefile.
 echo "- glib-gettextize."	&& \
@@ -46,15 +59,15 @@ echo "- intltoolize."		&& \
 echo "- libtoolize."		&& \
   libtoolize --copy --force --automake 	&& \
 echo "- aclocal"		&& \
-  aclocal 			&& \
+  aclocal -I "$srcdir/macros" $ACLOCAL_FLAGS && \
 echo "- autoheader"		&& \
   autoheader			&& \
 echo "- autoconf."		&& \
   autoconf			&& \
 echo "- automake."		&& \
   automake --add-missing --gnu	&& \
-echo				&& \
-  ./configure "$@"		&& exit 0
+echo "- configure --enable-maintainer-mode" $enable_warnings "$@"	&& \
+  ./configure --enable-maintainer-mode $enable_warnings "$@"		&& exit 0
 
 exit 1
 

@@ -29,7 +29,7 @@ Box_Data_List_Related::~Box_Data_List_Related()
 {
 }
 
-void Box_Data_List_Related::init_db_details(const Glib::ustring& strDatabaseName,  const Relationship& relationship, const Glib::ustring& strForeignKeyValue, const Glib::ustring& from_table_primary_key_value)
+void Box_Data_List_Related::init_db_details(const Glib::ustring& strDatabaseName,  const Relationship& relationship, const Glib::ustring& strForeignKeyValue, const Glib::ustring&  /* from_table_primary_key_value */)
 {
   m_strKeyField = relationship.get_to_field();
   m_strKeyValue = strForeignKeyValue;
@@ -129,27 +129,29 @@ void Box_Data_List_Related::on_AddDel_user_added(guint row)
 
   Field field;
   bool test = get_field(m_strKeyField, field);
-
-  Gnome::Gda::FieldAttributes fieldInfo = field.get_field_info();
-  if(fieldInfo.get_unique_key() || fieldInfo.get_primary_key())
+  if(test)
   {
-    if(m_AddDel.get_count() > 0) //If there is already 1 record
-      bAllowAdd = false;
-  }
+    Gnome::Gda::FieldAttributes fieldInfo = field.get_field_info();
+    if(fieldInfo.get_unique_key() || fieldInfo.get_primary_key())
+    {
+      if(m_AddDel.get_count() > 0) //If there is already 1 record
+        bAllowAdd = false;
+    }
 
-  if(bAllowAdd)
-  {
-    Box_Data_List::on_AddDel_user_added(row);
-  }
-  else
-  {
-    //Tell user that they can't do that:
-    Gtk::MessageDialog dialog(gettext("You attempted to add a new related record, \nbut there can only be one related record, \nbecause the relationship uses a unique key."),
-      Gtk::MESSAGE_WARNING);
-    dialog.run();
+    if(bAllowAdd)
+    {
+      Box_Data_List::on_AddDel_user_added(row);
+    }
+    else
+    {
+      //Tell user that they can't do that:
+      Gtk::MessageDialog dialog(gettext("You attempted to add a new related record, \nbut there can only be one related record, \nbecause the relationship uses a unique key."),
+        Gtk::MESSAGE_WARNING);
+      dialog.run();
 
-    //Replace with correct values:
-    fill_from_database();
+      //Replace with correct values:
+      fill_from_database();
+    }
   }
 }
 

@@ -29,7 +29,12 @@ FlowTableWithFields::~FlowTableWithFields()
 {
 }
 
-void FlowTableWithFields::add_field(const Glib::ustring& title, const Glib::ustring& id, const Glib::ustring group)
+void FlowTableWithFields::add_field(const Field& field, const Glib::ustring& group)
+{
+  add_field(field.get_title_or_name(), field.get_name(), group);
+}
+
+void FlowTableWithFields::add_field(const Glib::ustring& title, const Glib::ustring& id, const Glib::ustring& group)
 {
   type_mapFields::iterator iterFind = m_mapFields.find(id);
   if(iterFind == m_mapFields.end())
@@ -61,7 +66,7 @@ void FlowTableWithFields::add_field(const Glib::ustring& title, const Glib::ustr
     g_warning("FlowTableWithFields::add_field: The ID exists already.");
 }
 
-void FlowTableWithFields::remove_field(const Glib::ustring id)
+void FlowTableWithFields::remove_field(const Glib::ustring& id)
 {
   type_mapFields::iterator iterFind = m_mapFields.find(id);
   if(iterFind != m_mapFields.end())
@@ -76,6 +81,11 @@ void FlowTableWithFields::remove_field(const Glib::ustring id)
   } 
 }
 
+EntryGlom* FlowTableWithFields::get_field(const Field& field)
+{
+  return get_field(field.get_name());
+}
+
 EntryGlom* FlowTableWithFields::get_field(const Glib::ustring& id)
 {
   type_mapFields::const_iterator iterFind = m_mapFields.find(id);
@@ -88,7 +98,7 @@ EntryGlom* FlowTableWithFields::get_field(const Glib::ustring& id)
   return 0; //Not found.
 }
 
-void FlowTableWithFields::change_group(const Glib::ustring id, const Glib::ustring new_group)
+void FlowTableWithFields::change_group(const Glib::ustring& /* id */, const Glib::ustring& /*new_group */)
 {
   //TODO.
 }
