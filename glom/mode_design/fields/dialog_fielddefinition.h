@@ -21,31 +21,33 @@
 #ifndef DIALOG_FIELDDEFINITION_H
 #define DIALOG_FIELDDEFINITION_H
 
-#include <gtkmm.h>
+#include "combo_textglade.h"
 #include "combo_fieldtype.h"
+#include <gtkmm.h>
 #include "../../utility_widgets/table_columns.h"
 #include "../../utility_widgets/entry_numerical.h"
 #include "../../utility_widgets/dialog_properties.h"
 #include "../../data_structure/field.h"
+#include "../../base_db.h"
 
-/**
-  *@author Murray Cumming
-  */
-
-
-class Dialog_FieldDefinition : public Dialog_Properties
+class Dialog_FieldDefinition
+ : public Dialog_Properties,
+   public Base_DB //Give this class access to the current document, and to some utility methods.
 {
 public: 
   Dialog_FieldDefinition(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
   virtual ~Dialog_FieldDefinition();
 
-  virtual void set_field(const Field& field);
+  virtual void set_field(const Field& field, const Glib::ustring& table_name);
   virtual Field get_field() const;
 
 protected:
 
   //Signal handlers:
   void on_combo_type_changed();
+  void on_combo_lookup_relationship_changed();
+  void on_check_lookup_toggled();
+  
   //void on_foreach(Gtk::Widget& widget);
 
   //Disable/enable other controls when a control is selected.
@@ -60,9 +62,16 @@ protected:
   Gtk::CheckButton* m_pCheck_PrimaryKey;
   Gtk::CheckButton* m_pCheck_AutoIncrement;
 
+  Gtk::VBox* m_pBox_DefaultValue;
+  Gtk::CheckButton* m_pCheck_Lookup;
+  Gtk::Table* m_pTable_Lookup;
+  Combo_TextGlade* m_pCombo_LookupRelationship;
+  Combo_TextGlade* m_pCombo_LookupField;
+
   Gtk::Entry* m_pEntry_Title;
 
   Field m_Field;
+  Glib::ustring m_table_name;
 };
 
 #endif //DIALOG_FIELDDEFINITION_H

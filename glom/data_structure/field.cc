@@ -123,7 +123,7 @@ Glib::ustring Field::get_lookup_relationship() const
 
 void Field::set_lookup_relationship(const Glib::ustring& strRelationship)
 {
-  m_strLookupField = strRelationship;
+  m_strLookupRelationship = strRelationship;
 }
 
 Glib::ustring Field::get_lookup_field() const

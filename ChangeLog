@@ -1,3 +1,12 @@
+2004-06-17  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/glade.glom, glom/mode_design/fields/dialog_fielddefinition.cc: 
+	Moved Default Value into its own Notebook tab, with new Lookup widgets.
+	* glom/mode_data/box_data_list.cc: Make the rows have alternating 
+	colors when the theme does that. Among other things, this makes the 
+	data list look different to the field list.
+	* The lookup details are not actually used yet to do any lookups.
+
 2004-06-15  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/utility_widgets/adddel/adddel.[h|cc]: Simplifified the code for 

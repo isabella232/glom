@@ -40,6 +40,7 @@ void Box_DB_Table_Definition::init()
   Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_field_definition_edit");
   if(refXml)
     refXml->get_widget_derived("window_field_definition_edit", m_pDialog);
+  add_view(m_pDialog); //Give it access to the document.
 
   pack_start(m_AddDel);
   m_colName = m_AddDel.add_column(gettext("Name"));
@@ -219,7 +220,7 @@ void Box_DB_Table_Definition::on_AddDel_edit(const Gtk::TreeModel::iterator& row
 {
   m_Field_BeingEdited = get_field_definition(row);
   
-  m_pDialog->set_field(m_Field_BeingEdited); //By-value.
+  m_pDialog->set_field(m_Field_BeingEdited, m_strTableName);
  
   //m_pDialog->set_modified(false); //Disable [Apply] at start.
   
@@ -342,29 +343,7 @@ void Box_DB_Table_Definition::change_definition(const Field& fieldOld, Field fie
     }
   }
   */
-
-  
-  /* Old MySQL stuff:
-  if(fieldInfoOld.get_primary_key())
-  {
-    //If we are modifying a primary key then we first need to stop it from being the primary key.
-    //Otherwise mysql complains that there is a conflict. Silly mysql.
-
-    Gnome::Gda::FieldAttributes fieldInfoNonPrimary = fieldInfoOld;
-    fieldInfoNonPrimary.set_primary_key(false);
-    fieldInfoNonPrimary.set_auto_increment(false);
-    Query_execute( "ALTER TABLE " + m_strTableName + " CHANGE " + strFieldNameOld + " " + fieldInfoNonPrimary.get_name() + " " + get_field_definition_for_sql(fieldInfoNonPrimary) );
-
-    Query_execute( "ALTER TABLE " + m_strTableName + " DROP PRIMARY KEY");
-  }
-  else if(fieldInfoOld.get_unique_key() && fieldInfo.get_unique_key())
-  {
-    //It doesn't seem possible to turn off UNIQUE.
-    //And specifying it a second time gives an error.
-
-    fieldInfo.set_unique_key(false);
-  }
-  */
+ 
 
    //MySQL does this all with ALTER_TABLE, with "CHANGE" followed by the same details used with "CREATE TABLE",
    //MySQL also makes it easier to change the type.

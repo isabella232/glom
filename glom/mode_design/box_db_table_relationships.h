@@ -45,13 +45,11 @@ protected:
   virtual void on_AddDel_user_activated(const Gtk::TreeModel::iterator& row, guint col);
   virtual void on_AddDel_user_changed(const Gtk::TreeModel::iterator& row, guint col);
 
-  typedef std::vector<Glib::ustring> type_vecStrings;
-  static type_vecStrings util_vecStrings_from_Fields(const type_vecFields& fields);
-
   guint m_colName, m_colFromField, m_colToTable, m_colToField;
 
   mutable AddDel_WithButtons m_AddDel; //mutable because its get_ methods aren't const.
   Gtk::Button m_Button_Guess;
 };
 
-#endif
+#endif //BOX_DB_TABLE_RELATIONSHIPS_H
+

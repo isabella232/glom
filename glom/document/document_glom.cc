@@ -84,6 +84,43 @@ void Document_Glom::set_connection_database(const Glib::ustring& strVal)
 }
 
 
+bool Document_Glom::get_relationship(const Glib::ustring& table_name, const Glib::ustring& relationship_name, Relationship& relationship) const
+{
+  //Initialize output parameter:
+  relationship = Relationship();
+
+  const xmlpp::Element* nodeTable = get_node_table(table_name);
+  if(nodeTable)
+  {
+    const xmlpp::Element* nodeRelationships = get_node_child_named(nodeTable, "relationships");
+    if(nodeRelationships)
+    {
+      const xmlpp::Node::NodeList listNodes = nodeRelationships->get_children("relationship");
+      for(xmlpp::Node::NodeList::const_iterator iter = listNodes.begin(); iter != listNodes.end(); iter++)
+      {
+        const xmlpp::Element* nodeChild = dynamic_cast<xmlpp::Element*>(*iter);
+        if(nodeChild)
+        {
+          const Glib::ustring this_relationship_name = get_node_attribute_value(nodeChild, "name");
+          if(this_relationship_name == relationship_name)
+          {
+            relationship.set_from_table( table_name );
+            relationship.set_name( relationship_name );
+            relationship.set_from_field( get_node_attribute_value(nodeChild, "key") );
+            relationship.set_to_table( get_node_attribute_value(nodeChild, "other_table") );
+            relationship.set_to_field( get_node_attribute_value(nodeChild, "other_key") );
+
+            return true; //success.
+          }
+        }
+      }
+    }
+  }
+            
+  return false; //failed.
+}
+
+  
 Document_Glom::type_vecRelationships Document_Glom::get_relationships(const Glib::ustring& strTableName)
 {
   type_vecRelationships vecResult;

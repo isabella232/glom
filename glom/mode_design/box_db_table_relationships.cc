@@ -127,19 +127,6 @@ void Box_DB_Table_Relationships::save_to_document()
   Box_DB_Table::save_to_document();
 }
 
-Box_DB_Table_Relationships::type_vecStrings Box_DB_Table_Relationships::util_vecStrings_from_Fields(const type_vecFields& fields)
-{
-  //Get vector of field names, suitable for a combo box:
-
-  type_vecStrings vecNames;
-  for(type_vecFields::size_type i = 0; i < fields.size(); i++)
-  {
-    vecNames.push_back(fields[i].get_name());
-  }
-
-  return vecNames;
-}
-
 void Box_DB_Table_Relationships::on_AddDel_user_changed(const Gtk::TreeModel::iterator& row, guint col)
 {
   if(col == m_colName)

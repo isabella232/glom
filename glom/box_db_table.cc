@@ -312,7 +312,7 @@ Field Box_DB_Table::get_fields_for_table_one_field(const Glib::ustring& table_na
 
 Box_DB_Table::type_vecFields Box_DB_Table::get_fields_for_table(const Glib::ustring& table_name) const
 {
-  //Get field definitions from the database, because not all field information is stored in the document (for instance, whether it is a primary key)
+  //Get field definitions from the database:
   type_vecFields fieldsDatabase = get_fields_for_table_from_database(table_name);
 
   const Document_Glom* pDoc = dynamic_cast<const Document_Glom*>(get_document());

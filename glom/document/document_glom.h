@@ -50,6 +50,8 @@ public:
   virtual type_vecRelationships get_relationships(const Glib::ustring& strTableName);
   virtual void set_relationships(const Glib::ustring& strTableName, type_vecRelationships vecRelationships);
 
+  virtual bool get_relationship(const Glib::ustring& table_name, const Glib::ustring& relationship_name, Relationship& relationship) const;
+  
   typedef std::vector<Field> type_vecFields;
   virtual type_vecFields get_table_fields(const Glib::ustring& strTableName) const;
   virtual void set_table_fields(const Glib::ustring& strTableName, type_vecFields vecFields);

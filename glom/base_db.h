@@ -59,6 +59,8 @@ protected:
   typedef std::vector<Glib::ustring> type_vecStrings;
   type_vecStrings get_table_names();
 
+  type_vecFields get_fields_for_table(const Glib::ustring& table_name) const;
+
   virtual void fill_from_database();
   virtual void fill_end(); //Call this from the end of fill_from_database() overrides.
 
@@ -66,7 +68,10 @@ protected:
 
   Glib::ustring util_string_from_decimal(guint decimal);
   guint util_decimal_from_string(const Glib::ustring& str);
-  
+
+  static type_vecStrings util_vecStrings_from_Fields(const type_vecFields& fields);
+  static type_vecFields get_fields_for_table_from_database(const Glib::ustring& table_name);
+    
   virtual void handle_error(const std::exception& ex); //TODO_port: This is probably useless now.
   virtual void handle_error();
 

@@ -120,7 +120,6 @@ public:
   virtual void set_value(const Gtk::TreeModel::iterator& iter, guint col, bool bVal);
 
 
-
   virtual bool get_is_first_row(const Gtk::TreeModel::iterator& iter) const;
   virtual bool get_is_last_row(const Gtk::TreeModel::iterator& iter) const;
 
@@ -172,7 +171,9 @@ public:
 
   Glib::RefPtr<Gtk::TreeModel> get_model();
   Glib::RefPtr<const Gtk::TreeModel> get_model() const;
-    
+
+  virtual void set_rules_hint(bool val = true);
+      
   //Signals:
   //row number.
   typedef sigc::signal<void, const Gtk::TreeModel::iterator&> type_signal_user_added;

@@ -35,11 +35,20 @@ Dialog_FieldDefinition::Dialog_FieldDefinition(BaseObjectType* cobject, const Gl
   refGlade->get_widget("checkbutton_primarykey",  m_pCheck_PrimaryKey);
   refGlade->get_widget("checkbutton_autoincrement",  m_pCheck_AutoIncrement);  
 
-  refGlade->get_widget("entry_defaultvalue",  m_pEntry_Default);
-  refGlade->get_widget("label_defaultvalue",  m_pLabel_Default);  
+  refGlade->get_widget("entry_default_value_simple",  m_pEntry_Default);
+  refGlade->get_widget("label_default_value_simple",  m_pLabel_Default);
+
+  refGlade->get_widget("box_default_value",  m_pBox_DefaultValue);
+  refGlade->get_widget("checkbutton_lookup",  m_pCheck_Lookup);
+  refGlade->get_widget("table_lookup",  m_pTable_Lookup);
+  refGlade->get_widget_derived("combobox_lookup_relationship",  m_pCombo_LookupRelationship);
+  refGlade->get_widget_derived("combobox_lookup_field",  m_pCombo_LookupField);
+
 
   //Connect signals:
-  m_pCombo_Type->signal_changed().connect( sigc::mem_fun(*this, &Dialog_FieldDefinition::on_combo_type_changed));
+  m_pCombo_Type->signal_changed().connect( sigc::mem_fun(*this, &Dialog_FieldDefinition::on_combo_type_changed) );
+  m_pCombo_LookupRelationship->signal_changed().connect( sigc::mem_fun(*this, &Dialog_FieldDefinition::on_combo_lookup_relationship_changed) );
+  m_pCheck_Lookup->signal_toggled().connect( sigc::mem_fun(*this, &Dialog_FieldDefinition::on_check_lookup_toggled) );
 
   //TODO:
   //Connect every widget to on_anything_changed():
@@ -52,8 +61,8 @@ Dialog_FieldDefinition::Dialog_FieldDefinition(BaseObjectType* cobject, const Gl
 
   on_foreach_connect(*this);
 
-  set_modified(false);
-  
+  Dialog_Properties::set_modified(false);
+
   show_all_children();
 }
 
@@ -61,12 +70,13 @@ Dialog_FieldDefinition::~Dialog_FieldDefinition()
 {
 }
 
-void Dialog_FieldDefinition::set_field(const Field& field)
+void Dialog_FieldDefinition::set_field(const Field& field, const Glib::ustring& table_name)
 {
   set_blocked();
 
   m_Field = field; //Remember it so we save any details that are not in our UI.
-  
+  m_table_name = table_name;  //Used for lookup combo boxes.
+
   //Set the Widgets from the field info:
   const Gnome::Gda::FieldAttributes& fieldInfo = field.get_field_info();
 
@@ -77,28 +87,54 @@ void Dialog_FieldDefinition::set_field(const Field& field)
   m_pCheck_PrimaryKey->set_active(fieldInfo.get_primary_key());
   m_pCheck_AutoIncrement->set_active(fieldInfo.get_auto_increment());
 
-  Glib::ustring default_value = "";
-  if(!fieldInfo.get_auto_increment()) //Ignore default_values for auto_increment fields - it's just some obscure postgres code.
+  //Glom-specific details:
+
+  //Default value
+  bool disable_default_value = false;
+  if(fieldInfo.get_auto_increment()) //Ignore default_values for auto_increment fields - it's just some obscure postgres code.
+    disable_default_value = true;
+
+  //Default value: simple:
+  Glib::ustring default_value;
+  if(!disable_default_value)
     default_value = m_Field.get_default_value_as_string();
-    
   m_pEntry_Default->set_text(default_value);
 
-  //Optional type details:
-  /* TODO_port:
-  m_Entry_TypeDetails_M.set_value(fieldType.get_MaxLength());
-  m_Entry_TypeDetails_Numeric_M.set_value(fieldType.get_MaxLength());
-  m_Entry_TypeDetails_Numeric_D.set_value(fieldType.get_DecimalsCount());
+  //Default value: lookup:
 
-  m_Check_Signed.set_active(fieldType.get_Signed());
-  */
+  m_pCheck_Lookup->set_active(m_Field.get_is_lookup());
+  on_check_lookup_toggled();
+
+  //Fill the lookup relationships combo:
+  Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
+  if(document)
+  {
+   Document_Glom::type_vecRelationships vecRelationships = document->get_relationships(table_name);
+   m_pCombo_LookupRelationship->clear_text();
+
+   for(Document_Glom::type_vecRelationships::iterator iter = vecRelationships.begin(); iter != vecRelationships.end(); ++iter)
+   {
+     m_pCombo_LookupRelationship->append_text(iter->get_name());
+   }
+  }
   
-  //Glom-specific details:
+  Glib::ustring lookup_relationship_name;
+  if(!disable_default_value)
+    lookup_relationship_name = m_Field.get_lookup_relationship();
+  m_pCombo_LookupRelationship->set_active_text(lookup_relationship_name);
+  on_combo_lookup_relationship_changed(); //Put the correct list of fields in the fields combo.
+
+  Glib::ustring lookup_field_name;
+  if(!disable_default_value)
+    lookup_field_name = m_Field.get_lookup_field();
+  m_pCombo_LookupField->set_active_text(lookup_field_name);
+    
   m_pEntry_Title->set_text(field.get_title());
 
   set_blocked(false);
 
   enforce_constraints();
-  set_modified(false);
+  Dialog_Properties::set_modified(false);
 }
 
 Field Dialog_FieldDefinition::get_field() const
@@ -119,28 +155,26 @@ Field Dialog_FieldDefinition::get_field() const
  
   if(!fieldInfo.get_auto_increment()) //Ignore default_values for auto_increment fields - it's just some obscure postgres code.
   {
+    //Simple default value:
     Glib::ustring default_value = m_pEntry_Default->get_text();
     fieldInfo.set_default_value( Gnome::Gda::Value(default_value) );
   }
-      
+
+  //Lookup:
+  bool is_lookup = m_pCheck_Lookup->get_active();
+  Glib::ustring relationship;
+  if(is_lookup)
+    relationship = m_pCombo_LookupRelationship->get_active_text();
+  field.set_lookup_relationship(relationship);
+
+  Glib::ustring lookup_field;
+  if(is_lookup)
+    lookup_field = m_pCombo_LookupField->get_active_text();
+  field.set_lookup_field(lookup_field);
+
+   
   Gnome::Gda::FieldAttributes field_info_copy = fieldInfo;
     
-  //Optional type details:
-  /* TODO_port:
-  if(Gnome::Gda::FieldAttributes::FieldType::get_TypeCategory(m_pCombo_Type->get_field_type()) == mysqlcppapi::Field::TYPE_CATEGORY_Numeric)
-  {
-    fieldType.set_MaxLength( m_Entry_TypeDetails_M.get_value_as_guint() );
-  }
-  else
-  {
-    fieldType.set_MaxLength( m_Entry_TypeDetails_Numeric_M.get_value_as_guint() );
-  }
-
-  fieldType.set_DecimalsCount(m_Entry_TypeDetails_Numeric_D.get_value_as_guint());
-
-  fieldType.set_Signed(m_Check_Signed.get_active());
-  */
-
   field.set_field_info(fieldInfo);
 
   //Glom-specific details:
@@ -163,7 +197,7 @@ void Dialog_FieldDefinition::on_combo_type_changed()
 }
 
 void Dialog_FieldDefinition::enforce_constraints()
-{
+{  
   if(m_pCheck_PrimaryKey->get_active())
   {
     m_pCheck_Unique->set_active(true); //Primary keys must be unique.
@@ -172,16 +206,56 @@ void Dialog_FieldDefinition::enforce_constraints()
   else
     m_pCheck_Unique->set_sensitive(true);
 
-  if(m_pCheck_Unique->get_active())
+  if(m_pCheck_Unique->get_active() || m_pCheck_AutoIncrement->get_active())
   {
-    m_pLabel_Default->set_sensitive(false); //Disable the label because a disabled entry does not look disabled.
-    m_pEntry_Default->set_text(""); //Unique fields can not have default values. //TODO: People will be surprised when they lost information here. We should probably read the text as "" if the widget is disabled.
-    m_pEntry_Default->set_sensitive(false); //Stop the user from disagreeing with that.
+    m_pBox_DefaultValue->set_sensitive(false); //Disable all controls on the Notebook page.
+    m_pEntry_Default->set_text(""); //Unique fields can not have default values. //TODO: People will be surprised when they lose information here. We should probably read the text as "" if the widget is disabled.
   }
   else
   {
-    m_pLabel_Default->set_sensitive(true);
-    m_pEntry_Default->set_sensitive(true);
+    m_pBox_DefaultValue->set_sensitive(true);
   }
 }
+
+void Dialog_FieldDefinition::on_check_lookup_toggled()
+{
+  bool enable = m_pCheck_Lookup->get_active();
+  m_pTable_Lookup->set_sensitive(enable);
+
+  //re-disable it if it was not meant to be enabled:
+  enforce_constraints();
+}
+
+void Dialog_FieldDefinition::on_combo_lookup_relationship_changed()
+{
+  //Get the relationship name:
+  const Glib::ustring relationship_name = m_pCombo_LookupRelationship->get_active_text();
+  if(!relationship_name.empty())
+  {
+    //Get the relationship details:
+    Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
+    if(document)
+    {
+      Relationship relationship;
+      bool test = document->get_relationship(m_table_name, relationship_name, relationship);
+      if(test)
+      {
+        Glib::ustring to_table = relationship.get_to_table();
+        if(!to_table.empty())
+        {
+          //Get the fields in the other table, and add them to the combo:
+          type_vecStrings vecFields = util_vecStrings_from_Fields(get_fields_for_table(m_table_name));
+          m_pCombo_LookupField->clear_text();
+
+          for(type_vecStrings::iterator iter = vecFields.begin(); iter != vecFields.end(); ++iter)
+          {
+            m_pCombo_LookupField->append_text(*iter);
+          }
+        }
+      }
+    }
+  }
+
+}
+
 

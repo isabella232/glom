@@ -89,12 +89,7 @@ Field::glom_field_type Combo_FieldType::get_field_type() const
   //Get the active row:
   Gtk::TreeModel::iterator active_row  = get_active();
   if(active_row)
-  {
-    //g_warning("active_row.get_model_gobject(), %10X", active_row.get_model_gobject());
-    //g_warning("GTK_LIST_STORE(active_row.get_model_gobject())->stamp, %10X", GTK_LIST_STORE(active_row.get_model_gobject())->stamp);
-    //g_warning("active_row.gobj()->stamp, %10X", active_row.gobj()->stamp);   
-    
-    
+  {    
     Gtk::TreeModel::Row row = *active_row;
     result = row[m_Columns.m_col_type];
 

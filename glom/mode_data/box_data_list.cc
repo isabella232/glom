@@ -33,6 +33,7 @@ Box_Data_List::Box_Data_List()
   pack_start(m_AddDel);
   m_AddDel.set_auto_add(false); //We want to add the row ourselves when the user clicks the Add button, because the default behaviour there is not suitable.
   m_AddDel.set_allow_column_chooser();
+  m_AddDel.set_rules_hint(); //Use alternating row colors when the theme does that.
   
   //Connect signals:
   m_AddDel.signal_user_requested_add().connect(sigc::mem_fun(*this, &Box_Data_List::on_AddDel_user_requested_add)); //Only emitted when m_AddDel.set_auto_add(false) is used.

@@ -1512,6 +1512,11 @@ guint AddDel::get_count_hidden_system_columns()
 
   return hidden_count;
 }
+
+void AddDel::set_rules_hint(bool val)
+{
+  m_TreeView.set_rules_hint(val);
+}
   
       
 
