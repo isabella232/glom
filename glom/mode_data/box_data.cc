@@ -101,8 +101,6 @@ void Box_Data::on_Button_Find()
 
 Glib::RefPtr<Gnome::Gda::DataModel> Box_Data::record_new(bool use_entered_data, const Gnome::Gda::Value& primary_key_value)
 {
-  g_warning("Box_Data::record_new(): primary_key_value=%s", primary_key_value.to_string().c_str());
-
   Field fieldPrimaryKey;
   get_field_primary_key(fieldPrimaryKey);
 
@@ -421,7 +419,6 @@ Gnome::Gda::Value Box_Data::generate_next_auto_increment(const Glib::ustring& ta
   {
     //The result should be 1 row with 1 column
     Gnome::Gda::Value value = data_model->get_value_at(0, 0);
-    g_warning("Box_Data::generate_next_auto_increment(): value=%s, value_type=%d", value.to_string().c_str(), value.get_value_type());
 
     //It's a Gnome::Gda::Value::TYPE_NUMERIC, but the GdaNumeric struct is not easy to handle, so let's hack around it:
     //if(value.is_number())

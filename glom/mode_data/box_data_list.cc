@@ -315,7 +315,7 @@ void Box_Data_List::on_adddel_user_reordered_columns()
   {
     LayoutGroup group;
     group.set_name("toplevel");
-    
+
     AddDel::type_vecStrings vec_field_names = m_AddDel.get_columns_order();
 
     guint index = 0;
@@ -337,7 +337,6 @@ void Box_Data_List::on_adddel_user_reordered_columns()
 
 void Box_Data_List::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, guint col)
 {
-g_warning("Box_Data_List::on_adddel_user_changed");
   const Gnome::Gda::Value parent_primary_key_value = get_primary_key_value(row);
   if(!GlomConversions::value_is_empty(parent_primary_key_value)) //If the record's primary key is filled in:
   {
@@ -423,14 +422,13 @@ g_warning("Box_Data_List::on_adddel_user_changed");
     //This record probably doesn't exist yet.
     //Add new record, which will generate the primary key:
 
-    if(m_AddDel.get_key_field().get_field_info().get_auto_increment())
-    {
-      on_adddel_user_added(row);
+    on_adddel_user_added(row);
 
-       const Gnome::Gda::Value primaryKeyValue = get_primary_key_value(row); //TODO_Value
-       if(!(GlomConversions::value_is_empty(primaryKeyValue))) //If the Add succeeeded:
-         on_adddel_user_changed(row, col); //Change this field in the new record.
-    }
+    //TODO: When the primary is non auto-incrementing, this sets it again, though it was INSERTED in on_adddel_user_added().
+    //That's harmless, but inefficient.
+    const Gnome::Gda::Value primaryKeyValue = get_primary_key_value(row); //TODO_Value
+    if(!(GlomConversions::value_is_empty(primaryKeyValue))) //If the Add succeeeded:
+      on_adddel_user_changed(row, col); //Change this field in the new record.
   }
 
 }
