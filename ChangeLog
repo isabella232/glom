@@ -1,3 +1,10 @@
+2005-03-31  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/python_embed/glom_python.cc:
+	* glom/python_embed/py_glom_record.cc:
+	* glom/python_embed/py_glom_record.h:
+	Simplify the boost::python code a little.
+
 This is the GLOM_DEPEND_ON_BOOST branch, where I will try to use 
 boost::python without copying the boost source code into glom, 
 because I can not get it to build inside glom.

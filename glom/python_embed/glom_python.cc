@@ -55,7 +55,7 @@ std::list<Glib::ustring> ustring_tokenize(const Glib::ustring& msg, const Glib::
 Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field_type result_type, const Glib::ustring& func_impl)
 {
   Glib::ustring result;
-  
+
   Glib::ustring func_def;
 
   //Indent the function implementation (required by python syntax):
@@ -77,49 +77,35 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
   //PyObject* pMain = PyImport_AddModule("__main__");
 
   // Retrieve the main module's namespace
-  boost::python::object main_namespace( main_module.attr("__dict__") );
+  boost::python::object main_namespace = main_module.attr("__dict__");
   //PyObject* pDict = PyModule_GetDict(pMain);
 
   //Create the function definition:
-  PyObject* pyValue = PyRun_String(func_def.c_str(), Py_file_input, main_namespace.ptr(), main_namespace.ptr());
-  if(pyValue)
-  {
-    Py_DECREF(pyValue);
-    pyValue = 0;
-  }
+  boost::python::handle<> hValue( PyRun_String(func_def.c_str(), Py_file_input, main_namespace.ptr(), main_namespace.ptr()) );
 
   //Call the function:
   {
     //TODO: Use PyObject_CallObject(pFunc, pArgs), passing the PyGlomRecord as a parameter.
     //  return boost::python::call<std::string>(func, x, y);
 
-    Glib::ustring call_func = "glom_calc_field_value()";
-    PyObject* pyValue = PyRun_String(call_func.c_str(), Py_eval_input, main_namespace.ptr(), main_namespace.ptr());
-    if(!pyValue)
+    const Glib::ustring call_func = "glom_calc_field_value()";
+    boost::python::handle<> hValue( PyRun_String(call_func.c_str(), Py_eval_input, main_namespace.ptr(), main_namespace.ptr()) );
+    if(!hValue)
     {
       g_warning("pyValue was null");
       PyErr_Print();
     }
     else
     {
-      PyObject* pyStringObject = PyObject_Str(pyValue);
-      if(pyStringObject)
+      boost::python::object pythonDerived(hValue);
+      boost::python::handle<> hStringObject( PyObject_Str(pythonDerived.ptr()) );
+      if(hStringObject)
       {
-        if(PyString_Check(pyStringObject))
-        {
-          const char* pchResult = PyString_AsString(pyStringObject);
-          if(pchResult)
-            result = pchResult;
-          else
-            g_warning("pchResult is null");
-        }
-        else
-          g_warning("PyString_Check returned false");
+        boost::python::object pythonDerived(hStringObject);
+        result = boost::python::extract<std::string>(pythonDerived);
       }
       else
         g_warning("pyStringObject is null");
-
-      Py_DECREF(pyValue);
     }
   }
 
