@@ -1,34 +1,3 @@
-glom/Box_DB.cc
-glom/Box_DB_Table.cc
-glom/Dialog_Glom.cc
-glom/Frame_Glom.cc
-glom/Notebook_Glom.cc
-glom/application.cc
-glom/main.cc
-glom/Data_Structure/Field.cc
-glom/Data_Structure/Relationship.cc
-glom/Document/Document_Glom.cc
-glom/Mode_Data/Box_Data.cc
-glom/Mode_Data/Box_Data_Details.cc
-glom/Mode_Data/Box_Data_List.cc
-glom/Mode_Data/Box_Data_List_Related.cc
-glom/Mode_Data/Notebook_Data.cc
-glom/Mode_Design/Fields/Box_DB_Table_Definition.cc
-glom/Mode_Design/Fields/Combo_FieldType.cc
-glom/Mode_Design/Fields/Dialog_FieldDefinition.cc
-glom/Mode_Design/Box_DB_Table_Relationships.cc
-glom/Mode_Design/Notebook_Design.cc
-glom/Mode_Find/Box_Data_Details_Find.cc
-glom/Mode_Find/Box_Data_List_Find.cc
-glom/Mode_Find/Notebook_Find.cc
-glom/Navigation/Box_DataBases.cc
-glom/Navigation/Box_Tables.cc
-glom/Utility_Widgets/AddDel/AddDel.cc
-glom/Utility_Widgets/AddDel/AddDel_WithButtons.cc
-glom/Utility_Widgets/AddDel/cellrendererlist.cc
-glom/Utility_Widgets/AddDel/cellrendererpopup.cc
-glom/Utility_Widgets/AddDel/popupentry.cc
-glom/Utility_Widgets/Alignment_Justified.cc
-glom/Utility_Widgets/Dialog_Properties.cc
-glom/Utility_Widgets/Entry_Numerical.cc
-glom/Utility_Widgets/Table_Columns.cc
+# List of source files containing translatable strings.
+# Please keep this file sorted alphabetically.
+glom/glom.glade
