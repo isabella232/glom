@@ -242,9 +242,10 @@ void Box_Tables::on_adddel_Delete(const Gtk::TreeModel::iterator& rowStart, cons
         else
         {
           //Ask the user to confirm:
-          Glib::ustring strMsg = gettext("Are you sure that you want to delete this table?\nTable name: ")
-                              + table_name;
-          Gtk::MessageDialog dialog(strMsg);
+          Glib::ustring strMsg = gettext("Are you sure that you want to delete this table?\nTable name: ") + table_name;
+          Gtk::MessageDialog dialog(gettext("<b>Delete Table</b>"), true);
+          dialog.set_secondary_text(strMsg);
+          dialog.set_transient_for(*get_app_window());
           int iButtonClicked = dialog.run();
 
           //Delete the table:
@@ -276,7 +277,8 @@ void Box_Tables::on_adddel_Edit(const Gtk::TreeModel::iterator& row)
     if(!m_pDocument->get_table_is_known(table_name))
     {
        //TODO: Do not show tables that are not in the document.
-       Gtk::MessageDialog dialog(gettext("You can not open this table, because there is no information about this table in the document."));
+       Gtk::MessageDialog dialog(gettext("<b>Unknown Table</b>"), true);
+       dialog.set_secondary_text(gettext("You can not open this table, because there is no information about this table in the document."));
        dialog.set_transient_for(*get_app_window());
        dialog.run();
     }
@@ -344,7 +346,8 @@ void Box_Tables::on_adddel_changed(const Gtk::TreeModel::iterator& row, guint co
       if(!table_name.empty() && !table_name_new.empty())
       {
         Glib::ustring strMsg = gettext("Are you sure that you want to rename this table?");  //TODO: Show old and new names?
-        Gtk::MessageDialog dialog(strMsg);
+        Gtk::MessageDialog dialog(gettext("Rename Table"));
+        dialog.set_secondary_text(strMsg);
         int iButtonClicked = dialog.run();
 
         //Rename the table:

@@ -211,8 +211,9 @@ void Box_DB_Table_Definition::on_adddel_changed(const Gtk::TreeModel::iterator& 
        //Refuse to edit field definitions that were not created by glom:
        if(Field::get_glom_type_for_gda_type( m_Field_BeingEdited.get_field_info().get_gdatype() )  == Field::TYPE_INVALID)
        {
-         Gtk::MessageDialog dialog(gettext("This database field was created or edited outside of Glom. It has a data type that is not supported by Glom. Your system administrator may be able to correct this."));
-         dialog.set_transient_for(*get_app_window());
+         Gtk::MessageDialog dialog(gettext("<b>Invalid database structure</b>"), true);
+         dialog.set_secondary_text(gettext("This database field was created or edited outside of Glom. It has a data type that is not supported by Glom. Your system administrator may be able to correct this."));
+         //TODO: dialog.set_transient_for(*get_application());
          dialog.run();
        }
        else
@@ -311,8 +312,9 @@ void Box_DB_Table_Definition::on_Properties_apply()
     //Refuse to edit field definitions that were not created by glom:
     if( Field::get_glom_type_for_gda_type(m_Field_BeingEdited.get_field_info().get_gdatype()) == Field::TYPE_INVALID )
     {
-      Gtk::MessageDialog dialog(gettext("This database field was created or edited outside of Glom. It has a data type that is not supported by Glom. Your system administrator may be able to correct this."));
-      dialog.set_transient_for(*get_app_window());
+      Gtk::MessageDialog dialog(gettext("<b>Invalid database structure</b>"), true);
+         dialog.set_secondary_text(gettext("This database field was created or edited outside of Glom. It has a data type that is not supported by Glom. Your system administrator may be able to correct this."));
+      //TODO: dialog.set_transient_for(*get_app_window());
       dialog.run();
     }
     else

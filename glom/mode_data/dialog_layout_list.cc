@@ -271,6 +271,7 @@ void Dialog_Layout_List::on_button_add_field()
     if(dialog)
     {
       dialog->set_document(m_document, m_table_name);
+      dialog->set_transient_for(*this);
       int response = dialog->run();
       if(response == Gtk::RESPONSE_OK)
       {

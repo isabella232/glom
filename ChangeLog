@@ -1,5 +1,10 @@
 2005-03-11  Murray Cumming  <murrayc@murrayc.com>
 
+	* Lots of use of Gtk::MessageDialog::set_secondary_text() to make 
+	dialogs more HIGy, plus use of set_transient_for().
+
+2005-03-11  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/main.cc: Attempt to use Glib::Option from glibmm 2.6, to 
 	provide a --file option, for debugging. But it does not work, 
 	probably because of conflicts with the libgnomeui and libgda uses of 

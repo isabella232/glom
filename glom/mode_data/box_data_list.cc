@@ -246,7 +246,9 @@ void Box_Data_List::on_adddel_user_requested_delete(const Gtk::TreeModel::iterat
   if(rowStart)
   {
     //Ask the user for confirmation:
-    Gtk::MessageDialog dialog(gettext("Are you sure that you would like to delete this record? The data in this record will then be permanently lost."), false, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE);
+    Gtk::MessageDialog dialog(gettext("<b>Delete record</b>"), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE);
+    dialog.set_secondary_text(gettext("Are you sure that you would like to delete this record? The data in this record will then be permanently lost."));
+    dialog.set_transient_for(*get_app_window());
     dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
     dialog.add_button(Gtk::Stock::DELETE, Gtk::RESPONSE_OK);
     

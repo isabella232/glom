@@ -321,6 +321,7 @@ void Dialog_Layout_List_Related::on_button_add_field()
     if(dialog)
     {
       dialog->set_document(m_document, m_relationship.get_to_table());
+      dialog->set_transient_for(*this);
       int response = dialog->run();
       if(response == Gtk::RESPONSE_OK)
       {

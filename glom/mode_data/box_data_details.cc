@@ -373,7 +373,9 @@ void Box_Data_Details::on_button_del()
   if( GlomConversions::value_is_empty(get_primary_key_value()) )
   {
     //Tell user that a primary key is needed to delete a record:
-    Gtk::MessageDialog dialog(gettext("This record can not be deleted because there is no primary key."));
+    Gtk::MessageDialog dialog(gettext("<b>No primary key value.</b>"), true);
+    dialog.set_secondary_text(gettext("This record can not be deleted because there is no primary key."));
+    dialog.set_transient_for(*get_app_window());
     dialog.run();
   }
   else
@@ -592,7 +594,9 @@ void Box_Data_Details::on_flowtable_field_edited(const Glib::ustring& id, const 
       if(strFieldName == m_field_primary_key.get_name()) //If edited field is the primary key.
       {
         //Warn user that they can't choose their own primary key:
-        Gtk::MessageDialog dialog ("The primary key is auto-incremented.\n You may not enter your own primary key value.");
+        Gtk::MessageDialog dialog(gettext("<b>Primary key auto increments</b>"), true);
+        dialog.set_secondary_text(gettext("The primary key is auto-incremented.\n You may not enter your own primary key value."));
+        dialog.set_transient_for(*get_app_window());
         dialog.run();
       }
     }

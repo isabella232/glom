@@ -297,6 +297,7 @@ bool DataWidget::offer_field_list(const Glib::ustring& table_name, Field& field)
     if(dialog)
     {
       dialog->set_document(get_document(), table_name, field);
+      dialog->set_transient_for(*get_application());
       int response = dialog->run();
       dialog->hide();
       if(response == Gtk::RESPONSE_OK)

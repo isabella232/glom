@@ -381,6 +381,7 @@ bool App_Glom::on_document_load()
             if(dialog)
             {
               int response = dialog->run();
+              dialog->set_transient_for(*this);
               delete dialog;
               dialog = 0;
               
@@ -400,7 +401,9 @@ bool App_Glom::on_document_load()
                   AppState::userlevels userlevel = pDocument->get_userlevel(reason);
                   if( (userlevel == AppState::USERLEVEL_OPERATOR) && (reason == Document_Glom::USER_LEVEL_REASON_FILE_READ_ONLY) )
                   {
-                    Gtk::MessageDialog dialog(gettext("This file is read only, so you will not be able to enter Developer mode to make design changes. Maybe this file is an installed example file. Therefore, you might want to create your own writeable copy of this file."), Gtk::MESSAGE_WARNING );
+                    Gtk::MessageDialog dialog(gettext("<b>Creating from read-only file.</b>"), true,  Gtk::MESSAGE_WARNING);
+                    dialog.set_secondary_text(gettext("This file is read only, so you will not be able to enter Developer mode to make design changes. Maybe this file is an installed example file. Therefore, you might want to create your own writeable copy of this file."));
+                    dialog.set_transient_for(*this);
                     dialog.run();
                     //TODO: Store a magic number in the database (a special table) and the file to check for mismatches.
                   }
@@ -501,12 +504,12 @@ bool App_Glom::offer_new_or_existing()
   Gtk::Dialog* dialog = 0;
   refXml->get_widget("dialog_existing_or_new", dialog);
   dialog->set_transient_for(*this);
-  
+
   int response_id = dialog->run();
   delete dialog;
   dialog = 0;
-  
-  if(response_id ==1) //Open
+
+  if(response_id == 1) //Open
   {
     on_menu_file_open();
 
@@ -540,7 +543,8 @@ bool App_Glom::offer_new_or_existing()
         if(dialog)
         {
           std::auto_ptr<Dialog_NewDatabase> dialog_owner(dialog); //This will delete the dialog even when we return in the middle of this function.
-          
+          dialog->set_transient_for(*this);
+
           //Set suitable defaults:
           const Glib::ustring filename = document->get_name(); //Get the filename without the path and extension.
           dialog->set_input(filename, Base_DB::util_title_from_string( filename ) );

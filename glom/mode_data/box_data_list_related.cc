@@ -228,8 +228,9 @@ void Box_Data_List_Related::on_adddel_user_added(const Gtk::TreeModel::iterator&
   else
   {
     //Tell user that they can't do that:
-    Gtk::MessageDialog dialog(gettext("You attempted to add a new related record, \nbut there can only be one related record, \nbecause the relationship uses a unique key."),
-      Gtk::MESSAGE_WARNING);
+    Gtk::MessageDialog dialog(gettext("<b>Extra related records not possible</b>"), true, Gtk::MESSAGE_WARNING);
+    dialog.set_secondary_text(gettext("You attempted to add a new related record, but there can only be one related record, because the relationship uses a unique key.")),
+    dialog.set_transient_for(*get_app_window());
     dialog.run();
 
     //Replace with correct values:

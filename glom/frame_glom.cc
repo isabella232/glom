@@ -316,7 +316,9 @@ void Frame_Glom::on_menu_userlevel_Developer(const Glib::RefPtr<Gtk::RadioAction
       //If this was not possible then revert the menu:
       if(!test)
       {
-        Gtk::MessageDialog dialog(gettext("Developer mode is not available. Check that you have sufficient database access rights and that the glom file is not read-only."), Gtk::MESSAGE_WARNING);
+        Gtk::MessageDialog dialog(gettext("<b>Developer mode not available.</b>"), true, Gtk::MESSAGE_WARNING);
+        dialog.set_secondary_text(gettext("Developer mode is not available. Check that you have sufficient database access rights and that the glom file is not read-only."));
+        dialog.set_transient_for(*get_app_window());
         dialog.run();
         
         //This causes an endless loop, but it is not recursive so we can't block it.
@@ -674,6 +676,7 @@ bool Frame_Glom::connection_request_password_and_attempt()
   {
     //Ask for connection details:
     m_pDialogConnection->load_from_document(); //Get good defaults.
+    m_pDialogConnection->set_transient_for(*get_app_window());
     int response = m_pDialogConnection->run();
     m_pDialogConnection->hide();
 
@@ -688,10 +691,11 @@ bool Frame_Glom::connection_request_password_and_attempt()
       catch(const ExceptionConnection& ex)
       {
         g_warning("Frame_Glom::connection_request_password_and_attempt(): caught exception.");
-         
+
         if(ex.get_failure_type() == ExceptionConnection::FAILURE_NO_SERVER)
         {
           //Warn the user, and let him try again:
+          m_pDialogConnectionFailed->set_transient_for(*get_app_window());
           int response = m_pDialogConnectionFailed->run();
           m_pDialogConnectionFailed->hide();
 
@@ -754,7 +758,7 @@ bool Frame_Glom::create_database(const Glib::ustring& database_name, bool reques
  
       return false;
     }
-      
+
     if(sharedconnection)
     {
       Bakery::BusyCursor(*get_app_window());
@@ -783,6 +787,7 @@ bool Frame_Glom::create_database(const Glib::ustring& database_name, bool reques
             std::cerr << ex.what() << std::endl;
           }
 
+          //TODO: dialog->set_transient_for(*get_app_window());
           dialog->run();
           delete dialog;
           return false; //Failed. //TODO: Allow the user to try with a different user name?

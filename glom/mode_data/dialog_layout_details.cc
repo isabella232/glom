@@ -468,6 +468,7 @@ bool Dialog_Layout_Details::offer_relationship_list(Relationship& relationship)
     if(dialog)
     {
       dialog->set_document(m_document, m_table_name);
+      dialog->set_transient_for(*this);
       int response = dialog->run();
       dialog->hide();
       if(response == Gtk::RESPONSE_OK)
@@ -501,6 +502,7 @@ bool Dialog_Layout_Details::offer_field_list(Field& field)
     if(dialog)
     {
       dialog->set_document(m_document, m_table_name, field);
+      dialog->set_transient_for(*this);
       int response = dialog->run();
       if(response == Gtk::RESPONSE_OK)
       {

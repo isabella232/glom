@@ -57,7 +57,7 @@ void Base_DB::fill_end()
 //static:
 sharedptr<SharedConnection> Base_DB::connect_to_server()
 {
-  Bakery::BusyCursor(*get_app_window());
+  Bakery::BusyCursor(*get_application());
 
   sharedptr<SharedConnection> result(0);
 
@@ -72,7 +72,9 @@ sharedptr<SharedConnection> Base_DB::connect_to_server()
 
 void Base_DB::handle_error(const std::exception& ex)
 {
-  Gtk::MessageDialog dialog(Glib::ustring("Internal error:\n") + ex.what(), Gtk::MESSAGE_WARNING );
+  Gtk::MessageDialog dialog(gettext("<b>Internal error</b>"), true, Gtk::MESSAGE_WARNING );
+  dialog.set_secondary_text(ex.what());
+  //TODO: dialog.set_transient_for(*get_application());
   dialog.run();
 }
 
@@ -98,7 +100,9 @@ bool Base_DB::handle_error()
         std::cerr << "Internal error: " << error_details << std::endl;
       }
 
-      Gtk::MessageDialog dialog(Glib::ustring("Internal error:\n") + error_details, Gtk::MESSAGE_WARNING );
+      Gtk::MessageDialog dialog(Glib::ustring("<b>Internal error</b>"), true, Gtk::MESSAGE_WARNING );
+      dialog.set_secondary_text(error_details);
+      //TODO: dialog.set_transient_for(*get_application());
       dialog.run();
 
       return true; //There really was an error.
@@ -114,7 +118,7 @@ Glib::RefPtr<Gnome::Gda::DataModel> Base_DB::Query_execute(const Glib::ustring& 
 {
   Glib::RefPtr<Gnome::Gda::DataModel> result;
 
-  Bakery::BusyCursor(*get_app_window());
+  Bakery::BusyCursor(*get_application());
 
   sharedptr<SharedConnection> sharedconnection = connect_to_server();
   if(sharedconnection)
@@ -279,7 +283,7 @@ Base_DB::type_vecFields Base_DB::get_fields_for_table_from_database(const Glib::
     DATAMODEL_FIELDS_COL_DEFAULTVALUE = 8
   };
 
-  Bakery::BusyCursor(*get_app_window());
+  Bakery::BusyCursor(*get_application());
 
   sharedptr<SharedConnection> sharedconnection = connect_to_server();
   if(!sharedconnection)

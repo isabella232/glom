@@ -31,8 +31,9 @@ bool glom_show_dialog_invalid_date(Field::glom_field_type glom_type)
   Dialog_InvalidData* dialog = 0;
   refXml->get_widget_derived("dialog_data_invalid_format", dialog);
   dialog->set_example_data(glom_type);
-
+  //dialog->set_transient_for(*this);
   int response = dialog->run();
+
   delete dialog;
   return (response == 2); //The glade file has a response of 2 for the Revert button.
 }
