@@ -2,6 +2,11 @@ INCLUDES = -I@top_srcdir@/ $(GLOM_CFLAGS)
 
 SUBDIRS = adddel db_adddel
 
+# We define GLOM_GLADEDIR so that we can get the installed .glade file at runtime.
+INCLUDES = $(GLOM_CFLAGS) $(PYTHON_INCLUDES) \
+           -DGLOM_GLADEDIR=\""$(gladedir)/"\" \
+           -DDATADIR=\""$(datadir)"\"
+
 noinst_LIBRARIES = libutility_widgets.a
 libutility_widgets_a_SOURCES = alignment_justified.cc alignment_justified.h \
                                dialog_properties.cc dialog_properties.h \

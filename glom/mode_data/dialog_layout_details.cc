@@ -487,7 +487,7 @@ bool Dialog_Layout_Details::offer_relationship_list(Relationship& relationship)
 bool Dialog_Layout_Details::offer_field_list(Field& field)
 {
   bool result = false;
-  
+
   try
   {
     Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_choose_field");

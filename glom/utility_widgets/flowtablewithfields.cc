@@ -226,6 +226,7 @@ void FlowTableWithFields::add_field(const LayoutItem_Field& layoutitem_field)
     DataWidget* pDataWidget = Gtk::manage(new DataWidget(field.get_glom_type(), field.get_title_or_name()) );
     pDataWidget->set_layout_item(layoutitem_field.clone());
     add_layoutwidgetbase(pDataWidget);
+    add_view(pDataWidget); //So it can get the document.
 
     info.m_second = pDataWidget; 
     info.m_second->show_all();

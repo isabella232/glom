@@ -1,3 +1,8 @@
+2005-03-09  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/mode_data/datawidget.[h|cc]: Attempt to add a context menu 
+	to choose the field. Not working yet. Some EventBox problem maybe.
+
 2005-03-08  Murray Cumming  <murrayc@murrayc.com>
 
 	* examples/example_small_business.glom: Invoices table: Make the 

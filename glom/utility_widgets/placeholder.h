@@ -24,11 +24,6 @@
 #include <gtkmm.h>
 #include <libglademm.h>
 
-/**
-  *@author Murray Cumming
-  */
-
-
 class PlaceHolder : public Gtk::VBox
 {
 public:

@@ -44,12 +44,12 @@ public:
    * @param from_table_primary_key_value The primary key of the parent record's table, used to associate new related records.
    */
   virtual void refresh_db_details(const Gnome::Gda::Value& foreign_key_value, const Gnome::Gda::Value& from_table_primary_key_value);
-  
+
   virtual Relationship get_relationship() const;
   virtual Field get_key_field() const;
 
   virtual void show_layout_dialog();
-    
+
   sigc::signal<void, Gnome::Gda::Value> signal_record_added;
 
 protected:
@@ -61,13 +61,13 @@ protected:
   virtual void on_dialog_layout_hide(); //override.
 
   virtual void enable_buttons();
-  
+
 protected:
   Gtk::Frame m_Frame;
   Gtk::Alignment m_Alignment;
   Gtk::Label m_Label;
   Dialog_Layout_List_Related* m_pDialogLayoutRelated;
-  
+
   Relationship m_relationship; //The relationship of the parent table to this one.
   Field m_key_field;
   Gnome::Gda::Value m_key_value;

@@ -221,15 +221,13 @@ void DbAddDel::setup_menu()
     pApp->add_developer_action(m_refContextLayout); //So that it can be disabled when not in developer mode.
     pApp->update_userlevel_ui(); //Update our action's sensitivity. 
   }
- 
-   
+
   m_refUIManager = Gtk::UIManager::create();
-  
+
   m_refUIManager->insert_action_group(m_refActionGroup);
- 
+
   //TODO: add_accel_group(m_refUIManager->get_accel_group());
 
-  
   try
   {
     Glib::ustring ui_info = 
@@ -268,7 +266,6 @@ void DbAddDel::setup_menu()
   
   if(pApp)
     m_refContextLayout->set_sensitive(pApp->get_userlevel() == AppState::USERLEVEL_DEVELOPER);
-  
 }
 
 bool DbAddDel::on_button_press_event_Popup(GdkEventButton *event)

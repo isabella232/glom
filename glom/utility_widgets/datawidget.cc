@@ -21,11 +21,14 @@
 #include "datawidget.h"
 #include "entryglom.h"
 #include "../data_structure/glomconversions.h"
+#include "../application.h"
+#include "../mode_data/dialog_choose_field.h"
 
 
 
 DataWidget::DataWidget(Field::glom_field_type glom_type, const Glib::ustring& title)
-: m_glom_type(glom_type)
+: m_glom_type(glom_type),
+  m_pMenuPopup(0)
 {
   Gtk::Widget* child = 0;
   if(glom_type == Field::TYPE_BOOLEAN)
@@ -53,6 +56,11 @@ DataWidget::DataWidget(Field::glom_field_type glom_type, const Glib::ustring& ti
 
   if(child)
     add(*child);
+
+  setup_menu();
+
+  set_events(Gdk::BUTTON_PRESS_MASK);
+  signal_button_press_event().connect(sigc::mem_fun(*this, &DataWidget::on_button_press_event_popup), true);
 }
 
 DataWidget::~DataWidget()
@@ -189,7 +197,134 @@ void DataWidget::set_editable(bool editable)
   }
 }
 
+void DataWidget::setup_menu()
+{
+  m_refActionGroup = Gtk::ActionGroup::create();
+
+  m_refActionGroup->add(Gtk::Action::create("ContextMenu", "Context Menu") );
+
+  m_refContextLayout =  Gtk::Action::create("ContextLayout", gettext("Layout"));
+  m_refActionGroup->add(m_refContextLayout,
+    sigc::mem_fun(*this, &DataWidget::on_menupopup_activate_layout) );
+
+  //TODO: This does not work until this widget is in a container in the window:s
+  App_Glom* pApp = get_application();
+  if(pApp)
+  {
+    pApp->add_developer_action(m_refContextLayout); //So that it can be disabled when not in developer mode.
+    pApp->update_userlevel_ui(); //Update our action's sensitivity. 
+  }
+
+  m_refUIManager = Gtk::UIManager::create();
+
+  m_refUIManager->insert_action_group(m_refActionGroup);
+
+  //TODO: add_accel_group(m_refUIManager->get_accel_group());
+
+  try
+  {
+    Glib::ustring ui_info = 
+        "<ui>"
+        "  <popup name='ContextMenu'>"
+        "    <menuitem action='ContextLayout'/>"
+        "  </popup>"
+        "</ui>";
+
+    m_refUIManager->add_ui_from_string(ui_info);
+  }
+  catch(const Glib::Error& ex)
+  {
+    std::cerr << "building menus failed: " <<  ex.what();
+  }
+
+  //Get the menu:
+  m_pMenuPopup = dynamic_cast<Gtk::Menu*>( m_refUIManager->get_widget("/ContextMenu") ); 
+  if(!m_pMenuPopup)
+    g_warning("menu not found");
 
 
+  if(pApp)
+    m_refContextLayout->set_sensitive(pApp->get_userlevel() == AppState::USERLEVEL_DEVELOPER);
+}
 
-  
+bool DataWidget::on_button_press_event_popup(GdkEventButton *event)
+{
+  //Enable/Disable items.
+  //We did this earlier, but get_application is more likely to work now:
+  App_Glom* pApp = get_application();
+  if(pApp)
+  {
+    pApp->add_developer_action(m_refContextLayout); //So that it can be disabled when not in developer mode.
+    pApp->update_userlevel_ui(); //Update our action's sensitivity. 
+  }
+
+  GdkModifierType mods;
+  gdk_window_get_pointer( Gtk::Widget::gobj()->window, 0, 0, &mods );
+  if(mods & GDK_BUTTON3_MASK)
+  {
+    //Give user choices of actions on this item:
+    m_pMenuPopup->popup(event->button, event->time);
+    return true; //We handled this event.
+  }
+  else
+  {
+    return false; //We did not handle this event.
+  }
+}
+
+bool DataWidget::offer_field_list(const Glib::ustring& table_name, Field& field)
+{
+  bool result = false;
+
+  try
+  {
+    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_choose_field");
+
+    Dialog_ChooseField* dialog = 0;
+    refXml->get_widget_derived("dialog_choose_field", dialog);
+
+    if(dialog)
+    {
+      dialog->set_document(get_document(), table_name);
+      int response = dialog->run();
+      if(response == Gtk::RESPONSE_OK)
+      {
+        //Get the chosen field:
+        result = dialog->get_field_chosen(field);
+      }
+
+      delete dialog;
+    }
+  }
+  catch(const Gnome::Glade::XmlError& ex)
+  {
+    std::cerr << ex.what() << std::endl;
+  }
+
+  return result;
+}
+
+void DataWidget::on_menupopup_activate_layout()
+{
+  //finish_editing();
+
+  LayoutItem_Field* layoutField = dynamic_cast<LayoutItem_Field*>(get_layout_item());
+  if(layoutField)
+  {
+    Field field;
+    bool test = offer_field_list(layoutField->get_table_name(), field);
+    if(test)
+    {
+      layoutField->set_name(field.get_name());
+      signal_layout_changed().emit();
+    }
+  }
+}
+
+App_Glom* DataWidget::get_application()
+{
+  Gtk::Container* pWindow = get_toplevel();
+  //TODO: This only works when the child widget is already in its parent.
+
+  return dynamic_cast<App_Glom*>(pWindow);
+}

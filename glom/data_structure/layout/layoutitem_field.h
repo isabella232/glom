@@ -35,9 +35,15 @@ public:
 
   virtual LayoutItem* clone() const;
 
+  virtual Glib::ustring get_table_name() const;
+  virtual void set_table_name(const Glib::ustring& table_name);
+
   //This is filled in by looking at the database structure:
   Field m_field;
   //TODO: This might occasionally be different on different layouts: Glib::ustring m_title;
+
+protected:
+  Glib::ustring m_table_name; //TODO: Or a relationship, or a calculation.
 };
 
 #endif //GLOM_DATASTRUCTURE_LAYOUTITEM_FIELD_H

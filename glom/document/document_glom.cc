@@ -472,6 +472,7 @@ Document_Glom::type_mapLayoutGroupSequence Document_Glom::get_data_layout_groups
         {
           LayoutItem_Field layout_item;
           layout_item.set_name(field_name);
+          layout_item.set_table_name(table_name); //TODO: Allow viewing of fields through relationships.
           //layout_item.m_sequence = sequence;  add_item() will fill this.
           layout_item.m_hidden = false;
   

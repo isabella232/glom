@@ -59,7 +59,7 @@ void Dialog_ChooseField::set_document(Document_Glom* document, const Glib::ustri
   {
     //Set the table name and title:
     m_label_table_name->set_text(table_name); //TODO: Show table title here too.
-   
+
     //Fill the treeview:
     m_model->clear();
     Document_Glom::type_vecFields vecFields = document->get_table_fields(table_name);
@@ -72,7 +72,6 @@ void Dialog_ChooseField::set_document(Document_Glom* document, const Glib::ustri
       row[m_ColumnsFields.m_col_field] = *iter;
     }
   }
-
 }
 
 void Dialog_ChooseField::select_item(const Field& field)

@@ -45,8 +45,19 @@ LayoutItem_Field& LayoutItem_Field::operator=(const LayoutItem_Field& src)
   LayoutItem::operator=(src);
 
   m_field = src.m_field;
-  
+  m_table_name = src.m_table_name;
+
   return *this;
+}
+
+Glib::ustring LayoutItem_Field::get_table_name() const
+{
+  return m_table_name;
+}
+
+void LayoutItem_Field::set_table_name(const Glib::ustring& table_name)
+{
+  m_table_name = table_name;
 }
 
 

@@ -25,12 +25,14 @@
 #include "layoutwidgetbase.h"
 #include <gtkmm/label.h>
 #include "../data_structure/field.h"
+#include "../document/document_glom.h"
 
-
+class App_Glom;
 
 class DataWidget
- : public PlaceHolder,
-   public LayoutWidgetBase
+ : public Gtk::EventBox,
+   public LayoutWidgetBase,
+   public View_Composite_Glom
 {
 public:
   //explicit DataWidget(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
@@ -54,9 +56,15 @@ public:
   type_signal_edited signal_edited();
 
 protected:
+  virtual void setup_menu();
 
   //Overrides of default signal handlers:
   virtual void on_widget_edited(); //From Gtk::Entry, or Gtk::CheckButton.
+  virtual bool on_button_press_event_popup(GdkEventButton* event);
+  virtual void on_menupopup_activate_layout();
+  virtual bool offer_field_list(const Glib::ustring& table_name, Field& field);
+
+  App_Glom* get_application();
 
   int get_suitable_width(Field::glom_field_type field_type);
     
@@ -64,6 +72,11 @@ protected:
 
   Field::glom_field_type m_glom_type; //Store the type so we can validate the text accordingly.
   Gtk::Label m_label;
+
+  Gtk::Menu* m_pMenuPopup;
+  Glib::RefPtr<Gtk::ActionGroup> m_refActionGroup;
+  Glib::RefPtr<Gtk::UIManager> m_refUIManager;
+  Glib::RefPtr<Gtk::Action> m_refContextLayout;
 };
 
 #endif //GLOM_UTILITY_WIDGETS_DATAWIDGET_H
