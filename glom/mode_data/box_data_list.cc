@@ -429,25 +429,60 @@ void Box_Data_List::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, 
 
 }
 
-void Box_Data_List::refresh_related_fields(const Gtk::TreeModel::iterator& row, const LayoutItem_Field& field_changed, const Gnome::Gda::Value& /* field_value */, const Field& /* primary_key */, const Gnome::Gda::Value& /* primary_key_value */)
+void Box_Data_List::refresh_related_fields(const Gtk::TreeModel::iterator& row, const LayoutItem_Field& field_changed, const Gnome::Gda::Value& /* field_value */, const Field& primary_key, const Gnome::Gda::Value& primary_key_value)
 {
   if(field_changed.get_has_relationship_name())
     return; //TODO: Handle these too.
 
-   //Get values for lookup fields, if this field triggers those relationships:
-   //TODO_performance: There is a LOT of iterating and copying here.
-   const Glib::ustring strFieldName = field_changed.get_name();
-   type_list_lookups lookups = get_related_fields(strFieldName);
-   for(type_list_lookups::const_iterator iter = lookups.begin(); iter != lookups.end(); ++iter)
-   {
-     const LayoutItem_Field& layout_item = iter->first;
+  //Get values for lookup fields, if this field triggers those relationships:
+  //TODO_performance: There is a LOT of iterating and copying here.
+  const Glib::ustring strFieldName = field_changed.get_name();
+  type_list_lookups related_fields = get_related_fields(strFieldName); //TODO: Unnecessary intermediate step.
+  type_vecLayoutFields fieldsToGet;
+  for(type_list_lookups::const_iterator iter = related_fields.begin(); iter != related_fields.end(); ++iter)
+  {
+    const LayoutItem_Field& layout_item = iter->first;
 
-     //const Relationship relationship = iter->second;
-     //const Field& field_to_refresh = layout_Item.m_field;
+    fieldsToGet.push_back(layout_item);
 
-     Gnome::Gda::Value value_new; //TODO:
-     m_AddDel.set_value(row, layout_item, value_new);
-   }
+    //const Relationship relationship = iter->second;
+    //const Field& field_to_refresh = layout_Item.m_field;
+
+    //Gnome::Gda::Value value_new;
+    //m_AddDel.set_value(row, layout_item, value_new);
+  }
+
+  if(!fieldsToGet.empty())
+  {
+    const Glib::ustring query = build_sql_select(m_strTableName, fieldsToGet, primary_key, primary_key_value);
+
+    Glib::RefPtr<Gnome::Gda::DataModel> result = Query_execute(query);
+    if(!result)
+      handle_error();
+    else
+    {
+      //Field contents:
+      if(result->get_n_rows())
+      {
+        type_vecLayoutFields::const_iterator iterFields = fieldsToGet.begin();
+
+        guint cols_count = result->get_n_columns();
+        for(guint uiCol = 0; uiCol < cols_count; uiCol++)
+        {
+          const Gnome::Gda::Value value = result->get_value_at(uiCol, 0 /* row */);
+          const LayoutItem_Field& layout_item = *iterFields;
+
+          //g_warning("list fill: field_name=%s", iterFields->get_name().c_str());
+          //g_warning("  value_as_string=%s", value.to_string().c_str());
+
+          m_AddDel.set_value(row, layout_item, value);
+            //g_warning("addedel size=%d", m_AddDel.get_count());
+
+          ++iterFields;
+        }
+      }
+    }
+  }
 }
 
 void Box_Data_List::do_lookups(const Gtk::TreeModel::iterator& row, const LayoutItem_Field& field_changed, const Gnome::Gda::Value& field_value, const Field& primary_key, const Gnome::Gda::Value& primary_key_value)

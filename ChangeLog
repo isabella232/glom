@@ -1,6 +1,13 @@
 2005-03-14  Murray Cumming <murrayc@murrayc.com>
 
 	* glom/mode_data/box_data_list.cc:
+        refresh_related_fields(): The list view now updates 
+	the displayed value of related fields when you 
+	change the related key value in the current record.
+
+2005-03-14  Murray Cumming <murrayc@murrayc.com>
+
+	* glom/mode_data/box_data_list.cc:
 	* glom/utility_widgets/db_adddel/db_adddel.cc:
 	* glom/utility_widgets/db_adddel/db_adddel.h:
 	Db_AddDel::get_column_index() now returns a 
