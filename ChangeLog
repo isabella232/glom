@@ -1,3 +1,8 @@
+2004-11-17  Murray Cumming  <murrayc@murrayc.com>
+
+	* utility_widgets/Makefile.am: Use noinst_PROGRAMS instead of 
+	bin_PROGRAMS so that my little test does not get installed.
+
 2004-11-14  Murray Cumming  <murrayc@murrayc.com>
 
 	* utility_widgets/flowtable.[h|cc]: Draw some simple dotted lines 

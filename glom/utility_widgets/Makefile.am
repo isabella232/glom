@@ -17,7 +17,7 @@ libutility_widgets_a_LIBADD = adddel/libutility_widgets_adddel.a
 
 
 
-bin_PROGRAMS = test
+noinst_PROGRAMS = test
 
 test_SOURCES = test_flowtable.cc flowtable.cc flowtable.h
 
