@@ -28,7 +28,8 @@ Box_Tables::Box_Tables(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
   m_colTableName(0),
   m_colHidden(0),
   m_colTitle(0),
-  m_colDefault(0)
+  m_colDefault(0),
+  m_modified(false)
 {
   m_strHint = gettext("Select a table and click [Edit]. You may create a new table by entering the name in the last row.");
 
@@ -51,6 +52,7 @@ Box_Tables::Box_Tables(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
   m_AddDel.signal_user_added().connect(sigc::mem_fun(*this, &Box_Tables::on_AddDel_Add));
   m_AddDel.signal_user_requested_delete().connect(sigc::mem_fun(*this, &Box_Tables::on_AddDel_Delete));
   m_AddDel.signal_user_requested_edit().connect(sigc::mem_fun(*this, &Box_Tables::on_AddDel_Edit));
+  m_AddDel.signal_user_changed().connect(sigc::mem_fun(*this, &Box_Tables::on_AddDel_changed));
 
   show_all_children();
 }
@@ -66,18 +68,21 @@ void Box_Tables::fill_from_database()
   Box_DB::fill_from_database();
     
   //Enable/Disable extra widgets:
-  if( get_userlevel() == AppState::USERLEVEL_DEVELOPER)
-    m_pCheckButtonShowHidden->set_active(true); //Set a suitable default;
-  else
-    m_pCheckButtonShowHidden->set_sensitive(false); //Operators have no choice - they can't see hidden tables ever.
+  bool developer_mode = (get_userlevel() == AppState::USERLEVEL_DEVELOPER);
+  m_pCheckButtonShowHidden->set_sensitive(developer_mode); //Operators have no choice - they can't see hidden tables ever.
+  if( get_userlevel() != AppState::USERLEVEL_DEVELOPER)
+    m_pCheckButtonShowHidden->set_active(false); //Operators have no choice - they can't see hidden tables ever.
 
   m_AddDel.remove_all();
 
   //Add the columns:
   m_AddDel.remove_all_columns();
-  m_colTableName = m_AddDel.add_column(gettext("Tables"));
 
-  bool visible_extras = (get_userlevel() == AppState::USERLEVEL_DEVELOPER);
+  //TODO: Show the title instead of the name when in operator mode
+  bool editable = developer_mode;
+  m_colTableName = m_AddDel.add_column(gettext("Tables"), AddDelColumnInfo::STYLE_Text, editable);
+
+  bool visible_extras = developer_mode;
   m_colHidden = m_AddDel.add_column(gettext("Hidden"), AddDelColumnInfo::STYLE_Boolean, true, visible_extras);
   m_colTitle =  m_AddDel.add_column(gettext("Title"), AddDelColumnInfo::STYLE_Text, true, visible_extras);
   m_colDefault =  m_AddDel.add_column(gettext("Default"), AddDelColumnInfo::STYLE_Boolean,  true, visible_extras);
@@ -96,9 +101,6 @@ void Box_Tables::fill_from_database()
   }
   else
     g_warning("debug: m_pDocument is null");
-    
-  const bool developer_mode = ( get_userlevel() == AppState::USERLEVEL_DEVELOPER);
-  
   
   //Get the list of tables in the database, from the server:
   sharedptr<SharedConnection> sharedconnection = connect_to_server();
@@ -144,6 +146,11 @@ void Box_Tables::fill_from_database()
   }
 
   fill_end();
+
+  m_AddDel.set_allow_add(developer_mode);
+  m_AddDel.set_allow_delete(developer_mode);
+      
+  m_modified = false;
 }
 
 void Box_Tables::on_AddDel_Add(guint row)
@@ -181,7 +188,10 @@ void Box_Tables::on_AddDel_Add(guint row)
   //Query_execute( "INSERT INTO " + strName + " VALUES (0)" );
   #endif
 
+  save_to_document();
   fill_from_database();
+
+  m_modified = true;
 }
 
 void Box_Tables::on_AddDel_Delete(guint rowStart, guint rowEnd)
@@ -205,7 +215,11 @@ void Box_Tables::on_AddDel_Delete(guint rowStart, guint rowEnd)
     }
   }
 
+  save_to_document();
+  
   fill_from_database();
+
+  m_modified = true;
 }
 
 void Box_Tables::on_AddDel_Edit(guint row)
@@ -226,26 +240,7 @@ void Box_Tables::on_AddDel_Edit(guint row)
     {
        //Go ahead:
        
-       if(get_userlevel() == AppState::USERLEVEL_DEVELOPER)
-       {
-         //Save the hidden tables. TODO_usermode: Only if we are in developer mode.
-         Document_Glom::type_listTableInfo listTables;
-
-         guint rows_count = m_AddDel.get_count();
-         for(guint row_index = 0; row_index < rows_count; ++row_index)
-         {
-           TableInfo table_info;
-           table_info.m_name = m_AddDel.get_value(row_index, m_colTableName);
-           table_info.m_hidden  = m_AddDel.get_value_as_bool(row_index, m_colHidden);
-           table_info.m_title  = m_AddDel.get_value(row_index, m_colTitle);
-           
-           listTables.push_back(table_info);
-         }
-
-         if(m_pDocument)
-           m_pDocument->set_tables( listTables); //TODO: Don't save all new tables - just the ones already in the document.
-       }
-
+       save_to_document();
 
        //Emit the signal:
        signal_selected.emit(table_name);
@@ -253,7 +248,63 @@ void Box_Tables::on_AddDel_Edit(guint row)
   }
 }
 
+void Box_Tables::save_to_document()
+{
+  if(get_userlevel() == AppState::USERLEVEL_DEVELOPER)
+  {
+    if(true); //m_modified
+    {
+      //Save the hidden tables. TODO_usermode: Only if we are in developer mode.
+      Document_Glom::type_listTableInfo listTables;
+
+      guint rows_count = m_AddDel.get_count();
+      for(guint row_index = 0; row_index < rows_count; ++row_index)
+      {
+        TableInfo table_info;
+        table_info.m_name = m_AddDel.get_value(row_index, m_colTableName);
+        table_info.m_hidden  = m_AddDel.get_value_as_bool(row_index, m_colHidden);
+        table_info.m_title  = m_AddDel.get_value(row_index, m_colTitle);
+        table_info.m_default  = m_AddDel.get_value_as_bool(row_index, m_colDefault);
+
+        listTables.push_back(table_info);
+      }
+
+      if(m_pDocument)
+        m_pDocument->set_tables( listTables); //TODO: Don't save all new tables - just the ones already in the document.
+      }
+   }
+}
+
 void Box_Tables::on_show_hidden_toggled()
 {
   fill_from_database();
 }
+
+void Box_Tables::on_AddDel_changed(guint row, guint column)
+{
+  if(get_userlevel() == AppState::USERLEVEL_DEVELOPER)
+  {
+    if( (column == m_colHidden) )
+    {
+      save_to_document();
+      //TODO: This causes a crash. fill_from_database(); //Hide/show the table.
+      m_modified = true;
+    }
+    else if( (column == m_colTitle) || (column == m_colDefault) )
+    {
+      save_to_document();
+      m_modified = true;
+    } 
+    else if(column == m_colTableName)
+    {
+      g_warning("Box_Tables: renaming of tables is not yet implemented.");
+      fill_from_database();
+    }
+  }
+}
+
+void  Box_Tables::on_userlevel_changed(AppState::userlevels userlevel)
+{
+  fill_from_database();
+}
+

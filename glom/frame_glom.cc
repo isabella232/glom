@@ -207,13 +207,19 @@ bool Frame_Glom::set_mode(enumModes mode)
 
   return bChanged;
 }
+
+void Frame_Glom::alert_no_table()
+{
+  //Ask user to choose a table first:
+  show_ok_dialog(gettext("You must choose a database table first.\n Use the Navigation menu, or load a previous document."));
+}
+
 void Frame_Glom::show_table(const Glib::ustring& strTableName)
 {
   //Check that there is a table to show:
-  if(strTableName.size() == 0)
+  if(strTableName.empty())
   {
-    //Ask user to choose a table first:
-    show_ok_dialog(gettext("You must choose a database table first.\n Use the Navigation menu, or load a previous document."));
+    alert_no_table();
   }
   else
   {
@@ -265,18 +271,34 @@ void Frame_Glom::show_table(const Glib::ustring& strTableName)
   show_all();
 }
 
-void Frame_Glom::on_menu_UserLevel_Developer()
+void Frame_Glom::on_menu_UserLevel_Developer(Glib::RefPtr<Gtk::RadioAction> action)
 {
-  Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
-  if(document)
-    document->set_userlevel(AppState::USERLEVEL_DEVELOPER);
+g_warning("Frame_Glom::on_menu_UserLevel_Developer()");
+
+  if(action->get_active())
+  {
+    Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
+    if(document)
+    {
+      //Avoid double signals:
+      //if(document->get_userlevel() != AppState::USERLEVEL_DEVELOPER)
+        document->set_userlevel(AppState::USERLEVEL_DEVELOPER);
+    }
+  }
 }
 
-void Frame_Glom::on_menu_UserLevel_Operator()
+void Frame_Glom::on_menu_UserLevel_Operator(Glib::RefPtr<Gtk::RadioAction> action)
 {
-  Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
-  if(document)
-    document->set_userlevel(AppState::USERLEVEL_OPERATOR);
+  if(action->get_active())
+  {
+    Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
+    if(document)
+    {
+      //Avoid double signals:
+      //if(document->get_userlevel() != AppState::USERLEVEL_OPERATOR)
+        document->set_userlevel(AppState::USERLEVEL_OPERATOR);
+    }
+  }
 }
 
 void Frame_Glom::on_menu_Mode_Data()
@@ -383,15 +405,21 @@ void Frame_Glom::on_Notebook_Find(Glib::ustring strWhereClause)
 void Frame_Glom::on_userlevel_changed(AppState::userlevels userlevel)
 {
 g_warning("Frame_Glom::on_userlevel_changed");
+
   //show user level:
   Glib::ustring user_level_name = gettext("Operator");
   if(userlevel == AppState::USERLEVEL_DEVELOPER)
     user_level_name = gettext("Developer");
 
+ g_warning("Frame_Glom::on_userlevel_changed: userlevel=%s", user_level_name.c_str());
+    
   if(m_pLabel_UserLevel)
     m_pLabel_UserLevel->set_text(user_level_name);
 
   show_table_title();
+
+
+  
 }
 
 void Frame_Glom::show_table_title()
@@ -517,16 +545,32 @@ void Frame_Glom::load_from_document()
 
 void Frame_Glom::on_menu_developer_fields()
 {
-  m_pDialog_Fields->set_transient_for(*get_app_window());
-  m_pDialog_Fields->init_db_details( m_pBox_Databases->get_database_name(), m_strTableName);
-  m_pDialog_Fields->show();
+  //Check that there is a table to show:
+  if(m_strTableName.empty())
+  {
+    alert_no_table(); //TODO: Disable the menu item instead.
+  }
+  else
+  {
+    m_pDialog_Fields->set_transient_for(*get_app_window());
+    m_pDialog_Fields->init_db_details( m_pBox_Databases->get_database_name(), m_strTableName);
+    m_pDialog_Fields->show();
+  }
 }
 
 void Frame_Glom::on_menu_developer_relationships()
 {
-  m_pDialog_Relationships->set_transient_for(*get_app_window());
-  m_pDialog_Relationships->init_db_details( m_pBox_Databases->get_database_name(), m_strTableName);
-  m_pDialog_Relationships->show();
+  //Check that there is a table to show:
+  if(m_strTableName.empty())
+  {
+    alert_no_table(); //TODO: Disable the menu item instead.
+  }
+  else
+  {
+    m_pDialog_Relationships->set_transient_for(*get_app_window());
+    m_pDialog_Relationships->init_db_details( m_pBox_Databases->get_database_name(), m_strTableName);
+    m_pDialog_Relationships->show();
+  }
 }
 
 void Frame_Glom::on_menu_developer_users()
@@ -536,9 +580,17 @@ void Frame_Glom::on_menu_developer_users()
 
 void Frame_Glom::on_menu_developer_layout()
 {
-  Notebook_Glom* notebook_current = dynamic_cast<Notebook_Glom*>(m_pBox_Mode->get_child());
-  if(notebook_current)
-    notebook_current->do_menu_developer_layout();
+  //Check that there is a table to show:
+  if(m_strTableName.empty())
+  {
+    alert_no_table(); //TODO: Disable the menu item instead.
+  }
+  else
+  {
+    Notebook_Glom* notebook_current = dynamic_cast<Notebook_Glom*>(m_pBox_Mode->get_child());
+    if(notebook_current)
+      notebook_current->do_menu_developer_layout();
+  }
 }
 
 

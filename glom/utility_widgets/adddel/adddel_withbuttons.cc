@@ -38,7 +38,7 @@ AddDel_WithButtons::AddDel_WithButtons()
   //Link buttons to handlers:
   m_Button_Add.signal_clicked().connect(sigc::mem_fun(*this, &AddDel_WithButtons::on_button_add));
   m_Button_Del.signal_clicked().connect(sigc::mem_fun(*this, &AddDel_WithButtons::on_button_del));
-  m_Button_Edit.signal_clicked().connect(sigc::mem_fun(*this, &AddDel_WithButtons::on_Button_Edit));
+  m_Button_Edit.signal_clicked().connect(sigc::mem_fun(*this, &AddDel_WithButtons::on_button_edit));
 
 }
 
@@ -65,7 +65,7 @@ void AddDel_WithButtons::on_button_del()
   on_MenuPopup_activate_Delete();
 }
 
-void AddDel_WithButtons::on_Button_Edit()
+void AddDel_WithButtons::on_button_edit()
 {
   on_MenuPopup_activate_Edit();
 }
@@ -75,6 +75,13 @@ void AddDel_WithButtons::set_allow_add(bool val)
   AddDel::set_allow_add(val);
 
   m_Button_Add.set_sensitive(val);
+}
+
+void AddDel_WithButtons::set_allow_delete(bool val)
+{
+  AddDel::set_allow_delete(val);
+
+  m_Button_Del.set_sensitive(val);
 }
 
 void AddDel_WithButtons::set_allow_user_actions(bool bVal)

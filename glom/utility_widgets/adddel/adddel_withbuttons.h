@@ -34,6 +34,7 @@ public:
   virtual ~AddDel_WithButtons();
 
   virtual void set_allow_add(bool val = true); //override
+  virtual void set_allow_delete(bool val = true); //override
   virtual void set_allow_user_actions(bool bVal = true); //override
 
   virtual void set_select_text(const Glib::ustring& strVal); //override
@@ -43,7 +44,7 @@ protected:
 
   virtual void on_button_add();
   virtual void on_button_del();
-  virtual void on_Button_Edit();
+  virtual void on_button_edit();
 
   //member widgets:
   Gtk::HBox m_HBox;

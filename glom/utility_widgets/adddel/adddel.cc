@@ -62,7 +62,8 @@ AddDel::AddDel()
   m_pColumnHeaderPopup(0),
   m_allow_column_chooser(false),
   m_auto_add(true),
-  m_allow_add(true)
+  m_allow_add(true),
+  m_allow_delete(true)
 {
   set_prevent_user_signals();
   set_ignore_treeview_signals();
@@ -912,6 +913,12 @@ void AddDel::set_allow_add(bool val)
 {
   m_allow_add = val;
 }
+
+void AddDel::set_allow_delete(bool val)
+{
+  m_allow_delete= val;
+}
+  
   
 void AddDel::set_allow_user_actions(bool bVal)
 {

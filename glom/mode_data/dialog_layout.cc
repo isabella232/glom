@@ -253,7 +253,6 @@ void Dialog_Layout::fill_groups_fields()
 
 void Dialog_Layout::fill_groups()
 {
-g_warning("fill_groups");
   //Get the groups:
   Document_Glom::type_mapLayoutGroupSequence mapGroups = m_document->get_data_layout_groups(m_layout_name, m_table_name);
  
@@ -265,7 +264,6 @@ g_warning("fill_groups");
     Gtk::TreeModel::Row row = *iterTree;
 
     Glib::ustring group_name = iter->second.m_group_name;
-    g_warning("fill_groups: name=%s", group_name.c_str());
     row[m_ColumnsGroups.m_col_name] = group_name;
     row[m_ColumnsGroups.m_col_sequence] = iter->second.m_sequence;
   }
@@ -516,7 +514,6 @@ void Dialog_Layout::save_to_document()
       if(!name.empty())
       {
         item.m_group_name = name;
-        g_warning("save_to_document: group = %s", name.c_str());
 
         guint sequence = row[m_ColumnsGroups.m_col_sequence];
         item.m_sequence = sequence;

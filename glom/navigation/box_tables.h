@@ -36,12 +36,17 @@ public:
 protected:
   virtual void fill_from_database(); //override
 
+  virtual void save_to_document();
+
   //Signal handlers:
   virtual void on_AddDel_Add(guint row);
   virtual void on_AddDel_Delete(guint rowStart, guint rowEnd);
   virtual void on_AddDel_Edit(guint row);
-
+  virtual void on_AddDel_changed(guint row, guint column);
+  
   virtual void on_show_hidden_toggled();
+
+  virtual void on_userlevel_changed(AppState::userlevels userlevel);
 
   Gtk::Label* m_pLabelFrameTitle;
   Gtk::CheckButton* m_pCheckButtonShowHidden;
@@ -52,6 +57,7 @@ protected:
   
   mutable AddDel_WithButtons m_AddDel; //mutable because its get_ methods aren't const.
 
+  bool m_modified;
 };
 
 #endif //BOX_TABLES_H

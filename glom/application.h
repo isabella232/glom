@@ -69,6 +69,7 @@ protected:
   type_listActions m_listDeveloperActions; //Only enabled when in developer mode.
   type_listActions m_listWithDatabaseActions;  //Only enabled when a database has been selected.
   Glib::RefPtr<Gtk::Action> m_action_mode_data;
+  Glib::RefPtr<Gtk::RadioAction> m_action_menu_userlevel_developer, m_action_menu_userlevel_operator;
   
   Gtk::VBox* m_pBoxTop;
   Frame_Glom* m_pFrame;

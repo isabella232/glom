@@ -38,6 +38,7 @@ AppState::userlevels AppState::get_userlevel() const
 
 void AppState::set_userlevel(userlevels value)
 {
+g_warning("AppState::set_userlevel(userlevels value): userlevel=%d", value);
   if(m_userlevel != value)
   {
     m_userlevel = value;

@@ -72,7 +72,8 @@ public:
   virtual bool get_allow_user_actions() const;
 
   virtual void set_allow_add(bool val = true);
-  
+  virtual void set_allow_delete(bool val = true);
+    
   virtual void set_allow_column_chooser(bool value = true);
 
   virtual guint add_item(); //Return index of new row.
@@ -249,7 +250,8 @@ protected:
   bool m_allow_column_chooser;
   bool m_auto_add;
   bool m_allow_add;
-
+  bool m_allow_delete;
+  
   //signals:
   type_signal_user_added m_signal_user_added;
   type_signal_user_changed m_signal_user_changed;

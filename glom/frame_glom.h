@@ -51,8 +51,8 @@ public:
   virtual void on_Box_Databases_selected(Glib::ustring strName);
   virtual void on_Box_Tables_selected(Glib::ustring strName);
 
-  virtual void on_menu_UserLevel_Developer();
-  virtual void on_menu_UserLevel_Operator();
+  virtual void on_menu_UserLevel_Developer(Glib::RefPtr<Gtk::RadioAction> action);
+  virtual void on_menu_UserLevel_Operator(Glib::RefPtr<Gtk::RadioAction> action);
       
   virtual void on_menu_Mode_Data();
   virtual void on_menu_Mode_Find();
@@ -93,7 +93,8 @@ protected:
   virtual const Gtk::Window* get_app_window() const;
   
   virtual void show_ok_dialog(const Glib::ustring& strMessage);
-
+  virtual void alert_no_table();
+  
   //Signal handlers:
   virtual void on_Notebook_Find(Glib::ustring strWhereClause);
   virtual void on_userlevel_changed(AppState::userlevels userlevel);

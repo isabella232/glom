@@ -1,5 +1,19 @@
 2004-06-10  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/navigation/box_tables.cc: Handle AddDel::signal_user_changed so
+	that changes are saved immediately. It does not update the list of 
+	non-hidden tables properly yet though. The AddDel columns are no 
+	longer editable when in operator mode.
+	* glom/frame_glom.[h|cc]: Do not allow the user to design fields, 
+	relationships, or layouts if no table has been selected.
+	* glom/application.cc, frame_glom.[h|cc]: on_menu_userlevel_*(): 
+	Use sigc::bind to send the RadioAction to the signal handler, so we 
+	can check if it is active, because the signal seems to be sent both 
+	when the menu item is un-activated (as a result of another radioaction 
+	being activated) and when it is activated.
+
+2004-06-10  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/box_db.[h|cc]: Move the database stuff into the Base_DB class to
 	make the code a bit clearer. Connect to the signal of the document in 
 	a set_document() override instead of the on_load_document() override.

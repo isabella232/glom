@@ -115,10 +115,14 @@ void App_Glom::init_menus()
   //"UserLevel" menu:
   m_refActionGroup_Others->add(Gtk::Action::create("Glom_Menu_UserLevel", gettext("_User Level")));
   Gtk::RadioAction::Group group_userlevel;
-  m_refActionGroup_Others->add(Gtk::RadioAction::create(group_userlevel, "GlomAction_Menu_UserLevel_Developer", gettext("_Developer")),
-                        sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_UserLevel_Developer) );
-  m_refActionGroup_Others->add(Gtk::RadioAction::create(group_userlevel, "GlomAction_Menu_UserLevel_Operator", gettext("_Operator")),
-                        sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_UserLevel_Operator) );
+
+  m_action_menu_userlevel_developer = Gtk::RadioAction::create(group_userlevel, "GlomAction_Menu_UserLevel_Developer", gettext("_Developer"));
+  m_refActionGroup_Others->add(m_action_menu_userlevel_developer,
+                        sigc::bind( sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_UserLevel_Developer), m_action_menu_userlevel_developer) );
+
+  m_action_menu_userlevel_operator =  Gtk::RadioAction::create(group_userlevel, "GlomAction_Menu_UserLevel_Operator", gettext("_Operator"));
+  m_refActionGroup_Others->add(m_action_menu_userlevel_operator,
+                        sigc::bind( sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_UserLevel_Operator), m_action_menu_userlevel_operator) );
 
   //"Mode" menu:
   action =  Gtk::Action::create("Glom_Menu_Mode", gettext("_Mode"));
@@ -251,6 +255,11 @@ void App_Glom::on_document_load()
         connection_pool->set_ready_to_connect(); //Box_DB::connect_to_server() will now attempt the connection-> Shared instances of m_Connection will also be usable.
       }
 
+      //Switch to operator mode when opening new documents:
+      g_warning("debug 1");
+      pDocument->set_userlevel(AppState::USERLEVEL_OPERATOR);
+      g_warning("debug 2");
+            
       m_pFrame->do_menu_Navigate_Database(false); //false = don't show list, just open the current database after connecting.
     }
   }
@@ -273,6 +282,19 @@ void App_Glom::on_userlevel_changed(AppState::userlevels userlevel)
   {
     Glib::RefPtr<Gtk::Action> action = *iter;
      action->set_sensitive ( userlevel == AppState::USERLEVEL_DEVELOPER );
+  }
+
+  //Make sure that the correct radio menu item is activated (the userlevel might have been set programmatically):
+  //We only need to set/unset one, because the others are in the same radio group.
+  if(userlevel ==  AppState::USERLEVEL_DEVELOPER)
+  {
+    if(!m_action_menu_userlevel_developer->get_active())
+      m_action_menu_userlevel_developer->set_active();
+  }
+  else if(userlevel ==  AppState::USERLEVEL_OPERATOR)
+  {
+    if(!m_action_menu_userlevel_operator->get_active())
+      m_action_menu_userlevel_operator->set_active();
   }
 }
 

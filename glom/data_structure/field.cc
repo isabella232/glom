@@ -166,7 +166,6 @@ Glib::ustring Field::sql(const Glib::ustring& str) const
 {
 //TODO: This method should not be used in future = sql(Value) would be more type-safe.
 
-g_warning("get_field_type().get_glom_type(): %d", get_field_type().get_glom_type());
   FieldType::enumTypes type = get_field_type().get_glom_type();
   if( (type == FieldType::TYPE_TEXT) || (type == FieldType::TYPE_DATE) || (type == FieldType::TYPE_TIME) ) //TODO: We really need to think about locales and canonical formats for dates and times.
     return "'" + str + "'"; //TODO: special characters?
