@@ -27,7 +27,7 @@
 Box_Data_List_Related::Box_Data_List_Related()
 : m_pDialogLayoutRelated(0)
 {
-  set_size_request(400, -1); //TODO: Somehow we should use all the available space, or allow the developer to control this.
+  set_size_request(400, -1); //An arbitrary default.
 
   //m_Frame.set_label_widget(m_Label_Related);
   m_Frame.set_shadow_type(Gtk::SHADOW_NONE);

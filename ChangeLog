@@ -1,8 +1,16 @@
 2005-03-31  Murray Cumming <murrayc@murrayc.com>
 
+	* glom/utility_widgets/flowtable.cc:
+	* glom/utility_widgets/flowtable.h:
+	The optional add() expand parameter now works for first
+	items, so related records portals now take up the full 
+	column width.
+
+2005-03-31  Murray Cumming <murrayc@murrayc.com>
+
 	* glom/data_structure/iso_codes.cc:
 	Use the correct name with dgettext(), using a _ 
-	instead of a -. CUrrency names are therefore now 
+	instead of a -. Currency names are therefore now 
 	translated.
 	* glom/utility_widgets/flowtable.cc:
 	* glom/utility_widgets/flowtable.h:

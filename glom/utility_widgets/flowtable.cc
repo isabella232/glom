@@ -312,12 +312,13 @@ Gtk::Allocation FlowTable::assign_child(Gtk::Widget* widget, int x, int y)
   return assign_child(widget, x, y, child_requisition_request.width, child_requisition_request.height);
 }
 
-void FlowTable::get_item_max_width(guint start, guint height, guint& first_max_width, guint& second_max_width, guint& singles_max_width)
+void FlowTable::get_item_max_width_requested(guint start, guint height, guint& first_max_width, guint& second_max_width, guint& singles_max_width, bool& is_last_column)
 {
   //Initialize output parameters:
   first_max_width = 0;
   second_max_width = 0;
   singles_max_width = 0;
+  is_last_column = false;
 
   if(m_children.empty())
     return;
@@ -387,8 +388,13 @@ void FlowTable::get_item_max_width(guint start, guint height, guint& first_max_w
     ++i;
   }
 
+  //Tell the caller if this was the last column,
+  //so that it can decide to use all available space.
+  if(i == m_children.size())
+    is_last_column = true;
+
   //g_warning("i=%d", i);
-  //g_warning("get_item_max_width(guint start=%d, guint height=%d, guint& first_max_width=%d, guint& second_max_width=%d",  start, height, first_max_width, second_max_width);
+  //g_warning("get_item_max_width_requested(guint start=%d, guint height=%d, guint& first_max_width=%d, guint& second_max_width=%d",  start, height, first_max_width, second_max_width);
 }
 
 void FlowTable::on_size_allocate(Gtk::Allocation& allocation)
@@ -406,7 +412,8 @@ void FlowTable::on_size_allocate(Gtk::Allocation& allocation)
   guint first_max_width = 0;
   guint second_max_width = 0;
   guint singles_max_width = 0;
-  get_item_max_width(0, allocation.get_height(), first_max_width, second_max_width, singles_max_width);  //TODO: Give the 2nd part of the column a bit more if the total needed is less than the allocation given.
+  bool is_last_column = false;
+  get_item_max_width_requested(0, allocation.get_height(), first_max_width, second_max_width, singles_max_width, is_last_column);  //TODO: Give the 2nd part of the column a bit more if the total needed is less than the allocation given.
 
   //Calculate where the columns should start on the x axis.
   int column_x_start = allocation.get_x();
@@ -417,7 +424,11 @@ void FlowTable::on_size_allocate(Gtk::Allocation& allocation)
 
   //Used for drawing horizontal lines:
   guint column_max_width = MAX(first_max_width + m_padding + second_max_width, singles_max_width);
-
+  //Use the whole remaining width if there is no column after this:
+  if(is_last_column)
+  {
+    column_max_width = allocation.get_width() - (column_x_start - allocation.get_x());
+  }
 
   int column_child_y_start = allocation.get_y();
 
@@ -449,8 +460,9 @@ void FlowTable::on_size_allocate(Gtk::Allocation& allocation)
         first_max_width = 0;
         second_max_width= 0;
         singles_max_width = 0;
+        bool is_last_column = false;
 
-        get_item_max_width(i, allocation.get_height(), first_max_width, second_max_width, singles_max_width);
+        get_item_max_width_requested(i, allocation.get_height(), first_max_width, second_max_width, singles_max_width, is_last_column);
 
         column_x_start_second = column_x_start + first_max_width;
         if(first_max_width > 0) //Add padding between first and second sub sets of items, if there is a first set.
@@ -458,11 +470,17 @@ void FlowTable::on_size_allocate(Gtk::Allocation& allocation)
 
         //Used for drawing horizontal lines:
         column_max_width = MAX(first_max_width + m_padding + second_max_width, singles_max_width);
+
+        //Use the whole remaining width if there is no column after this:
+        if(is_last_column)
+        {
+          column_max_width = allocation.get_width() - (column_x_start - allocation.get_x());
+        }
       }
     }
 
     bool something_added = false;
- 
+
     Gtk::Widget* first = item.m_first;
     Gtk::Widget* second = item.m_second;
     if(child_is_visible(second))
@@ -494,7 +512,9 @@ void FlowTable::on_size_allocate(Gtk::Allocation& allocation)
       if(!(item.m_expand_first))
         item.m_first_allocation = assign_child(first, column_x_start, column_child_y_start);
       else
+      {
         item.m_first_allocation = assign_child(first, column_x_start, column_child_y_start, column_max_width, item_height);
+      }
 
       something_added = true;
     }

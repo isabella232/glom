@@ -93,7 +93,7 @@ protected:
 
   int get_item_requested_height(const FlowTableItem& item);
   void get_item_requested_width(const FlowTableItem& item, int& first, int& second);
-  void get_item_max_width(guint start, guint height, guint& first_max_width, guint& second_max_width, guint& singles_max_width); //TODO: maybe combine this with code in get_minimum_column_height().
+  void get_item_max_width_requested(guint start, guint height, guint& first_max_width, guint& second_max_width, guint& singles_max_width, bool& is_last_column); //TODO: maybe combine this with code in get_minimum_column_height().
 
   bool child_is_visible(Gtk::Widget* widget);
 
