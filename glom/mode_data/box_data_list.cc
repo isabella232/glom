@@ -256,16 +256,11 @@ void Box_Data_List::on_adddel_user_added(const Gtk::TreeModel::iterator& row)
 
   Field field_primary_key = m_AddDel.get_key_field();
 
-  guint generated_id = 0;
   if(field_primary_key.get_field_info().get_auto_increment())
   {
     //Auto-increment is awkward (we can't get the last-generated ID) with postgres, so we auto-generate it ourselves;
     const Glib::ustring& strPrimaryKeyName = field_primary_key.get_name();
-    generated_id = generate_next_auto_increment(m_strTableName, strPrimaryKeyName);  //TODO: return a Gnome::Gda::Value of an appropriate type.
-    Glib::ustring strPrimaryKeyValue = util_string_from_decimal(generated_id);
-
-    bool parsed = false;
-    primary_key_value = GlomConversions::parse_value(field_primary_key.get_glom_type(), strPrimaryKeyValue, parsed);
+    primary_key_value = generate_next_auto_increment(m_strTableName, strPrimaryKeyName);  //TODO: return a Gnome::Gda::Value of an appropriate type.
   }
   else
   {
@@ -684,3 +679,4 @@ bool Box_Data_List::get_field_primary_key_index(guint& field_column) const
 {
   return Box_Data::get_field_primary_key_index(m_Fields, field_column);
 }
+

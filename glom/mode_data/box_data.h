@@ -60,6 +60,7 @@ protected:
   virtual type_vecLayoutFields get_fields_to_show() const;
   virtual Glib::ustring build_sql_select(const Glib::ustring& table_name, const type_vecLayoutFields& fieldsToGet, const Field& primary_key_field, const Gnome::Gda::Value& primary_key_value);
   virtual Glib::ustring build_sql_select_with_where_clause(const Glib::ustring& table_name, const type_vecLayoutFields& fieldsToGet, const Glib::ustring& where_clause);
+  virtual bool get_related_record_exists(const Relationship& relationship, const Field& key_field, const Gnome::Gda::Value& key_value);
 
 
   type_vecLayoutFields get_table_fields_to_show(const Glib::ustring& table_name) const;
@@ -89,7 +90,7 @@ protected:
 
   virtual bool record_delete(const Gnome::Gda::Value& primary_key_value);
   virtual Glib::RefPtr<Gnome::Gda::DataModel> record_new(bool use_entered_data = true, const Gnome::Gda::Value& primary_key_value = Gnome::Gda::Value()); //New record with all entered field values.
-  guint generate_next_auto_increment(const Glib::ustring& table_name, const Glib::ustring field_name);
+  Gnome::Gda::Value generate_next_auto_increment(const Glib::ustring& table_name, const Glib::ustring field_name);
 
   virtual bool get_field_primary_key(Field& field) const = 0;
   virtual bool get_field(const Glib::ustring& name, Field& field) const;

@@ -61,7 +61,7 @@ public:
     TYPE_TIME,
     TYPE_BOOLEAN
   };
-  
+
   Field();
   Field(const Field& src);
   virtual ~Field();

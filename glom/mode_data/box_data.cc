@@ -403,11 +403,11 @@ Box_Data::type_vecLayoutFields Box_Data::get_table_fields_to_show(const Glib::us
   {
     g_warning("Box_Data::get_table_fields_to_show_add_group(): Returning empty list.");
   }
-  
+
   return result;
 }
 
-guint Box_Data::generate_next_auto_increment(const Glib::ustring& table_name, const Glib::ustring field_name)
+Gnome::Gda::Value Box_Data::generate_next_auto_increment(const Glib::ustring& table_name, const Glib::ustring field_name)
 {
   //This is a workaround for postgres problems. Ideally, we need to use the postgres serial type and find out how to get the generated value after we add a row.
 
@@ -425,7 +425,7 @@ guint Box_Data::generate_next_auto_increment(const Glib::ustring& table_name, co
     ++result;
   }
 
-  return result;
+  return Gnome::Gda::Value(result);
 }
 
 /** Get the fields that are in related tables, via a relationship using @a field_name changes.
@@ -769,4 +769,27 @@ Glib::ustring Box_Data::get_layout_item_table_name(const LayoutItem_Field& layou
   }
 
   return Glib::ustring();
+}
+
+bool Box_Data::get_related_record_exists(const Relationship& relationship, const Field& key_field, const Gnome::Gda::Value& key_value)
+{
+  bool result = false;
+
+  //TODO_Performance: It's very possible that this is slow.
+  //We don't care how many records there are, only whether there are more than zero.
+  const Glib::ustring to_field = relationship.get_to_table() = relationship.get_to_field();
+
+  //TODO_Performance: Is this the best way to just find out whether there is one record that meets this criteria?
+  const Glib::ustring query = "SELECT " + to_field + " FROM " + relationship.get_to_table() + " WHERE " + to_field + " = " + key_field.sql(key_value);
+  Glib::RefPtr<Gnome::Gda::DataModel> records = Query_execute(query);
+  if(!records)
+    handle_error();
+  else
+  {
+    //Field contents:
+    if(records->get_n_rows())
+      result = true;
+  }
+
+  return result;
 }

@@ -95,7 +95,7 @@ DbAddDel::DbAddDel()
   set_ignore_treeview_signals(false);
 
   remove_all_columns(); //set up the default columns.
-  
+
   show_all_children();
 }
 
@@ -103,16 +103,15 @@ DbAddDel::~DbAddDel()
 {
   if(m_modelcolumn_key)
     delete m_modelcolumn_key;
-  
+
   //if(m_modelcolumn_placeholder)
   //  delete m_modelcolumn_placeholder;
-  
+
   App_Glom* pApp = get_application();
   if(pApp)
   {
     pApp->remove_developer_action(m_refContextLayout);
-  }
-   
+  } 
 }
 
 void
