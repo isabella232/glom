@@ -1,0 +1,275 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Funda Wang <fundawang@linux.net.cn>, 2004.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: glom HEAD\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2004-12-04 03:31+0100\n"
+"PO-Revision-Date: 2004-12-04 16:04+0800\n"
+"Last-Translator: Funda Wang <fundawang@linux.net.cn>\n"
+"Language-Team: zh_CN <i18n-translation@lists.linux.net.cn>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: glom/glom.glade.h:1
+msgid "*"
+msgstr "*"
+
+#: glom/glom.glade.h:2
+msgid "<b>Connection</b>"
+msgstr "<b>连接</b>"
+
+#: glom/glom.glade.h:3
+msgid "<b>Field Definitions</b>"
+msgstr ""
+
+#: glom/glom.glade.h:4
+msgid "<b>Fields</b>"
+msgstr "<b>字段</b>"
+
+#: glom/glom.glade.h:5
+msgid "<b>Mode: </b>"
+msgstr "<b>模式：</b>"
+
+#: glom/glom.glade.h:6
+msgid "<b>Select Field</b>"
+msgstr "<b>选择字段</b>"
+
+#: glom/glom.glade.h:7
+msgid "<b>Table: </b>"
+msgstr "<b>表：</b>"
+
+#: glom/glom.glade.h:8
+msgid "<b>Tables in database</b>"
+msgstr "<b>数据库中的表</b>"
+
+#: glom/glom.glade.h:9
+msgid "<b>Title:</b>"
+msgstr "<b>标题：</b>"
+
+#: glom/glom.glade.h:10
+msgid "<b>User Level: </b>"
+msgstr "<b>用户级别：</b>"
+
+#: glom/glom.glade.h:11
+msgid "<b>def calculate_field_value():</b>"
+msgstr "<b>def calculate_field_value()：</b>"
+
+#: glom/glom.glade.h:12
+msgid ""
+"<span weight=\"bold\" size=\"larger\">Connect to Server</span>\n"
+"\n"
+"Please enter the connection details for your database server."
+msgstr ""
+"<span weight=\"bold\" size=\"larger\">连接到服务器</span>\n"
+"\n"
+"请输入您数据库服务器的连接细节。"
+
+#: glom/glom.glade.h:15
+msgid ""
+"<span weight=\"bold\" size=\"larger\">Connection Failed</span>\n"
+"\n"
+"Glom could not connect to the database server. Maybe you entered an "
+"incorrect user name or password, or maybe the postgres database server is "
+"not running."
+msgstr ""
+
+#: glom/glom.glade.h:18
+msgid ""
+"<span weight=\"bold\" size=\"larger\">Database creation failed</span>\n"
+"\n"
+"Glom could not create the new database. Maybe you do not have the necessary "
+"access rights. Please contact your system administrator."
+msgstr ""
+
+#: glom/glom.glade.h:21
+msgid ""
+"<span weight=\"bold\" size=\"larger\">Invalid format</span>\n"
+"\n"
+"The data in the field was not recognised. Please try to correct the data or "
+"revert to the previous value. Here is an example of correctly-formatted data "
+"for this field.\n"
+msgstr ""
+
+#: glom/glom.glade.h:25
+msgid ""
+"<span weight=\"bold\" size=\"larger\">New Database</span>\n"
+"\n"
+"Please choose a name and title for the new database. The name should not "
+"contain any spaces."
+msgstr ""
+
+#: glom/glom.glade.h:28
+msgid ""
+"<span weight=\"bold\" size=\"larger\">Open existing document, or create new "
+"document</span>\n"
+"\n"
+"Would you like to open an existing document, to connect to an existing "
+"database?\n"
+"\n"
+"Or would you like to create a new document, to design a new database?\n"
+msgstr ""
+
+#: glom/glom.glade.h:34
+msgid ""
+"<span weight=\"bold\" size=\"larger\">Title</span>\n"
+"\n"
+"Information text.\n"
+msgstr ""
+"<span weight=\"bold\" size=\"larger\">标题</span>\n"
+"\n"
+"信息文本。\n"
+
+#: glom/glom.glade.h:38
+msgid "Add _Group"
+msgstr "添加组(_G)"
+
+#: glom/glom.glade.h:39
+msgid "Auto-increment"
+msgstr "自动增加"
+
+#: glom/glom.glade.h:40
+msgid "Calculate value"
+msgstr "计算值"
+
+#: glom/glom.glade.h:41
+msgid "Connect"
+msgstr "连接"
+
+#: glom/glom.glade.h:42
+msgid "Data"
+msgstr "数据"
+
+#: glom/glom.glade.h:43
+msgid "Database"
+msgstr "数据库"
+
+#: glom/glom.glade.h:44
+msgid "Default Value"
+msgstr "默认值"
+
+#: glom/glom.glade.h:45
+msgid "Details Layout"
+msgstr "细节布局"
+
+#: glom/glom.glade.h:46
+msgid "Edit"
+msgstr "编辑"
+
+#: glom/glom.glade.h:47
+msgid "Edit Definition"
+msgstr "编辑定义"
+
+#: glom/glom.glade.h:48
+msgid "Extra"
+msgstr "额外"
+
+#: glom/glom.glade.h:49
+msgid "Field"
+msgstr "字段"
+
+#: glom/glom.glade.h:50
+msgid "Field Calculation"
+msgstr "字段计算"
+
+#: glom/glom.glade.h:51
+msgid "Field Definition"
+msgstr "字段定义"
+
+#: glom/glom.glade.h:52
+msgid "Field Definitions"
+msgstr "字段定义"
+
+#: glom/glom.glade.h:53
+msgid "Glom"
+msgstr "Glom"
+
+#: glom/glom.glade.h:54
+msgid "Host"
+msgstr "主机"
+
+#: glom/glom.glade.h:55
+msgid "List Layout"
+msgstr "列表布局"
+
+#: glom/glom.glade.h:56
+msgid "Lookup value when a field changes."
+msgstr "字段更改时查阅值。"
+
+#: glom/glom.glade.h:57
+msgid "Name"
+msgstr "名称"
+
+#: glom/glom.glade.h:58
+msgid "None selected"
+msgstr "没有选中"
+
+#: glom/glom.glade.h:59
+msgid "Password"
+msgstr "密码"
+
+#: glom/glom.glade.h:60
+msgid "Primary Key"
+msgstr "主键"
+
+#: glom/glom.glade.h:61
+msgid "Relationship"
+msgstr "关系"
+
+#: glom/glom.glade.h:62
+msgid "Revert"
+msgstr ""
+
+#: glom/glom.glade.h:63
+msgid "Select"
+msgstr "选择"
+
+#: glom/glom.glade.h:64
+msgid "Select Field"
+msgstr "选择字段"
+
+#: glom/glom.glade.h:65
+msgid "Show hidden tables"
+msgstr "显示隐藏表"
+
+#: glom/glom.glade.h:66
+msgid "Table:"
+msgstr "表："
+
+#: glom/glom.glade.h:67
+msgid "Test"
+msgstr "测试"
+
+#: glom/glom.glade.h:68
+msgid ""
+"The field value will be the return value of the python function, which you "
+"implement here."
+msgstr ""
+
+#: glom/glom.glade.h:69
+msgid "Title"
+msgstr "标题"
+
+#: glom/glom.glade.h:70
+msgid "Type"
+msgstr "类型"
+
+#: glom/glom.glade.h:71
+msgid "Unique"
+msgstr "唯一"
+
+#: glom/glom.glade.h:72
+msgid "User"
+msgstr "用户"
+
+#: glom/glom.glade.h:73
+msgid "example data format"
+msgstr "示例数据格式"
+
+#: glom/glom.glade.h:74
+msgid "table name"
+msgstr "表名"
