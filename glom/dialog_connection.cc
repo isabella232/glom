@@ -48,6 +48,8 @@ sharedptr<SharedConnection> Dialog_Connection::connect_to_server_with_connection
   {
     //Set the connection details in the ConnectionPool singleton.
     //The ConnectionPool will now use these every time it tries to connect.
+    connection_pool->set_database(m_pDocument->get_connection_database());
+    
     connection_pool->set_host(m_entry_host->get_text());
     connection_pool->set_user(m_entry_user->get_text());
     connection_pool->set_password(m_entry_password->get_text());

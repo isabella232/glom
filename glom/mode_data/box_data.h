@@ -46,6 +46,9 @@ public:
   //where_clause.
   sigc::signal<void, Glib::ustring> signal_find;
 
+  //g++ 3.4 needs this to be public when used from Box_Data_Details. I'm not sure why. murrayc.
+  virtual void on_dialog_layout_hide();
+    
 protected:
   virtual void fill_from_database(); //override.
 
@@ -75,7 +78,6 @@ protected:
 
   //Signal handlers:
   virtual void on_Button_Find(); //only used by _Find sub-classes. Should be MI.
-  virtual void on_dialog_layout_hide();
  
   Gtk::Button m_Button_Find; //only used by _Find sub-classes. Should be MI.
   Gtk::Label m_Label_FindStatus;

@@ -59,7 +59,7 @@ protected:
   virtual void on_button_close();
 
   Gtk::Label* m_label_table_name;
-  Gtk::Entry* m_entry_table_title;;
+  Gtk::Entry* m_entry_table_title;
       
   Glib::ustring m_table_name;
   Glib::ustring m_layout_name;

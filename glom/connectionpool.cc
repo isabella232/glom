@@ -140,9 +140,13 @@ sharedptr<SharedConnection> ConnectionPool::connect()
         {
           //g_warning("ConnectionPool: connection opened");
           
-           //Create the fieldtypes member if it has not already been done:
+          //Create the fieldtypes member if it has not already been done:
           if(!m_pFieldTypes)
             m_pFieldTypes = new FieldTypes(m_refGdaConnection);
+            
+          //Open the database, if one has been specified:
+          if(!m_database.empty())
+            m_refGdaConnection->change_database(m_database);
           
           return connect(); //Call this method recursively. This time m_refGdaConnection exists.
         }
@@ -177,6 +181,11 @@ void ConnectionPool::set_password(const Glib::ustring& value)
   m_password = value;
 }
 
+void ConnectionPool::set_database(const Glib::ustring& value)
+{
+  m_database = value;
+}
+
 Glib::ustring ConnectionPool::get_host() const
 {
   return m_host;
@@ -190,6 +199,11 @@ Glib::ustring ConnectionPool::get_user() const
 Glib::ustring ConnectionPool::get_password() const
 {
   return m_password;
+}
+
+Glib::ustring ConnectionPool::get_database() const
+{
+  return m_database;
 }
 
 const FieldTypes* ConnectionPool::get_field_types() const

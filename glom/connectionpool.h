@@ -82,10 +82,12 @@ public:
   void set_host(const Glib::ustring& value);
   void set_user(const Glib::ustring& value);
   void set_password(const Glib::ustring& value);
-
+  void set_database(const Glib::ustring& value);
+  
   Glib::ustring get_host() const;
   Glib::ustring get_user() const;
   Glib::ustring get_password() const;
+  Glib::ustring get_database() const;
 
   const FieldTypes* get_field_types() const;
 
@@ -99,7 +101,7 @@ protected:
   Glib::RefPtr<Gnome::Gda::Connection> m_refGdaConnection;
   guint m_sharedconnection_refcount;
   bool m_ready_to_connect;
-  Glib::ustring m_host, m_user, m_password;
+  Glib::ustring m_host, m_user, m_password, m_database;
   FieldTypes* m_pFieldTypes;
 
   static ConnectionPool* m_instance;
