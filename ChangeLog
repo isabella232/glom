@@ -1,5 +1,10 @@
 2004-07-02  Murray Cumming  <murrayc@murrayc.com>
 
+	* Renamed all the ugly on_AddDel_* methods to slightly less ugly 
+	on_adddel_* methods.
+
+2004-07-02  Murray Cumming  <murrayc@murrayc.com>
+
 	* Added glom.keys and glom.mime, and added rules in Makefile.am to 
 	install them. This is for the old MIME-type registration system, 
 	because GNOME 2.6 seems to need both the old and new systems.

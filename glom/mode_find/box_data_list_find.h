@@ -35,7 +35,7 @@ protected:
 
   virtual void fill_from_database(); //override.
 
-  virtual void on_AddDel_user_changed(const Gtk::TreeModel::iterator& row, guint col); //override
+  virtual void on_adddel_user_changed(const Gtk::TreeModel::iterator& row, guint col); //override
   
   //Member widgets:
   Gtk::HBox m_HBox;

@@ -42,8 +42,8 @@ protected:
   virtual void fill_from_database();
 
   //Signal handlers:
-  virtual void on_AddDel_user_activated(const Gtk::TreeModel::iterator& row, guint col);
-  virtual void on_AddDel_user_changed(const Gtk::TreeModel::iterator& row, guint col);
+  virtual void on_adddel_user_activated(const Gtk::TreeModel::iterator& row, guint col);
+  virtual void on_adddel_user_changed(const Gtk::TreeModel::iterator& row, guint col);
 
   guint m_colName, m_colFromField, m_colToTable, m_colToField;
 

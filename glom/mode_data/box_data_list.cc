@@ -37,12 +37,12 @@ Box_Data_List::Box_Data_List()
   m_AddDel.set_rules_hint(); //Use alternating row colors when the theme does that.
   
   //Connect signals:
-  m_AddDel.signal_user_requested_add().connect(sigc::mem_fun(*this, &Box_Data_List::on_AddDel_user_requested_add)); //Only emitted when m_AddDel.set_auto_add(false) is used.
-  m_AddDel.signal_user_requested_edit().connect(sigc::mem_fun(*this, &Box_Data_List::on_AddDel_user_requested_edit));
-  m_AddDel.signal_user_requested_delete().connect(sigc::mem_fun(*this, &Box_Data_List::on_AddDel_user_requested_delete));
-  m_AddDel.signal_user_added().connect(sigc::mem_fun(*this, &Box_Data_List::on_AddDel_user_added));
-  m_AddDel.signal_user_changed().connect(sigc::mem_fun(*this, &Box_Data_List::on_AddDel_user_changed));
-  m_AddDel.signal_user_reordered_columns().connect(sigc::mem_fun(*this, &Box_Data_List::on_AddDel_user_reordered_columns));
+  m_AddDel.signal_user_requested_add().connect(sigc::mem_fun(*this, &Box_Data_List::on_adddel_user_requested_add)); //Only emitted when m_AddDel.set_auto_add(false) is used.
+  m_AddDel.signal_user_requested_edit().connect(sigc::mem_fun(*this, &Box_Data_List::on_adddel_user_requested_edit));
+  m_AddDel.signal_user_requested_delete().connect(sigc::mem_fun(*this, &Box_Data_List::on_adddel_user_requested_delete));
+  m_AddDel.signal_user_added().connect(sigc::mem_fun(*this, &Box_Data_List::on_adddel_user_added));
+  m_AddDel.signal_user_changed().connect(sigc::mem_fun(*this, &Box_Data_List::on_adddel_user_changed));
+  m_AddDel.signal_user_reordered_columns().connect(sigc::mem_fun(*this, &Box_Data_List::on_adddel_user_reordered_columns));
 
 
   //Groups are not very helpful for a list view:
@@ -148,7 +148,7 @@ void Box_Data_List::fill_from_database()
   fill_end();
 }
 
-void Box_Data_List::on_AddDel_user_requested_add()
+void Box_Data_List::on_adddel_user_requested_add()
 {
   Gtk::TreeModel::iterator iter = m_AddDel.get_item_placeholder();
 
@@ -172,14 +172,14 @@ void Box_Data_List::on_AddDel_user_requested_add()
   m_AddDel.select_item(iter, treemodel_column, true /* start_editing */);
 }
 
-void Box_Data_List::on_AddDel_user_requested_edit(const Gtk::TreeModel::iterator& row)
+void Box_Data_List::on_adddel_user_requested_edit(const Gtk::TreeModel::iterator& row)
 {
   Gnome::Gda::Value primary_key_value = m_AddDel.get_value_key_as_value(row); //The primary key is in the key.
 
   signal_user_requested_details().emit(primary_key_value);
 }
 
-void Box_Data_List::on_AddDel_user_requested_delete(const Gtk::TreeModel::iterator& rowStart, const Gtk::TreeModel::iterator&  /* rowEnd TODO */)
+void Box_Data_List::on_adddel_user_requested_delete(const Gtk::TreeModel::iterator& rowStart, const Gtk::TreeModel::iterator&  /* rowEnd TODO */)
 {
   record_delete( get_primary_key_value(rowStart) );
 
@@ -187,7 +187,7 @@ void Box_Data_List::on_AddDel_user_requested_delete(const Gtk::TreeModel::iterat
   m_AddDel.remove_item(rowStart);
 }
 
-void Box_Data_List::on_AddDel_user_added(const Gtk::TreeModel::iterator& row)
+void Box_Data_List::on_adddel_user_added(const Gtk::TreeModel::iterator& row)
 {
   Gnome::Gda::Value primary_key_value;
 
@@ -195,7 +195,7 @@ void Box_Data_List::on_AddDel_user_added(const Gtk::TreeModel::iterator& row)
   Field field;
   bool found = get_field(strPrimaryKeyName, field);
   if(!found)
-    g_warning("Box_Data_List::on_AddDel_user_added(): primary key %s not found.", strPrimaryKeyName.c_str());
+    g_warning("Box_Data_List::on_adddel_user_added(): primary key %s not found.", strPrimaryKeyName.c_str());
 
   guint generated_id = 0;
   if(field.get_field_info().get_auto_increment())
@@ -247,7 +247,7 @@ void Box_Data_List::on_AddDel_user_added(const Gtk::TreeModel::iterator& row)
   }
 }
 
-void Box_Data_List::on_AddDel_user_reordered_columns()
+void Box_Data_List::on_adddel_user_reordered_columns()
 {
   Document_Glom* pDoc = dynamic_cast<Document_Glom*>(get_document());
   if(pDoc)
@@ -274,7 +274,7 @@ void Box_Data_List::on_AddDel_user_reordered_columns()
   }
 }
 
-void Box_Data_List::on_AddDel_user_changed(const Gtk::TreeModel::iterator& row, guint col)
+void Box_Data_List::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, guint col)
 {
   const Gnome::Gda::Value primary_key_value = get_primary_key_value(row);
   if(!GlomConversions::value_is_empty(primary_key_value)) //If the record's primary key is filled in:
@@ -321,11 +321,11 @@ void Box_Data_List::on_AddDel_user_changed(const Gtk::TreeModel::iterator& row, 
     bool found = get_field(get_primarykey_name(), field_primary_key);
     if(found && field_primary_key.get_field_info().get_auto_increment())
     {
-      on_AddDel_user_added(row);
+      on_adddel_user_added(row);
 
        const Glib::ustring strPrimaryKeyValue = get_primary_key_value(row).to_string(); //TODO_Value
        if(!strPrimaryKeyValue.empty()) //If the Add succeeeded:
-         on_AddDel_user_changed(row, col); //Change this field in the new record.
+         on_adddel_user_changed(row, col); //Change this field in the new record.
     }
   }
 
@@ -434,7 +434,7 @@ void Box_Data_List::on_Details_record_deleted(Gnome::Gda::Value primary_key_valu
     if(iterNext != m_AddDel.get_model()->children().end())
     {
       //Next record moves up one:
-      on_AddDel_user_requested_edit(iterNext);
+      on_adddel_user_requested_edit(iterNext);
     }
     else
     {

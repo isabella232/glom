@@ -41,10 +41,10 @@ protected:
   virtual void save_to_document();
 
   //Signal handlers:
-  virtual void on_AddDel_Add(const Gtk::TreeModel::iterator& row);
-  virtual void on_AddDel_Delete(const Gtk::TreeModel::iterator& rowStart, const Gtk::TreeModel::iterator& rowEnd);
-  virtual void on_AddDel_Edit(const Gtk::TreeModel::iterator& row);
-  virtual void on_AddDel_changed(const Gtk::TreeModel::iterator& row, guint column);
+  virtual void on_adddel_Add(const Gtk::TreeModel::iterator& row);
+  virtual void on_adddel_Delete(const Gtk::TreeModel::iterator& rowStart, const Gtk::TreeModel::iterator& rowEnd);
+  virtual void on_adddel_Edit(const Gtk::TreeModel::iterator& row);
+  virtual void on_adddel_changed(const Gtk::TreeModel::iterator& row, guint column);
   
   virtual void on_show_hidden_toggled();
 

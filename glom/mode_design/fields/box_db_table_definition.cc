@@ -66,10 +66,10 @@ void Box_DB_Table_Definition::init()
   m_colPrimaryKey = m_AddDel.add_column("Primary Key", AddDelColumnInfo::STYLE_Boolean);
 
   //Connect signals:
-  m_AddDel.signal_user_added().connect(sigc::mem_fun(*this, &Box_DB_Table_Definition::on_AddDel_add));
-  m_AddDel.signal_user_requested_delete().connect(sigc::mem_fun(*this, &Box_DB_Table_Definition::on_AddDel_delete));
-  m_AddDel.signal_user_changed().connect(sigc::mem_fun(*this, &Box_DB_Table_Definition::on_AddDel_changed));
-  m_AddDel.signal_user_requested_edit().connect(sigc::mem_fun(*this, &Box_DB_Table_Definition::on_AddDel_edit));
+  m_AddDel.signal_user_added().connect(sigc::mem_fun(*this, &Box_DB_Table_Definition::on_adddel_add));
+  m_AddDel.signal_user_requested_delete().connect(sigc::mem_fun(*this, &Box_DB_Table_Definition::on_adddel_delete));
+  m_AddDel.signal_user_changed().connect(sigc::mem_fun(*this, &Box_DB_Table_Definition::on_adddel_changed));
+  m_AddDel.signal_user_requested_edit().connect(sigc::mem_fun(*this, &Box_DB_Table_Definition::on_adddel_edit));
 
   //React to changes in the field properties:
   m_pDialog->signal_apply().connect(sigc::mem_fun(*this, &Box_DB_Table_Definition::on_Properties_apply));
@@ -134,7 +134,7 @@ void Box_DB_Table_Definition::fill_from_database()
   fill_end();
 }
 
-void Box_DB_Table_Definition::on_AddDel_add(const Gtk::TreeModel::iterator& row)
+void Box_DB_Table_Definition::on_adddel_add(const Gtk::TreeModel::iterator& row)
 {
   Glib::ustring strName = m_AddDel.get_value(row, m_colName);
   if(!strName.empty())
@@ -165,7 +165,7 @@ void Box_DB_Table_Definition::on_AddDel_add(const Gtk::TreeModel::iterator& row)
   }
 }
 
-void Box_DB_Table_Definition::on_AddDel_delete(const Gtk::TreeModel::iterator& rowStart, const Gtk::TreeModel::iterator&  rowEnd)
+void Box_DB_Table_Definition::on_adddel_delete(const Gtk::TreeModel::iterator& rowStart, const Gtk::TreeModel::iterator&  rowEnd)
 {
   Gtk::TreeModel::iterator iterAfterEnd = rowEnd;
   if(iterAfterEnd != m_AddDel.get_model()->children().end())
@@ -184,7 +184,7 @@ void Box_DB_Table_Definition::on_AddDel_delete(const Gtk::TreeModel::iterator& r
   fill_from_database();
 }
 
-void Box_DB_Table_Definition::on_AddDel_changed(const Gtk::TreeModel::iterator& row, guint /* col */)
+void Box_DB_Table_Definition::on_adddel_changed(const Gtk::TreeModel::iterator& row, guint /* col */)
 {
   //Get old field definition:
   Document_Glom* pDoc = static_cast<Document_Glom*>(get_document());
@@ -222,7 +222,7 @@ void Box_DB_Table_Definition::on_AddDel_changed(const Gtk::TreeModel::iterator& 
   }
 }
 
-void Box_DB_Table_Definition::on_AddDel_edit(const Gtk::TreeModel::iterator& row)
+void Box_DB_Table_Definition::on_adddel_edit(const Gtk::TreeModel::iterator& row)
 {
   m_Field_BeingEdited = get_field_definition(row);
   

@@ -43,10 +43,10 @@ protected:
   virtual void change_definition(const Field& fieldOld, Field field);
 
   //Signal handlers:
-  virtual void on_AddDel_add(const Gtk::TreeModel::iterator& row);
-  virtual void on_AddDel_delete(const Gtk::TreeModel::iterator& rowStart, const Gtk::TreeModel::iterator& rowEnd);
-  virtual void on_AddDel_changed(const Gtk::TreeModel::iterator& row, guint col);
-  virtual void on_AddDel_edit(const Gtk::TreeModel::iterator& row);
+  virtual void on_adddel_add(const Gtk::TreeModel::iterator& row);
+  virtual void on_adddel_delete(const Gtk::TreeModel::iterator& rowStart, const Gtk::TreeModel::iterator& rowEnd);
+  virtual void on_adddel_changed(const Gtk::TreeModel::iterator& row, guint col);
+  virtual void on_adddel_edit(const Gtk::TreeModel::iterator& row);
 
   virtual void on_Properties_apply();
 

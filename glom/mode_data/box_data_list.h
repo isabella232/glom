@@ -54,13 +54,13 @@ protected:
   void do_lookups(const Gtk::TreeModel::iterator& row, const Field& field_changed, const Gnome::Gda::Value& field_value, const Field& primary_key, const Gnome::Gda::Value& primary_key_value);
 
   //Signal handlers:
-  virtual void on_AddDel_user_requested_add();
-  virtual void on_AddDel_user_requested_edit(const Gtk::TreeModel::iterator& row);
-  virtual void on_AddDel_user_requested_delete(const Gtk::TreeModel::iterator& rowStart, const Gtk::TreeModel::iterator& rowEnd);
-  virtual void on_AddDel_user_added(const Gtk::TreeModel::iterator& row);
-  virtual void on_AddDel_user_reordered_columns();
+  virtual void on_adddel_user_requested_add();
+  virtual void on_adddel_user_requested_edit(const Gtk::TreeModel::iterator& row);
+  virtual void on_adddel_user_requested_delete(const Gtk::TreeModel::iterator& rowStart, const Gtk::TreeModel::iterator& rowEnd);
+  virtual void on_adddel_user_added(const Gtk::TreeModel::iterator& row);
+  virtual void on_adddel_user_reordered_columns();
 
-  virtual void on_AddDel_user_changed(const Gtk::TreeModel::iterator& row, guint col);
+  virtual void on_adddel_user_changed(const Gtk::TreeModel::iterator& row, guint col);
 
   virtual void on_record_added(const Gnome::Gda::Value& primary_key_value); //Not a signal handler. To be overridden.
 

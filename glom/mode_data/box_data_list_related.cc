@@ -113,7 +113,7 @@ void Box_Data_List_Related::on_record_added(const Gnome::Gda::Value& primary_key
       //Create the link by setting the foreign key:
       m_AddDel.set_value(iter, m_first_col + iKey, key_value);
 
-      on_AddDel_user_changed(iter, m_first_col + iKey); //Update the database.
+      on_adddel_user_changed(iter, m_first_col + iKey); //Update the database.
     }
   }
 }
@@ -123,9 +123,9 @@ Glib::ustring Box_Data_List_Related::get_KeyField() const
   return m_strKeyField;
 }
 
-void Box_Data_List_Related::on_AddDel_user_added(const Gtk::TreeModel::iterator& row)
+void Box_Data_List_Related::on_adddel_user_added(const Gtk::TreeModel::iterator& row)
 {
-  //Like Box_Data_List::on_AddDel_user_added(),
+  //Like Box_Data_List::on_adddel_user_added(),
   //but it doesn't allow adding if the new record can not be a related record.
   //This would happen if there is already one related record and the relationship uses the primary key in the related record.
 
@@ -144,7 +144,7 @@ void Box_Data_List_Related::on_AddDel_user_added(const Gtk::TreeModel::iterator&
 
     if(bAllowAdd)
     {
-      Box_Data_List::on_AddDel_user_added(row);
+      Box_Data_List::on_adddel_user_added(row);
     }
     else
     {

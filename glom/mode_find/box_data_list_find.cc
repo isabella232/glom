@@ -56,7 +56,7 @@ void Box_Data_List_Find::fill_from_database()
   m_AddDel.add_item("find");
 }
 
-void Box_Data_List_Find::on_AddDel_user_changed(const Gtk::TreeModel::iterator& /* row */, guint /* col */)
+void Box_Data_List_Find::on_adddel_user_changed(const Gtk::TreeModel::iterator& /* row */, guint /* col */)
 {
   //Just block the implementation in the base class.
 }

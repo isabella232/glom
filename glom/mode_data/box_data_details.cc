@@ -470,7 +470,7 @@ void Box_Data_Details::on_related_record_added(Gnome::Gda::Value /* strKeyValue 
   {
     //Set the From key value, to link the new related record (the first one so far) with the parent record.
     m_AddDel.set_value(iKey, m_ColumnValue, strKeyValue);
-    on_AddDel_user_changed(iKey, m_ColumnValue); //Update the database.
+    on_adddel_user_changed(iKey, m_ColumnValue); //Update the database.
   }
   */
 

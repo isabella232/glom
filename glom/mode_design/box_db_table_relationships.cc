@@ -43,8 +43,8 @@ void Box_DB_Table_Relationships::init()
   m_colToField = m_AddDel.add_column(gettext("To Field"), AddDelColumnInfo::STYLE_Choices);
 
   //Connect signals:
-  m_AddDel.signal_user_activated().connect(sigc::mem_fun(*this, &Box_DB_Table_Relationships::on_AddDel_user_activated));
-  m_AddDel.signal_user_changed().connect(sigc::mem_fun(*this, &Box_DB_Table_Relationships::on_AddDel_user_changed));
+  m_AddDel.signal_user_activated().connect(sigc::mem_fun(*this, &Box_DB_Table_Relationships::on_adddel_user_activated));
+  m_AddDel.signal_user_changed().connect(sigc::mem_fun(*this, &Box_DB_Table_Relationships::on_adddel_user_changed));
 
   show_all_children();
 }
@@ -76,7 +76,7 @@ void Box_DB_Table_Relationships::fill_from_database()
     type_vecStrings vecTableNames_ustring(vecTableNames.begin(), vecTableNames.end());
     m_AddDel.set_column_choices(m_colToTable, vecTableNames_ustring);
 
-    //To Field choices are different for each row: set in on_AddDel_signal_user_activated.
+    //To Field choices are different for each row: set in on_adddel_signal_user_activated.
 
     //Add the relationships:
     for(Document_Glom::type_vecRelationships::iterator iter = vecRelationships.begin(); iter != vecRelationships.end(); iter++)
@@ -131,7 +131,7 @@ void Box_DB_Table_Relationships::save_to_document()
   Box_DB_Table::save_to_document();
 }
 
-void Box_DB_Table_Relationships::on_AddDel_user_changed(const Gtk::TreeModel::iterator& row, guint col)
+void Box_DB_Table_Relationships::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, guint col)
 {
   if(col == m_colName)
   {
@@ -150,10 +150,10 @@ void Box_DB_Table_Relationships::on_AddDel_user_changed(const Gtk::TreeModel::it
   set_modified();
 }
 
-void Box_DB_Table_Relationships::on_AddDel_user_activated(const Gtk::TreeModel::iterator& row, guint col)
+void Box_DB_Table_Relationships::on_adddel_user_activated(const Gtk::TreeModel::iterator& row, guint col)
 {
 
- g_warning("on_AddDel_user_activated setting to field col=%d", col);
+ g_warning("on_adddel_user_activated setting to field col=%d", col);
  
   if(col == m_colToField)
   {
