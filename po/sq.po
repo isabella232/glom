@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glom HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-08-18 03:36+0200\n"
+"POT-Creation-Date: 2004-08-19 11:37+0200\n"
 "PO-Revision-Date: 2004-08-18 15:02+0200\n"
 "Last-Translator: Laurent Dhima <laurenti@alblinux.net>\n"
 "Language-Team: Albanian <gnome-albanian-perkthyesit@lists.sourceforge.net>\n"
@@ -202,7 +202,6 @@ msgstr "Marrëdhënie"
 msgid "Revert"
 msgstr "Rikthe"
 
-#. GRUT modified this item
 #: glom/glom.glade.h:51
 msgid "Select"
 msgstr "Zgjidh"
@@ -227,7 +226,8 @@ msgstr "Prova"
 msgid ""
 "The field value will be the return value of the python function, which you "
 "implement here."
-msgstr "Vlera e fushës do të pasqyrojë vlerën e funksionit python, që plotësuat këtu."
+msgstr ""
+"Vlera e fushës do të pasqyrojë vlerën e funksionit python, që plotësuat këtu."
 
 #: glom/glom.glade.h:57
 msgid "Title"
@@ -252,4 +252,3 @@ msgstr "shembull formatimi të dhënash"
 #: glom/glom.glade.h:62
 msgid "table name"
 msgstr "emri i tabelës"
-
