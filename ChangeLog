@@ -1,3 +1,25 @@
+2005-03-18  Murray Cumming <murrayc@murrayc.com>
+
+	* examples/example_smallbusiness.glom:
+	* glom/Makefile.am:
+	* glom/data_structure/layout/layoutitem_portal.h:
+	* glom/mode_data/dialog_layout_details.cc:
+	* glom/mode_data/treestore_layout.h:
+	* glom/mode_design/dialog_relationships.cc:
+	* glom/utility_widgets/datawidget.cc:
+	* glom/utility_widgets/datawidget.h:
+	* glom/utility_widgets/entryglom.cc:
+	* glom/utility_widgets/entryglom.h:
+	* glom/utility_widgets/flowtable.cc:
+	* glom/utility_widgets/flowtable.h:
+	* glom/utility_widgets/flowtablewithfields.cc:
+	* glom/utility_widgets/flowtablewithfields.h:
+	* glom/utility_widgets/layoutwidgetbase.cc:
+	* glom/utility_widgets/layoutwidgetbase.h:
+	Details view: You can now right-click on a Field 
+	Entry, to add a field, group, or related records 
+	portal after the clicked field.
+
 0.8.16:
 
 2005-03-15 Murray Cumming <murrayc@murrayc.com>

@@ -29,6 +29,7 @@
 #include "../document/document_glom.h"
 #include "../mode_data/box_data_list_related.h"
 #include "layoutwidgetbase.h"
+#include "../mode_data/treestore_layout.h" //Forthe enum.
 #include <map>
 #include <list>
 
@@ -58,7 +59,6 @@ public:
 
   virtual void add_layout_item(const LayoutItem& group);
   virtual void add_layout_group(const LayoutGroup& group);
-
 
   virtual void set_field_editable(const LayoutItem_Field& field, bool editable = true);
 
@@ -101,12 +101,15 @@ protected:
   virtual type_list_widgets get_portals(const LayoutItem_Field& from_key);
 
   int get_suitable_width(Field::glom_field_type field_type);
+
   void on_entry_edited(const Gnome::Gda::Value& value,  LayoutItem_Field field);
   void on_flowtable_entry_edited(const LayoutItem_Field& field, const Gnome::Gda::Value& value);
 
   /// Remember the layout widget so we can iterate through them later.
-  void add_layoutwidgetbase(LayoutWidgetBase* layout_widget);
   void on_layoutwidget_changed();
+
+  void on_datawidget_layout_item_added(TreeStore_Layout::enumType item_type, DataWidget* pDataWidget);
+
 
   class Info
   {
@@ -134,6 +137,12 @@ protected:
   //Remember the sequence of LayoutWidgetBase widgets, so we can iterate over them later:
   typedef std::list< LayoutWidgetBase* > type_list_layoutwidgets;
   type_list_layoutwidgets m_list_layoutwidgets;
+
+  void add_field_at_position(const LayoutItem_Field& layoutitem_field, const Glib::ustring& table_name, const type_list_layoutwidgets::iterator& add_before);
+  void add_layoutwidgetbase(LayoutWidgetBase* layout_widget);
+  void add_layoutwidgetbase(LayoutWidgetBase* layout_widget, const type_list_layoutwidgets::iterator& add_before);
+  void add_layout_item_at_position(const LayoutItem& item, const type_list_layoutwidgets::iterator& add_before);
+  void add_layout_group_at_position(const LayoutGroup& group, const type_list_layoutwidgets::iterator& add_before);
 
   Glib::ustring m_table_name;
 

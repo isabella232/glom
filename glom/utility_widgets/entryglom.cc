@@ -32,15 +32,13 @@
 
 EntryGlom::EntryGlom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& /* refGlade */)
 : Gtk::Entry(cobject),
-  m_glom_type(Field::TYPE_TEXT),
-  m_pMenuPopup(0)
+  m_glom_type(Field::TYPE_TEXT)
 {
   setup_menu();
 }
-  
+
 EntryGlom::EntryGlom(Field::glom_field_type glom_type)
-: m_glom_type(glom_type),
-  m_pMenuPopup(0)
+: m_glom_type(glom_type)
 {
   setup_menu();
 }
@@ -53,7 +51,6 @@ void EntryGlom::set_glom_type(Field::glom_field_type glom_type)
 {
   m_glom_type = glom_type;
 }
- 
 
 void EntryGlom::check_for_change()
 {
@@ -92,10 +89,10 @@ EntryGlom::type_signal_edited EntryGlom::signal_edited()
 bool EntryGlom::on_focus_out_event(GdkEventFocus* event)
 {
   bool result = Gtk::Entry::on_focus_out_event(event);
-  
+
   //The user has finished editing.
   check_for_change();
-  
+
   //Call base class:
   return result;
 }
@@ -112,7 +109,7 @@ void EntryGlom::on_activate()
 void EntryGlom::on_changed()
 {
   //The text is being edited, but the user has not finished yet.
-  
+
   //Call base class:
   Gtk::Entry::on_changed();
 }
@@ -156,11 +153,27 @@ void EntryGlom::setup_menu()
   m_refActionGroup->add(m_refContextLayout,
     sigc::mem_fun(*this, &EntryGlom::on_menupopup_activate_layout) );
 
+  m_refContextAddField =  Gtk::Action::create("ContextAddField", gettext("Add Field"));
+  m_refActionGroup->add(m_refContextAddField,
+    sigc::bind( sigc::mem_fun(*this, &EntryGlom::on_menupopup_add_item), TreeStore_Layout::TYPE_FIELD ) );
+
+  m_refContextAddRelatedRecords =  Gtk::Action::create("ContextAddRelatedRecords", gettext("Add Related Records"));
+  m_refActionGroup->add(m_refContextAddRelatedRecords,
+    sigc::bind( sigc::mem_fun(*this, &EntryGlom::on_menupopup_add_item), TreeStore_Layout::TYPE_PORTAL ) );
+
+  m_refContextAddGroup =  Gtk::Action::create("ContextAddGroup", gettext("Add Group"));
+  m_refActionGroup->add(m_refContextAddGroup,
+    sigc::bind( sigc::mem_fun(*this, &EntryGlom::on_menupopup_add_item), TreeStore_Layout::TYPE_GROUP ) );
+
   //TODO: This does not work until this widget is in a container in the window:s
   App_Glom* pApp = get_application();
   if(pApp)
   {
     pApp->add_developer_action(m_refContextLayout); //So that it can be disabled when not in developer mode.
+    pApp->add_developer_action(m_refContextAddField);
+    pApp->add_developer_action(m_refContextAddRelatedRecords);
+    pApp->add_developer_action(m_refContextAddGroup);
+
     pApp->update_userlevel_ui(); //Update our action's sensitivity. 
   }
 
@@ -176,6 +189,9 @@ void EntryGlom::setup_menu()
         "<ui>"
         "  <popup name='ContextMenu'>"
         "    <menuitem action='ContextLayout'/>"
+        "    <menuitem action='ContextAddField'/>"
+        "    <menuitem action='ContextAddRelatedRecords'/>"
+        "    <menuitem action='ContextAddGroup'/>"
         "  </popup>"
         "</ui>";
 
@@ -204,6 +220,10 @@ bool EntryGlom::on_button_press_event(GdkEventButton *event)
   if(pApp)
   {
     pApp->add_developer_action(m_refContextLayout); //So that it can be disabled when not in developer mode.
+    pApp->add_developer_action(m_refContextAddField);
+    pApp->add_developer_action(m_refContextAddRelatedRecords);
+    pApp->add_developer_action(m_refContextAddGroup);
+
     pApp->update_userlevel_ui(); //Update our action's sensitivity. 
 
     //Only show this popup in developer mode, so operators still see the default GtkEntry context menu.
@@ -223,6 +243,11 @@ bool EntryGlom::on_button_press_event(GdkEventButton *event)
   }
 
   return Gtk::Entry::on_button_press_event(event);
+}
+
+void EntryGlom::on_menupopup_add_item(TreeStore_Layout::enumType item)
+{
+  signal_layout_item_added().emit(item);
 }
 
 void EntryGlom::on_menupopup_activate_layout()

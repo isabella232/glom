@@ -27,7 +27,7 @@ class TreeStore_Layout : public Gtk::TreeStore
 {
 protected:
   TreeStore_Layout();
-  
+
 public:
 
    enum enumType

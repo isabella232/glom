@@ -45,7 +45,7 @@ Dialog_Layout_Details::Dialog_Layout_Details(BaseObjectType* cobject, const Glib
     m_treeview_fields->set_reorderable();
     m_treeview_fields->enable_model_drag_source();
     m_treeview_fields->enable_model_drag_dest();
-    
+
     m_model_items = TreeStore_Layout::create();
     m_treeview_fields->set_model(m_model_items);
 
@@ -462,7 +462,7 @@ void Dialog_Layout_Details::on_button_field_add()
 bool Dialog_Layout_Details::offer_relationship_list(Relationship& relationship)
 {
   bool result = false;
-  
+
   try
   {
     Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_choose_relationship");

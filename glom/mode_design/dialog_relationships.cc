@@ -32,10 +32,10 @@ Dialog_Relationships::Dialog_Relationships(BaseObjectType* cobject, const Glib::
 
   m_label_frame->set_text( gettext("<b>Relationships</b>") );
   m_label_frame->set_use_markup();
-  
+
   //Fill composite view:
   add_view(m_box);
-  
+
   show_all_children();
 }
 
@@ -43,6 +43,10 @@ Dialog_Relationships::~Dialog_Relationships()
 {
 }
 
+/**
+ * 
+ * @param strTableName 
+ */
 void Dialog_Relationships::init_db_details(const Glib::ustring& strTableName)
 {
   if(m_box)
@@ -50,7 +54,7 @@ void Dialog_Relationships::init_db_details(const Glib::ustring& strTableName)
     m_box->load_from_document();
 
     Dialog_Design::init_db_details(strTableName);
-    
+
     m_box->init_db_details(strTableName);
   }
 }

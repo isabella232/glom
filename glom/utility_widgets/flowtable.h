@@ -36,7 +36,7 @@ public:
   virtual void add(Gtk::Widget& first); //override
 
   virtual void remove(Gtk::Widget& first); //override
-  
+
   virtual void set_columns_count(guint value);
 
   /** Sets the padding to put between the child widgets.
@@ -46,7 +46,7 @@ public:
   /** Show extra UI that is useful in RAD tools:
    */
   virtual void set_design_mode(bool value = true);
-  
+
   void remove_all();
 
 
@@ -66,7 +66,7 @@ protected:
   virtual void on_realize();
   virtual void on_unrealize();
   virtual bool on_expose_event(GdkEventExpose* event);
-  
+
   int get_column_height(guint start_widget, guint widget_count, int& total_width);
 
   /** 
@@ -78,7 +78,7 @@ protected:
   {
   public:
     FlowTableItem();
-    
+
     Gtk::Widget* m_first;
     Gtk::Widget* m_second;
     bool m_expand_second;
@@ -87,7 +87,7 @@ protected:
     Gtk::Allocation m_first_allocation;
     Gtk::Allocation m_second_allocation;
   };
-  
+
   typedef std::vector<FlowTableItem> type_vecChildren;
 
   int get_item_requested_height(const FlowTableItem& item);
@@ -96,7 +96,7 @@ protected:
 
   bool child_is_visible(Gtk::Widget* widget);
   Gtk::Allocation assign_child(Gtk::Widget* widget, int x, int y);
-  
+
   type_vecChildren m_children;
   guint m_columns_count;
   guint m_padding;
@@ -107,7 +107,7 @@ protected:
   typedef std::vector<type_line> type_vecLines;
   type_vecLines m_lines_vertical;
   type_vecLines m_lines_horizontal;
-  
+
   //For drawing:
   Glib::RefPtr<Gdk::Window> m_refGdkWindow;
   Glib::RefPtr<Gdk::GC> m_refGC;

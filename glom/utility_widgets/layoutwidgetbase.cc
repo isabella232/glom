@@ -21,7 +21,8 @@
 #include "layoutwidgetbase.h"
 
 LayoutWidgetBase::LayoutWidgetBase()
-: m_pLayoutItem(0)
+: m_pLayoutItem(0),
+  m_pMenuPopup(0)
 {
 }
 
@@ -56,4 +57,9 @@ LayoutItem* LayoutWidgetBase::get_layout_item()
 LayoutWidgetBase::type_signal_layout_changed LayoutWidgetBase::signal_layout_changed()
 {
   return m_signal_layout_changed;
+}
+
+LayoutWidgetBase::type_signal_layout_item_added LayoutWidgetBase::signal_layout_item_added()
+{
+  return m_signal_layout_item_added;
 }

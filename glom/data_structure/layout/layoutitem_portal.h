@@ -37,7 +37,7 @@ public:
 
   Glib::ustring get_relationship() const;
   void set_relationship(const Glib::ustring& relationship);
-  
+
 protected:
 
   Glib::ustring m_relationship_name;

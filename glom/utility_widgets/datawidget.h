@@ -27,6 +27,7 @@
 #include "../data_structure/field.h"
 #include "../document/document_glom.h"
 #include "../data_structure/layout/layoutitem_field.h"
+#include "../mode_data/treestore_layout.h" //Forthe enum.
 
 class App_Glom;
 
@@ -53,6 +54,8 @@ public:
 
   virtual void set_editable(bool editable = true);
 
+  virtual bool offer_field_list(const Glib::ustring& table_name, LayoutItem_Field& field);
+
   typedef sigc::signal<void, const Gnome::Gda::Value&> type_signal_edited;
   type_signal_edited signal_edited();
 
@@ -63,8 +66,10 @@ protected:
   virtual void on_widget_edited(); //From Gtk::Entry, or Gtk::CheckButton.
   virtual bool on_button_press_event(GdkEventButton* event); //override.
   virtual void on_child_user_requested_layout();
+  virtual void on_child_layout_item_added(TreeStore_Layout::enumType item_type);
+
   virtual void on_menupopup_activate_layout();
-  virtual bool offer_field_list(const Glib::ustring& table_name, LayoutItem_Field& field);
+  virtual void on_menupopup_add_item(TreeStore_Layout::enumType item);
 
   App_Glom* get_application();
 
@@ -73,11 +78,6 @@ protected:
   type_signal_edited m_signal_edited;
 
   Gtk::Label m_label;
-
-  Gtk::Menu* m_pMenuPopup;
-  Glib::RefPtr<Gtk::ActionGroup> m_refActionGroup;
-  Glib::RefPtr<Gtk::UIManager> m_refUIManager;
-  Glib::RefPtr<Gtk::Action> m_refContextLayout;
 };
 
 #endif //GLOM_UTILITY_WIDGETS_DATAWIDGET_H

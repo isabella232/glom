@@ -22,7 +22,8 @@
 #define GLOM_MODE_DATA_LAYOUT_WIDGET_BASE_H
 
 #include "../data_structure/layout/layoutitem.h"
-#include <sigc++/sigc++.h>
+#include <gtkmm.h>
+#include "../mode_data/treestore_layout.h" //Forthe enum.
 
 class LayoutWidgetBase
 {
@@ -40,11 +41,20 @@ public:
   typedef sigc::signal<void> type_signal_layout_changed;
   type_signal_layout_changed signal_layout_changed();
 
+  typedef sigc::signal<void, TreeStore_Layout::enumType> type_signal_layout_item_added;
+  type_signal_layout_item_added signal_layout_item_added();
+
 protected:
   LayoutItem* m_pLayoutItem;
   Glib::ustring m_table_name;
 
   type_signal_layout_changed m_signal_layout_changed;
+  type_signal_layout_item_added m_signal_layout_item_added;
+
+  Gtk::Menu* m_pMenuPopup;
+  Glib::RefPtr<Gtk::ActionGroup> m_refActionGroup;
+  Glib::RefPtr<Gtk::UIManager> m_refUIManager;
+  Glib::RefPtr<Gtk::Action> m_refContextLayout, m_refContextAddField, m_refContextAddRelatedRecords, m_refContextAddGroup;
 
 };
 

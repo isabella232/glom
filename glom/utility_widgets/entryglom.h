@@ -23,12 +23,14 @@
 
 #include <gtkmm.h>
 #include "../data_structure/field.h"
+#include "layoutwidgetbase.h"
 #include <libglademm.h>
 
 class App_Glom;
 
 class EntryGlom
-: public Gtk::Entry
+: public Gtk::Entry,
+  public LayoutWidgetBase
 {
 public:
   explicit EntryGlom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
@@ -66,6 +68,7 @@ protected:
   virtual void setup_menu();
   virtual bool on_button_press_event(GdkEventButton *event); //override
   virtual void on_menupopup_activate_layout();
+  virtual void on_menupopup_add_item(TreeStore_Layout::enumType item);
 
   virtual App_Glom* get_application();
 
@@ -74,11 +77,6 @@ protected:
 
   Glib::ustring m_old_text;
   Field::glom_field_type m_glom_type; //Store the type so we can validate the text accordingly.
-
-  Gtk::Menu* m_pMenuPopup;
-  Glib::RefPtr<Gtk::ActionGroup> m_refActionGroup;
-  Glib::RefPtr<Gtk::UIManager> m_refUIManager;
-  Glib::RefPtr<Gtk::Action> m_refContextLayout;
 };
 
 #endif //GLOM_UTILITY_WIDGETS_ENTRY_GLOM_H

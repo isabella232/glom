@@ -23,6 +23,7 @@
 #include <gtkmm/checkbutton.h>
 #include "../data_structure/glomconversions.h"
 #include "../mode_data/box_data_list_related.h"
+#include "../mode_data/dialog_choose_relationship.h"
 
 FlowTableWithFields::Info::Info()
 : m_first(0),
@@ -57,18 +58,23 @@ void FlowTableWithFields::set_table(const Glib::ustring& table_name)
 
 void FlowTableWithFields::add_layout_item(const LayoutItem& item)
 {
+  add_layout_item_at_position(item, m_list_layoutwidgets.end()); 
+}
+
+void FlowTableWithFields::add_layout_item_at_position(const LayoutItem& item, const type_list_layoutwidgets::iterator& add_before)
+{
   const LayoutItem* pItem = &item;
 
   //Get derived type and do the appropriate thing:
   const LayoutGroup* group = dynamic_cast<const LayoutGroup*>(pItem);
   if(group)
-    add_layout_group(*group);
+    add_layout_group_at_position(*group, add_before);
   else
   {
     const LayoutItem_Field* field = dynamic_cast<const LayoutItem_Field*>(pItem);
     if(field)
     {
-      add_field(*field, m_table_name);
+      add_field_at_position(*field, m_table_name, add_before);
 
       //Do not allow editing of auto-increment fields:
       if(field->m_field.get_field_info().get_auto_increment())
@@ -96,7 +102,7 @@ void FlowTableWithFields::add_layout_item(const LayoutItem& item)
             add(*portal_box);
 
             m_portals.push_back(portal_box);
-            add_layoutwidgetbase(portal_box);
+            add_layoutwidgetbase(portal_box, add_before);
 
             add_view(portal_box);
           }
@@ -107,6 +113,11 @@ void FlowTableWithFields::add_layout_item(const LayoutItem& item)
 }
 
 void FlowTableWithFields::add_layout_group(const LayoutGroup& group)
+{
+  add_layout_group_at_position(group, m_list_layoutwidgets.end());
+}
+
+void FlowTableWithFields::add_layout_group_at_position(const LayoutGroup& group, const type_list_layoutwidgets::iterator& add_before)
 {
   if(true)//!fields.empty() && !group_name.empty())
   {
@@ -155,7 +166,7 @@ void FlowTableWithFields::add_layout_group(const LayoutGroup& group)
 
     m_sub_flow_tables.push_back(flow_table);
     flow_table->set_layout_item(group.clone(), m_table_name);
-    add_layoutwidgetbase(flow_table);
+    add_layoutwidgetbase(flow_table, add_before);
 
     //Connect signal:
     flow_table->signal_field_edited().connect( sigc::mem_fun(*this, &FlowTableWithFields::on_flowtable_entry_edited) );
@@ -216,12 +227,17 @@ void FlowTableWithFields::add_group(const Glib::ustring& group_name, const Glib:
 
 void FlowTableWithFields::add_field(const LayoutItem_Field& layoutitem_field, const Glib::ustring& table_name)
 {
+  add_field_at_position(layoutitem_field, table_name, m_list_layoutwidgets.end());
+}
+
+void FlowTableWithFields::add_field_at_position(const LayoutItem_Field& layoutitem_field, const Glib::ustring& table_name, const type_list_layoutwidgets::iterator& add_before)
+{
   Info info;
   info.m_field = layoutitem_field;
 
   //Add the entry or checkbox (handled by the DataWidget)
   DataWidget* pDataWidget = Gtk::manage(new DataWidget(layoutitem_field, table_name) );
-  add_layoutwidgetbase(pDataWidget);
+  add_layoutwidgetbase(pDataWidget, add_before);
   add_view(pDataWidget); //So it can get the document.
 
   info.m_second = pDataWidget; 
@@ -247,8 +263,10 @@ void FlowTableWithFields::add_field(const LayoutItem_Field& layoutitem_field, co
   add(*(info.m_first), *(info.m_second));
 
   info.m_second->signal_edited().connect( sigc::bind(sigc::mem_fun(*this, &FlowTableWithFields::on_entry_edited), layoutitem_field)  ); //TODO:  Is it a good idea to bind the LayoutItem? sigc::bind() probably stores a copy at this point.
+  info.m_second->signal_layout_item_added().connect( sigc::bind(
+    sigc::mem_fun(*this, &FlowTableWithFields::on_datawidget_layout_item_added), info.m_second) );
 
-  m_listFields.push_back(info);
+  m_listFields.push_back(info); //This would be the wrong position, but you should only use this method directly when you expect it to be followed by a complete re-layout.
 }
 
 void FlowTableWithFields::remove_field(const Glib::ustring& id)
@@ -560,7 +578,12 @@ void FlowTableWithFields::get_layout_group(LayoutGroup& group)
 
 void FlowTableWithFields::add_layoutwidgetbase(LayoutWidgetBase* layout_widget)
 {
-  m_list_layoutwidgets.push_back(layout_widget);
+  add_layoutwidgetbase(layout_widget, m_list_layoutwidgets.end());
+}
+
+void FlowTableWithFields::add_layoutwidgetbase(LayoutWidgetBase* layout_widget, const type_list_layoutwidgets::iterator& add_before)
+{
+  m_list_layoutwidgets.insert(add_before, layout_widget);
 
   //Handle layout_changed signal:
   layout_widget->signal_layout_changed().connect(sigc::mem_fun(*this, &FlowTableWithFields::on_layoutwidget_changed));
@@ -572,5 +595,72 @@ void FlowTableWithFields::on_layoutwidget_changed()
   signal_layout_changed().emit();
 }
 
+void FlowTableWithFields::on_datawidget_layout_item_added(TreeStore_Layout::enumType item_type, DataWidget* pDataWidget)
+{
+  //Get the position of the selected item:
+  type_list_layoutwidgets::iterator iterAfter = m_list_layoutwidgets.end();
+  type_list_layoutwidgets::iterator iterFind = std::find(m_list_layoutwidgets.begin(), m_list_layoutwidgets.end(), pDataWidget);
+  if(iterFind != m_list_layoutwidgets.end())
+  {
+    iterAfter = iterFind;
+    ++iterAfter; //std::list<>::insert() inserts before, but we want to insert after, so we increment..
+  }
+
+  if(item_type == TreeStore_Layout::TYPE_FIELD)
+  {
+    LayoutItem_Field layout_item_field;
+    bool test = pDataWidget->offer_field_list(m_table_name, layout_item_field);
+    if(test)
+    {
+      add_layout_item_at_position(layout_item_field, iterAfter);
+    }
+  }
+  else if(item_type == TreeStore_Layout::TYPE_GROUP)
+  {
+    LayoutGroup layout_item;
+    layout_item.m_title = gettext("New Group");
+    add_layout_item_at_position(layout_item, iterAfter);
+  }
+  else if(item_type == TreeStore_Layout::TYPE_PORTAL)
+  {
+    try
+    {
+      Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_choose_relationship");
+
+      Dialog_ChooseRelationship* dialog = 0;
+      refXml->get_widget_derived("dialog_choose_relationship", dialog);
+
+      if(dialog)
+      {
+        Document_Glom* pDocument = static_cast<Document_Glom*>(get_document());
+        dialog->set_document(pDocument, m_table_name);
+        //TODO: dialog->set_transient_for(*get_app_window());
+        int response = dialog->run();
+        dialog->hide();
+        if(response == Gtk::RESPONSE_OK)
+        {
+          //Get the chosen relationship:
+          Relationship relationship;
+          bool test = dialog->get_relationship_chosen(relationship);
+          if(test)
+          {
+            LayoutItem_Portal layout_item;
+            layout_item.set_relationship(relationship.get_name());
+            add_layout_item_at_position(layout_item, iterAfter);
+          }
+        }
+
+        delete dialog;
+      }
+    }
+    catch(const Gnome::Glade::XmlError& ex)
+    {
+      std::cerr << ex.what() << std::endl;
+    }
+  }
+
+  //TODO: Only if it has really changed:
+  signal_layout_changed().emit(); //This should result in a complete re-layout.
+}
 
 

@@ -655,7 +655,7 @@ void FlowTable::on_unrealize()
 {
   m_refGdkWindow.clear();
   m_refGC.clear();
-  
+ 
   Gtk::Container::on_unrealize();
 }
 
@@ -691,8 +691,9 @@ bool FlowTable::on_expose_event(GdkEventExpose* event)
       }
     }
   }
-  
+
   return Gtk::Container::on_expose_event(event);
 }
+
 
 

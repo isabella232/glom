@@ -31,7 +31,6 @@ DataWidget::DataWidget(Field::glom_field_type glom_type, const Glib::ustring& ti
 */
 
 DataWidget::DataWidget(const LayoutItem_Field& field, const Glib::ustring& table_name)
-: m_pMenuPopup(0)
 {
   Field::glom_field_type glom_type = field.m_field.get_glom_type();
   set_layout_item(field.clone(), table_name); //takes ownership
@@ -64,6 +63,7 @@ DataWidget::DataWidget(const LayoutItem_Field& field, const Glib::ustring& table
     entry->signal_edited().connect( sigc::mem_fun(*this, &DataWidget::on_widget_edited)  );
 
     entry->signal_user_requested_layout().connect( sigc::mem_fun(*this, &DataWidget::on_child_user_requested_layout) );
+    entry->signal_layout_item_added().connect( sigc::mem_fun(*this, &DataWidget::on_child_layout_item_added) );
 
     child = entry;
   }
@@ -90,6 +90,7 @@ DataWidget::type_signal_edited DataWidget::signal_edited()
   return m_signal_edited;
 }
 
+
 void DataWidget::set_value(const Gnome::Gda::Value& value)
 {
   Gtk::Widget* widget = get_child();
@@ -104,7 +105,7 @@ void DataWidget::set_value(const Gnome::Gda::Value& value)
       bool bValue = false;
       if(!value.is_null())
         bValue = value.get_bool();
-        
+
       checkbutton->set_active( bValue );
     }
   }
@@ -220,11 +221,27 @@ void DataWidget::setup_menu()
   m_refActionGroup->add(m_refContextLayout,
     sigc::mem_fun(*this, &DataWidget::on_menupopup_activate_layout) );
 
+  m_refContextAddField =  Gtk::Action::create("ContextAddField", gettext("Add Field"));
+  m_refActionGroup->add(m_refContextAddField,
+    sigc::bind( sigc::mem_fun(*this, &DataWidget::on_menupopup_add_item), TreeStore_Layout::TYPE_FIELD ) );
+
+  m_refContextAddRelatedRecords =  Gtk::Action::create("ContextAddRelatedRecords", gettext("Add Related Records"));
+  m_refActionGroup->add(m_refContextAddRelatedRecords,
+    sigc::bind( sigc::mem_fun(*this, &DataWidget::on_menupopup_add_item), TreeStore_Layout::TYPE_PORTAL ) );
+
+  m_refContextAddGroup =  Gtk::Action::create("ContextAddGroup", gettext("Add Group"));
+  m_refActionGroup->add(m_refContextAddGroup,
+    sigc::bind( sigc::mem_fun(*this, &DataWidget::on_menupopup_add_item), TreeStore_Layout::TYPE_GROUP ) );
+
   //TODO: This does not work until this widget is in a container in the window:s
   App_Glom* pApp = get_application();
   if(pApp)
   {
     pApp->add_developer_action(m_refContextLayout); //So that it can be disabled when not in developer mode.
+    pApp->add_developer_action(m_refContextAddField);
+    pApp->add_developer_action(m_refContextAddRelatedRecords);
+    pApp->add_developer_action(m_refContextAddGroup);
+
     pApp->update_userlevel_ui(); //Update our action's sensitivity. 
   }
 
@@ -240,6 +257,9 @@ void DataWidget::setup_menu()
         "<ui>"
         "  <popup name='ContextMenu'>"
         "    <menuitem action='ContextLayout'/>"
+        "    <menuitem action='ContextAddField'/>"
+        "    <menuitem action='ContextAddRelatedRecords'/>"
+        "    <menuitem action='ContextAddGroup'/>"
         "  </popup>"
         "</ui>";
 
@@ -257,7 +277,13 @@ void DataWidget::setup_menu()
 
 
   if(pApp)
-    m_refContextLayout->set_sensitive(pApp->get_userlevel() == AppState::USERLEVEL_DEVELOPER);
+  {
+    const bool sensitive = pApp->get_userlevel() == AppState::USERLEVEL_DEVELOPER;
+    m_refContextLayout->set_sensitive(sensitive);
+    m_refContextAddField->set_sensitive(sensitive);
+    m_refContextAddRelatedRecords->set_sensitive(sensitive);
+    m_refContextAddGroup->set_sensitive(sensitive);
+  }
 }
 
 bool DataWidget::on_button_press_event(GdkEventButton *event)
@@ -270,6 +296,10 @@ bool DataWidget::on_button_press_event(GdkEventButton *event)
   if(pApp)
   {
     pApp->add_developer_action(m_refContextLayout); //So that it can be disabled when not in developer mode.
+    pApp->add_developer_action(m_refContextAddField);
+    pApp->add_developer_action(m_refContextAddRelatedRecords);
+    pApp->add_developer_action(m_refContextAddGroup);
+
     pApp->update_userlevel_ui(); //Update our action's sensitivity. 
 
     //Only show this popup in developer mode, so operators still see the default GtkEntry context menu.
@@ -324,6 +354,11 @@ bool DataWidget::offer_field_list(const Glib::ustring& table_name, LayoutItem_Fi
   return result;
 }
 
+void DataWidget::on_menupopup_add_item(TreeStore_Layout::enumType item)
+{
+  signal_layout_item_added().emit(item);
+}
+
 void DataWidget::on_menupopup_activate_layout()
 {
   //finish_editing();
@@ -350,4 +385,9 @@ App_Glom* DataWidget::get_application()
   //TODO: This only works when the child widget is already in its parent.
 
   return dynamic_cast<App_Glom*>(pWindow);
+}
+
+void DataWidget::on_child_layout_item_added(TreeStore_Layout::enumType item_type)
+{
+  signal_layout_item_added().emit(item_type);
 }
