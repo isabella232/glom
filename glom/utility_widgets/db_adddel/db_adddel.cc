@@ -1353,6 +1353,7 @@ Gtk::TreeModel::iterator DbAddDel::get_last_row() const
     //TODO_performance: Hopefully there is a better way to do this.
     Gtk::TreeModel::iterator iter = get_model()->children().begin();
     guint size = get_model()->children().size();
+    g_warning("DbAddDel::get_last_row(): size=%d", size);
     if(size > 1)
     {
       for(guint i = 0; i < (size -1); ++i)
@@ -1406,11 +1407,23 @@ void DbAddDel::set_value_key(const Gtk::TreeModel::iterator& iter, const Gnome::
 
 bool DbAddDel::get_is_placeholder_row(const Gtk::TreeModel::iterator& iter) const
 {
+  g_warning("DbAddDel::get_is_placeholder_row()");
+
   if(!get_is_last_row(iter))
+  {
+    g_warning("  DbAddDel::get_is_placeholder_row(): false: !is_last_row");
+
     return false;
+  }
 
   if(iter == m_refListStore->children().end())
+  {
+    g_warning("  DbAddDel::get_is_placeholder_row(): false: is_end");
+
     return false;
+  }
+
+  g_warning("  DbAddDel::get_is_placeholder_row(): calling model");
 
   return m_refListStore->get_is_placeholder(iter);
   //Gtk::TreeModel::Row row = *iter;

@@ -64,6 +64,8 @@ public:
    */
   iterator erase(const iterator& iter);
   
+  void clear();
+  
   Gtk::TreeModelColumn< DbValue >& get_model_column(int column);
   
   /** Creates a new row at the end.
@@ -103,9 +105,12 @@ protected:
 
 private:
    typedef DbTreeModelRow typeRow; //X columns, all of type Value.
-   typedef std::vector< typeRow > typeListOfRows; //Y rows.
    
-   iterator create_iterator(typeListOfRows::size_type row_index) const;
+   //We use a std::list instead of a std::vector, though it is slower to access via an index,
+   //because std::list iterators are not all invalidated when we erase an element from the middle.
+   typedef std::list< typeRow > typeListOfRows; //Y rows.
+   
+   iterator create_iterator(const typeListOfRows::iterator& row_iter) const;
 
    //This maps the GtkTreeIters to potential paths:
    //Each GlueItem might be stored in more than one GtkTreeIter,
@@ -117,11 +122,11 @@ private:
    class GlueItem
    {
    public:
-     GlueItem(int row_number);
-     int get_row_number() const;
+     GlueItem(const typeListOfRows::iterator& row_iter);
+     typeListOfRows::iterator get_row_iter() const;
      
    protected:
-     int m_row_number;
+     typeListOfRows::iterator m_row_iter;
    };
 
    //Allow the GlueList inner class to access the declaration of the GlueItem inner class.
@@ -140,14 +145,14 @@ private:
      type_listOfGlue m_list;
    };
 
-   typeListOfRows::iterator get_data_row_iter_from_tree_row_iter(const iterator& iter);
-   typeListOfRows::const_iterator get_data_row_iter_from_tree_row_iter(const iterator& iter) const;
+   typeListOfRows::iterator get_data_row_iter_from_tree_row_iter(const iterator& iter) const;
+   //typeListOfRows::const_iterator get_data_row_iter_from_tree_row_iter(const iterator& iter) const;
    bool check_treeiter_validity(const iterator& iter) const;
    void remember_glue_item(GlueItem* item) const;
 
    //The data:
    unsigned int m_columns_count;
-   typeListOfRows m_rows;
+   mutable typeListOfRows m_rows;
 
    //Column information:
    ColumnRecord m_column_record;

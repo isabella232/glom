@@ -27,14 +27,14 @@ DbTreeModelRow::DbTreeModelRow()
 
 }
 
-DbTreeModel::GlueItem::GlueItem(int row_number)
-: m_row_number(row_number)
+DbTreeModel::GlueItem::GlueItem(const DbTreeModel::typeListOfRows::iterator& row_iter)
+: m_row_iter(row_iter)
 {
 }
 
-int DbTreeModel::GlueItem::get_row_number() const
+DbTreeModel::typeListOfRows::iterator DbTreeModel::GlueItem::get_row_iter() const
 {
-  return m_row_number;
+  return m_row_iter;
 }
 
 DbTreeModel::GlueList::GlueList()
@@ -74,10 +74,7 @@ DbTreeModel::DbTreeModel(const Gtk::TreeModelColumnRecord& columns)
 
 DbTreeModel::~DbTreeModel()
 {
-  if(m_pGlueList)
-  {
-    delete m_pGlueList;
-  }
+  clear();
 }
 
 //static:
@@ -88,7 +85,7 @@ Glib::RefPtr<DbTreeModel> DbTreeModel::create(const Gtk::TreeModelColumnRecord& 
 
 Gtk::TreeModelFlags DbTreeModel::get_flags_vfunc() const
 {
-   return Gtk::TREE_MODEL_LIST_ONLY; // | Gtk::TREE_MODEL_ITERS_PERSIST
+   return (Gtk::TreeModelFlags)(Gtk::TREE_MODEL_LIST_ONLY | Gtk::TREE_MODEL_ITERS_PERSIST);
 }
 
 int DbTreeModel::get_n_columns_vfunc() const
@@ -142,23 +139,15 @@ bool DbTreeModel::iter_next_vfunc(const iterator& iter, iterator& iter_next) con
     iter_next.set_stamp(m_stamp);
     
     //Get the current row:
-    const GlueItem* pItem = (const GlueItem*)iter.gobj()->user_data;
-    typeListOfRows::size_type row_index = pItem->get_row_number();
+    typeListOfRows::iterator row_iter = get_data_row_iter_from_tree_row_iter(iter);
         
     //Make the iter_next GtkTreeIter represent the next row:
-    row_index++;
-    if( row_index < m_rows.size() )
-    { 
-      //Put the index of the next row in a GlueItem in iter_next:
-      //GlueItem* pItemNew = new GlueItem(row_index);
-      //iter_next.gobj()->user_data = (void*)pItemNew;
-      //
-      //remember_glue_item(pItemNew);
-      
-      iter_next = create_iterator(row_index);
-      
-      return true; //success
-    }
+    ++row_iter;
+    
+    g_warning("iter_next_vfunc: returning next.");
+    iter_next = create_iterator(row_iter);
+    
+    return true; //success
   }
   else
     iter_next = iterator(); //Set is as invalid, as the TreeModel documentation says that it should be.
@@ -171,9 +160,9 @@ bool DbTreeModel::iter_children_vfunc(const iterator& parent, iterator& iter) co
   return iter_nth_child_vfunc(parent, 0, iter);
 }
 
-bool DbTreeModel::iter_has_child_vfunc(const iterator& iter) const
+bool DbTreeModel::iter_has_child_vfunc(const iterator& /* iter */) const
 {
-  return (iter_n_children_vfunc(iter) > 0);
+  return false;
 }
 
 int DbTreeModel::iter_n_children_vfunc(const iterator& iter) const
@@ -210,16 +199,18 @@ bool DbTreeModel::iter_nth_root_child_vfunc(int n, iterator& iter) const
 
     //Store the row_index in the GtkTreeIter:
     //See also iter_next_vfunc()
-
-    unsigned row_index = n;
-
-    //This will be deleted in the GlueList destructor, when old iterators are marked as invalid.
-    //GlueItem* pItem = new GlueItem(row_index);
-    //iter.gobj()->user_data = pItem;
-    //
-    //remember_glue_item(pItem);
     
-    iter = create_iterator(row_index);
+    //TODO_Performance
+    typeListOfRows::iterator row_iter = m_rows.begin();
+    for(int i = 0; i < n; ++i)
+    {
+      if(row_iter == m_rows.end())
+        break;
+        
+      ++row_iter;
+    }
+    
+    iter = create_iterator(row_iter);
    
     return true;
   }
@@ -240,40 +231,43 @@ bool DbTreeModel::iter_parent_vfunc(const iterator& child, iterator& iter) const
   return false; //There are no children, so no parents.
 }
 
-Gtk::TreeModel::Path DbTreeModel::get_path_vfunc(const iterator& /* iter */) const
+Gtk::TreeModel::Path DbTreeModel::get_path_vfunc(const iterator& iter) const
 {
-   //TODO:
-   return Path();
+   typeListOfRows::iterator row_iter = get_data_row_iter_from_tree_row_iter(iter);
+   
+   //TODO_Performance:
+   int index = 0;
+   for(typeListOfRows::iterator iter_count = m_rows.begin(); iter_count != row_iter; ++iter_count)
+   {
+     ++index;
+   }
+   
+   Gtk::TreeModel::Path path;
+   g_warning("DbTreeModel::get_path_vfunc(): returning %d", index);
+   path.push_back(index);
+   return path;
 }
 
-DbTreeModel::iterator DbTreeModel::create_iterator(typeListOfRows::size_type row_index) const
+DbTreeModel::iterator DbTreeModel::create_iterator(const typeListOfRows::iterator& row_iter) const
 {
   iterator iter(const_cast<DbTreeModel*>(this));
   
-  //TODO_Performance:
-  if(row_index >= m_rows.size())
-  {
-    iter.set_stamp(0); //Invalid/end.
-  }
-  else
-  {
-    iter.set_stamp(m_stamp);
-    
-    //Store the row_index in the GtkTreeIter:
-    //See also iter_next_vfunc()
-    //TODO: Store a pointer to some more complex data type such as a typeListOfRows::iterator.
+  iter.set_stamp(m_stamp);
   
-    //g_warning("DbTreeModel::create_iterator(): Creating iter to row_index=%d", row_index);
-    GlueItem* pItem = new GlueItem(row_index);
-  
-    //Store the GlueItem in the GtkTreeIter.
-    //This will be deleted in the GlueList destructor,
-    //which will be called when the old GtkTreeIters are marked as invalid,
-    //when the stamp value changes. 
-    iter.gobj()->user_data = (void*)pItem;
-  
-    remember_glue_item(pItem);
-  }
+  //Store the row_index in the GtkTreeIter:
+  //See also iter_next_vfunc()
+  //TODO: Store a pointer to some more complex data type such as a typeListOfRows::iterator.
+
+  //g_warning("DbTreeModel::create_iterator(): Creating iter to row_index=%d", row_index);
+  GlueItem* pItem = new GlueItem(row_iter);
+
+  //Store the GlueItem in the GtkTreeIter.
+  //This will be deleted in the GlueList destructor,
+  //which will be called when the old GtkTreeIters are marked as invalid,
+  //when the stamp value changes. 
+  iter.gobj()->user_data = (void*)pItem;
+
+  remember_glue_item(pItem);
    
   return iter;
 }
@@ -293,11 +287,7 @@ bool DbTreeModel::get_iter_vfunc(const Path& path, iterator& iter) const
      return false; 
    }
 
-   //This is a new GtkTreeIter, so it needs the current stamp value.
-   //See the comment in the constructor.
-   iter = create_iterator( path[0] );
-   
-   return true;
+   return iter_nth_root_child_vfunc(path[0], iter);
 }
 
 Gtk::TreeModelColumn< DbTreeModel::DbValue >& DbTreeModel::get_model_column(int column)
@@ -305,41 +295,21 @@ Gtk::TreeModelColumn< DbTreeModel::DbValue >& DbTreeModel::get_model_column(int 
   return m_listModelColumns[column];
 }
 
-DbTreeModel::typeListOfRows::iterator DbTreeModel::get_data_row_iter_from_tree_row_iter(const iterator& iter)
+DbTreeModel::typeListOfRows::iterator DbTreeModel::get_data_row_iter_from_tree_row_iter(const iterator& iter) const
 {
   //Don't call this on an invalid iter.
   const GlueItem* pItem = (const GlueItem*)iter.gobj()->user_data;
-
-  typeListOfRows::size_type row_index = pItem->get_row_number();
-  if( row_index > m_rows.size() )
-    return m_rows.end();
-  else
-  {
-    g_warning("DbTreeModel::get_data_row_iter_from_tree_row_iter(): row_index=%d", row_index);
-    
-    typeListOfRows::iterator dataIter = m_rows.begin();
-    for(typeListOfRows::size_type i = 0; i < row_index; ++i)
-    {
-      ++dataIter;
-    }
-    
-    return dataIter;
-      
-    //return m_rows.begin() + row_index; //TODO: Performance.
-  }
+  return pItem->get_row_iter();
 }
 
+/*
 DbTreeModel::typeListOfRows::const_iterator DbTreeModel::get_data_row_iter_from_tree_row_iter(const iterator& iter) const
 {
   //Don't call this on an invalid iter.
-  const GlueItem* pItem = (const GlueItem*)iter.gobj()->user_data;
-  
-  typeListOfRows::size_type row_index = pItem->get_row_number();
-  if( row_index > m_rows.size() )
-    return m_rows.end();
-  else
-    return m_rows.begin() + row_index; //TODO: Performance.
+  const GlueItem* pItem = (const GlueItem*)iter.gobj()->user_data; 
+  return  pItem->get_row_iter();
 }
+*/
 
 bool DbTreeModel::check_treeiter_validity(const iterator& iter) const
 {
@@ -374,11 +344,15 @@ void DbTreeModel::remember_glue_item(GlueItem* item) const
 DbTreeModel::iterator DbTreeModel::append()
 {
   const size_type existing_size = m_rows.size();
+  g_warning("DbTreeModel::append(): existing_size = %d", existing_size);
   m_rows.resize(existing_size + 1);
-  const size_type row_index = existing_size;
+    
+  //Get a std::list iterator to the last element:
+  typeListOfRows::iterator row_iter = m_rows.end();
+  --row_iter;
  
   //Create the row:
-  m_rows[row_index].m_db_values.resize(m_columns_count); 
+  row_iter->m_db_values.resize(m_columns_count); 
 
   for(unsigned int column_number = 0; column_number < m_columns_count; ++column_number)
   {
@@ -393,7 +367,7 @@ DbTreeModel::iterator DbTreeModel::append()
   }
 
   //Create the iterator to the new row:
-  return create_iterator(row_index);
+  return create_iterator(row_iter);
 }
 
 void DbTreeModel::set_value_impl(const iterator& row, int column, const Glib::ValueBase& value)
@@ -401,26 +375,25 @@ void DbTreeModel::set_value_impl(const iterator& row, int column, const Glib::Va
   if(iter_is_valid(row))
   {
     //Get the index from the user_data:
-    const GlueItem* pItem = (const GlueItem*)row.gobj()->user_data;
-    typeListOfRows::size_type row_index = pItem->get_row_number();
-    if( row_index <= m_rows.size() )
-    {
-      //TODO: Check column against get_n_columns() too, though it could hurt performance.
-      
+    typeListOfRows::iterator row_iter = get_data_row_iter_from_tree_row_iter(row);
+
+    //TODO: Check column against get_n_columns() too, though it could hurt performance.
     
-      //Cast it to the specific value type.
-      //It can't work with anything else anyway.
-      typedef Glib::Value< DbValue > ValueDbValue;
+  
+    //Cast it to the specific value type.
+    //It can't work with anything else anyway.
+    typedef Glib::Value< DbValue > ValueDbValue;
+    
+    const ValueDbValue* pDbValue = static_cast<const ValueDbValue*>(&value);
+    if(!pDbValue)
+      g_warning("DbTreeModel::set_value_impl(): value is not a Value< DbValue >.");
+    else
+    {
+      g_warning("set_value_impl: value=%s", pDbValue->get().to_string().c_str());
       
-      const ValueDbValue* pDbValue = static_cast<const ValueDbValue*>(&value);
-      if(!pDbValue)
-        g_warning("DbTreeModel::set_value_impl(): value is not a Value< DbValue >.");
-      else
-      {
-        DbValue& refValue = (m_rows[row_index]).m_db_values[column];
-        
-        refValue = pDbValue->get();
-      }
+      DbValue& refValue = row_iter->m_db_values[column];
+      
+      refValue = pDbValue->get();
     }
   }
 }
@@ -430,30 +403,13 @@ DbTreeModel::iterator DbTreeModel::erase(const iterator& iter)
   if(iter_is_valid(iter))
   {
     //Get the index from the user_data:
-    const GlueItem* pItem = (const GlueItem*)iter.gobj()->user_data;
-    typeListOfRows::size_type row_index = pItem->get_row_number();
-    if( row_index <= m_rows.size() )
-    {
-      //Get an iterator to the row:
-      //TODO_performance: Store an iterator instead of an index in the GlueItem?
-      typeListOfRows::iterator iterRow = m_rows.begin();
-      typeListOfRows::size_type i = 0;
-      while((i < row_index) && (iterRow != m_rows.end()))
-      {
-        ++i;
-        ++iterRow;
-      }
-      
-      //Remove the row.
-      /*  typeListOfRows::iterator iterNextRow = */
-      m_rows.erase(iterRow);
-      
-      //Other iterators are now invalid, so change the stamp value to mark them as invalid.
-      ++m_stamp;
-      
-      //Return an iterator to the next row:
-      return create_iterator(row_index);
-    }
+    typeListOfRows::iterator row_iter = get_data_row_iter_from_tree_row_iter(iter);
+   
+    //Remove the row.
+    typeListOfRows::iterator iterNextRow = m_rows.erase(row_iter);
+    
+    //Return an iterator to the next row:
+    return create_iterator(iterNextRow);
   }
   
   return iterator();
@@ -461,11 +417,13 @@ DbTreeModel::iterator DbTreeModel::erase(const iterator& iter)
 
 void DbTreeModel::set_is_placeholder(const TreeModel::iterator& iter, bool val)
 {
+  //g_warning("DbTreeModel::set_is_placeholder(): val=%d", val);
   if(check_treeiter_validity(iter))
   {
     typeListOfRows::iterator dataRowIter = get_data_row_iter_from_tree_row_iter(iter);
     if(dataRowIter != m_rows.end())
     {
+       //g_warning("  DbTreeModel::set_is_placeholder() settting.");
        dataRowIter->m_placeholder = val;
     }
   }
@@ -473,14 +431,28 @@ void DbTreeModel::set_is_placeholder(const TreeModel::iterator& iter, bool val)
 
 bool DbTreeModel::get_is_placeholder(const TreeModel::iterator& iter) const
 {
+  //g_warning("DbTreeModel::g et_is_placeholder()");
   if(check_treeiter_validity(iter))
   {
     typeListOfRows::const_iterator dataRowIter = get_data_row_iter_from_tree_row_iter(iter);
     if(dataRowIter != m_rows.end())
     {
+       //g_warning("  DbTreeModel::set_is_placeholder(): returning %d", dataRowIter->m_placeholder);
        return dataRowIter->m_placeholder;
     }
   }
   
+  g_warning("  DbTreeModel::set_is_placeholder(): returning false");  
   return false;
+}
+
+void DbTreeModel::clear()
+{
+  m_rows.clear();
+  
+  if(m_pGlueList)
+  {
+    delete m_pGlueList;
+    m_pGlueList = 0;
+  }
 }
