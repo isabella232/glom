@@ -1,3 +1,10 @@
+2005-03-30  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/python_embed/: Added boost/, containing lots of the 
+	boost files, needed by the boot::python library. We must 
+	copy the files instead of depending on a shared library, 
+	because the API is unstable.
+
 2005-03-30  Murray Cumming <murrayc@murrayc.com>
 
 	* configure.in:

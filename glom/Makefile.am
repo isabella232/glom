@@ -48,6 +48,12 @@ glom_LDADD = document/libdocument.a \
              python_embed/libpython_embed.a \
              $(GLOM_LIBS) $(PYTHON_LDFLAGS) -lutil
 
+#             python_embed/boost/config/libpython_embed_boost_config.a 
+#             python_embed/boost/python/libpython_embed_boost_python.a 
+#             python_embed/boost/python/detail/libpython_embed_boost_python_detail.a 
+#             python_embed/boost/mpl/libpython_embed_boost_mpl.a 
+#             python_embed/boost/mpl/aux_/libpython_embed_boost_mpl_aux.a 
+
 #libutil seems to be a fairly standard GNU library, and python needs it for openpty() and forkpty().
 
 
