@@ -801,13 +801,13 @@ guint AddDel::add_column(const AddDelColumnInfo& column_info)
 
   return m_ColumnTypes.size()-1;
 }
-  
+ 
 guint AddDel::add_column(const Glib::ustring& strTitle, AddDelColumnInfo::enumStyles style, bool editable, bool visible)
 {
   //Use the title as the column_id:
   return add_column(strTitle, strTitle, style, editable, visible);
 }
-  
+
 guint AddDel::add_column(const Glib::ustring& strTitle, const Glib::ustring& column_id, AddDelColumnInfo::enumStyles style, bool editable, bool visible)
 {
   InnerIgnore innerIgnore(this); //Stop on_treeview_columns_changed() from doing anything when it is called just because we add a new column.
@@ -1312,7 +1312,7 @@ guint AddDel::treeview_append_column(const Glib::ustring& title, Gtk::CellRender
   pViewColumn->set_column_id( (column_id.empty() ? title : column_id) );
 
   //TODO pViewColumn->signal_button_press_event().connect( sigc::mem_fun(*this, &AddDel::on_treeview_columnheader_button_press_event) );
-  
+
   return cols_count;
 }
 

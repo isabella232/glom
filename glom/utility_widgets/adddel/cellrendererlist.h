@@ -21,13 +21,11 @@
 #ifndef ADDDEL_CELLRENDERERLIST_H
 #define ADDDEL_CELLRENDERERLIST_H
 
-#include "cellrendererpopup.h"
-
+#include <gtkmm/cellrenderercombo.h>
 #include <gtkmm/liststore.h>
-#include <gtkmm/treeview.h>
 
 
-class CellRendererList : public CellRendererPopup
+class CellRendererList : public Gtk::CellRendererCombo
 {
 public:
   CellRendererList();
@@ -35,20 +33,25 @@ public:
 
   void remove_all_list_items();
   void append_list_item(const Glib::ustring& text);
-  Glib::ustring get_selected_item();
 
 protected:
-  virtual void on_show_popup(const Glib::ustring& path, int x1, int y1, int x2, int y2);
 
 private:
-  typedef CellRendererList Self;
 
-  Glib::RefPtr<Gtk::ListStore>  list_store_;
-  Gtk::TreeView                 tree_view_;
-  bool m_bIgnoreSignals;
+  //Tree model columns for the Combo CellRenderer in the TreeView column:
+  class ModelColumns : public Gtk::TreeModel::ColumnRecord
+  {
+  public:
 
-  bool on_tree_view_button_release_event(GdkEventButton* event);
-  void on_tree_selection_changed();
+    ModelColumns()
+    { add(m_col_choice); }
+
+    Gtk::TreeModelColumn<Glib::ustring> m_col_choice;
+  };
+
+  ModelColumns m_model_columns;
+
+  Glib::RefPtr<Gtk::ListStore>  m_refModel;
 };
 
 #endif //ADDDEL_CELLRENDERERLIST_H

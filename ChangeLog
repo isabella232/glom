@@ -1,3 +1,10 @@
+2005-03-11  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom now depends on gtkmm 2.6.
+	* glom/utility_widgets/adddel/cellrendererlist.[h|cc]: Derive from 
+	the Gtk::CellRendererCombo in gtkmm 2.6, instead of implementing 
+	all this ourselves.
+
 0.8.14:
 
 2005-03-10  Murray Cumming  <murrayc@murrayc.com>

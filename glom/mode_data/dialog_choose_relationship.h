@@ -25,7 +25,6 @@
 #include "../utility_widgets/dialog_properties.h"
 #include "../document/document_glom.h"
 #include "../box_db.h"
-#include "../utility_widgets/adddel/cellrendererlist.h"
 
 class Dialog_ChooseRelationship : public Gtk::Dialog
 {

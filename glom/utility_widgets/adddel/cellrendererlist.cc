@@ -19,105 +19,32 @@
  */
  
 #include "cellrendererlist.h"
-#include "popupentry.h"
 #include <gtkmm.h>
 
-
-namespace
-{
-
-struct PopupColumns : public Gtk::TreeModel::ColumnRecord
-{
-  Gtk::TreeModelColumn<Glib::ustring> item;
-  PopupColumns() { add(item); }
-};
-
-const PopupColumns& popup_columns()
-{
-  static const PopupColumns columns;
-  return columns;
-}
-
-} // anonymous namespace
-
-
 CellRendererList::CellRendererList()
-:
-  Glib::ObjectBase  (typeid(CellRendererList)),
-  CellRendererPopup (),
-  list_store_       (Gtk::ListStore::create(popup_columns())),
-  tree_view_        (list_store_),
-  m_bIgnoreSignals(false)
+:  Glib::ObjectBase(0) //Mark this class as gtkmmproc-generated, rather than a custom class, to allow vfunc optimisations.
+   //TODO: This should not be necessary - our gtkmm callbacks are somehow preventing the popup from appearing.
 {
-  tree_view_.set_headers_visible(false);
-  tree_view_.append_column("", popup_columns().item);
-  tree_view_.signal_button_release_event().connect(
-      sigc::mem_fun(*this, &Self::on_tree_view_button_release_event));
+  m_refModel = Gtk::ListStore::create(m_model_columns);
+  property_model() = m_refModel;
 
-  const Glib::RefPtr<Gtk::TreeSelection> selection = tree_view_.get_selection();
-  selection->set_mode(Gtk::SELECTION_BROWSE);
-  selection->signal_changed().connect(sigc::mem_fun(*this, &Self::on_tree_selection_changed));
-
-  Gtk::Frame *const frame = new Gtk::Frame();
-  get_popup_window()->add(*Gtk::manage(frame));
-
-  frame->add(tree_view_);
-  frame->set_shadow_type(Gtk::SHADOW_OUT);
-  frame->show_all();
-
-  set_focus_widget(tree_view_);
+  property_text_column() = 0; //This must be a text column, in m_refModel.
+  property_editable() = true; //It would be useless if we couldn't edit it.
 }
 
 CellRendererList::~CellRendererList()
-{}
+{
+}
 
 void CellRendererList::remove_all_list_items()
 {
-  bool temp = m_bIgnoreSignals;
-  m_bIgnoreSignals = true;
-  
-  if(list_store_)
-    list_store_->clear();
-
-  m_bIgnoreSignals = temp;  
+  if(m_refModel)
+    m_refModel->clear();
 }
 
 void CellRendererList::append_list_item(const Glib::ustring& text)
 {
-  Gtk::TreeModel::Row row = *list_store_->append();
-  row[popup_columns().item] = text;
+  Gtk::TreeModel::Row row = *(m_refModel->append());
+  row[m_model_columns.m_col_choice] = text;
 }
 
-Glib::ustring CellRendererList::get_selected_item()
-{
-  if(const Gtk::TreeModel::iterator selected = tree_view_.get_selection()->get_selected())
-  {
-    return (*selected)[popup_columns().item];
-  }
-
-  return Glib::ustring();
-}
-
-void CellRendererList::on_show_popup(const Glib::ustring& path, int x1, int y1, int x2, int y2)
-{
-  tree_view_.set_size_request(x2 - x1, -1);
-
-  CellRendererPopup::on_show_popup(path, x1, y1, x2, y2);
-}
-
-bool CellRendererList::on_tree_view_button_release_event(GdkEventButton* event)
-{
-  if(event->button == 1)
-  {
-    hide_popup();
-    return true;
-  }
-
-  return false;
-}
-
-void CellRendererList::on_tree_selection_changed()
-{
-  if(!m_bIgnoreSignals)
-    get_popup_entry()->set_text(get_selected_item());
-}
