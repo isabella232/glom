@@ -212,7 +212,18 @@ void Box_DataBases::load_from_document()
   {
     //Load server and user:
     m_Entry_Host->set_text(m_pDocument->get_connection_server());
-    m_Entry_User->set_text(m_pDocument->get_connection_user());
+
+    Glib::ustring user = m_pDocument->get_connection_user();
+
+    if(user.empty())
+    {
+      //Default to the UNIX user name, which is often the same as the Postgres user name:
+      const char* pchUser = getenv("$USER");
+      if(pchUser)
+        user = pchUser;
+    }
+    
+    m_Entry_User->set_text(user);
   }
 
 }

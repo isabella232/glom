@@ -1,5 +1,10 @@
 2004-07-05  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/navigation/box_databases.cc: Use the UNIX user name by default, 
+	because it is often the same as the postgres user name.
+
+2004-07-05  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/application.[h|cc]: Add intermediate signal handlers for the 
 	User Level menu items because use of sigc::bind with RefPtrs might be 
 	causing crashes.
