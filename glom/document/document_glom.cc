@@ -74,8 +74,6 @@ void Document_Glom::set_connection_user(const Glib::ustring& strVal)
 
 void Document_Glom::set_connection_server(const Glib::ustring& strVal)
 {
-  
-  g_warning("set_connection_server: strVal=%s, m_connection_server = %s", strVal.c_str(), m_connection_server.c_str());
   if(strVal != m_connection_server)
   {
     m_connection_server = strVal;
@@ -545,8 +543,6 @@ void Document_Glom::set_modified(bool value)
 
   if(value)
   {
-    g_warning("Document_Glom::set_modified(): saving");
-
     //Save changes automatically
     //(when in developer mode - no changes should even be possible when not in developer mode)
     if(get_userlevel() == AppState::USERLEVEL_DEVELOPER)
@@ -555,7 +551,10 @@ void Document_Glom::set_modified(bool value)
       //so we need to be careful not to call set_modified() too often.
       bool test = save();
       if(test)
+      {
+        g_warning("Document_Glom::set_modified(): saved");
         set_modified(false);
+      }
     }
   }
 }
@@ -840,7 +839,7 @@ bool Document_Glom::save_before()
       {
         xmlpp::Element* nodeLayout = nodeDataLayouts->add_child("data_layout");
         nodeLayout->set_attribute("name", iter->first);
-g_warning("save: adding group: %s", iter->first.c_str());
+
         xmlpp::Element* nodeGroups = nodeLayout->add_child("data_layout_groups");
      
         const type_mapLayoutGroupSequence& group_sequence = iter->second;

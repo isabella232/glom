@@ -510,11 +510,8 @@ void Dialog_Layout::on_button_close()
 
 void Dialog_Layout::save_to_document()
 {
-  if(!m_modified)
-    g_warning("save_to_document: not modified");
-  else
+  if(m_modified)
   {
-    g_warning("save_to_document: modified");
     //Set the table name and title:
     if(m_document)
       m_document->set_table_title( m_table_name, m_entry_table_title->get_text() );
@@ -731,7 +728,6 @@ void Dialog_Layout::on_treemodel_row_changed(const Gtk::TreeModel::Path& /* path
 
 void Dialog_Layout::on_entry_table_title_changed()
 {
-g_warning("on_entry_table_title_changed");
   m_modified = true;
 }
 
