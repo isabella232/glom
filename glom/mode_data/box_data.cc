@@ -223,7 +223,7 @@ bool Box_Data::confirm_discard_unstored_data() const
   if(get_unstored_data())
   {
     //Ask user to confirm loss of data:
-    Gtk::MessageDialog dialog(gettext("<b>No primary key value</b>"), true, Gtk::MESSAGE_QUESTION, (Gtk::ButtonsType)(Gtk::BUTTONS_OK | Gtk::BUTTONS_CANCEL) );
+    Gtk::MessageDialog dialog(gettext("<b>No primary key value</b>"), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_OK_CANCEL );
     dialog.set_secondary_text(gettext("This data can not be stored in the database because you have not provided a primary key.\nDo you really want to discard this data?"));
     //TODO: dialog.set_transient_for(*this);
     int iButton = dialog.run();

@@ -223,6 +223,8 @@ void Box_Data_Details::fill_from_database()
 
     //fill_related();
 
+    set_unstored_data(false);
+
     fill_end();
 
   }

@@ -1,5 +1,16 @@
 2005-03-15  Murray Cumming <murrayc@murrayc.com>
 
+	* glom/mode_data/box_data.cc:
+	confirm_discard_unstored_data(): The buttons 
+	argument of MessageDialog is not a flag - really 
+	show both buttons.
+	* glom/mode_data/box_data_details.cc:
+	fill_from_database(): Call set_unstored_data(false)
+	at the end. If there really is some unstored data 
+	then it is too late at this point.
+
+2005-03-15  Murray Cumming <murrayc@murrayc.com>
+
 	* glom/mode_data/box_data_list.cc:
 	on_adddel_user_requested_add(): When the primary 
 	key value does not exist yet, call 
