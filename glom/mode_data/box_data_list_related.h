@@ -33,7 +33,7 @@ public:
   Box_Data_List_Related();
   virtual ~Box_Data_List_Related();
 
-  virtual void initialize(const Glib::ustring& strDatabaseName, const Relationship& relationship, const Glib::ustring& strForeignKeyValue,  const Glib::ustring& from_table_primary_key_value);
+  virtual void init_db_details(const Glib::ustring& strDatabaseName, const Relationship& relationship, const Glib::ustring& strForeignKeyValue,  const Glib::ustring& from_table_primary_key_value);
 
   virtual Glib::ustring get_KeyField() const;
 

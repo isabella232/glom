@@ -42,15 +42,15 @@ Dialog_Relationships::~Dialog_Relationships()
 {
 }
 
-void Dialog_Relationships::initialize(const Glib::ustring& strDatabaseName, const Glib::ustring& strTableName)
+void Dialog_Relationships::init_db_details(const Glib::ustring& strDatabaseName, const Glib::ustring& strTableName)
 {
   if(m_box)
   {
     m_box->load_from_document();
 
-    Dialog_Design::initialize(strDatabaseName, strTableName);
+    Dialog_Design::init_db_details(strDatabaseName, strTableName);
     
-    m_box->initialize(strDatabaseName, strTableName);
+    m_box->init_db_details(strDatabaseName, strTableName);
   }
 }
 

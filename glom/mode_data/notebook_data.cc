@@ -60,12 +60,12 @@ Notebook_Data::~Notebook_Data()
 {
 }
 
-void Notebook_Data::initialize(const Glib::ustring& strDatabaseName, const Glib::ustring& strTableName, const Glib::ustring& strWhereClause)
+void Notebook_Data::init_db_details(const Glib::ustring& strDatabaseName, const Glib::ustring& strTableName, const Glib::ustring& strWhereClause)
 {
   //strWhereClause is only used as a result of a find.
 
-  m_Box_List.initialize(strDatabaseName, strTableName, strWhereClause);
-  m_Box_Details.initialize(strDatabaseName, strTableName, m_Box_List.get_primary_key_value_selected());
+  m_Box_List.init_db_details(strDatabaseName, strTableName, strWhereClause);
+  m_Box_Details.init_db_details(strDatabaseName, strTableName, m_Box_List.get_primary_key_value_selected());
 
   //Select List as default:
   set_current_page(m_iPage_List);
@@ -73,14 +73,14 @@ void Notebook_Data::initialize(const Glib::ustring& strDatabaseName, const Glib:
 
 void Notebook_Data::on_Details_user_requested_details(Glib::ustring strPrimaryKeyValue)
 {
-  m_Box_Details.initialize(strPrimaryKeyValue); //Uses existing connection, database, and table.
+  m_Box_Details.init_db_details(strPrimaryKeyValue); //Uses existing connection, database, and table.
   set_current_page(m_iPage_Details);
 }
 
 void Notebook_Data::on_Details_user_requested_related_details(Glib::ustring strTableName, Glib::ustring strPrimaryKeyValue)
 {
   //Show a different table:
-  initialize(m_Box_Details.get_databaseName(), strTableName);
+  init_db_details(m_Box_Details.get_database_name(), strTableName);
 
   //Show the specific record:
   on_Details_user_requested_details(strPrimaryKeyValue);

@@ -27,7 +27,7 @@
 #include "document/document_glom.h"
 #include "connectionpool.h"
 #include "appstate.h"
-#include "bakery/View/View.h"
+#include "base_db.h"
 #include <bakery/Utilities/BusyCursor.h>
 #include <libglademm.h>
 
@@ -37,7 +37,7 @@
 
 class Box_DB :
   public Gtk::VBox,
-  public View_Composite_Glom
+  public Base_DB
 {
 public: 
   Box_DB();
@@ -48,20 +48,6 @@ public:
   
   virtual ~Box_DB();
   
-  virtual void initialize(const Glib::ustring& strDatabaseName);
-
-  /** Returns whether we are in developer mode.
-   * Some functionality will be deactivated when not in developer mode.
-   */
-  virtual AppState::userlevels get_userlevel() const;
-  virtual void set_userlevel(AppState::userlevels value);
-   
-  static sharedptr<SharedConnection> connect_to_server();
-  
-  virtual Glib::ustring get_databaseName();
-
-  virtual void load_from_document(); //View override
-
   Gtk::Window* get_app_window();
   const Gtk::Window* get_app_window() const;
   
@@ -76,30 +62,12 @@ public:
   //Signal handlers:
   virtual void on_Button_Cancel();
 
-  typedef std::vector< Field > type_vecFields;
-    
+
 protected:
-  typedef std::vector<Glib::ustring> type_vecStrings;
-  type_vecStrings get_table_names();
-
-  virtual void fill_from_database();
-  virtual void fill_end(); //Call this from the end of fill_from_database() overrides.
-
-  virtual void on_userlevel_changed(AppState::userlevels userlevel);
-
-  Glib::ustring util_string_from_decimal(guint decimal);
-  guint util_decimal_from_string(const Glib::ustring& str);
-  
-  virtual void handle_error(const std::exception& ex); //TODO_port: This is probably useless now.
-  virtual void handle_error();
-
-  virtual Glib::RefPtr<Gnome::Gda::DataModel> Query_execute(const Glib::ustring& strQuery);
 
   virtual void hint_set(const Glib::ustring& strText);
 
   //Member data:
-  Glib::ustring m_strDatabaseName;
-
   Glib::ustring m_strHint; //Help text.
 
   

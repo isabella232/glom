@@ -42,7 +42,7 @@ Dialog_Design::~Dialog_Design()
 {
 }
 
-void Dialog_Design::initialize(const Glib::ustring& strDatabaseName, const Glib::ustring& strTableName)
+void Dialog_Design::init_db_details(const Glib::ustring& strDatabaseName, const Glib::ustring& strTableName)
 {
   if(get_document())
   {

@@ -175,7 +175,7 @@ sharedptr<SharedConnection> Box_DataBases::connect_to_server_with_connection_set
 void Box_DataBases::on_AddDel_Edit(guint row)
 {
   Glib::ustring strValue = m_AddDel.get_value(row);
-  m_strDatabaseName = strValue; //Remember for get_databaseName().
+  m_strDatabaseName = strValue; //Remember for get_database_name().
 
   signal_selected.emit(strValue);
 }

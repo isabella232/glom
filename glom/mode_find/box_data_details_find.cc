@@ -84,7 +84,7 @@ void Box_Data_Details_Find::fill_related()
      strKeyValue = m_Fields[rowKey].sql(strKeyValue); //Quote/Escape it if necessary.
 
      std::cout <<  "Box_Data_Details::fill_related() 3:" << std::endl;
-     pBox->initialize(get_databaseName(), relationship.get_to_table(), relationship.get_to_field(), strKeyValue);
+     pBox->init_db_details(get_database_name(), relationship.get_to_table(), relationship.get_to_field(), strKeyValue);
      pBox->show_all();
      */
   }

@@ -61,7 +61,7 @@ void SharedConnection::close()
 }
   
 
-//initialize static data:
+//init_db_details static data:
 ConnectionPool* ConnectionPool::m_instance = 0;
  
 ConnectionPool::ConnectionPool()
@@ -128,7 +128,7 @@ sharedptr<SharedConnection> ConnectionPool::connect()
        
       if(m_GdaClient)
       {
-        //m_GdaDataSourceInfo = Gnome::Gda::DataaSourceInfo(); //initialize it.
+        //m_GdaDataSourceInfo = Gnome::Gda::DataaSourceInfo(); //init_db_details it.
         //m_GdaDataSourceInfo->
 
         Glib::ustring cnc_string = "USER=" + m_user + ";PASSWORD=" + m_password; //TODO: Host

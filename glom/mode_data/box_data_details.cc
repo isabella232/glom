@@ -100,16 +100,16 @@ Glib::ustring Box_Data_Details::get_primary_key_value() const
   return m_strPrimaryKeyValue;
 }
 
-void Box_Data_Details::initialize(const Glib::ustring& strDatabaseName, const Glib::ustring& strTableName, const Glib::ustring& strPrimaryKeyValue)
+void Box_Data_Details::init_db_details(const Glib::ustring& strDatabaseName, const Glib::ustring& strTableName, const Glib::ustring& strPrimaryKeyValue)
 {
   m_strPrimaryKeyValue = strPrimaryKeyValue;
 
-  Box_DB_Table::initialize(strDatabaseName, strTableName);
+  Box_DB_Table::init_db_details(strDatabaseName, strTableName);
 }
 
-void Box_Data_Details::initialize(const Glib::ustring& strPrimaryKeyValue)
+void Box_Data_Details::init_db_details(const Glib::ustring& strPrimaryKeyValue)
 {
-  initialize(get_databaseName(), get_TableName(), strPrimaryKeyValue);
+  init_db_details(get_database_name(), get_table_name(), strPrimaryKeyValue);
 }
 
 void Box_Data_Details::fill_from_database()
@@ -143,7 +143,7 @@ void Box_Data_Details::fill_from_database()
         }
 
         std::stringstream query;
-        query << "SELECT " << sql_part_fields << " FROM " << m_strTableName << " WHERE " << get_TableName() + "." + get_PrimaryKey_Name() << " = " << m_strPrimaryKeyValue;
+        query << "SELECT " << sql_part_fields << " FROM " << m_strTableName << " WHERE " << get_table_name() + "." + get_PrimaryKey_Name() << " = " << m_strPrimaryKeyValue;
         Glib::RefPtr<Gnome::Gda::DataModel> result = connection->execute_single_command(query.str());
 
         if(result && result->get_n_rows())
@@ -264,7 +264,7 @@ void Box_Data_Details::fill_related()
              if(strKeyValue.size()) //Don't use NULL as a key value.
                strKeyValue = field.sql(strKeyValue); //Quote/Escape it if necessary.
 
-             pBox->initialize(get_databaseName(), relationship, strKeyValue, m_strPrimaryKeyValue);
+             pBox->init_db_details(get_database_name(), relationship, strKeyValue, m_strPrimaryKeyValue);
              pBox->show_all();
 
              //Connect signals:
@@ -299,13 +299,13 @@ void Box_Data_Details::on_button_new()
       Glib::ustring strPrimaryKeyValue = util_string_from_decimal(generated_id);
 
       record_new(strPrimaryKeyValue);
-      initialize(strPrimaryKeyValue);
+      init_db_details(strPrimaryKeyValue);
     }
     else
     {
       //It's not an auto-increment primary key,
       //so just blank the fields ready for a primary key later.
-      initialize(""); //shows blank record.
+      init_db_details(""); //shows blank record.
     }
 
   } //if(confirm_discard_unstored_data())
@@ -391,8 +391,8 @@ void Box_Data_Details::on_AddDel_user_changed(guint row, guint col)
         try
         {
           Glib::ustring strQuery = "UPDATE " + m_strTableName;
-          strQuery += " SET " +  get_TableName() + "." + strFieldName + " = " + Field::sql(strFieldValue);
-          strQuery += " WHERE " + get_TableName() + "." + strPrimaryKey_Name + " = " + Field::sql(get_primary_key_value());
+          strQuery += " SET " +  get_table_name() + "." + strFieldName + " = " + Field::sql(strFieldValue);
+          strQuery += " WHERE " + get_table_name() + "." + strPrimaryKey_Name + " = " + Field::sql(get_primary_key_value());
           bool bTest = Query_execute(strQuery);
 
           if(!bTest)
@@ -463,7 +463,7 @@ void Box_Data_Details::on_AddDel_user_changed(guint row, guint col)
                     Glib::ustring strAutoID(pchAutoID);
 
                     //Show the new record:
-                    initialize(strAutoID);
+                    init_db_details(strAutoID);
 
                     //Set the edited field in the new record:
                     m_AddDel.set_value(row, col, strFieldValue);
@@ -611,8 +611,8 @@ void Box_Data_Details::on_flowtable_field_edited(Glib::ustring id)
          try
          {
            Glib::ustring strQuery = "UPDATE " + m_strTableName;
-           strQuery += " SET " +  /* get_TableName() + "." +*/ strFieldName + " = " + field.sql(strFieldValue);
-           strQuery += " WHERE " + get_TableName() + "." + strPrimaryKey_Name + " = " + fieldInfoPK.sql(get_primary_key_value());
+           strQuery += " SET " +  /* get_table_name() + "." +*/ strFieldName + " = " + field.sql(strFieldValue);
+           strQuery += " WHERE " + get_table_name() + "." + strPrimaryKey_Name + " = " + fieldInfoPK.sql(get_primary_key_value());
            bool bTest = Query_execute(strQuery);
 
            if(!bTest)

@@ -34,9 +34,9 @@ public:
   Box_DB_Table(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
   virtual ~Box_DB_Table();
   
-  virtual void initialize(const Glib::ustring& strDatabaseName, const Glib::ustring& strTableName, const Glib::ustring& strWhereClause = "");
+  virtual void init_db_details(const Glib::ustring& strDatabaseName, const Glib::ustring& strTableName, const Glib::ustring& strWhereClause = "");
   
-  virtual Glib::ustring get_TableName();
+  virtual Glib::ustring get_table_name();
 
   //TODO: Put this somewhere more sensible:
   typedef std::map<Gnome::Gda::ValueType, Glib::ustring> type_map_valuetypes;

@@ -30,7 +30,7 @@ public:
   Dialog_Relationships(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
   virtual ~Dialog_Relationships();
 
-  virtual void initialize(const Glib::ustring& strDatabaseName, const Glib::ustring& strTableName);
+  virtual void init_db_details(const Glib::ustring& strDatabaseName, const Glib::ustring& strTableName);
     
 protected:
 

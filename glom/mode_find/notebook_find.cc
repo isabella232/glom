@@ -40,10 +40,10 @@ Notebook_Find::~Notebook_Find()
 {
 }
 
-void Notebook_Find::initialize(Glib::ustring strDatabaseName, Glib::ustring strTableName)
+void Notebook_Find::init_db_details(Glib::ustring strDatabaseName, Glib::ustring strTableName)
 {
-  //m_Box_List.initialize(pConnection, strDatabaseName, strTableName);
-  //m_Box_Details.initialize(pConnection, strDatabaseName, strTableName, "");
+  //m_Box_List.init_db_details(pConnection, strDatabaseName, strTableName);
+  //m_Box_Details.init_db_details(pConnection, strDatabaseName, strTableName, "");
 }
 
 void Notebook_Find::on_page_find(Glib::ustring strWhereClause)

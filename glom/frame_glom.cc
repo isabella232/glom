@@ -91,7 +91,6 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
   {
     std::cerr << ex.what() << std::endl;
   }
-  
 
   m_Mode = MODE_None;
   m_Mode_Previous = MODE_None;
@@ -239,14 +238,14 @@ void Frame_Glom::show_table(const Glib::ustring& strTableName)
       case(MODE_Data):
       {
         strMode = gettext("Data");
-        m_Notebook_Data.initialize( m_pBox_Databases->get_databaseName(), m_strTableName);
+        m_Notebook_Data.init_db_details( m_pBox_Databases->get_database_name(), m_strTableName);
         set_mode_widget(m_Notebook_Data);
         break;
       }
       case(MODE_Find):
       {
         strMode = gettext("Find");
-        m_Notebook_Find.initialize( m_pBox_Databases->get_databaseName(), m_strTableName);
+        m_Notebook_Find.init_db_details( m_pBox_Databases->get_database_name(), m_strTableName);
         set_mode_widget(m_Notebook_Find);
         break;
       }
@@ -324,7 +323,7 @@ void Frame_Glom::on_menu_Navigate_Table()
   }
   else
   {
-    m_pBox_Tables->initialize( get_document()->get_connection_database());
+    m_pBox_Tables->init_db_details( get_document()->get_connection_database());
     //m_pDialog_Tables->set_policy(false, true, false); //TODO_port
     m_pDialog_Tables->show();
   }
@@ -377,18 +376,20 @@ void Frame_Glom::show_ok_dialog(const Glib::ustring& strMessage)
 void Frame_Glom::on_Notebook_Find(Glib::ustring strWhereClause)
 {
   on_menu_Mode_Data();
-  m_Notebook_Data.initialize( m_pBox_Databases->get_databaseName(), m_strTableName, strWhereClause);
+  m_Notebook_Data.init_db_details( m_pBox_Databases->get_database_name(), m_strTableName, strWhereClause);
   m_Notebook_Data.select_page_for_find_results();
 }
 
 void Frame_Glom::on_userlevel_changed(AppState::userlevels userlevel)
-{  
+{
+g_warning("Frame_Glom::on_userlevel_changed");
   //show user level:
   Glib::ustring user_level_name = gettext("Operator");
   if(userlevel == AppState::USERLEVEL_DEVELOPER)
     user_level_name = gettext("Developer");
 
-  m_pLabel_UserLevel->set_text(user_level_name);
+  if(m_pLabel_UserLevel)
+    m_pLabel_UserLevel->set_text(user_level_name);
 
   show_table_title();
 }
@@ -489,15 +490,26 @@ void Frame_Glom::update_table_in_document_from_database()
       pDoc->set_table_fields(m_strTableName, fieldsActual);
   }
 }
+
+void Frame_Glom::set_document(Document_Glom* pDocument)
+{
+  View_Composite_Glom::set_document(pDocument);
+
+  if(m_pDocument)
+  {
+    //Connect to a signal that is only on the derived document class:
+    m_pDocument->signal_userlevel_changed().connect( sigc::mem_fun(*this, &Frame_Glom::on_userlevel_changed) );
+
+    //Show the appropriate UI for the user level that is specified by this new document:
+    on_userlevel_changed(m_pDocument->get_userlevel());
+  }
+}
+
 void Frame_Glom::load_from_document()
 {
   Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
   if(document)
   {
-    //TODO: Will this be connected multiple times, or is load_from_document() only called once-per-document?
-    document->signal_userlevel_changed().connect( sigc::mem_fun(*this, &Frame_Glom::on_userlevel_changed) );
-    on_userlevel_changed(document->get_userlevel());
-
     //Call base class:
     View_Composite_Glom::load_from_document();
   }
@@ -506,14 +518,14 @@ void Frame_Glom::load_from_document()
 void Frame_Glom::on_menu_developer_fields()
 {
   m_pDialog_Fields->set_transient_for(*get_app_window());
-  m_pDialog_Fields->initialize( m_pBox_Databases->get_databaseName(), m_strTableName);
+  m_pDialog_Fields->init_db_details( m_pBox_Databases->get_database_name(), m_strTableName);
   m_pDialog_Fields->show();
 }
 
 void Frame_Glom::on_menu_developer_relationships()
 {
   m_pDialog_Relationships->set_transient_for(*get_app_window());
-  m_pDialog_Relationships->initialize( m_pBox_Databases->get_databaseName(), m_strTableName);
+  m_pDialog_Relationships->init_db_details( m_pBox_Databases->get_database_name(), m_strTableName);
   m_pDialog_Relationships->show();
 }
 

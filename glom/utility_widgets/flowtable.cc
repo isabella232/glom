@@ -119,7 +119,7 @@ guint FlowTable::get_item_requested_height(const FlowTableItem& item)
 
 guint FlowTable::get_column_height(guint start_widget, guint widget_count, guint& total_width)
 {
-    //initialize output parameter:
+    //init_db_details output parameter:
     total_width = 0;
   
     //Just add the heights together:
@@ -161,7 +161,7 @@ guint FlowTable::get_column_height(guint start_widget, guint widget_count, guint
 
 guint FlowTable::get_minimum_column_height(guint start_widget, guint columns_count, guint& total_width)
 {  
-  //initialize output parameter:
+  //init_db_details output parameter:
   total_width = 0;
   
   //Discover how best (least column height) to arrange these widgets in these columns, keeping them in sequence,

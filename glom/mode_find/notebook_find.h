@@ -35,7 +35,7 @@ public:
   Notebook_Find();
   virtual ~Notebook_Find();
 
-  virtual void initialize(Glib::ustring strDatabaseName, Glib::ustring strTableName);
+  virtual void init_db_details(Glib::ustring strDatabaseName, Glib::ustring strTableName);
 
   //Signals:
   //where_clause.

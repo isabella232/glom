@@ -34,12 +34,12 @@ Box_DB_Table::~Box_DB_Table()
 {
 }
 
-Glib::ustring Box_DB_Table::get_TableName()
+Glib::ustring Box_DB_Table::get_table_name()
 {
   return m_strTableName;
 }
 
-void Box_DB_Table::initialize(const Glib::ustring& strDatabaseName, const Glib::ustring& strTableName, const Glib::ustring& strWhereClause /* = "" */)
+void Box_DB_Table::init_db_details(const Glib::ustring& strDatabaseName, const Glib::ustring& strTableName, const Glib::ustring& strWhereClause /* = "" */)
 {
   m_strDatabaseName = strDatabaseName;
   m_strTableName = strTableName;
@@ -133,7 +133,7 @@ bool Box_DB_Table::record_delete(const Glib::ustring& strPrimaryKeyValue)
 {
   if(strPrimaryKeyValue.size())
   {
-    return Query_execute( "DELETE FROM " + m_strTableName + " WHERE " + get_TableName() + "." + get_PrimaryKey_Name() + " = " + strPrimaryKeyValue );
+    return Query_execute( "DELETE FROM " + m_strTableName + " WHERE " + get_table_name() + "." + get_PrimaryKey_Name() + " = " + strPrimaryKeyValue );
   }
   else
   {
@@ -335,8 +335,7 @@ Box_DB_Table::type_vecFields Box_DB_Table::get_fields_for_table(const Glib::ustr
       if(iterFindDatabase != fieldsDatabase.end() )
       {
         Gnome::Gda::FieldAttributes field_info_document = iter->get_field_info();
-        g_warning("get_fields_for_table(): field_info_document.get_gdatype()=%d, name=%s",  field_info_document.get_gdatype(), field_info_document.get_name().c_str());
-        
+         
         //Update the Field information that _might_ have changed in the database.
         Gnome::Gda::FieldAttributes field_info = iterFindDatabase->get_field_info();
 

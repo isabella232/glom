@@ -91,7 +91,7 @@ protected:
   inline void ref();
   inline void unref();
 
-  void initialize();
+  void init_db_details();
 
   size_type* m_pRefCount; //Shared between instances, by copying.
   T_obj* m_pobj; //The underlying instance.
@@ -101,7 +101,7 @@ template< typename T_obj>
 sharedptr<T_obj>::sharedptr()
 : m_pRefCount(0), m_pobj(0)
 {
-  initialize();
+  init_db_details();
 }
 
 template< typename T_obj>
@@ -126,7 +126,7 @@ sharedptr<T_obj>& sharedptr<T_obj>::operator=(const sharedptr<T_obj>& src)
   if(&src != this)
   {
     //Unref any existing stuff.
-    //operator= can never run before a constructor, so these values will be initialized already.
+    //operator= can never run before a constructor, so these values will be init_db_detailsd already.
     if(m_pobj) //The if() might not be required.
     {
       unref(); //Could cause a deallocation.
@@ -151,7 +151,7 @@ sharedptr<T_obj>::~sharedptr()
 template< typename T_obj>
 void sharedptr<T_obj>::clear()
 {
-  initialize();
+  init_db_details();
 }
 
 template< typename T_obj>
@@ -251,7 +251,7 @@ void sharedptr<T_obj>::unref()
 }
 
 template <class T_obj>
-void sharedptr<T_obj>::initialize()
+void sharedptr<T_obj>::init_db_details()
 {
   //Forget any previous instance:
   if(m_pobj)

@@ -29,7 +29,7 @@ Box_Data_List_Related::~Box_Data_List_Related()
 {
 }
 
-void Box_Data_List_Related::initialize(const Glib::ustring& strDatabaseName,  const Relationship& relationship, const Glib::ustring& strForeignKeyValue, const Glib::ustring& from_table_primary_key_value)
+void Box_Data_List_Related::init_db_details(const Glib::ustring& strDatabaseName,  const Relationship& relationship, const Glib::ustring& strForeignKeyValue, const Glib::ustring& from_table_primary_key_value)
 {
   m_strKeyField = relationship.get_to_field();
   m_strKeyValue = strForeignKeyValue;
@@ -41,7 +41,7 @@ void Box_Data_List_Related::initialize(const Glib::ustring& strDatabaseName,  co
   if(!m_strKeyField.empty() && !m_strKeyValue.empty())
     strWhereClause = m_strKeyField + " = " + m_strKeyValue; //TODO: escape them.
 
-  Box_Data_List::initialize(strDatabaseName, relationship.get_to_table(), strWhereClause);
+  Box_Data_List::init_db_details(strDatabaseName, relationship.get_to_table(), strWhereClause);
 }
 
 void Box_Data_List_Related::fill_from_database()

@@ -65,7 +65,8 @@ public:
   virtual void on_menu_developer_relationships();
   virtual void on_menu_developer_users();     
   virtual void on_menu_developer_layout();
-  
+
+  virtual void set_document(Document_Glom* pDocument); //View override
   virtual void load_from_document(); //View override
 
   enum enumModes

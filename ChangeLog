@@ -1,5 +1,11 @@
 2004-06-10  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/box_db.[h|cc]: Move the database stuff into the Base_DB class to
+	make the code a bit clearer. Connect to the signal of the document in 
+	a set_document() override instead of the on_load_document() override.
+
+2004-06-10  Murray Cumming  <murrayc@murrayc.com>
+
 	* po/il.po: Italian translation from Alberto Paro.
 	* various headers: Alberto Paro added includes for libintl.h because 
 	he says gettext() is not defined without them. It is strange that it 

@@ -36,8 +36,8 @@ public:
   Box_Data_Details(bool bWithNavButtons = true);
   virtual ~Box_Data_Details();
   
-  virtual void initialize(const Glib::ustring& strDatabaseName, const Glib::ustring& strTableName, const Glib::ustring& strPrimaryKeyValue);
-  virtual void initialize(const Glib::ustring& strPrimaryKeyValue);
+  virtual void init_db_details(const Glib::ustring& strDatabaseName, const Glib::ustring& strTableName, const Glib::ustring& strPrimaryKeyValue);
+  virtual void init_db_details(const Glib::ustring& strPrimaryKeyValue);
   
   virtual Glib::ustring get_primary_key_value() const; //Actual primary key value of this record.
   virtual Glib::ustring get_primary_key_value_selected(); //Value in the primary key's cell.
