@@ -73,7 +73,7 @@ void Box_DB::on_Button_Cancel()
 
 
 
-void Box_DB::hint_set(const Glib::ustring& strText)
+void Box_DB::hint_set(const Glib::ustring& /* strText */)
 {
   //This method will only succeed *after* the widget has been added to its parent widget.
 
@@ -82,7 +82,7 @@ void Box_DB::hint_set(const Glib::ustring& strText)
   App_Glom* pAppGlom = dynamic_cast<App_Glom*>(pApp);
   if(pAppGlom)
   {
-    pAppGlom->statusbar_set_text(strText);
+    //Disable this for now. It looks annoying. //pAppGlom->statusbar_set_text(strText);
   }
 }
 

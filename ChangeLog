@@ -1,5 +1,10 @@
 2004-06-12  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/application.cc: show_hint(): Do not show the help hints at the 
+	bottom - they are just annoying and not really necessary anymore.
+	
+2004-06-12  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/data_structure/glomconversions.cc: Simplify the time_get and 
 	time_put code by using the default template iterators.
 	
