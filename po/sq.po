@@ -1,0 +1,224 @@
+# translation of glom to Albanian
+# This file is distributed under the same license as the glome package.
+# Copyright (C) 2004 Free Software Foundation, Inc.
+# Laurent Dhima <laurenti@alblinux.net>, 2004.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: glom.HEAD\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2004-06-23 14:50+0200\n"
+"PO-Revision-Date: 2004-07-10 20:10+0200\n"
+"Last-Translator: Laurent Dhima <laurenti@alblinux.net>\n"
+"Language-Team: Albanian <gnome-albanian-perkthyesit@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. GRUT modified this item
+#: glom/glom.glade.h:1
+msgid "*"
+msgstr "*"
+
+#. GRUT modified this item
+#: glom/glom.glade.h:2
+msgid "<b>Connection</b>"
+msgstr "<b>Lidhja</b>"
+
+#: glom/glom.glade.h:3
+msgid "<b>Databases</b>"
+msgstr "<b>Databazat</b>"
+
+#: glom/glom.glade.h:4
+msgid "<b>Field Definitions</b>"
+msgstr "<b>Përcaktimet e Fushës</b>"
+
+#: glom/glom.glade.h:5
+msgid "<b>Fields</b>"
+msgstr "<b>Fushat</b>"
+
+#: glom/glom.glade.h:6
+msgid "<b>Groups</b>"
+msgstr "<b>Grupet</b>"
+
+#: glom/glom.glade.h:7
+msgid "<b>Mode: </b>"
+msgstr "<b>Modaliteti: </b>"
+
+#: glom/glom.glade.h:8
+msgid "<b>Table: </b>"
+msgstr "<b>Tabela: </b>"
+
+#: glom/glom.glade.h:9
+msgid "<b>Tables in database</b>"
+msgstr "<b>Tabelat në databazë</b>"
+
+#: glom/glom.glade.h:10
+msgid "<b>Title:</b>"
+msgstr "<b>Titulli:</b>"
+
+#: glom/glom.glade.h:11
+msgid "<b>User Level: </b>"
+msgstr "<b>Niveli i përdoruesit: </b>"
+
+#: glom/glom.glade.h:12
+msgid ""
+"<span weight=\"bold\" size=\"larger\">Invalid format</span>\n"
+"\n"
+"The data in the field was not recognised. Please try to correct the data or "
+"revert to the previous value. Here is an example of correctly-formatted data "
+"for this field.\n"
+msgstr ""
+"<span weight=\"bold\" size=\"larger\">Format i pavlefshëm</span>\n"
+"\n"
+"Të dhënat e fushave nuk janë të organizuara. Ju lutem përpiquni të korrigjoni "
+"të dhënat ose kthehuni tek vlerat e vjetra. Këtu keni një shembull me të dhënat "
+"e formatuara me korrektësi për këtë fushë.\n"
+
+#: glom/glom.glade.h:16
+msgid ""
+"<span weight=\"bold\" size=\"larger\">Open existing document, or create new "
+"document</span>\n"
+"\n"
+"Would you like to open an existing document, to connect to an existing "
+"database?\n"
+"\n"
+"Or would you like to create a new document, to design a new database?\n"
+msgstr ""
+"<span weight=\"bold\" size=\"larger\">Hap një dokument ekzistues, ose krijoni një "
+"dokument të ri</span>\n"
+"\n"
+"Dëshironi të hapni një dokument ekzistues, për t'u lidhur me një databazë "
+"ekzistuese?\n"
+"\n"
+"Apo dëshironi të krijoni një dokument të ri, për të projektuar një databazë të re?\n"
+
+#: glom/glom.glade.h:22
+msgid ""
+"<span weight=\"bold\" size=\"larger\">Title</span>\n"
+"\n"
+"Information text.\n"
+msgstr ""
+"<span weight=\"bold\" size=\"larger\">Titulli</span>\n"
+"\n"
+"Teksti informues.\n"
+
+#: glom/glom.glade.h:26
+msgid "Auto-increment"
+msgstr "Auto-increment"
+
+#. GRUT modified this item
+#: glom/glom.glade.h:27
+msgid "Connect"
+msgstr "Lidhu"
+
+#. GRUT modified this item
+#: glom/glom.glade.h:28
+msgid "Data"
+msgstr "Të dhëna"
+
+#: glom/glom.glade.h:29
+msgid "Default Value"
+msgstr "Vlera e prezgjedhur"
+
+#. GRUT modified this item
+#: glom/glom.glade.h:30
+msgid "Edit"
+msgstr "Ndrysho"
+
+#: glom/glom.glade.h:31
+msgid "Edit Definition"
+msgstr "Ndrysho përcaktimin"
+
+#: glom/glom.glade.h:32
+msgid "Extra"
+msgstr "Shtesë"
+
+#. GRUT modified this item
+#: glom/glom.glade.h:33
+msgid "Field"
+msgstr "Fusha"
+
+#: glom/glom.glade.h:34
+msgid "Field Definition"
+msgstr "Përcaktimi i fushës"
+
+#: glom/glom.glade.h:35
+msgid "Field Definitions"
+msgstr "Përcaktimet e fushës"
+
+#: glom/glom.glade.h:36
+msgid "Glom"
+msgstr "Glom"
+
+#. GRUT modified this item
+#: glom/glom.glade.h:37
+msgid "Host"
+msgstr "Host"
+
+#. GRUT modified this item
+#: glom/glom.glade.h:38
+msgid "Layout"
+msgstr "Planimetria"
+
+#: glom/glom.glade.h:39
+msgid "Lookup value when a field changes."
+msgstr "Kontrollo vlerat kur ndryshon një fushë."
+
+#. GRUT modified this item
+#: glom/glom.glade.h:40
+msgid "Name"
+msgstr "Emri"
+
+#: glom/glom.glade.h:41
+msgid "None selected"
+msgstr "Asnjë zgjedhje"
+
+#. GRUT modified this item
+#: glom/glom.glade.h:42
+msgid "Password"
+msgstr "Fjalëkalimi"
+
+#: glom/glom.glade.h:43
+msgid "Primary Key"
+msgstr "Kyçi primar"
+
+#: glom/glom.glade.h:44
+msgid "Relationship"
+msgstr "Relationship"
+
+#. GRUT modified this item
+#: glom/glom.glade.h:45
+msgid "Revert"
+msgstr "Rikthe"
+
+#: glom/glom.glade.h:46
+msgid "Show hidden tables"
+msgstr "Shfaq tabelat e fshehura"
+
+#: glom/glom.glade.h:47
+msgid "Title"
+msgstr "Titulli"
+
+#. GRUT modified this item
+#: glom/glom.glade.h:48
+msgid "Type"
+msgstr "Lloji"
+
+#: glom/glom.glade.h:49
+msgid "Unique"
+msgstr "Unique"
+
+#. GRUT modified this item
+#: glom/glom.glade.h:50
+msgid "User"
+msgstr "Përdoruesi"
+
+#: glom/glom.glade.h:51
+msgid "example data format"
+msgstr "shembull formatimi të dhënash"
+
+#: glom/glom.glade.h:52
+msgid "table name"
+msgstr "emri i tabelës"
+
