@@ -378,7 +378,7 @@ Box_Data::type_vecLayoutFields Box_Data::get_table_fields_to_show(const Glib::us
     else
     {
       type_vecFields vecFieldsInDocument = pDoc->get_table_fields(table_name);
-      
+
       //We will show the fields that the document says we should:
       for(Document_Glom::type_mapLayoutGroupSequence::const_iterator iter = mapGroupSequence.begin(); iter != mapGroupSequence.end(); ++iter)
       {
@@ -634,4 +634,82 @@ bool Box_Data::get_field(const Glib::ustring& name, Field& field) const
   {
     return false; //not found.
   }
+}
+
+Glib::ustring Box_Data::build_sql_select(const Glib::ustring& table_name, const type_vecLayoutFields& fieldsToGet, const Field& primary_key_field, const Gnome::Gda::Value& primary_key_value)
+{
+  if(!GlomConversions::value_is_empty(primary_key_value)) //If there is a record to show:
+  {
+    const Glib::ustring where_clause = m_strTableName + "." + primary_key_field.get_name() + " = " + primary_key_field.sql(primary_key_value);
+    return build_sql_select_with_where_clause(table_name, fieldsToGet, where_clause);
+  }
+
+  return Glib::ustring();
+}
+
+Glib::ustring Box_Data::build_sql_select_with_where_clause(const Glib::ustring& table_name, const type_vecLayoutFields& fieldsToGet, const Glib::ustring& where_clause)
+{
+  Glib::ustring result;
+
+  Document_Glom* document = get_document();
+
+  Glib::ustring sql_part_fields;
+
+  typedef std::list<Glib::ustring> type_list_strings;
+  type_list_strings list_tables;
+
+  for(type_vecLayoutFields::const_iterator iter =  fieldsToGet.begin(); iter != fieldsToGet.end(); ++iter)
+  {
+    if(iter != fieldsToGet.begin())
+      sql_part_fields += ", ";
+
+    Glib::ustring relationship_name = iter->get_relationship_name();
+    Glib::ustring field_table_name;
+    if(relationship_name.empty())
+    {
+      field_table_name = table_name;
+      sql_part_fields += ( table_name + "." );
+    }
+    else
+    {
+      Relationship relationship;
+      bool test = document->get_relationship(table_name, relationship_name, relationship);
+      if(test)
+      {
+        field_table_name = relationship.get_to_table();
+        sql_part_fields += ( field_table_name + "." );
+      }
+    }
+
+    //sql_part_fields += ( iter->get_table_name() + "." );
+
+    sql_part_fields += iter->get_name();
+
+    //Add to the list of used table names:
+    if(field_table_name.empty())
+      field_table_name = table_name;
+
+    type_list_strings::const_iterator iterFind = std::find(list_tables.begin(), list_tables.end(), field_table_name);
+    if(iterFind == list_tables.end()) //If the table is not yet in the list:
+      list_tables.push_back(field_table_name);
+
+  }
+
+  //Build the list of tables:
+  Glib::ustring sql_part_tables;
+  for(type_list_strings::const_iterator iter = list_tables.begin(); iter != list_tables.end(); ++iter)
+  {
+    if(iter != list_tables.begin())
+      sql_part_tables += ", ";
+
+    sql_part_tables += *iter;
+  }
+
+  result =  "SELECT " + sql_part_fields +
+    " FROM " + sql_part_tables;
+
+  if(!where_clause.empty())
+    result += " WHERE " + where_clause;
+
+  return result;
 }

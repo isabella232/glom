@@ -47,9 +47,10 @@ public:
   virtual void set_table(const Glib::ustring& table_name);
 
   /** Add a field.
-   * @param layoutitem_field The layout item that describes this field
+   * @param layoutitem_field The layout item that describes this field,
+   * @param table_name The table on which this layout appears.
    */
-  virtual void add_field(const LayoutItem_Field& layoutitem_field);
+  virtual void add_field(const LayoutItem_Field& layoutitem_field, const Glib::ustring& table_name);
   virtual void remove_field(const Glib::ustring& id);
 
   typedef std::map<int, Field> type_map_field_sequence;

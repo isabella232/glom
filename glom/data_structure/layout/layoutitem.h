@@ -39,7 +39,7 @@ public:
 
   virtual void set_name(const Glib::ustring& name);
   virtual Glib::ustring get_name() const; //For use with our std::find_if() predicate.
-  
+
   guint m_sequence;
   bool m_hidden;
 

@@ -34,12 +34,13 @@ LayoutWidgetBase::~LayoutWidgetBase()
   }
 }
 
-void LayoutWidgetBase::set_layout_item(LayoutItem* layout_item)
+void LayoutWidgetBase::set_layout_item(LayoutItem* layout_item, const Glib::ustring& table_name)
 {
   if(m_pLayoutItem)
     delete m_pLayoutItem;
 
   m_pLayoutItem = layout_item;
+  m_table_name = table_name;
 }
 
 const LayoutItem* LayoutWidgetBase::get_layout_item() const

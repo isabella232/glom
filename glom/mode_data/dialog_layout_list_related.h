@@ -55,6 +55,7 @@ protected:
   virtual void on_button_delete();
   virtual void on_treeview_fields_selection_changed();
   virtual void on_combo_relationship_changed();
+  virtual void on_cell_data_name(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter);
 
   //Tree model columns:
   class ModelColumns_Fields : public Gtk::TreeModel::ColumnRecord
@@ -62,10 +63,9 @@ protected:
   public:
 
     ModelColumns_Fields()
-    { add(m_col_name); add(m_col_relationship_name); add(m_col_sequence); }
+    { add(m_col_layout_item); add(m_col_sequence); }
 
-    Gtk::TreeModelColumn<Glib::ustring> m_col_name;
-    Gtk::TreeModelColumn<Glib::ustring> m_col_relationship_name;
+    Gtk::TreeModelColumn<LayoutItem_Field> m_col_layout_item;
     Gtk::TreeModelColumn<guint> m_col_sequence;
   };
 

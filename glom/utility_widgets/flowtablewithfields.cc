@@ -68,7 +68,7 @@ void FlowTableWithFields::add_layout_item(const LayoutItem& item)
     const LayoutItem_Field* field = dynamic_cast<const LayoutItem_Field*>(pItem);
     if(field)
     {
-      add_field(*field);
+      add_field(*field, m_table_name);
 
       //Do not allow editing of auto-increment fields:
       if(field->m_field.get_field_info().get_auto_increment())
@@ -89,7 +89,7 @@ void FlowTableWithFields::add_layout_item(const LayoutItem& item)
             Box_Data_List_Related* portal_box = Gtk::manage(new Box_Data_List_Related);
 
             portal_box->init_db_details(relationship);
-            portal_box->set_layout_item(portal->clone());
+            portal_box->set_layout_item(portal->clone(), relationship.get_to_table());
             portal_box->show();
             add(*portal_box);
 
@@ -152,7 +152,7 @@ void FlowTableWithFields::add_layout_group(const LayoutGroup& group)
     add(*frame);
 
     m_sub_flow_tables.push_back(flow_table);
-    flow_table->set_layout_item(group.clone());
+    flow_table->set_layout_item(group.clone(), m_table_name);
     add_layoutwidgetbase(flow_table);
 
     //Connect signal:
@@ -212,7 +212,7 @@ void FlowTableWithFields::add_group(const Glib::ustring& group_name, const Glib:
 }
 */
 
-void FlowTableWithFields::add_field(const LayoutItem_Field& layoutitem_field)
+void FlowTableWithFields::add_field(const LayoutItem_Field& layoutitem_field, const Glib::ustring& table_name)
 {
   Field field = layoutitem_field.m_field;
   const Glib::ustring id = field.get_name();
@@ -221,7 +221,7 @@ void FlowTableWithFields::add_field(const LayoutItem_Field& layoutitem_field)
   info.m_field = field;
 
   //Add the entry or checkbox (handled by the DataWidget)
-  DataWidget* pDataWidget = Gtk::manage(new DataWidget(layoutitem_field) );
+  DataWidget* pDataWidget = Gtk::manage(new DataWidget(layoutitem_field, table_name) );
   add_layoutwidgetbase(pDataWidget);
   add_view(pDataWidget); //So it can get the document.
 

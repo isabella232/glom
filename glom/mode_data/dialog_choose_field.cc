@@ -119,7 +119,7 @@ void Dialog_ChooseField::set_document(Document_Glom* document, const Glib::ustri
     }
 
     //Set the table name and title:
-    //m_combo_relationship->set_active_text(table_name); //TODO: Show table title here too.
+    m_combo_relationship->set_active_text(table_name);
 
     //Fill the treeview:
     m_model->clear();

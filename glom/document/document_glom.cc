@@ -427,7 +427,7 @@ Document_Glom::type_mapLayoutGroupSequence Document_Glom::get_data_layout_groups
   if(result.empty())
     create_default = true;
   //TODO: Also set create_default is all groups have no fields.
-  
+
   if(create_default)
   {
     //Get the last top-level group. We will add new fields into this one:
@@ -467,15 +467,15 @@ Document_Glom::type_mapLayoutGroupSequence Document_Glom::get_data_layout_groups
             break;
           }
         }
-  
+
         if(!found)
         {
           LayoutItem_Field layout_item;
           layout_item.set_name(field_name);
-          layout_item.set_table_name(table_name); //TODO: Allow viewing of fields through relationships.
+          //layout_item.set_table_name(table_name); //TODO: Allow viewing of fields through relationships.
           //layout_item.m_sequence = sequence;  add_item() will fill this.
           layout_item.m_hidden = false;
-  
+
           pTopLevel->add_item(layout_item);
         }
       }
@@ -692,7 +692,7 @@ void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Gl
 
         item.set_name( get_node_attribute_value(element, "name") );
         item.set_relationship_name( get_node_attribute_value(element, "relationship") );
-        item.set_table_name(table_name);
+        //item.set_table_name(table_name);
 
         item.m_sequence = sequence;
         group.add_item(item, sequence);

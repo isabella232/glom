@@ -43,7 +43,13 @@ Dialog_Layout_List::Dialog_Layout_List(BaseObjectType* cobject, const Glib::RefP
     m_treeview_fields->set_model(m_model_fields);
 
     // Append the View columns:
-    m_treeview_fields->append_column( gettext("Field Name"), m_ColumnsFields.m_col_name );
+    Gtk::TreeView::Column* column_name = Gtk::manage( new Gtk::TreeView::Column(gettext("Name")) );
+    m_treeview_fields->append_column(*column_name);
+
+    Gtk::CellRendererText* renderer_name = Gtk::manage(new Gtk::CellRendererText);
+    column_name->pack_start(*renderer_name);
+    column_name->set_cell_data_func(*renderer_name, sigc::mem_fun(*this, &Dialog_Layout_List::on_cell_data_name));
+
 
     //Sort by sequence, so we can change the order by changing the values in the hidden sequence column.
     m_model_fields->set_sort_column(m_ColumnsFields.m_col_sequence, Gtk::SORT_ASCENDING);
@@ -88,7 +94,6 @@ void Dialog_Layout_List::set_document(const Glib::ustring& layout, Document_Glom
   m_modified = false;
 
   Dialog_Layout::set_document(layout, document, table_name, table_fields);
-  
 
   //Update the tree models from the document
   if(document)
@@ -110,8 +115,6 @@ void Dialog_Layout_List::set_document(const Glib::ustring& layout, Document_Glom
       for(type_vecLayoutFields::const_iterator iter = table_fields.begin(); iter != table_fields.end(); ++iter)
       {
         LayoutItem_Field item = *iter;
-        item.set_name(iter->get_name());
-        item.set_table_name(table_name); //TODO: Support view fields in other tables.
         item.m_sequence = field_sequence;
 
         group.add_item(item, field_sequence);
@@ -136,12 +139,12 @@ void Dialog_Layout_List::set_document(const Glib::ustring& layout, Document_Glom
       LayoutGroup::type_map_const_items items = group.get_items();
       for(LayoutGroup::type_map_const_items::const_iterator iter = items.begin(); iter != items.end(); ++iter)
       {
-        const LayoutItem* item = iter->second;
+        const LayoutItem_Field* item = dynamic_cast<const LayoutItem_Field*>(iter->second); 
 
         Gtk::TreeModel::iterator iterTree = m_model_fields->append();
         Gtk::TreeModel::Row row = *iterTree;
 
-        row[m_ColumnsFields.m_col_name] = item->get_name();
+        row[m_ColumnsFields.m_col_layout_item] = *item;
         row[m_ColumnsFields.m_col_sequence] = field_sequence;
         ++field_sequence;
       }
@@ -208,34 +211,32 @@ void Dialog_Layout_List::on_button_field_down()
 void Dialog_Layout_List::save_to_document()
 {
   Dialog_Layout::save_to_document();
-  
+
   if(m_modified)
   {
     //Set the table name and title:
     if(m_document)
       m_document->set_table_title( m_table_name, m_entry_table_title->get_text() );
-  
+
     //Get the data from the TreeView and store it in the document:
 
     //Get the groups and their fields:
     Document_Glom::type_mapLayoutGroupSequence mapGroups;
-   
+
     //Add the fields to the one group:
     LayoutGroup others;
     others.set_name("main");
     others.m_sequence = 1;
-      
+
     guint field_sequence = 1; //0 means no sequence
     for(Gtk::TreeModel::iterator iterFields = m_model_fields->children().begin(); iterFields != m_model_fields->children().end(); ++iterFields)
     {
       Gtk::TreeModel::Row row = *iterFields;
 
-      const Glib::ustring field_name = row[m_ColumnsFields.m_col_name];
+      LayoutItem_Field item = row[m_ColumnsFields.m_col_layout_item];
+      const Glib::ustring field_name = item.get_name();
       if(!field_name.empty())
       {
-        LayoutItem_Field item;
-        item.set_name(field_name);
-        item.set_table_name(m_table_name); //TODO: Support view fields in other tables.
         item.m_sequence = field_sequence;
 
         others.add_item(item, field_sequence); //Add it to the group:
@@ -285,9 +286,7 @@ void Dialog_Layout_List::on_button_add_field()
         if(iter)
         {
           Gtk::TreeModel::Row row = *iter;
-          row[m_ColumnsFields.m_col_name] = field.get_name();
-          row[m_ColumnsFields.m_col_relationship_name] = field.get_relationship_name();
-          //row[m_model_fields->m_columns.m_col_title] = field.get_title();
+          row[m_ColumnsFields.m_col_layout_item] = field;
 
           //Scroll to, and select, the new row:
           Glib::RefPtr<Gtk::TreeView::Selection> refTreeSelection = m_treeview_fields->get_selection();
@@ -321,6 +320,35 @@ void Dialog_Layout_List::on_button_delete()
       m_model_fields->erase(iter);
 
       m_modified = true;
+    }
+  }
+}
+
+
+void Dialog_Layout_List::on_cell_data_name(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter)
+{
+  //Set the view's cell properties depending on the model's data:
+  Gtk::CellRendererText* renderer_text = dynamic_cast<Gtk::CellRendererText*>(renderer);
+  if(renderer_text)
+  {
+    if(iter)
+    {
+      Gtk::TreeModel::Row row = *iter;
+
+      //Indicate that it's a field in another table.
+      const LayoutItem_Field item = row[m_ColumnsFields.m_col_layout_item]; //TODO_performance: Reduce copying.
+      const Glib::ustring relationship = item.get_relationship_name();
+
+      Glib::ustring markup;
+
+      if(!relationship.empty())
+        markup = relationship + "::";
+
+      markup += item.get_name();
+
+      renderer_text->property_markup() = markup;
+
+      renderer_text->property_editable() = false; //Names can never be edited.
     }
   }
 }

@@ -161,7 +161,6 @@ void Dialog_Layout_Details::fill_group(const Gtk::TreeModel::iterator& iter, Lay
         //Add field:
         LayoutItem_Field field;
         field.set_name( rowChild[m_model_items->m_columns.m_col_name] );
-        field.set_table_name(m_table_name);
         field.set_relationship_name( rowChild[m_model_items->m_columns.m_col_relationship_name] );
 
         group.add_item(field);
@@ -259,8 +258,6 @@ void Dialog_Layout_Details::set_document(const Glib::ustring& layout, Document_G
       for(type_vecLayoutFields::const_iterator iter = table_fields.begin(); iter != table_fields.end(); ++iter)
       {
         LayoutItem_Field item = *iter;
-        item.set_name(iter->get_name());
-        item.set_table_name(m_table_name);
         item.m_sequence = field_sequence;
 
         group.add_item(item, field_sequence);
@@ -730,7 +727,7 @@ void Dialog_Layout_Details::on_treeview_fields_selection_changed()
 void Dialog_Layout_Details::on_cell_data_name(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter)
 {
   //TODO: If we ever use this a real layout tree, then let's add icons for each type.
-  
+
   //Set the view's cell properties depending on the model's data:
   Gtk::CellRendererText* renderer_text = dynamic_cast<Gtk::CellRendererText*>(renderer);
   if(renderer_text)

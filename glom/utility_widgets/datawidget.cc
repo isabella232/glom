@@ -30,13 +30,13 @@ DataWidget::DataWidget(Field::glom_field_type glom_type, const Glib::ustring& ti
   m_pMenuPopup(0)
 */
 
-DataWidget::DataWidget(const LayoutItem_Field& field)
+DataWidget::DataWidget(const LayoutItem_Field& field, const Glib::ustring& table_name)
 : m_pMenuPopup(0)
 {
   g_warning("DataWidget::DataWidget(): name = %s, title = %s", field.get_name().c_str(), field.m_field.get_title().c_str());
 
   Field::glom_field_type glom_type = field.m_field.get_glom_type();
-  set_layout_item(field.clone()); //takes ownership
+  set_layout_item(field.clone(), table_name); //takes ownership
 
   Gtk::Widget* child = 0;
   const Glib::ustring title = field.m_field.get_title_or_name();
@@ -333,7 +333,7 @@ void DataWidget::on_menupopup_activate_layout()
   LayoutItem_Field* layoutField = dynamic_cast<LayoutItem_Field*>(get_layout_item());
   if(layoutField)
   {
-    bool test = offer_field_list(layoutField->get_table_name(), *layoutField);
+    bool test = offer_field_list(m_table_name, *layoutField);
     if(test)
     {
       signal_layout_changed().emit();

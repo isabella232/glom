@@ -44,13 +44,13 @@ Box_Data_List_Related::Box_Data_List_Related()
   m_Alignment.add(m_AddDel);
   m_AddDel.show();
   add(m_Frame);
-  
+
   m_layout_name = "list_related"; //TODO: We need a unique name when 2 portals use the same table.
-  
+
   //Delete the dialog from the base class, because we don't use it.
   if(m_pDialogLayout)
     delete m_pDialogLayout;
-        
+
   Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_data_layout_list_related");
   if(refXml)
   {

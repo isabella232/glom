@@ -117,7 +117,7 @@ void Dialog_FieldDefinition::set_field(const Field& field, const Glib::ustring& 
   LayoutItem_Field layout_item;
   layout_item.m_field = m_Field;
   layout_item.m_field.set_title(gettext("Default Value"));
-  m_pDataWidget_DefaultValueSimple = Gtk::manage( new DataWidget(layout_item ) );
+  m_pDataWidget_DefaultValueSimple = Gtk::manage( new DataWidget(layout_item, "") );
 
   Gtk::Label* pLabel = m_pDataWidget_DefaultValueSimple->get_label();
   if(!pLabel->get_text().empty())
@@ -143,7 +143,7 @@ void Dialog_FieldDefinition::set_field(const Field& field, const Glib::ustring& 
      m_pCombo_LookupRelationship->append_text(iter->get_name(), iter->get_from_field());
    }
   }
-  
+
   Glib::ustring lookup_relationship_name;
   if(!disable_default_value)
     lookup_relationship_name = m_Field.get_lookup_relationship();

@@ -58,6 +58,10 @@ protected:
   virtual void fill_from_database(); //override.
 
   virtual type_vecLayoutFields get_fields_to_show() const;
+  virtual Glib::ustring build_sql_select(const Glib::ustring& table_name, const type_vecLayoutFields& fieldsToGet, const Field& primary_key_field, const Gnome::Gda::Value& primary_key_value);
+  virtual Glib::ustring build_sql_select_with_where_clause(const Glib::ustring& table_name, const type_vecLayoutFields& fieldsToGet, const Glib::ustring& where_clause);
+
+
   type_vecLayoutFields get_table_fields_to_show(const Glib::ustring& table_name) const;
   type_vecLayoutFields get_table_fields_to_show(const Glib::ustring& table_name, const Document_Glom::type_mapLayoutGroupSequence& mapGroupSequence) const;
   void get_table_fields_to_show_add_group(const Glib::ustring& table_name, const type_vecFields& all_db_fields, const LayoutGroup& group, Box_Data::type_vecLayoutFields& vecFields) const;
@@ -66,7 +70,7 @@ protected:
    */
   Document_Glom::type_mapLayoutGroupSequence get_data_layout_groups(const Glib::ustring& layout);
   void fill_layout_group_field_info(LayoutGroup& group);
-  
+
   typedef std::pair<Field, Relationship> type_pairFieldTrigger;
   typedef std::list<type_pairFieldTrigger> type_list_lookups;
 

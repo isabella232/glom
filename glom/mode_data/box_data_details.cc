@@ -145,12 +145,12 @@ void Box_Data_Details::fill_from_database_layout()
 
   //Remove existing child widgets:
   m_FlowTable.remove_all();
- 
+
   Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
   if(document)
   {
     m_FlowTable.set_table(m_strTableName); //This allows portals to get full Relationship information
-    
+
     //This map of layout groups will also contain the field information from the database:
     Document_Glom::type_mapLayoutGroupSequence layout_groups = get_data_layout_groups("details");
     for(Document_Glom::type_mapLayoutGroupSequence::const_iterator iter = layout_groups.begin(); iter != layout_groups.end(); ++iter)
@@ -177,7 +177,6 @@ void Box_Data_Details::fill_from_database()
     m_Fields = get_fields_to_show();
     type_vecLayoutFields fieldsToGet = m_Fields;
 
-
     if(!fieldsToGet.empty())
     {
       fill_from_database_layout(); //TODO: Only do this when the layout has changed.
@@ -191,102 +190,34 @@ void Box_Data_Details::fill_from_database()
       //g_warning("primary_key name = %s", m_field_primary_key.get_name().c_str());
       const int index_primary_key = fieldsToGet.size() - 1;
 
-      Document_Glom* document = get_document();
+      const Glib::ustring query = build_sql_select(m_strTableName, fieldsToGet, m_field_primary_key, m_primary_key_value);
+      Glib::RefPtr<Gnome::Gda::DataModel> result = Query_execute(query);
 
-      if(!GlomConversions::value_is_empty(m_primary_key_value)) //If there is a record to show:
+      if(result && result->get_n_rows())
       {
-        if(sharedconnection)
+        const Document_Glom* pDoc = dynamic_cast<const Document_Glom*>(get_document());
+        if(pDoc)
         {
-          Glib::RefPtr<Gnome::Gda::Connection> connection = sharedconnection->get_gda_connection();
+          //Get glom-specific field info:
+          //Document_Glom::type_vecFields vecFields = pDoc->get_table_fields(m_strTableName);
 
+          const int row_number = 0; //The only row.
+          const int cols_count = result->get_n_columns();
 
-          Glib::ustring sql_part_fields;
+          //Get special possibly-non-visible field values:
+          if(index_primary_key < cols_count)
+            m_primary_key_value = result->get_value_at(index_primary_key, row_number);
 
-          typedef std::list<Glib::ustring> type_list_strings;
-          type_list_strings list_tables;
-
-          for(type_vecLayoutFields::const_iterator iter =  fieldsToGet.begin(); iter != fieldsToGet.end(); ++iter)
+          //Get field values to show:
+          for(int i = 0; i < cols_count; ++i)
           {
-            if(iter != fieldsToGet.begin())
-              sql_part_fields += ", ";
+            const Field& field = fieldsToGet[i].m_field;
 
-            Glib::ustring relationship_name = iter->get_relationship_name();
-            if(relationship_name.empty())
-            {
-              sql_part_fields += ( m_strTableName + "." );
-            }
-            else
-            {
-              Relationship relationship;
-              bool test = document->get_relationship(m_strTableName, relationship_name, relationship);
-              if(test)
-                sql_part_fields += ( relationship.get_to_table() + "." );
-            }
-
-            //sql_part_fields += ( iter->get_table_name() + "." );
-
-            sql_part_fields += iter->get_name();
-
-
-            //Add to the list of used table names:
-            Glib::ustring table_name = iter->get_table_name();
-            if(table_name.empty())
-              table_name = m_strTableName;
-
-            type_list_strings::const_iterator iterFind = std::find(list_tables.begin(), list_tables.end(), table_name);
-            if(iterFind == list_tables.end()) //If the table is not yet in the list:
-              list_tables.push_back(table_name);
-
-          }
-
-          //Build the list of tables:
-          Glib::ustring sql_part_tables;
-          for(type_list_strings::const_iterator iter = list_tables.begin(); iter != list_tables.end(); ++iter)
-          {
-            if(iter != list_tables.begin())
-              sql_part_tables += ", ";
-
-            sql_part_tables += *iter;
-          }
-
-          Glib::ustring query =  "SELECT " + sql_part_fields + 
-            " FROM " + sql_part_tables + 
-            " WHERE " + m_strTableName + "." + m_field_primary_key.get_name() + " = " + m_field_primary_key.sql(m_primary_key_value);
-
-          Glib::RefPtr<Gnome::Gda::DataModel> result = Query_execute(query);
-
-          if(result && result->get_n_rows())
-          {
-
-            const Document_Glom* pDoc = dynamic_cast<const Document_Glom*>(get_document());
-            if(pDoc)
-            {
-              //Get glom-specific field info:
-              //Document_Glom::type_vecFields vecFields = pDoc->get_table_fields(m_strTableName);
-
-              const int row_number = 0; //The only row.
-              const int cols_count = result->get_n_columns();
-
-              //Get special possibly-non-visible field values:
-              if(index_primary_key < cols_count)
-                m_primary_key_value = result->get_value_at(index_primary_key, row_number);
-
-              //Get field values to show:
-              for(int i = 0; i < cols_count; ++i)
-              {
-                const Field& field = fieldsToGet[i].m_field;
-
-                //Field value:
-                Gnome::Gda::Value value = result->get_value_at(i, row_number);
-                m_FlowTable.set_field_value(field, value);
-              }
-            }
+            //Field value:
+            Gnome::Gda::Value value = result->get_value_at(i, row_number);
+            m_FlowTable.set_field_value(field, value);
           }
         }
-      }
-      else
-      {
-        //Show blank record:
       }
     } //if(!fieldsToGet.empty())
 
