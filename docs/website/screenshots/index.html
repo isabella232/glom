@@ -31,7 +31,7 @@
 <li><a href="#developer_fields_calculated">Designing Fields - calculation</a></li>
 <li><a href="#developer_relationships">Designing Relationships</a></li>
 <li><a href="#developer_layout_details">Designing the Details Layout</a></li>
-<li><a href="#developer_layout_details">Designing the Details Layout - Related Records</a></li>
+<li><a href="#developer_layout_details_related">Designing the Details Layout - Related Records</a></li>
 <li><a href="#developer_layout_list">Desiging the List Layout</a></li>
 </ul>
 </p>
@@ -86,7 +86,7 @@
 <h3><a name="developer_fields_lookup" />Designing Fields - lookup</h3>
 
   <img src="glom_design_fields_dialog_lookup.png" />
-  <p>Some fields should copy their value from another table. For instance, an invoice should store the price of a product at the time the invoice was created. So you could specify that the Product Price field in Invoice Lines should get it's value from the Products table whenever the Product ID field changes in Invoice lines. If you have already defined the <a href="#developer_relationships">relationship</a> between the two tables then you just need to choose the relationship, and what field should trigger the lookup.</p> 
+  <p>Some fields should copy their value from another table. For instance, an invoice should store the price of a product at the time the invoice was created. So you could specify that the Product Price field in Invoice Lines should get it's value from the Products table whenever the Product ID field changes in Invoice lines. If you have already defined the <a href="#developer_relationships">relationship</a> between the two tables then you just need to choose the relationship, and the field from which to copy the value.</p> 
 
 <h3><a name="developer_fields_calculated" />Designing Fields - calculation</h3>
 
@@ -97,14 +97,14 @@
 
   <img src="glom_design_relationships.png" />
   <p>The tables in a relational database are related, so that the data from one table can be used by another table. A relationship can be used to <a href="#developer_fields_lookup">lookup</a> data from a field in another table, or to 
-show a list of <a href="#developer_relationships">related records</a>.</p> 
+show a list of <a href="#developer_layout_details_related">related records</a>.</p> 
 
 <h3><a name="developer_layout_details" />Designing the Details Layout</h3>
 
   <img src="glom_design_layout_details.png" />
   <p>There are no complicated display options - dates and times are displayed and interpreted appropriately according to the user's current locale, but are always stored in the database in standard ISO format. And boolean fields are represented by a check box.</p>
 
-<h3><a name="developer_layout_details" />Designing the Details Layout - Related Records</h3>
+<h3><a name="developer_layout_details_related" />Designing the Details Layout - Related Records</h3>
 
   <img src="glom_design_layout_details_related.png" />
   <p>Right-click on the related records portal to choose the <a href="#developer_relationships">relationship</a> that it shows, and which fields to show from the related table.</p>

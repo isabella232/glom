@@ -497,6 +497,7 @@ bool Box_Data::get_field_primary_key_index(const type_vecFields& fields, guint& 
 
 bool Box_Data::record_delete(const Gnome::Gda::Value& primary_key_value)
 {
+
   Field field_primary_key;
   bool test = get_field_primary_key(field_primary_key);
   if(test && !GlomConversions::value_is_empty(primary_key_value))

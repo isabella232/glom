@@ -495,7 +495,7 @@ void Box_Data_List::on_Details_record_deleted(Gnome::Gda::Value primary_key_valu
     //Remove the row:
     Gtk::TreeModel::iterator iterNext = iter;
     iterNext++;
-    
+
     m_AddDel.remove_item(iter);
 
     //Show Details for the next one:
@@ -604,7 +604,7 @@ bool Box_Data_List::get_field_column_index(const Glib::ustring& field_name, guin
     {
       return m_AddDel.get_model_column_index(i, index); //Add the extra model columns to get the model column index from the field column index
     }
-      
+
     ++i;
   }
 
@@ -614,7 +614,7 @@ bool Box_Data_List::get_field_column_index(const Glib::ustring& field_name, guin
 bool Box_Data_List::get_field_primary_key(Field& field) const
 {
   field = m_AddDel.get_key_field();
-  return false;
+  return true;
 }
 
 bool Box_Data_List::get_field_primary_key_index(guint& field_column) const

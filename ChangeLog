@@ -1,5 +1,11 @@
 2005-03-10  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/mode_data/box_data_list.cc: get_primary_key(): Return true 
+	for success, so that Box_Data::record_delete() works again, so that 
+	deleting records really deletes them from the database again.
+
+2005-03-10  Murray Cumming  <murrayc@murrayc.com>
+
 	* docs/website/: Redid the screenshots and put them on a page.
 
 2005-03-10  Murray Cumming  <murrayc@murrayc.com>
