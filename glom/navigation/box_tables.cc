@@ -24,8 +24,10 @@ Box_Tables::Box_Tables(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
 : Box_DB(cobject),
   m_pLabelFrameTitle(0),
   m_pCheckButtonShowHidden(0),
-  m_colHidden(0) ,
-  m_colTitle(0)
+  m_colTableName(0),
+  m_colHidden(0),
+  m_colTitle(0),
+  m_colDefault(0)
 {
   m_strHint = gettext("Select a table and click [Edit]. You may create a new table by entering the name in the last row.");
 
@@ -42,21 +44,8 @@ Box_Tables::Box_Tables(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
   
   refGlade->get_widget("checkbutton_show_hidden", m_pCheckButtonShowHidden);
   m_pCheckButtonShowHidden->signal_toggled().connect(sigc::mem_fun(*this, &Box_Tables::on_show_hidden_toggled));
-
-  if( get_userlevel() == AppState::USERLEVEL_DEVELOPER)
-    m_pCheckButtonShowHidden->set_active(true); //Set a suitable default;
-  else
-    m_pCheckButtonShowHidden->set_sensitive(false); //Operators have no choice - they can't see hidden tables ever.
    
   m_AddDel.set_show_row_titles(false);
-  m_AddDel.add_column(gettext("Tables"));
-
-  if(get_userlevel() == AppState::USERLEVEL_DEVELOPER)
-  {
-    //Be carefule not to use these columns unless we are in developer mode.
-    m_colHidden = m_AddDel.add_column(gettext("Hidden"), AddDelColumnInfo::STYLE_Boolean);
-    m_colTitle =  m_AddDel.add_column(gettext("Title"));
-  }
   
   m_AddDel.signal_user_added().connect(sigc::mem_fun(*this, &Box_Tables::on_AddDel_Add));
   m_AddDel.signal_user_requested_delete().connect(sigc::mem_fun(*this, &Box_Tables::on_AddDel_Delete));
@@ -72,8 +61,26 @@ Box_Tables::~Box_Tables()
 void Box_Tables::fill_from_database()
 {
   Bakery::BusyCursor(*get_app_window());
-    
+
   Box_DB::fill_from_database();
+    
+  //Enable/Disable extra widgets:
+  if( get_userlevel() == AppState::USERLEVEL_DEVELOPER)
+    m_pCheckButtonShowHidden->set_active(true); //Set a suitable default;
+  else
+    m_pCheckButtonShowHidden->set_sensitive(false); //Operators have no choice - they can't see hidden tables ever.
+
+  m_AddDel.remove_all();
+
+  //Add the columns:
+  m_AddDel.remove_all_columns();
+  m_colTableName = m_AddDel.add_column(gettext("Tables"));
+
+  bool visible_extras = (get_userlevel() == AppState::USERLEVEL_DEVELOPER);
+  m_colHidden = m_AddDel.add_column(gettext("Hidden"), AddDelColumnInfo::STYLE_Boolean, true, visible_extras);
+  m_colTitle =  m_AddDel.add_column(gettext("Title"), AddDelColumnInfo::STYLE_Text, true, visible_extras);
+  m_colDefault =  m_AddDel.add_column(gettext("Default"), AddDelColumnInfo::STYLE_Boolean,  true, visible_extras);
+  
 
   //gettext("Server: ") +  m_strServerName + ", " + 
   Glib::ustring strTitle = Glib::ustring("<b>") + gettext("Tables from Database: ") + get_databaseName() + "</b>";
@@ -109,10 +116,12 @@ void Box_Tables::fill_from_database()
       Document_Glom::type_listTableInfo::iterator iterFind = std::find_if(listTables.begin(), listTables.end(), predicate_FieldHasName<TableInfo>(strName));
       bool hidden = false;
       Glib::ustring title;
+      bool is_default = false;
       if(iterFind != listTables.end())
       {
         hidden = iterFind->m_hidden;
         title = iterFind->m_title;
+        is_default = iterFind->m_default;
       }
 
       bool bAddIt = true;
@@ -124,17 +133,12 @@ void Box_Tables::fill_from_database()
 
       if(bAddIt)
       {
-        if(developer_mode)
-        {
           guint uiRow = m_AddDel.add_item(strName);
 
-          if(get_userlevel() == AppState::USERLEVEL_DEVELOPER)
-          {
-            m_AddDel.set_value(uiRow, m_colHidden, hidden);
-            m_AddDel.set_value(uiRow, m_colTitle, title);
-          }
+          m_AddDel.set_value(uiRow, m_colHidden, hidden);
+          m_AddDel.set_value(uiRow, m_colTitle, title);
+          m_AddDel.set_value(uiRow, m_colTitle, is_default);
         }
-      }
     }
   }
 
@@ -230,7 +234,7 @@ void Box_Tables::on_AddDel_Edit(guint row)
          for(guint row_index = 0; row_index < rows_count; ++row_index)
          {
            TableInfo table_info;
-           table_info.m_name = m_AddDel.get_value(row_index, 0);
+           table_info.m_name = m_AddDel.get_value(row_index, m_colTableName);
            table_info.m_hidden  = m_AddDel.get_value_as_bool(row_index, m_colHidden);
            table_info.m_title  = m_AddDel.get_value(row_index, m_colTitle);
            

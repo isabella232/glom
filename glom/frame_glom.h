@@ -62,6 +62,8 @@ public:
   virtual void do_menu_Navigate_Database(bool bUseList = true);
   virtual void on_menu_Navigate_Table();
 
+  virtual void load_from_document(); //View override
+
   enum enumModes
   {
     MODE_None, //at the start.
@@ -74,6 +76,8 @@ public:
   enumModes m_Mode_Previous; // see comments in set_mode_widget().
 
 protected:
+
+  
   void show_table(const Glib::ustring& strTableName);
   void show_table_title();
   void update_table_in_document_from_database();

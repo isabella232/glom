@@ -44,7 +44,7 @@ Power through simplicity.</h2></center>
   no guarantees and accept no responsibility.</blockquote>
 <h2>Download</h2>
 <blockquote>
-  You can download Glom from <a href="http://sourceforge.net/project/showfiles.php?group_id=8270">here</a>.
+  You can download Glom from <a href="http://ftp.gnome.org/pub/GNOME/sources/glom/">here</a>.
   <p>See <a href="#RequiredLibraries">Required Libraries</a>.</p>
 </blockquote>
 <h2>Implementation</h2>
@@ -60,11 +60,27 @@ Power through simplicity.</h2></center>
   </ul>
 <p>In general, the latest version are required. The configure script will
 complain if you have the wrong versions.</p>
-<h2>Development</h2>The CVS repository, <a href="https://sourceforge.net/mail/?group_id=8270">mailing list</a>, bug tracker, 
+<h2>Development</h2>
+<p>Glom is in GNOME's cvs. To check out the latest version:
+<pre>
+cvs -d :pserver:anonymous@anoncvs.gnome.org:/cvs/gnome login 
+<i>(hit return as the password)</i>
+cvs -z3 -d :pserver:anonymous@anoncvs.gnome.org:/cvs/gnome co glom
+</pre>
+</p>
+<p>It is also in jhbuild, which might make things easier for you.</p>
+
+<h2>Bugs/Patches</h2>
+<p>
+Bugs are tracked in GNOME's <a href="http://bugzilla.gnome.org">bugzilla</a><br>
+Submit Glom bugs <a href="http://bugzilla.gnome.org/enter_bug.cgi?product=glom">here</a>.<br>
+Here is a list of <a href="http://bugzilla.gnome.org/buglist.cgi?short_desc_type=allwordssubstr&short_desc=&product=Glom&long_desc_type=allwordssubstr&long_desc=&status_whiteboard_type=allwordssubstr&status_whiteboard=&keywords_type=anywords&keywords=&bug_status=UNCONFIRMED&bug_status=NEW&bug_status=ASSIGNED&bug_status=REOPENED&emailtype1=substring&email1=&emailtype2=substring&email2=&bugidtype=include&bug_id=&changedin=&chfieldfrom=&chfieldto=Now&chfieldvalue=&cmdtype=doit&order=Reuse+same+sort+as+last+time&field0-0-0=noop&type0-0-0=noop&value0-0-0=">open Glom bugs</a>.
+</p>
+
+<p>The <a href="https://sourceforge.net/mail/?group_id=8270">mailing list</a>, bug tracker, 
 and task manager are at <a href="https://sourceforge.net/projects/glom/">sourceforge</a>. 
 <h2>Authors</h2>
-<p><a target="_blank" href="http://www.murrayc.com/">Murray 
-Cumming</a> (Please use the mailing list - do not email me directly)
+<p><a target="_blank" href="http://www.murrayc.com/">Murray Cumming</a> (Please use the mailing list - do not email me directly)
 <p>
 <a href="http://sourceforge.net"> 
 <img src="http://sourceforge.net/sflogo.php?group_id=1161&amp;type=1" alt="*SOURCEFORGE*" width="88" height="31" border="0" /></a>

@@ -102,11 +102,7 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
   add_view(&m_Notebook_Design); //Also a composite view.
   add_view(&m_Notebook_Data); //Also a composite view.
 
-  //Respond to change of user level:
-  AppState* pAppState = AppState::get_instance();
-  if(pAppState)
-    pAppState->signal_userlevel_changed().connect( sigc::mem_fun(*this, &Frame_Glom::on_userlevel_changed) );
-
+  on_userlevel_changed(AppState::USERLEVEL_OPERATOR); //A default to show before a document is created or loaded.
   show_all();
 }
 
@@ -215,9 +211,9 @@ void Frame_Glom::show_table(const Glib::ustring& strTableName)
     update_table_in_document_from_database();
 
     //Update user-level dependent UI:
-    AppState* pAppState = AppState::get_instance();
-    if(pAppState)
-      on_userlevel_changed(pAppState->get_userlevel());
+    App_Glom* pApp = dynamic_cast<App_Glom*>(get_app_window());
+    if(pApp)
+      on_userlevel_changed(pApp->get_userlevel());
     
     switch(m_Mode)
     {
@@ -260,20 +256,16 @@ void Frame_Glom::show_table(const Glib::ustring& strTableName)
 
 void Frame_Glom::on_menu_UserLevel_Developer()
 {
-  AppState* pAppState = AppState::get_instance();
-  if(pAppState)
-  {
-    pAppState->set_userlevel(AppState::USERLEVEL_DEVELOPER);
-  }
+  Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
+  if(document)
+    document->set_userlevel(AppState::USERLEVEL_DEVELOPER);
 }
 
 void Frame_Glom::on_menu_UserLevel_Operator()
 {
-  AppState* pAppState = AppState::get_instance();
-  if(pAppState)
-  {
-    pAppState->set_userlevel(AppState::USERLEVEL_OPERATOR);
-  }
+  Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
+  if(document)
+    document->set_userlevel(AppState::USERLEVEL_OPERATOR);
 }
 
 void Frame_Glom::on_menu_Mode_Design()
@@ -415,21 +407,24 @@ void Frame_Glom::on_userlevel_changed(AppState::userlevels userlevel)
 
 void Frame_Glom::show_table_title()
 {
-  //Show the table title:
-  Glib::ustring table_label = get_document()->get_table_title(m_strTableName);
-  if(!table_label.empty())
+  if(get_document())
   {
-    AppState* pAppState = AppState::get_instance();
-    if(pAppState)
+    //Show the table title:
+    Glib::ustring table_label = get_document()->get_table_title(m_strTableName);
+    if(!table_label.empty())
     {
-      if(pAppState->get_userlevel() == AppState::USERLEVEL_DEVELOPER)
-        table_label += " (" + m_strTableName + ")"; //Show the table name as well, if in developer mode.
+      Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
+      if(document)
+      {
+        if(document->get_userlevel() == AppState::USERLEVEL_DEVELOPER)
+          table_label += " (" + m_strTableName + ")"; //Show the table name as well, if in developer mode.
+      }
     }
-  }
-  else //Use the table name if there is no table title.
-    table_label = m_strTableName;
+    else //Use the table name if there is no table title.
+      table_label = m_strTableName;
 
-  m_pLabel_Table->set_text(table_label);
+    m_pLabel_Table->set_text(table_label);
+  }
 }
 
 void Frame_Glom::update_table_in_document_from_database()
@@ -507,4 +502,20 @@ void Frame_Glom::update_table_in_document_from_database()
       pDoc->set_table_fields(m_strTableName, fieldsActual);
   }
 }
+void Frame_Glom::load_from_document()
+{
+g_warning(" Frame_Glom::load_from_document()");
+
+  Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
+  if(document)
+  {
+    //TODO: Will this be connected multiple times, or is load_from_document() only called once-per-document?
+    document->signal_userlevel_changed().connect( sigc::mem_fun(*this, &Frame_Glom::on_userlevel_changed) );
+    on_userlevel_changed(document->get_userlevel());
+
+    //Call base class:
+    View_Composite_Glom::load_from_document();
+  }
+}
+
 

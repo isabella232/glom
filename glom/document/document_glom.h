@@ -28,6 +28,7 @@
 #include "../data_structure/layoutitem.h"
 #include "../data_structure/layoutgroup.h"
 #include "../data_structure/tableinfo.h"
+#include "../appstate.h"
 #include <vector>
 #include <map>
 
@@ -90,8 +91,21 @@ public:
     
   virtual Glib::ustring get_table_title(const Glib::ustring& table_name) const;
   virtual void set_table_title(const Glib::ustring& table_name, const Glib::ustring value);
+
+  virtual AppState::userlevels get_userlevel() const;
+
+  /** This is transitory information, not saved to disk.
+   */
+  virtual void set_userlevel(AppState::userlevels userlevel);
+  
+  typedef sigc::signal<void,  AppState::userlevels> type_signal_userlevel_changed;
+  type_signal_userlevel_changed signal_userlevel_changed();
+
+  virtual void emit_userlevel_changed();
     
 protected:
+  virtual void on_app_state_userlevel_changed(AppState::userlevels userleve);
+  
   virtual xmlpp::Element* get_node_connection(); //Gets <connection>
   virtual const xmlpp::Element* get_node_table(const Glib::ustring& strTableName) const;
   virtual xmlpp::Element* get_node_table(const Glib::ustring& strTableName);
@@ -100,11 +114,14 @@ protected:
   xmlpp::Element* get_node_data_layout(const Glib::ustring& layout_name, const Glib::ustring& strTableName) ;
   const xmlpp::Element* get_node_data_layout(const Glib::ustring& layout_name, const Glib::ustring& strTableName)  const;
   xmlpp::Element* get_node_data_layout_with_add(const Glib::ustring& layout_name, const Glib::ustring& strTableName) ;
-    
+
   static bool get_node_attribute_value_as_bool(const xmlpp::Element* node, const Glib::ustring& strAttributeName);
   static void set_node_attribute_value_as_bool(xmlpp::Element* node, const Glib::ustring& strAttributeName, bool value = true);
 
   static guint get_node_attribute_value_as_decimal(const xmlpp::Element* node, const Glib::ustring& strAttributeName);
+
+  AppState m_app_state;
+  type_signal_userlevel_changed m_signal_userlevel_changed;
 };
 
 //The base View for this document;

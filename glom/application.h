@@ -45,6 +45,8 @@ public:
    */
   virtual void set_mode_data();
 
+  virtual AppState::userlevels get_userlevel() const;
+    
 protected:
   virtual void init_layout(); //override.
   virtual void init_menus(); //override.

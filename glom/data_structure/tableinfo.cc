@@ -22,7 +22,8 @@
 
 TableInfo::TableInfo()
 : m_sequence(0),
-  m_hidden(false)
+  m_hidden(false),
+  m_default(false)
 {
 }
 
@@ -30,7 +31,8 @@ TableInfo::TableInfo(const TableInfo& src)
 : m_name(src.m_name),
   m_sequence(src.m_sequence),
   m_title(src.m_title),
-  m_hidden(src.m_hidden)
+  m_hidden(src.m_hidden),
+  m_default(src.m_default)
 {
 }
 
@@ -40,6 +42,7 @@ TableInfo& TableInfo::operator=(const TableInfo& src)
   m_sequence = src.m_sequence;
   m_title = src.m_title;
   m_hidden = src.m_hidden;
+  m_default = src.m_default;
 
   return *this;
 }

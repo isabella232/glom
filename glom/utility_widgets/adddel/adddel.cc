@@ -30,7 +30,8 @@
 
 AddDelColumnInfo::AddDelColumnInfo()
 : m_style(STYLE_Text),
-  m_editable(true)
+  m_editable(true),
+  m_visible(true)
 {
 }
 
@@ -39,7 +40,8 @@ AddDelColumnInfo::AddDelColumnInfo(const AddDelColumnInfo& src)
   m_name(src.m_name),
   m_id(src.m_id),
   m_choices(src.m_choices),
-  m_editable(src.m_editable)
+  m_editable(src.m_editable),
+  m_visible(src.m_visible)
 {
 }
 
@@ -50,6 +52,7 @@ AddDelColumnInfo& AddDelColumnInfo::operator=(const AddDelColumnInfo& src)
   m_id = src.m_id;
   m_choices = src.m_choices;
   m_editable = src.m_editable;
+  m_visible = src.m_visible;
 
   return *this;
 }
@@ -605,94 +608,98 @@ void AddDel::construct_specified_columns()
   for(type_vecModelColumns::iterator iter = vecModelColumns.begin(); iter != vecModelColumns.end(); ++iter)
   {
     type_vecModelColumns::value_type& pModelColumn = *iter;
-    const Glib::ustring column_name = m_ColumnTypes[iColumn].m_name;
-    const Glib::ustring column_id = m_ColumnTypes[iColumn].m_id;
 
-    int cols_count = 0;
-    switch(m_ColumnTypes[iColumn].m_style)
+    if(m_ColumnTypes[iColumn].m_visible)
     {
-      case(AddDelColumnInfo::STYLE_Choices):
-      {
-        //Use a custom CellRenderer:
-        CellRendererList* pCellRenderer = Gtk::manage( new CellRendererList() );
+      const Glib::ustring column_name = m_ColumnTypes[iColumn].m_name;
+      const Glib::ustring column_id = m_ColumnTypes[iColumn].m_id;
 
-        //Add the choices:
-        const type_vecStrings vecStrings = m_ColumnTypes[iColumn].m_choices;
-        for(type_vecStrings::const_iterator iter = vecStrings.begin(); iter != vecStrings.end(); ++iter)
+      int cols_count = 0;
+      switch(m_ColumnTypes[iColumn].m_style)
+      {
+        case(AddDelColumnInfo::STYLE_Choices):
         {
-          pCellRenderer->append_list_item(*iter);
+          //Use a custom CellRenderer:
+          CellRendererList* pCellRenderer = Gtk::manage( new CellRendererList() );
+
+          //Add the choices:
+          const type_vecStrings vecStrings = m_ColumnTypes[iColumn].m_choices;
+          for(type_vecStrings::const_iterator iter = vecStrings.begin(); iter != vecStrings.end(); ++iter)
+          {
+            pCellRenderer->append_list_item(*iter);
+          }
+
+          // Append the View column.
+          // We use a derived Gtk::TreeViewColumn so that we can store extra information in it.
+          // This means that we must reimplement the code from the convenience template methods from gtkmm.
+          cols_count = treeview_append_column( string_escape_underscores(column_name), *pCellRenderer,  *pModelColumn, column_id);
+
+          break;
         }
+        case(AddDelColumnInfo::STYLE_Boolean):
+        {
+          //Use whatever standard CellRenderer gtkmm thinks is appropriate:
 
-        // Append the View column.
-        // We use a derived Gtk::TreeViewColumn so that we can store extra information in it.
-        // This means that we must reimplement the code from the convenience template methods from gtkmm.
-        cols_count = treeview_append_column( string_escape_underscores(column_name), *pCellRenderer,  *pModelColumn, column_id);
+          //Cast to the derived type, because append_column<> is templated, and needs the type at compile-time
+          //to use the correct specialization:
 
-        break;
+          Gtk::TreeModelColumn<bool>* pModelColumnDerived = static_cast< Gtk::TreeModelColumn<bool>* >(pModelColumn);
+          if(pModelColumnDerived)
+            cols_count = treeview_append_column(string_escape_underscores(column_name), *pModelColumnDerived, column_id);
+
+          break;
+        }
+        default:
+        {
+          //Use whatever standard CellRenderer gtkmm thinks is appropriate:
+
+          //Cast to the derived type, because append_column<> is templated, and needs the type at compile-time
+          //to use the correct specialization:
+          Gtk::TreeModelColumn<Glib::ustring>* pModelColumnDerived = static_cast< Gtk::TreeModelColumn<Glib::ustring>* >(pModelColumn);
+          if(pModelColumnDerived)
+            cols_count = treeview_append_column(string_escape_underscores(column_name), *pModelColumnDerived, column_id);
+
+          break;
+        }
       }
-      case(AddDelColumnInfo::STYLE_Boolean):
+
+      const int model_column_index = cols_count - 1;
+
+      if(m_ColumnTypes[iColumn].m_editable)
       {
-        //Use whatever standard CellRenderer gtkmm thinks is appropriate:
-
-        //Cast to the derived type, because append_column<> is templated, and needs the type at compile-time
-        //to use the correct specialization:
-
-        Gtk::TreeModelColumn<bool>* pModelColumnDerived = static_cast< Gtk::TreeModelColumn<bool>* >(pModelColumn);
-        if(pModelColumnDerived)
-          cols_count = treeview_append_column(string_escape_underscores(column_name), *pModelColumnDerived, column_id);
-
-        break;
-      }
-      default:
-      {
-        //Use whatever standard CellRenderer gtkmm thinks is appropriate:
-
-        //Cast to the derived type, because append_column<> is templated, and needs the type at compile-time
-        //to use the correct specialization:
-        Gtk::TreeModelColumn<Glib::ustring>* pModelColumnDerived = static_cast< Gtk::TreeModelColumn<Glib::ustring>* >(pModelColumn);
-        if(pModelColumnDerived)
-          cols_count = treeview_append_column(string_escape_underscores(column_name), *pModelColumnDerived, column_id);
-
-        break;
-      }
-    }
-
-    const int model_column_index = cols_count - 1;
-
-    if(m_ColumnTypes[iColumn].m_editable)
-    {
-      Gtk::CellRendererText* pCellRenderer = dynamic_cast<Gtk::CellRendererText*>(m_TreeView.get_column_cell_renderer(model_column_index));
-      if(pCellRenderer)
-      {
-        //Connect a signal handler:
+        Gtk::CellRendererText* pCellRenderer = dynamic_cast<Gtk::CellRendererText*>(m_TreeView.get_column_cell_renderer(model_column_index));
         if(pCellRenderer)
         {
-          //Make it editable:
-          pCellRenderer->property_editable() = true;
+          //Connect a signal handler:
+          if(pCellRenderer)
+          {
+            //Make it editable:
+            pCellRenderer->property_editable() = true;
 
-          //Connect to its signal:
-          pCellRenderer->signal_edited().connect(
-            sigc::bind( sigc::mem_fun(*this, &AddDel::on_treeview_cell_edited), model_column_index ) );
+            //Connect to its signal:
+            pCellRenderer->signal_edited().connect(
+              sigc::bind( sigc::mem_fun(*this, &AddDel::on_treeview_cell_edited), model_column_index ) );
+          }
+        }
+        else
+        {
+           Gtk::CellRendererToggle* pCellRenderer = dynamic_cast<Gtk::CellRendererToggle*>(m_TreeView.get_column_cell_renderer(model_column_index));
+           if(pCellRenderer)
+           {
+             pCellRenderer->property_activatable() = true;
+
+             //Connect to its signal:
+             pCellRenderer->signal_toggled().connect(
+               sigc::bind( sigc::mem_fun(*this, &AddDel::on_treeview_cell_edited_bool), model_column_index ) );
+           }
         }
       }
-      else
-      {
-         Gtk::CellRendererToggle* pCellRenderer = dynamic_cast<Gtk::CellRendererToggle*>(m_TreeView.get_column_cell_renderer(model_column_index));
-         if(pCellRenderer)
-         {
-           pCellRenderer->property_activatable() = true;
 
-           //Connect to its signal:
-           pCellRenderer->signal_toggled().connect(
-             sigc::bind( sigc::mem_fun(*this, &AddDel::on_treeview_cell_edited_bool), model_column_index ) );
-         }
-      }
+
+      iColumn++;
     }
-
-
-    iColumn++;
   }
-
+  
   //Delete the vector's items:
   for(type_vecModelColumns::iterator iter = vecModelColumns.begin(); iter != vecModelColumns.end(); ++iter)
   {
@@ -848,13 +855,13 @@ guint AddDel::add_column(const AddDelColumnInfo& column_info)
   return m_ColumnTypes.size()-1;
 }
   
-guint AddDel::add_column(const Glib::ustring& strTitle, AddDelColumnInfo::enumStyles style, bool editable)
+guint AddDel::add_column(const Glib::ustring& strTitle, AddDelColumnInfo::enumStyles style, bool editable, bool visible)
 {
   //Use the title as the column_id:
-  return add_column(strTitle, strTitle, style, editable);
+  return add_column(strTitle, strTitle, style, editable, visible);
 }
 
-guint AddDel::add_column(const Glib::ustring& strTitle, const Glib::ustring& column_id, AddDelColumnInfo::enumStyles style, bool editable)
+guint AddDel::add_column(const Glib::ustring& strTitle, const Glib::ustring& column_id, AddDelColumnInfo::enumStyles style, bool editable, bool visible)
 {
   InnerIgnore innerIgnore(this); //Stop on_treeview_columns_changed() from doing anything when it is called just because we add a new column.
 
@@ -863,6 +870,7 @@ guint AddDel::add_column(const Glib::ustring& strTitle, const Glib::ustring& col
   column_info.m_style = style;
   column_info.m_id = column_id;
   column_info.m_editable = editable;
+  column_info.m_visible = visible;
 
   return add_column(column_info);
 }

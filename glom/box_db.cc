@@ -36,10 +36,6 @@ Box_DB::Box_DB()
 
   //Connect signals:
   m_Button_Cancel.signal_clicked().connect(sigc::mem_fun(*this, &Box_DB::on_Button_Cancel));
-
-  AppState* pAppState = AppState::get_instance();
-  if(pAppState)
-    pAppState->signal_userlevel_changed().connect( sigc::mem_fun(*this, &Box_DB::on_userlevel_changed) );
 }
 
 Box_DB::Box_DB(BaseObjectType* cobject)
@@ -154,7 +150,13 @@ void Box_DB::load_from_document()
 {
   if(m_pDocument)
   {
+    m_pDocument->signal_userlevel_changed().connect( sigc::mem_fun(*this, &Box_DB::on_userlevel_changed) );
+    on_userlevel_changed(m_pDocument->get_userlevel());
+    
     fill_from_database(); //virtual.
+
+    //Call base class:
+    View_Composite_Glom::load_from_document();
   }
 }
 
@@ -252,24 +254,24 @@ void Box_DB::set_button_cancel(Gtk::Button& button)
 
 AppState::userlevels Box_DB::get_userlevel() const
 {
-  AppState* pAppState = AppState::get_instance();
-  if(pAppState)
+  const Document_Glom* document = dynamic_cast<const Document_Glom*>(get_document());
+  if(document)
   {
-    return pAppState->get_userlevel();
+    return document->get_userlevel();
   }
   else
   {
-    g_warning("Box_DB::get_userlevel(): AppState not found.");
+    g_warning("Box_DB::get_userlevel(): document not found.");
     return AppState::USERLEVEL_OPERATOR;
   }
 }
 
 void Box_DB::set_userlevel(AppState::userlevels value)
 {
-  AppState* pAppState = AppState::get_instance();
-  if(pAppState)
+  Document_Glom* document = get_document();
+  if(document)
   {
-    pAppState->set_userlevel(value);
+    document->set_userlevel(value);
   }
 }
 

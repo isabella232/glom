@@ -55,6 +55,7 @@ public:
   type_vecStrings m_choices;
 
   bool m_editable;
+  bool m_visible;
 };
 
 //For adding/deleting/selecting multi-columned lists of items.
@@ -101,8 +102,8 @@ public:
 
  
   virtual guint add_column(const AddDelColumnInfo& column_info);
-  virtual guint add_column(const Glib::ustring& strTitle, AddDelColumnInfo::enumStyles style = AddDelColumnInfo::STYLE_Text, bool editable = true);
-  virtual guint add_column(const Glib::ustring& strTitle, const Glib::ustring& column_id, AddDelColumnInfo::enumStyles style = AddDelColumnInfo::STYLE_Text, bool editable = true);
+  virtual guint add_column(const Glib::ustring& strTitle, AddDelColumnInfo::enumStyles style = AddDelColumnInfo::STYLE_Text, bool editable = true, bool visible = true);
+  virtual guint add_column(const Glib::ustring& strTitle, const Glib::ustring& column_id, AddDelColumnInfo::enumStyles style = AddDelColumnInfo::STYLE_Text, bool editable = true, bool visible = true);
   virtual guint get_columns_count() const;
 
   typedef AddDelColumnInfo::type_vecStrings type_vecStrings;

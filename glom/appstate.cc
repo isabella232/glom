@@ -21,9 +21,6 @@
 #include "appstate.h"
 
 
-//initialize static data:
-AppState* AppState::m_instance = 0;
-
 AppState::AppState()
 : m_userlevel(USERLEVEL_DEVELOPER)
 {
@@ -32,19 +29,6 @@ AppState::AppState()
 AppState::~AppState()
 {
   
-}
-
-//static
-AppState* AppState::get_instance()
-{
-  //TODO: Synchronize this for threads?
-  if(m_instance)
-    return m_instance;
-  else
-  {
-    m_instance = new AppState(); //TODO: Does it matter that this is never deleted?
-    return m_instance;
-  }
 }
 
 AppState::userlevels AppState::get_userlevel() const

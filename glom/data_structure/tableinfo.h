@@ -37,6 +37,7 @@ public:
   guint m_sequence; //TODO: Use this?
   Glib::ustring m_title;
   bool m_hidden;
+  bool m_default;
 };
 
 #endif //GLOM_DATASTRUCTURE_TABLEINFO_H

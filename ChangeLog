@@ -1,5 +1,16 @@
 2004-06-08  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/application.[h|cc], glom/Document/Document_Glom.[h|cc], and 
+	others: The AppState (User Level) is now dependent on the document so 
+	different instances (each with 1 document) can have different 
+	user levels. And the user level is Operator if the file is read-only.
+	* glom/Navigation/Box_DB_Tables.cc: Enable/Disable the extra UI in 
+	fill_from_database() instead of the constructor, so that they are 
+	changed when the user level changes. The table title is not yet shown 
+	instead of the table name when in operator mode.
+
+2004-06-08  Murray Cumming  <murrayc@murrayc.com>
+
 	* Changed all source code filenames to lowercase, because it was 
 	getting ugly, and imported into GNOME cvs.
 

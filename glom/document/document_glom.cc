@@ -42,6 +42,8 @@ Document_Glom::Document_Glom()
   //but that isn't available for new documents.
   if(get_connection_server().size() == 0)
     set_connection_server("localhost");
+
+  m_app_state.signal_userlevel_changed().connect( sigc::mem_fun(*this, &Document_Glom::on_app_state_userlevel_changed) );
 }
 
 Document_Glom::~Document_Glom()
@@ -661,6 +663,7 @@ Document_Glom::type_listTableInfo Document_Glom::get_tables() const
         table_info.m_name = get_node_attribute_value(nodeChild, "name");
         table_info.m_hidden = get_node_attribute_value_as_bool(nodeChild, "hidden");
         table_info.m_title = get_node_attribute_value(nodeChild, "title");
+        table_info.m_default = get_node_attribute_value_as_bool(nodeChild, "default");
         
         result.push_back(table_info);
       }
@@ -693,6 +696,7 @@ void Document_Glom::set_tables(const type_listTableInfo& tables)
         {
           set_node_attribute_value_as_bool(nodeChild, "hidden", iterFind->m_hidden);
           set_node_attribute_value(nodeChild, "title", iterFind->m_title);
+          set_node_attribute_value_as_bool(nodeChild, "default", iterFind->m_default);
         }
       }
     }
@@ -835,6 +839,40 @@ Document_Glom::type_mapFieldSequence Document_Glom::get_data_layout_plus_new_fie
   }
   
   return result; 
+}
+
+AppState::userlevels Document_Glom::get_userlevel() const
+{
+  if(get_read_only())
+  {
+    return AppState::USERLEVEL_OPERATOR; //A read-only document can not be changed, so there's no point in being in developer mode. This is one way to control the user level on purpose.
+  }
+  else if(m_file_uri.empty()) //If it has never been saved then this is a new default document, so the user created it, so the user can be a developer.
+  {
+    return AppState::USERLEVEL_DEVELOPER;
+  }
+  else
+    return m_app_state.get_userlevel();
+}
+
+Document_Glom::type_signal_userlevel_changed Document_Glom::signal_userlevel_changed()
+{
+  return m_signal_userlevel_changed;
+}
+
+void Document_Glom::on_app_state_userlevel_changed(AppState::userlevels userlevel)
+{
+  m_signal_userlevel_changed.emit(userlevel);
+}
+
+void Document_Glom::set_userlevel(AppState::userlevels userlevel)
+{
+  m_app_state.set_userlevel(userlevel);
+}
+
+void Document_Glom::emit_userlevel_changed()
+{
+  m_signal_userlevel_changed.emit(m_app_state.get_userlevel());
 }
 
  

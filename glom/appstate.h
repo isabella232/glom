@@ -29,13 +29,9 @@
  */
 class AppState
 {
-protected:
+public:
   AppState();
   virtual ~AppState();
-
-public:
-
-  static AppState* get_instance();
 
   enum userlevels
   {
@@ -61,8 +57,6 @@ public:
   type_signal_userlevel_changed signal_userlevel_changed();
 
 protected:
-
-  static AppState* m_instance;
 
   userlevels m_userlevel;
   type_signal_userlevel_changed m_signal_userlevel_changed;

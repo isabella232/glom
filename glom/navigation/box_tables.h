@@ -45,9 +45,11 @@ protected:
 
   Gtk::Label* m_pLabelFrameTitle;
   Gtk::CheckButton* m_pCheckButtonShowHidden;
+  guint m_colTableName;
   guint m_colHidden;
   guint m_colTitle;
-
+  guint m_colDefault;
+  
   mutable AddDel_WithButtons m_AddDel; //mutable because its get_ methods aren't const.
 
 };

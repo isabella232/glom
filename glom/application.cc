@@ -33,12 +33,6 @@ App_Glom::App_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml
   refGlade->get_widget("bakery_vbox", m_pBoxTop);
   refGlade->get_widget_derived("vbox_frame", m_pFrame); //This one is derived. There's a lot happening here.
   refGlade->get_widget("label_hint", m_pStatus);
-
-  AppState* pAppState = AppState::get_instance();
-  if(pAppState)
-  {
-    pAppState->signal_userlevel_changed().connect( sigc::mem_fun(*this, &App_Glom::on_userlevel_changed) );
-  }
   
   add_mime_type("application/x-glom"); //TODO: make this actually work - we need to register it properly.
   
@@ -179,11 +173,6 @@ void App_Glom::init_menus()
 
   init_menus_help();
 
-  //Disable/Enable actions, depending on userlevel:
-  AppState* pAppState = AppState::get_instance();
-  if(pAppState)
-    pAppState->emit_userlevel_changed();
-
   on_database_selected(false);
 }
 
@@ -220,25 +209,34 @@ void App_Glom::on_document_load()
   //Need to ask user for user/password:
   //m_pFrame->load_from_document();
   Document_Glom* pDocument = static_cast<Document_Glom*>(get_document());
-  if(pDocument->get_connection_database().empty()) //If it is a new (default) document.
+  if(pDocument)
   {
-    //offer_new_or_existing();
-  }
-  else
-  {
-    //Read the connection information from the document:
-    ConnectionPool* connection_pool = ConnectionPool::get_instance();
-    if(connection_pool)
+    //Connect signals:
+    pDocument->signal_userlevel_changed().connect( sigc::mem_fun(*this, &App_Glom::on_userlevel_changed) );
+
+    //Disable/Enable actions, depending on userlevel:
+    pDocument->emit_userlevel_changed();
+    
+    if(pDocument->get_connection_database().empty()) //If it is a new (default) document.
     {
-      //Set the connection details in the ConnectionPool singleton.
-      //The ConnectionPool will now use these every time it tries to connect.
-      connection_pool->set_host(pDocument->get_connection_server());
-      connection_pool->set_user(pDocument->get_connection_user());
-
-      connection_pool->set_ready_to_connect(); //Box_DB::connect_to_server() will now attempt the connection-> Shared instances of m_Connection will also be usable.
+      //offer_new_or_existing();
     }
+    else
+    {
+      //Read the connection information from the document:
+      ConnectionPool* connection_pool = ConnectionPool::get_instance();
+      if(connection_pool)
+      {
+        //Set the connection details in the ConnectionPool singleton.
+        //The ConnectionPool will now use these every time it tries to connect.
+        connection_pool->set_host(pDocument->get_connection_server());
+        connection_pool->set_user(pDocument->get_connection_user());
 
-    m_pFrame->do_menu_Navigate_Database(false); //false = don't show list, just open the current database after connecting.
+        connection_pool->set_ready_to_connect(); //Box_DB::connect_to_server() will now attempt the connection-> Shared instances of m_Connection will also be usable.
+      }
+
+      m_pFrame->do_menu_Navigate_Database(false); //false = don't show list, just open the current database after connecting.
+    }
   }
 }
 
@@ -307,6 +305,17 @@ void App_Glom::offer_new_or_existing()
 void App_Glom::set_mode_data()
 {
   m_action_mode_data->activate();
+}
+
+AppState::userlevels App_Glom::get_userlevel() const
+{
+  const Document_Glom* document = dynamic_cast<const Document_Glom*>(get_document());
+  if(document)
+  {
+    return document->get_userlevel();
+  }
+  else
+    return AppState::USERLEVEL_DEVELOPER; //This should never happen.
 }
 
 
