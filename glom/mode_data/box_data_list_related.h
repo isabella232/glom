@@ -42,7 +42,7 @@ public:
 protected:
   virtual void fill_from_database(); //Override.
 
-  virtual void on_AddDel_user_added(guint row); //Override.
+  virtual void on_AddDel_user_added(const Gtk::TreeModel::iterator& row); //Override.
   virtual void on_record_added(const Glib::ustring& strPrimaryKeyValue); //Override. Not a signal handler.
 
   virtual void enable_buttons();

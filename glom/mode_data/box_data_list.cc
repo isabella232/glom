@@ -32,8 +32,7 @@ Box_Data_List::Box_Data_List()
   pack_start(m_AddDel);
   m_AddDel.set_auto_add(false); //We want to add the row ourselves when the user clicks the Add button, because the default behaviour there is not suitable.
   m_AddDel.set_allow_column_chooser();
-  m_AddDel.set_show_row_titles(false);
-
+  
   //Connect signals:
   m_AddDel.signal_user_requested_add().connect(sigc::mem_fun(*this, &Box_Data_List::on_AddDel_user_requested_add)); //Only emitted when m_AddDel.set_auto_add(false) is used.
   m_AddDel.signal_user_requested_edit().connect(sigc::mem_fun(*this, &Box_Data_List::on_AddDel_user_requested_edit));
@@ -57,19 +56,19 @@ Box_Data_List::~Box_Data_List()
 void Box_Data_List::fill_from_database()
 {
   Bakery::BusyCursor(*get_app_window());
-    
+ 
   Box_DB_Table::fill_from_database();
 
   m_AddDel.remove_all();
-  
+
   //Field Names:
   fill_column_titles();
-
+   
   try
   {
     sharedptr<SharedConnection> sharedconnection = connect_to_server();
     if(sharedconnection)
-    {
+    {    
       Glib::RefPtr<Gnome::Gda::Connection> connection = sharedconnection->get_gda_connection();
 
       Glib::ustring strWhereClausePiece;
@@ -107,14 +106,14 @@ void Box_Data_List::fill_from_database()
           rows_count = 100; //Don't get more than 100. TODO: Get other rows dynamically.
         for(guint result_row = 0; result_row < rows_count; result_row++)
         {
-          guint uiRow = m_AddDel.add_item("");
+          Gtk::TreeModel::iterator tree_iter = m_AddDel.add_item("");
 
           //each field:
           guint cols_count = result->get_n_columns();
           for(guint uiCol = 0; uiCol < cols_count; uiCol++)
           {
             Gnome::Gda::Value value = result->get_value_at(uiCol, result_row);
-            m_AddDel.set_value(uiRow, uiCol, value);
+            m_AddDel.set_value(tree_iter, uiCol, value);
           }
         }
       }
@@ -124,16 +123,18 @@ void Box_Data_List::fill_from_database()
   {
     handle_error(ex);
   }
-
+   
   //Select first record:
-  m_AddDel.select_item(0);
-
+  Glib::RefPtr<Gtk::TreeModel> refModel = m_AddDel.get_model();
+  if(refModel)
+    m_AddDel.select_item(refModel->children().begin());
+ 
   fill_end();
 }
 
 void Box_Data_List::on_AddDel_user_requested_add()
 {
-  guint row = m_AddDel.add_item();
+  Gtk::TreeModel::iterator iter = m_AddDel.add_item();
 
   //Start editing in the primary key or the first cell if the primary key is auto-incremented (because there is no point in editing an auto-generated value)..
   guint column = 0;
@@ -158,27 +159,27 @@ void Box_Data_List::on_AddDel_user_requested_add()
     }
   }
 
-  m_AddDel.select_item(row, column, true /* start_editing */);
+  m_AddDel.select_item(iter, column, true /* start_editing */);
 }
 
-void Box_Data_List::on_AddDel_user_requested_edit(guint row)
+void Box_Data_List::on_AddDel_user_requested_edit(const Gtk::TreeModel::iterator& row)
 {
   Glib::ustring strPrimaryKeyValue = get_primary_key_value(row);
   signal_user_requested_details().emit(strPrimaryKeyValue);
 }
 
-void Box_Data_List::on_AddDel_user_requested_delete(guint rowStart, guint /* rowEnd TODO */)
+void Box_Data_List::on_AddDel_user_requested_delete(const Gtk::TreeModel::iterator& rowStart, const Gtk::TreeModel::iterator&  /* rowEnd TODO */)
 {
-  guint iRow = m_AddDel.get_item_selected();
+  Gtk::TreeModel::iterator iterSelected = m_AddDel.get_item_selected();
 
   Glib::ustring strPrimaryKeyValue = m_AddDel.get_value(rowStart);
   record_delete(strPrimaryKeyValue);
 
   //Remove the row:
-  m_AddDel.remove_item(iRow);
+  m_AddDel.remove_item(iterSelected);
 }
 
-void Box_Data_List::on_AddDel_user_added(guint row)
+void Box_Data_List::on_AddDel_user_added(const Gtk::TreeModel::iterator& row)
 {
   Glib::ustring strPrimaryKeyValue;
 
@@ -258,10 +259,10 @@ void Box_Data_List::on_AddDel_user_reordered_columns()
   }
 }
 
-void Box_Data_List::on_AddDel_user_changed(guint row, guint col)
+void Box_Data_List::on_AddDel_user_changed(const Gtk::TreeModel::iterator& row, guint col)
 {
   const Glib::ustring& strPrimaryKeyValue = get_primary_key_value(row);
-  if(strPrimaryKeyValue.size()) //If the record's primary key is filled in:
+  if(!strPrimaryKeyValue.empty()) //If the record's primary key is filled in:
   {
     //Just update the record:
     try
@@ -313,45 +314,50 @@ void Box_Data_List::on_AddDel_user_changed(guint row, guint col)
 
 void Box_Data_List::on_details_nav_first()
 {
-  m_AddDel.select_item(0);
+  m_AddDel.select_item(m_AddDel.get_model()->children().begin());
 
   signal_user_requested_details().emit(m_AddDel.get_value_selected());
 }
 
 void Box_Data_List::on_details_nav_previous()
 {
-  guint rowToEdit = 0;
-  guint rowCurrent = m_AddDel.get_item_selected();
+  Gtk::TreeModel::iterator iter = m_AddDel.get_item_selected();
+  if(iter)
+  {
+    //Don't try to select a negative record number.
+    if(!m_AddDel.get_is_first_row(iter))
+    {
+      iter--;
 
-  //Don't try to select a negative record number.
-  if(rowCurrent > 0)
-    rowToEdit = rowCurrent - 1;
-
-  m_AddDel.select_item(rowToEdit);
-  signal_user_requested_details().emit(m_AddDel.get_value_selected());
+      m_AddDel.select_item(iter);
+      signal_user_requested_details().emit(m_AddDel.get_value_selected());
+    }
+  }
 }
 
 void Box_Data_List::on_details_nav_next()
 {
-  guint rowCurrent = m_AddDel.get_item_selected();
+  Gtk::TreeModel::iterator iter = m_AddDel.get_item_selected();
+  if(iter)
+  {
+    //Don't go past the last record:
+    if( !m_AddDel.get_is_last_row(iter) )
+    {
+      iter++;    
+      m_AddDel.select_item(iter);
 
-  //Don't go past the last record:
-  guint rowToEdit = rowCurrent;
-  if( (rowToEdit + 1) < m_AddDel.get_count())
-    rowToEdit++;
-
-  m_AddDel.select_item(rowToEdit);
-
-  signal_user_requested_details().emit(m_AddDel.get_value_selected());
+      signal_user_requested_details().emit(m_AddDel.get_value_selected());
+    }
+  }
 }
 
 void Box_Data_List::on_details_nav_last()
 {
-  guint rowCount = m_AddDel.get_count();
-
-  if(rowCount > 0) //Only select a record if there are any.
+  Gtk::TreeModel::iterator iter = m_AddDel.get_model()->children().end();
+  iter--;
+  if(iter)
   {
-    m_AddDel.select_item(rowCount - 1);
+    m_AddDel.select_item(iter);
     signal_user_requested_details().emit(m_AddDel.get_value_selected());
   }
 }
@@ -359,18 +365,20 @@ void Box_Data_List::on_details_nav_last()
 void Box_Data_List::on_Details_record_deleted(Glib::ustring strPrimaryKey)
 {
   //Find out which row is affected:
-  guint iRowSelected = 0;
-  bool bTest = m_AddDel.get_row_number(strPrimaryKey, iRowSelected);
-  if(bTest)
+  Gtk::TreeModel::iterator iter = m_AddDel.get_row(strPrimaryKey);
+  if(iter)
   {
     //Remove the row:
-    m_AddDel.remove_item(iRowSelected);
+    Gtk::TreeModel::iterator iterNext = iter;
+    iterNext++;
+    
+    m_AddDel.remove_item(iter);
 
     //Show Details for the next one:
-    if(iRowSelected < m_AddDel.get_count())
+    if(iterNext != m_AddDel.get_model()->children().end())
     {
       //Next record moves up one:
-      on_AddDel_user_requested_edit(iRowSelected);
+      on_AddDel_user_requested_edit(iterNext);
     }
     else
     {
@@ -387,7 +395,7 @@ void Box_Data_List::on_Details_record_deleted(Glib::ustring strPrimaryKey)
   }
 }
 
-Glib::ustring Box_Data_List::get_primary_key_value(guint row)
+Glib::ustring Box_Data_List::get_primary_key_value(const Gtk::TreeModel::iterator& row)
 {
   Glib::ustring strResult;
 

@@ -83,16 +83,15 @@ void Box_Data_List_Related::fill_from_database()
 void Box_Data_List_Related::on_record_added(const Glib::ustring& strPrimaryKeyValue)
 {
   //Get row of new record:
-  guint iRow = 0;
-  bool bTest = m_AddDel.get_row_number(strPrimaryKeyValue, iRow);
-  if(bTest)
+  Gtk::TreeModel::iterator iter = m_AddDel.get_row(strPrimaryKeyValue);
+  if(iter)
   {
     guint iKey = 0;
     bool bTest = get_field_index(m_strKeyField, iKey);
     if(!bTest)
        std::cout << "Box_Data_List_Related::on_record_added() field not found: " << m_strKeyField << std::endl;
 
-    Glib::ustring strKeyValue = m_AddDel.get_value(iRow, iKey);
+    Glib::ustring strKeyValue = m_AddDel.get_value(iter, iKey);
     Box_Data_List::on_record_added(strPrimaryKeyValue); //adds blank row.
 
 
@@ -107,9 +106,9 @@ void Box_Data_List_Related::on_record_added(const Glib::ustring& strPrimaryKeyVa
     else
     {
       //Create the link by setting the foreign key:
-      m_AddDel.set_value(iRow, iKey, m_strKeyValue);
+      m_AddDel.set_value(iter, iKey, m_strKeyValue);
 
-      on_AddDel_user_changed(iRow, iKey); //Update the database.
+      on_AddDel_user_changed(iter, iKey); //Update the database.
     }
   }
 }
@@ -119,7 +118,7 @@ Glib::ustring Box_Data_List_Related::get_KeyField() const
   return m_strKeyField;
 }
 
-void Box_Data_List_Related::on_AddDel_user_added(guint row)
+void Box_Data_List_Related::on_AddDel_user_added(const Gtk::TreeModel::iterator& row)
 {
   //Like Box_Data_List::on_AddDel_user_added(),
   //but it doesn't allow adding if the new record can not be a related record.

@@ -45,10 +45,10 @@ protected:
 
   //Signal handlers:
   virtual void on_button_connect();
-  virtual void on_AddDel_Add(guint row);
-  virtual void on_AddDel_Edit(guint row);
-  virtual void on_AddDel_Delete(guint rowStart, guint rowEnd);
-  virtual void on_AddDel_Changed(guint row, guint number);
+  virtual void on_AddDel_Add(const Gtk::TreeModel::iterator& row);
+  virtual void on_AddDel_Edit(const Gtk::TreeModel::iterator& row);
+  virtual void on_AddDel_Delete(const Gtk::TreeModel::iterator& rowStart, const Gtk::TreeModel::iterator& rowEnd);
+  virtual void on_AddDel_Changed(const Gtk::TreeModel::iterator& row, guint number);
 
   Glib::RefPtr<Gnome::Glade::Xml> m_refGlade;
   

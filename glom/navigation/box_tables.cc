@@ -46,8 +46,6 @@ Box_Tables::Box_Tables(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
   
   refGlade->get_widget("checkbutton_show_hidden", m_pCheckButtonShowHidden);
   m_pCheckButtonShowHidden->signal_toggled().connect(sigc::mem_fun(*this, &Box_Tables::on_show_hidden_toggled));
-   
-  m_AddDel.set_show_row_titles(false);
   
   m_AddDel.signal_user_added().connect(sigc::mem_fun(*this, &Box_Tables::on_AddDel_Add));
   m_AddDel.signal_user_requested_delete().connect(sigc::mem_fun(*this, &Box_Tables::on_AddDel_Delete));
@@ -136,11 +134,11 @@ void Box_Tables::fill_from_database()
 
       if(bAddIt)
       {
-          guint uiRow = m_AddDel.add_item(strName);
+          Gtk::TreeModel::iterator iter = m_AddDel.add_item(strName);
 
-          m_AddDel.set_value(uiRow, m_colHidden, hidden);
-          m_AddDel.set_value(uiRow, m_colTitle, title);
-          m_AddDel.set_value(uiRow, m_colDefault, is_default);
+          m_AddDel.set_value(iter, m_colHidden, hidden);
+          m_AddDel.set_value(iter, m_colTitle, title);
+          m_AddDel.set_value(iter, m_colDefault, is_default);
         }
     }
   }
@@ -153,7 +151,7 @@ void Box_Tables::fill_from_database()
   m_modified = false;
 }
 
-void Box_Tables::on_AddDel_Add(guint row)
+void Box_Tables::on_AddDel_Add(const Gtk::TreeModel::iterator& row)
 {
   Glib::ustring table_name = m_AddDel.get_value(row);
 
@@ -194,11 +192,11 @@ void Box_Tables::on_AddDel_Add(guint row)
   m_modified = true;
 }
 
-void Box_Tables::on_AddDel_Delete(guint rowStart, guint rowEnd)
+void Box_Tables::on_AddDel_Delete(const Gtk::TreeModel::iterator& rowStart, const Gtk::TreeModel::iterator& rowEnd)
 {
-  for(guint row = rowStart; row <= rowEnd; row++)
+  for(Gtk::TreeModel::iterator iter = rowStart; iter != rowEnd; ++iter)
   {
-    Glib::ustring strName = m_AddDel.get_value(row);
+    Glib::ustring strName = m_AddDel.get_value(iter);
     if(strName.size())
     {
       //Ask the user to confirm:
@@ -222,7 +220,7 @@ void Box_Tables::on_AddDel_Delete(guint rowStart, guint rowEnd)
   m_modified = true;
 }
 
-void Box_Tables::on_AddDel_Edit(guint row)
+void Box_Tables::on_AddDel_Edit(const Gtk::TreeModel::iterator& row)
 {
   Glib::ustring table_name = m_AddDel.get_value(row);
   
@@ -257,14 +255,13 @@ void Box_Tables::save_to_document()
       //Save the hidden tables. TODO_usermode: Only if we are in developer mode.
       Document_Glom::type_listTableInfo listTables;
 
-      guint rows_count = m_AddDel.get_count();
-      for(guint row_index = 0; row_index < rows_count; ++row_index)
+      for(Gtk::TreeModel::iterator iter = m_AddDel.get_model()->children().begin(); iter != m_AddDel.get_model()->children().end(); ++iter)
       {
         TableInfo table_info;
-        table_info.m_name = m_AddDel.get_value(row_index, m_colTableName);
-        table_info.m_hidden  = m_AddDel.get_value_as_bool(row_index, m_colHidden);
-        table_info.m_title  = m_AddDel.get_value(row_index, m_colTitle);
-        table_info.m_default  = m_AddDel.get_value_as_bool(row_index, m_colDefault);
+        table_info.m_name = m_AddDel.get_value(iter, m_colTableName);
+        table_info.m_hidden  = m_AddDel.get_value_as_bool(iter, m_colHidden);
+        table_info.m_title  = m_AddDel.get_value(iter, m_colTitle);
+        table_info.m_default  = m_AddDel.get_value_as_bool(iter, m_colDefault);
 
         listTables.push_back(table_info);
       }
@@ -280,7 +277,7 @@ void Box_Tables::on_show_hidden_toggled()
   fill_from_database();
 }
 
-void Box_Tables::on_AddDel_changed(guint /* row TODO */, guint column)
+void Box_Tables::on_AddDel_changed(const Gtk::TreeModel::iterator& /* row TODO */, guint column)
 {
   if(get_userlevel() == AppState::USERLEVEL_DEVELOPER)
   {

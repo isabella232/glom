@@ -41,15 +41,15 @@ protected:
   virtual void fill_from_database();
   virtual void fill_fields();
 
-  Field get_field_definition(guint row);
+  Field get_field_definition(const Gtk::TreeModel::iterator& row);
 
   virtual void change_definition(const Field& fieldOld, Field field);
 
   //Signal handlers:
-  virtual void on_AddDel_add(guint row);
-  virtual void on_AddDel_delete(guint rowStart, guint rowEnd);
-  virtual void on_AddDel_changed(guint row, guint col);
-  virtual void on_AddDel_edit(guint row);
+  virtual void on_AddDel_add(const Gtk::TreeModel::iterator& row);
+  virtual void on_AddDel_delete(const Gtk::TreeModel::iterator& rowStart, const Gtk::TreeModel::iterator& rowEnd);
+  virtual void on_AddDel_changed(const Gtk::TreeModel::iterator& row, guint col);
+  virtual void on_AddDel_edit(const Gtk::TreeModel::iterator& row);
 
   virtual void on_Properties_apply();
 

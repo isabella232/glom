@@ -79,30 +79,34 @@ public:
     
   virtual void set_allow_column_chooser(bool value = true);
 
-  virtual guint add_item(); //Return index of new row.
-  virtual guint add_item(const Glib::ustring& strKey); //Return index of new row.
+  virtual Gtk::TreeModel::iterator add_item(); //Return index of new row.
+  virtual Gtk::TreeModel::iterator add_item(const Glib::ustring& strKey); //Return index of new row.
 
-  virtual void remove_item(guint row);
+  virtual void remove_item(const Gtk::TreeModel::iterator& iter);
 
   virtual void remove_all();
 
-  virtual Gnome::Gda::Value get_value_as_value(guint row, guint col = 0);
-  virtual Glib::ustring get_value(guint row, guint col = 0);
-  virtual bool get_value_as_bool(guint row, guint col = 0);
+  virtual Gnome::Gda::Value get_value_as_value(const Gtk::TreeModel::iterator& iter, guint col = 0);
+  virtual Glib::ustring get_value(const Gtk::TreeModel::iterator& iter, guint col = 0);
+  virtual bool get_value_as_bool(const Gtk::TreeModel::iterator& iter, guint col = 0);
+
+  //TODO: Return an iterator.
   virtual Glib::ustring get_value_selected(guint col = 0);
 
-  virtual guint get_item_selected();
-  virtual bool select_item(guint row, guint column, bool start_editing = false);  //bool indicates success.
-  virtual bool select_item(guint row, bool start_editing = false);  //bool indicates success.
+  virtual Gtk::TreeModel::iterator get_item_selected();
+  virtual bool select_item(const Gtk::TreeModel::iterator& iter, guint column = 0, bool start_editing = false);  //bool indicates success.
   virtual bool select_item(const Glib::ustring& strItemText); //Select row with this text in the first column.
 
   virtual guint get_count() const;
 
-  virtual void set_value(guint row, guint col, const Gnome::Gda::Value& value);  
-  virtual void set_value(guint row, guint col, const Glib::ustring& strValue);
-  virtual void set_value(guint row, guint col, unsigned long ulValue);
-  virtual void set_value(guint row, guint col, bool bVal);
+  virtual void set_value(const Gtk::TreeModel::iterator& iter, guint col, const Gnome::Gda::Value& value);
+  virtual void set_value(const Gtk::TreeModel::iterator& iter, guint col, const Glib::ustring& strValue);
+  virtual void set_value(const Gtk::TreeModel::iterator& iter, guint col, unsigned long ulValue);
+  virtual void set_value(const Gtk::TreeModel::iterator& iter, guint col, bool bVal);
 
+  virtual bool get_is_first_row(const Gtk::TreeModel::iterator& iter);
+  virtual bool get_is_last_row(const Gtk::TreeModel::iterator& iter);
+  
   virtual void set_select_text(const Glib::ustring& strVal);
   virtual Glib::ustring get_select_text() const;
 
@@ -131,12 +135,9 @@ public:
    
   virtual void construct_specified_columns(); //Delay actual use of set_column_*() stuff until this method is called.
 
-  virtual void set_item_title(guint row, const Glib::ustring& strValue);
-
-  virtual void set_show_row_titles(bool bVal = true);
   virtual void set_show_column_titles(bool bVal = true);
 
-  virtual bool get_row_number(const Glib::ustring& strItemText, guint& row);
+  virtual Gtk::TreeModel::iterator get_row(const Glib::ustring& strItemText);
 
   virtual void finish_editing(); //Closes active edit controls and commits the data to the cell.
   //virtual void reactivate(); //Sheet doesn't seem to update unless a cell is active.
@@ -148,28 +149,31 @@ public:
    */
   virtual void set_auto_add(bool value = true);
 
+  Glib::RefPtr<Gtk::TreeModel> get_model();
+  Glib::RefPtr<const Gtk::TreeModel> get_model() const;
+    
   //Signals:
   //row number.
-  typedef sigc::signal<void, guint> type_signal_user_added;
+  typedef sigc::signal<void, const Gtk::TreeModel::iterator&> type_signal_user_added;
   type_signal_user_added signal_user_added();
 
   //row number, col number.
-  typedef sigc::signal<void, guint, guint> type_signal_user_changed;
+  typedef sigc::signal<void, const Gtk::TreeModel::iterator&, guint> type_signal_user_changed;
   type_signal_user_changed signal_user_changed();
 
   //start row, end row
-  typedef sigc::signal<void, guint, guint> type_signal_user_requested_delete;
+  typedef sigc::signal<void, const Gtk::TreeModel::iterator&, const Gtk::TreeModel::iterator&> type_signal_user_requested_delete;
   type_signal_user_requested_delete signal_user_requested_delete();
 
   //row number.
-  typedef sigc::signal<void, guint> type_signal_user_requested_edit;
+  typedef sigc::signal<void, const Gtk::TreeModel::iterator&> type_signal_user_requested_edit;
   type_signal_user_requested_edit signal_user_requested_edit();
 
   typedef sigc::signal<void> type_signal_user_requested_add;
   type_signal_user_requested_add signal_user_requested_add();
 
   //row number, col number.
-  typedef sigc::signal<void, guint, guint> type_signal_user_activated;
+  typedef sigc::signal<void, const Gtk::TreeModel::iterator&, guint> type_signal_user_activated;
   type_signal_user_activated signal_user_activated();
 
   typedef sigc::signal<void> type_signal_user_reordered_columns;
@@ -177,15 +181,13 @@ public:
   
 protected:
   virtual void setup_menu();
-  virtual Glib::ustring treeview_get_key(guint row);
+  virtual Glib::ustring treeview_get_key(const Gtk::TreeModel::iterator& row);
 
-  virtual bool add_blank(); //true if a blank was added.
+  ///Add a blank row, or return the existing blank row if there already is one.
+  virtual Gtk::TreeModel::iterator get_next_available_row_with_add_if_necessary();
+  virtual void add_blank();
   virtual bool get_blank_is_used() const;
-
-  virtual int row_number_from_iterator(const Gtk::TreeModel::iterator iter);
-
-  virtual int get_first_column() const;
-
+  virtual Gtk::TreeModel::iterator get_last_row();
 
   //Signal handlers:
   virtual void on_treeview_cell_edited(const Glib::ustring& path_string, const Glib::ustring& new_text, int model_column_index);
@@ -218,10 +220,10 @@ protected:
   bool get_ignore_treeview_signals() const;
 
   //The column_id is extra information that we can use later to discover what the column shows, even when columns have been reordered.
-  guint treeview_append_column(const Glib::ustring title, Gtk::CellRenderer& cellrenderer, const Gtk::TreeModelColumnBase& model_column, const Glib::ustring& column_id);
+  guint treeview_append_column(const Glib::ustring& title, Gtk::CellRenderer& cellrenderer, const Gtk::TreeModelColumnBase& model_column, const Glib::ustring& column_id);
 
   template<class T_ModelColumnType>
-  guint treeview_append_column(const Glib::ustring title, const Gtk::TreeModelColumn<T_ModelColumnType>& column, const Glib::ustring& column_id);
+  guint treeview_append_column(const Glib::ustring& title, const Gtk::TreeModelColumn<T_ModelColumnType>& column, const Glib::ustring& column_id);
 
 
   static Glib::ustring string_escape_underscores(const Glib::ustring& text);
@@ -249,9 +251,6 @@ protected:
   
   type_vecStrings m_vecColumnIDs; //We give each ViewColumn a special ID, so we know where they are after a reorder.
   
-
-  bool m_bHasRowTitles;
-
   Glib::ustring m_strTextActiveCell; //value before the change
   Gtk::Menu* m_pColumnHeaderPopup;
   bool m_allow_column_chooser;
@@ -291,7 +290,7 @@ protected:
 };
 
 template<class T_ModelColumnType>
-guint AddDel::treeview_append_column(const Glib::ustring title, const Gtk::TreeModelColumn<T_ModelColumnType>& column, const Glib::ustring& column_id)
+guint AddDel::treeview_append_column(const Glib::ustring& title, const Gtk::TreeModelColumn<T_ModelColumnType>& column, const Glib::ustring& column_id)
 {
   Gtk::CellRenderer* pCellRenderer = manage( Gtk::CellRenderer_Generation::generate_cellrenderer<T_ModelColumnType>() );
   return treeview_append_column(title, *pCellRenderer, column, column_id);

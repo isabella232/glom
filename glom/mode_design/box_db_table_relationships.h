@@ -42,8 +42,8 @@ protected:
   virtual void fill_from_database();
 
   //Signal handlers:
-  virtual void on_AddDel_user_activated(guint row, guint col);
-  virtual void on_AddDel_user_changed(guint row, guint col);
+  virtual void on_AddDel_user_activated(const Gtk::TreeModel::iterator& row, guint col);
+  virtual void on_AddDel_user_changed(const Gtk::TreeModel::iterator& row, guint col);
 
   typedef std::vector<Glib::ustring> type_vecStrings;
   static type_vecStrings util_vecStrings_from_Fields(const type_vecFields& fields);

@@ -84,17 +84,17 @@ void Box_DB_Table_Relationships::fill_from_database()
        const Relationship& relationship = *iter;
 
        //Name:
-       guint uiRow = m_AddDel.add_item(relationship.get_name());
+       Gtk::TreeModel::iterator iter = m_AddDel.add_item(relationship.get_name());
 
        //From Field:
-       m_AddDel.set_value(uiRow, m_colFromField, relationship.get_from_field());
+       m_AddDel.set_value(iter, m_colFromField, relationship.get_from_field());
 
        //To Table:
        const Glib::ustring& strToTable = relationship.get_to_table();
-       m_AddDel.set_value(uiRow, m_colToTable, strToTable);
+       m_AddDel.set_value(iter, m_colToTable, strToTable);
 
        //To Field:
-       m_AddDel.set_value(uiRow, m_colToField, relationship.get_to_field());
+       m_AddDel.set_value(iter, m_colToField, relationship.get_to_field());
 
     }
   }
@@ -107,14 +107,14 @@ void Box_DB_Table_Relationships::save_to_document()
   //Build relationships from AddDel:
   Document_Glom::type_vecRelationships vecRelationships;
 
-  for(guint i = 0; i < m_AddDel.get_count(); i++)
+  for(Gtk::TreeModel::iterator iter = m_AddDel.get_model()->children().begin(); iter < m_AddDel.get_model()->children().end(); ++iter)
   {
     Relationship relationship;
-    relationship.set_name(m_AddDel.get_value(i, m_colName));
+    relationship.set_name(m_AddDel.get_value(iter, m_colName));
     relationship.set_from_table(m_strTableName);
-    relationship.set_from_field(m_AddDel.get_value(i, m_colFromField));
-    relationship.set_to_table(m_AddDel.get_value(i, m_colToTable));
-    relationship.set_to_field(m_AddDel.get_value(i, m_colToField));
+    relationship.set_from_field(m_AddDel.get_value(iter, m_colFromField));
+    relationship.set_to_table(m_AddDel.get_value(iter, m_colToTable));
+    relationship.set_to_field(m_AddDel.get_value(iter, m_colToField));
 
     vecRelationships.push_back(relationship);
   }
@@ -139,7 +139,7 @@ Box_DB_Table_Relationships::type_vecStrings Box_DB_Table_Relationships::util_vec
   return vecNames;
 }
 
-void Box_DB_Table_Relationships::on_AddDel_user_changed(guint row, guint col)
+void Box_DB_Table_Relationships::on_AddDel_user_changed(const Gtk::TreeModel::iterator& row, guint col)
 {
   if(col == m_colToTable)
   {
@@ -151,7 +151,7 @@ void Box_DB_Table_Relationships::on_AddDel_user_changed(guint row, guint col)
   set_modified();
 }
 
-void Box_DB_Table_Relationships::on_AddDel_user_activated(guint row, guint col)
+void Box_DB_Table_Relationships::on_AddDel_user_activated(const Gtk::TreeModel::iterator& row, guint col)
 {
   if(col == m_colToField)
   {

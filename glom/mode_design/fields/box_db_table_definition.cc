@@ -95,10 +95,10 @@ void Box_DB_Table_Definition::fill_from_database()
       const Field& field = *iter;
              
       //Name:
-      guint uiRow = m_AddDel.add_item(field.get_name());
+      Gtk::TreeModel::iterator iter= m_AddDel.add_item(field.get_name());
 
       Glib::ustring title = field.get_title();
-      m_AddDel.set_value(uiRow, m_colTitle, title);      
+      m_AddDel.set_value(iter, m_colTitle, title);      
 
       Gnome::Gda::FieldAttributes fieldinfo = field.get_field_info();
       
@@ -106,16 +106,16 @@ void Box_DB_Table_Definition::fill_from_database()
       Field::glom_field_type fieldType = Field::get_glom_type_for_gda_type(fieldinfo.get_gdatype()); //Could be TYPE_INVALID if the gda type is not one of ours.
 
       Glib::ustring strType = Field::get_type_name( fieldType );
-      m_AddDel.set_value(uiRow, m_colType, strType);
+      m_AddDel.set_value(iter, m_colType, strType);
 
       //Unique:
       bool bUnique = fieldinfo.get_unique_key();
     
-      m_AddDel.set_value(uiRow, m_colUnique, bUnique);
+      m_AddDel.set_value(iter, m_colUnique, bUnique);
 
       //Primary Key:
       bool bPrimaryKey = fieldinfo.get_primary_key();
-      m_AddDel.set_value(uiRow, m_colPrimaryKey, bPrimaryKey);
+      m_AddDel.set_value(iter, m_colPrimaryKey, bPrimaryKey);
     }
   }
   catch(std::exception& ex)
@@ -126,8 +126,9 @@ void Box_DB_Table_Definition::fill_from_database()
   fill_end();
 }
 
-void Box_DB_Table_Definition::on_AddDel_add(guint row)
+void Box_DB_Table_Definition::on_AddDel_add(const Gtk::TreeModel::iterator& row)
 {
+g_warning("on_AddDel_add");
   Glib::ustring strName = m_AddDel.get_value(row);
   if(strName.size())
   {
@@ -144,12 +145,12 @@ void Box_DB_Table_Definition::on_AddDel_add(guint row)
   }
 }
 
-void Box_DB_Table_Definition::on_AddDel_delete(guint rowStart, guint rowEnd)
+void Box_DB_Table_Definition::on_AddDel_delete(const Gtk::TreeModel::iterator& rowStart, const Gtk::TreeModel::iterator&  rowEnd)
 {
-  for(guint row = rowStart; row <= rowEnd; row++)
+  for(Gtk::TreeModel::iterator iter = rowStart; iter != rowEnd; ++iter)
   {
-    Glib::ustring strName = m_AddDel.get_value(row);
-    if(strName.size())
+    Glib::ustring strName = m_AddDel.get_value(iter);
+    if(!strName.empty())
     {
       Query_execute( "ALTER TABLE " + m_strTableName + " DROP COLUMN " + strName );
     }
@@ -158,41 +159,47 @@ void Box_DB_Table_Definition::on_AddDel_delete(guint rowStart, guint rowEnd)
   fill_from_database();
 }
 
-void Box_DB_Table_Definition::on_AddDel_changed(guint row, guint /* col */)
+void Box_DB_Table_Definition::on_AddDel_changed(const Gtk::TreeModel::iterator& row, guint /* col */)
 {
+g_warning("on_AddDel_changed");
   //Get old field definition:
   Document_Glom* pDoc = static_cast<Document_Glom*>(get_document());
   if(pDoc)
   {
-    //Glom-specific stuff:
-    const Glib::ustring& strFieldNameBeingEdited = m_Fields[row].get_name();
+    //Glom-specific stuff: //TODO_portiter
+    const Glib::ustring strFieldNameBeingEdited = m_AddDel.get_value(row, 0);  //TODO: handle change of field name itself.
+    
     pDoc->get_field(m_strTableName, strFieldNameBeingEdited, m_Field_BeingEdited);
 
     //Get DB field info: (TODO: This might be unnecessary).
-    m_Field_BeingEdited = m_Fields[row];
-
-
-    //Get new field definition:
-    Field fieldNew = get_field_definition(row);
-        
-    //Change it:
-    if(m_Field_BeingEdited != fieldNew) //If it has really changed.
+    type_vecFields::const_iterator iterFind = std::find_if( m_Fields.begin(), m_Fields.end(), predicate_FieldHasName<Field>(strFieldNameBeingEdited) );
+    if(iterFind != m_Fields.end()) //If it was found:
     {
-      //If we are changing a non-glom type:
-     //Refuse to edit field definitions that were not created by glom:
-     if(Field::get_glom_type_for_gda_type( m_Field_BeingEdited.get_field_info().get_gdatype() )  == Field::TYPE_INVALID)
-     {
-       Gtk::MessageDialog dialog(gettext("This database field was created or edited outside of Glom. It has a data type that is not supported by Glom. Your system administrator may be able to correct this."));
-       dialog.set_transient_for(*get_app_window());
-       dialog.run();
-     }
-     else
-       change_definition(m_Field_BeingEdited, fieldNew);
+      m_Field_BeingEdited = *iterFind;
+
+
+      //Get new field definition:
+      Field fieldNew = get_field_definition(row);
+
+      //Change it:
+      if(m_Field_BeingEdited != fieldNew) //If it has really changed.
+      {
+        //If we are changing a non-glom type:
+       //Refuse to edit field definitions that were not created by glom:
+       if(Field::get_glom_type_for_gda_type( m_Field_BeingEdited.get_field_info().get_gdatype() )  == Field::TYPE_INVALID)
+       {
+         Gtk::MessageDialog dialog(gettext("This database field was created or edited outside of Glom. It has a data type that is not supported by Glom. Your system administrator may be able to correct this."));
+         dialog.set_transient_for(*get_app_window());
+         dialog.run();
+       }
+       else
+         change_definition(m_Field_BeingEdited, fieldNew);
+      }
     }
   }
 }
 
-void Box_DB_Table_Definition::on_AddDel_edit(guint row)
+void Box_DB_Table_Definition::on_AddDel_edit(const Gtk::TreeModel::iterator& row)
 {
   m_Field_BeingEdited = get_field_definition(row);
   
@@ -203,7 +210,7 @@ void Box_DB_Table_Definition::on_AddDel_edit(guint row)
   m_pDialog->show_all();
 }
 
-Field Box_DB_Table_Definition::get_field_definition(guint row)
+Field Box_DB_Table_Definition::get_field_definition(const Gtk::TreeModel::iterator& row)
 {
   Field fieldResult;
 
@@ -213,7 +220,7 @@ Field Box_DB_Table_Definition::get_field_definition(guint row)
   Document_Glom* pDoc = static_cast<Document_Glom*>(get_document());
   if(pDoc)
   {
-    const Glib::ustring& strFieldNameBeforeEdit = m_Fields[row].get_name();
+    const Glib::ustring& strFieldNameBeforeEdit = m_AddDel.get_value(row, 0);
 
     Document_Glom::type_vecFields vecFields= pDoc->get_table_fields(m_strTableName);
     Document_Glom::type_vecFields::iterator iterFind = std::find_if( vecFields.begin(), vecFields.end(), predicate_FieldHasName<Field>(strFieldNameBeforeEdit) );

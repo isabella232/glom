@@ -33,7 +33,7 @@ public:
   Box_Data_List();
   virtual ~Box_Data_List();
 
-  virtual Glib::ustring get_primary_key_value(guint row);
+  virtual Glib::ustring get_primary_key_value(const Gtk::TreeModel::iterator& row);
   virtual Glib::ustring get_primary_key_value_selected();
   
   virtual Field get_Entered_Field(guint index);
@@ -57,12 +57,12 @@ protected:
 
   //Signal handlers:
   virtual void on_AddDel_user_requested_add();
-  virtual void on_AddDel_user_requested_edit(guint row);
-  virtual void on_AddDel_user_requested_delete(guint rowStart, guint rowEnd);
-  virtual void on_AddDel_user_added(guint row);
+  virtual void on_AddDel_user_requested_edit(const Gtk::TreeModel::iterator& row);
+  virtual void on_AddDel_user_requested_delete(const Gtk::TreeModel::iterator& rowStart, const Gtk::TreeModel::iterator& rowEnd);
+  virtual void on_AddDel_user_added(const Gtk::TreeModel::iterator& row);
   virtual void on_AddDel_user_reordered_columns();
 
-  virtual void on_AddDel_user_changed(guint row, guint col);
+  virtual void on_AddDel_user_changed(const Gtk::TreeModel::iterator& row, guint col);
 
   virtual void on_record_added(const Glib::ustring& strPrimaryKey); //Not a signal handler. To be overridden.
 

@@ -51,7 +51,6 @@ Box_DataBases::Box_DataBases(BaseObjectType* cobject, const Glib::RefPtr<Gnome::
 
   pAligmentPlaceholder->add(m_AddDel);
 
-  m_AddDel.set_show_row_titles(false);
   m_AddDel.add_column(gettext("Databases"));
 
   m_AddDel.signal_user_added().connect(sigc::mem_fun(*this, &Box_DataBases::on_AddDel_Add));
@@ -121,7 +120,7 @@ void Box_DataBases::on_button_connect()
   }
 }
 
-void Box_DataBases::on_AddDel_Add(guint row)
+void Box_DataBases::on_AddDel_Add(const Gtk::TreeModel::iterator& row)
 {
   Glib::ustring strName = m_AddDel.get_value(row);
   if(strName.size())
@@ -172,7 +171,7 @@ sharedptr<SharedConnection> Box_DataBases::connect_to_server_with_connection_set
   return result;
 }
 
-void Box_DataBases::on_AddDel_Edit(guint row)
+void Box_DataBases::on_AddDel_Edit(const Gtk::TreeModel::iterator& row)
 {
   Glib::ustring strValue = m_AddDel.get_value(row);
   m_strDatabaseName = strValue; //Remember for get_database_name().
@@ -180,10 +179,10 @@ void Box_DataBases::on_AddDel_Edit(guint row)
   signal_selected.emit(strValue);
 }
 
-void Box_DataBases::on_AddDel_Delete(guint rowStart, guint /* rowEnd TODO */)
+void Box_DataBases::on_AddDel_Delete(const Gtk::TreeModel::iterator& rowStart, const Gtk::TreeModel::iterator& /* rowEnd TODO */)
 {
   Glib::ustring strValue = m_AddDel.get_value(rowStart);
-  if(strValue.size())
+  if(!strValue.empty())
   {
     //Ask the user to confirm:
     Gtk::MessageDialog dialog(gettext("Are you sure that you want to delete this database?"), Gtk::MESSAGE_QUESTION);
@@ -209,11 +208,13 @@ void Box_DataBases::on_AddDel_Delete(guint rowStart, guint /* rowEnd TODO */)
 void Box_DataBases::load_from_document()
 {
   if(m_pDocument)
-  { 
+  {
     //Load server and user:
     m_Entry_Host->set_text(m_pDocument->get_connection_server());
     m_Entry_User->set_text(m_pDocument->get_connection_user());
   }
+
+  g_warning("Box_DataBases::load_from_document end");
 }
 
 void Box_DataBases::set_use_list(bool bVal /* = true */)
@@ -265,7 +266,7 @@ Box_DataBases::type_vecStrings Box_DataBases::get_database_names()
   return result;
 }
 
-void Box_DataBases::on_AddDel_Changed(guint /* row */, guint /* number */)
+void Box_DataBases::on_AddDel_Changed(const Gtk::TreeModel::iterator& /* row */, guint /* number */)
 {
   //TODO: Get the old value and change the database name to the new value.
 }

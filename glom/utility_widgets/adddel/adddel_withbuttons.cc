@@ -50,14 +50,16 @@ void AddDel_WithButtons::on_button_add()
 {
   if(m_auto_add)
   {
-    add_item();
-
-    guint iCount = m_refListStore->children().size();
-    if(iCount)
-      select_item(iCount-1, true /* start_editing */);
+    Gtk::TreeModel::iterator iter = add_item();
+    if(iter)
+    {
+      select_item(iter, 0, true /* start_editing */);
+    }
   }
   else
+  {
     signal_user_requested_add().emit(); //Let the client code add the row explicitly, if it wants.
+  }
 }
 
 void AddDel_WithButtons::on_button_del()

@@ -156,7 +156,7 @@ void Box_Data_Details::fill_from_database()
 
             //Remove existing child widgets:
             m_FlowTable.remove_all();
-            
+
             const int row_number = 0; //The only row.
             const int cols_count = result->get_n_columns();
             for(int i = 0; i < cols_count; i ++)

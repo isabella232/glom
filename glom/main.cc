@@ -34,7 +34,7 @@ main(int argc, char* argv[])
   textdomain(GETTEXT_PACKAGE);
 
   Gnome::Gda::init("glom", VERSION, argc, argv);
-  
+
   try
   {
     Gtk::Main mainInstance(argc, argv);

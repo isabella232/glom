@@ -257,7 +257,7 @@ void App_Glom::on_document_load()
 
       //Switch to operator mode when opening new documents:
       pDocument->set_userlevel(AppState::USERLEVEL_OPERATOR);
-            
+
       m_pFrame->do_menu_Navigate_Database(false); //false = don't show list, just open the current database after connecting.
     }
   }
