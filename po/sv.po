@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glom\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-03-30 15:44+0200\n"
-"PO-Revision-Date: 2005-03-30 15:44+0200\n"
+"POT-Creation-Date: 2005-03-30 17:11+0200\n"
+"PO-Revision-Date: 2005-03-30 17:11+0200\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -29,39 +29,36 @@ msgid "<b>Fields</b>"
 msgstr "<b>Fält</b>"
 
 #: glom/glom.glade.h:4
-msgid "<b>Group: </b>"
-msgstr "<b>Grupp: </b>"
+msgid "<b>Group:</b>"
+msgstr "<b>Grupp:</b>"
 
 #: glom/glom.glade.h:5
 msgid "<b>Groups</b>"
 msgstr "<b>Grupper</b>"
 
 #: glom/glom.glade.h:6
-msgid "<b>Mode: </b>"
-msgstr "<b>Läge: </b>"
+msgid "<b>Mode:</b>"
+msgstr "<b>Läge:</b>"
 
 #: glom/glom.glade.h:7
 msgid "<b>Numeric Formatting</b>"
 msgstr "<b>Numerisk formatering</b>"
 
 #: glom/glom.glade.h:8
-#, fuzzy
-msgid "<b>Relationship: </b>"
-msgstr "<b>Fält</b>"
+msgid "<b>Relationship:</b>"
+msgstr "<b>Relation:</b>"
 
 #: glom/glom.glade.h:9
-#, fuzzy
 msgid "<b>Select Field</b>"
-msgstr "<b>Fält</b>"
+msgstr "<b>Urvalsfält</b>"
 
 #: glom/glom.glade.h:10
-#, fuzzy
 msgid "<b>Select Relationship</b>"
-msgstr "<b>Fält</b>"
+msgstr "<b>Urvalsrelation</b>"
 
 #: glom/glom.glade.h:11
-msgid "<b>Table: </b>"
-msgstr "<b>Tabell: </b>"
+msgid "<b>Table:</b>"
+msgstr "<b>Tabell:</b>"
 
 #: glom/glom.glade.h:12
 msgid "<b>Tables in database</b>"
@@ -76,8 +73,8 @@ msgid "<b>Title:</b>"
 msgstr "<b>Titel:</b>"
 
 #: glom/glom.glade.h:15
-msgid "<b>User Level: </b>"
-msgstr "<b>Användarnivå: </b>"
+msgid "<b>User Level:</b>"
+msgstr "<b>Användarnivå:</b>"
 
 #: glom/glom.glade.h:16
 msgid "<b>User</b>"
@@ -381,20 +378,43 @@ msgid "User"
 msgstr "Användare"
 
 #: glom/glom.glade.h:103
-msgid "User "
-msgstr "Användare "
-
-#: glom/glom.glade.h:104
 msgid "Users"
 msgstr "Användare"
 
-#: glom/glom.glade.h:105
+#: glom/glom.glade.h:104
 msgid "example data format"
 msgstr "exempeldataformat"
 
-#: glom/glom.glade.h:106
+#: glom/glom.glade.h:105
 msgid "table name"
 msgstr "tabellnamn"
+
+#~ msgid "<b>Mode</b>"
+#~ msgstr "<b>Läge</b>"
+
+#~ msgid "Mode"
+#~ msgstr "Läge"
+
+#~ msgid "Relationship:"
+#~ msgstr "Relation:"
+
+#~ msgid "<b>Relationship</b>"
+#~ msgstr "<b>Relation</b>"
+
+#~ msgid "User Level:"
+#~ msgstr "Användarnivå:"
+
+#~ msgid "<b>User Level</b>"
+#~ msgstr "<b>Användarnivå</b>"
+
+#~ msgid "<b>Table: </b>"
+#~ msgstr "<b>Tabell: </b>"
+
+#~ msgid "<b>Group: </b>"
+#~ msgstr "<b>Grupp: </b>"
+
+#~ msgid "User "
+#~ msgstr "Användare "
 
 #~ msgid "Field definitions"
 #~ msgstr "Fältdefinitioner"
@@ -416,9 +436,6 @@ msgstr "tabellnamn"
 
 #~ msgid "Groups: "
 #~ msgstr "Grupper: "
-
-#~ msgid "<b>Group:</b>"
-#~ msgstr "<b>Grupp:</b>"
 
 #~ msgid "Groups:"
 #~ msgstr "Grupper:"
