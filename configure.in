@@ -1,0 +1,57 @@
+# Initialization macros:
+AC_INIT(glom/main.cc)
+
+AM_CONFIG_HEADER(config.h)
+
+# Package name and version number:
+AM_INIT_AUTOMAKE(glom, 0.8.0)
+
+AM_MAINTAINER_MODE
+
+# Checks for programs:
+AC_PROG_CC
+AC_PROG_CXX
+AM_PROG_LIBTOOL
+AM_SANITY_CHECK
+
+#Internationalisation:
+GETTEXT_PACKAGE=glom
+AC_SUBST(GETTEXT_PACKAGE)
+ALL_LINGUAS="de"
+AM_GLIB_GNU_GETTEXT
+AC_PROG_INTLTOOL
+
+AC_LANG_CPLUSPLUS
+
+# Checks for libraries:
+PKG_CHECK_MODULES(GLOM, bakery-2.4 >= 2.3.5 libgdamm-2.0 >= 1.3.3 )
+AC_SUBST(GLOM_CFLAGS)
+AC_SUBST(GLOM_LIBS)
+
+
+# Install path for DTD (e.g. /usr/local/share/glom):
+
+#I would like to use this line, but it doesn't fully evaluate.
+#It appears in config.h as "${prefix}/share/glom"
+#So I hard-code "share" instead.
+#GLOM_DTD_INSTALL_DIR="\"${datadir}/${PACKAGE}\""
+
+GLOM_DTD_INSTALL_DIR="\"${prefix}/share/${PACKAGE}\""
+AC_DEFINE_UNQUOTED(GLOM_DTD_INSTALL_DIR, $GLOM_DTD_INSTALL_DIR, "definition of GLOM_DTD_INSTALL_DIR")
+
+# Generate Makefiles, configuration files and scripts:
+AC_OUTPUT(Makefile \
+  docs/Makefile \
+  glom/Makefile \
+    glom/Data_Structure/Makefile \
+    glom/Document/Makefile \
+    glom/Mode_Data/Makefile \
+    glom/Mode_Design/Makefile \
+      glom/Mode_Design/Fields/Makefile \
+    glom/Mode_Find/Makefile \
+    glom/Navigation/Makefile \
+    glom/Utility_Widgets/Makefile \
+      glom/Utility_Widgets/AddDel/Makefile \
+        glom/Utility_Widgets/AddDel/eggcolumnchooser/Makefile \
+    po/Makefile.in
+)

@@ -1,0 +1,46 @@
+Developer Documentation:
+
+*** The Document:
+- Stores:
+  - Database connection information - server name, database name, user name.
+  - Stores relationships between tables.
+  - Lookup definitions - e.g. copy the current price of this product into this field.
+  - Form layouts.
+  - Remembered Finds
+  - Which tables are secondary (hidden) - e.g. invoice lines.
+- Reuse:
+  - Is in XML format, with a DTD, so it could be used to build other interfaces.
+    e.g. an HTML/JSP web interface. See *** Web UI.
+  
+*** Basic application framework:
+- App_Glom inherits from Bakery::App_WithDoc, overriding appropriately.
+- Document_Glom inherits from Document_XML,
+  which inherits from Bakery::Document, overriding appropriately.
+- See comments in Bakery::App header.
+
+
+*** Database terminology:
+- I use Table, Record, Field
+
+
+*** Constraints:
+
+- Data Details:
+  - Related records:
+    - If the to field is a primary key, then there can be only one related record, because only one value can be in the from field.
+      (If that field has a value then Add should be disabled).
+
+  
+Crazy notions that just might work:
+
+*** Web UI:
+- The XML document stores enough information to generate a full-featured web interface.
+- e.g. JSP pages that put these things on the page by using Java classes/methods.:
+  - List, optionally filtered by a Find.
+  - Details, arranged using same layout logic as app.
+  - Find forms, like Details.
+- The Java-generated HTML could use style names to allow customisation without change to the Java code.
+- By changing the top-level JSP pages and by defining styles a great deal of customisation would be possible, without making the system unmaintainable.
+
+
+  

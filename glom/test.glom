@@ -1,0 +1,2 @@
+<?xml version="1.0"?>
+<glom_document><connection server="localhost" user="murrayc" database="murrayc"/><table name="tbltest1"><relationships/></table></glom_document>

@@ -1,0 +1,371 @@
+0.8.0:
+
+2004-06-06  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/application.cc: init_menus(): Give Mode/Find a control-F 
+	shortcut. Find does not work yet.
+	* glom/Mode_Design/Box_Table_FieldDefinitions: Show the field titles 
+	in the list of fields.
+	* Changed all std::strings to Glib::ustrings. Thanks regexxer.
+	* glom/Document/Document_Glom.cc set_data_layout_groups(): Really save 
+	the groups.
+
+2004-06-06  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/Data_Structure/Field.cc: sql(): Put quotes around dates and 
+	time, so that entering them works in Date mode.
+
+2004-06-06  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/Document/Document_Glom.cc: set_tables(): Removed old code that 
+	caused tables to always be marked as hidden.
+	* glom/Mode_Data/Box_Data_Details.cc: Change Related Records frame to
+	HIG-style.
+
+2004-06-05  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/Mode_Data/Box_Data.cc: get_fields_to_show(): Remove any fields 
+	that are no longer in the database. This method is horribly 
+	inefficient.
+	* glom/Mode_Data/Box_Data_Details.cc: fill_related(): Do not try to 
+	show records from a relationship that uses a field that does not exist 
+	any longer in the other table.
+	* Detail and List use Filed::value_to_string(), which deals with NULLs
+	instead of filling them with the text NULL.
+
+2004-06-05  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/Frame_Glom.cc: on_userlevel_changed(): Really switch to data 
+	mode if the current mode is not allowed for the new userlevel.
+
+2004-06-04  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/Utility_Widgets/: Added EntryGlom, which is an Entry with an
+	edited signal that is only emitted when the user finishes editing.
+	* glom/Utility_Widgets/flowtable_withfields.[h|cc]: Use EntryGlom 
+	instead of Gtk::Entry.
+	* glom/application.cc: init_menus(): Put the standard bakery save and
+	saveas actions in the list of developer-mode actions, so that they
+	will be disabled when in operator mode. Actually, I need to remove
+	save anyway, because it should save automatically.
+	* Added standard GPL copyright headers to all files.
+
+2004-06-04  Murray Cumming  <murrayc@murrayc.com>
+
+	* Data Details changing of data now works, though it is doing an 
+	insane amount of UPDATE commands.
+
+2004-06-04  Murray Cumming  <murrayc@murrayc.com>
+
+	* Data Layouts now show newly-added fields.
+
+2004-06-03  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/Mode_Data/Box_Data_Details.cc: Reordering the fields in the 
+	Data Layout really works now.
+
+2004-06-03  Murray Cumming  <murrayc@murrayc.com>
+
+	* Show the table title in the Data Layout dialog, and on the main
+	window.
+
+2004-06-03  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/Utility_Widgets/flow_table.cc: on_allocate(): Fixed awful 
+	calculation bug, so the Data Details view now shows itself properly.
+
+2004-06-03  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/Document/Document_Glom.h: Changed get/set_hidden_tables() to 
+	get/set_tables(), using the new TableInfo class, so that we can 
+	save table titles.
+
+2004-06-03  Murray Cumming  <murrayc@murrayc.com>
+
+	* application.cc: init(): If it is a default empty document, offer 
+	a choice of opening an existing document, or starting a new document, 
+	to make it clearer that you need a document to work with the database.
+
+2004-06-03  Murray Cumming  <murrayc@murrayc.com>
+
+	* Navigation: The user can not open a table that the document does not
+	know about. We really need up-to-date information in the document, so 
+	in future we must automatically-save it.
+	* List entry: Works again. Instead of using the postgres 
+	serial/auto-increment field type, I have added a hack that does a 
+	max() to get the next value. Maybe we can fix libgda to make it 
+	work with serial.
+
+2004-06-02  Murray Cumming  <murrayc@murrayc.com>
+
+	* Box_DB_Data::get_fields_for_table() now gets some information from 
+	the document - the information that libgda does not tell us.
+
+2004-06-01  Murray Cumming  <murrayc@murrayc.com>
+
+	* All field information is now saved in the document when a table is 
+	opened, and auto_increment information from the database is ignored,
+	because libgda does not give us that information.
+
+2004-05-31  Murray Cumming  <murrayc@.com>
+
+	* glom/Mode_Data/Box_Data_List::Fill(): Fixed some awful bugs - the
+	list view now shows all the fields and stores changes properly.
+
+2004-05-30  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/Document/Document_Glom.[h|cc]: get/set_data_layout*(): Removed 
+	the hidden_fields argument - now the LayoutItems have a m_hidden 
+	member instead.
+
+2004-05-30  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/Mode_Design/Box_DB_Table_Definition.cc:postgres_change_column():
+	Use to_date(), to_number(), and to_timestamp(), when CAST does not 
+	work. So now all field type conversions work.
+
+2004-05-30  Murray Cumming  <murrayc@murrayc.com>
+
+	* Layout groups can not have duplicate names.
+
+2004-05-29  Murray Cumming  <murrayc@murrayc.com>
+
+	* Layout groups are now saved too.
+
+2004-05-28  Murray Cumming  <murrayc@murrayc.com>
+
+	* Layouts are now saved.
+
+2004-05-28  Murray Cumming  <murrayc@murrayc.com>
+
+	* The beginnings of the Data Layout dialog.
+
+2004-05-28  Murray Cumming  <murrayc@murrayc.com>
+
+	* Added Notebook_Glom::merge_special_menus() so that modes can have 
+	their own extra menus.
+	* Added Box_Data::show_layout_dialog().
+
+2004-05-16  Murray Cumming  <murrayc@murrayc.com>
+
+	* FlowTable: Fixed several position problems.
+
+2004-05-14  Murray Cumming  <murrayc@murrayc.com>
+
+	* Combo_FieldType: made get give what you set.
+
+2004-05-13  Murray Cumming  <murrayc@murrayc.com>
+
+	* The Field Definition dialog is now done via libglademm.
+
+2004-05-13  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/Mode_Design/Fields/Combo_Type: Now derives from ComboBox instead
+	of Combo.
+
+2004-05-13  Murray Cumming  <murrayc@murrayc.com>
+
+	* Added Data_Structure/FieldType, which defines some simple Glom-only
+	types, and what underlying types to use for these. From now on, Glom
+	can not be used on databases that do not use these simple types. It
+	will refuse to edit fields that use other types.
+
+2004-05-10  Murray Cumming  <murrayc@murrayc.com>
+
+	* Box_Data_List: Gets specific fields (specified by document) instead 
+	of all fields.
+
+2004-05-08  Murray Cumming  <murrayc@murrayc.com>
+
+	* FlowTable now has 2 widgets in each row of each column. Kind of 
+	works.
+
+2004-05-06  Murray Cumming  <murrayc@murrayc.com>
+
+	* AppState: Added userlevel_changed signal.
+
+2004-05-05  Murray Cumming  <murrayc@murrayc.com>
+
+	* Changing the field type works sometimes.
+
+2004-05-03  Murray Cumming  <murrayc@murrayc.com>
+
+	* Added FlowTableWithFields, and used it a bit.
+
+2004-05-02  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/Utility_Widgets:/ Addded FlowTable container.
+
+2004-05-01  Murray Cumming  <murrayc@murrayc.com>
+
+	* App_Glom and Frame_Glom are now instantiated from glom.glade, 
+	with get_widget_derived().
+
+2004-04-30  Murray Cumming  <murrayc@murrayc.com>
+
+	* Information about which tables are hidden is now saved in the 
+	document.
+
+2004-04-30  Murray Cumming  <murrayc@murrayc.com>
+
+	* Replaced Connection with ConnectionPool which does more appropriate
+	sharing of the connection.
+
+2004-04-29  Murray Cumming  <murrayc@murrayc.com>
+
+	* AddDel: Used an AddDelColumnInfo field to simplify it a bit.
+
+2004-04-28  Murray Cumming  <murrayc@murrayc.com>
+
+	* Box_Databases now loads its UI from a libglade file.
+
+2004-04-28  Murray Cumming  <murrayc@murrayc.com>
+
+	* Added FieldTypes class and used it to get the actual GdaValueTypes
+	and therefore show the correct field type in the Table Definition.
+	* Added User Level menu.
+
+2004-04-27  Murray Cumming  <murrayc@murrayc.com>
+
+	* AddDel: Used derived TreeViewColumn so we can store extra column
+	information, so we can deal with reordered view columns.
+
+2004-04-24  Murray Cumming  <murrayc@murrayc.com>
+
+	* Creating tables works, though defining them does not. Creating 
+	databases does not work.
+
+2004-04-23  Murray Cumming  <murrayc@murrayc.com>
+
+	* Initial port from mysqlcppapi to libgdamm. It doesn't do much but 
+	you can navigate to a table with postgressql.
+
+2004-04-19  Murray Cumming  <murrayc@murrayc.com>
+
+	* Updated for gtkmm 2.4 API.
+
+0.7.0:
+
+2003-02-15  Murray Cumming  <murrayc@usa.net>
+
+	* glom/Dialog_Glom.[h|cc]: Inherit from Gtk::Dialog instead of 
+	Gtk::Window and use the action_area.
+
+2003-02-15  Murray Cumming  <murrayc@usa.net>
+
+	* Users can now see full Details of Related Records by choosing Edit.
+
+2003-02-15  Murray Cumming  <murrayc@usa.net>
+
+	* glom/Utility_Widgets/AddDel/AddDel.cc: Respected m_bHasRowTitles in
+	get_value() and set_value(). This means that the Related Records pane
+	in Data/Details now works again.
+
+2003-02-15  Murray Cumming  <murrayc@usa.net>
+
+	* Updated for latest mysqlcppapi API - using shared, reference-counted
+	objects.
+
+0.6.0:
+	
+2003-01-20  Murray Cumming <murrayc@usa.net>
+
+	* Did some funky TreeView on_button_press_event() stuff to fix the
+	context-menu and Design/Relationships popups. 
+
+2003-01-20  Murray Cumming  <murrayc@usa.net>
+
+	* Now uses true bool model column types. This was achieved with some
+	unpleasantly lengthy new/delete and switch/case stuff.
+
+2003-01-14  Murray Cumming <murrayc@usa.net>
+
+	* Data_Details works.
+	* Adding new records works.
+	* Used more stock buttons.
+
+2003-01-13  Murray Cumming  <murrayc@usa.net>
+
+	* Opening of database when opening old documents works again - the 
+	Bakery API had changed so on_Document_load() needed to be changed to
+	on_document_load() so that it was an override.
+	* Data_Details kind of works.
+
+2003-01-13  Murray Cumming  <murrayc@usa.net>
+
+	* popup columns now work.
+
+2003-01-13  Murray Cumming  <murrayc@usa.net>
+
+	* Column titles are now set properly.
+	* Field definition editing works via the Edit dialog.
+	* Added CellRendererList, from the gtkmm examples - doesn't quite
+	work yet.
+
+2003-01-12  Murray Cumming  <murrayc@usa.net>
+
+	* Updated for Bakery 1.3.7, with no gnomemm dependency.
+
+2002-12-26  Murray Cumming  <murrayc@usa.net>
+
+	* configure.in, Makefile.am: Used intltool, like the gnomemm_hello
+	build files. The intl, macros, and scripts directories are no longer
+	used.
+	* Updated for latest libxml++ API.
+	* Added std:: prefixes where necessary.
+
+2002-11-19  Murray Cumming  <murrayc@usa.net>
+
+	* Used Bakery::Document_XML now that it is part of Bakery itself, and
+	use libxml++ API instead of Xerces-C++ because that is what it uses.
+	This means that there are no more --with- options needed by the
+	configure script.
+
+2002-09-20  Murray Cumming  <murrayc@usa.net>
+
+	* Disabled part of Notebook_Find to prevent warnings and segfault
+	on exit. It didn't do anything yet anyway.
+
+2002-09-19  Murray Cummign  <murrayc@usa.net>
+
+	* Dialog_FieldDefinition: Show()ed the child notebook, so field
+	definition editing works again.
+
+2002-09-18  Murray Cumming  <murrayc@usa.net>
+
+	* Notebook_Glom: The signal handlers were hiding the base class
+	implementations.
+	* Frame_Glom::show_ok_dialog(): Now use Gtk::MessageDialog.
+
+2002-09-13  Murray Cumming  <murrayc@usa.net>
+
+	* AddDel widget: Adding of items now works, so Glom can create new
+	databases and tables again.
+
+2002-08-07  Murray Cummign  <murrayc@usa.net>
+
+	* Updated for latest Menu::popup() API.
+
+2002-07-27  Murray Cumming  <murrayc@localhost.localdomain>
+
+	* Updated for latest pack_start enum and use new TreeView editable
+	cells method.
+
+2002-07-12  Murray Cumming  <murrayc@usa.net>
+
+	* Updated for changed gtkmm2 pack_start() and TreeView APIs.
+
+2002-03-19  Murray Cumming  <murrayc@usa.net
+
+	* Used pkg-config checks instead of the various old .m4 macros,
+	and changed Xerces C++ version to 1.7.
+	* Replaced gtk-- 1.2 includes with gtkmm2 includes.
+	* Prefixed Xerces C++ includes with xercesc, as required by 1.7.
+	* Changed e.g. clicked.connect(SigC::slot(this to
+	signal_clicked.connect(SigC::slot(*this.
+	* Replaced use of Gnome::Dialog with Gtk::MessageDialog.
+	* Replaced use of Gnome::PropertyBox with a similar, but custom Window
+	class.
+	* Changed Gtk::wrap() to Glib::wrap(), and gtkobj() to gobj().
+   * Changed Gtk::Widget::set_usize() to set_default_size().
+

@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Glom
+Name[de]=Glom
+Comment=A Database GUI environment.
+Comment[de]=Eine GUI fuer Datenbanken.
+Exec=glom
+Terminal=0
+Type=Application

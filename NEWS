@@ -1,0 +1,30 @@
+0.8.0:
+
+* Now uses Postgres instead of MySQL, due to the MySQL license changes.
+* Now uses libgda instead of mysqlcppapi.
+* Now use libglademm to allow more improvement of the UI.
+* Glom can no longer be used with database tables that it did not create.
+* Now uses only a small set of simple field types.
+* Added "User Level" - normal operators do not see design functionality.
+  User Levels are bad, but this seems to be the only way to present the 
+  design functionality next to the stuff being designed.
+* Allows simple layout of List and Details views. (grouping in the Details view is not yet fully implemented)
+* Saves all field information in the document.
+* Tables can be hidden from normal users.
+
+
+0.7.0:
+
+* Updated for latest mysqlcppapi 2 API.
+* Various document-saving fixes.
+  (by requiring the latest Bakery)
+* Data Mode:
+    Details:
+      Related Records:
+      - Now shows the correct related records.
+      - You can now choose [Edit] to navigate to that record in the related table.
+* Design Mode:
+    Fields:
+    - Human-readable field titles are now saved properly.
+      (by requiring the latest libxml++)
+    - The Field Details dialog closes when you click [Save].

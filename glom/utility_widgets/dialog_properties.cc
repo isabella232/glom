@@ -1,0 +1,131 @@
+/* Glom
+ *
+ * Copyright (C) 2001-2004 Murray Cumming
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public
+ * License along with this program; if not, write to the
+ * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+ * Boston, MA 02111-1307, USA.
+ */
+
+#include "dialog_properties.h"
+
+Dialog_Properties::Dialog_Properties(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
+: Gtk::Window(cobject),
+  m_block(false),
+  m_modified(false)
+{
+  refGlade->get_widget("button_cancel", m_pButton_Cancel);
+  refGlade->get_widget("button_save", m_pButton_Save);
+    
+  //Connect signal handlers:
+  m_pButton_Cancel->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Properties::on_button_cancel) );
+  m_pButton_Save->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Properties::on_button_save) );
+  
+  show_all_children();
+}
+
+Dialog_Properties::~Dialog_Properties()
+{
+}
+
+Dialog_Properties::type_signal_apply Dialog_Properties::signal_apply()
+{
+  return m_signal_apply;
+}
+
+void Dialog_Properties::on_button_save()
+{
+  signal_apply().emit();
+}
+
+void Dialog_Properties::on_button_cancel()
+{
+  hide();
+}
+
+void Dialog_Properties::add(Gtk::Widget& widget)
+{
+  //Connect the widgets signals:
+  //on_foreach_connect(widget);
+}
+
+void Dialog_Properties::widget_connect_changed_signal(Gtk::Widget& widget)
+{
+  Gtk::ComboBox* pCombo = dynamic_cast<Gtk::ComboBox*>(&widget);
+  if(pCombo) //If it is actually a Combo:
+  {
+    pCombo->signal_changed().connect(sigc::mem_fun(*this, &Dialog_Properties::on_anything_changed));
+  }
+  else
+  {
+    Gtk::Entry* pEntry = dynamic_cast<Gtk::Entry*>(&widget);
+    if(pEntry) //If it is actually an Entry:
+    {
+      pEntry->signal_changed().connect(sigc::mem_fun(*this, &Dialog_Properties::on_anything_changed));
+    }
+    else
+    {
+      Gtk::ToggleButton* pToggleButton = dynamic_cast<Gtk::ToggleButton*>(&widget);
+      if(pToggleButton)
+      {
+        pToggleButton->signal_toggled().connect( sigc::mem_fun(*this, &Dialog_Properties::on_anything_changed) );
+      }
+    }
+  }
+}
+
+void Dialog_Properties::on_anything_changed()
+{
+  if(!m_block)
+  {
+    //Something (e.g. an edit or a combo) changed.
+    //So we need to activate the [Save] button:
+
+    enforce_constraints();
+    set_modified();
+  }
+}
+
+void Dialog_Properties::on_foreach_connect(Gtk::Widget& widget)
+{
+  widget_connect_changed_signal(widget); //Connect the appropriate signal
+
+  //Recurse through children:
+  Gtk::Container* pContainer = dynamic_cast<Gtk::Container*>(&widget);
+  if(pContainer)
+  {
+    pContainer->foreach( sigc::mem_fun(*this, &Dialog_Properties::on_foreach_connect)); //recursive
+  }
+}
+
+void Dialog_Properties::set_blocked(bool val)
+{
+  m_block = val;
+}
+
+void Dialog_Properties::set_modified(bool modified)
+{
+  m_modified = true;
+
+  m_pButton_Save->set_sensitive(modified);
+  m_pButton_Cancel->set_sensitive(true);
+}
+
+void Dialog_Properties::enforce_constraints()
+{
+
+}
+
+
+

@@ -1,0 +1,68 @@
+/* Glom
+ *
+ * Copyright (C) 2001-2004 Murray Cumming
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public
+ * License along with this program; if not, write to the
+ * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+ * Boston, MA 02111-1307, USA.
+ */
+
+#ifndef DIALOG_FIELDDEFINITION_H
+#define DIALOG_FIELDDEFINITION_H
+
+#include <gtkmm.h>
+#include "combo_fieldtype.h"
+#include "../../utility_widgets/table_columns.h"
+#include "../../utility_widgets/entry_numerical.h"
+#include "../../utility_widgets/dialog_properties.h"
+#include "../../data_structure/field.h"
+
+/**
+  *@author Murray Cumming
+  */
+
+
+class Dialog_FieldDefinition : public Dialog_Properties
+{
+public: 
+  Dialog_FieldDefinition(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  virtual ~Dialog_FieldDefinition();
+
+  virtual void set_field(const Field& field);
+  virtual Field get_field() const;
+
+protected:
+
+  //Signal handlers:
+  void on_combo_type_changed();
+  //void on_foreach(Gtk::Widget& widget);
+
+  //Disable/enable other controls when a control is selected.
+  virtual void enforce_constraints(); //override.
+
+  Gtk::Entry* m_pEntry_Name;
+  Combo_FieldType* m_pCombo_Type;
+  Gtk::CheckButton* m_pCheck_Unique;
+  Gtk::CheckButton* m_pCheck_NotNull;
+  Gtk::Entry* m_pEntry_Default;
+  Gtk::Label* m_pLabel_Default;
+  Gtk::CheckButton* m_pCheck_PrimaryKey;
+  Gtk::CheckButton* m_pCheck_AutoIncrement;
+
+  Gtk::Entry* m_pEntry_Title;
+
+  Field m_Field;
+};
+
+#endif //DIALOG_FIELDDEFINITION_H

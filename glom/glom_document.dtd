@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+DTD for glom documents.
+-->
+
+<!ELEMENT glom_document (connection?, table*) >
+
+<!ELEMENT connection EMPTY >
+<!ATTLIST connection
+  server CDATA "localhost"
+  user CDATA #REQUIRED
+  database CDATA #REQUIRED
+>
+
+<!ELEMENT table (fields | relationships | data_layouts)* >
+<!ATTLIST table
+  name CDATA #REQUIRED
+  title CDATA #OPTIONAL
+  hide CDATA #OPTIONAL
+>
+
+<!ELEMENT relationships (relationship*) >
+
+<!ELEMENT relationship EMPTY >
+<!ATTLIST relationship
+  name CDATA #REQUIRED
+  key CDATA #REQUIRED
+  other_table CDATA #REQUIRED
+  other_key CDATA #REQUIRED
+>
+
+<!ELEMENT fields (field | field_view)* >
+
+<!ELEMENT field (field_lookup?) >
+<!ATTLIST field
+  name CDATA #REQUIRED
+  title CDATA #IMPLIED
+>
+
+<!ELEMENT field_lookup EMPTY >
+<!ATTLIST field_lookup
+  relationship CDATA #REQUIRED
+  field CDATA #REQUIRED
+>
+
+<!ELEMENT field_view EMPTY >
+<!ATTLIST field_view
+  name CDATA #REQUIRED
+  relationship CDATA #REQUIRED
+  field CDATA #REQUIRED
+>
+
+<!ELEMENT data_layouts (data_layout_details | data_layout_list)* >
+
+<!ELEMENT data_layout_details (data_layout_item | data_layout_groups)*>
+
+<!ELEMENT data_layout_list (data_layout_item)*>
+
+<!ELEMENT data_layout_item EMPTY >
+<!ATTLIST data_layout_item
+  name CDATA #REQUIRED
+  group CDATA #OPTIONAL
+  sequence CDATA #REQUIRED
+  hide CDATA #OPTIONAL
+>
+
+<!ELEMENT data_layout_groups (data_layout_group)*>
+
+<!ELEMENT data_layout_group EMPTY >
+<!ATTLIST data_layout_group
+  name CDATA #REQUIRED
+  sequence CDATA #REQUIRED
+>

@@ -1,0 +1,76 @@
+/* Glom
+ *
+ * Copyright (C) 2001-2004 Murray Cumming
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public
+ * License along with this program; if not, write to the
+ * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+ * Boston, MA 02111-1307, USA.
+ */
+
+#ifndef GLOM_DIALOG_PROPERTIES_H
+#define GLOM_DIALOG_PROPERTIES_H
+
+#include <gtkmm.h>
+#include "placeholder.h"
+
+/**
+  *@author Murray Cumming
+  */
+
+
+class Dialog_Properties : public Gtk::Window
+{
+public:
+  Dialog_Properties(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  virtual ~Dialog_Properties();
+
+  //Add a widget (probably a container) to the top half of the dialog:
+  virtual void add(Gtk::Widget& widget);
+
+  virtual void set_modified(bool modified = true);
+
+  //int page_number
+  typedef sigc::signal<void> type_signal_apply;
+  type_signal_apply signal_apply();
+
+protected:
+  //Signal handlers:
+  virtual void on_button_save();
+  virtual void on_button_cancel();
+
+  virtual void on_anything_changed();
+
+  /// Disable/enable other controls when a control is selected.
+  virtual void enforce_constraints();
+  
+  virtual void on_foreach_connect(Gtk::Widget& widget);
+  virtual void widget_connect_changed_signal(Gtk::Widget& widget);
+  virtual void set_blocked(bool val = true);
+
+  type_signal_apply m_signal_apply;
+
+  //Child widgets:
+
+  //PlaceHolder m_Frame; //For the top-half. See add().
+  Gtk::Button* m_pButton_Save;
+  Gtk::Button* m_pButton_Cancel;
+
+  bool m_block;
+
+  bool m_modified;
+
+  //typedef std::list<sigc::connection> type_listConnections; //Store the connections so that we can remove them later.	
+};
+
+#endif //GLOM_DIALOG_PROPERTIES_H

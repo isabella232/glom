@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
+  <mime-type type="application/x-glom">
+    <comment xml:lang="en">Glom</comment>
+
+    <glob pattern="*.glom"/>
+
+    <magic priority="80">
+      <match type="string" value="&lt;glom_document" offset="0:100"/>
+    </magic>
+
+  </mime-type>
+</mime-info>
