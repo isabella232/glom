@@ -23,6 +23,7 @@
 
 #include "layoutitem.h"
 #include "../field.h"
+#include "../numeric_format.h"
 
 class LayoutItem_Field : public LayoutItem
 {
@@ -45,6 +46,8 @@ public:
   //This is filled in by looking at the database structure:
   Field m_field;
   //TODO: This might occasionally be different on different layouts: Glib::ustring m_title;
+
+  NumericFormat m_numeric_format; //Only used for numeric fields.
 
   bool get_editable_and_allowed() const;
 

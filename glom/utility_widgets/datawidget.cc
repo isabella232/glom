@@ -56,6 +56,7 @@ DataWidget::DataWidget(const LayoutItem_Field& field, const Glib::ustring& table
     m_label.show();
 
     EntryGlom* entry = Gtk::manage(new EntryGlom(glom_type));
+    entry->set_layout_item(get_layout_item()->clone(), table_name); //TODO_Performance: We only need this for the numerical format.
     int width = get_suitable_width(glom_type);
     entry->set_size_request(width, -1 /* auto */);
     entry->show_all();
@@ -405,3 +406,4 @@ void DataWidget::on_child_layout_item_added(TreeStore_Layout::enumType item_type
 {
   signal_layout_item_added().emit(item_type);
 }
+

@@ -22,12 +22,13 @@
 #define GLOM_DATASTRUCTURE_GLOMCONVERSIONS_H
 
 #include "../data_structure/field.h"
+#include "../data_structure/numeric_format.h"
 
 namespace GlomConversions
 {
   ///Get text for display to the user.
-  Glib::ustring get_text_for_gda_value(Field::glom_field_type glom_type, const Gnome::Gda::Value& value);
-  Glib::ustring get_text_for_gda_value(Field::glom_field_type glom_type, const Gnome::Gda::Value& value, const std::locale& locale, bool iso_format = false);
+  Glib::ustring get_text_for_gda_value(Field::glom_field_type glom_type, const Gnome::Gda::Value& value, const NumericFormat& numeric_format = NumericFormat());
+  Glib::ustring get_text_for_gda_value(Field::glom_field_type glom_type, const Gnome::Gda::Value& value, const std::locale& locale, const NumericFormat& numeric_format = NumericFormat(), bool iso_format = false);
 
   Glib::ustring format_time(const tm& tm_data);
   Glib::ustring format_time(const tm& tm_data, const std::locale& locale, bool iso_format = false);

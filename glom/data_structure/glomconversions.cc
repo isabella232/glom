@@ -24,6 +24,7 @@
 #include <locale>     // for locale, time_put
 #include <ctime>     // for struct tm
 #include <iostream>   // for cout, endl
+#include <iomanip>
 
 
 Glib::ustring GlomConversions::format_time(const tm& tm_data)
@@ -116,12 +117,36 @@ Glib::ustring GlomConversions::format_tm(const tm& tm_data, const std::locale& l
   */
 }
 
-Glib::ustring GlomConversions::get_text_for_gda_value(Field::glom_field_type glom_type, const Gnome::Gda::Value& value)
+namespace //anonymous
 {
-  return get_text_for_gda_value(glom_type, value, std::locale("") /* the user's current locale */ ); //Get the current locale.
+
+class numpunct_thousands_separator: public std::numpunct<char>
+{
+  //Override
+  std::string do_grouping() const
+  {
+    return "\3";
+  };
+};
+
+class numpunct_no_thousands_separator: public std::numpunct<char>
+{
+  //Override
+  std::string do_grouping() const
+  {
+    return "";
+  };
+};
+
+} //anonymous namespace
+
+Glib::ustring GlomConversions::get_text_for_gda_value(Field::glom_field_type glom_type, const Gnome::Gda::Value& value, const NumericFormat& numeric_format)
+{
+  return get_text_for_gda_value(glom_type, value, std::locale("") /* the user's current locale */, numeric_format); //Get the current locale.
 }
 
-Glib::ustring GlomConversions::get_text_for_gda_value(Field::glom_field_type glom_type, const Gnome::Gda::Value& value, const std::locale& locale, bool iso_format)
+
+Glib::ustring GlomConversions::get_text_for_gda_value(Field::glom_field_type glom_type, const Gnome::Gda::Value& value, const std::locale& locale, const NumericFormat& numeric_format, bool iso_format)
 {
   if(value.get_value_type() == Gnome::Gda::VALUE_TYPE_NULL) //The type can be null for any of the actual field types.
   {
@@ -131,7 +156,7 @@ Glib::ustring GlomConversions::get_text_for_gda_value(Field::glom_field_type glo
   if(glom_type == Field::TYPE_DATE)
   {
     Gnome::Gda::Date gda_date = value.get_date();
-    
+
     tm the_c_time = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     the_c_time.tm_year = gda_date.year - 1900; //C years start are the AD year - 1900. So, 01 is 1901.
     the_c_time.tm_mon = gda_date.month - 1; //C months start at 0.
@@ -171,20 +196,37 @@ Glib::ustring GlomConversions::get_text_for_gda_value(Field::glom_field_type glo
     double number = 0;
     the_stream >> number;
 
-    //Get the locale-specific text representation:
+    //Get the locale-specific text representation, in the required format:
     std::stringstream another_stream;
     another_stream.imbue(locale); //Tell it to parse stuff as per this locale.
+
+    //Numeric formatting:
+    if(!iso_format)
+    {
+
+      if(!numeric_format.m_use_thousands_separator)
+      {
+        std::locale locale_modified(locale, new numpunct_no_thousands_separator()); //The locale takes ownership.
+        another_stream.imbue(locale_modified);
+      }
+
+      if(numeric_format.m_decimal_places_restricted)
+      {
+        another_stream << std::fixed;
+        another_stream << std::setprecision(numeric_format.m_decimal_places); //precision means number of decimal places when using std::fixed.
+      }
+    }
+
     another_stream << number;
-    Glib::ustring text;
-    text = another_stream.str();  //Avoid using << because Glib::ustinrg does implicit character conversion with that.
-     
+    Glib::ustring text = another_stream.str();  //Avoid using << because Glib::ustring does implicit character conversion with that.
+
     if(locale == std::locale("") /* The user's current locale */)
     {
       //Converts from the user's current locale to utf8. I would prefer a generic conversion from any locale,
       // but there is no such function, and it's hard to do because I don't know how to get the encoding name from the std::locale()
       text = Glib::locale_to_utf8(text); 
     }
-    
+
     return text; //Do something like Glib::locale_to_utf(), but with the specified locale instead of the current locale.
   }
   else
@@ -365,15 +407,14 @@ tm GlomConversions::parse_date(const Glib::ustring& text, const std::locale& loc
       success = false;
     }
   }
-  
-    
+
   //Prevent some nonsense values:
   if(the_c_time.tm_mday == 0)
     the_c_time.tm_mday = 1;
-    
+
   if(the_c_time.tm_mon == 0)
       the_c_time.tm_mon = 1;
-      
+
   return the_c_time;
 }
 

@@ -99,23 +99,23 @@ public:
 
   virtual Glib::ustring get_value_selected(guint col);
   virtual Glib::ustring get_value_key_selected();
-  
+
   virtual Gtk::TreeModel::iterator get_item_selected();
 
   virtual bool select_item(const Gtk::TreeModel::iterator& iter, guint column, bool start_editing = false);  //bool indicates success.
   virtual bool select_item(const Gtk::TreeModel::iterator& iter);
-  
+
   //Select row with this key value:
   virtual bool select_item(const Glib::ustring& strItemText, guint column, bool start_editing = false);
-  
+
   virtual guint get_count() const;
 
-  virtual void set_value(const Gtk::TreeModel::iterator& iter, guint col, const Gnome::Gda::Value& value);
+  //virtual void set_value(const Gtk::TreeModel::iterator& iter, guint col, const Gnome::Gda::Value& value);
   virtual void set_value(const Gtk::TreeModel::iterator& iter, guint col, const Glib::ustring& strValue);
   virtual void set_value(const Gtk::TreeModel::iterator& iter, guint col, unsigned long ulValue);
   virtual void set_value(const Gtk::TreeModel::iterator& iter, guint col, bool bVal);
 
-  virtual void set_value_selected(guint col, const Gnome::Gda::Value& value);
+  //virtual void set_value_selected(guint col, const Gnome::Gda::Value& value);
 
   virtual bool get_is_first_row(const Gtk::TreeModel::iterator& iter) const;
   virtual bool get_is_last_row(const Gtk::TreeModel::iterator& iter) const;

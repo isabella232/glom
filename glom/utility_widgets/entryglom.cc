@@ -121,7 +121,9 @@ void EntryGlom::on_insert_text(const Glib::ustring& text, int* position)
 
 void EntryGlom::set_value(const Gnome::Gda::Value& value)
 {
-  set_text(GlomConversions::get_text_for_gda_value(m_glom_type, value));
+  const LayoutItem_Field* layout_item = dynamic_cast<const LayoutItem_Field*>(get_layout_item());
+  if(layout_item)
+    set_text(GlomConversions::get_text_for_gda_value(m_glom_type, value, layout_item->m_numeric_format));
 }
 
 void EntryGlom::set_text(const Glib::ustring& text)

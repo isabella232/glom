@@ -29,6 +29,7 @@ LayoutItem_Field::LayoutItem_Field()
 LayoutItem_Field::LayoutItem_Field(const LayoutItem_Field& src)
 : LayoutItem(src),
   m_field(src.m_field),
+  m_numeric_format(src.m_numeric_format),
   m_priv_view(src.m_priv_view),
   m_priv_edit(src.m_priv_edit),
   //m_table_name(src.m_table_name),
@@ -51,6 +52,7 @@ LayoutItem_Field& LayoutItem_Field::operator=(const LayoutItem_Field& src)
   LayoutItem::operator=(src);
 
   m_field = src.m_field;
+  m_numeric_format = src.m_numeric_format;
   m_priv_view = src.m_priv_view;
   m_priv_edit = src.m_priv_edit;
 

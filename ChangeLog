@@ -1,3 +1,31 @@
+2005-03-29  Murray Cumming <murrayc@murrayc.com>
+
+	* glom/data_structure/Makefile.am:
+	* glom/data_structure/numeric_format.cc:
+	* glom/data_structure/numeric_format.h:
+	New class to represent the numeric format.
+	* glom/data_structure/glomconversions.cc:
+	* glom/data_structure/glomconversions.h:
+	Do special std:: stream stuff to format numbers 
+	as needed by the NumericFormat.
+	* glom/data_structure/layout/layoutitem_field.cc:
+	* glom/data_structure/layout/layoutitem_field.h:
+	Add a NumericFormat member.
+	* glom/document/document_glom.cc:
+	Load/Save the numeric format information with the
+	LayoutItem.
+	* glom/glom.glade:
+	Add UI for the Numeric Format.
+	* glom/mode_data/dialog_choose_field.cc:
+	* glom/mode_data/dialog_choose_field.h:
+	Use the Numeric Format UI. It is only shown for 
+	numeric fields.
+	* glom/utility_widgets/db_adddel/db_adddel.cc:
+	Use the Numeric format for the list.
+	* glom/utility_widgets/datawidget.cc:
+	* glom/utility_widgets/entryglom.cc:
+	Use the numeric format for details views.
+
 2005-03-24  Murray Cumming <murrayc@murrayc.com>
 
 	* glom/glom.glade:

@@ -754,7 +754,14 @@ void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Gl
         item.set_name( get_node_attribute_value(element, "name") );
         item.set_relationship_name( get_node_attribute_value(element, "relationship") );
         item.set_editable( get_node_attribute_value_as_bool(element, "editable") );
-        //item.set_table_name(table_name);
+
+        //Numeric formatting:
+        NumericFormat numeric_format;
+        numeric_format.m_use_thousands_separator = get_node_attribute_value_as_bool(element, "format_thousands_separator");
+        numeric_format.m_decimal_places_restricted = get_node_attribute_value_as_bool(element, "format_decimal_places_restricted");
+        numeric_format.m_decimal_places = get_node_attribute_value_as_decimal(element, "format_decimal_places");
+
+        item.m_numeric_format = numeric_format;
 
         item.m_sequence = sequence;
         group.add_item(item, sequence);
@@ -1003,7 +1010,7 @@ bool Document_Glom::load_after()
       }
     }
   }
-  
+
   return result;
 }
 
@@ -1037,6 +1044,11 @@ void Document_Glom::save_before_layout_group(xmlpp::Element* node, const LayoutG
         nodeItem->set_attribute("name", item->get_name());
         nodeItem->set_attribute("relationship", field->get_relationship_name());
         set_node_attribute_value_as_bool(nodeItem, "editable", item->get_editable());
+
+        //Numeric format:
+        set_node_attribute_value_as_bool(nodeItem, "format_thousands_separator",  field->m_numeric_format.m_use_thousands_separator);
+        set_node_attribute_value_as_bool(nodeItem, "format_decimal_places_restricted", field->m_numeric_format.m_decimal_places_restricted);
+        set_node_attribute_value_as_decimal(nodeItem, "format_decimal_places", field->m_numeric_format.m_decimal_places);
 
         set_node_attribute_value_as_decimal(nodeItem, "sequence", item->m_sequence);
       }

@@ -21,7 +21,7 @@
 #ifndef GLOM_MODE_DATA_DIALOG_CHOOSE_FIELD_H
 #define GLOM_MODE_DATA_DIALOG_CHOOSE_FIELD_H
 
-#include <gtkmm/dialog.h>
+#include <gtkmm.h>
 #include "../utility_widgets/dialog_properties.h"
 #include "../document/document_glom.h"
 #include "../box_db.h"
@@ -49,6 +49,7 @@ public:
 protected:
 
   virtual void on_row_activated(const Gtk::TreePath& path, Gtk::TreeViewColumn* view_column);
+  virtual void on_treeview_selection_changed();
   virtual void on_combo_relationship_changed();
 
   //Tree model columns:
@@ -73,7 +74,9 @@ protected:
   Glib::RefPtr<Gtk::ListStore> m_model;
 
   Gtk::Frame* m_frame_numeric_format;
-  Combo_TextGlade* m_combo_numeric_format;
+  Gtk::CheckButton* m_checkbox_format_use_thousands;
+  Gtk::CheckButton* m_checkbox_format_use_decimal_places;
+  Gtk::Entry* m_entry_format_decimal_places;
 
   Glib::ustring m_table_name;
 

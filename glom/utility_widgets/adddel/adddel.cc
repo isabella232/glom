@@ -672,6 +672,7 @@ void AddDel::construct_specified_columns()
   m_TreeView.columns_autosize();
 }
 
+/*
 void AddDel::set_value(const Gtk::TreeModel::iterator& iter, guint col, const Gnome::Gda::Value& value)
 {
   //Different model columns have different types of data:
@@ -690,6 +691,7 @@ void AddDel::set_value(const Gtk::TreeModel::iterator& iter, guint col, const Gn
     }
   }
 }
+*/
 
 void AddDel::set_value(const Gtk::TreeModel::iterator& iter, guint col, const Glib::ustring& strValue)
 {
@@ -774,10 +776,12 @@ void AddDel::set_value(const Gtk::TreeModel::iterator& iter, guint col, bool bVa
   }
 }
 
+/*
 void AddDel::set_value_selected(guint col, const Gnome::Gda::Value& value)
 {
   set_value(get_item_selected(), col, value);
 }
+*/
 
 void AddDel::remove_all_columns()
 {

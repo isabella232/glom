@@ -192,7 +192,7 @@ Glib::ustring Field::sql(const Gnome::Gda::Value& value) const
   }
 
   Glib::ustring str;
-   
+
   switch(get_glom_type())
   {
     case(TYPE_TEXT):
@@ -205,10 +205,11 @@ Glib::ustring Field::sql(const Gnome::Gda::Value& value) const
     case(TYPE_DATE):
     case(TYPE_TIME):
     {
-      str = GlomConversions::get_text_for_gda_value(m_glom_type, value, std::locale() /* SQL uses the C locale */, true /* ISO standard */);
+      NumericFormat format_ignored; //Because we use ISO format.
+      str = GlomConversions::get_text_for_gda_value(m_glom_type, value, std::locale() /* SQL uses the C locale */, format_ignored, true /* ISO standard */);
       if(str != "NULL")
          str = "'" + str + "'"; //Add single-quotes.
-         
+
       break;
     }
     case(TYPE_NUMERIC):
@@ -230,11 +231,11 @@ Glib::ustring Field::sql(const Gnome::Gda::Value& value) const
       str = value.to_string();
       if(str.empty() && (m_glom_type != Field::TYPE_TEXT))
         str = "NULL"; //This has probably been handled in get_text_for_gda_value() anyway.
-  
+
       break;
     }
   }
-     
+
   return str;
 }
 
