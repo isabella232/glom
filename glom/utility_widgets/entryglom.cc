@@ -19,6 +19,7 @@
  */
 
 #include "entryglom.h"
+#include <gtkmm/messagedialog.h>
 
 
 EntryGlom::EntryGlom(Field::glom_field_type glom_type)
@@ -35,8 +36,23 @@ void EntryGlom::check_for_change()
   Glib::ustring new_text = get_text();
   if(new_text != m_old_text)
   {
-    m_old_text = new_text;
-    m_signal_edited.emit(); //The text was edited, so tell the client code.
+    if(validate_text())
+    {
+      m_old_text = new_text;
+      m_signal_edited.emit(); //The text was edited, so tell the client code.
+    }
+    else
+    {
+      Gtk::MessageDialog dialog(gettext("The data has an incorrect format")); //TODO: Improve this warning. Mention the field name and what format it should have.
+
+      /* TODO:
+      Gtk::Window* pWindowApp = get_app_window();
+      if(pWindowApp)
+        dialog.set_transient_for(*pWindowApp);
+      */
+
+       dialog.run();
+    }
   }
 }
 
@@ -84,6 +100,28 @@ void EntryGlom::set_text(const Glib::ustring &text)
   //Call base class:
   Gtk::Entry::set_text(text);
 }
+
+bool EntryGlom::validate_text() const
+{
+  const Glib::ustring text = get_text();
+  if(m_glom_type == Field::TYPE_DATE)
+  {
+    //Try to parse the inputted date, according to the current locale.
+    Glib::Date date;
+    date.set_parse(text);
+    return date.valid();
+  }
+  else if(m_glom_type == Field::TYPE_TIME)
+  {
+      //TODO:
+  }
+    
+
+  
+  return true;
+  
+}
+
 
 
   
