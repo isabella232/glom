@@ -1,3 +1,10 @@
+0.8.2:
+
+2004-06-18  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/mode_data/box_data_details.cc fill_from_database(): Make 
+	auto-increment fields non-editable.
+
 2004-06-18  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/utility_widgets/adddel.cc add_column(Field): Make the column 

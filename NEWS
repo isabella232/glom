@@ -1,9 +1,18 @@
 0.8.2:
 
-* Navigation / Tables : Fixed strange focus bug when adding tables,
-  but I don't know how.
+* Navigation / Tables : Fixed focus bug when adding tables.
+* Fields can lookup their values from a field in 
+  another table via a relationship.
+* When a table is marked as the default then it will be 
+  opened automatically when the database is opened.
+* Tables can now be renamed.
+* List and Data views: Auto-increment fields are non-editable.
+* Update the Data view when field editing has finished.
 * Code cleanup: AddDel widget is now iterator-based.
 (Murray Cumming)
+* Czech translation. (Miloslav Trmac)
+* Dutch translation. (Tino Meinen)
+  
 
 0.8.1:
 

@@ -175,6 +175,10 @@ void Box_Data_Details::fill_from_database()
               {
                 m_FlowTable.add_field(field);
                 pEntry = m_FlowTable.get_field(field);
+
+                //Do not allow editing of auto-increment fields:
+                if(field.get_field_info().get_auto_increment())
+                  pEntry->set_editable(false);     
               }
 
               if(pEntry)
