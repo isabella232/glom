@@ -1243,7 +1243,7 @@ Document_Glom::type_list_groups Document_Glom::get_groups() const
 void Document_Glom::set_group(GroupInfo& group)
 {
   type_map_groups::iterator iter = m_groups.find(group.m_name);
-  if(iter != m_groups.end())
+  if(iter == m_groups.end())
   {
     //Add it if necesary:
     m_groups[group.m_name] = group;
@@ -1251,7 +1251,8 @@ void Document_Glom::set_group(GroupInfo& group)
   }
   else
   {
-    if(iter->second != group)
+    const GroupInfo this_group = iter->second;
+    if(this_group != group)
     {
       iter->second = group;
       set_modified();

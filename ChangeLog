@@ -1,5 +1,13 @@
 2005-03-22  Murray Cumming  <murrayc@murrayc.com>
 
+	* examples/example_smallbusiness.glom:
+	Added the table_privs.
+	* glom/document/document_glom.cc:
+	Do not use an invalid map iterator, to 
+	prevent a crash.
+
+2005-03-22  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/application.cc: recreate_database():
 	Add the developer group and make the user a 
 	member of it.

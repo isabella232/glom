@@ -373,8 +373,10 @@ void Dialog_GroupsList::fill_group_list()
   if(refSelection)
   {
     Gtk::TreeModel::iterator iterFirst = m_model_groups->children().begin();
-    if(iterFirst != m_model_groups->children().end())
+    if(iterFirst)
+    {
       refSelection->select(iterFirst);
+    }
   }
 }
 

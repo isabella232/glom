@@ -314,7 +314,7 @@ Base_DB::type_vecFields Base_DB::get_fields_for_table_from_database(const Glib::
     }
     else if(data_model_fields->get_n_rows() == 0)
     {
-      g_warning("Base_DB::get_fields_for_table_from_database(): data_model_fields->get_n_rows() == 0: The table probably does not exist in the specified database.");
+      g_warning("Base_DB::get_fields_for_table_from_database(): table_name=%s, data_model_fields->get_n_rows() == 0: The table probably does not exist in the specified database.", table_name.c_str());
     }
     else
     {
