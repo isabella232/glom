@@ -1,3 +1,12 @@
+0.8.5:
+
+2004-07-02  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/utility_widgets/adddel/adddel_withbuttons.cc: Use a stock 
+	Open button instead of one that says Edit. It's nicer.
+	* glom/mode_find/box_data_list_find.cc: Make the Find button position 
+	sensible.
+
 2004-07-02  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/mode_find/box_data_list_find.cc fill_from_database(): Save the

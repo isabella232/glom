@@ -29,6 +29,8 @@ public:
   Box_Data_Details_Find();
   virtual ~Box_Data_Details_Find();
 
+  virtual Gtk::Widget* get_default_button(); //override
+    
 protected:
 
   virtual void fill_from_database(); //override.

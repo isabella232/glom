@@ -26,9 +26,11 @@
 class Box_Data_List_Find : public Box_Data_List
 {
 public: 
-	Box_Data_List_Find();
-	virtual ~Box_Data_List_Find();
-	
+  Box_Data_List_Find();
+  virtual ~Box_Data_List_Find();
+
+  virtual Gtk::Widget* get_default_button(); //override
+    
 protected:
 
   virtual void fill_from_database(); //override.

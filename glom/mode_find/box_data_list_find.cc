@@ -26,10 +26,12 @@ Box_Data_List_Find::Box_Data_List_Find()
 {
   m_strHint = gettext("Enter the search criteria and click [Find]\n Glom will then change to Data mode to display the results.");
 
-  m_HBox.pack_end(m_Button_Find, Gtk::PACK_EXPAND_WIDGET);
-  pack_start(m_HBox, Gtk::PACK_EXPAND_WIDGET);
+  m_HBox.pack_end(m_Button_Find, Gtk::PACK_SHRINK);
+  pack_start(m_HBox, Gtk::PACK_SHRINK);
 
-  show_all();
+  m_Button_Find.property_can_default() = true; //TODO: Make this a real method in gtkmm?
+  
+  show_all_children();
 }
 
 Box_Data_List_Find::~Box_Data_List_Find()
@@ -57,5 +59,11 @@ void Box_Data_List_Find::fill_from_database()
 void Box_Data_List_Find::on_AddDel_user_changed(const Gtk::TreeModel::iterator& /* row */, guint /* col */)
 {
   //Just block the implementation in the base class.
+}
+
+
+Gtk::Widget* Box_Data_List_Find::get_default_button() //override
+{
+  return &m_Button_Find;
 }
  

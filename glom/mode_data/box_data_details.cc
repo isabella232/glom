@@ -88,7 +88,7 @@ Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
 
   m_FlowTable.signal_field_edited().connect( sigc::mem_fun(*this,  &Box_Data_Details::on_flowtable_field_edited) );
   show_all();
-
+   
   m_ignore_signals = false;
 }
 

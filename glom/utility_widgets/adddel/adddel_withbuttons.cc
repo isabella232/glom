@@ -25,7 +25,7 @@ AddDel_WithButtons::AddDel_WithButtons()
 : m_HBox(false, 6),
   m_Button_Add(Gtk::Stock::ADD),
   m_Button_Del(Gtk::Stock::DELETE),
-  m_Button_Edit(m_strSelectText)
+  m_Button_Edit(Gtk::Stock::OPEN)
 {
   m_HBox.set_spacing(6);
   //m_Button_Add.set_border_width(6);
