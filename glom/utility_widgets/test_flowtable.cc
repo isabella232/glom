@@ -68,7 +68,7 @@ main(int argc, char* argv[])
   Gtk::Entry button8; button8.set_text("eight");
   flowtable.add(button7, button8);
   button8.show();
-  button8.set_size_request(100, 100);
+  button8.set_size_request(100, 300);
 
   Gtk::Entry button9; button9.set_text("nine");;
   button9.show();
@@ -82,7 +82,7 @@ main(int argc, char* argv[])
   flowtable.show();
 
 
-  flowtable.set_padding(6);
+  flowtable.set_padding(20);
 
   Gtk::Main::run(window);
 

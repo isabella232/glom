@@ -45,16 +45,17 @@ Power through simplicity.</h2></center>
 </blockquote>
 <h2>Implementation</h2>
 <blockquote>
-  Glom is built using gtkmm, which is the C++ wrapper for GTK+. It uses the Document/View model from Bakery, and its Document_XML
-  subclass, which uses the libxml++ C++ XML parser.
+  Glom is built using gtkmm, the C++ wrapper for GTK+. It uses the Document/View model from Bakery, and its Document_XML
+  subclass, which uses the libxml++ C++ XML parser. It uses Python for custom field calculations.
   <p>PostgresSQL databases are accessed via libgda.</p>
 </blockquote>
 <h2><a name="RequiredLibraries"></a>Required Libraries</h2>
 <ul>
   <li><a href="http://bakery.sourceforge.net/">Bakery 2.4</a> (requires libxml++, gtkmm, libglademm, gconfmm, and gnome-vfsmm)</li> 
   <li><a href="http://www.gtkmm.org/">libgdamm 2</a> (using <a href="http://www.postgres.org/">PostgresSQL</a>) </li>
+  <li><a href="http://www.python.org/">Python >=2.2</a></li>
   </ul>
-<p>In general, the latest version are required. The configure script will
+<p>In general, the latest versions are required. Later, you should be able to get all of these from your distro. When building from source, the configure script will
 complain if you have the wrong versions.</p>
 <h2>Development</h2>
 <p>Glom is in GNOME's cvs. To check out the latest version:

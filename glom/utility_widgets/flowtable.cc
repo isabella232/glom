@@ -304,11 +304,10 @@ void FlowTable::get_item_max_width(guint start, int height, int& first_max_width
 
     int height_item = 0;
 
+    int padding_above = 0;
     //Add padding above the item, if it is after another one.
     if( first_item_added && (child_is_visible(first) || child_is_visible(second)) )
-    {
-       height_item += m_padding;
-    }
+       padding_above += m_padding;
 
     int item_first_width = 0;
     int singles_width = 0;
@@ -339,9 +338,12 @@ void FlowTable::get_item_max_width(guint start, int height, int& first_max_width
       gtk_widget_size_request(const_cast<GtkWidget*>(second->gobj()), &child_requisition); //TODO: This parameter should not be const: child->size_request(child_requisition);
       item_second_width = child_requisition.width;
       height_item = MAX(height_item, child_requisition.height);
-      first_item_added = true;                                       
+      first_item_added = true;
     }
 
+    if(height_item)
+      height_item += padding_above;
+          
     height_so_far += height_item;
     if(height_so_far <= height) //Don't remember the width details if the widgets are too high for the end of this column:
     {
@@ -394,9 +396,9 @@ void FlowTable::on_size_allocate(Gtk::Allocation& allocation)
       column_child_y_start = allocation.get_y();
       int column_x_start_plus_singles = column_x_start + singles_max_width;
       column_x_start += column_x_start_second + second_max_width;
-      column_x_start += MAX(column_x_start, column_x_start_plus_singles); //Maybe the single items take up even more width.
+      column_x_start = MAX(column_x_start, column_x_start_plus_singles); //Maybe the single items take up even more width.
       column_x_start += m_padding;
-
+   
       {
         //Discover the widths of the different parts of this column:
         first_max_width = 0;

@@ -1,5 +1,14 @@
 2004-07-09  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/utility_widgets/flowtable.cc: get_item_max_width(): Don't 
+	ignore the vertical padding between widgets, so that this does not 
+	incorrectly report that more items could be in the column.
+	on_size_allocate(): Use = instead of += when using the single_items 
+	width to get the maximum width, to prevent a big gap between the 
+	first and second columns.
+
+2004-07-09  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/document/document_glom.cc: save_before(): Store the layout item 
 	sequence, so that the layout is not lost after a couple of saves.
 
