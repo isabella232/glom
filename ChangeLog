@@ -1,7 +1,14 @@
+2004-06-25  Murray Cumming  <murrayc@murrayc.com>
+
+	* configure.in: Removed AC_CONFIG_AUX_DIRS(), which was causing 
+	problems.
+
 2004-06-24  Duarte Loreto <happyguy_pt@hotmail.com>
 
 	* configure.in: Added Portuguese (pt) to ALL_LINGUAS.
 
+0.8.2:
+	
 2004-06-20  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/application.[h|cc]: Added on override of on_menu_help_init() to 
