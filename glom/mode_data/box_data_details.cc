@@ -553,7 +553,7 @@ void Box_Data_Details::on_flowtable_field_edited(const Glib::ustring& id, const 
       {
         //Set the value in all instances of this field in the layout (The field might be on the layout more than once):
         m_FlowTable.set_field_value(field, field_value);
-        
+
         //Get-and-set values for lookup fields, if this field triggers those relationships:
         do_lookups(field, field_value, m_field_primary_key, primary_key_value);
 

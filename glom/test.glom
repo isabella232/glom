@@ -1,4 +1,12 @@
 <?xml version="1.0"?>
-<glom_document>
-  <connection server="localhost" user="" database=""/>
+<glom_document database_title="Test March 1">
+  <connection server="localhost" user="" database="glom_testmarch1"/>
+  <table name="test1" title="Test1" hidden="false" default="false">
+    <fields>
+      <field name="test1_id" title="" primary_key="true" unique="false" auto_increment="true" default_value="NULL" calculation="" type="Number"/>
+      <field name="yadda" title="Yadda" primary_key="false" unique="false" auto_increment="false" default_value="NULL" calculation="" type="Text"/>
+    </fields>
+    <relationships/>
+    <data_layouts/>
+  </table>
 </glom_document>

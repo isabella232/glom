@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html><head>
+<title>Glom</title>
+<meta http-equiv="Content-Language" content="en-us">
+<meta content="Glom" name="description">
+<meta content="Glom, Postgres GUI, GNOME, FileMaker, Access, Linux" name="KEYWORDS">
+</head>
+
+<body bgcolor="#ffffff">
+
+<h1>Glom Screenshots</h1>
+
+<h2>Contents</h2>
+<p>As an operator:
+<ul>
+<li><a href="#operator_connect">Connecting</a></li>
+<li><a href="#operator_table">Choosing a Table</a></li>
+<li><a href="#operator_listview">The List View</a></li>
+<li><a href="#operator_detailsview">The Details View</a></li>
+</ul>
+</p>
+
+<p>As a developer:
+<ul>
+<li><a href="#developer_fields">Designing Fields</a></li>
+<li><a href="#developer_fields_details">Designing Fields in detail</a></li>
+<li><a href="#developer_fields_lookup">Designing Fields - lookup</a></li>
+<li><a href="#developer_fields_calculated">Designing Fields - calculation</a></li>
+<li><a href="#developer_relationships">Designing Relationships</a></li>
+<li><a href="#developer_layout_details">Designing the Details Layout</a></li>
+<li><a href="#developer_layout_details">Designing the Details Layout - Related Records</a></li>
+<li><a href="#developer_layout_list">Desiging the List Layout</a></li>
+</ul>
+</p>
+
+<h2>As an Operator</h2>
+
+<h3><a name="operator_connect" />Connecting</h3>
+
+  <img src="glom_connect.png" />
+  <p>When you open a Glom file it will try to connect to your database server, where the data is stored. Your administrator will give you a username and password.</p>
+
+<h3><a name="operator_table" />Choosing a Table</h3>
+
+  <img src="glom_tables.png" />
+  <p>Each database has several tables, such as Contacts, Invoices, Products, etc. Choose a table to see the records.</p>
+  <p><i>Developers can add new tables, <a href="#developer_fields">define the fields</a> in each table, and <a href="#developer_relationships">define the relationships</a> between the tables.</i></p>
+  <p><i>Developers can also see extra hidden tables, such as Invoice Lines, that would only be visible to an operator as related records from another table, such as Invoices.</i></p>
+
+<h3><a name="operator_listview" />The List View</h3>
+
+  <img src="glom_data_list.png" />
+  <p>The list view shows all records in the table, or all currently-found records. When you enter data in the fields it is saved immediately. Choose Edit, or double-click, to see a record in detail.</p>
+   <p><i>Developers can choose what fields to show by <a href="#developer_layout_list">designing the layout</a>.</i></p>
+
+<h3><a name="operator_detailsview" />The Details View</h3>
+
+  <img src="glom_data_details.png" />
+  <p>The details view shows the whole record, with the fields arranged conveniently.</p>
+  <p><i>Developers can choose what fields to show by <a href="#developer_layout_details">designing the layout</a>.</i></p>
+
+<h3><a name="operator_detailsview" />The Details View - related records</h3>
+
+  <img src="glom_data_details_related.png" />
+  <p>The details view can show records from a related table. Just enter new data in the list of related records to create a new record in the related table.</p>
+ 
+  <p><i>Note that this example shows <a href="#developer_relationships">related records</a> from the Invoice Lines table. When you add a new row here, a new related record will be created with the appropriate value in the key field.</i></p>
+
+<h2>As a Developer</h2>
+
+<h3><a name="developer_fields" />Designing Fields</h3>
+
+  <img src="glom_design_fields.png" />
+  <p>Each table has several fields, containing information about the items in the table.</p>  
+  <p>Unlike traditional (difficult) database systems, there are only a handful of field types - text, number, data, time, and boolean. So you don't need to choose between signed or unsigned values, small numbers or big numbers, string lengths, or date storage formats.</p>
+  <p>Each table must have one primary key. The primary key value identifies the record and can be used to build <a href="#developer_relationship">relationships</a> between tables. When you create a new table, the primary key will be created for you automatically.</p>
+
+<h3><a name="developer_fields_details" />Designing Fields in detail</h3>
+
+  <img src="glom_design_fields_dialog.png" />
+  <p>Choose Edit to see the full details for the field. Here you can specify a human-readable title to be shown on the list and details views. You can also define a default value, a <a href="#developer_fields_lookup">lookup</a>, or <a href="#developer_fields_calculated">calculation</a>, and whether the field should have a unique value.</p>  
+
+<h3><a name="developer_fields_lookup" />Designing Fields - lookup</h3>
+
+  <img src="glom_design_fields_dialog_lookup.png" />
+  <p>Some fields should copy their value from another table. For instance, an invoice should store the price of a product at the time the invoice was created. So you could specify that the Product Price field in Invoice Lines should get it's value from the Products table whenever the Product ID field changes in Invoice lines. If you have already defined the <a href="#developer_relationships">relationship</a> between the two tables then you just need to choose the relationship, and what field should trigger the lookup.</p> 
+
+<h3><a name="developer_fields_calculated" />Designing Fields - calculation</h3>
+
+  <img src="glom_design_fields_dialog_calculated.png" />
+  <p>Some fields should be filled in automatically by calculating a value based on other fields. You can do this with the python programming language.</p> 
+
+<h3><a name="developer_relationships" />Designing Relationships</h3>
+
+  <img src="glom_design_relationships.png" />
+  <p>The tables in a relational database are related, so that the data from one table can be used by another table. A relationship can be used to <a href="#developer_fields_lookup">lookup</a> data from a field in another table, or to 
+show a list of <a href="#developer_relationships">related records</a>.</p> 
+
+<h3><a name="developer_layout_details" />Designing the Details Layout</h3>
+
+  <img src="glom_design_layout_details.png" />
+  <p>There are no complicated display options - dates and times are displayed and interpreted appropriately according to the user's current locale, but are always stored in the database in standard ISO format. And boolean fields are represented by a check box.</p>
+
+<h3><a name="developer_layout_details" />Designing the Details Layout - Related Records</h3>
+
+  <img src="glom_design_layout_details_related.png" />
+  <p>Right-click on the related records portal to choose the <a href="#developer_relationships">relationship</a> that it shows, and which fields to show from the related table.</p>
+
+<h3><a name="developer_layout_list" />Designing the List Layout</h3>
+
+  <img src="glom_design_layout_list.png" />
+  <p>Designing the list layout is simple - just choose the fields and their sequence. As on the <a href="#developer_layout_details">details</a> view, data will be shown and interpreted appropriately for the user's locale.</p>
+
+</body></html>

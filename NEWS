@@ -1,3 +1,25 @@
+0.8.13:
+
+* Details:
+  - Related Records now work, including automatic addition of new 
+    related records.
+  - In developer mode, you can right-click on fields to choose a 
+    different field.
+  - In developer mode, you can right-click on related records to 
+    choose a different relationship and choose the fields to show.
+  - Groups may now contain the same field more than once.
+* Details and List: Automatically-generated primary keys do not 
+  need to be displayed.
+* List: Avoid GTK+ warning when clicking on empty space in the 
+  TreeView.
+* Example:
+  - Make some fields lookup their data from relationships:
+    Invoice Lines gets product information from the products table,
+    and Invoices looksup the customer name from the contacts table.
+  - Warn if people recreate a database on the server from a 
+    read-only example file, because they will probably want to 
+    change things.
+
 0.8.12:
 
 * Postgres connection:

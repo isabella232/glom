@@ -125,36 +125,46 @@ Glib::RefPtr<Gnome::Gda::DataModel> Box_Data::record_new(bool use_entered_data, 
   Glib::ustring strNames;
   Glib::ustring strValues;
 
+  //Avoid specifying the same field twice:
+  typedef std::map<Glib::ustring, bool> type_map_added;
+  type_map_added map_added;
+
   for(type_vecFields::const_iterator iter = fieldsToAdd.begin(); iter != fieldsToAdd.end(); ++iter)
   {
     const Field& field = *iter;
     const Glib::ustring field_name = field.get_name();
 
-    Gnome::Gda::Value value;
+    type_map_added::const_iterator iterFind = map_added.find(field_name);
+    if(iterFind == map_added.end()) //If it was not added already
+    {
+      Gnome::Gda::Value value;
 
-    //Use the specified (generated) primary key value, if there is one:
-    if(primary_key_name == field_name && !GlomConversions::value_is_empty(primary_key_value))
-    {
-      value = primary_key_value;
-    }
-    else
-    {
-      if(use_entered_data || !field.get_calculation().empty()) //TODO_Performance: Use a get_has_calculation() method.
-        value = get_entered_field_data(field);
-    }
-
-    Glib::ustring strFieldValue = field.sql(value);
-    
-    if(!strFieldValue.empty())
-    {
-      if(!strNames.empty())
+      //Use the specified (generated) primary key value, if there is one:
+      if(primary_key_name == field_name && !GlomConversions::value_is_empty(primary_key_value))
       {
-        strNames += ", ";
-        strValues += ", ";
+        value = primary_key_value;
+      }
+      else
+      {
+        if(use_entered_data || !field.get_calculation().empty()) //TODO_Performance: Use a get_has_calculation() method.
+          value = get_entered_field_data(field);
       }
 
-      strNames += field_name;
-      strValues += strFieldValue;
+      Glib::ustring strFieldValue = field.sql(value);
+
+      if(!strFieldValue.empty())
+      {
+        if(!strNames.empty())
+        {
+          strNames += ", ";
+          strValues += ", ";
+        }
+
+        strNames += field_name;
+        strValues += strFieldValue;
+
+        map_added[field_name] = true;
+      }
     }
   }
 

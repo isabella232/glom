@@ -1,5 +1,16 @@
 2005-03-10  Murray Cumming  <murrayc@murrayc.com>
 
+	* docs/website/: Redid the screenshots and put them on a page.
+
+2005-03-10  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/mode_data/box_data.cc: record_new(): Avoid specifying the same 
+	field data twice to the database.
+
+0.8.13:
+
+2005-03-10  Murray Cumming  <murrayc@murrayc.com>
+
 	* examples/example_small_business.glom: Invoices Lines: Lookup up the 
 	product name and price from the products table.
 

@@ -1,6 +1,9 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"><html><head>
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html><head>
 <title>Glom</title>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Content-Language" content="en-us">
 <meta content="Glom" name="description">
 <meta content="Glom, Postgres GUI, GNOME, FileMaker, Access, Linux" name="KEYWORDS">
@@ -12,7 +15,7 @@
 <h2>A database designer and user interface.<br>
 Power through simplicity.</h2></center>
 <h2>Introduction</h2>
-<blockquote>
+
   <p>Glom is a GUI that allows you to <b>design</b> table definitions and the relationships between them. It also allows you to <b>edit</b> and <b>search</b> the data in those tables, and to specify field values in terms of other fields.</p>
   <p>The design is loosely based upon <a href="http://www.filemaker.com/">FileMaker
   Pro</a>, with the added advantage of separation between interface and data. It
@@ -26,29 +29,34 @@ Power through simplicity.</h2></center>
 
   <p>Here are some <a href="screenshots/">screenshots</a>, and <a href="http://cvs.gnome.org/viewcvs/glom/NEWS?view=markup">news</a> about recent changes.</p>
   <p>Development is at an early stage, so it's not a complete database solution yet. The
-  following future functionality should complete it:</p>
+  following future functionality should complete it:
   <ul>
     <li>Virtual view fields (e.g. 'show the current price of this product in
       this field').</li>
     <li>Printing</li>
     <li>Reports</li>
   </ul>
-</blockquote>
+  </p>
+  
+  <p>
+  <a href="screenshots/"><img src="screenshots/small_glom_data_details.png" /></a>
+  </p>
+
 <h2>Warning</h2>
-<blockquote>
+
   This is not stable or tested. It might completely destroy your data. I offer
-  no guarantees and accept no responsibility.</blockquote>
+  no guarantees and accept no responsibility.
 <h2>Download</h2>
-<blockquote>
+
   You can download Glom from <a href="http://ftp.gnome.org/pub/GNOME/sources/glom/">here</a>.
   <p>See <a href="#RequiredLibraries">Required Libraries</a>.</p>
-</blockquote>
+
 <h2>Implementation</h2>
-<blockquote>
+
   Glom is built using gtkmm, the C++ wrapper for GTK+. It uses the Document/View model from Bakery, and its Document_XML
   subclass, which uses the libxml++ C++ XML parser. It uses Python for custom field calculations.
   <p>PostgresSQL databases are accessed via libgda.</p>
-</blockquote>
+
 <h2><a name="RequiredLibraries"></a>Required Libraries</h2>
 <ul>
   <li><a href="http://bakery.sourceforge.net/">Bakery 2.4</a> (requires libxml++, gtkmm, libglademm, gconfmm, and gnome-vfsmm)</li> 
@@ -79,9 +87,7 @@ Here is a list of <a href="http://bugzilla.gnome.org/buglist.cgi?short_desc_type
 
 <p>Please discuss glom on the <a href="http://mail.gnome.org/mailman/listinfo/glom-devel-list">mailing list</a>.</p> 
 <h2>Authors</h2>
-<p><a target="_blank" href="http://www.murrayc.com/">Murray Cumming</a> (Please use the mailing list - do not email me directly)
-<p>
-<a href="http://sourceforge.net"> 
-<img src="http://sourceforge.net/sflogo.php?group_id=1161&amp;type=1" alt="*SOURCEFORGE*" width="88" height="31" border="0" /></a>
+<p><a href="http://www.murrayc.com/">Murray Cumming</a> (Please use the mailing list - do not email me directly)
 </p>
-</p></body></html>
+
+</body></html>
