@@ -48,15 +48,13 @@ void EntryGlom::check_for_change()
     }
     else
     {
-      //TODO: problems with focus-out-event: Gtk::MessageDialog dialog(gettext("The data has an incorrect format")); //TODO: Improve this warning. Mention the field name and what format it should have.
+      Gtk::MessageDialog dialog(gettext("The data has an incorrect format")); //TODO: Improve this warning. Mention the field name and what format it should have.  Offer "try again" or "revert"
 
-      /* TODO:
-      Gtk::Window* pWindowApp = get_app_window();
+      Gtk::Window* pWindowApp = dynamic_cast<Gtk::Window*>(get_toplevel());
       if(pWindowApp)
         dialog.set_transient_for(*pWindowApp);
-      */
 
-       //dialog.run();
+      dialog.run();
     }
   }
 }
@@ -116,31 +114,23 @@ void EntryGlom::set_text(const Glib::ustring& text)
 }
 
 bool EntryGlom::validate_text() const
-{
-  return true; //TODO: See whether the regular conversion functions have an effect.
-  
-  const Glib::ustring text = get_text();
-  if(m_glom_type == Field::TYPE_DATE)
+{  
+  bool success = false;
+  Gnome::Gda::Value value = GlomConversions::parse_value(m_glom_type, get_text(), success);
+  if(!success)
   {
-    //Try to parse the inputted date, according to the current locale.
-    Glib::Date date;
-    date.set_parse(text);
-
-    return date.valid();
-  }
-  else if(m_glom_type == Field::TYPE_TIME)
-  {
-      //TODO:
+    g_warning("EntryGlom::validate_text(): Not valid: text=%s", get_text().c_str());
+    return false;
   }
   
   return true;
-  
 }
 
 
 Gnome::Gda::Value EntryGlom::get_value() const
 {
-  return GlomConversions::parse_value(m_glom_type, get_text());
+  bool success = false;
+  return GlomConversions::parse_value(m_glom_type, get_text(), success);
 }
 
 

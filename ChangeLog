@@ -1,4 +1,11 @@
-2004-06-12  Murray Cumming  <murrayc@murrayc_debian>
+2004-06-12  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/utility_widgets/entryglom.cc: check_for_change(): Complain 
+	about unparseable data (such as dates and times) instead of sending 
+	garbage to the database. This dialog should be improved (see comments) 
+	and we need the same thing for the List view.
+	
+2004-06-12  Murray Cumming  <murrayc@murrayc.com>
 
 	* Moved generic parse/format routines to 
 	glom/data_structure/glomconversions.[h|cc] from 
@@ -10,7 +17,7 @@
 	on_adddel_changed(): Use the GdaValue-based AddDel API so that dates, 
 	times, and numbers are shown and parsed as per the locale.
 	
-2004-06-12  Murray Cumming  <murrayc@murrayc_debian>
+2004-06-12  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/utility_widgets/flowtable_withfields.cc: Change all parsing to 
 	use C++ streams and facets, and rearranged them into generic 

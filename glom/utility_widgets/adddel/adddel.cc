@@ -312,7 +312,8 @@ void AddDel::remove_all()
 
 Gnome::Gda::Value AddDel::get_value_as_value(guint row, guint col)
 {
-  return GlomConversions::parse_value(m_ColumnTypes[col].m_field_type, get_value(row, col) );
+  bool success = false;
+  return GlomConversions::parse_value(m_ColumnTypes[col].m_field_type, get_value(row, col), success );
 }
 
 Glib::ustring AddDel::get_value(guint row, guint col)

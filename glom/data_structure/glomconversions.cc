@@ -182,7 +182,7 @@ Glib::ustring GlomConversions::get_text_for_gda_value(Field::glom_field_type glo
   }
 }
 
-Gnome::Gda::Value GlomConversions::parse_value(Field::glom_field_type glom_type, const Glib::ustring& text)
+Gnome::Gda::Value GlomConversions::parse_value(Field::glom_field_type glom_type, const Glib::ustring& text,  bool& success)
 {
   //Put a NULL in the database for empty dates, times, and numerics, because 0 would be an actual value.
   //But we use "" for strings, because the distinction between NULL and "" would not be clear to users.
@@ -197,7 +197,7 @@ Gnome::Gda::Value GlomConversions::parse_value(Field::glom_field_type glom_type,
 
   if(glom_type == Field::TYPE_DATE)
   {
-    tm the_c_time = parse_date(text);
+    tm the_c_time = parse_date(text, success);
 
     Gnome::Gda::Date gda_date = {0, 0, 0};
     gda_date.year = the_c_time.tm_year + 1900; //The C time starts at 1900.
@@ -209,7 +209,7 @@ Gnome::Gda::Value GlomConversions::parse_value(Field::glom_field_type glom_type,
   }
   else if(glom_type == Field::TYPE_TIME)
   {
-    tm the_c_time = parse_time(text);
+    tm the_c_time = parse_time(text, success);
 
     Gnome::Gda::Time gda_time = {0, 0, 0, 0};
     gda_time.hour = the_c_time.tm_hour;
@@ -227,20 +227,21 @@ Gnome::Gda::Value GlomConversions::parse_value(Field::glom_field_type glom_type,
     float the_number;
     the_stream >> the_number;  //TODO: Does this throw any exception if the text is an invalid time?
 
+    success = true; //Can this ever fail?
     return Gnome::Gda::Value(the_number);
   }
 
-  //TODO: Do locale-specific, and strongly-typed conversion:
+  success = true;
   return Gnome::Gda::Value(text);
 
 }
 
-tm GlomConversions::parse_date(const Glib::ustring& text)
+tm GlomConversions::parse_date(const Glib::ustring& text, bool& success)
 {
-  return parse_date( text, std::locale(std::getenv("LANG")) ); //Get the current locale.
+  return parse_date( text, std::locale(std::getenv("LANG")), success ); //Get the current locale.
 }
 
-tm GlomConversions::parse_date(const Glib::ustring& text, const std::locale& locale)
+tm GlomConversions::parse_date(const Glib::ustring& text, const std::locale& locale, bool& success)
 {
   //return parse_tm(text, locale, 'x' /* date */);
 
@@ -276,7 +277,10 @@ tm GlomConversions::parse_date(const Glib::ustring& text, const std::locale& loc
   tg.get_date(the_begin, the_end, the_stream, err, &the_c_time);
 
   if(err != std::ios_base::failbit)
+  {
+    success = true;
     return the_c_time;
+  }
   else
   {
     //time_get can fail just because you have entered "1/2/1903" instead "01/02/1903", so let's try another, more liberal, way:
@@ -289,27 +293,29 @@ tm GlomConversions::parse_date(const Glib::ustring& text, const std::locale& loc
       the_c_time.tm_mon = date.get_month() - 1; //C months start at 0.
       the_c_time.tm_mday = date.get_day(); //starts at 1
 
+      success = true;
       return the_c_time;
     }
     else //It really really failed.
     {
       tm blank_time = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+      success = false;
       return blank_time;
     }
   }
 }
 
 
-tm GlomConversions::parse_time(const Glib::ustring& text)
+tm GlomConversions::parse_time(const Glib::ustring& text, bool& success)
 {
   //return parse_time( text, std::locale(std::getenv("LANG")) ); //Get the current locale.
 
   //time_get() does not seem to work with non-C locales.
-  return parse_time( text, std::locale() );
+  return parse_time( text, std::locale(), success );
 }
 
 
-tm GlomConversions::parse_time(const Glib::ustring& text, const std::locale& locale)
+tm GlomConversions::parse_time(const Glib::ustring& text, const std::locale& locale, bool& success)
 {
   //The sequence of statements here seems to be very fragile. If you move things then it stops working.
 
@@ -330,7 +336,6 @@ tm GlomConversions::parse_time(const Glib::ustring& text, const std::locale& loc
 
   std::ios_base::iostate err = std::ios_base::goodbit; //The initialization is essential because time_get seems to a) not initialize this output argument and b) check its value.
 
-
   type_stream the_stream;
   the_stream.imbue(locale); //Make it format things for this locale. (Actually, I don't know if this is necessary, because we mention the locale in the time_put<> constructor.
 
@@ -347,10 +352,14 @@ tm GlomConversions::parse_time(const Glib::ustring& text, const std::locale& loc
   tg.get_time(the_begin, the_end, the_stream, err, &the_c_time);
 
   if(err != std::ios_base::failbit)
+  {
+    success = true;
     return the_c_time;
+  }
   else
   {
     tm blank_time = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    success = false;
     return blank_time;
   }
 }

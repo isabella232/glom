@@ -8,13 +8,13 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glom\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-06-10 19:51-0700\n"
+"POT-Creation-Date: 2004-06-12 05:08+0200\n"
 "PO-Revision-Date: 2004-06-10 19:52-0700\n"
 "Last-Translator: Adam Weinberger <adamw@gnome.org>\n"
 "Language-Team: English/Canada <adamw@FreeBSD.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit"
+"Content-Transfer-Encoding: 8bit\n"
 
 #: glom/glom.glade.h:1
 msgid "*"
@@ -173,4 +173,3 @@ msgstr "User"
 #: glom/glom.glade.h:41
 msgid "table name"
 msgstr "table name"
-
