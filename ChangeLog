@@ -1,3 +1,29 @@
+2005-03-12  Murray Cumming <murrayc@murrayc.com>
+
+	* examples/example_smallbusiness.glom:
+	* glom/data_structure/layout/layoutgroup.h:
+	* glom/data_structure/layout/layoutitem_field.cc:
+	* glom/data_structure/layout/layoutitem_field.h:
+	* glom/document/document_glom.cc:
+	* glom/glom.glade:
+	* glom/glom_document.dtd:
+	* glom/mode_data/dialog_choose_field.cc:
+	* glom/mode_data/dialog_choose_field.h:
+	* glom/mode_data/dialog_layout.h:
+	* glom/mode_data/dialog_layout_details.cc:
+	* glom/mode_data/dialog_layout_details.h:
+	* glom/mode_data/dialog_layout_list.cc:
+	* glom/mode_data/dialog_layout_list.h:
+	* glom/mode_data/dialog_layout_list_related.cc:
+	* glom/mode_data/dialog_layout_list_related.h:
+	* glom/mode_data/treestore_layout.h:
+	* glom/mode_design/fields/combo_textglade.cc:
+	* glom/mode_design/fields/combo_textglade.h:
+	* glom/utility_widgets/datawidget.cc:
+	* glom/utility_widgets/datawidget.h:
+        LayoutItem_Fields now contain an optional relationship_name.
+        When choosing fields, you can choose the relationship.
+
 2005-03-11  Murray Cumming  <murrayc@murrayc.com>
 
 	* Lots of use of Gtk::MessageDialog::set_secondary_text() to make 

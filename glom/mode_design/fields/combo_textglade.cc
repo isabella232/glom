@@ -27,31 +27,52 @@ Combo_TextGlade::Combo_TextGlade(BaseObjectType* cobject, const Glib::RefPtr<Gno
   m_model = Gtk::ListStore::create(m_text_columns);
   set_model(m_model);
   pack_start(m_text_columns.m_column);
+
+  set_row_separator_func( sigc::mem_fun(*this, &Combo_TextGlade::on_row_separator) );
 }
 
 
 Combo_TextGlade::~Combo_TextGlade()
 {
-  
+
+}
+
+void Combo_TextGlade::append_separator()
+{
+  if(m_model)
+  {
+    Gtk::TreeModel::iterator iter = m_model->append();
+    Gtk::TreeModel::Row row = *iter;
+    row[m_text_columns.m_separator] = true;
+  }
 }
 
 void Combo_TextGlade::append_text(const Glib::ustring& text)
 {
-  gtk_combo_box_append_text(gobj(), text.c_str());
-}
-
-void Combo_TextGlade::insert_text(int position, const Glib::ustring& text)
-{
-  gtk_combo_box_insert_text(gobj(), position, text.c_str());
+  if(m_model)
+  {
+    Gtk::TreeModel::iterator iter = m_model->append();
+    Gtk::TreeModel::Row row = *iter;
+    row[m_text_columns.m_column] = text;
+    row[m_text_columns.m_separator] = false;
+  }
 }
 
 void Combo_TextGlade::prepend_text(const Glib::ustring& text)
 {
-  gtk_combo_box_prepend_text(gobj(), text.c_str());
+  if(m_model)
+  {
+    Gtk::TreeModel::iterator iter = m_model->prepend();
+    Gtk::TreeModel::Row row = *iter;
+    row[m_text_columns.m_column] = text;
+    row[m_text_columns.m_separator] = false;
+  }
 }
 
 Glib::ustring Combo_TextGlade::get_active_text() const
 {
+  //We can not use gtk_combobox_get_active_text() here, because that can only be used if gtk_combo_box_new_text() has been used.
+
   Glib::ustring result;
 
   //Get the active row:
@@ -85,6 +106,12 @@ void Combo_TextGlade::set_active_text(const Glib::ustring& text)
 
   //Not found, so mark it as blank:
   unset_active();
+}
+
+bool Combo_TextGlade::on_row_separator(const Glib::RefPtr<Gtk::TreeModel>& /* model */, const Gtk::TreeModel::iterator& iter)
+{
+  Gtk::TreeModel::Row row = *iter;
+  return row[m_text_columns.m_separator];
 }
 
 

@@ -37,15 +37,18 @@ public:
   virtual ~Combo_TextGlade();
 
   void append_text(const Glib::ustring& text);
-  void insert_text(int position, const Glib::ustring& text);
+  void append_separator();
   void prepend_text(const Glib::ustring& text);
   Glib::ustring get_active_text() const;
 
   //This is not part of ComboBoxText:
   void clear_text();
   void set_active_text(const Glib::ustring& text);
-  
+
 protected:
+
+  //This determines whether each row should be shown as a separator.
+  bool on_row_separator(const Glib::RefPtr<Gtk::TreeModel>& model, const Gtk::TreeModel::iterator& iter);
 
   //Tree model columns:
   //These columns are used by the model that is created by the default constructor
@@ -53,9 +56,10 @@ protected:
   {
   public:
     TextModelColumns()
-    { add(m_column); }
+    { add(m_column); add(m_separator); }
 
     Gtk::TreeModelColumn<Glib::ustring> m_column;
+    Gtk::TreeModelColumn<bool> m_separator;
   };
 
   TextModelColumns m_text_columns;

@@ -99,7 +99,7 @@ void Dialog_Layout_List_Related::set_document(const Glib::ustring& layout, Docum
 void Dialog_Layout_List_Related::update_ui(bool including_relationship_list)
 {
    m_modified = false;
-  
+
   //Update the tree models from the document
   Document_Glom* document = m_document;
   if(document)
@@ -109,16 +109,16 @@ void Dialog_Layout_List_Related::update_ui(bool including_relationship_list)
     {
       m_combo_relationship_name->clear_text();
       Document_Glom::type_vecRelationships vecRelationships = document->get_relationships(m_relationship.get_from_table());
-  
+
       for(Document_Glom::type_vecRelationships::iterator iter = vecRelationships.begin(); iter != vecRelationships.end(); ++iter)
       {
         m_combo_relationship_name->append_text(iter->get_name());
       }
     }
-      
+
     //Set the table name and title:
     m_combo_relationship_name->set_active_text(m_relationship.get_name()); 
-   
+
     m_entry_table_title->set_text( m_relationship.get_title() );
 
     Document_Glom::type_mapLayoutGroupSequence mapGroups = document->get_relationship_data_layout_groups_plus_new_fields(m_layout_name, m_relationship);
@@ -326,16 +326,17 @@ void Dialog_Layout_List_Related::on_button_add_field()
       if(response == Gtk::RESPONSE_OK)
       {
         //Get the chosen field:
-        Field field;
+        LayoutItem_Field field;
         dialog->get_field_chosen(field);
 
         //Add the field details to the layout treeview:
         Gtk::TreeModel::iterator iter =  m_model_fields->append();
-      
+
         if(iter)
         {
           Gtk::TreeModel::Row row = *iter;
           row[m_ColumnsFields.m_col_name] = field.get_name();
+          row[m_ColumnsFields.m_col_relationship_name] = field.get_relationship_name();
           //row[m_model_fields->m_columns.m_col_title] = field.get_title();
 
           //Scroll to, and select, the new row:

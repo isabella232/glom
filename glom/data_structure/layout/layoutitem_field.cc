@@ -27,7 +27,8 @@ LayoutItem_Field::LayoutItem_Field()
 LayoutItem_Field::LayoutItem_Field(const LayoutItem_Field& src)
 : LayoutItem(src),
   m_field(src.m_field),
-  m_table_name(src.m_table_name)
+  m_table_name(src.m_table_name),
+  m_relationship_name(src.m_relationship_name)
 {
 }
 
@@ -47,6 +48,7 @@ LayoutItem_Field& LayoutItem_Field::operator=(const LayoutItem_Field& src)
 
   m_field = src.m_field;
   m_table_name = src.m_table_name;
+  m_relationship_name = src.m_relationship_name;
 
   return *this;
 }
@@ -60,5 +62,16 @@ void LayoutItem_Field::set_table_name(const Glib::ustring& table_name)
 {
   m_table_name = table_name;
 }
+
+Glib::ustring LayoutItem_Field::get_relationship_name() const
+{
+  return m_relationship_name;
+}
+
+void LayoutItem_Field::set_relationship_name(const Glib::ustring& table_name)
+{
+  m_relationship_name = table_name;
+}
+
 
 

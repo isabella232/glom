@@ -38,12 +38,16 @@ public:
   virtual Glib::ustring get_table_name() const;
   virtual void set_table_name(const Glib::ustring& table_name);
 
+  virtual Glib::ustring get_relationship_name() const;
+  virtual void set_relationship_name(const Glib::ustring& table_name);
+
   //This is filled in by looking at the database structure:
   Field m_field;
   //TODO: This might occasionally be different on different layouts: Glib::ustring m_title;
 
 protected:
-  Glib::ustring m_table_name; //TODO: Or a relationship, or a calculation.
+  Glib::ustring m_table_name; //If m_relationship_name is not used.
+  Glib::ustring m_relationship_name;
 };
 
 #endif //GLOM_DATASTRUCTURE_LAYOUTITEM_FIELD_H

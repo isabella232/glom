@@ -669,14 +669,14 @@ void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Gl
 {
   if(!node)
     return;
-    
+
   //Get the group details:
   group.set_name( get_node_attribute_value(node, "name") );
   group.m_title = get_node_attribute_value(node, "title");
   group.m_columns_count = get_node_attribute_value_as_decimal(node, "columns_count");
 
   group.m_sequence = get_node_attribute_value_as_decimal(node, "sequence");
-  
+
   //Get the child items:
   xmlpp::Node::NodeList listNodes = node->get_children(); 
   for(xmlpp::Node::NodeList::iterator iter = listNodes.begin(); iter != listNodes.end(); ++iter)
@@ -691,6 +691,7 @@ void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Gl
         LayoutItem_Field item;
 
         item.set_name( get_node_attribute_value(element, "name") );
+        item.set_relationship_name( get_node_attribute_value(element, "relationship") );
         item.set_table_name(table_name);
 
         item.m_sequence = sequence;
@@ -726,7 +727,7 @@ bool Document_Glom::load_after()
     if(nodeRoot)
     {
       m_database_title = get_node_attribute_value(nodeRoot, "database_title");
-          
+
       const xmlpp::Element* nodeConnection = get_node_child_named(nodeRoot, "connection");
       if(nodeConnection)
       {
@@ -735,10 +736,10 @@ bool Document_Glom::load_after()
         m_connection_user = get_node_attribute_value(nodeConnection, "user");
         m_connection_database = get_node_attribute_value(nodeConnection, "database");
       }
-  
+
       //Tables:
       m_tables.clear();
- 
+
       //Look at each "table" node.
       xmlpp::Node::NodeList listNodes = nodeRoot->get_children("table");
       for(xmlpp::Node::NodeList::const_iterator iter = listNodes.begin(); iter != listNodes.end(); iter++)
@@ -746,26 +747,26 @@ bool Document_Glom::load_after()
         xmlpp::Element* nodeTable = dynamic_cast<xmlpp::Element*>(*iter);
         if(nodeTable)
         {
-         
+
           const Glib::ustring table_name = get_node_attribute_value(nodeTable, "name");
-          
+
           m_tables[table_name] = DocumentTableInfo();
           DocumentTableInfo& doctableinfo = m_tables[table_name]; //Setting stuff directly in the reference is more efficient than copying it later:
-            
+
           TableInfo table_info;
           table_info.m_name = table_name;
           table_info.m_hidden = get_node_attribute_value_as_bool(nodeTable, "hidden");
           table_info.m_title = get_node_attribute_value(nodeTable, "title");
           table_info.m_default = get_node_attribute_value_as_bool(nodeTable, "default");
-          
+
           doctableinfo.m_info = table_info;
-          
+
           //Fields:
           const xmlpp::Element* nodeFields = get_node_child_named(nodeTable, "fields");
           if(nodeFields)
           {
             const Field::type_map_type_names type_names = Field::get_type_names();
-            
+
             //Loop through Field child nodes:
             xmlpp::Node::NodeList listNodes = nodeFields->get_children("field");
             for(xmlpp::Node::NodeList::const_iterator iter = listNodes.begin(); iter != listNodes.end(); iter++)
@@ -774,17 +775,17 @@ bool Document_Glom::load_after()
               if(nodeChild)
               {
                 Field field;
-                
+
                 Gnome::Gda::FieldAttributes field_info = field.get_field_info();
                 const Glib::ustring strName = get_node_attribute_value(nodeChild, "name");
                 field_info.set_name( strName );
-                
+
                 const Glib::ustring strTitle = get_node_attribute_value(nodeChild, "title");
                 field.set_title(strTitle);
-                
+ 
                 field_info.set_primary_key( get_node_attribute_value_as_bool(nodeChild, "primary_key") );
                 field_info.set_unique_key( get_node_attribute_value_as_bool(nodeChild, "unique") );
-                field_info.set_auto_increment( get_node_attribute_value_as_bool(nodeChild, "auto_increment") );           
+                field_info.set_auto_increment( get_node_attribute_value_as_bool(nodeChild, "auto_increment") );
 
                 //Get lookup information, if present.
                 xmlpp::Element* nodeLookup = get_node_child_named(nodeChild, "field_lookup");
@@ -795,10 +796,10 @@ bool Document_Glom::load_after()
                 }
 
                 field.set_calculation( get_node_attribute_value(nodeChild, "calculation") );
-                
+
                 //Field Type:
                 const Glib::ustring field_type = get_node_attribute_value(nodeChild, "type");
-      
+
                 //Get the type enum for this string representation of the type:
                 Field::glom_field_type field_type_enum = Field::TYPE_INVALID;
                 for(Field::type_map_type_names::const_iterator iter = type_names.begin(); iter !=type_names.end(); ++iter)
@@ -809,7 +810,7 @@ bool Document_Glom::load_after()
                     break;
                   }
                 }
-                        
+
                 //Default value:
                 const Glib::ustring default_value_text = get_node_attribute_value(nodeChild, "default_value");
                 //Interpret the text as per the field type:
@@ -819,12 +820,12 @@ bool Document_Glom::load_after()
 
                 //We set this after set_field_info(), because that gets a glom type from the (not-specified) gdatype. Yes, that's strange, and should probably be more explicit.
                 field.set_glom_type( field_type_enum );
-                             
+ 
                 doctableinfo.m_fields.push_back(field);
               }
             }
           }
-           
+
           //Relationships:
           const xmlpp::Element* nodeRelationships = get_node_child_named(nodeTable, "relationships");
           if(nodeRelationships)
@@ -837,22 +838,22 @@ bool Document_Glom::load_after()
               {
                 Relationship relationship;
                 const Glib::ustring relationship_name = get_node_attribute_value(nodeChild, "name");
-                
+
                 relationship.set_from_table( table_name );
                 relationship.set_name( relationship_name );
-                
+
                 const Glib::ustring relationship_title = get_node_attribute_value(nodeChild, "title");
                 relationship.set_title( relationship_title );
-                
+
                 relationship.set_from_field( get_node_attribute_value(nodeChild, "key") );
                 relationship.set_to_table( get_node_attribute_value(nodeChild, "other_table") );
                 relationship.set_to_field( get_node_attribute_value(nodeChild, "other_key") );
-          
+
                 doctableinfo.m_relationships.push_back(relationship);
               }
             }
           }
-          
+
           //Layouts:
           const xmlpp::Element* nodeDataLayouts = get_node_child_named(nodeTable, "data_layouts");
           if(nodeDataLayouts)
@@ -864,9 +865,9 @@ bool Document_Glom::load_after()
               if(node)
               {
                 const Glib::ustring layout_name = get_node_attribute_value(node, "name");
-               
+
                 type_mapLayoutGroupSequence layout_groups;
-                         
+
                 const xmlpp::Element* nodeGroups = get_node_child_named(node, "data_layout_groups");
                 if(nodeGroups)
                 {
@@ -888,7 +889,7 @@ bool Document_Glom::load_after()
                     }
                   }
                 }
-                
+
                 doctableinfo.m_layouts[layout_name] = layout_groups;
               }
             }
@@ -930,6 +931,7 @@ void Document_Glom::save_before_layout_group(xmlpp::Element* node, const LayoutG
       {
         xmlpp::Element* nodeItem = child->add_child("data_layout_item");
         nodeItem->set_attribute("name", item->get_name());
+        nodeItem->set_attribute("relationship", field->get_relationship_name());
 
         set_node_attribute_value_as_decimal(nodeItem, "sequence", item->m_sequence);
       }
@@ -965,7 +967,7 @@ bool Document_Glom::save_before()
     xmlpp::Node::NodeList listNodes = nodeRoot->get_children("table");
     for(xmlpp::Node::NodeList::iterator iter = listNodes.begin(); iter != listNodes.end(); ++iter)
       nodeRoot->remove_child(*iter);
-    
+
     //Add tables:
     for(type_tables::const_iterator iter = m_tables.begin(); iter != m_tables.end(); ++iter)
     {
@@ -973,7 +975,7 @@ bool Document_Glom::save_before()
 
       if(doctableinfo.m_info.m_name.empty())
         g_warning("Document_Glom::save_before(): table name is empty.");
-        
+
       if(!doctableinfo.m_info.m_name.empty())
       {
         xmlpp::Element* nodeTable = nodeRoot->add_child("table");

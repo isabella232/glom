@@ -416,8 +416,8 @@ void Dialog_Layout_Details::on_button_field_add()
 {
   Gtk::TreeModel::iterator parent = get_selected_group_parent();
 
-  Field field;
-  bool test = offer_field_list(field);
+  LayoutItem_Field layout_item;
+  bool test = offer_field_list(layout_item);
   if(test)
   {
     //Add the field details to the layout treeview:
@@ -440,7 +440,8 @@ void Dialog_Layout_Details::on_button_field_add()
     {
       Gtk::TreeModel::Row row = *iter;
       row[m_model_items->m_columns.m_col_type] = TreeStore_Layout::TYPE_FIELD;
-      row[m_model_items->m_columns.m_col_name] = field.get_name();
+      row[m_model_items->m_columns.m_col_name] = layout_item.get_name();
+      row[m_model_items->m_columns.m_col_relationship_name] = layout_item.get_relationship_name();
       //row[m_model_items->m_columns.m_col_title] = field.get_title();
 
       //Scroll to, and select, the new row:
@@ -488,7 +489,7 @@ bool Dialog_Layout_Details::offer_relationship_list(Relationship& relationship)
   return result;
 }
 
-bool Dialog_Layout_Details::offer_field_list(Field& field)
+bool Dialog_Layout_Details::offer_field_list(LayoutItem_Field& field)
 {
   bool result = false;
 
@@ -646,14 +647,16 @@ void Dialog_Layout_Details::on_button_field_edit()
         }
         case TreeStore_Layout::TYPE_FIELD:
         {
-          Field field;
+          LayoutItem_Field field;
           field.set_name( row[m_model_items->m_columns.m_col_name] ); //Start with this one selected.
+          field.set_relationship_name( row[m_model_items->m_columns.m_col_relationship_name] );
           bool test = offer_field_list(field);
           if(test)
           {
             row[m_model_items->m_columns.m_col_name] = field.get_name();
+            row[m_model_items->m_columns.m_col_relationship_name] = field.get_relationship_name();
           }
-          
+
           break;
         }
         case TreeStore_Layout::TYPE_PORTAL:

@@ -36,17 +36,18 @@ public:
      TYPE_GROUP,
      TYPE_PORTAL
    };
-    
-   //Tree model columns:  
+
+  //Tree model columns:  
   class ModelColumns : public Gtk::TreeModel::ColumnRecord
   {
   public:
 
     ModelColumns()
-    { add(m_col_type); add(m_col_name); add(m_col_title); add(m_col_sequence); add(m_col_columns_count); add(m_col_relationship); }
-    
+    { add(m_col_type); add(m_col_name); add(m_col_relationship_name); add(m_col_title); add(m_col_sequence); add(m_col_columns_count); add(m_col_relationship); }
+
     Gtk::TreeModelColumn<enumType> m_col_type;
     Gtk::TreeModelColumn<Glib::ustring> m_col_name;
+    Gtk::TreeModelColumn<Glib::ustring> m_col_relationship_name; //Only for fields
     Gtk::TreeModelColumn<Glib::ustring> m_col_title; //only for groups
     Gtk::TreeModelColumn<guint> m_col_sequence;
     Gtk::TreeModelColumn<guint> m_col_columns_count; //Only for groups.

@@ -25,6 +25,7 @@
 #include "../utility_widgets/dialog_properties.h"
 #include "../document/document_glom.h"
 #include "../box_db.h"
+#include "../mode_design/fields/combo_textglade.h"
 
 class Dialog_ChooseField : public Gtk::Dialog
 {
@@ -37,14 +38,14 @@ public:
    * @param table_name The table name.
    * @param field The starting field information.
    */
-  virtual void set_document(Document_Glom* document, const Glib::ustring& table_name, const Field& field);
+  virtual void set_document(Document_Glom* document, const Glib::ustring& table_name, const LayoutItem_Field& field);
  
   virtual void set_document(Document_Glom* document, const Glib::ustring& table_name);
 
 
   //void select_item(const Field& field);
 
-  bool get_field_chosen(Field& field) const;
+  bool get_field_chosen(LayoutItem_Field& field) const;
 
 protected:
 
@@ -65,7 +66,7 @@ protected:
 
   ModelColumns_Fields m_ColumnsFields;
 
-  Gtk::Label* m_label_table_name;
+  Combo_TextGlade* m_combo_relationship;
   Gtk::Button* m_button_select;
   Gtk::TreeView* m_treeview;
   Glib::RefPtr<Gtk::ListStore> m_model;

@@ -43,22 +43,22 @@ public:
   virtual void set_document(const Glib::ustring& layout, Document_Glom* document, const Glib::ustring& table_name, const type_vecFields& table_fields);
 
 protected:
- 
+
   virtual void treeview_fill_sequences(const Glib::RefPtr<Gtk::TreeModel> model, const Gtk::TreeModelColumn<guint>& sequence_column);
   virtual void enable_buttons();
-    
+
   virtual void save_to_document();
 
   void move_treeview_selection_down(Gtk::TreeView* treeview, const Gtk::TreeModelColumn<guint>& sequence_column);
   void move_treeview_selection_up(Gtk::TreeView* treeview, const Gtk::TreeModelColumn<guint>& sequence_column);
-    
+
   //signal handlers:
   virtual void on_treemodel_row_changed(const Gtk::TreeModel::Path& path, const Gtk::TreeModel::iterator& iter);
   virtual void on_entry_table_title_changed();
   virtual void on_button_close();
 
   Gtk::Entry* m_entry_table_title;
-      
+
   Glib::ustring m_table_name;
   Glib::ustring m_layout_name;
 

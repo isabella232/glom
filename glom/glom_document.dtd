@@ -73,6 +73,7 @@ The name will be either "list" or "details".
 <!ELEMENT data_layout_item EMPTY >
 <!ATTLIST data_layout_item
   name CDATA #REQUIRED
+  relationship CDATA #OPTIONAL
   group CDATA #OPTIONAL
   sequence CDATA #REQUIRED
   hide CDATA #OPTIONAL

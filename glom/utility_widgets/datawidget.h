@@ -63,12 +63,12 @@ protected:
   virtual bool on_button_press_event(GdkEventButton* event); //override.
   virtual void on_child_user_requested_layout();
   virtual void on_menupopup_activate_layout();
-  virtual bool offer_field_list(const Glib::ustring& table_name, Field& field);
+  virtual bool offer_field_list(const Glib::ustring& table_name, LayoutItem_Field& field);
 
   App_Glom* get_application();
 
   int get_suitable_width(Field::glom_field_type field_type);
-    
+
   type_signal_edited m_signal_edited;
 
   Field::glom_field_type m_glom_type; //Store the type so we can validate the text accordingly.

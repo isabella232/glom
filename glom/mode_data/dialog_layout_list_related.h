@@ -62,9 +62,10 @@ protected:
   public:
 
     ModelColumns_Fields()
-    { add(m_col_name); add(m_col_sequence); }
+    { add(m_col_name); add(m_col_relationship_name); add(m_col_sequence); }
 
     Gtk::TreeModelColumn<Glib::ustring> m_col_name;
+    Gtk::TreeModelColumn<Glib::ustring> m_col_relationship_name;
     Gtk::TreeModelColumn<guint> m_col_sequence;
   };
 

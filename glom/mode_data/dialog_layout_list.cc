@@ -276,16 +276,17 @@ void Dialog_Layout_List::on_button_add_field()
       if(response == Gtk::RESPONSE_OK)
       {
         //Get the chosen field:
-        Field field;
+        LayoutItem_Field field;
         dialog->get_field_chosen(field);
 
         //Add the field details to the layout treeview:
         Gtk::TreeModel::iterator iter =  m_model_fields->append();
-      
+
         if(iter)
         {
           Gtk::TreeModel::Row row = *iter;
           row[m_ColumnsFields.m_col_name] = field.get_name();
+          row[m_ColumnsFields.m_col_relationship_name] = field.get_relationship_name();
           //row[m_model_fields->m_columns.m_col_title] = field.get_title();
 
           //Scroll to, and select, the new row:

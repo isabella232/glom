@@ -43,16 +43,15 @@ protected:
   virtual void add_group(const Gtk::TreeModel::iterator& parent, const LayoutGroup& group);
   virtual void fill_group(const Gtk::TreeModel::iterator& iter, LayoutGroup& group);
 
-   
   //Enable/disable buttons, depending on treeview selection:
   virtual void enable_buttons();
 
   virtual void save_to_document();
 
   bool offer_relationship_list(Relationship& relationship);
-  bool offer_field_list(Field& field);
+  bool offer_field_list(LayoutItem_Field& field);
   Gtk::TreeModel::iterator get_selected_group_parent() const;
-  
+
   //signal handlers:
   virtual void on_button_field_up();
   virtual void on_button_field_down();
@@ -70,7 +69,6 @@ protected:
   virtual void on_treeview_cell_edited_text(const Glib::ustring& path_string, const Glib::ustring& new_text, const Gtk::TreeModelColumn<Glib::ustring>& model_column);
   virtual void on_treeview_cell_edited_numeric(const Glib::ustring& path_string, const Glib::ustring& new_text, const Gtk::TreeModelColumn<guint>& model_column);
 
-       
   Gtk::TreeView* m_treeview_fields;
   Gtk::Button* m_button_field_up;
   Gtk::Button* m_button_field_down;

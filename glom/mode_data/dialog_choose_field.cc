@@ -24,13 +24,13 @@
 
 Dialog_ChooseField::Dialog_ChooseField(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
 : Gtk::Dialog(cobject),
-  m_label_table_name(0),
+  m_combo_relationship(0),
   m_button_select(0),
   m_treeview(0),
   m_document(0)
 {
   refGlade->get_widget("button_select", m_button_select);
-  refGlade->get_widget("label_table_name", m_label_table_name);
+  refGlade->get_widget_derived("combobox_relationship", m_combo_relationship);
   refGlade->get_widget("treeview_fields", m_treeview);
 
   if(m_treeview)
@@ -51,9 +51,16 @@ Dialog_ChooseField::~Dialog_ChooseField()
 {
 }
 
-void Dialog_ChooseField::set_document(Document_Glom* document, const Glib::ustring& table_name, const Field& field)
+void Dialog_ChooseField::set_document(Document_Glom* document, const Glib::ustring& table_name,  const LayoutItem_Field& field)
 {
   set_document(document, table_name);
+
+  //Select the current relationship at the start:
+  Glib::ustring relationship_name = field.get_relationship_name();
+  if(!relationship_name.empty())
+    m_combo_relationship->set_active_text(relationship_name);
+  else
+    m_combo_relationship->set_active_text(table_name);
 
   //Select the current field at the start:
   const Glib::ustring field_name = field.get_name();
@@ -93,8 +100,25 @@ void Dialog_ChooseField::set_document(Document_Glom* document, const Glib::ustri
   //Update the tree models from the document
   if(document)
   {
+    //Fill the list of relationships:
+    m_combo_relationship->clear_text();
+    Document_Glom::type_vecRelationships vecRelationships = document->get_relationships(table_name);
+
+    //Add a special option for the current table:
+    m_combo_relationship->append_text(table_name);
+
+    //Add the relationships for this table:
+    if(!vecRelationships.empty())
+      m_combo_relationship->append_separator();
+
+    for(Document_Glom::type_vecRelationships::iterator iter = vecRelationships.begin(); iter != vecRelationships.end(); ++iter)
+    {
+      g_warning("debug: adding relationship: %s", iter->get_name().c_str());
+      m_combo_relationship->append_text(iter->get_name());
+    }
+
     //Set the table name and title:
-    m_label_table_name->set_text(table_name); //TODO: Show table title here too.
+    //m_combo_relationship->set_active_text(table_name); //TODO: Show table title here too.
 
     //Fill the treeview:
     m_model->clear();
@@ -131,11 +155,21 @@ void Dialog_ChooseField::select_item(const Field& field)
 }
 */
 
-bool Dialog_ChooseField::get_field_chosen(Field& field) const
+bool Dialog_ChooseField::get_field_chosen(LayoutItem_Field& field) const
 {
-  //Initialize output argument:
-  field = Field();
+  //Don't initialize output argument,
+  //because it might contain other useful data.
+  //TODO: Store a LayoutItem_Field as a member.
 
+
+  //Relationship:
+  Glib::ustring relationship_name = m_combo_relationship->get_active_text();
+  if(relationship_name == m_table_name)
+    relationship_name.clear();
+
+  field.set_relationship_name(relationship_name);
+
+  //Field:
   Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = m_treeview->get_selection();
   if(refTreeSelection)
   {
@@ -143,7 +177,7 @@ bool Dialog_ChooseField::get_field_chosen(Field& field) const
     if(iter)
     {
       Gtk::TreeModel::Row row = *iter;
-      field =  row[m_ColumnsFields.m_col_field];
+      field.set_name(row[m_ColumnsFields.m_col_name]);
       return true;
     }
   }

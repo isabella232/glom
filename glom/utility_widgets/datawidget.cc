@@ -283,7 +283,7 @@ bool DataWidget::on_button_press_event(GdkEventButton *event)
   return Gtk::EventBox::on_button_press_event(event);
 }
 
-bool DataWidget::offer_field_list(const Glib::ustring& table_name, Field& field)
+bool DataWidget::offer_field_list(const Glib::ustring& table_name, LayoutItem_Field& field)
 {
   bool result = false;
 
@@ -324,12 +324,9 @@ void DataWidget::on_menupopup_activate_layout()
   LayoutItem_Field* layoutField = dynamic_cast<LayoutItem_Field*>(get_layout_item());
   if(layoutField)
   {
-    Field field;
-    field.set_name(layoutField->get_name()); //So that the current field will be selected.
-    bool test = offer_field_list(layoutField->get_table_name(), field);
+    bool test = offer_field_list(layoutField->get_table_name(), *layoutField);
     if(test)
     {
-      layoutField->set_name(field.get_name());
       signal_layout_changed().emit();
     }
   }

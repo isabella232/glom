@@ -36,31 +36,31 @@ public:
   virtual ~LayoutGroup();
 
   virtual LayoutItem* clone() const;
-  
+
   bool has_field(const Glib::ustring& field_name) const;
 
   void add_item(const LayoutItem& item);
   void add_item(const LayoutItem& item, guint sequence);
 //  void add_item(const LayoutGroup& item);
 //  void add_item(const LayoutGroup& item, guint sequence);
-  
+
   void change_field_item_name(const Glib::ustring& field_name, const Glib::ustring& field_name_new);
 
   void remove_all_items();
-    
+
   Glib::ustring m_title;
   guint m_columns_count;
-  
+
   typedef std::map<int, LayoutItem*> type_map_items;
   type_map_items get_items();
 
   typedef std::map<int, const LayoutItem*> type_map_const_items;
   type_map_const_items get_items() const;
-    
+
 protected:
 
   type_map_items m_map_items;
-  
+
   void remove_item(guint sequence);
 };
 
