@@ -24,6 +24,7 @@
 #include "gtkmm.h"
 #include "../../data_structure/field.h"
 #include <libgdamm.h>
+#include "glom_db_treemodel.h"
 
 #include <vector>
 #include <map>
@@ -273,8 +274,11 @@ protected:
 
   Gtk::TreeView m_TreeView;
   Gtk::TreeModel::ColumnRecord m_ColumnRecord;
-  Glib::RefPtr<Gtk::ListStore> m_refListStore;
   
+  typedef Gtk::ListStore type_model_store;
+  //typedef DbTreeModel type_model_store;
+  Glib::RefPtr<type_model_store> m_refListStore;
+    
   //Hidden internal columns:
   Gtk::TreeModelColumn<Gnome::Gda::Value>* m_modelcolumn_key;
   Gtk::TreeModelColumn<bool>* m_modelcolumn_placeholder; //placeholder-marker model column.

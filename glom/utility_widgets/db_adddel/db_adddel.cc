@@ -512,7 +512,8 @@ void DbAddDel::construct_specified_columns()
   }
 
   //Create the model from the ColumnRecord:
-  m_refListStore = Gtk::ListStore::create(record);
+  m_refListStore = type_model_store::create(record);
+  
   m_TreeView.set_model(m_refListStore);
 
   //Remove all View columns:

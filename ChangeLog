@@ -1,5 +1,10 @@
 2005-02-18  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/utility_widgets/db_addel/: Added a Gda::Value-based custom 
+	treemodel, but it's not used yet.
+
+2005-02-18  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/utility_widgets/db_adddel/: Removed sources that are duplicated 
 	in adddel, and just include them from there. We can not using the 
 	custom popup cellrenderer anyway when we start using gtkmm 2.6.
