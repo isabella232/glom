@@ -21,7 +21,7 @@
 #include "box_data.h"
 #include "../data_structure/glomconversions.h"
 #include "../data_structure/layout/layoutitem_field.h"
-#include "../glom_python.h"
+#include "../python_embed/glom_python.h"
 #include "config.h"
 #include <libintl.h>
 

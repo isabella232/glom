@@ -1,5 +1,20 @@
 2005-03-30  Murray Cumming <murrayc@murrayc.com>
 
+	* configure.in:
+	* glom/Makefile.am:
+	* glom/box_db_table.cc:
+	* glom/glom_python.cc:
+	* glom/glom_python.h:
+	* glom/mode_data/box_data.cc:
+	* glom/mode_design/fields/dialog_fieldcalculation.cc:
+	* glom/python_embed/Makefile.am:
+	* glom/python_embed/glom_python.cc:
+	* glom/python_embed/glom_python.h:
+	Move glom_python.* to the python_emded subdirectory, 
+	where I plan to put more stuff.
+
+2005-03-30  Murray Cumming <murrayc@murrayc.com>
+
 	* glom/data_structure/glomconversions.cc:
 	* glom/data_structure/glomconversions.h:
 	Added util_trim_string().

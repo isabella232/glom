@@ -1,4 +1,4 @@
-SUBDIRS = data_structure document mode_data mode_design mode_find navigation utility_widgets
+SUBDIRS = data_structure document mode_data mode_design mode_find navigation utility_widgets python_embed
 
 gladedir = $(datadir)/glom/glade/
 
@@ -29,7 +29,6 @@ glom_SOURCES = main.cc \
                dialog_connection.h dialog_connection.cc \
                dialog_invalid_data.h dialog_invalid_data.cc \
                dialog_new_database.h dialog_new_database.cc \
-               glom_python.h glom_python.cc \
                sharedptr.h
 
 glom_LDADD = document/libdocument.a \
@@ -46,6 +45,7 @@ glom_LDADD = document/libdocument.a \
              utility_widgets/adddel/eggcolumnchooser/libutility_widgets_adddel_eggcolumnchooserdialog.a \
              utility_widgets/db_adddel/libutility_widgets_db_adddel.a \
              data_structure/libdata_structure.a \
+             python_embed/libpython_embed.a \
              $(GLOM_LIBS) $(PYTHON_LDFLAGS) -lutil
 
 #libutil seems to be a fairly standard GNU library, and python needs it for openpty() and forkpty().

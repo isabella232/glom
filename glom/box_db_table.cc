@@ -20,7 +20,7 @@
 
 #include "box_db_table.h"
 #include "data_structure/glomconversions.h"
-#include "glom_python.h"
+#include "python_embed/glom_python.h"
 #include <sstream>
 
 Box_DB_Table::Box_DB_Table()

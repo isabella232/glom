@@ -22,7 +22,7 @@
 #include "dialog_fieldcalculation.h"
 #include "../../box_db_table.h"
 #include "../../frame_glom.h"
-#include "../../glom_python.h"
+#include "../../python_embed/glom_python.h"
 
 //#include <libgnome/gnome-i18n.h>
 #include <libintl.h>

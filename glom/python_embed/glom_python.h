@@ -21,7 +21,7 @@
 #ifndef GLOM_PYTHON_H
 #define GLOM_PYTHON_H
 
-#include "data_structure/field.h"
+#include "../data_structure/field.h"
 #include <glibmm/ustring.h>
 
 Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field_type result_type, const Glib::ustring& func_impl);

@@ -24,7 +24,7 @@
 #include "eval.h" /* for PyEval_EvalCode */
 
 #include "glom_python.h"
-#include "data_structure/glomconversions.h"
+#include "../data_structure/glomconversions.h"
 #include <list>
 #include <glib.h> //For g_warning().
 
