@@ -106,8 +106,8 @@ DbAddDel::~DbAddDel()
   if(m_modelcolumn_key)
     delete m_modelcolumn_key;
   
-  if(m_modelcolumn_placeholder)
-    delete m_modelcolumn_placeholder;
+  //if(m_modelcolumn_placeholder)
+  //  delete m_modelcolumn_placeholder;
 }
 
 void
@@ -242,7 +242,9 @@ Gtk::TreeModel::iterator DbAddDel::add_item_placeholder()
   {
     Gtk::TreeModel::Row row = *iter;
     row[*m_modelcolumn_key] = Gnome::Gda::Value(); //Remove temporary key value.
-    row[*m_modelcolumn_placeholder] =  true; //This will be unset when set_value() is used to put real data in this column.
+    
+    m_refListStore->set_is_placeholder(iter, true);
+    //row[*m_modelcolumn_placeholder] =  true; //This will be unset when set_value() is used to put real data in this column.
   }
 
   return iter;
@@ -261,7 +263,8 @@ Gtk::TreeModel::iterator DbAddDel::add_item(const Gnome::Gda::Value& valKey)
     if(treerow)
     {
       treerow[*m_modelcolumn_key] = valKey;
-      treerow[*m_modelcolumn_placeholder] =  false; 
+      m_refListStore->set_is_placeholder(result, false);
+      //treerow[*m_modelcolumn_placeholder] =  false; 
     }
   }
 
@@ -489,12 +492,12 @@ void DbAddDel::construct_specified_columns()
     delete m_modelcolumn_key; 
   m_modelcolumn_key = new Gtk::TreeModelColumn<Gnome::Gda::Value>;
   
-  if(m_modelcolumn_placeholder)
-    delete m_modelcolumn_placeholder;
-  m_modelcolumn_placeholder = new Gtk::TreeModelColumn<bool>;
+  //if(m_modelcolumn_placeholder)
+  //  delete m_modelcolumn_placeholder;
+  //m_modelcolumn_placeholder = new Gtk::TreeModelColumn<bool>;
     
   record.add(*m_modelcolumn_key);
-  record.add(*m_modelcolumn_placeholder);
+  //record.add(*m_modelcolumn_placeholder);
     
   //Database columns:
   {       
@@ -1393,7 +1396,8 @@ void DbAddDel::set_value_key(const Gtk::TreeModel::iterator& iter, const Gnome::
     if(!(GlomConversions::value_is_empty(value)))
     {
       //This is not a placeholder anymore, if it every was:
-      row[*m_modelcolumn_placeholder] = false;
+      m_refListStore->set_is_placeholder(iter, false);
+      //row[*m_modelcolumn_placeholder] = false;
     }
   
     row[*m_modelcolumn_key] = value;
@@ -1408,8 +1412,9 @@ bool DbAddDel::get_is_placeholder_row(const Gtk::TreeModel::iterator& iter) cons
   if(iter == m_refListStore->children().end())
     return false;
 
-  Gtk::TreeModel::Row row = *iter;
-  return row[*m_modelcolumn_placeholder];
+  return m_refListStore->get_is_placeholder(iter);
+  //Gtk::TreeModel::Row row = *iter;
+  //return row[*m_modelcolumn_placeholder];
 }
 
 bool DbAddDel::get_model_column_index(guint view_column_index, guint& model_column_index)
@@ -1438,7 +1443,8 @@ bool DbAddDel::get_view_column_index(guint model_column_index, guint& view_colum
 
 guint DbAddDel::get_count_hidden_system_columns()
 {
-  return 2; //The key and the placeholder boolean.
+  return 1; //The key.
+  //return 2; //The key and the placeholder boolean.
 }
 
 void DbAddDel::set_rules_hint(bool val)

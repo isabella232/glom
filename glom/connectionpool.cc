@@ -210,6 +210,11 @@ sharedptr<SharedConnection> ConnectionPool::connect()
           }
 
           g_warning("ConnectionPool::connect() throwing exception.");
+          if(bJustDatabaseMissing)
+            g_warning("  (Connection succeeds, but not to the specific database).");
+          else
+            g_warning("  (Could not connect even to the default database.)");
+            
           throw ExceptionConnection(bJustDatabaseMissing ? ExceptionConnection::FAILURE_NO_DATABASE : ExceptionConnection::FAILURE_NO_SERVER);
         }
       }

@@ -1,3 +1,8 @@
+2005-02-19  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/utility_widgets/db_adddel/db_adddel.[h|cc]: Use the 
+	Gda::Value-based treemodel. It almost works.
+
 2005-02-18  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/utility_widgets/db_addel/: Added a Gda::Value-based custom 

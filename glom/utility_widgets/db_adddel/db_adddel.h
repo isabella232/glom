@@ -275,14 +275,12 @@ protected:
   Gtk::TreeView m_TreeView;
   Gtk::TreeModel::ColumnRecord m_ColumnRecord;
   
-  typedef Gtk::ListStore type_model_store;
-  //typedef DbTreeModel type_model_store;
+  //typedef Gtk::ListStore type_model_store;
+  typedef DbTreeModel type_model_store;
   Glib::RefPtr<type_model_store> m_refListStore;
     
   //Hidden internal columns:
-  Gtk::TreeModelColumn<Gnome::Gda::Value>* m_modelcolumn_key;
-  Gtk::TreeModelColumn<bool>* m_modelcolumn_placeholder; //placeholder-marker model column.
-    
+  Gtk::TreeModelColumn<Gnome::Gda::Value>* m_modelcolumn_key;   
   
   //Columns, not including the hidden internal columns:
   typedef std::vector<DbAddDelColumnInfo> type_ColumnTypes;
