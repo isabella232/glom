@@ -54,4 +54,13 @@ void Dialog_Relationships::init_db_details(const Glib::ustring& strDatabaseName,
   }
 }
 
+void Dialog_Relationships::on_hide()
+{
+  //Save the relationships when the dialog is closed.
+  save_to_document();
+
+  //Call base class:
+  Dialog_Design::on_hide();
+}
+
 

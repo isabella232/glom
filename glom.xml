@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
   <mime-type type="application/x-glom">
+    <comment>Glom</comment>
     <comment xml:lang="en">Glom</comment>
 
     <glob pattern="*.glom"/>

@@ -243,17 +243,17 @@ Box_DataBases::type_vecStrings Box_DataBases::get_database_names()
   {
     Glib::RefPtr<Gnome::Gda::Connection> gda_connection = sharedconnection->get_gda_connection();
 
-    Glib::RefPtr<Gnome::Gda::DataModel> data_model_tables = gda_connection->get_schema(Gnome::Gda::CONNECTION_SCHEMA_DATABASES);
-    if(data_model_tables && (data_model_tables->get_n_columns() == 0))
+    Glib::RefPtr<Gnome::Gda::DataModel> data_model_databases = gda_connection->get_schema(Gnome::Gda::CONNECTION_SCHEMA_DATABASES);
+    if(data_model_databases && (data_model_databases->get_n_columns() == 0))
     {
       std::cerr << "Box_DB_Table::get_table_names(): libgda reported 0 tables for the database." << std::endl;
     }
-    else if(data_model_tables)
+    else if(data_model_databases)
     {
-      int rows = data_model_tables->get_n_rows();
+      int rows = data_model_databases->get_n_rows();
       for(int i = 0; i < rows; ++i)
       {
-        Gnome::Gda::Value value = data_model_tables->get_value_at(0, i);
+        Gnome::Gda::Value value = data_model_databases->get_value_at(0, i);
 
         //Get the table name:
         Glib::ustring table_name;

@@ -1,3 +1,17 @@
+	2004-06-19  Murray Cumming  <murrayc@murrayc.com>
+
+	* Added glom.applications, to register glom as capable of opening 
+	glom files.
+	* Makefile.am: Install glom.applications in the applications-registry.
+	* glom/navigation/box_tables.cc: fill_from_database(): Show tables 
+	that are in the database, but not in the document, as hidden, if in 
+	developer mode.
+	* glom/utility_widgets/adddel/adddel.cc : set_column_choices(): Get the
+	cellrenderer for the view column, not the model column. Among other 
+	things, this makes the Relationships dialog work again.
+	* glom/mode_design/dialog_relationships.[h|cc]: Add an on_hide() 
+	override to actually save the relationships when the dialog is closed.
+	
 0.8.2:
 
 2004-06-18  Murray Cumming  <murrayc@murrayc.com>

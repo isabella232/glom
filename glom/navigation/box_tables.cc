@@ -88,7 +88,6 @@ void Box_Tables::fill_from_database()
   //Add the columns:
   m_AddDel.remove_all_columns();
 
-  //TODO: Show the title instead of the name when in operator mode
   bool editable = developer_mode;
   m_colTableName = m_AddDel.add_column(gettext("Tables"), AddDelColumnInfo::STYLE_Text, editable);
 
@@ -104,10 +103,10 @@ void Box_Tables::fill_from_database()
 
   //Get the list of hidden tables:
 
-  Document_Glom::type_listTableInfo listTables;
+  Document_Glom::type_listTableInfo listTablesDocument;
   if(m_pDocument)
   {
-    listTables = m_pDocument->get_tables();
+    listTablesDocument = m_pDocument->get_tables();
   }
   else
     g_warning("debug: m_pDocument is null");
@@ -123,11 +122,11 @@ void Box_Tables::fill_from_database()
 
     for(type_vecStrings::iterator iter = vecTables.begin(); iter != vecTables.end(); iter++)
     {
-      const Glib::ustring& strName = *iter;
+      const Glib::ustring strName = *iter;
 
       //Check whether it should be hidden:
-      Document_Glom::type_listTableInfo::iterator iterFind = std::find_if(listTables.begin(), listTables.end(), predicate_FieldHasName<TableInfo>(strName));
-      if(iterFind != listTables.end())
+      Document_Glom::type_listTableInfo::iterator iterFind = std::find_if(listTablesDocument.begin(), listTablesDocument.end(), predicate_FieldHasName<TableInfo>(strName));
+      if(iterFind != listTablesDocument.end())
       {
         bool hidden = iterFind->m_hidden;
 
@@ -144,6 +143,20 @@ void Box_Tables::fill_from_database()
           fill_table_row(iter, *iterFind);
         }
       }
+      else
+      {
+        //This table is in the database, but not in the document.
+        //Show it as hidden:
+        if(developer_mode)
+        {
+          TableInfo table_info;
+          table_info.m_name = strName;
+          table_info.m_hidden = true;
+          
+          Gtk::TreeModel::iterator iter = m_AddDel.add_item(strName);
+          fill_table_row(iter, table_info);
+        }
+      }
     }
   }
 
@@ -157,7 +170,6 @@ void Box_Tables::fill_from_database()
 
 void Box_Tables::on_AddDel_Add(const Gtk::TreeModel::iterator& row)
 {
-g_warning(" Box_Tables::on_AddDel_Add");
   Glib::ustring table_name = m_AddDel.get_value(row, m_colTableName);
   if(!table_name.empty())
   {
@@ -199,14 +211,10 @@ g_warning(" Box_Tables::on_AddDel_Add");
 
     m_modified = true;
   }
-
-g_warning(" Box_Tables::on_AddDel_Add end");
 }
 
 void Box_Tables::on_AddDel_Delete(const Gtk::TreeModel::iterator& rowStart, const Gtk::TreeModel::iterator& rowEnd)
 {
-      g_warning("Box_Tables::on_AddDel_Delete()");
-
   Gtk::TreeModel::iterator iterAfter = rowEnd;
   ++iterAfter;
 
@@ -214,7 +222,7 @@ void Box_Tables::on_AddDel_Delete(const Gtk::TreeModel::iterator& rowStart, cons
   for(Gtk::TreeModel::iterator iter = rowStart; iter != iterAfter; ++iter)
   {
     Glib::ustring strName = m_AddDel.get_value_key(iter);
-    g_warning("Box_Tables::on_AddDel_Delete(): key name =%s", strName.c_str());
+
     if(!strName.empty())
     {
       //Ask the user to confirm:

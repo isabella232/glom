@@ -31,7 +31,9 @@ public:
   virtual ~Dialog_Relationships();
 
   virtual void init_db_details(const Glib::ustring& strDatabaseName, const Glib::ustring& strTableName);
-    
+
+  virtual void on_hide();
+  
 protected:
 
   Box_DB_Table_Relationships* m_box;

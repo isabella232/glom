@@ -38,9 +38,9 @@ void Box_DB_Table_Relationships::init()
   pack_start(m_AddDel);
   m_colName = m_AddDel.add_column(gettext("Name"));
 
-  m_colFromField = m_AddDel.add_column(gettext("Field"), AddDelColumnInfo::STYLE_Choices);
+  m_colFromField = m_AddDel.add_column(gettext("From Field"), AddDelColumnInfo::STYLE_Choices);
   m_colToTable = m_AddDel.add_column(gettext("Table"), AddDelColumnInfo::STYLE_Choices);
-  m_colToField = m_AddDel.add_column(gettext("Field"), AddDelColumnInfo::STYLE_Choices);
+  m_colToField = m_AddDel.add_column(gettext("To Field"), AddDelColumnInfo::STYLE_Choices);
 
   //Connect signals:
   m_AddDel.signal_user_activated().connect(sigc::mem_fun(*this, &Box_DB_Table_Relationships::on_AddDel_user_activated));
@@ -104,20 +104,24 @@ void Box_DB_Table_Relationships::fill_from_database()
 }
 
 void Box_DB_Table_Relationships::save_to_document()
-{
+{ 
   //Build relationships from AddDel:
   Document_Glom::type_vecRelationships vecRelationships;
 
-  for(Gtk::TreeModel::iterator iter = m_AddDel.get_model()->children().begin(); iter < m_AddDel.get_model()->children().end(); ++iter)
+  for(Gtk::TreeModel::iterator iter = m_AddDel.get_model()->children().begin(); iter != m_AddDel.get_model()->children().end(); ++iter)
   {
-    Relationship relationship;
-    relationship.set_name(m_AddDel.get_value(iter, m_colName));
-    relationship.set_from_table(m_strTableName);
-    relationship.set_from_field(m_AddDel.get_value(iter, m_colFromField));
-    relationship.set_to_table(m_AddDel.get_value(iter, m_colToTable));
-    relationship.set_to_field(m_AddDel.get_value(iter, m_colToField));
+    const Glib::ustring name = m_AddDel.get_value(iter, m_colName);
+    if(!name.empty())
+    {
+      Relationship relationship;
+      relationship.set_name(name);
+      relationship.set_from_table(m_strTableName);
+      relationship.set_from_field(m_AddDel.get_value(iter, m_colFromField));
+      relationship.set_to_table(m_AddDel.get_value(iter, m_colToTable));
+      relationship.set_to_field(m_AddDel.get_value(iter, m_colToField));
 
-    vecRelationships.push_back(relationship);
+      vecRelationships.push_back(relationship);
+    }
   }
 
   //Update the Document with these relationships.
@@ -148,13 +152,16 @@ void Box_DB_Table_Relationships::on_AddDel_user_changed(const Gtk::TreeModel::it
 
 void Box_DB_Table_Relationships::on_AddDel_user_activated(const Gtk::TreeModel::iterator& row, guint col)
 {
+
+ g_warning("on_AddDel_user_activated setting to field col=%d", col);
+ 
   if(col == m_colToField)
   {
     Bakery::BusyCursor(*get_app_window());
         
-    const Glib::ustring& strTableName = m_AddDel.get_value(row, m_colToTable);
+    const Glib::ustring table_name = m_AddDel.get_value(row, m_colToTable);
 
-    if(!strTableName.empty())
+    if(!table_name.empty())
     {
       //Set list of 'To' fields depending on table:
       m_AddDel.set_value(row, m_colToField, Glib::ustring(""));
@@ -164,12 +171,13 @@ void Box_DB_Table_Relationships::on_AddDel_user_activated(const Gtk::TreeModel::
       {
         Glib::RefPtr<Gnome::Gda::Connection> connection = sharedconnection->get_gda_connection();
      
-        type_vecStrings vecFields = util_vecStrings_from_Fields(get_fields_for_table(strTableName));
+        type_vecStrings vecFields = util_vecStrings_from_Fields(get_fields_for_table(table_name));
 
         //This would cause a lot of tedious re-filling:
         //m_AddDel.set_column_choices(m_colToField, vecFields);
         //fill_from_database();
 
+        g_warning("setting to field col=%d, choices.size=%d", m_colToField, vecFields.size());
         m_AddDel.set_column_choices(m_colToField, vecFields);
       }
     }

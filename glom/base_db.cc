@@ -170,7 +170,9 @@ Base_DB::type_vecStrings Base_DB::get_table_names()
         //Get the table name:
         Glib::ustring table_name;
         if(value.get_value_type() ==  Gnome::Gda::VALUE_TYPE_STRING)
+        {
           result.push_back( value.get_string() );
+        }
       }
     }
   }
