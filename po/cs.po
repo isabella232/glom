@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glom VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-06-17 13:22+0200\n"
-"PO-Revision-Date: 2004-06-14 19:30+0200\n"
+"POT-Creation-Date: 2004-06-18 03:39+0200\n"
+"PO-Revision-Date: 2004-06-18 19:57+0200\n"
 "Last-Translator: Miloslav Trmac <mitr@volny.cz>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -91,109 +91,119 @@ msgstr ""
 "Nebo chcete vytvořit nový dokument, navrhnout novou databázi?\n"
 
 #: glom/glom.glade.h:22
+msgid ""
+"<span weight=\"bold\" size=\"larger\">Title</span>\n"
+"\n"
+"Information text.\n"
+msgstr ""
+"<span weight=\"bold\" size=\"larger\">Nadpis</span>\n"
+"\n"
+"Informující text.\n"
+
+#: glom/glom.glade.h:26
 msgid "Auto-increment"
 msgstr "Automaticky-inkrementovat"
 
-#: glom/glom.glade.h:23
+#: glom/glom.glade.h:27
 msgid "Connect"
 msgstr "Připojit"
 
-#: glom/glom.glade.h:24
+#: glom/glom.glade.h:28
 msgid "Data"
 msgstr "Data"
 
-#: glom/glom.glade.h:25
+#: glom/glom.glade.h:29
 msgid "Default Value"
 msgstr "Implicitní hodnota"
 
-#: glom/glom.glade.h:26
+#: glom/glom.glade.h:30
 msgid "Edit"
 msgstr "Upravit"
 
-#: glom/glom.glade.h:27
+#: glom/glom.glade.h:31
 msgid "Edit Definition"
 msgstr "Upravit definici"
 
-#: glom/glom.glade.h:28
+#: glom/glom.glade.h:32
 msgid "Extra"
 msgstr "Extra"
 
-#: glom/glom.glade.h:29
+#: glom/glom.glade.h:33
 msgid "Field"
 msgstr "Pole"
 
-#: glom/glom.glade.h:30
+#: glom/glom.glade.h:34
 msgid "Field Definition"
 msgstr "Definice pole"
 
-#: glom/glom.glade.h:31
+#: glom/glom.glade.h:35
 msgid "Field Definitions"
 msgstr "Definice pole"
 
-#: glom/glom.glade.h:32
+#: glom/glom.glade.h:36
 msgid "Glom"
 msgstr "Glom"
 
-#: glom/glom.glade.h:33
+#: glom/glom.glade.h:37
 msgid "Host"
 msgstr "Počítač"
 
-#: glom/glom.glade.h:34
+#: glom/glom.glade.h:38
 msgid "Layout"
 msgstr "Rozložení"
 
-#: glom/glom.glade.h:35
+#: glom/glom.glade.h:39
 msgid "Lookup value when a field changes."
-msgstr ""
+msgstr "Vyhledat hodnotu, když se pole změní."
 
-#: glom/glom.glade.h:36
+#: glom/glom.glade.h:40
 msgid "Name"
 msgstr "Název"
 
-#: glom/glom.glade.h:37
+#: glom/glom.glade.h:41
 msgid "None selected"
 msgstr "Nic nevybráno"
 
-#: glom/glom.glade.h:38
+#: glom/glom.glade.h:42
 msgid "Password"
 msgstr "Heslo"
 
-#: glom/glom.glade.h:39
+#: glom/glom.glade.h:43
 msgid "Primary Key"
 msgstr "Primární klíč"
 
-#: glom/glom.glade.h:40
+#: glom/glom.glade.h:44
 msgid "Relationship"
-msgstr ""
+msgstr "Vztah"
 
-#: glom/glom.glade.h:41
+#: glom/glom.glade.h:45
 msgid "Revert"
 msgstr "Vrátit"
 
-#: glom/glom.glade.h:42
+#: glom/glom.glade.h:46
 msgid "Show hidden tables"
 msgstr "Zobrazovat skryté tabulky"
 
-#: glom/glom.glade.h:43
+#: glom/glom.glade.h:47
 msgid "Title"
 msgstr "Nadpis"
 
-#: glom/glom.glade.h:44
+#: glom/glom.glade.h:48
 msgid "Type"
 msgstr "Typ"
 
-#: glom/glom.glade.h:45
+#: glom/glom.glade.h:49
 msgid "Unique"
 msgstr "Jedinečný"
 
-#: glom/glom.glade.h:46
+#: glom/glom.glade.h:50
 msgid "User"
 msgstr "Uživatel"
 
-#: glom/glom.glade.h:47
+#: glom/glom.glade.h:51
 msgid "example data format"
 msgstr "ukázkový formát data"
 
-#: glom/glom.glade.h:48
+#: glom/glom.glade.h:52
 msgid "table name"
 msgstr "název tabulky"
