@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GNOME 2.8\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-08-09 00:37+0200\n"
-"PO-Revision-Date: 2004-07-04 01:27+0200\n"
+"POT-Creation-Date: 2004-09-07 19:39+0200\n"
+"PO-Revision-Date: 2004-09-07 21:39+0200\n"
 "Last-Translator: Tino Meinen <a.t.meinen@chello.nl>\n"
 "Language-Team: Dutch <vertaling@nl.linux.org>\n"
 "MIME-Version: 1.0\n"
@@ -40,10 +40,10 @@ msgstr "<b>Velden</b>"
 msgid "<b>Mode: </b>"
 msgstr "<b>Modus: </b>"
 
+# geselecteerd veld?
 #: glom/glom.glade.h:7
-#, fuzzy
 msgid "<b>Select Field</b>"
-msgstr "<b>Velden</b>"
+msgstr "<b>Veld selecteren</b>"
 
 #: glom/glom.glade.h:8
 msgid "<b>Table: </b>"
@@ -63,7 +63,7 @@ msgstr "<b>Gebruikersniveau: </b>"
 
 #: glom/glom.glade.h:12
 msgid "<b>def calculate_field_value():</b>"
-msgstr ""
+msgstr "<b>def bereken_veld_waarde():</b>"
 
 #: glom/glom.glade.h:13
 msgid ""
@@ -109,16 +109,15 @@ msgstr ""
 
 #: glom/glom.glade.h:27
 msgid "Add _Group"
-msgstr ""
+msgstr "_Groep toevoegen"
 
 #: glom/glom.glade.h:28
 msgid "Auto-increment"
 msgstr "Automatisch-verhogen"
 
 #: glom/glom.glade.h:29
-#, fuzzy
 msgid "Calculate value"
-msgstr "Standaard waarde"
+msgstr "Waarde berekenen"
 
 #: glom/glom.glade.h:30
 msgid "Connect"
@@ -133,9 +132,8 @@ msgid "Default Value"
 msgstr "Standaard waarde"
 
 #: glom/glom.glade.h:33
-#, fuzzy
 msgid "Details Layout"
-msgstr "Indeling"
+msgstr "Indeling details"
 
 #: glom/glom.glade.h:34
 msgid "Edit"
@@ -154,9 +152,8 @@ msgid "Field"
 msgstr "Veld"
 
 #: glom/glom.glade.h:38
-#, fuzzy
 msgid "Field Calculation"
-msgstr "Velddefinitie"
+msgstr "Veldberekening"
 
 #: glom/glom.glade.h:39
 msgid "Field Definition"
@@ -175,9 +172,8 @@ msgid "Host"
 msgstr "Host"
 
 #: glom/glom.glade.h:43
-#, fuzzy
 msgid "List Layout"
-msgstr "Indeling"
+msgstr "Indeling lijst"
 
 #: glom/glom.glade.h:44
 msgid "Lookup value when a field changes."
@@ -210,30 +206,30 @@ msgstr "Terugzetten"
 
 #: glom/glom.glade.h:51
 msgid "Select"
-msgstr ""
+msgstr "Selecteren"
 
 #: glom/glom.glade.h:52
 msgid "Select Field"
-msgstr ""
+msgstr "Veld selecteren"
 
 #: glom/glom.glade.h:53
 msgid "Show hidden tables"
 msgstr "Verborgen tabellen tonen"
 
 #: glom/glom.glade.h:54
-#, fuzzy
 msgid "Table:"
-msgstr "<b>Tabel: </b>"
+msgstr "Tabel:"
 
 #: glom/glom.glade.h:55
 msgid "Test"
-msgstr ""
+msgstr "Test"
 
+# hmm dit kan beter
 #: glom/glom.glade.h:56
 msgid ""
 "The field value will be the return value of the python function, which you "
 "implement here."
-msgstr ""
+msgstr "De veldwaarde zal de teruggeefwaarde van de pythonfunctie zijn, die u hier implementeert."
 
 #: glom/glom.glade.h:57
 msgid "Title"
