@@ -1,3 +1,11 @@
+2005-03-13  Murray Cumming,,,  <murrayc@murrayc.com>
+
+	* glom/mode_data/box_data.cc:
+	* glom/mode_data/box_data.h:
+	* glom/mode_data/box_data_list_related.cc:
+        get_fields_to_show(): Reduce code duplication 
+	by calling the code in Box_Data.
+
 2005-03-12  Murray Cumming <murrayc@murrayc.com>
 
 	* examples/example_smallbusiness.glom:

@@ -244,74 +244,15 @@ void Box_Data_List_Related::enable_buttons()
 
 Box_Data_List_Related::type_vecLayoutFields Box_Data_List_Related::get_fields_to_show() const
 {
-  type_vecLayoutFields result;
-
   const Document_Glom* document = get_document();
   if(document)
   {
-
     Document_Glom::type_mapLayoutGroupSequence mapGroups = document->get_relationship_data_layout_groups_plus_new_fields(m_layout_name, m_relationship);
 
-    if(mapGroups.empty())
-    {
-      //Start with a suitable default set of fields:
-      result = get_table_fields_to_show(m_relationship.get_to_table());
-    }
-    else
-    {
-      type_vecFields all_db_fields = get_fields_for_table(m_relationship.get_to_table());
-
-      for(Document_Glom::type_mapLayoutGroupSequence::const_iterator iter = mapGroups.begin(); iter != mapGroups.end(); ++iter)
-      {
-        const LayoutGroup& group = iter->second;
-
-        //Add the group's fields:
-        LayoutGroup::type_map_const_items items = group.get_items();
-        for(LayoutGroup::type_map_const_items::const_iterator iter = items.begin(); iter != items.end(); ++iter)
-        {
-          const LayoutItem_Field* item = dynamic_cast<const LayoutItem_Field*>(iter->second);
-          if(item)
-          {
-            Glib::ustring relationship_name = item->get_relationship_name();
-            if(!relationship_name.empty()) //If it's a field in a related table (a related field, itself in a list of related records)
-            {
-              //Get the full field information:
-
-              Relationship relationship;
-              bool test = document->get_relationship(m_relationship.get_to_table(), relationship_name, relationship);
-              if(test)
-              {
-                Field field;
-                //TODO: get_fields_for_table_one_field() is probably very inefficient
-                bool test = get_fields_for_table_one_field(relationship.get_to_table(), item->get_name(), field);
-                if(test)
-                {
-                  LayoutItem_Field layout_item = *item; //TODO_Performance: Reduce the copying.
-                  layout_item.m_field = field; //Fill in the full field information for later.
-                  result.push_back(layout_item);
-                }
-              }
-            }
-            else //It's a regular field in the table:
-            {
-              //Get the full field information:
-              type_vecFields::const_iterator iterFind = std::find_if(all_db_fields.begin(), all_db_fields.end(), predicate_FieldHasName<Field>(item->get_name())); //item->m_field->get_name() is not filled in yet.
-
-              //If the field does not exist anymore then we won't try to show it:
-              if(iterFind != all_db_fields.end() )
-              {
-                LayoutItem_Field layout_item = *item; //TODO_Performance: Reduce the copying.
-                layout_item.m_field = *iterFind; //Fill in the full field information for later.
-                result.push_back(layout_item);
-              }
-            }
-          }
-        }
-      }
-    }
+    return get_table_fields_to_show(m_relationship.get_to_table(), mapGroups);
   }
 
-  return result;
+  return type_vecLayoutFields();
 }
 
 void Box_Data_List_Related::show_layout_dialog()

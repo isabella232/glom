@@ -281,13 +281,13 @@ void Box_Data::get_table_fields_to_show_add_group(const Glib::ustring& table_nam
         if(test)
         {
           Field field;
-          //TODO: get_fields_for_table_one_field() is probably very inefficient
+          //TODO_Performance: get_fields_for_table_one_field() is probably very inefficient
           bool test = get_fields_for_table_one_field(relationship.get_to_table(), item->get_name(), field);
           if(test)
           {
             LayoutItem_Field layout_item = *item_field; //TODO_Performance: Reduce the copying.
             layout_item.m_field = field; //Fill in the full field information for later.
-            g_warning("get_table_fields_to_show_add_group(): related field: name=%s, title=%s", layout_item.get_name().c_str(), layout_item.m_field.get_title().c_str());
+
             vecFields.push_back(layout_item);
           }
         }
@@ -295,7 +295,7 @@ void Box_Data::get_table_fields_to_show_add_group(const Glib::ustring& table_nam
       else //It's a regular field in the table:
       {
         type_vecFields::const_iterator iterFind = std::find_if(all_db_fields.begin(), all_db_fields.end(), predicate_FieldHasName<Field>(field_name));
-  
+
         //If the field does not exist anymore then we won't try to show it:
         if(iterFind != all_db_fields.end() )
         {
@@ -322,8 +322,19 @@ void Box_Data::get_table_fields_to_show_add_group(const Glib::ustring& table_nam
   } 
 }
 
-
 Box_Data::type_vecLayoutFields Box_Data::get_table_fields_to_show(const Glib::ustring& table_name) const
+{
+  const Document_Glom* pDoc = dynamic_cast<const Document_Glom*>(get_document());
+  if(pDoc)
+  {
+    Document_Glom::type_mapLayoutGroupSequence mapGroupSequence =  pDoc->get_data_layout_groups_plus_new_fields(m_layout_name, table_name);
+    return get_table_fields_to_show(table_name, mapGroupSequence);
+  }
+  else
+    return type_vecLayoutFields();
+}
+
+Box_Data::type_vecLayoutFields Box_Data::get_table_fields_to_show(const Glib::ustring& table_name, const Document_Glom::type_mapLayoutGroupSequence& mapGroupSequence) const
 {
   //Get field definitions from the database, with corrections from the document:
   type_vecFields all_fields = get_fields_for_table(table_name);
@@ -333,7 +344,6 @@ Box_Data::type_vecLayoutFields Box_Data::get_table_fields_to_show(const Glib::us
   const Document_Glom* pDoc = dynamic_cast<const Document_Glom*>(get_document());
   if(pDoc)
   {
-    Document_Glom::type_mapLayoutGroupSequence mapGroupSequence =  pDoc->get_data_layout_groups_plus_new_fields(m_layout_name, table_name);
     if(mapGroupSequence.empty())
     {
       //No field sequence has been saved in the document, so we use all fields by default, so we start with something visible:
