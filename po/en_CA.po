@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glom\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-03-29 16:26-0500\n"
-"PO-Revision-Date: 2005-03-29 19:52-0400\n"
+"POT-Creation-Date: 2005-03-30 21:12-0500\n"
+"PO-Revision-Date: 2005-03-30 19:52-0400\n"
 "Last-Translator: Adam Weinberger <adamw@gnome.org>\n"
 "Language-Team: Canadian English <adamw@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -29,24 +29,24 @@ msgid "<b>Fields</b>"
 msgstr "<b>Fields</b>"
 
 #: ../glom/glom.glade.h:4
-msgid "<b>Group: </b>"
-msgstr "<b>Group: </b>"
+msgid "<b>Group:</b>"
+msgstr "<b>Group:</b>"
 
 #: ../glom/glom.glade.h:5
 msgid "<b>Groups</b>"
 msgstr "<b>Groups</b>"
 
 #: ../glom/glom.glade.h:6
-msgid "<b>Mode: </b>"
-msgstr "<b>Mode: </b>"
+msgid "<b>Mode:</b>"
+msgstr "<b>Mode:</b>"
 
 #: ../glom/glom.glade.h:7
 msgid "<b>Numeric Formatting</b>"
 msgstr "<b>Numeric Formatting</b>"
 
 #: ../glom/glom.glade.h:8
-msgid "<b>Relationship: </b>"
-msgstr "<b>Relationship: </b>"
+msgid "<b>Relationship:</b>"
+msgstr "<b>Relationship:</b>"
 
 #: ../glom/glom.glade.h:9
 msgid "<b>Select Field</b>"
@@ -57,8 +57,8 @@ msgid "<b>Select Relationship</b>"
 msgstr "<b>Select Relationship</b>"
 
 #: ../glom/glom.glade.h:11
-msgid "<b>Table: </b>"
-msgstr "<b>Table: </b>"
+msgid "<b>Table:</b>"
+msgstr "<b>Table:</b>"
 
 #: ../glom/glom.glade.h:12
 msgid "<b>Tables in database</b>"
@@ -73,8 +73,8 @@ msgid "<b>Title:</b>"
 msgstr "<b>Title:</b>"
 
 #: ../glom/glom.glade.h:15
-msgid "<b>User Level: </b>"
-msgstr "<b>User Level: </b>"
+msgid "<b>User Level:</b>"
+msgstr "<b>User Level:</b>"
 
 #: ../glom/glom.glade.h:16
 msgid "<b>User</b>"
@@ -417,17 +417,13 @@ msgid "User"
 msgstr "User"
 
 #: ../glom/glom.glade.h:103
-msgid "User "
-msgstr "User "
-
-#: ../glom/glom.glade.h:104
 msgid "Users"
 msgstr "Users"
 
-#: ../glom/glom.glade.h:105
+#: ../glom/glom.glade.h:104
 msgid "example data format"
 msgstr "example data format"
 
-#: ../glom/glom.glade.h:106
+#: ../glom/glom.glade.h:105
 msgid "table name"
 msgstr "table name"
