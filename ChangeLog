@@ -1,5 +1,15 @@
 2005-03-08  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/mode_data/: More use of the stored primary key fields 
+	instead of getting them from the list of fields via their index. This 
+	means that the primary key can still be used when it is not shown.
+	* glom/mode_data/box_data_list_related.cc: Set the foreign key value 
+	even if it is not shown. This means that related records portals 
+	no longer need to show the primary key or the foreign key, both of 
+	which are uninteresting to most operators.
+
+2005-03-08  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/utility_widgets/db_adddel/db_adddel.[h|cc]: Remove as_value
 	from method names because they are all by value. Added 
 	get/set_key_field() so it is easy to know the primary key for the 

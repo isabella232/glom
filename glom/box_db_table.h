@@ -48,23 +48,17 @@ public:
 protected:
   virtual void fill_fields();
 
-  virtual Glib::ustring get_primary_key_name();
-
-  virtual bool record_delete(const Gnome::Gda::Value& primary_key_value);
   //virtual Glib::RefPtr<Gnome::Gda::DataModel> record_new(Gnome::Gda::Value primary_key_value);
 
   virtual Gnome::Gda::Value get_entered_field_data(const Field& field) const;
   virtual void set_entered_field_data(const Field& field, const Gnome::Gda::Value& value);
 
 
-  
   bool get_field(const Glib::ustring& name, Field& field) const;
-  //bool get_field_index(const Glib::ustring& name, guint& field_index) const; //It's almost certainly a bad idea to use this.
-  bool get_field_primary_key(guint& field_column) const; //TODO: visible 
-  bool get_field_primary_key(Field& field) const; //TODO: visible 
-  bool get_field_primary_key(const Glib::ustring table_name, Field& field) const;
-  static bool get_field_primary_key(const type_vecFields& fields, guint& field_column);
-  static bool get_field_primary_key(const type_vecFields& fields, Field& field);
+
+  bool get_field_primary_key_for_table(const Glib::ustring table_name, Field& field) const;
+  //static bool get_field_primary_key(const type_vecFields& fields, Field& field);
+
   unsigned long get_last_auto_increment_value(const Glib::RefPtr<Gnome::Gda::DataModel>& data_model, const Glib::ustring field_name);
 
 

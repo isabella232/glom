@@ -86,12 +86,24 @@ void Box_Data::on_Button_Find()
   signal_find.emit(get_WhereClause());
 }
 
-Glib::RefPtr<Gnome::Gda::DataModel> Box_Data::record_new(bool use_entered_data, Gnome::Gda::Value primary_key_value)
+Glib::RefPtr<Gnome::Gda::DataModel> Box_Data::record_new(bool use_entered_data, const Gnome::Gda::Value& primary_key_value)
 {
-  const Glib::ustring primary_key_name = get_primary_key_name();
+  Field fieldPrimaryKey;
+  get_field_primary_key(fieldPrimaryKey);
+
+  const Glib::ustring primary_key_name = fieldPrimaryKey.get_name();
+ 
+  type_vecFields fieldsToAdd = m_Fields;
+
+  //Add the primary key if it is not normally shown:
+  type_vecFields::const_iterator iterFindPrimary = std::find_if(fieldsToAdd.begin(), fieldsToAdd.end(), predicate_FieldHasName<Field>(primary_key_name));
+  if(iterFindPrimary == fieldsToAdd.end())
+  {
+    fieldsToAdd.push_back(fieldPrimaryKey);
+  }
 
   //Calculate any necessary field values and enter them:
-  for(type_vecFields::const_iterator iter = m_Fields.begin(); iter != m_Fields.end(); ++iter)
+  for(type_vecFields::const_iterator iter = fieldsToAdd.begin(); iter != fieldsToAdd.end(); ++iter)
   {
     const Field& field = *iter;
 
@@ -108,12 +120,12 @@ Glib::RefPtr<Gnome::Gda::DataModel> Box_Data::record_new(bool use_entered_data, 
       }
     }
   }
-  
+
   //Get all entered field name/value pairs:
   Glib::ustring strNames;
   Glib::ustring strValues;
 
-  for(type_vecFields::const_iterator iter = m_Fields.begin(); iter != m_Fields.end(); ++iter)
+  for(type_vecFields::const_iterator iter = fieldsToAdd.begin(); iter != fieldsToAdd.end(); ++iter)
   {
     const Field& field = *iter;
     const Glib::ustring field_name = field.get_name();
@@ -272,7 +284,7 @@ Box_Data::type_vecFields Box_Data::get_table_fields_to_show(const Glib::ustring&
    
       //Start with the Primary Key as the first field:
       guint iPrimaryKey = 0;
-      bool bPrimaryKeyFound = get_field_primary_key(all_fields, iPrimaryKey);
+      bool bPrimaryKeyFound = get_field_primary_key_index(all_fields, iPrimaryKey);
       Glib::ustring primary_key_field_name;
       if(bPrimaryKeyFound)
       {
@@ -448,6 +460,41 @@ void Box_Data::fill_layout_group_field_info(LayoutGroup& group)
   }
 }
 
+//static:
+bool Box_Data::get_field_primary_key_index(const type_vecFields& fields, guint& field_column)
+{
+  //Initialize input parameter:
+  field_column = 0;
+  
+  //TODO_performance: Cache the primary key?
+  guint col = 0;
+  guint cols_count = fields.size();
+  while(col < cols_count)
+  {
+    if(fields[col].get_field_info().get_primary_key())
+    {
+      field_column = col;
+      return true;
+    }
+    else
+    {
+      ++col;
+    }
+  }
 
-  
-  
+  return false; //Not found.
+}
+
+bool Box_Data::record_delete(const Gnome::Gda::Value& primary_key_value)
+{
+  Field field_primary_key;
+  bool test = get_field_primary_key(field_primary_key);
+  if(test && !GlomConversions::value_is_empty(primary_key_value))
+  {
+    return Query_execute( "DELETE FROM " + m_strTableName + " WHERE " + m_strTableName + "." + field_primary_key.get_name() + " = " + field_primary_key.sql(primary_key_value) );
+  }
+  else
+  {
+    return false; //no primary key
+  }
+}

@@ -72,12 +72,17 @@ protected:
   /** Get the value of the @a source_field from the @a relationship, using the @a key_value.
    */
   Gnome::Gda::Value get_lookup_value(const Relationship& relationship, const Field& source_field, const Gnome::Gda::Value & key_value);
-  
-  virtual Glib::RefPtr<Gnome::Gda::DataModel> record_new(bool use_entered_data = true, Gnome::Gda::Value primary_key_value = Gnome::Gda::Value()); //New record with all entered field values.
+
+  virtual bool record_delete(const Gnome::Gda::Value& primary_key_value);
+  virtual Glib::RefPtr<Gnome::Gda::DataModel> record_new(bool use_entered_data = true, const Gnome::Gda::Value& primary_key_value = Gnome::Gda::Value()); //New record with all entered field values.
   guint generate_next_auto_increment(const Glib::ustring& table_name, const Glib::ustring field_name);
+
+  virtual bool get_field_primary_key(Field& field) const = 0;
 
   //Signal handlers:
   virtual void on_Button_Find(); //only used by _Find sub-classes. Should be MI.
+
+ static bool get_field_primary_key_index(const type_vecFields& fields, guint& field_column);
  
   Gtk::Button m_Button_Find; //only used by _Find sub-classes. Should be MI.
   Gtk::Label m_Label_FindStatus;

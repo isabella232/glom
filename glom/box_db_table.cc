@@ -56,44 +56,11 @@ void Box_DB_Table::refresh_db_details(const Glib::ustring& strWhereClause)
 
   fill_from_database();
 }
- 
 
-Glib::ustring Box_DB_Table::get_primary_key_name()
-{
-  Glib::ustring strResult;
-
-  guint uiCol = 0;
-  bool bPresent = get_field_primary_key(uiCol);
-
-  if(bPresent)
-  {
-    strResult = m_Fields[uiCol].get_name();
-  }
-  else
-  {
-    std::cout << "Box_DB_Table::get_primary_key_name(): not found for table " << m_strTableName << " in " << m_Fields.size() << " fields." << std::endl;
-  }
-
-  return strResult;
-}
 
 void Box_DB_Table::fill_fields()
 {
 
-}
-
-bool Box_DB_Table::record_delete(const Gnome::Gda::Value& primary_key_value)
-{
-  Field field_primary_key;
-  bool test = get_field_primary_key(field_primary_key);
-  if(test && !GlomConversions::value_is_empty(primary_key_value))
-  {
-    return Query_execute( "DELETE FROM " + m_strTableName + " WHERE " + m_strTableName + "." + field_primary_key.get_name() + " = " + field_primary_key.sql(primary_key_value) );
-  }
-  else
-  {
-    return false; //no primary key
-  }
 }
 
 Gnome::Gda::Value Box_DB_Table::get_entered_field_data(const Field& /* field */) const
@@ -122,7 +89,7 @@ bool Box_DB_Table::get_field(const Glib::ustring& name, Field& field) const
   }
 }
 
-bool Box_DB_Table::get_field_primary_key(const Glib::ustring table_name, Field& field) const
+bool Box_DB_Table::get_field_primary_key_for_table(const Glib::ustring table_name, Field& field) const
 {
   const Document_Glom* document = get_document();
   if(document)
@@ -142,65 +109,13 @@ bool Box_DB_Table::get_field_primary_key(const Glib::ustring table_name, Field& 
   return false;
 }
 
-bool Box_DB_Table::get_field_primary_key(guint& field_column) const
-{
-  return get_field_primary_key(m_Fields, field_column);
-}
-
-//static:
-bool Box_DB_Table::get_field_primary_key(const type_vecFields& fields, guint& field_column)
-{
-  //Initialize input parameter:
-  field_column = 0;
-  
-  //TODO_performance: Cache the primary key?
-  guint col = 0;
-  guint cols_count = fields.size();
-  while(col < cols_count)
-  {
-    if(fields[col].get_field_info().get_primary_key())
-    {
-      field_column = col;
-      return true;
-    }
-    else
-    {
-      ++col;
-    }
-  }
-
-  return false; //Not found.
-}
-
+/*
 bool Box_DB_Table::get_field_primary_key(Field& field) const
 {
  return get_field_primary_key(m_Fields, field);
 }
+*/
 
-//static:
-bool Box_DB_Table::get_field_primary_key(const type_vecFields& fields, Field& field)
-{
-  //Initialize input parameter:
-  field = Field();
-
-  //TODO_performance: Cache the primary key?
-  guint col = 0;
-  guint cols_count = fields.size();
-  while(col < cols_count)
-  {
-    if(fields[col].get_field_info().get_primary_key())
-    {
-      field = fields[col];
-      return true;
-    }
-    else
-    {
-      ++col;
-    }
-  }
-
-  return false; //Not found.
-}
 
 /*
 bool Box_DB_Table::get_field_index(const Glib::ustring& name, guint& field_index) const

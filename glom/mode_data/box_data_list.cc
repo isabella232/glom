@@ -92,12 +92,18 @@ void Box_Data_List::fill_from_database()
         strWhereClausePiece = " WHERE " + m_strWhereClause;
 
       m_Fields = get_fields_to_show();
-      if(!m_Fields.empty())
+
+      //Add extra possibly-non-visible columns that we need:
+      type_vecFields fieldsToGet = m_Fields;
+      fieldsToGet.push_back(m_AddDel.get_key_field());
+      const int index_primary_key = fieldsToGet.size() - 1;
+
+      if(!fieldsToGet.empty())
       {
         Glib::ustring sql_part_fields;
-        for(type_vecFields::const_iterator iter =  m_Fields.begin(); iter != m_Fields.end(); ++iter)
+        for(type_vecFields::const_iterator iter =  fieldsToGet.begin(); iter != fieldsToGet.end(); ++iter)
         {
-          if(iter != m_Fields.begin())
+          if(iter != fieldsToGet.begin())
             sql_part_fields += ",";
 
           sql_part_fields += iter->get_name();
@@ -122,53 +128,48 @@ void Box_Data_List::fill_from_database()
           if(rows_count > 100)
             rows_count = 100; //Don't get more than 100. TODO: Get other rows dynamically.
 
-          guint primary_key_field_index = 0;
-          bool primary_key_found = get_field_primary_key(primary_key_field_index);
-          if(primary_key_found)
+          for(guint result_row = 0; result_row < (rows_count); result_row++)
           {
-            for(guint result_row = 0; result_row < rows_count; result_row++)
+            Gnome::Gda::Value key = result->get_value_at(index_primary_key, result_row);
+            //It is usually an integer.
+            if(GlomConversions::value_is_empty(key))
+              g_warning("Box_Data_List::fill_from_database(): primary key value is empty");
+            else
             {
+              Gnome::Gda::Value value_primary_key = result->get_value_at(index_primary_key, result_row);
 
-              Gnome::Gda::Value key = result->get_value_at(primary_key_field_index, result_row);
-              //It is usually an integer.
-              if(GlomConversions::value_is_empty(key))
-                g_warning("Box_Data_List::fill_from_database(): primary key value is empty");
-              else
+              Gtk::TreeModel::iterator tree_iter = m_AddDel.add_item(value_primary_key);
+
+              type_vecFields::const_iterator iterFields = fieldsToGet.begin();
+
+              //each field:
+              //We use cols_count -1 because we have an extra field for the primary_key.
+              guint cols_count = result->get_n_columns() - 1;
+              for(guint uiCol = 0; uiCol < cols_count; uiCol++)
               {
-                Gtk::TreeModel::iterator tree_iter = m_AddDel.add_item(key);
+                Gnome::Gda::Value value = result->get_value_at(uiCol, result_row);
+                guint index = 0;
 
-                type_vecFields::const_iterator iterFields = m_Fields.begin();
+                //g_warning("list fill: field_name=%s", iterFields->get_name().c_str());
+                //g_warning("  value_as_string=%s", value.to_string().c_str());
 
-                //each field:
-                guint cols_count = result->get_n_columns();
-                for(guint uiCol = 0; uiCol < cols_count; uiCol++)
+                //TODO_Performance: This searches fieldsToGet again each time:
+                const Glib::ustring field_name = iterFields->get_name();
+                bool test = get_field_column_index(field_name, index);
+                ++iterFields;
+
+                if(test)
                 {
-                  Gnome::Gda::Value value = result->get_value_at(uiCol, result_row);
-                  guint index = 0;
-
-                  //g_warning("list fill: field_name=%s", iterFields->get_name().c_str());
-                  //g_warning("  value_as_string=%s", value.to_string().c_str());
-
-                  //TODO_Performance: This searches m_Fields again each time:
-                  const Glib::ustring field_name = iterFields->get_name();
-                  bool test = get_field_column_index(field_name, index);
-                  ++iterFields;
-
-                  if(test)
-                  {
-                    m_AddDel.set_value(tree_iter, index, value);
-                    //g_warning("addedel size=%d", m_AddDel.get_count());
-                  }
-		  else
-		    g_warning("  get_field_column_index failed: field name=%s", field_name.c_str());
+                  m_AddDel.set_value(tree_iter, index, value);
+                  //g_warning("addedel size=%d", m_AddDel.get_count());
                 }
+                else
+                  g_warning("  get_field_column_index failed: field name=%s", field_name.c_str());
               }
             }
           }
-          else
-            g_warning("Box_Data_List::fill_from_database(): primary key not found in visible fields for table %s", m_strTableName.c_str());
         }
-      } //If !m_Fields.empty()
+      } //If !fieldsToGet.empty()
     }
    
     //Select first record:
@@ -192,7 +193,7 @@ void Box_Data_List::on_adddel_user_requested_add()
   {
     //Start editing in the primary key or the first cell if the primary key is auto-incremented (because there is no point in editing an auto-generated value)..
     guint index_primary_key = 0;
-    bool bPresent = get_field_primary_key(index_primary_key); //If there is no primary key then the default of 0 is OK.
+    bool bPresent = get_field_primary_key_index(index_primary_key); //If there is no primary key then the default of 0 is OK.
     guint index_field_to_edit = 0;
     if(bPresent)
     {
@@ -264,21 +265,18 @@ void Box_Data_List::on_adddel_user_added(const Gtk::TreeModel::iterator& row)
 {
   Gnome::Gda::Value primary_key_value;
 
-  const Glib::ustring& strPrimaryKeyName = get_primary_key_name();
-  Field field;
-  bool found = get_field(strPrimaryKeyName, field);
-  if(!found)
-    g_warning("Box_Data_List::on_adddel_user_added(): primary key %s not found.", strPrimaryKeyName.c_str());
+  Field field_primary_key = m_AddDel.get_key_field();
 
   guint generated_id = 0;
-  if(field.get_field_info().get_auto_increment())
+  if(field_primary_key.get_field_info().get_auto_increment())
   {
     //Auto-increment is awkward (we can't get the last-generated ID) with postgres, so we auto-generate it ourselves;
+    const Glib::ustring& strPrimaryKeyName = field_primary_key.get_name();
     generated_id = generate_next_auto_increment(m_strTableName, strPrimaryKeyName);  //TODO: return a Gnome::Gda::Value of an appropriate type.
     Glib::ustring strPrimaryKeyValue = util_string_from_decimal(generated_id);
 
     bool parsed = false;
-    primary_key_value = GlomConversions::parse_value(field.get_glom_type(), strPrimaryKeyValue, parsed);
+    primary_key_value = GlomConversions::parse_value(field_primary_key.get_glom_type(), strPrimaryKeyValue, parsed);
   }
   else
   {
@@ -287,25 +285,28 @@ void Box_Data_List::on_adddel_user_added(const Gtk::TreeModel::iterator& row)
 
   sharedptr<SharedConnection> sharedconnection = connect_to_server(); //Keep it alive while we need the data_model.
   if(sharedconnection)
-  {      
+  {
     Glib::RefPtr<Gnome::Gda::DataModel> data_model = record_new(true /* use entered field data*/, primary_key_value);
     if(data_model)
     {
+      //Save the primary key value for later use:
+      m_AddDel.set_value_key(row, primary_key_value);
+
+      //Show the primary key in the row, if the primary key is visible:
       guint primary_key_model_col_index = 0;
-      bool test = get_field_column_index(field.get_name(), primary_key_model_col_index);
+      bool test = get_field_column_index(field_primary_key.get_name(), primary_key_model_col_index);
       if(test)
       {
-        const Gnome::Gda::FieldAttributes fieldInfo = field.get_field_info();
+        const Gnome::Gda::FieldAttributes fieldInfo = field_primary_key.get_field_info();
         //If it's an auto-increment, then get the value and show it:
         if(fieldInfo.get_auto_increment())
         {
-          m_AddDel.set_value_key(row, primary_key_value); //The AddDel key is always a string.
           m_AddDel.set_value(row, primary_key_model_col_index, primary_key_value);
         }
-
-        //Allow derived class to respond to record addition.
-        on_record_added(primary_key_value);
       }
+
+      //Allow derived class to respond to record addition.
+      on_record_added(primary_key_value);
     }
     else
       handle_error();
@@ -353,36 +354,27 @@ void Box_Data_List::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, 
     //Just update the record:
     try
     {
-      guint primary_key_field_index = 0;
-      bool bPresent = get_field_primary_key(primary_key_field_index);
-      if(bPresent)
-      {
-        Field field_primary_key = m_Fields[primary_key_field_index];
+      Field field_primary_key = m_AddDel.get_key_field();
 
-        const Glib::ustring field_name = m_AddDel.get_column_field(col);
-        Field field;
-        bool test = get_fields_for_table_one_field(m_strTableName, field_name, field);
-        if(test)
-        {        
-          const Gnome::Gda::Value field_value = m_AddDel.get_value(row, col);
-             
-          Glib::ustring strQuery = "UPDATE " + m_strTableName;
-          strQuery += " SET " +  field.get_name() + " = " + field.sql(field_value);
+      const Glib::ustring field_name = m_AddDel.get_column_field(col);
+      Field field;
+      bool test = get_fields_for_table_one_field(m_strTableName, field_name, field);
+      if(test)
+      {        
+        const Gnome::Gda::Value field_value = m_AddDel.get_value(row, col);
+            
+        Glib::ustring strQuery = "UPDATE " + m_strTableName;
+        strQuery += " SET " +  field.get_name() + " = " + field.sql(field_value);
 
-          strQuery += " WHERE " + field_primary_key.get_name() + " = " + field_primary_key.sql(primary_key_value);
-          Query_execute(strQuery);  //TODO: Handle errors
+        strQuery += " WHERE " + field_primary_key.get_name() + " = " + field_primary_key.sql(primary_key_value);
+        Query_execute(strQuery);  //TODO: Handle errors
 
-          //Get-and-set values for lookup fields, if this field triggers those relationships:
-          do_lookups(row, field, field_value, field_primary_key, primary_key_value);
-        }
-        else
-        {
-          g_warning("Box_Data_List::on_adddel_user_changed(): get_fields_for_table_one_field() failed: m_strTableName=%s, field_name=%s", m_strTableName.c_str(), field_name.c_str());
-        }
+        //Get-and-set values for lookup fields, if this field triggers those relationships:
+        do_lookups(row, field, field_value, field_primary_key, primary_key_value);
       }
       else
       {
-        g_warning("Box_Data_List::on_adddel_user_changed(): primary key not found");
+        g_warning("Box_Data_List::on_adddel_user_changed(): get_fields_for_table_one_field() failed: m_strTableName=%s, field_name=%s", m_strTableName.c_str(), field_name.c_str());
       }
     }
     catch(const std::exception& ex)
@@ -395,10 +387,7 @@ void Box_Data_List::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, 
     //This record probably doesn't exist yet.
     //Add new record, which will generate the primary key:
 
-    Field field_primary_key;
-
-    bool found = get_field(get_primary_key_name(), field_primary_key);
-    if(found && field_primary_key.get_field_info().get_auto_increment())
+    if(m_AddDel.get_key_field().get_field_info().get_auto_increment())
     {
       on_adddel_user_added(row);
 
@@ -569,10 +558,16 @@ void Box_Data_List::fill_column_titles()
 {
   const Document_Glom* pDoc = dynamic_cast<const Document_Glom*>(get_document());
   if(pDoc)
-  {    
+  {
     //Field Names:
     m_AddDel.remove_all_columns();
     //m_AddDel.set_columns_count(m_Fields.size());
+
+    Field field_primary_key;
+    bool test = get_field_primary_key_for_table(m_strTableName, field_primary_key);
+    if(test)
+        m_AddDel.set_key_field(field_primary_key);
+
 
     type_vecFields listFieldsToShow = get_fields_to_show();
 
@@ -580,11 +575,9 @@ void Box_Data_List::fill_column_titles()
     for(type_vecFields::const_iterator iter =  listFieldsToShow.begin(); iter != listFieldsToShow.end(); ++iter)
     {
       m_AddDel.add_column(*iter);
-
-      if(iter->get_field_info().get_primary_key())
-        m_AddDel.set_key_field(*iter);
     }
   }
+
 }
 
 void Box_Data_List::on_record_added(const Gnome::Gda::Value& /* strPrimaryKey */)
@@ -615,11 +608,16 @@ bool Box_Data_List::get_field_column_index(const Glib::ustring& field_name, guin
     ++i;
   }
 
-  g_warning("Box_Data_List::get_field_column_index(): field not found.");
   return false; //failure.
 }
 
-Glib::ustring Box_Data_List::get_primary_key_name()
+bool Box_Data_List::get_field_primary_key(Field& field) const
 {
-  return m_AddDel.get_key_field().get_name();
+  field = m_AddDel.get_key_field();
+  return false;
+}
+
+bool Box_Data_List::get_field_primary_key_index(guint& field_column) const
+{
+  return Box_Data::get_field_primary_key_index(m_Fields, field_column);
 }

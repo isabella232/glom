@@ -64,7 +64,7 @@ protected:
 
   void do_lookups(const Field& field_changed, const Gnome::Gda::Value& field_value, const Field& primary_key, const Gnome::Gda::Value& primary_key_value);
 
-  virtual Glib::ustring get_primary_key_name();
+  virtual bool get_field_primary_key(Field& field) const;
 
   //Signal handlers:
   virtual void on_button_new();

@@ -124,7 +124,7 @@ void Box_Data_Details::init_db_details(const Glib::ustring& strTableName, const 
 {
   m_primary_key_value = primary_key_value;
 
-  get_field_primary_key(strTableName, m_field_primary_key);
+  get_field_primary_key_for_table(strTableName, m_field_primary_key);
 
   Box_DB_Table::init_db_details(strTableName);
 }
@@ -173,33 +173,37 @@ void Box_Data_Details::fill_from_database()
 
 
     Box_DB_Table::fill_from_database();
-         
-    type_vecFields listFieldsToShow = get_fields_to_show();
-    m_Fields =  listFieldsToShow;
-    if(!listFieldsToShow.empty())
+
+    m_Fields = get_fields_to_show();
+    type_vecFields fieldsToGet = m_Fields;
+
+    if(!fieldsToGet.empty())
     {
       fill_from_database_layout(); //TODO: Only do this when the layout has changed.
 
-      Field field_primary_key;
-      bool primary_key_found  = get_field_primary_key(field_primary_key);
+      //Add extra possibly-non-visible columns that we need:
+      fieldsToGet.push_back(m_field_primary_key); //Actually listFieldsToGet.
 
-      if(primary_key_found && !GlomConversions::value_is_empty(m_primary_key_value)) //If there is a record to show:
+      //g_warning("primary_key name = %s", m_field_primary_key.get_name().c_str());
+      const int index_primary_key = fieldsToGet.size() - 1;
+
+      if(!GlomConversions::value_is_empty(m_primary_key_value)) //If there is a record to show:
       {
         if(sharedconnection)
         {
           Glib::RefPtr<Gnome::Gda::Connection> connection = sharedconnection->get_gda_connection();
 
           Glib::ustring sql_part_fields;
-          for(type_vecFields::const_iterator iter =  listFieldsToShow.begin(); iter != listFieldsToShow.end(); ++iter)
+          for(type_vecFields::const_iterator iter =  fieldsToGet.begin(); iter != fieldsToGet.end(); ++iter)
           {
-            if(iter != listFieldsToShow.begin())
+            if(iter != fieldsToGet.begin())
               sql_part_fields += ",";
 
             sql_part_fields += iter->get_name();
           }
 
           std::stringstream query;
-          query << "SELECT " << sql_part_fields << " FROM " << m_strTableName << " WHERE " << get_table_name() + "." + get_primary_key_name() << " = " << field_primary_key.sql(m_primary_key_value);
+          query << "SELECT " << sql_part_fields << " FROM " << m_strTableName << " WHERE " << get_table_name() + "." + m_field_primary_key.get_name() << " = " << m_field_primary_key.sql(m_primary_key_value);
           Glib::RefPtr<Gnome::Gda::DataModel> result = connection->execute_single_command(query.str());
 
           if(result && result->get_n_rows())
@@ -212,9 +216,15 @@ void Box_Data_Details::fill_from_database()
 
               const int row_number = 0; //The only row.
               const int cols_count = result->get_n_columns();
+
+              //Get special possibly-non-visible field values:
+              if(index_primary_key < cols_count)
+                m_primary_key_value = result->get_value_at(index_primary_key, row_number);
+
+              //Get field values to show:
               for(int i = 0; i < cols_count; ++i)
               {
-                const Field& field = m_Fields[i];
+                const Field& field = fieldsToGet[i];
 
                 //Field value:
                 Gnome::Gda::Value value = result->get_value_at(i, row_number);
@@ -229,7 +239,7 @@ void Box_Data_Details::fill_from_database()
         //Show blank record:
         //TODO
       }
-    } //if(!listFieldsToShow.empty())
+    } //if(!fieldsToGet.empty())
 
     //fill_related();
 
@@ -333,31 +343,26 @@ void Box_Data_Details::on_button_new()
 {
   if(confirm_discard_unstored_data())
   {
-    Field field_primary_key;
-    bool primary_key_found  = get_field_primary_key(field_primary_key);
-    if(primary_key_found)
+    Gnome::Gda::FieldAttributes fieldinfo = m_field_primary_key.get_field_info();
+    if(fieldinfo.get_auto_increment()) //If the primary key is an auto-increment:
     {
-      Gnome::Gda::FieldAttributes fieldinfo = field_primary_key.get_field_info();
-      if(fieldinfo.get_auto_increment()) //If the primary key is an auto-increment:
-      {
-        //Just make a new record, and show it:
-        guint generated_id = generate_next_auto_increment(m_strTableName, field_primary_key.get_name()); //TODO: This should return a Gda::Value
+      //Just make a new record, and show it:
+      guint generated_id = generate_next_auto_increment(m_strTableName, m_field_primary_key.get_name()); //TODO: This should return a Gda::Value
 
-        //TODO: Create the Gda::Value directly from the integer.
-        bool parsed = false; 
-        Gnome::Gda::Value primary_key_value = GlomConversions::parse_value(field_primary_key.get_glom_type(), util_string_from_decimal(generated_id), parsed);
-        if(parsed)
-        {
-          record_new(false /* use entered field data */, primary_key_value);
-          refresh_db_details(primary_key_value);
-        }
-      }
-      else
+      //TODO: Create the Gda::Value directly from the integer.
+      bool parsed = false; 
+      Gnome::Gda::Value primary_key_value = GlomConversions::parse_value(m_field_primary_key.get_glom_type(), util_string_from_decimal(generated_id), parsed);
+      if(parsed)
       {
-        //It's not an auto-increment primary key,
-        //so just blank the fields ready for a primary key later.
-        refresh_db_details_blank(); //shows blank record.
+        record_new(false /* use entered field data */, primary_key_value);
+        refresh_db_details(primary_key_value);
       }
+    }
+    else
+    {
+      //It's not an auto-increment primary key,
+      //so just blank the fields ready for a primary key later.
+      refresh_db_details_blank(); //shows blank record.
     }
 
   } //if(confirm_discard_unstored_data())
@@ -518,106 +523,97 @@ void Box_Data_Details::on_flowtable_field_edited(const Glib::ustring& id, const 
   if(m_ignore_signals)
     return;
 
-   const Glib::ustring strPrimaryKey_Name = get_primary_key_name();
-   const Glib::ustring strFieldName = id;
+  const Glib::ustring strFieldName = id;
 
-   if(!strPrimaryKey_Name.empty())
-   {
-     Field fieldInfoPK;
-     bool test = get_field(strPrimaryKey_Name, fieldInfoPK);
-     if(!test)
-       g_warning("Box_Data_Details::on_flowtable_field_edited(): field not found");
+  Gnome::Gda::Value primary_key_value = get_primary_key_value();
+  if(!GlomConversions::value_is_empty(primary_key_value)) //If there is a primary key value:
+  {
+    Field field;
+    bool test = get_field(strFieldName, field);
+    if(!test)
+      g_warning("Box_Data_Details::on_flowtable_field_edited: field not found");
 
-     Gnome::Gda::Value primary_key_value = get_primary_key_value();
-     if(!GlomConversions::value_is_empty(primary_key_value)) //If there is a primary key value:
-     {
-       Field field;
-       bool test = get_field(strFieldName, field);
-       if(!test)
-         g_warning("Box_Data_Details::on_flowtable_field_edited: field not found");
+    //Update the field in the record (the record with this primary key):
+    try
+    {
+      Glib::ustring strQuery = "UPDATE " + m_strTableName;
+      strQuery += " SET " +  /* get_table_name() + "." +*/ strFieldName + " = " + field.sql(field_value);
+      strQuery += " WHERE " + get_table_name() + "." + m_field_primary_key.get_name() + " = " + m_field_primary_key.sql(get_primary_key_value());
+      bool bTest = Query_execute(strQuery);
 
-       //Update the field in the record (the record with this primary key):
-       try
-       {
-         Glib::ustring strQuery = "UPDATE " + m_strTableName;
-         strQuery += " SET " +  /* get_table_name() + "." +*/ strFieldName + " = " + field.sql(field_value);
-         strQuery += " WHERE " + get_table_name() + "." + strPrimaryKey_Name + " = " + fieldInfoPK.sql(get_primary_key_value());
-         bool bTest = Query_execute(strQuery);
+      if(!bTest)
+      {
+        //Update failed.
+        fill_from_database(); //Replace with correct values.
+      }
+      else
+      {
+        //Set the value in all instances of this field in the layout (The field might be on the layout more than once):
+        m_FlowTable.set_field_value(field, field_value);
+        
+        //Get-and-set values for lookup fields, if this field triggers those relationships:
+        do_lookups(field, field_value, m_field_primary_key, primary_key_value);
 
-         if(!bTest)
-         {
-           //Update failed.
-           fill_from_database(); //Replace with correct values.
-         }
-         else
-         {
-           //Set the value in all instances of this field in the layout (The field might be on the layout more than once):
-           m_FlowTable.set_field_value(field, field_value);
-           
-           //Get-and-set values for lookup fields, if this field triggers those relationships:
-           do_lookups(field, field_value, fieldInfoPK, primary_key_value);
+        //If this is a foreign key then refresh the related records:
+        /*
+        bool bIsForeignKey = false;
+        Document_Glom::type_vecRelationships vecRelationships = m_pDocument->get_relationships(m_strTableName);
+        for(Document_Glom::type_vecRelationships::iterator iter = vecRelationships.begin(); iter != vecRelationships.end(); iter++)
+        {
+          const Relationship& relationship = *iter;
 
-           //If this is a foreign key then refresh the related records:
-           /*
-           bool bIsForeignKey = false;
-           Document_Glom::type_vecRelationships vecRelationships = m_pDocument->get_relationships(m_strTableName);
-           for(Document_Glom::type_vecRelationships::iterator iter = vecRelationships.begin(); iter != vecRelationships.end(); iter++)
-           {
-             const Relationship& relationship = *iter;
+          if(relationship.get_from_field() == strFieldName)
+          {
+            bIsForeignKey = true;
+            break;
+          }
+        }
 
-             if(relationship.get_from_field() == strFieldName)
-             {
-               bIsForeignKey = true;
-               break;
-             }
-           }
+        if(bIsForeignKey)
+          fill_related();
+        */
+      }
 
-           if(bIsForeignKey)
-             fill_related();
-           */
-         }
+    }
+    catch(const std::exception& ex)
+    {
+      handle_error(ex);
+    }
+  }
+  else
+  {
+    //There is no current primary key value:
 
-       }
-       catch(const std::exception& ex)
-       {
-         handle_error(ex);
-       }
-     }
-     else
-     {
-       //There is no current primary key:
+    if(m_field_primary_key.get_field_info().get_auto_increment()) //If the primary key is an auto-increment:
+    {
+      if(strFieldName == m_field_primary_key.get_name()) //If edited field is the primary key.
+      {
+        //Warn user that they can't choose their own primary key:
+        Gtk::MessageDialog dialog ("The primary key is auto-incremented.\n You may not enter your own primary key value.");
+        dialog.run();
+      }
+    }
+    else
+    {
+      //It is not auto-generated:
 
-       if(fieldInfoPK.get_field_info().get_auto_increment()) //If the primary key is an auto-increment:
-       {
-         if(strFieldName == strPrimaryKey_Name) //If edited field is the primary key.
-         {
-           //Warn user that they can't choose their own primary key:
-           Gtk::MessageDialog dialog ("The primary key is auto-incremented.\n You may not enter your own primary key value.");
-           dialog.run();
-         }
-       }
-       else
-       {
-         //It is not auto-generated:
+      if(strFieldName == m_field_primary_key.get_name()) //if it is the primary key that' being edited.
+      {
+        //Create new record with this primary key,
+        //and all the other field values too.
+        //see comments after 'else':
+        record_new(true /* use entered field data */);
+      }
+      else
+      {
+        //The record does not exist yet.
+        //The values in the other fields will have to wait
+        //until the primary key is set by the user.
 
-         if(strFieldName == strPrimaryKey_Name) //if it is the primary key that' being edited.
-         {
-           //Create new record with this primary key,
-           //and all the other field values too.
-           //see comments after 'else':
-           record_new(true /* use entered field data */);
-         }
-         else
-         {
-           //The record does not exist yet.
-           //The values in the other fields will have to wait
-           //until the primary key is set by the user.
-
-           set_unstored_data(true); //Cause a warning if this is never put into the database.
-         }
-       }
-     } //if(get_primary_key_value().size())
-   } //if(strPrimaryKey_Name.size())
+        set_unstored_data(true); //Cause a warning if this is never put into the database.
+      }
+    }
+  } //if(get_primary_key_value().size())
 }
 
 void Box_Data_Details::do_lookups(const Field& field_changed, const Gnome::Gda::Value& field_value, const Field& primary_key, const Gnome::Gda::Value& primary_key_value)
@@ -658,10 +654,12 @@ void Box_Data_Details::on_userlevel_changed(AppState::userlevels user_level)
   m_FlowTable.set_design_mode( user_level == AppState::USERLEVEL_DEVELOPER );
 }
 
-Glib::ustring Box_Data_Details::get_primary_key_name()
+bool Box_Data_Details::get_field_primary_key(Field& field) const
 {
-  return m_field_primary_key.get_name();
+  field = m_field_primary_key;
+  return false;
 }
+
 
 
 
