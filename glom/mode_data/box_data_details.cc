@@ -277,9 +277,18 @@ void Box_Data_Details::fill_related()
     //Get relationships from the document:
     Document_Glom::type_vecRelationships vecRelationships = m_pDocument->get_relationships(m_strTableName);
 
-    //Add the relationships:
-    for(Document_Glom::type_vecRelationships::iterator iter = vecRelationships.begin(); iter != vecRelationships.end(); iter++)
+    if(vecRelationships.empty())
     {
+      //Hide the relationships pane:
+      m_Frame_Related.hide();
+    }
+    else
+    {
+      m_Frame_Related.show();
+      
+      //Add the relationships:
+      for(Document_Glom::type_vecRelationships::iterator iter = vecRelationships.begin(); iter != vecRelationships.end(); iter++)
+      {
        const Relationship& relationship = *iter;
 
        //bool bMakeRelatedTab = true;
@@ -296,12 +305,13 @@ void Box_Data_Details::fill_related()
          //TODO_performance:
          type_vecFields vecRelatedFields = get_fields_for_table_from_database(to_table_name); //Fields in the database;
          type_vecFields::const_iterator iterFind = std::find_if(vecRelatedFields.begin(), vecRelatedFields.end(), predicate_FieldHasName<Field>(to_field_name));
+         
          if(iterFind != vecRelatedFields.end() ) //If it was found
-         {    
+         {
            Box_Data_List_Related* pBox = Gtk::manage(new Box_Data_List_Related());
            add_view(pBox); //So that it knows about the Document.
            m_Notebook_Related.pages().push_back( Gtk::Notebook_Helpers::TabElem(*pBox, relationship.get_name()) );
-
+              
            EntryGlom* pEntry = m_FlowTable.get_field(from_field);
            if(pEntry)
            {
@@ -314,12 +324,12 @@ void Box_Data_Details::fill_related()
                pBox->init_db_details(get_database_name(), relationship, value, m_primary_key_value);
                pBox->show_all();
 
-            
+
                //Connect signals:
                pBox->signal_record_added.connect( sigc::bind(
                  sigc::mem_fun(*this, &Box_Data_Details::on_related_record_added), relationship.get_from_field() )
                );
-    
+
                pBox->signal_user_requested_details().connect( sigc::bind(
                  sigc::mem_fun(*this, &Box_Data_Details::on_related_user_requested_details), relationship.get_to_table() )
                );
@@ -327,6 +337,7 @@ void Box_Data_Details::fill_related()
            }
          }
        }
+      }
     }
   }
 

@@ -130,7 +130,20 @@ void FlowTableWithFields::remove_field(const Glib::ustring& id)
 
 EntryGlom* FlowTableWithFields::get_field(const Field& field)
 {
-  EntryGlom* entry = get_field(field.get_name());
+  return get_field(field.get_name());
+}
+
+EntryGlom* FlowTableWithFields::get_field(const Glib::ustring& id)
+{
+  EntryGlom* entry = 0;
+  
+  type_mapFields::const_iterator iterFind = m_mapFields.find(id);
+  if(iterFind != m_mapFields.end())
+  {
+    Info info = iterFind->second;
+    entry = info.m_second;
+  }
+
   if(entry)
     return entry;
   else
@@ -140,23 +153,11 @@ EntryGlom* FlowTableWithFields::get_field(const Field& field)
     {
       FlowTableWithFields* subtable = *iter;
       if(subtable)
-        entry = subtable->get_field(field);
-        
+        entry = subtable->get_field(id);
+
       if(entry)
         return entry;
     }
-  }
-
-  return 0;
-}
-
-EntryGlom* FlowTableWithFields::get_field(const Glib::ustring& id)
-{
-  type_mapFields::const_iterator iterFind = m_mapFields.find(id);
-  if(iterFind != m_mapFields.end())
-  {
-    Info info = iterFind->second;
-    return info.m_second;
   }
 
   return 0; //Not found.

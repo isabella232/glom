@@ -1,5 +1,12 @@
 2004-06-30  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/utility_widgets/flowtable.cc on_size_allocate(): Correct x 
+	posititioning of 2nd column when using single items.
+	get_field(): Put the recursive stuff in the field(sting id) overload, 
+	because that's the one that gets called by the field(field) overload.
+
+2004-06-30  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/utility_widgets/flowtablewithfields.cc: Added add_group() and 
 	used it in mode_data/box_table_data.cc fill_layout(). Layout groups 
 	are now shown inside a HIG-style frame.

@@ -369,6 +369,7 @@ void FlowTable::on_size_allocate(Gtk::Allocation& allocation)
   int second_max_width = 0;
   int singles_max_width = 0;
   get_item_max_width(0, allocation.get_height(), first_max_width, second_max_width, singles_max_width);  //TODO: Give the 2nd part of the column a bit more if the total needed is less than the allocation given.
+           
   //Calculate where the columns should start on the x axis.
   int column_x_start = allocation.get_x();
   
@@ -391,17 +392,19 @@ void FlowTable::on_size_allocate(Gtk::Allocation& allocation)
     {
       //start a new column:
       column_child_y_start = allocation.get_y();
+      int column_x_start_plus_singles = column_x_start + singles_max_width;
       column_x_start += column_x_start_second + second_max_width;
-      column_x_start += MAX(column_x_start, column_x_start_second + singles_max_width); //Maybe the single items take up even more width.
+      column_x_start += MAX(column_x_start, column_x_start_plus_singles); //Maybe the single items take up even more width.
       column_x_start += m_padding;
-      
+
       {
         //Discover the widths of the different parts of this column:
         first_max_width = 0;
         second_max_width= 0;
         singles_max_width = 0;
-        get_item_max_width(i, allocation.get_height(), first_max_width, second_max_width, singles_max_width);
 
+        get_item_max_width(i, allocation.get_height(), first_max_width, second_max_width, singles_max_width);
+       
         column_x_start_second = column_x_start + first_max_width;
         if(first_max_width > 0) //Add padding between first and second sub sets of items, if there is a first set.
           column_x_start_second += m_padding;
