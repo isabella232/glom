@@ -88,7 +88,12 @@ void Box_Data_List::fill_from_database()
       //Glib::RefPtr<Gnome::Gda::Connection> connection = sharedconnection->get_gda_connection();
 
     //Do not try to show the data if the user may not view it:
-    Privileges table_privs = get_current_privs(m_strTableName);
+    const Privileges table_privs = get_current_privs(m_strTableName);
+
+    //Enable/Disable record creation and deletion:
+    m_AddDel.set_allow_add(table_privs.m_create);
+    m_AddDel.set_allow_delete(table_privs.m_delete);
+
     if(table_privs.m_view)
     {
       Glib::ustring strWhereClausePiece;

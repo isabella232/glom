@@ -183,6 +183,11 @@ void Box_Data_Details::fill_from_database()
 
       //Do not try to show the data if the user may not view it:
       Privileges table_privs = get_current_privs(m_strTableName);
+
+      //Enable/Disable record creation and deletion:
+      m_Button_New.set_sensitive(table_privs.m_create);
+      m_Button_Del.set_sensitive(table_privs.m_delete);
+
       if(table_privs.m_view)
       {
         //Add extra possibly-non-visible columns that we need:

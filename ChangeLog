@@ -1,5 +1,14 @@
 2005-03-22  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/mode_data/box_data_details.cc:
+	* glom/mode_data/box_data_list.cc:
+	* glom/mode_data/box_data_list.h:
+	fill_from_database(): Disable the Add and Delete 
+	buttons if the current user does not have those 
+	priviliges.
+
+2005-03-22  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/data_structure/layout/layoutitem_field.cc:
 	* glom/data_structure/layout/layoutitem_field.h:
 	Store priv_view when we store priv_edit.
