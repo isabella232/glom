@@ -1,5 +1,12 @@
 2005-03-11  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/main.cc: Attempt to use Glib::Option from glibmm 2.6, to 
+	provide a --file option, for debugging. But it does not work, 
+	probably because of conflicts with the libgnomeui and libgda uses of 
+	argc and argv.
+
+2005-03-11  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom now depends on gtkmm 2.6.
 	* glom/utility_widgets/adddel/cellrendererlist.[h|cc]: Derive from 
 	the Gtk::CellRendererCombo in gtkmm 2.6, instead of implementing 

@@ -33,6 +33,28 @@
 #include "application.h"
 
 
+
+class ExampleOptionGroup : public Glib::OptionGroup
+{ 
+public:
+  ExampleOptionGroup();
+
+  //These int instances should live as long as the OptionGroup to which they are added, 
+  //and as long as the OptionContext to which those OptionGroups are added.
+  std::string m_arg_filename;
+};
+
+ExampleOptionGroup::ExampleOptionGroup()
+: Glib::OptionGroup("Glom", "Glom options", "Debug options for glom")
+{
+  Glib::OptionEntry entry;
+  entry.set_long_name("file");
+  entry.set_short_name('f');
+  entry.set_description("The Filename");
+  add_entry_filename(entry, m_arg_filename);
+}
+
+
 int 
 main(int argc, char* argv[])
 {
@@ -43,28 +65,38 @@ main(int argc, char* argv[])
 
   Gnome::Gda::init("glom", VERSION, argc, argv);
 
-  //Get command-line parameters, if any:
-  Glib::ustring input_uri;
-  if(argc > 1 )
-  {
-    input_uri = argv[1];
+  Glib::OptionContext context;
 
-    //Ignore arguements starting with "--", or "-".
-    if(input_uri.size() && input_uri[0] == '-')
-      input_uri = Glib::ustring();
+  ExampleOptionGroup group;
+  context.set_main_group(group);
+
+/*
+  try
+  {
+    context.parse(argc, argv);
   }
+  catch(const Glib::Error& ex)
+  {
+    std::cout << "Exception: " << ex.what() << std::endl;
+  }
+*/
+
 
   //We use python for calculated-fields:
   Py_Initialize();
-  
+
   try
   {
     //Initialize gnome_program, so that we can use gnome_help_display().    
     gnome_program_init (PACKAGE, VERSION, LIBGNOME_MODULE, argc, argv,
                             GNOME_PROGRAM_STANDARD_PROPERTIES, 0);
                             
-    Gtk::Main mainInstance(argc, argv);
+    Gtk::Main mainInstance(argc, argv, context);
     Bakery::init();
+
+    //Get command-line parameters, if any:
+    Glib::ustring input_uri = group.m_arg_filename;
+
 
     // Main app
     Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_main");
