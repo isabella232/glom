@@ -25,7 +25,7 @@
 #include <sstream> //For stringstream
 
 #include <locale>     // for locale, time_put
-#include <time.h>     // for struct tm
+#include <ctime>     // for struct tm
 #include <iostream>   // for cout, endl
 
 EntryGlom::EntryGlom(Field::glom_field_type glom_type)
@@ -42,9 +42,13 @@ void EntryGlom::check_for_change()
   Glib::ustring new_text = get_text();
   if(new_text != m_old_text)
   {
-    if(validate_text())
+    //Validate the input:
+    bool success = false;
+    Gnome::Gda::Value value = GlomConversions::parse_value(m_glom_type, get_text(), success);
+    if(success)
     {
-      m_old_text = new_text;
+      //Actually show the canonical text:
+      set_value(value);
       m_signal_edited.emit(); //The text was edited, so tell the client code.
     }
     else

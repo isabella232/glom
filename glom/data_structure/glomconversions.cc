@@ -22,13 +22,13 @@
 #include <sstream> //For stringstream
 
 #include <locale>     // for locale, time_put
-#include <time.h>     // for struct tm
+#include <ctime>     // for struct tm
 #include <iostream>   // for cout, endl
 
 
 Glib::ustring GlomConversions::format_time(const tm& tm_data)
 {
-  return format_time( tm_data, std::locale(std::getenv("LANG")) ); //Get the current locale.
+  return format_time( tm_data, std::locale("") /* the user's current locale */ ); //Get the current locale.
 }
 
 
@@ -45,7 +45,7 @@ Glib::ustring GlomConversions::format_time(const tm& tm_data, const std::locale&
 
 Glib::ustring GlomConversions::format_date(const tm& tm_data)
 {
-  return format_date( tm_data, std::locale(std::getenv("LANG")) ); //Get the current locale.
+  return format_date( tm_data, std::locale("") /* the user's current locale */ ); //Get the current locale.
 }
 
 
@@ -78,6 +78,13 @@ Glib::ustring GlomConversions::format_tm(const tm& tm_data, const std::locale& l
 
   Glib::ustring text = the_stream.str();
   g_warning("GlomConversions::format_tm(): result=%s", text.c_str());
+
+  if(locale == std::locale("") /* The user's current locale */)
+  {
+    //Converts from the user's current locale to utf8. I would prefer a generic conversion from any locale,
+    // but there is no such function, and it's hard to do because I don't know how to get the encoding name from the std::locale()
+    text = Glib::locale_to_utf8(text);
+  }
 
   return text; //TODO: Use something like Glib::locale_to_utf8()?
 
@@ -113,7 +120,7 @@ Glib::ustring GlomConversions::format_tm(const tm& tm_data, const std::locale& l
 
 Glib::ustring GlomConversions::get_text_for_gda_value(Field::glom_field_type glom_type, const Gnome::Gda::Value& value)
 {
-  return get_text_for_gda_value(glom_type, value, std::locale(std::getenv("LANG")) ); //Get the current locale.
+  return get_text_for_gda_value(glom_type, value, std::locale("") /* the user's current locale */ ); //Get the current locale.
 }
 
 Glib::ustring GlomConversions::get_text_for_gda_value(Field::glom_field_type glom_type, const Gnome::Gda::Value& value, const std::locale& locale, bool iso_format)
@@ -156,25 +163,35 @@ Glib::ustring GlomConversions::get_text_for_gda_value(Field::glom_field_type glo
   else if(glom_type == Field::TYPE_NUMERIC)
   {
     const GdaNumeric* gda_numeric = value.get_numeric();
-    Glib::ustring text_in_c_locale;
+    std::string text_in_c_locale;
     if(gda_numeric && gda_numeric->number) //A char* - I assume that it formatted as per the C locale. murrayc. TODO: Do we need to look at the other fields?
       text_in_c_locale = gda_numeric->number; //What formatting does this use?
 
     //Get an actual numeric value, so we can get a locale-specific text representation:
     std::stringstream the_stream;
-    the_stream.imbue( std::locale() ); //The C locale.
-    the_stream << text_in_c_locale;
-    float number = 0;
+    the_stream.imbue( std::locale::classic() ); //The C locale.
+    the_stream.str(text_in_c_locale); //Avoid using << because Glib::ustinrg does implicit character conversion with that.
+    g_warning("debug: the_stream.str()=%s", the_stream.str().c_str());
+    double number = 0;
     the_stream >> number;
+    g_warning("debug: number=%f", number);
 
     //Get the locale-specific text representation:
-    the_stream.clear();
-    the_stream.imbue(locale); //Tell it to parse stuff as per this locale.
-    the_stream << number;
+    std::stringstream another_stream;
+    another_stream.imbue(locale); //Tell it to parse stuff as per this locale.
+    another_stream << number;
     Glib::ustring text;
-    the_stream >> text;
-
-    return text;
+    text = another_stream.str();  //Avoid using << because Glib::ustinrg does implicit character conversion with that.
+     g_warning("debug: localized text=%s", text.c_str());
+     
+    if(locale == std::locale("") /* The user's current locale */)
+    {
+      //Converts from the user's current locale to utf8. I would prefer a generic conversion from any locale,
+      // but there is no such function, and it's hard to do because I don't know how to get the encoding name from the std::locale()
+      text = Glib::locale_to_utf8(text); 
+    }
+    
+    return text; //Do something like Glib::locale_to_utf(), but with the specified locale instead of the current locale.
   }
   else
   {
@@ -222,9 +239,9 @@ Gnome::Gda::Value GlomConversions::parse_value(Field::glom_field_type glom_type,
   {
     //Try to parse the inputted number, according to the current locale.
     std::stringstream the_stream;
-    the_stream.imbue( std::locale(getenv("LANG")) ); //Parse it as per the current locale.
-    the_stream << text;
-    float the_number;
+    the_stream.imbue( std::locale("") /* The user's current locale */ ); //Parse it as per the current locale.
+    the_stream.str(text); //Avoid << because it does implicit character conversion (though that might not be a problem here. Not sure). murrayc
+    double the_number = 0;
     the_stream >> the_number;  //TODO: Does this throw any exception if the text is an invalid time?
 
     success = true; //Can this ever fail?
@@ -238,7 +255,7 @@ Gnome::Gda::Value GlomConversions::parse_value(Field::glom_field_type glom_type,
 
 tm GlomConversions::parse_date(const Glib::ustring& text, bool& success)
 {
-  return parse_date( text, std::locale(std::getenv("LANG")), success ); //Get the current locale.
+  return parse_date( text, std::locale("") /* the user's current locale */, success ); //Get the current locale.
 }
 
 tm GlomConversions::parse_date(const Glib::ustring& text, const std::locale& locale, bool& success)
@@ -308,10 +325,19 @@ tm GlomConversions::parse_date(const Glib::ustring& text, const std::locale& loc
 
 tm GlomConversions::parse_time(const Glib::ustring& text, bool& success)
 {
-  //return parse_time( text, std::locale(std::getenv("LANG")) ); //Get the current locale.
+  //return parse_time( text, std::locale("") /* the user's current locale */ ); //Get the current locale.
 
-  //time_get() does not seem to work with non-C locales.
-  return parse_time( text, std::locale(), success );
+  //time_get() does not seem to work with non-C locales.  TODO: Try again.
+  tm the_time = parse_time( text, std::locale("") /* the user's current locale */, success );
+  if(success)
+    return the_time;
+  else
+  {
+    //Fallback:
+    //Try interpreting it as the C locale instead.
+    //For instance, time_get::get_time() does not seem to be able to parse any time in a non-C locale (even "en_US" or "en_US.UTF-8").
+    return parse_time( text, std::locale::classic() /* the C locale */, success );
+  }
 }
 
 

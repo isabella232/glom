@@ -1,3 +1,13 @@
+2004-06-12  Murray Cumming  <murrayc@murrayc_debian>
+
+	* glom/data_structure/glomconversions.cc: Various corrections from 
+	Daniel Elstner (king of C++). Also fallback to parsing time in the C 
+	locale, because parsing in the current locale never seems to work.
+	* glom/utility_widgets/adddel/adddel.cc: on_treeview_celledited(),
+	  glom/utility)widgets/entryglom: check_changed(): Update the entry 
+	with the text as it would be displayed in the locale, after editing, 
+	so that the user gets immediate feedback.
+
 2004-06-12  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/dialog_data_invalid.[h|cc}, glom.glade: New dialog to show 

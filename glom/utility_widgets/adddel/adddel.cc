@@ -1265,6 +1265,12 @@ void AddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const Gli
 
              do_signal = false;
           }
+          else
+          {
+            //Actually show the canonical text representation, so that the user sees how his input was interpreted:
+            Glib::ustring text_canonical = GlomConversions::get_text_for_gda_value(field_type, value);
+            row.set_value(model_column_index, text_canonical);
+          }
         }
 
         if(do_signal)
