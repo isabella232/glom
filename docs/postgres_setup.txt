@@ -1,0 +1,63 @@
+Each distro has a different default configuration for Postgres. These notes should help you to make postgres work with Glom. If you can improve this advice, then do tell us.
+
+
+*** Fedora Core 3:
+
+** To create a user that can create databases:
+
+[murrayc@localhost]$ su
+Password:
+[root@localhost docs]# su postgres
+bash-3.00$ createuser
+Enter name of user to add: murrayc
+Shall the new user be allowed to create databases? (y/n) y
+Shall the new user be allowed to create more new users? (y/n) y
+CREATE USER
+bash-3.00$
+
+
+** Allowing access:
+
+As root, edit
+/var/lib/pgsql/data/postgresql.conf
+
+Change
+#tcpip_socket = false
+to
+tcpip_socket = true
+
+
+As root, edit
+/var/lib/pgsql/data/pg_hba.conf:
+
+Uncomment the 2 existing host lines:
+
+# IPv4-style local connections:
+host    all         all         127.0.0.1         255.255.255.255   trust
+# IPv6-style local connections:
+host    all         all         ::1               ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff        trust
+
+Add this:
+
+# Upstream default configuration
+#
+# The following configuration is the upstream default, which allows
+# unrestricted access to amy database by any user on the local machine.
+# 
+# TYPE  DATABASE    USER        IP-ADDRESS        IP-MASK           METHOD
+#
+local   all         all                                             trust
+# IPv4-style local connections:
+host    all         all         127.0.0.1         255.255.255.255   trust
+
+
+
+
+
+*** Useful test tools:
+
+phppgadmin
+
+
+
+
