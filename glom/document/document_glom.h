@@ -53,8 +53,9 @@ public:
   virtual void set_relationships(const Glib::ustring& table_name, const type_vecRelationships& vecRelationships);
 
   virtual bool get_relationship(const Glib::ustring& table_name, const Glib::ustring& relationship_name, Relationship& relationship) const;
+  virtual void set_relationship(const Glib::ustring& table_name, const Relationship& relationship);
 
-  void set_relationship(const Glib::ustring& table_name, const Relationship& relationship);
+  virtual void remove_relationship(const Relationship& relationship);
 
   typedef std::vector<Field> type_vecFields;
   virtual type_vecFields get_table_fields(const Glib::ustring& table_name) const;
@@ -83,6 +84,12 @@ public:
   typedef std::list<TableInfo> type_listTableInfo;
   virtual type_listTableInfo get_tables() const;
   virtual void set_tables(const type_listTableInfo& tables);
+
+  /** Use this after DROPing the table.
+   * It removes information about the table, including fields and layouts,
+   * and any place that parts of the table are used.
+   */
+  virtual void remove_table(const Glib::ustring& table_name);
 
   virtual bool get_table_is_known(const Glib::ustring& table_name) const;
 

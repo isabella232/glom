@@ -1,3 +1,23 @@
+2005-03-21  Murray Cumming  <murrayc@murrayc.com>
+
+	* examples/example_smallbusiness.glom:
+	Remove nonsense table information.
+	* glom/base_db.cc:
+	* glom/base_db.h:
+	Add add_standard_groups() - it ensures that 
+	there is always a developer group.
+	* glom/mode_design/users/dialog_groups_list.cc:
+	load_from_document(): Call add_standard_groups() to ensure 
+	that the developer group always exists.
+	on_button_group_new(): Provide sensible default privilieges 
+	for new groups.
+	* glom/document/document_glom.cc:
+	* glom/document/document_glom.h:
+	Add remove_table() and remove_relationship().
+	* glom/navigation/box_tables.cc: on_adddel_Delete():
+	Remove tables from the document as well as the database 
+	server.	
+
 2005-03-21  Murray Cumming <murrayc@murrayc.com>
 
 	* configure.in:

@@ -250,6 +250,7 @@ void Box_Tables::on_adddel_Delete(const Gtk::TreeModel::iterator& rowStart, cons
           if(iButtonClicked == Gtk::RESPONSE_OK)
           {
             Query_execute( "DROP TABLE " + table_name);
+            m_pDocument->remove_table(table_name); //Forget about it in the document too.
             something_changed = true;
           }
         }

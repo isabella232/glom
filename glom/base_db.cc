@@ -572,6 +572,64 @@ Base_DB::type_vecStrings Base_DB::get_database_users(const Glib::ustring& group_
   return result;
 }
 
+void Base_DB::set_table_privileges(const Glib::ustring& group_name, const Glib::ustring& table_name, const Privileges& privs, bool developer_privs)
+{
+  if(group_name.empty() || table_name.empty())
+    return;
+
+  //Change the permission in the database:
+
+  //Build the SQL statement:
+
+  //Grant or revoke:
+  Glib::ustring strQuery = "GRANT";
+  //TODO: Revoke the ones that are not specified.
+
+  //What to grant or revoke:
+  Glib::ustring strPrivilege;
+
+  if(developer_privs)
+    strPrivilege = "ALL PRIVILEGES";
+  else
+  {
+    if(privs.m_view)
+      strPrivilege += "SELECT";
+
+    if(privs.m_edit)
+    {
+      if(!strPrivilege.empty())
+        strPrivilege += ", ";
+
+      strPrivilege += "UPDATE";
+    }
+
+    if(privs.m_create)
+    {
+      if(!strPrivilege.empty())
+        strPrivilege += ", ";
+
+      strPrivilege += "INSERT";
+    }
+
+    if(privs.m_delete)
+    {
+      if(!strPrivilege.empty())
+        strPrivilege += ", ";
+
+      strPrivilege += "DELETE";
+    }
+  }
+
+  strQuery += " " + strPrivilege + " ON " + table_name + " ";
+
+  //This must match the Grant or Revoke:
+  strQuery += "TO";
+
+  strQuery += " GROUP " + group_name;
+
+  Query_execute(strQuery);
+}
+
 Privileges Base_DB::get_table_privileges(const Glib::ustring& group_name, const Glib::ustring& table_name)
 {
   Privileges result;
@@ -642,6 +700,27 @@ Privileges Base_DB::get_table_privileges(const Glib::ustring& group_name, const 
   }
 
   return result;
+}
+
+void Base_DB::add_standard_groups()
+{
+  //Add the glom_developer group if it does not exist:
+  const Glib::ustring devgroup = "glom_developer";
+
+  const type_vecStrings vecGroups = get_database_groups();
+  type_vecStrings::const_iterator iterFind = std::find(vecGroups.begin(), vecGroups.end(), devgroup);
+  if(iterFind == vecGroups.end())
+  {
+    Query_execute("CREATE GROUP glom_developer");
+    Privileges priv_ignored;
+
+    Document_Glom::type_listTableInfo table_list = get_document()->get_tables();
+
+    for(Document_Glom::type_listTableInfo::const_iterator iter = table_list.begin(); iter != table_list.end(); ++iter)
+    {
+      set_table_privileges(devgroup, iter->m_name, priv_ignored, true /* developer privileges */);
+    }
+  }
 }
 
 

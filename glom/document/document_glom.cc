@@ -129,7 +129,7 @@ bool Document_Glom::get_relationship(const Glib::ustring& table_name, const Glib
   if(iterFind != m_tables.end())
   {
     const DocumentTableInfo& info = iterFind->second;
-    
+
     //Look for the relationship with this name:
     for(type_vecRelationships::const_iterator iter = info.m_relationships.begin(); iter != info.m_relationships.end(); ++iter)
     {
@@ -140,7 +140,7 @@ bool Document_Glom::get_relationship(const Glib::ustring& table_name, const Glib
       }
     }
   }
-   
+
   return false; //Not found.
 }
 
@@ -164,6 +164,68 @@ void Document_Glom::set_relationships(const Glib::ustring& table_name, const typ
     set_modified();
   }
 }
+
+void Document_Glom::remove_relationship(const Relationship& relationship)
+{
+  //Get the table that this relationship is part of:
+  type_tables::iterator iter = m_tables.find(relationship.get_from_table());
+  if(iter != m_tables.end())
+  {
+    DocumentTableInfo& info = iter->second;
+
+    //Find the relationship and remove it:
+    for(type_vecRelationships::iterator iter = info.m_relationships.begin(); iter != info.m_relationships.end(); ++iter)
+    {
+      if(iter->get_name() == relationship.get_name())
+      {
+        iter = info.m_relationships.erase(iter);
+
+        //TODO: Remove any lookups, view fields, or related records portals, that use this relationship.
+
+        set_modified(true);
+      }
+    }
+  }
+}
+
+
+void Document_Glom::remove_table(const Glib::ustring& table_name)
+{
+  type_tables::iterator iter = m_tables.find(table_name);
+  if(iter != m_tables.end())
+  {
+    m_tables.erase(iter);
+    set_modified(true);
+  }
+
+  //Remove any relationships that use this table:
+  for(type_tables::iterator iter = m_tables.begin(); iter != m_tables.end(); ++iter)
+  {
+    DocumentTableInfo& info = iter->second;
+
+    bool something_changed = true;
+    type_vecRelationships::iterator iterRel = info.m_relationships.begin();
+    while(something_changed)
+    {
+      if(iterRel->get_to_table() == table_name)
+      {
+        //Loop again, because we have changed the structure:
+        remove_relationship(*iterRel); //Also removes anything that uses the relationship.
+
+        something_changed = true;
+        iterRel = info.m_relationships.begin();
+      }
+      else
+      {
+        if(iterRel == info.m_relationships.end())
+          something_changed = false; //We've looked at them all, without changing things.
+      }
+    }
+
+  }
+
+}
+
 
 Document_Glom::type_vecFields Document_Glom::get_table_fields(const Glib::ustring& table_name) const
 {
@@ -490,7 +552,7 @@ Document_Glom::type_mapLayoutGroupSequence Document_Glom::get_data_layout_groups
   if(iterFind != m_tables.end())
   {
     const DocumentTableInfo& info = iterFind->second;
-    
+
     //Look for the layout with this name:
     DocumentTableInfo::type_layouts::const_iterator iter = info.m_layouts.find(layout_name);
     if(iter != info.m_layouts.end())
@@ -498,7 +560,7 @@ Document_Glom::type_mapLayoutGroupSequence Document_Glom::get_data_layout_groups
       return iter->second; //found   
     }
   }
-     
+
   return type_mapLayoutGroupSequence(); //not found
 }
 
@@ -959,12 +1021,12 @@ bool Document_Glom::save_before()
   if(nodeRoot)
   {
     set_node_attribute_value(nodeRoot, "database_title", m_database_title);
-    
+
     xmlpp::Element* nodeConnection = get_node_child_named_with_add(nodeRoot, "connection");
     set_node_attribute_value(nodeConnection, "server", m_connection_server); 
     set_node_attribute_value(nodeConnection, "user", m_connection_user); 
     set_node_attribute_value(nodeConnection, "database", m_connection_database);
-    
+
     //Remove existing tables:
     xmlpp::Node::NodeList listNodes = nodeRoot->get_children("table");
     for(xmlpp::Node::NodeList::iterator iter = listNodes.begin(); iter != listNodes.end(); ++iter)
@@ -1060,7 +1122,7 @@ bool Document_Glom::save_before()
           }
         }
       }
-      
+
     } //for m_tables
   }
   
@@ -1080,7 +1142,7 @@ void Document_Glom::set_database_title(const Glib::ustring& title)
     set_modified();
   }
 }
-  
+
 Glib::ustring Document_Glom::get_name() const
 {
   //Show the database title in the window title bar:

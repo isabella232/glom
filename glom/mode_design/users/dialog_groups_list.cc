@@ -32,7 +32,7 @@ Dialog_GroupsList::Dialog_GroupsList(BaseObjectType* cobject, const Glib::RefPtr
   m_button_group_delete(0),
   m_button_group_users(0)
 {
-  //refGlade->get_widget("label_table_name", m_label_table_name);
+  //set_default_size(600, -1);
 
   refGlade->get_widget("treeview_groups", m_treeview_groups);
   refGlade->get_widget("treeview_tables", m_treeview_tables);
@@ -253,6 +253,18 @@ void Dialog_GroupsList::on_button_group_new()
     Glib::ustring strQuery = "CREATE GROUP " + group_name;
     Glib::RefPtr<Gnome::Gda::DataModel> data_model = Query_execute(strQuery);
 
+    //Give the new group some sensible default privileges:
+    Privileges priv;
+    priv.m_view = true;
+    priv.m_edit = true;
+
+    Document_Glom::type_listTableInfo table_list = get_document()->get_tables();
+
+    for(Document_Glom::type_listTableInfo::const_iterator iter = table_list.begin(); iter != table_list.end(); ++iter)
+    {
+      set_table_privileges(group_name, iter->m_name, priv);
+    }
+
     fill_group_list();
   }
 }
@@ -388,7 +400,8 @@ void Dialog_GroupsList::fill_table_list(const Glib::ustring& group_name)
 
 void Dialog_GroupsList::load_from_document()
 {
-  g_warning("Dialog_GroupsList::load_from_document()");
+  //Ensure that the glom_developer group exists.
+  add_standard_groups();
 
   fill_group_list();
   //fill_table_list();

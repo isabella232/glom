@@ -76,6 +76,9 @@ protected:
   type_vecStrings get_database_groups();
   type_vecStrings get_database_users(const Glib::ustring& group_name = Glib::ustring());
   Privileges get_table_privileges(const Glib::ustring& group_name, const Glib::ustring& table_name);
+  void set_table_privileges(const Glib::ustring& group_name, const Glib::ustring& table_name, const Privileges& privs, bool developer_privs = false);
+  void add_standard_groups();
+
 
   virtual void fill_from_database();
   virtual void fill_end(); //Call this from the end of fill_from_database() overrides.
