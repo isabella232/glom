@@ -93,7 +93,7 @@ void FlowTableWithFields::add_layout_item(const LayoutItem& item)
             add(*portal_box);
             
             m_portals.push_back(portal_box);
-            add_view(portal_box);
+            //TODO: add_view(portal_box);
           }
         }
       }
@@ -338,13 +338,13 @@ FlowTableWithFields::type_list_widgets FlowTableWithFields::get_portals(const Gl
   type_list_widgets result;
 
   //Check the single-item widgets:
-  //TODO: We could maybe make this more efficient by storing an extra list of portals when we add them.
-  for(type_vecChildren::iterator iter = m_children.begin(); iter != m_children.end(); ++iter)
+   for(type_portals::iterator iter = m_portals.begin(); iter != m_portals.end(); ++iter)
   {
     //*iter is a FlowTableItem.
-    Box_Data_List_Related* pPortal = dynamic_cast<Box_Data_List_Related*>(iter->m_first);
+    Box_Data_List_Related* pPortal = *iter;
     if(pPortal)
     {
+      //TODO.
     }
   }
  
@@ -440,18 +440,28 @@ void FlowTableWithFields::remove_all()
 {
   //TODO: Release the fields memory, and the portal memory.
   m_mapFields.clear();
- 
+
   for(type_sub_flow_tables::iterator iter = m_sub_flow_tables.begin(); iter != m_sub_flow_tables.end(); ++iter)
   {
-    remove_view(*iter);
-    delete *iter;
+    FlowTableWithFields* pSub = *iter;
+    if(pSub)
+    {
+      remove_view(*iter);
+      remove(*pSub);
+
+      delete pSub;
+    }
   }
+  
   m_sub_flow_tables.clear();
+
 
   for(type_portals::iterator iter = m_portals.begin(); iter != m_portals.end(); ++iter)
   {
-    remove_view(*iter);
-    delete *iter;
+    Box_Data_List_Related* pPortal = *iter;
+    remove_view(pPortal);
+    remove(*pPortal);
+    delete pPortal;
   }
   m_portals.clear();
   

@@ -590,15 +590,51 @@ bool FlowTable::child_is_visible(Gtk::Widget* widget)
   return widget && widget->is_visible();
 }
 
+void FlowTable::remove(Gtk::Widget& first)
+{
+  //Gtk::Container::remove() does this too. We need to do it here too:
+  if(first.is_managed_())
+    first.reference();
+  
+  gtk_widget_unparent(first.gobj());
+
+  for(type_vecChildren::iterator iter = m_children.begin(); iter != m_children.end(); ++iter)
+  {
+    if((iter->m_first == &first) && (iter->m_second == 0))
+    {
+      g_warning("FlowTable::remove(): removing %10X", (guint)&first);
+
+      m_children.erase(iter);
+      break;
+    }
+  }
+}
+
 void FlowTable::remove_all()
 {
+
   for(type_vecChildren::iterator iter = m_children.begin(); iter != m_children.end(); ++iter)
   {
     if(iter->m_first)
-      gtk_widget_unparent(iter->m_first->gobj());
+    {
+      Gtk::Widget* widget = iter->m_first;
+      
+      if(widget->is_managed_())
+        widget->reference();
+      
+      gtk_widget_unparent(widget->gobj());
+    }
 
     if(iter->m_second)
-      gtk_widget_unparent(iter->m_second->gobj());
+    {
+      Gtk::Widget* widget = iter->m_second;
+
+      if(widget->is_managed_())
+        widget->reference();
+        
+      gtk_widget_unparent(widget->gobj());
+    }
+    
   }
    
   m_children.clear(); 

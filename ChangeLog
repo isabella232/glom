@@ -1,3 +1,12 @@
+2004-12-25  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/utility_widgets/flowtable.[h|cc]: Added a remove() override, so 
+	we remove the widget from the list in flowtable as well as from the 
+	base GtkContainer list. Do an extra reference() before calling 
+	gtk_widget_parent() if the widget is managed, like 
+	Gtk::Container::remove() does, so that this container acts like other 
+	gtkmm containers.
+
 2004-12-24  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/utility_widgets/flowtable_withfields.[h|cc]: Keep a list of 

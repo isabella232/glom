@@ -34,6 +34,8 @@ public:
 
   virtual void add(Gtk::Widget& first, Gtk::Widget& second);
   virtual void add(Gtk::Widget& first); //override
+
+  virtual void remove(Gtk::Widget& first); //override
   
   virtual void set_columns_count(guint value);
 
