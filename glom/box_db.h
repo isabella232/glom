@@ -31,10 +31,6 @@
 #include <bakery/Utilities/BusyCursor.h>
 #include <libglademm.h>
 
-/**
-  *@author Murray Cumming
-  */
-
 class Box_DB :
   public Gtk::VBox,
   public Base_DB

@@ -67,8 +67,8 @@ void FlowTableWithFields::add_layout_item(const LayoutItem& item)
   {
     const LayoutItem_Field* field = dynamic_cast<const LayoutItem_Field*>(pItem);
     if(field)
-    {                          
-      add_field(field->m_field);
+    {
+      add_field(*field);
 
       //Do not allow editing of auto-increment fields:
       if(field->m_field.get_field_info().get_auto_increment())
@@ -89,10 +89,13 @@ void FlowTableWithFields::add_layout_item(const LayoutItem& item)
             Box_Data_List_Related* portal_box = Gtk::manage(new Box_Data_List_Related);
              
             portal_box->init_db_details(relationship);
+            portal_box->set_layout_item(portal->clone());
             portal_box->show();
             add(*portal_box);
             
             m_portals.push_back(portal_box);
+            add_layoutwidgetbase(portal_box);
+
             add_view(portal_box);
           }
         }
@@ -149,13 +152,16 @@ void FlowTableWithFields::add_layout_group(const LayoutGroup& group)
     add(*frame);
 
     m_sub_flow_tables.push_back(flow_table);
+    flow_table->set_layout_item(group.clone());
+    add_layoutwidgetbase(flow_table);
 
     //Connect signal:
     flow_table->signal_field_edited().connect( sigc::mem_fun(*this, &FlowTableWithFields::on_flowtable_entry_edited) );
   }
 }
-  
-void FlowTableWithFields::add_group(const Glib::ustring& /* group_name */, const Glib::ustring& group_title, const type_map_field_sequence& fields)
+
+/*
+void FlowTableWithFields::add_group(const Glib::ustring& group_name, const Glib::ustring& group_title, const type_map_field_sequence& fields)
 {
   if(true)//!fields.empty() && !group_name.empty())
   {
@@ -204,9 +210,11 @@ void FlowTableWithFields::add_group(const Glib::ustring& /* group_name */, const
     flow_table->signal_field_edited().connect( sigc::mem_fun(*this, &FlowTableWithFields::on_flowtable_entry_edited) );
   }
 }
-  
-void FlowTableWithFields::add_field(const Field& field, const Glib::ustring& group)
+*/
+
+void FlowTableWithFields::add_field(const LayoutItem_Field& layoutitem_field)
 {
+  Field field = layoutitem_field.m_field;
   const Glib::ustring id = field.get_name();
   type_mapFields::iterator iterFind = m_mapFields.find(id);
   if(iterFind == m_mapFields.end()) //If it is not already there.
@@ -215,7 +223,11 @@ void FlowTableWithFields::add_field(const Field& field, const Glib::ustring& gro
     info.m_field = field;
 
     //Add the entry or checkbox (handled by the DataWidget)
-    info.m_second = Gtk::manage(new DataWidget(field.get_glom_type(), field.get_title_or_name()) );
+    DataWidget* pDataWidget = Gtk::manage(new DataWidget(field.get_glom_type(), field.get_title_or_name()) );
+    pDataWidget->set_layout_item(layoutitem_field.clone());
+    add_layoutwidgetbase(pDataWidget);
+
+    info.m_second = pDataWidget; 
     info.m_second->show_all();
 
     info.m_first = Gtk::manage(new Gtk::Alignment());
@@ -233,7 +245,7 @@ void FlowTableWithFields::add_field(const Field& field, const Glib::ustring& gro
       info.m_first->show_all_children(); //This does not seem to work, so we show the label explicitly.
     }
 
-    info.m_group = group;
+    //info.m_group = layoutitem_field.m_group;
 
     add(*(info.m_first), *(info.m_second));
 
@@ -464,7 +476,9 @@ void FlowTableWithFields::remove_all()
     delete pPortal;
   }
   m_portals.clear();
-  
+
+  m_list_layoutwidgets.clear();
+
   FlowTable::remove_all();
 }
 
@@ -496,10 +510,79 @@ void FlowTableWithFields::set_design_mode(bool value)
   }
 }
 
+void FlowTableWithFields::get_layout_groups(Document_Glom::type_mapLayoutGroupSequence& groups)
+{
+  //This is only called on the top-level FlowTable.
+  //It assumes that there are only groups in this FlowTable,
+  //and no other layout items:
+  Document_Glom::type_mapLayoutGroupSequence::size_type sequence = 1; //0 means no position.
+  for(type_list_layoutwidgets::iterator iter = m_list_layoutwidgets.begin(); iter != m_list_layoutwidgets.end(); ++iter)
+  {
+    LayoutWidgetBase* pLayoutWidget = *iter;
+    if(pLayoutWidget)
+    {
+      FlowTableWithFields* pFlowTable = dynamic_cast<FlowTableWithFields*>(pLayoutWidget);
+      if(pFlowTable)
+      {
+        //recurse:
+        LayoutGroup group_child;
+        pFlowTable->get_layout_group(group_child);
+        groups[sequence] = group_child;
+        ++sequence;
+      }
+    }
+  }
+}
 
+void FlowTableWithFields::get_layout_group(LayoutGroup& group)
+{
+  //Initialize output parameter:
+  //group = LayoutGroup();
+  const LayoutGroup* pGroupExisting = dynamic_cast<LayoutGroup*>(get_layout_item());
+  if(pGroupExisting)
+  {
+    //Start with the same information:
+    group = *pGroupExisting; //TODO_Performance: Copy without copying/clone the children.
+    group.remove_all_items(); //We will readd these.
+  }
 
+  //Iterate over the data widgets:
+  for(type_list_layoutwidgets::iterator iter = m_list_layoutwidgets.begin(); iter != m_list_layoutwidgets.end(); ++iter)
+  {
+    LayoutWidgetBase* pLayoutWidget = *iter;
+    if(pLayoutWidget)
+    {
+      FlowTableWithFields* pFlowTable = dynamic_cast<FlowTableWithFields*>(pLayoutWidget);
+      if(pFlowTable)
+      {
+        //recurse:
+        LayoutGroup group_child;
+        pFlowTable->get_layout_group(group_child);
+        group.add_item(group_child);
+      }
+      else
+      {
+        const LayoutItem* pLayoutItem = (*iter)->get_layout_item();
+        if(pLayoutItem)
+          group.add_item(*pLayoutItem);
+      }
+    }
+  }
+}
 
+void FlowTableWithFields::add_layoutwidgetbase(LayoutWidgetBase* layout_widget)
+{
+  m_list_layoutwidgets.push_back(layout_widget);
 
-           
+  //Handle layout_changed signal:
+  layout_widget->signal_layout_changed().connect(sigc::mem_fun(*this, &FlowTableWithFields::on_layoutwidget_changed));
+}
+
+void FlowTableWithFields::on_layoutwidget_changed()
+{
+  //Forward the signal to the container:
+  signal_layout_changed().emit();
+}
+
 
 

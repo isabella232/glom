@@ -25,7 +25,8 @@
 #include "../data_structure/field.h"
 #include <libglademm.h>
 
-class EntryGlom : public Gtk::Entry
+class EntryGlom
+: public Gtk::Entry
 {
 public:
   explicit EntryGlom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);

@@ -167,6 +167,8 @@ private:
    int m_stamp; //When the model's stamp and the TreeIter's stamp are equal, the TreeIter is valid.
    mutable GlueList* m_pGlueList;
 
+   static bool m_iface_initialized;
+
 };
 
 #endif //GLOM_MODE_DATA_DB_TREEMODEL_H

@@ -61,11 +61,12 @@ DbTreeModel::GlueItem* DbTreeModel::GlueList::get_existing_item(const typeListOf
     if(pItem->get_row_iter() == row_iter) //TODO_Performance: Access m_row_iter directly?
       return pItem;
   }
-  
+
   return 0;
 }
-     
-     
+
+//Intialize static variable:
+bool DbTreeModel::m_iface_initialized = false;
 
 DbTreeModel::DbTreeModel(const Gtk::TreeModelColumnRecord& columns)
 : Glib::ObjectBase( typeid(DbTreeModel) ), //register a custom GType.
@@ -74,8 +75,13 @@ DbTreeModel::DbTreeModel(const Gtk::TreeModelColumnRecord& columns)
   m_stamp(1), //When the model's stamp != the iterator's stamp then that iterator is invalid and should be ignored. Also, 0=invalid
   m_pGlueList(0)
 {
-  GType gtype = G_OBJECT_TYPE(gobj());  //The custom GType created in the Object constructor, from the typeid.
-  Gtk::TreeModel::add_interface( gtype );
+  if(!m_iface_initialized)
+  {
+    GType gtype = G_OBJECT_TYPE(gobj());  //The custom GType created in the Object constructor, from the typeid.
+    Gtk::TreeModel::add_interface( gtype );
+
+    m_iface_initialized = true; //Prevent us from calling add_interface() on the same gtype again.
+  }
 
 
   //The Column information that can be used with TreeView::append(), TreeModel::iterator[], etc.

@@ -22,11 +22,15 @@
 #define GLOM_UTILITY_WIDGETS_DATAWIDGET_H
 
 #include "placeholder.h"
+#include "layoutwidgetbase.h"
 #include <gtkmm/label.h>
 #include "../data_structure/field.h"
 
 
-class DataWidget : public PlaceHolder
+
+class DataWidget
+ : public PlaceHolder,
+   public LayoutWidgetBase
 {
 public:
   //explicit DataWidget(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);

@@ -28,6 +28,7 @@
 #include "../data_structure/field.h"
 #include "../document/document_glom.h"
 #include "../mode_data/box_data_list_related.h"
+#include "layoutwidgetbase.h"
 #include <map>
 #include <list>
 
@@ -35,7 +36,8 @@ class DataWidget;
 
 class FlowTableWithFields
   : public FlowTable,
-    public View_Composite_Glom
+    public View_Composite_Glom,
+    public LayoutWidgetBase
 {
 public: 
   FlowTableWithFields(const Glib::ustring& table_name = Glib::ustring());
@@ -45,15 +47,13 @@ public:
   virtual void set_table(const Glib::ustring& table_name);
 
   /** Add a field.
-   * @param title The title to show to the left of the entry.
-   * @param id The unique identifier for this field, to use with get_field().
-   * @param group The title of the group in which this field should be shown, if any.
+   * @param layoutitem_field The layout item that describes this field
    */
-  virtual void add_field(const Field& field, const Glib::ustring& group = Glib::ustring());
+  virtual void add_field(const LayoutItem_Field& layoutitem_field);
   virtual void remove_field(const Glib::ustring& id);
 
   typedef std::map<int, Field> type_map_field_sequence;
-  virtual void add_group(const Glib::ustring& group_name, const Glib::ustring& group_title, const type_map_field_sequence& fields);
+  //virtual void add_group(const Glib::ustring& group_name, const Glib::ustring& group_title, const type_map_field_sequence& fields);
 
   virtual void add_layout_item(const LayoutItem& group);
   virtual void add_layout_group(const LayoutGroup& group);
@@ -69,12 +69,20 @@ public:
 
   typedef std::list<Gtk::Widget*> type_list_widgets;
   typedef std::list<const Gtk::Widget*> type_list_const_widgets;
-      
+
   virtual void change_group(const Glib::ustring& id, const Glib::ustring& new_group);
 
   virtual void set_design_mode(bool value = true);
-  
+
   virtual void remove_all();
+
+  /** Get the layout structure, which might have changed in the child widgets since 
+   * the whole widget structure was built.
+   * for instance, if the user chose a new field for a DataWidget, 
+   * or a new relationship for a portal.
+   */
+  virtual void get_layout_groups(Document_Glom::type_mapLayoutGroupSequence& groups);
+  virtual void get_layout_group(LayoutGroup& group);
 
   /** For instance,
    * void on_flowtable_field_edited(const Glib::ustring& id, const Gnome::Gda::Value& value);
@@ -97,6 +105,10 @@ protected:
   int get_suitable_width(Field::glom_field_type field_type);
   void on_entry_edited(const Gnome::Gda::Value& value, Glib::ustring id);
   void on_flowtable_entry_edited(const Glib::ustring& id, const Gnome::Gda::Value& value);
+
+  /// Remember the layout widget so we can iterate through them later.
+  void add_layoutwidgetbase(LayoutWidgetBase* layout_widget);
+  void on_layoutwidget_changed();
     
   class Info
   {
@@ -120,6 +132,10 @@ protected:
 
   typedef std::list< Box_Data_List_Related* > type_portals;
   type_portals m_portals;
+
+  //Remember the sequence of LayoutWidgetBase widgets, so we can iterate over them later:
+  typedef std::list< LayoutWidgetBase* > type_list_layoutwidgets;
+  type_list_layoutwidgets m_list_layoutwidgets;
 
   Glib::ustring m_table_name;
 

@@ -238,15 +238,26 @@ void Box_Data_List_Related::show_layout_dialog()
 
 void Box_Data_List_Related::on_dialog_layout_hide()
 {
-  //Get the new relationship information, in case it has changed:
-  Document_Glom* document = get_document();
-  if(document)
+  const Glib::ustring relationship_name = m_pDialogLayoutRelated->get_relationship_name();
+  if(!relationship_name.empty())
   {
-    document->get_relationship(m_relationship.get_from_table(), m_relationship.get_name(), m_relationship);
-    
-    //Update the UI:
-    m_Label.set_markup("<b>" + m_relationship.get_title_or_name() + "</b>");
+    //Get the new relationship information, in case it has changed:
+    Document_Glom* document = get_document();
+    if(document)
+    {
+      document->get_relationship(m_relationship.get_from_table(), m_relationship.get_name(), m_relationship);
+
+      //Update the UI:
+      init_db_details(m_relationship);
+    }
+
+    Box_Data::on_dialog_layout_hide();
+
+    LayoutItem_Portal* pLayoutItem = dynamic_cast<LayoutItem_Portal*>(get_layout_item());
+    if(pLayoutItem)
+    {
+      pLayoutItem->set_relationship(relationship_name);
+      signal_layout_changed().emit(); //TODO: Check whether it has really changed.
+    }
   }
-  
-  Box_Data::on_dialog_layout_hide();
 }

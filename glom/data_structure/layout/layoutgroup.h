@@ -45,6 +45,8 @@ public:
 //  void add_item(const LayoutGroup& item, guint sequence);
   
   void change_field_item_name(const Glib::ustring& field_name, const Glib::ustring& field_name_new);
+
+  void remove_all_items();
     
   Glib::ustring m_title;
   guint m_columns_count;
@@ -58,8 +60,6 @@ public:
 protected:
 
   type_map_items m_map_items;
-
-  void remove_all_items();
   
   void remove_item(guint sequence);
 };

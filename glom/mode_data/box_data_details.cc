@@ -105,7 +105,9 @@ Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
 
   m_FlowTable.signal_field_edited().connect( sigc::mem_fun(*this,  &Box_Data_Details::on_flowtable_field_edited) );
   show_all();
-   
+
+  m_FlowTable.signal_layout_changed().connect( sigc::mem_fun(*this, &Box_Data_Details::on_flowtable_layout_changed) );
+
   m_ignore_signals = false;
 }
 
@@ -154,7 +156,7 @@ void Box_Data_Details::fill_from_database_layout()
       m_FlowTable.add_layout_group(iter->second);
     }
   }
-      
+
 }
 
 void Box_Data_Details::fill_from_database()
@@ -494,6 +496,20 @@ Box_Data_Details::type_signal_user_requested_related_details Box_Data_Details::s
   return m_signal_user_requested_related_details;
 }
 */
+
+void Box_Data_Details::on_flowtable_layout_changed()
+{
+  //Get new layout:
+  Document_Glom::type_mapLayoutGroupSequence layout_groups;
+  m_FlowTable.get_layout_groups(layout_groups);
+
+  Document_Glom* document = get_document();
+  if(document)
+    document->set_data_layout_groups("details", m_strTableName, layout_groups);
+
+  //Build the view again from the new layout:
+  fill_from_database_layout();
+}
 
 void Box_Data_Details::on_flowtable_field_edited(const Glib::ustring& id, const Gnome::Gda::Value& field_value)
 {

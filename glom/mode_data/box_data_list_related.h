@@ -22,10 +22,13 @@
 #define BOX_DATA_LIST_RELATED_H
 
 #include "box_data_list.h"
+#include "../utility_widgets/layoutwidgetbase.h"
 
 class Dialog_Layout_List_Related;
 
-class Box_Data_List_Related : public Box_Data_List
+class Box_Data_List_Related : 
+  public Box_Data_List,
+  public LayoutWidgetBase
 {
 public: 
   Box_Data_List_Related();

@@ -75,6 +75,7 @@ protected:
   virtual void on_button_nav_last();
 
   virtual void on_userlevel_changed(AppState::userlevels user_level); //override
+  virtual void on_flowtable_layout_changed();
   
   //Signal handler: The last 2 args are bind-ed.
   virtual void on_related_record_added(Gnome::Gda::Value key_value, Glib::ustring strFromKeyName);

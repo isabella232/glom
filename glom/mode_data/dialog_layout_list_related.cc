@@ -35,6 +35,7 @@ Dialog_Layout_List_Related::Dialog_Layout_List_Related(BaseObjectType* cobject, 
   m_combo_relationship_name(0)
 {
   refGlade->get_widget_derived("combo_relationship_name", m_combo_relationship_name);
+  m_combo_relationship_name->signal_changed().connect(sigc::mem_fun(*this, &Dialog_Layout_List_Related::on_combo_relationship_changed));
 
   refGlade->get_widget("treeview_fields", m_treeview_fields);
   if(m_treeview_fields)
@@ -85,33 +86,42 @@ Dialog_Layout_List_Related::~Dialog_Layout_List_Related()
 
 void Dialog_Layout_List_Related::set_document(const Glib::ustring& layout, Document_Glom* document, const Glib::ustring& parent_table_name, const Glib::ustring& relationship_name)
 {
-  m_modified = false;
-
   type_vecFields empty_fields; //Just to satisfy the base class.
   Dialog_Layout::set_document(layout, document, parent_table_name, empty_fields);
   //m_table_name is now actually the parent_table_name.
 
+  if(document)
+    document->get_relationship(parent_table_name, relationship_name, m_relationship);
+
+  update_ui();
+}
+
+void Dialog_Layout_List_Related::update_ui(bool including_relationship_list)
+{
+   m_modified = false;
+  
   //Update the tree models from the document
+  Document_Glom* document = m_document;
   if(document)
   {
     //Fill the relationships combo:
-    m_combo_relationship_name->clear_text();
-    Document_Glom::type_vecRelationships vecRelationships = document->get_relationships(parent_table_name);
-
-    for(Document_Glom::type_vecRelationships::iterator iter = vecRelationships.begin(); iter != vecRelationships.end(); ++iter)
+    if(including_relationship_list)
     {
-      m_combo_relationship_name->append_text(iter->get_name());
+      m_combo_relationship_name->clear_text();
+      Document_Glom::type_vecRelationships vecRelationships = document->get_relationships(m_relationship.get_from_table());
+  
+      for(Document_Glom::type_vecRelationships::iterator iter = vecRelationships.begin(); iter != vecRelationships.end(); ++iter)
+      {
+        m_combo_relationship_name->append_text(iter->get_name());
+      }
     }
       
     //Set the table name and title:
-    m_combo_relationship_name->set_active_text(relationship_name); 
-    
-    bool found = document->get_relationship(parent_table_name, relationship_name, m_relationship);
-    if(found)
-      m_entry_table_title->set_text( m_relationship.get_title() );
+    m_combo_relationship_name->set_active_text(m_relationship.get_name()); 
+   
+    m_entry_table_title->set_text( m_relationship.get_title() );
 
-    //TODO: Use the relationship fields:
-    Document_Glom::type_mapLayoutGroupSequence mapGroups = document->get_relationship_data_layout_groups_plus_new_fields(layout, parent_table_name, relationship_name);
+    Document_Glom::type_mapLayoutGroupSequence mapGroups = document->get_relationship_data_layout_groups_plus_new_fields(m_layout_name, m_relationship.get_from_table(), m_relationship.get_name());
 
     //If no information is stored in the document, then start with something:
     
@@ -275,15 +285,17 @@ void Dialog_Layout_List_Related::save_to_document()
 void Dialog_Layout_List_Related::on_combo_relationship_changed()
 {
   Glib::ustring relationship_name = m_combo_relationship_name->get_active_text();
+
   if(!relationship_name.empty())
   {
-    if(m_document)
-    {
-      //Refresh everything for the new relationship:
-      set_document(m_layout_name, m_document, m_table_name /* actually the parent table name */, relationship_name);
-      
-      m_modified = true;
-    }
+    Document_Glom* pDocument = m_document;
+    if(pDocument)
+      pDocument->get_relationship(m_relationship.get_from_table(), relationship_name, m_relationship);
+
+    //Refresh everything for the new relationship:
+    update_ui(false /* not including the list of relationships */);
+
+    m_modified = true;
   }
 }
  
@@ -354,4 +366,9 @@ void Dialog_Layout_List_Related::on_button_delete()
       m_modified = true;
     }
   }
+}
+
+Glib::ustring Dialog_Layout_List_Related::get_relationship_name() const
+{
+  return m_combo_relationship_name->get_active_text();
 }
