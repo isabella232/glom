@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glom HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-01-05 10:19+0100\n"
-"PO-Revision-Date: 2004-11-21 23:06+0100\n"
+"POT-Creation-Date: 2005-02-13 23:08+0000\n"
+"PO-Revision-Date: 2005-02-13 23:08+0100\n"
 "Last-Translator: David Lodge <dave@cirt.net>\n"
 "Language-Team: English/GB <en@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -42,9 +42,8 @@ msgid "<b>Select Field</b>"
 msgstr "<b>Select Field</b>"
 
 #: glom/glom.glade.h:7
-#, fuzzy
 msgid "<b>Select Relationship</b>"
-msgstr "<b>Select Field</b>"
+msgstr "<b>Select Relationship</b>"
 
 #: glom/glom.glade.h:8
 msgid "<b>Table: </b>"
@@ -80,73 +79,63 @@ msgstr ""
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Connection Failed</span>\n"
 "\n"
-"Glom could not connect to the database server. Maybe you entered an "
-"incorrect user name or password, or maybe the postgres database server is "
-"not running."
+"Glom could not connect to the database server. Maybe you entered an incorrect user name or password, or maybe the postgres database server is not running."
 msgstr ""
+"<span weight=\"bold\" size=\"larger\">Connection Failed</span>\n"
+"\n"
+"Glom could not connect to the database server. Maybe you entered an incorrect user name or password, or maybe the postgres database server is not running."
 
 #: glom/glom.glade.h:19
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Database creation failed</span>\n"
 "\n"
-"Glom could not create the new database. Maybe you do not have the necessary "
-"access rights. Please contact your system administrator."
+"Glom could not create the new database. Maybe you do not have the necessary access rights. Please contact your system administrator."
 msgstr ""
+"<span weight=\"bold\" size=\"larger\">Database creation failed</span>\n"
+"\n"
+"Glom could not create the new database. Maybe you do not have the necessary access rights. Please contact your system administrator."
 
 #: glom/glom.glade.h:22
-#, fuzzy
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Database does not exist</span>\n"
 "\n"
-"The database does not yet exist on the database server. Would you like to "
-"create the database with an empty structure?"
+"The database does not yet exist on the database server. Would you like to create the database with an empty structure?"
 msgstr ""
-"<span weight=\"bold\" size=\"larger\">New Database</span>\n"
+"<span weight=\"bold\" size=\"larger\">Database does not exist</span>\n"
 "\n"
-"Please choose a name and title for the new database. The name should not "
-"contain any spaces."
+"The database does not yet exist on the database server. Would you like to create the database with an empty structure?"
 
 #: glom/glom.glade.h:25
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Invalid format</span>\n"
 "\n"
-"The data in the field was not recognised. Please try to correct the data or "
-"revert to the previous value. Here is an example of correctly-formatted data "
-"for this field.\n"
+"The data in the field was not recognised. Please try to correct the data or revert to the previous value. Here is an example of correctly-formatted data for this field.\n"
 msgstr ""
 "<span weight=\"bold\" size=\"larger\">Invalid format</span>\n"
 "\n"
-"The data in the field was not recognised. Please try to correct the data or "
-"revert to the previous value. Here is an example of correctly-formatted data "
-"for this field.\n"
+"The data in the field was not recognised. Please try to correct the data or revert to the previous value. Here is an example of correctly-formatted data for this field.\n"
 
 #: glom/glom.glade.h:29
 msgid ""
 "<span weight=\"bold\" size=\"larger\">New Database</span>\n"
 "\n"
-"Please choose a name and title for the new database. The name should not "
-"contain any spaces."
+"Please choose a name and title for the new database. The name should not contain any spaces."
 msgstr ""
 "<span weight=\"bold\" size=\"larger\">New Database</span>\n"
 "\n"
-"Please choose a name and title for the new database. The name should not "
-"contain any spaces."
+"Please choose a name and title for the new database. The name should not contain any spaces."
 
 #: glom/glom.glade.h:32
 msgid ""
-"<span weight=\"bold\" size=\"larger\">Open existing document, or create new "
-"document</span>\n"
+"<span weight=\"bold\" size=\"larger\">Open existing document, or create new document</span>\n"
 "\n"
-"Would you like to open an existing document, to connect to an existing "
-"database?\n"
+"Would you like to open an existing document, to connect to an existing database?\n"
 "\n"
 "Or would you like to create a new document, to design a new database?\n"
 msgstr ""
-"<span weight=\"bold\" size=\"larger\">Open existing document, or create new "
-"document</span>\n"
+"<span weight=\"bold\" size=\"larger\">Open existing document, or create new document</span>\n"
 "\n"
-"Would you like to open an existing document, to connect to an existing "
-"database?\n"
+"Would you like to open an existing document, to connect to an existing database?\n"
 "\n"
 "Or would you like to create a new document, to design a new database?\n"
 
@@ -162,7 +151,7 @@ msgstr ""
 
 #: glom/glom.glade.h:42
 msgid "Add Related"
-msgstr ""
+msgstr "Add Related"
 
 #: glom/glom.glade.h:43
 msgid "Add _Group"
@@ -182,16 +171,15 @@ msgstr "Connect"
 
 #: glom/glom.glade.h:47
 msgid "Create"
-msgstr ""
+msgstr "Create"
 
 #: glom/glom.glade.h:48
 msgid "Data"
 msgstr "Data"
 
 #: glom/glom.glade.h:49
-#, fuzzy
 msgid "Database"
-msgstr "Data"
+msgstr "Database"
 
 #: glom/glom.glade.h:50
 msgid "Default Value"
@@ -278,9 +266,8 @@ msgid "Select Field"
 msgstr "Select Field"
 
 #: glom/glom.glade.h:71
-#, fuzzy
 msgid "Select Relationship"
-msgstr "Relationship"
+msgstr "Select Relationship"
 
 #: glom/glom.glade.h:72
 msgid "Show hidden tables"
@@ -295,12 +282,8 @@ msgid "Test"
 msgstr "Test"
 
 #: glom/glom.glade.h:75
-msgid ""
-"The field value will be the return value of the python function, which you "
-"implement here."
-msgstr ""
-"The field value will be the return value of the python function, which you "
-"implement here."
+msgid "The field value will be the return value of the python function, which you implement here."
+msgstr "The field value will be the return value of the python function, which you implement here."
 
 #: glom/glom.glade.h:76
 msgid "Title"
@@ -325,3 +308,4 @@ msgstr "example data format"
 #: glom/glom.glade.h:81
 msgid "table name"
 msgstr "table name"
+
