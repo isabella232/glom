@@ -1,3 +1,8 @@
+2004-12-08  Murray Cumming  <murrayc@murrayc.com>
+
+	* docs/Makefile: Upload to my dreamhost account instead of sourceforge,
+	so I can stop using sourceforge altogether.
+
 2004-12-08  Christian Krause  <chkr@plauener.de>
 
 	* Patch to fix Glib::wrap() build error with gcc 3.4.3.
