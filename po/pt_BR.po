@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glom\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-07-12 15:16+0200\n"
-"PO-Revision-Date: 2004-06-22 17:35-0300\n"
+"POT-Creation-Date: 2004-07-14 11:40-0400\n"
+"PO-Revision-Date: 2004-07-09 12:09-0300\n"
 "Last-Translator: João Paulo Gomes Vanzuita <joaopaulo99@terra.com.br>\n"
 "Language-Team: Portuguese/Brazil <gnome-l10n-br@listas.cipsga.org.br>\n"
 "MIME-Version: 1.0\n"
@@ -61,7 +61,7 @@ msgstr "<b>Nível de usuário: </b>"
 
 #: glom/glom.glade.h:12
 msgid "<b>def calculate_field_value():</b>"
-msgstr ""
+msgstr "<b>def calculate_field_value():</b>"
 
 #: glom/glom.glade.h:13
 msgid ""
@@ -111,9 +111,8 @@ msgid "Auto-increment"
 msgstr "Auto-incrementar"
 
 #: glom/glom.glade.h:28
-#, fuzzy
 msgid "Calculate value"
-msgstr "Valor Padrão"
+msgstr "Calcular valor"
 
 #: glom/glom.glade.h:29
 msgid "Connect"
@@ -144,17 +143,16 @@ msgid "Field"
 msgstr "Campo"
 
 #: glom/glom.glade.h:36
-#, fuzzy
 msgid "Field Calculation"
-msgstr "Definição de Campo"
+msgstr "Cálculo do Campo"
 
 #: glom/glom.glade.h:37
 msgid "Field Definition"
-msgstr "Definição de Campo"
+msgstr "Definição do Campo"
 
 #: glom/glom.glade.h:38
 msgid "Field Definitions"
-msgstr "Definições de Campo"
+msgstr "Definições do Campo"
 
 #: glom/glom.glade.h:39
 msgid "Glom"
@@ -202,13 +200,15 @@ msgstr "Mostrar tabelas ocultas"
 
 #: glom/glom.glade.h:50
 msgid "Test"
-msgstr ""
+msgstr "Testar"
 
 #: glom/glom.glade.h:51
 msgid ""
 "The field value will be the return value of the python function, which you "
 "implement here."
 msgstr ""
+"O valor do campo será o valor de retorno da função em python, que você "
+"implementa aqui."
 
 #: glom/glom.glade.h:52
 msgid "Title"
