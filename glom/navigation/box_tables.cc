@@ -135,7 +135,7 @@ void Box_Tables::fill_from_database()
       if(bAddIt)
       {
           Gtk::TreeModel::iterator iter = m_AddDel.add_item(strName);
-
+          m_AddDel.set_value(iter, m_colTableName, strName);
           m_AddDel.set_value(iter, m_colHidden, hidden);
           m_AddDel.set_value(iter, m_colTitle, title);
           m_AddDel.set_value(iter, m_colDefault, is_default);
@@ -153,51 +153,60 @@ void Box_Tables::fill_from_database()
 
 void Box_Tables::on_AddDel_Add(const Gtk::TreeModel::iterator& row)
 {
-  Glib::ustring table_name = m_AddDel.get_value(row);
+  Glib::ustring table_name = m_AddDel.get_value(row, m_colTableName);
+  if(!table_name.empty())
+  {
+    Glib::ustring primary_key_name =   table_name + "_id";
 
-  Glib::ustring primary_key_name =   table_name + "_id";
-  
-  //Create a table with 1 "ID" field:
-  #if 0 //MSYQL:
-  Query_execute( "CREATE TABLE " + table_name + " (" + primary_key_name + " INT NOT NULL AUTO_INCREMENT PRIMARY KEY)" );
-  Query_execute( "INSERT INTO " + table_name + " VALUES (0)" );
-  #else
-  //PostgresSQL:
-  //Query_execute( "CREATE TABLE " + table_name + " (" + primary_key_name + " serial NOT NULL  PRIMARY KEY)" );
-  Query_execute( "CREATE TABLE " + table_name + " (" + primary_key_name + " numeric NOT NULL  PRIMARY KEY)" );
+    //Create a table with 1 "ID" field:
+    #if 0 //MSYQL:
+    Query_execute( "CREATE TABLE " + table_name + " (" + primary_key_name + " INT NOT NULL AUTO_INCREMENT PRIMARY KEY)" );
+    Query_execute( "INSERT INTO " + table_name + " VALUES (0)" );
+    #else
+    //PostgresSQL:
+    //Query_execute( "CREATE TABLE " + table_name + " (" + primary_key_name + " serial NOT NULL  PRIMARY KEY)" );
+    Query_execute( "CREATE TABLE " + table_name + " (" + primary_key_name + " numeric NOT NULL  PRIMARY KEY)" );
 
-  //Save the field information directly into the database, because we can not get all the correct information from the database.
-  //Otherwise some information would be forgotten:
-  Field field_primary_key;
-  Gnome::Gda::FieldAttributes field_info = field_primary_key.get_field_info();
-  field_info.set_name(primary_key_name);
-  field_info.set_primary_key();
-  field_info.set_auto_increment();
-  field_info.set_allow_null(false);
-  field_primary_key.set_field_info(field_info);
-  field_primary_key.set_glom_type(Field::TYPE_NUMERIC);
-  
-  type_vecFields fields;
-  fields.push_back(field_primary_key);
+    //Save the field information directly into the database, because we can not get all the correct information from the database.
+    //Otherwise some information would be forgotten:
+    Field field_primary_key;
+    Gnome::Gda::FieldAttributes field_info = field_primary_key.get_field_info();
+    field_info.set_name(primary_key_name);
+    field_info.set_primary_key();
+    field_info.set_auto_increment();
+    field_info.set_allow_null(false);
+    field_primary_key.set_field_info(field_info);
+    field_primary_key.set_glom_type(Field::TYPE_NUMERIC);
 
-   if(m_pDocument)
-      m_pDocument->set_table_fields(table_name, fields);
-  
-  //Query_execute( "INSERT INTO " + strName + " VALUES (0)" );
-  #endif
+    type_vecFields fields;
+    fields.push_back(field_primary_key);
 
-  save_to_document();
-  fill_from_database();
+     if(m_pDocument)
+        m_pDocument->set_table_fields(table_name, fields);
 
-  m_modified = true;
+    //Query_execute( "INSERT INTO " + strName + " VALUES (0)" );
+    #endif
+
+    save_to_document();
+    fill_from_database();
+
+    m_modified = true;
+  }
 }
 
 void Box_Tables::on_AddDel_Delete(const Gtk::TreeModel::iterator& rowStart, const Gtk::TreeModel::iterator& rowEnd)
 {
-  for(Gtk::TreeModel::iterator iter = rowStart; iter != rowEnd; ++iter)
+      g_warning("Box_Tables::on_AddDel_Delete()");
+
+  Gtk::TreeModel::iterator iterAfter = rowEnd;
+  ++iterAfter;
+
+  bool something_changed = false;
+  for(Gtk::TreeModel::iterator iter = rowStart; iter != iterAfter; ++iter)
   {
-    Glib::ustring strName = m_AddDel.get_value(iter);
-    if(strName.size())
+    Glib::ustring strName = m_AddDel.get_value_key(iter);
+    g_warning("Box_Tables::on_AddDel_Delete(): key name =%s", strName.c_str());
+    if(!strName.empty())
     {
       //Ask the user to confirm:
       Glib::ustring strMsg = gettext("Are you sure that you want to delete this table?\nTable name: ")
@@ -209,20 +218,24 @@ void Box_Tables::on_AddDel_Delete(const Gtk::TreeModel::iterator& rowStart, cons
       if(iButtonClicked == Gtk::RESPONSE_OK)
       {
         Query_execute( "DROP TABLE " + strName);
+        something_changed = true;
       }
     }
   }
 
-  save_to_document();
-  
-  fill_from_database();
+  if(something_changed)
+  {
+    save_to_document();
 
-  m_modified = true;
+    fill_from_database();
+
+    m_modified = true;
+  }
 }
 
 void Box_Tables::on_AddDel_Edit(const Gtk::TreeModel::iterator& row)
 {
-  Glib::ustring table_name = m_AddDel.get_value(row);
+  Glib::ustring table_name = m_AddDel.get_value_key(row);
   
   if(m_pDocument)
   {

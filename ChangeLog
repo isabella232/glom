@@ -1,3 +1,14 @@
+2004-06-15  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/utility_widgets/adddel.[h|cc]: add_item(), remove_item(), 
+	get_row() now use a key value instead of the value in the first column.
+	This is a hidden TreeModel column. There is also a bool placeholder 
+	column, used to mark the blank row that is for the user to add a new 
+	row. This scheme should make it easier to handle reorderered rows, and 
+	it allows us to get a uniquq identifier for a changed row even when 
+	responding to a change an it is the first row (such as a field name) 
+	that has changed.
+
 2004-06-14  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/utility_widgets/adddel.[h|cc]: The API now uses Gtk::TreeModel

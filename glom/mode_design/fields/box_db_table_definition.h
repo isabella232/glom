@@ -24,11 +24,6 @@
 #include "../../box_db_table.h"
 #include "dialog_fielddefinition.h"
 
-/**
-  *@author Murray Cumming
-  */
-
-
 class Box_DB_Table_Definition : public Box_DB_Table
 {
 public: 

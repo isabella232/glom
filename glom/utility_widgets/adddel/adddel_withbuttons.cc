@@ -50,10 +50,11 @@ void AddDel_WithButtons::on_button_add()
 {
   if(m_auto_add)
   {
-    Gtk::TreeModel::iterator iter = add_item();
+    Gtk::TreeModel::iterator iter = add_item_placeholder();
     if(iter)
     {
-      select_item(iter, 0, true /* start_editing */);
+      guint first_visible = get_count_hidden_system_columns();
+      select_item(iter, first_visible, true /* start_editing */);
     }
   }
   else

@@ -23,7 +23,8 @@
 #include <libintl.h>
 
 Box_DataBases::Box_DataBases(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
-: Box_DB(cobject)
+: Box_DB(cobject),
+  m_col_name(0)
 {
   m_AddDel.set_show_column_titles(false);
   
@@ -51,7 +52,7 @@ Box_DataBases::Box_DataBases(BaseObjectType* cobject, const Glib::RefPtr<Gnome::
 
   pAligmentPlaceholder->add(m_AddDel);
 
-  m_AddDel.add_column(gettext("Databases"));
+  m_col_name = m_AddDel.add_column(gettext("Databases"));
 
   m_AddDel.signal_user_added().connect(sigc::mem_fun(*this, &Box_DataBases::on_AddDel_Add));
   m_AddDel.signal_user_requested_edit().connect(sigc::mem_fun(*this, &Box_DataBases::on_AddDel_Edit));
@@ -98,11 +99,12 @@ void Box_DataBases::on_button_connect()
       for(type_vecStrings::iterator iter = vecDatabases.begin(); iter != vecDatabases.end(); iter++)
       {
         const Glib::ustring& strName = *iter;
-        m_AddDel.add_item(strName);
+        Gtk::TreeModel::iterator iter = m_AddDel.add_item(strName);
+        m_AddDel.set_value(iter, m_col_name, strName);
       }
 
       //Select the current database:
-      m_AddDel.select_item(m_pDocument->get_connection_database());
+      m_AddDel.select_item(m_pDocument->get_connection_database(), m_col_name);
     }
   }
   else
@@ -122,8 +124,8 @@ void Box_DataBases::on_button_connect()
 
 void Box_DataBases::on_AddDel_Add(const Gtk::TreeModel::iterator& row)
 {
-  Glib::ustring strName = m_AddDel.get_value(row);
-  if(strName.size())
+  Glib::ustring strName = m_AddDel.get_value(row, m_col_name);
+  if(!strName.empty())
   {
     sharedptr<SharedConnection> sharedconnection = connect_to_server_with_connection_settings();
     if(sharedconnection)
@@ -139,7 +141,7 @@ void Box_DataBases::on_AddDel_Add(const Gtk::TreeModel::iterator& row)
       }
     }
 
-    on_button_connect();
+    on_button_connect(); //Refresh the list of databases.
   }
 }
 
@@ -173,15 +175,14 @@ sharedptr<SharedConnection> Box_DataBases::connect_to_server_with_connection_set
 
 void Box_DataBases::on_AddDel_Edit(const Gtk::TreeModel::iterator& row)
 {
-  Glib::ustring strValue = m_AddDel.get_value(row);
-  m_strDatabaseName = strValue; //Remember for get_database_name().
-
-  signal_selected.emit(strValue);
+  m_strDatabaseName = m_AddDel.get_value_key(row);
+ 
+  signal_selected.emit(m_strDatabaseName);
 }
 
 void Box_DataBases::on_AddDel_Delete(const Gtk::TreeModel::iterator& rowStart, const Gtk::TreeModel::iterator& /* rowEnd TODO */)
 {
-  Glib::ustring strValue = m_AddDel.get_value(rowStart);
+  Glib::ustring strValue = m_AddDel.get_value_key(rowStart);
   if(!strValue.empty())
   {
     //Ask the user to confirm:
@@ -200,7 +201,7 @@ void Box_DataBases::on_AddDel_Delete(const Gtk::TreeModel::iterator& rowStart, c
         connection->drop_database(strValue);
       }
 
-      on_button_connect();
+      on_button_connect(); //Refresh the list of databases.
     }
   }
 }
@@ -214,7 +215,6 @@ void Box_DataBases::load_from_document()
     m_Entry_User->set_text(m_pDocument->get_connection_user());
   }
 
-  g_warning("Box_DataBases::load_from_document end");
 }
 
 void Box_DataBases::set_use_list(bool bVal /* = true */)

@@ -23,7 +23,8 @@
 #include <libintl.h>
 
 Box_Data_List::Box_Data_List()
-: m_has_one_or_more_records(false)
+: m_has_one_or_more_records(false),
+  m_first_col(0)
 {
   m_layout_name = "list";
   
@@ -45,8 +46,6 @@ Box_Data_List::Box_Data_List()
   //Groups are not very helpful for a list view:
   m_pDialogLayout->set_show_groups(false);
  
-  m_bPrimaryKeyFound = false;
-  m_iPrimaryKey = 0;
 }
 
 Box_Data_List::~Box_Data_List()
@@ -104,18 +103,33 @@ void Box_Data_List::fill_from_database()
           
         if(rows_count > 100)
           rows_count = 100; //Don't get more than 100. TODO: Get other rows dynamically.
-        for(guint result_row = 0; result_row < rows_count; result_row++)
-        {
-          Gtk::TreeModel::iterator tree_iter = m_AddDel.add_item("");
 
-          //each field:
-          guint cols_count = result->get_n_columns();
-          for(guint uiCol = 0; uiCol < cols_count; uiCol++)
+        guint primary_key_col_index = 0;
+        bool primary_key_found = get_field_primary_key(primary_key_col_index);
+        if(primary_key_found)
+        {
+          for(guint result_row = 0; result_row < rows_count; result_row++)
           {
-            Gnome::Gda::Value value = result->get_value_at(uiCol, result_row);
-            m_AddDel.set_value(tree_iter, uiCol, value);
+            Gnome::Gda::Value value = result->get_value_at(primary_key_col_index, result_row);
+            Glib::ustring key = value.to_string(); //It is actually an integer, but that should not matter.
+            if(key.empty())
+              g_warning("Box_Data_List::fill_from_database(): primary key value is empty");
+            else
+            {
+              Gtk::TreeModel::iterator tree_iter = m_AddDel.add_item(key);
+
+              //each field:
+              guint cols_count = result->get_n_columns();
+              for(guint uiCol = 0; uiCol < cols_count; uiCol++)
+              {
+                Gnome::Gda::Value value = result->get_value_at(uiCol, result_row);
+                m_AddDel.set_value(tree_iter, m_first_col + uiCol, value);
+              }
+            }
           }
         }
+        else
+          g_warning("Box_Data_List::fill_from_database(): primary key not found in table %s", m_strTableName.c_str());
       }
     }
   }
@@ -127,17 +141,17 @@ void Box_Data_List::fill_from_database()
   //Select first record:
   Glib::RefPtr<Gtk::TreeModel> refModel = m_AddDel.get_model();
   if(refModel)
-    m_AddDel.select_item(refModel->children().begin());
+    m_AddDel.select_item(refModel->children().begin(), m_first_col);
  
   fill_end();
 }
 
 void Box_Data_List::on_AddDel_user_requested_add()
 {
-  Gtk::TreeModel::iterator iter = m_AddDel.add_item();
+  Gtk::TreeModel::iterator iter = m_AddDel.add_item_placeholder();
 
   //Start editing in the primary key or the first cell if the primary key is auto-incremented (because there is no point in editing an auto-generated value)..
-  guint column = 0;
+  guint treemodel_column = m_first_col;
   guint uiColPrimaryKey = 0;
   bool bPresent = get_field_primary_key(uiColPrimaryKey); //If there is no primary key then the default of 0 is OK.
   if(bPresent)
@@ -146,20 +160,20 @@ void Box_Data_List::on_AddDel_user_requested_add()
     if(fieldPrimaryKey.get_field_info().get_auto_increment())
     {
       //Start editing in the first cell that is not the primary key:
-      if(uiColPrimaryKey == 0)
-        column = 1; //TODO: Check that there is > 1 column.
+      if(uiColPrimaryKey == m_first_col)
+        treemodel_column = m_first_col + 1; //TODO: Check that there is > 1 column.
       else
       {
-        column = 0;
+        treemodel_column = m_first_col;
       }
     }
     else
     {
-      column = uiColPrimaryKey; //Start editing in the primary key, because it needs the user to give it a value.
+      treemodel_column = uiColPrimaryKey; //Start editing in the primary key, because it needs the user to give it a value.
     }
   }
 
-  m_AddDel.select_item(iter, column, true /* start_editing */);
+  m_AddDel.select_item(iter, treemodel_column, true /* start_editing */);
 }
 
 void Box_Data_List::on_AddDel_user_requested_edit(const Gtk::TreeModel::iterator& row)
@@ -170,13 +184,11 @@ void Box_Data_List::on_AddDel_user_requested_edit(const Gtk::TreeModel::iterator
 
 void Box_Data_List::on_AddDel_user_requested_delete(const Gtk::TreeModel::iterator& rowStart, const Gtk::TreeModel::iterator&  /* rowEnd TODO */)
 {
-  Gtk::TreeModel::iterator iterSelected = m_AddDel.get_item_selected();
-
-  Glib::ustring strPrimaryKeyValue = m_AddDel.get_value(rowStart);
+  Glib::ustring strPrimaryKeyValue = m_AddDel.get_value_key(rowStart);
   record_delete(strPrimaryKeyValue);
 
   //Remove the row:
-  m_AddDel.remove_item(iterSelected);
+  m_AddDel.remove_item(rowStart);
 }
 
 void Box_Data_List::on_AddDel_user_added(const Gtk::TreeModel::iterator& row)
@@ -314,9 +326,9 @@ void Box_Data_List::on_AddDel_user_changed(const Gtk::TreeModel::iterator& row, 
 
 void Box_Data_List::on_details_nav_first()
 {
-  m_AddDel.select_item(m_AddDel.get_model()->children().begin());
+  m_AddDel.select_item(m_AddDel.get_model()->children().begin(), m_first_col);
 
-  signal_user_requested_details().emit(m_AddDel.get_value_selected());
+  signal_user_requested_details().emit(m_AddDel.get_value_key_selected());
 }
 
 void Box_Data_List::on_details_nav_previous()
@@ -329,8 +341,8 @@ void Box_Data_List::on_details_nav_previous()
     {
       iter--;
 
-      m_AddDel.select_item(iter);
-      signal_user_requested_details().emit(m_AddDel.get_value_selected());
+      m_AddDel.select_item(iter, m_first_col);
+      signal_user_requested_details().emit(m_AddDel.get_value_key_selected());
     }
   }
 }
@@ -344,9 +356,9 @@ void Box_Data_List::on_details_nav_next()
     if( !m_AddDel.get_is_last_row(iter) )
     {
       iter++;    
-      m_AddDel.select_item(iter);
+      m_AddDel.select_item(iter, m_first_col);
 
-      signal_user_requested_details().emit(m_AddDel.get_value_selected());
+      signal_user_requested_details().emit(m_AddDel.get_value_key_selected());
     }
   }
 }
@@ -357,8 +369,8 @@ void Box_Data_List::on_details_nav_last()
   iter--;
   if(iter)
   {
-    m_AddDel.select_item(iter);
-    signal_user_requested_details().emit(m_AddDel.get_value_selected());
+    m_AddDel.select_item(iter, m_first_col);
+    signal_user_requested_details().emit(m_AddDel.get_value_key_selected());
   }
 }
 
@@ -397,26 +409,13 @@ void Box_Data_List::on_Details_record_deleted(Glib::ustring strPrimaryKey)
 
 Glib::ustring Box_Data_List::get_primary_key_value(const Gtk::TreeModel::iterator& row)
 {
-  Glib::ustring strResult;
-
-  guint uiCol = 0;
-  bool bPresent = get_field_primary_key(uiCol);
-  if(bPresent)
-    strResult = m_AddDel.get_value(row, uiCol);
-
-  return strResult;
+  //The primary key is stored in the hidden key column (as well as maybe in another visible column);
+  return m_AddDel.get_value_key(row);
 }
 
 Glib::ustring Box_Data_List::get_primary_key_value_selected()
 {
-  Glib::ustring strResult;
-
-  guint uiCol = 0;
-  bool bPresent = get_field_primary_key(uiCol);
-  if(bPresent)
-    strResult = m_AddDel.get_value_selected(uiCol);
-
-  return strResult;
+  return m_AddDel.get_value_key_selected();
 }
 
 Field Box_Data_List::get_Entered_Field(guint index)
@@ -449,17 +448,24 @@ void Box_Data_List::fill_column_titles()
 
     type_vecFields listFieldsToShow = get_fields_to_show();
 
+    //Add a column for each table field:
+    bool first_col_added = false;
     for(type_vecFields::const_iterator iter =  listFieldsToShow.begin(); iter != listFieldsToShow.end(); ++iter)
     {
-      m_AddDel.add_column(*iter);
+      guint col = m_AddDel.add_column(*iter);
+      if(!first_col_added)
+      {
+        m_first_col = col; //Remember for later.
+        first_col_added = true;
+      }
     }
-  } //if(pDoc)
+  }
 }
 
-void Box_Data_List::on_record_added(const Glib::ustring& /* strPrimaryKey */)
+void Box_Data_List::on_record_added(const Glib::ustring& strPrimaryKey)
 {
   //Overridden by Box_Data_List_Related.
-  m_AddDel.add_item(); //Add blank row.
+  m_AddDel.add_item(strPrimaryKey); //Add blank row.
 }
 
 Box_Data_List::type_signal_user_requested_details Box_Data_List::signal_user_requested_details()

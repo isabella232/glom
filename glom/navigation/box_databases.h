@@ -65,6 +65,7 @@ protected:
 
  
   bool m_bUseList; // see set_use_list().
+  guint m_col_name;
 };
 
 #endif //HEADER_BOX_DATABASES

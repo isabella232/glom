@@ -116,9 +116,8 @@ Glib::RefPtr<Gnome::Gda::DataModel> Base_DB::Query_execute(const Glib::ustring& 
   {
     Glib::RefPtr<Gnome::Gda::Connection> gda_connection = sharedconnection->get_gda_connection();
 
-    std::cout << "Query_execute() before: " << strQuery << std::endl;
+    std::cout << "Query_execute():  " << strQuery << std::endl;
     result = gda_connection->execute_single_command(strQuery);
-    std::cout << "Query_execute() after: " << strQuery << std::endl;
     if(!result)
     {
       handle_error();

@@ -91,14 +91,14 @@ void Box_Data_List_Related::on_record_added(const Glib::ustring& strPrimaryKeyVa
     if(!bTest)
        std::cout << "Box_Data_List_Related::on_record_added() field not found: " << m_strKeyField << std::endl;
 
-    Glib::ustring strKeyValue = m_AddDel.get_value(iter, iKey);
+    Glib::ustring strKeyValue = m_AddDel.get_value(iter, m_first_col + iKey);
     Box_Data_List::on_record_added(strPrimaryKeyValue); //adds blank row.
 
 
     //Make sure that the new related record is related,
     //by setting the foreign key:
     //If it's not auto-generated.
-    if(strKeyValue.size())
+    if(!strKeyValue.empty())
     {
       //It was auto-generated. Tell the parent about it, so it can make a link.
       signal_record_added.emit(strKeyValue);
@@ -106,9 +106,9 @@ void Box_Data_List_Related::on_record_added(const Glib::ustring& strPrimaryKeyVa
     else
     {
       //Create the link by setting the foreign key:
-      m_AddDel.set_value(iter, iKey, m_strKeyValue);
+      m_AddDel.set_value(iter, m_first_col + iKey, m_strKeyValue);
 
-      on_AddDel_user_changed(iter, iKey); //Update the database.
+      on_AddDel_user_changed(iter, m_first_col + iKey); //Update the database.
     }
   }
 }

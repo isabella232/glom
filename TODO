@@ -11,12 +11,9 @@ User Level:
 - Do not allow developer mode if the postgres permissions are low.
 
 
-Data entry:
-- Store date and time in a standard format, regardless of locale. Use locale to format and enter it.
-
 
 Data:
-- Properly handle NULL values in non-text fields.
+- Properly handle NULL values in non-text fields. (maybe done already)
 - Details: Use groups of fields.
 
 

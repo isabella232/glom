@@ -41,9 +41,8 @@ void Box_DB_Table_Definition::init()
   if(refXml)
     refXml->get_widget_derived("window_field_definition_edit", m_pDialog);
 
-  m_colName = 0;
   pack_start(m_AddDel);
-  m_AddDel.add_column(gettext("Name"));
+  m_colName = m_AddDel.add_column(gettext("Name"));
 
   m_colTitle = m_AddDel.add_column(gettext("Title"));
 
@@ -96,7 +95,8 @@ void Box_DB_Table_Definition::fill_from_database()
              
       //Name:
       Gtk::TreeModel::iterator iter= m_AddDel.add_item(field.get_name());
-
+      m_AddDel.set_value(iter, m_colName, field.get_name());
+      
       Glib::ustring title = field.get_title();
       m_AddDel.set_value(iter, m_colTitle, title);      
 
@@ -128,9 +128,8 @@ void Box_DB_Table_Definition::fill_from_database()
 
 void Box_DB_Table_Definition::on_AddDel_add(const Gtk::TreeModel::iterator& row)
 {
-g_warning("on_AddDel_add");
-  Glib::ustring strName = m_AddDel.get_value(row);
-  if(strName.size())
+  Glib::ustring strName = m_AddDel.get_value(row, m_colName);
+  if(!strName.empty())
   {
     bool bTest = Query_execute( "ALTER TABLE " + m_strTableName + " ADD " + strName + " NUMERIC" ); //TODO: Get schema type for Field::TYPE_NUMERIC
 
@@ -140,7 +139,7 @@ g_warning("on_AddDel_add");
 
     if(bTest)
     {
-      m_AddDel.select_item(strName);
+      m_AddDel.select_item(strName, m_colTitle, true); //Start editing the title
     }
   }
 }
@@ -149,7 +148,7 @@ void Box_DB_Table_Definition::on_AddDel_delete(const Gtk::TreeModel::iterator& r
 {
   for(Gtk::TreeModel::iterator iter = rowStart; iter != rowEnd; ++iter)
   {
-    Glib::ustring strName = m_AddDel.get_value(iter);
+    Glib::ustring strName = m_AddDel.get_value_key(iter);
     if(!strName.empty())
     {
       Query_execute( "ALTER TABLE " + m_strTableName + " DROP COLUMN " + strName );
@@ -161,13 +160,12 @@ void Box_DB_Table_Definition::on_AddDel_delete(const Gtk::TreeModel::iterator& r
 
 void Box_DB_Table_Definition::on_AddDel_changed(const Gtk::TreeModel::iterator& row, guint /* col */)
 {
-g_warning("on_AddDel_changed");
   //Get old field definition:
   Document_Glom* pDoc = static_cast<Document_Glom*>(get_document());
   if(pDoc)
   {
     //Glom-specific stuff: //TODO_portiter
-    const Glib::ustring strFieldNameBeingEdited = m_AddDel.get_value(row, 0);  //TODO: handle change of field name itself.
+    const Glib::ustring strFieldNameBeingEdited = m_AddDel.get_value_key(row);
     
     pDoc->get_field(m_strTableName, strFieldNameBeingEdited, m_Field_BeingEdited);
 
@@ -388,7 +386,7 @@ void Box_DB_Table_Definition::change_definition(const Field& fieldOld, Field fie
   fill_from_database();
 
   //Select the same field again:
-  m_AddDel.select_item(field.get_name());
+  m_AddDel.select_item(field.get_name(), m_colName, false);
 }
 
 void Box_DB_Table_Definition::fill_fields()

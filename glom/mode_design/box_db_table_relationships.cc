@@ -84,17 +84,18 @@ void Box_DB_Table_Relationships::fill_from_database()
        const Relationship& relationship = *iter;
 
        //Name:
-       Gtk::TreeModel::iterator iter = m_AddDel.add_item(relationship.get_name());
-
+       Gtk::TreeModel::iterator iterTree = m_AddDel.add_item(relationship.get_name());
+       m_AddDel.set_value(iterTree, m_colName, relationship.get_name());
+       
        //From Field:
-       m_AddDel.set_value(iter, m_colFromField, relationship.get_from_field());
+       m_AddDel.set_value(iterTree, m_colFromField, relationship.get_from_field());
 
        //To Table:
        const Glib::ustring& strToTable = relationship.get_to_table();
-       m_AddDel.set_value(iter, m_colToTable, strToTable);
+       m_AddDel.set_value(iterTree, m_colToTable, strToTable);
 
        //To Field:
-       m_AddDel.set_value(iter, m_colToField, relationship.get_to_field());
+       m_AddDel.set_value(iterTree, m_colToField, relationship.get_to_field());
 
     }
   }
@@ -141,7 +142,14 @@ Box_DB_Table_Relationships::type_vecStrings Box_DB_Table_Relationships::util_vec
 
 void Box_DB_Table_Relationships::on_AddDel_user_changed(const Gtk::TreeModel::iterator& row, guint col)
 {
-  if(col == m_colToTable)
+  if(col == m_colName)
+  {
+    //The name is the key, so If the name has been changed then the key must change too.
+    Glib::ustring new_name = m_AddDel.get_value(row, m_colName);
+    if(!new_name.empty())
+      m_AddDel.set_value_key(row, new_name);
+  }
+  else if(col == m_colToTable)
   {
     //User chose a new table so we need to wipe the field
     //because it might not be a valid field for that table:
@@ -159,7 +167,7 @@ void Box_DB_Table_Relationships::on_AddDel_user_activated(const Gtk::TreeModel::
         
     const Glib::ustring& strTableName = m_AddDel.get_value(row, m_colToTable);
 
-    if(strTableName.size())
+    if(!strTableName.empty())
     {
       //Set list of 'To' fields depending on table:
       m_AddDel.set_value(row, m_colToField, Glib::ustring(""));
