@@ -28,7 +28,7 @@
 #include "../../utility_widgets/table_columns.h"
 #include "../../utility_widgets/entry_numerical.h"
 #include "../../utility_widgets/dialog_properties.h"
-#include "../../utility_widgets/entryglom.h"
+#include "../../utility_widgets/datawidget.h"
 #include "../../data_structure/field.h"
 #include "../../base_db.h"
 
@@ -62,8 +62,7 @@ protected:
   Combo_FieldType* m_pCombo_Type;
   Gtk::CheckButton* m_pCheck_Unique;
   Gtk::CheckButton* m_pCheck_NotNull;
-  EntryGlom* m_pEntry_Default;
-  Gtk::Label* m_pLabel_Default;
+  Gtk::HBox* m_pBox_DefaultValueSimple;
   Gtk::CheckButton* m_pCheck_PrimaryKey;
   Gtk::CheckButton* m_pCheck_AutoIncrement;
 
@@ -79,6 +78,8 @@ protected:
   Gtk::Button* m_pButton_EditCalculation;
      
   Gtk::Entry* m_pEntry_Title;
+
+  DataWidget* m_pDataWidget_DefaultValueSimple;
 
   Field m_Field;
   Glib::ustring m_table_name;

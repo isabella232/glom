@@ -8,6 +8,7 @@ libutility_widgets_a_SOURCES = alignment_justified.cc alignment_justified.h \
                                flowtable.cc flowtable.h \
                                flowtablewithfields.cc flowtablewithfields.h \
                                entry_numerical.cc entry_numerical.h \
+                               datawidget.h datawidget.cc \
                                entryglom.h entryglom.cc \
                                placeholder.cc placeholder.h \
                                table_columns.cc table_columns.h

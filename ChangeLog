@@ -1,5 +1,12 @@
 2004-07-08  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/utility_widgets/: Added datawidget.[h|cc]: This widget can hold 
+	either an EntryGlom or a checkbox, depending on the field type. Used 
+	this in the Field Definition dialog and the FlowTableWithFields for the
+	Details view.
+
+2004-07-08  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/data_structure/glomconversions: parse_value(): Return success 
 	when parsing empty date, time, and numbers as nulls.
 	* glom/mode_design/fields/dialog_fielddefinition.cc: 

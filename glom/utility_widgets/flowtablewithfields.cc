@@ -19,7 +19,7 @@
  */
  
 #include "flowtablewithfields.h"
-#include "entryglom.h"
+#include "datawidget.h"
 #include <gtkmm/checkbutton.h>
 #include "../data_structure/glomconversions.h"
 
@@ -98,41 +98,29 @@ void FlowTableWithFields::add_field(const Field& field, const Glib::ustring& gro
     Info info;
     info.m_field = field;
 
-    if(info.m_field.get_glom_type() == Field::TYPE_BOOLEAN)
+    //Add the entry or checkbox (handled by the DataWidget)
+    info.m_second = Gtk::manage(new DataWidget(field.get_glom_type(), field.get_title_or_name()) );
+    info.m_second->show_all();
+
+    info.m_first = Gtk::manage(new Gtk::Alignment());
+
+    //Add a label, if one is necessary:
+    Gtk::Label* label = info.m_second->get_label();
+    if(!label->get_text().empty())
     {
-      //Add a checkbutton. We don't need a label, because the checkbutton has that already.
-      info.m_checkbutton = Gtk::manage( new Gtk::CheckButton( field.get_title_or_name() ) );
-      add( *(info.m_checkbutton) );
-      info.m_checkbutton->show();
-
-      info.m_checkbutton->signal_toggled().connect( sigc::bind(sigc::mem_fun(*this, &FlowTableWithFields::on_checkbutton_toggled), id)  );
-
-    }
-    else
-    {
-      //Add a label and an entry:
-      
-      info.m_first = Gtk::manage(new Gtk::Alignment());
-
-      Gtk::Label* label = Gtk::manage(new Gtk::Label(field.get_title_or_name()));
       info.m_first->add( *label );
       label->show();
       info.m_first->show();
       info.m_first->set(Gtk::ALIGN_RIGHT);
       info.m_first->show_all_children(); //This does not seem to work, so we show the label explicitly.
-
-      info.m_second = Gtk::manage(new EntryGlom(field.get_glom_type()) );
-      int width = get_suitable_width(field.get_glom_type());
-      info.m_second->set_size_request(width, -1 /* auto */);
-      info.m_second->show_all();
-
-      info.m_group = group;
-
-      add(*(info.m_first), *(info.m_second));
-
-      info.m_second->signal_edited().connect( sigc::bind(sigc::mem_fun(*this, &FlowTableWithFields::on_entry_edited), id)  );
     }
 
+    info.m_group = group;
+
+    add(*(info.m_first), *(info.m_second));
+
+    info.m_second->signal_edited().connect( sigc::bind(sigc::mem_fun(*this, &FlowTableWithFields::on_entry_edited), id)  );
+  
     m_mapFields[id] = info;
   }
   else
@@ -162,15 +150,9 @@ void FlowTableWithFields::set_field_value(const Field& field, const Gnome::Gda::
 void FlowTableWithFields::set_field_value(const Glib::ustring& id, const Gnome::Gda::Value& value)
 {
   Gtk::Widget* widget = get_field(id);
-  EntryGlom* entry = dynamic_cast<EntryGlom*>(widget);
-  if(entry)
-    entry->set_value(value);
-  else
-  {
-    Gtk::CheckButton* checkbutton = dynamic_cast<Gtk::CheckButton*>(widget);
-    if(checkbutton)
-      checkbutton->set_active( value.get_bool() );
-  }
+  DataWidget* datawidget = dynamic_cast<DataWidget*>(widget);
+  if(datawidget)
+    datawidget->set_value(value);
 }
 
 Gnome::Gda::Value FlowTableWithFields::get_field_value(const Field& field) const
@@ -181,33 +163,21 @@ Gnome::Gda::Value FlowTableWithFields::get_field_value(const Field& field) const
 Gnome::Gda::Value FlowTableWithFields::get_field_value(const Glib::ustring& id) const
 {
   const Gtk::Widget* widget = get_field(id);
-  const EntryGlom* entry = dynamic_cast<const EntryGlom*>(widget);
-  if(entry)
-    return entry->get_value();
+  const DataWidget* datawidget = dynamic_cast<const DataWidget*>(widget);
+  if(datawidget)
+    return datawidget->get_value();
   else
   {
-    const Gtk::CheckButton* checkbutton = dynamic_cast<const Gtk::CheckButton*>(widget);
-    if(checkbutton)
-    {
-      return Gnome::Gda::Value(checkbutton->get_active());
-    }
-    else
-      return Gnome::Gda::Value(); //null.
+    return Gnome::Gda::Value(); //null.
   }
 }
  
 void FlowTableWithFields::set_field_editable(const Field& field, bool editable)
 {
   Gtk::Widget* widget = get_field(field);
-  Gtk::Entry* entry = dynamic_cast<Gtk::Entry*>(widget);
-  if(entry)
-    entry->set_editable(editable);
-  else
-  {
-    Gtk::CheckButton* checkbutton = dynamic_cast<Gtk::CheckButton*>(widget);
-    if(checkbutton)
-      checkbutton->set_sensitive(editable);
-  }
+  DataWidget* datawidget = dynamic_cast<DataWidget*>(widget);
+  if(datawidget)
+    datawidget->set_editable(editable);
 }
 
 
@@ -285,64 +255,6 @@ void FlowTableWithFields::on_entry_edited(const Glib::ustring& id)
 void FlowTableWithFields::on_checkbutton_toggled(const Glib::ustring& id)
 {
   m_signal_field_edited.emit(id);
-}
-
-int FlowTableWithFields::get_suitable_width(Field::glom_field_type field_type)
-{
-  int result = 150;
-
-  Glib::ustring example_text;
-  switch(field_type)
-  {
-    case(Field::TYPE_DATE):
-    {
-      Gnome::Gda::Date date = {0, 0, 0};
-      date.day = 31;
-      date.month = 12;
-      date.year = 2000;        
-      example_text = GlomConversions::get_text_for_gda_value(field_type, Gnome::Gda::Value(date));
-      break;
-    }
-    case(Field::TYPE_TIME):
-    {
-      Gnome::Gda::Time time = {0, 0, 0, 0};
-      time.hour = 24;      
-      time.minute = 59;
-      time.second = 59;
-      example_text = GlomConversions::get_text_for_gda_value(field_type, Gnome::Gda::Value(time));
-      break;
-    }
-    case(Field::TYPE_NUMERIC):
-    {
-      example_text = "9999999999";
-      break;
-    }
-    case(Field::TYPE_TEXT):
-    {
-      example_text = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
-      break;
-    }
-    default:
-    {
-      break;
-    }
-  }
-
-
-  if(!example_text.empty())
-  {
-    //Get the width required for this string in the current font:
-    Glib::RefPtr<Pango::Layout> refLayout = create_pango_layout(example_text);
-    int width = 0;
-    int height = 0;
-    refLayout->get_pixel_size(width, height);
-    result = width;
-    
-    //Add a bit more:
-    result += 10;
-  }
-
-  return result;
 }
 
 

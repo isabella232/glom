@@ -26,7 +26,7 @@
 #include <map>
 #include <list>
 
-class EntryGlom;
+class DataWidget;
 
 class FlowTableWithFields : public FlowTable
 {
@@ -86,7 +86,7 @@ protected:
     Glib::ustring m_group;
 
     Gtk::Alignment* m_first;
-    EntryGlom* m_second;
+    DataWidget* m_second;
     Gtk::CheckButton* m_checkbutton; //Used instead of first and second if it's a bool.
   };
 

@@ -130,9 +130,7 @@ Glib::ustring GlomConversions::get_text_for_gda_value(Field::glom_field_type glo
 
   if(glom_type == Field::TYPE_DATE)
   {
-    g_warning("debug 1: gdavaluetype=%d", value.get_value_type());
     Gnome::Gda::Date gda_date = value.get_date();
-    g_warning("debug 2");
     
     tm the_c_time = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     the_c_time.tm_year = gda_date.year - 1900; //C years start are the AD year - 1900. So, 01 is 1901.

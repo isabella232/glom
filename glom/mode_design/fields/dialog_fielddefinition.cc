@@ -25,7 +25,8 @@
 #include <libintl.h>
 
 Dialog_FieldDefinition::Dialog_FieldDefinition(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
-: Dialog_Properties(cobject, refGlade)
+: Dialog_Properties(cobject, refGlade),
+  m_pDataWidget_DefaultValueSimple(0)
 {
   refGlade->get_widget_derived("combobox_type", m_pCombo_Type);
 
@@ -36,8 +37,7 @@ Dialog_FieldDefinition::Dialog_FieldDefinition(BaseObjectType* cobject, const Gl
   refGlade->get_widget("checkbutton_primarykey",  m_pCheck_PrimaryKey);
   refGlade->get_widget("checkbutton_autoincrement",  m_pCheck_AutoIncrement);  
 
-  refGlade->get_widget_derived("entry_default_value_simple",  m_pEntry_Default);
-  refGlade->get_widget("label_default_value_simple",  m_pLabel_Default);
+  refGlade->get_widget("hbox_default_value_simple",  m_pBox_DefaultValueSimple);
 
   refGlade->get_widget("box_default_value",  m_pBox_DefaultValue);
   refGlade->get_widget("checkbutton_lookup",  m_pCheck_Lookup);
@@ -105,12 +105,23 @@ void Dialog_FieldDefinition::set_field(const Field& field, const Glib::ustring& 
   //Default value: simple:
   Gnome::Gda::Value default_value;
   if(!disable_default_value)
-  {
     default_value = m_Field.get_field_info().get_default_value();
-       g_warning("default_value.gdavaluetype=%d", default_value.get_value_type());
+
+  //Create an appropriate DataWidget for the default value:
+  if(m_pDataWidget_DefaultValueSimple)
+  {
+    delete m_pDataWidget_DefaultValueSimple;
+    m_pDataWidget_DefaultValueSimple = 0;
   }
-  m_pEntry_Default->set_glom_type(m_Field.get_glom_type());
-  m_pEntry_Default->set_value(default_value);
+
+  m_pDataWidget_DefaultValueSimple = Gtk::manage( new DataWidget(m_Field.get_glom_type(), gettext("Default Value")) );
+
+  Gtk::Label* pLabel = m_pDataWidget_DefaultValueSimple->get_label();
+  if(!pLabel->get_text().empty())
+    m_pBox_DefaultValueSimple->pack_start(*pLabel);
+    
+  m_pBox_DefaultValueSimple->pack_end(*m_pDataWidget_DefaultValueSimple, Gtk::PACK_EXPAND_WIDGET); 
+  m_pDataWidget_DefaultValueSimple->set_value(default_value);
 
   //Default value: lookup:
 
@@ -176,7 +187,7 @@ Field Dialog_FieldDefinition::get_field() const
   if(!fieldInfo.get_auto_increment()) //Ignore default_values for auto_increment fields - it's just some obscure postgres code.
   {
     //Simple default value:
-    fieldInfo.set_default_value( m_pEntry_Default->get_value() );
+    fieldInfo.set_default_value( m_pDataWidget_DefaultValueSimple->get_value() );
   }
 
   //Lookup:
@@ -232,7 +243,7 @@ void Dialog_FieldDefinition::enforce_constraints()
   if(m_pCheck_Unique->get_active() || m_pCheck_AutoIncrement->get_active())
   {
     m_pBox_DefaultValue->set_sensitive(false); //Disable all controls on the Notebook page.
-    m_pEntry_Default->set_text(""); //Unique fields can not have default values. //TODO: People will be surprised when they lose information here. We should probably read the text as "" if the widget is disabled.
+    m_pDataWidget_DefaultValueSimple->set_value( Gnome::Gda::Value() ); //Unique fields can not have default values. //TODO: People will be surprised when they lose information here. We should probably read the text as "" if the widget is disabled.
   }
   else
   {
