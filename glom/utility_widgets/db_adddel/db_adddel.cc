@@ -561,6 +561,8 @@ void DbAddDel::set_column_title(guint col, const Glib::ustring& strText)
 
 void DbAddDel::construct_specified_columns()
 {
+  InnerIgnore innerIgnore(this);
+
   //TODO_optimisation: This is called many times, just to simplify the API.
 
   //Delay actual use of set_column_*() stuff until this method is called.
@@ -712,12 +714,12 @@ void DbAddDel::construct_specified_columns()
       }
 
     ++view_column_index;
-    
+ 
     } //is visible
 
     ++model_column_index;
   }
-  
+
   //Delete the vector's items:
   for(type_vecModelColumns::iterator iter = vecModelColumns.begin(); iter != vecModelColumns.end(); ++iter)
   {
@@ -798,7 +800,7 @@ guint DbAddDel::add_column(const LayoutItem_Field& field)
   m_ColumnTypes.push_back(column_info);
 
   //Generate appropriate model columns:
-  //if(m_columns_ready)
+  if(m_columns_ready)
     construct_specified_columns();
 
   //Tell the View to use the model:
@@ -811,7 +813,7 @@ guint DbAddDel::add_column(const LayoutItem_Field& field)
 void DbAddDel::set_columns_ready()
 {
   m_columns_ready = true;
-  //construct_specified_columns();
+  construct_specified_columns();
 }
 
 DbAddDel::type_list_indexes DbAddDel::get_column_index(const LayoutItem_Field& layout_item) const
@@ -878,7 +880,7 @@ void DbAddDel::set_column_choices(guint col, const type_vecStrings& vecStrings)
     else
     {
       //The column does not exist yet, so we must create it:
-      //if(m_columns_ready)
+      if(m_columns_ready)
         construct_specified_columns();
     }
   }

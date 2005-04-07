@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <glom_document database_title="Small Business Example">
-  <connection server="localhost" user="" database="glom_example_smallbusiness"/>
+  <connection server="localhost" user="" database="glom_example_smallbusinessv2"/>
   
   
   

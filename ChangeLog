@@ -1,5 +1,21 @@
 2005-04-07  Murray Cumming <murrayc@murrayc.com>
 
+	* glom/utility_widgets/db_adddel/db_adddel.cc:
+	* glom/utility_widgets/db_adddel/db_adddel.cc:
+	Add set_columns_ready(). Only when this is called will 
+	the columns actually be constructed. This prevents 
+	multiple unnecessary data retrievals.
+	* glom/mode_data/box_data_list.cc: fill_column_titles(): 
+	Call DbAddDel::set_columns_ready().
+	* glom/utility_widgets/db_adddel/glom_db_treemodel.cc:
+	* glom/utility_widgets/db_adddel/glom_db_treemodel.h:
+	create(): Add a where_clause parameter. Add a datamodel 
+	member variable and fill it from a SQL SELECT statement.
+	The result is not actually used yet, but could be used to 
+	get rows only on demand when iterating. 
+
+2005-04-07  Murray Cumming <murrayc@murrayc.com>
+
 	* glom/python_embed/Makefile.am:
 	Do not try to build the boost sub-directory. We do not 
 	use it anymore.
