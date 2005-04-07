@@ -29,14 +29,14 @@ class ExceptionConnection : public std::exception
 {
 public:
   enum failure_type
-  {                                         
+  {
     FAILURE_NO_SERVER, //Either there was no attempt to connect to a specific database, or the connection failed both with and without specifying the database.
     FAILURE_NO_DATABASE //Connection without specifying the database was possible.
   };
-  
+
   ExceptionConnection(failure_type failure);
   virtual ~ExceptionConnection() throw();
-  
+
   virtual const char* what();
 
   virtual failure_type get_failure_type() const;

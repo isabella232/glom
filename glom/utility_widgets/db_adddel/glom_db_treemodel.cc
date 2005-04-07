@@ -21,8 +21,13 @@
 #include <iostream>
 #include "glom_db_treemodel.h"
 
+#include "../../connectionpool.h"
+#include "../../data_structure/glomconversions.h" //For util_build_sql
+
 DbTreeModelRow::DbTreeModelRow()
-: m_placeholder(false)
+: m_placeholder(false),
+  m_values_retrieved(false),
+  m_data_model_row_number(false)
 {
 
 }
@@ -74,6 +79,7 @@ DbTreeModel::DbTreeModel(const Gtk::TreeModelColumnRecord& columns, const Glib::
   m_table_name(table_name),
   m_where_clause(where_clause),
   m_column_fields(column_fields),
+  m_data_model_rows_count(0),
   m_stamp(1), //When the model's stamp != the iterator's stamp then that iterator is invalid and should be ignored. Also, 0=invalid
   m_pGlueList(0)
 {
@@ -90,6 +96,29 @@ DbTreeModel::DbTreeModel(const Gtk::TreeModelColumnRecord& columns, const Glib::
   m_columns_count = columns.size();
 
   g_assert(m_columns_count != column_fields.size());
+
+  //Connect to database:
+  ConnectionPool* connection_pool = ConnectionPool::get_instance();
+  if(connection_pool)
+  {
+     m_connection = connection_pool->connect();
+  }
+
+  if(m_connection && !table_name.empty())
+  {
+    const Glib::ustring sql_query = util_build_sql_select_with_where_clause(table_name, column_fields, where_clause);
+
+    std::cout << "DbTreeModel: Executing SQL: " << sql_query << std::endl;
+    m_gda_datamodel = m_connection->get_gda_connection()->execute_single_command(sql_query);
+    if(!m_gda_datamodel)
+    {
+      //TODO: handle_error();
+    }
+    else
+    {
+      m_data_model_rows_count = m_gda_datamodel->get_n_rows(); //TODO_Performance: This probably gets all the data.
+    }
+  }
 }
 
 DbTreeModel::~DbTreeModel()
@@ -156,12 +185,12 @@ bool DbTreeModel::iter_next_vfunc(const iterator& iter, iterator& iter_next) con
   {
     //Get the current row:
     typeListOfRows::iterator row_iter = get_data_row_iter_from_tree_row_iter(iter);
-        
+
     //Make the iter_next GtkTreeIter represent the next row:
     ++row_iter;
-    
+
     create_iterator(row_iter, iter_next);
-    
+
     return true; //success
   }
   else
@@ -251,14 +280,14 @@ bool DbTreeModel::iter_parent_vfunc(const iterator& child, iterator& iter) const
 Gtk::TreeModel::Path DbTreeModel::get_path_vfunc(const iterator& iter) const
 {
    typeListOfRows::iterator row_iter = get_data_row_iter_from_tree_row_iter(iter);
-   
+
    //TODO_Performance:
    int index = 0;
    for(typeListOfRows::iterator iter_count = m_rows.begin(); iter_count != row_iter; ++iter_count)
    {
      ++index;
    }
-   
+
    Gtk::TreeModel::Path path;
    path.push_back(index);
    return path;
@@ -268,33 +297,32 @@ void DbTreeModel::create_iterator(const typeListOfRows::iterator& row_iter, DbTr
 {
   Glib::RefPtr<DbTreeModel> refModel(const_cast<DbTreeModel*>(this));
   refModel->reference();
-  
+
   iter.set_model_refptr(refModel);
-  
+
   if(row_iter == m_rows.end())
   {
     iter.set_stamp(0);
   }
   else
   {
-    iter.set_stamp(m_stamp);
-    
+    iter.set_stamp(m_stamp); 
     //Store the std::list iterator in the GtkTreeIter:
     //See also iter_next_vfunc()
-    
+
     //g_warning("DbTreeModel::create_iterator(): Creating iter to row_index=%d", row_index);
     if(!m_pGlueList)
     {
      m_pGlueList = new GlueList();
     }
-  
+
     GlueItem* pItem = m_pGlueList->get_existing_item(row_iter);
     if(!pItem)
     {
       pItem = new GlueItem(row_iter);
       remember_glue_item(pItem);
     }
-  
+
     //Store the GlueItem in the GtkTreeIter.
     //This will be deleted in the GlueList destructor,
     //which will be called when the old GtkTreeIters are marked as invalid,

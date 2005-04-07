@@ -646,6 +646,8 @@ void Box_Data_List::fill_column_titles()
     m_AddDel.remove_all_columns();
     //m_AddDel.set_columns_count(m_Fields.size());
 
+    m_AddDel.set_table_name(m_strTableName);
+
     Field field_primary_key;
     bool test = get_field_primary_key_for_table(m_strTableName, field_primary_key);
     if(test)
@@ -659,6 +661,8 @@ void Box_Data_List::fill_column_titles()
     {
       m_AddDel.add_column(*iter);
     }
+
+    m_AddDel.set_columns_ready();
   }
 
 }
