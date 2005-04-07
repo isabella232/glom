@@ -155,3 +155,14 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
 
   return valueResult;
 }
+
+/*
+
+examples:
+
+  return record.fields["name_first"] + " " + record.fields["name_last"]
+
+  return record.related_records["contacts"][0].fields["name_first"]
+
+  return record.related_records["invoice lines"].sum("cost") )
+*/
