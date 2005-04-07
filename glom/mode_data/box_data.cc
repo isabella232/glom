@@ -23,8 +23,9 @@
 #include "../data_structure/layout/layoutitem_field.h"
 #include "../python_embed/glom_python.h"
 #include <bakery/App/App_Gtk.h> //For util_bold_message().
+#include <libxslt/transform.h>
 #include "config.h"
-#include <libintl.h>
+#include <glibmm/i18n.h>
 
 Box_Data::Box_Data()
 : m_Button_Find(Gtk::Stock::FIND),
@@ -224,8 +225,8 @@ bool Box_Data::confirm_discard_unstored_data() const
   if(get_unstored_data())
   {
     //Ask user to confirm loss of data:
-    Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(gettext("No primary key value")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_OK_CANCEL );
-    dialog.set_secondary_text(gettext("This data can not be stored in the database because you have not provided a primary key.\nDo you really want to discard this data?"));
+    Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("No primary key value")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_OK_CANCEL );
+    dialog.set_secondary_text(_("This data can not be stored in the database because you have not provided a primary key.\nDo you really want to discard this data?"));
     //TODO: dialog.set_transient_for(*this);
     int iButton = dialog.run();
 
@@ -729,12 +730,13 @@ Glib::ustring Box_Data::build_sql_select(const Glib::ustring& table_name, const 
   if(!GlomConversions::value_is_empty(primary_key_value)) //If there is a record to show:
   {
     const Glib::ustring where_clause = m_strTableName + "." + primary_key_field.get_name() + " = " + primary_key_field.sql(primary_key_value);
-    return build_sql_select_with_where_clause(table_name, fieldsToGet, where_clause);
+    return util_build_sql_select_with_where_clause(table_name, fieldsToGet, where_clause);
   }
 
   return Glib::ustring();
 }
 
+/*
 Glib::ustring Box_Data::build_sql_select_with_where_clause(const Glib::ustring& table_name, const type_vecLayoutFields& fieldsToGet, const Glib::ustring& where_clause)
 {
   Glib::ustring result;
@@ -797,6 +799,7 @@ Glib::ustring Box_Data::build_sql_select_with_where_clause(const Glib::ustring& 
 
   return result;
 }
+*/
 
 Glib::ustring Box_Data::get_layout_item_table_name(const LayoutItem_Field& layout_item, const Glib::ustring table_name)
 {
@@ -854,8 +857,8 @@ bool Box_Data::add_related_record_for_field(const LayoutItem_Field& layout_item_
     {
       //Warn the user:
       //TODO: Make the field insensitive until it can receive data, so people never see this dialog.
-      Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(gettext("Related Record Does Not Exist")), true);
-      dialog.set_secondary_text(gettext("Data may not be entered into this related field, because the related record does not yet exist, and the relationship does not allow automatic creation of new related records."));
+      Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Related Record Does Not Exist")), true);
+      dialog.set_secondary_text(_("Data may not be entered into this related field, because the related record does not yet exist, and the relationship does not allow automatic creation of new related records."));
       dialog.set_transient_for(*get_app_window());
       dialog.run();
 
@@ -873,9 +876,9 @@ bool Box_Data::add_related_record_for_field(const LayoutItem_Field& layout_item_
       {
         //Warn the user:
         //TODO: Make the field insensitive until it can receive data, so people never see this dialog.
-        Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(gettext("Related Record Can Not Be Created")), true);
+        Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Related Record Can Not Be Created")), true);
         //TODO: This is a very complex error message:
-        dialog.set_secondary_text(gettext("Data may not be entered into this related field, because the related record does not yet exist, and the key in the related record is auto-generated and therefore can not be created with the key value in this record."));
+        dialog.set_secondary_text(_("Data may not be entered into this related field, because the related record does not yet exist, and the key in the related record is auto-generated and therefore can not be created with the key value in this record."));
         dialog.set_transient_for(*get_app_window());
         dialog.run();
 
@@ -937,3 +940,53 @@ bool Box_Data::add_related_record_for_field(const LayoutItem_Field& layout_item_
 
   return true;
 }
+
+void Box_Data::print_layout()
+{
+  Gtk::MessageDialog dialog("<b>Not implemented</b>", true);
+  dialog.set_secondary_text("Sorry, this feature has not been implemented yet.");
+  dialog.set_transient_for(*get_app_window());
+  dialog.run();
+}
+
+Glib::ustring Box_Data::xslt_process(const xmlpp::Document& xml_document, const std::string& filepath_xslt)
+{
+  Glib::ustring  result;
+
+  //Use libxslt to transform the XML:
+  xmlDocPtr style = xmlReadFile(filepath_xslt.c_str(), 0, 0);
+  if(style)
+  {
+    //Parse the stylesheet:
+    xsltStylesheetPtr cur = xsltParseStylesheetDoc(style);
+    if(cur)
+    {
+      //Use the parsed stylesheet on the XML:
+      xmlDocPtr pDocOutput = xsltApplyStylesheet(cur, const_cast<xmlDoc*>(xml_document.cobj()), 0);
+      xsltFreeStylesheet(cur);
+
+      //Get the output text:
+      xmlChar* buffer = 0;
+      int length = 0;
+      xmlDocDumpFormatMemoryEnc(pDocOutput, &buffer, &length, 0, 0);
+
+      if(buffer)
+      {
+        // Create a Glib::ustring copy of the buffer
+
+        // Here we force the use of Glib::ustring::ustring( InputIterator begin, InputIterator end )
+        // instead of Glib::ustring::ustring( const char*, size_type ) because it
+        // expects the length of the string in characters, not in bytes.
+        result = Glib::ustring( reinterpret_cast<const char *>(buffer), reinterpret_cast<const char *>(buffer + length) );
+
+        // Deletes the original buffer
+        xmlFree(buffer);
+      }
+
+      xmlFreeDoc(pDocOutput);
+    }
+  }
+
+  return result;
+}
+

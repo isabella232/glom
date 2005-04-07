@@ -127,3 +127,8 @@ void Notebook_Glom::do_menu_developer_layout()
 {
   //Override this.
 }
+
+void Notebook_Glom::do_menu_file_print()
+{
+  //Override this.
+}

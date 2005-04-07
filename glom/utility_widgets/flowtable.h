@@ -67,12 +67,12 @@ protected:
   virtual void on_unrealize();
   virtual bool on_expose_event(GdkEventExpose* event);
 
-  int get_column_height(guint start_widget, guint widget_count, int& total_width);
+  int get_column_height(guint start_widget, guint widget_count, int& total_width) const;
 
   /** 
    * @result The height when the children are arranged optimally (so that the height is minimum).
    */
-  int get_minimum_column_height(guint start_widget, guint columns_count, int& total_width);
+  int get_minimum_column_height(guint start_widget, guint columns_count, int& total_width) const;
 
   class FlowTableItem
   {
@@ -91,11 +91,11 @@ protected:
 
   typedef std::vector<FlowTableItem> type_vecChildren;
 
-  int get_item_requested_height(const FlowTableItem& item);
-  void get_item_requested_width(const FlowTableItem& item, int& first, int& second);
-  void get_item_max_width_requested(guint start, guint height, guint& first_max_width, guint& second_max_width, guint& singles_max_width, bool& is_last_column); //TODO: maybe combine this with code in get_minimum_column_height().
+  int get_item_requested_height(const FlowTableItem& item) const;
+  void get_item_requested_width(const FlowTableItem& item, int& first, int& second) const;
+  void get_item_max_width_requested(guint start, guint height, guint& first_max_width, guint& second_max_width, guint& singles_max_width, bool& is_last_column) const; //TODO: maybe combine this with code in get_minimum_column_height().
 
-  bool child_is_visible(Gtk::Widget* widget);
+  bool child_is_visible(const Gtk::Widget* widget) const;
 
   Gtk::Allocation assign_child(Gtk::Widget* widget, int x, int y);
   Gtk::Allocation assign_child(Gtk::Widget* widget, int x, int y, int width, int height);

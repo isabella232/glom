@@ -33,6 +33,8 @@ public:
   virtual void init_db_details(const Glib::ustring& strTableName, const Glib::ustring& strWhereClause = Glib::ustring());
   virtual void refresh_db_details(const Glib::ustring& strWhereClause = Glib::ustring());
 
+  virtual void print_layout(); //A test, for now.
+
   typedef std::vector<LayoutItem_Field> type_vecLayoutFields;
 
   virtual Glib::ustring get_WhereClause() const;
@@ -59,7 +61,7 @@ protected:
 
   virtual type_vecLayoutFields get_fields_to_show() const;
   virtual Glib::ustring build_sql_select(const Glib::ustring& table_name, const type_vecLayoutFields& fieldsToGet, const Field& primary_key_field, const Gnome::Gda::Value& primary_key_value);
-  virtual Glib::ustring build_sql_select_with_where_clause(const Glib::ustring& table_name, const type_vecLayoutFields& fieldsToGet, const Glib::ustring& where_clause);
+  //virtual Glib::ustring build_sql_select_with_where_clause(const Glib::ustring& table_name, const type_vecLayoutFields& fieldsToGet, const Glib::ustring& where_clause);
   virtual bool get_related_record_exists(const Relationship& relationship, const Field& key_field, const Gnome::Gda::Value& key_value);
   virtual bool add_related_record_for_field(const LayoutItem_Field& layout_item_parent, const Relationship& relationship, const Field& primary_key_field, const Gnome::Gda::Value& primary_key_value_provided);
 
@@ -104,6 +106,9 @@ protected:
 
   static bool get_field_primary_key_index(const type_vecFields& fields, guint& field_column);
   static bool get_field_primary_key_index(const type_vecLayoutFields& fields, guint& field_column);
+
+
+  static Glib::ustring xslt_process(const xmlpp::Document& xml_document, const std::string& filepath_xslt);
 
   Gtk::Button m_Button_Find; //only used by _Find sub-classes. Should be MI.
   Gtk::Label m_Label_FindStatus;

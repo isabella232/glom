@@ -23,7 +23,7 @@
 #include "dialog_layout_list.h"
 #include <bakery/App/App_Gtk.h> //For util_bold_message().
 #include <sstream> //For stringstream
-#include <libintl.h>
+#include <glibmm/i18n.h>
 
 Box_Data_List::Box_Data_List()
 : m_has_one_or_more_records(false)
@@ -42,7 +42,7 @@ Box_Data_List::Box_Data_List()
     }
   }
 
-  m_strHint = gettext("When you change the data in a field the database is updated immediately.\n Click [Add] or enter data into the last row to add a new record.\n Leave automatic ID fields empty - they will be filled for you.\nOnly the first 100 records are shown.");
+  m_strHint = _("When you change the data in a field the database is updated immediately.\n Click [Add] or enter data into the last row to add a new record.\n Leave automatic ID fields empty - they will be filled for you.\nOnly the first 100 records are shown.");
 
   pack_start(m_AddDel);
   m_AddDel.set_auto_add(false); //We want to add the row ourselves when the user clicks the Add button, because the default behaviour there is not suitable.
@@ -115,7 +115,7 @@ void Box_Data_List::fill_from_database()
 
       if(!fieldsToGet.empty())
       {
-        const Glib::ustring query = build_sql_select_with_where_clause(m_strTableName, fieldsToGet, m_strWhereClause);
+        const Glib::ustring query = util_build_sql_select_with_where_clause(m_strTableName, fieldsToGet, m_strWhereClause);
 
         Glib::RefPtr<Gnome::Gda::DataModel> result = Query_execute(query);
         if(!result)
@@ -244,8 +244,8 @@ void Box_Data_List::on_adddel_user_requested_delete(const Gtk::TreeModel::iterat
   if(rowStart)
   {
     //Ask the user for confirmation:
-    Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(gettext("Delete record")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE);
-    dialog.set_secondary_text(gettext("Are you sure that you would like to delete this record? The data in this record will then be permanently lost."));
+    Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Delete record")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE);
+    dialog.set_secondary_text(_("Are you sure that you would like to delete this record? The data in this record will then be permanently lost."));
     dialog.set_transient_for(*get_app_window());
     dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
     dialog.add_button(Gtk::Stock::DELETE, Gtk::RESPONSE_OK);
@@ -704,4 +704,10 @@ bool Box_Data_List::get_field_primary_key_index(guint& field_column) const
 {
   return Box_Data::get_field_primary_key_index(m_Fields, field_column);
 }
+
+void Box_Data_List::print_layout_group(xmlpp::Element* /* node_parent */, const LayoutGroup& /* group */)
+{
+
+}
+
 

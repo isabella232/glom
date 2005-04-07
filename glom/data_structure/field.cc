@@ -21,7 +21,7 @@
 #include "field.h"
 #include "../connectionpool.h"
 #include "glomconversions.h"
-#include <libintl.h>
+#include <glibmm/i18n.h>
 
 //Initialize static data:
 Field::type_map_gda_type_to_glom_type Field::m_map_gda_type_to_glom_type;
@@ -351,12 +351,12 @@ void Field::init_map()
     m_map_glom_type_to_gda_type[TYPE_DATE] = Gnome::Gda::VALUE_TYPE_DATE;
     m_map_glom_type_to_gda_type[TYPE_BOOLEAN] = Gnome::Gda::VALUE_TYPE_BOOLEAN;
     
-    m_map_type_names_ui[TYPE_INVALID] = gettext("Invalid");
-    m_map_type_names_ui[TYPE_NUMERIC] = gettext("Number");
-    m_map_type_names_ui[TYPE_TEXT] = gettext("Text");
-    m_map_type_names_ui[TYPE_TIME] = gettext("Time");
-    m_map_type_names_ui[TYPE_DATE] = gettext("Date");    
-    m_map_type_names_ui[TYPE_BOOLEAN] = gettext("Boolean");
+    m_map_type_names_ui[TYPE_INVALID] = _("Invalid");
+    m_map_type_names_ui[TYPE_NUMERIC] = _("Number");
+    m_map_type_names_ui[TYPE_TEXT] = _("Text");
+    m_map_type_names_ui[TYPE_TIME] = _("Time");
+    m_map_type_names_ui[TYPE_DATE] = _("Date");    
+    m_map_type_names_ui[TYPE_BOOLEAN] = _("Boolean");
 
     m_map_type_names[TYPE_INVALID] = "Invalid";
     m_map_type_names[TYPE_NUMERIC] = "Number";

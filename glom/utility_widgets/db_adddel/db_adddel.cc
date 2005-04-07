@@ -20,7 +20,7 @@
 
 #include "db_adddel.h"
 #include <algorithm> //For std::find.
-#include <libintl.h>
+#include <glibmm/i18n.h>
 #include "../adddel/cellrendererlist.h"
 #include "db_treeviewcolumn_glom.h"
 #include "../../data_structure/glomconversions.h"
@@ -211,7 +211,7 @@ void DbAddDel::setup_menu()
     sigc::mem_fun(*this, &DbAddDel::on_MenuPopup_activate_Add) );
   m_refContextAdd->set_sensitive(m_allow_add);
 
-  m_refContextLayout =  Gtk::Action::create("ContextLayout", gettext("Layout"));
+  m_refContextLayout =  Gtk::Action::create("ContextLayout", _("Layout"));
   m_refActionGroup->add(m_refContextLayout,
     sigc::mem_fun(*this, &DbAddDel::on_MenuPopup_activate_layout) );
 
@@ -603,7 +603,7 @@ void DbAddDel::construct_specified_columns()
 
       record.add( *pModelColumn );
 
-      fields.push_back(iter->m_field.m_field);
+      fields.push_back(iter->m_field);
 
       i++;
     }

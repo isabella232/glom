@@ -20,7 +20,7 @@
 
 #include "dialog_user.h"
 //#include <libgnome/gnome-i18n.h>
-#include <libintl.h>
+#include <glibmm/i18n.h>
 
 Dialog_User::Dialog_User(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
 : Gtk::Dialog(cobject)

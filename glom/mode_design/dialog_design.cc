@@ -21,7 +21,7 @@
 #include "dialog_design.h"
 #include "../box_db_table.h"
 //#include <libgnome/gnome-i18n.h>
-#include <libintl.h>
+#include <glibmm/i18n.h>
 
 
 Dialog_Design::Dialog_Design(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
@@ -47,7 +47,7 @@ void Dialog_Design::init_db_details(const Glib::ustring& strTableName)
 {
   if(get_document())
   {
-    Glib::ustring table_label = gettext("None selected");
+    Glib::ustring table_label = _("None selected");
     
     //Show the table title (if any) and name:
      Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());

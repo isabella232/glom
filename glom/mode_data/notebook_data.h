@@ -30,21 +30,22 @@ class Notebook_Data : public Notebook_Glom
 public: 
   Notebook_Data();
   virtual ~Notebook_Data();
-  
+
   virtual void init_db_details(const Glib::ustring& strTableName, const Glib::ustring& strWhereClause = Glib::ustring());
 
   virtual void select_page_for_find_results(); //Details for 1, List for > 1.
 
   virtual void do_menu_developer_layout(); //override
+  virtual void do_menu_file_print(); //override
 
   enum dataview
   {
     DATA_VIEW_Details,
     DATA_VIEW_List
   };
-  
+
   virtual dataview get_current_view() const;
-  
+
 protected:
 
   //Signal handlers:

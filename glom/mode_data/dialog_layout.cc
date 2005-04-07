@@ -20,7 +20,7 @@
 
 #include "dialog_layout.h"
 //#include <libgnome/gnome-i18n.h>
-#include <libintl.h>
+#include <glibmm/i18n.h>
 
 Dialog_Layout::Dialog_Layout(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
 : Gtk::Dialog(cobject),

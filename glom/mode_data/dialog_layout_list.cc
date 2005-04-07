@@ -23,7 +23,7 @@
 #include <bakery/App/App_Gtk.h> //For util_bold_message().
 
 //#include <libgnome/gnome-i18n.h>
-#include <libintl.h>
+#include <glibmm/i18n.h>
 
 Dialog_Layout_List::Dialog_Layout_List(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
 : Dialog_Layout(cobject, refGlade),
@@ -44,7 +44,7 @@ Dialog_Layout_List::Dialog_Layout_List(BaseObjectType* cobject, const Glib::RefP
     m_treeview_fields->set_model(m_model_fields);
 
     // Append the View columns:
-    Gtk::TreeView::Column* column_name = Gtk::manage( new Gtk::TreeView::Column(gettext("Name")) );
+    Gtk::TreeView::Column* column_name = Gtk::manage( new Gtk::TreeView::Column(_("Name")) );
     m_treeview_fields->append_column(*column_name);
 
     Gtk::CellRendererText* renderer_name = Gtk::manage(new Gtk::CellRendererText);

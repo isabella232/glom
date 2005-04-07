@@ -34,16 +34,17 @@ class Notebook_Glom :
 public: 
   Notebook_Glom();
   virtual ~Notebook_Glom();
-  
+
   virtual void show_hint();
-  
+
   //Signals:
   //Page number
   //typedef sigc::signal<void, guint> type_signal_leave_page;
  // type_signal_leave_page signal_leave_page();
 
  virtual void do_menu_developer_layout();
-    
+ virtual void do_menu_file_print();
+
 protected:
 
   Gtk::Window* get_app_window();

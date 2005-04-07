@@ -22,6 +22,7 @@
 #define GLOM_MODE_DATA_TREESTORE_LAYOUT_H
 
 #include <gtkmm/treestore.h>
+#include "../data_structure/layout/layoutgroup.h"
 
 class TreeStore_Layout : public Gtk::TreeStore
 {
@@ -47,7 +48,7 @@ public:
 
     Gtk::TreeModelColumn<enumType> m_col_type;
     Gtk::TreeModelColumn<Glib::ustring> m_col_name;
-    Gtk::TreeModelColumn<Glib::ustring> m_col_relationship_name; //Only for fields
+    Gtk::TreeModelColumn<Relationship> m_col_relationship_name; //Only for fields
     Gtk::TreeModelColumn<Glib::ustring> m_col_title; //only for groups
     Gtk::TreeModelColumn<bool> m_col_editable; 
     Gtk::TreeModelColumn<guint> m_col_sequence;

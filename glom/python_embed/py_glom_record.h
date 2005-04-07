@@ -21,12 +21,7 @@
 #ifndef GLOM_PYTHON_GLOM_RECORD_H
 #define GLOM_PYTHON_GLOM_RECORD_H
 
-//For an installed boost:
-//#include <boost/python.hpp>
-
-//For a copied version of boost:
-#include "boost/python.hpp"
-
+#include <Python.h>
 #include "../data_structure/field.h"
 #include <glibmm/ustring.h>
 
@@ -34,18 +29,24 @@
 class PyGlomRecord
 {
 public:
-  int get_test() const;
+  PyObject_HEAD
 
-protected:
+  PyObject* m_fields_dict; //Dictionary (map) of field names (string) to field values (Gnome::Gda::Value).
   int m_test;
+  //PyObject* m_py_gda_value;
 };
 
+PyTypeObject* PyGlomRecord_GetPyType();
 
-BOOST_PYTHON_MODULE(PyGlom)
-{
-    boost::python::class_<PyGlomRecord>("Record")
-        .def("get_test", &PyGlomRecord::get_test)
-    ;
-}
+typedef std::map<Glib::ustring, Gnome::Gda::Value> type_map_fields;
+void PyGlomRecord_SetFields(PyGlomRecord* self, const type_map_fields& fields);
+
+#ifndef PyMODINIT_FUNC	/* declarations for DLL import/export */
+#define PyMODINIT_FUNC void
+#endif
+PyMODINIT_FUNC
+initpyglomrecord(void);
+
+
 
 #endif //GLOM_PYTHON_GLOM_RECORD_H

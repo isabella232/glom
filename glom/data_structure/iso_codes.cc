@@ -21,6 +21,7 @@
 #include "iso_codes.h"
 #include <libxml++/libxml++.h>
 #include "../document/document_glom.h"
+#include <glibmm/i18n.h>
 #include "config.h" //For ISO_CODES_PREFIX.
 
 namespace IsoCodes
@@ -34,35 +35,42 @@ type_list_currencies get_list_of_currency_symbols()
   {
     const Glib::ustring filename = ISO_CODES_PREFIX "/share/xml/iso-codes/iso_4217.xml";
 
-    xmlpp::DomParser parser;
-    //parser.set_validate();
-    parser.set_substitute_entities(); //We just want the text to be resolved/unescaped automatically.
-    parser.parse_file(filename);
-    if(parser)
+    try
     {
-      //Walk the tree:
-      const xmlpp::Node* nodeRoot = parser.get_document()->get_root_node(); //deleted by DomParser.
-
-      xmlpp::Node::NodeList listNodes = nodeRoot->get_children("iso_4217_entry");
-      for(xmlpp::Node::NodeList::const_iterator iter = listNodes.begin(); iter != listNodes.end(); iter++)
+      xmlpp::DomParser parser;
+      //parser.set_validate();
+      parser.set_substitute_entities(); //We just want the text to be resolved/unescaped automatically.
+      parser.parse_file(filename);
+      if(parser)
       {
-        xmlpp::Element* nodeEntry = dynamic_cast<xmlpp::Element*>(*iter);
-        if(nodeEntry)
+        //Walk the tree:
+        const xmlpp::Node* nodeRoot = parser.get_document()->get_root_node(); //deleted by DomParser.
+
+        xmlpp::Node::NodeList listNodes = nodeRoot->get_children("iso_4217_entry");
+        for(xmlpp::Node::NodeList::const_iterator iter = listNodes.begin(); iter != listNodes.end(); iter++)
         {
-          Currency currency;
+          xmlpp::Element* nodeEntry = dynamic_cast<xmlpp::Element*>(*iter);
+          if(nodeEntry)
+          {
+            Currency currency;
 
-          currency.m_symbol = nodeEntry->get_attribute("letter_code")->get_value();
+            currency.m_symbol = nodeEntry->get_attribute("letter_code")->get_value();
 
-          Glib::ustring name = gettext(nodeEntry->get_attribute("currency_name")->get_value().c_str());
-          const char* pchTranslatedName = dgettext("iso_4217", name.c_str());
-          if(pchTranslatedName)
-            name = pchTranslatedName;
+            Glib::ustring name = _(nodeEntry->get_attribute("currency_name")->get_value().c_str());
+            const char* pchTranslatedName = dgettext("iso_4217", name.c_str());
+            if(pchTranslatedName)
+              name = pchTranslatedName;
 
-          currency.m_name = name;
+            currency.m_name = name;
 
-          list_currencies.push_back(currency);
+            list_currencies.push_back(currency);
+          }
         }
       }
+    }
+    catch(const std::exception& ex)
+    {
+      std::cerr << "Exception while parsing iso codes: " << ex.what() << std::endl;
     }
   }
 

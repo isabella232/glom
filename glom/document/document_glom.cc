@@ -758,7 +758,12 @@ void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Gl
         LayoutItem_Field item;
 
         item.set_name( get_node_attribute_value(element, "name") );
-        item.set_relationship_name( get_node_attribute_value(element, "relationship") );
+
+        const Glib::ustring relationship_name = get_node_attribute_value(element, "relationship"); 
+        //item.set_relationship_name(relationship_name);
+        if(!relationship_name.empty())
+          get_relationship(table_name, relationship_name, item.m_relationship);
+
         item.set_editable( get_node_attribute_value_as_bool(element, "editable") );
 
         //Numeric formatting:
@@ -1169,6 +1174,7 @@ bool Document_Glom::save_before()
         xmlpp::Element* nodeDataLayouts = nodeTable->add_child("data_layouts");
 
         //Add the groups:
+        //Make sure that we always get these _after_ the relationships.
         for(DocumentTableInfo::type_layouts::const_iterator iter = doctableinfo.m_layouts.begin(); iter != doctableinfo.m_layouts.end(); ++iter)
         {
           xmlpp::Element* nodeLayout = nodeDataLayouts->add_child("data_layout");

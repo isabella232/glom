@@ -20,7 +20,7 @@
 
 #include "dialog_choose_field.h"
 //#include <libgnome/gnome-i18n.h>
-#include <libintl.h>
+#include <glibmm/i18n.h>
 
 Dialog_ChooseField::Dialog_ChooseField(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
 : Gtk::Dialog(cobject),
@@ -49,8 +49,8 @@ Dialog_ChooseField::Dialog_ChooseField(BaseObjectType* cobject, const Glib::RefP
     m_model = Gtk::ListStore::create(m_ColumnsFields);
     m_treeview->set_model(m_model);
 
-    m_treeview->append_column( gettext("Name"), m_ColumnsFields.m_col_name );
-    m_treeview->append_column( gettext("Title"), m_ColumnsFields.m_col_title );
+    m_treeview->append_column( _("Name"), m_ColumnsFields.m_col_name );
+    m_treeview->append_column( _("Title"), m_ColumnsFields.m_col_title );
 
     m_treeview->signal_row_activated().connect( sigc::mem_fun(*this, &Dialog_ChooseField::on_row_activated) );
 
@@ -199,7 +199,12 @@ bool Dialog_ChooseField::get_field_chosen(LayoutItem_Field& field) const
   if(relationship_name == m_table_name)
     relationship_name.clear();
 
-  field.set_relationship_name(relationship_name);
+  //field.set_relationship_name(relationship_name);
+
+  if(!relationship_name.empty())
+  {
+    m_document->get_relationship(m_table_name, relationship_name, field.m_relationship);
+  }
 
   field.set_editable( m_checkbutton_editable->get_active() );
 

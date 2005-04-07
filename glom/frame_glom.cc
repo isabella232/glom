@@ -22,7 +22,7 @@
 #include "application.h"
 #include "appstate.h"
 #include "mode_design/users/dialog_groups_list.h"
-#include <libintl.h>
+#include <glibmm/i18n.h>
 
 Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
 : PlaceHolder(cobject, refGlade),
@@ -43,7 +43,7 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
   refGlade->get_widget("label_user_level", m_pLabel_userlevel);
   refGlade->get_widget_derived("vbox_mode", m_pBox_Mode);
 
-  //m_pLabel_Mode->set_text(gettext("No database selected.\n Use the Navigation menu, or open a previous Glom document."));
+  //m_pLabel_Mode->set_text(_("No database selected.\n Use the Navigation menu, or open a previous Glom document."));
 
   //Load the Glade file and instantiate its widgets to get the dialog stuff:
 
@@ -240,7 +240,7 @@ void Frame_Glom::alert_no_table()
   if(pWindowApp)
   {
     //TODO: Obviously this document should have been deleted when the database-creation was cancelled.
-    show_ok_dialog(gettext("No database"), gettext("This document does not specify any database. Maybe the document creation was cancelled before the database could be created."), *pWindowApp);
+    show_ok_dialog(_("No database"), _("This document does not specify any database. Maybe the document creation was cancelled before the database could be created."), *pWindowApp);
   }
 }
 
@@ -273,14 +273,14 @@ void Frame_Glom::show_table(const Glib::ustring& strTableName)
     {
       case(MODE_Data):
       {
-        strMode = gettext("Data");
+        strMode = _("Data");
         m_Notebook_Data.init_db_details(m_strTableName);
         set_mode_widget(m_Notebook_Data);
         break;
       }
       case(MODE_Find):
       {
-        strMode = gettext("Find");
+        strMode = _("Find");
         m_Notebook_Find.init_db_details(m_strTableName);
         set_mode_widget(m_Notebook_Find);
         break;
@@ -288,7 +288,7 @@ void Frame_Glom::show_table(const Glib::ustring& strTableName)
       default:
       {
         std::cout << "Frame_Glom::on_box_tables_selected(): Unexpected mode" << std::endl;
-        strMode = gettext("Unknown");
+        strMode = _("Unknown");
         break;
       }
     }
@@ -322,8 +322,8 @@ void Frame_Glom::on_menu_userlevel_Developer(const Glib::RefPtr<Gtk::RadioAction
       //If this was not possible then revert the menu:
       if(!test)
       {
-        Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(gettext("Developer mode not available.")), true, Gtk::MESSAGE_WARNING);
-        dialog.set_secondary_text(gettext("Developer mode is not available. Check that you have sufficient database access rights and that the glom file is not read-only."));
+        Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Developer mode not available.")), true, Gtk::MESSAGE_WARNING);
+        dialog.set_secondary_text(_("Developer mode is not available. Check that you have sufficient database access rights and that the glom file is not read-only."));
         dialog.set_transient_for(*get_app_window());
         dialog.run();
 
@@ -348,6 +348,13 @@ void Frame_Glom::on_menu_userlevel_Operator(const Glib::RefPtr<Gtk::RadioAction>
         document->set_userlevel(AppState::USERLEVEL_OPERATOR);
     }
   }
+}
+
+void Frame_Glom::on_menu_file_print()
+{
+ Notebook_Glom* notebook_current = dynamic_cast<Notebook_Glom*>(m_pBox_Mode->get_child());
+ if(notebook_current)
+   notebook_current->do_menu_file_print();
 }
 
 void Frame_Glom::on_menu_Mode_Data()
@@ -455,21 +462,10 @@ Gtk::Window* Frame_Glom::get_app_window()
 
 void Frame_Glom::show_ok_dialog(const Glib::ustring& title, const Glib::ustring& message, Gtk::Window& parent)
 {
-  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_information");
-  Gtk::Dialog* dialog = 0;
-  refXml->get_widget("dialog_information", dialog);
-
-  Gtk::Label* label = 0;
-  refXml->get_widget("label_text", label);
-
-  Glib::ustring text = "<span weight=\"bold\" size=\"larger\">" + title + "</span>\n\n" + message;
-  label->set_text(text);
-  label->set_use_markup();
-
-  dialog->set_transient_for(parent);
-
-  dialog->run();
-  delete dialog;
+  Gtk::MessageDialog dialog("<b>" + title + "</b>", true /* markup */, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_OK);
+  dialog.set_secondary_text(message);
+  dialog.set_transient_for(parent);
+  dialog.run();
 }
 
 void Frame_Glom::on_Notebook_Find(Glib::ustring strWhereClause)
@@ -483,9 +479,9 @@ void Frame_Glom::on_Notebook_Find(Glib::ustring strWhereClause)
 void Frame_Glom::on_userlevel_changed(AppState::userlevels userlevel)
 {
   //show user level:
-  Glib::ustring user_level_name = gettext("Operator");
+  Glib::ustring user_level_name = _("Operator");
   if(userlevel == AppState::USERLEVEL_DEVELOPER)
-    user_level_name = gettext("Developer");
+    user_level_name = _("Developer");
 
   if(m_pLabel_userlevel)
     m_pLabel_userlevel->set_text(user_level_name);

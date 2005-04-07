@@ -24,6 +24,7 @@
 #include "layoutitem.h"
 #include "../field.h"
 #include "../numeric_format.h"
+#include "../relationship.h"
 
 class LayoutItem_Field : public LayoutItem
 {
@@ -41,7 +42,7 @@ public:
 
   virtual bool get_has_relationship_name() const;
   virtual Glib::ustring get_relationship_name() const;
-  virtual void set_relationship_name(const Glib::ustring& relationship_name);
+  //virtual void set_relationship_name(const Glib::ustring& relationship_name);
 
   //This is filled in by looking at the database structure:
   Field m_field;
@@ -55,9 +56,12 @@ public:
   bool m_priv_view;
   bool m_priv_edit;
 
+  //TODO_Performance: This is just cached data, so we don't need to always lookup the relationship details from the document, from the name.
+  //Mayeb use a smartpointer?
+  Relationship m_relationship;
+
 protected:
-  //Glib::ustring m_table_name; //If m_relationship_name is not used.
-  Glib::ustring m_relationship_name;
+  //Glib::ustring m_relationship_name; //bool m_related;
 };
 
 #endif //GLOM_DATASTRUCTURE_LAYOUTITEM_FIELD_H

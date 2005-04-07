@@ -25,6 +25,7 @@
 #include "../mode_data/box_data_list_related.h"
 #include "../mode_data/dialog_choose_relationship.h"
 #include <bakery/App/App_Gtk.h> //For util_bold_message().
+#include <glibmm/i18n.h>
 
 FlowTableWithFields::Info::Info()
 : m_first(0),
@@ -620,7 +621,7 @@ void FlowTableWithFields::on_datawidget_layout_item_added(TreeStore_Layout::enum
   else if(item_type == TreeStore_Layout::TYPE_GROUP)
   {
     LayoutGroup layout_item;
-    layout_item.m_title = gettext("New Group");
+    layout_item.m_title = _("New Group");
     add_layout_item_at_position(layout_item, iterAfter);
   }
   else if(item_type == TreeStore_Layout::TYPE_PORTAL)

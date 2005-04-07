@@ -24,7 +24,7 @@
 #include "dialog_new_group.h"
 //#include <libgnome/gnome-i18n.h>
 #include <bakery/App/App_Gtk.h> //For util_bold_message().
-#include <libintl.h>
+#include <glibmm/i18n.h>
 
 Dialog_GroupsList::Dialog_GroupsList(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
 : Gtk::Dialog(cobject),
@@ -56,27 +56,27 @@ Dialog_GroupsList::Dialog_GroupsList(BaseObjectType* cobject, const Glib::RefPtr
 
   //Groups:
   Gtk::CellRendererText* pCell = Gtk::manage(new Gtk::CellRendererText);
-  Gtk::TreeView::Column* pViewColumn = Gtk::manage(new Gtk::TreeView::Column(gettext("Name"), *pCell) );
+  Gtk::TreeView::Column* pViewColumn = Gtk::manage(new Gtk::TreeView::Column(_("Name"), *pCell) );
   pViewColumn->set_cell_data_func(*pCell, sigc::mem_fun(*this, &Dialog_GroupsList::on_cell_data_group_name));
   m_treeview_groups->append_column(*pViewColumn);
 
-  m_treeview_groups->append_column(gettext("Description"), m_model_columns_groups.m_col_description);
+  m_treeview_groups->append_column(_("Description"), m_model_columns_groups.m_col_description);
 
 
 
   //Tables:
-  m_treeview_tables->append_column(gettext("Table"), m_model_columns_tables.m_col_name);
+  m_treeview_tables->append_column(_("Table"), m_model_columns_tables.m_col_name);
 
-  treeview_append_bool_column(*m_treeview_tables, gettext("View"), m_model_columns_tables.m_col_view,
+  treeview_append_bool_column(*m_treeview_tables, _("View"), m_model_columns_tables.m_col_view,
     sigc::mem_fun( *this, &Dialog_GroupsList::on_treeview_tables_toggled_view) );
 
-  treeview_append_bool_column(*m_treeview_tables, gettext("Edit"), m_model_columns_tables.m_col_edit,
+  treeview_append_bool_column(*m_treeview_tables, _("Edit"), m_model_columns_tables.m_col_edit,
     sigc::mem_fun( *this, &Dialog_GroupsList::on_treeview_tables_toggled_edit) );
 
-  treeview_append_bool_column(*m_treeview_tables, gettext("Create"), m_model_columns_tables.m_col_create,
+  treeview_append_bool_column(*m_treeview_tables, _("Create"), m_model_columns_tables.m_col_create,
     sigc::mem_fun( *this, &Dialog_GroupsList::on_treeview_tables_toggled_create) );
 
-  treeview_append_bool_column(*m_treeview_tables, gettext("Delete"), m_model_columns_tables.m_col_delete,
+  treeview_append_bool_column(*m_treeview_tables, _("Delete"), m_model_columns_tables.m_col_delete,
     sigc::mem_fun( *this, &Dialog_GroupsList::on_treeview_tables_toggled_delete) );
 
 
@@ -212,8 +212,8 @@ void Dialog_GroupsList::on_button_group_delete()
       if(!user.empty())
       {
         //TODO: Prevent deletion of standard groups
-        Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(gettext("Delete Group")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_OK_CANCEL);
-        dialog.set_secondary_text(gettext("Are your sure that you wish to delete this group?"));
+        Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Delete Group")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_OK_CANCEL);
+        dialog.set_secondary_text(_("Are your sure that you wish to delete this group?"));
         dialog.set_transient_for(*this);
 
         int response = dialog.run();
@@ -369,7 +369,7 @@ void Dialog_GroupsList::fill_group_list()
     row[m_model_columns_groups.m_col_name] = *iter;
 
     if(*iter == GLOM_STANDARD_GROUP_NAME_DEVELOPER)
-      row[m_model_columns_groups.m_col_description] = gettext("Full access.");
+      row[m_model_columns_groups.m_col_description] = _("Full access.");
   }
 
   //Select the first item, so that there is always something in the tables TreeView:

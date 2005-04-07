@@ -24,7 +24,7 @@
 //#include <gnome.h>
 #include <gtkmm/main.h>
 #include <libgnome/gnome-init.h> // For gnome_program_init().
-#include <libintl.h>
+#include <glibmm/i18n.h>
 
 
 
@@ -58,7 +58,7 @@ ExampleOptionGroup::ExampleOptionGroup()
 int 
 main(int argc, char* argv[])
 {
-  //Make this application use the current locale for gettext() translation:
+  //Make this application use the current locale for _() translation:
   bindtextdomain(GETTEXT_PACKAGE, LOCALEDIR);  //LOCALEDIR is defined in the Makefile.am
   bind_textdomain_codeset(GETTEXT_PACKAGE, "UTF-8");
   textdomain(GETTEXT_PACKAGE);

@@ -67,11 +67,12 @@ DbTreeModel::GlueItem* DbTreeModel::GlueList::get_existing_item(const typeListOf
 //Intialize static variable:
 bool DbTreeModel::m_iface_initialized = false;
 
-DbTreeModel::DbTreeModel(const Gtk::TreeModelColumnRecord& columns, const Glib::ustring& table_name, const type_vec_fields& column_fields)
+DbTreeModel::DbTreeModel(const Gtk::TreeModelColumnRecord& columns, const Glib::ustring& table_name, const type_vec_fields& column_fields, const Glib::ustring& where_clause)
 : Glib::ObjectBase( typeid(DbTreeModel) ), //register a custom GType.
   Glib::Object(), //The custom GType is actually registered here.
   m_columns_count(0),
   m_table_name(table_name),
+  m_where_clause(where_clause),
   m_column_fields(column_fields),
   m_stamp(1), //When the model's stamp != the iterator's stamp then that iterator is invalid and should be ignored. Also, 0=invalid
   m_pGlueList(0)
@@ -97,9 +98,9 @@ DbTreeModel::~DbTreeModel()
 }
 
 //static:
-Glib::RefPtr<DbTreeModel> DbTreeModel::create(const Gtk::TreeModelColumnRecord& columns, const Glib::ustring& table_name, const type_vec_fields& column_fields)
+Glib::RefPtr<DbTreeModel> DbTreeModel::create(const Gtk::TreeModelColumnRecord& columns, const Glib::ustring& table_name, const type_vec_fields& column_fields, const Glib::ustring& where_clause)
 {
-  return Glib::RefPtr<DbTreeModel>( new DbTreeModel(columns, table_name, column_fields) );
+  return Glib::RefPtr<DbTreeModel>( new DbTreeModel(columns, table_name, column_fields, where_clause) );
 }
 
 Gtk::TreeModelFlags DbTreeModel::get_flags_vfunc() const
@@ -442,22 +443,22 @@ void DbTreeModel::set_value_impl(const iterator& row, int column, const Glib::Va
 DbTreeModel::iterator DbTreeModel::erase(const iterator& iter)
 {
   iterator iter_result;
-      
+
   if(iter_is_valid(iter))
   {
     //Get the index from the user_data:
     typeListOfRows::iterator row_iter = get_data_row_iter_from_tree_row_iter(iter);
-   
+
     //Remove the row.
     Gtk::TreePath path_deleted = get_path(iter);
     typeListOfRows::iterator iterNextRow = m_rows.erase(row_iter);
-    
+
     row_deleted(path_deleted);
-    
+
     //Return an iterator to the next row:
     create_iterator(iterNextRow, iter_result);
   }
-  
+
   return iter_result;
 }
 
@@ -494,10 +495,12 @@ bool DbTreeModel::get_is_placeholder(const TreeModel::iterator& iter) const
 void DbTreeModel::clear()
 {
   m_rows.clear();
-  
+
   if(m_pGlueList)
   {
     delete m_pGlueList;
     m_pGlueList = 0;
   }
 }
+
+

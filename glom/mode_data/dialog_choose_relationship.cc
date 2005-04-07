@@ -20,7 +20,7 @@
 
 #include "dialog_choose_relationship.h"
 //#include <libgnome/gnome-i18n.h>
-#include <libintl.h>
+#include <glibmm/i18n.h>
 
 Dialog_ChooseRelationship::Dialog_ChooseRelationship(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
 : Gtk::Dialog(cobject),
@@ -38,8 +38,8 @@ Dialog_ChooseRelationship::Dialog_ChooseRelationship(BaseObjectType* cobject, co
     m_model = Gtk::ListStore::create(m_ColumnsRelationships);
     m_treeview->set_model(m_model);
 
-    m_treeview->append_column( gettext("Name"), m_ColumnsRelationships.m_col_name );
-    //m_treeview->append_column( gettext("Title"), m_ColumnsRelationships.m_col_title );
+    m_treeview->append_column( _("Name"), m_ColumnsRelationships.m_col_name );
+    //m_treeview->append_column( _("Title"), m_ColumnsRelationships.m_col_title );
   }
 
   show_all_children();

@@ -36,6 +36,8 @@ public:
   virtual void refresh_db_details(const Gnome::Gda::Value& primary_key_value);
   virtual void refresh_db_details_blank();
 
+  virtual void print_layout();
+
   virtual Gnome::Gda::Value get_primary_key_value() const; //Actual primary key value of this record.
   virtual Gnome::Gda::Value get_primary_key_value_selected(); //Value in the primary key's cell.
 
@@ -64,6 +66,8 @@ protected:
   void refresh_related_fields(const LayoutItem_Field& field_changed, const Gnome::Gda::Value& /* field_value */, const Field& primary_key, const Gnome::Gda::Value& primary_key_value);
 
   virtual bool get_field_primary_key(Field& field) const;
+
+  void print_layout_group(xmlpp::Element* node_parent, const LayoutGroup& group);
 
   //Signal handlers:
   virtual void on_button_new();

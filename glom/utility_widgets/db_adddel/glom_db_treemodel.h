@@ -23,7 +23,7 @@
 
 #include <gtkmm/treemodel.h>
 #include <gtkmm/treepath.h>
-#include "../..//data_structure/field.h"
+#include "../..//data_structure/layout/layoutitem_field.h"
 
 class DbTreeModelRow
 {
@@ -43,15 +43,15 @@ class DbTreeModel
 {
 public:
   typedef unsigned int size_type;
-  typedef std::vector<Field> type_vec_fields;
+  typedef std::vector<LayoutItem_Field> type_vec_fields;
 
 protected:
   //Create a TreeModel with @a columns_count number of columns, each of type Glib::ustring.
-  DbTreeModel(const Gtk::TreeModelColumnRecord& columns, const Glib::ustring& table_name, const type_vec_fields& column_fields);
+  DbTreeModel(const Gtk::TreeModelColumnRecord& columns, const Glib::ustring& table_name, const type_vec_fields& column_fields, const Glib::ustring& where_clause = Glib::ustring());
   virtual ~DbTreeModel();
 
 public:
-  static Glib::RefPtr<DbTreeModel> create(const Gtk::TreeModelColumnRecord& columns, const Glib::ustring& table_name, const type_vec_fields& column_fields);
+  static Glib::RefPtr<DbTreeModel> create(const Gtk::TreeModelColumnRecord& columns, const Glib::ustring& table_name, const type_vec_fields& column_fields, const Glib::ustring& where_clause = Glib::ustring());
 
   typedef DbTreeModelRow::DbValue DbValue;
 
@@ -73,7 +73,7 @@ public:
    * @result An iterator to the new row.
    */
   iterator append();
-  
+
 protected:
 
    // Overrides:
@@ -81,7 +81,7 @@ protected:
    virtual int get_n_columns_vfunc() const;
    virtual GType get_column_type_vfunc(int index) const;
    virtual void get_value_vfunc(const TreeModel::iterator& iter, int column, Glib::ValueBase& value) const;
-  
+
    bool iter_next_vfunc(const iterator& iter, iterator& iter_next) const;
 
    //TODO: Make sure that we make all of these const when we have made them all const in the TreeModel:
@@ -96,19 +96,16 @@ protected:
    virtual bool get_iter_vfunc(const Path& path, iterator& iter) const;
 
    virtual bool iter_is_valid(const iterator& iter) const;
-   
-   
+
    virtual void set_value_impl(const iterator& row, int column, const Glib::ValueBase& value);
-   
-   
 
 private:
    typedef DbTreeModelRow typeRow; //X columns, all of type Value.
-   
+
    //We use a std::list instead of a std::vector, though it is slower to access via an index,
    //because std::list iterators are not all invalidated when we erase an element from the middle.
    typedef std::list< typeRow > typeListOfRows; //Y rows.
-   
+
    void create_iterator(const typeListOfRows::iterator& row_iter, DbTreeModel::iterator& iter) const;
    void invalidate_iter(iterator& iter) const;
 
@@ -124,7 +121,7 @@ private:
    public:
      GlueItem(const typeListOfRows::iterator& row_iter);
      typeListOfRows::iterator get_row_iter() const;
-     
+
    protected:
      typeListOfRows::iterator m_row_iter;
    };
@@ -133,13 +130,13 @@ private:
    //SUN's Forte compiler complains about this.
    class GlueList;
    friend class GlueList; 
-   
+
    class GlueList
    {
    public:
      GlueList();
      ~GlueList();
-     
+
      //We must reuse GlueItems instead of having 2 that contain equal iterators,
      //because Gtk::TreeIter::iterator::operator() unfortunately does only
      //a pointer comparison, without allowing us to implement specific logic.
@@ -155,10 +152,12 @@ private:
    bool check_treeiter_validity(const iterator& iter) const;
    void remember_glue_item(GlueItem* item) const;
 
-   //The data:
+   //Structure:
    unsigned int m_columns_count;
-   Glib::ustring m_table_name;
+   Glib::ustring m_table_name, m_where_clause;
    type_vec_fields m_column_fields;
+
+   //Data:
    mutable typeListOfRows m_rows;
 
    //Column information:
@@ -170,7 +169,6 @@ private:
    mutable GlueList* m_pGlueList;
 
    static bool m_iface_initialized;
-
 };
 
 #endif //GLOM_MODE_DATA_DB_TREEMODEL_H

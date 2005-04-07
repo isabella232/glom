@@ -20,7 +20,7 @@
  
 #include "dialog_connection.h"
 #include "box_db.h" //For Box_DB::connect_to_server().
-#include <libintl.h>
+#include <glibmm/i18n.h>
 
 Dialog_Connection::Dialog_Connection(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
 : Gtk::Dialog(cobject),
@@ -100,7 +100,7 @@ void Dialog_Connection::load_from_document()
     //TODO: In future, we can hide this completely.
     Glib::ustring database = m_pDocument->get_connection_database();
     if(database.empty())
-      database = gettext("Not yet created.");
+      database = _("Not yet created.");
 
     m_label_database->set_text(database);
   }

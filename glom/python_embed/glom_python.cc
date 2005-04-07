@@ -19,6 +19,7 @@
  */
 
 //We need to include this before anything else, to avoid redefinitions:
+#include "py_glom_record.h"
 #include <Python.h>
 #include "compile.h" /* for the PyCodeObject */
 #include "eval.h" /* for PyEval_EvalCode */
@@ -51,10 +52,16 @@ std::list<Glib::ustring> ustring_tokenize(const Glib::ustring& msg, const Glib::
   return result;
 }
 
+void HandlePythonError()
+{
+  if(PyErr_Occurred())
+    PyErr_Print();
+}
+
 Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field_type result_type, const Glib::ustring& func_impl)
 {
   Glib::ustring result;
-  
+
   Glib::ustring func_def;
 
   //Indent the function implementation (required by python syntax):
@@ -67,7 +74,8 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
 
 
   //prefix the def line:
-  func_def = "def glom_calc_field_value():\n" + func_def;
+  const Glib::ustring func_name = "glom_calc_field_value";
+  func_def = "def " + func_name + "(record):\n" + func_def;
 
   //We did this in main(): Py_Initialize();
 
@@ -81,15 +89,36 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
     Py_DECREF(pyValue);
     pyValue = 0;
   }
+  else
+    HandlePythonError();
 
   //Call the function:
   {
-    Glib::ustring call_func = "glom_calc_field_value()";
-    PyObject* pyValue = PyRun_String(call_func.c_str(), Py_eval_input, pDict, pDict);
+    PyObject* pFunc = PyDict_GetItemString(pDict, func_name.c_str()); //The result is borrowed, so should not be dereferenced.
+    if(!pFunc)
+      HandlePythonError();
+
+    if(!PyCallable_Check(pFunc))
+    {
+      g_warning("pFunc is not callable.");
+    }
+
+    //The function's parameter:
+    PyObject* pArgs = PyTuple_New(1);
+    //PyObject* pParam = PyString_FromString("test value"); //This test did not need the extra ref.
+    PyGlomRecord* pParam = PyObject_New(PyGlomRecord, PyGlomRecord_GetPyType());
+    Py_INCREF(pParam); //TODO: As I understand it, PyObject_New() should return a new reference, so this should not be necessary.
+
+    PyTuple_SetItem(pArgs, 0, (PyObject*)pParam); //The pParam reference is taken by PyTuple_SetItem().
+
+    //Call the function with this parameter:
+    PyObject* pyValue = PyObject_CallObject(pFunc, pArgs);
+    Py_DECREF(pArgs);
+
     if(!pyValue)
     {
       g_warning("pyValue was null");
-      PyErr_Print();
+      HandlePythonError();
     }
     else
     {

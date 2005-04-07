@@ -22,7 +22,7 @@
 #include "dialog_layout_list_related.h"
 #include "../data_structure/glomconversions.h"
 #include <bakery/App/App_Gtk.h> //For util_bold_message().
-#include <libintl.h>
+#include <glibmm/i18n.h>
 
 Box_Data_List_Related::Box_Data_List_Related()
 : m_pDialogLayoutRelated(0)
@@ -235,8 +235,8 @@ void Box_Data_List_Related::on_adddel_user_added(const Gtk::TreeModel::iterator&
   else
   {
     //Tell user that they can't do that:
-    Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(gettext("Extra related records not possible.")), true, Gtk::MESSAGE_WARNING);
-    dialog.set_secondary_text(gettext("You attempted to add a new related record, but there can only be one related record, because the relationship uses a unique key.")),
+    Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Extra related records not possible.")), true, Gtk::MESSAGE_WARNING);
+    dialog.set_secondary_text(_("You attempted to add a new related record, but there can only be one related record, because the relationship uses a unique key.")),
     dialog.set_transient_for(*get_app_window());
     dialog.run();
 

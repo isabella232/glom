@@ -24,6 +24,7 @@
 #include "../dialog_invalid_data.h"
 #include "../data_structure/glomconversions.h"
 #include "../application.h"
+#include <glibmm/i18n.h>
 //#include <sstream> //For stringstream
 
 #include <locale>     // for locale, time_put
@@ -155,19 +156,19 @@ void EntryGlom::setup_menu()
 
   m_refActionGroup->add(Gtk::Action::create("ContextMenu", "Context Menu") );
 
-  m_refContextLayout =  Gtk::Action::create("ContextLayout", gettext("Choose Field"));
+  m_refContextLayout =  Gtk::Action::create("ContextLayout", _("Choose Field"));
   m_refActionGroup->add(m_refContextLayout,
     sigc::mem_fun(*this, &EntryGlom::on_menupopup_activate_layout) );
 
-  m_refContextAddField =  Gtk::Action::create("ContextAddField", gettext("Add Field"));
+  m_refContextAddField =  Gtk::Action::create("ContextAddField", _("Add Field"));
   m_refActionGroup->add(m_refContextAddField,
     sigc::bind( sigc::mem_fun(*this, &EntryGlom::on_menupopup_add_item), TreeStore_Layout::TYPE_FIELD ) );
 
-  m_refContextAddRelatedRecords =  Gtk::Action::create("ContextAddRelatedRecords", gettext("Add Related Records"));
+  m_refContextAddRelatedRecords =  Gtk::Action::create("ContextAddRelatedRecords", _("Add Related Records"));
   m_refActionGroup->add(m_refContextAddRelatedRecords,
     sigc::bind( sigc::mem_fun(*this, &EntryGlom::on_menupopup_add_item), TreeStore_Layout::TYPE_PORTAL ) );
 
-  m_refContextAddGroup =  Gtk::Action::create("ContextAddGroup", gettext("Add Group"));
+  m_refContextAddGroup =  Gtk::Action::create("ContextAddGroup", _("Add Group"));
   m_refActionGroup->add(m_refContextAddGroup,
     sigc::bind( sigc::mem_fun(*this, &EntryGlom::on_menupopup_add_item), TreeStore_Layout::TYPE_GROUP ) );
 

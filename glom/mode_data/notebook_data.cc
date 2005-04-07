@@ -19,15 +19,15 @@
  */
 
 #include "notebook_data.h"
-#include <libintl.h>
+#include <glibmm/i18n.h>
 
 Notebook_Data::Notebook_Data()
 {
   //Add Pages:
-  pages().push_back(Gtk::Notebook_Helpers::TabElem(m_Box_List, gettext("List")));
+  pages().push_back(Gtk::Notebook_Helpers::TabElem(m_Box_List, _("List")));
   m_iPage_List = 0;
 
-  pages().push_back(Gtk::Notebook_Helpers::TabElem(m_Box_Details, gettext("Details")));
+  pages().push_back(Gtk::Notebook_Helpers::TabElem(m_Box_Details, _("Details")));
   m_iPage_Details = 1;
 
 
@@ -114,6 +114,19 @@ void Notebook_Data::do_menu_developer_layout()
     Box_Data* pBox = dynamic_cast<Box_Data*>(pChild);
     if(pBox)
       pBox->show_layout_dialog();
+  } 
+}
+
+void Notebook_Data::do_menu_file_print()
+{
+  int iPageCurrent = get_current_page();
+
+  Gtk::Widget* pChild  = get_nth_page(iPageCurrent);
+  if(pChild)
+  {
+    Box_Data* pBox = dynamic_cast<Box_Data*>(pChild);
+    if(pBox)
+      pBox->print_layout();
   } 
 }
 

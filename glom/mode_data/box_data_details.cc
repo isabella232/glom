@@ -24,8 +24,10 @@
 #include "../data_structure/glomconversions.h"
 #include "dialog_layout_details.h"
 #include <bakery/App/App_Gtk.h> //For util_bold_message().
+#include <libgnomevfsmm.h>
+#include <libgnome/gnome-url.h>
 #include <sstream> //For stringstream
-#include <libintl.h>
+#include <glibmm/i18n.h>
 
 Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
 : m_HBox(false, 6),
@@ -57,7 +59,7 @@ Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
   m_FlowTable.set_columns_count(1); //Sub-groups will have multiple columns (by default, there is one sub-group, with 2 columns).
   m_FlowTable.set_padding(6);
   
-  m_strHint = gettext("When you change the data in a field the database is updated immediately.\n Click [New] to add a new record.\n Leave automatic ID fields empty - they will be filled for you.");
+  m_strHint = _("When you change the data in a field the database is updated immediately.\n Click [New] to add a new record.\n Leave automatic ID fields empty - they will be filled for you.");
 
 
   //m_Paned.set_border_width(6);
@@ -67,7 +69,7 @@ Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
 
   //Related records:
   /*
-  m_Label_Related.set_text(Bakery::App_Gtk::util_bold_message(gettext("Related Records")));
+  m_Label_Related.set_text(Bakery::App_Gtk::util_bold_message(_("Related Records")));
   m_Label_Related.set_use_markup(true);
   m_Frame_Related.set_label_widget(m_Label_Related);
   m_Frame_Related.set_shadow_type(Gtk::SHADOW_NONE);  
@@ -360,8 +362,8 @@ void Box_Data_Details::on_button_del()
   if( GlomConversions::value_is_empty(get_primary_key_value()) )
   {
     //Tell user that a primary key is needed to delete a record:
-    Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(gettext("No primary key value.")), true);
-    dialog.set_secondary_text(gettext("This record can not be deleted because there is no primary key."));
+    Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("No primary key value.")), true);
+    dialog.set_secondary_text(_("This record can not be deleted because there is no primary key."));
     dialog.set_transient_for(*get_app_window());
     dialog.run();
   }
@@ -633,8 +635,8 @@ void Box_Data_Details::on_flowtable_field_edited(const LayoutItem_Field& layout_
       if(strFieldName == m_field_primary_key.get_name()) //If edited field is the primary key.
       {
         //Warn user that they can't choose their own primary key:
-        Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(gettext("Primary key auto increments")), true);
-        dialog.set_secondary_text(gettext("The primary key is auto-incremented.\n You may not enter your own primary key value."));
+        Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Primary key auto increments")), true);
+        dialog.set_secondary_text(_("The primary key is auto-incremented.\n You may not enter your own primary key value."));
         dialog.set_transient_for(*get_app_window());
         dialog.run();
       }
@@ -756,3 +758,136 @@ bool Box_Data_Details::get_field_primary_key(Field& field) const
   return false;
 }
 
+void Box_Data_Details::print_layout_group(xmlpp::Element* node_parent, const LayoutGroup& group)
+{
+  xmlpp::Element* nodeChildGroup = node_parent->add_child("group");
+  nodeChildGroup->set_attribute("title", group.m_title);
+
+  LayoutGroup::type_map_const_items items = group.get_items();
+  for(LayoutGroup::type_map_const_items::const_iterator iter = items.begin(); iter != items.end(); ++iter)
+  {
+    const LayoutItem* layout_item = iter->second;
+
+    const LayoutGroup* pLayoutGroup = dynamic_cast<const LayoutGroup*>(layout_item);
+    if(pLayoutGroup)
+      print_layout_group(nodeChildGroup, *pLayoutGroup); //recurse
+    else
+    {
+      const LayoutItem_Field* pLayoutField = dynamic_cast<const LayoutItem_Field*>(layout_item);
+      if(pLayoutField)
+      {
+        xmlpp::Element* nodeField = nodeChildGroup->add_child("field");
+
+        nodeField->set_attribute("title", pLayoutField->m_field.get_title_or_name());
+
+        Gnome::Gda::Value value = m_FlowTable.get_field_value(*pLayoutField);
+        Glib::ustring text_representation = GlomConversions::get_text_for_gda_value(pLayoutField->m_field.get_glom_type(), value,
+          pLayoutField->m_numeric_format); //In the current locale.
+
+        nodeField->set_attribute("value", text_representation);
+      }
+      else
+      {
+        const LayoutItem_Portal* pLayoutPortal = dynamic_cast<const LayoutItem_Portal*>(layout_item);
+        if(pLayoutPortal)
+        {
+          xmlpp::Element* nodePortal = nodeChildGroup->add_child("related_records");
+
+          //Box_Data_List_Related* pPortalWidget = m_FlowTable.get_portals();
+
+          Relationship relationship;
+          bool relationship_found = get_document()->get_relationship(m_strTableName, pLayoutPortal->get_relationship(), relationship);
+          if(relationship_found)
+          {
+            nodePortal->set_attribute("title", relationship.get_title_or_name());
+
+            //TODO:
+
+            //TODO: Only print this if the user has access rights.
+          }
+        }
+      }
+    }
+  }
+
+}
+
+void Box_Data_Details::print_layout()
+{
+  const Privileges table_privs = get_current_privs(m_strTableName);
+
+  //Don't try to print tables that the user can't view.
+  if(!table_privs.m_view)
+  {
+    //TODO: Warn the user.
+  }
+  else
+  {
+    //Create a DOM Document with the XML:
+    xmlpp::DomParser dom_parser;;
+
+    xmlpp::Document* pDocument = dom_parser.get_document();
+    xmlpp::Element* nodeRoot = pDocument->get_root_node();
+    if(!nodeRoot)
+    {
+      //Add it if it isn't there already:
+      nodeRoot = pDocument->create_root_node("details_print");
+    }
+
+    Glib::ustring table_title = get_document()->get_table_title(m_strTableName);
+    if(table_title.empty())
+      table_title = m_strTableName;
+
+    nodeRoot->set_attribute("table", table_title);
+
+
+    //The groups:
+    xmlpp::Element* nodeParent = nodeRoot;
+
+    Document_Glom::type_mapLayoutGroupSequence layout_groups = get_data_layout_groups("details");
+    for(Document_Glom::type_mapLayoutGroupSequence::const_iterator iter = layout_groups.begin(); iter != layout_groups.end(); ++iter)
+    {
+      const LayoutGroup& layout_group = iter->second;
+      print_layout_group(nodeParent, layout_group);
+    }
+
+
+    //Use libxslt to convert the XML to HTML:
+    Glib::ustring result = xslt_process(*pDocument, GLOM_XSLTDIR "print_details_to_html.xsl");
+    std::cout << "After xslt: " << result << std::endl;
+
+    //Save it to a temporary file and show it in a browser:
+    //TODO: This actually shows it in gedit.
+    const Glib::ustring temp_uri = "file:///tmp/glom_printout.html";
+    std::cout << "temp_uri=" << temp_uri << std::endl;
+
+    Gnome::Vfs::Handle write_handle;
+
+    try
+    {
+      //0660 means "this user and his group can read and write this non-executable file".
+      //The 0 prefix means that this is octal.
+      write_handle.create(temp_uri, Gnome::Vfs::OPEN_WRITE, false, 0660 /* leading zero means octal */);
+    }
+    catch(const Gnome::Vfs::exception& ex)
+    {
+      // If the operation was not successful, print the error and abort
+      return; // print_error(ex, output_uri_string);
+    }
+
+    try
+    {
+      //Write the data to the output uri
+      /* GnomeVFSFileSize bytes_written = */ write_handle.write(result.data(), result.bytes());
+    }
+    catch(const Gnome::Vfs::exception& ex)
+    {
+      // If the operation was not successful, print the error and abort
+      return; //print_error(ex, output_uri_string);
+    }
+
+    //Use the GNOME browser:
+    GError* error = 0;
+    gnome_url_show(temp_uri.c_str(), &error); //This is in libgnome.
+  }
+}

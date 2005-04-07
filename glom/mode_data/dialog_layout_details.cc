@@ -23,7 +23,7 @@
 #include "dialog_choose_relationship.h"
 //#include <libgnome/gnome-i18n.h>
 #include <bakery/App/App_Gtk.h> //For util_bold_message().
-#include <libintl.h>
+#include <glibmm/i18n.h>
 #include <sstream> //For stringstream
 
 Dialog_Layout_Details::Dialog_Layout_Details(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
@@ -54,7 +54,7 @@ Dialog_Layout_Details::Dialog_Layout_Details(BaseObjectType* cobject, const Glib
     // Use set_cell_data_func() to give more control over the cell attributes depending on the row:
 
     //Name column:
-    Gtk::TreeView::Column* column_name = Gtk::manage( new Gtk::TreeView::Column(gettext("Name")) );
+    Gtk::TreeView::Column* column_name = Gtk::manage( new Gtk::TreeView::Column(_("Name")) );
     m_treeview_fields->append_column(*column_name);
 
     Gtk::CellRendererText* renderer_name = Gtk::manage(new Gtk::CellRendererText);
@@ -68,7 +68,7 @@ Dialog_Layout_Details::Dialog_Layout_Details(BaseObjectType* cobject, const Glib
 
 
     //Title column:
-    Gtk::TreeView::Column* column_title = Gtk::manage( new Gtk::TreeView::Column(gettext("Title")) );
+    Gtk::TreeView::Column* column_title = Gtk::manage( new Gtk::TreeView::Column(_("Title")) );
     m_treeview_fields->append_column(*column_title);
 
     Gtk::CellRendererText* renderer_title = Gtk::manage(new Gtk::CellRendererText);
@@ -81,7 +81,7 @@ Dialog_Layout_Details::Dialog_Layout_Details(BaseObjectType* cobject, const Glib
 
 
     //Columns-count column:
-    Gtk::TreeView::Column* column_count = Gtk::manage( new Gtk::TreeView::Column(gettext("Columns Count")) );
+    Gtk::TreeView::Column* column_count = Gtk::manage( new Gtk::TreeView::Column(_("Columns Count")) );
     m_treeview_fields->append_column(*column_count);
 
     Gtk::CellRendererText* renderer_count = Gtk::manage(new Gtk::CellRendererText);
@@ -163,7 +163,13 @@ void Dialog_Layout_Details::fill_group(const Gtk::TreeModel::iterator& iter, Lay
         //Add field:
         LayoutItem_Field field;
         field.set_name( rowChild[m_model_items->m_columns.m_col_name] );
-        field.set_relationship_name( rowChild[m_model_items->m_columns.m_col_relationship_name] );
+
+        field.m_relationship = rowChild[m_model_items->m_columns.m_col_relationship_name];
+
+        //if(!relationship_name.empty())
+        //{
+        //  get_document()->get_table_relationship(m_table_name, field.m_relationship);
+        //}
 
         field.set_editable( rowChild[m_model_items->m_columns.m_col_editable] );
 
@@ -224,7 +230,7 @@ void Dialog_Layout_Details::add_group(const Gtk::TreeModel::iterator& parent, co
             Gtk::TreeModel::Row row = *iterField;
             row[m_model_items->m_columns.m_col_type] = TreeStore_Layout::TYPE_FIELD;
             row[m_model_items->m_columns.m_col_name] = field->get_name();
-            row[m_model_items->m_columns.m_col_relationship_name] = field->get_relationship_name();
+            row[m_model_items->m_columns.m_col_relationship_name] = field->m_relationship;
 
             row[m_model_items->m_columns.m_col_editable] = field->get_editable();
           }
@@ -446,7 +452,7 @@ void Dialog_Layout_Details::on_button_field_add()
       Gtk::TreeModel::Row row = *iter;
       row[m_model_items->m_columns.m_col_type] = TreeStore_Layout::TYPE_FIELD;
       row[m_model_items->m_columns.m_col_name] = layout_item.get_name();
-      row[m_model_items->m_columns.m_col_relationship_name] = layout_item.get_relationship_name();
+      row[m_model_items->m_columns.m_col_relationship_name] = layout_item.m_relationship;
       //row[m_model_items->m_columns.m_col_title] = field.get_title();
 
       //Scroll to, and select, the new row:
@@ -654,13 +660,19 @@ void Dialog_Layout_Details::on_button_field_edit()
         {
           LayoutItem_Field field;
           field.set_name( row[m_model_items->m_columns.m_col_name] ); //Start with this one selected.
-          field.set_relationship_name( row[m_model_items->m_columns.m_col_relationship_name] );
+          field.m_relationship = row[m_model_items->m_columns.m_col_relationship_name];
+
+          //if(!relationship_name.empty())
+          //{
+          //  get_document()->get_table_relationship(m_table_name, field.m_relationship);
+          //}
+
           field.set_editable( row[m_model_items->m_columns.m_col_editable] );
           bool test = offer_field_list(field);
           if(test)
           {
             row[m_model_items->m_columns.m_col_name] = field.get_name();
-            row[m_model_items->m_columns.m_col_relationship_name] = field.get_relationship_name();
+            row[m_model_items->m_columns.m_col_relationship_name] = field.m_relationship;
 
             row[m_model_items->m_columns.m_col_editable] = field.get_editable();
           }
@@ -757,14 +769,15 @@ void Dialog_Layout_Details::on_cell_data_name(Gtk::CellRenderer* renderer, const
       }
       else if(is_relationship)
       {
-        markup = gettext("Related: ") + row[m_model_items->m_columns.m_col_relationship];
+        markup = _("Related: ") + row[m_model_items->m_columns.m_col_relationship];
       }
       else
       {
         //It's a field:
 
         //Indicate that it's a field in another table.
-        const Glib::ustring relationship = row[m_model_items->m_columns.m_col_relationship_name];
+        const Relationship& rel = row[m_model_items->m_columns.m_col_relationship_name];
+        const Glib::ustring relationship = rel.get_name();
         if(!relationship.empty())
           markup = relationship + "::";
 

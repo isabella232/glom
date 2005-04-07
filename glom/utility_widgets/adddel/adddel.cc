@@ -20,7 +20,7 @@
 
 #include "adddel.h"
 #include <algorithm> //For std::find.
-#include <libintl.h>
+#include <glibmm/i18n.h>
 #include "cellrendererlist.h"
 #include "treeviewcolumn_glom.h"
 #include "../../data_structure/glomconversions.h"
@@ -181,20 +181,20 @@ void AddDel::setup_menu()
   m_MenuPopup.items().clear();
 
   //Add new menu items:
-  Gtk::Menu_Helpers::MenuElem menuItem_Edit(gettext("Edit"));
+  Gtk::Menu_Helpers::MenuElem menuItem_Edit(_("Edit"));
   m_MenuPopup.items().push_back(menuItem_Edit);
   m_MenuPopup.items().back().signal_activate().connect(sigc::mem_fun(*this, &AddDel::on_MenuPopup_activate_Edit));
 
   if(get_allow_user_actions())
   {
-    Gtk::Menu_Helpers::MenuElem menuItem_Delete(gettext("Delete"));
+    Gtk::Menu_Helpers::MenuElem menuItem_Delete(_("Delete"));
     m_MenuPopup.items().push_back(menuItem_Delete);
     m_MenuPopup.items().back().signal_activate().connect(sigc::mem_fun(*this, &AddDel::on_MenuPopup_activate_Delete));
   }
   
   if(m_allow_column_chooser)
   {
-    Gtk::Menu_Helpers::MenuElem menuitem_ChooseColumns(gettext("Choose columns"));
+    Gtk::Menu_Helpers::MenuElem menuitem_ChooseColumns(_("Choose columns"));
     m_MenuPopup.items().push_back(menuitem_ChooseColumns);
     m_MenuPopup.items().back().signal_activate().connect(sigc::mem_fun(*this, &AddDel::on_MenuPopup_activate_ChooseColumns));
   }

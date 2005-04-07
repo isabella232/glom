@@ -25,7 +25,7 @@
 #include "../../python_embed/glom_python.h"
 
 //#include <libgnome/gnome-i18n.h>
-#include <libintl.h>
+#include <glibmm/i18n.h>
 
 Dialog_FieldCalculation::Dialog_FieldCalculation(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
 : Gtk::Dialog(cobject)
@@ -74,7 +74,7 @@ void Dialog_FieldCalculation::on_button_test()
   const Glib::ustring calculation = m_text_view->get_buffer()->get_text();
   Gnome::Gda::Value value = glom_evaluate_python_function_implementation(Field::TYPE_TEXT, calculation); //TODO: Maybe use the field's type here.
 
-  Frame_Glom::show_ok_dialog(gettext("Calculation result"), gettext("The result of the calculation is:\n") + value.to_string(), *this);
+  Frame_Glom::show_ok_dialog(_("Calculation result"), _("The result of the calculation is:\n") + value.to_string(), *this);
 }
 
 

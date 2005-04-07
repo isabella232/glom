@@ -19,13 +19,13 @@
  */
 
 #include "notebook_find.h"
-#include <libintl.h>
+#include <glibmm/i18n.h>
 
 Notebook_Find::Notebook_Find()
 {
 
-  pages().push_back(Gtk::Notebook_Helpers::TabElem(m_Box_List, gettext("List")));
-  pages().push_back(Gtk::Notebook_Helpers::TabElem(m_Box_Details, gettext("Details")));
+  pages().push_back(Gtk::Notebook_Helpers::TabElem(m_Box_List, _("List")));
+  pages().push_back(Gtk::Notebook_Helpers::TabElem(m_Box_Details, _("Details")));
 
   set_current_page(1); //Show the details page by default. It's more obvious for a Find.
   //TODO: Show the same layout that is being edited at the time that the mode was changed.

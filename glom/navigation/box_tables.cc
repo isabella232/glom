@@ -20,7 +20,7 @@
 
 #include "box_tables.h"
 #include <bakery/App/App_Gtk.h> //For util_bold_message().
-#include <libintl.h>
+#include <glibmm/i18n.h>
 
 Box_Tables::Box_Tables(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
 : Box_DB(cobject),
@@ -95,14 +95,14 @@ void Box_Tables::fill_from_database()
 
   const bool editable = developer_mode;
   const bool visible_extras = developer_mode;
-  m_colTableName = m_AddDel.add_column(gettext("Tables"), AddDelColumnInfo::STYLE_Text, editable, visible_extras);
-  m_colHidden = m_AddDel.add_column(gettext("Hidden"), AddDelColumnInfo::STYLE_Boolean, editable, visible_extras);
-  m_colTitle =  m_AddDel.add_column(gettext("Title"), AddDelColumnInfo::STYLE_Text, editable, true);
-  m_colDefault =  m_AddDel.add_column(gettext("Default"), AddDelColumnInfo::STYLE_Boolean,  editable, visible_extras);
+  m_colTableName = m_AddDel.add_column(_("Tables"), AddDelColumnInfo::STYLE_Text, editable, visible_extras);
+  m_colHidden = m_AddDel.add_column(_("Hidden"), AddDelColumnInfo::STYLE_Boolean, editable, visible_extras);
+  m_colTitle =  m_AddDel.add_column(_("Title"), AddDelColumnInfo::STYLE_Text, editable, true);
+  m_colDefault =  m_AddDel.add_column(_("Default"), AddDelColumnInfo::STYLE_Boolean,  editable, visible_extras);
 
 
-  //gettext("Server: ") +  m_strServerName + ", " + 
-  //Glib::ustring strTitle = Glib::ustring("<b>") + gettext("Tables from Database: ") + get_database_name() + "");
+  //_("Server: ") +  m_strServerName + ", " + 
+  //Glib::ustring strTitle = Glib::ustring("<b>") + _("Tables from Database: ") + get_database_name() + "");
   //m_pLabelFrameTitle->set_markup(strTitle);
 
   //Get the list of hidden tables:
@@ -234,15 +234,15 @@ void Box_Tables::on_adddel_Delete(const Gtk::TreeModel::iterator& rowStart, cons
         if(!m_pDocument->get_table_is_known(table_name))
         {
            //TODO: Do not show tables that are not in the document.
-           Gtk::MessageDialog dialog(gettext("You can not delete this table, because there is no information about this table in the document."));
+           Gtk::MessageDialog dialog(_("You can not delete this table, because there is no information about this table in the document."));
            dialog.set_transient_for(*get_app_window());
            dialog.run();
         }
         else
         {
           //Ask the user to confirm:
-          Glib::ustring strMsg = gettext("Are you sure that you want to delete this table?\nTable name: ") + table_name;
-          Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(gettext("Delete Table")), true);
+          Glib::ustring strMsg = _("Are you sure that you want to delete this table?\nTable name: ") + table_name;
+          Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Delete Table")), true);
           dialog.set_secondary_text(strMsg);
           dialog.set_transient_for(*get_app_window());
           int iButtonClicked = dialog.run();
@@ -277,8 +277,8 @@ void Box_Tables::on_adddel_Edit(const Gtk::TreeModel::iterator& row)
     if(!m_pDocument->get_table_is_known(table_name))
     {
        //TODO: Do not show tables that are not in the document.
-       Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(gettext("Unknown Table")), true);
-       dialog.set_secondary_text(gettext("You can not open this table, because there is no information about this table in the document."));
+       Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Unknown Table")), true);
+       dialog.set_secondary_text(_("You can not open this table, because there is no information about this table in the document."));
        dialog.set_transient_for(*get_app_window());
        dialog.run();
     }
@@ -345,8 +345,8 @@ void Box_Tables::on_adddel_changed(const Gtk::TreeModel::iterator& row, guint co
       Glib::ustring table_name_new = m_AddDel.get_value(row, m_colTableName);
       if(!table_name.empty() && !table_name_new.empty())
       {
-        Glib::ustring strMsg = gettext("Are you sure that you want to rename this table?");  //TODO: Show old and new names?
-        Gtk::MessageDialog dialog(gettext("Rename Table"));
+        Glib::ustring strMsg = _("Are you sure that you want to rename this table?");  //TODO: Show old and new names?
+        Gtk::MessageDialog dialog(_("Rename Table"));
         dialog.set_secondary_text(strMsg);
         int iButtonClicked = dialog.run();
 

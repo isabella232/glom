@@ -24,6 +24,8 @@
 #include "../data_structure/field.h"
 #include "../data_structure/numeric_format.h"
 
+#include "../data_structure/layout/layoutitem_field.h"
+
 namespace GlomConversions
 {
   ///Get text for display to the user.
@@ -52,6 +54,11 @@ namespace GlomConversions
 
   Glib::ustring util_trim_whitespace(const Glib::ustring& text);
 }
+
+typedef std::vector<LayoutItem_Field> type_vecLayoutFields;
+
+//TODO: Move this to its own file:
+Glib::ustring util_build_sql_select_with_where_clause(const Glib::ustring& table_name, const type_vecLayoutFields& fieldsToGet, const Glib::ustring& where_clause = Glib::ustring());
 
 #endif //GLOM_DATASTRUCTURE_GLOMCONVERSIONS_H
 

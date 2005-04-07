@@ -1,3 +1,97 @@
+2005-04-07  Murray Cumming <murrayc@murrayc.com>
+
+	* Makefile.am:
+	* configure.in:
+	Depend explicitly on libxslt. Stop using boost::python.
+	* glom/python_embed/py_glom_record.cc:
+	* glom/python_embed/py_glom_record.h:
+	Stop using boost::python, because it is too difficult to build , 
+	inside glom, and is huge, and is not really necessary here.
+	Add some more code for the PyGlomRecord object.
+	* glom/python_embed/glom_python.cc:
+	Pass a PyGlomRecord object to the python method.
+	* glom/application.cc:
+	App_Glom::init(): Add a print menu item. It is just a 
+	proof of concept at the moment.
+	* glom/mode_data/box_data_details.cc:
+	Added print_layout_group(), which creates an XML format 
+	for the data, and then converts it to HTML using an XSLT
+	stylesheet, using libxslt.
+	* xslt/ Added this directory, with .xslt which is 
+	installed for use by the application.
+	* glom/base_db.cc:
+	* glom/data_structure/glomconversions.cc:
+	* glom/data_structure/glomconversions.h:
+	Add util_build_sql_select_with_where_clause(), moved from 
+	Box_Data(), so that the Db_AddDel can use it in future, to 
+	do on-demand data retrieval.
+	* glom/data_structure/iso_codes.cc:
+	Catch the exception if the iso_codes XML file can not be 
+	found, and then just return an empty list. This prevents 
+	a crash when iso_codes is not properly installed. For instance, 
+	Ubuntu Hoary currently installs an (obviously) incorrect .pc file.
+	* glom/data_structure/layout/layoutitem_field.cc:
+	* glom/data_structure/layout/layoutitem_field.h:
+	Cache the whole Relationship details here, instead of just storing 
+	the relationship_name. This means that code that uses this does not 
+	need to access the document to lookup the full details.
+	* glom/dialog_connection.cc:
+	* glom/document/document_glom.cc:
+	* glom/frame_glom.cc:
+	* glom/frame_glom.h:
+	* glom/glom.glade:
+	Made ScrolledWindows use automatic mode for scrollbars, 
+	so they are only shown when necessary. Remove the unused 
+	information dialog.
+	* glom/utility_widgets/flowtable.cc:
+	* glom/utility_widgets/flowtable.h:
+	* glom/utility_widgets/flowtablewithfields.cc:
+	Make methods const.
+	* glom/utility_widgets/db_adddel/db_adddel.cc:
+	* glom/utility_widgets/db_adddel/glom_db_treemodel.cc:
+	* glom/utility_widgets/db_adddel/glom_db_treemodel.h:
+	Store LayoutItem_Fields for each column, not just Fields.
+	* glom/main.cc:
+	* glom/mode_data/Makefile.am:
+	* glom/mode_data/box_data.cc:
+	* glom/mode_data/box_data.h:
+	* glom/mode_data/box_data_details.h:
+	* glom/mode_data/box_data_list.cc:
+	* glom/mode_data/box_data_list.h:
+	* glom/mode_data/box_data_list_related.cc:
+	* glom/mode_data/dialog_choose_field.cc:
+	* glom/mode_data/dialog_choose_relationship.cc:
+	* glom/mode_data/dialog_layout.cc:
+	* glom/mode_data/dialog_layout_details.cc:
+	* glom/mode_data/dialog_layout_list.cc:
+	* glom/mode_data/dialog_layout_list_related.cc:
+	* glom/mode_data/notebook_data.cc:
+	* glom/mode_data/notebook_data.h:
+	* glom/mode_data/treestore_layout.h:
+	* glom/mode_design/box_db_table_relationships.cc:
+	* glom/mode_design/dialog_design.cc:
+	* glom/mode_design/dialog_fields.cc:
+	* glom/mode_design/dialog_relationships.cc:
+	* glom/mode_design/fields/box_db_table_definition.cc:
+	* glom/mode_design/fields/combo_fieldtype.cc:
+	* glom/mode_design/fields/dialog_fieldcalculation.cc:
+	* glom/mode_design/fields/dialog_fielddefinition.cc:
+	* glom/mode_design/users/dialog_groups_list.cc:
+	* glom/mode_design/users/dialog_user.cc:
+	* glom/mode_design/users/dialog_users_list.cc:
+	* glom/mode_find/box_data_details_find.cc:
+	* glom/mode_find/box_data_list_find.cc:
+	* glom/mode_find/notebook_find.cc:
+	* glom/navigation/box_tables.cc:
+	* glom/notebook_glom.cc:
+	* glom/notebook_glom.h:
+	* glom/utility_widgets/adddel/adddel.cc:
+	* glom/utility_widgets/datawidget.cc:
+	* glom/utility_widgets/entryglom.cc:
+	* glom/data_structure/field.cc:
+	Include glibmm/i18n.h instead of libintl.h in .cc files,
+	so we can use _() instead of gettext().
+
 2005-04-01  Steve Murphy  <murf@e-tools.com>
 
         * configure.in: Added "rw" to ALL_LINGUAS.

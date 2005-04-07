@@ -613,3 +613,65 @@ Glib::ustring GlomConversions::util_trim_whitespace(const Glib::ustring& text)
   return result;
 }
 
+
+
+Glib::ustring util_build_sql_select_with_where_clause(const Glib::ustring& table_name, const type_vecLayoutFields& fieldsToGet, const Glib::ustring& where_clause)
+{
+  Glib::ustring result;
+
+  Glib::ustring sql_part_fields;
+
+  typedef std::list<Relationship> type_list_relationships;
+  type_list_relationships list_relationships;
+
+  for(type_vecLayoutFields::const_iterator iter =  fieldsToGet.begin(); iter != fieldsToGet.end(); ++iter)
+  {
+    if(iter != fieldsToGet.begin())
+      sql_part_fields += ", ";
+
+
+    if(!iter->get_has_relationship_name())
+    {
+      sql_part_fields += ( table_name + "." );
+    }
+    else
+    {
+      Glib::ustring relationship_name = iter->get_relationship_name();
+      if(!relationship_name.empty())
+      {
+        const Relationship relationship = iter->m_relationship;
+
+        const Glib::ustring field_table_name = relationship.get_to_table();
+        sql_part_fields += ( field_table_name + "." );
+
+        //Add the relationship to the list:
+        type_list_relationships::const_iterator iterFind = std::find_if(list_relationships.begin(), list_relationships.end(), predicate_FieldHasName<Relationship>( relationship_name ) );
+        if(iterFind == list_relationships.end()) //If the table is not yet in the list:
+          list_relationships.push_back(relationship);
+      }
+    }
+
+    sql_part_fields += iter->get_name();
+  }
+
+  result =  "SELECT " + sql_part_fields +
+    " FROM " + table_name;
+
+  //LEFT OUTER JOIN will get the field values from the other tables, and give us our fields for this table even if there is no corresponding value in the other table.
+  Glib::ustring sql_part_leftouterjoin; 
+  for(type_list_relationships::const_iterator iter = list_relationships.begin(); iter != list_relationships.end(); ++iter)
+  {
+    const Relationship& relationship = *iter;
+    sql_part_leftouterjoin += " LEFT OUTER JOIN " + relationship.get_to_table() +
+      " ON (" + relationship.get_from_table() + "." + relationship.get_from_field() + " = " +
+      relationship.get_to_table() + "." + relationship.get_to_field() +
+      ")";
+  }
+
+  result += sql_part_leftouterjoin;
+
+  if(!where_clause.empty())
+    result += " WHERE " + where_clause;
+
+  return result;
+}

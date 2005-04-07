@@ -21,7 +21,7 @@
 #include "box_db_table_definition.h"
 #include <bakery/App/App_Gtk.h> //For util_bold_message().
 #include "../../../config.h"
-#include <libintl.h>
+#include <glibmm/i18n.h>
 
 Box_DB_Table_Definition::Box_DB_Table_Definition()
 {
@@ -36,7 +36,7 @@ Box_DB_Table_Definition::Box_DB_Table_Definition(BaseObjectType* cobject, const 
 
 void Box_DB_Table_Definition::init()
 {
-  m_strHint = gettext("Click [Edit] to edit the field definition in more detail.\nUse the Mode menu to see Data or perform a Find.");
+  m_strHint = _("Click [Edit] to edit the field definition in more detail.\nUse the Mode menu to see Data or perform a Find.");
 
   Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_field_definition_edit");
   if(refXml)
@@ -44,11 +44,11 @@ void Box_DB_Table_Definition::init()
   add_view(m_pDialog); //Give it access to the document.
 
   pack_start(m_AddDel);
-  m_colName = m_AddDel.add_column(gettext("Name"));
+  m_colName = m_AddDel.add_column(_("Name"));
 
-  m_colTitle = m_AddDel.add_column(gettext("Title"));
+  m_colTitle = m_AddDel.add_column(_("Title"));
 
-  m_colType = m_AddDel.add_column(gettext("Type"), AddDelColumnInfo::STYLE_Choices);
+  m_colType = m_AddDel.add_column(_("Type"), AddDelColumnInfo::STYLE_Choices);
   m_AddDel.set_column_width(m_colType, 100); //TODO: Auto-size columns.
 
   //Set Type choices:
@@ -212,8 +212,8 @@ void Box_DB_Table_Definition::on_adddel_changed(const Gtk::TreeModel::iterator& 
        //Refuse to edit field definitions that were not created by glom:
        if(Field::get_glom_type_for_gda_type( m_Field_BeingEdited.get_field_info().get_gdatype() )  == Field::TYPE_INVALID)
        {
-         Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(gettext("Invalid database structure")), true);
-         dialog.set_secondary_text(gettext("This database field was created or edited outside of Glom. It has a data type that is not supported by Glom. Your system administrator may be able to correct this."));
+         Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Invalid database structure")), true);
+         dialog.set_secondary_text(_("This database field was created or edited outside of Glom. It has a data type that is not supported by Glom. Your system administrator may be able to correct this."));
          //TODO: dialog.set_transient_for(*get_application());
          dialog.run();
        }
@@ -313,8 +313,8 @@ void Box_DB_Table_Definition::on_Properties_apply()
     //Refuse to edit field definitions that were not created by glom:
     if( Field::get_glom_type_for_gda_type(m_Field_BeingEdited.get_field_info().get_gdatype()) == Field::TYPE_INVALID )
     {
-      Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(gettext("Invalid database structure")), true);
-         dialog.set_secondary_text(gettext("This database field was created or edited outside of Glom. It has a data type that is not supported by Glom. Your system administrator may be able to correct this."));
+      Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Invalid database structure")), true);
+         dialog.set_secondary_text(_("This database field was created or edited outside of Glom. It has a data type that is not supported by Glom. Your system administrator may be able to correct this."));
       //TODO: dialog.set_transient_for(*get_app_window());
       dialog.run();
     }

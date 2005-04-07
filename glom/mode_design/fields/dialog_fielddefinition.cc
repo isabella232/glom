@@ -22,7 +22,7 @@
 #include "dialog_fieldcalculation.h"
 #include "../../box_db_table.h"
 //#include <libgnome/gnome-i18n.h>
-#include <libintl.h>
+#include <glibmm/i18n.h>
 
 Dialog_FieldDefinition::Dialog_FieldDefinition(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
 : Dialog_Properties(cobject, refGlade),
@@ -60,7 +60,7 @@ Dialog_FieldDefinition::Dialog_FieldDefinition(BaseObjectType* cobject, const Gl
   
   //TODO:
   //Connect every widget to on_anything_changed():
-  //foreachgettext( (GtkCallback)(&on_foreach), this); //Crashes several levels down.
+  //foreach_( (GtkCallback)(&on_foreach), this); //Crashes several levels down.
 
   //on_anything_changed(); //In the meantime, we'll just start with [Apply] already enabled.
 
@@ -116,7 +116,7 @@ void Dialog_FieldDefinition::set_field(const Field& field, const Glib::ustring& 
 
   LayoutItem_Field layout_item;
   layout_item.m_field = m_Field;
-  layout_item.m_field.set_title(gettext("Default Value"));
+  layout_item.m_field.set_title(_("Default Value"));
   m_pDataWidget_DefaultValueSimple = Gtk::manage( new DataWidget(layout_item, "") );
 
   Gtk::Label* pLabel = m_pDataWidget_DefaultValueSimple->get_label();

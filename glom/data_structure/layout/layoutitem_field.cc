@@ -33,7 +33,8 @@ LayoutItem_Field::LayoutItem_Field(const LayoutItem_Field& src)
   m_priv_view(src.m_priv_view),
   m_priv_edit(src.m_priv_edit),
   //m_table_name(src.m_table_name),
-  m_relationship_name(src.m_relationship_name)
+  m_relationship(src.m_relationship)
+  //m_relationship_name(src.m_relationship_name)
 {
 }
 
@@ -57,7 +58,8 @@ LayoutItem_Field& LayoutItem_Field::operator=(const LayoutItem_Field& src)
   m_priv_edit = src.m_priv_edit;
 
   //m_table_name = src.m_table_name;
-  m_relationship_name = src.m_relationship_name;
+  m_relationship = src.m_relationship;
+ // m_relationship_name = src.m_relationship_name;
 
   return *this;
 }
@@ -76,18 +78,20 @@ void LayoutItem_Field::set_table_name(const Glib::ustring& table_name)
 
 bool LayoutItem_Field::get_has_relationship_name() const
 {
-  return !m_relationship_name.empty();
+  return !m_relationship.get_name().empty();
 }
 
 Glib::ustring LayoutItem_Field::get_relationship_name() const
 {
-  return m_relationship_name;
+  return m_relationship.get_name();
 }
 
+/*
 void LayoutItem_Field::set_relationship_name(const Glib::ustring& relationship_name)
 {
   m_relationship_name = relationship_name;
 }
+*/
 
 bool LayoutItem_Field::get_editable_and_allowed() const
 {

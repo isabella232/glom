@@ -24,7 +24,7 @@
 #include "config.h" //For VERSION.
 #include <cstdio>
 #include <memory> //For std::auto_ptr<>
-#include <libintl.h>
+#include <glibmm/i18n.h>
 
 
 App_Glom::App_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
@@ -56,7 +56,7 @@ bool App_Glom::init(const Glib::ustring& document_uri)
 {
   type_vecStrings vecAuthors;
   vecAuthors.push_back("Murray Cumming <murrayc@murrayc.com>");
-  set_about_information(VERSION, vecAuthors, gettext("(C) 2000-2004 Murray Cumming"), gettext("A Database GUI"));
+  set_about_information(VERSION, vecAuthors, _("(C) 2000-2004 Murray Cumming"), _("A Database GUI"));
 
   type_base::init(); //calls init_menus() and init_toolbars()
 
@@ -140,14 +140,17 @@ void App_Glom::init_menus_file()
   //Build actions:
   m_refFileActionGroup = Gtk::ActionGroup::create("BakeryFileActions");
 
-  m_refFileActionGroup->add(Gtk::Action::create("BakeryAction_Menu_File", gettext("_File")));
-  m_refFileActionGroup->add(Gtk::Action::create("BakeryAction_Menu_File_RecentFiles", gettext("_Recent Files")));
+  m_refFileActionGroup->add(Gtk::Action::create("BakeryAction_Menu_File", _("_File")));
+  m_refFileActionGroup->add(Gtk::Action::create("BakeryAction_Menu_File_RecentFiles", _("_Recent Files")));
 
   //File actions
   m_refFileActionGroup->add(Gtk::Action::create("BakeryAction_File_New", Gtk::Stock::NEW),
                         sigc::mem_fun((App&)*this, &App::on_menu_file_new));
   m_refFileActionGroup->add(Gtk::Action::create("BakeryAction_File_Open", Gtk::Stock::OPEN),
                         sigc::mem_fun((App_WithDoc&)*this, &App_WithDoc::on_menu_file_open));
+
+  m_refFileActionGroup->add(Gtk::Action::create("GlomAction_File_Print", Gtk::Stock::PRINT),
+                        sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_file_print) );
 
   m_refFileActionGroup->add(Gtk::Action::create("BakeryAction_File_Close", Gtk::Stock::CLOSE),
                         sigc::mem_fun((App_WithDoc&)*this, &App_WithDoc::on_menu_file_close));
@@ -166,6 +169,8 @@ void App_Glom::init_menus_file()
     "        <menuitem action='BakeryAction_File_Open' />"
     "        <menu action='BakeryAction_Menu_File_RecentFiles'>"
     "        </menu>"
+    "        <separator/>"
+    "        <menuitem action='GlomAction_File_Print' />"
     "        <separator/>"
     "        <menuitem action='BakeryAction_File_Close' />"
     "        <menuitem action='BakeryAction_File_Exit' />"
@@ -190,64 +195,64 @@ void App_Glom::init_menus()
   m_refActionGroup_Others = Gtk::ActionGroup::create("GlomOthersActions");
   
   //"Navigate" menu:
-  m_refActionGroup_Others->add( Gtk::Action::create("Glom_Menu_Navigate", gettext("_Navigate")) );
+  m_refActionGroup_Others->add( Gtk::Action::create("Glom_Menu_Navigate", _("_Navigate")) );
 
-//  Glib::RefPtr<Gtk::Action> action = Gtk::Action::create("GlomAction_Menu_Navigate_Database", gettext("_Database"));
+//  Glib::RefPtr<Gtk::Action> action = Gtk::Action::create("GlomAction_Menu_Navigate_Database", _("_Database"));
 //  m_listDeveloperActions.push_back(action);
 //  m_refActionGroup_Others->add(action,
 //                        sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_Navigate_Database) );
 
 
-  Glib::RefPtr<Gtk::Action> action = Gtk::Action::create("GlomAction_Menu_Navigate_Table", gettext("_Table"));
+  Glib::RefPtr<Gtk::Action> action = Gtk::Action::create("GlomAction_Menu_Navigate_Table", _("_Table"));
   m_refActionGroup_Others->add(action,
                         sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_Navigate_Table) );
 
   //"UserLevel" menu:
-  m_refActionGroup_Others->add(Gtk::Action::create("Glom_Menu_userlevel", gettext("_User Level")));
+  m_refActionGroup_Others->add(Gtk::Action::create("Glom_Menu_userlevel", _("_User Level")));
   Gtk::RadioAction::Group group_userlevel;
 
-  m_action_menu_userlevel_developer = Gtk::RadioAction::create(group_userlevel, "GlomAction_Menu_userlevel_Developer", gettext("_Developer"));
+  m_action_menu_userlevel_developer = Gtk::RadioAction::create(group_userlevel, "GlomAction_Menu_userlevel_Developer", _("_Developer"));
   m_refActionGroup_Others->add(m_action_menu_userlevel_developer,
                         sigc::mem_fun(*this, &App_Glom::on_menu_userlevel_developer) );
 
-  m_action_menu_userlevel_operator =  Gtk::RadioAction::create(group_userlevel, "GlomAction_Menu_userlevel_Operator", gettext("_Operator"));
+  m_action_menu_userlevel_operator =  Gtk::RadioAction::create(group_userlevel, "GlomAction_Menu_userlevel_Operator", _("_Operator"));
   m_refActionGroup_Others->add(m_action_menu_userlevel_operator,
                           sigc::mem_fun(*this, &App_Glom::on_menu_userlevel_operator) );
 
   //"Mode" menu:
-  action =  Gtk::Action::create("Glom_Menu_Mode", gettext("_Mode"));
+  action =  Gtk::Action::create("Glom_Menu_Mode", _("_Mode"));
   m_refActionGroup_Others->add(action);
   Gtk::RadioAction::Group group_mode;
 
   //We remember this action, so that it can be explicitly activated later.
-  m_action_mode_data = Gtk::RadioAction::create(group_mode, "GlomAction_Menu_Mode_Data", gettext("D_ata"));
+  m_action_mode_data = Gtk::RadioAction::create(group_mode, "GlomAction_Menu_Mode_Data", _("D_ata"));
   m_refActionGroup_Others->add(m_action_mode_data,
                         sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_Mode_Data) );
-  m_refActionGroup_Others->add( Gtk::RadioAction::create(group_mode, "GlomAction_Menu_Mode_Find", gettext("_Find")),  Gtk::AccelKey("<control>F"),
+  m_refActionGroup_Others->add( Gtk::RadioAction::create(group_mode, "GlomAction_Menu_Mode_Find", _("_Find")),  Gtk::AccelKey("<control>F"),
                         sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_Mode_Find) );
 
-  action = Gtk::Action::create("Glom_Menu_Developer", gettext("_Developer"));
+  action = Gtk::Action::create("Glom_Menu_Developer", _("_Developer"));
   m_listDeveloperActions.push_back(action);
   m_refActionGroup_Others->add(action);
 
-  action = Gtk::Action::create("GlomAction_Menu_Developer_Fields", gettext("_Fields"));
+  action = Gtk::Action::create("GlomAction_Menu_Developer_Fields", _("_Fields"));
   m_listDeveloperActions.push_back(action);  
   m_refActionGroup_Others->add(action, sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_fields) );
 
-  action = Gtk::Action::create("GlomAction_Menu_Developer_Relationships", gettext("_Relationships"));
+  action = Gtk::Action::create("GlomAction_Menu_Developer_Relationships", _("_Relationships"));
   m_listDeveloperActions.push_back(action);
   m_refActionGroup_Others->add(action, sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_relationships) );
 
-  action = Gtk::Action::create("GlomAction_Menu_Developer_Users", gettext("_Users"));
+  action = Gtk::Action::create("GlomAction_Menu_Developer_Users", _("_Users"));
   m_listDeveloperActions.push_back(action);
   m_refActionGroup_Others->add(action, sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_users));
 
-  action = Gtk::Action::create("GlomAction_Menu_Developer_Layout", gettext("_Layout"));
+  action = Gtk::Action::create("GlomAction_Menu_Developer_Layout", _("_Layout"));
   m_listDeveloperActions.push_back(action);
   m_refActionGroup_Others->add(action, sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_layout));
 
   /*
-  action = Gtk::Action::create("GlomAction_Menu_Developer_RecreateStructure", gettext("_Recreate Database Structure"));
+  action = Gtk::Action::create("GlomAction_Menu_Developer_RecreateStructure", _("_Recreate Database Structure"));
   m_listDeveloperActions.push_back(action);
   m_refActionGroup_Others->add(action, sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_recreate_structure));
   */
@@ -401,8 +406,8 @@ bool App_Glom::on_document_load()
                   AppState::userlevels userlevel = pDocument->get_userlevel(reason);
                   if( (userlevel == AppState::USERLEVEL_OPERATOR) && (reason == Document_Glom::USER_LEVEL_REASON_FILE_READ_ONLY) )
                   {
-                    Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(gettext("Creating from read-only file.")), true,  Gtk::MESSAGE_WARNING);
-                    dialog.set_secondary_text(gettext("This file is read only, so you will not be able to enter Developer mode to make design changes. Maybe this file is an installed example file. Therefore, you might want to create your own writeable copy of this file."));
+                    Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Creating from read-only file.")), true,  Gtk::MESSAGE_WARNING);
+                    dialog.set_secondary_text(_("This file is read only, so you will not be able to enter Developer mode to make design changes. Maybe this file is an installed example file. Therefore, you might want to create your own writeable copy of this file."));
                     dialog.set_transient_for(*this);
                     dialog.run();
                     //TODO: Store a magic number in the database (a special table) and the file to check for mismatches.
@@ -427,12 +432,12 @@ bool App_Glom::on_document_load()
                       std::cerr << ex.what() << std::endl;
                     }
                   }
-  
+
                   return false;
                 }
-                  
+
                 //TODO: Recreate the database, using the information saved in the document:
-                //Frame_Glom::show_ok_dialog(gettext("Database recreation"), gettext("Sorry. This functionality has not been implemented yet."), *this);
+                //Frame_Glom::show_ok_dialog(_("Database recreation"), _("Sorry. This functionality has not been implemented yet."), *this);
                 //return false; //Give up on this document.
               }
             }
@@ -635,7 +640,7 @@ void App_Glom::init_menus_help()
   //Call base class:
   App_WithDoc_Gtk::init_menus_help();
   m_refHelpActionGroup->add( Gtk::Action::create("BakeryAction_Help_Contents",
-                        gettext("_Contents"), gettext("Help with the application")),
+                        _("_Contents"), _("Help with the application")),
                         sigc::mem_fun(*this, &App_Glom::on_menu_help_contents) );
 
   //Build part of the menu structure, to be merged in by using the "PH" plaeholders:
