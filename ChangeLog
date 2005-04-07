@@ -1,5 +1,11 @@
 2005-04-07  Murray Cumming <murrayc@murrayc.com>
 
+	* glom/python_embed/: Remove the (huge) boost 
+	directory. boost::python is not worth the trouble for now,
+	so I will use the C API instead.
+
+2005-04-07  Murray Cumming <murrayc@murrayc.com>
+
 	* glom/utility_widgets/db_adddel/db_adddel.cc:
 	* glom/utility_widgets/db_adddel/db_adddel.cc:
 	Add set_columns_ready(). Only when this is called will 
