@@ -1,3 +1,12 @@
+0.8.20:
+
+* Fix the boost::python build problem.
+* Added highly experimental File/Print menu item. It 
+  does stuff in the Details view. It should open some 
+  HTML in your browser. glom installs an XSLT file 
+  used to create the HTML, so feel free to improve it.
+* Translations: Added Kinyarwanda translation. (Steve Murphy)
+
 0.8.19:
 
 * List and Details: When defining the layout, developers

@@ -26,4 +26,8 @@ validate: glom.xml
 	xmllint --xinclude --valid --noout --catalogs $<
 
 
+# ignore the scrollkeeper stuff. I'm sure this shouldn't be necessary. murrayc.
+# Doesn't work.
+# distuninstallcheck_listfiles = find . -type f -print | grep -v '^\./var/scrollkeeper'
+
 
