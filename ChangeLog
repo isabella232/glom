@@ -1,5 +1,11 @@
 2005-04-07  Murray Cumming <murrayc@murrayc.com>
 
+	* glom/python_embed/Makefile.am:
+	Do not try to build the boost sub-directory. We do not 
+	use it anymore.
+
+2005-04-07  Murray Cumming <murrayc@murrayc.com>
+
 	* Makefile.am:
 	* configure.in:
 	Depend explicitly on libxslt. Stop using boost::python.
