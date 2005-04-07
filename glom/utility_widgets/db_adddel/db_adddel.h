@@ -127,10 +127,15 @@ public:
 
   virtual Field get_key_field() const;
   virtual void set_key_field(const Field& field);
- 
+
+  virtual void set_table_name(const Glib::ustring& table_name);
+
   /** @result The index of the new column.
    */
   virtual guint add_column(const LayoutItem_Field& field);
+
+  /// Start using the added columns.
+  virtual void set_columns_ready();
 
   virtual guint get_columns_count() const;
 
@@ -285,6 +290,7 @@ protected:
   //Columns, not including the hidden internal columns:
   typedef std::vector<DbAddDelColumnInfo> type_ColumnTypes;
   type_ColumnTypes m_ColumnTypes;
+  Glib::ustring m_table_name;
 
   Gtk::Menu* m_pMenuPopup;
   Glib::RefPtr<Gtk::ActionGroup> m_refActionGroup;
@@ -303,6 +309,8 @@ protected:
   bool m_allow_delete;
 
   Field m_key_field;
+
+  bool m_columns_ready;
 
   //signals:
   type_signal_user_added m_signal_user_added;

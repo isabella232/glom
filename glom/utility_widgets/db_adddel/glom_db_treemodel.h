@@ -23,7 +23,8 @@
 
 #include <gtkmm/treemodel.h>
 #include <gtkmm/treepath.h>
-#include "../..//data_structure/layout/layoutitem_field.h"
+#include "../../data_structure/layout/layoutitem_field.h"
+#include "../../connectionpool.h"
 
 class DbTreeModelRow
 {
@@ -35,6 +36,9 @@ public:
   typedef Gnome::Gda::Value DbValue;
   typedef std::vector< DbValue > type_vec_values;
   type_vec_values m_db_values;
+
+  bool m_values_retrieved; //Whether the values have been read from the datamodel.
+  guint m_data_model_row_number; //The row in the data model from which the values were read.
 };
 
 class DbTreeModel
@@ -158,6 +162,10 @@ private:
    type_vec_fields m_column_fields;
 
    //Data:
+   sharedptr<SharedConnection> m_connection;
+   Glib::RefPtr<Gnome::Gda::DataModel> m_gda_datamodel;
+   guint m_data_model_rows_count; //TODO: TODO_Performance: GdaDataModel probably needs an on-demand iterator. murrayc.
+
    mutable typeListOfRows m_rows;
 
    //Column information:

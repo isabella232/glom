@@ -58,7 +58,8 @@ DbAddDel::DbAddDel()
   m_pMenuPopup(0),
   m_auto_add(true),
   m_allow_add(true),
-  m_allow_delete(true)
+  m_allow_delete(true),
+  m_columns_ready(false)
 {
   set_prevent_user_signals();
   set_ignore_treeview_signals();
@@ -610,7 +611,7 @@ void DbAddDel::construct_specified_columns()
   }
 
   //Create the model from the ColumnRecord:
-  m_refListStore = type_model_store::create(record, "TODO: table_name", fields);
+  m_refListStore = type_model_store::create(record, m_table_name, fields);
 
   m_TreeView.set_model(m_refListStore);
 
@@ -770,6 +771,13 @@ void DbAddDel::set_value_selected(const LayoutItem_Field& layout_item, const Gno
 void DbAddDel::remove_all_columns()
 {
   m_ColumnTypes.clear();
+
+  m_columns_ready = false;
+}
+
+void DbAddDel::set_table_name(const Glib::ustring& table_name)
+{
+  m_table_name = table_name;
 }
 
 guint DbAddDel::add_column(const LayoutItem_Field& field)
@@ -790,12 +798,20 @@ guint DbAddDel::add_column(const LayoutItem_Field& field)
   m_ColumnTypes.push_back(column_info);
 
   //Generate appropriate model columns:
-  construct_specified_columns();
+  //if(m_columns_ready)
+    construct_specified_columns();
 
   //Tell the View to use the model:
   //m_TreeView.set_model(m_refListStore);
 
   return m_ColumnTypes.size() - 1;
+}
+
+
+void DbAddDel::set_columns_ready()
+{
+  m_columns_ready = true;
+  //construct_specified_columns();
 }
 
 DbAddDel::type_list_indexes DbAddDel::get_column_index(const LayoutItem_Field& layout_item) const
@@ -862,7 +878,8 @@ void DbAddDel::set_column_choices(guint col, const type_vecStrings& vecStrings)
     else
     {
       //The column does not exist yet, so we must create it:
-      construct_specified_columns();
+      //if(m_columns_ready)
+        construct_specified_columns();
     }
   }
 }

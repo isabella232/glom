@@ -50,9 +50,6 @@ protected:
 
   ModelColumns m_model_columns;
   Glib::RefPtr<Gtk::ListStore> m_model;
-
-private:
-  IsoCodes::Currency m_dummy; //Force the linker to use this. //TODO: Fix this properly.
 };
 
 #endif //GLOM_MODE_DESIGN_COMBOENTRY_CURRENCY_HH
