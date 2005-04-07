@@ -105,7 +105,7 @@ AddDel::AddDel()
   set_ignore_treeview_signals(false);
 
   remove_all_columns(); //set up the default columns.
-  
+
   show_all_children();
 }
 
@@ -124,7 +124,7 @@ AddDel::on_MenuPopup_activate_Edit()
     {
       //Discover whether it's the last (empty) row:
       if(get_is_placeholder_row(iter))
-      {        
+      {
         //This is a new entry:
         signal_user_added()(iter);
 
