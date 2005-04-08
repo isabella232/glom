@@ -33,13 +33,19 @@ DbTreeModelRow::DbTreeModelRow()
 }
 
 DbTreeModel::GlueItem::GlueItem(const DbTreeModel::typeListOfRows::iterator& row_iter)
-: m_row_iter(row_iter)
+: m_row_iter(row_iter),
+  m_datamodel_row_iter( DbTreeModel::type_datamodel_iter() )
 {
 }
 
 DbTreeModel::typeListOfRows::iterator DbTreeModel::GlueItem::get_row_iter() const
 {
   return m_row_iter;
+}
+
+DbTreeModel::type_datamodel_iter DbTreeModel::GlueItem::get_datamodel_row_iter() const
+{
+  return m_datamodel_row_iter;
 }
 
 DbTreeModel::GlueList::GlueList()
@@ -334,7 +340,7 @@ void DbTreeModel::create_iterator(const typeListOfRows::iterator& row_iter, DbTr
 bool DbTreeModel::get_iter_vfunc(const Path& path, iterator& iter) const
 {
   //g_warning("DbTreeModel::get_iter_vfunc(): path=%s", path.to_string().c_str());
-  
+
    unsigned sz = path.size();
    if(!sz)
    {
@@ -349,6 +355,18 @@ bool DbTreeModel::get_iter_vfunc(const Path& path, iterator& iter) const
    }
 
    return iter_nth_root_child_vfunc(path[0], iter);
+}
+
+DbTreeModel::type_datamodel_iter DbTreeModel::get_datamodel_row_iter_from_tree_row_iter(const iterator& iter) const
+{
+  const GlueItem* pItem = (const GlueItem*)iter.gobj()->user_data;
+  if(pItem)
+    return pItem->get_datamodel_row_iter();
+  else
+  {
+    g_warning("DbTreeModel::get_datamodel_row_iter_from_tree_row_iter(): iter has no GlueItem.");
+    return type_datamodel_iter();
+  }
 }
 
 DbTreeModel::typeListOfRows::iterator DbTreeModel::get_data_row_iter_from_tree_row_iter(const iterator& iter) const

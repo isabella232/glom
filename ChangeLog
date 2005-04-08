@@ -1,3 +1,29 @@
+2005-04-08  Murray Cumming <murrayc@murrayc.com>
+
+	* glom/data_structure/layout/layoutitem_field.cc:
+	* glom/data_structure/layout/layoutitem_field.h:
+	* glom/data_structure/relationship.cc:
+	* glom/data_structure/relationship.h:
+	Added Relationship::get_name_not_empty() and used it,
+	for performance, instead of getting the whole string
+	just to see if it is empty.
+	* glom/glom.glade:
+	* glom/mode_data/Makefile.am:
+	* glom/mode_data/dialog_choose_field.cc:
+	* glom/mode_data/dialog_choose_field.h:
+	* glom/mode_data/dialog_field_layout.cc:
+	* glom/mode_data/dialog_field_layout.h:
+	* glom/mode_data/dialog_layout_details.cc:
+	* glom/mode_data/dialog_layout_details.h:
+	Moved formatting options to their own dialog.
+	* glom/utility_widgets/datawidget.cc:
+	* glom/utility_widgets/datawidget.h:
+	* glom/utility_widgets/entryglom.cc:
+	* glom/utility_widgets/entryglom.h:
+	* glom/utility_widgets/layoutwidgetbase.h:
+	Added a context menu item for the new layout 
+	properties dialog.
+
 0.8.20:
 
 2005-04-07  Murray Cumming <murrayc@murrayc.com>

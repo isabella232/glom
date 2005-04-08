@@ -78,7 +78,7 @@ void LayoutItem_Field::set_table_name(const Glib::ustring& table_name)
 
 bool LayoutItem_Field::get_has_relationship_name() const
 {
-  return !m_relationship.get_name().empty();
+  return m_relationship.get_name_not_empty();
 }
 
 Glib::ustring LayoutItem_Field::get_relationship_name() const
@@ -96,4 +96,13 @@ void LayoutItem_Field::set_relationship_name(const Glib::ustring& relationship_n
 bool LayoutItem_Field::get_editable_and_allowed() const
 {
   return m_editable && m_priv_edit;
+}
+
+Glib::ustring LayoutItem_Field::get_layout_display_name() const
+{
+  Glib::ustring result = m_field.get_name();
+  if(get_has_relationship_name())
+    result == get_relationship_name() + "::" + result;
+
+  return result;
 }

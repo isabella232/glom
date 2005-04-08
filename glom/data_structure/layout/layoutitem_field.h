@@ -40,6 +40,10 @@ public:
   //virtual Glib::ustring get_table_name() const;
   //virtual void set_table_name(const Glib::ustring& table_name);
 
+  /** Get a text representation for the field, such as Relationship::FieldName.
+   */
+  virtual Glib::ustring get_layout_display_name() const;
+
   virtual bool get_has_relationship_name() const;
   virtual Glib::ustring get_relationship_name() const;
   //virtual void set_relationship_name(const Glib::ustring& relationship_name);

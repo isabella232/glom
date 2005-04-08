@@ -26,21 +26,12 @@ Dialog_ChooseField::Dialog_ChooseField(BaseObjectType* cobject, const Glib::RefP
 : Gtk::Dialog(cobject),
   m_combo_relationship(0),
   m_button_select(0),
-  m_checkbutton_editable(0),
   m_treeview(0),
   m_document(0)
 {
   refGlade->get_widget("button_select", m_button_select);
-  refGlade->get_widget("checkbutton_editable", m_checkbutton_editable);
   refGlade->get_widget_derived("combobox_relationship", m_combo_relationship);
   m_combo_relationship->signal_changed().connect(sigc::mem_fun(*this, &Dialog_ChooseField::on_combo_relationship_changed));
-
-  //Numeric formatting:
-  refGlade->get_widget("frame_numeric_format", m_frame_numeric_format);
-  refGlade->get_widget("checkbutton_format_thousands", m_checkbox_format_use_thousands);
-  refGlade->get_widget("checkbutton_format_use_decimal_places", m_checkbox_format_use_decimal_places);
-  refGlade->get_widget("entry_format_decimal_places", m_entry_format_decimal_places);
-  refGlade->get_widget_derived("entry_currency_symbol", m_entry_currency_symbol);
 
   refGlade->get_widget("treeview_fields", m_treeview);
 
@@ -99,26 +90,12 @@ void Dialog_ChooseField::set_document(Document_Glom* document, const Glib::ustri
   {
     m_treeview->get_selection()->select(iterFound);
   }
-
-  m_checkbutton_editable->set_active( field.get_editable() );
-
-
-  m_checkbox_format_use_thousands->set_active( field.m_numeric_format.m_use_thousands_separator );
-  m_checkbox_format_use_decimal_places->set_active( field.m_numeric_format.m_decimal_places_restricted );
-
-  char pchText[10] = {0};
-  sprintf(pchText, "%d", field.m_numeric_format.m_decimal_places);
-  m_entry_format_decimal_places->set_text(Glib::ustring(pchText));
-
-  m_entry_currency_symbol->get_entry()->set_text(field.m_numeric_format.m_currency_symbol);
 }
 
 void Dialog_ChooseField::set_document(Document_Glom* document, const Glib::ustring& table_name)
 {
   m_document = document;
   m_table_name = table_name;
-
-  m_checkbutton_editable->set_active( true ); //An appropriate default.
 
   if(!m_document)
   {
@@ -206,8 +183,6 @@ bool Dialog_ChooseField::get_field_chosen(LayoutItem_Field& field) const
     m_document->get_relationship(m_table_name, relationship_name, field.m_relationship);
   }
 
-  field.set_editable( m_checkbutton_editable->get_active() );
-
   //Field:
   Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = m_treeview->get_selection();
   if(refTreeSelection)
@@ -218,15 +193,6 @@ bool Dialog_ChooseField::get_field_chosen(LayoutItem_Field& field) const
       Gtk::TreeModel::Row row = *iter;
       field.set_name(row[m_ColumnsFields.m_col_name]);
       field.m_field = row[m_ColumnsFields.m_col_field];
-
-      //Numeric Formatting:
-      field.m_numeric_format.m_use_thousands_separator = m_checkbox_format_use_thousands->get_active();
-      field.m_numeric_format.m_decimal_places_restricted = m_checkbox_format_use_decimal_places->get_active();
-
-      const Glib::ustring strDecPlaces = m_entry_format_decimal_places->get_text();
-      field.m_numeric_format.m_decimal_places = atoi(strDecPlaces.c_str());
-
-      field.m_numeric_format.m_currency_symbol = m_entry_currency_symbol->get_entry()->get_text();
 
       return true;
     }
@@ -281,6 +247,7 @@ void Dialog_ChooseField::on_treeview_selection_changed()
     Gtk::TreeModel::iterator iter = refSelection->get_selected();
     if(iter)
     {
+      /*
       Gtk::TreeModel::Row row = *iter;
       const Field& field = row[m_ColumnsFields.m_col_field];
       const bool is_numeric = (field.get_glom_type() == Field::TYPE_NUMERIC);
@@ -288,6 +255,7 @@ void Dialog_ChooseField::on_treeview_selection_changed()
         m_frame_numeric_format->show();
       else
         m_frame_numeric_format->hide();
+      */
     }
   }
 }

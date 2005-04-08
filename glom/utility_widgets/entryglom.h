@@ -55,6 +55,9 @@ public:
   typedef sigc::signal<void> type_signal_user_requested_layout;
   type_signal_user_requested_layout signal_user_requested_layout(); 
 
+  typedef sigc::signal<void> type_signal_user_requested_layout_properties;
+  type_signal_user_requested_layout_properties signal_user_requested_layout_properties();
+
 protected:
 
   //Overrides of default signal handlers:
@@ -68,12 +71,13 @@ protected:
   virtual void setup_menu();
   virtual bool on_button_press_event(GdkEventButton *event); //override
   virtual void on_menupopup_activate_layout();
+  virtual void on_menupopup_activate_layout_properties();
   virtual void on_menupopup_add_item(TreeStore_Layout::enumType item);
 
   virtual App_Glom* get_application();
 
   type_signal_edited m_signal_edited;
-  type_signal_user_requested_layout m_signal_user_requested_layout;
+  type_signal_user_requested_layout m_signal_user_requested_layout, m_signal_user_requested_layout_properties;
 
   Glib::ustring m_old_text;
   Field::glom_field_type m_glom_type; //Store the type so we can validate the text accordingly.

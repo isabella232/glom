@@ -50,6 +50,7 @@ protected:
 
   bool offer_relationship_list(Relationship& relationship);
   bool offer_field_list(LayoutItem_Field& field);
+  bool offer_field_layout(LayoutItem_Field& field);
   Gtk::TreeModel::iterator get_selected_group_parent() const;
 
   //signal handlers:

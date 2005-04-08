@@ -23,6 +23,7 @@
 #include "../data_structure/glomconversions.h"
 #include "../application.h"
 #include "../mode_data/dialog_choose_field.h"
+#include "../mode_data/dialog_field_layout.h"
 #include <glibmm/i18n.h>
 
 /*
@@ -65,6 +66,7 @@ DataWidget::DataWidget(const LayoutItem_Field& field, const Glib::ustring& table
     entry->signal_edited().connect( sigc::mem_fun(*this, &DataWidget::on_widget_edited)  );
 
     entry->signal_user_requested_layout().connect( sigc::mem_fun(*this, &DataWidget::on_child_user_requested_layout) );
+    entry->signal_user_requested_layout_properties().connect( sigc::mem_fun(*this, &DataWidget::on_child_user_requested_layout_properties) );
     entry->signal_layout_item_added().connect( sigc::mem_fun(*this, &DataWidget::on_child_layout_item_added) );
 
     child = entry;
@@ -237,6 +239,10 @@ void DataWidget::setup_menu()
   m_refActionGroup->add(m_refContextLayout,
     sigc::mem_fun(*this, &DataWidget::on_menupopup_activate_layout) );
 
+ m_refContextLayoutProperties =  Gtk::Action::create("ContextLayoutProperties", _("Field Layout Properties"));
+  m_refActionGroup->add(m_refContextLayoutProperties,
+    sigc::mem_fun(*this, &DataWidget::on_menupopup_activate_layout_properties) );
+
   m_refContextAddField =  Gtk::Action::create("ContextAddField", _("Add Field"));
   m_refActionGroup->add(m_refContextAddField,
     sigc::bind( sigc::mem_fun(*this, &DataWidget::on_menupopup_add_item), TreeStore_Layout::TYPE_FIELD ) );
@@ -254,6 +260,7 @@ void DataWidget::setup_menu()
   if(pApp)
   {
     pApp->add_developer_action(m_refContextLayout); //So that it can be disabled when not in developer mode.
+    pApp->add_developer_action(m_refContextLayoutProperties); //So that it can be disabled when not in developer mode.
     pApp->add_developer_action(m_refContextAddField);
     pApp->add_developer_action(m_refContextAddRelatedRecords);
     pApp->add_developer_action(m_refContextAddGroup);
@@ -273,6 +280,7 @@ void DataWidget::setup_menu()
         "<ui>"
         "  <popup name='ContextMenu'>"
         "    <menuitem action='ContextLayout'/>"
+        "    <menuitem action='ContextLayoutProperties'/>"
         "    <menuitem action='ContextAddField'/>"
         "    <menuitem action='ContextAddRelatedRecords'/>"
         "    <menuitem action='ContextAddGroup'/>"
@@ -370,6 +378,40 @@ bool DataWidget::offer_field_list(const Glib::ustring& table_name, LayoutItem_Fi
   return result;
 }
 
+bool DataWidget::offer_field_layout( LayoutItem_Field& field)
+{
+  bool result = false;
+
+  try
+  {
+    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_layout_field_properties");
+
+    Dialog_FieldLayout* dialog = 0;
+    refXml->get_widget_derived("dialog_layout_field_properties", dialog);
+
+    if(dialog)
+    {
+      dialog->set_field(field);
+      dialog->set_transient_for(*get_application());
+      int response = dialog->run();
+      dialog->hide();
+      if(response == Gtk::RESPONSE_OK)
+      {
+        //Get the chosen field:
+        result = dialog->get_field_chosen(field);
+      }
+
+      delete dialog;
+    }
+  }
+  catch(const Gnome::Glade::XmlError& ex)
+  {
+    std::cerr << ex.what() << std::endl;
+  }
+
+  return result;
+}
+
 void DataWidget::on_menupopup_add_item(TreeStore_Layout::enumType item)
 {
   signal_layout_item_added().emit(item);
@@ -388,6 +430,26 @@ void DataWidget::on_menupopup_activate_layout()
       signal_layout_changed().emit();
     }
   }
+}
+
+void DataWidget::on_menupopup_activate_layout_properties()
+{
+  //finish_editing();
+
+  LayoutItem_Field* layoutField = dynamic_cast<LayoutItem_Field*>(get_layout_item());
+  if(layoutField)
+  {
+    bool test = offer_field_layout(*layoutField);
+    if(test)
+    {
+      signal_layout_changed().emit();
+    }
+  }
+}
+
+void DataWidget::on_child_user_requested_layout_properties()
+{
+  on_menupopup_activate_layout_properties();
 }
 
 void DataWidget::on_child_user_requested_layout()

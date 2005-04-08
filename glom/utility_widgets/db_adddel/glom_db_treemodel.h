@@ -38,7 +38,7 @@ public:
   type_vec_values m_db_values;
 
   bool m_values_retrieved; //Whether the values have been read from the datamodel.
-  guint m_data_model_row_number; //The row in the data model from which the values were read.
+  int m_data_model_row_number; //The row in the data model from which the values were read.
 };
 
 class DbTreeModel
@@ -113,6 +113,8 @@ private:
    void create_iterator(const typeListOfRows::iterator& row_iter, DbTreeModel::iterator& iter) const;
    void invalidate_iter(iterator& iter) const;
 
+   typedef int type_datamodel_iter;
+
    //This maps the GtkTreeIters to potential paths:
    //Each GlueItem might be stored in more than one GtkTreeIter,
    //but it will be deleted only once, because it is stored
@@ -126,8 +128,11 @@ private:
      GlueItem(const typeListOfRows::iterator& row_iter);
      typeListOfRows::iterator get_row_iter() const;
 
+     type_datamodel_iter get_datamodel_row_iter() const;
+
    protected:
      typeListOfRows::iterator m_row_iter;
+     type_datamodel_iter m_datamodel_row_iter;
    };
 
    //Allow the GlueList inner class to access the declaration of the GlueItem inner class.
@@ -151,6 +156,8 @@ private:
      type_listOfGlue m_list;
    };
 
+
+   type_datamodel_iter get_datamodel_row_iter_from_tree_row_iter(const iterator& iter) const;
    typeListOfRows::iterator get_data_row_iter_from_tree_row_iter(const iterator& iter) const;
    //typeListOfRows::const_iterator get_data_row_iter_from_tree_row_iter(const iterator& iter) const;
    bool check_treeiter_validity(const iterator& iter) const;

@@ -100,6 +100,11 @@ void Relationship::set_to_field(const Glib::ustring& strVal)
   m_strTo_Field = strVal;
 }
 
+bool Relationship::get_name_not_empty() const
+{
+  return !m_strName.empty();
+}
+
 Glib::ustring Relationship::get_name() const
 {
   return m_strName;

@@ -18,8 +18,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef GLOM_MODE_DATA_DIALOG_CHOOSE_FIELD_H
-#define GLOM_MODE_DATA_DIALOG_CHOOSE_FIELD_H
+#ifndef GLOM_MODE_DATA_DIALOG_FIELD_LAYOUT_H
+#define GLOM_MODE_DATA_DIALOG_FIELD_LAYOUT_H
 
 #include <gtkmm.h>
 #include "../utility_widgets/dialog_properties.h"
@@ -28,19 +28,17 @@
 #include "../utility_widgets/combo_textglade.h"
 #include "../utility_widgets/comboentry_currency.h"
 
-class Dialog_ChooseField : public Gtk::Dialog
+class Dialog_FieldLayout : public Gtk::Dialog
 {
 public:
-  Dialog_ChooseField(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
-  virtual ~Dialog_ChooseField();
+  Dialog_FieldLayout(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  virtual ~Dialog_FieldLayout();
 
   /**
    * @param document The document, so that the dialog can load the previous layout, and save changes.
-   * @param table_name The table name.
    * @param field The starting field information.
    */
-  virtual void set_document(Document_Glom* document, const Glib::ustring& table_name, const LayoutItem_Field& field);
-  virtual void set_document(Document_Glom* document, const Glib::ustring& table_name);
+  virtual void set_field(const LayoutItem_Field& field);
 
 
   //void select_item(const Field& field);
@@ -49,34 +47,19 @@ public:
 
 protected:
 
-  virtual void on_row_activated(const Gtk::TreePath& path, Gtk::TreeViewColumn* view_column);
-  virtual void on_treeview_selection_changed();
-  virtual void on_combo_relationship_changed();
-
-  //Tree model columns:
-  class ModelColumns_Fields : public Gtk::TreeModel::ColumnRecord
-  {
-  public:
-
-    ModelColumns_Fields()
-    { add(m_col_name); add(m_col_title); add(m_col_field); }
-
-    Gtk::TreeModelColumn<Glib::ustring> m_col_name;
-    Gtk::TreeModelColumn<Glib::ustring> m_col_title;
-    Gtk::TreeModelColumn<Field> m_col_field;
-  };
-
-  ModelColumns_Fields m_ColumnsFields;
-
-  Combo_TextGlade* m_combo_relationship;
-  Gtk::Button* m_button_select;
+  Gtk::Label* m_label_field_name;
   Gtk::CheckButton* m_checkbutton_editable;
-  Gtk::TreeView* m_treeview;
-  Glib::RefPtr<Gtk::ListStore> m_model;
 
-  Glib::ustring m_table_name;
+  Gtk::Frame* m_frame_numeric_format;
+  Gtk::CheckButton* m_checkbox_format_use_thousands;
+  Gtk::CheckButton* m_checkbox_format_use_decimal_places;
+  Gtk::Entry* m_entry_format_decimal_places;
+  ComboEntry_Currency* m_entry_currency_symbol;
 
-  Document_Glom* m_document;
+  Gtk::Frame* m_frame_text_format;
+  Gtk::CheckButton* m_checkbox_format_text_multiline;
+
+  mutable LayoutItem_Field m_layout_item;
 };
 
-#endif //GLOM_MODE_DATA_DIALOG_CHOOSE_FIELD_H
+#endif //GLOM_MODE_DATA_DIALOG_FIELD_LAYOUT_H

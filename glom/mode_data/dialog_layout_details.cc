@@ -20,6 +20,7 @@
 
 #include "dialog_layout_details.h"
 #include "dialog_choose_field.h"
+#include "dialog_field_layout.h"
 #include "dialog_choose_relationship.h"
 //#include <libgnome/gnome-i18n.h>
 #include <bakery/App/App_Gtk.h> //For util_bold_message().
@@ -514,6 +515,39 @@ bool Dialog_Layout_Details::offer_field_list(LayoutItem_Field& field)
     if(dialog)
     {
       dialog->set_document(m_document, m_table_name, field);
+      dialog->set_transient_for(*this);
+      int response = dialog->run();
+      if(response == Gtk::RESPONSE_OK)
+      {
+        //Get the chosen field:
+        result = dialog->get_field_chosen(field);
+      }
+
+      delete dialog;
+    }
+  }
+  catch(const Gnome::Glade::XmlError& ex)
+  {
+    std::cerr << ex.what() << std::endl;
+  }
+
+  return result;
+}
+
+bool Dialog_Layout_Details::offer_field_layout(LayoutItem_Field& field)
+{
+  bool result = false;
+
+  try
+  {
+    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_layout_field_properties");
+
+    Dialog_FieldLayout* dialog = 0;
+    refXml->get_widget_derived("dialog_layout_field_properties", dialog);
+
+    if(dialog)
+    {
+      dialog->set_field(field);
       dialog->set_transient_for(*this);
       int response = dialog->run();
       if(response == Gtk::RESPONSE_OK)

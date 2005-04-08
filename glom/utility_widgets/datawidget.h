@@ -56,6 +56,7 @@ public:
   virtual void set_viewable(bool viewable = true);
 
   virtual bool offer_field_list(const Glib::ustring& table_name, LayoutItem_Field& field);
+  virtual bool offer_field_layout(LayoutItem_Field& field);
 
   typedef sigc::signal<void, const Gnome::Gda::Value&> type_signal_edited;
   type_signal_edited signal_edited();
@@ -67,9 +68,11 @@ protected:
   virtual void on_widget_edited(); //From Gtk::Entry, or Gtk::CheckButton.
   virtual bool on_button_press_event(GdkEventButton* event); //override.
   virtual void on_child_user_requested_layout();
+  virtual void on_child_user_requested_layout_properties();
   virtual void on_child_layout_item_added(TreeStore_Layout::enumType item_type);
 
   virtual void on_menupopup_activate_layout();
+  virtual void on_menupopup_activate_layout_properties();
   virtual void on_menupopup_add_item(TreeStore_Layout::enumType item);
 
   App_Glom* get_application();

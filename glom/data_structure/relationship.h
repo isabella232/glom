@@ -35,6 +35,7 @@ public:
 
   bool operator==(const Relationship& src) const;
 
+  virtual bool get_name_not_empty() const; //For performance.
   virtual Glib::ustring get_name() const;
   virtual void set_name(const Glib::ustring& strVal);
 

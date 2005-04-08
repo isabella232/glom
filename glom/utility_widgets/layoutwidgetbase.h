@@ -54,7 +54,7 @@ protected:
   Gtk::Menu* m_pMenuPopup;
   Glib::RefPtr<Gtk::ActionGroup> m_refActionGroup;
   Glib::RefPtr<Gtk::UIManager> m_refUIManager;
-  Glib::RefPtr<Gtk::Action> m_refContextLayout, m_refContextAddField, m_refContextAddRelatedRecords, m_refContextAddGroup;
+  Glib::RefPtr<Gtk::Action> m_refContextLayout, m_refContextLayoutProperties, m_refContextAddField, m_refContextAddRelatedRecords, m_refContextAddGroup;
 
 };
 

@@ -150,6 +150,11 @@ EntryGlom::type_signal_user_requested_layout EntryGlom::signal_user_requested_la
   return m_signal_user_requested_layout;
 }
 
+EntryGlom::type_signal_user_requested_layout_properties EntryGlom::signal_user_requested_layout_properties()
+{
+  return m_signal_user_requested_layout_properties;
+}
+
 void EntryGlom::setup_menu()
 {
   m_refActionGroup = Gtk::ActionGroup::create();
@@ -159,6 +164,10 @@ void EntryGlom::setup_menu()
   m_refContextLayout =  Gtk::Action::create("ContextLayout", _("Choose Field"));
   m_refActionGroup->add(m_refContextLayout,
     sigc::mem_fun(*this, &EntryGlom::on_menupopup_activate_layout) );
+
+  m_refContextLayoutProperties =  Gtk::Action::create("ContextLayoutProperties", _("Field Layout Properties"));
+  m_refActionGroup->add(m_refContextLayoutProperties,
+    sigc::mem_fun(*this, &EntryGlom::on_menupopup_activate_layout_properties) );
 
   m_refContextAddField =  Gtk::Action::create("ContextAddField", _("Add Field"));
   m_refActionGroup->add(m_refContextAddField,
@@ -177,6 +186,7 @@ void EntryGlom::setup_menu()
   if(pApp)
   {
     pApp->add_developer_action(m_refContextLayout); //So that it can be disabled when not in developer mode.
+    pApp->add_developer_action(m_refContextLayoutProperties); //So that it can be disabled when not in developer mode.
     pApp->add_developer_action(m_refContextAddField);
     pApp->add_developer_action(m_refContextAddRelatedRecords);
     pApp->add_developer_action(m_refContextAddGroup);
@@ -196,6 +206,7 @@ void EntryGlom::setup_menu()
         "<ui>"
         "  <popup name='ContextMenu'>"
         "    <menuitem action='ContextLayout'/>"
+        "    <menuitem action='ContextLayoutProperties'/>"
         "    <menuitem action='ContextAddField'/>"
         "    <menuitem action='ContextAddRelatedRecords'/>"
         "    <menuitem action='ContextAddGroup'/>"
@@ -263,6 +274,14 @@ void EntryGlom::on_menupopup_activate_layout()
 
   //Ask the parent widget to show the layout dialog:
   signal_user_requested_layout().emit();
+}
+
+void EntryGlom::on_menupopup_activate_layout_properties()
+{
+  //finish_editing();
+
+  //Ask the parent widget to show the layout dialog:
+  signal_user_requested_layout_properties().emit();
 }
 
 App_Glom* EntryGlom::get_application()
