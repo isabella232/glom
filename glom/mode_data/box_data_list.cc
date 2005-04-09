@@ -97,6 +97,7 @@ void Box_Data_List::fill_from_database()
 
     if(table_privs.m_view)
     {
+/*
       Glib::ustring strWhereClausePiece;
       if(!m_strWhereClause.empty())
         strWhereClausePiece = " WHERE " + m_strWhereClause;
@@ -111,7 +112,7 @@ void Box_Data_List::fill_from_database()
       layout_item.set_name(field_key.get_name());
       layout_item.m_field = field_key;
       fieldsToGet.push_back(layout_item);
-      const int index_primary_key = fieldsToGet.size() - 1;
+      //const int index_primary_key = fieldsToGet.size() - 1;
 
       if(!fieldsToGet.empty())
       {
@@ -167,6 +168,8 @@ void Box_Data_List::fill_from_database()
           }
         }
       } //If !fieldsToGet.empty()
+
+*/
 
       //Select first record:
       Glib::RefPtr<Gtk::TreeModel> refModel = m_AddDel.get_model();
@@ -422,6 +425,8 @@ void Box_Data_List::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, 
       }
       else
       {
+         g_warning("doing lookups");
+
         //Get-and-set values for lookup fields, if this field triggers those relationships:
         do_lookups(row, layout_field, field_value, primary_key_field, primary_key_value);
 
@@ -438,14 +443,17 @@ void Box_Data_List::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, 
   {
     //This record probably doesn't exist yet.
     //Add new record, which will generate the primary key:
-
+    //Actually, on_adddel_user_added() is usually just called directly in response to the user_added signal.
     on_adddel_user_added(row);
+
 
     //TODO: When the primary is non auto-incrementing, this sets it again, though it was INSERTED in on_adddel_user_added().
     //That's harmless, but inefficient.
     const Gnome::Gda::Value primaryKeyValue = get_primary_key_value(row); //TODO_Value
     if(!(GlomConversions::value_is_empty(primaryKeyValue))) //If the Add succeeeded:
+    {
       on_adddel_user_changed(row, col); //Change this field in the new record.
+    }
   }
 
 }
@@ -561,7 +569,7 @@ void Box_Data_List::on_details_nav_next()
     //Don't go past the last record:
     if( !m_AddDel.get_is_last_row(iter) )
     {
-      iter++;    
+      iter++;
       m_AddDel.select_item(iter);
 
       signal_user_requested_details().emit(m_AddDel.get_value_key_selected());
@@ -650,19 +658,31 @@ void Box_Data_List::fill_column_titles()
 
     Field field_primary_key;
     bool test = get_field_primary_key_for_table(m_strTableName, field_primary_key);
-    if(test)
-        m_AddDel.set_key_field(field_primary_key);
-
-
-    type_vecLayoutFields listFieldsToShow = get_fields_to_show();
-
-    //Add a column for each table field:
-    for(type_vecLayoutFields::const_iterator iter =  listFieldsToShow.begin(); iter != listFieldsToShow.end(); ++iter)
+    if(!test)
+      g_warning("Box_Data_List::fill_column_titles(): primary key not found.");
+    else
     {
-      m_AddDel.add_column(*iter);
-    }
+      m_AddDel.set_key_field(field_primary_key);
 
-    m_AddDel.set_columns_ready();
+      m_Fields = get_fields_to_show();
+
+      //Add extra possibly-non-visible columns that we need:
+      //TODO: Only add it if it is not already there.
+      LayoutItem_Field layout_item;
+      layout_item.set_hidden();
+      Field field_key = m_AddDel.get_key_field();
+      layout_item.set_name(field_key.get_name());
+      layout_item.m_field = field_key;
+      m_Fields.push_back(layout_item);
+
+      //Add a column for each table field:
+      for(type_vecLayoutFields::const_iterator iter = m_Fields.begin(); iter != m_Fields.end(); ++iter)
+      {
+        m_AddDel.add_column(*iter);
+      }
+
+      m_AddDel.set_columns_ready();
+     }
   }
 
 }

@@ -54,12 +54,12 @@ DbAddDelColumnInfo& DbAddDelColumnInfo::operator=(const DbAddDelColumnInfo& src)
 }
 
 DbAddDel::DbAddDel()
-: m_modelcolumn_key(0),
-  m_pMenuPopup(0),
+: m_pMenuPopup(0),
   m_auto_add(true),
   m_allow_add(true),
   m_allow_delete(true),
-  m_columns_ready(false)
+  m_columns_ready(false),
+  m_allow_view(true)
 {
   set_prevent_user_signals();
   set_ignore_treeview_signals();
@@ -74,6 +74,7 @@ DbAddDel::DbAddDel()
 
   m_ScrolledWindow.add(m_TreeView);
   m_TreeView.show();
+  //m_TreeView.set_fixed_height_mode(); //This allows some optimizations.
   pack_start(m_ScrolledWindow);
 
   //Make sure that the TreeView doesn't start out only big enough for zero items.
@@ -102,8 +103,8 @@ DbAddDel::DbAddDel()
 
 DbAddDel::~DbAddDel()
 {
-  if(m_modelcolumn_key)
-    delete m_modelcolumn_key;
+  //if(m_modelcolumn_key)
+  //  delete m_modelcolumn_key;
 
   //if(m_modelcolumn_placeholder)
   //  delete m_modelcolumn_placeholder;
@@ -325,11 +326,8 @@ Gtk::TreeModel::iterator DbAddDel::add_item_placeholder()
   iter = m_refListStore->append();
   if(iter)
   {
-    Gtk::TreeModel::Row row = *iter;
-    row[*m_modelcolumn_key] = Gnome::Gda::Value(); //Remove temporary key value.
-
     m_refListStore->set_is_placeholder(iter, true);
-    //row[*m_modelcolumn_placeholder] =  true; //This will be unset when set_value() is used to put real data in this column.
+    m_refListStore->set_key_value(iter, Gnome::Gda::Value()); //Remove temporary key value.
   }
 
   return iter;
@@ -348,6 +346,7 @@ Gtk::TreeModel::iterator DbAddDel::add_item(const Gnome::Gda::Value& valKey)
     if(treerow)
     {
       treerow[*m_modelcolumn_key] = valKey;
+      set_value_key(result, valKey);
       m_refListStore->set_is_placeholder(result, false);
       //treerow[*m_modelcolumn_placeholder] =  false; 
     }
@@ -362,6 +361,7 @@ void DbAddDel::remove_all()
 {
   InnerIgnore innerIgnore(this); //see comments for InnerIgnore class.
 
+/* TODO
   if(m_refListStore)
   {
     Gtk::TreeModel::iterator iter = m_refListStore->children().begin();
@@ -371,6 +371,7 @@ void DbAddDel::remove_all()
       iter = m_refListStore->children().begin();
     }
   }
+*/
 }
 
 
@@ -403,8 +404,7 @@ Gnome::Gda::Value DbAddDel::get_value_key_selected()
   Gtk::TreeModel::iterator iter = get_item_selected();
   if(iter)
   {
-    Gtk::TreeModel::Row row = *iter;
-    return row[*m_modelcolumn_key];
+    return get_value_key(iter);
   }
   else
     return Gnome::Gda::Value();
@@ -431,8 +431,8 @@ Gtk::TreeModel::iterator DbAddDel::get_row(const Gnome::Gda::Value& key)
 {
   for(Gtk::TreeModel::iterator iter = m_refListStore->children().begin(); iter != m_refListStore->children().end(); ++iter)
   {
-    Gtk::TreeModel::Row row = *iter;
-    const Gnome::Gda::Value& valTemp = row[*m_modelcolumn_key];
+    //Gtk::TreeModel::Row row = *iter;
+    const Gnome::Gda::Value& valTemp = get_value_key(iter);
     if(valTemp == key)
     {
       return iter;
@@ -513,10 +513,10 @@ void DbAddDel::add_blank()
 
   if(get_allow_user_actions()) //The extra blank line is only used if the user may add items:
   {
-    Gtk::TreeModel::iterator iter = get_last_row();        
+    Gtk::TreeModel::iterator iter = get_last_row();
     if(get_is_placeholder_row(iter))
     {
-        bAddNewBlank  = false; //One already exists.
+      bAddNewBlank  = false; //One already exists.
     }
     else
     {
@@ -525,7 +525,9 @@ void DbAddDel::add_blank()
   }
 
   if(bAddNewBlank)
+  {
     add_item_placeholder();
+  }
 
   set_prevent_user_signals(bPreventUserSignals);
 }
@@ -581,16 +583,16 @@ void DbAddDel::construct_specified_columns()
   //Hidden internal columns:
 
   //We must recreate these standard modelcolumns, because we can not reuse them
-  if(m_modelcolumn_key)
-    delete m_modelcolumn_key;
+  //if(m_modelcolumn_key)
+  //  delete m_modelcolumn_key;
 
-  m_modelcolumn_key = new Gtk::TreeModelColumn<Gnome::Gda::Value>;
+  //m_modelcolumn_key = new Gtk::TreeModelColumn<Gnome::Gda::Value>;
 
   //if(m_modelcolumn_placeholder)
   //  delete m_modelcolumn_placeholder;
   //m_modelcolumn_placeholder = new Gtk::TreeModelColumn<bool>;
 
-  record.add(*m_modelcolumn_key);
+  //record.add(*m_modelcolumn_key);
   //record.add(*m_modelcolumn_placeholder);
 
   //Database columns:
@@ -612,10 +614,38 @@ void DbAddDel::construct_specified_columns()
     }
   }
 
+  //Find the primary key:
+  int column_index_key = 0;
+  bool key_found = false;
+  for(type_model_store::type_vec_fields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
+  {
+    if( !(iter->get_has_relationship_name()) && (iter->m_field.get_field_info().get_primary_key()) )
+    {
+      key_found = true;
+      break;
+    }
+
+    ++column_index_key;
+  }
+
+  if(!key_found)
+  {
+    g_warning("DbAddDel::construct_specified_columns(): no primary key field found in:");
+    for(type_model_store::type_vec_fields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
+    {
+      g_warning("  field: %s", iter->get_name().c_str());
+    }
+
+    g_assert(key_found); //crash here.
+  }
+
   //Create the model from the ColumnRecord:
-  m_refListStore = type_model_store::create(record, m_table_name, fields);
+  m_refListStore = type_model_store::create(record, m_table_name, fields, column_index_key, m_allow_view);
 
   m_TreeView.set_model(m_refListStore);
+
+
+
 
   //Remove all View columns:
   m_TreeView.remove_all_columns();
@@ -626,7 +656,7 @@ void DbAddDel::construct_specified_columns()
   for(type_vecModelColumns::iterator iter = vecModelColumns.begin(); iter != vecModelColumns.end(); ++iter)
   {
     DbAddDelColumnInfo& column_info = m_ColumnTypes[model_column_index];
-    if(column_info.m_visible)
+    if(column_info.m_visible && !(column_info.m_field.get_hidden())) //TODO: We shouldn't need both of these.
     {
       const Glib::ustring column_name = column_info.m_field.m_field.get_title_or_name();
       const Glib::ustring column_id = column_info.m_field.get_name();
@@ -724,10 +754,14 @@ void DbAddDel::construct_specified_columns()
   for(type_vecModelColumns::iterator iter = vecModelColumns.begin(); iter != vecModelColumns.end(); ++iter)
   {
      type_modelcolumn_value* pModelColumn = *iter;
-     delete pModelColumn;
+     if(pModelColumn)
+       delete pModelColumn;
   }
 
   m_TreeView.columns_autosize();
+
+  //Make sure there's a blank row after the database rows that have just been added.
+  add_blank();
 }
 
 void DbAddDel::set_value(const Gtk::TreeModel::iterator& iter, const LayoutItem_Field& layout_item, const Gnome::Gda::Value& value)
@@ -1002,12 +1036,7 @@ Gnome::Gda::Value DbAddDel::treeview_get_key(const Gtk::TreeModel::iterator& row
 
   if(m_refListStore)
   {
-    Gtk::TreeModel::Row treerow = *row;
-
-    if(treerow)
-    {
-      return treerow[*m_modelcolumn_key];
-    }
+    return m_refListStore->get_key_value(row);
   }
 
   return value;
@@ -1096,7 +1125,6 @@ void DbAddDel::on_treeview_cell_edited_bool(const Glib::ustring& path_string, in
 void DbAddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const Glib::ustring& new_text, int model_column_index)
 {
   //Note:: model_column_index is actually the AddDel column index, not the TreeModel column index.
-
   if(path_string.empty())
     return;
 
@@ -1428,6 +1456,7 @@ bool DbAddDel::get_is_last_row(const Gtk::TreeModel::iterator& iter) const
 
 Gtk::TreeModel::iterator DbAddDel::get_next_available_row_with_add_if_necessary()
 {
+g_warning("get_next_available_row_with_add_if_necessary");
   Gtk::TreeModel::iterator result;
 
   if(!m_refListStore)
@@ -1471,48 +1500,12 @@ Gtk::TreeModel::iterator DbAddDel::get_next_available_row_with_add_if_necessary(
 
 Gtk::TreeModel::iterator DbAddDel::get_last_row() const
 {
-  Glib::RefPtr<const Gtk::TreeModel> refModel = get_model();
-  if(!refModel)
-    return Gtk::TreeModel::iterator();
-  else
-  {
-    //TODO_performance: Hopefully there is a better way to do this.
-    Gtk::TreeModel::iterator iter = get_model()->children().begin();
-    guint size = get_model()->children().size();
-    if(size > 1)
-    {
-      guint i = 0;
-      for(i = 0; i < (size -1); ++i)
-      {
-        ++iter;
-      }
-
-      //g_warning("DbAddDel::get_last_row(): size=%d, i=%d", size, i);
-    }
-
-    return iter;
-  }
+  return m_refListStore->get_last_row();
 }
 
 Gtk::TreeModel::iterator DbAddDel::get_last_row()
 {
-  //TODO_performance: Hopefully there is a better way to do this.
-  Gtk::TreeModel::iterator iter;
-
-  if(m_refListStore)
-  {
-    iter = m_refListStore->children().begin();
-    guint size = m_refListStore->children().size();
-    if(size > 1)
-    {
-      for(guint i = 0; i < (size -1); ++i)
-      {
-        ++iter;
-      }
-    }
-  }
-
-  return iter;
+  return m_refListStore->get_last_row();
 }
 
 Gnome::Gda::Value DbAddDel::get_value_key(const Gtk::TreeModel::iterator& iter)
@@ -1534,7 +1527,9 @@ void DbAddDel::set_value_key(const Gtk::TreeModel::iterator& iter, const Gnome::
       //row[*m_modelcolumn_placeholder] = false;
     }
 
-    row[*m_modelcolumn_key] = value;
+    m_refListStore->set_key_value(iter, value);
+
+   // row[*m_modelcolumn_key] = value;
   }
 }
 
@@ -1583,7 +1578,8 @@ bool DbAddDel::get_view_column_index(guint model_column_index, guint& view_colum
 
 guint DbAddDel::get_count_hidden_system_columns()
 {
-  return 1; //The key.
+  return 0; //The key now has explicit API in the model.
+  //return 1; //The key.
   //return 2; //The key and the placeholder boolean.
 }
 
@@ -1604,30 +1600,33 @@ void DbAddDel::set_key_field(const Field& field)
 
 void DbAddDel::treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter, int model_column_index)
 {
-  const guint col_real = model_column_index + get_count_hidden_system_columns();
-  Gtk::TreeModel::Row treerow = *iter;
-  Gnome::Gda::Value value;
-  treerow->get_value(col_real, value);
-
-  DbAddDelColumnInfo& column_info = m_ColumnTypes[model_column_index];
-  switch(column_info.m_field.m_field.get_glom_type())
+  if(iter)
   {
-    case(Field::TYPE_BOOLEAN):
-    {
-      Gtk::CellRendererToggle* pDerived = dynamic_cast<Gtk::CellRendererToggle*>(renderer);
-      pDerived->set_active( value.get_bool() ); 
+    const guint col_real = model_column_index + get_count_hidden_system_columns();
+    Gtk::TreeModel::Row treerow = *iter;
+    Gnome::Gda::Value value;
+    treerow->get_value(col_real, value);
 
-      break;
+    DbAddDelColumnInfo& column_info = m_ColumnTypes[model_column_index];
+    switch(column_info.m_field.m_field.get_glom_type())
+    {
+      case(Field::TYPE_BOOLEAN):
+      {
+        Gtk::CellRendererToggle* pDerived = dynamic_cast<Gtk::CellRendererToggle*>(renderer);
+        pDerived->set_active( value.get_bool() ); 
+
+        break;
+      }
+      default:
+      {
+        //TODO: Maybe we should have custom cellrenderers for time, date, and numbers.
+        Gtk::CellRendererText* pDerived = dynamic_cast<Gtk::CellRendererText*>(renderer);
+
+        pDerived->property_text() = GlomConversions::get_text_for_gda_value(column_info.m_field.m_field.get_glom_type(), value, column_info.m_field.m_numeric_format);
+
+        break;
+      } 
     }
-    default:
-    {
-      //TODO: Maybe we should have custom cellrenderers for time, date, and numbers.
-      Gtk::CellRendererText* pDerived = dynamic_cast<Gtk::CellRendererText*>(renderer);
-
-      pDerived->property_text() = GlomConversions::get_text_for_gda_value(column_info.m_field.m_field.get_glom_type(), value, column_info.m_field.m_numeric_format);
-
-      break;
-    } 
   }
 }
 
@@ -1635,9 +1634,14 @@ App_Glom* DbAddDel::get_application()
 {
   Gtk::Container* pWindow = get_toplevel();
   //TODO: This only works when the child widget is already in its parent.
-  
+
   return dynamic_cast<App_Glom*>(pWindow);
 }
-  
-      
+
+void DbAddDel::set_allow_view(bool val)
+{
+  m_allow_view = val;
+}
+
+
 

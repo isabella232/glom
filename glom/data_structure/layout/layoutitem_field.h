@@ -56,6 +56,10 @@ public:
 
   bool get_editable_and_allowed() const;
 
+  /// For extra fields, needed for SQL queries. The user should never be able to made an item hidden - he can just remove it.
+  bool get_hidden() const;
+  void set_hidden(bool val = true);
+
   //Not saved to the document:
   bool m_priv_view;
   bool m_priv_edit;
@@ -66,6 +70,7 @@ public:
 
 protected:
   //Glib::ustring m_relationship_name; //bool m_related;
+  bool m_hidden;
 };
 
 #endif //GLOM_DATASTRUCTURE_LAYOUTITEM_FIELD_H

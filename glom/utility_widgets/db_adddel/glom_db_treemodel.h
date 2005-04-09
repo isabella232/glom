@@ -26,6 +26,8 @@
 #include "../../data_structure/layout/layoutitem_field.h"
 #include "../../connectionpool.h"
 
+class DbTreeModel;
+
 class DbTreeModelRow
 {
 public:
@@ -34,11 +36,25 @@ public:
   bool m_placeholder;
 
   typedef Gnome::Gda::Value DbValue;
-  typedef std::vector< DbValue > type_vec_values;
+
+  //Field Values. We store them here after reading them from the database,
+  //so that we can change them without changing them in the database immediately.
+  //This is a duplication of data but at least we are still only getting the _rows_ that will be displayed. //TODO_Performance?
+  typedef std::map<int, DbValue > type_vec_values;
   type_vec_values m_db_values;
 
+  ///Gets the values from the database if necessary.
+  DbValue get_value(DbTreeModel& model, int column, int row);
+  void set_value(DbTreeModel& model, int column, int row, const DbValue& value);
+
+  void fill_values_if_necessary(DbTreeModel& model, int row);
+
   bool m_values_retrieved; //Whether the values have been read from the datamodel.
-  int m_data_model_row_number; //The row in the data model from which the values were read.
+  //int m_data_model_row_number; //The row in the data model from which the values were read.
+
+  DbValue m_key;
+
+  bool m_removed; //If it should not be shown anymore.
 };
 
 class DbTreeModel
@@ -49,19 +65,26 @@ public:
   typedef unsigned int size_type;
   typedef std::vector<LayoutItem_Field> type_vec_fields;
 
+  friend class DbTreeModelRow;
+
 protected:
   //Create a TreeModel with @a columns_count number of columns, each of type Glib::ustring.
-  DbTreeModel(const Gtk::TreeModelColumnRecord& columns, const Glib::ustring& table_name, const type_vec_fields& column_fields, const Glib::ustring& where_clause = Glib::ustring());
+  DbTreeModel(const Gtk::TreeModelColumnRecord& columns, const Glib::ustring& table_name, const type_vec_fields& column_fields, int column_index_key, bool get_records = true, const Glib::ustring& where_clause = Glib::ustring());
   virtual ~DbTreeModel();
 
 public:
-  static Glib::RefPtr<DbTreeModel> create(const Gtk::TreeModelColumnRecord& columns, const Glib::ustring& table_name, const type_vec_fields& column_fields, const Glib::ustring& where_clause = Glib::ustring());
+  static Glib::RefPtr<DbTreeModel> create(const Gtk::TreeModelColumnRecord& columns, const Glib::ustring& table_name, const type_vec_fields& column_fields, int column_index_key, bool get_records = true, const Glib::ustring& where_clause = Glib::ustring());
 
   typedef DbTreeModelRow::DbValue DbValue;
 
   virtual void set_is_placeholder(const TreeModel::iterator& iter, bool val);
   virtual bool get_is_placeholder(const TreeModel::iterator& iter) const;
 
+  virtual void set_key_value(const TreeModel::iterator& iter, const DbValue& value);
+  virtual DbValue get_key_value(const TreeModel::iterator& iter) const;
+
+  //Convenience method:
+  TreeModel::iterator get_last_row();
 
   /** Removes the given row from the list store.
    * @param iter The iterator to the row to be removed.
@@ -108,12 +131,15 @@ private:
 
    //We use a std::list instead of a std::vector, though it is slower to access via an index,
    //because std::list iterators are not all invalidated when we erase an element from the middle.
-   typedef std::list< typeRow > typeListOfRows; //Y rows.
+   //typedef std::list< typeRow > typeListOfRows; //Y rows.
 
-   void create_iterator(const typeListOfRows::iterator& row_iter, DbTreeModel::iterator& iter) const;
+   typedef unsigned int type_datamodel_iter;
+   typedef const unsigned int type_datamodel_const_iter;
+
+   bool create_iterator(const type_datamodel_iter& row_iter, DbTreeModel::iterator& iter) const;
    void invalidate_iter(iterator& iter) const;
+   bool row_was_removed(const type_datamodel_iter& row_iter) const;
 
-   typedef int type_datamodel_iter;
 
    //This maps the GtkTreeIters to potential paths:
    //Each GlueItem might be stored in more than one GtkTreeIter,
@@ -125,13 +151,13 @@ private:
    class GlueItem
    {
    public:
-     GlueItem(const typeListOfRows::iterator& row_iter);
-     typeListOfRows::iterator get_row_iter() const;
+     GlueItem(const type_datamodel_iter& row_iter);
+     //type_datamodel_iter get_row_iter() const;
 
      type_datamodel_iter get_datamodel_row_iter() const;
 
    protected:
-     typeListOfRows::iterator m_row_iter;
+     //type_datamodel_iter m_row_iter;
      type_datamodel_iter m_datamodel_row_iter;
    };
 
@@ -149,7 +175,7 @@ private:
      //We must reuse GlueItems instead of having 2 that contain equal iterators,
      //because Gtk::TreeIter::iterator::operator() unfortunately does only
      //a pointer comparison, without allowing us to implement specific logic.
-     GlueItem* get_existing_item(const typeListOfRows::iterator& row_iter);
+     GlueItem* get_existing_item(const type_datamodel_iter& row_iter);
 
      //This is just a list of stuff to delete later:
      typedef std::list<GlueItem*> type_listOfGlue;
@@ -158,7 +184,7 @@ private:
 
 
    type_datamodel_iter get_datamodel_row_iter_from_tree_row_iter(const iterator& iter) const;
-   typeListOfRows::iterator get_data_row_iter_from_tree_row_iter(const iterator& iter) const;
+   //type_datamodel_iter get_data_row_iter_from_tree_row_iter(const iterator& iter) const;
    //typeListOfRows::const_iterator get_data_row_iter_from_tree_row_iter(const iterator& iter) const;
    bool check_treeiter_validity(const iterator& iter) const;
    void remember_glue_item(GlueItem* item) const;
@@ -167,13 +193,22 @@ private:
    unsigned int m_columns_count;
    Glib::ustring m_table_name, m_where_clause;
    type_vec_fields m_column_fields;
+   int m_column_index_key;
 
    //Data:
    sharedptr<SharedConnection> m_connection;
    Glib::RefPtr<Gnome::Gda::DataModel> m_gda_datamodel;
    guint m_data_model_rows_count; //TODO: TODO_Performance: GdaDataModel probably needs an on-demand iterator. murrayc.
+   guint m_data_model_columns_count; //1 less than m_columns_count, which also has a model column for the key.
 
-   mutable typeListOfRows m_rows;
+   //TODO: Performance:
+   typedef std::map<type_datamodel_iter, DbTreeModelRow> type_map_rows;
+   mutable type_map_rows m_map_rows; //mutable because getting fills the internal cache.
+   int m_count_extra_rows; //Rows that are not from the database.
+   int m_count_removed_rows; //A cache, instead of searching through the map.
+   int get_internal_rows_count() const;
+
+   //mutable typeListOfRows m_rows;
 
    //Column information:
    ColumnRecord m_column_record;

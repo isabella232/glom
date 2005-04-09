@@ -130,6 +130,9 @@ public:
 
   virtual void set_table_name(const Glib::ustring& table_name);
 
+  ///For instance, if the user can not view the table then don't try to get the records.
+  virtual void set_allow_view(bool val = true);
+
   /** @result The index of the new column.
    */
   virtual guint add_column(const LayoutItem_Field& field);
@@ -311,6 +314,7 @@ protected:
   Field m_key_field;
 
   bool m_columns_ready;
+  bool m_allow_view;
 
   //signals:
   type_signal_user_added m_signal_user_added;

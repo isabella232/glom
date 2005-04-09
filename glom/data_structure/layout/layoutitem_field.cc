@@ -22,7 +22,8 @@
 
 LayoutItem_Field::LayoutItem_Field()
 : m_priv_view(false),
-  m_priv_edit(false)
+  m_priv_edit(false),
+  m_hidden(false)
 {
 }
 
@@ -33,8 +34,9 @@ LayoutItem_Field::LayoutItem_Field(const LayoutItem_Field& src)
   m_priv_view(src.m_priv_view),
   m_priv_edit(src.m_priv_edit),
   //m_table_name(src.m_table_name),
-  m_relationship(src.m_relationship)
-  //m_relationship_name(src.m_relationship_name)
+  m_relationship(src.m_relationship),
+  //m_relationship_name(src.m_relationship_name),
+  m_hidden(src.m_hidden)
 {
 }
 
@@ -60,6 +62,8 @@ LayoutItem_Field& LayoutItem_Field::operator=(const LayoutItem_Field& src)
   //m_table_name = src.m_table_name;
   m_relationship = src.m_relationship;
  // m_relationship_name = src.m_relationship_name;
+
+  m_hidden = src.m_hidden;
 
   return *this;
 }
@@ -105,4 +109,14 @@ Glib::ustring LayoutItem_Field::get_layout_display_name() const
     result == get_relationship_name() + "::" + result;
 
   return result;
+}
+
+bool LayoutItem_Field::get_hidden() const
+{
+  return m_hidden;
+}
+
+void LayoutItem_Field::set_hidden(bool val)
+{
+  m_hidden = val;
 }

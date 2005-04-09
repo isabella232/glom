@@ -1,3 +1,21 @@
+2005-04-09  Murray Cumming <murrayc@murrayc.com>
+
+	* glom/data_structure/layout/layoutitem_field.cc:
+	* glom/data_structure/layout/layoutitem_field.h:
+	Add get/set_hidden(), so we can add a hidden list 
+	column for keys, without showing them in the UI.
+	* glom/mode_data/box_data_list.cc:
+	Do not create rows in the AddDel from the database - 
+	allow it (the model) to fill itself.
+	* glom/utility_widgets/db_adddel/db_adddel.cc:
+	* glom/utility_widgets/db_adddel/db_adddel.h:
+	Use the new explicit get_last_row() method of the model 
+	instead of iterating back from end().
+	* glom/utility_widgets/db_adddel/glom_db_treemodel.cc:
+	* glom/utility_widgets/db_adddel/glom_db_treemodel.h:
+	Constructor: create rows from the database automatically, 
+	as well as allowing creating of new empty rows.
+
 2005-04-08  Murray Cumming <murrayc@murrayc.com>
 
 	* glom/data_structure/layout/layoutitem_field.cc:
