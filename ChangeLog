@@ -1,5 +1,19 @@
 2005-04-10  Murray Cumming <murrayc@murrayc.com>
 
+	* glom/mode_data/box_data_list.cc:
+	* glom/mode_data/box_data_list.h:
+	on_adddel_user_added(): Call 
+	on_adddel_user_changed() to do lookups. 
+	* glom/mode_data/box_data_list_related.cc:
+	* glom/mode_data/box_data_list_related.h:
+	* glom/utility_widgets/db_adddel/db_adddel.cc:
+	* glom/utility_widgets/db_adddel/db_adddel.h:
+	DbAddDel::signal_user_added(): Pass the column 
+	index of the field that was filled-in to create 
+	the new row.
+
+2005-04-10  Murray Cumming <murrayc@murrayc.com>
+
 	* po/POTFILES.in: Added files that I think 
 	Christian Rose removed accidentally.
 

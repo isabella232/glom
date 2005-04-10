@@ -213,7 +213,7 @@ Field Box_Data_List_Related::get_key_field() const
   return m_key_field;
 }
 
-void Box_Data_List_Related::on_adddel_user_added(const Gtk::TreeModel::iterator& row)
+void Box_Data_List_Related::on_adddel_user_added(const Gtk::TreeModel::iterator& row, guint col_with_first_value)
 {
   //Like Box_Data_List::on_adddel_user_added(),
   //but it doesn't allow adding if the new record can not be a related record.
@@ -230,7 +230,7 @@ void Box_Data_List_Related::on_adddel_user_added(const Gtk::TreeModel::iterator&
 
   if(bAllowAdd)
   {
-    Box_Data_List::on_adddel_user_added(row);
+    Box_Data_List::on_adddel_user_added(row, col_with_first_value);
   }
   else
   {

@@ -181,8 +181,9 @@ public:
   virtual void set_rules_hint(bool val = true);
 
   //Signals:
-  //row number.
-  typedef sigc::signal<void, const Gtk::TreeModel::iterator&> type_signal_user_added;
+
+  //row number, col number.
+  typedef sigc::signal<void, const Gtk::TreeModel::iterator&, guint> type_signal_user_added;
   type_signal_user_added signal_user_added();
 
   //row number, col number.

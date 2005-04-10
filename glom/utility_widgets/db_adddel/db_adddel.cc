@@ -130,7 +130,7 @@ DbAddDel::on_MenuPopup_activate_Edit()
       {
         //This is a new entry:
         if(m_allow_add)
-          signal_user_added()(iter);
+          signal_user_added().emit(iter, 0);
 
         /*
         bool bRowAdded = true;
@@ -1241,7 +1241,7 @@ void DbAddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const G
       {
         //Signal that a new key was added"
         if(m_allow_add)
-          m_signal_user_added.emit(row);
+          m_signal_user_added.emit(row, model_column_index);
       }
       else if(bIsChange)
       {

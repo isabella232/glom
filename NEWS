@@ -1,3 +1,14 @@
+0.8.21:
+
+* List: Do lookups, and refresh related fields, when 
+  adding new records, not only when changing existing 
+  records.
+* Boring Internals:
+  The List view's TreeModel now gets the data from the 
+  database dynamically on-demand, though it probably 
+  needs some more work to do that as efficiently as 
+  possible.
+
 0.8.20:
 
 * Fix the boost::python build problem.

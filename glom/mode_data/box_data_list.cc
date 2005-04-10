@@ -223,7 +223,7 @@ void Box_Data_List::on_adddel_user_requested_add()
     else
     {
       //The only keys are non-editable, so just add a row:
-      on_adddel_user_added(iter);
+      on_adddel_user_added(iter, 0);
       m_AddDel.select_item(iter); //without start_editing.
       //g_warning("Box_Data_List::on_adddel_user_requested_add(): index_field_to_edit does not exist: %d", index_field_to_edit);
     }
@@ -264,13 +264,13 @@ void Box_Data_List::on_adddel_user_requested_delete(const Gtk::TreeModel::iterat
   }
 }
 
-void Box_Data_List::on_adddel_user_added(const Gtk::TreeModel::iterator& row)
+void Box_Data_List::on_adddel_user_added(const Gtk::TreeModel::iterator& row, guint col_with_first_value)
 {
- g_warning("Box_Data_List::on_adddel_user_added");
   Gnome::Gda::Value primary_key_value;
 
   Field field_primary_key = m_AddDel.get_key_field();
 
+  //Get the new primary key value, if one is available now:
   if(field_primary_key.get_field_info().get_auto_increment())
   {
     //Auto-increment is awkward (we can't get the last-generated ID) with postgres, so we auto-generate it ourselves;
@@ -286,6 +286,7 @@ void Box_Data_List::on_adddel_user_added(const Gtk::TreeModel::iterator& row)
     primary_key_value = get_entered_field_data(layout_item);
   }
 
+  //If no primary key value is available yet, then don't add the record yet:
   if(!GlomConversions::value_is_empty(primary_key_value))
   {
     sharedptr<SharedConnection> sharedconnection = connect_to_server(); //Keep it alive while we need the data_model.
@@ -309,6 +310,9 @@ void Box_Data_List::on_adddel_user_added(const Gtk::TreeModel::iterator& row)
         }
 
         on_record_added(primary_key_value);
+
+        //Do any lookups, etc, trigerred by the change of value of the original changed field:
+        on_adddel_user_changed(row, col_with_first_value);
       }
       else
         handle_error();
@@ -425,8 +429,6 @@ void Box_Data_List::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, 
       }
       else
       {
-         g_warning("doing lookups");
-
         //Get-and-set values for lookup fields, if this field triggers those relationships:
         do_lookups(row, layout_field, field_value, primary_key_field, primary_key_value);
 
@@ -444,8 +446,7 @@ void Box_Data_List::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, 
     //This record probably doesn't exist yet.
     //Add new record, which will generate the primary key:
     //Actually, on_adddel_user_added() is usually just called directly in response to the user_added signal.
-    on_adddel_user_added(row);
-
+    on_adddel_user_added(row, col);
 
     //TODO: When the primary is non auto-incrementing, this sets it again, though it was INSERTED in on_adddel_user_added().
     //That's harmless, but inefficient.
@@ -453,6 +454,11 @@ void Box_Data_List::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, 
     if(!(GlomConversions::value_is_empty(primaryKeyValue))) //If the Add succeeeded:
     {
       on_adddel_user_changed(row, col); //Change this field in the new record.
+    }
+    else
+    {
+      //A field value was entered, but the record has not been added yet, because not enough information exists yet.
+       g_warning("Box_Data_List::on_adddel_user_changed(): debug: record not yet added.");
     }
   }
 

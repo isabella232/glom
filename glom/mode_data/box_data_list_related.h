@@ -56,7 +56,7 @@ protected:
   virtual void fill_from_database(); //Override.
   virtual type_vecLayoutFields get_fields_to_show() const; //override
 
-  virtual void on_adddel_user_added(const Gtk::TreeModel::iterator& row); //Override.
+  virtual void on_adddel_user_added(const Gtk::TreeModel::iterator& row, guint col_with_first_value); //Override.
   virtual void on_record_added(const Gnome::Gda::Value& primary_key_value); //Override. Not a signal handler.
   virtual void on_dialog_layout_hide(); //override.
 
