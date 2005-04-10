@@ -1,3 +1,8 @@
+2005-04-10  Murray Cumming <murrayc@murrayc.com>
+
+	* po/POTFILES.in: Added files that I think 
+	Christian Rose removed accidentally.
+
 2005-04-09  Murray Cumming <murrayc@murrayc.com>
 
 	* glom/data_structure/layout/layoutitem_field.cc:
