@@ -86,6 +86,15 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
   PyObject* pMain = PyImport_AddModule("__main__");
   PyObject* pDict = PyModule_GetDict(pMain);
 
+  PyObject* module_gda = PyImport_ImportModule("gda");
+  if(!module_gda)
+    g_warning("Could not import python gda module.");
+
+  PyObject* module_gda_dict = PyModule_GetDict(module_gda);
+  PyObject* pyTypeGdaValue = PyDict_GetItemString(module_gda_dict, "Value"); //TODO: Unref this?
+  if(!pyTypeGdaValue && PyType_Check(pyTypeGdaValue))
+    g_warning("Could not get gda.Value from gda_module.");
+
   //Create the function definition:
   PyObject* pyValue = PyRun_String(func_def.c_str(), Py_file_input, pDict, pDict);
   if(pyValue)
@@ -129,18 +138,15 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
       //Deal with the various possible return types:
       bool object_is_gda_value = false;
 
-      //TODO: This is a hack - see below:
-      if( strcmp(pyResult->ob_type->tp_name, "gda.Value") == 0 )
-        object_is_gda_value = true;
+      //This is a hack - see below:
+      //if( strcmp(pyResult->ob_type->tp_name, "gda.Value") == 0 )
+      //  object_is_gda_value = true;
 
       g_warning("debug: pyResult->ob_type->tp_name=%s", pyResult->ob_type->tp_name);
 
-      //TODO:
-      //How can I get thh PyTypeObject for a GdaValue?
-      //Surely I should be able to get it from the type's name?
-      //int test = PyObject_IsSubclass(pyResul>ob_type, pyclass_gdavalue); 
-      //if(test == 1) // 0 means false, -1 means error.
-      //  object_is_gda_value = true;
+      int test = PyObject_IsSubclass(pyResult, pyTypeGdaValue);
+      if(test == 1) // 0 means false, -1 means error.
+        object_is_gda_value = true;
 
       if(object_is_gda_value)
       {

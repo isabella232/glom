@@ -1,5 +1,11 @@
 2005-04-12  Murray Cumming <murrayc@murrayc.com>
 
+	* glom/python_embed/glom_python.cc: Get access to 
+	the python gda.Value type and use it instead of 
+	the hack.
+
+2005-04-12  Murray Cumming <murrayc@murrayc.com>
+
 	* configure.in: pkg-config check for pygtk-2.0, 
 	because we need the header to access the internals 
 	of the gda.Value object.
