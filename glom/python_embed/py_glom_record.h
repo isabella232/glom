@@ -21,6 +21,9 @@
 #ifndef GLOM_PYTHON_GLOM_RECORD_H
 #define GLOM_PYTHON_GLOM_RECORD_H
 
+#define NO_IMPORT_PYGTK //To avoid a multiple definition in pygtk.
+#include <pygtk/pygtk.h> //For the PyGObject and PyGBoxed struct definitions.
+
 #include <Python.h>
 #include "../data_structure/field.h"
 #include <glibmm/ustring.h>
@@ -33,7 +36,7 @@ public:
 
   PyObject* m_fields_dict; //Dictionary (map) of field names (string) to field values (Gnome::Gda::Value).
   int m_test;
-  //PyObject* m_py_gda_value;
+  PyGBoxed* m_py_gda_value; //"derived" from PyObject.
 };
 
 PyTypeObject* PyGlomRecord_GetPyType();

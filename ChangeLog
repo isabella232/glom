@@ -1,3 +1,11 @@
+2005-04-12  Murray Cumming <murrayc@murrayc.com>
+
+	* configure.in: pkg-config check for pygtk-2.0, 
+	because we need the header to access the internals 
+	of the gda.Value object.
+	* glom/python_embed/glom_python.cc:
+	Handle the result as a gda.Value.
+
 2005-04-10  Murray Cumming <murrayc@murrayc.com>
 
 	* glom/mode_data/box_data_list.cc:

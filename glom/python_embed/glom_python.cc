@@ -20,9 +20,13 @@
 
 //We need to include this before anything else, to avoid redefinitions:
 #include "py_glom_record.h"
+
+#define NO_IMPORT_PYGTK //To avoid a multiple definition in pygtk.
+#include <pygtk/pygtk.h> //For the PyGObject and PyGBoxed struct definitions.
+
 #include <Python.h>
-#include "compile.h" /* for the PyCodeObject */
-#include "eval.h" /* for PyEval_EvalCode */
+#include <compile.h> /* for the PyCodeObject */
+#include <eval.h> /* for PyEval_EvalCode */
 
 #include "glom_python.h"
 #include "../data_structure/glomconversions.h"
@@ -60,7 +64,7 @@ void HandlePythonError()
 
 Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field_type result_type, const Glib::ustring& func_impl)
 {
-  Glib::ustring result;
+  Gnome::Gda::Value valueResult;
 
   Glib::ustring func_def;
 
@@ -75,8 +79,8 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
 
   //prefix the def line:
   const Glib::ustring func_name = "glom_calc_field_value";
-  func_def = "def " + func_name + "(record):\n" + func_def;
-
+  //TODO: When pygda packages are available: func_def = "def " + func_name + "(record):\n  import gda\n" + func_def;
+  func_def = "def " + func_name + "(record):\n  import gda\n" + func_def;
   //We did this in main(): Py_Initialize();
 
   PyObject* pMain = PyImport_AddModule("__main__");
@@ -112,34 +116,72 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
     PyTuple_SetItem(pArgs, 0, (PyObject*)pParam); //The pParam reference is taken by PyTuple_SetItem().
 
     //Call the function with this parameter:
-    PyObject* pyValue = PyObject_CallObject(pFunc, pArgs);
+    PyObject* pyResult = PyObject_CallObject(pFunc, pArgs);
     Py_DECREF(pArgs);
 
-    if(!pyValue)
+    if(!pyResult)
     {
-      g_warning("pyValue was null");
+      g_warning("pyResult was null");
       HandlePythonError();
     }
     else
     {
-      PyObject* pyStringObject = PyObject_Str(pyValue);
-      if(pyStringObject)
+      //Deal with the various possible return types:
+      bool object_is_gda_value = false;
+
+      //TODO: This is a hack - see below:
+      if( strcmp(pyResult->ob_type->tp_name, "gda.Value") == 0 )
+        object_is_gda_value = true;
+
+      g_warning("debug: pyResult->ob_type->tp_name=%s", pyResult->ob_type->tp_name);
+
+      //TODO:
+      //How can I get thh PyTypeObject for a GdaValue?
+      //Surely I should be able to get it from the type's name?
+      //int test = PyObject_IsSubclass(pyResul>ob_type, pyclass_gdavalue); 
+      //if(test == 1) // 0 means false, -1 means error.
+      //  object_is_gda_value = true;
+
+      if(object_is_gda_value)
       {
-        if(PyString_Check(pyStringObject))
+        //Cast it to the "derived" struct type:
+        //All boxed types are wrapped with PyGBoxed in pygtk, without their own special structs,
+        //and GValue is a boxed-type.
+        PyGBoxed* pygtkobject = (PyGBoxed*)pyResult;
+        if(pygtkobject)
         {
-          const char* pchResult = PyString_AsString(pyStringObject);
+          GdaValue* cboxed = (GdaValue*)pygtkobject->boxed;
+          if(cboxed)
+            valueResult = Glib::wrap(cboxed, true /* take_copy */);
+          g_warning("PyGBoxed::boxed is null");
+        }
+        else
+          g_warning("PyGBoxed is null");
+      }
+      else
+      {
+        g_warning("debug: pyResult is not a gda.value");
+
+        //TODO: Handle numeric/date/time types:
+
+        //Treat this as a string or something that can be converted to a string:
+        PyObject* pyObjectResult = PyObject_Str(pyResult);
+        if(PyString_Check(pyObjectResult))
+        {
+          const char* pchResult = PyString_AsString(pyObjectResult);
           if(pchResult)
-            result = pchResult;
+          {
+            bool success = false;
+            valueResult = GlomConversions::parse_value(result_type, pchResult, success, true /* iso_format */);
+          }
           else
             g_warning("pchResult is null");
         }
         else
           g_warning("PyString_Check returned false");
       }
-      else
-        g_warning("pyStringObject is null");
 
-      Py_DECREF(pyValue);
+      Py_DECREF(pyResult);
     }
   }
 
@@ -148,10 +190,6 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
 
 
   //We did this in main(): Py_Finalize();
-
-  //TODO: Get the Value as a PyValue and convert directly to a Gnome::Gda::Value without parsing text:
-  bool success = false;
-  Gnome::Gda::Value valueResult = GlomConversions::parse_value(result_type, result, success, true /* iso_format */);
 
   return valueResult;
 }
