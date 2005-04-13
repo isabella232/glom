@@ -1,6 +1,12 @@
 2005-04-13  Murray Cumming <murrayc@murrayc.com>
 
 	* glom/python_embed/python_module/Makefile.am:
+	Link the module to the glom dependencies, to 
+	avoid undefined symbols when using it from python.
+
+2005-04-13  Murray Cumming <murrayc@murrayc.com>
+
+	* glom/python_embed/python_module/Makefile.am:
 	Use pyexec_* instead of pkpyexec_* so that the 
 	module is not installed in a package sub-directory, 
 	so that it can be imported.

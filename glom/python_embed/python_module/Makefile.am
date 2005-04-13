@@ -7,5 +7,6 @@ common_ldflags = -module -avoid-version
 
 # Build and install the python module:
 pyexec_LTLIBRARIES = glom.la
-glom_la_LDFLAGS = $(common_ldflags) -export-symbols-regex initglom
+glom_la_LDFLAGS = $(common_ldflags) -export-symbols-regex initglom \
+                  $(GLOM_LIBS) $(PYTHON_LDFLAGS) -lutil
 glom_la_SOURCES = py_glom_record.cc py_glom_record.h
