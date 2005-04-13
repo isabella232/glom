@@ -1,3 +1,27 @@
+2005-04-13  Murray Cumming  <murrayc@murrayc.com>
+
+	* docs/website/screenshots/glom_design_fields_dialog_calculated.png
+	: Updated the screenshot to show these changes.
+	* examples/example_smallbusiness.glom:
+	Added a name_full fields to contacts, as a simple calculated-field 
+	test.
+	* glom/data_structure/field.cc:
+	* glom/data_structure/field.h:
+	Added get_caculation_fields() - it parses the python code and 
+	guesses what fields are used in the calculation.
+	* glom/data_structure/glomconversions.cc:
+	* glom/data_structure/glomconversions.h:
+	Added get_example_value(), so we have some field values for the 
+	calculation test dialog.
+	* glom/glom.glade:
+	* glom/mode_data/box_data.cc:
+	* glom/mode_data/box_data.h:
+	* glom/mode_design/fields/dialog_fieldcalculation.cc:
+	* glom/mode_design/fields/dialog_fieldcalculation.h:
+	* glom/mode_design/fields/dialog_fielddefinition.cc:
+	Show the (according to our parsing) used fields, and show that 
+	we import the glom module implicitly. 
+
 2005-04-13  Murray Cumming <murrayc@murrayc.com>
 
 	* glom/python_embed/glom_python.cc:

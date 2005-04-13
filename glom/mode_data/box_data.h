@@ -107,6 +107,10 @@ protected:
   static bool get_field_primary_key_index(const type_vecFields& fields, guint& field_column);
   static bool get_field_primary_key_index(const type_vecLayoutFields& fields, guint& field_column);
 
+  typedef std::map<Glib::ustring, Gnome::Gda::Value> type_map_fields;
+  //TODO: Performance: This is massively inefficient:
+  type_map_fields get_record_field_values(const Gnome::Gda::Value& primary_key_value);
+
 
   static Glib::ustring xslt_process(const xmlpp::Document& xml_document, const std::string& filepath_xslt);
 

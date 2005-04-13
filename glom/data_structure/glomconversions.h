@@ -52,6 +52,8 @@ namespace GlomConversions
   bool value_is_empty(const Gnome::Gda::Value& value);
   Gnome::Gda::Value get_empty_value(Field::glom_field_type field_type);
 
+  Gnome::Gda::Value get_example_value(Field::glom_field_type field_type);
+
   Glib::ustring util_trim_whitespace(const Glib::ustring& text);
 }
 

@@ -569,6 +569,34 @@ Gnome::Gda::Value GlomConversions::get_empty_value(Field::glom_field_type field_
   }
 }
 
+Gnome::Gda::Value GlomConversions::get_example_value(Field::glom_field_type field_type)
+{
+  switch(field_type)
+  {
+    case(Field::TYPE_BOOLEAN):
+      return Gnome::Gda::Value(true);
+    case(Field::TYPE_DATE):
+    {
+      bool success = false;
+      return parse_value(field_type, "01/02/03", success, true /* iso_format */);
+    }
+    case(Field::TYPE_NUMERIC):
+    {
+      bool success = false;
+      return parse_value(field_type, "123", success, true /* iso_format */);
+    }
+    case(Field::TYPE_TEXT):
+      return Gnome::Gda::Value( Glib::ustring("example") ); //Use an empty string instead of a null for text fields, because the distinction is confusing for users, and gives no advantages.
+    case(Field::TYPE_TIME):
+    {
+      bool success = false;
+      return parse_value(field_type, "01:02", success, true /* iso_format */);
+    }
+    default:
+      return Gnome::Gda::Value();
+  }
+}
+
 Glib::ustring GlomConversions::util_trim_whitespace(const Glib::ustring& text)
 {
   //TODO_Performance:

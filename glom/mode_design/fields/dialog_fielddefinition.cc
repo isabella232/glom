@@ -320,6 +320,8 @@ void Dialog_FieldDefinition::on_button_edit_calculation()
     refXml->get_widget_derived("window_field_calculation", dialog);
     if(dialog)
     {
+      add_view(dialog); //Give it access to the document.
+
       m_Field.set_calculation( m_pTextView_Calculation->get_buffer()->get_text() );
       dialog->set_field(m_Field, m_table_name);
       //TODO: dialog.set_transient_for(*get_app_window());
@@ -328,7 +330,7 @@ void Dialog_FieldDefinition::on_button_edit_calculation()
       {
         m_pTextView_Calculation->get_buffer()->set_text( dialog->get_field().get_calculation() );
       }
-      
+
       delete dialog;
     }
   }

@@ -27,7 +27,9 @@
 #include "../../base_db.h"
 
 class Dialog_FieldCalculation
- : public Gtk::Dialog
+ : public Gtk::Dialog,
+   public Base_DB //Give this class access to the current document, and to some utility methods.
+
 {
 public:
   Dialog_FieldCalculation(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
@@ -41,6 +43,7 @@ protected:
 
   Gtk::TextView* m_text_view;
   Gtk::Button* m_button_test;
+  Gtk::Label* m_label_triggered_by;
   
   Field m_field;
   Glib::ustring m_table_name;

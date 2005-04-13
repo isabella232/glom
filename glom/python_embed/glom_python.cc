@@ -178,7 +178,7 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
       }
       else
       {
-        g_warning("debug: pyResult is not a gda.value");
+        //g_warning("debug: pyResult is not a gda.value");
 
         //TODO: Handle numeric/date/time types:
 

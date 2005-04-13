@@ -101,6 +101,23 @@ void Box_Data::on_Button_Find()
   signal_find.emit(get_WhereClause());
 }
 
+Box_Data::type_map_fields Box_Data::get_record_field_values(const Gnome::Gda::Value& /* primary_key_value */)
+{
+  type_map_fields field_values;
+
+  Document_Glom* document = get_document();
+  if(document)
+  {
+    const Document_Glom::type_vecFields fields = document->get_table_fields(m_strTableName);
+    for(Document_Glom::type_vecFields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
+    {
+      Gnome::Gda::Value example_value = GlomConversions::get_example_value(iter->get_glom_type());
+      field_values[iter->get_name()] = example_value;
+    }
+  }
+  return field_values;
+}
+
 Glib::RefPtr<Gnome::Gda::DataModel> Box_Data::record_new(bool use_entered_data, const Gnome::Gda::Value& primary_key_value)
 {
   Field fieldPrimaryKey;
@@ -136,10 +153,7 @@ Glib::RefPtr<Gnome::Gda::DataModel> Box_Data::record_new(bool use_entered_data, 
       const Glib::ustring calculation = field.get_calculation(); //TODO_Performance: Use a get_has_calculation() method.
       if(!calculation.empty())
       {
-        //TODO:
-        type_map_fields field_values;
-        field_values["testfield1"] = Gnome::Gda::Value("testvalue1");
-        field_values["testfield2"] = Gnome::Gda::Value("testvalue2");
+        const type_map_fields field_values = get_record_field_values(primary_key_value);
 
         Gnome::Gda::Value value = glom_evaluate_python_function_implementation(field.get_glom_type(), calculation, field_values);
         set_entered_field_data(layout_item, value);

@@ -118,6 +118,12 @@ public:
   Glib::ustring get_calculation() const;
   void set_calculation(const Glib::ustring& calculation);
 
+  /* Discover what fields are used in the calculation,
+   * so the value can be recalculated when their values change.
+   */
+  typedef std::list<Glib::ustring> type_list_strings;
+  type_list_strings get_calculation_fields() const;
+
   void set_visible(bool val = true);
   bool get_visible() const;
 
