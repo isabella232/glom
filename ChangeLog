@@ -1,5 +1,19 @@
 2005-04-13  Murray Cumming <murrayc@murrayc.com>
 
+	* configure.in:
+	* glom/Makefile.am:
+	* glom/python_embed/Makefile.am:
+	* glom/python_embed/glom_python.cc:
+	* glom/python_embed/python_module/Makefile.am:
+	* glom/python_embed/python_module/py_glom_record.cc:
+	* glom/python_embed/python_module/py_glom_record.h:
+	Put the python module in a sub directory, making the 
+	build easiert. Rename the python module from pyglom 
+	to glom, and import that. But python still says that 
+	the module does not exist when we import it.
+
+2005-04-13  Murray Cumming <murrayc@murrayc.com>
+
 	* glom/mode_data/box_data.cc: record_new(),
 	* glom/mode_design/fields/dialog_fieldcalculation.cc:
 	on_button_test(): Pass some test fields values to 

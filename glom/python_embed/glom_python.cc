@@ -19,7 +19,7 @@
  */
 
 //We need to include this before anything else, to avoid redefinitions:
-#include "py_glom_record.h"
+#include "python_module/py_glom_record.h"
 
 #define NO_IMPORT_PYGTK //To avoid a multiple definition in pygtk.
 #include <pygtk/pygtk.h> //For the PyGObject and PyGBoxed struct definitions.
@@ -81,7 +81,7 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
   //prefix the def line:
   const Glib::ustring func_name = "glom_calc_field_value";
   //TODO: When pygda packages are available: func_def = "def " + func_name + "(record):\n  import gda\n" + func_def;
-  func_def = "def " + func_name + "(record):\n  import pyglom.Record\n  import gda\n" + func_def;
+  func_def = "def " + func_name + "(record):\n  import glom\n  import gda\n" + func_def;
   //We did this in main(): Py_Initialize();
 
   PyObject* pMain = PyImport_AddModule("__main__");
