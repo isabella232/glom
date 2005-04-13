@@ -1,5 +1,12 @@
 2005-04-13  Murray Cumming <murrayc@murrayc.com>
 
+	* glom/python_embed/python_module/Makefile.am:
+	Use pyexec_* instead of pkpyexec_* so that the 
+	module is not installed in a package sub-directory, 
+	so that it can be imported.
+
+2005-04-13  Murray Cumming <murrayc@murrayc.com>
+
 	* glom/Makefile.am:
 	* glom/python_embed/python_module/Makefile.am:
 	Create glom.la, not libglom.la. That seems to be what 

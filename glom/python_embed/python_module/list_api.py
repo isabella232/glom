@@ -17,15 +17,11 @@
 # *
 # */
 
-import pygtk; pygtk.require("2.0")
-import gda
 import glom
 
 def main ():
 
-   # I use this to see what API has been generated for our python gda bindings.
-   # The output is ugly. It would be nice to have a separate list of classes and their functions and properties.
-   print dir(gda)
+   # I use this to see what API exists.
    print dir(glom)
 
 main ()
