@@ -136,7 +136,12 @@ Glib::RefPtr<Gnome::Gda::DataModel> Box_Data::record_new(bool use_entered_data, 
       const Glib::ustring calculation = field.get_calculation(); //TODO_Performance: Use a get_has_calculation() method.
       if(!calculation.empty())
       {
-        Gnome::Gda::Value value = glom_evaluate_python_function_implementation(field.get_glom_type(), calculation);
+        //TODO:
+        type_map_fields field_values;
+        field_values["testfield1"] = Gnome::Gda::Value("testvalue1");
+        field_values["testfield2"] = Gnome::Gda::Value("testvalue2");
+
+        Gnome::Gda::Value value = glom_evaluate_python_function_implementation(field.get_glom_type(), calculation, field_values);
         set_entered_field_data(layout_item, value);
       }
     }

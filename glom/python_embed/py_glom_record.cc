@@ -20,8 +20,9 @@
 
 //We need to include this before anything else, to avoid redefinitions:
 #include <Python.h>
-#include "compile.h" /* for the PyCodeObject */
-#include "eval.h" /* for PyEval_EvalCode */
+#include <compile.h> /* for the PyCodeObject */
+#include <eval.h> /* for PyEval_EvalCode */
+#include <objimpl.h> /* for PyObject_New() */
 
 #include "py_glom_record.h"
 
@@ -38,7 +39,9 @@ Record_new(PyTypeObject *type, PyObject * /* args */, PyObject * /* kwds */)
   if(self)
   {
     self->m_test = 0;
-    self->m_fields_dict = PyDict_New();
+
+    if(self->m_fields_dict == 0)
+      self->m_fields_dict = PyDict_New();
   }
 
   return (PyObject*)self;
@@ -54,6 +57,12 @@ Record_init(PyGlomRecord *self, PyObject *args, PyObject *kwds)
                                     &self->m_test))
     return -1;
 
+  if(self)
+  {
+    if(self->m_fields_dict == 0)
+      self->m_fields_dict = PyDict_New();
+  }
+
   return 0;
 }
 
@@ -66,17 +75,26 @@ Record_dealloc(PyGlomRecord* self)
   self->ob_type->tp_free((PyObject*)self);
 }
 
+
 static PyObject *
-Record_get_fields(PyGlomRecord* self, void* /* closure */)
+Record__get_fields(PyGlomRecord *self, void * /*closure */)
 {
-    Py_INCREF(self->m_fields_dict); //Provide a reference, for the caller to unreference().
+  if(self->m_fields_dict)
+  {
+    Py_INCREF(self->m_fields_dict); //TODO: Should we do this?
     return self->m_fields_dict;
+  }
+  else
+  {
+    Py_INCREF(Py_None);
+    return Py_None;
+  }
 }
 
 static PyGetSetDef Record_getseters[] = {
     {"fields",
-     (getter)Record_get_fields, (setter)0, 0, 0
-    }, 
+     (getter)Record__get_fields, (setter)0, 0, 0
+    },
     {NULL, 0, 0, 0, 0, }  /* Sentinel */
 };
 
@@ -137,24 +155,77 @@ initpyglomrecord(void)
 {
     PyObject* m;
 
-    pyglom_RecordType.tp_new = PyType_GenericNew;
+    //pyglom_RecordType.tp_new = PyType_GenericNew;
     if (PyType_Ready(&pyglom_RecordType) < 0)
         return;
 
     m = Py_InitModule3("pyglomrecord", pyglomrecord_methods,
-                       "Example module that creates an extension type.");
+                       "Python module for Glom caluclated fields.");
 
     Py_INCREF(&pyglom_RecordType);
     PyModule_AddObject(m, "PyGlom", (PyObject *)&pyglom_RecordType);
 }
 
 
-//typedef std::map<Glib::ustring, Gnome::Gda::Value> type_map_fields;
-void PyGlomRecord_SetFields(PyGlomRecord* /* self */, const type_map_fields& fields)
+void Record_HandlePythonError()
 {
+  if(PyErr_Occurred())
+    PyErr_Print();
+}
+
+//typedef std::map<Glib::ustring, Gnome::Gda::Value> type_map_fields;
+void PyGlomRecord_SetFields(PyGlomRecord* self, const type_map_fields& fields)
+{
+  if(self->m_fields_dict == 0)
+    self->m_fields_dict = PyDict_New();
+
+  PyDict_Clear( self->m_fields_dict );
+
+  //TODO: Cache this in one place:
+  PyObject* module_gda = PyImport_ImportModule("gda");
+  if(!module_gda)
+    g_warning("Could not import python gda module.");
+
+  PyObject* module_gda_dict = PyModule_GetDict(module_gda);
+  PyObject* pyTypeGdaValue = PyDict_GetItemString(module_gda_dict, "Value"); //TODO: Unref this?
+  if(!pyTypeGdaValue || !PyType_Check(pyTypeGdaValue))
+    g_warning("Could not get gda.Value from gda_module.");
+
+  //Add the new pairs:
   for(type_map_fields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
   {
-    //TODO: self->m_fields_dict iter->first //name, iter->second //value.
+    //Add each name/value pair:
+
+    //PyObject* pyValue = _PyObject_New((PyTypeObject*)pyTypeGdaValue);
+    //if(!pyValue)
+    //  g_warning("_PyObject_New() failed.");
+
+    //PyObject_New() does not call the derived constructor. Stupid PyObject_New().
+    //PyObject* new_args = PyTuple_New(0);
+    //pyValue->ob_type->tp_init(pyValue, new_args, 0);
+    //Py_DECREF(new_args);
+
+    //PyObject_Call() instantiates a type when passed that type as the object to call. Strange Python.
+    PyObject* new_args = PyTuple_New(0);
+    PyObject* pyValue = PyObject_Call(pyTypeGdaValue, new_args, 0);
+    Py_DECREF(new_args);
+    if(!pyValue)
+    {
+      g_warning("PyObject_Call() failed to instantiate the type.");
+      Record_HandlePythonError();
+    }
+
+    //g_warning("pyValue->op_type->tp_name=%s", pyValue->ob_type->tp_name);
+
+    PyGBoxed* pygBoxed = (PyGBoxed*)(pyValue);
+    GdaValue* pGdaValue = (GdaValue*)pygBoxed->boxed;
+
+    if(!pGdaValue)
+      g_warning("pygBoxed->boxed is NULL");
+
+    gda_value_set_from_value(pGdaValue, (iter->second).gobj());
+
+    PyDict_SetItemString(self->m_fields_dict, iter->first.c_str(), pyValue);
   }
 }
 

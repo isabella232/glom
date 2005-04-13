@@ -24,6 +24,9 @@
 #include "../data_structure/field.h"
 #include <glibmm/ustring.h>
 
-Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field_type result_type, const Glib::ustring& func_impl);
+typedef std::map<Glib::ustring, Gnome::Gda::Value> type_map_fields;
+
+Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field_type result_type, const Glib::ustring& func_impl,
+  const type_map_fields& field_values);
 
 #endif //GLOM_PYTHON_H

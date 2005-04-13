@@ -62,7 +62,8 @@ void HandlePythonError()
     PyErr_Print();
 }
 
-Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field_type result_type, const Glib::ustring& func_impl)
+Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field_type result_type, const Glib::ustring& func_impl,
+    const type_map_fields& field_values)
 {
   Gnome::Gda::Value valueResult;
 
@@ -80,7 +81,7 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
   //prefix the def line:
   const Glib::ustring func_name = "glom_calc_field_value";
   //TODO: When pygda packages are available: func_def = "def " + func_name + "(record):\n  import gda\n" + func_def;
-  func_def = "def " + func_name + "(record):\n  import gda\n" + func_def;
+  func_def = "def " + func_name + "(record):\n  import pyglom.Record\n  import gda\n" + func_def;
   //We did this in main(): Py_Initialize();
 
   PyObject* pMain = PyImport_AddModule("__main__");
@@ -92,7 +93,7 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
 
   PyObject* module_gda_dict = PyModule_GetDict(module_gda);
   PyObject* pyTypeGdaValue = PyDict_GetItemString(module_gda_dict, "Value"); //TODO: Unref this?
-  if(!pyTypeGdaValue && PyType_Check(pyTypeGdaValue))
+  if(!pyTypeGdaValue || !PyType_Check(pyTypeGdaValue))
     g_warning("Could not get gda.Value from gda_module.");
 
   //Create the function definition:
@@ -120,7 +121,14 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
     PyObject* pArgs = PyTuple_New(1);
     //PyObject* pParam = PyString_FromString("test value"); //This test did not need the extra ref.
     PyGlomRecord* pParam = PyObject_New(PyGlomRecord, PyGlomRecord_GetPyType());
+    PyObject* new_args = PyTuple_New(0);
+    ((PyObject*)pParam)->ob_type->tp_init(((PyObject*)pParam), new_args, 0);
+    Py_DECREF(new_args);
+
     Py_INCREF(pParam); //TODO: As I understand it, PyObject_New() should return a new reference, so this should not be necessary.
+
+    //Fill the record's details:
+    PyGlomRecord_SetFields(pParam, field_values);
 
     PyTuple_SetItem(pArgs, 0, (PyObject*)pParam); //The pParam reference is taken by PyTuple_SetItem().
 

@@ -72,7 +72,11 @@ Field Dialog_FieldCalculation::get_field() const
 void Dialog_FieldCalculation::on_button_test()
 {
   const Glib::ustring calculation = m_text_view->get_buffer()->get_text();
-  Gnome::Gda::Value value = glom_evaluate_python_function_implementation(Field::TYPE_TEXT, calculation); //TODO: Maybe use the field's type here.
+
+  type_map_fields field_values;
+  field_values["testfield1"] = Gnome::Gda::Value("testvalue1");
+  field_values["testfield2"] = Gnome::Gda::Value("testvalue2");
+  Gnome::Gda::Value value = glom_evaluate_python_function_implementation(Field::TYPE_TEXT, calculation, field_values); //TODO: Maybe use the field's type here.
 
   Frame_Glom::show_ok_dialog(_("Calculation result"), _("The result of the calculation is:\n") + value.to_string(), *this);
 }

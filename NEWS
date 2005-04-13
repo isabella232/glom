@@ -4,10 +4,11 @@
   adding new records, not only when changing existing 
   records.
 * Boring Internals:
-  The List view's TreeModel now gets the data from the 
+  - The List view's TreeModel now gets the data from the 
   database dynamically on-demand, though it probably 
   needs some more work to do that as efficiently as 
   possible.
+  - Now depends on pygtk.
 
 0.8.20:
 
