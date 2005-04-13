@@ -1,5 +1,17 @@
 2005-04-13  Murray Cumming <murrayc@murrayc.com>
 
+	* glom/Makefile.am:
+	* glom/python_embed/python_module/Makefile.am:
+	Create glom.la, not libglom.la. That seems to be what 
+	python modules do.
+	* glom/python_embed/python_module/py_glom_record.cc:
+	* glom/python_embed/python_module/py_glom_record.h:
+	Rename the initglomRecord() method to initglom(), in 
+	case that is what python is looking for. Still does 
+	not work though.
+
+2005-04-13  Murray Cumming <murrayc@murrayc.com>
+
 	* configure.in:
 	* glom/Makefile.am:
 	* glom/python_embed/Makefile.am:

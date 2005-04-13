@@ -46,7 +46,7 @@ glom_LDADD = document/libdocument.a \
              utility_widgets/db_adddel/libutility_widgets_db_adddel.a \
              data_structure/libdata_structure.a \
              python_embed/libpython_embed.a \
-             python_embed/python_module/libglom.la \
+             python_embed/python_module/glom.la \
              $(GLOM_LIBS) $(PYTHON_LDFLAGS) -lutil
 
 #             python_embed/boost/config/libpython_embed_boost_config.a 

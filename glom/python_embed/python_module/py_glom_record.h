@@ -45,10 +45,10 @@ typedef std::map<Glib::ustring, Gnome::Gda::Value> type_map_fields;
 void PyGlomRecord_SetFields(PyGlomRecord* self, const type_map_fields& fields);
 
 #ifndef PyMODINIT_FUNC	/* declarations for DLL import/export */
-#define PyMODINIT_FUNC void
+//#define PyMODINIT_FUNC void
 #endif
-PyMODINIT_FUNC
-initpyglomrecord(void);
+
+PyMODINIT_FUNC initglom(void);
 
 
 

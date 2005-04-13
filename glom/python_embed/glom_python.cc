@@ -81,7 +81,7 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
   //prefix the def line:
   const Glib::ustring func_name = "glom_calc_field_value";
   //TODO: When pygda packages are available: func_def = "def " + func_name + "(record):\n  import gda\n" + func_def;
-  func_def = "def " + func_name + "(record):\n  import glom\n  import gda\n" + func_def;
+  func_def = "def " + func_name + "(record):\n  import glom.Record\n  import gda\n" + func_def;
   //We did this in main(): Py_Initialize();
 
   PyObject* pMain = PyImport_AddModule("__main__");

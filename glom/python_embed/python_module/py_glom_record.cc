@@ -151,7 +151,7 @@ static PyMethodDef pyglomrecord_methods[] = {
 };
 
 PyMODINIT_FUNC
-initpyglomrecord(void) 
+initglom(void) 
 {
     PyObject* m;
 
@@ -163,7 +163,7 @@ initpyglomrecord(void)
                        "Python module for Glom caluclated fields.");
 
     Py_INCREF(&pyglom_RecordType);
-    PyModule_AddObject(m, "PyGlom", (PyObject *)&pyglom_RecordType);
+    PyModule_AddObject(m, "Record", (PyObject *)&pyglom_RecordType);
 }
 
 
