@@ -1,5 +1,12 @@
 2005-04-13  Murray Cumming <murrayc@murrayc.com>
 
+	* glom/python_embed/glom_python.cc:
+	glom_evaluate_python_function_implementation()
+	Correctly check whether the result is a gda.Value 
+	and process it appropriately. This now works.
+
+2005-04-13  Murray Cumming <murrayc@murrayc.com>
+
 	* glom/python_embed/python_module/Makefile.am:
 	Link the module to the glom dependencies, to 
 	avoid undefined symbols when using it from python.

@@ -81,7 +81,7 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
   //prefix the def line:
   const Glib::ustring func_name = "glom_calc_field_value";
   //TODO: When pygda packages are available: func_def = "def " + func_name + "(record):\n  import gda\n" + func_def;
-  func_def = "def " + func_name + "(record):\n  import glom.Record\n  import gda\n" + func_def;
+  func_def = "def " + func_name + "(record):\n  import glom\n  import gda\n" + func_def;
   //We did this in main(): Py_Initialize();
 
   PyObject* pMain = PyImport_AddModule("__main__");
@@ -150,9 +150,13 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
       //if( strcmp(pyResult->ob_type->tp_name, "gda.Value") == 0 )
       //  object_is_gda_value = true;
 
-      g_warning("debug: pyResult->ob_type->tp_name=%s", pyResult->ob_type->tp_name);
+      //g_warning("debug: pyResult->ob_type->tp_name=%s", pyResult->ob_type->tp_name);
+      //g_warning("debug: pyTypeGdaValue->tp_name=%s", ((PyTypeObject*)pyTypeGdaValue)->tp_name);
 
-      int test = PyObject_IsSubclass(pyResult, pyTypeGdaValue);
+      int test = PyType_IsSubtype(pyResult->ob_type, (PyTypeObject*)pyTypeGdaValue);
+      if(test == -1)
+        HandlePythonError();
+
       if(test == 1) // 0 means false, -1 means error.
         object_is_gda_value = true;
 
