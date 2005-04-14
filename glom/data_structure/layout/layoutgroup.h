@@ -57,9 +57,11 @@ public:
   typedef std::map<int, const LayoutItem*> type_map_const_items;
   type_map_const_items get_items() const;
 
-protected:
+//Allow more efficient access: protected:
 
   type_map_items m_map_items;
+
+protected:
 
   void remove_item(guint sequence);
 };

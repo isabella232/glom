@@ -81,6 +81,8 @@ void Dialog_FieldLayout::set_field(const LayoutItem_Field& field)
     m_frame_text_format->show();
   else
     m_frame_text_format->hide();
+
+  g_warning("glom_type=%d, name=%s", the_field.get_glom_type(), the_field.get_name().c_str());
 }
 
 bool Dialog_FieldLayout::get_field_chosen(LayoutItem_Field& field) const

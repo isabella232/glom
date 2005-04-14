@@ -20,6 +20,7 @@
 
 #include "dialog_layout_list.h"
 #include "dialog_choose_field.h"
+#include "dialog_field_layout.h"
 #include <bakery/App/App_Gtk.h> //For util_bold_message().
 
 //#include <libgnome/gnome-i18n.h>
@@ -33,6 +34,7 @@ Dialog_Layout_List::Dialog_Layout_List(BaseObjectType* cobject, const Glib::RefP
   m_button_field_add(0),
   m_button_field_delete(0),
   m_button_field_edit(0),
+  m_button_field_formatting(0),
   m_label_table_name(0)
 {
   refGlade->get_widget("label_table_name", m_label_table_name);
@@ -82,6 +84,9 @@ Dialog_Layout_List::Dialog_Layout_List(BaseObjectType* cobject, const Glib::RefP
   refGlade->get_widget("button_field_edit", m_button_field_edit);
   m_button_field_edit->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout_List::on_button_edit_field) );
 
+  refGlade->get_widget("button_field_formatting", m_button_field_formatting);
+  m_button_field_formatting->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout_List::on_button_field_formatting) );
+
   show_all_children();
 }
 
@@ -103,6 +108,7 @@ void Dialog_Layout_List::set_document(const Glib::ustring& layout, Document_Glom
     m_entry_table_title->set_text( document->get_table_title(table_name) );
 
     Document_Glom::type_mapLayoutGroupSequence mapGroups = document->get_data_layout_groups_plus_new_fields(layout, m_table_name);
+    document->fill_layout_field_details(m_table_name, mapGroups); //Update with full field information.
 
     //If no information is stored in the document, then start with something:
 
@@ -409,3 +415,50 @@ void Dialog_Layout_List::on_button_edit_field()
     std::cerr << ex.what() << std::endl;
   }
 }
+
+
+void Dialog_Layout_List::on_button_field_formatting()
+{
+  try
+  {
+    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_layout_field_properties");
+
+    Dialog_FieldLayout* dialog = 0;
+    refXml->get_widget_derived("dialog_layout_field_properties", dialog);
+
+    if(dialog)
+    {
+      Glib::RefPtr<Gtk::TreeView::Selection> refTreeSelection = m_treeview_fields->get_selection();
+      if(refTreeSelection)
+      {
+        //TODO: Handle multiple-selection:
+        Gtk::TreeModel::iterator iter = refTreeSelection->get_selected();
+        if(iter)
+        {
+          Gtk::TreeModel::Row row = *iter;
+          LayoutItem_Field field = row[m_ColumnsFields.m_col_layout_item];
+          g_warning("field_name = %s, %s", field.m_field.get_name().c_str(), field.get_name().c_str());
+
+          dialog->set_field(field);
+          dialog->set_transient_for(*this);
+          int response = dialog->run();
+          dialog->hide();
+          if(response == Gtk::RESPONSE_OK)
+          {
+            //Get the chosen field:
+            bool test = dialog->get_field_chosen(field);
+            if(test)
+              row[m_ColumnsFields.m_col_layout_item] = field;
+          }
+        }
+      }
+    }
+
+    delete dialog;
+  }
+  catch(const Gnome::Glade::XmlError& ex)
+  {
+    std::cerr << ex.what() << std::endl;
+  }
+}
+

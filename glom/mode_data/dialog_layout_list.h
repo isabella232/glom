@@ -50,6 +50,7 @@ protected:
   virtual void on_button_add_field();
   virtual void on_button_delete();
   virtual void on_button_edit_field();
+  virtual void on_button_field_formatting();
   virtual void on_treeview_fields_selection_changed();
   virtual void on_cell_data_name(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter);
 
@@ -74,6 +75,7 @@ protected:
   Gtk::Button* m_button_field_add;
   Gtk::Button* m_button_field_delete;
   Gtk::Button* m_button_field_edit;
+  Gtk::Button* m_button_field_formatting;
 
   Glib::RefPtr<Gtk::ListStore> m_model_fields;
   

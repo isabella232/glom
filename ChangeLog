@@ -1,5 +1,32 @@
 2005-04-14  Murray Cumming <murrayc@murrayc.com>
 
+	* examples/example_smallbusiness.glom:
+	Invoice details: Show the related, calculated, 
+        Full Name instead of the individual name parts, now that 
+       calculated fields work.
+	* glom/data_structure/layout/layoutgroup.h:
+	Make the items map public so we can change it more 
+	efficiently.
+	* glom/document/document_glom.cc:
+	* glom/document/document_glom.h:
+	Add fill_layout_field_details() to fill layout groups 
+	with full field information.
+	* glom/glom.glade:
+	* glom/mode_data/dialog_layout_list.cc:
+	* glom/mode_data/dialog_layout_list.h:
+	Added a Formatting button to show the now-separate 
+	formatting dialog.
+	set_document(): Get the full field information from 
+	the document.
+	* glom/mode_data/box_data_list.cc:
+	* glom/utility_widgets/datawidget.cc:
+	* glom/utility_widgets/entryglom.cc:
+	* glom/utility_widgets/layoutwidgetbase.cc:
+	Move action creation into the base class instead of 
+	duplicating it.
+
+2005-04-14  Murray Cumming <murrayc@murrayc.com>
+
 	* docs/website/screenshots/glom_data_details.png:
 	* docs/website/screenshots/glom_design_layout_field_formatting.png:
 	* docs/website/screenshots/glom_select_field.png:

@@ -674,6 +674,7 @@ void Box_Data_List::fill_column_titles()
       m_AddDel.set_key_field(field_primary_key);
 
       m_Fields = get_fields_to_show();
+      //g_warning("m_Fields[0].m_field.get_name() = %s", m_Fields[0].m_field.get_name().c_str());
 
       //Add extra possibly-non-visible columns that we need:
       //TODO: Only add it if it is not already there.

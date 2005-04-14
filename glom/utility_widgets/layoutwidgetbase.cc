@@ -19,11 +19,21 @@
  */
 
 #include "layoutwidgetbase.h"
+#include <glibmm/i18n.h>
 
 LayoutWidgetBase::LayoutWidgetBase()
 : m_pLayoutItem(0),
   m_pMenuPopup(0)
 {
+  m_refActionGroup = Gtk::ActionGroup::create();
+
+  m_refActionGroup->add(Gtk::Action::create("ContextMenu", "Context Menu") );
+  m_refContextLayout =  Gtk::Action::create("ContextLayout", _("Choose Field"));
+  m_refContextLayoutProperties =  Gtk::Action::create("ContextLayoutProperties", _("Field Layout Properties"));
+  m_refContextAddField =  Gtk::Action::create("ContextAddField", _("Add Field"));
+  m_refContextAddRelatedRecords =  Gtk::Action::create("ContextAddRelatedRecords", _("Add Related Records"));
+  m_refContextAddGroup =  Gtk::Action::create("ContextAddGroup", _("Add Group"));
+
 }
 
 LayoutWidgetBase::~LayoutWidgetBase()

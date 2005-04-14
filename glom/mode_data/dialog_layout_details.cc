@@ -258,6 +258,7 @@ void Dialog_Layout_Details::set_document(const Glib::ustring& layout, Document_G
     m_entry_table_title->set_text( document->get_table_title(table_name) );
 
     Document_Glom::type_mapLayoutGroupSequence mapGroups = document->get_data_layout_groups_plus_new_fields(layout, m_table_name);
+    document->fill_layout_field_details(m_table_name, mapGroups); //Update with full field information.
 
     //If no information is stored in the document, then start with something:
 

@@ -81,6 +81,11 @@ public:
 
   virtual type_mapLayoutGroupSequence get_relationship_data_layout_groups_plus_new_fields(const Glib::ustring& layout_name, const Relationship& relationship) const;
 
+
+  virtual void fill_layout_field_details(const Glib::ustring& parent_table_name, LayoutGroup& layout_group) const;
+  virtual void fill_layout_field_details(const Glib::ustring& parent_table_name, type_mapLayoutGroupSequence& sequence) const;
+
+
   ///When a field name is changed, change it in the relationships and fields data:
   virtual void change_field_name(const Glib::ustring& table_name, const Glib::ustring& strFieldNameOld, const Glib::ustring& strFieldNameNew);
 

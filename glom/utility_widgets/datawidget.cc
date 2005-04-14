@@ -231,27 +231,18 @@ void DataWidget::set_editable(bool editable)
 
 void DataWidget::setup_menu()
 {
-  m_refActionGroup = Gtk::ActionGroup::create();
-
-  m_refActionGroup->add(Gtk::Action::create("ContextMenu", "Context Menu") );
-
-  m_refContextLayout =  Gtk::Action::create("ContextLayout", _("Choose Field"));
   m_refActionGroup->add(m_refContextLayout,
     sigc::mem_fun(*this, &DataWidget::on_menupopup_activate_layout) );
 
- m_refContextLayoutProperties =  Gtk::Action::create("ContextLayoutProperties", _("Field Layout Properties"));
   m_refActionGroup->add(m_refContextLayoutProperties,
     sigc::mem_fun(*this, &DataWidget::on_menupopup_activate_layout_properties) );
 
-  m_refContextAddField =  Gtk::Action::create("ContextAddField", _("Add Field"));
   m_refActionGroup->add(m_refContextAddField,
     sigc::bind( sigc::mem_fun(*this, &DataWidget::on_menupopup_add_item), TreeStore_Layout::TYPE_FIELD ) );
 
-  m_refContextAddRelatedRecords =  Gtk::Action::create("ContextAddRelatedRecords", _("Add Related Records"));
   m_refActionGroup->add(m_refContextAddRelatedRecords,
     sigc::bind( sigc::mem_fun(*this, &DataWidget::on_menupopup_add_item), TreeStore_Layout::TYPE_PORTAL ) );
 
-  m_refContextAddGroup =  Gtk::Action::create("ContextAddGroup", _("Add Group"));
   m_refActionGroup->add(m_refContextAddGroup,
     sigc::bind( sigc::mem_fun(*this, &DataWidget::on_menupopup_add_item), TreeStore_Layout::TYPE_GROUP ) );
 

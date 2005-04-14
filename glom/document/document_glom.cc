@@ -478,6 +478,36 @@ Document_Glom::type_mapLayoutGroupSequence Document_Glom::get_relationship_data_
   return get_data_layout_groups_plus_new_fields(layout_name + "_related_" + relationship.get_name(), relationship.get_from_table(), relationship.get_to_table());
 }
 
+void Document_Glom::fill_layout_field_details(const Glib::ustring& parent_table_name, LayoutGroup& layout_group) const
+{
+  //Get the full field information for the LayoutItem_Fields in this group:
+
+  for(LayoutGroup::type_map_items::iterator iter = layout_group.m_map_items.begin(); iter != layout_group.m_map_items.end(); ++iter)
+  {
+    LayoutItem* layout_item = iter->second;
+
+    LayoutItem_Field* layout_field = dynamic_cast<LayoutItem_Field*>(layout_item);
+    if(layout_field)
+    {
+      get_field(parent_table_name, layout_field->get_name(), layout_field->m_field);
+    }
+    else
+    {
+      LayoutGroup* layout_group_child = dynamic_cast<LayoutGroup*>(layout_item);
+      if(layout_group_child)
+        fill_layout_field_details(parent_table_name, *layout_group_child); //recurse
+    }
+  }
+}
+
+void Document_Glom::fill_layout_field_details(const Glib::ustring& parent_table_name, type_mapLayoutGroupSequence& sequence) const
+{
+  for(type_mapLayoutGroupSequence::iterator iterGroups = sequence.begin(); iterGroups != sequence.end(); ++iterGroups)
+  {
+    fill_layout_field_details(parent_table_name, iterGroups->second);
+  }
+}
+
 Document_Glom::type_mapLayoutGroupSequence Document_Glom::get_data_layout_groups_plus_new_fields(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name, const Glib::ustring& table_name) const
 {
   Glib::ustring child_table_name = table_name;
@@ -539,6 +569,7 @@ Document_Glom::type_mapLayoutGroupSequence Document_Glom::get_data_layout_groups
         {
           LayoutItem_Field layout_item;
           layout_item.set_name(field_name);
+          layout_item.m_field = *iter;
           //layout_item.set_table_name(child_table_name); //TODO: Allow viewing of fields through relationships.
           //layout_item.m_sequence = sequence;  add_item() will fill this.
 
