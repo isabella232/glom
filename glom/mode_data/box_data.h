@@ -82,6 +82,10 @@ protected:
    */
   type_list_lookups get_lookup_fields(const Glib::ustring& field_name) const;
 
+  /** Get the fields whose values should be recalculated when @a field_name changes.
+   */
+  type_vecLayoutFields get_calculated_fields(const Glib::ustring& field_name) const;
+
   /** Get the fields that are in related tables, via a relationship using @a field_name changes.
   */
   type_vecLayoutFields get_related_fields(const Glib::ustring& field_name) const;
@@ -89,6 +93,9 @@ protected:
   /** Get the value of the @a source_field from the @a relationship, using the @a key_value.
    */
   Gnome::Gda::Value get_lookup_value(const Relationship& relationship, const Field& source_field, const Gnome::Gda::Value & key_value);
+
+  virtual void do_calculations(const LayoutItem_Field& field_changed, const Field& primary_key, const Gnome::Gda::Value& primary_key_value);
+  void set_field_value_in_database(const LayoutItem_Field& field_layout, const Gnome::Gda::Value& field_value, const Field& primary_key, const Gnome::Gda::Value& primary_key_value);
 
   virtual bool record_delete(const Gnome::Gda::Value& primary_key_value);
   virtual Glib::RefPtr<Gnome::Gda::DataModel> record_new(bool use_entered_data = true, const Gnome::Gda::Value& primary_key_value = Gnome::Gda::Value()); //New record with all entered field values.

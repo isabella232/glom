@@ -1,5 +1,8 @@
 0.8.21:
 
+* Calculated Fields: Your python function can now use 
+  the record's other field values. This requires 
+  the python libgda bindings in gnome-python-extras 2.11.
 * List: Do lookups, and refresh related fields, when 
   adding new records, not only when changing existing 
   records.
@@ -8,7 +11,7 @@
   database dynamically on-demand, though it probably 
   needs some more work to do that as efficiently as 
   possible.
-  - Now depends on pygtk.
+  - Now depends on pygtk and gnome-python-extras/libgda.
 
 0.8.20:
 

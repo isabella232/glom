@@ -1,3 +1,18 @@
+2005-04-14  Murray Cumming <murrayc@murrayc.com>
+
+	* docs/website/screenshots/glom_data_details.png:
+	* docs/website/screenshots/glom_design_layout_field_formatting.png:
+	* docs/website/screenshots/glom_select_field.png:
+	* docs/website/screenshots/index.html:
+	Updated some screenshots and pictures.
+	* glom/mode_data/box_data.cc:
+	* glom/mode_data/box_data.h:
+	Added get_record_field_values(), get_calculated_fields(), and 
+	do_calculations() which use them.
+	* glom/mode_data/box_data_details.cc: on_flowtable_field_changed():
+	* glom/mode_data/box_data_list.cc: on_adddel_user_changed():
+	Call do_calculations() to update calculated field values.
+
 2005-04-13  Murray Cumming  <murrayc@murrayc.com>
 
 	* docs/website/screenshots/glom_design_fields_dialog_calculated.png

@@ -23,6 +23,7 @@
 #include "../data_structure/layout/layoutitem_field.h"
 #include "../python_embed/glom_python.h"
 #include <bakery/App/App_Gtk.h> //For util_bold_message().
+#include <algorithm> //For std::find()
 #include <libxslt/transform.h>
 #include "config.h"
 #include <glibmm/i18n.h>
@@ -101,20 +102,48 @@ void Box_Data::on_Button_Find()
   signal_find.emit(get_WhereClause());
 }
 
-Box_Data::type_map_fields Box_Data::get_record_field_values(const Gnome::Gda::Value& /* primary_key_value */)
+Box_Data::type_map_fields Box_Data::get_record_field_values(const Gnome::Gda::Value& primary_key_value)
 {
   type_map_fields field_values;
+
+  Field fieldPrimaryKey;
+  get_field_primary_key(fieldPrimaryKey);
 
   Document_Glom* document = get_document();
   if(document)
   {
+    //TODO: Cache the list of all fields, as well as caching (m_Fields) the list of all visible fields:
     const Document_Glom::type_vecFields fields = document->get_table_fields(m_strTableName);
+
+    //TODO: This seems silly. We should just have a build_sql_select() that can take this container:
+    type_vecLayoutFields fieldsToGet;
     for(Document_Glom::type_vecFields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
     {
-      Gnome::Gda::Value example_value = GlomConversions::get_example_value(iter->get_glom_type());
-      field_values[iter->get_name()] = example_value;
+      LayoutItem_Field layout_item;
+      layout_item.set_name(iter->get_name());
+      layout_item.m_field = *iter;
+      fieldsToGet.push_back(layout_item);
+    }
+
+    const Glib::ustring query = build_sql_select(m_strTableName, fieldsToGet, fieldPrimaryKey, primary_key_value);
+    Glib::RefPtr<Gnome::Gda::DataModel> data_model = Query_execute(query);
+
+    if(data_model && data_model->get_n_rows())
+    {
+      int col_index = 0;
+      for(Document_Glom::type_vecFields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
+      {
+        //There should be only 1 row. Well, there could be more but we will ignore them.
+        field_values[iter->get_name()] = data_model->get_value_at(col_index, 0);
+        ++col_index;
+      }
+    }
+    else
+    {
+      handle_error();
     }
   }
+
   return field_values;
 }
 
@@ -517,6 +546,29 @@ Box_Data::type_vecLayoutFields Box_Data::get_related_fields(const Glib::ustring&
   return result;
 }
 
+Box_Data::type_vecLayoutFields Box_Data::get_calculated_fields(const Glib::ustring& field_name) const
+{
+  type_vecLayoutFields result;
+
+  const Document_Glom* document = dynamic_cast<const Document_Glom*>(get_document());
+  if(document)
+  {
+    //TODO: examine all fields, not just the the shown fields (m_Fields):
+    for(type_vecLayoutFields::const_iterator iter = m_Fields.begin(); iter != m_Fields.end();  ++iter)
+    {
+      const Field& field = iter->m_field;
+
+      //Does this field's calculation use the field?
+      const Field::type_list_strings fields_triggered = field.get_calculation_fields();
+      Field::type_list_strings::const_iterator iterFind = std::find(fields_triggered.begin(), fields_triggered.end(), field_name);
+      if(iterFind != fields_triggered.end())
+        result.push_back(*iter);
+    }
+  }
+
+  return result;
+}
+
 /** Get the fields whose values should be looked up when @a field_name changes, with
  * the relationship used to lookup the value.
  */
@@ -527,6 +579,7 @@ Box_Data::type_list_lookups Box_Data::get_lookup_fields(const Glib::ustring& fie
   const Document_Glom* document = dynamic_cast<const Document_Glom*>(get_document());
   if(document)
   {
+    //TODO: examine all fields, not just the the shown fields (m_Fields):
     for(type_vecLayoutFields::const_iterator iter = m_Fields.begin(); iter != m_Fields.end();  ++iter)
     {
       const Field& field = iter->m_field;
@@ -580,7 +633,41 @@ Gnome::Gda::Value Box_Data::get_lookup_value(const Relationship& relationship, c
 
   return result;
 }
-  
+
+void Box_Data::do_calculations(const LayoutItem_Field& field_changed, const Field& primary_key, const Gnome::Gda::Value& primary_key_value)
+{
+  //TODO_Performance: This is profoundly inefficient:
+
+  //Recalculate fields that are triggered by a change of this field's value:
+  const type_vecLayoutFields calculated_fields = get_calculated_fields(field_changed.get_name());
+  for(type_vecLayoutFields::const_iterator iter = calculated_fields.begin(); iter != calculated_fields.end(); ++iter)
+  {
+    //recalculate:
+     const type_map_fields field_values = get_record_field_values(primary_key_value);
+     Gnome::Gda::Value value = glom_evaluate_python_function_implementation(iter->m_field.get_glom_type(), iter->m_field.get_calculation(), field_values);
+
+    //show it:
+    set_entered_field_data(*iter, value);
+
+    //Add it to the database (even if it is not shown in the view)
+    set_field_value_in_database(*iter, value, primary_key, primary_key_value);
+  }
+}
+
+void Box_Data::set_field_value_in_database(const LayoutItem_Field& field_layout, const Gnome::Gda::Value& field_value, const Field& primary_key, const Gnome::Gda::Value& primary_key_value)
+{
+  const Field& field = field_layout.m_field;
+
+  const Glib::ustring field_name = field_layout.get_name();
+  if(!field_name.empty()) //This should not happen.
+  {
+    Glib::ustring strQuery = "UPDATE " + m_strTableName;
+    strQuery += " SET " + field_name + " = " + field.sql(field_value);
+    strQuery += " WHERE " + primary_key.get_name() + " = " + primary_key.sql(primary_key_value);
+    Query_execute(strQuery);  //TODO: Handle errors
+  }
+}
+
 Document_Glom::type_mapLayoutGroupSequence Box_Data::get_data_layout_groups(const Glib::ustring& layout)
 {
   Document_Glom::type_mapLayoutGroupSequence layout_groups;

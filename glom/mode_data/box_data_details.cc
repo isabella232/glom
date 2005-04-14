@@ -24,6 +24,7 @@
 #include "../data_structure/glomconversions.h"
 #include "dialog_layout_details.h"
 #include <bakery/App/App_Gtk.h> //For util_bold_message().
+#include "../python_embed/glom_python.h"
 #include <libgnomevfsmm.h>
 #include <libgnome/gnome-url.h>
 #include <sstream> //For stringstream
@@ -55,10 +56,10 @@ Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
       m_pDialogLayout->signal_hide().connect( sigc::mem_fun(static_cast<Box_Data&>(*this), &Box_Data::on_dialog_layout_hide) );
     }
   }
-  
+
   m_FlowTable.set_columns_count(1); //Sub-groups will have multiple columns (by default, there is one sub-group, with 2 columns).
   m_FlowTable.set_padding(6);
-  
+
   m_strHint = _("When you change the data in a field the database is updated immediately.\n Click [New] to add a new record.\n Leave automatic ID fields empty - they will be filled for you.");
 
 
@@ -595,6 +596,9 @@ void Box_Data_Details::on_flowtable_field_edited(const LayoutItem_Field& layout_
         //Get-and-set values for lookup fields, if this field triggers those relationships:
         do_lookups(layout_field, field_value, primary_key_field, primary_key_value);
 
+        //Recalculate calculated fields, if this field is used by them:
+        do_calculations(layout_field, primary_key_field, primary_key_value);
+
         //Show new values for related fields:
         refresh_related_fields(layout_field, field_value, primary_key_field, primary_key_value);
 
@@ -714,13 +718,13 @@ void Box_Data_Details::do_lookups(const LayoutItem_Field& field_changed, const G
    //Get values for lookup fields, if this field triggers those relationships:
    //TODO_performance: There is a LOT of iterating and copying here.
    const Glib::ustring strFieldName = field_changed.get_name();
-   type_list_lookups lookups = get_lookup_fields(strFieldName);
+   const type_list_lookups lookups = get_lookup_fields(strFieldName);
    for(type_list_lookups::const_iterator iter = lookups.begin(); iter != lookups.end(); ++iter)
    {
-     const LayoutItem_Field& layout_Item = iter->first;
+     const LayoutItem_Field& layout_item = iter->first;
 
      const Relationship relationship = iter->second;
-     const Field& field_lookup = layout_Item.m_field;
+     const Field& field_lookup = layout_item.m_field;
      const Glib::ustring field_lookup_name = field_lookup.get_name();
 
      Field field_source;
@@ -730,21 +734,15 @@ void Box_Data_Details::do_lookups(const LayoutItem_Field& field_changed, const G
        Gnome::Gda::Value value = get_lookup_value(iter->second /* relationship */,  field_source /* the field to look in to get the value */, field_value /* Value of to and from fields */);
 
        //Add it to the view:
-       LayoutItem_Field layout_item;
-       layout_item.set_name(field_lookup_name);
        //TODO? layout_item.set_relationship_name();
-       m_FlowTable.set_field_value(layout_item, value);
+       set_entered_field_data(layout_item, value);
 
        //Add it to the database (even if it is not shown in the view)
-       Glib::ustring strQuery = "UPDATE " + m_strTableName;
-       strQuery += " SET " + field_lookup_name + " = " + field_lookup.sql(value);
-       strQuery += " WHERE " + primary_key.get_name() + " = " + primary_key.sql(primary_key_value);
-       Query_execute(strQuery);  //TODO: Handle errors
+       set_field_value_in_database(layout_item, value, primary_key, primary_key_value);
 
        //TODO: Handle lookups triggered by these fields (recursively)? TODO: Check for infinitely looping lookups.
      }
    }
-
 }
 
 void Box_Data_Details::on_userlevel_changed(AppState::userlevels user_level)

@@ -432,6 +432,9 @@ void Box_Data_List::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, 
         //Get-and-set values for lookup fields, if this field triggers those relationships:
         do_lookups(row, layout_field, field_value, primary_key_field, primary_key_value);
 
+        //Recalculate calculated fields, if this field is used by them:
+        do_calculations(layout_field, primary_key_field, primary_key_value);
+
         //Update related fields, if this field is used in the relationship:
         refresh_related_fields(row, layout_field, field_value, primary_key_field, primary_key_value);
       }

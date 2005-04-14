@@ -167,6 +167,9 @@ Glib::ustring Field::get_title_or_name() const
 
 Glib::ustring Field::sql(const Gnome::Gda::Value& value) const
 {
+//g_warning("Field::sql: glom_type=%d", get_glom_type());
+
+
   if(value.is_null())
   {
     switch(get_glom_type())
@@ -180,6 +183,12 @@ Glib::ustring Field::sql(const Gnome::Gda::Value& value) const
       case(TYPE_TIME):
       case(TYPE_NUMERIC):
       {
+        return "NULL";
+        break;
+      }
+      case(TYPE_INVALID):
+      {
+        g_warning("Field::sql(): The field type is INVALID.");
         return "NULL";
         break;
       }
