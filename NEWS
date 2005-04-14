@@ -6,12 +6,17 @@
 * List: Do lookups, and refresh related fields, when 
   adding new records, not only when changing existing 
   records.
+* Details and Lists Layout: Field formatting is now in a 
+  separate dialog window.
 * Boring Internals:
   - The List view's TreeModel now gets the data from the 
   database dynamically on-demand, though it probably 
   needs some more work to do that as efficiently as 
   possible.
   - Now depends on pygtk and gnome-python-extras/libgda.
+* Translations:
+  Updated: Candadian English (Adam Weinberger),
+  German (Hendrik Brandt), Czech (Miloslav Trmac) 
 
 0.8.20:
 

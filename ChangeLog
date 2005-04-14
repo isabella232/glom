@@ -1,3 +1,11 @@
+0.8.21:
+
+2005-04-14  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/application.cc: Updated copyright year.
+	* glom/frame_glom.cc: Use US spelling of 
+	canceled. Bug #300139.
+
 2005-04-14  Murray Cumming <murrayc@murrayc.com>
 
 	* examples/example_smallbusiness.glom:

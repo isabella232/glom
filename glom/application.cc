@@ -56,7 +56,7 @@ bool App_Glom::init(const Glib::ustring& document_uri)
 {
   type_vecStrings vecAuthors;
   vecAuthors.push_back("Murray Cumming <murrayc@murrayc.com>");
-  set_about_information(VERSION, vecAuthors, _("(C) 2000-2004 Murray Cumming"), _("A Database GUI"));
+  set_about_information(VERSION, vecAuthors, _("(C) 2000-2005 Murray Cumming"), _("A Database GUI"));
 
   type_base::init(); //calls init_menus() and init_toolbars()
 
