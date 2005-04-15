@@ -91,6 +91,17 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
   PyObject* pMain = PyImport_AddModule("__main__");
   PyObject* pDict = PyModule_GetDict(pMain);
 
+  PyObject* module_glom = PyImport_ImportModule("glom");
+  if(!module_glom)
+    g_warning("Could not import python glom module.");
+
+  PyObject* module_glom_dict = PyModule_GetDict(module_glom);
+  //This seems to be different to PyGlomRecord_GetPyType() - we can PyObject_Call() this one to instantiate it.
+  PyObject* pyTypeGlomRecord = PyDict_GetItemString(module_glom_dict, "Record"); //TODO: Unref this?
+  if(!pyTypeGlomRecord || !PyType_Check(pyTypeGlomRecord))
+    g_warning("Could not get glom.Record from glom_module.");
+
+
   PyObject* module_gda = PyImport_ImportModule("gda");
   if(!module_gda)
     g_warning("Could not import python gda module.");
@@ -99,6 +110,7 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
   PyObject* pyTypeGdaValue = PyDict_GetItemString(module_gda_dict, "Value"); //TODO: Unref this?
   if(!pyTypeGdaValue || !PyType_Check(pyTypeGdaValue))
     g_warning("Could not get gda.Value from gda_module.");
+
 
   //Create the function definition:
   PyObject* pyValue = PyRun_String(func_def.c_str(), Py_file_input, pDict, pDict);
@@ -123,13 +135,13 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
     }
 
     //The function's parameter:
-    PyObject* pArgs = PyTuple_New(1);
+  
     //PyObject* pParam = PyString_FromString("test value"); //This test did not need the extra ref.
-    PyGlomRecord* pParam = PyObject_New(PyGlomRecord, PyGlomRecord_GetPyType());
+
     PyObject* new_args = PyTuple_New(0);
-    ((PyObject*)pParam)->ob_type->tp_init(((PyObject*)pParam), new_args, 0);
+    PyGlomRecord* pParam = (PyGlomRecord*)PyObject_Call((PyObject*)pyTypeGlomRecord, new_args, 0);
+    //PyGlomRecord* pParam = (PyGlomRecord*)PyObject_Call((PyObject*)PyGlomRecord_GetPyType(), new_args, 0);
     Py_DECREF(new_args);
-    
     if(pParam)
     {
       Py_INCREF(pParam); //TODO: As I understand it, PyObject_New() should return a new reference, so this should not be necessary.
@@ -137,6 +149,7 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
       //Fill the record's details:
       PyGlomRecord_SetFields(pParam, field_values);
 
+      PyObject* pArgs = PyTuple_New(1);
       PyTuple_SetItem(pArgs, 0, (PyObject*)pParam); //The pParam reference is taken by PyTuple_SetItem().
 
       //Call the function with this parameter:

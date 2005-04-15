@@ -37,13 +37,13 @@
 static PyObject *
 Record_new(PyTypeObject *type, PyObject * /* args */, PyObject * /* kwds */)
 {
+g_warning("Record_new");
   PyGlomRecord *self  = (PyGlomRecord*)type->tp_alloc(type, 0);
   if(self)
   {
     self->m_py_gda_connection = 0;
 
-    //if(self->m_fields_dict == 0)
-    //  self->m_fields_dict = PyDict_New();
+    self->m_pMap_field_values = new PyGlomRecord::type_map_field_values();
   }
 
   return (PyObject*)self;
@@ -53,6 +53,7 @@ Record_new(PyTypeObject *type, PyObject * /* args */, PyObject * /* kwds */)
 static int
 Record_init(PyGlomRecord *self, PyObject * /* args */, PyObject * /* kwds */)
 {
+g_warning("Record_new");
   //static char *kwlist[] = {"test", NULL};
 
   //if(!PyArg_ParseTupleAndKeywords(args, kwds, "|i", kwlist,
@@ -61,10 +62,10 @@ Record_init(PyGlomRecord *self, PyObject * /* args */, PyObject * /* kwds */)
 
   if(self)
   {
-    //if(self->m_fields_dict == 0)
-    //  self->m_fields_dict = PyDict_New();
-
     self->m_py_gda_connection = 0;
+
+    if(self->m_pMap_field_values == 0)
+      self->m_pMap_field_values = new PyGlomRecord::type_map_field_values();
   }
 
   return 0;
@@ -73,11 +74,11 @@ Record_init(PyGlomRecord *self, PyObject * /* args */, PyObject * /* kwds */)
 static void
 Record_dealloc(PyGlomRecord* self)
 {
-  //if(self->m_fields_dict)
- // {
- //   Py_XDECREF(self->m_fields_dict);
- //   self->m_fields_dict = 0;
- // }
+  if(self->m_pMap_field_values)
+  {
+    delete self->m_pMap_field_values;
+    self->m_pMap_field_values = 0;
+  }
 
   if(self->m_py_gda_connection)
   {
@@ -118,7 +119,7 @@ static PyGetSetDef Record_getseters[] = {
 static int
 Record_tp_as_mapping_length(PyGlomRecord *self)
 {
-  return self->m_map_field_values.size();
+  return self->m_pMap_field_values->size();
 }
 
 static PyObject *
@@ -132,10 +133,10 @@ Record_tp_as_mapping_getitem(PyGlomRecord *self, PyObject *item)
       const Glib::ustring key(pchKey);
  g_warning("Record_tp_as_mapping_getitem() 2: index=%s.", key.c_str());
 
-      PyGlomRecord::type_map_field_values::const_iterator iterFind = self->m_map_field_values.find(key);
+      PyGlomRecord::type_map_field_values::const_iterator iterFind = self->m_pMap_field_values->find(key);
  g_warning("Record_tp_as_mapping_getitem() 3");
 
-      if(iterFind != self->m_map_field_values.end())
+      if(iterFind != self->m_pMap_field_values->end())
       {
         g_warning("Record_tp_as_mapping_getitem(): return value.");
         return pygda_value_as_pyobject(iterFind->second.gobj(), true /* copy */);
@@ -236,7 +237,7 @@ void PyGlomRecord_SetConnection(PyGlomRecord* self, const Glib::RefPtr<Gnome::Gd
 
 void PyGlomRecord_SetFields(PyGlomRecord* self, const PyGlomRecord::type_map_field_values& fields)
 {
-  self->m_map_field_values = fields;
+  *(self->m_pMap_field_values) = fields;
 
   /*
   if(self->m_fields_dict == 0)

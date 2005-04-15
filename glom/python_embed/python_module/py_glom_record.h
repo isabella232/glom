@@ -30,7 +30,7 @@
 
 class PyGlomRelated;
 
-class PyGlomRecord
+struct PyGlomRecord
 {
 public:
   PyObject_HEAD
@@ -41,7 +41,8 @@ public:
 
   //Available, for instance, in python via record["name_first"]
   typedef std::map<Glib::ustring, Gnome::Gda::Value> type_map_field_values;
-  type_map_field_values m_map_field_values;
+  //We use a pointer because python will not run the class/struct's default constructor.
+  type_map_field_values* m_pMap_field_values; 
 };
 
 PyTypeObject* PyGlomRecord_GetPyType();

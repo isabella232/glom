@@ -456,11 +456,11 @@ Field::type_list_strings Field::get_calculation_fields() const
 
   Glib::ustring::size_type index = 0;
   const Glib::ustring::size_type count = m_calculation.size();
-  const Glib::ustring::size_type prefix_size = 8; //"fields[\""
+  const Glib::ustring::size_type prefix_size = 8; //"record[\""
 
   while(index < count)
   {
-    Glib::ustring::size_type pos_find = m_calculation.find("fields[\"", index);
+    Glib::ustring::size_type pos_find = m_calculation.find("record[\"", index);
     if(pos_find != Glib::ustring::npos)
     {
       Glib::ustring::size_type pos_find_end = m_calculation.find("\"]", pos_find);
