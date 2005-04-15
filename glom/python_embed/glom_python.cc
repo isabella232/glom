@@ -65,6 +65,9 @@ void HandlePythonError()
 Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field_type result_type, const Glib::ustring& func_impl,
     const type_map_fields& field_values)
 {
+  g_assert(result_type != Field::TYPE_INVALID);
+
+  g_warning("glom_evaluate_python_function_implementation: func=%s", func_impl.c_str());
   Gnome::Gda::Value valueResult;
 
   Glib::ustring func_def;
@@ -115,91 +118,101 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
     if(!PyCallable_Check(pFunc))
     {
       g_warning("pFunc is not callable.");
+      return valueResult;
     }
 
     //The function's parameter:
     PyObject* pArgs = PyTuple_New(1);
     //PyObject* pParam = PyString_FromString("test value"); //This test did not need the extra ref.
-    PyGlomRecord* pParam = PyObject_New(PyGlomRecord, PyGlomRecord_GetPyType());
     PyObject* new_args = PyTuple_New(0);
-    ((PyObject*)pParam)->ob_type->tp_init(((PyObject*)pParam), new_args, 0);
+    PyGlomRecord* pParam = (PyGlomRecord*)PyObject_Call((PyObject*)PyGlomRecord_GetPyType(), new_args, 0); //Instantiates an instance of the type.
     Py_DECREF(new_args);
-
-    Py_INCREF(pParam); //TODO: As I understand it, PyObject_New() should return a new reference, so this should not be necessary.
-
-    //Fill the record's details:
-    PyGlomRecord_SetFields(pParam, field_values);
-
-    PyTuple_SetItem(pArgs, 0, (PyObject*)pParam); //The pParam reference is taken by PyTuple_SetItem().
-
-    //Call the function with this parameter:
-    PyObject* pyResult = PyObject_CallObject(pFunc, pArgs);
-    Py_DECREF(pArgs);
-
-    if(!pyResult)
+    if(!pParam)
     {
-      g_warning("pyResult was null");
-      HandlePythonError();
+      g_warning("Could not instantiate PyGloMRecord.");
     }
     else
     {
-      //Deal with the various possible return types:
-      bool object_is_gda_value = false;
+      PyObject* new_args = PyTuple_New(0);
+      ((PyObject*)pParam)->ob_type->tp_init(((PyObject*)pParam), new_args, 0);
+      Py_DECREF(new_args);
+  
+      Py_INCREF(pParam); //TODO: As I understand it, PyObject_New() should return a new reference, so this should not be necessary.
+  
+      //Fill the record's details:
+      PyGlomRecord_SetFields(pParam, field_values);
+  
+      PyTuple_SetItem(pArgs, 0, (PyObject*)pParam); //The pParam reference is taken by PyTuple_SetItem().
+  
+      //Call the function with this parameter:
+      PyObject* pyResult = PyObject_CallObject(pFunc, pArgs);
+      Py_DECREF(pArgs);
 
-      //This is a hack - see below:
-      //if( strcmp(pyResult->ob_type->tp_name, "gda.Value") == 0 )
-      //  object_is_gda_value = true;
-
-      //g_warning("debug: pyResult->ob_type->tp_name=%s", pyResult->ob_type->tp_name);
-      //g_warning("debug: pyTypeGdaValue->tp_name=%s", ((PyTypeObject*)pyTypeGdaValue)->tp_name);
-
-      int test = PyType_IsSubtype(pyResult->ob_type, (PyTypeObject*)pyTypeGdaValue);
-      if(test == -1)
-        HandlePythonError();
-
-      if(test == 1) // 0 means false, -1 means error.
-        object_is_gda_value = true;
-
-      if(object_is_gda_value)
+      if(!pyResult)
       {
-        //Cast it to the "derived" struct type:
-        //All boxed types are wrapped with PyGBoxed in pygtk, without their own special structs,
-        //and GValue is a boxed-type.
-        PyGBoxed* pygtkobject = (PyGBoxed*)pyResult;
-        if(pygtkobject)
-        {
-          GdaValue* cboxed = (GdaValue*)pygtkobject->boxed;
-          if(cboxed)
-            valueResult = Glib::wrap(cboxed, true /* take_copy */);
-          g_warning("PyGBoxed::boxed is null");
-        }
-        else
-          g_warning("PyGBoxed is null");
+        g_warning("pyResult was null");
+        HandlePythonError();
       }
       else
       {
-        //g_warning("debug: pyResult is not a gda.value");
-
-        //TODO: Handle numeric/date/time types:
-
-        //Treat this as a string or something that can be converted to a string:
-        PyObject* pyObjectResult = PyObject_Str(pyResult);
-        if(PyString_Check(pyObjectResult))
+        //Deal with the various possible return types:
+        bool object_is_gda_value = false;
+  
+        //This is a hack - see below:
+        //if( strcmp(pyResult->ob_type->tp_name, "gda.Value") == 0 )
+        //  object_is_gda_value = true;
+  
+        //g_warning("debug: pyResult->ob_type->tp_name=%s", pyResult->ob_type->tp_name);
+        //g_warning("debug: pyTypeGdaValue->tp_name=%s", ((PyTypeObject*)pyTypeGdaValue)->tp_name);
+  
+        int test = PyType_IsSubtype(pyResult->ob_type, (PyTypeObject*)pyTypeGdaValue);
+        if(test == -1)
+          HandlePythonError();
+  
+        if(test == 1) // 0 means false, -1 means error.
+          object_is_gda_value = true;
+  
+        if(object_is_gda_value)
         {
-          const char* pchResult = PyString_AsString(pyObjectResult);
-          if(pchResult)
+          //Cast it to the "derived" struct type:
+          //All boxed types are wrapped with PyGBoxed in pygtk, without their own special structs,
+          //and GValue is a boxed-type.
+          PyGBoxed* pygtkobject = (PyGBoxed*)pyResult;
+          if(pygtkobject)
           {
-            bool success = false;
-            valueResult = GlomConversions::parse_value(result_type, pchResult, success, true /* iso_format */);
+            GdaValue* cboxed = (GdaValue*)pygtkobject->boxed;
+            if(cboxed)
+              valueResult = Glib::wrap(cboxed, true /* take_copy */);
+            g_warning("PyGBoxed::boxed is null");
           }
           else
-            g_warning("pchResult is null");
+            g_warning("PyGBoxed is null");
         }
         else
-          g_warning("PyString_Check returned false");
+        {
+          //g_warning("debug: pyResult is not a gda.value");
+  
+          //TODO: Handle numeric/date/time types:
+  
+          //Treat this as a string or something that can be converted to a string:
+          PyObject* pyObjectResult = PyObject_Str(pyResult);
+          if(PyString_Check(pyObjectResult))
+          {
+            const char* pchResult = PyString_AsString(pyObjectResult);
+            if(pchResult)
+            {
+              bool success = false;
+              valueResult = GlomConversions::parse_value(result_type, pchResult, success, true /* iso_format */);
+            }
+            else
+              g_warning("pchResult is null");
+          }
+          else
+            g_warning("PyString_Check returned false");
+        }
+  
+        Py_DECREF(pyResult);
       }
-
-      Py_DECREF(pyResult);
     }
   }
 
