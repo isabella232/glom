@@ -24,9 +24,9 @@ def main ():
    # I use this to see what API exists.
    print dir(glom)
 
-   test = glom.Record();
-   print test.fields;
-   print test.fields["yadda"];
+   #test = glom.Record();
+   #print test.fields;
+   #print test.fields["yadda"];
 
 main ()
 

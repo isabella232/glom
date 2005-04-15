@@ -97,6 +97,9 @@ main(int argc, char* argv[])
     //Get command-line parameters, if any:
     Glib::ustring input_uri = group.m_arg_filename;
 
+    //debugging:
+    //input_uri = "file:///home/murrayc/cvs/gnome212/glom/examples/example_smallbusiness.glom";
+
 
     // Main app
     Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_main");
