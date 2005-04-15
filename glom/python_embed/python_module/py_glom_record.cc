@@ -146,30 +146,6 @@ PyTypeObject* PyGlomRecord_GetPyType()
   return &pyglom_RecordType;
 }
 
-static PyMethodDef pyglom_methods[] = {
-    {NULL, 0, 0, 0}  /* Sentinel */
-};
-
-PyMODINIT_FUNC
-initglom(void) 
-{
-  PyObject* m;
-
-  //pyglom_RecordType.tp_new = PyType_GenericNew;
-  if (PyType_Ready(&pyglom_RecordType) < 0)
-    return;
-
-  m = Py_InitModule3("glom", pyglom_methods,
-                      "Python module for Glom caluclated fields.");
-
-  Py_INCREF(&pyglom_RecordType);
-  PyModule_AddObject(m, "Record", (PyObject *)&pyglom_RecordType);
-
-  if (PyErr_Occurred())
-    Py_FatalError ("Can't initialise glom module");
-}
-
-
 void Record_HandlePythonError()
 {
   if(PyErr_Occurred())

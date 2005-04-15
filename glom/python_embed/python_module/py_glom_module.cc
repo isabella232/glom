@@ -25,7 +25,7 @@
 #include <objimpl.h> /* for PyObject_New() */
 
 #include "py_glom_record.h"
-//#include "py_glom_related.h"
+#include "py_glom_related.h"
 
 static PyMethodDef pyglom_methods[] = {
     {NULL, 0, 0, 0}  /* Sentinel */
@@ -41,8 +41,8 @@ initglom(void)
   if(PyType_Ready(PyGlomRecord_GetPyType()) < 0)
     return;
 
-  //if(PyType_Ready(PyGlomRelated_GetPyType()) < 0)
-  //  return;
+  if(PyType_Ready(PyGlomRelated_GetPyType()) < 0)
+    return;
 
   m = Py_InitModule3("glom", pyglom_methods,
                       "Python module for Glom caluclated fields.");
@@ -50,8 +50,8 @@ initglom(void)
   Py_INCREF(PyGlomRecord_GetPyType());
   PyModule_AddObject(m, "Record", (PyObject *)PyGlomRecord_GetPyType());
 
-  //Py_INCREF(PyGlomRelated_GetPyType());
-  //PyModule_AddObject(m, "Related", (PyObject *)PyGlomRelated_GetPyType());
+  Py_INCREF(PyGlomRelated_GetPyType());
+  PyModule_AddObject(m, "Related", (PyObject *)PyGlomRelated_GetPyType());
 
 
   if(PyErr_Occurred())

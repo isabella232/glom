@@ -9,4 +9,6 @@ common_ldflags = -module -avoid-version
 pyexec_LTLIBRARIES = glom.la
 glom_la_LDFLAGS = $(common_ldflags) -export-symbols-regex initglom \
                   $(GLOM_LIBS) $(PYTHON_LDFLAGS) -lutil
-glom_la_SOURCES = py_glom_record.cc py_glom_record.h
+glom_la_SOURCES = py_glom_record.cc py_glom_record.h \
+                  py_glom_related.cc py_glom_related.h \
+                  py_glom_module.cc py_glom_module.h
