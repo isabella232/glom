@@ -28,21 +28,27 @@
 #include "../../data_structure/field.h"
 #include <glibmm/ustring.h>
 
+class PyGlomRelated;
 
 class PyGlomRecord
 {
 public:
   PyObject_HEAD
 
-  PyObject* m_fields_dict; //Dictionary (map) of field names (string) to field values (Gnome::Gda::Value).
-  int m_test;
-  PyGBoxed* m_py_gda_value; //"derived" from PyObject.
+  //PyObject* m_fields_dict; //Dictionary (map) of field names (string) to field values (Gnome::Gda::Value).
+  PyGObject* m_py_gda_connection; //"derived" from PyObject.
+  //PyGlomRelated* m_related;
+
+  //Available, for instance, in python via record["name_first"]
+  typedef std::map<Glib::ustring, Gnome::Gda::Value> type_map_field_values;
+  type_map_field_values m_map_field_values;
 };
 
 PyTypeObject* PyGlomRecord_GetPyType();
 
-typedef std::map<Glib::ustring, Gnome::Gda::Value> type_map_fields;
-void PyGlomRecord_SetFields(PyGlomRecord* self, const type_map_fields& fields);
+void PyGlomRecord_SetFields(PyGlomRecord* self, const PyGlomRecord::type_map_field_values& fields);
+
+void PyGlomRecord_SetConnection(PyGlomRecord* self, const Glib::RefPtr<Gnome::Gda::Connection>& connection);
 
 #ifndef PyMODINIT_FUNC	/* declarations for DLL import/export */
 //#define PyMODINIT_FUNC void

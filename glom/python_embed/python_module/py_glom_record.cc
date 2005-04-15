@@ -25,6 +25,8 @@
 #include <objimpl.h> /* for PyObject_New() */
 
 #include "py_glom_record.h"
+#include "py_glom_related.h"
+#include "pygdavalue_conversions.h" //For pygda_value_as_pyobject().
 
 #include "../../data_structure/field.h"
 #include <glibmm/ustring.h>
@@ -38,10 +40,10 @@ Record_new(PyTypeObject *type, PyObject * /* args */, PyObject * /* kwds */)
   PyGlomRecord *self  = (PyGlomRecord*)type->tp_alloc(type, 0);
   if(self)
   {
-    self->m_test = 0;
+    self->m_py_gda_connection = 0;
 
-    if(self->m_fields_dict == 0)
-      self->m_fields_dict = PyDict_New();
+    //if(self->m_fields_dict == 0)
+    //  self->m_fields_dict = PyDict_New();
   }
 
   return (PyObject*)self;
@@ -49,18 +51,20 @@ Record_new(PyTypeObject *type, PyObject * /* args */, PyObject * /* kwds */)
 
 //Set the object's member data, from the parameters supplied when creating the object:
 static int
-Record_init(PyGlomRecord *self, PyObject *args, PyObject *kwds)
+Record_init(PyGlomRecord *self, PyObject * /* args */, PyObject * /* kwds */)
 {
-  static char *kwlist[] = {"test", NULL};
+  //static char *kwlist[] = {"test", NULL};
 
-  if(!PyArg_ParseTupleAndKeywords(args, kwds, "|i", kwlist,
-                                    &self->m_test))
-    return -1;
+  //if(!PyArg_ParseTupleAndKeywords(args, kwds, "|i", kwlist,
+   //                                 &self->m_test))
+   // return -1;
 
   if(self)
   {
-    if(self->m_fields_dict == 0)
-      self->m_fields_dict = PyDict_New();
+    //if(self->m_fields_dict == 0)
+    //  self->m_fields_dict = PyDict_New();
+
+    self->m_py_gda_connection = 0;
   }
 
   return 0;
@@ -69,15 +73,24 @@ Record_init(PyGlomRecord *self, PyObject *args, PyObject *kwds)
 static void
 Record_dealloc(PyGlomRecord* self)
 {
-  Py_XDECREF(self->m_fields_dict);
-  self->m_fields_dict = 0;
+  //if(self->m_fields_dict)
+ // {
+ //   Py_XDECREF(self->m_fields_dict);
+ //   self->m_fields_dict = 0;
+ // }
+
+  if(self->m_py_gda_connection)
+  {
+    Py_XDECREF( (PyObject*)(self->m_py_gda_connection));
+    self->m_py_gda_connection = 0;
+  }
 
   self->ob_type->tp_free((PyObject*)self);
 }
 
-
+/*
 static PyObject *
-Record__get_fields(PyGlomRecord *self, void * /*closure */)
+Record__get_fields(PyGlomRecord *self, void * closure )
 {
   if(self->m_fields_dict)
   {
@@ -90,13 +103,66 @@ Record__get_fields(PyGlomRecord *self, void * /*closure */)
     return Py_None;
   }
 }
+*/
 
+/*
 static PyGetSetDef Record_getseters[] = {
     {"fields",
      (getter)Record__get_fields, (setter)0, 0, 0
     },
-    {NULL, 0, 0, 0, 0, }  /* Sentinel */
+    {NULL, 0, 0, 0, 0, }  // Sentinel
 };
+*/
+
+
+static int
+Record_tp_as_mapping_length(PyGlomRecord *self)
+{
+  return self->m_map_field_values.size();
+}
+
+static PyObject *
+Record_tp_as_mapping_getitem(PyGlomRecord *self, PyObject *item)
+{
+  if(PyString_Check(item))
+  {
+    const char* pchKey = PyString_AsString(item);
+    if(pchKey)
+    {
+      const Glib::ustring key(pchKey);
+ g_warning("Record_tp_as_mapping_getitem() 2: index=%s.", key.c_str());
+
+      PyGlomRecord::type_map_field_values::const_iterator iterFind = self->m_map_field_values.find(key);
+ g_warning("Record_tp_as_mapping_getitem() 3");
+
+      if(iterFind != self->m_map_field_values.end())
+      {
+        g_warning("Record_tp_as_mapping_getitem(): return value.");
+        return pygda_value_as_pyobject(iterFind->second.gobj(), true /* copy */);
+      }
+    }
+  }
+
+  g_warning("Record_tp_as_mapping_getitem(): return null.");
+  PyErr_SetString(PyExc_IndexError, "field not found");
+  return NULL;
+}
+
+/*
+static int
+Record_tp_as_mapping_setitem(PyGObject *self, PyObject *item, PyObject *value)
+{
+  Py_INCREF(Py_None);
+  return Py_None;
+}
+*/
+
+static PyMappingMethods Record_tp_as_mapping = {
+    (inquiry)Record_tp_as_mapping_length,
+    (binaryfunc)Record_tp_as_mapping_getitem,
+    (objobjargproc)0 /* Record_tp_as_mapping_setitem */
+};
+
 
 static PyTypeObject pyglom_RecordType = {
     PyObject_HEAD_INIT(NULL)
@@ -112,7 +178,7 @@ static PyTypeObject pyglom_RecordType = {
     0,                         /*tp_repr*/
     0,                         /*tp_as_number*/
     0,                         /*tp_as_sequence*/
-    0,                         /*tp_as_mapping*/
+    &Record_tp_as_mapping,      /*tp_as_mapping*/
     0,                         /*tp_hash */
     0,                         /*tp_call*/
     0,                         /*tp_str*/
@@ -129,7 +195,7 @@ static PyTypeObject pyglom_RecordType = {
     0,                   /* tp_iternext */
     0 /* Record_methods */,             /* tp_methods */
     0 /* Record_members */,             /* tp_members */
-    Record_getseters,                   /* tp_getset */
+    0, /* Record_getseters, */                   /* tp_getset */
     0,                         /* tp_base */
     0,                         /* tp_dict */
     0,                         /* tp_descr_get */
@@ -146,15 +212,33 @@ PyTypeObject* PyGlomRecord_GetPyType()
   return &pyglom_RecordType;
 }
 
+
+
+
 void Record_HandlePythonError()
 {
   if(PyErr_Occurred())
     PyErr_Print();
 }
 
-//typedef std::map<Glib::ustring, Gnome::Gda::Value> type_map_fields;
-void PyGlomRecord_SetFields(PyGlomRecord* self, const type_map_fields& fields)
+void PyGlomRecord_SetConnection(PyGlomRecord* self, const Glib::RefPtr<Gnome::Gda::Connection>& connection)
 {
+  //Forget any previously-set connection:
+  if(self->m_py_gda_connection)
+  {
+    Py_XDECREF( (PyObject*)(self->m_py_gda_connection));
+    self->m_py_gda_connection = 0;
+  }
+
+  connection->reference(); //Give 1 reference to the
+  self->m_py_gda_connection = (PyGObject*)pygobject_new((GObject*)connection->gobj()); //takes the given reference and unrefs in PyGObject::tp_dealloc.
+}
+
+void PyGlomRecord_SetFields(PyGlomRecord* self, const PyGlomRecord::type_map_field_values& fields)
+{
+  self->m_map_field_values = fields;
+
+  /*
   if(self->m_fields_dict == 0)
     self->m_fields_dict = PyDict_New();
 
@@ -206,6 +290,7 @@ void PyGlomRecord_SetFields(PyGlomRecord* self, const type_map_fields& fields)
 
     PyDict_SetItemString(self->m_fields_dict, iter->first.c_str(), pyValue);
   }
+  */
 }
 
 
