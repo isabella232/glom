@@ -1,3 +1,17 @@
+2005-04-16  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/data_structure/layout/layoutitem_field.cc:
+	* glom/data_structure/layout/layoutitem_field.h:
+	Forward get/set_name() to m_field instead of 
+	using m_name from the base class.
+	* glom/document/document_glom.cc:
+	* glom/mode_data/box_data.cc:
+	* glom/mode_data/box_data_details.cc:
+	* glom/mode_data/box_data_list.cc:
+	* glom/mode_data/box_data_list_related.cc:
+	Remove set_name() where we also set m_field with 
+	an identical name.
+
 2005-04-16  Murray Cumming <murrayc@murrayc.com>
 
 	* glom/python_embed/python_module/py_glom_relatedrecord.cc:

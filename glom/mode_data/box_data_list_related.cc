@@ -161,7 +161,6 @@ void Box_Data_List_Related::on_record_added(const Gnome::Gda::Value& primary_key
     Gnome::Gda::Value key_value;
     //m_key_field is the field in this table that must match another field in the parent table.
     LayoutItem_Field layout_item;
-    layout_item.set_name(m_key_field.get_name());
     layout_item.m_field = m_key_field;
     key_value = m_AddDel.get_value(iter, layout_item);
 
@@ -192,7 +191,6 @@ void Box_Data_List_Related::on_record_added(const Gnome::Gda::Value& primary_key
       {
         //Show it on the view, if it's visible:
         LayoutItem_Field layout_item;
-        layout_item.set_name( field_primary_key.get_name() );
         layout_item.m_field = field_primary_key;
 
         m_AddDel.set_value(iter, layout_item, m_key_value);

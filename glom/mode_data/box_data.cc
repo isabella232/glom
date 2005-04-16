@@ -120,7 +120,6 @@ Box_Data::type_map_fields Box_Data::get_record_field_values(const Gnome::Gda::Va
     for(Document_Glom::type_vecFields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
     {
       LayoutItem_Field layout_item;
-      layout_item.set_name(iter->get_name());
       layout_item.m_field = *iter;
       fieldsToGet.push_back(layout_item);
     }
@@ -161,7 +160,6 @@ Glib::RefPtr<Gnome::Gda::DataModel> Box_Data::record_new(bool use_entered_data, 
   if(iterFindPrimary == fieldsToAdd.end())
   {
     LayoutItem_Field layout_item;
-    layout_item.set_name(primary_key_name);
     layout_item.m_field = fieldPrimaryKey;
 
     fieldsToAdd.push_back(layout_item);
@@ -424,7 +422,6 @@ Box_Data::type_vecLayoutFields Box_Data::get_table_fields_to_show(const Glib::us
       if(bPrimaryKeyFound)
       {
         LayoutItem_Field layout_item;
-        layout_item.set_name(primary_key_field_name);
         layout_item.m_field = all_fields[iPrimaryKey];
 
         //Don't use thousands separators with ID numbers:
@@ -447,7 +444,6 @@ Box_Data::type_vecLayoutFields Box_Data::get_table_fields_to_show(const Glib::us
         if(iter->get_name() != primary_key_field_name) //We already added the primary key.
         {
           LayoutItem_Field layout_item;
-          layout_item.set_name(iter->get_name());
           layout_item.m_field = field_info;
 
           layout_item.set_editable(true); //A sensible default.

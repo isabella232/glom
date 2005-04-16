@@ -196,7 +196,6 @@ void Box_Data_Details::fill_from_database()
       {
         //Add extra possibly-non-visible columns that we need:
         LayoutItem_Field layout_item;
-        layout_item.set_name(m_field_primary_key.get_name());
         layout_item.m_field = m_field_primary_key;
         fieldsToGet.push_back(layout_item);
 

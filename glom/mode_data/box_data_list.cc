@@ -109,7 +109,6 @@ void Box_Data_List::fill_from_database()
 
       LayoutItem_Field layout_item;
       Field field_key = m_AddDel.get_key_field();
-      layout_item.set_name(field_key.get_name());
       layout_item.m_field = field_key;
       fieldsToGet.push_back(layout_item);
       //const int index_primary_key = fieldsToGet.size() - 1;
@@ -281,7 +280,6 @@ void Box_Data_List::on_adddel_user_added(const Gtk::TreeModel::iterator& row, gu
   {
     //This only works when the primary key is already stored: primary_key_value = get_primary_key_value(row);
     LayoutItem_Field layout_item;
-    layout_item.set_name(field_primary_key.get_name());
     layout_item.m_field = field_primary_key;
     primary_key_value = get_entered_field_data(layout_item);
   }
@@ -304,7 +302,6 @@ void Box_Data_List::on_adddel_user_added(const Gtk::TreeModel::iterator& row, gu
         if(fieldInfo.get_auto_increment())
         {
           LayoutItem_Field layout_item;
-          layout_item.set_name(field_primary_key.get_name());
           layout_item.m_field = field_primary_key;
           m_AddDel.set_value(row, layout_item, primary_key_value);
         }
@@ -681,7 +678,6 @@ void Box_Data_List::fill_column_titles()
       LayoutItem_Field layout_item;
       layout_item.set_hidden();
       Field field_key = m_AddDel.get_key_field();
-      layout_item.set_name(field_key.get_name());
       layout_item.m_field = field_key;
       m_Fields.push_back(layout_item);
 
