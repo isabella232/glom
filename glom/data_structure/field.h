@@ -124,6 +124,8 @@ public:
   typedef std::list<Glib::ustring> type_list_strings;
   type_list_strings get_calculation_fields() const;
 
+  type_list_strings get_calculation_relationships() const;
+
   void set_visible(bool val = true);
   bool get_visible() const;
 

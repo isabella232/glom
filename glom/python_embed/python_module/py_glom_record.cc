@@ -40,7 +40,6 @@ Record_new(PyTypeObject *type, PyObject * /* args */, PyObject * /* kwds */)
   PyGlomRecord *self  = (PyGlomRecord*)type->tp_alloc(type, 0);
   if(self)
   {
-    self->m_py_gda_connection = 0;
     self->m_related = 0;
 
     self->m_pMap_field_values = new PyGlomRecord::type_map_field_values();
@@ -61,7 +60,6 @@ Record_init(PyGlomRecord *self, PyObject * /* args */, PyObject * /* kwds */)
 
   if(self)
   {
-    self->m_py_gda_connection = 0;
     self->m_related = 0;
 
     if(self->m_pMap_field_values == 0)
@@ -78,12 +76,6 @@ Record_dealloc(PyGlomRecord* self)
   {
     delete self->m_pMap_field_values;
     self->m_pMap_field_values = 0;
-  }
-
-  if(self->m_py_gda_connection)
-  {
-    Py_XDECREF( (PyObject*)(self->m_py_gda_connection));
-    self->m_py_gda_connection = 0;
   }
 
   self->ob_type->tp_free((PyObject*)self);
@@ -231,18 +223,6 @@ static void Record_HandlePythonError()
 }
 */
 
-void PyGlomRecord_SetConnection(PyGlomRecord* self, const Glib::RefPtr<Gnome::Gda::Connection>& connection)
-{
-  //Forget any previously-set connection:
-  if(self->m_py_gda_connection)
-  {
-    Py_XDECREF( (PyObject*)(self->m_py_gda_connection));
-    self->m_py_gda_connection = 0;
-  }
-
-  connection->reference(); //Give 1 reference to the
-  self->m_py_gda_connection = (PyGObject*)pygobject_new((GObject*)connection->gobj()); //takes the given reference and unrefs in PyGObject::tp_dealloc.
-}
 
 void PyGlomRecord_SetFields(PyGlomRecord* self, const PyGlomRecord::type_map_field_values& field_values, Document_Glom* document, const Glib::ustring& table_name)
 {

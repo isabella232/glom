@@ -583,7 +583,7 @@ Gnome::Gda::Value GlomConversions::get_example_value(Field::glom_field_type fiel
     case(Field::TYPE_NUMERIC):
     {
       bool success = false;
-      return parse_value(field_type, "123", success, true /* iso_format */);
+      return parse_value(field_type, "1", success, true /* iso_format */);
     }
     case(Field::TYPE_TEXT):
       return Gnome::Gda::Value( Glib::ustring("example") ); //Use an empty string instead of a null for text fields, because the distinction is confusing for users, and gives no advantages.

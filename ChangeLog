@@ -1,3 +1,22 @@
+2005-04-16  Murray Cumming <murrayc@murrayc.com>
+
+	* examples/example_smallbusiness.glom:
+	Add count and total_price (calculated) fields to invoice_lines.
+	Add price_total (calculated) field to invoices.
+	* glom/data_structure/field.cc:
+	* glom/data_structure/field.h:
+	Add get_calculation_relationships() to discover what relationships 
+	are used by a calculation.
+	* glom/data_structure/glomconversions.cc:
+	Change example value for numbers to 1 from 123, so we are more 
+	likely to find related records when testing calculations.
+	* glom/python_embed/python_module/py_glom_record.cc:
+	* glom/python_embed/python_module/py_glom_record.h:
+	Remove the unused m_gda_connection member variable. 
+	* glom/python_embed/python_module/py_glom_relatedrecord.cc:
+	Add sum(), count(), min(), and max() python methods. For instance, 
+	record["invoice_lines"].sum("total_price");
+
 2005-04-16  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/data_structure/layout/layoutitem_field.cc:

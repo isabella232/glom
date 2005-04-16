@@ -197,13 +197,7 @@ RelatedRecord_tp_as_mapping_getitem(PyGlomRelatedRecord *self, PyObject *item)
 
               //Cache it, in case it's asked-for again.
               (*(self->m_pMap_field_values))[field_name] = value;
-              PyObject* ret = pygda_value_as_pyobject(value.gobj(), true /* copy */);
-
-              g_warning("RelatedRecord_tp_as_mapping_getitem(): ret=%d", (int)ret);
-              if(PyString_Check(ret))
-                g_warning("RelatedRecord_tp_as_mapping_getitem(): ret is a PyString");
-
-              return ret;
+              return pygda_value_as_pyobject(value.gobj(), true /* copy */);
             }
             else if(!datamodel)
             {
@@ -240,6 +234,114 @@ static PyMappingMethods RelatedRecord_tp_as_mapping = {
     (objobjargproc)0 /* RelatedRecord_tp_as_mapping_setitem */
 };
 
+static PyObject *
+RelatedRecord_generic_aggregate(PyGlomRelatedRecord* self, PyObject *args, PyObject *kwargs, const Glib::ustring& aggregate)
+{
+  static char *kwlist[] = { "field_name", 0 };
+  PyObject* py_field_name = 0;
+
+  if (!PyArg_ParseTupleAndKeywords(args, kwargs, "O:RelatedRecord.sum", kwlist, &py_field_name))
+    return NULL;
+
+  if(!(PyString_Check(py_field_name)))
+    return NULL;
+
+  const char* pchKey = PyString_AsString(py_field_name);
+  if(pchKey)
+  {
+    const Glib::ustring field_name(pchKey);
+    const Glib::ustring related_table = self->m_relationship->get_to_table();
+
+    //Check whether the field exists in the table.
+    //TODO_Performance: Do this without the useless Field information?
+    Field field;
+    bool exists = self->m_document->get_field(self->m_relationship->get_to_table(), field_name, field);
+    if(!exists)
+      g_warning("RelatedRecord_sum: field %s not found in table %s", field_name.c_str(), self->m_relationship->get_to_table().c_str());
+    else
+    {
+      //Try to get the value from the database:
+      //const Glib::ustring parent_key_name;
+      sharedptr<SharedConnection> sharedconnection = ConnectionPool::get_instance()->connect();
+      if(sharedconnection)
+      {
+        Glib::RefPtr<Gnome::Gda::Connection> gda_connection = sharedconnection->get_gda_connection();
+
+        const Glib::ustring related_key_name = self->m_relationship->get_to_field();
+
+        Glib::ustring sql_query = "SELECT " + aggregate + "(" + related_table + "." + field_name + ") FROM " + related_table
+          + " WHERE " + related_table + "." + related_key_name + " = " + *(self->m_from_key_value_sqlized);
+
+        std::cout << "PyGlomRelatedRecord: Executing:  " << sql_query << std::endl;
+        Glib::RefPtr<Gnome::Gda::DataModel> datamodel = gda_connection->execute_single_command(sql_query);
+        if(datamodel && datamodel->get_n_rows())
+        {
+          Gnome::Gda::Value value = datamodel->get_value_at(0, 0);
+          g_warning("RelatedRecord_sum(): value from datamodel = %s", value.to_string().c_str());
+
+          //Cache it, in case it's asked-for again.
+          (*(self->m_pMap_field_values))[field_name] = value;
+          return pygda_value_as_pyobject(value.gobj(), true /* copy */);
+        }
+        else if(!datamodel)
+        {
+          g_warning("RelatedRecord_tp_as_mapping_getitem(): The datamodel was null.");
+          RelatedRecord_HandlePythonError();
+        }
+        else
+        {
+          g_warning("RelatedRecord_tp_as_mapping_getitem(): No related records exist yet for relationship %s.",  self->m_relationship->get_name().c_str());
+        }
+      }
+    }
+  }
+
+  Py_INCREF(Py_None);
+  return Py_None;
+}
+
+static PyObject *
+RelatedRecord_sum(PyGlomRelatedRecord* self, PyObject *args, PyObject *kwargs)
+{
+  return RelatedRecord_generic_aggregate(self, args, kwargs, "sum");
+}
+
+static PyObject *
+RelatedRecord_count(PyGlomRelatedRecord* self, PyObject *args, PyObject *kwargs)
+{
+  return RelatedRecord_generic_aggregate(self, args, kwargs, "count");
+}
+
+static PyObject *
+RelatedRecord_min(PyGlomRelatedRecord* self, PyObject *args, PyObject *kwargs)
+{
+  return RelatedRecord_generic_aggregate(self, args, kwargs, "min");
+}
+
+static PyObject *
+RelatedRecord_max(PyGlomRelatedRecord* self, PyObject *args, PyObject *kwargs)
+{
+  return RelatedRecord_generic_aggregate(self, args, kwargs, "max");
+}
+
+static PyMethodDef RelatedRecord_methods[] = {
+    {"sum", (PyCFunction)RelatedRecord_sum, METH_VARARGS | METH_KEYWORDS,
+     "Add all values of the field in the related records."
+    },
+    {"count", (PyCFunction)RelatedRecord_count, METH_VARARGS | METH_KEYWORDS,
+     "Count all values in the field in the related records."
+    },
+    {"min", (PyCFunction)RelatedRecord_min, METH_VARARGS | METH_KEYWORDS,
+     "Minimum of all values of the field in the related records."
+    },
+    {"max", (PyCFunction)RelatedRecord_max, METH_VARARGS | METH_KEYWORDS,
+     "Maximum of all values of the field in the related records."
+    },
+    {NULL, 0, 0, 0}  /* Sentinel */
+};
+
+
+
 
 static PyTypeObject pyglom_RelatedRecordType = {
     PyObject_HEAD_INIT(NULL)
@@ -270,7 +372,7 @@ static PyTypeObject pyglom_RelatedRecordType = {
     0,                   /* tp_weaklistoffset */
     0,                   /* tp_iter */
     0,                   /* tp_iternext */
-    0 /* RelatedRecord_methods */,             /* tp_methods */
+    RelatedRecord_methods,             /* tp_methods */
     0 /* RelatedRecord_members */,             /* tp_members */
     0, /* RelatedRecord_getseters, */                   /* tp_getset */
     0,                         /* tp_base */

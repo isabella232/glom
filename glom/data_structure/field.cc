@@ -456,11 +456,47 @@ Field::type_list_strings Field::get_calculation_fields() const
 
   Glib::ustring::size_type index = 0;
   const Glib::ustring::size_type count = m_calculation.size();
-  const Glib::ustring::size_type prefix_size = 8; //"record[\""
+  const Glib::ustring prefix = "record[\"";
+  const Glib::ustring::size_type prefix_size = prefix.size();
 
   while(index < count)
   {
-    Glib::ustring::size_type pos_find = m_calculation.find("record[\"", index);
+    Glib::ustring::size_type pos_find = m_calculation.find(prefix, index);
+    if(pos_find != Glib::ustring::npos)
+    {
+      Glib::ustring::size_type pos_find_end = m_calculation.find("\"]", pos_find);
+      if(pos_find_end  != Glib::ustring::npos)
+      {
+        Glib::ustring::size_type pos_start = pos_find + prefix_size;
+        const Glib::ustring field_name = m_calculation.substr(pos_start, pos_find_end - pos_start);
+        result.push_back(field_name);
+        index = pos_find_end + 1;
+      }
+    }
+
+    ++index;
+  }
+
+  return result;
+}
+
+
+Field::type_list_strings Field::get_calculation_relationships() const
+{
+  //TODO: Use regex, for instance with pcre here?
+  //TODO: Better?: Run the calculation on some example data, and record the touched fields? But this could not exercise every code path.
+  //TODO_Performance: Just cache the result whenever m_calculation changes.
+
+  type_list_strings result;
+
+  Glib::ustring::size_type index = 0;
+  const Glib::ustring::size_type count = m_calculation.size();
+  const Glib::ustring prefix = "record.related[\"";
+  const Glib::ustring::size_type prefix_size = prefix.size();
+
+  while(index < count)
+  {
+    Glib::ustring::size_type pos_find = m_calculation.find(prefix, index);
     if(pos_find != Glib::ustring::npos)
     {
       Glib::ustring::size_type pos_find_end = m_calculation.find("\"]", pos_find);
