@@ -25,6 +25,8 @@
 #include <objimpl.h> /* for PyObject_New() */
 
 #include "py_glom_related.h"
+//#include "py_glom_record.h"
+#include "py_glom_relatedrecord.h"
 
 #include "../../data_structure/field.h"
 #include <glibmm/ustring.h>
@@ -39,6 +41,9 @@ Related_new(PyTypeObject *type, PyObject * /* args */, PyObject * /* kwds */)
   if(self)
   {
     self->m_record = 0;
+
+    self->m_pMap_relationships = new PyGlomRelated::type_map_relationships();
+    self->m_pMap_relatedrecords = new PyGlomRelated::type_map_relatedrecords();
   }
 
   return (PyObject*)self;
@@ -51,6 +56,12 @@ Related_init(PyGlomRelated *self, PyObject* /* args */, PyObject* /* kwds */)
   if(self)
   {
     self->m_record = 0;
+
+    if(self->m_pMap_relationships == 0)
+      self->m_pMap_relationships = new PyGlomRelated::type_map_relationships();
+
+    if(self->m_pMap_relatedrecords == 0)
+      self->m_pMap_relatedrecords = new PyGlomRelated::type_map_relatedrecords();
   }
 
   return 0;
@@ -59,8 +70,119 @@ Related_init(PyGlomRelated *self, PyObject* /* args */, PyObject* /* kwds */)
 static void
 Related_dealloc(PyGlomRelated* self)
 {
+  if(self->m_pMap_relationships)
+  {
+    delete self->m_pMap_relationships;
+    self->m_pMap_relationships = 0;
+  }
+
+  if(self->m_record)
+  {
+    Py_XDECREF( (PyObject*)self->m_record );
+    self->m_record = 0;
+  }
+
+  if(self->m_pMap_relatedrecords)
+  {
+    //Unref each item:
+    for(PyGlomRelated::type_map_relatedrecords::iterator iter = self->m_pMap_relatedrecords->begin(); iter != self->m_pMap_relatedrecords->end(); ++iter)
+    {
+      Py_XDECREF( (PyObject*)(iter->second) );
+    }
+
+    delete self->m_pMap_relatedrecords;
+    self->m_pMap_relatedrecords = 0;
+  }
+
   self->ob_type->tp_free((PyObject*)self);
 }
+
+
+static int
+Related_tp_as_mapping_length(PyGlomRelated *self)
+{
+  return self->m_pMap_relationships->size();
+}
+
+static PyObject *
+Related_tp_as_mapping_getitem(PyGlomRelated *self, PyObject *item)
+{
+  if(PyString_Check(item))
+  {
+    const char* pchKey = PyString_AsString(item);
+    if(pchKey)
+    {
+      const Glib::ustring key(pchKey);
+
+      //Return a cached item if possible:
+      PyGlomRelated::type_map_relatedrecords::iterator iterCacheFind = self->m_pMap_relatedrecords->find(key);
+      if(iterCacheFind != self->m_pMap_relatedrecords->end())
+      {
+        //Return a reference to the cached item:
+        PyGlomRelatedRecord* pyRelatedRecord = iterCacheFind->second;
+        Py_INCREF((PyObject*)pyRelatedRecord);
+        return (PyObject*)pyRelatedRecord;
+      }
+      else
+      {
+        //If the relationship exists:
+        PyGlomRelated::type_map_relationships::const_iterator iterFind = self->m_pMap_relationships->find(key);
+        if(iterFind != self->m_pMap_relationships->end())
+        {
+          //Return a new RelatedRecord:
+          PyObject* new_args = PyTuple_New(0);
+          PyGlomRelatedRecord* pyRelatedRecord = (PyGlomRelatedRecord*)PyObject_Call((PyObject*)PyGlomRelatedRecord_GetPyType(), new_args, 0);
+          Py_DECREF(new_args);
+
+          //Fill it.
+
+          //Get the value of the from_key in the parent record.
+          const Glib::ustring from_key = iterFind->second.get_from_field();
+          PyGlomRecord::type_map_field_values::const_iterator iterFromKey = self->m_record->m_pMap_field_values->find(from_key);
+          if(iterFromKey != self->m_record->m_pMap_field_values->end())
+          {
+            const Gnome::Gda::Value from_key_value = iterFromKey->second;
+
+            //TODO_Performance:
+            //Get the full field details so we can sqlize its value:
+            Field from_key_field;
+            bool exists = self->m_record->m_document->get_field(*(self->m_record->m_table_name), from_key, from_key_field);
+            if(exists)
+            {
+              const Glib::ustring key_value_sqlized = from_key_field.sql(from_key_value);
+              PyGlomRelatedRecord_SetRelationship(pyRelatedRecord, iterFind->second, key_value_sqlized, self->m_record->m_document);
+  
+              //Store it in the cache:
+              Py_INCREF((PyObject*)pyRelatedRecord); //Dereferenced in _dealloc().
+              (*(self->m_pMap_relatedrecords))[key] = pyRelatedRecord;
+  
+              return (PyObject*)pyRelatedRecord; //TODO: pygda_value_as_pyobject(iterFind->second.gobj(), true /* copy */);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  PyErr_SetString(PyExc_IndexError, "relationship not found");
+  return NULL;
+}
+
+/*
+static int
+Related_tp_as_mapping_setitem(PyGObject *self, PyObject *item, PyObject *value)
+{
+  Py_INCREF(Py_None);
+  return Py_None;
+}
+*/
+
+static PyMappingMethods Related_tp_as_mapping = {
+    (inquiry)Related_tp_as_mapping_length,
+    (binaryfunc)Related_tp_as_mapping_getitem,
+    (objobjargproc)0 /* Related_tp_as_mapping_setitem */
+};
+
 
 static PyTypeObject pyglom_RelatedType = {
     PyObject_HEAD_INIT(NULL)
@@ -76,7 +198,7 @@ static PyTypeObject pyglom_RelatedType = {
     0,                         /*tp_repr*/
     0,                         /*tp_as_number*/
     0,                         /*tp_as_sequence*/
-    0,                         /*tp_as_mapping*/
+    &Related_tp_as_mapping,                         /*tp_as_mapping*/
     0,                         /*tp_hash */
     0,                         /*tp_call*/
     0,                         /*tp_str*/
@@ -118,5 +240,10 @@ static void Related_HandlePythonError()
 }
 */
 
+
+void PyGlomRelated_SetRelationships(PyGlomRelated* self, const PyGlomRelated::type_map_relationships& relationships)
+{
+  *(self->m_pMap_relationships) = relationships;
+}
 
 

@@ -27,6 +27,6 @@
 typedef std::map<Glib::ustring, Gnome::Gda::Value> type_map_fields;
 
 Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field_type result_type, const Glib::ustring& func_impl,
-  const type_map_fields& field_values);
+  const type_map_fields& field_values, Document_Glom* pDocument, const Glib::ustring& table_name);
 
 #endif //GLOM_PYTHON_H

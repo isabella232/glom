@@ -74,10 +74,10 @@ pygda_value_from_pyobject(GdaValue *boxed, PyObject *input)
 PyObject *
 pygda_value_as_pyobject(const GdaValue *boxed, gboolean copy_boxed)
 {
-    GdaValueType value_type = 0;
+    GdaValueType value_type = GDA_VALUE_TYPE_UNKNOWN;
     PyObject* ret = 0;
 
-    value_type = gda_value_get_type (boxed);
+    value_type = gda_value_get_type ((GdaValue*)boxed);
 
     PyDateTime_IMPORT; /* So we can use PyDate*() functions. */
 
@@ -85,56 +85,56 @@ pygda_value_as_pyobject(const GdaValue *boxed, gboolean copy_boxed)
       Py_INCREF (Py_None);
       ret = Py_None;
     } else if (value_type == GDA_VALUE_TYPE_BIGINT) {
-        ret = PyLong_FromLong (gda_value_get_bigint (boxed));
+        ret = PyLong_FromLong (gda_value_get_bigint ((GdaValue*)boxed));
     } else if (value_type == GDA_VALUE_TYPE_BIGUINT) {
-        ret = PyLong_FromLong (gda_value_get_biguint (boxed));
+        ret = PyLong_FromLong (gda_value_get_biguint ((GdaValue*)boxed));
     } else if (value_type == GDA_VALUE_TYPE_BINARY) {
         glong size = 0;
-        const gchar* val = gda_value_get_binary (boxed, &size);
+        const gchar* val = (const gchar*)gda_value_get_binary ((GdaValue*)boxed, &size);
         ret = PyString_FromString (val); //TODO: Use the size.
     } else if (value_type == GDA_VALUE_TYPE_BLOB) {
-        const GdaBlob* val = gda_value_get_blob (boxed);
+        /* const GdaBlob* val = gda_value_get_blob ((GdaValue*)boxed); */
         ret = 0; /* TODO: This thing has a whole read/write API. */
     } else if (value_type == GDA_VALUE_TYPE_BOOLEAN) {
-        ret = PyBool_FromLong (gda_value_get_boolean (boxed));
+        ret = PyBool_FromLong (gda_value_get_boolean ((GdaValue*)boxed));
     } else if (value_type == GDA_VALUE_TYPE_DATE) {
-        const GdaDate* val = gda_value_get_date (boxed);
+        const GdaDate* val = gda_value_get_date ((GdaValue*)boxed);
         if(val)
           ret = PyDate_FromDate(val->year, val->month, val->day);
     } else if (value_type == GDA_VALUE_TYPE_DOUBLE) {
-        ret = PyFloat_FromDouble (gda_value_get_double (boxed));
+        ret = PyFloat_FromDouble (gda_value_get_double ((GdaValue*)boxed));
     } else if (value_type == GDA_VALUE_TYPE_GEOMETRIC_POINT) {
-        const GdaGeometricPoint* val = gda_value_get_geometric_point (boxed);
+        const GdaGeometricPoint* val = gda_value_get_geometric_point ((GdaValue*)boxed);
         ret = Py_BuildValue ("(ii)", val->x, val->y);
     } else if (value_type == GDA_VALUE_TYPE_INTEGER) {
-        ret = PyInt_FromLong (gda_value_get_integer (boxed));
+        ret = PyInt_FromLong (gda_value_get_integer ((GdaValue*)boxed));
     } else if (value_type == GDA_VALUE_TYPE_MONEY) {
-        const GdaMoney* val = gda_value_get_money (boxed);
+        const GdaMoney* val = gda_value_get_money ((GdaValue*)boxed);
         ret = PyFloat_FromDouble(val->amount); /* TODO: We ignore the currency. */
     } else if (value_type == GDA_VALUE_TYPE_NUMERIC) {
-        const GdaNumeric* val = gda_value_get_numeric (boxed);
+        const GdaNumeric* val = gda_value_get_numeric ((GdaValue*)boxed);
         const gchar* number_as_text = val->number; /* Formatted according to the C locale, probably. */
         /* This would need a string _object_: ret = PyFloat_FromString(number_as_text, 0); */
         ret = PyLong_FromLong (PyOS_ascii_strtod (number_as_text, 0));
     } else if (value_type == GDA_VALUE_TYPE_SINGLE) {
-        ret = PyFloat_FromDouble (gda_value_get_single (boxed));
+        ret = PyFloat_FromDouble (gda_value_get_single ((GdaValue*)boxed));
     } else if (value_type == GDA_VALUE_TYPE_SMALLINT) {
-        ret = PyInt_FromLong (gda_value_get_smallint (boxed));
+        ret = PyInt_FromLong (gda_value_get_smallint ((GdaValue*)boxed));
     } else if (value_type == GDA_VALUE_TYPE_STRING) {
-        const gchar* val = gda_value_get_string (boxed);
+        const gchar* val = gda_value_get_string ((GdaValue*)boxed);
         ret = PyString_FromString (val);
     } else if (value_type == GDA_VALUE_TYPE_TIME) {
-        const GdaTime* val = gda_value_get_time (boxed);
+        const GdaTime* val = gda_value_get_time ((GdaValue*)boxed);
         ret = PyTime_FromTime(val->hour, val->minute, val->second, 0); /* TODO: Should we ignore GdaDate::timezone ? */
     } else if (value_type == GDA_VALUE_TYPE_TIMESTAMP) {
-        const GdaTimestamp* val = gda_value_get_timestamp (boxed);
+        const GdaTimestamp* val = gda_value_get_timestamp ((GdaValue*)boxed);
         ret = PyDateTime_FromDateAndTime(val->year, val->month, val->day, val->hour, val->minute, val->second, 0); /* TODO: Should we ignore GdaTimestamp::timezone ? */
     } else if (value_type == GDA_VALUE_TYPE_TINYINT) {
-        ret = PyInt_FromLong (gda_value_get_tinyint (boxed));
+        ret = PyInt_FromLong (gda_value_get_tinyint ((GdaValue*)boxed));
     } else if (value_type == GDA_VALUE_TYPE_TINYUINT) {
-        ret = PyInt_FromLong (gda_value_get_tinyuint (boxed));
+        ret = PyInt_FromLong (gda_value_get_tinyuint ((GdaValue*)boxed));
     } else if (value_type == GDA_VALUE_TYPE_UINTEGER) {
-        ret = PyInt_FromLong (gda_value_get_uinteger (boxed));
+        ret = PyInt_FromLong (gda_value_get_uinteger ((GdaValue*)boxed));
     } else {
       g_warning ("gda_value_get_type() returned unknown type %d", value_type);
 

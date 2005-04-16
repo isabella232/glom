@@ -63,7 +63,7 @@ void HandlePythonError()
 }
 
 Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field_type result_type, const Glib::ustring& func_impl,
-    const type_map_fields& field_values)
+    const type_map_fields& field_values, Document_Glom* pDocument, const Glib::ustring& table_name)
 {
   g_assert(result_type != Field::TYPE_INVALID);
 
@@ -147,7 +147,7 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
       Py_INCREF(pParam); //TODO: As I understand it, PyObject_New() should return a new reference, so this should not be necessary.
 
       //Fill the record's details:
-      PyGlomRecord_SetFields(pParam, field_values);
+      PyGlomRecord_SetFields(pParam, field_values, pDocument, table_name);
 
       PyObject* pArgs = PyTuple_New(1);
       PyTuple_SetItem(pArgs, 0, (PyObject*)pParam); //The pParam reference is taken by PyTuple_SetItem().

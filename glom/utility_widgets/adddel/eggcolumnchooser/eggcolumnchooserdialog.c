@@ -57,7 +57,7 @@ egg_column_chooser_dialog_get_type (void)
 			(GInstanceInitFunc) egg_column_chooser_dialog_init
 		};
 
-		object_type = g_type_register_static (GTK_TYPE_DIALOG, "EggColumnChooserDialog", &object_info, 0);
+		object_type = g_type_register_static (GTK_TYPE_DIALOG, "EggColumnChooserDialog", &object_info, (GTypeFlags)0);
 
 	}
 
@@ -203,7 +203,7 @@ egg_column_chooser_dialog_class_init (EggColumnChooserDialogClass *klass)
 	object_class = (GObjectClass *)klass;
 	dialog_class = (GtkDialogClass *)klass;
 	
-	parent_class = g_type_class_peek_parent (klass);
+	parent_class = (GtkDialogClass *)g_type_class_peek_parent (klass);
 
 	object_class->finalize = egg_column_chooser_dialog_finalize;
 
@@ -258,7 +258,7 @@ egg_column_chooser_dialog_init (EggColumnChooserDialog *dialog)
 	gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (dialog->tree_view), FALSE);
 	gtk_container_add (GTK_CONTAINER (scrolled_window), dialog->tree_view);
 
-	toggle_renderer = g_object_new (GTK_TYPE_CELL_RENDERER_TOGGLE,
+	toggle_renderer = (GtkCellRenderer *)g_object_new (GTK_TYPE_CELL_RENDERER_TOGGLE,
 					"activatable", TRUE,
 					NULL);
 	g_signal_connect (G_OBJECT (toggle_renderer), "toggled",
@@ -332,7 +332,7 @@ egg_column_chooser_dialog_new (GtkTreeView *tree_view)
 	EggColumnChooserDialog *dialog;
 	GtkTreePath *path;
 	
-	dialog = g_object_new (EGG_TYPE_COLUMN_CHOOSER_DIALOG, NULL);
+	dialog = (EggColumnChooserDialog *)g_object_new (EGG_TYPE_COLUMN_CHOOSER_DIALOG, NULL);
 
 	egg_column_chooser_dialog_construct (dialog, tree_view);
 

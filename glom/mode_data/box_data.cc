@@ -184,7 +184,8 @@ Glib::RefPtr<Gnome::Gda::DataModel> Box_Data::record_new(bool use_entered_data, 
       {
         const type_map_fields field_values = get_record_field_values(primary_key_value);
 
-        Gnome::Gda::Value value = glom_evaluate_python_function_implementation(field.get_glom_type(), calculation, field_values);
+        Gnome::Gda::Value value = glom_evaluate_python_function_implementation(field.get_glom_type(), calculation, field_values,
+          get_document(), m_strTableName);
         set_entered_field_data(layout_item, value);
       }
     }
@@ -644,7 +645,8 @@ void Box_Data::do_calculations(const LayoutItem_Field& field_changed, const Fiel
   {
     //recalculate:
      const type_map_fields field_values = get_record_field_values(primary_key_value);
-     Gnome::Gda::Value value = glom_evaluate_python_function_implementation(iter->m_field.get_glom_type(), iter->m_field.get_calculation(), field_values);
+     Gnome::Gda::Value value = glom_evaluate_python_function_implementation(iter->m_field.get_glom_type(), iter->m_field.get_calculation(), field_values,
+          get_document(), m_strTableName);
 
     //show it:
     set_entered_field_data(*iter, value);

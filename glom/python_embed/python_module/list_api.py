@@ -25,6 +25,7 @@ def main ():
    print dir(glom)
 
    #test = glom.Record();
+   #print glom.Record.related;
    #print test.fields;
    #print test.fields["yadda"];
 

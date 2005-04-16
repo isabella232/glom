@@ -18,8 +18,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef GLOM_PYTHON_GLOM_RECORD_H
-#define GLOM_PYTHON_GLOM_RECORD_H
+#ifndef GLOM_PYTHON_GLOM_RELATEDRECORD_H
+#define GLOM_PYTHON_GLOM_RELATEDRECORD_H
 
 #define NO_IMPORT_PYGTK //To avoid a multiple definition in pygtk.
 #include <pygtk/pygtk.h> //For the PyGObject and PyGBoxed struct definitions.
@@ -29,31 +29,36 @@
 #include "../../data_structure/field.h"
 #include <glibmm/ustring.h>
 
-class PyGlomRelated;
+class PyGlomRecord;
 
-struct PyGlomRecord
+struct PyGlomRelatedRecord
 {
 public:
   PyObject_HEAD
 
   //PyObject* m_fields_dict; //Dictionary (map) of field names (string) to field values (Gnome::Gda::Value).
   PyGObject* m_py_gda_connection; //"derived" from PyObject.
+  //PyGlomRecord* m_record_parent;
   Document_Glom* m_document;
-  Glib::ustring* m_table_name;
 
-  PyGlomRelated* m_related;
+  Relationship* m_relationship;
+  Glib::ustring* m_from_key_value_sqlized;
 
   //Available, for instance, in python via record["name_first"]
   typedef std::map<Glib::ustring, Gnome::Gda::Value> type_map_field_values;
   //We use a pointer because python will not run the class/struct's default constructor.
-  type_map_field_values* m_pMap_field_values;
+  type_map_field_values* m_pMap_field_values; 
 };
 
-PyTypeObject* PyGlomRecord_GetPyType();
-
-void PyGlomRecord_SetFields(PyGlomRecord* self, const PyGlomRecord::type_map_field_values& field_values, Document_Glom* document, const Glib::ustring& table_name);
-
-void PyGlomRecord_SetConnection(PyGlomRecord* self, const Glib::RefPtr<Gnome::Gda::Connection>& connection);
+PyTypeObject* PyGlomRelatedRecord_GetPyType();
 
 
-#endif //GLOM_PYTHON_GLOM_RECORD_H
+void PyGlomRelatedRecord_SetRelationship(PyGlomRelatedRecord* self, const Relationship& relationship, const Glib::ustring& from_key_value_sqlized, Document_Glom* document);
+
+/*
+void PyGlomRelatedRecord_SetConnection(PyGlomRelatedRecord* self, const Glib::RefPtr<Gnome::Gda::Connection>& connection);
+*/
+
+
+
+#endif //GLOM_PYTHON_GLOM_RELATEDRECORD_H

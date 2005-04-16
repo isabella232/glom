@@ -11,5 +11,6 @@ glom_la_LDFLAGS = $(common_ldflags) -export-symbols-regex initglom \
                   $(GLOM_LIBS) $(PYTHON_LDFLAGS) -lutil
 glom_la_SOURCES = py_glom_record.cc py_glom_record.h \
                   py_glom_related.cc py_glom_related.h \
+                  py_glom_relatedrecord.cc py_glom_relatedrecord.h \
                   py_glom_module.cc py_glom_module.h \
                   pygdavalue_conversions.c pygdavalue_conversions.h 

@@ -23,7 +23,9 @@
 
 #include <Python.h>
 #include "py_glom_record.h"
+#include "../../data_structure/relationship.h"
 
+class PyGlomRelatedRecord;
 
 class PyGlomRelated
 {
@@ -31,9 +33,20 @@ public:
   PyObject_HEAD
 
   PyGlomRecord* m_record; //A reference to the parent record.
+
+  typedef std::map<Glib::ustring, Relationship> type_map_relationships;
+  type_map_relationships* m_pMap_relationships;
+
+  typedef std::map<Glib::ustring, PyGlomRelatedRecord*> type_map_relatedrecords;
+  type_map_relatedrecords* m_pMap_relatedrecords;
 };
 
 PyTypeObject* PyGlomRelated_GetPyType();
+
+
+void PyGlomRelated_SetRelationships(PyGlomRelated* self, const PyGlomRelated::type_map_relationships& relationships);
+
+
 
 
 #endif //GLOM_PYTHON_GLOM_RELATED_H

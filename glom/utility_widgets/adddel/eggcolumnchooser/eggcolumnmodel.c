@@ -302,7 +302,7 @@ egg_column_model_finalize (GObject *object)
 
   g_list_free (model->columns);
 
-  g_signal_handlers_disconnect_by_func (G_OBJECT (model->tree_view), update_columns, model);
+  g_signal_handlers_disconnect_by_func (G_OBJECT (model->tree_view), (void*)update_columns, model);
 
   G_OBJECT_CLASS (parent_class)->finalize (object);
 }
@@ -314,7 +314,7 @@ egg_column_model_class_init (EggColumnModelClass *klass)
 
   object_class = (GObjectClass *)klass;
 
-  parent_class = g_type_class_peek_parent (klass);
+  parent_class = (GObjectClass *)g_type_class_peek_parent (klass);
 
   object_class->finalize = egg_column_model_finalize;
 }
@@ -360,7 +360,7 @@ egg_column_model_get_type (void)
 	  NULL
 	};
       
-      object_type = g_type_register_static (G_TYPE_OBJECT, "EggColumnModel", &object_info, 0);
+      object_type = g_type_register_static (G_TYPE_OBJECT, "EggColumnModel", &object_info, (GTypeFlags)0);
       g_type_add_interface_static (object_type,
 				   GTK_TYPE_TREE_MODEL,
 				   &tree_model_info);
@@ -490,7 +490,7 @@ egg_column_model_new (GtkTreeView *tree_view)
 {
   EggColumnModel *model;
 
-  model = g_object_new (egg_column_model_get_type (), NULL);
+  model = (EggColumnModel *)g_object_new (egg_column_model_get_type (), NULL);
 
   model->tree_view = tree_view;
   model->columns = gtk_tree_view_get_columns (tree_view);
@@ -509,7 +509,7 @@ egg_column_model_set_column_visible (EggColumnModel *model, GtkTreeIter *iter, g
 
   path = gtk_tree_model_get_path (GTK_TREE_MODEL (model), iter);
 
-  column = ((GList *)iter->user_data)->data;
+  column = (GtkTreeViewColumn *)((GList *)iter->user_data)->data;
 
   gtk_tree_view_column_set_visible (column, visible);
   gtk_tree_model_row_changed (GTK_TREE_MODEL (model), path, iter);
@@ -524,7 +524,7 @@ egg_column_model_get_column_visible (EggColumnModel *model, GtkTreeIter *iter)
 	
   g_return_val_if_fail (model->stamp == iter->stamp, FALSE);
 
-  column = ((GList *)iter->user_data)->data;
+  column = (GtkTreeViewColumn *)((GList *)iter->user_data)->data;
   
   return gtk_tree_view_column_get_visible (column);
 }
@@ -556,8 +556,8 @@ egg_column_model_move_down_column (EggColumnModel *model, GtkTreeIter *iter)
 
   node = (GList *)iter->user_data;
 
-  column = node->data;
-  base_column = node->next->data;
+  column = (GtkTreeViewColumn *)node->data;
+  base_column = (GtkTreeViewColumn *)node->next->data;
 
   gtk_tree_view_move_column_after (model->tree_view, column, base_column);
 }
@@ -573,8 +573,8 @@ egg_column_model_move_up_column (EggColumnModel *model, GtkTreeIter *iter)
 
   node = (GList *)iter->user_data;
 
-  column = node->prev->data;
-  base_column = node->data;
+  column = (GtkTreeViewColumn *)node->prev->data;
+  base_column = (GtkTreeViewColumn *)node->data;
 
   gtk_tree_view_move_column_after (model->tree_view, column, base_column);
 }

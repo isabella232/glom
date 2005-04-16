@@ -88,7 +88,9 @@ void Dialog_FieldCalculation::on_button_test()
     }
   }
 
-  Gnome::Gda::Value value = glom_evaluate_python_function_implementation(Field::TYPE_TEXT, calculation, field_values); //TODO: Maybe use the field's type here.
+  Gnome::Gda::Value value = glom_evaluate_python_function_implementation(Field::TYPE_TEXT, calculation, field_values, //TODO: Maybe use the field's type here.
+    document, m_table_name);
+
   Frame_Glom::show_ok_dialog(_("Calculation result"), _("The result of the calculation is:\n") + value.to_string(), *this);
 
 

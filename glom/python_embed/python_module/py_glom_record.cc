@@ -37,11 +37,11 @@
 static PyObject *
 Record_new(PyTypeObject *type, PyObject * /* args */, PyObject * /* kwds */)
 {
-g_warning("Record_new");
   PyGlomRecord *self  = (PyGlomRecord*)type->tp_alloc(type, 0);
   if(self)
   {
     self->m_py_gda_connection = 0;
+    self->m_related = 0;
 
     self->m_pMap_field_values = new PyGlomRecord::type_map_field_values();
   }
@@ -53,7 +53,6 @@ g_warning("Record_new");
 static int
 Record_init(PyGlomRecord *self, PyObject * /* args */, PyObject * /* kwds */)
 {
-g_warning("Record_new");
   //static char *kwlist[] = {"test", NULL};
 
   //if(!PyArg_ParseTupleAndKeywords(args, kwds, "|i", kwlist,
@@ -63,6 +62,7 @@ g_warning("Record_new");
   if(self)
   {
     self->m_py_gda_connection = 0;
+    self->m_related = 0;
 
     if(self->m_pMap_field_values == 0)
       self->m_pMap_field_values = new PyGlomRecord::type_map_field_values();
@@ -89,31 +89,44 @@ Record_dealloc(PyGlomRecord* self)
   self->ob_type->tp_free((PyObject*)self);
 }
 
-/*
-static PyObject *
-Record__get_fields(PyGlomRecord *self, void * closure )
-{
-  if(self->m_fields_dict)
-  {
-    Py_INCREF(self->m_fields_dict); //TODO: Should we do this?
-    return self->m_fields_dict;
-  }
-  else
-  {
-    Py_INCREF(Py_None);
-    return Py_None;
-  }
-}
-*/
 
-/*
+static PyObject *
+Record__get_related(PyGlomRecord* self, void* /* closure */)
+{
+  //We initialize it here, so that this work never happens if it's not needed:
+  if(!(self->m_related))
+  {
+    //Return a new RelatedRecord:
+    PyObject* new_args = PyTuple_New(0);
+    self->m_related = (PyGlomRelated*)PyObject_Call((PyObject*)PyGlomRelated_GetPyType(), new_args, 0);
+    Py_DECREF(new_args);
+
+    //Fill it:
+    Document_Glom::type_vecRelationships vecRelationships = self->m_document->get_relationships(*(self->m_table_name));
+    PyGlomRelated::type_map_relationships map_relationships;
+    for(Document_Glom::type_vecRelationships::const_iterator iter = vecRelationships.begin(); iter != vecRelationships.end(); ++iter)
+    {
+      map_relationships[iter->get_name()] = *iter;
+    }
+
+    PyGlomRelated_SetRelationships(self->m_related, map_relationships);
+
+    self->m_related->m_record = self;
+    Py_XINCREF(self); //unreffed in the self->m_related's _dealloc. //TODO: Is this a circular reference?
+  }
+
+  Py_INCREF(self->m_related); //Should we do this?
+  return (PyObject*)self->m_related;
+}
+
+
 static PyGetSetDef Record_getseters[] = {
-    {"fields",
-     (getter)Record__get_fields, (setter)0, 0, 0
+    {"related",
+     (getter)Record__get_related, (setter)0, 0, 0
     },
     {NULL, 0, 0, 0, 0, }  // Sentinel
 };
-*/
+
 
 
 static int
@@ -131,14 +144,9 @@ Record_tp_as_mapping_getitem(PyGlomRecord *self, PyObject *item)
     if(pchKey)
     {
       const Glib::ustring key(pchKey);
- g_warning("Record_tp_as_mapping_getitem() 2: index=%s.", key.c_str());
-
       PyGlomRecord::type_map_field_values::const_iterator iterFind = self->m_pMap_field_values->find(key);
- g_warning("Record_tp_as_mapping_getitem() 3");
-
       if(iterFind != self->m_pMap_field_values->end())
       {
-        g_warning("Record_tp_as_mapping_getitem(): return value.");
         return pygda_value_as_pyobject(iterFind->second.gobj(), true /* copy */);
       }
     }
@@ -196,7 +204,7 @@ static PyTypeObject pyglom_RecordType = {
     0,                   /* tp_iternext */
     0 /* Record_methods */,             /* tp_methods */
     0 /* Record_members */,             /* tp_members */
-    0, /* Record_getseters, */                   /* tp_getset */
+    Record_getseters,                   /* tp_getset */
     0,                         /* tp_base */
     0,                         /* tp_dict */
     0,                         /* tp_descr_get */
@@ -235,9 +243,11 @@ void PyGlomRecord_SetConnection(PyGlomRecord* self, const Glib::RefPtr<Gnome::Gd
   self->m_py_gda_connection = (PyGObject*)pygobject_new((GObject*)connection->gobj()); //takes the given reference and unrefs in PyGObject::tp_dealloc.
 }
 
-void PyGlomRecord_SetFields(PyGlomRecord* self, const PyGlomRecord::type_map_field_values& fields)
+void PyGlomRecord_SetFields(PyGlomRecord* self, const PyGlomRecord::type_map_field_values& field_values, Document_Glom* document, const Glib::ustring& table_name)
 {
-  *(self->m_pMap_field_values) = fields;
+  *(self->m_pMap_field_values) = field_values;
+  self->m_table_name = new Glib::ustring(table_name);
+  self->m_document = document;
 
   /*
   if(self->m_fields_dict == 0)

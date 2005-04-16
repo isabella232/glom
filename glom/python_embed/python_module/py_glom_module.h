@@ -28,6 +28,16 @@
 //#define PyMODINIT_FUNC void
 #endif
 
+/**
+ * PyGlomRecord provides
+ * - field values: for instance, name = record["name_first"];
+ * - relationships (PyGlomRelated): for instance, record.related
+ * PyGlomRelated provides:
+ * - related records (PyGlomRelatedRecord) - for instance, record.related["contacts"]
+ * PyGlomRelatedRecord provides
+ * - field values: for instance, name = record.related["contacts"]["name_first"];
+ * - Summary functions: for instance, total = record.related["invoice_lines"].sum("price");
+ */
 PyMODINIT_FUNC initglom(void);
 
 
