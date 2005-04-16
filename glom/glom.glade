@@ -3417,7 +3417,7 @@ Or would you like to create a new document, to design a new database?
 		  <property name="can_focus">True</property>
 		  <property name="label" translatable="yes">&lt;span weight=&quot;bold&quot; size=&quot;larger&quot;&gt;Invalid format&lt;/span&gt;
 
-The data in the field was not recognised. Please try to correct the data or revert to the previous value. Here is an example of correctly-formatted data for this field.
+The data in the field was not recognized. Please try to correct the data or revert to the previous value. Here is an example of correctly-formatted data for this field.
 </property>
 		  <property name="use_underline">False</property>
 		  <property name="use_markup">True</property>
