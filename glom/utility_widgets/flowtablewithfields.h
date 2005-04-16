@@ -91,6 +91,12 @@ public:
   typedef sigc::signal<void, const LayoutItem_Field&, const Gnome::Gda::Value&> type_signal_field_edited;
   type_signal_field_edited signal_field_edited();
 
+ /** For instance,
+   * void on_related_record_changed(const Glib::ustring& relationship_name);
+   */
+  typedef sigc::signal<void, const Glib::ustring&> type_signal_related_record_changed;
+  type_signal_related_record_changed signal_related_record_changed();
+
 
 protected:
 
@@ -105,11 +111,13 @@ protected:
   void on_entry_edited(const Gnome::Gda::Value& value,  LayoutItem_Field field);
   void on_flowtable_entry_edited(const LayoutItem_Field& field, const Gnome::Gda::Value& value);
 
+  void on_portal_record_changed(const Glib::ustring& relationship_name);
+  void on_flowtable_related_record_changed(const Glib::ustring& relationship_name);
+
   /// Remember the layout widget so we can iterate through them later.
   void on_layoutwidget_changed();
 
   void on_datawidget_layout_item_added(TreeStore_Layout::enumType item_type, DataWidget* pDataWidget);
-
 
   class Info
   {
@@ -147,6 +155,9 @@ protected:
   Glib::ustring m_table_name;
 
   type_signal_field_edited m_signal_field_edited;
+
+  //type_signal_related_record_added m_signal_related_record_added;
+  type_signal_related_record_changed m_signal_related_record_changed;
 };
 
 

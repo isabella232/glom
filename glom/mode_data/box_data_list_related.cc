@@ -211,6 +211,16 @@ Field Box_Data_List_Related::get_key_field() const
   return m_key_field;
 }
 
+void Box_Data_List_Related::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, guint col)
+{
+  //Call base class:
+  Box_Data_List::on_adddel_user_changed(row, col);
+
+  //Let parent respond:
+  if(row)
+    signal_record_changed().emit(m_relationship.get_name());
+}
+
 void Box_Data_List_Related::on_adddel_user_added(const Gtk::TreeModel::iterator& row, guint col_with_first_value)
 {
   //Like Box_Data_List::on_adddel_user_added(),
@@ -266,6 +276,11 @@ void Box_Data_List_Related::show_layout_dialog()
     m_pDialogLayoutRelated->set_document(m_layout_name, get_document(), m_relationship);
     m_pDialogLayoutRelated->show();
   }
+}
+
+Box_Data_List_Related::type_signal_record_changed Box_Data_List_Related::signal_record_changed()
+{
+  return m_signal_record_changed;
 }
 
 void Box_Data_List_Related::on_dialog_layout_hide()

@@ -105,6 +105,13 @@ void Dialog_FieldCalculation::on_button_test()
     field_names += ( *iter + ", " );
   }
 
+  const Field::type_list_strings triggered_relationships = temp.get_calculation_relationships();
+
+  for(Field::type_list_strings::const_iterator iter = triggered_relationships.begin(); iter != triggered_relationships.end(); ++iter)
+  {
+    field_names += ( "related(" + *iter + ")[?], " );
+  }
+
   m_label_triggered_by->set_text(field_names);
 }
 

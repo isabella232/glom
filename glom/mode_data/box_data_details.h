@@ -88,6 +88,9 @@ protected:
   //virtual void on_related_user_requested_details(Gnome::Gda::Value key_value, Glib::ustring strTableName);
 
   virtual void on_flowtable_field_edited(const LayoutItem_Field& id, const Gnome::Gda::Value& value);
+  virtual void on_flowtable_related_record_changed(const Glib::ustring& relationship_name);
+
+  virtual void recalculate_fields_for_related_records(const Glib::ustring& relationship_name);
 
   Field m_field_primary_key;
   Gnome::Gda::Value m_primary_key_value;

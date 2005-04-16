@@ -110,6 +110,9 @@ Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
   m_FlowTable.signal_field_edited().connect( sigc::mem_fun(*this,  &Box_Data_Details::on_flowtable_field_edited) );
   show_all();
 
+  m_FlowTable.signal_related_record_changed().connect( sigc::mem_fun(*this, &Box_Data_Details::on_flowtable_related_record_changed) );
+
+
   m_FlowTable.signal_layout_changed().connect( sigc::mem_fun(*this, &Box_Data_Details::on_flowtable_layout_changed) );
 
   m_ignore_signals = false;
@@ -435,6 +438,31 @@ void Box_Data_Details::on_related_user_requested_details(Gnome::Gda::Value key_v
 }
 */
 
+void Box_Data_Details::recalculate_fields_for_related_records(const Glib::ustring& relationship_name)
+{
+  const Gnome::Gda::Value primary_key_value = get_primary_key_value();
+
+  for(type_vecLayoutFields::iterator iter = m_Fields.begin(); iter != m_Fields.end(); ++iter)
+  {
+    //Is this field triggered by this relationship?
+    const Field::type_list_strings triggered_by = iter->m_field.get_calculation_relationships();
+    Field::type_list_strings::const_iterator iterFind = std::find(triggered_by.begin(), triggered_by.end(), relationship_name);
+    if(iterFind != triggered_by.end()) //If it was found
+    {
+       //recalculate:
+       const type_map_fields field_values = get_record_field_values(primary_key_value);
+       Gnome::Gda::Value value = glom_evaluate_python_function_implementation(iter->m_field.get_glom_type(), iter->m_field.get_calculation(), field_values,
+          get_document(), m_strTableName);
+
+      //show it:
+      set_entered_field_data(*iter, value);
+
+      //Add it to the database (even if it is not shown in the view)
+      set_field_value_in_database(*iter, value, m_field_primary_key, primary_key_value);
+    }
+  }
+}
+
 void Box_Data_Details::on_related_record_added(Gnome::Gda::Value /* strKeyValue */, Glib::ustring /* strFromKeyName */)
 {
   //Prevent deletion of Related boxes.
@@ -458,6 +486,8 @@ void Box_Data_Details::on_related_record_added(Gnome::Gda::Value /* strKeyValue 
     on_adddel_user_changed(iKey, m_ColumnValue); //Update the database.
   }
   */
+
+  
 
   //Restore value:
   m_bDoNotRefreshRelated = bDoNotRefreshRelated;
@@ -510,6 +540,11 @@ void Box_Data_Details::on_flowtable_layout_changed()
 
   //And fill it with data:
   fill_from_database();
+}
+
+void Box_Data_Details::on_flowtable_related_record_changed(const Glib::ustring& relationship_name)
+{
+  recalculate_fields_for_related_records(relationship_name);
 }
 
 void Box_Data_Details::on_flowtable_field_edited(const LayoutItem_Field& layout_field, const Gnome::Gda::Value& field_value)

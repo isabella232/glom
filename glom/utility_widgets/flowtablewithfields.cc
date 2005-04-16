@@ -106,6 +106,9 @@ void FlowTableWithFields::add_layout_item_at_position(const LayoutItem& item, co
             m_portals.push_back(portal_box);
             add_layoutwidgetbase(portal_box, add_before);
 
+            //Connect signals:
+            portal_box->signal_record_changed().connect( sigc::mem_fun(*this, &FlowTableWithFields::on_portal_record_changed) );
+
             add_view(portal_box);
           }
         }
@@ -172,6 +175,7 @@ void FlowTableWithFields::add_layout_group_at_position(const LayoutGroup& group,
 
     //Connect signal:
     flow_table->signal_field_edited().connect( sigc::mem_fun(*this, &FlowTableWithFields::on_flowtable_entry_edited) );
+    flow_table->signal_related_record_changed().connect( sigc::mem_fun(*this, &FlowTableWithFields::on_flowtable_related_record_changed) );
   }
 }
 
@@ -472,7 +476,7 @@ void FlowTableWithFields::remove_all()
       delete pSub;
     }
   }
-  
+ 
   m_sub_flow_tables.clear();
 
 
@@ -494,6 +498,12 @@ FlowTableWithFields::type_signal_field_edited FlowTableWithFields::signal_field_
 {
   return m_signal_field_edited;
 }
+
+FlowTableWithFields::type_signal_related_record_changed FlowTableWithFields::signal_related_record_changed()
+{
+  return m_signal_related_record_changed;
+}
+
 
 void FlowTableWithFields::on_entry_edited(const Gnome::Gda::Value& value, LayoutItem_Field field)
 {
@@ -664,6 +674,17 @@ void FlowTableWithFields::on_datawidget_layout_item_added(TreeStore_Layout::enum
 
   //TODO: Only if it has really changed:
   signal_layout_changed().emit(); //This should result in a complete re-layout.
+}
+
+void FlowTableWithFields::on_portal_record_changed(const Glib::ustring& relationship_name)
+{
+  signal_related_record_changed().emit(relationship_name);
+}
+
+void FlowTableWithFields::on_flowtable_related_record_changed(const Glib::ustring& relationship_name)
+{
+  //Forward it to the parent:
+  signal_related_record_changed().emit(relationship_name);
 }
 
 

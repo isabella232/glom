@@ -52,10 +52,15 @@ public:
 
   sigc::signal<void, Gnome::Gda::Value> signal_record_added;
 
+  ///@param relationship_name
+  typedef sigc::signal<void, const Glib::ustring&> type_signal_record_changed;
+  type_signal_record_changed signal_record_changed();
+
 protected:
   virtual void fill_from_database(); //Override.
   virtual type_vecLayoutFields get_fields_to_show() const; //override
 
+  virtual void on_adddel_user_changed(const Gtk::TreeModel::iterator& row, guint col);
   virtual void on_adddel_user_added(const Gtk::TreeModel::iterator& row, guint col_with_first_value); //Override.
   virtual void on_record_added(const Gnome::Gda::Value& primary_key_value); //Override. Not a signal handler.
   virtual void on_dialog_layout_hide(); //override.
@@ -71,6 +76,8 @@ protected:
   Relationship m_relationship; //The relationship of the parent table to this one.
   Field m_key_field;
   Gnome::Gda::Value m_key_value;
+
+  type_signal_record_changed m_signal_record_changed;
 };
 
 #endif
