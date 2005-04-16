@@ -67,7 +67,7 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
 {
   g_assert(result_type != Field::TYPE_INVALID);
 
-  g_warning("glom_evaluate_python_function_implementation: func=%s", func_impl.c_str());
+  //g_warning("glom_evaluate_python_function_implementation: func=%s", func_impl.c_str());
 
   Gnome::Gda::Value valueResult;
 

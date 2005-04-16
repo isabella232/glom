@@ -1,5 +1,12 @@
 2005-04-16  Murray Cumming <murrayc@murrayc.com>
 
+	* glom/python_embed/python_module/py_glom_relatedrecord.cc:
+	RelatedRecord_tp_as_mapping_getitem():
+	Actually execute the SQ so that it actually gets the data. 
+	And also handle various errors and give interesting warnings.
+
+2005-04-16  Murray Cumming <murrayc@murrayc.com>
+
 	* glom/mode_data/box_data.cc:
 	* glom/mode_design/fields/dialog_fieldcalculation.cc:
 	* glom/python_embed/glom_python.cc:

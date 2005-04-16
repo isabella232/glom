@@ -223,12 +223,13 @@ PyTypeObject* PyGlomRecord_GetPyType()
 
 
 
-
-void Record_HandlePythonError()
+/*
+static void Record_HandlePythonError()
 {
   if(PyErr_Occurred())
     PyErr_Print();
 }
+*/
 
 void PyGlomRecord_SetConnection(PyGlomRecord* self, const Glib::RefPtr<Gnome::Gda::Connection>& connection)
 {
