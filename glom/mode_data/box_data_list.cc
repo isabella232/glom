@@ -95,6 +95,8 @@ void Box_Data_List::fill_from_database()
     m_AddDel.set_allow_add(table_privs.m_create);
     m_AddDel.set_allow_delete(table_privs.m_delete);
 
+    m_AddDel.set_where_clause(m_strWhereClause);
+
     if(table_privs.m_view)
     {
 /*
@@ -665,7 +667,9 @@ void Box_Data_List::fill_column_titles()
     Field field_primary_key;
     bool test = get_field_primary_key_for_table(m_strTableName, field_primary_key);
     if(!test)
-      g_warning("Box_Data_List::fill_column_titles(): primary key not found.");
+    {
+      //g_warning("Box_Data_List::fill_column_titles(): primary key not found.");
+    }
     else
     {
       m_AddDel.set_key_field(field_primary_key);
@@ -687,7 +691,11 @@ void Box_Data_List::fill_column_titles()
         m_AddDel.add_column(*iter);
       }
 
+      m_AddDel.set_where_clause(m_strWhereClause);
+
+//g_warning("debug 1,5");
       m_AddDel.set_columns_ready();
+//g_warning("debug 1,6");
      }
   }
 

@@ -99,6 +99,7 @@ void FlowTableWithFields::add_layout_item_at_position(const LayoutItem& item, co
             Box_Data_List_Related* portal_box = Gtk::manage(new Box_Data_List_Related);
 
             portal_box->init_db_details(relationship);
+
             portal_box->set_layout_item(portal->clone(), relationship.get_to_table());
             portal_box->show();
             add(*portal_box, true /* expand */);
@@ -312,6 +313,7 @@ void FlowTableWithFields::set_field_value(const LayoutItem_Field& field, const G
     Box_Data_List_Related* portal = dynamic_cast<Box_Data_List_Related*>(*iter);
     if(portal)
     {
+      //g_warning("FlowTableWithFields::set_field_value: foreign_key_value=%s", value.to_string().c_str());
       portal->refresh_db_details(value /* foreign key value */, Gnome::Gda::Value() /* TODO */);
     }
   }

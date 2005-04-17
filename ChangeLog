@@ -1,5 +1,21 @@
 2005-04-17  Murray Cumming <murrayc@murrayc.com>
 
+	* glom/mode_data/box_data_list.cc:
+	fill_from_database(): Call 
+ 	DbAddDel::set_where_clause(), so that  
+	related records portals show only the related 
+	records instead of all records.
+	* glom/utility_widgets/db_adddel/db_adddel.cc:
+	* glom/utility_widgets/db_adddel/db_adddel.h:
+	Added set_where_clause(), and used it when 
+	creating the treemodel.
+	get_is_placeholder(): Cope with invalid 
+	iterators.
+	* po/POTFILES.in:
+	Updated.
+
+2005-04-17  Murray Cumming <murrayc@murrayc.com>
+
 	* docs/website/index.html: Updated.
 	* glom/mode_data/box_data_details.cc:
 	* glom/mode_data/box_data_details.h:

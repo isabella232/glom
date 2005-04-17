@@ -137,6 +137,9 @@ public:
    */
   virtual guint add_column(const LayoutItem_Field& field);
 
+  /// Specify which records to show:
+  virtual void set_where_clause(const Glib::ustring& where_clause);
+
   /// Start using the added columns.
   virtual void set_columns_ready();
 
@@ -294,7 +297,7 @@ protected:
   //Columns, not including the hidden internal columns:
   typedef std::vector<DbAddDelColumnInfo> type_ColumnTypes;
   type_ColumnTypes m_ColumnTypes;
-  Glib::ustring m_table_name;
+  Glib::ustring m_table_name, m_where_clause;
 
   Gtk::Menu* m_pMenuPopup;
   Glib::RefPtr<Gtk::ActionGroup> m_refActionGroup;

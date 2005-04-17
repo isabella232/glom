@@ -160,6 +160,8 @@ void Box_Data_Details::fill_from_database_layout()
 
     //This map of layout groups will also contain the field information from the database:
     Document_Glom::type_mapLayoutGroupSequence layout_groups = get_data_layout_groups("details");
+
+
     for(Document_Glom::type_mapLayoutGroupSequence::const_iterator iter = layout_groups.begin(); iter != layout_groups.end(); ++iter)
     {
       m_FlowTable.add_layout_group(iter->second);

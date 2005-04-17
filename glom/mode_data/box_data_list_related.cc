@@ -87,7 +87,6 @@ void Box_Data_List_Related::init_db_details(const Relationship& relationship)
   {
     g_warning("Box_Data_List_Related::init_db_details(): key_field not found.");
   }
-
   Box_Data_List::init_db_details(relationship.get_to_table());
 }
 
@@ -95,11 +94,11 @@ void Box_Data_List_Related::refresh_db_details(const Gnome::Gda::Value& foreign_
 {
   m_key_value = foreign_key_value;
 
-
   if(!GlomConversions::value_is_empty(m_key_value))
   {
     Glib::ustring strWhereClause = m_key_field.get_name() + " = " + m_key_field.sql(m_key_value);
 
+    //g_warning("refresh_db_details(): where_clause=%s", strWhereClause.c_str());
     Box_Data_List::refresh_db_details(strWhereClause);
   }
   else

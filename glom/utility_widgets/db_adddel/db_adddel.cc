@@ -640,7 +640,7 @@ void DbAddDel::construct_specified_columns()
   }
 
   //Create the model from the ColumnRecord:
-  m_refListStore = type_model_store::create(record, m_table_name, fields, column_index_key, m_allow_view);
+  m_refListStore = type_model_store::create(record, m_table_name, fields, column_index_key, m_allow_view, m_where_clause);
 
   m_TreeView.set_model(m_refListStore);
 
@@ -843,6 +843,10 @@ guint DbAddDel::add_column(const LayoutItem_Field& field)
   return m_ColumnTypes.size() - 1;
 }
 
+void DbAddDel::set_where_clause(const Glib::ustring& where_clause)
+{
+  m_where_clause = where_clause;
+}
 
 void DbAddDel::set_columns_ready()
 {
@@ -1445,13 +1449,21 @@ Glib::RefPtr<const Gtk::TreeModel> DbAddDel::get_model() const
 
 bool DbAddDel::get_is_first_row(const Gtk::TreeModel::iterator& iter) const
 {
-  return iter == get_model()->children().begin();
+  if(iter)
+    return iter == get_model()->children().begin();
+  else
+    return false;
 }
 
 bool DbAddDel::get_is_last_row(const Gtk::TreeModel::iterator& iter) const
 {
-  //TODO: Avoid this. iter::operator() might not work properly with our custom tree model.
-  return iter == get_last_row();
+  if(iter)
+  {
+    //TODO: Avoid this. iter::operator() might not work properly with our custom tree model.
+    return iter == get_last_row();
+  }
+  else
+    return false;
 }
 
 Gtk::TreeModel::iterator DbAddDel::get_next_available_row_with_add_if_necessary()
@@ -1541,6 +1553,9 @@ bool DbAddDel::get_is_placeholder_row(const Gtk::TreeModel::iterator& iter) cons
   {
     return false;
   }
+
+  if(!iter)
+    return false;
 
   if(iter == m_refListStore->children().end())
   {

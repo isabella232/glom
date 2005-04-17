@@ -34,4 +34,4 @@ glom/utility_widgets/datawidget.cc
 glom/utility_widgets/db_adddel/db_adddel.cc
 glom/utility_widgets/entryglom.cc
 glom/utility_widgets/flowtablewithfields.cc
-
+glom/utility_widgets/layoutwidgetbase.cc
