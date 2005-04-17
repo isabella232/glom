@@ -68,6 +68,8 @@ Dialog_FieldDefinition::Dialog_FieldDefinition(BaseObjectType* cobject, const Gl
   on_combo_type_changed();
 
   on_foreach_connect(*this);
+  on_foreach_connect(*m_pBox_DefaultValueSimple);
+  on_foreach_connect(*m_pBox_DefaultValue);
 
   Dialog_Properties::set_modified(false);
 
@@ -118,11 +120,12 @@ void Dialog_FieldDefinition::set_field(const Field& field, const Glib::ustring& 
   layout_item.m_field = m_Field;
   layout_item.m_field.set_title(_("Default Value"));
   m_pDataWidget_DefaultValueSimple = Gtk::manage( new DataWidget(layout_item, "") );
+  on_foreach_connect(*m_pDataWidget_DefaultValueSimple);
 
   Gtk::Label* pLabel = m_pDataWidget_DefaultValueSimple->get_label();
   if(!pLabel->get_text().empty())
     m_pBox_DefaultValueSimple->pack_start(*pLabel);
-    
+
   m_pBox_DefaultValueSimple->pack_end(*m_pDataWidget_DefaultValueSimple, Gtk::PACK_EXPAND_WIDGET); 
   m_pDataWidget_DefaultValueSimple->set_value(default_value);
 

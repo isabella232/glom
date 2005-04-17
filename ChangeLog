@@ -1,5 +1,15 @@
 2005-04-17  Murray Cumming <murrayc@murrayc.com>
 
+	* glom/mode_data/box_data.cc: record_new(): Iterate 
+	from begin to end, not begin to begin, so we actually 
+	set default values and calculate initial values.
+	* glom/mode_design/fields/dialog_fielddefinition.cc:
+	set_field(): Monitor changes to the dynamically-created 
+	default value widget, not just the rest, so that 
+	changes to the default value enable the Save button.
+
+2005-04-17  Murray Cumming <murrayc@murrayc.com>
+
 	* glom/mode_data/box_data_list.cc:
 	fill_from_database(): Call 
  	DbAddDel::set_where_clause(), so that  

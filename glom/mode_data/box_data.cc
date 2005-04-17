@@ -148,6 +148,9 @@ Box_Data::type_map_fields Box_Data::get_record_field_values(const Gnome::Gda::Va
 
 Glib::RefPtr<Gnome::Gda::DataModel> Box_Data::record_new(bool use_entered_data, const Gnome::Gda::Value& primary_key_value)
 {
+ g_warning("Box_Data::record_new()");
+
+
   Field fieldPrimaryKey;
   get_field_primary_key(fieldPrimaryKey);
 
@@ -166,12 +169,13 @@ Glib::RefPtr<Gnome::Gda::DataModel> Box_Data::record_new(bool use_entered_data, 
   }
 
   //Calculate any necessary field values and enter them:
-  for(type_vecLayoutFields::const_iterator iter = m_Fields.begin(); iter != m_Fields.begin(); ++iter)
+  for(type_vecLayoutFields::const_iterator iter = m_Fields.begin(); iter != m_Fields.end(); ++iter)
   {
     const LayoutItem_Field& layout_item = *iter;
 
     //If the user did not enter something in this field:
     Gnome::Gda::Value value = get_entered_field_data(layout_item);
+
     if(GlomConversions::value_is_empty(value)) //This deals with empty strings too.
     {
       const Field& field = layout_item.m_field;
@@ -182,9 +186,21 @@ Glib::RefPtr<Gnome::Gda::DataModel> Box_Data::record_new(bool use_entered_data, 
       {
         const type_map_fields field_values = get_record_field_values(primary_key_value);
 
-        Gnome::Gda::Value value = glom_evaluate_python_function_implementation(field.get_glom_type(), calculation, field_values,
+        const Gnome::Gda::Value value = glom_evaluate_python_function_implementation(field.get_glom_type(), calculation, field_values,
           get_document(), m_strTableName);
         set_entered_field_data(layout_item, value);
+      }
+
+      //Use default values (These are also specified in postgres as part of the field definition,
+      //so we could theoretically just not specify it here.
+      //TODO_Performance: Add has_default_value()?
+      if(GlomConversions::value_is_empty(value))
+      {
+        const Gnome::Gda::Value default_value = field.get_field_info().get_default_value();
+        if(!GlomConversions::value_is_empty(default_value))
+        {
+          set_entered_field_data(layout_item, default_value);
+        }
       }
     }
   }
