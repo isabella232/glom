@@ -1,5 +1,33 @@
 2005-04-17  Murray Cumming  <murrayc@murrayc.com>
 
+	* examples/example_smallbusiness.glom:
+	Add VAT fields to invoice_lines and invoices, 
+	with calculations.
+	* glom/data_structure/layout/layoutitem.cc:
+	* glom/data_structure/layout/layoutitem.h:
+	* glom/data_structure/layout/layoutitem_field.cc:
+	* glom/data_structure/layout/layoutitem_field.h:
+	Add operator==().
+	* glom/glom.glade:
+	* glom/mode_data/dialog_layout_list_related.cc:
+	* glom/mode_data/dialog_layout_list_related.h:
+	Add a Formatting button, as already in the regular 
+	List Layout dialog.
+	* glom/mode_data/box_data.cc:
+	* glom/mode_data/box_data.h:
+	do_calculations(),
+	* glom/mode_data/box_data_details.cc:
+	recalculate_fields_for_related_records(): Recalculated 	
+	fields that depend on the just-recalcualted fields, with 
+	some attempt to prevent circular fields. The dependency-
+	sequence needs to be figured out all at once, however - 
+	see the TODO>
+	* glom/python_embed/python_module/pygdavalue_conversions.c:
+	(pygda_value_as_pyobject): Return a PyFloat for a GdaNumeric, 
+	instead of a PyLong.
+
+2005-04-17  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/mode_data/box_data_list.cc:
 	* glom/mode_data/box_data_list.h:
 	* glom/mode_data/box_data_list_related.cc:

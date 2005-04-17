@@ -46,6 +46,13 @@ LayoutItem& LayoutItem::operator=(const LayoutItem& src)
   return *this;
 }
 
+bool LayoutItem::operator==(const LayoutItem& src) const
+{
+  return (m_name == src.m_name) &&
+         (m_sequence == src.m_sequence) &&
+         (m_editable == src.m_editable);
+}
+
 void LayoutItem::set_name(const Glib::ustring& name)
 {
   m_name = name;

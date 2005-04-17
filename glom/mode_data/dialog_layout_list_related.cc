@@ -20,6 +20,7 @@
 
 #include "dialog_layout_list_related.h"
 #include "dialog_choose_field.h"
+#include "dialog_field_layout.h"
 #include <bakery/App/App_Gtk.h> //For util_bold_message().
 
 //#include <libgnome/gnome-i18n.h>
@@ -84,6 +85,10 @@ Dialog_Layout_List_Related::Dialog_Layout_List_Related(BaseObjectType* cobject, 
   refGlade->get_widget("button_field_edit", m_button_field_edit);
   m_button_field_edit->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout_List_Related::on_button_edit_field) );
 
+  refGlade->get_widget("button_field_formatting", m_button_field_formatting);
+  m_button_field_formatting->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout_List_Related::on_button_field_formatting) );
+
+
   show_all_children();
 }
 
@@ -104,7 +109,7 @@ void Dialog_Layout_List_Related::set_document(const Glib::ustring& layout, Docum
 
 void Dialog_Layout_List_Related::update_ui(bool including_relationship_list)
 {
-   m_modified = false;
+  m_modified = false;
 
   //Update the tree models from the document
   Document_Glom* document = m_document;
@@ -128,6 +133,7 @@ void Dialog_Layout_List_Related::update_ui(bool including_relationship_list)
     m_entry_table_title->set_text( m_relationship.get_title() );
 
     Document_Glom::type_mapLayoutGroupSequence mapGroups = document->get_relationship_data_layout_groups_plus_new_fields(m_layout_name, m_relationship);
+    document->fill_layout_field_details(m_relationship.get_to_table(), mapGroups); //Update with full field information.
 
     //If no information is stored in the document, then start with something:
 
@@ -453,6 +459,52 @@ void Dialog_Layout_List_Related::on_button_edit_field()
 
             treeview_fill_sequences(m_model_fields, m_ColumnsFields.m_col_sequence); //The document should have checked this already, but it does not hurt to check again.
             */
+          }
+        }
+      }
+    }
+
+    delete dialog;
+  }
+  catch(const Gnome::Glade::XmlError& ex)
+  {
+    std::cerr << ex.what() << std::endl;
+  }
+}
+
+
+void Dialog_Layout_List_Related::on_button_field_formatting()
+{
+  try
+  {
+    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_layout_field_properties");
+
+    Dialog_FieldLayout* dialog = 0;
+    refXml->get_widget_derived("dialog_layout_field_properties", dialog);
+
+    if(dialog)
+    {
+      Glib::RefPtr<Gtk::TreeView::Selection> refTreeSelection = m_treeview_fields->get_selection();
+      if(refTreeSelection)
+      {
+        //TODO: Handle multiple-selection:
+        Gtk::TreeModel::iterator iter = refTreeSelection->get_selected();
+        if(iter)
+        {
+          Gtk::TreeModel::Row row = *iter;
+          LayoutItem_Field field = row[m_ColumnsFields.m_col_layout_item];
+          g_warning("field_name = %s, %s", field.m_field.get_name().c_str(), field.get_name().c_str());
+
+          dialog->set_field(field);
+          dialog->set_transient_for(*this);
+          int response = dialog->run();
+          dialog->hide();
+          if(response == Gtk::RESPONSE_OK)
+          {
+            //Get the chosen field:
+            bool test = dialog->get_field_chosen(field);
+            if(test)
+              row[m_ColumnsFields.m_col_layout_item] = field;
           }
         }
       }

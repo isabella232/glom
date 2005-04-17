@@ -115,7 +115,7 @@ pygda_value_as_pyobject(const GdaValue *boxed, gboolean copy_boxed)
         const GdaNumeric* val = gda_value_get_numeric ((GdaValue*)boxed);
         const gchar* number_as_text = val->number; /* Formatted according to the C locale, probably. */
         /* This would need a string _object_: ret = PyFloat_FromString(number_as_text, 0); */
-        ret = PyLong_FromLong (PyOS_ascii_strtod (number_as_text, 0));
+        ret = PyFloat_FromDouble (PyOS_ascii_strtod (number_as_text, 0));
     } else if (value_type == GDA_VALUE_TYPE_SINGLE) {
         ret = PyFloat_FromDouble (gda_value_get_single ((GdaValue*)boxed));
     } else if (value_type == GDA_VALUE_TYPE_SMALLINT) {

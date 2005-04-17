@@ -649,22 +649,52 @@ Gnome::Gda::Value Box_Data::get_lookup_value(const Relationship& relationship, c
 
 void Box_Data::do_calculations(const LayoutItem_Field& field_changed, const Field& primary_key, const Gnome::Gda::Value& primary_key_value)
 {
+  //TODO: Get (recursively) the list of fields to recalcualte, sort them in order of dependency, then calculate them all.
+
+  //g_warning("Box_Data::do_calculations(): field_changed=%s", field_changed.get_name().c_str());
+
   //TODO_Performance: This is profoundly inefficient:
 
   //Recalculate fields that are triggered by a change of this field's value:
   const type_vecLayoutFields calculated_fields = get_calculated_fields(field_changed.get_name());
   for(type_vecLayoutFields::const_iterator iter = calculated_fields.begin(); iter != calculated_fields.end(); ++iter)
   {
-    //recalculate:
-     const type_map_fields field_values = get_record_field_values(primary_key_value);
-     Gnome::Gda::Value value = glom_evaluate_python_function_implementation(iter->m_field.get_glom_type(), iter->m_field.get_calculation(), field_values,
-          get_document(), m_strTableName);
+    const LayoutItem_Field& field = *iter;
 
-    //show it:
-    set_entered_field_data(*iter, value);
+    type_vecLayoutFields::const_iterator iterFind = std::find(m_FieldsCalculationInProgress.begin(), m_FieldsCalculationInProgress.end(), field);
+    if(iterFind != m_FieldsCalculationInProgress.end())
+    {
+      g_warning("Box_Data::do_calculations(): Circular calculation detected. The Infinite loop was prevented before re-calculating field %s", field.get_name().c_str());
+    }
+    else
+    {
+      //g_warning("CircularPrevention: recalculating field=%s", field.get_name().c_str());
 
-    //Add it to the database (even if it is not shown in the view)
-    set_field_value_in_database(*iter, value, primary_key, primary_key_value);
+      //recalculate:
+      const type_map_fields field_values = get_record_field_values(primary_key_value);
+      Gnome::Gda::Value value = glom_evaluate_python_function_implementation(field.m_field.get_glom_type(), iter->m_field.get_calculation(), field_values,
+            get_document(), m_strTableName);
+
+      //show it:
+      set_entered_field_data(*iter, value);
+
+      //Add it to the database (even if it is not shown in the view)
+      set_field_value_in_database(*iter, value, primary_key, primary_key_value);
+
+      //Prevent circular calculations during the recursive do_calculations:
+      {
+        m_FieldsCalculationInProgress.push_back(field);
+
+        //Recalculate any calculated fields that depend on this calculated field.
+        do_calculations(*iter, primary_key, primary_key_value);
+
+        type_vecLayoutFields::iterator iterFind = std::find(m_FieldsCalculationInProgress.begin(), m_FieldsCalculationInProgress.end(), field);
+        if(iterFind != m_FieldsCalculationInProgress.end())
+        {
+          m_FieldsCalculationInProgress.erase(iterFind);
+        }
+      }
+    }
   }
 }
 

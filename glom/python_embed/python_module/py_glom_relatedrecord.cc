@@ -277,7 +277,7 @@ RelatedRecord_generic_aggregate(PyGlomRelatedRecord* self, PyObject *args, PyObj
         if(datamodel && datamodel->get_n_rows())
         {
           Gnome::Gda::Value value = datamodel->get_value_at(0, 0);
-          g_warning("RelatedRecord_sum(): value from datamodel = %s", value.to_string().c_str());
+          //g_warning("RelatedRecord_generic_aggregate(): value from datamodel = %s", value.to_string().c_str());
 
           //Cache it, in case it's asked-for again.
           (*(self->m_pMap_field_values))[field_name] = value;
@@ -285,12 +285,12 @@ RelatedRecord_generic_aggregate(PyGlomRelatedRecord* self, PyObject *args, PyObj
         }
         else if(!datamodel)
         {
-          g_warning("RelatedRecord_tp_as_mapping_getitem(): The datamodel was null.");
+          g_warning("RelatedRecord_generic_aggregate(): The datamodel was null.");
           RelatedRecord_HandlePythonError();
         }
         else
         {
-          g_warning("RelatedRecord_tp_as_mapping_getitem(): No related records exist yet for relationship %s.",  self->m_relationship->get_name().c_str());
+          g_warning("RelatedRecord_generic_aggregate(): No related records exist yet for relationship %s.",  self->m_relationship->get_name().c_str());
         }
       }
     }

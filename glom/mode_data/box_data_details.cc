@@ -442,25 +442,44 @@ void Box_Data_Details::on_related_user_requested_details(Gnome::Gda::Value key_v
 
 void Box_Data_Details::recalculate_fields_for_related_records(const Glib::ustring& relationship_name)
 {
+ //TODO: Get (recursively) the list of fields to recalcualte, sort them in order of dependency, then calculate them all.
+
   const Gnome::Gda::Value primary_key_value = get_primary_key_value();
 
   for(type_vecLayoutFields::iterator iter = m_Fields.begin(); iter != m_Fields.end(); ++iter)
   {
+    const LayoutItem_Field& field = *iter;
+
     //Is this field triggered by this relationship?
-    const Field::type_list_strings triggered_by = iter->m_field.get_calculation_relationships();
+    const Field::type_list_strings triggered_by = field.m_field.get_calculation_relationships();
     Field::type_list_strings::const_iterator iterFind = std::find(triggered_by.begin(), triggered_by.end(), relationship_name);
     if(iterFind != triggered_by.end()) //If it was found
     {
        //recalculate:
        const type_map_fields field_values = get_record_field_values(primary_key_value);
-       Gnome::Gda::Value value = glom_evaluate_python_function_implementation(iter->m_field.get_glom_type(), iter->m_field.get_calculation(), field_values,
+       Gnome::Gda::Value value = glom_evaluate_python_function_implementation(field.m_field.get_glom_type(), iter->m_field.get_calculation(), field_values,
           get_document(), m_strTableName);
 
       //show it:
-      set_entered_field_data(*iter, value);
+      set_entered_field_data(field, value);
 
       //Add it to the database (even if it is not shown in the view)
-      set_field_value_in_database(*iter, value, m_field_primary_key, primary_key_value);
+      set_field_value_in_database(field, value, m_field_primary_key, primary_key_value);
+
+      //Prevent circular calculations during the recursive do_calculations:
+      {
+        m_FieldsCalculationInProgress.push_back(field);
+
+        //Recalculate any calculated fields that depend on this calculated field.
+        //Recalculate fields whose calculations use this field:
+        do_calculations(*iter, m_field_primary_key, primary_key_value);
+
+        type_vecLayoutFields::iterator iterFind = std::find(m_FieldsCalculationInProgress.begin(), m_FieldsCalculationInProgress.end(), field);
+        if(iterFind != m_FieldsCalculationInProgress.end())
+        {
+          m_FieldsCalculationInProgress.erase(iterFind);
+        }
+      }
     }
   }
 }

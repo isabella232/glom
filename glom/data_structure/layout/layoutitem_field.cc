@@ -49,6 +49,17 @@ LayoutItem* LayoutItem_Field::clone() const
   return new LayoutItem_Field(*this);
 }
 
+bool LayoutItem_Field::operator==(const LayoutItem_Field& src) const
+{
+  return LayoutItem::operator==(src) &&
+    (m_field == src.m_field) &&
+    (m_numeric_format == src.m_numeric_format) &&
+    (m_priv_view == src.m_priv_view) &&
+    (m_priv_edit == src.m_priv_edit) &&
+    (m_relationship == src.m_relationship) &&
+    (m_hidden == src.m_hidden);
+}
+
 
 LayoutItem_Field& LayoutItem_Field::operator=(const LayoutItem_Field& src)
 {

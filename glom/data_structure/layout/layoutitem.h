@@ -37,6 +37,8 @@ public:
    */
   virtual LayoutItem* clone() const = 0;
 
+  bool operator==(const LayoutItem& src) const;
+
   virtual void set_name(const Glib::ustring& name);
   virtual Glib::ustring get_name() const; //For use with our std::find_if() predicate.
 

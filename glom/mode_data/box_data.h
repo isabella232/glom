@@ -132,6 +132,8 @@ protected:
   Glib::ustring m_strWhereClause;
 
   type_vecLayoutFields m_Fields;
+
+  type_vecLayoutFields m_FieldsCalculationInProgress; //Prevent circular calculations.
 };
 
 #endif
