@@ -71,6 +71,7 @@ protected:
   virtual void on_adddel_user_changed(const Gtk::TreeModel::iterator& row, guint col);
 
   virtual void on_record_added(const Gnome::Gda::Value& primary_key_value); //Not a signal handler. To be overridden.
+  virtual void on_record_deleted(const Gnome::Gda::Value& primary_key_value);
 
   virtual bool get_field_column_index(const Glib::ustring& field_name, guint& index) const;
 

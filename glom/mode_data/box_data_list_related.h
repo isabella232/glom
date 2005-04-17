@@ -63,6 +63,7 @@ protected:
   virtual void on_adddel_user_changed(const Gtk::TreeModel::iterator& row, guint col);
   virtual void on_adddel_user_added(const Gtk::TreeModel::iterator& row, guint col_with_first_value); //Override.
   virtual void on_record_added(const Gnome::Gda::Value& primary_key_value); //Override. Not a signal handler.
+  virtual void on_record_deleted(const Gnome::Gda::Value& primary_key_value); //override.
   virtual void on_dialog_layout_hide(); //override.
 
   virtual void enable_buttons();

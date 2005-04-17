@@ -210,6 +210,13 @@ Field Box_Data_List_Related::get_key_field() const
   return m_key_field;
 }
 
+void Box_Data_List_Related::on_record_deleted(const Gnome::Gda::Value& /* primary_key_value */)
+{
+  //Allow the parent record (Details view) to recalculate aggregations:
+  signal_record_changed().emit(m_relationship.get_name());
+}
+
+
 void Box_Data_List_Related::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, guint col)
 {
   //Call base class:

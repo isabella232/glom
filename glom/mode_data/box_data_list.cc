@@ -253,14 +253,17 @@ void Box_Data_List::on_adddel_user_requested_delete(const Gtk::TreeModel::iterat
     dialog.set_transient_for(*get_app_window());
     dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
     dialog.add_button(Gtk::Stock::DELETE, Gtk::RESPONSE_OK);
-    
+
     int response = dialog.run();
     if(response == Gtk::RESPONSE_OK)
     {
-      record_delete( get_primary_key_value(rowStart) );
+      const Gnome::Gda::Value primary_key_value = get_primary_key_value(rowStart);
+      record_delete(primary_key_value);
 
       //Remove the row:
       m_AddDel.remove_item(rowStart);
+
+      on_record_deleted(primary_key_value);
     }
   }
 }
@@ -699,6 +702,11 @@ void Box_Data_List::fill_column_titles()
      }
   }
 
+}
+
+void Box_Data_List::on_record_deleted(const Gnome::Gda::Value& /* primary_key_value */)
+{
+   //Overridden by Box_Data_List_Related.
 }
 
 void Box_Data_List::on_record_added(const Gnome::Gda::Value& /* strPrimaryKey */)
