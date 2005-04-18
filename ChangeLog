@@ -1,6 +1,21 @@
 2005-04-18  Murray Cumming <murrayc@murrayc.com>
 
 	* examples/example_smallbusiness.glom:
+	Remove 0 and NULL default values.
+	* glom/document/document_glom.cc:
+	Save default values with 
+	GlomConversions::get_text_for_gda_value(), in 
+	iso-format, instead of Gda::Value::to_string().
+	This stops empty default values being changed 
+	to 0s and NULLs. 
+	* glom/mode_data/box_data_list.cc:
+	Specify the list row when calling 
+        set_field_value_in_database() so that lookups/
+	calcs actually happen.
+
+2005-04-18  Murray Cumming <murrayc@murrayc.com>
+
+	* examples/example_smallbusiness.glom:
 	product: Add vat_percent field.
 	invoice_lines: Lookup vat_percent along with 
 	the other product information.

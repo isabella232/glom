@@ -310,10 +310,6 @@ Glib::ustring AddDel::get_value(const Gtk::TreeModel::iterator& iter, guint col)
     }
   }
 
-  //TODO: This is a hack. We need to deal with NULL explicitly:
-  if(value == "NULL")
-    value = "";
-
   return value;
 }
 

@@ -1161,7 +1161,11 @@ bool Document_Glom::save_before()
           set_node_attribute_value_as_bool(elemField, "primary_key", field_info.get_primary_key());
           set_node_attribute_value_as_bool(elemField, "unique", field_info.get_unique_key());
           set_node_attribute_value_as_bool(elemField, "auto_increment", field_info.get_auto_increment());
-          set_node_attribute_value(elemField, "default_value", field_info.get_default_value().to_string());
+
+          NumericFormat format_ignored; //Because we use ISO format.
+          const Glib::ustring default_value_as_text = GlomConversions::get_text_for_gda_value(field.get_glom_type(), field_info.get_default_value(), std::locale() /* SQL uses the C locale */, format_ignored, true /* ISO standard */);
+          set_node_attribute_value(elemField, "default_value", default_value_as_text);
+
 
           set_node_attribute_value(elemField, "calculation", field.get_calculation());
 

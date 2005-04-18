@@ -420,7 +420,7 @@ void Box_Data_List::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, 
       //const Field& field = layout_field.m_field;
       //const Glib::ustring strFieldName = layout_field.get_name();
 
-      bool bTest = set_field_value_in_database(layout_field, field_value, primary_key_field, primary_key_value);
+      bool bTest = set_field_value_in_database(row, layout_field, field_value, primary_key_field, primary_key_value);
 
       //Glib::ustring strQuery = "UPDATE " + table_name;
       //strQuery += " SET " +  /* table_name + "." + postgres does not seem to like the table name here */ strFieldName + " = " + field.sql(field_value);

@@ -1637,7 +1637,9 @@ void DbAddDel::treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gt
         //TODO: Maybe we should have custom cellrenderers for time, date, and numbers.
         Gtk::CellRendererText* pDerived = dynamic_cast<Gtk::CellRendererText*>(renderer);
 
-        pDerived->property_text() = GlomConversions::get_text_for_gda_value(column_info.m_field.m_field.get_glom_type(), value, column_info.m_field.m_numeric_format);
+        const Glib::ustring text = GlomConversions::get_text_for_gda_value(column_info.m_field.m_field.get_glom_type(), value, column_info.m_field.m_numeric_format);
+        //g_assert(text != "NULL");
+        pDerived->property_text() = text;
 
         break;
       } 
