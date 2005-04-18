@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glom\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-04-17 02:25-0400\n"
+"POT-Creation-Date: 2005-04-17 20:51-0400\n"
 "PO-Revision-Date: 2005-04-17 19:52-0400\n"
 "Last-Translator: Adam Weinberger <adamw@gnome.org>\n"
 "Language-Team: Canadian English <adamw@gnome.org>\n"
@@ -172,8 +172,8 @@ msgstr ""
 "<span weight=\"bold\" size=\"larger\">Invalid format</span>\n"
 "\n"
 "The data in the field were not recognized. Please try to correct the data or "
-"revert to the previous values. Here is an example of correctly-formatted data "
-"for these fields.\n"
+"revert to the previous values. Here is an example of correctly-formatted "
+"data for these fields.\n"
 
 #: glom/glom.glade.h:43
 msgid ""
@@ -261,7 +261,7 @@ msgstr "Database"
 msgid "Decimal Places"
 msgstr "Decimal Places"
 
-#: glom/glom.glade.h:66 glom/mode_design/fields/dialog_fielddefinition.cc:119
+#: glom/glom.glade.h:66 glom/mode_design/fields/dialog_fielddefinition.cc:121
 msgid "Default Value"
 msgstr "Default Value"
 
@@ -351,7 +351,7 @@ msgstr "Multi-line"
 #: glom/mode_data/dialog_choose_relationship.cc:41
 #: glom/mode_data/dialog_layout_details.cc:58
 #: glom/mode_data/dialog_layout_list.cc:49
-#: glom/mode_data/dialog_layout_list_related.cc:50
+#: glom/mode_data/dialog_layout_list_related.cc:51
 #: glom/mode_design/box_db_table_relationships.cc:39
 #: glom/mode_design/fields/box_db_table_definition.cc:47
 #: glom/mode_design/users/dialog_groups_list.cc:59
@@ -630,11 +630,11 @@ msgid "Developer"
 msgstr "Developer"
 
 #. Ask user to confirm loss of data:
-#: glom/mode_data/box_data.cc:275
+#: glom/mode_data/box_data.cc:291
 msgid "No primary key value"
 msgstr "No primary key value"
 
-#: glom/mode_data/box_data.cc:276
+#: glom/mode_data/box_data.cc:292
 msgid ""
 "This data can not be stored in the database because you have not provided a "
 "primary key.\n"
@@ -646,11 +646,11 @@ msgstr ""
 
 #. Warn the user:
 #. TODO: Make the field insensitive until it can receive data, so people never see this dialog.
-#: glom/mode_data/box_data.cc:964
+#: glom/mode_data/box_data.cc:1010
 msgid "Related Record Does Not Exist"
 msgstr "Related Record Does Not Exist"
 
-#: glom/mode_data/box_data.cc:965
+#: glom/mode_data/box_data.cc:1011
 msgid ""
 "Data may not be entered into this related field, because the related record "
 "does not yet exist, and the relationship does not allow automatic creation "
@@ -662,12 +662,12 @@ msgstr ""
 
 #. Warn the user:
 #. TODO: Make the field insensitive until it can receive data, so people never see this dialog.
-#: glom/mode_data/box_data.cc:983
+#: glom/mode_data/box_data.cc:1029
 msgid "Related Record Can Not Be Created"
 msgstr "Related Record Cannot Be Created"
 
 #. TODO: This is a very complex error message:
-#: glom/mode_data/box_data.cc:985
+#: glom/mode_data/box_data.cc:1031
 msgid ""
 "Data may not be entered into this related field, because the related record "
 "does not yet exist, and the key in the related record is auto-generated and "
@@ -688,20 +688,20 @@ msgstr ""
 " Leave automatic ID fields empty - they will be filled in for you."
 
 #. Tell user that a primary key is needed to delete a record:
-#: glom/mode_data/box_data_details.cc:368
+#: glom/mode_data/box_data_details.cc:370
 msgid "No primary key value."
 msgstr "No primary key value."
 
-#: glom/mode_data/box_data_details.cc:369
+#: glom/mode_data/box_data_details.cc:371
 msgid "This record can not be deleted because there is no primary key."
 msgstr "This record cannot be deleted because there is no primary key."
 
 #. Warn user that they can't choose their own primary key:
-#: glom/mode_data/box_data_details.cc:676
+#: glom/mode_data/box_data_details.cc:697
 msgid "Primary key auto increments"
 msgstr "Primary key auto increments"
 
-#: glom/mode_data/box_data_details.cc:677
+#: glom/mode_data/box_data_details.cc:698
 msgid ""
 "The primary key is auto-incremented.\n"
 " You may not enter your own primary key value."
@@ -722,11 +722,11 @@ msgstr ""
 "Only the first 100 records are shown."
 
 #. Ask the user for confirmation:
-#: glom/mode_data/box_data_list.cc:249
+#: glom/mode_data/box_data_list.cc:251
 msgid "Delete record"
 msgstr "Delete record"
 
-#: glom/mode_data/box_data_list.cc:250
+#: glom/mode_data/box_data_list.cc:252
 msgid ""
 "Are you sure that you would like to delete this record? The data in this "
 "record will then be permanently lost."
@@ -735,11 +735,11 @@ msgstr ""
 "will then be permanently lost."
 
 #. Tell user that they can't do that:
-#: glom/mode_data/box_data_list_related.cc:246
+#: glom/mode_data/box_data_list_related.cc:252
 msgid "Extra related records not possible."
 msgstr "Extra related records not possible."
 
-#: glom/mode_data/box_data_list_related.cc:247
+#: glom/mode_data/box_data_list_related.cc:253
 msgid ""
 "You attempted to add a new related record, but there can only be one related "
 "record, because the relationship uses a unique key."
@@ -934,6 +934,26 @@ msgstr "Choose columns"
 msgid "Layout"
 msgstr "Layout"
 
-#: glom/utility_widgets/flowtablewithfields.cc:634
+#: glom/utility_widgets/flowtablewithfields.cc:636
 msgid "New Group"
 msgstr "New Group"
+
+#: glom/utility_widgets/layoutwidgetbase.cc:31
+msgid "Choose Field"
+msgstr "Choose Field"
+
+#: glom/utility_widgets/layoutwidgetbase.cc:32
+msgid "Field Layout Properties"
+msgstr "Field Layout Properties"
+
+#: glom/utility_widgets/layoutwidgetbase.cc:33
+msgid "Add Field"
+msgstr "Add Field"
+
+#: glom/utility_widgets/layoutwidgetbase.cc:34
+msgid "Add Related Records"
+msgstr "Add Related Records"
+
+#: glom/utility_widgets/layoutwidgetbase.cc:35
+msgid "Add Group"
+msgstr "Add Group"
