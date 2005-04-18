@@ -334,6 +334,7 @@ void Dialog_FieldDefinition::on_button_edit_calculation()
         m_pTextView_Calculation->get_buffer()->set_text( dialog->get_field().get_calculation() );
       }
 
+      remove_view(dialog);
       delete dialog;
     }
   }

@@ -42,6 +42,7 @@ Dialog_Relationships::Dialog_Relationships(BaseObjectType* cobject, const Glib::
 
 Dialog_Relationships::~Dialog_Relationships()
 {
+  remove_view(m_box);
 }
 
 /**

@@ -42,6 +42,7 @@ Dialog_Fields::Dialog_Fields(BaseObjectType* cobject, const Glib::RefPtr<Gnome::
 
 Dialog_Fields::~Dialog_Fields()
 {
+  remove_view(m_box);
 }
 
 void Dialog_Fields::init_db_details(const Glib::ustring& strTableName)

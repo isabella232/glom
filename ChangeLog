@@ -1,3 +1,18 @@
+2005-04-18  Murray Cumming <murrayc@murrayc.com>
+
+	* glom/mode_data/box_data_details.cc:
+	* glom/mode_data/notebook_data.cc:
+	* glom/mode_design/dialog_fields.cc:
+	* glom/mode_design/dialog_relationships.cc:
+	* glom/mode_design/fields/box_db_table_definition.cc:
+	* glom/mode_design/fields/dialog_fielddefinition.cc:
+	* glom/mode_design/users/dialog_groups_list.cc:
+	* glom/mode_find/notebook_find.cc:
+	Added View_Composite::remove_view() calls before 
+	deleting widgets that have been add_view()ed. This 
+	fixes a crash when reopening the field definition 
+	details dialog.
+
 2005-04-17  Murray Cumming  <murrayc@murrayc.com>
 
 	* examples/example_smallbusiness.glom:

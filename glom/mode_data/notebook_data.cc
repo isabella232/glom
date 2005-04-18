@@ -58,6 +58,8 @@ Notebook_Data::Notebook_Data()
 
 Notebook_Data::~Notebook_Data()
 {
+  remove_view(&m_Box_List);
+  remove_view(&m_Box_Details);
 }
 
 void Notebook_Data::init_db_details(const Glib::ustring& strTableName, const Glib::ustring& strWhereClause)

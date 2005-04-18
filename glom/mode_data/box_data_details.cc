@@ -120,6 +120,7 @@ Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
 
 Box_Data_Details::~Box_Data_Details()
 {
+  remove_view(&m_FlowTable);
 }
 
 Gnome::Gda::Value Box_Data_Details::get_primary_key_value() const

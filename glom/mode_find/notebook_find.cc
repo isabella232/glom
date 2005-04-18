@@ -43,6 +43,8 @@ Notebook_Find::Notebook_Find()
 
 Notebook_Find::~Notebook_Find()
 {
+  remove_view(&m_Box_List);
+  remove_view(&m_Box_Details);
 }
 
 void Notebook_Find::init_db_details(const Glib::ustring& strTableName)

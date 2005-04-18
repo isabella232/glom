@@ -309,6 +309,8 @@ void Dialog_GroupsList::on_button_group_users()
       dialog->set_group(group_name);
 
       dialog->run();
+
+      remove_view(dialog);
       delete dialog;
 
       fill_group_list();
