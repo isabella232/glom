@@ -1,3 +1,27 @@
+0.8.22:
+
+* Field Definitions:
+  - Do not save empty default values as "NULL" or 0.
+  - Prevent crash when opening Field details a second 
+    time.
+  - Allow saving when the default value changes.
+  - Calculated fields:
+    - Simplified python API.
+    - Aggregate calculations (sum, count, max, min) 
+      on related records.
+    - Calculated fields may use the results of 
+      other calculated fields.
+    - Do not lose digits after decimal points.
+    (Demonstrated in the Invoice table in the example.)
+* List:
+  - Really do lookups and recalculations when 
+  adding new records.
+* Details:
+  - Related records: Only show related records, not 
+    all records.
+* g++ 3.4 build fixes.
+
+
 0.8.21:
 
 * Calculated Fields: Your python function can now use 

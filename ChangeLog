@@ -64,7 +64,7 @@
 	do_calculations(),
 	* glom/mode_data/box_data_details.cc:
 	recalculate_fields_for_related_records(): Recalculated 	
-	fields that depend on the just-recalcualted fields, with 
+	fields that depend on the just-recalculated fields, with 
 	some attempt to prevent circular fields. The dependency-
 	sequence needs to be figured out all at once, however - 
 	see the TODO>
@@ -160,7 +160,7 @@
 
 	* glom/python_embed/python_module/py_glom_relatedrecord.cc:
 	RelatedRecord_tp_as_mapping_getitem():
-	Actually execute the SQ so that it actually gets the data. 
+	Actually execute the SQL so that it actually gets the data. 
 	And also handle various errors and give interesting warnings.
 
 2005-04-16  Murray Cumming <murrayc@murrayc.com>
