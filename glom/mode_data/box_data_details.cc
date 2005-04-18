@@ -466,21 +466,6 @@ void Box_Data_Details::recalculate_fields_for_related_records(const Glib::ustrin
 
       //Add it to the database (even if it is not shown in the view)
       set_field_value_in_database(field, value, m_field_primary_key, primary_key_value);
-
-      //Prevent circular calculations during the recursive do_calculations:
-      {
-        m_FieldsCalculationInProgress.push_back(field);
-
-        //Recalculate any calculated fields that depend on this calculated field.
-        //Recalculate fields whose calculations use this field:
-        do_calculations(*iter, m_field_primary_key, primary_key_value);
-
-        type_vecLayoutFields::iterator iterFind = std::find(m_FieldsCalculationInProgress.begin(), m_FieldsCalculationInProgress.end(), field);
-        if(iterFind != m_FieldsCalculationInProgress.end())
-        {
-          m_FieldsCalculationInProgress.erase(iterFind);
-        }
-      }
     }
   }
 }
@@ -629,15 +614,19 @@ void Box_Data_Details::on_flowtable_field_edited(const LayoutItem_Field& layout_
       }
     }
 
-    const Field& field = layout_field.m_field;
+    //const Field& field = layout_field.m_field;
+
+    //Set the value in all instances of this field in the layout (The field might be on the layout more than once):
+    m_FlowTable.set_field_value(layout_field, field_value);
 
     //Update the field in the record (the record with this primary key):
     try
     {
-      Glib::ustring strQuery = "UPDATE " + table_name;
-      strQuery += " SET " +  /* table_name + "." + postgres does not seem to like the table name here */ strFieldName + " = " + field.sql(field_value);
-      strQuery += " WHERE " + table_name + "." + primary_key_field.get_name() + " = " + primary_key_field.sql(primary_key_value);
-      bool bTest = Query_execute(strQuery);
+      bool bTest = set_field_value_in_database(layout_field, field_value, primary_key_field, primary_key_value);
+      //Glib::ustring strQuery = "UPDATE " + table_name;
+      //strQuery += " SET " +  /* table_name + "." + postgres does not seem to like the table name here */ strFieldName + " = " + field.sql(field_value);
+      //strQuery += " WHERE " + table_name + "." + primary_key_field.get_name() + " = " + primary_key_field.sql(primary_key_value);
+      //bool bTest = Query_execute(strQuery);
 
       if(!bTest)
       {
@@ -646,18 +635,6 @@ void Box_Data_Details::on_flowtable_field_edited(const LayoutItem_Field& layout_
       }
       else
       {
-        //Set the value in all instances of this field in the layout (The field might be on the layout more than once):
-        m_FlowTable.set_field_value(layout_field, field_value);
-
-        //Get-and-set values for lookup fields, if this field triggers those relationships:
-        do_lookups(layout_field, field_value, primary_key_field, primary_key_value);
-
-        //Recalculate calculated fields, if this field is used by them:
-        do_calculations(layout_field, primary_key_field, primary_key_value);
-
-        //Show new values for related fields:
-        refresh_related_fields(layout_field, field_value, primary_key_field, primary_key_value);
-
         //TODO: Display new values for related fields.
 
         //If this is a foreign key then refresh the related records:
@@ -724,7 +701,7 @@ void Box_Data_Details::on_flowtable_field_edited(const LayoutItem_Field& layout_
   } //if(get_primary_key_value().size())
 }
 
-void Box_Data_Details::refresh_related_fields(const LayoutItem_Field& field_changed, const Gnome::Gda::Value& /* field_value */, const Field& primary_key, const Gnome::Gda::Value& primary_key_value)
+void Box_Data_Details::refresh_related_fields(const Gtk::TreeModel::iterator& /* row */, const LayoutItem_Field& field_changed, const Gnome::Gda::Value& /* field_value */, const Field& primary_key, const Gnome::Gda::Value& primary_key_value)
 {
   if(field_changed.get_has_relationship_name())
     return; //TODO: Handle these too.
@@ -766,7 +743,7 @@ void Box_Data_Details::refresh_related_fields(const LayoutItem_Field& field_chan
   }
 }
 
-void Box_Data_Details::do_lookups(const LayoutItem_Field& field_changed, const Gnome::Gda::Value& field_value, const Field& primary_key, const Gnome::Gda::Value& primary_key_value)
+void Box_Data_Details::do_lookups(const Gtk::TreeModel::iterator& /* row */, const LayoutItem_Field& field_changed, const Gnome::Gda::Value& field_value, const Field& primary_key, const Gnome::Gda::Value& primary_key_value)
 {
    if(field_changed.get_has_relationship_name())
     return; //TODO: Handle these too.
@@ -795,8 +772,6 @@ void Box_Data_Details::do_lookups(const LayoutItem_Field& field_changed, const G
 
        //Add it to the database (even if it is not shown in the view)
        set_field_value_in_database(layout_item, value, primary_key, primary_key_value);
-
-       //TODO: Handle lookups triggered by these fields (recursively)? TODO: Check for infinitely looping lookups.
      }
    }
 }

@@ -417,18 +417,21 @@ void Box_Data_List::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, 
 
       //Update the field in the record (the record with this primary key):
       const Gnome::Gda::Value field_value = m_AddDel.get_value(row, layout_field);
-      const Field& field = layout_field.m_field;
-      const Glib::ustring strFieldName = layout_field.get_name();
+      //const Field& field = layout_field.m_field;
+      //const Glib::ustring strFieldName = layout_field.get_name();
 
-      Glib::ustring strQuery = "UPDATE " + table_name;
-      strQuery += " SET " +  /* table_name + "." + postgres does not seem to like the table name here */ strFieldName + " = " + field.sql(field_value);
-      strQuery += " WHERE " + table_name + "." + primary_key_field.get_name() + " = " + primary_key_field.sql(primary_key_value);
-      bool bTest = Query_execute(strQuery);
+      bool bTest = set_field_value_in_database(layout_field, field_value, primary_key_field, primary_key_value);
+
+      //Glib::ustring strQuery = "UPDATE " + table_name;
+      //strQuery += " SET " +  /* table_name + "." + postgres does not seem to like the table name here */ strFieldName + " = " + field.sql(field_value);
+      //strQuery += " WHERE " + table_name + "." + primary_key_field.get_name() + " = " + primary_key_field.sql(primary_key_value);
+      //bool bTest = Query_execute(strQuery);
       if(!bTest)
       {
         //Update failed.
         fill_from_database(); //Replace with correct values.
       }
+      /*
       else
       {
         //Get-and-set values for lookup fields, if this field triggers those relationships:
@@ -440,6 +443,7 @@ void Box_Data_List::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, 
         //Update related fields, if this field is used in the relationship:
         refresh_related_fields(row, layout_field, field_value, primary_key_field, primary_key_value);
       }
+      */
     }
     catch(const std::exception& ex)
     {
@@ -538,10 +542,11 @@ void Box_Data_List::do_lookups(const Gtk::TreeModel::iterator& row, const Layout
        m_AddDel.set_value(row, layout_Item, value);
 
        //Add it to the database (even if it is not shown in the view)
-       Glib::ustring strQuery = "UPDATE " + m_strTableName;
-       strQuery += " SET " + field_lookup.get_name() + " = " + field_lookup.sql(value);
-       strQuery += " WHERE " + primary_key.get_name() + " = " + primary_key.sql(primary_key_value);
-       Query_execute(strQuery);  //TODO: Handle errors
+       set_field_value_in_database(row, layout_Item, value, primary_key, primary_key_value); //Also does dependent lookups/recalcs.
+       //Glib::ustring strQuery = "UPDATE " + m_strTableName;
+       //strQuery += " SET " + field_lookup.get_name() + " = " + field_lookup.sql(value);
+       //strQuery += " WHERE " + primary_key.get_name() + " = " + primary_key.sql(primary_key_value);
+       //Query_execute(strQuery);  //TODO: Handle errors
 
        //TODO: Handle lookups triggered by these fields (recursively)? TODO: Check for infinitely looping lookups.
      }
@@ -696,9 +701,7 @@ void Box_Data_List::fill_column_titles()
 
       m_AddDel.set_where_clause(m_strWhereClause);
 
-//g_warning("debug 1,5");
       m_AddDel.set_columns_ready();
-//g_warning("debug 1,6");
      }
   }
 

@@ -1,5 +1,21 @@
 2005-04-18  Murray Cumming <murrayc@murrayc.com>
 
+	* examples/example_smallbusiness.glom:
+	product: Add vat_percent field.
+	invoice_lines: Lookup vat_percent along with 
+	the other product information.
+	* glom/mode_data/box_data.cc:
+	* glom/mode_data/box_data.h:
+	* glom/mode_data/box_data_details.cc:
+	* glom/mode_data/box_data_details.h:
+	* glom/mode_data/box_data_list.cc:
+	Always use set_field_value_in_database() 
+	instead of custom UPDATE sql queries, 
+	and do all dependent recalcs/lookups/etc in 
+	set_field_value_in_database().
+
+2005-04-18  Murray Cumming <murrayc@murrayc.com>
+
 	* glom/mode_data/box_data_details.cc:
 	* glom/mode_data/notebook_data.cc:
 	* glom/mode_design/dialog_fields.cc:

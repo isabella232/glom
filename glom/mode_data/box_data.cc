@@ -148,9 +148,6 @@ Box_Data::type_map_fields Box_Data::get_record_field_values(const Gnome::Gda::Va
 
 Glib::RefPtr<Gnome::Gda::DataModel> Box_Data::record_new(bool use_entered_data, const Gnome::Gda::Value& primary_key_value)
 {
- g_warning("Box_Data::record_new()");
-
-
   Field fieldPrimaryKey;
   get_field_primary_key(fieldPrimaryKey);
 
@@ -679,27 +676,20 @@ void Box_Data::do_calculations(const LayoutItem_Field& field_changed, const Fiel
       set_entered_field_data(*iter, value);
 
       //Add it to the database (even if it is not shown in the view)
-      set_field_value_in_database(*iter, value, primary_key, primary_key_value);
-
-      //Prevent circular calculations during the recursive do_calculations:
-      {
-        m_FieldsCalculationInProgress.push_back(field);
-
-        //Recalculate any calculated fields that depend on this calculated field.
-        do_calculations(*iter, primary_key, primary_key_value);
-
-        type_vecLayoutFields::iterator iterFind = std::find(m_FieldsCalculationInProgress.begin(), m_FieldsCalculationInProgress.end(), field);
-        if(iterFind != m_FieldsCalculationInProgress.end())
-        {
-          m_FieldsCalculationInProgress.erase(iterFind);
-        }
-      }
+      set_field_value_in_database(*iter, value, primary_key, primary_key_value); //This triggers other recalculations/lookups.
     }
   }
 }
 
-void Box_Data::set_field_value_in_database(const LayoutItem_Field& field_layout, const Gnome::Gda::Value& field_value, const Field& primary_key, const Gnome::Gda::Value& primary_key_value)
+bool Box_Data::set_field_value_in_database(const LayoutItem_Field& field_layout, const Gnome::Gda::Value& field_value, const Field& primary_key_field, const Gnome::Gda::Value& primary_key_value)
 {
+  return set_field_value_in_database(Gtk::TreeModel::iterator(), field_layout, field_value, primary_key_field, primary_key_value);
+}
+
+bool Box_Data::set_field_value_in_database(const Gtk::TreeModel::iterator& row, const LayoutItem_Field& field_layout, const Gnome::Gda::Value& field_value, const Field& primary_key_field, const Gnome::Gda::Value& primary_key_value)
+{
+  //row is invalid, and ignored, for Box_Data_Details.
+
   const Field& field = field_layout.m_field;
 
   const Glib::ustring field_name = field_layout.get_name();
@@ -707,9 +697,38 @@ void Box_Data::set_field_value_in_database(const LayoutItem_Field& field_layout,
   {
     Glib::ustring strQuery = "UPDATE " + m_strTableName;
     strQuery += " SET " + field_name + " = " + field.sql(field_value);
-    strQuery += " WHERE " + primary_key.get_name() + " = " + primary_key.sql(primary_key_value);
-    Query_execute(strQuery);  //TODO: Handle errors
+    strQuery += " WHERE " + primary_key_field.get_name() + " = " + primary_key_field.sql(primary_key_value);
+    Glib::RefPtr<Gnome::Gda::DataModel> datamodel = Query_execute(strQuery);  //TODO: Handle errors
+    if(!datamodel)
+    {
+      g_warning("Box_Data::set_field_value_in_database(): UPDATE failed.");
+      return false; //failed.
+    }
+
+    //Get-and-set values for lookup fields, if this field triggers those relationships:
+    do_lookups(row, field_layout, field_value, primary_key_field, primary_key_value);
+
+    //Update related fields, if this field is used in the relationship:
+    refresh_related_fields(row, field_layout, field_value, primary_key_field, primary_key_value);
+
+    //Calculate any dependent fields.
+    //TODO: Make lookups part of this?
+    //Prevent circular calculations during the recursive do_calculations:
+    {
+      m_FieldsCalculationInProgress.push_back(field_layout);
+
+      //Recalculate any calculated fields that depend on this calculated field.
+      do_calculations(field_layout, primary_key_field, primary_key_value);
+
+      type_vecLayoutFields::iterator iterFind = std::find(m_FieldsCalculationInProgress.begin(), m_FieldsCalculationInProgress.end(), field_layout);
+      if(iterFind != m_FieldsCalculationInProgress.end())
+      {
+        m_FieldsCalculationInProgress.erase(iterFind);
+      }
+    }
   }
+
+  return true;
 }
 
 Document_Glom::type_mapLayoutGroupSequence Box_Data::get_data_layout_groups(const Glib::ustring& layout)
