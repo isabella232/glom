@@ -20,6 +20,8 @@
   - Related records: Only show related records, not 
     all records.
 * g++ 3.4 build fixes.
+* Translations:
+  - Updated Spanish (Francisco Javier Fernandez)
 
 
 0.8.21:
