@@ -63,7 +63,7 @@ Glib::ustring Box_Data::get_WhereClause() const
   Glib::ustring strClause;
 
   //Look at each field entry and build e.g. 'Name = "Bob"'
-  for(type_vecLayoutFields::const_iterator iter = m_Fields.begin(); iter != m_Fields.end(); ++iter)
+  for(type_vecLayoutFields::const_iterator iter = m_FieldsShown.begin(); iter != m_FieldsShown.end(); ++iter)
   {
     Glib::ustring strClausePart;
 
@@ -153,7 +153,7 @@ Glib::RefPtr<Gnome::Gda::DataModel> Box_Data::record_new(bool use_entered_data, 
 
   const Glib::ustring primary_key_name = fieldPrimaryKey.get_name();
 
-  type_vecLayoutFields fieldsToAdd = m_Fields;
+  type_vecLayoutFields fieldsToAdd = m_FieldsShown;
 
   //Add the primary key if it is not normally shown:
   type_vecLayoutFields::const_iterator iterFindPrimary = std::find_if(fieldsToAdd.begin(), fieldsToAdd.end(), predicate_FieldHasName<LayoutItem_Field>(primary_key_name));
@@ -166,7 +166,7 @@ Glib::RefPtr<Gnome::Gda::DataModel> Box_Data::record_new(bool use_entered_data, 
   }
 
   //Calculate any necessary field values and enter them:
-  for(type_vecLayoutFields::const_iterator iter = m_Fields.begin(); iter != m_Fields.end(); ++iter)
+  for(type_vecLayoutFields::const_iterator iter = m_FieldsShown.begin(); iter != m_FieldsShown.end(); ++iter)
   {
     const LayoutItem_Field& layout_item = *iter;
 
@@ -193,7 +193,7 @@ Glib::RefPtr<Gnome::Gda::DataModel> Box_Data::record_new(bool use_entered_data, 
       //TODO_Performance: Add has_default_value()?
       if(GlomConversions::value_is_empty(value))
       {
-        const Gnome::Gda::Value default_value = field.get_field_info().get_default_value();
+        const Gnome::Gda::Value default_value = field.get_default_value();
         if(!GlomConversions::value_is_empty(default_value))
         {
           set_entered_field_data(layout_item, default_value);
@@ -302,7 +302,7 @@ void Box_Data::show_layout_dialog()
 {
   if(m_pDialogLayout)
   {
-    m_pDialogLayout->set_document(m_layout_name, get_document(), m_strTableName, m_Fields);
+    m_pDialogLayout->set_document(m_layout_name, get_document(), m_strTableName, m_FieldsShown);
     m_pDialogLayout->show();
   }
 }
@@ -531,7 +531,7 @@ Box_Data::type_vecLayoutFields Box_Data::get_related_fields(const Glib::ustring&
   const Document_Glom* document = dynamic_cast<const Document_Glom*>(get_document());
   if(document)
   {
-    for(type_vecLayoutFields::const_iterator iter = m_Fields.begin(); iter != m_Fields.end();  ++iter)
+    for(type_vecLayoutFields::const_iterator iter = m_FieldsShown.begin(); iter != m_FieldsShown.end();  ++iter)
     {
       const LayoutItem_Field& layout_field = *iter;
       //Examine each field that looks up its data from a relationship:
@@ -564,7 +564,7 @@ Box_Data::type_vecLayoutFields Box_Data::get_calculated_fields(const Glib::ustri
   if(document)
   {
     //TODO: examine all fields, not just the the shown fields (m_Fields):
-    for(type_vecLayoutFields::const_iterator iter = m_Fields.begin(); iter != m_Fields.end();  ++iter)
+    for(type_vecLayoutFields::const_iterator iter = m_FieldsShown.begin(); iter != m_FieldsShown.end();  ++iter)
     {
       const Field& field = iter->m_field;
 
@@ -590,7 +590,7 @@ Box_Data::type_list_lookups Box_Data::get_lookup_fields(const Glib::ustring& fie
   if(document)
   {
     //TODO: examine all fields, not just the the shown fields (m_Fields):
-    for(type_vecLayoutFields::const_iterator iter = m_Fields.begin(); iter != m_Fields.end();  ++iter)
+    for(type_vecLayoutFields::const_iterator iter = m_FieldsShown.begin(); iter != m_FieldsShown.end();  ++iter)
     {
       const Field& field = iter->m_field;
       //Examine each field that looks up its data from a relationship:
@@ -826,7 +826,7 @@ bool Box_Data::get_field_primary_key_index(const type_vecFields& fields, guint& 
   guint cols_count = fields.size();
   while(col < cols_count)
   {
-    if(fields[col].get_field_info().get_primary_key())
+    if(fields[col].get_primary_key())
     {
       field_column = col;
       return true;
@@ -851,7 +851,7 @@ bool Box_Data::get_field_primary_key_index(const type_vecLayoutFields& fields, g
   guint cols_count = fields.size();
   while(col < cols_count)
   {
-    if(fields[col].m_field.get_field_info().get_primary_key())
+    if(fields[col].m_field.get_primary_key())
     {
       field_column = col;
       return true;
@@ -882,8 +882,8 @@ bool Box_Data::record_delete(const Gnome::Gda::Value& primary_key_value)
 
 bool Box_Data::get_field(const Glib::ustring& name, Field& field) const
 {
-  type_vecLayoutFields::const_iterator iterFind = std::find_if( m_Fields.begin(), m_Fields.end(), predicate_FieldHasName<LayoutItem_Field>(name) );
-  if(iterFind != m_Fields.end()) //If it was found:
+  type_vecLayoutFields::const_iterator iterFind = std::find_if( m_FieldsShown.begin(), m_FieldsShown.end(), predicate_FieldHasName<LayoutItem_Field>(name) );
+  if(iterFind != m_FieldsShown.end()) //If it was found:
   {
     field = iterFind->m_field;
     return true;
@@ -1038,7 +1038,7 @@ bool Box_Data::add_related_record_for_field(const LayoutItem_Field& layout_item_
     }
     else
     {
-      const bool key_is_auto_increment = primary_key_field.get_field_info().get_auto_increment();
+      const bool key_is_auto_increment = primary_key_field.get_auto_increment();
 
       //If we would have to set an otherwise auto-increment key to add the record.
       if( key_is_auto_increment && !GlomConversions::value_is_empty(primary_key_value) )

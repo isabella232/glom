@@ -193,16 +193,18 @@ void Box_Tables::on_adddel_Add(const Gtk::TreeModel::iterator& row)
     table_info.m_name = table_name;
     table_info.m_title = util_title_from_string( table_name ); //Start with a title that might be appropriate.
     fill_table_row(row, table_info);
-    
+
     //Save the field information directly into the database, because we can not get all the correct information from the database.
     //Otherwise some information would be forgotten:
     Field field_primary_key;
+    field_primary_key.set_name(primary_key_name);
+    field_primary_key.set_primary_key();
+    field_primary_key.set_auto_increment();
+
     Gnome::Gda::FieldAttributes field_info = field_primary_key.get_field_info();
-    field_info.set_name(primary_key_name);
-    field_info.set_primary_key();
-    field_info.set_auto_increment();
     field_info.set_allow_null(false);
     field_primary_key.set_field_info(field_info);
+
     field_primary_key.set_glom_type(Field::TYPE_NUMERIC);
 
     type_vecFields fields;

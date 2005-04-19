@@ -50,7 +50,7 @@ void Box_Data_List_Find::fill_from_database()
   //Field Names:
   fill_column_titles();
 
-  m_Fields = get_fields_to_show();
+  m_FieldsShown = get_fields_to_show();
 
   m_AddDel.add_item(Gnome::Gda::Value("find"));
 }

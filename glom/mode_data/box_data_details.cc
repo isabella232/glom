@@ -184,8 +184,8 @@ void Box_Data_Details::fill_from_database()
 
     Box_DB_Table::fill_from_database();
 
-    m_Fields = get_fields_to_show();
-    type_vecLayoutFields fieldsToGet = m_Fields;
+    m_FieldsShown = get_fields_to_show();
+    type_vecLayoutFields fieldsToGet = m_FieldsShown;
 
     if(!fieldsToGet.empty())
     {
@@ -344,8 +344,7 @@ void Box_Data_Details::on_button_new()
 {
   if(confirm_discard_unstored_data())
   {
-    Gnome::Gda::FieldAttributes fieldinfo = m_field_primary_key.get_field_info();
-    if(fieldinfo.get_auto_increment()) //If the primary key is an auto-increment:
+    if(m_field_primary_key.get_auto_increment()) //If the primary key is an auto-increment:
     {
       //Just make a new record, and show it:
       Gnome::Gda::Value primary_key_value = generate_next_auto_increment(m_strTableName, m_field_primary_key.get_name()); //TODO: This should return a Gda::Value
@@ -447,7 +446,7 @@ void Box_Data_Details::recalculate_fields_for_related_records(const Glib::ustrin
 
   const Gnome::Gda::Value primary_key_value = get_primary_key_value();
 
-  for(type_vecLayoutFields::iterator iter = m_Fields.begin(); iter != m_Fields.end(); ++iter)
+  for(type_vecLayoutFields::iterator iter = m_FieldsShown.begin(); iter != m_FieldsShown.end(); ++iter)
   {
     const LayoutItem_Field& field = *iter;
 
@@ -667,7 +666,7 @@ void Box_Data_Details::on_flowtable_field_edited(const LayoutItem_Field& layout_
   {
     //There is no current primary key value:
 
-    if(m_field_primary_key.get_field_info().get_auto_increment()) //If the primary key is an auto-increment:
+    if(m_field_primary_key.get_auto_increment()) //If the primary key is an auto-increment:
     {
       if(strFieldName == m_field_primary_key.get_name()) //If edited field is the primary key.
       {

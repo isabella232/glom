@@ -122,7 +122,7 @@ void Box_Data_List_Related::fill_from_database()
     if(m_has_one_or_more_records) //This was set by Box_Data_List::fill_from_database().
     {
       //Is the to_field unique? If so, there can not be more than one.
-      if(m_key_field.get_field_info().get_unique_key()) //automatically true if it is a primary key
+      if(m_key_field.get_unique_key()) //automatically true if it is a primary key
         allow_add = false;
     }
 
@@ -235,8 +235,7 @@ void Box_Data_List_Related::on_adddel_user_added(const Gtk::TreeModel::iterator&
 
   bool bAllowAdd = true;
 
-  const Gnome::Gda::FieldAttributes fieldInfo = m_key_field.get_field_info();
-  if(fieldInfo.get_unique_key() || fieldInfo.get_primary_key())
+  if(m_key_field.get_unique_key() || m_key_field.get_primary_key())
   {
     if(m_AddDel.get_count() > 0) //If there is already 1 record
       bAllowAdd = false;

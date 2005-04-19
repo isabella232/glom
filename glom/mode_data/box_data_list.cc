@@ -104,10 +104,10 @@ void Box_Data_List::fill_from_database()
       if(!m_strWhereClause.empty())
         strWhereClausePiece = " WHERE " + m_strWhereClause;
 
-      m_Fields = get_fields_to_show();
+      m_FieldsShown = get_fields_to_show();
 
       //Add extra possibly-non-visible columns that we need:
-      type_vecLayoutFields fieldsToGet = m_Fields;
+      type_vecLayoutFields fieldsToGet = m_FieldsShown;
 
       LayoutItem_Field layout_item;
       Field field_key = m_AddDel.get_key_field();
@@ -201,8 +201,9 @@ void Box_Data_List::on_adddel_user_requested_add()
     {
       index_field_to_edit = index_primary_key;
 
-      Field fieldPrimaryKey = m_Fields[index_primary_key].m_field;
-      if(fieldPrimaryKey.get_field_info().get_auto_increment())
+      Field fieldPrimaryKey;
+      bool test = get_field_primary_key(fieldPrimaryKey);
+      if(test && fieldPrimaryKey.get_auto_increment())
       {
         //Start editing in the first cell that is not the primary key:
         if(index_primary_key == 0)
@@ -214,10 +215,10 @@ void Box_Data_List::on_adddel_user_requested_add()
       }
     }
 
-    if(index_field_to_edit < m_Fields.size())
+    if(index_field_to_edit < m_FieldsShown.size())
     {
       guint treemodel_column = 0;
-      bool test = get_field_column_index(m_Fields[index_field_to_edit].get_name(), treemodel_column);
+      bool test = get_field_column_index(m_FieldsShown[index_field_to_edit].get_name(), treemodel_column);
       if(test)
         m_AddDel.select_item(iter, treemodel_column, true /* start_editing */);
     }
@@ -275,7 +276,7 @@ void Box_Data_List::on_adddel_user_added(const Gtk::TreeModel::iterator& row, gu
   Field field_primary_key = m_AddDel.get_key_field();
 
   //Get the new primary key value, if one is available now:
-  if(field_primary_key.get_field_info().get_auto_increment())
+  if(field_primary_key.get_auto_increment())
   {
     //Auto-increment is awkward (we can't get the last-generated ID) with postgres, so we auto-generate it ourselves;
     const Glib::ustring& strPrimaryKeyName = field_primary_key.get_name();
@@ -302,9 +303,9 @@ void Box_Data_List::on_adddel_user_added(const Gtk::TreeModel::iterator& row, gu
         m_AddDel.set_value_key(row, primary_key_value);
 
         //Show the primary key in the row, if the primary key is visible:
-        const Gnome::Gda::FieldAttributes fieldInfo = field_primary_key.get_field_info();
+
         //If it's an auto-increment, then get the value and show it:
-        if(fieldInfo.get_auto_increment())
+        if(field_primary_key.get_auto_increment())
         {
           LayoutItem_Field layout_item;
           layout_item.m_field = field_primary_key;
@@ -682,8 +683,8 @@ void Box_Data_List::fill_column_titles()
     {
       m_AddDel.set_key_field(field_primary_key);
 
-      m_Fields = get_fields_to_show();
-      //g_warning("m_Fields[0].m_field.get_name() = %s", m_Fields[0].m_field.get_name().c_str());
+      m_FieldsShown = get_fields_to_show();
+      //g_warning("m_Fields[0].m_field.get_name() = %s", m_FieldsShown[0].m_field.get_name().c_str());
 
       //Add extra possibly-non-visible columns that we need:
       //TODO: Only add it if it is not already there.
@@ -691,10 +692,10 @@ void Box_Data_List::fill_column_titles()
       layout_item.set_hidden();
       Field field_key = m_AddDel.get_key_field();
       layout_item.m_field = field_key;
-      m_Fields.push_back(layout_item);
+      m_FieldsShown.push_back(layout_item);
 
       //Add a column for each table field:
-      for(type_vecLayoutFields::const_iterator iter = m_Fields.begin(); iter != m_Fields.end(); ++iter)
+      for(type_vecLayoutFields::const_iterator iter = m_FieldsShown.begin(); iter != m_FieldsShown.end(); ++iter)
       {
         m_AddDel.add_column(*iter);
       }
@@ -730,7 +731,7 @@ bool Box_Data_List::get_field_column_index(const Glib::ustring& field_name, guin
 
   //Get the index of the field with this name:
   guint i = 0;
-  for(type_vecLayoutFields::const_iterator iter = m_Fields.begin(); iter != m_Fields.end(); ++iter)
+  for(type_vecLayoutFields::const_iterator iter = m_FieldsShown.begin(); iter != m_FieldsShown.end(); ++iter)
   {
     if(iter->get_name() == field_name)
     {
@@ -751,7 +752,7 @@ bool Box_Data_List::get_field_primary_key(Field& field) const
 
 bool Box_Data_List::get_field_primary_key_index(guint& field_column) const
 {
-  return Box_Data::get_field_primary_key_index(m_Fields, field_column);
+  return Box_Data::get_field_primary_key_index(m_FieldsShown, field_column);
 }
 
 void Box_Data_List::print_layout_group(xmlpp::Element* /* node_parent */, const LayoutGroup& /* group */)

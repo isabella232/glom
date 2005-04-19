@@ -887,16 +887,15 @@ bool Document_Glom::load_after()
               {
                 Field field;
 
-                Gnome::Gda::FieldAttributes field_info = field.get_field_info();
                 const Glib::ustring strName = get_node_attribute_value(nodeChild, "name");
-                field_info.set_name( strName );
+                field.set_name( strName );
 
                 const Glib::ustring strTitle = get_node_attribute_value(nodeChild, "title");
                 field.set_title(strTitle);
  
-                field_info.set_primary_key( get_node_attribute_value_as_bool(nodeChild, "primary_key") );
-                field_info.set_unique_key( get_node_attribute_value_as_bool(nodeChild, "unique") );
-                field_info.set_auto_increment( get_node_attribute_value_as_bool(nodeChild, "auto_increment") );
+                field.set_primary_key( get_node_attribute_value_as_bool(nodeChild, "primary_key") );
+                field.set_unique_key( get_node_attribute_value_as_bool(nodeChild, "unique") );
+                field.set_auto_increment( get_node_attribute_value_as_bool(nodeChild, "auto_increment") );
 
                 //Get lookup information, if present.
                 xmlpp::Element* nodeLookup = get_node_child_named(nodeChild, "field_lookup");
@@ -926,8 +925,7 @@ bool Document_Glom::load_after()
                 const Glib::ustring default_value_text = get_node_attribute_value(nodeChild, "default_value");
                 //Interpret the text as per the field type:
                 bool success = false;
-                field_info.set_default_value( GlomConversions::parse_value(field_type_enum, default_value_text, success, true /* iso_format */) );
-                field.set_field_info(field_info);
+                field.set_default_value( GlomConversions::parse_value(field_type_enum, default_value_text, success, true /* iso_format */) );
 
                 //We set this after set_field_info(), because that gets a glom type from the (not-specified) gdatype. Yes, that's strange, and should probably be more explicit.
                 field.set_glom_type( field_type_enum );
@@ -1154,16 +1152,15 @@ bool Document_Glom::save_before()
           const Field& field = *iter;
 
           xmlpp::Element* elemField = elemFields->add_child("field");
-          set_node_attribute_value(elemField, "name", field.get_field_info().get_name());
+          set_node_attribute_value(elemField, "name", field.get_name());
           set_node_attribute_value(elemField, "title", field.get_title());
 
-          const Gnome::Gda::FieldAttributes field_info = field.get_field_info();
-          set_node_attribute_value_as_bool(elemField, "primary_key", field_info.get_primary_key());
-          set_node_attribute_value_as_bool(elemField, "unique", field_info.get_unique_key());
-          set_node_attribute_value_as_bool(elemField, "auto_increment", field_info.get_auto_increment());
+          set_node_attribute_value_as_bool(elemField, "primary_key", field.get_primary_key());
+          set_node_attribute_value_as_bool(elemField, "unique", field.get_unique_key());
+          set_node_attribute_value_as_bool(elemField, "auto_increment", field.get_auto_increment());
 
           NumericFormat format_ignored; //Because we use ISO format.
-          const Glib::ustring default_value_as_text = GlomConversions::get_text_for_gda_value(field.get_glom_type(), field_info.get_default_value(), std::locale() /* SQL uses the C locale */, format_ignored, true /* ISO standard */);
+          const Glib::ustring default_value_as_text = GlomConversions::get_text_for_gda_value(field.get_glom_type(), field.get_default_value(), std::locale() /* SQL uses the C locale */, format_ignored, true /* ISO standard */);
           set_node_attribute_value(elemField, "default_value", default_value_as_text);
 
 

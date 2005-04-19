@@ -135,7 +135,8 @@ protected:
 
   Glib::ustring m_strWhereClause;
 
-  type_vecLayoutFields m_Fields;
+  //type_vecLayoutFields m_TableFields; //A cache, so we don't have to repeatedly get them from the Document.
+  type_vecLayoutFields m_FieldsShown; //And any extra keys needed by shown fields.
 
   type_vecLayoutFields m_FieldsCalculationInProgress; //Prevent circular calculations.
 };

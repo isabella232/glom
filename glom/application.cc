@@ -749,7 +749,7 @@ bool App_Glom::recreate_database(bool& user_cancelled)
 
       Glib::ustring sql_field_description = field.get_name() + " " + field.get_sql_type();
 
-      if(field.get_field_info().get_primary_key())
+      if(field.get_primary_key())
         sql_field_description += " NOT NULL  PRIMARY KEY";
 
       //Append it:

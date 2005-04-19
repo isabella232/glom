@@ -46,7 +46,7 @@ void Box_Data_Details_Find::fill_from_database()
 
   Box_DB_Table::fill_from_database();
 
-  m_Fields = get_fields_to_show();
+  m_FieldsShown = get_fields_to_show();
 
   fill_from_database_layout(); //TODO: Only do this when the layout has changed.
 }
@@ -71,9 +71,9 @@ void Box_Data_Details_Find::fill_related()
      m_Notebook_Related.pages().push_back( Gtk::Notebook_Helpers::TabElem(*pBox, relationship.get_name()) );
      std::cout <<  "Box_Data_Details::fill_related() 2.5:" << std::endl;
 
-     guint rowKey = m_Fields.get_index(relationship.get_from_field());
+     guint rowKey = m_FieldsShown.get_index(relationship.get_from_field());
      Glib::ustring strKeyValue = m_AddDel.get_value(rowKey);
-     strKeyValue = m_Fields[rowKey].sql(strKeyValue); //Quote/Escape it if necessary.
+     strKeyValue = m_FieldsShown[rowKey].sql(strKeyValue); //Quote/Escape it if necessary.
 
      std::cout <<  "Box_Data_Details::fill_related() 3:" << std::endl;
      pBox->init_db_details(get_database_name(), relationship.get_to_table(), relationship.get_to_field(), strKeyValue);

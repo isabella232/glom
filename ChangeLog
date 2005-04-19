@@ -1,3 +1,21 @@
+2005-04-19  Murray Cumming <murrayc@murrayc.com>
+
+	* glom/application.cc:
+	* glom/box_db_table.cc:
+	* glom/document/document_glom.cc:
+	* glom/frame_glom.cc:
+	* glom/mode_data/box_data.cc:
+	* glom/mode_data/box_data.h:
+	* glom/mode_data/box_data_details.cc:
+	* glom/mode_data/box_data_list.cc:
+	* glom/mode_data/box_data_list_related.cc:
+	* glom/mode_find/box_data_details_find.cc:
+	* glom/mode_find/box_data_list_find.cc:
+	* glom/navigation/box_tables.cc:
+	More use of Field methods instead of getting the 
+	FieldAttributes and using its methods. This should be 
+	more efficient.
+
 2005-04-19  Murray Cumming,,,  <murrayc@murrayc.com>
 
 	* glom/data_structure/field.cc:

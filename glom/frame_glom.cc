@@ -549,14 +549,14 @@ void Frame_Glom::update_table_in_document_from_database()
       else //if it was found.
       {
         //Compare the information:
-        Gnome::Gda::FieldAttributes field_info_db =  field_database.get_field_info();
+        Gnome::Gda::FieldAttributes field_info_db = field_database.get_field_info();
         Field field_document =  *iterFindDoc;
         if(field_document.field_info_from_database_is_equal( field_info_db )) //ignores auto_increment because libgda does not report it from the database properly.
         {
           //The database has different information. We assume that the information in the database is newer.
 
           //Update the field information:
-          field_info_db.set_auto_increment( field_document.get_field_info().get_auto_increment() ); //libgda does not report it from the database properly.
+          field_info_db.set_auto_increment( field_document.get_auto_increment() ); //libgda does not report it from the database properly.
           iterFindDoc->set_field_info( field_info_db );
 
           document_must_to_be_updated = true;

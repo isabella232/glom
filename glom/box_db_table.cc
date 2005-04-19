@@ -81,7 +81,7 @@ bool Box_DB_Table::get_field_primary_key_for_table(const Glib::ustring table_nam
     Document_Glom::type_vecFields fields = document->get_table_fields(table_name);
     for(Document_Glom::type_vecFields::iterator iter = fields.begin(); iter != fields.end(); ++iter)
     {
-      if(iter->get_field_info().get_primary_key())
+      if(iter->get_primary_key())
       {
         field = *iter;
         return true;
@@ -91,38 +91,6 @@ bool Box_DB_Table::get_field_primary_key_for_table(const Glib::ustring table_nam
 
   return false;
 }
-
-/*
-bool Box_DB_Table::get_field_primary_key(Field& field) const
-{
- return get_field_primary_key(m_Fields, field);
-}
-*/
-
-
-/*
-bool Box_DB_Table::get_field_index(const Glib::ustring& name, guint& field_index) const
-{
-  //Initialize input parameter:
-  field_index = 0;
-
-  //TODO_performance: Cache the primary key?
-  guint col = 0;
-  guint cols_count = m_Fields.size();
-  while(col < cols_count)
-  {
-    if(m_Fields[col].get_name() == name)
-    {
-      field_index = col;
-      return true;
-    }
-    else
-      ++col;
-  }
-
-  return false; //Not found.
-}
-*/
 
 unsigned long Box_DB_Table::get_last_auto_increment_value(const Glib::RefPtr<Gnome::Gda::DataModel>& data_model, const Glib::ustring /* field_name */)
 {
@@ -185,7 +153,7 @@ Glib::ustring Box_DB_Table::postgres_get_field_definition_for_sql(const Gnome::G
 
   //Type
   Glib::ustring strType = "unknowntype";
-  
+
   //Postgres has a special "serial" datatype. (MySQL uses a numeric type, and has an extra "AUTO_INCREMENT" command)
   if(false) //disabled for now - see generate_next_auto_increment() //field_info.get_auto_increment())
   {
@@ -204,9 +172,9 @@ Glib::ustring Box_DB_Table::postgres_get_field_definition_for_sql(const Gnome::G
       }
     }
   }
-  
+
   strResult += strType;
-  
+
    /*
   //Optinal type details: (M, D), UNSIGNED
   Field::enumTypeOptionals optionals = fieldType.get_TypeOptionals();
@@ -253,23 +221,23 @@ Glib::ustring Box_DB_Table::postgres_get_field_definition_for_sql(const Gnome::G
   //Unique:
   if(field_info.get_unique_key())
     strResult += " UNIQUE";
-      
+
   /* Posgres needs us to do this separately
   //Not Null:
   if(!(field_info.get_allow_null()))
     strResult += " NOT NULL";
   */
-    
+
   //Default:
   Gnome::Gda::Value valueDefault = field_info.get_default_value();
   const Glib::ustring& strDefault =  valueDefault.to_string();
   if(!strDefault.empty() && strDefault != "NULL")
     strResult += " DEFAULT " + strDefault; //TODO: Quote/Escape it if necessary.
-      
+
   //Primary Key:
   if(field_info.get_primary_key())
     strResult += " PRIMARY KEY";
-      
+
   return strResult;
 }
 
