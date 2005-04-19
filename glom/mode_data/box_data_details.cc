@@ -182,7 +182,7 @@ void Box_Data_Details::fill_from_database()
     sharedptr<SharedConnection> sharedconnection = connect_to_server();
 
 
-    Box_DB_Table::fill_from_database();
+    Box_Data::fill_from_database();
 
     m_FieldsShown = get_fields_to_show();
     type_vecLayoutFields fieldsToGet = m_FieldsShown;
@@ -446,25 +446,27 @@ void Box_Data_Details::recalculate_fields_for_related_records(const Glib::ustrin
 
   const Gnome::Gda::Value primary_key_value = get_primary_key_value();
 
-  for(type_vecLayoutFields::iterator iter = m_FieldsShown.begin(); iter != m_FieldsShown.end(); ++iter)
+  for(type_vecFields::iterator iter = m_TableFields.begin(); iter != m_TableFields.end(); ++iter)
   {
-    const LayoutItem_Field& field = *iter;
+    const Field& field = *iter;
 
     //Is this field triggered by this relationship?
-    const Field::type_list_strings triggered_by = field.m_field.get_calculation_relationships();
+    const Field::type_list_strings triggered_by = field.get_calculation_relationships();
     Field::type_list_strings::const_iterator iterFind = std::find(triggered_by.begin(), triggered_by.end(), relationship_name);
     if(iterFind != triggered_by.end()) //If it was found
     {
        //recalculate:
        const type_map_fields field_values = get_record_field_values(primary_key_value);
-       Gnome::Gda::Value value = glom_evaluate_python_function_implementation(field.m_field.get_glom_type(), iter->m_field.get_calculation(), field_values,
+       Gnome::Gda::Value value = glom_evaluate_python_function_implementation(field.get_glom_type(), field.get_calculation(), field_values,
           get_document(), m_strTableName);
 
-      //show it:
-      set_entered_field_data(field, value);
+      //show it, if it's on the layout:
+      LayoutItem_Field layout_item;
+      layout_item.m_field = field;
+      set_entered_field_data(layout_item, value);
 
-      //Add it to the database (even if it is not shown in the view)
-      set_field_value_in_database(field, value, m_field_primary_key, primary_key_value);
+      //Add it to the database (even if it is not shown in the layout)
+      set_field_value_in_database(layout_item, value, m_field_primary_key, primary_key_value);
     }
   }
 }

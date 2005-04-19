@@ -95,10 +95,8 @@ void Box_DB_Table_Definition::fill_field_row(const Gtk::TreeModel::iterator& ite
   Glib::ustring title = field.get_title();
   m_AddDel.set_value(iter, m_colTitle, title);
 
-  Gnome::Gda::FieldAttributes fieldinfo = field.get_field_info();
-
   //Type:
-  Field::glom_field_type fieldType = Field::get_glom_type_for_gda_type(fieldinfo.get_gdatype()); //Could be TYPE_INVALID if the gda type is not one of ours.
+  Field::glom_field_type fieldType = Field::get_glom_type_for_gda_type(field.get_field_info().get_gdatype()); //Could be TYPE_INVALID if the gda type is not one of ours.
 
   Glib::ustring strType = Field::get_type_name_ui( fieldType );
   m_AddDel.set_value(iter, m_colType, strType);
@@ -345,32 +343,11 @@ void Box_DB_Table_Definition::change_definition(const Field& fieldOld, Field fie
 
   postgres_change_column(fieldOld, field);
 
-   /*
-    //Get a data model:
-    Gnome::Gda::Command command("SELECT * FROM " + m_strTableName + " LIMIT 1"); //LIMIT 1 means we get only the first row.
-    Glib::RefPtr<Gnome::Gda::DataModel> data_model = gda_connection->execute_single_command(command);
-
-    if(data_model)
-    {
-      Gnome::Gda::FieldAttributes field_info = field.get_field_info();
-      bool test = data_model->update_column(field_info);
-      if(!test)
-      {
-        g_warning("Box_DB_Table_Definition::change_definition(): libgda update_column() failed.");
-        handle_error();
-      }
-      else
-        g_warning("Box_DB_Table_Definition::change_definition(): libgda says that update_column() succeeded.");
-    }
-  }
-  */
- 
 
    //MySQL does this all with ALTER_TABLE, with "CHANGE" followed by the same details used with "CREATE TABLE",
    //MySQL also makes it easier to change the type.
    // but Postgres uses various subcommands, such as  "ALTER COLUMN", and "RENAME".
 
- 
   //Extra Glom field definitions:
   Document_Glom* pDoc = static_cast<Document_Glom*>(get_document());
   if(pDoc)

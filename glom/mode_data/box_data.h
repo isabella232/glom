@@ -107,7 +107,7 @@ protected:
 
   virtual bool get_field_primary_key(Field& field) const = 0;
   virtual Gnome::Gda::Value get_primary_key_value_selected() = 0;
-  virtual bool get_field(const Glib::ustring& name, Field& field) const;
+  //virtual bool get_field(const Glib::ustring& name, Field& field) const;
 
   ///Get the table name. It's either the current table or the relationship's to_table:
   Glib::ustring get_layout_item_table_name(const LayoutItem_Field& layout_item, const Glib::ustring table_name);
@@ -135,7 +135,7 @@ protected:
 
   Glib::ustring m_strWhereClause;
 
-  //type_vecLayoutFields m_TableFields; //A cache, so we don't have to repeatedly get them from the Document.
+  type_vecFields m_TableFields; //A cache, so we don't have to repeatedly get them from the Document.
   type_vecLayoutFields m_FieldsShown; //And any extra keys needed by shown fields.
 
   type_vecLayoutFields m_FieldsCalculationInProgress; //Prevent circular calculations.

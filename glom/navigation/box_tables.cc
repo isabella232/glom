@@ -173,7 +173,7 @@ void Box_Tables::fill_from_database()
 void Box_Tables::on_adddel_Add(const Gtk::TreeModel::iterator& row)
 {
   //TODO: Handle cell renderer changes to prevent illegal table names (e.g. starting with numbers.)"
-  
+
   Glib::ustring table_name = m_AddDel.get_value(row, m_colTableName);
   if(!table_name.empty())
   {

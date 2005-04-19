@@ -1,5 +1,18 @@
 2005-04-19  Murray Cumming <murrayc@murrayc.com>
 
+	* glom/mode_data/box_data.cc:
+	* glom/mode_data/box_data.h:
+	Add m_TableFields and fill it in 
+	fill_database(), as a cache instead of 
+	repeatedly getting it from the document.
+        get_lookup_fields(), get_calculated_fields(), 
+	* glom/mode_data/box_data_details.cc:
+	recalculate_fields_for_related_records(), 
+        Examine all table fields, via m_TableFields, 
+        instead of just shown fields.
+
+2005-04-19  Murray Cumming <murrayc@murrayc.com>
+
 	* glom/application.cc:
 	* glom/box_db_table.cc:
 	* glom/document/document_glom.cc:

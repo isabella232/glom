@@ -155,18 +155,23 @@ Glib::RefPtr<Gnome::Gda::DataModel> Box_Data::record_new(bool use_entered_data, 
 
   type_vecLayoutFields fieldsToAdd = m_FieldsShown;
 
-  //Add the primary key if it is not normally shown:
-  type_vecLayoutFields::const_iterator iterFindPrimary = std::find_if(fieldsToAdd.begin(), fieldsToAdd.end(), predicate_FieldHasName<LayoutItem_Field>(primary_key_name));
-  if(iterFindPrimary == fieldsToAdd.end())
+  //Add values for all fields, not just the shown ones:
+  //For instance, we must always add the primary key, and fields with default/calculated/lookup values:
+  for(type_vecFields::const_iterator iter = m_TableFields.begin(); iter != m_TableFields.end(); ++iter)
   {
-    LayoutItem_Field layout_item;
-    layout_item.m_field = fieldPrimaryKey;
+    //TODO: Search for the non-related field with the name, not just the field with the name:
+    type_vecLayoutFields::const_iterator iterFind = std::find_if(fieldsToAdd.begin(), fieldsToAdd.end(), predicate_FieldHasName<LayoutItem_Field>(iter->get_name()));
+    if(iterFind == fieldsToAdd.end())
+    {
+      LayoutItem_Field layout_item;
+      layout_item.m_field = *iter;
 
-    fieldsToAdd.push_back(layout_item);
+      fieldsToAdd.push_back(layout_item);
+    }
   }
 
   //Calculate any necessary field values and enter them:
-  for(type_vecLayoutFields::const_iterator iter = m_FieldsShown.begin(); iter != m_FieldsShown.end(); ++iter)
+  for(type_vecLayoutFields::const_iterator iter = fieldsToAdd.begin(); iter != fieldsToAdd.end(); ++iter)
   {
     const LayoutItem_Field& layout_item = *iter;
 
@@ -277,6 +282,9 @@ void Box_Data::fill_from_database()
 {
   set_unstored_data(false);
 
+  //Cache the table information, for performance:
+  m_TableFields = get_fields_for_table(m_strTableName);
+
   Box_DB_Table::fill_from_database();
 }
 
@@ -302,7 +310,7 @@ void Box_Data::show_layout_dialog()
 {
   if(m_pDialogLayout)
   {
-    m_pDialogLayout->set_document(m_layout_name, get_document(), m_strTableName, m_FieldsShown);
+    m_pDialogLayout->set_document(m_layout_name, get_document(), m_strTableName, m_FieldsShown); //TODO: Use m_TableFields?
     m_pDialogLayout->show();
   }
 }
@@ -522,7 +530,7 @@ Gnome::Gda::Value Box_Data::generate_next_auto_increment(const Glib::ustring& ta
   return GlomConversions::parse_value(result);
 }
 
-/** Get the fields that are in related tables, via a relationship using @a field_name changes.
+/** Get the shown fields that are in related tables, via a relationship using @a field_name changes.
  */
 Box_Data::type_vecLayoutFields Box_Data::get_related_fields(const Glib::ustring& field_name) const
 {
@@ -563,16 +571,21 @@ Box_Data::type_vecLayoutFields Box_Data::get_calculated_fields(const Glib::ustri
   const Document_Glom* document = dynamic_cast<const Document_Glom*>(get_document());
   if(document)
   {
-    //TODO: examine all fields, not just the the shown fields (m_Fields):
-    for(type_vecLayoutFields::const_iterator iter = m_FieldsShown.begin(); iter != m_FieldsShown.end();  ++iter)
+    //Examine all fields, not just the the shown fields.
+    for(type_vecFields::const_iterator iter = m_TableFields.begin(); iter != m_TableFields.end();  ++iter)
     {
-      const Field& field = iter->m_field;
+      const Field& field = *iter;
 
       //Does this field's calculation use the field?
       const Field::type_list_strings fields_triggered = field.get_calculation_fields();
       Field::type_list_strings::const_iterator iterFind = std::find(fields_triggered.begin(), fields_triggered.end(), field_name);
       if(iterFind != fields_triggered.end())
-        result.push_back(*iter);
+      {
+        LayoutItem_Field layout_item;
+        layout_item.m_field = field;
+
+        result.push_back(layout_item);
+      }
     }
   }
 
@@ -589,10 +602,11 @@ Box_Data::type_list_lookups Box_Data::get_lookup_fields(const Glib::ustring& fie
   const Document_Glom* document = dynamic_cast<const Document_Glom*>(get_document());
   if(document)
   {
-    //TODO: examine all fields, not just the the shown fields (m_Fields):
-    for(type_vecLayoutFields::const_iterator iter = m_FieldsShown.begin(); iter != m_FieldsShown.end();  ++iter)
+    //Examine all fields, not just the the shown fields (m_Fields):
+    for(type_vecFields::const_iterator iter = m_TableFields.begin(); iter != m_TableFields.end();  ++iter)
     {
-      const Field& field = iter->m_field;
+      const Field& field = *iter;
+
       //Examine each field that looks up its data from a relationship:
       if(field.get_is_lookup())
       {
@@ -606,7 +620,6 @@ Box_Data::type_list_lookups Box_Data::get_lookup_fields(const Glib::ustring& fie
           {
             //Add it:
             LayoutItem_Field item;
-            item.set_name(field.get_name());
             item.m_field = field;
             result.push_back( type_pairFieldTrigger(item, relationship) );
           }
@@ -880,9 +893,11 @@ bool Box_Data::record_delete(const Gnome::Gda::Value& primary_key_value)
   }
 }
 
+/*
 bool Box_Data::get_field(const Glib::ustring& name, Field& field) const
 {
-  type_vecLayoutFields::const_iterator iterFind = std::find_if( m_FieldsShown.begin(), m_FieldsShown.end(), predicate_FieldHasName<LayoutItem_Field>(name) );
+g_warning("debug: Box_Data::get_field()");
+  type_vecFields::const_iterator iterFind = std::find_if( m_TableFields.begin(), m_TableFields.end(), predicate_FieldHasName<LayoutItem_Field>(name) );
   if(iterFind != m_FieldsShown.end()) //If it was found:
   {
     field = iterFind->m_field;
@@ -893,6 +908,7 @@ bool Box_Data::get_field(const Glib::ustring& name, Field& field) const
     return false; //not found.
   }
 }
+*/
 
 Glib::ustring Box_Data::build_sql_select(const Glib::ustring& table_name, const type_vecLayoutFields& fieldsToGet, const Field& primary_key_field, const Gnome::Gda::Value& primary_key_value)
 {
