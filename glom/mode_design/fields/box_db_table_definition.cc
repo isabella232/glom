@@ -89,7 +89,7 @@ Box_DB_Table_Definition::~Box_DB_Table_Definition()
 void Box_DB_Table_Definition::fill_field_row(const Gtk::TreeModel::iterator& iter, const Field& field)
 {
   m_AddDel.set_value_key(iter, field.get_name());
-  
+ 
   m_AddDel.set_value(iter, m_colName, field.get_name());
 
   Glib::ustring title = field.get_title();
@@ -104,12 +104,12 @@ void Box_DB_Table_Definition::fill_field_row(const Gtk::TreeModel::iterator& ite
   m_AddDel.set_value(iter, m_colType, strType);
 
   //Unique:
-  bool bUnique = fieldinfo.get_unique_key();
+  const bool bUnique = field.get_unique_key();
 
   m_AddDel.set_value(iter, m_colUnique, bUnique);
 
   //Primary Key:
-  bool bPrimaryKey = fieldinfo.get_primary_key();
+  const bool bPrimaryKey = field.get_primary_key();
   m_AddDel.set_value(iter, m_colPrimaryKey, bPrimaryKey);
 }
 
@@ -150,7 +150,7 @@ void Box_DB_Table_Definition::on_adddel_add(const Gtk::TreeModel::iterator& row)
     if(bTest)
     {
       //Show the new field (fill in the other cells):
-      
+
       fill_fields();
 
       //fill_from_database(); //We can not change the structure in a cell renderer signal handler.
@@ -164,9 +164,9 @@ void Box_DB_Table_Definition::on_adddel_add(const Gtk::TreeModel::iterator& row)
       Gnome::Gda::FieldAttributes field_info = field.get_field_info();
       field_info.set_gdatype( Field::get_gda_type_for_glom_type(Field::TYPE_NUMERIC) );
       field.set_field_info(field_info);
-      
+
       fill_field_row(row, field);
-      
+
       //m_AddDel.select_item(row, m_colTitle, true); //Start editing the title
     }
   }
@@ -547,12 +547,12 @@ void  Box_DB_Table_Definition::postgres_change_column_type(const Field& field_ol
 
 void Box_DB_Table_Definition::postgres_change_column_extras(const Field& field_old, const Field& field, bool set_anyway)
 {
-  Gnome::Gda::FieldAttributes field_info = field.get_field_info();
-  Gnome::Gda::FieldAttributes field_info_old = field_old.get_field_info();
+  //Gnome::Gda::FieldAttributes field_info = field.get_field_info();
+  //Gnome::Gda::FieldAttributes field_info_old = field_old.get_field_info();
 
-  if(field_info.get_name() != field_info_old.get_name())
+  if(field.get_name() != field_old.get_name())
   {
-     Glib::RefPtr<Gnome::Gda::DataModel>  datamodel = Query_execute( "ALTER TABLE " + m_strTableName + " RENAME COLUMN " + field_info_old.get_name() + " TO " + field_info.get_name() );
+     Glib::RefPtr<Gnome::Gda::DataModel>  datamodel = Query_execute( "ALTER TABLE " + m_strTableName + " RENAME COLUMN " + field_old.get_name() + " TO " + field.get_name() );
      if(!datamodel)
      {
        handle_error();
@@ -560,14 +560,14 @@ void Box_DB_Table_Definition::postgres_change_column_extras(const Field& field_o
      }
   }
 
-  if(set_anyway || (field_info.get_primary_key() != field_info_old.get_primary_key()))
+  if(set_anyway || (field.get_primary_key() != field_old.get_primary_key()))
   {
     //TODO: Check that there is only one primary key.
     Glib::ustring add_or_drop = "ADD";
-    if(field_info_old.get_primary_key() == false)
+    if(field_old.get_primary_key() == false)
       add_or_drop = "DROP";
 
-    Glib::RefPtr<Gnome::Gda::DataModel>  datamodel = Query_execute( "ALTER TABLE " + m_strTableName + " " + add_or_drop + " PRIMARY KEY (" + field_info.get_name() + ")");
+    Glib::RefPtr<Gnome::Gda::DataModel>  datamodel = Query_execute( "ALTER TABLE " + m_strTableName + " " + add_or_drop + " PRIMARY KEY (" + field.get_name() + ")");
     if(!datamodel)
     {
       handle_error();
@@ -575,9 +575,9 @@ void Box_DB_Table_Definition::postgres_change_column_extras(const Field& field_o
     }
   }
 
-  if( !field_info.get_primary_key() ) //Postgres automatically makes primary keys unique, so we do not need to do that separately if we have already made it a primary key
+  if( !field.get_primary_key() ) //Postgres automatically makes primary keys unique, so we do not need to do that separately if we have already made it a primary key
   {
-    if(set_anyway || (field_info.get_unique_key() != field_info_old.get_unique_key()))
+    if(set_anyway || (field.get_unique_key() != field_old.get_unique_key()))
     {
        /* TODO: Is there an easier way than adding an index manually?
        Glib::RefPtr<Gnome::Gda::DataModel>  datamodel = Query_execute( "ALTER TABLE " + m_strTableName + " RENAME COLUMN " + field_info_old.get_name() + " TO " + field_info.get_name() );
@@ -589,14 +589,14 @@ void Box_DB_Table_Definition::postgres_change_column_extras(const Field& field_o
        */
     }
 
-    Gnome::Gda::Value default_value = field_info.get_default_value();
-    Gnome::Gda::Value default_value_old = field_info_old.get_default_value();
+    Gnome::Gda::Value default_value = field.get_default_value();
+    Gnome::Gda::Value default_value_old = field_old.get_default_value();
 
-    if(!field_info.get_auto_increment()) //Postgres auto-increment fields have special code as their default values.
+    if(!field.get_auto_increment()) //Postgres auto-increment fields have special code as their default values.
     {
       if(set_anyway || (default_value != default_value_old))
       {
-        Glib::RefPtr<Gnome::Gda::DataModel> datamodel = Query_execute( "ALTER TABLE " + m_strTableName + " ALTER COLUMN "+ field_info.get_name() + " SET DEFAULT " + field.sql(field_info.get_default_value()) );
+        Glib::RefPtr<Gnome::Gda::DataModel> datamodel = Query_execute( "ALTER TABLE " + m_strTableName + " ALTER COLUMN "+ field.get_name() + " SET DEFAULT " + field.sql(field.get_default_value()) );
         if(!datamodel)
         {
           handle_error();

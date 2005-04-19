@@ -258,6 +258,46 @@ void Field::set_name(const Glib::ustring& value)
   m_field_info.set_name(value);
 }
 
+bool Field::get_auto_increment() const
+{
+  return m_field_info.get_auto_increment();
+}
+
+void Field::set_auto_increment(bool val)
+{
+  m_field_info.set_auto_increment(val);
+}
+
+bool Field::get_primary_key() const
+{
+  return m_field_info.get_primary_key();
+}
+
+void Field::set_primary_key(bool val)
+{
+  m_field_info.set_primary_key(val);
+}
+
+bool Field::get_unique_key() const
+{
+  return m_field_info.get_unique_key();
+}
+
+void Field::set_unique_key(bool val)
+{
+  m_field_info.set_unique_key(val);
+}
+
+Gnome::Gda::Value Field::get_default_value() const
+{
+  return m_field_info.get_default_value();
+}
+
+void Field::set_default_value(const Gnome::Gda::Value& val)
+{
+  m_field_info.set_default_value(val);
+}
+
 Glib::ustring Field::get_sql_type() const
 {
   if(false) //See generate_next_auto_increment() //m_field_info.get_auto_increment())

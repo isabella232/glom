@@ -88,26 +88,26 @@ void Dialog_FieldDefinition::set_field(const Field& field, const Glib::ustring& 
   m_table_name = table_name;  //Used for lookup combo boxes.
 
   //Set the Widgets from the field info:
-  const Gnome::Gda::FieldAttributes& fieldInfo = field.get_field_info();
+  //const Gnome::Gda::FieldAttributes& fieldInfo = field.get_field_info();
 
-  m_pEntry_Name->set_text(fieldInfo.get_name());
+  m_pEntry_Name->set_text(field.get_name());
   m_pCombo_Type->set_field_type( field.get_glom_type() );
 
-  m_pCheck_Unique->set_active(fieldInfo.get_unique_key());
-  m_pCheck_PrimaryKey->set_active(fieldInfo.get_primary_key());
-  m_pCheck_AutoIncrement->set_active(fieldInfo.get_auto_increment());
+  m_pCheck_Unique->set_active(field.get_unique_key());
+  m_pCheck_PrimaryKey->set_active(field.get_primary_key());
+  m_pCheck_AutoIncrement->set_active(field.get_auto_increment());
 
   //Glom-specific details:
 
   //Default value
   bool disable_default_value = false;
-  if(fieldInfo.get_auto_increment()) //Ignore default_values for auto_increment fields - it's just some obscure postgres code.
+  if(field.get_auto_increment()) //Ignore default_values for auto_increment fields - it's just some obscure postgres code.
     disable_default_value = true;
 
   //Default value: simple:
   Gnome::Gda::Value default_value;
   if(!disable_default_value)
-    default_value = m_Field.get_field_info().get_default_value();
+    default_value = m_Field.get_default_value();
 
   //Create an appropriate DataWidget for the default value:
   if(m_pDataWidget_DefaultValueSimple)

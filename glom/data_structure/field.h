@@ -64,46 +64,72 @@ public:
 
   Field();
   Field(const Field& src);
-  virtual ~Field();
+  ~Field();
 
   Field& operator=(const Field& src);
 
   bool operator==(const Field& src) const;
   bool operator!=(const Field& src) const;
 
+  glom_field_type get_glom_type() const;
+  void set_glom_type(glom_field_type fieldtype);
+
+
   /// This forwards to the Gnome::Gda::FieldAttributes::get_name, so that we can use it in the same predicate template.
-  virtual Glib::ustring get_name() const;
+  Glib::ustring get_name() const;
 
   /// This forwards to the Gnome::Gda::FieldAttributes::set_name, for convenience
-  virtual void set_name(const Glib::ustring& value);
+  void set_name(const Glib::ustring& value);
 
-  virtual glom_field_type get_glom_type() const;
-  virtual void set_glom_type(glom_field_type fieldtype);
+  /// This forwards to the Gnome::Gda::FieldAttributes::get_auto_increment.
+  bool get_auto_increment() const;
+
+  /// This forwards to the Gnome::Gda::FieldAttributes::set_auto_increment.
+  void set_auto_increment(bool val = true);
+
+  /// This forwards to the Gnome::Gda::FieldAttributes::get_primary_key.
+  bool get_primary_key() const;
+
+  /// This forwards to the Gnome::Gda::FieldAttributes::set_primary_key.
+  void set_primary_key(bool val = true);
+
+  /// This forwards to the Gnome::Gda::FieldAttributes::get_unique_key.
+  bool get_unique_key() const;
+
+  /// This forwards to the Gnome::Gda::FieldAttributes::set_unique_key.
+  void set_unique_key(bool val = true);
+
+  /// This forwards to the Gnome::Gda::FieldAttributes::get_default_value.
+  Gnome::Gda::Value get_default_value() const;
+
+  /// This forwards to the Gnome::Gda::FieldAttributes::set_default_value.
+  void set_default_value(const Gnome::Gda::Value& val);
+
 
   //TODO_Performance: Lots of code calls this just to call one of its methods:
-  virtual Gnome::Gda::FieldAttributes get_field_info() const;
-  virtual void set_field_info(const Gnome::Gda::FieldAttributes& fieldInfo);
+  Gnome::Gda::FieldAttributes get_field_info() const;
+  void set_field_info(const Gnome::Gda::FieldAttributes& fieldInfo);
 
   /// Ignores any part of FieldAttributes that libgda does not properly fill.
-  virtual bool field_info_from_database_is_equal(const Gnome::Gda::FieldAttributes& field);
+  bool field_info_from_database_is_equal(const Gnome::Gda::FieldAttributes& field);
 
   //These are not used much:
-  virtual Gnome::Gda::Value get_data() const;
-  virtual void set_data(const Gnome::Gda::Value& value);
+  Gnome::Gda::Value get_data() const;
+  void set_data(const Gnome::Gda::Value& value);
 
-  virtual Glib::ustring get_title() const;
-  virtual void set_title(const Glib::ustring& strTitle);
+  Glib::ustring get_title() const;
+  void set_title(const Glib::ustring& strTitle);
 
-  virtual Glib::ustring get_title_or_name() const; //Title, or Name if there is no title.
+  Glib::ustring get_title_or_name() const; //Title, or Name if there is no title.
 
   //Lookup stuff:
-  virtual bool get_is_lookup() const;
+  bool get_is_lookup() const;
 
-  virtual Glib::ustring get_lookup_relationship() const;
-  virtual void set_lookup_relationship(const Glib::ustring& strRelationship);
+  Glib::ustring get_lookup_relationship() const;
+  void set_lookup_relationship(const Glib::ustring& strRelationship);
 
-  virtual Glib::ustring get_lookup_field() const;
-  virtual void set_lookup_field(const Glib::ustring& strField);
+  Glib::ustring get_lookup_field() const;
+  void set_lookup_field(const Glib::ustring& strField);
 
   Glib::ustring get_sql_type() const;
 
