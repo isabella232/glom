@@ -9,63 +9,102 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glom HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-02-13 23:08+0000\n"
-"PO-Revision-Date: 2005-02-13 23:08+0100\n"
+"POT-Creation-Date: 2005-04-19 20:11-0400\n"
+"PO-Revision-Date: 2005-04-19 20:18-0400\n"
 "Last-Translator: David Lodge <dave@cirt.net>\n"
 "Language-Team: English/GB <en@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: glom/glom.glade.h:1
-msgid "*"
-msgstr "*"
-
-#: glom/glom.glade.h:2
+#: ../glom/glom.glade.h:1
 msgid "<b>Connection</b>"
 msgstr "<b>Connection</b>"
 
-#: glom/glom.glade.h:3
+#: ../glom/glom.glade.h:2
 msgid "<b>Field Definitions</b>"
 msgstr "<b>Field Definitions</b>"
 
-#: glom/glom.glade.h:4
+#: ../glom/glom.glade.h:3
+msgid "<b>Field:</b>"
+msgstr "<b>Field:</b>"
+
+#: ../glom/glom.glade.h:4
 msgid "<b>Fields</b>"
 msgstr "<b>Fields</b>"
 
-#: glom/glom.glade.h:5
-msgid "<b>Mode: </b>"
-msgstr "<b>Mode: </b>"
+#: ../glom/glom.glade.h:5
+msgid "<b>Group:</b>"
+msgstr "<b>Group:</b>"
 
-#: glom/glom.glade.h:6
+#: ../glom/glom.glade.h:6
+msgid "<b>Groups</b>"
+msgstr "<b>Groups</b>"
+
+#: ../glom/glom.glade.h:7
+msgid "<b>Mode:</b>"
+msgstr "<b>Mode:</b>"
+
+#: ../glom/glom.glade.h:8
+msgid "<b>Numeric Formatting</b>"
+msgstr "<b>Numeric Formatting</b>"
+
+#: ../glom/glom.glade.h:9
+msgid "<b>Relationship:</b>"
+msgstr "<b>Relationship:</b>"
+
+#: ../glom/glom.glade.h:10
 msgid "<b>Select Field</b>"
 msgstr "<b>Select Field</b>"
 
-#: glom/glom.glade.h:7
+#: ../glom/glom.glade.h:11
 msgid "<b>Select Relationship</b>"
 msgstr "<b>Select Relationship</b>"
 
-#: glom/glom.glade.h:8
-msgid "<b>Table: </b>"
-msgstr "<b>Table: </b>"
+#: ../glom/glom.glade.h:12
+msgid "<b>Table:</b>"
+msgstr "<b>Table:</b>"
 
-#: glom/glom.glade.h:9
+#: ../glom/glom.glade.h:13
 msgid "<b>Tables in database</b>"
 msgstr "<b>Tables in database</b>"
 
-#: glom/glom.glade.h:10
+#: ../glom/glom.glade.h:14
+msgid "<b>Tables</b>"
+msgstr "<b>Tables</b>"
+
+#: ../glom/glom.glade.h:15
+msgid "<b>Text Formatting</b>"
+msgstr "<b>Text Formatting</b>"
+
+#: ../glom/glom.glade.h:16
 msgid "<b>Title:</b>"
 msgstr "<b>Title:</b>"
 
-#: glom/glom.glade.h:11
-msgid "<b>User Level: </b>"
-msgstr "<b>User Level: </b>"
+#. Do not translate the markup.
+#: ../glom/glom.glade.h:18
+msgid "<b>User Level:</b>"
+msgstr "<b>User Level:</b>"
 
-#: glom/glom.glade.h:12
-msgid "<b>def calculate_field_value():</b>"
-msgstr "<b>def calculate_field_value():</b>"
+#: ../glom/glom.glade.h:19
+msgid "<b>User</b>"
+msgstr "<b>User</b>"
 
-#: glom/glom.glade.h:13
+#: ../glom/glom.glade.h:20
+msgid "<b>Users</b>"
+msgstr "<b>Users</b>"
+
+#: ../glom/glom.glade.h:21
+msgid ""
+"<span weight=\"bold\" size=\"larger\">Add User To Group</span>\n"
+"\n"
+"Which user should be added to this group?"
+msgstr ""
+"<span weight=\"bold\" size=\"larger\">Add User To Group</span>\n"
+"\n"
+"Which user should be added to this group?"
+
+#: ../glom/glom.glade.h:24
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Connect to Server</span>\n"
 "\n"
@@ -75,237 +114,820 @@ msgstr ""
 "\n"
 "Please enter the connection details for your database server."
 
-#: glom/glom.glade.h:16
+#: ../glom/glom.glade.h:27
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Connection Failed</span>\n"
 "\n"
-"Glom could not connect to the database server. Maybe you entered an incorrect user name or password, or maybe the postgres database server is not running."
+"Glom could not connect to the database server. Maybe you entered an "
+"incorrect user name or password, or maybe the postgres database server is "
+"not running."
 msgstr ""
 "<span weight=\"bold\" size=\"larger\">Connection Failed</span>\n"
 "\n"
-"Glom could not connect to the database server. Maybe you entered an incorrect user name or password, or maybe the postgres database server is not running."
+"Glom could not connect to the database server. Maybe you entered an "
+"incorrect user name or password, or maybe the postgres database server is "
+"not running."
 
-#: glom/glom.glade.h:19
+#: ../glom/glom.glade.h:30
+msgid ""
+"<span weight=\"bold\" size=\"larger\">Create Group</span>\n"
+"\n"
+"What name should this group have?"
+msgstr ""
+"<span weight=\"bold\" size=\"larger\">Create Group</span>\n"
+"\n"
+"What name should this group have?"
+
+#: ../glom/glom.glade.h:33
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Database creation failed</span>\n"
 "\n"
-"Glom could not create the new database. Maybe you do not have the necessary access rights. Please contact your system administrator."
+"Glom could not create the new database. Maybe you do not have the necessary "
+"access rights. Please contact your system administrator."
 msgstr ""
 "<span weight=\"bold\" size=\"larger\">Database creation failed</span>\n"
 "\n"
-"Glom could not create the new database. Maybe you do not have the necessary access rights. Please contact your system administrator."
+"Glom could not create the new database. Maybe you do not have the necessary "
+"access rights. Please contact your system administrator."
 
-#: glom/glom.glade.h:22
+#: ../glom/glom.glade.h:36
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Database does not exist</span>\n"
 "\n"
-"The database does not yet exist on the database server. Would you like to create the database with an empty structure?"
+"The database does not yet exist on the database server. Would you like to "
+"create the database with an empty structure?"
 msgstr ""
 "<span weight=\"bold\" size=\"larger\">Database does not exist</span>\n"
 "\n"
-"The database does not yet exist on the database server. Would you like to create the database with an empty structure?"
+"The database does not yet exist on the database server. Would you like to "
+"create the database with an empty structure?"
 
-#: glom/glom.glade.h:25
+#: ../glom/glom.glade.h:39
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Invalid format</span>\n"
 "\n"
-"The data in the field was not recognised. Please try to correct the data or revert to the previous value. Here is an example of correctly-formatted data for this field.\n"
+"The data in the field was not recognized. Please try to correct the data or "
+"revert to the previous value. Here is an example of correctly-formatted data "
+"for this field.\n"
 msgstr ""
 "<span weight=\"bold\" size=\"larger\">Invalid format</span>\n"
 "\n"
-"The data in the field was not recognised. Please try to correct the data or revert to the previous value. Here is an example of correctly-formatted data for this field.\n"
+"The data in the field was not recognized. Please try to correct the data or revert to the previous value. Here is an example of correctly-formatted data for this field.\n"
 
-#: glom/glom.glade.h:29
+#: ../glom/glom.glade.h:43
 msgid ""
 "<span weight=\"bold\" size=\"larger\">New Database</span>\n"
 "\n"
-"Please choose a name and title for the new database. The name should not contain any spaces."
+"Please choose a name and title for the new database. The name should not "
+"contain any spaces."
 msgstr ""
 "<span weight=\"bold\" size=\"larger\">New Database</span>\n"
 "\n"
-"Please choose a name and title for the new database. The name should not contain any spaces."
+"Please choose a name and title for the new database. The name should not "
+"contain any spaces."
 
-#: glom/glom.glade.h:32
+#: ../glom/glom.glade.h:46
 msgid ""
-"<span weight=\"bold\" size=\"larger\">Open existing document, or create new document</span>\n"
+"<span weight=\"bold\" size=\"larger\">Open existing document, or create new "
+"document</span>\n"
 "\n"
-"Would you like to open an existing document, to connect to an existing database?\n"
+"Would you like to open an existing document, to connect to an existing "
+"database?\n"
 "\n"
 "Or would you like to create a new document, to design a new database?\n"
 msgstr ""
-"<span weight=\"bold\" size=\"larger\">Open existing document, or create new document</span>\n"
+"<span weight=\"bold\" size=\"larger\">Open existing document, or create new "
+"document</span>\n"
 "\n"
-"Would you like to open an existing document, to connect to an existing database?\n"
+"Would you like to open an existing document, to connect to an existing "
+"database?\n"
 "\n"
 "Or would you like to create a new document, to design a new database?\n"
 
-#: glom/glom.glade.h:38
-msgid ""
-"<span weight=\"bold\" size=\"larger\">Title</span>\n"
-"\n"
-"Information text.\n"
-msgstr ""
-"<span weight=\"bold\" size=\"larger\">Title</span>\n"
-"\n"
-"Information text.\n"
-
-#: glom/glom.glade.h:42
+#: ../glom/glom.glade.h:52
 msgid "Add Related"
 msgstr "Add Related"
 
-#: glom/glom.glade.h:43
+#: ../glom/glom.glade.h:53
 msgid "Add _Group"
 msgstr "Add _Group"
 
-#: glom/glom.glade.h:44
+#: ../glom/glom.glade.h:54
+msgid "Allow Editing"
+msgstr "Allow Editing"
+
+#: ../glom/glom.glade.h:55
 msgid "Auto-increment"
 msgstr "Auto-increment"
 
-#: glom/glom.glade.h:45
+#: ../glom/glom.glade.h:56
 msgid "Calculate value"
 msgstr "Calculate value"
 
-#: glom/glom.glade.h:46
+#: ../glom/glom.glade.h:57
+msgid "Choose User"
+msgstr "Choose User"
+
+#: ../glom/glom.glade.h:58
+msgid "Confirm Password"
+msgstr "Confirm Password"
+
+#: ../glom/glom.glade.h:59
 msgid "Connect"
 msgstr "Connect"
 
-#: glom/glom.glade.h:47
+#: ../glom/glom.glade.h:60 ../glom/mode_design/users/dialog_groups_list.cc:76
 msgid "Create"
 msgstr "Create"
 
-#: glom/glom.glade.h:48
+#: ../glom/glom.glade.h:61
+msgid "Create Group"
+msgstr "Create Group"
+
+#: ../glom/glom.glade.h:62
+msgid "Currency Symbol"
+msgstr "Currency Symbol"
+
+#: ../glom/glom.glade.h:63 ../glom/frame_glom.cc:277
 msgid "Data"
 msgstr "Data"
 
-#: glom/glom.glade.h:49
+#: ../glom/glom.glade.h:64
 msgid "Database"
 msgstr "Database"
 
-#: glom/glom.glade.h:50
+#: ../glom/glom.glade.h:65
+msgid "Decimal Places"
+msgstr "Decimal Places"
+
+#: ../glom/glom.glade.h:66
+#: ../glom/mode_design/fields/dialog_fielddefinition.cc:121
 msgid "Default Value"
 msgstr "Default Value"
 
-#: glom/glom.glade.h:51
+#: ../glom/glom.glade.h:67
 msgid "Details Layout"
 msgstr "Details Layout"
 
-#: glom/glom.glade.h:52
+#. Add new menu items:
+#: ../glom/glom.glade.h:68 ../glom/mode_design/users/dialog_groups_list.cc:73
+#: ../glom/utility_widgets/adddel/adddel.cc:184
 msgid "Edit"
 msgstr "Edit"
 
-#: glom/glom.glade.h:53
-msgid "Edit Definition"
-msgstr "Edit Definition"
-
-#: glom/glom.glade.h:54
+#: ../glom/glom.glade.h:69
 msgid "Extra"
 msgstr "Extra"
 
-#: glom/glom.glade.h:55
+#: ../glom/glom.glade.h:70
 msgid "Field"
 msgstr "Field"
 
-#: glom/glom.glade.h:56
+#: ../glom/glom.glade.h:71
 msgid "Field Calculation"
 msgstr "Field Calculation"
 
-#: glom/glom.glade.h:57
+#: ../glom/glom.glade.h:72
 msgid "Field Definition"
 msgstr "Field Definition"
 
-#: glom/glom.glade.h:58
+#: ../glom/glom.glade.h:73 ../glom/mode_design/dialog_fields.cc:34
 msgid "Field Definitions"
 msgstr "Field Definitions"
 
-#: glom/glom.glade.h:59
+#: ../glom/glom.glade.h:74
+msgid "Field Layout"
+msgstr "Field Layout"
+
+#: ../glom/glom.glade.h:75
 msgid "Glom"
 msgstr "Glom"
 
-#: glom/glom.glade.h:60
+#: ../glom/glom.glade.h:76
+msgid "Group"
+msgstr "Group"
+
+#: ../glom/glom.glade.h:77
+msgid "Group Name"
+msgstr "Group Name"
+
+#: ../glom/glom.glade.h:78
+msgid "Groups"
+msgstr "Groups"
+
+#: ../glom/glom.glade.h:79
 msgid "Host"
 msgstr "Host"
 
-#: glom/glom.glade.h:61
+#: ../glom/glom.glade.h:80
+msgid ""
+"If this is not selected then a thousands separator will not be used, even if "
+"your locale would normally use one. If it is selected then a thousands "
+"separator will be used only if your locale normally uses one."
+msgstr "If this is not selected then a thousands separator will not be used, even if your locale would normally use one. If it is selected then a thousands separator will be used only if your locale normally uses one."
+
+#: ../glom/glom.glade.h:81
 msgid "List Layout"
 msgstr "List Layout"
 
-#: glom/glom.glade.h:62
+#: ../glom/glom.glade.h:82
 msgid "Lookup value when a field changes."
 msgstr "Lookup value when a field changes."
 
-#: glom/glom.glade.h:63
+#: ../glom/glom.glade.h:83
+msgid "Multi-line"
+msgstr "Multi-line"
+
+#. Append the View columns:
+#. Use set_cell_data_func() to give more control over the cell attributes depending on the row:
+#. Name column:
+#. Append the View columns:
+#. Append the View columns:
+#. Append the View columns:
+#: ../glom/glom.glade.h:84 ../glom/mode_data/dialog_choose_field.cc:43
+#: ../glom/mode_data/dialog_choose_relationship.cc:41
+#: ../glom/mode_data/dialog_layout_details.cc:58
+#: ../glom/mode_data/dialog_layout_list.cc:49
+#: ../glom/mode_data/dialog_layout_list_related.cc:51
+#: ../glom/mode_design/box_db_table_relationships.cc:39
+#: ../glom/mode_design/fields/box_db_table_definition.cc:48
+#: ../glom/mode_design/users/dialog_groups_list.cc:59
 msgid "Name"
 msgstr "Name"
 
-#: glom/glom.glade.h:64
+#: ../glom/glom.glade.h:85 ../glom/mode_design/dialog_design.cc:50
 msgid "None selected"
 msgstr "None selected"
 
-#: glom/glom.glade.h:65
+#: ../glom/glom.glade.h:86
 msgid "Password"
 msgstr "Password"
 
-#: glom/glom.glade.h:66
+#: ../glom/glom.glade.h:87
 msgid "Primary Key"
 msgstr "Primary Key"
 
-#: glom/glom.glade.h:67
+#: ../glom/glom.glade.h:88
+msgid "Related Records Layout"
+msgstr "Related Records Layout"
+
+#: ../glom/glom.glade.h:89
 msgid "Relationship"
 msgstr "Relationship"
 
-#: glom/glom.glade.h:68
+#: ../glom/glom.glade.h:90
 msgid "Revert"
 msgstr "Revert"
 
-#: glom/glom.glade.h:69
+#: ../glom/glom.glade.h:91
 msgid "Select"
 msgstr "Select"
 
-#: glom/glom.glade.h:70
+#: ../glom/glom.glade.h:92
 msgid "Select Field"
 msgstr "Select Field"
 
-#: glom/glom.glade.h:71
+#: ../glom/glom.glade.h:93
 msgid "Select Relationship"
 msgstr "Select Relationship"
 
-#: glom/glom.glade.h:72
+#: ../glom/glom.glade.h:94
 msgid "Show hidden tables"
 msgstr "Show hidden tables"
 
-#: glom/glom.glade.h:73
+#: ../glom/glom.glade.h:95
 msgid "Table:"
 msgstr "Table:"
 
-#: glom/glom.glade.h:74
+#: ../glom/glom.glade.h:96
 msgid "Test"
 msgstr "Test"
 
-#: glom/glom.glade.h:75
-msgid "The field value will be the return value of the python function, which you implement here."
-msgstr "The field value will be the return value of the python function, which you implement here."
+#: ../glom/glom.glade.h:97
+msgid ""
+"The field value will be the return value of the python function, which you "
+"implement here."
+msgstr ""
+"The field value will be the return value of the python function, which you "
+"implement here."
 
-#: glom/glom.glade.h:76
+#. Title column:
+#: ../glom/glom.glade.h:98 ../glom/mode_data/dialog_choose_field.cc:44
+#: ../glom/mode_data/dialog_layout_details.cc:72
+#: ../glom/mode_design/box_db_table_relationships.cc:40
+#: ../glom/mode_design/fields/box_db_table_definition.cc:50
+#: ../glom/navigation/box_tables.cc:100
 msgid "Title"
 msgstr "Title"
 
-#: glom/glom.glade.h:77
+#: ../glom/glom.glade.h:99
+msgid "Triggered by:"
+msgstr "Triggered by:"
+
+#: ../glom/glom.glade.h:100
+#: ../glom/mode_design/fields/box_db_table_definition.cc:52
 msgid "Type"
 msgstr "Type"
 
-#: glom/glom.glade.h:78
+#: ../glom/glom.glade.h:101
 msgid "Unique"
 msgstr "Unique"
 
-#: glom/glom.glade.h:79
+#: ../glom/glom.glade.h:102
+msgid "Use 1000s separator"
+msgstr "Use 1000s separator"
+
+#. Append the View columns:
+#: ../glom/glom.glade.h:103 ../glom/mode_design/users/dialog_users_list.cc:63
 msgid "User"
 msgstr "User"
 
-#: glom/glom.glade.h:80
+#: ../glom/glom.glade.h:104
+msgid "Users"
+msgstr "Users"
+
+#: ../glom/glom.glade.h:105
 msgid "example data format"
 msgstr "example data format"
 
-#: glom/glom.glade.h:81
+#: ../glom/glom.glade.h:106
+msgid "field name"
+msgstr "field name"
+
+#: ../glom/glom.glade.h:107
 msgid "table name"
 msgstr "table name"
 
+#: ../glom/application.cc:59
+msgid "(C) 2000-2005 Murray Cumming"
+msgstr "(C) 2000-2005 Murray Cumming"
+
+#: ../glom/application.cc:59
+msgid "A Database GUI"
+msgstr "A Database GUI"
+
+#: ../glom/application.cc:143
+msgid "_File"
+msgstr "_File"
+
+#: ../glom/application.cc:144
+msgid "_Recent Files"
+msgstr "_Recent Files"
+
+#. "Navigate" menu:
+#: ../glom/application.cc:198
+msgid "_Navigate"
+msgstr "_Navigate"
+
+#. Glib::RefPtr<Gtk::Action> action = Gtk::Action::create("GlomAction_Menu_Navigate_Database", _("_Database"));
+#. m_listDeveloperActions.push_back(action);
+#. m_refActionGroup_Others->add(action,
+#. sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_Navigate_Database) );
+#: ../glom/application.cc:206
+msgid "_Table"
+msgstr "_Table"
+
+#. "UserLevel" menu:
+#: ../glom/application.cc:211
+msgid "_User Level"
+msgstr "_User Level"
+
+#: ../glom/application.cc:214 ../glom/application.cc:234
+msgid "_Developer"
+msgstr "_Developer"
+
+#: ../glom/application.cc:218
+msgid "_Operator"
+msgstr "_Operator"
+
+#. "Mode" menu:
+#: ../glom/application.cc:223
+msgid "_Mode"
+msgstr "_Mode"
+
+#. We remember this action, so that it can be explicitly activated later.
+#: ../glom/application.cc:228
+msgid "D_ata"
+msgstr "D_ata"
+
+#: ../glom/application.cc:231
+msgid "_Find"
+msgstr "_Find"
+
+#: ../glom/application.cc:238
+msgid "_Fields"
+msgstr "_Fields"
+
+#: ../glom/application.cc:242
+msgid "_Relationships"
+msgstr "_Relationships"
+
+#: ../glom/application.cc:246
+msgid "_Users"
+msgstr "_Users"
+
+#: ../glom/application.cc:250
+msgid "_Layout"
+msgstr "_Layout"
+
+#: ../glom/application.cc:409
+msgid "Creating from read-only file."
+msgstr "Creating from read-only file."
+
+#: ../glom/application.cc:410
+msgid ""
+"This file is read only, so you will not be able to enter Developer mode to "
+"make design changes. Maybe this file is an installed example file. "
+"Therefore, you might want to create your own writeable copy of this file."
+msgstr "This file is read only, so you will not be able to enter Developer mode to make design changes. Maybe this file is an installed example file. Therefore, you might want to create your own writeable copy of this file."
+
+#: ../glom/application.cc:643
+msgid "_Contents"
+msgstr "_Contents"
+
+#: ../glom/application.cc:643
+msgid "Help with the application"
+msgstr "i"
+
+#: ../glom/base_db.cc:76 ../glom/base_db.cc:104
+msgid "Internal error"
+msgstr "Internal error"
+
+#: ../glom/data_structure/field.cc:403
+msgid "Invalid"
+msgstr "Invalid"
+
+#: ../glom/data_structure/field.cc:404
+msgid "Number"
+msgstr "Number"
+
+#: ../glom/data_structure/field.cc:405
+msgid "Text"
+msgstr "Text"
+
+#: ../glom/data_structure/field.cc:406
+msgid "Time"
+msgstr "Time"
+
+#: ../glom/data_structure/field.cc:407
+msgid "Date"
+msgstr "Date"
+
+#: ../glom/data_structure/field.cc:408
+msgid "Boolean"
+msgstr "Boolean"
+
+#: ../glom/dialog_connection.cc:103
+msgid "Not yet created."
+msgstr "Not yet created."
+
+#. TODO: Obviously this document should have been deleted when the database-creation was cancelled.
+#. Note that "canceled" is the correct US spelling.
+#: ../glom/frame_glom.cc:244
+msgid "No database"
+msgstr "No database"
+
+#: ../glom/frame_glom.cc:244
+msgid ""
+"This document does not specify any database. Maybe the document creation was "
+"canceled before the database could be created."
+msgstr "This document does not specify any database. Maybe the document creation was cancelled before the database could be created."
+
+#: ../glom/frame_glom.cc:284
+msgid "Find"
+msgstr "Find"
+
+#: ../glom/frame_glom.cc:292
+msgid "Unknown"
+msgstr "Unknown"
+
+#: ../glom/frame_glom.cc:326
+msgid "Developer mode not available."
+msgstr "Developer mode not available."
+
+#: ../glom/frame_glom.cc:327
+msgid ""
+"Developer mode is not available. Check that you have sufficient database "
+"access rights and that the glom file is not read-only."
+msgstr "Developer mode is not available. Check that you have sufficient database access rights and that the glom file is not read-only."
+
+#. show user level:
+#: ../glom/frame_glom.cc:483
+msgid "Operator"
+msgstr "Operator"
+
+#: ../glom/frame_glom.cc:485
+msgid "Developer"
+msgstr "Developer"
+
+#. Ask user to confirm loss of data:
+#: ../glom/mode_data/box_data.cc:296
+msgid "No primary key value"
+msgstr "No primary key value"
+
+#: ../glom/mode_data/box_data.cc:297
+msgid ""
+"This data can not be stored in the database because you have not provided a "
+"primary key.\n"
+"Do you really want to discard this data?"
+msgstr ""
+"This data can not be stored in the database because you have not provided a primary key.\n"
+"Do you really want to discard this data?"
+
+#. Warn the user:
+#. TODO: Make the field insensitive until it can receive data, so people never see this dialog.
+#: ../glom/mode_data/box_data.cc:1045
+msgid "Related Record Does Not Exist"
+msgstr "Related Record Does Not Exist"
+
+#: ../glom/mode_data/box_data.cc:1046
+msgid ""
+"Data may not be entered into this related field, because the related record "
+"does not yet exist, and the relationship does not allow automatic creation "
+"of new related records."
+msgstr "Data may not be entered into this related field, because the related record does not yet exist, and the relationship does not allow automatic creation of new related records."
+
+#. Warn the user:
+#. TODO: Make the field insensitive until it can receive data, so people never see this dialog.
+#: ../glom/mode_data/box_data.cc:1064
+msgid "Related Record Can Not Be Created"
+msgstr "Related Record Can Not Be Created"
+
+#. TODO: This is a very complex error message:
+#: ../glom/mode_data/box_data.cc:1066
+msgid ""
+"Data may not be entered into this related field, because the related record "
+"does not yet exist, and the key in the related record is auto-generated and "
+"therefore can not be created with the key value in this record."
+msgstr "Data may not be entered into this related field, because the related record does not yet exist, and the key in the related record is auto-generated and therefore can not be created with the key value in this record."
+
+#: ../glom/mode_data/box_data_details.cc:63
+msgid ""
+"When you change the data in a field the database is updated immediately.\n"
+" Click [New] to add a new record.\n"
+" Leave automatic ID fields empty - they will be filled for you."
+msgstr ""
+"When you change the data in a field the database is updated immediately.\n"
+" Click [New] to add a new record.\n"
+" Leave automatic ID fields empty - they will be filled for you."
+
+#. Tell user that a primary key is needed to delete a record:
+#: ../glom/mode_data/box_data_details.cc:370
+msgid "No primary key value."
+msgstr "No primary key value."
+
+#: ../glom/mode_data/box_data_details.cc:371
+msgid "This record can not be deleted because there is no primary key."
+msgstr "This record can not be deleted because there is no primary key."
+
+#. Warn user that they can't choose their own primary key:
+#: ../glom/mode_data/box_data_details.cc:676
+msgid "Primary key auto increments"
+msgstr "Primary key auto increments"
+
+#: ../glom/mode_data/box_data_details.cc:677
+msgid ""
+"The primary key is auto-incremented.\n"
+" You may not enter your own primary key value."
+msgstr ""
+"The primary key is auto-incremented.\n"
+" You may not enter your own primary key value."
+
+#: ../glom/mode_data/box_data_list.cc:45
+msgid ""
+"When you change the data in a field the database is updated immediately.\n"
+" Click [Add] or enter data into the last row to add a new record.\n"
+" Leave automatic ID fields empty - they will be filled for you.\n"
+"Only the first 100 records are shown."
+msgstr ""
+"When you change the data in a field the database is updated immediately.\n"
+" Click [Add] or enter data into the last row to add a new record.\n"
+" Leave automatic ID fields empty - they will be filled for you.\n"
+"Only the first 100 records are shown."
+
+#. Ask the user for confirmation:
+#: ../glom/mode_data/box_data_list.cc:181
+msgid "Delete record"
+msgstr "Delete record"
+
+#: ../glom/mode_data/box_data_list.cc:182
+msgid ""
+"Are you sure that you would like to delete this record? The data in this "
+"record will then be permanently lost."
+msgstr "Are you sure that you would like to delete this record? The data in this record will then be permanently lost."
+
+#. Tell user that they can't do that:
+#: ../glom/mode_data/box_data_list_related.cc:251
+msgid "Extra related records not possible."
+msgstr "Extra related records not possible."
+
+#: ../glom/mode_data/box_data_list_related.cc:252
+msgid ""
+"You attempted to add a new related record, but there can only be one related "
+"record, because the relationship uses a unique key."
+msgstr "You attempted to add a new related record, but there can only be one related record, because the relationship uses a unique key."
+
+#. Columns-count column:
+#: ../glom/mode_data/dialog_layout_details.cc:85
+msgid "Columns Count"
+msgstr "Columns Count"
+
+#: ../glom/mode_data/dialog_layout_details.cc:807
+msgid "Related: "
+msgstr "Related: "
+
+#. Add Pages:
+#: ../glom/mode_data/notebook_data.cc:27 ../glom/mode_find/notebook_find.cc:27
+msgid "List"
+msgstr "List"
+
+#: ../glom/mode_data/notebook_data.cc:30 ../glom/mode_find/notebook_find.cc:28
+msgid "Details"
+msgstr "Details"
+
+#: ../glom/mode_design/box_db_table_relationships.cc:42
+msgid "From Field"
+msgstr "From Field"
+
+#. Tables:
+#: ../glom/mode_design/box_db_table_relationships.cc:43
+#: ../glom/mode_design/users/dialog_groups_list.cc:68
+msgid "Table"
+msgstr "Table"
+
+#: ../glom/mode_design/box_db_table_relationships.cc:44
+msgid "To Field"
+msgstr "To Field"
+
+#: ../glom/mode_design/box_db_table_relationships.cc:45
+msgid "Automatic Creation"
+msgstr "Automatic Creation"
+
+#: ../glom/mode_design/dialog_relationships.cc:34
+msgid "Relationships"
+msgstr "Relationships"
+
+#: ../glom/mode_design/fields/box_db_table_definition.cc:219
+#: ../glom/mode_design/fields/box_db_table_definition.cc:320
+msgid "Invalid database structure"
+msgstr "Invalid database structure"
+
+#: ../glom/mode_design/fields/box_db_table_definition.cc:220
+#: ../glom/mode_design/fields/box_db_table_definition.cc:321
+msgid ""
+"This database field was created or edited outside of Glom. It has a data "
+"type that is not supported by Glom. Your system administrator may be able to "
+"correct this."
+msgstr "This database field was created or edited outside of Glom. It has a data type that is not supported by Glom. Your system administrator may be able to correct this."
+
+#: ../glom/mode_design/fields/dialog_fieldcalculation.cc:94
+msgid "Calculation result"
+msgstr "Calculation result"
+
+#: ../glom/mode_design/fields/dialog_fieldcalculation.cc:94
+msgid "The result of the calculation is:\n"
+msgstr "The result of the calculation is:\n"
+
+#: ../glom/mode_design/users/dialog_groups_list.cc:63
+msgid "Description"
+msgstr "Description"
+
+#: ../glom/mode_design/users/dialog_groups_list.cc:70
+msgid "View"
+msgstr "View"
+
+#: ../glom/mode_design/users/dialog_groups_list.cc:79
+#: ../glom/utility_widgets/adddel/adddel.cc:190
+msgid "Delete"
+msgstr "Delete"
+
+#. TODO: Prevent deletion of standard groups
+#: ../glom/mode_design/users/dialog_groups_list.cc:215
+msgid "Delete Group"
+msgstr "Delete Group"
+
+#: ../glom/mode_design/users/dialog_groups_list.cc:216
+msgid "Are your sure that you wish to delete this group?"
+msgstr "Are your sure that you wish to delete this group?"
+
+#: ../glom/mode_design/users/dialog_groups_list.cc:374
+msgid "Full access."
+msgstr "Full access."
+
+#: ../glom/mode_design/users/dialog_users_list.cc:220
+msgid "Delete User"
+msgstr "Delete User"
+
+#: ../glom/mode_design/users/dialog_users_list.cc:221
+msgid "Are your sure that you wish to delete this user?"
+msgstr "Are your sure that you wish to delete this user?"
+
+#: ../glom/mode_design/users/dialog_users_list.cc:457
+msgid "Developer group may not be empty."
+msgstr "Developer group may not be empty."
+
+#: ../glom/mode_design/users/dialog_users_list.cc:458
+msgid "The developer group must contain at least one user."
+msgstr "The developer group must contain at least one user."
+
+#: ../glom/mode_find/box_data_details_find.cc:27
+#: ../glom/mode_find/box_data_list_find.cc:27
+msgid ""
+"Enter the search criteria and click [Find]\n"
+" Glom will then change to Data mode to display the results."
+msgstr ""
+"Enter the search criteria and click [Find]\n"
+" Glom will then change to Data mode to display the results."
+
+#: ../glom/navigation/box_tables.cc:98
+msgid "Tables"
+msgstr "Tables"
+
+#: ../glom/navigation/box_tables.cc:99
+msgid "Hidden"
+msgstr "Hidden"
+
+#: ../glom/navigation/box_tables.cc:101
+msgid "Default"
+msgstr "Default"
+
+#. TODO: Do not show tables that are not in the document.
+#: ../glom/navigation/box_tables.cc:239
+msgid ""
+"You can not delete this table, because there is no information about this "
+"table in the document."
+msgstr "You can not delete this table, because there is no information about this table in the document."
+
+#. Ask the user to confirm:
+#: ../glom/navigation/box_tables.cc:246
+msgid ""
+"Are you sure that you want to delete this table?\n"
+"Table name: "
+msgstr ""
+"Are you sure that you want to delete this table?\n"
+"Table name: "
+
+#: ../glom/navigation/box_tables.cc:247
+msgid "Delete Table"
+msgstr "Delete Table"
+
+#. TODO: Do not show tables that are not in the document.
+#: ../glom/navigation/box_tables.cc:282
+msgid "Unknown Table"
+msgstr "Unknown Table"
+
+#: ../glom/navigation/box_tables.cc:283
+msgid ""
+"You can not open this table, because there is no information about this "
+"table in the document."
+msgstr "You can not open this table, because there is no information about this table in the document."
+
+#: ../glom/navigation/box_tables.cc:350
+msgid "Are you sure that you want to rename this table?"
+msgstr "Are you sure that you want to rename this table?"
+
+#. TODO: Show old and new names?
+#: ../glom/navigation/box_tables.cc:351
+msgid "Rename Table"
+msgstr "Rename Table"
+
+#: ../glom/utility_widgets/adddel/adddel.cc:197
+msgid "Choose columns"
+msgstr "Choose columns"
+
+#: ../glom/utility_widgets/db_adddel/db_adddel.cc:216
+msgid "Layout"
+msgstr "Layout"
+
+#: ../glom/utility_widgets/flowtablewithfields.cc:636
+msgid "New Group"
+msgstr "New Group"
+
+#: ../glom/utility_widgets/layoutwidgetbase.cc:31
+msgid "Choose Field"
+msgstr "Choose Field"
+
+#: ../glom/utility_widgets/layoutwidgetbase.cc:32
+msgid "Field Layout Properties"
+msgstr "Field Layout Properties"
+
+#: ../glom/utility_widgets/layoutwidgetbase.cc:33
+msgid "Add Field"
+msgstr "Add Field"
+
+#: ../glom/utility_widgets/layoutwidgetbase.cc:34
+msgid "Add Related Records"
+msgstr "Add Related Records"
+
+#: ../glom/utility_widgets/layoutwidgetbase.cc:35
+msgid "Add Group"
+msgstr "Add Group"
+
+#~ msgid "*"
+#~ msgstr "*"
+
+#~ msgid "<b>def calculate_field_value():</b>"
+#~ msgstr "<b>def calculate_field_value():</b>"
+
+#~ msgid "Edit Definition"
+#~ msgstr "Edit Definition"
