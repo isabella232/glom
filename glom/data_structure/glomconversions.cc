@@ -154,7 +154,7 @@ Glib::ustring GlomConversions::get_text_for_gda_value(Field::glom_field_type glo
     return "";
   }
 
-  if(glom_type == Field::TYPE_DATE)
+  if( (glom_type == Field::TYPE_DATE) && (value.get_value_type() == Gnome::Gda::VALUE_TYPE_DATE))
   {
     Gnome::Gda::Date gda_date = value.get_date();
 
@@ -171,7 +171,7 @@ Glib::ustring GlomConversions::get_text_for_gda_value(Field::glom_field_type glo
     return date.format_string("%x"); //%x means "is replaced by the locale's appropriate date representation".
     */
   }
-  else if(glom_type == Field::TYPE_TIME)
+  else if((glom_type == Field::TYPE_TIME) && (value.get_value_type() == Gnome::Gda::VALUE_TYPE_TIME))
   {
     Gnome::Gda::Time gda_time = value.get_time();
 
@@ -182,7 +182,7 @@ Glib::ustring GlomConversions::get_text_for_gda_value(Field::glom_field_type glo
 
     return format_time(the_c_time, locale, iso_format);
   }
-  else if(glom_type == Field::TYPE_NUMERIC)
+  else if( (glom_type == Field::TYPE_NUMERIC) && (value.get_value_type() == Gnome::Gda::VALUE_TYPE_NUMERIC))
   {
     const GdaNumeric* gda_numeric = value.get_numeric();
     std::string text_in_c_locale;

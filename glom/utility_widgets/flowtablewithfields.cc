@@ -615,14 +615,6 @@ void FlowTableWithFields::get_layout_group(LayoutGroup& group)
       {
         const LayoutItem* pLayoutItem = (*iter)->get_layout_item();
 
-const LayoutItem_Field* fielditem = dynamic_cast<const LayoutItem_Field*>(pLayoutItem);
-if(fielditem)
-{
-   Glib::ustring a, b, c;
-  fielditem->get_choices(a, b, c);
-  g_warning( "debug flowtablewithfields: %s, %s, %s", a.c_str(), b.c_str(),  c.c_str());
-}
-
         if(pLayoutItem)
           group.add_item(*pLayoutItem);
       }

@@ -191,7 +191,7 @@ protected:
   static type_map_type_names m_map_type_names; //These are canonical, for internal use.
   static type_map_type_names m_map_type_names_ui; //These are translated.
   static bool m_maps_inited;
-  
+
   glom_field_type m_glom_type;
   Gnome::Gda::FieldAttributes m_field_info;
 

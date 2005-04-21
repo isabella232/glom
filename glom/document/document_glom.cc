@@ -412,7 +412,7 @@ void Document_Glom::set_node_attribute_value_as_decimal(xmlpp::Element* node, co
   thestream.imbue( std::locale::classic() ); //The C locale.
   thestream << value;
   const Glib::ustring sequence_string = thestream.str();
-      
+
   set_node_attribute_value(node, strAttributeName, sequence_string);
 }
 
@@ -433,6 +433,28 @@ guint Document_Glom::get_node_attribute_value_as_decimal(const xmlpp::Element* n
 
   return result;
 }
+
+void Document_Glom::set_node_attribute_value_as_value(xmlpp::Element* node, const Glib::ustring& strAttributeName, const Gnome::Gda::Value& value,  Field::glom_field_type field_type)
+{
+  NumericFormat format_ignored; //Because we use ISO format.
+  const Glib::ustring value_as_text = GlomConversions::get_text_for_gda_value(field_type, value, std::locale() /* Use the C locale */, format_ignored, true /* ISO standard */);
+
+  set_node_attribute_value(node, strAttributeName, value_as_text);
+}
+
+Gnome::Gda::Value Document_Glom::get_node_attribute_value_as_value(const xmlpp::Element* node, const Glib::ustring& strAttributeName, Field::glom_field_type field_type)
+{
+  const Glib::ustring value_string = get_node_attribute_value(node, strAttributeName);
+
+  bool success = false;
+  Gnome::Gda::Value  result = GlomConversions::parse_value(field_type, value_string, success, true /* iso_format */);
+  if(success)
+    return result;
+  else 
+    return Gnome::Gda::Value();
+}
+
+
 
 Document_Glom::type_listTableInfo Document_Glom::get_tables() const
 {
@@ -808,6 +830,29 @@ void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Gl
         //Choices:
         item.set_choices_restricted( get_node_attribute_value_as_bool(element, "choices_restricted") );
         item.set_has_custom_choices( get_node_attribute_value_as_bool(element, "choices_custom") );
+
+        if(item.get_has_custom_choices())
+        {
+          const xmlpp::Element* nodeChoiceList = get_node_child_named(element, "custom_choice_list");
+          if(nodeChoiceList)
+          {
+            LayoutItem_Field::type_list_values list_values;
+
+            xmlpp::Node::NodeList listNodesCustomChoices = nodeChoiceList->get_children("custom_choice");
+            for(xmlpp::Node::NodeList::iterator iter = listNodesCustomChoices.begin(); iter != listNodesCustomChoices.end(); ++iter)
+            {
+              const xmlpp::Element* element = dynamic_cast<const xmlpp::Element*>(*iter);
+              if(element)
+              {
+                Gnome::Gda::Value value = get_node_attribute_value_as_value(element, "value", item.m_field.get_glom_type());
+                list_values.push_back(value);
+              }
+            }
+
+            item.set_choices_custom(list_values);
+          }
+        }
+
         item.set_has_related_choices( get_node_attribute_value_as_bool(element, "choices_related") );
 
         item.set_choices(get_node_attribute_value(element, "choices_related_relationship"),
@@ -934,11 +979,7 @@ bool Document_Glom::load_after()
                   }
                 }
 
-                //Default value:
-                const Glib::ustring default_value_text = get_node_attribute_value(nodeChild, "default_value");
-                //Interpret the text as per the field type:
-                bool success = false;
-                field.set_default_value( GlomConversions::parse_value(field_type_enum, default_value_text, success, true /* iso_format */) );
+                field.set_default_value( get_node_attribute_value_as_value(nodeChild, "default_value", field_type_enum) );
 
                 //We set this after set_field_info(), because that gets a glom type from the (not-specified) gdatype. Yes, that's strange, and should probably be more explicit.
                 field.set_glom_type( field_type_enum );
@@ -1109,6 +1150,19 @@ void Document_Glom::save_before_layout_group(xmlpp::Element* node, const LayoutG
 
         set_node_attribute_value_as_bool(nodeItem, "choices_restricted", field->get_choices_restricted());
         set_node_attribute_value_as_bool(nodeItem, "choices_custom", field->get_has_custom_choices());
+
+        if(field->get_has_custom_choices())
+        {
+           xmlpp::Element* child = nodeItem->add_child("custom_choice_list");
+
+           const LayoutItem_Field::type_list_values list_values = field->get_choices_custom();
+           for(LayoutItem_Field::type_list_values::const_iterator iter = list_values.begin(); iter != list_values.end(); ++iter)
+           {
+             xmlpp::Element* childChoice = child->add_child("custom_choice");
+             set_node_attribute_value_as_value(childChoice, "value", *iter, field->m_field.get_glom_type());
+           }
+        }
+
         set_node_attribute_value_as_bool(nodeItem, "choices_related", field->get_has_related_choices() );
 
         Glib::ustring choice_relationship, choice_field, choice_second;
@@ -1185,11 +1239,7 @@ bool Document_Glom::save_before()
           set_node_attribute_value_as_bool(elemField, "primary_key", field.get_primary_key());
           set_node_attribute_value_as_bool(elemField, "unique", field.get_unique_key());
           set_node_attribute_value_as_bool(elemField, "auto_increment", field.get_auto_increment());
-
-          NumericFormat format_ignored; //Because we use ISO format.
-          const Glib::ustring default_value_as_text = GlomConversions::get_text_for_gda_value(field.get_glom_type(), field.get_default_value(), std::locale() /* SQL uses the C locale */, format_ignored, true /* ISO standard */);
-          set_node_attribute_value(elemField, "default_value", default_value_as_text);
-
+          set_node_attribute_value_as_value(elemField, "default_value", field.get_default_value(), field.get_glom_type());
 
           set_node_attribute_value(elemField, "calculation", field.get_calculation());
 

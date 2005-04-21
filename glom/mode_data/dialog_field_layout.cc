@@ -29,7 +29,8 @@ Dialog_FieldLayout::Dialog_FieldLayout(BaseObjectType* cobject, const Glib::RefP
   m_frame_numeric_format(0),
   m_frame_text_format(0),
   m_checkbox_format_text_multiline(0),
-  m_adddel_choices_custom(0)
+  m_adddel_choices_custom(0),
+  m_col_index_custom_choices(0)
 {
   refGlade->get_widget("label_field_name", m_label_field_name);
   refGlade->get_widget("checkbutton_editable", m_checkbutton_editable);
@@ -46,9 +47,10 @@ Dialog_FieldLayout::Dialog_FieldLayout(BaseObjectType* cobject, const Glib::RefP
   refGlade->get_widget("checkbutton_format_text_multiline", m_checkbox_format_text_multiline);
 
   refGlade->get_widget_derived("adddel_choices", m_adddel_choices_custom);
-  m_adddel_choices_custom->add_column("Choices");
+  m_col_index_custom_choices = m_adddel_choices_custom->add_column("Choices");
   m_adddel_choices_custom->set_allow_add();
   m_adddel_choices_custom->set_allow_delete();
+  m_adddel_choices_custom->set_auto_add();
 
   refGlade->get_widget("checkbutton_choices_restrict", m_checkbutton_choices_restricted);
 
@@ -132,7 +134,7 @@ void Dialog_FieldLayout::set_field(const LayoutItem_Field& field, const Glib::us
     //Display the value in the choices list as it would be displayed in the field:
     Glib::ustring value_text = GlomConversions::get_text_for_gda_value(field.m_field.get_glom_type(), *iter, field.m_numeric_format);
     Gtk::TreeModel::iterator iter = m_adddel_choices_custom->add_item(value_text);
-    m_adddel_choices_custom->set_value(iter, 0, value_text);
+    m_adddel_choices_custom->set_value(iter, m_col_index_custom_choices, value_text);
   }
 
   m_radiobutton_choices_custom->set_active(field.get_has_custom_choices());
@@ -167,11 +169,15 @@ bool Dialog_FieldLayout::get_field_chosen(LayoutItem_Field& field) const
   {
     for(Gtk::TreeModel::iterator iter = choices_model->children().begin(); iter != choices_model->children().end(); ++iter)
     {
-      Glib::ustring text = m_adddel_choices_custom->get_value(iter, 0);
-      g_warning("text: %s", text.c_str());
+      const Glib::ustring text = m_adddel_choices_custom->get_value(iter, m_col_index_custom_choices);
+      if(!text.empty())
+      {
+        bool success = false;
+        Gnome::Gda::Value value = GlomConversions::parse_value(m_layout_item.m_field.get_glom_type(), text, m_layout_item.m_numeric_format, success);
 
-      bool success = false;
-      list_choice_values.push_back( GlomConversions::parse_value(m_layout_item.m_field.get_glom_type(), text, m_layout_item.m_numeric_format, success) );
+        if(success)
+          list_choice_values.push_back(value);
+      }
     }
   }
 

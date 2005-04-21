@@ -67,6 +67,7 @@ protected:
   Gtk::RadioButton* m_radiobutton_choices_related;
   Gtk::CheckButton* m_checkbutton_choices_restricted;
   AddDel_WithButtons* m_adddel_choices_custom;
+  guint m_col_index_custom_choices;
   Combo_TextGlade* m_combo_choices_relationship;
   Combo_TextGlade* m_combo_choices_field;
   Combo_TextGlade* m_combo_choices_field_second;

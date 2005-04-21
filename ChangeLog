@@ -1,5 +1,24 @@
 2005-04-21  Murray Cumming <murrayc@murrayc.com>
 
+	* examples/example_smallbusiness.glom:
+	Add drop down choices for name_title.
+	* glom/data_structure/field.h:
+	* glom/data_structure/glomconversions.cc:
+	get_text_for_gda_value(): Prevent use of 
+	values that do not have the expected type.
+	* glom/document/document_glom.cc:
+	* glom/document/document_glom.h:
+	Added get/set_attribute_value_as_value() 
+	for convenience. 
+	load_after(), save_before(): load/save the 
+	custom choices.
+	* glom/mode_data/dialog_field_layout.cc:
+	* glom/mode_data/dialog_field_layout.h:
+	Really save/load the custom choices, by 
+	storing and using the correct column index.
+
+2005-04-21  Murray Cumming <murrayc@murrayc.com>
+
 	* glom/data_structure/glomconversions.cc:
 	* glom/data_structure/glomconversions.h:
 	Add get_choice_values(), with code moved 
