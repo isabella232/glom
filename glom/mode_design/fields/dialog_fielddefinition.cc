@@ -119,7 +119,7 @@ void Dialog_FieldDefinition::set_field(const Field& field, const Glib::ustring& 
   LayoutItem_Field layout_item;
   layout_item.m_field = m_Field;
   layout_item.m_field.set_title(_("Default Value"));
-  m_pDataWidget_DefaultValueSimple = Gtk::manage( new DataWidget(layout_item, "") );
+  m_pDataWidget_DefaultValueSimple = Gtk::manage( new DataWidget(layout_item, "", get_document()) );
   on_foreach_connect(*m_pDataWidget_DefaultValueSimple);
 
   Gtk::Label* pLabel = m_pDataWidget_DefaultValueSimple->get_label();

@@ -254,7 +254,7 @@ void FlowTableWithFields::add_field_at_position(const LayoutItem_Field& layoutit
   info.m_field = layoutitem_field;
 
   //Add the entry or checkbox (handled by the DataWidget)
-  DataWidget* pDataWidget = Gtk::manage(new DataWidget(layoutitem_field, table_name) );
+  DataWidget* pDataWidget = Gtk::manage(new DataWidget(layoutitem_field, table_name, get_document()) );
   add_layoutwidgetbase(pDataWidget, add_before);
   add_view(pDataWidget); //So it can get the document.
 

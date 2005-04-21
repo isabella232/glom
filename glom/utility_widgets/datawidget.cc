@@ -33,7 +33,7 @@ DataWidget::DataWidget(Field::glom_field_type glom_type, const Glib::ustring& ti
   m_pMenuPopup(0)
 */
 
-DataWidget::DataWidget(const LayoutItem_Field& field, const Glib::ustring& table_name)
+DataWidget::DataWidget(const LayoutItem_Field& field, const Glib::ustring& table_name, const Document_Glom* document)
 {
   Field::glom_field_type glom_type = field.m_field.get_glom_type();
   set_layout_item(field.clone(), table_name); //takes ownership
@@ -62,16 +62,16 @@ DataWidget::DataWidget(const LayoutItem_Field& field, const Glib::ustring& table
     //Use a Combo if there is a drop-down of choices (A "value list"), else an Entry:
     if(field.get_has_choices())
     {
-      ComboEntryGlom* combo = Gtk::manage(new ComboEntryGlom(glom_type));
-      combo->signal_edited().connect( sigc::mem_fun(*this, &DataWidget::on_widget_edited)  );
+      ComboEntryGlom* combo = 0; //Gtk::manage(new ComboEntryGlom());
 
-      //set_choices() needs this, for the numeric layout:
-      combo->set_layout_item(get_layout_item()->clone(), table_name); //TODO_Performance: We only need this for the numerical format.
-
-      LayoutItem_Field::type_list_values list_values;
       if(field.get_has_custom_choices())
       {
-        list_values = field.get_choices_custom();
+        combo = Gtk::manage(new ComboEntryGlom());
+
+        //set_choices() needs this, for the numeric layout:
+        combo->set_layout_item(get_layout_item()->clone(), table_name); //TODO_Performance: We only need this for the numerical format.
+
+        combo->set_choices( field.get_choices_custom() );
       }
       else if(field.get_has_related_choices())
       {
@@ -79,34 +79,69 @@ DataWidget::DataWidget(const LayoutItem_Field& field, const Glib::ustring& table
         field.get_choices(choice_relationship_name, choice_field, choice_second);
         if(!choice_relationship_name.empty() && !choice_field.empty())
         {
-          Relationship relationship = field.m_choices_related_relationship;
-          //Document_Glom* document = get_document();
-          //document->get_relationship(m_table_name, choice_relationship_name, relationship);
+          const Relationship relationship = field.m_choices_related_relationship;
+          const Glib::ustring to_table = relationship.get_to_table();
 
-          //Get possible values from database:
-          const Glib::ustring sql_query = "SELECT " + relationship.get_to_table() + "." + choice_field + " FROM " + relationship.get_to_table();
+          const bool with_second = !choice_second.empty();
+
+          if(with_second && document)
+          {
+            Field field_second;
+            document->get_field(to_table, choice_second, field_second);
+
+            LayoutItem_Field layout_field_second;
+            layout_field_second.m_field = field_second;
+            //We use the default formatting for this field.
+
+            combo = Gtk::manage(new ComboEntryGlom(layout_field_second));
+          }
+          else
+            combo = Gtk::manage(new ComboEntryGlom());
+
+
+          const Glib::ustring sql_second = to_table + "." + choice_second;
+
+          //Get possible values from database, sorted by the first column.
+          Glib::ustring sql_query = "SELECT " + to_table + "." + choice_field;
+          if(with_second)
+            sql_query += ", " + sql_second;
+
+          sql_query += " FROM " + relationship.get_to_table() + " ORDER BY " + to_table + "." + choice_field;
 
           //Connect to database:
           sharedptr<SharedConnection> connection = ConnectionPool::get_instance()->connect();
 
           std::cout << "DataWidget: Executing SQL for choice list: " << sql_query << std::endl;
           Glib::RefPtr<Gnome::Gda::DataModel> datamodel = connection->get_gda_connection()->execute_single_command(sql_query);
+
+          ComboEntryGlom::type_list_values_with_second list_values;
           if(datamodel)
           {
             guint count = datamodel->get_n_rows();
             for(guint row = 0; row < count; ++row)
             {
-              list_values.push_back(datamodel->get_value_at(0, row));
+              std::pair<Gnome::Gda::Value, Gnome::Gda::Value> itempair;
+              itempair.first = datamodel->get_value_at(0, row);
+
+              if(with_second)
+                itempair.second = datamodel->get_value_at(1, row);
+
+              list_values.push_back(itempair);
             }
           }
-        }
 
-        combo->set_choices(list_values);
+          //set_choices() needs this, for the numeric layout:
+          combo->set_layout_item(get_layout_item()->clone(), table_name); //TODO_Performance: We only need this for the numerical format.
+
+          combo->set_choices_with_second(list_values);
+        }
       }
       else
       {
         g_warning("DataWidget::DataWidget(): Unexpected choice type.");
       }
+
+      combo->signal_edited().connect( sigc::mem_fun(*this, &DataWidget::on_widget_edited)  );
 
       pFieldWidget = combo;
     }

@@ -25,6 +25,7 @@
 #include <sstream> //For stringstream
 
 Document_Glom::Document_Glom()
+: m_block_cache_update(false)
 {
   //Conscious use of virtual methods in a constructor:
   set_file_extension("glom");
@@ -118,6 +119,8 @@ void Document_Glom::set_relationship(const Glib::ustring& table_name, const Rela
       info.m_relationships.push_back(relationship);
     }
   }
+
+  update_cached_relationships();
 }
 
 bool Document_Glom::get_relationship(const Glib::ustring& table_name, const Glib::ustring& relationship_name, Relationship& relationship) const
@@ -789,12 +792,7 @@ void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Gl
 
         item.set_name( get_node_attribute_value(element, "name") );
 
-        const Glib::ustring relationship_name = get_node_attribute_value(element, "relationship"); 
-        //item.set_relationship_name(relationship_name);
-
-        //Update the cached relationship information:
-        if(!relationship_name.empty())
-          get_relationship(table_name, relationship_name, item.m_relationship);
+        item.m_relationship.set_name( get_node_attribute_value(element, "relationship") ); //Full details are updated in filled-in ().
 
         item.set_editable( get_node_attribute_value_as_bool(element, "editable") );
 
@@ -812,14 +810,11 @@ void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Gl
         item.set_has_custom_choices( get_node_attribute_value_as_bool(element, "choices_custom") );
         item.set_has_related_choices( get_node_attribute_value_as_bool(element, "choices_related") );
 
-        const Glib::ustring choices_relationship_name = get_node_attribute_value(element, "choices_related_relationship"); 
-        item.set_choices(get_node_attribute_value(element, choices_relationship_name),
-          get_node_attribute_value(element, "choices_related_field"), 
+        item.set_choices(get_node_attribute_value(element, "choices_related_relationship"),
+          get_node_attribute_value(element, "choices_related_field"),
           get_node_attribute_value(element, "choices_related_second") );
+        //Full details are updated in filled-in ().
 
-        //Update the cached relationship information:
-        if(!choices_relationship_name.empty())
-          get_relationship(table_name, choices_relationship_name, item.m_choices_related_relationship);
 
         item.m_sequence = sequence;
         group.add_item(item, sequence);
@@ -847,6 +842,8 @@ void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Gl
 bool Document_Glom::load_after()
 {
   bool result = Bakery::Document_XML::load_after();  
+
+  m_block_cache_update = true; //Don't waste time repeatedly updating this until we have finished.
 
   if(result)
   {
@@ -1066,6 +1063,9 @@ bool Document_Glom::load_after()
       }
     }
   }
+
+  m_block_cache_update = false;
+  update_cached_relationships();
 
   return result;
 }
@@ -1351,5 +1351,54 @@ void Document_Glom::remove_group(const Glib::ustring& group_name)
   {
     m_groups.erase(iter);
     set_modified();
+  }
+}
+
+void Document_Glom::update_cached_relationships(LayoutGroup& group, const Glib::ustring& table_name)
+{
+  //Find any LayoutItem_Fields, and fill in their full relationship details:
+  for(LayoutGroup::type_map_items::iterator iter = group.m_map_items.begin(); iter != group.m_map_items.end(); ++iter)
+  {
+    LayoutItem* pItem = iter->second;
+
+    LayoutItem_Field* pField = dynamic_cast<LayoutItem_Field*>(pItem);
+    if(pField)
+    {
+       if(pField->m_relationship.get_name_not_empty())
+       {
+         get_relationship(table_name, pField->m_relationship.get_name(), pField->m_relationship);
+       }
+
+        if(pField->m_choices_related_relationship.get_name_not_empty())
+       {
+         get_relationship(table_name, pField->m_choices_related_relationship.get_name(), pField->m_choices_related_relationship);
+       }
+    }
+    else
+    {
+      LayoutGroup* pGroup = dynamic_cast<LayoutGroup*>(pItem);
+      if(pGroup)
+        update_cached_relationships(*pGroup, table_name); //recurse:
+    }
+  }
+}
+
+void Document_Glom::update_cached_relationships()
+{
+  if(m_block_cache_update)
+    return;
+
+  //Update all the groups (groups are in layouts, in tables)
+  for(type_tables::iterator iterTable = m_tables.begin(); iterTable != m_tables.end(); ++iterTable)
+  {
+    DocumentTableInfo& tableInfo = iterTable->second;
+    for(DocumentTableInfo::type_layouts::iterator iterLayout = tableInfo.m_layouts.begin(); iterLayout != tableInfo.m_layouts.end(); ++iterLayout)
+    {
+      type_mapLayoutGroupSequence& groups = iterLayout->second;
+      for(type_mapLayoutGroupSequence::iterator iterGroup = groups.begin(); iterGroup != groups.end(); ++iterGroup)
+      {
+        update_cached_relationships(iterGroup->second, tableInfo.m_info.get_name());
+      }
+    }
   }
 }

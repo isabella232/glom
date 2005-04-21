@@ -147,6 +147,13 @@ public:
 
   virtual void emit_userlevel_changed();
 
+  /** The LayouItem_Field contains cached full relationship information,
+   *  so we don't have to look up the details so often. This method
+   *  updates that cache. It should be called when the relationship details change.
+   */
+  void update_cached_relationships();
+  void update_cached_relationships(LayoutGroup& group, const Glib::ustring& table_name);
+
 protected:
 
   //Overrides:
@@ -188,10 +195,13 @@ protected:
   type_tables m_tables;
 
 
+  //User groups:
   typedef std::map<Glib::ustring, GroupInfo> type_map_groups;
   type_map_groups m_groups;
 
   Glib::ustring m_database_title;
+
+  bool m_block_cache_update; //For efficiency.
 };
 
 //The base View for this document;

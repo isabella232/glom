@@ -1,5 +1,21 @@
 2005-04-21  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/document/document_glom.cc:
+	* glom/document/document_glom.h:
+	Added update_cache_relationship() and call it from 
+	set_relationship() and load_after() instead of 
+	filling-in relationship details along the way.
+	* glom/mode_design/fields/dialog_fielddefinition.cc:
+	* glom/utility_widgets/comboentryglom.cc:
+	* glom/utility_widgets/comboentryglom.h:
+	* glom/utility_widgets/datawidget.cc:
+	* glom/utility_widgets/datawidget.h:
+	* glom/utility_widgets/flowtablewithfields.cc:
+	Show data from the second related field in the 
+	drop down choice.
+
+2005-04-21  Murray Cumming  <murrayc@murrayc.com>
+
 	* examples/example_smallbusiness.glom:
 	Invoice details: Added choice of contacts dropdown.
 	* glom/data_structure/glomconversions.cc:

@@ -33,14 +33,22 @@
 
 ComboEntryGlom::ComboEntryGlom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& /* refGlade */)
 : Gtk::ComboBoxEntry(cobject),
-  m_glom_type(Field::TYPE_TEXT)
+  m_with_second(false)
 {
   setup_menu();
   init();
 }
 
-ComboEntryGlom::ComboEntryGlom(Field::glom_field_type glom_type)
-: m_glom_type(glom_type)
+ComboEntryGlom::ComboEntryGlom()
+: m_with_second(false)
+{
+  setup_menu();
+  init();
+}
+
+ComboEntryGlom::ComboEntryGlom(const LayoutItem_Field& field_second)
+: m_with_second(true),
+  m_layoutitem_second(field_second)
 {
   setup_menu();
   init();
@@ -57,16 +65,12 @@ void ComboEntryGlom::init()
   get_entry()->signal_focus_out_event().connect(sigc::mem_fun(*this, &ComboEntryGlom::on_entry_focus_out_event), false);
   get_entry()->signal_activate().connect(sigc::mem_fun(*this, &ComboEntryGlom::on_entry_activate));
 
-  
+  if(m_with_second)
+    pack_start(m_Columns.m_col_second);
 }
 
 ComboEntryGlom::~ComboEntryGlom()
 {
-}
-
-void ComboEntryGlom::set_glom_type(Field::glom_field_type glom_type)
-{
-  m_glom_type = glom_type;
 }
 
 void ComboEntryGlom::check_for_change()
@@ -211,7 +215,9 @@ void ComboEntryGlom::set_choices_with_second(const type_list_values_with_second&
     if(layout_item)
     {
       row[m_Columns.m_col_first] = GlomConversions::get_text_for_gda_value(layout_item->m_field.get_glom_type(), iter->first, layout_item->m_numeric_format);;
-      row[m_Columns.m_col_second] = GlomConversions::get_text_for_gda_value(m_glom_type, iter->second, layout_item->m_numeric_format);;
+
+      if(m_with_second)
+        row[m_Columns.m_col_second] = GlomConversions::get_text_for_gda_value(m_layoutitem_second.m_field.get_glom_type(), iter->second, layout_item->m_numeric_format);;
     }
   }
 }
@@ -230,7 +236,7 @@ void ComboEntryGlom::set_choices(const LayoutItem_Field::type_list_values& list_
     if(layout_item)
     {
       const Gnome::Gda::Value value = *iter;
-      const Glib::ustring text = GlomConversions::get_text_for_gda_value(m_glom_type, value, layout_item->m_numeric_format);
+      const Glib::ustring text = GlomConversions::get_text_for_gda_value(layout_item->m_field.get_glom_type(), value, layout_item->m_numeric_format);
 
       row[m_Columns.m_col_first] = text;
     }

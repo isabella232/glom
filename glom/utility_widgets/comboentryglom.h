@@ -34,11 +34,14 @@ class ComboEntryGlom
 {
 public:
   explicit ComboEntryGlom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
-  explicit ComboEntryGlom(Field::glom_field_type glom_type = Field::TYPE_TEXT);
+
+  ///You must call set_layout_item() to specify the field type and formatting of the main column.
+  explicit ComboEntryGlom();
+
+  ///You must call set_layout_item() to specify the field type and formatting of the main column.
+  explicit ComboEntryGlom(const LayoutItem_Field& field_second);
+
   virtual ~ComboEntryGlom();
-
-  void set_glom_type(Field::glom_field_type glom_type);
-
 
   void set_choices(const LayoutItem_Field::type_list_values& list_values);
 
@@ -94,8 +97,8 @@ protected:
   type_signal_edited m_signal_edited;
 
   Glib::ustring m_old_text;
-  Field::glom_field_type m_glom_type; //Store the type so we can validate the text accordingly.
 
+  bool m_with_second;
   LayoutItem_Field m_layoutitem_second;
   //Gnome::Gda::Value m_value; //The last-stored value. We have this because the displayed value might be unparseable.
 };

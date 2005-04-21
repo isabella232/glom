@@ -38,7 +38,7 @@ class DataWidget
 {
 public:
   //explicit DataWidget(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
-  explicit DataWidget(const LayoutItem_Field& field, const Glib::ustring& table_name);
+  explicit DataWidget(const LayoutItem_Field& field, const Glib::ustring& table_name, const Document_Glom* document);
   virtual ~DataWidget();
 
   virtual Gtk::Label* get_label();
