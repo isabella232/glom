@@ -52,8 +52,10 @@ Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
     refXml->get_widget_derived("window_data_layout_details", dialog);
     if(dialog)
     {
-      add_view(m_pDialogLayout); //Give it access to the document.
+      g_warning("Box_Data_Details: add_view(m_pDialogLayout): document=%d", (int)get_document());
+
       m_pDialogLayout = dialog;
+      add_view(m_pDialogLayout); //Give it access to the document.
       m_pDialogLayout->signal_hide().connect( sigc::mem_fun(static_cast<Box_Data&>(*this), &Box_Data::on_dialog_layout_hide) );
     }
   }
@@ -276,7 +278,7 @@ void Box_Data_Details::fill_related()
     }
 
     //Get relationships from the document:
-    Document_Glom::type_vecRelationships vecRelationships = m_pDocument->get_relationships(m_strTableName);
+    Document_Glom::type_vecRelationships vecRelationships = get_document()->get_relationships(m_strTableName);
 
     if(vecRelationships.empty())
     {
@@ -642,7 +644,7 @@ void Box_Data_Details::on_flowtable_field_edited(const LayoutItem_Field& layout_
         //If this is a foreign key then refresh the related records:
         /*
         bool bIsForeignKey = false;
-        Document_Glom::type_vecRelationships vecRelationships = m_pDocument->get_relationships(m_strTableName);
+        Document_Glom::type_vecRelationships vecRelationships = get_document()->get_relationships(m_strTableName);
         for(Document_Glom::type_vecRelationships::iterator iter = vecRelationships.begin(); iter != vecRelationships.end(); iter++)
         {
           const Relationship& relationship = *iter;

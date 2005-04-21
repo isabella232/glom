@@ -50,17 +50,17 @@ Document_Glom::~Document_Glom()
 {
 }
 
-Glib::ustring Document_Glom::get_connection_user()
+Glib::ustring Document_Glom::get_connection_user() const
 {
   return m_connection_user;
 }
 
-Glib::ustring Document_Glom::get_connection_server()
+Glib::ustring Document_Glom::get_connection_server() const
 {
   return m_connection_server;
 }
 
-Glib::ustring Document_Glom::get_connection_database()
+Glib::ustring Document_Glom::get_connection_database() const
 {
   return m_connection_database;
 }

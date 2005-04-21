@@ -592,13 +592,14 @@ void Frame_Glom::set_document(Document_Glom* pDocument)
 {
   View_Composite_Glom::set_document(pDocument);
 
-  if(m_pDocument)
+  Document_Glom* document = get_document();
+  if(document)
   {
     //Connect to a signal that is only on the derived document class:
-    m_pDocument->signal_userlevel_changed().connect( sigc::mem_fun(*this, &Frame_Glom::on_userlevel_changed) );
+    document->signal_userlevel_changed().connect( sigc::mem_fun(*this, &Frame_Glom::on_userlevel_changed) );
 
     //Show the appropriate UI for the user level that is specified by this new document:
-    on_userlevel_changed(m_pDocument->get_userlevel());
+    on_userlevel_changed(document->get_userlevel());
   }
 }
 

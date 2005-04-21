@@ -62,5 +62,10 @@ typedef std::vector<LayoutItem_Field> type_vecLayoutFields;
 //TODO: Move this to its own file:
 Glib::ustring util_build_sql_select_with_where_clause(const Glib::ustring& table_name, const type_vecLayoutFields& fieldsToGet, const Glib::ustring& where_clause = Glib::ustring());
 
+
+typedef std::list< std::pair<Gnome::Gda::Value, Gnome::Gda::Value> > type_list_values_with_second;
+type_list_values_with_second get_choice_values(const LayoutItem_Field& field);
+
+
 #endif //GLOM_DATASTRUCTURE_GLOMCONVERSIONS_H
 

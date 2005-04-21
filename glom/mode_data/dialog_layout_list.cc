@@ -221,8 +221,9 @@ void Dialog_Layout_List::save_to_document()
   if(m_modified)
   {
     //Set the table name and title:
-    if(m_document)
-      m_document->set_table_title( m_table_name, m_entry_table_title->get_text() );
+    Document_Glom* document = get_document();
+    if(document)
+      document->set_table_title( m_table_name, m_entry_table_title->get_text() );
 
     //Get the data from the TreeView and store it in the document:
 
@@ -253,9 +254,9 @@ void Dialog_Layout_List::save_to_document()
 
     mapGroups[1] = others;
 
-    if(m_document)
+    if(document)
     {
-      m_document->set_data_layout_groups(m_layout_name, m_table_name, mapGroups);
+      document->set_data_layout_groups(m_layout_name, m_table_name, mapGroups);
       m_modified = false;
     }
   }
@@ -277,7 +278,7 @@ void Dialog_Layout_List::on_button_add_field()
 
     if(dialog)
     {
-      dialog->set_document(m_document, m_table_name);
+      dialog->set_document(get_document(), m_table_name);
       dialog->set_transient_for(*this);
       int response = dialog->run();
       if(response == Gtk::RESPONSE_OK)
@@ -379,8 +380,8 @@ void Dialog_Layout_List::on_button_edit_field()
         {
           Gtk::TreeModel::Row row = *iter;
           const LayoutItem_Field& field = row[m_ColumnsFields.m_col_layout_item];
-  
-          dialog->set_document(m_document, m_table_name, field);
+
+          dialog->set_document(get_document(), m_table_name, field);
           dialog->set_transient_for(*this);
           int response = dialog->run();
           if(response == Gtk::RESPONSE_OK)
@@ -428,7 +429,7 @@ void Dialog_Layout_List::on_button_field_formatting()
 
     if(dialog)
     {
-      //add_view(dialog); //Give it access to the document.
+      add_view(dialog); //Give it access to the document.
 
       Glib::RefPtr<Gtk::TreeView::Selection> refTreeSelection = m_treeview_fields->get_selection();
       if(refTreeSelection)
@@ -456,7 +457,7 @@ void Dialog_Layout_List::on_button_field_formatting()
       }
     }
 
-    //remove_view(dialog);
+    remove_view(dialog);
     delete dialog;
   }
   catch(const Gnome::Glade::XmlError& ex)

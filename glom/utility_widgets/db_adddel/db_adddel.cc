@@ -26,6 +26,7 @@
 #include "../../data_structure/glomconversions.h"
 #include "../../dialog_invalid_data.h"
 #include "../../application.h"
+#include "../adddel/cellrendererlist.h"
 #include <iostream> //For debug output.
 
 DbAddDelColumnInfo::DbAddDelColumnInfo()
@@ -702,7 +703,10 @@ void DbAddDel::construct_specified_columns()
         }
         default:
         {
-          pCellRenderer = Gtk::manage( new Gtk::CellRendererText() );
+          if(column_info.m_field.get_has_choices())
+            pCellRenderer = Gtk::manage( new CellRendererList() );
+          else
+            pCellRenderer = Gtk::manage( new Gtk::CellRendererText() );
 
           break;
         }
@@ -718,15 +722,60 @@ void DbAddDel::construct_specified_columns()
         Gtk::CellRendererText* pCellRenderer = dynamic_cast<Gtk::CellRendererText*>(m_TreeView.get_column_cell_renderer(view_column_index));
         if(pCellRenderer)
         {
-          //Connect a signal handler:
-          if(pCellRenderer)
-          {
-            //Make it editable:
-            pCellRenderer->property_editable() = true;
+          //Make it editable:
+          pCellRenderer->property_editable() = true;
 
-            //Connect to its signal:
-            pCellRenderer->signal_edited().connect(
-              sigc::bind( sigc::mem_fun(*this, &DbAddDel::on_treeview_cell_edited), model_column_index) );
+          //Connect to its signal:
+          pCellRenderer->signal_edited().connect(
+            sigc::bind( sigc::mem_fun(*this, &DbAddDel::on_treeview_cell_edited), model_column_index) );
+
+          CellRendererList* pCellRendererCombo = dynamic_cast<CellRendererList*>(pCellRenderer);
+          if(pCellRendererCombo)
+          {
+            pCellRendererCombo->remove_all_list_items();
+
+            if(column_info.m_field.get_has_custom_choices())
+            {
+              //set_choices() needs this, for the numeric layout:
+              //pCellRendererCombo->set_layout_item(get_layout_item()->clone(), table_name); //TODO_Performance: We only need this for the numerical format.
+              const LayoutItem_Field::type_list_values list_values = column_info.m_field.get_choices_custom();
+              for(LayoutItem_Field::type_list_values::const_iterator iter = list_values.begin(); iter != list_values.end(); ++iter)
+              {
+                pCellRendererCombo->append_list_item( GlomConversions::get_text_for_gda_value(column_info.m_field.m_field.get_glom_type(), *iter, column_info.m_field.m_numeric_format) );
+              }
+            }
+            else if(column_info.m_field.get_has_related_choices())
+            {
+              Glib::ustring choice_relationship_name, choice_field, choice_second;
+              column_info.m_field.get_choices(choice_relationship_name, choice_field, choice_second);
+              if(!choice_relationship_name.empty() && !choice_field.empty())
+              {
+                const Relationship relationship = column_info.m_field.m_choices_related_relationship;
+                const Glib::ustring to_table = relationship.get_to_table();
+
+                //const bool with_second = !choice_second.empty();
+
+/*
+                if(with_second); // && get_document())
+                {
+                  Field field_second; //TODO: Actually show this in the combo:
+                  //document->get_field(to_table, choice_second, field_second);
+
+                  LayoutItem_Field layout_field_second;
+                  layout_field_second.m_field = field_second;
+                  //We use the default formatting for this field.
+
+                  combo = Gtk::manage(new ComboEntryGlom(layout_field_second));
+                }
+*/
+
+                type_list_values_with_second list_values = get_choice_values(column_info.m_field);
+                for(type_list_values_with_second::const_iterator iter = list_values.begin(); iter != list_values.end(); ++iter)
+                {
+                  pCellRendererCombo->append_list_item( GlomConversions::get_text_for_gda_value(column_info.m_field.m_field.get_glom_type(), iter->first, column_info.m_field.m_numeric_format) );
+                }
+              }
+            }
           }
         }
         else

@@ -108,12 +108,13 @@ void Box_Tables::fill_from_database()
   //Get the list of hidden tables:
 
   Document_Glom::type_listTableInfo listTablesDocument;
-  if(m_pDocument)
+  Document_Glom* document = get_document();
+  if(document)
   {
-    listTablesDocument = m_pDocument->get_tables();
+    listTablesDocument = document->get_tables();
   }
   else
-    g_warning("Box_Tables::fill_from_database(): m_pDocument is null");
+    g_warning("Box_Tables::fill_from_database(): document is null");
 
   //Get the list of tables in the database, from the server:
   sharedptr<SharedConnection> sharedconnection = connect_to_server();
@@ -210,8 +211,9 @@ void Box_Tables::on_adddel_Add(const Gtk::TreeModel::iterator& row)
     type_vecFields fields;
     fields.push_back(field_primary_key);
 
-     if(m_pDocument)
-        m_pDocument->set_table_fields(table_name, fields);
+    Document_Glom* document = get_document();
+    if(document)
+        document->set_table_fields(table_name, fields);
 
     save_to_document();
     //fill_from_database(); //We should not modify the model structure in a cellrenderer signal handler.
@@ -230,10 +232,11 @@ void Box_Tables::on_adddel_Delete(const Gtk::TreeModel::iterator& rowStart, cons
 
     if(!table_name.empty())
     {
-      if(m_pDocument)
+      Document_Glom* document = get_document();
+      if(document)
       {
         //Don't open a table that the document does not know about, because we need information from the document:
-        if(!m_pDocument->get_table_is_known(table_name))
+        if(!document->get_table_is_known(table_name))
         {
            //TODO: Do not show tables that are not in the document.
            Gtk::MessageDialog dialog(_("You can not delete this table, because there is no information about this table in the document."));
@@ -253,7 +256,7 @@ void Box_Tables::on_adddel_Delete(const Gtk::TreeModel::iterator& rowStart, cons
           if(iButtonClicked == Gtk::RESPONSE_OK)
           {
             Query_execute( "DROP TABLE " + table_name);
-            m_pDocument->remove_table(table_name); //Forget about it in the document too.
+            get_document()->remove_table(table_name); //Forget about it in the document too.
             something_changed = true;
           }
         }
@@ -272,11 +275,12 @@ void Box_Tables::on_adddel_Delete(const Gtk::TreeModel::iterator& rowStart, cons
 void Box_Tables::on_adddel_Edit(const Gtk::TreeModel::iterator& row)
 {
   Glib::ustring table_name = m_AddDel.get_value_key(row);
-  
-  if(m_pDocument)
+
+  Document_Glom* document = get_document();
+  if(document)
   {
     //Don't open a table that the document does not know about, because we need information from the document:
-    if(!m_pDocument->get_table_is_known(table_name))
+    if(!document->get_table_is_known(table_name))
     {
        //TODO: Do not show tables that are not in the document.
        Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Unknown Table")), true);
@@ -318,8 +322,9 @@ void Box_Tables::save_to_document()
       }
     }
 
-    if(m_pDocument)
-      m_pDocument->set_tables( listTables); //TODO: Don't save all new tables - just the ones already in the document.
+    Document_Glom* document = get_document();
+    if(document)
+      document->set_tables( listTables); //TODO: Don't save all new tables - just the ones already in the document.
   }
 }
 

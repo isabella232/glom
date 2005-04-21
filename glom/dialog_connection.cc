@@ -51,25 +51,30 @@ sharedptr<SharedConnection> Dialog_Connection::connect_to_server_with_connection
   {
     //Set the connection details in the ConnectionPool singleton.
     //The ConnectionPool will now use these every time it tries to connect.
-    connection_pool->set_database(m_pDocument->get_connection_database());
-    
-    connection_pool->set_host(m_entry_host->get_text());
-    connection_pool->set_user(m_entry_user->get_text());
-    connection_pool->set_password(m_entry_password->get_text());
-    if(m_pDocument)
+
+    const Document_Glom* document = get_document();
+    if(document)
     {
-      connection_pool->set_database(m_pDocument->get_connection_database());
+      connection_pool->set_database(get_document()->get_connection_database());
+
+      connection_pool->set_host(m_entry_host->get_text());
+      connection_pool->set_user(m_entry_user->get_text());
+      connection_pool->set_password(m_entry_password->get_text());
+      if(document)
+      {
+        connection_pool->set_database(document->get_connection_database());
+      }
     }
-    
+
     connection_pool->set_ready_to_connect(); //Box_DB::connect_to_server() will now attempt the connection-> Shared instances of m_Connection will also be usable.
 
     result = Box_DB::connect_to_server();
 
     /*
-    if(m_pDocument)
+    if(document)
     {
-      m_pDocument->set_connection_server(m_entry_host->get_text());
-      m_pDocument->set_connection_user(m_entry_user->get_text());
+      document->set_connection_server(m_entry_host->get_text());
+      document->set_connection_user(m_entry_user->get_text());
     }
     */
   }
@@ -79,12 +84,13 @@ sharedptr<SharedConnection> Dialog_Connection::connect_to_server_with_connection
 
 void Dialog_Connection::load_from_document()
 {
-  if(m_pDocument)
+  Document_Glom* document = get_document();
+  if(document)
   {
     //Load server and user:
-    m_entry_host->set_text(m_pDocument->get_connection_server());
+    m_entry_host->set_text(document->get_connection_server());
 
-    Glib::ustring user = m_pDocument->get_connection_user(); //TODO: Offer a drop-down list of users.
+    Glib::ustring user = document->get_connection_user(); //TODO: Offer a drop-down list of users.
 
     if(user.empty())
     {
@@ -98,7 +104,7 @@ void Dialog_Connection::load_from_document()
 
     //Show the database to be opened, or created.
     //TODO: In future, we can hide this completely.
-    Glib::ustring database = m_pDocument->get_connection_database();
+    Glib::ustring database = document->get_connection_database();
     if(database.empty())
       database = _("Not yet created.");
 

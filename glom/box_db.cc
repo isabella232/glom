@@ -29,7 +29,7 @@ Box_DB::Box_DB()
 : m_Box_Buttons(false, 6),
   m_Button_Cancel(Gtk::Stock::CANCEL)
 {
-  m_pDocument = 0;
+  //m_pDocument = 0;
 
   set_border_width(6);
   set_spacing(6);
@@ -43,7 +43,7 @@ Box_DB::Box_DB(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& /
   m_Box_Buttons(false, 6),
   m_Button_Cancel(Gtk::Stock::CANCEL)
 {
-  m_pDocument = 0;
+  //m_pDocument = 0;
 
   set_border_width(6);
   set_spacing(6);

@@ -88,7 +88,7 @@ main(int argc, char* argv[])
     //Initialize gnome_program, so that we can use gnome_help_display().    
     gnome_program_init (PACKAGE, VERSION, LIBGNOME_MODULE, argc, argv,
                             GNOME_PROGRAM_STANDARD_PROPERTIES, 0);
- 
+
     Gtk::Main mainInstance(argc, argv, context);
     Bakery::init();
 
@@ -96,7 +96,7 @@ main(int argc, char* argv[])
     Glib::ustring input_uri = group.m_arg_filename;
 
     //debugging:
-    //input_uri = "file:///home/murrayc/cvs/gnome212/glom/examples/example_smallbusiness.glom";
+    input_uri = "file:///home/murrayc/cvs/gnome212/glom/examples/example_smallbusiness.glom";
 
 
     // Main app

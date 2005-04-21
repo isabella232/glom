@@ -28,7 +28,7 @@
 
 Base_DB::Base_DB()
 {
-  m_pDocument = 0;
+  //m_pDocument = 0;
 }
 
 Base_DB::~Base_DB()
@@ -139,7 +139,7 @@ Glib::RefPtr<Gnome::Gda::DataModel> Base_DB::Query_execute(const Glib::ustring& 
 
 void Base_DB::load_from_document()
 {
-  if(m_pDocument)
+  if(get_document())
   {
     fill_from_database(); //virtual.
 
@@ -242,12 +242,13 @@ void Base_DB::set_document(Document_Glom* pDocument)
   View_Composite_Glom::set_document(pDocument);
 
   //Connect to a signal that is only on the derived document class:
-  if(m_pDocument)
+  Document_Glom* document = get_document();
+  if(document)
   {
-    m_pDocument->signal_userlevel_changed().connect( sigc::mem_fun(*this, &Base_DB::on_userlevel_changed) );
+    document->signal_userlevel_changed().connect( sigc::mem_fun(*this, &Base_DB::on_userlevel_changed) );
 
     //Show the appropriate UI for the user level that is specified by this new document:
-    on_userlevel_changed(m_pDocument->get_userlevel());
+    on_userlevel_changed(document->get_userlevel());
   }
 
 

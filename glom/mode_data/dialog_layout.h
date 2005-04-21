@@ -65,7 +65,7 @@ protected:
   Glib::ustring m_layout_name;
 
 
-  Document_Glom* m_document;  
+  //Document_Glom* m_document;  
   bool m_modified;
 };
 

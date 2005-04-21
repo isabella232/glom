@@ -1,3 +1,38 @@
+2005-04-21  Murray Cumming <murrayc@murrayc.com>
+
+	* glom/data_structure/glomconversions.cc:
+	* glom/data_structure/glomconversions.h:
+	Add get_choice_values(), with code moved 
+	from DataWidget.
+	* glom/utility_widgets/datawidget.cc:
+	* glom/utility_widgets/db_adddel/db_adddel.cc:
+	Use a CellRendererCombo on the List view, 
+	if the field layout has choices. However, it 
+	only shows the first column so far.
+	* glom/base_db.cc:
+	* glom/box_db.cc:
+	* glom/dialog_connection.cc:
+	* glom/dialog_connection.h:
+	* glom/document/document_glom.cc:
+	* glom/document/document_glom.h:
+	* glom/frame_glom.cc:
+	* glom/main.cc:
+	* glom/mode_data/box_data_details.cc:
+	* glom/mode_data/box_data_list.cc:
+	* glom/mode_data/box_data_list_related.cc:
+	* glom/mode_data/dialog_field_layout.cc:
+	* glom/mode_data/dialog_layout.cc:
+	* glom/mode_data/dialog_layout.h:
+	* glom/mode_data/dialog_layout_details.cc:
+	* glom/mode_data/dialog_layout_list.cc:
+	* glom/mode_data/dialog_layout_list_related.cc:
+	* glom/mode_design/box_db_table_relationships.cc:
+	* glom/mode_find/box_data_details_find.cc:
+	* glom/navigation/box_tables.cc:
+	Use get_document() from the View base class 
+	instead of another member variable. Use add_view()
+	and remove_view() in some more places.
+
 2005-04-21  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/document/document_glom.cc:

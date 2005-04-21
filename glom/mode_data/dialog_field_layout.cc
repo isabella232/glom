@@ -105,19 +105,24 @@ void Dialog_FieldLayout::set_field(const LayoutItem_Field& field, const Glib::us
 
   //Fill the list of relationships:
   m_combo_choices_relationship->clear_text();
-  Document_Glom::type_vecRelationships vecRelationships = get_document()->get_relationships(m_table_name);
-  for(Document_Glom::type_vecRelationships::iterator iter = vecRelationships.begin(); iter != vecRelationships.end(); ++iter)
+
+  Document_Glom* document = get_document();
+  if(document)
   {
-    m_combo_choices_relationship->append_text(iter->get_name());
+    Document_Glom::type_vecRelationships vecRelationships = document->get_relationships(m_table_name);
+    for(Document_Glom::type_vecRelationships::iterator iter = vecRelationships.begin(); iter != vecRelationships.end(); ++iter)
+    {
+      m_combo_choices_relationship->append_text(iter->get_name());
+    }
+
+    Glib::ustring choices_relationship, choices_field, choices_field_second;
+    field.get_choices(choices_relationship, choices_field, choices_field_second);
+
+    m_combo_choices_relationship->set_active_text(choices_relationship);
+    on_combo_choices_relationship_changed(); //Fill the combos so we can set their active items.
+    m_combo_choices_field->set_active_text(choices_field);
+    m_combo_choices_field_second->set_active_text(choices_field_second);
   }
-
-  Glib::ustring choices_relationship, choices_field, choices_field_second;
-  field.get_choices(choices_relationship, choices_field, choices_field_second);
-
-  m_combo_choices_relationship->set_active_text(choices_relationship);
-  on_combo_choices_relationship_changed(); //Fill the combos so we can set their active items.
-  m_combo_choices_field->set_active_text(choices_field);
-  m_combo_choices_field_second->set_active_text(choices_field_second);
 
   //Custom choices:
   m_adddel_choices_custom->remove_all();

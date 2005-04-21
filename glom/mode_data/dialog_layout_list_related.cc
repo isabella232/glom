@@ -112,7 +112,7 @@ void Dialog_Layout_List_Related::update_ui(bool including_relationship_list)
   m_modified = false;
 
   //Update the tree models from the document
-  Document_Glom* document = m_document;
+  Document_Glom* document = get_document();
   if(document)
   {
     //Fill the relationships combo:
@@ -280,18 +280,19 @@ void Dialog_Layout_List_Related::save_to_document()
 
     mapGroups[1] = others;
 
-    if(m_document)
+    Document_Glom* document = get_document();
+    if(document)
     {
       Glib::ustring relationship_name = m_combo_relationship_name->get_active_text();
       if(!relationship_name.empty())
       {
-        m_document->set_relationship_data_layout_groups(m_layout_name, m_relationship, mapGroups);
+        document->set_relationship_data_layout_groups(m_layout_name, m_relationship, mapGroups);
         m_modified = false;
       }
 
       //Save the relationship title, which will be used elsewhere too:
       m_relationship.set_title(m_entry_table_title->get_text());
-      m_document->set_relationship(m_table_name, m_relationship);
+      document->set_relationship(m_table_name, m_relationship);
     }
   }
 }
@@ -302,7 +303,7 @@ void Dialog_Layout_List_Related::on_combo_relationship_changed()
 
   if(!relationship_name.empty())
   {
-    Document_Glom* pDocument = m_document;
+    Document_Glom* pDocument = get_document();
     if(pDocument)
       pDocument->get_relationship(m_relationship.get_from_table(), relationship_name, m_relationship);
 
@@ -329,7 +330,7 @@ void Dialog_Layout_List_Related::on_button_add_field()
 
     if(dialog)
     {
-      dialog->set_document(m_document, m_relationship.get_to_table());
+      dialog->set_document(get_document(), m_relationship.get_to_table());
       dialog->set_transient_for(*this);
       int response = dialog->run();
       if(response == Gtk::RESPONSE_OK)
@@ -436,7 +437,7 @@ void Dialog_Layout_List_Related::on_button_edit_field()
           Gtk::TreeModel::Row row = *iter;
           const LayoutItem_Field& field = row[m_ColumnsFields.m_col_layout_item];
 
-          dialog->set_document(m_document, m_relationship.get_to_table(), field);
+          dialog->set_document(get_document(), m_relationship.get_to_table(), field);
           dialog->set_transient_for(*this);
           int response = dialog->run();
           if(response == Gtk::RESPONSE_OK)
@@ -484,7 +485,7 @@ void Dialog_Layout_List_Related::on_button_field_formatting()
 
     if(dialog)
     {
-      //add_view(dialog); //Give it access to the document.
+      add_view(dialog); //Give it access to the document.
       Glib::RefPtr<Gtk::TreeView::Selection> refTreeSelection = m_treeview_fields->get_selection();
       if(refTreeSelection)
       {
@@ -494,7 +495,6 @@ void Dialog_Layout_List_Related::on_button_field_formatting()
         {
           Gtk::TreeModel::Row row = *iter;
           LayoutItem_Field field = row[m_ColumnsFields.m_col_layout_item];
-          g_warning("field_name = %s, %s", field.m_field.get_name().c_str(), field.get_name().c_str());
 
           dialog->set_field(field, m_table_name);
           dialog->set_transient_for(*this);
@@ -511,7 +511,7 @@ void Dialog_Layout_List_Related::on_button_field_formatting()
       }
     }
 
-    //remove_view(dialog);
+    remove_view(dialog);
     delete dialog;
   }
   catch(const Gnome::Glade::XmlError& ex)

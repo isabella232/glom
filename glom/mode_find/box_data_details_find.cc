@@ -57,7 +57,7 @@ void Box_Data_Details_Find::fill_related()
   //m_Notebook_Related.pages().clear();
 
   //Get relationships from the document:
-  Document_Glom::type_vecRelationships vecRelationships = m_pDocument->get_relationships(m_strTableName);
+  Document_Glom::type_vecRelationships vecRelationships = get_document()->get_relationships(m_strTableName);
 
   //Add the relationships:
   for(Document_Glom::type_vecRelationships::iterator iter = vecRelationships.begin(); iter != vecRelationships.end(); iter++)

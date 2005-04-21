@@ -63,7 +63,7 @@ void Box_DB_Table_Relationships::fill_from_database()
   Box_DB_Table::fill_from_database();
 
   //Get relationships from the document:
-  Document_Glom::type_vecRelationships vecRelationships = m_pDocument->get_relationships(m_strTableName);
+  Document_Glom::type_vecRelationships vecRelationships = get_document()->get_relationships(m_strTableName);
 
   m_AddDel.remove_all();
 
@@ -134,7 +134,7 @@ void Box_DB_Table_Relationships::save_to_document()
   }
 
   //Update the Document with these relationships.
-  m_pDocument->set_relationships(m_strTableName, vecRelationships);
+  get_document()->set_relationships(m_strTableName, vecRelationships);
 
   //Call base:
   Box_DB_Table::save_to_document();

@@ -64,8 +64,8 @@ Box_Data_List_Related::Box_Data_List_Related()
     if(dialog)
     {
       //Use the new dialog:
-      add_view(m_pDialogLayout); //Give it access to the document.
       m_pDialogLayoutRelated = dialog;
+      add_view(m_pDialogLayoutRelated); //Give it access to the document.
       m_pDialogLayoutRelated->signal_hide().connect( sigc::mem_fun(*this, &Box_Data::on_dialog_layout_hide) );
     }
   }
@@ -113,7 +113,6 @@ void Box_Data_List_Related::refresh_db_details(const Gnome::Gda::Value& foreign_
   }
   //TODO: Clear the list if there is no key value?
 }
- 
 
 void Box_Data_List_Related::fill_from_database()
 {

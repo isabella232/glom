@@ -19,6 +19,7 @@
  */
 
 #include "glomconversions.h"
+#include "../connectionpool.h"
 #include <sstream> //For stringstream
 
 #include <locale>     // for locale, time_put
@@ -703,3 +704,49 @@ Glib::ustring util_build_sql_select_with_where_clause(const Glib::ustring& table
 
   return result;
 }
+
+
+type_list_values_with_second get_choice_values(const LayoutItem_Field& field)
+{
+  Glib::ustring choice_relationship_name, choice_field, choice_second;
+  field.get_choices(choice_relationship_name, choice_field, choice_second);
+
+  const Relationship relationship = field.m_choices_related_relationship;
+  const Glib::ustring to_table = relationship.get_to_table();
+
+  const bool with_second = !choice_second.empty();
+  const Glib::ustring sql_second = to_table + "." + choice_second;
+
+  //Get possible values from database, sorted by the first column.
+  Glib::ustring sql_query = "SELECT " + to_table + "." + choice_field;
+  if(with_second)
+    sql_query += ", " + sql_second;
+
+  sql_query += " FROM " + relationship.get_to_table() + " ORDER BY " + to_table + "." + choice_field;
+
+  //Connect to database:
+  sharedptr<SharedConnection> connection = ConnectionPool::get_instance()->connect();
+
+
+  std::cout << "get_choice_values: Executing SQL: " << sql_query << std::endl;
+  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = connection->get_gda_connection()->execute_single_command(sql_query);
+
+  type_list_values_with_second list_values;
+  if(datamodel)
+  {
+    guint count = datamodel->get_n_rows();
+    for(guint row = 0; row < count; ++row)
+    {
+      std::pair<Gnome::Gda::Value, Gnome::Gda::Value> itempair;
+      itempair.first = datamodel->get_value_at(0, row);
+
+      if(with_second)
+        itempair.second = datamodel->get_value_at(1, row);
+
+      list_values.push_back(itempair);
+    }
+  }
+
+  return list_values;
+}
+

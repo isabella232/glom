@@ -37,8 +37,8 @@ Box_Data_List::Box_Data_List()
     refXml->get_widget_derived("window_data_layout_list", dialog);
     if(dialog)
     {
-      add_view(m_pDialogLayout); //Give it access to the document.
       m_pDialogLayout = dialog;
+      add_view(m_pDialogLayout); //Give it access to the document.
       m_pDialogLayout->signal_hide().connect( sigc::mem_fun(*this, &Box_Data::on_dialog_layout_hide) );
     }
   }

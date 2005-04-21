@@ -39,9 +39,9 @@ public:
   sharedptr<SharedConnection> connect_to_server_with_connection_settings() const;
 
   virtual void load_from_document(); //override
-  
+
 protected:
-  Gtk::Entry* m_entry_host;             
+  Gtk::Entry* m_entry_host;
   Gtk::Entry* m_entry_user;
   Gtk::Entry* m_entry_password;
   Gtk::Label* m_label_database;

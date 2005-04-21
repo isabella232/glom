@@ -45,9 +45,9 @@ public:
   virtual void set_connection_user(const Glib::ustring& strVal);
   virtual void set_connection_database(const Glib::ustring& strVal);
 
-  virtual Glib::ustring get_connection_server();
-  virtual Glib::ustring get_connection_user();
-  virtual Glib::ustring get_connection_database();
+  virtual Glib::ustring get_connection_server() const;
+  virtual Glib::ustring get_connection_user() const;
+  virtual Glib::ustring get_connection_database() const;
 
   typedef std::vector<Relationship> type_vecRelationships;
   virtual type_vecRelationships get_relationships(const Glib::ustring& table_name) const;

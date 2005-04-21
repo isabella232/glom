@@ -98,42 +98,10 @@ DataWidget::DataWidget(const LayoutItem_Field& field, const Glib::ustring& table
           else
             combo = Gtk::manage(new ComboEntryGlom());
 
-
-          const Glib::ustring sql_second = to_table + "." + choice_second;
-
-          //Get possible values from database, sorted by the first column.
-          Glib::ustring sql_query = "SELECT " + to_table + "." + choice_field;
-          if(with_second)
-            sql_query += ", " + sql_second;
-
-          sql_query += " FROM " + relationship.get_to_table() + " ORDER BY " + to_table + "." + choice_field;
-
-          //Connect to database:
-          sharedptr<SharedConnection> connection = ConnectionPool::get_instance()->connect();
-
-          std::cout << "DataWidget: Executing SQL for choice list: " << sql_query << std::endl;
-          Glib::RefPtr<Gnome::Gda::DataModel> datamodel = connection->get_gda_connection()->execute_single_command(sql_query);
-
-          ComboEntryGlom::type_list_values_with_second list_values;
-          if(datamodel)
-          {
-            guint count = datamodel->get_n_rows();
-            for(guint row = 0; row < count; ++row)
-            {
-              std::pair<Gnome::Gda::Value, Gnome::Gda::Value> itempair;
-              itempair.first = datamodel->get_value_at(0, row);
-
-              if(with_second)
-                itempair.second = datamodel->get_value_at(1, row);
-
-              list_values.push_back(itempair);
-            }
-          }
-
           //set_choices() needs this, for the numeric layout:
-          combo->set_layout_item(get_layout_item()->clone(), table_name); //TODO_Performance: We only need this for the numerical format.
+          combo->set_layout_item(get_layout_item()->clone(), table_name);
 
-          combo->set_choices_with_second(list_values);
+          combo->set_choices_with_second( get_choice_values(field) );
         }
       }
       else
