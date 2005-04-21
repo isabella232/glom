@@ -1,3 +1,11 @@
+* Details and List:
+  - Allow a drop-down list of choices for a field.
+    Either a custom list, such as Mr, Ms, Mrs, Miss, 
+    or a list of related records, such as a list of 
+    product codes.
+* Fixed various leaks and crashes, and improved 
+  performance.
+
 0.8.22:
 
 * Field Definitions:
