@@ -624,7 +624,7 @@ Glib::ustring GlomConversions::util_trim_whitespace(const Glib::ustring& text)
  //Find non-whitespace from back:
   Glib::ustring::size_type posBack = Glib::ustring::npos;
   pos = 0;
-  for(Glib::ustring::reverse_iterator iter = result.rend(); iter != result.rbegin(); ++iter)
+  for(Glib::ustring::reverse_iterator iter = result.rbegin(); iter != result.rend(); ++iter)
   {
     if(!Glib::Unicode::isspace(*iter))
     {

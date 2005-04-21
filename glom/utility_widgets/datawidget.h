@@ -62,7 +62,7 @@ public:
   type_signal_edited signal_edited();
 
 protected:
-  virtual void setup_menu();
+  //virtual void setup_menu();
 
   //Overrides of default signal handlers:
   virtual void on_widget_edited(); //From Gtk::Entry, or Gtk::CheckButton.
@@ -71,9 +71,9 @@ protected:
   virtual void on_child_user_requested_layout_properties();
   virtual void on_child_layout_item_added(TreeStore_Layout::enumType item_type);
 
-  virtual void on_menupopup_activate_layout();
-  virtual void on_menupopup_activate_layout_properties();
-  virtual void on_menupopup_add_item(TreeStore_Layout::enumType item);
+  virtual void on_menupopup_activate_layout(); //override
+  virtual void on_menupopup_activate_layout_properties(); //override
+  //virtual void on_menupopup_add_item(TreeStore_Layout::enumType item);
 
   App_Glom* get_application();
 

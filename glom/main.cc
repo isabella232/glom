@@ -33,7 +33,6 @@
 #include "application.h"
 
 
-
 class ExampleOptionGroup : public Glib::OptionGroup
 { 
 public:
@@ -80,7 +79,6 @@ main(int argc, char* argv[])
     std::cout << "Exception: " << ex.what() << std::endl;
   }
 */
-
 
   //We use python for calculated-fields:
   Py_Initialize();

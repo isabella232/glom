@@ -145,82 +145,6 @@ Gnome::Gda::Value EntryGlom::get_value() const
   return GlomConversions::parse_value(m_glom_type, get_text(), layout_item->m_numeric_format, success);
 }
 
-EntryGlom::type_signal_user_requested_layout EntryGlom::signal_user_requested_layout()
-{
-  return m_signal_user_requested_layout;
-}
-
-EntryGlom::type_signal_user_requested_layout_properties EntryGlom::signal_user_requested_layout_properties()
-{
-  return m_signal_user_requested_layout_properties;
-}
-
-void EntryGlom::setup_menu()
-{
-  m_refActionGroup->add(m_refContextLayout,
-    sigc::mem_fun(*this, &EntryGlom::on_menupopup_activate_layout) );
-
-  m_refActionGroup->add(m_refContextLayoutProperties,
-    sigc::mem_fun(*this, &EntryGlom::on_menupopup_activate_layout_properties) );
-
-  m_refActionGroup->add(m_refContextAddField,
-    sigc::bind( sigc::mem_fun(*this, &EntryGlom::on_menupopup_add_item), TreeStore_Layout::TYPE_FIELD ) );
-
-  m_refActionGroup->add(m_refContextAddRelatedRecords,
-    sigc::bind( sigc::mem_fun(*this, &EntryGlom::on_menupopup_add_item), TreeStore_Layout::TYPE_PORTAL ) );
-
-  m_refActionGroup->add(m_refContextAddGroup,
-    sigc::bind( sigc::mem_fun(*this, &EntryGlom::on_menupopup_add_item), TreeStore_Layout::TYPE_GROUP ) );
-
-  //TODO: This does not work until this widget is in a container in the window:s
-  App_Glom* pApp = get_application();
-  if(pApp)
-  {
-    pApp->add_developer_action(m_refContextLayout); //So that it can be disabled when not in developer mode.
-    pApp->add_developer_action(m_refContextLayoutProperties); //So that it can be disabled when not in developer mode.
-    pApp->add_developer_action(m_refContextAddField);
-    pApp->add_developer_action(m_refContextAddRelatedRecords);
-    pApp->add_developer_action(m_refContextAddGroup);
-
-    pApp->update_userlevel_ui(); //Update our action's sensitivity. 
-  }
-
-  m_refUIManager = Gtk::UIManager::create();
-
-  m_refUIManager->insert_action_group(m_refActionGroup);
-
-  //TODO: add_accel_group(m_refUIManager->get_accel_group());
-
-  try
-  {
-    Glib::ustring ui_info = 
-        "<ui>"
-        "  <popup name='ContextMenu'>"
-        "    <menuitem action='ContextLayout'/>"
-        "    <menuitem action='ContextLayoutProperties'/>"
-        "    <menuitem action='ContextAddField'/>"
-        "    <menuitem action='ContextAddRelatedRecords'/>"
-        "    <menuitem action='ContextAddGroup'/>"
-        "  </popup>"
-        "</ui>";
-
-    m_refUIManager->add_ui_from_string(ui_info);
-  }
-  catch(const Glib::Error& ex)
-  {
-    std::cerr << "building menus failed: " <<  ex.what();
-  }
-
-  //Get the menu:
-  m_pMenuPopup = dynamic_cast<Gtk::Menu*>( m_refUIManager->get_widget("/ContextMenu") ); 
-  if(!m_pMenuPopup)
-    g_warning("menu not found");
-
-
-  if(pApp)
-    m_refContextLayout->set_sensitive(pApp->get_userlevel() == AppState::USERLEVEL_DEVELOPER);
-}
-
 bool EntryGlom::on_button_press_event(GdkEventButton *event)
 {
   //Enable/Disable items.
@@ -252,27 +176,6 @@ bool EntryGlom::on_button_press_event(GdkEventButton *event)
   }
 
   return Gtk::Entry::on_button_press_event(event);
-}
-
-void EntryGlom::on_menupopup_add_item(TreeStore_Layout::enumType item)
-{
-  signal_layout_item_added().emit(item);
-}
-
-void EntryGlom::on_menupopup_activate_layout()
-{
-  //finish_editing();
-
-  //Ask the parent widget to show the layout dialog:
-  signal_user_requested_layout().emit();
-}
-
-void EntryGlom::on_menupopup_activate_layout_properties()
-{
-  //finish_editing();
-
-  //Ask the parent widget to show the layout dialog:
-  signal_user_requested_layout_properties().emit();
 }
 
 App_Glom* EntryGlom::get_application()

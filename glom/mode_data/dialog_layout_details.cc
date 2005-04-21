@@ -548,7 +548,8 @@ bool Dialog_Layout_Details::offer_field_layout(LayoutItem_Field& field)
 
     if(dialog)
     {
-      dialog->set_field(field);
+      //add_view(dialog); //Give it access to the document.
+      dialog->set_field(field, m_table_name);
       dialog->set_transient_for(*this);
       int response = dialog->run();
       if(response == Gtk::RESPONSE_OK)
@@ -557,6 +558,7 @@ bool Dialog_Layout_Details::offer_field_layout(LayoutItem_Field& field)
         result = dialog->get_field_chosen(field);
       }
 
+      //remove_view(dialog);
       delete dialog;
     }
   }

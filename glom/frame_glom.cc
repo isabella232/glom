@@ -662,6 +662,7 @@ void Frame_Glom::on_menu_developer_users()
   dialog->load_from_document(); //Update the UI now that it has the document.
 
   dialog->run();
+  remove_view(dialog);
   delete dialog;
 
   //Update the Details and List layouts, in case the permissions have changed:

@@ -26,14 +26,16 @@
 #include "../document/document_glom.h"
 #include "../box_db.h"
 
-class Dialog_Layout : public Gtk::Dialog
+class Dialog_Layout :
+  public Gtk::Dialog,
+  public View_Composite_Glom //Give it access to the document.
 {
 public:
   Dialog_Layout(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
   virtual ~Dialog_Layout();
 
   typedef std::vector< LayoutItem_Field > type_vecLayoutFields;
-  
+
   /**
    * @param layout "list" or "details"
    * @param document The document, so that the dialog can load the previous layout, and save changes.

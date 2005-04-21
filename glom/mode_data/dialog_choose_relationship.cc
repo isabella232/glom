@@ -22,6 +22,14 @@
 //#include <libgnome/gnome-i18n.h>
 #include <glibmm/i18n.h>
 
+Dialog_ChooseRelationship::Dialog_ChooseRelationship()
+: m_label_table_name(0),
+  m_button_select(0),
+  m_treeview(0),
+  m_document(0)
+{
+}
+
 Dialog_ChooseRelationship::Dialog_ChooseRelationship(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
 : Gtk::Dialog(cobject),
   m_label_table_name(0),

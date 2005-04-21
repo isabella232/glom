@@ -20,6 +20,7 @@
 
 #include "layoutwidgetbase.h"
 #include <glibmm/i18n.h>
+#include "../application.h"
 
 LayoutWidgetBase::LayoutWidgetBase()
 : m_pLayoutItem(0),
@@ -64,6 +65,98 @@ LayoutItem* LayoutWidgetBase::get_layout_item()
   return m_pLayoutItem;
 }
 
+void LayoutWidgetBase::setup_menu()
+{
+  m_refActionGroup->add(m_refContextLayout,
+    sigc::mem_fun(*this, &LayoutWidgetBase::on_menupopup_activate_layout) );
+
+  m_refActionGroup->add(m_refContextLayoutProperties,
+    sigc::mem_fun(*this, &LayoutWidgetBase::on_menupopup_activate_layout_properties) );
+
+  m_refActionGroup->add(m_refContextAddField,
+    sigc::bind( sigc::mem_fun(*this, &LayoutWidgetBase::on_menupopup_add_item), TreeStore_Layout::TYPE_FIELD ) );
+
+  m_refActionGroup->add(m_refContextAddRelatedRecords,
+    sigc::bind( sigc::mem_fun(*this, &LayoutWidgetBase::on_menupopup_add_item), TreeStore_Layout::TYPE_PORTAL ) );
+
+  m_refActionGroup->add(m_refContextAddGroup,
+    sigc::bind( sigc::mem_fun(*this, &LayoutWidgetBase::on_menupopup_add_item), TreeStore_Layout::TYPE_GROUP ) );
+
+  //TODO: This does not work until this widget is in a container in the window:s
+  App_Glom* pApp = get_application();
+  if(pApp)
+  {
+    pApp->add_developer_action(m_refContextLayout); //So that it can be disabled when not in developer mode.
+    pApp->add_developer_action(m_refContextLayoutProperties); //So that it can be disabled when not in developer mode.
+    pApp->add_developer_action(m_refContextAddField);
+    pApp->add_developer_action(m_refContextAddRelatedRecords);
+    pApp->add_developer_action(m_refContextAddGroup);
+
+    pApp->update_userlevel_ui(); //Update our action's sensitivity. 
+  }
+
+  m_refUIManager = Gtk::UIManager::create();
+
+  m_refUIManager->insert_action_group(m_refActionGroup);
+
+  //TODO: add_accel_group(m_refUIManager->get_accel_group());
+
+  try
+  {
+    Glib::ustring ui_info = 
+        "<ui>"
+        "  <popup name='ContextMenu'>"
+        "    <menuitem action='ContextLayout'/>"
+        "    <menuitem action='ContextLayoutProperties'/>"
+        "    <menuitem action='ContextAddField'/>"
+        "    <menuitem action='ContextAddRelatedRecords'/>"
+        "    <menuitem action='ContextAddGroup'/>"
+        "  </popup>"
+        "</ui>";
+
+    m_refUIManager->add_ui_from_string(ui_info);
+  }
+  catch(const Glib::Error& ex)
+  {
+    std::cerr << "building menus failed: " <<  ex.what();
+  }
+
+  //Get the menu:
+  m_pMenuPopup = dynamic_cast<Gtk::Menu*>( m_refUIManager->get_widget("/ContextMenu") ); 
+  if(!m_pMenuPopup)
+    g_warning("menu not found");
+
+
+  if(pApp)
+    m_refContextLayout->set_sensitive(pApp->get_userlevel() == AppState::USERLEVEL_DEVELOPER);
+}
+
+void LayoutWidgetBase::on_menupopup_add_item(TreeStore_Layout::enumType item)
+{
+  signal_layout_item_added().emit(item);
+}
+
+void LayoutWidgetBase::on_menupopup_activate_layout()
+{
+  //finish_editing();
+
+  //Ask the parent widget to show the layout dialog:
+  signal_user_requested_layout().emit();
+}
+
+void LayoutWidgetBase::on_menupopup_activate_layout_properties()
+{
+  //finish_editing();
+
+  //Ask the parent widget to show the layout dialog:
+  signal_user_requested_layout_properties().emit();
+}
+
+App_Glom* LayoutWidgetBase::get_application() const
+{
+  return 0; //override to implement.
+}
+
 LayoutWidgetBase::type_signal_layout_changed LayoutWidgetBase::signal_layout_changed()
 {
   return m_signal_layout_changed;
@@ -72,4 +165,14 @@ LayoutWidgetBase::type_signal_layout_changed LayoutWidgetBase::signal_layout_cha
 LayoutWidgetBase::type_signal_layout_item_added LayoutWidgetBase::signal_layout_item_added()
 {
   return m_signal_layout_item_added;
+}
+
+LayoutWidgetBase::type_signal_user_requested_layout LayoutWidgetBase::signal_user_requested_layout()
+{
+  return m_signal_user_requested_layout;
+}
+
+LayoutWidgetBase::type_signal_user_requested_layout_properties LayoutWidgetBase::signal_user_requested_layout_properties()
+{
+  return m_signal_user_requested_layout_properties;
 }

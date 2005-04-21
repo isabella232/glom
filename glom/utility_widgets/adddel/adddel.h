@@ -24,6 +24,7 @@
 #include "gtkmm.h"
 #include "../../data_structure/field.h"
 #include <libgdamm.h>
+#include <libglademm.h>
 
 #include <vector>
 #include <map>
@@ -65,6 +66,7 @@ public:
   friend class InnerIgnore; //declared below.
 
   AddDel();
+  AddDel(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
   virtual ~AddDel();
 
   virtual void set_allow_user_actions(bool bVal = true);
@@ -72,16 +74,16 @@ public:
 
   virtual void set_allow_add(bool val = true);
   virtual void set_allow_delete(bool val = true);
-    
+
   virtual void set_allow_column_chooser(bool value = true);
-  
+
   virtual Gtk::TreeModel::iterator add_item(const Glib::ustring& strKey); //Return index of new row.
 
   /** Get an iterator to the blank row in which the user should add data for the new row.
    * You can then add the row to your underlying data store when some data has been filled, by handling signal_user_changed.
    */
   virtual Gtk::TreeModel::iterator get_item_placeholder(); //Return index of the placeholder row.
-  
+
   virtual void remove_item(const Gtk::TreeModel::iterator& iter);
 
   virtual void remove_all();
@@ -123,8 +125,8 @@ public:
   /** @result Whether this is a blank row where date for a new row should be entered
    */
   virtual bool get_is_placeholder_row(const Gtk::TreeModel::iterator& iter) const;
-  
- 
+
+
   virtual guint add_column(const AddDelColumnInfo& column_info);
   virtual guint add_column(const Glib::ustring& strTitle, AddDelColumnInfo::enumStyles style = AddDelColumnInfo::STYLE_Text, bool editable = true, bool visible = true);
   virtual guint add_column(const Glib::ustring& strTitle, const Glib::ustring& column_id, AddDelColumnInfo::enumStyles style = AddDelColumnInfo::STYLE_Text, bool editable = true, bool visible = true);
@@ -133,14 +135,14 @@ public:
   virtual guint get_columns_count() const;
 
   virtual Glib::ustring get_column_field(guint column_index) const;
-  
+
   typedef AddDelColumnInfo::type_vecStrings type_vecStrings;
 
   /** Retrieves the column order, even after they have been reordered by the user.
    * @result a vector of column_id. These column_ids were provided in the call to add_column().
    */
   virtual type_vecStrings get_columns_order() const;
-  
+
   virtual void remove_all_columns();
   //virtual void set_columns_count(guint count);
   //virtual void set_column_title(guint col, const Glib::ustring& strText);
@@ -148,7 +150,7 @@ public:
 
   /// For popup cells.
   virtual void set_column_choices(guint col, const type_vecStrings& vecStrings);
-   
+
   virtual void construct_specified_columns(); //Delay actual use of set_column_*() stuff until this method is called.
 
   virtual void set_show_column_titles(bool bVal = true);
@@ -203,6 +205,7 @@ public:
   virtual Gtk::TreeModel::iterator get_last_row() const;
   
 protected:
+  void init();
 
   /** Get an iterator to the blank row in which the user should add data for the new row.
    * You can then add the row to your underlying data store when some data has been filled, by handling signal_user_changed.

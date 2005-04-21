@@ -301,7 +301,7 @@ void Document_Glom::change_field_name(const Glib::ustring& table_name, const Gli
       //Change it:
       iterFind->set_name(strFieldNameNew);
     }
-    
+
     //Find any relationships or layouts that use this field
     //Look at each table:
     for(type_tables::iterator iter = m_tables.begin(); iter != m_tables.end(); ++iter)
@@ -791,6 +791,8 @@ void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Gl
 
         const Glib::ustring relationship_name = get_node_attribute_value(element, "relationship"); 
         //item.set_relationship_name(relationship_name);
+
+        //Update the cached relationship information:
         if(!relationship_name.empty())
           get_relationship(table_name, relationship_name, item.m_relationship);
 
@@ -804,6 +806,20 @@ void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Gl
         numeric_format.m_currency_symbol = get_node_attribute_value(element, "format_currency_symbol");
 
         item.m_numeric_format = numeric_format;
+
+        //Choices:
+        item.set_choices_restricted( get_node_attribute_value_as_bool(element, "choices_restricted") );
+        item.set_has_custom_choices( get_node_attribute_value_as_bool(element, "choices_custom") );
+        item.set_has_related_choices( get_node_attribute_value_as_bool(element, "choices_related") );
+
+        const Glib::ustring choices_relationship_name = get_node_attribute_value(element, "choices_related_relationship"); 
+        item.set_choices(get_node_attribute_value(element, choices_relationship_name),
+          get_node_attribute_value(element, "choices_related_field"), 
+          get_node_attribute_value(element, "choices_related_second") );
+
+        //Update the cached relationship information:
+        if(!choices_relationship_name.empty())
+          get_relationship(table_name, choices_relationship_name, item.m_choices_related_relationship);
 
         item.m_sequence = sequence;
         group.add_item(item, sequence);
@@ -1090,6 +1106,17 @@ void Document_Glom::save_before_layout_group(xmlpp::Element* node, const LayoutG
         set_node_attribute_value_as_bool(nodeItem, "format_decimal_places_restricted", field->m_numeric_format.m_decimal_places_restricted);
         set_node_attribute_value_as_decimal(nodeItem, "format_decimal_places", field->m_numeric_format.m_decimal_places);
         set_node_attribute_value(nodeItem, "format_currency_symbol", field->m_numeric_format.m_currency_symbol);
+
+        set_node_attribute_value_as_bool(nodeItem, "choices_restricted", field->get_choices_restricted());
+        set_node_attribute_value_as_bool(nodeItem, "choices_custom", field->get_has_custom_choices());
+        set_node_attribute_value_as_bool(nodeItem, "choices_related", field->get_has_related_choices() );
+
+        Glib::ustring choice_relationship, choice_field, choice_second;
+        field->get_choices(choice_relationship, choice_field, choice_second);
+        set_node_attribute_value(nodeItem, "choices_related_relationship", choice_relationship);
+        set_node_attribute_value(nodeItem, "choices_related_field", choice_field);
+        set_node_attribute_value(nodeItem, "choices_related_second", choice_second);
+
 
         set_node_attribute_value_as_decimal(nodeItem, "sequence", item->m_sequence);
       }

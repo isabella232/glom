@@ -28,7 +28,9 @@
 #include "../utility_widgets/combo_textglade.h"
 #include "../utility_widgets/comboentry_currency.h"
 
-class Dialog_FieldLayout : public Gtk::Dialog
+class Dialog_FieldLayout
+ : public Gtk::Dialog,
+   public View_Composite_Glom //Give it access to the document.
 {
 public:
   Dialog_FieldLayout(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
@@ -37,15 +39,17 @@ public:
   /**
    * @param document The document, so that the dialog can load the previous layout, and save changes.
    * @param field The starting field information.
+   * @param table_name The field's table.
    */
-  virtual void set_field(const LayoutItem_Field& field);
-
+  virtual void set_field(const LayoutItem_Field& field, const Glib::ustring& table_name);
 
   //void select_item(const Field& field);
 
   bool get_field_chosen(LayoutItem_Field& field) const;
 
 protected:
+  //Signal handlers:
+  void on_combo_choices_relationship_changed();
 
   Gtk::Label* m_label_field_name;
   Gtk::CheckButton* m_checkbutton_editable;
@@ -59,7 +63,17 @@ protected:
   Gtk::Frame* m_frame_text_format;
   Gtk::CheckButton* m_checkbox_format_text_multiline;
 
+  Gtk::RadioButton* m_radiobutton_choices_custom;
+  Gtk::RadioButton* m_radiobutton_choices_related;
+  Gtk::CheckButton* m_checkbutton_choices_restricted;
+  AddDel_WithButtons* m_adddel_choices_custom;
+  Combo_TextGlade* m_combo_choices_relationship;
+  Combo_TextGlade* m_combo_choices_field;
+  Combo_TextGlade* m_combo_choices_field_second;
+
   mutable LayoutItem_Field m_layout_item;
+
+  Glib::ustring m_table_name;
 };
 
 #endif //GLOM_MODE_DATA_DIALOG_FIELD_LAYOUT_H

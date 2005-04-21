@@ -63,12 +63,30 @@ AddDelColumnInfo& AddDelColumnInfo::operator=(const AddDelColumnInfo& src)
 }
 
 AddDel::AddDel()
-:  m_col_key(0),
+: m_col_key(0),
   m_pColumnHeaderPopup(0),
   m_allow_column_chooser(false),
   m_auto_add(true),
   m_allow_add(true),
   m_allow_delete(true)
+{
+  init();
+}
+
+
+AddDel::AddDel(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& /* refGlade */)
+: Gtk::VBox(cobject),
+  m_col_key(0),
+  m_pColumnHeaderPopup(0),
+  m_allow_column_chooser(false),
+  m_auto_add(true),
+  m_allow_add(true),
+  m_allow_delete(true)
+{
+  init();
+}
+
+void AddDel::init()
 {
   set_prevent_user_signals();
   set_ignore_treeview_signals();
@@ -82,6 +100,7 @@ AddDel::AddDel()
   //construct_specified_columns();
 
   m_ScrolledWindow.add(m_TreeView);
+  m_ScrolledWindow.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
   m_TreeView.show();
   pack_start(m_ScrolledWindow);
 
@@ -108,6 +127,7 @@ AddDel::AddDel()
 
   show_all_children();
 }
+
 
 AddDel::~AddDel()
 {
@@ -634,34 +654,39 @@ void AddDel::construct_specified_columns()
       }
 
     ++view_column_index;
-    
+
     } //is visible
 
     ++model_column_index;
   }
-  
+
   //Delete the vector's items:
   for(type_vecModelColumns::iterator iter = vecModelColumns.begin(); iter != vecModelColumns.end(); ++iter)
   {
      Gtk::TreeModelColumnBase* pModelColumn = *iter;
-     switch(m_ColumnTypes[model_column_index].m_style)
-     {
-       //Cast it to the derived type, so we can delete it properly.
-       //This is necessary because TreeModelColumnBase's destructor is not virtual.
-       case(AddDelColumnInfo::STYLE_Boolean):
-       {
-         Gtk::TreeModelColumn<bool>* pModelColumnDerived = static_cast< Gtk::TreeModelColumn<bool>* >(pModelColumn);
-         delete pModelColumnDerived;
-         break;
-       }
-       default:
-       {
-         Gtk::TreeModelColumn<Glib::ustring>* pModelColumnDerived = static_cast< Gtk::TreeModelColumn<Glib::ustring>* >(pModelColumn);
-         delete pModelColumnDerived;
-         break;
-       }
 
-       *iter = 0;
+     if(model_column_index < (int)m_ColumnTypes.size())
+     {
+       AddDelColumnInfo::enumStyles style = m_ColumnTypes[model_column_index].m_style;
+       switch(style)
+       {
+        //Cast it to the derived type, so we can delete it properly.
+        //This is necessary because TreeModelColumnBase's destructor is not virtual.
+        case(AddDelColumnInfo::STYLE_Boolean):
+        {
+          Gtk::TreeModelColumn<bool>* pModelColumnDerived = static_cast< Gtk::TreeModelColumn<bool>* >(pModelColumn);
+          delete pModelColumnDerived;
+          break;
+        }
+        default:
+        {
+          Gtk::TreeModelColumn<Glib::ustring>* pModelColumnDerived = static_cast< Gtk::TreeModelColumn<Glib::ustring>* >(pModelColumn);
+          delete pModelColumnDerived;
+          break;
+        }
+
+        *iter = 0;
+      }
      }
   }
 

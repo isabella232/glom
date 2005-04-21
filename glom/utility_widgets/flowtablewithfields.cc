@@ -41,6 +41,17 @@ FlowTableWithFields::FlowTableWithFields(const Glib::ustring& table_name)
 
 FlowTableWithFields::~FlowTableWithFields()
 {
+  //Remove views. The widgets are deleted automatically because they are managed.
+  for(type_listFields::iterator iter = m_listFields.begin(); iter != m_listFields.end(); ++iter)
+  {
+    View_Composite_Glom* pViewFirst = dynamic_cast<View_Composite_Glom*>(iter->m_first);
+    if(pViewFirst)
+      remove_view(pViewFirst);
+
+   View_Composite_Glom* pViewSecond = dynamic_cast<View_Composite_Glom*>(iter->m_second);
+    if(pViewSecond)
+      remove_view(pViewSecond);
+  }
 }
 
 void FlowTableWithFields::set_table(const Glib::ustring& table_name)
@@ -285,7 +296,16 @@ void FlowTableWithFields::remove_field(const Glib::ustring& id)
       Info info = *iter;
       remove(*(info.m_first));
 
+      View_Composite_Glom* pViewFirst = dynamic_cast<View_Composite_Glom*>(info.m_first);
+      if(pViewFirst)
+        remove_view(pViewFirst);
+
       delete info.m_first;
+
+      View_Composite_Glom* pViewSecond = dynamic_cast<View_Composite_Glom*>(info.m_second);
+      if(pViewSecond)
+        remove_view(pViewSecond);
+
       delete info.m_second; //It is removed at the same time.
 
       iter = m_listFields.erase(iter);
@@ -464,7 +484,6 @@ void FlowTableWithFields::change_group(const Glib::ustring& /* id */, const Glib
 
 void FlowTableWithFields::remove_all()
 {
-  //TODO: Release the fields memory, and the portal memory.
   m_listFields.clear();
 
   for(type_sub_flow_tables::iterator iter = m_sub_flow_tables.begin(); iter != m_sub_flow_tables.end(); ++iter)
@@ -492,6 +511,18 @@ void FlowTableWithFields::remove_all()
   m_portals.clear();
 
   m_list_layoutwidgets.clear();
+
+  //Remove views. The widgets are deleted automatically because they are managed.
+  for(type_listFields::iterator iter = m_listFields.begin(); iter != m_listFields.end(); ++iter)
+  {
+    View_Composite_Glom* pViewFirst = dynamic_cast<View_Composite_Glom*>(iter->m_first);
+    if(pViewFirst)
+      remove_view(pViewFirst);
+
+   View_Composite_Glom* pViewSecond = dynamic_cast<View_Composite_Glom*>(iter->m_second);
+    if(pViewSecond)
+      remove_view(pViewSecond);
+  }
 
   FlowTable::remove_all();
 }
@@ -583,6 +614,15 @@ void FlowTableWithFields::get_layout_group(LayoutGroup& group)
       else
       {
         const LayoutItem* pLayoutItem = (*iter)->get_layout_item();
+
+const LayoutItem_Field* fielditem = dynamic_cast<const LayoutItem_Field*>(pLayoutItem);
+if(fielditem)
+{
+   Glib::ustring a, b, c;
+  fielditem->get_choices(a, b, c);
+  g_warning( "debug flowtablewithfields: %s, %s, %s", a.c_str(), b.c_str(),  c.c_str());
+}
+
         if(pLayoutItem)
           group.add_item(*pLayoutItem);
       }

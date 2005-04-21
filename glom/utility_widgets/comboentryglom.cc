@@ -1,0 +1,255 @@
+/* Glom
+ *
+ * Copyright (C) 2001-2004 Murray Cumming
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public
+ * License along with this program; if not, write to the
+ * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+ * Boston, MA 02111-1307, USA.
+ */
+
+#include "comboentryglom.h"
+#include "../data_structure/glomconversions.h"
+#include <gtkmm/messagedialog.h>
+#include "../dialog_invalid_data.h"
+#include "../data_structure/glomconversions.h"
+#include "../application.h"
+#include <glibmm/i18n.h>
+//#include <sstream> //For stringstream
+
+#include <locale>     // for locale, time_put
+#include <ctime>     // for struct tm
+#include <iostream>   // for cout, endl
+
+ComboEntryGlom::ComboEntryGlom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& /* refGlade */)
+: Gtk::ComboBoxEntry(cobject),
+  m_glom_type(Field::TYPE_TEXT)
+{
+  setup_menu();
+  init();
+}
+
+ComboEntryGlom::ComboEntryGlom(Field::glom_field_type glom_type)
+: m_glom_type(glom_type)
+{
+  setup_menu();
+  init();
+}
+
+void ComboEntryGlom::init()
+{
+  m_refModel = Gtk::ListStore::create(m_Columns);
+  set_model(m_refModel);
+  set_text_column(m_Columns.m_col_first);
+
+  //We use connect(slot, false) to connect before the default signal handler, because the default signal handler prevents _further_ handling.
+  get_entry()->signal_button_press_event().connect(sigc::mem_fun(*this, &ComboEntryGlom::on_entry_button_press_event), false);
+  get_entry()->signal_focus_out_event().connect(sigc::mem_fun(*this, &ComboEntryGlom::on_entry_focus_out_event), false);
+  get_entry()->signal_activate().connect(sigc::mem_fun(*this, &ComboEntryGlom::on_entry_activate));
+
+  
+}
+
+ComboEntryGlom::~ComboEntryGlom()
+{
+}
+
+void ComboEntryGlom::set_glom_type(Field::glom_field_type glom_type)
+{
+  m_glom_type = glom_type;
+}
+
+void ComboEntryGlom::check_for_change()
+{
+  Glib::ustring new_text = get_entry()->get_text();
+  if(new_text != m_old_text)
+  {
+    //Validate the input:
+    bool success = false;
+
+    const LayoutItem_Field* layout_item = dynamic_cast<const LayoutItem_Field*>(get_layout_item());
+    Gnome::Gda::Value value = GlomConversions::parse_value(layout_item->m_field.get_glom_type(), get_entry()->get_text(), layout_item->m_numeric_format, success);
+
+    if(success)
+    {
+      //Actually show the canonical text:
+      set_value(value);
+      m_signal_edited.emit(); //The text was edited, so tell the client code.
+    }
+    else
+    {
+      //Tell the user and offer to revert or try again:
+      bool revert = glom_show_dialog_invalid_date(layout_item->m_field.get_glom_type());
+      if(revert)
+      {
+        set_text(m_old_text);
+      }
+      else
+        grab_focus(); //Force the user back into the same field, so that the field can be checked again and eventually corrected or reverted.
+    }
+  }
+}
+
+ComboEntryGlom::type_signal_edited ComboEntryGlom::signal_edited()
+{
+  return m_signal_edited;
+}
+
+bool ComboEntryGlom::on_entry_focus_out_event(GdkEventFocus* /* event */)
+{
+  //bool result = Gtk::ComboBoxEntry::on_focus_out_event(event);
+
+  //The user has finished editing.
+  check_for_change();
+
+  //Call base class:
+  return false;
+}
+
+void ComboEntryGlom::on_entry_activate()
+{ 
+  //Call base class:
+  //get_entry()->on_activate();
+
+  //The user has finished editing.
+  check_for_change();
+}
+
+void ComboEntryGlom::on_entry_changed()
+{
+  //The text is being edited, but the user has not finished yet.
+
+  //Call base class:
+  //gtk_entry()->on_changed();
+}
+
+
+void ComboEntryGlom::set_value(const Gnome::Gda::Value& value)
+{
+  const LayoutItem_Field* layout_item = dynamic_cast<const LayoutItem_Field*>(get_layout_item());
+  if(layout_item)
+    set_text(GlomConversions::get_text_for_gda_value(layout_item->m_field.get_glom_type(), value, layout_item->m_numeric_format));
+}
+
+void ComboEntryGlom::set_text(const Glib::ustring& text)
+{
+  m_old_text = text;
+
+  //Call base class:
+  get_entry()->set_text(text);
+}
+
+Gnome::Gda::Value ComboEntryGlom::get_value() const
+{
+  bool success = false;
+
+  const LayoutItem_Field* layout_item = dynamic_cast<const LayoutItem_Field*>(get_layout_item());
+  return GlomConversions::parse_value(layout_item->m_field.get_glom_type(), get_entry()->get_text(), layout_item->m_numeric_format, success);
+}
+
+bool ComboEntryGlom::on_entry_button_press_event(GdkEventButton *event)
+{
+  //Enable/Disable items.
+  //We did this earlier, but get_application is more likely to work now:
+  App_Glom* pApp = get_application();
+  if(pApp)
+  {
+    pApp->add_developer_action(m_refContextLayout); //So that it can be disabled when not in developer mode.
+    pApp->add_developer_action(m_refContextAddField);
+    pApp->add_developer_action(m_refContextAddRelatedRecords);
+    pApp->add_developer_action(m_refContextAddGroup);
+
+    pApp->update_userlevel_ui(); //Update our action's sensitivity.
+
+    //Only show this popup in developer mode, so operators still see the default GtkEntry context menu.
+    //TODO: It would be better to add it somehow to the standard context menu.
+    if(pApp->get_userlevel() == AppState::USERLEVEL_DEVELOPER)
+    {
+      GdkModifierType mods;
+      gdk_window_get_pointer( Gtk::Widget::gobj()->window, 0, 0, &mods );
+      if(mods & GDK_BUTTON3_MASK)
+      {
+        //Give user choices of actions on this item:
+        m_pMenuPopup->popup(event->button, event->time);
+        return true; //We handled this event.
+      }
+    }
+
+  }
+
+  return Gtk::ComboBoxEntry::on_button_press_event(event);
+}
+
+App_Glom* ComboEntryGlom::get_application()
+{
+  Gtk::Container* pWindow = get_toplevel();
+  //TODO: This only works when the child widget is already in its parent.
+
+  return dynamic_cast<App_Glom*>(pWindow);
+}
+
+void ComboEntryGlom::set_choices_with_second(const type_list_values_with_second& list_values)
+{
+  m_refModel->clear();
+
+  for(type_list_values_with_second::const_iterator iter = list_values.begin(); iter != list_values.end(); ++iter)
+  {
+    Gtk::TreeModel::iterator iterTree = m_refModel->append();
+    Gtk::TreeModel::Row row = *iterTree;
+
+    LayoutItem_Field* layout_item = dynamic_cast<LayoutItem_Field*>(get_layout_item());
+    if(layout_item)
+    {
+      row[m_Columns.m_col_first] = GlomConversions::get_text_for_gda_value(layout_item->m_field.get_glom_type(), iter->first, layout_item->m_numeric_format);;
+      row[m_Columns.m_col_second] = GlomConversions::get_text_for_gda_value(m_glom_type, iter->second, layout_item->m_numeric_format);;
+    }
+  }
+}
+
+
+void ComboEntryGlom::set_choices(const LayoutItem_Field::type_list_values& list_values)
+{
+  m_refModel->clear();
+
+  for(LayoutItem_Field::type_list_values::const_iterator iter = list_values.begin(); iter != list_values.end(); ++iter)
+  {
+    Gtk::TreeModel::iterator iterTree = m_refModel->append();
+    Gtk::TreeModel::Row row = *iterTree;
+
+    LayoutItem_Field* layout_item = dynamic_cast<LayoutItem_Field*>(get_layout_item());
+    if(layout_item)
+    {
+      const Gnome::Gda::Value value = *iter;
+      const Glib::ustring text = GlomConversions::get_text_for_gda_value(m_glom_type, value, layout_item->m_numeric_format);
+
+      row[m_Columns.m_col_first] = text;
+    }
+  }
+}
+
+void ComboEntryGlom::on_changed()
+{
+  //Call base class:
+  Gtk::ComboBoxEntry::on_changed();
+
+  //This signal is emitted for every key press, but sometimes it's just to say that the active item has changed to "no active item",
+  //if the text is not in the dropdown list:
+  Gtk::TreeModel::iterator iter = get_active();
+  if(iter)
+  {
+    //This is either a choice from the dropdown menu, or someone has typed in something that is in the drop-down menu.
+    //TODO: If both ab, and abc, are in the menu, we are responding twice if the user types abc.
+    check_for_change();
+  }
+  //Entry of text that is not in the menu will be handled by the ->get_entry() signal handlers._
+}

@@ -25,7 +25,9 @@
 #include <gtkmm.h>
 #include "../mode_data/treestore_layout.h" //Forthe enum.
 
-class LayoutWidgetBase
+class App_Glom;
+
+class LayoutWidgetBase : virtual public sigc::trackable
 {
 public: 
   LayoutWidgetBase();
@@ -38,18 +40,38 @@ public:
   const LayoutItem* get_layout_item() const;
   LayoutItem* get_layout_item();
 
+  //Popup-menu:
+  virtual void setup_menu();
+  virtual void on_menupopup_activate_layout();
+  virtual void on_menupopup_activate_layout_properties();
+  virtual void on_menupopup_add_item(TreeStore_Layout::enumType item);
+
+
   typedef sigc::signal<void> type_signal_layout_changed;
   type_signal_layout_changed signal_layout_changed();
 
   typedef sigc::signal<void, TreeStore_Layout::enumType> type_signal_layout_item_added;
   type_signal_layout_item_added signal_layout_item_added();
 
+  //Allow a child widget to delegate to a parent widget:
+  typedef sigc::signal<void> type_signal_user_requested_layout;
+  type_signal_user_requested_layout signal_user_requested_layout(); 
+
+  //Allow a child widget to delegate to a parent widget:
+  typedef sigc::signal<void> type_signal_user_requested_layout_properties;
+  type_signal_user_requested_layout_properties signal_user_requested_layout_properties();
+
 protected:
+  virtual App_Glom* get_application() const; // = 0;
+
   LayoutItem* m_pLayoutItem;
   Glib::ustring m_table_name;
 
   type_signal_layout_changed m_signal_layout_changed;
   type_signal_layout_item_added m_signal_layout_item_added;
+
+  type_signal_user_requested_layout m_signal_user_requested_layout;
+  type_signal_user_requested_layout_properties m_signal_user_requested_layout_properties;
 
   Gtk::Menu* m_pMenuPopup;
   Glib::RefPtr<Gtk::ActionGroup> m_refActionGroup;

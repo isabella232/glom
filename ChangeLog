@@ -1,3 +1,52 @@
+2005-04-21  Murray Cumming  <murrayc@murrayc.com>
+
+	* examples/example_smallbusiness.glom:
+	Invoice details: Added choice of contacts dropdown.
+	* glom/data_structure/glomconversions.cc:
+	util_trim(): reverse iterate from rbegin to rend, 
+	not the other way around. This avoids accessing 
+	invalid memory too.
+	* glom/data_structure/layout/layoutitem_field.cc:
+	* glom/data_structure/layout/layoutitem_field.h:
+	Add members and methods for choices drop-downs.
+	* glom/document/document_glom.cc:
+	Load/Save the choices details for LayoutItem_Fields.
+	* glom/glom.glade:
+	* glom/main.cc:
+	* glom/mode_data/box_data.h:
+	* glom/mode_data/box_data_details.cc:
+	* glom/mode_data/box_data_list.cc:
+	* glom/mode_data/dialog_choose_relationship.cc:
+	* glom/mode_data/dialog_choose_relationship.h:
+	* glom/mode_data/dialog_field_layout.cc:
+	* glom/mode_data/dialog_field_layout.h:
+	* glom/mode_data/dialog_layout.h:
+	* glom/mode_data/dialog_layout_details.cc: 
+	* glom/mode_data/dialog_layout_list.cc:
+	* glom/mode_data/dialog_layout_list_related.cc:
+	* glom/utility_widgets/Makefile.am:
+	* glom/utility_widgets/adddel/adddel.cc:
+	* glom/utility_widgets/adddel/adddel.h:
+	* glom/utility_widgets/adddel/adddel_withbuttons.cc:
+	* glom/utility_widgets/adddel/adddel_withbuttons.h:
+	* glom/utility_widgets/comboentryglom.cc:
+	* glom/utility_widgets/comboentryglom.h:
+	* glom/utility_widgets/datawidget.cc:
+	* glom/utility_widgets/datawidget.h:
+	* glom/utility_widgets/entryglom.cc:
+	* glom/utility_widgets/entryglom.h:
+	* glom/utility_widgets/flowtablewithfields.cc:
+	* glom/utility_widgets/layoutwidgetbase.cc:
+	* glom/utility_widgets/layoutwidgetbase.h:
+	In the Layout Properties dialog, show a second tab 
+	for choices, either a custom list or a list from 
+	a related record. Only works on Details so far.
+	* glom/frame_glom.cc:on_menu_developer_users(),
+	* glom/mode_data/box_data_list_related.cc: destructor,
+	* glom/mode_data/box_data.cc: destructor,
+	Call remove_view() before deleting the dialog. 
+
+
 2005-04-19  Murray Cumming <murrayc@murrayc.com>
 
 	* glom/mode_data/box_data.cc:

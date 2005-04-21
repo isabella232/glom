@@ -33,15 +33,18 @@ Box_Data::Box_Data()
   m_pDialogLayout(0)
 {
   m_bUnstoredData = false;
-   
 
-    
   //Connect signals:
   m_Button_Find.signal_clicked().connect(sigc::mem_fun(*this, &Box_Data::on_Button_Find));
 }
 
 Box_Data::~Box_Data()
 {
+  if(m_pDialogLayout)
+  {
+    remove_view(m_pDialogLayout);
+    delete m_pDialogLayout;
+  }
 }
 
 void Box_Data::init_db_details(const Glib::ustring& strTableName, const Glib::ustring& strWhereClause)
@@ -986,7 +989,7 @@ Glib::ustring Box_Data::build_sql_select_with_where_clause(const Glib::ustring& 
 }
 */
 
-Glib::ustring Box_Data::get_layout_item_table_name(const LayoutItem_Field& layout_item, const Glib::ustring table_name)
+Glib::ustring Box_Data::get_layout_item_table_name(const LayoutItem_Field& layout_item, const Glib::ustring& table_name)
 {
   if(!layout_item.get_has_relationship_name())
     return table_name;

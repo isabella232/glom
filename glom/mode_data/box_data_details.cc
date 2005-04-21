@@ -52,6 +52,7 @@ Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
     refXml->get_widget_derived("window_data_layout_details", dialog);
     if(dialog)
     {
+      add_view(m_pDialogLayout); //Give it access to the document.
       m_pDialogLayout = dialog;
       m_pDialogLayout->signal_hide().connect( sigc::mem_fun(static_cast<Box_Data&>(*this), &Box_Data::on_dialog_layout_hide) );
     }

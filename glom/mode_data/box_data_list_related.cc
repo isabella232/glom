@@ -50,7 +50,11 @@ Box_Data_List_Related::Box_Data_List_Related()
 
   //Delete the dialog from the base class, because we don't use it.
   if(m_pDialogLayout)
+  {
+    remove_view(m_pDialogLayout);
     delete m_pDialogLayout;
+    m_pDialogLayout = 0;
+  }
 
   Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_data_layout_list_related");
   if(refXml)
@@ -60,6 +64,7 @@ Box_Data_List_Related::Box_Data_List_Related()
     if(dialog)
     {
       //Use the new dialog:
+      add_view(m_pDialogLayout); //Give it access to the document.
       m_pDialogLayoutRelated = dialog;
       m_pDialogLayoutRelated->signal_hide().connect( sigc::mem_fun(*this, &Box_Data::on_dialog_layout_hide) );
     }
@@ -71,6 +76,7 @@ Box_Data_List_Related::~Box_Data_List_Related()
 {
   if(m_pDialogLayoutRelated)
   {
+    remove_view(m_pDialogLayoutRelated);
     delete m_pDialogLayoutRelated;
     m_pDialogLayoutRelated = 0;
   }

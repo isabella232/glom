@@ -20,6 +20,7 @@
 
 #include "datawidget.h"
 #include "entryglom.h"
+#include "comboentryglom.h"
 #include "../data_structure/glomconversions.h"
 #include "../application.h"
 #include "../mode_data/dialog_choose_field.h"
@@ -57,19 +58,76 @@ DataWidget::DataWidget(const LayoutItem_Field& field, const Glib::ustring& table
     m_label.set_alignment(0);
     m_label.show();
 
-    EntryGlom* entry = Gtk::manage(new EntryGlom(glom_type));
-    entry->set_layout_item(get_layout_item()->clone(), table_name); //TODO_Performance: We only need this for the numerical format.
+    LayoutWidgetBase* pFieldWidget = 0;
+    //Use a Combo if there is a drop-down of choices (A "value list"), else an Entry:
+    if(field.get_has_choices())
+    {
+      ComboEntryGlom* combo = Gtk::manage(new ComboEntryGlom(glom_type));
+      combo->signal_edited().connect( sigc::mem_fun(*this, &DataWidget::on_widget_edited)  );
+
+      //set_choices() needs this, for the numeric layout:
+      combo->set_layout_item(get_layout_item()->clone(), table_name); //TODO_Performance: We only need this for the numerical format.
+
+      LayoutItem_Field::type_list_values list_values;
+      if(field.get_has_custom_choices())
+      {
+        list_values = field.get_choices_custom();
+      }
+      else if(field.get_has_related_choices())
+      {
+        Glib::ustring choice_relationship_name, choice_field, choice_second;
+        field.get_choices(choice_relationship_name, choice_field, choice_second);
+        if(!choice_relationship_name.empty() && !choice_field.empty())
+        {
+          Relationship relationship = field.m_choices_related_relationship;
+          //Document_Glom* document = get_document();
+          //document->get_relationship(m_table_name, choice_relationship_name, relationship);
+
+          //Get possible values from database:
+          const Glib::ustring sql_query = "SELECT " + relationship.get_to_table() + "." + choice_field + " FROM " + relationship.get_to_table();
+
+          //Connect to database:
+          sharedptr<SharedConnection> connection = ConnectionPool::get_instance()->connect();
+
+          std::cout << "DataWidget: Executing SQL for choice list: " << sql_query << std::endl;
+          Glib::RefPtr<Gnome::Gda::DataModel> datamodel = connection->get_gda_connection()->execute_single_command(sql_query);
+          if(datamodel)
+          {
+            guint count = datamodel->get_n_rows();
+            for(guint row = 0; row < count; ++row)
+            {
+              list_values.push_back(datamodel->get_value_at(0, row));
+            }
+          }
+        }
+
+        combo->set_choices(list_values);
+      }
+      else
+      {
+        g_warning("DataWidget::DataWidget(): Unexpected choice type.");
+      }
+
+      pFieldWidget = combo;
+    }
+    else
+    {
+      EntryGlom* entry = Gtk::manage(new EntryGlom(glom_type));
+      entry->signal_edited().connect( sigc::mem_fun(*this, &DataWidget::on_widget_edited)  );
+      entry->set_layout_item(get_layout_item()->clone(), table_name); //TODO_Performance: We only need this for the numerical format.
+
+      pFieldWidget = entry;
+    }
+
+    pFieldWidget->signal_user_requested_layout().connect( sigc::mem_fun(*this, &DataWidget::on_child_user_requested_layout) );
+    pFieldWidget->signal_user_requested_layout_properties().connect( sigc::mem_fun(*this, &DataWidget::on_child_user_requested_layout_properties) );
+    pFieldWidget->signal_layout_item_added().connect( sigc::mem_fun(*this, &DataWidget::on_child_layout_item_added) );
+
+
+    child = dynamic_cast<Gtk::Widget*>(pFieldWidget);
     int width = get_suitable_width(glom_type);
-    entry->set_size_request(width, -1 /* auto */);
-    entry->show_all();
-
-    entry->signal_edited().connect( sigc::mem_fun(*this, &DataWidget::on_widget_edited)  );
-
-    entry->signal_user_requested_layout().connect( sigc::mem_fun(*this, &DataWidget::on_child_user_requested_layout) );
-    entry->signal_user_requested_layout_properties().connect( sigc::mem_fun(*this, &DataWidget::on_child_user_requested_layout_properties) );
-    entry->signal_layout_item_added().connect( sigc::mem_fun(*this, &DataWidget::on_child_layout_item_added) );
-
-    child = entry;
+    child->set_size_request(width, -1 /* auto */);
+    child->show_all();
   }
 
   if(child)
@@ -103,14 +161,20 @@ void DataWidget::set_value(const Gnome::Gda::Value& value)
     entry->set_value(value);
   else
   {
-    Gtk::CheckButton* checkbutton = dynamic_cast<Gtk::CheckButton*>(widget);
-    if(checkbutton)
+    ComboEntryGlom* combo = dynamic_cast<ComboEntryGlom*>(widget);
+    if(combo)
+      combo->set_value(value);
+    else
     {
-      bool bValue = false;
-      if(!value.is_null())
-        bValue = value.get_bool();
+      Gtk::CheckButton* checkbutton = dynamic_cast<Gtk::CheckButton*>(widget);
+      if(checkbutton)
+      {
+        bool bValue = false;
+        if(!value.is_null())
+          bValue = value.get_bool();
 
-      checkbutton->set_active( bValue );
+        checkbutton->set_active( bValue );
+      }
     }
   }
 }
@@ -123,13 +187,19 @@ Gnome::Gda::Value DataWidget::get_value() const
     return entry->get_value();
   else
   {
-    const Gtk::CheckButton* checkbutton = dynamic_cast<const Gtk::CheckButton*>(widget);
-    if(checkbutton)
-    {
-      return Gnome::Gda::Value(checkbutton->get_active());
-    }
+    const ComboEntryGlom* combo = dynamic_cast<const ComboEntryGlom*>(widget);
+    if(combo)
+      return combo->get_value();
     else
-      return Gnome::Gda::Value(); //null.
+    {
+      const Gtk::CheckButton* checkbutton = dynamic_cast<const Gtk::CheckButton*>(widget);
+      if(checkbutton)
+      {
+        return Gnome::Gda::Value(checkbutton->get_active());
+      }
+      else
+        return Gnome::Gda::Value(); //null.
+    }
   }
 }
 
@@ -229,6 +299,7 @@ void DataWidget::set_editable(bool editable)
   }
 }
 
+/*
 void DataWidget::setup_menu()
 {
   m_refActionGroup->add(m_refContextLayout,
@@ -300,6 +371,7 @@ void DataWidget::setup_menu()
     m_refContextAddGroup->set_sensitive(sensitive);
   }
 }
+*/
 
 bool DataWidget::on_button_press_event(GdkEventButton *event)
 {
@@ -382,7 +454,8 @@ bool DataWidget::offer_field_layout( LayoutItem_Field& field)
 
     if(dialog)
     {
-      dialog->set_field(field);
+      add_view(dialog); //Give it access to the document.
+      dialog->set_field(field, m_table_name);
       dialog->set_transient_for(*get_application());
       int response = dialog->run();
       dialog->hide();
@@ -392,6 +465,7 @@ bool DataWidget::offer_field_layout( LayoutItem_Field& field)
         result = dialog->get_field_chosen(field);
       }
 
+      remove_view(dialog);
       delete dialog;
     }
   }
@@ -403,10 +477,12 @@ bool DataWidget::offer_field_layout( LayoutItem_Field& field)
   return result;
 }
 
+/*
 void DataWidget::on_menupopup_add_item(TreeStore_Layout::enumType item)
 {
   signal_layout_item_added().emit(item);
 }
+*/
 
 void DataWidget::on_menupopup_activate_layout()
 {

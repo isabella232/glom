@@ -27,13 +27,15 @@ class AddDel_WithButtons : public AddDel
 {
 public: 
   AddDel_WithButtons();
+  AddDel_WithButtons(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
   virtual ~AddDel_WithButtons();
 
   virtual void set_allow_add(bool val = true); //override
   virtual void set_allow_delete(bool val = true); //override
   virtual void set_allow_user_actions(bool bVal = true); //override
-  
+
 protected:
+  void init();
   virtual void setup_buttons();
 
   virtual void on_button_add();
