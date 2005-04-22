@@ -21,6 +21,7 @@
 #include "datawidget.h"
 #include "entryglom.h"
 #include "comboentryglom.h"
+#include "comboglom.h"
 #include "../data_structure/glomconversions.h"
 #include "../application.h"
 #include "../mode_data/dialog_choose_field.h"
@@ -62,11 +63,14 @@ DataWidget::DataWidget(const LayoutItem_Field& field, const Glib::ustring& table
     //Use a Combo if there is a drop-down of choices (A "value list"), else an Entry:
     if(field.get_has_choices())
     {
-      ComboEntryGlom* combo = 0; //Gtk::manage(new ComboEntryGlom());
+      ComboGlomChoicesBase* combo = 0; //Gtk::manage(new ComboEntryGlom());
 
       if(field.get_has_custom_choices())
       {
-        combo = Gtk::manage(new ComboEntryGlom());
+        if(field.get_choices_restricted())
+          combo = Gtk::manage(new ComboGlom());
+        else
+          combo = Gtk::manage(new ComboEntryGlom());
 
         //set_choices() needs this, for the numeric layout:
         combo->set_layout_item(get_layout_item()->clone(), table_name); //TODO_Performance: We only need this for the numerical format.
@@ -93,10 +97,18 @@ DataWidget::DataWidget(const LayoutItem_Field& field, const Glib::ustring& table
             layout_field_second.m_field = field_second;
             //We use the default formatting for this field.
 
-            combo = Gtk::manage(new ComboEntryGlom(layout_field_second));
+            if(field.get_choices_restricted())
+              combo = Gtk::manage(new ComboGlom());
+            else
+              combo = Gtk::manage(new ComboEntryGlom());
           }
           else
-            combo = Gtk::manage(new ComboEntryGlom());
+          {
+            if(field.get_choices_restricted())
+              combo = Gtk::manage(new ComboGlom());
+            else
+              combo = Gtk::manage(new ComboEntryGlom());
+          }
 
           //set_choices() needs this, for the numeric layout:
           combo->set_layout_item(get_layout_item()->clone(), table_name);
@@ -169,14 +181,20 @@ void DataWidget::set_value(const Gnome::Gda::Value& value)
       combo->set_value(value);
     else
     {
-      Gtk::CheckButton* checkbutton = dynamic_cast<Gtk::CheckButton*>(widget);
-      if(checkbutton)
+      ComboGlom* combo = dynamic_cast<ComboGlom*>(widget);
+      if(combo)
+        combo->set_value(value);
+      else
       {
-        bool bValue = false;
-        if(!value.is_null())
-          bValue = value.get_bool();
+        Gtk::CheckButton* checkbutton = dynamic_cast<Gtk::CheckButton*>(widget);
+        if(checkbutton)
+        {
+          bool bValue = false;
+          if(!value.is_null())
+            bValue = value.get_bool();
 
-        checkbutton->set_active( bValue );
+          checkbutton->set_active( bValue );
+        }
       }
     }
   }
@@ -195,13 +213,19 @@ Gnome::Gda::Value DataWidget::get_value() const
       return combo->get_value();
     else
     {
-      const Gtk::CheckButton* checkbutton = dynamic_cast<const Gtk::CheckButton*>(widget);
-      if(checkbutton)
-      {
-        return Gnome::Gda::Value(checkbutton->get_active());
-      }
+      const ComboGlom* combo = dynamic_cast<const ComboGlom*>(widget);
+      if(combo)
+        return combo->get_value();
       else
-        return Gnome::Gda::Value(); //null.
+      {
+        const Gtk::CheckButton* checkbutton = dynamic_cast<const Gtk::CheckButton*>(widget);
+        if(checkbutton)
+        {
+          return Gnome::Gda::Value(checkbutton->get_active());
+        }
+        else
+          return Gnome::Gda::Value(); //null.
+      }
     }
   }
 }

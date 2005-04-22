@@ -21,12 +21,12 @@
 #include "db_adddel.h"
 #include <algorithm> //For std::find.
 #include <glibmm/i18n.h>
-#include "../adddel/cellrendererlist.h"
+#include "../cellrendererlist.h"
 #include "db_treeviewcolumn_glom.h"
 #include "../../data_structure/glomconversions.h"
 #include "../../dialog_invalid_data.h"
 #include "../../application.h"
-#include "../adddel/cellrendererlist.h"
+//#include "../cellrendererlist.h"
 #include <iostream> //For debug output.
 
 DbAddDelColumnInfo::DbAddDelColumnInfo()
@@ -704,7 +704,12 @@ void DbAddDel::construct_specified_columns()
         default:
         {
           if(column_info.m_field.get_has_choices())
-            pCellRenderer = Gtk::manage( new CellRendererList() );
+          {
+            CellRendererList* rendererList = Gtk::manage( new CellRendererList() );
+            rendererList->set_restrict_values_to_list(column_info.m_field.get_choices_restricted());
+
+            pCellRenderer = rendererList;
+          }
           else
             pCellRenderer = Gtk::manage( new Gtk::CellRendererText() );
 

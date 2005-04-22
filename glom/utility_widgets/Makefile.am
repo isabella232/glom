@@ -16,11 +16,14 @@ libutility_widgets_a_SOURCES = alignment_justified.cc alignment_justified.h \
                                flowtablewithfields.cc flowtablewithfields.h \
                                datawidget.h datawidget.cc \
                                entryglom.h entryglom.cc \
+                               comboglom.h comboglom.cc \
+                               comboglomchoicesbase.h comboglomchoicesbase.cc \
                                comboentryglom.h comboentryglom.cc \
                                placeholder.cc placeholder.h \
                                table_columns.cc table_columns.h \
                                layoutwidgetbase.cc layoutwidgetbase.h \
                                combo_textglade.h combo_textglade.cc \
+                               cellrendererlist.h cellrendererlist.cc \
                                comboentry_currency.h comboentry_currency.cc
 
 libutility_widgets_a_LIBADD = adddel/libutility_widgets_adddel.a \

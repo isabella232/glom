@@ -21,7 +21,7 @@
 #include "adddel.h"
 #include <algorithm> //For std::find.
 #include <glibmm/i18n.h>
-#include "cellrendererlist.h"
+#include "../cellrendererlist.h"
 #include "treeviewcolumn_glom.h"
 #include "../../data_structure/glomconversions.h"
 #include "../../dialog_invalid_data.h"

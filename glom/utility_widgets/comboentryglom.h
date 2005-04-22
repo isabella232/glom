@@ -23,14 +23,14 @@
 
 #include <gtkmm.h>
 #include "../data_structure/field.h"
-#include "layoutwidgetbase.h"
+#include "comboglomchoicesbase.h"
 #include <libglademm.h>
 
 class App_Glom;
 
 class ComboEntryGlom
 : public Gtk::ComboBoxEntry,
-  public LayoutWidgetBase
+  public ComboGlomChoicesBase
 {
 public:
   explicit ComboEntryGlom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
@@ -43,11 +43,6 @@ public:
 
   virtual ~ComboEntryGlom();
 
-  void set_choices(const LayoutItem_Field::type_list_values& list_values);
-
-  typedef std::list< std::pair<Gnome::Gda::Value, Gnome::Gda::Value> > type_list_values_with_second;
-  void set_choices_with_second(const type_list_values_with_second& list_values);
-
   //Override this so we can store the text to compare later.
   //This is not virtual, so you must not use it via Gtk::Entry.
   void set_text(const Glib::ustring& text); //override
@@ -57,9 +52,6 @@ public:
   void set_value(const Gnome::Gda::Value& value);
 
   Gnome::Gda::Value get_value() const;
-
-  typedef sigc::signal<void> type_signal_edited;
-  type_signal_edited signal_edited();
 
 protected:
   void init();
@@ -77,24 +69,6 @@ protected:
 
   virtual App_Glom* get_application();
 
-  //Tree model columns:
-  class ModelColumns : public Gtk::TreeModel::ColumnRecord
-  {
-  public:
-
-    ModelColumns()
-    { add(m_col_first); add(m_col_second); }
-
-    Gtk::TreeModelColumn<Glib::ustring> m_col_first; //The data to choose - this must be text.
-    Gtk::TreeModelColumn<Glib::ustring> m_col_second;
-  };
-
-  ModelColumns m_Columns;
-
-  Glib::RefPtr<Gtk::ListStore> m_refModel;
-
-
-  type_signal_edited m_signal_edited;
 
   Glib::ustring m_old_text;
 

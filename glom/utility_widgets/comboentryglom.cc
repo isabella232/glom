@@ -32,23 +32,20 @@
 #include <iostream>   // for cout, endl
 
 ComboEntryGlom::ComboEntryGlom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& /* refGlade */)
-: Gtk::ComboBoxEntry(cobject),
-  m_with_second(false)
+: Gtk::ComboBoxEntry(cobject)
 {
   setup_menu();
   init();
 }
 
 ComboEntryGlom::ComboEntryGlom()
-: m_with_second(false)
 {
   setup_menu();
   init();
 }
 
 ComboEntryGlom::ComboEntryGlom(const LayoutItem_Field& field_second)
-: m_with_second(true),
-  m_layoutitem_second(field_second)
+: m_layoutitem_second(field_second)
 {
   setup_menu();
   init();
@@ -56,8 +53,8 @@ ComboEntryGlom::ComboEntryGlom(const LayoutItem_Field& field_second)
 
 void ComboEntryGlom::init()
 {
-  m_refModel = Gtk::ListStore::create(m_Columns);
   set_model(m_refModel);
+
   set_text_column(m_Columns.m_col_first);
 
   //We use connect(slot, false) to connect before the default signal handler, because the default signal handler prevents _further_ handling.
@@ -102,11 +99,6 @@ void ComboEntryGlom::check_for_change()
         grab_focus(); //Force the user back into the same field, so that the field can be checked again and eventually corrected or reverted.
     }
   }
-}
-
-ComboEntryGlom::type_signal_edited ComboEntryGlom::signal_edited()
-{
-  return m_signal_edited;
 }
 
 bool ComboEntryGlom::on_entry_focus_out_event(GdkEventFocus* /* event */)
@@ -191,7 +183,7 @@ bool ComboEntryGlom::on_entry_button_press_event(GdkEventButton *event)
 
   }
 
-  return Gtk::ComboBoxEntry::on_button_press_event(event);
+  return false; //We did not handle this event.
 }
 
 App_Glom* ComboEntryGlom::get_application()
@@ -200,47 +192,6 @@ App_Glom* ComboEntryGlom::get_application()
   //TODO: This only works when the child widget is already in its parent.
 
   return dynamic_cast<App_Glom*>(pWindow);
-}
-
-void ComboEntryGlom::set_choices_with_second(const type_list_values_with_second& list_values)
-{
-  m_refModel->clear();
-
-  for(type_list_values_with_second::const_iterator iter = list_values.begin(); iter != list_values.end(); ++iter)
-  {
-    Gtk::TreeModel::iterator iterTree = m_refModel->append();
-    Gtk::TreeModel::Row row = *iterTree;
-
-    LayoutItem_Field* layout_item = dynamic_cast<LayoutItem_Field*>(get_layout_item());
-    if(layout_item)
-    {
-      row[m_Columns.m_col_first] = GlomConversions::get_text_for_gda_value(layout_item->m_field.get_glom_type(), iter->first, layout_item->m_numeric_format);;
-
-      if(m_with_second)
-        row[m_Columns.m_col_second] = GlomConversions::get_text_for_gda_value(m_layoutitem_second.m_field.get_glom_type(), iter->second, layout_item->m_numeric_format);;
-    }
-  }
-}
-
-
-void ComboEntryGlom::set_choices(const LayoutItem_Field::type_list_values& list_values)
-{
-  m_refModel->clear();
-
-  for(LayoutItem_Field::type_list_values::const_iterator iter = list_values.begin(); iter != list_values.end(); ++iter)
-  {
-    Gtk::TreeModel::iterator iterTree = m_refModel->append();
-    Gtk::TreeModel::Row row = *iterTree;
-
-    LayoutItem_Field* layout_item = dynamic_cast<LayoutItem_Field*>(get_layout_item());
-    if(layout_item)
-    {
-      const Gnome::Gda::Value value = *iter;
-      const Glib::ustring text = GlomConversions::get_text_for_gda_value(layout_item->m_field.get_glom_type(), value, layout_item->m_numeric_format);
-
-      row[m_Columns.m_col_first] = text;
-    }
-  }
 }
 
 void ComboEntryGlom::on_changed()

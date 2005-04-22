@@ -34,6 +34,8 @@ public:
   void remove_all_list_items();
   void append_list_item(const Glib::ustring& text);
 
+  void set_restrict_values_to_list(bool val = true);
+
 protected:
 
 private:

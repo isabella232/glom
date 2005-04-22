@@ -1,3 +1,29 @@
+2005-04-22  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/Makefile.am:
+	* glom/utility_widgets/Makefile.am:
+	* glom/utility_widgets/adddel/Makefile.am:
+	* glom/utility_widgets/adddel/adddel.cc:
+	* glom/utility_widgets/adddel/cellrendererlist.cc:
+	* glom/utility_widgets/adddel/cellrendererlist.h:
+	Move cellrendererlist out of adddel into 
+	utlity_widgets, because it is also used by 
+	DbAddDel.
+	* glom/utility_widgets/cellrendererlist.cc:
+	* glom/utility_widgets/cellrendererlist.h:
+	* glom/utility_widgets/comboentryglom.cc:
+	* glom/utility_widgets/comboentryglom.h:
+	* glom/utility_widgets/comboglomchoicesbase.cc:
+	* glom/utility_widgets/comboglomchoicesbase.h:	
+	Add ComboGlom and ComboGlomChoicesBase which is 
+	a base class for ComboGlom and ComboEntryGlom.
+	* glom/utility_widgets/datawidget.cc:
+	Use ComboGlom instead of ComboEntryGlom when 
+	the choices should be restricted.
+	* glom/utility_widgets/db_adddel/db_adddel.cc:
+	Restrict the choices when specified, using 
+	CellRendererCombo::property_has_entry().
+
 2005-04-21  Murray Cumming <murrayc@murrayc.com>
 
 	* examples/example_smallbusiness.glom:
