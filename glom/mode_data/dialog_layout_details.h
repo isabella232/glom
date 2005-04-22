@@ -60,7 +60,8 @@ protected:
   virtual void on_button_field_add();  
   virtual void on_button_field_add_group();
   virtual void on_button_add_related();
-  virtual void on_button_field_edit();  
+  virtual void on_button_field_formatting();
+  virtual void on_button_field_edit();
   virtual void on_treeview_fields_selection_changed();
 
   virtual void on_cell_data_name(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter);
@@ -77,6 +78,7 @@ protected:
   Gtk::Button* m_button_field_add_group;
   Gtk::Button* m_button_add_related;
   Gtk::Button* m_button_field_delete;
+  Gtk::Button* m_button_field_formatting;
   Gtk::Button* m_button_field_edit;
   Gtk::Label* m_label_table_name;
 

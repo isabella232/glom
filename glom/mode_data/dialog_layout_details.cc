@@ -36,6 +36,7 @@ Dialog_Layout_Details::Dialog_Layout_Details(BaseObjectType* cobject, const Glib
   m_button_field_add_group(0),
   m_button_add_related(0),
   m_button_field_delete(0),
+  m_button_field_formatting(0),
   m_button_field_edit(0),
   m_label_table_name(0)
 {
@@ -112,6 +113,9 @@ Dialog_Layout_Details::Dialog_Layout_Details(BaseObjectType* cobject, const Glib
   refGlade->get_widget("button_field_delete", m_button_field_delete);
   m_button_field_delete->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout_Details::on_button_field_delete) );
 
+  refGlade->get_widget("button_formatting", m_button_field_formatting);
+  m_button_field_formatting->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout_Details::on_button_field_formatting) );
+
   refGlade->get_widget("button_field_add", m_button_field_add);
   m_button_field_add->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout_Details::on_button_field_add) );
 
@@ -162,7 +166,8 @@ void Dialog_Layout_Details::fill_group(const Gtk::TreeModel::iterator& iter, Lay
       else if(rowChild[m_model_items->m_columns.m_col_type] == TreeStore_Layout::TYPE_FIELD)
       {
         //Add field:
-        LayoutItem_Field field;
+        LayoutItem_Field field = rowChild[m_model_items->m_columns.m_col_field_formatting]; //TODO: Use _only_ this for fields in future?
+
         field.set_name( rowChild[m_model_items->m_columns.m_col_name] );
 
         field.m_relationship = rowChild[m_model_items->m_columns.m_col_relationship_name];
@@ -230,6 +235,7 @@ void Dialog_Layout_Details::add_group(const Gtk::TreeModel::iterator& parent, co
             Gtk::TreeModel::iterator iterField = m_model_items->append(iterNewGroup->children());
             Gtk::TreeModel::Row row = *iterField;
             row[m_model_items->m_columns.m_col_type] = TreeStore_Layout::TYPE_FIELD;
+            row[m_model_items->m_columns.m_col_field_formatting] = *field;
             row[m_model_items->m_columns.m_col_name] = field->get_name();
             row[m_model_items->m_columns.m_col_relationship_name] = field->m_relationship;
 
@@ -333,6 +339,8 @@ void Dialog_Layout_Details::enable_buttons()
       m_button_field_down->set_sensitive(enable_down);
 
       m_button_field_delete->set_sensitive(true);
+
+      m_button_field_formatting->set_sensitive( (*iter)[m_model_items->m_columns.m_col_type] == TreeStore_Layout::TYPE_FIELD);
     }
     else
     {
@@ -340,6 +348,7 @@ void Dialog_Layout_Details::enable_buttons()
       m_button_field_down->set_sensitive(false);
       m_button_field_up->set_sensitive(false);
       m_button_field_delete->set_sensitive(false);
+      m_button_field_formatting->set_sensitive(false);
     }
   }
 
@@ -465,6 +474,8 @@ void Dialog_Layout_Details::on_button_field_add()
       m_treeview_fields->scroll_to_row( Gtk::TreeModel::Path(iter) );
     }
   }
+
+  enable_buttons();
 }
 
 
@@ -609,6 +620,8 @@ void Dialog_Layout_Details::on_button_add_related()
       m_treeview_fields->scroll_to_row( Gtk::TreeModel::Path(iter) );
     }
   }
+
+  enable_buttons();
 }
 
 Gtk::TreeModel::iterator Dialog_Layout_Details::get_selected_group_parent() const
@@ -670,6 +683,58 @@ void Dialog_Layout_Details::on_button_field_add_group()
     m_treeview_fields->scroll_to_row( Gtk::TreeModel::Path(iterNewGroup) );
 
     m_modified = true;
+  }
+
+  enable_buttons();
+}
+
+void Dialog_Layout_Details::on_button_field_formatting()
+{
+  //TODO: Abstract this into the base class:
+
+  //Get the selected item:
+  Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = m_treeview_fields->get_selection();
+  if(refTreeSelection)
+  {
+    Gtk::TreeModel::iterator iter = refTreeSelection->get_selected();
+    if(iter)
+    {
+      Gtk::TreeModel::Row row = *iter;
+
+      try
+      {
+        Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_layout_field_properties");
+
+        Dialog_FieldLayout* dialog = 0;
+        refXml->get_widget_derived("dialog_layout_field_properties", dialog);
+
+        if(dialog)
+        {
+          add_view(dialog); //Give it access to the document.
+
+          LayoutItem_Field field = row[m_model_items->m_columns.m_col_field_formatting];
+
+          dialog->set_field(field, m_table_name);
+          dialog->set_transient_for(*this);
+          int response = dialog->run();
+          dialog->hide();
+          if(response == Gtk::RESPONSE_OK)
+          {
+            //Get the chosen field:
+            bool test = dialog->get_field_chosen(field);
+            if(test)
+              row[m_model_items->m_columns.m_col_field_formatting] = field;
+          }
+
+          remove_view(dialog);
+          delete dialog;
+        }
+      }
+      catch(const Gnome::Glade::XmlError& ex)
+      {
+        std::cerr << ex.what() << std::endl;
+      }
+    }
   }
 }
 

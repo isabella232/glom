@@ -1,3 +1,15 @@
+2005-04-22  Murray Cumming <murrayc@murrayc.com>
+
+	* glom/glom.glade:
+	* glom/mode_data/dialog_layout_details.cc:
+	* glom/mode_data/dialog_layout_details.h:
+	* glom/mode_data/treestore_layout.h:
+	Details Layout: Add a Formatting button, 
+	because I can not yet implement a context 
+	menu for a GtkComboBox, and because nothing 
+	should be available only via a context menu 	
+	anyway.
+
 2005-04-22  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/Makefile.am:
