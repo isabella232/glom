@@ -246,7 +246,7 @@ Document_Glom::type_vecFields Document_Glom::get_table_fields(const Glib::ustrin
     }
     else
     {
-      g_warning("Document_Glom::get_table_fields: table not found in document: %s", table_name.c_str());
+      //g_warning("Document_Glom::get_table_fields: table not found in document: %s", table_name.c_str());
       return type_vecFields();
     }
   }
@@ -337,9 +337,9 @@ void Document_Glom::change_field_name(const Glib::ustring& table_name, const Gli
     for(DocumentTableInfo::type_layouts::iterator iterLayouts = iterFindTable->second.m_layouts.begin(); iterLayouts != iterFindTable->second.m_layouts.end(); ++iterLayouts)
     {
       //Look at each group:
-      for(type_mapLayoutGroupSequence::iterator iterGroup = iterLayouts->second.begin(); iterGroup != iterLayouts->second.end(); ++iterGroup)
+      for(type_mapLayoutGroupSequence::iterator iterGroup = iterLayouts->m_layout_groups.begin(); iterGroup != iterLayouts->m_layout_groups.end(); ++iterGroup)
       {
-        //Change the field if it is in this group:    
+        //Change the field if it is in this group:
         iterGroup->second.change_field_item_name(strFieldNameOld, strFieldNameNew);
       }
     }
@@ -539,7 +539,7 @@ Document_Glom::type_mapLayoutGroupSequence Document_Glom::get_data_layout_groups
   if(child_table_name.empty())
     child_table_name = parent_table_name;
 
-  type_mapLayoutGroupSequence result = get_data_layout_groups(layout_name, parent_table_name);
+  type_mapLayoutGroupSequence result = get_data_layout_groups(layout_name, parent_table_name, child_table_name);
 
 
   //If there are no fields in the layout, then add a default:
@@ -550,7 +550,7 @@ Document_Glom::type_mapLayoutGroupSequence Document_Glom::get_data_layout_groups
 
   if(create_default)
   {
-    g_warning("Document_Glom::get_data_layout_groups_plus_new_field(): Creating default layout for table %s, for layout %s", parent_table_name.c_str(), layout_name.c_str());
+    g_warning("Document_Glom::get_data_layout_groups_plus_new_fields(): Creating default layout for table %s (child_table=%s), for layout %s", parent_table_name.c_str(), child_table_name.c_str(), layout_name.c_str());
 
     //Get the last top-level group. We will add new fields into this one:
     //TODO_Performance: There must be a better way to do this:
@@ -607,18 +607,22 @@ Document_Glom::type_mapLayoutGroupSequence Document_Glom::get_data_layout_groups
   return result;  
 }
   
-Document_Glom::type_mapLayoutGroupSequence Document_Glom::get_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& table_name) const
+Document_Glom::type_mapLayoutGroupSequence Document_Glom::get_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name, const Glib::ustring& table_name) const
 {
-  type_tables::const_iterator iterFind = m_tables.find(table_name);
+  Glib::ustring child_table = table_name;
+  if(child_table.empty())
+    child_table = parent_table_name;
+
+  type_tables::const_iterator iterFind = m_tables.find(parent_table_name);
   if(iterFind != m_tables.end())
   {
     const DocumentTableInfo& info = iterFind->second;
 
     //Look for the layout with this name:
-    DocumentTableInfo::type_layouts::const_iterator iter = info.m_layouts.find(layout_name);
+    DocumentTableInfo::type_layouts::const_iterator iter = std::find_if(info.m_layouts.begin(), info.m_layouts.end(), predicate_Layout<LayoutInfo>(child_table, layout_name));
     if(iter != info.m_layouts.end())
     {
-      return iter->second; //found   
+      return iter->m_layout_groups; //found
     }
   }
 
@@ -628,15 +632,33 @@ Document_Glom::type_mapLayoutGroupSequence Document_Glom::get_data_layout_groups
 void Document_Glom::set_relationship_data_layout_groups(const Glib::ustring& layout_name, const Relationship& relationship, const type_mapLayoutGroupSequence& groups)
 {
   //TODO: Use an actual relationship_name instead of concatenating:
-  set_data_layout_groups(layout_name + "_related_" + relationship.get_name(), relationship.get_from_table(), groups);
+  set_data_layout_groups(layout_name + "_related_" + relationship.get_name(), relationship.get_from_table(), groups, relationship.get_to_table());
 }
 
-void Document_Glom::set_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& table_name, const type_mapLayoutGroupSequence& groups)
+void Document_Glom::set_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name, const type_mapLayoutGroupSequence& groups, const Glib::ustring& table_name)
 {
-  if(!table_name.empty())
+  Glib::ustring child_table_name = table_name;
+  if(child_table_name.empty())
+    child_table_name = parent_table_name;
+
+  //g_warning("Document_Glom::set_data_layout_groups(): ADDING layout for table %s (child_table=%s), for layout %s", parent_table_name.c_str(), child_table_name.c_str(), layout_name.c_str());
+
+
+  if(!parent_table_name.empty())
   {
-    DocumentTableInfo& info = get_table_info_with_add(table_name);
-    info.m_layouts[layout_name] = groups;
+    DocumentTableInfo& info = get_table_info_with_add(parent_table_name);
+
+    LayoutInfo layout_info;
+    layout_info.m_parent_table = child_table_name;
+    layout_info.m_layout_name = layout_name;
+    layout_info.m_layout_groups = groups;
+
+    DocumentTableInfo::type_layouts::iterator iter = std::find_if(info.m_layouts.begin(), info.m_layouts.end(), predicate_Layout<LayoutInfo>(child_table_name, layout_name));
+    if(iter == info.m_layouts.end())
+      info.m_layouts.push_back(layout_info);
+    else
+      *iter = layout_info;
+
     set_modified();
   }
 }
@@ -1029,6 +1051,9 @@ bool Document_Glom::load_after()
               if(node)
               {
                 const Glib::ustring layout_name = get_node_attribute_value(node, "name");
+                Glib::ustring parent_table = get_node_attribute_value(node, "parent_table");
+                if(parent_table.empty())
+                  parent_table = table_name; //Deal with the earlier file format that did not include this.
 
                 type_mapLayoutGroupSequence layout_groups;
 
@@ -1054,7 +1079,11 @@ bool Document_Glom::load_after()
                   }
                 }
 
-                doctableinfo.m_layouts[layout_name] = layout_groups;
+                LayoutInfo layout_info;
+                layout_info.m_parent_table = parent_table;
+                layout_info.m_layout_name = layout_name;
+                layout_info.m_layout_groups = layout_groups;
+                doctableinfo.m_layouts.push_back(layout_info);
               }
             }
           } //if(nodeDataLayouts)
@@ -1286,11 +1315,12 @@ bool Document_Glom::save_before()
         for(DocumentTableInfo::type_layouts::const_iterator iter = doctableinfo.m_layouts.begin(); iter != doctableinfo.m_layouts.end(); ++iter)
         {
           xmlpp::Element* nodeLayout = nodeDataLayouts->add_child("data_layout");
-          nodeLayout->set_attribute("name", iter->first);
+          nodeLayout->set_attribute("name", iter->m_layout_name);
+          nodeLayout->set_attribute("parent_table", iter->m_parent_table);
 
           xmlpp::Element* nodeGroups = nodeLayout->add_child("data_layout_groups");
 
-          const type_mapLayoutGroupSequence& group_sequence = iter->second;
+          const type_mapLayoutGroupSequence& group_sequence = iter->m_layout_groups;
           for(type_mapLayoutGroupSequence::const_iterator iterGroups = group_sequence.begin(); iterGroups != group_sequence.end(); ++iterGroups)
           {
             save_before_layout_group(nodeGroups, iterGroups->second);
@@ -1419,16 +1449,36 @@ void Document_Glom::update_cached_relationships(LayoutGroup& group, const Glib::
          get_relationship(table_name, pField->m_relationship.get_name(), pField->m_relationship);
        }
 
-        if(pField->m_choices_related_relationship.get_name_not_empty())
+       if(pField->m_choices_related_relationship.get_name_not_empty())
        {
          get_relationship(table_name, pField->m_choices_related_relationship.get_name(), pField->m_choices_related_relationship);
        }
     }
     else
     {
-      LayoutGroup* pGroup = dynamic_cast<LayoutGroup*>(pItem);
-      if(pGroup)
-        update_cached_relationships(*pGroup, table_name); //recurse:
+      LayoutItem_Portal* pPortal = dynamic_cast<LayoutItem_Portal*>(pItem);
+      if(pPortal)
+      {
+
+        get_relationship(table_name, pPortal->get_relationship(), pPortal->m_relationship);
+
+        //Update the Portal's group: TODO: Do this in place, instead of using set/get.
+        const Glib::ustring layout_name = "list_related"; //TODO: This is silly.
+        type_mapLayoutGroupSequence portalGroups = get_relationship_data_layout_groups_plus_new_fields(layout_name, pPortal->m_relationship);
+
+        for(type_mapLayoutGroupSequence::iterator iterGroup = portalGroups.begin(); iterGroup != portalGroups.end(); ++iterGroup)
+        {
+          update_cached_relationships(iterGroup->second, pPortal->m_relationship.get_to_table());
+        }
+
+        set_relationship_data_layout_groups(layout_name, pPortal->m_relationship, portalGroups);
+      }
+      else
+      {
+        LayoutGroup* pGroup = dynamic_cast<LayoutGroup*>(pItem);
+        if(pGroup)
+          update_cached_relationships(*pGroup, table_name); //recurse:
+      }
     }
   }
 }
@@ -1444,10 +1494,13 @@ void Document_Glom::update_cached_relationships()
     DocumentTableInfo& tableInfo = iterTable->second;
     for(DocumentTableInfo::type_layouts::iterator iterLayout = tableInfo.m_layouts.begin(); iterLayout != tableInfo.m_layouts.end(); ++iterLayout)
     {
-      type_mapLayoutGroupSequence& groups = iterLayout->second;
-      for(type_mapLayoutGroupSequence::iterator iterGroup = groups.begin(); iterGroup != groups.end(); ++iterGroup)
+      if(tableInfo.m_info.get_name() == iterLayout->m_parent_table) //If it is not a related layout:
       {
-        update_cached_relationships(iterGroup->second, tableInfo.m_info.get_name());
+        type_mapLayoutGroupSequence& groups = iterLayout->m_layout_groups;
+        for(type_mapLayoutGroupSequence::iterator iterGroup = groups.begin(); iterGroup != groups.end(); ++iterGroup)
+        {
+          update_cached_relationships(iterGroup->second, tableInfo.m_info.get_name());
+        }
       }
     }
   }

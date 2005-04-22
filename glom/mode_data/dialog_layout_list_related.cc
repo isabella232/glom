@@ -496,7 +496,7 @@ void Dialog_Layout_List_Related::on_button_field_formatting()
           Gtk::TreeModel::Row row = *iter;
           LayoutItem_Field field = row[m_ColumnsFields.m_col_layout_item];
 
-          dialog->set_field(field, m_table_name);
+          dialog->set_field(field, m_relationship.get_to_table());
           dialog->set_transient_for(*this);
           int response = dialog->run();
           dialog->hide();

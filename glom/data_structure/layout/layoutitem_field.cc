@@ -172,7 +172,8 @@ void LayoutItem_Field::set_hidden(bool val)
 
 bool LayoutItem_Field::get_has_choices() const
 {
-  return m_choices_related || m_choices_custom;
+  return ( m_choices_related && m_choices_related_relationship.get_name_not_empty() && !m_choices_related_field.empty() ) ||
+         ( m_choices_custom && !m_choices_custom_list.empty() );
 }
 
 LayoutItem_Field::type_list_values LayoutItem_Field::get_choices_custom() const

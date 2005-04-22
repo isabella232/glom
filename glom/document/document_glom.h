@@ -33,6 +33,30 @@
 #include <vector>
 #include <map>
 
+template<class T_Element>
+class predicate_Layout
+{
+public:
+  predicate_Layout(const Glib::ustring& parent_table, const Glib::ustring& layout_name)
+  : m_parent_table(parent_table),
+    m_layout_name(layout_name)
+  {
+  }
+
+  virtual ~predicate_Layout()
+  {
+  }
+
+  bool operator() (const T_Element& element)
+  {
+    return (element.m_parent_table == m_parent_table) &&
+           (element.m_layout_name == m_layout_name);
+  }
+
+protected:
+  Glib::ustring m_parent_table, m_layout_name;
+};
+
 class Document_Glom : public Bakery::Document_XML
 {
 public: 
@@ -66,9 +90,9 @@ public:
 
 
   typedef std::map<guint, LayoutGroup> type_mapLayoutGroupSequence;
-  virtual type_mapLayoutGroupSequence get_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& table_name) const;
+  virtual type_mapLayoutGroupSequence get_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name, const Glib::ustring& table_name = Glib::ustring()) const;
 
-  virtual void set_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& table_name, const type_mapLayoutGroupSequence& groups);
+  virtual void set_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name, const type_mapLayoutGroupSequence& groups, const Glib::ustring& table_name = Glib::ustring());
 
   virtual void set_relationship_data_layout_groups(const Glib::ustring& layout_name, const Relationship& relationship, const type_mapLayoutGroupSequence& groups);
 
@@ -179,6 +203,15 @@ protected:
 
   Glib::ustring m_connection_server, m_connection_user, m_connection_database;
 
+  class LayoutInfo
+  {
+  public:
+    Glib::ustring m_layout_name;
+    Glib::ustring m_parent_table;
+
+    type_mapLayoutGroupSequence m_layout_groups;
+  };
+
   class DocumentTableInfo
   {
   public:
@@ -187,8 +220,8 @@ protected:
     type_vecFields m_fields;
     type_vecRelationships m_relationships;
 
-    //Map layout names to layouts:
-    typedef std::map<Glib::ustring, type_mapLayoutGroupSequence> type_layouts;
+    typedef std::list< LayoutInfo > type_layouts;
+    //typedef std::map<Glib::ustring, type_mapLayoutGroupSequence> type_layouts;
     type_layouts m_layouts;
   };
 

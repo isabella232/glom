@@ -26,7 +26,7 @@ LayoutItem_Portal::LayoutItem_Portal()
 
 LayoutItem_Portal::LayoutItem_Portal(const LayoutItem_Portal& src)
 : LayoutItem(src),
-  m_relationship_name(src.m_relationship_name)
+  m_relationship(src.m_relationship)
 {
 }
 
@@ -44,20 +44,20 @@ LayoutItem_Portal& LayoutItem_Portal::operator=(const LayoutItem_Portal& src)
 {
   LayoutItem::operator=(src);
 
-  m_relationship_name = src.m_relationship_name;
-  
+  m_relationship = src.m_relationship;
+
   return *this;
 }
 
 
 Glib::ustring LayoutItem_Portal::get_relationship() const
-{         
-  return m_relationship_name;
+{
+  return m_relationship.get_name();
 }
 
 void LayoutItem_Portal::set_relationship(const Glib::ustring& relationship)
 {
-  m_relationship_name = relationship;
+  m_relationship.set_name(relationship);
 }
   
 

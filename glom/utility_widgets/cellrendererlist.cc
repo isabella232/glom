@@ -50,6 +50,5 @@ void CellRendererList::append_list_item(const Glib::ustring& text)
 
 void CellRendererList::set_restrict_values_to_list(bool val)
 {
-  g_warning("CellRendererList::set_restrict_values_to_list(val = %d", val);
   property_has_entry() = !val;
 }

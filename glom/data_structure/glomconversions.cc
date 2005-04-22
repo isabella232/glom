@@ -671,6 +671,11 @@ Glib::ustring util_build_sql_select_with_where_clause(const Glib::ustring& table
         const Relationship relationship = iter->m_relationship;
 
         const Glib::ustring field_table_name = relationship.get_to_table();
+        if(field_table_name.empty())
+        {
+          g_warning("util_build_sql_select_with_where_clause(): field_table_name is null. relationship name = %s", relationship.get_name().c_str());
+        }
+
         sql_part_fields += ( field_table_name + "." );
 
         //Add the relationship to the list:
@@ -708,11 +713,18 @@ Glib::ustring util_build_sql_select_with_where_clause(const Glib::ustring& table
 
 type_list_values_with_second get_choice_values(const LayoutItem_Field& field)
 {
+  type_list_values_with_second list_values;
+
   Glib::ustring choice_relationship_name, choice_field, choice_second;
   field.get_choices(choice_relationship_name, choice_field, choice_second);
 
   const Relationship relationship = field.m_choices_related_relationship;
   const Glib::ustring to_table = relationship.get_to_table();
+  if(to_table.empty())
+  {
+    g_warning("get_choice_values(): table_name is null. relationship name = %s", field.m_choices_related_relationship.get_name().c_str());
+    return list_values;
+  }
 
   const bool with_second = !choice_second.empty();
   const Glib::ustring sql_second = to_table + "." + choice_second;
@@ -731,7 +743,6 @@ type_list_values_with_second get_choice_values(const LayoutItem_Field& field)
   std::cout << "get_choice_values: Executing SQL: " << sql_query << std::endl;
   Glib::RefPtr<Gnome::Gda::DataModel> datamodel = connection->get_gda_connection()->execute_single_command(sql_query);
 
-  type_list_values_with_second list_values;
   if(datamodel)
   {
     guint count = datamodel->get_n_rows();

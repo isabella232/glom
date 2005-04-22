@@ -23,6 +23,7 @@
 
 #include "layoutitem.h"
 #include "../field.h"
+#include "../relationship.h"
 
 class LayoutItem_Portal : public LayoutItem
 {
@@ -38,9 +39,10 @@ public:
   Glib::ustring get_relationship() const;
   void set_relationship(const Glib::ustring& relationship);
 
+  Relationship m_relationship; //Public, for more efficient access.
+
 protected:
 
-  Glib::ustring m_relationship_name;
 };
 
 #endif //GLOM_DATASTRUCTURE_LAYOUTITEM_PORTAL_H

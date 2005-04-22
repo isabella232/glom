@@ -1,5 +1,28 @@
 2005-04-22  Murray Cumming <murrayc@murrayc.com>
 
+	* glom/data_structure/glomconversions.cc:
+	Added some warnings for when relationships are 
+	unexpectedly empty.
+	* glom/data_structure/layout/layoutitem_field.cc:
+	get_has_choices(). Return false if the choices 
+	information is empty, so we have no empty dropdown
+	menus.
+	* glom/data_structure/layout/layoutitem_portal.cc:
+	* glom/data_structure/layout/layoutitem_portal.h:
+	Store the whole Relationship information here.
+	* glom/document/document_glom.cc:
+	* glom/document/document_glom.h:
+	Use a more explicit data structure for layouts, 
+	clearly marking related (portal) layouts. 
+	update_relationships(): Update related (portal) 
+	layouts too.
+	* glom/mode_data/dialog_layout_list_related.cc:
+	on_button_formatting(): Specify the correct 
+	table name, so we get choices from the 
+	related table, not the parent table.
+	
+2005-04-22  Murray Cumming <murrayc@murrayc.com>
+
 	* glom/glom.glade:
 	* glom/mode_data/dialog_layout_details.cc:
 	* glom/mode_data/dialog_layout_details.h:
