@@ -25,6 +25,8 @@
 #include <gtkmm/liststore.h>
 
 
+void c_callback_CellRendererList_on_editing_started(GtkCellRenderer* /* self */, GtkCellEditable* cell_editable, const gchar* /* path */, void* data);
+
 class CellRendererList : public Gtk::CellRendererCombo
 {
 public:
@@ -32,13 +34,18 @@ public:
   virtual ~CellRendererList();
 
   void remove_all_list_items();
-  void append_list_item(const Glib::ustring& text);
+  void append_list_item(const Glib::ustring& text, const Glib::ustring& extra = Glib::ustring());
+
+  ///Whether the second column will be shown.
+  void set_use_second(bool use_second = true);
 
   void set_restrict_values_to_list(bool val = true);
 
-protected:
+  void on_editing_started(Gtk::CellEditable* cell_editable, const Glib::ustring& path);
 
-private:
+  friend void c_callback_CellRendererList_on_editing_started(GtkCellRenderer* /* self */, GtkCellEditable* cell_editable, const gchar* /* path */, void* data);
+
+protected:
 
   //Tree model columns for the Combo CellRenderer in the TreeView column:
   class ModelColumns : public Gtk::TreeModel::ColumnRecord
@@ -46,14 +53,16 @@ private:
   public:
 
     ModelColumns()
-    { add(m_col_choice); }
+    { add(m_col_choice); add(m_col_extra); }
 
     Gtk::TreeModelColumn<Glib::ustring> m_col_choice;
+    Gtk::TreeModelColumn<Glib::ustring> m_col_extra;
   };
 
   ModelColumns m_model_columns;
 
-  Glib::RefPtr<Gtk::ListStore>  m_refModel;
+  Glib::RefPtr<Gtk::ListStore> m_refModel;
+  bool m_use_second;
 };
 
 #endif //ADDDEL_CELLRENDERERLIST_H

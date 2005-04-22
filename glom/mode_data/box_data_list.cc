@@ -46,6 +46,7 @@ Box_Data_List::Box_Data_List()
   m_strHint = _("When you change the data in a field the database is updated immediately.\n Click [Add] or enter data into the last row to add a new record.\n Leave automatic ID fields empty - they will be filled for you.\nOnly the first 100 records are shown.");
 
   pack_start(m_AddDel);
+  add_view(&m_AddDel); //Give it access to the document.
   m_AddDel.set_auto_add(false); //We want to add the row ourselves when the user clicks the Add button, because the default behaviour there is not suitable.
   m_AddDel.set_rules_hint(); //Use alternating row colors when the theme does that.
 
@@ -68,6 +69,7 @@ Box_Data_List::Box_Data_List()
 
 Box_Data_List::~Box_Data_List()
 {
+  remove_view(&m_AddDel);
 }
 
 void Box_Data_List::fill_from_database()

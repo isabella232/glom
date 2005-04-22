@@ -25,6 +25,7 @@
 #include "../../data_structure/layout/layoutitem_field.h"
 #include <libgdamm.h>
 #include "glom_db_treemodel.h"
+#include "../../document/document_glom.h"
 
 #include <vector>
 #include <map>
@@ -51,7 +52,9 @@ class DbTreeViewColumnGlom;
 
 //For adding/deleting/selecting multi-columned lists of items.
 //This was also an abstraction layer against the strangeness of GtkSheet, though it now uses Gtk::TreeView instead.
-class DbAddDel : public Gtk::VBox
+class DbAddDel
+ : public Gtk::VBox,
+   public View_Composite_Glom
 {
 public:
   friend class InnerIgnore; //declared below.

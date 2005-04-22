@@ -20,16 +20,45 @@
  
 #include "cellrendererlist.h"
 #include <gtkmm.h>
+#include <gtk/gtkcombobox.h>
+
+
+void c_callback_CellRendererList_on_editing_started(GtkCellRenderer* /* self */, GtkCellEditable* cell_editable, const gchar* /* path */, void* data)
+{
+  CellRendererList* pCppSelf = (CellRendererList*)data;
+ 
+  if(cell_editable)
+  {
+    //This is actually ComboBox, because GtkComboBox inherits from GtkCellEditable since GTK+ 2.6.
+    //But Gtk::ComboBox does not inherit from Gtk::CellEditable because we could not break ABI.
+    //So we will use the C API to get the Gtk::ComboBox:
+    GtkComboBox* pCComboBox = GTK_COMBO_BOX(cell_editable);
+    Gtk::ComboBox* pComboBox = Glib::wrap(pCComboBox);
+
+    pComboBox->pack_start(pCppSelf->m_model_columns.m_col_extra);
+  }
+  else
+  {
+    g_warning("CellRendererList::on_editing_started() cell_editable is null");
+  }
+}
+
 
 CellRendererList::CellRendererList()
-:  Glib::ObjectBase(0) //Mark this class as gtkmmproc-generated, rather than a custom class, to allow vfunc optimisations.
+:  Glib::ObjectBase(0), //Mark this class as gtkmmproc-generated, rather than a custom class, to allow vfunc optimisations.
    //TODO: This should not be necessary - our gtkmm callbacks are somehow preventing the popup from appearing.
+  m_use_second(false)
 {
   m_refModel = Gtk::ListStore::create(m_model_columns);
   property_model() = m_refModel;
 
   property_text_column() = 0; //This must be a text column, in m_refModel.
   property_editable() = true; //It would be useless if we couldn't edit it.
+
+  //See the comment next to the implementation:
+  //signal_editing_started().connect(sigc::mem_fun(*this, &CellRendererList::on_editing_started));
+
+  g_signal_connect (gobj(), "editing_started", G_CALLBACK(&c_callback_CellRendererList_on_editing_started), this);
 }
 
 CellRendererList::~CellRendererList()
@@ -42,13 +71,46 @@ void CellRendererList::remove_all_list_items()
     m_refModel->clear();
 }
 
-void CellRendererList::append_list_item(const Glib::ustring& text)
+void CellRendererList::append_list_item(const Glib::ustring& text, const Glib::ustring& extra)
 {
   Gtk::TreeModel::Row row = *(m_refModel->append());
   row[m_model_columns.m_col_choice] = text;
+  row[m_model_columns.m_col_extra] = extra;
 }
 
 void CellRendererList::set_restrict_values_to_list(bool val)
 {
   property_has_entry() = !val;
+}
+
+/* This is not used because the Gtk::CellRenderer::editing_started() signal currently sends a null cell_editable.
+   We use a C callback instead.
+ 
+void CellRendererList::on_editing_started(Gtk::CellEditable* cell_editable, const Glib::ustring&  path)
+{
+  g_assert(cell_editable);
+
+  if(m_use_second)
+  {
+    if(cell_editable)
+    {
+      //This is actually ComboBox, because GtkComboBox inherits from GtkCellEditable since GTK+ 2.6.
+      //But Gtk::ComboBox does not inherit from Gtk::CellEditable because we could not break ABI.
+      //So we will use the C API to get the Gtk::ComboBox:
+      GtkComboBox* pCComboBox = GTK_COMBO_BOX(cell_editable->gobj());
+      Gtk::ComboBox* pComboBox = Glib::wrap(pCComboBox);
+
+      pComboBox->pack_start(m_model_columns.m_col_extra);
+    }
+    else
+    {
+      g_warning("CellRendererList::on_editing_started() cell_editable is null");
+    }
+  }
+}
+*/
+
+void CellRendererList::set_use_second(bool use_second)
+{
+  m_use_second = use_second;
 }

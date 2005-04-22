@@ -741,6 +741,8 @@ void DbAddDel::construct_specified_columns()
 
             if(column_info.m_field.get_has_custom_choices())
             {
+              pCellRendererCombo->set_use_second(false); //Custom choices have only one column.
+
               //set_choices() needs this, for the numeric layout:
               //pCellRendererCombo->set_layout_item(get_layout_item()->clone(), table_name); //TODO_Performance: We only need this for the numerical format.
               const LayoutItem_Field::type_list_values list_values = column_info.m_field.get_choices_custom();
@@ -758,26 +760,36 @@ void DbAddDel::construct_specified_columns()
                 const Relationship relationship = column_info.m_field.m_choices_related_relationship;
                 const Glib::ustring to_table = relationship.get_to_table();
 
-                //const bool with_second = !choice_second.empty();
+                const bool use_second = !choice_second.empty();
+                pCellRendererCombo->set_use_second(use_second);
 
-/*
-                if(with_second); // && get_document())
+                LayoutItem_Field layout_field_second;
+                if(use_second)
                 {
-                  Field field_second; //TODO: Actually show this in the combo:
-                  //document->get_field(to_table, choice_second, field_second);
+g_warning("use_second is true");
+                  Document_Glom* document = get_document();
+                  if(document)
+                  {
+                    Field field_second; //TODO: Actually show this in the combo:
+                    document->get_field(to_table, choice_second, field_second);
+  
+                    layout_field_second.m_field = field_second;
 
-                  LayoutItem_Field layout_field_second;
-                  layout_field_second.m_field = field_second;
-                  //We use the default formatting for this field.
-
-                  combo = Gtk::manage(new ComboEntryGlom(layout_field_second));
+g_warning("use_second is true: field_name=%s", field_second.get_name().c_str());
+                    //We use the default formatting for this field.
+                  }
                 }
-*/
 
                 type_list_values_with_second list_values = get_choice_values(column_info.m_field);
                 for(type_list_values_with_second::const_iterator iter = list_values.begin(); iter != list_values.end(); ++iter)
                 {
-                  pCellRendererCombo->append_list_item( GlomConversions::get_text_for_gda_value(column_info.m_field.m_field.get_glom_type(), iter->first, column_info.m_field.m_numeric_format) );
+                  const Glib::ustring first = GlomConversions::get_text_for_gda_value(column_info.m_field.m_field.get_glom_type(), iter->first, column_info.m_field.m_numeric_format);
+
+                  Glib::ustring second;
+                  if(use_second)
+                    second = GlomConversions::get_text_for_gda_value(layout_field_second.m_field.get_glom_type(), iter->second, layout_field_second.m_numeric_format);
+
+                  pCellRendererCombo->append_list_item(first, second);
                 }
               }
             }
