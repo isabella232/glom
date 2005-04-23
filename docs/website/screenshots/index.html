@@ -20,6 +20,7 @@
 <li><a href="#operator_table">Choosing a Table</a></li>
 <li><a href="#operator_listview">The List View</a></li>
 <li><a href="#operator_detailsview">The Details View</a></li>
+<li><a href="#operator_detailsview_relatedrecords">The Details View - Related Records</a></li>
 </ul>
 </p>
 
@@ -67,7 +68,7 @@
   <p><i>Developers can choose what fields to show by <a href="#developer_layout_details">designing the layout</a>.</i></p>
    <p><i>Developers can choose who may view or edit these records, as well as who can create or delete records here, by <a href="#developer_groups">designing the users and groups</a>.</i></p>
 
-<h3><a name="operator_detailsview" />The Details View - related records</h3>
+<h3><a name="operator_detailsview_relatedrecords" />The Details View - related records</h3>
 
   <img src="glom_data_details_related.png" />
   <p>The details view can show records from a related table. Just enter new data in the list of related records to create a new record in the related table.</p>
@@ -115,6 +116,8 @@
    <p>You can arrange fields and related records in groups which are layed out automatically, instead of wasting time with difficult manual positioning. This also allows your layout to be displayed in different languages and fonts, without manual changes.</p> 
    <p>You can can choose who may view or edit records in this table, as well as who may create or delete records, by <a href="#developer_groups">designing the users and groups</a>.</p>
    <p>For numeric <a href="#developer_fields">fields</a>, you can specify <a href="#developer_layout_field_formatting">formatting</a>, such as a currency symbol, or the number of decimal places to show.</p>
+   <p>You may also specify possible choices for data entry, such as &quot;Mr, Ms, Mrs, Miss&quot; for a contact's title, or a list of product IDs (with the product names shown too) from the products table. These will be shown in a drop-down 
+menu for the field.</p> 
 
 <h3><a name="developer_layout_details_related" />Designing the Details Layout - Related Records</h3>
 
@@ -124,7 +127,7 @@
 <h3><a name="developer_layout_list" />Designing the List Layout</h3>
 
   <img src="glom_design_layout_list.png" />
-  <p>Designing the list layout is simple - just choose the fields and their sequence. As on the <a href="#developer_layout_details">details</a> view, data will be shown and interpreted appropriately for the user's locale.</p>
+  <p>Designing the list layout is simple - just choose the fields and their sequence. As on the <a href="#developer_layout_details">details</a> view, data will be shown and interpreted appropriately for the user's locale, and you may specify choices for the field data.</p>
 
 <h3><a name="developer_layout_related_fields" />Designing the Layout - Related Fields</h3>
 
