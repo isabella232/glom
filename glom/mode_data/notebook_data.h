@@ -31,6 +31,7 @@ public:
   Notebook_Data();
   virtual ~Notebook_Data();
 
+  //Create the layout for the database structure, and fill it with data.
   virtual void init_db_details(const Glib::ustring& strTableName, const Glib::ustring& strWhereClause = Glib::ustring());
 
   virtual void select_page_for_find_results(); //Details for 1, List for > 1.
@@ -49,7 +50,7 @@ public:
 protected:
 
   //Signal handlers:
-  virtual void on_Details_user_requested_details(Gnome::Gda::Value primary_key_value);
+  virtual void on_list_user_requested_details(Gnome::Gda::Value primary_key_value);
   virtual void on_Details_user_requested_related_details(Glib::ustring strTableName, Gnome::Gda::Value primary_key_value);
 
   //Member widgets:

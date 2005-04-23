@@ -34,7 +34,7 @@ Notebook_Data::Notebook_Data()
   //Connect signals:
 
   //Allow List to ask Details to show a record.
-  m_Box_List.signal_user_requested_details().connect(sigc::mem_fun(*this, &Notebook_Data::on_Details_user_requested_details));
+  m_Box_List.signal_user_requested_details().connect(sigc::mem_fun(*this, &Notebook_Data::on_list_user_requested_details));
 
   //Allow Details's Related Records to ask Details to show a record.
   //m_Box_Details.signal_user_requested_related_details().connect(sigc::mem_fun(*this, &Notebook_Data::on_Details_user_requested_related_details));
@@ -70,7 +70,7 @@ void Notebook_Data::init_db_details(const Glib::ustring& strTableName, const Gli
   //Keep the connection open during all these operations:
   {
     sharedptr<SharedConnection> sharedconnection = connect_to_server();
-  
+
     m_Box_List.init_db_details(strTableName, strWhereClause);
     m_Box_Details.init_db_details(strTableName, m_Box_List.get_primary_key_value_selected());
   }
@@ -79,7 +79,7 @@ void Notebook_Data::init_db_details(const Glib::ustring& strTableName, const Gli
   set_current_page(m_iPage_List);
 }
 
-void Notebook_Data::on_Details_user_requested_details(Gnome::Gda::Value primary_key_value)
+void Notebook_Data::on_list_user_requested_details(Gnome::Gda::Value primary_key_value)
 {
   m_Box_Details.refresh_db_details(primary_key_value);
   set_current_page(m_iPage_Details);
@@ -91,7 +91,7 @@ void Notebook_Data::on_Details_user_requested_related_details(Glib::ustring strT
   init_db_details(strTableName);
 
   //Show the specific record:
-  on_Details_user_requested_details(primary_key_value);
+  on_list_user_requested_details(primary_key_value);
 }
 
 void Notebook_Data::select_page_for_find_results()

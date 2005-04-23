@@ -85,7 +85,7 @@ void Box_Data_List::fill_from_database()
     m_AddDel.remove_all();
 
     //Field Names:
-    fill_column_titles();
+    //fill_from_database_layout();
 
     //if(sharedconnection)
     //{
@@ -291,6 +291,7 @@ void Box_Data_List::on_adddel_user_reordered_columns()
 void Box_Data_List::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, guint col)
 {
   const Gnome::Gda::Value parent_primary_key_value = get_primary_key_value(row);
+
   if(!GlomConversions::value_is_empty(parent_primary_key_value)) //If the record's primary key is filled in:
   {
     //Just update the record:
@@ -454,6 +455,7 @@ void Box_Data_List::do_lookups(const Gtk::TreeModel::iterator& row, const Layout
    if(field_changed.get_has_relationship_name())
     return; //TODO: Handle these too.
 
+
    //Get values for lookup fields, if this field triggers those relationships:
    //TODO_performance: There is a LOT of iterating and copying here.
    const Glib::ustring strFieldName = field_changed.get_name();
@@ -594,8 +596,10 @@ guint Box_Data_List::get_records_count() const
   return m_AddDel.get_count();
 }
 
-void Box_Data_List::fill_column_titles()
+void Box_Data_List::fill_from_database_layout()
 {
+  Box_Data::fill_from_database_layout(); //Fills m_TableFields.
+
   const Document_Glom* pDoc = dynamic_cast<const Document_Glom*>(get_document());
   if(pDoc)
   {
@@ -609,7 +613,7 @@ void Box_Data_List::fill_column_titles()
     bool test = get_field_primary_key_for_table(m_strTableName, field_primary_key);
     if(!test)
     {
-      //g_warning("Box_Data_List::fill_column_titles(): primary key not found.");
+      //g_warning("Box_Data_List::fill_from_database_layout(): primary key not found.");
     }
     else
     {
@@ -625,6 +629,7 @@ void Box_Data_List::fill_column_titles()
       Field field_key = m_AddDel.get_key_field();
       layout_item.m_field = field_key;
       m_FieldsShown.push_back(layout_item);
+
 
       //Add a column for each table field:
       for(type_vecLayoutFields::const_iterator iter = m_FieldsShown.begin(); iter != m_FieldsShown.end(); ++iter)

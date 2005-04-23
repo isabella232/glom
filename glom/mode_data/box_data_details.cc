@@ -137,12 +137,13 @@ void Box_Data_Details::init_db_details(const Glib::ustring& strTableName, const 
 
   get_field_primary_key_for_table(strTableName, m_field_primary_key);
 
-  Box_Data::init_db_details(strTableName);
+  Box_Data::init_db_details(strTableName); //Calls fill_from_database_layout(), then fill_from_database()
 }
 
 void Box_Data_Details::refresh_db_details(const Gnome::Gda::Value& primary_key_value)
 {
-  init_db_details(get_table_name(), primary_key_value);
+  m_primary_key_value = primary_key_value;
+  fill_from_database();
 }
 
 void Box_Data_Details::refresh_db_details_blank()
@@ -154,6 +155,8 @@ void Box_Data_Details::fill_from_database_layout()
 {
   Bakery::BusyCursor(*get_app_window());
 
+  Box_Data::fill_from_database_layout(); //Fills m_TableFields.
+
   //Remove existing child widgets:
   m_FlowTable.remove_all();
 
@@ -164,7 +167,6 @@ void Box_Data_Details::fill_from_database_layout()
 
     //This map of layout groups will also contain the field information from the database:
     Document_Glom::type_mapLayoutGroupSequence layout_groups = get_data_layout_groups("details");
-
 
     for(Document_Glom::type_mapLayoutGroupSequence::const_iterator iter = layout_groups.begin(); iter != layout_groups.end(); ++iter)
     {
@@ -192,8 +194,6 @@ void Box_Data_Details::fill_from_database()
 
     if(!fieldsToGet.empty())
     {
-      fill_from_database_layout(); //TODO: Only do this when the layout has changed.
-
       //Do not try to show the data if the user may not view it:
       Privileges table_privs = get_current_privs(m_strTableName);
 
@@ -255,93 +255,6 @@ void Box_Data_Details::fill_from_database()
     handle_error(ex);
   }
 }
-
-/*
-void Box_Data_Details::fill_related()
-{
-  if(!m_bDoNotRefreshRelated)
-  {
-    //Clear existing pages:
-    {
-      Gtk::Notebook_Helpers::PageList& pages = m_Notebook_Related.pages();
-      for(Gtk::Notebook_Helpers::PageList::iterator iter = pages.begin(); iter != pages.end(); iter++)
-      {
-        Gtk::Notebook_Helpers::Page page = *iter;
-        Box_Data_List_Related* pWidget = dynamic_cast<Box_Data_List_Related*>(page.get_child());
-        if(pWidget)
-          remove_view(pWidget);
-        else
-          std::cout << "Box_Data_Details::fill_related(): unexpected child widget." << std::endl;
-      }
-
-      pages.clear(); //deletes Gtk::manage()d boxes.
-    }
-
-    //Get relationships from the document:
-    Document_Glom::type_vecRelationships vecRelationships = get_document()->get_relationships(m_strTableName);
-
-    if(vecRelationships.empty())
-    {
-      //Hide the relationships pane:
-      m_Frame_Related.hide();
-    }
-    else
-    {
-      m_Frame_Related.show();
-      
-      //Add the relationships:
-      for(Document_Glom::type_vecRelationships::iterator iter = vecRelationships.begin(); iter != vecRelationships.end(); iter++)
-      {
-       const Relationship& relationship = *iter;
-
-       //bool bMakeRelatedTab = true;
-       //guint rowKey = 0;
-
-       Glib::ustring from_field = relationship.get_from_field();
-       if(!from_field.empty())
-       {
-         const Glib::ustring to_table_name =  relationship.get_to_table();
-         const Glib::ustring to_field_name = relationship.get_to_field();
-
-         //Check that the to_field still exists in the to_table structure:
-         //(note that the to_field will not necessarily be visible in the related records list, though it must be in the database
-         //TODO_performance:
-         type_vecFields vecRelatedFields = get_fields_for_table_from_database(to_table_name); //Fields in the database;
-         type_vecFields::const_iterator iterFind = std::find_if(vecRelatedFields.begin(), vecRelatedFields.end(), predicate_FieldHasName<Field>(to_field_name));
-         
-         if(iterFind != vecRelatedFields.end() ) //If it was found
-         {
-           Box_Data_List_Related* pBox = Gtk::manage(new Box_Data_List_Related());
-           add_view(pBox); //So that it knows about the Document.
-           m_Notebook_Related.pages().push_back( Gtk::Notebook_Helpers::TabElem(*pBox, relationship.get_name()) );
-              
-           Gnome::Gda::Value value = m_FlowTable.get_field_value(from_field);
-
-           Field field;
-           bool test = get_fields_for_table_one_field(m_strTableName, from_field, field);
-           if(test)
-           {
-             pBox->init_db_details(relationship, value, m_primary_key_value);
-             pBox->show_all();
-
-
-             //Connect signals:
-             pBox->signal_record_added.connect( sigc::bind(
-               sigc::mem_fun(*this, &Box_Data_Details::on_related_record_added), relationship.get_from_field() )
-             );
-
-             pBox->signal_user_requested_details().connect( sigc::bind(
-               sigc::mem_fun(*this, &Box_Data_Details::on_related_user_requested_details), relationship.get_to_table() )
-             );
-           }
-         }
-       }
-      }
-    }
-  }
-
-}
-*/
 
 void Box_Data_Details::on_button_new()
 {

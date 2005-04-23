@@ -766,16 +766,14 @@ void DbAddDel::construct_specified_columns()
                 LayoutItem_Field layout_field_second;
                 if(use_second)
                 {
-g_warning("use_second is true");
                   Document_Glom* document = get_document();
                   if(document)
                   {
                     Field field_second; //TODO: Actually show this in the combo:
                     document->get_field(to_table, choice_second, field_second);
-  
+
                     layout_field_second.m_field = field_second;
 
-g_warning("use_second is true: field_name=%s", field_second.get_name().c_str());
                     //We use the default formatting for this field.
                   }
                 }

@@ -50,8 +50,8 @@ public:
   virtual void on_Details_record_deleted(Gnome::Gda::Value primary_key_value);
 
 protected:
+  virtual void fill_from_database_layout(); //override
   virtual void fill_from_database(); //override.
-  virtual void fill_column_titles();
 
   virtual bool get_field_primary_key_index(guint& field_column) const; //TODO: visible 
   virtual bool get_field_primary_key(Field& field) const;

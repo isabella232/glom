@@ -46,7 +46,6 @@ public:
   bool get_fields_for_table_one_field(const Glib::ustring& table_name, const Glib::ustring& field_name, Field& field) const;      
 
 protected:
-  virtual void fill_fields();
 
   //virtual Glib::RefPtr<Gnome::Gda::DataModel> record_new(Gnome::Gda::Value primary_key_value);
 

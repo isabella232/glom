@@ -308,11 +308,11 @@ Base_DB::type_vecFields Base_DB::get_fields_for_table_from_database(const Glib::
 
     if(!data_model_fields)
     {
-      std::cerr << "Base_DB_Table_Definition::fill_fields(): libgda reported empty fields schema data_model for the table." << std::endl;
+      std::cerr << "Base_DB::get_fields_for_table_from_database(): libgda reported empty fields schema data_model for the table." << std::endl;
     } 
     else if(data_model_fields->get_n_columns() == 0)
     {
-      std::cerr << "Base_DB_Table_Definition::fill_fields(): libgda reported 0 fields for the table." << std::endl;
+      std::cerr << "BBase_DB::get_fields_for_table_from_database(): libgda reported 0 fields for the table." << std::endl;
     }
     else if(data_model_fields->get_n_rows() == 0)
     {

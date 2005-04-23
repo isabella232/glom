@@ -114,7 +114,9 @@ void Box_DB_Table_Definition::fill_field_row(const Gtk::TreeModel::iterator& ite
 void Box_DB_Table_Definition::fill_from_database()
 {
   Box_DB_Table::fill_from_database();
-  
+
+  fill_fields();
+
   try
   {
     //Fields:

@@ -85,6 +85,7 @@ Box_Data_List_Related::~Box_Data_List_Related()
 void Box_Data_List_Related::init_db_details(const Relationship& relationship)
 {
   m_relationship = relationship;
+  m_strTableName = relationship.get_to_table();
 
   m_Label.set_markup(Bakery::App_Gtk::util_bold_message( relationship.get_title_or_name() ));
 
@@ -93,10 +94,12 @@ void Box_Data_List_Related::init_db_details(const Relationship& relationship)
   {
     g_warning("Box_Data_List_Related::init_db_details(): key_field not found.");
   }
-  Box_Data_List::init_db_details(relationship.get_to_table());
+
+  Box_Data_List::init_db_details(relationship.get_to_table()); //Calls fill_from_database_layout() and fill_from_database().
+
 }
 
-void Box_Data_List_Related::refresh_db_details(const Gnome::Gda::Value& foreign_key_value, const Gnome::Gda::Value& /* from_table_primary_key_value */)
+void Box_Data_List_Related::refresh_db_details(const Gnome::Gda::Value& foreign_key_value)
 {
   m_key_value = foreign_key_value;
 
@@ -141,7 +144,7 @@ void Box_Data_List_Related::fill_from_database()
 
     Box_DB_Table::fill_from_database();
 
-    fill_column_titles();
+    //fill_from_database_layout();
 
     fill_end();
   }

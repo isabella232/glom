@@ -108,8 +108,9 @@ void FlowTableWithFields::add_layout_item_at_position(const LayoutItem& item, co
           if(found)
           {
             Box_Data_List_Related* portal_box = Gtk::manage(new Box_Data_List_Related);
+            add_view(portal_box); //Give it access to the document, needed to get the layout and fields information.
 
-            portal_box->init_db_details(relationship);
+            portal_box->init_db_details(relationship); //Create the layout
 
             portal_box->set_layout_item(portal->clone(), relationship.get_to_table());
             portal_box->show();
@@ -120,8 +121,6 @@ void FlowTableWithFields::add_layout_item_at_position(const LayoutItem& item, co
 
             //Connect signals:
             portal_box->signal_record_changed().connect( sigc::mem_fun(*this, &FlowTableWithFields::on_portal_record_changed) );
-
-            add_view(portal_box);
           }
         }
       }
@@ -334,7 +333,7 @@ void FlowTableWithFields::set_field_value(const LayoutItem_Field& field, const G
     if(portal)
     {
       //g_warning("FlowTableWithFields::set_field_value: foreign_key_value=%s", value.to_string().c_str());
-      portal->refresh_db_details(value /* foreign key value */, Gnome::Gda::Value() /* TODO */);
+      portal->refresh_db_details(value /* foreign key value */);
     }
   }
 }

@@ -49,16 +49,19 @@ Box_Data::~Box_Data()
 
 void Box_Data::init_db_details(const Glib::ustring& strTableName, const Glib::ustring& strWhereClause)
 {
+  m_strTableName = strTableName;
   m_strWhereClause = strWhereClause;
 
-  Box_DB_Table::init_db_details(strTableName);
+  fill_from_database_layout(); //So that fill_from_database() can succeed.
+
+  Box_DB_Table::init_db_details(strTableName); //Calls fill_from_database().
 }
 
 void Box_Data::refresh_db_details(const Glib::ustring& strWhereClause)
 {
   m_strWhereClause = strWhereClause;
 
-  Box_DB_Table::refresh_db_details();
+  Box_DB_Table::refresh_db_details(); //Calls fill_from_database().
 }
 
 Glib::ustring Box_Data::get_WhereClause() const
@@ -281,12 +284,17 @@ bool Box_Data::get_unstored_data() const
   return m_bUnstoredData;
 }
 
-void Box_Data::fill_from_database()
+void Box_Data::fill_from_database_layout()
 {
   set_unstored_data(false);
 
   //Cache the table information, for performance:
   m_TableFields = get_fields_for_table(m_strTableName);
+}
+
+void Box_Data::fill_from_database()
+{
+  set_unstored_data(false);
 
   Box_DB_Table::fill_from_database();
 }
@@ -321,6 +329,7 @@ void Box_Data::show_layout_dialog()
 void Box_Data::on_dialog_layout_hide()
 {
   //Re-fill view, in case the layout has changed:
+  fill_from_database_layout();
   fill_from_database();
 }
 

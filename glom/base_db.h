@@ -39,7 +39,7 @@ public:
   Base_DB();
   virtual ~Base_DB();
 
-  /// Specify the structure of what will be shown.
+  /// Specify the structure of what will be shown, and fill it.
   virtual void init_db_details();
 
   /// Specify what actual data will be shown:

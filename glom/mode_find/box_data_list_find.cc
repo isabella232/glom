@@ -48,7 +48,7 @@ void Box_Data_List_Find::fill_from_database()
   m_AddDel.remove_all();
 
   //Field Names:
-  fill_column_titles();
+  fill_from_database_layout();
 
   m_FieldsShown = get_fields_to_show();
 

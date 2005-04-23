@@ -30,7 +30,10 @@ public:
   Box_Data();
   virtual ~Box_Data();
 
+  ///Create the layout for the database structure, and fill it with data from the database.
   virtual void init_db_details(const Glib::ustring& strTableName, const Glib::ustring& strWhereClause = Glib::ustring());
+
+  //Fill the existing layout with data from the databse.
   virtual void refresh_db_details(const Glib::ustring& strWhereClause = Glib::ustring());
 
   virtual void print_layout(); //A test, for now.
@@ -57,6 +60,13 @@ public:
   virtual void on_dialog_layout_hide();
 
 protected:
+
+  /* Create the layout based on the database structure and saved layout,
+   * so that fill_from_database() can fill it with data.
+   */
+  virtual void fill_from_database_layout();
+
+  ///Fill the existing layout with data from the database.
   virtual void fill_from_database(); //override.
 
   virtual void do_lookups(const Gtk::TreeModel::iterator& row, const LayoutItem_Field& field_changed, const Gnome::Gda::Value& field_value, const Field& primary_key, const Gnome::Gda::Value& primary_key_value) = 0;

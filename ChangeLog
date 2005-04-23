@@ -1,3 +1,42 @@
+2005-04-23  Murray Cumming<murrayc@murrayc.com>
+
+	* glom/box_db_table.cc:
+	* glom/box_db_table.h:
+	Remove fill_fields(). It has no use here.
+	Its equivalent is the new fill_database_layout()
+ 	in Box_Data, a derived class.
+	* glom/mode_data/box_data.cc:
+	* glom/mode_data/box_data.h:
+	Add virtual fill_database_layout() so the 
+	derived implementations can be called from 
+	init_db_details(). 
+	* glom/mode_data/box_data_details.cc:
+	fill_database_layout() is now called by the 
+	base class, at the appropriate time, so we 
+        do not need to call it from fill_database().
+	refresh_db_details(): Call fill_from_database()
+	instead of init_db_details() so we do not 
+	unnecessarily rebuild the whole layout UI.
+	* glom/mode_data/box_data_list.cc:
+	* glom/mode_data/box_data_list.h:
+        fill_fields(): Rename to fill_database_layout(),
+	which is now called from the base class.
+	fill_from_database(): Do not call fill_fields/
+	fill_database_layout() unnecessarily here.
+	* glom/mode_data/notebook_data.cc:
+	* glom/mode_data/notebook_data.h:
+	Rename on_Details_user_requested_details() to 
+	on_list_user_requested_details() because that it is 
+	a signal on list, not details.
+	* glom/mode_design/fields/box_db_table_definition.cc:
+	fill_from_database(): Call fill_fields() because 
+	the base class does not call it anymore.
+	* glom/utility_widgets/flowtablewithfields.cc:
+	add_layout_item_at_position(). When adding 
+	a Box_Data_List_Related portal, call add_view() 
+	before init_db_details() because the latter needs 
+	the document.
+
 2005-04-22  Murray Cumming <murrayc@murrayc.com>
 
 	* glom/mode_data/box_data_list.cc:
