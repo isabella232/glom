@@ -98,9 +98,9 @@ DataWidget::DataWidget(const LayoutItem_Field& field, const Glib::ustring& table
             //We use the default formatting for this field.
 
             if(field.get_choices_restricted())
-              combo = Gtk::manage(new ComboGlom());
+              combo = Gtk::manage(new ComboGlom(layout_field_second));
             else
-              combo = Gtk::manage(new ComboEntryGlom());
+              combo = Gtk::manage(new ComboEntryGlom(layout_field_second));
           }
           else
           {

@@ -71,9 +71,6 @@ protected:
 
 
   Glib::ustring m_old_text;
-
-  bool m_with_second;
-  LayoutItem_Field m_layoutitem_second;
   //Gnome::Gda::Value m_value; //The last-stored value. We have this because the displayed value might be unparseable.
 };
 

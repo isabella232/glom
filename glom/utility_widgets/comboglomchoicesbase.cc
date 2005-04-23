@@ -70,7 +70,10 @@ void ComboGlomChoicesBase::set_choices_with_second(const type_list_values_with_s
       row[m_Columns.m_col_first] = GlomConversions::get_text_for_gda_value(layout_item->m_field.get_glom_type(), iter->first, layout_item->m_numeric_format);;
 
       if(m_with_second)
+      {
         row[m_Columns.m_col_second] = GlomConversions::get_text_for_gda_value(m_layoutitem_second.m_field.get_glom_type(), iter->second, layout_item->m_numeric_format);;
+         g_warning("ComboGlomChoicesBase::set_choices_with_second(): second=%s", iter->second.to_string().c_str());
+      }
     }
   }
 }

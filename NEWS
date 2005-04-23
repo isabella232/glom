@@ -1,10 +1,14 @@
+0.8.23:
+
 * Details and List:
   - Allow a drop-down list of choices for a field.
     Either a custom list, such as Mr, Ms, Mrs, Miss, 
     or a list of related records, such as a list of 
-    product codes.
-* Fixed various leaks and crashes, and improved 
-  performance.
+    product codes. This is demonstrated in the 
+    example, in the Invoices table.
+- Details layout: Fields are now editable by default.
+* Fixed various leaks and crashes, improved 
+  performance, and simplified the code some more.
 
 0.8.22:
 

@@ -39,13 +39,14 @@ ComboEntryGlom::ComboEntryGlom(BaseObjectType* cobject, const Glib::RefPtr<Gnome
 }
 
 ComboEntryGlom::ComboEntryGlom()
+: ComboGlomChoicesBase()
 {
   setup_menu();
   init();
 }
 
 ComboEntryGlom::ComboEntryGlom(const LayoutItem_Field& field_second)
-: m_layoutitem_second(field_second)
+: ComboGlomChoicesBase(field_second)
 {
   setup_menu();
   init();
@@ -63,7 +64,10 @@ void ComboEntryGlom::init()
   get_entry()->signal_activate().connect(sigc::mem_fun(*this, &ComboEntryGlom::on_entry_activate));
 
   if(m_with_second)
+  {
+    g_warning("ComboEntryGlom::init(): m_with_second is true");
     pack_start(m_Columns.m_col_second);
+  }
 }
 
 ComboEntryGlom::~ComboEntryGlom()

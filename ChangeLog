@@ -1,3 +1,14 @@
+0.8.23:
+
+2005-04-23  Murray Cumming <murrayc@murrayc.com>
+
+	* glom/utility_widgets/comboentryglom.cc:
+	* glom/utility_widgets/comboentryglom.h:
+	* glom/utility_widgets/comboglomchoicesbase.cc:
+	* glom/utility_widgets/datawidget.cc:
+	Actually use the Combo* constructors that take 
+	a second LayoutItem_Field column.
+
 2005-04-23  Murray Cumming <murrayc@murrayc.com>
 
 	* glom/mode_data/dialog_layout_details.cc:
