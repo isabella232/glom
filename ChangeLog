@@ -1,3 +1,15 @@
+0.8.24:
+
+2005-04-23  Murray Cumming <murrayc@murrayc.com>
+
+	* glom/main.cc:
+	Remove debug code that hardcoded one filepath.
+	* glom/utility_widgets/cellrendererlist.cc:
+	* glom/utility_widgets/comboentryglom.cc:
+	* glom/utility_widgets/comboglom.cc:
+	Attempt to left-align second combo column, 
+        unsuccessfully.
+
 0.8.23:
 
 2005-04-23  Murray Cumming <murrayc@murrayc.com>

@@ -35,7 +35,21 @@ void c_callback_CellRendererList_on_editing_started(GtkCellRenderer* /* self */,
     GtkComboBox* pCComboBox = GTK_COMBO_BOX(cell_editable);
     Gtk::ComboBox* pComboBox = Glib::wrap(pCComboBox);
 
-    pComboBox->pack_start(pCppSelf->m_model_columns.m_col_extra);
+
+    //We don't use this convenience method, because we want more control over the renderer.
+    //and CellLayout gives no way to get the renderer back afterwards.
+    //(well, maybe set_cell_data_func(), but that's a bit awkward.)
+    //pComboBox->pack_start(pCppSelf->m_model_columns.m_col_extra);
+
+    Gtk::CellRenderer* cell_second = Gtk::manage(new Gtk::CellRendererText);
+    cell_second->property_xalign() = 0.0;
+
+    //Use the renderer:
+    pComboBox->pack_start(*cell_second);
+
+    //Make the renderer render the column:
+    pComboBox->add_attribute(cell_second->_property_renderable(), pCppSelf->m_model_columns.m_col_extra);
+
   }
   else
   {

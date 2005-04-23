@@ -65,8 +65,19 @@ void ComboEntryGlom::init()
 
   if(m_with_second)
   {
-    g_warning("ComboEntryGlom::init(): m_with_second is true");
-    pack_start(m_Columns.m_col_second);
+    //We don't use this convenience method, because we want more control over the renderer.
+    //and CellLayout gives no way to get the renderer back afterwards.
+    //(well, maybe set_cell_data_func(), but that's a bit awkward.)
+    //pack_start(m_Columns.m_col_second);
+
+    Gtk::CellRenderer* cell_second = Gtk::manage(new Gtk::CellRendererText);
+    cell_second->property_xalign() = 0.0;
+
+    //Use the renderer:
+    pack_start(*cell_second);
+
+    //Make the renderer render the column:
+    add_attribute(cell_second->_property_renderable(), m_Columns.m_col_second);
   }
 }
 

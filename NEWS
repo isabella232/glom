@@ -1,3 +1,8 @@
+0.8.24:
+
+* Remove debug code that hardcoded one file path, 
+  so you can open any file.
+
 0.8.23:
 
 * Details and List:
