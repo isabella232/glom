@@ -1,5 +1,11 @@
 2005-04-23  Murray Cumming <murrayc@murrayc.com>
 
+	* glom/mode_data/dialog_layout_details.cc:
+	on_button_add_field(): Make fields editable 
+	by default.
+
+2005-04-23  Murray Cumming <murrayc@murrayc.com>
+
 	* glom/base_db.cc:
 	* glom/base_db.h:
 	* glom/box_db_table.cc:

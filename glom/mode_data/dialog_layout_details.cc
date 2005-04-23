@@ -207,6 +207,7 @@ void Dialog_Layout_Details::add_group(const Gtk::TreeModel::iterator& parent, co
     row[m_model_items->m_columns.m_col_name] = group.get_name();
     row[m_model_items->m_columns.m_col_columns_count] = group.m_columns_count;
     row[m_model_items->m_columns.m_col_title] = group.m_title;
+    row[m_model_items->m_columns.m_col_editable] = group.get_editable();
 
     //Add the child items:
     LayoutGroup::type_map_const_items items = group.get_items();
@@ -464,6 +465,7 @@ void Dialog_Layout_Details::on_button_field_add()
       row[m_model_items->m_columns.m_col_type] = TreeStore_Layout::TYPE_FIELD;
       row[m_model_items->m_columns.m_col_name] = layout_item.get_name();
       row[m_model_items->m_columns.m_col_relationship_name] = layout_item.m_relationship;
+      row[m_model_items->m_columns.m_col_editable] = true; //A sane default.
       //row[m_model_items->m_columns.m_col_title] = field.get_title();
 
       //Scroll to, and select, the new row:
@@ -610,6 +612,7 @@ void Dialog_Layout_Details::on_button_add_related()
       Gtk::TreeModel::Row row = *iter;
       row[m_model_items->m_columns.m_col_type] = TreeStore_Layout::TYPE_PORTAL;
       row[m_model_items->m_columns.m_col_relationship] = relationship.get_name();
+      row[m_model_items->m_columns.m_col_editable] = true; //A sane default.
       //row[m_model_items->m_columns.m_col_title] = field.get_title();
 
       //Scroll to, and select, the new row:
@@ -674,6 +677,7 @@ void Dialog_Layout_Details::on_button_field_add_group()
     row[m_model_items->m_columns.m_col_type] = TreeStore_Layout::TYPE_GROUP;
     row[m_model_items->m_columns.m_col_name] = "Untitled group";
     row[m_model_items->m_columns.m_col_columns_count] = 1;
+    row[m_model_items->m_columns.m_col_editable] = true; //A sane default.
 
     //Scroll to, and select, the new row:
     Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = m_treeview_fields->get_selection();
