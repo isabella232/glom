@@ -48,7 +48,7 @@ void Box_Data_Details_Find::fill_from_database()
 
   m_FieldsShown = get_fields_to_show();
 
-  fill_from_database_layout(); //TODO: Only do this when the layout has changed.
+  create_layout(); //TODO: Only do this when the layout has changed.
 }
 
 void Box_Data_Details_Find::fill_related()

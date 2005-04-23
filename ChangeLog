@@ -1,3 +1,33 @@
+2005-04-23  Murray Cumming <murrayc@murrayc.com>
+
+	* glom/base_db.cc:
+	* glom/base_db.h:
+	* glom/box_db_table.cc:
+	* glom/box_db_table.h:
+	* glom/dialog_invalid_data.cc:
+	* glom/dialog_invalid_data.h:
+	* glom/mode_data/box_data.cc:
+	* glom/mode_data/box_data.h:
+	* glom/mode_data/box_data_details.cc:
+	* glom/mode_data/box_data_details.h:
+	* glom/mode_data/box_data_list.cc:
+	* glom/mode_data/box_data_list.h:
+	* glom/mode_data/box_data_list_related.cc:
+	* glom/mode_data/box_data_list_related.h:
+	* glom/mode_data/notebook_data.cc:
+	* glom/mode_find/box_data_details_find.cc:
+	* glom/mode_find/box_data_list_find.cc:
+	* glom/utility_widgets/adddel/adddel.cc:
+	* glom/utility_widgets/comboentryglom.cc:
+	* glom/utility_widgets/db_adddel/db_adddel.cc:
+	* glom/utility_widgets/entryglom.cc:
+	* glom/utility_widgets/flowtablewithfields.cc:
+	Rename fill_from_database_layout() to 
+	create_layout(), refresh_db_details() to 
+	refresh_data_from_database() and describe how 
+	these and the other 2 methods work together in
+	the class documentation for Box_Data.
+
 2005-04-23  Murray Cumming<murrayc@murrayc.com>
 
 	* glom/box_db_table.cc:

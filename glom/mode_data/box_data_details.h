@@ -33,8 +33,8 @@ public:
   virtual ~Box_Data_Details();
 
   virtual void init_db_details(const Glib::ustring& strTableName, const Gnome::Gda::Value& primary_key_value);
-  virtual void refresh_db_details(const Gnome::Gda::Value& primary_key_value);
-  virtual void refresh_db_details_blank();
+  virtual void refresh_data_from_database(const Gnome::Gda::Value& primary_key_value);
+  virtual void refresh_data_from_database_blank();
 
   virtual void print_layout();
 
@@ -59,7 +59,7 @@ public:
 
 protected:
   virtual void fill_from_database(); //override.
-  virtual void fill_from_database_layout();
+  virtual void create_layout();
   //virtual void fill_related();
 
   virtual void do_lookups(const Gtk::TreeModel::iterator& row, const LayoutItem_Field& field_changed, const Gnome::Gda::Value& field_value, const Field& primary_key, const Gnome::Gda::Value& primary_key_value);

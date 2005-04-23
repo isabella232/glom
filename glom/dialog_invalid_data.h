@@ -29,7 +29,7 @@
 /** Show the dialog.
  * @result true if the data in the field should be reverted.
  */
-bool glom_show_dialog_invalid_date(Field::glom_field_type glom_type);
+bool glom_show_dialog_invalid_data(Field::glom_field_type glom_type);
 
 class Dialog_InvalidData : public Gtk::Dialog
 {

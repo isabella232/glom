@@ -43,7 +43,7 @@ public:
    * @param foreign_key_value: The value that should be found in this table.
    * @param from_table_primary_key_value The primary key of the parent record's table, used to associate new related records.
    */
-  virtual void refresh_db_details(const Gnome::Gda::Value& foreign_key_value);
+  virtual void refresh_data_from_database(const Gnome::Gda::Value& foreign_key_value);
 
   virtual Relationship get_relationship() const;
   virtual Field get_key_field() const;

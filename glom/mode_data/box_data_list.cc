@@ -85,7 +85,7 @@ void Box_Data_List::fill_from_database()
     m_AddDel.remove_all();
 
     //Field Names:
-    //fill_from_database_layout();
+    //create_layout();
 
     //if(sharedconnection)
     //{
@@ -596,9 +596,9 @@ guint Box_Data_List::get_records_count() const
   return m_AddDel.get_count();
 }
 
-void Box_Data_List::fill_from_database_layout()
+void Box_Data_List::create_layout()
 {
-  Box_Data::fill_from_database_layout(); //Fills m_TableFields.
+  Box_Data::create_layout(); //Fills m_TableFields.
 
   const Document_Glom* pDoc = dynamic_cast<const Document_Glom*>(get_document());
   if(pDoc)
@@ -613,7 +613,7 @@ void Box_Data_List::fill_from_database_layout()
     bool test = get_field_primary_key_for_table(m_strTableName, field_primary_key);
     if(!test)
     {
-      //g_warning("Box_Data_List::fill_from_database_layout(): primary key not found.");
+      //g_warning("Box_Data_List::create_layout(): primary key not found.");
     }
     else
     {

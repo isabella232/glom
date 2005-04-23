@@ -43,7 +43,7 @@ public:
   virtual void init_db_details();
 
   /// Specify what actual data will be shown:
-  virtual void refresh_db_details();
+  virtual void refresh_data_from_database();
 
   /** Returns whether we are in developer mode.
    * Some functionality will be deactivated when not in developer mode.

@@ -1163,7 +1163,7 @@ void AddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const Gli
           if(!success)
           {
              //Tell the user and offer to revert or try again:
-             bool revert = glom_show_dialog_invalid_date(field_type);
+             bool revert = glom_show_dialog_invalid_data(field_type);
              if(revert)
              {
                //Revert the data:

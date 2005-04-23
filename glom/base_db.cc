@@ -40,7 +40,7 @@ void Base_DB::init_db_details()
   fill_from_database();
 }
 
-void Base_DB::refresh_db_details()
+void Base_DB::refresh_data_from_database()
 {
   fill_from_database();
 }

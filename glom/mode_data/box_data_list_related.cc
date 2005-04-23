@@ -95,11 +95,11 @@ void Box_Data_List_Related::init_db_details(const Relationship& relationship)
     g_warning("Box_Data_List_Related::init_db_details(): key_field not found.");
   }
 
-  Box_Data_List::init_db_details(relationship.get_to_table()); //Calls fill_from_database_layout() and fill_from_database().
+  Box_Data_List::init_db_details(relationship.get_to_table()); //Calls create_layout() and fill_from_database().
 
 }
 
-void Box_Data_List_Related::refresh_db_details(const Gnome::Gda::Value& foreign_key_value)
+void Box_Data_List_Related::refresh_data_from_database(const Gnome::Gda::Value& foreign_key_value)
 {
   m_key_value = foreign_key_value;
 
@@ -107,12 +107,12 @@ void Box_Data_List_Related::refresh_db_details(const Gnome::Gda::Value& foreign_
   {
     Glib::ustring strWhereClause = m_key_field.get_name() + " = " + m_key_field.sql(m_key_value);
 
-    //g_warning("refresh_db_details(): where_clause=%s", strWhereClause.c_str());
-    Box_Data_List::refresh_db_details(strWhereClause);
+    //g_warning("refresh_data_from_database(): where_clause=%s", strWhereClause.c_str());
+    Box_Data_List::refresh_data_from_database(strWhereClause);
   }
   else
   {
-    g_warning("Box_Data_List_Related::refresh_db_details(): m_key_value is NULL.");
+    g_warning("Box_Data_List_Related::refresh_data_from_database(): m_key_value is NULL.");
   }
   //TODO: Clear the list if there is no key value?
 }
@@ -144,7 +144,7 @@ void Box_Data_List_Related::fill_from_database()
 
     Box_DB_Table::fill_from_database();
 
-    //fill_from_database_layout();
+    //create_layout();
 
     fill_end();
   }

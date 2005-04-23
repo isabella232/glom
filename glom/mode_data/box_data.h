@@ -24,6 +24,13 @@
 #include "../box_db_table.h"
 #include "dialog_layout.h"
 
+
+/** Call init_db_details() to create the layout and fill it with data from the database.
+ * Call refresh_data_from_database() to fill the existing layout with up-to-date data from the database.
+ *
+ * Derived classes should implement create_layout() to create/arrange the widgets for the groups, fields, portals, etc.
+ * Derived classes should implement fill_from_database() to get the data from the database and fill the widgets created by create_layout().
+ */
 class Box_Data : public Box_DB_Table
 {
 public: 
@@ -34,7 +41,7 @@ public:
   virtual void init_db_details(const Glib::ustring& strTableName, const Glib::ustring& strWhereClause = Glib::ustring());
 
   //Fill the existing layout with data from the databse.
-  virtual void refresh_db_details(const Glib::ustring& strWhereClause = Glib::ustring());
+  virtual void refresh_data_from_database(const Glib::ustring& strWhereClause = Glib::ustring());
 
   virtual void print_layout(); //A test, for now.
 
@@ -64,7 +71,7 @@ protected:
   /* Create the layout based on the database structure and saved layout,
    * so that fill_from_database() can fill it with data.
    */
-  virtual void fill_from_database_layout();
+  virtual void create_layout();
 
   ///Fill the existing layout with data from the database.
   virtual void fill_from_database(); //override.

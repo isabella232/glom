@@ -137,25 +137,25 @@ void Box_Data_Details::init_db_details(const Glib::ustring& strTableName, const 
 
   get_field_primary_key_for_table(strTableName, m_field_primary_key);
 
-  Box_Data::init_db_details(strTableName); //Calls fill_from_database_layout(), then fill_from_database()
+  Box_Data::init_db_details(strTableName); //Calls create_layout(), then fill_from_database()
 }
 
-void Box_Data_Details::refresh_db_details(const Gnome::Gda::Value& primary_key_value)
+void Box_Data_Details::refresh_data_from_database(const Gnome::Gda::Value& primary_key_value)
 {
   m_primary_key_value = primary_key_value;
   fill_from_database();
 }
 
-void Box_Data_Details::refresh_db_details_blank()
+void Box_Data_Details::refresh_data_from_database_blank()
 {
-  refresh_db_details( Gnome::Gda::Value() );
+  refresh_data_from_database( Gnome::Gda::Value() );
 }
 
-void Box_Data_Details::fill_from_database_layout()
+void Box_Data_Details::create_layout()
 {
   Bakery::BusyCursor(*get_app_window());
 
-  Box_Data::fill_from_database_layout(); //Fills m_TableFields.
+  Box_Data::create_layout(); //Fills m_TableFields.
 
   //Remove existing child widgets:
   m_FlowTable.remove_all();
@@ -266,13 +266,13 @@ void Box_Data_Details::on_button_new()
       Gnome::Gda::Value primary_key_value = generate_next_auto_increment(m_strTableName, m_field_primary_key.get_name()); //TODO: This should return a Gda::Value
 
       record_new(false /* use entered field data */, primary_key_value);
-      refresh_db_details(primary_key_value);
+      refresh_data_from_database(primary_key_value);
     }
     else
     {
       //It's not an auto-increment primary key,
       //so just blank the fields ready for a primary key later.
-      refresh_db_details_blank(); //shows blank record.
+      refresh_data_from_database_blank(); //shows blank record.
     }
 
   } //if(confirm_discard_unstored_data())
@@ -460,7 +460,7 @@ void Box_Data_Details::on_flowtable_layout_changed()
     document->set_data_layout_groups("details", m_strTableName, layout_groups);
 
   //Build the view again from the new layout:
-  fill_from_database_layout();
+  create_layout();
 
   //And fill it with data:
   fill_from_database();

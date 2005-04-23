@@ -90,7 +90,7 @@ void ComboEntryGlom::check_for_change()
     else
     {
       //Tell the user and offer to revert or try again:
-      bool revert = glom_show_dialog_invalid_date(layout_item->m_field.get_glom_type());
+      bool revert = glom_show_dialog_invalid_data(layout_item->m_field.get_glom_type());
       if(revert)
       {
         set_text(m_old_text);

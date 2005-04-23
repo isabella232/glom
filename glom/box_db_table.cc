@@ -48,7 +48,7 @@ void Box_DB_Table::init_db_details(const Glib::ustring& strTableName)
   fill_from_database();
 }
 
-void Box_DB_Table::refresh_db_details()
+void Box_DB_Table::refresh_data_from_database()
 {
   fill_from_database();
 }
