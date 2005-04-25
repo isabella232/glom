@@ -1,3 +1,9 @@
+2005-04-25  Murray Cumming <murrayc@murrayc.com>
+
+	* glom/document/document_glom.cc: Use #defines 
+	for XML node and attribute names, to avoid 
+	errors when repeating them.
+
 0.8.24:
 
 2005-04-23  Murray Cumming <murrayc@murrayc.com>

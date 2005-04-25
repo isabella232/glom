@@ -24,6 +24,75 @@
 #include <algorithm> //For std::find_if().
 #include <sstream> //For stringstream
 
+#define GLOM_NODE_CONNECTION "connection"
+#define GLOM_ATTRIBUTE_SERVER "server"
+#define GLOM_ATTRIBUTE_USER "user"
+#define GLOM_ATTRIBUTE_DATABASE "database"
+
+#define GLOM_NODE_DATA_LAYOUT_GROUPS "data_layout_groups"
+#define GLOM_NODE_DATA_LAYOUT_GROUP "data_layout_group"
+#define GLOM_ATTRIBUTE_COLUMNS_COUNT "columns_count"
+
+#define GLOM_NODE_DATA_LAYOUTS "data_layouts"
+#define GLOM_NODE_DATA_LAYOUT "data_layout"
+#define GLOM_ATTRIBUTE_PARENT_TABLE_NAME "parent_table"
+
+#define GLOM_NODE_DATA_LAYOUT_PORTAL "data_layout_portal"
+#define GLOM_NODE_DATA_LAYOUT_ITEM "data_layout_item"
+#define GLOM_NODE_TABLE "table"
+#define GLOM_NODE_FIELDS "fields"
+#define GLOM_NODE_FIELD "field"
+#define GLOM_ATTRIBUTE_PRIMARY_KEY "primary_key"
+#define GLOM_ATTRIBUTE_DEFAULT_VALUE "default_value"
+#define GLOM_ATTRIBUTE_UNIQUE "unique"
+#define GLOM_ATTRIBUTE_AUTOINCREMENT "auto_increment"
+#define GLOM_ATTRIBUTE_CALCULATION "calculation"
+#define GLOM_ATTRIBUTE_TYPE "type"
+
+#define GLOM_NODE_FIELD_LOOKUP "field_lookup"
+#define GLOM_NODE_RELATIONSHIPS "relationships"
+#define GLOM_NODE_RELATIONSHIP "relationship"
+#define GLOM_ATTRIBUTE_KEY "key"
+#define GLOM_ATTRIBUTE_OTHER_TABLE "other_table"
+#define GLOM_ATTRIBUTE_OTHER_KEY "other_key"
+#define GLOM_ATTRIBUTE_AUTO_CREATE "auto_create"
+
+#define GLOM_NODE_GROUPS "groups"
+#define GLOM_NODE_GROUP "group"
+#define GLOM_ATTRIBUTE_DEVELOPER "developer"
+#define GLOM_NODE_TABLE_PRIVS "table_privs"
+#define GLOM_ATTRIBUTE_TABLE_NAME "table_name"
+#define GLOM_ATTRIBUTE_PRIV_VIEW "priv_view"
+#define GLOM_ATTRIBUTE_PRIV_EDIT "priv_edit"
+#define GLOM_ATTRIBUTE_PRIV_CREATE "priv_create"
+#define GLOM_ATTRIBUTE_PRIV_DELETE "priv_delete"
+
+#define GLOM_ATTRIBUTE_DATABASE_TITLE "database_title"
+#define GLOM_ATTRIBUTE_NAME "name"
+#define GLOM_ATTRIBUTE_TITLE "title"
+#define GLOM_ATTRIBUTE_SEQUENCE "sequence"
+#define GLOM_ATTRIBUTE_HIDDEN "hidden"
+#define GLOM_ATTRIBUTE_DEFAULT "default"
+#define GLOM_ATTRIBUTE_FIELD "field"
+#define GLOM_ATTRIBUTE_EDITABLE "editable"
+
+#define GLOM_ATTRIBUTE_FORMAT_THOUSANDS_SEPARATOR "format_thousands_separator"
+#define GLOM_ATTRIBUTE_FORMAT_DECIMAL_PLACES_RESTRICTED "format_decimal_places_restricted"
+#define GLOM_ATTRIBUTE_FORMAT_DECIMAL_PLACES "format_decimal_places"
+#define GLOM_ATTRIBUTE_FORMAT_CURRENCY_SYMBOL "format_currency_symbol"
+
+#define GLOM_ATTRIBUTE_CHOICES_RESTRICTED "choices_restricted"
+#define GLOM_ATTRIBUTE_CHOICES_CUSTOM "choices_custom"
+#define GLOM_ATTRIBUTE_CHOICES_CUSTOM_LIST "custom_choice_list"
+#define GLOM_NODE_CUSTOM_CHOICE "custom_choice"
+#define GLOM_ATTRIBUTE_VALUE "value"
+#define GLOM_ATTRIBUTE_CHOICES_RELATED "choices_related"
+#define GLOM_ATTRIBUTE_CHOICES_RELATED_RELATIONSHIP "choices_related_relationship"
+#define GLOM_ATTRIBUTE_CHOICES_RELATED_FIELD "choices_related_field"
+#define GLOM_ATTRIBUTE_CHOICES_RELATED_SECOND "choices_related_second"
+
+#define GLOM_ATTRIBUTE_RELATIONSHIP_NAME "relationship"
+
 Document_Glom::Document_Glom()
 : m_block_cache_update(false)
 {
@@ -815,11 +884,11 @@ void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Gl
     return;
 
   //Get the group details:
-  group.set_name( get_node_attribute_value(node, "name") );
-  group.m_title = get_node_attribute_value(node, "title");
-  group.m_columns_count = get_node_attribute_value_as_decimal(node, "columns_count");
+  group.set_name( get_node_attribute_value(node, GLOM_ATTRIBUTE_NAME) );
+  group.m_title = get_node_attribute_value(node, GLOM_ATTRIBUTE_TITLE);
+  group.m_columns_count = get_node_attribute_value_as_decimal(node, GLOM_ATTRIBUTE_COLUMNS_COUNT);
 
-  group.m_sequence = get_node_attribute_value_as_decimal(node, "sequence");
+  group.m_sequence = get_node_attribute_value_as_decimal(node, GLOM_ATTRIBUTE_SEQUENCE);
 
   //Get the child items:
   xmlpp::Node::NodeList listNodes = node->get_children(); 
@@ -828,45 +897,45 @@ void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Gl
     const xmlpp::Element* element = dynamic_cast<const xmlpp::Element*>(*iter);
     if(element)
     {
-      const guint sequence = get_node_attribute_value_as_decimal(element, "sequence");
+      const guint sequence = get_node_attribute_value_as_decimal(element, GLOM_ATTRIBUTE_SEQUENCE);
 
-      if(element->get_name() == "data_layout_item")
+      if(element->get_name() == GLOM_NODE_DATA_LAYOUT_ITEM)
       {
         LayoutItem_Field item;
 
-        item.set_name( get_node_attribute_value(element, "name") );
+        item.set_name( get_node_attribute_value(element, GLOM_ATTRIBUTE_NAME) );
 
-        item.m_relationship.set_name( get_node_attribute_value(element, "relationship") ); //Full details are updated in filled-in ().
+        item.m_relationship.set_name( get_node_attribute_value(element, GLOM_ATTRIBUTE_RELATIONSHIP_NAME) ); //Full details are updated in filled-in ().
 
-        item.set_editable( get_node_attribute_value_as_bool(element, "editable") );
+        item.set_editable( get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_EDITABLE) );
 
         //Numeric formatting:
         NumericFormat numeric_format;
-        numeric_format.m_use_thousands_separator = get_node_attribute_value_as_bool(element, "format_thousands_separator");
-        numeric_format.m_decimal_places_restricted = get_node_attribute_value_as_bool(element, "format_decimal_places_restricted");
-        numeric_format.m_decimal_places = get_node_attribute_value_as_decimal(element, "format_decimal_places");
-        numeric_format.m_currency_symbol = get_node_attribute_value(element, "format_currency_symbol");
+        numeric_format.m_use_thousands_separator = get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_FORMAT_THOUSANDS_SEPARATOR);
+        numeric_format.m_decimal_places_restricted = get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_FORMAT_DECIMAL_PLACES_RESTRICTED);
+        numeric_format.m_decimal_places = get_node_attribute_value_as_decimal(element, GLOM_ATTRIBUTE_FORMAT_DECIMAL_PLACES);
+        numeric_format.m_currency_symbol = get_node_attribute_value(element, GLOM_ATTRIBUTE_FORMAT_CURRENCY_SYMBOL);
 
         item.m_numeric_format = numeric_format;
 
         //Choices:
-        item.set_choices_restricted( get_node_attribute_value_as_bool(element, "choices_restricted") );
-        item.set_has_custom_choices( get_node_attribute_value_as_bool(element, "choices_custom") );
+        item.set_choices_restricted( get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_CHOICES_RESTRICTED) );
+        item.set_has_custom_choices( get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_CHOICES_CUSTOM) );
 
         if(item.get_has_custom_choices())
         {
-          const xmlpp::Element* nodeChoiceList = get_node_child_named(element, "custom_choice_list");
+          const xmlpp::Element* nodeChoiceList = get_node_child_named(element, GLOM_ATTRIBUTE_CHOICES_CUSTOM_LIST);
           if(nodeChoiceList)
           {
             LayoutItem_Field::type_list_values list_values;
 
-            xmlpp::Node::NodeList listNodesCustomChoices = nodeChoiceList->get_children("custom_choice");
+            xmlpp::Node::NodeList listNodesCustomChoices = nodeChoiceList->get_children(GLOM_NODE_CUSTOM_CHOICE);
             for(xmlpp::Node::NodeList::iterator iter = listNodesCustomChoices.begin(); iter != listNodesCustomChoices.end(); ++iter)
             {
               const xmlpp::Element* element = dynamic_cast<const xmlpp::Element*>(*iter);
               if(element)
               {
-                Gnome::Gda::Value value = get_node_attribute_value_as_value(element, "value", item.m_field.get_glom_type());
+                Gnome::Gda::Value value = get_node_attribute_value_as_value(element, GLOM_ATTRIBUTE_VALUE, item.m_field.get_glom_type());
                 list_values.push_back(value);
               }
             }
@@ -875,18 +944,18 @@ void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Gl
           }
         }
 
-        item.set_has_related_choices( get_node_attribute_value_as_bool(element, "choices_related") );
+        item.set_has_related_choices( get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_CHOICES_RELATED) );
 
-        item.set_choices(get_node_attribute_value(element, "choices_related_relationship"),
-          get_node_attribute_value(element, "choices_related_field"),
-          get_node_attribute_value(element, "choices_related_second") );
+        item.set_choices(get_node_attribute_value(element, GLOM_ATTRIBUTE_CHOICES_RELATED_RELATIONSHIP),
+          get_node_attribute_value(element, GLOM_ATTRIBUTE_CHOICES_RELATED_FIELD),
+          get_node_attribute_value(element, GLOM_ATTRIBUTE_CHOICES_RELATED_SECOND) );
         //Full details are updated in filled-in ().
 
 
         item.m_sequence = sequence;
         group.add_item(item, sequence);
       }
-      else if(element->get_name() == "data_layout_group")
+      else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_GROUP)
       {
         LayoutGroup child_group;
         //Recurse:
@@ -894,10 +963,10 @@ void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Gl
 
         group.add_item(child_group);
       }
-      else if(element->get_name() == "data_layout_portal")
+      else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_PORTAL)
       {
         LayoutItem_Portal item;
-        item.set_relationship( get_node_attribute_value(element, "relationship") );
+        item.set_relationship( get_node_attribute_value(element, GLOM_ATTRIBUTE_RELATIONSHIP_NAME) );
 
         item.m_sequence = sequence;
         group.add_item(item, sequence);
@@ -917,49 +986,49 @@ bool Document_Glom::load_after()
     const xmlpp::Element* nodeRoot = get_node_document();
     if(nodeRoot)
     {
-      m_database_title = get_node_attribute_value(nodeRoot, "database_title");
+      m_database_title = get_node_attribute_value(nodeRoot, GLOM_ATTRIBUTE_DATABASE_TITLE);
 
-      const xmlpp::Element* nodeConnection = get_node_child_named(nodeRoot, "connection");
+      const xmlpp::Element* nodeConnection = get_node_child_named(nodeRoot, GLOM_NODE_CONNECTION);
       if(nodeConnection)
       {
         //Connection information:
-        m_connection_server = get_node_attribute_value(nodeConnection, "server");
-        m_connection_user = get_node_attribute_value(nodeConnection, "user");
-        m_connection_database = get_node_attribute_value(nodeConnection, "database");
+        m_connection_server = get_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_SERVER);
+        m_connection_user = get_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_USER);
+        m_connection_database = get_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_DATABASE);
       }
 
       //Tables:
       m_tables.clear();
 
       //Look at each "table" node.
-      xmlpp::Node::NodeList listNodes = nodeRoot->get_children("table");
+      xmlpp::Node::NodeList listNodes = nodeRoot->get_children(GLOM_NODE_TABLE);
       for(xmlpp::Node::NodeList::const_iterator iter = listNodes.begin(); iter != listNodes.end(); iter++)
       {
         xmlpp::Element* nodeTable = dynamic_cast<xmlpp::Element*>(*iter);
         if(nodeTable)
         {
 
-          const Glib::ustring table_name = get_node_attribute_value(nodeTable, "name");
+          const Glib::ustring table_name = get_node_attribute_value(nodeTable, GLOM_ATTRIBUTE_NAME);
 
           m_tables[table_name] = DocumentTableInfo();
           DocumentTableInfo& doctableinfo = m_tables[table_name]; //Setting stuff directly in the reference is more efficient than copying it later:
 
           TableInfo table_info;
           table_info.m_name = table_name;
-          table_info.m_hidden = get_node_attribute_value_as_bool(nodeTable, "hidden");
-          table_info.m_title = get_node_attribute_value(nodeTable, "title");
-          table_info.m_default = get_node_attribute_value_as_bool(nodeTable, "default");
+          table_info.m_hidden = get_node_attribute_value_as_bool(nodeTable, GLOM_ATTRIBUTE_HIDDEN);
+          table_info.m_title = get_node_attribute_value(nodeTable, GLOM_ATTRIBUTE_TITLE);
+          table_info.m_default = get_node_attribute_value_as_bool(nodeTable, GLOM_ATTRIBUTE_DEFAULT);
 
           doctableinfo.m_info = table_info;
 
           //Fields:
-          const xmlpp::Element* nodeFields = get_node_child_named(nodeTable, "fields");
+          const xmlpp::Element* nodeFields = get_node_child_named(nodeTable, GLOM_NODE_FIELDS);
           if(nodeFields)
           {
             const Field::type_map_type_names type_names = Field::get_type_names();
 
             //Loop through Field child nodes:
-            xmlpp::Node::NodeList listNodes = nodeFields->get_children("field");
+            xmlpp::Node::NodeList listNodes = nodeFields->get_children(GLOM_NODE_FIELD);
             for(xmlpp::Node::NodeList::const_iterator iter = listNodes.begin(); iter != listNodes.end(); iter++)
             {
               const xmlpp::Element* nodeChild = dynamic_cast<xmlpp::Element*>(*iter);
@@ -967,28 +1036,28 @@ bool Document_Glom::load_after()
               {
                 Field field;
 
-                const Glib::ustring strName = get_node_attribute_value(nodeChild, "name");
+                const Glib::ustring strName = get_node_attribute_value(nodeChild, GLOM_ATTRIBUTE_NAME);
                 field.set_name( strName );
 
-                const Glib::ustring strTitle = get_node_attribute_value(nodeChild, "title");
+                const Glib::ustring strTitle = get_node_attribute_value(nodeChild, GLOM_ATTRIBUTE_TITLE);
                 field.set_title(strTitle);
  
-                field.set_primary_key( get_node_attribute_value_as_bool(nodeChild, "primary_key") );
-                field.set_unique_key( get_node_attribute_value_as_bool(nodeChild, "unique") );
-                field.set_auto_increment( get_node_attribute_value_as_bool(nodeChild, "auto_increment") );
+                field.set_primary_key( get_node_attribute_value_as_bool(nodeChild, GLOM_ATTRIBUTE_PRIMARY_KEY) );
+                field.set_unique_key( get_node_attribute_value_as_bool(nodeChild, GLOM_ATTRIBUTE_UNIQUE) );
+                field.set_auto_increment( get_node_attribute_value_as_bool(nodeChild, GLOM_ATTRIBUTE_AUTOINCREMENT) );
 
                 //Get lookup information, if present.
-                xmlpp::Element* nodeLookup = get_node_child_named(nodeChild, "field_lookup");
+                xmlpp::Element* nodeLookup = get_node_child_named(nodeChild, GLOM_NODE_FIELD_LOOKUP);
                 if(nodeLookup)
                 { 
-                  field.set_lookup_relationship( get_node_attribute_value(nodeLookup, "relationship") );
-                  field.set_lookup_field( get_node_attribute_value(nodeLookup, "field") );
+                  field.set_lookup_relationship( get_node_attribute_value(nodeLookup, GLOM_ATTRIBUTE_RELATIONSHIP_NAME) );
+                  field.set_lookup_field( get_node_attribute_value(nodeLookup, GLOM_ATTRIBUTE_FIELD) );
                 }
 
-                field.set_calculation( get_node_attribute_value(nodeChild, "calculation") );
+                field.set_calculation( get_node_attribute_value(nodeChild, GLOM_ATTRIBUTE_CALCULATION) );
 
                 //Field Type:
-                const Glib::ustring field_type = get_node_attribute_value(nodeChild, "type");
+                const Glib::ustring field_type = get_node_attribute_value(nodeChild, GLOM_ATTRIBUTE_TYPE);
 
                 //Get the type enum for this string representation of the type:
                 Field::glom_field_type field_type_enum = Field::TYPE_INVALID;
@@ -1001,7 +1070,7 @@ bool Document_Glom::load_after()
                   }
                 }
 
-                field.set_default_value( get_node_attribute_value_as_value(nodeChild, "default_value", field_type_enum) );
+                field.set_default_value( get_node_attribute_value_as_value(nodeChild, GLOM_ATTRIBUTE_DEFAULT_VALUE, field_type_enum) );
 
                 //We set this after set_field_info(), because that gets a glom type from the (not-specified) gdatype. Yes, that's strange, and should probably be more explicit.
                 field.set_glom_type( field_type_enum );
@@ -1012,28 +1081,28 @@ bool Document_Glom::load_after()
           }
 
           //Relationships:
-          const xmlpp::Element* nodeRelationships = get_node_child_named(nodeTable, "relationships");
+          const xmlpp::Element* nodeRelationships = get_node_child_named(nodeTable, GLOM_NODE_RELATIONSHIPS);
           if(nodeRelationships)
           {
-            const xmlpp::Node::NodeList listNodes = nodeRelationships->get_children("relationship");
+            const xmlpp::Node::NodeList listNodes = nodeRelationships->get_children(GLOM_NODE_RELATIONSHIP);
             for(xmlpp::Node::NodeList::const_iterator iter = listNodes.begin(); iter != listNodes.end(); iter++)
             {
               const xmlpp::Element* nodeChild = dynamic_cast<xmlpp::Element*>(*iter);
               if(nodeChild)
               {
                 Relationship relationship;
-                const Glib::ustring relationship_name = get_node_attribute_value(nodeChild, "name");
+                const Glib::ustring relationship_name = get_node_attribute_value(nodeChild, GLOM_ATTRIBUTE_NAME);
 
                 relationship.set_from_table( table_name );
                 relationship.set_name( relationship_name );;
 
-                const Glib::ustring relationship_title = get_node_attribute_value(nodeChild, "title");
+                const Glib::ustring relationship_title = get_node_attribute_value(nodeChild, GLOM_ATTRIBUTE_TITLE);
                 relationship.set_title( relationship_title );
 
-                relationship.set_from_field( get_node_attribute_value(nodeChild, "key") );
-                relationship.set_to_table( get_node_attribute_value(nodeChild, "other_table") );
-                relationship.set_to_field( get_node_attribute_value(nodeChild, "other_key") );
-                relationship.set_auto_create( get_node_attribute_value_as_bool(nodeChild, "auto_create") );
+                relationship.set_from_field( get_node_attribute_value(nodeChild, GLOM_ATTRIBUTE_KEY) );
+                relationship.set_to_table( get_node_attribute_value(nodeChild, GLOM_ATTRIBUTE_OTHER_TABLE) );
+                relationship.set_to_field( get_node_attribute_value(nodeChild, GLOM_ATTRIBUTE_OTHER_KEY) );
+                relationship.set_auto_create( get_node_attribute_value_as_bool(nodeChild, GLOM_ATTRIBUTE_AUTO_CREATE) );
 
                 doctableinfo.m_relationships.push_back(relationship);
               }
@@ -1041,33 +1110,33 @@ bool Document_Glom::load_after()
           }
 
           //Layouts:
-          const xmlpp::Element* nodeDataLayouts = get_node_child_named(nodeTable, "data_layouts");
+          const xmlpp::Element* nodeDataLayouts = get_node_child_named(nodeTable, GLOM_NODE_DATA_LAYOUTS);
           if(nodeDataLayouts)
           {
-            xmlpp::Node::NodeList listNodes = nodeDataLayouts->get_children("data_layout");
+            xmlpp::Node::NodeList listNodes = nodeDataLayouts->get_children(GLOM_NODE_DATA_LAYOUT);
             for(xmlpp::Node::NodeList::iterator iter = listNodes.begin(); iter != listNodes.end(); ++iter)
             {
               xmlpp::Element* node = dynamic_cast<xmlpp::Element*>(*iter);
               if(node)
               {
-                const Glib::ustring layout_name = get_node_attribute_value(node, "name");
-                Glib::ustring parent_table = get_node_attribute_value(node, "parent_table");
+                const Glib::ustring layout_name = get_node_attribute_value(node, GLOM_ATTRIBUTE_NAME);
+                Glib::ustring parent_table = get_node_attribute_value(node, GLOM_ATTRIBUTE_PARENT_TABLE_NAME);
                 if(parent_table.empty())
                   parent_table = table_name; //Deal with the earlier file format that did not include this.
 
                 type_mapLayoutGroupSequence layout_groups;
 
-                const xmlpp::Element* nodeGroups = get_node_child_named(node, "data_layout_groups");
+                const xmlpp::Element* nodeGroups = get_node_child_named(node, GLOM_NODE_DATA_LAYOUT_GROUPS);
                 if(nodeGroups)
                 {
                   //Look at all its children:
-                  xmlpp::Node::NodeList listNodes = nodeGroups->get_children("data_layout_group");
+                  xmlpp::Node::NodeList listNodes = nodeGroups->get_children(GLOM_NODE_DATA_LAYOUT_GROUP);
                   for(xmlpp::Node::NodeList::iterator iter = listNodes.begin(); iter != listNodes.end(); ++iter)
                   {
                     const xmlpp::Element* node = dynamic_cast<const xmlpp::Element*>(*iter);
                     if(node)
                     {
-                      const Glib::ustring group_name = get_node_attribute_value(node, "name");
+                      const Glib::ustring group_name = get_node_attribute_value(node, GLOM_ATTRIBUTE_NAME);
                       if(!group_name.empty())
                       {
                         LayoutGroup group;
@@ -1092,10 +1161,10 @@ bool Document_Glom::load_after()
           //Groups:
           m_groups.clear();
 
-          const xmlpp::Element* nodeGroups = get_node_child_named(nodeRoot, "groups");
+          const xmlpp::Element* nodeGroups = get_node_child_named(nodeRoot, GLOM_NODE_GROUPS);
           if(nodeGroups)
           {
-            xmlpp::Node::NodeList listNodes = nodeGroups->get_children("group");
+            xmlpp::Node::NodeList listNodes = nodeGroups->get_children(GLOM_NODE_GROUP);
             for(xmlpp::Node::NodeList::iterator iter = listNodes.begin(); iter != listNodes.end(); ++iter)
             {
               xmlpp::Element* node = dynamic_cast<xmlpp::Element*>(*iter);
@@ -1103,22 +1172,22 @@ bool Document_Glom::load_after()
               {
                 GroupInfo group_info;
 
-                group_info.m_name = get_node_attribute_value(node, "name");
-                group_info.m_developer = get_node_attribute_value_as_bool(node, "developer");
+                group_info.m_name = get_node_attribute_value(node, GLOM_ATTRIBUTE_NAME);
+                group_info.m_developer = get_node_attribute_value_as_bool(node, GLOM_ATTRIBUTE_DEVELOPER);
 
-                xmlpp::Node::NodeList listTablePrivs = nodeGroups->get_children("table_privs");
+                xmlpp::Node::NodeList listTablePrivs = nodeGroups->get_children(GLOM_NODE_TABLE_PRIVS);
                 for(xmlpp::Node::NodeList::iterator iter = listTablePrivs.begin(); iter != listTablePrivs.end(); ++iter)
                 {
                   xmlpp::Element* node = dynamic_cast<xmlpp::Element*>(*iter);
                   if(node)
                   {
-                    const Glib::ustring table_name = get_node_attribute_value(node, "table_name");
+                    const Glib::ustring table_name = get_node_attribute_value(node, GLOM_ATTRIBUTE_TABLE_NAME);
 
                     Privileges privs;
-                    privs.m_view = get_node_attribute_value_as_bool(node, "priv_view");
-                    privs.m_edit = get_node_attribute_value_as_bool(node, "priv_edit");
-                    privs.m_create = get_node_attribute_value_as_bool(node, "priv_create");
-                    privs.m_delete = get_node_attribute_value_as_bool(node, "priv_delete");
+                    privs.m_view = get_node_attribute_value_as_bool(node, GLOM_ATTRIBUTE_PRIV_VIEW);
+                    privs.m_edit = get_node_attribute_value_as_bool(node, GLOM_ATTRIBUTE_PRIV_EDIT);
+                    privs.m_create = get_node_attribute_value_as_bool(node, GLOM_ATTRIBUTE_PRIV_CREATE);
+                    privs.m_delete = get_node_attribute_value_as_bool(node, GLOM_ATTRIBUTE_PRIV_DELETE);
 
                     group_info.m_map_privileges[table_name] = privs;
                   }
@@ -1142,13 +1211,13 @@ bool Document_Glom::load_after()
 
 void Document_Glom::save_before_layout_group(xmlpp::Element* node, const LayoutGroup& group)
 {
-  xmlpp::Element* child = node->add_child("data_layout_group");
+  xmlpp::Element* child = node->add_child(GLOM_NODE_DATA_LAYOUT_GROUP);
 
-  child->set_attribute("name", group.get_name());
-  child->set_attribute("title", group.m_title);
-  set_node_attribute_value_as_decimal(child, "columns_count", group.m_columns_count);
+  child->set_attribute(GLOM_ATTRIBUTE_NAME, group.get_name());
+  child->set_attribute(GLOM_ATTRIBUTE_TITLE, group.m_title);
+  set_node_attribute_value_as_decimal(child, GLOM_ATTRIBUTE_COLUMNS_COUNT, group.m_columns_count);
 
-  set_node_attribute_value_as_decimal(child, "sequence", group.m_sequence);
+  set_node_attribute_value_as_decimal(child, GLOM_ATTRIBUTE_SEQUENCE, group.m_sequence);
 
   //Add the child items:
   LayoutGroup::type_map_const_items items = group.get_items();
@@ -1166,52 +1235,52 @@ void Document_Glom::save_before_layout_group(xmlpp::Element* node, const LayoutG
       const LayoutItem_Field* field = dynamic_cast<const LayoutItem_Field*>(item);
       if(field) //If it is a field
       {
-        xmlpp::Element* nodeItem = child->add_child("data_layout_item");
-        nodeItem->set_attribute("name", item->get_name());
-        nodeItem->set_attribute("relationship", field->get_relationship_name());
-        set_node_attribute_value_as_bool(nodeItem, "editable", item->get_editable());
+        xmlpp::Element* nodeItem = child->add_child(GLOM_NODE_DATA_LAYOUT_ITEM);
+        nodeItem->set_attribute(GLOM_ATTRIBUTE_NAME, item->get_name());
+        nodeItem->set_attribute(GLOM_ATTRIBUTE_RELATIONSHIP_NAME, field->get_relationship_name());
+        set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_EDITABLE, item->get_editable());
 
         //Numeric format:
-        set_node_attribute_value_as_bool(nodeItem, "format_thousands_separator",  field->m_numeric_format.m_use_thousands_separator);
-        set_node_attribute_value_as_bool(nodeItem, "format_decimal_places_restricted", field->m_numeric_format.m_decimal_places_restricted);
-        set_node_attribute_value_as_decimal(nodeItem, "format_decimal_places", field->m_numeric_format.m_decimal_places);
-        set_node_attribute_value(nodeItem, "format_currency_symbol", field->m_numeric_format.m_currency_symbol);
+        set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_FORMAT_THOUSANDS_SEPARATOR,  field->m_numeric_format.m_use_thousands_separator);
+        set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_FORMAT_DECIMAL_PLACES_RESTRICTED, field->m_numeric_format.m_decimal_places_restricted);
+        set_node_attribute_value_as_decimal(nodeItem, GLOM_ATTRIBUTE_FORMAT_DECIMAL_PLACES, field->m_numeric_format.m_decimal_places);
+        set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_FORMAT_CURRENCY_SYMBOL, field->m_numeric_format.m_currency_symbol);
 
-        set_node_attribute_value_as_bool(nodeItem, "choices_restricted", field->get_choices_restricted());
-        set_node_attribute_value_as_bool(nodeItem, "choices_custom", field->get_has_custom_choices());
+        set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_CHOICES_RESTRICTED, field->get_choices_restricted());
+        set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_CHOICES_CUSTOM, field->get_has_custom_choices());
 
         if(field->get_has_custom_choices())
         {
-           xmlpp::Element* child = nodeItem->add_child("custom_choice_list");
+           xmlpp::Element* child = nodeItem->add_child(GLOM_ATTRIBUTE_CHOICES_CUSTOM_LIST);
 
            const LayoutItem_Field::type_list_values list_values = field->get_choices_custom();
            for(LayoutItem_Field::type_list_values::const_iterator iter = list_values.begin(); iter != list_values.end(); ++iter)
            {
-             xmlpp::Element* childChoice = child->add_child("custom_choice");
-             set_node_attribute_value_as_value(childChoice, "value", *iter, field->m_field.get_glom_type());
+             xmlpp::Element* childChoice = child->add_child(GLOM_NODE_CUSTOM_CHOICE);
+             set_node_attribute_value_as_value(childChoice, GLOM_ATTRIBUTE_VALUE, *iter, field->m_field.get_glom_type());
            }
         }
 
-        set_node_attribute_value_as_bool(nodeItem, "choices_related", field->get_has_related_choices() );
+        set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_CHOICES_RELATED, field->get_has_related_choices() );
 
         Glib::ustring choice_relationship, choice_field, choice_second;
         field->get_choices(choice_relationship, choice_field, choice_second);
-        set_node_attribute_value(nodeItem, "choices_related_relationship", choice_relationship);
-        set_node_attribute_value(nodeItem, "choices_related_field", choice_field);
-        set_node_attribute_value(nodeItem, "choices_related_second", choice_second);
+        set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_CHOICES_RELATED_RELATIONSHIP, choice_relationship);
+        set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_CHOICES_RELATED_FIELD, choice_field);
+        set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_CHOICES_RELATED_SECOND, choice_second);
 
 
-        set_node_attribute_value_as_decimal(nodeItem, "sequence", item->m_sequence);
+        set_node_attribute_value_as_decimal(nodeItem, GLOM_ATTRIBUTE_SEQUENCE, item->m_sequence);
       }
       else
       {
         const LayoutItem_Portal* portal = dynamic_cast<const LayoutItem_Portal*>(item);
         if(portal) //If it is a portal
         {
-          xmlpp::Element* nodeItem = child->add_child("data_layout_portal");
-          nodeItem->set_attribute("relationship", portal->get_relationship());
+          xmlpp::Element* nodeItem = child->add_child(GLOM_NODE_DATA_LAYOUT_PORTAL);
+          nodeItem->set_attribute(GLOM_ATTRIBUTE_RELATIONSHIP_NAME, portal->get_relationship());
 
-          set_node_attribute_value_as_decimal(nodeItem, "sequence", item->m_sequence);
+          set_node_attribute_value_as_decimal(nodeItem, GLOM_ATTRIBUTE_SEQUENCE, item->m_sequence);
         }
       }
 
@@ -1224,15 +1293,15 @@ bool Document_Glom::save_before()
   xmlpp::Element* nodeRoot = get_node_document();
   if(nodeRoot)
   {
-    set_node_attribute_value(nodeRoot, "database_title", m_database_title);
+    set_node_attribute_value(nodeRoot, GLOM_ATTRIBUTE_DATABASE_TITLE, m_database_title);
 
-    xmlpp::Element* nodeConnection = get_node_child_named_with_add(nodeRoot, "connection");
-    set_node_attribute_value(nodeConnection, "server", m_connection_server); 
-    set_node_attribute_value(nodeConnection, "user", m_connection_user); 
-    set_node_attribute_value(nodeConnection, "database", m_connection_database);
+    xmlpp::Element* nodeConnection = get_node_child_named_with_add(nodeRoot, GLOM_NODE_CONNECTION);
+    set_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_SERVER, m_connection_server);
+    set_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_USER, m_connection_user);
+    set_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_DATABASE, m_connection_database);
 
     //Remove existing tables:
-    xmlpp::Node::NodeList listNodes = nodeRoot->get_children("table");
+    xmlpp::Node::NodeList listNodes = nodeRoot->get_children(GLOM_NODE_TABLE);
     for(xmlpp::Node::NodeList::iterator iter = listNodes.begin(); iter != listNodes.end(); ++iter)
       nodeRoot->remove_child(*iter);
 
@@ -1246,14 +1315,14 @@ bool Document_Glom::save_before()
 
       if(!doctableinfo.m_info.m_name.empty())
       {
-        xmlpp::Element* nodeTable = nodeRoot->add_child("table");
-        set_node_attribute_value(nodeTable, "name", doctableinfo.m_info.m_name);
-        set_node_attribute_value(nodeTable, "title", doctableinfo.m_info.m_title);
-        set_node_attribute_value_as_bool(nodeTable, "hidden", doctableinfo.m_info.m_hidden);
-        set_node_attribute_value_as_bool(nodeTable, "default", doctableinfo.m_info.m_default);
+        xmlpp::Element* nodeTable = nodeRoot->add_child(GLOM_NODE_TABLE);
+        set_node_attribute_value(nodeTable, GLOM_ATTRIBUTE_NAME, doctableinfo.m_info.m_name);
+        set_node_attribute_value(nodeTable, GLOM_ATTRIBUTE_TITLE, doctableinfo.m_info.m_title);
+        set_node_attribute_value_as_bool(nodeTable, GLOM_ATTRIBUTE_HIDDEN, doctableinfo.m_info.m_hidden);
+        set_node_attribute_value_as_bool(nodeTable, GLOM_ATTRIBUTE_DEFAULT, doctableinfo.m_info.m_default);
 
         //Fields:
-        xmlpp::Element* elemFields = nodeTable->add_child("fields");
+        xmlpp::Element* elemFields = nodeTable->add_child(GLOM_NODE_FIELDS);
 
         const Field::type_map_type_names type_names = Field::get_type_names();
 
@@ -1261,64 +1330,64 @@ bool Document_Glom::save_before()
         {
           const Field& field = *iter;
 
-          xmlpp::Element* elemField = elemFields->add_child("field");
-          set_node_attribute_value(elemField, "name", field.get_name());
-          set_node_attribute_value(elemField, "title", field.get_title());
+          xmlpp::Element* elemField = elemFields->add_child(GLOM_NODE_FIELD);
+          set_node_attribute_value(elemField, GLOM_ATTRIBUTE_NAME, field.get_name());
+          set_node_attribute_value(elemField, GLOM_ATTRIBUTE_TITLE, field.get_title());
 
-          set_node_attribute_value_as_bool(elemField, "primary_key", field.get_primary_key());
-          set_node_attribute_value_as_bool(elemField, "unique", field.get_unique_key());
-          set_node_attribute_value_as_bool(elemField, "auto_increment", field.get_auto_increment());
-          set_node_attribute_value_as_value(elemField, "default_value", field.get_default_value(), field.get_glom_type());
+          set_node_attribute_value_as_bool(elemField, GLOM_ATTRIBUTE_PRIMARY_KEY, field.get_primary_key());
+          set_node_attribute_value_as_bool(elemField, GLOM_ATTRIBUTE_UNIQUE, field.get_unique_key());
+          set_node_attribute_value_as_bool(elemField, GLOM_ATTRIBUTE_AUTOINCREMENT, field.get_auto_increment());
+          set_node_attribute_value_as_value(elemField, GLOM_ATTRIBUTE_DEFAULT_VALUE, field.get_default_value(), field.get_glom_type());
 
-          set_node_attribute_value(elemField, "calculation", field.get_calculation());
+          set_node_attribute_value(elemField, GLOM_ATTRIBUTE_CALCULATION, field.get_calculation());
 
           Glib::ustring field_type;
           Field::type_map_type_names::const_iterator iterTypes = type_names.find( field.get_glom_type() );
           if(iterTypes != type_names.end())
             field_type = iterTypes->second;
 
-          set_node_attribute_value(elemField, "type", field_type);
+          set_node_attribute_value(elemField, GLOM_ATTRIBUTE_TYPE, field_type);
 
           //Add Lookup sub-node:
           if(field.get_is_lookup())
           {
-            xmlpp::Element* elemFieldLookup = elemField->add_child("field_lookup");
-            set_node_attribute_value(elemFieldLookup, "relationship", field.get_lookup_relationship());
-            set_node_attribute_value(elemFieldLookup, "field", field.get_lookup_field());
+            xmlpp::Element* elemFieldLookup = elemField->add_child(GLOM_NODE_FIELD_LOOKUP);
+            set_node_attribute_value(elemFieldLookup, GLOM_ATTRIBUTE_RELATIONSHIP_NAME, field.get_lookup_relationship());
+            set_node_attribute_value(elemFieldLookup, GLOM_ATTRIBUTE_FIELD, field.get_lookup_field());
           }
         }
 
         //Relationships:
         //Add new <relationships> node:
-        xmlpp::Element* elemRelationships = nodeTable->add_child("relationships");
+        xmlpp::Element* elemRelationships = nodeTable->add_child(GLOM_NODE_RELATIONSHIPS);
 
         //Add each <relationship> node:
         for(type_vecRelationships::const_iterator iter = doctableinfo.m_relationships.begin(); iter != doctableinfo.m_relationships.end(); iter++)
         {
           const Relationship& relationship = *iter;
 
-          xmlpp::Element* elemRelationship = elemRelationships->add_child("relationship");
-          set_node_attribute_value(elemRelationship, "name", relationship.get_name());
-          set_node_attribute_value(elemRelationship, "title", relationship.get_title());
-          set_node_attribute_value(elemRelationship, "key", relationship.get_from_field());
-          set_node_attribute_value(elemRelationship, "other_table", relationship.get_to_table());
-          set_node_attribute_value(elemRelationship, "other_key", relationship.get_to_field());
-          set_node_attribute_value_as_bool(elemRelationship, "auto_create", relationship.get_auto_create());
+          xmlpp::Element* elemRelationship = elemRelationships->add_child(GLOM_NODE_RELATIONSHIP);
+          set_node_attribute_value(elemRelationship, GLOM_ATTRIBUTE_NAME, relationship.get_name());
+          set_node_attribute_value(elemRelationship, GLOM_ATTRIBUTE_TITLE, relationship.get_title());
+          set_node_attribute_value(elemRelationship, GLOM_ATTRIBUTE_KEY, relationship.get_from_field());
+          set_node_attribute_value(elemRelationship, GLOM_ATTRIBUTE_OTHER_TABLE, relationship.get_to_table());
+          set_node_attribute_value(elemRelationship, GLOM_ATTRIBUTE_OTHER_KEY, relationship.get_to_field());
+          set_node_attribute_value_as_bool(elemRelationship, GLOM_ATTRIBUTE_AUTO_CREATE, relationship.get_auto_create());
         }
 
 
         //Layouts:
-        xmlpp::Element* nodeDataLayouts = nodeTable->add_child("data_layouts");
+        xmlpp::Element* nodeDataLayouts = nodeTable->add_child(GLOM_NODE_DATA_LAYOUTS);
 
         //Add the groups:
         //Make sure that we always get these _after_ the relationships.
         for(DocumentTableInfo::type_layouts::const_iterator iter = doctableinfo.m_layouts.begin(); iter != doctableinfo.m_layouts.end(); ++iter)
         {
-          xmlpp::Element* nodeLayout = nodeDataLayouts->add_child("data_layout");
-          nodeLayout->set_attribute("name", iter->m_layout_name);
-          nodeLayout->set_attribute("parent_table", iter->m_parent_table);
+          xmlpp::Element* nodeLayout = nodeDataLayouts->add_child(GLOM_NODE_DATA_LAYOUT);
+          nodeLayout->set_attribute(GLOM_ATTRIBUTE_NAME, iter->m_layout_name);
+          nodeLayout->set_attribute(GLOM_ATTRIBUTE_PARENT_TABLE_NAME, iter->m_parent_table);
 
-          xmlpp::Element* nodeGroups = nodeLayout->add_child("data_layout_groups");
+          xmlpp::Element* nodeGroups = nodeLayout->add_child(GLOM_NODE_DATA_LAYOUT_GROUPS);
 
           const type_mapLayoutGroupSequence& group_sequence = iter->m_layout_groups;
           for(type_mapLayoutGroupSequence::const_iterator iterGroups = group_sequence.begin(); iterGroups != group_sequence.end(); ++iterGroups)
@@ -1332,12 +1401,12 @@ bool Document_Glom::save_before()
 
 
     //Remove existing groups:
-    listNodes = nodeRoot->get_children("groups");
+    listNodes = nodeRoot->get_children(GLOM_NODE_GROUPS);
     for(xmlpp::Node::NodeList::iterator iter = listNodes.begin(); iter != listNodes.end(); ++iter)
       nodeRoot->remove_child(*iter);
 
     //Add groups:
-    xmlpp::Element* nodeGroups = nodeRoot->add_child("groups");
+    xmlpp::Element* nodeGroups = nodeRoot->add_child(GLOM_NODE_GROUPS);
 
     nodeGroups->add_child_comment("These are only used when recreating a database from an example file. The actualy access-control is on the server, of course.");
 
@@ -1345,22 +1414,22 @@ bool Document_Glom::save_before()
     {
       const GroupInfo& group_info = iter->second;
 
-      xmlpp::Element* nodeGroup = nodeGroups->add_child("group");
-      nodeGroup->set_attribute("name", group_info.m_name);
-      set_node_attribute_value_as_bool(nodeGroup, "developer", group_info.m_developer);
+      xmlpp::Element* nodeGroup = nodeGroups->add_child(GLOM_NODE_GROUP);
+      nodeGroup->set_attribute(GLOM_ATTRIBUTE_NAME, group_info.m_name);
+      set_node_attribute_value_as_bool(nodeGroup, GLOM_ATTRIBUTE_DEVELOPER, group_info.m_developer);
 
       //The privilieges for each table, for this group:
       for(GroupInfo::type_map_table_privileges::const_iterator iter = group_info.m_map_privileges.begin(); iter != group_info.m_map_privileges.end(); ++iter)
       {
-        xmlpp::Element* nodeTablePrivs = nodeGroups->add_child("table_privs");
+        xmlpp::Element* nodeTablePrivs = nodeGroups->add_child(GLOM_NODE_TABLE_PRIVS);
 
-        set_node_attribute_value(nodeTablePrivs, "table_name", iter->first);
+        set_node_attribute_value(nodeTablePrivs, GLOM_ATTRIBUTE_TABLE_NAME, iter->first);
 
         const Privileges& privs = iter->second;
-        set_node_attribute_value_as_bool(nodeTablePrivs, "priv_view", privs.m_view);
-        set_node_attribute_value_as_bool(nodeTablePrivs, "priv_edit", privs.m_edit);
-        set_node_attribute_value_as_bool(nodeTablePrivs, "priv_create", privs.m_create);
-        set_node_attribute_value_as_bool(nodeTablePrivs, "priv_delete", privs.m_delete);
+        set_node_attribute_value_as_bool(nodeTablePrivs, GLOM_ATTRIBUTE_PRIV_VIEW, privs.m_view);
+        set_node_attribute_value_as_bool(nodeTablePrivs, GLOM_ATTRIBUTE_PRIV_EDIT, privs.m_edit);
+        set_node_attribute_value_as_bool(nodeTablePrivs, GLOM_ATTRIBUTE_PRIV_CREATE, privs.m_create);
+        set_node_attribute_value_as_bool(nodeTablePrivs, GLOM_ATTRIBUTE_PRIV_DELETE, privs.m_delete);
       }
     }
 
