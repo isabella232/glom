@@ -1,3 +1,8 @@
+2005-04-25  Murray Cumming <murrayc@murrayc.com>
+
+	* pt_BR.po: Untranslated some pango markup that 
+	caused a crash. Do not translate markup.
+
 2005-04-21 Gareth Owen <gowen@gnome.org>
 
 	* en_GB.po: Updated British English translation.
