@@ -1,5 +1,10 @@
 2005-04-26  Murray Cumming <murrayc@murrayc.com>
 
+	* glom/utility_widgets/db_adddel/db_adddel.cc:
+	construct_columns(): Right-align numeric fields.
+
+2005-04-26  Murray Cumming <murrayc@murrayc.com>
+
 	* glom/utility_widgets/comboentryglom.cc:
 	* glom/utility_widgets/comboentryglom.h:
 	* glom/utility_widgets/entryglom.cc:

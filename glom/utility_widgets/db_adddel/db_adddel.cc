@@ -581,21 +581,6 @@ void DbAddDel::construct_specified_columns()
 
   Gtk::TreeModel::ColumnRecord record;
 
-  //Hidden internal columns:
-
-  //We must recreate these standard modelcolumns, because we can not reuse them
-  //if(m_modelcolumn_key)
-  //  delete m_modelcolumn_key;
-
-  //m_modelcolumn_key = new Gtk::TreeModelColumn<Gnome::Gda::Value>;
-
-  //if(m_modelcolumn_placeholder)
-  //  delete m_modelcolumn_placeholder;
-  //m_modelcolumn_placeholder = new Gtk::TreeModelColumn<bool>;
-
-  //record.add(*m_modelcolumn_key);
-  //record.add(*m_modelcolumn_placeholder);
-
   //Database columns:
   type_model_store::type_vec_fields fields;
   {
@@ -666,35 +651,6 @@ void DbAddDel::construct_specified_columns()
       Gtk::CellRenderer* pCellRenderer = 0;
       switch(column_info.m_field.m_field.get_glom_type())
       {
-  /*
-        case(DbAddDelColumnInfo::STYLE_Choices):
-        {
-          //Use a custom CellRenderer:
-          CellRendererList* pCellRendererDerived = Gtk::manage( new CellRendererList() );
-
-          //Add the choices:
-          const type_vecStrings vecStrings = column_info.m_choices;
-          for(type_vecStrings::const_iterator iter = vecStrings.begin(); iter != vecStrings.end(); ++iter)
-          {
-            pCellRendererDerived->append_list_item(*iter);
-          }
-
-          pCellRenderer = pCellRendererDerived;
-
-          break;
-        }
-
-   */
-
-    /* Possible types:
-    TYPE_INVALID,
-    TYPE_NUMERIC,
-    TYPE_TEXT,
-    TYPE_DATE,
-    TYPE_TIME,
-    TYPE_BOOLEAN
-    */
-
         case(Field::TYPE_BOOLEAN):
         {
           pCellRenderer = Gtk::manage( new Gtk::CellRendererToggle() );
@@ -729,6 +685,9 @@ void DbAddDel::construct_specified_columns()
         {
           //Make it editable:
           pCellRenderer->property_editable() = true;
+
+          if( column_info.m_field.m_field.get_glom_type() == Field::TYPE_NUMERIC )
+            pCellRenderer->property_xalign() = 1.0; //Align right.
 
           //Connect to its signal:
           pCellRenderer->signal_edited().connect(

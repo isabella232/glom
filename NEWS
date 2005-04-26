@@ -1,3 +1,7 @@
+* Details: Use a bigger widget (TextView) with scrollbars 
+  for multiline text fields.
+* Details and List: Right-align numbers.
+  
 0.8.24:
 
 * Remove debug code that hardcoded one file path, 
