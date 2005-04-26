@@ -26,7 +26,8 @@ LayoutItem_Field::LayoutItem_Field()
   m_hidden(false),
   m_choices_restricted(false),
   m_choices_custom(false),
-  m_choices_related(false)
+  m_choices_related(false),
+  m_text_format_multiline(false)
 {
 }
 
@@ -45,6 +46,7 @@ LayoutItem_Field::LayoutItem_Field(const LayoutItem_Field& src)
   m_choices_restricted(src.m_choices_restricted),
   m_choices_custom(src.m_choices_custom),
   m_choices_related(src.m_choices_related),
+  m_text_format_multiline(src.m_text_format_multiline),
   m_choices_related_field(src.m_choices_related_field),
   m_choices_related_field_second(src.m_choices_related_field_second)
 {
@@ -76,7 +78,8 @@ bool LayoutItem_Field::operator==(const LayoutItem_Field& src) const
     (m_choices_related == src.m_choices_related) &&
     (m_choices_related_relationship == src.m_choices_related_relationship) &&
     (m_choices_related_field == src.m_choices_related_field) &&
-    (m_choices_related_field_second == src.m_choices_related_field_second);
+    (m_choices_related_field_second == src.m_choices_related_field_second) &&
+    (m_text_format_multiline == src.m_text_format_multiline);
 }
 
 
@@ -102,6 +105,8 @@ LayoutItem_Field& LayoutItem_Field::operator=(const LayoutItem_Field& src)
   m_choices_related_relationship = src.m_choices_related_relationship;
   m_choices_related_field = src.m_choices_related_field;
   m_choices_related_field_second = src.m_choices_related_field_second;
+
+  m_text_format_multiline = src.m_text_format_multiline;
 
 //g_warning("LayoutItem_Field::operator=: m_choices_related_relationship=%s, src.m_choices_related_relationship=%s", m_choices_related_relationship.c_str(), src.m_choices_related_relationship.c_str());
   return *this;
@@ -145,6 +150,16 @@ void LayoutItem_Field::set_relationship_name(const Glib::ustring& relationship_n
   m_relationship_name = relationship_name;
 }
 */
+
+bool LayoutItem_Field::get_text_format_multiline() const
+{
+  return m_text_format_multiline;
+}
+
+void LayoutItem_Field::set_text_format_multiline(bool value)
+{
+  m_text_format_multiline = value;
+}
 
 bool LayoutItem_Field::get_editable_and_allowed() const
 {

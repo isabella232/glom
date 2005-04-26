@@ -101,6 +101,7 @@ void Dialog_FieldLayout::set_field(const LayoutItem_Field& field, const Glib::us
   else
     m_frame_text_format->hide();
 
+  m_checkbox_format_text_multiline->set_active(field.get_text_format_multiline());
 
   //Choices:
   m_checkbutton_choices_restricted->set_active(field.get_choices_restricted());
@@ -154,6 +155,8 @@ bool Dialog_FieldLayout::get_field_chosen(LayoutItem_Field& field) const
 
   m_layout_item.m_numeric_format.m_currency_symbol = m_entry_currency_symbol->get_entry()->get_text();
 
+  //Text formatting:
+  m_layout_item.set_text_format_multiline(m_checkbox_format_text_multiline->get_active());
 
   //Choices:
   m_layout_item.set_choices_restricted(m_checkbutton_choices_restricted->get_active());

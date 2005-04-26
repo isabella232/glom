@@ -81,6 +81,8 @@
 #define GLOM_ATTRIBUTE_FORMAT_DECIMAL_PLACES "format_decimal_places"
 #define GLOM_ATTRIBUTE_FORMAT_CURRENCY_SYMBOL "format_currency_symbol"
 
+#define GLOM_ATTRIBUTE_FORMAT_TEXT_MULTILINE "format_text_multiline"
+
 #define GLOM_ATTRIBUTE_CHOICES_RESTRICTED "choices_restricted"
 #define GLOM_ATTRIBUTE_CHOICES_CUSTOM "choices_custom"
 #define GLOM_ATTRIBUTE_CHOICES_CUSTOM_LIST "custom_choice_list"
@@ -918,6 +920,9 @@ void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Gl
 
         item.m_numeric_format = numeric_format;
 
+        //Text formatting:
+        item.set_text_format_multiline( get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_FORMAT_TEXT_MULTILINE) );
+
         //Choices:
         item.set_choices_restricted( get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_CHOICES_RESTRICTED) );
         item.set_has_custom_choices( get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_CHOICES_CUSTOM) );
@@ -1249,6 +1254,10 @@ void Document_Glom::save_before_layout_group(xmlpp::Element* node, const LayoutG
         set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_CHOICES_RESTRICTED, field->get_choices_restricted());
         set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_CHOICES_CUSTOM, field->get_has_custom_choices());
 
+        //Text formatting:
+        set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_FORMAT_TEXT_MULTILINE,  field->get_text_format_multiline());
+
+        //Choices:
         if(field->get_has_custom_choices())
         {
            xmlpp::Element* child = nodeItem->add_child(GLOM_ATTRIBUTE_CHOICES_CUSTOM_LIST);

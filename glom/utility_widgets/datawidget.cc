@@ -22,6 +22,7 @@
 #include "entryglom.h"
 #include "comboentryglom.h"
 #include "comboglom.h"
+#include "textviewglom.h"
 #include "../data_structure/glomconversions.h"
 #include "../application.h"
 #include "../mode_data/dialog_choose_field.h"
@@ -125,10 +126,18 @@ DataWidget::DataWidget(const LayoutItem_Field& field, const Glib::ustring& table
     }
     else
     {
-      EntryGlom* entry = Gtk::manage(new EntryGlom(glom_type));
-      entry->set_layout_item(get_layout_item()->clone(), table_name); //TODO_Performance: We only need this for the numerical format.
+      if(field.get_text_format_multiline())
+      {
+        TextViewGlom* textview = Gtk::manage(new TextViewGlom(glom_type));
+        pFieldWidget = textview;
+      }
+      else
+      {
+        EntryGlom* entry = Gtk::manage(new EntryGlom(glom_type));
+        pFieldWidget = entry;
+      }
 
-      pFieldWidget = entry;
+      pFieldWidget->set_layout_item(get_layout_item()->clone(), table_name); //TODO_Performance: We only need this for the numerical format.
     }
 
     pFieldWidget->signal_edited().connect( sigc::mem_fun(*this, &DataWidget::on_widget_edited)  );
@@ -170,31 +179,19 @@ DataWidget::type_signal_edited DataWidget::signal_edited()
 void DataWidget::set_value(const Gnome::Gda::Value& value)
 {
   Gtk::Widget* widget = get_child();
-  EntryGlom* entry = dynamic_cast<EntryGlom*>(widget);
-  if(entry)
-    entry->set_value(value);
+  LayoutWidgetField* generic_field_widget = dynamic_cast<LayoutWidgetField*>(widget);
+  if(generic_field_widget)
+    generic_field_widget->set_value(value);
   else
   {
-    ComboEntryGlom* combo = dynamic_cast<ComboEntryGlom*>(widget);
-    if(combo)
-      combo->set_value(value);
-    else
+    Gtk::CheckButton* checkbutton = dynamic_cast<Gtk::CheckButton*>(widget);
+    if(checkbutton)
     {
-      ComboGlom* combo = dynamic_cast<ComboGlom*>(widget);
-      if(combo)
-        combo->set_value(value);
-      else
-      {
-        Gtk::CheckButton* checkbutton = dynamic_cast<Gtk::CheckButton*>(widget);
-        if(checkbutton)
-        {
-          bool bValue = false;
-          if(!value.is_null())
-            bValue = value.get_bool();
+      bool bValue = false;
+      if(!value.is_null())
+        bValue = value.get_bool();
 
-          checkbutton->set_active( bValue );
-        }
-      }
+      checkbutton->set_active( bValue );
     }
   }
 }

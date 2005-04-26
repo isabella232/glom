@@ -78,6 +78,9 @@ public:
 
   NumericFormat m_numeric_format; //Only used for numeric fields.
 
+  bool get_text_format_multiline() const;
+  void set_text_format_multiline(bool value = true);
+
   bool get_editable_and_allowed() const;
 
   /// For extra fields, needed for SQL queries. The user should never be able to made an item hidden - he can just remove it.
@@ -100,6 +103,8 @@ protected:
   type_list_values m_choices_custom_list; //A drop-down list of possible values for the field.
   bool m_choices_restricted;
   bool m_choices_custom, m_choices_related;
+
+  bool m_text_format_multiline;
 
   Glib::ustring m_choices_related_field, m_choices_related_field_second;
 };
