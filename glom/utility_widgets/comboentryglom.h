@@ -53,6 +53,8 @@ public:
 
   virtual Gnome::Gda::Value get_value() const;
 
+  virtual void set_layout_item(LayoutItem* layout_item, const Glib::ustring& table_name);
+
 protected:
   void init();
 

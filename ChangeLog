@@ -1,5 +1,17 @@
 2005-04-26  Murray Cumming <murrayc@murrayc.com>
 
+	* glom/utility_widgets/comboentryglom.cc:
+	* glom/utility_widgets/comboentryglom.h:
+	* glom/utility_widgets/entryglom.cc:
+	* glom/utility_widgets/entryglom.h:
+	Right-align number fields.
+	* glom/utility_widgets/layoutwidgetbase.h: 
+	Make set_layout_item() virtual so we can 
+	change parts of the derived widget according to 
+	the layout details.
+
+2005-04-26  Murray Cumming <murrayc@murrayc.com>
+
 	* examples/example_smallbusiness.glom: Make comments 
 	multiline formatted on Details views.
 	* glom/data_structure/layout/layoutitem_field.cc:

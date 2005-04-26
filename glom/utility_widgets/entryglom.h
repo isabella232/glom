@@ -50,6 +50,7 @@ public:
   virtual Gnome::Gda::Value get_value() const;
 
 protected:
+  void init();
 
   //Overrides of default signal handlers:
   virtual void on_changed(); //From Gtk::Entry.

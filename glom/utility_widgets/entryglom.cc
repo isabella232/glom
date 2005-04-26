@@ -36,16 +36,24 @@ EntryGlom::EntryGlom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::X
   m_glom_type(Field::TYPE_TEXT)
 {
   setup_menu();
+  init();
 }
 
 EntryGlom::EntryGlom(Field::glom_field_type glom_type)
 : m_glom_type(glom_type)
 {
   setup_menu();
+  init();
 }
 
 EntryGlom::~EntryGlom()
 {
+}
+
+void EntryGlom::init()
+{
+  if(m_glom_type == Field::TYPE_NUMERIC)
+    set_alignment(1.0); //Align numbers to the right.
 }
 
 void EntryGlom::set_glom_type(Field::glom_field_type glom_type)

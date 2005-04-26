@@ -85,6 +85,17 @@ ComboEntryGlom::~ComboEntryGlom()
 {
 }
 
+void ComboEntryGlom::set_layout_item(LayoutItem* layout_item, const Glib::ustring& table_name)
+{
+  //Call base class:
+  ComboGlomChoicesBase::set_layout_item(layout_item, table_name);
+
+  //Right-align numbers:
+  const LayoutItem_Field* layout_field = dynamic_cast<const LayoutItem_Field*>(get_layout_item());
+  if(layout_field && layout_field->m_field.get_glom_type() == Field::TYPE_NUMERIC)
+      get_entry()->set_alignment(1.0); //Align numbers to the right.
+}
+
 void ComboEntryGlom::check_for_change()
 {
   Glib::ustring new_text = get_entry()->get_text();
@@ -149,7 +160,9 @@ void ComboEntryGlom::set_value(const Gnome::Gda::Value& value)
 {
   const LayoutItem_Field* layout_item = dynamic_cast<const LayoutItem_Field*>(get_layout_item());
   if(layout_item)
+  {
     set_text(GlomConversions::get_text_for_gda_value(layout_item->m_field.get_glom_type(), value, layout_item->m_numeric_format));
+  }
 }
 
 void ComboEntryGlom::set_text(const Glib::ustring& text)

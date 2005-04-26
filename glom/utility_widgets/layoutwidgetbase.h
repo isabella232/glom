@@ -34,7 +34,7 @@ public:
   virtual ~LayoutWidgetBase();
 
   ///Takes ownership.
-  void set_layout_item(LayoutItem* layout_item, const Glib::ustring& table_name);
+  virtual void set_layout_item(LayoutItem* layout_item, const Glib::ustring& table_name);
 
   //The caller should call clone().
   const LayoutItem* get_layout_item() const;
