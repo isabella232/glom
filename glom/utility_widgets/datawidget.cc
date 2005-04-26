@@ -148,7 +148,7 @@ DataWidget::DataWidget(const LayoutItem_Field& field, const Glib::ustring& table
 
 
     child = dynamic_cast<Gtk::Widget*>(pFieldWidget);
-    int width = get_suitable_width(glom_type);
+    int width = get_suitable_width(field);
     child->set_size_request(width, -1 /* auto */);
     child->show_all();
   }
@@ -224,9 +224,11 @@ const Gtk::Label* DataWidget::get_label() const
   return &m_label;
 }
 
-int DataWidget::get_suitable_width(Field::glom_field_type field_type)
+int DataWidget::get_suitable_width(const LayoutItem_Field& field_layout)
 {
   int result = 150;
+
+  const Field::glom_field_type field_type = field_layout.m_field.get_glom_type();
 
   Glib::ustring example_text;
   switch(field_type)
@@ -256,7 +258,8 @@ int DataWidget::get_suitable_width(Field::glom_field_type field_type)
     }
     case(Field::TYPE_TEXT):
     {
-      example_text = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+      //if(!field_layout.get_text_format_multiline()) //Use the full width for multi-line text.
+        example_text = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
       break;
     }
     default:

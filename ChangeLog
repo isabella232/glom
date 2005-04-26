@@ -16,6 +16,10 @@
 	* glom/utility_widgets/textviewglom.h:
 	Added TextViewGlom which is a TextView in a 
 	ScrolledWindow. Use it for multiline text.
+	* glom/utility_widgets/flowtable.cc: 
+	Expand the second item to take the remaining 
+	columns width, like single items already do, 
+	where specified.
 
 2005-04-26  Murray Cumming <murrayc@murrayc.com>
 

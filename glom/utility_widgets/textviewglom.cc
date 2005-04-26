@@ -53,6 +53,7 @@ void TextViewGlom::init()
 
   //Wrap text, and allow vertical scrolling:
   set_policy(Gtk::POLICY_NEVER, Gtk::POLICY_AUTOMATIC); 
+  set_shadow_type(Gtk::SHADOW_IN);
   m_TextView.set_wrap_mode(Gtk::WRAP_WORD);
 
   //We use connect(slot, false) to connect before the default signal handler, because the default signal handler prevents _further_ handling.

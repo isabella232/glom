@@ -277,7 +277,14 @@ void FlowTableWithFields::add_field_at_position(const LayoutItem_Field& layoutit
 
   //info.m_group = layoutitem_field.m_group;
 
-  add(*(info.m_first), *(info.m_second));
+  //Expand multiline text fields to take up the maximum possible width:
+  bool expand_second = false;
+  if( (layoutitem_field.m_field.get_glom_type() == Field::TYPE_TEXT) && layoutitem_field.get_text_format_multiline())
+    expand_second = true;
+
+  g_warning("add_field_at_position(): name=%s, expand=%d", layoutitem_field.get_name().c_str(), expand_second);
+
+  add(*(info.m_first), *(info.m_second), expand_second);
 
   info.m_second->signal_edited().connect( sigc::bind(sigc::mem_fun(*this, &FlowTableWithFields::on_entry_edited), layoutitem_field)  ); //TODO:  Is it a good idea to bind the LayoutItem? sigc::bind() probably stores a copy at this point.
   info.m_second->signal_layout_item_added().connect( sigc::bind(

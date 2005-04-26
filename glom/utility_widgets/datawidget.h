@@ -77,7 +77,7 @@ protected:
 
   App_Glom* get_application();
 
-  int get_suitable_width(Field::glom_field_type field_type);
+  int get_suitable_width(const LayoutItem_Field& field_layout);
 
   type_signal_edited m_signal_edited;
 

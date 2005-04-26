@@ -106,7 +106,7 @@ protected:
   ///Get portals whose relationships have @a from_key as the from_key.
   virtual type_list_widgets get_portals(const LayoutItem_Field& from_key);
 
-  int get_suitable_width(Field::glom_field_type field_type);
+  //int get_suitable_width(Field::glom_field_type field_type);
 
   void on_entry_edited(const Gnome::Gda::Value& value,  LayoutItem_Field field);
   void on_flowtable_entry_edited(const LayoutItem_Field& field, const Gnome::Gda::Value& value);

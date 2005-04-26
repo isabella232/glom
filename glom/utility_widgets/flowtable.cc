@@ -50,6 +50,11 @@ void FlowTable::set_design_mode(bool value)
 
 void FlowTable::add(Gtk::Widget& first, Gtk::Widget& second, bool expand_second)
 {
+if(expand_second)
+{
+  g_warning("FlowTable::add: expand_second");
+}
+
   FlowTableItem item;
   item.m_first = &first;
   item.m_second = &second;
@@ -500,7 +505,15 @@ void FlowTable::on_size_allocate(Gtk::Allocation& allocation)
         //Assign space to the child:
 
         //Make all the left edges line up:
-        item.m_second_allocation = assign_child(second, column_x_start_second, column_child_y_start);
+
+        if(!(item.m_expand_second))
+          item.m_second_allocation = assign_child(second, column_x_start_second, column_child_y_start);
+        else
+        {
+          int second_width_available = column_max_width - first_max_width - m_padding;
+          item.m_second_allocation = assign_child(second, column_x_start_second, column_child_y_start, second_width_available, item_height);
+        }
+
         something_added = true;
       }
     }
