@@ -59,7 +59,7 @@ DataWidget::DataWidget(const LayoutItem_Field& field, const Glib::ustring& table
     m_label.set_alignment(0);
     m_label.show();
 
-    LayoutWidgetBase* pFieldWidget = 0;
+    LayoutWidgetField* pFieldWidget = 0;
     //Use a Combo if there is a drop-down of choices (A "value list"), else an Entry:
     if(field.get_has_choices())
     {
@@ -121,18 +121,17 @@ DataWidget::DataWidget(const LayoutItem_Field& field, const Glib::ustring& table
         g_warning("DataWidget::DataWidget(): Unexpected choice type.");
       }
 
-      combo->signal_edited().connect( sigc::mem_fun(*this, &DataWidget::on_widget_edited)  );
-
       pFieldWidget = combo;
     }
     else
     {
       EntryGlom* entry = Gtk::manage(new EntryGlom(glom_type));
-      entry->signal_edited().connect( sigc::mem_fun(*this, &DataWidget::on_widget_edited)  );
       entry->set_layout_item(get_layout_item()->clone(), table_name); //TODO_Performance: We only need this for the numerical format.
 
       pFieldWidget = entry;
     }
+
+    pFieldWidget->signal_edited().connect( sigc::mem_fun(*this, &DataWidget::on_widget_edited)  );
 
     pFieldWidget->signal_user_requested_layout().connect( sigc::mem_fun(*this, &DataWidget::on_child_user_requested_layout) );
     pFieldWidget->signal_user_requested_layout_properties().connect( sigc::mem_fun(*this, &DataWidget::on_child_user_requested_layout_properties) );
@@ -203,30 +202,18 @@ void DataWidget::set_value(const Gnome::Gda::Value& value)
 Gnome::Gda::Value DataWidget::get_value() const
 {
   const Gtk::Widget* widget = get_child();
-  const EntryGlom* entry = dynamic_cast<const EntryGlom*>(widget);
-  if(entry)
-    return entry->get_value();
+  const LayoutWidgetField* generic_field_widget = dynamic_cast<const LayoutWidgetField*>(widget);
+  if(generic_field_widget)
+    return generic_field_widget->get_value();
   else
   {
-    const ComboEntryGlom* combo = dynamic_cast<const ComboEntryGlom*>(widget);
-    if(combo)
-      return combo->get_value();
-    else
+    const Gtk::CheckButton* checkbutton = dynamic_cast<const Gtk::CheckButton*>(widget);
+    if(checkbutton)
     {
-      const ComboGlom* combo = dynamic_cast<const ComboGlom*>(widget);
-      if(combo)
-        return combo->get_value();
-      else
-      {
-        const Gtk::CheckButton* checkbutton = dynamic_cast<const Gtk::CheckButton*>(widget);
-        if(checkbutton)
-        {
-          return Gnome::Gda::Value(checkbutton->get_active());
-        }
-        else
-          return Gnome::Gda::Value(); //null.
-      }
+      return Gnome::Gda::Value(checkbutton->get_active());
     }
+    else
+      return Gnome::Gda::Value(); //null.
   }
 }
 

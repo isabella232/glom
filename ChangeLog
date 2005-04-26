@@ -1,3 +1,19 @@
+2005-04-26  Murray Cumming <murrayc@murrayc.com>
+
+	* glom/utility_widgets/Makefile.am:
+	* glom/utility_widgets/comboentryglom.h:
+	* glom/utility_widgets/comboglomchoicesbase.cc:
+	* glom/utility_widgets/comboglomchoicesbase.h:
+	* glom/utility_widgets/entryglom.cc:
+	* glom/utility_widgets/entryglom.h:
+	* glom/utility_widgets/layoutwidgetfield.cc:
+	* glom/utility_widgets/layoutwidgetfield.h:
+	Move get/set_value() and signal_edited() into 
+	a new LayoutWidgetField base class.
+	* glom/utility_widgets/datawidget.cc: Use 
+	LayoutWidgetField instances polymorphically via 
+	the base class, simplifying the code.
+
 2005-04-25  Murray Cumming <murrayc@murrayc.com>
 
 	* glom/document/document_glom.cc: Use #defines 

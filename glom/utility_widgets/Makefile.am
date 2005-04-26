@@ -22,6 +22,7 @@ libutility_widgets_a_SOURCES = alignment_justified.cc alignment_justified.h \
                                placeholder.cc placeholder.h \
                                table_columns.cc table_columns.h \
                                layoutwidgetbase.cc layoutwidgetbase.h \
+                               layoutwidgetfield.cc layoutwidgetfield.h \
                                combo_textglade.h combo_textglade.cc \
                                cellrendererlist.h cellrendererlist.cc \
                                comboentry_currency.h comboentry_currency.cc

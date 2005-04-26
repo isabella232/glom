@@ -23,14 +23,14 @@
 
 #include <gtkmm.h>
 #include "../data_structure/field.h"
-#include "layoutwidgetbase.h"
+#include "layoutwidgetfield.h"
 #include <libglademm.h>
 
 class App_Glom;
 
 class EntryGlom
 : public Gtk::Entry,
-  public LayoutWidgetBase
+  public LayoutWidgetField
 {
 public:
   explicit EntryGlom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
@@ -45,12 +45,9 @@ public:
 
   /** Set the text from a Gnome::Gda::Value.
    */
-  void set_value(const Gnome::Gda::Value& value);
+  virtual void set_value(const Gnome::Gda::Value& value);
 
-  Gnome::Gda::Value get_value() const;
-
-  typedef sigc::signal<void> type_signal_edited;
-  type_signal_edited signal_edited();
+  virtual Gnome::Gda::Value get_value() const;
 
 protected:
 
@@ -65,8 +62,6 @@ protected:
   virtual bool on_button_press_event(GdkEventButton *event); //override
 
   virtual App_Glom* get_application();
-
-  type_signal_edited m_signal_edited;
 
   Glib::ustring m_old_text;
   Field::glom_field_type m_glom_type; //Store the type so we can validate the text accordingly.

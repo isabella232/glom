@@ -50,11 +50,6 @@ ComboGlomChoicesBase::~ComboGlomChoicesBase()
 {
 }
 
-ComboGlomChoicesBase::type_signal_edited ComboGlomChoicesBase::signal_edited()
-{
-  return m_signal_edited;
-}
-
 void ComboGlomChoicesBase::set_choices_with_second(const type_list_values_with_second& list_values)
 {
   m_refModel->clear();

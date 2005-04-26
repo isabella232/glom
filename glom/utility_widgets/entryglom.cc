@@ -84,11 +84,6 @@ void EntryGlom::check_for_change()
   }
 }
 
-EntryGlom::type_signal_edited EntryGlom::signal_edited()
-{
-  return m_signal_edited;
-}
-
 bool EntryGlom::on_focus_out_event(GdkEventFocus* event)
 {
   bool result = Gtk::Entry::on_focus_out_event(event);

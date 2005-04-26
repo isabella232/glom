@@ -23,9 +23,9 @@
 
 #include <gtkmm.h>
 #include "../data_structure/field.h"
-#include "layoutwidgetbase.h"
+#include "layoutwidgetfield.h"
 
-class ComboGlomChoicesBase : public LayoutWidgetBase
+class ComboGlomChoicesBase : public LayoutWidgetField
 {
 public:
   ///You must call set_layout_item() to specify the field type and formatting of the main column.
@@ -40,9 +40,6 @@ public:
 
   typedef std::list< std::pair<Gnome::Gda::Value, Gnome::Gda::Value> > type_list_values_with_second;
   void set_choices_with_second(const type_list_values_with_second& list_values);
-
-  typedef sigc::signal<void> type_signal_edited;
-  type_signal_edited signal_edited();
 
 protected:
   void init();
@@ -62,9 +59,6 @@ protected:
   ModelColumns m_Columns;
 
   Glib::RefPtr<Gtk::ListStore> m_refModel;
-
-
-  type_signal_edited m_signal_edited;
 
   bool m_with_second;
   LayoutItem_Field m_layoutitem_second;

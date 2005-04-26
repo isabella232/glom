@@ -49,9 +49,9 @@ public:
 
   /** Set the text from a Gnome::Gda::Value.
    */
-  void set_value(const Gnome::Gda::Value& value);
+  virtual void set_value(const Gnome::Gda::Value& value);
 
-  Gnome::Gda::Value get_value() const;
+  virtual Gnome::Gda::Value get_value() const;
 
 protected:
   void init();
