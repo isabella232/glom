@@ -23,6 +23,7 @@
 
 #include "../box_db_table.h"
 #include "dialog_layout.h"
+#include "calcinprogress.h"
 
 
 /** Call init_db_details() to create the layout and fill it with data from the database.
@@ -102,9 +103,11 @@ protected:
    */
   type_list_lookups get_lookup_fields(const Glib::ustring& field_name) const;
 
+  typedef std::map<Glib::ustring, CalcInProgress> type_field_calcs;
+
   /** Get the fields whose values should be recalculated when @a field_name changes.
    */
-  type_vecLayoutFields get_calculated_fields(const Glib::ustring& field_name) const;
+  type_field_calcs get_calculated_fields(const Glib::ustring& field_name);
 
   /** Get the fields that are in related tables, via a relationship using @a field_name changes.
   */
@@ -114,9 +117,21 @@ protected:
    */
   Gnome::Gda::Value get_lookup_value(const Relationship& relationship, const Field& source_field, const Gnome::Gda::Value & key_value);
 
-  virtual void do_calculations(const LayoutItem_Field& field_changed, const Field& primary_key, const Gnome::Gda::Value& primary_key_value);
-  bool set_field_value_in_database(const LayoutItem_Field& field_layout, const Gnome::Gda::Value& field_value, const Field& primary_key, const Gnome::Gda::Value& primary_key_value);
-  bool set_field_value_in_database(const Gtk::TreeModel::iterator& row, const LayoutItem_Field& field_layout, const Gnome::Gda::Value& field_value, const Field& primary_key, const Gnome::Gda::Value& primary_key_value);
+  /** Calculate values for fields, set them in the database, and show them in the layout.
+   * @param field_changed The field that has changed, causing other fields to be recalculated because they use its value.
+   * @param primary_key The primary key field for this table.
+   * @param priamry_key_value: The primary key value for this record.
+   * @param first_calc_field: false if this is called recursively.
+   */
+  virtual void do_calculations(const LayoutItem_Field& field_changed, const Field& primary_key, const Gnome::Gda::Value& primary_key_value, bool first_calc_field = false);
+
+  /** Calculate a field value, show it and set it in the database.
+   * This will do the same for any dependent calculations.
+   */
+  void calculate_field(const Field& field, const Field& primary_key, const Gnome::Gda::Value& primary_key_value);
+
+  bool set_field_value_in_database(const LayoutItem_Field& field_layout, const Gnome::Gda::Value& field_value, const Field& primary_key, const Gnome::Gda::Value& primary_key_value, bool use_current_calculations = false);
+  bool set_field_value_in_database(const Gtk::TreeModel::iterator& row, const LayoutItem_Field& field_layout, const Gnome::Gda::Value& field_value, const Field& primary_key, const Gnome::Gda::Value& primary_key_value, bool use_current_calculations = false);
 
   virtual bool record_delete(const Gnome::Gda::Value& primary_key_value);
   virtual Glib::RefPtr<Gnome::Gda::DataModel> record_new(bool use_entered_data = true, const Gnome::Gda::Value& primary_key_value = Gnome::Gda::Value()); //New record with all entered field values.
@@ -155,7 +170,8 @@ protected:
   type_vecFields m_TableFields; //A cache, so we don't have to repeatedly get them from the Document.
   type_vecLayoutFields m_FieldsShown; //And any extra keys needed by shown fields.
 
-  type_vecLayoutFields m_FieldsCalculationInProgress; //Prevent circular calculations.
+
+  type_field_calcs m_FieldsCalculationInProgress; //Prevent circular calculations and recalculations.
 };
 
 #endif

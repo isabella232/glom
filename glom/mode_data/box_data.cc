@@ -189,9 +189,9 @@ Glib::RefPtr<Gnome::Gda::DataModel> Box_Data::record_new(bool use_entered_data, 
       const Field& field = layout_item.m_field;
 
       //If the default value should be calculated, then calculate it:
-      const Glib::ustring calculation = field.get_calculation(); //TODO_Performance: Use a get_has_calculation() method.
-      if(!calculation.empty())
+      if(field.get_has_calculation())
       {
+        const Glib::ustring calculation = field.get_calculation();
         const type_map_fields field_values = get_record_field_values(primary_key_value);
 
         const Gnome::Gda::Value value = glom_evaluate_python_function_implementation(field.get_glom_type(), calculation, field_values,
@@ -576,9 +576,9 @@ Box_Data::type_vecLayoutFields Box_Data::get_related_fields(const Glib::ustring&
   return result;
 }
 
-Box_Data::type_vecLayoutFields Box_Data::get_calculated_fields(const Glib::ustring& field_name) const
+Box_Data::type_field_calcs Box_Data::get_calculated_fields(const Glib::ustring& field_name)
 {
-  type_vecLayoutFields result;
+  type_field_calcs result;
 
   const Document_Glom* document = dynamic_cast<const Document_Glom*>(get_document());
   if(document)
@@ -593,10 +593,10 @@ Box_Data::type_vecLayoutFields Box_Data::get_calculated_fields(const Glib::ustri
       Field::type_list_strings::const_iterator iterFind = std::find(fields_triggered.begin(), fields_triggered.end(), field_name);
       if(iterFind != fields_triggered.end())
       {
-        LayoutItem_Field layout_item;
-        layout_item.m_field = field;
+        CalcInProgress item;
+        item.m_field = field;
 
-        result.push_back(layout_item);
+        result[field.get_name()] = item;
       }
     }
   }
@@ -669,49 +669,138 @@ Gnome::Gda::Value Box_Data::get_lookup_value(const Relationship& relationship, c
   return result;
 }
 
-void Box_Data::do_calculations(const LayoutItem_Field& field_changed, const Field& primary_key, const Gnome::Gda::Value& primary_key_value)
+void Box_Data::calculate_field(const Field& field, const Field& primary_key, const Gnome::Gda::Value& primary_key_value)
 {
-  //TODO: Get (recursively) the list of fields to recalcualte, sort them in order of dependency, then calculate them all.
+  const Glib::ustring field_name = field.get_name();
+  //g_warning("Box_Data::calculate_field(): field_name=%s", field_name.c_str());
 
-  //g_warning("Box_Data::do_calculations(): field_changed=%s", field_changed.get_name().c_str());
-
-  //TODO_Performance: This is profoundly inefficient:
-
-  //Recalculate fields that are triggered by a change of this field's value:
-  const type_vecLayoutFields calculated_fields = get_calculated_fields(field_changed.get_name());
-  for(type_vecLayoutFields::const_iterator iter = calculated_fields.begin(); iter != calculated_fields.end(); ++iter)
+  //Do we already have this in our list?
+  type_field_calcs::iterator iterFind = m_FieldsCalculationInProgress.find(field_name);
+  if(iterFind == m_FieldsCalculationInProgress.end()) //If it was not found.
   {
-    const LayoutItem_Field& field = *iter;
+    //Add it:
+    CalcInProgress item;
+    item.m_field = field;
+    m_FieldsCalculationInProgress[field_name] = item;
 
-    type_vecLayoutFields::const_iterator iterFind = std::find(m_FieldsCalculationInProgress.begin(), m_FieldsCalculationInProgress.end(), field);
-    if(iterFind != m_FieldsCalculationInProgress.end())
+    iterFind = m_FieldsCalculationInProgress.find(field_name); //Always succeeds.
+  }
+
+  CalcInProgress& refCalcProgress = iterFind->second;
+
+  //Use the previously-calculated value if possible:
+  if(refCalcProgress.m_calc_in_progress)
+  {
+    //g_warning("  Box_Data::calculate_field(): Circular calculation detected. field_name=%s", field_name.c_str());
+    //refCalcProgress.m_value = GlomConversions::get_empty_value(field.get_glom_type()); //Give up.
+  }
+  else if(refCalcProgress.m_calc_finished)
+  {
+    //g_warning("  Box_Data::calculate_field(): Already calculated.");
+
+    //Don't bother calculating it again. The correct value is already in the database and layout.
+  }
+  else
+  {
+    //g_warning("  Box_Data::calculate_field(): setting calc_in_progress: field_name=%s", field_name.c_str());
+
+    refCalcProgress.m_calc_in_progress = true; //Let the recursive calls to calculate_field() check this.
+
+    LayoutItem_Field layout_item;
+    layout_item.m_field = refCalcProgress.m_field;
+
+    //Calculate dependencies first:
+    const Field::type_list_strings fields_needed = field.get_calculation_fields();
+    for(Field::type_list_strings::const_iterator iterNeeded = fields_needed.begin(); iterNeeded != fields_needed.end(); ++iterNeeded)
     {
-      g_warning("Box_Data::do_calculations(): Circular calculation detected. The Infinite loop was prevented before re-calculating field %s", field.get_name().c_str());
+      Field field_needed;
+      //g_warning("field %s needs %s", field_name.c_str(), iterNeeded->c_str());
+      bool test = get_document()->get_field(m_strTableName, *iterNeeded, field_needed);
+      if(test)
+      {
+        if(field_needed.get_has_calculation())
+        {
+          //g_warning("  calling calculate_field() for %s", iterNeeded->c_str());
+          calculate_field(field_needed, primary_key, primary_key_value);
+        }
+        else
+        {
+          //g_warning("  not a calculated field.");
+        }
+      }
+    }
+
+
+    //m_FieldsCalculationInProgress has changed, probably invalidating our iter, so get it again:
+    iterFind = m_FieldsCalculationInProgress.find(field_name); //Always succeeds.
+    CalcInProgress& refCalcProgress = iterFind->second;
+
+    //Check again, because the value miight have been calculated during the dependencies.
+    if(refCalcProgress.m_calc_finished)
+    {
+      //We recently calculated this value, and set it in the database and layout, so don't waste time doing it again:
     }
     else
     {
-      //g_warning("CircularPrevention: recalculating field=%s", field.get_name().c_str());
-
       //recalculate:
       const type_map_fields field_values = get_record_field_values(primary_key_value);
-      Gnome::Gda::Value value = glom_evaluate_python_function_implementation(field.m_field.get_glom_type(), iter->m_field.get_calculation(), field_values,
+      refCalcProgress.m_value  = glom_evaluate_python_function_implementation(refCalcProgress.m_field.get_glom_type(), refCalcProgress.m_field.get_calculation(), field_values,
             get_document(), m_strTableName);
 
+      refCalcProgress.m_calc_finished = true;
+      refCalcProgress.m_calc_in_progress = false;
+
+      LayoutItem_Field layout_item;
+      layout_item.m_field = refCalcProgress.m_field;
+ 
       //show it:
-      set_entered_field_data(*iter, value);
+      set_entered_field_data(layout_item, refCalcProgress.m_value );
 
       //Add it to the database (even if it is not shown in the view)
-      set_field_value_in_database(*iter, value, primary_key, primary_key_value); //This triggers other recalculations/lookups.
+      //Using true for the last parameter means we use existing calculations where possible,
+      //instead of recalculating a field that is being calculated already, and for which this dependent field is being calculated anyway.
+      set_field_value_in_database(layout_item, refCalcProgress.m_value, primary_key, primary_key_value, true); //This triggers other recalculations/lookups.
     }
   }
+
 }
 
-bool Box_Data::set_field_value_in_database(const LayoutItem_Field& field_layout, const Gnome::Gda::Value& field_value, const Field& primary_key_field, const Gnome::Gda::Value& primary_key_value)
+
+void Box_Data::do_calculations(const LayoutItem_Field& field_changed, const Field& primary_key, const Gnome::Gda::Value& primary_key_value, bool first_calc_field)
 {
-  return set_field_value_in_database(Gtk::TreeModel::iterator(), field_layout, field_value, primary_key_field, primary_key_value);
+  //g_warning("Box_Data::do_calculations(): triggered by =%s", field_changed.get_name().c_str());
+
+  if(first_calc_field)
+  {
+    //g_warning("  clearing m_FieldsCalculationInProgress");
+    m_FieldsCalculationInProgress.clear();
+  }
+
+  //Recalculate fields that are triggered by a change of this field's value, not including calculations that these calculations use.
+  type_field_calcs calculated_fields = get_calculated_fields(field_changed.get_name()); //TODO: Just return the Fields, not the CalcInProgress.
+  for(type_field_calcs::iterator iter = calculated_fields.begin(); iter != calculated_fields.end(); ++iter)
+  {
+    const Field& field = iter->second.m_field;
+
+    calculate_field(field, primary_key, primary_key_value); //And any dependencies.
+
+    //Calculate anything that depends on this.
+    LayoutItem_Field layout_item;
+    layout_item.m_field = field;
+
+    do_calculations(layout_item, primary_key, primary_key_value, false /* recurse, reusing m_FieldsCalculationInProgress */);
+  }
+
+  if(first_calc_field)
+    m_FieldsCalculationInProgress.clear();
 }
 
-bool Box_Data::set_field_value_in_database(const Gtk::TreeModel::iterator& row, const LayoutItem_Field& field_layout, const Gnome::Gda::Value& field_value, const Field& primary_key_field, const Gnome::Gda::Value& primary_key_value)
+bool Box_Data::set_field_value_in_database(const LayoutItem_Field& field_layout, const Gnome::Gda::Value& field_value, const Field& primary_key_field, const Gnome::Gda::Value& primary_key_value, bool use_current_calculations)
+{
+  return set_field_value_in_database(Gtk::TreeModel::iterator(), field_layout, field_value, primary_key_field, primary_key_value, use_current_calculations);
+}
+
+bool Box_Data::set_field_value_in_database(const Gtk::TreeModel::iterator& row, const LayoutItem_Field& field_layout, const Gnome::Gda::Value& field_value, const Field& primary_key_field, const Gnome::Gda::Value& primary_key_value, bool use_current_calculations)
 {
   //row is invalid, and ignored, for Box_Data_Details.
 
@@ -740,16 +829,9 @@ bool Box_Data::set_field_value_in_database(const Gtk::TreeModel::iterator& row, 
     //TODO: Make lookups part of this?
     //Prevent circular calculations during the recursive do_calculations:
     {
-      m_FieldsCalculationInProgress.push_back(field_layout);
-
       //Recalculate any calculated fields that depend on this calculated field.
-      do_calculations(field_layout, primary_key_field, primary_key_value);
-
-      type_vecLayoutFields::iterator iterFind = std::find(m_FieldsCalculationInProgress.begin(), m_FieldsCalculationInProgress.end(), field_layout);
-      if(iterFind != m_FieldsCalculationInProgress.end())
-      {
-        m_FieldsCalculationInProgress.erase(iterFind);
-      }
+      //g_warning("Box_Data::set_field_value_in_database(): calling do_calculations");
+      do_calculations(field_layout, primary_key_field, primary_key_value, !use_current_calculations);
     }
   }
 

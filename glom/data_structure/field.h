@@ -143,6 +143,7 @@ public:
 
   Glib::ustring get_calculation() const;
   void set_calculation(const Glib::ustring& calculation);
+  bool get_has_calculation() const;
 
   /* Discover what fields are used in the calculation,
    * so the value can be recalculated when their values change.

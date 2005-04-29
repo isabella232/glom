@@ -486,6 +486,11 @@ void Field::set_calculation(const Glib::ustring& calculation)
   m_calculation = calculation;
 }
 
+bool Field::get_has_calculation() const
+{
+  return !m_calculation.empty();
+}
+
 Field::type_list_strings Field::get_calculation_fields() const
 {
   //TODO: Use regex, for instance with pcre here?

@@ -356,7 +356,7 @@ void Box_Data_Details::on_related_user_requested_details(Gnome::Gda::Value key_v
 
 void Box_Data_Details::recalculate_fields_for_related_records(const Glib::ustring& relationship_name)
 {
- //TODO: Get (recursively) the list of fields to recalcualte, sort them in order of dependency, then calculate them all.
+  m_FieldsCalculationInProgress.clear();
 
   const Gnome::Gda::Value primary_key_value = get_primary_key_value();
 
@@ -369,20 +369,19 @@ void Box_Data_Details::recalculate_fields_for_related_records(const Glib::ustrin
     Field::type_list_strings::const_iterator iterFind = std::find(triggered_by.begin(), triggered_by.end(), relationship_name);
     if(iterFind != triggered_by.end()) //If it was found
     {
-       //recalculate:
-       const type_map_fields field_values = get_record_field_values(primary_key_value);
-       Gnome::Gda::Value value = glom_evaluate_python_function_implementation(field.get_glom_type(), field.get_calculation(), field_values,
-          get_document(), m_strTableName);
+      const Field& field = *iter;
 
-      //show it, if it's on the layout:
+      calculate_field(field, m_field_primary_key, primary_key_value); //And any dependencies.
+
+      //Calculate anything that depends on this.
       LayoutItem_Field layout_item;
       layout_item.m_field = field;
-      set_entered_field_data(layout_item, value);
 
-      //Add it to the database (even if it is not shown in the layout)
-      set_field_value_in_database(layout_item, value, m_field_primary_key, primary_key_value);
+      do_calculations(layout_item, m_field_primary_key, primary_key_value, false /* recurse, reusing m_FieldsCalculationInProgress */);
     }
   }
+
+   m_FieldsCalculationInProgress.clear();
 }
 
 void Box_Data_Details::on_related_record_added(Gnome::Gda::Value /* strKeyValue */, Glib::ustring /* strFromKeyName */)

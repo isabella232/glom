@@ -1,3 +1,27 @@
+2005-04-29  Murray Cumming <murrayc@murrayc.com>
+
+	* glom/data_structure/field.cc:
+	* glom/data_structure/field.h:
+	Added get_has_calculation() for performance.
+	* glom/mode_data/Makefile.am:
+	* glom/mode_data/calcinprogress.cc:
+	* glom/mode_data/calcinprogress.h:
+ 	Added data structure for fields being calculated.
+	* glom/mode_data/box_data.cc:
+	* glom/mode_data/box_data.h:
+	- Added m_FieldsCalculationInProgress, so we can 
+	maintain the state of all ongoing calculations 
+	when calculating fields.
+	- Added calculate_field() which calculates and 
+	sets a calculated field and any calculated fields 
+	that it needs. Whenc called recursively, it 
+	is aware of existing calculations in
+	m_FieldsCalculationInProgress.
+	- do_calculations(),
+	* glom/mode_data/box_data_details.cc:
+ 	- recalculate_fields_for_related_records():
+	Use calculate_field() to simplify the code.
+
 2005-04-26  Murray Cumming <murrayc@murrayc.com>
 
 	* glom/utility_widgets/db_adddel/db_adddel.cc:

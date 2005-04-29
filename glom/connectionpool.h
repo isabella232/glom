@@ -75,7 +75,7 @@ protected:
 /** This is a singleton.
  * Use get_instance().
  */
-class ConnectionPool
+class ConnectionPool : public sigc::trackable
 {
 protected:
   ConnectionPool();
