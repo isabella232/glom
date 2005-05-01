@@ -1,3 +1,16 @@
+2005-05-01  Murray Cumming <murrayc@murrayc.com>
+
+	* glom/data_structure/field.cc:
+	* glom/data_structure/field.h: Added 
+	sql_find_operator()
+	* glom/mode_data/box_data.cc: Use it instead 
+	of LIKE.
+	* glom/utility_widgets/db_adddel/db_adddel.cc:
+	* glom/utility_widgets/db_adddel/db_adddel.h:
+	Fix crash due to use of old key column.
+
+0.8.25:
+
 2005-04-29  Murray Cumming <murrayc@murrayc.com>
 
 	* glom/data_structure/field.cc:

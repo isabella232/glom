@@ -248,6 +248,28 @@ Glib::ustring Field::sql(const Gnome::Gda::Value& value) const
   return str;
 }
 
+Glib::ustring Field::sql_find_operator() const
+{
+  switch(get_glom_type())
+  {
+    case(TYPE_TEXT):
+    {
+      return "ILIKE"; //"LIKE"; ILIKE is a postgres extension for locale-dependent case-insensitive matches.
+      break;
+    }
+    case(TYPE_DATE):
+    case(TYPE_TIME):
+    case(TYPE_NUMERIC):
+    case(TYPE_BOOLEAN):
+    default:
+    {
+      return "=";
+      break;
+    }
+  }
+}
+
+
 Glib::ustring Field::get_name() const
 {
   return m_field_info.get_name();

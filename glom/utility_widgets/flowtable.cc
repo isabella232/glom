@@ -50,11 +50,6 @@ void FlowTable::set_design_mode(bool value)
 
 void FlowTable::add(Gtk::Widget& first, Gtk::Widget& second, bool expand_second)
 {
-if(expand_second)
-{
-  g_warning("FlowTable::add: expand_second");
-}
-
   FlowTableItem item;
   item.m_first = &first;
   item.m_second = &second;

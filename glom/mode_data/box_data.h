@@ -48,7 +48,7 @@ public:
 
   typedef std::vector<LayoutItem_Field> type_vecLayoutFields;
 
-  virtual Glib::ustring get_WhereClause() const;
+  virtual Glib::ustring get_find_where_clause() const;
 
   virtual void set_unstored_data(bool bVal);
   virtual bool get_unstored_data() const;

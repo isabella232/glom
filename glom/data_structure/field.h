@@ -141,6 +141,11 @@ public:
    */
   Glib::ustring sql(const Gnome::Gda::Value& value) const;
 
+  /** Get a suitable operator to use when finding records.
+   * For instance, == for numbers, or LIKE for text.
+   */
+  Glib::ustring sql_find_operator() const;
+
   Glib::ustring get_calculation() const;
   void set_calculation(const Glib::ustring& calculation);
   bool get_has_calculation() const;

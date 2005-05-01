@@ -64,7 +64,7 @@ void Box_Data::refresh_data_from_database(const Glib::ustring& strWhereClause)
   Box_DB_Table::refresh_data_from_database(); //Calls fill_from_database().
 }
 
-Glib::ustring Box_Data::get_WhereClause() const
+Glib::ustring Box_Data::get_find_where_clause() const
 {
   Glib::ustring strClause;
 
@@ -88,8 +88,7 @@ Glib::ustring Box_Data::get_WhereClause() const
 
       if(use_this_field)
       {
-        //TODO: "table.name"
-        strClausePart = field.get_name() + " LIKE " +  field.sql(data); //% is mysql wildcard for 0 or more characters.
+        strClausePart = m_strTableName + "." + field.get_name() + " " + field.sql_find_operator() + " " +  field.sql(data); //% is mysql wildcard for 0 or more characters.
       }
     }
 
@@ -105,7 +104,7 @@ void Box_Data::on_Button_Find()
   //Make sure that the cell is updated:
   //m_AddDel.finish_editing();
 
-  signal_find.emit(get_WhereClause());
+  signal_find.emit(get_find_where_clause());
 }
 
 Box_Data::type_map_fields Box_Data::get_record_field_values(const Gnome::Gda::Value& primary_key_value)

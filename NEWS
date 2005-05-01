@@ -1,6 +1,10 @@
+0.8.25:
+
 * Details: Use a bigger widget (TextView) with scrollbars 
   for multiline text fields.
 * Details and List: Right-align numbers.
+* Calculated fields: Do the calculations in the correct 
+  order of their dependencies.
   
 0.8.24:
 

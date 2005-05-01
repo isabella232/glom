@@ -104,12 +104,6 @@ DbAddDel::DbAddDel()
 
 DbAddDel::~DbAddDel()
 {
-  //if(m_modelcolumn_key)
-  //  delete m_modelcolumn_key;
-
-  //if(m_modelcolumn_placeholder)
-  //  delete m_modelcolumn_placeholder;
-
   App_Glom* pApp = get_application();
   if(pApp)
   {
@@ -346,7 +340,6 @@ Gtk::TreeModel::iterator DbAddDel::add_item(const Gnome::Gda::Value& valKey)
     Gtk::TreeModel::Row treerow = *result;
     if(treerow)
     {
-      treerow[*m_modelcolumn_key] = valKey;
       set_value_key(result, valKey);
       m_refListStore->set_is_placeholder(result, false);
       //treerow[*m_modelcolumn_placeholder] =  false; 
@@ -1563,8 +1556,6 @@ void DbAddDel::set_value_key(const Gtk::TreeModel::iterator& iter, const Gnome::
     }
 
     m_refListStore->set_key_value(iter, value);
-
-   // row[*m_modelcolumn_key] = value;
   }
 }
 
