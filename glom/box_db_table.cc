@@ -41,16 +41,16 @@ Glib::ustring Box_DB_Table::get_table_name()
   return m_strTableName;
 }
 
-void Box_DB_Table::init_db_details(const Glib::ustring& strTableName)
+bool Box_DB_Table::init_db_details(const Glib::ustring& strTableName)
 {
   m_strTableName = strTableName;
 
-  fill_from_database();
+  return fill_from_database();
 }
 
-void Box_DB_Table::refresh_data_from_database()
+bool Box_DB_Table::refresh_data_from_database()
 {
-  fill_from_database();
+  return fill_from_database();
 }
 
 Gnome::Gda::Value Box_DB_Table::get_entered_field_data(const LayoutItem_Field& /* field */) const

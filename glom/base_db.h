@@ -40,10 +40,10 @@ public:
   virtual ~Base_DB();
 
   /// Specify the structure of what will be shown, and fill it.
-  virtual void init_db_details();
+  virtual bool init_db_details();
 
   /// Specify what actual data will be shown:
-  virtual void refresh_data_from_database();
+  virtual bool refresh_data_from_database();
 
   /** Returns whether we are in developer mode.
    * Some functionality will be deactivated when not in developer mode.
@@ -85,7 +85,7 @@ protected:
   bool get_user_is_in_group(const Glib::ustring& user, const Glib::ustring& group) const;
   Privileges get_current_privs(const Glib::ustring& table_name) const;
 
-  virtual void fill_from_database();
+  virtual bool fill_from_database();
   virtual void fill_end(); //Call this from the end of fill_from_database() overrides.
 
   virtual void on_userlevel_changed(AppState::userlevels userlevel);

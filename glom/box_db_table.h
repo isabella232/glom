@@ -34,8 +34,8 @@ public:
   Box_DB_Table(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
   virtual ~Box_DB_Table();
 
-  virtual void init_db_details(const Glib::ustring& strTableName);
-  virtual void refresh_data_from_database();
+  virtual bool init_db_details(const Glib::ustring& strTableName);
+  virtual bool refresh_data_from_database();
 
   virtual Glib::ustring get_table_name();
 

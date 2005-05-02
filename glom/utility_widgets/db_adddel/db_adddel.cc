@@ -780,6 +780,20 @@ void DbAddDel::construct_specified_columns()
   add_blank();
 }
 
+bool DbAddDel::refresh_from_database()
+{
+  if(m_refListStore)
+  {
+    Glib::RefPtr<Gtk::TreeModel> refNull;
+    bool result = m_refListStore->refresh_from_database();
+    m_TreeView.set_model(refNull);
+    m_TreeView.set_model(m_refListStore);
+    return result;
+  }
+  else
+    return false;
+}
+
 void DbAddDel::set_value(const Gtk::TreeModel::iterator& iter, const LayoutItem_Field& layout_item, const Gnome::Gda::Value& value)
 {
   //g_warning("DbAddDel::set_value begin");

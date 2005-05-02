@@ -32,9 +32,9 @@ public:
   Box_Data_Details(bool bWithNavButtons = true);
   virtual ~Box_Data_Details();
 
-  virtual void init_db_details(const Glib::ustring& strTableName, const Gnome::Gda::Value& primary_key_value);
-  virtual void refresh_data_from_database(const Gnome::Gda::Value& primary_key_value);
-  virtual void refresh_data_from_database_blank();
+  virtual bool init_db_details(const Glib::ustring& strTableName, const Gnome::Gda::Value& primary_key_value);
+  virtual bool refresh_data_from_database(const Gnome::Gda::Value& primary_key_value);
+  virtual bool refresh_data_from_database_blank();
 
   virtual void print_layout();
 
@@ -58,7 +58,7 @@ public:
   //type_signal_user_requested_related_details signal_user_requested_related_details();
 
 protected:
-  virtual void fill_from_database(); //override.
+  virtual bool fill_from_database(); //override.
   virtual void create_layout();
   //virtual void fill_related();
 

@@ -129,24 +129,24 @@ Gnome::Gda::Value Box_Data_Details::get_primary_key_value() const
   return m_primary_key_value;
 }
 
-void Box_Data_Details::init_db_details(const Glib::ustring& strTableName, const Gnome::Gda::Value& primary_key_value)
+bool Box_Data_Details::init_db_details(const Glib::ustring& strTableName, const Gnome::Gda::Value& primary_key_value)
 {
   m_primary_key_value = primary_key_value;
 
   get_field_primary_key_for_table(strTableName, m_field_primary_key);
 
-  Box_Data::init_db_details(strTableName); //Calls create_layout(), then fill_from_database()
+  return Box_Data::init_db_details(strTableName); //Calls create_layout(), then fill_from_database()
 }
 
-void Box_Data_Details::refresh_data_from_database(const Gnome::Gda::Value& primary_key_value)
+bool Box_Data_Details::refresh_data_from_database(const Gnome::Gda::Value& primary_key_value)
 {
   m_primary_key_value = primary_key_value;
-  fill_from_database();
+  return fill_from_database();
 }
 
-void Box_Data_Details::refresh_data_from_database_blank()
+bool Box_Data_Details::refresh_data_from_database_blank()
 {
-  refresh_data_from_database( Gnome::Gda::Value() );
+  return refresh_data_from_database( Gnome::Gda::Value() );
 }
 
 void Box_Data_Details::create_layout()
@@ -174,8 +174,10 @@ void Box_Data_Details::create_layout()
 
 }
 
-void Box_Data_Details::fill_from_database()
+bool Box_Data_Details::fill_from_database()
 {
+  bool bResult = false;
+
   Bakery::BusyCursor(*get_app_window());
 
   try
@@ -185,7 +187,7 @@ void Box_Data_Details::fill_from_database()
     sharedptr<SharedConnection> sharedconnection = connect_to_server();
 
 
-    Box_Data::fill_from_database();
+    bResult = Box_Data::fill_from_database();
 
     m_FieldsShown = get_fields_to_show();
     type_vecLayoutFields fieldsToGet = m_FieldsShown;
@@ -238,6 +240,10 @@ void Box_Data_Details::fill_from_database()
             }
           }
         }
+        else
+        {
+          bResult = false; //There were no records.
+        }
       }
     } //if(!fieldsToGet.empty())
 
@@ -251,7 +257,10 @@ void Box_Data_Details::fill_from_database()
   catch(std::exception& ex)
   {
     handle_error(ex);
+    bResult = false;
   }
+
+  return bResult;
 }
 
 void Box_Data_Details::on_button_new()

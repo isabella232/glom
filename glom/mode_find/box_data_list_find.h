@@ -33,7 +33,7 @@ public:
     
 protected:
 
-  virtual void fill_from_database(); //override.
+  virtual bool fill_from_database(); //override.
 
   virtual void on_adddel_user_changed(const Gtk::TreeModel::iterator& row, guint col); //override
   

@@ -37,13 +37,13 @@ public:
   /**
    * @param Relationship: The relationship used by the parent table to get rows from this table.
    */
-  virtual void init_db_details(const Relationship& relationship);
+  virtual bool init_db_details(const Relationship& relationship);
 
   /**
    * @param foreign_key_value: The value that should be found in this table.
    * @param from_table_primary_key_value The primary key of the parent record's table, used to associate new related records.
    */
-  virtual void refresh_data_from_database(const Gnome::Gda::Value& foreign_key_value);
+  virtual bool refresh_data_from_database(const Gnome::Gda::Value& foreign_key_value);
 
   virtual Relationship get_relationship() const;
   virtual Field get_key_field() const;
@@ -57,7 +57,7 @@ public:
   type_signal_record_changed signal_record_changed();
 
 protected:
-  virtual void fill_from_database(); //Override.
+  virtual bool fill_from_database(); //Override.
   virtual type_vecLayoutFields get_fields_to_show() const; //override
 
   virtual void on_adddel_user_changed(const Gtk::TreeModel::iterator& row, guint col);

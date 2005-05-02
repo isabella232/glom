@@ -1,3 +1,52 @@
+2005-05-02  Murray Cumming <murrayc@murrayc.com>
+
+	* glom/base_db.cc:
+	* glom/base_db.h:
+	* glom/box_db_table.cc:
+	* glom/box_db_table.h:
+	* glom/frame_glom.cc:
+	* glom/frame_glom.h:
+	* glom/main.cc:
+	* glom/mode_data/box_data.cc:
+	* glom/mode_data/box_data.h:
+	* glom/mode_data/box_data_details.cc:
+	* glom/mode_data/box_data_details.h:
+	* glom/mode_data/box_data_list.cc:
+	* glom/mode_data/box_data_list.h:
+	* glom/mode_data/box_data_list_related.cc:
+	* glom/mode_data/box_data_list_related.h:
+	* glom/mode_data/notebook_data.cc:
+	* glom/mode_data/notebook_data.h:
+	* glom/mode_design/box_db_table_relationships.cc:
+	* glom/mode_design/box_db_table_relationships.h:
+	* glom/mode_design/dialog_design.cc:
+	* glom/mode_design/dialog_design.h:
+	* glom/mode_design/dialog_fields.cc:
+	* glom/mode_design/dialog_fields.h:
+	* glom/mode_design/dialog_relationships.cc:
+	* glom/mode_design/dialog_relationships.h:
+	* glom/mode_design/fields/box_db_table_definition.cc:
+	* glom/mode_design/fields/box_db_table_definition.h:
+	* glom/mode_find/box_data_details_find.cc:
+	* glom/mode_find/box_data_details_find.h:
+	* glom/mode_find/box_data_list_find.cc:
+	* glom/mode_find/box_data_list_find.h:
+	* glom/mode_find/notebook_find.cc:
+	* glom/mode_find/notebook_find.h:
+	* glom/navigation/box_tables.cc:
+	* glom/navigation/box_tables.h:
+	init_from_database(), fill_from_database(), and 
+	refresh_from_database() now return a bool. This should 
+	let us detect empty results from finds.
+	* glom/utility_widgets/db_adddel/db_adddel.cc:
+	* glom/utility_widgets/db_adddel/db_adddel.h:
+	* glom/utility_widgets/db_adddel/glom_db_treemodel.cc:
+	* glom/utility_widgets/db_adddel/glom_db_treemodel.h:
+	Add AddDel::refresh_from_database(), and 
+	DbTreeModel::refresh_from_database() so we can build 
+	the structure separately and refill it repeatedly with 
+	data.
+
 2005-05-01  Murray Cumming <murrayc@murrayc.com>
 
 	* glom/data_structure/field.cc:

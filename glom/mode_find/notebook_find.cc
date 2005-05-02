@@ -31,8 +31,8 @@ Notebook_Find::Notebook_Find()
   //TODO: Show the same layout that is being edited at the time that the mode was changed.
 
   //Connect Signals:
-  m_Box_List.signal_find.connect(sigc::mem_fun(*this, &Notebook_Find::on_page_find));
-  m_Box_Details.signal_find.connect(sigc::mem_fun(*this, &Notebook_Find::on_page_find));
+  m_Box_List.signal_find_criteria.connect(sigc::mem_fun(*this, &Notebook_Find::on_page_find_criteria));
+  m_Box_Details.signal_find_criteria.connect(sigc::mem_fun(*this, &Notebook_Find::on_page_find_criteria));
 
   //Fill composite view:
   add_view(&m_Box_List);
@@ -47,15 +47,18 @@ Notebook_Find::~Notebook_Find()
   remove_view(&m_Box_Details);
 }
 
-void Notebook_Find::init_db_details(const Glib::ustring& strTableName)
+bool Notebook_Find::init_db_details(const Glib::ustring& strTableName)
 {
-  m_Box_List.init_db_details(strTableName);
+  bool result = m_Box_List.init_db_details(strTableName);
 
   Gnome::Gda::Value primary_key_value; //It's ignored anyway.
   m_Box_Details.init_db_details(strTableName, primary_key_value);
+
+  return result;
 }
 
-void Notebook_Find::on_page_find(Glib::ustring strWhereClause)
+void Notebook_Find::on_page_find_criteria(const Glib::ustring& strWhereClause)
 {
-  signal_find(strWhereClause);
+  //Pass it up to the application.
+  signal_find_criteria.emit(strWhereClause);
 }

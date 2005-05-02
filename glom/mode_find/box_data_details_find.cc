@@ -40,15 +40,17 @@ Box_Data_Details_Find::~Box_Data_Details_Find()
 
 
 
-void Box_Data_Details_Find::fill_from_database()
+bool Box_Data_Details_Find::fill_from_database()
 {
   Bakery::BusyCursor(*get_app_window());
 
-  Box_DB_Table::fill_from_database();
+  bool result = Box_DB_Table::fill_from_database();
 
   m_FieldsShown = get_fields_to_show();
 
   create_layout(); //TODO: Only do this when the layout has changed.
+
+  return result;
 }
 
 void Box_Data_Details_Find::fill_related()

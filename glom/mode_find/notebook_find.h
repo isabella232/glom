@@ -32,16 +32,18 @@ public:
   Notebook_Find();
   virtual ~Notebook_Find();
 
-  virtual void init_db_details(const Glib::ustring& strTableName);
+  virtual bool init_db_details(const Glib::ustring& strTableName);
 
-  //Signals:
-  //where_clause.
-  sigc::signal<void, Glib::ustring> signal_find;
-  
+  /** Emitted when the user has entered a find critera that
+   * should be used to find and display records.
+   * @param find_criteria The SQL where clause.
+   */
+  sigc::signal<void, Glib::ustring> signal_find_criteria;
+
 protected:
 
   //Signal handlers:
-  virtual void on_page_find(Glib::ustring strWhereClause);
+  virtual void on_page_find_criteria(const Glib::ustring& strWhereClause);
 
   //Member widgets:
   Box_Data_List_Find m_Box_List;

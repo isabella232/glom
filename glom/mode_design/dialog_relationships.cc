@@ -49,7 +49,7 @@ Dialog_Relationships::~Dialog_Relationships()
  * 
  * @param strTableName 
  */
-void Dialog_Relationships::init_db_details(const Glib::ustring& strTableName)
+bool Dialog_Relationships::init_db_details(const Glib::ustring& strTableName)
 {
   if(m_box)
   {
@@ -57,8 +57,10 @@ void Dialog_Relationships::init_db_details(const Glib::ustring& strTableName)
 
     Dialog_Design::init_db_details(strTableName);
 
-    m_box->init_db_details(strTableName);
+    return m_box->init_db_details(strTableName);
   }
+
+  return false;
 }
 
 void Dialog_Relationships::on_hide()

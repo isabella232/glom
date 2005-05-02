@@ -43,12 +43,12 @@ Dialog_Design::~Dialog_Design()
 {
 }
 
-void Dialog_Design::init_db_details(const Glib::ustring& strTableName)
+bool Dialog_Design::init_db_details(const Glib::ustring& strTableName)
 {
   if(get_document())
   {
     Glib::ustring table_label = _("None selected");
-    
+
     //Show the table title (if any) and name:
      Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
      if(document)
@@ -66,6 +66,8 @@ void Dialog_Design::init_db_details(const Glib::ustring& strTableName)
   {
     g_warning("no document");
   }
+
+  return true;
 }
 
 void Dialog_Design::on_button_close()

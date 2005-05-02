@@ -39,10 +39,10 @@ public:
   virtual ~Box_Data();
 
   ///Create the layout for the database structure, and fill it with data from the database.
-  virtual void init_db_details(const Glib::ustring& strTableName, const Glib::ustring& strWhereClause = Glib::ustring());
+  virtual bool init_db_details(const Glib::ustring& strTableName, const Glib::ustring& strWhereClause = Glib::ustring());
 
   //Fill the existing layout with data from the databse.
-  virtual void refresh_data_from_database(const Glib::ustring& strWhereClause = Glib::ustring());
+  virtual bool refresh_data_from_database(const Glib::ustring& strWhereClause = Glib::ustring());
 
   virtual void print_layout(); //A test, for now.
 
@@ -59,10 +59,14 @@ public:
 
   //Signals:
 
-  //signal_find: Used by _Find sub-classes.
+  /** Emitted when the user has entered a find critera that
+   * should be used to find and display records.
+   * Used by _Find sub-classes.
+   * @param find_criteria The SQL where clause.
+   */
   //Should be a MI class, derived by those sub-classes. TODO.
   //where_clause.
-  sigc::signal<void, Glib::ustring> signal_find;
+  sigc::signal<void, Glib::ustring> signal_find_criteria;
 
   //g++ 3.4 needs this to be public when used from Box_Data_Details. I'm not sure why. murrayc.
   virtual void on_dialog_layout_hide();
@@ -75,7 +79,7 @@ protected:
   virtual void create_layout();
 
   ///Fill the existing layout with data from the database.
-  virtual void fill_from_database(); //override.
+  virtual bool fill_from_database(); //override.
 
   virtual void do_lookups(const Gtk::TreeModel::iterator& row, const LayoutItem_Field& field_changed, const Gnome::Gda::Value& field_value, const Field& primary_key, const Gnome::Gda::Value& primary_key_value) = 0;
   virtual void refresh_related_fields(const Gtk::TreeModel::iterator& row, const LayoutItem_Field& field_changed, const Gnome::Gda::Value& field_value, const Field& primary_key, const Gnome::Gda::Value& primary_key_value) = 0;

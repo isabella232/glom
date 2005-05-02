@@ -45,16 +45,18 @@ Dialog_Fields::~Dialog_Fields()
   remove_view(m_box);
 }
 
-void Dialog_Fields::init_db_details(const Glib::ustring& strTableName)
+bool Dialog_Fields::init_db_details(const Glib::ustring& strTableName)
 {
   if(m_box)
   {
     m_box->load_from_document();
 
     Dialog_Design::init_db_details(strTableName);
-    
+
     m_box->init_db_details(strTableName);
   }
+
+  return true;
 }
 
 

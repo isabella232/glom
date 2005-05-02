@@ -123,8 +123,7 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
   //Connect signals:
   m_pBox_Tables->signal_selected.connect(sigc::mem_fun(*this, &Frame_Glom::on_box_tables_selected));
 
-  
-  m_Notebook_Find.signal_find.connect(sigc::mem_fun(*this, &Frame_Glom::on_Notebook_Find));
+  m_Notebook_Find.signal_find_criteria.connect(sigc::mem_fun(*this, &Frame_Glom::on_notebook_find_criteria));
 
   //Fill Composite View:
   //This means that set_document and load/save are delegated to these children:
@@ -469,12 +468,20 @@ void Frame_Glom::show_ok_dialog(const Glib::ustring& title, const Glib::ustring&
   dialog.run();
 }
 
-void Frame_Glom::on_Notebook_Find(Glib::ustring strWhereClause)
+void Frame_Glom::on_notebook_find_criteria(const Glib::ustring& strWhereClause)
 {
   on_menu_Mode_Data();
 
-  m_Notebook_Data.init_db_details(m_strTableName, strWhereClause);
+  bool records_found = m_Notebook_Data.init_db_details(m_strTableName, strWhereClause);
   m_Notebook_Data.select_page_for_find_results();
+
+  if(!records_found)
+  {
+    Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("No Records Found")), true, Gtk::MESSAGE_WARNING);
+    dialog.set_secondary_text(_("Your find criteria did not match any records in the table."));
+    dialog.set_transient_for(*(get_app_window()));
+    dialog.run();
+  }
 }
 
 void Frame_Glom::on_userlevel_changed(AppState::userlevels userlevel)

@@ -39,7 +39,7 @@ public:
   virtual void save_to_document(); //override.
 
 protected:
-  virtual void fill_from_database();
+  virtual bool fill_from_database();
 
   //Signal handlers:
   virtual void on_adddel_user_activated(const Gtk::TreeModel::iterator& row, guint col);

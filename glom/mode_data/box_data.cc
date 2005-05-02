@@ -47,21 +47,21 @@ Box_Data::~Box_Data()
   }
 }
 
-void Box_Data::init_db_details(const Glib::ustring& strTableName, const Glib::ustring& strWhereClause)
+bool Box_Data::init_db_details(const Glib::ustring& strTableName, const Glib::ustring& strWhereClause)
 {
   m_strTableName = strTableName;
   m_strWhereClause = strWhereClause;
 
   create_layout(); //So that fill_from_database() can succeed.
 
-  Box_DB_Table::init_db_details(strTableName); //Calls fill_from_database().
+  return Box_DB_Table::init_db_details(strTableName); //Calls fill_from_database().
 }
 
-void Box_Data::refresh_data_from_database(const Glib::ustring& strWhereClause)
+bool Box_Data::refresh_data_from_database(const Glib::ustring& strWhereClause)
 {
   m_strWhereClause = strWhereClause;
 
-  Box_DB_Table::refresh_data_from_database(); //Calls fill_from_database().
+  return Box_DB_Table::refresh_data_from_database(); //Calls fill_from_database().
 }
 
 Glib::ustring Box_Data::get_find_where_clause() const
@@ -104,7 +104,7 @@ void Box_Data::on_Button_Find()
   //Make sure that the cell is updated:
   //m_AddDel.finish_editing();
 
-  signal_find.emit(get_find_where_clause());
+  signal_find_criteria.emit(get_find_where_clause());
 }
 
 Box_Data::type_map_fields Box_Data::get_record_field_values(const Gnome::Gda::Value& primary_key_value)
@@ -291,11 +291,11 @@ void Box_Data::create_layout()
   m_TableFields = get_fields_for_table(m_strTableName);
 }
 
-void Box_Data::fill_from_database()
+bool Box_Data::fill_from_database()
 {
   set_unstored_data(false);
 
-  Box_DB_Table::fill_from_database();
+  return Box_DB_Table::fill_from_database();
 }
 
 bool Box_Data::confirm_discard_unstored_data() const

@@ -69,11 +69,11 @@ void Box_Tables::fill_table_row(const Gtk::TreeModel::iterator& iter, const Tabl
   }
 }
 
-void Box_Tables::fill_from_database()
+bool Box_Tables::fill_from_database()
 {
   Bakery::BusyCursor(*get_app_window());
 
-  Box_DB::fill_from_database();
+  bool result = Box_DB::fill_from_database();
 
   //Enable/Disable extra widgets:
   bool developer_mode = (get_userlevel() == AppState::USERLEVEL_DEVELOPER);
@@ -169,6 +169,8 @@ void Box_Tables::fill_from_database()
 
   m_AddDel.set_allow_add(developer_mode);
   m_AddDel.set_allow_delete(developer_mode);
+
+  return result;
 }
 
 void Box_Tables::on_adddel_Add(const Gtk::TreeModel::iterator& row)

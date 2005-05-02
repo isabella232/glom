@@ -32,7 +32,7 @@ public:
   virtual ~Notebook_Data();
 
   //Create the layout for the database structure, and fill it with data.
-  virtual void init_db_details(const Glib::ustring& strTableName, const Glib::ustring& strWhereClause = Glib::ustring());
+  virtual bool init_db_details(const Glib::ustring& strTableName, const Glib::ustring& strWhereClause = Glib::ustring());
 
   virtual void select_page_for_find_results(); //Details for 1, List for > 1.
 

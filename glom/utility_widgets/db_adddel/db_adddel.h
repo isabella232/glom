@@ -167,6 +167,8 @@ public:
 
   virtual void construct_specified_columns(); //Delay actual use of set_column_*() stuff until this method is called.
 
+  virtual bool refresh_from_database();
+
   virtual void set_show_column_titles(bool bVal = true);
 
   virtual Gtk::TreeModel::iterator get_row(const Gnome::Gda::Value& key);

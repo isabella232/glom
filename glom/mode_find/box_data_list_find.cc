@@ -39,11 +39,11 @@ Box_Data_List_Find::~Box_Data_List_Find()
 }
 
 
-void Box_Data_List_Find::fill_from_database()
+bool Box_Data_List_Find::fill_from_database()
 {
   Bakery::BusyCursor(*get_app_window());
 
-  Box_DB_Table::fill_from_database();
+  bool result = Box_DB_Table::fill_from_database();
 
   m_AddDel.remove_all();
 
@@ -53,6 +53,8 @@ void Box_Data_List_Find::fill_from_database()
   m_FieldsShown = get_fields_to_show();
 
   m_AddDel.add_item(Gnome::Gda::Value("find"));
+
+  return result;
 }
 
 void Box_Data_List_Find::on_adddel_user_changed(const Gtk::TreeModel::iterator& /* row */, guint /* col */)

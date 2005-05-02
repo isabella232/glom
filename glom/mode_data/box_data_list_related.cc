@@ -82,7 +82,7 @@ Box_Data_List_Related::~Box_Data_List_Related()
   }
 }
 
-void Box_Data_List_Related::init_db_details(const Relationship& relationship)
+bool Box_Data_List_Related::init_db_details(const Relationship& relationship)
 {
   m_relationship = relationship;
   m_strTableName = relationship.get_to_table();
@@ -95,11 +95,10 @@ void Box_Data_List_Related::init_db_details(const Relationship& relationship)
     g_warning("Box_Data_List_Related::init_db_details(): key_field not found.");
   }
 
-  Box_Data_List::init_db_details(relationship.get_to_table()); //Calls create_layout() and fill_from_database().
-
+  return Box_Data_List::init_db_details(relationship.get_to_table()); //Calls create_layout() and fill_from_database().
 }
 
-void Box_Data_List_Related::refresh_data_from_database(const Gnome::Gda::Value& foreign_key_value)
+bool Box_Data_List_Related::refresh_data_from_database(const Gnome::Gda::Value& foreign_key_value)
 {
   m_key_value = foreign_key_value;
 
@@ -108,22 +107,24 @@ void Box_Data_List_Related::refresh_data_from_database(const Gnome::Gda::Value& 
     Glib::ustring strWhereClause = m_key_field.get_name() + " = " + m_key_field.sql(m_key_value);
 
     //g_warning("refresh_data_from_database(): where_clause=%s", strWhereClause.c_str());
-    Box_Data_List::refresh_data_from_database(strWhereClause);
+    return Box_Data_List::refresh_data_from_database(strWhereClause);
   }
   else
   {
     g_warning("Box_Data_List_Related::refresh_data_from_database(): m_key_value is NULL.");
+    return false;
   }
   //TODO: Clear the list if there is no key value?
 }
 
-void Box_Data_List_Related::fill_from_database()
+bool Box_Data_List_Related::fill_from_database()
 {
+  bool result = false;
   bool allow_add = true;
 
   if(!m_strWhereClause.empty())
   {
-    Box_Data_List::fill_from_database();
+    result = Box_Data_List::fill_from_database();
 
 
     //Is there already one record here?
@@ -142,7 +143,7 @@ void Box_Data_List_Related::fill_from_database()
   {
     //No Foreign Key value, so just show the field names:
 
-    Box_DB_Table::fill_from_database();
+    result = Box_DB_Table::fill_from_database();
 
     //create_layout();
 
@@ -154,6 +155,8 @@ void Box_Data_List_Related::fill_from_database()
     allow_add = m_relationship.get_auto_create();
 
   m_AddDel.set_allow_add(allow_add);
+
+  return result;
 }
 
 void Box_Data_List_Related::on_record_added(const Gnome::Gda::Value& primary_key_value)

@@ -35,19 +35,20 @@ Base_DB::~Base_DB()
 {
 }
 
-void Base_DB::init_db_details()
+bool Base_DB::init_db_details()
 {
-  fill_from_database();
+  return fill_from_database();
 }
 
-void Base_DB::refresh_data_from_database()
+bool Base_DB::refresh_data_from_database()
 {
-  fill_from_database();
+  return fill_from_database();
 }
 
-void Base_DB::fill_from_database()
+bool Base_DB::fill_from_database()
 {
   //m_AddDel.remove_all();
+  return true;
 }
 
 void Base_DB::fill_end()

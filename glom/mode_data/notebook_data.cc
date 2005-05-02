@@ -62,8 +62,9 @@ Notebook_Data::~Notebook_Data()
   remove_view(&m_Box_Details);
 }
 
-void Notebook_Data::init_db_details(const Glib::ustring& strTableName, const Glib::ustring& strWhereClause)
+bool Notebook_Data::init_db_details(const Glib::ustring& strTableName, const Glib::ustring& strWhereClause)
 {
+  bool result = false;
   //strWhereClause is only used as a result of a find.
 
   //Performance optimisation:
@@ -71,12 +72,14 @@ void Notebook_Data::init_db_details(const Glib::ustring& strTableName, const Gli
   {
     sharedptr<SharedConnection> sharedconnection = connect_to_server();
 
-    m_Box_List.init_db_details(strTableName, strWhereClause);
+    result = m_Box_List.init_db_details(strTableName, strWhereClause);
     m_Box_Details.init_db_details(strTableName, m_Box_List.get_primary_key_value_selected());
   }
 
   //Select List as default:
   set_current_page(m_iPage_List);
+
+  return result;
 }
 
 void Notebook_Data::on_list_user_requested_details(Gnome::Gda::Value primary_key_value)

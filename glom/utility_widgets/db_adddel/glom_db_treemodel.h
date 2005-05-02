@@ -75,6 +75,8 @@ protected:
 public:
   static Glib::RefPtr<DbTreeModel> create(const Gtk::TreeModelColumnRecord& columns, const Glib::ustring& table_name, const type_vec_fields& column_fields, int column_index_key, bool get_records = true, const Glib::ustring& where_clause = Glib::ustring());
 
+  virtual bool refresh_from_database();
+
   typedef DbTreeModelRow::DbValue DbValue;
 
   virtual void set_is_placeholder(const TreeModel::iterator& iter, bool val);
@@ -214,6 +216,7 @@ private:
    ColumnRecord m_column_record;
 
    typedef Gtk::TreeModelColumn< DbValue > typeModelColumn;
+   bool m_get_records;
 
    int m_stamp; //When the model's stamp and the TreeIter's stamp are equal, the TreeIter is valid.
    mutable GlueList* m_pGlueList;

@@ -33,7 +33,7 @@ public:
 
 protected:
   void init(); //Avoid duplicating code in constructors.
-  virtual void fill_from_database();
+  virtual bool fill_from_database();
   virtual void fill_fields();
 
   void fill_field_row(const Gtk::TreeModel::iterator& iter, const Field& field);

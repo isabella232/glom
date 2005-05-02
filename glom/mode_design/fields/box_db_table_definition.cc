@@ -111,9 +111,9 @@ void Box_DB_Table_Definition::fill_field_row(const Gtk::TreeModel::iterator& ite
   m_AddDel.set_value(iter, m_colPrimaryKey, bPrimaryKey);
 }
 
-void Box_DB_Table_Definition::fill_from_database()
+bool Box_DB_Table_Definition::fill_from_database()
 {
-  Box_DB_Table::fill_from_database();
+  bool result = Box_DB_Table::fill_from_database();
 
   fill_fields();
 
@@ -132,13 +132,18 @@ void Box_DB_Table_Definition::fill_from_database()
       Gtk::TreeModel::iterator iter= m_AddDel.add_item(field.get_name());
       fill_field_row(iter, field);
     }
+
+    result = true;
   }
   catch(std::exception& ex)
   {
     handle_error(ex);
+    result = false;
   }
 
   fill_end();
+
+  return result;
 }
 
 void Box_DB_Table_Definition::on_adddel_add(const Gtk::TreeModel::iterator& row)

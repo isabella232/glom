@@ -140,6 +140,7 @@ DbTreeModel::DbTreeModel(const Gtk::TreeModelColumnRecord& columns, const Glib::
   m_data_model_columns_count(0),
   m_count_extra_rows(0),
   m_count_removed_rows(0),
+  m_get_records(get_records),
   m_stamp(1), //When the model's stamp != the iterator's stamp then that iterator is invalid and should be ignored. Also, 0=invalid
   m_pGlueList(0)
 {
@@ -157,31 +158,7 @@ DbTreeModel::DbTreeModel(const Gtk::TreeModelColumnRecord& columns, const Glib::
 
   g_assert(m_columns_count == column_fields.size());
 
-  //Connect to database:
-  ConnectionPool* connection_pool = ConnectionPool::get_instance();
-  if(connection_pool)
-  {
-     m_connection = connection_pool->connect();
-  }
-
-  if(m_connection && !table_name.empty() && get_records)
-  {
-    const Glib::ustring sql_query = util_build_sql_select_with_where_clause(table_name, column_fields, where_clause);
-
-    std::cout << "DbTreeModel: Executing SQL: " << sql_query << std::endl;
-    m_gda_datamodel = m_connection->get_gda_connection()->execute_single_command(sql_query);
-    if(!m_gda_datamodel)
-    {
-      //TODO: handle_error();
-    }
-    else
-    {
-      m_data_model_rows_count = m_gda_datamodel->get_n_rows(); //TODO_Performance: This probably gets all the data.
-      m_data_model_columns_count = m_gda_datamodel->get_n_columns();
-    }
-  }
-  else
-    m_data_model_columns_count = m_columns_count;
+  //refresh_from_database();
 }
 
 DbTreeModel::~DbTreeModel()
@@ -193,6 +170,58 @@ DbTreeModel::~DbTreeModel()
 Glib::RefPtr<DbTreeModel> DbTreeModel::create(const Gtk::TreeModelColumnRecord& columns, const Glib::ustring& table_name, const type_vec_fields& column_fields, int column_index_key, bool get_records, const Glib::ustring& where_clause)
 {
   return Glib::RefPtr<DbTreeModel>( new DbTreeModel(columns, table_name, column_fields, column_index_key, get_records, where_clause) );
+}
+
+bool DbTreeModel::refresh_from_database()
+{
+  if(!m_get_records)
+    return false;
+
+  //Connect to database:
+  ConnectionPool* connection_pool = ConnectionPool::get_instance();
+  if(connection_pool)
+  {
+     m_connection = connection_pool->connect();
+  }
+
+  if(m_connection && !m_table_name.empty() && m_get_records)
+  {
+    const Glib::ustring sql_query = util_build_sql_select_with_where_clause(m_table_name, m_column_fields, m_where_clause);
+
+    std::cout << "DbTreeModel: Executing SQL: " << sql_query << std::endl;
+    m_gda_datamodel = m_connection->get_gda_connection()->execute_single_command(sql_query);
+    if(!m_gda_datamodel && m_gda_datamodel->get_n_rows())
+    {
+      //TODO: handle_error();
+      return false; //No records were found.
+    }
+    else
+    {
+      m_data_model_rows_count = m_gda_datamodel->get_n_rows(); //TODO_Performance: This probably gets all the data.
+      m_data_model_columns_count = m_gda_datamodel->get_n_columns();
+
+      /*
+      guint rows_to_get = 100;
+      if(rows_to_get > m_data_model_rows_count)
+        rows_to_get = m_data_model_rows_count;
+
+      for(guint i = 0; i < rows_to_get; ++i)
+      {
+        iterator iter;
+        const bool iter_is_valid = create_iterator(i, iter);
+        if(iter_is_valid)
+          row_inserted(get_path(iter), iter); //Allow the TreeView to respond to the addition.
+      }
+      */
+
+      return true;
+    }
+  }
+  else
+  {
+    m_data_model_columns_count = m_columns_count;
+    return false; //No records were found.
+  }
 }
 
 Gtk::TreeModelFlags DbTreeModel::get_flags_vfunc() const

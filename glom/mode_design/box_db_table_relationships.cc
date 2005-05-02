@@ -56,11 +56,11 @@ Box_DB_Table_Relationships::~Box_DB_Table_Relationships()
 {
 }
 
-void Box_DB_Table_Relationships::fill_from_database()
+bool Box_DB_Table_Relationships::fill_from_database()
 {
   Bakery::BusyCursor(*get_app_window());
 
-  Box_DB_Table::fill_from_database();
+  bool result = Box_DB_Table::fill_from_database();
 
   //Get relationships from the document:
   Document_Glom::type_vecRelationships vecRelationships = get_document()->get_relationships(m_strTableName);
@@ -108,6 +108,8 @@ void Box_DB_Table_Relationships::fill_from_database()
   }
 
   fill_end();
+
+  return result;
 }
 
 void Box_DB_Table_Relationships::save_to_document()

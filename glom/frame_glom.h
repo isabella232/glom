@@ -108,7 +108,7 @@ protected:
   virtual void alert_no_table();
 
   //Signal handlers:
-  virtual void on_Notebook_Find(Glib::ustring strWhereClause);
+  virtual void on_notebook_find_criteria(const Glib::ustring& strWhereClause);
   virtual void on_userlevel_changed(AppState::userlevels userlevel);
 
   //Member data:
