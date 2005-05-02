@@ -1,5 +1,17 @@
 2005-05-02  Murray Cumming <murrayc@murrayc.com>
 
+	* glom/mode_find/box_data_list_find.cc:
+	* glom/mode_find/box_data_list_find.h:
+	Override some signal handlers from the base class, to 
+	prevent adding new rows to the database.
+	* glom/utility_widgets/db_adddel/glom_db_treemodel.cc:
+	get_value_vfunc(): Check the count of columns, not the 
+	count of columns in the data model, so we can show 
+	an empty placeholder row without database data, for 
+	instance in Find mode. 
+
+2005-05-02  Murray Cumming <murrayc@murrayc.com>
+
 	* glom/application.cc:
 	* glom/application.h:
 	Added set_mode_find().

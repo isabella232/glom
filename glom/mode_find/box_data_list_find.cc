@@ -38,6 +38,10 @@ Box_Data_List_Find::~Box_Data_List_Find()
 {
 }
 
+void Box_Data_List_Find::create_layout()
+{
+  Box_Data_List::create_layout();
+}
 
 bool Box_Data_List_Find::fill_from_database()
 {
@@ -67,4 +71,13 @@ Gtk::Widget* Box_Data_List_Find::get_default_button() //override
 {
   return &m_Button_Find;
 }
- 
+
+void Box_Data_List_Find::on_adddel_user_requested_delete(const Gtk::TreeModel::iterator& /* rowStart */, const Gtk::TreeModel::iterator&  /* rowEnd TODO */)
+{
+  //Ignore this, instead of updating the database, as the base class does.
+}
+
+void Box_Data_List_Find::on_adddel_user_added(const Gtk::TreeModel::iterator& /* row */, guint /* col_with_first_value */)
+{
+  //Ignore this, instead of updating the database, as the base class does.
+}

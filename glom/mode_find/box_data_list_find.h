@@ -30,13 +30,16 @@ public:
   virtual ~Box_Data_List_Find();
 
   virtual Gtk::Widget* get_default_button(); //override
-    
+
 protected:
 
   virtual bool fill_from_database(); //override.
+  virtual void create_layout();
 
   virtual void on_adddel_user_changed(const Gtk::TreeModel::iterator& row, guint col); //override
-  
+  virtual void on_adddel_user_requested_delete(const Gtk::TreeModel::iterator& /* rowStart */, const Gtk::TreeModel::iterator&  /* rowEnd TODO */);
+  virtual void on_adddel_user_added(const Gtk::TreeModel::iterator& /* row */, guint /* col_with_first_value */);
+
   //Member widgets:
   Gtk::HBox m_HBox;
 };

@@ -123,7 +123,6 @@ bool Box_Data_List::fill_from_database()
     result = false;
   }
 
-  g_warning("Box_Data_List:: returning %d", result);
   return result;
 }
 

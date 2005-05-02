@@ -268,7 +268,7 @@ void DbTreeModel::get_value_vfunc(const TreeModel::iterator& iter, int column, G
 
         DbTreeModelRow& row_details = m_map_rows[dataRowIter]; //Adds it if necessary.
         const int column_sql = column;
-        if(column_sql < (int)m_data_model_columns_count) //TODO_Performance: Remove the checks.
+        if(column_sql < (int)m_columns_count) //TODO_Performance: Remove the checks.
         {
           if(true) //dataRowIter < (unsigned int)m_data_model_rows_count)
           {
@@ -278,7 +278,7 @@ void DbTreeModel::get_value_vfunc(const TreeModel::iterator& iter, int column, G
             g_warning("DbTreeModel::get_value_vfunc: row out of bounds.");
         }
         else
-          g_warning("DbTreeModel::get_value_vfunc: column out of bounds: sql_col=%d, max=%d.", column_sql, m_data_model_columns_count);
+          g_warning("DbTreeModel::get_value_vfunc: column out of bounds: sql_col=%d, max=%d.", column_sql, m_columns_count);
 
 
         value_specific.set(result); //The compiler would complain if the type was wrong.
