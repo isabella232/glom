@@ -73,7 +73,9 @@ DbAddDel::DbAddDel()
   //set_columns_count(1);
   //construct_specified_columns();
 
+  m_ScrolledWindow.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
   m_ScrolledWindow.add(m_TreeView);
+
   m_TreeView.show();
   //m_TreeView.set_fixed_height_mode(); //This allows some optimizations.
   pack_start(m_ScrolledWindow);

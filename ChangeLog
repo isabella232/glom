@@ -1,5 +1,11 @@
 2005-05-02  Murray Cumming <murrayc@murrayc.com>
 
+	* glom/utility_widgets/db_adddel/db_adddel.cc:
+	Use ScrolledWindow::set_policy(POLICY_AUTOMATIC) so 
+	we do not get useless scrollbars.
+
+2005-05-02  Murray Cumming <murrayc@murrayc.com>
+
 	* glom/mode_find/box_data_list_find.cc:
 	* glom/mode_find/box_data_list_find.h:
 	Override some signal handlers from the base class, to 
