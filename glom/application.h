@@ -40,15 +40,16 @@ public:
 
   /** Changes the mode to Data mode, as if the user had selected the Data Mode menu item.
    */
-  virtual void set_mode_data();
-  
-  virtual void add_developer_action(const Glib::RefPtr<Gtk::Action>& refAction);
-  virtual void remove_developer_action(const Glib::RefPtr<Gtk::Action>& refAction);
-  
-  virtual AppState::userlevels get_userlevel() const;
-  
-  virtual void update_userlevel_ui();
-    
+  void set_mode_data();
+  void set_mode_find();
+
+  void add_developer_action(const Glib::RefPtr<Gtk::Action>& refAction);
+  void remove_developer_action(const Glib::RefPtr<Gtk::Action>& refAction);
+
+  AppState::userlevels get_userlevel() const;
+
+  void update_userlevel_ui();
+
 protected:
   virtual void init_layout(); //override.
   virtual void init_menus_file(); //override.
@@ -78,7 +79,7 @@ protected:
 
   typedef std::list< Glib::RefPtr<Gtk::Action> > type_listActions; 
   type_listActions m_listDeveloperActions; //Only enabled when in developer mode.
-  Glib::RefPtr<Gtk::Action> m_action_mode_data;
+  Glib::RefPtr<Gtk::Action> m_action_mode_data, m_action_mode_find;
   Glib::RefPtr<Gtk::RadioAction> m_action_menu_userlevel_developer, m_action_menu_userlevel_operator;
   
   Gtk::VBox* m_pBoxTop;

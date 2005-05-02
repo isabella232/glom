@@ -1,5 +1,16 @@
 2005-05-02  Murray Cumming <murrayc@murrayc.com>
 
+	* glom/application.cc:
+	* glom/application.h:
+	Added set_mode_find().
+	* glom/frame_glom.cc: 
+	on_notebook_find_criteria(): Show a dialog 
+	when no records were found, and offer to 
+	return to find mode. Show the mode in the 
+	Mode menu when programatically changing mode.
+
+2005-05-02  Murray Cumming <murrayc@murrayc.com>
+
 	* glom/base_db.cc:
 	* glom/base_db.h:
 	* glom/box_db_table.cc:

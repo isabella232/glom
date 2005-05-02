@@ -470,17 +470,28 @@ void Frame_Glom::show_ok_dialog(const Glib::ustring& title, const Glib::ustring&
 
 void Frame_Glom::on_notebook_find_criteria(const Glib::ustring& strWhereClause)
 {
-  on_menu_Mode_Data();
+  //on_menu_Mode_Data();
 
-  bool records_found = m_Notebook_Data.init_db_details(m_strTableName, strWhereClause);
-  m_Notebook_Data.select_page_for_find_results();
-
-  if(!records_found)
+  App_Glom* pApp = dynamic_cast<App_Glom*>(get_app_window());
+  if(pApp)
   {
-    Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("No Records Found")), true, Gtk::MESSAGE_WARNING);
-    dialog.set_secondary_text(_("Your find criteria did not match any records in the table."));
-    dialog.set_transient_for(*(get_app_window()));
-    dialog.run();
+    pApp->set_mode_data();
+
+    bool records_found = m_Notebook_Data.init_db_details(m_strTableName, strWhereClause);
+    m_Notebook_Data.select_page_for_find_results();
+
+    if(!records_found)
+    {
+      Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("No Records Found")), true, Gtk::MESSAGE_WARNING, Gtk::BUTTONS_NONE);
+      dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+      dialog.add_button(_("New Find"), Gtk::RESPONSE_OK);
+      dialog.set_secondary_text(_("Your find criteria did not match any records in the table."));
+      dialog.set_transient_for(*(get_app_window()));
+      bool find_again = dialog.run();
+
+      if(find_again)
+        pApp->set_mode_find();
+    }
   }
 }
 

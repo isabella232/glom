@@ -102,9 +102,8 @@ bool Box_Data_List::fill_from_database()
 
     m_AddDel.set_where_clause(m_strWhereClause);
 
-    g_warning("debug");
     result = m_AddDel.refresh_from_database();
-    g_warning("debug2");
+
     if(table_privs.m_view)
     {
       //TODO: Don't show it if m_view is false.
@@ -124,6 +123,7 @@ bool Box_Data_List::fill_from_database()
     result = false;
   }
 
+  g_warning("Box_Data_List:: returning %d", result);
   return result;
 }
 

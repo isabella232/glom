@@ -190,7 +190,7 @@ bool DbTreeModel::refresh_from_database()
 
     std::cout << "DbTreeModel: Executing SQL: " << sql_query << std::endl;
     m_gda_datamodel = m_connection->get_gda_connection()->execute_single_command(sql_query);
-    if(!m_gda_datamodel && m_gda_datamodel->get_n_rows())
+    if(!m_gda_datamodel || (m_gda_datamodel->get_n_rows() == 0))
     {
       //TODO: handle_error();
       return false; //No records were found.

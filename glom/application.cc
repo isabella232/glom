@@ -228,7 +228,9 @@ void App_Glom::init_menus()
   m_action_mode_data = Gtk::RadioAction::create(group_mode, "GlomAction_Menu_Mode_Data", _("D_ata"));
   m_refActionGroup_Others->add(m_action_mode_data,
                         sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_Mode_Data) );
-  m_refActionGroup_Others->add( Gtk::RadioAction::create(group_mode, "GlomAction_Menu_Mode_Find", _("_Find")),  Gtk::AccelKey("<control>F"),
+
+  m_action_mode_find = Gtk::RadioAction::create(group_mode, "GlomAction_Menu_Mode_Find", _("_Find"));
+  m_refActionGroup_Others->add(m_action_mode_find,  Gtk::AccelKey("<control>F"),
                         sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_Mode_Find) );
 
   action = Gtk::Action::create("Glom_Menu_Developer", _("_Developer"));
@@ -630,6 +632,11 @@ bool App_Glom::offer_new_or_existing()
 }
 
 void App_Glom::set_mode_data()
+{
+  m_action_mode_data->activate();
+}
+
+void App_Glom::set_mode_find()
 {
   m_action_mode_data->activate();
 }
