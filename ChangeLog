@@ -1,3 +1,24 @@
+2005-05-03  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/application.cc:
+	* glom/application.h:
+	* glom/base_db.cc:
+	* glom/box_db.cc:
+	* glom/box_db.h:
+	* glom/frame_glom.cc:
+	* glom/frame_glom.h:
+	* glom/glom.glade:
+	* glom/mode_data/box_data_details.cc:
+	* glom/mode_data/box_data_list.cc:
+	* glom/mode_find/box_data_details_find.cc:
+	* glom/mode_find/box_data_list_find.cc:
+	* glom/notebook_glom.cc:
+	* glom/notebook_glom.h:
+	Move Mode label to the bottom of the window. 
+	Show the system name at the top, from the 
+	database preferences. Remove crufty hints 
+	stuff.
+
 2005-05-03  Murray Cumming <murrayc@murrayc.com>
 
 	* glom/Makefile.am:

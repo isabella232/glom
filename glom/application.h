@@ -32,8 +32,8 @@ public:
 
   virtual bool init(const Glib::ustring& document_uri = Glib::ustring()); //override
 
-  virtual void statusbar_set_text(const Glib::ustring& strText);
-  virtual void statusbar_clear();
+  //virtual void statusbar_set_text(const Glib::ustring& strText);
+  //virtual void statusbar_clear();
 
   /// Get the UIManager so we can merge new menus in.
   Glib::RefPtr<Gtk::UIManager> get_ui_manager();

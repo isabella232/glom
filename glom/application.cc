@@ -31,14 +31,12 @@ App_Glom::App_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml
 : Gtk::Window(cobject), //It's a virtual base class, so we have to call the specific constructor to prevent the default constructor from being called.
   type_base(cobject, "Glom"),
   m_pBoxTop(0),
-  m_pFrame(0),
-  m_pStatus(0)
+  m_pFrame(0)
 {
   //Load widgets from glade file:
   refGlade->get_widget("bakery_vbox", m_pBoxTop);
   refGlade->get_widget_derived("vbox_frame", m_pFrame); //This one is derived. There's a lot happening here.
-  refGlade->get_widget("label_hint", m_pStatus);
- 
+
   add_mime_type("application/x-glom"); //TODO: make this actually work - we need to register it properly.
   
   //Hide the toolbar because it doesn't contain anything useful for this app.
@@ -453,8 +451,11 @@ bool App_Glom::on_document_load()
         //Switch to operator mode when opening new documents:
         pDocument->set_userlevel(AppState::USERLEVEL_OPERATOR);
 
+        m_pFrame->show_system_name();
+
         //Open default table, or show list of tables instead:
         m_pFrame->do_menu_Navigate_Table(true /* open the default if there is one */);
+
       }
     }
 
@@ -462,6 +463,7 @@ bool App_Glom::on_document_load()
   }
 }
 
+/*
 void App_Glom::statusbar_set_text(const Glib::ustring& strText)
 {
   m_pStatus->set_text(strText);
@@ -471,6 +473,7 @@ void App_Glom::statusbar_clear()
 {
   statusbar_set_text("");
 }
+*/
 
 
 void App_Glom::on_userlevel_changed(AppState::userlevels /* userlevel */)

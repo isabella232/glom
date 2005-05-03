@@ -75,6 +75,8 @@ public:
   virtual void set_document(Document_Glom* pDocument); //View override
   virtual void load_from_document(); //View override
 
+  void show_system_name();
+
   enum enumModes
   {
     MODE_None, //at the start.
@@ -116,6 +118,7 @@ protected:
   Glib::ustring m_strTableName;
 
   //Child widgets:
+  Gtk::Label* m_pLabel_Name;
   Gtk::Label* m_pLabel_Table;
   Gtk::Label* m_pLabel_Mode;
   Gtk::Label* m_pLabel_userlevel;

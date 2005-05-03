@@ -24,7 +24,7 @@
 Box_Data_List_Find::Box_Data_List_Find()
 : m_HBox(false, 6)
 {
-  m_strHint = _("Enter the search criteria and click [Find]\n Glom will then change to Data mode to display the results.");
+  //m_strHint = _("Enter the search criteria and click [Find]\n Glom will then change to Data mode to display the results.");
 
   m_HBox.pack_end(m_Button_Find, Gtk::PACK_SHRINK);
   pack_start(m_HBox, Gtk::PACK_SHRINK);

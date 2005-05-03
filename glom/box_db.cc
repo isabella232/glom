@@ -69,21 +69,6 @@ void Box_DB::on_Button_Cancel()
   signal_cancelled.emit();
 }
 
-
-
-void Box_DB::hint_set(const Glib::ustring& /* strText */)
-{
-  //This method will only succeed *after* the widget has been added to its parent widget.
-
-  Gtk::Window* pApp = get_app_window();
-
-  App_Glom* pAppGlom = dynamic_cast<App_Glom*>(pApp);
-  if(pAppGlom)
-  {
-    //Disable this for now. It looks annoying. //pAppGlom->statusbar_set_text(strText);
-  }
-}
-
 const Gtk::Window* Box_DB::get_app_window() const
 {
   Box_DB* nonconst = const_cast<Box_DB*>(this);
@@ -116,10 +101,12 @@ Gtk::Window* Box_DB::get_app_window()
 */
 }
 
+/*
 void Box_DB::show_hint()
 {
   hint_set(m_strHint);
 }
+*/
 
 void Box_DB::set_button_cancel(Gtk::Button& button)
 {

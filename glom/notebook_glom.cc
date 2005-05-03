@@ -51,11 +51,10 @@ void Notebook_Glom::on_switch_page_handler(GtkNotebookPage* pPage, guint uiPageN
   //Remove the help hint for the previous page:
   Gtk::Window* pApp = get_app_window();
 
-  App_Glom* pAppGlom = dynamic_cast<App_Glom*>(pApp);
-  if(pAppGlom)
-  {
-    pAppGlom->statusbar_clear();
-  }
+  //if(pAppGlom)
+  //{
+  //  pAppGlom->statusbar_clear();
+ // }
 
   //m_signal_leave_page.emit(m_uiPreviousPage);
   m_uiPreviousPage = uiPageNumber; //Remember the current page for next time.
@@ -70,6 +69,7 @@ void Notebook_Glom::on_switch_page_handler(GtkNotebookPage* pPage, guint uiPageN
       pBox->load_from_document();
 
       //Set the default button, if there is one:
+      App_Glom* pAppGlom = dynamic_cast<App_Glom*>(pApp);
       if(pAppGlom)
       {
         Gtk::Widget* default_button = pBox->get_default_button();
@@ -110,6 +110,7 @@ Gtk::Window* Notebook_Glom::get_app_window()
   return dynamic_cast<Gtk::Window*>(get_toplevel());
 }
 
+/*
 void Notebook_Glom::show_hint()
 {
   int iPageCurrent = get_current_page();
@@ -122,6 +123,7 @@ void Notebook_Glom::show_hint()
       pBox->show_hint();
   }
 }
+*/
 
 void Notebook_Glom::do_menu_developer_layout()
 {

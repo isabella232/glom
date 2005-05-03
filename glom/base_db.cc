@@ -137,6 +137,10 @@ Glib::RefPtr<Gnome::Gda::DataModel> Base_DB::Query_execute(const Glib::ustring& 
       handle_error();
     }
   }
+  else
+  {
+    g_warning("Base_DB::Query_execute(): No connection yet.");
+  }
 
   return result;
 }
@@ -992,6 +996,7 @@ SystemPrefs Base_DB::get_database_preferences() const
     std::cerr << "Base_DB::get_database_preferences(): exception: " << ex.what() << std::endl;
   }
 
+  g_warning("result.m_name=%s", result.m_name.c_str());
   return result;
 }
 

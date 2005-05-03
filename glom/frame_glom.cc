@@ -27,6 +27,7 @@
 
 Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
 : PlaceHolder(cobject, refGlade),
+  m_pLabel_Name(0),
   m_pLabel_Table(0),
   m_pLabel_Mode(0),
   m_pLabel_userlevel(0),
@@ -39,6 +40,7 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
   m_pDialogConnectionFailed(0)
 {
   //Load widgets from glade file:
+  refGlade->get_widget("label_name", m_pLabel_Name);
   refGlade->get_widget("label_table_name", m_pLabel_Table);
   refGlade->get_widget("label_mode", m_pLabel_Mode);
   refGlade->get_widget("label_user_level", m_pLabel_userlevel);
@@ -136,6 +138,7 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
   add_view(&m_Notebook_Find); //Also a composite view.
 
   on_userlevel_changed(AppState::USERLEVEL_OPERATOR); //A default to show before a document is created or loaded.
+
   show_all();
 }
 
@@ -211,11 +214,11 @@ void Frame_Glom::set_mode_widget(Gtk::Widget& widget)
     widget.show();
 
     //Show help text:
-    Notebook_Glom* pNotebook = dynamic_cast<Notebook_Glom*>(&widget);
-    if(pNotebook)
-    {
-      pNotebook->show_hint();
-    }
+    //Notebook_Glom* pNotebook = dynamic_cast<Notebook_Glom*>(&widget);
+    //if(pNotebook)
+   // {
+   //   pNotebook->show_hint();
+   // }
   }
 }
 
@@ -622,6 +625,13 @@ void Frame_Glom::set_document(Document_Glom* pDocument)
   }
 }
 
+void Frame_Glom::show_system_name()
+{
+  m_pLabel_Name->set_text ( Bakery::App_Gtk::util_bold_message( get_database_preferences().m_name ));
+  m_pLabel_Name->set_use_markup();
+}
+
+
 void Frame_Glom::load_from_document()
 {
   Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
@@ -649,6 +659,8 @@ void Frame_Glom::on_menu_developer_database_preferences()
 
       remove_view(dialog);
       delete dialog;
+
+      show_system_name(); //In case it has changed.
     }
   }
 

@@ -35,7 +35,7 @@ public:
   Notebook_Glom();
   virtual ~Notebook_Glom();
 
-  virtual void show_hint();
+  //virtual void show_hint();
 
   //Signals:
   //Page number

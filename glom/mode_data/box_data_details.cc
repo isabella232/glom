@@ -61,7 +61,7 @@ Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
   m_FlowTable.set_columns_count(1); //Sub-groups will have multiple columns (by default, there is one sub-group, with 2 columns).
   m_FlowTable.set_padding(6);
 
-  m_strHint = _("When you change the data in a field the database is updated immediately.\n Click [New] to add a new record.\n Leave automatic ID fields empty - they will be filled for you.");
+  //m_strHint = _("When you change the data in a field the database is updated immediately.\n Click [New] to add a new record.\n Leave automatic ID fields empty - they will be filled for you.");
 
 
   //m_Paned.set_border_width(6);

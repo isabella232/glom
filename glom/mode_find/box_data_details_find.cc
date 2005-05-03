@@ -24,7 +24,7 @@
 Box_Data_Details_Find::Box_Data_Details_Find()
 : Box_Data_Details(false)
 {
-   m_strHint = _("Enter the search criteria and click [Find]\n Glom will then change to Data mode to display the results.");
+   //m_strHint = _("Enter the search criteria and click [Find]\n Glom will then change to Data mode to display the results.");
 
   //Instead of nav buttons:
   m_HBox.pack_end(m_Button_Find, Gtk::PACK_SHRINK);

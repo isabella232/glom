@@ -47,7 +47,7 @@ public:
   Gtk::Window* get_app_window();
   const Gtk::Window* get_app_window() const;
 
-  void show_hint(); //Public so that it can be called *after* this widget is added to its container.
+  //void show_hint(); //Public so that it can be called *after* this widget is added to its container.
 
   void set_button_cancel(Gtk::Button& button);
 
@@ -63,10 +63,10 @@ public:
 
 protected:
 
-  virtual void hint_set(const Glib::ustring& strText);
+  //virtual void hint_set(const Glib::ustring& strText);
 
   //Member data:
-  Glib::ustring m_strHint; //Help text.
+  //Glib::ustring m_strHint; //Help text.
 
   Gtk::HBox m_Box_Buttons;
   Gtk::Button m_Button_Cancel; //Derived classes can use it if it's necessary.
