@@ -37,10 +37,71 @@ Dialog_Database_Preferences::Dialog_Database_Preferences(BaseObjectType* cobject
   m_glade_variables_map.connect_widget("entry_org_address_county", m_system_prefs.m_org_address_county);
   m_glade_variables_map.connect_widget("entry_org_address_country", m_system_prefs.m_org_address_country);
   m_glade_variables_map.connect_widget("entry_org_address_postcode", m_system_prefs.m_org_address_postcode);
+
+
+
+  refGlade->get_widget("treeview_autoincrements", m_treeview_autoincrements);
+
+  m_model_autoincrements = Gtk::ListStore::create(m_columns);
+  m_treeview_autoincrements->set_model(m_model_autoincrements);
+
+  m_treeview_autoincrements->append_column(_("Table"), m_columns.m_col_table);
+  m_treeview_autoincrements->append_column(_("Field"), m_columns.m_col_field);
+  int view_cols_count = m_treeview_autoincrements->append_column(_("Next Value"), m_columns.m_col_next_value);
+
+  Gtk::CellRendererText* pCellRenderer = dynamic_cast<Gtk::CellRendererText*>(m_treeview_autoincrements->get_column_cell_renderer(view_cols_count-1));
+  if(pCellRenderer)
+  {
+    //Make it editable:
+    pCellRenderer->property_editable() = true;
+    pCellRenderer->property_xalign() = 1.0; //Align right.
+
+    //Connect to its signal:
+    pCellRenderer->signal_edited().connect(
+      sigc::mem_fun(*this, &Dialog_Database_Preferences::on_treeview_cell_edited_next_value) );
+  }
 }
 
 Dialog_Database_Preferences::~Dialog_Database_Preferences()
 {
+}
+
+void Dialog_Database_Preferences::on_treeview_cell_edited_next_value(const Glib::ustring& path_string, const Glib::ustring& new_text)
+{
+  if(path_string.empty())
+    return;
+
+  Gtk::TreePath path(path_string);
+
+  //Get the row from the path:
+  Gtk::TreeModel::iterator iter = m_model_autoincrements->get_iter(path);
+  if(iter != m_model_autoincrements->children().end())
+  {
+    Gtk::TreeModel::Row row = *iter;
+
+    //Set it in the model:
+    long new_value = atol(new_text.c_str()); //TODO: Careful of locale.
+    row[m_columns.m_col_next_value] = new_value;
+
+
+    //Set it in the database system table:
+    const Glib::ustring table_name = row[m_columns.m_col_table];
+    const Glib::ustring field_name = row[m_columns.m_col_field];
+
+    const Gnome::Gda::Value next_value = GlomConversions::parse_value(new_value);
+
+    const Glib::ustring sql_query = "UPDATE " GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME " SET "
+        GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_NEXT_VALUE " = " + next_value.to_string() +
+        " WHERE " GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME " = '" + table_name + "' AND "
+                  GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_FIELD_NAME " = '" + field_name +"'";
+
+    Glib::RefPtr<Gnome::Gda::DataModel> datamodel = Query_execute(sql_query);
+    if(!datamodel)
+    {
+      g_warning("Dialog_Database_Preferences::on_treeview_cell_edited_next_value(): UPDATE failed.");
+    }
+
+  }
 }
 
 void Dialog_Database_Preferences::load_from_document()
@@ -49,6 +110,30 @@ void Dialog_Database_Preferences::load_from_document()
 
   //Show the data in the UI:
   m_glade_variables_map.transfer_variables_to_widgets();
+
+  //Show the auto-increment values:
+  m_model_autoincrements->clear();
+
+  const Glib::ustring sql_query = "SELECT "
+    GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME "." GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME ", "
+    GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME "." GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_FIELD_NAME ", "
+    GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME "." GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_NEXT_VALUE
+    " FROM " GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME;
+
+  NumericFormat numeric_format; //ignored
+
+  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = Query_execute(sql_query);
+  guint count = datamodel->get_n_rows();
+  for(guint i = 0; i < count; ++i)
+  {
+    Gtk::TreeModel::iterator iter = m_model_autoincrements->append();
+    Gtk::TreeModel::Row row = *iter;
+    row[m_columns.m_col_table] = GlomConversions::get_text_for_gda_value(Field::TYPE_TEXT, datamodel->get_value_at(0, i), numeric_format);
+    row[m_columns.m_col_field] = GlomConversions::get_text_for_gda_value(Field::TYPE_TEXT, datamodel->get_value_at(1, i), numeric_format);
+
+    //TODO: Careful of locale:
+    row[m_columns.m_col_next_value] = atol(datamodel->get_value_at(2, i).to_string().c_str());
+  }
 }
 
 void Dialog_Database_Preferences::save_to_document()

@@ -516,6 +516,11 @@ Box_Data::type_vecLayoutFields Box_Data::get_table_fields_to_show(const Glib::us
 
 Gnome::Gda::Value Box_Data::generate_next_auto_increment(const Glib::ustring& table_name, const Glib::ustring field_name)
 {
+  //Get it from the database system table.
+  //The developer can change the next value in the Database Preferences
+  return get_next_auto_increment_value(table_name, field_name);
+
+  /*
   //This is a workaround for postgres problems. Ideally, we need to use the postgres serial type and find out how to get the generated value after we add a row.
 
   double result = 0;
@@ -539,6 +544,7 @@ Gnome::Gda::Value Box_Data::generate_next_auto_increment(const Glib::ustring& ta
   //Get a string representation of the number, so we can put it back in a NUMERIC Gda::Value:
 
   return GlomConversions::parse_value(result);
+  */
 }
 
 /** Get the shown fields that are in related tables, via a relationship using @a field_name changes.

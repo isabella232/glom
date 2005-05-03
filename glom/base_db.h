@@ -95,6 +95,10 @@ protected:
   SystemPrefs get_database_preferences() const;
   void set_database_preferences(const SystemPrefs& prefs);
 
+  /** Get the next auto-increment value for this primary key, from the glom system table.
+   * Add a row for this field in the system table if it does not exist already.
+   */
+  Gnome::Gda::Value get_next_auto_increment_value(const Glib::ustring& table_name, const Glib::ustring& field_name);
 
   virtual bool fill_from_database();
   virtual void fill_end(); //Call this from the end of fill_from_database() overrides.

@@ -46,7 +46,28 @@ public:
 protected:
   void on_response(int response_id);
 
+  void on_treeview_cell_edited_next_value(const Glib::ustring& path_string, const Glib::ustring& new_text);
+
+  //Tree model columns:
+  class ModelColumns : public Gtk::TreeModel::ColumnRecord
+  {
+  public:
+
+    ModelColumns()
+    { add(m_col_table); add(m_col_field); add(m_col_next_value); }
+
+    Gtk::TreeModelColumn<Glib::ustring> m_col_table;
+    Gtk::TreeModelColumn<Glib::ustring> m_col_field;
+    Gtk::TreeModelColumn<long> m_col_next_value;
+  };
+
+  ModelColumns m_columns;
+
+  Glib::RefPtr<Gtk::ListStore> m_model_autoincrements;
+
+
   Gnome::Glade::VariablesMap m_glade_variables_map;
+  Gtk::TreeView* m_treeview_autoincrements;
 
   SystemPrefs m_system_prefs;
 };
