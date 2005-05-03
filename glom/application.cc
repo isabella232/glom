@@ -237,6 +237,11 @@ void App_Glom::init_menus()
   m_listDeveloperActions.push_back(action);
   m_refActionGroup_Others->add(action);
 
+  action = Gtk::Action::create("GlomAction_Menu_Developer_Database_Preferences", _("_Database Preferences"));
+  m_listDeveloperActions.push_back(action);  
+  m_refActionGroup_Others->add(action, sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_database_preferences) );
+
+
   action = Gtk::Action::create("GlomAction_Menu_Developer_Fields", _("_Fields"));
   m_listDeveloperActions.push_back(action);  
   m_refActionGroup_Others->add(action, sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_fields) );
@@ -278,6 +283,7 @@ void App_Glom::init_menus()
     "        <menuitem action='GlomAction_Menu_userlevel_Operator' />"
     "      </menu>"
     "      <menu action='Glom_Menu_Developer'>"
+    "        <menuitem action='GlomAction_Menu_Developer_Database_Preferences' />"
     "        <menuitem action='GlomAction_Menu_Developer_Fields' />"
     "        <menuitem action='GlomAction_Menu_Developer_Relationships' />"    
     "        <menuitem action='GlomAction_Menu_Developer_Layout' />"
@@ -346,7 +352,7 @@ bool App_Glom::on_document_load()
 
     //Disable/Enable actions, depending on userlevel:
     pDocument->emit_userlevel_changed();
-    
+ 
     if(pDocument->get_connection_database().empty()) //If it is a new (default) document.
     {
       //offer_new_or_existing();
@@ -426,8 +432,10 @@ bool App_Glom::on_document_load()
                     try
                     {
                       Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_error_create_database");
-  
                       refXml->get_widget("dialog_error_create_database", dialog);
+                      dialog->set_transient_for(*this);
+                      dialog->run();
+                      delete dialog;
                     }
                     catch(const Gnome::Glade::XmlError& ex)
                     {
@@ -437,10 +445,6 @@ bool App_Glom::on_document_load()
 
                   return false;
                 }
-
-                //TODO: Recreate the database, using the information saved in the document:
-                //Frame_Glom::show_ok_dialog(_("Database recreation"), _("Sorry. This functionality has not been implemented yet."), *this);
-                //return false; //Give up on this document.
               }
             }
           }
@@ -450,7 +454,7 @@ bool App_Glom::on_document_load()
         pDocument->set_userlevel(AppState::USERLEVEL_OPERATOR);
 
         //Open default table, or show list of tables instead:
-        m_pFrame->do_menu_Navigate_Table(true /* open the default if there is one */);    
+        m_pFrame->do_menu_Navigate_Table(true /* open the default if there is one */);
       }
     }
 
@@ -738,52 +742,12 @@ bool App_Glom::recreate_database(bool& user_cancelled)
   for(Document_Glom::type_listTableInfo::const_iterator iter = tables.begin(); iter != tables.end(); ++iter)
   {
     const TableInfo& table_info = *iter;
-    const Glib::ustring table_name = table_info.get_name();
 
     //Create SQL to describe all fields in this table:
     Glib::ustring sql_fields;
-    Document_Glom::type_vecFields fields = pDocument->get_table_fields(table_name);
-    for(Document_Glom::type_vecFields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
-    {
-      //Create SQL to describe this field:
-      Field field = *iter;
+    Document_Glom::type_vecFields fields = pDocument->get_table_fields(table_info.get_name());
 
-      //The field has no gda type, so we set that:
-      //This usually comes from the database, but that's a bit strange.
-      Gnome::Gda::FieldAttributes info = field.get_field_info();
-      info.set_gdatype( Field::get_gda_type_for_glom_type(field.get_glom_type()) );
-      field.set_field_info(info);
-
-      Glib::ustring sql_field_description = field.get_name() + " " + field.get_sql_type();
-
-      if(field.get_primary_key())
-        sql_field_description += " NOT NULL  PRIMARY KEY";
-
-      //Append it:
-      if(!sql_fields.empty())
-        sql_fields += ", ";
-
-      sql_fields += sql_field_description;
-    }
-
-    if(sql_fields.empty())
-    {
-      g_warning("App_Glom::recreate_database(): sql_fields is empty.");
-    }
-
-    //Actually create the table
-    bool table_creation_succeeded = true;
-    try
-    {
-      Glib::RefPtr<Gnome::Gda::DataModel> data_model = m_pFrame->Query_execute( "CREATE TABLE \"" + table_name + "\" (" + sql_fields + ")" );
-      if(!data_model)
-        table_creation_succeeded = false;
-    }
-    catch(const ExceptionConnection& ex)
-    {
-      table_creation_succeeded = false;
-    }
-
+    bool table_creation_succeeded = m_pFrame->create_table(table_info, fields);
     if(!table_creation_succeeded)
     {
       g_warning("App_Glom::recreate_database(): CREATE TABLE failed with the newly-created database.");
@@ -792,6 +756,8 @@ bool App_Glom::recreate_database(bool& user_cancelled)
 
   } //for(tables)
 
+
+  m_pFrame->add_standard_tables(); //Add internal, hidden, tables.
 
   //Create the developer group, and make this user a member of it:
   //If we got this far then the user must really have developer privileges already:

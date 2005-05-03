@@ -29,6 +29,7 @@ glom_SOURCES = main.cc \
                dialog_connection.h dialog_connection.cc \
                dialog_invalid_data.h dialog_invalid_data.cc \
                dialog_new_database.h dialog_new_database.cc \
+               dialog_database_preferences.h dialog_database_preferences.cc \
                sharedptr.h
 
 glom_LDADD = document/libdocument.a \

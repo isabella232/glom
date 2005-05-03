@@ -1,3 +1,31 @@
+2005-05-03  Murray Cumming <murrayc@murrayc.com>
+
+	* glom/Makefile.am:
+	* glom/dialog_database_preferences.cc:
+	* glom/dialog_database_preferences.h:
+	* glom/glom.glade:
+	Added dialog to show system-wide details 
+	and next auto-increment values.
+	* glom/data_structure/Makefile.am:
+	* glom/data_structure/system_prefs.cc:
+	* glom/data_structure/system_prefs.h:
+	New class to hold system-wide preferences.
+	* glom/standard_table_prefs_fields.h:
+ 	Added list of #defines for the standard 
+	table database structure.
+	* glom/application.cc: recreate_database():
+	Call new add_standard_tables() method to 
+	hold system-wide preferences.
+	* glom/base_db.cc:
+	* glom/base_db.h:
+	Move some of recreate_database() into 
+	create_table() and reused it in new 
+	add_standard_tables() method.
+	* glom/frame_glom.cc:
+	* glom/frame_glom.h:
+	Add Developer/Database Preferences menu 
+	item and handle it.
+
 2005-05-02  Murray Cumming <murrayc@murrayc.com>
 
 	* glom/utility_widgets/db_adddel/db_adddel.cc:

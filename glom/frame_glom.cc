@@ -22,6 +22,7 @@
 #include "application.h"
 #include "appstate.h"
 #include "mode_design/users/dialog_groups_list.h"
+#include "dialog_database_preferences.h"
 #include <glibmm/i18n.h>
 
 Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
@@ -628,6 +629,32 @@ void Frame_Glom::load_from_document()
   {
     //Call base class:
     View_Composite_Glom::load_from_document();
+  }
+}
+
+void Frame_Glom::on_menu_developer_database_preferences()
+{
+  Dialog_Database_Preferences* dialog = 0;
+  try
+  {
+    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_database_preferences");
+    refXml->get_widget_derived("dialog_database_preferences", dialog);
+    if(dialog)
+    {
+      dialog->set_transient_for(*(get_app_window()));
+      add_view(dialog);
+      dialog->load_from_document();
+
+      dialog->run();
+
+      remove_view(dialog);
+      delete dialog;
+    }
+  }
+
+  catch(const Gnome::Glade::XmlError& ex)
+  {
+    std::cerr << ex.what() << std::endl;
   }
 }
 

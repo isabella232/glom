@@ -21,6 +21,9 @@
 #include "base_db.h"
 #include "application.h" //App_Glom.
 #include "appstate.h"
+#include "standard_table_prefs_fields.h"
+#include "document/document_glom.h"
+#include "data_structure/glomconversions.h"
 #include <glibmm/i18n.h>
 //#include <libgnomeui/gnome-app-helper.h>
 
@@ -149,8 +152,16 @@ void Base_DB::load_from_document()
   }
 }
 
+bool Base_DB::get_table_exists_in_database(const Glib::ustring& table_name) const
+{
+  //TODO_Performance
 
-Base_DB::type_vecStrings Base_DB::get_table_names()
+  type_vecStrings tables = get_table_names();
+  type_vecStrings::const_iterator iterFind = std::find(tables.begin(), tables.end(), table_name);
+  return (iterFind != tables.end());
+}
+
+Base_DB::type_vecStrings Base_DB::get_table_names() const
 {
   type_vecStrings result;
 
@@ -651,7 +662,7 @@ Privileges Base_DB::get_table_privileges(const Glib::ustring& group_name, const 
     for(type_vecStrings::const_iterator iterItems = vecItems.begin(); iterItems != vecItems.end(); ++iterItems)
     {
       Glib::ustring item = *iterItems;
-      item = string_trim(item, "\""); //Remove quotes from front and back.
+      item = string_trim(item, "'"); //Remove quotes from front and back.
 
       //Find group permissions, ignoring user permissions:
       const Glib::ustring strgroup = "group ";
@@ -702,6 +713,71 @@ Privileges Base_DB::get_table_privileges(const Glib::ustring& group_name, const 
   }
 
   return result;
+}
+
+void Base_DB::add_standard_tables() const
+{
+  if(!get_table_exists_in_database(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME))
+  {
+    TableInfo prefs_table_info;
+    prefs_table_info.m_name = GLOM_STANDARD_TABLE_PREFS_TABLE_NAME;
+    prefs_table_info.m_hidden = true;
+
+    Document_Glom::type_vecFields pref_fields;
+
+    Field primary_key; //It's not used, because there's only one record, but we must have one.
+    primary_key.set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ID);
+    primary_key.set_glom_type(Field::TYPE_NUMERIC);
+    pref_fields.push_back(primary_key);
+
+    Field field_name;
+    field_name.set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_NAME);
+    field_name.set_glom_type(Field::TYPE_TEXT);
+    pref_fields.push_back(field_name);
+
+    Field field_org_name;
+    field_org_name.set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_NAME);
+    field_org_name.set_glom_type(Field::TYPE_TEXT);
+    pref_fields.push_back(field_org_name);
+
+    Field field_org_address_street;
+    field_org_address_street.set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_STREET);
+    field_org_address_street.set_glom_type(Field::TYPE_TEXT);
+    pref_fields.push_back(field_org_address_street);
+
+    Field field_org_address_street2;
+    field_org_address_street2.set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_STREET2);
+    field_org_address_street2.set_glom_type(Field::TYPE_TEXT);
+    pref_fields.push_back(field_org_address_street2);
+
+    Field field_org_address_town;
+    field_org_address_town.set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_TOWN);
+    field_org_address_town.set_glom_type(Field::TYPE_TEXT);
+    pref_fields.push_back(field_org_address_town);
+
+    Field field_org_address_county;
+    field_org_address_county.set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_COUNTY);
+    field_org_address_county.set_glom_type(Field::TYPE_TEXT);
+    pref_fields.push_back(field_org_address_county);
+
+    Field field_org_address_country;
+    field_org_address_country.set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_COUNTRY);
+    field_org_address_country.set_glom_type(Field::TYPE_TEXT);
+    pref_fields.push_back(field_org_address_country);
+
+    Field field_org_address_postcode;
+    field_org_address_postcode.set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_POSTCODE);
+    field_org_address_postcode.set_glom_type(Field::TYPE_TEXT);
+    pref_fields.push_back(field_org_address_postcode);
+
+    bool test = create_table(prefs_table_info, pref_fields);
+
+    if(test)
+    {
+      //Add the single record:
+      Query_execute("INSERT INTO " GLOM_STANDARD_TABLE_PREFS_TABLE_NAME "(" GLOM_STANDARD_TABLE_PREFS_FIELD_ID ") VALUES (1)");
+    }
+  }
 }
 
 void Base_DB::add_standard_groups()
@@ -877,4 +953,121 @@ Privileges Base_DB::get_current_privs(const Glib::ustring& table_name) const
   }
 
   return result;
+}
+
+SystemPrefs Base_DB::get_database_preferences() const
+{
+  //if(get_userlevel() == AppState::USERLEVEL_DEVELOPER)
+  //  add_standard_tables();
+
+  SystemPrefs result;
+
+  const Glib::ustring sql_query = "SELECT "
+      GLOM_STANDARD_TABLE_PREFS_TABLE_NAME "." GLOM_STANDARD_TABLE_PREFS_FIELD_NAME ", "
+      GLOM_STANDARD_TABLE_PREFS_TABLE_NAME "." GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_NAME ", "
+      GLOM_STANDARD_TABLE_PREFS_TABLE_NAME "." GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_STREET ", "
+      GLOM_STANDARD_TABLE_PREFS_TABLE_NAME "." GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_STREET2 ", "
+      GLOM_STANDARD_TABLE_PREFS_TABLE_NAME "." GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_TOWN ", "
+      GLOM_STANDARD_TABLE_PREFS_TABLE_NAME "." GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_COUNTY ", "
+      GLOM_STANDARD_TABLE_PREFS_TABLE_NAME "." GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_COUNTRY ", "
+      GLOM_STANDARD_TABLE_PREFS_TABLE_NAME "." GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_POSTCODE
+      " FROM " GLOM_STANDARD_TABLE_PREFS_TABLE_NAME;
+
+  try
+  {
+    Glib::RefPtr<Gnome::Gda::DataModel> datamodel = Query_execute(sql_query);
+    if(datamodel && (datamodel->get_n_rows() != 0))
+    {
+      result.m_name = GlomConversions::get_text_for_gda_value(Field::TYPE_TEXT, datamodel->get_value_at(0, 0));
+      result.m_org_name = GlomConversions::get_text_for_gda_value(Field::TYPE_TEXT, datamodel->get_value_at(1, 0));
+      result.m_org_address_street = GlomConversions::get_text_for_gda_value(Field::TYPE_TEXT, datamodel->get_value_at(2, 0));
+      result.m_org_address_street2 = GlomConversions::get_text_for_gda_value(Field::TYPE_TEXT, datamodel->get_value_at(3, 0));
+      result.m_org_address_town = GlomConversions::get_text_for_gda_value(Field::TYPE_TEXT, datamodel->get_value_at(4, 0));
+      result.m_org_address_county = GlomConversions::get_text_for_gda_value(Field::TYPE_TEXT, datamodel->get_value_at(5, 0));
+      result.m_org_address_country = GlomConversions::get_text_for_gda_value(Field::TYPE_TEXT, datamodel->get_value_at(6, 0));
+      result.m_org_address_postcode = GlomConversions::get_text_for_gda_value(Field::TYPE_TEXT, datamodel->get_value_at(7, 0));      }
+  }
+  catch(const std::exception& ex)
+  {
+    std::cerr << "Base_DB::get_database_preferences(): exception: " << ex.what() << std::endl;
+  }
+
+  return result;
+}
+
+void Base_DB::set_database_preferences(const SystemPrefs& prefs)
+{
+  if(get_userlevel() == AppState::USERLEVEL_DEVELOPER)
+    add_standard_tables();
+
+  const Glib::ustring sql_query = "UPDATE " GLOM_STANDARD_TABLE_PREFS_TABLE_NAME " SET "
+      GLOM_STANDARD_TABLE_PREFS_FIELD_NAME " = '" + prefs.m_name + "', "
+      GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_NAME " = '" + prefs.m_org_name + "', "
+      GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_STREET " = '" + prefs.m_org_address_street + "', "
+      GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_STREET2 " = '" + prefs.m_org_address_street2 + "', "
+      GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_TOWN " = '" + prefs.m_org_address_town + "', "
+      GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_COUNTY " = '" + prefs.m_org_address_county + "', "
+      GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_COUNTRY " = '" + prefs.m_org_address_country + "', "
+      GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_POSTCODE " = '" + prefs.m_org_address_postcode + "'"
+      " WHERE " GLOM_STANDARD_TABLE_PREFS_FIELD_ID " = 1";
+
+    try
+    {
+      Glib::RefPtr<Gnome::Gda::DataModel> datamodel = Query_execute(sql_query);
+    }
+    catch(const std::exception& ex)
+    {
+      std::cerr << "Base_DB::set_database_preferences(): exception: " << ex.what() << std::endl;
+    }
+}
+
+bool Base_DB::create_table(const TableInfo& table_info, const Document_Glom::type_vecFields& fields) const
+{
+  bool table_creation_succeeded = false;
+
+  //Create SQL to describe all fields in this table:
+  Glib::ustring sql_fields;
+  for(Document_Glom::type_vecFields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
+  {
+    //Create SQL to describe this field:
+    Field field = *iter;
+
+    //The field has no gda type, so we set that:
+    //This usually comes from the database, but that's a bit strange.
+    Gnome::Gda::FieldAttributes info = field.get_field_info();
+    info.set_gdatype( Field::get_gda_type_for_glom_type(field.get_glom_type()) );
+    field.set_field_info(info);
+
+    Glib::ustring sql_field_description = field.get_name() + " " + field.get_sql_type();
+
+    if(field.get_primary_key())
+      sql_field_description += " NOT NULL  PRIMARY KEY";
+
+    //Append it:
+    if(!sql_fields.empty())
+      sql_fields += ", ";
+
+    sql_fields += sql_field_description;
+  }
+
+  if(sql_fields.empty())
+  {
+    g_warning("Base_Db::create_table::create_table(): sql_fields is empty.");
+  }
+
+  //Actually create the table
+  try
+  {
+    Glib::RefPtr<Gnome::Gda::DataModel> data_model = Query_execute( "CREATE TABLE \"" + table_info.get_name() + "\" (" + sql_fields + ")" );
+    if(!data_model)
+      table_creation_succeeded = false;
+    else
+      table_creation_succeeded = true;
+  }
+  catch(const ExceptionConnection& ex)
+  {
+    table_creation_succeeded = false;
+  }
+
+  return table_creation_succeeded;
 }

@@ -18,28 +18,4 @@
  * Boston, MA 02111-1307, USA.
  */
  
-#ifndef GLOM_DATASTRUCTURE_TABLEINFO_H
-#define GLOM_DATASTRUCTURE_TABLEINFO_H
-
-#include <glibmm/ustring.h>
-
-class TableInfo
-{
-public:
-  TableInfo();
-  TableInfo(const TableInfo& src);
-  TableInfo& operator=(const TableInfo& src);
-
-  Glib::ustring get_name() const; //For the predicate, when using std::find_if().
-
-  Glib::ustring m_name;
-  guint m_sequence; //TODO: Use this?
-  Glib::ustring m_title;
-  bool m_hidden;
-  bool m_default;
-};
-
-#endif //GLOM_DATASTRUCTURE_TABLEINFO_H
-
-
-
+#include "system_prefs.h"

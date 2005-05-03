@@ -18,28 +18,19 @@
  * Boston, MA 02111-1307, USA.
  */
  
-#ifndef GLOM_DATASTRUCTURE_TABLEINFO_H
-#define GLOM_DATASTRUCTURE_TABLEINFO_H
+#ifndef GLOM_DATASTRUCTURE_SYSTEMPREFS_H
+#define GLOM_DATASTRUCTURE_SYSTEMPREFS_H
 
 #include <glibmm/ustring.h>
 
-class TableInfo
+class SystemPrefs
 {
 public:
-  TableInfo();
-  TableInfo(const TableInfo& src);
-  TableInfo& operator=(const TableInfo& src);
-
-  Glib::ustring get_name() const; //For the predicate, when using std::find_if().
-
-  Glib::ustring m_name;
-  guint m_sequence; //TODO: Use this?
-  Glib::ustring m_title;
-  bool m_hidden;
-  bool m_default;
+ Glib::ustring m_name, m_org_name,
+    m_org_address_street, m_org_address_street2, m_org_address_town, m_org_address_county, m_org_address_country, m_org_address_postcode;
 };
 
-#endif //GLOM_DATASTRUCTURE_TABLEINFO_H
+#endif //GLOM_DATASTRUCTURE_SYSTEMPREFS_H
 
 
 

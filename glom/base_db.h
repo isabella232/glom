@@ -27,6 +27,7 @@
 #include "connectionpool.h"
 #include "appstate.h"
 #include "data_structure/privileges.h"
+#include "data_structure/system_prefs.h"
 #include "bakery/View/View.h"
 #include <bakery/Utilities/BusyCursor.h>
 
@@ -67,11 +68,17 @@ public:
 
   //This is const because const means not changing this instance, not whether we change the database.
   virtual Glib::RefPtr<Gnome::Gda::DataModel> Query_execute(const Glib::ustring& strQuery) const;
+
   void add_standard_groups();
+  void add_standard_tables() const;
+
+  bool create_table(const TableInfo& table_info, const Document_Glom::type_vecFields& fields) const;
 
 protected:
   typedef std::vector<Glib::ustring> type_vecStrings;
-  type_vecStrings get_table_names();
+  type_vecStrings get_table_names() const;
+
+  bool get_table_exists_in_database(const Glib::ustring& table_name) const;
 
   type_vecFields get_fields_for_table(const Glib::ustring& table_name) const;
 
@@ -84,6 +91,10 @@ protected:
   type_vecStrings get_groups_of_user(const Glib::ustring& user) const;
   bool get_user_is_in_group(const Glib::ustring& user, const Glib::ustring& group) const;
   Privileges get_current_privs(const Glib::ustring& table_name) const;
+
+  SystemPrefs get_database_preferences() const;
+  void set_database_preferences(const SystemPrefs& prefs);
+
 
   virtual bool fill_from_database();
   virtual void fill_end(); //Call this from the end of fill_from_database() overrides.
