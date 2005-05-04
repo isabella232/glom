@@ -653,6 +653,16 @@ Privileges Base_DB::get_table_privileges(const Glib::ustring& group_name, const 
 {
   Privileges result;
 
+  if(group_name == GLOM_STANDARD_GROUP_NAME_DEVELOPER)
+  {
+    //Always give developers full access:
+    result.m_view = true;
+    result.m_edit = true;
+    result.m_create = true;
+    result.m_delete = true;
+    return result;
+  }
+
   //Get the permissions:
   Glib::ustring strQuery = "SELECT pg_class.relacl FROM pg_class WHERE pg_class.relname = '" + table_name + "'";
   Glib::RefPtr<Gnome::Gda::DataModel> data_model = Query_execute(strQuery);
@@ -718,6 +728,7 @@ Privileges Base_DB::get_table_privileges(const Glib::ustring& group_name, const 
     }
   }
 
+  g_warning("get_table_privileges(group_name=%s, table_name=%s) returning: %d", group_name.c_str(), table_name.c_str(), result.m_create);
   return result;
 }
 
@@ -829,13 +840,17 @@ void Base_DB::add_standard_groups()
   if(iterFind == vecGroups.end())
   {
     Query_execute("CREATE GROUP " GLOM_STANDARD_GROUP_NAME_DEVELOPER);
-    Privileges priv_ignored;
+    Privileges priv_devs;
+    priv_devs.m_view = true;
+    priv_devs.m_edit = true;
+    priv_devs.m_create = true;
+    priv_devs.m_delete = true;
 
     Document_Glom::type_listTableInfo table_list = get_document()->get_tables();
 
     for(Document_Glom::type_listTableInfo::const_iterator iter = table_list.begin(); iter != table_list.end(); ++iter)
     {
-      set_table_privileges(devgroup, iter->m_name, priv_ignored, true /* developer privileges */);
+      set_table_privileges(devgroup, iter->m_name, priv_devs, true /* developer privileges */);
     }
 
     //Make sure that it is in the database too:

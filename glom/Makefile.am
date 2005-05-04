@@ -30,7 +30,8 @@ glom_SOURCES = main.cc \
                dialog_invalid_data.h dialog_invalid_data.cc \
                dialog_new_database.h dialog_new_database.cc \
                dialog_database_preferences.h dialog_database_preferences.cc \
-               sharedptr.h
+               sharedptr.h \
+               standard_table_prefs_fields.h
 
 glom_LDADD = document/libdocument.a \
              data_structure/libdata_structure.a \

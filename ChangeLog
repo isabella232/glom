@@ -1,5 +1,11 @@
 2005-05-04  Murray Cumming <murrayc@murrayc.com>
 
+	* glom/base_db.cc: get_table_privileges(): Really give full 
+	rights to members of the developer group, whatever rights 
+	that group has saved.
+
+2005-05-04  Murray Cumming <murrayc@murrayc.com>
+
 	* glom/frame_glom.cc: Show the organisation name as well as 
 	the system name.
 	* glom/navigation/box_tables.cc: Check for glom_system_*

@@ -1,5 +1,8 @@
 0.8.26:
 
+* For new databases, really allow the developer to create 
+  and edit records. This has probably been broken since 
+  the user administration was added.
 * Added Developer/Database Preferences menu item, where 
   you can enter global values for the system name, 
   organisation details, and specify next values for 
