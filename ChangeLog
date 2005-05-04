@@ -1,5 +1,17 @@
 2005-05-04  Murray Cumming <murrayc@murrayc.com>
 
+	* glom/mode_data/box_data_list.cc:
+	* glom/utility_widgets/db_adddel/db_adddel.cc:
+	Pass the where_clause when calling refresh_from_database() 
+	on the model.
+	* glom/utility_widgets/db_adddel/glom_db_treemodel.cc:
+	* glom/utility_widgets/db_adddel/glom_db_treemodel.h:
+	refresh_from_database(): Take where_clause parameter as 
+	well as in the constructor. clear() existing records before 
+	getting them again.
+
+2005-05-04  Murray Cumming <murrayc@murrayc.com>
+
 	* glom/base_db.cc: get_next_autoincrement_value():
 	Really increment the value.
 

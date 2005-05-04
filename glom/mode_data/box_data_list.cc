@@ -429,12 +429,17 @@ void Box_Data_List::refresh_related_fields(const Gtk::TreeModel::iterator& row, 
 
     Glib::RefPtr<Gnome::Gda::DataModel> result = Query_execute(query);
     if(!result)
+    {
+      g_warning("Box_Data_List::refresh_related_fields(): no result.");
       handle_error();
+    }
     else
     {
       //Field contents:
       if(result->get_n_rows())
       {
+        g_warning("Box_Data_List::refresh_related_fields(): records_count=%d", result->get_n_rows());
+
         type_vecLayoutFields::const_iterator iterFields = fieldsToGet.begin();
 
         guint cols_count = result->get_n_columns();
@@ -452,6 +457,8 @@ void Box_Data_List::refresh_related_fields(const Gtk::TreeModel::iterator& row, 
           ++iterFields;
         }
       }
+      else
+       g_warning("Box_Data_List::refresh_related_fields(): no records found.");
     }
   }
 }

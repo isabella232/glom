@@ -172,10 +172,15 @@ Glib::RefPtr<DbTreeModel> DbTreeModel::create(const Gtk::TreeModelColumnRecord& 
   return Glib::RefPtr<DbTreeModel>( new DbTreeModel(columns, table_name, column_fields, column_index_key, get_records, where_clause) );
 }
 
-bool DbTreeModel::refresh_from_database()
+bool DbTreeModel::refresh_from_database(const Glib::ustring& where_clause)
 {
+  m_where_clause = where_clause;
+
   if(!m_get_records)
     return false;
+
+
+  clear(); //Clear existing shown records.
 
   //Connect to database:
   ConnectionPool* connection_pool = ConnectionPool::get_instance();
@@ -192,6 +197,10 @@ bool DbTreeModel::refresh_from_database()
     m_gda_datamodel = m_connection->get_gda_connection()->execute_single_command(sql_query);
     if(!m_gda_datamodel || (m_gda_datamodel->get_n_rows() == 0))
     {
+      g_warning("DbTreeModel::refresh_from_database(): no records found.");
+      m_data_model_rows_count = 0;
+      m_data_model_columns_count = m_columns_count;
+
       //TODO: handle_error();
       return false; //No records were found.
     }
@@ -199,6 +208,8 @@ bool DbTreeModel::refresh_from_database()
     {
       m_data_model_rows_count = m_gda_datamodel->get_n_rows(); //TODO_Performance: This probably gets all the data.
       m_data_model_columns_count = m_gda_datamodel->get_n_columns();
+
+     g_warning("DbTreeModel::refresh_from_database(): records count=%d", m_data_model_rows_count);
 
       /*
       guint rows_to_get = 100;

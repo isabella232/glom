@@ -75,7 +75,7 @@ protected:
 public:
   static Glib::RefPtr<DbTreeModel> create(const Gtk::TreeModelColumnRecord& columns, const Glib::ustring& table_name, const type_vec_fields& column_fields, int column_index_key, bool get_records = true, const Glib::ustring& where_clause = Glib::ustring());
 
-  virtual bool refresh_from_database();
+  virtual bool refresh_from_database(const Glib::ustring& where_clause = Glib::ustring());
 
   typedef DbTreeModelRow::DbValue DbValue;
 

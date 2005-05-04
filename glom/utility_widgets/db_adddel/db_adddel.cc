@@ -621,6 +621,7 @@ void DbAddDel::construct_specified_columns()
   }
 
   //Create the model from the ColumnRecord:
+  g_warning("DbAddDel::construct_specified_columns(): where_clause=%s", m_where_clause.c_str());
   m_refListStore = type_model_store::create(record, m_table_name, fields, column_index_key, m_allow_view, m_where_clause);
 
   m_TreeView.set_model(m_refListStore);
@@ -787,7 +788,7 @@ bool DbAddDel::refresh_from_database()
   if(m_refListStore)
   {
     Glib::RefPtr<Gtk::TreeModel> refNull;
-    bool result = m_refListStore->refresh_from_database();
+    bool result = m_refListStore->refresh_from_database(m_where_clause);
     m_TreeView.set_model(refNull);
     m_TreeView.set_model(m_refListStore);
     return result;
