@@ -889,10 +889,7 @@ Gnome::Gda::Value Base_DB::get_next_auto_increment_value(const Glib::ustring& ta
 {
   const Gnome::Gda::Value result = auto_increment_insert_first_if_necessary(table_name, field_name);
   long num_result = 0;
-
-  //It's a Gnome::Gda::Value::TYPE_NUMERIC, but the GdaNumeric struct is not easy to handle, so let's hack around it:
-  if(result.is_number())
-    num_result = util_decimal_from_string(result.to_string());
+  num_result = util_decimal_from_string(result.to_string());
 
 
   //Increment the next_value:

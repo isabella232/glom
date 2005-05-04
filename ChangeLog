@@ -1,5 +1,10 @@
 2005-05-04  Murray Cumming <murrayc@murrayc.com>
 
+	* glom/base_db.cc: get_next_autoincrement_value():
+	Really increment the value.
+
+2005-05-04  Murray Cumming <murrayc@murrayc.com>
+
 	* glom/base_db.cc:
 	* glom/base_db.h:
 	Added auto_increment_insert_first_if_necessary() 
