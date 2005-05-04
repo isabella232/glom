@@ -47,6 +47,7 @@ protected:
   void on_response(int response_id);
 
   void on_treeview_cell_edited_next_value(const Glib::ustring& path_string, const Glib::ustring& new_text);
+  int on_autoincrements_sort(const Gtk::TreeModel::iterator& a, const Gtk::TreeModel::iterator& b);
 
   //Tree model columns:
   class ModelColumns : public Gtk::TreeModel::ColumnRecord

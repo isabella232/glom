@@ -162,7 +162,11 @@ bool Base_DB::get_table_exists_in_database(const Glib::ustring& table_name) cons
 
   type_vecStrings tables = get_table_names();
   type_vecStrings::const_iterator iterFind = std::find(tables.begin(), tables.end(), table_name);
-  return (iterFind != tables.end());
+  bool result = (iterFind != tables.end());
+
+  g_warning("Base_DB::get_table_exists_in_database() table_name=%s, result=%d", table_name.c_str(), result);
+
+  return result;
 }
 
 Base_DB::type_vecStrings Base_DB::get_table_names() const
@@ -844,60 +848,66 @@ void Base_DB::add_standard_groups()
   }
 }
 
-Gnome::Gda::Value Base_DB::get_next_auto_increment_value(const Glib::ustring& table_name, const Glib::ustring& field_name)
+Gnome::Gda::Value Base_DB::auto_increment_insert_first_if_necessary(const Glib::ustring& table_name, const Glib::ustring& field_name)
 {
-  Gnome::Gda::Value result;
-  long num_result = 0;
+  Gnome::Gda::Value value;
 
   const Glib::ustring sql_query = "SELECT " GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME ".next_value FROM " GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME
-   " WHERE " GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME " = " + table_name + " AND "
-             GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_FIELD_NAME " = " + field_name;
+   " WHERE " GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME " = '" + table_name + "' AND "
+             GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_FIELD_NAME " = '" + field_name + "'";
 
   Glib::RefPtr<Gnome::Gda::DataModel> datamodel = Query_execute(sql_query);
-  if(datamodel && datamodel->get_n_rows())
-  {
-    result = datamodel->get_value_at(0, 0);
-
-    //It's a Gnome::Gda::Value::TYPE_NUMERIC, but the GdaNumeric struct is not easy to handle, so let's hack around it:
-    if(result.is_number())
-      num_result = util_decimal_from_string(result.to_string());
-  }
-  else
+  if(!datamodel || (datamodel->get_n_rows() == 0))
   {
     //Start with zero:
 
-    //GdaNumeric is a pain to use, so let's take a short cut around it:
-    bool success = false;
-    result = GlomConversions::parse_value(Field::TYPE_NUMERIC, "0", success, true /* iso_format */);
-    num_result = 0;
-
     //Insert the row if it's not there.
     const Glib::ustring sql_query = "INSERT INTO " GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME " ("
-      GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME ", " GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME ", " GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_NEXT_VALUE
-      " VALUES (" + table_name + ", " + field_name + ", 0";
+      GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME ", " GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_FIELD_NAME ", " GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_NEXT_VALUE
+      ") VALUES ('" + table_name + "', '" + field_name + "', 0)";
 
     Glib::RefPtr<Gnome::Gda::DataModel> datamodel = Query_execute(sql_query);
     if(!datamodel)
     {
-      g_warning("Base_DB::get_next_auto_increment_value(): INSERT of new row failed.");
+      g_warning("Base_DB::auto_increment_insert_first_if_necessary(): INSERT of new row failed.");
     }
+
+    //GdaNumeric is a pain, so we take a short-cut:
+    bool success = false;
+    value = GlomConversions::parse_value(Field::TYPE_NUMERIC, "0", success, true /* iso_format */);
+  }
+  else
+  {
+    //Return the value so that a calling function does not need to do a second SELECT.
+    value = datamodel->get_value_at(0, 0);
   }
 
+  return value;
+}
+
+Gnome::Gda::Value Base_DB::get_next_auto_increment_value(const Glib::ustring& table_name, const Glib::ustring& field_name)
+{
+  const Gnome::Gda::Value result = auto_increment_insert_first_if_necessary(table_name, field_name);
+  long num_result = 0;
+
+  //It's a Gnome::Gda::Value::TYPE_NUMERIC, but the GdaNumeric struct is not easy to handle, so let's hack around it:
+  if(result.is_number())
+    num_result = util_decimal_from_string(result.to_string());
+
+
   //Increment the next_value:
+  ++num_result;
+  const Gnome::Gda::Value next_value = GlomConversions::parse_value(num_result);
+
+  const Glib::ustring sql_query = "UPDATE " GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME " SET "
+      GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_NEXT_VALUE " = " + next_value.to_string() +
+      " WHERE " GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME " = '" + table_name + "' AND "
+                GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_FIELD_NAME " = '" + field_name + "'";
+
+  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = Query_execute(sql_query);
+  if(!datamodel)
   {
-    ++num_result;
-    const Gnome::Gda::Value next_value = GlomConversions::parse_value(num_result);
-
-    const Glib::ustring sql_query = "UPDATE " GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME " SET "
-        GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_NEXT_VALUE " = " + next_value.to_string() +
-        " WHERE " GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME " = '" + table_name + "' AND "
-                  GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_FIELD_NAME " = '" + field_name + "'";
-
-    Glib::RefPtr<Gnome::Gda::DataModel> datamodel = Query_execute(sql_query);
-    if(!datamodel)
-    {
-      g_warning("Base_DB::get_next_auto_increment_value(): Increment failed.");
-    }
+    g_warning("Base_DB::get_next_auto_increment_value(): Increment failed.");
   }
 
   return result;

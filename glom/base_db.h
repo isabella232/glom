@@ -95,6 +95,8 @@ protected:
   SystemPrefs get_database_preferences() const;
   void set_database_preferences(const SystemPrefs& prefs);
 
+  Gnome::Gda::Value auto_increment_insert_first_if_necessary(const Glib::ustring& table_name, const Glib::ustring& field_name);
+
   /** Get the next auto-increment value for this primary key, from the glom system table.
    * Add a row for this field in the system table if it does not exist already.
    */

@@ -111,6 +111,20 @@ void Dialog_Database_Preferences::load_from_document()
   //Show the data in the UI:
   m_glade_variables_map.transfer_variables_to_widgets();
 
+
+  //Make sure that all auto-increment values are setup:
+  Document_Glom* document = get_document();
+  const Document_Glom::type_listTableInfo tables = document->get_tables();
+  for(Document_Glom::type_listTableInfo::const_iterator iter = tables.begin(); iter != tables.end(); ++iter)
+  {
+    const Document_Glom::type_vecFields fields = document->get_table_fields(iter->m_name);
+    for(Document_Glom::type_vecFields::const_iterator iterFields = fields.begin(); iterFields != fields.end(); ++iterFields)
+    {
+      if(iterFields->get_primary_key())
+        auto_increment_insert_first_if_necessary(iter->m_name, iterFields->get_name());
+    }
+  }
+
   //Show the auto-increment values:
   m_model_autoincrements->clear();
 
@@ -134,6 +148,21 @@ void Dialog_Database_Preferences::load_from_document()
     //TODO: Careful of locale:
     row[m_columns.m_col_next_value] = atol(datamodel->get_value_at(2, i).to_string().c_str());
   }
+
+  m_model_autoincrements->set_default_sort_func( sigc::mem_fun(*this, &Dialog_Database_Preferences::on_autoincrements_sort) );
+}
+
+int Dialog_Database_Preferences::on_autoincrements_sort(const Gtk::TreeModel::iterator& a, const Gtk::TreeModel::iterator& b)
+{
+  const Glib::ustring a_full = (*a)[m_columns.m_col_table] + ", " + (*a)[m_columns.m_col_field];
+  const Glib::ustring b_full = (*b)[m_columns.m_col_table] + ", " + (*b)[m_columns.m_col_field];
+
+  if(a_full < b_full)
+   return -1;
+  else if(a_full > b_full)
+   return 1;
+  else
+   return 0;
 }
 
 void Dialog_Database_Preferences::save_to_document()

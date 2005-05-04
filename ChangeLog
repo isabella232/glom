@@ -1,5 +1,17 @@
 2005-05-04  Murray Cumming <murrayc@murrayc.com>
 
+	* glom/base_db.cc:
+	* glom/base_db.h:
+	Added auto_increment_insert_first_if_necessary() 
+	by moving some code from get_auto_increment_next_value().
+	* glom/dialog_database_preferences.cc:
+	* glom/dialog_database_preferences.h:
+	load_from_document(): Iterate over all fields and 
+	call auto_increment_insert_first_if_necessary() for all 
+	primary keys, so they all show up in the dialog.
+
+2005-05-04  Murray Cumming <murrayc@murrayc.com>
+
 	* glom/base_db.cc: get_table_privileges(): 
 	Reverted a search/replace that broke parsing of 
 	user rights.
