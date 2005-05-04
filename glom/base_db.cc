@@ -666,7 +666,7 @@ Privileges Base_DB::get_table_privileges(const Glib::ustring& group_name, const 
     for(type_vecStrings::const_iterator iterItems = vecItems.begin(); iterItems != vecItems.end(); ++iterItems)
     {
       Glib::ustring item = *iterItems;
-      item = string_trim(item, "'"); //Remove quotes from front and back.
+      item = string_trim(item, "\""); //Remove quotes from front and back.
 
       //Find group permissions, ignoring user permissions:
       const Glib::ustring strgroup = "group ";
