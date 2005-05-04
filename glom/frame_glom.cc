@@ -627,7 +627,17 @@ void Frame_Glom::set_document(Document_Glom* pDocument)
 
 void Frame_Glom::show_system_name()
 {
-  m_pLabel_Name->set_text ( Bakery::App_Gtk::util_bold_message( get_database_preferences().m_name ));
+  const SystemPrefs prefs = get_database_preferences();
+  const Glib::ustring org = prefs.m_org_name;
+  const Glib::ustring name = prefs.m_name;
+
+  Glib::ustring system_name = org;
+  if(!system_name.empty() && !name.empty())
+    system_name += ": ";
+
+  system_name += name;
+
+  m_pLabel_Name->set_text ( Bakery::App_Gtk::util_bold_message(system_name) );
   m_pLabel_Name->set_use_markup();
 }
 

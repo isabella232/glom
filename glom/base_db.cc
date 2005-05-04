@@ -164,8 +164,6 @@ bool Base_DB::get_table_exists_in_database(const Glib::ustring& table_name) cons
   type_vecStrings::const_iterator iterFind = std::find(tables.begin(), tables.end(), table_name);
   bool result = (iterFind != tables.end());
 
-  g_warning("Base_DB::get_table_exists_in_database() table_name=%s, result=%d", table_name.c_str(), result);
-
   return result;
 }
 

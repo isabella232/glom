@@ -142,6 +142,11 @@ bool Box_Tables::fill_from_database()
         if(hidden && !m_pCheckButtonShowHidden->get_active()) //Don't add hidden tables if that checkbox is unset.
           bAddIt = false;
 
+        //Check whether it's a system table, though they should never be in this list:
+        Glib::ustring prefix = "glom_system_";
+        if(strName.substr(0, prefix.size()) == prefix)
+          bAddIt = false;
+
         if(bAddIt)
         {
           Gtk::TreeModel::iterator iter = m_AddDel.add_item(strName);

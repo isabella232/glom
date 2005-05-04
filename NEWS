@@ -1,3 +1,13 @@
+0.8.26:
+
+* Added Developer/Database Preferences menu item, where 
+  you can enter global values for the system name, 
+  organisation details, and specify next values for 
+  auto-incremented fields.
+* Show the system name at the top of the window.
+* Find mode: Works again.
+* Hide scrollbars when they are not needed.
+
 0.8.25:
 
 * Details: Use a bigger widget (TextView) with scrollbars 

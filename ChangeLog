@@ -1,5 +1,12 @@
 2005-05-04  Murray Cumming <murrayc@murrayc.com>
 
+	* glom/frame_glom.cc: Show the organisation name as well as 
+	the system name.
+	* glom/navigation/box_tables.cc: Check for glom_system_*
+ 	tables and do not show them.
+
+2005-05-04  Murray Cumming <murrayc@murrayc.com>
+
 	* glom/mode_data/box_data_list.cc:
 	* glom/utility_widgets/db_adddel/db_adddel.cc:
 	Pass the where_clause when calling refresh_from_database() 
