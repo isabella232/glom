@@ -1,3 +1,28 @@
+2005-05-06  Murray Cumming <murrayc@murrayc.com>
+
+	* glom/Makefile.am:
+	* glom/application.cc:
+	* glom/data_structure/layout/layoutgroup.cc:
+	* glom/data_structure/layout/layoutgroup.h:
+	* glom/data_structure/layout/layoutitem.h:
+	* glom/data_structure/layout/layoutitem_field.cc:
+	* glom/data_structure/layout/layoutitem_field.h:
+	* glom/data_structure/layout/layoutitem_portal.cc:
+	* glom/data_structure/layout/layoutitem_portal.h:
+	* glom/dialog_layout_report.cc:
+	* glom/dialog_layout_report.h:
+	* glom/frame_glom.cc:
+	* glom/frame_glom.h:
+	* glom/glom.glade:
+	* glom/main.cc:
+	* glom/mode_data/dialog_layout.cc:
+	* glom/mode_data/dialog_layout.h:
+	* glom/utility_widgets/db_adddel/db_adddel.cc:
+	* po/POTFILES.in:
+	Added a Developer/Reports menu item, with non-working 
+	beginnings of a simple layout dialog, with available 
+	parts on the left, and chosen parts on the right.
+
 2005-05-04  Murray Cumming <murrayc@murrayc.com>
 
 	* glom/base_db.cc: get_table_privileges(): Really give full 

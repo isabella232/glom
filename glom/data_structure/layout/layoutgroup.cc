@@ -20,6 +20,7 @@
  
 #include "layoutgroup.h"
 #include "layoutitem_field.h"
+#include <glibmm/i18n.h>
 
 LayoutGroup::LayoutGroup()
 : m_columns_count(1) //A sensible default
@@ -201,4 +202,9 @@ void LayoutGroup::change_field_item_name(const Glib::ustring& field_name, const 
         iterItem->second->set_name(field_name_new); //Change it.
     }
   }
+}
+
+Glib::ustring LayoutGroup::get_part_type_name() const
+{
+  return _("Group");
 }

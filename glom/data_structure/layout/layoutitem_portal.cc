@@ -19,6 +19,7 @@
  */
  
 #include "layoutitem_portal.h"
+#include <glibmm/i18n.h>
 
 LayoutItem_Portal::LayoutItem_Portal()
 {
@@ -59,6 +60,9 @@ void LayoutItem_Portal::set_relationship(const Glib::ustring& relationship)
 {
   m_relationship.set_name(relationship);
 }
-  
 
 
+Glib::ustring LayoutItem_Portal::get_part_type_name() const
+{
+  return _("Portal");
+}

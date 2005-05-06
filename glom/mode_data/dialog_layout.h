@@ -31,7 +31,7 @@ class Dialog_Layout :
   public View_Composite_Glom //Give it access to the document.
 {
 public:
-  Dialog_Layout(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  Dialog_Layout(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade, bool with_table_title = true);
   virtual ~Dialog_Layout();
 
   typedef std::vector< LayoutItem_Field > type_vecLayoutFields;

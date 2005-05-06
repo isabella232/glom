@@ -22,7 +22,7 @@
 //#include <libgnome/gnome-i18n.h>
 #include <glibmm/i18n.h>
 
-Dialog_Layout::Dialog_Layout(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
+Dialog_Layout::Dialog_Layout(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade, bool with_table_title)
 : Gtk::Dialog(cobject),
   m_entry_table_title(0),
   m_modified(false)
@@ -31,9 +31,12 @@ Dialog_Layout::Dialog_Layout(BaseObjectType* cobject, const Glib::RefPtr<Gnome::
   refGlade->get_widget("button_close", button);
   button->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout::on_button_close) );
 
-  refGlade->get_widget("entry_table_title", m_entry_table_title);
-  m_entry_table_title->signal_changed().connect( sigc::mem_fun(*this, &Dialog_Layout::on_entry_table_title_changed) );
- 
+  if(with_table_title)
+  {
+    refGlade->get_widget("entry_table_title", m_entry_table_title);
+    m_entry_table_title->signal_changed().connect( sigc::mem_fun(*this, &Dialog_Layout::on_entry_table_title_changed) );
+  }
+
   show_all_children();
 }
 
@@ -68,7 +71,7 @@ void Dialog_Layout::move_treeview_selection_up(Gtk::TreeView* treeview, const Gt
 
         Gtk::TreeModel::Row row = *iter;
         Gtk::TreeModel::Row rowBefore = **iterBefore;
-                                                     
+
         //Swap the sequence values, so that the one before will be after:
         guint tempBefore = rowBefore[sequence_column];
         guint tempRow = row[sequence_column];
@@ -78,7 +81,7 @@ void Dialog_Layout::move_treeview_selection_up(Gtk::TreeView* treeview, const Gt
         //Because the model is sorted, the visual order should now be swapped.
 
         m_modified = true;
-      }   
+      }
     }
 
   }

@@ -23,6 +23,8 @@
 #include "appstate.h"
 #include "mode_design/users/dialog_groups_list.h"
 #include "dialog_database_preferences.h"
+#include "dialog_layout_report.h"
+
 #include <glibmm/i18n.h>
 
 Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
@@ -754,14 +756,43 @@ void Frame_Glom::on_menu_developer_layout()
   }
 }
 
+void Frame_Glom::on_menu_developer_reports()
+{
+  //Check that there is a table to show:
+  if(m_strTableName.empty())
+  {
+    alert_no_table(); //TODO: Disable the menu item instead.
+  }
+  else
+  {
+    Gtk::MessageDialog dialog("This is not working yet. It's just some test code."); //TODO: Remove this.
+    dialog.run();
+
+    Dialog_Layout_Report* pDialog;
+
+    try
+    {
+      Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_report_layout");
+
+      refXml->get_widget_derived("window_report_layout", pDialog);
+    }
+    catch(const Gnome::Glade::XmlError& ex)
+    {
+      std::cerr << ex.what() << std::endl;
+    }
+
+    add_view(pDialog);
+    pDialog->run();
+
+    pDialog->show();
+    //delete pDialog;
+  }
+}
+
 void Frame_Glom::on_developer_dialog_hide()
 {
   //The dababase structure might have changed, so refresh the data view:
   show_table(m_strTableName);
-}
-
-void Frame_Glom::on_menu_developer_recreate_structure()
-{
 }
 
 bool Frame_Glom::connection_request_password_and_attempt()

@@ -71,6 +71,7 @@ public:
   void get_choices(Glib::ustring& relationship_name, Glib::ustring& field, Glib::ustring& field_second) const;
   void set_choices(const Glib::ustring& relationship_name, const Glib::ustring& field, const Glib::ustring& field_second);
 
+  virtual Glib::ustring get_part_type_name() const;
 
   //This is filled in by looking at the database structure:
   Field m_field;

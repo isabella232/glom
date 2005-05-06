@@ -66,9 +66,9 @@ public:
   virtual void on_menu_developer_database_preferences();
   virtual void on_menu_developer_fields();
   virtual void on_menu_developer_relationships();
-  virtual void on_menu_developer_users();     
+  virtual void on_menu_developer_users();
   virtual void on_menu_developer_layout();
-  virtual void on_menu_developer_recreate_structure();
+  virtual void on_menu_developer_reports();
 
   virtual void on_developer_dialog_hide();
 

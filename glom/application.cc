@@ -252,16 +252,14 @@ void App_Glom::init_menus()
   m_listDeveloperActions.push_back(action);
   m_refActionGroup_Others->add(action, sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_users));
 
+  action = Gtk::Action::create("GlomAction_Menu_Developer_Reports", _("R_eports"));
+  m_listDeveloperActions.push_back(action);
+  m_refActionGroup_Others->add(action, sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_reports));
+
   action = Gtk::Action::create("GlomAction_Menu_Developer_Layout", _("_Layout"));
   m_listDeveloperActions.push_back(action);
   m_refActionGroup_Others->add(action, sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_layout));
 
-  /*
-  action = Gtk::Action::create("GlomAction_Menu_Developer_RecreateStructure", _("_Recreate Database Structure"));
-  m_listDeveloperActions.push_back(action);
-  m_refActionGroup_Others->add(action, sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_recreate_structure));
-  */
-  
   m_refUIManager->insert_action_group(m_refActionGroup_Others);
 
   //Build part of the menu structure, to be merged in by using the "Bakery_MenuPH_Others" placeholder:
@@ -283,9 +281,10 @@ void App_Glom::init_menus()
     "      <menu action='Glom_Menu_Developer'>"
     "        <menuitem action='GlomAction_Menu_Developer_Database_Preferences' />"
     "        <menuitem action='GlomAction_Menu_Developer_Fields' />"
-    "        <menuitem action='GlomAction_Menu_Developer_Relationships' />"    
+    "        <menuitem action='GlomAction_Menu_Developer_Relationships' />"
     "        <menuitem action='GlomAction_Menu_Developer_Layout' />"
     "        <menuitem action='GlomAction_Menu_Developer_Users' />"
+    "        <menuitem action='GlomAction_Menu_Developer_Reports' />"
     "      </menu>"
     "    </placeholder>"
     "  </menubar>"

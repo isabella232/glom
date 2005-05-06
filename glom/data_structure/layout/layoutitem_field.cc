@@ -19,6 +19,7 @@
  */
  
 #include "layoutitem_field.h"
+#include <glibmm/i18n.h>
 
 LayoutItem_Field::LayoutItem_Field()
 : m_priv_view(false),
@@ -247,3 +248,8 @@ void LayoutItem_Field::set_choices(const Glib::ustring& relationship_name, const
   m_choices_related_field_second = field_second;
 }
 
+
+Glib::ustring LayoutItem_Field::get_part_type_name() const
+{
+  return _("Field");
+}

@@ -4,6 +4,9 @@ glom/glom.glade
 glom/application.cc
 glom/base_db.cc
 glom/data_structure/field.cc
+glom/data_structure/layout/layoutgroup.cc
+glom/data_structure/layout/layoutitem_field.cc
+glom/data_structure/layout/layoutitem_portal.cc
 glom/dialog_database_preferences.cc
 glom/dialog_connection.cc
 glom/frame_glom.cc

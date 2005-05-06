@@ -39,6 +39,8 @@ public:
   Glib::ustring get_relationship() const;
   void set_relationship(const Glib::ustring& relationship);
 
+  virtual Glib::ustring get_part_type_name() const;
+
   Relationship m_relationship; //Public, for more efficient access.
 
 protected:

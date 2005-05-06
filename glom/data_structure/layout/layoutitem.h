@@ -45,6 +45,8 @@ public:
   virtual bool get_editable() const;
   virtual void set_editable(bool val);
 
+  virtual Glib::ustring get_part_type_name() const = 0;
+
   guint m_sequence;
   //bool m_hidden;
 

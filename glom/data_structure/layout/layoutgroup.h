@@ -57,6 +57,8 @@ public:
   typedef std::map<int, const LayoutItem*> type_map_const_items;
   type_map_const_items get_items() const;
 
+  virtual Glib::ustring get_part_type_name() const;
+
 //Allow more efficient access: protected:
 
   type_map_items m_map_items;
