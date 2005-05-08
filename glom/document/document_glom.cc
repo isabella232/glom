@@ -95,6 +95,9 @@
 
 #define GLOM_ATTRIBUTE_RELATIONSHIP_NAME "relationship"
 
+#define GLOM_NODE_REPORTS "reports"
+#define GLOM_NODE_REPORT "report"
+
 Document_Glom::Document_Glom()
 : m_block_cache_update(false)
 {
@@ -1163,6 +1166,54 @@ bool Document_Glom::load_after()
           } //if(nodeDataLayouts)
 
 
+          //Reports:
+          const xmlpp::Element* nodeReports = get_node_child_named(nodeTable, GLOM_NODE_REPORTS);
+          if(nodeReports)
+          {
+            xmlpp::Node::NodeList listNodes = nodeReports->get_children(GLOM_NODE_REPORT);
+            for(xmlpp::Node::NodeList::iterator iter = listNodes.begin(); iter != listNodes.end(); ++iter)
+            {
+              xmlpp::Element* node = dynamic_cast<xmlpp::Element*>(*iter);
+              if(node)
+              {
+                const Glib::ustring report_name = get_node_attribute_value(node, GLOM_ATTRIBUTE_NAME);
+                const Glib::ustring report_title = get_node_attribute_value(node, GLOM_ATTRIBUTE_TITLE);
+
+                //type_mapLayoutGroupSequence layout_groups;
+
+                Report report;
+                report.m_name = report_name;
+                report.m_title = report_title;
+
+                const xmlpp::Element* nodeGroups = get_node_child_named(node, GLOM_NODE_DATA_LAYOUT_GROUPS);
+                if(nodeGroups)
+                {
+                  //Look at all its children:
+                  xmlpp::Node::NodeList listNodes = nodeGroups->get_children(GLOM_NODE_DATA_LAYOUT_GROUP);
+                  for(xmlpp::Node::NodeList::iterator iter = listNodes.begin(); iter != listNodes.end(); ++iter)
+                  {
+                    const xmlpp::Element* node = dynamic_cast<const xmlpp::Element*>(*iter);
+                    if(node)
+                    {
+                      const Glib::ustring group_name = get_node_attribute_value(node, GLOM_ATTRIBUTE_NAME);
+                      if(!group_name.empty())
+                      {
+                        LayoutGroup group;
+                        load_after_layout_group(node, table_name, group);
+
+                        //layout_groups[group.m_sequence] = group;
+                        report.m_layout_group = group; //TODO: Get rid of the for loop here.
+                      }
+                    }
+                  }
+                }
+
+                doctableinfo.m_reports[report.m_name] = report;
+              }
+            }
+          } //if(nodeReports)
+
+
           //Groups:
           m_groups.clear();
 
@@ -1404,6 +1455,29 @@ bool Document_Glom::save_before()
             save_before_layout_group(nodeGroups, iterGroups->second);
           }
         }
+
+        //Reports:
+        xmlpp::Element* nodeReports = nodeTable->add_child(GLOM_NODE_REPORTS);
+
+        //Add the groups:
+        //Make sure that we always get these _after_ the relationships.
+        for(DocumentTableInfo::type_reports::const_iterator iter = doctableinfo.m_reports.begin(); iter != doctableinfo.m_reports.end(); ++iter)
+        {
+          xmlpp::Element* nodeReport = nodeReports->add_child(GLOM_NODE_REPORT);
+          nodeReport->set_attribute(GLOM_ATTRIBUTE_NAME, iter->second.get_name());
+          nodeReport->set_attribute(GLOM_ATTRIBUTE_TITLE, iter->second.m_title);
+
+          xmlpp::Element* nodeGroups = nodeReport->add_child(GLOM_NODE_DATA_LAYOUT_GROUPS);
+
+          const LayoutGroup::type_map_items& group_sequence = iter->second.m_layout_group.m_map_items;
+          for(LayoutGroup::type_map_items::const_iterator iterGroups = group_sequence.begin(); iterGroups != group_sequence.end(); ++iterGroups)
+          {
+            const LayoutGroup* group = dynamic_cast<const LayoutGroup*>(iterGroups->second);
+            if(group)
+              save_before_layout_group(nodeGroups, *group);
+          }
+        }
+
       }
 
     } //for m_tables
@@ -1583,3 +1657,63 @@ void Document_Glom::update_cached_relationships()
     }
   }
 }
+
+Document_Glom::type_listReports Document_Glom::get_report_names(const Glib::ustring& table_name) const
+{
+  type_tables::const_iterator iterFind = m_tables.find(table_name);
+  if(iterFind != m_tables.end())
+  {
+    type_listReports result;
+    for(DocumentTableInfo::type_reports::const_iterator iter = iterFind->second.m_reports.begin(); iter != iterFind->second.m_reports.end(); ++iter)
+    {
+      result.push_back(iter->second.get_name());
+    }
+
+    return result;
+  }
+  else
+    return type_listReports(); 
+}
+
+void Document_Glom::remove_all_reports(const Glib::ustring& table_name)
+{
+  type_tables::iterator iterFind = m_tables.find(table_name);
+  if(iterFind != m_tables.end())
+    iterFind->second.m_reports.clear();
+}
+
+void Document_Glom::set_report(const Glib::ustring& table_name, const Report& report)
+{
+  type_tables::iterator iterFind = m_tables.find(table_name);
+  if(iterFind != m_tables.end())
+    iterFind->second.m_reports[report.m_name] = report;
+}
+
+bool Document_Glom::get_report(const Glib::ustring& table_name, const Glib::ustring& report_name, Report& report) const
+{
+  type_tables::const_iterator iterFindTable = m_tables.find(table_name);
+  if(iterFindTable != m_tables.end())
+  {
+    DocumentTableInfo::type_reports::const_iterator iterFindReport = iterFindTable->second.m_reports.find(report_name);
+    if(iterFindReport != iterFindTable->second.m_reports.end())
+    {
+      report = iterFindReport->second;
+      return true; //success.
+    }
+  }
+
+  return false;
+}
+
+void Document_Glom::remove_report(const Glib::ustring& table_name, const Glib::ustring& report_name)
+{
+  type_tables::iterator iterFindTable = m_tables.find(table_name);
+  if(iterFindTable != m_tables.end())
+  {
+    DocumentTableInfo::type_reports::iterator iterFindReport = iterFindTable->second.m_reports.find(report_name);
+    if(iterFindReport != iterFindTable->second.m_reports.end())
+      iterFindTable->second.m_reports.erase(iterFindReport);
+  }
+}
+
+

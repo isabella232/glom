@@ -35,11 +35,14 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
   m_pLabel_userlevel(0),
   m_pBox_Mode(0),
   m_pBox_Tables(0),
+  m_pBox_Reports(0),
   m_pDialog_Tables(0),
+  m_pDialog_Reports(0),
   m_pDialog_Fields(0),
   m_pDialog_Relationships(0),
   m_pDialogConnection(0),
-  m_pDialogConnectionFailed(0)
+  m_pDialogConnectionFailed(0),
+  m_pDialogLayoutReport(0)
 {
   //Load widgets from glade file:
   refGlade->get_widget("label_name", m_pLabel_Name);
@@ -70,6 +73,19 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
 
     refXml->get_widget_derived("box_navigation_tables", m_pBox_Tables);
     m_pDialog_Tables = new Dialog_Glom(m_pBox_Tables);
+  }
+  catch(const Gnome::Glade::XmlError& ex)
+  {
+    std::cerr << ex.what() << std::endl;
+  }
+
+  try
+  {
+    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "box_reports");
+
+    refXml->get_widget_derived("box_reports", m_pBox_Reports);
+    m_pDialog_Reports = new Dialog_Glom(m_pBox_Reports);
+    //add_view(m_pBox_Reports);
   }
   catch(const Gnome::Glade::XmlError& ex)
   {
@@ -128,6 +144,12 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
   //Connect signals:
   m_pBox_Tables->signal_selected.connect(sigc::mem_fun(*this, &Frame_Glom::on_box_tables_selected));
 
+  m_pDialog_Reports->get_vbox()->pack_start(*m_pBox_Reports);
+  m_pDialog_Reports->set_default_size(300, 400);
+  m_pBox_Reports->show_all();
+
+  m_pBox_Reports->signal_selected.connect(sigc::mem_fun(*this, &Frame_Glom::on_box_reports_selected));
+
   m_Notebook_Find.signal_find_criteria.connect(sigc::mem_fun(*this, &Frame_Glom::on_notebook_find_criteria));
 
   //Fill Composite View:
@@ -176,6 +198,12 @@ Frame_Glom::~Frame_Glom()
     m_pDialog_Relationships = 0;
   }
 
+  if(m_pDialogLayoutReport)
+  {
+    remove_view(m_pDialogLayoutReport);
+    delete m_pDialogLayoutReport;
+    m_pDialogLayoutReport = 0;
+  }
 }
 
 void Frame_Glom::set_databases_selected(const Glib::ustring& strName)
@@ -187,7 +215,7 @@ void Frame_Glom::set_databases_selected(const Glib::ustring& strName)
   do_menu_Navigate_Table(true /* open default */);
 }
 
-void Frame_Glom::on_box_tables_selected(Glib::ustring strName)
+void Frame_Glom::on_box_tables_selected(const Glib::ustring& strName)
 {
   m_pDialog_Tables->hide(); //cause_close();
 
@@ -768,26 +796,22 @@ void Frame_Glom::on_menu_developer_reports()
     Gtk::MessageDialog dialog("This is not working yet. It's just some test code."); //TODO: Remove this.
     dialog.run();
 
-    Dialog_Layout_Report* pDialog;
-
-    try
-    {
-      Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_report_layout");
-
-      refXml->get_widget_derived("window_report_layout", pDialog);
-    }
-    catch(const Gnome::Glade::XmlError& ex)
-    {
-      std::cerr << ex.what() << std::endl;
-    }
-
-    add_view(pDialog);
-    pDialog->run();
-
-    pDialog->show();
-    //delete pDialog;
+    m_pDialog_Reports->show();
   }
 }
+
+
+void Frame_Glom::on_box_reports_selected(const Glib::ustring& report_name)
+{
+  Report report;
+  bool found = get_document()->get_report(m_strTableName, report_name, report);
+  if(found)
+  {
+    m_pDialogLayoutReport->set_report(m_strTableName, report);
+    m_pDialogLayoutReport->show();
+  }
+}
+
 
 void Frame_Glom::on_developer_dialog_hide()
 {

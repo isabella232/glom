@@ -19,7 +19,8 @@
  */
 
 #include "dialog_layout_report.h"
-#include "data_structure/layout/layoutgroup.h"
+#include "data_structure/layout/report_parts/layoutitem_groupby.h"
+#include "data_structure/layout/report_parts/layoutitem_summary.h"
 #include "data_structure/layout/layoutitem_field.h"
 #include "mode_data/dialog_choose_field.h"
 #include "mode_data/dialog_field_layout.h"
@@ -55,9 +56,11 @@ Dialog_Layout_Report::Dialog_Layout_Report(BaseObjectType* cobject, const Glib::
     m_model_available_parts = Gtk::TreeStore::create(m_columns_available_parts);
 
     Gtk::TreeModel::iterator iter = m_model_available_parts->append();
-    (*iter)[m_columns_available_parts.m_col_item] = new LayoutGroup();
+    (*iter)[m_columns_available_parts.m_col_item] = new LayoutItem_GroupBy();
     iter = m_model_available_parts->append();
     (*iter)[m_columns_available_parts.m_col_item] = new LayoutItem_Field();
+    iter = m_model_available_parts->append();
+    (*iter)[m_columns_available_parts.m_col_item] = new LayoutItem_Summary();
 
     m_treeview_available_parts->set_model(m_model_available_parts);
 
@@ -253,57 +256,38 @@ void Dialog_Layout_Report::add_group(const Gtk::TreeModel::iterator& parent, con
   }
 }
 
-void Dialog_Layout_Report::set_document(const Glib::ustring& layout, Document_Glom* document, const Glib::ustring& table_name, const type_vecLayoutFields& table_fields)
+//void Dialog_Layout_Report::set_document(const Glib::ustring& layout, Document_Glom* document, const Glib::ustring& table_name, const type_vecLayoutFields& table_fields)
+void Dialog_Layout_Report::set_report(const Glib::ustring& table_name, const Report& report)
 {
   m_modified = false;
 
-  Dialog_Layout::set_document(layout, document, table_name, table_fields);
+  //Dialog_Layout::set_document(layout, document, table_name, table_fields);
 
+  //Set the table name and title:
+  m_label_table_name->set_text(table_name);
+  m_entry_title->set_text(report.m_title);
 
   //Update the tree models from the document
-  if(document)
+
+  if(true) //document)
   {
-    //Set the table name and title:
-    m_label_table_name->set_text(table_name);
+
+
     //m_entry_table_title->set_text( document->get_table_title(table_name) );
 
-    Document_Glom::type_mapLayoutGroupSequence mapGroups = document->get_data_layout_groups_plus_new_fields(layout, m_table_name);
-    document->fill_layout_field_details(m_table_name, mapGroups); //Update with full field information.
+    LayoutGroup::type_map_items mapGroups = report.m_layout_group.m_map_items;
+    //document->fill_layout_field_details(m_table_name, mapGroups); //Update with full field information.
 
-    //If no information is stored in the document, then start with something:
-
-    if(mapGroups.empty())
-    {
-      LayoutGroup group;
-      group.set_name("main");
-      group.m_columns_count = 2;
-
-      guint field_sequence = 1; //0 means no sequence
-      for(type_vecLayoutFields::const_iterator iter = table_fields.begin(); iter != table_fields.end(); ++iter)
-      {
-        LayoutItem_Field item = *iter;
-        item.m_sequence = field_sequence;
-
-        group.add_item(item, field_sequence);
-
-        ++field_sequence;
-      }
-
-      mapGroups[1] = group;
-    }
-
-    //Show the field layout
-    typedef std::list< Glib::ustring > type_listStrings;
-
+    //Show the report items:
     m_model_parts->clear();
 
     //guint field_sequence = 1; //0 means no sequence
     //guint group_sequence = 1; //0 means no sequence
-    for(Document_Glom::type_mapLayoutGroupSequence::const_iterator iter = mapGroups.begin(); iter != mapGroups.end(); ++iter)
+    for(LayoutGroup::type_map_items::const_iterator iter = mapGroups.begin(); iter != mapGroups.end(); ++iter)
     {
-      const LayoutGroup& group = iter->second;
-
-      add_group(Gtk::TreeModel::iterator() /* null == top-level */, group);
+      const LayoutGroup* group = dynamic_cast<const LayoutGroup*>(iter->second);
+      if(group)
+        add_group(Gtk::TreeModel::iterator() /* null == top-level */, *group);
     }
 
     //treeview_fill_sequences(m_model_parts, m_model_parts->m_columns.m_col_sequence); //The document should have checked this already, but it does not hurt to check again.
@@ -442,8 +426,6 @@ void Dialog_Layout_Report::on_button_add()
   Gtk::TreeModel::iterator parent = get_selected_group_parent();
   Gtk::TreeModel::iterator available = get_selected_available();
 
-g_warning("Dialog_Layout_Report::on_button_add");
-
   //Copy the available part to the list of parts:
   if(available)
   {
@@ -451,13 +433,14 @@ g_warning("Dialog_Layout_Report::on_button_add");
 
     Gtk::TreeModel::iterator iter;
     if(parent)
+    {
+      m_treeview_parts->expand_row( Gtk::TreePath(parent), true);
       iter = m_model_parts->append(parent->children());
+    }
     else
       iter = m_model_parts->append();
 
     (*iter)[m_columns_parts.m_col_item] = pAvailable->clone();
-
-g_warning("Dialog_Layout_Report::on_button_add: after add");
   }
 
   enable_buttons();
@@ -579,12 +562,13 @@ Gtk::TreeModel::iterator Dialog_Layout_Report::get_selected_group_parent() const
     if(iter)
     {
       Gtk::TreeModel::Row row = *iter;
-      //if(row[m_columns_parts->m_columns.m_col_type] == TreeStore_Layout::TYPE_GROUP)
-      //{
+      LayoutItem* pPart = row[m_columns_parts.m_col_item];
+      if(dynamic_cast<LayoutGroup*>(pPart))
+      {
         //Add a group under this group:
-      //  parent = iter;
-      //}
-      //else
+        parent = iter;
+      }
+      else
       {
         //Add a group under this item's group:
         parent = iter->parent();

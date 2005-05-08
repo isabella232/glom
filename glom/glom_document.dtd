@@ -30,7 +30,7 @@ DTD for glom documents.
 >
 
 
-<!ELEMENT table (fields | relationships | data_layouts)* >
+<!ELEMENT table (fields | relationships | data_layouts | reports)* >
 <!ATTLIST table
   name CDATA #REQUIRED
   title CDATA #OPTIONAL
@@ -76,7 +76,7 @@ The name will be either "list" or "details".
 -->
 <!ELEMENT data_layout (data_layout_group)*>
 <!ATTLIST data_layout
-  name CDATA #REQUIRED
+ name CDATA #REQUIRED
 >
 
 <!ELEMENT data_layout_group (data_layout_group | data_layout_item | data_layout_portal)* >
@@ -102,3 +102,13 @@ The name will be either "list" or "details".
   sequence CDATA #REQUIRED
   hide CDATA #OPTIONAL
 >
+
+
+<!ELEMENT data_reports (data_report)* >
+
+<!ELEMENT data_report (data_layout_group)*>
+<!ATTLIST data_report
+ name CDATA #REQUIRED
+ title CDATA #REQUIRED
+>
+

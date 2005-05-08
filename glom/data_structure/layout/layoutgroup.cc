@@ -102,7 +102,7 @@ bool LayoutGroup::has_field(const Glib::ustring& field_name) const
         if(group_item->has_field(field_name))
           return true;
       }
-    }    
+    }
   }
 
   return false;

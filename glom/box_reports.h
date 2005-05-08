@@ -18,21 +18,23 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef BOX_TABLES_H
-#define BOX_TABLES_H
+#ifndef BOX_REPORTS_H
+#define BOX_REPORTS_H
 
-#include "../box_db.h"
+#include "box_db_table.h"
+#include "data_structure/report.h"
 
-class Box_Tables : public Box_DB
+
+class Box_Reports : public Box_DB_Table
 {
 public:
-  Box_Tables(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
-  virtual ~Box_Tables();
+  Box_Reports(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  virtual ~Box_Reports();
 
 protected:
   virtual bool fill_from_database(); //override
 
-  virtual void fill_table_row(const Gtk::TreeModel::iterator& iter, const TableInfo& table_info);
+  virtual void fill_row(const Gtk::TreeModel::iterator& iter, const Report& report);
 
   virtual void save_to_document();
 
@@ -41,20 +43,16 @@ protected:
   virtual void on_adddel_Delete(const Gtk::TreeModel::iterator& rowStart, const Gtk::TreeModel::iterator& rowEnd);
   virtual void on_adddel_Edit(const Gtk::TreeModel::iterator& row);
   virtual void on_adddel_changed(const Gtk::TreeModel::iterator& row, guint column);
-  
-  virtual void on_show_hidden_toggled();
 
   virtual void on_userlevel_changed(AppState::userlevels userlevel);
 
   Gtk::Label* m_pLabelFrameTitle;
   Gtk::CheckButton* m_pCheckButtonShowHidden;
-  guint m_colTableName;
-  guint m_colHidden;
+  guint m_colReportName;
   guint m_colTitle;
-  guint m_colDefault;
-  
+
   mutable AddDel_WithButtons m_AddDel; //mutable because its get_ methods aren't const.
 };
 
-#endif //BOX_TABLES_H
+#endif //BOX_REPORTS_H
 

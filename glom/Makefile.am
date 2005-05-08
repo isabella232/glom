@@ -32,11 +32,13 @@ glom_SOURCES = main.cc \
                dialog_database_preferences.h dialog_database_preferences.cc \
                dialog_layout_report.h dialog_layout_report.cc \
                sharedptr.h \
-               standard_table_prefs_fields.h
+               standard_table_prefs_fields.h \
+               box_reports.h box_reports.cc 
 
 glom_LDADD = document/libdocument.a \
              data_structure/libdata_structure.a \
              data_structure/layout/libdata_structure_layout.a \
+             data_structure/layout/report_parts/libdata_structure_layout_reportparts.a \
              mode_data/libmode_data.a \
              mode_find/libmode_find.a \
              mode_design/libmode_design.a \

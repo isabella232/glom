@@ -1,3 +1,31 @@
+2005-05-08  Murray Cumming <murrayc@murrayc.com>
+
+	* configure.in:
+	* glom/Makefile.am:
+	* glom/glom.glade:
+	* glom/box_reports.cc:
+	* glom/box_reports.h:
+	* glom/dialog_layout_report.cc:
+	* glom/dialog_layout_report.h:
+	Beginnings of UI to add/remove reports, and to edit them.
+	* glom/data_structure/Makefile.am:
+	* glom/data_structure/layout/Makefile.am:
+	* glom/data_structure/layout/layoutgroup.cc:
+	* glom/data_structure/layout/report_parts/Makefile.am:
+	* glom/data_structure/layout/report_parts/layoutitem_groupby.cc:
+	* glom/data_structure/layout/report_parts/layoutitem_groupby.h:
+	* glom/data_structure/layout/report_parts/layoutitem_summary.cc:
+	* glom/data_structure/layout/report_parts/layoutitem_summary.h:
+	* glom/data_structure/report.cc:
+	* glom/data_structure/report.h:
+	Beginnings of data structure for reports and their parts.
+	* glom/document/document_glom.cc:
+	* glom/document/document_glom.h:
+	API to get/set reports, and load/save them.
+	* glom/frame_glom.cc:
+	* glom/frame_glom.h:
+	Use the new UI bits for reports.
+
 2005-05-06  Murray Cumming <murrayc@murrayc.com>
 
 	* glom/Makefile.am:

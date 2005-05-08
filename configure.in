@@ -66,6 +66,7 @@ AC_OUTPUT(Makefile \
   glom/Makefile \
     glom/data_structure/Makefile \
       glom/data_structure/layout/Makefile \
+        glom/data_structure/layout/report_parts/Makefile \
     glom/document/Makefile \
     glom/mode_data/Makefile \
     glom/mode_design/Makefile \

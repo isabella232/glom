@@ -22,6 +22,7 @@
 #define GLOM_DIALOG_LAYOUT_REPORT
 
 #include "mode_data/dialog_layout.h"
+#include "data_structure/report.h"
 
 class Dialog_Layout_Report : public Dialog_Layout
 {
@@ -35,7 +36,8 @@ public:
    * @param table_name The table name.
    * @param table_fields: The actual fields in the table, in case the document does not yet know about them all.
    */
-  virtual void set_document(const Glib::ustring& layout, Document_Glom* document, const Glib::ustring& table_name, const type_vecLayoutFields& table_fields);
+  //virtual void set_document(const Glib::ustring& layout, Document_Glom* document, const Glib::ustring& table_name, const type_vecLayoutFields& table_fields);
+  virtual void set_report(const Glib::ustring& table_name, const Report& report);
 
 protected:
 
@@ -99,6 +101,8 @@ protected:
 
   Glib::RefPtr<Gtk::TreeStore> m_model_parts;
   Glib::RefPtr<Gtk::TreeStore> m_model_available_parts;
+
+  Report m_report;
 };
 
 #endif //GLOM_DIALOG_LAYOUT_REPORT

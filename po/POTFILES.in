@@ -3,6 +3,7 @@
 glom/glom.glade
 glom/application.cc
 glom/base_db.cc
+glom/box_reports.cc
 glom/data_structure/field.cc
 glom/data_structure/layout/layoutgroup.cc
 glom/data_structure/layout/layoutitem_field.cc
@@ -19,6 +20,7 @@ glom/mode_data/dialog_choose_relationship.cc
 glom/mode_data/dialog_layout_details.cc
 glom/mode_data/dialog_layout_list.cc
 glom/mode_data/dialog_layout_list_related.cc
+glom/mode_data/dialog_layout_report.cc
 glom/mode_data/notebook_data.cc
 glom/mode_design/box_db_table_relationships.cc
 glom/mode_design/dialog_design.cc

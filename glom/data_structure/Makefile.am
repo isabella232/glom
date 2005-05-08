@@ -12,6 +12,8 @@ libdata_structure_a_SOURCES = field.h field.cc \
                               groupinfo.h groupinfo.cc \
                               numeric_format.h numeric_format.cc \
                               iso_codes.h iso_codes.cc \
-                              system_prefs.h system_prefs.cc
+                              system_prefs.h system_prefs.cc \
+                              report.h report.cc
+
 
 

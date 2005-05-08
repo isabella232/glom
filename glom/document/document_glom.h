@@ -29,6 +29,7 @@
 #include "../data_structure/layout/layoutitem_portal.h"
 #include "../data_structure/tableinfo.h"
 #include "../data_structure/groupinfo.h"
+#include "../data_structure/report.h"
 #include "../appstate.h"
 #include <vector>
 #include <map>
@@ -147,6 +148,15 @@ public:
 
   void remove_group(const Glib::ustring& group_name);
 
+
+  typedef std::list<Glib::ustring> type_listReports;
+  type_listReports get_report_names(const Glib::ustring& table_name) const;
+  void remove_all_reports(const Glib::ustring& table_name);
+
+  void set_report(const Glib::ustring& table_name, const Report& report);
+  bool get_report(const Glib::ustring& table_name, const Glib::ustring& report_name, Report& report) const;
+  void remove_report(const Glib::ustring& table_name, const Glib::ustring& report_name);
+
   enum userLevelReason
   {
     USER_LEVEL_REASON_UNKNOWN,
@@ -221,8 +231,10 @@ protected:
     type_vecRelationships m_relationships;
 
     typedef std::list< LayoutInfo > type_layouts;
-    //typedef std::map<Glib::ustring, type_mapLayoutGroupSequence> type_layouts;
     type_layouts m_layouts;
+
+    typedef std::map<Glib::ustring, Report> type_reports; //map of report names to reports
+    type_reports m_reports;
   };
 
   DocumentTableInfo& get_table_info_with_add(const Glib::ustring& table_name);

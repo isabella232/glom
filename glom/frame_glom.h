@@ -28,6 +28,7 @@
 #include "dialog_glom.h"
 
 #include "navigation/box_tables.h"
+#include "box_reports.h"
 
 #include "mode_data/notebook_data.h"
 #include "mode_find/notebook_find.h"
@@ -37,6 +38,8 @@
 #include "dialog_connection.h"
 
 #include "mode_data/box_data_list_related.h" //only for m_HackToFixLinkerError.
+
+class Dialog_Layout_Report;
 
 class Frame_Glom :
   public PlaceHolder,
@@ -48,7 +51,9 @@ public:
   virtual ~Frame_Glom();
 
   virtual void set_databases_selected(const Glib::ustring& strName);
-  virtual void on_box_tables_selected(Glib::ustring strName);
+  virtual void on_box_tables_selected(const Glib::ustring& strName);
+
+   virtual void on_box_reports_selected(const Glib::ustring& strName);
 
   virtual void on_menu_userlevel_Developer(const Glib::RefPtr<Gtk::RadioAction>& action, const Glib::RefPtr<Gtk::RadioAction>& operator_action);
   virtual void on_menu_userlevel_Operator(const Glib::RefPtr<Gtk::RadioAction>& action);
@@ -126,12 +131,14 @@ protected:
   PlaceHolder* m_pBox_Mode; //Contains e.g. design mode notebook.
 
   Box_Tables* m_pBox_Tables;
+  Box_Reports* m_pBox_Reports;
 
   Notebook_Data m_Notebook_Data;
   Notebook_Find m_Notebook_Find;
 
   //Navigation:
   Dialog_Glom* m_pDialog_Tables;
+  Dialog_Glom* m_pDialog_Reports;
 
   //Developer:
   Dialog_Fields* m_pDialog_Fields;
@@ -139,6 +146,8 @@ protected:
 
   Dialog_Connection* m_pDialogConnection;
   Gtk::Dialog* m_pDialogConnectionFailed;
+
+  Dialog_Layout_Report* m_pDialogLayoutReport;
 
   Box_Data_List_Related m_HackToFixLinkerError; //The implementation of this class does not seem to be in the library unless I do this. murrayc.
 };
