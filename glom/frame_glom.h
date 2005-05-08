@@ -53,7 +53,7 @@ public:
   virtual void set_databases_selected(const Glib::ustring& strName);
   virtual void on_box_tables_selected(const Glib::ustring& strName);
 
-   virtual void on_box_reports_selected(const Glib::ustring& strName);
+  virtual void on_box_reports_selected(const Glib::ustring& strName);
 
   virtual void on_menu_userlevel_Developer(const Glib::RefPtr<Gtk::RadioAction>& action, const Glib::RefPtr<Gtk::RadioAction>& operator_action);
   virtual void on_menu_userlevel_Operator(const Glib::RefPtr<Gtk::RadioAction>& action);
@@ -65,7 +65,7 @@ public:
 
   //virtual void on_menu_Navigate_Database();
   //virtual void do_menu_Navigate_Database(bool bUseList = true);
-  virtual void on_menu_Navigate_Table();
+  virtual void on_menu_Tables_EditTables();
   virtual void do_menu_Navigate_Table(bool open_default = false);
 
   virtual void on_menu_developer_database_preferences();

@@ -59,6 +59,8 @@ protected:
   virtual void init_create_document(); //override
   virtual bool on_document_load(); //override.
 
+  void fill_menu_tables();
+
   virtual bool offer_new_or_existing();
 
   virtual void on_menu_help_contents();
@@ -81,10 +83,13 @@ protected:
   type_listActions m_listDeveloperActions; //Only enabled when in developer mode.
   Glib::RefPtr<Gtk::Action> m_action_mode_data, m_action_mode_find;
   Glib::RefPtr<Gtk::RadioAction> m_action_menu_userlevel_developer, m_action_menu_userlevel_operator;
-  
+
   Gtk::VBox* m_pBoxTop;
   Frame_Glom* m_pFrame;
   Gtk::Label* m_pStatus;
+
+  Glib::RefPtr<Gtk::ActionGroup> m_refNavTablesActionGroup;
+  type_listActions m_listNavTableActions;
 };
 
 #endif //HEADER_APP_GLOM

@@ -38,10 +38,10 @@ App_Glom::App_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml
   refGlade->get_widget_derived("vbox_frame", m_pFrame); //This one is derived. There's a lot happening here.
 
   add_mime_type("application/x-glom"); //TODO: make this actually work - we need to register it properly.
-  
+
   //Hide the toolbar because it doesn't contain anything useful for this app.
   m_HandleBox_Toolbar.hide();
-  
+ 
   show_all_children();
 }
 
@@ -85,7 +85,7 @@ bool App_Glom::init(const Glib::ustring& document_uri)
 void App_Glom::init_layout()
 {
   //We override this method so that we can put everything in the vbox from the glade file, instead of the vbox from App_Gtk.
-  
+
   //Add menu bar at the top:
   //These were defined in init_uimanager().
   Gtk::MenuBar* pMenuBar = static_cast<Gtk::MenuBar*>(m_refUIManager->get_widget("/Bakery_MainMenu"));
@@ -193,7 +193,7 @@ void App_Glom::init_menus()
   m_refActionGroup_Others = Gtk::ActionGroup::create("GlomOthersActions");
   
   //"Navigate" menu:
-  m_refActionGroup_Others->add( Gtk::Action::create("Glom_Menu_Navigate", _("_Navigate")) );
+  m_refActionGroup_Others->add( Gtk::Action::create("Glom_Menu_Tables", _("_Tables")) );
 
 //  Glib::RefPtr<Gtk::Action> action = Gtk::Action::create("GlomAction_Menu_Navigate_Database", _("_Database"));
 //  m_listDeveloperActions.push_back(action);
@@ -201,9 +201,10 @@ void App_Glom::init_menus()
 //                        sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_Navigate_Database) );
 
 
-  Glib::RefPtr<Gtk::Action> action = Gtk::Action::create("GlomAction_Menu_Navigate_Table", _("_Table"));
+  Glib::RefPtr<Gtk::Action> action = Gtk::Action::create("GlomAction_Menu_EditTables", _("_Edit Tables"));
   m_refActionGroup_Others->add(action,
-                        sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_Navigate_Table) );
+                        sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_Tables_EditTables) );
+  m_listDeveloperActions.push_back(action);
 
   //"UserLevel" menu:
   m_refActionGroup_Others->add(Gtk::Action::create("Glom_Menu_userlevel", _("_User Level")));
@@ -267,8 +268,10 @@ void App_Glom::init_menus()
     "<ui>"
     "  <menubar name='Bakery_MainMenu'>"
     "    <placeholder name='Bakery_MenuPH_Others'>"
-    "      <menu action='Glom_Menu_Navigate'>"
-    "        <menuitem action='GlomAction_Menu_Navigate_Table' />"
+    "      <menu action='Glom_Menu_Tables'>"
+    "        <placeholder name='Menu_Tables_Dynamic' />"
+    "        <separator />"
+    "        <menuitem action='GlomAction_Menu_EditTables' />"
     "     </menu>"
     "      <menu action='Glom_Menu_Mode'>"
     "        <menuitem action='GlomAction_Menu_Mode_Data' />"
@@ -294,6 +297,8 @@ void App_Glom::init_menus()
   add_ui_from_string(ui_description);
 
   init_menus_help();
+
+  fill_menu_tables();
 }
 
 void App_Glom::on_menu_userlevel_developer()
@@ -378,7 +383,7 @@ bool App_Glom::on_document_load()
             return false; //Failed. Close the document.
         }
         catch(const ExceptionConnection& ex)
-        { 
+        {
           if(ex.get_failure_type() == ExceptionConnection::FAILURE_NO_DATABASE) //This is the only FALURE_* type that connection_request_password_and_attempt() throws.
           {
             //The connection to the server is OK, but the database is not there yet.
@@ -457,6 +462,9 @@ bool App_Glom::on_document_load()
 
       }
     }
+
+    //List the non-hiden tables in the menu:
+    fill_menu_tables();
 
     return true; //Loading of the document into the application succeeded.
   }
@@ -584,7 +592,7 @@ bool App_Glom::offer_new_or_existing()
                 if(db_created)
                 {
                   keep_asking = false;
-                
+
                   document->set_connection_database(db_name); //Select the database that was just created.
 
                   ConnectionPool* connection_pool = ConnectionPool::get_instance();
@@ -803,3 +811,53 @@ void App_Glom::remove_developer_action(const Glib::RefPtr<Gtk::Action>& refActio
     }
   }
 }
+
+void App_Glom::fill_menu_tables()
+{
+  //TODO: There must be a better way than building a ui_string like this:
+
+  m_listNavTableActions.clear();
+  m_refNavTablesActionGroup = Gtk::ActionGroup::create("NavTablesActions");
+
+  Glib::ustring ui_description =
+    "<ui>"
+    "  <menubar name='Bakery_MainMenu'>"
+    "    <placeholder name='Bakery_MenuPH_Others'>"
+    "      <menu action='Glom_Menu_Tables'>"
+    "        <placeholder name='Menu_Tables_Dynamic'>";
+
+  Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
+  const Document_Glom::type_listTableInfo tables = document->get_tables();
+  for(Document_Glom::type_listTableInfo::const_iterator iter = tables.begin(); iter != tables.end(); ++iter)
+  {
+    const TableInfo& table_info = *iter;
+    if(!table_info.m_hidden)
+    {
+      const Glib::ustring action_name = "NavTableAction_" + table_info.get_name();
+
+      ui_description += "<menuitem action='" + action_name + "' />";
+
+      Glib::RefPtr<Gtk::Action> refAction = Gtk::Action::create(action_name, table_info.m_title);
+      m_refNavTablesActionGroup->add(refAction,
+        sigc::bind( sigc::mem_fun(*m_pFrame, &Frame_Glom::on_box_tables_selected), table_info.m_name) );
+
+      m_listNavTableActions.push_back(refAction);
+
+      //m_refUIManager->add_ui(merge_id, path, table_info.m_title, refAction, UI_MANAGER_MENUITEM);
+    }
+  }
+
+  m_refUIManager->insert_action_group(m_refNavTablesActionGroup);
+
+
+  ui_description +=
+    "     </placeholder>"
+    "    </menu>"
+    "    </placeholder>"
+    "  </menubar>"
+    "</ui>";
+
+  //Add menus:
+  add_ui_from_string(ui_description);
+}
+

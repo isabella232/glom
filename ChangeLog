@@ -1,5 +1,17 @@
 2005-05-08  Murray Cumming <murrayc@murrayc.com>
 
+	* glom/application.cc:
+	* glom/application.h:
+	* glom/frame_glom.cc:
+	* glom/frame_glom.h:
+	Changed the Navigation menu to a Tables menu, 
+	with dynamic menu items for each non-hidden 
+	table. The full tables dialog is now only for 
+	developers, available from the Edit Tables 
+	menu item.
+
+2005-05-08  Murray Cumming <murrayc@murrayc.com>
+
 	* configure.in:
 	* glom/Makefile.am:
 	* glom/glom.glade:

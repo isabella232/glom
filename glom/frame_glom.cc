@@ -429,7 +429,7 @@ void Frame_Glom::do_menu_Navigate_Database(bool bUseList)
 }
 */
 
-void Frame_Glom::on_menu_Navigate_Table()
+void Frame_Glom::on_menu_Tables_EditTables()
 {
   do_menu_Navigate_Table(); 
 }
