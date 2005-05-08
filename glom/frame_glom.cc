@@ -280,6 +280,8 @@ void Frame_Glom::alert_no_table()
 
 void Frame_Glom::show_table(const Glib::ustring& strTableName)
 {
+  App_Glom* pApp = dynamic_cast<App_Glom*>(get_app_window());
+
   //Check that there is a table to show:
   if(strTableName.empty())
   {
@@ -299,7 +301,6 @@ void Frame_Glom::show_table(const Glib::ustring& strTableName)
     update_table_in_document_from_database();
 
     //Update user-level dependent UI:
-    App_Glom* pApp = dynamic_cast<App_Glom*>(get_app_window());
     if(pApp)
       on_userlevel_changed(pApp->get_userlevel());
  
@@ -331,6 +332,9 @@ void Frame_Glom::show_table(const Glib::ustring& strTableName)
   }
 
   show_table_title();
+
+  //List the reports in the menu:
+  pApp->fill_menu_reports(strTableName);
 
   show_all();
 }
@@ -428,6 +432,11 @@ void Frame_Glom::do_menu_Navigate_Database(bool bUseList)
   //m_frame.show_all();
 }
 */
+
+void Frame_Glom::on_menu_Tables_EditReports()
+{
+  on_menu_developer_reports();
+}
 
 void Frame_Glom::on_menu_Tables_EditTables()
 {
@@ -948,8 +957,7 @@ bool Frame_Glom::create_database(const Glib::ustring& database_name, bool reques
   return false;
 }
 
-
-
-
-
-
+void Frame_Glom::on_menu_report_selected(const Glib::ustring& report_name)
+{
+  std::cout << "//TODO: report: " << report_name << std::endl;
+}

@@ -3,6 +3,14 @@
 	* glom/application.cc:
 	* glom/application.h:
 	* glom/frame_glom.cc:
+	* glom/frame_glom.h: Added Reports menu, 
+	like the new Tables menu.
+
+2005-05-08  Murray Cumming <murrayc@murrayc.com>
+
+	* glom/application.cc:
+	* glom/application.h:
+	* glom/frame_glom.cc:
 	* glom/frame_glom.h:
 	Changed the Navigation menu to a Tables menu, 
 	with dynamic menu items for each non-hidden 

@@ -49,6 +49,7 @@ public:
   AppState::userlevels get_userlevel() const;
 
   void update_userlevel_ui();
+  void fill_menu_reports(const Glib::ustring& table_name);
 
 protected:
   virtual void init_layout(); //override.
@@ -88,8 +89,8 @@ protected:
   Frame_Glom* m_pFrame;
   Gtk::Label* m_pStatus;
 
-  Glib::RefPtr<Gtk::ActionGroup> m_refNavTablesActionGroup;
-  type_listActions m_listNavTableActions;
+  Glib::RefPtr<Gtk::ActionGroup> m_refNavTablesActionGroup, m_refNavReportsActionGroup;
+  type_listActions m_listNavTableActions, m_listNavReportActions;
 };
 
 #endif //HEADER_APP_GLOM

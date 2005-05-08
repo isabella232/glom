@@ -191,8 +191,8 @@ void App_Glom::init_menus()
 
   //Build actions:
   m_refActionGroup_Others = Gtk::ActionGroup::create("GlomOthersActions");
-  
-  //"Navigate" menu:
+
+  //"Tables" menu:
   m_refActionGroup_Others->add( Gtk::Action::create("Glom_Menu_Tables", _("_Tables")) );
 
 //  Glib::RefPtr<Gtk::Action> action = Gtk::Action::create("GlomAction_Menu_Navigate_Database", _("_Database"));
@@ -204,6 +204,15 @@ void App_Glom::init_menus()
   Glib::RefPtr<Gtk::Action> action = Gtk::Action::create("GlomAction_Menu_EditTables", _("_Edit Tables"));
   m_refActionGroup_Others->add(action,
                         sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_Tables_EditTables) );
+  m_listDeveloperActions.push_back(action);
+
+
+  //"Reports" menu:
+  m_refActionGroup_Others->add( Gtk::Action::create("Glom_Menu_Reports", _("_Reports")) );
+
+  action = Gtk::Action::create("GlomAction_Menu_EditReports", _("_Edit Reports"));
+  m_refActionGroup_Others->add(action,
+                        sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_Tables_EditReports) );
   m_listDeveloperActions.push_back(action);
 
   //"UserLevel" menu:
@@ -272,6 +281,11 @@ void App_Glom::init_menus()
     "        <placeholder name='Menu_Tables_Dynamic' />"
     "        <separator />"
     "        <menuitem action='GlomAction_Menu_EditTables' />"
+    "     </menu>"
+    "     <menu action='Glom_Menu_Reports'>"
+    "        <placeholder name='Menu_Reports_Dynamic' />"
+    "        <separator />"
+    "        <menuitem action='GlomAction_Menu_EditReports' />"
     "     </menu>"
     "      <menu action='Glom_Menu_Mode'>"
     "        <menuitem action='GlomAction_Menu_Mode_Data' />"
@@ -463,7 +477,7 @@ bool App_Glom::on_document_load()
       }
     }
 
-    //List the non-hiden tables in the menu:
+    //List the non-hidden tables in the menu:
     fill_menu_tables();
 
     return true; //Loading of the document into the application succeeded.
@@ -861,3 +875,53 @@ void App_Glom::fill_menu_tables()
   add_ui_from_string(ui_description);
 }
 
+
+void App_Glom::fill_menu_reports(const Glib::ustring& table_name)
+{
+  //TODO: There must be a better way than building a ui_string like this:
+
+  m_listNavReportActions.clear();
+  m_refNavReportsActionGroup = Gtk::ActionGroup::create("NavReportsActions");
+
+  Glib::ustring ui_description =
+    "<ui>"
+    "  <menubar name='Bakery_MainMenu'>"
+    "    <placeholder name='Bakery_MenuPH_Others'>"
+    "     <menu action='Glom_Menu_Reports'>"
+    "        <placeholder name='Menu_Reports_Dynamic'>";
+
+  Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
+  const Document_Glom::type_listReports tables = document->get_report_names(table_name);
+  for(Document_Glom::type_listReports::const_iterator iter = tables.begin(); iter != tables.end(); ++iter)
+  {
+    Report report;
+    bool found =  document->get_report(table_name, *iter, report);
+    if(found)
+    {
+      const Glib::ustring action_name = "NavReportAction_" + report.get_name();
+
+      ui_description += "<menuitem action='" + action_name + "' />";
+
+      Glib::RefPtr<Gtk::Action> refAction = Gtk::Action::create(action_name, report.m_title);
+      m_refNavReportsActionGroup->add(refAction,
+        sigc::bind( sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_report_selected), report.m_name) );
+
+      m_listNavReportActions.push_back(refAction);
+
+      //m_refUIManager->add_ui(merge_id, path, table_info.m_title, refAction, UI_MANAGER_MENUITEM);
+    }
+  }
+
+  m_refUIManager->insert_action_group(m_refNavReportsActionGroup);
+
+
+  ui_description +=
+    "     </placeholder>"
+    "    </menu>"
+    "    </placeholder>"
+    "  </menubar>"
+    "</ui>";
+
+  //Add menus:
+  add_ui_from_string(ui_description);
+}
