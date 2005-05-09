@@ -51,3 +51,11 @@ Glib::ustring TableInfo::get_name() const
 {
   return m_name;
 }
+
+Glib::ustring TableInfo::get_title_or_name() const
+{
+  if(m_title.empty())
+    return m_name;
+  else
+    return m_title;
+}

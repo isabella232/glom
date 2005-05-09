@@ -34,6 +34,8 @@ public:
 
   Glib::ustring get_name() const; //For the predicate, when using std::find_if().
 
+  Glib::ustring get_title_or_name() const;
+
   Glib::ustring m_name;
   Glib::ustring m_title;
 

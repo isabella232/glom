@@ -1460,7 +1460,6 @@ bool Document_Glom::save_before()
         xmlpp::Element* nodeReports = nodeTable->add_child(GLOM_NODE_REPORTS);
 
         //Add the groups:
-        //Make sure that we always get these _after_ the relationships.
         for(DocumentTableInfo::type_reports::const_iterator iter = doctableinfo.m_reports.begin(); iter != doctableinfo.m_reports.end(); ++iter)
         {
           xmlpp::Element* nodeReport = nodeReports->add_child(GLOM_NODE_REPORT);
@@ -1679,14 +1678,20 @@ void Document_Glom::remove_all_reports(const Glib::ustring& table_name)
 {
   type_tables::iterator iterFind = m_tables.find(table_name);
   if(iterFind != m_tables.end())
+  {
     iterFind->second.m_reports.clear();
+    set_modified();
+  }
 }
 
 void Document_Glom::set_report(const Glib::ustring& table_name, const Report& report)
 {
   type_tables::iterator iterFind = m_tables.find(table_name);
   if(iterFind != m_tables.end())
+  {
     iterFind->second.m_reports[report.m_name] = report;
+    set_modified();
+  }
 }
 
 bool Document_Glom::get_report(const Glib::ustring& table_name, const Glib::ustring& report_name, Report& report) const
@@ -1712,7 +1717,11 @@ void Document_Glom::remove_report(const Glib::ustring& table_name, const Glib::u
   {
     DocumentTableInfo::type_reports::iterator iterFindReport = iterFindTable->second.m_reports.find(report_name);
     if(iterFindReport != iterFindTable->second.m_reports.end())
+    {
       iterFindTable->second.m_reports.erase(iterFindReport);
+
+      set_modified();
+    }
   }
 }
 

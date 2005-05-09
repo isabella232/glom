@@ -976,6 +976,12 @@ void AddDel::remove_item(const Gtk::TreeModel::iterator& iter)
     m_refListStore->erase(iter);
 }
 
+void AddDel::remove_item_by_key(const Glib::ustring& strKey)
+{
+  Gtk::TreeModel::iterator iter = get_row(strKey);
+  remove_item(iter);
+}
+
 AddDel::InnerIgnore::InnerIgnore(AddDel* pOuter)
 {
   m_pOuter = pOuter;

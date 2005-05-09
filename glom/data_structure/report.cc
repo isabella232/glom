@@ -44,3 +44,12 @@ Glib::ustring Report::get_name() const
 {
   return m_name;
 }
+
+Glib::ustring Report::get_title_or_name() const
+{
+  if(m_title.empty())
+    return m_name;
+  else
+    return m_title;
+}
+

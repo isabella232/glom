@@ -155,6 +155,7 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
   //Fill Composite View:
   //This means that set_document and load/save are delegated to these children:
   add_view(m_pBox_Tables);
+  add_view(m_pBox_Reports);
   add_view(m_pDialog_Fields); //Also a composite view.
   add_view(m_pDialog_Relationships); //Also a composite view.
   add_view(m_pDialogConnection); //Also a composite view.
@@ -168,6 +169,11 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
 
 Frame_Glom::~Frame_Glom()
 {
+  remove_view(m_pBox_Tables);
+  remove_view(m_pBox_Reports);
+  remove_view(&m_Notebook_Data); //Also a composite view.
+  remove_view(&m_Notebook_Find); //Also a composite view.
+
   if(m_pDialog_Tables)
   {
     delete m_pDialog_Tables;
@@ -176,6 +182,7 @@ Frame_Glom::~Frame_Glom()
 
   if(m_pDialogConnection)
   {
+    remove_view(m_pDialogConnection);
     delete m_pDialogConnection;
     m_pDialogConnection = 0;
   }
@@ -188,6 +195,7 @@ Frame_Glom::~Frame_Glom()
 
   if(m_pDialog_Relationships)
   {
+    remove_view(m_pDialog_Relationships);
     delete m_pDialog_Relationships;
     m_pDialog_Relationships = 0;
   }
@@ -203,6 +211,13 @@ Frame_Glom::~Frame_Glom()
     remove_view(m_pDialogLayoutReport);
     delete m_pDialogLayoutReport;
     m_pDialogLayoutReport = 0;
+  }
+
+  if(m_pDialog_Fields)
+  {
+    remove_view(m_pDialog_Fields);
+    delete m_pDialog_Fields;
+    m_pDialog_Fields = 0;
   }
 }
 
@@ -805,6 +820,7 @@ void Frame_Glom::on_menu_developer_reports()
     Gtk::MessageDialog dialog("This is not working yet. It's just some test code."); //TODO: Remove this.
     dialog.run();
 
+    m_pBox_Reports->init_db_details(m_strTableName);
     m_pDialog_Reports->show();
   }
 }

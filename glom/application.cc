@@ -851,7 +851,7 @@ void App_Glom::fill_menu_tables()
 
       ui_description += "<menuitem action='" + action_name + "' />";
 
-      Glib::RefPtr<Gtk::Action> refAction = Gtk::Action::create(action_name, table_info.m_title);
+      Glib::RefPtr<Gtk::Action> refAction = Gtk::Action::create(action_name, table_info.get_title_or_name());
       m_refNavTablesActionGroup->add(refAction,
         sigc::bind( sigc::mem_fun(*m_pFrame, &Frame_Glom::on_box_tables_selected), table_info.m_name) );
 
@@ -898,17 +898,21 @@ void App_Glom::fill_menu_reports(const Glib::ustring& table_name)
     bool found =  document->get_report(table_name, *iter, report);
     if(found)
     {
-      const Glib::ustring action_name = "NavReportAction_" + report.get_name();
+      const Glib::ustring report_name = report.get_name();
+      if(!report_name.empty())
+      {
+        const Glib::ustring action_name = "NavReportAction_" + report_name;
 
-      ui_description += "<menuitem action='" + action_name + "' />";
+        ui_description += "<menuitem action='" + action_name + "' />";
 
-      Glib::RefPtr<Gtk::Action> refAction = Gtk::Action::create(action_name, report.m_title);
-      m_refNavReportsActionGroup->add(refAction,
-        sigc::bind( sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_report_selected), report.m_name) );
+        Glib::RefPtr<Gtk::Action> refAction = Gtk::Action::create(action_name, report.get_title_or_name());
+        m_refNavReportsActionGroup->add(refAction,
+          sigc::bind( sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_report_selected), report.m_name) );
 
-      m_listNavReportActions.push_back(refAction);
+        m_listNavReportActions.push_back(refAction);
 
-      //m_refUIManager->add_ui(merge_id, path, table_info.m_title, refAction, UI_MANAGER_MENUITEM);
+        //m_refUIManager->add_ui(merge_id, path, table_info.m_title, refAction, UI_MANAGER_MENUITEM);
+      }
     }
   }
 

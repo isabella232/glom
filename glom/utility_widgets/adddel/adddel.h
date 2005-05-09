@@ -85,6 +85,7 @@ public:
   virtual Gtk::TreeModel::iterator get_item_placeholder(); //Return index of the placeholder row.
 
   virtual void remove_item(const Gtk::TreeModel::iterator& iter);
+  virtual void remove_item_by_key(const Glib::ustring& strKey);
 
   virtual void remove_all();
 

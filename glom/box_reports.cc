@@ -83,7 +83,7 @@ bool Box_Reports::fill_from_database()
 
   const bool editable = developer_mode;
   const bool visible_extras = developer_mode;
-  m_colReportName = m_AddDel.add_column(_("Report"), AddDelColumnInfo::STYLE_Text, editable, visible_extras);
+  m_colReportName = m_AddDel.add_column(_("Name"), AddDelColumnInfo::STYLE_Text, editable, visible_extras);
   m_colTitle = m_AddDel.add_column(_("Title"), AddDelColumnInfo::STYLE_Text, editable, true);
 
   //_("Server: ") +  m_strServerName + ", " + 
@@ -95,7 +95,17 @@ bool Box_Reports::fill_from_database()
   if(document)
   {
     listTableReports = document->get_report_names(m_strTableName);
-  }
+    for(Document_Glom::type_listReports::const_iterator iter = listTableReports.begin(); iter != listTableReports.end(); ++iter)
+    {
+      Report report;
+      bool found = document->get_report(m_strTableName, *iter, report);
+      if(found)
+      {
+        Gtk::TreeModel::iterator row = m_AddDel.add_item(report.m_name);
+        fill_row(row, report);
+      }
+    }
+   }
   else
     g_warning("Box_Reports::fill_from_database(): document is null");
 
@@ -121,7 +131,10 @@ void Box_Reports::on_adddel_Delete(const Gtk::TreeModel::iterator& rowStart, con
 {
   const Glib::ustring name = m_AddDel.get_value_key(rowStart);
   if(!name.empty())
+  {
     get_document()->remove_report(m_strTableName, name);
+    m_AddDel.remove_item_by_key(name);
+  }
 }
 
 void Box_Reports::on_adddel_Edit(const Gtk::TreeModel::iterator& row)
@@ -140,30 +153,31 @@ void Box_Reports::on_adddel_Edit(const Gtk::TreeModel::iterator& row)
 
 void Box_Reports::save_to_document()
 {
-/*
   if(get_userlevel() == AppState::USERLEVEL_DEVELOPER)
   {
-    //Save the hidden tables. TODO_usermode: Only if we are in developer mode.
-    Document_Glom::type_listReports listReports;
+    //Add any reports that are not in the document:
+    Document_Glom::type_listReports listReports = get_document()->get_report_names(m_strTableName);
 
+    bool modified = false;
     for(Gtk::TreeModel::iterator iter = m_AddDel.get_model()->children().begin(); iter != m_AddDel.get_model()->children().end(); ++iter)
     {
-      Report report;
-      report.m_name = m_AddDel.get_value(iter, m_colReportName);
+      const Glib::ustring report_name = m_AddDel.get_value(iter, m_colReportName);
 
-      if(!report.m_name.empty())
+      if(!report_name.empty() && std::find(listReports.begin(), listReports.end(), report_name) == listReports.end())
       {
+        Report report;
+        report.m_name = report_name;
+
         report.m_title  = m_AddDel.get_value(iter, m_colTitle);
 
-        listReports.push_back(report);
-      }
+        get_document()->set_report(m_strTableName, report);
+        modified = true;
+     }
     }
 
-    Document_Glom* document = get_document();
-    if(document)make 
-      document->set_reports(m_strTableName, listReports); //TODO: Don't save all new tables - just the ones already in the document.
+    if(modified)
+     get_document()->set_modified(true);
   }
-*/
 }
 
 void Box_Reports::on_adddel_changed(const Gtk::TreeModel::iterator& row, guint column)
@@ -176,19 +190,31 @@ void Box_Reports::on_adddel_changed(const Gtk::TreeModel::iterator& row, guint c
     } 
     else if(column == m_colReportName)
     {
-      Glib::ustring table_name = m_AddDel.get_value_key(row);
-      Glib::ustring table_name_new = m_AddDel.get_value(row, m_colReportName);
-      if(!table_name.empty() && !table_name_new.empty())
+      const Glib::ustring report_name = m_AddDel.get_value_key(row);
+      const Glib::ustring report_name_new = m_AddDel.get_value(row, m_colReportName);
+      if(!report_name.empty() && !report_name_new.empty())
       {
         Glib::ustring strMsg = _("Are you sure that you want to rename this report?");  //TODO: Show old and new names?
         Gtk::MessageDialog dialog(_("Rename Report"));
         dialog.set_secondary_text(strMsg);
         int iButtonClicked = dialog.run();
 
-        //Rename the table:
+        //Rename the report:
         if(iButtonClicked == Gtk::RESPONSE_OK)
         {
-          //TODO
+          m_AddDel.set_value_key(row, report_name_new);
+
+          Document_Glom* document = get_document();
+
+          Report report;
+          bool found = document->get_report(m_strTableName, report_name, report);
+          if(found)
+          {
+            document->remove_report(m_strTableName, report_name);
+
+            report.m_name = report_name_new;
+            document->set_report(m_strTableName, report);
+          }
         }
       }
     }
