@@ -184,32 +184,33 @@ void Box_Reports::on_adddel_changed(const Gtk::TreeModel::iterator& row, guint c
 {
   if(get_userlevel() == AppState::USERLEVEL_DEVELOPER)
   {
-    if(column == m_colTitle)
+    const Glib::ustring report_name = m_AddDel.get_value_key(row);
+    Document_Glom* document = get_document();
+
+    Report report;
+    bool found = document->get_report(m_strTableName, report_name, report);
+    if(found)
     {
-      save_to_document();
-    } 
-    else if(column == m_colReportName)
-    {
-      const Glib::ustring report_name = m_AddDel.get_value_key(row);
-      const Glib::ustring report_name_new = m_AddDel.get_value(row, m_colReportName);
-      if(!report_name.empty() && !report_name_new.empty())
+      if(column == m_colTitle)
       {
-        Glib::ustring strMsg = _("Are you sure that you want to rename this report?");  //TODO: Show old and new names?
-        Gtk::MessageDialog dialog(_("Rename Report"));
-        dialog.set_secondary_text(strMsg);
-        int iButtonClicked = dialog.run();
-
-        //Rename the report:
-        if(iButtonClicked == Gtk::RESPONSE_OK)
+        report.m_title = m_AddDel.get_value(row, m_colTitle);
+        document->set_report(m_strTableName, report);
+      } 
+      else if(column == m_colReportName)
+      {
+        const Glib::ustring report_name_new = m_AddDel.get_value(row, m_colReportName);
+        if(!report_name.empty() && !report_name_new.empty())
         {
-          m_AddDel.set_value_key(row, report_name_new);
+          Glib::ustring strMsg = _("Are you sure that you want to rename this report?");  //TODO: Show old and new names?
+          Gtk::MessageDialog dialog(_("Rename Report"));
+          dialog.set_secondary_text(strMsg);
+          int iButtonClicked = dialog.run();
 
-          Document_Glom* document = get_document();
-
-          Report report;
-          bool found = document->get_report(m_strTableName, report_name, report);
-          if(found)
+          //Rename the report:
+          if(iButtonClicked == Gtk::RESPONSE_OK)
           {
+            m_AddDel.set_value_key(row, report_name_new);
+
             document->remove_report(m_strTableName, report_name);
 
             report.m_name = report_name_new;

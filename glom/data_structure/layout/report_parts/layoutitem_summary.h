@@ -35,6 +35,8 @@ public:
   virtual ~LayoutItem_Summary();
 
   virtual LayoutItem* clone() const;
+
+  virtual Glib::ustring get_part_type_name() const;
 };
 
 #endif //GLOM_DATASTRUCTURE_LAYOUTITEM_SUMMARY_H

@@ -30,14 +30,10 @@ public:
   Dialog_Layout_Report(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
   virtual ~Dialog_Layout_Report();
 
-  /**
-   * @param layout "list" or "details"
-   * @param document The document, so that the dialog can load the previous layout, and save changes.
-   * @param table_name The table name.
-   * @param table_fields: The actual fields in the table, in case the document does not yet know about them all.
-   */
-  //virtual void set_document(const Glib::ustring& layout, Document_Glom* document, const Glib::ustring& table_name, const type_vecLayoutFields& table_fields);
-  virtual void set_report(const Glib::ustring& table_name, const Report& report);
+  void set_report(const Glib::ustring& table_name, const Report& report);
+  Report get_report();
+
+  Glib::ustring get_original_report_name() const;
 
 protected:
 
@@ -84,9 +80,6 @@ protected:
   void on_cell_data_part(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter);
   void on_cell_data_available_part(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter);
 
-  virtual void on_treeview_cell_edited_text(const Glib::ustring& path_string, const Glib::ustring& new_text, const Gtk::TreeModelColumn<Glib::ustring>& model_column);
-  virtual void on_treeview_cell_edited_numeric(const Glib::ustring& path_string, const Glib::ustring& new_text, const Gtk::TreeModelColumn<guint>& model_column);
-
   Gtk::TreeView* m_treeview_parts;
   Gtk::TreeView* m_treeview_available_parts;
 
@@ -102,6 +95,7 @@ protected:
   Glib::RefPtr<Gtk::TreeStore> m_model_parts;
   Glib::RefPtr<Gtk::TreeStore> m_model_available_parts;
 
+  Glib::ustring m_name_original;
   Report m_report;
 };
 

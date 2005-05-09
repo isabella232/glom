@@ -79,7 +79,9 @@ public:
   virtual void on_menu_developer_layout();
   virtual void on_menu_developer_reports();
 
-  virtual void on_developer_dialog_hide();
+  void on_developer_dialog_hide();
+  void on_dialog_layout_report_hide();
+  void on_dialog_reports_hide();
 
   virtual void set_document(Document_Glom* pDocument); //View override
   virtual void load_from_document(); //View override

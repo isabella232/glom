@@ -31,7 +31,9 @@ App_Glom::App_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml
 : Gtk::Window(cobject), //It's a virtual base class, so we have to call the specific constructor to prevent the default constructor from being called.
   type_base(cobject, "Glom"),
   m_pBoxTop(0),
-  m_pFrame(0)
+  m_pFrame(0),
+  m_menu_tables_ui_merge_id(0),
+  m_menu_reports_ui_merge_id(0)
 {
   //Load widgets from glade file:
   refGlade->get_widget("bakery_vbox", m_pBoxTop);
@@ -831,6 +833,9 @@ void App_Glom::fill_menu_tables()
   //TODO: There must be a better way than building a ui_string like this:
 
   m_listNavTableActions.clear();
+  if(m_menu_tables_ui_merge_id)
+    m_refUIManager->remove_ui(m_menu_tables_ui_merge_id);
+
   m_refNavTablesActionGroup = Gtk::ActionGroup::create("NavTablesActions");
 
   Glib::ustring ui_description =
@@ -872,7 +877,14 @@ void App_Glom::fill_menu_tables()
     "</ui>";
 
   //Add menus:
-  add_ui_from_string(ui_description);
+  try
+  {
+    m_menu_tables_ui_merge_id = m_refUIManager->add_ui_from_string(ui_description);
+  }
+  catch(const Glib::Error& ex)
+  {
+    std::cerr << " App_Glom::fill_menu_tables(): building menus failed: " <<  ex.what();
+  }
 }
 
 
@@ -881,6 +893,9 @@ void App_Glom::fill_menu_reports(const Glib::ustring& table_name)
   //TODO: There must be a better way than building a ui_string like this:
 
   m_listNavReportActions.clear();
+  if(m_menu_reports_ui_merge_id)
+    m_refUIManager->remove_ui(m_menu_reports_ui_merge_id);
+
   m_refNavReportsActionGroup = Gtk::ActionGroup::create("NavReportsActions");
 
   Glib::ustring ui_description =
@@ -927,5 +942,12 @@ void App_Glom::fill_menu_reports(const Glib::ustring& table_name)
     "</ui>";
 
   //Add menus:
-  add_ui_from_string(ui_description);
+  try
+  {
+    m_menu_reports_ui_merge_id = m_refUIManager->add_ui_from_string(ui_description);
+  }
+  catch(const Glib::Error& ex)
+  {
+    std::cerr << " App_Glom::fill_menu_reports(): building menus failed: " <<  ex.what();
+  }
 }

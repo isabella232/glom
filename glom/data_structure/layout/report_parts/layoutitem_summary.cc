@@ -53,3 +53,8 @@ LayoutItem_Summary& LayoutItem_Summary::operator=(const LayoutItem_Summary& src)
   return *this;
 }
 
+Glib::ustring LayoutItem_Summary::get_part_type_name() const
+{
+  return _("Summary");
+}
+

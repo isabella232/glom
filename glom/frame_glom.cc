@@ -94,6 +94,23 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
 
   try
   {
+    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_report_layout");
+
+    refXml->get_widget_derived("window_report_layout", m_pDialogLayoutReport);
+
+    add_view(m_pDialogLayoutReport);
+    m_pDialogLayoutReport->signal_hide().connect( sigc::mem_fun(*this, &Frame_Glom::on_dialog_layout_report_hide) );
+
+    m_pDialog_Reports = new Dialog_Glom(m_pBox_Reports);
+    m_pDialog_Reports->signal_hide().connect( sigc::mem_fun(*this, &Frame_Glom::on_dialog_reports_hide) );
+  }
+  catch(const Gnome::Glade::XmlError& ex)
+  {
+    std::cerr << ex.what() << std::endl;
+  }
+
+  try
+  {
     Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_design");
 
     refXml->get_widget_derived("window_design", m_pDialog_Fields);
@@ -828,6 +845,8 @@ void Frame_Glom::on_menu_developer_reports()
 
 void Frame_Glom::on_box_reports_selected(const Glib::ustring& report_name)
 {
+  m_pDialog_Reports->hide();
+
   Report report;
   bool found = get_document()->get_report(m_strTableName, report_name, report);
   if(found)
@@ -977,3 +996,32 @@ void Frame_Glom::on_menu_report_selected(const Glib::ustring& report_name)
 {
   std::cout << "//TODO: report: " << report_name << std::endl;
 }
+
+void Frame_Glom::on_dialog_layout_report_hide()
+{
+  Document_Glom* document = get_document();
+
+  if(true) //m_pDialogLayoutReport->get_modified())
+  {
+    const Glib::ustring original_name = m_pDialogLayoutReport->get_original_report_name();
+    Report report = m_pDialogLayoutReport->get_report();
+    if(original_name != report.get_name())
+      document->remove_report(m_strTableName, original_name);
+
+    document->set_report(m_strTableName, report);
+  }
+
+  //Update the reports menu:
+  App_Glom* pApp = dynamic_cast<App_Glom*>(get_app_window());
+  if(pApp)
+    pApp->fill_menu_reports(m_strTableName);
+}
+
+void Frame_Glom::on_dialog_reports_hide()
+{
+  //Update the reports menu:
+  App_Glom* pApp = dynamic_cast<App_Glom*>(get_app_window());
+  if(pApp)
+    pApp->fill_menu_reports(m_strTableName);
+}
+

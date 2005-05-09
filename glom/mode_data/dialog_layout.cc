@@ -181,4 +181,7 @@ void Dialog_Layout::enable_buttons()
 {
 }
 
-
+bool Dialog_Layout::get_modified() const
+{
+  return m_modified;
+}

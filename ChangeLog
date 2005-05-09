@@ -1,6 +1,29 @@
 2005-05-09  Murray Cumming <murrayc@murrayc.com>
 
 	* glom/application.cc:
+	* glom/application.h:
+	fill_menu_tables(), fill_menu_reports(): Use UIManager::remove_ui()
+ 	to remove the previous tables, so we really lose removed/renamed 
+	report names.
+	* glom/box_reports.cc:
+	Handle, and save, title changes.
+	* glom/data_structure/layout/report_parts/layoutitem_groupby.cc:
+	* glom/data_structure/layout/report_parts/layoutitem_groupby.h:
+	* glom/data_structure/layout/report_parts/layoutitem_summary.cc:
+	* glom/data_structure/layout/report_parts/layoutitem_summary.h:
+	Add get_layout_part_name() overrides so they show up in the 
+	list of available parts.
+	* glom/dialog_layout_report.cc:
+	* glom/dialog_layout_report.h:
+	Added get_report() and get_original_name().
+	* glom/frame_glom.cc:
+	* glom/frame_glom.h:
+	Added signal_hide handlers for the report list and report layout 
+	dialogs, to rebuild the report menu and save the report details. 
+
+2005-05-09  Murray Cumming <murrayc@murrayc.com>
+
+	* glom/application.cc:
 	* glom/box_reports.cc:
 	Set changes in the document.
 	* glom/data_structure/report.cc:

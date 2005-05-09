@@ -151,45 +151,6 @@ void Dialog_Layout_Report::fill_group(const Gtk::TreeModel::iterator& iter, Layo
     LayoutGroup* pGroup = dynamic_cast<LayoutGroup*>(pItem);
     if(pGroup)
       group = *pGroup;
-/*
-    //Get child layout items:
-    for(Gtk::TreeModel::iterator iterChild = row.children().begin(); iterChild != row.children().end(); ++iterChild)
-    {
-      Gtk::TreeModel::Row rowChild = *iterChild;
-
-      if(rowChild[m_columns_parts->m_columns.m_col_type] == TreeStore_Layout::TYPE_GROUP)
-      {
-        //Recurse:
-        LayoutGroup group_child;
-        fill_group(iterChild, group_child);
-        group.add_item(group_child);
-      }
-      else if(rowChild[m_columns_parts->m_columns.m_col_type] == TreeStore_Layout::TYPE_PORTAL)
-      {
-        LayoutItem_Portal portal;
-        portal.set_relationship(  rowChild[m_columns_parts->m_columns.m_col_relationship] );
-        group.add_item(portal);
-      }
-      else if(rowChild[m_columns_parts->m_columns.m_col_type] == TreeStore_Layout::TYPE_FIELD)
-      {
-        //Add field:
-        LayoutItem_Field field = rowChild[m_columns_parts->m_columns.m_col_field_formatting]; //TODO: Use _only_ this for fields in future?
-
-        field.set_name( rowChild[m_columns_parts->m_columns.m_col_name] );
-
-        field.m_relationship = rowChild[m_columns_parts->m_columns.m_col_relationship_name];
-
-        //if(!relationship_name.empty())
-        //{
-        //  get_document()->get_table_relationship(m_table_name, field.m_relationship);
-        //}
-
-        field.set_editable( rowChild[m_columns_parts->m_columns.m_col_editable] );
-
-        group.add_item(field);
-      }
-    }
-*/
   }
 }
 
@@ -213,45 +174,6 @@ void Dialog_Layout_Report::add_group(const Gtk::TreeModel::iterator& parent, con
     Gtk::TreeModel::Row row = *iterNewGroup;
     row[m_columns_parts.m_col_item] = group.clone();
 
-/*
-    //Add the child items:
-    LayoutGroup::type_map_const_items items = group.get_items();
-    for(LayoutGroup::type_map_const_items::const_iterator iter = items.begin(); iter != items.end(); ++iter)
-    {
-      const LayoutItem* item = iter->second;
-      const LayoutGroup* child_group = dynamic_cast<const LayoutGroup*>(item);
-      if(child_group) //If it is a group:
-        add_group(iterNewGroup, *child_group); //recursive
-      else
-      {
-        const LayoutItem_Portal* portal = dynamic_cast<const LayoutItem_Portal*>(item);
-        if(portal) //If it is a portal
-        {
-          Gtk::TreeModel::iterator iterField = m_model_parts->append(iterNewGroup->children());
-          Gtk::TreeModel::Row row = *iterField;
-          row[m_columns_parts->m_columns.m_col_type] = TreeStore_Layout::TYPE_PORTAL;
-          row[m_columns_parts->m_columns.m_col_relationship] = portal->get_relationship();
-        }
-        else
-        {
-          const LayoutItem_Field* field = dynamic_cast<const LayoutItem_Field*>(item);
-          if(field) //If it is a field
-          {
-            //Add the field to the treeview:
-            Gtk::TreeModel::iterator iterField = m_model_parts->append(iterNewGroup->children());
-            Gtk::TreeModel::Row row = *iterField;
-            row[m_columns_parts->m_columns.m_col_type] = TreeStore_Layout::TYPE_FIELD;
-            row[m_columns_parts->m_columns.m_col_field_formatting] = *field;
-            row[m_columns_parts->m_columns.m_col_name] = field->get_name();
-            row[m_columns_parts->m_columns.m_col_relationship_name] = field->m_relationship;
-
-            row[m_columns_parts->m_columns.m_col_editable] = field->get_editable();
-          }
-        }
-      }
-
-    }
-*/
     m_modified = true;
   }
 }
@@ -261,10 +183,15 @@ void Dialog_Layout_Report::set_report(const Glib::ustring& table_name, const Rep
 {
   m_modified = false;
 
+  m_name_original = report.m_name;
+  m_report = report;
+
   //Dialog_Layout::set_document(layout, document, table_name, table_fields);
 
   //Set the table name and title:
   m_label_table_name->set_text(table_name);
+
+  m_entry_name->set_text(report.m_name); 
   m_entry_title->set_text(report.m_title);
 
   //Update the tree models from the document
@@ -660,6 +587,7 @@ void Dialog_Layout_Report::save_to_document()
 {
   Dialog_Layout::save_to_document();
 
+/*
   if(m_modified)
   {
     //Set the table name and title:
@@ -699,6 +627,7 @@ void Dialog_Layout_Report::save_to_document()
       m_modified = false;
     }
   }
+*/
 }
 
 void Dialog_Layout_Report::on_treeview_fields_selection_changed()
@@ -746,52 +675,32 @@ void Dialog_Layout_Report::on_cell_data_available_part(Gtk::CellRenderer* render
   }
 }
 
-void Dialog_Layout_Report::on_treeview_cell_edited_text(const Glib::ustring& path_string, const Glib::ustring& new_text, const Gtk::TreeModelColumn<Glib::ustring>& model_column)
+Glib::ustring Dialog_Layout_Report::get_original_report_name() const
 {
-  if(!path_string.empty())
-  {
-    Gtk::TreePath path(path_string);
-
-    //Get the row from the path:
-    Gtk::TreeModel::iterator iter = m_model_parts->get_iter(path);
-    if(iter)
-    {
-      //Store the user's new text in the model:
-      Gtk::TreeRow row = *iter;
-      row[model_column] = new_text;
-    }
-  }
+  return m_name_original;
 }
 
-void Dialog_Layout_Report::on_treeview_cell_edited_numeric(const Glib::ustring& path_string, const Glib::ustring& new_text, const Gtk::TreeModelColumn<guint>& model_column)
+Report Dialog_Layout_Report::get_report()
 {
-  //This is used on numerical model columns:
-  if(path_string.empty())
-    return;
+  m_report.m_name = m_entry_name->get_text();
+  m_report.m_title = m_entry_title->get_text();
 
-  Gtk::TreePath path(path_string);
+  m_report.m_layout_group.remove_all_items();
 
-  //Get the row from the path:
-  Gtk::TreeModel::iterator iter = m_model_parts->get_iter(path);
-  if(iter)
+  guint group_sequence = 0;
+  for(Gtk::TreeModel::iterator iter = m_model_parts->children().begin(); iter != m_model_parts->children().end(); ++iter)
   {
-    //std::istringstream astream(new_text); //Put it in a stream.
-    //ColumnType new_value = ColumnType();
-    //new_value << astream; //Get it out of the stream as the numerical type.
+    LayoutGroup group;
+    group.m_sequence = group_sequence;
+    fill_group(iter, group);
 
-    //Convert the text to a number, using the same logic used by GtkCellRendererText when it stores numbers.
-    char* pchEnd = 0;
-    guint new_value = static_cast<guint>( strtod(new_text.c_str(), &pchEnd) );
-
-    //Don't allow a 0 columns_count:
-    if(new_value == 0)
-      new_value = 1;
-      
-    //Store the user's new text in the model:
-    Gtk::TreeRow row = *iter;
-    row[model_column] = (guint)new_value;
+    m_report.m_layout_group.m_map_items[group_sequence] = group.clone();
+    ++group_sequence;
   }
+
+  return m_report;
 }
+
 
 
 

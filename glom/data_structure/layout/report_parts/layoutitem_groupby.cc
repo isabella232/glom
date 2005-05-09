@@ -63,3 +63,7 @@ const LayoutItem_Field* LayoutItem_GroupBy::get_field_group_by() const
   return &m_field_group_by;
 }
 
+Glib::ustring LayoutItem_GroupBy::get_part_type_name() const
+{
+  return _("Group By");
+}

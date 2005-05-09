@@ -44,6 +44,8 @@ public:
   LayoutItem_Field* get_field_group_by();
   const LayoutItem_Field* get_field_group_by() const;
 
+  virtual Glib::ustring get_part_type_name() const;
+
 protected:
   LayoutItem_Field m_field_group_by;
 };
