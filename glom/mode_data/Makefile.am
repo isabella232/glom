@@ -17,7 +17,6 @@ libmode_data_a_SOURCES = box_data.cc box_data.h \
                          dialog_layout_list_related.cc dialog_layout_list_related.h \
                          dialog_layout_details.cc dialog_layout_details.h \
                          dialog_choose_field.cc dialog_choose_field.h \
-                         dialog_field_layout.cc dialog_field_layout.h \
                          dialog_choose_relationship.cc dialog_choose_relationship.h \
                          calcinprogress.cc calcinprogress.h \
                          treestore_layout.cc treestore_layout.h

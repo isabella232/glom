@@ -26,7 +26,7 @@
 #include "../data_structure/glomconversions.h"
 #include "../application.h"
 #include "../mode_data/dialog_choose_field.h"
-#include "../mode_data/dialog_field_layout.h"
+#include "../layout_item_dialogs/dialog_field_layout.h"
 #include "../utils.h"
 #include <glibmm/i18n.h>
 

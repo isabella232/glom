@@ -23,7 +23,7 @@
 #include "data_structure/layout/report_parts/layoutitem_summary.h"
 #include "data_structure/layout/layoutitem_field.h"
 #include "mode_data/dialog_choose_field.h"
-#include "mode_data/dialog_field_layout.h"
+#include "layout_item_dialogs/dialog_field_layout.h"
 #include "mode_data/dialog_choose_relationship.h"
 //#include <libgnome/gnome-i18n.h>
 #include <bakery/App/App_Gtk.h> //For util_bold_message().

@@ -1,3 +1,22 @@
+2005-05-10  Murray Cumming <murrayc@murrayc.com>
+
+	* Makefile.am:
+	* configure.in:
+	* glom/Makefile.am:
+	* glom/dialog_layout_report.cc:
+	* glom/layout_item_dialogs/Makefile.am:
+	* glom/layout_item_dialogs/dialog_field_layout.cc:
+	* glom/layout_item_dialogs/dialog_field_layout.h:
+	* glom/mode_data/Makefile.am:
+	* glom/mode_data/dialog_field_layout.cc:
+	* glom/mode_data/dialog_field_layout.h:
+	* glom/mode_data/dialog_layout_details.cc:
+	* glom/mode_data/dialog_layout_list.cc:
+	* glom/mode_data/dialog_layout_list_related.cc:
+	* glom/utility_widgets/datawidget.cc:
+	Moved dialog_field_layout.[h|cc] from mode_data/ 
+	to the new layout_item_dialogs/ directory.
+
 2005-05-10  Murray Cumming,,,  <murrayc@murrayc.com>
 
 	* glom/Makefile.am:

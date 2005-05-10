@@ -35,7 +35,4 @@ EXTRA_DIST = $(GnomeApplications_DATA) $(MimeDatabase_DATA) $(appreg_DATA) $(mim
 scrollkeeper_rubbish = find . -type f -print | grep -v '^\./var/scrollkeeper
 mime_rubbish = find . -type f -print | grep -v '^\./share/mime'
 distuninstallcheck_listfiles = intltool-extract intltool-merge intltool-update $(scrollkeeper_rubbish $(mime_rubbish)
-                               
-                               
-                               
 

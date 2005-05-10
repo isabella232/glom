@@ -1,4 +1,4 @@
-SUBDIRS = data_structure document mode_data mode_design mode_find navigation utility_widgets python_embed
+SUBDIRS = data_structure document mode_data mode_design mode_find navigation utility_widgets layout_item_dialogs python_embed
 
 gladedir = $(datadir)/glom/glade/
 glomxsltdir = $(datadir)/glom/xslt/
@@ -47,6 +47,7 @@ glom_LDADD = document/libdocument.a \
              mode_design/libmode_design.a \
              mode_design/fields/libmode_design_fields.a \
              mode_design/users/libmode_design_users.a \
+             layout_item_dialogs/liblayoutitemdialogs.a \
              navigation/libnavigation.a \
              utility_widgets/libutility_widgets.a \
              utility_widgets/adddel/libutility_widgets_adddel.a \
