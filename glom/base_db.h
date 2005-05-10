@@ -75,6 +75,8 @@ public:
   bool create_table(const TableInfo& table_info, const Document_Glom::type_vecFields& fields) const;
 
 protected:
+  bool offer_field_list(LayoutItem_Field& field, const Glib::ustring& table_name);
+
   typedef std::vector<Glib::ustring> type_vecStrings;
   type_vecStrings get_table_names() const;
 

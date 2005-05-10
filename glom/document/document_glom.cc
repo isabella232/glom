@@ -39,6 +39,8 @@
 
 #define GLOM_NODE_DATA_LAYOUT_PORTAL "data_layout_portal"
 #define GLOM_NODE_DATA_LAYOUT_ITEM "data_layout_item"
+#define GLOM_NODE_DATA_LAYOUT_ITEM_GROUPBY "data_layout_item_groupby"
+#define GLOM_NODE_DATA_LAYOUT_ITEM_SUMMARY "data_layout_item_summary"
 #define GLOM_NODE_TABLE "table"
 #define GLOM_NODE_FIELDS "fields"
 #define GLOM_NODE_FIELD "field"
@@ -97,6 +99,8 @@
 
 #define GLOM_NODE_REPORTS "reports"
 #define GLOM_NODE_REPORT "report"
+#define GLOM_ATTRIBUTE_REPORT_ITEM_GROUPBY_GROUPBY "groupby"
+#define GLOM_ATTRIBUTE_REPORT_ITEM_GROUPBY_SORTBY "sortby"
 
 Document_Glom::Document_Glom()
 : m_block_cache_update(false)
@@ -904,6 +908,8 @@ void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Gl
     {
       const guint sequence = get_node_attribute_value_as_decimal(element, GLOM_ATTRIBUTE_SEQUENCE);
 
+       g_warning("load_after_layout_group(): child name=%s", element->get_name().c_str());
+
       if(element->get_name() == GLOM_NODE_DATA_LAYOUT_ITEM)
       {
         LayoutItem_Field item;
@@ -978,6 +984,23 @@ void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Gl
 
         item.m_sequence = sequence;
         group.add_item(item, sequence);
+      }
+      else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_ITEM_GROUPBY)
+      {
+        g_warning("load_after_layout_group(): groupby found.");
+        LayoutItem_GroupBy child_group;
+        //Recurse:
+        load_after_layout_group(element, table_name, child_group);
+
+        LayoutItem_Field field_groupby; //TODO: Handle related fields too.
+        field_groupby.set_name( get_node_attribute_value(element, GLOM_ATTRIBUTE_REPORT_ITEM_GROUPBY_GROUPBY) );
+        child_group.set_field_group_by(field_groupby);
+
+        LayoutItem_Field field_sortpby;
+        field_sortpby.set_name( get_node_attribute_value(element, GLOM_ATTRIBUTE_REPORT_ITEM_GROUPBY_SORTBY) );
+        child_group.set_field_sort_by(field_sortpby);
+
+        group.add_item(child_group);
       }
     }
   }
@@ -1195,15 +1218,11 @@ bool Document_Glom::load_after()
                     const xmlpp::Element* node = dynamic_cast<const xmlpp::Element*>(*iter);
                     if(node)
                     {
-                      const Glib::ustring group_name = get_node_attribute_value(node, GLOM_ATTRIBUTE_NAME);
-                      if(!group_name.empty())
-                      {
-                        LayoutGroup group;
-                        load_after_layout_group(node, table_name, group);
+                      LayoutGroup group;
+                      load_after_layout_group(node, table_name, group);
 
-                        //layout_groups[group.m_sequence] = group;
-                        report.m_layout_group = group; //TODO: Get rid of the for loop here.
-                      }
+                      //layout_groups[group.m_sequence] = group;
+                      report.m_layout_group = group; //TODO: Get rid of the for loop here.
                     }
                   }
                 }
@@ -1267,7 +1286,20 @@ bool Document_Glom::load_after()
 
 void Document_Glom::save_before_layout_group(xmlpp::Element* node, const LayoutGroup& group)
 {
-  xmlpp::Element* child = node->add_child(GLOM_NODE_DATA_LAYOUT_GROUP);
+  xmlpp::Element* child = 0;
+
+  const LayoutItem_GroupBy* group_by = dynamic_cast<const LayoutItem_GroupBy*>(&group);
+  if(group_by) //If it is a GroupBy report part.
+  {
+    child = node->add_child(GLOM_NODE_DATA_LAYOUT_ITEM_GROUPBY);
+
+    set_node_attribute_value(child, GLOM_ATTRIBUTE_REPORT_ITEM_GROUPBY_GROUPBY, group_by->get_field_group_by()->get_name());
+    set_node_attribute_value(child, GLOM_ATTRIBUTE_REPORT_ITEM_GROUPBY_SORTBY, group_by->get_field_sort_by()->get_name());
+  }
+  else
+  {
+    child = node->add_child(GLOM_NODE_DATA_LAYOUT_GROUP);
+  }
 
   child->set_attribute(GLOM_ATTRIBUTE_NAME, group.get_name());
   child->set_attribute(GLOM_ATTRIBUTE_TITLE, group.m_title);
@@ -1280,6 +1312,7 @@ void Document_Glom::save_before_layout_group(xmlpp::Element* node, const LayoutG
   for(LayoutGroup::type_map_const_items::const_iterator iterItems = items.begin(); iterItems != items.end(); ++iterItems)
   {
     const LayoutItem* item = iterItems->second;
+
     const LayoutGroup* child_group = dynamic_cast<const LayoutGroup*>(item);
     if(child_group) //If it is a group
     {
@@ -1311,14 +1344,14 @@ void Document_Glom::save_before_layout_group(xmlpp::Element* node, const LayoutG
         //Choices:
         if(field->get_has_custom_choices())
         {
-           xmlpp::Element* child = nodeItem->add_child(GLOM_ATTRIBUTE_CHOICES_CUSTOM_LIST);
+          xmlpp::Element* child = nodeItem->add_child(GLOM_ATTRIBUTE_CHOICES_CUSTOM_LIST);
 
-           const LayoutItem_Field::type_list_values list_values = field->get_choices_custom();
-           for(LayoutItem_Field::type_list_values::const_iterator iter = list_values.begin(); iter != list_values.end(); ++iter)
-           {
-             xmlpp::Element* childChoice = child->add_child(GLOM_NODE_CUSTOM_CHOICE);
-             set_node_attribute_value_as_value(childChoice, GLOM_ATTRIBUTE_VALUE, *iter, field->m_field.get_glom_type());
-           }
+          const LayoutItem_Field::type_list_values list_values = field->get_choices_custom();
+          for(LayoutItem_Field::type_list_values::const_iterator iter = list_values.begin(); iter != list_values.end(); ++iter)
+          {
+            xmlpp::Element* childChoice = child->add_child(GLOM_NODE_CUSTOM_CHOICE);
+            set_node_attribute_value_as_value(childChoice, GLOM_ATTRIBUTE_VALUE, *iter, field->m_field.get_glom_type());
+          }
         }
 
         set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_CHOICES_RELATED, field->get_has_related_choices() );
@@ -1467,14 +1500,7 @@ bool Document_Glom::save_before()
           nodeReport->set_attribute(GLOM_ATTRIBUTE_TITLE, iter->second.m_title);
 
           xmlpp::Element* nodeGroups = nodeReport->add_child(GLOM_NODE_DATA_LAYOUT_GROUPS);
-
-          const LayoutGroup::type_map_items& group_sequence = iter->second.m_layout_group.m_map_items;
-          for(LayoutGroup::type_map_items::const_iterator iterGroups = group_sequence.begin(); iterGroups != group_sequence.end(); ++iterGroups)
-          {
-            const LayoutGroup* group = dynamic_cast<const LayoutGroup*>(iterGroups->second);
-            if(group)
-              save_before_layout_group(nodeGroups, *group);
-          }
+          save_before_layout_group(nodeGroups, iter->second.m_layout_group);
         }
 
       }

@@ -52,7 +52,7 @@ protected:
   ModelColumnsGroups m_columns_available_parts;
 
   virtual void add_group(const Gtk::TreeModel::iterator& parent, const LayoutGroup& group);
-  virtual void fill_group(const Gtk::TreeModel::iterator& iter, LayoutGroup& group);
+  virtual LayoutGroup* fill_group(const Gtk::TreeModel::iterator& iter);
 
   //Enable/disable buttons, depending on treeview selection:
   virtual void enable_buttons();
@@ -60,7 +60,6 @@ protected:
   virtual void save_to_document();
 
   bool offer_relationship_list(Relationship& relationship);
-  bool offer_field_list(LayoutItem_Field& field);
   bool offer_field_layout(LayoutItem_Field& field);
   Gtk::TreeModel::iterator get_selected_group_parent() const;
 

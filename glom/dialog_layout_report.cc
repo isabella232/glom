@@ -24,6 +24,7 @@
 #include "data_structure/layout/layoutitem_field.h"
 #include "mode_data/dialog_choose_field.h"
 #include "layout_item_dialogs/dialog_field_layout.h"
+#include "layout_item_dialogs/dialog_group_by.h"
 #include "mode_data/dialog_choose_relationship.h"
 //#include <libgnome/gnome-i18n.h>
 #include <bakery/App/App_Gtk.h> //For util_bold_message().
@@ -141,20 +142,21 @@ Dialog_Layout_Report::~Dialog_Layout_Report()
 {
 }
 
-void Dialog_Layout_Report::fill_group(const Gtk::TreeModel::iterator& iter, LayoutGroup& group)
+LayoutGroup* Dialog_Layout_Report::fill_group(const Gtk::TreeModel::iterator& iter)
 {
   if(iter)
   {
     Gtk::TreeModel::Row row = *iter;
 
     LayoutItem* pItem = row[m_columns_parts.m_col_item];
+
     LayoutGroup* pGroup = dynamic_cast<LayoutGroup*>(pItem);
     if(pGroup)
-      group = *pGroup;
+      return static_cast<LayoutGroup*>(pGroup->clone());
   }
+
+  return 0;
 }
-
-
 
 void Dialog_Layout_Report::add_group(const Gtk::TreeModel::iterator& parent, const LayoutGroup& group)
 {
@@ -185,6 +187,7 @@ void Dialog_Layout_Report::set_report(const Glib::ustring& table_name, const Rep
 
   m_name_original = report.m_name;
   m_report = report;
+  m_table_name = table_name;
 
   //Dialog_Layout::set_document(layout, document, table_name, table_fields);
 
@@ -408,39 +411,6 @@ bool Dialog_Layout_Report::offer_relationship_list(Relationship& relationship)
   return result;
 }
 
-bool Dialog_Layout_Report::offer_field_list(LayoutItem_Field& field)
-{
-  bool result = false;
-
-  try
-  {
-    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_choose_field");
-
-    Dialog_ChooseField* dialog = 0;
-    refXml->get_widget_derived("dialog_choose_field", dialog);
-
-    if(dialog)
-    {
-      dialog->set_document(get_document(), m_table_name, field);
-      dialog->set_transient_for(*this);
-      int response = dialog->run();
-      if(response == Gtk::RESPONSE_OK)
-      {
-        //Get the chosen field:
-        result = dialog->get_field_chosen(field);
-      }
-
-      delete dialog;
-    }
-  }
-  catch(const Gnome::Glade::XmlError& ex)
-  {
-    std::cerr << ex.what() << std::endl;
-  }
-
-  return result;
-}
-
 bool Dialog_Layout_Report::offer_field_layout(LayoutItem_Field& field)
 {
   bool result = false;
@@ -531,54 +501,45 @@ void Dialog_Layout_Report::on_button_edit()
     if(iter)
     {
       //Do something different for each type of item:
-      //This is unpleasant, but so is this whole dialog.
-      //This whole dialog is just a temporary way to edit the layout before we have a visual DnD way.
       Gtk::TreeModel::Row row = *iter;
-/*
-      switch( row[m_columns_parts->m_columns.m_col_type])
+      LayoutItem* item = row[m_columns_parts.m_col_item];
+
+      LayoutItem_GroupBy* group_by = dynamic_cast<LayoutItem_GroupBy*>(item);
+      if(group_by)
       {
-        case TreeStore_Layout::TYPE_GROUP:
+        try
         {
-          //TODO: Start editing the name.
-          break;
-        }
-        case TreeStore_Layout::TYPE_FIELD:
-        {
-          LayoutItem_Field field;
-          field.set_name( row[m_columns_parts->m_columns.m_col_name] ); //Start with this one selected.
-          field.m_relationship = row[m_columns_parts->m_columns.m_col_relationship_name];
+          Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_group_by");
 
-          //if(!relationship_name.empty())
-          //{
-          //  get_document()->get_table_relationship(m_table_name, field.m_relationship);
-          //}
+          Dialog_GroupBy* dialog = 0;
+          refXml->get_widget_derived("dialog_group_by", dialog);
 
-          field.set_editable( row[m_columns_parts->m_columns.m_col_editable] );
-          bool test = offer_field_list(field);
-          if(test)
+          if(dialog)
           {
-            row[m_columns_parts->m_columns.m_col_name] = field.get_name();
-            row[m_columns_parts->m_columns.m_col_relationship_name] = field.m_relationship;
+            add_view(dialog);
+            dialog->set_item(*group_by, m_table_name);
+            dialog->set_transient_for(*this);
 
-            row[m_columns_parts->m_columns.m_col_editable] = field.get_editable();
+            int response = dialog->run();
+            dialog->hide();
+
+            if(response == Gtk::RESPONSE_OK)
+            {
+              //Get the chosen relationship:
+              dialog->get_item(*group_by);
+            }
+
+            remove_view(dialog);
+            delete dialog;
           }
-
-          break;
         }
-        case TreeStore_Layout::TYPE_PORTAL:
+        catch(const Gnome::Glade::XmlError& ex)
         {
-          Relationship relationship;
-          relationship.set_name( row[m_columns_parts->m_columns.m_col_relationship] ); //Start with this one selected.
-          bool test = offer_relationship_list(relationship);
-          if(test)
-          {
-            row[m_columns_parts->m_columns.m_col_relationship] = relationship.get_name();
-          }
-
-          break;
+          std::cerr << ex.what() << std::endl;
         }
+
       }
-*/
+
     }
   }
 }
@@ -690,11 +651,10 @@ Report Dialog_Layout_Report::get_report()
   guint group_sequence = 0;
   for(Gtk::TreeModel::iterator iter = m_model_parts->children().begin(); iter != m_model_parts->children().end(); ++iter)
   {
-    LayoutGroup group;
-    group.m_sequence = group_sequence;
-    fill_group(iter, group);
+    LayoutGroup* group = fill_group(iter);
+    group->m_sequence = group_sequence;
 
-    m_report.m_layout_group.m_map_items[group_sequence] = group.clone();
+    m_report.m_layout_group.m_map_items[group_sequence] = group;
     ++group_sequence;
   }
 

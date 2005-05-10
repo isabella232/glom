@@ -44,9 +44,13 @@ public:
   LayoutItem_Field* get_field_group_by();
   const LayoutItem_Field* get_field_group_by() const;
 
+  void set_field_group_by(const LayoutItem_Field& field);
+
   //How to sort the records in this group:
   LayoutItem_Field* get_field_sort_by();
   const LayoutItem_Field* get_field_sort_by() const;
+
+  void set_field_sort_by(const LayoutItem_Field& field);
 
   virtual Glib::ustring get_part_type_name() const;
 

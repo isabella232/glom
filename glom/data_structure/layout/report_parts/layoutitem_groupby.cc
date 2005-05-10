@@ -82,3 +82,14 @@ Glib::ustring LayoutItem_GroupBy::get_part_type_name() const
 {
   return _("Group By");
 }
+
+void LayoutItem_GroupBy::set_field_group_by(const LayoutItem_Field& field)
+{
+  m_field_group_by = field;
+}
+
+void LayoutItem_GroupBy::set_field_sort_by(const LayoutItem_Field& field)
+{
+  m_field_sort_by = field;
+}
+

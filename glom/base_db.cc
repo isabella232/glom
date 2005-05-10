@@ -24,6 +24,7 @@
 #include "standard_table_prefs_fields.h"
 #include "document/document_glom.h"
 #include "data_structure/glomconversions.h"
+#include "mode_data/dialog_choose_field.h"
 #include <glibmm/i18n.h>
 //#include <libgnomeui/gnome-app-helper.h>
 
@@ -1186,4 +1187,37 @@ bool Base_DB::create_table(const TableInfo& table_info, const Document_Glom::typ
   }
 
   return table_creation_succeeded;
+}
+
+bool Base_DB::offer_field_list(LayoutItem_Field& field, const Glib::ustring& table_name)
+{
+  bool result = false;
+
+  try
+  {
+    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_choose_field");
+
+    Dialog_ChooseField* dialog = 0;
+    refXml->get_widget_derived("dialog_choose_field", dialog);
+
+    if(dialog)
+    {
+      dialog->set_document(get_document(), table_name, field);
+      //TODO: dialog->set_transient_for(*get_app_window());
+      int response = dialog->run();
+      if(response == Gtk::RESPONSE_OK)
+      {
+        //Get the chosen field:
+        result = dialog->get_field_chosen(field);
+      }
+
+      delete dialog;
+    }
+  }
+  catch(const Gnome::Glade::XmlError& ex)
+  {
+    std::cerr << ex.what() << std::endl;
+  }
+
+  return result;
 }

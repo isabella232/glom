@@ -1,0 +1,63 @@
+/* Glom
+ *
+ * Copyright (C) 2001-2004 Murray Cumming
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public
+ * License along with this program; if not, write to the
+ * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+ * Boston, MA 02111-1307, USA.
+ */
+
+#ifndef GLOM_LAYOUT_ITEM_DIALOGS_GROUP_BY_H
+#define GLOM_LAYOUT_ITEM_DIALOGS_GROUP_BY_H
+
+#include <gtkmm.h>
+#include "../utility_widgets/dialog_properties.h"
+#include "../document/document_glom.h"
+#include "../box_db.h"
+#include "../utility_widgets/combo_textglade.h"
+#include "../utility_widgets/comboentry_currency.h"
+
+class Dialog_GroupBy
+ : public Gtk::Dialog,
+   public Base_DB
+{
+public:
+  Dialog_GroupBy(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  virtual ~Dialog_GroupBy();
+
+  /**
+   * @param item The starting information.
+   * @param table_name The item's table.
+   */
+  virtual void set_item(const LayoutItem_GroupBy& item, const Glib::ustring& table_name);
+
+
+  bool get_item(LayoutItem_GroupBy& item) const;
+
+protected:
+  //Signal handlers:
+  void on_button_field_group_by();
+  void on_button_field_sort_by();
+
+  Gtk::Label* m_label_group_by;
+  Gtk::Label* m_label_sort_by;
+  Gtk::Button* m_button_field_group_by;
+  Gtk::Button* m_button_field_sort_by;
+
+  mutable LayoutItem_GroupBy m_layout_item;
+
+  Glib::ustring m_table_name;
+};
+
+#endif //GLOM_LAYOUT_ITEM_DIALOGS_GROUP_BY_H
