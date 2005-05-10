@@ -23,6 +23,7 @@
 
 #include "../../connectionpool.h"
 #include "../../data_structure/glomconversions.h" //For util_build_sql
+#include "../../utils.h"
 
 
 DbTreeModelRow::DbTreeModelRow()
@@ -191,7 +192,7 @@ bool DbTreeModel::refresh_from_database(const Glib::ustring& where_clause)
 
   if(m_connection && !m_table_name.empty() && m_get_records)
   {
-    const Glib::ustring sql_query = util_build_sql_select_with_where_clause(m_table_name, m_column_fields, m_where_clause);
+    const Glib::ustring sql_query = GlomUtils::build_sql_select_with_where_clause(m_table_name, m_column_fields, m_where_clause);
 
     std::cout << "DbTreeModel: Executing SQL: " << sql_query << std::endl;
     m_gda_datamodel = m_connection->get_gda_connection()->execute_single_command(sql_query);

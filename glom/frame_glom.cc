@@ -24,6 +24,8 @@
 #include "mode_design/users/dialog_groups_list.h"
 #include "dialog_database_preferences.h"
 #include "dialog_layout_report.h"
+#include "utils.h"
+#include "data_structure/glomconversions.h"
 
 #include <glibmm/i18n.h>
 
@@ -994,7 +996,111 @@ bool Frame_Glom::create_database(const Glib::ustring& database_name, bool reques
 
 void Frame_Glom::on_menu_report_selected(const Glib::ustring& report_name)
 {
-  std::cout << "//TODO: report: " << report_name << std::endl;
+  const Privileges table_privs = get_current_privs(m_strTableName);
+
+  //Don't try to print tables that the user can't view.
+  if(!table_privs.m_view)
+  {
+    //TODO: Warn the user.
+    return;
+  }
+
+  //Create a DOM Document with the XML:
+  xmlpp::DomParser dom_parser;;
+
+  xmlpp::Document* pDocument = dom_parser.get_document();
+  xmlpp::Element* nodeRoot = pDocument->get_root_node();
+  if(!nodeRoot)
+  {
+    //Add it if it isn't there already:
+    nodeRoot = pDocument->create_root_node("report_print");
+  }
+
+  Glib::ustring table_title = get_document()->get_table_title(m_strTableName);
+  if(table_title.empty())
+    table_title = m_strTableName;
+
+  nodeRoot->set_attribute("table", table_title);
+
+
+  //The groups:
+  xmlpp::Element* nodeParent = nodeRoot;
+
+
+
+  Report report;
+  bool found = get_document()->get_report(m_strTableName, report_name, report);
+  if(!found)
+    return;
+
+  nodeRoot->set_attribute("title", report.get_title_or_name());
+
+  for(LayoutGroup::type_map_items::const_iterator iter = report.m_layout_group.m_map_items.begin(); iter != report.m_layout_group.m_map_items.end(); ++iter)
+  {
+    const LayoutItem* pPart = iter->second;
+
+    //The Group, and the details for each record in the group:
+    const LayoutItem_GroupBy* pGroupBy = dynamic_cast<const LayoutItem_GroupBy*>(pPart);
+    if(pGroupBy)
+    {
+      //Get the possible heading values.
+      const LayoutItem_Field* field_group_by = pGroupBy->get_field_group_by();
+      if(field_group_by)
+      {
+        //Add XML node:
+        xmlpp::Element* nodeGroupBy = nodeParent->add_child("group_by");
+        nodeGroupBy->set_attribute("group_field", field_group_by->m_field.get_title());
+
+        //Get data and add child rows:
+        GlomUtils::type_vecLayoutFields fieldsToGet;
+        for(LayoutGroup::type_map_items::const_iterator iterChildren = pGroupBy->m_map_items.begin(); iterChildren != pGroupBy->m_map_items.end(); ++iterChildren)
+        {
+           const LayoutItem_Field* pField = dynamic_cast<const LayoutItem_Field*>(iter->second);
+           if(pPart)
+             fieldsToGet.push_back(*pField);
+        }
+
+        if(!fieldsToGet.empty())
+        {
+          Glib::ustring where_clause; //TODO: Use the current found set.
+
+          Glib::ustring sort_clause;
+          if(pGroupBy->get_field_sort_by())
+            sort_clause = pGroupBy->get_field_sort_by()->get_name(); //TODO: Deal with related fields too.
+
+          Glib::ustring sql_query = GlomUtils::build_sql_select_with_where_clause(m_strTableName,
+            fieldsToGet,
+            where_clause, sort_clause);
+
+          Glib::RefPtr<Gnome::Gda::DataModel> datamodel = Query_execute(sql_query);
+          if(datamodel)
+          {
+            guint rows_count = datamodel->get_n_rows();
+            for(guint row = 0; row < rows_count; ++row)
+            {
+              xmlpp::Element* nodeRow = nodeGroupBy->add_child("row");
+
+              for(guint col = 0; col < fieldsToGet.size(); ++col)
+              {
+                const LayoutItem_Field& field = fieldsToGet[col];
+                xmlpp::Element* nodeField = nodeRow->add_child("field");
+                nodeField->set_attribute("name", field.get_name()); //Not really necessary, but maybe useful.
+                nodeField->set_attribute("value",
+                  GlomConversions::get_text_for_gda_value(field.m_field.get_glom_type(), datamodel->get_value_at(row, col), field.m_numeric_format) );
+              }
+            }
+
+          }
+        }
+
+
+      }
+
+
+    }
+  }
+
+  GlomUtils::transform_and_open(*pDocument, "print_report_to_html.xsl");
 }
 
 void Frame_Glom::on_dialog_layout_report_hide()

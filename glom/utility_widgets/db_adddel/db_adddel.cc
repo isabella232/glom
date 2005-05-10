@@ -26,6 +26,7 @@
 #include "../../data_structure/glomconversions.h"
 #include "../../dialog_invalid_data.h"
 #include "../../application.h"
+#include "../../utils.h"
 //#include "../cellrendererlist.h"
 #include <iostream> //For debug output.
 
@@ -732,8 +733,8 @@ void DbAddDel::construct_specified_columns()
                   }
                 }
 
-                type_list_values_with_second list_values = get_choice_values(column_info.m_field);
-                for(type_list_values_with_second::const_iterator iter = list_values.begin(); iter != list_values.end(); ++iter)
+                GlomUtils::type_list_values_with_second list_values = GlomUtils::get_choice_values(column_info.m_field);
+                for(GlomUtils::type_list_values_with_second::const_iterator iter = list_values.begin(); iter != list_values.end(); ++iter)
                 {
                   const Glib::ustring first = GlomConversions::get_text_for_gda_value(column_info.m_field.m_field.get_glom_type(), iter->first, column_info.m_field.m_numeric_format);
 

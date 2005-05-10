@@ -20,11 +20,11 @@
 
 #include "box_data.h"
 #include "../data_structure/glomconversions.h"
+#include "../utils.h"
 #include "../data_structure/layout/layoutitem_field.h"
 #include "../python_embed/glom_python.h"
 #include <bakery/App/App_Gtk.h> //For util_bold_message().
 #include <algorithm> //For std::find()
-#include <libxslt/transform.h>
 #include "config.h"
 #include <glibmm/i18n.h>
 
@@ -1014,7 +1014,7 @@ Glib::ustring Box_Data::build_sql_select(const Glib::ustring& table_name, const 
   if(!GlomConversions::value_is_empty(primary_key_value)) //If there is a record to show:
   {
     const Glib::ustring where_clause = m_strTableName + "." + primary_key_field.get_name() + " = " + primary_key_field.sql(primary_key_value);
-    return util_build_sql_select_with_where_clause(table_name, fieldsToGet, where_clause);
+    return GlomUtils::build_sql_select_with_where_clause(table_name, fieldsToGet, where_clause);
   }
 
   return Glib::ustring();
@@ -1233,44 +1233,5 @@ void Box_Data::print_layout()
   dialog.run();
 }
 
-Glib::ustring Box_Data::xslt_process(const xmlpp::Document& xml_document, const std::string& filepath_xslt)
-{
-  Glib::ustring  result;
 
-  //Use libxslt to transform the XML:
-  xmlDocPtr style = xmlReadFile(filepath_xslt.c_str(), 0, 0);
-  if(style)
-  {
-    //Parse the stylesheet:
-    xsltStylesheetPtr cur = xsltParseStylesheetDoc(style);
-    if(cur)
-    {
-      //Use the parsed stylesheet on the XML:
-      xmlDocPtr pDocOutput = xsltApplyStylesheet(cur, const_cast<xmlDoc*>(xml_document.cobj()), 0);
-      xsltFreeStylesheet(cur);
-
-      //Get the output text:
-      xmlChar* buffer = 0;
-      int length = 0;
-      xmlDocDumpFormatMemoryEnc(pDocOutput, &buffer, &length, 0, 0);
-
-      if(buffer)
-      {
-        // Create a Glib::ustring copy of the buffer
-
-        // Here we force the use of Glib::ustring::ustring( InputIterator begin, InputIterator end )
-        // instead of Glib::ustring::ustring( const char*, size_type ) because it
-        // expects the length of the string in characters, not in bytes.
-        result = Glib::ustring( reinterpret_cast<const char *>(buffer), reinterpret_cast<const char *>(buffer + length) );
-
-        // Deletes the original buffer
-        xmlFree(buffer);
-      }
-
-      xmlFreeDoc(pDocOutput);
-    }
-  }
-
-  return result;
-}
 

@@ -27,7 +27,9 @@ LayoutItem_GroupBy::LayoutItem_GroupBy()
 }
 
 LayoutItem_GroupBy::LayoutItem_GroupBy(const LayoutItem_GroupBy& src)
-: LayoutGroup(src)
+: LayoutGroup(src),
+  m_field_group_by(src.m_field_group_by),
+  m_field_sort_by(src.m_field_sort_by)
 {
 }
 
@@ -48,6 +50,9 @@ LayoutItem_GroupBy& LayoutItem_GroupBy::operator=(const LayoutItem_GroupBy& src)
   if(this != &src)
   {
     LayoutGroup::operator=(src);
+
+    m_field_group_by = src.m_field_group_by;
+    m_field_sort_by = src.m_field_sort_by;
   }
 
   return *this;
@@ -61,6 +66,16 @@ LayoutItem_Field* LayoutItem_GroupBy::get_field_group_by()
 const LayoutItem_Field* LayoutItem_GroupBy::get_field_group_by() const
 {
   return &m_field_group_by;
+}
+
+LayoutItem_Field* LayoutItem_GroupBy::get_field_sort_by()
+{
+  return &m_field_sort_by;
+}
+
+const LayoutItem_Field* LayoutItem_GroupBy::get_field_sort_by() const
+{
+  return &m_field_sort_by;
 }
 
 Glib::ustring LayoutItem_GroupBy::get_part_type_name() const

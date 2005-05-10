@@ -25,6 +25,7 @@
 #include "../data_structure/numeric_format.h"
 
 #include "../data_structure/layout/layoutitem_field.h"
+#include <libxml++/libxml++.h>
 
 namespace GlomConversions
 {
@@ -53,19 +54,7 @@ namespace GlomConversions
   Gnome::Gda::Value get_empty_value(Field::glom_field_type field_type);
 
   Gnome::Gda::Value get_example_value(Field::glom_field_type field_type);
-
-  Glib::ustring util_trim_whitespace(const Glib::ustring& text);
 }
-
-typedef std::vector<LayoutItem_Field> type_vecLayoutFields;
-
-//TODO: Move this to its own file:
-Glib::ustring util_build_sql_select_with_where_clause(const Glib::ustring& table_name, const type_vecLayoutFields& fieldsToGet, const Glib::ustring& where_clause = Glib::ustring());
-
-
-typedef std::list< std::pair<Gnome::Gda::Value, Gnome::Gda::Value> > type_list_values_with_second;
-type_list_values_with_second get_choice_values(const LayoutItem_Field& field);
-
 
 #endif //GLOM_DATASTRUCTURE_GLOMCONVERSIONS_H
 

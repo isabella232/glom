@@ -1,3 +1,26 @@
+2005-05-10  Murray Cumming,,,  <murrayc@murrayc.com>
+
+	* glom/Makefile.am:
+	* glom/data_structure/glomconversions.cc:
+	* glom/data_structure/glomconversions.h:
+	* glom/utils.cc:
+	* glom/utils.h: Added utils.[h|cc] with some functions from 
+	GlomConversions:: and some from xsl stuff from Box_Data.
+	* glom/data_structure/layout/report_parts/layoutitem_groupby.cc:
+	* glom/data_structure/layout/report_parts/layoutitem_groupby.h:
+	Add sort_by field.
+	* glom/frame_glom.cc: on_menu_report_selected():
+	Beginnings of report generation.
+	* glom/mode_data/box_data.cc:
+	* glom/mode_data/box_data_details.cc:
+	* glom/utility_widgets/datawidget.cc:
+	* glom/utility_widgets/db_adddel/db_adddel.cc:
+	* glom/utility_widgets/db_adddel/glom_db_treemodel.cc:
+	Use functions from GlomUtils::.
+	* xslt/Makefile.am:
+	* xslt/print_report_to_html.xsl:
+	Added xsl transformation for reports.
+
 2005-05-09  Murray Cumming <murrayc@murrayc.com>
 
 	* glom/application.cc:

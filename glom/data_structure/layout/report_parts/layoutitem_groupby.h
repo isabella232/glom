@@ -44,10 +44,15 @@ public:
   LayoutItem_Field* get_field_group_by();
   const LayoutItem_Field* get_field_group_by() const;
 
+  //How to sort the records in this group:
+  LayoutItem_Field* get_field_sort_by();
+  const LayoutItem_Field* get_field_sort_by() const;
+
   virtual Glib::ustring get_part_type_name() const;
 
 protected:
   LayoutItem_Field m_field_group_by;
+  LayoutItem_Field m_field_sort_by;
 };
 
 #endif //GLOM_DATASTRUCTURE_LAYOUTITEM_GROUPBY_H

@@ -27,6 +27,7 @@
 #include "../application.h"
 #include "../mode_data/dialog_choose_field.h"
 #include "../mode_data/dialog_field_layout.h"
+#include "../utils.h"
 #include <glibmm/i18n.h>
 
 /*
@@ -114,7 +115,7 @@ DataWidget::DataWidget(const LayoutItem_Field& field, const Glib::ustring& table
           //set_choices() needs this, for the numeric layout:
           combo->set_layout_item(get_layout_item()->clone(), table_name);
 
-          combo->set_choices_with_second( get_choice_values(field) );
+          combo->set_choices_with_second( GlomUtils::get_choice_values(field) );
         }
       }
       else

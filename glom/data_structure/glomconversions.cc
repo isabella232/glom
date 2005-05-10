@@ -20,6 +20,7 @@
 
 #include "glomconversions.h"
 #include "../connectionpool.h"
+#include "../utils.h"
 #include <sstream> //For stringstream
 
 #include <locale>     // for locale, time_put
@@ -311,7 +312,7 @@ Gnome::Gda::Value GlomConversions::parse_value(Field::glom_field_type glom_type,
   }
   else if(glom_type == Field::TYPE_NUMERIC)
   {
-    Glib::ustring text_to_parse = util_trim_whitespace(text);
+    Glib::ustring text_to_parse = GlomUtils::trim_whitespace(text);
 
     if(!(numeric_format.m_currency_symbol.empty()))
     {
@@ -320,7 +321,7 @@ Gnome::Gda::Value GlomConversions::parse_value(Field::glom_field_type glom_type,
       if(text_to_parse.substr(0, numeric_format.m_currency_symbol.size()) == numeric_format.m_currency_symbol)
       {
         text_to_parse = text_to_parse.substr(numeric_format.m_currency_symbol.size());
-        text_to_parse = util_trim_whitespace(text_to_parse); //remove any whitespace between the currency symbol and the number.
+        text_to_parse = GlomUtils::trim_whitespace(text_to_parse); //remove any whitespace between the currency symbol and the number.
       }
     }
 
@@ -598,166 +599,5 @@ Gnome::Gda::Value GlomConversions::get_example_value(Field::glom_field_type fiel
   }
 }
 
-Glib::ustring GlomConversions::util_trim_whitespace(const Glib::ustring& text)
-{
-  //TODO_Performance:
 
-  Glib::ustring result = text;
-
-  //Find non-whitespace from front:
-  Glib::ustring::size_type posFront = Glib::ustring::npos;
-  Glib::ustring::size_type pos = 0;
-  for(Glib::ustring::iterator iter = result.begin(); iter != result.end(); ++iter)
-  {
-    if(!Glib::Unicode::isspace(*iter))
-    {
-      posFront = pos;
-      break;
-    }
-
-    ++pos;
-  }
-
-  //Remove the white space from the front:
-  result = result.substr(posFront);
-
-
- //Find non-whitespace from back:
-  Glib::ustring::size_type posBack = Glib::ustring::npos;
-  pos = 0;
-  for(Glib::ustring::reverse_iterator iter = result.rbegin(); iter != result.rend(); ++iter)
-  {
-    if(!Glib::Unicode::isspace(*iter))
-    {
-      posBack = pos;
-      break;
-    }
-
-    ++pos;
-  }
-
-  //Remove the white space from the front:
-  result = result.substr(0, result.size() - posBack);
-
-  return result;
-}
-
-
-
-Glib::ustring util_build_sql_select_with_where_clause(const Glib::ustring& table_name, const type_vecLayoutFields& fieldsToGet, const Glib::ustring& where_clause)
-{
-  Glib::ustring result;
-
-  Glib::ustring sql_part_fields;
-
-  typedef std::list<Relationship> type_list_relationships;
-  type_list_relationships list_relationships;
-
-  for(type_vecLayoutFields::const_iterator iter =  fieldsToGet.begin(); iter != fieldsToGet.end(); ++iter)
-  {
-    if(iter != fieldsToGet.begin())
-      sql_part_fields += ", ";
-
-
-    if(!iter->get_has_relationship_name())
-    {
-      sql_part_fields += ( table_name + "." );
-    }
-    else
-    {
-      Glib::ustring relationship_name = iter->get_relationship_name();
-      if(!relationship_name.empty())
-      {
-        const Relationship relationship = iter->m_relationship;
-
-        const Glib::ustring field_table_name = relationship.get_to_table();
-        if(field_table_name.empty())
-        {
-          g_warning("util_build_sql_select_with_where_clause(): field_table_name is null. relationship name = %s", relationship.get_name().c_str());
-        }
-
-        sql_part_fields += ( field_table_name + "." );
-
-        //Add the relationship to the list:
-        type_list_relationships::const_iterator iterFind = std::find_if(list_relationships.begin(), list_relationships.end(), predicate_FieldHasName<Relationship>( relationship_name ) );
-        if(iterFind == list_relationships.end()) //If the table is not yet in the list:
-          list_relationships.push_back(relationship);
-      }
-    }
-
-    sql_part_fields += iter->get_name();
-  }
-
-  result =  "SELECT " + sql_part_fields +
-    " FROM " + table_name;
-
-  //LEFT OUTER JOIN will get the field values from the other tables, and give us our fields for this table even if there is no corresponding value in the other table.
-  Glib::ustring sql_part_leftouterjoin; 
-  for(type_list_relationships::const_iterator iter = list_relationships.begin(); iter != list_relationships.end(); ++iter)
-  {
-    const Relationship& relationship = *iter;
-    sql_part_leftouterjoin += " LEFT OUTER JOIN " + relationship.get_to_table() +
-      " ON (" + relationship.get_from_table() + "." + relationship.get_from_field() + " = " +
-      relationship.get_to_table() + "." + relationship.get_to_field() +
-      ")";
-  }
-
-  result += sql_part_leftouterjoin;
-
-  if(!where_clause.empty())
-    result += " WHERE " + where_clause;
-
-  return result;
-}
-
-
-type_list_values_with_second get_choice_values(const LayoutItem_Field& field)
-{
-  type_list_values_with_second list_values;
-
-  Glib::ustring choice_relationship_name, choice_field, choice_second;
-  field.get_choices(choice_relationship_name, choice_field, choice_second);
-
-  const Relationship relationship = field.m_choices_related_relationship;
-  const Glib::ustring to_table = relationship.get_to_table();
-  if(to_table.empty())
-  {
-    g_warning("get_choice_values(): table_name is null. relationship name = %s", field.m_choices_related_relationship.get_name().c_str());
-    return list_values;
-  }
-
-  const bool with_second = !choice_second.empty();
-  const Glib::ustring sql_second = to_table + "." + choice_second;
-
-  //Get possible values from database, sorted by the first column.
-  Glib::ustring sql_query = "SELECT " + to_table + "." + choice_field;
-  if(with_second)
-    sql_query += ", " + sql_second;
-
-  sql_query += " FROM " + relationship.get_to_table() + " ORDER BY " + to_table + "." + choice_field;
-
-  //Connect to database:
-  sharedptr<SharedConnection> connection = ConnectionPool::get_instance()->connect();
-
-
-  std::cout << "get_choice_values: Executing SQL: " << sql_query << std::endl;
-  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = connection->get_gda_connection()->execute_single_command(sql_query);
-
-  if(datamodel)
-  {
-    guint count = datamodel->get_n_rows();
-    for(guint row = 0; row < count; ++row)
-    {
-      std::pair<Gnome::Gda::Value, Gnome::Gda::Value> itempair;
-      itempair.first = datamodel->get_value_at(0, row);
-
-      if(with_second)
-        itempair.second = datamodel->get_value_at(1, row);
-
-      list_values.push_back(itempair);
-    }
-  }
-
-  return list_values;
-}
 

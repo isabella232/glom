@@ -23,10 +23,9 @@
 #include "../data_structure/relationship.h"
 #include "../data_structure/glomconversions.h"
 #include "dialog_layout_details.h"
+#include "../utils.h"
 #include <bakery/App/App_Gtk.h> //For util_bold_message().
 #include "../python_embed/glom_python.h"
-#include <libgnomevfsmm.h>
-#include <libgnome/gnome-url.h>
 #include <sstream> //For stringstream
 #include <glibmm/i18n.h>
 
@@ -803,43 +802,6 @@ void Box_Data_Details::print_layout()
       print_layout_group(nodeParent, layout_group);
     }
 
-
-    //Use libxslt to convert the XML to HTML:
-    Glib::ustring result = xslt_process(*pDocument, GLOM_XSLTDIR "print_details_to_html.xsl");
-    std::cout << "After xslt: " << result << std::endl;
-
-    //Save it to a temporary file and show it in a browser:
-    //TODO: This actually shows it in gedit.
-    const Glib::ustring temp_uri = "file:///tmp/glom_printout.html";
-    std::cout << "temp_uri=" << temp_uri << std::endl;
-
-    Gnome::Vfs::Handle write_handle;
-
-    try
-    {
-      //0660 means "this user and his group can read and write this non-executable file".
-      //The 0 prefix means that this is octal.
-      write_handle.create(temp_uri, Gnome::Vfs::OPEN_WRITE, false, 0660 /* leading zero means octal */);
-    }
-    catch(const Gnome::Vfs::exception& ex)
-    {
-      // If the operation was not successful, print the error and abort
-      return; // print_error(ex, output_uri_string);
-    }
-
-    try
-    {
-      //Write the data to the output uri
-      /* GnomeVFSFileSize bytes_written = */ write_handle.write(result.data(), result.bytes());
-    }
-    catch(const Gnome::Vfs::exception& ex)
-    {
-      // If the operation was not successful, print the error and abort
-      return; //print_error(ex, output_uri_string);
-    }
-
-    //Use the GNOME browser:
-    GError* error = 0;
-    gnome_url_show(temp_uri.c_str(), &error); //This is in libgnome.
+    GlomUtils::transform_and_open(*pDocument, "print_details_to_html.xsl");
   }
 }
