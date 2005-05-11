@@ -242,6 +242,13 @@ void GlomUtils::transform_and_open(const xmlpp::Document& xml_document, const Gl
 
 Glib::ustring GlomUtils::xslt_process(const xmlpp::Document& xml_document, const std::string& filepath_xslt)
 {
+  //Debug output:
+  std::cout << "XML before XSLT processing: " << std::endl;
+  std::cout << "  ";
+  xmlpp::Document& nonconst = const_cast<xmlpp::Document&>(xml_document);
+  nonconst.write_to_stream_formatted(std::cout);
+  std::cout << std::endl;
+
   Glib::ustring  result;
 
   //Use libxslt to transform the XML:
@@ -259,6 +266,7 @@ Glib::ustring GlomUtils::xslt_process(const xmlpp::Document& xml_document, const
       //Get the output text:
       xmlChar* buffer = 0;
       int length = 0;
+      xmlIndentTreeOutput = 1; //Format the output with extra white space. TODO: Is there a better way than this global variable?
       xmlDocDumpFormatMemoryEnc(pDocOutput, &buffer, &length, 0, 0);
 
       if(buffer)

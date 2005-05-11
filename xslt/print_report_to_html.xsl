@@ -7,15 +7,16 @@
 
 <head>
 <title>
-  Details: <xsl:value-of select="@title"/>
+  <xsl:value-of select="@table"/>: <xsl:value-of select="@title"/>
 </title>
 </head>
 
 <body>
 
 <h1>
-  Table: <xsl:value-of select="@table"/>
+  <xsl:value-of select="@table"/>: <xsl:value-of select="@title"/>
 </h1>
+
 
 <xsl:apply-templates/>
 
@@ -24,9 +25,16 @@
 </xsl:template>
 
 <xsl:template match="group_by">
+<p>
+<xsl:value-of select="@group_field"/>: <b><xsl:value-of select="@group_value"/></b>
 <table>
         <xsl:apply-templates/>
 </table>
+</p>
+</xsl:template>
+
+<xsl:template match="field_heading">
+<th> <xsl:value-of select="@title"/> </th>
 </xsl:template>
 
 <xsl:template match="row">
@@ -34,7 +42,6 @@
 <xsl:apply-templates/>
 </tr>
 </xsl:template>
-
 
 <xsl:template match="field">
 <td> <xsl:value-of select="@value"/> </td>

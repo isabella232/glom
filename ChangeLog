@@ -1,5 +1,26 @@
 2005-05-11  Murray Cumming <murrayc@murrayc.com>
 
+	* glom/mode_data/box_data.cc:
+	* glom/mode_data/box_data.h:
+	* glom/base_db.cc:
+	* glom/base_db.h:
+	Moved get_layout_item_table_name() here from 
+	box_data. Added fill_full_field_details().
+	* glom/document/document_glom.cc:
+	update_cached_relationships(): Fill in the 
+	relationships in the report layouts too.
+        Also call this at the start of save_before(), 
+	to ensure that relationships are always up to 
+	date.
+	* glom/frame_glom.cc: on_menu_report_selected():
+	Do a GROUP BY sql SELECT and then a WHERE sql 
+	SELECT for each value, creating nodes for each 
+	value.  
+	* xslt/print_report_to_html.xsl: Show field 
+	headings, and group-by details.
+
+2005-05-11  Murray Cumming <murrayc@murrayc.com>
+
 	* glom/data_structure/layout/layoutgroup.cc:
 	* glom/dialog_layout_report.cc:
 	* glom/dialog_layout_report.h:

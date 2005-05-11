@@ -145,9 +145,6 @@ protected:
   virtual Gnome::Gda::Value get_primary_key_value_selected() = 0;
   //virtual bool get_field(const Glib::ustring& name, Field& field) const;
 
-  ///Get the table name. It's either the current table or the relationship's to_table:
-  Glib::ustring get_layout_item_table_name(const LayoutItem_Field& layout_item, const Glib::ustring& table_name);
-
   //Signal handlers:
   virtual void on_Button_Find(); //only used by _Find sub-classes. Should be MI.
 

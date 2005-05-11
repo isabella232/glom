@@ -1085,23 +1085,6 @@ Glib::ustring Box_Data::build_sql_select_with_where_clause(const Glib::ustring& 
 }
 */
 
-Glib::ustring Box_Data::get_layout_item_table_name(const LayoutItem_Field& layout_item, const Glib::ustring& table_name)
-{
-  if(!layout_item.get_has_relationship_name())
-    return table_name;
-  else
-  {
-    const Glib::ustring relationship_name = layout_item.get_relationship_name();
-    Relationship relationship;
-    Document_Glom* document = get_document();
-    bool test = document->get_relationship(table_name, relationship_name, relationship);
-    if(test)
-     return relationship.get_to_table();
-  }
-
-  return Glib::ustring();
-}
-
 bool Box_Data::get_related_record_exists(const Relationship& relationship, const Field& key_field, const Gnome::Gda::Value& key_value)
 {
   bool result = false;

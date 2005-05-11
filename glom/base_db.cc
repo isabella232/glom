@@ -1221,3 +1221,30 @@ bool Base_DB::offer_field_list(LayoutItem_Field& field, const Glib::ustring& tab
 
   return result;
 }
+
+void Base_DB::fill_full_field_details(const Glib::ustring& parent_table_name, LayoutItem_Field& layout_item)
+{
+  Glib::ustring table_name = parent_table_name;
+
+  if(layout_item.get_has_relationship_name())
+    table_name = layout_item.m_relationship.get_to_table();
+
+  get_document()->get_field(table_name, layout_item.get_name(), layout_item.m_field);
+}
+
+Glib::ustring Base_DB::get_layout_item_table_name(const LayoutItem_Field& layout_item, const Glib::ustring& table_name)
+{
+  if(!layout_item.get_has_relationship_name())
+    return table_name;
+  else
+  {
+    const Glib::ustring relationship_name = layout_item.get_relationship_name();
+    Relationship relationship; //TODO: We should not need to do this. It should be updated in the LayoutItem_Field already.
+    Document_Glom* document = get_document();
+    bool test = document->get_relationship(table_name, relationship_name, relationship);
+    if(test)
+     return relationship.get_to_table();
+  }
+
+  return Glib::ustring();
+}

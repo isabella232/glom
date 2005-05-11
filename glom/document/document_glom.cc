@@ -343,7 +343,7 @@ void Document_Glom::set_table_fields(const Glib::ustring& table_name, const type
     {
       g_warning("Document_Glom::set_table_fields(): vecFields is empty: table_name=%s", table_name.c_str());
     }
-      
+
     DocumentTableInfo& info = get_table_info_with_add(table_name);
     info.m_fields = vecFields;
 
@@ -1384,6 +1384,8 @@ void Document_Glom::save_before_layout_group(xmlpp::Element* node, const LayoutG
 
 bool Document_Glom::save_before()
 {
+  update_cached_relationships(); //It's helpful to update this whenever something has changed.
+
   xmlpp::Element* nodeRoot = get_node_document();
   if(nodeRoot)
   {
@@ -1670,6 +1672,8 @@ void Document_Glom::update_cached_relationships()
   for(type_tables::iterator iterTable = m_tables.begin(); iterTable != m_tables.end(); ++iterTable)
   {
     DocumentTableInfo& tableInfo = iterTable->second;
+
+    //Layouts:
     for(DocumentTableInfo::type_layouts::iterator iterLayout = tableInfo.m_layouts.begin(); iterLayout != tableInfo.m_layouts.end(); ++iterLayout)
     {
       if(tableInfo.m_info.get_name() == iterLayout->m_parent_table) //If it is not a related layout:
@@ -1680,6 +1684,12 @@ void Document_Glom::update_cached_relationships()
           update_cached_relationships(iterGroup->second, tableInfo.m_info.get_name());
         }
       }
+    }
+
+    //Reports:
+    for(DocumentTableInfo::type_reports::iterator iterReport = tableInfo.m_reports.begin(); iterReport != tableInfo.m_reports.end(); ++iterReport)
+    {
+      update_cached_relationships(iterReport->second.m_layout_group, tableInfo.m_info.get_name());
     }
   }
 }

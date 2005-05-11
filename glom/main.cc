@@ -122,7 +122,7 @@ main(int argc, char* argv[])
 
   //We use python for calculated-fields:
   Py_Finalize();
-  
+
   return 0;
 }
 

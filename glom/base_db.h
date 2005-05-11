@@ -77,6 +77,11 @@ public:
 protected:
   bool offer_field_list(LayoutItem_Field& field, const Glib::ustring& table_name);
 
+  void fill_full_field_details(const Glib::ustring& parent_table_name, LayoutItem_Field& layout_item);
+
+  ///Get the table name. It's either the current table or the relationship's to_table:
+  Glib::ustring get_layout_item_table_name(const LayoutItem_Field& layout_item, const Glib::ustring& table_name);
+
   typedef std::vector<Glib::ustring> type_vecStrings;
   type_vecStrings get_table_names() const;
 
