@@ -1,5 +1,9 @@
+0.8.27:
+
 * Simpler Tables menu replaces the Navigation/Tables 
   dialog window.
+* Added simple reports functionality, via the Reports 
+  menu.
 
 0.8.26:
 
