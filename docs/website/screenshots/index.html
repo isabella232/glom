@@ -21,6 +21,7 @@
 <li><a href="#operator_listview">The List View</a></li>
 <li><a href="#operator_detailsview">The Details View</a></li>
 <li><a href="#operator_detailsview_relatedrecords">The Details View - Related Records</a></li>
+<li><a href="#operator_reports">Producing Reports</a></li>
 </ul>
 </p>
 
@@ -36,6 +37,7 @@
 <li><a href="#developer_layout_list">Designing the List Layout</a></li>
 <li><a href="#developer_layout_related_fields">Designing the Layout - Related Fields</a></li>
 <li><a href="#developer_layout_field_formatting">Designing the Layout - Formatting</a></li>
+<li><a href="#developer_reports">Designing Reports</a></li>
 <li><a href="#developer_groups">Designing Users and Groups</a></li>
 </ul>
 </p>
@@ -74,6 +76,11 @@
   <p>The details view can show records from a related table. Just enter new data in the list of related records to create a new record in the related table.</p>
  
   <p><i>Note that this example shows <a href="#developer_relationships">related records</a> from the Invoice Lines table. When you add a new row here, a new related record will be created with the appropriate value in the key field.</i></p>
+
+<h3><a name="operator_reports" />Producing Reports</h3>
+
+  <img src="glom_report_result.png" />
+  <p>The Reports menu lists reports that the developer has <a href="#developer_reports">created</a> for you. Just choose the report from the menu.</p>
 
 <h2>As a Developer</h2>
 
@@ -140,6 +147,11 @@ menu for the field.</p>
   <img src="glom_design_layout_field_formatting.png" />
   <p>The default formatting for your locale is usually acceptable, but sometimes you need to make small changes. For instance, for a number field, you might want to show only two decimal places, or not show the thousands separator. Or you might want to show a currency symbol.</p>
   <p>You can also prevent editing of fields. For instance, maybe you don't want to edit the customer's name via the Invoice details, because this would then be seen on every other Invoice for that customer.</p>
+
+<h3><a name="developer_reports" />Designing Reports</h3>
+
+  <img src="glom_report_design.png" />
+  <p>For each table, you can create reports that will be available to the operators. For instance, this report lists each contact, grouped by country, and then grouped by town.</p>
 
 <h3><a name="developer_groups" />Designing Users and Groups</h3>
 
