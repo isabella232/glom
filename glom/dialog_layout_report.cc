@@ -57,11 +57,11 @@ Dialog_Layout_Report::Dialog_Layout_Report(BaseObjectType* cobject, const Glib::
     m_model_available_parts = Gtk::TreeStore::create(m_columns_available_parts);
 
     Gtk::TreeModel::iterator iter = m_model_available_parts->append();
-    (*iter)[m_columns_available_parts.m_col_item] = new LayoutItem_GroupBy();
+    (*iter)[m_columns_available_parts.m_col_item] = type_item_ptr(new LayoutItem_GroupBy());
     iter = m_model_available_parts->append();
-    (*iter)[m_columns_available_parts.m_col_item] = new LayoutItem_Field();
+    (*iter)[m_columns_available_parts.m_col_item] = type_item_ptr(new LayoutItem_Field());
     iter = m_model_available_parts->append();
-    (*iter)[m_columns_available_parts.m_col_item] = new LayoutItem_Summary();
+    (*iter)[m_columns_available_parts.m_col_item] = type_item_ptr(new LayoutItem_Summary());
 
     m_treeview_available_parts->set_model(m_model_available_parts);
 
@@ -77,6 +77,13 @@ Dialog_Layout_Report::Dialog_Layout_Report(BaseObjectType* cobject, const Glib::
     column_part->set_cell_data_func(*renderer_part, sigc::mem_fun(*this, &Dialog_Layout_Report::on_cell_data_available_part));
 
     m_treeview_available_parts->set_headers_visible(false); //There's only one column, so this is not useful.
+
+    //Respond to changes of selection:
+    Glib::RefPtr<Gtk::TreeView::Selection> refSelection = m_treeview_available_parts->get_selection();
+    if(refSelection)
+    {
+      refSelection->signal_changed().connect( sigc::mem_fun(*this, &Dialog_Layout_Report::on_treeview_available_parts_selection_changed) );
+    }
   }
 
   refGlade->get_widget("treeview_parts", m_treeview_parts);
@@ -100,10 +107,13 @@ Dialog_Layout_Report::Dialog_Layout_Report(BaseObjectType* cobject, const Glib::
     column_part->pack_start(*renderer_part);
     column_part->set_cell_data_func(*renderer_part, sigc::mem_fun(*this, &Dialog_Layout_Report::on_cell_data_part));
 
-    //Connect to its signal:
-    //renderer_name->property_editable() = true;
-    //renderer_name->signal_edited().connect(
-    //  sigc::bind( sigc::mem_fun(*this, &Dialog_Layout_Report::on_treeview_cell_edited_text), m_model_parts->m_columns.m_col_name) );
+    //Details column:
+    Gtk::TreeView::Column* column_details = Gtk::manage( new Gtk::TreeView::Column(_("Details")) );
+    m_treeview_parts->append_column(*column_details);
+
+    Gtk::CellRendererText* renderer_details = Gtk::manage(new Gtk::CellRendererText);
+    column_details->pack_start(*renderer_details);
+    column_details->set_cell_data_func(*renderer_details, sigc::mem_fun(*this, &Dialog_Layout_Report::on_cell_data_details));
 
 
     //Connect to its signal:
@@ -114,7 +124,7 @@ Dialog_Layout_Report::Dialog_Layout_Report(BaseObjectType* cobject, const Glib::
     Glib::RefPtr<Gtk::TreeView::Selection> refSelection = m_treeview_parts->get_selection();
     if(refSelection)
     {
-      refSelection->signal_changed().connect( sigc::mem_fun(*this, &Dialog_Layout_Report::on_treeview_fields_selection_changed) );
+      refSelection->signal_changed().connect( sigc::mem_fun(*this, &Dialog_Layout_Report::on_treeview_parts_selection_changed) );
     }
 
     //m_model_parts->signal_row_changed().connect( sigc::mem_fun(*this, &Dialog_Layout_Report::on_treemodel_row_changed) );
@@ -148,14 +158,47 @@ LayoutGroup* Dialog_Layout_Report::fill_group(const Gtk::TreeModel::iterator& it
   {
     Gtk::TreeModel::Row row = *iter;
 
-    LayoutItem* pItem = row[m_columns_parts.m_col_item];
-
+    type_item_ptr ptr = row[m_columns_parts.m_col_item];
+    LayoutItem* pItem = ptr.obj();
+ 
     LayoutGroup* pGroup = dynamic_cast<LayoutGroup*>(pItem);
     if(pGroup)
+    {
+      //Make sure that it contains the child items:
+      fill_group_children(*pGroup, iter);
       return static_cast<LayoutGroup*>(pGroup->clone());
+    }
+
   }
 
   return 0;
+}
+
+void Dialog_Layout_Report::fill_group_children(LayoutGroup& group, const Gtk::TreeModel::iterator& iter)
+{
+  if(iter)
+  {
+    Gtk::TreeModel::Row row = *iter;
+
+    guint sequence = 0;
+    group.remove_all_items();
+    for(Gtk::TreeModel::iterator iterChild = row.children().begin(); iterChild != row.children().end(); ++iterChild)
+    {
+      Gtk::TreeModel::Row row = *iterChild;
+      type_item_ptr ptr = row[m_columns_parts.m_col_item];
+      LayoutItem* item = ptr.obj();
+
+      //Recurse:
+      LayoutGroup* child_group = dynamic_cast<LayoutGroup*>(item);
+      if(child_group)
+        fill_group_children(*child_group, iterChild);
+
+      item->m_sequence = sequence;
+      group.m_map_items[sequence] = item->clone();
+      ++sequence;
+    }
+
+  }
 }
 
 void Dialog_Layout_Report::add_group(const Gtk::TreeModel::iterator& parent, const LayoutGroup& group)
@@ -174,7 +217,25 @@ void Dialog_Layout_Report::add_group(const Gtk::TreeModel::iterator& parent, con
   if(iterNewGroup)
   {
     Gtk::TreeModel::Row row = *iterNewGroup;
-    row[m_columns_parts.m_col_item] = group.clone();
+
+    row[m_columns_parts.m_col_item] = type_item_ptr(group.clone());
+
+    //Add child rows:
+    for(LayoutGroup::type_map_items::const_iterator iter = group.m_map_items.begin(); iter != group.m_map_items.end(); ++iter)
+    {
+      const LayoutItem* pItem = iter->second;
+
+      const LayoutGroup* pGroup = dynamic_cast<const LayoutGroup*>(pItem);
+      if(pGroup)
+        add_group(iterNewGroup /*parent of the new group */, *pGroup); //recurse
+      else
+      {
+        Gtk::TreeModel::iterator iterChildRow = m_model_parts->append(iterNewGroup->children());
+
+        Gtk::TreeModel::Row row = *iterChildRow;
+        row[m_columns_parts.m_col_item] = type_item_ptr(pItem->clone());
+      }
+    }
 
     m_modified = true;
   }
@@ -205,7 +266,6 @@ void Dialog_Layout_Report::set_report(const Glib::ustring& table_name, const Rep
 
     //m_entry_table_title->set_text( document->get_table_title(table_name) );
 
-    LayoutGroup::type_map_items mapGroups = report.m_layout_group.m_map_items;
     //document->fill_layout_field_details(m_table_name, mapGroups); //Update with full field information.
 
     //Show the report items:
@@ -213,7 +273,7 @@ void Dialog_Layout_Report::set_report(const Glib::ustring& table_name, const Rep
 
     //guint field_sequence = 1; //0 means no sequence
     //guint group_sequence = 1; //0 means no sequence
-    for(LayoutGroup::type_map_items::const_iterator iter = mapGroups.begin(); iter != mapGroups.end(); ++iter)
+    for(LayoutGroup::type_map_items::const_iterator iter = report.m_layout_group.m_map_items.begin(); iter != report.m_layout_group.m_map_items.end(); ++iter)
     {
       const LayoutGroup* group = dynamic_cast<const LayoutGroup*>(iter->second);
       if(group)
@@ -231,7 +291,14 @@ void Dialog_Layout_Report::set_report(const Glib::ustring& table_name, const Rep
 
 void Dialog_Layout_Report::enable_buttons()
 {
-  //Fields:
+  //Available Parts:
+  Glib::RefPtr<Gtk::TreeView::Selection> refSelectionAvailable = m_treeview_available_parts->get_selection();
+  if(refSelectionAvailable)
+    m_button_add->set_sensitive(true);
+  else
+    m_button_add->set_sensitive(false);
+
+  //Parts:
   Glib::RefPtr<Gtk::TreeView::Selection> refSelection = m_treeview_parts->get_selection();
   if(refSelection)
   {
@@ -359,7 +426,7 @@ void Dialog_Layout_Report::on_button_add()
   //Copy the available part to the list of parts:
   if(available)
   {
-    const LayoutItem* pAvailable = (*available)[m_columns_available_parts.m_col_item];
+    type_item_ptr pAvailable = (*available)[m_columns_available_parts.m_col_item];
 
     Gtk::TreeModel::iterator iter;
     if(parent)
@@ -370,7 +437,7 @@ void Dialog_Layout_Report::on_button_add()
     else
       iter = m_model_parts->append();
 
-    (*iter)[m_columns_parts.m_col_item] = pAvailable->clone();
+    (*iter)[m_columns_parts.m_col_item] = type_item_ptr(pAvailable->clone());
   }
 
   enable_buttons();
@@ -459,8 +526,8 @@ Gtk::TreeModel::iterator Dialog_Layout_Report::get_selected_group_parent() const
     if(iter)
     {
       Gtk::TreeModel::Row row = *iter;
-      LayoutItem* pPart = row[m_columns_parts.m_col_item];
-      if(dynamic_cast<LayoutGroup*>(pPart))
+      type_item_ptr pPart = row[m_columns_parts.m_col_item];
+      if(dynamic_cast<LayoutGroup*>(pPart.obj()))
       {
         //Add a group under this group:
         parent = iter;
@@ -502,44 +569,56 @@ void Dialog_Layout_Report::on_button_edit()
     {
       //Do something different for each type of item:
       Gtk::TreeModel::Row row = *iter;
-      LayoutItem* item = row[m_columns_parts.m_col_item];
+      type_item_ptr ptr = row[m_columns_parts.m_col_item];
+      LayoutItem* item = ptr.obj();
 
-      LayoutItem_GroupBy* group_by = dynamic_cast<LayoutItem_GroupBy*>(item);
-      if(group_by)
+      LayoutItem_Field* field = dynamic_cast<LayoutItem_Field*>(item);
+      if(field)
       {
-        try
+        bool test = offer_field_list(*field, m_table_name);
+        if(test)
         {
-          Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_group_by");
-
-          Dialog_GroupBy* dialog = 0;
-          refXml->get_widget_derived("dialog_group_by", dialog);
-
-          if(dialog)
+          m_model_parts->row_changed(Gtk::TreePath(iter), iter); //TODO: Add row_changed(iter) to gtkmm?
+        }
+      }
+      else
+      {
+        LayoutItem_GroupBy* group_by = dynamic_cast<LayoutItem_GroupBy*>(item);
+        if(group_by)
+        {
+          try
           {
-            add_view(dialog);
-            dialog->set_item(*group_by, m_table_name);
-            dialog->set_transient_for(*this);
+            Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_group_by");
+  
+            Dialog_GroupBy* dialog = 0;
+            refXml->get_widget_derived("dialog_group_by", dialog);
 
-            int response = dialog->run();
-            dialog->hide();
-
-            if(response == Gtk::RESPONSE_OK)
+            if(dialog)
             {
-              //Get the chosen relationship:
-              dialog->get_item(*group_by);
-            }
+              add_view(dialog);
+              dialog->set_item(*group_by, m_table_name);
+              dialog->set_transient_for(*this);
 
-            remove_view(dialog);
-            delete dialog;
+              int response = dialog->run();
+              dialog->hide();
+
+              if(response == Gtk::RESPONSE_OK)
+              {
+                //Get the chosen relationship:
+                dialog->get_item(*group_by);
+                m_model_parts->row_changed(Gtk::TreePath(iter), iter); //TODO: Add row_changed(iter) to gtkmm?
+              }
+
+              remove_view(dialog);
+              delete dialog;
+            }
+          }
+          catch(const Gnome::Glade::XmlError& ex)
+          {
+            std::cerr << ex.what() << std::endl;
           }
         }
-        catch(const Gnome::Glade::XmlError& ex)
-        {
-          std::cerr << ex.what() << std::endl;
-        }
-
       }
-
     }
   }
 }
@@ -591,7 +670,12 @@ void Dialog_Layout_Report::save_to_document()
 */
 }
 
-void Dialog_Layout_Report::on_treeview_fields_selection_changed()
+void Dialog_Layout_Report::on_treeview_available_parts_selection_changed()
+{
+  enable_buttons();
+}
+
+void Dialog_Layout_Report::on_treeview_parts_selection_changed()
 {
   enable_buttons();
 }
@@ -607,7 +691,7 @@ void Dialog_Layout_Report::on_cell_data_part(Gtk::CellRenderer* renderer, const 
     if(iter)
     {
       Gtk::TreeModel::Row row = *iter;
-      LayoutItem* pItem = row[m_columns_parts.m_col_item];
+      type_item_ptr pItem = row[m_columns_parts.m_col_item];
       Glib::ustring part = pItem->get_part_type_name();
 
       renderer_text->property_text() = part;
@@ -615,6 +699,43 @@ void Dialog_Layout_Report::on_cell_data_part(Gtk::CellRenderer* renderer, const 
     }
   }
 }
+
+void Dialog_Layout_Report::on_cell_data_details(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter)
+{
+//Set the view's cell properties depending on the model's data:
+  Gtk::CellRendererText* renderer_text = dynamic_cast<Gtk::CellRendererText*>(renderer);
+  if(renderer_text)
+  {
+    if(iter)
+    {
+      Glib::ustring text;
+
+      Gtk::TreeModel::Row row = *iter;
+      type_item_ptr ptr = row[m_columns_parts.m_col_item];
+      const LayoutItem* pItem = ptr.obj();
+
+      const LayoutItem_GroupBy* pGroup = dynamic_cast<const LayoutItem_GroupBy*>(pItem);
+      if(pGroup)
+      {
+        //TODO: Internationalize this properly:
+        text = pGroup->get_field_group_by()->get_layout_display_name();
+
+        if(pGroup->get_field_sort_by())
+          text += "(sort by: " + pGroup->get_field_sort_by()->get_layout_display_name() + ")";
+      }
+      else
+      {
+        const LayoutItem_Field* pField = dynamic_cast<const LayoutItem_Field*>(pItem);
+        if(pField)
+          text = pField->get_layout_display_name();
+      }
+
+      renderer_text->property_text() = text;
+      renderer_text->property_editable() = false;
+    }
+  }
+}
+
 
 void Dialog_Layout_Report::on_cell_data_available_part(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter)
 {
@@ -627,7 +748,7 @@ void Dialog_Layout_Report::on_cell_data_available_part(Gtk::CellRenderer* render
     if(iter)
     {
       Gtk::TreeModel::Row row = *iter;
-      LayoutItem* pItem = row[m_columns_available_parts.m_col_item];
+      type_item_ptr pItem = row[m_columns_available_parts.m_col_item];
       Glib::ustring part = pItem->get_part_type_name();
 
       renderer_text->property_text() = part;
@@ -649,6 +770,7 @@ Report Dialog_Layout_Report::get_report()
   m_report.m_layout_group.remove_all_items();
 
   guint group_sequence = 0;
+  m_report.m_layout_group.remove_all_items();
   for(Gtk::TreeModel::iterator iter = m_model_parts->children().begin(); iter != m_model_parts->children().end(); ++iter)
   {
     LayoutGroup* group = fill_group(iter);

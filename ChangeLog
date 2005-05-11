@@ -1,3 +1,14 @@
+2005-05-11  Murray Cumming <murrayc@murrayc.com>
+
+	* glom/data_structure/layout/layoutgroup.cc:
+	* glom/dialog_layout_report.cc:
+	* glom/dialog_layout_report.h:
+	* glom/document/document_glom.cc:
+	* glom/frame_glom.cc:
+	* glom/mode_data/dialog_layout.h:
+	Fix various problems with loading/saving 
+	report parts.
+
 2005-05-10  Murray Cumming <murrayc@murrayc.com>
 
 	* glom/base_db.cc:

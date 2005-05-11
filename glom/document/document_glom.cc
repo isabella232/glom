@@ -907,9 +907,6 @@ void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Gl
     if(element)
     {
       const guint sequence = get_node_attribute_value_as_decimal(element, GLOM_ATTRIBUTE_SEQUENCE);
-
-       g_warning("load_after_layout_group(): child name=%s", element->get_name().c_str());
-
       if(element->get_name() == GLOM_NODE_DATA_LAYOUT_ITEM)
       {
         LayoutItem_Field item;
@@ -987,7 +984,6 @@ void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Gl
       }
       else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_ITEM_GROUPBY)
       {
-        g_warning("load_after_layout_group(): groupby found.");
         LayoutItem_GroupBy child_group;
         //Recurse:
         load_after_layout_group(element, table_name, child_group);
@@ -996,9 +992,9 @@ void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Gl
         field_groupby.set_name( get_node_attribute_value(element, GLOM_ATTRIBUTE_REPORT_ITEM_GROUPBY_GROUPBY) );
         child_group.set_field_group_by(field_groupby);
 
-        LayoutItem_Field field_sortpby;
-        field_sortpby.set_name( get_node_attribute_value(element, GLOM_ATTRIBUTE_REPORT_ITEM_GROUPBY_SORTBY) );
-        child_group.set_field_sort_by(field_sortpby);
+        LayoutItem_Field field_sortby;
+        field_sortby.set_name( get_node_attribute_value(element, GLOM_ATTRIBUTE_REPORT_ITEM_GROUPBY_SORTBY) );
+        child_group.set_field_sort_by(field_sortby);
 
         group.add_item(child_group);
       }
@@ -1286,6 +1282,8 @@ bool Document_Glom::load_after()
 
 void Document_Glom::save_before_layout_group(xmlpp::Element* node, const LayoutGroup& group)
 {
+  //g_warning("save_before_layout_group");
+
   xmlpp::Element* child = 0;
 
   const LayoutItem_GroupBy* group_by = dynamic_cast<const LayoutItem_GroupBy*>(&group);
@@ -1312,6 +1310,7 @@ void Document_Glom::save_before_layout_group(xmlpp::Element* node, const LayoutG
   for(LayoutGroup::type_map_const_items::const_iterator iterItems = items.begin(); iterItems != items.end(); ++iterItems)
   {
     const LayoutItem* item = iterItems->second;
+    //g_warning("save_before_layout_group: child part type=%s", item->get_part_type_name().c_str());
 
     const LayoutGroup* child_group = dynamic_cast<const LayoutGroup*>(item);
     if(child_group) //If it is a group
@@ -1378,6 +1377,8 @@ void Document_Glom::save_before_layout_group(xmlpp::Element* node, const LayoutG
       }
 
     }
+
+    //g_warning("save_before_layout_group: after child part type=%s", item->get_part_type_name().c_str());
   } 
 }
 
@@ -1516,7 +1517,7 @@ bool Document_Glom::save_before()
     //Add groups:
     xmlpp::Element* nodeGroups = nodeRoot->add_child(GLOM_NODE_GROUPS);
 
-    nodeGroups->add_child_comment("These are only used when recreating a database from an example file. The actualy access-control is on the server, of course.");
+    nodeGroups->add_child_comment("These are only used when recreating a database from an example file. The actual access-control is on the server, of course.");
 
     for(type_map_groups::const_iterator iter = m_groups.begin(); iter != m_groups.end(); ++iter)
     {

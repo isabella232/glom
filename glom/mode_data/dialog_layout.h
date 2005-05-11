@@ -28,7 +28,7 @@
 
 class Dialog_Layout :
   public Gtk::Dialog,
-  public View_Composite_Glom //Give it access to the document.
+  public Base_DB //Give it access to the document, and to the database utilities
 {
 public:
   Dialog_Layout(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade, bool with_table_title = true);

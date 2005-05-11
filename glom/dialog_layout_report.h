@@ -37,6 +37,8 @@ public:
 
 protected:
 
+  typedef sharedptr<LayoutItem> type_item_ptr;
+
   class ModelColumnsGroups : public Gtk::TreeModel::ColumnRecord
   {
   public:
@@ -44,7 +46,8 @@ protected:
     ModelColumnsGroups()
     { add(m_col_item); }
 
-    Gtk::TreeModelColumn<LayoutItem*> m_col_item;
+    //We use sharedptr<> so that the underlying LayoutItem will be destroyed automatically when the model is destroyed.
+    Gtk::TreeModelColumn< type_item_ptr > m_col_item;
   };
 
   ModelColumnsGroups m_columns_parts;
@@ -52,7 +55,9 @@ protected:
   ModelColumnsGroups m_columns_available_parts;
 
   virtual void add_group(const Gtk::TreeModel::iterator& parent, const LayoutGroup& group);
-  virtual LayoutGroup* fill_group(const Gtk::TreeModel::iterator& iter);
+
+  void fill_group_children(LayoutGroup& group, const Gtk::TreeModel::iterator& iter);
+  LayoutGroup* fill_group(const Gtk::TreeModel::iterator& iter);
 
   //Enable/disable buttons, depending on treeview selection:
   virtual void enable_buttons();
@@ -74,9 +79,12 @@ protected:
 
   virtual void on_button_edit();
 
-  virtual void on_treeview_fields_selection_changed();
+  virtual void on_treeview_parts_selection_changed();
+  virtual void on_treeview_available_parts_selection_changed();
 
   void on_cell_data_part(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter);
+  void on_cell_data_details(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter);
+
   void on_cell_data_available_part(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter);
 
   Gtk::TreeView* m_treeview_parts;

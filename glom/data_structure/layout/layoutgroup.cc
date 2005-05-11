@@ -36,7 +36,7 @@ LayoutGroup::LayoutGroup(const LayoutGroup& src)
   for(type_map_items::const_iterator iter = src.m_map_items.begin(); iter != src.m_map_items.end(); ++iter)
   {
     m_map_items[iter->first] = iter->second->clone();
-  }   
+  }
 }
 
 LayoutGroup::~LayoutGroup()

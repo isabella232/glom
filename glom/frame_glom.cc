@@ -836,8 +836,8 @@ void Frame_Glom::on_menu_developer_reports()
   }
   else
   {
-    Gtk::MessageDialog dialog("This is not working yet. It's just some test code."); //TODO: Remove this.
-    dialog.run();
+    //Gtk::MessageDialog dialog("This is not working yet. It's just some test code."); //TODO: Remove this.
+    //dialog.run();
 
     m_pBox_Reports->init_db_details(m_strTableName);
     m_pDialog_Reports->show();
@@ -1092,11 +1092,7 @@ void Frame_Glom::on_menu_report_selected(const Glib::ustring& report_name)
 
           }
         }
-
-
       }
-
-
     }
   }
 
