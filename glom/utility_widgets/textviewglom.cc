@@ -48,6 +48,8 @@ void TextViewGlom::init()
 {
   setup_menu();
 
+  set_shadow_type(Gtk::SHADOW_IN);
+
   m_TextView.show();
   add(m_TextView);
 

@@ -101,6 +101,7 @@ void AddDel::init()
 
   m_ScrolledWindow.add(m_TreeView);
   m_ScrolledWindow.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
+  m_ScrolledWindow.set_shadow_type(Gtk::SHADOW_IN);
   m_TreeView.show();
   pack_start(m_ScrolledWindow);
 
