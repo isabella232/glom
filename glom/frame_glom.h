@@ -119,7 +119,9 @@ protected:
   virtual Gtk::Window* get_app_window();
   virtual const Gtk::Window* get_app_window() const;
 
-  virtual void alert_no_table();
+  void alert_no_table();
+
+  void report_build_groupby(xmlpp::Element& parent_node, LayoutItem_GroupBy& group_by, const Glib::ustring where_clause_parent);
 
   //Signal handlers:
   virtual void on_notebook_find_criteria(const Glib::ustring& strWhereClause);

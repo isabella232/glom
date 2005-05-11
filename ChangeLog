@@ -1,5 +1,19 @@
 2005-05-11  Murray Cumming <murrayc@murrayc.com>
 
+	* glom/data_structure/layout/report_parts/Makefile.am:
+	Fixed a distcheck problem.
+	* glom/frame_glom.cc:
+	* glom/frame_glom.h:
+	on_menu_report_selected(): Add field headings, and 
+	recurse into sub-groupbys.
+	* po/POTFILES.in: Updated.
+	* xslt/print_report_to_html.xsl: Added class names for 
+	the various parts, and added a little inline css to 
+	use them. Used select with apply-templates to put 
+	sub-groupbys in the right place.
+
+2005-05-11  Murray Cumming <murrayc@murrayc.com>
+
 	* glom/mode_data/box_data.cc:
 	* glom/mode_data/box_data.h:
 	* glom/base_db.cc:

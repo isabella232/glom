@@ -994,6 +994,108 @@ bool Frame_Glom::create_database(const Glib::ustring& database_name, bool reques
   return false;
 }
 
+void Frame_Glom::report_build_groupby(xmlpp::Element& parent_node, LayoutItem_GroupBy& group_by, const Glib::ustring where_clause_parent)
+{
+  //Get the possible heading values.
+  LayoutItem_Field* field_group_by = group_by.get_field_group_by();
+  if(field_group_by)
+  {
+    fill_full_field_details(m_strTableName, *field_group_by);
+
+    //Get the possible group values, ignoring repeats by using GROUP BY.
+    const Glib::ustring group_field_table_name = get_layout_item_table_name(*field_group_by, m_strTableName);
+    Glib::ustring sql_query = "SELECT " + group_field_table_name + "." + field_group_by->get_name() +
+      " FROM " + group_field_table_name;
+
+    if(!where_clause_parent.empty())
+      sql_query += " WHERE " + where_clause_parent;
+
+    sql_query += " GROUP BY " + field_group_by->get_name(); //rTODO: And restrict to the current found set.
+
+    Glib::RefPtr<Gnome::Gda::DataModel> datamodel = Query_execute(sql_query);
+    if(datamodel)
+    {
+      guint rows_count = datamodel->get_n_rows();
+      for(guint row = 0; row < rows_count; ++row)
+      {
+        const Gnome::Gda::Value group_value = datamodel->get_value_at(0 /* col*/, row);
+
+        //Add XML node:
+        xmlpp::Element* nodeGroupBy = parent_node.add_child("group_by");
+
+        nodeGroupBy->set_attribute("group_field", field_group_by->m_field.get_title_or_name());
+        nodeGroupBy->set_attribute("group_value",
+          GlomConversions::get_text_for_gda_value(field_group_by->m_field.get_glom_type(), group_value, field_group_by->m_numeric_format) );
+
+        Glib::ustring where_clause = group_field_table_name + "." + field_group_by->get_name() + " = " + field_group_by->m_field.sql(group_value);
+        if(!where_clause_parent.empty())
+          where_clause += " AND (" + where_clause_parent + ")";
+
+        //Get data and add child rows:
+        GlomUtils::type_vecLayoutFields fieldsToGet;
+        for(LayoutGroup::type_map_items::iterator iterChildren = group_by.m_map_items.begin(); iterChildren != group_by.m_map_items.end(); ++iterChildren)
+        {
+          LayoutItem_Field* pField = dynamic_cast<LayoutItem_Field*>(iterChildren->second);
+          if(pField)
+          {
+            fill_full_field_details(m_strTableName, *pField);
+            fieldsToGet.push_back(*pField);
+          }
+          else
+          {
+             LayoutItem_GroupBy* pGroupBy = dynamic_cast<LayoutItem_GroupBy*>(iterChildren->second);
+             if(pGroupBy)
+             {
+               //Recurse, adding a sub-groupby block:
+               report_build_groupby(*nodeGroupBy, *pGroupBy, where_clause);
+             }
+          }
+        }
+
+        if(!fieldsToGet.empty())
+        {
+          //Field headings:
+          for(GlomUtils::type_vecLayoutFields::iterator iter = fieldsToGet.begin(); iter != fieldsToGet.end(); ++iter)
+          {
+            xmlpp::Element* nodeFieldHeading = nodeGroupBy->add_child("field_heading");
+            nodeFieldHeading->set_attribute("name", iter->get_name()); //Not really necessary, but maybe useful.
+            nodeFieldHeading->set_attribute("title", iter->m_field.get_title_or_name());
+          }
+
+          //Rows, with data:
+          Glib::ustring sort_clause;
+          if(group_by.get_field_sort_by())
+            sort_clause = group_by.get_field_sort_by()->get_name(); //TODO: Deal with related fields too.
+
+          Glib::ustring sql_query = GlomUtils::build_sql_select_with_where_clause(m_strTableName,
+            fieldsToGet,
+            where_clause, sort_clause);
+
+          Glib::RefPtr<Gnome::Gda::DataModel> datamodel = Query_execute(sql_query);
+          if(datamodel)
+          {
+            guint rows_count = datamodel->get_n_rows();
+            for(guint row = 0; row < rows_count; ++row)
+            {
+              xmlpp::Element* nodeRow = nodeGroupBy->add_child("row");
+
+              for(guint col = 0; col < fieldsToGet.size(); ++col)
+              {
+                const LayoutItem_Field& field = fieldsToGet[col];
+                xmlpp::Element* nodeField = nodeRow->add_child("field");
+                nodeField->set_attribute("name", field.get_name()); //Not really necessary, but maybe useful.
+                nodeField->set_attribute("value",
+                  GlomConversions::get_text_for_gda_value(field.m_field.get_glom_type(), datamodel->get_value_at(col, row), field.m_numeric_format) );
+              }
+            }
+
+          }
+        }
+      }
+    }
+  }
+}
+
 void Frame_Glom::on_menu_report_selected(const Glib::ustring& report_name)
 {
   const Privileges table_privs = get_current_privs(m_strTableName);
@@ -1042,90 +1144,7 @@ void Frame_Glom::on_menu_report_selected(const Glib::ustring& report_name)
     //The Group, and the details for each record in the group:
     LayoutItem_GroupBy* pGroupBy = dynamic_cast<LayoutItem_GroupBy*>(pPart);
     if(pGroupBy)
-    {
-      //Get the possible heading values.
-      LayoutItem_Field* field_group_by = pGroupBy->get_field_group_by();
-      if(field_group_by)
-      {
-        fill_full_field_details(m_strTableName, *field_group_by);
-
-        //Get the possible group values, ignoring repeats by using GROUP BY.
-        const Glib::ustring group_field_table_name = get_layout_item_table_name(*field_group_by, m_strTableName); 
-        const Glib::ustring sql_query = "SELECT " + group_field_table_name + "." + field_group_by->get_name() +
-          " FROM " + group_field_table_name + " GROUP BY " + field_group_by->get_name(); //rTODO: And restrict to the current found set.
-
-        Glib::RefPtr<Gnome::Gda::DataModel> datamodel = Query_execute(sql_query);
-        if(datamodel)
-        {
-          guint rows_count = datamodel->get_n_rows();
-          for(guint row = 0; row < rows_count; ++row)
-          {
-            const Gnome::Gda::Value group_value = datamodel->get_value_at(0 /* col*/, row);
-
-            //Add XML node:
-            xmlpp::Element* nodeGroupBy = nodeParent->add_child("group_by");
-
-            nodeGroupBy->set_attribute("group_field", field_group_by->m_field.get_title_or_name());
-            nodeGroupBy->set_attribute("group_value",
-              GlomConversions::get_text_for_gda_value(field_group_by->m_field.get_glom_type(), group_value, field_group_by->m_numeric_format) );
-
-            //Get data and add child rows:
-            GlomUtils::type_vecLayoutFields fieldsToGet;
-            for(LayoutGroup::type_map_items::iterator iterChildren = pGroupBy->m_map_items.begin(); iterChildren != pGroupBy->m_map_items.end(); ++iterChildren)
-            {
-              LayoutItem_Field* pField = dynamic_cast<LayoutItem_Field*>(iterChildren->second);
-              if(pField)
-              {
-                fill_full_field_details(m_strTableName, *pField);
-                fieldsToGet.push_back(*pField);
-              }
-            }
-
-            if(!fieldsToGet.empty())
-            {
-              //Field headings:
-              for(GlomUtils::type_vecLayoutFields::iterator iter = fieldsToGet.begin(); iter != fieldsToGet.end(); ++iter)
-              {
-                xmlpp::Element* nodeFieldHeading = nodeGroupBy->add_child("field_heading");
-                nodeFieldHeading->set_attribute("name", iter->get_name()); //Not really necessary, but maybe useful.
-                nodeFieldHeading->set_attribute("title", iter->m_field.get_title_or_name());
-              }
-
-              //Rows, with data:
-              Glib::ustring where_clause = group_field_table_name + "." + field_group_by->get_name() + " = " + field_group_by->m_field.sql(group_value); //TODO: And restrict to the current found set.
-
-              Glib::ustring sort_clause;
-              if(pGroupBy->get_field_sort_by())
-                sort_clause = pGroupBy->get_field_sort_by()->get_name(); //TODO: Deal with related fields too.
-
-              Glib::ustring sql_query = GlomUtils::build_sql_select_with_where_clause(m_strTableName,
-                fieldsToGet,
-                where_clause, sort_clause);
-
-              Glib::RefPtr<Gnome::Gda::DataModel> datamodel = Query_execute(sql_query);
-              if(datamodel)
-              {
-                guint rows_count = datamodel->get_n_rows();
-                for(guint row = 0; row < rows_count; ++row)
-                {
-                  xmlpp::Element* nodeRow = nodeGroupBy->add_child("row");
-
-                  for(guint col = 0; col < fieldsToGet.size(); ++col)
-                  {
-                    const LayoutItem_Field& field = fieldsToGet[col];
-                    xmlpp::Element* nodeField = nodeRow->add_child("field");
-                    nodeField->set_attribute("name", field.get_name()); //Not really necessary, but maybe useful.
-                    nodeField->set_attribute("value",
-                      GlomConversions::get_text_for_gda_value(field.m_field.get_glom_type(), datamodel->get_value_at(col, row), field.m_numeric_format) );
-                  }
-                }
- 
-              }
-            }
-          }
-        }
-      }
-    }
+      report_build_groupby(*nodeParent, *pGroupBy, ""); //TODO: //Use the where_clause of the current found set.
   }
 
   GlomUtils::transform_and_open(*pDocument, "print_report_to_html.xsl");

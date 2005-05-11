@@ -9,6 +9,21 @@
 <title>
   <xsl:value-of select="@table"/>: <xsl:value-of select="@title"/>
 </title>
+
+<!-- Very simple styling. -->
+<style type="text/css">
+.group_by
+{
+  margin-left: 2em;
+}
+
+.records
+{
+  margin-left: 2em;
+}
+
+</style>
+
 </head>
 
 <body>
@@ -25,26 +40,32 @@
 </xsl:template>
 
 <xsl:template match="group_by">
+<div class="group_by">
 <p>
 <xsl:value-of select="@group_field"/>: <b><xsl:value-of select="@group_value"/></b>
-<table>
-        <xsl:apply-templates/>
+</p>
+<xsl:apply-templates select="group_by"/>
+<p>
+<table class="records">
+  <xsl:apply-templates select="field_heading"/>
+  <xsl:apply-templates select="row"/>
 </table>
 </p>
+</div>
 </xsl:template>
 
 <xsl:template match="field_heading">
-<th> <xsl:value-of select="@title"/> </th>
+<th class="field_heading"> <xsl:value-of select="@title"/> </th>
 </xsl:template>
 
 <xsl:template match="row">
-<tr>
+<tr class="row">
 <xsl:apply-templates/>
 </tr>
 </xsl:template>
 
 <xsl:template match="field">
-<td> <xsl:value-of select="@value"/> </td>
+<td class="field"> <xsl:value-of select="@value"/> </td>
 </xsl:template>
 
 
