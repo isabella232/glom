@@ -194,8 +194,11 @@ protected:
   virtual bool load_after();
   virtual bool save_before();
 
-  virtual void load_after_layout_group(const xmlpp::Element* node, const Glib::ustring table_name, LayoutGroup& group);
-  virtual void save_before_layout_group(xmlpp::Element* node, const LayoutGroup& group);
+  void load_after_layout_group(const xmlpp::Element* node, const Glib::ustring table_name, LayoutGroup& group);
+  void save_before_layout_group(xmlpp::Element* node, const LayoutGroup& group);
+
+  void load_after_layout_item_field(const xmlpp::Element* element, LayoutItem_Field& item);
+  void save_before_layout_item_field(xmlpp::Element* nodeItem, const LayoutItem_Field& item);
 
   virtual void on_app_state_userlevel_changed(AppState::userlevels userleve);
 

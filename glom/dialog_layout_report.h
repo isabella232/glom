@@ -62,6 +62,8 @@ protected:
   //Enable/disable buttons, depending on treeview selection:
   virtual void enable_buttons();
 
+  bool may_be_child_of(const LayoutItem& parent, const LayoutItem& suggested_child);
+
   virtual void save_to_document();
 
   bool offer_relationship_list(Relationship& relationship);

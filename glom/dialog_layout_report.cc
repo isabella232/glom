@@ -21,10 +21,12 @@
 #include "dialog_layout_report.h"
 #include "data_structure/layout/report_parts/layoutitem_groupby.h"
 #include "data_structure/layout/report_parts/layoutitem_summary.h"
+#include "data_structure/layout/report_parts/layoutitem_fieldsummary.h"
 #include "data_structure/layout/layoutitem_field.h"
 #include "mode_data/dialog_choose_field.h"
 #include "layout_item_dialogs/dialog_field_layout.h"
 #include "layout_item_dialogs/dialog_group_by.h"
+#include "layout_item_dialogs/dialog_field_summary.h"
 #include "mode_data/dialog_choose_relationship.h"
 //#include <libgnome/gnome-i18n.h>
 #include <bakery/App/App_Gtk.h> //For util_bold_message().
@@ -62,6 +64,8 @@ Dialog_Layout_Report::Dialog_Layout_Report(BaseObjectType* cobject, const Glib::
     (*iter)[m_columns_available_parts.m_col_item] = type_item_ptr(new LayoutItem_Field());
     iter = m_model_available_parts->append();
     (*iter)[m_columns_available_parts.m_col_item] = type_item_ptr(new LayoutItem_Summary());
+    iter = m_model_available_parts->append();
+    (*iter)[m_columns_available_parts.m_col_item] = type_item_ptr(new LayoutItem_FieldSummary());
 
     m_treeview_available_parts->set_model(m_model_available_parts);
 
@@ -289,14 +293,49 @@ void Dialog_Layout_Report::set_report(const Glib::ustring& table_name, const Rep
   m_modified = false;
 }
 
+bool Dialog_Layout_Report::may_be_child_of(const LayoutItem& parent, const LayoutItem& suggested_child)
+{
+  if(!(dynamic_cast<const LayoutGroup*>(&parent)))
+    return false; //Only LayoutGroup (and derived types) may have children.
+
+  const bool fieldsummary = dynamic_cast<const LayoutItem_FieldSummary*>(&suggested_child);
+
+  const LayoutItem_Summary* summary = dynamic_cast<const LayoutItem_Summary*>(&parent);
+
+  //A Summary may only have FieldSummary children:
+  if(summary && !fieldsummary)
+      return false;
+
+  //FieldSummary may only be a member of Summary:
+  if(fieldsummary && !summary)
+    return false;
+
+  return true;
+}
+
 void Dialog_Layout_Report::enable_buttons()
 {
+  sharedptr<LayoutItem> layout_item_available;
+  bool enable_add = false;
+
   //Available Parts:
   Glib::RefPtr<Gtk::TreeView::Selection> refSelectionAvailable = m_treeview_available_parts->get_selection();
   if(refSelectionAvailable)
-    m_button_add->set_sensitive(true);
-  else
-    m_button_add->set_sensitive(false);
+  {
+    Gtk::TreeModel::iterator iter = refSelectionAvailable->get_selected();
+    if(iter)
+    {
+      layout_item_available = (*iter)[m_columns_available_parts.m_col_item];
+
+      enable_add = true;
+    }
+    else
+    {
+      enable_add = false;
+    }
+  }
+
+  sharedptr<LayoutItem> layout_item_parent;
 
   //Parts:
   Glib::RefPtr<Gtk::TreeView::Selection> refSelection = m_treeview_parts->get_selection();
@@ -305,6 +344,8 @@ void Dialog_Layout_Report::enable_buttons()
     Gtk::TreeModel::iterator iter = refSelection->get_selected();
     if(iter)
     {
+      layout_item_parent = (*iter)[m_columns_parts.m_col_item];
+
       //Disable Up if It can't go any higher.
       bool enable_up = true;
       if(iter == m_model_parts->children().begin())
@@ -336,6 +377,11 @@ void Dialog_Layout_Report::enable_buttons()
     }
   }
 
+  //Not all parts may be children of all other parts.
+  if(layout_item_available && layout_item_parent)
+    enable_add = may_be_child_of(*layout_item_parent, *layout_item_available);
+
+  m_button_add->set_sensitive(enable_add);
 }
 
 
@@ -572,50 +618,88 @@ void Dialog_Layout_Report::on_button_edit()
       type_item_ptr ptr = row[m_columns_parts.m_col_item];
       LayoutItem* item = ptr.obj();
 
-      LayoutItem_Field* field = dynamic_cast<LayoutItem_Field*>(item);
-      if(field)
+      LayoutItem_FieldSummary* fieldsummary = dynamic_cast<LayoutItem_FieldSummary*>(item);
+      if(fieldsummary)
       {
-        bool test = offer_field_list(*field, m_table_name);
-        if(test)
+        try
         {
-          m_model_parts->row_changed(Gtk::TreePath(iter), iter); //TODO: Add row_changed(iter) to gtkmm?
+          Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_field_summary");
+
+          Dialog_FieldSummary* dialog = 0;
+          refXml->get_widget_derived("dialog_field_summary", dialog);
+
+          if(dialog)
+          {
+            add_view(dialog);
+            dialog->set_item(*fieldsummary, m_table_name);
+            dialog->set_transient_for(*this);
+
+            int response = dialog->run();
+            dialog->hide();
+
+            if(response == Gtk::RESPONSE_OK)
+            {
+              //Get the chosen relationship:
+              dialog->get_item(*fieldsummary);
+              m_model_parts->row_changed(Gtk::TreePath(iter), iter); //TODO: Add row_changed(iter) to gtkmm?
+            }
+
+            remove_view(dialog);
+            delete dialog;
+          }
+        }
+        catch(const Gnome::Glade::XmlError& ex)
+        {
+          std::cerr << ex.what() << std::endl;
         }
       }
       else
       {
-        LayoutItem_GroupBy* group_by = dynamic_cast<LayoutItem_GroupBy*>(item);
-        if(group_by)
+        LayoutItem_Field* field = dynamic_cast<LayoutItem_Field*>(item);
+        if(field)
         {
-          try
+          bool test = offer_field_list(*field, m_table_name);
+          if(test)
           {
-            Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_group_by");
-  
-            Dialog_GroupBy* dialog = 0;
-            refXml->get_widget_derived("dialog_group_by", dialog);
-
-            if(dialog)
-            {
-              add_view(dialog);
-              dialog->set_item(*group_by, m_table_name);
-              dialog->set_transient_for(*this);
-
-              int response = dialog->run();
-              dialog->hide();
-
-              if(response == Gtk::RESPONSE_OK)
-              {
-                //Get the chosen relationship:
-                dialog->get_item(*group_by);
-                m_model_parts->row_changed(Gtk::TreePath(iter), iter); //TODO: Add row_changed(iter) to gtkmm?
-              }
-
-              remove_view(dialog);
-              delete dialog;
-            }
+            m_model_parts->row_changed(Gtk::TreePath(iter), iter); //TODO: Add row_changed(iter) to gtkmm?
           }
-          catch(const Gnome::Glade::XmlError& ex)
+        }
+        else
+        {
+          LayoutItem_GroupBy* group_by = dynamic_cast<LayoutItem_GroupBy*>(item);
+          if(group_by)
           {
-            std::cerr << ex.what() << std::endl;
+            try
+            {
+              Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_group_by");
+    
+              Dialog_GroupBy* dialog = 0;
+              refXml->get_widget_derived("dialog_group_by", dialog);
+  
+              if(dialog)
+              {
+                add_view(dialog);
+                dialog->set_item(*group_by, m_table_name);
+                dialog->set_transient_for(*this);
+  
+                int response = dialog->run();
+                dialog->hide();
+  
+                if(response == Gtk::RESPONSE_OK)
+                {
+                  //Get the chosen relationship:
+                  dialog->get_item(*group_by);
+                  m_model_parts->row_changed(Gtk::TreePath(iter), iter); //TODO: Add row_changed(iter) to gtkmm?
+                }
+  
+                remove_view(dialog);
+                delete dialog;
+              }
+            }
+            catch(const Gnome::Glade::XmlError& ex)
+            {
+              std::cerr << ex.what() << std::endl;
+            }
           }
         }
       }
@@ -720,14 +804,22 @@ void Dialog_Layout_Report::on_cell_data_details(Gtk::CellRenderer* renderer, con
         //TODO: Internationalize this properly:
         text = pGroup->get_field_group_by()->get_layout_display_name();
 
-        if(pGroup->get_field_sort_by())
+        if(!(pGroup->get_field_sort_by()->get_name().empty()))
           text += "(sort by: " + pGroup->get_field_sort_by()->get_layout_display_name() + ")";
       }
       else
       {
-        const LayoutItem_Field* pField = dynamic_cast<const LayoutItem_Field*>(pItem);
-        if(pField)
-          text = pField->get_layout_display_name();
+        //const LayoutItem_FieldSummary* pFieldSummary = dynamic_cast<const LayoutItem_FieldSummary*>(pItem);
+       // if(pFieldSummary)
+       // {
+
+       // }
+       // else
+        {
+          const LayoutItem_Field* pField = dynamic_cast<const LayoutItem_Field*>(pItem);
+          if(pField)
+            text = pField->get_layout_display_name();
+        }
       }
 
       renderer_text->property_text() = text;

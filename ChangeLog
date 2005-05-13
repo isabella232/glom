@@ -1,3 +1,25 @@
+2005-05-14  Murray Cumming <murrayc@murrayc.com>
+
+	* glom/data_structure/layout/report_parts/Makefile.am:
+	* glom/data_structure/layout/report_parts/layoutitem_fieldsummary.c
+	c:
+	* glom/data_structure/layout/report_parts/layoutitem_fieldsummary.h
+	: Add a LayoutPart for the field summary report parts.
+	* glom/dialog_layout_report.cc:
+	* glom/dialog_layout_report.h:
+	Disable the Add button when inappropriate parts are selected.
+	* glom/document/document_glom.cc:
+	* glom/document/document_glom.h:
+	Save/Load the Summary parts.
+	* glom/glom.glade:
+	* glom/layout_item_dialogs/Makefile.am:
+	* glom/layout_item_dialogs/combo_summarytype.cc:
+	* glom/layout_item_dialogs/combo_summarytype.h:
+	* glom/layout_item_dialogs/dialog_field_summary.cc:
+	* glom/layout_item_dialogs/dialog_field_summary.h:
+	Added UI fo rthe summary parts.
+	* po/POTFILES.in: Mention the new files.
+
 2005-05-11  Murray Cumming <murrayc@murrayc.com>
 
 	* glom/glom.glade:
