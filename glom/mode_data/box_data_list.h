@@ -75,6 +75,7 @@ protected:
 
   virtual bool get_field_column_index(const Glib::ustring& field_name, guint& index) const;
 
+  virtual void print_layout();
   virtual void print_layout_group(xmlpp::Element* node_parent, const LayoutGroup& group);
 
   //Member widgers:

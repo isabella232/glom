@@ -25,6 +25,11 @@
 #include "document/document_glom.h"
 #include "data_structure/glomconversions.h"
 #include "mode_data/dialog_choose_field.h"
+//#include "dialog_layout_report.h"
+#include "utils.h"
+#include "data_structure/glomconversions.h"
+#include "data_structure/layout/report_parts/layoutitem_summary.h"
+#include "data_structure/layout/report_parts/layoutitem_fieldsummary.h"
 #include <glibmm/i18n.h>
 //#include <libgnomeui/gnome-app-helper.h>
 
@@ -1247,4 +1252,264 @@ Glib::ustring Base_DB::get_layout_item_table_name(const LayoutItem_Field& layout
   }
 
   return Glib::ustring();
+}
+
+void Base_DB::report_build_summary(const Glib::ustring& /* table_name */, xmlpp::Element& /* parent_node */, LayoutItem_Summary& /* summary */, const Glib::ustring& /* where_clause_parent */)
+{
+/*
+  //Get fields
+  GlomUtils::type_vecLayoutFields fieldsToGet;
+  for(LayoutGroup::type_map_items::iterator iterChildren = group_by.m_map_items.begin(); iterChildren != group_by.m_map_items.end(); ++iterChildren)
+  {
+    LayoutItem_Field* pField = dynamic_cast<LayoutItem_Field*>(iterChildren->second);
+    if(pField)
+    {
+      fill_full_field_details(table_name, *pField);
+      fieldsToGet.push_back(*pField);
+    }
+    else
+    {
+      LayoutItem_GroupBy* pGroupBy = dynamic_cast<LayoutItem_GroupBy*>(iterChildren->second);
+      if(pGroupBy)
+      {
+        //Recurse, adding a sub-groupby block:
+        report_build_groupby(*nodeGroupBy, *pGroupBy, where_clause);
+      }
+      else
+      {
+        LayoutItem_Summary* pSummary = dynamic_cast<LayoutItem_Summary*>(iterChildren->second);
+        if(pSummary)
+        {
+          //Recurse, adding a summary block:
+          report_build_summary(*nodeGroupBy, *pSummary, where_clause);
+        }
+      }
+    }
+  }
+
+  if(!fieldsToGet.empty())
+  {
+    //Field headings:
+    for(GlomUtils::type_vecLayoutFields::iterator iter = fieldsToGet.begin(); iter != fieldsToGet.end(); ++iter)
+    {
+      xmlpp::Element* nodeFieldHeading = nodeGroupBy->add_child("field_heading");
+      nodeFieldHeading->set_attribute("name", iter->get_name()); //Not really necessary, but maybe useful.
+      nodeFieldHeading->set_attribute("title", iter->m_field.get_title_or_name());
+    }
+
+    //Rows, with data:
+    Glib::ustring sort_clause;
+    if(group_by.get_field_sort_by())
+      sort_clause = group_by.get_field_sort_by()->get_name(); //TODO: Deal with related fields too.
+
+    Glib::ustring sql_query = GlomUtils::build_sql_select_with_where_clause(table_name,
+      fieldsToGet,
+      where_clause, sort_clause);
+
+    Glib::RefPtr<Gnome::Gda::DataModel> datamodel = Query_execute(sql_query);
+    if(datamodel)
+    {
+      guint rows_count = datamodel->get_n_rows();
+      for(guint row = 0; row < rows_count; ++row)
+      {
+        xmlpp::Element* nodeRow = nodeGroupBy->add_child("row");
+
+        for(guint col = 0; col < fieldsToGet.size(); ++col)
+        {
+          const LayoutItem_Field& field = fieldsToGet[col];
+          xmlpp::Element* nodeField = nodeRow->add_child("field");
+          nodeField->set_attribute("name", field.get_name()); //Not really necessary, but maybe useful.
+          nodeField->set_attribute("value",
+            GlomConversions::get_text_for_gda_value(field.m_field.get_glom_type(), datamodel->get_value_at(col, row), field.m_numeric_format) );
+        }
+      }
+
+    }
+  }
+*/
+}
+
+void Base_DB::report_build_groupby(const Glib::ustring& table_name, xmlpp::Element& parent_node, LayoutItem_GroupBy& group_by, const Glib::ustring& where_clause_parent)
+{
+  //Get the possible heading values.
+  LayoutItem_Field* field_group_by = group_by.get_field_group_by();
+  if(field_group_by)
+  {
+    fill_full_field_details(table_name, *field_group_by);
+
+    //Get the possible group values, ignoring repeats by using GROUP BY.
+    const Glib::ustring group_field_table_name = get_layout_item_table_name(*field_group_by, table_name);
+    Glib::ustring sql_query = "SELECT " + group_field_table_name + "." + field_group_by->get_name() +
+      " FROM " + group_field_table_name;
+
+    if(!where_clause_parent.empty())
+      sql_query += " WHERE " + where_clause_parent;
+
+    sql_query += " GROUP BY " + field_group_by->get_name(); //rTODO: And restrict to the current found set.
+
+    Glib::RefPtr<Gnome::Gda::DataModel> datamodel = Query_execute(sql_query);
+    if(datamodel)
+    {
+      guint rows_count = datamodel->get_n_rows();
+      for(guint row = 0; row < rows_count; ++row)
+      {
+        const Gnome::Gda::Value group_value = datamodel->get_value_at(0 /* col*/, row);
+
+        //Add XML node:
+        xmlpp::Element* nodeGroupBy = parent_node.add_child("group_by");
+
+        nodeGroupBy->set_attribute("group_field", field_group_by->m_field.get_title_or_name());
+        nodeGroupBy->set_attribute("group_value",
+          GlomConversions::get_text_for_gda_value(field_group_by->m_field.get_glom_type(), group_value, field_group_by->m_numeric_format) );
+
+        Glib::ustring where_clause = group_field_table_name + "." + field_group_by->get_name() + " = " + field_group_by->m_field.sql(group_value);
+        if(!where_clause_parent.empty())
+          where_clause += " AND (" + where_clause_parent + ")";
+
+        //Get data and add child rows:
+        GlomUtils::type_vecLayoutFields fieldsToGet;
+        for(LayoutGroup::type_map_items::iterator iterChildren = group_by.m_map_items.begin(); iterChildren != group_by.m_map_items.end(); ++iterChildren)
+        {
+          LayoutItem_Field* pField = dynamic_cast<LayoutItem_Field*>(iterChildren->second);
+          if(pField)
+          {
+            fill_full_field_details(table_name, *pField);
+            fieldsToGet.push_back(*pField);
+          }
+          else
+          {
+            LayoutItem_GroupBy* pGroupBy = dynamic_cast<LayoutItem_GroupBy*>(iterChildren->second);
+            if(pGroupBy)
+            {
+              //Recurse, adding a sub-groupby block:
+              report_build_groupby(table_name, *nodeGroupBy, *pGroupBy, where_clause);
+            }
+            else
+            {
+              LayoutItem_Summary* pSummary = dynamic_cast<LayoutItem_Summary*>(iterChildren->second);
+              if(pSummary)
+              {
+                //Recurse, adding a summary block:
+                report_build_summary(table_name, *nodeGroupBy, *pSummary, where_clause);
+              }
+            }
+          }
+        }
+
+        if(!fieldsToGet.empty())
+        {
+          //Rows, with data:
+          Glib::ustring sort_clause;
+          if(group_by.get_field_sort_by())
+            sort_clause = group_by.get_field_sort_by()->get_name(); //TODO: Deal with related fields too.
+
+          report_build_records(table_name, *nodeGroupBy, fieldsToGet, where_clause, sort_clause);
+        }
+      }
+    }
+  }
+}
+
+void Base_DB::report_build_records(const Glib::ustring& table_name, xmlpp::Element& parent_node, const GlomUtils::type_vecLayoutFields& fieldsToGet, const Glib::ustring& where_clause, const Glib::ustring& sort_clause)
+{
+  if(!fieldsToGet.empty())
+  {
+    //Field headings:
+    for(GlomUtils::type_vecLayoutFields::const_iterator iter = fieldsToGet.begin(); iter != fieldsToGet.end(); ++iter)
+    {
+      xmlpp::Element* nodeFieldHeading = parent_node.add_child("field_heading");
+      nodeFieldHeading->set_attribute("name", iter->get_name()); //Not really necessary, but maybe useful.
+      nodeFieldHeading->set_attribute("title", iter->m_field.get_title_or_name());
+    }
+
+    Glib::ustring sql_query = GlomUtils::build_sql_select_with_where_clause(table_name,
+      fieldsToGet,
+      where_clause, sort_clause);
+
+    Glib::RefPtr<Gnome::Gda::DataModel> datamodel = Query_execute(sql_query);
+    if(datamodel)
+    {
+      guint rows_count = datamodel->get_n_rows();
+      for(guint row = 0; row < rows_count; ++row)
+      {
+        xmlpp::Element* nodeRow = parent_node.add_child("row");
+
+        for(guint col = 0; col < fieldsToGet.size(); ++col)
+        {
+          const LayoutItem_Field& field = fieldsToGet[col];
+          xmlpp::Element* nodeField = nodeRow->add_child("field");
+          nodeField->set_attribute("name", field.get_name()); //Not really necessary, but maybe useful.
+          nodeField->set_attribute("value",
+            GlomConversions::get_text_for_gda_value(field.m_field.get_glom_type(), datamodel->get_value_at(col, row), field.m_numeric_format) );
+        }
+      }
+
+    }
+  }
+}
+
+
+void Base_DB::report_build(const Glib::ustring& table_name, const Report& report, const Glib::ustring& where_clause)
+{
+  //Create a DOM Document with the XML:
+  xmlpp::DomParser dom_parser;;
+
+  xmlpp::Document* pDocument = dom_parser.get_document();
+  xmlpp::Element* nodeRoot = pDocument->get_root_node();
+  if(!nodeRoot)
+  {
+    //Add it if it isn't there already:
+    nodeRoot = pDocument->create_root_node("report_print");
+  }
+
+  Glib::ustring table_title = get_document()->get_table_title(table_name);
+  if(table_title.empty())
+    table_title = table_name;
+
+  nodeRoot->set_attribute("table", table_title);
+
+
+  //The groups:
+  xmlpp::Element* nodeParent = nodeRoot;
+
+
+  nodeRoot->set_attribute("title", report.get_title_or_name());
+
+  GlomUtils::type_vecLayoutFields fieldsToGet_TopLevel;
+
+  for(LayoutGroup::type_map_items::const_iterator iter = report.m_layout_group.m_map_items.begin(); iter != report.m_layout_group.m_map_items.end(); ++iter)
+  {
+    LayoutItem* pPart = iter->second;
+
+    //The Group, and the details for each record in the group:
+    LayoutItem_GroupBy* pGroupBy = dynamic_cast<LayoutItem_GroupBy*>(pPart);
+    if(pGroupBy)
+      report_build_groupby(table_name, *nodeParent, *pGroupBy, where_clause);
+    else
+    {
+      LayoutItem_Summary* pSummary = dynamic_cast<LayoutItem_Summary*>(pPart);
+      if(pSummary)
+      {
+        //Recurse, adding a summary block:
+        report_build_summary(table_name, *nodeParent, *pSummary, where_clause);
+      }
+      else
+      {
+        LayoutItem_Field* pField = dynamic_cast<LayoutItem_Field*>(pPart);
+        if(pField)
+        {
+          fieldsToGet_TopLevel.push_back(*pField);
+        }
+      }
+    }
+  }
+
+  //Add top-level records, outside of any groupby or summary, if fields have been specified:
+  if(!fieldsToGet_TopLevel.empty())
+  {
+    xmlpp::Element* nodeGroupBy = nodeParent->add_child("ungrouped_records");
+    report_build_records(table_name, *nodeGroupBy, fieldsToGet_TopLevel, where_clause, Glib::ustring() /* no sort clause */);
+  }
+
+  GlomUtils::transform_and_open(*pDocument, "print_report_to_html.xsl");
 }

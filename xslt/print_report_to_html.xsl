@@ -54,6 +54,17 @@
 </div>
 </xsl:template>
 
+<xsl:template match="ungrouped_records">
+<div class="ungrouped_records">
+<p>
+<table class="records">
+  <xsl:apply-templates select="field_heading"/>
+  <xsl:apply-templates select="row"/>
+</table>
+</p>
+</div>
+</xsl:template>
+
 <xsl:template match="field_heading">
 <th class="field_heading"> <xsl:value-of select="@title"/> </th>
 </xsl:template>

@@ -705,9 +705,34 @@ bool Box_Data_List::get_field_primary_key_index(guint& field_column) const
   return Box_Data::get_field_primary_key_index(m_FieldsShown, field_column);
 }
 
+void Box_Data_List::print_layout()
+{
+  const Privileges table_privs = get_current_privs(m_strTableName);
+
+  //Don't try to print tables that the user can't view.
+  if(!table_privs.m_view)
+  {
+    //TODO: Warn the user.
+  }
+  else
+  {
+    //Create a simple report on the fly:
+    Report report_temp;
+    report_temp.m_name = "list";
+    report_temp.m_title = _("List");
+
+    //Add all the fields from the layout:
+    for(type_vecLayoutFields::const_iterator iter = m_FieldsShown.begin(); iter != m_FieldsShown.end(); ++iter)
+    {
+      report_temp.m_layout_group.add_item(*iter);
+    }
+
+    report_build(m_strTableName, report_temp, m_strWhereClause);
+  }
+}
+
 void Box_Data_List::print_layout_group(xmlpp::Element* /* node_parent */, const LayoutGroup& /* group */)
 {
-
 }
 
 

@@ -36,6 +36,7 @@
 #include "mode_design/dialog_fields.h"
 #include "mode_design/dialog_relationships.h"
 #include "dialog_connection.h"
+#include "utils.h"
 
 #include "mode_data/box_data_list_related.h" //only for m_HackToFixLinkerError.
 
@@ -120,8 +121,6 @@ protected:
   virtual const Gtk::Window* get_app_window() const;
 
   void alert_no_table();
-
-  void report_build_groupby(xmlpp::Element& parent_node, LayoutItem_GroupBy& group_by, const Glib::ustring where_clause_parent);
 
   //Signal handlers:
   virtual void on_notebook_find_criteria(const Glib::ustring& strWhereClause);

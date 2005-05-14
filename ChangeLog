@@ -1,5 +1,20 @@
 2005-05-14  Murray Cumming <murrayc@murrayc.com>
 
+	* glom/base_db.cc:
+	* glom/base_db.h:
+	* glom/frame_glom.cc:
+	* glom/frame_glom.h:
+	Moved report_build_* methods from Frame_Glom to 
+	Base_DB, so they can be used in Box_Data_List.
+	* glom/mode_data/box_data_list.cc:
+	* glom/mode_data/box_data_list.h:
+	Overrode print_layout() and created a non-grouping 
+	report on the fly, to implement File/Print for Lists.
+	* xslt/print_report_to_html.xsl:
+	Handle ungrouped_fields, a bit like group_by.
+
+2005-05-14  Murray Cumming <murrayc@murrayc.com>
+
 	* glom/data_structure/layout/report_parts/Makefile.am:
 	* glom/data_structure/layout/report_parts/layoutitem_fieldsummary.c
 	c:
