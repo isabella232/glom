@@ -642,7 +642,7 @@ void DbAddDel::construct_specified_columns()
     DbAddDelColumnInfo& column_info = m_ColumnTypes[model_column_index];
     if(column_info.m_visible && !(column_info.m_field.get_hidden())) //TODO: We shouldn't need both of these.
     {
-      const Glib::ustring column_name = column_info.m_field.m_field.get_title_or_name();
+      const Glib::ustring column_name = column_info.m_field.get_title_or_name();
       const Glib::ustring column_id = column_info.m_field.get_name();
 
       int cols_count = 0;

@@ -1,3 +1,27 @@
+2005-05-15  Murray Cumming <murrayc@murrayc.com>
+
+	* glom/base_db.cc:
+	* glom/base_db.h:
+	report_build_summary(): Implemented, so summary parts show up in 
+	reports.
+	* glom/data_structure/layout/layoutitem_field.cc:
+	* glom/data_structure/layout/layoutitem_field.h:
+	Added get_title_or_name(), delegating to the member Field.
+	* glom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:
+	* glom/data_structure/layout/report_parts/layoutitem_fieldsummary.h:
+	Override get_title_or_name() to mention the summary type. Added 
+	get_layout_display_name_field() to get just the field part. Corrected 
+	the copy constructor and operator== to use the summary type too.
+	* glom/dialog_layout_report.cc:
+	Show the field name and summary type properly.
+	* glom/document/document_glom.cc:
+	Save the summary type of LayoutItem_FieldSummary parts.
+	* glom/layout_item_dialogs/dialog_field_summary.cc:
+	* glom/utils.cc: build_sql_select_with_where_clause(): If the LayoutItem_Field 
+	is actually a LayoutItem_FieldSummary, use a summary function instead of just 
+	getting the field value.
+	* xslt/print_report_to_html.xsl: Added a block for the summary part.
+
 2005-05-14  Murray Cumming <murrayc@murrayc.com>
 
 	* glom/base_db.cc:

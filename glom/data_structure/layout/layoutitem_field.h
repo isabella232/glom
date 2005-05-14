@@ -42,6 +42,8 @@ public:
   virtual void set_name(const Glib::ustring& name);
   virtual Glib::ustring get_name() const; //For use with our std::find_if() predicate.
 
+  virtual Glib::ustring get_title_or_name() const;
+
   //virtual Glib::ustring get_table_name() const;
   //virtual void set_table_name(const Glib::ustring& table_name);
 

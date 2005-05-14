@@ -49,9 +49,19 @@ public:
   summaryType get_summary_type() const;
   void set_summary_type(summaryType summary_type);
 
+  /// Get the SQL command to use for this summary.
+  Glib::ustring get_summary_type_sql() const;
+
+  /// This is used when loading the XML document, because we use get_summary_type_sql() when writing it.
+  void set_summary_type_from_sql(const Glib::ustring& summary_type);
+
   void set_field(const LayoutItem_Field& field);
 
+  virtual Glib::ustring get_title_or_name() const;
+
   virtual Glib::ustring get_layout_display_name() const;
+
+  Glib::ustring get_layout_display_name_field() const;
 
   static Glib::ustring get_summary_type_name(summaryType summary_type);
 

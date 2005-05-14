@@ -42,7 +42,7 @@ DataWidget::DataWidget(const LayoutItem_Field& field, const Glib::ustring& table
   set_layout_item(field.clone(), table_name); //takes ownership
 
   Gtk::Widget* child = 0;
-  const Glib::ustring title = field.m_field.get_title_or_name();
+  const Glib::ustring title = field.get_title_or_name();
   if(glom_type == Field::TYPE_BOOLEAN)
   {
     Gtk::CheckButton* checkbutton = Gtk::manage( new Gtk::CheckButton( title ) );

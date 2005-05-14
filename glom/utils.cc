@@ -20,6 +20,7 @@
 
 #include "utils.h"
 #include "connectionpool.h"
+#include "data_structure/layout/report_parts/layoutitem_fieldsummary.h"
 #include <libxml++/libxml++.h>
 #include <libxslt/transform.h>
 #include <libgnomevfsmm.h>
@@ -87,12 +88,23 @@ Glib::ustring GlomUtils::build_sql_select_with_where_clause(const Glib::ustring&
   typedef std::list<Relationship> type_list_relationships;
   type_list_relationships list_relationships;
 
+
   for(type_vecLayoutFields::const_iterator iter =  fieldsToGet.begin(); iter != fieldsToGet.end(); ++iter)
   {
+    sharedptr<LayoutItem_Field> layout_item = *iter;
+
+    bool is_summary = false;
+    LayoutItem_FieldSummary* fieldsummary = dynamic_cast<LayoutItem_FieldSummary*>(layout_item.obj());
+    if(fieldsummary)
+      is_summary = true;
+
     if(iter != fieldsToGet.begin())
       sql_part_fields += ", ";
 
-    sharedptr<LayoutItem_Field> layout_item = *iter;
+    //Add, for instance, "SUM(":
+    if(is_summary)
+      sql_part_fields += fieldsummary->get_summary_type_sql() + "(";
+
     if(!layout_item->get_has_relationship_name())
     {
       sql_part_fields += ( table_name + "." );
@@ -120,6 +132,11 @@ Glib::ustring GlomUtils::build_sql_select_with_where_clause(const Glib::ustring&
     }
 
     sql_part_fields += layout_item->get_name();
+
+    //Close the summary bracket if necessary.
+    if(is_summary)
+      sql_part_fields +=  ")";
+
   }
 
   result =  "SELECT " + sql_part_fields +

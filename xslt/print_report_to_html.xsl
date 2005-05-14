@@ -12,12 +12,28 @@
 
 <!-- Very simple styling. -->
 <style type="text/css">
+
+table
+{
+  border-spacing: 0.3em;
+}
+
 .group_by
 {
   margin-left: 2em;
 }
 
+.summary
+{
+  margin-left: 2em;
+}
+
 .records
+{
+  margin-left: 2em;
+}
+
+.records_summary
 {
   margin-left: 2em;
 }
@@ -47,6 +63,18 @@
 <xsl:apply-templates select="group_by"/>
 <p>
 <table class="records">
+  <xsl:apply-templates select="field_heading"/>
+  <xsl:apply-templates select="row"/>
+</table>
+</p>
+<xsl:apply-templates select="summary"/>
+</div>
+</xsl:template>
+
+<xsl:template match="summary">
+<div class="summary">
+<p>
+<table class="records_summary">
   <xsl:apply-templates select="field_heading"/>
   <xsl:apply-templates select="row"/>
 </table>

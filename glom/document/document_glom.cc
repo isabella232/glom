@@ -104,6 +104,7 @@
 #define GLOM_NODE_REPORT "report"
 #define GLOM_ATTRIBUTE_REPORT_ITEM_GROUPBY_GROUPBY "groupby"
 #define GLOM_ATTRIBUTE_REPORT_ITEM_GROUPBY_SORTBY "sortby"
+#define GLOM_ATTRIBUTE_LAYOUT_ITEM_FIELDSUMMARY_SUMMARYTYPE "summarytype"
 
 Document_Glom::Document_Glom()
 : m_block_cache_update(false)
@@ -977,6 +978,7 @@ void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Gl
       {
         LayoutItem_FieldSummary item;
         load_after_layout_item_field(element, item);
+        item.set_summary_type_from_sql( get_node_attribute_value(element, GLOM_ATTRIBUTE_LAYOUT_ITEM_FIELDSUMMARY_SUMMARYTYPE) );
 
         item.m_sequence = sequence;
         group.add_item(item, sequence);
@@ -1400,6 +1402,7 @@ void Document_Glom::save_before_layout_group(xmlpp::Element* node, const LayoutG
       {
         xmlpp::Element* nodeItem = child->add_child(GLOM_NODE_DATA_LAYOUT_ITEM_FIELDSUMMARY);
         save_before_layout_item_field(nodeItem, *fieldsummary);
+        set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_LAYOUT_ITEM_FIELDSUMMARY_SUMMARYTYPE, fieldsummary->get_summary_type_sql()); //The SQL name is as good as anything as an identifier for the summary function.
       }
       else
       {

@@ -729,7 +729,7 @@ void Box_Data_Details::print_layout_group(xmlpp::Element* node_parent, const Lay
       {
         xmlpp::Element* nodeField = nodeChildGroup->add_child("field");
 
-        nodeField->set_attribute("title", pLayoutField->m_field.get_title_or_name());
+        nodeField->set_attribute("title", pLayoutField->get_title_or_name());
 
         Gnome::Gda::Value value = m_FlowTable.get_field_value(*pLayoutField);
         Glib::ustring text_representation = GlomConversions::get_text_for_gda_value(pLayoutField->m_field.get_glom_type(), value,

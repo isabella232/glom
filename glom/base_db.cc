@@ -1254,18 +1254,20 @@ Glib::ustring Base_DB::get_layout_item_table_name(const LayoutItem_Field& layout
   return Glib::ustring();
 }
 
-void Base_DB::report_build_summary(const Glib::ustring& /* table_name */, xmlpp::Element& /* parent_node */, LayoutItem_Summary& /* summary */, const Glib::ustring& /* where_clause_parent */)
+void Base_DB::report_build_summary(const Glib::ustring& table_name, xmlpp::Element& parent_node, LayoutItem_Summary& summary, const Glib::ustring& where_clause)
 {
-/*
+  //Add XML node:
+  xmlpp::Element* nodeSummary = parent_node.add_child("summary");
+
   //Get fields
   GlomUtils::type_vecLayoutFields fieldsToGet;
-  for(LayoutGroup::type_map_items::iterator iterChildren = group_by.m_map_items.begin(); iterChildren != group_by.m_map_items.end(); ++iterChildren)
+  for(LayoutGroup::type_map_items::iterator iterChildren = summary.m_map_items.begin(); iterChildren != summary.m_map_items.end(); ++iterChildren)
   {
     LayoutItem_Field* pField = dynamic_cast<LayoutItem_Field*>(iterChildren->second);
     if(pField)
     {
       fill_full_field_details(table_name, *pField);
-      fieldsToGet.push_back(*pField);
+      fieldsToGet.push_back( sharedptr<LayoutItem_Field>( static_cast<LayoutItem_Field*>(pField->clone() ) ) );
     }
     else
     {
@@ -1273,7 +1275,7 @@ void Base_DB::report_build_summary(const Glib::ustring& /* table_name */, xmlpp:
       if(pGroupBy)
       {
         //Recurse, adding a sub-groupby block:
-        report_build_groupby(*nodeGroupBy, *pGroupBy, where_clause);
+        report_build_groupby(table_name, *nodeSummary, *pGroupBy, where_clause);
       }
       else
       {
@@ -1281,7 +1283,7 @@ void Base_DB::report_build_summary(const Glib::ustring& /* table_name */, xmlpp:
         if(pSummary)
         {
           //Recurse, adding a summary block:
-          report_build_summary(*nodeGroupBy, *pSummary, where_clause);
+          report_build_summary(table_name, *nodeSummary, *pSummary, where_clause);
         }
       }
     }
@@ -1289,44 +1291,9 @@ void Base_DB::report_build_summary(const Glib::ustring& /* table_name */, xmlpp:
 
   if(!fieldsToGet.empty())
   {
-    //Field headings:
-    for(GlomUtils::type_vecLayoutFields::iterator iter = fieldsToGet.begin(); iter != fieldsToGet.end(); ++iter)
-    {
-      xmlpp::Element* nodeFieldHeading = nodeGroupBy->add_child("field_heading");
-      nodeFieldHeading->set_attribute("name", iter->get_name()); //Not really necessary, but maybe useful.
-      nodeFieldHeading->set_attribute("title", iter->m_field.get_title_or_name());
-    }
-
     //Rows, with data:
-    Glib::ustring sort_clause;
-    if(group_by.get_field_sort_by())
-      sort_clause = group_by.get_field_sort_by()->get_name(); //TODO: Deal with related fields too.
-
-    Glib::ustring sql_query = GlomUtils::build_sql_select_with_where_clause(table_name,
-      fieldsToGet,
-      where_clause, sort_clause);
-
-    Glib::RefPtr<Gnome::Gda::DataModel> datamodel = Query_execute(sql_query);
-    if(datamodel)
-    {
-      guint rows_count = datamodel->get_n_rows();
-      for(guint row = 0; row < rows_count; ++row)
-      {
-        xmlpp::Element* nodeRow = nodeGroupBy->add_child("row");
-
-        for(guint col = 0; col < fieldsToGet.size(); ++col)
-        {
-          const LayoutItem_Field& field = fieldsToGet[col];
-          xmlpp::Element* nodeField = nodeRow->add_child("field");
-          nodeField->set_attribute("name", field.get_name()); //Not really necessary, but maybe useful.
-          nodeField->set_attribute("value",
-            GlomConversions::get_text_for_gda_value(field.m_field.get_glom_type(), datamodel->get_value_at(col, row), field.m_numeric_format) );
-        }
-      }
-
-    }
+    report_build_records(table_name, *nodeSummary, fieldsToGet, where_clause, Glib::ustring() /* No sort_clause because there is only one row */);
   }
-*/
 }
 
 void Base_DB::report_build_groupby(const Glib::ustring& table_name, xmlpp::Element& parent_node, LayoutItem_GroupBy& group_by, const Glib::ustring& where_clause_parent)
@@ -1358,7 +1325,7 @@ void Base_DB::report_build_groupby(const Glib::ustring& table_name, xmlpp::Eleme
         //Add XML node:
         xmlpp::Element* nodeGroupBy = parent_node.add_child("group_by");
 
-        nodeGroupBy->set_attribute("group_field", field_group_by->m_field.get_title_or_name());
+        nodeGroupBy->set_attribute("group_field", field_group_by->get_title_or_name());
         nodeGroupBy->set_attribute("group_value",
           GlomConversions::get_text_for_gda_value(field_group_by->m_field.get_glom_type(), group_value, field_group_by->m_numeric_format) );
 
@@ -1374,7 +1341,7 @@ void Base_DB::report_build_groupby(const Glib::ustring& table_name, xmlpp::Eleme
           if(pField)
           {
             fill_full_field_details(table_name, *pField);
-            fieldsToGet.push_back( sharedptr<LayoutItem_Field>(new LayoutItem_Field(*pField)) );
+            fieldsToGet.push_back( sharedptr<LayoutItem_Field>( static_cast<LayoutItem_Field*>(pField->clone() ) ) );
           }
           else
           {
@@ -1420,17 +1387,21 @@ void Base_DB::report_build_records(const Glib::ustring& table_name, xmlpp::Eleme
       sharedptr<LayoutItem_Field> layout_item = *iter;
       xmlpp::Element* nodeFieldHeading = parent_node.add_child("field_heading");
       nodeFieldHeading->set_attribute("name", layout_item->get_name()); //Not really necessary, but maybe useful.
-      nodeFieldHeading->set_attribute("title", layout_item->m_field.get_title_or_name());
+      nodeFieldHeading->set_attribute("title", layout_item->get_title_or_name());
     }
 
     Glib::ustring sql_query = GlomUtils::build_sql_select_with_where_clause(table_name,
       fieldsToGet,
       where_clause, sort_clause);
 
+    bool records_found = false;
     Glib::RefPtr<Gnome::Gda::DataModel> datamodel = Query_execute(sql_query);
     if(datamodel)
     {
       guint rows_count = datamodel->get_n_rows();
+      if(rows_count > 0)
+        records_found = true;
+
       for(guint row = 0; row < rows_count; ++row)
       {
         xmlpp::Element* nodeRow = parent_node.add_child("row");
@@ -1440,12 +1411,26 @@ void Base_DB::report_build_records(const Glib::ustring& table_name, xmlpp::Eleme
           sharedptr<LayoutItem_Field> field = fieldsToGet[col];
           xmlpp::Element* nodeField = nodeRow->add_child("field");
           nodeField->set_attribute("name", field->get_name()); //Not really necessary, but maybe useful.
-          nodeField->set_attribute("value",
-            GlomConversions::get_text_for_gda_value(field->m_field.get_glom_type(), datamodel->get_value_at(col, row), field->m_numeric_format) );
+
+          const Field::glom_field_type field_type = field->m_field.get_glom_type();
+          Glib::ustring text_value = GlomConversions::get_text_for_gda_value(field_type, datamodel->get_value_at(col, row), field->m_numeric_format);
+
+          //The Postgres summary functions return NULL when summarising NULL records, but 0 is more sensible:
+          if(text_value.empty() && dynamic_cast<LayoutItem_FieldSummary*>(field.obj()) && (field_type == Field::TYPE_NUMERIC))
+          {
+            //Use get_text_for_gda_value() instead of "0" so we get the correct numerical formatting:
+            Gnome::Gda::Value value = GlomConversions::parse_value(0);
+            text_value = GlomConversions::get_text_for_gda_value(field_type, value, field->m_numeric_format);
+          }
+
+          nodeField->set_attribute("value", text_value);
         }
       }
 
     }
+
+    //If there are no records, show zero
+    //if(!rows_found && show_null_row)
   }
 }
 
@@ -1499,7 +1484,7 @@ void Base_DB::report_build(const Glib::ustring& table_name, const Report& report
         LayoutItem_Field* pField = dynamic_cast<LayoutItem_Field*>(pPart);
         if(pField)
         {
-          fieldsToGet_TopLevel.push_back( sharedptr<LayoutItem_Field>(new LayoutItem_Field(*pField)) );
+          fieldsToGet_TopLevel.push_back( sharedptr<LayoutItem_Field>( static_cast<LayoutItem_Field*>(pField->clone() ) ) );
         }
       }
     }

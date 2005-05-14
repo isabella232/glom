@@ -809,17 +809,19 @@ void Dialog_Layout_Report::on_cell_data_details(Gtk::CellRenderer* renderer, con
       }
       else
       {
-        //const LayoutItem_FieldSummary* pFieldSummary = dynamic_cast<const LayoutItem_FieldSummary*>(pItem);
-       // if(pFieldSummary)
-       // {
-
-       // }
-       // else
+        /*
+        const LayoutItem_FieldSummary* pFieldSummary = dynamic_cast<const LayoutItem_FieldSummary*>(pItem);
+        if(pFieldSummary)
         {
+           text = pFieldSummary.LayoutItem_Field::get_layout_display_name_field();
+        }
+        else
+        {
+        */
           const LayoutItem_Field* pField = dynamic_cast<const LayoutItem_Field*>(pItem);
           if(pField)
             text = pField->get_layout_display_name();
-        }
+        //}
       }
 
       renderer_text->property_text() = text;

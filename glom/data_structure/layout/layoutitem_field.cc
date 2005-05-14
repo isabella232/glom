@@ -123,6 +123,11 @@ Glib::ustring LayoutItem_Field::get_name() const
   return m_field.get_name();
 }
 
+Glib::ustring LayoutItem_Field::get_title_or_name() const
+{
+  return m_field.get_title_or_name();
+}
+
 /*
 Glib::ustring LayoutItem_Field::get_table_name() const
 {

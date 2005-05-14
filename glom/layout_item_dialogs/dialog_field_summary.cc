@@ -48,7 +48,7 @@ void Dialog_FieldSummary::set_item(const LayoutItem_FieldSummary& item, const Gl
   m_layout_item = item;
   m_table_name = table_name;
 
-  m_label_field->set_text( item.get_layout_display_name() );
+  m_label_field->set_text( item.get_layout_display_name_field() );
   m_combo_summarytype->set_summary_type( item.get_summary_type() );
 }
 

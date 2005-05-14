@@ -26,7 +26,8 @@ LayoutItem_FieldSummary::LayoutItem_FieldSummary()
 }
 
 LayoutItem_FieldSummary::LayoutItem_FieldSummary(const LayoutItem_FieldSummary& src)
-: LayoutItem_Field(src)
+: LayoutItem_Field(src),
+  m_summary_type(src.m_summary_type)
 {
 }
 
@@ -41,14 +42,24 @@ LayoutItem* LayoutItem_FieldSummary::clone() const
 
 bool LayoutItem_FieldSummary::operator==(const LayoutItem_FieldSummary& src) const
 {
-  return LayoutItem_Field::operator==(src);
+  return LayoutItem_Field::operator==(src) &&
+    (m_summary_type == src.m_summary_type);
 }
 
 LayoutItem_FieldSummary& LayoutItem_FieldSummary::operator=(const LayoutItem_FieldSummary& src)
 {
   LayoutItem_Field::operator=(src);
 
+  m_summary_type = src.m_summary_type;
+
   return *this;
+}
+
+Glib::ustring LayoutItem_FieldSummary::get_title_or_name() const
+{
+  Glib::ustring field_title =  m_field.get_title_or_name();
+
+  return get_summary_type_name(m_summary_type) + ": " + field_title; //TODO: Allow a more human-readable title for summary headings.
 }
 
 Glib::ustring LayoutItem_FieldSummary::get_part_type_name() const
@@ -66,14 +77,40 @@ void LayoutItem_FieldSummary::set_summary_type(summaryType summary_type)
   m_summary_type = summary_type;
 }
 
+Glib::ustring LayoutItem_FieldSummary::get_summary_type_sql() const
+{
+  if(m_summary_type == TYPE_INVALID)
+    return "INVALID";
+  else if(m_summary_type == TYPE_SUM)
+    return "SUM";
+  else if(m_summary_type == TYPE_AVERAGE)
+    return "AVG";
+  else if(m_summary_type == TYPE_COUNT)
+    return "COUNT";
+  else
+    return "INVALID";
+}
+
+void LayoutItem_FieldSummary::set_summary_type_from_sql(const Glib::ustring& summary_type)
+{
+  if(summary_type == "SUM")
+    m_summary_type = TYPE_SUM;
+  else if(summary_type == "AVG")
+    m_summary_type = TYPE_AVERAGE;
+  else if(summary_type == "COUNT")
+    m_summary_type = TYPE_COUNT;
+  else
+    m_summary_type = TYPE_INVALID;
+}
+
 void LayoutItem_FieldSummary::set_field(const LayoutItem_Field& field)
 {
-  LayoutItem_Field::operator==(field);
+  LayoutItem_Field::operator=(field);
 }
 
 Glib::ustring LayoutItem_FieldSummary::get_layout_display_name() const
 {
-  Glib::ustring result = LayoutItem_Field::get_layout_display_name();
+  Glib::ustring result = get_layout_display_name_field();
 
   if(m_summary_type == TYPE_INVALID)
     result = _("No summary chosen");
@@ -81,6 +118,12 @@ Glib::ustring LayoutItem_FieldSummary::get_layout_display_name() const
     result = get_summary_type_name(m_summary_type) + "(" + result + ")";
 
   return result;
+}
+
+Glib::ustring LayoutItem_FieldSummary::get_layout_display_name_field() const
+{
+  //Get the name for just the field part.
+  return LayoutItem_Field::get_layout_display_name();
 }
 
 //static:
