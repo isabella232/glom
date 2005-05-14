@@ -203,8 +203,8 @@ bool Box_Data_Details::fill_from_database()
       if(table_privs.m_view)
       {
         //Add extra possibly-non-visible columns that we need:
-        LayoutItem_Field layout_item;
-        layout_item.m_field = m_field_primary_key;
+        sharedptr<LayoutItem_Field> layout_item(new LayoutItem_Field);
+        layout_item->m_field = m_field_primary_key;
         fieldsToGet.push_back(layout_item);
 
         //g_warning("primary_key name = %s", m_field_primary_key.get_name().c_str());
@@ -231,11 +231,11 @@ bool Box_Data_Details::fill_from_database()
             //Get field values to show:
             for(int i = 0; i < cols_count; ++i)
             {
-              const LayoutItem_Field& layout_item = fieldsToGet[i];
+              sharedptr<LayoutItem_Field> layout_item = fieldsToGet[i];
 
               //Field value:
               Gnome::Gda::Value value = result->get_value_at(i, row_number);
-              m_FlowTable.set_field_value(layout_item, value);
+              m_FlowTable.set_field_value(*layout_item, value);
             }
           }
         }
@@ -651,12 +651,12 @@ void Box_Data_Details::refresh_related_fields(const Gtk::TreeModel::iterator& /*
         for(guint uiCol = 0; uiCol < cols_count; uiCol++)
         {
           const Gnome::Gda::Value value = result->get_value_at(uiCol, 0 /* row */);
-          const LayoutItem_Field& layout_item = *iterFields;
+          sharedptr<LayoutItem_Field> layout_item = *iterFields;
 
           //g_warning("list fill: field_name=%s", iterFields->get_name().c_str());
           //g_warning("  value_as_string=%s", value.to_string().c_str());
 
-          m_FlowTable.set_field_value(layout_item, value);
+          m_FlowTable.set_field_value(*layout_item, value);
 
           ++iterFields;
         }

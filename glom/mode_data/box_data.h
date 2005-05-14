@@ -46,8 +46,6 @@ public:
 
   virtual void print_layout(); //A test, for now.
 
-  typedef std::vector<LayoutItem_Field> type_vecLayoutFields;
-
   virtual Glib::ustring get_find_where_clause() const;
 
   virtual void set_unstored_data(bool bVal);

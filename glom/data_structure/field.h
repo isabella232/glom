@@ -22,6 +22,7 @@
 #define GLOM_DATASTRUCTURE_FIELD_H
 
 #include <libgdamm.h>
+#include "../sharedptr.h"
 
 //Predicate, for use with std::find_if():
 
@@ -41,6 +42,11 @@ public:
   bool operator() (const T_Element& element)
   {
     return (element.get_name() == m_strName);
+  }
+
+  bool operator() (const sharedptr<T_Element>& element)
+  {
+    return (element->get_name() == m_strName);
   }
 
 protected:

@@ -34,8 +34,6 @@ public:
   Dialog_Layout(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade, bool with_table_title = true);
   virtual ~Dialog_Layout();
 
-  typedef std::vector< LayoutItem_Field > type_vecLayoutFields;
-
   /**
    * @param layout "list" or "details"
    * @param document The document, so that the dialog can load the previous layout, and save changes.

@@ -78,6 +78,8 @@ public:
 
   bool create_table(const TableInfo& table_info, const Document_Glom::type_vecFields& fields) const;
 
+  typedef std::vector< sharedptr<LayoutItem_Field> > type_vecLayoutFields;
+
 protected:
   bool offer_field_list(LayoutItem_Field& field, const Glib::ustring& table_name);
 
@@ -109,7 +111,7 @@ protected:
   void report_build(const Glib::ustring& table_name, const Report& report, const Glib::ustring& where_clause);
   void report_build_groupby(const Glib::ustring& table_name, xmlpp::Element& parent_node, LayoutItem_GroupBy& group_by, const Glib::ustring& where_clause_parent);
   void report_build_summary(const Glib::ustring& table_name, xmlpp::Element& parent_node, LayoutItem_Summary& summary, const Glib::ustring& where_clause_parent);
-  void report_build_records(const Glib::ustring& table_name, xmlpp::Element& parent_node, const GlomUtils::type_vecLayoutFields& fieldsToGet, const Glib::ustring& where_clause, const Glib::ustring& sort_clause);
+  void report_build_records(const Glib::ustring& table_name, xmlpp::Element& parent_node, const type_vecLayoutFields& fieldsToGet, const Glib::ustring& where_clause, const Glib::ustring& sort_clause);
 
   Gnome::Gda::Value auto_increment_insert_first_if_necessary(const Glib::ustring& table_name, const Glib::ustring& field_name);
 

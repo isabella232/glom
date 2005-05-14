@@ -25,6 +25,7 @@
 #include <gtkmm/treepath.h>
 #include "../../data_structure/layout/layoutitem_field.h"
 #include "../../connectionpool.h"
+#include "../../base_db.h"
 
 class DbTreeModel;
 
@@ -63,7 +64,9 @@ class DbTreeModel
 {
 public:
   typedef unsigned int size_type;
-  typedef std::vector<LayoutItem_Field> type_vec_fields;
+
+  //typedef std::vector<LayoutItem_Field> type_vec_fields;
+  typedef Base_DB::type_vecLayoutFields type_vec_fields;
 
   friend class DbTreeModelRow;
 

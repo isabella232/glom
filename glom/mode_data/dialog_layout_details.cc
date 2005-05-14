@@ -278,7 +278,7 @@ void Dialog_Layout_Details::set_document(const Glib::ustring& layout, Document_G
       guint field_sequence = 1; //0 means no sequence
       for(type_vecLayoutFields::const_iterator iter = table_fields.begin(); iter != table_fields.end(); ++iter)
       {
-        LayoutItem_Field item = *iter;
+        LayoutItem_Field item = *(*iter);
         item.m_sequence = field_sequence;
 
         group.add_item(item, field_sequence);

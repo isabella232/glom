@@ -92,17 +92,17 @@ Glib::ustring GlomUtils::build_sql_select_with_where_clause(const Glib::ustring&
     if(iter != fieldsToGet.begin())
       sql_part_fields += ", ";
 
-
-    if(!iter->get_has_relationship_name())
+    sharedptr<LayoutItem_Field> layout_item = *iter;
+    if(!layout_item->get_has_relationship_name())
     {
       sql_part_fields += ( table_name + "." );
     }
     else
     {
-      Glib::ustring relationship_name = iter->get_relationship_name();
+      Glib::ustring relationship_name = layout_item->get_relationship_name();
       if(!relationship_name.empty())
       {
-        const Relationship relationship = iter->m_relationship;
+        const Relationship relationship = layout_item->m_relationship;
 
         const Glib::ustring field_table_name = relationship.get_to_table();
         if(field_table_name.empty())
@@ -119,7 +119,7 @@ Glib::ustring GlomUtils::build_sql_select_with_where_clause(const Glib::ustring&
       }
     }
 
-    sql_part_fields += iter->get_name();
+    sql_part_fields += layout_item->get_name();
   }
 
   result =  "SELECT " + sql_part_fields +

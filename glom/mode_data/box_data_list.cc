@@ -156,7 +156,7 @@ void Box_Data_List::on_adddel_user_requested_add()
     if(index_field_to_edit < m_FieldsShown.size())
     {
       guint treemodel_column = 0;
-      bool test = get_field_column_index(m_FieldsShown[index_field_to_edit].get_name(), treemodel_column);
+      bool test = get_field_column_index(m_FieldsShown[index_field_to_edit]->get_name(), treemodel_column);
       if(test)
         m_AddDel.select_item(iter, treemodel_column, true /* start_editing */);
     }
@@ -446,12 +446,12 @@ void Box_Data_List::refresh_related_fields(const Gtk::TreeModel::iterator& row, 
         for(guint uiCol = 0; uiCol < cols_count; uiCol++)
         {
           const Gnome::Gda::Value value = result->get_value_at(uiCol, 0 /* row */);
-          const LayoutItem_Field& layout_item = *iterFields;
+          sharedptr<LayoutItem_Field> layout_item = *iterFields;
 
           //g_warning("list fill: field_name=%s", iterFields->get_name().c_str());
           //g_warning("  value_as_string=%s", value.to_string().c_str());
 
-          m_AddDel.set_value(row, layout_item, value);
+          m_AddDel.set_value(row, *layout_item, value);
             //g_warning("addedel size=%d", m_AddDel.get_count());
 
           ++iterFields;
@@ -637,17 +637,16 @@ void Box_Data_List::create_layout()
 
       //Add extra possibly-non-visible columns that we need:
       //TODO: Only add it if it is not already there.
-      LayoutItem_Field layout_item;
-      layout_item.set_hidden();
-      Field field_key = m_AddDel.get_key_field();
-      layout_item.m_field = field_key;
+      sharedptr<LayoutItem_Field> layout_item(new LayoutItem_Field);
+      layout_item->set_hidden();
+      layout_item->m_field = m_AddDel.get_key_field();
       m_FieldsShown.push_back(layout_item);
 
 
       //Add a column for each table field:
       for(type_vecLayoutFields::const_iterator iter = m_FieldsShown.begin(); iter != m_FieldsShown.end(); ++iter)
       {
-        m_AddDel.add_column(*iter);
+        m_AddDel.add_column(*(*iter));
       }
 
       m_AddDel.set_where_clause(m_strWhereClause);
@@ -683,7 +682,7 @@ bool Box_Data_List::get_field_column_index(const Glib::ustring& field_name, guin
   guint i = 0;
   for(type_vecLayoutFields::const_iterator iter = m_FieldsShown.begin(); iter != m_FieldsShown.end(); ++iter)
   {
-    if(iter->get_name() == field_name)
+    if((*iter)->get_name() == field_name)
     {
       return m_AddDel.get_model_column_index(i, index); //Add the extra model columns to get the model column index from the field column index
     }
@@ -724,7 +723,7 @@ void Box_Data_List::print_layout()
     //Add all the fields from the layout:
     for(type_vecLayoutFields::const_iterator iter = m_FieldsShown.begin(); iter != m_FieldsShown.end(); ++iter)
     {
-      report_temp.m_layout_group.add_item(*iter);
+      report_temp.m_layout_group.add_item(*(*iter));
     }
 
     report_build(m_strTableName, report_temp, m_strWhereClause);

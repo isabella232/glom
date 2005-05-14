@@ -1374,7 +1374,7 @@ void Base_DB::report_build_groupby(const Glib::ustring& table_name, xmlpp::Eleme
           if(pField)
           {
             fill_full_field_details(table_name, *pField);
-            fieldsToGet.push_back(*pField);
+            fieldsToGet.push_back( sharedptr<LayoutItem_Field>(new LayoutItem_Field(*pField)) );
           }
           else
           {
@@ -1417,9 +1417,10 @@ void Base_DB::report_build_records(const Glib::ustring& table_name, xmlpp::Eleme
     //Field headings:
     for(GlomUtils::type_vecLayoutFields::const_iterator iter = fieldsToGet.begin(); iter != fieldsToGet.end(); ++iter)
     {
+      sharedptr<LayoutItem_Field> layout_item = *iter;
       xmlpp::Element* nodeFieldHeading = parent_node.add_child("field_heading");
-      nodeFieldHeading->set_attribute("name", iter->get_name()); //Not really necessary, but maybe useful.
-      nodeFieldHeading->set_attribute("title", iter->m_field.get_title_or_name());
+      nodeFieldHeading->set_attribute("name", layout_item->get_name()); //Not really necessary, but maybe useful.
+      nodeFieldHeading->set_attribute("title", layout_item->m_field.get_title_or_name());
     }
 
     Glib::ustring sql_query = GlomUtils::build_sql_select_with_where_clause(table_name,
@@ -1436,11 +1437,11 @@ void Base_DB::report_build_records(const Glib::ustring& table_name, xmlpp::Eleme
 
         for(guint col = 0; col < fieldsToGet.size(); ++col)
         {
-          const LayoutItem_Field& field = fieldsToGet[col];
+          sharedptr<LayoutItem_Field> field = fieldsToGet[col];
           xmlpp::Element* nodeField = nodeRow->add_child("field");
-          nodeField->set_attribute("name", field.get_name()); //Not really necessary, but maybe useful.
+          nodeField->set_attribute("name", field->get_name()); //Not really necessary, but maybe useful.
           nodeField->set_attribute("value",
-            GlomConversions::get_text_for_gda_value(field.m_field.get_glom_type(), datamodel->get_value_at(col, row), field.m_numeric_format) );
+            GlomConversions::get_text_for_gda_value(field->m_field.get_glom_type(), datamodel->get_value_at(col, row), field->m_numeric_format) );
         }
       }
 
@@ -1498,7 +1499,7 @@ void Base_DB::report_build(const Glib::ustring& table_name, const Report& report
         LayoutItem_Field* pField = dynamic_cast<LayoutItem_Field*>(pPart);
         if(pField)
         {
-          fieldsToGet_TopLevel.push_back(*pField);
+          fieldsToGet_TopLevel.push_back( sharedptr<LayoutItem_Field>(new LayoutItem_Field(*pField)) );
         }
       }
     }

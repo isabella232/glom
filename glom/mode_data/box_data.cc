@@ -73,11 +73,11 @@ Glib::ustring Box_Data::get_find_where_clause() const
   {
     Glib::ustring strClausePart;
 
-    const Gnome::Gda::Value data = get_entered_field_data(*iter);
+    const Gnome::Gda::Value data = get_entered_field_data(*(*iter));
 
     if(!GlomConversions::value_is_empty(data))
     {
-      const Field field = iter->m_field;
+      const Field field = (*iter)->m_field;
 
       bool use_this_field = true;
       if(field.get_glom_type() == Field::TYPE_BOOLEAN) //TODO: We need an intermediate state for boolean fields, so that they can be ignored in searches.
@@ -124,8 +124,8 @@ Box_Data::type_map_fields Box_Data::get_record_field_values(const Gnome::Gda::Va
     type_vecLayoutFields fieldsToGet;
     for(Document_Glom::type_vecFields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
     {
-      LayoutItem_Field layout_item;
-      layout_item.m_field = *iter;
+      sharedptr<LayoutItem_Field> layout_item(new LayoutItem_Field);
+      layout_item->m_field = *iter;
       fieldsToGet.push_back(layout_item);
     }
 
@@ -168,8 +168,8 @@ Glib::RefPtr<Gnome::Gda::DataModel> Box_Data::record_new(bool use_entered_data, 
     type_vecLayoutFields::const_iterator iterFind = std::find_if(fieldsToAdd.begin(), fieldsToAdd.end(), predicate_FieldHasName<LayoutItem_Field>(iter->get_name()));
     if(iterFind == fieldsToAdd.end())
     {
-      LayoutItem_Field layout_item;
-      layout_item.m_field = *iter;
+      sharedptr<LayoutItem_Field> layout_item(new LayoutItem_Field);
+      layout_item->m_field = *iter;
 
       fieldsToAdd.push_back(layout_item);
     }
@@ -178,14 +178,14 @@ Glib::RefPtr<Gnome::Gda::DataModel> Box_Data::record_new(bool use_entered_data, 
   //Calculate any necessary field values and enter them:
   for(type_vecLayoutFields::const_iterator iter = fieldsToAdd.begin(); iter != fieldsToAdd.end(); ++iter)
   {
-    const LayoutItem_Field& layout_item = *iter;
+    sharedptr<LayoutItem_Field> layout_item = *iter;
 
     //If the user did not enter something in this field:
-    Gnome::Gda::Value value = get_entered_field_data(layout_item);
+    Gnome::Gda::Value value = get_entered_field_data(*layout_item);
 
     if(GlomConversions::value_is_empty(value)) //This deals with empty strings too.
     {
-      const Field& field = layout_item.m_field;
+      const Field& field = layout_item->m_field;
 
       //If the default value should be calculated, then calculate it:
       if(field.get_has_calculation())
@@ -195,7 +195,7 @@ Glib::RefPtr<Gnome::Gda::DataModel> Box_Data::record_new(bool use_entered_data, 
 
         const Gnome::Gda::Value value = glom_evaluate_python_function_implementation(field.get_glom_type(), calculation, field_values,
           get_document(), m_strTableName);
-        set_entered_field_data(layout_item, value);
+        set_entered_field_data(*layout_item, value);
       }
 
       //Use default values (These are also specified in postgres as part of the field definition,
@@ -206,7 +206,7 @@ Glib::RefPtr<Gnome::Gda::DataModel> Box_Data::record_new(bool use_entered_data, 
         const Gnome::Gda::Value default_value = field.get_default_value();
         if(!GlomConversions::value_is_empty(default_value))
         {
-          set_entered_field_data(layout_item, default_value);
+          set_entered_field_data(*layout_item, default_value);
         }
       }
     }
@@ -222,16 +222,16 @@ Glib::RefPtr<Gnome::Gda::DataModel> Box_Data::record_new(bool use_entered_data, 
 
   for(type_vecLayoutFields::const_iterator iter = fieldsToAdd.begin(); iter != fieldsToAdd.end(); ++iter)
   {
-    const LayoutItem_Field& layout_item = *iter;
-    const Glib::ustring field_name = layout_item.get_name();
-    if(!layout_item.get_has_relationship_name()) //TODO: Allow people to add a related record also by entering new data in a related field of the related record.
+    sharedptr<LayoutItem_Field> layout_item = *iter;
+    const Glib::ustring field_name = layout_item->get_name();
+    if(!layout_item->get_has_relationship_name()) //TODO: Allow people to add a related record also by entering new data in a related field of the related record.
     {
       type_map_added::const_iterator iterFind = map_added.find(field_name);
       if(iterFind == map_added.end()) //If it was not added already
       {
         Gnome::Gda::Value value;
 
-        const Field& field = layout_item.m_field;
+        const Field& field = layout_item->m_field;
 
         //Use the specified (generated) primary key value, if there is one:
         if(primary_key_name == field_name && !GlomConversions::value_is_empty(primary_key_value))
@@ -241,7 +241,7 @@ Glib::RefPtr<Gnome::Gda::DataModel> Box_Data::record_new(bool use_entered_data, 
         else
         {
           if(use_entered_data || !field.get_calculation().empty()) //TODO_Performance: Use a get_has_calculation() method.
-            value = get_entered_field_data(layout_item);
+            value = get_entered_field_data(*layout_item);
         }
 
         Glib::ustring strFieldValue = field.sql(value);
@@ -380,7 +380,7 @@ void Box_Data::get_table_fields_to_show_add_group(const Glib::ustring& table_nam
             layout_item.m_priv_view = privs_related.m_view;
             layout_item.m_priv_edit = privs_related.m_edit;
 
-            vecFields.push_back(layout_item);
+            vecFields.push_back( sharedptr<LayoutItem_Field>(new LayoutItem_Field(layout_item)) );
           }
         }
       }
@@ -398,7 +398,7 @@ void Box_Data::get_table_fields_to_show_add_group(const Glib::ustring& table_nam
           layout_item.m_priv_view = table_privs.m_view;
           layout_item.m_priv_edit = table_privs.m_edit;
 
-          vecFields.push_back(layout_item);
+          vecFields.push_back( sharedptr<LayoutItem_Field>(new LayoutItem_Field(layout_item)) );
         }
       }
     }
@@ -453,17 +453,17 @@ Box_Data::type_vecLayoutFields Box_Data::get_table_fields_to_show(const Glib::us
       Glib::ustring primary_key_field_name;
       if(bPrimaryKeyFound)
       {
-        LayoutItem_Field layout_item;
-        layout_item.m_field = all_fields[iPrimaryKey];
+        sharedptr<LayoutItem_Field> layout_item(new LayoutItem_Field);
+        layout_item->m_field = all_fields[iPrimaryKey];
 
         //Don't use thousands separators with ID numbers:
-        layout_item.m_numeric_format.m_use_thousands_separator = false;
+        layout_item->m_numeric_format.m_use_thousands_separator = false;
 
-        layout_item.set_editable(true); //A sensible default.
+        layout_item->set_editable(true); //A sensible default.
 
         //Prevent editing of the field if the user may not edit this table:
-        layout_item.m_priv_view = table_privs.m_view;
-        layout_item.m_priv_edit = table_privs.m_edit;
+        layout_item->m_priv_view = table_privs.m_view;
+        layout_item->m_priv_edit = table_privs.m_edit;
 
         result.push_back(layout_item);
       }
@@ -475,14 +475,14 @@ Box_Data::type_vecLayoutFields Box_Data::get_table_fields_to_show(const Glib::us
 
         if(iter->get_name() != primary_key_field_name) //We already added the primary key.
         {
-          LayoutItem_Field layout_item;
-          layout_item.m_field = field_info;
+          sharedptr<LayoutItem_Field> layout_item(new LayoutItem_Field);
+          layout_item->m_field = field_info;
 
-          layout_item.set_editable(true); //A sensible default.
+          layout_item->set_editable(true); //A sensible default.
 
           //Prevent editing of the field if the user may not edit this table:
-          layout_item.m_priv_view = table_privs.m_view;
-          layout_item.m_priv_edit = table_privs.m_edit;
+          layout_item->m_priv_view = table_privs.m_view;
+          layout_item->m_priv_edit = table_privs.m_edit;
 
           result.push_back(layout_item);
         }
@@ -558,13 +558,13 @@ Box_Data::type_vecLayoutFields Box_Data::get_related_fields(const Glib::ustring&
   {
     for(type_vecLayoutFields::const_iterator iter = m_FieldsShown.begin(); iter != m_FieldsShown.end();  ++iter)
     {
-      const LayoutItem_Field& layout_field = *iter;
+      sharedptr<LayoutItem_Field> layout_field = *iter;
       //Examine each field that looks up its data from a relationship:
-      if(layout_field.get_has_relationship_name())
+      if(layout_field->get_has_relationship_name())
       {
         //Get the relationship information:
         Relationship relationship;
-        bool test = document->get_relationship(m_strTableName, layout_field.get_relationship_name(), relationship);
+        bool test = document->get_relationship(m_strTableName, layout_field->get_relationship_name(), relationship);
         if(test)
         {
           //If the relationship uses the specified field:
@@ -963,7 +963,7 @@ bool Box_Data::get_field_primary_key_index(const type_vecLayoutFields& fields, g
   guint cols_count = fields.size();
   while(col < cols_count)
   {
-    if(fields[col].m_field.get_primary_key())
+    if(fields[col]->m_field.get_primary_key())
     {
       field_column = col;
       return true;

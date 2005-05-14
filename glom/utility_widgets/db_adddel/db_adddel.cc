@@ -591,7 +591,7 @@ void DbAddDel::construct_specified_columns()
 
       record.add( *pModelColumn );
 
-      fields.push_back(iter->m_field);
+      fields.push_back(sharedptr<LayoutItem_Field>(new LayoutItem_Field(iter->m_field)));
 
       i++;
     }
@@ -602,7 +602,8 @@ void DbAddDel::construct_specified_columns()
   bool key_found = false;
   for(type_model_store::type_vec_fields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
   {
-    if( !(iter->get_has_relationship_name()) && (iter->m_field.get_primary_key()) )
+    sharedptr<LayoutItem_Field> layout_item = *iter;
+    if( !(layout_item->get_has_relationship_name()) && (layout_item->m_field.get_primary_key()) )
     {
       key_found = true;
       break;
@@ -613,11 +614,11 @@ void DbAddDel::construct_specified_columns()
 
   if(!key_found)
   {
-    g_warning("DbAddDel::construct_specified_columns(): no primary key field found in:");
-    for(type_model_store::type_vec_fields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
-    {
-      g_warning("  field: %s", iter->get_name().c_str());
-    }
+    g_warning("DbAddDel::construct_specified_columns(): no primary key field found.");
+    //for(type_model_store::type_vec_fields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
+    //{
+    //  g_warning("  field: %s", (iter->get_name().c_str());
+    //}
 
     g_assert(key_found); //crash here.
   }

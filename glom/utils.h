@@ -25,6 +25,7 @@
 #include "data_structure/numeric_format.h"
 
 #include "data_structure/layout/layoutitem_field.h"
+#include "base_db.h"
 #include <libxml++/libxml++.h>
 
 namespace GlomUtils
@@ -32,7 +33,8 @@ namespace GlomUtils
 
 Glib::ustring trim_whitespace(const Glib::ustring& text);
 
-typedef std::vector<LayoutItem_Field> type_vecLayoutFields;
+//typedef Base_DB::type_vecLayoutFields type_vecLayoutFields;
+typedef std::vector< sharedptr<LayoutItem_Field> > type_vecLayoutFields;
 
   //TODO: Move this to its own file:
 Glib::ustring build_sql_select_with_where_clause(const Glib::ustring& table_name, const type_vecLayoutFields& fieldsToGet, const Glib::ustring& where_clause = Glib::ustring(), const Glib::ustring& sort_clause = Glib::ustring());
