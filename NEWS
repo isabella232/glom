@@ -1,3 +1,6 @@
+* File/Print works for List view, printing a list of records 
+  in the found set.
+
 0.8.27:
 
 * Simpler Tables menu replaces the Navigation/Tables 
