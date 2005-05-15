@@ -8,6 +8,9 @@ glom/data_structure/field.cc
 glom/data_structure/layout/layoutgroup.cc
 glom/data_structure/layout/layoutitem_field.cc
 glom/data_structure/layout/layoutitem_portal.cc
+glom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc
+glom/data_structure/layout/report_parts/layoutitem_groupby.cc
+glom/data_structure/layout/report_parts/layoutitem_summary.cc
 glom/dialog_database_preferences.cc
 glom/dialog_connection.cc
 glom/dialog_layout_report.cc

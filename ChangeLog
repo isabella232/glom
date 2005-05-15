@@ -1,5 +1,9 @@
 2005-05-15  Murray Cumming <murrayc@murrayc.com>
 
+	* po/POTFILES.in: Mention new files.
+
+2005-05-15  Murray Cumming <murrayc@murrayc.com>
+
 	* glom/base_db.cc: build_report_fields(): For numeric fields 
 	create a <field_numeric> instead of <field> node.
 	* xslt/print_report_to_html.xsl: Handle <field_numeric>, like 
