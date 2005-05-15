@@ -11,4 +11,5 @@ liblayoutitemdialogs_a_SOURCES = \
                          dialog_field_layout.cc dialog_field_layout.h \
                          dialog_group_by.cc dialog_group_by.h \
                          dialog_field_summary.cc dialog_field_summary.h \
-                         combo_summarytype.h combo_summarytype.cc
+                         combo_summarytype.h combo_summarytype.cc \
+                         dialog_groupby_secondaryfields.h dialog_groupby_secondaryfields.cc

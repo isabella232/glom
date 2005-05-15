@@ -1,5 +1,25 @@
 2005-05-15  Murray Cumming <murrayc@murrayc.com>
 
+	* glom/base_db.cc:
+	* glom/base_db.h:
+	* glom/data_structure/layout/report_parts/layoutitem_groupby.cc:
+	* glom/data_structure/layout/report_parts/layoutitem_groupby.h:
+	* glom/document/document_glom.cc:
+	* glom/glom.glade:
+	* glom/layout_item_dialogs/Makefile.am:
+	* glom/layout_item_dialogs/dialog_group_by.cc:
+	* glom/layout_item_dialogs/dialog_group_by.h:
+	* glom/layout_item_dialogs/dialog_groupby_secondaryfields.cc:
+	* glom/layout_item_dialogs/dialog_groupby_secondaryfields.h:
+	* glom/mode_data/dialog_layout.cc:
+	* glom/utility_widgets/comboglomchoicesbase.cc:
+	* xslt/print_report_to_html.xsl:
+	Added secondary_fields to the GroupBy report part, so we can show, 
+	for instance, a contact name as well as the contact id that we 
+        group by. 
+
+2005-05-15  Murray Cumming <murrayc@murrayc.com>
+
 	* po/POTFILES.in: Mention new files.
 
 2005-05-15  Murray Cumming <murrayc@murrayc.com>

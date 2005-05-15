@@ -1333,6 +1333,29 @@ void Base_DB::report_build_groupby(const Glib::ustring& table_name, xmlpp::Eleme
         if(!where_clause_parent.empty())
           where_clause += " AND (" + where_clause_parent + ")";
 
+        //Secondary fields. For instance, the Contact Name, in addition to the Contact ID that we group by.
+        if(!(group_by.m_group_secondary_fields.m_map_items.empty()))
+        {
+          xmlpp::Element* nodeSecondaryFields = nodeGroupBy->add_child("secondary_fields");
+
+          GlomUtils::type_vecLayoutFields fieldsToGet;
+          for(LayoutGroup::type_map_items::iterator iterChildren = group_by.m_group_secondary_fields.m_map_items.begin(); iterChildren != group_by.m_group_secondary_fields.m_map_items.end(); ++iterChildren)
+          {
+            LayoutItem_Field* pField = dynamic_cast<LayoutItem_Field*>(iterChildren->second);
+            if(pField)
+            {
+              fill_full_field_details(table_name, *pField);
+              fieldsToGet.push_back( sharedptr<LayoutItem_Field>( static_cast<LayoutItem_Field*>(pField->clone() ) ) );
+            }
+          }
+
+          if(!fieldsToGet.empty())
+          {
+            report_build_records(table_name, *nodeSecondaryFields, fieldsToGet, where_clause, Glib::ustring(), true /* one record only */);
+          }
+        }
+
+
         //Get data and add child rows:
         GlomUtils::type_vecLayoutFields fieldsToGet;
         for(LayoutGroup::type_map_items::iterator iterChildren = group_by.m_map_items.begin(); iterChildren != group_by.m_map_items.end(); ++iterChildren)
@@ -1377,7 +1400,7 @@ void Base_DB::report_build_groupby(const Glib::ustring& table_name, xmlpp::Eleme
   }
 }
 
-void Base_DB::report_build_records(const Glib::ustring& table_name, xmlpp::Element& parent_node, const GlomUtils::type_vecLayoutFields& fieldsToGet, const Glib::ustring& where_clause, const Glib::ustring& sort_clause)
+void Base_DB::report_build_records(const Glib::ustring& table_name, xmlpp::Element& parent_node, const GlomUtils::type_vecLayoutFields& fieldsToGet, const Glib::ustring& where_clause, const Glib::ustring& sort_clause, bool one_record_only)
 {
   if(!fieldsToGet.empty())
   {
@@ -1393,6 +1416,10 @@ void Base_DB::report_build_records(const Glib::ustring& table_name, xmlpp::Eleme
     Glib::ustring sql_query = GlomUtils::build_sql_select_with_where_clause(table_name,
       fieldsToGet,
       where_clause, sort_clause);
+
+    //For instance, when we just want to get a name corresponding to a contact ID, and want to ignore duplicates.
+    if(one_record_only)
+      sql_query += "LIMIT 1";
 
     bool records_found = false;
     Glib::RefPtr<Gnome::Gda::DataModel> datamodel = Query_execute(sql_query);

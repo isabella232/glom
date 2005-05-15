@@ -64,6 +64,7 @@ table
 <div class="group_by">
 <p>
 <xsl:value-of select="@group_field"/>: <b><xsl:value-of select="@group_value"/></b>
+<xsl:apply-templates select="secondary_fields"/>
 </p>
 <xsl:apply-templates select="group_by"/>
 <p>
@@ -74,6 +75,13 @@ table
 </p>
 <xsl:apply-templates select="summary"/>
 </div>
+</xsl:template>
+
+<xsl:template match="secondary_fields">
+<table class="group_by_secondary_fields">
+  <xsl:apply-templates select="field_heading"/>
+  <xsl:apply-templates select="row"/>
+</table>
 </xsl:template>
 
 <xsl:template match="summary">

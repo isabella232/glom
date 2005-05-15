@@ -54,6 +54,8 @@ public:
 
   virtual Glib::ustring get_part_type_name() const;
 
+  LayoutGroup m_group_secondary_fields; //For instance, show a contact name as well as the contact ID that we group by.
+
 protected:
   LayoutItem_Field m_field_group_by;
   LayoutItem_Field m_field_sort_by;

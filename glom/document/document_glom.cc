@@ -42,6 +42,7 @@
 #define GLOM_NODE_DATA_LAYOUT_PORTAL "data_layout_portal"
 #define GLOM_NODE_DATA_LAYOUT_ITEM "data_layout_item"
 #define GLOM_NODE_DATA_LAYOUT_ITEM_GROUPBY "data_layout_item_groupby"
+#define GLOM_NODE_DATA_LAYOUT_GROUP_SECONDARYFIELDS "secondary_fields"
 #define GLOM_NODE_DATA_LAYOUT_ITEM_SUMMARY "data_layout_item_summary"
 #define GLOM_NODE_DATA_LAYOUT_ITEM_FIELDSUMMARY "data_layout_item_fieldsummary"
 #define GLOM_NODE_TABLE "table"
@@ -1013,6 +1014,13 @@ void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Gl
         field_sortby.set_name( get_node_attribute_value(element, GLOM_ATTRIBUTE_REPORT_ITEM_GROUPBY_SORTBY) );
         child_group.set_field_sort_by(field_sortby);
 
+        xmlpp::Node::NodeList listNodes = node->get_children(GLOM_NODE_DATA_LAYOUT_GROUP_SECONDARYFIELDS);
+        if(!listNodes.empty())
+        {
+          xmlpp::Element* element = dynamic_cast<xmlpp::Element*>( *(listNodes.begin()) );
+          load_after_layout_group(element, table_name, child_group.m_group_secondary_fields);
+        }
+
         group.add_item(child_group);
       }
       else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_ITEM_SUMMARY)
@@ -1361,6 +1369,9 @@ void Document_Glom::save_before_layout_group(xmlpp::Element* node, const LayoutG
 
     set_node_attribute_value(child, GLOM_ATTRIBUTE_REPORT_ITEM_GROUPBY_GROUPBY, group_by->get_field_group_by()->get_name());
     set_node_attribute_value(child, GLOM_ATTRIBUTE_REPORT_ITEM_GROUPBY_SORTBY, group_by->get_field_sort_by()->get_name());
+
+    xmlpp::Element* secondary_fields = child->add_child(GLOM_NODE_DATA_LAYOUT_GROUP_SECONDARYFIELDS);
+    save_before_layout_group(secondary_fields, group_by->m_group_secondary_fields);
   }
   else
   {

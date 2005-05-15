@@ -27,6 +27,8 @@
 #include "../box_db.h"
 #include "../utility_widgets/combo_textglade.h"
 #include "../utility_widgets/comboentry_currency.h"
+#include "dialog_groupby_secondaryfields.h"
+
 
 class Dialog_GroupBy
  : public Gtk::Dialog,
@@ -49,11 +51,17 @@ protected:
   //Signal handlers:
   void on_button_field_group_by();
   void on_button_field_sort_by();
+  void on_button_secondary_fields();
+  void on_dialog_secondary_fields_hide();
 
   Gtk::Label* m_label_group_by;
   Gtk::Label* m_label_sort_by;
+  Gtk::Label* m_label_secondary_fields;
   Gtk::Button* m_button_field_group_by;
   Gtk::Button* m_button_field_sort_by;
+  Gtk::Button* m_button_secondary_fields;
+
+  Dialog_GroupBy_SecondaryFields* m_dialog_choose_secondary_fields;
 
   mutable LayoutItem_GroupBy m_layout_item;
 

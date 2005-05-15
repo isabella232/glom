@@ -163,7 +163,7 @@ void Dialog_Layout::treeview_fill_sequences(const Glib::RefPtr<Gtk::TreeModel> m
 
     }
   }
-      
+
 }
 
 

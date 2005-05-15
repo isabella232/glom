@@ -28,6 +28,7 @@ LayoutItem_GroupBy::LayoutItem_GroupBy()
 
 LayoutItem_GroupBy::LayoutItem_GroupBy(const LayoutItem_GroupBy& src)
 : LayoutGroup(src),
+  m_group_secondary_fields(src.m_group_secondary_fields),
   m_field_group_by(src.m_field_group_by),
   m_field_sort_by(src.m_field_sort_by)
 {
@@ -51,6 +52,7 @@ LayoutItem_GroupBy& LayoutItem_GroupBy::operator=(const LayoutItem_GroupBy& src)
   {
     LayoutGroup::operator=(src);
 
+    m_group_secondary_fields = src.m_group_secondary_fields;
     m_field_group_by = src.m_field_group_by;
     m_field_sort_by = src.m_field_sort_by;
   }
