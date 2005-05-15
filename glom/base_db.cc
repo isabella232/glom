@@ -1409,10 +1409,16 @@ void Base_DB::report_build_records(const Glib::ustring& table_name, xmlpp::Eleme
         for(guint col = 0; col < fieldsToGet.size(); ++col)
         {
           sharedptr<LayoutItem_Field> field = fieldsToGet[col];
-          xmlpp::Element* nodeField = nodeRow->add_child("field");
+          const Field::glom_field_type field_type = field->m_field.get_glom_type();
+
+          xmlpp::Element* nodeField = 0;
+          if(field_type == Field::TYPE_NUMERIC)
+             nodeField = nodeRow->add_child("field_numeric"); //TODO: I would prefer just to add a field_type attribute to the "field" node and use an <xsl::if> instead. murrayc.
+          else
+             nodeField = nodeRow->add_child("field");
+
           nodeField->set_attribute("name", field->get_name()); //Not really necessary, but maybe useful.
 
-          const Field::glom_field_type field_type = field->m_field.get_glom_type();
           Glib::ustring text_value = GlomConversions::get_text_for_gda_value(field_type, datamodel->get_value_at(col, row), field->m_numeric_format);
 
           //The Postgres summary functions return NULL when summarising NULL records, but 0 is more sensible:

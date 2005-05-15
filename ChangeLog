@@ -1,5 +1,13 @@
 2005-05-15  Murray Cumming <murrayc@murrayc.com>
 
+	* glom/base_db.cc: build_report_fields(): For numeric fields 
+	create a <field_numeric> instead of <field> node.
+	* xslt/print_report_to_html.xsl: Handle <field_numeric>, like 
+	<field>, but with align=right in the HTML <td>. Hopefully there is 
+	a better way to do this. 
+
+2005-05-15  Murray Cumming <murrayc@murrayc.com>
+
 	* glom/base_db.cc:
 	* glom/base_db.h:
 	report_build_summary(): Implemented, so summary parts show up in 

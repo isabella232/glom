@@ -38,6 +38,11 @@ table
   margin-left: 2em;
 }
 
+.field_numerical
+{
+  text-align: right;
+}
+
 </style>
 
 </head>
@@ -104,8 +109,13 @@ table
 </xsl:template>
 
 <xsl:template match="field">
-<td class="field"> <xsl:value-of select="@value"/> </td>
+<td class="field"><xsl:value-of select="@value"/></td>
 </xsl:template>
 
+<!-- TODO: I would like to just add the attribute to the td in the regular field instead,
+     but I do not know how to use xsl::if to add an attribute. murrayc -->
+<xsl:template match="field_numeric">
+<td class="field" align="right"><xsl:value-of select="@value"/></td>
+</xsl:template>
 
 </xsl:stylesheet>
