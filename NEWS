@@ -1,5 +1,15 @@
+0.8.28:
+
 * File/Print works for List view, printing a list of records 
   in the found set.
+* Reports: Group By parts may now show extra "secondary" 
+  fields, in addition to the field by which the records are 
+  grouped. 
+* Translations updated:
+  - Spanish (Francisco Javier F. Serrador)
+  - Czech (Miloslav Trmac)
+  - Canadian English (Adam Weinberger)
+  - British English (Gareth Owen)
 
 0.8.27:
 
