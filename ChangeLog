@@ -1,3 +1,15 @@
+2005-05-16  Murray Cumming <murrayc@murrayc.com>
+
+	* glom/base_db.cc:
+	* glom/box_db_table.cc:
+	* glom/layout_item_dialogs/dialog_group_by.cc:
+	* glom/mode_data/box_data.cc:
+	* glom/mode_data/box_data_details.cc:
+	* glom/mode_design/fields/box_db_table_definition.cc:
+	Do not call fill_from_database() if the connection is not 
+	ready, to prevent misleading g_warnings.
+
+
 2005-05-15  Murray Cumming <murrayc@murrayc.com>
 
 	* glom/base_db.cc:

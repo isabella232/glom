@@ -155,7 +155,8 @@ void Base_DB::load_from_document()
 {
   if(get_document())
   {
-    fill_from_database(); //virtual.
+    if(ConnectionPool::get_instance()->get_ready_to_connect())
+      fill_from_database(); //virtual.
 
     //Call base class:
     View_Composite_Glom::load_from_document();

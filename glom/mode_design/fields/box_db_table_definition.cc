@@ -115,6 +115,9 @@ bool Box_DB_Table_Definition::fill_from_database()
 {
   bool result = Box_DB_Table::fill_from_database();
 
+  if(!(ConnectionPool::get_instance()->get_ready_to_connect()))
+    return false;
+
   fill_fields();
 
   try

@@ -329,7 +329,9 @@ void Box_Data::on_dialog_layout_hide()
 {
   //Re-fill view, in case the layout has changed:
   create_layout();
-  fill_from_database();
+
+  if(ConnectionPool::get_instance()->get_ready_to_connect())
+    fill_from_database();
 }
 
 Box_Data::type_vecLayoutFields Box_Data::get_fields_to_show() const

@@ -114,15 +114,16 @@ void Dialog_GroupBy::on_button_secondary_fields()
   if(m_dialog_choose_secondary_fields)
   {
     m_dialog_choose_secondary_fields->set_fields(m_table_name, m_layout_item.m_group_secondary_fields.m_map_items);
-    m_dialog_choose_secondary_fields->show();
+    int response = m_dialog_choose_secondary_fields->run();
+    if(response == Gtk::RESPONSE_OK && m_dialog_choose_secondary_fields->get_modified())
+    {
+      m_layout_item.m_group_secondary_fields.remove_all_items(); //Free the existing member items.
+      m_layout_item.m_group_secondary_fields.m_map_items = m_dialog_choose_secondary_fields->get_fields();
+    }
   }
 }
 
 void Dialog_GroupBy::on_dialog_secondary_fields_hide()
 {
- if(m_dialog_choose_secondary_fields->get_modified())
- {
-   m_layout_item.m_group_secondary_fields.remove_all_items(); //Free the existing member items.
-   m_layout_item.m_group_secondary_fields.m_map_items = m_dialog_choose_secondary_fields->get_fields();
- }
+
 }

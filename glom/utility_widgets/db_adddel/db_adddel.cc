@@ -791,7 +791,7 @@ bool DbAddDel::refresh_from_database()
   {
     Glib::RefPtr<Gtk::TreeModel> refNull;
     bool result = m_refListStore->refresh_from_database(m_where_clause);
-    m_TreeView.set_model(refNull);
+    m_TreeView.set_model(refNull); //TODO: Find a better way to indicate that the whole model has changed, because this causes a g_waring().
     m_TreeView.set_model(m_refListStore);
     return result;
   }
