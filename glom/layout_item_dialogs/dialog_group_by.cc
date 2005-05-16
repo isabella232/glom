@@ -99,10 +99,10 @@ void Dialog_GroupBy::on_button_secondary_fields()
 {
   if(!m_dialog_choose_secondary_fields)
   {
-    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_data_layout_list"); //TODO: Use a generic layout dialog?
+    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_groupby_secondary_fields");
     if(refXml)
     {
-      refXml->get_widget_derived("window_data_layout_list", m_dialog_choose_secondary_fields);
+      refXml->get_widget_derived("dialog_groupby_secondary_fields", m_dialog_choose_secondary_fields);
       if(m_dialog_choose_secondary_fields)
       {
         add_view(m_dialog_choose_secondary_fields); //Give it access to the document.
@@ -114,7 +114,9 @@ void Dialog_GroupBy::on_button_secondary_fields()
   if(m_dialog_choose_secondary_fields)
   {
     m_dialog_choose_secondary_fields->set_fields(m_table_name, m_layout_item.m_group_secondary_fields.m_map_items);
+
     int response = m_dialog_choose_secondary_fields->run();
+    m_dialog_choose_secondary_fields->hide();
     if(response == Gtk::RESPONSE_OK && m_dialog_choose_secondary_fields->get_modified())
     {
       m_layout_item.m_group_secondary_fields.remove_all_items(); //Free the existing member items.

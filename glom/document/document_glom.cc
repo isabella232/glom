@@ -108,7 +108,8 @@
 #define GLOM_ATTRIBUTE_LAYOUT_ITEM_FIELDSUMMARY_SUMMARYTYPE "summarytype"
 
 Document_Glom::Document_Glom()
-: m_block_cache_update(false)
+: m_block_cache_update(false),
+  m_block_modified_set(false)
 {
   //Conscious use of virtual methods in a constructor:
   set_file_extension("glom");
@@ -859,12 +860,15 @@ Glib::ustring Document_Glom::get_default_table() const
     type_tables::const_iterator iter = m_tables.begin();
     return iter->second.m_info.m_name;
   }
-  
+
   return Glib::ustring();
 }
 
 void Document_Glom::set_modified(bool value)
 {
+  if(value && m_block_modified_set)
+    return;
+
   if(value != get_modified()) //Prevent endless loops
   {
     Bakery::Document_XML::set_modified(value);
@@ -950,7 +954,10 @@ void Document_Glom::load_after_layout_item_field(const xmlpp::Element* element, 
 void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Glib::ustring table_name, LayoutGroup& group)
 {
   if(!node)
+  {
+    //g_warning("Document_Glom::load_after_layout_group(): node is NULL");
     return;
+  }
 
   //Get the group details:
   group.set_name( get_node_attribute_value(node, GLOM_ATTRIBUTE_NAME) );
@@ -960,7 +967,7 @@ void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Gl
   group.m_sequence = get_node_attribute_value_as_decimal(node, GLOM_ATTRIBUTE_SEQUENCE);
 
   //Get the child items:
-  xmlpp::Node::NodeList listNodes = node->get_children(); 
+  xmlpp::Node::NodeList listNodes = node->get_children();
   for(xmlpp::Node::NodeList::iterator iter = listNodes.begin(); iter != listNodes.end(); ++iter)
   {
     const xmlpp::Element* element = dynamic_cast<const xmlpp::Element*>(*iter);
@@ -1014,11 +1021,20 @@ void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Gl
         field_sortby.set_name( get_node_attribute_value(element, GLOM_ATTRIBUTE_REPORT_ITEM_GROUPBY_SORTBY) );
         child_group.set_field_sort_by(field_sortby);
 
-        xmlpp::Node::NodeList listNodes = node->get_children(GLOM_NODE_DATA_LAYOUT_GROUP_SECONDARYFIELDS);
+        //Secondary fields:
+        xmlpp::Node::NodeList listNodes = element->get_children(GLOM_NODE_DATA_LAYOUT_GROUP_SECONDARYFIELDS);
         if(!listNodes.empty())
         {
           xmlpp::Element* element = dynamic_cast<xmlpp::Element*>( *(listNodes.begin()) );
-          load_after_layout_group(element, table_name, child_group.m_group_secondary_fields);
+          if(element)
+          {
+            xmlpp::Node::NodeList listNodes = element->get_children(GLOM_NODE_DATA_LAYOUT_GROUP);
+            xmlpp::Element* element = dynamic_cast<xmlpp::Element*>( *(listNodes.begin()) );
+            if(element)
+            {
+              load_after_layout_group(element, table_name, child_group.m_group_secondary_fields);
+            }
+          }
         }
 
         group.add_item(child_group);
@@ -1370,8 +1386,11 @@ void Document_Glom::save_before_layout_group(xmlpp::Element* node, const LayoutG
     set_node_attribute_value(child, GLOM_ATTRIBUTE_REPORT_ITEM_GROUPBY_GROUPBY, group_by->get_field_group_by()->get_name());
     set_node_attribute_value(child, GLOM_ATTRIBUTE_REPORT_ITEM_GROUPBY_SORTBY, group_by->get_field_sort_by()->get_name());
 
-    xmlpp::Element* secondary_fields = child->add_child(GLOM_NODE_DATA_LAYOUT_GROUP_SECONDARYFIELDS);
-    save_before_layout_group(secondary_fields, group_by->m_group_secondary_fields);
+    if(!group_by->m_group_secondary_fields.m_map_items.empty())
+    {
+      xmlpp::Element* secondary_fields = child->add_child(GLOM_NODE_DATA_LAYOUT_GROUP_SECONDARYFIELDS);
+      save_before_layout_group(secondary_fields, group_by->m_group_secondary_fields);
+    }
   }
   else
   {
@@ -1676,6 +1695,9 @@ void Document_Glom::remove_group(const Glib::ustring& group_name)
 
 void Document_Glom::update_cached_relationships(LayoutGroup& group, const Glib::ustring& table_name)
 {
+  const bool old_block_modified_set = m_block_modified_set;
+  m_block_modified_set = true; //Don't let any of this cause a document save. It's just a cache.
+
   //Find any LayoutItem_Fields, and fill in their full relationship details:
   for(LayoutGroup::type_map_items::iterator iter = group.m_map_items.begin(); iter != group.m_map_items.end(); ++iter)
   {
@@ -1715,12 +1737,24 @@ void Document_Glom::update_cached_relationships(LayoutGroup& group, const Glib::
       }
       else
       {
-        LayoutGroup* pGroup = dynamic_cast<LayoutGroup*>(pItem);
-        if(pGroup)
-          update_cached_relationships(*pGroup, table_name); //recurse:
+        LayoutItem_GroupBy* pGroupBy = dynamic_cast<LayoutItem_GroupBy*>(pItem);
+        if(pGroupBy)
+        {
+          update_cached_relationships(*pGroupBy, table_name); //recurse:
+
+          update_cached_relationships(pGroupBy->m_group_secondary_fields, table_name); //recuse.
+        }
+        else
+        {
+          LayoutGroup* pGroup = dynamic_cast<LayoutGroup*>(pItem);
+          if(pGroup)
+            update_cached_relationships(*pGroup, table_name); //recurse:
+        }
       }
     }
   }
+
+  m_block_modified_set = old_block_modified_set;
 }
 
 void Document_Glom::update_cached_relationships()

@@ -1409,7 +1409,13 @@ void Base_DB::report_build_records(const Glib::ustring& table_name, xmlpp::Eleme
     for(GlomUtils::type_vecLayoutFields::const_iterator iter = fieldsToGet.begin(); iter != fieldsToGet.end(); ++iter)
     {
       sharedptr<LayoutItem_Field> layout_item = *iter;
-      xmlpp::Element* nodeFieldHeading = parent_node.add_child("field_heading");
+
+      xmlpp::Element* nodeFieldHeading = 0;
+      if(layout_item->m_field.get_glom_type() == Field::TYPE_NUMERIC)
+        nodeFieldHeading = parent_node.add_child("field_heading_numeric"); //This is quite hacky. murrayc.
+      else
+        nodeFieldHeading = parent_node.add_child("field_heading");
+
       nodeFieldHeading->set_attribute("name", layout_item->get_name()); //Not really necessary, but maybe useful.
       nodeFieldHeading->set_attribute("title", layout_item->get_title_or_name());
     }

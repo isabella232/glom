@@ -253,6 +253,7 @@ protected:
   Glib::ustring m_database_title;
 
   bool m_block_cache_update; //For efficiency.
+  bool m_block_modified_set;
 };
 
 //The base View for this document;

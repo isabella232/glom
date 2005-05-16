@@ -45,7 +45,7 @@ bool Box_DB_Table::init_db_details(const Glib::ustring& strTableName)
 {
   m_strTableName = strTableName;
 
- if(!ConnectionPool::get_instance()->get_ready_to_connect())
+  if(!ConnectionPool::get_instance()->get_ready_to_connect())
     return false;
 
   return fill_from_database();

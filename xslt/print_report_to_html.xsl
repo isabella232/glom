@@ -69,7 +69,7 @@ table
 <xsl:apply-templates select="group_by"/>
 <p>
 <table class="records">
-  <xsl:apply-templates select="field_heading"/>
+  <xsl:apply-templates select="field_heading|field_heading_numeric"/>
   <xsl:apply-templates select="row"/>
 </table>
 </p>
@@ -79,7 +79,7 @@ table
 
 <xsl:template match="secondary_fields">
 <table class="group_by_secondary_fields">
-  <xsl:apply-templates select="field_heading"/>
+  <xsl:apply-templates select="field_heading|field_heading_numeric"/>
   <xsl:apply-templates select="row"/>
 </table>
 </xsl:template>
@@ -88,7 +88,7 @@ table
 <div class="summary">
 <p>
 <table class="records_summary">
-  <xsl:apply-templates select="field_heading"/>
+  <xsl:apply-templates select="field_heading|field_heading_numeric"/>
   <xsl:apply-templates select="row"/>
 </table>
 </p>
@@ -99,7 +99,7 @@ table
 <div class="ungrouped_records">
 <p>
 <table class="records">
-  <xsl:apply-templates select="field_heading"/>
+  <xsl:apply-templates select="field_heading|field_heading_numeric"/>
   <xsl:apply-templates select="row"/>
 </table>
 </p>
@@ -107,7 +107,13 @@ table
 </xsl:template>
 
 <xsl:template match="field_heading">
-<th class="field_heading"> <xsl:value-of select="@title"/> </th>
+<th class="field_heading" align="left"> <xsl:value-of select="@title"/> </th>
+</xsl:template>
+
+<!-- TODO: I would like to just add the attribute to the td in the regular field instead,
+     but I do not know how to use xsl::if to add an attribute. murrayc -->
+<xsl:template match="field_heading_numeric">
+<th class="field_heading" align="right"> <xsl:value-of select="@title"/> </th>
 </xsl:template>
 
 <xsl:template match="row">
@@ -117,7 +123,7 @@ table
 </xsl:template>
 
 <xsl:template match="field">
-<td class="field"><xsl:value-of select="@value"/></td>
+<td class="field" align="left"><xsl:value-of select="@value"/></td>
 </xsl:template>
 
 <!-- TODO: I would like to just add the attribute to the td in the regular field instead,
