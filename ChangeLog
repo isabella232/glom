@@ -1,5 +1,12 @@
 2005-05-18  Murray Cumming <murrayc@murrayc.com>
 
+	* glom/document/document_glom.cc: 
+        set_node_attribute_value_as_bool/as_decimal(): 
+	Save lots of space by writing/interpreting 
+	non-existant attributes as false or zero. 
+
+2005-05-18  Murray Cumming <murrayc@murrayc.com>
+
 	* glom/dialog_layout_report.cc: constructor: 
 	Position the available parts hierarchically, to 
 	indicate their expected relationship.

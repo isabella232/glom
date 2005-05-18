@@ -489,12 +489,18 @@ bool Document_Glom::get_node_attribute_value_as_bool(const xmlpp::Element* node,
   
 void Document_Glom::set_node_attribute_value_as_bool(xmlpp::Element* node, const Glib::ustring& strAttributeName, bool value)
 {
+  if(!value && !node->get_attribute(strAttributeName))
+    return; //Use the non-existance of an attribute to mean false, to save space.
+
   Glib::ustring strValue = (value ? "true" : "false");
   set_node_attribute_value(node, strAttributeName, strValue);
 }
 
 void Document_Glom::set_node_attribute_value_as_decimal(xmlpp::Element* node, const Glib::ustring& strAttributeName, int value)
 {
+  if(!value && !node->get_attribute(strAttributeName))
+    return; //Use the non-existance of an attribute to mean zero, to save space.
+
   //Get text representation of int:
   std::stringstream thestream;
   thestream.imbue( std::locale::classic() ); //The C locale.

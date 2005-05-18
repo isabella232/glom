@@ -192,23 +192,15 @@ void Box_Formatting::on_combo_choices_relationship_changed()
   }
 }
 
-void Box_Formatting::on_debug()
-{
-  g_warning("debug: reshown");
-}
-
 void Box_Formatting::enforce_constraints()
 {
   //Hide inappropriate UI:
   const bool is_numeric = (m_field.get_glom_type() == Field::TYPE_NUMERIC);
-  g_warning("debug: is_numeric ==%d", is_numeric);
   if(is_numeric)
     m_frame_numeric_format->show();
   else
   {
     m_frame_numeric_format->hide();
-
-    m_frame_numeric_format->signal_show().connect(sigc::mem_fun(*this, &Box_Formatting::on_debug));
   }
 
   const bool is_text = (m_field.get_glom_type() == Field::TYPE_TEXT);

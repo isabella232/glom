@@ -48,8 +48,6 @@ protected:
   //Signal handlers:
   void on_combo_choices_relationship_changed();
 
-  void on_debug();
-
   void enforce_constraints();
 
   Gtk::Frame* m_frame_numeric_format;
