@@ -1,3 +1,58 @@
+2005-05-18  Murray Cumming <murrayc@murrayc.com>
+
+	* examples/example_smallbusiness.glom: Add default 
+	field formatting, instead of custom formatting.
+	* glom/base_db.cc:
+	* glom/data_structure/field.cc:
+	* glom/data_structure/field.h: Added default_formatting.
+	* glom/data_structure/layout/Makefile.am:
+	* glom/data_structure/layout/fieldformatting.cc:
+	* glom/data_structure/layout/fieldformatting.h:
+	Added FieldFormatting to hold numeric formatting, 
+	text formatting, and the various choices.
+	* glom/data_structure/layout/layoutitem_field.cc:
+	* glom/data_structure/layout/layoutitem_field.h:
+	Replace individual formatting members with a 
+	FieldFormatting, and added boolean to specify 
+	use of the default.
+	* glom/document/document_glom.cc:
+	* glom/document/document_glom.h:
+	Save/load the formatting as a whole node, and save 
+	Field default formatting.
+	* glom/glom.glade: Move field formatting into a 
+	VBox that can be used in both the field definition 
+	dialog and the field layout dialog for custom 	
+	formatting.
+	* glom/layout_item_dialogs/Makefile.am:
+	* glom/layout_item_dialogs/box_formatting.cc:
+	* glom/layout_item_dialogs/box_formatting.h:
+	Added derived VBox for the formatting.
+	* glom/layout_item_dialogs/dialog_field_layout.cc:
+	* glom/layout_item_dialogs/dialog_field_layout.h:
+	Use Box_Formatting instead of the individual 
+	formatting widgets.
+	* glom/mode_data/box_data.cc:
+	* glom/mode_data/box_data_details.cc:
+	* glom/mode_data/box_data_list.cc:
+	Use the appropriate formatting, using custom formatting 
+	if specified.
+	* glom/mode_design/fields/box_db_table_definition.cc:
+	* glom/mode_design/fields/dialog_fielddefinition.cc:
+	* glom/mode_design/fields/dialog_fielddefinition.h:
+	Moved Extras tab into the main tab. Added Default 
+	Formatting tab.
+	* glom/utility_widgets/comboentryglom.cc:
+	* glom/utility_widgets/comboglom.cc:
+	* glom/utility_widgets/comboglomchoicesbase.cc:
+	* glom/utility_widgets/comboglomchoicesbase.h:
+	* glom/utility_widgets/datawidget.cc:
+	* glom/utility_widgets/db_adddel/db_adddel.cc:
+	* glom/utility_widgets/entryglom.cc:
+	* glom/utility_widgets/flowtablewithfields.cc:
+	* glom/utility_widgets/textviewglom.cc:
+	* glom/utils.cc:
+	Use the default formatting, if specified.
+
 0.8.28:
 
 2005-05-16  Murray Cumming <murrayc@murrayc.com>

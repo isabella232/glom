@@ -105,7 +105,7 @@ void ComboEntryGlom::check_for_change()
     bool success = false;
 
     const LayoutItem_Field* layout_item = dynamic_cast<const LayoutItem_Field*>(get_layout_item());
-    Gnome::Gda::Value value = GlomConversions::parse_value(layout_item->m_field.get_glom_type(), get_entry()->get_text(), layout_item->m_numeric_format, success);
+    Gnome::Gda::Value value = GlomConversions::parse_value(layout_item->m_field.get_glom_type(), get_entry()->get_text(), layout_item->get_formatting_used().m_numeric_format, success);
 
     if(success)
     {
@@ -161,7 +161,7 @@ void ComboEntryGlom::set_value(const Gnome::Gda::Value& value)
   const LayoutItem_Field* layout_item = dynamic_cast<const LayoutItem_Field*>(get_layout_item());
   if(layout_item)
   {
-    set_text(GlomConversions::get_text_for_gda_value(layout_item->m_field.get_glom_type(), value, layout_item->m_numeric_format));
+    set_text(GlomConversions::get_text_for_gda_value(layout_item->m_field.get_glom_type(), value, layout_item->get_formatting_used().m_numeric_format));
   }
 }
 
@@ -178,7 +178,7 @@ Gnome::Gda::Value ComboEntryGlom::get_value() const
   bool success = false;
 
   const LayoutItem_Field* layout_item = dynamic_cast<const LayoutItem_Field*>(get_layout_item());
-  return GlomConversions::parse_value(layout_item->m_field.get_glom_type(), get_entry()->get_text(), layout_item->m_numeric_format, success);
+  return GlomConversions::parse_value(layout_item->m_field.get_glom_type(), get_entry()->get_text(), layout_item->get_formatting_used().m_numeric_format, success);
 }
 
 bool ComboEntryGlom::on_entry_button_press_event(GdkEventButton *event)

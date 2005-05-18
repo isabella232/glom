@@ -24,11 +24,6 @@
 #include <gtkmm/window.h>
 #include "placeholder.h"
 
-/**
-  *@author Murray Cumming
-  */
-
-
 class Dialog_Properties : public Gtk::Window
 {
 public:
@@ -50,10 +45,11 @@ protected:
   virtual void on_button_cancel();
 
   virtual void on_anything_changed();
+  virtual void on_adddel_user_changed(const Gtk::TreeModel::iterator& /* iter */, guint /* col */);
 
   /// Disable/enable other controls when a control is selected.
   virtual void enforce_constraints();
-  
+
   virtual void on_foreach_connect(Gtk::Widget& widget);
   virtual void widget_connect_changed_signal(Gtk::Widget& widget);
   virtual void set_blocked(bool val = true);

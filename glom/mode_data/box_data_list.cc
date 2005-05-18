@@ -438,8 +438,6 @@ void Box_Data_List::refresh_related_fields(const Gtk::TreeModel::iterator& row, 
       //Field contents:
       if(result->get_n_rows())
       {
-        g_warning("Box_Data_List::refresh_related_fields(): records_count=%d", result->get_n_rows());
-
         type_vecLayoutFields::const_iterator iterFields = fieldsToGet.begin();
 
         guint cols_count = result->get_n_columns();
@@ -633,7 +631,6 @@ void Box_Data_List::create_layout()
       m_AddDel.set_key_field(field_primary_key);
 
       m_FieldsShown = get_fields_to_show();
-      //g_warning("m_Fields[0].m_field.get_name() = %s", m_FieldsShown[0].m_field.get_name().c_str());
 
       //Add extra possibly-non-visible columns that we need:
       //TODO: Only add it if it is not already there.

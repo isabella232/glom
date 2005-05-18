@@ -26,13 +26,15 @@
 
 Dialog_FieldDefinition::Dialog_FieldDefinition(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
 : Dialog_Properties(cobject, refGlade),
-  m_pDataWidget_DefaultValueSimple(0)
+  m_pDataWidget_DefaultValueSimple(0),
+  m_box_formatting_placeholder(0),
+  m_box_formatting(0)
 {
   refGlade->get_widget_derived("combobox_type", m_pCombo_Type);
 
   refGlade->get_widget("entry_name", m_pEntry_Name);
   refGlade->get_widget("entry_title", m_pEntry_Title);
-  
+
   refGlade->get_widget("checkbutton_unique",  m_pCheck_Unique);
   refGlade->get_widget("checkbutton_primarykey",  m_pCheck_PrimaryKey);
   refGlade->get_widget("checkbutton_autoincrement",  m_pCheck_AutoIncrement);  
@@ -57,7 +59,7 @@ Dialog_FieldDefinition::Dialog_FieldDefinition(BaseObjectType* cobject, const Gl
 
   m_pCheck_Calculate->signal_toggled().connect( sigc::mem_fun(*this, &Dialog_FieldDefinition::on_check_calculate_toggled) );
   m_pButton_EditCalculation->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_FieldDefinition::on_button_edit_calculation) );
-  
+
   //TODO:
   //Connect every widget to on_anything_changed():
   //foreach_( (GtkCallback)(&on_foreach), this); //Crashes several levels down.
@@ -67,9 +69,28 @@ Dialog_FieldDefinition::Dialog_FieldDefinition(BaseObjectType* cobject, const Gl
   //Make sure that the correct Type Details are showing:
   on_combo_type_changed();
 
+  //Formatting:
+  //Get the place to put the Formatting stuff:
+  refGlade->get_widget("box_formatting_placeholder", m_box_formatting_placeholder);
+
+  //Get the formatting stuff:
+  try
+  {
+    Glib::RefPtr<Gnome::Glade::Xml> refXmlFormatting = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "box_formatting");
+    refXmlFormatting->get_widget_derived("box_formatting", m_box_formatting);
+  }
+  catch(const Gnome::Glade::XmlError& ex)
+  {
+    std::cerr << ex.what() << std::endl;
+  }
+
+  m_box_formatting_placeholder->pack_start(*m_box_formatting);
+
+
   on_foreach_connect(*this);
   on_foreach_connect(*m_pBox_DefaultValueSimple);
   on_foreach_connect(*m_pBox_DefaultValue);
+  on_foreach_connect(*m_box_formatting);
 
   Dialog_Properties::set_modified(false);
 
@@ -128,6 +149,7 @@ void Dialog_FieldDefinition::set_field(const Field& field, const Glib::ustring& 
 
   m_pBox_DefaultValueSimple->pack_end(*m_pDataWidget_DefaultValueSimple, Gtk::PACK_EXPAND_WIDGET); 
   m_pDataWidget_DefaultValueSimple->set_value(default_value);
+  m_pDataWidget_DefaultValueSimple->show();
 
   //Default value: lookup:
 
@@ -163,10 +185,13 @@ void Dialog_FieldDefinition::set_field(const Field& field, const Glib::ustring& 
   const Glib::ustring calculation = field.get_calculation();
   m_pCheck_Calculate->set_active(!calculation.empty());
   on_check_lookup_toggled();
-  
+
   m_pTextView_Calculation->get_buffer()->set_text(calculation);
-          
+
   m_pEntry_Title->set_text(field.get_title());
+
+  //Formatting:
+  m_box_formatting->set_formatting(field.m_default_formatting, m_table_name, field);
 
   set_blocked(false);
 
@@ -189,7 +214,7 @@ Field Dialog_FieldDefinition::get_field() const
   fieldInfo.set_unique_key(m_pCheck_Unique->get_active());
   fieldInfo.set_primary_key(m_pCheck_PrimaryKey->get_active());
   fieldInfo.set_auto_increment(m_pCheck_AutoIncrement->get_active());
- 
+
   if(!fieldInfo.get_auto_increment()) //Ignore default_values for auto_increment fields - it's just some obscure postgres code.
   {
     //Simple default value:
@@ -212,14 +237,17 @@ Field Dialog_FieldDefinition::get_field() const
   //Calculation:
   if(m_pCheck_Calculate)
     field.set_calculation(m_pTextView_Calculation->get_buffer()->get_text());
-   
+
   Gnome::Gda::FieldAttributes field_info_copy = fieldInfo;
-    
+
   field.set_field_info(fieldInfo);
 
   //Glom-specific details:
 
   field.set_title(m_pEntry_Title->get_text());
+
+  //Formatting:
+  m_box_formatting->get_formatting(field.m_default_formatting);
 
   return field;
 }

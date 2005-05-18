@@ -734,7 +734,7 @@ void Box_Data_Details::print_layout_group(xmlpp::Element* node_parent, const Lay
 
         Gnome::Gda::Value value = m_FlowTable.get_field_value(*pLayoutField);
         Glib::ustring text_representation = GlomConversions::get_text_for_gda_value(pLayoutField->m_field.get_glom_type(), value,
-          pLayoutField->m_numeric_format); //In the current locale.
+          pLayoutField->get_formatting_used().m_numeric_format); //In the current locale.
 
         nodeField->set_attribute("value", text_representation);
       }

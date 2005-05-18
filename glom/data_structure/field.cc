@@ -39,6 +39,7 @@ Field::Field()
 
 Field::Field(const Field& src)
 {
+  //TODO_Performance: Implement this properly, without the extra copy.
   operator=(src);
 }
 
@@ -60,6 +61,8 @@ Field& Field::operator=(const Field& src)
 
   m_visible = src.m_visible;
 
+  m_default_formatting = src.m_default_formatting;
+
   return *this;
 }
 
@@ -76,7 +79,9 @@ bool Field::operator==(const Field& src) const
   bResult = bResult && (m_calculation == src.m_calculation);
 
   bResult = bResult && (m_visible == src.m_visible);
-  
+
+  bResult = bResult && (m_default_formatting == src.m_default_formatting);
+
   return bResult;
 }
 

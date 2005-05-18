@@ -22,6 +22,7 @@
 #define GLOM_DATASTRUCTURE_FIELD_H
 
 #include <libgdamm.h>
+#include "layout/fieldformatting.h"
 #include "../sharedptr.h"
 
 //Predicate, for use with std::find_if():
@@ -187,6 +188,8 @@ public:
   static glom_field_type get_glom_type_for_gda_type(Gnome::Gda::ValueType gda_type);
   static Gnome::Gda::ValueType get_gda_type_for_glom_type(Field::glom_field_type glom_type);
 
+
+  FieldFormatting m_default_formatting;
 
 protected:
 

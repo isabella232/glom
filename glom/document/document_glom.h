@@ -187,6 +187,7 @@ public:
    */
   void update_cached_relationships();
   void update_cached_relationships(LayoutGroup& group, const Glib::ustring& table_name);
+  void update_cached_relationships(FieldFormatting& formatting, const Glib::ustring& table_name);
 
 protected:
 
@@ -198,7 +199,9 @@ protected:
   void save_before_layout_group(xmlpp::Element* node, const LayoutGroup& group);
 
   void load_after_layout_item_field(const xmlpp::Element* element, LayoutItem_Field& item);
+  void load_after_layout_item_field_formatting(const xmlpp::Element* element, FieldFormatting& format, const Field& layout_item);
   void save_before_layout_item_field(xmlpp::Element* nodeItem, const LayoutItem_Field& item);
+  void save_before_layout_item_field_formatting(xmlpp::Element* nodeItem, const FieldFormatting& format, const Field& layout_item);
 
   virtual void on_app_state_userlevel_changed(AppState::userlevels userleve);
 

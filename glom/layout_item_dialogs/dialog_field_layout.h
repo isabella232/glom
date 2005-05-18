@@ -27,6 +27,7 @@
 #include "../box_db.h"
 #include "../utility_widgets/combo_textglade.h"
 #include "../utility_widgets/comboentry_currency.h"
+#include "box_formatting.h"
 
 class Dialog_FieldLayout
  : public Gtk::Dialog,
@@ -43,34 +44,17 @@ public:
    */
   virtual void set_field(const LayoutItem_Field& field, const Glib::ustring& table_name);
 
-  //void select_item(const Field& field);
-
   bool get_field_chosen(LayoutItem_Field& field) const;
 
 protected:
-  //Signal handlers:
-  void on_combo_choices_relationship_changed();
+  void on_radiobutton_custom_formatting();
+  void enforce_constraints();
 
   Gtk::Label* m_label_field_name;
   Gtk::CheckButton* m_checkbutton_editable;
-
-  Gtk::Frame* m_frame_numeric_format;
-  Gtk::CheckButton* m_checkbox_format_use_thousands;
-  Gtk::CheckButton* m_checkbox_format_use_decimal_places;
-  Gtk::Entry* m_entry_format_decimal_places;
-  ComboEntry_Currency* m_entry_currency_symbol;
-
-  Gtk::Frame* m_frame_text_format;
-  Gtk::CheckButton* m_checkbox_format_text_multiline;
-
-  Gtk::RadioButton* m_radiobutton_choices_custom;
-  Gtk::RadioButton* m_radiobutton_choices_related;
-  Gtk::CheckButton* m_checkbutton_choices_restricted;
-  AddDel_WithButtons* m_adddel_choices_custom;
-  guint m_col_index_custom_choices;
-  Combo_TextGlade* m_combo_choices_relationship;
-  Combo_TextGlade* m_combo_choices_field;
-  Combo_TextGlade* m_combo_choices_field_second;
+  Gtk::VBox* m_box_formatting_placeholder;
+  Gtk::RadioButton* m_radiobutton_custom_formatting;
+  Box_Formatting* m_box_formatting;
 
   mutable LayoutItem_Field m_layout_item;
 

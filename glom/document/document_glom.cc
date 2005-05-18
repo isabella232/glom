@@ -41,6 +41,7 @@
 
 #define GLOM_NODE_DATA_LAYOUT_PORTAL "data_layout_portal"
 #define GLOM_NODE_DATA_LAYOUT_ITEM "data_layout_item"
+#define GLOM_ATTRIBUTE_DATA_LAYOUT_ITEM_FIELD_USE_DEFAULT_FORMATTING "use_default_formatting"
 #define GLOM_NODE_DATA_LAYOUT_ITEM_GROUPBY "data_layout_item_groupby"
 #define GLOM_NODE_DATA_LAYOUT_GROUP_SECONDARYFIELDS "secondary_fields"
 #define GLOM_NODE_DATA_LAYOUT_ITEM_SUMMARY "data_layout_item_summary"
@@ -82,22 +83,7 @@
 #define GLOM_ATTRIBUTE_FIELD "field"
 #define GLOM_ATTRIBUTE_EDITABLE "editable"
 
-#define GLOM_ATTRIBUTE_FORMAT_THOUSANDS_SEPARATOR "format_thousands_separator"
-#define GLOM_ATTRIBUTE_FORMAT_DECIMAL_PLACES_RESTRICTED "format_decimal_places_restricted"
-#define GLOM_ATTRIBUTE_FORMAT_DECIMAL_PLACES "format_decimal_places"
-#define GLOM_ATTRIBUTE_FORMAT_CURRENCY_SYMBOL "format_currency_symbol"
 
-#define GLOM_ATTRIBUTE_FORMAT_TEXT_MULTILINE "format_text_multiline"
-
-#define GLOM_ATTRIBUTE_CHOICES_RESTRICTED "choices_restricted"
-#define GLOM_ATTRIBUTE_CHOICES_CUSTOM "choices_custom"
-#define GLOM_ATTRIBUTE_CHOICES_CUSTOM_LIST "custom_choice_list"
-#define GLOM_NODE_CUSTOM_CHOICE "custom_choice"
-#define GLOM_ATTRIBUTE_VALUE "value"
-#define GLOM_ATTRIBUTE_CHOICES_RELATED "choices_related"
-#define GLOM_ATTRIBUTE_CHOICES_RELATED_RELATIONSHIP "choices_related_relationship"
-#define GLOM_ATTRIBUTE_CHOICES_RELATED_FIELD "choices_related_field"
-#define GLOM_ATTRIBUTE_CHOICES_RELATED_SECOND "choices_related_second"
 
 #define GLOM_ATTRIBUTE_RELATIONSHIP_NAME "relationship"
 
@@ -106,6 +92,24 @@
 #define GLOM_ATTRIBUTE_REPORT_ITEM_GROUPBY_GROUPBY "groupby"
 #define GLOM_ATTRIBUTE_REPORT_ITEM_GROUPBY_SORTBY "sortby"
 #define GLOM_ATTRIBUTE_LAYOUT_ITEM_FIELDSUMMARY_SUMMARYTYPE "summarytype"
+
+#define GLOM_NODE_FORMAT "formatting"
+#define GLOM_ATTRIBUTE_FORMAT_THOUSANDS_SEPARATOR "format_thousands_separator"
+#define GLOM_ATTRIBUTE_FORMAT_DECIMAL_PLACES_RESTRICTED "format_decimal_places_restricted"
+#define GLOM_ATTRIBUTE_FORMAT_DECIMAL_PLACES "format_decimal_places"
+#define GLOM_ATTRIBUTE_FORMAT_CURRENCY_SYMBOL "format_currency_symbol"
+
+#define GLOM_ATTRIBUTE_FORMAT_TEXT_MULTILINE "format_text_multiline"
+
+#define GLOM_ATTRIBUTE_FORMAT_CHOICES_RESTRICTED "choices_restricted"
+#define GLOM_ATTRIBUTE_FORMAT_CHOICES_CUSTOM "choices_custom"
+#define GLOM_ATTRIBUTE_FORMAT_CHOICES_CUSTOM_LIST "custom_choice_list"
+#define GLOM_NODE_FORMAT_CUSTOM_CHOICE "custom_choice"
+#define GLOM_ATTRIBUTE_VALUE "value"
+#define GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED "choices_related"
+#define GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_RELATIONSHIP "choices_related_relationship"
+#define GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_FIELD "choices_related_field"
+#define GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_SECOND "choices_related_second"
 
 Document_Glom::Document_Glom()
 : m_block_cache_update(false),
@@ -896,6 +900,52 @@ void Document_Glom::set_modified(bool value)
   }
 }
 
+void Document_Glom::load_after_layout_item_field_formatting(const xmlpp::Element* element, FieldFormatting& format, const Field& field)
+{
+  //Numeric formatting:
+  format.m_numeric_format.m_use_thousands_separator = get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_FORMAT_THOUSANDS_SEPARATOR);
+  format.m_numeric_format.m_decimal_places_restricted = get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_FORMAT_DECIMAL_PLACES_RESTRICTED);
+  format.m_numeric_format.m_decimal_places = get_node_attribute_value_as_decimal(element, GLOM_ATTRIBUTE_FORMAT_DECIMAL_PLACES);
+  format.m_numeric_format.m_currency_symbol = get_node_attribute_value(element, GLOM_ATTRIBUTE_FORMAT_CURRENCY_SYMBOL);
+
+  //Text formatting:
+  format.set_text_format_multiline( get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_FORMAT_TEXT_MULTILINE) );
+
+  //Choices:
+  format.set_choices_restricted( get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_RESTRICTED) );
+  format.set_has_custom_choices( get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_CUSTOM) );
+
+  if(format.get_has_custom_choices())
+  {
+    const xmlpp::Element* nodeChoiceList = get_node_child_named(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_CUSTOM_LIST);
+    if(nodeChoiceList)
+    {
+      FieldFormatting::type_list_values list_values;
+
+      xmlpp::Node::NodeList listNodesCustomChoices = nodeChoiceList->get_children(GLOM_NODE_FORMAT_CUSTOM_CHOICE);
+      for(xmlpp::Node::NodeList::iterator iter = listNodesCustomChoices.begin(); iter != listNodesCustomChoices.end(); ++iter)
+      {
+        const xmlpp::Element* element = dynamic_cast<const xmlpp::Element*>(*iter);
+        if(element)
+        {
+          Gnome::Gda::Value value = get_node_attribute_value_as_value(element, GLOM_ATTRIBUTE_VALUE, field.get_glom_type());
+          list_values.push_back(value);
+        }
+      }
+
+      format.set_choices_custom(list_values);
+    }
+  }
+
+  format.set_has_related_choices( get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED) );
+
+  format.set_choices(get_node_attribute_value(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_RELATIONSHIP),
+    get_node_attribute_value(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_FIELD),
+    get_node_attribute_value(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_SECOND) );
+  //Full details are updated in filled-in ().
+
+}
+
 void Document_Glom::load_after_layout_item_field(const xmlpp::Element* element, LayoutItem_Field& item)
 {
   item.set_name( get_node_attribute_value(element, GLOM_ATTRIBUTE_NAME) );
@@ -904,53 +954,13 @@ void Document_Glom::load_after_layout_item_field(const xmlpp::Element* element, 
 
   item.set_editable( get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_EDITABLE) );
 
-  //Numeric formatting:
-  NumericFormat numeric_format;
-  numeric_format.m_use_thousands_separator = get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_FORMAT_THOUSANDS_SEPARATOR);
-  numeric_format.m_decimal_places_restricted = get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_FORMAT_DECIMAL_PLACES_RESTRICTED);
-  numeric_format.m_decimal_places = get_node_attribute_value_as_decimal(element, GLOM_ATTRIBUTE_FORMAT_DECIMAL_PLACES);
-  numeric_format.m_currency_symbol = get_node_attribute_value(element, GLOM_ATTRIBUTE_FORMAT_CURRENCY_SYMBOL);
+  const xmlpp::Element* elementFormatting = get_node_child_named(element, GLOM_NODE_FORMAT);
+  if(elementFormatting)
+    load_after_layout_item_field_formatting(elementFormatting, item.m_formatting, item.m_field);
 
-  item.m_numeric_format = numeric_format;
-
-  //Text formatting:
-  item.set_text_format_multiline( get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_FORMAT_TEXT_MULTILINE) );
-
-  //Choices:
-  item.set_choices_restricted( get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_CHOICES_RESTRICTED) );
-  item.set_has_custom_choices( get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_CHOICES_CUSTOM) );
-
-  if(item.get_has_custom_choices())
-  {
-    const xmlpp::Element* nodeChoiceList = get_node_child_named(element, GLOM_ATTRIBUTE_CHOICES_CUSTOM_LIST);
-    if(nodeChoiceList)
-    {
-      LayoutItem_Field::type_list_values list_values;
-
-      xmlpp::Node::NodeList listNodesCustomChoices = nodeChoiceList->get_children(GLOM_NODE_CUSTOM_CHOICE);
-      for(xmlpp::Node::NodeList::iterator iter = listNodesCustomChoices.begin(); iter != listNodesCustomChoices.end(); ++iter)
-      {
-        const xmlpp::Element* element = dynamic_cast<const xmlpp::Element*>(*iter);
-        if(element)
-        {
-          Gnome::Gda::Value value = get_node_attribute_value_as_value(element, GLOM_ATTRIBUTE_VALUE, item.m_field.get_glom_type());
-          list_values.push_back(value);
-        }
-      }
-
-      item.set_choices_custom(list_values);
-    }
-  }
-
-  item.set_has_related_choices( get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_CHOICES_RELATED) );
-
-  item.set_choices(get_node_attribute_value(element, GLOM_ATTRIBUTE_CHOICES_RELATED_RELATIONSHIP),
-    get_node_attribute_value(element, GLOM_ATTRIBUTE_CHOICES_RELATED_FIELD),
-    get_node_attribute_value(element, GLOM_ATTRIBUTE_CHOICES_RELATED_SECOND) );
-  //Full details are updated in filled-in ().
-
-
+  item.set_formatting_use_default( get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_DATA_LAYOUT_ITEM_FIELD_USE_DEFAULT_FORMATTING) );
 }
+
 void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Glib::ustring table_name, LayoutGroup& group)
 {
   if(!node)
@@ -1022,18 +1032,13 @@ void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Gl
         child_group.set_field_sort_by(field_sortby);
 
         //Secondary fields:
-        xmlpp::Node::NodeList listNodes = element->get_children(GLOM_NODE_DATA_LAYOUT_GROUP_SECONDARYFIELDS);
-        if(!listNodes.empty())
+        xmlpp::Element* elementSecondary = get_node_child_named(element, GLOM_NODE_DATA_LAYOUT_GROUP_SECONDARYFIELDS);
+        if(elementSecondary)
         {
-          xmlpp::Element* element = dynamic_cast<xmlpp::Element*>( *(listNodes.begin()) );
-          if(element)
+          xmlpp::Element* elementGroup = get_node_child_named(elementSecondary, GLOM_NODE_DATA_LAYOUT_GROUP);
+          if(elementGroup)
           {
-            xmlpp::Node::NodeList listNodes = element->get_children(GLOM_NODE_DATA_LAYOUT_GROUP);
-            xmlpp::Element* element = dynamic_cast<xmlpp::Element*>( *(listNodes.begin()) );
-            if(element)
-            {
-              load_after_layout_group(element, table_name, child_group.m_group_secondary_fields);
-            }
+            load_after_layout_group(elementGroup, table_name, child_group.m_group_secondary_fields);
           }
         }
 
@@ -1150,7 +1155,12 @@ bool Document_Glom::load_after()
 
                 //We set this after set_field_info(), because that gets a glom type from the (not-specified) gdatype. Yes, that's strange, and should probably be more explicit.
                 field.set_glom_type( field_type_enum );
- 
+
+                //Default Formatting:
+                const xmlpp::Element* elementFormatting = get_node_child_named(nodeChild, GLOM_NODE_FORMAT);
+                if(elementFormatting)
+                  load_after_layout_item_field_formatting(elementFormatting, field.m_default_formatting, field);
+
                 doctableinfo.m_fields.push_back(field);
               }
             }
@@ -1329,45 +1339,52 @@ bool Document_Glom::load_after()
   return result;
 }
 
+void Document_Glom::save_before_layout_item_field_formatting(xmlpp::Element* nodeItem, const FieldFormatting& format, const Field& field)
+{
+  //Numeric format:
+  set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_FORMAT_THOUSANDS_SEPARATOR,  format.m_numeric_format.m_use_thousands_separator);
+  set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_FORMAT_DECIMAL_PLACES_RESTRICTED, format.m_numeric_format.m_decimal_places_restricted);
+  set_node_attribute_value_as_decimal(nodeItem, GLOM_ATTRIBUTE_FORMAT_DECIMAL_PLACES, format.m_numeric_format.m_decimal_places);
+  set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_FORMAT_CURRENCY_SYMBOL, format.m_numeric_format.m_currency_symbol);
+
+  set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_FORMAT_CHOICES_RESTRICTED, format.get_choices_restricted());
+  set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_FORMAT_CHOICES_CUSTOM, format.get_has_custom_choices());
+
+  //Text formatting:
+  set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_FORMAT_TEXT_MULTILINE, format.get_text_format_multiline());
+
+  //Choices:
+  if(format.get_has_custom_choices())
+  {
+    xmlpp::Element* child = nodeItem->add_child(GLOM_ATTRIBUTE_FORMAT_CHOICES_CUSTOM_LIST);
+
+    const FieldFormatting::type_list_values list_values = format.get_choices_custom();
+    for(FieldFormatting::type_list_values::const_iterator iter = list_values.begin(); iter != list_values.end(); ++iter)
+    {
+      xmlpp::Element* childChoice = child->add_child(GLOM_NODE_FORMAT_CUSTOM_CHOICE);
+      set_node_attribute_value_as_value(childChoice, GLOM_ATTRIBUTE_VALUE, *iter, field.get_glom_type());
+    }
+  }
+
+  set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED, format.get_has_related_choices() );
+
+  Glib::ustring choice_relationship, choice_field, choice_second;
+  format.get_choices(choice_relationship, choice_field, choice_second);
+  set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_RELATIONSHIP, choice_relationship);
+  set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_FIELD, choice_field);
+  set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_SECOND, choice_second);
+}
+
 void Document_Glom::save_before_layout_item_field(xmlpp::Element* nodeItem, const LayoutItem_Field& field)
 {
   nodeItem->set_attribute(GLOM_ATTRIBUTE_NAME, field.get_name());
   nodeItem->set_attribute(GLOM_ATTRIBUTE_RELATIONSHIP_NAME, field.get_relationship_name());
   set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_EDITABLE, field.get_editable());
 
-  //Numeric format:
-  set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_FORMAT_THOUSANDS_SEPARATOR,  field.m_numeric_format.m_use_thousands_separator);
-  set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_FORMAT_DECIMAL_PLACES_RESTRICTED, field.m_numeric_format.m_decimal_places_restricted);
-  set_node_attribute_value_as_decimal(nodeItem, GLOM_ATTRIBUTE_FORMAT_DECIMAL_PLACES, field.m_numeric_format.m_decimal_places);
-  set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_FORMAT_CURRENCY_SYMBOL, field.m_numeric_format.m_currency_symbol);
+  xmlpp::Element* elementFormat = nodeItem->add_child(GLOM_NODE_FORMAT);
+  save_before_layout_item_field_formatting(elementFormat, field.m_formatting, field.m_field);
 
-  set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_CHOICES_RESTRICTED, field.get_choices_restricted());
-  set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_CHOICES_CUSTOM, field.get_has_custom_choices());
-
-  //Text formatting:
-  set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_FORMAT_TEXT_MULTILINE,  field.get_text_format_multiline());
-
-  //Choices:
-  if(field.get_has_custom_choices())
-  {
-    xmlpp::Element* child = nodeItem->add_child(GLOM_ATTRIBUTE_CHOICES_CUSTOM_LIST);
-
-    const LayoutItem_Field::type_list_values list_values = field.get_choices_custom();
-    for(LayoutItem_Field::type_list_values::const_iterator iter = list_values.begin(); iter != list_values.end(); ++iter)
-    {
-      xmlpp::Element* childChoice = child->add_child(GLOM_NODE_CUSTOM_CHOICE);
-      set_node_attribute_value_as_value(childChoice, GLOM_ATTRIBUTE_VALUE, *iter, field.m_field.get_glom_type());
-    }
-  }
-
-  set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_CHOICES_RELATED, field.get_has_related_choices() );
-
-  Glib::ustring choice_relationship, choice_field, choice_second;
-  field.get_choices(choice_relationship, choice_field, choice_second);
-  set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_CHOICES_RELATED_RELATIONSHIP, choice_relationship);
-  set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_CHOICES_RELATED_FIELD, choice_field);
-  set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_CHOICES_RELATED_SECOND, choice_second);
-
+  set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_DATA_LAYOUT_ITEM_FIELD_USE_DEFAULT_FORMATTING, field.get_formatting_use_default());
 
   set_node_attribute_value_as_decimal(nodeItem, GLOM_ATTRIBUTE_SEQUENCE, field.m_sequence);
 }
@@ -1530,6 +1547,10 @@ bool Document_Glom::save_before()
             set_node_attribute_value(elemFieldLookup, GLOM_ATTRIBUTE_RELATIONSHIP_NAME, field.get_lookup_relationship());
             set_node_attribute_value(elemFieldLookup, GLOM_ATTRIBUTE_FIELD, field.get_lookup_field());
           }
+
+          //Default Formatting:
+          xmlpp::Element* elementFormat = elemField->add_child(GLOM_NODE_FORMAT);
+          save_before_layout_item_field_formatting(elementFormat, field.m_default_formatting, field);
         }
 
         //Relationships:
@@ -1693,6 +1714,14 @@ void Document_Glom::remove_group(const Glib::ustring& group_name)
   }
 }
 
+void Document_Glom::update_cached_relationships(FieldFormatting& formatting, const Glib::ustring& table_name)
+{
+  if(formatting.m_choices_related_relationship.get_name_not_empty())
+  {
+    get_relationship(table_name, formatting.m_choices_related_relationship.get_name(), formatting.m_choices_related_relationship);
+  }
+}
+
 void Document_Glom::update_cached_relationships(LayoutGroup& group, const Glib::ustring& table_name)
 {
   const bool old_block_modified_set = m_block_modified_set;
@@ -1711,9 +1740,9 @@ void Document_Glom::update_cached_relationships(LayoutGroup& group, const Glib::
          get_relationship(table_name, pField->m_relationship.get_name(), pField->m_relationship);
        }
 
-       if(pField->m_choices_related_relationship.get_name_not_empty())
+       if(pField->m_formatting.m_choices_related_relationship.get_name_not_empty())
        {
-         get_relationship(table_name, pField->m_choices_related_relationship.get_name(), pField->m_choices_related_relationship);
+         get_relationship(table_name, pField->m_formatting.m_choices_related_relationship.get_name(), pField->m_formatting.m_choices_related_relationship);
        }
     }
     else
@@ -1762,10 +1791,17 @@ void Document_Glom::update_cached_relationships()
   if(m_block_cache_update)
     return;
 
-  //Update all the groups (groups are in layouts, in tables)
+
+  //Update all the formatting and groups (groups are in layouts, in tables)
   for(type_tables::iterator iterTable = m_tables.begin(); iterTable != m_tables.end(); ++iterTable)
   {
     DocumentTableInfo& tableInfo = iterTable->second;
+
+    //Fields (formatting):
+    for(type_vecFields::iterator iterField = tableInfo.m_fields.begin(); iterField != tableInfo.m_fields.end(); ++iterField)
+    {
+       update_cached_relationships(iterField->m_default_formatting, tableInfo.m_info.get_name());
+    }
 
     //Layouts:
     for(DocumentTableInfo::type_layouts::iterator iterLayout = tableInfo.m_layouts.begin(); iterLayout != tableInfo.m_layouts.end(); ++iterLayout)

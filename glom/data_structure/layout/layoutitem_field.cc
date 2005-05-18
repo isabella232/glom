@@ -25,31 +25,20 @@ LayoutItem_Field::LayoutItem_Field()
 : m_priv_view(false),
   m_priv_edit(false),
   m_hidden(false),
-  m_choices_restricted(false),
-  m_choices_custom(false),
-  m_choices_related(false),
-  m_text_format_multiline(false)
+  m_formatting_use_default(true)
 {
 }
 
 LayoutItem_Field::LayoutItem_Field(const LayoutItem_Field& src)
 : LayoutItem(src),
   m_field(src.m_field),
-  m_numeric_format(src.m_numeric_format),
   m_priv_view(src.m_priv_view),
   m_priv_edit(src.m_priv_edit),
   //m_table_name(src.m_table_name),
   m_relationship(src.m_relationship),
-  m_choices_related_relationship(src.m_choices_related_relationship),
-  //m_relationship_name(src.m_relationship_name),
+  m_formatting(src.m_formatting),
   m_hidden(src.m_hidden),
-  m_choices_custom_list(src.m_choices_custom_list),
-  m_choices_restricted(src.m_choices_restricted),
-  m_choices_custom(src.m_choices_custom),
-  m_choices_related(src.m_choices_related),
-  m_text_format_multiline(src.m_text_format_multiline),
-  m_choices_related_field(src.m_choices_related_field),
-  m_choices_related_field_second(src.m_choices_related_field_second)
+  m_formatting_use_default(src.m_formatting_use_default)
 {
 //g_warning("LayoutItem_Field::LayoutItem_Field: m_choices_related_relationship=%s, src.m_choices_related_relationship=%s", m_choices_related_relationship.c_str(), src.m_choices_related_relationship.c_str());
 
@@ -68,19 +57,12 @@ bool LayoutItem_Field::operator==(const LayoutItem_Field& src) const
 {
   return LayoutItem::operator==(src) &&
     (m_field == src.m_field) &&
-    (m_numeric_format == src.m_numeric_format) &&
     (m_priv_view == src.m_priv_view) &&
     (m_priv_edit == src.m_priv_edit) &&
     (m_relationship == src.m_relationship) &&
     (m_hidden == src.m_hidden) &&
-    (m_choices_custom_list == src.m_choices_custom_list) &&
-    (m_choices_restricted == src.m_choices_restricted) &&
-    (m_choices_custom == src.m_choices_custom) &&
-    (m_choices_related == src.m_choices_related) &&
-    (m_choices_related_relationship == src.m_choices_related_relationship) &&
-    (m_choices_related_field == src.m_choices_related_field) &&
-    (m_choices_related_field_second == src.m_choices_related_field_second) &&
-    (m_text_format_multiline == src.m_text_format_multiline);
+    (m_formatting_use_default == src.m_formatting_use_default) &&
+    (m_formatting == src.m_formatting);
 }
 
 
@@ -89,27 +71,16 @@ LayoutItem_Field& LayoutItem_Field::operator=(const LayoutItem_Field& src)
   LayoutItem::operator=(src);
 
   m_field = src.m_field;
-  m_numeric_format = src.m_numeric_format;
   m_priv_view = src.m_priv_view;
   m_priv_edit = src.m_priv_edit;
 
-  //m_table_name = src.m_table_name;
   m_relationship = src.m_relationship;
- // m_relationship_name = src.m_relationship_name;
 
   m_hidden = src.m_hidden;
 
-  m_choices_custom_list = src.m_choices_custom_list;
-  m_choices_restricted = src.m_choices_restricted;
-  m_choices_custom = src.m_choices_custom;
-  m_choices_related = src.m_choices_related;
-  m_choices_related_relationship = src.m_choices_related_relationship;
-  m_choices_related_field = src.m_choices_related_field;
-  m_choices_related_field_second = src.m_choices_related_field_second;
+  m_formatting_use_default = src.m_formatting_use_default;
+  m_formatting = src.m_formatting;
 
-  m_text_format_multiline = src.m_text_format_multiline;
-
-//g_warning("LayoutItem_Field::operator=: m_choices_related_relationship=%s, src.m_choices_related_relationship=%s", m_choices_related_relationship.c_str(), src.m_choices_related_relationship.c_str());
   return *this;
 }
 
@@ -128,18 +99,6 @@ Glib::ustring LayoutItem_Field::get_title_or_name() const
   return m_field.get_title_or_name();
 }
 
-/*
-Glib::ustring LayoutItem_Field::get_table_name() const
-{
-  return m_table_name;
-}
-
-void LayoutItem_Field::set_table_name(const Glib::ustring& table_name)
-{
-  m_table_name = table_name;
-}
-*/
-
 bool LayoutItem_Field::get_has_relationship_name() const
 {
   return m_relationship.get_name_not_empty();
@@ -148,23 +107,6 @@ bool LayoutItem_Field::get_has_relationship_name() const
 Glib::ustring LayoutItem_Field::get_relationship_name() const
 {
   return m_relationship.get_name();
-}
-
-/*
-void LayoutItem_Field::set_relationship_name(const Glib::ustring& relationship_name)
-{
-  m_relationship_name = relationship_name;
-}
-*/
-
-bool LayoutItem_Field::get_text_format_multiline() const
-{
-  return m_text_format_multiline;
-}
-
-void LayoutItem_Field::set_text_format_multiline(bool value)
-{
-  m_text_format_multiline = value;
 }
 
 bool LayoutItem_Field::get_editable_and_allowed() const
@@ -191,70 +133,27 @@ void LayoutItem_Field::set_hidden(bool val)
   m_hidden = val;
 }
 
-bool LayoutItem_Field::get_has_choices() const
-{
-  return ( m_choices_related && m_choices_related_relationship.get_name_not_empty() && !m_choices_related_field.empty() ) ||
-         ( m_choices_custom && !m_choices_custom_list.empty() );
-}
-
-LayoutItem_Field::type_list_values LayoutItem_Field::get_choices_custom() const
-{
-  return m_choices_custom_list;
-}
-
-void LayoutItem_Field::set_choices_custom(const type_list_values& choices)
-{
-  m_choices_custom_list = choices;
-}
-
-bool LayoutItem_Field::get_choices_restricted() const
-{
-  return m_choices_restricted;
-}
-
-void LayoutItem_Field::set_choices_restricted(bool val)
-{
-  m_choices_restricted = val;
-}
-
-bool LayoutItem_Field::get_has_custom_choices() const
-{
-  return m_choices_custom;
-}
-
-void LayoutItem_Field::set_has_custom_choices(bool val)
-{
-  m_choices_custom = val;
-}
-
-bool LayoutItem_Field::get_has_related_choices() const
-{
-  return m_choices_related;
-}
-
-void LayoutItem_Field::set_has_related_choices(bool val)
-{
-  m_choices_related = val;
-}
-
-void LayoutItem_Field::get_choices(Glib::ustring& relationship_name, Glib::ustring& field, Glib::ustring& field_second) const
-{
-  relationship_name = m_choices_related_relationship.get_name();
-  field = m_choices_related_field;
-  field_second = m_choices_related_field_second;
-
-  //g_warning("LayoutItem_Field::get_choices, %s, %s, %s", m_choices_related_relationship.c_str(), m_choices_related_field.c_str(), m_choices_related_field_second.c_str());
-}
-
-void LayoutItem_Field::set_choices(const Glib::ustring& relationship_name, const Glib::ustring& field, const Glib::ustring& field_second)
-{
-  m_choices_related_relationship.set_name(relationship_name);
-  m_choices_related_field = field;
-  m_choices_related_field_second = field_second;
-}
-
-
 Glib::ustring LayoutItem_Field::get_part_type_name() const
 {
   return _("Field");
 }
+
+bool LayoutItem_Field::get_formatting_use_default() const
+{
+  return m_formatting_use_default;
+}
+
+void LayoutItem_Field::set_formatting_use_default(bool use_default)
+{
+  m_formatting_use_default = use_default;
+}
+
+const FieldFormatting& LayoutItem_Field::get_formatting_used() const
+{
+  if(m_formatting_use_default)
+    return m_field.m_default_formatting;
+  else
+    return m_formatting;
+}
+
+

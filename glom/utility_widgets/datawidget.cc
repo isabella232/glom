@@ -63,13 +63,13 @@ DataWidget::DataWidget(const LayoutItem_Field& field, const Glib::ustring& table
 
     LayoutWidgetField* pFieldWidget = 0;
     //Use a Combo if there is a drop-down of choices (A "value list"), else an Entry:
-    if(field.get_has_choices())
+    if(field.get_formatting_used().get_has_choices())
     {
       ComboGlomChoicesBase* combo = 0; //Gtk::manage(new ComboEntryGlom());
 
-      if(field.get_has_custom_choices())
+      if(field.get_formatting_used().get_has_custom_choices())
       {
-        if(field.get_choices_restricted())
+        if(field.get_formatting_used().get_choices_restricted())
           combo = Gtk::manage(new ComboGlom());
         else
           combo = Gtk::manage(new ComboEntryGlom());
@@ -77,15 +77,15 @@ DataWidget::DataWidget(const LayoutItem_Field& field, const Glib::ustring& table
         //set_choices() needs this, for the numeric layout:
         combo->set_layout_item(get_layout_item()->clone(), table_name); //TODO_Performance: We only need this for the numerical format.
 
-        combo->set_choices( field.get_choices_custom() );
+        combo->set_choices( field.get_formatting_used().get_choices_custom() );
       }
-      else if(field.get_has_related_choices())
+      else if(field.get_formatting_used().get_has_related_choices())
       {
         Glib::ustring choice_relationship_name, choice_field, choice_second;
-        field.get_choices(choice_relationship_name, choice_field, choice_second);
+        field.get_formatting_used().get_choices(choice_relationship_name, choice_field, choice_second);
         if(!choice_relationship_name.empty() && !choice_field.empty())
         {
-          const Relationship relationship = field.m_choices_related_relationship;
+          const Relationship relationship = field.get_formatting_used().m_choices_related_relationship;
           const Glib::ustring to_table = relationship.get_to_table();
 
           const bool with_second = !choice_second.empty();
@@ -99,14 +99,14 @@ DataWidget::DataWidget(const LayoutItem_Field& field, const Glib::ustring& table
             layout_field_second.m_field = field_second;
             //We use the default formatting for this field.
 
-            if(field.get_choices_restricted())
+            if(field.get_formatting_used().get_choices_restricted())
               combo = Gtk::manage(new ComboGlom(layout_field_second));
             else
               combo = Gtk::manage(new ComboEntryGlom(layout_field_second));
           }
           else
           {
-            if(field.get_choices_restricted())
+            if(field.get_formatting_used().get_choices_restricted())
               combo = Gtk::manage(new ComboGlom());
             else
               combo = Gtk::manage(new ComboEntryGlom());
@@ -127,7 +127,7 @@ DataWidget::DataWidget(const LayoutItem_Field& field, const Glib::ustring& table
     }
     else
     {
-      if(field.get_text_format_multiline())
+      if(field.get_formatting_used().get_text_format_multiline())
       {
         TextViewGlom* textview = Gtk::manage(new TextViewGlom(glom_type));
         pFieldWidget = textview;
@@ -254,7 +254,7 @@ int DataWidget::get_suitable_width(const LayoutItem_Field& field_layout)
     }
     case(Field::TYPE_NUMERIC):
     {
-      example_text = "9999999999";
+      example_text = "EUR 9999999999";
       break;
     }
     case(Field::TYPE_TEXT):

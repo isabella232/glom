@@ -172,7 +172,7 @@ public:
   Glib::RefPtr<const Gtk::TreeModel> get_model() const;
 
   virtual void set_rules_hint(bool val = true);
-      
+
   //Signals:
   //row number.
   typedef sigc::signal<void, const Gtk::TreeModel::iterator&> type_signal_user_added;
@@ -204,7 +204,7 @@ public:
 
   virtual Gtk::TreeModel::iterator get_last_row();
   virtual Gtk::TreeModel::iterator get_last_row() const;
-  
+
 protected:
   void init();
 
@@ -212,7 +212,7 @@ protected:
    * You can then add the row to your underlying data store when some data has been filled, by handling signal_user_changed.
    */
   virtual Gtk::TreeModel::iterator add_item_placeholder(); //Return index of new row.
-  
+ 
   virtual void setup_menu();
   virtual Glib::ustring treeview_get_key(const Gtk::TreeModel::iterator& row);
 
@@ -220,14 +220,14 @@ protected:
   virtual Gtk::TreeModel::iterator get_next_available_row_with_add_if_necessary();
   virtual void add_blank();
 
-  
+
   //Signal handlers:
   virtual void on_treeview_cell_edited(const Glib::ustring& path_string, const Glib::ustring& new_text, int model_column_index);
   virtual void on_treeview_cell_edited_bool(const Glib::ustring& path_string, int model_column_index);
-  
+
   virtual bool on_treeview_column_drop(Gtk::TreeView* treeview, Gtk::TreeViewColumn* column, Gtk::TreeViewColumn* prev_column, Gtk::TreeViewColumn* next_column);
   virtual void on_treeview_columns_changed();
-  
+
   virtual bool on_button_press_event_Popup(GdkEventButton* event);
 
   virtual void on_MenuPopup_activate_Edit();

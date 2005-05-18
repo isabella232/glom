@@ -55,34 +55,12 @@ public:
   virtual Glib::ustring get_relationship_name() const;
   //virtual void set_relationship_name(const Glib::ustring& relationship_name);
 
-  bool get_has_choices() const;
-
-  bool get_has_related_choices() const;
-  void set_has_related_choices(bool val = true);
-
-  bool get_has_custom_choices() const;
-  void set_has_custom_choices(bool val = true);
-
-  typedef std::list<Gnome::Gda::Value> type_list_values;
-  virtual type_list_values get_choices_custom() const;
-  virtual void set_choices_custom(const type_list_values& choices);
-
-  bool get_choices_restricted() const;
-  void set_choices_restricted(bool val = true);
-
-  void get_choices(Glib::ustring& relationship_name, Glib::ustring& field, Glib::ustring& field_second) const;
-  void set_choices(const Glib::ustring& relationship_name, const Glib::ustring& field, const Glib::ustring& field_second);
-
   virtual Glib::ustring get_part_type_name() const;
 
   //This is filled in by looking at the database structure:
   Field m_field;
   //TODO: This might occasionally be different on different layouts: Glib::ustring m_title;
 
-  NumericFormat m_numeric_format; //Only used for numeric fields.
-
-  bool get_text_format_multiline() const;
-  void set_text_format_multiline(bool value = true);
 
   bool get_editable_and_allowed() const;
 
@@ -95,21 +73,22 @@ public:
   bool m_priv_edit;
 
   //TODO_Performance: This is just cached data, so we don't need to always lookup the relationship details from the document, from the name.
-  //Mayeb use a smartpointer?
+  //Maybe use a smartpointer?
   Relationship m_relationship;
-  Relationship m_choices_related_relationship;
+
+  FieldFormatting m_formatting;
+
+  bool get_formatting_use_default() const;
+  void set_formatting_use_default(bool use_default = true);
+
+  const FieldFormatting& get_formatting_used() const;
 
 protected:
+
   //Glib::ustring m_relationship_name; //bool m_related;
   bool m_hidden;
+  bool m_formatting_use_default;
 
-  type_list_values m_choices_custom_list; //A drop-down list of possible values for the field.
-  bool m_choices_restricted;
-  bool m_choices_custom, m_choices_related;
-
-  bool m_text_format_multiline;
-
-  Glib::ustring m_choices_related_field, m_choices_related_field_second;
 };
 
 #endif //GLOM_DATASTRUCTURE_LAYOUTITEM_FIELD_H

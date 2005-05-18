@@ -19,6 +19,7 @@
  */
 
 #include "dialog_properties.h"
+#include "adddel/adddel.h"
 
 Dialog_Properties::Dialog_Properties(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
 : Gtk::Window(cobject),
@@ -27,11 +28,11 @@ Dialog_Properties::Dialog_Properties(BaseObjectType* cobject, const Glib::RefPtr
 {
   refGlade->get_widget("button_cancel", m_pButton_Cancel);
   refGlade->get_widget("button_save", m_pButton_Save);
-    
+
   //Connect signal handlers:
   m_pButton_Cancel->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Properties::on_button_cancel) );
   m_pButton_Save->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Properties::on_button_save) );
-  
+
   show_all_children();
 }
 
@@ -89,9 +90,22 @@ void Dialog_Properties::widget_connect_changed_signal(Gtk::Widget& widget)
         {
           pTextView->get_buffer()->signal_changed().connect( sigc::mem_fun(*this, &Dialog_Properties::on_anything_changed) );
         }
+        else
+        {
+          AddDel* pAddDel = dynamic_cast<AddDel*>(&widget);
+          if(pAddDel)
+          {
+            pAddDel->signal_user_changed().connect( sigc::mem_fun(*this, &Dialog_Properties::on_adddel_user_changed) );
+          }
+        }
       }
     }
   }
+}
+
+void Dialog_Properties::on_adddel_user_changed(const Gtk::TreeModel::iterator& /* iter */, guint /* col */)
+{
+  on_anything_changed();
 }
 
 void Dialog_Properties::on_anything_changed()

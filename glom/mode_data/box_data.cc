@@ -459,7 +459,7 @@ Box_Data::type_vecLayoutFields Box_Data::get_table_fields_to_show(const Glib::us
         layout_item->m_field = all_fields[iPrimaryKey];
 
         //Don't use thousands separators with ID numbers:
-        layout_item->m_numeric_format.m_use_thousands_separator = false;
+        layout_item->m_formatting.m_numeric_format.m_use_thousands_separator = false;
 
         layout_item->set_editable(true); //A sensible default.
 

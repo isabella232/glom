@@ -170,13 +170,13 @@ GlomUtils::type_list_values_with_second GlomUtils::get_choice_values(const Layou
   type_list_values_with_second list_values;
 
   Glib::ustring choice_relationship_name, choice_field, choice_second;
-  field.get_choices(choice_relationship_name, choice_field, choice_second);
+  field.get_formatting_used().get_choices(choice_relationship_name, choice_field, choice_second);
 
-  const Relationship relationship = field.m_choices_related_relationship;
+  const Relationship relationship = field.get_formatting_used().m_choices_related_relationship;
   const Glib::ustring to_table = relationship.get_to_table();
   if(to_table.empty())
   {
-    g_warning("get_choice_values(): table_name is null. relationship name = %s", field.m_choices_related_relationship.get_name().c_str());
+    g_warning("get_choice_values(): table_name is null. relationship name = %s", field.get_formatting_used().m_choices_related_relationship.get_name().c_str());
     return list_values;
   }
 

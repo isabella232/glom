@@ -246,7 +246,7 @@ void Box_DB_Table_Definition::on_adddel_edit(const Gtk::TreeModel::iterator& row
 
   //m_pDialog->set_modified(false); //Disable [Apply] at start.
 
-  m_pDialog->show_all();
+  m_pDialog->show();
 }
 
 Field Box_DB_Table_Definition::get_field_definition(const Gtk::TreeModel::iterator& row)

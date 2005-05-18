@@ -30,6 +30,7 @@
 #include "../../utility_widgets/dialog_properties.h"
 #include "../../utility_widgets/datawidget.h"
 #include "../../data_structure/field.h"
+#include "../../layout_item_dialogs/box_formatting.h"
 #include "../../base_db.h"
 
 
@@ -52,7 +53,7 @@ protected:
   void on_check_lookup_toggled();
   void on_check_calculate_toggled();
   void on_button_edit_calculation();
-  
+
   //void on_foreach(Gtk::Widget& widget);
 
   //Disable/enable other controls when a control is selected.
@@ -76,10 +77,13 @@ protected:
   Gtk::Alignment* m_pAlignment_Calculate;
   Gtk::TextView* m_pTextView_Calculation;
   Gtk::Button* m_pButton_EditCalculation;
-     
+
   Gtk::Entry* m_pEntry_Title;
 
   DataWidget* m_pDataWidget_DefaultValueSimple;
+
+  Gtk::VBox* m_box_formatting_placeholder;
+  Box_Formatting* m_box_formatting;
 
   Field m_Field;
   Glib::ustring m_table_name;

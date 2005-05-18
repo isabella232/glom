@@ -279,7 +279,7 @@ void FlowTableWithFields::add_field_at_position(const LayoutItem_Field& layoutit
 
   //Expand multiline text fields to take up the maximum possible width:
   bool expand_second = false;
-  if( (layoutitem_field.m_field.get_glom_type() == Field::TYPE_TEXT) && layoutitem_field.get_text_format_multiline())
+  if( (layoutitem_field.m_field.get_glom_type() == Field::TYPE_TEXT) && layoutitem_field.get_formatting_used().get_text_format_multiline())
     expand_second = true;
 
   add(*(info.m_first), *(info.m_second), expand_second);

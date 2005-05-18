@@ -1328,7 +1328,7 @@ void Base_DB::report_build_groupby(const Glib::ustring& table_name, xmlpp::Eleme
 
         nodeGroupBy->set_attribute("group_field", field_group_by->get_title_or_name());
         nodeGroupBy->set_attribute("group_value",
-          GlomConversions::get_text_for_gda_value(field_group_by->m_field.get_glom_type(), group_value, field_group_by->m_numeric_format) );
+          GlomConversions::get_text_for_gda_value(field_group_by->m_field.get_glom_type(), group_value, field_group_by->get_formatting_used().m_numeric_format) );
 
         Glib::ustring where_clause = group_field_table_name + "." + field_group_by->get_name() + " = " + field_group_by->m_field.sql(group_value);
         if(!where_clause_parent.empty())
@@ -1453,14 +1453,14 @@ void Base_DB::report_build_records(const Glib::ustring& table_name, xmlpp::Eleme
 
           nodeField->set_attribute("name", field->get_name()); //Not really necessary, but maybe useful.
 
-          Glib::ustring text_value = GlomConversions::get_text_for_gda_value(field_type, datamodel->get_value_at(col, row), field->m_numeric_format);
+          Glib::ustring text_value = GlomConversions::get_text_for_gda_value(field_type, datamodel->get_value_at(col, row), field->get_formatting_used().m_numeric_format);
 
           //The Postgres summary functions return NULL when summarising NULL records, but 0 is more sensible:
           if(text_value.empty() && dynamic_cast<LayoutItem_FieldSummary*>(field.obj()) && (field_type == Field::TYPE_NUMERIC))
           {
             //Use get_text_for_gda_value() instead of "0" so we get the correct numerical formatting:
             Gnome::Gda::Value value = GlomConversions::parse_value(0);
-            text_value = GlomConversions::get_text_for_gda_value(field_type, value, field->m_numeric_format);
+            text_value = GlomConversions::get_text_for_gda_value(field_type, value, field->get_formatting_used().m_numeric_format);
           }
 
           nodeField->set_attribute("value", text_value);
