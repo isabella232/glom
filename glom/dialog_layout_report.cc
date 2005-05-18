@@ -60,14 +60,15 @@ Dialog_Layout_Report::Dialog_Layout_Report(BaseObjectType* cobject, const Glib::
 
     Gtk::TreeModel::iterator iter = m_model_available_parts->append();
     (*iter)[m_columns_available_parts.m_col_item] = type_item_ptr(new LayoutItem_GroupBy());
-    iter = m_model_available_parts->append();
+    iter = m_model_available_parts->append(iter->children()); //Place Field under GroupBy to indicate that that's where it belongs in the actual layout.
     (*iter)[m_columns_available_parts.m_col_item] = type_item_ptr(new LayoutItem_Field());
     iter = m_model_available_parts->append();
     (*iter)[m_columns_available_parts.m_col_item] = type_item_ptr(new LayoutItem_Summary());
-    iter = m_model_available_parts->append();
+    iter = m_model_available_parts->append(iter->children());
     (*iter)[m_columns_available_parts.m_col_item] = type_item_ptr(new LayoutItem_FieldSummary());
-
+    
     m_treeview_available_parts->set_model(m_model_available_parts);
+    m_treeview_available_parts->expand_all();
 
     // Append the View columns:
     // Use set_cell_data_func() to give more control over the cell attributes depending on the row:
@@ -485,6 +486,9 @@ void Dialog_Layout_Report::on_button_add()
 
     (*iter)[m_columns_parts.m_col_item] = type_item_ptr(pAvailable->clone());
   }
+
+  if(parent)
+    m_treeview_parts->expand_row( Gtk::TreePath(parent), true);
 
   enable_buttons();
 }

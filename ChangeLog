@@ -1,5 +1,11 @@
 2005-05-18  Murray Cumming <murrayc@murrayc.com>
 
+	* glom/dialog_layout_report.cc: constructor: 
+	Position the available parts hierarchically, to 
+	indicate their expected relationship.
+
+2005-05-18  Murray Cumming <murrayc@murrayc.com>
+
 	* examples/example_smallbusiness.glom: Add default 
 	field formatting, instead of custom formatting.
 	* glom/base_db.cc:
