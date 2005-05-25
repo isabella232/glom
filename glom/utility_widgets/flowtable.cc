@@ -642,7 +642,7 @@ void FlowTable::remove(Gtk::Widget& first)
   {
     if((iter->m_first == &first) && (iter->m_second == 0))
     {
-      g_warning("FlowTable::remove(): removing %10X", (guint)&first);
+      //g_warning("FlowTable::remove(): removing %10X", (guint)&first);
 
       m_children.erase(iter);
       break;

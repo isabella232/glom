@@ -1,3 +1,8 @@
+2005-05-25  Murray Cumming <murrayc@murrayc.com>
+
+	* glom/utility_widgets/flowtable.cc: Commented out
+	a g_warning that was causing a compiler warning.
+
 0.8.30:
 
 2005-05-25  Murray Cumming <murrayc@murrayc.com>
