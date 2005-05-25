@@ -2,6 +2,7 @@
 
 * Field Definitions: Added default formatting, so you don't 
   have to specify the same formatting repeatedly.
+* Make the .glom document more compact. 
  
 0.8.28:
 

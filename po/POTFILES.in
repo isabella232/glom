@@ -17,6 +17,7 @@ glom/dialog_layout_report.cc
 glom/frame_glom.cc
 glom/layout_item_dialogs/dialog_field_layout.cc
 glom/layout_item_dialogs/dialog_group_by.cc
+glom/layout_item_dialogs/dialog_groupby_secondaryfields.cc
 glom/layout_item_dialogs/dialog_field_summary.cc
 glom/layout_item_dialogs/combo_summarytype.cc
 glom/mode_data/box_data.cc
