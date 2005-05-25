@@ -85,6 +85,7 @@ Dialog_FieldDefinition::Dialog_FieldDefinition(BaseObjectType* cobject, const Gl
   }
 
   m_box_formatting_placeholder->pack_start(*m_box_formatting);
+  add_view(m_box_formatting);
 
 
   on_foreach_connect(*this);
@@ -99,6 +100,7 @@ Dialog_FieldDefinition::Dialog_FieldDefinition(BaseObjectType* cobject, const Gl
 
 Dialog_FieldDefinition::~Dialog_FieldDefinition()
 {
+  remove_view(m_box_formatting);
 }
 
 void Dialog_FieldDefinition::set_field(const Field& field, const Glib::ustring& table_name)

@@ -50,6 +50,7 @@ Dialog_FieldLayout::Dialog_FieldLayout(BaseObjectType* cobject, const Glib::RefP
   }
 
   m_box_formatting_placeholder->pack_start(*m_box_formatting);
+  add_view(m_box_formatting);
 
   m_radiobutton_custom_formatting->signal_toggled().connect(sigc::mem_fun(*this, &Dialog_FieldLayout::on_radiobutton_custom_formatting));
 
@@ -58,6 +59,7 @@ Dialog_FieldLayout::Dialog_FieldLayout(BaseObjectType* cobject, const Glib::RefP
 
 Dialog_FieldLayout::~Dialog_FieldLayout()
 {
+  remove_view(m_box_formatting);
 }
 
 void Dialog_FieldLayout::set_field(const LayoutItem_Field& field, const Glib::ustring& table_name)

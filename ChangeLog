@@ -1,3 +1,14 @@
+0.8.30:
+
+2005-05-25  Murray Cumming <murrayc@murrayc.com>
+
+	* glom/layout_item_dialogs/box_formatting.cc:
+	* glom/layout_item_dialogs/dialog_field_layout.cc:
+	* glom/mode_design/fields/dialog_fielddefinition.cc:
+	Make Box_Formatting a sub-view so it has access 
+	to the document, so we can use choices from 
+	related tables again.
+
 0.8.29:
 
 2005-05-18  Murray Cumming <murrayc@murrayc.com>

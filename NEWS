@@ -1,3 +1,9 @@
+0.8.30:
+
+* Field Formatting: Choices from related tables: This was 
+  broken in 0.8.29.
+* Updated screenshots.
+
 0.8.29:
 
 * Field Definitions: Added default formatting, so you don't 
