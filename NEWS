@@ -8,7 +8,10 @@
 
 * File/Print works for List view, printing a list of records 
   in the found set.
-* Reports: Group By parts may now show extra "secondary" 
+* Reports:
+  - The Summary part is now implemented, allowing totals, 
+  averages, and counts.
+  - Group By parts may now show extra "secondary" 
   fields, in addition to the field by which the records are 
   grouped. 
 * Translations updated:
