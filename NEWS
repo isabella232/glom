@@ -1,3 +1,9 @@
+0.8.31:
+
+* Initial Dialog: Added Open Examples button. The examples 
+  are now installed.
+* Build fix when using warnings as errors.
+
 0.8.30:
 
 * Field Formatting: Choices from related tables: This was 
