@@ -558,6 +558,30 @@ bool App_Glom::offer_new_or_existing()
       return offer_new_or_existing();
     }
   }
+  if(response_id == 3) //Open Example
+  {
+    //Based on on_menu_file_open();
+
+    //Display File Open dialog and respond to choice:
+
+    //Bring document window to front, to make it clear which document is being changed:
+    ui_bring_to_front();
+
+    //Ask user to choose file to open:
+    //g_warning("GLOM_EXAMPLES_DIR=%s", GLOM_EXAMPLES_DIR);
+    Glib::ustring file_uri = ui_file_select_open(GLOM_EXAMPLES_DIR);
+    if(!file_uri.empty())
+      open_document(file_uri);
+
+
+    //Check that a document was opened:
+    Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
+    if(document->get_file_uri().empty())
+    {
+      //Ask again:
+      return offer_new_or_existing();
+    }
+  }
   else if(response_id == 2) //New
   {
     //Each document must have a location, so ask the user for one.

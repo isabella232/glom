@@ -1,3 +1,16 @@
+2005-06-16  Murray Cumming <murrayc@murrayc.com>
+
+	* examples/Makefile.am:
+	Install the examples in <prefix>/share/glom/doc/, 
+	which I guess is correct.
+	* glom/Makefile.am:
+	* glom/application.cc: offer_new_or_existing():
+	* glom/glom.glade:
+	Add an Open Examples button that goes straight to 
+	the installed examples.
+	* configure.in: Depend on bakery 2.3.14, to get 
+	changed API for this.
+
 2005-05-25  Murray Cumming <murrayc@murrayc.com>
 
 	* glom/utility_widgets/flowtable.cc: Commented out

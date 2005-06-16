@@ -2,6 +2,7 @@ SUBDIRS = data_structure document mode_data mode_design mode_find navigation uti
 
 gladedir = $(datadir)/glom/glade/
 glomxsltdir = $(datadir)/glom/xslt/
+glom_examples_dir = $(pkgdatadir)/doc/examples/
 
 # We define GLOM_GLADEDIR so that we can get the installed .glade file at runtime.
 # We define PREFIX, SYSCONFDIR, LIBDIR, and DATADIR for the GNOME_PROGRAM_STANDARD_PROPERTIES macro.
@@ -12,7 +13,8 @@ INCLUDES = $(GLOM_CFLAGS) $(PYTHON_INCLUDES) \
            -DSYSCONFDIR=\""$(sysconfdir)"\" \
            -DLIBDIR=\""$(libdir)"\" \
            -DDATADIR=\""$(datadir)"\" \
-           -DGLOM_XSLTDIR=\""$(glomxsltdir)/"\"
+           -DGLOM_XSLTDIR=\""$(glomxsltdir)/"\" \
+           -DGLOM_EXAMPLES_DIR=\""$(glom_examples_dir)"\"
 
 bin_PROGRAMS = glom
 noinst_PROGRAMS = test_pyembed
