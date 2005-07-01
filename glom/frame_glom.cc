@@ -769,6 +769,10 @@ void Frame_Glom::on_menu_developer_fields()
   }
 }
 
+void Frame_Glom::on_menu_developer_relationships_overview()
+{
+}
+
 void Frame_Glom::on_menu_developer_relationships()
 {
   //Check that there is a table to show:
