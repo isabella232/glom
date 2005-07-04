@@ -437,14 +437,19 @@ bool App_Glom::on_document_load()
                   AppState::userlevels userlevel = pDocument->get_userlevel(reason);
                   if( (userlevel == AppState::USERLEVEL_OPERATOR) && (reason == Document_Glom::USER_LEVEL_REASON_FILE_READ_ONLY) )
                   {
-                    Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Creating from read-only file.")), true,  Gtk::BUTTONS_NONE));
+                    Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Creating from read-only file.")), true,  Gtk::MESSAGE_INFO, Gtk::BUTTONS_NONE);
                     dialog.set_secondary_text(_("This file is read only, so you will not be able to enter Developer mode to make design changes. Maybe this file is an installed example file. Therefore, you might want to create your own writeable copy of this file."));
                     dialog.set_transient_for(*this);
 
-                    dialog.add_button(_("Save As"), Gtk::RESPONSE_OK); //arbitrary response code.
+                    dialog.add_button(Gtk::Stock::SAVE_AS, Gtk::RESPONSE_OK); //arbitrary response code.
                     dialog.add_button(_("Coninue without Developer Mode"), Gtk::RESPONSE_ACCEPT); //arbitrary response code.
 
-                    dialog.run();
+                    int response = dialog.run();
+                    if(response == Gtk::RESPONSE_OK)
+                    {
+                      //TODO: Offer again if they choose cancel.
+                      offer_saveas();
+                    }
                     //TODO: Store a magic number in the database (a special table) and the file to check for mismatches.
                   }
                 }
