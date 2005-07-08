@@ -1,5 +1,10 @@
 2005-07-08  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/data_structure/glomconversions.cc: Really use GDate 
+	to parse dates that the C++ facet can not parse.
+
+2005-07-08  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/main.cc: Allow the filename to be specified 
 	even without a --file option name. And convert 
 	the filename to a URI so it actually works. 

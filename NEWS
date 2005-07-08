@@ -1,6 +1,11 @@
+0.8.32:
+
+* Dates: Allow parsing of, for instance, 11/5/1973 instead of 
+  just 11/05/1973.
 * Tables:
   - Prevent crash when removing a table.
   - Update the Tables menu when adding tables.
+* Accept a filename on the command line.
 * Examples:
   - Add Save As button to the warning about read-only 
   examples.

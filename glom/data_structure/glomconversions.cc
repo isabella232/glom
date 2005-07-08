@@ -296,7 +296,7 @@ Gnome::Gda::Value GlomConversions::parse_value(Field::glom_field_type glom_type,
     gda_date.year = the_c_time.tm_year + 1900; //The C time starts at 1900.
     gda_date.month = the_c_time.tm_mon + 1; //The C month starts at 0.
     gda_date.day = the_c_time.tm_mday; //THe C mday starts at 1.
-
+    
     return Gnome::Gda::Value(gda_date);
   }
   else if(glom_type == Field::TYPE_TIME)
@@ -419,10 +419,17 @@ tm GlomConversions::parse_date(const Glib::ustring& text, const std::locale& loc
     date.set_parse(text); //I think this uses the current locale. murrayc.
     if(date.valid())
     {
-      tm the_c_time = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-      the_c_time.tm_year = date.get_year() - 1900; //C years start are the AD year - 1900. So, 01 is 1901.
-      the_c_time.tm_mon = date.get_month() - 1; //C months start at 0.
-      the_c_time.tm_mday = date.get_day(); //starts at 1
+      tm null_c_time = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+      the_c_time = null_c_time;
+      
+      if(date.get_year() != Glib::Date::BAD_YEAR)
+        the_c_time.tm_year = date.get_year() - 1900; //C years start are the AD year - 1900. So, 01 is 1901.
+      
+      if(date.get_month() != Glib::Date::BAD_MONTH)
+        the_c_time.tm_mon = date.get_month() - 1; //C months start at 0.
+        
+      if(date.get_day() != Glib::Date::BAD_DAY)
+        the_c_time.tm_mday = date.get_day(); //starts at 1
 
       success = true;
     }
