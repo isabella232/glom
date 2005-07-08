@@ -1,3 +1,10 @@
+* Tables:
+  - Prevent crash when removing a table.
+  - Update the Tables menu when adding tables.
+* Examples:
+  - Add Save As button to the warning about read-only 
+  examples.
+
 0.8.31:
 
 * Initial Dialog: Added Open Examples button. The examples 

@@ -293,28 +293,32 @@ void Document_Glom::remove_table(const Glib::ustring& table_name)
   for(type_tables::iterator iter = m_tables.begin(); iter != m_tables.end(); ++iter)
   {
     DocumentTableInfo& info = iter->second;
-
-    bool something_changed = true;
-    type_vecRelationships::iterator iterRel = info.m_relationships.begin();
-    while(something_changed)
+    
+    if(!(info.m_relationships.empty()))
     {
-      if(iterRel->get_to_table() == table_name)
+      type_vecRelationships::iterator iterRel = info.m_relationships.begin();
+      bool something_changed = true;
+      while(something_changed && !info.m_relationships.empty())
       {
-        //Loop again, because we have changed the structure:
-        remove_relationship(*iterRel); //Also removes anything that uses the relationship.
-
-        something_changed = true;
-        iterRel = info.m_relationships.begin();
-      }
-      else
-      {
-        if(iterRel == info.m_relationships.end())
-          something_changed = false; //We've looked at them all, without changing things.
+        if(iterRel->get_to_table() == table_name)
+        {
+          //Loop again, because we have changed the structure:
+          remove_relationship(*iterRel); //Also removes anything that uses the relationship.
+  
+          something_changed = true;
+          iterRel = info.m_relationships.begin();
+        }
+        else
+        {
+          ++iterRel;
+          
+          if(iterRel == info.m_relationships.end())
+            something_changed = false; //We've looked at them all, without changing things.
+        }
       }
     }
 
   }
-
 }
 
 

@@ -1,5 +1,10 @@
 2005-07-08  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/document/document_glom.cc: remove_table(): 
+	Prevent infinite loop.
+
+2005-07-08  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/application.h: Made fill_tables_menu() public.
 	* glom/frame_glom.cc:
 	* glom/frame_glom.h: When the tables dialog is hidden,
