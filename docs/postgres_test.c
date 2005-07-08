@@ -1,6 +1,8 @@
 /*
  Compile this like so, or similar:
    gcc postgres_test.c -I /usr/include/postgresql -lpq
+or, on Ubuntu Breezy:
+   gcc postgres_test.c -I /usr/include/postgresql -lpq -I/usr/include/postgresql/8.0/
  murrayc
 */
 
@@ -39,7 +41,7 @@ main(int argc, char **argv)
         if (argc > 1)
                 conninfo = argv[1];
         else
-                conninfo = "host=192.168.1.101 dbname=template1 user=murrayc password=luftballons";
+                conninfo = "host=192.168.1.101 dbname=template1 user=murrayc password=thepasswordhere";
 
         /* Make a connection to the database */
         conn = PQconnectdb(conninfo);
