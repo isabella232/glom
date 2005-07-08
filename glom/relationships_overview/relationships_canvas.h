@@ -23,9 +23,12 @@
 #define GLOM_RELATIONSHIPS_OVERVIEW_RELATIONSHIPS_CANVAS_H
 
 #include <libgnomecanvasmm.h>
+#include "../base_db.h"
 
 
-class RelationshipsCanvas : public Gnome::Canvas::Canvas
+class RelationshipsCanvas
+  : public Gnome::Canvas::Canvas,
+    public Base_DB
 {
 public: 
   RelationshipsCanvas();

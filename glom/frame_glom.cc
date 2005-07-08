@@ -28,6 +28,7 @@
 #include "data_structure/glomconversions.h"
 #include "data_structure/layout/report_parts/layoutitem_summary.h"
 #include "data_structure/layout/report_parts/layoutitem_fieldsummary.h"
+#include "relationships_overview/dialog_relationships_overview.h"
 #include <glibmm/i18n.h>
 
 Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
@@ -771,6 +772,28 @@ void Frame_Glom::on_menu_developer_fields()
 
 void Frame_Glom::on_menu_developer_relationships_overview()
 {
+  Dialog_RelationshipsOverview* dialog = 0;
+  try
+  {
+    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_relationships_overview");
+    refXml->get_widget_derived("dialog_relationships_overview", dialog);
+    if(dialog)
+    {
+      dialog->set_transient_for(*(get_app_window()));
+      add_view(dialog);
+      dialog->load_from_document();
+
+      dialog->run();
+
+      remove_view(dialog);
+      delete dialog;
+    }
+  }
+
+  catch(const Gnome::Glade::XmlError& ex)
+  {
+    std::cerr << ex.what() << std::endl;
+  }
 }
 
 void Frame_Glom::on_menu_developer_relationships()
