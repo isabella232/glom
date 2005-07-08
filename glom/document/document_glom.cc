@@ -878,6 +878,15 @@ Glib::ustring Document_Glom::get_default_table() const
   return Glib::ustring();
 }
 
+Glib::ustring Document_Glom::get_first_table() const
+{
+  if(m_tables.empty())
+    return Glib::ustring();
+    
+  type_tables::const_iterator iter = m_tables.begin();
+  return iter->second.m_info.m_name;
+}
+
 void Document_Glom::set_modified(bool value)
 {
   if(value && m_block_modified_set)

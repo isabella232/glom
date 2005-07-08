@@ -1,3 +1,10 @@
+2005-07-08  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/document/document_glom.cc:
+	* glom/document/document_glom.h: Added get_first_table().
+	* glom/frame_glom.cc: on_dialog_tables_hide(): If the current 
+	table was deleted, show the default or first table.
+
 0.8.32:
 
 2005-07-08  Murray Cumming  <murrayc@murrayc.com>

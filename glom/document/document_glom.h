@@ -135,6 +135,7 @@ public:
   virtual Glib::ustring get_name() const; //override.
 
   virtual Glib::ustring get_default_table() const;
+  virtual Glib::ustring get_first_table() const;
 
   virtual Glib::ustring get_database_title() const;
   virtual void set_database_title(const Glib::ustring& title);

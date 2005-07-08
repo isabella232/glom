@@ -64,6 +64,7 @@ void Dialog_RelationshipsOverview::load_from_document()
         if(parent_group)
         {
           TableCanvasItem* pItem = new TableCanvasItem(*parent_group);
+          pItem->show();
           m_map_items[table_name] = pItem;
         }
       }

@@ -1084,6 +1084,17 @@ void Frame_Glom::on_dialog_tables_hide()
       App_Glom* pApp = dynamic_cast<App_Glom*>(get_app_window());
       if(pApp)
         pApp->fill_menu_tables();
+        
+      //Select a different table if the current one no longer exists:
+      if(!document->get_table_is_known(m_strTableName))
+      {
+        //Open the default table, or the first table if there is no default: 
+        Glib::ustring table_name = document->get_default_table();
+        if(table_name.empty())
+          table_name = document->get_first_table();
+    
+        show_table(table_name);
+      }
     }
   }
 }
