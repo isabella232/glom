@@ -24,6 +24,7 @@
 //#include <gnome.h>
 #include <gtkmm/main.h>
 #include <libgnome/gnome-init.h> // For gnome_program_init().
+#include <libgnomevfsmm/uri.h>
 #include <glibmm/i18n.h>
 
 
@@ -69,7 +70,6 @@ main(int argc, char* argv[])
   ExampleOptionGroup group;
   context.set_main_group(group);
 
-/*
   try
   {
     context.parse(argc, argv);
@@ -78,7 +78,6 @@ main(int argc, char* argv[])
   {
     std::cout << "Exception: " << ex.what() << std::endl;
   }
-*/
 
   //We use python for calculated-fields:
   Py_Initialize();
@@ -94,7 +93,23 @@ main(int argc, char* argv[])
 
     //Get command-line parameters, if any:
     Glib::ustring input_uri = group.m_arg_filename;
+    
+    // The GOption documentation says that options without names will be returned to the application as "rest arguments".
+    // I guess this means they will be left in the argv. Murray.
+    if(input_uri.empty() && (argc > 1))
+    {
+       const char* pch = argv[1];
+       if(pch)
+         input_uri = pch;
+    }
 
+    if(!input_uri.empty())
+    {
+      //Get a URI (file://something) from the filepath:
+      input_uri = Gnome::Vfs::Uri::make_from_shell_arg(input_uri);
+      //std::cout << "URI = " << input_uri << std::endl;
+    }
+     
     //debugging:
     //input_uri = "file:///home/murrayc/cvs/gnome212/glom/examples/example_smallbusiness.glom";
 

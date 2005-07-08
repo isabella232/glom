@@ -1,5 +1,11 @@
 2005-07-08  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/main.cc: Allow the filename to be specified 
+	even without a --file option name. And convert 
+	the filename to a URI so it actually works. 
+
+2005-07-08  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/document/document_glom.cc: remove_table(): 
 	Prevent infinite loop.
 
