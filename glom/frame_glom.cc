@@ -77,6 +77,9 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
 
     refXml->get_widget_derived("box_navigation_tables", m_pBox_Tables);
     m_pDialog_Tables = new Dialog_Glom(m_pBox_Tables);
+    
+    //Respond to window close:
+    m_pDialog_Tables->signal_hide().connect(sigc::mem_fun(*this, &Frame_Glom::on_dialog_tables_hide));
   }
   catch(const Gnome::Glade::XmlError& ex)
   {
@@ -1068,5 +1071,20 @@ void Frame_Glom::on_dialog_reports_hide()
   App_Glom* pApp = dynamic_cast<App_Glom*>(get_app_window());
   if(pApp)
     pApp->fill_menu_reports(m_strTableName);
+}
+
+void Frame_Glom::on_dialog_tables_hide()
+{
+  //If tables could have been added or removed, update the tables menu:
+  Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
+  if(document)
+  {
+    if(document->get_userlevel() == AppState::USERLEVEL_DEVELOPER)
+    {
+      App_Glom* pApp = dynamic_cast<App_Glom*>(get_app_window());
+      if(pApp)
+        pApp->fill_menu_tables();
+    }
+  }
 }
 

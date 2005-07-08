@@ -49,6 +49,7 @@ public:
   AppState::userlevels get_userlevel() const;
 
   void update_userlevel_ui();
+  void fill_menu_tables();
   void fill_menu_reports(const Glib::ustring& table_name);
 
 protected:
@@ -59,8 +60,6 @@ protected:
   virtual void init_toolbars(); //override
   virtual void init_create_document(); //override
   virtual bool on_document_load(); //override.
-
-  void fill_menu_tables();
 
   virtual bool offer_new_or_existing();
 
