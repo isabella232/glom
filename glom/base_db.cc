@@ -174,7 +174,7 @@ bool Base_DB::get_table_exists_in_database(const Glib::ustring& table_name) cons
   return result;
 }
 
-Base_DB::type_vecStrings Base_DB::get_table_names() const
+Base_DB::type_vecStrings Base_DB::get_table_names(bool ignore_system_tables) const
 {
   type_vecStrings result;
 
@@ -200,9 +200,23 @@ Base_DB::type_vecStrings Base_DB::get_table_names() const
         {
           table_name = value.get_string();
 
+          bool add_it = true;
+          
+          if(ignore_system_tables)
+          {
+            //Check whether it's a system table:
+            const Glib::ustring prefix = "glom_system_";
+            const Glib::ustring table_prefix = table_name.substr(0, prefix.size());
+            if(table_prefix == prefix)
+              add_it = false;
+          }
+          
           //Ignore the pga_* tables that pgadmin adds when you use it:
-          if(table_name.substr(0, 4) != "pga_")
-            result.push_back( table_name );
+          if(table_name.substr(0, 4) == "pga_")
+            add_it = false;
+            
+          if(add_it)
+            result.push_back(table_name);
         }
       }
     }

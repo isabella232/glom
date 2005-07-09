@@ -89,7 +89,7 @@ protected:
   Glib::ustring get_layout_item_table_name(const LayoutItem_Field& layout_item, const Glib::ustring& table_name);
 
   typedef std::vector<Glib::ustring> type_vecStrings;
-  type_vecStrings get_table_names() const;
+  type_vecStrings get_table_names(bool ignore_system_tables = false) const;
 
   bool get_table_exists_in_database(const Glib::ustring& table_name) const;
 

@@ -1,3 +1,11 @@
+2005-07-09  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/base_db.cc:
+	* glom/base_db.h: get_table_names(): Added optional bool 
+	ignore_system_tables parameter
+	* glom/mode_design/box_db_table_relationships.cc: 
+	fill_from_database(): Hide the system tables.
+
 2005-07-09  Murray Cumming  <set EMAIL_ADDRESS environment variable>
 
 	reviewed by: <delete if not using a buddy>

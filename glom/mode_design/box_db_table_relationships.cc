@@ -75,7 +75,7 @@ bool Box_DB_Table_Relationships::fill_from_database()
     //Set combo choices:
     m_AddDel.set_column_choices(m_colFromField, util_vecStrings_from_Fields(get_fields_for_table(m_strTableName)));
 
-    type_vecStrings vecTableNames = get_table_names();
+    type_vecStrings vecTableNames = get_table_names(true /* ignore_system_tables */);
     type_vecStrings vecTableNames_ustring(vecTableNames.begin(), vecTableNames.end());
     m_AddDel.set_column_choices(m_colToTable, vecTableNames_ustring);
 
