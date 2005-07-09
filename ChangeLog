@@ -1,5 +1,10 @@
 2005-07-09  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/mode_data/dialog_layout_details.cc: on_cell_data_name(): 
+	Allow group names to be changed.
+
+2005-07-09  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/base_db.cc:
 	* glom/base_db.h: get_table_names(): Added optional bool 
 	ignore_system_tables parameter

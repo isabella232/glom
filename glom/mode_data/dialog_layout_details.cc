@@ -897,7 +897,10 @@ void Dialog_Layout_Details::on_cell_data_name(Gtk::CellRenderer* renderer, const
 
       renderer_text->property_markup() = markup;
 
-      renderer_text->property_editable() = false; //Names can never be edited.
+      if(is_group)
+        renderer_text->property_editable() = true; //Group names can be changed.
+      else
+        renderer_text->property_editable() = false; //Field names can never be edited.
     }
   }
 }
