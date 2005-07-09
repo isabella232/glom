@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glom\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-07-08 16:23-0400\n"
-"PO-Revision-Date: 2005-07-08 19:52-0400\n"
+"POT-Creation-Date: 2005-07-09 15:28-0400\n"
+"PO-Revision-Date: 2005-07-09 19:52-0400\n"
 "Last-Translator: Adam Weinberger <adamw@gnome.org>\n"
 "Language-Team: Canadian English <adamw@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -729,11 +729,11 @@ msgstr "R_eports"
 msgid "_Layout"
 msgstr "_Layout"
 
-#: glom/application.cc:439
+#: glom/application.cc:440
 msgid "Creating from read-only file."
 msgstr "Creating from read-only file."
 
-#: glom/application.cc:440
+#: glom/application.cc:441
 msgid ""
 "This file is read only, so you will not be able to enter Developer mode to "
 "make design changes. Maybe this file is an installed example file. "
@@ -744,21 +744,29 @@ msgstr ""
 "your own writeable copy of this file."
 
 #. arbitrary response code.
-#: glom/application.cc:444
+#: glom/application.cc:445
 msgid "Coninue without Developer Mode"
 msgstr "Continue without Developer Mode"
 
-#: glom/application.cc:717
+#: glom/application.cc:718
 msgid "_Contents"
 msgstr "_Contents"
 
-#: glom/application.cc:717
+#: glom/application.cc:718
 msgid "Help with the application"
 msgstr "Help with the application"
 
 #: glom/base_db.cc:86 glom/base_db.cc:114
 msgid "Internal error"
 msgstr "Internal error"
+
+#: glom/base_db.cc:749
+msgid "System: Preferences"
+msgstr "System: Preferences"
+
+#: glom/base_db.cc:813
+msgid "System: Auto Increments"
+msgstr "System: Auto Increments"
 
 #: glom/box_reports.cc:204
 msgid "Are you sure that you want to rename this report?"
@@ -1108,7 +1116,7 @@ msgid "Default"
 msgstr "Default"
 
 #. TODO: Do not show tables that are not in the document.
-#: glom/navigation/box_tables.cc:249
+#: glom/navigation/box_tables.cc:251
 msgid ""
 "You can not delete this table, because there is no information about this "
 "table in the document."
@@ -1117,7 +1125,7 @@ msgstr ""
 "table in the document."
 
 #. Ask the user to confirm:
-#: glom/navigation/box_tables.cc:256
+#: glom/navigation/box_tables.cc:258
 msgid ""
 "Are you sure that you want to delete this table?\n"
 "Table name: "
@@ -1125,16 +1133,16 @@ msgstr ""
 "Are you sure that you want to delete this table?\n"
 "Table name: "
 
-#: glom/navigation/box_tables.cc:257
+#: glom/navigation/box_tables.cc:259
 msgid "Delete Table"
 msgstr "Delete Table"
 
 #. TODO: Do not show tables that are not in the document.
-#: glom/navigation/box_tables.cc:293
+#: glom/navigation/box_tables.cc:295
 msgid "Unknown Table"
 msgstr "Unknown Table"
 
-#: glom/navigation/box_tables.cc:294
+#: glom/navigation/box_tables.cc:296
 msgid ""
 "You can not open this table, because there is no information about this "
 "table in the document."
@@ -1142,12 +1150,12 @@ msgstr ""
 "You cannot open this table, because there is no information about this table "
 "in the document."
 
-#: glom/navigation/box_tables.cc:362
+#: glom/navigation/box_tables.cc:364
 msgid "Are you sure that you want to rename this table?"
 msgstr "Are you sure that you want to rename this table?"
 
 #. TODO: Show old and new names?
-#: glom/navigation/box_tables.cc:363
+#: glom/navigation/box_tables.cc:365
 msgid "Rename Table"
 msgstr "Rename Table"
 
