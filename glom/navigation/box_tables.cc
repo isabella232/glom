@@ -128,44 +128,46 @@ bool Box_Tables::fill_from_database()
     for(type_vecStrings::iterator iter = vecTables.begin(); iter != vecTables.end(); iter++)
     {
       const Glib::ustring strName = *iter;
-
+     
+      TableInfo table_info;
+      
       //Check whether it should be hidden:
       Document_Glom::type_listTableInfo::iterator iterFind = std::find_if(listTablesDocument.begin(), listTablesDocument.end(), predicate_FieldHasName<TableInfo>(strName));
       if(iterFind != listTablesDocument.end())
       {
-        bool hidden = iterFind->m_hidden;
-
-        bool bAddIt = true;
-        if(hidden && !developer_mode)  //Don't add hidden tables unless we are in developer mode:
-          bAddIt = false;
-
-        if(hidden && !m_pCheckButtonShowHidden->get_active()) //Don't add hidden tables if that checkbox is unset.
-          bAddIt = false;
-
-        //Check whether it's a system table, though they should never be in this list:
-        Glib::ustring prefix = "glom_system_";
-        if(strName.substr(0, prefix.size()) == prefix)
-          bAddIt = false;
-
-        if(bAddIt)
-        {
-          Gtk::TreeModel::iterator iter = m_AddDel.add_item(strName);
-          fill_table_row(iter, *iterFind);
-        }
+        table_info = *iterFind;
       }
       else
       {
         //This table is in the database, but not in the document.
         //Show it as hidden:
-        if(developer_mode)
-        {
-          TableInfo table_info;
-          table_info.m_name = strName;
-          table_info.m_hidden = true;
+        table_info.m_name = strName;
+        table_info.m_hidden = true;
+      }
+      
+      bool hidden = iterFind->m_hidden;
 
-          Gtk::TreeModel::iterator iter = m_AddDel.add_item(strName);
-          fill_table_row(iter, table_info);
-        }
+      bool bAddIt = true;
+      if(hidden && !developer_mode)  //Don't add hidden tables unless we are in developer mode:
+        bAddIt = false;
+
+      if(hidden && !m_pCheckButtonShowHidden->get_active()) //Don't add hidden tables if that checkbox is unset.
+      {
+        bAddIt = false;
+      }
+      
+      //Check whether it's a system table, though they should never be in this list:
+      const Glib::ustring prefix = "glom_system_";
+      const Glib::ustring table_prefix = strName.substr(0, prefix.size());
+      if(table_prefix == prefix)
+      {
+        bAddIt = false;
+      }
+        
+      if(bAddIt)
+      {
+        Gtk::TreeModel::iterator iter = m_AddDel.add_item(strName);
+        fill_table_row(iter, table_info);
       }
     }
   }

@@ -25,7 +25,6 @@
 #include <gtkmm/dialog.h>
 #include <libglademm.h>
 #include "relationships_canvas.h"
-#include "table_canvasitem.h"
 
 class Dialog_RelationshipsOverview 
   : public Gtk::Dialog,
@@ -35,15 +34,11 @@ public:
   Dialog_RelationshipsOverview(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
   virtual ~Dialog_RelationshipsOverview();
 
-  virtual void load_from_document(); //View override
-
 protected:
 
   Gtk::ScrolledWindow* m_scrolledwindow_canvas;
   RelationshipsCanvas m_canvas;
-  
-  typedef std::map<Glib::ustring, TableCanvasItem*> type_map_items;
-  type_map_items m_map_items;
+  //Gnome::Canvas::Group m_canvas_group;
 };
 
 #endif //GLOM_DIALOG_RELATIONSHIPS_OVERVIEW

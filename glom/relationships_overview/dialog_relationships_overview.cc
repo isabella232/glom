@@ -31,46 +31,18 @@ Dialog_RelationshipsOverview::Dialog_RelationshipsOverview(BaseObjectType* cobje
 {
   refGlade->get_widget("scrolledwindow_canvas", m_scrolledwindow_canvas);
   m_scrolledwindow_canvas->add(m_canvas);
+  m_canvas.show();
+  add_view(&m_canvas);
   
   show_all_children();
 }
 
 Dialog_RelationshipsOverview::~Dialog_RelationshipsOverview()
 {
-  //Delete all canvas items:
-  for(type_map_items::iterator iter = m_map_items.begin(); iter != m_map_items.end(); ++iter)
-  {
-    TableCanvasItem* pItem = iter->second;
-    delete pItem;
-  }
-  
-  m_map_items.clear();
+  remove_view(&m_canvas);
 }
 
-void Dialog_RelationshipsOverview::load_from_document()
-{
-  Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
-  if(document)
-  {
-    Document_Glom::type_listTableInfo list_tables = document->get_tables();
-    for(Document_Glom::type_listTableInfo::const_iterator iter = list_tables.begin(); iter != list_tables.end(); ++iter)
-    {
-      //Add a canvas item for each table:
-      const TableInfo& table_info = *iter;
-      const Glib::ustring table_name = table_info.get_name();
-      if(!table_name.empty())
-      {
-        Gnome::Canvas::Group* parent_group = m_canvas.root();
-        if(parent_group)
-        {
-          TableCanvasItem* pItem = new TableCanvasItem(*parent_group);
-          pItem->show();
-          m_map_items[table_name] = pItem;
-        }
-      }
-    }
-  }
-}
+
 
 
 

@@ -27,4 +27,12 @@ RelationshipCanvasItem::RelationshipCanvasItem(Gnome::Canvas::Group& parent_grou
 
 RelationshipCanvasItem::~RelationshipCanvasItem()
 {
+ //Delete all canvas items:
+  for(type_map_items::iterator iter = m_map_items.begin(); iter != m_map_items.end(); ++iter)
+  {
+    TableCanvasItem* pItem = iter->second;
+    delete pItem;
+  }
+  
+  m_map_items.clear();
 }

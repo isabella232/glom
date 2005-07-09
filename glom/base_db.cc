@@ -746,6 +746,7 @@ void Base_DB::add_standard_tables() const
   {
     TableInfo prefs_table_info;
     prefs_table_info.m_name = GLOM_STANDARD_TABLE_PREFS_TABLE_NAME;
+    prefs_table_info.m_title = _("System: Preferences");
     prefs_table_info.m_hidden = true;
 
     Document_Glom::type_vecFields pref_fields;
@@ -809,6 +810,7 @@ void Base_DB::add_standard_tables() const
   {
     TableInfo table_info;
     table_info.m_name = GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME;
+    table_info.m_title = _("System: Auto Increments");
     table_info.m_hidden = true;
 
     Document_Glom::type_vecFields fields;

@@ -24,6 +24,7 @@
 
 #include <libgnomecanvasmm.h>
 #include "../base_db.h"
+#include "table_canvasitem.h"
 
 
 class RelationshipsCanvas
@@ -33,9 +34,19 @@ class RelationshipsCanvas
 public: 
   RelationshipsCanvas();
   virtual ~RelationshipsCanvas();
+  
+  virtual void load_from_document(); //View override
 
-  typedef Gdk::Rectangle Coordinates;
-  typedef std::map<Glib::ustring, Coordinates> type_map_coordinates;
+  //typedef Gdk::Rectangle Coordinates;
+  //typedef std::map<Glib::ustring, Coordinates> type_map_coordinates;
+  
+protected:
+  void remove_all();
+  bool on_item_event(GdkEvent* event, Gnome::Canvas::Item* item);
+
+  typedef std::map<Glib::ustring, TableCanvasItem*> type_map_items;
+  type_map_items m_map_items;
+  
 };
 
 #endif //GLOM_RELATIONSHIPS_OVERVIEW_RELATIONSHIPS_CANVAS_H

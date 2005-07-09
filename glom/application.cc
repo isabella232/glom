@@ -305,6 +305,7 @@ void App_Glom::init_menus()
     "        <menuitem action='GlomAction_Menu_Developer_Database_Preferences' />"
     "        <menuitem action='GlomAction_Menu_Developer_Fields' />"
     "        <menuitem action='GlomAction_Menu_Developer_Relationships' />"
+    "        <menuitem action='GlomAction_Menu_Developer_RelationshipsOverview' />"
     "        <menuitem action='GlomAction_Menu_Developer_Layout' />"
     "        <menuitem action='GlomAction_Menu_Developer_Users' />"
     "        <menuitem action='GlomAction_Menu_Developer_Reports' />"

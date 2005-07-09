@@ -1,3 +1,13 @@
+2005-07-09  Murray Cumming  <set EMAIL_ADDRESS environment variable>
+
+	reviewed by: <delete if not using a buddy>
+
+	* configure.in: Depend on gnome-vfsmm 2.11, instead of just 
+	the version that bakery needs, because we need 
+	Uri::make_from_shell_arg().
+	* glom/navigation/box_tables.cc: load_from_document(): Really 
+	hide the glom_system_* tables.
+
 2005-07-08  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/document/document_glom.cc:

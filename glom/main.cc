@@ -25,6 +25,7 @@
 #include <gtkmm/main.h>
 #include <libgnome/gnome-init.h> // For gnome_program_init().
 #include <libgnomevfsmm/uri.h>
+#include <libgnomecanvasmm.h>
 #include <glibmm/i18n.h>
 
 
@@ -90,6 +91,7 @@ main(int argc, char* argv[])
 
     Gtk::Main mainInstance(argc, argv, context);
     Bakery::init();
+    Gnome::Canvas::init();
 
     //Get command-line parameters, if any:
     Glib::ustring input_uri = group.m_arg_filename;
