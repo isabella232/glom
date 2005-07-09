@@ -1,3 +1,5 @@
+0.8.33:
+
 2005-07-09  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/mode_data/dialog_layout_details.cc: on_cell_data_name(): 
@@ -12,8 +14,6 @@
 	fill_from_database(): Hide the system tables.
 
 2005-07-09  Murray Cumming  <set EMAIL_ADDRESS environment variable>
-
-	reviewed by: <delete if not using a buddy>
 
 	* configure.in: Depend on gnome-vfsmm 2.11, instead of just 
 	the version that bakery needs, because we need 

@@ -1,3 +1,12 @@
+0.8.33:
+
+* Details layout: Group names can be changed again.
+* Editing tables list:
+  - System tables are no longer shown.
+  - Prevent crash when deleting the currently-shown table.
+* Editing relationships: System tables are no longer shown.
+
+
 0.8.32:
 
 * Dates: Allow parsing of, for instance, 11/5/1973 instead of 
