@@ -35,6 +35,7 @@ void RelationshipsCanvas::remove_all()
   for(type_map_items::iterator iter = m_map_items.begin(); iter != m_map_items.end(); ++iter)
   {
     TableCanvasItem* pItem = iter->second;
+    remove_view(pItem);
     delete pItem;
   }
   
@@ -62,8 +63,12 @@ void RelationshipsCanvas::load_from_document()
         Gnome::Canvas::Group* parent_group = root();
         if(parent_group)
         {
-          TableCanvasItem* pItem = new TableCanvasItem(*parent_group);
+          TableCanvasItem* pItem = new TableCanvasItem(*parent_group, table_info);
+          add_view(pItem); //Give it access to the document.
+          
           pItem->show();
+          pItem->load_from_document();
+          
           m_map_items[table_name] = pItem;
           
           pItem->move(x, y);
