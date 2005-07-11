@@ -1,3 +1,8 @@
+2005-07-11  Daniel Holbach <dh@mailempfang.de>
+
+	* glom/main.cc: Pass G_PARAM_NONE to gnome_program_init() to 
+	avoid a crash at startup.
+
 0.8.33:
 
 2005-07-09  Murray Cumming  <murrayc@murrayc.com>
