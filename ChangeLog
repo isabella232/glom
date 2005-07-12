@@ -1,3 +1,11 @@
+2005-07-12  Murray Cumming  <murrayc@murryac.com>
+
+	* glom/data_structure/field.h: Document the IMAGE type 
+	as always being stored as PNG.
+	* glom/utility_widgets/imageglom.cc:
+	* glom/utility_widgets/imageglom.h: Implement set_value(), 
+	though I'm still not sure how to get/set it in SQL.
+
 2005-07-12  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/utility_widgets/imageglom.cc:

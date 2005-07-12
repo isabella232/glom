@@ -80,25 +80,15 @@ bool ImageGlom::on_button_press_event(GdkEventButton *event)
         const std::string filepath = dialog.get_filename();
         if(!filepath.empty())
         {
-          Glib::RefPtr<Gdk::Pixbuf> pixbuf;
           try
           {
-            pixbuf = Gdk::Pixbuf::create_from_file(filepath);
-            
-            //Scale it down to the preferred size:
-            //TODO : This will be silly if we allow different image sizes on different layouts:
-            const Gtk::Allocation allocation = m_image.get_allocation();
-            const int pixbuf_height = pixbuf->get_height();
-            const int pixbuf_width = pixbuf->get_width();
-            
-            if( (pixbuf_height > allocation.get_height()) ||
-                (pixbuf_width > allocation.get_width()) )
+            m_pixbuf_original = Gdk::Pixbuf::create_from_file(filepath);
+            if(m_pixbuf_original)
             {
-              pixbuf = scale_keeping_ratio(pixbuf, allocation.get_height(), allocation.get_width());
+              m_image.set(m_pixbuf_original); //Load the image.
+              scale();
+              signal_edited().emit();
             }
-            
-            if(pixbuf)
-              m_image.set(pixbuf); //Load the image.
           }
           catch(const Glib::Exception& ex)
           {
@@ -122,16 +112,83 @@ App_Glom* ImageGlom::get_application()
   return dynamic_cast<App_Glom*>(pWindow);
 }
 
-void ImageGlom::set_value(const Gnome::Gda::Value& /* value */)
+void ImageGlom::set_value(const Gnome::Gda::Value& value)
 {
-  //TODO
+  Glib::RefPtr<Gdk::Pixbuf> pixbuf;
+  
+  if(value.get_value_type() == Gnome::Gda::VALUE_TYPE_BINARY)
+  {
+    glong size = 0;
+    const gpointer pData = value.get_binary(&size);
+    if(size && pData)
+    {
+      Glib::RefPtr<Gdk::PixbufLoader> refPixbufLoader = Gdk::PixbufLoader::create("png");
+      
+      try
+      {
+        guint8* puiData = (guint8*)pData;
+        refPixbufLoader->write(puiData, (glong)size);
+        m_image.set( refPixbufLoader->get_pixbuf() );
+        
+        scale();
+      }
+      catch(const Glib::Exception& ex)
+      {
+        g_warning("ImageGlom::set_value(): PixbufLoader::write() failed.");
+      }
+            
+      //TODO: load the image, using the mime type stored elsewhere.
+      //pixbuf = Gdk::Pixbuf::create_from_data(
+    }
+    
+  }
+  
+  m_image.set(pixbuf);
 }
 
 Gnome::Gda::Value ImageGlom::get_value() const
 {
-  Gnome::Gda::Value result;
-  //TODO
+  //TODO: Return the data from the file that was just chosen.
+  //Don't store the original here any longer than necessary,
+  Gnome::Gda::Value result; //TODO: Initialize it as binary.
+  
+  Glib::RefPtr<const Gdk::Pixbuf> pixbuf = m_image.get_pixbuf();
+  if(pixbuf)
+  {
+    try
+    {
+      gchar* buffer = 0;
+      gsize buffer_size = 0;
+      std::list<Glib::ustring> list_empty;
+      //pixbuf->save_to_buffer(buffer, buffer_size, "png", list_empty, list_empty);
+      result.set(buffer, buffer_size);
+      
+      g_free(buffer);
+      buffer = 0;
+    }
+    catch(const Glib::Exception& /* ex */)
+    {
+    
+    }
+  }
+  
   return result;
+}
+
+void ImageGlom::scale()
+{
+  Glib::RefPtr<Gdk::Pixbuf> pixbuf = m_image.get_pixbuf();
+  
+  const Gtk::Allocation allocation = m_image.get_allocation();
+  const int pixbuf_height = pixbuf->get_height();
+  const int pixbuf_width = pixbuf->get_width();
+        
+   if( (pixbuf_height > allocation.get_height()) ||
+       (pixbuf_width > allocation.get_width()) )
+  {
+    pixbuf = scale_keeping_ratio(pixbuf, allocation.get_height(), allocation.get_width());
+    m_image.set(pixbuf);
+  }
 }
 
 //static:

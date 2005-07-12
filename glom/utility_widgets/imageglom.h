@@ -44,9 +44,13 @@ protected:
   virtual bool on_button_press_event(GdkEventButton *event);
 
   virtual App_Glom* get_application();
+  
+  void scale();
+  
   static Glib::RefPtr<Gdk::Pixbuf> scale_keeping_ratio(const Glib::RefPtr<Gdk::Pixbuf> pixbu, int target_height, int target_width);
   
   Gtk::Image m_image;
+  Glib::RefPtr<Gdk::Pixbuf> m_pixbuf_original; //Only stored temporarily, because it could be big.
 };
 
 #endif //GLOM_UTILITY_WIDGETS_COMBOENTRY_GLOM_H
