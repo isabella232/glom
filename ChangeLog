@@ -1,5 +1,13 @@
 2005-07-12  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/utility_widgets/Makefile.am:
+	* glom/utility_widgets/datawidget.cc:
+	* glom/utility_widgets/imageglom.cc:
+	* glom/utility_widgets/imageglom.h: Use a derived Image widget 
+	so we can catch button_press_events on it.
+
+2005-07-12  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/data_structure/field.cc:
 	* glom/data_structure/field.h:
 	- Added map of possible field conversions, and 

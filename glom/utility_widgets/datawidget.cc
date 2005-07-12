@@ -23,6 +23,7 @@
 #include "comboentryglom.h"
 #include "comboglom.h"
 #include "textviewglom.h"
+#include "imageglom.h"
 #include "../data_structure/glomconversions.h"
 #include "../application.h"
 #include "../mode_data/dialog_choose_field.h"
@@ -57,8 +58,8 @@ DataWidget::DataWidget(const LayoutItem_Field& field, const Glib::ustring& table
   }
   else if(glom_type == Field::TYPE_IMAGE)
   {
-    Gtk::Image* image = Gtk::manage( new Gtk::Image(Gtk::Stock::MISSING_IMAGE, Gtk::ICON_SIZE_DIALOG) ); //The widget will be invisible if we don't specify an image.
-    image->set_size_request(100, 100);
+    ImageGlom* image = Gtk::manage( new ImageGlom() );
+    image->set_size_request(200, 200);
     //Gtk::Image* image = Gtk::manage( new Gtk::Image("/home/murrayc/gnome-small.jpg") );
     image->show();
     //TODO: Respond to double-click: checkbutton->signal_toggled().connect( sigc::mem_fun(*this, &DataWidget::on_widget_edited)  );
