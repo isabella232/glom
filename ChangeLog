@@ -1,5 +1,11 @@
 2005-07-12  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/utility_widgets/imageglom.cc:
+	* glom/utility_widgets/imageglom.h: Scale images down to fit the 
+	allocated size of the Image widget.
+
+2005-07-12  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/utility_widgets/Makefile.am:
 	* glom/utility_widgets/datawidget.cc:
 	* glom/utility_widgets/imageglom.cc:

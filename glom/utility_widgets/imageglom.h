@@ -44,6 +44,7 @@ protected:
   virtual bool on_button_press_event(GdkEventButton *event);
 
   virtual App_Glom* get_application();
+  static Glib::RefPtr<Gdk::Pixbuf> scale_keeping_ratio(const Glib::RefPtr<Gdk::Pixbuf> pixbu, int target_height, int target_width);
   
   Gtk::Image m_image;
 };
