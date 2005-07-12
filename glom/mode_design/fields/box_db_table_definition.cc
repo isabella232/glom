@@ -465,66 +465,73 @@ void  Box_DB_Table_Definition::postgres_change_column_type(const Field& field_ol
         fieldTemp.set_name("glom_temp_column");
         postgres_add_column(fieldTemp); //This might also involves several commands.
 
-
-        //TODO: postgres seems to give an error if the data can not be converted (for instance if the text is not a numeric digit when converting to numeric) instead of using 0.
-        /*
-        Maybe, for instance:
-        http://groups.google.de/groups?hl=en&lr=&ie=UTF-8&frame=right&th=a7a62337ad5a8f13&seekm=23739.1073660245%40sss.pgh.pa.us#link5
-        UPDATE _table
-        SET _bbb = to_number(substring(_aaa from 1 for 5), '99999')
-        WHERE _aaa <> '     ';  
-        */
-        Glib::ustring conversion_command;
-        switch(field.get_glom_type())
+        
+        bool conversion_failed = false;
+        if(Field::get_conversion_possible(field_old.get_glom_type(), field.get_glom_type()))
         {
-          case Field::TYPE_BOOLEAN: //CAST does not work if the destination type is numeric.
+          //TODO: postgres seems to give an error if the data can not be converted (for instance if the text is not a numeric digit when converting to numeric) instead of using 0.
+          /*
+          Maybe, for instance:
+          http://groups.google.de/groups?hl=en&lr=&ie=UTF-8&frame=right&th=a7a62337ad5a8f13&seekm=23739.1073660245%40sss.pgh.pa.us#link5
+          UPDATE _table
+          SET _bbb = to_number(substring(_aaa from 1 for 5), '99999')
+          WHERE _aaa <> '     ';  
+          */
+          Glib::ustring conversion_command;
+          switch(field.get_glom_type())
           {
-            conversion_command = "FALSE"; //TODO: Find a way to convert: "to_number( " + field_old.get_name() + ", '999999999.99' )";
-            break;
+            case Field::TYPE_BOOLEAN: //CAST does not work if the destination type is numeric.
+            {
+              conversion_command = "FALSE"; //TODO: Find a way to convert: "to_number( " + field_old.get_name() + ", '999999999.99' )";
+              break;
+            }
+            case Field::TYPE_NUMERIC: //CAST does not work if the destination type is numeric.
+            {
+              conversion_command = "to_number( " + field_old.get_name() + ", '999999999.99' )";
+              break;
+            }
+            case Field::TYPE_DATE: //CAST does not work if the destination type is numeric.
+            {
+              conversion_command = "to_date( " + field_old.get_name() + ", 'YYYYMMDD' )"; //TODO: standardise date storage format.
+              break;
+            }
+            case Field::TYPE_TIME: //CAST does not work if the destination type is numeric.
+            {
+              conversion_command = "to_timestamp( " + field_old.get_name() + ", 'HHMMSS' )";  //TODO: standardise time storage format.
+              break;
+            }
+            default:
+            {
+              conversion_command = "CAST(" +  field_old.get_name() + " AS " + field.get_sql_type() + ")";
+              break;
+            }
           }
-          case Field::TYPE_NUMERIC: //CAST does not work if the destination type is numeric.
-          {
-            conversion_command = "to_number( " + field_old.get_name() + ", '999999999.99' )";
-            break;
-          }
-          case Field::TYPE_DATE: //CAST does not work if the destination type is numeric.
-          {
-            conversion_command = "to_date( " + field_old.get_name() + ", 'YYYYMMDD' )"; //TODO: standardise date storage format.
-            break;
-          }
-          case Field::TYPE_TIME: //CAST does not work if the destination type is numeric.
-          {
-            conversion_command = "to_timestamp( " + field_old.get_name() + ", 'HHMMSS' )";  //TODO: standardise time storage format.
-            break;
-          }
-          default:
-          {
-            conversion_command = "CAST(" +  field_old.get_name() + " AS " + field.get_sql_type() + ")";
-            break;
-          }
+  
+          Glib::RefPtr<Gnome::Gda::DataModel> datamodel = Query_execute( "UPDATE " + m_strTableName + " SET  " + fieldTemp.get_name() + " = " + conversion_command );  //TODO: Not full type details.
+          if(!datamodel)
+            conversion_failed = true;
         }
-
-        Glib::RefPtr<Gnome::Gda::DataModel> datamodel = Query_execute( "UPDATE " + m_strTableName + " SET  " + fieldTemp.get_name() + " = " + conversion_command );  //TODO: Not full type details.
-        if(datamodel)
+            
+        if(!conversion_failed)
         {
-          datamodel = Query_execute( "ALTER TABLE " + m_strTableName + " DROP COLUMN " +  field_old.get_name() );
+          Glib::RefPtr<Gnome::Gda::DataModel> datamodel = Query_execute( "ALTER TABLE " + m_strTableName + " DROP COLUMN " +  field_old.get_name() );
           if(datamodel)
           {
             datamodel = Query_execute( "ALTER TABLE " + m_strTableName + " RENAME COLUMN " + fieldTemp.get_name() + " TO " + field.get_name() );
             if(datamodel)
             {
-               bool test = gda_connection->commit_transaction(transaction);
-               if(!test)
-               {
-                 handle_error();
-               }
-               else
-                 new_column_created = true;
-             }
-           }
-         }   //TODO: Abandon the transaction if something failed.
-       }
-     }  /// If the datatype has changed:
+              bool test = gda_connection->commit_transaction(transaction);
+              if(!test)
+              {
+                handle_error();
+              }
+              else
+                new_column_created = true;
+            }
+          }
+        }
+      }   //TODO: Abandon the transaction if something failed.
+    }  /// If the datatype has changed:
 
     if(!new_column_created) //We don't need to change anything else if everything was alrady correctly set as a new column:
       postgres_change_column_extras(field_old, field);

@@ -69,6 +69,8 @@ FieldTypes::FieldTypes(const Glib::RefPtr<Gnome::Gda::Connection>& gda_connectio
             //std::cout << "schema type: " << schema_type_string << " = gdatype " << (guint)gdatype << "(" << gdatypestring << ")" << std::endl;
             
             m_mapGdaTypesToSchemaStrings[gdatype] = schema_type_string; //We save it twice, to just to make searching easier, without using a predicate.
+            
+            //g_warning("debug: schema type: %s = gdatype %d", schema_type_string.c_str(), gdatype);
           }
         }
           
@@ -108,5 +110,6 @@ Glib::ustring FieldTypes::get_string_name_for_gdavaluetype(Gnome::Gda::ValueType
   else
     return iterFind->second;
 }
+
 
 

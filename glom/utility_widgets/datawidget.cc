@@ -55,6 +55,22 @@ DataWidget::DataWidget(const LayoutItem_Field& field, const Glib::ustring& table
 
     m_label.set_text( Glib::ustring() ); //It is not used.
   }
+  else if(glom_type == Field::TYPE_IMAGE)
+  {
+    Gtk::Image* image = Gtk::manage( new Gtk::Image(Gtk::Stock::MISSING_IMAGE, Gtk::ICON_SIZE_DIALOG) ); //The widget will be invisible if we don't specify an image.
+    image->set_size_request(100, 100);
+    //Gtk::Image* image = Gtk::manage( new Gtk::Image("/home/murrayc/gnome-small.jpg") );
+    image->show();
+    //TODO: Respond to double-click: checkbutton->signal_toggled().connect( sigc::mem_fun(*this, &DataWidget::on_widget_edited)  );
+
+    //TODO: entry->signal_user_requested_layout().connect( sigc::mem_fun(*this, &DataWidget::on_child_user_requested_layout );
+
+    child = image;
+
+    m_label.set_label(title);
+    m_label.set_alignment(0);
+    m_label.show();
+  }
   else
   {
     m_label.set_label(title);

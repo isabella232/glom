@@ -66,7 +66,8 @@ public:
     TYPE_TEXT,
     TYPE_DATE,
     TYPE_TIME,
-    TYPE_BOOLEAN
+    TYPE_BOOLEAN,
+    TYPE_IMAGE
   };
 
   Field();
@@ -187,7 +188,8 @@ public:
 
   static glom_field_type get_glom_type_for_gda_type(Gnome::Gda::ValueType gda_type);
   static Gnome::Gda::ValueType get_gda_type_for_glom_type(Field::glom_field_type glom_type);
-
+  
+  static bool get_conversion_possible(glom_field_type field_type_src, glom_field_type field_type_dest);
 
   FieldFormatting m_default_formatting;
 
@@ -202,9 +204,13 @@ protected:
   //The gda type to be used for the glom type:
   typedef std::map<glom_field_type, Gnome::Gda::ValueType> type_map_glom_type_to_gda_type;
   static type_map_glom_type_to_gda_type m_map_glom_type_to_gda_type;
-
+  
+  typedef std::list<glom_field_type> type_list_conversion_targets;
+  typedef std::map<glom_field_type, type_list_conversion_targets> type_map_conversions;
+ 
   static type_map_type_names m_map_type_names; //These are canonical, for internal use.
   static type_map_type_names m_map_type_names_ui; //These are translated.
+  static type_map_conversions m_map_conversions; //Map of types to list of possibnle conversion targets types.
   static bool m_maps_inited;
 
   glom_field_type m_glom_type;

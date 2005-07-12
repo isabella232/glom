@@ -1,3 +1,16 @@
+2005-07-12  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/data_structure/field.cc:
+	* glom/data_structure/field.h:
+	- Added map of possible field conversions, and 
+	get_conversion_possible().
+	- Added TYPE_IMAGE, which maps to "bytea" in SQL and 
+	Gnome::Gda::Value::TYPE_BINARY. 
+	* glom/mode_design/fields/box_db_table_definition.cc: 
+	Don't cast the data if it is not possible.
+	* glom/utility_widgets/datawidget.cc: Constructor: Create a 
+	Gtk::Image widget for image fields.
+
 2005-07-11  Daniel Holbach <dh@mailempfang.de>
 
 	* glom/main.cc: Pass G_PARAM_NONE to gnome_program_init() to 
