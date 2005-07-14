@@ -27,11 +27,18 @@
 #include <iostream>   // for cout, endl
 
 ImageGlom::ImageGlom()
-: m_image(Gtk::Stock::MISSING_IMAGE, Gtk::ICON_SIZE_DIALOG) //The widget is invisible if we don't specify an image.
+: m_image(Gtk::Stock::MISSING_IMAGE, Gtk::ICON_SIZE_DIALOG), //The widget is invisible if we don't specify an image.
+  m_pMenuPopup_UserMode(0)
 {
   setup_menu();
+  setup_menu_usermode();
+  m_image.show();
   
-  add(m_image);
+  m_frame.set_shadow_type(Gtk::SHADOW_ETCHED_IN); //Without this, the image widget has no borders and is completely invisible when empty.
+  m_frame.add(m_image);
+  m_frame.show();
+  
+  add(m_frame);
 }
 
 ImageGlom::~ImageGlom()
@@ -67,38 +74,22 @@ bool ImageGlom::on_button_press_event(GdkEventButton *event)
         return true; //We handled this event.
       }
     }
+    else
+    {
+      if(mods & GDK_BUTTON3_MASK)
+      {
+        //Give user choices of actions on this item:
+        m_pMenuPopup_UserMode->popup(event->button, event->time);
+        return true; //We handled this event.
+      }
+    }
   
     //Single-click to select file:
     if(mods & GDK_BUTTON1_MASK)
     {
-      Gtk::FileChooserDialog dialog(_("Choose image"), Gtk::FILE_CHOOSER_ACTION_OPEN);
-      dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
-      dialog.add_button(_("Select"), Gtk::RESPONSE_OK);
-      int response = dialog.run();
-      dialog.hide();
-      if(response != Gtk::RESPONSE_CANCEL)
-      {
-        const std::string filepath = dialog.get_filename();
-        if(!filepath.empty())
-        {
-          try
-          {
-            m_pixbuf_original = Gdk::Pixbuf::create_from_file(filepath);
-            if(m_pixbuf_original)
-            {
-              m_image.set(m_pixbuf_original); //Load the image.
-              scale();
-              signal_edited().emit();
-            }
-          }
-          catch(const Glib::Exception& ex)
-          {
-            Frame_Glom::show_ok_dialog(_("Image loading failed"), _("The image file could not be opened:\n") + ex.what(), *pApp);
-          } 
-          
-          return true; //We handled this event.
-        }
-      }
+      on_menupopup_activate_select_file();
+      return true; //We handled this event.
+
     }
   }
 
@@ -248,8 +239,8 @@ void ImageGlom::scale()
     if( (pixbuf_height > allocation.get_height()) ||
         (pixbuf_width > allocation.get_width()) )
     {
-      pixbuf = scale_keeping_ratio(pixbuf, allocation.get_height(), allocation.get_width());
-      m_image.set(pixbuf);
+      Glib::RefPtr<Gdk::Pixbuf> pixbuf_scaled = scale_keeping_ratio(pixbuf, allocation.get_height(), allocation.get_width());
+      m_image.set(pixbuf_scaled);
     }
   }
 }
@@ -305,4 +296,101 @@ Glib::RefPtr<Gdk::Pixbuf> ImageGlom::scale_keeping_ratio(const Glib::RefPtr<Gdk:
   }
   
   return pixbuf->scale_simple(target_width, target_height, Gdk::INTERP_NEAREST);
+}
+
+void ImageGlom::on_menupopup_activate_select_file()
+{
+  Gtk::FileChooserDialog dialog(_("Choose image"), Gtk::FILE_CHOOSER_ACTION_OPEN);
+  
+  //Get image formats only:
+  Gtk::FileFilter filter;
+  filter.add_pixbuf_formats();
+  dialog.add_filter(filter);
+  
+  dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+  dialog.add_button(_("Select"), Gtk::RESPONSE_OK);
+  int response = dialog.run();
+  dialog.hide();
+  if(response != Gtk::RESPONSE_CANCEL)
+  {
+    const std::string filepath = dialog.get_filename();
+    if(!filepath.empty())
+    {
+      try
+      {
+        m_pixbuf_original = Gdk::Pixbuf::create_from_file(filepath);
+        if(m_pixbuf_original)
+        {
+          m_image.set(m_pixbuf_original); //Load the image.
+          scale();
+          signal_edited().emit();
+        }
+      }
+      catch(const Glib::Exception& ex)
+      {
+        App_Glom* pApp = get_application();
+        if(pApp)
+          Frame_Glom::show_ok_dialog(_("Image loading failed"), _("The image file could not be opened:\n") + ex.what(), *pApp);
+      }
+    }
+  }        
+}
+
+void ImageGlom::on_menupopup_activate_copy()
+{
+
+}
+
+void ImageGlom::on_menupopup_activate_paste()
+{
+
+}
+
+void ImageGlom::setup_menu_usermode()
+{
+  m_refActionGroup_UserModePopup = Gtk::ActionGroup::create();
+  
+  m_refActionGroup_UserModePopup->add(Gtk::Action::create("ContextMenu_UserMode", "Context Menu") );
+  m_refActionSelectFile =  Gtk::Action::create("ContextSelectFile", Gtk::Stock::EDIT, _("Choose File"));
+  m_refActionCopy = Gtk::Action::create("ContextCopy", Gtk::Stock::COPY);
+  m_refActionPaste = Gtk::Action::create("ContextPaste", Gtk::Stock::PASTE);
+ 
+  
+  m_refActionGroup_UserModePopup->add(m_refActionSelectFile,
+    sigc::mem_fun(*this, &ImageGlom::on_menupopup_activate_select_file) );
+
+  m_refActionGroup_UserModePopup->add(m_refActionCopy,
+    sigc::mem_fun(*this, &ImageGlom::on_menupopup_activate_copy) );
+
+  m_refActionGroup_UserModePopup->add(m_refActionPaste,
+    sigc::mem_fun(*this, &ImageGlom::on_menupopup_activate_paste) );
+
+  m_refUIManager_UserModePopup = Gtk::UIManager::create();
+
+  m_refUIManager_UserModePopup->insert_action_group(m_refActionGroup_UserModePopup);
+
+  //TODO: add_accel_group(m_refUIManager_UserModePopup->get_accel_group());
+
+  try
+  {
+    Glib::ustring ui_info = 
+        "<ui>"
+        "  <popup name='ContextMenu_UserMode'>"
+        "    <menuitem action='ContextSelectFile'/>"
+        "    <menuitem action='ContextCopy'/>"
+        "    <menuitem action='ContextPaste'/>"
+        "  </popup>"
+        "</ui>";
+
+    m_refUIManager_UserModePopup->add_ui_from_string(ui_info);
+  }
+  catch(const Glib::Error& ex)
+  {
+    std::cerr << "building menus failed: " <<  ex.what();
+  }
+
+  //Get the menu:
+  m_pMenuPopup_UserMode = dynamic_cast<Gtk::Menu*>( m_refUIManager_UserModePopup->get_widget("/ContextMenu_UserMode") ); 
+  if(!m_pMenuPopup_UserMode)
+    g_warning("menu not found");
 }

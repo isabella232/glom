@@ -43,15 +43,25 @@ public:
 protected:
 
   virtual bool on_button_press_event(GdkEventButton *event);
+  void on_menupopup_activate_select_file();
+  void on_menupopup_activate_copy();
+  void on_menupopup_activate_paste();
 
   virtual App_Glom* get_application();
   
+  void setup_menu_usermode();
   void scale();
   
   static Glib::RefPtr<Gdk::Pixbuf> scale_keeping_ratio(const Glib::RefPtr<Gdk::Pixbuf> pixbu, int target_height, int target_width);
   
   Gtk::Image m_image;
+  Gtk::Frame m_frame;
   Glib::RefPtr<Gdk::Pixbuf> m_pixbuf_original; //Only stored temporarily, because it could be big.
+  
+  Gtk::Menu* m_pMenuPopup_UserMode;
+  Glib::RefPtr<Gtk::ActionGroup> m_refActionGroup_UserModePopup;
+  Glib::RefPtr<Gtk::UIManager> m_refUIManager_UserModePopup;
+  Glib::RefPtr<Gtk::Action> m_refActionSelectFile, m_refActionCopy, m_refActionPaste;
 };
 
 #endif //GLOM_UTILITY_WIDGETS_COMBOENTRY_GLOM_H

@@ -609,11 +609,9 @@ Gnome::Gda::Value GlomConversions::get_example_value(Field::glom_field_type fiel
 
 Glib::ustring GlomConversions::get_escaped_binary_data(guint8* buffer, size_t buffer_size)
 {
-g_warning("debug: get_escaped_binary_data start");
-
- g_warning("GlomConversions::get_escaped_binary_data: debug: buffer ");
-      for(int i = 0; i < 10; ++i)
-        g_warning("%02X (%c), ", (guint8)buffer[i], buffer[i]);
+  //g_warning("GlomConversions::get_escaped_binary_data: debug: buffer ");
+  //for(int i = 0; i < 10; ++i)
+  //  g_warning("%02X (%c), ", (guint8)buffer[i], buffer[i]);
         
   //TODO: Performance: Preallocate a string of the appropriate size.
   //Use an output parameter instead of copying it during return.
@@ -635,8 +633,7 @@ g_warning("debug: get_escaped_binary_data start");
       result += Glib::ustring("\\\\") + byte_as_octal;
     }
   }
-  
-  g_warning("debug: get_escaped_binary_data end");
+ 
   return result;
 }
 

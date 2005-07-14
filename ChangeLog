@@ -1,3 +1,11 @@
+2005-07-14  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/utility_widgets/imageglom.cc:
+	* glom/utility_widgets/imageglom.h: Put the Gtk::Image in a 
+	Gtk::Frame so we can see it when it is empty. Added a context 
+	menu for user mode, and restricted the file chooser to pixbuf
+	types.
+
 2005-07-14  Murray Cumming  <murrayc.com>
 
 	* glom/data_structure/field.cc: sql(): Handle TYPE_IMAGE 
