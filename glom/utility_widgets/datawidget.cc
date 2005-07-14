@@ -289,6 +289,11 @@ int DataWidget::get_suitable_width(const LayoutItem_Field& field_layout)
         example_text = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
       break;
     }
+    case(Field::TYPE_IMAGE):
+    {
+      return 200;
+      break;
+    }
     default:
     {
       break;

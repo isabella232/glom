@@ -1,5 +1,15 @@
 2005-07-14  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/mode_data/box_data_details.cc:on_flowtable_field_edited():
+	Special case to avoid calling set_value() with a _correct_ 
+	GdaValue, because we expect the current broken binary GdaValue.
+	* glom/utility_widgets/datawidget.cc: 
+	* glom/utility_widgets/imageglom.cc:
+	* glom/utility_widgets/imageglom.h: Images show up again after 
+	loading, and after retrieval from database. Nifty.
+
+2005-07-14  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/utility_widgets/imageglom.cc:
 	* glom/utility_widgets/imageglom.h: Put the Gtk::Image in a 
 	Gtk::Frame so we can see it when it is empty. Added a context 

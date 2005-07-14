@@ -52,7 +52,7 @@ protected:
   void setup_menu_usermode();
   void scale();
   
-  static Glib::RefPtr<Gdk::Pixbuf> scale_keeping_ratio(const Glib::RefPtr<Gdk::Pixbuf> pixbu, int target_height, int target_width);
+  static Glib::RefPtr<Gdk::Pixbuf> scale_keeping_ratio(const Glib::RefPtr<Gdk::Pixbuf>& pixbuf, int target_height, int target_width);
   
   Gtk::Image m_image;
   Gtk::Frame m_frame;

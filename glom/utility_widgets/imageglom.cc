@@ -32,6 +32,8 @@ ImageGlom::ImageGlom()
 {
   setup_menu();
   setup_menu_usermode();
+  
+  m_image.set_size_request(150, 150);
   m_image.show();
   
   m_frame.set_shadow_type(Gtk::SHADOW_ETCHED_IN); //Without this, the image widget has no borders and is completely invisible when empty.
@@ -110,8 +112,10 @@ bool ImageGlom::get_has_original_data() const
 }
   
 void ImageGlom::set_value(const Gnome::Gda::Value& value)
-{
-  Glib::RefPtr<Gdk::Pixbuf> pixbuf;
+{ 
+  g_warning("debug: set_value(): start");
+  
+  bool pixbuf_set = false;
   
   if(value.get_value_type() == Gnome::Gda::VALUE_TYPE_BINARY)
   {
@@ -166,12 +170,16 @@ void ImageGlom::set_value(const Gnome::Gda::Value& value)
             //for(int i = 0; i < 10; ++i)
             //  g_warning("%02X (%c), ", (guint8)puiData[i], (char)puiData[i]);
               
+             g_warning("  debug: debug z1.");
             refPixbufLoader->write(puiData, (glong)buffer_binary_length);
-            
+            g_warning("  debug: debug z2.");
             m_pixbuf_original = refPixbufLoader->get_pixbuf();
             m_image.set(m_pixbuf_original);
+            pixbuf_set = true;
             
+            g_warning("  debug: debug zscale1.");
             scale();
+            g_warning("  debug: debug zscale2.");
           }
           catch(const Glib::Exception& ex)
           {
@@ -181,6 +189,7 @@ void ImageGlom::set_value(const Gnome::Gda::Value& value)
           refPixbufLoader->close();
           
           free(buffer_binary);
+          g_warning("  debug: debug z3.");
         }
       }
             
@@ -190,11 +199,20 @@ void ImageGlom::set_value(const Gnome::Gda::Value& value)
     
   }
   
-  m_image.set(pixbuf);
+  if(!pixbuf_set)
+  {
+    g_warning("debug: set_value(): setting to empty image.");
+    m_image.set(Gtk::Stock::MISSING_IMAGE, Gtk::ICON_SIZE_DIALOG);
+  }
+  
+ g_warning("debug: set_value(): end");
+ 
 }
 
 Gnome::Gda::Value ImageGlom::get_value() const
 {
+ g_warning("debug: get_value(): start");
+ 
   //TODO: Return the data from the file that was just chosen.
   //Don't store the original here any longer than necessary,
   Gnome::Gda::Value result; //TODO: Initialize it as binary.
@@ -223,6 +241,7 @@ Gnome::Gda::Value ImageGlom::get_value() const
     }
   }
   
+  g_warning("debug: get_value(): end");
   return result;
 }
 
@@ -243,11 +262,16 @@ void ImageGlom::scale()
       m_image.set(pixbuf_scaled);
     }
   }
+  else
+    g_warning("ImageGlom::scale(): attempt to scale a null pixbuf.");
 }
 
 //static:
-Glib::RefPtr<Gdk::Pixbuf> ImageGlom::scale_keeping_ratio(const Glib::RefPtr<Gdk::Pixbuf> pixbuf, int target_height, int target_width)
+Glib::RefPtr<Gdk::Pixbuf> ImageGlom::scale_keeping_ratio(const Glib::RefPtr<Gdk::Pixbuf>& pixbuf, int target_height, int target_width)
 {
+  if( (target_height == 0) || (target_width == 0) )
+    return Glib::RefPtr<Gdk::Pixbuf>(); //This shouldn't happen anyway.
+    
   enum enum_scale_mode
   {
     SCALE_WIDTH,
@@ -295,6 +319,7 @@ Glib::RefPtr<Gdk::Pixbuf> ImageGlom::scale_keeping_ratio(const Glib::RefPtr<Gdk:
     target_height = (int)((float)pixbuf_height * ratio);
   }
   
+  g_warning("debug: before scale_simple: target_width=%d, target_height=%d", target_width, target_height);
   return pixbuf->scale_simple(target_width, target_height, Gdk::INTERP_NEAREST);
 }
 
@@ -311,6 +336,7 @@ void ImageGlom::on_menupopup_activate_select_file()
   dialog.add_button(_("Select"), Gtk::RESPONSE_OK);
   int response = dialog.run();
   dialog.hide();
+  
   if(response != Gtk::RESPONSE_CANCEL)
   {
     const std::string filepath = dialog.get_filename();
@@ -324,6 +350,10 @@ void ImageGlom::on_menupopup_activate_select_file()
           m_image.set(m_pixbuf_original); //Load the image.
           scale();
           signal_edited().emit();
+        }
+        else
+        {
+          g_warning("ImageGlom::on_menupopup_activate_select_file(): file load failed.");
         }
       }
       catch(const Glib::Exception& ex)
