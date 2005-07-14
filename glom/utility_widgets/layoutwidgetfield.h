@@ -32,12 +32,18 @@ public:
   virtual void set_value(const Gnome::Gda::Value& value) = 0;
 
   virtual Gnome::Gda::Value get_value() const = 0;
+  
+  /**Whether this widget still has the original entered data, instead of just a representation.
+   * For intance, and image widget might only store a preview.
+   */
+  virtual bool get_has_original_data() const;
 
   typedef sigc::signal<void> type_signal_edited;
   type_signal_edited signal_edited();
 
 protected:
   type_signal_edited m_signal_edited;
+  bool m_entered_data_stored;
 };
 
 #endif //GLOM_MODE_DATA_LAYOUT_WIDGET_FIELD_H

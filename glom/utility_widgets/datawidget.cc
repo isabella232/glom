@@ -43,6 +43,7 @@ DataWidget::DataWidget(const LayoutItem_Field& field, const Glib::ustring& table
   set_layout_item(field.clone(), table_name); //takes ownership
 
   Gtk::Widget* child = 0;
+  LayoutWidgetField* pFieldWidget = 0;
   const Glib::ustring title = field.get_title_or_name();
   if(glom_type == Field::TYPE_BOOLEAN)
   {
@@ -67,6 +68,7 @@ DataWidget::DataWidget(const LayoutItem_Field& field, const Glib::ustring& table
     //TODO: entry->signal_user_requested_layout().connect( sigc::mem_fun(*this, &DataWidget::on_child_user_requested_layout );
 
     child = image;
+    pFieldWidget = image;
 
     m_label.set_label(title);
     m_label.set_alignment(0);
@@ -78,7 +80,6 @@ DataWidget::DataWidget(const LayoutItem_Field& field, const Glib::ustring& table
     m_label.set_alignment(0);
     m_label.show();
 
-    LayoutWidgetField* pFieldWidget = 0;
     //Use a Combo if there is a drop-down of choices (A "value list"), else an Entry:
     if(field.get_formatting_used().get_has_choices())
     {
@@ -157,7 +158,10 @@ DataWidget::DataWidget(const LayoutItem_Field& field, const Glib::ustring& table
 
       pFieldWidget->set_layout_item(get_layout_item()->clone(), table_name); //TODO_Performance: We only need this for the numerical format.
     }
-
+  }
+  
+  if(pFieldWidget)
+  {
     pFieldWidget->signal_edited().connect( sigc::mem_fun(*this, &DataWidget::on_widget_edited)  );
 
     pFieldWidget->signal_user_requested_layout().connect( sigc::mem_fun(*this, &DataWidget::on_child_user_requested_layout) );
@@ -167,7 +171,12 @@ DataWidget::DataWidget(const LayoutItem_Field& field, const Glib::ustring& table
 
     child = dynamic_cast<Gtk::Widget*>(pFieldWidget);
     int width = get_suitable_width(field);
-    child->set_size_request(width, -1 /* auto */);
+    
+    if(glom_type == Field::TYPE_IMAGE) //GtkImage widgets default to no size (invisible) if they are empty.
+      child->set_size_request(width, 200);
+    else
+      child->set_size_request(width, -1 /* auto */);
+      
     child->show_all();
   }
 

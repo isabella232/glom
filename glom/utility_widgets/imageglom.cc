@@ -21,6 +21,7 @@
 #include "imageglom.h"
 #include <glibmm/i18n.h>
 #include "../application.h"
+#include "../data_structure/glomconversions.h"
 //#include <sstream> //For stringstream
 
 #include <iostream>   // for cout, endl
@@ -112,6 +113,11 @@ App_Glom* ImageGlom::get_application()
   return dynamic_cast<App_Glom*>(pWindow);
 }
 
+bool ImageGlom::get_has_original_data() const
+{
+  return true; //TODO.
+}
+  
 void ImageGlom::set_value(const Gnome::Gda::Value& value)
 {
   Glib::RefPtr<Gdk::Pixbuf> pixbuf;
@@ -122,19 +128,69 @@ void ImageGlom::set_value(const Gnome::Gda::Value& value)
     const gpointer pData = value.get_binary(&size);
     if(size && pData)
     {
-      Glib::RefPtr<Gdk::PixbufLoader> refPixbufLoader = Gdk::PixbufLoader::create("png");
-      
-      try
+      //libgda does not currently properly unescape binary data,
+      //so pData is actually a null terminated string, of escaped binary data.
+      //This workaround should be removed when libgda is fixed:
+      size_t buffer_binary_length = 0;
+      guchar* buffer_binary =  Glom_PQunescapeBytea((const guchar*)pData /* must be null-terminated */, &buffer_binary_length); //freed by us later.
+      if(buffer_binary)
       {
-        guint8* puiData = (guint8*)pData;
-        refPixbufLoader->write(puiData, (glong)size);
-        m_image.set( refPixbufLoader->get_pixbuf() );
+        //typedef std::list<Gdk::PixbufFormat> type_list_formats;
+        //const type_list_formats formats = Gdk::Pixbuf::get_formats();
+        //std::cout << "Debug: Supported pixbuf formats:" << std::endl;
+        //for(type_list_formats::const_iterator iter = formats.begin(); iter != formats.end(); ++iter)
+        //{
+        //  std::cout << " name=" << iter->get_name() << ", writable=" << iter->is_writable() << std::endl;
+        //}
         
-        scale();
-      }
-      catch(const Glib::Exception& ex)
-      {
-        g_warning("ImageGlom::set_value(): PixbufLoader::write() failed.");
+        Glib::RefPtr<Gdk::PixbufLoader> refPixbufLoader;
+        
+        // PixbufLoader::create() is broken in gtkmm before 2.6.something,
+        // so let's do this in C so it works with all 2.6 versions:
+        GError* error = 0;
+        GdkPixbufLoader* loader = gdk_pixbuf_loader_new_with_type("png", &error);
+        if(!error)
+          refPixbufLoader = Glib::wrap(loader);
+        
+        /*
+        try
+        {
+          refPixbufLoader = Gdk::PixbufLoader::create("png");
+          g_warning("debug a1");
+        }
+        catch(const Gdk::PixbufError& ex)
+        {
+          refPixbufLoader.clear();
+          g_warning("PixbufLoader::create failed: %s",ex.what().c_str());
+        }
+        */
+        
+        if(refPixbufLoader)
+        {
+          try
+          {
+            guint8* puiData = (guint8*)buffer_binary;
+            
+            //g_warning("ImageGlom::set_value(): debug: from db: ");
+            //for(int i = 0; i < 10; ++i)
+            //  g_warning("%02X (%c), ", (guint8)puiData[i], (char)puiData[i]);
+              
+            refPixbufLoader->write(puiData, (glong)buffer_binary_length);
+            
+            m_pixbuf_original = refPixbufLoader->get_pixbuf();
+            m_image.set(m_pixbuf_original);
+            
+            scale();
+          }
+          catch(const Glib::Exception& ex)
+          {
+            g_warning("ImageGlom::set_value(): PixbufLoader::write() failed: %s", ex.what().c_str());
+          }
+          
+          refPixbufLoader->close();
+          
+          free(buffer_binary);
+        }
       }
             
       //TODO: load the image, using the mime type stored elsewhere.
@@ -152,15 +208,19 @@ Gnome::Gda::Value ImageGlom::get_value() const
   //Don't store the original here any longer than necessary,
   Gnome::Gda::Value result; //TODO: Initialize it as binary.
   
-  Glib::RefPtr<const Gdk::Pixbuf> pixbuf = m_image.get_pixbuf();
-  if(pixbuf)
+  if(m_pixbuf_original)
   {
     try
     {
       gchar* buffer = 0;
       gsize buffer_size = 0;
       std::list<Glib::ustring> list_empty;
-      //pixbuf->save_to_buffer(buffer, buffer_size, "png", list_empty, list_empty);
+      m_pixbuf_original->save_to_buffer(buffer, buffer_size, "png", list_empty, list_empty); //Always store images as PNG in the database.
+      
+      //g_warning("ImageGlom::get_value(): debug: to db: ");
+      //for(int i = 0; i < 10; ++i)
+      //  g_warning("%02X (%c), ", (guint8)buffer[i], buffer[i]);
+          
       result.set(buffer, buffer_size);
       
       g_free(buffer);
@@ -177,17 +237,20 @@ Gnome::Gda::Value ImageGlom::get_value() const
 
 void ImageGlom::scale()
 {
-  Glib::RefPtr<Gdk::Pixbuf> pixbuf = m_image.get_pixbuf();
+  Glib::RefPtr<Gdk::Pixbuf> pixbuf = m_pixbuf_original;
   
-  const Gtk::Allocation allocation = m_image.get_allocation();
-  const int pixbuf_height = pixbuf->get_height();
-  const int pixbuf_width = pixbuf->get_width();
-        
-   if( (pixbuf_height > allocation.get_height()) ||
-       (pixbuf_width > allocation.get_width()) )
+  if(pixbuf)
   {
-    pixbuf = scale_keeping_ratio(pixbuf, allocation.get_height(), allocation.get_width());
-    m_image.set(pixbuf);
+    const Gtk::Allocation allocation = m_image.get_allocation();
+    const int pixbuf_height = pixbuf->get_height();
+    const int pixbuf_width = pixbuf->get_width();
+          
+    if( (pixbuf_height > allocation.get_height()) ||
+        (pixbuf_width > allocation.get_width()) )
+    {
+      pixbuf = scale_keeping_ratio(pixbuf, allocation.get_height(), allocation.get_width());
+      m_image.set(pixbuf);
+    }
   }
 }
 

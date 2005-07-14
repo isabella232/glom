@@ -21,6 +21,7 @@
 #include "layoutwidgetfield.h"
 
 LayoutWidgetField::LayoutWidgetField()
+: m_entered_data_stored(false)
 {
 }
 
@@ -31,4 +32,11 @@ LayoutWidgetField::~LayoutWidgetField()
 LayoutWidgetField::type_signal_edited LayoutWidgetField::signal_edited()
 {
   return m_signal_edited;
+}
+
+bool LayoutWidgetField::get_has_original_data() const
+{
+  //Most widgets always have the original data.
+  //Override this method for widgets that don't.
+  return true;
 }

@@ -38,6 +38,7 @@ public:
   
   virtual void set_value(const Gnome::Gda::Value& value);
   virtual Gnome::Gda::Value get_value() const;
+  virtual bool get_has_original_data() const;
 
 protected:
 

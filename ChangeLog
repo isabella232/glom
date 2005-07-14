@@ -1,3 +1,22 @@
+2005-07-14  Murray Cumming  <murrayc.com>
+
+	* glom/data_structure/field.cc: sql(): Handle TYPE_IMAGE 
+	fields.
+	* glom/data_structure/glomconversions.cc:
+	* glom/data_structure/glomconversions.h: Add 
+	get_escaped_binary_data() and parse_escaped_binary_data(), 
+	using a a copy of the PQunescapeBytea() function from 
+	Postgres, because gda_value_get_binary() does not unescape 
+	the data yet.
+	* glom/utility_widgets/datawidget.cc: Connect to the 
+	LayoutWidgetField signals for the ImageGlom widget.
+	* glom/utility_widgets/imageglom.cc:
+	* glom/utility_widgets/imageglom.h: set_value(): 
+	Use our copy of PQunescapeBytea().
+	* glom/utility_widgets/layoutwidgetfield.cc:
+	* glom/utility_widgets/layoutwidgetfield.h: Added 
+	get_has_original_data() for later optimisation.
+
 2005-07-12  Murray Cumming  <murrayc@murryac.com>
 
 	* glom/data_structure/field.h: Document the IMAGE type 

@@ -607,4 +607,138 @@ Gnome::Gda::Value GlomConversions::get_example_value(Field::glom_field_type fiel
 }
 
 
+Glib::ustring GlomConversions::get_escaped_binary_data(guint8* buffer, size_t buffer_size)
+{
+g_warning("debug: get_escaped_binary_data start");
+
+ g_warning("GlomConversions::get_escaped_binary_data: debug: buffer ");
+      for(int i = 0; i < 10; ++i)
+        g_warning("%02X (%c), ", (guint8)buffer[i], buffer[i]);
+        
+  //TODO: Performance: Preallocate a string of the appropriate size.
+  //Use an output parameter instead of copying it during return.
+  
+  Glib::ustring result;
+  
+  if(buffer && buffer_size)
+  {
+    guint8* buffer_end = buffer + buffer_size;
+    char byte_as_octal[4]; //3 digits, and a null terminator
+    
+    for(guint8* pos = buffer; pos < buffer_end; ++pos)
+    {
+      sprintf(byte_as_octal, "%03o", *pos); //Format as octal with 3 digits.
+      byte_as_octal[3] = 0;
+      
+//      g_warning("byte=%d, as_hex=%s", *pos, byte_as_octal);      
+
+      result += Glib::ustring("\\\\") + byte_as_octal;
+    }
+  }
+  
+  g_warning("debug: get_escaped_binary_data end");
+  return result;
+}
+
+
+#define ISFIRSTOCTDIGIT(CH) ((CH) >= '0' && (CH) <= '3')
+#define ISOCTDIGIT(CH) ((CH) >= '0' && (CH) <= '7')
+#define OCTVAL(CH) ((CH) - '0')
+
+Gnome::Gda::Value GlomConversions::parse_escaped_binary_data(const Glib::ustring& escaped_data)
+{
+  //Hopefully we don't need to use this because Gda does it for us when we read a part of a "SELECT" result into a Gnome::Value.
+  //TODO: Performance
+  
+  Gnome::Gda::Value result;
+  size_t buffer_binary_length = 0;
+  guchar* buffer_binary =  Glom_PQunescapeBytea((guchar*)escaped_data.c_str(), &buffer_binary_length);
+  if(buffer_binary)
+  {
+    result.set(buffer_binary, buffer_binary_length);
+    free(buffer_binary);
+  }
+  
+  return result;
+}
+
+unsigned char *
+Glom_PQunescapeBytea(const unsigned char *strtext, size_t *retbuflen)
+{
+  size_t    strtextlen,
+        buflen;
+  unsigned char *buffer,
+         *tmpbuf;
+  size_t    i,
+        j;
+
+  if (strtext == NULL)
+    return NULL;
+
+  strtextlen = strlen((const char*)strtext);
+
+  /*
+   * Length of input is max length of output, but add one to avoid
+   * unportable malloc(0) if input is zero-length.
+   */
+  buffer = (unsigned char *) malloc(strtextlen + 1);
+  if (buffer == NULL)
+    return NULL;
+
+  for (i = j = 0; i < strtextlen;)
+  {
+    switch (strtext[i])
+    {
+      case '\\':
+        i++;
+        if (strtext[i] == '\\')
+          buffer[j++] = strtext[i++];
+        else
+        {
+          if ((ISFIRSTOCTDIGIT(strtext[i])) &&
+            (ISOCTDIGIT(strtext[i + 1])) &&
+            (ISOCTDIGIT(strtext[i + 2])))
+          {
+            int     byte;
+
+            byte = OCTVAL(strtext[i++]);
+            byte = (byte << 3) + OCTVAL(strtext[i++]);
+            byte = (byte << 3) + OCTVAL(strtext[i++]);
+            buffer[j++] = byte;
+          }
+        }
+
+        /*
+         * Note: if we see '\' followed by something that isn't a
+         * recognized escape sequence, we loop around having done
+         * nothing except advance i.  Therefore the something will
+         * be emitted as ordinary data on the next cycle. Corner
+         * case: '\' at end of string will just be discarded.
+         */
+        break;
+
+      default:
+        buffer[j++] = strtext[i++];
+        break;
+    }
+  }
+  buflen = j;         /* buflen is the length of the dequoted
+                 * data */
+
+  /* Shrink the buffer to be no larger than necessary */
+  /* +1 avoids unportable behavior when buflen==0 */
+  tmpbuf = (unsigned char*)realloc(buffer, buflen + 1);
+
+  /* It would only be a very brain-dead realloc that could fail, but... */
+  if (!tmpbuf)
+  {
+    free(buffer);
+    return NULL;
+  }
+
+  *retbuflen = buflen;
+  return tmpbuf;
+}
+
+
 

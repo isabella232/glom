@@ -188,6 +188,7 @@ Glib::ustring Field::sql(const Gnome::Gda::Value& value) const
       case(TYPE_DATE):
       case(TYPE_TIME):
       case(TYPE_NUMERIC):
+      case(TYPE_IMAGE):
       {
         return "NULL";
         break;
@@ -239,6 +240,17 @@ Glib::ustring Field::sql(const Gnome::Gda::Value& value) const
       else
         str = "FALSE";
 
+      break;
+    }
+    case(TYPE_IMAGE):
+    {
+      if(value.get_value_type() == Gnome::Gda::VALUE_TYPE_BINARY)
+      {
+        long buffer_size = 0;
+        const gpointer buffer = value.get_binary(&buffer_size);  
+        str = "'" + GlomConversions::get_escaped_binary_data((guint8*)buffer, buffer_size) + "'::bytea";
+      }
+      
       break;
     }
     default:
