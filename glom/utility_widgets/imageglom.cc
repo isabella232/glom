@@ -113,8 +113,6 @@ bool ImageGlom::get_has_original_data() const
   
 void ImageGlom::set_value(const Gnome::Gda::Value& value)
 { 
-  g_warning("debug: set_value(): start");
-  
   bool pixbuf_set = false;
   
   if(value.get_value_type() == Gnome::Gda::VALUE_TYPE_BINARY)
@@ -170,16 +168,12 @@ void ImageGlom::set_value(const Gnome::Gda::Value& value)
             //for(int i = 0; i < 10; ++i)
             //  g_warning("%02X (%c), ", (guint8)puiData[i], (char)puiData[i]);
               
-             g_warning("  debug: debug z1.");
             refPixbufLoader->write(puiData, (glong)buffer_binary_length);
-            g_warning("  debug: debug z2.");
             m_pixbuf_original = refPixbufLoader->get_pixbuf();
             m_image.set(m_pixbuf_original);
             pixbuf_set = true;
             
-            g_warning("  debug: debug zscale1.");
             scale();
-            g_warning("  debug: debug zscale2.");
           }
           catch(const Glib::Exception& ex)
           {
@@ -189,7 +183,6 @@ void ImageGlom::set_value(const Gnome::Gda::Value& value)
           refPixbufLoader->close();
           
           free(buffer_binary);
-          g_warning("  debug: debug z3.");
         }
       }
             
@@ -201,18 +194,12 @@ void ImageGlom::set_value(const Gnome::Gda::Value& value)
   
   if(!pixbuf_set)
   {
-    g_warning("debug: set_value(): setting to empty image.");
     m_image.set(Gtk::Stock::MISSING_IMAGE, Gtk::ICON_SIZE_DIALOG);
   }
-  
- g_warning("debug: set_value(): end");
- 
 }
 
 Gnome::Gda::Value ImageGlom::get_value() const
 {
- g_warning("debug: get_value(): start");
- 
   //TODO: Return the data from the file that was just chosen.
   //Don't store the original here any longer than necessary,
   Gnome::Gda::Value result; //TODO: Initialize it as binary.
@@ -241,7 +228,6 @@ Gnome::Gda::Value ImageGlom::get_value() const
     }
   }
   
-  g_warning("debug: get_value(): end");
   return result;
 }
 
@@ -319,7 +305,6 @@ Glib::RefPtr<Gdk::Pixbuf> ImageGlom::scale_keeping_ratio(const Glib::RefPtr<Gdk:
     target_height = (int)((float)pixbuf_height * ratio);
   }
   
-  g_warning("debug: before scale_simple: target_width=%d, target_height=%d", target_width, target_height);
   return pixbuf->scale_simple(target_width, target_height, Gdk::INTERP_NEAREST);
 }
 
