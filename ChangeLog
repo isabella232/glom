@@ -1,3 +1,13 @@
+2005-07-15  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/base_db.cc: Comment out the debug query output on 
+	stdout, because it slows us down when we use lots of image data.
+	* glom/data_structure/glomconversions.cc: Tried to use 
+	PQescapeBytea() instead of my custom (slow) encoding code, without 
+	success, so left that code commented-out.
+	* glom/utility_widgets/imageglom.cc:
+	* glom/utility_widgets/imageglom.h: Implemented copy/paste.
+
 2005-07-14  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/mode_data/box_data_details.cc:on_flowtable_field_edited():

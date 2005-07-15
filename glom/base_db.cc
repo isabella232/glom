@@ -136,7 +136,17 @@ Glib::RefPtr<Gnome::Gda::DataModel> Base_DB::Query_execute(const Glib::ustring& 
   {
     Glib::RefPtr<Gnome::Gda::Connection> gda_connection = sharedconnection->get_gda_connection();
 
-    std::cout << "Query_execute():  " << strQuery << std::endl;
+    /*
+    try
+    {
+      std::cout << "Debug: Query_execute():  " << strQuery << std::endl;
+    }
+    catch(const Glib::Exception& ex)
+    {
+      std::cout << "Debug: query string could not be converted to std::cout: " << ex.what() << std::endl;
+    }
+    */
+    
     result = gda_connection->execute_single_command(strQuery);
     if(!result)
     {

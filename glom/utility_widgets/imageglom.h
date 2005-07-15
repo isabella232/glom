@@ -46,6 +46,10 @@ protected:
   void on_menupopup_activate_select_file();
   void on_menupopup_activate_copy();
   void on_menupopup_activate_paste();
+  
+  void on_clipboard_get(Gtk::SelectionData& selection_data, guint /* info */);
+  void on_clipboard_clear();
+  void on_clipboard_received_image(const Glib::RefPtr<Gdk::Pixbuf>& pixbuf);
 
   virtual App_Glom* get_application();
   
@@ -57,6 +61,7 @@ protected:
   Gtk::Image m_image;
   Gtk::Frame m_frame;
   Glib::RefPtr<Gdk::Pixbuf> m_pixbuf_original; //Only stored temporarily, because it could be big.
+  Glib::RefPtr<Gdk::Pixbuf> m_pixbuf_clipboard; //When copy is used, store it here until it is pasted.
   
   Gtk::Menu* m_pMenuPopup_UserMode;
   Glib::RefPtr<Gtk::ActionGroup> m_refActionGroup_UserModePopup;

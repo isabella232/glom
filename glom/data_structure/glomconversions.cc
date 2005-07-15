@@ -607,57 +607,72 @@ Gnome::Gda::Value GlomConversions::get_example_value(Field::glom_field_type fiel
 }
 
 
-Glib::ustring GlomConversions::get_escaped_binary_data(guint8* buffer, size_t buffer_size)
+unsigned char *
+Glom_PQescapeBytea(const unsigned char *bintext, size_t binlen, size_t *bytealen)
 {
-  //g_warning("GlomConversions::get_escaped_binary_data: debug: buffer ");
-  //for(int i = 0; i < 10; ++i)
-  //  g_warning("%02X (%c), ", (guint8)buffer[i], buffer[i]);
-        
-  //TODO: Performance: Preallocate a string of the appropriate size.
-  //Use an output parameter instead of copying it during return.
-  
-  Glib::ustring result;
-  
-  if(buffer && buffer_size)
-  {
-    guint8* buffer_end = buffer + buffer_size;
-    char byte_as_octal[4]; //3 digits, and a null terminator
-    
-    for(guint8* pos = buffer; pos < buffer_end; ++pos)
-    {
-      sprintf(byte_as_octal, "%03o", *pos); //Format as octal with 3 digits.
-      byte_as_octal[3] = 0;
-      
-//      g_warning("byte=%d, as_hex=%s", *pos, byte_as_octal);      
+  const unsigned char *vp;
+  unsigned char *rp;
+  unsigned char *result;
+  size_t    i;
+  size_t    len;
 
-      result += Glib::ustring("\\\\") + byte_as_octal;
-    }
+  /*
+   * empty string has 1 char ('\0')
+   */
+  len = 1;
+
+  vp = bintext;
+  for (i = binlen; i > 0; i--, vp++)
+  {
+    if (*vp < 0x20 || *vp > 0x7e)
+      len += 5;     /* '5' is for '\\ooo' */
+    else if (*vp == '\'')
+      len += 2;
+    else if (*vp == '\\')
+      len += 4;
+    else
+      len++;
   }
- 
+
+  rp = result = (unsigned char *) malloc(len);
+  if (rp == NULL)
+    return NULL;
+
+  vp = bintext;
+  *bytealen = len;
+
+  for (i = binlen; i > 0; i--, vp++)
+  {
+    if (*vp < 0x20 || *vp > 0x7e)
+    {
+      (void) sprintf((char*)rp, "\\\\%03o", *vp);
+      rp += 5;
+    }
+    else if (*vp == '\'')
+    {
+      rp[0] = '\\';
+      rp[1] = '\'';
+      rp += 2;
+    }
+    else if (*vp == '\\')
+    {
+      rp[0] = '\\';
+      rp[1] = '\\';
+      rp[2] = '\\';
+      rp[3] = '\\';
+      rp += 4;
+    }
+    else
+      *rp++ = *vp;
+  }
+  *rp = '\0';
+
   return result;
 }
-
 
 #define ISFIRSTOCTDIGIT(CH) ((CH) >= '0' && (CH) <= '3')
 #define ISOCTDIGIT(CH) ((CH) >= '0' && (CH) <= '7')
 #define OCTVAL(CH) ((CH) - '0')
-
-Gnome::Gda::Value GlomConversions::parse_escaped_binary_data(const Glib::ustring& escaped_data)
-{
-  //Hopefully we don't need to use this because Gda does it for us when we read a part of a "SELECT" result into a Gnome::Value.
-  //TODO: Performance
-  
-  Gnome::Gda::Value result;
-  size_t buffer_binary_length = 0;
-  guchar* buffer_binary =  Glom_PQunescapeBytea((guchar*)escaped_data.c_str(), &buffer_binary_length);
-  if(buffer_binary)
-  {
-    result.set(buffer_binary, buffer_binary_length);
-    free(buffer_binary);
-  }
-  
-  return result;
-}
 
 unsigned char *
 Glom_PQunescapeBytea(const unsigned char *strtext, size_t *retbuflen)
@@ -736,6 +751,66 @@ Glom_PQunescapeBytea(const unsigned char *strtext, size_t *retbuflen)
   *retbuflen = buflen;
   return tmpbuf;
 }
+
+Glib::ustring GlomConversions::get_escaped_binary_data(guint8* buffer, size_t buffer_size)
+{
+  //g_warning("GlomConversions::get_escaped_binary_data: debug: buffer ");
+  //for(int i = 0; i < 10; ++i)
+  //  g_warning("%02X (%c), ", (guint8)buffer[i], buffer[i]);
+        
+  //TODO: Performance: Preallocate a string of the appropriate size.
+  //Use an output parameter instead of copying it during return.
+  
+  Glib::ustring result;
+  
+  /* This should be much faster, and more correct, but it gives an error - "unterminated quoted string at or near: "
+  size_t escaped_length = 0;
+  guchar* escaped =  Glom_PQescapeBytea(buffer, buffer_size, &escaped_length);
+  
+  if(escaped && escaped_length)
+  {
+    result = std::string((char*)escaped, escaped_length);
+    free(escaped);
+  }
+  */
+  
+  
+  if(buffer && buffer_size)
+  {
+    guint8* buffer_end = buffer + buffer_size;
+    char byte_as_octal[4]; //3 digits, and a null terminator
+    
+    for(guint8* pos = buffer; pos < buffer_end; ++pos)
+    {
+      sprintf(byte_as_octal, "%03o", *pos); //Format as octal with 3 digits.
+      byte_as_octal[3] = 0;
+      
+//      g_warning("byte=%d, as_hex=%s", *pos, byte_as_octal);      
+
+      result += Glib::ustring("\\\\") + byte_as_octal;
+    }
+  }
+ 
+  return result;
+}
+
+Gnome::Gda::Value GlomConversions::parse_escaped_binary_data(const Glib::ustring& escaped_data)
+{
+  //Hopefully we don't need to use this because Gda does it for us when we read a part of a "SELECT" result into a Gnome::Value.
+  //TODO: Performance
+  
+  Gnome::Gda::Value result;
+  size_t buffer_binary_length = 0;
+  guchar* buffer_binary =  Glom_PQunescapeBytea((guchar*)escaped_data.c_str(), &buffer_binary_length);
+  if(buffer_binary)
+  {
+    result.set(buffer_binary, buffer_binary_length);
+    free(buffer_binary);
+  }
+  
+  return result;
+}
+
 
 
 

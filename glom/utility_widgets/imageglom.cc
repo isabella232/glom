@@ -26,6 +26,9 @@
 
 #include <iostream>   // for cout, endl
 
+#define GLOM_IMAGE_FORMAT "png"
+#define GLOM_IMAGE_FORMAT_MIME_TYPE "image/png"
+
 ImageGlom::ImageGlom()
 : m_image(Gtk::Stock::MISSING_IMAGE, Gtk::ICON_SIZE_DIALOG), //The widget is invisible if we don't specify an image.
   m_pMenuPopup_UserMode(0)
@@ -141,14 +144,14 @@ void ImageGlom::set_value(const Gnome::Gda::Value& value)
         // PixbufLoader::create() is broken in gtkmm before 2.6.something,
         // so let's do this in C so it works with all 2.6 versions:
         GError* error = 0;
-        GdkPixbufLoader* loader = gdk_pixbuf_loader_new_with_type("png", &error);
+        GdkPixbufLoader* loader = gdk_pixbuf_loader_new_with_type(GLOM_IMAGE_FORMAT, &error);
         if(!error)
           refPixbufLoader = Glib::wrap(loader);
         
         /*
         try
         {
-          refPixbufLoader = Gdk::PixbufLoader::create("png");
+          refPixbufLoader = Gdk::PixbufLoader::create(GLOM_IMAGE_FORMAT);
           g_warning("debug a1");
         }
         catch(const Gdk::PixbufError& ex)
@@ -211,7 +214,7 @@ Gnome::Gda::Value ImageGlom::get_value() const
       gchar* buffer = 0;
       gsize buffer_size = 0;
       std::list<Glib::ustring> list_empty;
-      m_pixbuf_original->save_to_buffer(buffer, buffer_size, "png", list_empty, list_empty); //Always store images as PNG in the database.
+      m_pixbuf_original->save_to_buffer(buffer, buffer_size, GLOM_IMAGE_FORMAT, list_empty, list_empty); //Always store images as PNG in the database.
       
       //g_warning("ImageGlom::get_value(): debug: to db: ");
       //for(int i = 0; i < 10; ++i)
@@ -351,14 +354,64 @@ void ImageGlom::on_menupopup_activate_select_file()
   }        
 }
 
+void ImageGlom::on_clipboard_get(Gtk::SelectionData& selection_data, guint /* info */)
+{
+  //info is meant to indicate the target, but it seems to be always 0,
+  //so we use the selection_data's target instead.
+
+  const std::string target = selection_data.get_target(); 
+
+  if(target == GLOM_IMAGE_FORMAT_MIME_TYPE)
+  {
+    // This set() override uses an 8-bit text format for the data.
+    selection_data.set_pixbuf(m_pixbuf_clipboard);
+  }
+  else
+  {
+    g_warning("ExampleWindow::on_clipboard_get(): Unexpected clipboard target format.");
+  } 
+}
+
+void ImageGlom::on_clipboard_clear()
+{
+  m_pixbuf_clipboard.clear();
+}
+
 void ImageGlom::on_menupopup_activate_copy()
 {
+  //When copy is used, store it here until it is pasted.
+  m_pixbuf_clipboard = m_pixbuf_original->copy(); //TODO: Get it from the DB, when we stop storing the original here instead of just the preview.
+  
+  Glib::RefPtr<Gtk::Clipboard> refClipboard = Gtk::Clipboard::get();
 
+  //Targets:
+  std::list<Gtk::TargetEntry> listTargets;
+
+  listTargets.push_back( Gtk::TargetEntry(GLOM_IMAGE_FORMAT_MIME_TYPE) );
+  
+  refClipboard->set( listTargets, sigc::mem_fun(*this, &ImageGlom::on_clipboard_get), sigc::mem_fun(*this, &ImageGlom::on_clipboard_clear) );
+ 
 }
+
+void ImageGlom::on_clipboard_received_image(const Glib::RefPtr<Gdk::Pixbuf>& pixbuf)
+{
+  if(pixbuf)
+  {
+    m_pixbuf_original = pixbuf;
+    
+    m_image.set(m_pixbuf_original); //Load the image.
+    scale();
+    signal_edited().emit();
+  }
+}
+
 
 void ImageGlom::on_menupopup_activate_paste()
 {
+  //Tell the clipboard to call our method when it is ready:
+  Glib::RefPtr<Gtk::Clipboard> refClipboard = Gtk::Clipboard::get();
 
+  refClipboard->request_image( sigc::mem_fun(*this, &ImageGlom::on_clipboard_received_image) );
 }
 
 void ImageGlom::setup_menu_usermode()
