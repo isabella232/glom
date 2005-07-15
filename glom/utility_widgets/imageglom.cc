@@ -414,6 +414,12 @@ void ImageGlom::on_menupopup_activate_paste()
   refClipboard->request_image( sigc::mem_fun(*this, &ImageGlom::on_clipboard_received_image) );
 }
 
+void ImageGlom::on_menupopup_activate_clear()
+{
+  m_pixbuf_original.clear();
+  m_image.set(Gtk::Stock::MISSING_IMAGE, Gtk::ICON_SIZE_DIALOG);
+}
+
 void ImageGlom::setup_menu_usermode()
 {
   m_refActionGroup_UserModePopup = Gtk::ActionGroup::create();
@@ -422,7 +428,7 @@ void ImageGlom::setup_menu_usermode()
   m_refActionSelectFile =  Gtk::Action::create("ContextSelectFile", Gtk::Stock::EDIT, _("Choose File"));
   m_refActionCopy = Gtk::Action::create("ContextCopy", Gtk::Stock::COPY);
   m_refActionPaste = Gtk::Action::create("ContextPaste", Gtk::Stock::PASTE);
- 
+  m_refActionClear = Gtk::Action::create("ContextClear", Gtk::Stock::CLEAR);
   
   m_refActionGroup_UserModePopup->add(m_refActionSelectFile,
     sigc::mem_fun(*this, &ImageGlom::on_menupopup_activate_select_file) );
@@ -432,6 +438,9 @@ void ImageGlom::setup_menu_usermode()
 
   m_refActionGroup_UserModePopup->add(m_refActionPaste,
     sigc::mem_fun(*this, &ImageGlom::on_menupopup_activate_paste) );
+    
+  m_refActionGroup_UserModePopup->add(m_refActionClear,
+    sigc::mem_fun(*this, &ImageGlom::on_menupopup_activate_clear) );
 
   m_refUIManager_UserModePopup = Gtk::UIManager::create();
 
@@ -447,6 +456,7 @@ void ImageGlom::setup_menu_usermode()
         "    <menuitem action='ContextSelectFile'/>"
         "    <menuitem action='ContextCopy'/>"
         "    <menuitem action='ContextPaste'/>"
+        "    <menuitem action='ContextClear'/>"
         "  </popup>"
         "</ui>";
 

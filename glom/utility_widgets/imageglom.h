@@ -46,6 +46,7 @@ protected:
   void on_menupopup_activate_select_file();
   void on_menupopup_activate_copy();
   void on_menupopup_activate_paste();
+  void on_menupopup_activate_clear();
   
   void on_clipboard_get(Gtk::SelectionData& selection_data, guint /* info */);
   void on_clipboard_clear();
@@ -66,7 +67,7 @@ protected:
   Gtk::Menu* m_pMenuPopup_UserMode;
   Glib::RefPtr<Gtk::ActionGroup> m_refActionGroup_UserModePopup;
   Glib::RefPtr<Gtk::UIManager> m_refUIManager_UserModePopup;
-  Glib::RefPtr<Gtk::Action> m_refActionSelectFile, m_refActionCopy, m_refActionPaste;
+  Glib::RefPtr<Gtk::Action> m_refActionSelectFile, m_refActionCopy, m_refActionPaste, m_refActionClear;
 };
 
 #endif //GLOM_UTILITY_WIDGETS_COMBOENTRY_GLOM_H

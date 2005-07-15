@@ -1,3 +1,8 @@
+0.8.34:
+
+* Prevented crash at startup. (Daniel Holbach)
+* Added Image field type. (Murray Cumming)
+
 0.8.33:
 
 * Details layout: Group names can be changed again.
