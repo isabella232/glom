@@ -1,5 +1,12 @@
 2005-07-16  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/mode_data/box_data_details.cc: get_suitable_width()
+	* glom/utility_widgets/datawidget.cc: constructor:
+	Give images the same width as text fields, with an equal height, 
+	so they line up more, though this might be too big.
+
+2005-07-16  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/utility_widgets/imageglom.cc: Do not crash when reading bad 
 	image data from the database.
 

@@ -540,7 +540,7 @@ void Box_Data_Details::on_flowtable_field_edited(const LayoutItem_Field& layout_
     //const Field& field = layout_field.m_field;
 
     //Set the value in all instances of this field in the layout (The field might be on the layout more than once):
-    if(layout_field.m_field.get_glom_type() != Field::TYPE_IMAGE) //TODOL For now, don't do this for images, because the ImageGlom widget expects a broken GdaValue, because gda_value_get_binary() needs to be fixed.
+    if(layout_field.m_field.get_glom_type() != Field::TYPE_IMAGE) //TODO For now, don't do this for images, because the ImageGlom widget expects a broken GdaValue, because gda_value_get_binary() needs to be fixed.
       m_FlowTable.set_field_value(layout_field, field_value);
 
     //Update the field in the record (the record with this primary key):

@@ -173,7 +173,7 @@ DataWidget::DataWidget(const LayoutItem_Field& field, const Glib::ustring& table
     int width = get_suitable_width(field);
     
     if(glom_type == Field::TYPE_IMAGE) //GtkImage widgets default to no size (invisible) if they are empty.
-      child->set_size_request(width, 200);
+      child->set_size_request(width, width);
     else
       child->set_size_request(width, -1 /* auto */);
       
@@ -284,14 +284,10 @@ int DataWidget::get_suitable_width(const LayoutItem_Field& field_layout)
       break;
     }
     case(Field::TYPE_TEXT):
+    case(Field::TYPE_IMAGE): //Give images the same width as text fields, so they will often line up.
     {
       //if(!field_layout.get_text_format_multiline()) //Use the full width for multi-line text.
         example_text = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
-      break;
-    }
-    case(Field::TYPE_IMAGE):
-    {
-      return 200;
       break;
     }
     default:
