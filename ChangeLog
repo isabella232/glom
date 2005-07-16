@@ -1,3 +1,8 @@
+2005-07-16  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/utility_widgets/imageglom.cc: Do not crash when reading bad 
+	image data from the database.
+
 0.8.34:
 
 2005-07-15  Murray Cumming  <murrayc@murrayc.com>

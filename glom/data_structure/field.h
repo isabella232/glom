@@ -67,7 +67,7 @@ public:
     TYPE_DATE,
     TYPE_TIME,
     TYPE_BOOLEAN,
-    TYPE_IMAGE //Always stored as PNG format.
+    TYPE_IMAGE //Always stored as a standard format.
   };
 
   Field();

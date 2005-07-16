@@ -26,6 +26,9 @@
 
 #include <iostream>   // for cout, endl
 
+//JPEG seems to give ugly results when saved to the database and shown again.
+//#define GLOM_IMAGE_FORMAT "jpeg"
+//#define GLOM_IMAGE_FORMAT_MIME_TYPE "image/jpeg"
 #define GLOM_IMAGE_FORMAT "png"
 #define GLOM_IMAGE_FORMAT_MIME_TYPE "image/png"
 
@@ -177,13 +180,13 @@ void ImageGlom::set_value(const Gnome::Gda::Value& value)
             pixbuf_set = true;
             
             scale();
+            
+            refPixbufLoader->close(); //This throws if write() threw, so it must be inside the try block.
           }
           catch(const Glib::Exception& ex)
           {
             g_warning("ImageGlom::set_value(): PixbufLoader::write() failed: %s", ex.what().c_str());
           }
-          
-          refPixbufLoader->close();
           
           free(buffer_binary);
         }
@@ -213,8 +216,12 @@ Gnome::Gda::Value ImageGlom::get_value() const
     {
       gchar* buffer = 0;
       gsize buffer_size = 0;
-      std::list<Glib::ustring> list_empty;
-      m_pixbuf_original->save_to_buffer(buffer, buffer_size, GLOM_IMAGE_FORMAT, list_empty, list_empty); //Always store images as PNG in the database.
+      std::list<Glib::ustring> list_keys;
+      std::list<Glib::ustring> list_values;
+      //list_keys.push_back("quality"); //For jpeg only.
+      //list_values.push_back("95");
+      
+      m_pixbuf_original->save_to_buffer(buffer, buffer_size, GLOM_IMAGE_FORMAT, list_keys, list_values); //Always store images as the standard format in the database.
       
       //g_warning("ImageGlom::get_value(): debug: to db: ");
       //for(int i = 0; i < 10; ++i)
