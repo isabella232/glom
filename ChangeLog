@@ -1,3 +1,8 @@
+2005-07-17  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/mode_data/treestore_layout.cc: Prevent items from being 
+	dragged directly under themselves, preventing a crash.
+
 2005-07-16  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/mode_data/box_data_details.cc: get_suitable_width()

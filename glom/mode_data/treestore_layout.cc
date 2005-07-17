@@ -45,6 +45,16 @@ bool TreeStore_Layout::row_draggable_vfunc(const Gtk::TreeModel::Path& path) con
 
 bool TreeStore_Layout::row_drop_possible_vfunc(const Gtk::TreeModel::Path& dest, const Gtk::SelectionData& selection_data) const
 {
+    //Get the Row that is being dragged:
+    //TODO: Add const version of get_from_selection_data(): Glib::RefPtr<const Gtk::TreeModel> refThis = Glib::RefPtr<const Gtk::TreeModel>(this);
+    Glib::RefPtr<Gtk::TreeModel> refThis = Glib::RefPtr<Gtk::TreeModel>(const_cast<TreeStore_Layout*>(this));
+    refThis->reference(); //, true /* take_copy */)
+    Gtk::TreeModel::Path path_dragged_row;
+    Gtk::TreeModel::Path::get_from_selection_data(selection_data, refThis, path_dragged_row);
+
+    if(path_dragged_row == dest)
+      return false; //Prevent a row from being dragged onto itself.
+      
   //Only allow items to become children of groups.
   //Do not allow items to become children of fields.
     
@@ -56,16 +66,6 @@ bool TreeStore_Layout::row_drop_possible_vfunc(const Gtk::TreeModel::Path& dest,
   {
     //The user wants to move something to the top-level.
     //Only groups can be at the top level, so we examine the thing being dragged:
-
-    //Get the Row that is being dragged:
-    //TODO: Add const version of get_from_selection_data(): Glib::RefPtr<const Gtk::TreeModel> refThis = Glib::RefPtr<const Gtk::TreeModel>(this);
-    Glib::RefPtr<Gtk::TreeModel> refThis = Glib::RefPtr<Gtk::TreeModel>(const_cast<TreeStore_Layout*>(this));
-    refThis->reference(); //, true /* take_copy */)
-    Gtk::TreeModel::Path path_dragged_row;
-    Gtk::TreeModel::Path::get_from_selection_data(selection_data, refThis, path_dragged_row);
-
-    if(path_dragged_row == dest)
-      return false; //Prevent a row from being dragged onto itself.
       
     //Get an iterator for the row at this path:
     //We must unconst this. This should not be necessary with a future version of gtkmm.
@@ -81,6 +81,9 @@ bool TreeStore_Layout::row_drop_possible_vfunc(const Gtk::TreeModel::Path& dest,
   }
   else
   {
+    if(dest_parent == path_dragged_row)
+      return false; //Don't allow an item to be dragged under itself. TODO: Check the whole parent hierarchy.
+      
     //Get an iterator for the row at the requested parent's path:
     //We must unconst this. This should not be necessary with a future version of gtkmm.
     TreeStore_Layout* unconstThis = const_cast<TreeStore_Layout*>(this); //TODO: Add a const version of get_iter to TreeModel:
