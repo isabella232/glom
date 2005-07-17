@@ -648,11 +648,13 @@ Document_Glom::type_mapLayoutGroupSequence Document_Glom::get_data_layout_groups
 
   if(create_default)
   {
-    g_warning("Document_Glom::get_data_layout_groups_plus_new_fields(): Creating default layout for table %s (child_table=%s), for layout %s", parent_table_name.c_str(), child_table_name.c_str(), layout_name.c_str());
+    //g_warning("Document_Glom::get_data_layout_groups_plus_new_fields(): Creating default layout for table %s (child_table=%s), for layout %s", parent_table_name.c_str(), child_table_name.c_str(), layout_name.c_str());
 
     //Get the last top-level group. We will add new fields into this one:
     //TODO_Performance: There must be a better way to do this:
     LayoutGroup* pTopLevel = 0;
+    LayoutGroup* pOverview = 0; //The default layout has a main group with an overview and details group inside.
+    LayoutGroup* pDetails = 0;
     for(type_mapLayoutGroupSequence::iterator iterGroups = result.begin(); iterGroups != result.end(); ++iterGroups)
     {
       pTopLevel = &(iterGroups->second);
@@ -667,8 +669,28 @@ Document_Glom::type_mapLayoutGroupSequence Document_Glom::get_data_layout_groups
       group.m_columns_count = 1;
       result[1] = group;
       pTopLevel = &(result[1]);
+      
+      /*
+      LayoutGroup overview;
+      overview.set_name("overview");
+      overview.m_columns_count = 2;
+      pOverview = dynamic_cast<LayoutGroup*>(pTopLevel->add_item(overview));
+      
+      LayoutGroup details;
+      details.set_name("details");
+      details.m_columns_count = 2;
+      pDetails = dynamic_cast<LayoutGroup*>(pTopLevel->add_item(details));
+      */
     }
 
+    //If, for some reason, we didn't create the-subgroups, add everything to the top level group:
+    if(!pOverview)
+      pOverview = pTopLevel;
+      
+    if(!pDetails)
+      pDetails = pTopLevel;
+      
+    
     //Discover new fields, and add them:
     type_vecFields all_fields = get_table_fields(child_table_name);
     for(type_vecFields::const_iterator iter = all_fields.begin(); iter != all_fields.end(); ++iter)
@@ -695,8 +717,10 @@ Document_Glom::type_mapLayoutGroupSequence Document_Glom::get_data_layout_groups
           //layout_item.set_table_name(child_table_name); //TODO: Allow viewing of fields through relationships.
           //layout_item.m_sequence = sequence;  add_item() will fill this.
 
-
-          pTopLevel->add_item(layout_item);
+          if(layout_item.m_field.get_primary_key())
+            pOverview->add_item(layout_item);
+          else
+            pDetails->add_item(layout_item);
         }
       }
     }

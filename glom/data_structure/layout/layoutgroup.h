@@ -39,8 +39,8 @@ public:
 
   bool has_field(const Glib::ustring& field_name) const;
 
-  void add_item(const LayoutItem& item);
-  void add_item(const LayoutItem& item, guint sequence);
+  LayoutItem* add_item(const LayoutItem& item);
+  LayoutItem* add_item(const LayoutItem& item, guint sequence);
 //  void add_item(const LayoutGroup& item);
 //  void add_item(const LayoutGroup& item, guint sequence);
 

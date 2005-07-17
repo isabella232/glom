@@ -1,5 +1,14 @@
 2005-07-17  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/data_structure/layout/layoutgroup.cc:
+	* glom/data_structure/layout/layoutgroup.h: add_item(): 
+	Return a pointer to the added item.
+	* glom/navigation/box_tables.cc: on_adddel_Add(): Add 
+	a description and comments field as well as an ID field 
+	when creating new tables.
+
+2005-07-17  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/mode_data/treestore_layout.cc: Prevent items from being 
 	dragged directly under themselves, preventing a crash.
 

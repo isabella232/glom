@@ -108,18 +108,19 @@ bool LayoutGroup::has_field(const Glib::ustring& field_name) const
   return false;
 }
 
-void LayoutGroup::add_item(const LayoutItem& item)
+LayoutItem* LayoutGroup::add_item(const LayoutItem& item)
 {
   //Get next available sequence:
   guint sequence = 0;
    if(!m_map_items.empty())
      sequence = m_map_items.rbegin()->first;
+     
   ++sequence;
 
-  add_item(item, sequence);
+  return add_item(item, sequence);
 }
 
-void LayoutGroup::add_item(const LayoutItem& item, guint sequence)
+LayoutItem* LayoutGroup::add_item(const LayoutItem& item, guint sequence)
 {
 /*
   if(m_map_items.find(sequence) != m_map_items.end())
@@ -132,8 +133,11 @@ void LayoutGroup::add_item(const LayoutItem& item, guint sequence)
   remove_item(sequence);
 
   //Add the new item:
-  m_map_items[sequence] = item.clone();
+  LayoutItem* pStoredItem = item.clone(); //Deleted in LayoutGroup destructor.
+  m_map_items[sequence] = pStoredItem;
   m_map_items[sequence]->m_sequence = sequence;
+  
+  return pStoredItem;
 }
 
 void LayoutGroup::remove_item(guint sequence)
