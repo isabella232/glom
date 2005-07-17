@@ -225,7 +225,7 @@ int FlowTable::get_minimum_column_height(guint start_widget, guint columns_count
 
     const guint count_items_remaining = m_children.size() - start_widget;
 
-    for(guint first_column_widgets_count = 1;  first_column_widgets_count < count_items_remaining; ++first_column_widgets_count)
+    for(guint first_column_widgets_count = 1;  first_column_widgets_count <= count_items_remaining; ++first_column_widgets_count)
     {
       int first_column_width = 0;
       int first_column_height = get_column_height(start_widget, first_column_widgets_count, first_column_width);

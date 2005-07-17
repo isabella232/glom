@@ -670,17 +670,20 @@ Document_Glom::type_mapLayoutGroupSequence Document_Glom::get_data_layout_groups
       result[1] = group;
       pTopLevel = &(result[1]);
       
-      /*
-      LayoutGroup overview;
-      overview.set_name("overview");
-      overview.m_columns_count = 2;
-      pOverview = dynamic_cast<LayoutGroup*>(pTopLevel->add_item(overview));
-      
-      LayoutGroup details;
-      details.set_name("details");
-      details.m_columns_count = 2;
-      pDetails = dynamic_cast<LayoutGroup*>(pTopLevel->add_item(details));
-      */
+      if(layout_name == "details") //The Details default layut is a bit more complicated.
+      {
+        LayoutGroup overview;
+        overview.set_name("overview");
+        overview.m_title = "Overview"; //Don't translate this, but TODO: add standard translations.
+        overview.m_columns_count = 2;
+        pOverview = dynamic_cast<LayoutGroup*>(pTopLevel->add_item(overview));
+        
+        LayoutGroup details;
+        details.set_name("details");
+        details.m_title = "Details"; //Don't translate this, but TODO: add standard translations.
+        details.m_columns_count = 2;
+        pDetails = dynamic_cast<LayoutGroup*>(pTopLevel->add_item(details));
+      }
     }
 
     //If, for some reason, we didn't create the-subgroups, add everything to the top level group:

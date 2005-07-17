@@ -1,5 +1,15 @@
 2005-07-17  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/document/document_glom.cc: 
+	get_data_layout_groups_plus_new_fields(): Create a more useful 
+	default details layout, with overview and details sections.
+	* glom/utility_widgets/flowtable.cc: 
+	get_minimum_column_height(): Change a < to <= so we check 
+	all widgets, so that multi-column FlowTables work when they 
+	have only one item.
+
+2005-07-17  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/data_structure/layout/layoutgroup.cc:
 	* glom/data_structure/layout/layoutgroup.h: add_item(): 
 	Return a pointer to the added item.
