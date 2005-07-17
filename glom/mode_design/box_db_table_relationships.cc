@@ -47,6 +47,7 @@ void Box_DB_Table_Relationships::init()
   //Connect signals:
   m_AddDel.signal_user_activated().connect(sigc::mem_fun(*this, &Box_DB_Table_Relationships::on_adddel_user_activated));
   m_AddDel.signal_user_changed().connect(sigc::mem_fun(*this, &Box_DB_Table_Relationships::on_adddel_user_changed));
+  m_AddDel.signal_user_added().connect(sigc::mem_fun(*this, &Box_DB_Table_Relationships::on_adddel_user_added));
   m_AddDel.signal_user_requested_delete().connect(sigc::mem_fun(*this, &Box_DB_Table_Relationships::on_adddel_user_requested_delete));
 
   show_all_children();
@@ -142,6 +143,27 @@ void Box_DB_Table_Relationships::save_to_document()
   Box_DB_Table::save_to_document();
 }
 
+void Box_DB_Table_Relationships::on_adddel_user_added(const Gtk::TreeModel::iterator& row)
+{
+  const guint col_with_first_value = m_colName;
+  
+  if(col_with_first_value == m_colName)
+  {
+    //The name is the key:
+    Glib::ustring new_name = m_AddDel.get_value(row, m_colName);
+    if(!new_name.empty())
+      m_AddDel.set_value_key(row, new_name);
+      
+    //Set a suitable starting title, if there is none already:
+    Glib::ustring title = m_AddDel.get_value(row, m_colTitle);
+    if(title.empty())
+    {
+      title = Base_DB::util_title_from_string(new_name);
+      m_AddDel.set_value(row, m_colTitle, title);
+    }
+  }
+}
+  
 void Box_DB_Table_Relationships::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, guint col)
 {
   if(col == m_colName)

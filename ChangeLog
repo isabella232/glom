@@ -1,5 +1,11 @@
 2005-07-17  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/mode_design/box_db_table_relationships.cc:
+	* glom/mode_design/box_db_table_relationships.h: Add a suitable 
+	capitalized title when adding a relationship name.
+
+2005-07-17  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/document/document_glom.cc: 
 	get_data_layout_groups_plus_new_fields(): Create a more useful 
 	default details layout, with overview and details sections.
