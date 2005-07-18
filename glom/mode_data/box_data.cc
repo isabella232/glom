@@ -816,7 +816,22 @@ bool Box_Data::set_field_value_in_database(const Gtk::TreeModel::iterator& row, 
   const Glib::ustring field_name = field_layout.get_name();
   if(!field_name.empty()) //This should not happen.
   {
-    Glib::ustring strQuery = "UPDATE " + m_strTableName;
+    Glib::ustring table_name;
+    if(field_layout.get_has_relationship_name())
+    {
+      //The field is in a related table.
+      table_name = field_layout.m_relationship.get_to_table();
+    }
+    else
+      table_name = m_strTableName;
+      
+    if(table_name.empty())
+    {
+      g_warning("Box_Data::set_field_value_in_database(): table_name is empty.");
+      return false;
+    }
+    
+    Glib::ustring strQuery = "UPDATE " + table_name;
     strQuery += " SET " + field_name + " = " + field.sql(field_value);
     strQuery += " WHERE " + primary_key_field.get_name() + " = " + primary_key_field.sql(primary_key_value);
     Glib::RefPtr<Gnome::Gda::DataModel> datamodel = Query_execute(strQuery);  //TODO: Handle errors
@@ -1189,15 +1204,25 @@ bool Box_Data::add_related_record_for_field(const LayoutItem_Field& layout_item_
               Field parent_primary_key_field;
               bool test = get_field_primary_key(parent_primary_key_field);
               if(!test)
+              {
+                g_warning("Box_Data::add_related_record_for_field(): get_field_primary_key() failed. table = %s", get_table_name().c_str());
                 return false;
+              }
               else
               {
                 const Gnome::Gda::Value parent_primary_key_value = get_primary_key_value_selected();
-
-                const Glib::ustring strQuery = "UPDATE  " + relationship.get_from_table() + " SET " + relationship.get_from_field() + " = " + primary_key_field.sql(primary_key_value) +
-                  " WHERE " + relationship.get_from_table() + "." + parent_primary_key_field.get_name() + " = " + parent_primary_key_field.sql(parent_primary_key_value);
-                bool test = Query_execute(strQuery);
-                return test;
+                if(parent_primary_key_value.is_null())
+                {
+                  g_warning("Box_Data::add_related_record_for_field(): get_primary_key_value_selected() failed. table = %s", get_table_name().c_str());
+                  return false;
+                }
+                else
+                {
+                  const Glib::ustring strQuery = "UPDATE  " + relationship.get_from_table() + " SET " + relationship.get_from_field() + " = " + primary_key_field.sql(primary_key_value) +
+                    " WHERE " + relationship.get_from_table() + "." + parent_primary_key_field.get_name() + " = " + parent_primary_key_field.sql(parent_primary_key_value);
+                  bool test = Query_execute(strQuery);
+                  return test;
+                }
               }
             }
           }

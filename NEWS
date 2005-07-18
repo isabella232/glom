@@ -1,3 +1,17 @@
+0.8.35:
+
+* Tables: New tables have a description and a comments field as 
+  well as the primary key.
+* Details:
+  - Related fields, with automatic related-record creation:
+  Really write the new value into the related record, instead of 
+  just creating the related record.
+  - The default layout is now more useful.
+  - Field titles are now visible again when there is only one 
+  item in a multi-column group.
+* Relationships: Create a suitable title when adding a 
+  relationship name.
+
 0.8.34:
 
 * Prevented crash at startup. (Daniel Holbach)

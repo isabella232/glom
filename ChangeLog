@@ -1,3 +1,17 @@
+0.8.35:
+
+2005-07-18  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/mode_data/box_data.cc: set_field_value_in_database(): 
+	Use the related table name if it is a related table.
+	add_related_record_for_field(): Added some warnings.
+	* glom/mode_data/box_data_details.cc: 
+	get_primary_key_value_selected(): Actually return the field, 
+	instead of a null field.
+	get_field_primary_key(): Return true instead of false, to 
+	indicate success. This fixes automatic related-field setting. 
+	* glom/utility_widgets/imageglom.cc:
+
 2005-07-17  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/mode_design/box_db_table_relationships.cc:

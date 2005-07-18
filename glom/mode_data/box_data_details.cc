@@ -344,16 +344,7 @@ void Box_Data_Details::set_entered_field_data(const LayoutItem_Field& field, con
 
 Gnome::Gda::Value Box_Data_Details::get_primary_key_value_selected()
 {
-
-  Glib::ustring strResult;
-/* TODO_port.
-  guint uiRow = 0;
-  bool bPresent = get_field_primary_key(uiRow);
-  if(bPresent)
-    strResult = m_AddDel.get_value(uiRow);
-
-*/
-  return Gnome::Gda::Value(strResult);
+  return m_primary_key_value;
 }
 
 /*
@@ -547,6 +538,7 @@ void Box_Data_Details::on_flowtable_field_edited(const LayoutItem_Field& layout_
     try
     {
       bool bTest = set_field_value_in_database(layout_field, field_value, primary_key_field, primary_key_value);
+
       //Glib::ustring strQuery = "UPDATE " + table_name;
       //strQuery += " SET " +  /* table_name + "." + postgres does not seem to like the table name here */ strFieldName + " = " + field.sql(field_value);
       //strQuery += " WHERE " + table_name + "." + primary_key_field.get_name() + " = " + primary_key_field.sql(primary_key_value);
@@ -708,7 +700,7 @@ void Box_Data_Details::on_userlevel_changed(AppState::userlevels user_level)
 bool Box_Data_Details::get_field_primary_key(Field& field) const
 {
   field = m_field_primary_key;
-  return false;
+  return true;
 }
 
 void Box_Data_Details::print_layout_group(xmlpp::Element* node_parent, const LayoutGroup& group)

@@ -315,6 +315,12 @@ Glib::RefPtr<Gdk::Pixbuf> ImageGlom::scale_keeping_ratio(const Glib::RefPtr<Gdk:
     target_height = (int)((float)pixbuf_height * ratio);
   }
   
+ if( (target_height == 0) || (target_width == 0) )
+ {
+   g_warning("ImageGlom::scale_keeping_ratio(): calculated dimension is zero: target_width=%d, target_height=%d", target_width, target_height); 
+   return Glib::RefPtr<Gdk::Pixbuf>(); //This shouldn't happen anyway.
+ }
+    
   return pixbuf->scale_simple(target_width, target_height, Gdk::INTERP_NEAREST);
 }
 

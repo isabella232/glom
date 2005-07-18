@@ -194,7 +194,7 @@ GlomUtils::type_list_values_with_second GlomUtils::get_choice_values(const Layou
   sharedptr<SharedConnection> connection = ConnectionPool::get_instance()->connect();
 
 
-  std::cout << "get_choice_values: Executing SQL: " << sql_query << std::endl;
+  //std::cout << "get_choice_values: Executing SQL: " << sql_query << std::endl;
   Glib::RefPtr<Gnome::Gda::DataModel> datamodel = connection->get_gda_connection()->execute_single_command(sql_query);
 
   if(datamodel)
