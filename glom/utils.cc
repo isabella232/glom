@@ -111,18 +111,22 @@ Glib::ustring GlomUtils::build_sql_select_with_where_clause(const Glib::ustring&
     }
     else
     {
-      Glib::ustring relationship_name = layout_item->get_relationship_name();
+      const Glib::ustring relationship_name = layout_item->get_relationship_name();
       if(!relationship_name.empty())
       {
         const Relationship relationship = layout_item->m_relationship;
 
+        /*
         const Glib::ustring field_table_name = relationship.get_to_table();
         if(field_table_name.empty())
         {
           g_warning("build_sql_select_with_where_clause(): field_table_name is null. relationship name = %s", relationship.get_name().c_str());
         }
+        */
 
-        sql_part_fields += ( field_table_name + "." );
+        //We use relationship_name.field_name instead of related_table_name.field_name,
+        //because, in the JOIN below, will specify the relationship_name as an alias for the related table name
+        sql_part_fields += ( relationship_name + "." );
 
         //Add the relationship to the list:
         type_list_relationships::const_iterator iterFind = std::find_if(list_relationships.begin(), list_relationships.end(), predicate_FieldHasName<Relationship>( relationship_name ) );
@@ -147,9 +151,10 @@ Glib::ustring GlomUtils::build_sql_select_with_where_clause(const Glib::ustring&
   for(type_list_relationships::const_iterator iter = list_relationships.begin(); iter != list_relationships.end(); ++iter)
   {
     const Relationship& relationship = *iter;
-    sql_part_leftouterjoin += " LEFT OUTER JOIN " + relationship.get_to_table() +
+    sql_part_leftouterjoin += " LEFT OUTER JOIN " + relationship.get_to_table() + 
+      " AS " + relationship.get_name() + //Specify an alias, to avoid ambiguity when using 2 relationships to the same table.
       " ON (" + relationship.get_from_table() + "." + relationship.get_from_field() + " = " +
-      relationship.get_to_table() + "." + relationship.get_to_field() +
+      relationship.get_name() + "." + relationship.get_to_field() +
       ")";
   }
 
@@ -158,7 +163,7 @@ Glib::ustring GlomUtils::build_sql_select_with_where_clause(const Glib::ustring&
   if(!where_clause.empty())
     result += " WHERE " + where_clause;
 
- if(!sort_clause.empty())
+  if(!sort_clause.empty())
     result += " ORDER BY " + sort_clause;
 
   return result;

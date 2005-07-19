@@ -1,3 +1,9 @@
+2005-07-19  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/utils.cc: build_sql_select(): Use AS to create an 
+	alias name for the related table, so we can use two 
+	relationships to the same table.
+
 0.8.35:
 
 2005-07-18  Murray Cumming  <murrayc@murrayc.com>
