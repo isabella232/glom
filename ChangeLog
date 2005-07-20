@@ -1,5 +1,18 @@
 2005-07-20  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/data_structure/relationship.cc:
+	* glom/data_structure/relationship.h: Added get/set_allow_edit() 
+	* glom/data_structure/layout/layoutitem_field.cc: 
+	get_editable_and_allowed(): Also check the relationship, if any.
+	* glom/document/document_glom.cc: Load/Save the allow_edit of 
+	the relationship.
+	* glom/mode_design/box_db_table_relationships.cc:
+	* glom/mode_design/box_db_table_relationships.h: Add a column 
+	for allow_edit, so relationships can prevent editing of 
+	related fields.
+
+2005-07-20  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/document/document_glom.cc: fill_layout_field_details():
 	Get field details from the appropriate table, even if it is a 
 	related field. This stops us losing related fields on layouts.

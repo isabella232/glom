@@ -21,7 +21,7 @@
 #include "relationship.h"
 
 Relationship::Relationship()
-: m_auto_create(false)
+: m_allow_edit(true), m_auto_create(false)
 {
 }
 
@@ -42,6 +42,7 @@ Relationship& Relationship::operator=(const Relationship& src)
   m_strFrom_Field = src.m_strFrom_Field;
   m_strTo_Table = src.m_strTo_Table;
   m_strTo_Field = src.m_strTo_Field;
+  m_allow_edit = src.m_allow_edit;
   m_auto_create = src.m_auto_create;
 
   return *this;
@@ -55,6 +56,7 @@ bool Relationship::operator==(const Relationship& src) const
   bEqual = bEqual && (m_strTo_Table == src.m_strTo_Table);
   bEqual = bEqual && (m_strTo_Field == src.m_strTo_Field);
   bEqual = bEqual && (m_strName == src.m_strName);
+  bEqual = bEqual && (m_allow_edit == src.m_allow_edit);
   bEqual = bEqual && (m_auto_create == src.m_auto_create);
 
   return bEqual;
@@ -141,4 +143,14 @@ bool Relationship::get_auto_create() const
 void Relationship::set_auto_create(bool val)
 {
   m_auto_create = val;
+}
+
+bool Relationship::get_allow_edit() const
+{
+  return m_allow_edit;
+}
+
+void Relationship::set_allow_edit(bool val)
+{
+  m_allow_edit = val;
 }

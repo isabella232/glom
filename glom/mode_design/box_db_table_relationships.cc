@@ -42,6 +42,7 @@ void Box_DB_Table_Relationships::init()
   m_colFromField = m_AddDel.add_column(_("From Field"), AddDelColumnInfo::STYLE_Choices);
   m_colToTable = m_AddDel.add_column(_("Table"), AddDelColumnInfo::STYLE_Choices);
   m_colToField = m_AddDel.add_column(_("To Field"), AddDelColumnInfo::STYLE_Choices);
+  m_colAllowEdit = m_AddDel.add_column(_("Allow Editing"),  AddDelColumnInfo::STYLE_Boolean);
   m_colAutoCreate = m_AddDel.add_column(_("Automatic Creation"),  AddDelColumnInfo::STYLE_Boolean);
 
   //Connect signals:
@@ -104,6 +105,7 @@ bool Box_DB_Table_Relationships::fill_from_database()
        //To Field:
        m_AddDel.set_value(iterTree, m_colToField, relationship.get_to_field());
 
+       m_AddDel.set_value(iterTree, m_colAllowEdit, relationship.get_allow_edit());
        m_AddDel.set_value(iterTree, m_colAutoCreate, relationship.get_auto_create());
     }
   }
@@ -130,6 +132,7 @@ void Box_DB_Table_Relationships::save_to_document()
       relationship.set_from_field(m_AddDel.get_value(iter, m_colFromField));
       relationship.set_to_table(m_AddDel.get_value(iter, m_colToTable));
       relationship.set_to_field(m_AddDel.get_value(iter, m_colToField));
+      relationship.set_allow_edit(m_AddDel.get_value_as_bool(iter, m_colAllowEdit));
       relationship.set_auto_create(m_AddDel.get_value_as_bool(iter, m_colAutoCreate));
 
       vecRelationships.push_back(relationship);

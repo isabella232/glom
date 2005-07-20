@@ -232,8 +232,6 @@ void Dialog_Layout_Details::add_group(const Gtk::TreeModel::iterator& parent, co
           const LayoutItem_Field* field = dynamic_cast<const LayoutItem_Field*>(item);
           if(field) //If it is a field
           {
-             g_warning("Adding field: name=%s, relationship_name=%s", field->get_name().c_str(), field->m_relationship.get_name().c_str());
-             
             //Add the field to the treeview:
             Gtk::TreeModel::iterator iterField = m_model_items->append(iterNewGroup->children());
             Gtk::TreeModel::Row row = *iterField;
@@ -241,8 +239,6 @@ void Dialog_Layout_Details::add_group(const Gtk::TreeModel::iterator& parent, co
             row[m_model_items->m_columns.m_col_field_formatting] = *field;
             row[m_model_items->m_columns.m_col_name] = field->get_name();
             row[m_model_items->m_columns.m_col_relationship] = field->m_relationship;
-            
-            g_warning("  Adding field : name=%s, relationship_name=%s", field->get_name().c_str(), field->m_relationship.get_name().c_str());
 
             row[m_model_items->m_columns.m_col_editable] = field->get_editable();
           }

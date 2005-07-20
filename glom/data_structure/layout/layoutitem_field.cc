@@ -111,6 +111,11 @@ Glib::ustring LayoutItem_Field::get_relationship_name() const
 
 bool LayoutItem_Field::get_editable_and_allowed() const
 {
+  //Thre relationship might forbid editing of any fields through itself:
+  if(get_has_relationship_name())
+    if(!(m_relationship.get_allow_edit()))
+      return false; 
+    
   return m_editable && m_priv_edit;
 }
 

@@ -56,7 +56,11 @@ public:
 
   ///Whether related records will be created automatically.
   virtual bool get_auto_create() const;
-  virtual void set_auto_create(bool val);
+  virtual void set_auto_create(bool val = true);
+  
+  ///Whether related records may be edited through this relationship.
+  virtual bool get_allow_edit() const;
+  virtual void set_allow_edit(bool val = true);
 
 protected:
   Glib::ustring m_strName, m_strTitle;
@@ -65,7 +69,7 @@ protected:
   Glib::ustring m_strFrom_Field;
   Glib::ustring m_strTo_Table;
   Glib::ustring m_strTo_Field;
-  bool m_auto_create;
+  bool m_allow_edit, m_auto_create;
 };
 
 #endif

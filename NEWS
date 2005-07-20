@@ -1,7 +1,10 @@
 0.8.36:
 
 * Layout design: Don't forget related fields.
-* Allow more than one relationship to the same table.
+* Relationships:
+  - Relationships may now optionally not allow editing of 
+  related fields.
+  - Allow more than one relationship to the same table.
 
 0.8.35:
 

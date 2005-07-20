@@ -63,6 +63,7 @@
 #define GLOM_ATTRIBUTE_OTHER_TABLE "other_table"
 #define GLOM_ATTRIBUTE_OTHER_KEY "other_key"
 #define GLOM_ATTRIBUTE_AUTO_CREATE "auto_create"
+#define GLOM_ATTRIBUTE_ALLOW_EDIT "allow_edit"
 
 #define GLOM_NODE_GROUPS "groups"
 #define GLOM_NODE_GROUP "group"
@@ -1238,6 +1239,7 @@ bool Document_Glom::load_after()
                 relationship.set_to_table( get_node_attribute_value(nodeChild, GLOM_ATTRIBUTE_OTHER_TABLE) );
                 relationship.set_to_field( get_node_attribute_value(nodeChild, GLOM_ATTRIBUTE_OTHER_KEY) );
                 relationship.set_auto_create( get_node_attribute_value_as_bool(nodeChild, GLOM_ATTRIBUTE_AUTO_CREATE) );
+                 relationship.set_allow_edit( get_node_attribute_value_as_bool(nodeChild, GLOM_ATTRIBUTE_ALLOW_EDIT) );
 
                 doctableinfo.m_relationships.push_back(relationship);
               }
@@ -1618,6 +1620,7 @@ bool Document_Glom::save_before()
           set_node_attribute_value(elemRelationship, GLOM_ATTRIBUTE_OTHER_TABLE, relationship.get_to_table());
           set_node_attribute_value(elemRelationship, GLOM_ATTRIBUTE_OTHER_KEY, relationship.get_to_field());
           set_node_attribute_value_as_bool(elemRelationship, GLOM_ATTRIBUTE_AUTO_CREATE, relationship.get_auto_create());
+          set_node_attribute_value_as_bool(elemRelationship, GLOM_ATTRIBUTE_ALLOW_EDIT, relationship.get_allow_edit());
         }
 
 
