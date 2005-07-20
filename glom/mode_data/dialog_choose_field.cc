@@ -42,6 +42,7 @@ Dialog_ChooseField::Dialog_ChooseField(BaseObjectType* cobject, const Glib::RefP
 
     m_treeview->append_column( _("Name"), m_ColumnsFields.m_col_name );
     m_treeview->append_column( _("Title"), m_ColumnsFields.m_col_title );
+    m_model->set_sort_column(m_ColumnsFields.m_col_name, Gtk::SORT_ASCENDING);
 
     m_treeview->signal_row_activated().connect( sigc::mem_fun(*this, &Dialog_ChooseField::on_row_activated) );
 

@@ -1,5 +1,13 @@
 2005-07-20  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/mode_data/dialog_choose_field.cc: Constructor: 
+	The list is now sorted alphabetically.
+	* glom/utils.cc: build_sql_select_with_where_clause():
+	Prefix aliases with relationship_ to avoid conflicts with table 
+	names.
+
+2005-07-20  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/base_db.cc: Base_DB::set_database_preferences(): Save 
 	the title into the document as well as the database, for the 
 	window title, and for database recreation.

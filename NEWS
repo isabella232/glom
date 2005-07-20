@@ -1,6 +1,8 @@
 0.8.36:
 
-* Layout design: Don't forget related fields.
+* Layout design:
+  - Don't forget related fields.
+  - Field selection dialog: Now sorted alphabetically.
 * Relationships:
   - Relationships may now optionally not allow editing of 
   related fields.

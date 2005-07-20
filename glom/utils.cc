@@ -126,7 +126,7 @@ Glib::ustring GlomUtils::build_sql_select_with_where_clause(const Glib::ustring&
 
         //We use relationship_name.field_name instead of related_table_name.field_name,
         //because, in the JOIN below, will specify the relationship_name as an alias for the related table name
-        sql_part_fields += ( relationship_name + "." );
+        sql_part_fields += ( "relationship_" + relationship_name + "." );
 
         //Add the relationship to the list:
         type_list_relationships::const_iterator iterFind = std::find_if(list_relationships.begin(), list_relationships.end(), predicate_FieldHasName<Relationship>( relationship_name ) );
@@ -152,8 +152,8 @@ Glib::ustring GlomUtils::build_sql_select_with_where_clause(const Glib::ustring&
   {
     const Relationship& relationship = *iter;
     sql_part_leftouterjoin += " LEFT OUTER JOIN " + relationship.get_to_table() + 
-      " AS " + relationship.get_name() + //Specify an alias, to avoid ambiguity when using 2 relationships to the same table.
-      " ON (" + relationship.get_from_table() + "." + relationship.get_from_field() + " = " +
+      " AS relationship_" + relationship.get_name() + //Specify an alias, to avoid ambiguity when using 2 relationships to the same table.
+      " ON (" + relationship.get_from_table() + "." + relationship.get_from_field() + " = relationship_" +
       relationship.get_name() + "." + relationship.get_to_field() +
       ")";
   }
