@@ -1,7 +1,8 @@
 0.8.36:
 
 * Layout design:
-  - Don't forget related fields.
+  - Don't forget related fields when reopening the layout dialog.
+  - Change related field names on layouts when renaming fields.
   - Field selection dialog: Now sorted alphabetically.
 * Relationships:
   - Relationships may now optionally not allow editing of 

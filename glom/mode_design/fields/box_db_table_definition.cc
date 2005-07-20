@@ -382,7 +382,7 @@ void Box_DB_Table_Definition::change_definition(const Field& fieldOld, Field fie
 
     pDoc->set_table_fields(m_strTableName, vecFields);
 
-    //Update field names where they are used in relationships.
+    //Update field names where they are used in relationships or on layouts:
     if(field_name_old != field.get_name())
     {
       pDoc->change_field_name(m_strTableName, field_name_old, field.get_name());

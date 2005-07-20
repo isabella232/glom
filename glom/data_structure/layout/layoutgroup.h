@@ -44,7 +44,8 @@ public:
 //  void add_item(const LayoutGroup& item);
 //  void add_item(const LayoutGroup& item, guint sequence);
 
-  void change_field_item_name(const Glib::ustring& field_name, const Glib::ustring& field_name_new);
+  void change_field_item_name(const Glib::ustring& table_name, const Glib::ustring& field_name, const Glib::ustring& field_name_new);
+  void change_related_field_item_name(const Glib::ustring& table_name, const Glib::ustring& field_name, const Glib::ustring& field_name_new);
 
   void remove_all_items();
 

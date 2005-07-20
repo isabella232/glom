@@ -423,18 +423,35 @@ void Document_Glom::change_field_name(const Glib::ustring& table_name, const Gli
           }
         }
       }
-    }
 
-    //Look at each layout:
-    //TODO: Remember to change it in other layouts when we add the ability to show fields from other tables.
-    for(DocumentTableInfo::type_layouts::iterator iterLayouts = iterFindTable->second.m_layouts.begin(); iterLayouts != iterFindTable->second.m_layouts.end(); ++iterLayouts)
-    {
-      //Look at each group:
-      for(type_mapLayoutGroupSequence::iterator iterGroup = iterLayouts->m_layout_groups.begin(); iterGroup != iterLayouts->m_layout_groups.end(); ++iterGroup)
+      const bool is_parent_table = (iter->second.m_info.get_name() == table_name);
+        
+      //Look at each layout:
+      for(DocumentTableInfo::type_layouts::iterator iterLayouts = iter->second.m_layouts.begin(); iterLayouts != iter->second.m_layouts.end(); ++iterLayouts)
+      {
+        
+        //Look at each group:
+        for(type_mapLayoutGroupSequence::iterator iterGroup = iterLayouts->m_layout_groups.begin(); iterGroup != iterLayouts->m_layout_groups.end(); ++iterGroup)
+        {
+          //Change the field if it is in this group:
+          if(is_parent_table)
+            iterGroup->second.change_field_item_name(table_name, strFieldNameOld, strFieldNameNew);
+          else
+            iterGroup->second.change_related_field_item_name(table_name, strFieldNameOld, strFieldNameNew);
+        }
+      }
+      
+      
+      //Look at each report:
+      for(DocumentTableInfo::type_reports::iterator iterReports = iter->second.m_reports.begin(); iterReports != iter->second.m_reports.end(); ++iterReports)
       {
         //Change the field if it is in this group:
-        iterGroup->second.change_field_item_name(strFieldNameOld, strFieldNameNew);
+        if(is_parent_table)
+          iterReports->second.m_layout_group.change_field_item_name(table_name, strFieldNameOld, strFieldNameNew);
+        else
+          iterReports->second.m_layout_group.change_related_field_item_name(table_name, strFieldNameOld, strFieldNameNew);
       }
+      
     }
    
     set_modified();

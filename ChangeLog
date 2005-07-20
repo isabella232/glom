@@ -1,3 +1,13 @@
+2005-07-21  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/data_structure/layout/layoutgroup.cc:
+	* glom/data_structure/layout/layoutgroup.h: Added 
+	change_related_field_item_name(). change_field_item_name():
+	Process child groups and self-related fields.
+	* glom/document/document_glom.cc: change_field_name(): 
+	Process all tables, to change related fields in layouts and 
+	reports.
+
 2005-07-20  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/mode_data/dialog_choose_field.cc: Constructor: 

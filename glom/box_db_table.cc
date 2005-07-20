@@ -71,7 +71,7 @@ void Box_DB_Table::set_entered_field_data(const LayoutItem_Field& /* field */, c
   //Override this.
 }
 
-bool Box_DB_Table::get_field_primary_key_for_table(const Glib::ustring table_name, Field& field) const
+bool Box_DB_Table::get_field_primary_key_for_table(const Glib::ustring& table_name, Field& field) const
 {
   const Document_Glom* document = get_document();
   if(document)
@@ -91,7 +91,7 @@ bool Box_DB_Table::get_field_primary_key_for_table(const Glib::ustring table_nam
   return false;
 }
 
-unsigned long Box_DB_Table::get_last_auto_increment_value(const Glib::RefPtr<Gnome::Gda::DataModel>& data_model, const Glib::ustring /* field_name */)
+unsigned long Box_DB_Table::get_last_auto_increment_value(const Glib::RefPtr<Gnome::Gda::DataModel>& data_model, const Glib::ustring& /* field_name */)
 {
   sharedptr<SharedConnection> sharedconnection = connect_to_server();
   if(sharedconnection)

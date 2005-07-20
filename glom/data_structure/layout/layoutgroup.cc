@@ -194,7 +194,7 @@ LayoutGroup::type_map_const_items LayoutGroup::get_items() const
   return result;
 }
 
-void LayoutGroup::change_field_item_name(const Glib::ustring& field_name, const Glib::ustring& field_name_new)
+void LayoutGroup::change_related_field_item_name(const Glib::ustring& table_name, const Glib::ustring& field_name, const Glib::ustring& field_name_new)
 {
   //Look at each item:
   for(LayoutGroup::type_map_items::iterator iterItem = m_map_items.begin(); iterItem != m_map_items.end(); ++iterItem)
@@ -202,8 +202,51 @@ void LayoutGroup::change_field_item_name(const Glib::ustring& field_name, const 
     LayoutItem_Field* field_item = dynamic_cast<LayoutItem_Field*>(iterItem->second);
     if(field_item)
     {
-      if(iterItem->second->get_name() == field_name)
-        iterItem->second->set_name(field_name_new); //Change it.
+      if(field_item->get_has_relationship_name()) //If it's related table.
+      {
+        if(field_item->m_relationship.get_to_table() == table_name)
+        {
+          if(field_item->get_name() == field_name)
+            field_item->set_name(field_name_new); //Change it.
+        }
+      }
+    }
+    else
+    {
+      LayoutGroup* sub_group = dynamic_cast<LayoutGroup*>(iterItem->second);
+      if(sub_group)
+        sub_group->change_field_item_name(table_name, field_name, field_name_new);
+    }
+  }
+}
+
+void LayoutGroup::change_field_item_name(const Glib::ustring& table_name, const Glib::ustring& field_name, const Glib::ustring& field_name_new)
+{
+  //Look at each item:
+  for(LayoutGroup::type_map_items::iterator iterItem = m_map_items.begin(); iterItem != m_map_items.end(); ++iterItem)
+  {
+    LayoutItem_Field* field_item = dynamic_cast<LayoutItem_Field*>(iterItem->second);
+    if(field_item)
+    {
+      if(field_item->get_has_relationship_name()) //If it's a related table (this would be a self-relationship)
+      {
+        if(field_item->m_relationship.get_to_table() == table_name)
+        {
+          if(field_item->get_name() == field_name)
+            field_item->set_name(field_name_new); //Change it.
+        }
+      }
+      else
+      {
+        if(field_item->get_name() == field_name)
+          field_item->set_name(field_name_new); //Change it.
+      }
+    }
+    else
+    {
+      LayoutGroup* sub_group = dynamic_cast<LayoutGroup*>(iterItem->second);
+      if(sub_group)
+        sub_group->change_field_item_name(table_name, field_name, field_name_new);
     }
   }
 }
