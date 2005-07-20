@@ -160,7 +160,7 @@ void Dialog_Layout_Details::fill_group(const Gtk::TreeModel::iterator& iter, Lay
       else if(rowChild[m_model_items->m_columns.m_col_type] == TreeStore_Layout::TYPE_PORTAL)
       {
         LayoutItem_Portal portal;
-        portal.set_relationship(  rowChild[m_model_items->m_columns.m_col_relationship] );
+        portal.set_relationship(  rowChild[m_model_items->m_columns.m_col_portal_relationship] );
         group.add_item(portal);
       }
       else if(rowChild[m_model_items->m_columns.m_col_type] == TreeStore_Layout::TYPE_FIELD)
@@ -170,7 +170,7 @@ void Dialog_Layout_Details::fill_group(const Gtk::TreeModel::iterator& iter, Lay
 
         field.set_name( rowChild[m_model_items->m_columns.m_col_name] );
 
-        field.m_relationship = rowChild[m_model_items->m_columns.m_col_relationship_name];
+        field.m_relationship = rowChild[m_model_items->m_columns.m_col_relationship];
 
         //if(!relationship_name.empty())
         //{
@@ -225,20 +225,24 @@ void Dialog_Layout_Details::add_group(const Gtk::TreeModel::iterator& parent, co
           Gtk::TreeModel::iterator iterField = m_model_items->append(iterNewGroup->children());
           Gtk::TreeModel::Row row = *iterField;
           row[m_model_items->m_columns.m_col_type] = TreeStore_Layout::TYPE_PORTAL;
-          row[m_model_items->m_columns.m_col_relationship] = portal->get_relationship();
+          row[m_model_items->m_columns.m_col_portal_relationship] = portal->get_relationship();
         }
         else
         {
           const LayoutItem_Field* field = dynamic_cast<const LayoutItem_Field*>(item);
           if(field) //If it is a field
           {
+             g_warning("Adding field: name=%s, relationship_name=%s", field->get_name().c_str(), field->m_relationship.get_name().c_str());
+             
             //Add the field to the treeview:
             Gtk::TreeModel::iterator iterField = m_model_items->append(iterNewGroup->children());
             Gtk::TreeModel::Row row = *iterField;
             row[m_model_items->m_columns.m_col_type] = TreeStore_Layout::TYPE_FIELD;
             row[m_model_items->m_columns.m_col_field_formatting] = *field;
             row[m_model_items->m_columns.m_col_name] = field->get_name();
-            row[m_model_items->m_columns.m_col_relationship_name] = field->m_relationship;
+            row[m_model_items->m_columns.m_col_relationship] = field->m_relationship;
+            
+            g_warning("  Adding field : name=%s, relationship_name=%s", field->get_name().c_str(), field->m_relationship.get_name().c_str());
 
             row[m_model_items->m_columns.m_col_editable] = field->get_editable();
           }
@@ -464,7 +468,7 @@ void Dialog_Layout_Details::on_button_field_add()
       Gtk::TreeModel::Row row = *iter;
       row[m_model_items->m_columns.m_col_type] = TreeStore_Layout::TYPE_FIELD;
       row[m_model_items->m_columns.m_col_name] = layout_item.get_name();
-      row[m_model_items->m_columns.m_col_relationship_name] = layout_item.m_relationship;
+      row[m_model_items->m_columns.m_col_relationship] = layout_item.m_relationship;
       row[m_model_items->m_columns.m_col_editable] = true; //A sane default.
       //row[m_model_items->m_columns.m_col_title] = field.get_title();
 
@@ -611,7 +615,7 @@ void Dialog_Layout_Details::on_button_add_related()
     {
       Gtk::TreeModel::Row row = *iter;
       row[m_model_items->m_columns.m_col_type] = TreeStore_Layout::TYPE_PORTAL;
-      row[m_model_items->m_columns.m_col_relationship] = relationship.get_name();
+      row[m_model_items->m_columns.m_col_portal_relationship] = relationship.get_name();
       row[m_model_items->m_columns.m_col_editable] = true; //A sane default.
       //row[m_model_items->m_columns.m_col_title] = field.get_title();
 
@@ -766,7 +770,7 @@ void Dialog_Layout_Details::on_button_field_edit()
         {
           LayoutItem_Field field;
           field.set_name( row[m_model_items->m_columns.m_col_name] ); //Start with this one selected.
-          field.m_relationship = row[m_model_items->m_columns.m_col_relationship_name];
+          field.m_relationship = row[m_model_items->m_columns.m_col_relationship];
 
           //if(!relationship_name.empty())
           //{
@@ -778,7 +782,7 @@ void Dialog_Layout_Details::on_button_field_edit()
           if(test)
           {
             row[m_model_items->m_columns.m_col_name] = field.get_name();
-            row[m_model_items->m_columns.m_col_relationship_name] = field.m_relationship;
+            row[m_model_items->m_columns.m_col_relationship] = field.m_relationship;
 
             row[m_model_items->m_columns.m_col_editable] = field.get_editable();
           }
@@ -788,11 +792,11 @@ void Dialog_Layout_Details::on_button_field_edit()
         case TreeStore_Layout::TYPE_PORTAL:
         {
           Relationship relationship;
-          relationship.set_name( row[m_model_items->m_columns.m_col_relationship] ); //Start with this one selected.
+          relationship.set_name( row[m_model_items->m_columns.m_col_portal_relationship] ); //Start with this one selected.
           bool test = offer_relationship_list(relationship);
           if(test)
           {
-            row[m_model_items->m_columns.m_col_relationship] = relationship.get_name();
+            row[m_model_items->m_columns.m_col_portal_relationship] = relationship.get_name();
           }
 
           break;
@@ -876,14 +880,14 @@ void Dialog_Layout_Details::on_cell_data_name(Gtk::CellRenderer* renderer, const
       }
       else if(is_relationship)
       {
-        markup = _("Related: ") + row[m_model_items->m_columns.m_col_relationship];
+        markup = _("Related: ") + row[m_model_items->m_columns.m_col_portal_relationship];
       }
       else
       {
         //It's a field:
 
         //Indicate that it's a field in another table.
-        const Relationship& rel = row[m_model_items->m_columns.m_col_relationship_name];
+        const Relationship& rel = row[m_model_items->m_columns.m_col_relationship];
         const Glib::ustring relationship = rel.get_name();
         if(!relationship.empty())
           markup = relationship + "::";

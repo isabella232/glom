@@ -1,3 +1,9 @@
+2005-07-20  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/document/document_glom.cc: fill_layout_field_details():
+	Get field details from the appropriate table, even if it is a 
+	related field. This stops us losing related fields on layouts.
+
 2005-07-19  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/utils.cc: build_sql_select(): Use AS to create an 

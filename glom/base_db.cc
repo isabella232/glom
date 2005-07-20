@@ -136,6 +136,7 @@ Glib::RefPtr<Gnome::Gda::DataModel> Base_DB::Query_execute(const Glib::ustring& 
   {
     Glib::RefPtr<Gnome::Gda::Connection> gda_connection = sharedconnection->get_gda_connection();
 
+    /*
     try
     {
       std::cout << "Debug: Query_execute():  " << strQuery << std::endl;
@@ -144,6 +145,7 @@ Glib::RefPtr<Gnome::Gda::DataModel> Base_DB::Query_execute(const Glib::ustring& 
     {
       std::cout << "Debug: query string could not be converted to std::cout: " << ex.what() << std::endl;
     }
+    */
     
     result = gda_connection->execute_single_command(strQuery);
     if(!result)
@@ -376,8 +378,13 @@ Base_DB::type_vecFields Base_DB::get_fields_for_table_from_database(const Glib::
         //Get the field name:
         Gnome::Gda::Value value_name = data_model_fields->get_value_at(DATAMODEL_FIELDS_COL_NAME, row);
         if(value_name.get_value_type() ==  Gnome::Gda::VALUE_TYPE_STRING)
+        {
+          if(value_name.get_string().empty())
+            g_warning("Base_DB::get_fields_for_table_from_database(): value_name is empty.");
+            
           field_info.set_name( value_name.get_string() );
-
+        }
+        
         //Get the field type:
         //This is a string representation of the type, so we need to discover the Gnome::Gda::ValueType for it:
         Gnome::Gda::Value value_fieldtype = data_model_fields->get_value_at(DATAMODEL_FIELDS_COL_TYPE, row);
@@ -460,7 +467,7 @@ Base_DB::type_vecFields Base_DB::get_fields_for_table(const Glib::ustring& table
     //Look at each field in the database:
     for(type_vecFields::iterator iter = fieldsDocument.begin(); iter != fieldsDocument.end(); ++iter)
     {
-      Glib::ustring field_name = iter->get_name();
+      const Glib::ustring field_name = iter->get_name();
 
       //Get the field info from the database:
       //This is in the document as well, but it _might_ have changed.

@@ -612,7 +612,10 @@ void Document_Glom::fill_layout_field_details(const Glib::ustring& parent_table_
     LayoutItem_Field* layout_field = dynamic_cast<LayoutItem_Field*>(layout_item);
     if(layout_field)
     {
-      get_field(parent_table_name, layout_field->get_name(), layout_field->m_field);
+      if(layout_field->get_has_relationship_name()) //If it is a related field, instead of a field in parent_table_name
+        get_field(layout_field->m_relationship.get_to_table(), layout_field->get_name(), layout_field->m_field);
+      else  
+        get_field(parent_table_name, layout_field->get_name(), layout_field->m_field);
     }
     else
     {
