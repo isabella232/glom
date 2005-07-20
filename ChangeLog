@@ -1,5 +1,11 @@
 2005-07-20  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/base_db.cc: Base_DB::set_database_preferences(): Save 
+	the title into the document as well as the database, for the 
+	window title, and for database recreation.
+
+2005-07-20  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/data_structure/relationship.cc:
 	* glom/data_structure/relationship.h: Added get/set_allow_edit() 
 	* glom/data_structure/layout/layoutitem_field.cc: 

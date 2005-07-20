@@ -1173,6 +1173,9 @@ void Base_DB::set_database_preferences(const SystemPrefs& prefs)
     {
       std::cerr << "Base_DB::set_database_preferences(): exception: " << ex.what() << std::endl;
     }
+    
+    //Set some information in the document too, so we can use it to recreate the database:
+    get_document()->set_database_title(prefs.m_name);
 }
 
 bool Base_DB::create_table(const TableInfo& table_info, const Document_Glom::type_vecFields& fields) const
