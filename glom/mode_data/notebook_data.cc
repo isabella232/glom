@@ -35,10 +35,6 @@ Notebook_Data::Notebook_Data()
 
   //Allow List to ask Details to show a record.
   m_Box_List.signal_user_requested_details().connect(sigc::mem_fun(*this, &Notebook_Data::on_list_user_requested_details));
-
-  //Allow Details's Related Records to ask Details to show a record.
-  //m_Box_Details.signal_user_requested_related_details().connect(sigc::mem_fun(*this, &Notebook_Data::on_Details_user_requested_related_details));
-
     
   //Allow Details to ask List to ask Details to show a different record:
   m_Box_Details.signal_nav_first().connect(sigc::mem_fun(m_Box_List, &Box_Data_List::on_details_nav_first));
@@ -48,6 +44,9 @@ Notebook_Data::Notebook_Data()
 
   //Allow Details to tell List about record deletion:
   m_Box_Details.signal_record_deleted().connect(sigc::mem_fun(m_Box_List, &Box_Data_List::on_Details_record_deleted));
+
+  //Allow Details to ask to show a different record in a different table:
+  m_Box_Details.signal_requested_related_details().connect(sigc::mem_fun(*this, &Notebook_Data::on_Details_user_requested_related_details));
 
   //Fill composite view:
   add_view(&m_Box_List);
@@ -88,13 +87,17 @@ void Notebook_Data::on_list_user_requested_details(Gnome::Gda::Value primary_key
   set_current_page(m_iPage_Details);
 }
 
-void Notebook_Data::on_Details_user_requested_related_details(Glib::ustring strTableName, Gnome::Gda::Value primary_key_value)
+void Notebook_Data::on_Details_user_requested_related_details(const Glib::ustring& strTableName, Gnome::Gda::Value primary_key_value)
 {
+  signal_record_details_requested().emit(strTableName, primary_key_value);
+  
+  /*
   //Show a different table:
   init_db_details(strTableName);
 
   //Show the specific record:
   on_list_user_requested_details(primary_key_value);
+  */
 }
 
 void Notebook_Data::select_page_for_find_results()
@@ -152,3 +155,13 @@ Notebook_Data::dataview Notebook_Data::get_current_view() const
   return result;
 }
 
+Notebook_Data::type_signal_record_details_requested Notebook_Data::signal_record_details_requested()
+{
+  return m_signal_record_details_requested;
+}
+
+void Notebook_Data::show_details(const Gnome::Gda::Value& primary_key_value)
+{
+  //Reuse this implementation:
+  on_list_user_requested_details(primary_key_value);
+}

@@ -53,9 +53,12 @@ public:
 
   typedef sigc::signal<void, Gnome::Gda::Value> type_signal_record_deleted; //arg is PrimaryKey.   //TODO: pass by const ref?
   type_signal_record_deleted signal_record_deleted();
-
-  //typedef sigc::signal<void, Glib::ustring, Gnome::Gda::Value> type_signal_user_requested_related_details; //args are TableName, PrimaryKey.
-  //type_signal_user_requested_related_details signal_user_requested_related_details();
+  
+   /** For instance,
+    * void on_requested_related_details(const Glib::ustring& table_name, Gnome::Gda::Value primary_key_value);
+    */
+  typedef sigc::signal<void, const Glib::ustring&, Gnome::Gda::Value> type_signal_requested_related_details;
+  type_signal_requested_related_details signal_requested_related_details();
 
 protected:
   virtual bool fill_from_database(); //override.
@@ -89,6 +92,7 @@ protected:
 
   virtual void on_flowtable_field_edited(const LayoutItem_Field& id, const Gnome::Gda::Value& value);
   virtual void on_flowtable_related_record_changed(const Glib::ustring& relationship_name);
+  virtual void on_flowtable_requested_related_details(const Glib::ustring& table_name, Gnome::Gda::Value primary_key_value);
 
   virtual void recalculate_fields_for_related_records(const Glib::ustring& relationship_name);
 
@@ -118,14 +122,13 @@ protected:
   bool m_bDoNotRefreshRelated; //Stops us from refreshing related records in response to an addition of a related record.
   bool m_ignore_signals;
 
-  //type_signal_user_requested_related_details m_signal_user_requested_related_details;
-
   type_signal_void m_signal_nav_first;
   type_signal_void m_signal_nav_prev;
   type_signal_void m_signal_nav_next;
   type_signal_void m_signal_nav_last;
 
   type_signal_record_deleted m_signal_record_deleted;
+  type_signal_requested_related_details m_signal_requested_related_details;
 };
 
 #endif //BOX_DATA_DETAILS_H

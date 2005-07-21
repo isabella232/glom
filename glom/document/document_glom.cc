@@ -900,6 +900,15 @@ bool Document_Glom::get_table_is_known(const Glib::ustring& table_name) const
   return (iterFind != m_tables.end());
 }
 
+bool Document_Glom::get_table_is_hidden(const Glib::ustring& table_name) const
+{
+  type_tables::const_iterator iterFind = m_tables.find(table_name);
+  if(iterFind != m_tables.end())
+    return iterFind->second.m_info.m_hidden;
+  else
+    return false; //It's not even known.
+}
+
 AppState::userlevels Document_Glom::get_userlevel() const
 {
   userLevelReason reason;

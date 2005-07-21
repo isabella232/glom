@@ -116,6 +116,8 @@ void FlowTableWithFields::add_layout_item_at_position(const LayoutItem& item, co
 
           //Connect signals:
           portal_box->signal_record_changed().connect( sigc::mem_fun(*this, &FlowTableWithFields::on_portal_record_changed) );
+          
+          portal_box->signal_user_requested_details().connect( sigc::bind( sigc::mem_fun(*this, &FlowTableWithFields::on_portal_user_requested_details), portal_box));
         }
       }
     }
@@ -187,6 +189,7 @@ void FlowTableWithFields::add_layout_group_at_position(const LayoutGroup& group,
     //Connect signal:
     flow_table->signal_field_edited().connect( sigc::mem_fun(*this, &FlowTableWithFields::on_flowtable_entry_edited) );
     flow_table->signal_related_record_changed().connect( sigc::mem_fun(*this, &FlowTableWithFields::on_flowtable_related_record_changed) );
+    flow_table->signal_requested_related_details().connect( sigc::mem_fun(*this, &FlowTableWithFields::on_flowtable_requested_related_details) );
   }
 }
 
@@ -541,6 +544,11 @@ FlowTableWithFields::type_signal_related_record_changed FlowTableWithFields::sig
   return m_signal_related_record_changed;
 }
 
+FlowTableWithFields::type_signal_requested_related_details FlowTableWithFields::signal_requested_related_details()
+{
+  return m_signal_requested_related_details;
+}
+
 
 void FlowTableWithFields::on_entry_edited(const Gnome::Gda::Value& value, LayoutItem_Field field)
 {
@@ -727,4 +735,13 @@ void FlowTableWithFields::on_flowtable_related_record_changed(const Glib::ustrin
   signal_related_record_changed().emit(relationship_name);
 }
 
+void FlowTableWithFields::on_portal_user_requested_details(Gnome::Gda::Value primary_key_value, Box_Data_List_Related* portal_box)
+{
+  signal_requested_related_details().emit(portal_box->get_relationship().get_to_table(), primary_key_value);
+}
 
+void FlowTableWithFields::on_flowtable_requested_related_details(const Glib::ustring& table_name, Gnome::Gda::Value primary_key_value)
+{
+  //Forward it to the parent:
+  signal_requested_related_details().emit(table_name, primary_key_value);
+}

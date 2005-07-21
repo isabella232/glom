@@ -176,6 +176,7 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
 
   m_Notebook_Find.signal_find_criteria.connect(sigc::mem_fun(*this, &Frame_Glom::on_notebook_find_criteria));
 
+  m_Notebook_Data.signal_record_details_requested().connect(sigc::mem_fun(*this, &Frame_Glom::on_notebook_data_record_details_requested));
   //Fill Composite View:
   //This means that set_document and load/save are delegated to these children:
   add_view(m_pBox_Tables);
@@ -1097,5 +1098,11 @@ void Frame_Glom::on_dialog_tables_hide()
       }
     }
   }
+}
+
+void Frame_Glom::on_notebook_data_record_details_requested(const Glib::ustring& table_name, Gnome::Gda::Value primary_key_value)
+{
+  show_table(table_name);
+  m_Notebook_Data.show_details(primary_key_value);
 }
 

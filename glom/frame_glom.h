@@ -126,6 +126,7 @@ protected:
 
   //Signal handlers:
   virtual void on_notebook_find_criteria(const Glib::ustring& strWhereClause);
+  virtual void on_notebook_data_record_details_requested(const Glib::ustring& table_name, Gnome::Gda::Value primary_key_value);
   virtual void on_userlevel_changed(AppState::userlevels userlevel);
 
   //Member data:

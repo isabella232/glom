@@ -91,12 +91,17 @@ public:
   typedef sigc::signal<void, const LayoutItem_Field&, const Gnome::Gda::Value&> type_signal_field_edited;
   type_signal_field_edited signal_field_edited();
 
- /** For instance,
+  /** For instance,
    * void on_related_record_changed(const Glib::ustring& relationship_name);
    */
   typedef sigc::signal<void, const Glib::ustring&> type_signal_related_record_changed;
   type_signal_related_record_changed signal_related_record_changed();
-
+  
+   /** For instance,
+   * void on_requested_related_details(const Glib::ustring& table_name, Gnome::Gda::Value primary_key_value);
+   */
+  typedef sigc::signal<void, const Glib::ustring&, Gnome::Gda::Value> type_signal_requested_related_details;
+  type_signal_requested_related_details signal_requested_related_details();
 
 protected:
 
@@ -118,6 +123,9 @@ protected:
   void on_layoutwidget_changed();
 
   void on_datawidget_layout_item_added(TreeStore_Layout::enumType item_type, DataWidget* pDataWidget);
+
+  void on_portal_user_requested_details(Gnome::Gda::Value primary_key_value, Box_Data_List_Related* portal_box);
+  void on_flowtable_requested_related_details(const Glib::ustring& table_name, Gnome::Gda::Value primary_key_value);
 
   class Info
   {
@@ -158,6 +166,7 @@ protected:
 
   //type_signal_related_record_added m_signal_related_record_added;
   type_signal_related_record_changed m_signal_related_record_changed;
+  type_signal_requested_related_details m_signal_requested_related_details;
 };
 
 

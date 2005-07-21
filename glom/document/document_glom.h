@@ -127,6 +127,7 @@ public:
   virtual void remove_table(const Glib::ustring& table_name);
 
   virtual bool get_table_is_known(const Glib::ustring& table_name) const;
+  virtual bool get_table_is_hidden(const Glib::ustring& table_name) const;
 
   virtual Glib::ustring get_table_title(const Glib::ustring& table_name) const;
   virtual void set_table_title(const Glib::ustring& table_name, const Glib::ustring& value);

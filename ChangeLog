@@ -1,3 +1,34 @@
+2005-07-22  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/document/document_glom.cc:
+	* glom/document/document_glom.h: Added get_table_is_hidden().
+	* glom/frame_glom.cc:
+	* glom/frame_glom.h: Handle signal_record_details_requested on the
+	Notebook_Data, to show a specific record in another table.
+	* glom/mode_data/box_data_details.cc:
+	* glom/mode_data/box_data_details.h: Added 
+	signal_requested_related_details, emitted when a FlowTable emits 
+	its own signal_requested_related_details.
+	* glom/utility_widgets/db_adddel/db_adddel.cc:
+	* glom/utility_widgets/db_adddel/db_adddel.h: Added 
+	set_use_row_button().
+	* glom/mode_data/box_data_list_related.cc: init_db_details(): 
+	If the related table is not hidden, then add a button on each 
+	row, to navigate to the related record.
+	* glom/mode_data/notebook_data.cc:
+	* glom/mode_data/notebook_data.h: Catch the signal from 
+	Box_Data_Details, and emit 
+	signal_details_requested signal_record_details_requested.
+	Added show_details(), so the parent Frame can specify a 
+	record.
+	* glom/utility_widgets/db_adddel/Makefile.am:
+	* glom/utility_widgets/db_adddel/cellrenderer_button.cc:
+	* glom/utility_widgets/db_adddel/cellrenderer_button.h: New 
+	derived CellRenderer, which is just an icon at the moment.
+	* glom/utility_widgets/flowtablewithfields.cc:
+	* glom/utility_widgets/flowtablewithfields.h: Added 
+	signal_requested_related_details.
+
 0.8.36:
 
 2005-07-21  Murray Cumming  <murrayc@murrayc.com>

@@ -135,6 +135,11 @@ public:
 
   ///For instance, if the user can not view the table then don't try to get the records.
   virtual void set_allow_view(bool val = true);
+  
+  ///Whether each row should have a button, to request edit.
+  void set_use_row_button(bool val = true);
+  bool get_use_row_button() const;
+
 
   /** @result The index of the new column.
    */
@@ -263,6 +268,7 @@ protected:
 
   virtual bool on_treeview_columnheader_button_press_event(GdkEventButton* event);
 
+  virtual void on_cell_button_clicked();
 
   bool get_prevent_user_signals() const;
 
@@ -321,6 +327,8 @@ protected:
 
   bool m_columns_ready;
   bool m_allow_view;
+  bool m_use_row_button;
+  Gtk::TreeViewColumn* m_treeviewcolumn_button;
 
   //signals:
   type_signal_user_added m_signal_user_added;

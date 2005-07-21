@@ -115,6 +115,8 @@ Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
 
   m_FlowTable.signal_layout_changed().connect( sigc::mem_fun(*this, &Box_Data_Details::on_flowtable_layout_changed) );
 
+  m_FlowTable.signal_requested_related_details().connect( sigc::mem_fun(*this, &Box_Data_Details::on_flowtable_requested_related_details) );
+    
   m_ignore_signals = false;
 }
 
@@ -347,13 +349,6 @@ Gnome::Gda::Value Box_Data_Details::get_primary_key_value_selected()
   return m_primary_key_value;
 }
 
-/*
-void Box_Data_Details::on_related_user_requested_details(Gnome::Gda::Value key_value, Glib::ustring strTableName)
-{
-  signal_user_requested_related_details().emit(strTableName, key_value);
-}
-*/
-
 void Box_Data_Details::recalculate_fields_for_related_records(const Glib::ustring& relationship_name)
 {
   m_FieldsCalculationInProgress.clear();
@@ -439,12 +434,10 @@ Box_Data_Details::type_signal_record_deleted Box_Data_Details::signal_record_del
   return m_signal_record_deleted; 
 }
 
-/*
-Box_Data_Details::type_signal_user_requested_related_details Box_Data_Details::signal_user_requested_related_details()
+Box_Data_Details::type_signal_requested_related_details Box_Data_Details::signal_requested_related_details()
 {
-  return m_signal_user_requested_related_details;
+  return m_signal_requested_related_details;
 }
-*/
 
 void Box_Data_Details::on_flowtable_layout_changed()
 {
@@ -457,6 +450,11 @@ void Box_Data_Details::on_flowtable_layout_changed()
 
   //And fill it with data:
   fill_from_database();
+}
+
+void Box_Data_Details::on_flowtable_requested_related_details(const Glib::ustring& table_name, Gnome::Gda::Value primary_key_value)
+{
+  signal_requested_related_details().emit(table_name, primary_key_value);
 }
 
 void Box_Data_Details::on_flowtable_related_record_changed(const Glib::ustring& relationship_name)

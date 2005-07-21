@@ -27,6 +27,7 @@
 #include "../../dialog_invalid_data.h"
 #include "../../application.h"
 #include "../../utils.h"
+#include "cellrenderer_button.h"
 //#include "../cellrendererlist.h"
 #include <iostream> //For debug output.
 
@@ -61,7 +62,9 @@ DbAddDel::DbAddDel()
   m_allow_add(true),
   m_allow_delete(true),
   m_columns_ready(false),
-  m_allow_view(true)
+  m_allow_view(true),
+  m_use_row_button(false),
+  m_treeviewcolumn_button(0)
 {
   set_prevent_user_signals();
   set_ignore_treeview_signals();
@@ -637,6 +640,19 @@ void DbAddDel::construct_specified_columns()
   //Add new View Colums:
   int model_column_index = 0; //Not including the hidden internal columns.
   int view_column_index = 0;
+  
+  {
+    GlomCellRenderer_Button* pCellButton = Gtk::manage(new GlomCellRenderer_Button());
+    pCellButton->signal_clicked().connect(sigc::mem_fun(*this, &DbAddDel::on_cell_button_clicked));
+    
+    const int viewcols_count = m_TreeView.append_column(Glib::ustring(), *pCellButton);
+    m_treeviewcolumn_button = m_TreeView.get_column(viewcols_count - 1);
+    
+    m_treeviewcolumn_button->property_visible() = get_use_row_button();
+    
+    ++view_column_index;
+  }
+  
   for(type_vecModelColumns::iterator iter = vecModelColumns.begin(); iter != vecModelColumns.end(); ++iter)
   {
     DbAddDelColumnInfo& column_info = m_ColumnTypes[model_column_index];
@@ -1691,6 +1707,26 @@ App_Glom* DbAddDel::get_application()
 void DbAddDel::set_allow_view(bool val)
 {
   m_allow_view = val;
+}
+
+void DbAddDel::set_use_row_button(bool val)
+{
+  m_use_row_button = val;
+  
+  //Hide it if it was visible:
+  if(m_treeviewcolumn_button)
+    m_treeviewcolumn_button->property_visible() = get_use_row_button();
+}
+
+bool DbAddDel::get_use_row_button() const
+{
+  return m_use_row_button;
+}
+
+void DbAddDel::on_cell_button_clicked()
+{
+  g_warning("DbAddDel::on_cell_button_clicked): debug");
+  on_MenuPopup_activate_Edit();
 }
 
 
