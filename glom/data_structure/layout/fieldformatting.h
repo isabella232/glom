@@ -58,6 +58,10 @@ public:
   void set_text_format_multiline(bool value = true);
 
   bool get_editable_and_allowed() const;
+  
+  void change_field_name(const Glib::ustring& table_name, const Glib::ustring& field_name, const Glib::ustring& field_name_new);
+  void change_relationship_name(const Glib::ustring& table_name, const Glib::ustring& name, const Glib::ustring& name_new);
+ 
 
   NumericFormat m_numeric_format; //Only used for numeric fields.
 

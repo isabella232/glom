@@ -323,3 +323,10 @@ void Box_Data_List_Related::on_dialog_layout_hide()
   }
 }
 
+void Box_Data_List_Related::on_adddel_user_requested_add()
+{
+  //Prevent an add on a portal with no fields:
+  //TODO: Warn the user instead of just doing nothing.
+  if(!m_portal.m_map_items.empty())
+    Box_Data_List::on_adddel_user_requested_add();
+}

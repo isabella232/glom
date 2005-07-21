@@ -150,3 +150,26 @@ void FieldFormatting::set_choices(const Glib::ustring& relationship_name, const 
   m_choices_related_field = field;
   m_choices_related_field_second = field_second;
 }
+
+void FieldFormatting::change_field_name(const Glib::ustring& table_name, const Glib::ustring& field_name, const Glib::ustring& field_name_new)
+{
+  //Update choices:
+  if(m_choices_related_relationship.get_to_table() == table_name)
+  {
+    if(m_choices_related_field == field_name)
+       m_choices_related_field = field_name_new;
+       
+    if(m_choices_related_field_second == field_name)
+       m_choices_related_field_second = field_name_new; 
+  }
+}
+
+void FieldFormatting::change_relationship_name(const Glib::ustring& table_name, const Glib::ustring& name, const Glib::ustring& name_new)
+{
+  //Update choices:
+  if(m_choices_related_relationship.get_from_table() == table_name)
+  {
+    if(m_choices_related_relationship.get_name() == name)
+       m_choices_related_relationship.set_name(name_new);
+  }
+}

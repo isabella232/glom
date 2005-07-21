@@ -397,8 +397,9 @@ void Document_Glom::change_field_name(const Glib::ustring& table_name, const Gli
       //Change it:
       iterFind->set_name(strFieldNameNew);
     }
+    
 
-    //Find any relationships or layouts that use this field
+    //Find any relationships, layouts, or formatting that use this field
     //Look at each table:
     for(type_tables::iterator iter = m_tables.begin(); iter != m_tables.end(); ++iter)
     {
@@ -424,6 +425,13 @@ void Document_Glom::change_field_name(const Glib::ustring& table_name, const Gli
         }
       }
 
+      //Look at all field formatting:
+      for(type_vecFields::iterator iterFields = iter->second.m_fields.begin(); iterFields != iter->second.m_fields.end(); ++iterFields)
+      {
+        iterFields->m_default_formatting.change_field_name(table_name, strFieldNameOld, strFieldNameNew);
+      }
+           
+      
       const bool is_parent_table = (iter->second.m_info.get_name() == table_name);
         
       //Look at each layout:
@@ -516,6 +524,12 @@ void Document_Glom::change_relationship_name(const Glib::ustring& table_name, co
     //Look at each table:
     for(type_tables::iterator iter = m_tables.begin(); iter != m_tables.end(); ++iter)
     {
+       //Look at all field formatting:
+      for(type_vecFields::iterator iterFields = iter->second.m_fields.begin(); iterFields != iter->second.m_fields.end(); ++iterFields)
+      {
+        iterFields->m_default_formatting.change_relationship_name(table_name, name, name_new);
+      }
+      
       const bool is_parent_table = (iter->second.m_info.get_name() == table_name);
         
       //Look at each layout:

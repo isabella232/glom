@@ -128,6 +128,10 @@ bool Box_Data_List::fill_from_database()
 
 void Box_Data_List::on_adddel_user_requested_add()
 {
+g_warning("Box_Data_List::on_adddel_user_requested_add() start: m_FieldsShowns.size()=%d", m_FieldsShown.size());
+  if(m_FieldsShown.empty())
+    return; //Don't try to add a record to a list with no fields.
+    
   Gtk::TreeModel::iterator iter = m_AddDel.get_item_placeholder();
   if(iter)
   {
@@ -168,6 +172,8 @@ void Box_Data_List::on_adddel_user_requested_add()
       //g_warning("Box_Data_List::on_adddel_user_requested_add(): index_field_to_edit does not exist: %d", index_field_to_edit);
     }
   }
+  
+  g_warning("Box_Data_List::on_adddel_user_requested_add() end");
 }
 
 void Box_Data_List::on_adddel_user_requested_edit(const Gtk::TreeModel::iterator& row)

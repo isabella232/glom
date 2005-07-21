@@ -1,5 +1,23 @@
 2005-07-21  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/data_structure/layout/fieldformatting.cc:
+	* glom/data_structure/layout/fieldformatting.h:
+	Added change_field_name() and change_relationship_name(), 
+	to update choices when these change.
+	* glom/data_structure/layout/layoutgroup.cc:
+	Update field formatting too.
+	* glom/document/document_glom.cc:
+	change_relationship_name(), change_field_name(): 
+	Update all the default formatting too.
+	* glom/mode_data/box_data_list.cc:
+	* glom/mode_data/box_data_list_related.cc:
+	* glom/mode_data/box_data_list_related.h:
+	on_adddel_user_requested_add(): Do not try to add 
+	related records to portals that have no columns, 
+	avoiding a database error.
+
+2005-07-21  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/data_structure/layout/layoutgroup.cc:
 	* glom/data_structure/layout/layoutgroup.h:
 	* glom/data_structure/layout/layoutitem_portal.cc:
