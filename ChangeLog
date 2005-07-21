@@ -2,6 +2,20 @@
 
 	* glom/data_structure/layout/layoutgroup.cc:
 	* glom/data_structure/layout/layoutgroup.h: Added 
+	change_relationship_name() to update the layout 
+	when a relationship is renamed.
+	* glom/document/document_glom.cc:
+	* glom/document/document_glom.h: Added 
+	change_relationship_name().
+	* glom/mode_design/box_db_table_relationships.cc:
+	save_to_document(): Detect a rename and call 
+	Document_Glom::change_relationship_name() so it does not 
+	break the layout.
+
+2005-07-21  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/data_structure/layout/layoutgroup.cc:
+	* glom/data_structure/layout/layoutgroup.h: Added 
 	change_related_field_item_name(). change_field_item_name():
 	Process child groups and self-related fields.
 	* glom/document/document_glom.cc: change_field_name(): 

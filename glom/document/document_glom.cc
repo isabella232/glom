@@ -501,6 +501,54 @@ void Document_Glom::change_table_name(const Glib::ustring& strTableNameOld, cons
   }
 }
 
+void Document_Glom::change_relationship_name(const Glib::ustring& table_name, const Glib::ustring& name, const Glib::ustring& name_new)
+{
+  type_tables::iterator iterFindTable = m_tables.find(table_name);
+  if(iterFindTable != m_tables.end())
+  {
+    //Change the relationship name:
+    type_vecRelationships::iterator iterRelFind = std::find_if( iterFindTable->second.m_relationships.begin(), iterFindTable->second.m_relationships.end(), predicate_FieldHasName<Relationship>(name) );
+    if(iterRelFind != iterFindTable->second.m_relationships.end())
+      iterRelFind->set_name(name_new);
+      
+      
+    //Find any layouts or reports that use this field
+    //Look at each table:
+    for(type_tables::iterator iter = m_tables.begin(); iter != m_tables.end(); ++iter)
+    {
+      const bool is_parent_table = (iter->second.m_info.get_name() == table_name);
+        
+      //Look at each layout:
+      for(DocumentTableInfo::type_layouts::iterator iterLayouts = iter->second.m_layouts.begin(); iterLayouts != iter->second.m_layouts.end(); ++iterLayouts)
+      {
+        //Look at each group:
+        for(type_mapLayoutGroupSequence::iterator iterGroup = iterLayouts->m_layout_groups.begin(); iterGroup != iterLayouts->m_layout_groups.end(); ++iterGroup)
+        {
+          //Change the field if it is in this group:
+          if(is_parent_table)
+            iterGroup->second.change_relationship_name(table_name, name, name_new);
+          else
+            iterGroup->second.change_related_relationship_name(table_name, name, name_new);
+        }
+      }
+      
+      
+      //Look at each report:
+      for(DocumentTableInfo::type_reports::iterator iterReports = iter->second.m_reports.begin(); iterReports != iter->second.m_reports.end(); ++iterReports)
+      {
+        //Change the field if it is in this group:
+        if(is_parent_table)
+          iterReports->second.m_layout_group.change_relationship_name(table_name, name, name_new);
+        else
+          iterReports->second.m_layout_group.change_related_relationship_name(table_name, name, name_new);
+      }
+      
+    }
+   
+    set_modified();
+  }
+ }
+  
 
 
 bool Document_Glom::get_node_attribute_value_as_bool(const xmlpp::Element* node, const Glib::ustring& strAttributeName)

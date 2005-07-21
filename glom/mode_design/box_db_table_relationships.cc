@@ -122,9 +122,15 @@ void Box_DB_Table_Relationships::save_to_document()
 
   for(Gtk::TreeModel::iterator iter = m_AddDel.get_model()->children().begin(); iter != m_AddDel.get_model()->children().end(); ++iter)
   {
+    const Glib::ustring old_name = m_AddDel.get_value_key(iter);
+     
     const Glib::ustring name = m_AddDel.get_value(iter, m_colName);
     if(!name.empty())
     {
+      //If it is a rename:
+      if(!old_name.empty() && (old_name != name))
+        get_document()->change_relationship_name(m_strTableName, old_name, name); //Update layouts and reports.
+      
       Relationship relationship;
       relationship.set_name(name);
       relationship.set_title(m_AddDel.get_value(iter, m_colTitle));
@@ -173,8 +179,8 @@ void Box_DB_Table_Relationships::on_adddel_user_changed(const Gtk::TreeModel::it
   {
     //The name is the key, so If the name has been changed then the key must change too.
     Glib::ustring new_name = m_AddDel.get_value(row, m_colName);
-    if(!new_name.empty())
-      m_AddDel.set_value_key(row, new_name);
+    //if(!new_name.empty()) //Don't do this, so we can use the key as the old name to detect a rename later.
+    //  m_AddDel.set_value_key(row, new_name);
 
     //Update the title, if there is none already:
     Glib::ustring title = m_AddDel.get_value(row, m_colTitle);

@@ -111,11 +111,14 @@ public:
   virtual void fill_layout_field_details(const Glib::ustring& parent_table_name, type_mapLayoutGroupSequence& sequence) const;
 
 
-  ///When a field name is changed, change it in the relationships and fields data:
+  ///When a field name is changed, change it in the relationships, layouts, reports, and fields data:
   virtual void change_field_name(const Glib::ustring& table_name, const Glib::ustring& strFieldNameOld, const Glib::ustring& strFieldNameNew);
 
   ///When a table name is changed, change it in the relationships and tables data:
   virtual void change_table_name(const Glib::ustring& strTableNameOld, const Glib::ustring& strTableNameNew);
+  
+  ///When a relationship name is changed, change it in layouts and reports:
+  virtual void change_relationship_name(const Glib::ustring& table_name, const Glib::ustring& name, const Glib::ustring& name_new);
 
   typedef std::list<TableInfo> type_listTableInfo;
   virtual type_listTableInfo get_tables() const;

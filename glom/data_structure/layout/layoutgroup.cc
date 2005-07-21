@@ -251,6 +251,36 @@ void LayoutGroup::change_field_item_name(const Glib::ustring& table_name, const 
   }
 }
 
+void LayoutGroup::change_relationship_name(const Glib::ustring& table_name, const Glib::ustring& name, const Glib::ustring& name_new)
+{
+  //Look at each item:
+  for(LayoutGroup::type_map_items::iterator iterItem = m_map_items.begin(); iterItem != m_map_items.end(); ++iterItem)
+  {
+    LayoutItem_Field* field_item = dynamic_cast<LayoutItem_Field*>(iterItem->second);
+    if(field_item)
+    {
+      if(field_item->get_has_relationship_name())
+      {
+        if(field_item->m_relationship.get_name() == name)
+        {
+          field_item->m_relationship.set_name(name_new);
+        }
+      }
+    }
+    else
+    {
+      LayoutGroup* sub_group = dynamic_cast<LayoutGroup*>(iterItem->second);
+      if(sub_group)
+        sub_group->change_relationship_name(table_name, name, name_new);
+    }
+  }
+}
+
+void LayoutGroup::change_related_relationship_name(const Glib::ustring& /* table_name */, const Glib::ustring& /* name */, const Glib::ustring& /* name_new */)
+{
+  
+}
+
 Glib::ustring LayoutGroup::get_part_type_name() const
 {
   return _("Group");
