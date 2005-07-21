@@ -82,20 +82,20 @@ Box_Data_List_Related::~Box_Data_List_Related()
   }
 }
 
-bool Box_Data_List_Related::init_db_details(const Relationship& relationship)
+bool Box_Data_List_Related::init_db_details(const LayoutItem_Portal& portal)
 {
-  m_relationship = relationship;
-  m_strTableName = relationship.get_to_table();
+  m_portal = portal;
+  m_strTableName = m_portal.m_relationship.get_to_table();
 
-  m_Label.set_markup(Bakery::App_Gtk::util_bold_message( relationship.get_title_or_name() ));
+  m_Label.set_markup(Bakery::App_Gtk::util_bold_message( m_portal.m_relationship.get_title_or_name() ));
 
-  bool found = get_fields_for_table_one_field(relationship.get_to_table(), relationship.get_to_field(), m_key_field /* output parameter */);
+  bool found = get_fields_for_table_one_field(m_portal.m_relationship.get_to_table(), m_portal.m_relationship.get_to_field(), m_key_field /* output parameter */);
   if(!found)
   {
     g_warning("Box_Data_List_Related::init_db_details(): key_field not found.");
   }
 
-  return Box_Data_List::init_db_details(relationship.get_to_table()); //Calls create_layout() and fill_from_database().
+  return Box_Data_List::init_db_details(m_portal.m_relationship.get_to_table()); //Calls create_layout() and fill_from_database().
 }
 
 bool Box_Data_List_Related::refresh_data_from_database(const Gnome::Gda::Value& foreign_key_value)
@@ -152,7 +152,7 @@ bool Box_Data_List_Related::fill_from_database()
 
   //Prevent addition of new records if that is what the relationship specifies:
   if(allow_add)
-    allow_add = m_relationship.get_auto_create();
+    allow_add = m_portal.m_relationship.get_auto_create();
 
   m_AddDel.set_allow_add(allow_add);
 
@@ -193,7 +193,7 @@ void Box_Data_List_Related::on_record_added(const Gnome::Gda::Value& primary_key
       Field field_primary_key = m_AddDel.get_key_field();
 
       //Create the link by setting the foreign key
-      Glib::ustring strQuery = "UPDATE " + m_relationship.get_to_table();
+      Glib::ustring strQuery = "UPDATE " + m_portal.m_relationship.get_to_table();
       strQuery += " SET " +  /* get_table_name() + "." +*/ m_key_field.get_name() + " = " + m_key_field.sql(m_key_value);
       strQuery += " WHERE " + get_table_name() + "." + field_primary_key.get_name() + " = " + field_primary_key.sql(primary_key_value);
       bool test = Query_execute(strQuery);
@@ -213,7 +213,7 @@ void Box_Data_List_Related::on_record_added(const Gnome::Gda::Value& primary_key
 
 Relationship Box_Data_List_Related::get_relationship() const
 {
-  return m_relationship;
+  return m_portal.m_relationship;
 }
  
 Field Box_Data_List_Related::get_key_field() const
@@ -224,7 +224,7 @@ Field Box_Data_List_Related::get_key_field() const
 void Box_Data_List_Related::on_record_deleted(const Gnome::Gda::Value& /* primary_key_value */)
 {
   //Allow the parent record (Details view) to recalculate aggregations:
-  signal_record_changed().emit(m_relationship.get_name());
+  signal_record_changed().emit(m_portal.m_relationship.get_name());
 }
 
 
@@ -235,7 +235,7 @@ void Box_Data_List_Related::on_adddel_user_changed(const Gtk::TreeModel::iterato
 
   //Let parent respond:
   if(row)
-    signal_record_changed().emit(m_relationship.get_name());
+    signal_record_changed().emit(m_portal.m_relationship.get_name());
 }
 
 void Box_Data_List_Related::on_adddel_user_added(const Gtk::TreeModel::iterator& row, guint col_with_first_value)
@@ -278,8 +278,9 @@ Box_Data_List_Related::type_vecLayoutFields Box_Data_List_Related::get_fields_to
   const Document_Glom* document = get_document();
   if(document)
   {
-    Document_Glom::type_mapLayoutGroupSequence mapGroups = document->get_relationship_data_layout_groups_plus_new_fields(m_layout_name, m_relationship);
-    return get_table_fields_to_show(m_relationship.get_to_table(), mapGroups);
+    Document_Glom::type_mapLayoutGroupSequence mapGroups;
+    mapGroups[0] = m_portal;
+    return get_table_fields_to_show(m_portal.m_relationship.get_to_table(), mapGroups);
   }
 
   return type_vecLayoutFields();
@@ -289,7 +290,7 @@ void Box_Data_List_Related::show_layout_dialog()
 {
   if(m_pDialogLayoutRelated)
   {
-    m_pDialogLayoutRelated->set_document(m_layout_name, get_document(), m_relationship);
+    m_pDialogLayoutRelated->set_document(m_layout_name, get_document(), m_portal);
     m_pDialogLayoutRelated->show();
   }
 }
@@ -301,27 +302,24 @@ Box_Data_List_Related::type_signal_record_changed Box_Data_List_Related::signal_
 
 void Box_Data_List_Related::on_dialog_layout_hide()
 {
-  const Glib::ustring relationship_name = m_pDialogLayoutRelated->get_relationship_name();
-  if(!relationship_name.empty())
+  m_portal = m_pDialogLayoutRelated->get_portal_layout();
+  
+  
+  //Update the UI:
+  init_db_details(m_portal);
+  
+
+  Box_Data::on_dialog_layout_hide();
+
+  LayoutItem_Portal* pLayoutItem = dynamic_cast<LayoutItem_Portal*>(get_layout_item());
+  if(pLayoutItem)
   {
-    //Get the new relationship information, in case it has changed:
-    Document_Glom* document = get_document();
-    if(document)
-    {
-      document->get_relationship(m_relationship.get_from_table(), m_relationship.get_name(), m_relationship);
+  
+    *pLayoutItem = m_portal;
+    g_warning("Box_Data_List_Related::opLayoutItem->m_map_items.size()=%d", pLayoutItem->m_map_items.size());
+    pLayoutItem->debug();
 
-      //Update the UI:
-      init_db_details(m_relationship);
-    }
-
-    Box_Data::on_dialog_layout_hide();
-
-    LayoutItem_Portal* pLayoutItem = dynamic_cast<LayoutItem_Portal*>(get_layout_item());
-    if(pLayoutItem)
-    {
-      pLayoutItem->set_relationship(relationship_name);
-      signal_layout_changed().emit(); //TODO: Check whether it has really changed.
-    }
+    signal_layout_changed().emit(); //TODO: Check whether it has really changed.
   }
 }
 

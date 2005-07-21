@@ -661,12 +661,6 @@ void Document_Glom::set_tables(const type_listTableInfo& tables)
 
 }
 
-Document_Glom::type_mapLayoutGroupSequence Document_Glom::get_relationship_data_layout_groups_plus_new_fields(const Glib::ustring& layout_name, const Relationship& relationship) const
-{
-  //TODO: Use an actual relationship_name instead of concatenating:
-  return get_data_layout_groups_plus_new_fields(layout_name + "_related_" + relationship.get_name(), relationship.get_from_table(), relationship.get_to_table());
-}
-
 void Document_Glom::fill_layout_field_details(const Glib::ustring& parent_table_name, LayoutGroup& layout_group) const
 {
   //Get the full field information for the LayoutItem_Fields in this group:
@@ -700,13 +694,9 @@ void Document_Glom::fill_layout_field_details(const Glib::ustring& parent_table_
   }
 }
 
-Document_Glom::type_mapLayoutGroupSequence Document_Glom::get_data_layout_groups_plus_new_fields(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name, const Glib::ustring& table_name) const
+Document_Glom::type_mapLayoutGroupSequence Document_Glom::get_data_layout_groups_plus_new_fields(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name) const
 {
-  Glib::ustring child_table_name = table_name;
-  if(child_table_name.empty())
-    child_table_name = parent_table_name;
-
-  type_mapLayoutGroupSequence result = get_data_layout_groups(layout_name, parent_table_name, child_table_name);
+  type_mapLayoutGroupSequence result = get_data_layout_groups(layout_name, parent_table_name);
 
 
   //If there are no fields in the layout, then add a default:
@@ -764,7 +754,7 @@ Document_Glom::type_mapLayoutGroupSequence Document_Glom::get_data_layout_groups
       
     
     //Discover new fields, and add them:
-    type_vecFields all_fields = get_table_fields(child_table_name);
+    type_vecFields all_fields = get_table_fields(parent_table_name);
     for(type_vecFields::const_iterator iter = all_fields.begin(); iter != all_fields.end(); ++iter)
     {
       const Glib::ustring field_name = iter->get_name();
@@ -801,19 +791,15 @@ Document_Glom::type_mapLayoutGroupSequence Document_Glom::get_data_layout_groups
   return result;  
 }
   
-Document_Glom::type_mapLayoutGroupSequence Document_Glom::get_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name, const Glib::ustring& table_name) const
+Document_Glom::type_mapLayoutGroupSequence Document_Glom::get_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name) const
 {
-  Glib::ustring child_table = table_name;
-  if(child_table.empty())
-    child_table = parent_table_name;
-
   type_tables::const_iterator iterFind = m_tables.find(parent_table_name);
   if(iterFind != m_tables.end())
   {
     const DocumentTableInfo& info = iterFind->second;
 
     //Look for the layout with this name:
-    DocumentTableInfo::type_layouts::const_iterator iter = std::find_if(info.m_layouts.begin(), info.m_layouts.end(), predicate_Layout<LayoutInfo>(child_table, layout_name));
+    DocumentTableInfo::type_layouts::const_iterator iter = std::find_if(info.m_layouts.begin(), info.m_layouts.end(), predicate_Layout<LayoutInfo>(parent_table_name, layout_name));
     if(iter != info.m_layouts.end())
     {
       return iter->m_layout_groups; //found
@@ -1126,11 +1112,12 @@ void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Gl
       }
       else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_PORTAL)
       {
-        LayoutItem_Portal item;
-        item.set_relationship( get_node_attribute_value(element, GLOM_ATTRIBUTE_RELATIONSHIP_NAME) );
+        LayoutItem_Portal portal;
+        portal.set_relationship( get_node_attribute_value(element, GLOM_ATTRIBUTE_RELATIONSHIP_NAME) );
 
-        item.m_sequence = sequence;
-        group.add_item(item, sequence);
+        //Recurse:
+        load_after_layout_group(element, table_name, portal);
+        group.add_item(portal);
       }
       else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_ITEM_GROUPBY)
       {
@@ -1535,7 +1522,16 @@ void Document_Glom::save_before_layout_group(xmlpp::Element* node, const LayoutG
     }
     else
     {
-      child = node->add_child(GLOM_NODE_DATA_LAYOUT_GROUP);
+      const LayoutItem_Portal* portal = dynamic_cast<const LayoutItem_Portal*>(&group);
+      if(portal) //If it is a related records portal
+      {
+        child = node->add_child(GLOM_NODE_DATA_LAYOUT_PORTAL);
+        child->set_attribute(GLOM_ATTRIBUTE_RELATIONSHIP_NAME, portal->get_relationship());
+      }
+      else
+      {
+        child = node->add_child(GLOM_NODE_DATA_LAYOUT_GROUP);
+      }
     }
   }
 
@@ -1553,8 +1549,8 @@ void Document_Glom::save_before_layout_group(xmlpp::Element* node, const LayoutG
     //g_warning("save_before_layout_group: child part type=%s", item->get_part_type_name().c_str());
 
     const LayoutGroup* child_group = dynamic_cast<const LayoutGroup*>(item);
-    if(child_group) //If it is a group
-    {
+    if(child_group) //If it is a group, portal, summary, or groupby.
+    {   
       //recurse:
       save_before_layout_group(child, *child_group);
     }
@@ -1575,19 +1571,7 @@ void Document_Glom::save_before_layout_group(xmlpp::Element* node, const LayoutG
           xmlpp::Element* nodeItem = child->add_child(GLOM_NODE_DATA_LAYOUT_ITEM);
           save_before_layout_item_field(nodeItem, *field);
         }
-        else
-        {
-          const LayoutItem_Portal* portal = dynamic_cast<const LayoutItem_Portal*>(item);
-          if(portal) //If it is a portal
-          {
-            xmlpp::Element* nodeItem = child->add_child(GLOM_NODE_DATA_LAYOUT_PORTAL);
-            nodeItem->set_attribute(GLOM_ATTRIBUTE_RELATIONSHIP_NAME, portal->get_relationship());
-
-            set_node_attribute_value_as_decimal(nodeItem, GLOM_ATTRIBUTE_SEQUENCE, item->m_sequence);
-          }
-        }
       }
-
     }
 
     //g_warning("save_before_layout_group: after child part type=%s", item->get_part_type_name().c_str());
@@ -1867,19 +1851,10 @@ void Document_Glom::update_cached_relationships(LayoutGroup& group, const Glib::
       LayoutItem_Portal* pPortal = dynamic_cast<LayoutItem_Portal*>(pItem);
       if(pPortal)
       {
-
         get_relationship(table_name, pPortal->get_relationship(), pPortal->m_relationship);
 
-        //Update the Portal's group: TODO: Do this in place, instead of using set/get.
-        const Glib::ustring layout_name = "list_related"; //TODO: This is silly.
-        type_mapLayoutGroupSequence portalGroups = get_relationship_data_layout_groups_plus_new_fields(layout_name, pPortal->m_relationship);
-
-        for(type_mapLayoutGroupSequence::iterator iterGroup = portalGroups.begin(); iterGroup != portalGroups.end(); ++iterGroup)
-        {
-          update_cached_relationships(iterGroup->second, pPortal->m_relationship.get_to_table());
-        }
-
-        set_relationship_data_layout_groups(layout_name, pPortal->m_relationship, portalGroups);
+        //Update the Portal's group: TODO:
+        update_cached_relationships(*pPortal, pPortal->m_relationship.get_to_table());
       }
       else
       {

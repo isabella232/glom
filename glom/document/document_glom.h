@@ -91,21 +91,17 @@ public:
 
 
   typedef std::map<guint, LayoutGroup> type_mapLayoutGroupSequence;
-  virtual type_mapLayoutGroupSequence get_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name, const Glib::ustring& table_name = Glib::ustring()) const;
+  virtual type_mapLayoutGroupSequence get_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name) const;
 
   virtual void set_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name, const type_mapLayoutGroupSequence& groups, const Glib::ustring& table_name = Glib::ustring());
 
   virtual void set_relationship_data_layout_groups(const Glib::ustring& layout_name, const Relationship& relationship, const type_mapLayoutGroupSequence& groups);
 
   /**
-   * @para The layout_name, such as "details", "list", or "related_invoice_lines".
+   * @para The layout_name, such as "details", "list".
    * @para parent_table_name The name of the table on whose layout the layout appears.
-   * @para table_name The name of the related table, if this is a related layout.
    */
-  virtual type_mapLayoutGroupSequence get_data_layout_groups_plus_new_fields(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name, const Glib::ustring& table_name = Glib::ustring()) const;
-
-  virtual type_mapLayoutGroupSequence get_relationship_data_layout_groups_plus_new_fields(const Glib::ustring& layout_name, const Relationship& relationship) const;
-
+  virtual type_mapLayoutGroupSequence get_data_layout_groups_plus_new_fields(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name) const;
 
   virtual void fill_layout_field_details(const Glib::ustring& parent_table_name, LayoutGroup& layout_group) const;
   virtual void fill_layout_field_details(const Glib::ustring& parent_table_name, type_mapLayoutGroupSequence& sequence) const;

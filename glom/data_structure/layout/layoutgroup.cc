@@ -285,3 +285,21 @@ Glib::ustring LayoutGroup::get_part_type_name() const
 {
   return _("Group");
 }
+
+void LayoutGroup::debug(guint level) const
+{
+  g_warning("LayoutGroup::debug() level =%d", level);
+  
+  for(type_map_items::const_iterator iter = m_map_items.begin(); iter != m_map_items.end(); ++iter)
+  {
+    const LayoutGroup* group = dynamic_cast<const LayoutGroup*>(iter->second);
+    if(group)
+      group->debug(level + 1);
+    else
+    {
+      const LayoutItem_Field* field = dynamic_cast<const LayoutItem_Field*>(iter->second);
+      if(field)
+        g_warning("  field: name=%s, relationship=%s", field->get_name().c_str(), field->get_relationship_name().c_str());
+    }
+  }
+}

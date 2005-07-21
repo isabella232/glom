@@ -21,11 +21,11 @@
 #ifndef GLOM_DATASTRUCTURE_LAYOUTITEM_PORTAL_H
 #define GLOM_DATASTRUCTURE_LAYOUTITEM_PORTAL_H
 
-#include "layoutitem.h"
+#include "layoutgroup.h"
 #include "../field.h"
 #include "../relationship.h"
 
-class LayoutItem_Portal : public LayoutItem
+class LayoutItem_Portal : public LayoutGroup
 {
 public:
 
@@ -40,6 +40,12 @@ public:
   void set_relationship(const Glib::ustring& relationship);
 
   virtual Glib::ustring get_part_type_name() const;
+  
+  virtual void change_field_item_name(const Glib::ustring& table_name, const Glib::ustring& field_name, const Glib::ustring& field_name_new);
+  virtual void change_related_field_item_name(const Glib::ustring& table_name, const Glib::ustring& field_name, const Glib::ustring& field_name_new);
+  
+  virtual void change_relationship_name(const Glib::ustring& table_name, const Glib::ustring& name, const Glib::ustring& name_new);
+  virtual void change_related_relationship_name(const Glib::ustring& table_name, const Glib::ustring& name, const Glib::ustring& name_new);
 
   Relationship m_relationship; //Public, for more efficient access.
 

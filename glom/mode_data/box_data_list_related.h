@@ -35,9 +35,9 @@ public:
   virtual ~Box_Data_List_Related();
 
   /**
-   * @param Relationship: The relationship used by the parent table to get rows from this table.
+   * @param portal: The full portal details
    */
-  virtual bool init_db_details(const Relationship& relationship);
+  virtual bool init_db_details(const LayoutItem_Portal& portal);
 
   /**
    * @param foreign_key_value: The value that should be found in this table.
@@ -74,7 +74,7 @@ protected:
   Gtk::Label m_Label;
   Dialog_Layout_List_Related* m_pDialogLayoutRelated;
 
-  Relationship m_relationship; //The relationship of the parent table to this one.
+  LayoutItem_Portal m_portal;
   Field m_key_field;
   Gnome::Gda::Value m_key_value;
 

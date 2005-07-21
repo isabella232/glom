@@ -79,51 +79,51 @@ void FlowTableWithFields::add_layout_item_at_position(const LayoutItem& item, co
   const LayoutItem* pItem = &item;
 
   //Get derived type and do the appropriate thing:
-  const LayoutGroup* group = dynamic_cast<const LayoutGroup*>(pItem);
-  if(group)
-    add_layout_group_at_position(*group, add_before);
+  const LayoutItem_Field* field = dynamic_cast<const LayoutItem_Field*>(pItem);
+  if(field)
+  {
+    add_field_at_position(*field, m_table_name, add_before);
+
+    //Do not allow editing of auto-increment fields:
+    if(field->m_field.get_auto_increment())
+      set_field_editable(*field, false);
+    else
+      set_field_editable(*field, field->get_editable_and_allowed());
+  }
   else
   {
-    const LayoutItem_Field* field = dynamic_cast<const LayoutItem_Field*>(pItem);
-    if(field)
+    const LayoutItem_Portal* portal = dynamic_cast<const LayoutItem_Portal*>(pItem);
+    if(portal)
     {
-      add_field_at_position(*field, m_table_name, add_before);
+      Document_Glom* pDocument = static_cast<Document_Glom*>(get_document());
+      if(pDocument)
+      {
+        Relationship relationship;
+        bool found = pDocument->get_relationship(m_table_name, portal->get_relationship(), relationship);
+        if(found)
+        {
+          Box_Data_List_Related* portal_box = Gtk::manage(new Box_Data_List_Related);
+          add_view(portal_box); //Give it access to the document, needed to get the layout and fields information.
 
-      //Do not allow editing of auto-increment fields:
-      if(field->m_field.get_auto_increment())
-        set_field_editable(*field, false);
-      else
-        set_field_editable(*field, field->get_editable_and_allowed());
+          portal_box->init_db_details(*portal); //Create the layout
+
+          portal_box->set_layout_item(portal->clone(), relationship.get_to_table());
+          portal_box->show();
+          add(*portal_box, true /* expand */);
+
+          m_portals.push_back(portal_box);
+          add_layoutwidgetbase(portal_box, add_before);
+
+          //Connect signals:
+          portal_box->signal_record_changed().connect( sigc::mem_fun(*this, &FlowTableWithFields::on_portal_record_changed) );
+        }
+      }
     }
     else
     {
-      const LayoutItem_Portal* portal = dynamic_cast<const LayoutItem_Portal*>(pItem);
-      if(portal)
-      {
-        Document_Glom* pDocument = static_cast<Document_Glom*>(get_document());
-        if(pDocument)
-        {
-          Relationship relationship;
-          bool found = pDocument->get_relationship(m_table_name, portal->get_relationship(), relationship);
-          if(found)
-          {
-            Box_Data_List_Related* portal_box = Gtk::manage(new Box_Data_List_Related);
-            add_view(portal_box); //Give it access to the document, needed to get the layout and fields information.
-
-            portal_box->init_db_details(relationship); //Create the layout
-
-            portal_box->set_layout_item(portal->clone(), relationship.get_to_table());
-            portal_box->show();
-            add(*portal_box, true /* expand */);
-
-            m_portals.push_back(portal_box);
-            add_layoutwidgetbase(portal_box, add_before);
-
-            //Connect signals:
-            portal_box->signal_record_changed().connect( sigc::mem_fun(*this, &FlowTableWithFields::on_portal_record_changed) );
-          }
-        }
-      }
+     const LayoutGroup* group = dynamic_cast<const LayoutGroup*>(pItem);
+      if(group)
+        add_layout_group_at_position(*group, add_before);
     }
   }
 }
@@ -583,10 +583,12 @@ void FlowTableWithFields::get_layout_groups(Document_Glom::type_mapLayoutGroupSe
         LayoutGroup group_child;
         pFlowTable->get_layout_group(group_child);
         groups[sequence] = group_child;
+        
         ++sequence;
       }
     }
   }
+ 
 }
 
 void FlowTableWithFields::get_layout_group(LayoutGroup& group)

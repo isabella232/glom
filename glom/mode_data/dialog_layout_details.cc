@@ -159,8 +159,7 @@ void Dialog_Layout_Details::fill_group(const Gtk::TreeModel::iterator& iter, Lay
       }
       else if(rowChild[m_model_items->m_columns.m_col_type] == TreeStore_Layout::TYPE_PORTAL)
       {
-        LayoutItem_Portal portal;
-        portal.set_relationship(  rowChild[m_model_items->m_columns.m_col_portal_relationship] );
+        const LayoutItem_Portal portal = rowChild[m_model_items->m_columns.m_col_portal];
         group.add_item(portal);
       }
       else if(rowChild[m_model_items->m_columns.m_col_type] == TreeStore_Layout::TYPE_FIELD)
@@ -214,19 +213,20 @@ void Dialog_Layout_Details::add_group(const Gtk::TreeModel::iterator& parent, co
     for(LayoutGroup::type_map_const_items::const_iterator iter = items.begin(); iter != items.end(); ++iter)
     {
       const LayoutItem* item = iter->second;
-      const LayoutGroup* child_group = dynamic_cast<const LayoutGroup*>(item);
-      if(child_group) //If it is a group:
-        add_group(iterNewGroup, *child_group); //recursive
+  
+      const LayoutItem_Portal* portal = dynamic_cast<const LayoutItem_Portal*>(item);
+      if(portal) //If it is a portal
+      {
+        Gtk::TreeModel::iterator iterField = m_model_items->append(iterNewGroup->children());
+        Gtk::TreeModel::Row row = *iterField;
+        row[m_model_items->m_columns.m_col_type] = TreeStore_Layout::TYPE_PORTAL;
+        row[m_model_items->m_columns.m_col_portal] = *portal;
+      }
       else
       {
-        const LayoutItem_Portal* portal = dynamic_cast<const LayoutItem_Portal*>(item);
-        if(portal) //If it is a portal
-        {
-          Gtk::TreeModel::iterator iterField = m_model_items->append(iterNewGroup->children());
-          Gtk::TreeModel::Row row = *iterField;
-          row[m_model_items->m_columns.m_col_type] = TreeStore_Layout::TYPE_PORTAL;
-          row[m_model_items->m_columns.m_col_portal_relationship] = portal->get_relationship();
-        }
+        const LayoutGroup* child_group = dynamic_cast<const LayoutGroup*>(item);
+        if(child_group) //If it is a group:
+          add_group(iterNewGroup, *child_group); //recursive
         else
         {
           const LayoutItem_Field* field = dynamic_cast<const LayoutItem_Field*>(item);
@@ -239,7 +239,7 @@ void Dialog_Layout_Details::add_group(const Gtk::TreeModel::iterator& parent, co
             row[m_model_items->m_columns.m_col_field_formatting] = *field;
             row[m_model_items->m_columns.m_col_name] = field->get_name();
             row[m_model_items->m_columns.m_col_relationship] = field->m_relationship;
-
+  
             row[m_model_items->m_columns.m_col_editable] = field->get_editable();
           }
         }
@@ -611,7 +611,10 @@ void Dialog_Layout_Details::on_button_add_related()
     {
       Gtk::TreeModel::Row row = *iter;
       row[m_model_items->m_columns.m_col_type] = TreeStore_Layout::TYPE_PORTAL;
-      row[m_model_items->m_columns.m_col_portal_relationship] = relationship.get_name();
+      
+      LayoutItem_Portal portal;
+      portal.set_relationship(relationship.get_name());
+      row[m_model_items->m_columns.m_col_portal] = portal;
       row[m_model_items->m_columns.m_col_editable] = true; //A sane default.
       //row[m_model_items->m_columns.m_col_title] = field.get_title();
 
@@ -788,11 +791,13 @@ void Dialog_Layout_Details::on_button_field_edit()
         case TreeStore_Layout::TYPE_PORTAL:
         {
           Relationship relationship;
-          relationship.set_name( row[m_model_items->m_columns.m_col_portal_relationship] ); //Start with this one selected.
+          LayoutItem_Portal portal = row[m_model_items->m_columns.m_col_portal];
+          relationship.set_name( portal.get_relationship() ); //Start with this one selected.
           bool test = offer_relationship_list(relationship);
           if(test)
           {
-            row[m_model_items->m_columns.m_col_portal_relationship] = relationship.get_name();
+            portal.set_relationship(relationship.get_name());
+            row[m_model_items->m_columns.m_col_portal] = portal;
           }
 
           break;
@@ -876,7 +881,8 @@ void Dialog_Layout_Details::on_cell_data_name(Gtk::CellRenderer* renderer, const
       }
       else if(is_relationship)
       {
-        markup = _("Related: ") + row[m_model_items->m_columns.m_col_portal_relationship];
+        const LayoutItem_Portal portal = row[m_model_items->m_columns.m_col_portal];
+        markup = _("Related: ") + portal.get_relationship();
       }
       else
       {

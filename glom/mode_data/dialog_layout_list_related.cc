@@ -96,13 +96,13 @@ Dialog_Layout_List_Related::~Dialog_Layout_List_Related()
 {
 }
 
-void Dialog_Layout_List_Related::set_document(const Glib::ustring& layout, Document_Glom* document, const Relationship& relationship)
+void Dialog_Layout_List_Related::set_document(const Glib::ustring& layout, Document_Glom* document, const LayoutItem_Portal& portal)
 {
   type_vecLayoutFields empty_fields; //Just to satisfy the base class.
-  Dialog_Layout::set_document(layout, document, relationship.get_from_table(), empty_fields);
+  Dialog_Layout::set_document(layout, document, portal.m_relationship.get_from_table(), empty_fields);
   //m_table_name is now actually the parent_table_name.
 
-  m_relationship = relationship;
+  m_portal = portal;
 
   update_ui();
 }
@@ -119,7 +119,7 @@ void Dialog_Layout_List_Related::update_ui(bool including_relationship_list)
     if(including_relationship_list)
     {
       m_combo_relationship_name->clear_text();
-      Document_Glom::type_vecRelationships vecRelationships = document->get_relationships(m_relationship.get_from_table());
+      Document_Glom::type_vecRelationships vecRelationships = document->get_relationships(m_portal.m_relationship.get_from_table());
 
       for(Document_Glom::type_vecRelationships::iterator iter = vecRelationships.begin(); iter != vecRelationships.end(); ++iter)
       {
@@ -128,18 +128,19 @@ void Dialog_Layout_List_Related::update_ui(bool including_relationship_list)
     }
 
     //Set the table name and title:
-    m_combo_relationship_name->set_active_text(m_relationship.get_name()); 
+    m_combo_relationship_name->set_active_text(m_portal.m_relationship.get_name()); 
 
-    m_entry_table_title->set_text( m_relationship.get_title() );
+    m_entry_table_title->set_text( m_portal.m_relationship.get_title() );
 
-    Document_Glom::type_mapLayoutGroupSequence mapGroups = document->get_relationship_data_layout_groups_plus_new_fields(m_layout_name, m_relationship);
-    document->fill_layout_field_details(m_relationship.get_to_table(), mapGroups); //Update with full field information.
+    Document_Glom::type_mapLayoutGroupSequence mapGroups;
+    mapGroups[0] = m_portal;
+    document->fill_layout_field_details(m_portal.m_relationship.get_to_table(), mapGroups); //Update with full field information.
 
     //If no information is stored in the document, then start with something:
 
     if(mapGroups.empty())
     {
-      const Glib::ustring table_name = m_relationship.get_to_table();
+      const Glib::ustring table_name = m_portal.m_relationship.get_to_table();
       Document_Glom::type_vecFields table_fields = document->get_table_fields(table_name);
 
       LayoutGroup group;
@@ -256,10 +257,9 @@ void Dialog_Layout_List_Related::save_to_document()
     //Get the groups and their fields:
     Document_Glom::type_mapLayoutGroupSequence mapGroups;
 
-    //Add the fields to the one group:
-    LayoutGroup others;
-    others.set_name("main");
-    others.m_sequence = 1;
+    //Add the fields to the portal:
+    //The code that created this dialog must read m_portal back out again.
+    m_portal.remove_all_items();
 
     guint field_sequence = 1; //0 means no sequence
     for(Gtk::TreeModel::iterator iterFields = m_model_fields->children().begin(); iterFields != m_model_fields->children().end(); ++iterFields)
@@ -272,27 +272,18 @@ void Dialog_Layout_List_Related::save_to_document()
       {
         item.m_sequence = field_sequence;
 
-        others.add_item(item, field_sequence); //Add it to the group:
+        m_portal.add_item(item, field_sequence); //Add it to the group:
 
         ++field_sequence;
       }
     }
 
-    mapGroups[1] = others;
-
     Document_Glom* document = get_document();
     if(document)
     {
-      Glib::ustring relationship_name = m_combo_relationship_name->get_active_text();
-      if(!relationship_name.empty())
-      {
-        document->set_relationship_data_layout_groups(m_layout_name, m_relationship, mapGroups);
-        m_modified = false;
-      }
-
       //Save the relationship title, which will be used elsewhere too:
-      m_relationship.set_title(m_entry_table_title->get_text());
-      document->set_relationship(m_table_name, m_relationship);
+      m_portal.m_relationship.set_title(m_entry_table_title->get_text());
+      document->set_relationship(m_table_name, m_portal.m_relationship);
     }
   }
 }
@@ -305,7 +296,7 @@ void Dialog_Layout_List_Related::on_combo_relationship_changed()
   {
     Document_Glom* pDocument = get_document();
     if(pDocument)
-      pDocument->get_relationship(m_relationship.get_from_table(), relationship_name, m_relationship);
+      pDocument->get_relationship(m_portal.m_relationship.get_from_table(), relationship_name, m_portal.m_relationship);
 
     //Refresh everything for the new relationship:
     update_ui(false /* not including the list of relationships */);
@@ -330,7 +321,7 @@ void Dialog_Layout_List_Related::on_button_add_field()
 
     if(dialog)
     {
-      dialog->set_document(get_document(), m_relationship.get_to_table());
+      dialog->set_document(get_document(), m_portal.m_relationship.get_to_table());
       dialog->set_transient_for(*this);
       int response = dialog->run();
       if(response == Gtk::RESPONSE_OK)
@@ -437,7 +428,7 @@ void Dialog_Layout_List_Related::on_button_edit_field()
           Gtk::TreeModel::Row row = *iter;
           const LayoutItem_Field& field = row[m_ColumnsFields.m_col_layout_item];
 
-          dialog->set_document(get_document(), m_relationship.get_to_table(), field);
+          dialog->set_document(get_document(), m_portal.m_relationship.get_to_table(), field);
           dialog->set_transient_for(*this);
           int response = dialog->run();
           if(response == Gtk::RESPONSE_OK)
@@ -496,7 +487,7 @@ void Dialog_Layout_List_Related::on_button_field_formatting()
           Gtk::TreeModel::Row row = *iter;
           LayoutItem_Field field = row[m_ColumnsFields.m_col_layout_item];
 
-          dialog->set_field(field, m_relationship.get_to_table());
+          dialog->set_field(field, m_portal.m_relationship.get_to_table());
           dialog->set_transient_for(*this);
           int response = dialog->run();
           dialog->hide();
@@ -519,4 +510,10 @@ void Dialog_Layout_List_Related::on_button_field_formatting()
     std::cerr << ex.what() << std::endl;
   }
 }
+
+LayoutItem_Portal Dialog_Layout_List_Related::get_portal_layout()
+{
+  return m_portal;
+}
+
 

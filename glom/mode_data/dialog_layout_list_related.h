@@ -36,10 +36,11 @@ public:
    * @param table_name The table name.
    * @param table_fields: The actual fields in the table, in case the document does not yet know about them all.
    */
-  virtual void set_document(const Glib::ustring& layout, Document_Glom* document, const Relationship& relationship);
+  virtual void set_document(const Glib::ustring& layout, Document_Glom* document, const LayoutItem_Portal& portal);
   virtual void update_ui(bool including_relationships_list = true);
 
   virtual Glib::ustring get_relationship_name() const;
+  LayoutItem_Portal get_portal_layout();
 
 protected:
 
@@ -83,7 +84,7 @@ protected:
   Gtk::Button* m_button_field_formatting;
 
   Combo_TextGlade* m_combo_relationship_name;
-  Relationship m_relationship;
+  LayoutItem_Portal m_portal;
 
   Glib::RefPtr<Gtk::ListStore> m_model_fields;
 };

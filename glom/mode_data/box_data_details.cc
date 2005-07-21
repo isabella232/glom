@@ -451,11 +451,7 @@ void Box_Data_Details::on_flowtable_layout_changed()
   //Get new layout:
   Document_Glom::type_mapLayoutGroupSequence layout_groups;
   m_FlowTable.get_layout_groups(layout_groups);
-
-  Document_Glom* document = get_document();
-  if(document)
-    document->set_data_layout_groups("details", m_strTableName, layout_groups);
-
+  
   //Build the view again from the new layout:
   create_layout();
 

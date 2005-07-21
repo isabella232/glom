@@ -22,7 +22,7 @@
 #define GLOM_MODE_DATA_TREESTORE_LAYOUT_H
 
 #include <gtkmm/treestore.h>
-#include "../data_structure/layout/layoutgroup.h"
+#include "../data_structure/layout/layoutitem_portal.h"
 
 class TreeStore_Layout : public Gtk::TreeStore
 {
@@ -44,7 +44,7 @@ public:
   public:
 
     ModelColumns()
-    { add(m_col_type); add(m_col_name); add(m_col_relationship); add(m_col_field_formatting); add(m_col_title); add(m_col_editable); add(m_col_sequence); add(m_col_columns_count); add(m_col_portal_relationship); }
+    { add(m_col_type); add(m_col_name); add(m_col_relationship); add(m_col_field_formatting); add(m_col_title); add(m_col_editable); add(m_col_sequence); add(m_col_columns_count); add(m_col_portal_relationship); add(m_col_portal); }
 
     Gtk::TreeModelColumn<enumType> m_col_type;
     Gtk::TreeModelColumn<Glib::ustring> m_col_name;
@@ -54,7 +54,9 @@ public:
     Gtk::TreeModelColumn<bool> m_col_editable; 
     Gtk::TreeModelColumn<guint> m_col_sequence;
     Gtk::TreeModelColumn<guint> m_col_columns_count; //Only for groups.
+    
     Gtk::TreeModelColumn<Glib::ustring> m_col_portal_relationship; //Only for portals.
+    Gtk::TreeModelColumn<LayoutItem_Portal> m_col_portal;
   };
 
   ModelColumns m_columns;
