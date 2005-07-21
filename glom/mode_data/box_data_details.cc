@@ -451,13 +451,6 @@ void Box_Data_Details::on_flowtable_layout_changed()
   //Get new layout:
   Document_Glom::type_mapLayoutGroupSequence layout_groups;
   m_FlowTable.get_layout_groups(layout_groups);
-
-  g_warning("XXX debug 1");
-  
-  Document_Glom* document = get_document();
-  if(document)
-    document->set_data_layout_groups("details", m_strTableName, layout_groups);
-  g_warning("XXX debug 1a");
   
   //Build the view again from the new layout:
   create_layout();
@@ -634,6 +627,8 @@ void Box_Data_Details::refresh_related_fields(const Gtk::TreeModel::iterator& /*
   {
     const Glib::ustring query = build_sql_select(m_strTableName, fieldsToGet, primary_key, primary_key_value);
 
+    //g_warning("Box_Data_Details::refresh_related_fields(): get query = %s", query.c_str());
+    
     Glib::RefPtr<Gnome::Gda::DataModel> result = Query_execute(query);
     if(!result)
       handle_error();
