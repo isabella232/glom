@@ -108,7 +108,6 @@ void DbAddDel_WithButtons::setup_buttons()
   const bool allow_del = get_allow_user_actions() && m_allow_delete;
   const bool allow_add = get_allow_user_actions() && m_allow_add;
   
-  //g_warning("DbAddDel_WithButtons::setup_buttons(): allow_edit=%d", allow_edit);
   m_Button_Edit.property_visible() = allow_edit;
   m_Button_Del.property_visible() = allow_del;  
   m_Button_Add.property_visible() = allow_add;

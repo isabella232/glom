@@ -1,3 +1,10 @@
+2005-07-22  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/utility_widgets/db_adddel/cellrenderer_button.cc:
+	Constructor: Use the OPEN stock item instead of EDIT for 
+	viewing details. Set mode to activatable so it actually 
+	responds to clicks.
+
 2005-07-22  Murray Cumming  <set EMAIL_ADDRESS environment variable>
 
 	* glom/mode_data/box_data_list.cc: Call 

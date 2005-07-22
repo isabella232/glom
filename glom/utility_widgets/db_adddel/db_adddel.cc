@@ -1728,7 +1728,6 @@ bool DbAddDel::get_allow_view_details() const
 
 void DbAddDel::on_cell_button_clicked()
 {
-  g_warning("DbAddDel::on_cell_button_clicked): debug");
   on_MenuPopup_activate_Edit();
 }
 
