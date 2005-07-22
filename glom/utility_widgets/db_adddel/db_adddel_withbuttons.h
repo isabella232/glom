@@ -39,6 +39,8 @@ protected:
   virtual void on_button_add();
   virtual void on_button_del();
   virtual void on_button_edit();
+  
+  virtual void show_all_vfunc();
 
   //member widgets:
   Gtk::HBox m_HBox;

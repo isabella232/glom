@@ -82,6 +82,12 @@ Box_Data_List_Related::~Box_Data_List_Related()
   }
 }
 
+void Box_Data_List_Related::enable_buttons()
+{
+  const bool to_table_is_hidden = get_document()->get_table_is_hidden(m_portal.m_relationship.get_to_table());
+  m_AddDel.set_allow_view_details(!to_table_is_hidden); //Don't allow the user to go to a record in a hidden table.
+}
+
 bool Box_Data_List_Related::init_db_details(const LayoutItem_Portal& portal)
 {
   m_portal = portal;
@@ -95,10 +101,8 @@ bool Box_Data_List_Related::init_db_details(const LayoutItem_Portal& portal)
     g_warning("Box_Data_List_Related::init_db_details(): key_field not found.");
   }
 
-  const bool to_table_is_hidden = get_document()->get_table_is_hidden(portal.m_relationship.get_to_table());
-  g_warning("Box_Data_List_Related::init_db_details(): table=%s, hidden=%d", portal.m_relationship.get_to_table().c_str(), to_table_is_hidden);
-  m_AddDel.set_allow_view_details(!to_table_is_hidden); //Don't allow the user to go to a record in a hidden table.
-  
+  enable_buttons();
+    
   return Box_Data_List::init_db_details(m_portal.m_relationship.get_to_table()); //Calls create_layout() and fill_from_database().
 }
 
@@ -273,10 +277,6 @@ void Box_Data_List_Related::on_adddel_user_added(const Gtk::TreeModel::iterator&
   }
 }
 
-void Box_Data_List_Related::enable_buttons()
-{
-}
-
 Box_Data_List_Related::type_vecLayoutFields Box_Data_List_Related::get_fields_to_show() const
 {
   const Document_Glom* document = get_document();
@@ -318,11 +318,11 @@ void Box_Data_List_Related::on_dialog_layout_hide()
   LayoutItem_Portal* pLayoutItem = dynamic_cast<LayoutItem_Portal*>(get_layout_item());
   if(pLayoutItem)
   {
-  
+/*  
     *pLayoutItem = m_portal;
     g_warning("Box_Data_List_Related::opLayoutItem->m_map_items.size()=%d", pLayoutItem->m_map_items.size());
     pLayoutItem->debug();
-
+*/
     signal_layout_changed().emit(); //TODO: Check whether it has really changed.
   }
 }

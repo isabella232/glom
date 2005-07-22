@@ -113,4 +113,13 @@ void DbAddDel_WithButtons::setup_buttons()
   m_Button_Add.property_visible() = allow_add;
 }
 
+void DbAddDel_WithButtons::show_all_vfunc()
+{
+  //Call the base class:
+  Gtk::VBox::show_all_vfunc();
+  
+  //Hide some stuff:
+  setup_buttons();
+}
+
 

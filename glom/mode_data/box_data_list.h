@@ -52,6 +52,7 @@ public:
 protected:
   virtual void create_layout(); //override
   virtual bool fill_from_database(); //override.
+  virtual void enable_buttons();
 
   virtual bool get_field_primary_key_index(guint& field_column) const; //TODO: visible 
   virtual bool get_field_primary_key(Field& field) const;

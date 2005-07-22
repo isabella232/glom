@@ -67,7 +67,7 @@ protected:
   virtual void on_record_deleted(const Gnome::Gda::Value& primary_key_value); //override.
   virtual void on_dialog_layout_hide(); //override.
 
-  virtual void enable_buttons();
+  virtual void enable_buttons(); //override
 
 protected:
   Gtk::Frame m_Frame;

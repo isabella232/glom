@@ -1,5 +1,19 @@
 2005-07-22  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/mode_data/box_data_list.cc:
+	* glom/mode_data/box_data_list.h:
+	* glom/mode_data/box_data_list_related.cc:
+	* glom/mode_data/box_data_list_related.h: Added virtual 
+	enable_buttons(), and moved some code there to stop the 
+	base class from making the Open button visible again for 
+	hidden-table related records.
+	* glom/utility_widgets/db_adddel/db_adddel_withbuttons.cc:
+	* glom/utility_widgets/db_adddel/db_adddel_withbuttons.h: 
+	Added a show_all_vfunc() implementation in case a 
+	show_all() would show the hidden buttons.
+
+2005-07-22  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/utility_widgets/db_adddel/cellrenderer_button.cc:
 	Constructor: Use the OPEN stock item instead of EDIT for 
 	viewing details. Set mode to activatable so it actually 

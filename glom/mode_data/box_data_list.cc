@@ -72,6 +72,16 @@ Box_Data_List::~Box_Data_List()
   remove_view(&m_AddDel);
 }
 
+void Box_Data_List::enable_buttons()
+{
+  const Privileges table_privs = get_current_privs(m_strTableName);
+  
+    //Enable/Disable record creation and deletion:
+  m_AddDel.set_allow_add(table_privs.m_create);
+  m_AddDel.set_allow_delete(table_privs.m_delete);
+  m_AddDel.set_allow_view_details(table_privs.m_view);
+}
+
 bool Box_Data_List::fill_from_database()
 {
   bool result = false;
@@ -96,10 +106,7 @@ bool Box_Data_List::fill_from_database()
     //Do not try to show the data if the user may not view it:
     const Privileges table_privs = get_current_privs(m_strTableName);
 
-    //Enable/Disable record creation and deletion:
-    m_AddDel.set_allow_add(table_privs.m_create);
-    m_AddDel.set_allow_delete(table_privs.m_delete);
-    m_AddDel.set_allow_view_details(table_privs.m_view);
+    enable_buttons();
 
     m_AddDel.set_where_clause(m_strWhereClause);
 
