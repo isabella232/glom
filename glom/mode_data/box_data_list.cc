@@ -99,6 +99,7 @@ bool Box_Data_List::fill_from_database()
     //Enable/Disable record creation and deletion:
     m_AddDel.set_allow_add(table_privs.m_create);
     m_AddDel.set_allow_delete(table_privs.m_delete);
+    m_AddDel.set_allow_view_details(table_privs.m_view);
 
     m_AddDel.set_where_clause(m_strWhereClause);
 

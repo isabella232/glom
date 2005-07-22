@@ -137,8 +137,8 @@ public:
   virtual void set_allow_view(bool val = true);
   
   ///Whether each row should have a button, to request edit.
-  void set_use_row_button(bool val = true);
-  bool get_use_row_button() const;
+  void set_allow_view_details(bool val = true);
+  bool get_allow_view_details() const;
 
 
   /** @result The index of the new column.
@@ -327,7 +327,7 @@ protected:
 
   bool m_columns_ready;
   bool m_allow_view;
-  bool m_use_row_button;
+  bool m_allow_view_details;
   Gtk::TreeViewColumn* m_treeviewcolumn_button;
 
   //signals:

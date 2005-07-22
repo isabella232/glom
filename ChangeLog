@@ -1,3 +1,19 @@
+2005-07-22  Murray Cumming  <set EMAIL_ADDRESS environment variable>
+
+	* glom/mode_data/box_data_list.cc: Call 
+	DbAddDel::set_allow_view_details() so we get the open button 
+	and the row open button.
+	* glom/mode_data/box_data_list_related.cc:
+	* glom/utility_widgets/db_adddel/db_adddel.cc:
+	* glom/utility_widgets/db_adddel/db_adddel.h: Change 
+	*use_row_button to *allow_view_details.
+	on_button_press_event_Popup(): Do not handle double-click on 
+	the row to open the details, because it is too easy to 
+	double-click when single-clicking to edit a cell.
+	* glom/utility_widgets/db_adddel/db_adddel_withbuttons.cc:
+	setup_buttons(): Just hide the buttons when necessary, 
+	instead of adding and removing them. 
+
 2005-07-22  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/document/document_glom.cc:

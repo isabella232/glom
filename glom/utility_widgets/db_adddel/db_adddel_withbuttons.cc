@@ -40,6 +40,11 @@ DbAddDel_WithButtons::DbAddDel_WithButtons()
   m_Button_Del.signal_clicked().connect(sigc::mem_fun(*this, &DbAddDel_WithButtons::on_button_del));
   m_Button_Edit.signal_clicked().connect(sigc::mem_fun(*this, &DbAddDel_WithButtons::on_button_edit));
 
+  m_HBox.pack_end(m_Button_Edit, Gtk::PACK_SHRINK);
+  m_HBox.pack_end(m_Button_Del, Gtk::PACK_SHRINK);
+  m_HBox.pack_end(m_Button_Add, Gtk::PACK_SHRINK);
+
+  setup_buttons();
 }
 
 DbAddDel_WithButtons::~DbAddDel_WithButtons()
@@ -77,35 +82,21 @@ void DbAddDel_WithButtons::set_allow_add(bool val)
 {
   DbAddDel::set_allow_add(val);
 
-  m_Button_Add.set_sensitive(val);
+  setup_buttons();
 }
 
 void DbAddDel_WithButtons::set_allow_delete(bool val)
 {
   DbAddDel::set_allow_delete(val);
 
-  m_Button_Del.set_sensitive(val);
+  setup_buttons();
 }
 
 void DbAddDel_WithButtons::set_allow_user_actions(bool bVal)
 {
   DbAddDel::set_allow_user_actions(bVal);
 
-  //add or remove buttons:
-  if(bVal)
-  {
-    set_allow_user_actions(false); //Remove them first (Don't want to add them twice).
-
-    //Ensure that the buttons are in the HBox.
-    setup_buttons();
-  }
-  else
-  {
-    //We don't just remove m_HBox, because we want it to remain as a placeholder.
-    m_HBox.remove(m_Button_Add);
-    m_HBox.remove(m_Button_Del);
-    m_HBox.remove(m_Button_Edit);
-  }
+  setup_buttons();
 
   //Recreate popup menu with correct items:
   setup_menu();
@@ -113,17 +104,14 @@ void DbAddDel_WithButtons::set_allow_user_actions(bool bVal)
 
 void DbAddDel_WithButtons::setup_buttons()
 {
-  //Put buttons below sheet:
-  //m_HBox.remove(m_Button_Add);
-  //m_HBox.remove(m_Button_Del);
-  //m_HBox.remove(m_Button_Edit);
-
-  if(get_allow_user_actions())
-  {
-    m_HBox.pack_end(m_Button_Edit, Gtk::PACK_SHRINK);
-    m_HBox.pack_end(m_Button_Del, Gtk::PACK_SHRINK);
-    m_HBox.pack_end(m_Button_Add, Gtk::PACK_SHRINK);
-  }
+  const bool allow_edit = get_allow_user_actions() && get_allow_view_details();
+  const bool allow_del = get_allow_user_actions() && m_allow_delete;
+  const bool allow_add = get_allow_user_actions() && m_allow_add;
+  
+  //g_warning("DbAddDel_WithButtons::setup_buttons(): allow_edit=%d", allow_edit);
+  m_Button_Edit.property_visible() = allow_edit;
+  m_Button_Del.property_visible() = allow_del;  
+  m_Button_Add.property_visible() = allow_add;
 }
 
 

@@ -97,7 +97,7 @@ bool Box_Data_List_Related::init_db_details(const LayoutItem_Portal& portal)
 
   const bool to_table_is_hidden = get_document()->get_table_is_hidden(portal.m_relationship.get_to_table());
   
-  m_AddDel.set_use_row_button(!to_table_is_hidden); //Don't allow the user to go to a record in a hidden table.
+  m_AddDel.set_allow_view_details(!to_table_is_hidden); //Don't allow the user to go to a record in a hidden table.
   
   return Box_Data_List::init_db_details(m_portal.m_relationship.get_to_table()); //Calls create_layout() and fill_from_database().
 }

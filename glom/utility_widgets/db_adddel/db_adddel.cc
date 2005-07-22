@@ -63,7 +63,7 @@ DbAddDel::DbAddDel()
   m_allow_delete(true),
   m_columns_ready(false),
   m_allow_view(true),
-  m_use_row_button(false),
+  m_allow_view_details(false),
   m_treeviewcolumn_button(0)
 {
   set_prevent_user_signals();
@@ -290,17 +290,20 @@ bool DbAddDel::on_button_press_event_Popup(GdkEventButton *event)
   {
     //Give user choices of actions on this item:
     m_pMenuPopup->popup(event->button, event->time);
+    return true; //handled.
   }
   else
   {
     if(event->type == GDK_2BUTTON_PRESS)
     {
       //Double-click means edit.
-      on_MenuPopup_activate_Edit();
+      //Don't do this, because users sometimes double-click by accident when they just want to edit a cell.
+      //on_MenuPopup_activate_Edit();
+      return false; //Not handled.
     }
   }
 
-  return true;
+  return  false; //Not handled. TODO: Call base class?
 }
 
 Gtk::TreeModel::iterator DbAddDel::get_item_placeholder()
@@ -648,7 +651,7 @@ void DbAddDel::construct_specified_columns()
     const int viewcols_count = m_TreeView.append_column(Glib::ustring(), *pCellButton);
     m_treeviewcolumn_button = m_TreeView.get_column(viewcols_count - 1);
     
-    m_treeviewcolumn_button->property_visible() = get_use_row_button();
+    m_treeviewcolumn_button->property_visible() = get_allow_view_details();
     
     ++view_column_index;
   }
@@ -1709,18 +1712,18 @@ void DbAddDel::set_allow_view(bool val)
   m_allow_view = val;
 }
 
-void DbAddDel::set_use_row_button(bool val)
+void DbAddDel::set_allow_view_details(bool val)
 {
-  m_use_row_button = val;
+  m_allow_view_details = val;
   
   //Hide it if it was visible:
   if(m_treeviewcolumn_button)
-    m_treeviewcolumn_button->property_visible() = get_use_row_button();
+    m_treeviewcolumn_button->property_visible() = get_allow_view_details();
 }
 
-bool DbAddDel::get_use_row_button() const
+bool DbAddDel::get_allow_view_details() const
 {
-  return m_use_row_button;
+  return m_allow_view_details;
 }
 
 void DbAddDel::on_cell_button_clicked()
