@@ -142,3 +142,9 @@ void LayoutItem_Portal::change_related_relationship_name(const Glib::ustring& /*
 {
   
 }
+
+void LayoutItem_Portal::debug(guint level) const
+{
+  g_warning("LayoutItem_Portal::debug: level = %d", level);
+  LayoutGroup::debug(level);
+}

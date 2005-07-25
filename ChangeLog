@@ -1,5 +1,18 @@
 2005-07-25  Murray Cumming  <murrayc@murrayc.com>
 
+	* configure.in: Depend on latest libgdamm.
+	* glom/utility_widgets/imageglom.cc:
+	* glom/data_structure/field.cc: Change for latest libgdamm
+	API change.
+	* glom/document/document_glom.cc:
+	* glom/document/document_glom.h: Remove unused 
+	set_relationship_data_layout_groups().
+	* glom/mode_data/box_data_details.cc: on_flowtable_layout_changed():
+	Actually save the new layout in the document. For instance, really 
+	save portal layout changes.
+
+2005-07-25  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/utility_widgets/db_adddel/cellrenderer_button.cc:
 	* glom/utility_widgets/db_adddel/cellrenderer_button.h:
 	signal_clicked(): Add path parameter, so we know what row 

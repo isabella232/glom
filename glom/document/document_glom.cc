@@ -823,17 +823,9 @@ Document_Glom::type_mapLayoutGroupSequence Document_Glom::get_data_layout_groups
   return type_mapLayoutGroupSequence(); //not found
 }
 
-void Document_Glom::set_relationship_data_layout_groups(const Glib::ustring& layout_name, const Relationship& relationship, const type_mapLayoutGroupSequence& groups)
+void Document_Glom::set_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name, const type_mapLayoutGroupSequence& groups)
 {
-  //TODO: Use an actual relationship_name instead of concatenating:
-  set_data_layout_groups(layout_name + "_related_" + relationship.get_name(), relationship.get_from_table(), groups, relationship.get_to_table());
-}
-
-void Document_Glom::set_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name, const type_mapLayoutGroupSequence& groups, const Glib::ustring& table_name)
-{
-  Glib::ustring child_table_name = table_name;
-  if(child_table_name.empty())
-    child_table_name = parent_table_name;
+  Glib::ustring child_table_name = parent_table_name; //TODO: Remove this cruft.
 
   //g_warning("Document_Glom::set_data_layout_groups(): ADDING layout for table %s (child_table=%s), for layout %s", parent_table_name.c_str(), child_table_name.c_str(), layout_name.c_str());
 
@@ -1729,7 +1721,9 @@ bool Document_Glom::save_before()
           xmlpp::Element* nodeGroups = nodeReport->add_child(GLOM_NODE_DATA_LAYOUT_GROUPS);
           save_before_layout_group(nodeGroups, iter->second.m_layout_group);
         }
-
+        
+        
+        nodeTable->add_child_text("\n\n"); //Make it a bit easier to read, 
       }
 
     } //for m_tables
@@ -1753,7 +1747,7 @@ bool Document_Glom::save_before()
       nodeGroup->set_attribute(GLOM_ATTRIBUTE_NAME, group_info.m_name);
       set_node_attribute_value_as_bool(nodeGroup, GLOM_ATTRIBUTE_DEVELOPER, group_info.m_developer);
 
-      //The privilieges for each table, for this group:
+      //The privileges for each table, for this group:
       for(GroupInfo::type_map_table_privileges::const_iterator iter = group_info.m_map_privileges.begin(); iter != group_info.m_map_privileges.end(); ++iter)
       {
         xmlpp::Element* nodeTablePrivs = nodeGroups->add_child(GLOM_NODE_TABLE_PRIVS);

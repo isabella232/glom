@@ -318,11 +318,11 @@ void Box_Data_List_Related::on_dialog_layout_hide()
   LayoutItem_Portal* pLayoutItem = dynamic_cast<LayoutItem_Portal*>(get_layout_item());
   if(pLayoutItem)
   {
-/*  
+ 
     *pLayoutItem = m_portal;
     g_warning("Box_Data_List_Related::opLayoutItem->m_map_items.size()=%d", pLayoutItem->m_map_items.size());
     pLayoutItem->debug();
-*/
+
     signal_layout_changed().emit(); //TODO: Check whether it has really changed.
   }
 }

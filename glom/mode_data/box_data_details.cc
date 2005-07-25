@@ -166,7 +166,7 @@ void Box_Data_Details::create_layout()
     m_FlowTable.set_table(m_strTableName); //This allows portals to get full Relationship information
 
     //This map of layout groups will also contain the field information from the database:
-    Document_Glom::type_mapLayoutGroupSequence layout_groups = get_data_layout_groups("details");
+    Document_Glom::type_mapLayoutGroupSequence layout_groups = get_data_layout_groups(m_layout_name);
 
     for(Document_Glom::type_mapLayoutGroupSequence::const_iterator iter = layout_groups.begin(); iter != layout_groups.end(); ++iter)
     {
@@ -445,6 +445,11 @@ void Box_Data_Details::on_flowtable_layout_changed()
   //Get new layout:
   Document_Glom::type_mapLayoutGroupSequence layout_groups;
   m_FlowTable.get_layout_groups(layout_groups);
+  
+  //Store it in the document:
+  Document_Glom* document = get_document();
+  if(document)
+    document->set_data_layout_groups(m_layout_name, m_strTableName, layout_groups);
   
   //Build the view again from the new layout:
   create_layout();
@@ -802,7 +807,7 @@ void Box_Data_Details::print_layout()
     //The groups:
     xmlpp::Element* nodeParent = nodeRoot;
 
-    Document_Glom::type_mapLayoutGroupSequence layout_groups = get_data_layout_groups("details");
+    Document_Glom::type_mapLayoutGroupSequence layout_groups = get_data_layout_groups(m_layout_name);
     for(Document_Glom::type_mapLayoutGroupSequence::const_iterator iter = layout_groups.begin(); iter != layout_groups.end(); ++iter)
     {
       const LayoutGroup& layout_group = iter->second;

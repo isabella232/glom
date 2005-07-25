@@ -52,7 +52,7 @@ public:
 
   void remove_all_items();
   
-  void debug(guint level = 0) const;
+  virtual void debug(guint level = 0) const;
 
   Glib::ustring m_title;
   guint m_columns_count;

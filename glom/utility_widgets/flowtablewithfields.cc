@@ -668,6 +668,17 @@ void FlowTableWithFields::add_layoutwidgetbase(LayoutWidgetBase* layout_widget, 
 
 void FlowTableWithFields::on_layoutwidget_changed()
 {
+g_warning("FlowTableWithFields::on_layoutwidget_changed");
+
+  LayoutGroup* pLayoutItem = dynamic_cast<LayoutGroup*>(get_layout_item());
+  if(pLayoutItem)
+  {
+    //Update tha LayoutItem by looking at the child widgets:
+    get_layout_group(*pLayoutItem);
+    g_warning("FlowTableWithFields::on_layoutwidget_changed size()=%d", pLayoutItem->m_map_items.size());
+    pLayoutItem->debug();
+  }
+
   //Forward the signal to the container:
   signal_layout_changed().emit();
 }

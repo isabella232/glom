@@ -124,7 +124,7 @@ void ImageGlom::set_value(const Gnome::Gda::Value& value)
   if(value.get_value_type() == Gnome::Gda::VALUE_TYPE_BINARY)
   {
     glong size = 0;
-    const gpointer pData = value.get_binary(&size);
+    const gpointer pData = value.get_binary(size);
     if(size && pData)
     {
       //libgda does not currently properly unescape binary data,

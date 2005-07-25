@@ -247,7 +247,7 @@ Glib::ustring Field::sql(const Gnome::Gda::Value& value) const
       if(value.get_value_type() == Gnome::Gda::VALUE_TYPE_BINARY)
       {
         long buffer_size = 0;
-        const gpointer buffer = value.get_binary(&buffer_size);  
+        const gpointer buffer = value.get_binary(buffer_size);  
         str = "'" + GlomConversions::get_escaped_binary_data((guint8*)buffer, buffer_size) + "'::bytea";
       }
       

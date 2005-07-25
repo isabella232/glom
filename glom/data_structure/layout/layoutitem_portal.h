@@ -46,6 +46,8 @@ public:
   
   virtual void change_relationship_name(const Glib::ustring& table_name, const Glib::ustring& name, const Glib::ustring& name_new);
   virtual void change_related_relationship_name(const Glib::ustring& table_name, const Glib::ustring& name, const Glib::ustring& name_new);
+  
+  virtual void debug(guint level = 0) const;
 
   Relationship m_relationship; //Public, for more efficient access.
 
