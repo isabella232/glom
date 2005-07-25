@@ -2007,4 +2007,53 @@ void Document_Glom::remove_report(const Glib::ustring& table_name, const Glib::u
   }
 }
 
+bool Document_Glom::get_relationship_is_to_one(const Glib::ustring& table_name, const Glib::ustring& relationship_name) const
+{
+  Relationship relationship;
+  bool found = get_relationship(table_name, relationship_name, relationship);
+  if(found)
+  {
+    Field field_to;
+    bool found = get_field(relationship.get_to_table(), relationship.get_to_field(), field_to);
+    if(found)
+      return (field_to.get_primary_key() || field_to.get_unique_key());
+  }
+  
+  return false;
+}
+  
+bool Document_Glom::get_field_used_in_relationship_to_one(const Glib::ustring& table_name, const Glib::ustring& field_name, Relationship& relationship) const
+{
+  //Initialize input parameter:
+  relationship = Relationship();
+  
+  type_tables::const_iterator iterFind = m_tables.find(table_name);
+  if(iterFind != m_tables.end())
+  {
+    //Look at each relationship:
+    for(type_vecRelationships::const_iterator iterRel = iterFind->second.m_relationships.begin(); iterRel != iterFind->second.m_relationships.end(); ++iterRel)
+    {
+      //If the relationship uses the field
+      if(iterRel->get_from_field() == field_name)
+      {
+        //if the to_table is not hidden:
+        if(!get_table_is_hidden(iterRel->get_to_table()))
+        {
+          //TODO_Performance: The use of this convenience method means we get the full relationship information again:
+          if(get_relationship_is_to_one(table_name, iterRel->get_name()))
+          {
+            relationship = *iterRel;
+            return true;
+          }
+        }
+      }
+    }
+  }
+  return false;
+}
 
+bool Document_Glom::get_field_used_in_relationship_to_one(const Glib::ustring& table_name, const Glib::ustring& field_name) const
+{
+  Relationship relationship; //ignored.
+  return get_field_used_in_relationship_to_one(table_name, field_name, relationship);
+}

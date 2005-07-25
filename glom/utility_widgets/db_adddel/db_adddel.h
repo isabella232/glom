@@ -267,7 +267,7 @@ protected:
   virtual void on_treeview_button_press_event(GdkEventButton* event);
 
   virtual bool on_treeview_columnheader_button_press_event(GdkEventButton* event);
-  virtual void on_cell_button_clicked();  
+  virtual void on_cell_button_clicked(const Gtk::TreeModel::Path& path);  
 
   bool get_prevent_user_signals() const;
 

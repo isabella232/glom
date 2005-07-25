@@ -44,7 +44,7 @@ bool GlomCellRenderer_Button::activate_vfunc(GdkEvent* event, Gtk::Widget& widge
   //Call base class:
   bool result = CellRendererPixbuf::activate_vfunc(event, widget, path, background_area, cell_area, flags);
   
-  m_signal_clicked.emit();
+  m_signal_clicked.emit( Gtk::TreeModel::Path(path) );
   
   return result;
 }

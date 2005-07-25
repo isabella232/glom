@@ -188,6 +188,7 @@ void FlowTableWithFields::add_layout_group_at_position(const LayoutGroup& group,
 
     //Connect signal:
     flow_table->signal_field_edited().connect( sigc::mem_fun(*this, &FlowTableWithFields::on_flowtable_entry_edited) );
+    flow_table->signal_field_open_details_requested().connect( sigc::mem_fun(*this, &FlowTableWithFields::on_flowtable_entry_open_details_requested) );
     flow_table->signal_related_record_changed().connect( sigc::mem_fun(*this, &FlowTableWithFields::on_flowtable_related_record_changed) );
     flow_table->signal_requested_related_details().connect( sigc::mem_fun(*this, &FlowTableWithFields::on_flowtable_requested_related_details) );
   }
@@ -290,6 +291,8 @@ void FlowTableWithFields::add_field_at_position(const LayoutItem_Field& layoutit
   info.m_second->signal_edited().connect( sigc::bind(sigc::mem_fun(*this, &FlowTableWithFields::on_entry_edited), layoutitem_field)  ); //TODO:  Is it a good idea to bind the LayoutItem? sigc::bind() probably stores a copy at this point.
   info.m_second->signal_layout_item_added().connect( sigc::bind(
     sigc::mem_fun(*this, &FlowTableWithFields::on_datawidget_layout_item_added), info.m_second) );
+    
+  info.m_second->signal_open_details_requested().connect( sigc::bind(sigc::mem_fun(*this, &FlowTableWithFields::on_entry_open_details_requested), layoutitem_field)  );
 
   m_listFields.push_back(info); //This would be the wrong position, but you should only use this method directly when you expect it to be followed by a complete re-layout.
 }
@@ -539,6 +542,11 @@ FlowTableWithFields::type_signal_field_edited FlowTableWithFields::signal_field_
   return m_signal_field_edited;
 }
 
+FlowTableWithFields::type_signal_field_open_details_requested FlowTableWithFields::signal_field_open_details_requested()
+{
+  return m_signal_field_open_details_requested;
+}
+
 FlowTableWithFields::type_signal_related_record_changed FlowTableWithFields::signal_related_record_changed()
 {
   return m_signal_related_record_changed;
@@ -549,15 +557,24 @@ FlowTableWithFields::type_signal_requested_related_details FlowTableWithFields::
   return m_signal_requested_related_details;
 }
 
-
 void FlowTableWithFields::on_entry_edited(const Gnome::Gda::Value& value, LayoutItem_Field field)
 {
   m_signal_field_edited.emit(field, value);
 }
 
+void FlowTableWithFields::on_entry_open_details_requested(const Gnome::Gda::Value& value, LayoutItem_Field field)
+{
+  m_signal_field_open_details_requested.emit(field, value);
+}
+
 void FlowTableWithFields::on_flowtable_entry_edited(const LayoutItem_Field& field, const Gnome::Gda::Value& value)
 {
   m_signal_field_edited.emit(field, value);
+}
+
+void FlowTableWithFields::on_flowtable_entry_open_details_requested(const LayoutItem_Field& field, const Gnome::Gda::Value& value)
+{
+  m_signal_field_open_details_requested.emit(field, value);
 }
 
 void FlowTableWithFields::set_design_mode(bool value)

@@ -42,7 +42,7 @@ DataWidget::DataWidget(const LayoutItem_Field& field, const Glib::ustring& table
   Field::glom_field_type glom_type = field.m_field.get_glom_type();
   set_layout_item(field.clone(), table_name); //takes ownership
 
-  Gtk::Widget* child = 0;
+  m_child = 0;
   LayoutWidgetField* pFieldWidget = 0;
   const Glib::ustring title = field.get_title_or_name();
   if(glom_type == Field::TYPE_BOOLEAN)
@@ -53,7 +53,7 @@ DataWidget::DataWidget(const LayoutItem_Field& field, const Glib::ustring& table
 
     //TODO: entry->signal_user_requested_layout().connect( sigc::mem_fun(*this, &DataWidget::on_child_user_requested_layout );
 
-    child = checkbutton;
+    m_child = checkbutton;
 
     m_label.set_text( Glib::ustring() ); //It is not used.
   }
@@ -67,7 +67,7 @@ DataWidget::DataWidget(const LayoutItem_Field& field, const Glib::ustring& table
 
     //TODO: entry->signal_user_requested_layout().connect( sigc::mem_fun(*this, &DataWidget::on_child_user_requested_layout );
 
-    child = image;
+    m_child = image;
     pFieldWidget = image;
 
     m_label.set_label(title);
@@ -169,19 +169,41 @@ DataWidget::DataWidget(const LayoutItem_Field& field, const Glib::ustring& table
     pFieldWidget->signal_layout_item_added().connect( sigc::mem_fun(*this, &DataWidget::on_child_layout_item_added) );
 
 
-    child = dynamic_cast<Gtk::Widget*>(pFieldWidget);
+    m_child = dynamic_cast<Gtk::Widget*>(pFieldWidget);
     int width = get_suitable_width(field);
     
     if(glom_type == Field::TYPE_IMAGE) //GtkImage widgets default to no size (invisible) if they are empty.
-      child->set_size_request(width, width);
+      m_child->set_size_request(width, width);
     else
-      child->set_size_request(width, -1 /* auto */);
+      m_child->set_size_request(width, -1 /* auto */);
       
-    child->show_all();
+    m_child->show_all();
   }
 
-  if(child)
-    add(*child);
+  if(m_child)
+  {
+    bool child_added = false; //Don't use an extra container unless necessary.
+    if(document->get_field_used_in_relationship_to_one(table_name, field.get_name()))
+    {
+      Gtk::HBox* hbox_parent = Gtk::manage( new Gtk::HBox() ); //We put the child (and any extra stuff) in this:
+      hbox_parent->set_spacing(6);
+      
+      hbox_parent->pack_start(*m_child);
+      add(*hbox_parent);
+    
+    
+      Gtk::Button* button_go_to_details = Gtk::manage(new Gtk::Button(Gtk::Stock::OPEN));
+      hbox_parent->pack_start(*button_go_to_details);
+      button_go_to_details->signal_clicked().connect(sigc::mem_fun(*this, &DataWidget::on_button_open_details));
+      
+      child_added = true;
+    }
+    
+    if(!child_added)
+      add(*m_child);
+  }
+  
+  
 
   setup_menu();
 
@@ -205,7 +227,7 @@ DataWidget::type_signal_edited DataWidget::signal_edited()
 
 void DataWidget::set_value(const Gnome::Gda::Value& value)
 {
-  Gtk::Widget* widget = get_child();
+  Gtk::Widget* widget = get_data_child_widget();
   LayoutWidgetField* generic_field_widget = dynamic_cast<LayoutWidgetField*>(widget);
   if(generic_field_widget)
     generic_field_widget->set_value(value);
@@ -225,7 +247,7 @@ void DataWidget::set_value(const Gnome::Gda::Value& value)
 
 Gnome::Gda::Value DataWidget::get_value() const
 {
-  const Gtk::Widget* widget = get_child();
+  const Gtk::Widget* widget = get_data_child_widget();
   const LayoutWidgetField* generic_field_widget = dynamic_cast<const LayoutWidgetField*>(widget);
   if(generic_field_widget)
     return generic_field_widget->get_value();
@@ -315,7 +337,7 @@ int DataWidget::get_suitable_width(const LayoutItem_Field& field_layout)
 
 void DataWidget::set_viewable(bool viewable)
 {
-  Gtk::Widget* child = get_child();
+  Gtk::Widget* child = get_data_child_widget();
   Gtk::Entry* entry = dynamic_cast<Gtk::Entry*>(child);
   if(entry)
     entry->set_visibility(viewable); //TODO: This is not an ideal way to show non-viewable fields..
@@ -329,7 +351,7 @@ void DataWidget::set_viewable(bool viewable)
 
 void DataWidget::set_editable(bool editable)
 {
-  Gtk::Widget* child = get_child();
+  Gtk::Widget* child = get_data_child_widget();
   Gtk::Entry* entry = dynamic_cast<Gtk::Entry*>(child);
   if(entry)
     entry->set_editable(editable);
@@ -579,3 +601,22 @@ void DataWidget::on_child_layout_item_added(TreeStore_Layout::enumType item_type
   signal_layout_item_added().emit(item_type);
 }
 
+Gtk::Widget* DataWidget::get_data_child_widget()
+{
+  return m_child;
+}
+
+const Gtk::Widget* DataWidget::get_data_child_widget() const
+{
+  return m_child;
+}
+ 
+ DataWidget::type_signal_open_details_requested DataWidget::signal_open_details_requested()
+ {
+   return m_signal_open_details_requested;
+ }
+ 
+ void DataWidget::on_button_open_details()
+ {
+   signal_open_details_requested().emit(get_value());
+ }

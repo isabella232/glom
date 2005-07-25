@@ -76,13 +76,26 @@ public:
 
   typedef std::vector<Relationship> type_vecRelationships;
   virtual type_vecRelationships get_relationships(const Glib::ustring& table_name) const;
-  virtual void set_relationships(const Glib::ustring& table_name, const type_vecRelationships& vecRelationships);
+  void set_relationships(const Glib::ustring& table_name, const type_vecRelationships& vecRelationships);
 
-  virtual bool get_relationship(const Glib::ustring& table_name, const Glib::ustring& relationship_name, Relationship& relationship) const;
-  virtual void set_relationship(const Glib::ustring& table_name, const Relationship& relationship);
+  bool get_relationship(const Glib::ustring& table_name, const Glib::ustring& relationship_name, Relationship& relationship) const;
+  void set_relationship(const Glib::ustring& table_name, const Relationship& relationship);
 
-  virtual void remove_relationship(const Relationship& relationship);
+  void remove_relationship(const Relationship& relationship);
+  
+  /** Returns whether the relationship's to-field is a primary key  or unique field, meaning
+   * that there can be only one related record for each value of the from-field.
+   */
+  bool get_relationship_is_to_one(const Glib::ustring& table_name, const Glib::ustring& relationship_name) const;
+  
+  
+  /** Returns whether the field is the from-field in a to-one relationship.
+   * @see get_relationship_is_to_one(). Ignores hidden tables.
+   */
+  bool get_field_used_in_relationship_to_one(const Glib::ustring& table_name, const Glib::ustring& field_name) const;
+  bool get_field_used_in_relationship_to_one(const Glib::ustring& table_name, const Glib::ustring& field_name, Relationship& relationship) const;
 
+    
   typedef std::vector<Field> type_vecFields;
   virtual type_vecFields get_table_fields(const Glib::ustring& table_name) const;
   virtual void set_table_fields(const Glib::ustring& table_name, const type_vecFields& vecFields);

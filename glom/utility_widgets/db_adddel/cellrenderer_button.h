@@ -22,6 +22,8 @@
 #define GLOM_CELLRENDERER_BUTTON_H
 
 #include <gtkmm/cellrendererpixbuf.h>
+#include <gtkmm/treepath.h>
+#include <gtkmm/treemodel.h>
 
 class GlomCellRenderer_Button : public Gtk::CellRendererPixbuf
 {
@@ -29,7 +31,7 @@ public:
   GlomCellRenderer_Button();
   virtual ~GlomCellRenderer_Button();
 
-  typedef sigc::signal<void> type_signal_clicked;
+  typedef sigc::signal<void, const Gtk::TreeModel::Path&> type_signal_clicked;
   type_signal_clicked signal_clicked();
   
 protected:

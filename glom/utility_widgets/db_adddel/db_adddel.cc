@@ -1726,8 +1726,15 @@ bool DbAddDel::get_allow_view_details() const
   return m_allow_view_details;
 }
 
-void DbAddDel::on_cell_button_clicked()
+void DbAddDel::on_cell_button_clicked(const Gtk::TreeModel::Path& path)
 {
+  Gtk::TreeModel::iterator iter = m_refListStore->get_iter(path);
+  if(iter)
+  {
+    const guint first_visible = get_count_hidden_system_columns();
+    select_item(iter, first_visible, false /* start_editing */);
+  }
+  
   on_MenuPopup_activate_Edit();
 }
 

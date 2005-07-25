@@ -1,3 +1,23 @@
+2005-07-25  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/utility_widgets/db_adddel/cellrenderer_button.cc:
+	* glom/utility_widgets/db_adddel/cellrenderer_button.h:
+	signal_clicked(): Add path parameter, so we know what row 
+	was clicked.
+	* glom/utility_widgets/db_adddel/db_adddel.cc:
+	* glom/utility_widgets/db_adddel/db_adddel.h:
+	Open the clicked row, not just the selected row.
+	* glom/document/document_glom.cc:
+	* glom/document/document_glom.h:
+	* glom/mode_data/box_data_details.cc:
+	* glom/mode_data/box_data_details.h:
+	* glom/utility_widgets/datawidget.cc:
+	* glom/utility_widgets/datawidget.h:
+	* glom/utility_widgets/flowtablewithfields.cc:
+	* glom/utility_widgets/flowtablewithfields.h: Add an Open 
+	button next to foreign keys, when a unique non-hidden record is 
+	indicated.
+
 2005-07-22  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/mode_data/box_data_list.cc:

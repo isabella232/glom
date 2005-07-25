@@ -108,6 +108,7 @@ Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
   pack_start(m_HBox, Gtk::PACK_SHRINK);
 
   m_FlowTable.signal_field_edited().connect( sigc::mem_fun(*this,  &Box_Data_Details::on_flowtable_field_edited) );
+  m_FlowTable.signal_field_open_details_requested().connect( sigc::mem_fun(*this,  &Box_Data_Details::on_flowtable_field_open_details_requested) );
   show_all();
 
   m_FlowTable.signal_related_record_changed().connect( sigc::mem_fun(*this, &Box_Data_Details::on_flowtable_related_record_changed) );
@@ -454,12 +455,28 @@ void Box_Data_Details::on_flowtable_layout_changed()
 
 void Box_Data_Details::on_flowtable_requested_related_details(const Glib::ustring& table_name, Gnome::Gda::Value primary_key_value)
 {
+  if(GlomConversions::value_is_empty(primary_key_value))
+    return; //Ignore empty ID fields.
+    
   signal_requested_related_details().emit(table_name, primary_key_value);
 }
 
 void Box_Data_Details::on_flowtable_related_record_changed(const Glib::ustring& relationship_name)
 {
   recalculate_fields_for_related_records(relationship_name);
+}
+
+void Box_Data_Details::on_flowtable_field_open_details_requested(const LayoutItem_Field& layout_field, const Gnome::Gda::Value& field_value)
+{
+  if(GlomConversions::value_is_empty(field_value))
+    return; //Ignore empty ID fields.
+    
+  Relationship relationship;
+  const bool related_to_one = get_document()->get_field_used_in_relationship_to_one(m_strTableName, layout_field.get_name(), relationship);
+  if(related_to_one)
+  {
+    signal_requested_related_details().emit(relationship.get_to_table(), field_value);
+  }
 }
 
 void Box_Data_Details::on_flowtable_field_edited(const LayoutItem_Field& layout_field, const Gnome::Gda::Value& field_value)

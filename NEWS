@@ -1,4 +1,15 @@
+0.8.37:
+
+* List view (and related records lists)
+  - Instead of double-clicking to open record details, you can now click 
+  on the small Open button on each row.
+* Details view:
+  - ID fields that identify a unique related record (e.g. a Company ID on 
+  a contacts record) now have an Open button, so you can go quickly to 
+  the related record. 
+
 0.8.36:
+
 
 * Layout design:
   - Don't forget related fields when reopening the layout dialog.

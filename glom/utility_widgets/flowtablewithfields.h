@@ -90,6 +90,12 @@ public:
    */
   typedef sigc::signal<void, const LayoutItem_Field&, const Gnome::Gda::Value&> type_signal_field_edited;
   type_signal_field_edited signal_field_edited();
+  
+  /** For instance,
+   * void on_flowtable_field_open_details_requested(const LayoutItem_Field& field, const Gnome::Gda::Value& value);
+   */
+  typedef sigc::signal<void, const LayoutItem_Field&, const Gnome::Gda::Value&> type_signal_field_open_details_requested;
+  type_signal_field_open_details_requested signal_field_open_details_requested();
 
   /** For instance,
    * void on_related_record_changed(const Glib::ustring& relationship_name);
@@ -97,8 +103,8 @@ public:
   typedef sigc::signal<void, const Glib::ustring&> type_signal_related_record_changed;
   type_signal_related_record_changed signal_related_record_changed();
   
-   /** For instance,
-   * void on_requested_related_details(const Glib::ustring& table_name, Gnome::Gda::Value primary_key_value);
+  /** For instance,
+   * void on_requested_related_details(const Glib::ustring& table_name, Gnome::Gda::Value primary_key_value);-
    */
   typedef sigc::signal<void, const Glib::ustring&, Gnome::Gda::Value> type_signal_requested_related_details;
   type_signal_requested_related_details signal_requested_related_details();
@@ -114,10 +120,13 @@ protected:
   //int get_suitable_width(Field::glom_field_type field_type);
 
   void on_entry_edited(const Gnome::Gda::Value& value,  LayoutItem_Field field);
+  void on_entry_open_details_requested(const Gnome::Gda::Value& value, LayoutItem_Field field);
   void on_flowtable_entry_edited(const LayoutItem_Field& field, const Gnome::Gda::Value& value);
+  void on_flowtable_entry_open_details_requested(const LayoutItem_Field& field, const Gnome::Gda::Value& value); 
 
   void on_portal_record_changed(const Glib::ustring& relationship_name);
   void on_flowtable_related_record_changed(const Glib::ustring& relationship_name);
+  void on_flowtable_requested_related_details(const Glib::ustring& table_name, Gnome::Gda::Value primary_key_value);
 
   /// Remember the layout widget so we can iterate through them later.
   void on_layoutwidget_changed();
@@ -125,7 +134,6 @@ protected:
   void on_datawidget_layout_item_added(TreeStore_Layout::enumType item_type, DataWidget* pDataWidget);
 
   void on_portal_user_requested_details(Gnome::Gda::Value primary_key_value, Box_Data_List_Related* portal_box);
-  void on_flowtable_requested_related_details(const Glib::ustring& table_name, Gnome::Gda::Value primary_key_value);
 
   class Info
   {
@@ -163,6 +171,7 @@ protected:
   Glib::ustring m_table_name;
 
   type_signal_field_edited m_signal_field_edited;
+  type_signal_field_open_details_requested m_signal_field_open_details_requested;
 
   //type_signal_related_record_added m_signal_related_record_added;
   type_signal_related_record_changed m_signal_related_record_changed;

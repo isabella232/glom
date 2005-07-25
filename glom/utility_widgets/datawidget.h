@@ -58,18 +58,26 @@ public:
   virtual bool offer_field_list(const Glib::ustring& table_name, LayoutItem_Field& field);
   virtual bool offer_field_layout(LayoutItem_Field& field);
 
+  /// Get the actual child widget used to show the data:
+  Gtk::Widget* get_data_child_widget();
+  const Gtk::Widget* get_data_child_widget() const;
+  
   typedef sigc::signal<void, const Gnome::Gda::Value&> type_signal_edited;
   type_signal_edited signal_edited();
+  
+  typedef sigc::signal<void, const Gnome::Gda::Value&> type_signal_open_details_requested;
+  type_signal_open_details_requested signal_open_details_requested();
 
 protected:
   //virtual void setup_menu();
 
   //Overrides of default signal handlers:
-  virtual void on_widget_edited(); //From Gtk::Entry, or Gtk::CheckButton.
+  void on_widget_edited(); //From Gtk::Entry, or Gtk::CheckButton.
   virtual bool on_button_press_event(GdkEventButton* event); //override.
   virtual void on_child_user_requested_layout();
   virtual void on_child_user_requested_layout_properties();
   virtual void on_child_layout_item_added(TreeStore_Layout::enumType item_type);
+  void on_button_open_details();
 
   virtual void on_menupopup_activate_layout(); //override
   virtual void on_menupopup_activate_layout_properties(); //override
@@ -80,8 +88,10 @@ protected:
   int get_suitable_width(const LayoutItem_Field& field_layout);
 
   type_signal_edited m_signal_edited;
+  type_signal_open_details_requested m_signal_open_details_requested;
 
   Gtk::Label m_label;
+  Gtk::Widget* m_child;
 };
 
 #endif //GLOM_UTILITY_WIDGETS_DATAWIDGET_H
