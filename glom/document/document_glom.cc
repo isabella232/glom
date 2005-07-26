@@ -693,9 +693,15 @@ void Document_Glom::fill_layout_field_details(const Glib::ustring& parent_table_
     }
     else
     {
-      LayoutGroup* layout_group_child = dynamic_cast<LayoutGroup*>(layout_item);
-      if(layout_group_child)
-        fill_layout_field_details(parent_table_name, *layout_group_child); //recurse
+      LayoutItem_Portal* layout_portal_child = dynamic_cast<LayoutItem_Portal*>(layout_item);
+      if(layout_portal_child)
+        fill_layout_field_details(layout_portal_child->m_relationship.get_to_table(), *layout_portal_child); //recurse
+      else
+      {  
+        LayoutGroup* layout_group_child = dynamic_cast<LayoutGroup*>(layout_item);
+        if(layout_group_child)
+          fill_layout_field_details(parent_table_name, *layout_group_child); //recurse
+      }
     }
   }
 }

@@ -150,17 +150,17 @@ void Dialog_Layout_Details::fill_group(const Gtk::TreeModel::iterator& iter, Lay
     {
       Gtk::TreeModel::Row rowChild = *iterChild;
 
-      if(rowChild[m_model_items->m_columns.m_col_type] == TreeStore_Layout::TYPE_GROUP)
+      if(rowChild[m_model_items->m_columns.m_col_type] == TreeStore_Layout::TYPE_PORTAL)
+      {
+        const LayoutItem_Portal portal = rowChild[m_model_items->m_columns.m_col_portal];
+        group.add_item(portal);
+      }
+      else if(rowChild[m_model_items->m_columns.m_col_type] == TreeStore_Layout::TYPE_GROUP)
       {
         //Recurse:
         LayoutGroup group_child;
         fill_group(iterChild, group_child);
         group.add_item(group_child);
-      }
-      else if(rowChild[m_model_items->m_columns.m_col_type] == TreeStore_Layout::TYPE_PORTAL)
-      {
-        const LayoutItem_Portal portal = rowChild[m_model_items->m_columns.m_col_portal];
-        group.add_item(portal);
       }
       else if(rowChild[m_model_items->m_columns.m_col_type] == TreeStore_Layout::TYPE_FIELD)
       {

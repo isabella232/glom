@@ -1,3 +1,13 @@
+2005-07-26  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/document/document_glom.cc: fill_layout_field_details():
+	Handle portals, so we do not lose field information for portals 
+	when editing the whole layout.
+	* glom/mode_data/box_data_list_related.cc:
+	* glom/mode_data/dialog_layout_details.cc:
+	Dialog_Layout_Details::fill_group(): Handle portals.
+	* glom/utility_widgets/flowtablewithfields.cc:
+
 2005-07-25  Murray Cumming  <murrayc@murrayc.com>
 
 	* configure.in: Depend on latest libgdamm.
