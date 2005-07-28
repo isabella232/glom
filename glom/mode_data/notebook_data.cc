@@ -19,6 +19,7 @@
  */
 
 #include "notebook_data.h"
+#include "../data_structure/glomconversions.h"
 #include <glibmm/i18n.h>
 
 Notebook_Data::Notebook_Data()
@@ -72,7 +73,16 @@ bool Notebook_Data::init_db_details(const Glib::ustring& strTableName, const Gli
     sharedptr<SharedConnection> sharedconnection = connect_to_server();
 
     result = m_Box_List.init_db_details(strTableName, strWhereClause);
-    m_Box_Details.init_db_details(strTableName, m_Box_List.get_primary_key_value_selected());
+    //m_Box_List.load_from_document();
+    
+    //Make sure that the details view is not empty, if there are any records to show:
+    Gnome::Gda::Value primary_key_for_details = m_Box_List.get_primary_key_value_selected();
+    if(GlomConversions::value_is_empty(primary_key_for_details))
+    {
+      primary_key_for_details = m_Box_List.get_primary_key_value_first();
+    }
+     
+    m_Box_Details.init_db_details(strTableName, primary_key_for_details);
   }
 
   //Select List as default:

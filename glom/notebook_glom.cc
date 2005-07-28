@@ -66,7 +66,7 @@ void Notebook_Glom::on_switch_page_handler(GtkNotebookPage* pPage, guint uiPageN
     Box_DB* pBox = dynamic_cast<Box_DB*>(pChild);
     if(pBox)
     {
-      pBox->load_from_document();
+      //pBox->load_from_document();
 
       //Set the default button, if there is one:
       App_Glom* pAppGlom = dynamic_cast<App_Glom*>(pApp);

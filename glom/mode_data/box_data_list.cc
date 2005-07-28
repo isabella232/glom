@@ -94,6 +94,8 @@ void Box_Data_List::enable_buttons()
 
 bool Box_Data_List::fill_from_database()
 {
+g_warning("Box_Data_List::fill_from_database");
+
   bool result = false;
 
   Bakery::BusyCursor(*get_app_window());
@@ -118,6 +120,7 @@ bool Box_Data_List::fill_from_database()
 
     enable_buttons();
 
+    g_warning("Box_Data_List::fill_from_database: before  m_AddDel.set_where_clause(%s)", m_strWhereClause.c_str());
     m_AddDel.set_where_clause(m_strWhereClause);
 
     result = m_AddDel.refresh_from_database();
@@ -610,7 +613,28 @@ Gnome::Gda::Value Box_Data_List::get_primary_key_value(const Gtk::TreeModel::ite
 
 Gnome::Gda::Value Box_Data_List::get_primary_key_value_selected()
 {
-  return Gnome::Gda::Value(m_AddDel.get_value_key_selected());
+  return m_AddDel.get_value_key_selected();
+}
+
+Gnome::Gda::Value Box_Data_List::get_primary_key_value_first()
+{
+  Glib::RefPtr<Gtk::TreeModel> model = m_AddDel.get_model();
+  if(model)
+  {
+    Gtk::TreeModel::iterator iter = model->children().begin();
+    while(iter != model->children().end())
+    {
+      Gnome::Gda::Value value = get_primary_key_value(iter);
+      if(GlomConversions::value_is_empty(value))
+      {
+        ++iter;
+      }
+      else
+        return value;
+    }
+  }
+  
+  return Gnome::Gda::Value();
 }
 
 Gnome::Gda::Value Box_Data_List::get_entered_field_data(const LayoutItem_Field& field) const

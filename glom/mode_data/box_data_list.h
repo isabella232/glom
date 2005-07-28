@@ -32,6 +32,7 @@ public:
 
   virtual Gnome::Gda::Value get_primary_key_value(const Gtk::TreeModel::iterator& row);
   virtual Gnome::Gda::Value get_primary_key_value_selected();
+  Gnome::Gda::Value get_primary_key_value_first();
 
   virtual Gnome::Gda::Value get_entered_field_data(const LayoutItem_Field& field) const;
   virtual void set_entered_field_data(const LayoutItem_Field& field, const Gnome::Gda::Value& value);

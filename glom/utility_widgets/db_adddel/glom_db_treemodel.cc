@@ -705,12 +705,19 @@ void DbTreeModel::set_key_value(const TreeModel::iterator& iter, const DbValue& 
 }
 
 DbTreeModel::DbValue DbTreeModel::get_key_value(const TreeModel::iterator& iter) const
-{
-  //g_warning("DbTreeModel::g et_is_placeholder()");
+{   
   if(check_treeiter_validity(iter))
   {
     type_datamodel_iter dataRowIter = get_datamodel_row_iter_from_tree_row_iter(iter);
-    return m_map_rows[dataRowIter].m_key; //Adds it if necessary.
+    type_map_rows::iterator iterFind = m_map_rows.find(dataRowIter);
+    if(iterFind != m_map_rows.end())
+      return iterFind->second.m_key;
+    else
+    {
+      DbTreeModelRow& row_details = m_map_rows[dataRowIter]; //Adds it if necessary
+      row_details.fill_values_if_necessary(const_cast<DbTreeModel&>(*this), dataRowIter);
+      return row_details.m_key;
+    }
   }
 
   return DbValue();

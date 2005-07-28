@@ -1,5 +1,20 @@
 2005-07-28  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/mode_data/box_data_list.cc:
+	* glom/mode_data/box_data_list.h: Added 
+	get_primary_key_value_first()
+	* glom/mode_data/notebook_data.cc: init_db_details(): Show the first 
+	record from the list in the detauls.
+	* glom/notebook_glom.cc: on_switch_page_handler(): 
+	Do not call load_from_document() on the child page. It is 
+	superfluous.
+	* glom/utility_widgets/db_adddel/glom_db_treemodel.cc:
+	get_key_value(): Retrieve the data from the database 
+	if necessary. Previously we always called get_value() 
+	first.
+
+2005-07-28  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/data_structure/field.cc:
 	* glom/data_structure/field.h: Added sql_find(), like sql(), 
 	but with wildcards.
