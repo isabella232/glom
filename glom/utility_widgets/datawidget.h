@@ -78,6 +78,7 @@ protected:
   virtual void on_child_user_requested_layout_properties();
   virtual void on_child_layout_item_added(TreeStore_Layout::enumType item_type);
   void on_button_open_details();
+  void on_button_select_id();
 
   virtual void on_menupopup_activate_layout(); //override
   virtual void on_menupopup_activate_layout_properties(); //override
@@ -86,6 +87,10 @@ protected:
   App_Glom* get_application();
 
   int get_suitable_width(const LayoutItem_Field& field_layout);
+  
+  /** Show a dialog with a Find so that the user can choose an ID value to indicate the related record.
+   */
+  bool offer_related_record_id_find(Gnome::Gda::Value& chosen_id);
 
   type_signal_edited m_signal_edited;
   type_signal_open_details_requested m_signal_open_details_requested;

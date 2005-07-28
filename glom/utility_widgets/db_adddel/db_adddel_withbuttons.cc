@@ -107,10 +107,19 @@ void DbAddDel_WithButtons::setup_buttons()
   const bool allow_edit = get_allow_user_actions() && get_allow_view_details();
   const bool allow_del = get_allow_user_actions() && m_allow_delete;
   const bool allow_add = get_allow_user_actions() && m_allow_add;
+ 
+  m_Button_Edit.show();
+  m_Button_Del.show();
+  m_Button_Add.show();
   
   m_Button_Edit.property_visible() = allow_edit;
   m_Button_Del.property_visible() = allow_del;  
   m_Button_Add.property_visible() = allow_add;
+  
+  if(!m_open_button_title.empty())
+    m_Button_Edit.set_label(m_open_button_title);
+  
+  m_HBox.show();
 }
 
 void DbAddDel_WithButtons::show_all_vfunc()
@@ -122,4 +131,10 @@ void DbAddDel_WithButtons::show_all_vfunc()
   setup_buttons();
 }
 
+void DbAddDel_WithButtons::set_allow_view_details(bool val)
+{
+  DbAddDel::set_allow_view_details(val);
+  
+  setup_buttons();
+}
 

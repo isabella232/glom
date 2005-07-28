@@ -26,7 +26,8 @@
 #include <glibmm/i18n.h>
 
 Box_Data_List::Box_Data_List()
-: m_has_one_or_more_records(false)
+: m_has_one_or_more_records(false),
+  m_read_only(false)
 {
   m_layout_name = "list";
 
@@ -77,8 +78,17 @@ void Box_Data_List::enable_buttons()
   const Privileges table_privs = get_current_privs(m_strTableName);
   
     //Enable/Disable record creation and deletion:
-  m_AddDel.set_allow_add(table_privs.m_create);
-  m_AddDel.set_allow_delete(table_privs.m_delete);
+  bool allow_create = !m_read_only;
+  bool allow_delete = !m_read_only;
+  if(!m_read_only)
+  {
+    allow_create = table_privs.m_create;
+    allow_delete = table_privs.m_delete;
+  }
+  
+  m_AddDel.set_allow_add(allow_create);
+  m_AddDel.set_allow_delete(allow_delete);
+  
   m_AddDel.set_allow_view_details(table_privs.m_view);
 }
 
@@ -136,8 +146,7 @@ bool Box_Data_List::fill_from_database()
 
 void Box_Data_List::on_adddel_user_requested_add()
 {
-g_warning("Box_Data_List::on_adddel_user_requested_add() start: m_FieldsShowns.size()=%d", m_FieldsShown.size());
-  if(m_FieldsShown.empty())
+ if(m_FieldsShown.empty())
     return; //Don't try to add a record to a list with no fields.
     
   Gtk::TreeModel::iterator iter = m_AddDel.get_item_placeholder();
@@ -180,8 +189,6 @@ g_warning("Box_Data_List::on_adddel_user_requested_add() start: m_FieldsShowns.s
       //g_warning("Box_Data_List::on_adddel_user_requested_add(): index_field_to_edit does not exist: %d", index_field_to_edit);
     }
   }
-  
-  g_warning("Box_Data_List::on_adddel_user_requested_add() end");
 }
 
 void Box_Data_List::on_adddel_user_requested_edit(const Gtk::TreeModel::iterator& row)
@@ -655,9 +662,13 @@ void Box_Data_List::create_layout()
 
 
       //Add a column for each table field:
-      for(type_vecLayoutFields::const_iterator iter = m_FieldsShown.begin(); iter != m_FieldsShown.end(); ++iter)
+      for(type_vecLayoutFields::iterator iter = m_FieldsShown.begin(); iter != m_FieldsShown.end(); ++iter)
       {
-        m_AddDel.add_column(*(*iter));
+        sharedptr<LayoutItem_Field> field = *iter;
+        if(m_read_only)
+          field->set_editable(false);
+          
+        m_AddDel.add_column(*field);
       }
 
       m_AddDel.set_where_clause(m_strWhereClause);
@@ -744,5 +755,19 @@ void Box_Data_List::print_layout()
 void Box_Data_List::print_layout_group(xmlpp::Element* /* node_parent */, const LayoutGroup& /* group */)
 {
 }
+
+void Box_Data_List::set_read_only(bool read_only)
+{
+  //This is useful when showing find results for the user to select one, without changing them.
+  m_read_only = read_only;
+  m_AddDel.set_allow_add(!read_only);
+  m_AddDel.set_allow_delete(!read_only);
+}
+
+void Box_Data_List::set_open_button_title(const Glib::ustring& title)
+{
+  m_AddDel.set_open_button_title(title);
+}
+
 
 

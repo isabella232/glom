@@ -266,6 +266,33 @@ Glib::ustring Field::sql(const Gnome::Gda::Value& value) const
   return str;
 }
 
+Glib::ustring Field::sql_find(const Gnome::Gda::Value& value) const
+{
+  switch(get_glom_type())
+  {
+    case(TYPE_TEXT):
+    {
+      //% means 0 or more characters.
+      
+      if(value.is_null())
+        return "''"; //We want to ignore the concept of NULL strings, and deal only with empty strings.
+      else
+        return ("'%" + value.to_string() + "%'"); //Add single-quotes. Actually escape it.
+        
+      break;
+    }
+    case(TYPE_DATE):
+    case(TYPE_TIME):
+    case(TYPE_NUMERIC):
+    case(TYPE_BOOLEAN):
+    default:
+    {
+      return sql(value);
+      break;
+    }
+  }
+}
+
 Glib::ustring Field::sql_find_operator() const
 {
   switch(get_glom_type())

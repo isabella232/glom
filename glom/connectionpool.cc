@@ -172,7 +172,10 @@ sharedptr<SharedConnection> ConnectionPool::connect()
 
           //Create the fieldtypes member if it has not already been done:
           if(!m_pFieldTypes)
-            m_pFieldTypes = new FieldTypes(m_refGdaConnection);
+            m_pFieldTypes = new FieldTypes(m_refGdaConnection);  
+            
+          //Enforce ISO formats in the communication:
+          m_refGdaConnection->execute_single_command("SET DATESTYLE = 'ISO'");  
 
           //Open the database, if one has been specified:
           /* This does not seem to work in libgda's postgres provider, so we specify it in the cnc_string instead:

@@ -27,6 +27,7 @@
 #include "../data_structure/glomconversions.h"
 #include "../application.h"
 #include "../mode_data/dialog_choose_field.h"
+#include "dialog_choose_id.h"
 #include "../layout_item_dialogs/dialog_field_layout.h"
 #include "../utils.h"
 #include <glibmm/i18n.h>
@@ -195,6 +196,10 @@ DataWidget::DataWidget(const LayoutItem_Field& field, const Glib::ustring& table
       Gtk::Button* button_go_to_details = Gtk::manage(new Gtk::Button(Gtk::Stock::OPEN));
       hbox_parent->pack_start(*button_go_to_details);
       button_go_to_details->signal_clicked().connect(sigc::mem_fun(*this, &DataWidget::on_button_open_details));
+      
+      Gtk::Button* button_select = Gtk::manage(new Gtk::Button(Gtk::Stock::FIND));
+      hbox_parent->pack_start(*button_select);
+      button_select->signal_clicked().connect(sigc::mem_fun(*this, &DataWidget::on_button_select_id));
       
       child_added = true;
     }
@@ -620,3 +625,70 @@ const Gtk::Widget* DataWidget::get_data_child_widget() const
  {
    signal_open_details_requested().emit(get_value());
  }
+ 
+ void DataWidget::on_button_select_id()
+ {
+   Gnome::Gda::Value chosen_id;
+   bool chosen = offer_related_record_id_find(chosen_id);
+   if(chosen)
+   {
+     set_value(chosen_id);
+     m_signal_edited.emit(chosen_id);
+   }
+ }
+ 
+ bool DataWidget::offer_related_record_id_find(Gnome::Gda::Value& chosen_id)
+ {
+  bool result = false;
+  
+  //Initialize output variable:
+  chosen_id = Gnome::Gda::Value();
+   
+  try
+  {
+    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_find_id");
+
+    Dialog_ChooseID* dialog = 0;
+    refXml->get_widget_derived("dialog_find_id", dialog);
+
+    if(dialog)
+    {
+      //dialog->set_document(get_document(), table_name, field);
+      dialog->set_transient_for(*get_application());
+      add_view(dialog);
+      
+      //Discover the related table, in the relationship that uses this ID field:
+      Glib::ustring related_table_name;
+      LayoutItem_Field* layoutField = dynamic_cast<LayoutItem_Field*>(get_layout_item());
+      if(layoutField)
+      {
+        Relationship relationship;
+        const bool related_to_one = get_document()->get_field_used_in_relationship_to_one(m_table_name, layoutField->get_name(), relationship);
+        if(related_to_one)
+          related_table_name = relationship.get_to_table();
+      }
+      else
+        g_warning("get_layout_item() was not a LayoutItem_Field");
+  
+      dialog->init_db_details(related_table_name);
+      
+      
+      int response = dialog->run();
+      dialog->hide();
+      if(response == Gtk::RESPONSE_OK)
+      {
+        //Get the chosen field:
+        result = dialog->get_id_chosen(chosen_id);
+      }
+
+      remove_view(dialog);
+      delete dialog;
+    }
+  }
+  catch(const Gnome::Glade::XmlError& ex)
+  {
+    std::cerr << ex.what() << std::endl;
+  }
+
+  return result;
+}

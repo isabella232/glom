@@ -202,7 +202,11 @@ void DbAddDel::setup_menu()
 
   m_refActionGroup->add(Gtk::Action::create("ContextMenu", "Context Menu") );
 
-  m_refContextEdit =  Gtk::Action::create("ContextEdit", Gtk::Stock::EDIT);
+  if(m_open_button_title.empty())
+    m_refContextEdit =  Gtk::Action::create("ContextEdit", Gtk::Stock::EDIT);
+  else
+    m_refContextEdit =  Gtk::Action::create("ContextEdit", m_open_button_title);
+    
   m_refActionGroup->add(m_refContextEdit,
     sigc::mem_fun(*this, &DbAddDel::on_MenuPopup_activate_Edit) );
 
@@ -297,7 +301,9 @@ bool DbAddDel::on_button_press_event_Popup(GdkEventButton *event)
     if(event->type == GDK_2BUTTON_PRESS)
     {
       //Double-click means edit.
-      //Don't do this, because users sometimes double-click by accident when they just want to edit a cell.
+      //Don't do this usually, because users sometimes double-click by accident when they just want to edit a cell.
+      
+      //TODO: If the cell is not editable, handle the double-click as an edit/selection.
       //on_MenuPopup_activate_Edit();
       return false; //Not handled.
     }
@@ -986,7 +992,7 @@ void DbAddDel::set_allow_add(bool val)
 
 void DbAddDel::set_allow_delete(bool val)
 {
-  m_allow_delete= val;
+  m_allow_delete = val;
 }
   
   
@@ -1719,6 +1725,7 @@ void DbAddDel::set_allow_view_details(bool val)
   //Hide it if it was visible:
   if(m_treeviewcolumn_button)
     m_treeviewcolumn_button->property_visible() = get_allow_view_details();
+    
 }
 
 bool DbAddDel::get_allow_view_details() const
@@ -1736,6 +1743,11 @@ void DbAddDel::on_cell_button_clicked(const Gtk::TreeModel::Path& path)
   }
   
   on_MenuPopup_activate_Edit();
+}
+
+void DbAddDel::set_open_button_title(const Glib::ustring& title)
+{
+  m_open_button_title = title;
 }
 
 

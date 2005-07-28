@@ -148,6 +148,10 @@ public:
   /** Escape the value so that it can be used in a SQL command.
    */
   Glib::ustring sql(const Gnome::Gda::Value& value) const;
+  
+  /** Escape the value so that it can be used in a SQL command for a find.
+   */
+  Glib::ustring sql_find(const Gnome::Gda::Value& value) const;
 
   /** Get a suitable operator to use when finding records.
    * For instance, == for numbers, or LIKE for text.

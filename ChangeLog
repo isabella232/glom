@@ -1,3 +1,37 @@
+2005-07-28  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/data_structure/field.cc:
+	* glom/data_structure/field.h: Added sql_find(), like sql(), 
+	but with wildcards.
+	* glom/glom.glade: Added a dialog for finding an ID.
+	* glom/utility_widgets/Makefile.am:
+	* glom/utility_widgets/dialog_choose_id.cc:
+	* glom/utility_widgets/dialog_choose_id.h: Added dialog.
+	* glom/mode_data/box_data.cc: get_find_where_clause(): 
+	Use sql_find() to do a substring search.
+	* po/POTFILES.in: Added the new .cc file.
+	* glom/mode_data/box_data_list.cc:
+	* glom/mode_data/box_data_list.h: Added set_read_only() 
+	to prevent editing when the list is only for selection. 
+	Added set_open_button_title() which delegates to the DbAddDel.
+	* glom/mode_find/box_data_details_find.cc:
+	* glom/mode_find/box_data_details_find.h:
+	* glom/mode_find/notebook_find.cc: Override init_db_details(), 
+	without a primary key parameter.
+	* glom/utility_widgets/datawidget.cc:
+	* glom/utility_widgets/datawidget.h: Added 
+	offer_related_record_id_find() and a Find button next to 
+	fields used in relationships. This opens a secondary dialog 
+	with the Find UI.
+	* glom/utility_widgets/db_adddel/db_adddel.cc:
+	* glom/utility_widgets/db_adddel/db_adddel.h:
+	Added set_open_button_title() so we can use Select instead 
+	of Open in the Find ID dialog.
+	* glom/utility_widgets/db_adddel/db_adddel_withbuttons.cc:
+	* glom/utility_widgets/db_adddel/db_adddel_withbuttons.h:
+	Override set_allow_view_details() to show/hide the open 
+	button.
+
 0.8.37:
 
 2005-07-26  Murray Cumming  <murrayc@murrayc.com>

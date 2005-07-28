@@ -28,6 +28,8 @@ class Box_Data_Details_Find : public Box_Data_Details
 public: 
   Box_Data_Details_Find();
   virtual ~Box_Data_Details_Find();
+  
+  virtual bool init_db_details(const Glib::ustring& table_name);
 
   virtual Gtk::Widget* get_default_button(); //override
     

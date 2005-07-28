@@ -137,7 +137,7 @@ public:
   virtual void set_allow_view(bool val = true);
   
   ///Whether each row should have a button, to request edit.
-  void set_allow_view_details(bool val = true);
+  virtual void set_allow_view_details(bool val = true);
   bool get_allow_view_details() const;
 
 
@@ -228,6 +228,8 @@ public:
 
   virtual Gtk::TreeModel::iterator get_last_row();
   virtual Gtk::TreeModel::iterator get_last_row() const;
+  
+  virtual void set_open_button_title(const Glib::ustring& title);
 
 protected:
 
@@ -305,6 +307,7 @@ protected:
   typedef std::vector<DbAddDelColumnInfo> type_ColumnTypes;
   type_ColumnTypes m_ColumnTypes;
   Glib::ustring m_table_name, m_where_clause;
+  Glib::ustring m_open_button_title; //Allow us to change "Open" to "Select".
 
   Gtk::Menu* m_pMenuPopup;
   Glib::RefPtr<Gtk::ActionGroup> m_refActionGroup;

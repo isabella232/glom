@@ -33,6 +33,9 @@ public:
   virtual void set_allow_delete(bool val = true); //override
   virtual void set_allow_user_actions(bool bVal = true); //override
   
+  ///Whether each row should have a button, to request edit.
+  virtual void set_allow_view_details(bool val = true);
+  
 protected:
   virtual void setup_buttons();
 

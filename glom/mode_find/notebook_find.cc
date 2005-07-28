@@ -51,8 +51,7 @@ bool Notebook_Find::init_db_details(const Glib::ustring& strTableName)
 {
   bool result = m_Box_List.init_db_details(strTableName);
 
-  Gnome::Gda::Value primary_key_value; //It's ignored anyway.
-  m_Box_Details.init_db_details(strTableName, primary_key_value);
+  m_Box_Details.init_db_details(strTableName);
 
   return result;
 }
