@@ -84,10 +84,7 @@ bool Dialog_FieldLayout::get_field_chosen(LayoutItem_Field& field) const
   m_layout_item.set_formatting_use_default( !m_radiobutton_custom_formatting->get_active() );
   m_box_formatting->get_formatting(m_layout_item.m_formatting);
 
-  g_warning("Dialog_FieldLayout::get_field_chosen(): multiline=%d", m_layout_item.m_formatting.get_text_format_multiline());
-
   field = m_layout_item;
- g_warning("Dialog_FieldLayout::get_field_chosen() 2 : multiline=%d", field.m_formatting.get_text_format_multiline());
 
   return true;
 }

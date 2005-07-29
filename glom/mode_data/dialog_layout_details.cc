@@ -176,14 +176,14 @@ void Dialog_Layout_Details::fill_group(const Gtk::TreeModel::iterator& iter, Lay
         //  get_document()->get_table_relationship(m_table_name, field.m_relationship);
         //}
 
-        field.set_editable( rowChild[m_model_items->m_columns.m_col_editable] );
-
+        const bool editable = rowChild[m_model_items->m_columns.m_col_editable];
+        field.set_editable(editable);
+        
         group.add_item(field);
       }
     }
   }
 }
-
 
 
 void Dialog_Layout_Details::add_group(const Gtk::TreeModel::iterator& parent, const LayoutGroup& group)
@@ -201,12 +201,12 @@ void Dialog_Layout_Details::add_group(const Gtk::TreeModel::iterator& parent, co
 
   if(iterNewGroup)
   {
-    Gtk::TreeModel::Row row = *iterNewGroup;
-    row[m_model_items->m_columns.m_col_type] = TreeStore_Layout::TYPE_GROUP;
-    row[m_model_items->m_columns.m_col_name] = group.get_name();
-    row[m_model_items->m_columns.m_col_columns_count] = group.m_columns_count;
-    row[m_model_items->m_columns.m_col_title] = group.m_title;
-    row[m_model_items->m_columns.m_col_editable] = group.get_editable();
+    Gtk::TreeModel::Row rowGroup = *iterNewGroup;
+    rowGroup[m_model_items->m_columns.m_col_type] = TreeStore_Layout::TYPE_GROUP;
+    rowGroup[m_model_items->m_columns.m_col_name] = group.get_name();
+    rowGroup[m_model_items->m_columns.m_col_columns_count] = group.m_columns_count;
+    rowGroup[m_model_items->m_columns.m_col_title] = group.m_title;
+    rowGroup[m_model_items->m_columns.m_col_editable] = group.get_editable();
 
     //Add the child items:
     LayoutGroup::type_map_const_items items = group.get_items();
@@ -720,6 +720,7 @@ void Dialog_Layout_Details::on_button_field_formatting()
           add_view(dialog); //Give it access to the document.
 
           LayoutItem_Field field = row[m_model_items->m_columns.m_col_field_formatting];
+          field.set_editable(row[m_model_items->m_columns.m_col_editable]);
 
           dialog->set_field(field, m_table_name);
           dialog->set_transient_for(*this);
@@ -730,7 +731,10 @@ void Dialog_Layout_Details::on_button_field_formatting()
             //Get the chosen field:
             bool test = dialog->get_field_chosen(field);
             if(test)
+            {
               row[m_model_items->m_columns.m_col_field_formatting] = field;
+              row[m_model_items->m_columns.m_col_editable] = field.get_editable();
+            }
           }
 
           remove_view(dialog);
@@ -897,8 +901,8 @@ void Dialog_Layout_Details::on_cell_data_name(Gtk::CellRenderer* renderer, const
         markup += row[m_model_items->m_columns.m_col_name];
 
         //Just for debugging:
-       // if(!row[m_model_items->m_columns.m_col_editable])
-       //  markup += " *";
+        //if(!row[m_model_items->m_columns.m_col_editable])
+        // markup += " *";
       }
 
       renderer_text->property_markup() = markup;

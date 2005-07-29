@@ -7,6 +7,12 @@
   -  ID fields that identify a unique related record (e.g. a Company ID on 
   a contacts record) now have an Find button, so you can search for the 
   related record, to get the ID.
+* Find: Really searches for substrings.
+* Updated translations:
+  - Canadian English (Adam Weinberger)
+  - Spanish (Francisco Javier F. Serrador)
+  - Czech (Miloslav Trmac)
+  - German (Hendrik Brandt)
 
 0.8.37:
 

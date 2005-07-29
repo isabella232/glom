@@ -1,5 +1,13 @@
 2005-07-29  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/data_structure/layout/fieldformatting.h: 
+	Removed unimplemented get_editable_and_allowed() function.
+	* glom/mode_data/dialog_layout_details.cc: on_button_field_formatting():
+	get/set the editableness from the specific column, not from the formatting 
+	column, so we actually save the change. 
+
+2005-07-29  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/document/document_glom.cc:
 	* glom/document/document_glom.h: Added 
 	get/set_layout_current() and 
