@@ -77,9 +77,19 @@ void Dialog_ChooseID::on_box_find_criteria(const Glib::ustring& where_clause)
   //Use the find criteria to show a list of results:
   if(!where_clause.empty())
   {
-    m_box_select.init_db_details(m_table_name, where_clause);
-    m_stage = STAGE_SELECT;
-    update_ui_for_stage();
+    bool records_found = m_box_select.init_db_details(m_table_name, where_clause);
+    if(!records_found)
+    {
+      bool find_again = show_warning_no_records_found(*this);
+
+      if(!find_again)
+        response(Gtk::RESPONSE_CANCEL);
+    }
+    else
+    {
+      m_stage = STAGE_SELECT;
+      update_ui_for_stage();
+    }
   }
 }
 

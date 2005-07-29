@@ -2,6 +2,22 @@
 
 2005-07-29  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/base_db.cc:
+	* glom/base_db.h: Added show_warning_no_records_found(), 
+	using the code from Frame_Glom::on_notebook_find_criteria(), 
+	so it can be reused.
+	* glom/frame_glom.cc:
+	* glom/mode_data/box_data.cc: on_Button_Find(): Warn the user 
+	if they have not entered any criteria.
+	* glom/mode_find/box_data_details_find.cc:
+	* glom/mode_find/box_data_details_find.h: Override 
+	on_flowtable_field_edited(), to stop it adding new records during 
+	finds.
+	* glom/utility_widgets/dialog_choose_id.cc: on_box_find_criteria(): 
+	show a warning if no records were found.
+
+2005-07-29  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/mode_data/box_data_details.cc: on_flowtable_field_edited():
 	Really add a new record when entering data on a blank record.
 

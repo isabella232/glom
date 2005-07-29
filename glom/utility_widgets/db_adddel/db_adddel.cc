@@ -1528,7 +1528,6 @@ bool DbAddDel::get_is_last_row(const Gtk::TreeModel::iterator& iter) const
 
 Gtk::TreeModel::iterator DbAddDel::get_next_available_row_with_add_if_necessary()
 {
-g_warning("get_next_available_row_with_add_if_necessary");
   Gtk::TreeModel::iterator result;
 
   if(!m_refListStore)

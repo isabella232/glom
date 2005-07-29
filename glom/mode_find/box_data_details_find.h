@@ -38,8 +38,7 @@ protected:
   virtual bool fill_from_database(); //override.
   virtual void fill_related(); //override.
 
-  virtual void on_adddel_user_changed(guint row, guint col); //override
-
+  virtual void on_flowtable_field_edited(const LayoutItem_Field& id, const Gnome::Gda::Value& value);
 
 };
 

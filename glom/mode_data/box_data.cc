@@ -104,7 +104,16 @@ void Box_Data::on_Button_Find()
   //Make sure that the cell is updated:
   //m_AddDel.finish_editing();
 
-  signal_find_criteria.emit(get_find_where_clause());
+  const Glib::ustring where_clause = get_find_where_clause();
+  if(where_clause.empty())
+  {
+    Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("No Find Criteria")), true, Gtk::MESSAGE_WARNING );
+    dialog.set_secondary_text(_("You have not entered any find criteria. Try entering information in the fields."));
+    dialog.set_transient_for(*get_app_window());
+    dialog.run();
+  }
+  else
+    signal_find_criteria.emit(where_clause);
 }
 
 Box_Data::type_map_fields Box_Data::get_record_field_values(const Gnome::Gda::Value& primary_key_value)
@@ -305,7 +314,7 @@ bool Box_Data::confirm_discard_unstored_data() const
     //Ask user to confirm loss of data:
     Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("No primary key value")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_OK_CANCEL );
     dialog.set_secondary_text(_("This data can not be stored in the database because you have not provided a primary key.\nDo you really want to discard this data?"));
-    //TODO: dialog.set_transient_for(*this);
+    //TODO: It needs a const. I wonder if it should. murrayc. dialog.set_transient_for(*get_app_window());
     int iButton = dialog.run();
 
     return (iButton == Gtk::RESPONSE_OK);

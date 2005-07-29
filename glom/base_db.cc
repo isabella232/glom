@@ -1573,3 +1573,16 @@ void Base_DB::report_build(const Glib::ustring& table_name, const Report& report
 
   GlomUtils::transform_and_open(*pDocument, "print_report_to_html.xsl");
 }
+
+//static
+bool Base_DB::show_warning_no_records_found(Gtk::Window& transient_for)
+{
+  Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("No Records Found")), true, Gtk::MESSAGE_WARNING, Gtk::BUTTONS_NONE);
+  dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+  dialog.add_button(_("New Find"), Gtk::RESPONSE_OK);
+  dialog.set_secondary_text(_("Your find criteria did not match any records in the table."));
+  dialog.set_transient_for(transient_for);
+  
+  const bool find_again = (dialog.run() == Gtk::RESPONSE_OK);
+  return find_again;
+}

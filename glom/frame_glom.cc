@@ -565,12 +565,7 @@ void Frame_Glom::on_notebook_find_criteria(const Glib::ustring& strWhereClause)
 
     if(!records_found)
     {
-      Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("No Records Found")), true, Gtk::MESSAGE_WARNING, Gtk::BUTTONS_NONE);
-      dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
-      dialog.add_button(_("New Find"), Gtk::RESPONSE_OK);
-      dialog.set_secondary_text(_("Your find criteria did not match any records in the table."));
-      dialog.set_transient_for(*(get_app_window()));
-      bool find_again = dialog.run();
+      bool find_again = show_warning_no_records_found(*get_app_window());
 
       if(find_again)
         pApp->set_mode_find();

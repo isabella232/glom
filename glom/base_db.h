@@ -82,6 +82,9 @@ public:
 
 protected:
   bool offer_field_list(LayoutItem_Field& field, const Glib::ustring& table_name);
+  
+  ///@result Whether the user would like to find again.
+  static bool show_warning_no_records_found(Gtk::Window& transient_for);
 
   void fill_full_field_details(const Glib::ustring& parent_table_name, LayoutItem_Field& layout_item);
 

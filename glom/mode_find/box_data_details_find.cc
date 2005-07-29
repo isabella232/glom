@@ -88,7 +88,7 @@ void Box_Data_Details_Find::fill_related()
 }
 
 
-void Box_Data_Details_Find::on_adddel_user_changed(guint /* row */, guint /* col */)
+void Box_Data_Details_Find::on_flowtable_field_edited(const LayoutItem_Field& /* id */, const Gnome::Gda::Value& /* value */)
 {
   //Don't do anything.
   //This just blocks the method in the base class.
