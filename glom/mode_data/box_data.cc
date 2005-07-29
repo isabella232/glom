@@ -1243,5 +1243,9 @@ void Box_Data::print_layout()
   dialog.run();
 }
 
+Glib::ustring Box_Data::get_layout_name() const
+{
+  return m_layout_name;
+}
 
 

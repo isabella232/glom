@@ -182,6 +182,9 @@ bool Box_Data_Details::fill_from_database()
 
   Bakery::BusyCursor(*get_app_window());
 
+  if(!GlomConversions::value_is_empty(m_primary_key_value))
+    get_document()->set_layout_record_viewed(m_strTableName, m_layout_name, m_primary_key_value);
+    
   try
   {
 

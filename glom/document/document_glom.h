@@ -168,6 +168,12 @@ public:
   void set_report(const Glib::ustring& table_name, const Report& report);
   bool get_report(const Glib::ustring& table_name, const Glib::ustring& report_name, Report& report) const;
   void remove_report(const Glib::ustring& table_name, const Glib::ustring& report_name);
+  
+  void set_layout_record_viewed(const Glib::ustring& table_name, const Glib::ustring& layout_name, const Gnome::Gda::Value& primary_key_value);
+  Gnome::Gda::Value get_layout_record_viewed(const Glib::ustring& table_name, const Glib::ustring& layout_name) const;
+  
+  void set_layout_current(const Glib::ustring& table_name, const Glib::ustring& layout_name);
+  Glib::ustring get_layout_current(const Glib::ustring& table_name) const;
 
   enum userLevelReason
   {
@@ -253,6 +259,12 @@ protected:
 
     typedef std::map<Glib::ustring, Report> type_reports; //map of report names to reports
     type_reports m_reports;
+    
+    //Per-session, not saved in document:
+    typedef std::map<Glib::ustring, Gnome::Gda::Value> type_map_layout_primarykeys;
+    type_map_layout_primarykeys m_map_current_record; //The record last viewed in each layout.
+    
+    Glib::ustring m_layout_current;
   };
 
   DocumentTableInfo& get_table_info_with_add(const Glib::ustring& table_name);

@@ -59,11 +59,14 @@ protected:
   virtual void on_list_user_requested_details(Gnome::Gda::Value primary_key_value);
   void on_Details_user_requested_related_details(const Glib::ustring& strTableName, Gnome::Gda::Value primary_key_value);
   
+  virtual void on_switch_page_handler(GtkNotebookPage* pPage, guint uiPageNumber);
+
   //Member widgets:
   Box_Data_List m_Box_List;
   Box_Data_Details m_Box_Details;
 
   guint m_iPage_Details, m_iPage_List;
+  Glib::ustring m_table_name;
   type_signal_record_details_requested m_signal_record_details_requested;
 };
 

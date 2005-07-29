@@ -1,3 +1,13 @@
+0.9.0:
+
+* Remembers last-viewed record and layout: If you view a record, then go 
+  to another table, then come back, the same record will be shown, on the 
+  same layout.
+* Details view:
+  -  ID fields that identify a unique related record (e.g. a Company ID on 
+  a contacts record) now have an Find button, so you can search for the 
+  related record, to get the ID.
+
 0.8.37:
 
 * List view (and related records lists)

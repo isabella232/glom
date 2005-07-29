@@ -1,3 +1,22 @@
+2005-07-29  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/document/document_glom.cc:
+	* glom/document/document_glom.h: Added 
+	get/set_layout_current() and 
+	get/set_layout_record_viewed() for remembering
+	(not saving in the document) information about 
+	the last-viewed records and layouts.
+	* glom/mode_data/box_data.cc:
+	* glom/mode_data/box_data.h: Added get_layout_name().
+	* glom/mode_data/box_data_details.cc: fill_from_database():
+	Remember the record.
+	* glom/mode_data/notebook_data.cc:
+	* glom/mode_data/notebook_data.h: Override on_switch_page_handler() 
+	so we can remember the last-viewed layout.
+	init_db_details(): Open the last-viewed record and switch to the 
+	last-viewed layout.
+	* glom/notebook_glom.h: Make on_switch_page_handler() virtual.
+
 2005-07-28  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/mode_data/box_data_list.cc:

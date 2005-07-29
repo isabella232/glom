@@ -2057,3 +2057,47 @@ bool Document_Glom::get_field_used_in_relationship_to_one(const Glib::ustring& t
   Relationship relationship; //ignored.
   return get_field_used_in_relationship_to_one(table_name, field_name, relationship);
 }
+
+void Document_Glom::set_layout_record_viewed(const Glib::ustring& table_name, const Glib::ustring& layout_name, const Gnome::Gda::Value& primary_key_value)
+{
+  type_tables::iterator iterFind = m_tables.find(table_name);
+  if(iterFind != m_tables.end())
+  {
+    iterFind->second.m_map_current_record[layout_name] = primary_key_value;
+  }
+}
+
+Gnome::Gda::Value Document_Glom::get_layout_record_viewed(const Glib::ustring& table_name, const Glib::ustring& layout_name) const
+{
+  type_tables::const_iterator iterFind = m_tables.find(table_name);
+  if(iterFind != m_tables.end())
+  {
+    const DocumentTableInfo& info = iterFind->second;
+    DocumentTableInfo::type_map_layout_primarykeys::const_iterator iterLayoutKeys = info.m_map_current_record.find(layout_name);
+    if(iterLayoutKeys != info.m_map_current_record.end())
+      return iterLayoutKeys->second;
+  }
+  
+  return Gnome::Gda::Value(); //not found.
+}
+
+void Document_Glom::set_layout_current(const Glib::ustring& table_name, const Glib::ustring& layout_name)
+{
+  type_tables::iterator iterFind = m_tables.find(table_name);
+  if(iterFind != m_tables.end())
+  {
+    iterFind->second.m_layout_current = layout_name;
+  }
+}
+
+Glib::ustring Document_Glom::get_layout_current(const Glib::ustring& table_name) const
+{
+  type_tables::const_iterator iterFind = m_tables.find(table_name);
+  if(iterFind != m_tables.end())
+  {
+    return iterFind->second.m_layout_current;
+  }
+  
+  return Glib::ustring(); //not found.
+}
+

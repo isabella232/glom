@@ -54,6 +54,8 @@ public:
   virtual bool confirm_discard_unstored_data() const;
 
   virtual void show_layout_dialog();
+  
+  Glib::ustring get_layout_name() const;
 
   //Signals:
 
