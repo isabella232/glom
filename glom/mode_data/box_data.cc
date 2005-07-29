@@ -1248,4 +1248,15 @@ Glib::ustring Box_Data::get_layout_name() const
   return m_layout_name;
 }
 
+bool Box_Data::confirm_delete_record()
+{
+  //Ask the user for confirmation:
+  Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Delete record")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE);
+  dialog.set_secondary_text(_("Are you sure that you would like to delete this record? The data in this record will then be permanently lost."));
+  dialog.set_transient_for(*get_app_window());
+  dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+  dialog.add_button(Gtk::Stock::DELETE, Gtk::RESPONSE_OK);
 
+  const int response = dialog.run();
+  return (response == Gtk::RESPONSE_OK);
+}

@@ -145,6 +145,8 @@ protected:
   virtual Gnome::Gda::Value get_primary_key_value_selected() = 0;
   //virtual bool get_field(const Glib::ustring& name, Field& field) const;
 
+  bool confirm_delete_record();
+  
   //Signal handlers:
   virtual void on_Button_Find(); //only used by _Find sub-classes. Should be MI.
 

@@ -45,7 +45,7 @@ public:
   void set_open_button_title(const Glib::ustring& title);
 
   //Primary Key value:
-  typedef sigc::signal<void, Gnome::Gda::Value> type_signal_user_requested_details;
+  typedef sigc::signal<void, const Gnome::Gda::Value&> type_signal_user_requested_details;
   type_signal_user_requested_details signal_user_requested_details();
 
   //Signal Handlers:
@@ -53,7 +53,7 @@ public:
   virtual void on_details_nav_previous();
   virtual void on_details_nav_next();
   virtual void on_details_nav_last();
-  virtual void on_Details_record_deleted(Gnome::Gda::Value primary_key_value);
+  virtual void on_Details_record_deleted(const Gnome::Gda::Value& primary_key_value);
 
 protected:
   virtual void create_layout(); //override

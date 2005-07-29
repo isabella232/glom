@@ -207,15 +207,7 @@ void Box_Data_List::on_adddel_user_requested_delete(const Gtk::TreeModel::iterat
 {
   if(rowStart)
   {
-    //Ask the user for confirmation:
-    Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Delete record")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE);
-    dialog.set_secondary_text(_("Are you sure that you would like to delete this record? The data in this record will then be permanently lost."));
-    dialog.set_transient_for(*get_app_window());
-    dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
-    dialog.add_button(Gtk::Stock::DELETE, Gtk::RESPONSE_OK);
-
-    int response = dialog.run();
-    if(response == Gtk::RESPONSE_OK)
+    if(confirm_delete_record())
     {
       const Gnome::Gda::Value primary_key_value = get_primary_key_value(rowStart);
       record_delete(primary_key_value);
@@ -568,9 +560,11 @@ void Box_Data_List::on_details_nav_last()
     m_AddDel.select_item(iter);
     signal_user_requested_details().emit(m_AddDel.get_value_key_selected());
   }
+  else
+    signal_user_requested_details().emit(Gnome::Gda::Value()); //Show a blank record if there are no records.
 }
 
-void Box_Data_List::on_Details_record_deleted(Gnome::Gda::Value primary_key_value)
+void Box_Data_List::on_Details_record_deleted(const Gnome::Gda::Value& primary_key_value)
 {
   //Find out which row is affected:
   Gtk::TreeModel::iterator iter = m_AddDel.get_row(primary_key_value);

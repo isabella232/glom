@@ -51,7 +51,7 @@ public:
   type_signal_void signal_nav_next();
   type_signal_void signal_nav_last();
 
-  typedef sigc::signal<void, Gnome::Gda::Value> type_signal_record_deleted; //arg is PrimaryKey.   //TODO: pass by const ref?
+  typedef sigc::signal<void, const Gnome::Gda::Value&> type_signal_record_deleted; //arg is PrimaryKey.   //TODO: pass by const ref?
   type_signal_record_deleted signal_record_deleted();
   
    /** For instance,

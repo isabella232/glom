@@ -1,5 +1,22 @@
 2005-07-29  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/mode_data/box_data.cc:
+	* glom/mode_data/box_data.h: Added 
+	confirm_delete_record() based on the code 
+	in box_data_list.cc
+	* glom/mode_data/box_data_details.cc:
+	* glom/mode_data/box_data_details.h: on_button_del():
+	Use confirm_delete_record(), already used in list view.
+	fill_from_database(): When no primary key value is 
+	specified, fill the fields with empty values, instead 
+	of preserving whatever was there last time.
+	* glom/mode_data/box_data_list.cc:
+	* glom/mode_data/box_data_list.h: Use 
+	confirm_delete_record() in the base class instead of 
+	the existing code.
+
+2005-07-29  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/data_structure/layout/fieldformatting.h: 
 	Removed unimplemented get_editable_and_allowed() function.
 	* glom/mode_data/dialog_layout_details.cc: on_button_field_formatting():

@@ -7,6 +7,9 @@
   -  ID fields that identify a unique related record (e.g. a Company ID on 
   a contacts record) now have an Find button, so you can search for the 
   related record, to get the ID.
+  - When deleting a record, you will be asked for confirmation, as the 
+  list view already does. And when deleting the only record, the record 
+  will be blanked instead of still showing the dead record.
 * Find: Really searches for substrings.
 * Updated translations:
   - Canadian English (Adam Weinberger)

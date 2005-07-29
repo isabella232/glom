@@ -131,7 +131,7 @@ bool Notebook_Data::init_db_details(const Glib::ustring& strTableName, const Gli
   return result;
 }
 
-void Notebook_Data::on_list_user_requested_details(Gnome::Gda::Value primary_key_value)
+void Notebook_Data::on_list_user_requested_details(const Gnome::Gda::Value& primary_key_value)
 {
   m_Box_Details.refresh_data_from_database(primary_key_value);
   set_current_page(m_iPage_Details);

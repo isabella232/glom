@@ -182,7 +182,8 @@ bool Box_Data_Details::fill_from_database()
 
   Bakery::BusyCursor(*get_app_window());
 
-  if(!GlomConversions::value_is_empty(m_primary_key_value))
+  const bool primary_key_is_empty = GlomConversions::value_is_empty(m_primary_key_value);
+  if(!primary_key_is_empty)
     get_document()->set_layout_record_viewed(m_strTableName, m_layout_name, m_primary_key_value);
     
   try
@@ -218,9 +219,12 @@ bool Box_Data_Details::fill_from_database()
         const int index_primary_key = fieldsToGet.size() - 1;
 
         const Glib::ustring query = build_sql_select(m_strTableName, fieldsToGet, m_field_primary_key, m_primary_key_value);
-        Glib::RefPtr<Gnome::Gda::DataModel> result = Query_execute(query);
+        Glib::RefPtr<Gnome::Gda::DataModel> result;
+         
+        if(!primary_key_is_empty)
+          result = Query_execute(query);
 
-        if(result && result->get_n_rows())
+        if((result && result->get_n_rows()) || primary_key_is_empty) //either a working result or no result needed.
         {
           const Document_Glom* pDoc = dynamic_cast<const Document_Glom*>(get_document());
           if(pDoc)
@@ -229,11 +233,18 @@ bool Box_Data_Details::fill_from_database()
             //Document_Glom::type_vecFields vecFields = pDoc->get_table_fields(m_strTableName);
 
             const int row_number = 0; //The only row.
-            const int cols_count = result->get_n_columns();
+            int cols_count = 0;
+            if(!primary_key_is_empty)
+              cols_count = result->get_n_columns();
+            else
+              cols_count = fieldsToGet.size();
 
             //Get special possibly-non-visible field values:
-            if(index_primary_key < cols_count)
-              m_primary_key_value = result->get_value_at(index_primary_key, row_number);
+            if(!primary_key_is_empty)
+            {
+              if(index_primary_key < cols_count)
+                m_primary_key_value = result->get_value_at(index_primary_key, row_number);
+            }
 
             //Get field values to show:
             for(int i = 0; i < cols_count; ++i)
@@ -241,7 +252,15 @@ bool Box_Data_Details::fill_from_database()
               sharedptr<LayoutItem_Field> layout_item = fieldsToGet[i];
 
               //Field value:
-              Gnome::Gda::Value value = result->get_value_at(i, row_number);
+              Gnome::Gda::Value value;
+               
+              if(!primary_key_is_empty)
+                value = result->get_value_at(i, row_number);
+              else
+              {
+                value = GlomConversions::get_empty_value(layout_item->m_field.get_glom_type());
+              }
+               
               m_FlowTable.set_field_value(*layout_item, value);
             }
           }
@@ -303,13 +322,16 @@ void Box_Data_Details::on_button_del()
   }
   else
   {
-    bool bTest = record_delete(m_primary_key_value);
-
-    if(bTest)
+    if(confirm_delete_record())
     {
-      //Tell the list that it has been deleted:
-      //It will go to the next (or last) record,
-      signal_record_deleted().emit(m_primary_key_value);
+      bool bTest = record_delete(m_primary_key_value);
+  
+      if(bTest)
+      {
+        //Tell the list that it has been deleted:
+        //It will go to the next (or last) record,
+        signal_record_deleted().emit(m_primary_key_value);
+      }
     }
   }
 }

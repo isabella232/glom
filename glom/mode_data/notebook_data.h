@@ -56,7 +56,7 @@ public:
 protected:
 
   //Signal handlers:
-  virtual void on_list_user_requested_details(Gnome::Gda::Value primary_key_value);
+  virtual void on_list_user_requested_details(const Gnome::Gda::Value& primary_key_value);
   void on_Details_user_requested_related_details(const Glib::ustring& strTableName, Gnome::Gda::Value primary_key_value);
   
   virtual void on_switch_page_handler(GtkNotebookPage* pPage, guint uiPageNumber);
