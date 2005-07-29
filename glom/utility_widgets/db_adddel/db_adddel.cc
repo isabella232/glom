@@ -30,6 +30,7 @@
 #include "cellrenderer_button.h"
 //#include "../cellrendererlist.h"
 #include <iostream> //For debug output.
+#include <gtk/gtktreeview.h>
 
 DbAddDelColumnInfo::DbAddDelColumnInfo()
 :
@@ -816,7 +817,8 @@ bool DbAddDel::refresh_from_database()
   {
     Glib::RefPtr<Gtk::TreeModel> refNull;
     bool result = m_refListStore->refresh_from_database(m_where_clause);
-    m_TreeView.set_model(refNull); //TODO: Find a better way to indicate that the whole model has changed, because this causes a g_waring().
+    m_TreeView.set_model(refNull); //TODO: This causes a g_waring(): gtk_tree_view_unref_tree_helper: assertion `node != NULL' failed
+    //gtk_tree_view_set_model(m_TreeView.gobj(), 0); //This gives the same warning.
     m_TreeView.set_model(m_refListStore);
     return result;
   }

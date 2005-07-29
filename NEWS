@@ -3,6 +3,7 @@
 * Remembers last-viewed record and layout: If you view a record, then go 
   to another table, then come back, the same record will be shown, on the 
   same layout.
+* Table title is now big and bold.
 * Details view:
   -  ID fields that identify a unique related record (e.g. a Company ID on 
   a contacts record) now have an Find button, so you can search for the 
@@ -10,7 +11,10 @@
   - When deleting a record, you will be asked for confirmation, as the 
   list view already does. And when deleting the only record, the record 
   will be blanked instead of still showing the dead record.
-* Find: Really searches for substrings.
+* Find:
+  - Really searches for substrings.
+  - Warns if no criteria was entered.
+  - Warns if no records were found.
 * Updated translations:
   - Canadian English (Adam Weinberger)
   - Spanish (Francisco Javier F. Serrador)
