@@ -517,7 +517,7 @@ void Box_Data_Details::on_flowtable_field_edited(const LayoutItem_Field& layout_
   const Glib::ustring strFieldName = layout_field.get_name();
 
   Gnome::Gda::Value primary_key_value = get_primary_key_value();
-  if(!GlomConversions::value_is_empty(primary_key_value)) //If there is a primary key value:
+  if(!GlomConversions::value_is_empty(primary_key_value)) //If there is not a primary key value:
   {
     Glib::ustring table_name;
     Field primary_key_field;
@@ -623,7 +623,7 @@ void Box_Data_Details::on_flowtable_field_edited(const LayoutItem_Field& layout_
   else
   {
     //There is no current primary key value:
-
+    
     if(m_field_primary_key.get_auto_increment()) //If the primary key is an auto-increment:
     {
       if(strFieldName == m_field_primary_key.get_name()) //If edited field is the primary key.
@@ -633,6 +633,14 @@ void Box_Data_Details::on_flowtable_field_edited(const LayoutItem_Field& layout_
         dialog.set_secondary_text(_("The primary key is auto-incremented.\n You may not enter your own primary key value."));
         dialog.set_transient_for(*get_app_window());
         dialog.run();
+      }
+      else
+      {
+        //Make a new record, and show it:
+        Gnome::Gda::Value primary_key_value = generate_next_auto_increment(m_strTableName, m_field_primary_key.get_name());
+
+        record_new(true /* use entered field data */, primary_key_value);
+        refresh_data_from_database(primary_key_value);
       }
     }
     else

@@ -1,3 +1,10 @@
+0.9.0:
+
+2005-07-29  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/mode_data/box_data_details.cc: on_flowtable_field_edited():
+	Really add a new record when entering data on a blank record.
+
 2005-07-29  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/mode_data/box_data.cc:
