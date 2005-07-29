@@ -689,7 +689,7 @@
 	      <child>
 		<widget class="GtkLabel" id="label23">
 		  <property name="visible">True</property>
-		  <property name="label" translatable="yes">&lt;b&gt;Table:&lt;/b&gt;</property>
+		  <property name="label" translatable="yes">Table:</property>
 		  <property name="use_underline">False</property>
 		  <property name="use_markup">True</property>
 		  <property name="justify">GTK_JUSTIFY_LEFT</property>
@@ -710,9 +710,9 @@
 	      <child>
 		<widget class="GtkLabel" id="label_table_name">
 		  <property name="visible">True</property>
-		  <property name="label" translatable="yes">None selected</property>
+		  <property name="label" translatable="yes">&lt;b&gt;&lt;span size=&quot;xx-large&quot;&gt;None selected&lt;/span&gt;&lt;/b&gt;</property>
 		  <property name="use_underline">False</property>
-		  <property name="use_markup">False</property>
+		  <property name="use_markup">True</property>
 		  <property name="justify">GTK_JUSTIFY_LEFT</property>
 		  <property name="wrap">False</property>
 		  <property name="selectable">False</property>
@@ -753,7 +753,7 @@
 	      <child>
 		<widget class="GtkLabel" id="label22">
 		  <property name="visible">True</property>
-		  <property name="label" translatable="yes">&lt;b&gt;Mode:&lt;/b&gt;</property>
+		  <property name="label" translatable="yes">Mode:</property>
 		  <property name="use_underline">False</property>
 		  <property name="use_markup">True</property>
 		  <property name="justify">GTK_JUSTIFY_LEFT</property>

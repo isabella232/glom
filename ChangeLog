@@ -2,6 +2,13 @@
 
 2005-07-29  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/frame_glom.cc: show_table_title(): 
+	Use pango markup to show a big title.
+	* glom/utility_widgets/imageglom.cc:
+	on_menupopup_activate_select_file(): Give the filter a name.
+
+2005-07-29  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/base_db.cc:
 	* glom/base_db.h: Added show_warning_no_records_found(), 
 	using the code from Frame_Glom::on_notebook_find_criteria(), 

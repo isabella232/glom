@@ -330,6 +330,7 @@ void ImageGlom::on_menupopup_activate_select_file()
   
   //Get image formats only:
   Gtk::FileFilter filter;
+  filter.set_name(_("Images"));
   filter.add_pixbuf_formats();
   dialog.add_filter(filter);
   

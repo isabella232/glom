@@ -604,7 +604,7 @@ void Frame_Glom::show_table_title()
     else //Use the table name if there is no table title.
       table_label = m_strTableName;
 
-    m_pLabel_Table->set_text(table_label);
+    m_pLabel_Table->set_markup("<b><span size=\"xx-large\">" + table_label + "</span></b>"); //Show the table title in large text, because it's very important to the user.
   }
 }
 
