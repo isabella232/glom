@@ -1,3 +1,9 @@
+2005-07-30  Daniel Holbach <dh@mailempfang.de>
+
+	* glom/main.cc: Changed the gnome_program_init() call again.
+	Apparently it was crashing on AMD64, though we do not know 
+	why.
+
 0.9.0:
 
 2005-07-29  Murray Cumming  <murrayc@murrayc.com>
