@@ -20,6 +20,7 @@ glom/layout_item_dialogs/dialog_group_by.cc
 glom/layout_item_dialogs/dialog_groupby_secondaryfields.cc
 glom/layout_item_dialogs/dialog_field_summary.cc
 glom/layout_item_dialogs/combo_summarytype.cc
+glom/main.cc
 glom/mode_data/box_data.cc
 glom/mode_data/box_data_details.cc
 glom/mode_data/box_data_list.cc
@@ -51,4 +52,3 @@ glom/utility_widgets/flowtablewithfields.cc
 glom/utility_widgets/imageglom.cc
 glom/utility_widgets/layoutwidgetbase.cc
 glom/utility_widgets/dialog_choose_id.cc
-

@@ -1,5 +1,6 @@
 2005-07-30  Adam Weinberger  <adamw@gnome.org>
 
+	* POTFILES.in: Added missing file.
 	* en_CA.po: Updated Canadian English translation.
 
 2005-07-29  Adam Weinberger  <adamw@gnome.org>
