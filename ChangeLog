@@ -1,5 +1,10 @@
 2005-08-02  Murray Cumming  <murrayc@murrayc.com>
 
+	* docs/postgres_gda_test.c: (main): call get_errors() 
+	when database creation fails, so we know why.
+
+2005-08-02  Murray Cumming  <murrayc@murrayc.com>
+
 	* docs/postgres_gda_test.c: (main): Try to create a 
 	database, because that seems to fail sometimes, possibly 
 	depending on the type of authentication used, and possibly 

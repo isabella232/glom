@@ -52,7 +52,10 @@ main(int argc, char *argv[])
 
         gboolean created = gda_connection_create_database(con, "glomtest");
 	if(!created)
+        {
 	  g_print("** Error: gda_connection_create_database failed.\n");
+          get_errors(con);
+        }
      
 	gda_connection_close (con);
 
