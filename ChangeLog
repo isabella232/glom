@@ -1,5 +1,26 @@
 2005-08-02  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/base_db.cc:
+	* glom/base_db.h: connect(): Reimplement with 
+	get_and_connect().
+	handle_error(): Reimplement with 
+	ConnectionPool::handle_error().
+	* glom/connectionpool.cc:
+	* glom/connectionpool.h: Added get_and_connect().
+	Added handle_error().
+	* glom/frame_glom.cc: Frame_Glom::create_database(): 
+	Do not show the error dialog here because it is already shown 
+	by the calling function in application.cc.
+	* glom/mode_data/box_data_details.cc:
+	* glom/mode_data/box_data_list.cc:
+	* glom/mode_design/fields/box_db_table_definition.cc:
+	* glom/python_embed/python_module/py_glom_relatedrecord.cc:
+	* glom/utility_widgets/db_adddel/glom_db_treemodel.cc: 
+	Call handle_error() to show a dialog when there is a 
+	database error.
+
+2005-08-02  Murray Cumming  <murrayc@murrayc.com>
+
 	* docs/postgres_gda_test.c: (main): call get_errors() 
 	when database creation fails, so we know why.
 

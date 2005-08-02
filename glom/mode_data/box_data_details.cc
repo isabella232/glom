@@ -279,7 +279,7 @@ bool Box_Data_Details::fill_from_database()
     fill_end();
 
   }
-  catch(std::exception& ex)
+  catch(const std::exception& ex)
   {
     handle_error(ex);
     bResult = false;

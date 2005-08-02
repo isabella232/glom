@@ -138,7 +138,7 @@ bool Box_DB_Table_Definition::fill_from_database()
 
     result = true;
   }
-  catch(std::exception& ex)
+  catch(const std::exception& ex)
   {
     handle_error(ex);
     result = false;

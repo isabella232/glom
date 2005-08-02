@@ -143,8 +143,8 @@ protected:
   static type_vecStrings pg_list_separate(const Glib::ustring& str);
 
 
-  virtual void handle_error(const std::exception& ex) const; //TODO_port: This is probably useless now.
-  virtual bool handle_error() const;
+  void handle_error(const std::exception& ex) const; //TODO_port: This is probably useless now.
+  bool handle_error() const;
 
 };
 

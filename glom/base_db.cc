@@ -70,15 +70,7 @@ sharedptr<SharedConnection> Base_DB::connect_to_server()
 {
   Bakery::BusyCursor(*get_application());
 
-  sharedptr<SharedConnection> result(0);
-
-  ConnectionPool* connection_pool = ConnectionPool::get_instance();
-  if(connection_pool)
-  {
-    result = connection_pool->connect();
-  }
-
-  return result;
+  return ConnectionPool::get_and_connect();
 }
 
 void Base_DB::handle_error(const std::exception& ex) const
@@ -91,37 +83,7 @@ void Base_DB::handle_error(const std::exception& ex) const
 
 bool Base_DB::handle_error() const
 {
-  sharedptr<SharedConnection> sharedconnection = connect_to_server();
-  if(sharedconnection)
-  {
-    Glib::RefPtr<Gnome::Gda::Connection> gda_connection = sharedconnection->get_gda_connection();
-
-    typedef std::list< Glib::RefPtr<Gnome::Gda::Error> > type_list_errors;
-    type_list_errors list_errors = gda_connection->get_errors();
-
-    if(!list_errors.empty())
-    {
-      Glib::ustring error_details;
-      for(type_list_errors::iterator iter = list_errors.begin(); iter != list_errors.end(); ++iter)
-      {
-        if(iter != list_errors.begin())
-          error_details += "\n"; //Add newline after each error.
-
-        error_details += (*iter)->get_description();
-        std::cerr << "Internal error: " << error_details << std::endl;
-      }
-
-      Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Internal error")), true, Gtk::MESSAGE_WARNING );
-      dialog.set_secondary_text(error_details);
-      //TODO: dialog.set_transient_for(*get_application());
-      dialog.run();
-
-      return true; //There really was an error.
-    }
-  }
-
-   //There was no error. libgda just did not return any data, and has no concept of an empty datamodel.
-   return false;
+  return ConnectionPool::handle_error();
 }
 
 

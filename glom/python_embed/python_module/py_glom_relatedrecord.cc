@@ -202,6 +202,7 @@ RelatedRecord_tp_as_mapping_getitem(PyGlomRelatedRecord *self, PyObject *item)
             else if(!datamodel)
             {
               g_warning("RelatedRecord_tp_as_mapping_getitem(): The datamodel was null.");
+              ConnectionPool::handle_error(true /* cerr only */);
               RelatedRecord_HandlePythonError();
             }
             else
@@ -272,7 +273,7 @@ RelatedRecord_generic_aggregate(PyGlomRelatedRecord* self, PyObject *args, PyObj
         Glib::ustring sql_query = "SELECT " + aggregate + "(" + related_table + "." + field_name + ") FROM " + related_table
           + " WHERE " + related_table + "." + related_key_name + " = " + *(self->m_from_key_value_sqlized);
 
-        std::cout << "PyGlomRelatedRecord: Executing:  " << sql_query << std::endl;
+        //std::cout << "PyGlomRelatedRecord: Executing:  " << sql_query << std::endl;
         Glib::RefPtr<Gnome::Gda::DataModel> datamodel = gda_connection->execute_single_command(sql_query);
         if(datamodel && datamodel->get_n_rows())
         {
@@ -286,6 +287,7 @@ RelatedRecord_generic_aggregate(PyGlomRelatedRecord* self, PyObject *args, PyObj
         else if(!datamodel)
         {
           g_warning("RelatedRecord_generic_aggregate(): The datamodel was null.");
+          ConnectionPool::handle_error(true /* cerr only */);
           RelatedRecord_HandlePythonError();
         }
         else

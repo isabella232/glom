@@ -100,6 +100,8 @@ public:
    */
   sharedptr<SharedConnection> connect();
 
+  static sharedptr<SharedConnection> get_and_connect();
+
 
   void set_host(const Glib::ustring& value);
   void set_user(const Glib::ustring& value);
@@ -112,6 +114,9 @@ public:
   Glib::ustring get_database() const;
 
   const FieldTypes* get_field_types() const;
+
+  //Show the gda error in a dialog.
+  static bool handle_error(bool cerr_only = false);
 
 protected:
   void on_sharedconnection_finished();

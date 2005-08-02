@@ -201,7 +201,7 @@ bool DbTreeModel::refresh_from_database(const Glib::ustring& where_clause)
       m_data_model_rows_count = 0;
       m_data_model_columns_count = m_columns_count;
 
-      //TODO: handle_error();
+      ConnectionPool::handle_error();
       return false; //No records were found.
     }
     else

@@ -135,7 +135,7 @@ bool Box_Data_List::fill_from_database()
 
     fill_end();
   }
-  catch(std::exception& ex)
+  catch(const std::exception& ex)
   {
     handle_error(ex);
     result = false;

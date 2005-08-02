@@ -996,22 +996,10 @@ bool Frame_Glom::create_database(const Glib::ustring& database_name, bool reques
         }
         else
         {
-          //Tell the user:
-          Gtk::Dialog* dialog = 0;
-          try
-          {
-            Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_error_create_database");
+          handle_error();
 
-            refXml->get_widget("dialog_error_create_database", dialog);
-          }
-          catch(const Gnome::Glade::XmlError& ex)
-          {
-            std::cerr << ex.what() << std::endl;
-          }
+          //The calling function will tell the user.
 
-          //TODO: dialog->set_transient_for(*get_app_window());
-          dialog->run();
-          delete dialog;
           return false; //Failed. //TODO: Allow the user to try with a different user name?
         }
       }

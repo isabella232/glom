@@ -19,7 +19,9 @@
  */
  
 #include "connectionpool.h"
-
+#include <gtkmm/messagedialog.h>
+#include <bakery/bakery.h>
+#include <glibmm/i18n.h>
 
 ExceptionConnection::ExceptionConnection(failure_type failure)
 : m_failure_type(failure)
@@ -125,8 +127,22 @@ void ConnectionPool::set_ready_to_connect(bool val)
   m_ready_to_connect = val;
 }
 
+//static:
+sharedptr<SharedConnection> ConnectionPool::get_and_connect()
+{
+  sharedptr<SharedConnection> result(0);
+
+  ConnectionPool* connection_pool = ConnectionPool::get_instance();
+  if(connection_pool)
+  {
+    result = connection_pool->connect();
+  }
+
+  return result;
+}
+
 sharedptr<SharedConnection> ConnectionPool::connect()
-{       
+{
   if(get_ready_to_connect())
   {
     //If the connection is already open (because it is being used by somebody):
@@ -173,7 +189,7 @@ sharedptr<SharedConnection> ConnectionPool::connect()
           //Create the fieldtypes member if it has not already been done:
           if(!m_pFieldTypes)
             m_pFieldTypes = new FieldTypes(m_refGdaConnection);  
-            
+
           //Enforce ISO formats in the communication:
           m_refGdaConnection->execute_single_command("SET DATESTYLE = 'ISO'");  
 
@@ -216,6 +232,9 @@ sharedptr<SharedConnection> ConnectionPool::connect()
             g_warning("  (Connection succeeds, but not to the specific database).");
           else
             g_warning("  (Could not connect even to the default database.)");
+
+
+          //handle_error(true /* cerr only */);
 
           throw ExceptionConnection(bJustDatabaseMissing ? ExceptionConnection::FAILURE_NO_DATABASE : ExceptionConnection::FAILURE_NO_SERVER);
         }
@@ -290,16 +309,50 @@ void ConnectionPool::on_sharedconnection_finished()
     //run when we clear this last RefPtr of it, but we will explicitly close it just in case.
     //g_warning("ConnectionPool::on_sharedconnection_finished(): closing GdaConnection");
     m_refGdaConnection->close();
-    
+
     m_refGdaConnection.clear();
 
     //g_warning("ConnectionPool: connection closed");
   }
-    
+
 }
 
+//static
+bool ConnectionPool::handle_error(bool cerr_only)
+{
+  sharedptr<SharedConnection> sharedconnection = get_and_connect();
+  if(sharedconnection)
+  {
+    Glib::RefPtr<Gnome::Gda::Connection> gda_connection = sharedconnection->get_gda_connection();
 
+    typedef std::list< Glib::RefPtr<Gnome::Gda::Error> > type_list_errors;
+    type_list_errors list_errors = gda_connection->get_errors();
 
+    if(!list_errors.empty())
+    {
+      Glib::ustring error_details;
+      for(type_list_errors::iterator iter = list_errors.begin(); iter != list_errors.end(); ++iter)
+      {
+        if(iter != list_errors.begin())
+          error_details += "\n"; //Add newline after each error.
 
-  
+        error_details += (*iter)->get_description();
+        std::cerr << "Internal error: " << error_details << std::endl;
+      }
+
+      if(!cerr_only)
+      {
+	Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Internal error")), true, Gtk::MESSAGE_WARNING );
+	dialog.set_secondary_text(error_details);
+	//TODO: dialog.set_transient_for(*get_application());
+	dialog.run();
+      }
+
+      return true; //There really was an error.
+    }
+  }
+
+   //There was no error. libgda just did not return any data, and has no concept of an empty datamodel.
+   return false;
+}
 
