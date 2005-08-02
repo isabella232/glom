@@ -30,7 +30,7 @@ get_errors (GdaConnection *connection)
 int
 main(int argc, char *argv[])
 {
-        const gchar* connection_string = "HOST=localhost;USER=murrayc;PASSWORD=thepasswordhere;DATABASE=template1";
+        const gchar* connection_string = "HOST=localhost;USER=murrayc;PASSWORD=yourpasswordhere;DATABASE=template1";
         GdaClient     *client = 0;
         GdaConnection *con = 0;
         
@@ -50,12 +50,15 @@ main(int argc, char *argv[])
 		return 0;
 	}
 
+        gboolean created = gda_connection_create_database(con, "glomtest");
+	if(!created)
+	  g_print("** Error: gda_connection_create_database failed.\n");
      
 	gda_connection_close (con);
 
 	g_object_unref (G_OBJECT (client));
 
-        g_print ("** Connection successfully opened and closed.\n");
+        g_print ("** Connection successfully opened, database created, and connection closed.\n");
 
         return 0;
 }

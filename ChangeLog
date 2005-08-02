@@ -1,3 +1,10 @@
+2005-08-02  Murray Cumming  <murrayc@murrayc.com>
+
+	* docs/postgres_gda_test.c: (main): Try to create a 
+	database, because that seems to fail sometimes, possibly 
+	depending on the type of authentication used, and possibly 
+	not failing in the psql command-line tool.
+
 2005-07-30  Daniel Holbach <dh@mailempfang.de>
 
 	* glom/main.cc: Changed the gnome_program_init() call again.
