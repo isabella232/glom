@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glom.HEAD.es\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-07-18 19:40+0000\n"
-"PO-Revision-Date: 2005-07-19 00:32+0200\n"
+"POT-Creation-Date: 2005-07-31 19:40+0000\n"
+"PO-Revision-Date: 2005-08-02 02:04+0200\n"
 "Last-Translator: Jorge Gonzalez <jorge.gonzalez.gonzalez@hispalinux.es>\n"
 "Language-Team:  <traductores@es.gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -25,122 +25,126 @@ msgid "*"
 msgstr "*"
 
 #: ../glom/glom.glade.h:2
+msgid "<b><span size=\"xx-large\">None selected</span></b>"
+msgstr "<b><span size=\"xx-large\">Ninguno seleccionado</span></b>"
+
+#: ../glom/glom.glade.h:3
 msgid "<b>Address</b>"
 msgstr "<b>Dirección</b>"
 
-#: ../glom/glom.glade.h:3
+#: ../glom/glom.glade.h:4
 msgid "<b>Available Parts</b>"
 msgstr "<b>Partes disponibles</b>"
 
-#: ../glom/glom.glade.h:4
+#: ../glom/glom.glade.h:5
 msgid "<b>Choices</b>"
 msgstr "<b>Opciones</b>"
 
-#: ../glom/glom.glade.h:5
+#: ../glom/glom.glade.h:6
 msgid "<b>Connection</b>"
 msgstr "<b>Conexión</b>"
 
-#: ../glom/glom.glade.h:6
+#: ../glom/glom.glade.h:7
 msgid "<b>Field Definitions</b>"
 msgstr "<b>Definiciones de campos</b>"
 
-#: ../glom/glom.glade.h:7
+#: ../glom/glom.glade.h:8
 msgid "<b>Field:</b>"
 msgstr "<b>Campo:</b>"
 
-#: ../glom/glom.glade.h:8
+#: ../glom/glom.glade.h:9
 msgid "<b>Fields</b>"
 msgstr "<b>Campos</b>"
 
-#: ../glom/glom.glade.h:9
+#: ../glom/glom.glade.h:10
+msgid "<b>Find Related Record</b>"
+msgstr "<b>Buscar registros relacionados</b>"
+
+#: ../glom/glom.glade.h:11
 msgid "<b>Group By</b>"
 msgstr "<b>Agrupar por</b>"
 
-#: ../glom/glom.glade.h:10
+#: ../glom/glom.glade.h:12
 msgid "<b>Group:</b>"
 msgstr "<b>Grupo:</b>"
 
-#: ../glom/glom.glade.h:11
+#: ../glom/glom.glade.h:13
 msgid "<b>Groups</b>"
 msgstr "<b>Grupos</b>"
 
-#: ../glom/glom.glade.h:12
-msgid "<b>Mode:</b>"
-msgstr "<b>Modo:</b>"
-
-#: ../glom/glom.glade.h:13
+#: ../glom/glom.glade.h:14
 msgid "<b>Numeric Formatting</b>"
 msgstr "<b>Formato numérico</b>"
 
-#: ../glom/glom.glade.h:14
+#: ../glom/glom.glade.h:15
 msgid "<b>Parts</b>"
 msgstr "<b>Partes</b>"
 
-#: ../glom/glom.glade.h:15
+#: ../glom/glom.glade.h:16
 msgid "<b>Relationship:</b>"
 msgstr "<b>Relación:</b>"
 
-#: ../glom/glom.glade.h:16
+#: ../glom/glom.glade.h:17
 msgid "<b>Relationships</b>"
 msgstr "<b>Relaciones</b>"
 
-#: ../glom/glom.glade.h:17
+#: ../glom/glom.glade.h:18
 msgid "<b>Report name:</b>"
 msgstr "<b>Nombre del informe:</b>"
 
-#: ../glom/glom.glade.h:18
+#: ../glom/glom.glade.h:19
 msgid "<b>Reports</b>"
 msgstr "<b>Informes</b>"
 
-#: ../glom/glom.glade.h:19
+#: ../glom/glom.glade.h:20
 msgid "<b>Select Field</b>"
 msgstr "<b>Seleccione el campo</b>"
 
-#: ../glom/glom.glade.h:20
+#: ../glom/glom.glade.h:21
 msgid "<b>Select Relationship</b>"
 msgstr "<b>Seleccione la relación</b>"
 
-#: ../glom/glom.glade.h:21
+#: ../glom/glom.glade.h:22
 msgid "<b>Summary Field</b>"
 msgstr "<b>Resumen del campo:</b>"
 
-#: ../glom/glom.glade.h:22
+#: ../glom/glom.glade.h:23
 msgid "<b>Table Name</b>"
 msgstr "<b>Nombre de la tabla:</b>"
 
-#: ../glom/glom.glade.h:23
+#: ../glom/glom.glade.h:24
 msgid "<b>Table:</b>"
 msgstr "<b>Tabla:</b>"
 
-#: ../glom/glom.glade.h:24
+#: ../glom/glom.glade.h:25
 msgid "<b>Tables in database</b>"
 msgstr "<b>Tablas en base de datos</b>"
 
-#: ../glom/glom.glade.h:25
+#: ../glom/glom.glade.h:26
 msgid "<b>Tables</b>"
 msgstr "<b>Tablas</b>"
 
-#: ../glom/glom.glade.h:26
+#: ../glom/glom.glade.h:27
 msgid "<b>Text Formatting</b>"
 msgstr "<b>Formato del texto</b>"
 
-#: ../glom/glom.glade.h:27
+#: ../glom/glom.glade.h:28
 msgid "<b>Title:</b>"
 msgstr "<b>Título:</b>"
 
-#: ../glom/glom.glade.h:28
+#: ../glom/glom.glade.h:29
 msgid "<b>User Level:</b>"
 msgstr "<b>Nivel de usuario:</b>"
 
-#: ../glom/glom.glade.h:29
+#: ../glom/glom.glade.h:30
 msgid "<b>User</b>"
 msgstr "<b>Usuario</b>"
 
-#: ../glom/glom.glade.h:30
+#: ../glom/glom.glade.h:31
 msgid "<b>Users</b>"
 msgstr "<b>Usuarios</b>"
 
-#: ../glom/glom.glade.h:31
+#: ../glom/glom.glade.h:32
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Add User To Group</span>\n"
 "\n"
@@ -150,7 +154,7 @@ msgstr ""
 "\n"
 "¿Qué usuario debe ser añadido a este grupo?"
 
-#: ../glom/glom.glade.h:34
+#: ../glom/glom.glade.h:35
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Connect to Server</span>\n"
 "\n"
@@ -160,7 +164,7 @@ msgstr ""
 "\n"
 "Introduzca los detalles de conexión con el servidor de su base de datos."
 
-#: ../glom/glom.glade.h:37
+#: ../glom/glom.glade.h:38
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Connection Failed</span>\n"
 "\n"
@@ -174,7 +178,7 @@ msgstr ""
 "usuario o una contraseña incorrecta, o quizá la base de datos postgres del "
 "servidor no se está ejecutando."
 
-#: ../glom/glom.glade.h:40
+#: ../glom/glom.glade.h:41
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Create Group</span>\n"
 "\n"
@@ -184,7 +188,7 @@ msgstr ""
 "\n"
 "¿Qué nombre debe tener este grupo?"
 
-#: ../glom/glom.glade.h:43
+#: ../glom/glom.glade.h:44
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Database creation failed</span>\n"
 "\n"
@@ -197,7 +201,7 @@ msgstr ""
 "Glom no pudo crear la nueva base de datos. Quizá usted no tenga los permisos "
 "necesarios. Póngase en contacto con el administrador del sistema."
 
-#: ../glom/glom.glade.h:46
+#: ../glom/glom.glade.h:47
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Database does not exist</span>\n"
 "\n"
@@ -209,7 +213,7 @@ msgstr ""
 "La base de datos todavía no existe en este servidor. ¿Desea crear la base de "
 "datos con una estructura vacía?"
 
-#: ../glom/glom.glade.h:49
+#: ../glom/glom.glade.h:50
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Invalid format</span>\n"
 "\n"
@@ -220,10 +224,10 @@ msgstr ""
 "<span weight=\"bold\" size=\"larger\">Formato inválido</span>\n"
 "\n"
 "Los datos del campo no fueron reconocidos. Intente corregir los datos o "
-"revertirlos al valor anterior. Aquí tiene un ejemplo de datos con un formato"
-"correcto para este campo.\n"
+"revertirlos al valor anterior. Aquí tiene un ejemplo de datos con un "
+"formato correcto para este campo.\n"
 
-#: ../glom/glom.glade.h:53
+#: ../glom/glom.glade.h:54
 msgid ""
 "<span weight=\"bold\" size=\"larger\">New Database</span>\n"
 "\n"
@@ -235,7 +239,7 @@ msgstr ""
 "Elija un nombre y un título para la base de datos nueva. El nombre no debe "
 "contener ningún espacio."
 
-#: ../glom/glom.glade.h:56
+#: ../glom/glom.glade.h:57
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Open existing document, or create new "
 "document</span>\n"
@@ -253,170 +257,175 @@ msgstr ""
 "\n"
 "O desea crear un documento nuevo, para diseñar una base de datos nueva?\n"
 
-#: ../glom/glom.glade.h:62
+#: ../glom/glom.glade.h:63
 msgid "Add Related"
 msgstr "Añadir una relación"
 
-#: ../glom/glom.glade.h:63
+#: ../glom/glom.glade.h:64
 msgid "Add _Group"
 msgstr "Añadir _grupo"
 
-#: ../glom/glom.glade.h:64
+#: ../glom/glom.glade.h:65
+#: ../glom/mode_design/box_db_table_relationships.cc:45
 msgid "Allow Editing"
 msgstr "Permitir escritura"
 
-#: ../glom/glom.glade.h:65
+#: ../glom/glom.glade.h:66
 msgid "Also show"
 msgstr "Mostrar también"
 
-#: ../glom/glom.glade.h:66
+#: ../glom/glom.glade.h:67
 msgid "Auto-increment"
 msgstr "Auto-incrementar"
 
-#: ../glom/glom.glade.h:67
+#: ../glom/glom.glade.h:68
 msgid "Auto-increment values"
 msgstr "Auto-incrementar valores"
 
-#: ../glom/glom.glade.h:68
+#: ../glom/glom.glade.h:69
 msgid "Calculate value"
 msgstr "Calcular valor"
 
-#: ../glom/glom.glade.h:69
+#: ../glom/glom.glade.h:70
 msgid "Choices From Related Records"
 msgstr "Opciones de los registros relacionados"
 
-#: ../glom/glom.glade.h:70
+#: ../glom/glom.glade.h:71
 msgid "Choose User"
 msgstr "Elegir usuario"
 
-#: ../glom/glom.glade.h:71
+#: ../glom/glom.glade.h:72
 msgid "Confirm Password"
 msgstr "Confirme la contraseña"
 
-#: ../glom/glom.glade.h:72
+#: ../glom/glom.glade.h:73
 msgid "Connect"
 msgstr "Conectar"
 
-#: ../glom/glom.glade.h:73
+#: ../glom/glom.glade.h:74
 msgid "Country"
 msgstr "País"
 
-#: ../glom/glom.glade.h:74 ../glom/mode_design/users/dialog_groups_list.cc:76
+#: ../glom/glom.glade.h:75 ../glom/mode_design/users/dialog_groups_list.cc:76
 msgid "Create"
 msgstr "Crear"
 
-#: ../glom/glom.glade.h:75
+#: ../glom/glom.glade.h:76
 msgid "Create Group"
 msgstr "Crear un grupo"
 
-#: ../glom/glom.glade.h:76
+#: ../glom/glom.glade.h:77
 msgid "Currency Symbol"
 msgstr "Símbolo de divisa"
 
-#: ../glom/glom.glade.h:77
+#: ../glom/glom.glade.h:78
 msgid "Custom Choice List"
 msgstr "Lista de opciones personalizada"
 
-#: ../glom/glom.glade.h:78 ../glom/frame_glom.cc:350
+#: ../glom/glom.glade.h:79 ../glom/frame_glom.cc:351
 msgid "Data"
 msgstr "Datos"
 
-#: ../glom/glom.glade.h:79
+#: ../glom/glom.glade.h:80
 msgid "Database"
 msgstr "Base de datos"
 
-#: ../glom/glom.glade.h:80
+#: ../glom/glom.glade.h:81
 msgid "Database Preferences"
 msgstr "Preferencias de la base de datos"
 
-#: ../glom/glom.glade.h:81
+#: ../glom/glom.glade.h:82
 msgid "Decimal Places"
 msgstr "Lugares para los decimales"
 
-#: ../glom/glom.glade.h:82
+#: ../glom/glom.glade.h:83
 msgid "Default Formatting"
 msgstr "Formato predeterminado"
 
-#: ../glom/glom.glade.h:83
+#: ../glom/glom.glade.h:84
 #: ../glom/mode_design/fields/dialog_fielddefinition.cc:144
 msgid "Default Value"
 msgstr "Valor predeterminado"
 
-#: ../glom/glom.glade.h:84
+#: ../glom/glom.glade.h:85
 msgid "Details Layout"
 msgstr "Detalles de la distribución"
 
 #. Add new menu items:
-#: ../glom/glom.glade.h:85 ../glom/mode_design/users/dialog_groups_list.cc:73
+#: ../glom/glom.glade.h:86 ../glom/mode_design/users/dialog_groups_list.cc:73
 #: ../glom/utility_widgets/adddel/adddel.cc:205
 msgid "Edit"
 msgstr "Editar"
 
-#: ../glom/glom.glade.h:86
-#: ../glom/data_structure/layout/layoutitem_field.cc:138
+#: ../glom/glom.glade.h:87
+#: ../glom/data_structure/layout/layoutitem_field.cc:143
 #: ../glom/dialog_database_preferences.cc:49
 msgid "Field"
 msgstr "Campo"
 
-#: ../glom/glom.glade.h:87
+#: ../glom/glom.glade.h:88
 msgid "Field Calculation"
 msgstr "Cálculo del campo"
 
-#: ../glom/glom.glade.h:88
+#: ../glom/glom.glade.h:89
 msgid "Field Definition"
 msgstr "Definición del campo"
 
-#: ../glom/glom.glade.h:89 ../glom/mode_design/dialog_fields.cc:34
+#: ../glom/glom.glade.h:90 ../glom/mode_design/dialog_fields.cc:34
 msgid "Field Definitions"
 msgstr "Definiciones de los campos"
 
-#: ../glom/glom.glade.h:90
+#: ../glom/glom.glade.h:91
 msgid "Field Layout"
 msgstr "Distribución de los campos"
 
-#: ../glom/glom.glade.h:91
+#: ../glom/glom.glade.h:92
 #: ../glom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:67
 msgid "Field Summary"
 msgstr "Resumen del campo"
 
-#: ../glom/glom.glade.h:92
+#: ../glom/glom.glade.h:93
 msgid "Field:"
 msgstr "Campo:"
 
-#: ../glom/glom.glade.h:93
+#: ../glom/glom.glade.h:94
+msgid "Find Related Record"
+msgstr "Buscar registro relacionados"
+
+#: ../glom/glom.glade.h:95
 msgid "Formatting"
 msgstr "Formato"
 
-#: ../glom/glom.glade.h:94
+#: ../glom/glom.glade.h:96 ../glom/main.cc:90
 msgid "Glom"
 msgstr "Glom"
 
-#: ../glom/glom.glade.h:95 ../glom/data_structure/layout/layoutgroup.cc:213
+#: ../glom/glom.glade.h:97 ../glom/data_structure/layout/layoutgroup.cc:290
 msgid "Group"
 msgstr "Agrupar"
 
-#: ../glom/glom.glade.h:96
+#: ../glom/glom.glade.h:98
 #: ../glom/data_structure/layout/report_parts/layoutitem_groupby.cc:85
 msgid "Group By"
 msgstr "Agrupar por"
 
-#: ../glom/glom.glade.h:97
+#: ../glom/glom.glade.h:99
 msgid "Group By - Secondary Fields"
 msgstr "Agrupar por - campos secundarios"
 
-#: ../glom/glom.glade.h:98
+#: ../glom/glom.glade.h:100
 msgid "Group Name"
 msgstr "Nombre del grupo"
 
-#: ../glom/glom.glade.h:99
+#: ../glom/glom.glade.h:101
 msgid "Groups"
 msgstr "Grupos"
 
-#: ../glom/glom.glade.h:100
+#: ../glom/glom.glade.h:102
 msgid "Host"
 msgstr "Anfitrión"
 
-#: ../glom/glom.glade.h:101
+#: ../glom/glom.glade.h:103
 msgid ""
 "If this is not selected then a thousands separator will not be used, even if "
 "your locale would normally use one. If it is selected then a thousands "
@@ -427,15 +436,19 @@ msgstr ""
 "entonces, los separadores de milllares se usarán sólo si su configuración "
 "local los usa normalmente."
 
-#: ../glom/glom.glade.h:102
+#: ../glom/glom.glade.h:104
 msgid "List Layout"
 msgstr "Lista de distribuciones"
 
-#: ../glom/glom.glade.h:103
+#: ../glom/glom.glade.h:105
 msgid "Lookup value when a field changes."
 msgstr "Buscar valor al cambiar un campo."
 
-#: ../glom/glom.glade.h:104
+#: ../glom/glom.glade.h:106
+msgid "Mode:"
+msgstr "Modo:"
+
+#: ../glom/glom.glade.h:107
 msgid "Multi-line"
 msgstr "Multi-línea"
 
@@ -446,7 +459,7 @@ msgstr "Multi-línea"
 #. Append the View columns:
 #. Append the View columns:
 #. Append the View columns:
-#: ../glom/glom.glade.h:105 ../glom/box_reports.cc:86
+#: ../glom/glom.glade.h:108 ../glom/box_reports.cc:86
 #: ../glom/layout_item_dialogs/dialog_groupby_secondaryfields.cc:49
 #: ../glom/mode_data/dialog_choose_field.cc:43
 #: ../glom/mode_data/dialog_choose_relationship.cc:49
@@ -459,111 +472,112 @@ msgstr "Multi-línea"
 msgid "Name"
 msgstr "Nombre"
 
-#: ../glom/glom.glade.h:106
+#: ../glom/glom.glade.h:109
 msgid "No Choices"
 msgstr "Sin opciones"
 
-#: ../glom/glom.glade.h:107 ../glom/mode_design/dialog_design.cc:50
+#: ../glom/glom.glade.h:110 ../glom/mode_design/dialog_design.cc:50
 msgid "None selected"
 msgstr "Ninguno seleccionado"
 
-#: ../glom/glom.glade.h:108
+#: ../glom/glom.glade.h:111
 msgid "Open Example"
 msgstr "Abrir un ejemplo"
 
-#: ../glom/glom.glade.h:109
+#: ../glom/glom.glade.h:112
 msgid "Organisation"
 msgstr "Organización"
 
-#: ../glom/glom.glade.h:110
+#: ../glom/glom.glade.h:113
 msgid "Password"
 msgstr "Contraseña"
 
-#: ../glom/glom.glade.h:111
+#: ../glom/glom.glade.h:114
 msgid "Primary Key"
 msgstr "Clave primaria"
 
-#: ../glom/glom.glade.h:112
+#: ../glom/glom.glade.h:115
 msgid "Related Records Layout"
 msgstr "Distribución de los registros relacionados"
 
-#: ../glom/glom.glade.h:113
+#: ../glom/glom.glade.h:116
 msgid "Relationship"
 msgstr "Relación"
 
-#: ../glom/glom.glade.h:114
+#: ../glom/glom.glade.h:117
 msgid "Report Layout"
 msgstr "Distribución del informe"
 
-#: ../glom/glom.glade.h:115
+#: ../glom/glom.glade.h:118
 msgid "Reports"
 msgstr "Informes"
 
-#: ../glom/glom.glade.h:116
+#: ../glom/glom.glade.h:119
 msgid "Restrict data to these choices"
 msgstr "Restringir los datos a esas opciones"
 
-#: ../glom/glom.glade.h:117
+#: ../glom/glom.glade.h:120
 msgid "Revert"
 msgstr "Revertir"
 
-#: ../glom/glom.glade.h:118
+#: ../glom/glom.glade.h:121
 msgid "Secondary Fields:"
 msgstr "Campos secundarios:"
 
-#: ../glom/glom.glade.h:119 ../glom/utility_widgets/imageglom.cc:337
+#: ../glom/glom.glade.h:122 ../glom/utility_widgets/imageglom.cc:338
+#: ../glom/utility_widgets/dialog_choose_id.cc:63
 msgid "Select"
 msgstr "Seleccionar"
 
-#: ../glom/glom.glade.h:120
+#: ../glom/glom.glade.h:123
 msgid "Select Field"
 msgstr "Campo de selección"
 
-#: ../glom/glom.glade.h:121
+#: ../glom/glom.glade.h:124
 msgid "Select Relationship"
 msgstr "Relación de selección"
 
-#: ../glom/glom.glade.h:122
+#: ../glom/glom.glade.h:125
 msgid "Show hidden tables"
 msgstr "Mostrar tablas ocultas"
 
-#: ../glom/glom.glade.h:123
+#: ../glom/glom.glade.h:126
 msgid "Sort Field:"
 msgstr "Campo de ordenación:"
 
-#: ../glom/glom.glade.h:124
+#: ../glom/glom.glade.h:127
 msgid "State/County"
 msgstr "Estado/País"
 
-#: ../glom/glom.glade.h:125
+#: ../glom/glom.glade.h:128
 msgid "Street"
 msgstr "Calle"
 
-#: ../glom/glom.glade.h:126
+#: ../glom/glom.glade.h:129
 msgid "Street (Line 2)"
 msgstr "Calle (línea 2)"
 
-#: ../glom/glom.glade.h:127
+#: ../glom/glom.glade.h:130
 msgid "Summary Type:"
 msgstr "Tipo de resumen:"
 
-#: ../glom/glom.glade.h:128
+#: ../glom/glom.glade.h:131
 msgid "System Name"
 msgstr "Nombre del sistema"
 
-#: ../glom/glom.glade.h:129
+#: ../glom/glom.glade.h:132
 msgid "Table:"
 msgstr "Tabla:"
 
-#: ../glom/glom.glade.h:130
+#: ../glom/glom.glade.h:133
 msgid "Table: "
 msgstr "Tabla: "
 
-#: ../glom/glom.glade.h:131
+#: ../glom/glom.glade.h:134
 msgid "Test"
 msgstr "Prueba"
 
-#: ../glom/glom.glade.h:132
+#: ../glom/glom.glade.h:135
 msgid ""
 "The field value will be the return value of the python function, which you "
 "implement here."
@@ -572,7 +586,7 @@ msgstr ""
 "se implementa aquí."
 
 #. Title column:
-#: ../glom/glom.glade.h:133 ../glom/box_reports.cc:87
+#: ../glom/glom.glade.h:136 ../glom/box_reports.cc:87
 #: ../glom/mode_data/dialog_choose_field.cc:44
 #: ../glom/mode_data/dialog_layout_details.cc:73
 #: ../glom/mode_design/box_db_table_relationships.cc:40
@@ -581,57 +595,58 @@ msgstr ""
 msgid "Title"
 msgstr "Título"
 
-#: ../glom/glom.glade.h:134
+#: ../glom/glom.glade.h:137
 msgid "Town"
 msgstr "Ciudad"
 
-#: ../glom/glom.glade.h:135
+#: ../glom/glom.glade.h:138
 msgid "Triggered by:"
 msgstr "Disparado por:"
 
-#: ../glom/glom.glade.h:136
+#: ../glom/glom.glade.h:139
 #: ../glom/mode_design/fields/box_db_table_definition.cc:52
 msgid "Type"
 msgstr "Tipo"
 
-#: ../glom/glom.glade.h:137
+#: ../glom/glom.glade.h:140
 msgid "Unique"
 msgstr "Único"
 
-#: ../glom/glom.glade.h:138
+#: ../glom/glom.glade.h:141
 msgid "Use 1000s separator"
 msgstr "Usar separadores de millares"
 
-#: ../glom/glom.glade.h:139
+#: ../glom/glom.glade.h:142
 msgid "Use custom formatting"
 msgstr "Usar formato personalizado"
 
-#: ../glom/glom.glade.h:140
+#: ../glom/glom.glade.h:143
 msgid "Use default formatting"
 msgstr "Usar el formato predeterminado"
 
 #. Append the View columns:
-#: ../glom/glom.glade.h:141 ../glom/mode_design/users/dialog_users_list.cc:63
+#: ../glom/glom.glade.h:144 ../glom/mode_design/users/dialog_users_list.cc:63
 msgid "User"
 msgstr "Usuario"
 
-#: ../glom/glom.glade.h:142
+#: ../glom/glom.glade.h:145
 msgid "Users"
 msgstr "Usuarios"
 
-#: ../glom/glom.glade.h:143
+#: ../glom/glom.glade.h:146
 msgid "Zip/Postal Code"
 msgstr "Código postal"
 
-#: ../glom/glom.glade.h:144
+#: ../glom/glom.glade.h:147
 msgid "example data format"
 msgstr "formato de datos de ejemplo"
 
-#: ../glom/glom.glade.h:145
+#: ../glom/glom.glade.h:148
 msgid "field name"
 msgstr "nombre del campo"
 
-#: ../glom/glom.glade.h:146
+#: ../glom/glom.glade.h:149
+#, fuzzy
 msgid ""
 "import glom\n"
 "\n"
@@ -641,9 +656,14 @@ msgstr ""
 "\n"
 "<b>def calculate_field_value(record):</b>"
 
-#: ../glom/glom.glade.h:149
+#: ../glom/glom.glade.h:152
 msgid "table name"
 msgstr "nombre de la tabla"
+
+#: ../glom/glom.glade.h:153
+#, fuzzy
+msgid "table_name"
+msgstr "nombre_de_la_tabla"
 
 #: ../glom/application.cc:59
 msgid "(C) 2000-2005 Murray Cumming"
@@ -769,13 +789,27 @@ msgstr "Ayuda con la aplicación"
 msgid "Internal error"
 msgstr "Error interno"
 
-#: ../glom/base_db.cc:773
+#: ../glom/base_db.cc:778
 msgid "System: Preferences"
 msgstr "Sistema: preferencias"
 
-#: ../glom/base_db.cc:837
+#: ../glom/base_db.cc:842
 msgid "System: Auto Increments"
 msgstr "Sistema: auto incrementos"
+
+#: ../glom/base_db.cc:1580
+msgid "No Records Found"
+msgstr "No se encontró ningún registro"
+
+#: ../glom/base_db.cc:1582
+msgid "New Find"
+msgstr "Nueva búsqueda"
+
+#: ../glom/base_db.cc:1583
+msgid "Your find criteria did not match any records in the table."
+msgstr ""
+"El criterio de búsqueda introducido no coincide con ningún registro de la "
+"tabla."
 
 #: ../glom/box_reports.cc:204
 msgid "Are you sure that you want to rename this report?"
@@ -786,33 +820,33 @@ msgstr "¿Está seguro de querer renombrar este informe?"
 msgid "Rename Report"
 msgstr "Renombrar un informe"
 
-#: ../glom/data_structure/field.cc:445
+#: ../glom/data_structure/field.cc:472
 #: ../glom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:133
 #: ../glom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:141
 msgid "Invalid"
 msgstr "No válido"
 
-#: ../glom/data_structure/field.cc:446
+#: ../glom/data_structure/field.cc:473
 msgid "Number"
 msgstr "Número"
 
-#: ../glom/data_structure/field.cc:447
+#: ../glom/data_structure/field.cc:474
 msgid "Text"
 msgstr "Texto"
 
-#: ../glom/data_structure/field.cc:448
+#: ../glom/data_structure/field.cc:475
 msgid "Time"
 msgstr "Hora"
 
-#: ../glom/data_structure/field.cc:449
+#: ../glom/data_structure/field.cc:476
 msgid "Date"
 msgstr "Fecha"
 
-#: ../glom/data_structure/field.cc:450
+#: ../glom/data_structure/field.cc:477
 msgid "Boolean"
 msgstr "Booleano"
 
-#: ../glom/data_structure/field.cc:451
+#: ../glom/data_structure/field.cc:478
 msgid "Image"
 msgstr "Imagen"
 
@@ -863,18 +897,18 @@ msgid "Part"
 msgstr "Parte"
 
 #. Details column:
-#: ../glom/dialog_layout_report.cc:116 ../glom/mode_data/notebook_data.cc:30
+#: ../glom/dialog_layout_report.cc:116 ../glom/mode_data/notebook_data.cc:31
 #: ../glom/mode_find/notebook_find.cc:28
 msgid "Details"
 msgstr "Detalles"
 
 #. TODO: Obviously this document should have been deleted when the database-creation was cancelled.
 #. Note that "canceled" is the correct US spelling.
-#: ../glom/frame_glom.cc:316
+#: ../glom/frame_glom.cc:317
 msgid "No database"
 msgstr "Sin base de datos"
 
-#: ../glom/frame_glom.cc:316
+#: ../glom/frame_glom.cc:317
 msgid ""
 "This document does not specify any database. Maybe the document creation was "
 "canceled before the database could be created."
@@ -882,19 +916,19 @@ msgstr ""
 "Este documento no especifica ninguna base de datos. Quizá la creación del "
 "documento fue cancelada antes de que la base de datos se pudiera crear."
 
-#: ../glom/frame_glom.cc:357
+#: ../glom/frame_glom.cc:358
 msgid "Find"
 msgstr "Buscar"
 
-#: ../glom/frame_glom.cc:365
+#: ../glom/frame_glom.cc:366
 msgid "Unknown"
 msgstr "Desconocido"
 
-#: ../glom/frame_glom.cc:402
+#: ../glom/frame_glom.cc:403
 msgid "Developer mode not available."
 msgstr "El «Modo de desarrollador» no está disponible."
 
-#: ../glom/frame_glom.cc:403
+#: ../glom/frame_glom.cc:404
 msgid ""
 "Developer mode is not available. Check that you have sufficient database "
 "access rights and that the glom file is not read-only."
@@ -903,35 +937,31 @@ msgstr ""
 "suficientes sobre la base de datos y que el archivo de glom no es de sólo "
 "lectura."
 
-#: ../glom/frame_glom.cc:567
-msgid "No Records Found"
-msgstr "No se encontró ningún registro"
-
-#: ../glom/frame_glom.cc:569
-msgid "New Find"
-msgstr "Nueva búsqueda"
-
-#: ../glom/frame_glom.cc:570
-msgid "Your find criteria did not match any records in the table."
-msgstr ""
-"El criterio de búsqueda introducido no coincide con ningún registro de la "
-"tabla."
-
 #. show user level:
-#: ../glom/frame_glom.cc:583
+#: ../glom/frame_glom.cc:579
 msgid "Operator"
 msgstr "Operador"
 
-#: ../glom/frame_glom.cc:585
+#: ../glom/frame_glom.cc:581
 msgid "Developer"
 msgstr "Desarrollador"
 
+#: ../glom/mode_data/box_data.cc:110
+msgid "No Find Criteria"
+msgstr "No hay criterio de búsqueda"
+
+#: ../glom/mode_data/box_data.cc:111
+msgid ""
+"You have not entered any find criteria. Try entering information in the "
+"fields."
+msgstr "No ha introducido un criterio de búsqueda. Pruebe introduciendo información en los campos."
+
 #. Ask user to confirm loss of data:
-#: ../glom/mode_data/box_data.cc:306
+#: ../glom/mode_data/box_data.cc:315
 msgid "No primary key value"
 msgstr "No hay un valor de clave primaria"
 
-#: ../glom/mode_data/box_data.cc:307
+#: ../glom/mode_data/box_data.cc:316
 msgid ""
 "This data can not be stored in the database because you have not provided a "
 "primary key.\n"
@@ -943,11 +973,11 @@ msgstr ""
 
 #. Warn the user:
 #. TODO: Make the field insensitive until it can receive data, so people never see this dialog.
-#: ../glom/mode_data/box_data.cc:1144
+#: ../glom/mode_data/box_data.cc:1153
 msgid "Related Record Does Not Exist"
 msgstr "No existe ningún registro relacionado"
 
-#: ../glom/mode_data/box_data.cc:1145
+#: ../glom/mode_data/box_data.cc:1154
 msgid ""
 "Data may not be entered into this related field, because the related record "
 "does not yet exist, and the relationship does not allow automatic creation "
@@ -959,12 +989,12 @@ msgstr ""
 
 #. Warn the user:
 #. TODO: Make the field insensitive until it can receive data, so people never see this dialog.
-#: ../glom/mode_data/box_data.cc:1163
+#: ../glom/mode_data/box_data.cc:1172
 msgid "Related Record Can Not Be Created"
 msgstr "No se puede crear un registro relacionado"
 
 #. TODO: This is a very complex error message:
-#: ../glom/mode_data/box_data.cc:1165
+#: ../glom/mode_data/box_data.cc:1174
 msgid ""
 "Data may not be entered into this related field, because the related record "
 "does not yet exist, and the key in the related record is auto-generated and "
@@ -975,34 +1005,12 @@ msgstr ""
 "generada y por ello no se puede crear con el valor de la clave en este "
 "registro."
 
-#. Tell user that a primary key is needed to delete a record:
-#: ../glom/mode_data/box_data_details.cc:293
-msgid "No primary key value."
-msgstr "No hay un valor para la clave primaria."
-
-#: ../glom/mode_data/box_data_details.cc:294
-msgid "This record can not be deleted because there is no primary key."
-msgstr "Este registro no se puede borrar porque no hay una clave primaria."
-
-#. Warn user that they can't choose their own primary key:
-#: ../glom/mode_data/box_data_details.cc:591
-msgid "Primary key auto increments"
-msgstr "La clave primaria es autoincrementable"
-
-#: ../glom/mode_data/box_data_details.cc:592
-msgid ""
-"The primary key is auto-incremented.\n"
-" You may not enter your own primary key value."
-msgstr ""
-"La clave primaria es autoincrementable.\n"
-" No debería introducir su propio valor para la clave primaria."
-
 #. Ask the user for confirmation:
-#: ../glom/mode_data/box_data_list.cc:190
+#: ../glom/mode_data/box_data.cc:1263
 msgid "Delete record"
 msgstr "Borrar registro"
 
-#: ../glom/mode_data/box_data_list.cc:191
+#: ../glom/mode_data/box_data.cc:1264
 msgid ""
 "Are you sure that you would like to delete this record? The data in this "
 "record will then be permanently lost."
@@ -1010,18 +1018,40 @@ msgstr ""
 "¿Está seguro de querer borrar este registro? Los datos en este registro se "
 "perderán para siempre."
 
+#. Tell user that a primary key is needed to delete a record:
+#: ../glom/mode_data/box_data_details.cc:318
+msgid "No primary key value."
+msgstr "No hay un valor para la clave primaria."
+
+#: ../glom/mode_data/box_data_details.cc:319
+msgid "This record can not be deleted because there is no primary key."
+msgstr "Este registro no se puede borrar porque no hay una clave primaria."
+
+#. Warn user that they can't choose their own primary key:
+#: ../glom/mode_data/box_data_details.cc:632
+msgid "Primary key auto increments"
+msgstr "La clave primaria es autoincrementable"
+
+#: ../glom/mode_data/box_data_details.cc:633
+msgid ""
+"The primary key is auto-incremented.\n"
+" You may not enter your own primary key value."
+msgstr ""
+"La clave primaria es autoincrementable.\n"
+" No debería introducir su propio valor para la clave primaria."
+
 #. Add Pages:
-#: ../glom/mode_data/box_data_list.cc:718
-#: ../glom/mode_data/notebook_data.cc:27 ../glom/mode_find/notebook_find.cc:27
+#: ../glom/mode_data/box_data_list.cc:758
+#: ../glom/mode_data/notebook_data.cc:28 ../glom/mode_find/notebook_find.cc:27
 msgid "List"
 msgstr "Lista"
 
 #. Tell user that they can't do that:
-#: ../glom/mode_data/box_data_list_related.cc:262
+#: ../glom/mode_data/box_data_list_related.cc:270
 msgid "Extra related records not possible."
 msgstr "No son posibles los registros relacionados extra."
 
-#: ../glom/mode_data/box_data_list_related.cc:263
+#: ../glom/mode_data/box_data_list_related.cc:271
 msgid ""
 "You attempted to add a new related record, but there can only be one related "
 "record, because the relationship uses a unique key."
@@ -1034,7 +1064,7 @@ msgstr ""
 msgid "Columns Count"
 msgstr "Contar las columnas"
 
-#: ../glom/mode_data/dialog_layout_details.cc:879
+#: ../glom/mode_data/dialog_layout_details.cc:889
 msgid "Related: "
 msgstr "Relacionados: "
 
@@ -1046,7 +1076,7 @@ msgstr "Del campo"
 msgid "To Field"
 msgstr "Al campo"
 
-#: ../glom/mode_design/box_db_table_relationships.cc:45
+#: ../glom/mode_design/box_db_table_relationships.cc:46
 msgid "Automatic Creation"
 msgstr "Creación automática"
 
@@ -1180,11 +1210,11 @@ msgstr "Renombrar una tabla"
 msgid "Choose columns"
 msgstr "Elegir columnas"
 
-#: ../glom/utility_widgets/db_adddel/db_adddel.cc:215
+#: ../glom/utility_widgets/db_adddel/db_adddel.cc:223
 msgid "Layout"
 msgstr "Distribución"
 
-#: ../glom/utility_widgets/flowtablewithfields.cc:672
+#: ../glom/utility_widgets/flowtablewithfields.cc:709
 msgid "New Group"
 msgstr "Grupo nuevo"
 
@@ -1192,15 +1222,19 @@ msgstr "Grupo nuevo"
 msgid "Choose image"
 msgstr "Elegir una imagen"
 
-#: ../glom/utility_widgets/imageglom.cc:364
+#: ../glom/utility_widgets/imageglom.cc:333
+msgid "Images"
+msgstr "Imágenes"
+
+#: ../glom/utility_widgets/imageglom.cc:365
 msgid "Image loading failed"
 msgstr "Falló la carga de la imagen"
 
-#: ../glom/utility_widgets/imageglom.cc:364
+#: ../glom/utility_widgets/imageglom.cc:365
 msgid "The image file could not be opened:\n"
 msgstr "El archivo de la imagen no se pudo abrir:\n"
 
-#: ../glom/utility_widgets/imageglom.cc:441
+#: ../glom/utility_widgets/imageglom.cc:442
 msgid "Choose File"
 msgstr "Elegir archivo"
 
