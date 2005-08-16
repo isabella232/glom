@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<omf>
+  <resource>
+    <creator>
+      murrayc@murrayc.com (Murray Cumming)
+    </creator>
+    <maintainer>
+      murrayc@murrayc.com (Murray Cumming)
+    </maintainer>
+    <title>
+      Guía del usuario de Glom
+    </title>
+    <date>
+      20-06-2004
+    </date>
+    <version identifier="0.1" date="2004-06-20" description="Added first User Guide"/>
+    <subject category="GNOME|Applications"/>
+    <description>
+          Guía del usuario de Glom
+    </description>
+    <type>
+      guía del usuario
+    </type>
+    <format mime="text/xml" dtd="-//OASIS//DTD DocBook V4.1.2//EN"/>
+    <identifier url="glom.xml"/>
+    <language code="C"/>
+    <relation seriesid="517f551c-b490-11d6-9295-da147643ae57"/>
+    <rights type="GNU FDL" license.version="1.1" holder="Murray Cumming"/>
+  </resource>
+</omf>

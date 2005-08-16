@@ -1,0 +1,39 @@
+# translation of glom-C.po to spanish
+# Jorge Gonzalez <jorge.gonzalez.gonzalez@hispalinux.es>, 2005.
+msgid ""
+msgstr ""
+"Project-Id-Version: glom-C\n"
+"POT-Creation-Date: 2005-07-19 14:27+0200\n"
+"PO-Revision-Date: 2005-07-19 14:30+0200\n"
+"Last-Translator: Jorge Gonzalez <jorge.gonzalez.gonzalez@hispalinux.es>\n"
+"Language-Team:  <traductores@es.gnome.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.9.1\n"
+
+#: glom-C.omf:4(creator) glom-C.omf:7(maintainer)
+msgid "murrayc@murrayc.com (Murray Cumming)"
+msgstr "murrayc@murrayc.com (Murray Cumming)"
+
+#: glom-C.omf:10(title)
+msgid "Glom User Guide"
+msgstr "Guía del usuario de Glom"
+
+#: glom-C.omf:13(date)
+msgid "2004-06-20"
+msgstr "20-06-2004"
+
+#: glom-C.omf:18(description)
+msgid "User Guide for Glom"
+msgstr "Guía del usuario de Glom"
+
+#: glom-C.omf:21(type)
+msgid "user's guide"
+msgstr "guía del usuario"
+
+#. Put one translator per line, in the form of NAME <EMAIL>, YEAR1, YEAR2.
+#: glom-C.omf:0(None)
+msgid "translator-credits"
+msgstr "Jorge González <jorge.gonzalez.gonzalez@hispalinux.es>"
+

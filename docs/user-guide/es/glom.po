@@ -1,0 +1,400 @@
+# Traducción del manual de Glom al español
+# Spanish translation of Glom's manual
+# Jorge Gonzalez <jorge.gonzalez.gonzalez@hispalinux.es>, 2005.
+msgid ""
+msgstr ""
+"Project-Id-Version: glom\n"
+"POT-Creation-Date: 2005-08-09 20:54+0200\n"
+"PO-Revision-Date: 2005-08-14 14:15+0200\n"
+"Last-Translator: Jorge Gonzalez <jorge.gonzalez.gonzalez@hispalinux.es>\n"
+"Language-Team:  <traductores@es.gnome.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.9.1\n"
+
+#. When image changes, this message will be marked fuzzy or untranslated for you.
+#. It doesn't matter what you translate it to: it's not used at all.
+#: glom.xml:173(None)
+msgid "@@image: 'figures/start.png'; md5=c9a0692d036556f44fd67b87e39cb4fc"
+msgstr "@@image: 'figures/start.png'; md5=c9a0692d036556f44fd67b87e39cb4fc"
+
+#. When image changes, this message will be marked fuzzy or untranslated for you.
+#. It doesn't matter what you translate it to: it's not used at all.
+#: glom.xml:240(None)
+msgid "@@image: 'figures/glom_design_fields.png'; md5=e7137a37c7c74a96a914b0df777f5f6b"
+msgstr "@@image: 'figures/glom_design_fields.png'; md5=e7137a37c7c74a96a914b0df777f5f6b"
+
+#: glom.xml:21(title)
+msgid "Glom User Guide V0.1"
+msgstr "Manual del usuario de Glom V0.1"
+
+#: glom.xml:22(subtitle)
+msgid "for Glom v0.8"
+msgstr "para Glom v0.8"
+
+#: glom.xml:25(year)
+msgid "2004"
+msgstr "2004"
+
+#: glom.xml:26(holder)
+msgid "Murray Cumming"
+msgstr "Murray Cumming"
+
+#: glom.xml:40(publishername) glom.xml:53(orgname)
+msgid "Glom Development Team"
+msgstr "Equipo de desarrollo de Glom"
+
+#: glom.xml:50(firstname)
+msgid "Murrayc"
+msgstr "Murrayc"
+
+#: glom.xml:51(surname)
+msgid "Cumming"
+msgstr "Cumming"
+
+#: glom.xml:54(email)
+msgid "murrayc@murrayc.com"
+msgstr "murrayc@murrayc.com"
+
+#: glom.xml:91(releaseinfo)
+msgid "This manual describes version 0.8 of Glom"
+msgstr "Este manual describe el uso de la versión 0.8 de Glom"
+
+#: glom.xml:94(title)
+msgid "Feedback"
+msgstr "Retroalimentación"
+
+#: glom.xml:95(para)
+msgid "To report a bug or make a suggestion regarding the Glom or this manual can be submitted to the <ulink url=\"http://bugzilla.gnome.org\" type=\"http\">GNOME Bugzilla </ulink>, under the Glom product. Please search bugzilla before submitting your bug to ensure that yours hasn't already been reported."
+msgstr "Para informar sobre un error o hacer sugerencias sobre Glom o sobre éste manual, puede enviarlas en la página <ulink url=\"http://bugzilla.gnome.org\" type=\"http\">Gnome Bugzilla</ulink>, seleccionando el producto Glom. Para asegurarse de que otros no han informado antes del mismo fallo, busque en Bugzilla antes de enviar su error."
+
+#: glom.xml:106(primary)
+msgid "MY-GNOME-APP"
+msgstr "MY-GNOME-APP"
+
+#: glom.xml:109(primary)
+msgid "mygnomeapp"
+msgstr "mygnomeapp"
+
+#: glom.xml:117(title)
+msgid "Introduction"
+msgstr "Introducción"
+
+#: glom.xml:118(para)
+msgid "Glom allows you to design and use database systems."
+msgstr "Glom le permite diseñar y usar sistemas de bases de datos."
+
+#: glom.xml:131(title)
+msgid "Getting Started"
+msgstr "Comenzar"
+
+#: glom.xml:134(title)
+msgid "Starting Glom"
+msgstr "Iniciar Glom"
+
+#: glom.xml:135(para)
+msgid "You can start <application>Glom</application> in the following ways:"
+msgstr "Puede iniciar <application>Glom</application> de las siguientes maneras:"
+
+#: glom.xml:139(term)
+msgid "<guimenu>Applications</guimenu> menu"
+msgstr "Menú de <guimenu>Aplicaciones</guimenu>"
+
+#: glom.xml:141(para)
+msgid "Choose <menuchoice><guisubmenu>Office</guisubmenu><guimenuitem>Glom</guimenuitem></menuchoice>."
+msgstr "Escoja <menuchoice><guisubmenu>Oficina</guisubmenu><guimenuitem>Glom</guimenuitem></menuchoice>."
+
+#: glom.xml:149(term)
+msgid "Command line"
+msgstr "Línea de comandos"
+
+#: glom.xml:151(para)
+msgid "To start <application>Glom</application> from a command line, type the following command, then press <keycap>Return</keycap>:"
+msgstr "Para iniciar <application>Glom</application> desde la línea de comandos, escriba el siguiente comando y pulse <keycap>Intro</keycap>:"
+
+#: glom.xml:154(command)
+msgid "Glom"
+msgstr "Glom"
+
+#: glom.xml:156(para)
+msgid "there are no command line parameters at this time."
+msgstr "actualmente no existen parámetros para la línea de comandos."
+
+#: glom.xml:164(title)
+msgid "When You Start Glom"
+msgstr "Al iniciar Glom"
+
+#: glom.xml:165(para)
+msgid "When you start <application>Glom</application>, the following window is displayed."
+msgstr "Se mostrará la siguiente ventana al iniciar <application>Glom</application>."
+
+#: glom.xml:170(title)
+msgid "Glom Start Up Window"
+msgstr "Ventana de inicio de Glom"
+
+#: glom.xml:176(phrase)
+msgid "Shows Glom main window."
+msgstr "Muestra la ventana principal de Glom."
+
+#: glom.xml:191(title)
+msgid "Using Glom as an Operator"
+msgstr "Uso de Glom como un operador"
+
+#: glom.xml:192(para)
+msgid "To open an existing glom document, either open that document from the File Manager, or choose Glom from the Applications menu, and then choose the document when asked. Glom will ask you for a user name and password to access the database. Your administrator will provide your user name and password."
+msgstr "Para abrir un documento existente de Glom, puede hacerlo con el administrador de archivos o bien puede escoger Glom del  menú de Aplicaciones, y después escoger el documento cuando se le pregunte. Glom le pedirá un nombre de usuario y una contraseña para acceder a la base de datos. El administrador le proveerá de ése nombre y ésa contraseña."
+
+#: glom.xml:194(para)
+msgid "When you open an existing document, Glom will be in <literal>Operator</literal><literal>user level</literal>. This user level allows you to find and edit records, but does not allow you to change the fundamental structure of the database."
+msgstr "Cuando abra un documento existente, Glom estará ejecutándose a <literal>nivel de usuario</literal><literal>Operador</literal>. Éste nivel le permite buscar y editar registros pero no le permite cambiar la estructura fundamental de la base de datos."
+
+#: glom.xml:197(title)
+msgid "Navigation"
+msgstr "Navegación"
+
+#: glom.xml:198(para)
+msgid "Each database has several tables. To look at a different table, choose <literal>Table</literal> from the <literal>Navigate</literal> menu. Then double-click on the table, or select it and click the <literal>Open</literal> button."
+msgstr "Cada base de datos tiene varias tablas. Para ver una tabla diferente, escoja <literal>Tabla</literal> del menú de <literal>Navegación</literal>. Después pulse dos veces sobre la tabla o bien selecciónela y pulse el botón <literal>Abrir</literal>."
+
+#: glom.xml:202(title)
+msgid "Entering Data"
+msgstr "Introducir datos"
+
+#: glom.xml:203(para)
+msgid "When in <literal>Data Mode</literal>, you can enter information into either the <literal>List</literal> or <literal>Details</literal> view. The List view shows many records at once, but does not show every field. The details view shows only one record, and shows all the fields arranged suitably."
+msgstr "Cuando trabaje en <literal>Modo de datos</literal>, puede introducir información en la <literal>Lista</literal> o en la vista de <literal>Detalles</literal>. La vista de la «Lista» muestra cuántos registros hay a la vez, pero no muestra todos los campos. La vista de «Detalles» muestra sólo un registro pero muestra todos los campos ordenados de manera adecuada."
+
+#: glom.xml:204(para)
+msgid "When you enter data into a field it will be saved into the database immediately after you finish editing the field. If it is a date or time field then the data format will be checked for you."
+msgstr "Cuando introduzca datos en un campo se guardarán en la base de datos inmediatamente después de que termine de editarlo. Si es un campo de fecha u hora el formato se comprobará automáticamente."
+
+#: glom.xml:205(para)
+msgid "To create a new record just click the <literal>New</literal> button. A new record will be created with blank fields for you to fill in."
+msgstr "Para crear un nuevo registro pulse el botón <literal>Nuevo</literal>. Se creará un nuevo registro con los campos vacíos para que los pueda rellenar."
+
+#: glom.xml:209(title)
+msgid "Finding Data"
+msgstr "Buscando datos"
+
+#: glom.xml:210(para)
+msgid "Choose <literal>Find Mode</literal> from the Mode menu. The fields in the List and Details views will now be empty, and a Find button will appear at the bottom of the window."
+msgstr "Escoja <literal>Modo de búsqueda</literal> del menú. Los campos en la lista y vista detallada estarán vacíos y un botón de búsqueda aparecerá en la parte inferior de la ventana."
+
+#: glom.xml:211(para)
+msgid "Enter information, or part of the information, into a field to find records with that information in that field. For instance, enter Jim into a name field to find records with \"Jim\" or \"Jimmy\" in the name."
+msgstr "Introduzca la información, o parte de la información, en el campo para buscar registros que contengan esa información en ese campo. Por ejemplo, introduzca Javi en un campo de nombre para buscar registros con «Javi» o «Javier» en el campo «Nombre»."
+
+#: glom.xml:212(para)
+msgid "When you press the <literal>Find</literal> button, glom will search for records and then display them. If only one record is found then it will show you that record in the Details view. If several records are found then it will show you those records in the List view."
+msgstr "Cuando presione el botón <literal>Buscar</literal>, Glom buscará los registros y después los mostrará.Si sólo se encuentra un registro entonces se mostrará con la vista de «Detalles». Si se encuentran varios registros, entonces se mostrarán con la vista de «Lista»."
+
+#: glom.xml:219(title)
+msgid "Using Glom as a Developer"
+msgstr "Uso de Glom como desarrollador"
+
+#: glom.xml:220(para)
+msgid "When you create a new document, Glom will be in the <literal>Developer</literal><literal>user level</literal>. You can also change to the Developer user level after opening an existing document, with the <literal>User Level</literal> menu. Glom will only allow this if the administrator has allowed it."
+msgstr "Cuando cree un nuevo documento, Glom estará ejecutándose a <literal>nivel de usuario</literal><literal>Desarrollador</literal>. También puede cambiar al nivel de usuario «Desarrollador» después de abrir un documento existente, desde el menú <literal>Nivel de usuario</literal>. Glom permitirá este cambio sólo si el administrador también lo permite."
+
+#: glom.xml:223(title)
+msgid "Adding Tables"
+msgstr "Añadir tablas"
+
+#: glom.xml:224(para)
+msgid "You can see the list of existing tables by choosing <literal>Table</literal> from the <literal>Navigate</literal> menu. You will also see this window after connecting to a database server, after creating a new document. To create a new table, click the <literal>Add</literal> button and enter the name for the new table. This name should not contain any spaces or special characters. Glom will suggest a human-readable title for this table. <literal>Operators</literal> will see this title instead of the actual table name. You can also marka a tables as <literal>hidden</literal> from Operators. For instance, Operators should see \"Invoice Lines\" as related records from the \"Invoices\" table, but they should never be able to navigate directly to the \"Invoice Lines\" table."
+msgstr "Puede ver la lista de las tablas existentes escogiendo <literal>Tabla</literal> del menú de <literal>Navegación</literal>. También verá esta ventana después de conectarse con un servidor de bases de datos, después de crear un documento nuevo. Para crear una tabla nueva, pulse en el botón <literal>Añadir</literal> e introduzca un nombre para la tabla nueva. Éste nombre no debería contener espacios ni caracteres especiales. Glom le sugerirá un título legible por humanos paraesta tabla. Los <literal>Operadores</literal> verán éste título en lugar del nombre actual de la tabla. También puede marcar una tabla como <literal>oculta</literal> para los Operadores. Por ejemplo, los Operadores deberían ver «Lista de facturas» como un registro relacionado de la tabla «Facturas», pero nunca podrán navegar directamente por la tabla «Lista de facturas»."
+
+#: glom.xml:225(para)
+msgid "You can also specify one table as the <literal>default table</literal>. This table will be shown whenever an operator opens an existing document, without asking him to select a table from the list."
+msgstr "Puede especificar una tabla como la <literal>tabla predeterminada</literal>. Esta tabla e mostrará siempre que un operador abra un documento existente, sin preguntarle que seleccione una tabla de la lista."
+
+#: glom.xml:226(para)
+msgid "You can also use this window to rename an existing table."
+msgstr "También puede usar esta ventana para renombrar una tabla existente."
+
+#: glom.xml:227(para)
+msgid "Click the <literal>Open</literal> button to look at the selected table."
+msgstr "Pulse el botón de <literal>Abrir</literal> para ver las tablas seleccionadas."
+
+#: glom.xml:231(title) glom.xml:237(title)
+msgid "Editing Fields"
+msgstr "Editar campos"
+
+#: glom.xml:232(para)
+msgid "Choose <literal>Fields</literal> from the <literal>Developer</literal> menu. This shows the list of fields in the table. New tables automatically have a primary key field, but you can change this field if necessary."
+msgstr "Escoja <literal>Campos</literal> del menú de <literal>Desarrollador</literal>. Esto mostrará la lista de campos en la tabla. Las tablas nuevas tienen un campo de clave primaria automáticamente, pero puede cambiar el campo si es necesario."
+
+#: glom.xml:233(para)
+msgid "Click the <literal>Add</literal> button to add a new field, then enter the name of the new field. The name should not contain spaces or special characters. Glom will guess an appropriate human-readable title for this field, but you can edit this. <literal>Operators</literal> will see this title instead of the actual field name."
+msgstr "Para añadir un campo nuevo pulse el botón de <literal>Añadir</literal>, después introduzca el nombre del campo nuevo. El nombre no debe contener espacios o caracteres especiales.Glom supondrá un título apropiado y legible por humanos para este campo, pero puede editarlo. Los <literal>Operadores</literal> verán este nombre en lugar del nombre actual del campo."
+
+#: glom.xml:234(para)
+msgid "To specify more field details, select the field and click the <literal>Details</literal> button."
+msgstr "Para especificar más detalles de un campo, seleccione el campo y pulse en el botón de <literal>Detalles</literal>."
+
+#: glom.xml:243(phrase)
+msgid "Editing the table's fields."
+msgstr "Editar los campos de tabla."
+
+#: glom.xml:252(title)
+msgid "Primary Keys"
+msgstr "Claves primarias"
+
+#: glom.xml:253(para)
+msgid "Each table must have one, and only one, <literal>Primary Key</literal>. The value in this field will be unique, meaning that each value in this field will appear in only one record in the table. For instance, each record in a \"Customers\" table would have a \"Customer ID\". This value will be used to refer to that customer from other tables, such as \"Projects\" and \"Invoices\" records. See the <link linkend=\"sec-developer-relationships\">Creating Relationships</link> section to see how you can relate tables together."
+msgstr "Cada tabla debe tener una, y solamente una, <literal>Clave primaria</literal>. El valor en este campo debe ser único, lo que quiere decir que cada valor en este campo sólo aparecerá en un sólo registro de la tabla. Por ejemplo, cada registro de la tabla «Clientes» tendrá también un campo «ID del cliente». Este valor se usará para referirse a este cliente en otras tablas, tales como los registros «Proyectos» y «Facturas». Lea la sección <link linkend=\"sec-developer-relationships\">Creando relaciones</link> para obtener más información acerca de cómo relacionar tablas entre si."
+
+#: glom.xml:257(title)
+msgid "Field Types"
+msgstr "Tipos de campos"
+
+#: glom.xml:260(simpara)
+msgid "Number"
+msgstr "Número"
+
+#: glom.xml:261(simpara)
+msgid "Text"
+msgstr "Texto"
+
+#: glom.xml:262(simpara)
+msgid "Date"
+msgstr "Fecha"
+
+#: glom.xml:263(simpara)
+msgid "Time"
+msgstr "Hora"
+
+#: glom.xml:264(simpara)
+msgid "Boolean - either true or false"
+msgstr "Booleano - tanto cierto como falso"
+
+#: glom.xml:258(para)
+msgid "Glom offers a few simple field types: <placeholder-1/>"
+msgstr "Glom ofrece algunos tipos simples de campos: <placeholder-1/>"
+
+#: glom.xml:270(title)
+msgid "Calculated Fields"
+msgstr "Campos calculados"
+
+#: glom.xml:271(para)
+msgid "Field values can be calculated in terms of other fields, using the Python programming language. This calculation should be the implementation of a python function, which should return a value. The return value will be used as the value of the field. This value will be recalculated every time one of the source fields changes. TODO: This only works for default values at the moment, and you can not use field values in the calculation yet."
+msgstr "El valor de los campos se puede calcular con términos de otros campos, usando el lenguaje de programación Python. Éste cálculo debería ser la implementación de una función en Python y debería devolver un valor. El valor devuelto se usará como el valor del campo. Este valor se volverá a calcular cada vez que cambie alguno de los campos de los que obtiene sus datos. Por desarrollar: Por ahora ésto sólo funciona para valores predeterminados, y tampoco se pueden usar los valores de los campos en el cálculo."
+
+#: glom.xml:272(para)
+msgid "You can also use calculations to specify a default value for fields, by selecting the <literal>Default Value</literal> tab in the <literal>Field Details</literal> window, clicking on the <literal>Calculate Value</literal> check box, and then entering a Python calculation. You can test this calculation in the <literal>Edit</literal> window."
+msgstr "También puede hacer cálculos para especificar el valor predeterminado de los campos, seleccionado la solapa <literal>Valor predeterminado</literal> de la ventana <literal>Detalles del campo</literal>, pulsando sobre la casilla <literal>Calcular valor</literal> e introduciendo un cálculo en Python. Puede comprobar este cálculo en la ventana <literal>Editar</literal>."
+
+#: glom.xml:278(title)
+msgid "Arranging Layouts"
+msgstr "Ordenando las distribuciones"
+
+#: glom.xml:279(para)
+msgid "Each table has <literal>List</literal> and <literal>Details</literal> views, and by default these show all fields in the table, in order of creation. You can edit the layout by choosing <literal>Layout</literal> from the <literal>Developer</literal> menu."
+msgstr "Cada tabla tiene una vista de <literal>Lista</literal> y de <literal>Detalles</literal>, por omisión ambas muestran todos los campos de la tabla por fecha de creación. Puede editar la distribución escogiendo <literal>Distribución</literal> del menú de <literal>Desarrollador</literal>."
+
+#: glom.xml:280(para)
+msgid "For the <literal>List</literal> view, you can specify the sequence of field columns, and whether some fields are hidden."
+msgstr "Para la vista de <literal>Lista</literal>, puede especificar la secuencia de los campos columna, y también si hay algún campo oculto."
+
+#: glom.xml:281(para)
+msgid "For the <literal>Details</literal> view, you can create groups of fields, and give these groups titles. You can then place fields in these groups and specify the sequence fo fields in these groups. You can also specify the sequence of these groups. For instance, in a \"Contacts\" table, you might create a \"Name\" group, and place the \"title\", \"first_name\" and \"last_name\" fields in that group. You might have other groups for the \"Address\" fields."
+msgstr "Para la vista de <literal>Detalles</literal>, puede crear grupos o campos y darlos títulos. Después puede colocar campos en esos grupos y especificar la secuencia de los campos en los grupos. También puede especificar la secuencia de los grupos. Por ejemplo, en una tabla de «Contactos» puede crear un grupo llamado «Nombre», y colocar los campos «Título», «Nombre» y «Apellido» en ese grupo. Puede tener otros grupos para los campos «Direcciones»."
+
+#: glom.xml:283(para)
+msgid "Date and Time fields will be displayed, and entered, in the correct format according to the user's locale, but stored in the database in a canonical form. Therefore, a German user can enter a date in the German format, but this will later be displayed to a U.S. user in the U.S. format."
+msgstr "Los campos de «Fecha» y «Hora» se mostrarán, y se introducirán, en un formato correcto según la localización del usuario, pero se almacenarán en la base de datos de una forma canónica. Por tanto, un usuario español puede introducir la fecha en formato español, pero después a un usuario estadounidense se mostrará en formato estadounidense."
+
+#: glom.xml:287(title)
+msgid "Creating Relationships"
+msgstr "Crear relaciones"
+
+#: glom.xml:288(para)
+msgid "Tables in the Database are often related together. For instance, an \"Invoices\" table might have a \"Customer ID\" field. A value in this field would specify a record in the \"Customers\" table with the same value. Glom can show extra information, such as the customer name, from that related record. Or it can show a list of several related records - for instance, several related \"Invoice Lines\" that are related to a record in the \"Invoice\" record."
+msgstr "Muchas veces las tablas de una base de datos están relacionadas entre sí. Por ejemplo, una tabla de «Facturas» podrá tener un campo «ID del cliente». El valor de ese campo especifica un registro en la tabla «Clientes» el cual tiene el mismo valor. Glom puede mostrar información adicional, como el nombre del cliente, de ese registro relacionado. O puede mostrar una lista de varios registros relacionados - por ejemplo, algún registro de la «Lista de facturas» que está relacionado con otro registro de «Facturas»."
+
+#: glom.xml:289(para)
+msgid "To create relationships, choose <literal>Relationships</literal> from the <literal>Developer</literal> menu. This will show the list of existing relationships. Click the <literal>Add</literal> button to create a new relationship, and enter a name for it. You should then choose a field in the current table, and a field in another table to which it should be related. This relationship will find any records in the other table for which the values in both fields are equal."
+msgstr "Para crear relaciones, escoja <literal>Relaciones</literal> del menú de <literal>Desarrollador</litral>. Esto le mostrará la lista de relaciones existentes. Para crear una nueva relación pulse el botón de <literal>Añadir</literal> e introduzca un nombre para ella. Debe elegir un campo de la tabla actual y un campo de otra tabla con el que se creará la relación. Esta relación buscará cualquier registro en la otra tabla para los que los valores de ambos campos sean iguales."
+
+#: glom.xml:293(simpara)
+msgid "To show a related field on the List or Details view."
+msgstr "Para mostrar un campo relacionado en la lista o en la vista detallada."
+
+#: glom.xml:294(simpara)
+msgid "To show a list of related records on the Details view."
+msgstr "Para mostrar una lista de registros relacionados en la vista detallada."
+
+#: glom.xml:295(simpara)
+msgid "To lookup a value from a field in a related record. For instance, to copy the current price of a \"Product\" into the \"Price\" field of an \"Invoice Line\" record."
+msgstr "Para buscar un valor de un campo en un registro relacionado. Por ejemplo, copie el precio de un «Producto» en el campo «Precio» de un registro de «Facturas»."
+
+#: glom.xml:296(simpara)
+msgid "To calculate a field value."
+msgstr "Para calcular el valor de un campo."
+
+#: glom.xml:290(para)
+msgid "You can use the relationship in the following places. <placeholder-1/>"
+msgstr "Puede usar las relaciones en los siguientes lugares. <placeholder-1/>"
+
+#: glom.xml:302(title)
+msgid "Users Administration"
+msgstr "Administración de usuarios"
+
+#: glom.xml:303(para)
+msgid "To define the <literal>Operators</literal> who can use your database, and to specify what access they have to the various tables, choose <literal>Users</literal> from the <literal>Developer</literal> menu. TODO: Implement the User adminstration."
+msgstr "Para definir los <literal>Operadores</literal> que pueden usar su base de datos, y para especificar qué tipo de acceso tienen sobre las tablas, escoja <literal>Usuarios</literal> del menú de <literal>Desarrollador</literal>. Por desarrollar: implementar el menú de administración de usuarios."
+
+#: glom.xml:690(title)
+msgid "About Glom"
+msgstr "Acerca de Glom"
+
+#: glom.xml:691(para)
+msgid "Glom is maintained by Glom and GNOME community volunteers. To find more information about Glom, please visit the <ulink url=\"http://www.glom.org/\" type=\"http\">Glom Web site</ulink>."
+msgstr "Glom y la comunidad de voluntarios de Glom se encargan de mantener Glom. Para obtener más información sobre Glom, visite la <ulink url=\"http://www.glom.org/\" type=\"http\">página web de Glom</ulink>."
+
+#: glom.xml:696(para)
+msgid "To report a bug or make a suggestion regarding this application or this manual, you can submit them using <ulink url=\"http://bugzilla.gnome.org\" type=\"help\">bugzilla</ulink>."
+msgstr "Para informar sobre un error o hacer sugerencias sobre Glom o sobre éste manual, puede enviarlas usando <ulink url=\"http://bugzilla.gnome.org\" type=\"http\">Bugzilla</ulink>."
+
+#: glom.xml:702(para)
+msgid "Another excellent source of information are the Glom <ulink url=\"http://www.glom.org\" type=\"http\">mailing lists</ulink>."
+msgstr "Otra excelente fuente de información son las <ulink url=\"http://www.glom.org\" type=\"http\">listas de correo</ulink> de Glom."
+
+#: glom.xml:707(para)
+msgid "This program is distributed under the terms of the GNU General Public license as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version. A copy of this license can be found at this <ulink url=\"ghelp:gpl\" type=\"help\">link</ulink>, or in the file COPYING included with the source code of this program."
+msgstr "Este programa se distribuye bajo los términos de la Licencia Pública General GNU (GPL) tal y como fue publicada por la Free Software Foundation, en la versión 2 ó (a su elección) cualquier versión posterior. Una copia de esta licencia puede encontrarse en <ulink url=\"ghelp:gpl\" type=\"help\">este enlace</ulink>, o en el archivo COPYING incluido con el código fuente de este programa."
+
+#: glom.xml:716(title)
+msgid "Concepts"
+msgstr "Conceptos"
+
+#: glom.xml:719(simpara)
+msgid "<literal>Database</literal>: Each glom document allows access to one database."
+msgstr "<literal>Base de datos</literal>: Cada documento de Glom permite el acceso a una base de datos."
+
+#: glom.xml:720(simpara)
+msgid "<literal>Table</literal>: Each database contains several tables, such as \"Customers\" and \"Invoices\" tables."
+msgstr "<literal>Tabla</literal>: Cada base de datos contiene varias tablas, tales como, por ejemplo, las tablas «Clientes» y «Facturas»."
+
+#: glom.xml:721(simpara)
+msgid "<literal>Field</literal>: Each table has several fields, such as \"Customer ID\", \"First Name\", and \"Date of Birth\" fields. In other documents and applications, fields are sometimes called \"Columns\""
+msgstr "<literal>Campo</literal>: Cada tabla tiene varios campos, tales como «ID del cliente», «Nombre» y «Fecha de nacimiento», en otros documentos y aplicaciones, se suele denominar a estos campos «columnas»."
+
+#: glom.xml:722(simpara)
+msgid "<literal>Records</literal>: Each table contains several records, each of which has values for each of the fields. For instance, the \"Customers\" table will have a record for each customer. In other documents and applications, records are sometimes called <literal>Rows</literal>."
+msgstr "<literal>Registros</literal>: Cada tabla tiene varios registros, cada uno de los cuales contiene valores para cada uno de los campos. Por ejemplo la tabla de «Clientes» tendrá un registro para cada cliente. En otros documentos y aplicaciones, a los registros se los suele denominar <literal>filas</literal>."
+
+#: glom.xml:723(simpara)
+msgid "<literal>Relationships</literal>: Each table might be related to other tables, via fields in both tables. For instance, a \"Customers\" table could have a relationship to the \"Invoices\" table, so that people could see all the invoices for that customer. Only developers need to understand this concept. In other documents and applications, relationships are sometimes called \"Joins\"."
+msgstr "<literal>Relaciones</literal>: Cada tabla puede estar relacionada con otras tablas, por medio de los campos de ambas tablas. Por ejemplo, la tabla «Clientes» puede tener relación con la tabla «Facturas», de tal manera que se pueden ver todas las facturas de ése cliente. Sólo los desarrolladores necesitan entender éste concepto. En otros documentos y aplicaciones, a las relaciones se las suele denominar «uniones» o «joins»."
+
+#: glom.xml:717(para)
+msgid "Glom is easy to use, but you must understand the following basic concepts. <placeholder-1/>"
+msgstr "Glom es fácil de usar, pero debe entender los siguientes conceptos básicos. <placeholder-1/>"
+
+#. Put one translator per line, in the form of NAME <EMAIL>, YEAR1, YEAR2.
+#: glom.xml:0(None)
+msgid "translator-credits"
+msgstr "Jorge González <jorge.gonzalez.gonzalez@hispalinux.es>, 2005"
+
