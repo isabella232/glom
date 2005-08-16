@@ -1,3 +1,8 @@
+2005-08-16  Murray Cumming  <murrayc@murrayc.com>
+
+	* po/POTFILES.in: Added glomconversions.cc, because it now 
+	contains translatable strings.
+
 2005-08-02  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/base_db.cc:

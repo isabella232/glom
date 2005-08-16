@@ -5,6 +5,7 @@ glom/application.cc
 glom/base_db.cc
 glom/box_reports.cc
 glom/data_structure/field.cc
+glom/data_structure/glomconversions.cc
 glom/data_structure/layout/layoutgroup.cc
 glom/data_structure/layout/layoutitem_field.cc
 glom/data_structure/layout/layoutitem_portal.cc
