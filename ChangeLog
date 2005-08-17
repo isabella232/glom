@@ -1,3 +1,9 @@
+2005-08-17  Murray Cumming <murrayc@murrayc.com>
+
+	* docs/user-guide/Makefile.am: Removed new es SUBDIR because it 
+	does not have a Makefile.am and that breaks the build. This 
+	might need changing to the new gnome-doc-utils system anyway.
+
 2005-08-16  Murray Cumming  <murrayc@murrayc.com>
 
 	* po/POTFILES.in: Added glomconversions.cc, because it now 
