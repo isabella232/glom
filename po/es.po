@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glom.HEAD.es\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-07-31 19:40+0000\n"
-"PO-Revision-Date: 2005-08-02 02:04+0200\n"
+"POT-Creation-Date: 2005-10-29 20:21+0200\n"
+"PO-Revision-Date: 2005-10-29 20:22+0200\n"
 "Last-Translator: Jorge Gonzalez <jorge.gonzalez.gonzalez@hispalinux.es>\n"
 "Language-Team:  <traductores@es.gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -224,8 +224,8 @@ msgstr ""
 "<span weight=\"bold\" size=\"larger\">Formato inválido</span>\n"
 "\n"
 "Los datos del campo no fueron reconocidos. Intente corregir los datos o "
-"revertirlos al valor anterior. Aquí tiene un ejemplo de datos con un "
-"formato correcto para este campo.\n"
+"revertirlos al valor anterior. Aquí tiene un ejemplo de datos con un formato "
+"correcto para este campo.\n"
 
 #: ../glom/glom.glade.h:54
 msgid ""
@@ -646,7 +646,6 @@ msgid "field name"
 msgstr "nombre del campo"
 
 #: ../glom/glom.glade.h:149
-#, fuzzy
 msgid ""
 "import glom\n"
 "\n"
@@ -661,7 +660,6 @@ msgid "table name"
 msgstr "nombre de la tabla"
 
 #: ../glom/glom.glade.h:153
-#, fuzzy
 msgid "table_name"
 msgstr "nombre_de_la_tabla"
 
@@ -785,27 +783,27 @@ msgstr "_Contenido"
 msgid "Help with the application"
 msgstr "Ayuda con la aplicación"
 
-#: ../glom/base_db.cc:86 ../glom/base_db.cc:114
+#: ../glom/base_db.cc:78
 msgid "Internal error"
 msgstr "Error interno"
 
-#: ../glom/base_db.cc:778
+#: ../glom/base_db.cc:740
 msgid "System: Preferences"
 msgstr "Sistema: preferencias"
 
-#: ../glom/base_db.cc:842
+#: ../glom/base_db.cc:804
 msgid "System: Auto Increments"
 msgstr "Sistema: auto incrementos"
 
-#: ../glom/base_db.cc:1580
+#: ../glom/base_db.cc:1542
 msgid "No Records Found"
 msgstr "No se encontró ningún registro"
 
-#: ../glom/base_db.cc:1582
+#: ../glom/base_db.cc:1544
 msgid "New Find"
 msgstr "Nueva búsqueda"
 
-#: ../glom/base_db.cc:1583
+#: ../glom/base_db.cc:1545
 msgid "Your find criteria did not match any records in the table."
 msgstr ""
 "El criterio de búsqueda introducido no coincide con ningún registro de la "
@@ -954,7 +952,9 @@ msgstr "No hay criterio de búsqueda"
 msgid ""
 "You have not entered any find criteria. Try entering information in the "
 "fields."
-msgstr "No ha introducido un criterio de búsqueda. Pruebe introduciendo información en los campos."
+msgstr ""
+"No ha introducido un criterio de búsqueda. Pruebe introduciendo información "
+"en los campos."
 
 #. Ask user to confirm loss of data:
 #: ../glom/mode_data/box_data.cc:315
@@ -1257,4 +1257,3 @@ msgstr "Añadir registros relacionado"
 #: ../glom/utility_widgets/layoutwidgetbase.cc:36
 msgid "Add Group"
 msgstr "Añadir grupo"
-
