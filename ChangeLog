@@ -1,3 +1,7 @@
+2005-12-20  Murray Cumming  <murrayc@murrayc.com>
+
+	* po/POTFILES.in: Added glom/connectionpool.cc.
+
 2005-09-04  Josep Puigdemont  <josep.puigdemont@gmail.com>
 
 	* configure.in: Added 'ca' to ALL_LINGUAS.
