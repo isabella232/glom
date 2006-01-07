@@ -1,15 +1,15 @@
 # Catalan translations for Glom package
 # Traduccions al català del paquet «Glom».
-# Copyright (C) 2005 The Free Software Foundation, Inc.
+# Copyright (C) 2005, 2006 The Free Software Foundation, Inc.
 # This file is distributed under the same license as the Glom package.
-# Josep Puigdemont <josep.puigdemont@gmail.com>, 2005.
+# Josep Puigdemont <josep.puigdemont@gmail.com>, 2005, 2006.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Glom\n"
-"Report-Msgid-Bugs-To: <tradgnome@softcatala.org>\n"
-"POT-Creation-Date: 2005-09-04 12:42+0200\n"
-"PO-Revision-Date: 2005-09-04 13:17+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2006-01-07 13:15+0100\n"
+"PO-Revision-Date: 2006-01-07 13:16+0100\n"
 "Last-Translator: Josep Puigdemont <josep.puigdemont@gmail.com>\n"
 "Language-Team: Catalan <tradgnome@softcatala.org>\n"
 "MIME-Version: 1.0\n"
@@ -23,7 +23,7 @@ msgstr "*"
 
 #: ../glom/glom.glade.h:2
 msgid "<b><span size=\"xx-large\">None selected</span></b>"
-msgstr "<b><span size=\"xx-large\">Cap de seleccionat</span></b>"
+msgstr "<b><span size=\"xx-large\">No se n'ha seleccionat cap</span></b>"
 
 #: ../glom/glom.glade.h:3
 msgid "<b>Address</b>"
@@ -95,11 +95,11 @@ msgstr "<b>Informes</b>"
 
 #: ../glom/glom.glade.h:20
 msgid "<b>Select Field</b>"
-msgstr "<b>Selecciona els camps</b>"
+msgstr "<b>Seleccioneu els camps</b>"
 
 #: ../glom/glom.glade.h:21
 msgid "<b>Select Relationship</b>"
-msgstr "<b>Selecciona la relació</b>"
+msgstr "<b>Seleccioneu la relació</b>"
 
 #: ../glom/glom.glade.h:22
 msgid "<b>Summary Field</b>"
@@ -127,7 +127,7 @@ msgstr "<b>Formatació del text</b>"
 
 #: ../glom/glom.glade.h:28
 msgid "<b>Title:</b>"
-msgstr "<b>Títol</b>"
+msgstr "<b>Títol:</b>"
 
 #: ../glom/glom.glade.h:29
 msgid "<b>User Level:</b>"
@@ -159,7 +159,7 @@ msgid ""
 msgstr ""
 "<span weight=\"bold\" size=\"larger\">Connecta al servidor</span>\n"
 "\n"
-"Enreu els detalls de la connexió del servidor de base de dades."
+"Entreu els detalls de la connexió del servidor de base de dades."
 
 #: ../glom/glom.glade.h:38
 msgid ""
@@ -171,9 +171,9 @@ msgid ""
 msgstr ""
 "<span weight=\"bold\" size=\"larger\">Ha fallat la connexió</span>\n"
 "\n"
-"El Glom no ha pogut connectar al servidor de base de dades. Potser heu "
-"entrat un nom d'usuari o contrasenya incorrectes, o la base de dades "
-"postgres no s'està executant."
+"El Glom no s'ha pogut connectar al servidor de base de dades. Potser heu "
+"entrat un nom d'usuari o contrasenya incorrectes, o el servidor de la base "
+"de dades postgres no s'està executant."
 
 #: ../glom/glom.glade.h:41
 msgid ""
@@ -207,8 +207,8 @@ msgid ""
 msgstr ""
 "<span weight=\"bold\" size=\"larger\">La base de dades no existeix</span>\n"
 "\n"
-"En aquest servidor no existeix aquesta base de dades. Voleu crear la base de "
-"dades amb una estructura buida?"
+"Aquesta base de dades no existeix en aquest servidor. Voleu crear-la amb una "
+"estructura buida?"
 
 #: ../glom/glom.glade.h:50
 msgid ""
@@ -220,9 +220,9 @@ msgid ""
 msgstr ""
 "<span weight=\"bold\" size=\"larger\">El format no és vàlid</span>\n"
 "\n"
-"No s'ha pogut reconèixer les dades del camp. Corregiu les dades o revertiu a "
-"les anteriors. Aquí teniu un exemple de dades formatades correctament per a "
-"aquest camp.\n"
+"No s'han pogut reconèixer les dades del camp. Corregiu les dades o revertiu "
+"a les anteriors. Aquí teniu un exemple de dades formatades correctament per "
+"a aquest camp.\n"
 
 #: ../glom/glom.glade.h:54
 msgid ""
@@ -246,13 +246,13 @@ msgid ""
 "\n"
 "Or would you like to create a new document, to design a new database?\n"
 msgstr ""
-"<span weight=\"bold\" size=\"larger\">Obre un document existent, or crea'n "
+"<span weight=\"bold\" size=\"larger\">Obrir un document existent, o crear-ne "
 "un de nou</span>\n"
 "\n"
 "Voleu obrir un document existent, per a connectar a una base de dades "
 "existent?\n"
 "\n"
-"O voleu crear un documet nou, per a dissenyar una base de dades nova?\n"
+"O voleu crear un document nou, per a dissenyar una base de dades nova?\n"
 "\n"
 
 #: ../glom/glom.glade.h:63
@@ -286,7 +286,7 @@ msgstr "Calcula el valor"
 
 #: ../glom/glom.glade.h:70
 msgid "Choices From Related Records"
-msgstr ""
+msgstr "Opcions de registres relacionats"
 
 #: ../glom/glom.glade.h:71
 msgid "Choose User"
@@ -347,7 +347,7 @@ msgstr "Valor per defecte"
 
 #: ../glom/glom.glade.h:85
 msgid "Details Layout"
-msgstr ""
+msgstr "Disposició dels detalls"
 
 #. Add new menu items:
 #: ../glom/glom.glade.h:86 ../glom/mode_design/users/dialog_groups_list.cc:73
@@ -375,12 +375,12 @@ msgstr "Definicions del camp"
 
 #: ../glom/glom.glade.h:91
 msgid "Field Layout"
-msgstr ""
+msgstr "Disposició dels camps"
 
 #: ../glom/glom.glade.h:92
 #: ../glom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:67
 msgid "Field Summary"
-msgstr ""
+msgstr "Sumari del camp"
 
 #: ../glom/glom.glade.h:93
 msgid "Field:"
@@ -388,7 +388,7 @@ msgstr "Camp:"
 
 #: ../glom/glom.glade.h:94
 msgid "Find Related Record"
-msgstr ""
+msgstr "Cerca registres relacionats"
 
 #: ../glom/glom.glade.h:95
 msgid "Formatting"
@@ -429,14 +429,18 @@ msgid ""
 "your locale would normally use one. If it is selected then a thousands "
 "separator will be used only if your locale normally uses one."
 msgstr ""
+"Si no se selecciona, no es farà servir el separador de milers, encara que la "
+"vostra localització normalment el faci servir. En canvi, si se selecciona es "
+"farà servir el separador de miler d'acord amb la localització, sempre i quan "
+"aquesta en faci servir cap."
 
 #: ../glom/glom.glade.h:104
 msgid "List Layout"
-msgstr ""
+msgstr "Disposició de la llista"
 
 #: ../glom/glom.glade.h:105
 msgid "Lookup value when a field changes."
-msgstr ""
+msgstr "Cerca un valor quan el camp canvia."
 
 #: ../glom/glom.glade.h:106
 msgid "Mode:"
@@ -468,7 +472,7 @@ msgstr "Nom"
 
 #: ../glom/glom.glade.h:109
 msgid "No Choices"
-msgstr ""
+msgstr "Cap opció"
 
 #: ../glom/glom.glade.h:110 ../glom/mode_design/dialog_design.cc:50
 msgid "None selected"
@@ -476,7 +480,7 @@ msgstr "Cap de seleccionada"
 
 #: ../glom/glom.glade.h:111
 msgid "Open Example"
-msgstr ""
+msgstr "Obre un exemple"
 
 #: ../glom/glom.glade.h:112
 msgid "Organisation"
@@ -492,7 +496,7 @@ msgstr "Clau primària"
 
 #: ../glom/glom.glade.h:115
 msgid "Related Records Layout"
-msgstr ""
+msgstr "Disposició dels registres relacionats"
 
 #: ../glom/glom.glade.h:116
 msgid "Relationship"
@@ -500,7 +504,7 @@ msgstr "Relació"
 
 #: ../glom/glom.glade.h:117
 msgid "Report Layout"
-msgstr ""
+msgstr "Disposició de l'informe"
 
 #: ../glom/glom.glade.h:118
 msgid "Reports"
@@ -553,7 +557,7 @@ msgstr "Carrer (2)"
 
 #: ../glom/glom.glade.h:130
 msgid "Summary Type:"
-msgstr ""
+msgstr "Tipus de sumari:"
 
 #: ../glom/glom.glade.h:131
 msgid "System Name"
@@ -576,6 +580,8 @@ msgid ""
 "The field value will be the return value of the python function, which you "
 "implement here."
 msgstr ""
+"El valor del camp serà el valor retornat per la funció Python, que "
+"implementeu aquí."
 
 #. Title column:
 #: ../glom/glom.glade.h:136 ../glom/box_reports.cc:87
@@ -593,7 +599,7 @@ msgstr "Població"
 
 #: ../glom/glom.glade.h:138
 msgid "Triggered by:"
-msgstr ""
+msgstr "Activat per:"
 
 #: ../glom/glom.glade.h:139
 #: ../glom/mode_design/fields/box_db_table_definition.cc:52
@@ -637,12 +643,16 @@ msgstr "exemple del format de dades"
 msgid "field name"
 msgstr "nom del camp"
 
+# FIXME? (josep)
 #: ../glom/glom.glade.h:149
 msgid ""
 "import glom\n"
 "\n"
 "<b>def calculate_field_value(record):</b>"
 msgstr ""
+"import glom\n"
+"\n"
+"<b>def calculate_field_value(registre):</b>"
 
 #: ../glom/glom.glade.h:152
 msgid "table name"
@@ -743,7 +753,7 @@ msgstr "I_nformes"
 
 #: ../glom/application.cc:275
 msgid "_Layout"
-msgstr ""
+msgstr "_Disposició"
 
 #: ../glom/application.cc:441
 msgid "Creating from read-only file."
@@ -773,7 +783,7 @@ msgstr "_Continguts"
 msgid "Help with the application"
 msgstr "Ajuda de l'aplicació"
 
-#: ../glom/base_db.cc:78
+#: ../glom/base_db.cc:78 ../glom/connectionpool.cc:345
 msgid "Internal error"
 msgstr "Error intern"
 
@@ -944,7 +954,7 @@ msgstr "No heu entrat cap criteri de cerca. Entreu informació en els camps."
 #. Ask user to confirm loss of data:
 #: ../glom/mode_data/box_data.cc:315
 msgid "No primary key value"
-msgstr ""
+msgstr "No hi ha cap valor de clau primària"
 
 #: ../glom/mode_data/box_data.cc:316
 msgid ""
@@ -952,12 +962,15 @@ msgid ""
 "primary key.\n"
 "Do you really want to discard this data?"
 msgstr ""
+"Aquestes dades no es poden emmagatzemar a la base de dades perquè no heu "
+"proporcionat cap clau primària.\n"
+"Esteu segur de voler descartar aquestes dades?"
 
 #. Warn the user:
 #. TODO: Make the field insensitive until it can receive data, so people never see this dialog.
 #: ../glom/mode_data/box_data.cc:1153
 msgid "Related Record Does Not Exist"
-msgstr ""
+msgstr "No existeix cap registre relacionat"
 
 #: ../glom/mode_data/box_data.cc:1154
 msgid ""
@@ -965,12 +978,15 @@ msgid ""
 "does not yet exist, and the relationship does not allow automatic creation "
 "of new related records."
 msgstr ""
+"No es poden entrar dades en aquest camp relacionat, ja que el registre "
+"encara no existeix, i la relació no permet la creació automàtica de "
+"registres relacionats nous."
 
 #. Warn the user:
 #. TODO: Make the field insensitive until it can receive data, so people never see this dialog.
 #: ../glom/mode_data/box_data.cc:1172
 msgid "Related Record Can Not Be Created"
-msgstr ""
+msgstr "No es pot crear un registre relacionat"
 
 #. TODO: This is a very complex error message:
 #: ../glom/mode_data/box_data.cc:1174
@@ -979,6 +995,9 @@ msgid ""
 "does not yet exist, and the key in the related record is auto-generated and "
 "therefore can not be created with the key value in this record."
 msgstr ""
+"No es poden entrar dades en aquest camp, ja que el registre relacionat "
+"encara no existeix, i la clau en el registre relacionat és auto-generada, i "
+"per tant no es pot crear amb el valor de la clau d'aquest registre."
 
 #. Ask the user for confirmation:
 #: ../glom/mode_data/box_data.cc:1263
@@ -990,26 +1009,30 @@ msgid ""
 "Are you sure that you would like to delete this record? The data in this "
 "record will then be permanently lost."
 msgstr ""
+"Esteu segur de voler suprimir aquest registre? Se'n perdran permanentment "
+"les dades."
 
 #. Tell user that a primary key is needed to delete a record:
 #: ../glom/mode_data/box_data_details.cc:318
 msgid "No primary key value."
-msgstr ""
+msgstr "No hi ha cap valor de clau primària."
 
 #: ../glom/mode_data/box_data_details.cc:319
 msgid "This record can not be deleted because there is no primary key."
-msgstr ""
+msgstr "Aquest registre no es pot suprimir perquè no hi ha cap clau primària."
 
 #. Warn user that they can't choose their own primary key:
 #: ../glom/mode_data/box_data_details.cc:632
 msgid "Primary key auto increments"
-msgstr ""
+msgstr "La clau primària s'auto-incrementa."
 
 #: ../glom/mode_data/box_data_details.cc:633
 msgid ""
 "The primary key is auto-incremented.\n"
 " You may not enter your own primary key value."
 msgstr ""
+"La clau primària s'auto-incrementa.\n"
+" No podeu entrar la vostra pròpia clau primària."
 
 #. Add Pages:
 #: ../glom/mode_data/box_data_list.cc:758
@@ -1020,13 +1043,15 @@ msgstr "Llista"
 #. Tell user that they can't do that:
 #: ../glom/mode_data/box_data_list_related.cc:270
 msgid "Extra related records not possible."
-msgstr ""
+msgstr "No es poden definir registres extres relacionats."
 
 #: ../glom/mode_data/box_data_list_related.cc:271
 msgid ""
 "You attempted to add a new related record, but there can only be one related "
 "record, because the relationship uses a unique key."
 msgstr ""
+"Heu intentat crear un registre relacionat nou, però només n'hi pot haver un, "
+"ja que la relació utilitza una clau única."
 
 #. Columns-count column:
 #: ../glom/mode_data/dialog_layout_details.cc:86
@@ -1065,6 +1090,9 @@ msgid ""
 "type that is not supported by Glom. Your system administrator may be able to "
 "correct this."
 msgstr ""
+"Aquesta base de dades s'ha creat o editat fora del Glom. Conté un tipus de "
+"dades que no està implementat o permès en el Glom. És possible que el vostre "
+"administrador de sistemes pugui corregir aquesta situació."
 
 #: ../glom/mode_design/fields/dialog_fieldcalculation.cc:94
 msgid "Calculation result"
@@ -1177,7 +1205,7 @@ msgstr "Trieu les columnes"
 
 #: ../glom/utility_widgets/db_adddel/db_adddel.cc:223
 msgid "Layout"
-msgstr ""
+msgstr "Disposició"
 
 #: ../glom/utility_widgets/flowtablewithfields.cc:709
 msgid "New Group"
@@ -1209,7 +1237,7 @@ msgstr "Tria el camp"
 
 #: ../glom/utility_widgets/layoutwidgetbase.cc:33
 msgid "Field Layout Properties"
-msgstr ""
+msgstr "Propietats de la disposició de camps"
 
 #: ../glom/utility_widgets/layoutwidgetbase.cc:34
 msgid "Add Field"
