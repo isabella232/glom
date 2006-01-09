@@ -1,5 +1,11 @@
 2006-01-09  Murray Cumming  <murrayc@murrayc.com>
 
+	* docs/user-guide/C/glom.xml: Add IDs for 
+	sections, to make sub-menu links work. 
+	Patch from Jorge Gonzalez in bug #313107.
+
+2006-01-09  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/data_structure/field.cc: Field::sql(): 
 	Use a copy of the PQescapeString() function from 
 	Posrgres, instead of gda_value_stringify() to really 

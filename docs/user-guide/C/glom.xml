@@ -195,7 +195,7 @@
   which the application is designed. -->
 
 
-    <sect1>
+    <sect1 id="glom-operator-usage">
     <title>Using Glom as an Operator</title>
     <para>To open an existing glom document, either open that document from the File Manager, or choose Glom from the Applications menu, and then choose the document when asked. Glom will ask you for a user name and password to access the database. Your administrator will provide your user name and password.</para>
 
@@ -223,7 +223,7 @@
 
     </sect1>
 
-    <sect1>
+    <sect1 id="glom-developer-usage">
     <title>Using Glom as a Developer</title>
     <para>When you create a new document, Glom will be in the <literal>Developer</literal> <literal>user level</literal>. You can also change to the Developer user level after opening an existing document, with the <literal>User Level</literal> menu. Glom will only allow this if the administrator has allowed it.</para>
 
