@@ -171,6 +171,51 @@ Glib::ustring Field::get_title_or_name() const
   }
 }
 
+namespace { //anonymous
+
+//A copy of PQescapeString from the Postgres source, to avoid linking with libpql directly, 
+//and to use until we can use the latest libgda, which has an equivalent.
+
+#define SQL_STR_DOUBLE(ch)	((ch) == '\'' || (ch) == '\\')
+
+/*
+ * Escaping arbitrary strings to get valid SQL literal strings.
+ *
+ * Replaces "\\" with "\\\\" and "'" with "''".
+ *
+ * length is the length of the source string.  (Note: if a terminating NUL
+ * is encountered sooner, PQescapeString stops short of "length"; the behavior
+ * is thus rather like strncpy.)
+ *
+ * For safety the buffer at "to" must be at least 2*length + 1 bytes long.
+ * A terminating NUL character is added to the output string, whether the
+ * input is NUL-terminated or not.
+ *
+ * Returns the actual length of the output (not counting the terminating NUL).
+ */
+size_t
+Glom_PQescapeString(char *to, const char *from, size_t length)
+{
+	const char *source = from;
+	char	   *target = to;
+	size_t		remaining = length;
+
+	while (remaining > 0 && *source != '\0')
+	{
+		if (SQL_STR_DOUBLE(*source))
+			*target++ = *source;
+		*target++ = *source++;
+		remaining--;
+	}
+
+	/* Write the terminating NUL character. */
+	*target = '\0';
+
+	return target - to;
+}
+
+} //anonymous
+
 Glib::ustring Field::sql(const Gnome::Gda::Value& value) const
 {
 //g_warning("Field::sql: glom_type=%d", get_glom_type());
@@ -216,7 +261,27 @@ Glib::ustring Field::sql(const Gnome::Gda::Value& value) const
       if(value.is_null())
         return "''"; //We want to ignore the concept of NULL strings, and deal only with empty strings.
       else
-        str = "'" + value.to_string() + "'"; //Add single-quotes. Actually escape it.
+      {
+        std::string as_string = value.get_string();
+        if(as_string.empty())
+          return "''"; //We want to ignore the concept of NULL strings, and deal only with empty strings.
+        else
+        {
+          const size_t len = as_string.size();
+          char* to = (char*)malloc(sizeof(char) * (len + 1)); //recommended size for to.
+          const size_t len_escaped = Glom_PQescapeString(to, as_string.c_str(), len);
+          if(!len_escaped)
+          {
+            std::cerr << "Glom_PQescapeString() failed with text: " << as_string << std::endl;
+            return "''";
+          }
+          else
+          { 
+            str = "'" + std::string(to, len_escaped) + "'"; //Add single-quotes. Actually escape it 
+          }
+          free(to);
+        }
+      }
     }
     case(TYPE_DATE):
     case(TYPE_TIME):
