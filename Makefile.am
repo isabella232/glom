@@ -27,7 +27,12 @@ install-data-hook:
 
 EXTRA_DIST = $(GnomeApplications_DATA) $(MimeDatabase_DATA) $(appreg_DATA) $(mimeinfo_DATA) \
              autogen.sh \
+             gnome-doc-utils.make \
              intltool-extract.in intltool-merge.in intltool-update.in
+
+#gnome-doc-utils stuff:
+DISTCLEAN_FILES = gnome-doc-utils.make
+DISTCHECK_CONFIGURE_FLAGS = --disable-scrollkeeper
 
 # (See http://cvs.gnome.org/lxr/source/intltool/README about these intltool files)
 

@@ -21,10 +21,7 @@
     <type>
       user's guide
     </type>
-    <format mime="text/xml" dtd="-//OASIS//DTD DocBook V4.1.2//EN"/>
-    <identifier url="glom.xml"/>
-    <language code="C"/>
-    <relation seriesid="517f551c-b490-11d6-9295-da147643ae57"/>
+    <relation seriesid="0f51b462-10d8-11da-85a3-fc84e721c7fe"/>
     <rights type="GNU FDL" license.version="1.1" holder="Murray Cumming"/>
   </resource>
 </omf>

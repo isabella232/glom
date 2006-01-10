@@ -53,7 +53,7 @@
 	any of this. -->
 
     <authorgroup> 
-      <author> 
+      <author role="maintainer"> 
 		<firstname>Murrayc</firstname> 
 		<surname>Cumming</surname> 
 		<affiliation> 
@@ -92,7 +92,14 @@
 <!-- When the desktop release version changes to V3.x, the revision number of the manual changes -->
 <!-- to V3.0, and so on. -->  
     <revhistory>
-      
+      <revision> 
+		  <revnumber>Glom &appversion;</revnumber> 
+		  <date>&date;</date> 
+		  <revdescription> 
+			 <para role="author">Murray Cumming</para> 
+			 <para role="publisher">Murray Cumming</para> 
+		  </revdescription> 
+		</revision>
     </revhistory> 
 
     <releaseinfo>This manual describes version &appversion; of &app;
@@ -107,6 +114,10 @@
       </para>
 <!-- Translators may also add here feedback address for translations -->
     </legalnotice> 
+
+    <abstract role="description">
+      <para>User manual for Glom.</para>
+    </abstract>
   </articleinfo> 
 
   <indexterm zone="index"> 

@@ -1,5 +1,23 @@
 2006-01-10  Murray Cumming  <murrayc@murrayc.com>
 
+	* .cvsignore:
+	* Makefile.am:
+	* autogen.sh:
+	* configure.in:
+	* docs/user-guide/.cvsignore:
+	* docs/user-guide/C/Makefile.am:
+	* docs/user-guide/C/glom-C.omf:
+	* docs/user-guide/C/glom.xml:
+	* docs/user-guide/Makefile.am:
+	* docs/user-guide/de/de.po:
+	* docs/user-guide/glom-C.omf.in:
+	* gnome-doc-utils.make: Convert to the new 
+	gnome-doc-utils (xml2po) system, with a 
+	dummy de translation, though I get warnings about 
+	the path to the images in figures.
+
+2006-01-10  Murray Cumming  <murrayc@murrayc.com>
+
 	* docs/postgres_gda_test.c: (main):
 	* glom/base_db.cc:
 	* glom/document/document_glom.cc:

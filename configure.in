@@ -28,6 +28,9 @@ AC_PROG_INTLTOOL
 #AC_CONFIG_AUX_DIR(macros)
 AC_SUBST([ACLOCAL_AMFLAGS], ['-I macros ${ACLOCAL_FLAGS}'])
 
+#For gnome-doc-utils:
+GNOME_DOC_INIT
+
 AC_LANG_CPLUSPLUS
 
 # Checks for libraries
@@ -60,8 +63,6 @@ GLOM_ARG_ENABLE_WARNINGS()
 AC_OUTPUT(Makefile \
   docs/Makefile \
     docs/user-guide/Makefile \
-      docs/user-guide/C/Makefile \
-        docs/user-guide/C/figures/Makefile \
   glom/Makefile \
     glom/data_structure/Makefile \
       glom/data_structure/layout/Makefile \
