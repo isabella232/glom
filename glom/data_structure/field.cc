@@ -21,6 +21,7 @@
 #include "field.h"
 #include "../connectionpool.h"
 #include "glomconversions.h"
+#include "../utils.h"
 #include <glibmm/i18n.h>
 
 //Initialize static data:
@@ -268,7 +269,7 @@ Glib::ustring Field::sql(const Gnome::Gda::Value& value) const
         else
         {
           const size_t len = as_string.size();
-          char* to = (char*)malloc(sizeof(char) * (len + 1)); //recommended size for to.
+          char* to = (char*)malloc(sizeof(char) * 2 * (len + 1)); //recommended size for to.
           const size_t len_escaped = Glom_PQescapeString(to, as_string.c_str(), len);
           if(!len_escaped)
           {
@@ -276,12 +277,20 @@ Glib::ustring Field::sql(const Gnome::Gda::Value& value) const
             return "''";
           }
           else
-          { 
-            str = "'" + std::string(to, len_escaped) + "'"; //Add single-quotes. Actually escape it 
+          {
+            std::string escaped(to, len_escaped);
+
+            //Also escape any ";" characters, because these also cause problems, at least with libgda:
+            escaped = GlomUtils::string_replace(escaped, ";", "\\073");
+
+            str = "'" + escaped + "'"; //Add single-quotes. Actually escape it 
+            //std::cout << "Field::sql(): escaped and quoted: " << str << std::endl;
           }
           free(to);
         }
       }
+
+      break;
     }
     case(TYPE_DATE):
     case(TYPE_TIME):
