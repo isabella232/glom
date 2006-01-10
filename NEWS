@@ -3,7 +3,16 @@
 * List view: Show new records that were added in Details view.
   (Bug found by Daniel Holbach and Greg Breland.)
 * List and Details views: Do not crash when entering ;, ', or " characters.
-  (Bug #323266 from Nicolas Chevreux.) 
+  (Bug #323266 from Nicolas Chevreux.)
+* Dialog text grammar changes. (Bug #300139 from Adam Weinberger).
+* New Translations:
+  - Nepali (Pawan Chitrakar)
+* Update Translations:
+  - Canadian English (Adam Weinberger)
+  - Catalan (Josep Puigdemont)
+  - Czech (Miloslav Trmac)
+  - German (Hendrik Brandt)
+  - Spanish (Francisco Javier F. Serrador)
 
 0.9.0:
 
