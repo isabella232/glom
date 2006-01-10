@@ -1437,7 +1437,7 @@ Gtk::TreeModel::iterator AddDel::get_next_available_row_with_add_if_necessary()
       }
       else
       {
-        // The last line isn't blank, so we can not use it. Add another one.
+        // The last line isn't blank, so we cannot use it. Add another one.
         result = m_refListStore->append();
       }
     }

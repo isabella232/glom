@@ -514,7 +514,7 @@ void Dialog_GroupsList::on_treeview_tables_toggled_view(const Glib::ustring& pat
     if(test)
       row[m_model_columns_tables.m_col_view] = bActive;
 
-    //If the group can not view, then it should not do anything else either:
+    //If the group cannot view, then it should not do anything else either:
     if(!bActive)
     {
       bool test = set_table_privilege(table_name, group_name, bActive, PRIV_EDIT);

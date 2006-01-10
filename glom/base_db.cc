@@ -98,7 +98,7 @@ Glib::RefPtr<Gnome::Gda::DataModel> Base_DB::Query_execute(const Glib::ustring& 
   {
     Glib::RefPtr<Gnome::Gda::Connection> gda_connection = sharedconnection->get_gda_connection();
 
-
+    /*
     try
     {
       std::cout << "Debug: Query_execute():  " << strQuery << std::endl;
@@ -107,6 +107,7 @@ Glib::RefPtr<Gnome::Gda::DataModel> Base_DB::Query_execute(const Glib::ustring& 
     {
       std::cout << "Debug: query string could not be converted to std::cout: " << ex.what() << std::endl;
     }
+    */
 
 
     result = gda_connection->execute_single_command(strQuery);
@@ -284,6 +285,9 @@ Base_DB::type_vecStrings Base_DB::util_vecStrings_from_Fields(const type_vecFiel
 Base_DB::type_vecFields Base_DB::get_fields_for_table_from_database(const Glib::ustring& table_name)
 {
   type_vecFields result;
+
+  if(table_name.empty())
+    return result;
 
   // These are documented here:
   // http://www.gnome-db.org/docs/libgda/libgda-provider-class.html#LIBGDA-PROVIDER-GET-SCHEMA

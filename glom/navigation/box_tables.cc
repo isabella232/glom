@@ -242,7 +242,7 @@ void Box_Tables::on_adddel_Add(const Gtk::TreeModel::iterator& row)
       //Show the new information for this whole row:
       fill_table_row(row, table_info);
   
-      //Save the field information directly into the database, because we can not get all the correct information from the database.
+      //Save the field information directly into the database, because we cannot get all the correct information from the database.
       //Otherwise some information would be forgotten:
       
   
@@ -276,7 +276,7 @@ void Box_Tables::on_adddel_Delete(const Gtk::TreeModel::iterator& rowStart, cons
         if(!document->get_table_is_known(table_name))
         {
            //TODO: Do not show tables that are not in the document.
-           Gtk::MessageDialog dialog(_("You can not delete this table, because there is no information about this table in the document."));
+           Gtk::MessageDialog dialog(_("You cannot delete this table, because there is no information about this table in the document."));
            dialog.set_transient_for(*get_app_window());
            dialog.run();
         }
@@ -321,7 +321,7 @@ void Box_Tables::on_adddel_Edit(const Gtk::TreeModel::iterator& row)
     {
        //TODO: Do not show tables that are not in the document.
        Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Unknown Table")), true);
-       dialog.set_secondary_text(_("You can not open this table, because there is no information about this table in the document."));
+       dialog.set_secondary_text(_("You cannot open this table, because there is no information about this table in the document."));
        dialog.set_transient_for(*get_app_window());
        dialog.run();
     }

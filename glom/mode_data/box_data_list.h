@@ -38,11 +38,14 @@ public:
   virtual void set_entered_field_data(const LayoutItem_Field& field, const Gnome::Gda::Value& value);
 
   virtual guint get_records_count() const;
-  
+
   void set_read_only(bool read_only = true);
-  
+
   //For instance, change "Open" to "Select" when used to select an ID.
   void set_open_button_title(const Glib::ustring& title);
+
+  ///Highlight and scroll to the specified record, with primary key value @primary_key_value.
+  void set_primary_key_value_selected(const Gnome::Gda::Value& primary_key_value);
 
   //Primary Key value:
   typedef sigc::signal<void, const Gnome::Gda::Value&> type_signal_user_requested_details;
@@ -84,7 +87,6 @@ protected:
 
   virtual void print_layout();
   virtual void print_layout_group(xmlpp::Element* node_parent, const LayoutGroup& group);
-  
 
   //Member widgers:
   mutable DbAddDel_WithButtons m_AddDel; //mutable because its get_ methods aren't const.

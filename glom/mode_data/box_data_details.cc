@@ -316,7 +316,7 @@ void Box_Data_Details::on_button_del()
   {
     //Tell user that a primary key is needed to delete a record:
     Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("No primary key value.")), true);
-    dialog.set_secondary_text(_("This record can not be deleted because there is no primary key."));
+    dialog.set_secondary_text(_("This record cannot be deleted because there is no primary key."));
     dialog.set_transient_for(*get_app_window());
     dialog.run();
   }

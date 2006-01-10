@@ -144,8 +144,8 @@ bool Box_Data_List_Related::fill_from_database()
     }
 
     //TODO: Disable add if the from_field already has a value and the to_field is auto-incrementing because
-    //- we can not override the auto-increment in the to_field.
-    //- we can not change the value in the from_field to the new auto_increment value in the to_field.
+    //- we cannot override the auto-increment in the to_field.
+    //- we cannot change the value in the from_field to the new auto_increment value in the to_field.
   }
   else
   {
@@ -249,7 +249,7 @@ void Box_Data_List_Related::on_adddel_user_changed(const Gtk::TreeModel::iterato
 void Box_Data_List_Related::on_adddel_user_added(const Gtk::TreeModel::iterator& row, guint col_with_first_value)
 {
   //Like Box_Data_List::on_adddel_user_added(),
-  //but it doesn't allow adding if the new record can not be a related record.
+  //but it doesn't allow adding if the new record cannot be a related record.
   //This would happen if there is already one related record and the relationship uses the primary key in the related record.
 
   bool bAllowAdd = true;

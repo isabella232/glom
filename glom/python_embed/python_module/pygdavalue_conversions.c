@@ -16,7 +16,7 @@ int
 pygda_value_from_pyobject(GdaValue *boxed, PyObject *input)
 {
     /* Use an appropriate gda_value_set_*() function.
-       We can not know what GdaValue type is actually wanted, so
+       We cannot know what GdaValue type is actually wanted, so
        we must still have the get_*() functions in the python API.
      */
     if (PyString_Check (input)) {

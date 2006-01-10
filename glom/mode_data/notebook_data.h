@@ -33,7 +33,7 @@ public:
 
   //Create the layout for the database structure, and fill it with data.
   virtual bool init_db_details(const Glib::ustring& strTableName, const Glib::ustring& strWhereClause = Glib::ustring());
-  
+
   ///Show the details for a particular record, without affecting the list view:
   virtual void show_details(const Gnome::Gda::Value& primary_key_value);
 
@@ -49,7 +49,7 @@ public:
   };
 
   virtual dataview get_current_view() const;
-  
+
   typedef sigc::signal<void, const Glib::ustring&, Gnome::Gda::Value> type_signal_record_details_requested;
   type_signal_record_details_requested signal_record_details_requested();
 
@@ -58,7 +58,7 @@ protected:
   //Signal handlers:
   virtual void on_list_user_requested_details(const Gnome::Gda::Value& primary_key_value);
   void on_Details_user_requested_related_details(const Glib::ustring& strTableName, Gnome::Gda::Value primary_key_value);
-  
+
   virtual void on_switch_page_handler(GtkNotebookPage* pPage, guint uiPageNumber);
 
   //Member widgets:

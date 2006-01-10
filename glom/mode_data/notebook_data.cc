@@ -220,7 +220,7 @@ void Notebook_Data::on_switch_page_handler(GtkNotebookPage* pPage, guint uiPageN
 {
   //Call base class:
   Notebook_Glom::on_switch_page_handler(pPage, uiPageNumber);
-  
+
   //Remember that currently-viewed layout, so we can show it again when the user comes back to this table from elsewhere:
   Box_Data* box = dynamic_cast<Box_Data*>(get_nth_page(uiPageNumber));
   if(box)
@@ -228,5 +228,16 @@ void Notebook_Data::on_switch_page_handler(GtkNotebookPage* pPage, guint uiPageN
     Document_Glom* document = get_document();
     if(document)
       document->set_layout_current(m_table_name, box->get_layout_name());
+
+    //And refresh the list view whenever it is shown, to 
+    //a) show any new records that were added via the details view, or via a related portal elsewhere.
+    //b) show changed field contents, changed elsewhere.
+    if(box == &m_Box_List)
+    {
+      Gnome::Gda::Value primary_key_selected = m_Box_List.get_primary_key_value_selected();
+      m_Box_List.refresh_data_from_database();
+      m_Box_List.set_primary_key_value_selected(primary_key_selected);
+    }
   }
+
 }

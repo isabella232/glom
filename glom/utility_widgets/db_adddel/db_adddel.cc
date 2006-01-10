@@ -440,6 +440,9 @@ Gtk::TreeModel::iterator DbAddDel::get_item_selected()
 
 Gtk::TreeModel::iterator DbAddDel::get_row(const Gnome::Gda::Value& key)
 {
+  if(!m_refListStore)
+    return Gtk::TreeModel::iterator();
+
   for(Gtk::TreeModel::iterator iter = m_refListStore->children().begin(); iter != m_refListStore->children().end(); ++iter)
   {
     //Gtk::TreeModel::Row row = *iter;
@@ -464,7 +467,7 @@ bool DbAddDel::select_item(const Gtk::TreeModel::iterator& iter, guint column, b
 {
   if(!m_refListStore)
     return false;
-   
+
   InnerIgnore innerIgnore(this); //see comments for InnerIgnore class
 
   bool bResult = false;
@@ -1551,7 +1554,7 @@ Gtk::TreeModel::iterator DbAddDel::get_next_available_row_with_add_if_necessary(
       }
       else
       {
-        // The last line isn't blank, so we can not use it. Add another one.
+        // The last line isn't blank, so we cannot use it. Add another one.
         result = m_refListStore->append();
       }
     }

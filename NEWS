@@ -1,3 +1,10 @@
+0.9.1:
+
+* List view: Show new records that were added in Details view.
+  (Bug found by Daniel Holbach and Greg Breland.)
+* List and Details views: Do not crash when entering ;, ', or " characters.
+  (Bug #323266 from Nicolas Chevreux.) 
+
 0.9.0:
 
 * Remembers last-viewed record and layout: If you view a record, then go 

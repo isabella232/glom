@@ -279,7 +279,7 @@ void Dialog_FieldDefinition::enforce_constraints()
   if(m_pCheck_Unique->get_active() || m_pCheck_AutoIncrement->get_active())
   {
     m_pBox_DefaultValue->set_sensitive(false); //Disable all controls on the Notebook page.
-    m_pDataWidget_DefaultValueSimple->set_value( Gnome::Gda::Value() ); //Unique fields can not have default values. //TODO: People will be surprised when they lose information here. We should probably read the text as "" if the widget is disabled.
+    m_pDataWidget_DefaultValueSimple->set_value( Gnome::Gda::Value() ); //Unique fields cannot have default values. //TODO: People will be surprised when they lose information here. We should probably read the text as "" if the widget is disabled.
   }
   else
   {

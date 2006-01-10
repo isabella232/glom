@@ -161,7 +161,7 @@ void Box_DB_Table_Definition::on_adddel_add(const Gtk::TreeModel::iterator& row)
 
       fill_fields();
 
-      //fill_from_database(); //We can not change the structure in a cell renderer signal handler.
+      //fill_from_database(); //We cannot change the structure in a cell renderer signal handler.
 
       //This must match the SQL statement above:
       Field field;
@@ -469,7 +469,7 @@ void  Box_DB_Table_Definition::postgres_change_column_type(const Field& field_ol
         bool conversion_failed = false;
         if(Field::get_conversion_possible(field_old.get_glom_type(), field.get_glom_type()))
         {
-          //TODO: postgres seems to give an error if the data can not be converted (for instance if the text is not a numeric digit when converting to numeric) instead of using 0.
+          //TODO: postgres seems to give an error if the data cannot be converted (for instance if the text is not a numeric digit when converting to numeric) instead of using 0.
           /*
           Maybe, for instance:
           http://groups.google.de/groups?hl=en&lr=&ie=UTF-8&frame=right&th=a7a62337ad5a8f13&seekm=23739.1073660245%40sss.pgh.pa.us#link5

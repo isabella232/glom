@@ -921,7 +921,7 @@ AppState::userlevels Document_Glom::get_userlevel(userLevelReason& reason) const
   if(get_read_only())
   {
     reason = USER_LEVEL_REASON_FILE_READ_ONLY;
-    return AppState::USERLEVEL_OPERATOR; //A read-only document can not be changed, so there's no point in being in developer mode. This is one way to control the user level on purpose.
+    return AppState::USERLEVEL_OPERATOR; //A read-only document cannot be changed, so there's no point in being in developer mode. This is one way to control the user level on purpose.
   }
   else if(m_file_uri.empty()) //If it has never been saved then this is a new default document, so the user created it, so the user can be a developer.
   {

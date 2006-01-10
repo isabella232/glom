@@ -46,7 +46,7 @@ main(int argc, char *argv[])
         con = gda_client_open_connection_from_string (client, "PostgreSQL", connection_string, 0);
         if (!GDA_IS_CONNECTION (con)) {
 		g_print ("** ERROR: could not open connection.\n");
-                /* This can not work because it needs a working connection: get_errors (con); */
+                /* This cannot work because it needs a working connection: get_errors (con); */
 		return 0;
 	}
 

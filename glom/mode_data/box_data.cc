@@ -313,7 +313,7 @@ bool Box_Data::confirm_discard_unstored_data() const
   {
     //Ask user to confirm loss of data:
     Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("No primary key value")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_OK_CANCEL );
-    dialog.set_secondary_text(_("This data can not be stored in the database because you have not provided a primary key.\nDo you really want to discard this data?"));
+    dialog.set_secondary_text(_("This data cannot be stored in the database because you have not provided a primary key.\nDo you really want to discard this data?"));
     //TODO: It needs a const. I wonder if it should. murrayc. dialog.set_transient_for(*get_app_window());
     int iButton = dialog.run();
 
@@ -1169,7 +1169,7 @@ bool Box_Data::add_related_record_for_field(const LayoutItem_Field& layout_item_
       {
         //Warn the user:
         //TODO: Make the field insensitive until it can receive data, so people never see this dialog.
-        Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Related Record Can Not Be Created")), true);
+        Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Related Record Cannot Be Created")), true);
         //TODO: This is a very complex error message:
         dialog.set_secondary_text(_("Data may not be entered into this related field, because the related record does not yet exist, and the key in the related record is auto-generated and therefore can not be created with the key value in this record."));
         dialog.set_transient_for(*get_app_window());

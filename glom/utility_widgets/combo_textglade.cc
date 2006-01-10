@@ -71,7 +71,7 @@ void Combo_TextGlade::prepend_text(const Glib::ustring& text)
 
 Glib::ustring Combo_TextGlade::get_active_text() const
 {
-  //We can not use gtk_combobox_get_active_text() here, because that can only be used if gtk_combo_box_new_text() has been used.
+  //We cannot use gtk_combobox_get_active_text() here, because that can only be used if gtk_combo_box_new_text() has been used.
 
   Glib::ustring result;
 

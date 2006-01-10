@@ -54,7 +54,7 @@ public:
   virtual bool confirm_discard_unstored_data() const;
 
   virtual void show_layout_dialog();
-  
+
   Glib::ustring get_layout_name() const;
 
   //Signals:
@@ -146,7 +146,7 @@ protected:
   //virtual bool get_field(const Glib::ustring& name, Field& field) const;
 
   bool confirm_delete_record();
-  
+
   //Signal handlers:
   virtual void on_Button_Find(); //only used by _Find sub-classes. Should be MI.
 

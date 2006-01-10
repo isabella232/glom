@@ -133,9 +133,9 @@ public:
 
   virtual void set_table_name(const Glib::ustring& table_name);
 
-  ///For instance, if the user can not view the table then don't try to get the records.
+  ///For instance, if the user cannot view the table then don't try to get the records.
   virtual void set_allow_view(bool val = true);
-  
+
   ///Whether each row should have a button, to request edit.
   virtual void set_allow_view_details(bool val = true);
   bool get_allow_view_details() const;

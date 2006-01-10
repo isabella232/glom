@@ -1,5 +1,44 @@
 2006-01-10  Murray Cumming  <murrayc@murrayc.com>
 
+	* docs/postgres_gda_test.c: (main):
+	* glom/base_db.cc:
+	* glom/document/document_glom.cc:
+	* glom/mode_data/box_data.cc:
+	* glom/mode_data/box_data.h:
+	* glom/mode_data/box_data_details.cc:
+	* glom/mode_data/box_data_list.cc:
+	* glom/mode_data/box_data_list.h:
+	* glom/mode_data/box_data_list_related.cc:
+	* glom/mode_data/notebook_data.cc:
+	* glom/mode_data/notebook_data.h:
+	* glom/mode_design/fields/box_db_table_definition.cc:
+	* glom/mode_design/fields/dialog_fielddefinition.cc:
+	* glom/mode_design/users/dialog_groups_list.cc:
+	* glom/navigation/box_tables.cc:
+	* glom/python_embed/python_module/pygdavalue_conversions.c:
+	(pygda_value_from_pyobject):
+	* glom/utility_widgets/adddel/adddel.cc:
+	* glom/utility_widgets/combo_textglade.cc:
+	* glom/utility_widgets/db_adddel/db_adddel.cc:
+	* glom/utility_widgets/db_adddel/db_adddel.h:
+	* glom/utility_widgets/flowtablewithfields.cc: Change all 
+	instances of can not to cannot. Bug #300139 from Adam Weinberger. 
+	This may or maynot be necessary. 
+
+2006-01-10  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/utility_widgets/db_adddel/db_adddel.cc: get_row(): 
+	Do not crash if there is not model yet.
+	* glom/mode_data/box_data_list.cc:
+	* glom/mode_data/box_data_list.h: Added set_primary_key_value_selected().
+	* glom/mode_data/notebook_data.cc:
+	* glom/mode_data/notebook_data.h: on_switch_page_handler(): 
+	Refresh the list when showing it, trying to keep the same row selected.
+	This means that new records (added in Details) show up. Thanks to 
+	Daniel Holbach and Greg Breland.
+
+2006-01-10  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/data_structure/field.cc: 
 	Field::sql(): Also escape ; characters, because 
 	libgda seems to cause postgres to be confused by these.
