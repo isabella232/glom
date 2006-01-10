@@ -281,6 +281,7 @@ Glib::ustring Field::sql(const Gnome::Gda::Value& value) const
             std::string escaped(to, len_escaped);
 
             //Also escape any ";" characters, because these also cause problems, at least with libgda:
+            //See bug #326325.
             escaped = GlomUtils::string_replace(escaped, ";", "\\073");
 
             str = "'" + escaped + "'"; //Add single-quotes. Actually escape it 

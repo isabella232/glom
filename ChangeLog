@@ -1,3 +1,14 @@
+2006-01-10  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/data_structure/field.cc: 
+	Field::sql(): Also escape ; characters, because 
+	libgda seems to cause postgres to be confused by these.
+	And allocate a big enough string for PQescapeString(), to 
+	avoid crashes. Now bug #323266 seems to really be fixed. 
+	* glom/utils.cc:
+	* glom/utils.h: Added inefficient string_replace() for use 
+	by Field::sql().
+
 2006-01-09  Murray Cumming  <murrayc@murrayc.com>
 
 	* docs/user-guide/C/glom.xml: Add IDs for 

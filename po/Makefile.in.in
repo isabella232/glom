@@ -242,15 +242,3 @@ stamp-it: Makefile.in.in ../config.status POTFILES.in
 # Tell versions [3.59,3.63) of GNU make not to export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:
-
-XGETTEXT_KEYWORDS = --keyword=_ --keyword=N_ --keyword=translate --qt
-
-XGETTEXT_KEYWORDS = --keyword=_ --keyword=N_ --keyword=translate --qt
-
-XGETTEXT_KEYWORDS = --keyword=_ --keyword=N_ --keyword=translate --qt
-
-XGETTEXT_KEYWORDS = --keyword=_ --keyword=N_ --keyword=translate --qt
-
-XGETTEXT_KEYWORDS = --keyword=_ --keyword=N_ --keyword=translate --qt
-
-XGETTEXT_KEYWORDS = --keyword=_ --keyword=N_ --keyword=translate --qt

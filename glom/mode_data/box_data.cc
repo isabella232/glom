@@ -833,13 +833,13 @@ bool Box_Data::set_field_value_in_database(const Gtk::TreeModel::iterator& row, 
     }
     else
       table_name = m_strTableName;
-      
+
     if(table_name.empty())
     {
       g_warning("Box_Data::set_field_value_in_database(): table_name is empty.");
       return false;
     }
-    
+
     Glib::ustring strQuery = "UPDATE " + table_name;
     strQuery += " SET " + field_name + " = " + field.sql(field_value);
     strQuery += " WHERE " + primary_key_field.get_name() + " = " + primary_key_field.sql(primary_key_value);

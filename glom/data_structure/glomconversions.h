@@ -54,7 +54,7 @@ namespace GlomConversions
   Gnome::Gda::Value get_empty_value(Field::glom_field_type field_type);
 
   Gnome::Gda::Value get_example_value(Field::glom_field_type field_type);
-  
+
   Glib::ustring get_escaped_binary_data(guint8* buffer, size_t buffer_size);
   Gnome::Gda::Value parse_escaped_binary_data(const Glib::ustring& escaped_data);
 }

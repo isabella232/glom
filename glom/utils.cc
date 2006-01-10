@@ -77,6 +77,54 @@ Glib::ustring GlomUtils::trim_whitespace(const Glib::ustring& text)
   return result;
 }
 
+Glib::ustring GlomUtils::string_replace(const Glib::ustring& src, const Glib::ustring search_for, const Glib::ustring& replace_with)
+{
+  std::string result = src;
+
+  std::string::size_type pos = 0;
+  std::string::size_type len= search_for.size();
+
+  while((pos = result.find(search_for)) != std::string::npos)
+  {
+   result.replace(pos, len, replace_with);
+  }
+
+  return result;
+
+/*
+  //TODO_Performance:
+
+  Glib::ustring result;
+  const size_t src_length = src.size();
+  const size_t search_for_length = search_for.size();
+  //const size_t replace_with_length = replace_with.size();
+
+  size_t src_index = 0;
+  size_t src_index_section_start = 0;
+  while(src_index < src_length)
+  {
+    const bool found = (src.find(search_for.c_str(), src_index) == src_index);
+    if(found)
+    {
+      result += src.substr(src_index_section_start, src_index - src_index_section_start);
+      result += replace_with;
+
+      src_index_section_start = src_index + search_for_length;
+      src_index = src_index_section_start;
+    }
+    else
+      ++src_index;
+  }
+
+  if(src_index_section_start < src_length)
+  {
+    result += src.substr(src_index_section_start);
+  }
+
+  return result;
+*/
+}
+
 
 
 Glib::ustring GlomUtils::build_sql_select_with_where_clause(const Glib::ustring& table_name, const type_vecLayoutFields& fieldsToGet, const Glib::ustring& where_clause, const Glib::ustring& sort_clause)
