@@ -59,7 +59,11 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
 
   refGlade->get_widget("hbox_quickfind", m_pBox_QuickFind);
   m_pBox_QuickFind->hide();
+
   refGlade->get_widget("entry_quickfind", m_pEntry_QuickFind);
+  m_pEntry_QuickFind->signal_activate().connect(
+   sigc::mem_fun(*this, &Frame_Glom::on_button_quickfind) ); //Pressing Enter here is like pressing Find.
+
   refGlade->get_widget("button_quickfind", m_pButton_QuickFind);
   m_pButton_QuickFind->signal_clicked().connect(
     sigc::mem_fun(*this, &Frame_Glom::on_button_quickfind) );

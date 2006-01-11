@@ -1,5 +1,10 @@
 2006-01-11  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/frame_glom.cc: Connect explicitly to the activate 
+	signal of the quick find entry, instead of using default widgets.
+
+2006-01-11  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/frame_glom.cc:
 	* glom/frame_glom.h:
 	* glom/glom.glade: Add a Quick Find entry and button, only 

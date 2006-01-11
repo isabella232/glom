@@ -23,7 +23,7 @@
 Dialog_Glom::Dialog_Glom(Box_DB* pBox)
 {
   set_border_width(6);
- 
+
   m_pBox = pBox;
 
   if(m_pBox)

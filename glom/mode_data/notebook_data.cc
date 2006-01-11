@@ -114,16 +114,16 @@ bool Notebook_Data::init_db_details(const Glib::ustring& strTableName, const Gli
         else
           ++page;
       }
-      
+
       if(found)
       {
         set_current_page(page);
       }
     }
   }
-  
+
   if(!found)
-  {   
+  {
     //Select List as default:
     set_current_page(m_iPage_List);
   }
