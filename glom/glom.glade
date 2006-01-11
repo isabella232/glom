@@ -16,6 +16,8 @@
   <property name="skip_pager_hint">False</property>
   <property name="type_hint">GDK_WINDOW_TYPE_HINT_NORMAL</property>
   <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
+  <property name="focus_on_map">True</property>
+  <property name="urgency_hint">False</property>
 
   <child>
     <widget class="GtkVBox" id="box_navigation_connection">
@@ -66,7 +68,7 @@
 			  <property name="max_length">0</property>
 			  <property name="text" translatable="yes"></property>
 			  <property name="has_frame">True</property>
-			  <property name="invisible_char" translatable="yes">*</property>
+			  <property name="invisible_char">*</property>
 			  <property name="activates_default">False</property>
 			</widget>
 			<packing>
@@ -88,7 +90,7 @@
 			  <property name="max_length">0</property>
 			  <property name="text" translatable="yes"></property>
 			  <property name="has_frame">True</property>
-			  <property name="invisible_char" translatable="yes">*</property>
+			  <property name="invisible_char">*</property>
 			  <property name="activates_default">True</property>
 			</widget>
 			<packing>
@@ -113,6 +115,10 @@
 			  <property name="yalign">0.5</property>
 			  <property name="xpad">0</property>
 			  <property name="ypad">0</property>
+			  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+			  <property name="width_chars">-1</property>
+			  <property name="single_line_mode">False</property>
+			  <property name="angle">0</property>
 			</widget>
 			<packing>
 			  <property name="left_attach">0</property>
@@ -137,6 +143,10 @@
 			  <property name="yalign">0.5</property>
 			  <property name="xpad">0</property>
 			  <property name="ypad">0</property>
+			  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+			  <property name="width_chars">-1</property>
+			  <property name="single_line_mode">False</property>
+			  <property name="angle">0</property>
 			</widget>
 			<packing>
 			  <property name="left_attach">0</property>
@@ -161,6 +171,10 @@
 			  <property name="yalign">0.5</property>
 			  <property name="xpad">0</property>
 			  <property name="ypad">0</property>
+			  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+			  <property name="width_chars">-1</property>
+			  <property name="single_line_mode">False</property>
+			  <property name="angle">0</property>
 			</widget>
 			<packing>
 			  <property name="left_attach">0</property>
@@ -181,7 +195,7 @@
 			  <property name="max_length">0</property>
 			  <property name="text" translatable="yes"></property>
 			  <property name="has_frame">True</property>
-			  <property name="invisible_char" translatable="yes">*</property>
+			  <property name="invisible_char">*</property>
 			  <property name="activates_default">False</property>
 			</widget>
 			<packing>
@@ -276,6 +290,10 @@
 				      <property name="yalign">0.5</property>
 				      <property name="xpad">0</property>
 				      <property name="ypad">0</property>
+				      <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+				      <property name="width_chars">-1</property>
+				      <property name="single_line_mode">False</property>
+				      <property name="angle">0</property>
 				    </widget>
 				    <packing>
 				      <property name="padding">0</property>
@@ -314,6 +332,10 @@
 	      <property name="yalign">0.5</property>
 	      <property name="xpad">0</property>
 	      <property name="ypad">0</property>
+	      <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+	      <property name="width_chars">-1</property>
+	      <property name="single_line_mode">False</property>
+	      <property name="angle">0</property>
 	    </widget>
 	    <packing>
 	      <property name="type">label_item</property>
@@ -343,6 +365,8 @@
   <property name="skip_pager_hint">False</property>
   <property name="type_hint">GDK_WINDOW_TYPE_HINT_NORMAL</property>
   <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
+  <property name="focus_on_map">True</property>
+  <property name="urgency_hint">False</property>
 
   <child>
     <widget class="GtkVBox" id="box_navigation_tables">
@@ -434,6 +458,10 @@
 	      <property name="yalign">0.5</property>
 	      <property name="xpad">0</property>
 	      <property name="ypad">0</property>
+	      <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+	      <property name="width_chars">-1</property>
+	      <property name="single_line_mode">False</property>
+	      <property name="angle">0</property>
 	    </widget>
 	    <packing>
 	      <property name="type">label_item</property>
@@ -487,6 +515,8 @@
   <property name="skip_pager_hint">False</property>
   <property name="type_hint">GDK_WINDOW_TYPE_HINT_NORMAL</property>
   <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
+  <property name="focus_on_map">True</property>
+  <property name="urgency_hint">False</property>
 
   <child>
     <widget class="GtkVBox" id="vbox6">
@@ -511,6 +541,9 @@
 	      <property name="rules_hint">True</property>
 	      <property name="reorderable">True</property>
 	      <property name="enable_search">True</property>
+	      <property name="fixed_height_mode">False</property>
+	      <property name="hover_selection">False</property>
+	      <property name="hover_expand">False</property>
 	    </widget>
 	  </child>
 	</widget>
@@ -607,6 +640,10 @@
 			  <property name="yalign">0.5</property>
 			  <property name="xpad">0</property>
 			  <property name="ypad">0</property>
+			  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+			  <property name="width_chars">-1</property>
+			  <property name="single_line_mode">False</property>
+			  <property name="angle">0</property>
 			</widget>
 			<packing>
 			  <property name="padding">0</property>
@@ -645,6 +682,8 @@
   <property name="skip_pager_hint">False</property>
   <property name="type_hint">GDK_WINDOW_TYPE_HINT_NORMAL</property>
   <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
+  <property name="focus_on_map">True</property>
+  <property name="urgency_hint">False</property>
 
   <child>
     <widget class="GtkVBox" id="bakery_vbox">
@@ -672,6 +711,10 @@
 	      <property name="yalign">0.5</property>
 	      <property name="xpad">0</property>
 	      <property name="ypad">0</property>
+	      <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+	      <property name="width_chars">-1</property>
+	      <property name="single_line_mode">False</property>
+	      <property name="angle">0</property>
 	    </widget>
 	    <packing>
 	      <property name="padding">0</property>
@@ -699,6 +742,10 @@
 		  <property name="yalign">0.5</property>
 		  <property name="xpad">0</property>
 		  <property name="ypad">0</property>
+		  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+		  <property name="width_chars">-1</property>
+		  <property name="single_line_mode">False</property>
+		  <property name="angle">0</property>
 		</widget>
 		<packing>
 		  <property name="padding">0</property>
@@ -720,6 +767,10 @@
 		  <property name="yalign">0.5</property>
 		  <property name="xpad">0</property>
 		  <property name="ypad">0</property>
+		  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+		  <property name="width_chars">-1</property>
+		  <property name="single_line_mode">False</property>
+		  <property name="angle">0</property>
 		</widget>
 		<packing>
 		  <property name="padding">0</property>
@@ -741,6 +792,10 @@
 		  <property name="yalign">0.5</property>
 		  <property name="xpad">0</property>
 		  <property name="ypad">0</property>
+		  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+		  <property name="width_chars">-1</property>
+		  <property name="single_line_mode">False</property>
+		  <property name="angle">0</property>
 		</widget>
 		<packing>
 		  <property name="padding">0</property>
@@ -763,6 +818,10 @@
 		  <property name="yalign">0.5</property>
 		  <property name="xpad">0</property>
 		  <property name="ypad">0</property>
+		  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+		  <property name="width_chars">-1</property>
+		  <property name="single_line_mode">False</property>
+		  <property name="angle">0</property>
 		</widget>
 		<packing>
 		  <property name="padding">0</property>
@@ -776,6 +835,81 @@
 	      <property name="padding">0</property>
 	      <property name="expand">False</property>
 	      <property name="fill">True</property>
+	    </packing>
+	  </child>
+
+	  <child>
+	    <widget class="GtkHBox" id="hbox_quickfind">
+	      <property name="homogeneous">False</property>
+	      <property name="spacing">6</property>
+
+	      <child>
+		<widget class="GtkLabel" id="label_quickfind">
+		  <property name="visible">True</property>
+		  <property name="label" translatable="yes">Quick Find</property>
+		  <property name="use_underline">False</property>
+		  <property name="use_markup">False</property>
+		  <property name="justify">GTK_JUSTIFY_LEFT</property>
+		  <property name="wrap">False</property>
+		  <property name="selectable">False</property>
+		  <property name="xalign">0.5</property>
+		  <property name="yalign">0.5</property>
+		  <property name="xpad">0</property>
+		  <property name="ypad">0</property>
+		  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+		  <property name="width_chars">-1</property>
+		  <property name="single_line_mode">False</property>
+		  <property name="angle">0</property>
+		</widget>
+		<packing>
+		  <property name="padding">0</property>
+		  <property name="expand">False</property>
+		  <property name="fill">False</property>
+		</packing>
+	      </child>
+
+	      <child>
+		<widget class="GtkEntry" id="entry_quickfind">
+		  <property name="visible">True</property>
+		  <property name="can_focus">True</property>
+		  <property name="has_focus">True</property>
+		  <property name="editable">True</property>
+		  <property name="visibility">True</property>
+		  <property name="max_length">0</property>
+		  <property name="text" translatable="yes"></property>
+		  <property name="has_frame">True</property>
+		  <property name="invisible_char">*</property>
+		  <property name="activates_default">True</property>
+		</widget>
+		<packing>
+		  <property name="padding">0</property>
+		  <property name="expand">True</property>
+		  <property name="fill">True</property>
+		</packing>
+	      </child>
+
+	      <child>
+		<widget class="GtkButton" id="button_quickfind">
+		  <property name="visible">True</property>
+		  <property name="can_default">True</property>
+		  <property name="has_default">True</property>
+		  <property name="can_focus">True</property>
+		  <property name="label">gtk-find</property>
+		  <property name="use_stock">True</property>
+		  <property name="relief">GTK_RELIEF_NORMAL</property>
+		  <property name="focus_on_click">True</property>
+		</widget>
+		<packing>
+		  <property name="padding">0</property>
+		  <property name="expand">False</property>
+		  <property name="fill">False</property>
+		</packing>
+	      </child>
+	    </widget>
+	    <packing>
+	      <property name="padding">0</property>
+	      <property name="expand">False</property>
+	      <property name="fill">False</property>
 	    </packing>
 	  </child>
 
@@ -815,6 +949,10 @@
 		  <property name="yalign">0.5</property>
 		  <property name="xpad">0</property>
 		  <property name="ypad">0</property>
+		  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+		  <property name="width_chars">-1</property>
+		  <property name="single_line_mode">False</property>
+		  <property name="angle">0</property>
 		</widget>
 		<packing>
 		  <property name="padding">0</property>
@@ -836,6 +974,10 @@
 		  <property name="yalign">0.5</property>
 		  <property name="xpad">0</property>
 		  <property name="ypad">0</property>
+		  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+		  <property name="width_chars">-1</property>
+		  <property name="single_line_mode">False</property>
+		  <property name="angle">0</property>
 		</widget>
 		<packing>
 		  <property name="padding">0</property>
@@ -885,6 +1027,8 @@
   <property name="skip_pager_hint">False</property>
   <property name="type_hint">GDK_WINDOW_TYPE_HINT_NORMAL</property>
   <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
+  <property name="focus_on_map">True</property>
+  <property name="urgency_hint">False</property>
 
   <child>
     <widget class="GtkVBox" id="vbox7">
@@ -911,6 +1055,10 @@
 	      <property name="yalign">0.5</property>
 	      <property name="xpad">0</property>
 	      <property name="ypad">0</property>
+	      <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+	      <property name="width_chars">-1</property>
+	      <property name="single_line_mode">False</property>
+	      <property name="angle">0</property>
 	    </widget>
 	    <packing>
 	      <property name="padding">0</property>
@@ -932,6 +1080,10 @@
 	      <property name="yalign">0.5</property>
 	      <property name="xpad">0</property>
 	      <property name="ypad">0</property>
+	      <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+	      <property name="width_chars">-1</property>
+	      <property name="single_line_mode">False</property>
+	      <property name="angle">0</property>
 	    </widget>
 	    <packing>
 	      <property name="padding">0</property>
@@ -949,7 +1101,7 @@
 	      <property name="max_length">0</property>
 	      <property name="text" translatable="yes"></property>
 	      <property name="has_frame">True</property>
-	      <property name="invisible_char" translatable="yes">*</property>
+	      <property name="invisible_char">*</property>
 	      <property name="activates_default">False</property>
 	    </widget>
 	    <packing>
@@ -973,6 +1125,10 @@
 	      <property name="yalign">0.5</property>
 	      <property name="xpad">0</property>
 	      <property name="ypad">0</property>
+	      <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+	      <property name="width_chars">-1</property>
+	      <property name="single_line_mode">False</property>
+	      <property name="angle">0</property>
 	    </widget>
 	    <packing>
 	      <property name="padding">0</property>
@@ -1031,6 +1187,9 @@
 			  <property name="rules_hint">False</property>
 			  <property name="reorderable">False</property>
 			  <property name="enable_search">True</property>
+			  <property name="fixed_height_mode">False</property>
+			  <property name="hover_selection">False</property>
+			  <property name="hover_expand">False</property>
 			</widget>
 		      </child>
 		    </widget>
@@ -1170,6 +1329,10 @@
 					  <property name="yalign">0.5</property>
 					  <property name="xpad">0</property>
 					  <property name="ypad">0</property>
+					  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+					  <property name="width_chars">-1</property>
+					  <property name="single_line_mode">False</property>
+					  <property name="angle">0</property>
 					</widget>
 					<packing>
 					  <property name="padding">0</property>
@@ -1240,6 +1403,10 @@
 					  <property name="yalign">0.5</property>
 					  <property name="xpad">0</property>
 					  <property name="ypad">0</property>
+					  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+					  <property name="width_chars">-1</property>
+					  <property name="single_line_mode">False</property>
+					  <property name="angle">0</property>
 					</widget>
 					<packing>
 					  <property name="padding">0</property>
@@ -1310,6 +1477,10 @@
 					  <property name="yalign">0.5</property>
 					  <property name="xpad">0</property>
 					  <property name="ypad">0</property>
+					  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+					  <property name="width_chars">-1</property>
+					  <property name="single_line_mode">False</property>
+					  <property name="angle">0</property>
 					</widget>
 					<packing>
 					  <property name="padding">0</property>
@@ -1367,6 +1538,10 @@
 	      <property name="yalign">0.5</property>
 	      <property name="xpad">0</property>
 	      <property name="ypad">0</property>
+	      <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+	      <property name="width_chars">-1</property>
+	      <property name="single_line_mode">False</property>
+	      <property name="angle">0</property>
 	    </widget>
 	    <packing>
 	      <property name="type">label_item</property>
@@ -1423,6 +1598,8 @@
   <property name="skip_pager_hint">False</property>
   <property name="type_hint">GDK_WINDOW_TYPE_HINT_NORMAL</property>
   <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
+  <property name="focus_on_map">True</property>
+  <property name="urgency_hint">False</property>
 
   <child>
     <widget class="GtkVBox" id="vbox7">
@@ -1449,6 +1626,10 @@
 	      <property name="yalign">0.5</property>
 	      <property name="xpad">0</property>
 	      <property name="ypad">0</property>
+	      <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+	      <property name="width_chars">-1</property>
+	      <property name="single_line_mode">False</property>
+	      <property name="angle">0</property>
 	    </widget>
 	    <packing>
 	      <property name="padding">0</property>
@@ -1470,6 +1651,10 @@
 	      <property name="yalign">0.5</property>
 	      <property name="xpad">0</property>
 	      <property name="ypad">0</property>
+	      <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+	      <property name="width_chars">-1</property>
+	      <property name="single_line_mode">False</property>
+	      <property name="angle">0</property>
 	    </widget>
 	    <packing>
 	      <property name="padding">0</property>
@@ -1487,7 +1672,7 @@
 	      <property name="max_length">0</property>
 	      <property name="text" translatable="yes"></property>
 	      <property name="has_frame">True</property>
-	      <property name="invisible_char" translatable="yes">*</property>
+	      <property name="invisible_char">*</property>
 	      <property name="activates_default">False</property>
 	    </widget>
 	    <packing>
@@ -1511,6 +1696,10 @@
 	      <property name="yalign">0.5</property>
 	      <property name="xpad">0</property>
 	      <property name="ypad">0</property>
+	      <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+	      <property name="width_chars">-1</property>
+	      <property name="single_line_mode">False</property>
+	      <property name="angle">0</property>
 	    </widget>
 	    <packing>
 	      <property name="padding">0</property>
@@ -1569,6 +1758,9 @@
 			  <property name="rules_hint">False</property>
 			  <property name="reorderable">False</property>
 			  <property name="enable_search">True</property>
+			  <property name="fixed_height_mode">False</property>
+			  <property name="hover_selection">False</property>
+			  <property name="hover_expand">False</property>
 			</widget>
 		      </child>
 		    </widget>
@@ -1708,6 +1900,10 @@
 					  <property name="yalign">0.5</property>
 					  <property name="xpad">0</property>
 					  <property name="ypad">0</property>
+					  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+					  <property name="width_chars">-1</property>
+					  <property name="single_line_mode">False</property>
+					  <property name="angle">0</property>
 					</widget>
 					<packing>
 					  <property name="padding">0</property>
@@ -1765,6 +1961,10 @@
 	      <property name="yalign">0.5</property>
 	      <property name="xpad">0</property>
 	      <property name="ypad">0</property>
+	      <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+	      <property name="width_chars">-1</property>
+	      <property name="single_line_mode">False</property>
+	      <property name="angle">0</property>
 	    </widget>
 	    <packing>
 	      <property name="type">label_item</property>
@@ -1821,6 +2021,8 @@
   <property name="skip_pager_hint">False</property>
   <property name="type_hint">GDK_WINDOW_TYPE_HINT_NORMAL</property>
   <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
+  <property name="focus_on_map">True</property>
+  <property name="urgency_hint">False</property>
 
   <child>
     <widget class="GtkVBox" id="vbox7">
@@ -1847,6 +2049,10 @@
 	      <property name="yalign">0.5</property>
 	      <property name="xpad">0</property>
 	      <property name="ypad">0</property>
+	      <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+	      <property name="width_chars">-1</property>
+	      <property name="single_line_mode">False</property>
+	      <property name="angle">0</property>
 	    </widget>
 	    <packing>
 	      <property name="padding">0</property>
@@ -1858,6 +2064,8 @@
 	  <child>
 	    <widget class="GtkComboBox" id="combo_relationship_name">
 	      <property name="visible">True</property>
+	      <property name="add_tearoffs">False</property>
+	      <property name="focus_on_click">True</property>
 	    </widget>
 	    <packing>
 	      <property name="padding">0</property>
@@ -1875,7 +2083,7 @@
 	      <property name="max_length">0</property>
 	      <property name="text" translatable="yes"></property>
 	      <property name="has_frame">True</property>
-	      <property name="invisible_char" translatable="yes">*</property>
+	      <property name="invisible_char">*</property>
 	      <property name="activates_default">False</property>
 	    </widget>
 	    <packing>
@@ -1899,6 +2107,10 @@
 	      <property name="yalign">0.5</property>
 	      <property name="xpad">0</property>
 	      <property name="ypad">0</property>
+	      <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+	      <property name="width_chars">-1</property>
+	      <property name="single_line_mode">False</property>
+	      <property name="angle">0</property>
 	    </widget>
 	    <packing>
 	      <property name="padding">0</property>
@@ -1957,6 +2169,9 @@
 			  <property name="rules_hint">False</property>
 			  <property name="reorderable">False</property>
 			  <property name="enable_search">True</property>
+			  <property name="fixed_height_mode">False</property>
+			  <property name="hover_selection">False</property>
+			  <property name="hover_expand">False</property>
 			</widget>
 		      </child>
 		    </widget>
@@ -2096,6 +2311,10 @@
 					  <property name="yalign">0.5</property>
 					  <property name="xpad">0</property>
 					  <property name="ypad">0</property>
+					  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+					  <property name="width_chars">-1</property>
+					  <property name="single_line_mode">False</property>
+					  <property name="angle">0</property>
 					</widget>
 					<packing>
 					  <property name="padding">0</property>
@@ -2153,6 +2372,10 @@
 	      <property name="yalign">0.5</property>
 	      <property name="xpad">0</property>
 	      <property name="ypad">0</property>
+	      <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+	      <property name="width_chars">-1</property>
+	      <property name="single_line_mode">False</property>
+	      <property name="angle">0</property>
 	    </widget>
 	    <packing>
 	      <property name="type">label_item</property>
@@ -2206,6 +2429,8 @@
   <property name="skip_pager_hint">False</property>
   <property name="type_hint">GDK_WINDOW_TYPE_HINT_NORMAL</property>
   <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
+  <property name="focus_on_map">True</property>
+  <property name="urgency_hint">False</property>
 
   <child>
     <widget class="GtkVBox" id="vbox11">
@@ -2265,6 +2490,10 @@
 			  <property name="yalign">0.5</property>
 			  <property name="xpad">0</property>
 			  <property name="ypad">0</property>
+			  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+			  <property name="width_chars">-1</property>
+			  <property name="single_line_mode">False</property>
+			  <property name="angle">0</property>
 			</widget>
 		      </child>
 		    </widget>
@@ -2303,6 +2532,10 @@
 			  <property name="yalign">0.5</property>
 			  <property name="xpad">0</property>
 			  <property name="ypad">0</property>
+			  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+			  <property name="width_chars">-1</property>
+			  <property name="single_line_mode">False</property>
+			  <property name="angle">0</property>
 			</widget>
 		      </child>
 		    </widget>
@@ -2319,6 +2552,8 @@
 		  <child>
 		    <widget class="GtkComboBox" id="combobox_type">
 		      <property name="visible">True</property>
+		      <property name="add_tearoffs">False</property>
+		      <property name="focus_on_click">True</property>
 		    </widget>
 		    <packing>
 		      <property name="left_attach">1</property>
@@ -2339,7 +2574,7 @@
 		      <property name="max_length">0</property>
 		      <property name="text" translatable="yes"></property>
 		      <property name="has_frame">True</property>
-		      <property name="invisible_char" translatable="yes">*</property>
+		      <property name="invisible_char">*</property>
 		      <property name="activates_default">False</property>
 		    </widget>
 		    <packing>
@@ -2364,6 +2599,10 @@
 		      <property name="yalign">0.5</property>
 		      <property name="xpad">0</property>
 		      <property name="ypad">0</property>
+		      <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+		      <property name="width_chars">-1</property>
+		      <property name="single_line_mode">False</property>
+		      <property name="angle">0</property>
 		    </widget>
 		    <packing>
 		      <property name="left_attach">0</property>
@@ -2384,7 +2623,7 @@
 		      <property name="max_length">0</property>
 		      <property name="text" translatable="yes"></property>
 		      <property name="has_frame">True</property>
-		      <property name="invisible_char" translatable="yes">*</property>
+		      <property name="invisible_char">*</property>
 		      <property name="activates_default">False</property>
 		    </widget>
 		    <packing>
@@ -2493,6 +2732,10 @@
 	      <property name="yalign">0.5</property>
 	      <property name="xpad">0</property>
 	      <property name="ypad">0</property>
+	      <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+	      <property name="width_chars">-1</property>
+	      <property name="single_line_mode">False</property>
+	      <property name="angle">0</property>
 	    </widget>
 	    <packing>
 	      <property name="type">tab</property>
@@ -2593,6 +2836,10 @@
 			      <property name="yalign">0.5</property>
 			      <property name="xpad">0</property>
 			      <property name="ypad">0</property>
+			      <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+			      <property name="width_chars">-1</property>
+			      <property name="single_line_mode">False</property>
+			      <property name="angle">0</property>
 			    </widget>
 			  </child>
 			</widget>
@@ -2619,6 +2866,10 @@
 			  <property name="yalign">0.5</property>
 			  <property name="xpad">0</property>
 			  <property name="ypad">0</property>
+			  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+			  <property name="width_chars">-1</property>
+			  <property name="single_line_mode">False</property>
+			  <property name="angle">0</property>
 			</widget>
 			<packing>
 			  <property name="left_attach">0</property>
@@ -2633,6 +2884,8 @@
 		      <child>
 			<widget class="GtkComboBox" id="combobox_lookup_relationship">
 			  <property name="visible">True</property>
+			  <property name="add_tearoffs">False</property>
+			  <property name="focus_on_click">True</property>
 			</widget>
 			<packing>
 			  <property name="left_attach">1</property>
@@ -2647,6 +2900,8 @@
 		      <child>
 			<widget class="GtkComboBox" id="combobox_lookup_field">
 			  <property name="visible">True</property>
+			  <property name="add_tearoffs">False</property>
+			  <property name="focus_on_click">True</property>
 			</widget>
 			<packing>
 			  <property name="left_attach">1</property>
@@ -2797,6 +3052,10 @@
 	      <property name="yalign">0.5</property>
 	      <property name="xpad">0</property>
 	      <property name="ypad">0</property>
+	      <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+	      <property name="width_chars">-1</property>
+	      <property name="single_line_mode">False</property>
+	      <property name="angle">0</property>
 	    </widget>
 	    <packing>
 	      <property name="type">tab</property>
@@ -2833,6 +3092,10 @@
 	      <property name="yalign">0.5</property>
 	      <property name="xpad">0</property>
 	      <property name="ypad">0</property>
+	      <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+	      <property name="width_chars">-1</property>
+	      <property name="single_line_mode">False</property>
+	      <property name="angle">0</property>
 	    </widget>
 	    <packing>
 	      <property name="type">tab</property>
@@ -2900,6 +3163,8 @@
   <property name="skip_pager_hint">False</property>
   <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
   <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
+  <property name="focus_on_map">True</property>
+  <property name="urgency_hint">False</property>
   <property name="has_separator">True</property>
 
   <child internal-child="vbox">
@@ -3010,6 +3275,10 @@
 			  <property name="yalign">0.5</property>
 			  <property name="xpad">0</property>
 			  <property name="ypad">0</property>
+			  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+			  <property name="width_chars">-1</property>
+			  <property name="single_line_mode">False</property>
+			  <property name="angle">0</property>
 			</widget>
 			<packing>
 			  <property name="padding">0</property>
@@ -3088,6 +3357,10 @@ Or would you like to create a new document, to design a new database?
 	      <property name="yalign">0</property>
 	      <property name="xpad">0</property>
 	      <property name="ypad">0</property>
+	      <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+	      <property name="width_chars">-1</property>
+	      <property name="single_line_mode">False</property>
+	      <property name="angle">0</property>
 	    </widget>
 	    <packing>
 	      <property name="padding">0</property>
@@ -3120,6 +3393,8 @@ Or would you like to create a new document, to design a new database?
   <property name="skip_pager_hint">False</property>
   <property name="type_hint">GDK_WINDOW_TYPE_HINT_NORMAL</property>
   <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
+  <property name="focus_on_map">True</property>
+  <property name="urgency_hint">False</property>
 
   <child>
     <widget class="GtkVBox" id="vbox14">
@@ -3172,6 +3447,10 @@ Or would you like to create a new document, to design a new database?
 			  <property name="yalign">0.5</property>
 			  <property name="xpad">0</property>
 			  <property name="ypad">0</property>
+			  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+			  <property name="width_chars">-1</property>
+			  <property name="single_line_mode">False</property>
+			  <property name="angle">0</property>
 			</widget>
 			<packing>
 			  <property name="padding">0</property>
@@ -3193,6 +3472,10 @@ Or would you like to create a new document, to design a new database?
 			  <property name="yalign">0.5</property>
 			  <property name="xpad">0</property>
 			  <property name="ypad">0</property>
+			  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+			  <property name="width_chars">-1</property>
+			  <property name="single_line_mode">False</property>
+			  <property name="angle">0</property>
 			</widget>
 			<packing>
 			  <property name="padding">0</property>
@@ -3242,6 +3525,10 @@ Or would you like to create a new document, to design a new database?
 	      <property name="yalign">0.5</property>
 	      <property name="xpad">0</property>
 	      <property name="ypad">0</property>
+	      <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+	      <property name="width_chars">-1</property>
+	      <property name="single_line_mode">False</property>
+	      <property name="angle">0</property>
 	    </widget>
 	    <packing>
 	      <property name="type">label_item</property>
@@ -3296,6 +3583,8 @@ Or would you like to create a new document, to design a new database?
   <property name="skip_pager_hint">False</property>
   <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
   <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
+  <property name="focus_on_map">True</property>
+  <property name="urgency_hint">False</property>
   <property name="has_separator">True</property>
 
   <child internal-child="vbox">
@@ -3379,6 +3668,10 @@ Or would you like to create a new document, to design a new database?
 			  <property name="yalign">0.5</property>
 			  <property name="xpad">0</property>
 			  <property name="ypad">0</property>
+			  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+			  <property name="width_chars">-1</property>
+			  <property name="single_line_mode">False</property>
+			  <property name="angle">0</property>
 			</widget>
 			<packing>
 			  <property name="padding">0</property>
@@ -3462,6 +3755,10 @@ The data in the field was not recognized. Please try to correct the data or reve
 		  <property name="yalign">0</property>
 		  <property name="xpad">0</property>
 		  <property name="ypad">0</property>
+		  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+		  <property name="width_chars">-1</property>
+		  <property name="single_line_mode">False</property>
+		  <property name="angle">0</property>
 		</widget>
 		<packing>
 		  <property name="padding">0</property>
@@ -3483,6 +3780,10 @@ The data in the field was not recognized. Please try to correct the data or reve
 		  <property name="yalign">0.5</property>
 		  <property name="xpad">0</property>
 		  <property name="ypad">0</property>
+		  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+		  <property name="width_chars">-1</property>
+		  <property name="single_line_mode">False</property>
+		  <property name="angle">0</property>
 		</widget>
 		<packing>
 		  <property name="padding">0</property>
@@ -3522,6 +3823,8 @@ The data in the field was not recognized. Please try to correct the data or reve
   <property name="skip_pager_hint">False</property>
   <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
   <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
+  <property name="focus_on_map">True</property>
+  <property name="urgency_hint">False</property>
   <property name="has_separator">False</property>
 
   <child internal-child="vbox">
@@ -3602,6 +3905,10 @@ The data in the field was not recognized. Please try to correct the data or reve
 	      <property name="yalign">0.5</property>
 	      <property name="xpad">0</property>
 	      <property name="ypad">0</property>
+	      <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+	      <property name="width_chars">-1</property>
+	      <property name="single_line_mode">False</property>
+	      <property name="angle">0</property>
 	    </widget>
 	    <packing>
 	      <property name="padding">0</property>
@@ -3625,6 +3932,10 @@ The data in the field was not recognized. Please try to correct the data or reve
 	      <property name="yalign">0.5</property>
 	      <property name="xpad">0</property>
 	      <property name="ypad">0</property>
+	      <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+	      <property name="width_chars">-1</property>
+	      <property name="single_line_mode">False</property>
+	      <property name="angle">0</property>
 	    </widget>
 	    <packing>
 	      <property name="padding">0</property>
@@ -3734,6 +4045,10 @@ The data in the field was not recognized. Please try to correct the data or reve
 		  <property name="yalign">0.5</property>
 		  <property name="xpad">0</property>
 		  <property name="ypad">0</property>
+		  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+		  <property name="width_chars">-1</property>
+		  <property name="single_line_mode">False</property>
+		  <property name="angle">0</property>
 		</widget>
 		<packing>
 		  <property name="padding">0</property>
@@ -3755,6 +4070,10 @@ The data in the field was not recognized. Please try to correct the data or reve
 		  <property name="yalign">0.5</property>
 		  <property name="xpad">0</property>
 		  <property name="ypad">0</property>
+		  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+		  <property name="width_chars">-1</property>
+		  <property name="single_line_mode">False</property>
+		  <property name="angle">0</property>
 		</widget>
 		<packing>
 		  <property name="padding">0</property>
@@ -3794,6 +4113,8 @@ The data in the field was not recognized. Please try to correct the data or reve
   <property name="skip_pager_hint">False</property>
   <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
   <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
+  <property name="focus_on_map">True</property>
+  <property name="urgency_hint">False</property>
   <property name="has_separator">False</property>
 
   <child internal-child="vbox">
@@ -3878,6 +4199,10 @@ The data in the field was not recognized. Please try to correct the data or reve
 			  <property name="yalign">0.5</property>
 			  <property name="xpad">0</property>
 			  <property name="ypad">0</property>
+			  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+			  <property name="width_chars">-1</property>
+			  <property name="single_line_mode">False</property>
+			  <property name="angle">0</property>
 			</widget>
 			<packing>
 			  <property name="padding">0</property>
@@ -3951,6 +4276,10 @@ The data in the field was not recognized. Please try to correct the data or reve
 			      <property name="yalign">0.5</property>
 			      <property name="xpad">0</property>
 			      <property name="ypad">0</property>
+			      <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+			      <property name="width_chars">-1</property>
+			      <property name="single_line_mode">False</property>
+			      <property name="angle">0</property>
 			    </widget>
 			    <packing>
 			      <property name="padding">0</property>
@@ -3962,6 +4291,8 @@ The data in the field was not recognized. Please try to correct the data or reve
 			  <child>
 			    <widget class="GtkComboBox" id="combobox_relationship">
 			      <property name="visible">True</property>
+			      <property name="add_tearoffs">False</property>
+			      <property name="focus_on_click">True</property>
 			      <accessibility>
 				<atkproperty name="AtkObject::accessible_name" translatable="yes">Relationship</atkproperty>
 			      </accessibility>
@@ -3997,6 +4328,9 @@ The data in the field was not recognized. Please try to correct the data or reve
 			      <property name="rules_hint">False</property>
 			      <property name="reorderable">False</property>
 			      <property name="enable_search">True</property>
+			      <property name="fixed_height_mode">False</property>
+			      <property name="hover_selection">False</property>
+			      <property name="hover_expand">False</property>
 			    </widget>
 			  </child>
 			</widget>
@@ -4024,6 +4358,10 @@ The data in the field was not recognized. Please try to correct the data or reve
 		  <property name="yalign">0.5</property>
 		  <property name="xpad">0</property>
 		  <property name="ypad">0</property>
+		  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+		  <property name="width_chars">-1</property>
+		  <property name="single_line_mode">False</property>
+		  <property name="angle">0</property>
 		</widget>
 		<packing>
 		  <property name="type">label_item</property>
@@ -4059,6 +4397,8 @@ The data in the field was not recognized. Please try to correct the data or reve
   <property name="skip_pager_hint">False</property>
   <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
   <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
+  <property name="focus_on_map">True</property>
+  <property name="urgency_hint">False</property>
   <property name="has_separator">True</property>
 
   <child internal-child="vbox">
@@ -4166,6 +4506,10 @@ Please choose a name and title for the new database. The name should not contain
 		  <property name="yalign">0</property>
 		  <property name="xpad">0</property>
 		  <property name="ypad">0</property>
+		  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+		  <property name="width_chars">-1</property>
+		  <property name="single_line_mode">False</property>
+		  <property name="angle">0</property>
 		</widget>
 		<packing>
 		  <property name="padding">0</property>
@@ -4192,7 +4536,7 @@ Please choose a name and title for the new database. The name should not contain
 		      <property name="max_length">0</property>
 		      <property name="text" translatable="yes"></property>
 		      <property name="has_frame">True</property>
-		      <property name="invisible_char" translatable="yes">*</property>
+		      <property name="invisible_char">*</property>
 		      <property name="activates_default">False</property>
 		    </widget>
 		    <packing>
@@ -4213,7 +4557,7 @@ Please choose a name and title for the new database. The name should not contain
 		      <property name="max_length">0</property>
 		      <property name="text" translatable="yes"></property>
 		      <property name="has_frame">True</property>
-		      <property name="invisible_char" translatable="yes">*</property>
+		      <property name="invisible_char">*</property>
 		      <property name="activates_default">False</property>
 		    </widget>
 		    <packing>
@@ -4238,6 +4582,10 @@ Please choose a name and title for the new database. The name should not contain
 		      <property name="yalign">0.5</property>
 		      <property name="xpad">0</property>
 		      <property name="ypad">0</property>
+		      <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+		      <property name="width_chars">-1</property>
+		      <property name="single_line_mode">False</property>
+		      <property name="angle">0</property>
 		    </widget>
 		    <packing>
 		      <property name="left_attach">0</property>
@@ -4262,6 +4610,10 @@ Please choose a name and title for the new database. The name should not contain
 		      <property name="yalign">0.5</property>
 		      <property name="xpad">0</property>
 		      <property name="ypad">0</property>
+		      <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+		      <property name="width_chars">-1</property>
+		      <property name="single_line_mode">False</property>
+		      <property name="angle">0</property>
 		    </widget>
 		    <packing>
 		      <property name="left_attach">0</property>
@@ -4309,6 +4661,8 @@ Please choose a name and title for the new database. The name should not contain
   <property name="skip_pager_hint">False</property>
   <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
   <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
+  <property name="focus_on_map">True</property>
+  <property name="urgency_hint">False</property>
   <property name="has_separator">True</property>
 
   <child internal-child="vbox">
@@ -4406,6 +4760,10 @@ Please choose a name and title for the new database. The name should not contain
 			  <property name="yalign">0.5</property>
 			  <property name="xpad">0</property>
 			  <property name="ypad">0</property>
+			  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+			  <property name="width_chars">-1</property>
+			  <property name="single_line_mode">False</property>
+			  <property name="angle">0</property>
 			</widget>
 			<packing>
 			  <property name="padding">0</property>
@@ -4474,6 +4832,10 @@ Please enter the connection details for your database server.</property>
 		  <property name="yalign">0</property>
 		  <property name="xpad">0</property>
 		  <property name="ypad">0</property>
+		  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+		  <property name="width_chars">-1</property>
+		  <property name="single_line_mode">False</property>
+		  <property name="angle">0</property>
 		</widget>
 		<packing>
 		  <property name="padding">0</property>
@@ -4500,7 +4862,7 @@ Please enter the connection details for your database server.</property>
 		      <property name="max_length">0</property>
 		      <property name="text" translatable="yes"></property>
 		      <property name="has_frame">True</property>
-		      <property name="invisible_char" translatable="yes">*</property>
+		      <property name="invisible_char">*</property>
 		      <property name="activates_default">False</property>
 		    </widget>
 		    <packing>
@@ -4525,6 +4887,10 @@ Please enter the connection details for your database server.</property>
 		      <property name="yalign">0.5</property>
 		      <property name="xpad">0</property>
 		      <property name="ypad">0</property>
+		      <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+		      <property name="width_chars">-1</property>
+		      <property name="single_line_mode">False</property>
+		      <property name="angle">0</property>
 		    </widget>
 		    <packing>
 		      <property name="left_attach">0</property>
@@ -4549,6 +4915,10 @@ Please enter the connection details for your database server.</property>
 		      <property name="yalign">0.5</property>
 		      <property name="xpad">0</property>
 		      <property name="ypad">0</property>
+		      <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+		      <property name="width_chars">-1</property>
+		      <property name="single_line_mode">False</property>
+		      <property name="angle">0</property>
 		    </widget>
 		    <packing>
 		      <property name="left_attach">0</property>
@@ -4570,7 +4940,7 @@ Please enter the connection details for your database server.</property>
 		      <property name="max_length">0</property>
 		      <property name="text" translatable="yes"></property>
 		      <property name="has_frame">True</property>
-		      <property name="invisible_char" translatable="yes">*</property>
+		      <property name="invisible_char">*</property>
 		      <property name="activates_default">True</property>
 		    </widget>
 		    <packing>
@@ -4591,7 +4961,7 @@ Please enter the connection details for your database server.</property>
 		      <property name="max_length">0</property>
 		      <property name="text" translatable="yes"></property>
 		      <property name="has_frame">True</property>
-		      <property name="invisible_char" translatable="yes">*</property>
+		      <property name="invisible_char">*</property>
 		      <property name="activates_default">False</property>
 		    </widget>
 		    <packing>
@@ -4616,6 +4986,10 @@ Please enter the connection details for your database server.</property>
 		      <property name="yalign">0.5</property>
 		      <property name="xpad">0</property>
 		      <property name="ypad">0</property>
+		      <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+		      <property name="width_chars">-1</property>
+		      <property name="single_line_mode">False</property>
+		      <property name="angle">0</property>
 		    </widget>
 		    <packing>
 		      <property name="left_attach">0</property>
@@ -4640,6 +5014,10 @@ Please enter the connection details for your database server.</property>
 		      <property name="yalign">0.5</property>
 		      <property name="xpad">0</property>
 		      <property name="ypad">0</property>
+		      <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+		      <property name="width_chars">-1</property>
+		      <property name="single_line_mode">False</property>
+		      <property name="angle">0</property>
 		    </widget>
 		    <packing>
 		      <property name="left_attach">0</property>
@@ -4664,6 +5042,10 @@ Please enter the connection details for your database server.</property>
 		      <property name="yalign">0.5</property>
 		      <property name="xpad">0</property>
 		      <property name="ypad">0</property>
+		      <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+		      <property name="width_chars">-1</property>
+		      <property name="single_line_mode">False</property>
+		      <property name="angle">0</property>
 		    </widget>
 		    <packing>
 		      <property name="left_attach">1</property>
@@ -4711,6 +5093,8 @@ Please enter the connection details for your database server.</property>
   <property name="skip_pager_hint">False</property>
   <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
   <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
+  <property name="focus_on_map">True</property>
+  <property name="urgency_hint">False</property>
   <property name="has_separator">True</property>
 
   <child internal-child="vbox">
@@ -4805,6 +5189,10 @@ Glom could not connect to the database server. Maybe you entered an incorrect us
 		  <property name="yalign">0</property>
 		  <property name="xpad">0</property>
 		  <property name="ypad">0</property>
+		  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+		  <property name="width_chars">-1</property>
+		  <property name="single_line_mode">False</property>
+		  <property name="angle">0</property>
 		</widget>
 		<packing>
 		  <property name="padding">0</property>
@@ -4842,6 +5230,8 @@ Glom could not connect to the database server. Maybe you entered an incorrect us
   <property name="skip_pager_hint">False</property>
   <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
   <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
+  <property name="focus_on_map">True</property>
+  <property name="urgency_hint">False</property>
   <property name="has_separator">True</property>
 
   <child internal-child="vbox">
@@ -4936,6 +5326,10 @@ Glom could not create the new database. Maybe you do not have the necessary acce
 		  <property name="yalign">0</property>
 		  <property name="xpad">0</property>
 		  <property name="ypad">0</property>
+		  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+		  <property name="width_chars">-1</property>
+		  <property name="single_line_mode">False</property>
+		  <property name="angle">0</property>
 		</widget>
 		<packing>
 		  <property name="padding">0</property>
@@ -4973,6 +5367,8 @@ Glom could not create the new database. Maybe you do not have the necessary acce
   <property name="skip_pager_hint">False</property>
   <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
   <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
+  <property name="focus_on_map">True</property>
+  <property name="urgency_hint">False</property>
   <property name="has_separator">True</property>
 
   <child internal-child="vbox">
@@ -5070,6 +5466,10 @@ Glom could not create the new database. Maybe you do not have the necessary acce
 			  <property name="yalign">0.5</property>
 			  <property name="xpad">0</property>
 			  <property name="ypad">0</property>
+			  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+			  <property name="width_chars">-1</property>
+			  <property name="single_line_mode">False</property>
+			  <property name="angle">0</property>
 			</widget>
 			<packing>
 			  <property name="padding">0</property>
@@ -5138,6 +5538,10 @@ The database does not yet exist on the database server. Would you like to create
 		  <property name="yalign">0</property>
 		  <property name="xpad">0</property>
 		  <property name="ypad">0</property>
+		  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+		  <property name="width_chars">-1</property>
+		  <property name="single_line_mode">False</property>
+		  <property name="angle">0</property>
 		</widget>
 		<packing>
 		  <property name="padding">0</property>
@@ -5178,6 +5582,8 @@ The database does not yet exist on the database server. Would you like to create
   <property name="skip_pager_hint">False</property>
   <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
   <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
+  <property name="focus_on_map">True</property>
+  <property name="urgency_hint">False</property>
   <property name="has_separator">False</property>
 
   <child internal-child="vbox">
@@ -5262,6 +5668,10 @@ The database does not yet exist on the database server. Would you like to create
 			  <property name="yalign">0.5</property>
 			  <property name="xpad">0</property>
 			  <property name="ypad">0</property>
+			  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+			  <property name="width_chars">-1</property>
+			  <property name="single_line_mode">False</property>
+			  <property name="angle">0</property>
 			</widget>
 			<packing>
 			  <property name="padding">0</property>
@@ -5334,6 +5744,10 @@ The database does not yet exist on the database server. Would you like to create
 			      <property name="yalign">0.5</property>
 			      <property name="xpad">0</property>
 			      <property name="ypad">0</property>
+			      <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+			      <property name="width_chars">-1</property>
+			      <property name="single_line_mode">False</property>
+			      <property name="angle">0</property>
 			    </widget>
 			    <packing>
 			      <property name="padding">0</property>
@@ -5355,6 +5769,10 @@ The database does not yet exist on the database server. Would you like to create
 			      <property name="yalign">0.5</property>
 			      <property name="xpad">0</property>
 			      <property name="ypad">0</property>
+			      <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+			      <property name="width_chars">-1</property>
+			      <property name="single_line_mode">False</property>
+			      <property name="angle">0</property>
 			    </widget>
 			    <packing>
 			      <property name="padding">0</property>
@@ -5387,6 +5805,9 @@ The database does not yet exist on the database server. Would you like to create
 			      <property name="rules_hint">False</property>
 			      <property name="reorderable">False</property>
 			      <property name="enable_search">True</property>
+			      <property name="fixed_height_mode">False</property>
+			      <property name="hover_selection">False</property>
+			      <property name="hover_expand">False</property>
 			    </widget>
 			  </child>
 			</widget>
@@ -5414,6 +5835,10 @@ The database does not yet exist on the database server. Would you like to create
 		  <property name="yalign">0.5</property>
 		  <property name="xpad">0</property>
 		  <property name="ypad">0</property>
+		  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+		  <property name="width_chars">-1</property>
+		  <property name="single_line_mode">False</property>
+		  <property name="angle">0</property>
 		</widget>
 		<packing>
 		  <property name="type">label_item</property>
@@ -5452,6 +5877,8 @@ The database does not yet exist on the database server. Would you like to create
   <property name="skip_pager_hint">False</property>
   <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
   <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
+  <property name="focus_on_map">True</property>
+  <property name="urgency_hint">False</property>
   <property name="has_separator">False</property>
 
   <child internal-child="vbox">
@@ -5557,6 +5984,9 @@ The database does not yet exist on the database server. Would you like to create
 				  <property name="rules_hint">False</property>
 				  <property name="reorderable">False</property>
 				  <property name="enable_search">True</property>
+				  <property name="fixed_height_mode">False</property>
+				  <property name="hover_selection">False</property>
+				  <property name="hover_expand">False</property>
 				</widget>
 			      </child>
 			    </widget>
@@ -5672,6 +6102,10 @@ The database does not yet exist on the database server. Would you like to create
 						  <property name="yalign">0.5</property>
 						  <property name="xpad">0</property>
 						  <property name="ypad">0</property>
+						  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+						  <property name="width_chars">-1</property>
+						  <property name="single_line_mode">False</property>
+						  <property name="angle">0</property>
 						</widget>
 						<packing>
 						  <property name="padding">0</property>
@@ -5717,6 +6151,10 @@ The database does not yet exist on the database server. Would you like to create
 		      <property name="yalign">0.5</property>
 		      <property name="xpad">0</property>
 		      <property name="ypad">0</property>
+		      <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+		      <property name="width_chars">-1</property>
+		      <property name="single_line_mode">False</property>
+		      <property name="angle">0</property>
 		    </widget>
 		    <packing>
 		      <property name="type">label_item</property>
@@ -5773,6 +6211,9 @@ The database does not yet exist on the database server. Would you like to create
 				  <property name="rules_hint">False</property>
 				  <property name="reorderable">False</property>
 				  <property name="enable_search">True</property>
+				  <property name="fixed_height_mode">False</property>
+				  <property name="hover_selection">False</property>
+				  <property name="hover_expand">False</property>
 				</widget>
 			      </child>
 			    </widget>
@@ -5839,6 +6280,10 @@ The database does not yet exist on the database server. Would you like to create
 		      <property name="yalign">0.5</property>
 		      <property name="xpad">0</property>
 		      <property name="ypad">0</property>
+		      <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+		      <property name="width_chars">-1</property>
+		      <property name="single_line_mode">False</property>
+		      <property name="angle">0</property>
 		    </widget>
 		    <packing>
 		      <property name="type">label_item</property>
@@ -5885,6 +6330,8 @@ The database does not yet exist on the database server. Would you like to create
   <property name="skip_pager_hint">False</property>
   <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
   <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
+  <property name="focus_on_map">True</property>
+  <property name="urgency_hint">False</property>
   <property name="has_separator">False</property>
 
   <child internal-child="vbox">
@@ -5957,6 +6404,10 @@ The database does not yet exist on the database server. Would you like to create
 		  <property name="yalign">0.5</property>
 		  <property name="xpad">0</property>
 		  <property name="ypad">0</property>
+		  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+		  <property name="width_chars">-1</property>
+		  <property name="single_line_mode">False</property>
+		  <property name="angle">0</property>
 		</widget>
 		<packing>
 		  <property name="padding">0</property>
@@ -5968,6 +6419,8 @@ The database does not yet exist on the database server. Would you like to create
 	      <child>
 		<widget class="GtkComboBox" id="combobox_group">
 		  <property name="visible">True</property>
+		  <property name="add_tearoffs">False</property>
+		  <property name="focus_on_click">True</property>
 		</widget>
 		<packing>
 		  <property name="padding">0</property>
@@ -6025,6 +6478,9 @@ The database does not yet exist on the database server. Would you like to create
 			      <property name="rules_hint">False</property>
 			      <property name="reorderable">False</property>
 			      <property name="enable_search">True</property>
+			      <property name="fixed_height_mode">False</property>
+			      <property name="hover_selection">False</property>
+			      <property name="hover_expand">False</property>
 			    </widget>
 			  </child>
 			</widget>
@@ -6151,6 +6607,10 @@ The database does not yet exist on the database server. Would you like to create
 		  <property name="yalign">0.5</property>
 		  <property name="xpad">0</property>
 		  <property name="ypad">0</property>
+		  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+		  <property name="width_chars">-1</property>
+		  <property name="single_line_mode">False</property>
+		  <property name="angle">0</property>
 		</widget>
 		<packing>
 		  <property name="type">label_item</property>
@@ -6187,6 +6647,8 @@ The database does not yet exist on the database server. Would you like to create
   <property name="skip_pager_hint">False</property>
   <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
   <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
+  <property name="focus_on_map">True</property>
+  <property name="urgency_hint">False</property>
   <property name="has_separator">False</property>
 
   <child internal-child="vbox">
@@ -6297,7 +6759,7 @@ The database does not yet exist on the database server. Would you like to create
 			      <property name="max_length">0</property>
 			      <property name="text" translatable="yes"></property>
 			      <property name="has_frame">True</property>
-			      <property name="invisible_char" translatable="yes">*</property>
+			      <property name="invisible_char">*</property>
 			      <property name="activates_default">False</property>
 			    </widget>
 			    <packing>
@@ -6322,6 +6784,10 @@ The database does not yet exist on the database server. Would you like to create
 			      <property name="yalign">0.5</property>
 			      <property name="xpad">0</property>
 			      <property name="ypad">0</property>
+			      <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+			      <property name="width_chars">-1</property>
+			      <property name="single_line_mode">False</property>
+			      <property name="angle">0</property>
 			    </widget>
 			    <packing>
 			      <property name="left_attach">0</property>
@@ -6343,7 +6809,7 @@ The database does not yet exist on the database server. Would you like to create
 			      <property name="max_length">0</property>
 			      <property name="text" translatable="yes"></property>
 			      <property name="has_frame">True</property>
-			      <property name="invisible_char" translatable="yes">*</property>
+			      <property name="invisible_char">*</property>
 			      <property name="activates_default">True</property>
 			    </widget>
 			    <packing>
@@ -6368,6 +6834,10 @@ The database does not yet exist on the database server. Would you like to create
 			      <property name="yalign">0.5</property>
 			      <property name="xpad">0</property>
 			      <property name="ypad">0</property>
+			      <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+			      <property name="width_chars">-1</property>
+			      <property name="single_line_mode">False</property>
+			      <property name="angle">0</property>
 			    </widget>
 			    <packing>
 			      <property name="left_attach">0</property>
@@ -6392,6 +6862,10 @@ The database does not yet exist on the database server. Would you like to create
 			      <property name="yalign">0.5</property>
 			      <property name="xpad">0</property>
 			      <property name="ypad">0</property>
+			      <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+			      <property name="width_chars">-1</property>
+			      <property name="single_line_mode">False</property>
+			      <property name="angle">0</property>
 			    </widget>
 			    <packing>
 			      <property name="left_attach">0</property>
@@ -6412,7 +6886,7 @@ The database does not yet exist on the database server. Would you like to create
 			      <property name="max_length">0</property>
 			      <property name="text" translatable="yes"></property>
 			      <property name="has_frame">True</property>
-			      <property name="invisible_char" translatable="yes">*</property>
+			      <property name="invisible_char">*</property>
 			      <property name="activates_default">False</property>
 			    </widget>
 			    <packing>
@@ -6437,6 +6911,10 @@ The database does not yet exist on the database server. Would you like to create
 			      <property name="yalign">0.5</property>
 			      <property name="xpad">0</property>
 			      <property name="ypad">0</property>
+			      <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+			      <property name="width_chars">-1</property>
+			      <property name="single_line_mode">False</property>
+			      <property name="angle">0</property>
 			    </widget>
 			    <packing>
 			      <property name="left_attach">0</property>
@@ -6451,6 +6929,8 @@ The database does not yet exist on the database server. Would you like to create
 			  <child>
 			    <widget class="GtkComboBox" id="combobox_group">
 			      <property name="visible">True</property>
+			      <property name="add_tearoffs">False</property>
+			      <property name="focus_on_click">True</property>
 			    </widget>
 			    <packing>
 			      <property name="left_attach">1</property>
@@ -6486,6 +6966,10 @@ The database does not yet exist on the database server. Would you like to create
 		  <property name="yalign">0.5</property>
 		  <property name="xpad">0</property>
 		  <property name="ypad">0</property>
+		  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+		  <property name="width_chars">-1</property>
+		  <property name="single_line_mode">False</property>
+		  <property name="angle">0</property>
 		</widget>
 		<packing>
 		  <property name="type">label_item</property>
@@ -6522,6 +7006,8 @@ The database does not yet exist on the database server. Would you like to create
   <property name="skip_pager_hint">False</property>
   <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
   <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
+  <property name="focus_on_map">True</property>
+  <property name="urgency_hint">False</property>
   <property name="has_separator">True</property>
 
   <child internal-child="vbox">
@@ -6618,6 +7104,10 @@ The database does not yet exist on the database server. Would you like to create
 			  <property name="yalign">0.5</property>
 			  <property name="xpad">0</property>
 			  <property name="ypad">0</property>
+			  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+			  <property name="width_chars">-1</property>
+			  <property name="single_line_mode">False</property>
+			  <property name="angle">0</property>
 			</widget>
 			<packing>
 			  <property name="padding">0</property>
@@ -6692,6 +7182,10 @@ What name should this group have?</property>
 		      <property name="yalign">0</property>
 		      <property name="xpad">0</property>
 		      <property name="ypad">0</property>
+		      <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+		      <property name="width_chars">-1</property>
+		      <property name="single_line_mode">False</property>
+		      <property name="angle">0</property>
 		    </widget>
 		    <packing>
 		      <property name="padding">0</property>
@@ -6734,6 +7228,10 @@ What name should this group have?</property>
 		  <property name="yalign">0.5</property>
 		  <property name="xpad">0</property>
 		  <property name="ypad">0</property>
+		  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+		  <property name="width_chars">-1</property>
+		  <property name="single_line_mode">False</property>
+		  <property name="angle">0</property>
 		</widget>
 		<packing>
 		  <property name="padding">0</property>
@@ -6751,7 +7249,7 @@ What name should this group have?</property>
 		  <property name="max_length">0</property>
 		  <property name="text" translatable="yes"></property>
 		  <property name="has_frame">True</property>
-		  <property name="invisible_char" translatable="yes">*</property>
+		  <property name="invisible_char">*</property>
 		  <property name="activates_default">False</property>
 		</widget>
 		<packing>
@@ -6791,6 +7289,8 @@ What name should this group have?</property>
   <property name="skip_pager_hint">False</property>
   <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
   <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
+  <property name="focus_on_map">True</property>
+  <property name="urgency_hint">False</property>
   <property name="has_separator">True</property>
 
   <child internal-child="vbox">
@@ -6903,6 +7403,10 @@ Which user should be added to this group?</property>
 		      <property name="yalign">0</property>
 		      <property name="xpad">0</property>
 		      <property name="ypad">0</property>
+		      <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+		      <property name="width_chars">-1</property>
+		      <property name="single_line_mode">False</property>
+		      <property name="angle">0</property>
 		    </widget>
 		    <packing>
 		      <property name="padding">0</property>
@@ -6945,6 +7449,10 @@ Which user should be added to this group?</property>
 		  <property name="yalign">0.5</property>
 		  <property name="xpad">0</property>
 		  <property name="ypad">0</property>
+		  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+		  <property name="width_chars">-1</property>
+		  <property name="single_line_mode">False</property>
+		  <property name="angle">0</property>
 		</widget>
 		<packing>
 		  <property name="padding">0</property>
@@ -6956,6 +7464,8 @@ Which user should be added to this group?</property>
 	      <child>
 		<widget class="GtkComboBox" id="combo_user_name">
 		  <property name="visible">True</property>
+		  <property name="add_tearoffs">False</property>
+		  <property name="focus_on_click">True</property>
 		</widget>
 		<packing>
 		  <property name="padding">0</property>
@@ -6993,6 +7503,8 @@ Which user should be added to this group?</property>
   <property name="skip_pager_hint">False</property>
   <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
   <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
+  <property name="focus_on_map">True</property>
+  <property name="urgency_hint">False</property>
   <property name="has_separator">False</property>
 
   <child internal-child="vbox">
@@ -7067,6 +7579,10 @@ Which user should be added to this group?</property>
 		  <property name="yalign">0.5</property>
 		  <property name="xpad">0</property>
 		  <property name="ypad">0</property>
+		  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+		  <property name="width_chars">-1</property>
+		  <property name="single_line_mode">False</property>
+		  <property name="angle">0</property>
 		</widget>
 		<packing>
 		  <property name="padding">0</property>
@@ -7088,6 +7604,10 @@ Which user should be added to this group?</property>
 		  <property name="yalign">0.5</property>
 		  <property name="xpad">0</property>
 		  <property name="ypad">0</property>
+		  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+		  <property name="width_chars">-1</property>
+		  <property name="single_line_mode">False</property>
+		  <property name="angle">0</property>
 		</widget>
 		<packing>
 		  <property name="padding">0</property>
@@ -7215,6 +7735,8 @@ Which user should be added to this group?</property>
   <property name="skip_pager_hint">False</property>
   <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
   <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
+  <property name="focus_on_map">True</property>
+  <property name="urgency_hint">False</property>
   <property name="has_separator">True</property>
 
   <child internal-child="vbox">
@@ -7301,6 +7823,10 @@ Which user should be added to this group?</property>
 		  <property name="yalign">0.5</property>
 		  <property name="xpad">0</property>
 		  <property name="ypad">0</property>
+		  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+		  <property name="width_chars">-1</property>
+		  <property name="single_line_mode">False</property>
+		  <property name="angle">0</property>
 		</widget>
 		<packing>
 		  <property name="padding">0</property>
@@ -7318,7 +7844,7 @@ Which user should be added to this group?</property>
 		  <property name="max_length">0</property>
 		  <property name="text" translatable="yes"></property>
 		  <property name="has_frame">True</property>
-		  <property name="invisible_char" translatable="yes">*</property>
+		  <property name="invisible_char">*</property>
 		  <property name="activates_default">False</property>
 		</widget>
 		<packing>
@@ -7371,6 +7897,10 @@ Which user should be added to this group?</property>
 			  <property name="yalign">0.5</property>
 			  <property name="xpad">0</property>
 			  <property name="ypad">0</property>
+			  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+			  <property name="width_chars">-1</property>
+			  <property name="single_line_mode">False</property>
+			  <property name="angle">0</property>
 			</widget>
 			<packing>
 			  <property name="padding">0</property>
@@ -7388,7 +7918,7 @@ Which user should be added to this group?</property>
 			  <property name="max_length">0</property>
 			  <property name="text" translatable="yes"></property>
 			  <property name="has_frame">True</property>
-			  <property name="invisible_char" translatable="yes">*</property>
+			  <property name="invisible_char">*</property>
 			  <property name="activates_default">False</property>
 			</widget>
 			<packing>
@@ -7446,6 +7976,10 @@ Which user should be added to this group?</property>
 				  <property name="yalign">0.5</property>
 				  <property name="xpad">0</property>
 				  <property name="ypad">0</property>
+				  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+				  <property name="width_chars">-1</property>
+				  <property name="single_line_mode">False</property>
+				  <property name="angle">0</property>
 				</widget>
 				<packing>
 				  <property name="left_attach">0</property>
@@ -7470,6 +8004,10 @@ Which user should be added to this group?</property>
 				  <property name="yalign">0.5</property>
 				  <property name="xpad">0</property>
 				  <property name="ypad">0</property>
+				  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+				  <property name="width_chars">-1</property>
+				  <property name="single_line_mode">False</property>
+				  <property name="angle">0</property>
 				</widget>
 				<packing>
 				  <property name="left_attach">0</property>
@@ -7494,6 +8032,10 @@ Which user should be added to this group?</property>
 				  <property name="yalign">0.5</property>
 				  <property name="xpad">0</property>
 				  <property name="ypad">0</property>
+				  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+				  <property name="width_chars">-1</property>
+				  <property name="single_line_mode">False</property>
+				  <property name="angle">0</property>
 				</widget>
 				<packing>
 				  <property name="left_attach">0</property>
@@ -7518,6 +8060,10 @@ Which user should be added to this group?</property>
 				  <property name="yalign">0.5</property>
 				  <property name="xpad">0</property>
 				  <property name="ypad">0</property>
+				  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+				  <property name="width_chars">-1</property>
+				  <property name="single_line_mode">False</property>
+				  <property name="angle">0</property>
 				</widget>
 				<packing>
 				  <property name="left_attach">0</property>
@@ -7542,6 +8088,10 @@ Which user should be added to this group?</property>
 				  <property name="yalign">0.5</property>
 				  <property name="xpad">0</property>
 				  <property name="ypad">0</property>
+				  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+				  <property name="width_chars">-1</property>
+				  <property name="single_line_mode">False</property>
+				  <property name="angle">0</property>
 				</widget>
 				<packing>
 				  <property name="left_attach">0</property>
@@ -7566,6 +8116,10 @@ Which user should be added to this group?</property>
 				  <property name="yalign">0.5</property>
 				  <property name="xpad">0</property>
 				  <property name="ypad">0</property>
+				  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+				  <property name="width_chars">-1</property>
+				  <property name="single_line_mode">False</property>
+				  <property name="angle">0</property>
 				</widget>
 				<packing>
 				  <property name="left_attach">0</property>
@@ -7586,7 +8140,7 @@ Which user should be added to this group?</property>
 				  <property name="max_length">0</property>
 				  <property name="text" translatable="yes"></property>
 				  <property name="has_frame">True</property>
-				  <property name="invisible_char" translatable="yes">*</property>
+				  <property name="invisible_char">*</property>
 				  <property name="activates_default">False</property>
 				</widget>
 				<packing>
@@ -7607,7 +8161,7 @@ Which user should be added to this group?</property>
 				  <property name="max_length">0</property>
 				  <property name="text" translatable="yes"></property>
 				  <property name="has_frame">True</property>
-				  <property name="invisible_char" translatable="yes">*</property>
+				  <property name="invisible_char">*</property>
 				  <property name="activates_default">False</property>
 				</widget>
 				<packing>
@@ -7628,7 +8182,7 @@ Which user should be added to this group?</property>
 				  <property name="max_length">0</property>
 				  <property name="text" translatable="yes"></property>
 				  <property name="has_frame">True</property>
-				  <property name="invisible_char" translatable="yes">*</property>
+				  <property name="invisible_char">*</property>
 				  <property name="activates_default">False</property>
 				</widget>
 				<packing>
@@ -7649,7 +8203,7 @@ Which user should be added to this group?</property>
 				  <property name="max_length">0</property>
 				  <property name="text" translatable="yes"></property>
 				  <property name="has_frame">True</property>
-				  <property name="invisible_char" translatable="yes">*</property>
+				  <property name="invisible_char">*</property>
 				  <property name="activates_default">False</property>
 				</widget>
 				<packing>
@@ -7670,7 +8224,7 @@ Which user should be added to this group?</property>
 				  <property name="max_length">0</property>
 				  <property name="text" translatable="yes"></property>
 				  <property name="has_frame">True</property>
-				  <property name="invisible_char" translatable="yes">*</property>
+				  <property name="invisible_char">*</property>
 				  <property name="activates_default">False</property>
 				</widget>
 				<packing>
@@ -7691,7 +8245,7 @@ Which user should be added to this group?</property>
 				  <property name="max_length">0</property>
 				  <property name="text" translatable="yes"></property>
 				  <property name="has_frame">True</property>
-				  <property name="invisible_char" translatable="yes">*</property>
+				  <property name="invisible_char">*</property>
 				  <property name="activates_default">False</property>
 				</widget>
 				<packing>
@@ -7720,6 +8274,10 @@ Which user should be added to this group?</property>
 			  <property name="yalign">0.5</property>
 			  <property name="xpad">0</property>
 			  <property name="ypad">0</property>
+			  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+			  <property name="width_chars">-1</property>
+			  <property name="single_line_mode">False</property>
+			  <property name="angle">0</property>
 			</widget>
 			<packing>
 			  <property name="type">label_item</property>
@@ -7752,6 +8310,10 @@ Which user should be added to this group?</property>
 		  <property name="yalign">0.5</property>
 		  <property name="xpad">0</property>
 		  <property name="ypad">0</property>
+		  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+		  <property name="width_chars">-1</property>
+		  <property name="single_line_mode">False</property>
+		  <property name="angle">0</property>
 		</widget>
 		<packing>
 		  <property name="type">tab</property>
@@ -7782,6 +8344,9 @@ Which user should be added to this group?</property>
 			  <property name="rules_hint">True</property>
 			  <property name="reorderable">False</property>
 			  <property name="enable_search">True</property>
+			  <property name="fixed_height_mode">False</property>
+			  <property name="hover_selection">False</property>
+			  <property name="hover_expand">False</property>
 			</widget>
 		      </child>
 		    </widget>
@@ -7811,6 +8376,10 @@ Which user should be added to this group?</property>
 		  <property name="yalign">0.5</property>
 		  <property name="xpad">0</property>
 		  <property name="ypad">0</property>
+		  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+		  <property name="width_chars">-1</property>
+		  <property name="single_line_mode">False</property>
+		  <property name="angle">0</property>
 		</widget>
 		<packing>
 		  <property name="type">tab</property>
@@ -7849,6 +8418,8 @@ Which user should be added to this group?</property>
   <property name="skip_pager_hint">False</property>
   <property name="type_hint">GDK_WINDOW_TYPE_HINT_NORMAL</property>
   <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
+  <property name="focus_on_map">True</property>
+  <property name="urgency_hint">False</property>
 
   <child>
     <widget class="GtkVBox" id="vbox67">
@@ -7881,6 +8452,10 @@ Which user should be added to this group?</property>
 		  <property name="yalign">0.5</property>
 		  <property name="xpad">0</property>
 		  <property name="ypad">0</property>
+		  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+		  <property name="width_chars">-1</property>
+		  <property name="single_line_mode">False</property>
+		  <property name="angle">0</property>
 		</widget>
 		<packing>
 		  <property name="padding">0</property>
@@ -7902,6 +8477,10 @@ Which user should be added to this group?</property>
 		  <property name="yalign">0.5</property>
 		  <property name="xpad">0</property>
 		  <property name="ypad">0</property>
+		  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+		  <property name="width_chars">-1</property>
+		  <property name="single_line_mode">False</property>
+		  <property name="angle">0</property>
 		</widget>
 		<packing>
 		  <property name="padding">0</property>
@@ -7936,6 +8515,10 @@ Which user should be added to this group?</property>
 		  <property name="yalign">0.5</property>
 		  <property name="xpad">0</property>
 		  <property name="ypad">0</property>
+		  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+		  <property name="width_chars">-1</property>
+		  <property name="single_line_mode">False</property>
+		  <property name="angle">0</property>
 		</widget>
 		<packing>
 		  <property name="padding">0</property>
@@ -7953,7 +8536,7 @@ Which user should be added to this group?</property>
 		  <property name="max_length">0</property>
 		  <property name="text" translatable="yes"></property>
 		  <property name="has_frame">True</property>
-		  <property name="invisible_char" translatable="yes">*</property>
+		  <property name="invisible_char">*</property>
 		  <property name="activates_default">False</property>
 		</widget>
 		<packing>
@@ -7989,6 +8572,10 @@ Which user should be added to this group?</property>
 		  <property name="yalign">0.5</property>
 		  <property name="xpad">0</property>
 		  <property name="ypad">0</property>
+		  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+		  <property name="width_chars">-1</property>
+		  <property name="single_line_mode">False</property>
+		  <property name="angle">0</property>
 		</widget>
 		<packing>
 		  <property name="padding">0</property>
@@ -8006,7 +8593,7 @@ Which user should be added to this group?</property>
 		  <property name="max_length">0</property>
 		  <property name="text" translatable="yes"></property>
 		  <property name="has_frame">True</property>
-		  <property name="invisible_char" translatable="yes">*</property>
+		  <property name="invisible_char">*</property>
 		  <property name="activates_default">False</property>
 		</widget>
 		<packing>
@@ -8073,6 +8660,9 @@ Which user should be added to this group?</property>
 			  <property name="rules_hint">False</property>
 			  <property name="reorderable">False</property>
 			  <property name="enable_search">True</property>
+			  <property name="fixed_height_mode">False</property>
+			  <property name="hover_selection">False</property>
+			  <property name="hover_expand">False</property>
 			</widget>
 		      </child>
 		    </widget>
@@ -8093,6 +8683,10 @@ Which user should be added to this group?</property>
 		  <property name="yalign">0.5</property>
 		  <property name="xpad">0</property>
 		  <property name="ypad">0</property>
+		  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+		  <property name="width_chars">-1</property>
+		  <property name="single_line_mode">False</property>
+		  <property name="angle">0</property>
 		</widget>
 		<packing>
 		  <property name="type">label_item</property>
@@ -8182,6 +8776,9 @@ Which user should be added to this group?</property>
 			      <property name="rules_hint">False</property>
 			      <property name="reorderable">False</property>
 			      <property name="enable_search">True</property>
+			      <property name="fixed_height_mode">False</property>
+			      <property name="hover_selection">False</property>
+			      <property name="hover_expand">False</property>
 			    </widget>
 			  </child>
 			</widget>
@@ -8296,6 +8893,10 @@ Which user should be added to this group?</property>
 		  <property name="yalign">0.5</property>
 		  <property name="xpad">0</property>
 		  <property name="ypad">0</property>
+		  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+		  <property name="width_chars">-1</property>
+		  <property name="single_line_mode">False</property>
+		  <property name="angle">0</property>
 		</widget>
 		<packing>
 		  <property name="type">label_item</property>
@@ -8357,6 +8958,8 @@ Which user should be added to this group?</property>
   <property name="skip_pager_hint">False</property>
   <property name="type_hint">GDK_WINDOW_TYPE_HINT_NORMAL</property>
   <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
+  <property name="focus_on_map">True</property>
+  <property name="urgency_hint">False</property>
 
   <child>
     <widget class="GtkVBox" id="box_reports">
@@ -8429,6 +9032,10 @@ Which user should be added to this group?</property>
 	      <property name="yalign">0.5</property>
 	      <property name="xpad">0</property>
 	      <property name="ypad">0</property>
+	      <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+	      <property name="width_chars">-1</property>
+	      <property name="single_line_mode">False</property>
+	      <property name="angle">0</property>
 	    </widget>
 	    <packing>
 	      <property name="type">label_item</property>
@@ -8482,6 +9089,8 @@ Which user should be added to this group?</property>
   <property name="skip_pager_hint">False</property>
   <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
   <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
+  <property name="focus_on_map">True</property>
+  <property name="urgency_hint">False</property>
   <property name="has_separator">False</property>
 
   <child internal-child="vbox">
@@ -8581,6 +9190,10 @@ Which user should be added to this group?</property>
 			      <property name="yalign">0.5</property>
 			      <property name="xpad">0</property>
 			      <property name="ypad">0</property>
+			      <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+			      <property name="width_chars">-1</property>
+			      <property name="single_line_mode">False</property>
+			      <property name="angle">0</property>
 			    </widget>
 			    <packing>
 			      <property name="padding">0</property>
@@ -8602,6 +9215,10 @@ Which user should be added to this group?</property>
 			      <property name="yalign">0.5</property>
 			      <property name="xpad">0</property>
 			      <property name="ypad">0</property>
+			      <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+			      <property name="width_chars">-1</property>
+			      <property name="single_line_mode">False</property>
+			      <property name="angle">0</property>
 			    </widget>
 			    <packing>
 			      <property name="padding">0</property>
@@ -8665,6 +9282,10 @@ Which user should be added to this group?</property>
 					  <property name="yalign">0.5</property>
 					  <property name="xpad">0</property>
 					  <property name="ypad">0</property>
+					  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+					  <property name="width_chars">-1</property>
+					  <property name="single_line_mode">False</property>
+					  <property name="angle">0</property>
 					</widget>
 					<packing>
 					  <property name="padding">0</property>
@@ -8711,6 +9332,10 @@ Which user should be added to this group?</property>
 			      <property name="yalign">0.5</property>
 			      <property name="xpad">0</property>
 			      <property name="ypad">0</property>
+			      <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+			      <property name="width_chars">-1</property>
+			      <property name="single_line_mode">False</property>
+			      <property name="angle">0</property>
 			    </widget>
 			    <packing>
 			      <property name="padding">0</property>
@@ -8732,6 +9357,10 @@ Which user should be added to this group?</property>
 			      <property name="yalign">0.5</property>
 			      <property name="xpad">0</property>
 			      <property name="ypad">0</property>
+			      <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+			      <property name="width_chars">-1</property>
+			      <property name="single_line_mode">False</property>
+			      <property name="angle">0</property>
 			    </widget>
 			    <packing>
 			      <property name="padding">0</property>
@@ -8795,6 +9424,10 @@ Which user should be added to this group?</property>
 					  <property name="yalign">0.5</property>
 					  <property name="xpad">0</property>
 					  <property name="ypad">0</property>
+					  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+					  <property name="width_chars">-1</property>
+					  <property name="single_line_mode">False</property>
+					  <property name="angle">0</property>
 					</widget>
 					<packing>
 					  <property name="padding">0</property>
@@ -8841,6 +9474,10 @@ Which user should be added to this group?</property>
 			      <property name="yalign">0.5</property>
 			      <property name="xpad">0</property>
 			      <property name="ypad">0</property>
+			      <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+			      <property name="width_chars">-1</property>
+			      <property name="single_line_mode">False</property>
+			      <property name="angle">0</property>
 			    </widget>
 			    <packing>
 			      <property name="padding">0</property>
@@ -8862,6 +9499,10 @@ Which user should be added to this group?</property>
 			      <property name="yalign">0.5</property>
 			      <property name="xpad">0</property>
 			      <property name="ypad">0</property>
+			      <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+			      <property name="width_chars">-1</property>
+			      <property name="single_line_mode">False</property>
+			      <property name="angle">0</property>
 			    </widget>
 			    <packing>
 			      <property name="padding">0</property>
@@ -8911,6 +9552,10 @@ Which user should be added to this group?</property>
 		  <property name="yalign">0.5</property>
 		  <property name="xpad">0</property>
 		  <property name="ypad">0</property>
+		  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+		  <property name="width_chars">-1</property>
+		  <property name="single_line_mode">False</property>
+		  <property name="angle">0</property>
 		</widget>
 		<packing>
 		  <property name="type">label_item</property>
@@ -8946,6 +9591,8 @@ Which user should be added to this group?</property>
   <property name="skip_pager_hint">False</property>
   <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
   <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
+  <property name="focus_on_map">True</property>
+  <property name="urgency_hint">False</property>
   <property name="has_separator">False</property>
 
   <child internal-child="vbox">
@@ -9045,6 +9692,10 @@ Which user should be added to this group?</property>
 			      <property name="yalign">0.5</property>
 			      <property name="xpad">0</property>
 			      <property name="ypad">0</property>
+			      <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+			      <property name="width_chars">-1</property>
+			      <property name="single_line_mode">False</property>
+			      <property name="angle">0</property>
 			    </widget>
 			    <packing>
 			      <property name="padding">0</property>
@@ -9066,6 +9717,10 @@ Which user should be added to this group?</property>
 			      <property name="yalign">0.5</property>
 			      <property name="xpad">0</property>
 			      <property name="ypad">0</property>
+			      <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+			      <property name="width_chars">-1</property>
+			      <property name="single_line_mode">False</property>
+			      <property name="angle">0</property>
 			    </widget>
 			    <packing>
 			      <property name="padding">0</property>
@@ -9117,6 +9772,10 @@ Which user should be added to this group?</property>
 			      <property name="yalign">0.5</property>
 			      <property name="xpad">0</property>
 			      <property name="ypad">0</property>
+			      <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+			      <property name="width_chars">-1</property>
+			      <property name="single_line_mode">False</property>
+			      <property name="angle">0</property>
 			    </widget>
 			    <packing>
 			      <property name="padding">0</property>
@@ -9128,6 +9787,8 @@ Which user should be added to this group?</property>
 			  <child>
 			    <widget class="GtkComboBox" id="combobox_summarytype">
 			      <property name="visible">True</property>
+			      <property name="add_tearoffs">False</property>
+			      <property name="focus_on_click">True</property>
 			    </widget>
 			    <packing>
 			      <property name="padding">0</property>
@@ -9161,6 +9822,10 @@ Which user should be added to this group?</property>
 		  <property name="yalign">0.5</property>
 		  <property name="xpad">0</property>
 		  <property name="ypad">0</property>
+		  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+		  <property name="width_chars">-1</property>
+		  <property name="single_line_mode">False</property>
+		  <property name="angle">0</property>
 		</widget>
 		<packing>
 		  <property name="type">label_item</property>
@@ -9197,6 +9862,8 @@ Which user should be added to this group?</property>
   <property name="skip_pager_hint">False</property>
   <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
   <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
+  <property name="focus_on_map">True</property>
+  <property name="urgency_hint">False</property>
   <property name="has_separator">True</property>
 
   <child internal-child="vbox">
@@ -9283,6 +9950,10 @@ Which user should be added to this group?</property>
 		  <property name="yalign">0.5</property>
 		  <property name="xpad">0</property>
 		  <property name="ypad">0</property>
+		  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+		  <property name="width_chars">-1</property>
+		  <property name="single_line_mode">False</property>
+		  <property name="angle">0</property>
 		</widget>
 		<packing>
 		  <property name="padding">0</property>
@@ -9304,6 +9975,10 @@ Which user should be added to this group?</property>
 		  <property name="yalign">0.5</property>
 		  <property name="xpad">0</property>
 		  <property name="ypad">0</property>
+		  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+		  <property name="width_chars">-1</property>
+		  <property name="single_line_mode">False</property>
+		  <property name="angle">0</property>
 		</widget>
 		<packing>
 		  <property name="padding">0</property>
@@ -9361,6 +10036,9 @@ Which user should be added to this group?</property>
 			      <property name="rules_hint">False</property>
 			      <property name="reorderable">False</property>
 			      <property name="enable_search">True</property>
+			      <property name="fixed_height_mode">False</property>
+			      <property name="hover_selection">False</property>
+			      <property name="hover_expand">False</property>
 			    </widget>
 			  </child>
 			</widget>
@@ -9500,6 +10178,10 @@ Which user should be added to this group?</property>
 					      <property name="yalign">0.5</property>
 					      <property name="xpad">0</property>
 					      <property name="ypad">0</property>
+					      <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+					      <property name="width_chars">-1</property>
+					      <property name="single_line_mode">False</property>
+					      <property name="angle">0</property>
 					    </widget>
 					    <packing>
 					      <property name="padding">0</property>
@@ -9557,6 +10239,10 @@ Which user should be added to this group?</property>
 		  <property name="yalign">0.5</property>
 		  <property name="xpad">0</property>
 		  <property name="ypad">0</property>
+		  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+		  <property name="width_chars">-1</property>
+		  <property name="single_line_mode">False</property>
+		  <property name="angle">0</property>
 		</widget>
 		<packing>
 		  <property name="type">label_item</property>
@@ -9593,6 +10279,8 @@ Which user should be added to this group?</property>
   <property name="skip_pager_hint">False</property>
   <property name="type_hint">GDK_WINDOW_TYPE_HINT_NORMAL</property>
   <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
+  <property name="focus_on_map">True</property>
+  <property name="urgency_hint">False</property>
 
   <child>
     <widget class="GtkVBox" id="box_formatting">
@@ -9680,7 +10368,7 @@ Which user should be added to this group?</property>
 			  <property name="max_length">0</property>
 			  <property name="text" translatable="yes"></property>
 			  <property name="has_frame">True</property>
-			  <property name="invisible_char" translatable="yes">*</property>
+			  <property name="invisible_char">*</property>
 			  <property name="activates_default">False</property>
 			</widget>
 			<packing>
@@ -9716,6 +10404,10 @@ Which user should be added to this group?</property>
 			  <property name="yalign">0.5</property>
 			  <property name="xpad">0</property>
 			  <property name="ypad">0</property>
+			  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+			  <property name="width_chars">-1</property>
+			  <property name="single_line_mode">False</property>
+			  <property name="angle">0</property>
 			</widget>
 			<packing>
 			  <property name="padding">0</property>
@@ -9727,6 +10419,9 @@ Which user should be added to this group?</property>
 		      <child>
 			<widget class="GtkComboBoxEntry" id="entry_currency_symbol">
 			  <property name="visible">True</property>
+			  <property name="add_tearoffs">False</property>
+			  <property name="has_frame">True</property>
+			  <property name="focus_on_click">True</property>
 			</widget>
 			<packing>
 			  <property name="padding">0</property>
@@ -9759,6 +10454,10 @@ Which user should be added to this group?</property>
 	      <property name="yalign">0.5</property>
 	      <property name="xpad">0</property>
 	      <property name="ypad">0</property>
+	      <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+	      <property name="width_chars">-1</property>
+	      <property name="single_line_mode">False</property>
+	      <property name="angle">0</property>
 	    </widget>
 	    <packing>
 	      <property name="type">label_item</property>
@@ -9831,10 +10530,14 @@ Which user should be added to this group?</property>
 	      <property name="justify">GTK_JUSTIFY_LEFT</property>
 	      <property name="wrap">False</property>
 	      <property name="selectable">False</property>
-	      <property name="xalign">0.48</property>
+	      <property name="xalign">0.479999989271</property>
 	      <property name="yalign">0.5</property>
 	      <property name="xpad">0</property>
 	      <property name="ypad">0</property>
+	      <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+	      <property name="width_chars">-1</property>
+	      <property name="single_line_mode">False</property>
+	      <property name="angle">0</property>
 	    </widget>
 	    <packing>
 	      <property name="type">label_item</property>
@@ -9970,6 +10673,10 @@ Which user should be added to this group?</property>
 				      <property name="yalign">0.5</property>
 				      <property name="xpad">0</property>
 				      <property name="ypad">0</property>
+				      <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+				      <property name="width_chars">-1</property>
+				      <property name="single_line_mode">False</property>
+				      <property name="angle">0</property>
 				    </widget>
 				    <packing>
 				      <property name="left_attach">0</property>
@@ -9994,6 +10701,10 @@ Which user should be added to this group?</property>
 				      <property name="yalign">0.5</property>
 				      <property name="xpad">0</property>
 				      <property name="ypad">0</property>
+				      <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+				      <property name="width_chars">-1</property>
+				      <property name="single_line_mode">False</property>
+				      <property name="angle">0</property>
 				    </widget>
 				    <packing>
 				      <property name="left_attach">0</property>
@@ -10018,6 +10729,10 @@ Which user should be added to this group?</property>
 				      <property name="yalign">0.5</property>
 				      <property name="xpad">0</property>
 				      <property name="ypad">0</property>
+				      <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+				      <property name="width_chars">-1</property>
+				      <property name="single_line_mode">False</property>
+				      <property name="angle">0</property>
 				    </widget>
 				    <packing>
 				      <property name="left_attach">0</property>
@@ -10032,6 +10747,8 @@ Which user should be added to this group?</property>
 				  <child>
 				    <widget class="GtkComboBox" id="combobox_choices_related_relationship">
 				      <property name="visible">True</property>
+				      <property name="add_tearoffs">False</property>
+				      <property name="focus_on_click">True</property>
 				    </widget>
 				    <packing>
 				      <property name="left_attach">1</property>
@@ -10045,6 +10762,8 @@ Which user should be added to this group?</property>
 				  <child>
 				    <widget class="GtkComboBox" id="combobox_choices_related_field">
 				      <property name="visible">True</property>
+				      <property name="add_tearoffs">False</property>
+				      <property name="focus_on_click">True</property>
 				    </widget>
 				    <packing>
 				      <property name="left_attach">1</property>
@@ -10059,6 +10778,8 @@ Which user should be added to this group?</property>
 				  <child>
 				    <widget class="GtkComboBox" id="combobox_choices_related_field_second">
 				      <property name="visible">True</property>
+				      <property name="add_tearoffs">False</property>
+				      <property name="focus_on_click">True</property>
 				    </widget>
 				    <packing>
 				      <property name="left_attach">1</property>
@@ -10200,6 +10921,10 @@ Which user should be added to this group?</property>
 	      <property name="yalign">0.5</property>
 	      <property name="xpad">0</property>
 	      <property name="ypad">0</property>
+	      <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+	      <property name="width_chars">-1</property>
+	      <property name="single_line_mode">False</property>
+	      <property name="angle">0</property>
 	    </widget>
 	    <packing>
 	      <property name="type">label_item</property>
@@ -10229,6 +10954,8 @@ Which user should be added to this group?</property>
   <property name="skip_pager_hint">False</property>
   <property name="type_hint">GDK_WINDOW_TYPE_HINT_NORMAL</property>
   <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
+  <property name="focus_on_map">True</property>
+  <property name="urgency_hint">False</property>
 
   <child>
     <widget class="GtkAlignment" id="alignment_placeholder_canvasitem">
@@ -10285,6 +11012,9 @@ Which user should be added to this group?</property>
 			  <property name="rules_hint">True</property>
 			  <property name="reorderable">False</property>
 			  <property name="enable_search">True</property>
+			  <property name="fixed_height_mode">False</property>
+			  <property name="hover_selection">False</property>
+			  <property name="hover_expand">False</property>
 			</widget>
 		      </child>
 		    </widget>
@@ -10305,6 +11035,10 @@ Which user should be added to this group?</property>
 		  <property name="yalign">0.5</property>
 		  <property name="xpad">0</property>
 		  <property name="ypad">0</property>
+		  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+		  <property name="width_chars">-1</property>
+		  <property name="single_line_mode">False</property>
+		  <property name="angle">0</property>
 		</widget>
 		<packing>
 		  <property name="type">label_item</property>
@@ -10339,6 +11073,8 @@ Which user should be added to this group?</property>
   <property name="skip_pager_hint">False</property>
   <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
   <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
+  <property name="focus_on_map">True</property>
+  <property name="urgency_hint">False</property>
   <property name="has_separator">False</property>
 
   <child internal-child="vbox">
@@ -10435,6 +11171,10 @@ Which user should be added to this group?</property>
 	      <property name="yalign">0.5</property>
 	      <property name="xpad">0</property>
 	      <property name="ypad">0</property>
+	      <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+	      <property name="width_chars">-1</property>
+	      <property name="single_line_mode">False</property>
+	      <property name="angle">0</property>
 	    </widget>
 	    <packing>
 	      <property name="type">label_item</property>
@@ -10466,6 +11206,8 @@ Which user should be added to this group?</property>
   <property name="skip_pager_hint">False</property>
   <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
   <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
+  <property name="focus_on_map">True</property>
+  <property name="urgency_hint">False</property>
   <property name="has_separator">False</property>
 
   <child internal-child="vbox">
@@ -10550,6 +11292,10 @@ Which user should be added to this group?</property>
 			      <property name="yalign">0.5</property>
 			      <property name="xpad">0</property>
 			      <property name="ypad">0</property>
+			      <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+			      <property name="width_chars">-1</property>
+			      <property name="single_line_mode">False</property>
+			      <property name="angle">0</property>
 			    </widget>
 			    <packing>
 			      <property name="padding">0</property>
@@ -10571,6 +11317,10 @@ Which user should be added to this group?</property>
 			      <property name="yalign">0.5</property>
 			      <property name="xpad">0</property>
 			      <property name="ypad">0</property>
+			      <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+			      <property name="width_chars">-1</property>
+			      <property name="single_line_mode">False</property>
+			      <property name="angle">0</property>
 			    </widget>
 			    <packing>
 			      <property name="padding">0</property>
@@ -10626,6 +11376,10 @@ Which user should be added to this group?</property>
 		  <property name="yalign">0.5</property>
 		  <property name="xpad">0</property>
 		  <property name="ypad">0</property>
+		  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+		  <property name="width_chars">-1</property>
+		  <property name="single_line_mode">False</property>
+		  <property name="angle">0</property>
 		</widget>
 		<packing>
 		  <property name="type">label_item</property>

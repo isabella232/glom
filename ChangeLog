@@ -1,3 +1,11 @@
+2006-01-11  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/frame_glom.cc:
+	* glom/frame_glom.h:
+	* glom/glom.glade: Add a Quick Find entry and button, only 
+	shown when in Find mode. It is probably inefficient, because 
+	it just ORs over all the fields.
+
 2006-01-10  Murray Cumming  <murrayc@murrayc.com>
 
 	* .cvsignore:

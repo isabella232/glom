@@ -768,7 +768,7 @@ void Box_Data::calculate_field(const Field& field, const Field& primary_key, con
 
       LayoutItem_Field layout_item;
       layout_item.m_field = refCalcProgress.m_field;
- 
+
       //show it:
       set_entered_field_data(layout_item, refCalcProgress.m_value );
 

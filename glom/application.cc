@@ -43,8 +43,6 @@ App_Glom::App_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml
 
   //Hide the toolbar because it doesn't contain anything useful for this app.
   m_HandleBox_Toolbar.hide();
- 
-  show_all_children();
 }
 
 App_Glom::~App_Glom()

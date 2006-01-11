@@ -220,7 +220,7 @@ bool Box_Data_Details::fill_from_database()
 
         const Glib::ustring query = build_sql_select(m_strTableName, fieldsToGet, m_field_primary_key, m_primary_key_value);
         Glib::RefPtr<Gnome::Gda::DataModel> result;
-         
+
         if(!primary_key_is_empty)
           result = Query_execute(query);
 

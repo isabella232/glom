@@ -37,6 +37,9 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
   m_pLabel_Table(0),
   m_pLabel_Mode(0),
   m_pLabel_userlevel(0),
+  m_pBox_QuickFind(0),
+  m_pEntry_QuickFind(0),
+  m_pButton_QuickFind(0),
   m_pBox_Mode(0),
   m_pBox_Tables(0),
   m_pBox_Reports(0),
@@ -53,6 +56,14 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
   refGlade->get_widget("label_table_name", m_pLabel_Table);
   refGlade->get_widget("label_mode", m_pLabel_Mode);
   refGlade->get_widget("label_user_level", m_pLabel_userlevel);
+
+  refGlade->get_widget("hbox_quickfind", m_pBox_QuickFind);
+  m_pBox_QuickFind->hide();
+  refGlade->get_widget("entry_quickfind", m_pEntry_QuickFind);
+  refGlade->get_widget("button_quickfind", m_pButton_QuickFind);
+  m_pButton_QuickFind->signal_clicked().connect(
+    sigc::mem_fun(*this, &Frame_Glom::on_button_quickfind) );
+
   refGlade->get_widget_derived("vbox_mode", m_pBox_Mode);
 
   //m_pLabel_Mode->set_text(_("No database selected.\n Use the Navigation menu, or open a previous Glom document."));
@@ -77,7 +88,7 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
 
     refXml->get_widget_derived("box_navigation_tables", m_pBox_Tables);
     m_pDialog_Tables = new Dialog_Glom(m_pBox_Tables);
-    
+
     //Respond to window close:
     m_pDialog_Tables->signal_hide().connect(sigc::mem_fun(*this, &Frame_Glom::on_dialog_tables_hide));
   }
@@ -175,8 +186,11 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
   m_pBox_Reports->signal_selected.connect(sigc::mem_fun(*this, &Frame_Glom::on_box_reports_selected));
 
   m_Notebook_Find.signal_find_criteria.connect(sigc::mem_fun(*this, &Frame_Glom::on_notebook_find_criteria));
+  m_Notebook_Find.show();
 
   m_Notebook_Data.signal_record_details_requested().connect(sigc::mem_fun(*this, &Frame_Glom::on_notebook_data_record_details_requested));
+  m_Notebook_Data.show();
+
   //Fill Composite View:
   //This means that set_document and load/save are delegated to these children:
   add_view(m_pBox_Tables);
@@ -188,8 +202,6 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
   add_view(&m_Notebook_Find); //Also a composite view.
 
   on_userlevel_changed(AppState::USERLEVEL_OPERATOR); //A default to show before a document is created or loaded.
-
-  show_all();
 }
 
 Frame_Glom::~Frame_Glom()
@@ -294,7 +306,8 @@ void Frame_Glom::set_mode_widget(Gtk::Widget& widget)
 
 bool Frame_Glom::set_mode(enumModes mode)
 {
-  bool bChanged = (m_Mode != mode);
+  //TODO: This seems to be called twice when changing mode.
+  const bool changed = (m_Mode != mode);
 
   //Choose a default mode, if necessary:
   if(mode == MODE_None)
@@ -303,7 +316,26 @@ bool Frame_Glom::set_mode(enumModes mode)
   m_Mode_Previous = m_Mode;
   m_Mode = mode;
 
-  return bChanged;
+  //Hide the Quick Find widgets if we are not in Find mode.
+  const bool show_quickfind = (m_Mode == MODE_Find);
+  if(show_quickfind)
+  {
+    m_pBox_QuickFind->show();
+
+    //Clear the quick-find entry, ready for a new Find.
+    if(changed)
+    {
+      m_pEntry_QuickFind->set_text(Glib::ustring());
+
+      //Put the cursor in the quick find entry:
+      m_pEntry_QuickFind->grab_focus();
+      m_pButton_QuickFind->grab_default();
+    }
+  }
+  else
+    m_pBox_QuickFind->hide();
+
+  return changed;
 }
 
 void Frame_Glom::alert_no_table()
@@ -376,7 +408,7 @@ void Frame_Glom::show_table(const Glib::ustring& strTableName)
   //List the reports in the menu:
   pApp->fill_menu_reports(strTableName);
 
-  show_all();
+  //show_all();
 }
 
 void Frame_Glom::on_menu_userlevel_Developer(const Glib::RefPtr<Gtk::RadioAction>& action, const Glib::RefPtr<Gtk::RadioAction>& operator_action)
@@ -551,8 +583,67 @@ void Frame_Glom::show_ok_dialog(const Glib::ustring& title, const Glib::ustring&
   dialog.run();
 }
 
+Glib::ustring Frame_Glom::get_find_where_clause_quick(const Gnome::Gda::Value& quick_search) const
+{
+  Glib::ustring strClause;
+
+  const Document_Glom* document = get_document();
+  if(document)
+  {
+    //TODO: Cache the list of all fields, as well as caching (m_Fields) the list of all visible fields:
+    const Document_Glom::type_vecFields fields = document->get_table_fields(m_strTableName);
+
+    type_vecLayoutFields fieldsToGet;
+    for(Document_Glom::type_vecFields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
+    {
+      Glib::ustring strClausePart;
+
+      const Field& field = *iter;
+
+      bool use_this_field = true;
+      if(field.get_glom_type() != Field::TYPE_TEXT)
+      {
+          use_this_field = false;
+      }
+
+      if(use_this_field)
+      {
+        strClausePart = m_strTableName + "." + field.get_name() + " " + field.sql_find_operator() + " " +  field.sql_find(quick_search);
+      }
+
+      if(!strClausePart.empty())
+      {
+        if(!strClause.empty())
+          strClause += " OR ";
+
+        strClause += strClausePart;
+      }
+    }
+  }
+
+  return strClause;
+}
+
+void Frame_Glom::on_button_quickfind()
+{
+  const Glib::ustring criteria = m_pEntry_QuickFind->get_text();
+  if(criteria.empty())
+  {
+    Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("No Find Criteria")), true, Gtk::MESSAGE_WARNING );
+    dialog.set_secondary_text(_("You have not entered any quick find criteria."));
+    dialog.set_transient_for(*get_app_window());
+    dialog.run();
+  }
+  else
+  {
+    Glib::ustring where_clause = get_find_where_clause_quick(Gnome::Gda::Value(criteria));
+    on_notebook_find_criteria(where_clause);
+  }
+}
+
 void Frame_Glom::on_notebook_find_criteria(const Glib::ustring& strWhereClause)
 {
+  //std::cout << "Frame_Glom::on_notebook_find_criteria(): " << strWhereClause << std::endl;
   //on_menu_Mode_Data();
 
   App_Glom* pApp = dynamic_cast<App_Glom*>(get_app_window());
@@ -713,6 +804,7 @@ void Frame_Glom::show_system_name()
 
   m_pLabel_Name->set_text ( Bakery::App_Gtk::util_bold_message(system_name) );
   m_pLabel_Name->set_use_markup();
+  m_pLabel_Name->show();
 }
 
 
