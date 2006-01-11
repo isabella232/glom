@@ -1138,7 +1138,7 @@ void DbAddDel::on_treeview_cell_edited_bool(const Glib::ustring& path_string, in
     row.set_value(tree_model_column_index, value_new);
 
     //TODO: Did it really change?
-    
+
     //Is this an add or a change?:
 
     bool bIsAdd = false;

@@ -38,7 +38,7 @@ public:
   virtual ~EntryGlom();
 
   void set_glom_type(Field::glom_field_type glom_type);
- 
+
   //Override this so we can store the text to compare later.
   //This is not virtual, so you must not use it via Gtk::Entry.
   void set_text(const Glib::ustring& text); //override

@@ -797,3 +797,35 @@ Gtk::TreeModel::iterator DbTreeModel::get_last_row()
 
   return result;
 }
+
+void DbTreeModel::get_record_counts(gulong& total, gulong& found) const
+{
+  if(m_gda_datamodel)
+  {
+    found = (gulong)m_gda_datamodel->get_n_rows();
+
+    if(m_where_clause.empty())
+      total = found;
+    else
+    {
+      //Ask the database how many records there are in the whole table:
+      //TODO: Apparently, this is very slow:
+      const Glib::ustring sql_query = "SELECT count(*) FROM " + m_table_name;
+      Glib::RefPtr<Gnome::Gda::DataModel> datamodel = m_connection->get_gda_connection()->execute_single_command(sql_query);
+
+      if(datamodel)
+      {
+        if(datamodel->get_n_rows())
+        {
+          Gnome::Gda::Value value = datamodel->get_value_at(0, 0);
+          total = (gulong)value.get_bigint(); //I discovered that it's a bigint by trying it.
+        }
+      }
+    }
+  }
+  else
+  {
+    total = 0;
+    found = 0;
+  }
+}

@@ -78,15 +78,15 @@ protected:
 public:
   static Glib::RefPtr<DbTreeModel> create(const Gtk::TreeModelColumnRecord& columns, const Glib::ustring& table_name, const type_vec_fields& column_fields, int column_index_key, bool get_records = true, const Glib::ustring& where_clause = Glib::ustring());
 
-  virtual bool refresh_from_database(const Glib::ustring& where_clause = Glib::ustring());
+  bool refresh_from_database(const Glib::ustring& where_clause = Glib::ustring());
 
   typedef DbTreeModelRow::DbValue DbValue;
 
-  virtual void set_is_placeholder(const TreeModel::iterator& iter, bool val);
-  virtual bool get_is_placeholder(const TreeModel::iterator& iter) const;
+  void set_is_placeholder(const TreeModel::iterator& iter, bool val);
+  bool get_is_placeholder(const TreeModel::iterator& iter) const;
 
-  virtual void set_key_value(const TreeModel::iterator& iter, const DbValue& value);
-  virtual DbValue get_key_value(const TreeModel::iterator& iter) const;
+  void set_key_value(const TreeModel::iterator& iter, const DbValue& value);
+  DbValue get_key_value(const TreeModel::iterator& iter) const;
 
   //Convenience method:
   TreeModel::iterator get_last_row();
@@ -105,6 +105,8 @@ public:
    * @result An iterator to the new row.
    */
   iterator append();
+
+  void get_record_counts(gulong& total, gulong& found) const;
 
 protected:
 

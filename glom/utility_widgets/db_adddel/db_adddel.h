@@ -68,34 +68,34 @@ public:
   virtual void set_allow_add(bool val = true);
   virtual void set_allow_delete(bool val = true);
 
-  virtual Gtk::TreeModel::iterator add_item(const Gnome::Gda::Value& valKey); //Return index of new row.
+  Gtk::TreeModel::iterator add_item(const Gnome::Gda::Value& valKey); //Return index of new row.
 
   /** Get an iterator to the blank row in which the user should add data for the new row.
    * You can then add the row to your underlying data store when some data has been filled, by handling signal_user_changed.
    */
-  virtual Gtk::TreeModel::iterator get_item_placeholder(); //Return index of the placeholder row.
+  Gtk::TreeModel::iterator get_item_placeholder(); //Return index of the placeholder row.
 
-  virtual void remove_item(const Gtk::TreeModel::iterator& iter);
+  void remove_item(const Gtk::TreeModel::iterator& iter);
 
-  virtual void remove_all();
+  void remove_all();
 
-  virtual Gnome::Gda::Value get_value(const Gtk::TreeModel::iterator& iter, const LayoutItem_Field& layout_item);
+  Gnome::Gda::Value get_value(const Gtk::TreeModel::iterator& iter, const LayoutItem_Field& layout_item);
 
   /** Get the row's hidden key
    */
-  virtual Gnome::Gda::Value get_value_key(const Gtk::TreeModel::iterator& iter);
+  Gnome::Gda::Value get_value_key(const Gtk::TreeModel::iterator& iter);
 
   /** Set the row's hidden key
    */
-  virtual void set_value_key(const Gtk::TreeModel::iterator& iter, const Gnome::Gda::Value& value);
+  void set_value_key(const Gtk::TreeModel::iterator& iter, const Gnome::Gda::Value& value);
 
   /** @param col A value returned from add_column().
    * @result The value on the selected row.
    */
-  virtual Gnome::Gda::Value get_value_selected(const LayoutItem_Field& layout_item);
-  virtual Gnome::Gda::Value get_value_key_selected();
+  Gnome::Gda::Value get_value_selected(const LayoutItem_Field& layout_item);
+  Gnome::Gda::Value get_value_key_selected();
 
-  virtual Gtk::TreeModel::iterator get_item_selected();
+  Gtk::TreeModel::iterator get_item_selected();
 
   /** 
    * @param iter The row to be selected. 
@@ -103,10 +103,10 @@ public:
    * @param start_editing Whether editing should start in the cell.
    * @result Whether the row was successfully selected.
    */
-  virtual bool select_item(const Gtk::TreeModel::iterator& iter, guint column, bool start_editing = false);  //bool indicates success.
-  virtual bool select_item(const Gtk::TreeModel::iterator& iter);
+  bool select_item(const Gtk::TreeModel::iterator& iter, guint column, bool start_editing = false);  //bool indicates success.
+  bool select_item(const Gtk::TreeModel::iterator& iter);
 
-  virtual guint get_count() const;
+  guint get_count() const;
 
   /** 
    * @param iter The row to be changed. 
@@ -121,20 +121,20 @@ public:
    */
   virtual void set_value_selected(const LayoutItem_Field& layout_item, const Gnome::Gda::Value& value);
 
-  virtual bool get_is_first_row(const Gtk::TreeModel::iterator& iter) const;
-  virtual bool get_is_last_row(const Gtk::TreeModel::iterator& iter) const;
+  bool get_is_first_row(const Gtk::TreeModel::iterator& iter) const;
+  bool get_is_last_row(const Gtk::TreeModel::iterator& iter) const;
 
   /** @result Whether this is a blank row where date for a new row should be entered
    */
-  virtual bool get_is_placeholder_row(const Gtk::TreeModel::iterator& iter) const;
+  bool get_is_placeholder_row(const Gtk::TreeModel::iterator& iter) const;
 
-  virtual Field get_key_field() const;
-  virtual void set_key_field(const Field& field);
+  Field get_key_field() const;
+  void set_key_field(const Field& field);
 
-  virtual void set_table_name(const Glib::ustring& table_name);
+  void set_table_name(const Glib::ustring& table_name);
 
   ///For instance, if the user cannot view the table then don't try to get the records.
-  virtual void set_allow_view(bool val = true);
+  void set_allow_view(bool val = true);
 
   ///Whether each row should have a button, to request edit.
   virtual void set_allow_view_details(bool val = true);
@@ -143,42 +143,42 @@ public:
 
   /** @result The index of the new column.
    */
-  virtual guint add_column(const LayoutItem_Field& field);
+  guint add_column(const LayoutItem_Field& field);
 
   /// Specify which records to show:
-  virtual void set_where_clause(const Glib::ustring& where_clause);
+  void set_where_clause(const Glib::ustring& where_clause);
 
   /// Start using the added columns.
-  virtual void set_columns_ready();
+  void set_columns_ready();
 
-  virtual guint get_columns_count() const;
+  guint get_columns_count() const;
 
-  virtual LayoutItem_Field get_column_field(guint column_index) const;
+  LayoutItem_Field get_column_field(guint column_index) const;
 
   typedef DbAddDelColumnInfo::type_vecStrings type_vecStrings;
 
   /** Retrieves the column order, even after they have been reordered by the user.
    * @result a vector of column_id. These column_ids were provided in the call to add_column().
    */
-  virtual type_vecStrings get_columns_order() const;
+  type_vecStrings get_columns_order() const;
 
-  virtual void remove_all_columns();
+  void remove_all_columns();
   //virtual void set_columns_count(guint count);
   //virtual void set_column_title(guint col, const Glib::ustring& strText);
-  virtual void set_column_width(guint col, guint width);
+  void set_column_width(guint col, guint width);
 
   /// For popup cells.
-  virtual void set_column_choices(guint col, const type_vecStrings& vecStrings);
+  void set_column_choices(guint col, const type_vecStrings& vecStrings);
 
-  virtual void construct_specified_columns(); //Delay actual use of set_column_*() stuff until this method is called.
+  void construct_specified_columns(); //Delay actual use of set_column_*() stuff until this method is called.
 
-  virtual bool refresh_from_database();
+  bool refresh_from_database();
 
-  virtual void set_show_column_titles(bool bVal = true);
+  void set_show_column_titles(bool bVal = true);
 
-  virtual Gtk::TreeModel::iterator get_row(const Gnome::Gda::Value& key);
+  Gtk::TreeModel::iterator get_row(const Gnome::Gda::Value& key);
 
-  virtual void finish_editing(); //Closes active edit controls and commits the data to the cell.
+  void finish_editing(); //Closes active edit controls and commits the data to the cell.
   //virtual void reactivate(); //Sheet doesn't seem to update unless a cell is active.
   void set_prevent_user_signals(bool bVal = true);
 
@@ -186,12 +186,12 @@ public:
    * Use set_auto_add(false) if you want to provide default values for columns in the new row, or if you want to place the cursor in a different column.
    * If @a value is false then signal_user_requested_add will be emitted so that you can add the row explicitly.
    */
-  virtual void set_auto_add(bool value = true);
+  void set_auto_add(bool value = true);
 
   Glib::RefPtr<Gtk::TreeModel> get_model();
   Glib::RefPtr<const Gtk::TreeModel> get_model() const;
 
-  virtual void set_rules_hint(bool val = true);
+  void set_rules_hint(bool val = true);
 
   //Signals:
 
@@ -228,7 +228,7 @@ public:
 
   virtual Gtk::TreeModel::iterator get_last_row();
   virtual Gtk::TreeModel::iterator get_last_row() const;
-  
+
   virtual void set_open_button_title(const Glib::ustring& title);
 
 protected:

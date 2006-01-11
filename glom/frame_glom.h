@@ -123,12 +123,14 @@ protected:
   virtual const Gtk::Window* get_app_window() const;
 
   Glib::ustring get_find_where_clause_quick(const Gnome::Gda::Value& quick_search) const;
+  void update_records_count();
 
   void alert_no_table();
 
   //Signal handlers:
   void on_notebook_find_criteria(const Glib::ustring& strWhereClause);
   void on_button_quickfind();
+  void on_button_find_all();
   void on_notebook_data_record_details_requested(const Glib::ustring& table_name, Gnome::Gda::Value primary_key_value);
   void on_userlevel_changed(AppState::userlevels userlevel);
 
@@ -144,6 +146,11 @@ protected:
   Gtk::HBox* m_pBox_QuickFind; //Only show this when in Find mode.
   Gtk::Entry* m_pEntry_QuickFind;
   Gtk::Button* m_pButton_QuickFind;
+
+  Gtk::HBox* m_pBox_RecordsCount; //Only show this when in Data mode.
+  Gtk::Label* m_pLabel_RecordsCount;
+  Gtk::Label* m_pLabel_FoundCount;
+  Gtk::Button* m_pButton_FindAll;
 
   PlaceHolder* m_pBox_Mode; //Contains e.g. design mode notebook.
 

@@ -76,14 +76,14 @@ bool Notebook_Data::init_db_details(const Glib::ustring& strTableName, const Gli
 
     result = m_Box_List.init_db_details(m_table_name, strWhereClause);
     //m_Box_List.load_from_document();
-    
+
     //Show the previously-shown record, if there is one,
     //so that returning to this table will return the user to the same record:
     Document_Glom* document = get_document();
     if(document)
     {
       Gnome::Gda::Value primary_key_for_details = document->get_layout_record_viewed(m_table_name, m_Box_Details.get_layout_name());
-      
+
       if(GlomConversions::value_is_empty(primary_key_for_details))
       {
         //Make sure that the details view is not empty, if there are any records to show:
@@ -91,7 +91,7 @@ bool Notebook_Data::init_db_details(const Glib::ustring& strTableName, const Gli
         if(GlomConversions::value_is_empty(primary_key_for_details))
           primary_key_for_details = m_Box_List.get_primary_key_value_first();
       }
-      
+
        m_Box_Details.init_db_details(m_table_name, primary_key_for_details);
     }
   }
@@ -152,7 +152,7 @@ void Notebook_Data::on_Details_user_requested_related_details(const Glib::ustrin
 
 void Notebook_Data::select_page_for_find_results()
 {
-  if(m_Box_List.get_records_count() > 1)
+  if(m_Box_List.get_showing_multiple_records())
   {
     set_current_page(m_iPage_List);
   }
@@ -240,4 +240,9 @@ void Notebook_Data::on_switch_page_handler(GtkNotebookPage* pPage, guint uiPageN
     }
   }
 
+}
+
+void Notebook_Data::get_record_counts(gulong& total, gulong& found)
+{
+  m_Box_List.get_record_counts(total, found);
 }

@@ -37,7 +37,7 @@ public:
   virtual Gnome::Gda::Value get_entered_field_data(const LayoutItem_Field& field) const;
   virtual void set_entered_field_data(const LayoutItem_Field& field, const Gnome::Gda::Value& value);
 
-  virtual guint get_records_count() const;
+  bool get_showing_multiple_records() const;
 
   void set_read_only(bool read_only = true);
 
@@ -57,6 +57,8 @@ public:
   virtual void on_details_nav_next();
   virtual void on_details_nav_last();
   virtual void on_Details_record_deleted(const Gnome::Gda::Value& primary_key_value);
+
+  void get_record_counts(gulong& total, gulong& found) const;
 
 protected:
   virtual void create_layout(); //override

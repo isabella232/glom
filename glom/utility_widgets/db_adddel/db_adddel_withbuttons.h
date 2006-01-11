@@ -32,17 +32,17 @@ public:
   virtual void set_allow_add(bool val = true); //override
   virtual void set_allow_delete(bool val = true); //override
   virtual void set_allow_user_actions(bool bVal = true); //override
-  
+
   ///Whether each row should have a button, to request edit.
   virtual void set_allow_view_details(bool val = true);
-  
-protected:
-  virtual void setup_buttons();
 
-  virtual void on_button_add();
-  virtual void on_button_del();
-  virtual void on_button_edit();
-  
+protected:
+  void setup_buttons();
+
+  void on_button_add();
+  void on_button_del();
+  void on_button_edit();
+
   virtual void show_all_vfunc();
 
   //member widgets:

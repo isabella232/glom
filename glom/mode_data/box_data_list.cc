@@ -22,6 +22,7 @@
 #include "../data_structure/glomconversions.h"
 #include "dialog_layout_list.h"
 #include <bakery/App/App_Gtk.h> //For util_bold_message().
+//#include <../utility_widgets/db_adddel/glom_db_treemodel.h> //For DbTreeModel.
 #include <sstream> //For stringstream
 #include <glibmm/i18n.h>
 
@@ -638,9 +639,9 @@ void Box_Data_List::set_entered_field_data(const LayoutItem_Field& field, const 
   return m_AddDel.set_value_selected(field, value);
 }
 
-guint Box_Data_List::get_records_count() const
+bool Box_Data_List::get_showing_multiple_records() const
 {
-  return m_AddDel.get_count();
+  return m_AddDel.get_count() > 1;
 }
 
 void Box_Data_List::create_layout()
@@ -791,6 +792,14 @@ void Box_Data_List::set_primary_key_value_selected(const Gnome::Gda::Value& prim
   {
     m_AddDel.select_item(iter);
   }
+}
+
+void Box_Data_List::get_record_counts(gulong& total, gulong& found) const
+{
+  Glib::RefPtr<Gtk::TreeModel> refModel = m_AddDel.get_model();
+  Glib::RefPtr<DbTreeModel> refModelDerived = Glib::RefPtr<DbTreeModel>::cast_dynamic(refModel);
+
+  refModelDerived->get_record_counts(total, found);
 }
 
 

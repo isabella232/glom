@@ -37,7 +37,7 @@ public:
 
   virtual void remove(Gtk::Widget& first); //override
 
-  virtual void set_columns_count(guint value);
+  void set_columns_count(guint value);
 
   /** Sets the padding to put between the child widgets.
    */

@@ -29,6 +29,7 @@
 #include "data_structure/layout/report_parts/layoutitem_summary.h"
 #include "data_structure/layout/report_parts/layoutitem_fieldsummary.h"
 #include "relationships_overview/dialog_relationships_overview.h"
+#include <sstream> //For stringstream.
 #include <glibmm/i18n.h>
 
 Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
@@ -40,6 +41,10 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
   m_pBox_QuickFind(0),
   m_pEntry_QuickFind(0),
   m_pButton_QuickFind(0),
+  m_pBox_RecordsCount(0),
+  m_pLabel_RecordsCount(0),
+  m_pLabel_FoundCount(0),
+  m_pButton_FindAll(0),
   m_pBox_Mode(0),
   m_pBox_Tables(0),
   m_pBox_Reports(0),
@@ -67,6 +72,13 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
   refGlade->get_widget("button_quickfind", m_pButton_QuickFind);
   m_pButton_QuickFind->signal_clicked().connect(
     sigc::mem_fun(*this, &Frame_Glom::on_button_quickfind) );
+
+  refGlade->get_widget("hbox_records_count", m_pBox_RecordsCount);
+  refGlade->get_widget("label_records_count", m_pLabel_RecordsCount);
+  refGlade->get_widget("label_records_found_count", m_pLabel_FoundCount);
+  refGlade->get_widget("button_find_all", m_pButton_FindAll);
+  m_pButton_FindAll->signal_clicked().connect(
+    sigc::mem_fun(*this, &Frame_Glom::on_button_find_all) );
 
   refGlade->get_widget_derived("vbox_mode", m_pBox_Mode);
 
@@ -333,11 +345,17 @@ bool Frame_Glom::set_mode(enumModes mode)
 
       //Put the cursor in the quick find entry:
       m_pEntry_QuickFind->grab_focus();
-      m_pButton_QuickFind->grab_default();
+      //m_pButton_QuickFind->grab_default();
     }
+
+    m_pBox_RecordsCount->hide();
   }
   else
+  {
     m_pBox_QuickFind->hide();
+
+    m_pBox_RecordsCount->show();
+  }
 
   return changed;
 }
@@ -379,7 +397,7 @@ void Frame_Glom::show_table(const Glib::ustring& strTableName)
     //Update user-level dependent UI:
     if(pApp)
       on_userlevel_changed(pApp->get_userlevel());
- 
+
     switch(m_Mode)
     {
       case(MODE_Data):
@@ -387,6 +405,10 @@ void Frame_Glom::show_table(const Glib::ustring& strTableName)
         strMode = _("Data");
         m_Notebook_Data.init_db_details(m_strTableName);
         set_mode_widget(m_Notebook_Data);
+
+        //Show how many records were found:
+        update_records_count();
+
         break;
       }
       case(MODE_Find):
@@ -664,6 +686,11 @@ void Frame_Glom::on_notebook_find_criteria(const Glib::ustring& strWhereClause)
 
       if(find_again)
         pApp->set_mode_find();
+    }
+    else
+    {
+      //Show how many records were found:
+      update_records_count();
     }
   }
 }
@@ -1164,7 +1191,7 @@ void Frame_Glom::on_dialog_tables_hide()
       App_Glom* pApp = dynamic_cast<App_Glom*>(get_app_window());
       if(pApp)
         pApp->fill_menu_tables();
-        
+
       //Select a different table if the current one no longer exists:
       if(!document->get_table_is_known(m_strTableName))
       {
@@ -1172,7 +1199,7 @@ void Frame_Glom::on_dialog_tables_hide()
         Glib::ustring table_name = document->get_default_table();
         if(table_name.empty())
           table_name = document->get_first_table();
-    
+
         show_table(table_name);
       }
     }
@@ -1183,5 +1210,50 @@ void Frame_Glom::on_notebook_data_record_details_requested(const Glib::ustring& 
 {
   show_table(table_name);
   m_Notebook_Data.show_details(primary_key_value);
+}
+
+void Frame_Glom::update_records_count()
+{
+  //Get the number of records available and the number found,
+  //and all the user to find all if necessary.
+
+  gulong count_all = 0;
+  gulong count_found = 0;
+  m_Notebook_Data.get_record_counts(count_all, count_found);
+
+  std::string str_count_all, str_count_found;
+
+  std::stringstream the_stream;
+  //the_stream.imbue( current_locale );
+  the_stream << count_all;
+  the_stream >> str_count_all;
+
+  if(count_found == count_all)
+  {
+    if(count_found != 0) //Show 0 instead of "all" when all of no records are found, to avoid confusion.
+      str_count_found = _("All");
+    else
+      str_count_found = str_count_all;
+
+    m_pButton_FindAll->hide();
+  }
+  else
+  {
+    std::stringstream the_stream; //Reusing the existing stream seems to produce an empty string.
+    the_stream << count_found;
+    the_stream >> str_count_found;
+
+    m_pButton_FindAll->show();
+  }
+
+  m_pLabel_RecordsCount->set_text(str_count_all);
+  m_pLabel_FoundCount->set_text(str_count_found);
+
+}
+
+void Frame_Glom::on_button_find_all()
+{
+  //Change the found set to all records:
+  show_table(m_strTableName);
 }
 

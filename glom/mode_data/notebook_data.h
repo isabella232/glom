@@ -42,6 +42,8 @@ public:
   virtual void do_menu_developer_layout(); //override
   virtual void do_menu_file_print(); //override
 
+  void get_record_counts(gulong& total, gulong& found);
+
   enum dataview
   {
     DATA_VIEW_Details,
@@ -54,6 +56,9 @@ public:
   type_signal_record_details_requested signal_record_details_requested();
 
 protected:
+
+  ///Show the counts of all records and found records:
+  void update_records_count();
 
   //Signal handlers:
   virtual void on_list_user_requested_details(const Gnome::Gda::Value& primary_key_value);
