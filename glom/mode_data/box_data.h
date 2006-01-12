@@ -41,10 +41,13 @@ public:
   ///Create the layout for the database structure, and fill it with data from the database.
   virtual bool init_db_details(const Glib::ustring& strTableName, const Glib::ustring& strWhereClause = Glib::ustring());
 
-  //Fill the existing layout with data from the databse.
-  virtual bool refresh_data_from_database(const Glib::ustring& strWhereClause = Glib::ustring());
+  //Fill the existing layout with data from the database:
+  virtual bool refresh_data_from_database_with_where_clause(const Glib::ustring& strWhereClause = Glib::ustring());
 
   virtual void print_layout(); //A test, for now.
+
+  ///Get the existing where clause, previously supplied to init_db_details().
+  Glib::ustring get_where_clause() const;
 
   virtual Glib::ustring get_find_where_clause() const;
 

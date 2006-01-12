@@ -344,7 +344,7 @@ void FlowTableWithFields::set_field_value(const LayoutItem_Field& field, const G
     if(portal)
     {
       //g_warning("FlowTableWithFields::set_field_value: foreign_key_value=%s", value.to_string().c_str());
-      portal->refresh_data_from_database(value /* foreign key value */);
+      portal->refresh_data_from_database_with_foreign_key(value /* foreign key value */);
     }
   }
 }

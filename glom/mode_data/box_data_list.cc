@@ -86,15 +86,17 @@ void Box_Data_List::enable_buttons()
     allow_create = table_privs.m_create;
     allow_delete = table_privs.m_delete;
   }
-  
+
   m_AddDel.set_allow_add(allow_create);
   m_AddDel.set_allow_delete(allow_delete);
-  
+
   m_AddDel.set_allow_view_details(table_privs.m_view);
 }
 
 bool Box_Data_List::fill_from_database()
 {
+  //std::cout << "Box_Data_List::fill_from_database(): where_clause=" << m_strWhereClause << std::endl;
+
   bool result = false;
 
   Bakery::BusyCursor(*get_app_window());
@@ -149,7 +151,7 @@ void Box_Data_List::on_adddel_user_requested_add()
 {
  if(m_FieldsShown.empty())
     return; //Don't try to add a record to a list with no fields.
-    
+
   Gtk::TreeModel::iterator iter = m_AddDel.get_item_placeholder();
   if(iter)
   {
@@ -180,10 +182,14 @@ void Box_Data_List::on_adddel_user_requested_add()
       guint treemodel_column = 0;
       bool test = get_field_column_index(m_FieldsShown[index_field_to_edit]->get_name(), treemodel_column);
       if(test)
+      {
+        std::cout << "on_adddel_user_requested_add(): editing column=" << treemodel_column << std::endl;
         m_AddDel.select_item(iter, treemodel_column, true /* start_editing */);
+      }
     }
     else
     {
+      std::cout << "on_adddel_user_requested_add(): no editable rows." << std::endl;
       //The only keys are non-editable, so just add a row:
       on_adddel_user_added(iter, 0);
       m_AddDel.select_item(iter); //without start_editing.
@@ -223,6 +229,8 @@ void Box_Data_List::on_adddel_user_requested_delete(const Gtk::TreeModel::iterat
 
 void Box_Data_List::on_adddel_user_added(const Gtk::TreeModel::iterator& row, guint col_with_first_value)
 {
+  std::cout << "Box_Data_List::on_adddel_user_added" << std::endl;
+
   Gnome::Gda::Value primary_key_value;
 
   Field field_primary_key = m_AddDel.get_key_field();
@@ -251,6 +259,8 @@ void Box_Data_List::on_adddel_user_added(const Gtk::TreeModel::iterator& row, gu
       Glib::RefPtr<Gnome::Gda::DataModel> data_model = record_new(true /* use entered field data*/, primary_key_value);
       if(data_model)
       {
+        std::cout << "Box_Data_List::on_adddel_user_added debug `" << std::endl;
+
         //Save the primary key value for later use:
         m_AddDel.set_value_key(row, primary_key_value);
 
@@ -259,12 +269,16 @@ void Box_Data_List::on_adddel_user_added(const Gtk::TreeModel::iterator& row, gu
         //If it's an auto-increment, then get the value and show it:
         if(field_primary_key.get_auto_increment())
         {
+           std::cout << "Box_Data_List::on_adddel_user_added debug 2" << std::endl;
+
           LayoutItem_Field layout_item;
           layout_item.m_field = field_primary_key;
           m_AddDel.set_value(row, layout_item, primary_key_value);
         }
 
         on_record_added(primary_key_value);
+
+         std::cout << "Box_Data_List::on_adddel_user_added debug 3" << std::endl;
 
         //Do any lookups, etc, trigerred by the change of value of the original changed field:
         on_adddel_user_changed(row, col_with_first_value);
@@ -274,6 +288,8 @@ void Box_Data_List::on_adddel_user_added(const Gtk::TreeModel::iterator& row, gu
     }
     else
     {
+      std::cout << "Box_Data_List::on_adddel_user_added debug: add record failed." << std::endl;
+
       //Add Record failed.
       //Replace with correct values:
       fill_from_database();
@@ -371,6 +387,7 @@ void Box_Data_List::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, 
 
       //Update the field in the record (the record with this primary key):
       const Gnome::Gda::Value field_value = m_AddDel.get_value(row, layout_field);
+      std::cout << "Box_Data_List::on_adddel_user_changed(): field_value = " << field_value.to_string() << std::endl;
       //const Field& field = layout_field.m_field;
       //const Glib::ustring strFieldName = layout_field.get_name();
 
@@ -683,7 +700,7 @@ void Box_Data_List::create_layout()
         sharedptr<LayoutItem_Field> field = *iter;
         if(m_read_only)
           field->set_editable(false);
-          
+
         m_AddDel.add_column(*field);
       }
 

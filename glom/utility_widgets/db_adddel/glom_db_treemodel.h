@@ -34,8 +34,6 @@ class DbTreeModelRow
 public:
   DbTreeModelRow();
 
-  bool m_placeholder;
-
   typedef Gnome::Gda::Value DbValue;
 
   //Field Values. We store them here after reading them from the database,
@@ -56,6 +54,7 @@ public:
   DbValue m_key;
 
   bool m_removed; //If it should not be shown anymore.
+  bool m_extra; //A temporary new row.
 };
 
 class DbTreeModel
@@ -82,14 +81,19 @@ public:
 
   typedef DbTreeModelRow::DbValue DbValue;
 
-  void set_is_placeholder(const TreeModel::iterator& iter, bool val);
+  void set_is_not_placeholder(const TreeModel::iterator& iter);
   bool get_is_placeholder(const TreeModel::iterator& iter) const;
 
   void set_key_value(const TreeModel::iterator& iter, const DbValue& value);
   DbValue get_key_value(const TreeModel::iterator& iter) const;
 
-  //Convenience method:
+  /** Get the last row - usually the placeholder.
+   */
   TreeModel::iterator get_last_row();
+
+  /** Get the placeholder row.
+   */
+  TreeModel::iterator get_placeholder_row();
 
   /** Removes the given row from the list store.
    * @param iter The iterator to the row to be removed.

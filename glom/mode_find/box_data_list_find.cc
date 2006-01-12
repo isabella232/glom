@@ -30,7 +30,7 @@ Box_Data_List_Find::Box_Data_List_Find()
   pack_start(m_HBox, Gtk::PACK_SHRINK);
 
   m_Button_Find.property_can_default() = true; //TODO: Make this a real method in gtkmm?
-  
+
   show_all_children();
 }
 
@@ -56,7 +56,7 @@ bool Box_Data_List_Find::fill_from_database()
 
   m_FieldsShown = get_fields_to_show();
 
-  m_AddDel.add_item(Gnome::Gda::Value("find"));
+  //m_AddDel.add_item(Gnome::Gda::Value("find"));
 
   return result;
 }

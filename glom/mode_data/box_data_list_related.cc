@@ -106,7 +106,7 @@ bool Box_Data_List_Related::init_db_details(const LayoutItem_Portal& portal)
   return Box_Data_List::init_db_details(m_portal.m_relationship.get_to_table()); //Calls create_layout() and fill_from_database().
 }
 
-bool Box_Data_List_Related::refresh_data_from_database(const Gnome::Gda::Value& foreign_key_value)
+bool Box_Data_List_Related::refresh_data_from_database_with_foreign_key(const Gnome::Gda::Value& foreign_key_value)
 {
   m_key_value = foreign_key_value;
 
@@ -115,11 +115,11 @@ bool Box_Data_List_Related::refresh_data_from_database(const Gnome::Gda::Value& 
     Glib::ustring strWhereClause = m_key_field.get_name() + " = " + m_key_field.sql(m_key_value);
 
     //g_warning("refresh_data_from_database(): where_clause=%s", strWhereClause.c_str());
-    return Box_Data_List::refresh_data_from_database(strWhereClause);
+    return Box_Data_List::refresh_data_from_database_with_where_clause(strWhereClause);
   }
   else
   {
-    g_warning("Box_Data_List_Related::refresh_data_from_database(): m_key_value is NULL.");
+    g_warning("Box_Data_List_Related::refresh_data_from_database_with_foreign_key(): m_key_value is NULL.");
     return false;
   }
   //TODO: Clear the list if there is no key value?

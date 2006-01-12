@@ -36,7 +36,7 @@ Notebook_Data::Notebook_Data()
 
   //Allow List to ask Details to show a record.
   m_Box_List.signal_user_requested_details().connect(sigc::mem_fun(*this, &Notebook_Data::on_list_user_requested_details));
-    
+
   //Allow Details to ask List to ask Details to show a different record:
   m_Box_Details.signal_nav_first().connect(sigc::mem_fun(m_Box_List, &Box_Data_List::on_details_nav_first));
   m_Box_Details.signal_nav_prev().connect(sigc::mem_fun(m_Box_List, &Box_Data_List::on_details_nav_previous));
@@ -74,15 +74,24 @@ bool Notebook_Data::init_db_details(const Glib::ustring& strTableName, const Gli
   {
     sharedptr<SharedConnection> sharedconnection = connect_to_server();
 
+    const Glib::ustring old_where_clause = m_Box_List.get_where_clause();
+    //std::cout << "  old_where_clause=" << old_where_clause << std::endl;
+    //std::cout << "  strWhereClause=" << strWhereClause << std::endl;
+    const bool new_find_set = (strWhereClause != old_where_clause);
     result = m_Box_List.init_db_details(m_table_name, strWhereClause);
     //m_Box_List.load_from_document();
 
-    //Show the previously-shown record, if there is one,
+    //Show the previously-shown record, if there is one, if this is not a new found-set (via a new where_clause)
     //so that returning to this table will return the user to the same record:
     Document_Glom* document = get_document();
     if(document)
     {
-      Gnome::Gda::Value primary_key_for_details = document->get_layout_record_viewed(m_table_name, m_Box_Details.get_layout_name());
+      Gnome::Gda::Value primary_key_for_details;
+
+      if(!new_find_set)
+      {
+        primary_key_for_details = document->get_layout_record_viewed(m_table_name, m_Box_Details.get_layout_name());
+      }
 
       if(GlomConversions::value_is_empty(primary_key_for_details))
       {
@@ -92,7 +101,7 @@ bool Notebook_Data::init_db_details(const Glib::ustring& strTableName, const Gli
           primary_key_for_details = m_Box_List.get_primary_key_value_first();
       }
 
-       m_Box_Details.init_db_details(m_table_name, primary_key_for_details);
+      m_Box_Details.init_db_details(m_table_name, primary_key_for_details);
     }
   }
 
@@ -133,14 +142,14 @@ bool Notebook_Data::init_db_details(const Glib::ustring& strTableName, const Gli
 
 void Notebook_Data::on_list_user_requested_details(const Gnome::Gda::Value& primary_key_value)
 {
-  m_Box_Details.refresh_data_from_database(primary_key_value);
+  m_Box_Details.refresh_data_from_database_with_primary_key(primary_key_value);
   set_current_page(m_iPage_Details);
 }
 
 void Notebook_Data::on_Details_user_requested_related_details(const Glib::ustring& strTableName, Gnome::Gda::Value primary_key_value)
 {
   signal_record_details_requested().emit(strTableName, primary_key_value);
-  
+
   /*
   //Show a different table:
   init_db_details(m_table_name);
@@ -185,7 +194,7 @@ void Notebook_Data::do_menu_file_print()
     Box_Data* pBox = dynamic_cast<Box_Data*>(pChild);
     if(pBox)
       pBox->print_layout();
-  } 
+  }
 }
 
 enum dataview
@@ -232,6 +241,7 @@ void Notebook_Data::on_switch_page_handler(GtkNotebookPage* pPage, guint uiPageN
     //And refresh the list view whenever it is shown, to 
     //a) show any new records that were added via the details view, or via a related portal elsewhere.
     //b) show changed field contents, changed elsewhere.
+    //TODO_Performance: This causes double refreshes (with database retrieval) when doing finds. We probably want to distinguish between user page-switches and programmatic page-switches.
     if(box == &m_Box_List)
     {
       Gnome::Gda::Value primary_key_selected = m_Box_List.get_primary_key_value_selected();

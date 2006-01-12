@@ -27,9 +27,9 @@
 
 
 DbTreeModelRow::DbTreeModelRow()
-: m_placeholder(false),
-  m_values_retrieved(false),
-  m_removed(false)
+: m_values_retrieved(false),
+  m_removed(false),
+  m_extra(false)
   //m_data_model_row_number(false)
 {
 
@@ -49,12 +49,23 @@ void DbTreeModelRow::fill_values_if_necessary(DbTreeModel& model, int row)
       }
 
       m_key = model.m_gda_datamodel->get_value_at(model.m_column_index_key, row);
+
+      m_extra = false;
+      m_removed = false;
     }
     else
     {
       //g_warning("DbTreeModelRow::fill_values_if_necessary(): Non-db row.");
-      //It is an extra row, added with append().
-      //Use the default values.
+      if(m_extra)
+      {
+        //It is an extra row, added with append().
+        //Use the default values.
+      }
+      else if(!m_removed)
+      {
+        //It must be the last blank placeholder row.
+        //m_placeholder = true;
+      }
     }
 
   }
@@ -266,8 +277,9 @@ void DbTreeModel::get_value_vfunc(const TreeModel::iterator& iter, int column, G
       //value_specific.init( Glib::Value< DbValue >::value_type() ); //TODO: Is there any way to avoid this step?
 
       type_datamodel_const_iter dataRowIter = get_datamodel_row_iter_from_tree_row_iter(iter);
-//g_warning("DbTreeModel::get_value_vfunc(): dataRowIter=%d", dataRowIter);
-      if(dataRowIter < (unsigned int)get_internal_rows_count()) //!= m_rows.end())
+      //g_warning("DbTreeModel::get_value_vfunc(): dataRowIter=%d, get_internal_rows_count=%d", dataRowIter, get_internal_rows_count());
+      const unsigned int internal_rows_count = get_internal_rows_count();
+      if( dataRowIter < internal_rows_count) //!= m_rows.end())
       {
         //const typeRow& dataRow = *dataRowIter;
 
@@ -279,12 +291,18 @@ void DbTreeModel::get_value_vfunc(const TreeModel::iterator& iter, int column, G
         const int column_sql = column;
         if(column_sql < (int)m_columns_count) //TODO_Performance: Remove the checks.
         {
-          if(true) //dataRowIter < (unsigned int)m_data_model_rows_count)
+          if( !(dataRowIter < (internal_rows_count - 1)))
+          {
+             //std::cout << "DbTreeModel::get_value_vfunc: row " << dataRowIter << " is placeholder" << std::endl;
+
+             //If it's after the database rows then it must be a placeholder row.
+             //We have only one of these because iter_n_root_children_vfunc() only adds 1 to the row count.
+             //row_details.m_placeholder = true;
+          }
+          else
           {
             result = row_details.get_value(const_cast<DbTreeModel&>(*this), column_sql, dataRowIter); //m_gda_datamodel->get_value_at(column_sql, dataRowIter); //dataRow.m_db_values[column];
           }
-          else
-            g_warning("DbTreeModel::get_value_vfunc: row out of bounds.");
         }
         else
           g_warning("DbTreeModel::get_value_vfunc: column out of bounds: sql_col=%d, max=%d.", column_sql, m_columns_count);
@@ -293,7 +311,6 @@ void DbTreeModel::get_value_vfunc(const TreeModel::iterator& iter, int column, G
         value_specific.set(result); //The compiler would complain if the type was wrong.
         value.init( Glib::Value< DbValue >::value_type() ); //TODO: Is there any way to avoid this step? Can't it copy the type as well as the value?
         value = value_specific;
-
       }
     }
   }
@@ -342,6 +359,7 @@ int DbTreeModel::iter_n_children_vfunc(const iterator& iter) const
 
 int DbTreeModel::iter_n_root_children_vfunc() const
 {
+  //std::cout << "iter_n_root_children_vfunc(): returning: " << get_internal_rows_count() - m_count_removed_rows + 1 << std::endl;
   return get_internal_rows_count() - m_count_removed_rows;
 }
 
@@ -365,7 +383,7 @@ bool DbTreeModel::iter_nth_child_vfunc(const iterator& parent, int /* n */, iter
 bool DbTreeModel::iter_nth_root_child_vfunc(int n, iterator& iter) const
 {
 //g_warning("DbTreeModel::iter_nth_root_child_vfunc(): n=%d", n);
- 
+
   //if(m_data_model_rows_count == 0)
   //  return false;  //There are no children.
 
@@ -389,7 +407,7 @@ bool DbTreeModel::iter_nth_root_child_vfunc(int n, iterator& iter) const
     //TODO_Performance:
     //Get the nth unremoved row:
     type_datamodel_iter row_iter = 0;
-    for(int child_n = 0; child_n <n; ++child_n)
+    for(int child_n = 0; child_n < n; ++child_n)
     {
       //Jump over hidden rows:
       while(m_map_rows[row_iter].m_removed)
@@ -462,9 +480,10 @@ bool DbTreeModel::create_iterator(const type_datamodel_iter& row_iter, DbTreeMod
 
   const guint count_all_rows = get_internal_rows_count();
 //g_warning("DbTreeModel::create_iterator(): row_iter=%d, count=%d", row_iter, count_all_rows);
-  if(row_iter >= count_all_rows) //row_iter == m_rows.end())
+  if(row_iter >= (count_all_rows)) //row_iter == m_rows.end()) //1 for the placeholder.
   {
-     //g_warning("DbTreeModel::create_iterator(): out of bounds: returning invalid iterator.");
+    //TreeView seems to use this to identify the last row.
+    //g_warning("DbTreeModel::create_iterator(): out of bounds: returning invalid iterator: row_iter=%d", row_iter);
     invalidate_iter(iter);
     return false;
   }
@@ -474,7 +493,7 @@ bool DbTreeModel::create_iterator(const type_datamodel_iter& row_iter, DbTreeMod
     //Store the std::list iterator in the GtkTreeIter:
     //See also iter_next_vfunc()
 
-    //g_warning("DbTreeModel::create_iterator(): Creating iter to row_index=%d", row_index);
+    //g_warning("DbTreeModel::create_iterator(): Creating iter to row_index=%d", row_iter);
     if(!m_pGlueList)
     {
      m_pGlueList = new GlueList();
@@ -585,7 +604,7 @@ void DbTreeModel::remember_glue_item(GlueItem* item) const
 
 int DbTreeModel::get_internal_rows_count() const
 {
-  return m_data_model_rows_count + m_count_extra_rows;
+  return m_data_model_rows_count + m_count_extra_rows + 1; //1 for placeholder.
 }
 
 DbTreeModel::iterator DbTreeModel::append()
@@ -618,7 +637,9 @@ DbTreeModel::iterator DbTreeModel::append()
   iterator iter;
   const bool iter_is_valid = create_iterator(row_iter, iter);
   if(iter_is_valid)
+  {
     row_inserted(get_path(iter), iter); //Allow the TreeView to respond to the addition.
+  }
 
   return iter;
 }
@@ -647,6 +668,7 @@ void DbTreeModel::set_value_impl(const iterator& row, int column, const Glib::Va
       row_details.set_value(*this, column, row_iter, pDbValue->get());
 
       //TODO: Performance: get_path() is really slow.
+      std::cout << "DbTreeModel::set_value_impl: calling row_changed on row_iter=" << row_iter << std::endl;
       row_changed( get_path(row), row);
 
       //g_warning("set_value_impl: value=%s", pDbValue->get().to_string().c_str());
@@ -723,32 +745,26 @@ DbTreeModel::DbValue DbTreeModel::get_key_value(const TreeModel::iterator& iter)
   return DbValue();
 }
 
-
-
-void DbTreeModel::set_is_placeholder(const TreeModel::iterator& iter, bool val)
-{
-  //g_warning("DbTreeModel::set_is_placeholder(): val=%d", val);
-  if(check_treeiter_validity(iter))
-  {
-    type_datamodel_iter dataRowIter = get_datamodel_row_iter_from_tree_row_iter(iter);
-    m_map_rows[dataRowIter].m_placeholder = val;
-  }
-}
-
 bool DbTreeModel::get_is_placeholder(const TreeModel::iterator& iter) const
 {
   //g_warning("DbTreeModel::g et_is_placeholder()");
   if(check_treeiter_validity(iter))
   {
     type_datamodel_iter dataRowIter = get_datamodel_row_iter_from_tree_row_iter(iter);
-
-    type_map_rows::const_iterator iterFind = m_map_rows.find(dataRowIter);
-    if(iterFind != m_map_rows.end());
-      return iterFind->second.m_placeholder;
-      //return dataRowIter->m_placeholder;
+    return (dataRowIter == ((type_datamodel_iter)get_internal_rows_count() -1));
   }
 
   return false;
+}
+
+void DbTreeModel::set_is_not_placeholder(const TreeModel::iterator& iter)
+{
+  if(get_is_placeholder(iter))
+  {
+    //This row is an extra row (after a refresh it will probably be a row in the database).
+    //So now we need a new row to be the placeholder.
+    append();
+  }
 }
 
 void DbTreeModel::clear()
@@ -777,22 +793,56 @@ Gtk::TreeModel::iterator DbTreeModel::get_last_row()
   iterator result;
 
   //Find the last non-removed row:
+  int rows_count = get_internal_rows_count();
+  if(rows_count)
+  {
+    type_datamodel_iter row = rows_count - 1;
+    --rows_count; //Ignore the placeholder.
+
+    //Step backwards until we find one that is not removed.
+    while((m_map_rows.find(row) != m_map_rows.end()) && m_map_rows[row].m_removed)
+    {
+      if(row)
+        --row;
+      else
+        return result; //failed, because there are no non-removed row.
+    }
+
+    //g_warning("DbTreeModel::get_last_row(): returning row=%d", row);
+    create_iterator(row, result);
+  }
+
+  return result;
+}
+
+Gtk::TreeModel::iterator DbTreeModel::get_placeholder_row()
+{
+  iterator result;
+
+  //Find the last non-removed row:
   const int rows_count = get_internal_rows_count();
   if(rows_count)
   {
     type_datamodel_iter row = rows_count - 1;
 
     //Step backwards until we find one that is not removed:
-    while(m_map_rows[row].m_removed)
+    while((m_map_rows.find(row) != m_map_rows.end()) && m_map_rows[row].m_removed)
     {
       if(row)
         --row;
       else
+      {
+        g_warning("bTreeModel::get_placeholder_row(): Placeholder row not found.");
         return result; //failed, because there are no non-removed rows.
+      }
     }
 
-    //g_warning("DbTreeModel::get_last_row(): returning row=%d", row);
-    create_iterator(row, result);
+    type_map_rows::const_iterator iter_map = m_map_rows.find(row);
+    if(iter_map != m_map_rows.end())
+    {
+      g_warning("DbTreeModel::get_last_row(): returning row=%d", row);
+      create_iterator(row, result);
+    }
   }
 
   return result;

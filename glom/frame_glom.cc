@@ -663,6 +663,7 @@ void Frame_Glom::on_button_quickfind()
   else
   {
     Glib::ustring where_clause = get_find_where_clause_quick(Gnome::Gda::Value(criteria));
+    //std::cout << "Frame_Glom::on_button_quickfind(): where_clause=" << where_clause << std::endl;
     on_notebook_find_criteria(where_clause);
   }
 }
@@ -677,6 +678,7 @@ void Frame_Glom::on_notebook_find_criteria(const Glib::ustring& strWhereClause)
   {
     pApp->set_mode_data();
 
+    //std::cout << "Frame_Glom::on_notebook_find_criteria: where_clause=" << strWhereClause << std::endl;
     bool records_found = m_Notebook_Data.init_db_details(m_strTableName, strWhereClause);
     m_Notebook_Data.select_page_for_find_results();
 

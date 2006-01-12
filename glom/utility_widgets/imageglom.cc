@@ -116,11 +116,11 @@ bool ImageGlom::get_has_original_data() const
 {
   return true; //TODO.
 }
-  
+
 void ImageGlom::set_value(const Gnome::Gda::Value& value)
 { 
   bool pixbuf_set = false;
-  
+
   if(value.get_value_type() == Gnome::Gda::VALUE_TYPE_BINARY)
   {
     glong size = 0;
@@ -141,16 +141,16 @@ void ImageGlom::set_value(const Gnome::Gda::Value& value)
         //{
         //  std::cout << " name=" << iter->get_name() << ", writable=" << iter->is_writable() << std::endl;
         //}
-        
+
         Glib::RefPtr<Gdk::PixbufLoader> refPixbufLoader;
-        
+
         // PixbufLoader::create() is broken in gtkmm before 2.6.something,
         // so let's do this in C so it works with all 2.6 versions:
         GError* error = 0;
         GdkPixbufLoader* loader = gdk_pixbuf_loader_new_with_type(GLOM_IMAGE_FORMAT, &error);
         if(!error)
           refPixbufLoader = Glib::wrap(loader);
-        
+
         /*
         try
         {
@@ -163,41 +163,41 @@ void ImageGlom::set_value(const Gnome::Gda::Value& value)
           g_warning("PixbufLoader::create failed: %s",ex.what().c_str());
         }
         */
-        
+
         if(refPixbufLoader)
         {
           try
           {
             guint8* puiData = (guint8*)buffer_binary;
-            
+
             //g_warning("ImageGlom::set_value(): debug: from db: ");
             //for(int i = 0; i < 10; ++i)
             //  g_warning("%02X (%c), ", (guint8)puiData[i], (char)puiData[i]);
-              
+
             refPixbufLoader->write(puiData, (glong)buffer_binary_length);
             m_pixbuf_original = refPixbufLoader->get_pixbuf();
             m_image.set(m_pixbuf_original);
             pixbuf_set = true;
-            
+
             scale();
-            
+
             refPixbufLoader->close(); //This throws if write() threw, so it must be inside the try block.
           }
           catch(const Glib::Exception& ex)
           {
             g_warning("ImageGlom::set_value(): PixbufLoader::write() failed: %s", ex.what().c_str());
           }
-          
+
           free(buffer_binary);
         }
       }
-            
+
       //TODO: load the image, using the mime type stored elsewhere.
       //pixbuf = Gdk::Pixbuf::create_from_data(
     }
-    
+
   }
-  
+
   if(!pixbuf_set)
   {
     m_image.set(Gtk::Stock::MISSING_IMAGE, Gtk::ICON_SIZE_DIALOG);
@@ -234,23 +234,23 @@ Gnome::Gda::Value ImageGlom::get_value() const
     }
     catch(const Glib::Exception& /* ex */)
     {
-    
+
     }
   }
-  
+
   return result;
 }
 
 void ImageGlom::scale()
 {
   Glib::RefPtr<Gdk::Pixbuf> pixbuf = m_pixbuf_original;
-  
+
   if(pixbuf)
   {
     const Gtk::Allocation allocation = m_image.get_allocation();
     const int pixbuf_height = pixbuf->get_height();
     const int pixbuf_width = pixbuf->get_width();
-          
+
     if( (pixbuf_height > allocation.get_height()) ||
         (pixbuf_width > allocation.get_width()) )
     {
@@ -267,19 +267,19 @@ Glib::RefPtr<Gdk::Pixbuf> ImageGlom::scale_keeping_ratio(const Glib::RefPtr<Gdk:
 {
   if( (target_height == 0) || (target_width == 0) )
     return Glib::RefPtr<Gdk::Pixbuf>(); //This shouldn't happen anyway.
-    
+
   enum enum_scale_mode
   {
     SCALE_WIDTH,
     SCALE_HEIGHT,
     SCALE_NONE
   };
-    
+
   enum_scale_mode scale_mode = SCALE_NONE; //Start with either the width or height, and scale the other according to the ratio.
 
   const int pixbuf_height = pixbuf->get_height();
   const int pixbuf_width = pixbuf->get_width();
-  
+
   if(pixbuf_height > target_height)
   {
     if(pixbuf_width > target_width)
@@ -301,33 +301,33 @@ Glib::RefPtr<Gdk::Pixbuf> ImageGlom::scale_keeping_ratio(const Glib::RefPtr<Gdk:
     //Only the height is bigger:
     scale_mode = SCALE_WIDTH;
   }
-  
+
   if(scale_mode == SCALE_NONE)
     return pixbuf;
   else if(scale_mode == SCALE_HEIGHT)
   {
-    float ratio = (float)target_height / (float)pixbuf_height; 
+    const float ratio = (float)target_height / (float)pixbuf_height; 
     target_width = (int)((float)pixbuf_width * ratio);
   }
   else if(scale_mode == SCALE_WIDTH)
   {
-    float ratio = (float)target_width / (float) pixbuf_width;
+    const float ratio = (float)target_width / (float) pixbuf_width;
     target_height = (int)((float)pixbuf_height * ratio);
   }
-  
+
  if( (target_height == 0) || (target_width == 0) )
  {
-   g_warning("ImageGlom::scale_keeping_ratio(): calculated dimension is zero: target_width=%d, target_height=%d", target_width, target_height); 
-   return Glib::RefPtr<Gdk::Pixbuf>(); //This shouldn't happen anyway.
+   //g_warning("ImageGlom::scale_keeping_ratio(): calculated dimension is zero: target_width=%d, target_height=%d", target_width, target_height); 
+   return Glib::RefPtr<Gdk::Pixbuf>(); //This shouldn't happen anyway. It seems to happen sometimes though, when ratio is very small.
  }
-    
+
   return pixbuf->scale_simple(target_width, target_height, Gdk::INTERP_NEAREST);
 }
 
 void ImageGlom::on_menupopup_activate_select_file()
 {
   Gtk::FileChooserDialog dialog(_("Choose image"), Gtk::FILE_CHOOSER_ACTION_OPEN);
-  
+
   //Get image formats only:
   Gtk::FileFilter filter;
   filter.set_name(_("Images"));

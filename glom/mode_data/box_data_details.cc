@@ -140,7 +140,7 @@ bool Box_Data_Details::init_db_details(const Glib::ustring& strTableName, const 
   return Box_Data::init_db_details(strTableName); //Calls create_layout(), then fill_from_database()
 }
 
-bool Box_Data_Details::refresh_data_from_database(const Gnome::Gda::Value& primary_key_value)
+bool Box_Data_Details::refresh_data_from_database_with_primary_key(const Gnome::Gda::Value& primary_key_value)
 {
   m_primary_key_value = primary_key_value;
   return fill_from_database();
@@ -148,7 +148,7 @@ bool Box_Data_Details::refresh_data_from_database(const Gnome::Gda::Value& prima
 
 bool Box_Data_Details::refresh_data_from_database_blank()
 {
-  return refresh_data_from_database( Gnome::Gda::Value() );
+  return refresh_data_from_database_with_primary_key( Gnome::Gda::Value() );
 }
 
 void Box_Data_Details::create_layout()
@@ -185,7 +185,7 @@ bool Box_Data_Details::fill_from_database()
   const bool primary_key_is_empty = GlomConversions::value_is_empty(m_primary_key_value);
   if(!primary_key_is_empty)
     get_document()->set_layout_record_viewed(m_strTableName, m_layout_name, m_primary_key_value);
-    
+
   try
   {
 
@@ -298,7 +298,7 @@ void Box_Data_Details::on_button_new()
       Gnome::Gda::Value primary_key_value = generate_next_auto_increment(m_strTableName, m_field_primary_key.get_name()); //TODO: This should return a Gda::Value
 
       record_new(false /* use entered field data */, primary_key_value);
-      refresh_data_from_database(primary_key_value);
+      refresh_data_from_database_with_primary_key(primary_key_value);
     }
     else
     {
@@ -640,7 +640,7 @@ void Box_Data_Details::on_flowtable_field_edited(const LayoutItem_Field& layout_
         Gnome::Gda::Value primary_key_value = generate_next_auto_increment(m_strTableName, m_field_primary_key.get_name());
 
         record_new(true /* use entered field data */, primary_key_value);
-        refresh_data_from_database(primary_key_value);
+        refresh_data_from_database_with_primary_key(primary_key_value);
       }
     }
     else

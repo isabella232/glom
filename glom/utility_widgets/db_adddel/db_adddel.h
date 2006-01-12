@@ -68,7 +68,7 @@ public:
   virtual void set_allow_add(bool val = true);
   virtual void set_allow_delete(bool val = true);
 
-  Gtk::TreeModel::iterator add_item(const Gnome::Gda::Value& valKey); //Return index of new row.
+  //Gtk::TreeModel::iterator add_item(const Gnome::Gda::Value& valKey); //Return index of new row.
 
   /** Get an iterator to the blank row in which the user should add data for the new row.
    * You can then add the row to your underlying data store when some data has been filled, by handling signal_user_changed.
@@ -147,6 +147,8 @@ public:
 
   /// Specify which records to show:
   void set_where_clause(const Glib::ustring& where_clause);
+
+  Glib::ustring get_where_clause() const;
 
   /// Start using the added columns.
   void set_columns_ready();
@@ -237,18 +239,11 @@ protected:
   ///Return the column indexes of any columns that display this field.
   virtual type_list_indexes get_column_index(const LayoutItem_Field& layout_item) const;
 
-  /** Get an iterator to the blank row in which the user should add data for the new row.
-   * You can then add the row to your underlying data store when some data has been filled, by handling signal_user_changed.
-   */
-  virtual Gtk::TreeModel::iterator add_item_placeholder(); //Return index of new row.
-
   virtual void setup_menu();
   virtual Gnome::Gda::Value treeview_get_key(const Gtk::TreeModel::iterator& row);
 
   ///Add a blank row, or return the existing blank row if there already is one.
-  virtual Gtk::TreeModel::iterator get_next_available_row_with_add_if_necessary();
-  virtual void add_blank();
-
+  //virtual Gtk::TreeModel::iterator get_next_available_row_with_add_if_necessary();
 
   //Signal handlers:
   void treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter, int model_column_index);

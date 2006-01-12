@@ -33,7 +33,7 @@ public:
   virtual ~Box_Data_Details();
 
   virtual bool init_db_details(const Glib::ustring& strTableName, const Gnome::Gda::Value& primary_key_value);
-  virtual bool refresh_data_from_database(const Gnome::Gda::Value& primary_key_value);
+  virtual bool refresh_data_from_database_with_primary_key(const Gnome::Gda::Value& primary_key_value);
   virtual bool refresh_data_from_database_blank();
 
   virtual void print_layout();

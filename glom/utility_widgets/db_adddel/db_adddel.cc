@@ -303,7 +303,7 @@ bool DbAddDel::on_button_press_event_Popup(GdkEventButton *event)
     {
       //Double-click means edit.
       //Don't do this usually, because users sometimes double-click by accident when they just want to edit a cell.
-      
+
       //TODO: If the cell is not editable, handle the double-click as an edit/selection.
       //on_MenuPopup_activate_Edit();
       return false; //Not handled.
@@ -316,56 +316,7 @@ bool DbAddDel::on_button_press_event_Popup(GdkEventButton *event)
 Gtk::TreeModel::iterator DbAddDel::get_item_placeholder()
 {
   //Get the existing placeholder row, or add one if necessary:
-  Gtk::TreeModel::iterator iter = get_last_row();
-  if( get_is_placeholder_row(iter) )
-  {
-    return iter;
-  }
-  else
-  {
-    return add_item_placeholder();
-  }
-}
-
-Gtk::TreeModel::iterator DbAddDel::add_item_placeholder()
-{
-  Gtk::TreeModel::iterator iter;
-
-  //Placeholder rows are for adding new records.
-  if(!m_allow_add)
-    return iter;
-
-  iter = m_refListStore->append();
-  if(iter)
-  {
-    m_refListStore->set_is_placeholder(iter, true);
-    m_refListStore->set_key_value(iter, Gnome::Gda::Value()); //Remove temporary key value.
-  }
-
-  return iter;
-}
-
-Gtk::TreeModel::iterator DbAddDel::add_item(const Gnome::Gda::Value& valKey)
-{
-  if(!(get_model()))
-    return Gtk::TreeModel::iterator();
-
-  Gtk::TreeModel::iterator result = get_next_available_row_with_add_if_necessary();
-
-  if(result)
-  {
-    Gtk::TreeModel::Row treerow = *result;
-    if(treerow)
-    {
-      set_value_key(result, valKey);
-      m_refListStore->set_is_placeholder(result, false);
-      //treerow[*m_modelcolumn_placeholder] =  false; 
-    }
-  }
-
-  add_blank(); //if necessary
-
-  return result;
+  return m_refListStore->get_placeholder_row();
 }
 
 void DbAddDel::remove_all()
@@ -478,7 +429,7 @@ bool DbAddDel::select_item(const Gtk::TreeModel::iterator& iter, guint column, b
     if(refTreeSelection)
     {
       refTreeSelection->select(iter);
-          
+
       Gtk::TreeModel::Path path = m_refListStore->get_path(iter);
 
       guint view_column_index = 0;
@@ -517,35 +468,6 @@ guint DbAddDel::get_count() const
 
   return iCount;
 }
-
-void DbAddDel::add_blank()
-{
-  bool bPreventUserSignals = get_prevent_user_signals();
-  set_prevent_user_signals(true);
-
-  bool bAddNewBlank = false;
-
-  if(get_allow_user_actions()) //The extra blank line is only used if the user may add items:
-  {
-    Gtk::TreeModel::iterator iter = get_last_row();
-    if(get_is_placeholder_row(iter))
-    {
-      bAddNewBlank  = false; //One already exists.
-    }
-    else
-    {
-      bAddNewBlank = true; // The last line isn't a placeholder. Add one.
-    }
-  }
-
-  if(bAddNewBlank)
-  {
-    add_item_placeholder();
-  }
-
-  set_prevent_user_signals(bPreventUserSignals);
-}
-
 
 guint DbAddDel::get_columns_count() const
 {
@@ -811,7 +733,7 @@ void DbAddDel::construct_specified_columns()
   m_TreeView.columns_autosize();
 
   //Make sure there's a blank row after the database rows that have just been added.
-  add_blank();
+  //add_blank();
 }
 
 bool DbAddDel::refresh_from_database()
@@ -858,9 +780,9 @@ void DbAddDel::set_value(const Gtk::TreeModel::iterator& iter, const LayoutItem_
     }
 
     //Add extra blank if necessary:
-    add_blank();
+    //add_blank();
   }
-  
+
   //g_warning("DbAddDel::set_value end");
 }
 
@@ -911,6 +833,11 @@ guint DbAddDel::add_column(const LayoutItem_Field& field)
 void DbAddDel::set_where_clause(const Glib::ustring& where_clause)
 {
   m_where_clause = where_clause;
+}
+
+Glib::ustring DbAddDel::get_where_clause() const
+{
+  return m_where_clause;
 }
 
 void DbAddDel::set_columns_ready()
@@ -999,8 +926,7 @@ void DbAddDel::set_allow_delete(bool val)
 {
   m_allow_delete = val;
 }
-  
-  
+
 void DbAddDel::set_allow_user_actions(bool bVal)
 {
   m_bAllowUserActions = bVal;
@@ -1226,10 +1152,9 @@ void DbAddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const G
         set_prevent_user_signals(true); //Stops extra signal_user_changed.
 
         //Mark this row as no longer a placeholder, because it has data now. The client code must set an actual key for this in the signal_user_added() or m_signal_user_changed signal handlers.
-        //m_refListStore->set_is_placeholder(iter, false);
+        m_refListStore->set_is_not_placeholder(iter);
         //Don't mark this as not a placeholder, because it's still a placeholder until it has a key value.
 
-        add_item_placeholder(); //Add the next blank for the next user add, if necessary.
         set_prevent_user_signals(bPreventUserSignals);
 
         bIsAdd = true; //Signal that a new key was added.
@@ -1531,49 +1456,6 @@ bool DbAddDel::get_is_last_row(const Gtk::TreeModel::iterator& iter) const
     return false;
 }
 
-Gtk::TreeModel::iterator DbAddDel::get_next_available_row_with_add_if_necessary()
-{
-  Gtk::TreeModel::iterator result;
-
-  if(!m_refListStore)
-    return result;
-
-  bool bPreventUserSignals = get_prevent_user_signals();
-  set_prevent_user_signals(true);
-
-  if(get_allow_user_actions()) //The extra blank line is only used if the user may add items:
-  {
-    Gtk::TreeModel::iterator iter = get_last_row();
-
-    if(iter != get_model()->children().end())
-    {
-      //Look at the last row:
-      if( get_is_placeholder_row(iter))
-      {
-        result = iter;
-      }
-      else
-      {
-        // The last line isn't blank, so we cannot use it. Add another one.
-        result = m_refListStore->append();
-      }
-    }
-    else
-    {
-       // This is the first line.
-       result = m_refListStore->append();
-    }
-  }
-  else
-  {
-     result = m_refListStore->append(); //Add a new blank line. There are no blank lines.
-  }
-
-  set_prevent_user_signals(bPreventUserSignals);
-
-  return result;
-}
-
 Gtk::TreeModel::iterator DbAddDel::get_last_row() const
 {
   return m_refListStore->get_last_row();
@@ -1599,7 +1481,7 @@ void DbAddDel::set_value_key(const Gtk::TreeModel::iterator& iter, const Gnome::
     if(!(GlomConversions::value_is_empty(value)))
     {
       //This is not a placeholder anymore, if it every was:
-      m_refListStore->set_is_placeholder(iter, false);
+      m_refListStore->set_is_not_placeholder(iter);
       //row[*m_modelcolumn_placeholder] = false;
     }
 
