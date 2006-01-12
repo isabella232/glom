@@ -102,7 +102,7 @@ bool Box_Data_List_Related::init_db_details(const LayoutItem_Portal& portal)
   }
 
   enable_buttons();
-    
+
   return Box_Data_List::init_db_details(m_portal.m_relationship.get_to_table()); //Calls create_layout() and fill_from_database().
 }
 
@@ -119,7 +119,8 @@ bool Box_Data_List_Related::refresh_data_from_database_with_foreign_key(const Gn
   }
   else
   {
-    g_warning("Box_Data_List_Related::refresh_data_from_database_with_foreign_key(): m_key_value is NULL.");
+    //g_warning("Box_Data_List_Related::refresh_data_from_database_with_foreign_key(): m_key_value is NULL.");
+    refresh_data_from_database_blank();
     return false;
   }
   //TODO: Clear the list if there is no key value?

@@ -30,6 +30,8 @@ public:
   Box_Data_List();
   virtual ~Box_Data_List();
 
+  void refresh_data_from_database_blank();
+
   virtual Gnome::Gda::Value get_primary_key_value(const Gtk::TreeModel::iterator& row);
   virtual Gnome::Gda::Value get_primary_key_value_selected();
   Gnome::Gda::Value get_primary_key_value_first();

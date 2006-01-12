@@ -59,8 +59,6 @@ bool Box_Data::init_db_details(const Glib::ustring& strTableName, const Glib::us
 
 bool Box_Data::refresh_data_from_database_with_where_clause(const Glib::ustring& strWhereClause)
 {
-  std::cout << "Box_Data::refresh_data_from_database(): strWhereClause=" << strWhereClause << std::endl;
-
   m_strWhereClause = strWhereClause;
 
   return Box_DB_Table::refresh_data_from_database(); //Calls fill_from_database().

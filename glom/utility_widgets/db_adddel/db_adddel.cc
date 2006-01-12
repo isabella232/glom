@@ -740,15 +740,27 @@ bool DbAddDel::refresh_from_database()
 {
   if(m_refListStore)
   {
-    Glib::RefPtr<Gtk::TreeModel> refNull;
+    //Glib::RefPtr<Gtk::TreeModel> refNull;
     bool result = m_refListStore->refresh_from_database(m_where_clause);
-    m_TreeView.set_model(refNull); //TODO: This causes a g_waring(): gtk_tree_view_unref_tree_helper: assertion `node != NULL' failed
-    //gtk_tree_view_set_model(m_TreeView.gobj(), 0); //This gives the same warning.
+    //m_TreeView.set_model(refNull); //TODO: This causes a g_warning(): gtk_tree_view_unref_tree_helper: assertion `node != NULL' failed
+    if(m_TreeView.get_model())
+      gtk_tree_view_set_model(m_TreeView.gobj(), 0); //This gives the same warning.
+
     m_TreeView.set_model(m_refListStore);
     return result;
   }
   else
     return false;
+}
+
+bool DbAddDel::refresh_from_database_blank()
+{
+  if(m_refListStore)
+  {
+    m_refListStore->clear(); //Remove all rows.
+  }
+
+  return true;
 }
 
 void DbAddDel::set_value(const Gtk::TreeModel::iterator& iter, const LayoutItem_Field& layout_item, const Gnome::Gda::Value& value)

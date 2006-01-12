@@ -77,7 +77,7 @@ Box_Data_List::~Box_Data_List()
 void Box_Data_List::enable_buttons()
 {
   const Privileges table_privs = get_current_privs(m_strTableName);
-  
+
     //Enable/Disable record creation and deletion:
   bool allow_create = !m_read_only;
   bool allow_delete = !m_read_only;
@@ -91,6 +91,12 @@ void Box_Data_List::enable_buttons()
   m_AddDel.set_allow_delete(allow_delete);
 
   m_AddDel.set_allow_view_details(table_privs.m_view);
+}
+
+void Box_Data_List::refresh_data_from_database_blank()
+{
+  m_AddDel.refresh_from_database_blank();
+  m_AddDel.set_where_clause("");
 }
 
 bool Box_Data_List::fill_from_database()
@@ -259,8 +265,6 @@ void Box_Data_List::on_adddel_user_added(const Gtk::TreeModel::iterator& row, gu
       Glib::RefPtr<Gnome::Gda::DataModel> data_model = record_new(true /* use entered field data*/, primary_key_value);
       if(data_model)
       {
-        std::cout << "Box_Data_List::on_adddel_user_added debug `" << std::endl;
-
         //Save the primary key value for later use:
         m_AddDel.set_value_key(row, primary_key_value);
 
@@ -269,16 +273,12 @@ void Box_Data_List::on_adddel_user_added(const Gtk::TreeModel::iterator& row, gu
         //If it's an auto-increment, then get the value and show it:
         if(field_primary_key.get_auto_increment())
         {
-           std::cout << "Box_Data_List::on_adddel_user_added debug 2" << std::endl;
-
           LayoutItem_Field layout_item;
           layout_item.m_field = field_primary_key;
           m_AddDel.set_value(row, layout_item, primary_key_value);
         }
 
         on_record_added(primary_key_value);
-
-         std::cout << "Box_Data_List::on_adddel_user_added debug 3" << std::endl;
 
         //Do any lookups, etc, trigerred by the change of value of the original changed field:
         on_adddel_user_changed(row, col_with_first_value);
@@ -288,8 +288,6 @@ void Box_Data_List::on_adddel_user_added(const Gtk::TreeModel::iterator& row, gu
     }
     else
     {
-      std::cout << "Box_Data_List::on_adddel_user_added debug: add record failed." << std::endl;
-
       //Add Record failed.
       //Replace with correct values:
       fill_from_database();

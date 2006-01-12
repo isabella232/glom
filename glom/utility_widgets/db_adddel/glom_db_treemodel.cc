@@ -668,7 +668,6 @@ void DbTreeModel::set_value_impl(const iterator& row, int column, const Glib::Va
       row_details.set_value(*this, column, row_iter, pDbValue->get());
 
       //TODO: Performance: get_path() is really slow.
-      std::cout << "DbTreeModel::set_value_impl: calling row_changed on row_iter=" << row_iter << std::endl;
       row_changed( get_path(row), row);
 
       //g_warning("set_value_impl: value=%s", pDbValue->get().to_string().c_str());

@@ -175,6 +175,7 @@ public:
   void construct_specified_columns(); //Delay actual use of set_column_*() stuff until this method is called.
 
   bool refresh_from_database();
+  bool refresh_from_database_blank();
 
   void set_show_column_titles(bool bVal = true);
 
