@@ -609,47 +609,6 @@ void Frame_Glom::show_ok_dialog(const Glib::ustring& title, const Glib::ustring&
   dialog.run();
 }
 
-Glib::ustring Frame_Glom::get_find_where_clause_quick(const Gnome::Gda::Value& quick_search) const
-{
-  Glib::ustring strClause;
-
-  const Document_Glom* document = get_document();
-  if(document)
-  {
-    //TODO: Cache the list of all fields, as well as caching (m_Fields) the list of all visible fields:
-    const Document_Glom::type_vecFields fields = document->get_table_fields(m_strTableName);
-
-    type_vecLayoutFields fieldsToGet;
-    for(Document_Glom::type_vecFields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
-    {
-      Glib::ustring strClausePart;
-
-      const Field& field = *iter;
-
-      bool use_this_field = true;
-      if(field.get_glom_type() != Field::TYPE_TEXT)
-      {
-          use_this_field = false;
-      }
-
-      if(use_this_field)
-      {
-        strClausePart = m_strTableName + "." + field.get_name() + " " + field.sql_find_operator() + " " +  field.sql_find(quick_search);
-      }
-
-      if(!strClausePart.empty())
-      {
-        if(!strClause.empty())
-          strClause += " OR ";
-
-        strClause += strClausePart;
-      }
-    }
-  }
-
-  return strClause;
-}
-
 void Frame_Glom::on_button_quickfind()
 {
   const Glib::ustring criteria = m_pEntry_QuickFind->get_text();
@@ -662,7 +621,7 @@ void Frame_Glom::on_button_quickfind()
   }
   else
   {
-    Glib::ustring where_clause = get_find_where_clause_quick(Gnome::Gda::Value(criteria));
+    Glib::ustring where_clause = get_find_where_clause_quick(m_strTableName, Gnome::Gda::Value(criteria));
     //std::cout << "Frame_Glom::on_button_quickfind(): where_clause=" << where_clause << std::endl;
     on_notebook_find_criteria(where_clause);
   }

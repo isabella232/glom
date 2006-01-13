@@ -19,12 +19,16 @@
  */
 
 #include "dialog_choose_id.h"
+#include <bakery/App/App_Gtk.h> //For util_bold_message().
 //#include <libgnome/gnome-i18n.h>
 #include <glibmm/i18n.h>
 
 
 Dialog_ChooseID::Dialog_ChooseID()
 : m_label_table_name(0),
+  m_pBox_QuickFind(0),
+  m_pEntry_QuickFind(0),
+  m_pButton_QuickFind(0),
   m_alignment_parent(0),
   m_document(0),
   m_stage(STAGE_INVALID)
@@ -34,13 +38,25 @@ Dialog_ChooseID::Dialog_ChooseID()
 Dialog_ChooseID::Dialog_ChooseID(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
 : Gtk::Dialog(cobject),
   m_label_table_name(0),
+  m_pBox_QuickFind(0),
+  m_pEntry_QuickFind(0),
+  m_pButton_QuickFind(0),
   m_alignment_parent(0),
   m_document(0),
   m_stage(STAGE_INVALID)
 {
   refGlade->get_widget("label_table_name", m_label_table_name);
   refGlade->get_widget("alignment_parent", m_alignment_parent);
-  
+
+  refGlade->get_widget("hbox_quickfind", m_pBox_QuickFind);
+  refGlade->get_widget("entry_quickfind", m_pEntry_QuickFind);
+  m_pEntry_QuickFind->signal_activate().connect(
+   sigc::mem_fun(*this, &Dialog_ChooseID::on_button_quickfind) ); //Pressing Enter here is like pressing Find.
+
+  refGlade->get_widget("button_quickfind", m_pButton_QuickFind);
+  m_pButton_QuickFind->signal_clicked().connect(
+    sigc::mem_fun(*this, &Dialog_ChooseID::on_button_quickfind) );
+
   setup();
 }
 
@@ -51,7 +67,7 @@ Dialog_ChooseID::~Dialog_ChooseID()
 }
 
 void Dialog_ChooseID::setup()
-{   
+{
   m_box_find.signal_find_criteria.connect(sigc::mem_fun(*this, &Dialog_ChooseID::on_box_find_criteria));
   m_box_select.signal_user_requested_details().connect(sigc::mem_fun(*this, &Dialog_ChooseID::on_box_select_selected));
   m_box_select.set_read_only();
@@ -61,7 +77,7 @@ void Dialog_ChooseID::setup()
   //m_box_select.show_all_children();
   add_view(&m_box_select);
   m_box_select.set_open_button_title(_("Select"));
-  
+
   m_stage = STAGE_FIND;
   update_ui_for_stage();
 }
@@ -70,6 +86,23 @@ bool Dialog_ChooseID::get_id_chosen(Gnome::Gda::Value& chosen_id) const
 {
   chosen_id = m_id_chosen;
   return true;
+}
+
+void Dialog_ChooseID::on_button_quickfind()
+{
+  const Glib::ustring criteria = m_pEntry_QuickFind->get_text();
+  if(criteria.empty())
+  {
+    Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("No Find Criteria")), true, Gtk::MESSAGE_WARNING );
+    dialog.set_secondary_text(_("You have not entered any quick find criteria."));
+    dialog.set_transient_for(*this);
+    dialog.run();
+  }
+  else
+  {
+    const Glib::ustring where_clause = get_find_where_clause_quick(m_table_name, Gnome::Gda::Value(criteria));
+    on_box_find_criteria(where_clause);
+  }
 }
 
 void Dialog_ChooseID::on_box_find_criteria(const Glib::ustring& where_clause)
@@ -102,14 +135,18 @@ void Dialog_ChooseID::on_box_select_selected(const Gnome::Gda::Value& primary_ke
 void Dialog_ChooseID::update_ui_for_stage()
 {
   m_alignment_parent->remove();
-    
+
   if(m_stage == STAGE_FIND)
   {
+    m_pBox_QuickFind->show();
+
     m_box_find.show();
     m_alignment_parent->add(m_box_find);
   }
   else if(m_stage == STAGE_SELECT)
   {
+    m_pBox_QuickFind->hide();
+
     m_box_select.show();
     m_alignment_parent->add(m_box_select);
   }
@@ -118,17 +155,17 @@ void Dialog_ChooseID::update_ui_for_stage()
 bool Dialog_ChooseID::init_db_details(const Glib::ustring& table_name)
 {
   m_table_name = table_name;
-  
+
   m_label_table_name->set_text( get_document()->get_table_title(m_table_name) );
-  
+
   //Start by asking for find criteria:
   m_stage = STAGE_FIND;
   update_ui_for_stage();
-  
+
   bool result = m_box_find.init_db_details(table_name);
-  
+
   m_table_name = table_name;
-  
+
   return result;
 }
 

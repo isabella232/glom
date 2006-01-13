@@ -82,7 +82,7 @@ public:
 
 protected:
   bool offer_field_list(LayoutItem_Field& field, const Glib::ustring& table_name);
-  
+
   ///@result Whether the user would like to find again.
   static bool show_warning_no_records_found(Gtk::Window& transient_for);
 
@@ -97,6 +97,8 @@ protected:
   bool get_table_exists_in_database(const Glib::ustring& table_name) const;
 
   type_vecFields get_fields_for_table(const Glib::ustring& table_name) const;
+
+  Glib::ustring get_find_where_clause_quick(const Glib::ustring& table_name, const Gnome::Gda::Value& quick_search) const;
 
   type_vecStrings get_database_groups() const;
   type_vecStrings get_database_users(const Glib::ustring& group_name = Glib::ustring()) const;

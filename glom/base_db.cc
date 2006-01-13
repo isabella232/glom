@@ -1548,7 +1548,51 @@ bool Base_DB::show_warning_no_records_found(Gtk::Window& transient_for)
   dialog.add_button(_("New Find"), Gtk::RESPONSE_OK);
   dialog.set_secondary_text(_("Your find criteria did not match any records in the table."));
   dialog.set_transient_for(transient_for);
-  
+
   const bool find_again = (dialog.run() == Gtk::RESPONSE_OK);
   return find_again;
 }
+
+Glib::ustring Base_DB::get_find_where_clause_quick(const Glib::ustring& table_name, const Gnome::Gda::Value& quick_search) const
+{
+  Glib::ustring strClause;
+
+  const Document_Glom* document = get_document();
+  if(document)
+  {
+    //TODO: Cache the list of all fields, as well as caching (m_Fields) the list of all visible fields:
+    const Document_Glom::type_vecFields fields = document->get_table_fields(table_name);
+
+    type_vecLayoutFields fieldsToGet;
+    for(Document_Glom::type_vecFields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
+    {
+      Glib::ustring strClausePart;
+
+      const Field& field = *iter;
+
+      bool use_this_field = true;
+      if(field.get_glom_type() != Field::TYPE_TEXT)
+      {
+          use_this_field = false;
+      }
+
+      if(use_this_field)
+      {
+        strClausePart = table_name + "." + field.get_name() + " " + field.sql_find_operator() + " " +  field.sql_find(quick_search);
+      }
+
+      if(!strClausePart.empty())
+      {
+        if(!strClause.empty())
+          strClause += " OR ";
+
+        strClause += strClausePart;
+      }
+    }
+  }
+
+  return strClause;
+}
+
+
+

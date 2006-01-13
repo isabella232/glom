@@ -1639,7 +1639,7 @@ void DbAddDel::on_cell_button_clicked(const Gtk::TreeModel::Path& path)
     const guint first_visible = get_count_hidden_system_columns();
     select_item(iter, first_visible, false /* start_editing */);
   }
-  
+
   on_MenuPopup_activate_Edit();
 }
 

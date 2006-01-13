@@ -640,10 +640,10 @@ const Gtk::Widget* DataWidget::get_data_child_widget() const
  bool DataWidget::offer_related_record_id_find(Gnome::Gda::Value& chosen_id)
  {
   bool result = false;
-  
+
   //Initialize output variable:
   chosen_id = Gnome::Gda::Value();
-   
+
   try
   {
     Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_find_id");
@@ -656,7 +656,7 @@ const Gtk::Widget* DataWidget::get_data_child_widget() const
       //dialog->set_document(get_document(), table_name, field);
       dialog->set_transient_for(*get_application());
       add_view(dialog);
-      
+
       //Discover the related table, in the relationship that uses this ID field:
       Glib::ustring related_table_name;
       LayoutItem_Field* layoutField = dynamic_cast<LayoutItem_Field*>(get_layout_item());

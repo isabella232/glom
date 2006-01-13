@@ -122,7 +122,6 @@ protected:
   virtual Gtk::Window* get_app_window();
   virtual const Gtk::Window* get_app_window() const;
 
-  Glib::ustring get_find_where_clause_quick(const Gnome::Gda::Value& quick_search) const;
   void update_records_count();
 
   void alert_no_table();
