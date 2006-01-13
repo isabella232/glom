@@ -1,3 +1,12 @@
+2006-01-13  Murray Cumming   <murrayc@murrayc.com>
+
+	* examples/example_smallbusiness.glom: Contacts: Add the web site 
+	field to the layout, and change it to text.
+	* glom/mode_data/dialog_layout_details.cc: enable_buttons(): Properly 
+	enable/disable Up and Down for the first and last _child_ items.
+	* glom/mode_data/dialog_layout_list.cc: enable_buttons(): Properly 
+	enable/disable Up and Down when adding fields.
+
 2006-01-12  Murray Cumming   <murrayc@murrayc.com>
 
 	* glom/utility_widgets/db_adddel/db_adddel.cc:

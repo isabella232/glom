@@ -68,7 +68,7 @@ Dialog_Layout_List::Dialog_Layout_List(BaseObjectType* cobject, const Glib::RefP
     m_model_fields->signal_row_changed().connect( sigc::mem_fun(*this, &Dialog_Layout_List::on_treemodel_row_changed) );
   }
 
- 
+
   refGlade->get_widget("button_field_up", m_button_field_up);
   m_button_field_up->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout_List::on_button_field_up) );
 
@@ -313,6 +313,8 @@ void Dialog_Layout_List::on_button_add_field()
   {
     std::cerr << ex.what() << std::endl;
   }
+
+  enable_buttons();
 }
 
 void Dialog_Layout_List::on_button_delete()
@@ -329,6 +331,8 @@ void Dialog_Layout_List::on_button_delete()
       m_modified = true;
     }
   }
+
+  enable_buttons();
 }
 
 

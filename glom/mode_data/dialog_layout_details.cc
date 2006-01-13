@@ -323,8 +323,19 @@ void Dialog_Layout_Details::enable_buttons()
     {
       //Disable Up if It can't go any higher.
       bool enable_up = true;
-      if(iter == m_model_items->children().begin())
-        enable_up = false;  //It can't go any higher.
+      Gtk::TreeModel::iterator iterParent = iter->parent();
+      if(iterParent)
+      {
+        //See whether it is the last child of its parent:
+        if(iter == iterParent->children().begin())
+          enable_up = false;
+      }
+      else
+      {
+        //It is at the top-level:
+        if(iter == m_model_items->children().begin())
+          enable_up = false;  //It can't go any higher.
+      }
 
       m_button_field_up->set_sensitive(enable_up);
 
@@ -334,8 +345,18 @@ void Dialog_Layout_Details::enable_buttons()
       iterNext++;
 
       bool enable_down = true;
-      if(iterNext == m_model_items->children().end())
-        enable_down = false;
+      if(iterParent)
+      {
+        //See whether it is the last child of its parent:
+        if(iterNext == iterParent->children().end())
+          enable_down = false;
+      }
+      else
+      {
+        //It is at the top-level:
+        if(iterNext == m_model_items->children().end())
+          enable_down = false;
+      }
 
       m_button_field_down->set_sensitive(enable_down);
 
