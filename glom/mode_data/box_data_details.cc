@@ -253,14 +253,14 @@ bool Box_Data_Details::fill_from_database()
 
               //Field value:
               Gnome::Gda::Value value;
-               
+
               if(!primary_key_is_empty)
                 value = result->get_value_at(i, row_number);
               else
               {
                 value = GlomConversions::get_empty_value(layout_item->m_field.get_glom_type());
               }
-               
+
               m_FlowTable.set_field_value(*layout_item, value);
             }
           }
@@ -470,12 +470,12 @@ void Box_Data_Details::on_flowtable_layout_changed()
   //Get new layout:
   Document_Glom::type_mapLayoutGroupSequence layout_groups;
   m_FlowTable.get_layout_groups(layout_groups);
-  
+
   //Store it in the document:
   Document_Glom* document = get_document();
   if(document)
     document->set_data_layout_groups(m_layout_name, m_strTableName, layout_groups);
-  
+
   //Build the view again from the new layout:
   create_layout();
 
@@ -487,7 +487,7 @@ void Box_Data_Details::on_flowtable_requested_related_details(const Glib::ustrin
 {
   if(GlomConversions::value_is_empty(primary_key_value))
     return; //Ignore empty ID fields.
-    
+
   signal_requested_related_details().emit(table_name, primary_key_value);
 }
 
@@ -623,7 +623,7 @@ void Box_Data_Details::on_flowtable_field_edited(const LayoutItem_Field& layout_
   else
   {
     //There is no current primary key value:
-    
+
     if(m_field_primary_key.get_auto_increment()) //If the primary key is an auto-increment:
     {
       if(strFieldName == m_field_primary_key.get_name()) //If edited field is the primary key.

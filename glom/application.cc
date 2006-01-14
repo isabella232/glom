@@ -132,7 +132,7 @@ void App_Glom::init_menus_file()
 {
   //Overridden to remove the Save and Save-As menu items,
   //because all changes are saved immediately and automatically.
-  
+
   // File menu
 
   //Build actions:
@@ -146,6 +146,9 @@ void App_Glom::init_menus_file()
                         sigc::mem_fun((App&)*this, &App::on_menu_file_new));
   m_refFileActionGroup->add(Gtk::Action::create("BakeryAction_File_Open", Gtk::Stock::OPEN),
                         sigc::mem_fun((App_WithDoc&)*this, &App_WithDoc::on_menu_file_open));
+
+  m_refFileActionGroup->add(Gtk::Action::create("BakeryAction_Menu_File_Export", _("_Export")),
+                        sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_file_export));
 
   m_refFileActionGroup->add(Gtk::Action::create("GlomAction_File_Print", Gtk::Stock::PRINT),
                         sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_file_print) );
@@ -167,6 +170,7 @@ void App_Glom::init_menus_file()
     "        <menuitem action='BakeryAction_File_Open' />"
     "        <menu action='BakeryAction_Menu_File_RecentFiles'>"
     "        </menu>"
+    "        <menuitem action='BakeryAction_Menu_File_Export' />"
     "        <separator/>"
     "        <menuitem action='GlomAction_File_Print' />"
     "        <separator/>"

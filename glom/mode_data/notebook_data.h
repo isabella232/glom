@@ -34,6 +34,9 @@ public:
   //Create the layout for the database structure, and fill it with data.
   virtual bool init_db_details(const Glib::ustring& strTableName, const Glib::ustring& strWhereClause = Glib::ustring());
 
+  ///Get the existing where clause, previously supplied to init_db_details().
+  Glib::ustring get_where_clause() const;
+
   ///Show the details for a particular record, without affecting the list view:
   virtual void show_details(const Gnome::Gda::Value& primary_key_value);
 

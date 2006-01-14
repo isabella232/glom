@@ -71,26 +71,6 @@ void Box_DB_Table::set_entered_field_data(const LayoutItem_Field& /* field */, c
   //Override this.
 }
 
-bool Box_DB_Table::get_field_primary_key_for_table(const Glib::ustring& table_name, Field& field) const
-{
-  const Document_Glom* document = get_document();
-  if(document)
-  {
-    //TODO_Performance:
-    Document_Glom::type_vecFields fields = document->get_table_fields(table_name);
-    for(Document_Glom::type_vecFields::iterator iter = fields.begin(); iter != fields.end(); ++iter)
-    {
-      if(iter->get_primary_key())
-      {
-        field = *iter;
-        return true;
-      }
-    }
-  }
-
-  return false;
-}
-
 unsigned long Box_DB_Table::get_last_auto_increment_value(const Glib::RefPtr<Gnome::Gda::DataModel>& data_model, const Glib::ustring& /* field_name */)
 {
   sharedptr<SharedConnection> sharedconnection = connect_to_server();
@@ -110,24 +90,6 @@ unsigned long Box_DB_Table::get_last_auto_increment_value(const Glib::RefPtr<Gno
   else
     return 0;
 }
-
-bool Box_DB_Table::get_fields_for_table_one_field(const Glib::ustring& table_name, const Glib::ustring& field_name, Field& field) const
-{
-  //Initialize output parameter:
-  Field result = Field();
-
-  type_vecFields fields = get_fields_for_table(table_name);
-  type_vecFields::iterator iter = std::find_if(fields.begin(), fields.end(), predicate_FieldHasName<Field>(field_name));
-  if(iter != fields.end()) //TODO: Handle error?
-  {
-    field = *iter;
-    return true;
-  }
-
-  return false;
-}
-
-
 
 //static:
 Box_DB_Table::type_vecFields Box_DB_Table::get_fields_for_datamodel(const Glib::RefPtr<Gnome::Gda::DataModel>& data_model)

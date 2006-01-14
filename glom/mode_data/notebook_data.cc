@@ -140,6 +140,11 @@ bool Notebook_Data::init_db_details(const Glib::ustring& strTableName, const Gli
   return result;
 }
 
+Glib::ustring Notebook_Data::get_where_clause() const
+{
+  return m_Box_List.get_where_clause();
+}
+
 void Notebook_Data::on_list_user_requested_details(const Gnome::Gda::Value& primary_key_value)
 {
   m_Box_Details.refresh_data_from_database_with_primary_key(primary_key_value);

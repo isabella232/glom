@@ -88,7 +88,6 @@ protected:
   //Glib::ustring m_relationship_name; //bool m_related;
   bool m_hidden;
   bool m_formatting_use_default;
-
 };
 
 #endif //GLOM_DATASTRUCTURE_LAYOUTITEM_FIELD_H

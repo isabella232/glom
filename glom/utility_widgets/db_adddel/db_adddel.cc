@@ -207,7 +207,7 @@ void DbAddDel::setup_menu()
     m_refContextEdit =  Gtk::Action::create("ContextEdit", Gtk::Stock::EDIT);
   else
     m_refContextEdit =  Gtk::Action::create("ContextEdit", m_open_button_title);
-    
+
   m_refActionGroup->add(m_refContextEdit,
     sigc::mem_fun(*this, &DbAddDel::on_MenuPopup_activate_Edit) );
 

@@ -358,176 +358,16 @@ Box_Data::type_vecLayoutFields Box_Data::get_fields_to_show() const
     return get_table_fields_to_show(m_strTableName);
 }
 
-void Box_Data::get_table_fields_to_show_add_group(const Glib::ustring& table_name, const Privileges& table_privs, const type_vecFields& all_db_fields, const LayoutGroup& group, Box_Data::type_vecLayoutFields& vecFields) const
-{
-  //g_warning("Box_Data::get_table_fields_to_show_add_group(): table_name=%s, all_db_fields.size()=%d, group.name=%s", table_name.c_str(), all_db_fields.size(), group.get_name().c_str());
-
-  const Document_Glom* document = get_document();
-
-  LayoutGroup::type_map_const_items items = group.get_items();
-  for(LayoutGroup::type_map_const_items::const_iterator iterItems = items.begin(); iterItems != items.end(); ++iterItems)
-  {
-    const LayoutItem* item = iterItems->second;
-
-    const LayoutItem_Field* item_field = dynamic_cast<const LayoutItem_Field*>(item);
-    if(item_field)
-    {
-      //Get the field info:
-      const Glib::ustring field_name = item->get_name();
-
-      if(item_field->get_has_relationship_name()) //If it's a field in a related table.
-      {
-        //Get the full field information:
-        const Glib::ustring relationship_name = item_field->get_relationship_name();
-        Relationship relationship;
-        bool test = document->get_relationship(table_name, relationship_name, relationship);
-        if(test)
-        {
-          Field field;
-          //TODO_Performance: get_fields_for_table_one_field() is probably very inefficient
-          bool test = get_fields_for_table_one_field(relationship.get_to_table(), item->get_name(), field);
-          if(test)
-          {
-            LayoutItem_Field layout_item = *item_field; //TODO_Performance: Reduce the copying.
-            layout_item.m_field = field; //Fill in the full field information for later.
-
-            //TODO_Performance: We do this once for each related field, even if there are 2 from the same table:
-            const Privileges privs_related = get_current_privs(relationship.get_to_table());
-            layout_item.m_priv_view = privs_related.m_view;
-            layout_item.m_priv_edit = privs_related.m_edit;
-
-            vecFields.push_back( sharedptr<LayoutItem_Field>(new LayoutItem_Field(layout_item)) );
-          }
-        }
-      }
-      else //It's a regular field in the table:
-      {
-        type_vecFields::const_iterator iterFind = std::find_if(all_db_fields.begin(), all_db_fields.end(), predicate_FieldHasName<Field>(field_name));
-
-        //If the field does not exist anymore then we won't try to show it:
-        if(iterFind != all_db_fields.end() )
-        {
-          LayoutItem_Field layout_item = *item_field; //TODO_Performance: Reduce the copying here.
-          layout_item.m_field = *iterFind; //Fill the LayoutItem with the full field information.
-
-          //Prevent editing of the field if the user may not edit this table:
-          layout_item.m_priv_view = table_privs.m_view;
-          layout_item.m_priv_edit = table_privs.m_edit;
-
-          vecFields.push_back( sharedptr<LayoutItem_Field>(new LayoutItem_Field(layout_item)) );
-        }
-      }
-    }
-    else
-    {
-      const LayoutGroup* item_group = dynamic_cast<const LayoutGroup*>(item);
-      if(item_group)
-      {
-        //Recurse:
-        get_table_fields_to_show_add_group(table_name, table_privs, all_db_fields, *item_group, vecFields);
-      }
-    }
-  }
-
-  if(vecFields.empty())
-  {
-    //g_warning("Box_Data::get_table_fields_to_show_add_group(): Returning empty list.");
-  } 
-}
-
 Box_Data::type_vecLayoutFields Box_Data::get_table_fields_to_show(const Glib::ustring& table_name) const
 {
   const Document_Glom* pDoc = dynamic_cast<const Document_Glom*>(get_document());
   if(pDoc)
   {
     Document_Glom::type_mapLayoutGroupSequence mapGroupSequence =  pDoc->get_data_layout_groups_plus_new_fields(m_layout_name, table_name);
-    return get_table_fields_to_show(table_name, mapGroupSequence);
+    return get_table_fields_to_show_for_sequence(table_name, mapGroupSequence);
   }
   else
     return type_vecLayoutFields();
-}
-
-Box_Data::type_vecLayoutFields Box_Data::get_table_fields_to_show(const Glib::ustring& table_name, const Document_Glom::type_mapLayoutGroupSequence& mapGroupSequence) const
-{
-  //Get field definitions from the database, with corrections from the document:
-  type_vecFields all_fields = get_fields_for_table(table_name);
-
-  const Privileges table_privs = get_current_privs(table_name);
-
-  //Get fields that the document says we should show:
-  type_vecLayoutFields result;
-  const Document_Glom* pDoc = dynamic_cast<const Document_Glom*>(get_document());
-  if(pDoc)
-  {
-    if(mapGroupSequence.empty())
-    {
-      //No field sequence has been saved in the document, so we use all fields by default, so we start with something visible:
-
-      //Start with the Primary Key as the first field:
-      guint iPrimaryKey = 0;
-      bool bPrimaryKeyFound = get_field_primary_key_index(all_fields, iPrimaryKey);
-      Glib::ustring primary_key_field_name;
-      if(bPrimaryKeyFound)
-      {
-        sharedptr<LayoutItem_Field> layout_item(new LayoutItem_Field);
-        layout_item->m_field = all_fields[iPrimaryKey];
-
-        //Don't use thousands separators with ID numbers:
-        layout_item->m_formatting.m_numeric_format.m_use_thousands_separator = false;
-
-        layout_item->set_editable(true); //A sensible default.
-
-        //Prevent editing of the field if the user may not edit this table:
-        layout_item->m_priv_view = table_privs.m_view;
-        layout_item->m_priv_edit = table_privs.m_edit;
-
-        result.push_back(layout_item);
-      }
-
-      //Add the rest:
-      for(type_vecFields::const_iterator iter = all_fields.begin(); iter != all_fields.end(); ++iter)
-      {
-        const Field& field_info = *iter;
-
-        if(iter->get_name() != primary_key_field_name) //We already added the primary key.
-        {
-          sharedptr<LayoutItem_Field> layout_item(new LayoutItem_Field);
-          layout_item->m_field = field_info;
-
-          layout_item->set_editable(true); //A sensible default.
-
-          //Prevent editing of the field if the user may not edit this table:
-          layout_item->m_priv_view = table_privs.m_view;
-          layout_item->m_priv_edit = table_privs.m_edit;
-
-          result.push_back(layout_item);
-        }
-      }
-    }
-    else
-    {
-      type_vecFields vecFieldsInDocument = pDoc->get_table_fields(table_name);
-
-      //We will show the fields that the document says we should:
-      for(Document_Glom::type_mapLayoutGroupSequence::const_iterator iter = mapGroupSequence.begin(); iter != mapGroupSequence.end(); ++iter)
-      {
-        const LayoutGroup& group = iter->second;
-
-        if(true) //!group.m_hidden)
-        {
-          //Get the fields:
-          get_table_fields_to_show_add_group(table_name, table_privs, all_fields, group, result);
-        }
-      }
-    }
-  }
-
-  if(result.empty())
-  {
-    //g_warning("Box_Data::get_table_fields_to_show_add_group(): Returning empty list.");
-  }
-
-  return result;
 }
 
 Gnome::Gda::Value Box_Data::generate_next_auto_increment(const Glib::ustring& table_name, const Glib::ustring field_name)
@@ -667,7 +507,7 @@ Box_Data::type_list_lookups Box_Data::get_lookup_fields(const Glib::ustring& fie
 Gnome::Gda::Value Box_Data::get_lookup_value(const Relationship& relationship, const Field& source_field, const Gnome::Gda::Value& key_value)
 {
   Gnome::Gda::Value result;
- 
+
   Field to_key_field;
   bool test = get_fields_for_table_one_field(relationship.get_to_table(), relationship.get_to_field(), to_key_field);
   if(test)
@@ -958,56 +798,6 @@ void Box_Data::fill_layout_group_field_info(LayoutGroup& group, const Privileges
   }
 }
 
-//static:
-bool Box_Data::get_field_primary_key_index(const type_vecFields& fields, guint& field_column)
-{
-  //Initialize input parameter:
-  field_column = 0;
-
-  //TODO_performance: Cache the primary key?
-  guint col = 0;
-  guint cols_count = fields.size();
-  while(col < cols_count)
-  {
-    if(fields[col].get_primary_key())
-    {
-      field_column = col;
-      return true;
-    }
-    else
-    {
-      ++col;
-    }
-  }
-
-  return false; //Not found.
-}
-
-//static:
-bool Box_Data::get_field_primary_key_index(const type_vecLayoutFields& fields, guint& field_column)
-{
-  //Initialize input parameter:
-  field_column = 0;
-
-  //TODO_performance: Cache the primary key?
-  guint col = 0;
-  guint cols_count = fields.size();
-  while(col < cols_count)
-  {
-    if(fields[col]->m_field.get_primary_key())
-    {
-      field_column = col;
-      return true;
-    }
-    else
-    {
-      ++col;
-    }
-  }
-
-  return false; //Not found.
-}
-
 bool Box_Data::record_delete(const Gnome::Gda::Value& primary_key_value)
 {
 
@@ -1044,7 +834,7 @@ Glib::ustring Box_Data::build_sql_select(const Glib::ustring& table_name, const 
 {
   if(!GlomConversions::value_is_empty(primary_key_value)) //If there is a record to show:
   {
-    const Glib::ustring where_clause = m_strTableName + "." + primary_key_field.get_name() + " = " + primary_key_field.sql(primary_key_value);
+    const Glib::ustring where_clause = table_name + "." + primary_key_field.get_name() + " = " + primary_key_field.sql(primary_key_value);
     return GlomUtils::build_sql_select_with_where_clause(table_name, fieldsToGet, where_clause);
   }
 

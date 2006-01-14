@@ -754,7 +754,7 @@ bool Box_Data_List::get_field_primary_key(Field& field) const
 
 bool Box_Data_List::get_field_primary_key_index(guint& field_column) const
 {
-  return Box_Data::get_field_primary_key_index(m_FieldsShown, field_column);
+  return Box_Data::get_field_primary_key_index_for_fields(m_FieldsShown, field_column);
 }
 
 void Box_Data_List::print_layout()

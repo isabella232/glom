@@ -97,6 +97,9 @@ protected:
   bool get_table_exists_in_database(const Glib::ustring& table_name) const;
 
   type_vecFields get_fields_for_table(const Glib::ustring& table_name) const;
+  bool get_fields_for_table_one_field(const Glib::ustring& table_name, const Glib::ustring& field_name, Field& field) const;
+
+  bool get_field_primary_key_for_table(const Glib::ustring& table_name, Field& field) const;
 
   Glib::ustring get_find_where_clause_quick(const Glib::ustring& table_name, const Gnome::Gda::Value& quick_search) const;
 
@@ -131,6 +134,12 @@ protected:
   virtual void fill_end(); //Call this from the end of fill_from_database() overrides.
 
   virtual void on_userlevel_changed(AppState::userlevels userlevel);
+
+  type_vecLayoutFields get_table_fields_to_show_for_sequence(const Glib::ustring& table_name, const Document_Glom::type_mapLayoutGroupSequence& mapGroupSequence) const;
+  void get_table_fields_to_show_for_sequence_add_group(const Glib::ustring& table_name, const Privileges& table_privs, const type_vecFields& all_db_fields, const LayoutGroup& group, type_vecLayoutFields& vecFields) const;
+
+  static bool get_field_primary_key_index_for_fields(const type_vecFields& fields, guint& field_column);
+  static bool get_field_primary_key_index_for_fields(const type_vecLayoutFields& fields, guint& field_column);
 
   static Glib::ustring util_string_from_decimal(guint decimal);
   static guint util_decimal_from_string(const Glib::ustring& str);

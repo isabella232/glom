@@ -29,7 +29,9 @@
 #include "data_structure/layout/report_parts/layoutitem_summary.h"
 #include "data_structure/layout/report_parts/layoutitem_fieldsummary.h"
 #include "relationships_overview/dialog_relationships_overview.h"
+#include "filechooser_export.h"
 #include <sstream> //For stringstream.
+#include <fstream>
 #include <glibmm/i18n.h>
 
 Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
@@ -368,7 +370,7 @@ void Frame_Glom::alert_no_table()
   {
     //TODO: Obviously this document should have been deleted when the database-creation was cancelled.
     /* Note that "canceled" is the correct US spelling. */
-    show_ok_dialog(_("No database"), _("This document does not specify any database. Maybe the document creation was canceled before the database could be created."), *pWindowApp);
+    show_ok_dialog(_("No database"), _("This document does not specify any database. Maybe the document creation was canceled before the database could be created."), *pWindowApp, Gtk::MESSAGE_ERROR);
   }
 }
 
@@ -482,6 +484,93 @@ void Frame_Glom::on_menu_userlevel_Operator(const Glib::RefPtr<Gtk::RadioAction>
       //Avoid double signals:
       //if(document->get_userlevel() != AppState::USERLEVEL_OPERATOR)
         document->set_userlevel(AppState::USERLEVEL_OPERATOR);
+    }
+  }
+}
+
+void Frame_Glom::on_menu_file_export()
+{
+  //Start with a sequence based on the Details view:
+  //The user can changed this by clicking the button in the FileChooser:
+  const Document_Glom::type_mapLayoutGroupSequence mapGroupSequence =  get_document()->get_data_layout_groups_plus_new_fields("details", m_strTableName);
+  type_vecLayoutFields fieldsSequence = get_table_fields_to_show_for_sequence(m_strTableName, mapGroupSequence);
+
+  if(fieldsSequence.empty())
+    return;
+
+  Gtk::Window* pWindowApp = get_app_window();
+  g_assert(pWindowApp);
+
+  //Do not try to export the data if the user may not view it:
+  Privileges table_privs = get_current_privs(m_strTableName);
+  if(!table_privs.m_view)
+  {
+    show_ok_dialog(_("Export Not Allowed."), _("You do not have permission to view the data in this table, so you may not export the data."), *pWindowApp, Gtk::MESSAGE_ERROR);
+    return;
+  }
+
+  //Ask the user for the new file location, and to optionally modify the format:
+  FileChooser_Export dialog;
+  const int response = dialog.run();
+  dialog.hide();
+
+  if(response == Gtk::RESPONSE_CANCEL)
+    return;
+
+  const std::string filepath = dialog.get_filename();
+  if(filepath.empty())
+    return;
+
+  //Add extra possibly-non-visible columns that we need:
+  Field field_primary_key;
+  const bool found = get_field_primary_key_for_table(m_strTableName, field_primary_key);
+  if(found)
+  {
+    sharedptr<LayoutItem_Field> layout_item(new LayoutItem_Field);
+    layout_item->m_field = field_primary_key;
+    fieldsSequence.push_back(layout_item);
+  }
+
+  //const int index_primary_key = fieldsSequence.size() - 1;
+
+  const Glib::ustring found_set_where_clause = m_Notebook_Data.get_where_clause();
+  const Glib::ustring query = GlomUtils::build_sql_select_with_where_clause(m_strTableName, fieldsSequence, found_set_where_clause);
+
+  Glib::RefPtr<Gnome::Gda::DataModel> result = Query_execute(query);
+
+  guint rows_count = 0;
+  if(result)
+    rows_count = result->get_n_rows();
+
+  if(rows_count)
+  {
+    const guint columns_count = result->get_n_columns();
+
+    std::fstream the_stream(filepath.c_str(), std::ios_base::out | std::ios_base::trunc);
+    if(!the_stream)
+    {
+       show_ok_dialog(_("Could Not Create File."), _("Glom could not create the specified file."), *pWindowApp, Gtk::MESSAGE_ERROR);
+      return;
+    }
+
+    for(guint row_index = 0; row_index < rows_count; ++row_index)
+    {
+        Glib::ustring row_string;
+
+        for(guint col_index = 0; col_index < columns_count; ++col_index)
+        {
+          const Gnome::Gda::Value value = result->get_value_at(row_index, col_index);
+
+          sharedptr<LayoutItem_Field> layout_item = fieldsSequence[col_index];
+
+          if(!row_string.empty())
+            row_string += ",";
+
+          //Output data in canonical SQL format, ignoring the user's locale, and ignoring the layout formatting:
+          row_string += layout_item->m_field.sql(value);
+        }
+
+        the_stream << row_string << std::endl;
     }
   }
 }
@@ -601,9 +690,9 @@ Gtk::Window* Frame_Glom::get_app_window()
 
 }
 
-void Frame_Glom::show_ok_dialog(const Glib::ustring& title, const Glib::ustring& message, Gtk::Window& parent)
+void Frame_Glom::show_ok_dialog(const Glib::ustring& title, const Glib::ustring& message, Gtk::Window& parent, Gtk::MessageType message_type)
 {
-  Gtk::MessageDialog dialog("<b>" + title + "</b>", true /* markup */, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_OK);
+  Gtk::MessageDialog dialog("<b>" + title + "</b>", true /* markup */, message_type, Gtk::BUTTONS_OK);
   dialog.set_secondary_text(message);
   dialog.set_transient_for(parent);
   dialog.run();

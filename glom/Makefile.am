@@ -35,6 +35,7 @@ glom_SOURCES = main.cc \
                dialog_new_database.h dialog_new_database.cc \
                dialog_database_preferences.h dialog_database_preferences.cc \
                dialog_layout_report.h dialog_layout_report.cc \
+               filechooser_export.h filechooser_export.cc \
                sharedptr.h \
                standard_table_prefs_fields.h \
                box_reports.h box_reports.cc \

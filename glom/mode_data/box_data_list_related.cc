@@ -285,7 +285,7 @@ Box_Data_List_Related::type_vecLayoutFields Box_Data_List_Related::get_fields_to
   {
     Document_Glom::type_mapLayoutGroupSequence mapGroups;
     mapGroups[0] = m_portal;
-    return get_table_fields_to_show(m_portal.m_relationship.get_to_table(), mapGroups);
+    return get_table_fields_to_show_for_sequence(m_portal.m_relationship.get_to_table(), mapGroups);
   }
 
   return type_vecLayoutFields();

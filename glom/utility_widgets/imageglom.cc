@@ -333,12 +333,12 @@ void ImageGlom::on_menupopup_activate_select_file()
   filter.set_name(_("Images"));
   filter.add_pixbuf_formats();
   dialog.add_filter(filter);
-  
+
   dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
   dialog.add_button(_("Select"), Gtk::RESPONSE_OK);
   int response = dialog.run();
   dialog.hide();
-  
+
   if(response != Gtk::RESPONSE_CANCEL)
   {
     const std::string filepath = dialog.get_filename();
@@ -362,10 +362,10 @@ void ImageGlom::on_menupopup_activate_select_file()
       {
         App_Glom* pApp = get_application();
         if(pApp)
-          Frame_Glom::show_ok_dialog(_("Image loading failed"), _("The image file could not be opened:\n") + ex.what(), *pApp);
+          Frame_Glom::show_ok_dialog(_("Image loading failed"), _("The image file could not be opened:\n") + ex.what(), *pApp, Gtk::MESSAGE_ERROR);
       }
     }
-  }        
+  }
 }
 
 void ImageGlom::on_clipboard_get(Gtk::SelectionData& selection_data, guint /* info */)

@@ -42,9 +42,6 @@ public:
   //TODO: Put this somewhere more sensible:
   typedef std::map<Gnome::Gda::ValueType, Glib::ustring> type_map_valuetypes;
 
-
-  bool get_fields_for_table_one_field(const Glib::ustring& table_name, const Glib::ustring& field_name, Field& field) const;
-
 protected:
 
   //virtual Glib::RefPtr<Gnome::Gda::DataModel> record_new(Gnome::Gda::Value primary_key_value);
@@ -52,7 +49,6 @@ protected:
   virtual Gnome::Gda::Value get_entered_field_data(const LayoutItem_Field& field) const;
   virtual void set_entered_field_data(const LayoutItem_Field& field, const Gnome::Gda::Value& value);
 
-  bool get_field_primary_key_for_table(const Glib::ustring& table_name, Field& field) const;
   //static bool get_field_primary_key(const type_vecFields& fields, Field& field);
 
   unsigned long get_last_auto_increment_value(const Glib::RefPtr<Gnome::Gda::DataModel>& data_model, const Glib::ustring& field_name);

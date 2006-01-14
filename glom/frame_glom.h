@@ -59,6 +59,7 @@ public:
   void on_menu_userlevel_Developer(const Glib::RefPtr<Gtk::RadioAction>& action, const Glib::RefPtr<Gtk::RadioAction>& operator_action);
   void on_menu_userlevel_Operator(const Glib::RefPtr<Gtk::RadioAction>& action);
 
+  void on_menu_file_export();
   void on_menu_file_print();
 
   void on_menu_Mode_Data();
@@ -100,7 +101,7 @@ public:
   enumModes m_Mode;
   enumModes m_Mode_Previous; // see comments in set_mode_widget().
 
-  static void show_ok_dialog(const Glib::ustring& title, const Glib::ustring& message, Gtk::Window& parent);
+  static void show_ok_dialog(const Glib::ustring& title, const Glib::ustring& message, Gtk::Window& parent, Gtk::MessageType message_type = Gtk::MESSAGE_INFO);
 
   //Show the dialog to request the password, and check whether it works.
   virtual bool connection_request_password_and_attempt();

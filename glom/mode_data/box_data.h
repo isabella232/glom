@@ -88,14 +88,12 @@ protected:
   virtual void refresh_related_fields(const Gtk::TreeModel::iterator& row, const LayoutItem_Field& field_changed, const Gnome::Gda::Value& field_value, const Field& primary_key, const Gnome::Gda::Value& primary_key_value) = 0;
 
   virtual type_vecLayoutFields get_fields_to_show() const;
-  virtual Glib::ustring build_sql_select(const Glib::ustring& table_name, const type_vecLayoutFields& fieldsToGet, const Field& primary_key_field, const Gnome::Gda::Value& primary_key_value);
+  static Glib::ustring build_sql_select(const Glib::ustring& table_name, const type_vecLayoutFields& fieldsToGet, const Field& primary_key_field, const Gnome::Gda::Value& primary_key_value);
   //virtual Glib::ustring build_sql_select_with_where_clause(const Glib::ustring& table_name, const type_vecLayoutFields& fieldsToGet, const Glib::ustring& where_clause);
   virtual bool get_related_record_exists(const Relationship& relationship, const Field& key_field, const Gnome::Gda::Value& key_value);
   virtual bool add_related_record_for_field(const LayoutItem_Field& layout_item_parent, const Relationship& relationship, const Field& primary_key_field, const Gnome::Gda::Value& primary_key_value_provided);
 
   type_vecLayoutFields get_table_fields_to_show(const Glib::ustring& table_name) const;
-  type_vecLayoutFields get_table_fields_to_show(const Glib::ustring& table_name, const Document_Glom::type_mapLayoutGroupSequence& mapGroupSequence) const;
-  void get_table_fields_to_show_add_group(const Glib::ustring& table_name, const Privileges& table_privs, const type_vecFields& all_db_fields, const LayoutGroup& group, Box_Data::type_vecLayoutFields& vecFields) const;
 
   /** Get the layout groups, with the Field information filled in.
    */
@@ -152,9 +150,6 @@ protected:
 
   //Signal handlers:
   virtual void on_Button_Find(); //only used by _Find sub-classes. Should be MI.
-
-  static bool get_field_primary_key_index(const type_vecFields& fields, guint& field_column);
-  static bool get_field_primary_key_index(const type_vecLayoutFields& fields, guint& field_column);
 
   typedef std::map<Glib::ustring, Gnome::Gda::Value> type_map_fields;
   //TODO: Performance: This is massively inefficient:
