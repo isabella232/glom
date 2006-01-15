@@ -506,12 +506,12 @@ void  Box_DB_Table_Definition::postgres_change_column_type(const Field& field_ol
               break;
             }
           }
-  
+
           Glib::RefPtr<Gnome::Gda::DataModel> datamodel = Query_execute( "UPDATE " + m_strTableName + " SET  " + fieldTemp.get_name() + " = " + conversion_command );  //TODO: Not full type details.
           if(!datamodel)
             conversion_failed = true;
         }
-            
+
         if(!conversion_failed)
         {
           Glib::RefPtr<Gnome::Gda::DataModel> datamodel = Query_execute( "ALTER TABLE " + m_strTableName + " DROP COLUMN " +  field_old.get_name() );

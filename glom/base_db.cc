@@ -1139,7 +1139,7 @@ void Base_DB::set_database_preferences(const SystemPrefs& prefs)
     {
       std::cerr << "Base_DB::set_database_preferences(): exception: " << ex.what() << std::endl;
     }
-    
+
     //Set some information in the document too, so we can use it to recreate the database:
     get_document()->set_database_title(prefs.m_name);
 }
@@ -1193,6 +1193,51 @@ bool Base_DB::create_table(const TableInfo& table_info, const Document_Glom::typ
   }
 
   return table_creation_succeeded;
+}
+
+bool Base_DB::insert_example_data(const Glib::ustring& table_name) const
+{
+  const Glib::ustring example_rows = get_document()->get_table_example_data(table_name);
+  if(example_rows.empty())
+    return true;
+
+  bool insert_succeeded = false;
+
+
+  //Get field names:
+  Document_Glom::type_vecFields vec_fields = get_document()->get_table_fields(table_name);
+  Glib::ustring strNames;
+  for(Document_Glom::type_vecFields::const_iterator iter = vec_fields.begin(); iter != vec_fields.end(); ++iter)
+  {
+    //Append it:
+    if(!strNames.empty())
+      strNames += ", ";
+
+    strNames += iter->get_name();
+  }
+
+  if(strNames.empty())
+  {
+    g_warning("Base_DB::insert_example_data(): strNames is empty.");
+  }
+
+  //Actually insert the data:
+  type_vecStrings vec_rows = string_separate(example_rows, "\n");
+
+  for(type_vecStrings::const_iterator iter = vec_rows.begin(); iter != vec_rows.end(); ++iter)
+  {
+    try
+    {
+      const Glib::ustring strQuery = "INSERT INTO " + table_name + " (" + strNames + ") VALUES (" + *iter + ")";
+      Query_execute(strQuery); //TODO: Test result.
+    }
+    catch(const ExceptionConnection& ex)
+    {
+      insert_succeeded = false;
+    }
+  }
+
+  return insert_succeeded;
 }
 
 bool Base_DB::offer_field_list(LayoutItem_Field& field, const Glib::ustring& table_name)

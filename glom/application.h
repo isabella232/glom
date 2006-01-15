@@ -66,6 +66,7 @@ protected:
   virtual void on_menu_help_contents();
   virtual void on_menu_userlevel_developer();
   virtual void on_menu_userlevel_operator();
+  virtual void on_menu_file_save_as_example();
 
   virtual void on_userlevel_changed(AppState::userlevels userlevel);
 

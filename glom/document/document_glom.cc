@@ -75,6 +75,7 @@
 #define GLOM_ATTRIBUTE_PRIV_CREATE "priv_create"
 #define GLOM_ATTRIBUTE_PRIV_DELETE "priv_delete"
 
+#define GLOM_ATTRIBUTE_IS_EXAMPLE "is_example"
 #define GLOM_ATTRIBUTE_DATABASE_TITLE "database_title"
 #define GLOM_ATTRIBUTE_NAME "name"
 #define GLOM_ATTRIBUTE_TITLE "title"
@@ -83,6 +84,7 @@
 #define GLOM_ATTRIBUTE_DEFAULT "default"
 #define GLOM_ATTRIBUTE_FIELD "field"
 #define GLOM_ATTRIBUTE_EDITABLE "editable"
+#define GLOM_ATTRIBUTE_EXAMPLE_ROWS "example_rows"
 
 
 
@@ -114,7 +116,9 @@
 
 Document_Glom::Document_Glom()
 : m_block_cache_update(false),
-  m_block_modified_set(false)
+  m_block_modified_set(false),
+  m_allow_auto_save(true), //Save all changes immediately, by default.
+  m_is_example(false)
 {
   //Conscious use of virtual methods in a constructor:
   set_file_extension("glom");
@@ -474,14 +478,14 @@ void Document_Glom::change_table_name(const Glib::ustring& strTableNameOld, cons
     //Change it:
     //We can't just change the key of the iterator (I think),
     //so we copy the whole thing and put it back in the map under a different key:
-    
+
     //iterFindTable->first = strTableNameNew;
     DocumentTableInfo doctableinfo = iterFindTable->second;
     m_tables.erase(iterFindTable);
-  
+
     doctableinfo.m_info.m_name = strTableNameNew; 
     m_tables[strTableNameNew] = doctableinfo; 
-    
+
     //Find any relationships or layouts that use this table
     //Look at each table:
     for(type_tables::iterator iter = m_tables.begin(); iter != m_tables.end(); ++iter)
@@ -499,12 +503,12 @@ void Document_Glom::change_table_name(const Glib::ustring& strTableNameOld, cons
         {
           //Change it:
            iterRels->set_to_table(strTableNameNew);
-        }           
+        }
       }
     }
-    
+
     //TODO: Remember to change it in layouts when we add the ability to show fields from other tables.
- 
+
     set_modified();
   }
 }
@@ -518,8 +522,8 @@ void Document_Glom::change_relationship_name(const Glib::ustring& table_name, co
     type_vecRelationships::iterator iterRelFind = std::find_if( iterFindTable->second.m_relationships.begin(), iterFindTable->second.m_relationships.end(), predicate_FieldHasName<Relationship>(name) );
     if(iterRelFind != iterFindTable->second.m_relationships.end())
       iterRelFind->set_name(name_new);
-      
-      
+
+
     //Find any layouts or reports that use this field
     //Look at each table:
     for(type_tables::iterator iter = m_tables.begin(); iter != m_tables.end(); ++iter)
@@ -529,9 +533,9 @@ void Document_Glom::change_relationship_name(const Glib::ustring& table_name, co
       {
         iterFields->m_default_formatting.change_relationship_name(table_name, name, name_new);
       }
-      
+
       const bool is_parent_table = (iter->second.m_info.get_name() == table_name);
-        
+
       //Look at each layout:
       for(DocumentTableInfo::type_layouts::iterator iterLayouts = iter->second.m_layouts.begin(); iterLayouts != iter->second.m_layouts.end(); ++iterLayouts)
       {
@@ -545,8 +549,8 @@ void Document_Glom::change_relationship_name(const Glib::ustring& table_name, co
             iterGroup->second.change_related_relationship_name(table_name, name, name_new);
         }
       }
-      
-      
+
+
       //Look at each report:
       for(DocumentTableInfo::type_reports::iterator iterReports = iter->second.m_reports.begin(); iterReports != iter->second.m_reports.end(); ++iterReports)
       {
@@ -556,13 +560,12 @@ void Document_Glom::change_relationship_name(const Glib::ustring& table_name, co
         else
           iterReports->second.m_layout_group.change_related_relationship_name(table_name, name, name_new);
       }
-      
+
     }
-   
+
     set_modified();
   }
  }
-  
 
 
 bool Document_Glom::get_node_attribute_value_as_bool(const xmlpp::Element* node, const Glib::ustring& strAttributeName)
@@ -570,7 +573,7 @@ bool Document_Glom::get_node_attribute_value_as_bool(const xmlpp::Element* node,
   Glib::ustring strValue = get_node_attribute_value(node, strAttributeName);
   return strValue == "true";
 }
-  
+
 void Document_Glom::set_node_attribute_value_as_bool(xmlpp::Element* node, const Glib::ustring& strAttributeName, bool value)
 {
   if(!value && !node->get_attribute(strAttributeName))
@@ -714,10 +717,87 @@ void Document_Glom::fill_layout_field_details(const Glib::ustring& parent_table_
   }
 }
 
+Document_Glom::type_mapLayoutGroupSequence Document_Glom::get_data_layout_groups_default(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name) const
+{
+  type_mapLayoutGroupSequence result;
+
+  //Add one if necessary:
+  LayoutGroup* pTopLevel = 0;
+  LayoutGroup* pOverview = 0;
+  LayoutGroup* pDetails = 0;
+  if(!pTopLevel)
+  {
+    LayoutGroup group;
+    group.set_name("main");
+    group.m_sequence = 1;
+    group.m_columns_count = 1;
+    result[1] = group;
+    pTopLevel = &(result[1]);
+
+    if(layout_name == "details") //The Details default layut is a bit more complicated.
+    {
+      LayoutGroup overview;
+      overview.set_name("overview");
+      overview.m_title = "Overview"; //Don't translate this, but TODO: add standard translations.
+      overview.m_columns_count = 2;
+      pOverview = dynamic_cast<LayoutGroup*>(pTopLevel->add_item(overview));
+
+      LayoutGroup details;
+      details.set_name("details");
+      details.m_title = "Details"; //Don't translate this, but TODO: add standard translations.
+      details.m_columns_count = 2;
+      pDetails = dynamic_cast<LayoutGroup*>(pTopLevel->add_item(details));
+    }
+  }
+
+  //If, for some reason, we didn't create the-subgroups, add everything to the top level group:
+  if(!pOverview)
+    pOverview = pTopLevel;
+
+  if(!pDetails)
+    pDetails = pTopLevel;
+
+
+  //Discover new fields, and add them:
+  type_vecFields all_fields = get_table_fields(parent_table_name);
+  for(type_vecFields::const_iterator iter = all_fields.begin(); iter != all_fields.end(); ++iter)
+  {
+    const Glib::ustring field_name = iter->get_name();
+    if(!field_name.empty())
+    {
+      //See whether it's already in the result:
+      //TODO_Performance: There is a lot of iterating and comparison here:
+      bool found = false; //TODO: This is horrible.
+      for(type_mapLayoutGroupSequence::const_iterator iterFind = result.begin(); iterFind != result.end(); ++iterFind)
+      {
+        if(iterFind->second.has_field(field_name))
+        {
+          found = true;
+          break;
+        }
+      }
+
+      if(!found)
+      {
+        LayoutItem_Field layout_item;
+        layout_item.m_field = *iter;
+        //layout_item.set_table_name(child_table_name); //TODO: Allow viewing of fields through relationships.
+        //layout_item.m_sequence = sequence;  add_item() will fill this.
+
+        if(layout_item.m_field.get_primary_key())
+          pOverview->add_item(layout_item);
+        else
+          pDetails->add_item(layout_item);
+      }
+    }
+  }
+
+  return result;
+}
+
 Document_Glom::type_mapLayoutGroupSequence Document_Glom::get_data_layout_groups_plus_new_fields(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name) const
 {
   type_mapLayoutGroupSequence result = get_data_layout_groups(layout_name, parent_table_name);
-
 
   //If there are no fields in the layout, then add a default:
   bool create_default = false;
@@ -726,91 +806,11 @@ Document_Glom::type_mapLayoutGroupSequence Document_Glom::get_data_layout_groups
   //TODO: Also set create_default is all groups have no fields.
 
   if(create_default)
-  {
-    //g_warning("Document_Glom::get_data_layout_groups_plus_new_fields(): Creating default layout for table %s (child_table=%s), for layout %s", parent_table_name.c_str(), child_table_name.c_str(), layout_name.c_str());
-
-    //Get the last top-level group. We will add new fields into this one:
-    //TODO_Performance: There must be a better way to do this:
-    LayoutGroup* pTopLevel = 0;
-    LayoutGroup* pOverview = 0; //The default layout has a main group with an overview and details group inside.
-    LayoutGroup* pDetails = 0;
-    for(type_mapLayoutGroupSequence::iterator iterGroups = result.begin(); iterGroups != result.end(); ++iterGroups)
-    {
-      pTopLevel = &(iterGroups->second);
-    }
-
-    //Add one if necessary:
-    if(!pTopLevel)
-    {
-      LayoutGroup group;
-      group.set_name("main");
-      group.m_sequence = 1;
-      group.m_columns_count = 1;
-      result[1] = group;
-      pTopLevel = &(result[1]);
-      
-      if(layout_name == "details") //The Details default layut is a bit more complicated.
-      {
-        LayoutGroup overview;
-        overview.set_name("overview");
-        overview.m_title = "Overview"; //Don't translate this, but TODO: add standard translations.
-        overview.m_columns_count = 2;
-        pOverview = dynamic_cast<LayoutGroup*>(pTopLevel->add_item(overview));
-        
-        LayoutGroup details;
-        details.set_name("details");
-        details.m_title = "Details"; //Don't translate this, but TODO: add standard translations.
-        details.m_columns_count = 2;
-        pDetails = dynamic_cast<LayoutGroup*>(pTopLevel->add_item(details));
-      }
-    }
-
-    //If, for some reason, we didn't create the-subgroups, add everything to the top level group:
-    if(!pOverview)
-      pOverview = pTopLevel;
-      
-    if(!pDetails)
-      pDetails = pTopLevel;
-      
-    
-    //Discover new fields, and add them:
-    type_vecFields all_fields = get_table_fields(parent_table_name);
-    for(type_vecFields::const_iterator iter = all_fields.begin(); iter != all_fields.end(); ++iter)
-    {
-      const Glib::ustring field_name = iter->get_name();
-      if(!field_name.empty())
-      {
-        //See whether it's already in the result:
-        //TODO_Performance: There is a lot of iterating and comparison here:
-        bool found = false; //TODO: This is horrible.
-        for(type_mapLayoutGroupSequence::const_iterator iterFind = result.begin(); iterFind != result.end(); ++iterFind)
-        {
-          if(iterFind->second.has_field(field_name))
-          {
-            found = true;
-            break;
-          }
-        }
-
-        if(!found)
-        {
-          LayoutItem_Field layout_item;
-          layout_item.m_field = *iter;
-          //layout_item.set_table_name(child_table_name); //TODO: Allow viewing of fields through relationships.
-          //layout_item.m_sequence = sequence;  add_item() will fill this.
-
-          if(layout_item.m_field.get_primary_key())
-            pOverview->add_item(layout_item);
-          else
-            pDetails->add_item(layout_item);
-        }
-      }
-    }
-  }
+    result = get_data_layout_groups_default(layout_name, parent_table_name);
 
   return result;  
 }
-  
+
 Document_Glom::type_mapLayoutGroupSequence Document_Glom::get_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name) const
 {
   type_tables::const_iterator iterFind = m_tables.find(parent_table_name);
@@ -890,6 +890,28 @@ void Document_Glom::set_table_title(const Glib::ustring& table_name, const Glib:
       set_modified();
     }
   }
+}
+
+void Document_Glom::set_table_example_data(const Glib::ustring& table_name, const Glib::ustring& rows)
+{
+ if(!table_name.empty())
+  {
+    DocumentTableInfo& info = get_table_info_with_add(table_name);
+    if(info.m_example_rows != rows)
+    {
+      info.m_example_rows = rows;
+      set_modified();
+    }
+  }
+}
+
+Glib::ustring Document_Glom::get_table_example_data(const Glib::ustring& table_name) const
+{
+  type_tables::const_iterator iterFind = m_tables.find(table_name);
+  if(iterFind != m_tables.end())
+    return iterFind->second.m_example_rows;
+  else
+    return Glib::ustring();
 }
 
 bool Document_Glom::get_table_is_known(const Glib::ustring& table_name) const
@@ -985,9 +1007,44 @@ Glib::ustring Document_Glom::get_first_table() const
 {
   if(m_tables.empty())
     return Glib::ustring();
-    
+
   type_tables::const_iterator iter = m_tables.begin();
   return iter->second.m_info.m_name;
+}
+
+void Document_Glom::set_allow_autosave(bool value)
+{
+  if(m_allow_auto_save == value)
+    return;
+
+  m_allow_auto_save = value;
+
+  //Save changes that have been waiting for us to call this function:
+  if(m_allow_auto_save && get_modified())
+  {
+    save_changes();
+  }
+}
+
+void Document_Glom::save_changes()
+{
+  //Save changes automatically
+  //(when in developer mode - no changes should even be possible when not in developer mode)
+  if(get_userlevel() == AppState::USERLEVEL_DEVELOPER)
+  {
+    //This rebuilds the whole XML DOM and saves the whole document,
+    //so we need to be careful not to call set_modified() too often.
+
+      bool test = save_before();
+      if(test)
+      {
+        test = write_to_disk();
+        if(test)
+        {
+          set_modified(false);
+        }
+      }
+  }
 }
 
 void Document_Glom::set_modified(bool value)
@@ -1001,23 +1058,7 @@ void Document_Glom::set_modified(bool value)
 
     if(value)
     {
-      //Save changes automatically
-      //(when in developer mode - no changes should even be possible when not in developer mode)
-      if(get_userlevel() == AppState::USERLEVEL_DEVELOPER)
-      {
-        //This rebuilds the whole XML DOM and saves the whole document,
-        //so we need to be careful not to call set_modified() too often.
-
-         bool test = save_before();
-         if(test)
-         {
-           test = write_to_disk();
-           if(test)
-           {
-             set_modified(false);
-           }
-         }
-      }
+      save_changes();
     }
   }
 }
@@ -1190,6 +1231,7 @@ bool Document_Glom::load_after()
     const xmlpp::Element* nodeRoot = get_node_document();
     if(nodeRoot)
     {
+      m_is_example = get_node_attribute_value_as_bool(nodeRoot, GLOM_ATTRIBUTE_IS_EXAMPLE);
       m_database_title = get_node_attribute_value(nodeRoot, GLOM_ATTRIBUTE_DATABASE_TITLE);
 
       const xmlpp::Element* nodeConnection = get_node_child_named(nodeRoot, GLOM_NODE_CONNECTION);
@@ -1224,6 +1266,8 @@ bool Document_Glom::load_after()
           table_info.m_default = get_node_attribute_value_as_bool(nodeTable, GLOM_ATTRIBUTE_DEFAULT);
 
           doctableinfo.m_info = table_info;
+
+          doctableinfo.m_example_rows = get_node_attribute_value(nodeTable, GLOM_ATTRIBUTE_EXAMPLE_ROWS);
 
           //Fields:
           const xmlpp::Element* nodeFields = get_node_child_named(nodeTable, GLOM_NODE_FIELDS);
@@ -1606,6 +1650,7 @@ bool Document_Glom::save_before()
   xmlpp::Element* nodeRoot = get_node_document();
   if(nodeRoot)
   {
+    set_node_attribute_value_as_bool(nodeRoot, GLOM_ATTRIBUTE_IS_EXAMPLE, m_is_example);
     set_node_attribute_value(nodeRoot, GLOM_ATTRIBUTE_DATABASE_TITLE, m_database_title);
 
     xmlpp::Element* nodeConnection = get_node_child_named_with_add(nodeRoot, GLOM_NODE_CONNECTION);
@@ -1633,6 +1678,8 @@ bool Document_Glom::save_before()
         set_node_attribute_value(nodeTable, GLOM_ATTRIBUTE_TITLE, doctableinfo.m_info.m_title);
         set_node_attribute_value_as_bool(nodeTable, GLOM_ATTRIBUTE_HIDDEN, doctableinfo.m_info.m_hidden);
         set_node_attribute_value_as_bool(nodeTable, GLOM_ATTRIBUTE_DEFAULT, doctableinfo.m_info.m_default);
+
+        set_node_attribute_value(nodeTable, GLOM_ATTRIBUTE_EXAMPLE_ROWS, doctableinfo.m_example_rows);
 
         //Fields:
         xmlpp::Element* elemFields = nodeTable->add_child(GLOM_NODE_FIELDS);
@@ -2097,7 +2144,17 @@ Glib::ustring Document_Glom::get_layout_current(const Glib::ustring& table_name)
   {
     return iterFind->second.m_layout_current;
   }
-  
+
   return Glib::ustring(); //not found.
+}
+
+bool Document_Glom::get_is_example_file() const
+{
+  return m_is_example;
+}
+
+void Document_Glom::set_is_example_file(bool value)
+{
+  m_is_example = value;
 }
 

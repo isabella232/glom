@@ -66,6 +66,15 @@ public:
 
   virtual void set_modified(bool value = true);
 
+  /** The document usually saves itself when you call set_modified().
+   * Pass false to this function to prevent that temporarily.
+   * The document will be saved, if necessary, after you call this function with true.
+   */
+  void set_allow_autosave(bool value = true);
+
+  bool get_is_example_file() const;
+  void set_is_example_file(bool value = true);
+
   virtual void set_connection_server(const Glib::ustring& strVal);
   virtual void set_connection_user(const Glib::ustring& strVal);
   virtual void set_connection_database(const Glib::ustring& strVal);
@@ -82,20 +91,19 @@ public:
   void set_relationship(const Glib::ustring& table_name, const Relationship& relationship);
 
   void remove_relationship(const Relationship& relationship);
-  
+
   /** Returns whether the relationship's to-field is a primary key  or unique field, meaning
    * that there can be only one related record for each value of the from-field.
    */
   bool get_relationship_is_to_one(const Glib::ustring& table_name, const Glib::ustring& relationship_name) const;
-  
-  
+
   /** Returns whether the field is the from-field in a to-one relationship.
    * @see get_relationship_is_to_one(). Ignores hidden tables.
    */
   bool get_field_used_in_relationship_to_one(const Glib::ustring& table_name, const Glib::ustring& field_name) const;
   bool get_field_used_in_relationship_to_one(const Glib::ustring& table_name, const Glib::ustring& field_name, Relationship& relationship) const;
 
-    
+
   typedef std::vector<Field> type_vecFields;
   virtual type_vecFields get_table_fields(const Glib::ustring& table_name) const;
   virtual void set_table_fields(const Glib::ustring& table_name, const type_vecFields& vecFields);
@@ -104,18 +112,20 @@ public:
 
 
   typedef std::map<guint, LayoutGroup> type_mapLayoutGroupSequence;
-  virtual type_mapLayoutGroupSequence get_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name) const;
+  type_mapLayoutGroupSequence get_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name) const;
 
-  virtual void set_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name, const type_mapLayoutGroupSequence& groups);
+  void set_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name, const type_mapLayoutGroupSequence& groups);
 
   /**
    * @para The layout_name, such as "details", "list".
    * @para parent_table_name The name of the table on whose layout the layout appears.
    */
-  virtual type_mapLayoutGroupSequence get_data_layout_groups_plus_new_fields(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name) const;
+  type_mapLayoutGroupSequence get_data_layout_groups_plus_new_fields(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name) const;
 
-  virtual void fill_layout_field_details(const Glib::ustring& parent_table_name, LayoutGroup& layout_group) const;
-  virtual void fill_layout_field_details(const Glib::ustring& parent_table_name, type_mapLayoutGroupSequence& sequence) const;
+  type_mapLayoutGroupSequence get_data_layout_groups_default(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name) const;
+
+  void fill_layout_field_details(const Glib::ustring& parent_table_name, LayoutGroup& layout_group) const;
+  void fill_layout_field_details(const Glib::ustring& parent_table_name, type_mapLayoutGroupSequence& sequence) const;
 
 
   ///When a field name is changed, change it in the relationships, layouts, reports, and fields data:
@@ -123,7 +133,7 @@ public:
 
   ///When a table name is changed, change it in the relationships and tables data:
   virtual void change_table_name(const Glib::ustring& strTableNameOld, const Glib::ustring& strTableNameNew);
-  
+
   ///When a relationship name is changed, change it in layouts and reports:
   virtual void change_relationship_name(const Glib::ustring& table_name, const Glib::ustring& name, const Glib::ustring& name_new);
 
@@ -142,6 +152,15 @@ public:
 
   virtual Glib::ustring get_table_title(const Glib::ustring& table_name) const;
   virtual void set_table_title(const Glib::ustring& table_name, const Glib::ustring& value);
+
+  /** Save example data into the document, for use when creating the example database on the server.
+   * Don't use this for large amounts of data.
+   * @param table_name The table that should contain this example data.
+   * @param rows Each row is separated by a newline. Each line has comma-separated field values, in SQL format.
+   */
+  void set_table_example_data(const Glib::ustring& table_name, const Glib::ustring& rows);
+
+  Glib::ustring get_table_example_data(const Glib::ustring& table_name) const;
 
   virtual Glib::ustring get_name() const; //override.
 
@@ -168,10 +187,10 @@ public:
   void set_report(const Glib::ustring& table_name, const Report& report);
   bool get_report(const Glib::ustring& table_name, const Glib::ustring& report_name, Report& report) const;
   void remove_report(const Glib::ustring& table_name, const Glib::ustring& report_name);
-  
+
   void set_layout_record_viewed(const Glib::ustring& table_name, const Glib::ustring& layout_name, const Gnome::Gda::Value& primary_key_value);
   Gnome::Gda::Value get_layout_record_viewed(const Glib::ustring& table_name, const Glib::ustring& layout_name) const;
-  
+
   void set_layout_current(const Glib::ustring& table_name, const Glib::ustring& layout_name);
   Glib::ustring get_layout_current(const Glib::ustring& table_name) const;
 
@@ -221,6 +240,8 @@ protected:
   void save_before_layout_item_field(xmlpp::Element* nodeItem, const LayoutItem_Field& item);
   void save_before_layout_item_field_formatting(xmlpp::Element* nodeItem, const FieldFormatting& format, const Field& layout_item);
 
+  void save_changes();
+
   virtual void on_app_state_userlevel_changed(AppState::userlevels userleve);
 
   static bool get_node_attribute_value_as_bool(const xmlpp::Element* node, const Glib::ustring& strAttributeName);
@@ -259,11 +280,13 @@ protected:
 
     typedef std::map<Glib::ustring, Report> type_reports; //map of report names to reports
     type_reports m_reports;
-    
+
+    Glib::ustring m_example_rows;
+
     //Per-session, not saved in document:
     typedef std::map<Glib::ustring, Gnome::Gda::Value> type_map_layout_primarykeys;
     type_map_layout_primarykeys m_map_current_record; //The record last viewed in each layout.
-    
+
     Glib::ustring m_layout_current;
   };
 
@@ -281,6 +304,8 @@ protected:
 
   bool m_block_cache_update; //For efficiency.
   bool m_block_modified_set;
+  bool m_allow_auto_save;
+  bool m_is_example;
 };
 
 //The base View for this document;

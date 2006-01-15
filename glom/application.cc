@@ -24,6 +24,8 @@
 #include "config.h" //For VERSION.
 #include <cstdio>
 #include <memory> //For std::auto_ptr<>
+#include <libgnomevfsmm.h>
+#include <sstream> //For stringstream.
 #include <glibmm/i18n.h>
 
 
@@ -146,6 +148,8 @@ void App_Glom::init_menus_file()
                         sigc::mem_fun((App&)*this, &App::on_menu_file_new));
   m_refFileActionGroup->add(Gtk::Action::create("BakeryAction_File_Open", Gtk::Stock::OPEN),
                         sigc::mem_fun((App_WithDoc&)*this, &App_WithDoc::on_menu_file_open));
+  m_refFileActionGroup->add(Gtk::Action::create("BakeryAction_File_SaveAsExample", _("Save As Example")),
+                        sigc::mem_fun((App_Glom&)*this, &App_Glom::on_menu_file_save_as_example));
 
   m_refFileActionGroup->add(Gtk::Action::create("BakeryAction_Menu_File_Export", _("_Export")),
                         sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_file_export));
@@ -170,6 +174,7 @@ void App_Glom::init_menus_file()
     "        <menuitem action='BakeryAction_File_Open' />"
     "        <menu action='BakeryAction_Menu_File_RecentFiles'>"
     "        </menu>"
+    "        <menuitem action='BakeryAction_File_SaveAsExample' />"
     "        <menuitem action='BakeryAction_Menu_File_Export' />"
     "        <separator/>"
     "        <menuitem action='GlomAction_File_Print' />"
@@ -378,7 +383,7 @@ bool App_Glom::on_document_load()
 
     //Disable/Enable actions, depending on userlevel:
     pDocument->emit_userlevel_changed();
- 
+
     if(pDocument->get_connection_database().empty()) //If it is a new (default) document.
     {
       //offer_new_or_existing();
@@ -445,13 +450,15 @@ bool App_Glom::on_document_load()
                     dialog.set_transient_for(*this);
 
                     dialog.add_button(Gtk::Stock::SAVE_AS, Gtk::RESPONSE_OK); //arbitrary response code.
-                    dialog.add_button(_("Coninue without Developer Mode"), Gtk::RESPONSE_ACCEPT); //arbitrary response code.
+                    dialog.add_button(_("Continue without Developer Mode"), Gtk::RESPONSE_ACCEPT); //arbitrary response code.
 
                     int response = dialog.run();
                     if(response == Gtk::RESPONSE_OK)
                     {
                       //TODO: Offer again if they choose cancel.
                       offer_saveas();
+                      if(!get_operation_cancelled())
+                        pDocument->set_is_example_file(false);
                     }
                     //TODO: Store a magic number in the database (a special table) and the file to check for mismatches.
                   }
@@ -776,7 +783,7 @@ bool App_Glom::recreate_database(bool& user_cancelled)
       return false;
     }
 
-    //Otherwise continue, because we expected connect() to fail if the db does not exist yet.
+    //Otherwise continue, because we _expected_ connect() to fail if the db does not exist yet.
   }
 
  //Create the database:
@@ -788,13 +795,13 @@ bool App_Glom::recreate_database(bool& user_cancelled)
     return false;
   }
   else
-    connection_pool->set_database(db_name); //Specify the new database when connection from now on.
+    connection_pool->set_database(db_name); //Specify the new database when connecting from now on.
 
   sharedptr<SharedConnection> sharedconnection;
   try
   {
     sharedconnection = connection_pool->connect();
-    connection_pool->set_database(db_name); //The database was successfully created, so specify it when connection from now on.
+    connection_pool->set_database(db_name); //The database was successfully created, so specify it when connecting from now on.
   }
   catch(const ExceptionConnection& ex)
   {
@@ -814,11 +821,21 @@ bool App_Glom::recreate_database(bool& user_cancelled)
     Glib::ustring sql_fields;
     Document_Glom::type_vecFields fields = pDocument->get_table_fields(table_info.get_name());
 
-    bool table_creation_succeeded = m_pFrame->create_table(table_info, fields);
+    const bool table_creation_succeeded = m_pFrame->create_table(table_info, fields);
     if(!table_creation_succeeded)
     {
       g_warning("App_Glom::recreate_database(): CREATE TABLE failed with the newly-created database.");
       return false;
+    }
+    else
+    {
+      const bool table_insert_succeeded = m_pFrame->insert_example_data(table_info.get_name());
+      //Add any example data to the table:
+      if(!table_insert_succeeded)
+      {
+        g_warning("App_Glom::recreate_database(): INSERT of example data failed with the newly-created database.");
+        return false;
+      }
     }
 
   } //for(tables)
@@ -992,3 +1009,109 @@ void App_Glom::fill_menu_reports(const Glib::ustring& table_name)
     std::cerr << " App_Glom::fill_menu_reports(): building menus failed: " <<  ex.what();
   }
 }
+
+void App_Glom::on_menu_file_save_as_example()
+{
+  //Based on the implementation of Bakery::App_WithDoc::on_menu_file_saveas()
+
+  //Display File Save dialog and respond to choice:
+
+  //Bring document window to front, to make it clear which document is being saved:
+  //This doesn't work: TODO.
+  ui_bring_to_front();
+
+  //Show the save dialog:
+  Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
+  const Glib::ustring& file_uriOld = document->get_file_uri();
+  Glib::ustring file_uri = ui_file_select_save(file_uriOld); //Also asks for overwrite confirmation.
+  if(!file_uri.empty())
+  {
+    //Enforce the file extension:
+    file_uri = document->get_file_uri_with_extension(file_uri);
+
+    bool bUseThisFileUri = true;
+
+    //Check whether file exists already:
+    {
+      // Try to open the input file.
+      Gnome::Vfs::Handle read_handle;
+      try
+      {
+        read_handle.open(file_uri, Gnome::Vfs::OPEN_READ);
+
+        //It does (there was no exception), so ask the user to confirm overwrite:
+        const bool bOverwrite = true; //The FileChooser asked already. ui_ask_overwrite(file_uri);
+
+        //Respond to button that was clicked:
+        bUseThisFileUri = bOverwrite;
+      }
+      catch(const Gnome::Vfs::exception& ex)
+      {
+        bUseThisFileUri = true; //It does not exist.
+      }
+    }
+
+    //Save to this filepath:
+    if(bUseThisFileUri)
+    {
+      //Prevent saving while we modify the document:
+      document->set_allow_autosave(false);
+
+      document->set_file_uri(file_uri, true); //true = enforce file extension
+      document->set_is_example_file();
+
+      //Save all data from all tables into the document:
+      Document_Glom::type_listTableInfo list_table_info = document->get_tables();
+      for(Document_Glom::type_listTableInfo::const_iterator iter = list_table_info.begin(); iter != list_table_info.end(); ++iter)
+      {
+        const Glib::ustring table_name = iter->get_name();
+
+        //const type_vecFields vec_fields = document->get_table_fields(table_name);
+
+        //export_data_to_stream() needs a type_mapLayoutGroupSequence;
+        Document_Glom::type_mapLayoutGroupSequence sequence = document->get_data_layout_groups_default("list", table_name);
+
+        std::stringstream the_stream;
+        m_pFrame->export_data_to_stream(the_stream, table_name, sequence);
+        std::string row_text;
+        the_stream >> row_text;
+
+        document->set_table_example_data(table_name, row_text);
+      }
+
+      document->set_allow_autosave(true);
+
+      bool bTest  = document->save();
+
+      if(!bTest)
+      {
+        ui_warning(_("Save failed."), _("There was an error while saving the file. Your changes have not been saved."));
+      }
+      else
+      {
+        //Disable Save and SaveAs menu items:
+        after_successful_save();
+      }
+
+      update_window_title();
+
+
+      //Close if this save was a result of a File|Close or File|Exit:.
+      //if(bTest && m_bCloseAfterSave) //Don't close if the save failed.
+      //{
+      //  on_menu_file_close(); //This could be the second time, but now there are no unsaved changes.
+      //}
+    }
+    else
+    {
+      //Let the user choose a different file path,
+      //because he decided not to overwrite the 1st one.
+      on_menu_file_save_as_example(); //recursive.
+    }
+  }
+  else
+  {
+    cancel_close_or_exit();
+  }
+}
+

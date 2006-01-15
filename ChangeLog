@@ -1,5 +1,19 @@
 2006-01-15  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/application.cc:
+	* glom/application.h:
+	* glom/base_db.cc:
+	* glom/base_db.h:
+	* glom/document/document_glom.cc:
+	* glom/document/document_glom.h:
+	* glom/frame_glom.cc:
+	* glom/frame_glom.h: Added half-working 
+	File / Save As Example menu item, which stores the 
+	data  in the .glom file, for use when creating the 
+	database from an example.
+
+2006-01-15  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/mode_data/dialog_layout.cc:
 	* glom/mode_data/dialog_layout_export.cc:
 	* glom/mode_data/dialog_layout_export.h:

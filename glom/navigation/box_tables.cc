@@ -201,14 +201,14 @@ void Box_Tables::on_adddel_Add(const Gtk::TreeModel::iterator& row)
 
     type_vecFields fields;
     fields.push_back(field_primary_key);
-    
+
     //Description:
     Field field_description;
     field_description.set_name("description");
     field_description.set_title("Description");
     field_description.set_glom_type(Field::TYPE_TEXT);
     fields.push_back(field_description);
-    
+
     //Comments:
     Field field_comments;
     field_comments.set_name("comments");
@@ -216,13 +216,13 @@ void Box_Tables::on_adddel_Add(const Gtk::TreeModel::iterator& row)
     field_comments.set_glom_type(Field::TYPE_TEXT);
     field_comments.m_default_formatting.set_text_format_multiline();
     fields.push_back(field_comments);
-    
+
     TableInfo table_info;
     table_info.m_name = table_name;
     table_info.m_title = util_title_from_string( table_name ); //Start with a title that might be appropriate.
-    
+
     bool test = create_table(table_info, fields);
-    
+
     //Create a table with 1 "ID" field:
    //MSYQL:
     //Query_execute( "CREATE TABLE " + table_name + " (" + primary_key_name + " INT NOT NULL AUTO_INCREMENT PRIMARY KEY)" );
@@ -230,7 +230,7 @@ void Box_Tables::on_adddel_Add(const Gtk::TreeModel::iterator& row)
 
     //PostgresSQL:
     //Query_execute( "CREATE TABLE " + table_name + " (" + primary_key_name + " serial NOT NULL  PRIMARY KEY)" );
-    
+
     //Query_execute( "CREATE TABLE \"" + table_name + "\" (" +
     //  field_primary_key.get_name() + " numeric NOT NULL  PRIMARY KEY," + 
     //  extra_field_description + "varchar, " +

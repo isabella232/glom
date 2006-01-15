@@ -37,7 +37,7 @@ void evaluate_function_implementation(const Glib::ustring& func_impl)
   {
     func_def += "  " + *iter + "\n";
   }
-  
+
   //Indent the function implementation (required by python syntax):
 
   //prefix the def line:

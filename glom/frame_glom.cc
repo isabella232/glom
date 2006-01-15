@@ -488,6 +488,7 @@ void Frame_Glom::on_menu_userlevel_Operator(const Glib::RefPtr<Gtk::RadioAction>
   }
 }
 
+
 void Frame_Glom::on_menu_file_export()
 {
   //Start with a sequence based on the Details view:
@@ -520,7 +521,23 @@ void Frame_Glom::on_menu_file_export()
 
   dialog.get_layout_groups(mapGroupSequence);
 
-  type_vecLayoutFields fieldsSequence = get_table_fields_to_show_for_sequence(m_strTableName, mapGroupSequence);
+  //const int index_primary_key = fieldsSequence.size() - 1;
+
+  const Glib::ustring found_set_where_clause = m_Notebook_Data.get_where_clause();
+
+  std::fstream the_stream(filepath.c_str(), std::ios_base::out | std::ios_base::trunc);
+  if(!the_stream)
+  {
+      show_ok_dialog(_("Could Not Create File."), _("Glom could not create the specified file."), *pWindowApp, Gtk::MESSAGE_ERROR);
+    return;
+  }
+
+  export_data_to_stream(the_stream, m_strTableName, mapGroupSequence, found_set_where_clause);
+}
+
+void Frame_Glom::export_data_to_stream(std::ostream& the_stream, const Glib::ustring table_name, const Document_Glom::type_mapLayoutGroupSequence& sequence, const Glib::ustring& where_clause)
+{
+  type_vecLayoutFields fieldsSequence = get_table_fields_to_show_for_sequence(m_strTableName, sequence);
 
   if(fieldsSequence.empty())
     return;
@@ -535,10 +552,7 @@ void Frame_Glom::on_menu_file_export()
     fieldsSequence.push_back(layout_item);
   }
 
-  //const int index_primary_key = fieldsSequence.size() - 1;
-
-  const Glib::ustring found_set_where_clause = m_Notebook_Data.get_where_clause();
-  const Glib::ustring query = GlomUtils::build_sql_select_with_where_clause(m_strTableName, fieldsSequence, found_set_where_clause);
+  const Glib::ustring query = GlomUtils::build_sql_select_with_where_clause(table_name, fieldsSequence, where_clause);
 
   //TODO: Lock the database (prevent changes) during export.
   Glib::RefPtr<Gnome::Gda::DataModel> result = Query_execute(query);
@@ -550,13 +564,6 @@ void Frame_Glom::on_menu_file_export()
   if(rows_count)
   {
     const guint columns_count = result->get_n_columns();
-
-    std::fstream the_stream(filepath.c_str(), std::ios_base::out | std::ios_base::trunc);
-    if(!the_stream)
-    {
-       show_ok_dialog(_("Could Not Create File."), _("Glom could not create the specified file."), *pWindowApp, Gtk::MESSAGE_ERROR);
-      return;
-    }
 
     for(guint row_index = 0; row_index < rows_count; ++row_index)
     {
