@@ -146,13 +146,15 @@ void Dialog_Layout_List::set_document(const Glib::ustring& layout, Document_Glom
       for(LayoutGroup::type_map_const_items::const_iterator iter = items.begin(); iter != items.end(); ++iter)
       {
         const LayoutItem_Field* item = dynamic_cast<const LayoutItem_Field*>(iter->second); 
+        if(item)
+        {
+          Gtk::TreeModel::iterator iterTree = m_model_fields->append();
+          Gtk::TreeModel::Row row = *iterTree;
 
-        Gtk::TreeModel::iterator iterTree = m_model_fields->append();
-        Gtk::TreeModel::Row row = *iterTree;
-
-        row[m_ColumnsFields.m_col_layout_item] = *item;
-        row[m_ColumnsFields.m_col_sequence] = field_sequence;
-        ++field_sequence;
+          row[m_ColumnsFields.m_col_layout_item] = *item;
+          row[m_ColumnsFields.m_col_sequence] = field_sequence;
+          ++field_sequence;
+        }
       }
     }
 

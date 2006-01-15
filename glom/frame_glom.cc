@@ -492,11 +492,7 @@ void Frame_Glom::on_menu_file_export()
 {
   //Start with a sequence based on the Details view:
   //The user can changed this by clicking the button in the FileChooser:
-  const Document_Glom::type_mapLayoutGroupSequence mapGroupSequence =  get_document()->get_data_layout_groups_plus_new_fields("details", m_strTableName);
-  type_vecLayoutFields fieldsSequence = get_table_fields_to_show_for_sequence(m_strTableName, mapGroupSequence);
-
-  if(fieldsSequence.empty())
-    return;
+  Document_Glom::type_mapLayoutGroupSequence mapGroupSequence =  get_document()->get_data_layout_groups_plus_new_fields("details", m_strTableName);
 
   Gtk::Window* pWindowApp = get_app_window();
   g_assert(pWindowApp);
@@ -511,6 +507,7 @@ void Frame_Glom::on_menu_file_export()
 
   //Ask the user for the new file location, and to optionally modify the format:
   FileChooser_Export dialog;
+  dialog.set_export_layout(mapGroupSequence, m_strTableName, get_document());
   const int response = dialog.run();
   dialog.hide();
 
@@ -519,6 +516,13 @@ void Frame_Glom::on_menu_file_export()
 
   const std::string filepath = dialog.get_filename();
   if(filepath.empty())
+    return;
+
+  dialog.get_layout_groups(mapGroupSequence);
+
+  type_vecLayoutFields fieldsSequence = get_table_fields_to_show_for_sequence(m_strTableName, mapGroupSequence);
+
+  if(fieldsSequence.empty())
     return;
 
   //Add extra possibly-non-visible columns that we need:
@@ -536,6 +540,7 @@ void Frame_Glom::on_menu_file_export()
   const Glib::ustring found_set_where_clause = m_Notebook_Data.get_where_clause();
   const Glib::ustring query = GlomUtils::build_sql_select_with_where_clause(m_strTableName, fieldsSequence, found_set_where_clause);
 
+  //TODO: Lock the database (prevent changes) during export.
   Glib::RefPtr<Gnome::Gda::DataModel> result = Query_execute(query);
 
   guint rows_count = 0;
@@ -559,7 +564,7 @@ void Frame_Glom::on_menu_file_export()
 
         for(guint col_index = 0; col_index < columns_count; ++col_index)
         {
-          const Gnome::Gda::Value value = result->get_value_at(row_index, col_index);
+          const Gnome::Gda::Value value = result->get_value_at(col_index, row_index);
 
           sharedptr<LayoutItem_Field> layout_item = fieldsSequence[col_index];
 

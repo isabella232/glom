@@ -1,3 +1,15 @@
+2006-01-15  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/mode_data/dialog_layout.cc:
+	* glom/mode_data/dialog_layout_export.cc:
+	* glom/mode_data/dialog_layout_export.h:
+	* glom/glom.glade: Remove formatting button, 
+        so we _always_ export in iso format.
+	* glom/filechooser_export.cc:
+	* glom/filechooser_export.h: The Define Data Format 
+	button now works, though it opens in the background. 
+	It now exports only the requested fields.
+
 2006-01-14  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/frame_glom.cc:

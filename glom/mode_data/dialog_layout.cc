@@ -126,13 +126,13 @@ void Dialog_Layout::move_treeview_selection_down(Gtk::TreeView* treeview, const 
 void Dialog_Layout::on_button_close()
 {
   save_to_document();
-  
+
   hide();
 }
 
 void Dialog_Layout::save_to_document()
 {
- 
+
 }
 
 
