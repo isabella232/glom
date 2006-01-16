@@ -405,6 +405,7 @@ bool App_Glom::on_document_load()
           dialog.add_button(Gtk::Stock::SAVE_AS, Gtk::RESPONSE_OK);
 
           const int response = dialog.run();
+          dialog.hide();
           if(response == Gtk::RESPONSE_CANCEL)
             return false;
           else
@@ -429,6 +430,7 @@ bool App_Glom::on_document_load()
         dialog.add_button(_("Continue without Developer Mode"), Gtk::RESPONSE_OK); //arbitrary response code.
 
         const int response = dialog.run();
+        dialog.hide();
         if(response == Gtk::RESPONSE_CANCEL)
           return false;
       }
@@ -697,13 +699,13 @@ bool App_Glom::offer_new_or_existing()
             else
             {
               return false; //The user cancelled.
-            }            
+            }
           } /* while() */
-            
+
           return true; //File successfully created.
         }
        }
-  
+
       return false; //Creation of new document failed.
     }
     else
@@ -1088,10 +1090,9 @@ void App_Glom::on_menu_file_save_as_example()
 
         std::cout << "debug: table_name=" << table_name << std::endl;
 
-        std::stringstream the_stream;
-        m_pFrame->export_data_to_stream(the_stream, table_name, sequence);
-        std::string row_text;
-        the_stream >> row_text;
+        Glib::ustring row_text;
+        m_pFrame->export_data_to_string(row_text, table_name, sequence);
+        //std::cout << "  debug after row_text=" << row_text << std::endl;
 
         document->set_table_example_data(table_name, row_text);
       }

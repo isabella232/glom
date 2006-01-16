@@ -112,6 +112,7 @@ public:
   ///Create the database for new documents, showing the Connection dialog
   bool create_database(const Glib::ustring& database_name, bool request_password = true);
 
+  void export_data_to_string(Glib::ustring& the_string, const Glib::ustring table_name, const Document_Glom::type_mapLayoutGroupSequence& sequence, const Glib::ustring& where_clause = Glib::ustring());
   void export_data_to_stream(std::ostream& the_stream, const Glib::ustring table_name, const Document_Glom::type_mapLayoutGroupSequence& sequence, const Glib::ustring& where_clause = Glib::ustring());
 
 protected:

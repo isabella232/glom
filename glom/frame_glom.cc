@@ -535,30 +535,12 @@ void Frame_Glom::on_menu_file_export()
   export_data_to_stream(the_stream, m_strTableName, mapGroupSequence, found_set_where_clause);
 }
 
-void Frame_Glom::export_data_to_stream(std::ostream& the_stream, const Glib::ustring table_name, const Document_Glom::type_mapLayoutGroupSequence& sequence, const Glib::ustring& where_clause)
+void Frame_Glom::export_data_to_string(Glib::ustring& the_string, const Glib::ustring table_name, const Document_Glom::type_mapLayoutGroupSequence& sequence, const Glib::ustring& where_clause)
 {
   type_vecLayoutFields fieldsSequence = get_table_fields_to_show_for_sequence(m_strTableName, sequence);
 
   if(fieldsSequence.empty())
     return;
-
-        for(type_vecLayoutFields::iterator iter = fieldsSequence.begin(); iter != fieldsSequence.end(); ++iter)
-        {
-            sharedptr<LayoutItem_Field> field = *iter;
-           std::cout << "  field name=" << field->get_name() << std::endl;
-        }
-
-  /*
-  //Add extra possibly-non-visible columns that we need:
-  Field field_primary_key;
-  const bool found = get_field_primary_key_for_table(table_name, field_primary_key);
-  if(found)
-  {
-    sharedptr<LayoutItem_Field> layout_item(new LayoutItem_Field);
-    layout_item->m_field = field_primary_key;
-    fieldsSequence.push_back(layout_item);
-  }
-  */
 
   const Glib::ustring query = GlomUtils::build_sql_select_with_where_clause(table_name, fieldsSequence, where_clause);
 
@@ -575,21 +557,73 @@ void Frame_Glom::export_data_to_stream(std::ostream& the_stream, const Glib::ust
 
     for(guint row_index = 0; row_index < rows_count; ++row_index)
     {
-        Glib::ustring row_string;
+        std::string row_string;
 
         for(guint col_index = 0; col_index < columns_count; ++col_index)
         {
           const Gnome::Gda::Value value = result->get_value_at(col_index, row_index);
 
           sharedptr<LayoutItem_Field> layout_item = fieldsSequence[col_index];
+          //if(layout_item->m_field.get_glom_type() != Field::TYPE_IMAGE) //This is too much data.
+          //{
+            if(!row_string.empty())
+              row_string += ",";
 
-          if(!row_string.empty())
-            row_string += ",";
+            //Output data in canonical SQL format, ignoring the user's locale, and ignoring the layout formatting:
+            row_string += layout_item->m_field.sql(value);
 
-          //Output data in canonical SQL format, ignoring the user's locale, and ignoring the layout formatting:
-          row_string += layout_item->m_field.sql(value);
+            //std::cout << "  field name=" << layout_item->get_name() << ", value=" << layout_item->m_field.sql(value) << std::endl;
+          //}
         }
 
+        //std::cout << " row_string=" << row_string << std::endl;
+        the_string += (row_string += "\n");
+    }
+  }
+}
+
+void Frame_Glom::export_data_to_stream(std::ostream& the_stream, const Glib::ustring table_name, const Document_Glom::type_mapLayoutGroupSequence& sequence, const Glib::ustring& where_clause)
+{
+  type_vecLayoutFields fieldsSequence = get_table_fields_to_show_for_sequence(m_strTableName, sequence);
+
+  if(fieldsSequence.empty())
+    return;
+
+  const Glib::ustring query = GlomUtils::build_sql_select_with_where_clause(table_name, fieldsSequence, where_clause);
+
+  //TODO: Lock the database (prevent changes) during export.
+  Glib::RefPtr<Gnome::Gda::DataModel> result = Query_execute(query);
+
+  guint rows_count = 0;
+  if(result)
+    rows_count = result->get_n_rows();
+
+  if(rows_count)
+  {
+    const guint columns_count = result->get_n_columns();
+
+    for(guint row_index = 0; row_index < rows_count; ++row_index)
+    {
+        std::string row_string;
+
+        for(guint col_index = 0; col_index < columns_count; ++col_index)
+        {
+          const Gnome::Gda::Value value = result->get_value_at(col_index, row_index);
+
+          sharedptr<LayoutItem_Field> layout_item = fieldsSequence[col_index];
+          //if(layout_item->m_field.get_glom_type() != Field::TYPE_IMAGE) //This is too much data.
+          //{
+            if(!row_string.empty())
+              row_string += ",";
+
+            //Output data in canonical SQL format, ignoring the user's locale, and ignoring the layout formatting:
+            row_string += layout_item->m_field.sql(value);
+
+            std::cout << "  field name=" << layout_item->get_name() << ", value=" << layout_item->m_field.sql(value) << std::endl;
+          //}
+        }
+
+        std::cout << " row_string=" << row_string << std::endl;
         the_stream << row_string << std::endl;
     }
   }

@@ -1681,6 +1681,8 @@ bool Document_Glom::save_before()
 
         if(m_is_example) //The example data is useless to non-example files (and is big):
           set_node_attribute_value(nodeTable, GLOM_ATTRIBUTE_EXAMPLE_ROWS, doctableinfo.m_example_rows);
+        //else
+          //TODO: doctableinfo.m_example_rows.clear(); //Make sure we are not keeping this in memory unnecessarily.
 
         //Fields:
         xmlpp::Element* elemFields = nodeTable->add_child(GLOM_NODE_FIELDS);

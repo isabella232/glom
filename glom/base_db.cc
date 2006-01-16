@@ -98,6 +98,7 @@ Glib::RefPtr<Gnome::Gda::DataModel> Base_DB::Query_execute(const Glib::ustring& 
   {
     Glib::RefPtr<Gnome::Gda::Connection> gda_connection = sharedconnection->get_gda_connection();
 
+    
     try
     {
       std::cout << "Debug: Query_execute():  " << strQuery << std::endl;
@@ -106,6 +107,7 @@ Glib::RefPtr<Gnome::Gda::DataModel> Base_DB::Query_execute(const Glib::ustring& 
     {
       std::cout << "Debug: query string could not be converted to std::cout: " << ex.what() << std::endl;
     }
+    
 
 
     result = gda_connection->execute_single_command(strQuery);
@@ -1228,6 +1230,7 @@ bool Base_DB::insert_example_data(const Glib::ustring& table_name) const
     {
       const Glib::ustring strQuery = "INSERT INTO " + table_name + " (" + strNames + ") VALUES (" + *iter + ")";
       Query_execute(strQuery); //TODO: Test result.
+      insert_succeeded = true;
     }
     catch(const ExceptionConnection& ex)
     {

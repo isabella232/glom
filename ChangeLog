@@ -1,5 +1,15 @@
 2006-01-16  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/frame_glom.cc:
+	* glom/frame_glom.h:
+	* glom/application.cc: on_menu_file_save_as_example(): 
+	Put the example data in a string instead of a stringstream, 
+	because it was somehow truncating the data.
+	* glom/base_db.cc: insert_example_data(): Really return true 
+	for success.
+
+2006-01-16  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/application.cc:
 	* glom/dialog_connection.cc:
 	* glom/dialog_connection.h:
