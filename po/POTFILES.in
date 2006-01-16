@@ -16,6 +16,7 @@ glom/data_structure/layout/report_parts/layoutitem_summary.cc
 glom/dialog_database_preferences.cc
 glom/dialog_connection.cc
 glom/dialog_layout_report.cc
+glom/filechooser_export.cc
 glom/frame_glom.cc
 glom/layout_item_dialogs/dialog_field_layout.cc
 glom/layout_item_dialogs/dialog_group_by.cc
@@ -30,6 +31,7 @@ glom/mode_data/box_data_list_related.cc
 glom/mode_data/dialog_choose_field.cc
 glom/mode_data/dialog_choose_relationship.cc
 glom/mode_data/dialog_layout_details.cc
+glom/mode_data/dialog_layout_export.cc
 glom/mode_data/dialog_layout_list.cc
 glom/mode_data/dialog_layout_list_related.cc
 glom/mode_data/notebook_data.cc
