@@ -756,40 +756,40 @@ Glib::ustring GlomConversions::get_escaped_binary_data(guint8* buffer, size_t bu
   //g_warning("GlomConversions::get_escaped_binary_data: debug: buffer ");
   //for(int i = 0; i < 10; ++i)
   //  g_warning("%02X (%c), ", (guint8)buffer[i], buffer[i]);
-        
+
   //TODO: Performance: Preallocate a string of the appropriate size.
   //Use an output parameter instead of copying it during return.
-  
+
   Glib::ustring result;
-  
+
   /* This should be much faster, and more correct, but it gives an error - "unterminated quoted string at or near: "
   size_t escaped_length = 0;
   guchar* escaped =  Glom_PQescapeBytea(buffer, buffer_size, &escaped_length);
-  
+
   if(escaped && escaped_length)
   {
     result = std::string((char*)escaped, escaped_length);
     free(escaped);
   }
   */
-  
-  
+
+
   if(buffer && buffer_size)
   {
     guint8* buffer_end = buffer + buffer_size;
     char byte_as_octal[4]; //3 digits, and a null terminator
-    
+
     for(guint8* pos = buffer; pos < buffer_end; ++pos)
     {
       sprintf(byte_as_octal, "%03o", *pos); //Format as octal with 3 digits.
       byte_as_octal[3] = 0;
-      
+
 //      g_warning("byte=%d, as_hex=%s", *pos, byte_as_octal);      
 
       result += Glib::ustring("\\\\") + byte_as_octal;
     }
   }
- 
+
   return result;
 }
 
@@ -797,7 +797,7 @@ Gnome::Gda::Value GlomConversions::parse_escaped_binary_data(const Glib::ustring
 {
   //Hopefully we don't need to use this because Gda does it for us when we read a part of a "SELECT" result into a Gnome::Value.
   //TODO: Performance
-  
+
   Gnome::Gda::Value result;
   size_t buffer_binary_length = 0;
   guchar* buffer_binary =  Glom_PQunescapeBytea((guchar*)escaped_data.c_str(), &buffer_binary_length);
@@ -806,7 +806,7 @@ Gnome::Gda::Value GlomConversions::parse_escaped_binary_data(const Glib::ustring
     result.set(buffer_binary, buffer_binary_length);
     free(buffer_binary);
   }
-  
+
   return result;
 }
 

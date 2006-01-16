@@ -542,15 +542,23 @@ void Frame_Glom::export_data_to_stream(std::ostream& the_stream, const Glib::ust
   if(fieldsSequence.empty())
     return;
 
+        for(type_vecLayoutFields::iterator iter = fieldsSequence.begin(); iter != fieldsSequence.end(); ++iter)
+        {
+            sharedptr<LayoutItem_Field> field = *iter;
+           std::cout << "  field name=" << field->get_name() << std::endl;
+        }
+
+  /*
   //Add extra possibly-non-visible columns that we need:
   Field field_primary_key;
-  const bool found = get_field_primary_key_for_table(m_strTableName, field_primary_key);
+  const bool found = get_field_primary_key_for_table(table_name, field_primary_key);
   if(found)
   {
     sharedptr<LayoutItem_Field> layout_item(new LayoutItem_Field);
     layout_item->m_field = field_primary_key;
     fieldsSequence.push_back(layout_item);
   }
+  */
 
   const Glib::ustring query = GlomUtils::build_sql_select_with_where_clause(table_name, fieldsSequence, where_clause);
 
@@ -1075,6 +1083,72 @@ void Frame_Glom::on_developer_dialog_hide()
 {
   //The dababase structure might have changed, so refresh the data view:
   show_table(m_strTableName);
+}
+
+bool Frame_Glom::connection_request_password_and_choose_new_database_name()
+{
+  //Ask for connection details:
+  m_pDialogConnection->load_from_document(); //Get good defaults.
+  m_pDialogConnection->set_transient_for(*get_app_window());
+  int response = m_pDialogConnection->run();
+  m_pDialogConnection->hide();
+
+  if(response == Gtk::RESPONSE_OK)
+  {
+    const Glib::ustring database_name = get_document()->get_connection_database();
+    bool keep_trying = true;
+    size_t extra_num = 1;
+    while(keep_trying)
+    {
+      //Create a new database name by appending a number to the old name:
+      char pchExtraNum[10];
+      sprintf(pchExtraNum, "%d", extra_num);
+      Glib::ustring database_name_possible = (database_name + pchExtraNum);
+      ++extra_num;
+
+      m_pDialogConnection->set_database_name(database_name_possible);
+      std::cout << "possible name=" << database_name_possible << std::endl;
+
+      try
+      {
+        sharedptr<SharedConnection> sharedconnection = m_pDialogConnection->connect_to_server_with_connection_settings();
+        //If no exception was thrown then the database exists.
+        //But we are looking for an unused database name, so we will try again.
+      }
+      catch(const ExceptionConnection& ex)
+      {
+        //g_warning("Frame_Glom::connection_request_password_and_choose_new_database_name(): caught exception.");
+
+        if(ex.get_failure_type() == ExceptionConnection::FAILURE_NO_SERVER)
+        {
+          //Warn the user, and let him try again:
+          m_pDialogConnectionFailed->set_transient_for(*get_app_window());
+          int response = m_pDialogConnectionFailed->run();
+          m_pDialogConnectionFailed->hide();
+
+          //TODO: Combine these into one dialog.
+          if(response != Gtk::RESPONSE_OK)
+            return false; //The user cancelled.
+
+          response = m_pDialogConnection->run();
+          m_pDialogConnection->hide();
+          if(response != Gtk::RESPONSE_OK)
+            return false; //The user cancelled.
+        }
+        else
+        {
+          //g_warning("Frame_Glom::connection_request_password_and_choose_new_database_name(): rethrowing exception.");
+
+          //The connection to the server is OK, but the specified database does not exist.
+          //That's good - we were looking for an unused database name.
+          get_document()->set_connection_database(database_name_possible);
+          return true;
+        }
+      }
+    }
+  }
+  else
+    return false; //The user cancelled.
 }
 
 bool Frame_Glom::connection_request_password_and_attempt()

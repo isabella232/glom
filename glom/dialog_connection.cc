@@ -55,15 +55,15 @@ sharedptr<SharedConnection> Dialog_Connection::connect_to_server_with_connection
     const Document_Glom* document = get_document();
     if(document)
     {
-      connection_pool->set_database(get_document()->get_connection_database());
+      connection_pool->set_database(m_label_database->get_text());
 
       connection_pool->set_host(m_entry_host->get_text());
       connection_pool->set_user(m_entry_user->get_text());
       connection_pool->set_password(m_entry_password->get_text());
-      if(document)
-      {
-        connection_pool->set_database(document->get_connection_database());
-      }
+      //if(document)
+      //{
+      //  connection_pool->set_database(document->get_connection_database());
+      //}
     }
 
     connection_pool->set_ready_to_connect(); //Box_DB::connect_to_server() will now attempt the connection-> Shared instances of m_Connection will also be usable.
@@ -113,5 +113,10 @@ void Dialog_Connection::load_from_document()
   else
     g_warning("ialog_Connection::load_from_document(): no document");
 
+}
+
+void Dialog_Connection::set_database_name(const Glib::ustring& name)
+{
+  m_label_database->set_text(name);
 }
 

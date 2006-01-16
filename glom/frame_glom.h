@@ -104,7 +104,10 @@ public:
   static void show_ok_dialog(const Glib::ustring& title, const Glib::ustring& message, Gtk::Window& parent, Gtk::MessageType message_type = Gtk::MESSAGE_INFO);
 
   //Show the dialog to request the password, and check whether it works.
-  virtual bool connection_request_password_and_attempt();
+  bool connection_request_password_and_attempt();
+
+  //Show the dialog to request the password, and choose an unused database name.
+  bool Frame_Glom::connection_request_password_and_choose_new_database_name();
 
   ///Create the database for new documents, showing the Connection dialog
   bool create_database(const Glib::ustring& database_name, bool request_password = true);

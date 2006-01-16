@@ -1,3 +1,16 @@
+2006-01-16  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/application.cc:
+	* glom/dialog_connection.cc:
+	* glom/dialog_connection.h:
+	* glom/document/document_glom.cc:
+	* glom/frame_glom.cc:
+	* glom/frame_glom.h: When opening example documents, 
+	always save a copy and always create a database, choosing 
+	a new unused database name. Mark documents explicitly as examples.
+	* glom/glom.glade: Rename Open Example button to 
+	New From Example.
+
 2006-01-15  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/application.cc:

@@ -1679,7 +1679,8 @@ bool Document_Glom::save_before()
         set_node_attribute_value_as_bool(nodeTable, GLOM_ATTRIBUTE_HIDDEN, doctableinfo.m_info.m_hidden);
         set_node_attribute_value_as_bool(nodeTable, GLOM_ATTRIBUTE_DEFAULT, doctableinfo.m_info.m_default);
 
-        set_node_attribute_value(nodeTable, GLOM_ATTRIBUTE_EXAMPLE_ROWS, doctableinfo.m_example_rows);
+        if(m_is_example) //The example data is useless to non-example files (and is big):
+          set_node_attribute_value(nodeTable, GLOM_ATTRIBUTE_EXAMPLE_ROWS, doctableinfo.m_example_rows);
 
         //Fields:
         xmlpp::Element* elemFields = nodeTable->add_child(GLOM_NODE_FIELDS);
@@ -2124,7 +2125,7 @@ Gnome::Gda::Value Document_Glom::get_layout_record_viewed(const Glib::ustring& t
     if(iterLayoutKeys != info.m_map_current_record.end())
       return iterLayoutKeys->second;
   }
-  
+
   return Gnome::Gda::Value(); //not found.
 }
 
@@ -2155,6 +2156,10 @@ bool Document_Glom::get_is_example_file() const
 
 void Document_Glom::set_is_example_file(bool value)
 {
-  m_is_example = value;
+  if(m_is_example != value)
+  {
+    m_is_example = value;
+    set_modified();
+  }
 }
 

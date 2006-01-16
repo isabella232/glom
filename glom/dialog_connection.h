@@ -40,6 +40,11 @@ public:
 
   virtual void load_from_document(); //override
 
+  /** Use this to override the data from load_from_document().
+   * For instance, if you want to try to connect to a renamed database.
+   */
+  void set_database_name(const Glib::ustring& name);
+
 protected:
   Gtk::Entry* m_entry_host;
   Gtk::Entry* m_entry_user;

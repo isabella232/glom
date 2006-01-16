@@ -64,7 +64,7 @@ bool App_Glom::init(const Glib::ustring& document_uri)
 
   //Hide the toolbar because it doesn't contain anything useful for this app.
   //m_HandleBox_Toolbar.hide();
-  
+
   if(document_uri.empty())
   {
     Document_Glom* pDocument = static_cast<Document_Glom*>(get_document());
@@ -390,6 +390,49 @@ bool App_Glom::on_document_load()
     }
     else
     {
+      //Prevent saving until we are sure that everything worked.
+      //This also stops us from losing the example data as soon as we say the new file (created from the example) is not an example.
+      pDocument->set_allow_autosave(false);
+
+      const bool is_example = pDocument->get_is_example_file();
+      if(pDocument->get_is_example_file())
+      {
+          Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Creating from example file.")), true,  Gtk::MESSAGE_INFO, Gtk::BUTTONS_NONE);
+          dialog.set_secondary_text(_("To use this example file you must save an editable copy of the file. A new database will also be created on the server.")); //TODO: Better explanation.
+          dialog.set_transient_for(*this);
+
+          dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+          dialog.add_button(Gtk::Stock::SAVE_AS, Gtk::RESPONSE_OK);
+
+          const int response = dialog.run();
+          if(response == Gtk::RESPONSE_CANCEL)
+            return false;
+          else
+          {
+            offer_saveas();
+            if(get_operation_cancelled())
+              return false;
+            else
+              pDocument->set_is_example_file(false);
+          }
+      }
+
+      //Warn about read-only files, because users will otherwise wonder why they can't use Developer mode:
+      Document_Glom::userLevelReason reason = Document_Glom::USER_LEVEL_REASON_UNKNOWN;
+      const AppState::userlevels userlevel = pDocument->get_userlevel(reason);
+      if( (userlevel == AppState::USERLEVEL_OPERATOR) && (reason == Document_Glom::USER_LEVEL_REASON_FILE_READ_ONLY) )
+      {
+        Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Opening Read-Only File.")), true,  Gtk::MESSAGE_INFO, Gtk::BUTTONS_NONE);
+        dialog.set_secondary_text(_("This file is read only, so you will not be able to enter Developer mode to make design changes."));
+        dialog.set_transient_for(*this);
+        dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+        dialog.add_button(_("Continue without Developer Mode"), Gtk::RESPONSE_OK); //arbitrary response code.
+
+        const int response = dialog.run();
+        if(response == Gtk::RESPONSE_CANCEL)
+          return false;
+      }
+
       //Read the connection information from the document:
       ConnectionPool* connection_pool = ConnectionPool::get_instance();
       if(!connection_pool)
@@ -407,89 +450,60 @@ bool App_Glom::on_document_load()
         //Attempt to connect to the specified database:
         try
         {
-          bool test = m_pFrame->connection_request_password_and_attempt();
-          if(!test)
+          bool test = false;
+          if(is_example)
+            test = m_pFrame->connection_request_password_and_choose_new_database_name();
+          else
+            test = m_pFrame->connection_request_password_and_attempt();
+
+          if(!test) //It usually throws an exception instead of returning false.
             return false; //Failed. Close the document.
+
+          if(is_example)
+          {
+            //Create the example database:
+            //connection_request_password_and_choose_new_database_name() has already change the database name to a new unused one:
+            bool user_cancelled = false;
+            const bool test = recreate_database(user_cancelled);
+            if(!test)
+            {
+              //If the database was not successfully recreated:
+              if(!user_cancelled)
+              {
+                //Tell the user:
+                Gtk::Dialog* dialog = 0;
+                try
+                {
+                  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_error_create_database");
+                  refXml->get_widget("dialog_error_create_database", dialog);
+                  dialog->set_transient_for(*this);
+                  dialog->run();
+                  delete dialog;
+                }
+                catch(const Gnome::Glade::XmlError& ex)
+                {
+                  std::cerr << ex.what() << std::endl;
+                }
+              }
+
+              return false;
+            }
+          }
         }
         catch(const ExceptionConnection& ex)
         {
-          if(ex.get_failure_type() == ExceptionConnection::FAILURE_NO_DATABASE) //This is the only FALURE_* type that connection_request_password_and_attempt() throws.
+          if(ex.get_failure_type() == ExceptionConnection::FAILURE_NO_DATABASE) //This is the only FAILURE_* type that connection_request_password_and_attempt() throws.
           {
-            //The connection to the server is OK, but the database is not there yet.
-            //Ask the user if he wants to create it.
-            //For instance, it might be an example document, whose database does not exist on his server yet.
-
-            Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_recreate_database");
-            Gtk::Dialog* dialog = 0;
-            refXml->get_widget("dialog_recreate_database", dialog);
-            if(dialog)
+            if(!is_example)
             {
-              int response = dialog->run();
-              dialog->set_transient_for(*this);
-              delete dialog;
-              dialog = 0;
-
-              if(response == Gtk::RESPONSE_CANCEL)
-                return false; //Close the document.
-              else
-              {
-                bool user_cancelled = false;
-                bool test = recreate_database(user_cancelled);
-
-                if(test)
-                {
-                  //If the database was successfully recreated.
-
-                  //Warn about read-only files, such as installed example files.
-                  Document_Glom::userLevelReason reason = Document_Glom::USER_LEVEL_REASON_UNKNOWN;
-                  AppState::userlevels userlevel = pDocument->get_userlevel(reason);
-                  if( (userlevel == AppState::USERLEVEL_OPERATOR) && (reason == Document_Glom::USER_LEVEL_REASON_FILE_READ_ONLY) )
-                  {
-                    Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Creating from read-only file.")), true,  Gtk::MESSAGE_INFO, Gtk::BUTTONS_NONE);
-                    dialog.set_secondary_text(_("This file is read only, so you will not be able to enter Developer mode to make design changes. Maybe this file is an installed example file. Therefore, you might want to create your own writeable copy of this file."));
-                    dialog.set_transient_for(*this);
-
-                    dialog.add_button(Gtk::Stock::SAVE_AS, Gtk::RESPONSE_OK); //arbitrary response code.
-                    dialog.add_button(_("Continue without Developer Mode"), Gtk::RESPONSE_ACCEPT); //arbitrary response code.
-
-                    int response = dialog.run();
-                    if(response == Gtk::RESPONSE_OK)
-                    {
-                      //TODO: Offer again if they choose cancel.
-                      offer_saveas();
-                      if(!get_operation_cancelled())
-                        pDocument->set_is_example_file(false);
-                    }
-                    //TODO: Store a magic number in the database (a special table) and the file to check for mismatches.
-                  }
-                }
-                else
-                {
-                  //If the database was not successfully recreated:
-
-                  if(!user_cancelled)
-                  {
-                    //Tell the user:
-                    Gtk::Dialog* dialog = 0;
-                    try
-                    {
-                      Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_error_create_database");
-                      refXml->get_widget("dialog_error_create_database", dialog);
-                      dialog->set_transient_for(*this);
-                      dialog->run();
-                      delete dialog;
-                    }
-                    catch(const Gnome::Glade::XmlError& ex)
-                    {
-                      std::cerr << ex.what() << std::endl;
-                    }
-                  }
-
-                  return false;
-                }
-              }
+              //The connection to the server is OK, but the database is not there yet.
+              Frame_Glom::show_ok_dialog(_("Database Not Found On Server"), _("The database could not be found on the server. Please consult your system administrator."), *this, Gtk::MESSAGE_ERROR);
             }
+            else
+              std::cerr << "App_Glom::on_document_load(): unexpected ExceptionConnection when opening example." << std::endl;
           }
+          else
+            std::cerr << "App_Glom::on_document_load(): unexpected ExceptionConnection failure type." << std::endl;
         }
 
         //Switch to operator mode when opening new documents:
@@ -506,6 +520,7 @@ bool App_Glom::on_document_load()
     //List the non-hidden tables in the menu:
     fill_menu_tables();
 
+    pDocument->set_allow_autosave(true);
     return true; //Loading of the document into the application succeeded.
   }
 }
@@ -1070,6 +1085,8 @@ void App_Glom::on_menu_file_save_as_example()
 
         //export_data_to_stream() needs a type_mapLayoutGroupSequence;
         Document_Glom::type_mapLayoutGroupSequence sequence = document->get_data_layout_groups_default("list", table_name);
+
+        std::cout << "debug: table_name=" << table_name << std::endl;
 
         std::stringstream the_stream;
         m_pFrame->export_data_to_stream(the_stream, table_name, sequence);
