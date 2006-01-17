@@ -235,7 +235,7 @@ void Box_Data_List::on_adddel_user_requested_delete(const Gtk::TreeModel::iterat
 
 void Box_Data_List::on_adddel_user_added(const Gtk::TreeModel::iterator& row, guint col_with_first_value)
 {
-  std::cout << "Box_Data_List::on_adddel_user_added" << std::endl;
+  //std::cout << "Box_Data_List::on_adddel_user_added" << std::endl;
 
   Gnome::Gda::Value primary_key_value;
 

@@ -17,7 +17,7 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
- 
+
 #include "dialog_connection.h"
 #include "box_db.h" //For Box_DB::connect_to_server().
 #include <glibmm/i18n.h>

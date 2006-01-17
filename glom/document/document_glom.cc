@@ -434,14 +434,14 @@ void Document_Glom::change_field_name(const Glib::ustring& table_name, const Gli
       {
         iterFields->m_default_formatting.change_field_name(table_name, strFieldNameOld, strFieldNameNew);
       }
-           
-      
+
+
       const bool is_parent_table = (iter->second.m_info.get_name() == table_name);
-        
+
       //Look at each layout:
       for(DocumentTableInfo::type_layouts::iterator iterLayouts = iter->second.m_layouts.begin(); iterLayouts != iter->second.m_layouts.end(); ++iterLayouts)
       {
-        
+ 
         //Look at each group:
         for(type_mapLayoutGroupSequence::iterator iterGroup = iterLayouts->m_layout_groups.begin(); iterGroup != iterLayouts->m_layout_groups.end(); ++iterGroup)
         {
@@ -452,8 +452,8 @@ void Document_Glom::change_field_name(const Glib::ustring& table_name, const Gli
             iterGroup->second.change_related_field_item_name(table_name, strFieldNameOld, strFieldNameNew);
         }
       }
-      
-      
+
+
       //Look at each report:
       for(DocumentTableInfo::type_reports::iterator iterReports = iter->second.m_reports.begin(); iterReports != iter->second.m_reports.end(); ++iterReports)
       {
@@ -463,9 +463,9 @@ void Document_Glom::change_field_name(const Glib::ustring& table_name, const Gli
         else
           iterReports->second.m_layout_group.change_related_field_item_name(table_name, strFieldNameOld, strFieldNameNew);
       }
-      
+
     }
-   
+
     set_modified();
   }
 }
@@ -719,6 +719,8 @@ void Document_Glom::fill_layout_field_details(const Glib::ustring& parent_table_
 
 Document_Glom::type_mapLayoutGroupSequence Document_Glom::get_data_layout_groups_default(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name) const
 {
+  //std::cout << "debug: Document_Glom::get_data_layout_groups_default(): table_name = " << parent_table_name << std::endl;
+
   type_mapLayoutGroupSequence result;
 
   //Add one if necessary:
@@ -784,6 +786,7 @@ Document_Glom::type_mapLayoutGroupSequence Document_Glom::get_data_layout_groups
         //layout_item.set_table_name(child_table_name); //TODO: Allow viewing of fields through relationships.
         //layout_item.m_sequence = sequence;  add_item() will fill this.
 
+        //std::cout << "  debug: add_item(): " << layout_item.get_name() << std::endl;
         if(layout_item.m_field.get_primary_key())
           pOverview->add_item(layout_item);
         else

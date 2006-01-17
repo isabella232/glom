@@ -124,12 +124,18 @@ protected:
   ///@show_null_records means show a summary of zero values when there are no records to actually summarise.
   void report_build_records(const Glib::ustring& table_name, xmlpp::Element& parent_node, const type_vecLayoutFields& fieldsToGet, const Glib::ustring& where_clause, const Glib::ustring& sort_clause = Glib::ustring(), bool one_record_only = false);
 
-  Gnome::Gda::Value auto_increment_insert_first_if_necessary(const Glib::ustring& table_name, const Glib::ustring& field_name);
+  Gnome::Gda::Value auto_increment_insert_first_if_necessary(const Glib::ustring& table_name, const Glib::ustring& field_name) const;
 
   /** Get the next auto-increment value for this primary key, from the glom system table.
    * Add a row for this field in the system table if it does not exist already.
    */
-  Gnome::Gda::Value get_next_auto_increment_value(const Glib::ustring& table_name, const Glib::ustring& field_name);
+  Gnome::Gda::Value get_next_auto_increment_value(const Glib::ustring& table_name, const Glib::ustring& field_name) const;
+
+  /** Set the next auto-increment value in the glom system table, by examining all current values.
+   * Use this, for instance, after importing rows.
+   * Add a row for this field in the system table if it does not exist already.
+   */
+  void recalculate_next_auto_increment_value(const Glib::ustring& table_name, const Glib::ustring& field_name) const;
 
   virtual bool fill_from_database();
   virtual void fill_end(); //Call this from the end of fill_from_database() overrides.

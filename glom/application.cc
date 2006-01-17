@@ -846,8 +846,17 @@ bool App_Glom::recreate_database(bool& user_cancelled)
     }
     else
     {
-      const bool table_insert_succeeded = m_pFrame->insert_example_data(table_info.get_name());
+      m_pFrame->add_standard_tables(); //Add internal, hidden, tables.
+
+      //Create the developer group, and make this user a member of it:
+      //If we got this far then the user must really have developer privileges already:
+      m_pFrame->add_standard_groups();
+
+      Glib::ustring strQuery = "ALTER GROUP " GLOM_STANDARD_GROUP_NAME_DEVELOPER " ADD USER " + connection_pool->get_user();
+      m_pFrame->Query_execute(strQuery);
+
       //Add any example data to the table:
+      const bool table_insert_succeeded = m_pFrame->insert_example_data(table_info.get_name());
       if(!table_insert_succeeded)
       {
         g_warning("App_Glom::recreate_database(): INSERT of example data failed with the newly-created database.");
@@ -857,20 +866,8 @@ bool App_Glom::recreate_database(bool& user_cancelled)
 
   } //for(tables)
 
-
-  m_pFrame->add_standard_tables(); //Add internal, hidden, tables.
-
-  //Create the developer group, and make this user a member of it:
-  //If we got this far then the user must really have developer privileges already:
-  m_pFrame->add_standard_groups();
-
-  Glib::ustring strQuery = "ALTER GROUP " GLOM_STANDARD_GROUP_NAME_DEVELOPER " ADD USER " + connection_pool->get_user();
-  m_pFrame->Query_execute(strQuery);
-
   return true; //All tables created successfully.
 }
-
-  
 
 AppState::userlevels App_Glom::get_userlevel() const
 {

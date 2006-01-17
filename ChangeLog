@@ -1,3 +1,12 @@
+2006-01-17  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/frame_glom.cc: export_data_to_*(): Use specified table name, 
+	not the current table name, so that all tables are properly exported.
+	* glom/base_db.[h|cc]: Add recalculate_next_auto_increment_value(), 
+	which does a SELECT MAX() on the table.
+        * glom/application.cc: recreate_database():  Recalculate next auto-increment 
+	values, and create glom system tables and groups before adding data. 
+
 2006-01-16  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/frame_glom.cc:

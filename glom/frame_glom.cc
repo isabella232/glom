@@ -537,7 +537,7 @@ void Frame_Glom::on_menu_file_export()
 
 void Frame_Glom::export_data_to_string(Glib::ustring& the_string, const Glib::ustring table_name, const Document_Glom::type_mapLayoutGroupSequence& sequence, const Glib::ustring& where_clause)
 {
-  type_vecLayoutFields fieldsSequence = get_table_fields_to_show_for_sequence(m_strTableName, sequence);
+  type_vecLayoutFields fieldsSequence = get_table_fields_to_show_for_sequence(table_name, sequence);
 
   if(fieldsSequence.empty())
     return;
@@ -584,7 +584,7 @@ void Frame_Glom::export_data_to_string(Glib::ustring& the_string, const Glib::us
 
 void Frame_Glom::export_data_to_stream(std::ostream& the_stream, const Glib::ustring table_name, const Document_Glom::type_mapLayoutGroupSequence& sequence, const Glib::ustring& where_clause)
 {
-  type_vecLayoutFields fieldsSequence = get_table_fields_to_show_for_sequence(m_strTableName, sequence);
+  type_vecLayoutFields fieldsSequence = get_table_fields_to_show_for_sequence(table_name, sequence);
 
   if(fieldsSequence.empty())
     return;
@@ -619,11 +619,11 @@ void Frame_Glom::export_data_to_stream(std::ostream& the_stream, const Glib::ust
             //Output data in canonical SQL format, ignoring the user's locale, and ignoring the layout formatting:
             row_string += layout_item->m_field.sql(value);
 
-            std::cout << "  field name=" << layout_item->get_name() << ", value=" << layout_item->m_field.sql(value) << std::endl;
+            //std::cout << "  field name=" << layout_item->get_name() << ", value=" << layout_item->m_field.sql(value) << std::endl;
           //}
         }
 
-        std::cout << " row_string=" << row_string << std::endl;
+        //std::cout << " row_string=" << row_string << std::endl;
         the_stream << row_string << std::endl;
     }
   }
@@ -1141,7 +1141,7 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
       ++extra_num;
 
       m_pDialogConnection->set_database_name(database_name_possible);
-      std::cout << "possible name=" << database_name_possible << std::endl;
+      //std::cout << "possible name=" << database_name_possible << std::endl;
 
       try
       {

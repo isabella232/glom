@@ -67,8 +67,6 @@ void FileChooser_Export::set_export_layout(const Document_Glom::type_mapLayoutGr
   m_document = document;
   if(!m_document)
     std::cerr << "FileChooser_Export::set_export_layout() document is NULL." << std::endl;
-  else
-    std::cout << "debug: have document." << std::endl;
 }
 
 void FileChooser_Export::on_button_define_layout()

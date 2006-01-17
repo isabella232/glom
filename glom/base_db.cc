@@ -98,7 +98,7 @@ Glib::RefPtr<Gnome::Gda::DataModel> Base_DB::Query_execute(const Glib::ustring& 
   {
     Glib::RefPtr<Gnome::Gda::Connection> gda_connection = sharedconnection->get_gda_connection();
 
-    
+    /*
     try
     {
       std::cout << "Debug: Query_execute():  " << strQuery << std::endl;
@@ -107,7 +107,7 @@ Glib::RefPtr<Gnome::Gda::DataModel> Base_DB::Query_execute(const Glib::ustring& 
     {
       std::cout << "Debug: query string could not be converted to std::cout: " << ex.what() << std::endl;
     }
-    
+    */
 
 
     result = gda_connection->execute_single_command(strQuery);
@@ -865,7 +865,7 @@ void Base_DB::add_standard_groups()
   }
 }
 
-Gnome::Gda::Value Base_DB::auto_increment_insert_first_if_necessary(const Glib::ustring& table_name, const Glib::ustring& field_name)
+Gnome::Gda::Value Base_DB::auto_increment_insert_first_if_necessary(const Glib::ustring& table_name, const Glib::ustring& field_name) const
 {
   Gnome::Gda::Value value;
 
@@ -902,11 +902,45 @@ Gnome::Gda::Value Base_DB::auto_increment_insert_first_if_necessary(const Glib::
   return value;
 }
 
-Gnome::Gda::Value Base_DB::get_next_auto_increment_value(const Glib::ustring& table_name, const Glib::ustring& field_name)
+void Base_DB::recalculate_next_auto_increment_value(const Glib::ustring& table_name, const Glib::ustring& field_name) const
+{
+  //Make sure that the row exists in the glom system table:
+  auto_increment_insert_first_if_necessary(table_name, field_name);
+
+  //Get the max key value in the database:
+  const Glib::ustring sql_query = "SELECT MAX(" + table_name + "." + field_name + ") FROM " + table_name;
+  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = Query_execute(sql_query);
+  if(datamodel && datamodel->get_n_rows() && datamodel->get_n_columns())
+  {
+    //Increment it:
+    const Gnome::Gda::Value value_max = datamodel->get_value_at(0, 0);
+    long num_max = util_decimal_from_string(value_max.to_string()); //TODO: Is this sensible? Probably not.
+    ++num_max;
+
+    //Set it in the glom system table:
+    const Gnome::Gda::Value next_value = GlomConversions::parse_value(num_max);
+    const Glib::ustring sql_query = "UPDATE " GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME " SET "
+      GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_NEXT_VALUE " = " + next_value.to_string() + //TODO: Don't use to_string().
+      " WHERE " GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME " = '" + table_name + "' AND "
+                GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_FIELD_NAME " = '" + field_name + "'";
+
+    Glib::RefPtr<Gnome::Gda::DataModel> datamodel = Query_execute(sql_query);
+    if(!datamodel)
+    {
+      g_warning("Base_DB::recalculate_next_auto_increment_value(): UPDATE failed.");
+    }
+    else
+    {
+      g_warning("Base_DB::recalculate_next_auto_increment_value(): SELECT MAX() failed.");
+    }
+  }
+}
+
+Gnome::Gda::Value Base_DB::get_next_auto_increment_value(const Glib::ustring& table_name, const Glib::ustring& field_name) const
 {
   const Gnome::Gda::Value result = auto_increment_insert_first_if_necessary(table_name, field_name);
   long num_result = 0;
-  num_result = util_decimal_from_string(result.to_string());
+  num_result = util_decimal_from_string(result.to_string()); //TODO: Is this sensible? Probably not.
 
 
   //Increment the next_value:
@@ -1235,7 +1269,14 @@ bool Base_DB::insert_example_data(const Glib::ustring& table_name) const
     catch(const ExceptionConnection& ex)
     {
       insert_succeeded = false;
+      break;
     }
+  }
+
+  for(Document_Glom::type_vecFields::const_iterator iter = vec_fields.begin(); iter != vec_fields.end(); ++iter)
+  {
+    if(iter->get_auto_increment())
+      recalculate_next_auto_increment_value(table_name, iter->get_name());
   }
 
   return insert_succeeded;
