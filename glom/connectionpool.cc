@@ -32,7 +32,7 @@ ExceptionConnection::~ExceptionConnection() throw()
 {
 }
 
-const char* ExceptionConnection::what()
+const char* ExceptionConnection::what() const throw()
 {
   return "Glom database connection failed.";
 }
@@ -41,7 +41,7 @@ ExceptionConnection::failure_type ExceptionConnection::get_failure_type() const
 {
   return m_failure_type;
 }
-  
+
 SharedConnection::SharedConnection()
 {
 }
@@ -76,18 +76,18 @@ void SharedConnection::close()
 {
   if(m_gda_connection)
     m_gda_connection.clear();
-  
-  
+
+
   //Tell the connection pool that we have finished with this connection.
   //It might want to close it, or keep it open if somebody else is using it.
   //It might even give it to someone else while it is waiting for that other person to finish with it.
   m_signal_finished.emit();
 }
-  
+
 
 //init_db_details static data:
 ConnectionPool* ConnectionPool::m_instance = 0;
- 
+
 ConnectionPool::ConnectionPool()
 : m_sharedconnection_refcount(0),
   m_ready_to_connect(false),

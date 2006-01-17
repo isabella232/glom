@@ -733,103 +733,123 @@ Privileges Base_DB::get_table_privileges(const Glib::ustring& group_name, const 
   return result;
 }
 
-void Base_DB::add_standard_tables() const
+bool Base_DB::add_standard_tables() const
 {
-  //Name, address, etc:
-  if(!get_table_exists_in_database(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME))
+  try
   {
-    TableInfo prefs_table_info;
-    prefs_table_info.m_name = GLOM_STANDARD_TABLE_PREFS_TABLE_NAME;
-    prefs_table_info.m_title = _("System: Preferences");
-    prefs_table_info.m_hidden = true;
-
-    Document_Glom::type_vecFields pref_fields;
-
-    Field primary_key; //It's not used, because there's only one record, but we must have one.
-    primary_key.set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ID);
-    primary_key.set_glom_type(Field::TYPE_NUMERIC);
-    pref_fields.push_back(primary_key);
-
-    Field field_name;
-    field_name.set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_NAME);
-    field_name.set_glom_type(Field::TYPE_TEXT);
-    pref_fields.push_back(field_name);
-
-    Field field_org_name;
-    field_org_name.set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_NAME);
-    field_org_name.set_glom_type(Field::TYPE_TEXT);
-    pref_fields.push_back(field_org_name);
-
-    Field field_org_address_street;
-    field_org_address_street.set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_STREET);
-    field_org_address_street.set_glom_type(Field::TYPE_TEXT);
-    pref_fields.push_back(field_org_address_street);
-
-    Field field_org_address_street2;
-    field_org_address_street2.set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_STREET2);
-    field_org_address_street2.set_glom_type(Field::TYPE_TEXT);
-    pref_fields.push_back(field_org_address_street2);
-
-    Field field_org_address_town;
-    field_org_address_town.set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_TOWN);
-    field_org_address_town.set_glom_type(Field::TYPE_TEXT);
-    pref_fields.push_back(field_org_address_town);
-
-    Field field_org_address_county;
-    field_org_address_county.set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_COUNTY);
-    field_org_address_county.set_glom_type(Field::TYPE_TEXT);
-    pref_fields.push_back(field_org_address_county);
-
-    Field field_org_address_country;
-    field_org_address_country.set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_COUNTRY);
-    field_org_address_country.set_glom_type(Field::TYPE_TEXT);
-    pref_fields.push_back(field_org_address_country);
-
-    Field field_org_address_postcode;
-    field_org_address_postcode.set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_POSTCODE);
-    field_org_address_postcode.set_glom_type(Field::TYPE_TEXT);
-    pref_fields.push_back(field_org_address_postcode);
-
-    bool test = create_table(prefs_table_info, pref_fields);
-
-    if(test)
+    //Name, address, etc:
+    if(!get_table_exists_in_database(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME))
     {
-      //Add the single record:
-      Query_execute("INSERT INTO " GLOM_STANDARD_TABLE_PREFS_TABLE_NAME "(" GLOM_STANDARD_TABLE_PREFS_FIELD_ID ") VALUES (1)");
+      TableInfo prefs_table_info;
+      prefs_table_info.m_name = GLOM_STANDARD_TABLE_PREFS_TABLE_NAME;
+      prefs_table_info.m_title = _("System: Preferences");
+      prefs_table_info.m_hidden = true;
+
+      Document_Glom::type_vecFields pref_fields;
+
+      Field primary_key; //It's not used, because there's only one record, but we must have one.
+      primary_key.set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ID);
+      primary_key.set_glom_type(Field::TYPE_NUMERIC);
+      pref_fields.push_back(primary_key);
+
+      Field field_name;
+      field_name.set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_NAME);
+      field_name.set_glom_type(Field::TYPE_TEXT);
+      pref_fields.push_back(field_name);
+
+      Field field_org_name;
+      field_org_name.set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_NAME);
+      field_org_name.set_glom_type(Field::TYPE_TEXT);
+      pref_fields.push_back(field_org_name);
+
+      Field field_org_address_street;
+      field_org_address_street.set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_STREET);
+      field_org_address_street.set_glom_type(Field::TYPE_TEXT);
+      pref_fields.push_back(field_org_address_street);
+
+      Field field_org_address_street2;
+      field_org_address_street2.set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_STREET2);
+      field_org_address_street2.set_glom_type(Field::TYPE_TEXT);
+      pref_fields.push_back(field_org_address_street2);
+
+      Field field_org_address_town;
+      field_org_address_town.set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_TOWN);
+      field_org_address_town.set_glom_type(Field::TYPE_TEXT);
+      pref_fields.push_back(field_org_address_town);
+
+      Field field_org_address_county;
+      field_org_address_county.set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_COUNTY);
+      field_org_address_county.set_glom_type(Field::TYPE_TEXT);
+      pref_fields.push_back(field_org_address_county);
+
+      Field field_org_address_country;
+      field_org_address_country.set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_COUNTRY);
+      field_org_address_country.set_glom_type(Field::TYPE_TEXT);
+      pref_fields.push_back(field_org_address_country);
+
+      Field field_org_address_postcode;
+      field_org_address_postcode.set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_POSTCODE);
+      field_org_address_postcode.set_glom_type(Field::TYPE_TEXT);
+      pref_fields.push_back(field_org_address_postcode);
+
+      bool test = create_table(prefs_table_info, pref_fields);
+
+      if(test)
+      {
+        //Add the single record:
+        Query_execute("INSERT INTO " GLOM_STANDARD_TABLE_PREFS_TABLE_NAME "(" GLOM_STANDARD_TABLE_PREFS_FIELD_ID ") VALUES (1)");
+      }
+      else
+      {
+        g_warning("Base_DB::add_standard_tables(): create_table(prefs) failed.");
+        return false;
+      }
     }
+
+    //Auto-increment next values:
+    if(!get_table_exists_in_database(GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME))
+    {
+      TableInfo table_info;
+      table_info.m_name = GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME;
+      table_info.m_title = _("System: Auto Increments");
+      table_info.m_hidden = true;
+
+      Document_Glom::type_vecFields fields;
+
+      Field primary_key; //It's not used, because there's only one record, but we must have one.
+      primary_key.set_name(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_ID);
+      primary_key.set_glom_type(Field::TYPE_NUMERIC);
+      fields.push_back(primary_key);
+
+      Field field_table_name;
+      field_table_name.set_name(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME);
+      field_table_name.set_glom_type(Field::TYPE_TEXT);
+      fields.push_back(field_table_name);
+
+      Field field_field_name;
+      field_field_name.set_name(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_FIELD_NAME);
+      field_field_name.set_glom_type(Field::TYPE_TEXT);
+      fields.push_back(field_field_name);
+
+      Field field_next_value;
+      field_next_value.set_name(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_NEXT_VALUE);
+      field_next_value.set_glom_type(Field::TYPE_TEXT);
+      fields.push_back(field_next_value);
+
+      const bool test = create_table(table_info, fields);
+      if(!test)
+      {
+        g_warning("Base_DB::add_standard_tables(): create_table(autoincrements) failed.");
+        return false;
+      }
+    }
+    else
+      return false;
   }
-
-  //Auto-increment next values:
-  if(!get_table_exists_in_database(GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME))
+  catch(const std::exception& ex)
   {
-    TableInfo table_info;
-    table_info.m_name = GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME;
-    table_info.m_title = _("System: Auto Increments");
-    table_info.m_hidden = true;
-
-    Document_Glom::type_vecFields fields;
-
-    Field primary_key; //It's not used, because there's only one record, but we must have one.
-    primary_key.set_name(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_ID);
-    primary_key.set_glom_type(Field::TYPE_NUMERIC);
-    fields.push_back(primary_key);
-
-    Field field_table_name;
-    field_table_name.set_name(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME);
-    field_table_name.set_glom_type(Field::TYPE_TEXT);
-    fields.push_back(field_table_name);
-
-    Field field_field_name;
-    field_field_name.set_name(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_FIELD_NAME);
-    field_field_name.set_glom_type(Field::TYPE_TEXT);
-    fields.push_back(field_field_name);
-
-    Field field_next_value;
-    field_next_value.set_name(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_NEXT_VALUE);
-    field_next_value.set_glom_type(Field::TYPE_TEXT);
-    fields.push_back(field_next_value);
-
-    create_table(table_info, fields);
+    std::cerr << "Base_DB::add_standard_tables(): caught exception: " << ex.what() << std::endl;
+    return false;
   }
 }
 

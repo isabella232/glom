@@ -884,7 +884,7 @@ void App_Glom::add_developer_action(const Glib::RefPtr<Gtk::Action>& refAction)
 {
   //Prevent it from being added twice:
   remove_developer_action(refAction);
-  
+
   m_listDeveloperActions.push_back(refAction);
 }
 
@@ -1085,7 +1085,7 @@ void App_Glom::on_menu_file_save_as_example()
         //export_data_to_stream() needs a type_mapLayoutGroupSequence;
         Document_Glom::type_mapLayoutGroupSequence sequence = document->get_data_layout_groups_default("list", table_name);
 
-        std::cout << "debug: table_name=" << table_name << std::endl;
+        //std::cout << "debug: table_name=" << table_name << std::endl;
 
         Glib::ustring row_text;
         m_pFrame->export_data_to_string(row_text, table_name, sequence);

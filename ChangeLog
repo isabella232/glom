@@ -1,3 +1,11 @@
+2006-01-17  Murray Cumming <murrayc@murrayc.com>
+
+        * glom/exception.[h|cc]: Make what() const and throw(), so that it really 
+	overrides std::exception::what() so we get real text in the error dialogs.
+	* glom/frame_glom.cc: create_database(): Call add_standard_tables() and 
+	add_standard_groups() to avoid the error/crash when adding a record to a new 
+	table in a new database.
+
 2006-01-17  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/data_structure/field.cc: sql(): Move text escaping code into 

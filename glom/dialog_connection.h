@@ -50,6 +50,7 @@ protected:
   Gtk::Entry* m_entry_user;
   Gtk::Entry* m_entry_password;
   Gtk::Label* m_label_database;
+  Glib::ustring m_database_name;
 };
 
 #endif //GLOM_DIALOG_CONNECTION_H

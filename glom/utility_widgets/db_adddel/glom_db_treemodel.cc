@@ -839,7 +839,7 @@ Gtk::TreeModel::iterator DbTreeModel::get_placeholder_row()
     type_map_rows::const_iterator iter_map = m_map_rows.find(row);
     if(iter_map != m_map_rows.end())
     {
-      g_warning("DbTreeModel::get_last_row(): returning row=%d", row);
+      //g_warning("DbTreeModel::get_last_row(): returning row=%d", row);
       create_iterator(row, result);
     }
   }

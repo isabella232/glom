@@ -55,7 +55,7 @@ sharedptr<SharedConnection> Dialog_Connection::connect_to_server_with_connection
     const Document_Glom* document = get_document();
     if(document)
     {
-      connection_pool->set_database(m_label_database->get_text());
+      connection_pool->set_database(m_database_name);
 
       connection_pool->set_host(m_entry_host->get_text());
       connection_pool->set_user(m_entry_user->get_text());
@@ -104,19 +104,19 @@ void Dialog_Connection::load_from_document()
 
     //Show the database to be opened, or created.
     //TODO: In future, we can hide this completely.
-    Glib::ustring database = document->get_connection_database();
-    if(database.empty())
-      database = _("Not yet created.");
-
-    m_label_database->set_text(database);
+    set_database_name(document->get_connection_database());
   }
   else
-    g_warning("ialog_Connection::load_from_document(): no document");
+    g_warning("Dialog_Connection::load_from_document(): no document");
 
 }
 
 void Dialog_Connection::set_database_name(const Glib::ustring& name)
 {
-  m_label_database->set_text(name);
+  m_database_name = name;
+  if(m_database_name.empty())
+    m_label_database->set_text(_("Not yet created."));
+  else
+    m_label_database->set_text(name);
 }
 

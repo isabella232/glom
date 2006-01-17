@@ -1250,12 +1250,12 @@ bool Frame_Glom::create_database(const Glib::ustring& database_name, bool reques
     if(request_password)
       connection_possible = connection_request_password_and_attempt(); //If it succeeded and the user did not cancel.
     else
-      connection_possible = true; //Assume that connection details are already coorect.
+      connection_possible = true; //Assume that connection details are already correct.
   }
   catch(const ExceptionConnection& ex)
   {
      connection_possible = false;
-     g_warning("debug Frame_Glom::create_database() exception caught: connection failed be");
+     std::cerr << "debug Frame_Glom::create_database() exception caught: connection failed: " << ex.what() << std::endl;
   }
 
   if(!connection_possible)
@@ -1291,7 +1291,16 @@ bool Frame_Glom::create_database(const Glib::ustring& database_name, bool reques
         bool result = connection->create_database(database_name);
         if(result)
         {
-          g_warning("Frame_Glom::create_database(): Succeeded: database_name=%s", database_name.c_str());
+          std::cout << "Frame_Glom::create_database(): Creation succeeded: database_name=" << database_name << std::endl;
+
+          add_standard_tables(); //Add internal, hidden, tables.
+
+          //Create the developer group, and make this user a member of it:
+          //If we got this far then the user must really have developer privileges already:
+          add_standard_groups();
+
+          std::cout << "Frame_Glom::create_database(): Creation of standard tables and groups finished." << std::endl;
+
           return true; // It succeeded.
         }
         else

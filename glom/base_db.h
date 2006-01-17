@@ -74,7 +74,7 @@ public:
   virtual Glib::RefPtr<Gnome::Gda::DataModel> Query_execute(const Glib::ustring& strQuery) const;
 
   void add_standard_groups();
-  void add_standard_tables() const;
+  bool add_standard_tables() const;
 
   bool create_table(const TableInfo& table_info, const Document_Glom::type_vecFields& fields) const;
   bool insert_example_data(const Glib::ustring& table_name) const;

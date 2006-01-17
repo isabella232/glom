@@ -37,7 +37,7 @@ public:
   ExceptionConnection(failure_type failure);
   virtual ~ExceptionConnection() throw();
 
-  virtual const char* what();
+  virtual const char* what() const throw();
 
   virtual failure_type get_failure_type() const;
 
