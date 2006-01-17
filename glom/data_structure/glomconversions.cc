@@ -786,7 +786,7 @@ Glib::ustring GlomConversions::get_escaped_binary_data(guint8* buffer, size_t bu
 
 //      g_warning("byte=%d, as_hex=%s", *pos, byte_as_octal);      
 
-      result += Glib::ustring("\\\\") + byte_as_octal;
+      result += Glib::ustring("\\") + byte_as_octal; //Note that this string must be escaped once more to convert \ ("\\") into \\ ("\\\\").
     }
   }
 

@@ -130,6 +130,7 @@ void ImageGlom::set_value(const Gnome::Gda::Value& value)
       //libgda does not currently properly unescape binary data,
       //so pData is actually a null terminated string, of escaped binary data.
       //This workaround should be removed when libgda is fixed:
+      //(It is fixed in libgd-2.0 but is unlikely to be fixed in libgda-1.2)
       size_t buffer_binary_length = 0;
       guchar* buffer_binary =  Glom_PQunescapeBytea((const guchar*)pData /* must be null-terminated */, &buffer_binary_length); //freed by us later.
       if(buffer_binary)
@@ -209,7 +210,7 @@ Gnome::Gda::Value ImageGlom::get_value() const
   //TODO: Return the data from the file that was just chosen.
   //Don't store the original here any longer than necessary,
   Gnome::Gda::Value result; //TODO: Initialize it as binary.
-  
+
   if(m_pixbuf_original)
   {
     try
@@ -220,15 +221,18 @@ Gnome::Gda::Value ImageGlom::get_value() const
       std::list<Glib::ustring> list_values;
       //list_keys.push_back("quality"); //For jpeg only.
       //list_values.push_back("95");
-      
+
       m_pixbuf_original->save_to_buffer(buffer, buffer_size, GLOM_IMAGE_FORMAT, list_keys, list_values); //Always store images as the standard format in the database.
-      
+
       //g_warning("ImageGlom::get_value(): debug: to db: ");
       //for(int i = 0; i < 10; ++i)
       //  g_warning("%02X (%c), ", (guint8)buffer[i], buffer[i]);
-          
-      result.set(buffer, buffer_size);
-      
+
+      //libgda currently assumes that this buffer is an already-escaped string.
+      //TODO: Just use the raw buffer when libgda (in libgda-2.0) has been fixed:
+      Glib::ustring binary_escaped = GlomConversions::get_escaped_binary_data((guint8*)buffer, buffer_size);
+      result.set(binary_escaped.c_str(), binary_escaped.size());
+
       g_free(buffer);
       buffer = 0;
     }

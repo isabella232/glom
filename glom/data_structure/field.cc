@@ -217,10 +217,42 @@ Glom_PQescapeString(char *to, const char *from, size_t length)
 
 } //anonymous
 
+static std::string glom_escape_text(const std::string src)
+{
+  if(src.empty())
+    return "''"; //We want to ignore the concept of NULL strings, and deal only with empty strings.
+  else
+  {
+    const size_t len = src.size();
+    char* to = (char*)malloc(sizeof(char) * 2 * (len + 1)); //recommended size for to.
+    const size_t len_escaped = Glom_PQescapeString(to, src.c_str(), len);
+    if(!len_escaped)
+    {
+      std::cerr << "glom_escape_text(): Glom_PQescapeString() failed with text: " << src << std::endl;
+
+      if(to)
+        free(to);
+
+      return "''";
+    }
+    else
+    {
+      std::string escaped(to, len_escaped);
+      free(to);
+
+      //Also escape any ";" characters, because these also cause problems, at least with libgda:
+      //See bug #326325.
+      escaped = GlomUtils::string_replace(escaped, ";", "\\073");
+
+      return ("'" + escaped + "'"); //Add single-quotes. Actually escape it 
+      //std::cout << "glom_escape_text: escaped and quoted: " << str << std::endl;
+    }
+  }
+}
+
 Glib::ustring Field::sql(const Gnome::Gda::Value& value) const
 {
-//g_warning("Field::sql: glom_type=%d", get_glom_type());
-
+  //g_warning("Field::sql: glom_type=%d", get_glom_type());
 
   if(value.is_null())
   {
@@ -263,32 +295,7 @@ Glib::ustring Field::sql(const Gnome::Gda::Value& value) const
         return "''"; //We want to ignore the concept of NULL strings, and deal only with empty strings.
       else
       {
-        std::string as_string = value.get_string();
-        if(as_string.empty())
-          return "''"; //We want to ignore the concept of NULL strings, and deal only with empty strings.
-        else
-        {
-          const size_t len = as_string.size();
-          char* to = (char*)malloc(sizeof(char) * 2 * (len + 1)); //recommended size for to.
-          const size_t len_escaped = Glom_PQescapeString(to, as_string.c_str(), len);
-          if(!len_escaped)
-          {
-            std::cerr << "Glom_PQescapeString() failed with text: " << as_string << std::endl;
-            return "''";
-          }
-          else
-          {
-            std::string escaped(to, len_escaped);
-
-            //Also escape any ";" characters, because these also cause problems, at least with libgda:
-            //See bug #326325.
-            escaped = GlomUtils::string_replace(escaped, ";", "\\073");
-
-            str = "'" + escaped + "'"; //Add single-quotes. Actually escape it 
-            //std::cout << "Field::sql(): escaped and quoted: " << str << std::endl;
-          }
-          free(to);
-        }
+        str = glom_escape_text(value.get_string());
       }
 
       break;
@@ -322,10 +329,20 @@ Glib::ustring Field::sql(const Gnome::Gda::Value& value) const
       if(value.get_value_type() == Gnome::Gda::VALUE_TYPE_BINARY)
       {
         long buffer_size = 0;
-        const gpointer buffer = value.get_binary(buffer_size);  
-        str = "'" + GlomConversions::get_escaped_binary_data((guint8*)buffer, buffer_size) + "'::bytea";
+        const gpointer buffer = value.get_binary(buffer_size);
+        if(buffer && buffer_size)
+        {
+          const std::string escaped_binary_data = std::string((char*)buffer, buffer_size);
+          //Now escape that text (to convert \ to \\, for instance):
+          str = glom_escape_text(escaped_binary_data) /* has quotes */ + "::bytea";
+
+          //Use this when libgda unescapes the binary data internally, as it should: 
+          //str = "'" + GlomConversions::get_escaped_binary_data((guint8*)buffer, buffer_size) + "'::bytea";
+        }
       }
-      
+      else
+        g_warning("Field::sql(): glom_type is TYPE_IMAGE but gda type is not VALUE_TYPE_BINARY");
+
       break;
     }
     default:

@@ -1,5 +1,22 @@
 2006-01-17  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/data_structure/field.cc: sql(): Move text escaping code into 
+	glom_escape_text() so it can be reused. For IMAGE fields, assume that 
+	get_binary() is already the escaped binary format, but escape it 
+	again as text, so we get the \\ needed for SQL commands.
+	* glom/data_structure/glomconversions.cc: get_escaped_binary_data(): 
+	Use one \, not \\ to separate byte numbers, because that's the format 
+	used by get/set_binary() in libgda at the moment.
+	* glom/utility_widgets/imageglom.cc: 
+	get_value(): Use GlomConversions::get_escaped_binary_data() before 
+	set_binary() because Glom must assume elsewhere that it is escaped 
+	in all GdaValues. This workaround will all be unnecessary in libgda-2.0, 
+	which properly unescapes binary buffers. 
+	Images are now saved properly into examples, and inserted properly into 
+	the new databases that are created when examples are opened.
+
+2006-01-17  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/utility_widgets/imageglom.cc:
 	on_menupopup_activate_clear(): Emit the signal to actually update the database.
 	on_menupopup_activate_paste(): Prevent crash when the received pixbuf is NULL.
