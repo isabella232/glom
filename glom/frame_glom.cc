@@ -572,8 +572,10 @@ void Frame_Glom::export_data_to_string(Glib::ustring& the_string, const Glib::us
             //Output data in canonical SQL format, ignoring the user's locale, and ignoring the layout formatting:
             row_string += layout_item->m_field.sql(value);
 
-            //std::cout << "  field name=" << layout_item->get_name() << ", value=" << layout_item->m_field.sql(value) << std::endl;
-          //}
+            //if(layout_item->m_field.get_glom_type() == Field::TYPE_IMAGE) //This is too much data.
+            //{
+             //std::cout << "  field name=" << layout_item->get_name() << ", value=" << layout_item->m_field.sql(value) << std::endl;
+            //}
         }
 
         //std::cout << " row_string=" << row_string << std::endl;
@@ -619,6 +621,11 @@ void Frame_Glom::export_data_to_stream(std::ostream& the_stream, const Glib::ust
             //Output data in canonical SQL format, ignoring the user's locale, and ignoring the layout formatting:
             row_string += layout_item->m_field.sql(value);
 
+            if(layout_item->m_field.get_glom_type() == Field::TYPE_IMAGE) //This is too much data.
+            {
+              if(!GlomConversions::value_is_empty(value))
+                std::cout << "  field name=" << layout_item->get_name() << ", image value not empty=" << std::endl;
+            }
             //std::cout << "  field name=" << layout_item->get_name() << ", value=" << layout_item->m_field.sql(value) << std::endl;
           //}
         }

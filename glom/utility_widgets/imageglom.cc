@@ -38,14 +38,14 @@ ImageGlom::ImageGlom()
 {
   setup_menu();
   setup_menu_usermode();
-  
+
   m_image.set_size_request(150, 150);
   m_image.show();
-  
+
   m_frame.set_shadow_type(Gtk::SHADOW_ETCHED_IN); //Without this, the image widget has no borders and is completely invisible when empty.
   m_frame.add(m_image);
   m_frame.show();
-  
+
   add(m_frame);
 }
 
@@ -58,7 +58,7 @@ bool ImageGlom::on_button_press_event(GdkEventButton *event)
 {
   GdkModifierType mods;
   gdk_window_get_pointer( Gtk::Widget::gobj()->window, 0, 0, &mods );
-      
+
   //Enable/Disable items.
   //We did this earlier, but get_application is more likely to work now:
   App_Glom* pApp = get_application();
@@ -91,7 +91,7 @@ bool ImageGlom::on_button_press_event(GdkEventButton *event)
         return true; //We handled this event.
       }
     }
-  
+
     //Single-click to select file:
     if(mods & GDK_BUTTON1_MASK)
     {
@@ -393,18 +393,22 @@ void ImageGlom::on_clipboard_clear()
 
 void ImageGlom::on_menupopup_activate_copy()
 {
-  //When copy is used, store it here until it is pasted.
-  m_pixbuf_clipboard = m_pixbuf_original->copy(); //TODO: Get it from the DB, when we stop storing the original here instead of just the preview.
-  
+  if(m_pixbuf_original)
+  {
+    //When copy is used, store it here until it is pasted.
+    m_pixbuf_clipboard = m_pixbuf_original->copy(); //TODO: Get it from the DB, when we stop storing the original here instead of just the preview.
+  }
+  else
+    m_pixbuf_clipboard.clear();
+
   Glib::RefPtr<Gtk::Clipboard> refClipboard = Gtk::Clipboard::get();
 
   //Targets:
   std::list<Gtk::TargetEntry> listTargets;
 
   listTargets.push_back( Gtk::TargetEntry(GLOM_IMAGE_FORMAT_MIME_TYPE) );
-  
+
   refClipboard->set( listTargets, sigc::mem_fun(*this, &ImageGlom::on_clipboard_get), sigc::mem_fun(*this, &ImageGlom::on_clipboard_clear) );
- 
 }
 
 void ImageGlom::on_clipboard_received_image(const Glib::RefPtr<Gdk::Pixbuf>& pixbuf)
@@ -412,7 +416,7 @@ void ImageGlom::on_clipboard_received_image(const Glib::RefPtr<Gdk::Pixbuf>& pix
   if(pixbuf)
   {
     m_pixbuf_original = pixbuf;
-    
+
     m_image.set(m_pixbuf_original); //Load the image.
     scale();
     signal_edited().emit();
@@ -425,25 +429,27 @@ void ImageGlom::on_menupopup_activate_paste()
   //Tell the clipboard to call our method when it is ready:
   Glib::RefPtr<Gtk::Clipboard> refClipboard = Gtk::Clipboard::get();
 
-  refClipboard->request_image( sigc::mem_fun(*this, &ImageGlom::on_clipboard_received_image) );
+  if(refClipboard)
+    refClipboard->request_image( sigc::mem_fun(*this, &ImageGlom::on_clipboard_received_image) );
 }
 
 void ImageGlom::on_menupopup_activate_clear()
 {
   m_pixbuf_original.clear();
   m_image.set(Gtk::Stock::MISSING_IMAGE, Gtk::ICON_SIZE_DIALOG);
+  signal_edited().emit();
 }
 
 void ImageGlom::setup_menu_usermode()
 {
   m_refActionGroup_UserModePopup = Gtk::ActionGroup::create();
-  
+
   m_refActionGroup_UserModePopup->add(Gtk::Action::create("ContextMenu_UserMode", "Context Menu") );
   m_refActionSelectFile =  Gtk::Action::create("ContextSelectFile", Gtk::Stock::EDIT, _("Choose File"));
   m_refActionCopy = Gtk::Action::create("ContextCopy", Gtk::Stock::COPY);
   m_refActionPaste = Gtk::Action::create("ContextPaste", Gtk::Stock::PASTE);
   m_refActionClear = Gtk::Action::create("ContextClear", Gtk::Stock::CLEAR);
-  
+
   m_refActionGroup_UserModePopup->add(m_refActionSelectFile,
     sigc::mem_fun(*this, &ImageGlom::on_menupopup_activate_select_file) );
 
@@ -452,7 +458,7 @@ void ImageGlom::setup_menu_usermode()
 
   m_refActionGroup_UserModePopup->add(m_refActionPaste,
     sigc::mem_fun(*this, &ImageGlom::on_menupopup_activate_paste) );
-    
+
   m_refActionGroup_UserModePopup->add(m_refActionClear,
     sigc::mem_fun(*this, &ImageGlom::on_menupopup_activate_clear) );
 
