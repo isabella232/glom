@@ -20,6 +20,7 @@
 
 #include "application.h"
 #include "dialog_new_database.h"
+#include "dialog_progress_creating.h"
 #include "utils.h"
 #include <libgnome/gnome-help.h> //For gnome_help_display
 #include "config.h" //For VERSION.
@@ -817,7 +818,30 @@ bool App_Glom::recreate_database(bool& user_cancelled)
     //Otherwise continue, because we _expected_ connect() to fail if the db does not exist yet.
   }
 
- //Create the database:
+  //Show the user that something is happening, because the INSERTS might take time.
+  //TOOD: This doesn't actually show up until near the end, even with Gtk::Main::instance()->iteration().
+  std::auto_ptr<Dialog_ProgressCreating> dialog_progress;
+  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_progress_creating_from_example");
+  if(refXml)
+  {
+    Dialog_ProgressCreating* dialog_progress_temp = 0;
+    refXml->get_widget_derived("window_progress_creating_from_example", dialog_progress_temp);
+    if(dialog_progress_temp)
+    {
+      dialog_progress.reset(dialog_progress_temp); //The dialog will be deleted (and hidden) when this function returns.
+
+      dialog_progress->set_transient_for(*dialog_progress_temp);
+      dialog_progress->show();
+
+      //Ensure that the dialog is shown, instead of waiting for the application to be idle:
+      while(Gtk::Main::instance()->events_pending())
+        Gtk::Main::instance()->iteration();
+    }
+  }
+
+  dialog_progress->pulse();
+
+  //Create the database: (This will show a connection dialog)
   connection_pool->set_database( Glib::ustring() );
   bool db_created = m_pFrame->create_database(db_name, pDocument->get_database_title(), false /* Don't ask for password etc again. */);
 
@@ -827,6 +851,9 @@ bool App_Glom::recreate_database(bool& user_cancelled)
   }
   else
     connection_pool->set_database(db_name); //Specify the new database when connecting from now on.
+
+  dialog_progress->pulse();
+  Bakery::BusyCursor(*this);
 
   sharedptr<SharedConnection> sharedconnection;
   try
@@ -840,7 +867,7 @@ bool App_Glom::recreate_database(bool& user_cancelled)
     return false;
   }
 
-  Bakery::BusyCursor(*this);
+  dialog_progress->pulse();
 
   //Create each table:
   Document_Glom::type_listTableInfo tables = pDocument->get_tables();
@@ -852,7 +879,9 @@ bool App_Glom::recreate_database(bool& user_cancelled)
     Glib::ustring sql_fields;
     Document_Glom::type_vecFields fields = pDocument->get_table_fields(table_info.get_name());
 
+    dialog_progress->pulse();
     const bool table_creation_succeeded = m_pFrame->create_table(table_info, fields);
+    dialog_progress->pulse();
     if(!table_creation_succeeded)
     {
       g_warning("App_Glom::recreate_database(): CREATE TABLE failed with the newly-created database.");
@@ -860,16 +889,19 @@ bool App_Glom::recreate_database(bool& user_cancelled)
     }
     else
     {
+      dialog_progress->pulse();
       m_pFrame->add_standard_tables(); //Add internal, hidden, tables.
 
       //Create the developer group, and make this user a member of it:
       //If we got this far then the user must really have developer privileges already:
+      dialog_progress->pulse();
       m_pFrame->add_standard_groups();
 
       Glib::ustring strQuery = "ALTER GROUP " GLOM_STANDARD_GROUP_NAME_DEVELOPER " ADD USER " + connection_pool->get_user();
       m_pFrame->Query_execute(strQuery);
 
       //Add any example data to the table:
+      dialog_progress->pulse();
       const bool table_insert_succeeded = m_pFrame->insert_example_data(table_info.get_name());
       if(!table_insert_succeeded)
       {

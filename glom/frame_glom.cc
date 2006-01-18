@@ -371,7 +371,7 @@ void Frame_Glom::alert_no_table()
   {
     //TODO: Obviously this document should have been deleted when the database-creation was cancelled.
     /* Note that "canceled" is the correct US spelling. */
-    show_ok_dialog(_("No database"), _("This document does not specify any database. Maybe the document creation was canceled before the database could be created."), *pWindowApp, Gtk::MESSAGE_ERROR);
+    show_ok_dialog(_("No table"), _("This database has no tables yet."), *pWindowApp, Gtk::MESSAGE_WARNING);
   }
 }
 

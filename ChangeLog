@@ -1,5 +1,17 @@
 2006-01-18  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/Makefile.am:
+	* glom/application.cc:
+	* glom/glom.glade:
+	* glom/dialog_progress_creating.cc:
+	* glom/dialog_progress_creating.h: Try to show a pulsing progress dialog 
+	while recreating the example database, but it does not show up until the 
+	end.
+	* glom/frame_glom.cc: alert_no_table(): Correct the message. It is about a 
+	lack of tables, not of databases, and it is not an error.
+
+2006-01-18  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/application.cc: offer_new_or_existing(): Tell the document and the 
 	connection about the actually-used database name.
 	* glom/base_db.cc: add_standard_tables(): Set the title from the document, 
