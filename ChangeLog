@@ -1,5 +1,10 @@
 2006-01-18  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/application.cc: init_menu_file(): Make the Save As Example menu 
+	item only available in Developer mode, to avoid confusing operators.
+
+2006-01-18  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/Makefile.am:
 	* glom/application.cc:
 	* glom/glom.glade:

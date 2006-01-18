@@ -150,7 +150,10 @@ void App_Glom::init_menus_file()
                         sigc::mem_fun((App&)*this, &App::on_menu_file_new));
   m_refFileActionGroup->add(Gtk::Action::create("BakeryAction_File_Open", Gtk::Stock::OPEN),
                         sigc::mem_fun((App_WithDoc&)*this, &App_WithDoc::on_menu_file_open));
-  m_refFileActionGroup->add(Gtk::Action::create("BakeryAction_File_SaveAsExample", _("Save As Example")),
+
+  Glib::RefPtr<Gtk::Action> action = Gtk::Action::create("BakeryAction_File_SaveAsExample", _("Save As Example"));
+  m_listDeveloperActions.push_back(action); 
+  m_refFileActionGroup->add(action,
                         sigc::mem_fun((App_Glom&)*this, &App_Glom::on_menu_file_save_as_example));
 
   m_refFileActionGroup->add(Gtk::Action::create("BakeryAction_Menu_File_Export", _("_Export")),
