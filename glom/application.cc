@@ -20,6 +20,7 @@
 
 #include "application.h"
 #include "dialog_new_database.h"
+#include "utils.h"
 #include <libgnome/gnome-help.h> //For gnome_help_display
 #include "config.h" //For VERSION.
 #include <cstdio>
@@ -649,7 +650,7 @@ bool App_Glom::offer_new_or_existing()
 
           //Set suitable defaults:
           const Glib::ustring filename = document->get_name(); //Get the filename without the path and extension.
-          dialog->set_input(filename, Base_DB::util_title_from_string( filename ) );
+          dialog->set_input( Base_DB::util_title_from_string( filename ) ); //Start with something suitable.
 
           bool keep_asking = true;
           while(keep_asking)
@@ -658,9 +659,12 @@ bool App_Glom::offer_new_or_existing()
 
             if(response == Gtk::RESPONSE_OK)
             {
-              Glib::ustring db_name;
               Glib::ustring db_title;
-              dialog->get_input(db_name, db_title);
+              dialog->get_input(db_title);
+
+              //Create a database name based on the title.
+              //The user will (almost) never see this anyway but it's nicer than using a random number:
+              Glib::ustring db_name = GlomUtils::create_name_from_title(db_title);
 
               //Prefix glom_ to the database name, so it's more obvious
               //for the system administrator.
@@ -669,21 +673,29 @@ bool App_Glom::offer_new_or_existing()
 
               if(!db_name.empty()) //The dialog prevents this anyway.
               {
-                bool db_created = m_pFrame->create_database(db_name);
+                //Connect to the server and choose a variation of this db_name that does not exist yet:
+                document->set_connection_database(db_name);
+                const bool connected = m_pFrame->connection_request_password_and_choose_new_database_name();
+                if(!connected)
+                  return false;
+
+                const bool db_created = m_pFrame->create_database(document->get_connection_database(), false /* do not request password */);
                 if(db_created)
                 {
                   keep_asking = false;
 
-                  document->set_connection_database(db_name); //Select the database that was just created.
+                  //document->set_connection_database(db_name); //Select the database that was just created.
 
+                  /*
                   ConnectionPool* connection_pool = ConnectionPool::get_instance();
                   if(connection_pool)
                   {
                     connection_pool->set_database(db_name); //The rest has been set while creating the database.
                   }
+                  */
 
                   document->set_database_title(db_title);
-                  m_pFrame->set_databases_selected(db_name);
+                  m_pFrame->set_databases_selected(document->get_connection_database());
                 }
                 else
                 {
@@ -794,7 +806,7 @@ bool App_Glom::recreate_database(bool& user_cancelled)
   catch(const ExceptionConnection& ex)
   {
     if(ex.get_failure_type() == ExceptionConnection::FAILURE_NO_SERVER)
-    { 
+    {
       user_cancelled = true; //Eventually, the user will cancel after retrying.
       g_warning("App_Glom::recreate_database(): Failed because connection to server failed, without specifying a databse.");
       return false;

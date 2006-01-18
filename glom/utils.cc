@@ -310,6 +310,12 @@ void GlomUtils::transform_and_open(const xmlpp::Document& xml_document, const Gl
   gnome_url_show(temp_uri.c_str(), &error); //This is in libgnome.
 }
 
+Glib::ustring GlomUtils::create_name_from_title(const Glib::ustring& title)
+{
+  Glib::ustring result = string_replace(title, " ", "");
+  return result; //.lowercase(); //Database titles must be lowercase, it seems. TODO: Maybe they need to be ASCII (not UTF8)?
+}
+
 Glib::ustring GlomUtils::xslt_process(const xmlpp::Document& xml_document, const std::string& filepath_xslt)
 {
   //Debug output:

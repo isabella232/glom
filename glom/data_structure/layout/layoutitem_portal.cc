@@ -140,7 +140,7 @@ void LayoutItem_Portal::change_relationship_name(const Glib::ustring& table_name
 
 void LayoutItem_Portal::change_related_relationship_name(const Glib::ustring& /* table_name */, const Glib::ustring& /* name */, const Glib::ustring& /* name_new */)
 {
-  
+
 }
 
 void LayoutItem_Portal::debug(guint level) const

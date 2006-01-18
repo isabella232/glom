@@ -1,3 +1,15 @@
+2006-01-18  Murray Cumming  <murrayc@murrayc.com>
+
+	* NEWS:
+	* glom/application.cc: offer_new_or_existing(): When creating a new file, 
+	discover and use an unused database name, based on the title.
+	* glom/utils.cc:
+	* glom/utils.h: Added create_name_from_title().
+	* glom/dialog_new_database.cc:
+	* glom/dialog_new_database.h:
+	* glom/glom.glade: When creating a new file/database, do not ask the user 
+	for a database name - just guess one based on the human-readable title.
+
 2006-01-17  Murray Cumming <murrayc@murrayc.com>
 
         * glom/exception.[h|cc]: Make what() const and throw(), so that it really 

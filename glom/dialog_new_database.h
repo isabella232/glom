@@ -32,15 +32,14 @@ public:
   virtual ~Dialog_NewDatabase();
 
   //Set sensible defaults:
-  virtual void set_input(const Glib::ustring& name, const Glib::ustring& title);
+  virtual void set_input(const Glib::ustring& title);
 
-  //Get the user input:  
-  virtual void get_input(Glib::ustring& name, Glib::ustring& title);
+  //Get the user input:
+  virtual void get_input(Glib::ustring& title);
 
 protected:
-  virtual void on_entry_name_changed();
-  
-  Gtk::Entry* m_entry_name;
+  virtual void on_entry_title_changed();
+
   Gtk::Entry* m_entry_title;
   Gtk::Button* m_button_ok;
 };

@@ -22,36 +22,33 @@
 
 Dialog_NewDatabase::Dialog_NewDatabase(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
 : Gtk::Dialog(cobject),
-  m_entry_name(0),
-  m_entry_title(0)
+  m_entry_title(0),
+  m_button_ok(0)
 {
-  refGlade->get_widget("entry_name", m_entry_name);
   refGlade->get_widget("entry_title", m_entry_title);
   refGlade->get_widget("button_ok", m_button_ok);
-  
-  m_entry_name->signal_changed().connect( sigc::mem_fun(*this, &Dialog_NewDatabase::on_entry_name_changed) );
+
+  m_entry_title->signal_changed().connect( sigc::mem_fun(*this, &Dialog_NewDatabase::on_entry_title_changed) );
 }
 
 Dialog_NewDatabase::~Dialog_NewDatabase()
 {
 }
 
-void Dialog_NewDatabase::on_entry_name_changed()
+void Dialog_NewDatabase::on_entry_title_changed()
 {
-  //Disable the OK button if the database name is not suitable.
-  Glib::ustring name = m_entry_name->get_text();
-  bool allow_ok = !name.empty();
+  //Disable the OK button if the database title is not suitable.
+  const Glib::ustring title = m_entry_title->get_text();
+  const bool allow_ok = !title.empty();
   m_button_ok->set_sensitive(allow_ok);
 }
 
-void Dialog_NewDatabase::set_input(const Glib::ustring& name, const Glib::ustring& title)
+void Dialog_NewDatabase::set_input(const Glib::ustring& title)
 {
-  m_entry_name->set_text(name);
   m_entry_title->set_text(title);
 }
 
-void Dialog_NewDatabase::get_input(Glib::ustring& name, Glib::ustring& title)
+void Dialog_NewDatabase::get_input(Glib::ustring& title)
 {
-  name = m_entry_name->get_text();
   title = m_entry_title->get_text();
 }

@@ -1138,13 +1138,19 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
   {
     const Glib::ustring database_name = get_document()->get_connection_database();
     bool keep_trying = true;
-    size_t extra_num = 1;
+    size_t extra_num = 0;
     while(keep_trying)
     {
-      //Create a new database name by appending a number to the old name:
-      char pchExtraNum[10];
-      sprintf(pchExtraNum, "%d", extra_num);
-      Glib::ustring database_name_possible = (database_name + pchExtraNum);
+      Glib::ustring database_name_possible;
+      if(extra_num == 0)
+        database_name_possible = database_name; //Try the original name first.
+      else
+      {
+        //Create a new database name by appending a number to the original name:
+        char pchExtraNum[10];
+        sprintf(pchExtraNum, "%d", extra_num);
+        Glib::ustring database_name_possible = (database_name + pchExtraNum);
+      }
       ++extra_num;
 
       m_pDialogConnection->set_database_name(database_name_possible);
@@ -1178,8 +1184,7 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
         }
         else
         {
-          //g_warning("Frame_Glom::connection_request_password_and_choose_new_database_name(): rethrowing exception.");
-
+          std::cout << "Frame_Glom::connection_request_password_and_choose_new_database_name(): unused database name successfully found: " << database_name_possible << std::endl; 
           //The connection to the server is OK, but the specified database does not exist.
           //That's good - we were looking for an unused database name.
           get_document()->set_connection_database(database_name_possible);
@@ -1250,7 +1255,10 @@ bool Frame_Glom::create_database(const Glib::ustring& database_name, bool reques
     if(request_password)
       connection_possible = connection_request_password_and_attempt(); //If it succeeded and the user did not cancel.
     else
+    {
+      m_pDialogConnection->set_database_name(Glib::ustring()); //Make sure that it always connects to the default database when creating a database.
       connection_possible = true; //Assume that connection details are already correct.
+    }
   }
   catch(const ExceptionConnection& ex)
   {
@@ -1260,7 +1268,7 @@ bool Frame_Glom::create_database(const Glib::ustring& database_name, bool reques
 
   if(!connection_possible)
   {
-    g_warning("debug Frame_Glom::create_database(): connection was not possible.");
+    //g_warning("debug Frame_Glom::create_database(): connection was not possible.");
     return false;
   }
   else
@@ -1272,11 +1280,15 @@ bool Frame_Glom::create_database(const Glib::ustring& database_name, bool reques
       if(request_password)
         sharedconnection = m_pDialogConnection->connect_to_server_with_connection_settings();
       else
-        sharedconnection = ConnectionPool::get_instance()->connect();
+      {
+        ConnectionPool* connection_pool = ConnectionPool::get_instance();
+        connection_pool->set_database(Glib::ustring()); //Make sure that it uses the default database for connections when creating databases.
+        sharedconnection = connection_pool->connect();
+      }
     }
     catch(const ExceptionConnection& ex)
     {
-      g_warning("debug Frame_Glom::create_database() Connection failed.");
+      //g_warning("debug Frame_Glom::create_database() Connection failed.");
 
       return false;
     }

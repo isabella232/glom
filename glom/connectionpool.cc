@@ -182,6 +182,7 @@ sharedptr<SharedConnection> ConnectionPool::connect()
         std::cout << "Glom: connecting." << std::endl;
 
         //*m_refGdaConnection = m_GdaClient->open_connection(m_GdaDataSourceInfo.get_name(), m_GdaDataSourceInfo.get_username(), m_GdaDataSourceInfo.get_password() );
+        //m_refGdaConnection.clear(); //Make sure any previous connection is really forgotten.
         m_refGdaConnection = m_GdaClient->open_connection_from_string("PostgreSQL", cnc_string);
         if(m_refGdaConnection)
         {
@@ -231,9 +232,9 @@ sharedptr<SharedConnection> ConnectionPool::connect()
 
           g_warning("ConnectionPool::connect() throwing exception.");
           if(bJustDatabaseMissing)
-            g_warning("  (Connection succeeds, but not to the specific database).");
+            std::cout << "  (Connection succeeds, but not to the specific database: " << m_database << std::endl;
           else
-            g_warning("  (Could not connect even to the default database.)");
+            std::cerr << "  (Could not connect even to the default database: " << default_database << std::endl;
 
 
           //handle_error(true /* cerr only */);

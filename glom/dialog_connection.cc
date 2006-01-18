@@ -42,6 +42,8 @@ Dialog_Connection::~Dialog_Connection()
 
 sharedptr<SharedConnection> Dialog_Connection::connect_to_server_with_connection_settings() const
 {
+  //std::cout << "debug: Dialog_Connection::connect_to_server_with_connection_settings()" << std::endl;
+
   //TODO: Bakery::BusyCursor(*get_app_window());
 
   sharedptr<SharedConnection> result(0);
@@ -52,9 +54,10 @@ sharedptr<SharedConnection> Dialog_Connection::connect_to_server_with_connection
     //Set the connection details in the ConnectionPool singleton.
     //The ConnectionPool will now use these every time it tries to connect.
 
-    const Document_Glom* document = get_document();
-    if(document)
-    {
+    //const Document_Glom* document = get_document();
+    //if(document)
+    //{
+      //std::cout << "debug: Dialog_Connection::connect_to_server_with_connection_settings(): m_database_name=" << m_database_name << std::endl;
       connection_pool->set_database(m_database_name);
 
       connection_pool->set_host(m_entry_host->get_text());
@@ -64,7 +67,7 @@ sharedptr<SharedConnection> Dialog_Connection::connect_to_server_with_connection
       //{
       //  connection_pool->set_database(document->get_connection_database());
       //}
-    }
+    //}
 
     connection_pool->set_ready_to_connect(); //Box_DB::connect_to_server() will now attempt the connection-> Shared instances of m_Connection will also be usable.
 
@@ -78,6 +81,8 @@ sharedptr<SharedConnection> Dialog_Connection::connect_to_server_with_connection
     }
     */
   }
+  else
+     std::cerr << "Dialog_Connection::connect_to_server_with_connection_settings(): ConnectionPool::get_instance() failed." << std::endl;
 
   return result;
 }
