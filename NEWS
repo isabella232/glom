@@ -4,8 +4,18 @@
   - When you open an example you must now always save an editable copy, 
   and a new database will always be created on the server.
   - Examples contain example data to fill the new database.
-* Find: The number of found records and number of total records are now 
+  - Added File / Save As Example feature in developer mode.
+* New files: Create the glom system tables, to avoid the error message.
+* Find:
+  Quick Find: Type criteria in this entry to search all text fields.
+  Found Set: The number of found records and number of total records are now 
   shown at the bottom right of the window, along with a Find All button.
+* Added File / Export feature, for exporting comma-separated data. 
+* Image fields: Choosing clear from the context menu now really clears 
+  the field in the database.
+* Updated Translations:
+  - Canadian English (Adam Weinberger)
+  - Spanish (Francisco Javier F. Serrador)
 
 0.9.1:
 
@@ -16,7 +26,7 @@
 * Dialog text grammar changes. (Bug #300139 from Adam Weinberger).
 * New Translations:
   - Nepali (Pawan Chitrakar)
-* Update Translations:
+* Updated Translations:
   - Canadian English (Adam Weinberger)
   - Catalan (Josep Puigdemont)
   - Czech (Miloslav Trmac)
