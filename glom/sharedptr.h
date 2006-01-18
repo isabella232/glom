@@ -19,7 +19,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
- 
+
 #ifndef GLOM_SHAREDPTR_H
 #define GLOM_SHAREDPTR_H
 
@@ -257,9 +257,10 @@ void sharedptr<T_obj>::init()
   if(m_pobj)
   {
     unref();
-    m_pobj = 0;
-    m_pRefCount = 0;
   }
+
+  m_pobj = 0;
+  m_pRefCount = 0;
 }
 
 

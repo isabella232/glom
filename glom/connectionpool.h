@@ -107,7 +107,7 @@ public:
   void set_user(const Glib::ustring& value);
   void set_password(const Glib::ustring& value);
   void set_database(const Glib::ustring& value);
-  
+
   Glib::ustring get_host() const;
   Glib::ustring get_user() const;
   Glib::ustring get_password() const;

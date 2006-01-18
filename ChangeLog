@@ -1,5 +1,18 @@
 2006-01-18  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/application.cc: offer_new_or_existing(): Tell the document and the 
+	connection about the actually-used database name.
+	* glom/base_db.cc: add_standard_tables(): Set the title from the document, 
+	if the document already has a database title.
+	* glom/frame_glom.h: 
+	* glom/frame_glom.cc: set_databases_selected(): Show the database title 
+	when showing a new database.
+	create_database(): Re-connect to the new database, instead of staying in 
+	template1, before creating the glom system tables. Set the title as 
+	provided in a function parameter.
+
+2006-01-18  Murray Cumming  <murrayc@murrayc.com>
+
 	* NEWS:
 	* glom/application.cc: offer_new_or_existing(): When creating a new file, 
 	discover and use an unused database name, based on the title.

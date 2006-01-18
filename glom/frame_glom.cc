@@ -282,6 +282,7 @@ void Frame_Glom::set_databases_selected(const Glib::ustring& strName)
 
   get_document()->set_connection_database(strName);
 
+  show_system_name();
   do_menu_Navigate_Table(true /* open default */);
 }
 
@@ -1149,7 +1150,7 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
         //Create a new database name by appending a number to the original name:
         char pchExtraNum[10];
         sprintf(pchExtraNum, "%d", extra_num);
-        Glib::ustring database_name_possible = (database_name + pchExtraNum);
+        database_name_possible = (database_name + pchExtraNum);
       }
       ++extra_num;
 
@@ -1246,7 +1247,7 @@ bool Frame_Glom::connection_request_password_and_attempt()
   }
 }
 
-bool Frame_Glom::create_database(const Glib::ustring& database_name, bool request_password)
+bool Frame_Glom::create_database(const Glib::ustring& database_name, const Glib::ustring& title, bool request_password)
 {
   //Ask for connection details:
   bool connection_possible = false;
@@ -1304,30 +1305,56 @@ bool Frame_Glom::create_database(const Glib::ustring& database_name, bool reques
         if(result)
         {
           std::cout << "Frame_Glom::create_database(): Creation succeeded: database_name=" << database_name << std::endl;
-
-          add_standard_tables(); //Add internal, hidden, tables.
-
-          //Create the developer group, and make this user a member of it:
-          //If we got this far then the user must really have developer privileges already:
-          add_standard_groups();
-
-          std::cout << "Frame_Glom::create_database(): Creation of standard tables and groups finished." << std::endl;
-
-          return true; // It succeeded.
-        }
-        else
-        {
-          handle_error();
-
-          //The calling function will tell the user.
-
-          return false; //Failed. //TODO: Allow the user to try with a different user name?
         }
       }
     }
   }
 
-  return false;
+  //Connect to the actual database:
+  ConnectionPool* connection_pool = ConnectionPool::get_instance();
+  connection_pool->set_database(database_name);
+
+  sharedptr<SharedConnection> sharedconnection;
+  try
+  {
+    sharedconnection = connection_pool->connect();
+  }
+  catch(const std::exception& ex)
+  {
+    std::cerr << "Frame_Glom::create_database(): Could not connect to just-created database. exception caught:" << ex.what() << std::endl;
+    return false;
+  }
+
+  if(sharedconnection)
+  {
+    add_standard_tables(); //Add internal, hidden, tables.
+
+    //Create the developer group, and make this user a member of it:
+    //If we got this far then the user must really have developer privileges already:
+    add_standard_groups();
+
+    std::cout << "Frame_Glom::create_database(): Creation of standard tables and groups finished." << std::endl;
+
+    //Set the title based on the title in the example document, or the user-supplied title when creating new documents:
+    SystemPrefs prefs = get_database_preferences();
+    if(prefs.m_name.empty())
+    {
+      std::cout << "Frame_Glom::create_database(): Setting title in the database." << std::endl;
+      prefs.m_name = title;
+      set_database_preferences(prefs);
+    }
+    else
+    {
+      std::cout << "Frame_Glom::create_database(): database has title: " << prefs.m_name << std::endl;
+    }
+
+    return true;
+  }
+  else
+  {
+    std::cerr << "Frame_Glom::create_database(): Could not connect to just-created database." << std::endl;
+    return false;
+  }
 }
 
 

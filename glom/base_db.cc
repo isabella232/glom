@@ -798,6 +798,13 @@ bool Base_DB::add_standard_tables() const
       {
         //Add the single record:
         Query_execute("INSERT INTO " GLOM_STANDARD_TABLE_PREFS_TABLE_NAME "(" GLOM_STANDARD_TABLE_PREFS_FIELD_ID ") VALUES (1)");
+
+        //Use the database title from the document, if there is one:
+        const Glib::ustring system_name = get_document()->get_database_title();
+        if(!system_name.empty())
+        {
+          Query_execute("UPDATE " GLOM_STANDARD_TABLE_PREFS_TABLE_NAME " SET  " GLOM_STANDARD_TABLE_PREFS_FIELD_NAME " = '" + system_name + "' WHERE " GLOM_STANDARD_TABLE_PREFS_FIELD_ID " = 1");
+        }
       }
       else
       {

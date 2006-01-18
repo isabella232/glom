@@ -679,7 +679,7 @@ bool App_Glom::offer_new_or_existing()
                 if(!connected)
                   return false;
 
-                const bool db_created = m_pFrame->create_database(document->get_connection_database(), false /* do not request password */);
+                const bool db_created = m_pFrame->create_database(document->get_connection_database(), db_title, false /* do not request password */);
                 if(db_created)
                 {
                   keep_asking = false;
@@ -694,8 +694,10 @@ bool App_Glom::offer_new_or_existing()
                   }
                   */
 
+                  const Glib::ustring database_name_used = document->get_connection_database();
+                  ConnectionPool::get_instance()->set_database(database_name_used);
                   document->set_database_title(db_title);
-                  m_pFrame->set_databases_selected(document->get_connection_database());
+                  m_pFrame->set_databases_selected(database_name_used);
                 }
                 else
                 {
@@ -817,7 +819,7 @@ bool App_Glom::recreate_database(bool& user_cancelled)
 
  //Create the database:
   connection_pool->set_database( Glib::ustring() );
-  bool db_created = m_pFrame->create_database(db_name, false /* Don't ask for password etc again. */);
+  bool db_created = m_pFrame->create_database(db_name, pDocument->get_database_title(), false /* Don't ask for password etc again. */);
 
   if(!db_created)
   {
