@@ -21,6 +21,7 @@
 #include "application.h"
 #include "dialog_new_database.h"
 #include "dialog_progress_creating.h"
+#include "translation/window_translations.h"
 #include "utils.h"
 #include <libgnome/gnome-help.h> //For gnome_help_display
 #include "config.h" //For VERSION.
@@ -81,7 +82,7 @@ bool App_Glom::init(const Glib::ustring& document_uri)
     if(!test)
       return offer_new_or_existing();
   }
-  
+
   return true;
   //show_all();
 }
@@ -288,6 +289,14 @@ void App_Glom::init_menus()
   m_listDeveloperActions.push_back(action);
   m_refActionGroup_Others->add(action, sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_layout));
 
+  action = Gtk::Action::create("GlomAction_Menu_Developer_ChangeLanguage", _("_Change Language"));
+  m_listDeveloperActions.push_back(action);
+  m_refActionGroup_Others->add(action, sigc::mem_fun(*this, &App_Glom::on_menu_developer_changelanguage));
+
+  action = Gtk::Action::create("GlomAction_Menu_Developer_Translations", _("_Translations"));
+  m_listDeveloperActions.push_back(action);
+  m_refActionGroup_Others->add(action, sigc::mem_fun(*this, &App_Glom::on_menu_developer_translations));
+
   m_refUIManager->insert_action_group(m_refActionGroup_Others);
 
   //Build part of the menu structure, to be merged in by using the "Bakery_MenuPH_Others" placeholder:
@@ -320,6 +329,8 @@ void App_Glom::init_menus()
     "        <menuitem action='GlomAction_Menu_Developer_Layout' />"
     "        <menuitem action='GlomAction_Menu_Developer_Users' />"
     "        <menuitem action='GlomAction_Menu_Developer_Reports' />"
+   // "        <menuitem action='GlomAction_Menu_Developer_ChangeLanguage' />"
+  //  "        <menuitem action='GlomAction_Menu_Developer_Translations' />"
     "      </menu>"
     "    </placeholder>"
     "  </menubar>"
@@ -833,7 +844,7 @@ bool App_Glom::recreate_database(bool& user_cancelled)
     {
       dialog_progress.reset(dialog_progress_temp); //The dialog will be deleted (and hidden) when this function returns.
 
-      dialog_progress->set_transient_for(*dialog_progress_temp);
+      dialog_progress->set_transient_for(*this);
       dialog_progress->show();
 
       //Ensure that the dialog is shown, instead of waiting for the application to be idle:
@@ -1178,4 +1189,43 @@ void App_Glom::on_menu_file_save_as_example()
     cancel_close_or_exit();
   }
 }
+
+void App_Glom::on_menu_developer_changelanguage()
+{
+
+}
+
+void App_Glom::on_menu_developer_translations()
+{
+  if(!m_window_translations)
+  {
+    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_translations");
+    refXml->get_widget_derived("window_translations", m_window_translations);
+    if(m_window_translations)
+    {
+      m_window_translations->set_transient_for(*this);
+      m_window_translations->set_document(static_cast<Document_Glom*>(m_pDocument));
+      m_window_translations->load_from_document();
+      m_window_translations->show();
+
+      m_window_translations->signal_hide().connect(sigc::mem_fun(*this, &App_Glom::on_window_translations_hide));
+    }
+  }
+  else
+  {
+    m_window_translations->show();
+  }
+}
+
+void App_Glom::on_window_translations_hide()
+{
+  if(m_window_translations)
+  {
+    //remove_view(m_window_translations);
+    delete m_window_translations;
+    m_window_translations = 0;
+  }
+}
+
+
 

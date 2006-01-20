@@ -28,6 +28,7 @@ namespace IsoCodes
 {
 
 static type_list_currencies list_currencies;
+static type_list_locales list_locales;
 
 type_list_currencies get_list_of_currency_symbols()
 {
@@ -54,14 +55,20 @@ type_list_currencies get_list_of_currency_symbols()
           {
             Currency currency;
 
-            currency.m_symbol = nodeEntry->get_attribute("letter_code")->get_value();
+            const xmlpp::Attribute* attribute_code = nodeEntry->get_attribute("letter_code");
+            if(attribute_code)
+              currency.m_symbol = attribute_code->get_value();
 
-            Glib::ustring name = _(nodeEntry->get_attribute("currency_name")->get_value().c_str());
-            const char* pchTranslatedName = dgettext("iso_4217", name.c_str());
-            if(pchTranslatedName)
-              name = pchTranslatedName;
+            const xmlpp::Attribute* attribute_name = nodeEntry->get_attribute("currency_name");
+            if(attribute_name)
+            {
+              Glib::ustring name = _(attribute_name->get_value().c_str());
+              const char* pchTranslatedName = dgettext("iso_4217", name.c_str());
+              if(pchTranslatedName)
+                name = pchTranslatedName;
 
-            currency.m_name = name;
+              currency.m_name = name;
+            }
 
             list_currencies.push_back(currency);
           }
@@ -70,12 +77,72 @@ type_list_currencies get_list_of_currency_symbols()
     }
     catch(const std::exception& ex)
     {
-      std::cerr << "Exception while parsing iso codes: " << ex.what() << std::endl;
+      std::cerr << "Exception while parsing iso codes (currencies): " << ex.what() << std::endl;
     }
   }
 
   return list_currencies;
 }
+
+type_list_locales get_list_of_locales()
+{
+  if(list_locales.empty())
+  {
+    const Glib::ustring filename = ISO_CODES_PREFIX "/share/xml/iso-codes/iso_639.xml";
+
+    try
+    {
+      xmlpp::DomParser parser;
+      //parser.set_validate();
+      parser.set_substitute_entities(); //We just want the text to be resolved/unescaped automatically.
+      parser.parse_file(filename);
+      if(parser)
+      {
+        //Walk the tree:
+        const xmlpp::Node* nodeRoot = parser.get_document()->get_root_node(); //deleted by DomParser.
+
+        xmlpp::Node::NodeList listNodes = nodeRoot->get_children("iso_639_entry");
+        for(xmlpp::Node::NodeList::const_iterator iter = listNodes.begin(); iter != listNodes.end(); iter++)
+        {
+          xmlpp::Element* nodeEntry = dynamic_cast<xmlpp::Element*>(*iter);
+          if(nodeEntry)
+          {
+            Locale the_locale;
+
+            //TODO: There are 3 codes (not each entry has each code). Is this the correct one to identify a locale?
+            const xmlpp::Attribute* attribute_code = nodeEntry->get_attribute("iso_639_1_code");
+            if(attribute_code)
+            {
+              the_locale.m_identifier = attribute_code->get_value();
+              if(!the_locale.m_identifier.empty())
+              {
+                const xmlpp::Attribute* attribute_name = nodeEntry->get_attribute("name");
+                if(attribute_name)
+                {
+                  Glib::ustring name = _(attribute_name->get_value().c_str()); //TODO: Is the _() useful/necessary here?
+                  const char* pchTranslatedName = dgettext("iso_639", name.c_str());
+                  if(pchTranslatedName)
+                    name = pchTranslatedName;
+
+                  the_locale.m_name = name;
+
+                  list_locales.push_back(the_locale);
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    catch(const std::exception& ex)
+    {
+      std::cerr << "Exception while parsing iso codes (locales): " << ex.what() << std::endl;
+    }
+  }
+
+  return list_locales;
+}
+
 
 } //namespace IsoCodes
 

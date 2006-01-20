@@ -82,6 +82,7 @@ AC_OUTPUT(Makefile \
       glom/python_embed/Makefile \
         glom/python_embed/python_module/Makefile \
     glom/relationships_overview/Makefile \
+    glom/translation/Makefile \
     xslt/Makefile \
     po/Makefile.in \
   macros/Makefile \

@@ -24,6 +24,8 @@
 #include "bakery/bakery.h"
 #include "frame_glom.h"
 
+class Window_Translations;
+
 class App_Glom : public Bakery::App_WithDoc_Gtk
 {
 public:
@@ -67,13 +69,16 @@ protected:
   virtual void on_menu_userlevel_developer();
   virtual void on_menu_userlevel_operator();
   virtual void on_menu_file_save_as_example();
+  virtual void on_menu_developer_changelanguage();
+  virtual void on_menu_developer_translations();
+  virtual void on_window_translations_hide();
 
   virtual void on_userlevel_changed(AppState::userlevels userlevel);
 
   virtual Bakery::App* new_instance(); //Override
 
   virtual bool recreate_database(bool& user_cancelled); //return indicates success.
-  
+
   typedef Bakery::App_WithDoc_Gtk type_base;
 
   //Widgets:
@@ -88,6 +93,8 @@ protected:
   Gtk::VBox* m_pBoxTop;
   Frame_Glom* m_pFrame;
   Gtk::Label* m_pStatus;
+
+  Window_Translations* m_window_translations;
 
   Glib::RefPtr<Gtk::ActionGroup> m_refNavTablesActionGroup, m_refNavReportsActionGroup;
   type_listActions m_listNavTableActions, m_listNavReportActions;

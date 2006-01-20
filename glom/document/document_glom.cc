@@ -1780,8 +1780,8 @@ bool Document_Glom::save_before()
           xmlpp::Element* nodeGroups = nodeReport->add_child(GLOM_NODE_DATA_LAYOUT_GROUPS);
           save_before_layout_group(nodeGroups, iter->second.m_layout_group);
         }
-        
-        
+
+ 
         nodeTable->add_child_text("\n\n"); //Make it a bit easier to read, 
       }
 
