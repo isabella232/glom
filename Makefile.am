@@ -13,14 +13,15 @@ GnomeApplications_DATA = glom.desktop
 mimeinfodir = $(datadir)/mime-info
 mimeinfo_DATA = glom.keys glom.mime
 
-# Install the glom.xml MIME-type registration file, so that the files can be recognised as the $
+# Install the glom.xml MIME-type registration file, so that the files can be recognised as the 
 # correct MIME-type:
 MimeDatabasedir = $(datadir)/mime/packages
 MimeDatabase_DATA = glom.xml
 
 # Install the application registration, so that the system knows that this application can open files of this MIME-type:
-appregdir = $(datadir)/application-registry
-appreg_DATA = glom.applications
+# Removed because that was the old way. murrayc:
+# appregdir = $(datadir)/application-registry
+# appreg_DATA = glom.applications
 
 install-data-hook: 
 	-update-mime-database "$(DESTDIR)${datadir}/mime"

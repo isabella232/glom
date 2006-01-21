@@ -1,8 +1,0 @@
-glom
-	command=glom
-	name=Glom
-	can_open_multiple_files=true
-	expects_uris=true
-	requires_terminal=false
-	mime_types=application/x-glom
-	uses_gnomevfs=true

@@ -1,3 +1,10 @@
+2006-01-21  Murray Cumming  <murrayc@murrayc.com>
+
+	* Makefile.am:
+	* glom.applications: Removed .applications file because it is 
+	apparently the old way, for versions of GNOME with which Glom 
+	is not likely to work anyway.
+
 2006-01-20  Murray Cumming  <murrayc@murrayc.com>
 
   * glom/data_structure/iso_codes.cc:
