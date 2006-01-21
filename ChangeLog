@@ -1,5 +1,18 @@
 2006-01-21  Murray Cumming  <murrayc@murrayc.com>
 
+	* configure.in:
+	* glom.desktop: Removed
+	* glom.desktop.in.in: Added .in.in file instead, based on 
+	the same thing in gnome-terminal, so that intltool can 
+	translate strings prefixed by underscores (_Name and _Comment), 
+	and so that configure.in can substitute the VERSION for 
+	bug-buddy.
+	* glom.png:
+	* Makefile.am: Actually install the application icon, and 
+	correct the install location for the .desktop file.
+
+2006-01-21  Murray Cumming  <murrayc@murrayc.com>
+
 	* Makefile.am:
 	* glom.applications: Removed .applications file because it is 
 	apparently the old way, for versions of GNOME with which Glom 

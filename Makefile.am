@@ -3,10 +3,12 @@
 #Build in these directories:
 SUBDIRS = po glom docs macros examples xslt
 
+#Copied from gnome-terminal's Makefile.am:
+desktopdir = $(datadir)/applications
+desktop_in_files = glom.desktop.in
+desktop_DATA = $(desktop_in_files:.desktop.in=.desktop)
+@INTLTOOL_DESKTOP_RULE@
 
-#Gnome install information:
-GnomeApplicationsdir = $(datadir)/gnome/apps/Applications
-GnomeApplications_DATA = glom.desktop
 
 # This is the old MIME-type system.
 # GNOME 2.6 seems to require that we register with both the old and the new MIME-type systems.
@@ -26,19 +28,19 @@ MimeDatabase_DATA = glom.xml
 install-data-hook: 
 	-update-mime-database "$(DESTDIR)${datadir}/mime"
 
-EXTRA_DIST = $(GnomeApplications_DATA) $(MimeDatabase_DATA) $(appreg_DATA) $(mimeinfo_DATA) \
-             autogen.sh \
+EXTRA_DIST = $(desktop_in_files) $(MimeDatabase_DATA) $(appreg_DATA) $(mimeinfo_DATA) \
+             autogen.sh glom.png \
              gnome-doc-utils.make \
-             intltool-extract.in intltool-merge.in intltool-update.in
+             intltool-extract.in intltool-merge.in intltool-update.in xmldocs.make omf.make
 
 #gnome-doc-utils stuff:
-DISTCLEAN_FILES = gnome-doc-utils.make
+DISTCLEAN_FILES = gnome-doc-utils.make $(desktop_DATA) intltool-extract intltool-merge intltool-update
 DISTCHECK_CONFIGURE_FLAGS = --disable-scrollkeeper
 
 # (See http://cvs.gnome.org/lxr/source/intltool/README about these intltool files)
 
 # ignore the scrollkeeper and mime stuff. I'm sure this shouldn't be necessary. murrayc.
-scrollkeeper_rubbish = find . -type f -print | grep -v '^\./var/scrollkeeper
+scrollkeeper_rubbish = find . -type f -print | grep -v '^\./var/scrollkeeper'
 mime_rubbish = find . -type f -print | grep -v '^\./share/mime'
-distuninstallcheck_listfiles = intltool-extract intltool-merge intltool-update $(scrollkeeper_rubbish $(mime_rubbish)
+distuninstallcheck_listfiles = intltool-extract intltool-merge intltool-update $(scrollkeeper_rubbish) $(mime_rubbish)
 

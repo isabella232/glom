@@ -1,0 +1,15 @@
+[Desktop Entry]
+Encoding=UTF-8
+_Name=Glom
+_Comment=A user-friendly database environment.
+Exec=glom
+Terminal=false
+Type=Application
+Icon=glom.png
+Categories=Application;GNOME;Office;
+StartupNotify=true
+X-GNOME-DocPath=glom/index.html
+X-GNOME-Bugzilla-Bugzilla=GNOME
+X-GNOME-Bugzilla-Product=glom
+X-GNOME-Bugzilla-Component=general
+X-GNOME-Bugzilla-Version=@VERSION@
