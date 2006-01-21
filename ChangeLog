@@ -1,5 +1,9 @@
 2006-01-21  Murray Cumming  <murrayc@murrayc.com>
 
+	* po/POTFILES.in: Mention the desktop file.
+
+2006-01-21  Murray Cumming  <murrayc@murrayc.com>
+
 	* configure.in:
 	* glom.desktop: Removed
 	* glom.desktop.in.in: Added .in.in file instead, based on 

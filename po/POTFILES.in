@@ -1,5 +1,6 @@
 # List of source files containing translatable strings.
 # Please keep this file sorted alphabetically.
+glom.desktop.in.in
 glom/glom.glade
 glom/application.cc
 glom/base_db.cc
