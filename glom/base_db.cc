@@ -274,7 +274,7 @@ Base_DB::type_vecStrings Base_DB::util_vecStrings_from_Fields(const type_vecFiel
   type_vecStrings vecNames;
   for(type_vecFields::size_type i = 0; i < fields.size(); i++)
   {
-    vecNames.push_back(fields[i].get_name());
+    vecNames.push_back(fields[i]->get_name());
   }
 
   return vecNames;
@@ -346,10 +346,10 @@ Base_DB::type_vecFields Base_DB::get_fields_for_table_from_database(const Glib::
         {
           if(value_name.get_string().empty())
             g_warning("Base_DB::get_fields_for_table_from_database(): value_name is empty.");
-            
-          field_info.set_name( value_name.get_string() );
+
+          field_info.set_name( value_name.get_string() ); //TODO: get_string() is a dodgy choice. murrayc.
         }
-        
+
         //Get the field type:
         //This is a string representation of the type, so we need to discover the Gnome::Gda::ValueType for it:
         Gnome::Gda::Value value_fieldtype = data_model_fields->get_value_at(DATAMODEL_FIELDS_COL_TYPE, row);
@@ -398,8 +398,8 @@ Base_DB::type_vecFields Base_DB::get_fields_for_table_from_database(const Glib::
           field_info.set_auto_increment( value_autoincrement.get_bool() );
         */
 
-        Field field; //TODO: Get glom-specific information from the document?
-        field.set_field_info(field_info);
+        sharedptr<Field> field(new Field()); //TODO: Get glom-specific information from the document?
+        field->set_field_info(field_info);
         result.push_back(field);
 
         ++row;
@@ -432,7 +432,8 @@ Base_DB::type_vecFields Base_DB::get_fields_for_table(const Glib::ustring& table
     //Look at each field in the database:
     for(type_vecFields::iterator iter = fieldsDocument.begin(); iter != fieldsDocument.end(); ++iter)
     {
-      const Glib::ustring field_name = iter->get_name();
+      sharedptr<Field> field = *iter;
+      const Glib::ustring field_name = field->get_name();
 
       //Get the field info from the database:
       //This is in the document as well, but it _might_ have changed.
@@ -440,10 +441,10 @@ Base_DB::type_vecFields Base_DB::get_fields_for_table(const Glib::ustring& table
 
       if(iterFindDatabase != fieldsDatabase.end() ) //Ignore fields that don't exist in the database anymore.
       {
-        Gnome::Gda::FieldAttributes field_info_document = iter->get_field_info();
+        Gnome::Gda::FieldAttributes field_info_document = field->get_field_info();
 
         //Update the Field information that _might_ have changed in the database.
-        Gnome::Gda::FieldAttributes field_info = iterFindDatabase->get_field_info();
+        Gnome::Gda::FieldAttributes field_info = (*iterFindDatabase)->get_field_info();
 
         //libgda does not tell us whether the field is auto_incremented, so we need to get that from the document.
         field_info.set_auto_increment( field_info_document.get_auto_increment() );
@@ -454,7 +455,7 @@ Base_DB::type_vecFields Base_DB::get_fields_for_table(const Glib::ustring& table
         //libgda does yet tell us correct default_value information so we need to get that from the document.
         field_info.set_default_value( field_info_document.get_default_value() );
 
-        iter->set_field_info(field_info);
+        field->set_field_info(field_info);
 
         result.push_back(*iter);
       }
@@ -463,7 +464,7 @@ Base_DB::type_vecFields Base_DB::get_fields_for_table(const Glib::ustring& table
     //Add any fields that are in the database, but not in the document:
     for(type_vecFields::iterator iter = fieldsDatabase.begin(); iter != fieldsDatabase.end(); ++iter)
     {
-      Glib::ustring field_name = iter->get_name();
+      Glib::ustring field_name = (*iter)->get_name();
 
        //Look in the result so far:
        type_vecFields::const_iterator iterFind = std::find_if(result.begin(), result.end(), predicate_FieldHasName<Field>(field_name));
@@ -747,52 +748,52 @@ bool Base_DB::add_standard_tables() const
 
       Document_Glom::type_vecFields pref_fields;
 
-      Field primary_key; //It's not used, because there's only one record, but we must have one.
-      primary_key.set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ID);
-      primary_key.set_glom_type(Field::TYPE_NUMERIC);
+      sharedptr<Field> primary_key(new Field()); //It's not used, because there's only one record, but we must have one.
+      primary_key->set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ID);
+      primary_key->set_glom_type(Field::TYPE_NUMERIC);
       pref_fields.push_back(primary_key);
 
-      Field field_name;
-      field_name.set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_NAME);
-      field_name.set_glom_type(Field::TYPE_TEXT);
+      sharedptr<Field> field_name(new Field());
+      field_name->set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_NAME);
+      field_name->set_glom_type(Field::TYPE_TEXT);
       pref_fields.push_back(field_name);
 
-      Field field_org_name;
-      field_org_name.set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_NAME);
-      field_org_name.set_glom_type(Field::TYPE_TEXT);
+      sharedptr<Field> field_org_name(new Field());
+      field_org_name->set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_NAME);
+      field_org_name->set_glom_type(Field::TYPE_TEXT);
       pref_fields.push_back(field_org_name);
 
-      Field field_org_address_street;
-      field_org_address_street.set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_STREET);
-      field_org_address_street.set_glom_type(Field::TYPE_TEXT);
+      sharedptr<Field> field_org_address_street(new Field());
+      field_org_address_street->set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_STREET);
+      field_org_address_street->set_glom_type(Field::TYPE_TEXT);
       pref_fields.push_back(field_org_address_street);
 
-      Field field_org_address_street2;
-      field_org_address_street2.set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_STREET2);
-      field_org_address_street2.set_glom_type(Field::TYPE_TEXT);
+      sharedptr<Field> field_org_address_street2(new Field());
+      field_org_address_street2->set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_STREET2);
+      field_org_address_street2->set_glom_type(Field::TYPE_TEXT);
       pref_fields.push_back(field_org_address_street2);
 
-      Field field_org_address_town;
-      field_org_address_town.set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_TOWN);
-      field_org_address_town.set_glom_type(Field::TYPE_TEXT);
+      sharedptr<Field> field_org_address_town(new Field());
+      field_org_address_town->set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_TOWN);
+      field_org_address_town->set_glom_type(Field::TYPE_TEXT);
       pref_fields.push_back(field_org_address_town);
 
-      Field field_org_address_county;
-      field_org_address_county.set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_COUNTY);
-      field_org_address_county.set_glom_type(Field::TYPE_TEXT);
+      sharedptr<Field> field_org_address_county(new Field());
+      field_org_address_county->set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_COUNTY);
+      field_org_address_county->set_glom_type(Field::TYPE_TEXT);
       pref_fields.push_back(field_org_address_county);
 
-      Field field_org_address_country;
-      field_org_address_country.set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_COUNTRY);
-      field_org_address_country.set_glom_type(Field::TYPE_TEXT);
+      sharedptr<Field> field_org_address_country(new Field());
+      field_org_address_country->set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_COUNTRY);
+      field_org_address_country->set_glom_type(Field::TYPE_TEXT);
       pref_fields.push_back(field_org_address_country);
 
-      Field field_org_address_postcode;
-      field_org_address_postcode.set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_POSTCODE);
-      field_org_address_postcode.set_glom_type(Field::TYPE_TEXT);
+      sharedptr<Field> field_org_address_postcode(new Field());
+      field_org_address_postcode->set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_POSTCODE);
+      field_org_address_postcode->set_glom_type(Field::TYPE_TEXT);
       pref_fields.push_back(field_org_address_postcode);
 
-      bool test = create_table(prefs_table_info, pref_fields);
+      const bool test = create_table(prefs_table_info, pref_fields);
 
       if(test)
       {
@@ -823,24 +824,24 @@ bool Base_DB::add_standard_tables() const
 
       Document_Glom::type_vecFields fields;
 
-      Field primary_key; //It's not used, because there's only one record, but we must have one.
-      primary_key.set_name(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_ID);
-      primary_key.set_glom_type(Field::TYPE_NUMERIC);
+      sharedptr<Field> primary_key(new Field()); //It's not used, because there's only one record, but we must have one.
+      primary_key->set_name(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_ID);
+      primary_key->set_glom_type(Field::TYPE_NUMERIC);
       fields.push_back(primary_key);
 
-      Field field_table_name;
-      field_table_name.set_name(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME);
-      field_table_name.set_glom_type(Field::TYPE_TEXT);
+      sharedptr<Field> field_table_name(new Field());
+      field_table_name->set_name(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME);
+      field_table_name->set_glom_type(Field::TYPE_TEXT);
       fields.push_back(field_table_name);
 
-      Field field_field_name;
-      field_field_name.set_name(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_FIELD_NAME);
-      field_field_name.set_glom_type(Field::TYPE_TEXT);
+      sharedptr<Field> field_field_name(new Field());
+      field_field_name->set_name(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_FIELD_NAME);
+      field_field_name->set_glom_type(Field::TYPE_TEXT);
       fields.push_back(field_field_name);
 
-      Field field_next_value;
-      field_next_value.set_name(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_NEXT_VALUE);
-      field_next_value.set_glom_type(Field::TYPE_TEXT);
+      sharedptr<Field> field_next_value(new Field());
+      field_next_value->set_name(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_NEXT_VALUE);
+      field_next_value->set_glom_type(Field::TYPE_TEXT);
       fields.push_back(field_next_value);
 
       const bool test = create_table(table_info, fields);
@@ -849,6 +850,8 @@ bool Base_DB::add_standard_tables() const
         g_warning("Base_DB::add_standard_tables(): create_table(autoincrements) failed.");
         return false;
       }
+
+      return true;
     }
     else
       return false;
@@ -1213,17 +1216,17 @@ bool Base_DB::create_table(const TableInfo& table_info, const Document_Glom::typ
   for(Document_Glom::type_vecFields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
   {
     //Create SQL to describe this field:
-    Field field = *iter;
+    sharedptr<Field> field = *iter;
 
     //The field has no gda type, so we set that:
     //This usually comes from the database, but that's a bit strange.
-    Gnome::Gda::FieldAttributes info = field.get_field_info();
-    info.set_gdatype( Field::get_gda_type_for_glom_type(field.get_glom_type()) );
-    field.set_field_info(info);
+    Gnome::Gda::FieldAttributes info = field->get_field_info();
+    info.set_gdatype( Field::get_gda_type_for_glom_type(field->get_glom_type()) );
+    field->set_field_info(info); //TODO_Performance
 
-    Glib::ustring sql_field_description = field.get_name() + " " + field.get_sql_type();
+    Glib::ustring sql_field_description = field->get_name() + " " + field->get_sql_type();
 
-    if(field.get_primary_key())
+    if(field->get_primary_key())
       sql_field_description += " NOT NULL  PRIMARY KEY";
 
     //Append it:
@@ -1273,7 +1276,7 @@ bool Base_DB::insert_example_data(const Glib::ustring& table_name) const
     if(!strNames.empty())
       strNames += ", ";
 
-    strNames += iter->get_name();
+    strNames += (*iter)->get_name();
   }
 
   if(strNames.empty())
@@ -1301,8 +1304,8 @@ bool Base_DB::insert_example_data(const Glib::ustring& table_name) const
 
   for(Document_Glom::type_vecFields::const_iterator iter = vec_fields.begin(); iter != vec_fields.end(); ++iter)
   {
-    if(iter->get_auto_increment())
-      recalculate_next_auto_increment_value(table_name, iter->get_name());
+    if((*iter)->get_auto_increment())
+      recalculate_next_auto_increment_value(table_name, (*iter)->get_name());
   }
 
   return insert_succeeded;
@@ -1348,7 +1351,7 @@ void Base_DB::fill_full_field_details(const Glib::ustring& parent_table_name, La
   if(layout_item.get_has_relationship_name())
     table_name = layout_item.m_relationship.get_to_table();
 
-  get_document()->get_field(table_name, layout_item.get_name(), layout_item.m_field);
+  layout_item.set_full_field_details( get_document()->get_field(table_name, layout_item.get_name()) );
 }
 
 Glib::ustring Base_DB::get_layout_item_table_name(const LayoutItem_Field& layout_item, const Glib::ustring& table_name)
@@ -1441,9 +1444,9 @@ void Base_DB::report_build_groupby(const Glib::ustring& table_name, xmlpp::Eleme
 
         nodeGroupBy->set_attribute("group_field", field_group_by->get_title_or_name());
         nodeGroupBy->set_attribute("group_value",
-          GlomConversions::get_text_for_gda_value(field_group_by->m_field.get_glom_type(), group_value, field_group_by->get_formatting_used().m_numeric_format) );
+          GlomConversions::get_text_for_gda_value(field_group_by->get_glom_type(), group_value, field_group_by->get_formatting_used().m_numeric_format) );
 
-        Glib::ustring where_clause = group_field_table_name + "." + field_group_by->get_name() + " = " + field_group_by->m_field.sql(group_value);
+        Glib::ustring where_clause = group_field_table_name + "." + field_group_by->get_name() + " = " + field_group_by->get_full_field_details()->sql(group_value);
         if(!where_clause_parent.empty())
           where_clause += " AND (" + where_clause_parent + ")";
 
@@ -1524,7 +1527,7 @@ void Base_DB::report_build_records(const Glib::ustring& table_name, xmlpp::Eleme
       sharedptr<LayoutItem_Field> layout_item = *iter;
 
       xmlpp::Element* nodeFieldHeading = 0;
-      if(layout_item->m_field.get_glom_type() == Field::TYPE_NUMERIC)
+      if(layout_item->get_glom_type() == Field::TYPE_NUMERIC)
         nodeFieldHeading = parent_node.add_child("field_heading_numeric"); //This is quite hacky. murrayc.
       else
         nodeFieldHeading = parent_node.add_child("field_heading");
@@ -1556,7 +1559,7 @@ void Base_DB::report_build_records(const Glib::ustring& table_name, xmlpp::Eleme
         for(guint col = 0; col < fieldsToGet.size(); ++col)
         {
           sharedptr<LayoutItem_Field> field = fieldsToGet[col];
-          const Field::glom_field_type field_type = field->m_field.get_glom_type();
+          const Field::glom_field_type field_type = field->get_glom_type();
 
           xmlpp::Element* nodeField = 0;
           if(field_type == Field::TYPE_NUMERIC)
@@ -1681,17 +1684,17 @@ Glib::ustring Base_DB::get_find_where_clause_quick(const Glib::ustring& table_na
     {
       Glib::ustring strClausePart;
 
-      const Field& field = *iter;
+      sharedptr<const Field> field = *iter;
 
       bool use_this_field = true;
-      if(field.get_glom_type() != Field::TYPE_TEXT)
+      if(field->get_glom_type() != Field::TYPE_TEXT)
       {
           use_this_field = false;
       }
 
       if(use_this_field)
       {
-        strClausePart = table_name + "." + field.get_name() + " " + field.sql_find_operator() + " " +  field.sql_find(quick_search);
+        strClausePart = table_name + "." + field->get_name() + " " + field->sql_find_operator() + " " +  field->sql_find(quick_search);
       }
 
       if(!strClausePart.empty())
@@ -1707,20 +1710,19 @@ Glib::ustring Base_DB::get_find_where_clause_quick(const Glib::ustring& table_na
   return strClause;
 }
 
-bool Base_DB::get_fields_for_table_one_field(const Glib::ustring& table_name, const Glib::ustring& field_name, Field& field) const
+sharedptr<Field> Base_DB::get_fields_for_table_one_field(const Glib::ustring& table_name, const Glib::ustring& field_name) const
 {
   //Initialize output parameter:
-  Field result = Field();
+  sharedptr<Field> result;
 
   type_vecFields fields = get_fields_for_table(table_name);
   type_vecFields::iterator iter = std::find_if(fields.begin(), fields.end(), predicate_FieldHasName<Field>(field_name));
   if(iter != fields.end()) //TODO: Handle error?
   {
-    field = *iter;
-    return true;
+    return *iter;
   }
 
-  return false;
+  return sharedptr<Field>();
 }
 
 //static:
@@ -1734,7 +1736,7 @@ bool Base_DB::get_field_primary_key_index_for_fields(const type_vecFields& field
   guint cols_count = fields.size();
   while(col < cols_count)
   {
-    if(fields[col].get_primary_key())
+    if(fields[col]->get_primary_key())
     {
       field_column = col;
       return true;
@@ -1759,7 +1761,7 @@ bool Base_DB::get_field_primary_key_index_for_fields(const type_vecLayoutFields&
   guint cols_count = fields.size();
   while(col < cols_count)
   {
-    if(fields[col]->m_field.get_primary_key())
+    if(fields[col]->get_full_field_details()->get_primary_key())
     {
       field_column = col;
       return true;
@@ -1773,7 +1775,7 @@ bool Base_DB::get_field_primary_key_index_for_fields(const type_vecLayoutFields&
   return false; //Not found.
 }
 
-bool Base_DB::get_field_primary_key_for_table(const Glib::ustring& table_name, Field& field) const
+sharedptr<Field> Base_DB::get_field_primary_key_for_table(const Glib::ustring& table_name) const
 {
   const Document_Glom* document = get_document();
   if(document)
@@ -1782,15 +1784,14 @@ bool Base_DB::get_field_primary_key_for_table(const Glib::ustring& table_name, F
     Document_Glom::type_vecFields fields = document->get_table_fields(table_name);
     for(Document_Glom::type_vecFields::iterator iter = fields.begin(); iter != fields.end(); ++iter)
     {
-      if(iter->get_primary_key())
+      if((*iter)->get_primary_key())
       {
-        field = *iter;
-        return true;
+        return *iter;
       }
     }
   }
 
-  return false;
+  return sharedptr<Field>();
 }
 
 void Base_DB::get_table_fields_to_show_for_sequence_add_group(const Glib::ustring& table_name, const Privileges& table_privs, const type_vecFields& all_db_fields, const LayoutGroup& group, Base_DB::type_vecLayoutFields& vecFields) const
@@ -1818,13 +1819,12 @@ void Base_DB::get_table_fields_to_show_for_sequence_add_group(const Glib::ustrin
         bool test = document->get_relationship(table_name, relationship_name, relationship);
         if(test)
         {
-          Field field;
           //TODO_Performance: get_fields_for_table_one_field() is probably very inefficient
-          bool test = get_fields_for_table_one_field(relationship.get_to_table(), item->get_name(), field);
-          if(test)
+          sharedptr<Field> field = get_fields_for_table_one_field(relationship.get_to_table(), item->get_name());
+          if(field)
           {
             LayoutItem_Field layout_item = *item_field; //TODO_Performance: Reduce the copying.
-            layout_item.m_field = field; //Fill in the full field information for later.
+            layout_item.set_full_field_details(field); //Fill in the full field information for later.
 
             //TODO_Performance: We do this once for each related field, even if there are 2 from the same table:
             const Privileges privs_related = get_current_privs(relationship.get_to_table());
@@ -1843,7 +1843,7 @@ void Base_DB::get_table_fields_to_show_for_sequence_add_group(const Glib::ustrin
         if(iterFind != all_db_fields.end() )
         {
           LayoutItem_Field layout_item = *item_field; //TODO_Performance: Reduce the copying here.
-          layout_item.m_field = *iterFind; //Fill the LayoutItem with the full field information.
+          layout_item.set_full_field_details(*iterFind); //Fill the LayoutItem with the full field information.
 
           //Prevent editing of the field if the user may not edit this table:
           layout_item.m_priv_view = table_privs.m_view;
@@ -1893,7 +1893,7 @@ Base_DB::type_vecLayoutFields Base_DB::get_table_fields_to_show_for_sequence(con
       if(bPrimaryKeyFound)
       {
         sharedptr<LayoutItem_Field> layout_item(new LayoutItem_Field);
-        layout_item->m_field = all_fields[iPrimaryKey];
+        layout_item->set_full_field_details(all_fields[iPrimaryKey]);
 
         //Don't use thousands separators with ID numbers:
         layout_item->m_formatting.m_numeric_format.m_use_thousands_separator = false;
@@ -1910,12 +1910,12 @@ Base_DB::type_vecLayoutFields Base_DB::get_table_fields_to_show_for_sequence(con
       //Add the rest:
       for(type_vecFields::const_iterator iter = all_fields.begin(); iter != all_fields.end(); ++iter)
       {
-        const Field& field_info = *iter;
+        sharedptr<Field> field_info = *iter;
 
-        if(iter->get_name() != primary_key_field_name) //We already added the primary key.
+        if((*iter)->get_name() != primary_key_field_name) //We already added the primary key.
         {
           sharedptr<LayoutItem_Field> layout_item(new LayoutItem_Field);
-          layout_item->m_field = field_info;
+          layout_item->set_full_field_details(field_info);
 
           layout_item->set_editable(true); //A sensible default.
 

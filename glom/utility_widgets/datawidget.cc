@@ -40,7 +40,7 @@ DataWidget::DataWidget(Field::glom_field_type glom_type, const Glib::ustring& ti
 
 DataWidget::DataWidget(const LayoutItem_Field& field, const Glib::ustring& table_name, const Document_Glom* document)
 {
-  Field::glom_field_type glom_type = field.m_field.get_glom_type();
+  const Field::glom_field_type glom_type = field.get_glom_type();
   set_layout_item(field.clone(), table_name); //takes ownership
 
   m_child = 0;
@@ -111,11 +111,10 @@ DataWidget::DataWidget(const LayoutItem_Field& field, const Glib::ustring& table
 
           if(with_second && document)
           {
-            Field field_second;
-            document->get_field(to_table, choice_second, field_second);
+            sharedptr<Field> field_second = document->get_field(to_table, choice_second);
 
             LayoutItem_Field layout_field_second;
-            layout_field_second.m_field = field_second;
+            layout_field_second.set_full_field_details(field_second);
             //We use the default formatting for this field.
 
             if(field.get_formatting_used().get_choices_restricted())
@@ -177,7 +176,7 @@ DataWidget::DataWidget(const LayoutItem_Field& field, const Glib::ustring& table
       m_child->set_size_request(width, width);
     else
       m_child->set_size_request(width, -1 /* auto */);
-      
+
     m_child->show_all();
   }
 
@@ -188,27 +187,27 @@ DataWidget::DataWidget(const LayoutItem_Field& field, const Glib::ustring& table
     {
       Gtk::HBox* hbox_parent = Gtk::manage( new Gtk::HBox() ); //We put the child (and any extra stuff) in this:
       hbox_parent->set_spacing(6);
-      
+
       hbox_parent->pack_start(*m_child);
       add(*hbox_parent);
-    
-    
+
+
       Gtk::Button* button_go_to_details = Gtk::manage(new Gtk::Button(Gtk::Stock::OPEN));
       hbox_parent->pack_start(*button_go_to_details);
       button_go_to_details->signal_clicked().connect(sigc::mem_fun(*this, &DataWidget::on_button_open_details));
-      
+
       Gtk::Button* button_select = Gtk::manage(new Gtk::Button(Gtk::Stock::FIND));
       hbox_parent->pack_start(*button_select);
       button_select->signal_clicked().connect(sigc::mem_fun(*this, &DataWidget::on_button_select_id));
-      
+
       child_added = true;
     }
-    
+
     if(!child_added)
       add(*m_child);
   }
-  
-  
+
+
 
   setup_menu();
 
@@ -282,7 +281,7 @@ int DataWidget::get_suitable_width(const LayoutItem_Field& field_layout)
 {
   int result = 150;
 
-  const Field::glom_field_type field_type = field_layout.m_field.get_glom_type();
+  const Field::glom_field_type field_type = field_layout.get_glom_type();
 
   Glib::ustring example_text;
   switch(field_type)
@@ -496,7 +495,8 @@ bool DataWidget::offer_field_list(const Glib::ustring& table_name, LayoutItem_Fi
       if(response == Gtk::RESPONSE_OK)
       {
         //Get the chosen field:
-        result = dialog->get_field_chosen(field);
+        const bool test  = dialog->get_field_chosen(field);
+        result = test;
       }
 
       delete dialog;
@@ -531,7 +531,8 @@ bool DataWidget::offer_field_layout( LayoutItem_Field& field)
       if(response == Gtk::RESPONSE_OK)
       {
         //Get the chosen field:
-        result = dialog->get_field_chosen(field);
+        const bool test = dialog->get_field_chosen(field);
+        result = test;
       }
 
       remove_view(dialog);
@@ -669,7 +670,7 @@ const Gtk::Widget* DataWidget::get_data_child_widget() const
       }
       else
         g_warning("get_layout_item() was not a LayoutItem_Field");
-  
+
       dialog->init_db_details(related_table_name);
       
       

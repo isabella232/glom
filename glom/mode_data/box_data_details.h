@@ -53,7 +53,7 @@ public:
 
   typedef sigc::signal<void, const Gnome::Gda::Value&> type_signal_record_deleted; //arg is PrimaryKey.   //TODO: pass by const ref?
   type_signal_record_deleted signal_record_deleted();
-  
+
    /** For instance,
     * void on_requested_related_details(const Glib::ustring& table_name, Gnome::Gda::Value primary_key_value);
     */
@@ -65,10 +65,10 @@ protected:
   virtual void create_layout();
   //virtual void fill_related();
 
-  virtual void do_lookups(const Gtk::TreeModel::iterator& row, const LayoutItem_Field& field_changed, const Gnome::Gda::Value& field_value, const Field& primary_key, const Gnome::Gda::Value& primary_key_value);
-  virtual void refresh_related_fields(const Gtk::TreeModel::iterator& row, const LayoutItem_Field& field_changed, const Gnome::Gda::Value& field_value, const Field& primary_key, const Gnome::Gda::Value& primary_key_value);
+  virtual void do_lookups(const Gtk::TreeModel::iterator& row, const LayoutItem_Field& field_changed, const Gnome::Gda::Value& field_value, const sharedptr<const Field>& primary_key, const Gnome::Gda::Value& primary_key_value);
+  virtual void refresh_related_fields(const Gtk::TreeModel::iterator& row, const LayoutItem_Field& field_changed, const Gnome::Gda::Value& field_value, const sharedptr<const Field>& primary_key, const Gnome::Gda::Value& primary_key_value);
 
-  virtual bool get_field_primary_key(Field& field) const;
+  virtual sharedptr<Field> get_field_primary_key() const;
 
   void print_layout_group(xmlpp::Element* node_parent, const LayoutGroup& group);
 
@@ -97,7 +97,7 @@ protected:
 
   virtual void recalculate_fields_for_related_records(const Glib::ustring& relationship_name);
 
-  Field m_field_primary_key;
+  sharedptr<Field> m_field_primary_key;
   Gnome::Gda::Value m_primary_key_value;
 
   //Member widgets:

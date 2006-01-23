@@ -17,7 +17,7 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
- 
+
 #include "layoutgroup.h"
 #include "layoutitem_field.h"
 #include <glibmm/i18n.h>
@@ -114,7 +114,7 @@ LayoutItem* LayoutGroup::add_item(const LayoutItem& item)
   guint sequence = 0;
    if(!m_map_items.empty())
      sequence = m_map_items.rbegin()->first;
-     
+
   ++sequence;
 
   return add_item(item, sequence);
@@ -128,7 +128,7 @@ LayoutItem* LayoutGroup::add_item(const LayoutItem& item, guint sequence)
     g_warning("LayoutGroup::add_item(item, sequence): Replacing item: item.name = %s, sequence=%d", item.get_name().c_str(), sequence);
   }
 */
-  
+
   //Delete any existing item at this position:
   remove_item(sequence);
 
@@ -136,7 +136,7 @@ LayoutItem* LayoutGroup::add_item(const LayoutItem& item, guint sequence)
   LayoutItem* pStoredItem = item.clone(); //Deleted in LayoutGroup destructor.
   m_map_items[sequence] = pStoredItem;
   m_map_items[sequence]->m_sequence = sequence;
-  
+
   return pStoredItem;
 }
 
@@ -146,8 +146,11 @@ void LayoutGroup::remove_item(guint sequence)
   type_map_items::iterator iterFind = m_map_items.find(sequence);
   if(iterFind != m_map_items.end())
   {
-    delete iterFind->second;
-    iterFind->second = 0;
+    if(iterFind->second)
+    {
+      delete iterFind->second;
+      iterFind->second = 0;
+    }
 
     m_map_items.erase(iterFind);
   }
@@ -185,7 +188,7 @@ LayoutGroup::type_map_const_items LayoutGroup::get_items() const
   //Get a const map from the non-const map:
   //TODO_Performance: Surely we should not need to copy the structure just to constize it?
   type_map_const_items result;
-  
+
   for(type_map_items::const_iterator iter = m_map_items.begin(); iter != m_map_items.end(); ++iter)
   {
     result[iter->first] = iter->second;
@@ -241,7 +244,7 @@ void LayoutGroup::change_field_item_name(const Glib::ustring& table_name, const 
         if(field_item->get_name() == field_name)
           field_item->set_name(field_name_new); //Change it.
       }
-      
+
       field_item->m_formatting.change_field_name(table_name, field_name, field_name_new);
     }
     else
@@ -268,7 +271,7 @@ void LayoutGroup::change_relationship_name(const Glib::ustring& table_name, cons
           field_item->m_relationship.set_name(name_new);
         }
       }
-      
+
       field_item->m_formatting.change_relationship_name(table_name, name, name_new);
     }
     else

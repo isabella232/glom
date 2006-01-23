@@ -541,7 +541,7 @@ void DbAddDel::construct_specified_columns()
   for(type_model_store::type_vec_fields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
   {
     sharedptr<LayoutItem_Field> layout_item = *iter;
-    if( !(layout_item->get_has_relationship_name()) && (layout_item->m_field.get_primary_key()) )
+    if( !(layout_item->get_has_relationship_name()) && (layout_item->get_full_field_details()->get_primary_key()) )
     {
       key_found = true;
       break;
@@ -575,19 +575,19 @@ void DbAddDel::construct_specified_columns()
   //Add new View Colums:
   int model_column_index = 0; //Not including the hidden internal columns.
   int view_column_index = 0;
-  
+
   {
     GlomCellRenderer_Button* pCellButton = Gtk::manage(new GlomCellRenderer_Button());
     pCellButton->signal_clicked().connect(sigc::mem_fun(*this, &DbAddDel::on_cell_button_clicked));
-    
+
     const int viewcols_count = m_TreeView.append_column(Glib::ustring(), *pCellButton);
     m_treeviewcolumn_button = m_TreeView.get_column(viewcols_count - 1);
-    
+
     m_treeviewcolumn_button->property_visible() = get_allow_view_details();
-    
+
     ++view_column_index;
   }
-  
+
   for(type_vecModelColumns::iterator iter = vecModelColumns.begin(); iter != vecModelColumns.end(); ++iter)
   {
     DbAddDelColumnInfo& column_info = m_ColumnTypes[model_column_index];
@@ -598,7 +598,7 @@ void DbAddDel::construct_specified_columns()
 
       int cols_count = 0;
       Gtk::CellRenderer* pCellRenderer = 0;
-      switch(column_info.m_field.m_field.get_glom_type())
+      switch(column_info.m_field.get_glom_type())
       {
         case(Field::TYPE_BOOLEAN):
         {
@@ -635,7 +635,7 @@ void DbAddDel::construct_specified_columns()
           //Make it editable:
           pCellRenderer->property_editable() = true;
 
-          if( column_info.m_field.m_field.get_glom_type() == Field::TYPE_NUMERIC )
+          if( column_info.m_field.get_glom_type() == Field::TYPE_NUMERIC )
             pCellRenderer->property_xalign() = 1.0; //Align right.
 
           //Connect to its signal:
@@ -656,7 +656,7 @@ void DbAddDel::construct_specified_columns()
               const FieldFormatting::type_list_values list_values = column_info.m_field.get_formatting_used().get_choices_custom();
               for(FieldFormatting::type_list_values::const_iterator iter = list_values.begin(); iter != list_values.end(); ++iter)
               {
-                pCellRendererCombo->append_list_item( GlomConversions::get_text_for_gda_value(column_info.m_field.m_field.get_glom_type(), *iter, column_info.m_field.get_formatting_used().m_numeric_format) );
+                pCellRendererCombo->append_list_item( GlomConversions::get_text_for_gda_value(column_info.m_field.get_glom_type(), *iter, column_info.m_field.get_formatting_used().m_numeric_format) );
               }
             }
             else if(column_info.m_field.get_formatting_used().get_has_related_choices())
@@ -677,10 +677,9 @@ void DbAddDel::construct_specified_columns()
                   Document_Glom* document = get_document();
                   if(document)
                   {
-                    Field field_second; //TODO: Actually show this in the combo:
-                    document->get_field(to_table, choice_second, field_second);
+                    sharedptr<Field> field_second = document->get_field(to_table, choice_second); //TODO: Actually show this in the combo:
 
-                    layout_field_second.m_field = field_second;
+                    layout_field_second.set_full_field_details(field_second);
 
                     //We use the default formatting for this field.
                   }
@@ -689,11 +688,11 @@ void DbAddDel::construct_specified_columns()
                 GlomUtils::type_list_values_with_second list_values = GlomUtils::get_choice_values(column_info.m_field);
                 for(GlomUtils::type_list_values_with_second::const_iterator iter = list_values.begin(); iter != list_values.end(); ++iter)
                 {
-                  const Glib::ustring first = GlomConversions::get_text_for_gda_value(column_info.m_field.m_field.get_glom_type(), iter->first, column_info.m_field.get_formatting_used().m_numeric_format);
+                  const Glib::ustring first = GlomConversions::get_text_for_gda_value(column_info.m_field.get_glom_type(), iter->first, column_info.m_field.get_formatting_used().m_numeric_format);
 
                   Glib::ustring second;
                   if(use_second)
-                    second = GlomConversions::get_text_for_gda_value(layout_field_second.m_field.get_glom_type(), iter->second, layout_field_second.get_formatting_used().m_numeric_format);
+                    second = GlomConversions::get_text_for_gda_value(layout_field_second.get_glom_type(), iter->second, layout_field_second.get_formatting_used().m_numeric_format);
 
                   pCellRendererCombo->append_list_item(first, second);
                 }
@@ -825,7 +824,7 @@ guint DbAddDel::add_column(const LayoutItem_Field& field)
   //column_info.m_visible = visible;
 
   //Make it non-editable if it is auto-generated:
-  if(field.m_field.get_auto_increment())
+  if(field.get_full_field_details()->get_auto_increment())
     column_info.m_editable = false;
   else
     column_info.m_editable = field.get_editable_and_allowed();
@@ -1173,7 +1172,7 @@ void DbAddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const G
       }
     }
 
-    const Field::glom_field_type field_type = m_ColumnTypes[model_column_index].m_field.m_field.get_glom_type();
+    const Field::glom_field_type field_type = m_ColumnTypes[model_column_index].m_field.get_glom_type();
     if(field_type != Field::TYPE_INVALID) //If a field type was specified for this column.
     {
       //Make sure that the entered data is suitable for this field type:
@@ -1399,7 +1398,7 @@ guint DbAddDel::treeview_append_column(const Glib::ustring& title, Gtk::CellRend
   pViewColumn->set_column_id( (column_id.empty() ? title : column_id) );
 
   //TODO pViewColumn->signal_button_press_event().connect( sigc::mem_fun(*this, &DbAddDel::on_treeview_columnheader_button_press_event) );
-  
+
   return cols_count;
 }
 
@@ -1559,12 +1558,12 @@ void DbAddDel::set_rules_hint(bool val)
   m_TreeView.set_rules_hint(val);
 }
 
-Field DbAddDel::get_key_field() const
+sharedptr<Field> DbAddDel::get_key_field() const
 {
   return m_key_field;
 }
 
-void DbAddDel::set_key_field(const Field& field)
+void DbAddDel::set_key_field(const sharedptr<Field>& field)
 {
   m_key_field = field;
 }
@@ -1579,7 +1578,7 @@ void DbAddDel::treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gt
     treerow->get_value(col_real, value);
 
     DbAddDelColumnInfo& column_info = m_ColumnTypes[model_column_index];
-    switch(column_info.m_field.m_field.get_glom_type())
+    switch(column_info.m_field.get_glom_type())
     {
       case(Field::TYPE_BOOLEAN):
       {
@@ -1593,7 +1592,7 @@ void DbAddDel::treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gt
         //TODO: Maybe we should have custom cellrenderers for time, date, and numbers.
         Gtk::CellRendererText* pDerived = dynamic_cast<Gtk::CellRendererText*>(renderer);
 
-        const Glib::ustring text = GlomConversions::get_text_for_gda_value(column_info.m_field.m_field.get_glom_type(), value, column_info.m_field.get_formatting_used().m_numeric_format);
+        const Glib::ustring text = GlomConversions::get_text_for_gda_value(column_info.m_field.get_glom_type(), value, column_info.m_field.get_formatting_used().m_numeric_format);
         //g_assert(text != "NULL");
         pDerived->property_text() = text;
 

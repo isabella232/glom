@@ -62,11 +62,11 @@ void ComboGlomChoicesBase::set_choices_with_second(const type_list_values_with_s
     LayoutItem_Field* layout_item = dynamic_cast<LayoutItem_Field*>(get_layout_item());
     if(layout_item)
     {
-      row[m_Columns.m_col_first] = GlomConversions::get_text_for_gda_value(layout_item->m_field.get_glom_type(), iter->first, layout_item->get_formatting_used().m_numeric_format);;
+      row[m_Columns.m_col_first] = GlomConversions::get_text_for_gda_value(layout_item->get_glom_type(), iter->first, layout_item->get_formatting_used().m_numeric_format);;
 
       if(m_with_second)
       {
-        row[m_Columns.m_col_second] = GlomConversions::get_text_for_gda_value(m_layoutitem_second.m_field.get_glom_type(), iter->second, layout_item->get_formatting_used().m_numeric_format);
+        row[m_Columns.m_col_second] = GlomConversions::get_text_for_gda_value(m_layoutitem_second.get_glom_type(), iter->second, layout_item->get_formatting_used().m_numeric_format);
       }
     }
   }
@@ -86,7 +86,7 @@ void ComboGlomChoicesBase::set_choices(const FieldFormatting::type_list_values& 
     if(layout_item)
     {
       const Gnome::Gda::Value value = *iter;
-      const Glib::ustring text = GlomConversions::get_text_for_gda_value(layout_item->m_field.get_glom_type(), value, layout_item->get_formatting_used().m_numeric_format);
+      const Glib::ustring text = GlomConversions::get_text_for_gda_value(layout_item->get_glom_type(), value, layout_item->get_formatting_used().m_numeric_format);
 
       row[m_Columns.m_col_first] = text;
     }

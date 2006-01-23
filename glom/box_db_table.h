@@ -49,7 +49,7 @@ protected:
   virtual Gnome::Gda::Value get_entered_field_data(const LayoutItem_Field& field) const;
   virtual void set_entered_field_data(const LayoutItem_Field& field, const Gnome::Gda::Value& value);
 
-  //static bool get_field_primary_key(const type_vecFields& fields, Field& field);
+  //static sharedptr<Field> get_field_primary_key(const type_vecFields& fields);
 
   unsigned long get_last_auto_increment_value(const Glib::RefPtr<Gnome::Gda::DataModel>& data_model, const Glib::ustring& field_name);
 

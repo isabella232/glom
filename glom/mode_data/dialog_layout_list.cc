@@ -446,7 +446,7 @@ void Dialog_Layout_List::on_button_field_formatting()
         {
           Gtk::TreeModel::Row row = *iter;
           LayoutItem_Field field = row[m_ColumnsFields.m_col_layout_item];
-          g_warning("field_name = %s, %s", field.m_field.get_name().c_str(), field.get_name().c_str());
+          //g_warning("field_name = %s, %s", field.m_field.get_name().c_str(), field.get_name().c_str());
 
           dialog->set_field(field, m_table_name);
           dialog->set_transient_for(*this);

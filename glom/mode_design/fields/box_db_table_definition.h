@@ -36,11 +36,11 @@ protected:
   virtual bool fill_from_database();
   virtual void fill_fields();
 
-  void fill_field_row(const Gtk::TreeModel::iterator& iter, const Field& field);
+  void fill_field_row(const Gtk::TreeModel::iterator& iter, const sharedptr<const Field>& field);
 
-  Field get_field_definition(const Gtk::TreeModel::iterator& row);
+  sharedptr<Field> get_field_definition(const Gtk::TreeModel::iterator& row);
 
-  virtual void change_definition(const Field& fieldOld, Field field);
+  virtual void change_definition(const sharedptr<const Field>& fieldOld, const sharedptr<const Field>& field);
 
   //Signal handlers:
   virtual void on_adddel_add(const Gtk::TreeModel::iterator& row);
@@ -54,20 +54,20 @@ protected:
 
     /** @param not_extras If this is true, then do not set extra details, such as NOT NULL. You should do that later, when you are ready.
    */
-  virtual void postgres_add_column(const Field& field, bool not_extras = false);
-  virtual void postgres_change_column(const Field& field_old, const Field& field);
-  virtual void postgres_change_column_type(const Field& field_old, const Field& field);
+  virtual void postgres_add_column(const sharedptr<const Field>& field, bool not_extras = false);
+  virtual void postgres_change_column(const sharedptr<const Field>& field_old, const sharedptr<const Field>& field);
+  virtual void postgres_change_column_type(const sharedptr<const Field>& field_old, const sharedptr<const Field>& field);
 
   /** @param set_anyway If this is true, then set the extra details even if @field_old has the same properties.
    */
-  virtual void postgres_change_column_extras(const Field& field_old, const Field& field, bool set_anyway = false);
+  virtual void postgres_change_column_extras(const sharedptr<const Field>& field_old, const sharedptr<const Field>& field, bool set_anyway = false);
 
   mutable AddDel_WithButtons m_AddDel; //mutable because its get_ methods aren't const.
 
   guint m_colName, m_colTitle, m_colType, m_colUnique, m_colPrimaryKey;
 
   Dialog_FieldDefinition* m_pDialog;
-  Field m_Field_BeingEdited;
+  sharedptr<const Field> m_Field_BeingEdited; //TODO_FieldShared
   type_vecFields m_vecFields;
 };
 

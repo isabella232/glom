@@ -54,7 +54,7 @@ public:
     Gtk::TreeModelColumn<bool> m_col_editable; 
     Gtk::TreeModelColumn<guint> m_col_sequence;
     Gtk::TreeModelColumn<guint> m_col_columns_count; //Only for groups.
-    
+
     Gtk::TreeModelColumn<Glib::ustring> m_col_portal_relationship; //Only for portals.
     Gtk::TreeModelColumn<LayoutItem_Portal> m_col_portal;
   };

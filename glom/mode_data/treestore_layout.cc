@@ -54,10 +54,10 @@ bool TreeStore_Layout::row_drop_possible_vfunc(const Gtk::TreeModel::Path& dest,
 
     if(path_dragged_row == dest)
       return false; //Prevent a row from being dragged onto itself.
-      
+
   //Only allow items to become children of groups.
   //Do not allow items to become children of fields.
-    
+
   //dest is the path that the row would have after it has been dropped:
   //But in this case we are more interested in the parent row:
   Gtk::TreeModel::Path dest_parent = dest;
@@ -66,24 +66,24 @@ bool TreeStore_Layout::row_drop_possible_vfunc(const Gtk::TreeModel::Path& dest,
   {
     //The user wants to move something to the top-level.
     //Only groups can be at the top level, so we examine the thing being dragged:
-      
+
     //Get an iterator for the row at this path:
     //We must unconst this. This should not be necessary with a future version of gtkmm.
     TreeStore_Layout* unconstThis = const_cast<TreeStore_Layout*>(this); //TODO: Add a const version of get_iter to TreeModel:
     const_iterator iter_dragged = unconstThis->get_iter(path_dragged_row);
     //const_iterator iter_dragged = get_iter(path_dragged_row);
-  
+
     if(iter_dragged)
     {
       Gtk::TreeModel::Row row = *iter_dragged;
       return row[m_columns.m_col_type] == TYPE_GROUP; //Only groups can be dragged to the top-level.
-    }   
+    }
   }
   else
   {
     if(dest_parent == path_dragged_row)
       return false; //Don't allow an item to be dragged under itself. TODO: Check the whole parent hierarchy.
-      
+
     //Get an iterator for the row at the requested parent's path:
     //We must unconst this. This should not be necessary with a future version of gtkmm.
     TreeStore_Layout* unconstThis = const_cast<TreeStore_Layout*>(this); //TODO: Add a const version of get_iter to TreeModel:
@@ -111,7 +111,7 @@ void TreeStore_Layout::fill_sequences()
 
     //Recurse:
     fill_sequences(iter_children);
-  }   
+  }
 }
 
 void TreeStore_Layout::fill_sequences(const iterator& iter)

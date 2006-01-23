@@ -61,7 +61,7 @@ public:
   virtual void set_document(Document_Glom* pDocument); //View override
   virtual void load_from_document(); //View override
 
-  typedef std::vector< Field > type_vecFields;
+  typedef std::vector< sharedptr<Field> > type_vecFields;
 
   static type_vecFields get_fields_for_table_from_database(const Glib::ustring& table_name);
 
@@ -98,9 +98,9 @@ protected:
   bool get_table_exists_in_database(const Glib::ustring& table_name) const;
 
   type_vecFields get_fields_for_table(const Glib::ustring& table_name) const;
-  bool get_fields_for_table_one_field(const Glib::ustring& table_name, const Glib::ustring& field_name, Field& field) const;
+  sharedptr<Field> get_fields_for_table_one_field(const Glib::ustring& table_name, const Glib::ustring& field_name) const;
 
-  bool get_field_primary_key_for_table(const Glib::ustring& table_name, Field& field) const;
+  sharedptr<Field> get_field_primary_key_for_table(const Glib::ustring& table_name) const;
 
   Glib::ustring get_find_where_clause_quick(const Glib::ustring& table_name, const Gnome::Gda::Value& quick_search) const;
 

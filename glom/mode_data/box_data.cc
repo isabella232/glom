@@ -82,10 +82,10 @@ Glib::ustring Box_Data::get_find_where_clause() const
 
     if(!GlomConversions::value_is_empty(data))
     {
-      const Field field = (*iter)->m_field;
+      const sharedptr<const Field> field = (*iter)->get_full_field_details();
 
       bool use_this_field = true;
-      if(field.get_glom_type() == Field::TYPE_BOOLEAN) //TODO: We need an intermediate state for boolean fields, so that they can be ignored in searches.
+      if(field->get_glom_type() == Field::TYPE_BOOLEAN) //TODO: We need an intermediate state for boolean fields, so that they can be ignored in searches.
       {
         if(!data.get_bool())
           use_this_field = false;
@@ -93,7 +93,7 @@ Glib::ustring Box_Data::get_find_where_clause() const
 
       if(use_this_field)
       {
-        strClausePart = m_strTableName + "." + field.get_name() + " " + field.sql_find_operator() + " " +  field.sql_find(data); //% is mysql wildcard for 0 or more characters.
+        strClausePart = m_strTableName + "." + field->get_name() + " " + field->sql_find_operator() + " " +  field->sql_find(data); //% is mysql wildcard for 0 or more characters.
       }
     }
 
@@ -125,8 +125,7 @@ Box_Data::type_map_fields Box_Data::get_record_field_values(const Gnome::Gda::Va
 {
   type_map_fields field_values;
 
-  Field fieldPrimaryKey;
-  get_field_primary_key(fieldPrimaryKey);
+  sharedptr<const Field> fieldPrimaryKey = get_field_primary_key();
 
   Document_Glom* document = get_document();
   if(document)
@@ -139,7 +138,7 @@ Box_Data::type_map_fields Box_Data::get_record_field_values(const Gnome::Gda::Va
     for(Document_Glom::type_vecFields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
     {
       sharedptr<LayoutItem_Field> layout_item(new LayoutItem_Field);
-      layout_item->m_field = *iter;
+      layout_item->set_full_field_details(*iter);
       fieldsToGet.push_back(layout_item);
     }
 
@@ -152,7 +151,7 @@ Box_Data::type_map_fields Box_Data::get_record_field_values(const Gnome::Gda::Va
       for(Document_Glom::type_vecFields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
       {
         //There should be only 1 row. Well, there could be more but we will ignore them.
-        field_values[iter->get_name()] = data_model->get_value_at(col_index, 0);
+        field_values[(*iter)->get_name()] = data_model->get_value_at(col_index, 0);
         ++col_index;
       }
     }
@@ -167,10 +166,9 @@ Box_Data::type_map_fields Box_Data::get_record_field_values(const Gnome::Gda::Va
 
 Glib::RefPtr<Gnome::Gda::DataModel> Box_Data::record_new(bool use_entered_data, const Gnome::Gda::Value& primary_key_value)
 {
-  Field fieldPrimaryKey;
-  get_field_primary_key(fieldPrimaryKey);
+  sharedptr<const Field> fieldPrimaryKey = get_field_primary_key();
 
-  const Glib::ustring primary_key_name = fieldPrimaryKey.get_name();
+  const Glib::ustring primary_key_name = fieldPrimaryKey->get_name();
 
   type_vecLayoutFields fieldsToAdd = m_FieldsShown;
 
@@ -179,11 +177,11 @@ Glib::RefPtr<Gnome::Gda::DataModel> Box_Data::record_new(bool use_entered_data, 
   for(type_vecFields::const_iterator iter = m_TableFields.begin(); iter != m_TableFields.end(); ++iter)
   {
     //TODO: Search for the non-related field with the name, not just the field with the name:
-    type_vecLayoutFields::const_iterator iterFind = std::find_if(fieldsToAdd.begin(), fieldsToAdd.end(), predicate_FieldHasName<LayoutItem_Field>(iter->get_name()));
+    type_vecLayoutFields::const_iterator iterFind = std::find_if(fieldsToAdd.begin(), fieldsToAdd.end(), predicate_FieldHasName<LayoutItem_Field>((*iter)->get_name()));
     if(iterFind == fieldsToAdd.end())
     {
       sharedptr<LayoutItem_Field> layout_item(new LayoutItem_Field);
-      layout_item->m_field = *iter;
+      layout_item->set_full_field_details(*iter);
 
       fieldsToAdd.push_back(layout_item);
     }
@@ -199,15 +197,15 @@ Glib::RefPtr<Gnome::Gda::DataModel> Box_Data::record_new(bool use_entered_data, 
 
     if(GlomConversions::value_is_empty(value)) //This deals with empty strings too.
     {
-      const Field& field = layout_item->m_field;
+      const sharedptr<const Field>& field = layout_item->get_full_field_details();
 
       //If the default value should be calculated, then calculate it:
-      if(field.get_has_calculation())
+      if(field->get_has_calculation())
       {
-        const Glib::ustring calculation = field.get_calculation();
+        const Glib::ustring calculation = field->get_calculation();
         const type_map_fields field_values = get_record_field_values(primary_key_value);
 
-        const Gnome::Gda::Value value = glom_evaluate_python_function_implementation(field.get_glom_type(), calculation, field_values,
+        const Gnome::Gda::Value value = glom_evaluate_python_function_implementation(field->get_glom_type(), calculation, field_values,
           get_document(), m_strTableName);
         set_entered_field_data(*layout_item, value);
       }
@@ -217,7 +215,7 @@ Glib::RefPtr<Gnome::Gda::DataModel> Box_Data::record_new(bool use_entered_data, 
       //TODO_Performance: Add has_default_value()?
       if(GlomConversions::value_is_empty(value))
       {
-        const Gnome::Gda::Value default_value = field.get_default_value();
+        const Gnome::Gda::Value default_value = field->get_default_value();
         if(!GlomConversions::value_is_empty(default_value))
         {
           set_entered_field_data(*layout_item, default_value);
@@ -245,7 +243,7 @@ Glib::RefPtr<Gnome::Gda::DataModel> Box_Data::record_new(bool use_entered_data, 
       {
         Gnome::Gda::Value value;
 
-        const Field& field = layout_item->m_field;
+        const sharedptr<const Field>& field = layout_item->get_full_field_details();
 
         //Use the specified (generated) primary key value, if there is one:
         if(primary_key_name == field_name && !GlomConversions::value_is_empty(primary_key_value))
@@ -254,11 +252,11 @@ Glib::RefPtr<Gnome::Gda::DataModel> Box_Data::record_new(bool use_entered_data, 
         }
         else
         {
-          if(use_entered_data || !field.get_calculation().empty()) //TODO_Performance: Use a get_has_calculation() method.
+          if(use_entered_data || !field->get_calculation().empty()) //TODO_Performance: Use a get_has_calculation() method.
             value = get_entered_field_data(*layout_item);
         }
 
-        Glib::ustring strFieldValue = field.sql(value);
+        Glib::ustring strFieldValue = field->sql(value);
 
         if(!strFieldValue.empty())
         {
@@ -447,17 +445,17 @@ Box_Data::type_field_calcs Box_Data::get_calculated_fields(const Glib::ustring& 
     //Examine all fields, not just the the shown fields.
     for(type_vecFields::const_iterator iter = m_TableFields.begin(); iter != m_TableFields.end();  ++iter)
     {
-      const Field& field = *iter;
+      sharedptr<const Field> field = *iter;
 
       //Does this field's calculation use the field?
-      const Field::type_list_strings fields_triggered = field.get_calculation_fields();
+      const Field::type_list_strings fields_triggered = field->get_calculation_fields();
       Field::type_list_strings::const_iterator iterFind = std::find(fields_triggered.begin(), fields_triggered.end(), field_name);
       if(iterFind != fields_triggered.end())
       {
         CalcInProgress item;
         item.m_field = field;
 
-        result[field.get_name()] = item;
+        result[field->get_name()] = item;
       }
     }
   }
@@ -478,14 +476,14 @@ Box_Data::type_list_lookups Box_Data::get_lookup_fields(const Glib::ustring& fie
     //Examine all fields, not just the the shown fields (m_Fields):
     for(type_vecFields::const_iterator iter = m_TableFields.begin(); iter != m_TableFields.end();  ++iter)
     {
-      const Field& field = *iter;
+      sharedptr<Field> field = *iter;
 
       //Examine each field that looks up its data from a relationship:
-      if(field.get_is_lookup())
+      if(field->get_is_lookup())
       {
         //Get the relationship information:
         Relationship relationship;
-        bool test = document->get_relationship(m_strTableName, field.get_lookup_relationship(), relationship);
+        bool test = document->get_relationship(m_strTableName, field->get_lookup_relationship(), relationship);
         if(test)
         {
           //If the relationship is triggererd by the specified field:
@@ -493,7 +491,7 @@ Box_Data::type_list_lookups Box_Data::get_lookup_fields(const Glib::ustring& fie
           {
             //Add it:
             LayoutItem_Field item;
-            item.m_field = field;
+            item.set_full_field_details(field);
             result.push_back( type_pairFieldTrigger(item, relationship) );
           }
         }
@@ -504,16 +502,15 @@ Box_Data::type_list_lookups Box_Data::get_lookup_fields(const Glib::ustring& fie
   return result;
 }
 
-Gnome::Gda::Value Box_Data::get_lookup_value(const Relationship& relationship, const Field& source_field, const Gnome::Gda::Value& key_value)
+Gnome::Gda::Value Box_Data::get_lookup_value(const Relationship& relationship, const sharedptr<const Field>& source_field, const Gnome::Gda::Value& key_value)
 {
   Gnome::Gda::Value result;
 
-  Field to_key_field;
-  bool test = get_fields_for_table_one_field(relationship.get_to_table(), relationship.get_to_field(), to_key_field);
-  if(test)
+  sharedptr<Field> to_key_field = get_fields_for_table_one_field(relationship.get_to_table(), relationship.get_to_field());
+  if(to_key_field)
   {
-    Glib::ustring strQuery = "SELECT " + relationship.get_to_table() + "." + source_field.get_name() + " FROM " +  relationship.get_to_table();
-    strQuery += " WHERE " + relationship.get_to_field() + " = " + to_key_field.sql(key_value);
+    Glib::ustring strQuery = "SELECT " + relationship.get_to_table() + "." + source_field->get_name() + " FROM " +  relationship.get_to_table();
+    strQuery += " WHERE " + relationship.get_to_field() + " = " + to_key_field->sql(key_value);
 
     Glib::RefPtr<Gnome::Gda::DataModel> data_model = Query_execute(strQuery);
     if(data_model && data_model->get_n_rows())
@@ -530,9 +527,9 @@ Gnome::Gda::Value Box_Data::get_lookup_value(const Relationship& relationship, c
   return result;
 }
 
-void Box_Data::calculate_field(const Field& field, const Field& primary_key, const Gnome::Gda::Value& primary_key_value)
+void Box_Data::calculate_field(const sharedptr<const Field>& field, const sharedptr<const Field>& primary_key, const Gnome::Gda::Value& primary_key_value)
 {
-  const Glib::ustring field_name = field.get_name();
+  const Glib::ustring field_name = field->get_name();
   //g_warning("Box_Data::calculate_field(): field_name=%s", field_name.c_str());
 
   //Do we already have this in our list?
@@ -553,7 +550,7 @@ void Box_Data::calculate_field(const Field& field, const Field& primary_key, con
   if(refCalcProgress.m_calc_in_progress)
   {
     //g_warning("  Box_Data::calculate_field(): Circular calculation detected. field_name=%s", field_name.c_str());
-    //refCalcProgress.m_value = GlomConversions::get_empty_value(field.get_glom_type()); //Give up.
+    //refCalcProgress.m_value = GlomConversions::get_empty_value(field->get_glom_type()); //Give up.
   }
   else if(refCalcProgress.m_calc_finished)
   {
@@ -568,25 +565,23 @@ void Box_Data::calculate_field(const Field& field, const Field& primary_key, con
     refCalcProgress.m_calc_in_progress = true; //Let the recursive calls to calculate_field() check this.
 
     LayoutItem_Field layout_item;
-    layout_item.m_field = refCalcProgress.m_field;
+    layout_item.set_full_field_details(refCalcProgress.m_field);
 
     //Calculate dependencies first:
-    const Field::type_list_strings fields_needed = field.get_calculation_fields();
+    const Field::type_list_strings fields_needed = field->get_calculation_fields();
     for(Field::type_list_strings::const_iterator iterNeeded = fields_needed.begin(); iterNeeded != fields_needed.end(); ++iterNeeded)
     {
-      Field field_needed;
-      //g_warning("field %s needs %s", field_name.c_str(), iterNeeded->c_str());
-      bool test = get_document()->get_field(m_strTableName, *iterNeeded, field_needed);
-      if(test)
+      sharedptr<const Field> field_needed = get_document()->get_field(m_strTableName, *iterNeeded);
+      if(field_needed)
       {
-        if(field_needed.get_has_calculation())
+        if(field_needed->get_has_calculation())
         {
           //g_warning("  calling calculate_field() for %s", iterNeeded->c_str());
           calculate_field(field_needed, primary_key, primary_key_value);
         }
         else
         {
-          //g_warning("  not a calculated field.");
+          //g_warning("  not a calculated field->");
         }
       }
     }
@@ -605,14 +600,16 @@ void Box_Data::calculate_field(const Field& field, const Field& primary_key, con
     {
       //recalculate:
       const type_map_fields field_values = get_record_field_values(primary_key_value);
-      refCalcProgress.m_value  = glom_evaluate_python_function_implementation(refCalcProgress.m_field.get_glom_type(), refCalcProgress.m_field.get_calculation(), field_values,
+
+      sharedptr<const Field> field = refCalcProgress.m_field;
+      refCalcProgress.m_value  = glom_evaluate_python_function_implementation(field->get_glom_type(), field->get_calculation(), field_values,
             get_document(), m_strTableName);
 
       refCalcProgress.m_calc_finished = true;
       refCalcProgress.m_calc_in_progress = false;
 
       LayoutItem_Field layout_item;
-      layout_item.m_field = refCalcProgress.m_field;
+      layout_item.set_full_field_details(field);
 
       //show it:
       set_entered_field_data(layout_item, refCalcProgress.m_value );
@@ -627,7 +624,7 @@ void Box_Data::calculate_field(const Field& field, const Field& primary_key, con
 }
 
 
-void Box_Data::do_calculations(const LayoutItem_Field& field_changed, const Field& primary_key, const Gnome::Gda::Value& primary_key_value, bool first_calc_field)
+void Box_Data::do_calculations(const LayoutItem_Field& field_changed, const sharedptr<const Field>& primary_key, const Gnome::Gda::Value& primary_key_value, bool first_calc_field)
 {
   //g_warning("Box_Data::do_calculations(): triggered by =%s", field_changed.get_name().c_str());
 
@@ -641,13 +638,13 @@ void Box_Data::do_calculations(const LayoutItem_Field& field_changed, const Fiel
   type_field_calcs calculated_fields = get_calculated_fields(field_changed.get_name()); //TODO: Just return the Fields, not the CalcInProgress.
   for(type_field_calcs::iterator iter = calculated_fields.begin(); iter != calculated_fields.end(); ++iter)
   {
-    const Field& field = iter->second.m_field;
+    sharedptr<const Field> field = iter->second.m_field;
 
     calculate_field(field, primary_key, primary_key_value); //And any dependencies.
 
     //Calculate anything that depends on this.
     LayoutItem_Field layout_item;
-    layout_item.m_field = field;
+    layout_item.set_full_field_details(field);
 
     do_calculations(layout_item, primary_key, primary_key_value, false /* recurse, reusing m_FieldsCalculationInProgress */);
   }
@@ -656,16 +653,16 @@ void Box_Data::do_calculations(const LayoutItem_Field& field_changed, const Fiel
     m_FieldsCalculationInProgress.clear();
 }
 
-bool Box_Data::set_field_value_in_database(const LayoutItem_Field& field_layout, const Gnome::Gda::Value& field_value, const Field& primary_key_field, const Gnome::Gda::Value& primary_key_value, bool use_current_calculations)
+bool Box_Data::set_field_value_in_database(const LayoutItem_Field& field_layout, const Gnome::Gda::Value& field_value, const sharedptr<const Field>& primary_key_field, const Gnome::Gda::Value& primary_key_value, bool use_current_calculations)
 {
   return set_field_value_in_database(Gtk::TreeModel::iterator(), field_layout, field_value, primary_key_field, primary_key_value, use_current_calculations);
 }
 
-bool Box_Data::set_field_value_in_database(const Gtk::TreeModel::iterator& row, const LayoutItem_Field& field_layout, const Gnome::Gda::Value& field_value, const Field& primary_key_field, const Gnome::Gda::Value& primary_key_value, bool use_current_calculations)
+bool Box_Data::set_field_value_in_database(const Gtk::TreeModel::iterator& row, const LayoutItem_Field& field_layout, const Gnome::Gda::Value& field_value, const sharedptr<const Field>& primary_key_field, const Gnome::Gda::Value& primary_key_value, bool use_current_calculations)
 {
   //row is invalid, and ignored, for Box_Data_Details.
 
-  const Field& field = field_layout.m_field;
+  const sharedptr<const Field> field = field_layout.get_full_field_details();
 
   const Glib::ustring field_name = field_layout.get_name();
   if(!field_name.empty()) //This should not happen.
@@ -686,8 +683,8 @@ bool Box_Data::set_field_value_in_database(const Gtk::TreeModel::iterator& row, 
     }
 
     Glib::ustring strQuery = "UPDATE " + table_name;
-    strQuery += " SET " + field_name + " = " + field.sql(field_value);
-    strQuery += " WHERE " + primary_key_field.get_name() + " = " + primary_key_field.sql(primary_key_value);
+    strQuery += " SET " + field_name + " = " + field->sql(field_value);
+    strQuery += " WHERE " + primary_key_field->get_name() + " = " + primary_key_field->sql(primary_key_value);
     Glib::RefPtr<Gnome::Gda::DataModel> datamodel = Query_execute(strQuery);  //TODO: Handle errors
     if(!datamodel)
     {
@@ -759,12 +756,10 @@ void Box_Data::fill_layout_group_field_info(LayoutGroup& group, const Privileges
         bool test = document->get_relationship(m_strTableName, relationship_name, relationship);
         if(test)
         {
-          Field field;
-          //TODO: get_fields_for_table_one_field() is probably very inefficient
-          bool test = get_fields_for_table_one_field(relationship.get_to_table(), item->get_name(), field);
-          if(test)
+          sharedptr<Field> field = get_fields_for_table_one_field(relationship.get_to_table(), item->get_name());
+          if(field)
           {
-            item_field->m_field = field;
+            item_field->set_full_field_details(field);
 
             //TODO_Performance: Don't do this repeatedly for the same table.
             const Privileges privs = get_current_privs(relationship.get_to_table());
@@ -776,11 +771,10 @@ void Box_Data::fill_layout_group_field_info(LayoutGroup& group, const Privileges
       else
       {
         //Get the field info:
-        Field field;
-        bool found = get_fields_for_table_one_field(m_strTableName, item_field->get_name(), field);
-        if(found)
+        sharedptr<Field> field = get_fields_for_table_one_field(m_strTableName, item_field->get_name());
+        if(field)
         {
-          item_field->m_field = field; //TODO_Performance: Just use this as the output arg?
+          item_field->set_full_field_details(field); //TODO_Performance: Just use this as the output arg?
           item_field->m_priv_view = table_privs.m_view;
           item_field->m_priv_edit = table_privs.m_edit;
         }
@@ -801,11 +795,10 @@ void Box_Data::fill_layout_group_field_info(LayoutGroup& group, const Privileges
 bool Box_Data::record_delete(const Gnome::Gda::Value& primary_key_value)
 {
 
-  Field field_primary_key;
-  bool test = get_field_primary_key(field_primary_key);
-  if(test && !GlomConversions::value_is_empty(primary_key_value))
+  sharedptr<Field> field_primary_key = get_field_primary_key();
+  if(field_primary_key && !GlomConversions::value_is_empty(primary_key_value))
   {
-    return Query_execute( "DELETE FROM " + m_strTableName + " WHERE " + m_strTableName + "." + field_primary_key.get_name() + " = " + field_primary_key.sql(primary_key_value) );
+    return Query_execute( "DELETE FROM " + m_strTableName + " WHERE " + m_strTableName + "." + field_primary_key->get_name() + " = " + field_primary_key->sql(primary_key_value) );
   }
   else
   {
@@ -830,11 +823,11 @@ g_warning("debug: Box_Data::get_field()");
 }
 */
 
-Glib::ustring Box_Data::build_sql_select(const Glib::ustring& table_name, const type_vecLayoutFields& fieldsToGet, const Field& primary_key_field, const Gnome::Gda::Value& primary_key_value)
+Glib::ustring Box_Data::build_sql_select(const Glib::ustring& table_name, const type_vecLayoutFields& fieldsToGet, const sharedptr<const Field>& primary_key_field, const Gnome::Gda::Value& primary_key_value)
 {
   if(!GlomConversions::value_is_empty(primary_key_value)) //If there is a record to show:
   {
-    const Glib::ustring where_clause = table_name + "." + primary_key_field.get_name() + " = " + primary_key_field.sql(primary_key_value);
+    const Glib::ustring where_clause = table_name + "." + primary_key_field->get_name() + " = " + primary_key_field->sql(primary_key_value);
     return GlomUtils::build_sql_select_with_where_clause(table_name, fieldsToGet, where_clause);
   }
 
@@ -906,7 +899,7 @@ Glib::ustring Box_Data::build_sql_select_with_where_clause(const Glib::ustring& 
 }
 */
 
-bool Box_Data::get_related_record_exists(const Relationship& relationship, const Field& key_field, const Gnome::Gda::Value& key_value)
+bool Box_Data::get_related_record_exists(const Relationship& relationship, const sharedptr<const Field>& key_field, const Gnome::Gda::Value& key_value)
 {
   bool result = false;
 
@@ -915,7 +908,7 @@ bool Box_Data::get_related_record_exists(const Relationship& relationship, const
   const Glib::ustring to_field = relationship.get_to_table() = relationship.get_to_field();
 
   //TODO_Performance: Is this the best way to just find out whether there is one record that meets this criteria?
-  const Glib::ustring query = "SELECT " + to_field + " FROM " + relationship.get_to_table() + " WHERE " + to_field + " = " + key_field.sql(key_value);
+  const Glib::ustring query = "SELECT " + to_field + " FROM " + relationship.get_to_table() + " WHERE " + to_field + " = " + key_field->sql(key_value);
   Glib::RefPtr<Gnome::Gda::DataModel> records = Query_execute(query);
   if(!records)
     handle_error();
@@ -929,7 +922,7 @@ bool Box_Data::get_related_record_exists(const Relationship& relationship, const
   return result;
 }
 
-bool Box_Data::add_related_record_for_field(const LayoutItem_Field& layout_item_parent, const Relationship& relationship, const Field& primary_key_field, const Gnome::Gda::Value& primary_key_value_provided)
+bool Box_Data::add_related_record_for_field(const LayoutItem_Field& layout_item_parent, const Relationship& relationship, const sharedptr<const Field>& primary_key_field, const Gnome::Gda::Value& primary_key_value_provided)
 {
   Gnome::Gda::Value primary_key_value = primary_key_value_provided;
 
@@ -957,7 +950,7 @@ bool Box_Data::add_related_record_for_field(const LayoutItem_Field& layout_item_
     }
     else
     {
-      const bool key_is_auto_increment = primary_key_field.get_auto_increment();
+      const bool key_is_auto_increment = primary_key_field->get_auto_increment();
 
       //If we would have to set an otherwise auto-increment key to add the record.
       if( key_is_auto_increment && !GlomConversions::value_is_empty(primary_key_value) )
@@ -982,12 +975,12 @@ bool Box_Data::add_related_record_for_field(const LayoutItem_Field& layout_item_
         //Create the related record:
         if(key_is_auto_increment)
         {
-          primary_key_value = generate_next_auto_increment(relationship.get_to_table(), primary_key_field.get_name());
+          primary_key_value = generate_next_auto_increment(relationship.get_to_table(), primary_key_field->get_name());
 
           //Generate the new key value;
         }
 
-        const Glib::ustring strQuery = "INSERT INTO " + relationship.get_to_table() + " (" + primary_key_field.get_name() + ") VALUES (" + primary_key_field.sql(primary_key_value) + ")";
+        const Glib::ustring strQuery = "INSERT INTO " + relationship.get_to_table() + " (" + primary_key_field->get_name() + ") VALUES (" + primary_key_field->sql(primary_key_value) + ")";
         bool test = Query_execute(strQuery);
         if(test)
         {
@@ -1001,13 +994,11 @@ bool Box_Data::add_related_record_for_field(const LayoutItem_Field& layout_item_
             set_entered_field_data(item_from_key, primary_key_value);
 
             //Set it in the database too:
-            Field field_from_key;
-            bool test = get_fields_for_table_one_field(relationship.get_from_table(), relationship.get_from_field(), field_from_key); //TODO_Performance.
-            if(test)
+            sharedptr<Field> field_from_key = get_fields_for_table_one_field(relationship.get_from_table(), relationship.get_from_field()); //TODO_Performance.
+            if(field_from_key)
             {
-              Field parent_primary_key_field;
-              bool test = get_field_primary_key(parent_primary_key_field);
-              if(!test)
+              sharedptr<Field> parent_primary_key_field = get_field_primary_key();
+              if(!parent_primary_key_field)
               {
                 g_warning("Box_Data::add_related_record_for_field(): get_field_primary_key() failed. table = %s", get_table_name().c_str());
                 return false;
@@ -1022,8 +1013,8 @@ bool Box_Data::add_related_record_for_field(const LayoutItem_Field& layout_item_
                 }
                 else
                 {
-                  const Glib::ustring strQuery = "UPDATE  " + relationship.get_from_table() + " SET " + relationship.get_from_field() + " = " + primary_key_field.sql(primary_key_value) +
-                    " WHERE " + relationship.get_from_table() + "." + parent_primary_key_field.get_name() + " = " + parent_primary_key_field.sql(parent_primary_key_value);
+                  const Glib::ustring strQuery = "UPDATE  " + relationship.get_from_table() + " SET " + relationship.get_from_field() + " = " + primary_key_field->sql(primary_key_value) +
+                    " WHERE " + relationship.get_from_table() + "." + parent_primary_key_field->get_name() + " = " + parent_primary_key_field->sql(parent_primary_key_value);
                   bool test = Query_execute(strQuery);
                   return test;
                 }

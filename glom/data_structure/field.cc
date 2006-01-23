@@ -92,6 +92,11 @@ bool Field::operator!=(const Field& src) const
   return !(operator==(src));
 }
 
+Field* Field::clone() const
+{
+  return new Field(*this);
+}
+
 Field::glom_field_type Field::get_glom_type() const
 {
   return m_glom_type;
@@ -492,11 +497,11 @@ Glib::ustring Field::get_sql_type() const
 bool Field::field_info_from_database_is_equal(const Gnome::Gda::FieldAttributes& field)
 {
   Gnome::Gda::FieldAttributes temp = m_field_info;
-  
+
   temp.set_auto_increment( field.get_auto_increment() ); //Don't compare this, because the data is incorrect when libgda reads it from the database.
   temp.set_default_value( field.get_default_value() ); //Don't compare this, because the data is incorrect when libgda reads it from the database.
   temp.set_primary_key( field.get_primary_key() ); //Don't compare this, because the data is incorrect when libgda reads it from the database.
-    
+
   return temp == field; 
 }
 

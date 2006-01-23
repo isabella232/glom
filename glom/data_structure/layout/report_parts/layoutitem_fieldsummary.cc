@@ -57,7 +57,7 @@ LayoutItem_FieldSummary& LayoutItem_FieldSummary::operator=(const LayoutItem_Fie
 
 Glib::ustring LayoutItem_FieldSummary::get_title_or_name() const
 {
-  Glib::ustring field_title =  m_field.get_title_or_name();
+  Glib::ustring field_title = m_field->get_title_or_name();
 
   return get_summary_type_name(m_summary_type) + ": " + field_title; //TODO: Allow a more human-readable title for summary headings.
 }

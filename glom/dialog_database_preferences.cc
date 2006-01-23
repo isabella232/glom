@@ -120,8 +120,9 @@ void Dialog_Database_Preferences::load_from_document()
     const Document_Glom::type_vecFields fields = document->get_table_fields(iter->m_name);
     for(Document_Glom::type_vecFields::const_iterator iterFields = fields.begin(); iterFields != fields.end(); ++iterFields)
     {
-      if(iterFields->get_primary_key())
-        auto_increment_insert_first_if_necessary(iter->m_name, iterFields->get_name());
+      sharedptr<Field> field = *iterFields;
+      if(field->get_primary_key())
+        auto_increment_insert_first_if_necessary(iter->m_name, field->get_name());
     }
   }
 

@@ -100,8 +100,8 @@ Box_DB_Table::type_vecFields Box_DB_Table::get_fields_for_datamodel(const Glib::
   for(int i = 0; i < columns; ++i)
   {
     Gnome::Gda::FieldAttributes fieldinfo = data_model->describe_column(i);
-    Field field;
-    field.set_field_info(fieldinfo); //TODO: Get glom-specific information from document?
+    sharedptr<Field> field(new Field());
+    field->set_field_info(fieldinfo); //TODO: Get glom-specific information from document?
     result.push_back( field );
   }
 

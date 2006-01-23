@@ -35,8 +35,8 @@ public:
   Dialog_FieldCalculation(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
   virtual ~Dialog_FieldCalculation();
 
-  virtual void set_field(const Field& field, const Glib::ustring& table_name);
-  virtual Field get_field() const;
+  virtual void set_field(const sharedptr<const Field>& field, const Glib::ustring& table_name);
+  virtual sharedptr<Field> get_field() const;
 
 protected:
   virtual void on_button_test();
@@ -44,8 +44,8 @@ protected:
   Gtk::TextView* m_text_view;
   Gtk::Button* m_button_test;
   Gtk::Label* m_label_triggered_by;
-  
-  Field m_field;
+
+  sharedptr<Field> m_field;
   Glib::ustring m_table_name;
 };
 

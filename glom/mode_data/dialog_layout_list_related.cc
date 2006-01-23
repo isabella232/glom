@@ -150,7 +150,7 @@ void Dialog_Layout_List_Related::update_ui(bool including_relationship_list)
       for(Document_Glom::type_vecFields::const_iterator iter = table_fields.begin(); iter != table_fields.end(); ++iter)
       {
         LayoutItem_Field item;
-        item.set_name(iter->get_name());
+        item.set_name((*iter)->get_name());
         item.m_sequence = field_sequence;
 
         group.add_item(item, field_sequence);

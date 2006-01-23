@@ -128,8 +128,8 @@ public:
    */
   bool get_is_placeholder_row(const Gtk::TreeModel::iterator& iter) const;
 
-  Field get_key_field() const;
-  void set_key_field(const Field& field);
+  sharedptr<Field> get_key_field() const;
+  void set_key_field(const sharedptr<Field>& field);
 
   void set_table_name(const Glib::ustring& table_name);
 
@@ -321,7 +321,7 @@ protected:
   bool m_allow_add;
   bool m_allow_delete;
 
-  Field m_key_field;
+  sharedptr<Field> m_key_field;
 
   bool m_columns_ready;
   bool m_allow_view;

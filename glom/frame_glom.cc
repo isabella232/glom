@@ -571,7 +571,7 @@ void Frame_Glom::export_data_to_string(Glib::ustring& the_string, const Glib::us
               row_string += ",";
 
             //Output data in canonical SQL format, ignoring the user's locale, and ignoring the layout formatting:
-            row_string += layout_item->m_field.sql(value);
+            row_string += layout_item->get_full_field_details()->sql(value);
 
             //if(layout_item->m_field.get_glom_type() == Field::TYPE_IMAGE) //This is too much data.
             //{
@@ -620,9 +620,9 @@ void Frame_Glom::export_data_to_stream(std::ostream& the_stream, const Glib::ust
               row_string += ",";
 
             //Output data in canonical SQL format, ignoring the user's locale, and ignoring the layout formatting:
-            row_string += layout_item->m_field.sql(value);
+            row_string += layout_item->get_full_field_details()->sql(value);
 
-            if(layout_item->m_field.get_glom_type() == Field::TYPE_IMAGE) //This is too much data.
+            if(layout_item->get_glom_type() == Field::TYPE_IMAGE) //This is too much data.
             {
               if(!GlomConversions::value_is_empty(value))
                 std::cout << "  field name=" << layout_item->get_name() << ", image value not empty=" << std::endl;
@@ -866,30 +866,35 @@ void Frame_Glom::update_table_in_document_from_database()
 
     for(Base_DB::type_vecFields::const_iterator iter = fieldsDatabase.begin(); iter != fieldsDatabase.end(); ++iter)
     {
-      const Field& field_database = *iter;
-
-      //Is the field already in the document?
-      type_vecFields::iterator iterFindDoc = std::find_if( fieldsDocument.begin(), fieldsDocument.end(), predicate_FieldHasName<Field>( field_database.get_name() ) );
-      if(iterFindDoc == fieldsDocument.end()) //If it was not found:
+      sharedptr<Field> field_database = *iter;
+      if(field_database)
       {
-        //Add it
-        fieldsDocument.push_back(field_database);
-        document_must_to_be_updated = true;
-      }
-      else //if it was found.
-      {
-        //Compare the information:
-        Gnome::Gda::FieldAttributes field_info_db = field_database.get_field_info();
-        Field field_document =  *iterFindDoc;
-        if(field_document.field_info_from_database_is_equal( field_info_db )) //ignores auto_increment because libgda does not report it from the database properly.
+        //Is the field already in the document?
+        type_vecFields::iterator iterFindDoc = std::find_if( fieldsDocument.begin(), fieldsDocument.end(), predicate_FieldHasName<Field>( field_database->get_name() ) );
+        if(iterFindDoc == fieldsDocument.end()) //If it was not found:
         {
-          //The database has different information. We assume that the information in the database is newer.
-
-          //Update the field information:
-          field_info_db.set_auto_increment( field_document.get_auto_increment() ); //libgda does not report it from the database properly.
-          iterFindDoc->set_field_info( field_info_db );
-
+          //Add it
+          fieldsDocument.push_back(field_database);
           document_must_to_be_updated = true;
+        }
+        else //if it was found.
+        {
+          //Compare the information:
+          Gnome::Gda::FieldAttributes field_info_db = field_database->get_field_info();
+          sharedptr<Field> field_document =  *iterFindDoc;
+          if(field_document)
+          {
+            if(field_document->field_info_from_database_is_equal( field_info_db )) //ignores auto_increment because libgda does not report it from the database properly.
+            {
+              //The database has different information. We assume that the information in the database is newer.
+
+              //Update the field information:
+              field_info_db.set_auto_increment( field_document->get_auto_increment() ); //libgda does not report it from the database properly.
+              (*iterFindDoc)->set_field_info( field_info_db );
+
+              document_must_to_be_updated = true;
+            }
+          }
         }
       }
     }
@@ -899,10 +904,10 @@ void Frame_Glom::update_table_in_document_from_database()
     type_vecFields fieldsActual;
     for(type_vecFields::const_iterator iter = fieldsDocument.begin(); iter != fieldsDocument.end(); ++iter)
     {
-      const Field& field = *iter;
+      sharedptr<Field> field = *iter;
 
       //Check whether it's in the database:
-      type_vecFields::iterator iterFindDatabase = std::find_if( fieldsDatabase.begin(), fieldsDatabase.end(), predicate_FieldHasName<Field>( field.get_name() ) );
+      type_vecFields::iterator iterFindDatabase = std::find_if( fieldsDatabase.begin(), fieldsDatabase.end(), predicate_FieldHasName<Field>( field->get_name() ) );
       if(iterFindDatabase != fieldsDatabase.end()) //If it was found
       {
         fieldsActual.push_back(field);
@@ -1196,6 +1201,8 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
   }
   else
     return false; //The user cancelled.
+
+  return false;
 }
 
 bool Frame_Glom::connection_request_password_and_attempt()

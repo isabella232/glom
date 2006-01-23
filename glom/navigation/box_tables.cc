@@ -188,40 +188,40 @@ void Box_Tables::on_adddel_Add(const Gtk::TreeModel::iterator& row)
   if(!table_name.empty())
   {
     //Primary key:
-    Field field_primary_key;
-    field_primary_key.set_name(table_name + "_id");
-    field_primary_key.set_primary_key();
-    field_primary_key.set_auto_increment();
+    sharedptr<Field> field_primary_key(new Field());
+    field_primary_key->set_name(table_name + "_id");
+    field_primary_key->set_primary_key();
+    field_primary_key->set_auto_increment();
 
-    Gnome::Gda::FieldAttributes field_info = field_primary_key.get_field_info();
+    Gnome::Gda::FieldAttributes field_info = field_primary_key->get_field_info();
     field_info.set_allow_null(false);
-    field_primary_key.set_field_info(field_info);
+    field_primary_key->set_field_info(field_info);
 
-    field_primary_key.set_glom_type(Field::TYPE_NUMERIC);
+    field_primary_key->set_glom_type(Field::TYPE_NUMERIC);
 
     type_vecFields fields;
     fields.push_back(field_primary_key);
 
     //Description:
-    Field field_description;
-    field_description.set_name("description");
-    field_description.set_title("Description");
-    field_description.set_glom_type(Field::TYPE_TEXT);
+    sharedptr<Field> field_description(new Field());
+    field_description->set_name("description");
+    field_description->set_title("Description");
+    field_description->set_glom_type(Field::TYPE_TEXT);
     fields.push_back(field_description);
 
     //Comments:
-    Field field_comments;
-    field_comments.set_name("comments");
-    field_comments.set_title("Comments");
-    field_comments.set_glom_type(Field::TYPE_TEXT);
-    field_comments.m_default_formatting.set_text_format_multiline();
+    sharedptr<Field> field_comments(new Field());
+    field_comments->set_name("comments");
+    field_comments->set_title("Comments");
+    field_comments->set_glom_type(Field::TYPE_TEXT);
+    field_comments->m_default_formatting.set_text_format_multiline();
     fields.push_back(field_comments);
 
     TableInfo table_info;
     table_info.m_name = table_name;
     table_info.m_title = util_title_from_string( table_name ); //Start with a title that might be appropriate.
 
-    bool test = create_table(table_info, fields);
+    const bool test = create_table(table_info, fields);
 
     //Create a table with 1 "ID" field:
    //MSYQL:
@@ -232,7 +232,7 @@ void Box_Tables::on_adddel_Add(const Gtk::TreeModel::iterator& row)
     //Query_execute( "CREATE TABLE " + table_name + " (" + primary_key_name + " serial NOT NULL  PRIMARY KEY)" );
 
     //Query_execute( "CREATE TABLE \"" + table_name + "\" (" +
-    //  field_primary_key.get_name() + " numeric NOT NULL  PRIMARY KEY," + 
+    //  field_primary_key->get_name() + " numeric NOT NULL  PRIMARY KEY," + 
     //  extra_field_description + "varchar, " +
     //  extra_field_comments + "varchar" +
     //  ")" );
@@ -241,16 +241,16 @@ void Box_Tables::on_adddel_Add(const Gtk::TreeModel::iterator& row)
     {
       //Show the new information for this whole row:
       fill_table_row(row, table_info);
-  
+
       //Save the field information directly into the database, because we cannot get all the correct information from the database.
       //Otherwise some information would be forgotten:
-      
-  
-  
+
+
+
       Document_Glom* document = get_document();
       if(document)
           document->set_table_fields(table_name, fields);
-  
+
       save_to_document();
       //fill_from_database(); //We should not modify the model structure in a cellrenderer signal handler.
     }

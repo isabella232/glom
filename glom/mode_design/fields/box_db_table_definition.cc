@@ -86,28 +86,28 @@ Box_DB_Table_Definition::~Box_DB_Table_Definition()
   }
 }
 
-void Box_DB_Table_Definition::fill_field_row(const Gtk::TreeModel::iterator& iter, const Field& field)
+void Box_DB_Table_Definition::fill_field_row(const Gtk::TreeModel::iterator& iter, const sharedptr<const Field>& field)
 {
-  m_AddDel.set_value_key(iter, field.get_name());
- 
-  m_AddDel.set_value(iter, m_colName, field.get_name());
+  m_AddDel.set_value_key(iter, field->get_name());
 
-  Glib::ustring title = field.get_title();
+  m_AddDel.set_value(iter, m_colName, field->get_name());
+
+  Glib::ustring title = field->get_title();
   m_AddDel.set_value(iter, m_colTitle, title);
 
   //Type:
-  Field::glom_field_type fieldType = Field::get_glom_type_for_gda_type(field.get_field_info().get_gdatype()); //Could be TYPE_INVALID if the gda type is not one of ours.
+  Field::glom_field_type fieldType = Field::get_glom_type_for_gda_type(field->get_field_info().get_gdatype()); //Could be TYPE_INVALID if the gda type is not one of ours.
 
   Glib::ustring strType = Field::get_type_name_ui( fieldType );
   m_AddDel.set_value(iter, m_colType, strType);
 
   //Unique:
-  const bool bUnique = field.get_unique_key();
+  const bool bUnique = field->get_unique_key();
 
   m_AddDel.set_value(iter, m_colUnique, bUnique);
 
   //Primary Key:
-  const bool bPrimaryKey = field.get_primary_key();
+  const bool bPrimaryKey = field->get_primary_key();
   m_AddDel.set_value(iter, m_colPrimaryKey, bPrimaryKey);
 }
 
@@ -129,10 +129,10 @@ bool Box_DB_Table_Definition::fill_from_database()
 
     for(type_vecFields::iterator iter = m_vecFields.begin(); iter != m_vecFields.end(); iter++)
     {
-      const Field& field = *iter;
+      const sharedptr<const Field>& field = *iter;
 
       //Name:
-      Gtk::TreeModel::iterator iter= m_AddDel.add_item(field.get_name());
+      Gtk::TreeModel::iterator iter= m_AddDel.add_item(field->get_name());
       fill_field_row(iter, field);
     }
 
@@ -164,14 +164,14 @@ void Box_DB_Table_Definition::on_adddel_add(const Gtk::TreeModel::iterator& row)
       //fill_from_database(); //We cannot change the structure in a cell renderer signal handler.
 
       //This must match the SQL statement above:
-      Field field;
-      field.set_name(strName);
-      field.set_title( util_title_from_string(strName) ); //Start with a title that might be useful.
-      field.set_glom_type(Field::TYPE_NUMERIC);
+      sharedptr<Field> field(new Field());
+      field->set_name(strName);
+      field->set_title( util_title_from_string(strName) ); //Start with a title that might be useful.
+      field->set_glom_type(Field::TYPE_NUMERIC);
 
-      Gnome::Gda::FieldAttributes field_info = field.get_field_info();
+      Gnome::Gda::FieldAttributes field_info = field->get_field_info();
       field_info.set_gdatype( Field::get_gda_type_for_glom_type(Field::TYPE_NUMERIC) );
-      field.set_field_info(field_info);
+      field->set_field_info(field_info);
 
       fill_field_row(row, field);
 
@@ -207,24 +207,26 @@ void Box_DB_Table_Definition::on_adddel_changed(const Gtk::TreeModel::iterator& 
   {
     //Glom-specific stuff: //TODO_portiter
     const Glib::ustring strFieldNameBeingEdited = m_AddDel.get_value_key(row);
- 
-    pDoc->get_field(m_strTableName, strFieldNameBeingEdited, m_Field_BeingEdited);
+
+    sharedptr<const Field> constfield = pDoc->get_field(m_strTableName, strFieldNameBeingEdited);
+    m_Field_BeingEdited = constfield;
 
     //Get DB field info: (TODO: This might be unnecessary).
     type_vecFields::const_iterator iterFind = std::find_if( m_vecFields.begin(), m_vecFields.end(), predicate_FieldHasName<Field>(strFieldNameBeingEdited) );
     if(iterFind != m_vecFields.end()) //If it was found:
     {
-      m_Field_BeingEdited = *iterFind;
+      sharedptr<const Field> constfield = *iterFind;
+      m_Field_BeingEdited = constfield;
 
       //Get new field definition:
-      Field fieldNew = get_field_definition(row);
+      sharedptr<Field> fieldNew = get_field_definition(row);
 
       //Change it:
-      if(m_Field_BeingEdited != fieldNew) //If it has really changed.
+      if(*m_Field_BeingEdited != *fieldNew) //If it has really changed.
       {
         //If we are changing a non-glom type:
        //Refuse to edit field definitions that were not created by glom:
-       if(Field::get_glom_type_for_gda_type( m_Field_BeingEdited.get_field_info().get_gdatype() )  == Field::TYPE_INVALID)
+       if(Field::get_glom_type_for_gda_type( m_Field_BeingEdited->get_field_info().get_gdatype() )  == Field::TYPE_INVALID)
        {
          Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Invalid database structure")), true);
          dialog.set_secondary_text(_("This database field was created or edited outside of Glom. It has a data type that is not supported by Glom. Your system administrator may be able to correct this."));
@@ -240,7 +242,8 @@ void Box_DB_Table_Definition::on_adddel_changed(const Gtk::TreeModel::iterator& 
 
 void Box_DB_Table_Definition::on_adddel_edit(const Gtk::TreeModel::iterator& row)
 {
-  m_Field_BeingEdited = get_field_definition(row);
+  sharedptr<const Field> constfield = get_field_definition(row);
+  m_Field_BeingEdited = constfield;
 
   m_pDialog->set_field(m_Field_BeingEdited, m_strTableName);
 
@@ -249,9 +252,9 @@ void Box_DB_Table_Definition::on_adddel_edit(const Gtk::TreeModel::iterator& row
   m_pDialog->show();
 }
 
-Field Box_DB_Table_Definition::get_field_definition(const Gtk::TreeModel::iterator& row)
+sharedptr<Field> Box_DB_Table_Definition::get_field_definition(const Gtk::TreeModel::iterator& row)
 {
-  Field fieldResult;
+  sharedptr<Field> fieldResult;
 
   //Get old field definition (to preserve anything that the user doesn't have access to):
 
@@ -264,14 +267,14 @@ Field Box_DB_Table_Definition::get_field_definition(const Gtk::TreeModel::iterat
     Document_Glom::type_vecFields vecFields= pDoc->get_table_fields(m_strTableName);
     Document_Glom::type_vecFields::iterator iterFind = std::find_if( vecFields.begin(), vecFields.end(), predicate_FieldHasName<Field>(strFieldNameBeforeEdit) );
 
-    if(iterFind != vecFields.end()) //If it was found:
+    if((iterFind != vecFields.end()) && (*iterFind)) //If it was found:
     {
-      fieldResult = *iterFind;
+      fieldResult = sharedptr<Field>((*iterFind)->clone());
     }
     else
     {
       //Start with a default:
-      fieldResult = Field();
+      fieldResult = sharedptr<Field>(new Field());
     }
   }
 
@@ -280,38 +283,37 @@ Field Box_DB_Table_Definition::get_field_definition(const Gtk::TreeModel::iterat
 
   //Start with original definitions, so that we preserve things like UNSIGNED.
   //TODO maybe use document's fieldinfo instead of m_vecFields.
-  Field field_temp;
-  bool test = get_fields_for_table_one_field(m_strTableName, strFieldNameBeforeEdit, field_temp);
-  if(test)
+  sharedptr<const Field> field_temp = get_fields_for_table_one_field(m_strTableName, strFieldNameBeforeEdit);
+  if(field_temp)
   {
-    Gnome::Gda::FieldAttributes fieldInfo = field_temp.get_field_info();
+    Gnome::Gda::FieldAttributes fieldInfo = field_temp->get_field_info();
 
     //Name:
-    Glib::ustring strName = m_AddDel.get_value(row, m_colName);
+    const Glib::ustring strName = m_AddDel.get_value(row, m_colName);
     fieldInfo.set_name(strName);
 
     //Title:
-    Glib::ustring title = m_AddDel.get_value(row, m_colTitle);
-    fieldResult.set_title(title);
+    const Glib::ustring title = m_AddDel.get_value(row, m_colTitle);
+    fieldResult->set_title(title);
 
     //Type:
     const Glib::ustring& strType = m_AddDel.get_value(row, m_colType);
 
-    Field::glom_field_type glom_type =  Field::get_type_for_ui_name(strType);
+    const Field::glom_field_type glom_type =  Field::get_type_for_ui_name(strType);
     Gnome::Gda::ValueType fieldType = Field::get_gda_type_for_glom_type(glom_type);
 
     //Unique:
-    bool bUnique = m_AddDel.get_value_as_bool(row, m_colUnique);
+    const bool bUnique = m_AddDel.get_value_as_bool(row, m_colUnique);
     fieldInfo.set_unique_key(bUnique);
 
     //Primary Key:
-    bool bPrimaryKey = m_AddDel.get_value_as_bool(row, m_colPrimaryKey);
+    const bool bPrimaryKey = m_AddDel.get_value_as_bool(row, m_colPrimaryKey);
     fieldInfo.set_primary_key(bPrimaryKey);
 
     fieldInfo.set_gdatype(fieldType);
 
     //Put it together:
-    fieldResult.set_field_info(fieldInfo);
+    fieldResult->set_field_info(fieldInfo);
   }
 
   return fieldResult;
@@ -319,13 +321,13 @@ Field Box_DB_Table_Definition::get_field_definition(const Gtk::TreeModel::iterat
 
 void Box_DB_Table_Definition::on_Properties_apply()
 {
-  Field field_New = m_pDialog->get_field();
+  sharedptr<Field> field_New = m_pDialog->get_field();
 
-  if(m_Field_BeingEdited != field_New)
+  if(*m_Field_BeingEdited != *field_New)
   {
     //If we are changing a non-glom type:
     //Refuse to edit field definitions that were not created by glom:
-    if( Field::get_glom_type_for_gda_type(m_Field_BeingEdited.get_field_info().get_gdatype()) == Field::TYPE_INVALID )
+    if( Field::get_glom_type_for_gda_type(m_Field_BeingEdited->get_field_info().get_gdatype()) == Field::TYPE_INVALID )
     {
       Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Invalid database structure")), true);
          dialog.set_secondary_text(_("This database field was created or edited outside of Glom. It has a data type that is not supported by Glom. Your system administrator may be able to correct this."));
@@ -345,7 +347,7 @@ void Box_DB_Table_Definition::on_Properties_apply()
   m_pDialog->hide();
 }
 
-void Box_DB_Table_Definition::change_definition(const Field& fieldOld, Field field)
+void Box_DB_Table_Definition::change_definition(const sharedptr<const Field>& fieldOld, const sharedptr<const Field>& field)
 {
   Bakery::BusyCursor(*get_app_window());
 
@@ -366,26 +368,26 @@ void Box_DB_Table_Definition::change_definition(const Field& fieldOld, Field fie
     Document_Glom::type_vecFields vecFields = pDoc->get_table_fields(m_strTableName);
 
     //Find old field:
-    const Glib::ustring field_name_old = fieldOld.get_name();
+    const Glib::ustring field_name_old = fieldOld->get_name();
     Document_Glom::type_vecFields::iterator iterFind = std::find_if( vecFields.begin(), vecFields.end(), predicate_FieldHasName<Field>(field_name_old) );
     if(iterFind != vecFields.end()) //If it was found:
     {
       //Change it to the new Fields's value:
-      Field& refField = *iterFind;
-      refField = field;
+      sharedptr<Field> refField = *iterFind;
+      *refField = *field;
     }
     else
     {
       //Add it, because it's not there already:
-      vecFields.push_back(field);
+      vecFields.push_back( sharedptr<Field>(field->clone()) );
     }
 
     pDoc->set_table_fields(m_strTableName, vecFields);
 
     //Update field names where they are used in relationships or on layouts:
-    if(field_name_old != field.get_name())
+    if(field_name_old != field->get_name())
     {
-      pDoc->change_field_name(m_strTableName, field_name_old, field.get_name());
+      pDoc->change_field_name(m_strTableName, field_name_old, field->get_name());
     }
   }
 
@@ -396,7 +398,7 @@ void Box_DB_Table_Definition::change_definition(const Field& fieldOld, Field fie
   //fill_from_database(); //We should not change the database definition in a cell renderer signal handler.
 
   //Select the same field again:
-  m_AddDel.select_item(field.get_name(), m_colName, false);
+  m_AddDel.select_item(field->get_name(), m_colName, false);
 }
 
 void Box_DB_Table_Definition::fill_fields()
@@ -404,9 +406,9 @@ void Box_DB_Table_Definition::fill_fields()
   m_vecFields = get_fields_for_table(m_strTableName);
 }
 
-void  Box_DB_Table_Definition::postgres_add_column(const Field& field, bool not_extras)
+void  Box_DB_Table_Definition::postgres_add_column(const sharedptr<const Field>& field, bool not_extras)
 {
-  bool bTest = Query_execute(  "ALTER TABLE " + m_strTableName + " ADD " + field.get_name() + " " +  field.get_sql_type() );
+  bool bTest = Query_execute(  "ALTER TABLE " + m_strTableName + " ADD " + field->get_name() + " " +  field->get_sql_type() );
   if(bTest)
   {
     if(not_extras)
@@ -417,10 +419,10 @@ void  Box_DB_Table_Definition::postgres_add_column(const Field& field, bool not_
   }
 }
 
-void  Box_DB_Table_Definition::postgres_change_column(const Field& field_old, const Field& field)
+void  Box_DB_Table_Definition::postgres_change_column(const sharedptr<const Field>& field_old, const sharedptr<const Field>& field)
 {
-  Gnome::Gda::FieldAttributes field_info = field.get_field_info();
-  Gnome::Gda::FieldAttributes field_info_old = field_old.get_field_info();
+  const Gnome::Gda::FieldAttributes field_info = field->get_field_info();
+  const Gnome::Gda::FieldAttributes field_info_old = field_old->get_field_info();
 
   //If the underlying data type has changed:
   if( field_info.get_gdatype() != field_info_old.get_gdatype() )
@@ -434,7 +436,7 @@ void  Box_DB_Table_Definition::postgres_change_column(const Field& field_old, co
   }
 }
 
-void  Box_DB_Table_Definition::postgres_change_column_type(const Field& field_old, const Field& field)
+void  Box_DB_Table_Definition::postgres_change_column_type(const sharedptr<const Field>& field_old, const sharedptr<const Field>& field)
 {
   sharedptr<SharedConnection> sharedconnection = connect_to_server();
   if(sharedconnection)
@@ -444,7 +446,7 @@ void  Box_DB_Table_Definition::postgres_change_column_type(const Field& field_ol
     bool new_column_created = false;
 
     //If the datatype has changed:
-    if(field.get_field_info().get_gdatype() != field_old.get_field_info().get_gdatype())
+    if(field->get_field_info().get_gdatype() != field_old->get_field_info().get_gdatype())
     {
       //We have to create a new table, and move the data across:
       //See http://www.postgresql.org/docs/faqs/FAQ.html#4.4
@@ -461,13 +463,13 @@ void  Box_DB_Table_Definition::postgres_change_column_type(const Field& field_ol
         //TODO: Warn about a delay, and possible loss of precision, before actually doing this.
         //TODO: Try to use a unique name for the temp column:
 
-        Field fieldTemp = field;
-        fieldTemp.set_name("glom_temp_column");
+        sharedptr<Field> fieldTemp = sharedptr<Field>(field->clone());
+        fieldTemp->set_name("glom_temp_column");
         postgres_add_column(fieldTemp); //This might also involves several commands.
 
-        
+
         bool conversion_failed = false;
-        if(Field::get_conversion_possible(field_old.get_glom_type(), field.get_glom_type()))
+        if(Field::get_conversion_possible(field_old->get_glom_type(), field->get_glom_type()))
         {
           //TODO: postgres seems to give an error if the data cannot be converted (for instance if the text is not a numeric digit when converting to numeric) instead of using 0.
           /*
@@ -478,46 +480,46 @@ void  Box_DB_Table_Definition::postgres_change_column_type(const Field& field_ol
           WHERE _aaa <> '     ';  
           */
           Glib::ustring conversion_command;
-          switch(field.get_glom_type())
+          switch(field->get_glom_type())
           {
             case Field::TYPE_BOOLEAN: //CAST does not work if the destination type is numeric.
             {
-              conversion_command = "FALSE"; //TODO: Find a way to convert: "to_number( " + field_old.get_name() + ", '999999999.99' )";
+              conversion_command = "FALSE"; //TODO: Find a way to convert: "to_number( " + field_old->get_name() + ", '999999999.99' )";
               break;
             }
             case Field::TYPE_NUMERIC: //CAST does not work if the destination type is numeric.
             {
-              conversion_command = "to_number( " + field_old.get_name() + ", '999999999.99' )";
+              conversion_command = "to_number( " + field_old->get_name() + ", '999999999.99' )";
               break;
             }
             case Field::TYPE_DATE: //CAST does not work if the destination type is numeric.
             {
-              conversion_command = "to_date( " + field_old.get_name() + ", 'YYYYMMDD' )"; //TODO: standardise date storage format.
+              conversion_command = "to_date( " + field_old->get_name() + ", 'YYYYMMDD' )"; //TODO: standardise date storage format.
               break;
             }
             case Field::TYPE_TIME: //CAST does not work if the destination type is numeric.
             {
-              conversion_command = "to_timestamp( " + field_old.get_name() + ", 'HHMMSS' )";  //TODO: standardise time storage format.
+              conversion_command = "to_timestamp( " + field_old->get_name() + ", 'HHMMSS' )";  //TODO: standardise time storage format.
               break;
             }
             default:
             {
-              conversion_command = "CAST(" +  field_old.get_name() + " AS " + field.get_sql_type() + ")";
+              conversion_command = "CAST(" +  field_old->get_name() + " AS " + field->get_sql_type() + ")";
               break;
             }
           }
 
-          Glib::RefPtr<Gnome::Gda::DataModel> datamodel = Query_execute( "UPDATE " + m_strTableName + " SET  " + fieldTemp.get_name() + " = " + conversion_command );  //TODO: Not full type details.
+          Glib::RefPtr<Gnome::Gda::DataModel> datamodel = Query_execute( "UPDATE " + m_strTableName + " SET  " + fieldTemp->get_name() + " = " + conversion_command );  //TODO: Not full type details.
           if(!datamodel)
             conversion_failed = true;
         }
 
         if(!conversion_failed)
         {
-          Glib::RefPtr<Gnome::Gda::DataModel> datamodel = Query_execute( "ALTER TABLE " + m_strTableName + " DROP COLUMN " +  field_old.get_name() );
+          Glib::RefPtr<Gnome::Gda::DataModel> datamodel = Query_execute( "ALTER TABLE " + m_strTableName + " DROP COLUMN " +  field_old->get_name() );
           if(datamodel)
           {
-            datamodel = Query_execute( "ALTER TABLE " + m_strTableName + " RENAME COLUMN " + fieldTemp.get_name() + " TO " + field.get_name() );
+            datamodel = Query_execute( "ALTER TABLE " + m_strTableName + " RENAME COLUMN " + fieldTemp->get_name() + " TO " + field->get_name() );
             if(datamodel)
             {
               bool test = gda_connection->commit_transaction(transaction);
@@ -539,14 +541,14 @@ void  Box_DB_Table_Definition::postgres_change_column_type(const Field& field_ol
 }
 
 
-void Box_DB_Table_Definition::postgres_change_column_extras(const Field& field_old, const Field& field, bool set_anyway)
+void Box_DB_Table_Definition::postgres_change_column_extras(const sharedptr<const Field>& field_old, const sharedptr<const Field>& field, bool set_anyway)
 {
-  //Gnome::Gda::FieldAttributes field_info = field.get_field_info();
-  //Gnome::Gda::FieldAttributes field_info_old = field_old.get_field_info();
+  //Gnome::Gda::FieldAttributes field_info = field->get_field_info();
+  //Gnome::Gda::FieldAttributes field_info_old = field_old->get_field_info();
 
-  if(field.get_name() != field_old.get_name())
+  if(field->get_name() != field_old->get_name())
   {
-     Glib::RefPtr<Gnome::Gda::DataModel>  datamodel = Query_execute( "ALTER TABLE " + m_strTableName + " RENAME COLUMN " + field_old.get_name() + " TO " + field.get_name() );
+     Glib::RefPtr<Gnome::Gda::DataModel>  datamodel = Query_execute( "ALTER TABLE " + m_strTableName + " RENAME COLUMN " + field_old->get_name() + " TO " + field->get_name() );
      if(!datamodel)
      {
        handle_error();
@@ -554,14 +556,14 @@ void Box_DB_Table_Definition::postgres_change_column_extras(const Field& field_o
      }
   }
 
-  if(set_anyway || (field.get_primary_key() != field_old.get_primary_key()))
+  if(set_anyway || (field->get_primary_key() != field_old->get_primary_key()))
   {
     //TODO: Check that there is only one primary key.
     Glib::ustring add_or_drop = "ADD";
-    if(field_old.get_primary_key() == false)
+    if(field_old->get_primary_key() == false)
       add_or_drop = "DROP";
 
-    Glib::RefPtr<Gnome::Gda::DataModel>  datamodel = Query_execute( "ALTER TABLE " + m_strTableName + " " + add_or_drop + " PRIMARY KEY (" + field.get_name() + ")");
+    Glib::RefPtr<Gnome::Gda::DataModel>  datamodel = Query_execute( "ALTER TABLE " + m_strTableName + " " + add_or_drop + " PRIMARY KEY (" + field->get_name() + ")");
     if(!datamodel)
     {
       handle_error();
@@ -569,9 +571,9 @@ void Box_DB_Table_Definition::postgres_change_column_extras(const Field& field_o
     }
   }
 
-  if( !field.get_primary_key() ) //Postgres automatically makes primary keys unique, so we do not need to do that separately if we have already made it a primary key
+  if( !field->get_primary_key() ) //Postgres automatically makes primary keys unique, so we do not need to do that separately if we have already made it a primary key
   {
-    if(set_anyway || (field.get_unique_key() != field_old.get_unique_key()))
+    if(set_anyway || (field->get_unique_key() != field_old->get_unique_key()))
     {
        /* TODO: Is there an easier way than adding an index manually?
        Glib::RefPtr<Gnome::Gda::DataModel>  datamodel = Query_execute( "ALTER TABLE " + m_strTableName + " RENAME COLUMN " + field_info_old.get_name() + " TO " + field_info.get_name() );
@@ -583,14 +585,14 @@ void Box_DB_Table_Definition::postgres_change_column_extras(const Field& field_o
        */
     }
 
-    Gnome::Gda::Value default_value = field.get_default_value();
-    Gnome::Gda::Value default_value_old = field_old.get_default_value();
+    Gnome::Gda::Value default_value = field->get_default_value();
+    Gnome::Gda::Value default_value_old = field_old->get_default_value();
 
-    if(!field.get_auto_increment()) //Postgres auto-increment fields have special code as their default values.
+    if(!field->get_auto_increment()) //Postgres auto-increment fields have special code as their default values.
     {
       if(set_anyway || (default_value != default_value_old))
       {
-        Glib::RefPtr<Gnome::Gda::DataModel> datamodel = Query_execute( "ALTER TABLE " + m_strTableName + " ALTER COLUMN "+ field.get_name() + " SET DEFAULT " + field.sql(field.get_default_value()) );
+        Glib::RefPtr<Gnome::Gda::DataModel> datamodel = Query_execute( "ALTER TABLE " + m_strTableName + " ALTER COLUMN "+ field->get_name() + " SET DEFAULT " + field->sql(field->get_default_value()) );
         if(!datamodel)
         {
           handle_error();
@@ -609,10 +611,10 @@ void Box_DB_Table_Definition::postgres_change_column_extras(const Field& field_o
  
    /*
     //If the not-nullness has changed:
-    if( set_anyway ||  (field.get_field_info().get_allow_null() != field_old.get_field_info().get_allow_null()) )
+    if( set_anyway ||  (field->get_field_info().get_allow_null() != field_old->get_field_info().get_allow_null()) )
     {
-      Glib::ustring nullness = (field.get_field_info().get_allow_null() ? "NULL" : "NOT NULL");
-      Query_execute(  "ALTER TABLE " + m_strTableName + " ALTER COLUMN " + field.get_name() + "  SET " + nullness);
+      Glib::ustring nullness = (field->get_field_info().get_allow_null() ? "NULL" : "NOT NULL");
+      Query_execute(  "ALTER TABLE " + m_strTableName + " ALTER COLUMN " + field->get_name() + "  SET " + nullness);
     }
   */ 
 }

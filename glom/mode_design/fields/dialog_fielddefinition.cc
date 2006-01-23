@@ -103,34 +103,34 @@ Dialog_FieldDefinition::~Dialog_FieldDefinition()
   remove_view(m_box_formatting);
 }
 
-void Dialog_FieldDefinition::set_field(const Field& field, const Glib::ustring& table_name)
+void Dialog_FieldDefinition::set_field(const sharedptr<const Field>& field, const Glib::ustring& table_name)
 {
   set_blocked();
 
-  m_Field = field; //Remember it so we save any details that are not in our UI.
+  m_Field = sharedptr<Field>(field->clone()); //Remember it so we save any details that are not in our UI.
   m_table_name = table_name;  //Used for lookup combo boxes.
 
   //Set the Widgets from the field info:
-  //const Gnome::Gda::FieldAttributes& fieldInfo = field.get_field_info();
+  //const Gnome::Gda::FieldAttributes& fieldInfo = field->get_field_info();
 
-  m_pEntry_Name->set_text(field.get_name());
-  m_pCombo_Type->set_field_type( field.get_glom_type() );
+  m_pEntry_Name->set_text(field->get_name());
+  m_pCombo_Type->set_field_type( field->get_glom_type() );
 
-  m_pCheck_Unique->set_active(field.get_unique_key());
-  m_pCheck_PrimaryKey->set_active(field.get_primary_key());
-  m_pCheck_AutoIncrement->set_active(field.get_auto_increment());
+  m_pCheck_Unique->set_active(field->get_unique_key());
+  m_pCheck_PrimaryKey->set_active(field->get_primary_key());
+  m_pCheck_AutoIncrement->set_active(field->get_auto_increment());
 
   //Glom-specific details:
 
   //Default value
   bool disable_default_value = false;
-  if(field.get_auto_increment()) //Ignore default_values for auto_increment fields - it's just some obscure postgres code.
+  if(field->get_auto_increment()) //Ignore default_values for auto_increment fields - it's just some obscure postgres code.
     disable_default_value = true;
 
   //Default value: simple:
   Gnome::Gda::Value default_value;
   if(!disable_default_value)
-    default_value = m_Field.get_default_value();
+    default_value = m_Field->get_default_value();
 
   //Create an appropriate DataWidget for the default value:
   if(m_pDataWidget_DefaultValueSimple)
@@ -139,9 +139,13 @@ void Dialog_FieldDefinition::set_field(const Field& field, const Glib::ustring& 
     m_pDataWidget_DefaultValueSimple = 0;
   }
 
+  //We use a regular DataWidget for the default value, so we can reuse its functionality,
+  //but it's not a real field - hence the special title.
   LayoutItem_Field layout_item;
-  layout_item.m_field = m_Field;
-  layout_item.m_field.set_title(_("Default Value"));
+  sharedptr<Field> field_default_value = sharedptr<Field>(m_Field->clone());
+  field_default_value->set_name("glom_temp_default_value");
+  field_default_value->set_title(_("Default Value"));
+  layout_item.set_full_field_details(field_default_value);
   m_pDataWidget_DefaultValueSimple = Gtk::manage( new DataWidget(layout_item, "", get_document()) );
   on_foreach_connect(*m_pDataWidget_DefaultValueSimple);
 
@@ -155,7 +159,7 @@ void Dialog_FieldDefinition::set_field(const Field& field, const Glib::ustring& 
 
   //Default value: lookup:
 
-  m_pCheck_Lookup->set_active(m_Field.get_is_lookup());
+  m_pCheck_Lookup->set_active(m_Field->get_is_lookup());
   on_check_lookup_toggled();
 
   //Fill the lookup relationships combo:
@@ -173,27 +177,27 @@ void Dialog_FieldDefinition::set_field(const Field& field, const Glib::ustring& 
 
   Glib::ustring lookup_relationship_name;
   if(!disable_default_value)
-    lookup_relationship_name = m_Field.get_lookup_relationship();
+    lookup_relationship_name = m_Field->get_lookup_relationship();
   m_pCombo_LookupRelationship->set_active_text(lookup_relationship_name);
   on_combo_lookup_relationship_changed(); //Put the correct list of fields in the fields combo.
 
   Glib::ustring lookup_field_name;
   if(!disable_default_value)
-    lookup_field_name = m_Field.get_lookup_field();
+    lookup_field_name = m_Field->get_lookup_field();
   m_pCombo_LookupField->set_active_text(lookup_field_name);
 
 
   //Calculation:
-  const Glib::ustring calculation = field.get_calculation();
+  const Glib::ustring calculation = field->get_calculation();
   m_pCheck_Calculate->set_active(!calculation.empty());
   on_check_lookup_toggled();
 
   m_pTextView_Calculation->get_buffer()->set_text(calculation);
 
-  m_pEntry_Title->set_text(field.get_title());
+  m_pEntry_Title->set_text(field->get_title());
 
   //Formatting:
-  m_box_formatting->set_formatting(field.m_default_formatting, m_table_name, field);
+  m_box_formatting->set_formatting(field->m_default_formatting, m_table_name, field);
 
   set_blocked(false);
 
@@ -201,13 +205,13 @@ void Dialog_FieldDefinition::set_field(const Field& field, const Glib::ustring& 
   Dialog_Properties::set_modified(false);
 }
 
-Field Dialog_FieldDefinition::get_field() const
+sharedptr<Field> Dialog_FieldDefinition::get_field() const
 {
-  Field field = m_Field; //Start with the old details, to preserve anything that is not in our UI.
+  sharedptr<Field> field = sharedptr<Field>(m_Field->clone()); //Start with the old details, to preserve anything that is not in our UI.
 
   //Get the field info from the widgets:
 
-  Gnome::Gda::FieldAttributes fieldInfo = field.get_field_info(); //Preserve previous information.
+  Gnome::Gda::FieldAttributes fieldInfo = field->get_field_info(); //Preserve previous information.
 
   fieldInfo.set_name(m_pEntry_Name->get_text());
 
@@ -228,28 +232,28 @@ Field Dialog_FieldDefinition::get_field() const
   Glib::ustring relationship;
   if(is_lookup)
     relationship = m_pCombo_LookupRelationship->get_active_text();
-  field.set_lookup_relationship(relationship);
+  field->set_lookup_relationship(relationship);
 
   Glib::ustring lookup_field;
   if(is_lookup)
     lookup_field = m_pCombo_LookupField->get_active_text();
-  field.set_lookup_field(lookup_field);
+  field->set_lookup_field(lookup_field);
 
 
   //Calculation:
   if(m_pCheck_Calculate)
-    field.set_calculation(m_pTextView_Calculation->get_buffer()->get_text());
+    field->set_calculation(m_pTextView_Calculation->get_buffer()->get_text());
 
   Gnome::Gda::FieldAttributes field_info_copy = fieldInfo;
 
-  field.set_field_info(fieldInfo);
+  field->set_field_info(fieldInfo);
 
   //Glom-specific details:
 
-  field.set_title(m_pEntry_Title->get_text());
+  field->set_title(m_pEntry_Title->get_text());
 
   //Formatting:
-  m_box_formatting->get_formatting(field.m_default_formatting);
+  m_box_formatting->get_formatting(field->m_default_formatting);
 
   return field;
 }
@@ -334,7 +338,7 @@ void Dialog_FieldDefinition::on_combo_lookup_relationship_changed()
           type_vecFields fields_in_to_table = get_fields_for_table(to_table);
           for(type_vecFields::iterator iter = fields_in_to_table.begin(); iter != fields_in_to_table.end(); ++iter)
           {
-            m_pCombo_LookupField->append_text(iter->get_name());
+            m_pCombo_LookupField->append_text((*iter)->get_name());
           }
         }
       }
@@ -355,13 +359,13 @@ void Dialog_FieldDefinition::on_button_edit_calculation()
     {
       add_view(dialog); //Give it access to the document.
 
-      m_Field.set_calculation( m_pTextView_Calculation->get_buffer()->get_text() );
+      m_Field->set_calculation( m_pTextView_Calculation->get_buffer()->get_text() );
       dialog->set_field(m_Field, m_table_name);
       //TODO: dialog.set_transient_for(*get_app_window());
       int response = dialog->run();
       if(response == Gtk::RESPONSE_OK)
       {
-        m_pTextView_Calculation->get_buffer()->set_text( dialog->get_field().get_calculation() );
+        m_pTextView_Calculation->get_buffer()->set_text( dialog->get_field()->get_calculation() );
       }
 
       remove_view(dialog);

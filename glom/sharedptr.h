@@ -46,8 +46,29 @@ public:
   ///Share ownership
   sharedptr(const sharedptr& src);
 
+  /** Swap the contents of two sharedptr<>.
+   * This method swaps the internal pointers.  This can be
+   * done safely without involving a reference/unreference cycle and is
+   * therefore highly efficient.
+   */
+  inline void swap(sharedptr<T_obj>& other);
+
+  /** Copy constructor (from different, but castable type).
+   *
+   * Increments the reference count.
+   */
+  template <class T_CastFrom>
+  inline sharedptr(const sharedptr<T_CastFrom>& src);
+
   ///Share ownership
   sharedptr& operator=(const sharedptr& src);
+
+  /** Copy from different, but castable type).
+   *
+   * Increments the reference count.
+   */
+  template <class T_CastFrom>
+  inline sharedptr<T_obj>& operator=(const sharedptr<T_CastFrom>& src);
 
   virtual ~sharedptr();
 
@@ -70,7 +91,7 @@ public:
    */
   inline T_obj* operator->() const;
 
-  /** Test whether the RefPtr<> points to any underlying instance.
+  /** Test whether the sharedptr<> points to any underlying instance.
    *
    * Mimics usage of ordinary pointers:
    * @code
@@ -86,6 +107,9 @@ public:
   ///Get the underlying instance:
   inline const T_obj* obj() const;
 
+  ///This is for internal use. You never need to use it.
+  inline size_type* _get_refcount() const
+  { return m_pRefCount; }
 
 protected:
   inline void ref();
@@ -93,7 +117,7 @@ protected:
 
   void init();
 
-  size_type* m_pRefCount; //Shared between instances, by copying.
+  mutable size_type* m_pRefCount; //Shared between instances, by copying.
   T_obj* m_pobj; //The underlying instance.
 };
 
@@ -119,28 +143,54 @@ sharedptr<T_obj>::sharedptr(const sharedptr<T_obj>& src)
   ref();
 }
 
+// The templated ctor allows copy construction from any object that's
+// castable.  Thus, it does downcasts:
+//   base_ref = derived_ref
+template <class T_obj>
+  template <class T_CastFrom>
+inline
+sharedptr<T_obj>::sharedptr(const sharedptr<T_CastFrom>& src)
+:
+  // A different sharedptr<> will not allow us access to pCppObject_.  We need
+  // to add a get_underlying() for this, but that would encourage incorrect
+  // use, so we use the less well-known operator->() accessor:
+  m_pRefCount(src._get_refcount()), m_pobj(src.operator->())
+{
+  if(m_pobj)
+    ref();
+}
+
+template <class T_obj> inline
+void sharedptr<T_obj>::swap(sharedptr<T_obj>& other)
+{
+  T_obj *const obj_temp = m_pobj;
+  size_type* const count_temp = m_pRefCount;
+
+  m_pobj = other.m_pobj;
+  m_pRefCount = other.m_pRefCount;
+
+  other.m_pobj = obj_temp;
+  other.m_pRefCount = count_temp;
+}
+
 template< typename T_obj>
 sharedptr<T_obj>& sharedptr<T_obj>::operator=(const sharedptr<T_obj>& src)
 {
-  //std::cout << "sharedptr& operator=(const sharedptr& src)" << std::endl;
-  if(&src != this)
-  {
-    //Unref any existing stuff.
-    //operator= can never run before a constructor, so these values will be initd already.
-    if(m_pobj) //The if() might not be required.
-    {
-      unref(); //Could cause a deallocation.
-    }
+ sharedptr<T_obj> temp(src); //Increases ref
+ this->swap(temp); //temp forgets everything and gives it to this.
+ return *this;
+}
 
-    //Copy:
-    m_pobj = src.m_pobj;
-
-    m_pRefCount = src.m_pRefCount;
-    ref();
-  }
-
+template <class T_obj>
+  template <class T_CastFrom>
+inline
+sharedptr<T_obj>& sharedptr<T_obj>::operator=(const sharedptr<T_CastFrom>& src)
+{
+  sharedptr<T_obj> temp(src); //Increases ref
+  this->swap(temp); //temp forgets everything and gives it to this.
   return *this;
 }
+
 
 template< typename T_obj>
 sharedptr<T_obj>::~sharedptr()
@@ -151,7 +201,8 @@ sharedptr<T_obj>::~sharedptr()
 template< typename T_obj>
 void sharedptr<T_obj>::clear()
 {
-  init();
+  sharedptr<T_obj> temp; // swap with an empty sharedptr<> to clear *this
+  this->swap(temp);
 }
 
 template< typename T_obj>

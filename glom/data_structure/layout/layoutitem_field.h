@@ -17,7 +17,7 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
- 
+
 #ifndef GLOM_DATASTRUCTURE_LAYOUTITEM_FIELD_H
 #define GLOM_DATASTRUCTURE_LAYOUTITEM_FIELD_H
 
@@ -57,8 +57,13 @@ public:
 
   virtual Glib::ustring get_part_type_name() const;
 
-  //This is filled in by looking at the database structure:
-  Field m_field;
+  void set_full_field_details(const sharedptr<const Field>& field);
+  void set_full_field_details_empty();
+  sharedptr<const Field> get_full_field_details() const;
+
+  ///Convenience function, to avoid use of get_full_field_details().
+  Field::glom_field_type get_glom_type() const;
+
   //TODO: This might occasionally be different on different layouts: Glib::ustring m_title;
 
 
@@ -84,6 +89,9 @@ public:
   const FieldFormatting& get_formatting_used() const;
 
 protected:
+
+  //This is filled in by looking at the database structure:
+  sharedptr<Field> m_field;
 
   //Glib::ustring m_relationship_name; //bool m_related;
   bool m_hidden;

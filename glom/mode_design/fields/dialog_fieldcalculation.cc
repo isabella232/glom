@@ -47,14 +47,14 @@ Dialog_FieldCalculation::~Dialog_FieldCalculation()
 {
 }
 
-void Dialog_FieldCalculation::set_field(const Field& field, const Glib::ustring& table_name)
+void Dialog_FieldCalculation::set_field(const sharedptr<const Field>& field, const Glib::ustring& table_name)
 {
   //set_blocked();
 
-  m_field = field; //Remember it so we save any details that are not in our UI.
+  m_field = sharedptr<Field>(field->clone()); //Remember it so we save any details that are not in our UI.
   m_table_name = table_name;  //Used for lookup combo boxes.
 
-  m_text_view->get_buffer()->set_text( field.get_calculation() );
+  m_text_view->get_buffer()->set_text( field->get_calculation() );
 
   //set_blocked(false);
 
@@ -62,11 +62,11 @@ void Dialog_FieldCalculation::set_field(const Field& field, const Glib::ustring&
   //Dialog_Properties::set_modified(false);
 }
 
-Field Dialog_FieldCalculation::get_field() const
+sharedptr<Field> Dialog_FieldCalculation::get_field() const
 {
-  Field field = m_field; //Start with the old details, to preserve anything that is not in our UI.
+  sharedptr<Field> field = sharedptr<Field>(m_field->clone()); //Start with the old details, to preserve anything that is not in our UI.
 
-  field.set_calculation( m_text_view->get_buffer()->get_text() );
+  field->set_calculation( m_text_view->get_buffer()->get_text() );
 
   return field;
 }
@@ -83,8 +83,9 @@ void Dialog_FieldCalculation::on_button_test()
     const Document_Glom::type_vecFields fields = document->get_table_fields(m_table_name);
     for(Document_Glom::type_vecFields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
     {
-      Gnome::Gda::Value example_value = GlomConversions::get_example_value(iter->get_glom_type());
-      field_values[iter->get_name()] = example_value;
+      const sharedptr<const Field> field = *iter;
+      const Gnome::Gda::Value example_value = GlomConversions::get_example_value(field->get_glom_type());
+      field_values[field->get_name()] = example_value;
     }
   }
 

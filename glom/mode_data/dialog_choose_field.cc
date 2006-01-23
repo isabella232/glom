@@ -137,9 +137,11 @@ void Dialog_ChooseField::set_document(Document_Glom* document, const Glib::ustri
     {
       Gtk::TreeModel::iterator iterRow = m_model->append();
       Gtk::TreeModel::Row row = *iterRow;
-      row[m_ColumnsFields.m_col_name] = iter->get_name();
-      row[m_ColumnsFields.m_col_title] = iter->get_title();
-      row[m_ColumnsFields.m_col_field] = *iter;
+
+      sharedptr<Field> field = *iter;
+      row[m_ColumnsFields.m_col_name] = field->get_name();
+      row[m_ColumnsFields.m_col_title] = field->get_title();
+      row[m_ColumnsFields.m_col_field] = field;
     }
   }
 }
@@ -193,7 +195,8 @@ bool Dialog_ChooseField::get_field_chosen(LayoutItem_Field& field) const
     {
       Gtk::TreeModel::Row row = *iter;
       field.set_name(row[m_ColumnsFields.m_col_name]);
-      field.m_field = row[m_ColumnsFields.m_col_field];
+      sharedptr<Field> field_details = row[m_ColumnsFields.m_col_field];
+      field.set_full_field_details(field_details);
 
       return true;
     }
@@ -232,9 +235,11 @@ void Dialog_ChooseField::on_combo_relationship_changed()
     {
       Gtk::TreeModel::iterator iterRow = m_model->append();
       Gtk::TreeModel::Row row = *iterRow;
-      row[m_ColumnsFields.m_col_name] = iter->get_name();
-      row[m_ColumnsFields.m_col_title] = iter->get_title();
-      row[m_ColumnsFields.m_col_field] = *iter;
+
+      sharedptr<Field> field = *iter;
+      row[m_ColumnsFields.m_col_name] = field->get_name();
+      row[m_ColumnsFields.m_col_title] = field->get_title();
+      row[m_ColumnsFields.m_col_field] = field;
     }
 
   }

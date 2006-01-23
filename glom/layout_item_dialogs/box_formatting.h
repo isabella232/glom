@@ -41,7 +41,7 @@ public:
    * @param table_name The field's table.
    * @param The field that will have this formatting, so we know what formatting options to allow.
    */
-  virtual void set_formatting(const FieldFormatting& format, const Glib::ustring& table_name, const Field& field);
+  virtual void set_formatting(const FieldFormatting& format, const Glib::ustring& table_name, const sharedptr<const Field>& field);
   bool get_formatting(FieldFormatting& format) const;
 
 protected:
@@ -71,7 +71,7 @@ protected:
   mutable FieldFormatting m_format;
 
   Glib::ustring m_table_name;
-  Field m_field;
+  sharedptr<const Field> m_field;
 };
 
 #endif //GLOM_BOX_FORMATTING_H

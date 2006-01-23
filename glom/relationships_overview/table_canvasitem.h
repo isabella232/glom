@@ -49,18 +49,18 @@ protected:
     ModelColumns_Fields()
     { add(m_col_field); }
 
-    Gtk::TreeModelColumn<Field> m_col_field;
+    Gtk::TreeModelColumn< sharedptr<Field> > m_col_field;
   };
 
   ModelColumns_Fields m_ColumnsFields;
   Glib::RefPtr<Gtk::ListStore> m_model_fields;
-  
+
   Gnome::Canvas::Widget* m_canvas_widget;
   RelationshipsCanvasTableWidget* m_widget;
   Gtk::TreeView* m_treeview_fields;
   Gnome::Canvas::Text* m_canvas_text_title;
   Gnome::Canvas::Rect* m_canvas_rect;
-  
+
   TableInfo m_table_info;
 };
 

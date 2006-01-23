@@ -178,7 +178,7 @@ void Dialog_Layout_Details::fill_group(const Gtk::TreeModel::iterator& iter, Lay
 
         const bool editable = rowChild[m_model_items->m_columns.m_col_editable];
         field.set_editable(editable);
-        
+
         group.add_item(field);
       }
     }
@@ -213,7 +213,7 @@ void Dialog_Layout_Details::add_group(const Gtk::TreeModel::iterator& parent, co
     for(LayoutGroup::type_map_const_items::const_iterator iter = items.begin(); iter != items.end(); ++iter)
     {
       const LayoutItem* item = iter->second;
-  
+
       const LayoutItem_Portal* portal = dynamic_cast<const LayoutItem_Portal*>(item);
       if(portal) //If it is a portal
       {
@@ -239,7 +239,7 @@ void Dialog_Layout_Details::add_group(const Gtk::TreeModel::iterator& parent, co
             row[m_model_items->m_columns.m_col_field_formatting] = *field;
             row[m_model_items->m_columns.m_col_name] = field->get_name();
             row[m_model_items->m_columns.m_col_relationship] = field->m_relationship;
-  
+
             row[m_model_items->m_columns.m_col_editable] = field->get_editable();
           }
         }
@@ -487,6 +487,10 @@ void Dialog_Layout_Details::on_button_field_add()
       row[m_model_items->m_columns.m_col_name] = layout_item.get_name();
       row[m_model_items->m_columns.m_col_relationship] = layout_item.m_relationship;
       row[m_model_items->m_columns.m_col_editable] = true; //A sane default.
+
+      LayoutItem_Field field_for_formatting;
+      field_for_formatting.set_full_field_details_empty();
+      row[m_model_items->m_columns.m_col_field_formatting] = field_for_formatting; //A sane default.
       //row[m_model_items->m_columns.m_col_title] = field.get_title();
 
       //Scroll to, and select, the new row:

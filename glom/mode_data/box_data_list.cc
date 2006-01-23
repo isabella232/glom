@@ -169,9 +169,8 @@ void Box_Data_List::on_adddel_user_requested_add()
     {
       index_field_to_edit = index_primary_key;
 
-      Field fieldPrimaryKey;
-      bool test = get_field_primary_key(fieldPrimaryKey);
-      if(test && fieldPrimaryKey.get_auto_increment())
+      sharedptr<Field> fieldPrimaryKey = get_field_primary_key();
+      if(fieldPrimaryKey && fieldPrimaryKey->get_auto_increment())
       {
         //Start editing in the first cell that is not the primary key:
         if(index_primary_key == 0)
@@ -239,20 +238,20 @@ void Box_Data_List::on_adddel_user_added(const Gtk::TreeModel::iterator& row, gu
 
   Gnome::Gda::Value primary_key_value;
 
-  Field field_primary_key = m_AddDel.get_key_field();
+  sharedptr<Field> field_primary_key = m_AddDel.get_key_field();
 
   //Get the new primary key value, if one is available now:
-  if(field_primary_key.get_auto_increment())
+  if(field_primary_key->get_auto_increment())
   {
     //Auto-increment is awkward (we can't get the last-generated ID) with postgres, so we auto-generate it ourselves;
-    const Glib::ustring& strPrimaryKeyName = field_primary_key.get_name();
+    const Glib::ustring& strPrimaryKeyName = field_primary_key->get_name();
     primary_key_value = generate_next_auto_increment(m_strTableName, strPrimaryKeyName);  //TODO: return a Gnome::Gda::Value of an appropriate type.
   }
   else
   {
     //This only works when the primary key is already stored: primary_key_value = get_primary_key_value(row);
     LayoutItem_Field layout_item;
-    layout_item.m_field = field_primary_key;
+    layout_item.set_full_field_details(field_primary_key);
     primary_key_value = get_entered_field_data(layout_item);
   }
 
@@ -271,10 +270,10 @@ void Box_Data_List::on_adddel_user_added(const Gtk::TreeModel::iterator& row, gu
         //Show the primary key in the row, if the primary key is visible:
 
         //If it's an auto-increment, then get the value and show it:
-        if(field_primary_key.get_auto_increment())
+        if(field_primary_key->get_auto_increment())
         {
           LayoutItem_Field layout_item;
-          layout_item.m_field = field_primary_key;
+          layout_item.set_full_field_details(field_primary_key);
           m_AddDel.set_value(row, layout_item, primary_key_value);
         }
 
@@ -334,7 +333,7 @@ void Box_Data_List::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, 
       LayoutItem_Field layout_field = m_AddDel.get_column_field(col);
 
       Glib::ustring table_name = m_strTableName;
-      Field primary_key_field;
+      sharedptr<Field> primary_key_field;
       Gnome::Gda::Value primary_key_value;
 
       if(!layout_field.get_has_relationship_name())
@@ -358,8 +357,8 @@ void Box_Data_List::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, 
           table_name = relationship.get_to_table();
           const Glib::ustring to_field_name = relationship.get_to_field();
           //Get the key field in the other table (the table that we will change)
-          bool test = get_fields_for_table_one_field(table_name, to_field_name, primary_key_field); //TODO_Performance.
-          if(test)
+          primary_key_field = get_fields_for_table_one_field(table_name, to_field_name); //TODO_Performance.
+          if(primary_key_field)
           {
             //Get the value of the corresponding key in the current table (that identifies the record in the table that we will change)
             LayoutItem_Field layout_item;
@@ -386,10 +385,10 @@ void Box_Data_List::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, 
       //Update the field in the record (the record with this primary key):
       const Gnome::Gda::Value field_value = m_AddDel.get_value(row, layout_field);
       std::cout << "Box_Data_List::on_adddel_user_changed(): field_value = " << field_value.to_string() << std::endl;
-      //const Field& field = layout_field.m_field;
+      //const sharedptr<const Field>& field = layout_field.m_field;
       //const Glib::ustring strFieldName = layout_field.get_name();
 
-      bool bTest = set_field_value_in_database(row, layout_field, field_value, primary_key_field, primary_key_value);
+      const bool bTest = set_field_value_in_database(row, layout_field, field_value, primary_key_field, primary_key_value);
 
       //Glib::ustring strQuery = "UPDATE " + table_name;
       //strQuery += " SET " +  /* table_name + "." + postgres does not seem to like the table name here */ strFieldName + " = " + field.sql(field_value);
@@ -442,7 +441,7 @@ void Box_Data_List::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, 
 
 }
 
-void Box_Data_List::refresh_related_fields(const Gtk::TreeModel::iterator& row, const LayoutItem_Field& field_changed, const Gnome::Gda::Value& /* field_value */, const Field& primary_key, const Gnome::Gda::Value& primary_key_value)
+void Box_Data_List::refresh_related_fields(const Gtk::TreeModel::iterator& row, const LayoutItem_Field& field_changed, const Gnome::Gda::Value& /* field_value */, const sharedptr<const Field>& primary_key, const Gnome::Gda::Value& primary_key_value)
 {
   if(field_changed.get_has_relationship_name())
     return; //TODO: Handle these too.
@@ -490,7 +489,7 @@ void Box_Data_List::refresh_related_fields(const Gtk::TreeModel::iterator& row, 
   }
 }
 
-void Box_Data_List::do_lookups(const Gtk::TreeModel::iterator& row, const LayoutItem_Field& field_changed, const Gnome::Gda::Value& field_value, const Field& primary_key, const Gnome::Gda::Value& primary_key_value)
+void Box_Data_List::do_lookups(const Gtk::TreeModel::iterator& row, const LayoutItem_Field& field_changed, const Gnome::Gda::Value& field_value, const sharedptr<const Field>& primary_key, const Gnome::Gda::Value& primary_key_value)
 {
    if(field_changed.get_has_relationship_name())
     return; //TODO: Handle these too.
@@ -505,11 +504,10 @@ void Box_Data_List::do_lookups(const Gtk::TreeModel::iterator& row, const Layout
      const LayoutItem_Field& layout_Item = iter->first;
 
      const Relationship relationship = iter->second;
-     const Field& field_lookup = layout_Item.m_field;
+     const sharedptr<const Field>& field_lookup = layout_Item.get_full_field_details();
 
-     Field field_source;
-     bool test = get_fields_for_table_one_field(relationship.get_to_table(), field_lookup.get_lookup_field(), field_source);
-     if(test)
+     sharedptr<const Field> field_source = get_fields_for_table_one_field(relationship.get_to_table(), field_lookup->get_lookup_field());
+     if(field_source)
      {
        Gnome::Gda::Value value = get_lookup_value(iter->second /* relationship */,  field_source /* the field to look in to get the value */, field_value /* Value of to and from fields */);
 
@@ -640,7 +638,7 @@ Gnome::Gda::Value Box_Data_List::get_primary_key_value_first()
         return value;
     }
   }
-  
+
   return Gnome::Gda::Value();
 }
 
@@ -672,9 +670,8 @@ void Box_Data_List::create_layout()
 
     m_AddDel.set_table_name(m_strTableName);
 
-    Field field_primary_key;
-    bool test = get_field_primary_key_for_table(m_strTableName, field_primary_key);
-    if(!test)
+    sharedptr<Field> field_primary_key = get_field_primary_key_for_table(m_strTableName);
+    if(!field_primary_key)
     {
       //g_warning("Box_Data_List::create_layout(): primary key not found.");
     }
@@ -688,7 +685,7 @@ void Box_Data_List::create_layout()
       //TODO: Only add it if it is not already there.
       sharedptr<LayoutItem_Field> layout_item(new LayoutItem_Field);
       layout_item->set_hidden();
-      layout_item->m_field = m_AddDel.get_key_field();
+      layout_item->set_full_field_details(m_AddDel.get_key_field());
       m_FieldsShown.push_back(layout_item);
 
 
@@ -746,10 +743,9 @@ bool Box_Data_List::get_field_column_index(const Glib::ustring& field_name, guin
   return false; //failure.
 }
 
-bool Box_Data_List::get_field_primary_key(Field& field) const
+sharedptr<Field> Box_Data_List::get_field_primary_key() const
 {
-  field = m_AddDel.get_key_field();
-  return true;
+  return m_AddDel.get_key_field();
 }
 
 bool Box_Data_List::get_field_primary_key_index(guint& field_column) const

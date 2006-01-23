@@ -79,6 +79,8 @@ public:
   bool operator==(const Field& src) const;
   bool operator!=(const Field& src) const;
 
+  Field* clone() const;
+
   glom_field_type get_glom_type() const;
   void set_glom_type(glom_field_type fieldtype);
 

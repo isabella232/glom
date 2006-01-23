@@ -85,7 +85,7 @@ void FlowTableWithFields::add_layout_item_at_position(const LayoutItem& item, co
     add_field_at_position(*field, m_table_name, add_before);
 
     //Do not allow editing of auto-increment fields:
-    if(field->m_field.get_auto_increment())
+    if(field->get_full_field_details()->get_auto_increment())
       set_field_editable(*field, false);
     else
       set_field_editable(*field, field->get_editable_and_allowed());
@@ -283,7 +283,7 @@ void FlowTableWithFields::add_field_at_position(const LayoutItem_Field& layoutit
 
   //Expand multiline text fields to take up the maximum possible width:
   bool expand_second = false;
-  if( (layoutitem_field.m_field.get_glom_type() == Field::TYPE_TEXT) && layoutitem_field.get_formatting_used().get_text_format_multiline())
+  if( (layoutitem_field.get_glom_type() == Field::TYPE_TEXT) && layoutitem_field.get_formatting_used().get_text_format_multiline())
     expand_second = true;
 
   add(*(info.m_first), *(info.m_second), expand_second);

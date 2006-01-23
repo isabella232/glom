@@ -72,7 +72,7 @@ void Dialog_FieldLayout::set_field(const LayoutItem_Field& field, const Glib::us
   m_checkbutton_editable->set_active( field.get_editable() );
 
   m_radiobutton_custom_formatting->set_active( !field.get_formatting_use_default() );
-  m_box_formatting->set_formatting(field.m_formatting, table_name, field.m_field);
+  m_box_formatting->set_formatting(field.m_formatting, table_name, field.get_full_field_details());
 
   enforce_constraints();
 }

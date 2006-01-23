@@ -42,8 +42,8 @@ public:
   Dialog_FieldDefinition(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
   virtual ~Dialog_FieldDefinition();
 
-  virtual void set_field(const Field& field, const Glib::ustring& table_name);
-  virtual Field get_field() const;
+  virtual void set_field(const sharedptr<const Field>& field, const Glib::ustring& table_name);
+  virtual sharedptr<Field> get_field() const; //TODO_FieldShared
 
 protected:
 
@@ -85,7 +85,7 @@ protected:
   Gtk::VBox* m_box_formatting_placeholder;
   Box_Formatting* m_box_formatting;
 
-  Field m_Field;
+  sharedptr<Field> m_Field;
   Glib::ustring m_table_name;
 };
 

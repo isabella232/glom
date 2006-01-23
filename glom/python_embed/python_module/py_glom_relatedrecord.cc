@@ -170,9 +170,8 @@ RelatedRecord_tp_as_mapping_getitem(PyGlomRelatedRecord *self, PyObject *item)
 
         //Check whether the field exists in the table.
         //TODO_Performance: Do this without the useless Field information?
-        Field field;
-        bool exists = self->m_document->get_field(self->m_relationship->get_to_table(), field_name, field);
-        if(!exists)
+        sharedptr<Field> field  = self->m_document->get_field(self->m_relationship->get_to_table(), field_name);
+        if(!field)
           g_warning("RelatedRecord_tp_as_mapping_getitem: field %s not found in table %s", field_name.c_str(), self->m_relationship->get_to_table().c_str());
         else
         {
@@ -255,9 +254,8 @@ RelatedRecord_generic_aggregate(PyGlomRelatedRecord* self, PyObject *args, PyObj
 
     //Check whether the field exists in the table.
     //TODO_Performance: Do this without the useless Field information?
-    Field field;
-    bool exists = self->m_document->get_field(self->m_relationship->get_to_table(), field_name, field);
-    if(!exists)
+    sharedptr<Field> field = self->m_document->get_field(self->m_relationship->get_to_table(), field_name);
+    if(!field)
       g_warning("RelatedRecord_sum: field %s not found in table %s", field_name.c_str(), self->m_relationship->get_to_table().c_str());
     else
     {

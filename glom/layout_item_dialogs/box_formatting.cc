@@ -64,7 +64,7 @@ Box_Formatting::~Box_Formatting()
 {
 }
 
-void Box_Formatting::set_formatting(const FieldFormatting& format, const Glib::ustring& table_name, const Field& field)
+void Box_Formatting::set_formatting(const FieldFormatting& format, const Glib::ustring& table_name, const sharedptr<const Field>& field)
 {
   m_format = format;
   m_table_name = table_name;
@@ -115,7 +115,7 @@ void Box_Formatting::set_formatting(const FieldFormatting& format, const Glib::u
   for(FieldFormatting::type_list_values::const_iterator iter = list_choice_values.begin(); iter != list_choice_values.end(); ++iter)
   {
     //Display the value in the choices list as it would be displayed in the format:
-    Glib::ustring value_text = GlomConversions::get_text_for_gda_value(field.get_glom_type(), *iter, format.m_numeric_format);
+    Glib::ustring value_text = GlomConversions::get_text_for_gda_value(field->get_glom_type(), *iter, format.m_numeric_format);
     Gtk::TreeModel::iterator iter = m_adddel_choices_custom->add_item(value_text);
     m_adddel_choices_custom->set_value(iter, m_col_index_custom_choices, value_text);
   }
@@ -158,7 +158,7 @@ bool Box_Formatting::get_formatting(FieldFormatting& format) const
       if(!text.empty())
       {
         bool success = false;
-        Gnome::Gda::Value value = GlomConversions::parse_value(m_field.get_glom_type(), text, m_format.m_numeric_format, success);
+        Gnome::Gda::Value value = GlomConversions::parse_value(m_field->get_glom_type(), text, m_format.m_numeric_format, success);
 
         if(success)
           list_choice_values.push_back(value);
@@ -190,8 +190,9 @@ void Box_Formatting::on_combo_choices_relationship_changed()
     m_combo_choices_field_second->clear_text();
     for(Document_Glom::type_vecFields::const_iterator iter = vecFields.begin(); iter != vecFields.end(); ++iter)
     {
-      m_combo_choices_field->append_text(iter->get_name());
-      m_combo_choices_field_second->append_text(iter->get_name());
+      sharedptr<const Field> field = *iter;
+      m_combo_choices_field->append_text(field->get_name());
+      m_combo_choices_field_second->append_text(field->get_name());
     }
   }
 }
@@ -199,7 +200,7 @@ void Box_Formatting::on_combo_choices_relationship_changed()
 void Box_Formatting::enforce_constraints()
 {
   //Hide inappropriate UI:
-  const bool is_numeric = (m_field.get_glom_type() == Field::TYPE_NUMERIC);
+  const bool is_numeric = (m_field->get_glom_type() == Field::TYPE_NUMERIC);
   if(is_numeric)
     m_frame_numeric_format->show();
   else
@@ -207,7 +208,7 @@ void Box_Formatting::enforce_constraints()
     m_frame_numeric_format->hide();
   }
 
-  const bool is_text = (m_field.get_glom_type() == Field::TYPE_TEXT);
+  const bool is_text = (m_field->get_glom_type() == Field::TYPE_TEXT);
   if(is_text)
     m_frame_text_format->show();
   else

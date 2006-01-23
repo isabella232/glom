@@ -31,7 +31,6 @@ LayoutItem_Field::LayoutItem_Field()
 
 LayoutItem_Field::LayoutItem_Field(const LayoutItem_Field& src)
 : LayoutItem(src),
-  m_field(src.m_field),
   m_priv_view(src.m_priv_view),
   m_priv_edit(src.m_priv_edit),
   //m_table_name(src.m_table_name),
@@ -41,6 +40,9 @@ LayoutItem_Field::LayoutItem_Field(const LayoutItem_Field& src)
   m_formatting_use_default(src.m_formatting_use_default)
 {
 //g_warning("LayoutItem_Field::LayoutItem_Field: m_choices_related_relationship=%s, src.m_choices_related_relationship=%s", m_choices_related_relationship.c_str(), src.m_choices_related_relationship.c_str());
+
+  if(src.m_field)
+    m_field = sharedptr<Field>(src.m_field->clone()); //We clone it because we change the name to indicate another field, whose real details must then be retrieved. TODO_SharedField
 
 }
 
@@ -55,22 +57,34 @@ LayoutItem* LayoutItem_Field::clone() const
 
 bool LayoutItem_Field::operator==(const LayoutItem_Field& src) const
 {
-  return LayoutItem::operator==(src) &&
-    (m_field == src.m_field) &&
+  bool result = LayoutItem::operator==(src) &&
     (m_priv_view == src.m_priv_view) &&
     (m_priv_edit == src.m_priv_edit) &&
     (m_relationship == src.m_relationship) &&
     (m_hidden == src.m_hidden) &&
     (m_formatting_use_default == src.m_formatting_use_default) &&
     (m_formatting == src.m_formatting);
+
+  if(m_field && src.m_field)
+    result == result && (*m_field == *(src.m_field));
+  else
+    result = result && (m_field == src.m_field);
+
+  return result;
 }
 
-
+//Avoid using this, for performance:
 LayoutItem_Field& LayoutItem_Field::operator=(const LayoutItem_Field& src)
 {
   LayoutItem::operator=(src);
 
-  m_field = src.m_field;
+  if(src.m_field)
+   m_field = sharedptr<Field>(src.m_field->clone());
+  else
+   m_field = sharedptr<Field>();
+
+  //We clone it because we change the name to indicate another field, whose real details must then be retrieved. TODO_SharedField
+
   m_priv_view = src.m_priv_view;
   m_priv_edit = src.m_priv_edit;
 
@@ -86,17 +100,24 @@ LayoutItem_Field& LayoutItem_Field::operator=(const LayoutItem_Field& src)
 
 void LayoutItem_Field::set_name(const Glib::ustring& name)
 {
-  m_field.set_name(name);
+  if(m_field)
+    m_field->set_name(name);
 }
 
 Glib::ustring LayoutItem_Field::get_name() const
 {
-  return m_field.get_name();
+  if(m_field)
+    return m_field->get_name();
+  else
+    return Glib::ustring();
 }
 
 Glib::ustring LayoutItem_Field::get_title_or_name() const
 {
-  return m_field.get_title_or_name();
+  if(m_field)
+    return m_field->get_title_or_name();
+  else
+    return Glib::ustring();
 }
 
 bool LayoutItem_Field::get_has_relationship_name() const
@@ -115,13 +136,17 @@ bool LayoutItem_Field::get_editable_and_allowed() const
   if(get_has_relationship_name())
     if(!(m_relationship.get_allow_edit()))
       return false; 
-    
+
   return m_editable && m_priv_edit;
 }
 
 Glib::ustring LayoutItem_Field::get_layout_display_name() const
 {
-  Glib::ustring result = m_field.get_name();
+  Glib::ustring result;
+
+  if(m_field)
+    result= m_field->get_name();
+
   if(get_has_relationship_name())
     result == get_relationship_name() + "::" + result;
 
@@ -155,10 +180,41 @@ void LayoutItem_Field::set_formatting_use_default(bool use_default)
 
 const FieldFormatting& LayoutItem_Field::get_formatting_used() const
 {
-  if(m_formatting_use_default)
-    return m_field.m_default_formatting;
+  if(m_formatting_use_default && m_field)
+    return m_field->m_default_formatting;
   else
     return m_formatting;
 }
+
+void LayoutItem_Field::set_full_field_details(const sharedptr<const Field>& field)
+{
+  if(field)
+   m_field = sharedptr<Field>(field->clone());
+  else
+   m_field = sharedptr<Field>();
+
+  //We clone it because we change the name to indicate another field, whose real details must then be retrieved. TODO_SharedField
+}
+
+void LayoutItem_Field::set_full_field_details_empty()
+{
+  m_field = sharedptr<Field>( new Field() );
+}
+
+sharedptr<const Field> LayoutItem_Field::get_full_field_details() const
+{
+  return m_field;
+}
+
+Field::glom_field_type LayoutItem_Field::get_glom_type() const
+{
+  if(m_field)
+    return m_field->get_glom_type();
+  else
+    return Field::TYPE_INVALID;
+}
+
+
+
 
 

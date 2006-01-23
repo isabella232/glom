@@ -95,8 +95,8 @@ bool Box_Data_List_Related::init_db_details(const LayoutItem_Portal& portal)
 
   m_Label.set_markup(Bakery::App_Gtk::util_bold_message( m_portal.m_relationship.get_title_or_name() ));
 
-  bool found = get_fields_for_table_one_field(m_portal.m_relationship.get_to_table(), m_portal.m_relationship.get_to_field(), m_key_field /* output parameter */);
-  if(!found)
+  m_key_field = get_fields_for_table_one_field(m_portal.m_relationship.get_to_table(), m_portal.m_relationship.get_to_field());
+  if(!m_key_field)
   {
     g_warning("Box_Data_List_Related::init_db_details(): key_field not found.");
   }
@@ -112,7 +112,7 @@ bool Box_Data_List_Related::refresh_data_from_database_with_foreign_key(const Gn
 
   if(!GlomConversions::value_is_empty(m_key_value))
   {
-    Glib::ustring strWhereClause = m_key_field.get_name() + " = " + m_key_field.sql(m_key_value);
+    const Glib::ustring strWhereClause = m_key_field->get_name() + " = " + m_key_field->sql(m_key_value);
 
     //g_warning("refresh_data_from_database(): where_clause=%s", strWhereClause.c_str());
     return Box_Data_List::refresh_data_from_database_with_where_clause(strWhereClause);
@@ -140,7 +140,7 @@ bool Box_Data_List_Related::fill_from_database()
     if(m_has_one_or_more_records) //This was set by Box_Data_List::fill_from_database().
     {
       //Is the to_field unique? If so, there can not be more than one.
-      if(m_key_field.get_unique_key()) //automatically true if it is a primary key
+      if(m_key_field->get_unique_key()) //automatically true if it is a primary key
         allow_add = false;
     }
 
@@ -180,7 +180,7 @@ void Box_Data_List_Related::on_record_added(const Gnome::Gda::Value& primary_key
     Gnome::Gda::Value key_value;
     //m_key_field is the field in this table that must match another field in the parent table.
     LayoutItem_Field layout_item;
-    layout_item.m_field = m_key_field;
+    layout_item.set_full_field_details(m_key_field);
     key_value = m_AddDel.get_value(iter, layout_item);
 
     Box_Data_List::on_record_added(key_value); //adds blank row.
@@ -199,18 +199,18 @@ void Box_Data_List_Related::on_record_added(const Gnome::Gda::Value& primary_key
     }
     else
     {
-      Field field_primary_key = m_AddDel.get_key_field();
+      sharedptr<Field> field_primary_key = m_AddDel.get_key_field();
 
       //Create the link by setting the foreign key
       Glib::ustring strQuery = "UPDATE " + m_portal.m_relationship.get_to_table();
-      strQuery += " SET " +  /* get_table_name() + "." +*/ m_key_field.get_name() + " = " + m_key_field.sql(m_key_value);
-      strQuery += " WHERE " + get_table_name() + "." + field_primary_key.get_name() + " = " + field_primary_key.sql(primary_key_value);
+      strQuery += " SET " +  /* get_table_name() + "." +*/ m_key_field->get_name() + " = " + m_key_field->sql(m_key_value);
+      strQuery += " WHERE " + get_table_name() + "." + field_primary_key->get_name() + " = " + field_primary_key->sql(primary_key_value);
       bool test = Query_execute(strQuery);
       if(test)
       {
         //Show it on the view, if it's visible:
         LayoutItem_Field layout_item;
-        layout_item.m_field = field_primary_key;
+        layout_item.set_full_field_details(field_primary_key);
 
         m_AddDel.set_value(iter, layout_item, m_key_value);
       }
@@ -224,8 +224,8 @@ Relationship Box_Data_List_Related::get_relationship() const
 {
   return m_portal.m_relationship;
 }
- 
-Field Box_Data_List_Related::get_key_field() const
+
+sharedptr<const Field> Box_Data_List_Related::get_key_field() const
 {
   return m_key_field;
 }
@@ -255,7 +255,7 @@ void Box_Data_List_Related::on_adddel_user_added(const Gtk::TreeModel::iterator&
 
   bool bAllowAdd = true;
 
-  if(m_key_field.get_unique_key() || m_key_field.get_primary_key())
+  if(m_key_field->get_unique_key() || m_key_field->get_primary_key())
   {
     if(m_AddDel.get_count() > 0) //If there is already 1 record
       bAllowAdd = false;

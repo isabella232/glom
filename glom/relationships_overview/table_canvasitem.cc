@@ -76,7 +76,7 @@ void TableCanvasItem::load_from_document()
   if(document)
   {
     m_model_fields->clear();
-    
+
     const Document_Glom::type_vecFields fields = document->get_table_fields(m_table_info.get_name());
     for(Document_Glom::type_vecFields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
     {
@@ -106,8 +106,8 @@ void TableCanvasItem::on_cell_data_name(Gtk::CellRenderer* renderer, const Gtk::
     {
       Gtk::TreeModel::Row row = *iter;
 
-      const Field& field = row[m_ColumnsFields.m_col_field];
-      renderer_text->property_text() = field.get_title_or_name();
+      sharedptr<Field> field = row[m_ColumnsFields.m_col_field];
+      renderer_text->property_text() = field->get_title_or_name();
     }
   }
 }

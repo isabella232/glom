@@ -154,8 +154,10 @@ void Window_Translations::load_from_document()
     {
       Gtk::TreeModel::iterator iterTree = m_model->append();
       Gtk::TreeModel::Row row = *iterTree;
-      row[m_columns.m_col_identifier] = iter->get_name();
-      row[m_columns.m_col_original] = iter->get_title();
+
+      sharedptr<const Field> field = *iter;
+      row[m_columns.m_col_identifier] = field->get_name();
+      row[m_columns.m_col_original] = field->get_title();
       row[m_columns.m_col_item] = ITEM_FIELD;
     }
 

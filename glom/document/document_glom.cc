@@ -370,26 +370,21 @@ void Document_Glom::set_table_fields(const Glib::ustring& table_name, const type
   }
 }
 
-bool Document_Glom::get_field(const Glib::ustring& table_name, const Glib::ustring& strFieldName, Field& fieldResult) const
+sharedptr<Field> Document_Glom::get_field(const Glib::ustring& table_name, const Glib::ustring& strFieldName) const
 {
-  fieldResult = Field(); //Initialize output arg.
-
   type_vecFields vecFields = get_table_fields(table_name);
   type_vecFields::iterator iterFind = std::find_if( vecFields.begin(), vecFields.end(), predicate_FieldHasName<Field>(strFieldName) );
   if(iterFind != vecFields.end()) //If it was found:
   {
-    fieldResult = *iterFind;
-    return true;
+    return  *iterFind; //A reference, not a copy.
   }
-  else
-  {
-    return false; //not found.
-  }
+
+  return sharedptr<Field>();
 }
 
 
 void Document_Glom::change_field_name(const Glib::ustring& table_name, const Glib::ustring& strFieldNameOld, const Glib::ustring& strFieldNameNew)
-{      
+{
   type_tables::iterator iterFindTable = m_tables.find(table_name);
   if(iterFindTable != m_tables.end())
   {
@@ -399,9 +394,9 @@ void Document_Glom::change_field_name(const Glib::ustring& table_name, const Gli
     if(iterFind != vecFields.end()) //If it was found:
     {
       //Change it:
-      iterFind->set_name(strFieldNameNew);
+      (*iterFind)->set_name(strFieldNameNew);
     }
-    
+
 
     //Find any relationships, layouts, or formatting that use this field
     //Look at each table:
@@ -432,7 +427,7 @@ void Document_Glom::change_field_name(const Glib::ustring& table_name, const Gli
       //Look at all field formatting:
       for(type_vecFields::iterator iterFields = iter->second.m_fields.begin(); iterFields != iter->second.m_fields.end(); ++iterFields)
       {
-        iterFields->m_default_formatting.change_field_name(table_name, strFieldNameOld, strFieldNameNew);
+        (*iterFields)->m_default_formatting.change_field_name(table_name, strFieldNameOld, strFieldNameNew);
       }
 
 
@@ -531,7 +526,7 @@ void Document_Glom::change_relationship_name(const Glib::ustring& table_name, co
        //Look at all field formatting:
       for(type_vecFields::iterator iterFields = iter->second.m_fields.begin(); iterFields != iter->second.m_fields.end(); ++iterFields)
       {
-        iterFields->m_default_formatting.change_relationship_name(table_name, name, name_new);
+        (*iterFields)->m_default_formatting.change_relationship_name(table_name, name, name_new);
       }
 
       const bool is_parent_table = (iter->second.m_info.get_name() == table_name);
@@ -690,9 +685,9 @@ void Document_Glom::fill_layout_field_details(const Glib::ustring& parent_table_
     if(layout_field)
     {
       if(layout_field->get_has_relationship_name()) //If it is a related field, instead of a field in parent_table_name
-        get_field(layout_field->m_relationship.get_to_table(), layout_field->get_name(), layout_field->m_field);
+        layout_field->set_full_field_details( get_field(layout_field->m_relationship.get_to_table(), layout_field->get_name()) );
       else  
-        get_field(parent_table_name, layout_field->get_name(), layout_field->m_field);
+        layout_field->set_full_field_details( get_field(parent_table_name, layout_field->get_name()) );
     }
     else
     {
@@ -764,7 +759,7 @@ Document_Glom::type_mapLayoutGroupSequence Document_Glom::get_data_layout_groups
   type_vecFields all_fields = get_table_fields(parent_table_name);
   for(type_vecFields::const_iterator iter = all_fields.begin(); iter != all_fields.end(); ++iter)
   {
-    const Glib::ustring field_name = iter->get_name();
+    const Glib::ustring field_name = (*iter)->get_name();
     if(!field_name.empty())
     {
       //See whether it's already in the result:
@@ -782,12 +777,12 @@ Document_Glom::type_mapLayoutGroupSequence Document_Glom::get_data_layout_groups
       if(!found)
       {
         LayoutItem_Field layout_item;
-        layout_item.m_field = *iter;
+        layout_item.set_full_field_details(*iter);
         //layout_item.set_table_name(child_table_name); //TODO: Allow viewing of fields through relationships.
         //layout_item.m_sequence = sequence;  add_item() will fill this.
 
         //std::cout << "  debug: add_item(): " << layout_item.get_name() << std::endl;
-        if(layout_item.m_field.get_primary_key())
+        if(layout_item.get_full_field_details()->get_primary_key())
           pOverview->add_item(layout_item);
         else
           pDetails->add_item(layout_item);
@@ -1066,8 +1061,10 @@ void Document_Glom::set_modified(bool value)
   }
 }
 
-void Document_Glom::load_after_layout_item_field_formatting(const xmlpp::Element* element, FieldFormatting& format, const Field& field)
+void Document_Glom::load_after_layout_item_field_formatting(const xmlpp::Element* element, FieldFormatting& format, const sharedptr<const Field>& field)
 {
+  g_assert((bool)field);
+
   //Numeric formatting:
   format.m_numeric_format.m_use_thousands_separator = get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_FORMAT_THOUSANDS_SEPARATOR);
   format.m_numeric_format.m_decimal_places_restricted = get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_FORMAT_DECIMAL_PLACES_RESTRICTED);
@@ -1094,7 +1091,7 @@ void Document_Glom::load_after_layout_item_field_formatting(const xmlpp::Element
         const xmlpp::Element* element = dynamic_cast<const xmlpp::Element*>(*iter);
         if(element)
         {
-          Gnome::Gda::Value value = get_node_attribute_value_as_value(element, GLOM_ATTRIBUTE_VALUE, field.get_glom_type());
+          Gnome::Gda::Value value = get_node_attribute_value_as_value(element, GLOM_ATTRIBUTE_VALUE, field->get_glom_type());
           list_values.push_back(value);
         }
       }
@@ -1122,7 +1119,9 @@ void Document_Glom::load_after_layout_item_field(const xmlpp::Element* element, 
 
   const xmlpp::Element* elementFormatting = get_node_child_named(element, GLOM_NODE_FORMAT);
   if(elementFormatting)
-    load_after_layout_item_field_formatting(elementFormatting, item.m_formatting, item.m_field);
+  {
+    load_after_layout_item_field_formatting(elementFormatting, item.m_formatting, item.get_full_field_details());
+  }
 
   item.set_formatting_use_default( get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_DATA_LAYOUT_ITEM_FIELD_USE_DEFAULT_FORMATTING) );
 }
@@ -1153,6 +1152,7 @@ void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Gl
       if(element->get_name() == GLOM_NODE_DATA_LAYOUT_ITEM)
       {
         LayoutItem_Field item;
+        item.set_full_field_details_empty();
         load_after_layout_item_field(element, item);
 
         item.m_sequence = sequence;
@@ -1161,6 +1161,7 @@ void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Gl
       else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_ITEM_FIELDSUMMARY)
       {
         LayoutItem_FieldSummary item;
+        item.set_full_field_details_empty();
         load_after_layout_item_field(element, item);
         item.set_summary_type_from_sql( get_node_attribute_value(element, GLOM_ATTRIBUTE_LAYOUT_ITEM_FIELDSUMMARY_SUMMARYTYPE) );
 
@@ -1191,10 +1192,12 @@ void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Gl
         load_after_layout_group(element, table_name, child_group);
 
         LayoutItem_Field field_groupby; //TODO: Handle related fields too.
+        field_groupby.set_full_field_details_empty();
         field_groupby.set_name( get_node_attribute_value(element, GLOM_ATTRIBUTE_REPORT_ITEM_GROUPBY_GROUPBY) );
         child_group.set_field_group_by(field_groupby);
 
         LayoutItem_Field field_sortby;
+        field_groupby.set_full_field_details_empty();
         field_sortby.set_name( get_node_attribute_value(element, GLOM_ATTRIBUTE_REPORT_ITEM_GROUPBY_SORTBY) );
         child_group.set_field_sort_by(field_sortby);
 
@@ -1285,27 +1288,27 @@ bool Document_Glom::load_after()
               const xmlpp::Element* nodeChild = dynamic_cast<xmlpp::Element*>(*iter);
               if(nodeChild)
               {
-                Field field;
+                sharedptr<Field> field(new Field());
 
                 const Glib::ustring strName = get_node_attribute_value(nodeChild, GLOM_ATTRIBUTE_NAME);
-                field.set_name( strName );
+                field->set_name( strName );
 
                 const Glib::ustring strTitle = get_node_attribute_value(nodeChild, GLOM_ATTRIBUTE_TITLE);
-                field.set_title(strTitle);
- 
-                field.set_primary_key( get_node_attribute_value_as_bool(nodeChild, GLOM_ATTRIBUTE_PRIMARY_KEY) );
-                field.set_unique_key( get_node_attribute_value_as_bool(nodeChild, GLOM_ATTRIBUTE_UNIQUE) );
-                field.set_auto_increment( get_node_attribute_value_as_bool(nodeChild, GLOM_ATTRIBUTE_AUTOINCREMENT) );
+                field->set_title(strTitle);
+
+                field->set_primary_key( get_node_attribute_value_as_bool(nodeChild, GLOM_ATTRIBUTE_PRIMARY_KEY) );
+                field->set_unique_key( get_node_attribute_value_as_bool(nodeChild, GLOM_ATTRIBUTE_UNIQUE) );
+                field->set_auto_increment( get_node_attribute_value_as_bool(nodeChild, GLOM_ATTRIBUTE_AUTOINCREMENT) );
 
                 //Get lookup information, if present.
                 xmlpp::Element* nodeLookup = get_node_child_named(nodeChild, GLOM_NODE_FIELD_LOOKUP);
                 if(nodeLookup)
                 { 
-                  field.set_lookup_relationship( get_node_attribute_value(nodeLookup, GLOM_ATTRIBUTE_RELATIONSHIP_NAME) );
-                  field.set_lookup_field( get_node_attribute_value(nodeLookup, GLOM_ATTRIBUTE_FIELD) );
+                  field->set_lookup_relationship( get_node_attribute_value(nodeLookup, GLOM_ATTRIBUTE_RELATIONSHIP_NAME) );
+                  field->set_lookup_field( get_node_attribute_value(nodeLookup, GLOM_ATTRIBUTE_FIELD) );
                 }
 
-                field.set_calculation( get_node_attribute_value(nodeChild, GLOM_ATTRIBUTE_CALCULATION) );
+                field->set_calculation( get_node_attribute_value(nodeChild, GLOM_ATTRIBUTE_CALCULATION) );
 
                 //Field Type:
                 const Glib::ustring field_type = get_node_attribute_value(nodeChild, GLOM_ATTRIBUTE_TYPE);
@@ -1321,15 +1324,15 @@ bool Document_Glom::load_after()
                   }
                 }
 
-                field.set_default_value( get_node_attribute_value_as_value(nodeChild, GLOM_ATTRIBUTE_DEFAULT_VALUE, field_type_enum) );
+                field->set_default_value( get_node_attribute_value_as_value(nodeChild, GLOM_ATTRIBUTE_DEFAULT_VALUE, field_type_enum) );
 
                 //We set this after set_field_info(), because that gets a glom type from the (not-specified) gdatype. Yes, that's strange, and should probably be more explicit.
-                field.set_glom_type( field_type_enum );
+                field->set_glom_type( field_type_enum );
 
                 //Default Formatting:
                 const xmlpp::Element* elementFormatting = get_node_child_named(nodeChild, GLOM_NODE_FORMAT);
                 if(elementFormatting)
-                  load_after_layout_item_field_formatting(elementFormatting, field.m_default_formatting, field);
+                  load_after_layout_item_field_formatting(elementFormatting, field->m_default_formatting, field);
 
                 doctableinfo.m_fields.push_back(field);
               }
@@ -1510,8 +1513,10 @@ bool Document_Glom::load_after()
   return result;
 }
 
-void Document_Glom::save_before_layout_item_field_formatting(xmlpp::Element* nodeItem, const FieldFormatting& format, const Field& field)
+void Document_Glom::save_before_layout_item_field_formatting(xmlpp::Element* nodeItem, const FieldFormatting& format, const sharedptr<const Field>& field)
 {
+  g_assert((bool)field);
+
   //Numeric format:
   set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_FORMAT_THOUSANDS_SEPARATOR,  format.m_numeric_format.m_use_thousands_separator);
   set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_FORMAT_DECIMAL_PLACES_RESTRICTED, format.m_numeric_format.m_decimal_places_restricted);
@@ -1533,7 +1538,7 @@ void Document_Glom::save_before_layout_item_field_formatting(xmlpp::Element* nod
     for(FieldFormatting::type_list_values::const_iterator iter = list_values.begin(); iter != list_values.end(); ++iter)
     {
       xmlpp::Element* childChoice = child->add_child(GLOM_NODE_FORMAT_CUSTOM_CHOICE);
-      set_node_attribute_value_as_value(childChoice, GLOM_ATTRIBUTE_VALUE, *iter, field.get_glom_type());
+      set_node_attribute_value_as_value(childChoice, GLOM_ATTRIBUTE_VALUE, *iter, field->get_glom_type());
     }
   }
 
@@ -1553,7 +1558,7 @@ void Document_Glom::save_before_layout_item_field(xmlpp::Element* nodeItem, cons
   set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_EDITABLE, field.get_editable());
 
   xmlpp::Element* elementFormat = nodeItem->add_child(GLOM_NODE_FORMAT);
-  save_before_layout_item_field_formatting(elementFormat, field.m_formatting, field.m_field);
+  save_before_layout_item_field_formatting(elementFormat, field.m_formatting, field.get_full_field_details());
 
   set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_DATA_LAYOUT_ITEM_FIELD_USE_DEFAULT_FORMATTING, field.get_formatting_use_default());
 
@@ -1694,37 +1699,37 @@ bool Document_Glom::save_before()
 
         for(type_vecFields::const_iterator iter = doctableinfo.m_fields.begin(); iter != doctableinfo.m_fields.end(); ++iter)
         {
-          const Field& field = *iter;
+          sharedptr<const Field> field = *iter;
 
           xmlpp::Element* elemField = elemFields->add_child(GLOM_NODE_FIELD);
-          set_node_attribute_value(elemField, GLOM_ATTRIBUTE_NAME, field.get_name());
-          set_node_attribute_value(elemField, GLOM_ATTRIBUTE_TITLE, field.get_title());
+          set_node_attribute_value(elemField, GLOM_ATTRIBUTE_NAME, field->get_name());
+          set_node_attribute_value(elemField, GLOM_ATTRIBUTE_TITLE, field->get_title());
 
-          set_node_attribute_value_as_bool(elemField, GLOM_ATTRIBUTE_PRIMARY_KEY, field.get_primary_key());
-          set_node_attribute_value_as_bool(elemField, GLOM_ATTRIBUTE_UNIQUE, field.get_unique_key());
-          set_node_attribute_value_as_bool(elemField, GLOM_ATTRIBUTE_AUTOINCREMENT, field.get_auto_increment());
-          set_node_attribute_value_as_value(elemField, GLOM_ATTRIBUTE_DEFAULT_VALUE, field.get_default_value(), field.get_glom_type());
+          set_node_attribute_value_as_bool(elemField, GLOM_ATTRIBUTE_PRIMARY_KEY, field->get_primary_key());
+          set_node_attribute_value_as_bool(elemField, GLOM_ATTRIBUTE_UNIQUE, field->get_unique_key());
+          set_node_attribute_value_as_bool(elemField, GLOM_ATTRIBUTE_AUTOINCREMENT, field->get_auto_increment());
+          set_node_attribute_value_as_value(elemField, GLOM_ATTRIBUTE_DEFAULT_VALUE, field->get_default_value(), field->get_glom_type());
 
-          set_node_attribute_value(elemField, GLOM_ATTRIBUTE_CALCULATION, field.get_calculation());
+          set_node_attribute_value(elemField, GLOM_ATTRIBUTE_CALCULATION, field->get_calculation());
 
           Glib::ustring field_type;
-          Field::type_map_type_names::const_iterator iterTypes = type_names.find( field.get_glom_type() );
+          Field::type_map_type_names::const_iterator iterTypes = type_names.find( field->get_glom_type() );
           if(iterTypes != type_names.end())
             field_type = iterTypes->second;
 
           set_node_attribute_value(elemField, GLOM_ATTRIBUTE_TYPE, field_type);
 
           //Add Lookup sub-node:
-          if(field.get_is_lookup())
+          if(field->get_is_lookup())
           {
             xmlpp::Element* elemFieldLookup = elemField->add_child(GLOM_NODE_FIELD_LOOKUP);
-            set_node_attribute_value(elemFieldLookup, GLOM_ATTRIBUTE_RELATIONSHIP_NAME, field.get_lookup_relationship());
-            set_node_attribute_value(elemFieldLookup, GLOM_ATTRIBUTE_FIELD, field.get_lookup_field());
+            set_node_attribute_value(elemFieldLookup, GLOM_ATTRIBUTE_RELATIONSHIP_NAME, field->get_lookup_relationship());
+            set_node_attribute_value(elemFieldLookup, GLOM_ATTRIBUTE_FIELD, field->get_lookup_field());
           }
 
           //Default Formatting:
           xmlpp::Element* elementFormat = elemField->add_child(GLOM_NODE_FORMAT);
-          save_before_layout_item_field_formatting(elementFormat, field.m_default_formatting, field);
+          save_before_layout_item_field_formatting(elementFormat, field->m_default_formatting, field);
         }
 
         //Relationships:
@@ -1968,7 +1973,7 @@ void Document_Glom::update_cached_relationships()
     //Fields (formatting):
     for(type_vecFields::iterator iterField = tableInfo.m_fields.begin(); iterField != tableInfo.m_fields.end(); ++iterField)
     {
-       update_cached_relationships(iterField->m_default_formatting, tableInfo.m_info.get_name());
+       update_cached_relationships((*iterField)->m_default_formatting, tableInfo.m_info.get_name());
     }
 
     //Layouts:
@@ -2066,20 +2071,19 @@ bool Document_Glom::get_relationship_is_to_one(const Glib::ustring& table_name, 
   bool found = get_relationship(table_name, relationship_name, relationship);
   if(found)
   {
-    Field field_to;
-    bool found = get_field(relationship.get_to_table(), relationship.get_to_field(), field_to);
-    if(found)
-      return (field_to.get_primary_key() || field_to.get_unique_key());
+    sharedptr<const Field> field_to = get_field(relationship.get_to_table(), relationship.get_to_field());
+    if(field_to)
+      return (field_to->get_primary_key() || field_to->get_unique_key());
   }
-  
+
   return false;
 }
-  
+
 bool Document_Glom::get_field_used_in_relationship_to_one(const Glib::ustring& table_name, const Glib::ustring& field_name, Relationship& relationship) const
 {
   //Initialize input parameter:
   relationship = Relationship();
-  
+
   type_tables::const_iterator iterFind = m_tables.find(table_name);
   if(iterFind != m_tables.end())
   {

@@ -145,17 +145,17 @@ Related_tp_as_mapping_getitem(PyGlomRelated *self, PyObject *item)
 
             //TODO_Performance:
             //Get the full field details so we can sqlize its value:
-            Field from_key_field;
-            bool exists = self->m_record->m_document->get_field(*(self->m_record->m_table_name), from_key, from_key_field);
-            if(exists)
+            sharedptr<Field> from_key_field;
+            from_key_field = self->m_record->m_document->get_field(*(self->m_record->m_table_name), from_key);
+            if(from_key_field)
             {
-              const Glib::ustring key_value_sqlized = from_key_field.sql(from_key_value);
+              const Glib::ustring key_value_sqlized = from_key_field->sql(from_key_value);
               PyGlomRelatedRecord_SetRelationship(pyRelatedRecord, iterFind->second, key_value_sqlized, self->m_record->m_document);
-  
+
               //Store it in the cache:
               Py_INCREF((PyObject*)pyRelatedRecord); //Dereferenced in _dealloc().
               (*(self->m_pMap_relatedrecords))[key] = pyRelatedRecord;
-  
+
               return (PyObject*)pyRelatedRecord; //TODO: pygda_value_as_pyobject(iterFind->second.gobj(), true /* copy */);
             }
           }

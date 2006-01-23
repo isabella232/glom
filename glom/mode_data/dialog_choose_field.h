@@ -43,7 +43,7 @@ public:
   virtual void set_document(Document_Glom* document, const Glib::ustring& table_name);
 
 
-  //void select_item(const Field& field);
+  //void select_item(const sharedptr<const Field>& field);
 
   bool get_field_chosen(LayoutItem_Field& field) const;
 
@@ -63,7 +63,7 @@ protected:
 
     Gtk::TreeModelColumn<Glib::ustring> m_col_name;
     Gtk::TreeModelColumn<Glib::ustring> m_col_title;
-    Gtk::TreeModelColumn<Field> m_col_field;
+    Gtk::TreeModelColumn< sharedptr<Field> > m_col_field;
   };
 
   ModelColumns_Fields m_ColumnsFields;
