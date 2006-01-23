@@ -107,7 +107,7 @@ Glib::RefPtr<Gnome::Gda::DataModel> Base_DB::Query_execute(const Glib::ustring& 
     {
       std::cout << "Debug: query string could not be converted to std::cout: " << ex.what() << std::endl;
     }
-   */
+    */
 
     result = gda_connection->execute_single_command(strQuery);
     if(!result)
@@ -310,7 +310,7 @@ Base_DB::type_vecFields Base_DB::get_fields_for_table_from_database(const Glib::
   {
     g_warning("Base_DB::get_fields_for_table_from_database(): connection failed.");
   }
-  else  
+  else
   {
     Glib::RefPtr<Gnome::Gda::Connection> connection = sharedconnection->get_gda_connection();
 
@@ -1816,7 +1816,7 @@ void Base_DB::get_table_fields_to_show_for_sequence_add_group(const Glib::ustrin
         //Get the full field information:
         const Glib::ustring relationship_name = item_field->get_relationship_name();
         Relationship relationship;
-        bool test = document->get_relationship(table_name, relationship_name, relationship);
+        const bool test = document->get_relationship(table_name, relationship_name, relationship);
         if(test)
         {
           //TODO_Performance: get_fields_for_table_one_field() is probably very inefficient

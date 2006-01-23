@@ -488,7 +488,7 @@ Glib::ustring Field::get_sql_type() const
     {
       g_warning("Field::get_sql_type(): returning unknowntype for field name=%s , glom_type=%d, gda_type=%d", get_name().c_str(), get_glom_type(), m_field_info.get_gdatype());
     }
-    
+
     return strType;
   }
 }

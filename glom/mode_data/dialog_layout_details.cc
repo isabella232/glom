@@ -489,7 +489,7 @@ void Dialog_Layout_Details::on_button_field_add()
       row[m_model_items->m_columns.m_col_editable] = true; //A sane default.
 
       LayoutItem_Field field_for_formatting;
-      field_for_formatting.set_full_field_details_empty();
+      //field_for_formatting.set_full_field_details_empty();
       row[m_model_items->m_columns.m_col_field_formatting] = field_for_formatting; //A sane default.
       //row[m_model_items->m_columns.m_col_title] = field.get_title();
 

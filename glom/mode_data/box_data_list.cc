@@ -696,6 +696,7 @@ void Box_Data_List::create_layout()
         if(m_read_only)
           field->set_editable(false);
 
+        //std::cout << "Adding field: name=" << field->get_name() << ", titleorname=" << field->get_title_or_name() << std::endl;
         m_AddDel.add_column(*field);
       }
 

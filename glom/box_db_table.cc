@@ -92,6 +92,7 @@ unsigned long Box_DB_Table::get_last_auto_increment_value(const Glib::RefPtr<Gno
 }
 
 //static:
+/*
 Box_DB_Table::type_vecFields Box_DB_Table::get_fields_for_datamodel(const Glib::RefPtr<Gnome::Gda::DataModel>& data_model)
 {
   type_vecFields result;
@@ -107,6 +108,7 @@ Box_DB_Table::type_vecFields Box_DB_Table::get_fields_for_datamodel(const Glib::
 
   return result;
 }
+*/
 
 Glib::ustring Box_DB_Table::postgres_get_field_definition_for_sql(const Gnome::Gda::FieldAttributes& field_info)
 {

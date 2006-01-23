@@ -1061,10 +1061,8 @@ void Document_Glom::set_modified(bool value)
   }
 }
 
-void Document_Glom::load_after_layout_item_field_formatting(const xmlpp::Element* element, FieldFormatting& format, const sharedptr<const Field>& field)
+void Document_Glom::load_after_layout_item_field_formatting(const xmlpp::Element* element, FieldFormatting& format, Field::glom_field_type field_type, const Glib::ustring& table_name, const Glib::ustring& field_name)
 {
-  g_assert((bool)field);
-
   //Numeric formatting:
   format.m_numeric_format.m_use_thousands_separator = get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_FORMAT_THOUSANDS_SEPARATOR);
   format.m_numeric_format.m_decimal_places_restricted = get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_FORMAT_DECIMAL_PLACES_RESTRICTED);
@@ -1091,7 +1089,17 @@ void Document_Glom::load_after_layout_item_field_formatting(const xmlpp::Element
         const xmlpp::Element* element = dynamic_cast<const xmlpp::Element*>(*iter);
         if(element)
         {
-          Gnome::Gda::Value value = get_node_attribute_value_as_value(element, GLOM_ATTRIBUTE_VALUE, field->get_glom_type());
+          if(field_type == Field::TYPE_INVALID)
+          {
+            //Discover the field type, so we can interpret the text as a value.
+            //Not all calling functions know this.
+            //TODO_Performance.
+            sharedptr<const Field> field_temp = get_field(table_name, field_name);
+            if(field_temp)
+              field_type = field_temp->get_glom_type();
+          }
+
+          const Gnome::Gda::Value value = get_node_attribute_value_as_value(element, GLOM_ATTRIBUTE_VALUE, field_type);
           list_values.push_back(value);
         }
       }
@@ -1109,9 +1117,10 @@ void Document_Glom::load_after_layout_item_field_formatting(const xmlpp::Element
 
 }
 
-void Document_Glom::load_after_layout_item_field(const xmlpp::Element* element, LayoutItem_Field& item)
+void Document_Glom::load_after_layout_item_field(const xmlpp::Element* element, const Glib::ustring& table_name, LayoutItem_Field& item)
 {
-  item.set_name( get_node_attribute_value(element, GLOM_ATTRIBUTE_NAME) );
+  const Glib::ustring name = get_node_attribute_value(element, GLOM_ATTRIBUTE_NAME);
+  item.set_name(name);
 
   item.m_relationship.set_name( get_node_attribute_value(element, GLOM_ATTRIBUTE_RELATIONSHIP_NAME) ); //Full details are updated in filled-in ().
 
@@ -1120,7 +1129,8 @@ void Document_Glom::load_after_layout_item_field(const xmlpp::Element* element, 
   const xmlpp::Element* elementFormatting = get_node_child_named(element, GLOM_NODE_FORMAT);
   if(elementFormatting)
   {
-    load_after_layout_item_field_formatting(elementFormatting, item.m_formatting, item.get_full_field_details());
+    //TODO: Provide the name of the relationship's table if there is a relationship:
+    load_after_layout_item_field_formatting(elementFormatting, item.m_formatting, item.get_glom_type(), table_name, name);
   }
 
   item.set_formatting_use_default( get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_DATA_LAYOUT_ITEM_FIELD_USE_DEFAULT_FORMATTING) );
@@ -1152,8 +1162,8 @@ void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Gl
       if(element->get_name() == GLOM_NODE_DATA_LAYOUT_ITEM)
       {
         LayoutItem_Field item;
-        item.set_full_field_details_empty();
-        load_after_layout_item_field(element, item);
+        //item.set_full_field_details_empty();
+        load_after_layout_item_field(element, table_name, item);
 
         item.m_sequence = sequence;
         group.add_item(item, sequence);
@@ -1161,8 +1171,8 @@ void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Gl
       else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_ITEM_FIELDSUMMARY)
       {
         LayoutItem_FieldSummary item;
-        item.set_full_field_details_empty();
-        load_after_layout_item_field(element, item);
+        //item.set_full_field_details_empty();
+        load_after_layout_item_field(element, table_name, item);
         item.set_summary_type_from_sql( get_node_attribute_value(element, GLOM_ATTRIBUTE_LAYOUT_ITEM_FIELDSUMMARY_SUMMARYTYPE) );
 
         item.m_sequence = sequence;
@@ -1192,12 +1202,12 @@ void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Gl
         load_after_layout_group(element, table_name, child_group);
 
         LayoutItem_Field field_groupby; //TODO: Handle related fields too.
-        field_groupby.set_full_field_details_empty();
+        //field_groupby.set_full_field_details_empty();
         field_groupby.set_name( get_node_attribute_value(element, GLOM_ATTRIBUTE_REPORT_ITEM_GROUPBY_GROUPBY) );
         child_group.set_field_group_by(field_groupby);
 
         LayoutItem_Field field_sortby;
-        field_groupby.set_full_field_details_empty();
+        //field_groupby.set_full_field_details_empty();
         field_sortby.set_name( get_node_attribute_value(element, GLOM_ATTRIBUTE_REPORT_ITEM_GROUPBY_SORTBY) );
         child_group.set_field_sort_by(field_sortby);
 
@@ -1327,12 +1337,12 @@ bool Document_Glom::load_after()
                 field->set_default_value( get_node_attribute_value_as_value(nodeChild, GLOM_ATTRIBUTE_DEFAULT_VALUE, field_type_enum) );
 
                 //We set this after set_field_info(), because that gets a glom type from the (not-specified) gdatype. Yes, that's strange, and should probably be more explicit.
-                field->set_glom_type( field_type_enum );
+                field->set_glom_type(field_type_enum);
 
                 //Default Formatting:
                 const xmlpp::Element* elementFormatting = get_node_child_named(nodeChild, GLOM_NODE_FORMAT);
                 if(elementFormatting)
-                  load_after_layout_item_field_formatting(elementFormatting, field->m_default_formatting, field);
+                  load_after_layout_item_field_formatting(elementFormatting, field->m_default_formatting, field_type_enum, table_name, strName);
 
                 doctableinfo.m_fields.push_back(field);
               }
@@ -1513,10 +1523,8 @@ bool Document_Glom::load_after()
   return result;
 }
 
-void Document_Glom::save_before_layout_item_field_formatting(xmlpp::Element* nodeItem, const FieldFormatting& format, const sharedptr<const Field>& field)
+void Document_Glom::save_before_layout_item_field_formatting(xmlpp::Element* nodeItem, const FieldFormatting& format, Field::glom_field_type field_type)
 {
-  g_assert((bool)field);
-
   //Numeric format:
   set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_FORMAT_THOUSANDS_SEPARATOR,  format.m_numeric_format.m_use_thousands_separator);
   set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_FORMAT_DECIMAL_PLACES_RESTRICTED, format.m_numeric_format.m_decimal_places_restricted);
@@ -1538,7 +1546,7 @@ void Document_Glom::save_before_layout_item_field_formatting(xmlpp::Element* nod
     for(FieldFormatting::type_list_values::const_iterator iter = list_values.begin(); iter != list_values.end(); ++iter)
     {
       xmlpp::Element* childChoice = child->add_child(GLOM_NODE_FORMAT_CUSTOM_CHOICE);
-      set_node_attribute_value_as_value(childChoice, GLOM_ATTRIBUTE_VALUE, *iter, field->get_glom_type());
+      set_node_attribute_value_as_value(childChoice, GLOM_ATTRIBUTE_VALUE, *iter, field_type);
     }
   }
 
@@ -1558,7 +1566,7 @@ void Document_Glom::save_before_layout_item_field(xmlpp::Element* nodeItem, cons
   set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_EDITABLE, field.get_editable());
 
   xmlpp::Element* elementFormat = nodeItem->add_child(GLOM_NODE_FORMAT);
-  save_before_layout_item_field_formatting(elementFormat, field.m_formatting, field.get_full_field_details());
+  save_before_layout_item_field_formatting(elementFormat, field.m_formatting, field.get_glom_type());
 
   set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_DATA_LAYOUT_ITEM_FIELD_USE_DEFAULT_FORMATTING, field.get_formatting_use_default());
 
@@ -1623,7 +1631,7 @@ void Document_Glom::save_before_layout_group(xmlpp::Element* node, const LayoutG
 
     const LayoutGroup* child_group = dynamic_cast<const LayoutGroup*>(item);
     if(child_group) //If it is a group, portal, summary, or groupby.
-    {   
+    {
       //recurse:
       save_before_layout_group(child, *child_group);
     }
@@ -1729,7 +1737,7 @@ bool Document_Glom::save_before()
 
           //Default Formatting:
           xmlpp::Element* elementFormat = elemField->add_child(GLOM_NODE_FORMAT);
-          save_before_layout_item_field_formatting(elementFormat, field->m_default_formatting, field);
+          save_before_layout_item_field_formatting(elementFormat, field->m_default_formatting, field->get_glom_type());
         }
 
         //Relationships:

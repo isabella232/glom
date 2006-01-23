@@ -1,5 +1,24 @@
 2006-01-23  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/data_structure/layout/layoutitem_field.cc:
+	* glom/data_structure/layout/layoutitem_field.h: 
+	Remove set_full_field_data_empty(). Instead, allow 
+	the field cache to be null and use m_name when 
+	there is no full data. Use a bool to mark when the 
+	cache is up-to-date, and do no try to use it when it 
+	is not up-to-date.
+	* glom/mode_data/dialog_layout_details.cc:
+	* glom/utils.cc: build_sql_select_with_where_clause(): 
+	Cope with fields with no names, in case that happens.
+	* glom/document/document_glom.cc:
+	* glom/document/document_glom.h: load_after_layout_item_field() 
+	and load_after_layout_item_field_formatting(): These functions 
+	now take the field type, and the table name that can be used to 
+	discover the field type if necessary. This is necessary in order 
+	to interperet default values and choices.
+
+2006-01-23  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/mode_design/fields/box_db_table_definition.cc: 
 	on_adddel_add(): Call on_adddel_changed() to save the 
 	guessed title into the document, even when the title is 

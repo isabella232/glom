@@ -139,6 +139,8 @@ Glib::ustring GlomUtils::build_sql_select_with_where_clause(const Glib::ustring&
 
   for(type_vecLayoutFields::const_iterator iter =  fieldsToGet.begin(); iter != fieldsToGet.end(); ++iter)
   {
+    Glib::ustring one_sql_part;
+
     sharedptr<LayoutItem_Field> layout_item = *iter;
 
     bool is_summary = false;
@@ -146,16 +148,13 @@ Glib::ustring GlomUtils::build_sql_select_with_where_clause(const Glib::ustring&
     if(fieldsummary)
       is_summary = true;
 
-    if(iter != fieldsToGet.begin())
-      sql_part_fields += ", ";
-
     //Add, for instance, "SUM(":
     if(is_summary)
-      sql_part_fields += fieldsummary->get_summary_type_sql() + "(";
+      one_sql_part += fieldsummary->get_summary_type_sql() + "(";
 
     if(!layout_item->get_has_relationship_name())
     {
-      sql_part_fields += ( table_name + "." );
+      one_sql_part += ( table_name + "." );
     }
     else
     {
@@ -174,7 +173,7 @@ Glib::ustring GlomUtils::build_sql_select_with_where_clause(const Glib::ustring&
 
         //We use relationship_name.field_name instead of related_table_name.field_name,
         //because, in the JOIN below, will specify the relationship_name as an alias for the related table name
-        sql_part_fields += ( "relationship_" + relationship_name + "." );
+        one_sql_part += ( "relationship_" + relationship_name + "." );
 
         //Add the relationship to the list:
         type_list_relationships::const_iterator iterFind = std::find_if(list_relationships.begin(), list_relationships.end(), predicate_FieldHasName<Relationship>( relationship_name ) );
@@ -183,11 +182,24 @@ Glib::ustring GlomUtils::build_sql_select_with_where_clause(const Glib::ustring&
       }
     }
 
-    sql_part_fields += layout_item->get_name();
+    const Glib::ustring name = layout_item->get_name();
+    if(!name.empty())
+    {
+      one_sql_part += name;
 
-    //Close the summary bracket if necessary.
-    if(is_summary)
-      sql_part_fields +=  ")";
+      //Close the summary bracket if necessary.
+      if(is_summary)
+        one_sql_part +=  ")";
+
+      //Append it to the big string of fields:
+      if(!one_sql_part.empty())
+      {
+        if(!sql_part_fields.empty())
+          sql_part_fields += ", ";
+
+        sql_part_fields += one_sql_part;
+      }
+    }
 
   }
 

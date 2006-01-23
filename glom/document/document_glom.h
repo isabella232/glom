@@ -235,10 +235,10 @@ protected:
   void load_after_layout_group(const xmlpp::Element* node, const Glib::ustring table_name, LayoutGroup& group);
   void save_before_layout_group(xmlpp::Element* node, const LayoutGroup& group);
 
-  void load_after_layout_item_field(const xmlpp::Element* element, LayoutItem_Field& item);
-  void load_after_layout_item_field_formatting(const xmlpp::Element* element, FieldFormatting& format, const sharedptr<const Field>& layout_item);
+  void load_after_layout_item_field(const xmlpp::Element* element, const Glib::ustring& table_name, LayoutItem_Field& item);
+  void load_after_layout_item_field_formatting(const xmlpp::Element* element, FieldFormatting& format, Field::glom_field_type field_type, const Glib::ustring& table_name, const Glib::ustring& field_name);
   void save_before_layout_item_field(xmlpp::Element* nodeItem, const LayoutItem_Field& item);
-  void save_before_layout_item_field_formatting(xmlpp::Element* nodeItem, const FieldFormatting& format, const sharedptr<const Field>& layout_item);
+  void save_before_layout_item_field_formatting(xmlpp::Element* nodeItem, const FieldFormatting& format, Field::glom_field_type field_type);
 
   void save_changes();
 

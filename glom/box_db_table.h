@@ -54,7 +54,7 @@ protected:
   unsigned long get_last_auto_increment_value(const Glib::RefPtr<Gnome::Gda::DataModel>& data_model, const Glib::ustring& field_name);
 
 
-  static type_vecFields get_fields_for_datamodel(const Glib::RefPtr<Gnome::Gda::DataModel>& data_model); 
+  //static type_vecFields get_fields_for_datamodel(const Glib::RefPtr<Gnome::Gda::DataModel>& data_model); 
   static Glib::ustring postgres_get_field_definition_for_sql(const Gnome::Gda::FieldAttributes& field_info);
 
   Glib::ustring m_strTableName;

@@ -58,7 +58,6 @@ public:
   virtual Glib::ustring get_part_type_name() const;
 
   void set_full_field_details(const sharedptr<const Field>& field);
-  void set_full_field_details_empty();
   sharedptr<const Field> get_full_field_details() const;
 
   ///Convenience function, to avoid use of get_full_field_details().
@@ -90,8 +89,9 @@ public:
 
 protected:
 
-  //This is filled in by looking at the database structure:
+  //This is just a cache, filled in by looking at the database structure:
   sharedptr<Field> m_field;
+  bool m_field_cache_valid; //Whetehr m_field is up-to-date.
 
   //Glib::ustring m_relationship_name; //bool m_related;
   bool m_hidden;

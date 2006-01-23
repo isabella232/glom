@@ -24,6 +24,7 @@
 LayoutItem_Field::LayoutItem_Field()
 : m_priv_view(false),
   m_priv_edit(false),
+  m_field_cache_valid(false),
   m_hidden(false),
   m_formatting_use_default(true)
 {
@@ -36,6 +37,7 @@ LayoutItem_Field::LayoutItem_Field(const LayoutItem_Field& src)
   //m_table_name(src.m_table_name),
   m_relationship(src.m_relationship),
   m_formatting(src.m_formatting),
+  m_field_cache_valid(src.m_field_cache_valid),
   m_hidden(src.m_hidden),
   m_formatting_use_default(src.m_formatting_use_default)
 {
@@ -63,7 +65,8 @@ bool LayoutItem_Field::operator==(const LayoutItem_Field& src) const
     (m_relationship == src.m_relationship) &&
     (m_hidden == src.m_hidden) &&
     (m_formatting_use_default == src.m_formatting_use_default) &&
-    (m_formatting == src.m_formatting);
+    (m_formatting == src.m_formatting) &&
+    (m_field_cache_valid == src.m_field_cache_valid);
 
   if(m_field && src.m_field)
     result == result && (*m_field == *(src.m_field));
@@ -83,6 +86,8 @@ LayoutItem_Field& LayoutItem_Field::operator=(const LayoutItem_Field& src)
   else
    m_field = sharedptr<Field>();
 
+  m_field_cache_valid = src.m_field_cache_valid;
+
   //We clone it because we change the name to indicate another field, whose real details must then be retrieved. TODO_SharedField
 
   m_priv_view = src.m_priv_view;
@@ -100,24 +105,23 @@ LayoutItem_Field& LayoutItem_Field::operator=(const LayoutItem_Field& src)
 
 void LayoutItem_Field::set_name(const Glib::ustring& name)
 {
-  if(m_field)
-    m_field->set_name(name);
+  if(get_name() != name)
+    m_field_cache_valid = false;
+
+  LayoutItem::set_name(name);
 }
 
 Glib::ustring LayoutItem_Field::get_name() const
 {
-  if(m_field)
-    return m_field->get_name();
-  else
-    return Glib::ustring();
+  return LayoutItem::get_name();
 }
 
 Glib::ustring LayoutItem_Field::get_title_or_name() const
 {
-  if(m_field)
+  if(m_field_cache_valid && m_field)
     return m_field->get_title_or_name();
   else
-    return Glib::ustring();
+    return get_name();
 }
 
 bool LayoutItem_Field::get_has_relationship_name() const
@@ -144,7 +148,7 @@ Glib::ustring LayoutItem_Field::get_layout_display_name() const
 {
   Glib::ustring result;
 
-  if(m_field)
+  if(m_field_cache_valid && m_field)
     result= m_field->get_name();
 
   if(get_has_relationship_name())
@@ -180,7 +184,7 @@ void LayoutItem_Field::set_formatting_use_default(bool use_default)
 
 const FieldFormatting& LayoutItem_Field::get_formatting_used() const
 {
-  if(m_formatting_use_default && m_field)
+  if(m_formatting_use_default && m_field_cache_valid && m_field)
     return m_field->m_default_formatting;
   else
     return m_formatting;
@@ -189,16 +193,19 @@ const FieldFormatting& LayoutItem_Field::get_formatting_used() const
 void LayoutItem_Field::set_full_field_details(const sharedptr<const Field>& field)
 {
   if(field)
-   m_field = sharedptr<Field>(field->clone());
+  {
+    //std::cout << "LayoutItem_Field::set_full_field_details(): field->get_title_or_name()=" << field->get_title_or_name() << std::endl;
+    m_field = sharedptr<Field>(field->clone());
+    m_field_cache_valid = true;
+  }
   else
-   m_field = sharedptr<Field>();
+  {
+    //std::cout << "LayoutItem_Field::set_full_field_details(null): previous name=" << m_name << std::endl;
+    m_field = sharedptr<Field>();
+    m_field_cache_valid = false;
+  }
 
   //We clone it because we change the name to indicate another field, whose real details must then be retrieved. TODO_SharedField
-}
-
-void LayoutItem_Field::set_full_field_details_empty()
-{
-  m_field = sharedptr<Field>( new Field() );
 }
 
 sharedptr<const Field> LayoutItem_Field::get_full_field_details() const
@@ -208,7 +215,7 @@ sharedptr<const Field> LayoutItem_Field::get_full_field_details() const
 
 Field::glom_field_type LayoutItem_Field::get_glom_type() const
 {
-  if(m_field)
+  if(m_field && m_field_cache_valid)
     return m_field->get_glom_type();
   else
     return Field::TYPE_INVALID;
