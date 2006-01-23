@@ -2,6 +2,13 @@
 
 	* glom/data_structure/layout/layoutitem_field.cc:
 	* glom/data_structure/layout/layoutitem_field.h: 
+	Just store a const reference (sharedptr) to the 
+	Field, instead of copying it.
+
+2006-01-23  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/data_structure/layout/layoutitem_field.cc:
+	* glom/data_structure/layout/layoutitem_field.h: 
 	Remove set_full_field_data_empty(). Instead, allow 
 	the field cache to be null and use m_name when 
 	there is no full data. Use a bool to mark when the 

@@ -90,7 +90,7 @@ public:
 protected:
 
   //This is just a cache, filled in by looking at the database structure:
-  sharedptr<Field> m_field;
+  sharedptr<const Field> m_field;
   bool m_field_cache_valid; //Whetehr m_field is up-to-date.
 
   //Glib::ustring m_relationship_name; //bool m_related;

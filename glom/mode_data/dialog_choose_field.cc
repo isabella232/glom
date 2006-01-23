@@ -194,9 +194,9 @@ bool Dialog_ChooseField::get_field_chosen(LayoutItem_Field& field) const
     if(iter)
     {
       Gtk::TreeModel::Row row = *iter;
-      field.set_name(row[m_ColumnsFields.m_col_name]);
       sharedptr<Field> field_details = row[m_ColumnsFields.m_col_field];
       field.set_full_field_details(field_details);
+      field.set_name(row[m_ColumnsFields.m_col_name]);
 
       return true;
     }

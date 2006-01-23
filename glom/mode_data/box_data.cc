@@ -137,8 +137,9 @@ Box_Data::type_map_fields Box_Data::get_record_field_values(const Gnome::Gda::Va
     type_vecLayoutFields fieldsToGet;
     for(Document_Glom::type_vecFields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
     {
-      sharedptr<LayoutItem_Field> layout_item(new LayoutItem_Field);
+      sharedptr<LayoutItem_Field> layout_item(new LayoutItem_Field());
       layout_item->set_full_field_details(*iter);
+
       fieldsToGet.push_back(layout_item);
     }
 
@@ -599,6 +600,7 @@ void Box_Data::calculate_field(const sharedptr<const Field>& field, const shared
     else
     {
       //recalculate:
+      //TODO_Performance: We don't know what fields the python calculation will use, so we give it all of them:
       const type_map_fields field_values = get_record_field_values(primary_key_value);
 
       sharedptr<const Field> field = refCalcProgress.m_field;

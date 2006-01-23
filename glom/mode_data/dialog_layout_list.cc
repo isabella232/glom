@@ -389,25 +389,25 @@ void Dialog_Layout_List::on_button_edit_field()
 
           dialog->set_document(get_document(), m_table_name, field);
           dialog->set_transient_for(*this);
-          int response = dialog->run();
+          const int response = dialog->run();
           if(response == Gtk::RESPONSE_OK)
           {
             //Get the chosen field:
             LayoutItem_Field field;
             dialog->get_field_chosen(field);
-  
+
             //Set the field details in the layout treeview:
-  
+
             row[m_ColumnsFields.m_col_layout_item] = field;
-  
+
             //Scroll to, and select, the new row:
             /*
             Glib::RefPtr<Gtk::TreeView::Selection> refTreeSelection = m_treeview_fields->get_selection();
             if(refTreeSelection)
               refTreeSelection->select(iter);
-  
+
             m_treeview_fields->scroll_to_row( Gtk::TreeModel::Path(iter) );
-  
+
             treeview_fill_sequences(m_model_fields, m_ColumnsFields.m_col_sequence); //The document should have checked this already, but it does not hurt to check again.
             */
           }

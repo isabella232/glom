@@ -43,9 +43,7 @@ LayoutItem_Field::LayoutItem_Field(const LayoutItem_Field& src)
 {
 //g_warning("LayoutItem_Field::LayoutItem_Field: m_choices_related_relationship=%s, src.m_choices_related_relationship=%s", m_choices_related_relationship.c_str(), src.m_choices_related_relationship.c_str());
 
-  if(src.m_field)
-    m_field = sharedptr<Field>(src.m_field->clone()); //We clone it because we change the name to indicate another field, whose real details must then be retrieved. TODO_SharedField
-
+  m_field = src.m_field;
 }
 
 LayoutItem_Field::~LayoutItem_Field()
@@ -81,14 +79,8 @@ LayoutItem_Field& LayoutItem_Field::operator=(const LayoutItem_Field& src)
 {
   LayoutItem::operator=(src);
 
-  if(src.m_field)
-   m_field = sharedptr<Field>(src.m_field->clone());
-  else
-   m_field = sharedptr<Field>();
-
+  m_field = src.m_field;
   m_field_cache_valid = src.m_field_cache_valid;
-
-  //We clone it because we change the name to indicate another field, whose real details must then be retrieved. TODO_SharedField
 
   m_priv_view = src.m_priv_view;
   m_priv_edit = src.m_priv_edit;
@@ -192,20 +184,22 @@ const FieldFormatting& LayoutItem_Field::get_formatting_used() const
 
 void LayoutItem_Field::set_full_field_details(const sharedptr<const Field>& field)
 {
+
   if(field)
   {
+    //std::cout << "LayoutItem_Field::set_full_field_details(): name=" << field->get_name() << std::endl;
     //std::cout << "LayoutItem_Field::set_full_field_details(): field->get_title_or_name()=" << field->get_title_or_name() << std::endl;
-    m_field = sharedptr<Field>(field->clone());
+    m_field = field;
     m_field_cache_valid = true;
+
+    LayoutItem::set_name(field->get_name()); //It seems to be OK to expect get_name() to work after setting _full_ details.
   }
   else
   {
     //std::cout << "LayoutItem_Field::set_full_field_details(null): previous name=" << m_name << std::endl;
-    m_field = sharedptr<Field>();
+    m_field = sharedptr<const Field>();
     m_field_cache_valid = false;
   }
-
-  //We clone it because we change the name to indicate another field, whose real details must then be retrieved. TODO_SharedField
 }
 
 sharedptr<const Field> LayoutItem_Field::get_full_field_details() const

@@ -1826,6 +1826,7 @@ void Base_DB::get_table_fields_to_show_for_sequence_add_group(const Glib::ustrin
             LayoutItem_Field layout_item = *item_field; //TODO_Performance: Reduce the copying.
             layout_item.set_full_field_details(field); //Fill in the full field information for later.
 
+
             //TODO_Performance: We do this once for each related field, even if there are 2 from the same table:
             const Privileges privs_related = get_current_privs(relationship.get_to_table());
             layout_item.m_priv_view = privs_related.m_view;
@@ -1844,6 +1845,8 @@ void Base_DB::get_table_fields_to_show_for_sequence_add_group(const Glib::ustrin
         {
           LayoutItem_Field layout_item = *item_field; //TODO_Performance: Reduce the copying here.
           layout_item.set_full_field_details(*iterFind); //Fill the LayoutItem with the full field information.
+
+          //std::cout << "get_table_fields_to_show_for_sequence_add_group(): name=" << layout_item.get_name() << std::endl;
 
           //Prevent editing of the field if the user may not edit this table:
           layout_item.m_priv_view = table_privs.m_view;

@@ -203,8 +203,16 @@ Glib::ustring GlomUtils::build_sql_select_with_where_clause(const Glib::ustring&
 
   }
 
-  result =  "SELECT " + sql_part_fields +
-    " FROM " + table_name;
+  if(sql_part_fields.empty())
+  {
+    std::cerr << "GlomUtils::build_sql_select_with_where_clause(): sql_part_fields.empty(): fieldsToGet.size()=" << fieldsToGet.size() << std::endl;
+    return result;
+  }
+  else
+  {
+    result =  "SELECT " + sql_part_fields +
+      " FROM " + table_name;
+  }
 
   //LEFT OUTER JOIN will get the field values from the other tables, and give us our fields for this table even if there is no corresponding value in the other table.
   Glib::ustring sql_part_leftouterjoin; 
