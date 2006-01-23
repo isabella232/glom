@@ -98,7 +98,7 @@ void Box_DB_Table_Definition::fill_field_row(const Gtk::TreeModel::iterator& ite
   //Type:
   Field::glom_field_type fieldType = Field::get_glom_type_for_gda_type(field->get_field_info().get_gdatype()); //Could be TYPE_INVALID if the gda type is not one of ours.
 
-  Glib::ustring strType = Field::get_type_name_ui( fieldType );
+  const Glib::ustring strType = Field::get_type_name_ui( fieldType );
   m_AddDel.set_value(iter, m_colType, strType);
 
   //Unique:
@@ -174,6 +174,9 @@ void Box_DB_Table_Definition::on_adddel_add(const Gtk::TreeModel::iterator& row)
       field->set_field_info(field_info);
 
       fill_field_row(row, field);
+
+      //Store the generated title in the document:
+      on_adddel_changed(row, m_colTitle);
 
       //m_AddDel.select_item(row, m_colTitle, true); //Start editing the title
     }

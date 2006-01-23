@@ -1,4 +1,11 @@
-2006-01-23  Murray Cumming <murrayc@murrayc.com>
+2006-01-23  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/mode_design/fields/box_db_table_definition.cc: 
+	on_adddel_add(): Call on_adddel_changed() to save the 
+	guessed title into the document, even when the title is 
+	not edited by the user.
+
+2006-01-23  Murray Cumming  <murrayc@murrayc.com>
 
 	* Many files: Use Field via sharedptr<Field>, to 
 	avoid unnecessary copying. However, LayoutItem_Field still 
