@@ -767,8 +767,8 @@ void Box_Data_List::print_layout()
   {
     //Create a simple report on the fly:
     Report report_temp;
-    report_temp.m_name = "list";
-    report_temp.m_title = _("List");
+    report_temp.set_name("list");
+    report_temp.set_title(_("List"));
 
     //Add all the fields from the layout:
     for(type_vecLayoutFields::const_iterator iter = m_FieldsShown.begin(); iter != m_FieldsShown.end(); ++iter)

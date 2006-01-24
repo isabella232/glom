@@ -21,50 +21,39 @@
 #ifndef RELATIONSHIP_H
 #define RELATIONSHIP_H
 
-
+#include "translatable_item.h"
 #include <glibmm/ustring.h>
 
-class Relationship
+class Relationship : public TranslatableItem
 {
 public: 
   Relationship();
   Relationship(const Relationship& src);
-  virtual ~Relationship();
+  ~Relationship();
 
   Relationship& operator=(const Relationship& src);
 
   bool operator==(const Relationship& src) const;
 
-  virtual bool get_name_not_empty() const; //For performance.
-  virtual Glib::ustring get_name() const;
-  virtual void set_name(const Glib::ustring& strVal);
+  Glib::ustring get_from_table() const;
+  Glib::ustring get_from_field() const;
+  Glib::ustring get_to_table() const;
+  Glib::ustring get_to_field() const;
 
-  virtual Glib::ustring get_title() const;
-  virtual void set_title(const Glib::ustring& strVal);
-
-  Glib::ustring get_title_or_name() const;
-
-  virtual Glib::ustring get_from_table() const;
-  virtual Glib::ustring get_from_field() const;
-  virtual Glib::ustring get_to_table() const;
-  virtual Glib::ustring get_to_field() const;
-
-  virtual void set_from_table(const Glib::ustring& strVal);
-  virtual void set_from_field(const Glib::ustring& strVal);
-  virtual void set_to_table(const Glib::ustring& strVal);
-  virtual void set_to_field(const Glib::ustring& strVal);
+  void set_from_table(const Glib::ustring& strVal);
+  void set_from_field(const Glib::ustring& strVal);
+  void set_to_table(const Glib::ustring& strVal);
+  void set_to_field(const Glib::ustring& strVal);
 
   ///Whether related records will be created automatically.
-  virtual bool get_auto_create() const;
-  virtual void set_auto_create(bool val = true);
-  
+  bool get_auto_create() const;
+  void set_auto_create(bool val = true);
+
   ///Whether related records may be edited through this relationship.
-  virtual bool get_allow_edit() const;
-  virtual void set_allow_edit(bool val = true);
+  bool get_allow_edit() const;
+  void set_allow_edit(bool val = true);
 
 protected:
-  Glib::ustring m_strName, m_strTitle;
-
   Glib::ustring m_strFrom_Table;
   Glib::ustring m_strFrom_Field;
   Glib::ustring m_strTo_Table;

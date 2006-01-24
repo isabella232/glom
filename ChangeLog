@@ -1,3 +1,47 @@
+2006-01-24  Murray Cumming  <murray@murrayc.com>
+
+	* glom/data_structure/translatable_item.cc:
+	* glom/data_structure/translatable_item.h: Added a new 
+	base class for all items that have a non-translated ID name and 
+	a translated title. This base class has a map of translated titles 
+	for locales.
+	* glom/document/document_glom.cc:
+	* glom/document/document_glom.h: Added load_after_translations() 
+	and save_before_translations() and used it for fields, reports, 
+	tables, and layout items, so these XML nodes get a translations 
+	node if they have any translations.
+	* glom/application.cc:
+	* glom/base_db.cc:
+	* glom/box_reports.cc:
+	* glom/data_structure/Makefile.am:
+	* glom/data_structure/field.cc:
+	* glom/data_structure/field.h:
+	* glom/data_structure/groupinfo.cc:
+	* glom/data_structure/groupinfo.h:
+	* glom/data_structure/layout/layoutgroup.cc:
+	* glom/data_structure/layout/layoutgroup.h:
+	* glom/data_structure/layout/layoutitem.cc:
+	* glom/data_structure/layout/layoutitem.h:
+	* glom/data_structure/relationship.cc:
+	* glom/data_structure/relationship.h:
+	* glom/data_structure/report.cc:
+	* glom/data_structure/report.h:
+	* glom/data_structure/tableinfo.cc:
+	* glom/data_structure/tableinfo.h:
+	* glom/dialog_database_preferences.cc:
+	* glom/dialog_layout_report.cc:
+	* glom/mode_data/box_data_details.cc:
+	* glom/mode_data/box_data_list.cc:
+	* glom/mode_data/dialog_layout_details.cc:
+	* glom/mode_design/users/dialog_groups_list.cc:
+	* glom/navigation/box_tables.cc:
+	* glom/utility_widgets/flowtablewithfields.cc: Use the base class 
+	API, removing superfluous API.
+	* glom/translation/window_translations.cc:
+	* glom/translation/window_translations.h: Store sharedptr<TranslatableItem> 
+	in the tree model.
+	* po/POTFILES.in: Added the new files.
+
 2006-01-23  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/data_structure/layout/layoutitem_field.cc:

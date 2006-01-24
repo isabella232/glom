@@ -54,7 +54,6 @@ public:
 
   virtual void debug(guint level = 0) const;
 
-  Glib::ustring m_title;
   guint m_columns_count;
 
   typedef std::map<int, LayoutItem*> type_map_items;

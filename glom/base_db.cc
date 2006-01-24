@@ -742,8 +742,8 @@ bool Base_DB::add_standard_tables() const
     if(!get_table_exists_in_database(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME))
     {
       TableInfo prefs_table_info;
-      prefs_table_info.m_name = GLOM_STANDARD_TABLE_PREFS_TABLE_NAME;
-      prefs_table_info.m_title = _("System: Preferences");
+      prefs_table_info.set_name(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME);
+      prefs_table_info.set_title("System: Preferences"); //TODO: Provide standard translations.
       prefs_table_info.m_hidden = true;
 
       Document_Glom::type_vecFields pref_fields;
@@ -818,8 +818,8 @@ bool Base_DB::add_standard_tables() const
     if(!get_table_exists_in_database(GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME))
     {
       TableInfo table_info;
-      table_info.m_name = GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME;
-      table_info.m_title = _("System: Auto Increments");
+      table_info.set_name(GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME);
+      table_info.set_title("System: Auto Increments"); //TODO: Provide standard translations.
       table_info.m_hidden = true;
 
       Document_Glom::type_vecFields fields;
@@ -883,12 +883,12 @@ void Base_DB::add_standard_groups()
 
     for(Document_Glom::type_listTableInfo::const_iterator iter = table_list.begin(); iter != table_list.end(); ++iter)
     {
-      set_table_privileges(devgroup, iter->m_name, priv_devs, true /* developer privileges */);
+      set_table_privileges(devgroup, iter->get_name(), priv_devs, true /* developer privileges */);
     }
 
     //Make sure that it is in the database too:
     GroupInfo group_info;
-    group_info.m_name = GLOM_STANDARD_GROUP_NAME_DEVELOPER;
+    group_info.set_name(GLOM_STANDARD_GROUP_NAME_DEVELOPER);
     group_info.m_developer = true;
     get_document()->set_group(group_info);
   }

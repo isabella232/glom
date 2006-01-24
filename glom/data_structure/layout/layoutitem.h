@@ -21,9 +21,10 @@
 #ifndef GLOM_DATASTRUCTURE_LAYOUTITEM_H
 #define GLOM_DATASTRUCTURE_LAYOUTITEM_H
 
+#include "../translatable_item.h"
 #include <glibmm/ustring.h>
 
-class LayoutItem
+class LayoutItem : public TranslatableItem
 {
 public:
 
@@ -38,9 +39,6 @@ public:
   virtual LayoutItem* clone() const = 0;
 
   bool operator==(const LayoutItem& src) const;
-
-  virtual void set_name(const Glib::ustring& name);
-  virtual Glib::ustring get_name() const; //For use with our std::find_if() predicate.
 
   virtual bool get_editable() const;
   virtual void set_editable(bool val);

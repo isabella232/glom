@@ -443,7 +443,7 @@ void DataWidget::setup_menu()
 
 bool DataWidget::on_button_press_event(GdkEventButton *event)
 {
-  g_warning("DataWidget::on_button_press_event_popup");
+  //g_warning("DataWidget::on_button_press_event_popup");
 
   //Enable/Disable items.
   //We did this earlier, but get_application is more likely to work now:

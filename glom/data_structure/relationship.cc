@@ -23,11 +23,13 @@
 Relationship::Relationship()
 : m_allow_edit(true), m_auto_create(false)
 {
+   m_translatable_item_type = TRANSLATABLE_TYPE_RELATIONSHIP;
 }
 
 Relationship::Relationship(const Relationship& src)
+: TranslatableItem(src)
 {
-  operator=(src);
+  operator=(src); //TODO_Performance: Implement properly.
 }
 
 Relationship::~Relationship()
@@ -36,8 +38,8 @@ Relationship::~Relationship()
 
 Relationship& Relationship::operator=(const Relationship& src)
 {
-  m_strName = src.m_strName;
-  m_strTitle = src.m_strTitle;  
+  TranslatableItem::operator=(src);
+
   m_strFrom_Table = src.m_strFrom_Table;
   m_strFrom_Field = src.m_strFrom_Field;
   m_strTo_Table = src.m_strTo_Table;
@@ -50,12 +52,12 @@ Relationship& Relationship::operator=(const Relationship& src)
 
 bool Relationship::operator==(const Relationship& src) const
 {
-  bool bEqual = (m_strFrom_Table == src.m_strFrom_Table);
-  bEqual = bEqual && (m_strTitle == src.m_strTitle);
+  bool bEqual = TranslatableItem::operator==(src);
+
+  bEqual = bEqual && (m_strFrom_Table == src.m_strFrom_Table);
   bEqual = bEqual && (m_strFrom_Field == src.m_strFrom_Field);
   bEqual = bEqual && (m_strTo_Table == src.m_strTo_Table);
   bEqual = bEqual && (m_strTo_Field == src.m_strTo_Field);
-  bEqual = bEqual && (m_strName == src.m_strName);
   bEqual = bEqual && (m_allow_edit == src.m_allow_edit);
   bEqual = bEqual && (m_auto_create == src.m_auto_create);
 
@@ -100,39 +102,6 @@ void Relationship::set_to_table(const Glib::ustring& strVal)
 void Relationship::set_to_field(const Glib::ustring& strVal)
 {
   m_strTo_Field = strVal;
-}
-
-bool Relationship::get_name_not_empty() const
-{
-  return !m_strName.empty();
-}
-
-Glib::ustring Relationship::get_name() const
-{
-  return m_strName;
-}
-
-void Relationship::set_name(const Glib::ustring& strVal)
-{
-  m_strName = strVal;
-}
-
-Glib::ustring Relationship::get_title() const
-{
-  return m_strTitle;
-}
-
-void Relationship::set_title(const Glib::ustring& strVal)
-{
-  m_strTitle = strVal;
-}
-
-Glib::ustring Relationship::get_title_or_name() const
-{
-  if(m_strTitle.empty())
-    return m_strName;
-  else
-    return m_strTitle;
 }
 
 bool Relationship::get_auto_create() const

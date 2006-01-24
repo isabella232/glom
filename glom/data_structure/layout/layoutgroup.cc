@@ -29,7 +29,6 @@ LayoutGroup::LayoutGroup()
 
 LayoutGroup::LayoutGroup(const LayoutGroup& src)
 : LayoutItem(src),
-  m_title(src.m_title),
   m_columns_count(src.m_columns_count)
 {
   //Deep copy of the items map:
@@ -69,7 +68,6 @@ LayoutGroup& LayoutGroup::operator=(const LayoutGroup& src)
   {
     LayoutItem::operator=(src);
 
-    m_title = src.m_title;
     m_columns_count = src.m_columns_count;
 
     //Deep copy of the items map:

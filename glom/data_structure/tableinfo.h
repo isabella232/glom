@@ -21,22 +21,17 @@
 #ifndef GLOM_DATASTRUCTURE_TABLEINFO_H
 #define GLOM_DATASTRUCTURE_TABLEINFO_H
 
+#include "translatable_item.h"
 #include <glibmm/ustring.h>
 
-class TableInfo
+class TableInfo : public TranslatableItem
 {
 public:
   TableInfo();
   TableInfo(const TableInfo& src);
   TableInfo& operator=(const TableInfo& src);
 
-  Glib::ustring get_name() const; //For the predicate, when using std::find_if().
-
-  Glib::ustring get_title_or_name() const;
-
-  Glib::ustring m_name;
   guint m_sequence; //TODO: Use this?
-  Glib::ustring m_title;
   bool m_hidden;
   bool m_default;
 };

@@ -61,10 +61,10 @@ void Box_Tables::fill_table_row(const Gtk::TreeModel::iterator& iter, const Tabl
 {
   if(iter)
   {
-    m_AddDel.set_value_key(iter, table_info.m_name);
-    m_AddDel.set_value(iter, m_colTableName, table_info.m_name);
+    m_AddDel.set_value_key(iter, table_info.get_name());
+    m_AddDel.set_value(iter, m_colTableName, table_info.get_name());
     m_AddDel.set_value(iter, m_colHidden, table_info.m_hidden);
-    m_AddDel.set_value(iter, m_colTitle, table_info.m_title);
+    m_AddDel.set_value(iter, m_colTitle, table_info.get_title());
     m_AddDel.set_value(iter, m_colDefault, table_info.m_default);
   }
 }
@@ -141,10 +141,10 @@ bool Box_Tables::fill_from_database()
       {
         //This table is in the database, but not in the document.
         //Show it as hidden:
-        table_info.m_name = strName;
+        table_info.set_name(strName);
         table_info.m_hidden = true;
       }
-      
+
       bool hidden = iterFind->m_hidden;
 
       bool bAddIt = true;
@@ -218,8 +218,8 @@ void Box_Tables::on_adddel_Add(const Gtk::TreeModel::iterator& row)
     fields.push_back(field_comments);
 
     TableInfo table_info;
-    table_info.m_name = table_name;
-    table_info.m_title = util_title_from_string( table_name ); //Start with a title that might be appropriate.
+    table_info.set_name(table_name);
+    table_info.set_title( util_title_from_string( table_name ) ); //Start with a title that might be appropriate.
 
     const bool test = create_table(table_info, fields);
 
@@ -347,12 +347,12 @@ void Box_Tables::save_to_document()
     for(Gtk::TreeModel::iterator iter = m_AddDel.get_model()->children().begin(); iter != m_AddDel.get_model()->children().end(); ++iter)
     {
       TableInfo table_info;
-      table_info.m_name = m_AddDel.get_value(iter, m_colTableName);
+      table_info.set_name( m_AddDel.get_value(iter, m_colTableName) );
 
-      if(!table_info.m_name.empty())
+      if(!table_info.get_name().empty())
       {
         table_info.m_hidden  = m_AddDel.get_value_as_bool(iter, m_colHidden);
-        table_info.m_title  = m_AddDel.get_value(iter, m_colTitle);
+        table_info.set_title( m_AddDel.get_value(iter, m_colTitle) );
         table_info.m_default  = m_AddDel.get_value_as_bool(iter, m_colDefault);
 
         listTables.push_back(table_info);

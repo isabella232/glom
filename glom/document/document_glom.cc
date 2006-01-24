@@ -114,6 +114,11 @@
 #define GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_FIELD "choices_related_field"
 #define GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_SECOND "choices_related_second"
 
+#define GLOM_NODE_TRANSLATIONS_SET "trans_set"
+#define GLOM_NODE_TRANSLATION "trans"
+#define GLOM_ATTRIBUTE_TRANSLATION_LOCALE "loc"
+#define GLOM_ATTRIBUTE_TRANSLATION_VALUE "val"
+
 Document_Glom::Document_Glom()
 : m_block_cache_update(false),
   m_block_modified_set(false),
@@ -478,7 +483,7 @@ void Document_Glom::change_table_name(const Glib::ustring& strTableNameOld, cons
     DocumentTableInfo doctableinfo = iterFindTable->second;
     m_tables.erase(iterFindTable);
 
-    doctableinfo.m_info.m_name = strTableNameNew; 
+    doctableinfo.m_info.set_name(strTableNameNew); 
     m_tables[strTableNameNew] = doctableinfo; 
 
     //Find any relationships or layouts that use this table
@@ -654,14 +659,14 @@ void Document_Glom::set_tables(const type_listTableInfo& tables)
   {
     const DocumentTableInfo& doctableinfo = iter->second;
 
-    const Glib::ustring table_name = doctableinfo.m_info.m_name;
+    const Glib::ustring table_name = doctableinfo.m_info.get_name();
 
     type_listTableInfo::const_iterator iterfind = std::find_if(tables.begin(), tables.end(), predicate_FieldHasName<TableInfo>(table_name));
     if(iterfind != tables.end())
     {
       TableInfo& info = iter->second.m_info;
       info.m_hidden = iterfind->m_hidden;
-      info.m_title = iterfind->m_title;
+      info.set_title(iterfind->get_title());
       info.m_default = iterfind->m_default;
 
       something_changed = true;
@@ -735,13 +740,13 @@ Document_Glom::type_mapLayoutGroupSequence Document_Glom::get_data_layout_groups
     {
       LayoutGroup overview;
       overview.set_name("overview");
-      overview.m_title = "Overview"; //Don't translate this, but TODO: add standard translations.
+      overview.set_title("Overview"); //Don't translate this, but TODO: add standard translations.
       overview.m_columns_count = 2;
       pOverview = dynamic_cast<LayoutGroup*>(pTopLevel->add_item(overview));
 
       LayoutGroup details;
       details.set_name("details");
-      details.m_title = "Details"; //Don't translate this, but TODO: add standard translations.
+      details.set_title("Details"); //Don't translate this, but TODO: add standard translations.
       details.m_columns_count = 2;
       pDetails = dynamic_cast<LayoutGroup*>(pTopLevel->add_item(details));
     }
@@ -863,7 +868,7 @@ Document_Glom::DocumentTableInfo& Document_Glom::get_table_info_with_add(const G
   else
   {
     m_tables[table_name] = DocumentTableInfo();
-    m_tables[table_name].m_info.m_name = table_name;
+    m_tables[table_name].m_info.set_name(table_name);
     return get_table_info_with_add(table_name);
   }
 }
@@ -872,7 +877,7 @@ Glib::ustring Document_Glom::get_table_title(const Glib::ustring& table_name) co
 {
   type_tables::const_iterator iterFind = m_tables.find(table_name);
   if(iterFind != m_tables.end())
-    return iterFind->second.m_info.m_title;
+    return iterFind->second.m_info.get_title();
   else
     return Glib::ustring();
 }
@@ -882,9 +887,9 @@ void Document_Glom::set_table_title(const Glib::ustring& table_name, const Glib:
   if(!table_name.empty())
   {
     DocumentTableInfo& info = get_table_info_with_add(table_name);
-    if(info.m_info.m_title != value)
+    if(info.m_info.get_title() != value)
     {
-      info.m_info.m_title = value;
+      info.m_info.set_title(value);
       set_modified();
     }
   }
@@ -988,14 +993,14 @@ Glib::ustring Document_Glom::get_default_table() const
   for(type_tables::const_iterator iter = m_tables.begin(); iter != m_tables.end(); ++iter)
   {
     if(iter->second.m_info.m_default)
-      return iter->second.m_info.m_name;
+      return iter->second.m_info.get_name();
   }
 
   //If there is only one table then pretend that is the default:
   if(m_tables.size() == 1)
   {
     type_tables::const_iterator iter = m_tables.begin();
-    return iter->second.m_info.m_name;
+    return iter->second.m_info.get_name();
   }
 
   return Glib::ustring();
@@ -1007,7 +1012,7 @@ Glib::ustring Document_Glom::get_first_table() const
     return Glib::ustring();
 
   type_tables::const_iterator iter = m_tables.begin();
-  return iter->second.m_info.m_name;
+  return iter->second.m_info.get_name();
 }
 
 void Document_Glom::set_allow_autosave(bool value)
@@ -1146,10 +1151,13 @@ void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Gl
 
   //Get the group details:
   group.set_name( get_node_attribute_value(node, GLOM_ATTRIBUTE_NAME) );
-  group.m_title = get_node_attribute_value(node, GLOM_ATTRIBUTE_TITLE);
+  group.set_title( get_node_attribute_value(node, GLOM_ATTRIBUTE_TITLE) );
   group.m_columns_count = get_node_attribute_value_as_decimal(node, GLOM_ATTRIBUTE_COLUMNS_COUNT);
 
   group.m_sequence = get_node_attribute_value_as_decimal(node, GLOM_ATTRIBUTE_SEQUENCE);
+
+  //Translations:
+  load_after_translations(node, group);
 
   //Get the child items:
   xmlpp::Node::NodeList listNodes = node->get_children();
@@ -1236,6 +1244,25 @@ void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Gl
   }
 }
 
+void Document_Glom::load_after_translations(const xmlpp::Element* element, TranslatableItem& item)
+{
+  const xmlpp::Element* nodeTranslations = get_node_child_named(element, GLOM_NODE_TRANSLATIONS_SET);
+  if(nodeTranslations)
+  {
+    xmlpp::Node::NodeList listNodesTranslations = nodeTranslations->get_children(GLOM_NODE_TRANSLATION);
+    for(xmlpp::Node::NodeList::iterator iter = listNodesTranslations.begin(); iter != listNodesTranslations.end(); ++iter)
+    {
+      const xmlpp::Element* element = dynamic_cast<const xmlpp::Element*>(*iter);
+      if(element)
+      {
+        const Glib::ustring locale = get_node_attribute_value(element, GLOM_ATTRIBUTE_TRANSLATION_LOCALE);
+        const Glib::ustring translation = get_node_attribute_value(element, GLOM_ATTRIBUTE_TRANSLATION_VALUE);
+        item.set_translation(locale, translation);
+      }
+    }
+  }
+}
+
 bool Document_Glom::load_after()
 {
   bool result = Bakery::Document_XML::load_after();  
@@ -1269,16 +1296,15 @@ bool Document_Glom::load_after()
         xmlpp::Element* nodeTable = dynamic_cast<xmlpp::Element*>(*iter);
         if(nodeTable)
         {
-
           const Glib::ustring table_name = get_node_attribute_value(nodeTable, GLOM_ATTRIBUTE_NAME);
 
           m_tables[table_name] = DocumentTableInfo();
           DocumentTableInfo& doctableinfo = m_tables[table_name]; //Setting stuff directly in the reference is more efficient than copying it later:
 
           TableInfo table_info;
-          table_info.m_name = table_name;
+          table_info.set_name(table_name);
           table_info.m_hidden = get_node_attribute_value_as_bool(nodeTable, GLOM_ATTRIBUTE_HIDDEN);
-          table_info.m_title = get_node_attribute_value(nodeTable, GLOM_ATTRIBUTE_TITLE);
+          table_info.set_title( get_node_attribute_value(nodeTable, GLOM_ATTRIBUTE_TITLE) );
           table_info.m_default = get_node_attribute_value_as_bool(nodeTable, GLOM_ATTRIBUTE_DEFAULT);
 
           doctableinfo.m_info = table_info;
@@ -1313,7 +1339,7 @@ bool Document_Glom::load_after()
                 //Get lookup information, if present.
                 xmlpp::Element* nodeLookup = get_node_child_named(nodeChild, GLOM_NODE_FIELD_LOOKUP);
                 if(nodeLookup)
-                { 
+                {
                   field->set_lookup_relationship( get_node_attribute_value(nodeLookup, GLOM_ATTRIBUTE_RELATIONSHIP_NAME) );
                   field->set_lookup_field( get_node_attribute_value(nodeLookup, GLOM_ATTRIBUTE_FIELD) );
                 }
@@ -1344,6 +1370,9 @@ bool Document_Glom::load_after()
                 if(elementFormatting)
                   load_after_layout_item_field_formatting(elementFormatting, field->m_default_formatting, field_type_enum, table_name, strName);
 
+                //Translations:
+                load_after_translations(nodeChild, *field);
+
                 doctableinfo.m_fields.push_back(field);
               }
             }
@@ -1373,6 +1402,9 @@ bool Document_Glom::load_after()
                 relationship.set_to_field( get_node_attribute_value(nodeChild, GLOM_ATTRIBUTE_OTHER_KEY) );
                 relationship.set_auto_create( get_node_attribute_value_as_bool(nodeChild, GLOM_ATTRIBUTE_AUTO_CREATE) );
                  relationship.set_allow_edit( get_node_attribute_value_as_bool(nodeChild, GLOM_ATTRIBUTE_ALLOW_EDIT) );
+
+                //Translations:
+                load_after_translations(nodeChild, relationship);
 
                 doctableinfo.m_relationships.push_back(relationship);
               }
@@ -1444,8 +1476,8 @@ bool Document_Glom::load_after()
                 //type_mapLayoutGroupSequence layout_groups;
 
                 Report report;
-                report.m_name = report_name;
-                report.m_title = report_title;
+                report.set_name(report_name);
+                report.set_title(report_title);
 
                 const xmlpp::Element* nodeGroups = get_node_child_named(node, GLOM_NODE_DATA_LAYOUT_GROUPS);
                 if(nodeGroups)
@@ -1466,7 +1498,10 @@ bool Document_Glom::load_after()
                   }
                 }
 
-                doctableinfo.m_reports[report.m_name] = report;
+                //Translations:
+                load_after_translations(node, report);
+
+                doctableinfo.m_reports[report.get_name()] = report;
               }
             }
           } //if(nodeReports)
@@ -1486,7 +1521,7 @@ bool Document_Glom::load_after()
               {
                 GroupInfo group_info;
 
-                group_info.m_name = get_node_attribute_value(node, GLOM_ATTRIBUTE_NAME);
+                group_info.set_name( get_node_attribute_value(node, GLOM_ATTRIBUTE_NAME) );
                 group_info.m_developer = get_node_attribute_value_as_bool(node, GLOM_ATTRIBUTE_DEVELOPER);
 
                 xmlpp::Node::NodeList listTablePrivs = nodeGroups->get_children(GLOM_NODE_TABLE_PRIVS);
@@ -1507,7 +1542,7 @@ bool Document_Glom::load_after()
                   }
                 }
 
-                m_groups[group_info.m_name] = group_info;
+                m_groups[group_info.get_name()] = group_info;
               }
             }
           }
@@ -1617,10 +1652,13 @@ void Document_Glom::save_before_layout_group(xmlpp::Element* node, const LayoutG
   }
 
   child->set_attribute(GLOM_ATTRIBUTE_NAME, group.get_name());
-  child->set_attribute(GLOM_ATTRIBUTE_TITLE, group.m_title);
+  child->set_attribute(GLOM_ATTRIBUTE_TITLE, group.get_title());
   set_node_attribute_value_as_decimal(child, GLOM_ATTRIBUTE_COLUMNS_COUNT, group.m_columns_count);
 
   set_node_attribute_value_as_decimal(child, GLOM_ATTRIBUTE_SEQUENCE, group.m_sequence);
+
+  //Translations:
+  save_before_translations(child, group);
 
   //Add the child items:
   LayoutGroup::type_map_const_items items = group.get_items();
@@ -1659,6 +1697,22 @@ void Document_Glom::save_before_layout_group(xmlpp::Element* node, const LayoutG
   } 
 }
 
+void Document_Glom::save_before_translations(xmlpp::Element* element, const TranslatableItem& item)
+{
+  if(!item.get_has_translations())
+    return;
+
+  xmlpp::Element* child = element->add_child(GLOM_NODE_TRANSLATIONS_SET);
+
+  const TranslatableItem::type_map_locale_to_translations& map_translations = item._get_translations_map();
+  for(TranslatableItem::type_map_locale_to_translations::const_iterator iter = map_translations.begin(); iter != map_translations.end(); ++iter)
+  {
+    xmlpp::Element* childItem = child->add_child(GLOM_NODE_TRANSLATION);
+    set_node_attribute_value(childItem, GLOM_ATTRIBUTE_TRANSLATION_LOCALE, iter->first);
+    set_node_attribute_value(childItem, GLOM_ATTRIBUTE_TRANSLATION_VALUE, iter->first);
+  }
+}
+
 bool Document_Glom::save_before()
 {
   update_cached_relationships(); //It's helpful to update this whenever something has changed.
@@ -1684,14 +1738,15 @@ bool Document_Glom::save_before()
     {
       const DocumentTableInfo& doctableinfo = iter->second;
 
-      if(doctableinfo.m_info.m_name.empty())
+      const Glib::ustring table_name = doctableinfo.m_info.get_name();
+      if(table_name.empty())
         g_warning("Document_Glom::save_before(): table name is empty.");
 
-      if(!doctableinfo.m_info.m_name.empty())
+      if(!table_name.empty())
       {
         xmlpp::Element* nodeTable = nodeRoot->add_child(GLOM_NODE_TABLE);
-        set_node_attribute_value(nodeTable, GLOM_ATTRIBUTE_NAME, doctableinfo.m_info.m_name);
-        set_node_attribute_value(nodeTable, GLOM_ATTRIBUTE_TITLE, doctableinfo.m_info.m_title);
+        set_node_attribute_value(nodeTable, GLOM_ATTRIBUTE_NAME, table_name);
+        set_node_attribute_value(nodeTable, GLOM_ATTRIBUTE_TITLE, doctableinfo.m_info.get_title());
         set_node_attribute_value_as_bool(nodeTable, GLOM_ATTRIBUTE_HIDDEN, doctableinfo.m_info.m_hidden);
         set_node_attribute_value_as_bool(nodeTable, GLOM_ATTRIBUTE_DEFAULT, doctableinfo.m_info.m_default);
 
@@ -1738,6 +1793,9 @@ bool Document_Glom::save_before()
           //Default Formatting:
           xmlpp::Element* elementFormat = elemField->add_child(GLOM_NODE_FORMAT);
           save_before_layout_item_field_formatting(elementFormat, field->m_default_formatting, field->get_glom_type());
+
+          //Translations:
+          save_before_translations(elemField, *field);
         }
 
         //Relationships:
@@ -1757,6 +1815,9 @@ bool Document_Glom::save_before()
           set_node_attribute_value(elemRelationship, GLOM_ATTRIBUTE_OTHER_KEY, relationship.get_to_field());
           set_node_attribute_value_as_bool(elemRelationship, GLOM_ATTRIBUTE_AUTO_CREATE, relationship.get_auto_create());
           set_node_attribute_value_as_bool(elemRelationship, GLOM_ATTRIBUTE_ALLOW_EDIT, relationship.get_allow_edit());
+
+          //Translations:
+          save_before_translations(elemRelationship, relationship);
         }
 
 
@@ -1788,13 +1849,16 @@ bool Document_Glom::save_before()
         {
           xmlpp::Element* nodeReport = nodeReports->add_child(GLOM_NODE_REPORT);
           nodeReport->set_attribute(GLOM_ATTRIBUTE_NAME, iter->second.get_name());
-          nodeReport->set_attribute(GLOM_ATTRIBUTE_TITLE, iter->second.m_title);
+          nodeReport->set_attribute(GLOM_ATTRIBUTE_TITLE, iter->second.get_title());
 
           xmlpp::Element* nodeGroups = nodeReport->add_child(GLOM_NODE_DATA_LAYOUT_GROUPS);
           save_before_layout_group(nodeGroups, iter->second.m_layout_group);
+
+          //Translations:
+          save_before_translations(nodeReport, iter->second);
         }
 
- 
+
         nodeTable->add_child_text("\n\n"); //Make it a bit easier to read, 
       }
 
@@ -1816,7 +1880,7 @@ bool Document_Glom::save_before()
       const GroupInfo& group_info = iter->second;
 
       xmlpp::Element* nodeGroup = nodeGroups->add_child(GLOM_NODE_GROUP);
-      nodeGroup->set_attribute(GLOM_ATTRIBUTE_NAME, group_info.m_name);
+      nodeGroup->set_attribute(GLOM_ATTRIBUTE_NAME, group_info.get_name());
       set_node_attribute_value_as_bool(nodeGroup, GLOM_ATTRIBUTE_DEVELOPER, group_info.m_developer);
 
       //The privileges for each table, for this group:
@@ -1876,11 +1940,12 @@ Document_Glom::type_list_groups Document_Glom::get_groups() const
 ///This adds the group if necessary.
 void Document_Glom::set_group(GroupInfo& group)
 {
-  type_map_groups::iterator iter = m_groups.find(group.m_name);
+  const Glib::ustring name = group.get_name();
+  type_map_groups::iterator iter = m_groups.find(name);
   if(iter == m_groups.end())
   {
     //Add it if necesary:
-    m_groups[group.m_name] = group;
+    m_groups[name] = group;
     set_modified();
   }
   else
@@ -2037,7 +2102,7 @@ void Document_Glom::set_report(const Glib::ustring& table_name, const Report& re
   type_tables::iterator iterFind = m_tables.find(table_name);
   if(iterFind != m_tables.end())
   {
-    iterFind->second.m_reports[report.m_name] = report;
+    iterFind->second.m_reports[report.get_name()] = report;
     set_modified();
   }
 }

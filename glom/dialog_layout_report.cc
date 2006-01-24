@@ -251,7 +251,7 @@ void Dialog_Layout_Report::set_report(const Glib::ustring& table_name, const Rep
 {
   m_modified = false;
 
-  m_name_original = report.m_name;
+  m_name_original = report.get_name();
   m_report = report;
   m_table_name = table_name;
 
@@ -260,8 +260,8 @@ void Dialog_Layout_Report::set_report(const Glib::ustring& table_name, const Rep
   //Set the table name and title:
   m_label_table_name->set_text(table_name);
 
-  m_entry_name->set_text(report.m_name); 
-  m_entry_title->set_text(report.m_title);
+  m_entry_name->set_text(report.get_name()); 
+  m_entry_title->set_text(report.get_title());
 
   //Update the tree models from the document
 
@@ -862,8 +862,8 @@ Glib::ustring Dialog_Layout_Report::get_original_report_name() const
 
 Report Dialog_Layout_Report::get_report()
 {
-  m_report.m_name = m_entry_name->get_text();
-  m_report.m_title = m_entry_title->get_text();
+  m_report.set_name( m_entry_name->get_text() );
+  m_report.set_title( m_entry_title->get_text() );
 
   m_report.m_layout_group.remove_all_items();
 

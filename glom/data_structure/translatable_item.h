@@ -1,0 +1,112 @@
+/* Glom
+ *
+ * Copyright (C) 2001-2004 Murray Cumming
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public
+ * License along with this program; if not, write to the
+ * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+ * Boston, MA 02111-1307, USA.
+ */
+
+#ifndef GLOM_DATASTRUCTURE_TRANSLATABLE_ITEM_H
+#define GLOM_DATASTRUCTURE_TRANSLATABLE_ITEM_H
+
+#include <glibmm/ustring.h>
+#include <map>
+
+///TranslatableItem have a map of translation strings - one string for each locale.
+class TranslatableItem
+{
+public:
+  TranslatableItem();
+  TranslatableItem(const TranslatableItem& src);
+  virtual ~TranslatableItem();
+
+  TranslatableItem& operator=(const TranslatableItem& src);
+
+  bool operator==(const TranslatableItem& src) const;
+  bool operator!=(const TranslatableItem& src) const;
+
+  /** Set the  non-translated identifier name.
+   */
+  virtual void set_name(const Glib::ustring& name);
+
+  /** Get the non-translated identifier name.
+   */
+  virtual Glib::ustring get_name() const;
+
+  bool get_name_not_empty() const; //For performance.
+
+  virtual Glib::ustring TranslatableItem::get_title_or_name() const;
+
+  /** Get the title's translation for the current locale.
+   */
+  Glib::ustring get_title() const;
+
+  /** Get the title's translation for the specifed locale.
+   */
+  Glib::ustring get_title(const Glib::ustring& locale) const;
+
+  /** Get the title's original (non-translated, usually English) text.
+   */
+  Glib::ustring get_title_original() const;
+
+
+  /** Set the title's translation for the current locale.
+   */
+  void set_title(const Glib::ustring& title);
+
+  /** Set the title's translation for the current locale.
+   */
+  void set_title(const Glib::ustring& locale, Glib::ustring& title);
+
+  /** Set the title's original (non-translated, usually English) text.
+   */
+  void set_title_original(const Glib::ustring& title);
+
+  void set_translation(const Glib::ustring& locale, const Glib::ustring& translation);
+  Glib::ustring get_translation(const Glib::ustring& locale) const;
+
+  typedef std::map<Glib::ustring, Glib::ustring> type_map_locale_to_translations;
+
+  bool get_has_translations() const;
+
+  enum enumTranslatableItemType
+  {
+     TRANSLATABLE_TYPE_INVALID,
+     TRANSLATABLE_TYPE_FIELD,
+     TRANSLATABLE_TYPE_RELATIONSHIP,
+     TRANSLATABLE_TYPE_LAYOUT_ITEM,
+     TRANSLATABLE_TYPE_REPORT,
+     TRANSLATABLE_TYPE_TABLE
+   };
+
+  enumTranslatableItemType get_translatable_item_type();
+
+  //Direct access, for performance:
+  const type_map_locale_to_translations& _get_translations_map() const;
+
+  static Glib::ustring get_translatable_type_name(enumTranslatableItemType item_type);
+
+protected:
+
+  static Glib::ustring get_current_locale();
+
+  enumTranslatableItemType m_translatable_item_type;
+  Glib::ustring m_name; //Non-translated identifier;
+  Glib::ustring m_title; //The original, untranslated (usually-English) title.
+  type_map_locale_to_translations m_map_translations;
+};
+
+#endif //GLOM_DATASTRUCTURE_TRANSLATABLE_ITEM_H
+

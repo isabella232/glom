@@ -143,7 +143,7 @@ void Dialog_Layout_Details::fill_group(const Gtk::TreeModel::iterator& iter, Lay
 
     group.set_name( row[m_model_items->m_columns.m_col_name] );
     group.m_columns_count = row[m_model_items->m_columns.m_col_columns_count];
-    group.m_title = row[m_model_items->m_columns.m_col_title];
+    group.set_title( row[m_model_items->m_columns.m_col_title] );
 
     //Get child layout items:
     for(Gtk::TreeModel::iterator iterChild = row.children().begin(); iterChild != row.children().end(); ++iterChild)
@@ -205,7 +205,7 @@ void Dialog_Layout_Details::add_group(const Gtk::TreeModel::iterator& parent, co
     rowGroup[m_model_items->m_columns.m_col_type] = TreeStore_Layout::TYPE_GROUP;
     rowGroup[m_model_items->m_columns.m_col_name] = group.get_name();
     rowGroup[m_model_items->m_columns.m_col_columns_count] = group.m_columns_count;
-    rowGroup[m_model_items->m_columns.m_col_title] = group.m_title;
+    rowGroup[m_model_items->m_columns.m_col_title] = group.get_title();
     rowGroup[m_model_items->m_columns.m_col_editable] = group.get_editable();
 
     //Add the child items:

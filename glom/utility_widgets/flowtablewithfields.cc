@@ -141,10 +141,10 @@ void FlowTableWithFields::add_layout_group_at_position(const LayoutGroup& group,
   {
     Gtk::Frame* frame = Gtk::manage( new Gtk::Frame );
 
-    if(!group.m_title.empty())
+    if(!group.get_title().empty())
     {
       Gtk::Label* label = Gtk::manage( new Gtk::Label );
-      label->set_text( Bakery::App_Gtk::util_bold_message(group.m_title) );
+      label->set_text( Bakery::App_Gtk::util_bold_message(group.get_title()) );
       label->set_use_markup();
       label->show();
       frame->set_label_widget(*label);
@@ -155,7 +155,7 @@ void FlowTableWithFields::add_layout_group_at_position(const LayoutGroup& group,
 
     Gtk::Alignment* alignment = Gtk::manage( new Gtk::Alignment );
 
-    if(!group.m_title.empty()) //Don't indent if it has no title, to allow use of groups just for positioning.
+    if(!group.get_title().empty()) //Don't indent if it has no title, to allow use of groups just for positioning.
       alignment->set_padding(6, 0, 6, 0);
 
     alignment->show();
@@ -706,7 +706,7 @@ void FlowTableWithFields::on_datawidget_layout_item_added(TreeStore_Layout::enum
   else if(item_type == TreeStore_Layout::TYPE_GROUP)
   {
     LayoutGroup layout_item;
-    layout_item.m_title = _("New Group");
+    layout_item.set_title(_("New Group"));
     add_layout_item_at_position(layout_item, iterAfter);
   }
   else if(item_type == TreeStore_Layout::TYPE_PORTAL)

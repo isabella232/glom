@@ -17,7 +17,7 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
- 
+
 #include "tableinfo.h"
 
 TableInfo::TableInfo()
@@ -25,12 +25,12 @@ TableInfo::TableInfo()
   m_hidden(false),
   m_default(false)
 {
+  m_translatable_item_type = TRANSLATABLE_TYPE_TABLE;
 }
 
 TableInfo::TableInfo(const TableInfo& src)
-: m_name(src.m_name),
+: TranslatableItem(src),
   m_sequence(src.m_sequence),
-  m_title(src.m_title),
   m_hidden(src.m_hidden),
   m_default(src.m_default)
 {
@@ -38,24 +38,11 @@ TableInfo::TableInfo(const TableInfo& src)
 
 TableInfo& TableInfo::operator=(const TableInfo& src)
 {
-  m_name = src.m_name;
+  TranslatableItem::operator=(src);
+
   m_sequence = src.m_sequence;
-  m_title = src.m_title;
   m_hidden = src.m_hidden;
   m_default = src.m_default;
 
   return *this;
-}
-
-Glib::ustring TableInfo::get_name() const
-{
-  return m_name;
-}
-
-Glib::ustring TableInfo::get_title_or_name() const
-{
-  if(m_title.empty())
-    return m_name;
-  else
-    return m_title;
 }

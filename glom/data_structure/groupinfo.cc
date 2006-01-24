@@ -26,8 +26,10 @@ GroupInfo::GroupInfo()
 }
 
 GroupInfo::GroupInfo(const GroupInfo& src)
+: TranslatableItem(src),
+  m_developer(src.m_developer),
+  m_map_privileges(src.m_map_privileges)
 {
-  operator=(src);
 }
 
 GroupInfo::~GroupInfo()
@@ -36,7 +38,8 @@ GroupInfo::~GroupInfo()
 
 GroupInfo& GroupInfo::operator=(const GroupInfo& src)
 {
-  m_name = src.m_name;
+  TranslatableItem::operator=(src);
+
   m_developer = src.m_developer;
   m_map_privileges = src.m_map_privileges;
 
@@ -45,7 +48,7 @@ GroupInfo& GroupInfo::operator=(const GroupInfo& src)
 
 bool GroupInfo::operator==(const GroupInfo& src) const
 {
-  bool result = (m_name == src.m_name);
+  bool result = TranslatableItem::operator==(src);
   result = result && (m_developer == src.m_developer);
   result = result && (m_map_privileges == src.m_map_privileges);
 

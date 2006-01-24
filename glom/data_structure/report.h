@@ -17,27 +17,21 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
- 
+
 #ifndef GLOM_DATASTRUCTURE_REPORT_H
 #define GLOM_DATASTRUCTURE_REPORT_H
 
+#include "translatable_item.h"
 #include "layout/report_parts/layoutitem_groupby.h"
 #include <glibmm/ustring.h>
 
 
-class Report
+class Report : public TranslatableItem
 {
 public:
   Report();
   Report(const Report& src);
   Report& operator=(const Report& src);
-
-  Glib::ustring get_name() const; //For the predicate, when using std::find_if().
-
-  Glib::ustring get_title_or_name() const;
-
-  Glib::ustring m_name;
-  Glib::ustring m_title;
 
   LayoutGroup m_layout_group;
 };

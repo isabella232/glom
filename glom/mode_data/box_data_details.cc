@@ -755,7 +755,7 @@ sharedptr<Field> Box_Data_Details::get_field_primary_key() const
 void Box_Data_Details::print_layout_group(xmlpp::Element* node_parent, const LayoutGroup& group)
 {
   xmlpp::Element* nodeChildGroup = node_parent->add_child("group");
-  nodeChildGroup->set_attribute("title", group.m_title);
+  nodeChildGroup->set_attribute("title", group.get_title());
 
   LayoutGroup::type_map_const_items items = group.get_items();
   for(LayoutGroup::type_map_const_items::const_iterator iter = items.begin(); iter != items.end(); ++iter)

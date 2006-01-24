@@ -49,12 +49,12 @@ Window_Translations::Window_Translations(BaseObjectType* cobject, const Glib::Re
     column_original->set_cell_data_func(*renderer_name, sigc::mem_fun(*this, &Window_Translations::on_cell_data_original));
 
 
-    Gtk::TreeView::Column* column_item = Gtk::manage( new Gtk::TreeView::Column(_("Item")) );
-    m_treeview->append_column(*column_item);
+    Gtk::TreeView::Column* column_item_typename = Gtk::manage( new Gtk::TreeView::Column(_("Item")) );
+    m_treeview->append_column(*column_item_typename);
 
-    Gtk::CellRendererText* renderer_item = Gtk::manage(new Gtk::CellRendererText);
-    column_item->pack_start(*renderer_item);
-    column_item->set_cell_data_func(*renderer_item, sigc::mem_fun(*this, &Window_Translations::on_cell_data_item));
+    Gtk::CellRendererText* renderer_item_typename = Gtk::manage(new Gtk::CellRendererText);
+    column_item_typename->pack_start(*renderer_item_typename);
+    column_item_typename->set_cell_data_func(*renderer_item_typename, sigc::mem_fun(*this, &Window_Translations::on_cell_data_item_typename));
 
 
     m_treeview->append_column_editable(_("Translation"), m_columns.m_col_translation);
@@ -93,7 +93,11 @@ void Window_Translations::on_cell_data_original(Gtk::CellRenderer* renderer, con
     if(iter)
     {
       Gtk::TreeModel::Row row = *iter;
-      Glib::ustring text = row[m_columns.m_col_original];
+
+      Glib::ustring text;
+      sharedptr<TranslatableItem> item = row[m_columns.m_col_item];
+      if(item)
+        text = item->get_title_original();
 
       //TODO: Mark non-English originals.
       renderer_text->property_text() = text;
@@ -102,7 +106,7 @@ void Window_Translations::on_cell_data_original(Gtk::CellRenderer* renderer, con
   }
 }
 
-void Window_Translations::on_cell_data_item(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter)
+void Window_Translations::on_cell_data_item_typename(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter)
 {
   //Set the view's cell properties depending on the model's data:
   Gtk::CellRendererText* renderer_text = dynamic_cast<Gtk::CellRendererText*>(renderer);
@@ -113,17 +117,11 @@ void Window_Translations::on_cell_data_item(Gtk::CellRenderer* renderer, const G
       Gtk::TreeModel::Row row = *iter;
 
       Glib::ustring item_type_name;
-      item_type item = row[m_columns.m_col_item];
-      if(item == ITEM_FIELD)
-        item_type_name = _("Field");
-      else if(item == ITEM_TABLE)
-        item_type_name = _("Table");
-      else if(item == ITEM_REPORT)
-        item_type_name = _("Report");
-      else
-        item_type_name = _("Unknown");
+      sharedptr<TranslatableItem> item = row[m_columns.m_col_item];
+      if(item)
+        item_type_name = TranslatableItem::get_translatable_type_name(item->get_translatable_item_type());
 
-      renderer_text->property_markup() = item_type_name;
+      renderer_text->property_text() = item_type_name;
       renderer_text->property_editable() = false; //Names can never be edited.
     }
   }
@@ -135,6 +133,8 @@ void Window_Translations::load_from_document()
 
   Document_Glom* document = get_document();
 
+  const Glib::ustring translation_locale = "TODO";
+
   //Add tables:
   Document_Glom::type_listTableInfo tables = document->get_tables();
   for(Document_Glom::type_listTableInfo::const_iterator iter = tables.begin(); iter != tables.end(); ++iter)
@@ -144,21 +144,21 @@ void Window_Translations::load_from_document()
     //Table title:
     Gtk::TreeModel::iterator iterTree = m_model->append();
     Gtk::TreeModel::Row row = *iterTree;
-    row[m_columns.m_col_identifier] = tableinfo.m_name;
-    row[m_columns.m_col_original] = tableinfo.m_title;
-    row[m_columns.m_col_item] = ITEM_TABLE;
+    row[m_columns.m_col_item] = sharedptr<TableInfo>(new TableInfo(tableinfo));
+    row[m_columns.m_col_translation] = tableinfo.get_title(translation_locale);
+    row[m_columns.m_col_parent_table] = Glib::ustring(); //Not used for tables.
 
     //The table's field titles:
-    Document_Glom::type_vecFields fields = document->get_table_fields(tableinfo.m_name);
-    for(Document_Glom::type_vecFields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
+    Document_Glom::type_vecFields fields = document->get_table_fields(tableinfo.get_name());
+    for(Document_Glom::type_vecFields::iterator iter = fields.begin(); iter != fields.end(); ++iter)
     {
       Gtk::TreeModel::iterator iterTree = m_model->append();
       Gtk::TreeModel::Row row = *iterTree;
 
-      sharedptr<const Field> field = *iter;
-      row[m_columns.m_col_identifier] = field->get_name();
-      row[m_columns.m_col_original] = field->get_title();
-      row[m_columns.m_col_item] = ITEM_FIELD;
+      sharedptr<Field> field = *iter;
+      row[m_columns.m_col_item] = field;
+      row[m_columns.m_col_translation] = field->get_title(translation_locale);
+      row[m_columns.m_col_parent_table] = tableinfo.get_name();
     }
 
     //The table's report titles:

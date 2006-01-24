@@ -55,9 +55,10 @@ void Box_Reports::fill_row(const Gtk::TreeModel::iterator& iter, const Report& r
 {
   if(iter)
   {
-    m_AddDel.set_value_key(iter, report.m_name);
-    m_AddDel.set_value(iter, m_colReportName, report.m_name);
-    m_AddDel.set_value(iter, m_colTitle, report.m_title);
+    const Glib::ustring report_name = report.get_name();
+    m_AddDel.set_value_key(iter, report_name);
+    m_AddDel.set_value(iter, m_colReportName, report_name);
+    m_AddDel.set_value(iter, m_colTitle, report.get_title());
   }
 }
 
@@ -101,7 +102,7 @@ bool Box_Reports::fill_from_database()
       bool found = document->get_report(m_strTableName, *iter, report);
       if(found)
       {
-        Gtk::TreeModel::iterator row = m_AddDel.add_item(report.m_name);
+        Gtk::TreeModel::iterator row = m_AddDel.add_item(report.get_name());
         fill_row(row, report);
       }
     }
@@ -122,7 +123,7 @@ bool Box_Reports::fill_from_database()
 void Box_Reports::on_adddel_Add(const Gtk::TreeModel::iterator& row)
 {
   Report report;
-  report.m_name = m_AddDel.get_value(row, m_colReportName);
+  report.set_name( m_AddDel.get_value(row, m_colReportName) );
 
   get_document()->set_report(m_strTableName, report);
 }
@@ -166,9 +167,9 @@ void Box_Reports::save_to_document()
       if(!report_name.empty() && std::find(listReports.begin(), listReports.end(), report_name) == listReports.end())
       {
         Report report;
-        report.m_name = report_name;
+        report.set_name(report_name);
 
-        report.m_title  = m_AddDel.get_value(iter, m_colTitle);
+        report.set_title( m_AddDel.get_value(iter, m_colTitle) );
 
         get_document()->set_report(m_strTableName, report);
         modified = true;
@@ -193,7 +194,7 @@ void Box_Reports::on_adddel_changed(const Gtk::TreeModel::iterator& row, guint c
     {
       if(column == m_colTitle)
       {
-        report.m_title = m_AddDel.get_value(row, m_colTitle);
+        report.set_title( m_AddDel.get_value(row, m_colTitle) );
         document->set_report(m_strTableName, report);
       } 
       else if(column == m_colReportName)
@@ -213,7 +214,7 @@ void Box_Reports::on_adddel_changed(const Gtk::TreeModel::iterator& row, guint c
 
             document->remove_report(m_strTableName, report_name);
 
-            report.m_name = report_name_new;
+            report.set_name(report_name_new);
             document->set_report(m_strTableName, report);
           }
         }

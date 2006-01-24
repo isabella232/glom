@@ -21,23 +21,22 @@
 #ifndef GLOM_DATA_STRUCTURE_GROUPINFO_H
 #define GLOM_DATA_STRUCTURE_GROUPINFO_H
 
+#include "translatable_item.h"
 #include "privileges.h"
-#include <glibmm/ustring.h>
 #include <map>
 
-class GroupInfo
+class GroupInfo : public TranslatableItem
 {
 public:
   GroupInfo();
   GroupInfo(const GroupInfo& src);
-  ~GroupInfo();
+  virtual ~GroupInfo();
 
   GroupInfo& operator=(const GroupInfo& src);
 
   bool operator==(const GroupInfo& src) const;
   bool operator!=(const GroupInfo& src) const;
 
-  Glib::ustring m_name;
   bool m_developer; //m_privs is ignored if this is true.
 
   typedef std::map<Glib::ustring, Privileges> type_map_table_privileges;

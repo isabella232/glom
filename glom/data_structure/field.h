@@ -22,6 +22,7 @@
 #define GLOM_DATASTRUCTURE_FIELD_H
 
 #include <libgdamm.h>
+#include "translatable_item.h"
 #include "layout/fieldformatting.h"
 #include "../sharedptr.h"
 
@@ -56,7 +57,7 @@ protected:
 
 
 //Field info, such as Name, Title, definitions, and, sometimes, contents.
-class Field
+class Field : public TranslatableItem
 {
 public:
   enum glom_field_type
@@ -126,11 +127,6 @@ public:
   //These are not used much:
   Gnome::Gda::Value get_data() const;
   void set_data(const Gnome::Gda::Value& value);
-
-  Glib::ustring get_title() const;
-  void set_title(const Glib::ustring& strTitle);
-
-  Glib::ustring get_title_or_name() const; //Title, or Name if there is no title.
 
   //Lookup stuff:
   bool get_is_lookup() const;
@@ -223,7 +219,6 @@ protected:
   Gnome::Gda::FieldAttributes m_field_info;
 
   Gnome::Gda::Value m_data; //Not used much.
-  Glib::ustring m_strTitle;
   Glib::ustring m_strLookupRelationship, m_strLookupField;
   Glib::ustring m_calculation;
   bool m_visible; //Whether it will be shown to the user.

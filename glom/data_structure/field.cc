@@ -37,9 +37,11 @@ Field::Field()
 : m_glom_type(TYPE_INVALID),
   m_visible(true)
 {
+  m_translatable_item_type = TRANSLATABLE_TYPE_FIELD;
 }
 
 Field::Field(const Field& src)
+: TranslatableItem(src)
 {
   //TODO_Performance: Implement this properly, without the extra copy.
   operator=(src);
@@ -51,11 +53,12 @@ Field::~Field()
 
 Field& Field::operator=(const Field& src)
 {
+  TranslatableItem::operator=(src);
+
   m_glom_type = src.m_glom_type;
   m_field_info = src.m_field_info;
   m_data = src.m_data;
 
-  m_strTitle = src.m_strTitle;
   m_strLookupRelationship = src.m_strLookupRelationship;
   m_strLookupField = src.m_strLookupField;
 
@@ -70,11 +73,12 @@ Field& Field::operator=(const Field& src)
 
 bool Field::operator==(const Field& src) const
 {
-  bool bResult = (m_field_info == src.m_field_info);
+  bool bResult = TranslatableItem::operator==(src);
+
+  bResult = (m_field_info == src.m_field_info);
   bResult = bResult && (m_glom_type == src.m_glom_type);
   bResult = bResult && (m_data == src.m_data);
 
-  bResult = bResult && (m_strTitle == src.m_strTitle);
   bResult = bResult && (m_strLookupRelationship == src.m_strLookupRelationship);
   bResult = bResult && (m_strLookupField == src.m_strLookupField);
 
@@ -130,15 +134,6 @@ void Field::set_data(const Gnome::Gda::Value& data)
   m_data = data;
 }
 
-Glib::ustring Field::get_title() const
-{
-  return m_strTitle;
-}
-void Field::set_title(const Glib::ustring& strTitle)
-{
-  m_strTitle = strTitle;
-}
-
 Glib::ustring Field::get_lookup_relationship() const
 {
   return m_strLookupRelationship;
@@ -163,18 +158,6 @@ bool Field::get_is_lookup() const
 {
   //It's a lookup if the lookup relationship and field are set:
   return ( (m_strLookupRelationship.size() > 0) && (m_strLookupField.size() > 0) );
-}
-
-Glib::ustring Field::get_title_or_name() const
-{
-  if(!m_strTitle.empty())
-  {
-    return m_strTitle;
-  }
-  else
-  {
-    return m_field_info.get_name();
-  }
 }
 
 namespace { //anonymous

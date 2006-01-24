@@ -17,18 +17,19 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
- 
+
 #include "layoutitem.h"
 
 LayoutItem::LayoutItem()
 : m_sequence(0),
   m_editable(true)
 {
+  m_translatable_item_type = TRANSLATABLE_TYPE_LAYOUT_ITEM;
 }
 
 LayoutItem::LayoutItem(const LayoutItem& src)
-: m_sequence(src.m_sequence),
-  m_name(src.m_name),
+: TranslatableItem(src),
+  m_sequence(src.m_sequence),
   m_editable(src.m_editable)
 {
 }
@@ -39,7 +40,8 @@ LayoutItem::~LayoutItem()
 
 LayoutItem& LayoutItem::operator=(const LayoutItem& src)
 {
-  m_name = src.m_name;
+  TranslatableItem::operator=(src);
+
   m_sequence = src.m_sequence;
   m_editable = src.m_editable;
 
@@ -48,19 +50,9 @@ LayoutItem& LayoutItem::operator=(const LayoutItem& src)
 
 bool LayoutItem::operator==(const LayoutItem& src) const
 {
-  return (m_name == src.m_name) &&
+  return (TranslatableItem::operator==(src)) &&
          (m_sequence == src.m_sequence) &&
          (m_editable == src.m_editable);
-}
-
-void LayoutItem::set_name(const Glib::ustring& name)
-{
-  m_name = name;
-}
-
-Glib::ustring LayoutItem::get_name() const
-{
-  return m_name;
 }
 
 bool LayoutItem::get_editable() const

@@ -46,14 +46,8 @@ protected:
   //signal handlers:
   void on_button_identify();
   void on_cell_data_original(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter);
-  void on_cell_data_item(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter);
+  void on_cell_data_item_typename(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter);
 
-  enum item_type
-  {
-    ITEM_FIELD,
-    ITEM_TABLE,
-    ITEM_REPORT
-  };
 
   //Tree model columns:
   class ModelColumns : public Gtk::TreeModel::ColumnRecord
@@ -61,12 +55,11 @@ protected:
   public:
 
     ModelColumns()
-    { add(m_col_identifier); add(m_col_original); add(m_col_item);  add(m_col_translation); }
+    { add(m_col_item); add(m_col_translation); add(m_col_parent_table); }
 
-    Gtk::TreeModelColumn<Glib::ustring> m_col_identifier; //The table name, field name, etc. Not shown.
-    Gtk::TreeModelColumn<Glib::ustring> m_col_original;
-    Gtk::TreeModelColumn<item_type> m_col_item;
+    Gtk::TreeModelColumn< sharedptr<TranslatableItem> > m_col_item; //The table name, field name, etc.
     Gtk::TreeModelColumn<Glib::ustring> m_col_translation;
+    Gtk::TreeModelColumn<Glib::ustring> m_col_parent_table; //Not shown.
   };
 
   ModelColumns m_columns;

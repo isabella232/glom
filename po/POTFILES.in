@@ -8,6 +8,7 @@ glom/box_reports.cc
 glom/connectionpool.cc
 glom/data_structure/field.cc
 glom/data_structure/glomconversions.cc
+glom/data_structure/translatable_item.cc
 glom/data_structure/layout/layoutgroup.cc
 glom/data_structure/layout/layoutitem_field.cc
 glom/data_structure/layout/layoutitem_portal.cc
@@ -57,3 +58,6 @@ glom/utility_widgets/flowtablewithfields.cc
 glom/utility_widgets/imageglom.cc
 glom/utility_widgets/layoutwidgetbase.cc
 glom/utility_widgets/dialog_choose_id.cc
+glom/translation/combobox_locale.cc
+glom/translation/window_translations.cc
+glom/translation/dialog_translations.cc

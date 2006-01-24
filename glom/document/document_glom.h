@@ -237,8 +237,13 @@ protected:
 
   void load_after_layout_item_field(const xmlpp::Element* element, const Glib::ustring& table_name, LayoutItem_Field& item);
   void load_after_layout_item_field_formatting(const xmlpp::Element* element, FieldFormatting& format, Field::glom_field_type field_type, const Glib::ustring& table_name, const Glib::ustring& field_name);
+
+  void load_after_translations(const xmlpp::Element* element, TranslatableItem& item);
+
   void save_before_layout_item_field(xmlpp::Element* nodeItem, const LayoutItem_Field& item);
   void save_before_layout_item_field_formatting(xmlpp::Element* nodeItem, const FieldFormatting& format, Field::glom_field_type field_type);
+
+  void save_before_translations(xmlpp::Element* nodeItem, const TranslatableItem& item);
 
   void save_changes();
 

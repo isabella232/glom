@@ -22,34 +22,21 @@
 
 Report::Report()
 {
+  m_translatable_item_type = TRANSLATABLE_TYPE_REPORT;
 }
 
 Report::Report(const Report& src)
-: m_name(src.m_name),
-  m_title(src.m_title),
+: TranslatableItem(src),
   m_layout_group(src.m_layout_group)
 {
 }
 
 Report& Report::operator=(const Report& src)
 {
-  m_name = src.m_name;
-  m_title = src.m_title;
+  TranslatableItem::operator=(src);
+
   m_layout_group = src.m_layout_group;
 
   return *this;
-}
-
-Glib::ustring Report::get_name() const
-{
-  return m_name;
-}
-
-Glib::ustring Report::get_title_or_name() const
-{
-  if(m_title.empty())
-    return m_name;
-  else
-    return m_title;
 }
 
