@@ -1,3 +1,19 @@
+2006-01-25  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/application.cc:
+	* glom/base_db.cc:
+	* glom/base_db.h:
+	* glom/box_reports.cc:
+	* glom/box_reports.h:
+	* glom/dialog_layout_report.cc:
+	* glom/dialog_layout_report.h:
+	* glom/document/document_glom.cc:
+	* glom/document/document_glom.h:
+	* glom/frame_glom.cc:
+	* glom/mode_data/box_data_list.cc:
+	* glom/translation/window_translations.cc: Use Report via 
+	sharedptr<> so that Report title translations are used.
+
 2006-01-25  Murray Cumming  <murray@murrayc.com>
 
 	* glom/application.cc:

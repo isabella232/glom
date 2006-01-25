@@ -247,12 +247,12 @@ void Dialog_Layout_Report::add_group(const Gtk::TreeModel::iterator& parent, con
 }
 
 //void Dialog_Layout_Report::set_document(const Glib::ustring& layout, Document_Glom* document, const Glib::ustring& table_name, const type_vecLayoutFields& table_fields)
-void Dialog_Layout_Report::set_report(const Glib::ustring& table_name, const Report& report)
+void Dialog_Layout_Report::set_report(const Glib::ustring& table_name, const sharedptr<const Report>& report)
 {
   m_modified = false;
 
-  m_name_original = report.get_name();
-  m_report = report;
+  m_name_original = report->get_name();
+  m_report = sharedptr<Report>(new Report(*report)); //Copy it, so we only use the changes when we want to.
   m_table_name = table_name;
 
   //Dialog_Layout::set_document(layout, document, table_name, table_fields);
@@ -260,8 +260,8 @@ void Dialog_Layout_Report::set_report(const Glib::ustring& table_name, const Rep
   //Set the table name and title:
   m_label_table_name->set_text(table_name);
 
-  m_entry_name->set_text(report.get_name()); 
-  m_entry_title->set_text(report.get_title());
+  m_entry_name->set_text(report->get_name()); 
+  m_entry_title->set_text(report->get_title());
 
   //Update the tree models from the document
 
@@ -278,7 +278,7 @@ void Dialog_Layout_Report::set_report(const Glib::ustring& table_name, const Rep
 
     //guint field_sequence = 1; //0 means no sequence
     //guint group_sequence = 1; //0 means no sequence
-    for(LayoutGroup::type_map_items::const_iterator iter = report.m_layout_group.m_map_items.begin(); iter != report.m_layout_group.m_map_items.end(); ++iter)
+    for(LayoutGroup::type_map_items::const_iterator iter = report->m_layout_group.m_map_items.begin(); iter != report->m_layout_group.m_map_items.end(); ++iter)
     {
       const LayoutGroup* group = dynamic_cast<const LayoutGroup*>(iter->second);
       if(group)
@@ -860,21 +860,21 @@ Glib::ustring Dialog_Layout_Report::get_original_report_name() const
   return m_name_original;
 }
 
-Report Dialog_Layout_Report::get_report()
+sharedptr<Report> Dialog_Layout_Report::get_report()
 {
-  m_report.set_name( m_entry_name->get_text() );
-  m_report.set_title( m_entry_title->get_text() );
+  m_report->set_name( m_entry_name->get_text() );
+  m_report->set_title( m_entry_title->get_text() );
 
-  m_report.m_layout_group.remove_all_items();
+  m_report->m_layout_group.remove_all_items();
 
   guint group_sequence = 0;
-  m_report.m_layout_group.remove_all_items();
+  m_report->m_layout_group.remove_all_items();
   for(Gtk::TreeModel::iterator iter = m_model_parts->children().begin(); iter != m_model_parts->children().end(); ++iter)
   {
     LayoutGroup* group = fill_group(iter);
     group->m_sequence = group_sequence;
 
-    m_report.m_layout_group.m_map_items[group_sequence] = group;
+    m_report->m_layout_group.m_map_items[group_sequence] = group;
     ++group_sequence;
   }
 

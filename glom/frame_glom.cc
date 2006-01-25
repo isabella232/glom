@@ -1121,9 +1121,8 @@ void Frame_Glom::on_box_reports_selected(const Glib::ustring& report_name)
 {
   m_pDialog_Reports->hide();
 
-  Report report;
-  bool found = get_document()->get_report(m_strTableName, report_name, report);
-  if(found)
+  sharedptr<Report> report = get_document()->get_report(m_strTableName, report_name);
+  if(report)
   {
     m_pDialogLayoutReport->set_report(m_strTableName, report);
     m_pDialogLayoutReport->show();
@@ -1381,9 +1380,8 @@ void Frame_Glom::on_menu_report_selected(const Glib::ustring& report_name)
     return;
   }
 
-  Report report;
-  bool found = get_document()->get_report(m_strTableName, report_name, report);
-  if(!found)
+  sharedptr<Report> report = get_document()->get_report(m_strTableName, report_name);
+  if(!report)
     return;
 
   report_build(m_strTableName, report, ""); //TODO: Use found set's where_claus.
@@ -1396,8 +1394,8 @@ void Frame_Glom::on_dialog_layout_report_hide()
   if(true) //m_pDialogLayoutReport->get_modified())
   {
     const Glib::ustring original_name = m_pDialogLayoutReport->get_original_report_name();
-    Report report = m_pDialogLayoutReport->get_report();
-    if(original_name != report.get_name())
+    sharedptr<Report> report = m_pDialogLayoutReport->get_report();
+    if(original_name != report->get_name())
       document->remove_report(m_strTableName, original_name);
 
     document->set_report(m_strTableName, report);

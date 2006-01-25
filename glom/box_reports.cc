@@ -51,14 +51,14 @@ Box_Reports::~Box_Reports()
 {
 }
 
-void Box_Reports::fill_row(const Gtk::TreeModel::iterator& iter, const Report& report)
+void Box_Reports::fill_row(const Gtk::TreeModel::iterator& iter, const sharedptr<const Report>& report)
 {
   if(iter)
   {
-    const Glib::ustring report_name = report.get_name();
+    const Glib::ustring report_name = report->get_name();
     m_AddDel.set_value_key(iter, report_name);
     m_AddDel.set_value(iter, m_colReportName, report_name);
-    m_AddDel.set_value(iter, m_colTitle, report.get_title());
+    m_AddDel.set_value(iter, m_colTitle, report->get_title());
   }
 }
 
@@ -98,11 +98,10 @@ bool Box_Reports::fill_from_database()
     listTableReports = document->get_report_names(m_strTableName);
     for(Document_Glom::type_listReports::const_iterator iter = listTableReports.begin(); iter != listTableReports.end(); ++iter)
     {
-      Report report;
-      bool found = document->get_report(m_strTableName, *iter, report);
-      if(found)
+      sharedptr<Report> report = document->get_report(m_strTableName, *iter);
+      if(report)
       {
-        Gtk::TreeModel::iterator row = m_AddDel.add_item(report.get_name());
+        Gtk::TreeModel::iterator row = m_AddDel.add_item(report->get_name());
         fill_row(row, report);
       }
     }
@@ -122,8 +121,8 @@ bool Box_Reports::fill_from_database()
 
 void Box_Reports::on_adddel_Add(const Gtk::TreeModel::iterator& row)
 {
-  Report report;
-  report.set_name( m_AddDel.get_value(row, m_colReportName) );
+  sharedptr<Report> report(new Report());
+  report->set_name( m_AddDel.get_value(row, m_colReportName) );
 
   get_document()->set_report(m_strTableName, report);
 }
@@ -166,10 +165,10 @@ void Box_Reports::save_to_document()
 
       if(!report_name.empty() && std::find(listReports.begin(), listReports.end(), report_name) == listReports.end())
       {
-        Report report;
-        report.set_name(report_name);
+        sharedptr<Report> report(new Report());
+        report->set_name(report_name);
 
-        report.set_title( m_AddDel.get_value(iter, m_colTitle) );
+        report->set_title( m_AddDel.get_value(iter, m_colTitle) ); //TODO: Translations: Store the original in the TreeView.
 
         get_document()->set_report(m_strTableName, report);
         modified = true;
@@ -188,15 +187,15 @@ void Box_Reports::on_adddel_changed(const Gtk::TreeModel::iterator& row, guint c
     const Glib::ustring report_name = m_AddDel.get_value_key(row);
     Document_Glom* document = get_document();
 
-    Report report;
-    bool found = document->get_report(m_strTableName, report_name, report);
-    if(found)
+    sharedptr<Report> report = document->get_report(m_strTableName, report_name);
+    if(report)
     {
       if(column == m_colTitle)
       {
-        report.set_title( m_AddDel.get_value(row, m_colTitle) );
+        report->set_title( m_AddDel.get_value(row, m_colTitle) );
+        //TODO: Unnecessary:
         document->set_report(m_strTableName, report);
-      } 
+      }
       else if(column == m_colReportName)
       {
         const Glib::ustring report_name_new = m_AddDel.get_value(row, m_colReportName);
@@ -214,7 +213,7 @@ void Box_Reports::on_adddel_changed(const Gtk::TreeModel::iterator& row, guint c
 
             document->remove_report(m_strTableName, report_name);
 
-            report.set_name(report_name_new);
+            report->set_name(report_name_new);
             document->set_report(m_strTableName, report);
           }
         }

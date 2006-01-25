@@ -30,8 +30,8 @@ public:
   Dialog_Layout_Report(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
   virtual ~Dialog_Layout_Report();
 
-  void set_report(const Glib::ustring& table_name, const Report& report);
-  Report get_report();
+  void set_report(const Glib::ustring& table_name, const sharedptr<const Report>& report);
+  sharedptr<Report> get_report();
 
   Glib::ustring get_original_report_name() const;
 
@@ -105,7 +105,7 @@ protected:
   Glib::RefPtr<Gtk::TreeStore> m_model_available_parts;
 
   Glib::ustring m_name_original;
-  Report m_report;
+  sharedptr<Report> m_report;
 };
 
 #endif //GLOM_DIALOG_LAYOUT_REPORT

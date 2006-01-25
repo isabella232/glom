@@ -766,14 +766,14 @@ void Box_Data_List::print_layout()
   else
   {
     //Create a simple report on the fly:
-    Report report_temp;
-    report_temp.set_name("list");
-    report_temp.set_title(_("List"));
+    sharedptr<Report> report_temp(new Report());
+    report_temp->set_name("list");
+    report_temp->set_title(_("List"));
 
     //Add all the fields from the layout:
     for(type_vecLayoutFields::const_iterator iter = m_FieldsShown.begin(); iter != m_FieldsShown.end(); ++iter)
     {
-      report_temp.m_layout_group.add_item(*(*iter));
+      report_temp->m_layout_group.add_item(*(*iter));
     }
 
     report_build(m_strTableName, report_temp, m_strWhereClause);

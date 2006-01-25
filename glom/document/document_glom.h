@@ -195,8 +195,8 @@ public:
   type_listReports get_report_names(const Glib::ustring& table_name) const;
   void remove_all_reports(const Glib::ustring& table_name);
 
-  void set_report(const Glib::ustring& table_name, const Report& report);
-  bool get_report(const Glib::ustring& table_name, const Glib::ustring& report_name, Report& report) const;
+  void set_report(const Glib::ustring& table_name, const sharedptr<Report>& report);
+  sharedptr<Report> get_report(const Glib::ustring& table_name, const Glib::ustring& report_name) const;
   void remove_report(const Glib::ustring& table_name, const Glib::ustring& report_name);
 
   void set_layout_record_viewed(const Glib::ustring& table_name, const Glib::ustring& layout_name, const Gnome::Gda::Value& primary_key_value);
@@ -299,7 +299,7 @@ protected:
     typedef std::list< LayoutInfo > type_layouts;
     type_layouts m_layouts;
 
-    typedef std::map<Glib::ustring, Report> type_reports; //map of report names to reports
+    typedef std::map< Glib::ustring, sharedptr<Report> > type_reports; //map of report names to reports
     type_reports m_reports;
 
     Glib::ustring m_example_rows;

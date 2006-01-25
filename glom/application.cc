@@ -1044,20 +1044,19 @@ void App_Glom::fill_menu_reports(const Glib::ustring& table_name)
   const Document_Glom::type_listReports tables = document->get_report_names(table_name);
   for(Document_Glom::type_listReports::const_iterator iter = tables.begin(); iter != tables.end(); ++iter)
   {
-    Report report;
-    bool found =  document->get_report(table_name, *iter, report);
-    if(found)
+    sharedptr<Report> report = document->get_report(table_name, *iter);
+    if(report)
     {
-      const Glib::ustring report_name = report.get_name();
+      const Glib::ustring report_name = report->get_name();
       if(!report_name.empty())
       {
         const Glib::ustring action_name = "NavReportAction_" + report_name;
 
         ui_description += "<menuitem action='" + action_name + "' />";
 
-        Glib::RefPtr<Gtk::Action> refAction = Gtk::Action::create(action_name, report.get_title_or_name()); //TODO: Ignore mnemonics.
+        Glib::RefPtr<Gtk::Action> refAction = Gtk::Action::create(action_name, report->get_title_or_name()); //TODO: Ignore mnemonics.
         m_refNavReportsActionGroup->add(refAction,
-          sigc::bind( sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_report_selected), report.get_name()) );
+          sigc::bind( sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_report_selected), report->get_name()) );
 
         m_listNavReportActions.push_back(refAction);
 

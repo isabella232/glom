@@ -186,16 +186,14 @@ void Window_Translations::load_from_document()
     Document_Glom::type_listReports listReports = document->get_report_names(table_name);
     for(Document_Glom::type_listReports::iterator iter = listReports.begin(); iter != listReports.end(); ++iter)
     {
-      Report report;
-      const bool test = document->get_report(table_name, *iter, report);
-      if(test)
+      sharedptr<Report> report = document->get_report(table_name, *iter);
+      if(report)
       {
         Gtk::TreeModel::iterator iterTree = m_model->append();
         Gtk::TreeModel::Row row = *iterTree;
 
-        sharedptr<Report> sharedReport = sharedptr<Report>(new Report(report));
-        row[m_columns.m_col_item] = sharedReport;
-        row[m_columns.m_col_translation] = sharedReport->get_title(m_translation_locale);
+        row[m_columns.m_col_item] = report;
+        row[m_columns.m_col_translation] = report->get_title(m_translation_locale);
         row[m_columns.m_col_parent_table] = table_name;
       }
     }

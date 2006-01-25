@@ -34,7 +34,7 @@ public:
 protected:
   virtual bool fill_from_database(); //override
 
-  virtual void fill_row(const Gtk::TreeModel::iterator& iter, const Report& report);
+  virtual void fill_row(const Gtk::TreeModel::iterator& iter, const sharedptr<const Report>& report);
 
   virtual void save_to_document();
 

@@ -1593,7 +1593,7 @@ void Base_DB::report_build_records(const Glib::ustring& table_name, xmlpp::Eleme
 }
 
 
-void Base_DB::report_build(const Glib::ustring& table_name, const Report& report, const Glib::ustring& where_clause)
+void Base_DB::report_build(const Glib::ustring& table_name, const sharedptr<const Report>& report, const Glib::ustring& where_clause)
 {
   //Create a DOM Document with the XML:
   xmlpp::DomParser dom_parser;;
@@ -1617,11 +1617,11 @@ void Base_DB::report_build(const Glib::ustring& table_name, const Report& report
   xmlpp::Element* nodeParent = nodeRoot;
 
 
-  nodeRoot->set_attribute("title", report.get_title_or_name());
+  nodeRoot->set_attribute("title", report->get_title_or_name());
 
   GlomUtils::type_vecLayoutFields fieldsToGet_TopLevel;
 
-  for(LayoutGroup::type_map_items::const_iterator iter = report.m_layout_group.m_map_items.begin(); iter != report.m_layout_group.m_map_items.end(); ++iter)
+  for(LayoutGroup::type_map_items::const_iterator iter = report->m_layout_group.m_map_items.begin(); iter != report->m_layout_group.m_map_items.end(); ++iter)
   {
     LayoutItem* pPart = iter->second;
 
