@@ -92,7 +92,6 @@ protected:
 
   Gtk::VBox* m_pBoxTop;
   Frame_Glom* m_pFrame;
-  Gtk::Label* m_pStatus;
 
   Window_Translations* m_window_translations;
 

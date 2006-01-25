@@ -87,10 +87,10 @@ public:
 
 
   /// This forwards to the Gnome::Gda::FieldAttributes::get_name, so that we can use it in the same predicate template.
-  Glib::ustring get_name() const;
+  virtual Glib::ustring get_name() const;
 
   /// This forwards to the Gnome::Gda::FieldAttributes::set_name, for convenience
-  void set_name(const Glib::ustring& value);
+  virtual void set_name(const Glib::ustring& value);
 
   /// This forwards to the Gnome::Gda::FieldAttributes::get_auto_increment.
   bool get_auto_increment() const;

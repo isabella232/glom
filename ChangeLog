@@ -1,5 +1,27 @@
 2006-01-24  Murray Cumming  <murray@murrayc.com>
 
+	* glom/data_structure/translatable_item.h: Copy m_title 
+	(the original) in copy constructor and operator=(). This makes 
+	the table titles show up again and be saved.
+	* glom/document/document_glom.cc:
+	* glom/document/document_glom.h: Save/load titles in 
+	load_after_translations() and save_before_translations() instead 
+	of separately.
+	* glom/sharedptr.h: Added cast_dynamic<>, cast_static<>, and 
+	cast_const<>, based on RefPtr.
+	* glom/glom.glade:
+	* glom/translation/Makefile.am:
+	* glom/translation/combobox_locale.cc:
+	* glom/translation/combobox_locale.h: Added set_locale().
+	* glom/application.cc:
+	* glom/application.h:
+	* glom/translation/dialog_change_language.cc:
+	* glom/translation/dialog_change_language.h: New dialog 
+	used to choose a language to test temporarily.
+	* po/POTFILES.in: Added dialog_change_language.cc.
+
+2006-01-24  Murray Cumming  <murray@murrayc.com>
+
 	* glom/data_structure/translatable_item.cc:
 	* glom/data_structure/translatable_item.h: Added a new 
 	base class for all items that have a non-translated ID name and 

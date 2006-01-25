@@ -30,7 +30,10 @@ Window_Translations::Window_Translations(BaseObjectType* cobject, const Glib::Re
   m_treeview(0),
   m_button_identify(0),
   m_combo_target_locale(0),
-  m_label_source_locale(0)
+  m_label_source_locale(0),
+  m_button_ok(0),
+  m_button_cancel(0),
+  m_treeview_modified(false)
 {
   refGlade->get_widget("label_source_locale", m_label_source_locale);
 
@@ -57,15 +60,33 @@ Window_Translations::Window_Translations(BaseObjectType* cobject, const Glib::Re
     column_item_typename->set_cell_data_func(*renderer_item_typename, sigc::mem_fun(*this, &Window_Translations::on_cell_data_item_typename));
 
 
-    m_treeview->append_column_editable(_("Translation"), m_columns.m_col_translation);
+    const int col = m_treeview->append_column_editable(_("Translation"), m_columns.m_col_translation);
+    Gtk::CellRendererText* renderer = dynamic_cast<Gtk::CellRendererText*>(m_treeview->get_column_cell_renderer(col - 1));
+    if(renderer)
+      renderer->signal_edited().connect(sigc::mem_fun(*this, &Window_Translations::on_treeview_edited));
   }
 
   refGlade->get_widget("button_identify", m_button_identify);
   m_button_identify->signal_clicked().connect( sigc::mem_fun(*this, &Window_Translations::on_button_identify) );
 
   refGlade->get_widget_derived("combobox_target_locale", m_combo_target_locale);
+  m_combo_target_locale->signal_changed().connect(sigc::mem_fun(*this, &Window_Translations::on_combo_target_locale_changed));
+
+  refGlade->get_widget("button_ok", m_button_ok);
+  m_button_ok->signal_clicked().connect( sigc::mem_fun(*this, &Window_Translations::on_button_ok) );
+
+  refGlade->get_widget("button_cancel", m_button_cancel);
+  m_button_cancel->signal_clicked().connect( sigc::mem_fun(*this, &Window_Translations::on_button_cancel) );
 
   show_all_children();
+
+  //Start with the currently-used/tested translation, if appropriate:
+  if(TranslatableItem::get_current_locale_not_original())
+  {
+    m_translation_locale = TranslatableItem::get_current_locale();
+    m_combo_target_locale->set_selected_locale(m_translation_locale);
+    //The translations will be shown in the treeview when load_from_document() is called.
+  }
 }
 
 Window_Translations::~Window_Translations()
@@ -133,23 +154,22 @@ void Window_Translations::load_from_document()
 
   Document_Glom* document = get_document();
 
-  const Glib::ustring translation_locale = "TODO";
-
   //Add tables:
   Document_Glom::type_listTableInfo tables = document->get_tables();
   for(Document_Glom::type_listTableInfo::const_iterator iter = tables.begin(); iter != tables.end(); ++iter)
   {
     const TableInfo& tableinfo = *iter;
+    const Glib::ustring table_name = tableinfo.get_name();
 
     //Table title:
     Gtk::TreeModel::iterator iterTree = m_model->append();
     Gtk::TreeModel::Row row = *iterTree;
     row[m_columns.m_col_item] = sharedptr<TableInfo>(new TableInfo(tableinfo));
-    row[m_columns.m_col_translation] = tableinfo.get_title(translation_locale);
+    row[m_columns.m_col_translation] = tableinfo.get_title(m_translation_locale);
     row[m_columns.m_col_parent_table] = Glib::ustring(); //Not used for tables.
 
     //The table's field titles:
-    Document_Glom::type_vecFields fields = document->get_table_fields(tableinfo.get_name());
+    Document_Glom::type_vecFields fields = document->get_table_fields(table_name);
     for(Document_Glom::type_vecFields::iterator iter = fields.begin(); iter != fields.end(); ++iter)
     {
       Gtk::TreeModel::iterator iterTree = m_model->append();
@@ -157,20 +177,77 @@ void Window_Translations::load_from_document()
 
       sharedptr<Field> field = *iter;
       row[m_columns.m_col_item] = field;
-      row[m_columns.m_col_translation] = field->get_title(translation_locale);
-      row[m_columns.m_col_parent_table] = tableinfo.get_name();
+      row[m_columns.m_col_translation] = field->get_title(m_translation_locale);
+      row[m_columns.m_col_parent_table] = table_name;
+
     }
 
     //The table's report titles:
-    //TODO: 
-  }
+    Document_Glom::type_listReports listReports = document->get_report_names(table_name);
+    for(Document_Glom::type_listReports::iterator iter = listReports.begin(); iter != listReports.end(); ++iter)
+    {
+      Report report;
+      const bool test = document->get_report(table_name, *iter, report);
+      if(test)
+      {
+        Gtk::TreeModel::iterator iterTree = m_model->append();
+        Gtk::TreeModel::Row row = *iterTree;
 
+        sharedptr<Report> sharedReport = sharedptr<Report>(new Report(report));
+        row[m_columns.m_col_item] = sharedReport;
+        row[m_columns.m_col_translation] = sharedReport->get_title(m_translation_locale);
+        row[m_columns.m_col_parent_table] = table_name;
+      }
+    }
+  } //for
+
+  m_treeview_modified = false;
 }
 
 void Window_Translations::save_to_document()
 {
+  if(!m_treeview_modified || m_translation_locale.empty())
+    return;
+
+  //Look at every item in the treeview and apply its translation:
+  for(Gtk::TreeModel::iterator iter = m_model->children().begin(); iter != m_model->children().end(); ++iter)
+  {
+    Gtk::TreeModel::Row row = *iter;
+
+    //We have stored a sharedptr to the original item, so we can just change it directly:
+    sharedptr<TranslatableItem> item = row[m_columns.m_col_item];
+    if(item)
+    {
+      const Glib::ustring translation = row[m_columns.m_col_translation];
+      item->set_title(m_translation_locale, translation);
+    }
+  }
+
+  m_treeview_modified = false;
+  set_modified(); //Save to the document.
 }
 
+void Window_Translations::on_button_cancel()
+{
+  hide();
+}
 
+void Window_Translations::on_button_ok()
+{
+  save_to_document();
+  hide();
+}
 
+void Window_Translations::on_combo_target_locale_changed()
+{
+  save_to_document();
+
+  m_translation_locale = m_combo_target_locale->get_selected_locale();
+  load_from_document();
+}
+
+void Window_Translations::on_treeview_edited(const Glib::ustring& /* path */, const Glib::ustring& /* new_text */)
+{
+  m_treeview_modified = true;
+}
 

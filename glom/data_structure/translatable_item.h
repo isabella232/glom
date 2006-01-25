@@ -68,7 +68,7 @@ public:
 
   /** Set the title's translation for the current locale.
    */
-  void set_title(const Glib::ustring& locale, Glib::ustring& title);
+  void set_title(const Glib::ustring& locale, const Glib::ustring& title);
 
   /** Set the title's original (non-translated, usually English) text.
    */
@@ -98,14 +98,39 @@ public:
 
   static Glib::ustring get_translatable_type_name(enumTranslatableItemType item_type);
 
+
+  /** Set the locale used for titles, to test translations.
+   * Usually the current locale is just the locale at startup.
+   */
+  static void set_current_locale(const Glib::ustring& locale);
+
+  /** Get the locale used by this program when it was started.
+   */
+  static Glib::ustring get_current_locale();
+
+  /** Set the locale used for original text of titles. This 
+   * must usually be stored in the document. 
+   * Ideally, it would be English.
+   */
+  static void set_original_locale(const Glib::ustring& locale);
+
+  static bool get_current_locale_not_original();
+
 protected:
 
-  static Glib::ustring get_current_locale();
+  /** Get the locale used as the source language.
+   * This is the language of the title that is used when there are no translations.
+   */
+  static Glib::ustring get_original_locale();
+
+
 
   enumTranslatableItemType m_translatable_item_type;
   Glib::ustring m_name; //Non-translated identifier;
   Glib::ustring m_title; //The original, untranslated (usually-English) title.
   type_map_locale_to_translations m_map_translations;
+
+  static Glib::ustring m_current_locale, m_original_locale;
 };
 
 #endif //GLOM_DATASTRUCTURE_TRANSLATABLE_ITEM_H

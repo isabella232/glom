@@ -87,7 +87,7 @@ public:
   /** Dereferencing.
    *
    * Use the methods of the underlying instance like so:
-   * <code>refptr->memberfun()</code>.
+   * <code>sharedptr->memberfun()</code>.
    */
   inline T_obj* operator->() const;
 
@@ -100,6 +100,36 @@ public:
    * @endcode
    */
   inline operator bool() const;
+
+    /** Dynamic cast to derived class.
+   *
+   * The sharedptr can't be cast with the usual notation so instead you can use
+   * @code
+   *   ptr_derived = sharedptr<Derived>::cast_dynamic(ptr_base);
+   * @endcode
+   */
+  template <class T_CastFrom>
+  static inline sharedptr<T_obj> cast_dynamic(const sharedptr<T_CastFrom>& src);
+
+  /** Static cast to derived class.
+   *
+   * Like the dynamic cast; the notation is 
+   * @code
+   *   ptr_derived = sharedptr<Derived>::cast_static(ptr_base);
+   * @endcode
+   */
+  template <class T_CastFrom>
+  static inline sharedptr<T_obj> cast_static(const sharedptr<T_CastFrom>& src);
+
+  /** Cast to non-const.
+   *
+   * The sharedptr can't be cast with the usual notation so instead you can use
+   * @code
+   *   ptr_unconst = sharedptr<UnConstType>::cast_const(ptr_const);
+   * @endcode
+   */
+  template <class T_CastFrom>
+  static inline sharedptr<T_obj> cast_const(const sharedptr<T_CastFrom>& src);
 
   ///Get the underlying instance:
   inline T_obj* obj();
@@ -312,6 +342,46 @@ void sharedptr<T_obj>::init()
 
   m_pobj = 0;
   m_pRefCount = 0;
+}
+
+
+template <class T_obj>
+  template <class T_CastFrom>
+inline
+sharedptr<T_obj> sharedptr<T_obj>::cast_dynamic(const sharedptr<T_CastFrom>& src)
+{
+  T_obj *const pCppObject = dynamic_cast<T_obj*>(src.operator->());
+
+  if(pCppObject)
+    ref();
+
+  return sharedptr<T_obj>(pCppObject);
+}
+
+template <class T_obj>
+  template <class T_CastFrom>
+inline
+sharedptr<T_obj> sharedptr<T_obj>::cast_static(const sharedptr<T_CastFrom>& src)
+{
+  T_obj *const pCppObject = static_cast<T_obj*>(src.operator->());
+
+  if(pCppObject)
+    ref();
+
+  return sharedptr<T_obj>(pCppObject);
+}
+
+template <class T_obj>
+  template <class T_CastFrom>
+inline
+sharedptr<T_obj> sharedptr<T_obj>::cast_const(const sharedptr<T_CastFrom>& src)
+{
+  T_obj *const pCppObject = const_cast<T_obj*>(src.operator->());
+
+  if(pCppObject)
+    ref();
+
+  return sharedptr<T_obj>(pCppObject);
 }
 
 

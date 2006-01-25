@@ -47,7 +47,12 @@ protected:
   void on_button_identify();
   void on_cell_data_original(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter);
   void on_cell_data_item_typename(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter);
+  void on_treeview_edited(const Glib::ustring& path, const Glib::ustring& new_text);
 
+  void on_combo_target_locale_changed();
+
+  void on_button_cancel();
+  void on_button_ok();
 
   //Tree model columns:
   class ModelColumns : public Gtk::TreeModel::ColumnRecord
@@ -72,6 +77,12 @@ protected:
   Glib::RefPtr<Gtk::ListStore> m_model;
 
   Gtk::Label* m_label_source_locale;
+  Glib::ustring m_translation_locale;
+
+  Gtk::Button* m_button_ok;
+  Gtk::Button* m_button_cancel;
+
+  bool m_treeview_modified;
 };
 
 #endif //GLOM_TRANSLATIONS_DIALOG_TRANSLATIONS_H

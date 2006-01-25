@@ -21,6 +21,7 @@
 #include "application.h"
 #include "dialog_new_database.h"
 #include "dialog_progress_creating.h"
+#include "translation/dialog_change_language.h"
 #include "translation/window_translations.h"
 #include "utils.h"
 #include <libgnome/gnome-help.h> //For gnome_help_display
@@ -37,6 +38,7 @@ App_Glom::App_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml
   type_base(cobject, "Glom"),
   m_pBoxTop(0),
   m_pFrame(0),
+  m_window_translations(0),
   m_menu_tables_ui_merge_id(0),
   m_menu_reports_ui_merge_id(0)
 {
@@ -289,7 +291,7 @@ void App_Glom::init_menus()
   m_listDeveloperActions.push_back(action);
   m_refActionGroup_Others->add(action, sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_layout));
 
-  action = Gtk::Action::create("GlomAction_Menu_Developer_ChangeLanguage", _("_Change Language"));
+  action = Gtk::Action::create("GlomAction_Menu_Developer_ChangeLanguage", _("_Test Translation"));
   m_listDeveloperActions.push_back(action);
   m_refActionGroup_Others->add(action, sigc::mem_fun(*this, &App_Glom::on_menu_developer_changelanguage));
 
@@ -329,8 +331,9 @@ void App_Glom::init_menus()
     "        <menuitem action='GlomAction_Menu_Developer_Layout' />"
     "        <menuitem action='GlomAction_Menu_Developer_Users' />"
     "        <menuitem action='GlomAction_Menu_Developer_Reports' />"
-   // "        <menuitem action='GlomAction_Menu_Developer_ChangeLanguage' />"
-  //  "        <menuitem action='GlomAction_Menu_Developer_Translations' />"
+    "        <separator />"
+    "        <menuitem action='GlomAction_Menu_Developer_Translations' />"
+    "        <menuitem action='GlomAction_Menu_Developer_ChangeLanguage' />"
     "      </menu>"
     "    </placeholder>"
     "  </menubar>"
@@ -564,7 +567,7 @@ void App_Glom::on_userlevel_changed(AppState::userlevels /* userlevel */)
 void App_Glom::update_userlevel_ui()
 {
   AppState::userlevels userlevel = get_userlevel();
-  
+
   //Disable/Enable developer actions:
   for(type_listActions::iterator iter = m_listDeveloperActions.begin(); iter != m_listDeveloperActions.end(); ++iter)
   {
@@ -1192,7 +1195,31 @@ void App_Glom::on_menu_file_save_as_example()
 
 void App_Glom::on_menu_developer_changelanguage()
 {
+  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_change_language");
+  if(refXml)
+  {
+    Dialog_ChangeLanguage* dialog = 0;
+    refXml->get_widget_derived("dialog_change_language", dialog);
+    if(dialog)
+    {
+      dialog->set_transient_for(*this);
+      const int response = dialog->run();
+      dialog->hide();
 
+      if(response == Gtk::RESPONSE_OK)
+      {
+        TranslatableItem::set_current_locale(dialog->get_locale());
+
+       //Get the translations from the document (in Operator mode, we only load the necessary translations.)
+       //This also updates the UI, so we show all the translated titles:
+       get_document()->load();
+
+       m_pFrame->show_table_refresh(); //load() doesn't seem to refresh the view.
+      }
+
+      delete dialog;
+    }
+  }
 }
 
 void App_Glom::on_menu_developer_translations()
@@ -1224,6 +1251,8 @@ void App_Glom::on_window_translations_hide()
     //remove_view(m_window_translations);
     delete m_window_translations;
     m_window_translations = 0;
+
+    m_pFrame->on_developer_dialog_hide();
   }
 }
 

@@ -115,6 +115,10 @@ public:
   void export_data_to_string(Glib::ustring& the_string, const Glib::ustring table_name, const Document_Glom::type_mapLayoutGroupSequence& sequence, const Glib::ustring& where_clause = Glib::ustring());
   void export_data_to_stream(std::ostream& the_stream, const Glib::ustring table_name, const Document_Glom::type_mapLayoutGroupSequence& sequence, const Glib::ustring& where_clause = Glib::ustring());
 
+  /** Show the table again. For instance, if the document has changed, or we want to display it differently.
+   */
+  void show_table_refresh();
+
 protected:
 
   //virtual void set_document(Document_Glom* pDocument); //override

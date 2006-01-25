@@ -83,6 +83,17 @@ public:
   virtual Glib::ustring get_connection_user() const;
   virtual Glib::ustring get_connection_database() const;
 
+  /** Set the language/locale used by original titles.
+   * Title translations are translations of the text in this language.
+   * @param locale: For instance, "en_US.UTF-8".
+   */
+  void set_translation_original_locale(const Glib::ustring& locale);
+
+  /** Get the language/locale used by original titles.
+   * Title translations are translations of the text in this language.
+   */
+  Glib::ustring get_translation_original_locale() const;
+
   typedef std::vector<Relationship> type_vecRelationships;
   virtual type_vecRelationships get_relationships(const Glib::ustring& table_name) const;
   void set_relationships(const Glib::ustring& table_name, const type_vecRelationships& vecRelationships);
@@ -306,6 +317,7 @@ protected:
   type_map_groups m_groups;
 
   Glib::ustring m_database_title;
+  Glib::ustring m_translation_original_locale;
 
   bool m_block_cache_update; //For efficiency.
   bool m_block_modified_set;

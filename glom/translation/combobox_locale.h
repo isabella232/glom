@@ -34,6 +34,9 @@ public:
   ComboBox_Locale(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
   virtual ~ComboBox_Locale();
 
+  void set_selected_locale(const Glib::ustring& locale);
+  Glib::ustring get_selected_locale() const;
+
 protected:
 
   //Tree model columns:

@@ -52,6 +52,43 @@ ComboBox_Locale::~ComboBox_Locale()
 
 }
 
+Glib::ustring ComboBox_Locale::get_selected_locale() const
+{
+  Gtk::TreeModel::iterator iter = get_active();
+  if(iter)
+  {
+    Gtk::TreeModel::Row row = *iter;
+    return row[m_model_columns.m_identifier];
+  }
+  else
+    return Glib::ustring();
+}
+
+void ComboBox_Locale::set_selected_locale(const Glib::ustring& locale)
+{
+  //Look for the row with this text, and activate it:
+  Glib::RefPtr<Gtk::TreeModel> model = get_model();
+  if(model)
+  {
+    for(Gtk::TreeModel::iterator iter = model->children().begin(); iter != model->children().end(); ++iter)
+    {
+      const Glib::ustring& this_text = (*iter)[m_model_columns.m_identifier];
+
+      if(this_text == locale)
+      {
+        set_active(iter);
+        return; //success
+      }
+    }
+  }
+
+  //Not found, so mark it as blank:
+  std::cerr << "ComboBox_Locale::set_selected_locale(): locale not found in list: " << locale << std::endl;
+  unset_active();
+}
+
+
+
 
 
 

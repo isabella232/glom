@@ -375,6 +375,11 @@ void Frame_Glom::alert_no_table()
   }
 }
 
+void Frame_Glom::show_table_refresh()
+{
+  show_table(m_strTableName);
+}
+
 void Frame_Glom::show_table(const Glib::ustring& strTableName)
 {
   App_Glom* pApp = dynamic_cast<App_Glom*>(get_app_window());
