@@ -1,5 +1,10 @@
 2006-01-25  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/application.cc: Reuse the Translations window, so it shows the 
+	last-used locale when shown again.
+
+2006-01-25  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/application.cc:
 	* glom/base_db.cc:
 	* glom/base_db.h:

@@ -54,7 +54,8 @@ App_Glom::App_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml
 
 App_Glom::~App_Glom()
 {
-
+  if(m_window_translations)
+    delete m_window_translations;
 }
 
 bool App_Glom::init(const Glib::ustring& document_uri)
@@ -1240,6 +1241,7 @@ void App_Glom::on_menu_developer_translations()
   else
   {
     m_window_translations->show();
+    m_window_translations->load_from_document();
   }
 }
 
@@ -1247,10 +1249,6 @@ void App_Glom::on_window_translations_hide()
 {
   if(m_window_translations)
   {
-    //remove_view(m_window_translations);
-    delete m_window_translations;
-    m_window_translations = 0;
-
     m_pFrame->on_developer_dialog_hide();
   }
 }
