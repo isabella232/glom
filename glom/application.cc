@@ -890,11 +890,11 @@ bool App_Glom::recreate_database(bool& user_cancelled)
   Document_Glom::type_listTableInfo tables = pDocument->get_tables();
   for(Document_Glom::type_listTableInfo::const_iterator iter = tables.begin(); iter != tables.end(); ++iter)
   {
-    const TableInfo& table_info = *iter;
+    sharedptr<const TableInfo> table_info = *iter;
 
     //Create SQL to describe all fields in this table:
     Glib::ustring sql_fields;
-    Document_Glom::type_vecFields fields = pDocument->get_table_fields(table_info.get_name());
+    Document_Glom::type_vecFields fields = pDocument->get_table_fields(table_info->get_name());
 
     dialog_progress->pulse();
     const bool table_creation_succeeded = m_pFrame->create_table(table_info, fields);
@@ -919,7 +919,7 @@ bool App_Glom::recreate_database(bool& user_cancelled)
 
       //Add any example data to the table:
       dialog_progress->pulse();
-      const bool table_insert_succeeded = m_pFrame->insert_example_data(table_info.get_name());
+      const bool table_insert_succeeded = m_pFrame->insert_example_data(table_info->get_name());
       if(!table_insert_succeeded)
       {
         g_warning("App_Glom::recreate_database(): INSERT of example data failed with the newly-created database.");
@@ -984,20 +984,20 @@ void App_Glom::fill_menu_tables()
   const Document_Glom::type_listTableInfo tables = document->get_tables();
   for(Document_Glom::type_listTableInfo::const_iterator iter = tables.begin(); iter != tables.end(); ++iter)
   {
-    const TableInfo& table_info = *iter;
-    if(!table_info.m_hidden)
+    sharedptr<const TableInfo> table_info = *iter;
+    if(!table_info->m_hidden)
     {
-      const Glib::ustring action_name = "NavTableAction_" + table_info.get_name();
+      const Glib::ustring action_name = "NavTableAction_" + table_info->get_name();
 
       ui_description += "<menuitem action='" + action_name + "' />";
 
-      Glib::RefPtr<Gtk::Action> refAction = Gtk::Action::create(action_name, table_info.get_title_or_name()); //TODO: Ignore mnemonics.
+      Glib::RefPtr<Gtk::Action> refAction = Gtk::Action::create(action_name, table_info->get_title_or_name()); //TODO: Ignore mnemonics.
       m_refNavTablesActionGroup->add(refAction,
-        sigc::bind( sigc::mem_fun(*m_pFrame, &Frame_Glom::on_box_tables_selected), table_info.get_name()) );
+        sigc::bind( sigc::mem_fun(*m_pFrame, &Frame_Glom::on_box_tables_selected), table_info->get_name()) );
 
       m_listNavTableActions.push_back(refAction);
 
-      //m_refUIManager->add_ui(merge_id, path, table_info.m_title, refAction, UI_MANAGER_MENUITEM);
+      //m_refUIManager->add_ui(merge_id, path, table_info->m_title, refAction, UI_MANAGER_MENUITEM);
     }
   }
 
@@ -1061,7 +1061,7 @@ void App_Glom::fill_menu_reports(const Glib::ustring& table_name)
 
         m_listNavReportActions.push_back(refAction);
 
-        //m_refUIManager->add_ui(merge_id, path, table_info.m_title, refAction, UI_MANAGER_MENUITEM);
+        //m_refUIManager->add_ui(merge_id, path, table_info->m_title, refAction, UI_MANAGER_MENUITEM);
       }
     }
   }
@@ -1141,7 +1141,7 @@ void App_Glom::on_menu_file_save_as_example()
       Document_Glom::type_listTableInfo list_table_info = document->get_tables();
       for(Document_Glom::type_listTableInfo::const_iterator iter = list_table_info.begin(); iter != list_table_info.end(); ++iter)
       {
-        const Glib::ustring table_name = iter->get_name();
+        const Glib::ustring table_name = (*iter)->get_name();
 
         //const type_vecFields vec_fields = document->get_table_fields(table_name);
 

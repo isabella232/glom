@@ -741,10 +741,10 @@ bool Base_DB::add_standard_tables() const
     //Name, address, etc:
     if(!get_table_exists_in_database(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME))
     {
-      TableInfo prefs_table_info;
-      prefs_table_info.set_name(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME);
-      prefs_table_info.set_title("System: Preferences"); //TODO: Provide standard translations.
-      prefs_table_info.m_hidden = true;
+      sharedptr<TableInfo> prefs_table_info(new TableInfo());
+      prefs_table_info->set_name(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME);
+      prefs_table_info->set_title("System: Preferences"); //TODO: Provide standard translations.
+      prefs_table_info->m_hidden = true;
 
       Document_Glom::type_vecFields pref_fields;
 
@@ -817,10 +817,10 @@ bool Base_DB::add_standard_tables() const
     //Auto-increment next values:
     if(!get_table_exists_in_database(GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME))
     {
-      TableInfo table_info;
-      table_info.set_name(GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME);
-      table_info.set_title("System: Auto Increments"); //TODO: Provide standard translations.
-      table_info.m_hidden = true;
+      sharedptr<TableInfo> table_info(new TableInfo());
+      table_info->set_name(GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME);
+      table_info->set_title("System: Auto Increments"); //TODO: Provide standard translations.
+      table_info->m_hidden = true;
 
       Document_Glom::type_vecFields fields;
 
@@ -883,7 +883,9 @@ void Base_DB::add_standard_groups()
 
     for(Document_Glom::type_listTableInfo::const_iterator iter = table_list.begin(); iter != table_list.end(); ++iter)
     {
-      set_table_privileges(devgroup, iter->get_name(), priv_devs, true /* developer privileges */);
+      sharedptr<TableInfo> table_info = *iter;
+      if(table_info)
+        set_table_privileges(devgroup, table_info->get_name(), priv_devs, true /* developer privileges */);
     }
 
     //Make sure that it is in the database too:
@@ -1207,7 +1209,7 @@ void Base_DB::set_database_preferences(const SystemPrefs& prefs)
     get_document()->set_database_title(prefs.m_name);
 }
 
-bool Base_DB::create_table(const TableInfo& table_info, const Document_Glom::type_vecFields& fields) const
+bool Base_DB::create_table(const sharedptr<const TableInfo>& table_info, const Document_Glom::type_vecFields& fields) const
 {
   bool table_creation_succeeded = false;
 
@@ -1244,7 +1246,7 @@ bool Base_DB::create_table(const TableInfo& table_info, const Document_Glom::typ
   //Actually create the table
   try
   {
-    Glib::RefPtr<Gnome::Gda::DataModel> data_model = Query_execute( "CREATE TABLE \"" + table_info.get_name() + "\" (" + sql_fields + ")" );
+    Glib::RefPtr<Gnome::Gda::DataModel> data_model = Query_execute( "CREATE TABLE \"" + table_info->get_name() + "\" (" + sql_fields + ")" );
     if(!data_model)
       table_creation_succeeded = false;
     else

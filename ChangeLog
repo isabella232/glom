@@ -1,3 +1,22 @@
+2006-01-25  Murray Cumming  <murray@murrayc.com>
+
+	* glom/application.cc:
+	* glom/base_db.cc:
+	* glom/base_db.h:
+	* glom/dialog_database_preferences.cc:
+	* glom/document/document_glom.cc:
+	* glom/document/document_glom.h:
+	* glom/glom.glade:
+	* glom/mode_design/users/dialog_groups_list.cc:
+	* glom/mode_design/users/dialog_users_list.cc:
+	* glom/navigation/box_tables.cc:
+	* glom/navigation/box_tables.h:
+	* glom/relationships_overview/relationships_canvas.cc:
+	* glom/relationships_overview/table_canvasitem.cc:
+	* glom/relationships_overview/table_canvasitem.h:
+	* glom/translation/window_translations.cc: Use TableInfo via 
+	sharedptr<> so that Table title translations are used.
+
 2006-01-24  Murray Cumming  <murray@murrayc.com>
 
 	* glom/data_structure/translatable_item.h: Copy m_title 

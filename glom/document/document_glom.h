@@ -148,7 +148,7 @@ public:
   ///When a relationship name is changed, change it in layouts and reports:
   virtual void change_relationship_name(const Glib::ustring& table_name, const Glib::ustring& name, const Glib::ustring& name_new);
 
-  typedef std::list<TableInfo> type_listTableInfo;
+  typedef std::list< sharedptr<TableInfo> > type_listTableInfo;
   virtual type_listTableInfo get_tables() const;
   virtual void set_tables(const type_listTableInfo& tables);
 
@@ -286,7 +286,12 @@ protected:
   class DocumentTableInfo
   {
   public:
-    TableInfo m_info;
+    DocumentTableInfo()
+    {
+      m_info = sharedptr<TableInfo>(new TableInfo()); //Avoid a null sharedptr.
+    }
+
+    sharedptr<TableInfo> m_info;
 
     type_vecFields m_fields;
     type_vecRelationships m_relationships;

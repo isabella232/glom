@@ -33,11 +33,11 @@ class TableCanvasItem
     public Base_DB
 {
 public: 
-  TableCanvasItem(Gnome::Canvas::Group& parent_group, const TableInfo& table_info);
+  TableCanvasItem(Gnome::Canvas::Group& parent_group, const sharedptr<const TableInfo>& table_info);
   virtual ~TableCanvasItem();
-  
+
   virtual void load_from_document(); //View override
- 
+
 protected: 
   void on_cell_data_name(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter);
 
@@ -61,7 +61,7 @@ protected:
   Gnome::Canvas::Text* m_canvas_text_title;
   Gnome::Canvas::Rect* m_canvas_rect;
 
-  TableInfo m_table_info;
+  sharedptr<const TableInfo> m_table_info;
 };
 
 #endif //GLOM_RELATIONSHIPS_OVERVIEW_TABLE_CANVASITEM_H

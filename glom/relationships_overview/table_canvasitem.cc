@@ -20,7 +20,7 @@
 
 #include "table_canvasitem.h"
 
-TableCanvasItem::TableCanvasItem(Gnome::Canvas::Group& parent_group, const TableInfo& table_info)
+TableCanvasItem::TableCanvasItem(Gnome::Canvas::Group& parent_group, const sharedptr<const TableInfo>& table_info)
 : Gnome::Canvas::Group(parent_group),
   m_canvas_widget(0),
   m_widget(0),
@@ -31,41 +31,41 @@ TableCanvasItem::TableCanvasItem(Gnome::Canvas::Group& parent_group, const Table
 {
   m_canvas_rect = new Gnome::Canvas::Rect(*this);
   m_canvas_rect->property_outline_color() = "black";
-  
+
   m_canvas_text_title = new Gnome::Canvas::Text(*this);
-  m_canvas_text_title->property_text() = table_info.get_title_or_name();
-  
+  m_canvas_text_title->property_text() = table_info->get_title_or_name();
+
   try
   {
     Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "alignment_placeholder_canvasitem");
 
     refXml->get_widget_derived("alignment_placeholder_canvasitem", m_widget);
-    
+
     refXml->get_widget("treeview_fields", m_treeview_fields);
-    
+
     m_model_fields = Gtk::ListStore::create(m_ColumnsFields);
     m_treeview_fields->set_model(m_model_fields);
     m_treeview_fields->set_size_request(100,100);
-    
+
     Gtk::CellRendererText* cell_name = new Gtk::CellRendererText();
     Gtk::TreeView::Column* view_column = new Gtk::TreeViewColumn("name");
     view_column->pack_start(*cell_name);
     m_treeview_fields->append_column(*view_column);
     view_column->set_cell_data_func(*cell_name, sigc::mem_fun(*this, &TableCanvasItem::on_cell_data_name));
 
-    
+
   }
   catch(const Gnome::Glade::XmlError& ex)
   {
     std::cerr << ex.what() << std::endl;
   }
-  
+
   m_widget->show();
-  
+
   m_canvas_widget = new Gnome::Canvas::Widget(*this);
   m_canvas_widget->property_widget() = m_widget;
   m_canvas_widget->property_y() = 50; //TODO: m_canvas_text_title->property_height();
- 
+
   m_canvas_rect->property_y2() = 200;
   m_canvas_rect->property_x2() = 100;
 }
@@ -77,7 +77,7 @@ void TableCanvasItem::load_from_document()
   {
     m_model_fields->clear();
 
-    const Document_Glom::type_vecFields fields = document->get_table_fields(m_table_info.get_name());
+    const Document_Glom::type_vecFields fields = document->get_table_fields(m_table_info->get_name());
     for(Document_Glom::type_vecFields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
     {
       Gtk::TreeModel::iterator iterTree = m_model_fields->append();

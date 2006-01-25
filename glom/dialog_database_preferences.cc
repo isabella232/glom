@@ -117,12 +117,12 @@ void Dialog_Database_Preferences::load_from_document()
   const Document_Glom::type_listTableInfo tables = document->get_tables();
   for(Document_Glom::type_listTableInfo::const_iterator iter = tables.begin(); iter != tables.end(); ++iter)
   {
-    const Document_Glom::type_vecFields fields = document->get_table_fields(iter->get_name());
+    const Document_Glom::type_vecFields fields = document->get_table_fields((*iter)->get_name());
     for(Document_Glom::type_vecFields::const_iterator iterFields = fields.begin(); iterFields != fields.end(); ++iterFields)
     {
       sharedptr<Field> field = *iterFields;
       if(field->get_primary_key())
-        auto_increment_insert_first_if_necessary(iter->get_name(), field->get_name());
+        auto_increment_insert_first_if_necessary((*iter)->get_name(), field->get_name());
     }
   }
 

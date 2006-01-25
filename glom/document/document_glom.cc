@@ -437,7 +437,7 @@ void Document_Glom::change_field_name(const Glib::ustring& table_name, const Gli
       }
 
 
-      const bool is_parent_table = (iter->second.m_info.get_name() == table_name);
+      const bool is_parent_table = (iter->second.m_info->get_name() == table_name);
 
       //Look at each layout:
       for(DocumentTableInfo::type_layouts::iterator iterLayouts = iter->second.m_layouts.begin(); iterLayouts != iter->second.m_layouts.end(); ++iterLayouts)
@@ -484,7 +484,7 @@ void Document_Glom::change_table_name(const Glib::ustring& strTableNameOld, cons
     DocumentTableInfo doctableinfo = iterFindTable->second;
     m_tables.erase(iterFindTable);
 
-    doctableinfo.m_info.set_name(strTableNameNew); 
+    doctableinfo.m_info->set_name(strTableNameNew); 
     m_tables[strTableNameNew] = doctableinfo; 
 
     //Find any relationships or layouts that use this table
@@ -535,7 +535,7 @@ void Document_Glom::change_relationship_name(const Glib::ustring& table_name, co
         (*iterFields)->m_default_formatting.change_relationship_name(table_name, name, name_new);
       }
 
-      const bool is_parent_table = (iter->second.m_info.get_name() == table_name);
+      const bool is_parent_table = (iter->second.m_info->get_name() == table_name);
 
       //Look at each layout:
       for(DocumentTableInfo::type_layouts::iterator iterLayouts = iter->second.m_layouts.begin(); iterLayouts != iter->second.m_layouts.end(); ++iterLayouts)
@@ -660,14 +660,16 @@ void Document_Glom::set_tables(const type_listTableInfo& tables)
   {
     const DocumentTableInfo& doctableinfo = iter->second;
 
-    const Glib::ustring table_name = doctableinfo.m_info.get_name();
+    const Glib::ustring table_name = doctableinfo.m_info->get_name();
 
     type_listTableInfo::const_iterator iterfind = std::find_if(tables.begin(), tables.end(), predicate_FieldHasName<TableInfo>(table_name));
     if(iterfind != tables.end())
     {
-      TableInfo& info = iter->second.m_info;
+      sharedptr<TableInfo> info = iter->second.m_info;
       //std::cout << "Document_Glom::set_tables() info.get_title_original() = " << info.get_title_origina() << std::endl;
-      info = *iterfind;
+ 
+      sharedptr<TableInfo> infoFound = *iterfind;
+      *info = *infoFound;
 
       something_changed = true;
     }
@@ -867,7 +869,7 @@ Document_Glom::DocumentTableInfo& Document_Glom::get_table_info_with_add(const G
   else
   {
     m_tables[table_name] = DocumentTableInfo();
-    m_tables[table_name].m_info.set_name(table_name);
+    m_tables[table_name].m_info->set_name(table_name);
     return get_table_info_with_add(table_name);
   }
 }
@@ -876,7 +878,7 @@ Glib::ustring Document_Glom::get_table_title(const Glib::ustring& table_name) co
 {
   type_tables::const_iterator iterFind = m_tables.find(table_name);
   if(iterFind != m_tables.end())
-    return iterFind->second.m_info.get_title();
+    return iterFind->second.m_info->get_title();
   else
     return Glib::ustring();
 }
@@ -887,9 +889,9 @@ void Document_Glom::set_table_title(const Glib::ustring& table_name, const Glib:
   if(!table_name.empty())
   {
     DocumentTableInfo& info = get_table_info_with_add(table_name);
-    if(info.m_info.get_title() != value)
+    if(info.m_info->get_title() != value)
     {
-      info.m_info.set_title(value);
+      info.m_info->set_title(value);
       set_modified();
     }
   }
@@ -927,7 +929,7 @@ bool Document_Glom::get_table_is_hidden(const Glib::ustring& table_name) const
 {
   type_tables::const_iterator iterFind = m_tables.find(table_name);
   if(iterFind != m_tables.end())
-    return iterFind->second.m_info.m_hidden;
+    return iterFind->second.m_info->m_hidden;
   else
     return false; //It's not even known.
 }
@@ -992,15 +994,15 @@ Glib::ustring Document_Glom::get_default_table() const
 {
   for(type_tables::const_iterator iter = m_tables.begin(); iter != m_tables.end(); ++iter)
   {
-    if(iter->second.m_info.m_default)
-      return iter->second.m_info.get_name();
+    if(iter->second.m_info->m_default)
+      return iter->second.m_info->get_name();
   }
 
   //If there is only one table then pretend that is the default:
   if(m_tables.size() == 1)
   {
     type_tables::const_iterator iter = m_tables.begin();
-    return iter->second.m_info.get_name();
+    return iter->second.m_info->get_name();
   }
 
   return Glib::ustring();
@@ -1012,7 +1014,7 @@ Glib::ustring Document_Glom::get_first_table() const
     return Glib::ustring();
 
   type_tables::const_iterator iter = m_tables.begin();
-  return iter->second.m_info.get_name();
+  return iter->second.m_info->get_name();
 }
 
 void Document_Glom::set_allow_autosave(bool value)
@@ -1309,17 +1311,17 @@ bool Document_Glom::load_after()
           m_tables[table_name] = DocumentTableInfo();
           DocumentTableInfo& doctableinfo = m_tables[table_name]; //Setting stuff directly in the reference is more efficient than copying it later:
 
-          TableInfo table_info;
-          table_info.set_name(table_name);
-          table_info.m_hidden = get_node_attribute_value_as_bool(nodeTable, GLOM_ATTRIBUTE_HIDDEN);
-          table_info.m_default = get_node_attribute_value_as_bool(nodeTable, GLOM_ATTRIBUTE_DEFAULT);
+          sharedptr<TableInfo> table_info(new TableInfo());
+          table_info->set_name(table_name);
+          table_info->m_hidden = get_node_attribute_value_as_bool(nodeTable, GLOM_ATTRIBUTE_HIDDEN);
+          table_info->m_default = get_node_attribute_value_as_bool(nodeTable, GLOM_ATTRIBUTE_DEFAULT);
 
           doctableinfo.m_info = table_info;
 
           doctableinfo.m_example_rows = get_node_attribute_value(nodeTable, GLOM_ATTRIBUTE_EXAMPLE_ROWS);
 
           //Translations:
-          load_after_translations(nodeTable, doctableinfo.m_info);
+          load_after_translations(nodeTable, *(doctableinfo.m_info));
 
           //Fields:
           const xmlpp::Element* nodeFields = get_node_child_named(nodeTable, GLOM_NODE_FIELDS);
@@ -1752,7 +1754,7 @@ bool Document_Glom::save_before()
     {
       const DocumentTableInfo& doctableinfo = iter->second;
 
-      const Glib::ustring table_name = doctableinfo.m_info.get_name();
+      const Glib::ustring table_name = doctableinfo.m_info->get_name();
       if(table_name.empty())
         g_warning("Document_Glom::save_before(): table name is empty.");
 
@@ -1760,8 +1762,8 @@ bool Document_Glom::save_before()
       {
         xmlpp::Element* nodeTable = nodeRoot->add_child(GLOM_NODE_TABLE);
         set_node_attribute_value(nodeTable, GLOM_ATTRIBUTE_NAME, table_name);
-        set_node_attribute_value_as_bool(nodeTable, GLOM_ATTRIBUTE_HIDDEN, doctableinfo.m_info.m_hidden);
-        set_node_attribute_value_as_bool(nodeTable, GLOM_ATTRIBUTE_DEFAULT, doctableinfo.m_info.m_default);
+        set_node_attribute_value_as_bool(nodeTable, GLOM_ATTRIBUTE_HIDDEN, doctableinfo.m_info->m_hidden);
+        set_node_attribute_value_as_bool(nodeTable, GLOM_ATTRIBUTE_DEFAULT, doctableinfo.m_info->m_default);
 
         if(m_is_example) //The example data is useless to non-example files (and is big):
           set_node_attribute_value(nodeTable, GLOM_ATTRIBUTE_EXAMPLE_ROWS, doctableinfo.m_example_rows);
@@ -1769,7 +1771,7 @@ bool Document_Glom::save_before()
           //TODO: doctableinfo.m_example_rows.clear(); //Make sure we are not keeping this in memory unnecessarily.
 
         //Translations:
-        save_before_translations(nodeTable, doctableinfo.m_info);
+        save_before_translations(nodeTable, *(doctableinfo.m_info));
 
         //Fields:
         xmlpp::Element* elemFields = nodeTable->add_child(GLOM_NODE_FIELDS);
@@ -2059,18 +2061,18 @@ void Document_Glom::update_cached_relationships()
     //Fields (formatting):
     for(type_vecFields::iterator iterField = tableInfo.m_fields.begin(); iterField != tableInfo.m_fields.end(); ++iterField)
     {
-       update_cached_relationships((*iterField)->m_default_formatting, tableInfo.m_info.get_name());
+       update_cached_relationships((*iterField)->m_default_formatting, tableInfo.m_info->get_name());
     }
 
     //Layouts:
     for(DocumentTableInfo::type_layouts::iterator iterLayout = tableInfo.m_layouts.begin(); iterLayout != tableInfo.m_layouts.end(); ++iterLayout)
     {
-      if(tableInfo.m_info.get_name() == iterLayout->m_parent_table) //If it is not a related layout:
+      if(tableInfo.m_info->get_name() == iterLayout->m_parent_table) //If it is not a related layout:
       {
         type_mapLayoutGroupSequence& groups = iterLayout->m_layout_groups;
         for(type_mapLayoutGroupSequence::iterator iterGroup = groups.begin(); iterGroup != groups.end(); ++iterGroup)
         {
-          update_cached_relationships(iterGroup->second, tableInfo.m_info.get_name());
+          update_cached_relationships(iterGroup->second, tableInfo.m_info->get_name());
         }
       }
     }
@@ -2078,7 +2080,7 @@ void Document_Glom::update_cached_relationships()
     //Reports:
     for(DocumentTableInfo::type_reports::iterator iterReport = tableInfo.m_reports.begin(); iterReport != tableInfo.m_reports.end(); ++iterReport)
     {
-      update_cached_relationships(iterReport->second.m_layout_group, tableInfo.m_info.get_name());
+      update_cached_relationships(iterReport->second.m_layout_group, tableInfo.m_info->get_name());
     }
   }
 }

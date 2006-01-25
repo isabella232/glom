@@ -158,14 +158,14 @@ void Window_Translations::load_from_document()
   Document_Glom::type_listTableInfo tables = document->get_tables();
   for(Document_Glom::type_listTableInfo::const_iterator iter = tables.begin(); iter != tables.end(); ++iter)
   {
-    const TableInfo& tableinfo = *iter;
-    const Glib::ustring table_name = tableinfo.get_name();
+    sharedptr<TableInfo> tableinfo = *iter;
+    const Glib::ustring table_name = tableinfo->get_name();
 
     //Table title:
     Gtk::TreeModel::iterator iterTree = m_model->append();
     Gtk::TreeModel::Row row = *iterTree;
-    row[m_columns.m_col_item] = sharedptr<TableInfo>(new TableInfo(tableinfo));
-    row[m_columns.m_col_translation] = tableinfo.get_title(m_translation_locale);
+    row[m_columns.m_col_item] = tableinfo;
+    row[m_columns.m_col_translation] = tableinfo->get_title(m_translation_locale);
     row[m_columns.m_col_parent_table] = Glib::ustring(); //Not used for tables.
 
     //The table's field titles:

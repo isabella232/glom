@@ -271,7 +271,7 @@ void Dialog_GroupsList::on_button_group_new()
 
     for(Document_Glom::type_listTableInfo::const_iterator iter = table_list.begin(); iter != table_list.end(); ++iter)
     {
-      set_table_privileges(group_name, iter->get_name(), priv);
+      set_table_privileges(group_name, (*iter)->get_name(), priv);
     }
 
     fill_group_list();
@@ -406,7 +406,7 @@ void Dialog_GroupsList::fill_table_list(const Glib::ustring& group_name)
       Gtk::TreeModel::iterator iterTree = m_model_tables->append();
       Gtk::TreeModel::Row row = *iterTree;
 
-      const Glib::ustring table_name = iter->get_name();
+      const Glib::ustring table_name = (*iter)->get_name();
 
       row[m_model_columns_tables.m_col_name] = table_name;
 

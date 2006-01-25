@@ -38,26 +38,26 @@ void RelationshipsCanvas::remove_all()
     remove_view(pItem);
     delete pItem;
   }
-  
+
   m_map_items.clear();
  }
- 
+
 void RelationshipsCanvas::load_from_document()
 {  
   remove_all();
-  
+
   Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
   if(document)
   {
     double x = 0;
     double y = 0;
-  
+
     Document_Glom::type_listTableInfo list_tables = document->get_tables();
     for(Document_Glom::type_listTableInfo::const_iterator iter = list_tables.begin(); iter != list_tables.end(); ++iter)
     {
       //Add a canvas item for each table:
-      const TableInfo& table_info = *iter;
-      const Glib::ustring table_name = table_info.get_name();
+      const sharedptr<const TableInfo> table_info = *iter;
+      const Glib::ustring table_name = table_info->get_name();
       if(!table_name.empty())
       {
         Gnome::Canvas::Group* parent_group = root();
@@ -65,16 +65,16 @@ void RelationshipsCanvas::load_from_document()
         {
           TableCanvasItem* pItem = new TableCanvasItem(*parent_group, table_info);
           add_view(pItem); //Give it access to the document.
-          
+
           pItem->show();
           pItem->load_from_document();
-          
+
           m_map_items[table_name] = pItem;
-          
+
           pItem->move(x, y);
           x += 20;
           y += 20;
-          
+
           pItem->signal_event().connect( sigc::bind(sigc::mem_fun(*this, &RelationshipsCanvas::on_item_event), pItem) );
         }
       }
