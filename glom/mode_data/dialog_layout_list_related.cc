@@ -34,10 +34,10 @@ Dialog_Layout_List_Related::Dialog_Layout_List_Related(BaseObjectType* cobject, 
   m_button_field_add(0),
   m_button_field_delete(0),
   m_button_field_edit(0),
-  m_combo_relationship_name(0)
+  m_combo_relationship(0)
 {
-  refGlade->get_widget_derived("combo_relationship_name", m_combo_relationship_name);
-  m_combo_relationship_name->signal_changed().connect(sigc::mem_fun(*this, &Dialog_Layout_List_Related::on_combo_relationship_changed));
+  refGlade->get_widget_derived("combo_relationship_name", m_combo_relationship);
+  m_combo_relationship->signal_changed().connect(sigc::mem_fun(*this, &Dialog_Layout_List_Related::on_combo_relationship_changed));
 
   refGlade->get_widget("treeview_fields", m_treeview_fields);
   if(m_treeview_fields)
@@ -99,7 +99,7 @@ Dialog_Layout_List_Related::~Dialog_Layout_List_Related()
 void Dialog_Layout_List_Related::set_document(const Glib::ustring& layout, Document_Glom* document, const LayoutItem_Portal& portal)
 {
   type_vecLayoutFields empty_fields; //Just to satisfy the base class.
-  Dialog_Layout::set_document(layout, document, portal.m_relationship.get_from_table(), empty_fields);
+  Dialog_Layout::set_document(layout, document, portal.get_relationship()->get_from_table(), empty_fields);
   //m_table_name is now actually the parent_table_name.
 
   m_portal = portal;
@@ -118,29 +118,26 @@ void Dialog_Layout_List_Related::update_ui(bool including_relationship_list)
     //Fill the relationships combo:
     if(including_relationship_list)
     {
-      m_combo_relationship_name->clear_text();
-      Document_Glom::type_vecRelationships vecRelationships = document->get_relationships(m_portal.m_relationship.get_from_table());
-
-      for(Document_Glom::type_vecRelationships::iterator iter = vecRelationships.begin(); iter != vecRelationships.end(); ++iter)
-      {
-        m_combo_relationship_name->append_text(iter->get_name());
-      }
+      const Glib::ustring parent_table_name = m_portal.get_relationship()->get_from_table();
+      const Glib::ustring parent_table_title = document->get_table_title(parent_table_name);
+      const Document_Glom::type_vecRelationships vecRelationships = document->get_relationships(parent_table_title);
+      m_combo_relationship->set_relationships(vecRelationships, parent_table_name, parent_table_title);
     }
 
     //Set the table name and title:
-    m_combo_relationship_name->set_active_text(m_portal.m_relationship.get_name()); 
+    m_combo_relationship->set_selected_relationship(m_portal.get_relationship()); 
 
-    m_entry_table_title->set_text( m_portal.m_relationship.get_title() );
+    m_entry_table_title->set_text( m_portal.get_relationship()->get_title() );
 
     Document_Glom::type_mapLayoutGroupSequence mapGroups;
     mapGroups[0] = m_portal;
-    document->fill_layout_field_details(m_portal.m_relationship.get_to_table(), mapGroups); //Update with full field information.
+    document->fill_layout_field_details(m_portal.get_relationship()->get_to_table(), mapGroups); //Update with full field information.
 
     //If no information is stored in the document, then start with something:
 
     if(mapGroups.empty())
     {
-      const Glib::ustring table_name = m_portal.m_relationship.get_to_table();
+      const Glib::ustring table_name = m_portal.get_relationship()->get_to_table();
       Document_Glom::type_vecFields table_fields = document->get_table_fields(table_name);
 
       LayoutGroup group;
@@ -282,27 +279,21 @@ void Dialog_Layout_List_Related::save_to_document()
     if(document)
     {
       //Save the relationship title, which will be used elsewhere too:
-      m_portal.m_relationship.set_title(m_entry_table_title->get_text());
-      document->set_relationship(m_table_name, m_portal.m_relationship);
+      m_portal.get_relationship()->set_title(m_entry_table_title->get_text());
+      document->set_relationship(m_table_name, m_portal.get_relationship());
     }
   }
 }
 
 void Dialog_Layout_List_Related::on_combo_relationship_changed()
 {
-  Glib::ustring relationship_name = m_combo_relationship_name->get_active_text();
+  sharedptr<Relationship> relationship = m_combo_relationship->get_selected_relationship();
+  m_portal.set_relationship(relationship);
 
-  if(!relationship_name.empty())
-  {
-    Document_Glom* pDocument = get_document();
-    if(pDocument)
-      pDocument->get_relationship(m_portal.m_relationship.get_from_table(), relationship_name, m_portal.m_relationship);
+  //Refresh everything for the new relationship:
+  update_ui(false /* not including the list of relationships */);
 
-    //Refresh everything for the new relationship:
-    update_ui(false /* not including the list of relationships */);
-
-    m_modified = true;
-  }
+  m_modified = true;
 }
  
 void Dialog_Layout_List_Related::on_treeview_fields_selection_changed()
@@ -321,7 +312,7 @@ void Dialog_Layout_List_Related::on_button_add_field()
 
     if(dialog)
     {
-      dialog->set_document(get_document(), m_portal.m_relationship.get_to_table());
+      dialog->set_document(get_document(), m_portal.get_relationship()->get_to_table());
       dialog->set_transient_for(*this);
       int response = dialog->run();
       if(response == Gtk::RESPONSE_OK)
@@ -374,9 +365,9 @@ void Dialog_Layout_List_Related::on_button_delete()
   }
 }
 
-Glib::ustring Dialog_Layout_List_Related::get_relationship_name() const
+sharedptr<Relationship> Dialog_Layout_List_Related::get_relationship() const
 {
-  return m_combo_relationship_name->get_active_text();
+  return m_combo_relationship->get_selected_relationship();
 }
 
 
@@ -428,7 +419,7 @@ void Dialog_Layout_List_Related::on_button_edit_field()
           Gtk::TreeModel::Row row = *iter;
           const LayoutItem_Field& field = row[m_ColumnsFields.m_col_layout_item];
 
-          dialog->set_document(get_document(), m_portal.m_relationship.get_to_table(), field);
+          dialog->set_document(get_document(), m_portal.get_relationship()->get_to_table(), field);
           dialog->set_transient_for(*this);
           int response = dialog->run();
           if(response == Gtk::RESPONSE_OK)
@@ -487,7 +478,7 @@ void Dialog_Layout_List_Related::on_button_field_formatting()
           Gtk::TreeModel::Row row = *iter;
           LayoutItem_Field field = row[m_ColumnsFields.m_col_layout_item];
 
-          dialog->set_field(field, m_portal.m_relationship.get_to_table());
+          dialog->set_field(field, m_portal.get_relationship()->get_to_table());
           dialog->set_transient_for(*this);
           int response = dialog->run();
           dialog->hide();

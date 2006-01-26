@@ -98,7 +98,8 @@ Record__get_related(PyGlomRecord* self, void* /* closure */)
     PyGlomRelated::type_map_relationships map_relationships;
     for(Document_Glom::type_vecRelationships::const_iterator iter = vecRelationships.begin(); iter != vecRelationships.end(); ++iter)
     {
-      map_relationships[iter->get_name()] = *iter;
+      if(*iter)
+        map_relationships[(*iter)->get_name()] = *iter;
     }
 
     PyGlomRelated_SetRelationships(self->m_related, map_relationships);

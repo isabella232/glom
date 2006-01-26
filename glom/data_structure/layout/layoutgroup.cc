@@ -205,10 +205,14 @@ void LayoutGroup::change_related_field_item_name(const Glib::ustring& table_name
     {
       if(field_item->get_has_relationship_name()) //If it's related table.
       {
-        if(field_item->m_relationship.get_to_table() == table_name)
+        sharedptr<const Relationship> relationship = field_item->get_relationship();
+        if(relationship)
         {
-          if(field_item->get_name() == field_name)
-            field_item->set_name(field_name_new); //Change it.
+          if(relationship->get_to_table() == table_name)
+          {
+            if(field_item->get_name() == field_name)
+              field_item->set_name(field_name_new); //Change it.
+          }
         }
       }
     }
@@ -231,10 +235,14 @@ void LayoutGroup::change_field_item_name(const Glib::ustring& table_name, const 
     {
       if(field_item->get_has_relationship_name()) //If it's a related table (this would be a self-relationship)
       {
-        if(field_item->m_relationship.get_to_table() == table_name)
+        sharedptr<const Relationship> rel = field_item->get_relationship();
+        if(rel)
         {
-          if(field_item->get_name() == field_name)
-            field_item->set_name(field_name_new); //Change it.
+          if(rel->get_to_table() == table_name)
+          {
+            if(field_item->get_name() == field_name)
+              field_item->set_name(field_name_new); //Change it.
+          }
         }
       }
       else
@@ -254,6 +262,7 @@ void LayoutGroup::change_field_item_name(const Glib::ustring& table_name, const 
   }
 }
 
+/*
 void LayoutGroup::change_relationship_name(const Glib::ustring& table_name, const Glib::ustring& name, const Glib::ustring& name_new)
 {
   //Look at each item:
@@ -264,9 +273,9 @@ void LayoutGroup::change_relationship_name(const Glib::ustring& table_name, cons
     {
       if(field_item->get_has_relationship_name())
       {
-        if(field_item->m_relationship.get_name() == name)
+        if(field_item->get_relationship_name() == name)
         {
-          field_item->m_relationship.set_name(name_new);
+          field_item->set_relationship_name(name_new);
         }
       }
 
@@ -280,11 +289,8 @@ void LayoutGroup::change_relationship_name(const Glib::ustring& table_name, cons
     }
   }
 }
+*/
 
-void LayoutGroup::change_related_relationship_name(const Glib::ustring& /* table_name */, const Glib::ustring& /* name */, const Glib::ustring& /* name_new */)
-{
-  
-}
 
 Glib::ustring LayoutGroup::get_part_type_name() const
 {
@@ -304,7 +310,9 @@ void LayoutGroup::debug(guint level) const
     {
       const LayoutItem_Field* field = dynamic_cast<const LayoutItem_Field*>(iter->second);
       if(field)
+      {
         g_warning("  field: name=%s, relationship=%s", field->get_name().c_str(), field->get_relationship_name().c_str());
+      }
     }
   }
 }

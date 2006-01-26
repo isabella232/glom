@@ -51,6 +51,11 @@ public:
     return (element->get_name() == m_strName);
   }
 
+  bool operator() (const sharedptr<const T_Element>& element)
+  {
+    return (element->get_name() == m_strName);
+  }
+
 protected:
   Glib::ustring m_strName;
 };
@@ -131,8 +136,8 @@ public:
   //Lookup stuff:
   bool get_is_lookup() const;
 
-  Glib::ustring get_lookup_relationship() const;
-  void set_lookup_relationship(const Glib::ustring& strRelationship);
+  sharedptr<Relationship> get_lookup_relationship() const;
+  void set_lookup_relationship(const sharedptr<Relationship>& strRelationship);
 
   Glib::ustring get_lookup_field() const;
   void set_lookup_field(const Glib::ustring& strField);
@@ -219,7 +224,9 @@ protected:
   Gnome::Gda::FieldAttributes m_field_info;
 
   Gnome::Gda::Value m_data; //Not used much.
-  Glib::ustring m_strLookupRelationship, m_strLookupField;
+
+  sharedptr<Relationship> m_lookup_relationship;
+  Glib::ustring m_strLookupField;
   Glib::ustring m_calculation;
   bool m_visible; //Whether it will be shown to the user.
 };

@@ -100,12 +100,12 @@ DataWidget::DataWidget(const LayoutItem_Field& field, const Glib::ustring& table
       }
       else if(field.get_formatting_used().get_has_related_choices())
       {
-        Glib::ustring choice_relationship_name, choice_field, choice_second;
-        field.get_formatting_used().get_choices(choice_relationship_name, choice_field, choice_second);
-        if(!choice_relationship_name.empty() && !choice_field.empty())
+        sharedptr<Relationship> choice_relationship;
+        Glib::ustring choice_field, choice_second;
+        field.get_formatting_used().get_choices(choice_relationship, choice_field, choice_second);
+        if(choice_relationship && !choice_field.empty())
         {
-          const Relationship relationship = field.get_formatting_used().m_choices_related_relationship;
-          const Glib::ustring to_table = relationship.get_to_table();
+          const Glib::ustring to_table = choice_relationship->get_to_table();
 
           const bool with_second = !choice_second.empty();
 
@@ -663,17 +663,16 @@ const Gtk::Widget* DataWidget::get_data_child_widget() const
       LayoutItem_Field* layoutField = dynamic_cast<LayoutItem_Field*>(get_layout_item());
       if(layoutField)
       {
-        Relationship relationship;
-        const bool related_to_one = get_document()->get_field_used_in_relationship_to_one(m_table_name, layoutField->get_name(), relationship);
-        if(related_to_one)
-          related_table_name = relationship.get_to_table();
+        sharedptr<Relationship> relationship = get_document()->get_field_used_in_relationship_to_one(m_table_name, layoutField->get_name());
+        if(relationship)
+          related_table_name = relationship->get_to_table();
       }
       else
         g_warning("get_layout_item() was not a LayoutItem_Field");
 
       dialog->init_db_details(related_table_name);
-      
-      
+
+
       int response = dialog->run();
       dialog->hide();
       if(response == Gtk::RESPONSE_OK)

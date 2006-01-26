@@ -98,16 +98,15 @@ void FlowTableWithFields::add_layout_item_at_position(const LayoutItem& item, co
       Document_Glom* pDocument = static_cast<Document_Glom*>(get_document());
       if(pDocument)
       {
-        Relationship relationship;
-        bool found = pDocument->get_relationship(m_table_name, portal->get_relationship(), relationship);
-        if(found)
+        sharedptr<Relationship> relationship = pDocument->get_relationship(m_table_name, portal->get_relationship_name());
+        if(relationship)
         {
           Box_Data_List_Related* portal_box = Gtk::manage(new Box_Data_List_Related);
           add_view(portal_box); //Give it access to the document, needed to get the layout and fields information.
 
           portal_box->init_db_details(*portal); //Create the layout
 
-          portal_box->set_layout_item(portal->clone(), relationship.get_to_table());
+          portal_box->set_layout_item(portal->clone(), relationship->get_to_table());
           portal_box->show();
           add(*portal_box, true /* expand */);
 
@@ -391,7 +390,8 @@ FlowTableWithFields::type_list_widgets FlowTableWithFields::get_portals(const La
     Box_Data_List_Related* pPortal = *iter;
     if(pPortal)
     {
-      if(pPortal->get_relationship().get_from_field() == from_key_name)
+      sharedptr<Relationship> relationship = pPortal->get_relationship();
+      if(relationship && (relationship->get_from_field() == from_key_name))
         result.push_back(pPortal);
     }
   }
@@ -728,12 +728,11 @@ void FlowTableWithFields::on_datawidget_layout_item_added(TreeStore_Layout::enum
         if(response == Gtk::RESPONSE_OK)
         {
           //Get the chosen relationship:
-          Relationship relationship;
-          bool test = dialog->get_relationship_chosen(relationship);
-          if(test)
+          sharedptr<Relationship> relationship  = dialog->get_relationship_chosen();
+          if(relationship)
           {
             LayoutItem_Portal layout_item;
-            layout_item.set_relationship(relationship.get_name());
+            layout_item.set_relationship(relationship);
             add_layout_item_at_position(layout_item, iterAfter);
           }
         }
@@ -764,7 +763,7 @@ void FlowTableWithFields::on_flowtable_related_record_changed(const Glib::ustrin
 
 void FlowTableWithFields::on_portal_user_requested_details(Gnome::Gda::Value primary_key_value, Box_Data_List_Related* portal_box)
 {
-  signal_requested_related_details().emit(portal_box->get_relationship().get_to_table(), primary_key_value);
+  signal_requested_related_details().emit(portal_box->get_relationship()->get_to_table(), primary_key_value);
 }
 
 void FlowTableWithFields::on_flowtable_requested_related_details(const Glib::ustring& table_name, Gnome::Gda::Value primary_key_value)

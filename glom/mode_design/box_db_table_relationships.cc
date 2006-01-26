@@ -86,27 +86,29 @@ bool Box_DB_Table_Relationships::fill_from_database()
     //Add the relationships:
     for(Document_Glom::type_vecRelationships::iterator iter = vecRelationships.begin(); iter != vecRelationships.end(); iter++)
     {
-       const Relationship& relationship = *iter;
+      sharedptr<const Relationship> relationship = *iter;
+      if(relationship)
+      {
+        //Name:
+        Gtk::TreeModel::iterator iterTree = m_AddDel.add_item(relationship->get_name());
+        m_AddDel.set_value(iterTree, m_colName, relationship->get_name());
 
-       //Name:
-       Gtk::TreeModel::iterator iterTree = m_AddDel.add_item(relationship.get_name());
-       m_AddDel.set_value(iterTree, m_colName, relationship.get_name());
+        //Title:
+        m_AddDel.set_value(iterTree, m_colTitle, relationship->get_title());
 
-       //Title:
-       m_AddDel.set_value(iterTree, m_colTitle, relationship.get_title());
+        //From Field:
+        m_AddDel.set_value(iterTree, m_colFromField, relationship->get_from_field());
 
-       //From Field:
-       m_AddDel.set_value(iterTree, m_colFromField, relationship.get_from_field());
+        //To Table:
+        const Glib::ustring& strToTable = relationship->get_to_table();
+        m_AddDel.set_value(iterTree, m_colToTable, strToTable);
 
-       //To Table:
-       const Glib::ustring& strToTable = relationship.get_to_table();
-       m_AddDel.set_value(iterTree, m_colToTable, strToTable);
+        //To Field:
+        m_AddDel.set_value(iterTree, m_colToField, relationship->get_to_field());
 
-       //To Field:
-       m_AddDel.set_value(iterTree, m_colToField, relationship.get_to_field());
-
-       m_AddDel.set_value(iterTree, m_colAllowEdit, relationship.get_allow_edit());
-       m_AddDel.set_value(iterTree, m_colAutoCreate, relationship.get_auto_create());
+        m_AddDel.set_value(iterTree, m_colAllowEdit, relationship->get_allow_edit());
+        m_AddDel.set_value(iterTree, m_colAutoCreate, relationship->get_auto_create());
+      }
     }
   }
 
@@ -120,28 +122,33 @@ void Box_DB_Table_Relationships::save_to_document()
   //Build relationships from AddDel:
   Document_Glom::type_vecRelationships vecRelationships;
 
+  const Document_Glom* document = get_document();
+
   for(Gtk::TreeModel::iterator iter = m_AddDel.get_model()->children().begin(); iter != m_AddDel.get_model()->children().end(); ++iter)
   {
     const Glib::ustring old_name = m_AddDel.get_value_key(iter);
-     
+
     const Glib::ustring name = m_AddDel.get_value(iter, m_colName);
     if(!name.empty())
     {
       //If it is a rename:
       if(!old_name.empty() && (old_name != name))
         get_document()->change_relationship_name(m_strTableName, old_name, name); //Update layouts and reports.
-      
-      Relationship relationship;
-      relationship.set_name(name);
-      relationship.set_title(m_AddDel.get_value(iter, m_colTitle));
-      relationship.set_from_table(m_strTableName);
-      relationship.set_from_field(m_AddDel.get_value(iter, m_colFromField));
-      relationship.set_to_table(m_AddDel.get_value(iter, m_colToTable));
-      relationship.set_to_field(m_AddDel.get_value(iter, m_colToField));
-      relationship.set_allow_edit(m_AddDel.get_value_as_bool(iter, m_colAllowEdit));
-      relationship.set_auto_create(m_AddDel.get_value_as_bool(iter, m_colAutoCreate));
 
-      vecRelationships.push_back(relationship);
+      sharedptr<Relationship> relationship = document->get_relationship(m_strTableName, name); //Preserve other information, such as translations.
+      if(relationship)
+      {
+        relationship->set_name(name);
+        relationship->set_title(m_AddDel.get_value(iter, m_colTitle));
+        relationship->set_from_table(m_strTableName);
+        relationship->set_from_field(m_AddDel.get_value(iter, m_colFromField));
+        relationship->set_to_table(m_AddDel.get_value(iter, m_colToTable));
+        relationship->set_to_field(m_AddDel.get_value(iter, m_colToField));
+        relationship->set_allow_edit(m_AddDel.get_value_as_bool(iter, m_colAllowEdit));
+        relationship->set_auto_create(m_AddDel.get_value_as_bool(iter, m_colAutoCreate));
+
+        vecRelationships.push_back(relationship);
+      }
     }
   }
 

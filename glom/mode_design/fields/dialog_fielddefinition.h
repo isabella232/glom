@@ -23,7 +23,7 @@
 
 #include <gtkmm.h>
 #include "../../utility_widgets/combo_textglade.h"
-#include "combo_lookup_relationship.h"
+#include "../../combobox_relationship.h"
 #include "combo_fieldtype.h"
 #include "../../utility_widgets/table_columns.h"
 //#include "../../utility_widgets/entry_numerical.h"
@@ -70,7 +70,7 @@ protected:
   Gtk::VBox* m_pBox_DefaultValue;
   Gtk::CheckButton* m_pCheck_Lookup;
   Gtk::Table* m_pTable_Lookup;
-  Combo_LookupRelationship* m_pCombo_LookupRelationship;
+  ComboBox_Relationship* m_pCombo_LookupRelationship;
   Combo_TextGlade* m_pCombo_LookupField;
 
   Gtk::CheckButton* m_pCheck_Calculate;

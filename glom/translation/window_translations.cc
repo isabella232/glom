@@ -120,6 +120,10 @@ void Window_Translations::on_cell_data_original(Gtk::CellRenderer* renderer, con
       if(item)
         text = item->get_title_original();
 
+      //Use the name if there is no title:
+      if(text.empty())
+        text = item->get_name(); 
+
       //TODO: Mark non-English originals.
       renderer_text->property_text() = text;
       renderer_text->property_editable() = false; //Names can never be edited.
@@ -180,6 +184,22 @@ void Window_Translations::load_from_document()
       row[m_columns.m_col_translation] = field->get_title(m_translation_locale);
       row[m_columns.m_col_parent_table] = table_name;
 
+    }
+
+    //The table's relationships:
+    Document_Glom::type_vecRelationships relationships = document->get_relationships(table_name);
+    for(Document_Glom::type_vecRelationships::iterator iter = relationships.begin(); iter != relationships.end(); ++iter)
+    {
+      sharedptr<Relationship> relationship = *iter;
+      if(relationship)
+      {
+        Gtk::TreeModel::iterator iterTree = m_model->append();
+        Gtk::TreeModel::Row row = *iterTree;
+
+        row[m_columns.m_col_item] = relationship;
+        row[m_columns.m_col_translation] = relationship->get_title(m_translation_locale);
+        row[m_columns.m_col_parent_table] = table_name;
+      }
     }
 
     //The table's report titles:

@@ -133,7 +133,7 @@ Glib::ustring GlomUtils::build_sql_select_with_where_clause(const Glib::ustring&
 
   Glib::ustring sql_part_fields;
 
-  typedef std::list<Relationship> type_list_relationships;
+  typedef std::list< sharedptr<const Relationship> > type_list_relationships;
   type_list_relationships list_relationships;
 
 
@@ -158,28 +158,25 @@ Glib::ustring GlomUtils::build_sql_select_with_where_clause(const Glib::ustring&
     }
     else
     {
-      const Glib::ustring relationship_name = layout_item->get_relationship_name();
-      if(!relationship_name.empty())
+      sharedptr<const Relationship> relationship = layout_item->get_relationship();
+
+      /*
+      const Glib::ustring field_table_name = relationship->get_to_table();
+      if(field_table_name.empty())
       {
-        const Relationship relationship = layout_item->m_relationship;
-
-        /*
-        const Glib::ustring field_table_name = relationship.get_to_table();
-        if(field_table_name.empty())
-        {
-          g_warning("build_sql_select_with_where_clause(): field_table_name is null. relationship name = %s", relationship.get_name().c_str());
-        }
-        */
-
-        //We use relationship_name.field_name instead of related_table_name.field_name,
-        //because, in the JOIN below, will specify the relationship_name as an alias for the related table name
-        one_sql_part += ( "relationship_" + relationship_name + "." );
-
-        //Add the relationship to the list:
-        type_list_relationships::const_iterator iterFind = std::find_if(list_relationships.begin(), list_relationships.end(), predicate_FieldHasName<Relationship>( relationship_name ) );
-        if(iterFind == list_relationships.end()) //If the table is not yet in the list:
-          list_relationships.push_back(relationship);
+        g_warning("build_sql_select_with_where_clause(): field_table_name is null. relationship name = %s", relationship->get_name().c_str());
       }
+      */
+
+      //We use relationship_name.field_name instead of related_table_name.field_name,
+      //because, in the JOIN below, will specify the relationship_name as an alias for the related table name
+      const Glib::ustring relationship_name = relationship->get_name();
+      one_sql_part += ( "relationship_" + relationship_name + "." );
+
+      //Add the relationship to the list:
+      type_list_relationships::const_iterator iterFind = std::find_if(list_relationships.begin(), list_relationships.end(), predicate_FieldHasName<Relationship>( relationship_name ) );
+      if(iterFind == list_relationships.end()) //If the table is not yet in the list:
+        list_relationships.push_back(relationship);
     }
 
     const Glib::ustring name = layout_item->get_name();
@@ -218,11 +215,11 @@ Glib::ustring GlomUtils::build_sql_select_with_where_clause(const Glib::ustring&
   Glib::ustring sql_part_leftouterjoin; 
   for(type_list_relationships::const_iterator iter = list_relationships.begin(); iter != list_relationships.end(); ++iter)
   {
-    const Relationship& relationship = *iter;
-    sql_part_leftouterjoin += " LEFT OUTER JOIN " + relationship.get_to_table() + 
-      " AS relationship_" + relationship.get_name() + //Specify an alias, to avoid ambiguity when using 2 relationships to the same table.
-      " ON (" + relationship.get_from_table() + "." + relationship.get_from_field() + " = relationship_" +
-      relationship.get_name() + "." + relationship.get_to_field() +
+    sharedptr<const Relationship> relationship = *iter;
+    sql_part_leftouterjoin += " LEFT OUTER JOIN " + relationship->get_to_table() + 
+      " AS relationship_" + relationship->get_name() + //Specify an alias, to avoid ambiguity when using 2 relationships to the same table.
+      " ON (" + relationship->get_from_table() + "." + relationship->get_from_field() + " = relationship_" +
+      relationship->get_name() + "." + relationship->get_to_field() +
       ")";
   }
 
@@ -242,14 +239,16 @@ GlomUtils::type_list_values_with_second GlomUtils::get_choice_values(const Layou
 {
   type_list_values_with_second list_values;
 
-  Glib::ustring choice_relationship_name, choice_field, choice_second;
-  field.get_formatting_used().get_choices(choice_relationship_name, choice_field, choice_second);
+  sharedptr<Relationship> choice_relationship;
+  Glib::ustring choice_field, choice_second;
+  field.get_formatting_used().get_choices(choice_relationship, choice_field, choice_second);
+  if(!choice_relationship)
+    return list_values;
 
-  const Relationship relationship = field.get_formatting_used().m_choices_related_relationship;
-  const Glib::ustring to_table = relationship.get_to_table();
+  const Glib::ustring to_table = choice_relationship->get_to_table();
   if(to_table.empty())
   {
-    g_warning("get_choice_values(): table_name is null. relationship name = %s", field.get_formatting_used().m_choices_related_relationship.get_name().c_str());
+    g_warning("get_choice_values(): table_name is null. relationship name = %s", glom_get_sharedptr_name(choice_relationship).c_str());
     return list_values;
   }
 
@@ -261,7 +260,7 @@ GlomUtils::type_list_values_with_second GlomUtils::get_choice_values(const Layou
   if(with_second)
     sql_query += ", " + sql_second;
 
-  sql_query += " FROM " + relationship.get_to_table() + " ORDER BY " + to_table + "." + choice_field;
+  sql_query += " FROM " + choice_relationship->get_to_table() + " ORDER BY " + to_table + "." + choice_field;
 
   //Connect to database:
   sharedptr<SharedConnection> connection = ConnectionPool::get_instance()->connect();

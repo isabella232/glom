@@ -5,6 +5,7 @@ glom/glom.glade
 glom/application.cc
 glom/base_db.cc
 glom/box_reports.cc
+glom/combobox_relationship.cc
 glom/connectionpool.cc
 glom/data_structure/field.cc
 glom/data_structure/glomconversions.cc

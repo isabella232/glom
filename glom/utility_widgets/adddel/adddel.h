@@ -262,7 +262,7 @@ protected:
 
 
   static Glib::ustring string_escape_underscores(const Glib::ustring& text);
-  
+
   typedef Gtk::VBox type_base;
 
   //Member widgets:

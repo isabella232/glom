@@ -75,21 +75,27 @@ void Dialog_ChooseRelationship::set_document(Document_Glom* document, const Glib
     {
       Gtk::TreeModel::iterator iterRow = m_model->append();
       Gtk::TreeModel::Row row = *iterRow;
-      row[m_ColumnsRelationships.m_col_name] = iter->get_name();
+
+      sharedptr<Relationship> relationship = *iter;
+      if(relationship)
+        row[m_ColumnsRelationships.m_col_name] = glom_get_sharedptr_name(relationship);
+
       //row[m_ColumnsRelationships.m_col_title] = iter->get_title();
-      row[m_ColumnsRelationships.m_col_relationship] = *iter;
+      row[m_ColumnsRelationships.m_col_relationship] = relationship;
     }
   }
 }
 
-void Dialog_ChooseRelationship::select_item(const Relationship& relationship)
+void Dialog_ChooseRelationship::select_item(const sharedptr<const Relationship>& relationship)
 {
   //Find any items with the same name:
   for(Gtk::TreeModel::iterator iter = m_model->children().begin(); iter != m_model->children().end(); ++iter)
   {
+    const Glib::ustring relationship_name = glom_get_sharedptr_name(relationship);
+
     Gtk::TreeModel::Row row = *iter;
-    const Relationship& relationship_item = row[m_ColumnsRelationships.m_col_relationship];
-    if(relationship_item.get_name() == relationship.get_name())
+    sharedptr<Relationship> relationship_item = row[m_ColumnsRelationships.m_col_relationship];
+    if(glom_get_sharedptr_name(relationship_item) == relationship_name)
     {
       //Select the item:
       Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = m_treeview->get_selection();
@@ -99,10 +105,9 @@ void Dialog_ChooseRelationship::select_item(const Relationship& relationship)
   }
 }
 
-bool Dialog_ChooseRelationship::get_relationship_chosen(Relationship& relationship) const
+sharedptr<Relationship> Dialog_ChooseRelationship::get_relationship_chosen() const
 {
-  //Initialize output argument:
-  relationship = Relationship();
+  sharedptr<Relationship> result;
 
   Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = m_treeview->get_selection();
   if(refTreeSelection)
@@ -111,10 +116,9 @@ bool Dialog_ChooseRelationship::get_relationship_chosen(Relationship& relationsh
     if(iter)
     {
       Gtk::TreeModel::Row row = *iter;
-      relationship =  row[m_ColumnsRelationships.m_col_relationship];
-      return true;
+      result =  row[m_ColumnsRelationships.m_col_relationship];
     }
   }
-    
-  return false;
+
+  return result;
 }

@@ -84,30 +84,20 @@ void Box_Formatting::set_formatting(const FieldFormatting& format, const Glib::u
   //Choices:
   m_checkbutton_choices_restricted->set_active(format.get_choices_restricted());
 
+  const Document_Glom* document = get_document();
+
   //Fill the list of relationships:
-  m_combo_choices_relationship->clear_text();
+  const Document_Glom::type_vecRelationships vecRelationships = document->get_relationships(m_table_name);
+  m_combo_choices_relationship->set_relationships(vecRelationships);
 
-  Document_Glom* document = get_document();
-  if(document)
-  {
-    Document_Glom::type_vecRelationships vecRelationships = document->get_relationships(m_table_name);
-    for(Document_Glom::type_vecRelationships::iterator iter = vecRelationships.begin(); iter != vecRelationships.end(); ++iter)
-    {
-      m_combo_choices_relationship->append_text(iter->get_name());
-    }
+  sharedptr<Relationship> choices_relationship;
+  Glib::ustring choices_field, choices_field_second;
+  format.get_choices(choices_relationship, choices_field, choices_field_second);
 
-    Glib::ustring choices_relationship, choices_field, choices_field_second;
-    format.get_choices(choices_relationship, choices_field, choices_field_second);
-
-    m_combo_choices_relationship->set_active_text(choices_relationship);
-    on_combo_choices_relationship_changed(); //Fill the combos so we can set their active items.
-    m_combo_choices_field->set_active_text(choices_field);
-    m_combo_choices_field_second->set_active_text(choices_field_second);
-  }
-  else
-  {
-    g_warning("Box_Formatting::set_formatting(): document not found.");
-  }
+  m_combo_choices_relationship->set_selected_relationship(choices_relationship);
+  on_combo_choices_relationship_changed(); //Fill the combos so we can set their active items.
+  m_combo_choices_field->set_active_text(choices_field);
+  m_combo_choices_field_second->set_active_text(choices_field_second);
 
   //Custom choices:
   m_adddel_choices_custom->remove_all();
@@ -143,7 +133,8 @@ bool Box_Formatting::get_formatting(FieldFormatting& format) const
   //Choices:
   m_format.set_choices_restricted(m_checkbutton_choices_restricted->get_active());
 
-  m_format.set_choices(m_combo_choices_relationship->get_active_text(),
+  sharedptr<Relationship> choices_relationship = m_combo_choices_relationship->get_selected_relationship();
+  m_format.set_choices(choices_relationship,
     m_combo_choices_field->get_active_text(),
     m_combo_choices_field_second->get_active_text() );
 
@@ -176,23 +167,24 @@ bool Box_Formatting::get_formatting(FieldFormatting& format) const
 
 void Box_Formatting::on_combo_choices_relationship_changed()
 {
-  Glib::ustring relationship_name = m_combo_choices_relationship->get_active_text();
+  sharedptr<Relationship> relationship = m_combo_choices_relationship->get_selected_relationship();
 
   Document_Glom* pDocument = get_document();
   if(pDocument)
   {
     //Show the list of formats from this relationship:
-    Relationship relationship;
-    pDocument->get_relationship(m_table_name, relationship_name, relationship);
-    Document_Glom::type_vecFields vecFields = pDocument->get_table_fields(relationship.get_to_table());
-
-    m_combo_choices_field->clear_text();
-    m_combo_choices_field_second->clear_text();
-    for(Document_Glom::type_vecFields::const_iterator iter = vecFields.begin(); iter != vecFields.end(); ++iter)
+    if(relationship)
     {
-      sharedptr<const Field> field = *iter;
-      m_combo_choices_field->append_text(field->get_name());
-      m_combo_choices_field_second->append_text(field->get_name());
+      Document_Glom::type_vecFields vecFields = pDocument->get_table_fields(relationship->get_to_table());
+
+      m_combo_choices_field->clear_text();
+      m_combo_choices_field_second->clear_text();
+      for(Document_Glom::type_vecFields::const_iterator iter = vecFields.begin(); iter != vecFields.end(); ++iter)
+      {
+        sharedptr<const Field> field = *iter;
+        m_combo_choices_field->append_text(field->get_name());
+        m_combo_choices_field_second->append_text(field->get_name());
+      }
     }
   }
 }

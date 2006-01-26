@@ -67,7 +67,6 @@ protected:
 
   TextModelColumns m_text_columns;
   Glib::RefPtr<Gtk::ListStore> m_model;
-  
 };
 
 #endif //GLOM_MODE_DESIGN_COMBO_TEXTGLADE_HH

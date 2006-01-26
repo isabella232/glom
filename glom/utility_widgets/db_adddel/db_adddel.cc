@@ -661,12 +661,13 @@ void DbAddDel::construct_specified_columns()
             }
             else if(column_info.m_field.get_formatting_used().get_has_related_choices())
             {
-              Glib::ustring choice_relationship_name, choice_field, choice_second;
-              column_info.m_field.get_formatting_used().get_choices(choice_relationship_name, choice_field, choice_second);
-              if(!choice_relationship_name.empty() && !choice_field.empty())
+              sharedptr<Relationship> choice_relationship;
+              Glib::ustring choice_field, choice_second;
+              column_info.m_field.get_formatting_used().get_choices(choice_relationship, choice_field, choice_second);
+
+              if(choice_relationship && !choice_field.empty())
               {
-                const Relationship relationship = column_info.m_field.get_formatting_used().m_choices_related_relationship;
-                const Glib::ustring to_table = relationship.get_to_table();
+                const Glib::ustring to_table = choice_relationship->get_to_table();
 
                 const bool use_second = !choice_second.empty();
                 pCellRendererCombo->set_use_second(use_second);

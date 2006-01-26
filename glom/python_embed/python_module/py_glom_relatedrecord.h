@@ -41,7 +41,7 @@ public:
   //PyGlomRecord* m_record_parent;
   Document_Glom* m_document;
 
-  Relationship* m_relationship;
+  sharedptr<const Relationship>* m_relationship;
   Glib::ustring* m_from_key_value_sqlized;
 
   //Available, for instance, in python via record["name_first"]
@@ -53,7 +53,7 @@ public:
 PyTypeObject* PyGlomRelatedRecord_GetPyType();
 
 
-void PyGlomRelatedRecord_SetRelationship(PyGlomRelatedRecord* self, const Relationship& relationship, const Glib::ustring& from_key_value_sqlized, Document_Glom* document);
+void PyGlomRelatedRecord_SetRelationship(PyGlomRelatedRecord* self, const sharedptr<const Relationship>& relationship, const Glib::ustring& from_key_value_sqlized, Document_Glom* document);
 
 /*
 void PyGlomRelatedRecord_SetConnection(PyGlomRelatedRecord* self, const Glib::RefPtr<Gnome::Gda::Connection>& connection);

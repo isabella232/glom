@@ -34,7 +34,7 @@ public:
 
   PyGlomRecord* m_record; //A reference to the parent record.
 
-  typedef std::map<Glib::ustring, Relationship> type_map_relationships;
+  typedef std::map<Glib::ustring, sharedptr<Relationship> > type_map_relationships;
   type_map_relationships* m_pMap_relationships;
 
   typedef std::map<Glib::ustring, PyGlomRelatedRecord*> type_map_relatedrecords;

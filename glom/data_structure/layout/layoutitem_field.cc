@@ -32,10 +32,10 @@ LayoutItem_Field::LayoutItem_Field()
 
 LayoutItem_Field::LayoutItem_Field(const LayoutItem_Field& src)
 : LayoutItem(src),
+  UsesRelationship(src),
   m_priv_view(src.m_priv_view),
   m_priv_edit(src.m_priv_edit),
   //m_table_name(src.m_table_name),
-  m_relationship(src.m_relationship),
   m_formatting(src.m_formatting),
   m_field_cache_valid(src.m_field_cache_valid),
   m_hidden(src.m_hidden),
@@ -58,9 +58,9 @@ LayoutItem* LayoutItem_Field::clone() const
 bool LayoutItem_Field::operator==(const LayoutItem_Field& src) const
 {
   bool result = LayoutItem::operator==(src) &&
+    UsesRelationship::operator==(src) &&
     (m_priv_view == src.m_priv_view) &&
     (m_priv_edit == src.m_priv_edit) &&
-    (m_relationship == src.m_relationship) &&
     (m_hidden == src.m_hidden) &&
     (m_formatting_use_default == src.m_formatting_use_default) &&
     (m_formatting == src.m_formatting) &&
@@ -78,14 +78,13 @@ bool LayoutItem_Field::operator==(const LayoutItem_Field& src) const
 LayoutItem_Field& LayoutItem_Field::operator=(const LayoutItem_Field& src)
 {
   LayoutItem::operator=(src);
+  UsesRelationship::operator=(src);
 
   m_field = src.m_field;
   m_field_cache_valid = src.m_field_cache_valid;
 
   m_priv_view = src.m_priv_view;
   m_priv_edit = src.m_priv_edit;
-
-  m_relationship = src.m_relationship;
 
   m_hidden = src.m_hidden;
 
@@ -118,22 +117,18 @@ Glib::ustring LayoutItem_Field::get_title_or_name() const
     return get_name(); //We ignore TranslatableItem::get_title() for LayoutItem_Field.
 }
 
-bool LayoutItem_Field::get_has_relationship_name() const
-{
-  return m_relationship.get_name_not_empty();
-}
-
-Glib::ustring LayoutItem_Field::get_relationship_name() const
-{
-  return m_relationship.get_name();
-}
-
 bool LayoutItem_Field::get_editable_and_allowed() const
 {
   //Thre relationship might forbid editing of any fields through itself:
   if(get_has_relationship_name())
-    if(!(m_relationship.get_allow_edit()))
-      return false; 
+  {
+    sharedptr<const Relationship> rel = get_relationship();
+    if(rel)
+    {
+      if(!(rel->get_allow_edit()))
+        return false;
+    }
+  }
 
   return m_editable && m_priv_edit;
 }

@@ -72,16 +72,16 @@ void Box_Data_Details_Find::fill_related()
 
 
      Box_Data_List_Related* pBox = Gtk::manage(new Box_Data_List_Related());
-     std::cout <<  "Box_Data_Details::fill_related() 2:" << relationship.get_name() << std::endl;
-     m_Notebook_Related.pages().push_back( Gtk::Notebook_Helpers::TabElem(*pBox, relationship.get_name()) );
+     std::cout <<  "Box_Data_Details::fill_related() 2:" << relationship->get_name() << std::endl;
+     m_Notebook_Related.pages().push_back( Gtk::Notebook_Helpers::TabElem(*pBox, relationship->get_name()) );
      std::cout <<  "Box_Data_Details::fill_related() 2.5:" << std::endl;
 
-     guint rowKey = m_FieldsShown.get_index(relationship.get_from_field());
+     guint rowKey = m_FieldsShown.get_index(relationship->get_from_field());
      Glib::ustring strKeyValue = m_AddDel.get_value(rowKey);
      strKeyValue = m_FieldsShown[rowKey].sql(strKeyValue); //Quote/Escape it if necessary.
 
      std::cout <<  "Box_Data_Details::fill_related() 3:" << std::endl;
-     pBox->init_db_details(get_database_name(), relationship.get_to_table(), relationship.get_to_field(), strKeyValue);
+     pBox->init_db_details(get_database_name(), relationship->get_to_table(), relationship->get_to_field(), strKeyValue);
      pBox->show_all();
      */
   }

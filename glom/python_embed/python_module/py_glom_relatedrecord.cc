@@ -166,13 +166,13 @@ RelatedRecord_tp_as_mapping_getitem(PyGlomRelatedRecord *self, PyObject *item)
       }
       else
       {
-         const Glib::ustring related_table = self->m_relationship->get_to_table();
+         const Glib::ustring related_table = (*(self->m_relationship))->get_to_table();
 
         //Check whether the field exists in the table.
         //TODO_Performance: Do this without the useless Field information?
-        sharedptr<Field> field  = self->m_document->get_field(self->m_relationship->get_to_table(), field_name);
+        sharedptr<Field> field  = self->m_document->get_field((*(self->m_relationship))->get_to_table(), field_name);
         if(!field)
-          g_warning("RelatedRecord_tp_as_mapping_getitem: field %s not found in table %s", field_name.c_str(), self->m_relationship->get_to_table().c_str());
+          g_warning("RelatedRecord_tp_as_mapping_getitem: field %s not found in table %s", field_name.c_str(), (*(self->m_relationship))->get_to_table().c_str());
         else
         {
           //Try to get the value from the database:
@@ -182,7 +182,7 @@ RelatedRecord_tp_as_mapping_getitem(PyGlomRelatedRecord *self, PyObject *item)
           {
             Glib::RefPtr<Gnome::Gda::Connection> gda_connection = sharedconnection->get_gda_connection();
 
-            const Glib::ustring related_key_name = self->m_relationship->get_to_field();
+            const Glib::ustring related_key_name = (*(self->m_relationship))->get_to_field();
 
             Glib::ustring sql_query = "SELECT " + related_table + "." + field_name + " FROM " + related_table
               + " WHERE " + related_table + "." + related_key_name + " = " + *(self->m_from_key_value_sqlized);
@@ -206,7 +206,7 @@ RelatedRecord_tp_as_mapping_getitem(PyGlomRelatedRecord *self, PyObject *item)
             }
             else
             {
-              g_warning("RelatedRecord_tp_as_mapping_getitem(): No related records exist yet for relationship %s.",  self->m_relationship->get_name().c_str());
+              g_warning("RelatedRecord_tp_as_mapping_getitem(): No related records exist yet for relationship %s.",  (*(self->m_relationship))->get_name().c_str());
             }
           }
         }
@@ -250,13 +250,13 @@ RelatedRecord_generic_aggregate(PyGlomRelatedRecord* self, PyObject *args, PyObj
   if(pchKey)
   {
     const Glib::ustring field_name(pchKey);
-    const Glib::ustring related_table = self->m_relationship->get_to_table();
+    const Glib::ustring related_table = (*(self->m_relationship))->get_to_table();
 
     //Check whether the field exists in the table.
     //TODO_Performance: Do this without the useless Field information?
-    sharedptr<Field> field = self->m_document->get_field(self->m_relationship->get_to_table(), field_name);
+    sharedptr<Field> field = self->m_document->get_field((*(self->m_relationship))->get_to_table(), field_name);
     if(!field)
-      g_warning("RelatedRecord_sum: field %s not found in table %s", field_name.c_str(), self->m_relationship->get_to_table().c_str());
+      g_warning("RelatedRecord_sum: field %s not found in table %s", field_name.c_str(), (*(self->m_relationship))->get_to_table().c_str());
     else
     {
       //Try to get the value from the database:
@@ -266,7 +266,7 @@ RelatedRecord_generic_aggregate(PyGlomRelatedRecord* self, PyObject *args, PyObj
       {
         Glib::RefPtr<Gnome::Gda::Connection> gda_connection = sharedconnection->get_gda_connection();
 
-        const Glib::ustring related_key_name = self->m_relationship->get_to_field();
+        const Glib::ustring related_key_name = (*(self->m_relationship))->get_to_field();
 
         Glib::ustring sql_query = "SELECT " + aggregate + "(" + related_table + "." + field_name + ") FROM " + related_table
           + " WHERE " + related_table + "." + related_key_name + " = " + *(self->m_from_key_value_sqlized);
@@ -290,7 +290,7 @@ RelatedRecord_generic_aggregate(PyGlomRelatedRecord* self, PyObject *args, PyObj
         }
         else
         {
-          g_warning("RelatedRecord_generic_aggregate(): No related records exist yet for relationship %s.",  self->m_relationship->get_name().c_str());
+          g_warning("RelatedRecord_generic_aggregate(): No related records exist yet for relationship %s.",  (*(self->m_relationship))->get_name().c_str());
         }
       }
     }
@@ -392,9 +392,9 @@ PyTypeObject* PyGlomRelatedRecord_GetPyType()
 }
 
 
-void PyGlomRelatedRecord_SetRelationship(PyGlomRelatedRecord* self, const Relationship& relationship, const Glib::ustring& from_key_value_sqlized,  Document_Glom* document)
+void PyGlomRelatedRecord_SetRelationship(PyGlomRelatedRecord* self, const sharedptr<const Relationship>& relationship, const Glib::ustring& from_key_value_sqlized,  Document_Glom* document)
 {
-  self->m_relationship = new Relationship(relationship);
+  self->m_relationship = new sharedptr<const Relationship>(relationship);
   self->m_from_key_value_sqlized = new Glib::ustring(from_key_value_sqlized);
   self->m_document = document;
 }

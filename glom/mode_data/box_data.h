@@ -90,8 +90,8 @@ protected:
   virtual type_vecLayoutFields get_fields_to_show() const;
   static Glib::ustring build_sql_select(const Glib::ustring& table_name, const type_vecLayoutFields& fieldsToGet, const sharedptr<const Field>& primary_key_field, const Gnome::Gda::Value& primary_key_value);
   //virtual Glib::ustring build_sql_select_with_where_clause(const Glib::ustring& table_name, const type_vecLayoutFields& fieldsToGet, const Glib::ustring& where_clause);
-  virtual bool get_related_record_exists(const Relationship& relationship, const sharedptr<const Field>& key_field, const Gnome::Gda::Value& key_value);
-  virtual bool add_related_record_for_field(const LayoutItem_Field& layout_item_parent, const Relationship& relationship, const sharedptr<const Field>& primary_key_field, const Gnome::Gda::Value& primary_key_value_provided);
+  virtual bool get_related_record_exists(const sharedptr<const Relationship>& relationship, const sharedptr<const Field>& key_field, const Gnome::Gda::Value& key_value);
+  virtual bool add_related_record_for_field(const LayoutItem_Field& layout_item_parent, const sharedptr<const Relationship>& relationship, const sharedptr<const Field>& primary_key_field, const Gnome::Gda::Value& primary_key_value_provided);
 
   type_vecLayoutFields get_table_fields_to_show(const Glib::ustring& table_name) const;
 
@@ -100,7 +100,7 @@ protected:
   Document_Glom::type_mapLayoutGroupSequence get_data_layout_groups(const Glib::ustring& layout);
   void fill_layout_group_field_info(LayoutGroup& group, const Privileges& table_privs);
 
-  typedef std::pair<LayoutItem_Field, Relationship> type_pairFieldTrigger;
+  typedef std::pair< LayoutItem_Field, sharedptr<Relationship> > type_pairFieldTrigger;
   typedef std::list<type_pairFieldTrigger> type_list_lookups;
 
   /** Get the fields whose values should be looked up when @a field_name changes, with
@@ -120,7 +120,7 @@ protected:
 
   /** Get the value of the @a source_field from the @a relationship, using the @a key_value.
    */
-  Gnome::Gda::Value get_lookup_value(const Relationship& relationship, const sharedptr<const Field>& source_field, const Gnome::Gda::Value & key_value);
+  Gnome::Gda::Value get_lookup_value(const sharedptr<const Relationship>& relationship, const sharedptr<const Field>& source_field, const Gnome::Gda::Value & key_value);
 
   /** Calculate values for fields, set them in the database, and show them in the layout.
    * @param field_changed The field that has changed, causing other fields to be recalculated because they use its value.

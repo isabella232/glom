@@ -137,7 +137,8 @@ Related_tp_as_mapping_getitem(PyGlomRelated *self, PyObject *item)
           //Fill it.
 
           //Get the value of the from_key in the parent record.
-          const Glib::ustring from_key = iterFind->second.get_from_field();
+          sharedptr<Relationship> relationship = iterFind->second;
+          const Glib::ustring from_key = relationship->get_from_field();
           PyGlomRecord::type_map_field_values::const_iterator iterFromKey = self->m_record->m_pMap_field_values->find(from_key);
           if(iterFromKey != self->m_record->m_pMap_field_values->end())
           {

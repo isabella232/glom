@@ -1211,6 +1211,8 @@ void Base_DB::set_database_preferences(const SystemPrefs& prefs)
 
 bool Base_DB::create_table(const sharedptr<const TableInfo>& table_info, const Document_Glom::type_vecFields& fields) const
 {
+  std::cout << "Base_DB::create_table(): " << table_info->get_name() << std::endl;
+
   bool table_creation_succeeded = false;
 
   //Create SQL to describe all fields in this table:
@@ -1351,7 +1353,10 @@ void Base_DB::fill_full_field_details(const Glib::ustring& parent_table_name, La
   Glib::ustring table_name = parent_table_name;
 
   if(layout_item.get_has_relationship_name())
-    table_name = layout_item.m_relationship.get_to_table();
+  {
+    sharedptr<const Relationship> rel = layout_item.get_relationship();;
+    table_name = rel->get_to_table();
+  }
 
   layout_item.set_full_field_details( get_document()->get_field(table_name, layout_item.get_name()) );
 }
@@ -1363,11 +1368,12 @@ Glib::ustring Base_DB::get_layout_item_table_name(const LayoutItem_Field& layout
   else
   {
     const Glib::ustring relationship_name = layout_item.get_relationship_name();
-    Relationship relationship; //TODO: We should not need to do this. It should be updated in the LayoutItem_Field already.
+
+    //TODO: We should not need to do this. It should be updated in the LayoutItem_Field already.
     Document_Glom* document = get_document();
-    bool test = document->get_relationship(table_name, relationship_name, relationship);
-    if(test)
-     return relationship.get_to_table();
+    sharedptr<Relationship> relationship = document->get_relationship(table_name, relationship_name);
+    if(relationship)
+      return relationship->get_to_table();
   }
 
   return Glib::ustring();
@@ -1817,12 +1823,11 @@ void Base_DB::get_table_fields_to_show_for_sequence_add_group(const Glib::ustrin
       {
         //Get the full field information:
         const Glib::ustring relationship_name = item_field->get_relationship_name();
-        Relationship relationship;
-        const bool test = document->get_relationship(table_name, relationship_name, relationship);
-        if(test)
+        sharedptr<Relationship> relationship = document->get_relationship(table_name, relationship_name);
+        if(relationship)
         {
           //TODO_Performance: get_fields_for_table_one_field() is probably very inefficient
-          sharedptr<Field> field = get_fields_for_table_one_field(relationship.get_to_table(), item->get_name());
+          sharedptr<Field> field = get_fields_for_table_one_field(relationship->get_to_table(), item->get_name());
           if(field)
           {
             LayoutItem_Field layout_item = *item_field; //TODO_Performance: Reduce the copying.
@@ -1830,7 +1835,7 @@ void Base_DB::get_table_fields_to_show_for_sequence_add_group(const Glib::ustrin
 
 
             //TODO_Performance: We do this once for each related field, even if there are 2 from the same table:
-            const Privileges privs_related = get_current_privs(relationship.get_to_table());
+            const Privileges privs_related = get_current_privs(relationship->get_to_table());
             layout_item.m_priv_view = privs_related.m_view;
             layout_item.m_priv_edit = privs_related.m_edit;
 

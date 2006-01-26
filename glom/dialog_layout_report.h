@@ -66,7 +66,7 @@ protected:
 
   virtual void save_to_document();
 
-  bool offer_relationship_list(Relationship& relationship);
+  sharedptr<Relationship> offer_relationship_list();
   bool offer_field_layout(LayoutItem_Field& field);
   Gtk::TreeModel::iterator get_selected_group_parent() const;
 

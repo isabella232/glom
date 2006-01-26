@@ -166,19 +166,15 @@ void Dialog_FieldDefinition::set_field(const sharedptr<const Field>& field, cons
   Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
   if(document)
   {
-   Document_Glom::type_vecRelationships vecRelationships = document->get_relationships(table_name);
-   m_pCombo_LookupRelationship->clear_text();
-
-   for(Document_Glom::type_vecRelationships::iterator iter = vecRelationships.begin(); iter != vecRelationships.end(); ++iter)
-   {
-     m_pCombo_LookupRelationship->append_text(iter->get_name(), iter->get_from_field());
-   }
+    const Document_Glom::type_vecRelationships vecRelationships = document->get_relationships(table_name);
+    m_pCombo_LookupRelationship->set_relationships(vecRelationships, table_name, document->get_table_title(table_name));
   }
 
-  Glib::ustring lookup_relationship_name;
+  sharedptr<Relationship> lookup_relationship;
   if(!disable_default_value)
-    lookup_relationship_name = m_Field->get_lookup_relationship();
-  m_pCombo_LookupRelationship->set_active_text(lookup_relationship_name);
+    lookup_relationship = m_Field->get_lookup_relationship();
+
+  m_pCombo_LookupRelationship->set_selected_relationship(lookup_relationship);
   on_combo_lookup_relationship_changed(); //Put the correct list of fields in the fields combo.
 
   Glib::ustring lookup_field_name;
@@ -228,10 +224,10 @@ sharedptr<Field> Dialog_FieldDefinition::get_field() const
   }
 
   //Lookup:
-  bool is_lookup = m_pCheck_Lookup->get_active();
-  Glib::ustring relationship;
+  const bool is_lookup = m_pCheck_Lookup->get_active();
+  sharedptr<Relationship> relationship;
   if(is_lookup)
-    relationship = m_pCombo_LookupRelationship->get_active_text();
+    relationship = m_pCombo_LookupRelationship->get_selected_relationship();
   field->set_lookup_relationship(relationship);
 
   Glib::ustring lookup_field;
@@ -316,30 +312,25 @@ void Dialog_FieldDefinition::on_check_calculate_toggled()
 void Dialog_FieldDefinition::on_combo_lookup_relationship_changed()
 {
   //Get the fields that are avaiable from the new relationship:
-  
+
   m_pCombo_LookupField->clear_text();
-  
+
   //Get the relationship name:
-  const Glib::ustring relationship_name = m_pCombo_LookupRelationship->get_active_text();
-  if(!relationship_name.empty())
+  sharedptr<const Relationship> relationship = m_pCombo_LookupRelationship->get_selected_relationship();
+  if(relationship)
   {
     //Get the relationship details:
     Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
     if(document)
     {
-      Relationship relationship;
-      bool test = document->get_relationship(m_table_name, relationship_name, relationship);
-      if(test)
+      const Glib::ustring to_table = relationship->get_to_table();
+      if(!to_table.empty())
       {
-        Glib::ustring to_table = relationship.get_to_table();
-        if(!to_table.empty())
+        //Get the fields in the other table, and add them to the combo:
+        const type_vecFields fields_in_to_table = get_fields_for_table(to_table);
+        for(type_vecFields::const_iterator iter = fields_in_to_table.begin(); iter != fields_in_to_table.end(); ++iter)
         {
-          //Get the fields in the other table, and add them to the combo:
-          type_vecFields fields_in_to_table = get_fields_for_table(to_table);
-          for(type_vecFields::iterator iter = fields_in_to_table.begin(); iter != fields_in_to_table.end(); ++iter)
-          {
-            m_pCombo_LookupField->append_text((*iter)->get_name());
-          }
+          m_pCombo_LookupField->append_text((*iter)->get_name());
         }
       }
     }

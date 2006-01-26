@@ -94,14 +94,14 @@ public:
    */
   Glib::ustring get_translation_original_locale() const;
 
-  typedef std::vector<Relationship> type_vecRelationships;
+  typedef std::vector< sharedptr<Relationship> > type_vecRelationships;
   virtual type_vecRelationships get_relationships(const Glib::ustring& table_name) const;
   void set_relationships(const Glib::ustring& table_name, const type_vecRelationships& vecRelationships);
 
-  bool get_relationship(const Glib::ustring& table_name, const Glib::ustring& relationship_name, Relationship& relationship) const;
-  void set_relationship(const Glib::ustring& table_name, const Relationship& relationship);
+  sharedptr<Relationship> get_relationship(const Glib::ustring& table_name, const Glib::ustring& relationship_name) const;
+  void set_relationship(const Glib::ustring& table_name, const sharedptr<Relationship>& relationship);
 
-  void remove_relationship(const Relationship& relationship);
+  void remove_relationship(const sharedptr<const Relationship>& relationship);
 
   /** Returns whether the relationship's to-field is a primary key  or unique field, meaning
    * that there can be only one related record for each value of the from-field.
@@ -111,8 +111,7 @@ public:
   /** Returns whether the field is the from-field in a to-one relationship.
    * @see get_relationship_is_to_one(). Ignores hidden tables.
    */
-  bool get_field_used_in_relationship_to_one(const Glib::ustring& table_name, const Glib::ustring& field_name) const;
-  bool get_field_used_in_relationship_to_one(const Glib::ustring& table_name, const Glib::ustring& field_name, Relationship& relationship) const;
+  sharedptr<Relationship> get_field_used_in_relationship_to_one(const Glib::ustring& table_name, const Glib::ustring& field_name) const;
 
 
   typedef std::vector< sharedptr<Field> > type_vecFields;
@@ -151,6 +150,8 @@ public:
   typedef std::list< sharedptr<TableInfo> > type_listTableInfo;
   virtual type_listTableInfo get_tables() const;
   virtual void set_tables(const type_listTableInfo& tables);
+
+  sharedptr<TableInfo> get_table(const Glib::ustring table_name) const;
 
   /** Use this after DROPing the table.
    * It removes information about the table, including fields and layouts,
@@ -228,14 +229,6 @@ public:
   type_signal_userlevel_changed signal_userlevel_changed();
 
   virtual void emit_userlevel_changed();
-
-  /** The LayouItem_Field contains cached full relationship information,
-   *  so we don't have to look up the details so often. This method
-   *  updates that cache. It should be called when the relationship details change.
-   */
-  void update_cached_relationships();
-  void update_cached_relationships(LayoutGroup& group, const Glib::ustring& table_name);
-  void update_cached_relationships(FieldFormatting& formatting, const Glib::ustring& table_name);
 
 protected:
 

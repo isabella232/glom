@@ -26,6 +26,7 @@
 #include "../document/document_glom.h"
 #include "../box_db.h"
 #include "../utility_widgets/combo_textglade.h"
+#include "../combobox_relationship.h"
 #include "../utility_widgets/comboentry_currency.h"
 
 class Dialog_ChooseField : public Gtk::Dialog
@@ -68,7 +69,7 @@ protected:
 
   ModelColumns_Fields m_ColumnsFields;
 
-  Combo_TextGlade* m_combo_relationship;
+  ComboBox_Relationship* m_combo_relationship;
   Gtk::Button* m_button_select;
   Gtk::CheckButton* m_checkbutton_editable;
   Gtk::TreeView* m_treeview;

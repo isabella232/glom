@@ -21,11 +21,13 @@
 #ifndef GLOM_DATASTRUCTURE_FIELDFORMATTING_H
 #define GLOM_DATASTRUCTURE_FIELDFORMATTING_H
 
+#include "usesrelationship.h"
 #include "../numeric_format.h"
 #include "../relationship.h"
+#include "../../sharedptr.h"
 #include <libgdamm.h>
 
-class FieldFormatting
+class FieldFormatting : public UsesRelationship //The UsesRelationship base has the relationship for the choices.
 {
 public:
 
@@ -51,21 +53,15 @@ public:
   bool get_choices_restricted() const;
   void set_choices_restricted(bool val = true);
 
-  void get_choices(Glib::ustring& relationship_name, Glib::ustring& field, Glib::ustring& field_second) const;
-  void set_choices(const Glib::ustring& relationship_name, const Glib::ustring& field, const Glib::ustring& field_second);
+  void get_choices(sharedptr<Relationship>& relationship_name, Glib::ustring& field, Glib::ustring& field_second) const;
+  void set_choices(const sharedptr<Relationship>& relationship_name, const Glib::ustring& field, const Glib::ustring& field_second);
 
   bool get_text_format_multiline() const;
   void set_text_format_multiline(bool value = true);
-  
+
   void change_field_name(const Glib::ustring& table_name, const Glib::ustring& field_name, const Glib::ustring& field_name_new);
-  void change_relationship_name(const Glib::ustring& table_name, const Glib::ustring& name, const Glib::ustring& name_new);
- 
 
   NumericFormat m_numeric_format; //Only used for numeric fields.
-
-  //TODO_Performance: This is just cached data, so we don't need to always lookup the relationship details from the document, from the name.
-  //Maybe use a smartpointer?
-  Relationship m_choices_related_relationship;
 
 protected:
 

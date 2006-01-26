@@ -30,8 +30,8 @@ FieldFormatting::FieldFormatting()
 }
 
 FieldFormatting::FieldFormatting(const FieldFormatting& src)
-: m_numeric_format(src.m_numeric_format),
-  m_choices_related_relationship(src.m_choices_related_relationship),
+: UsesRelationship(src),
+  m_numeric_format(src.m_numeric_format),
   m_choices_custom_list(src.m_choices_custom_list),
   m_choices_restricted(src.m_choices_restricted),
   m_choices_custom(src.m_choices_custom),
@@ -48,12 +48,12 @@ FieldFormatting::~FieldFormatting()
 
 bool FieldFormatting::operator==(const FieldFormatting& src) const
 {
-  return (m_numeric_format == src.m_numeric_format) &&
+  return UsesRelationship::operator==(src) &&
+    (m_numeric_format == src.m_numeric_format) &&
     (m_choices_custom_list == src.m_choices_custom_list) &&
     (m_choices_restricted == src.m_choices_restricted) &&
     (m_choices_custom == src.m_choices_custom) &&
     (m_choices_related == src.m_choices_related) &&
-    (m_choices_related_relationship == src.m_choices_related_relationship) &&
     (m_choices_related_field == src.m_choices_related_field) &&
     (m_choices_related_field_second == src.m_choices_related_field_second) &&
     (m_text_format_multiline == src.m_text_format_multiline);
@@ -62,19 +62,20 @@ bool FieldFormatting::operator==(const FieldFormatting& src) const
 
 FieldFormatting& FieldFormatting::operator=(const FieldFormatting& src)
 {
+  UsesRelationship::operator=(src);
+
   m_numeric_format = src.m_numeric_format;
 
   m_choices_custom_list = src.m_choices_custom_list;
   m_choices_restricted = src.m_choices_restricted;
   m_choices_custom = src.m_choices_custom;
   m_choices_related = src.m_choices_related;
-  m_choices_related_relationship = src.m_choices_related_relationship;
   m_choices_related_field = src.m_choices_related_field;
   m_choices_related_field_second = src.m_choices_related_field_second;
 
   m_text_format_multiline = src.m_text_format_multiline;
 
-//g_warning("FieldFormatting::operator=: m_choices_related_relationship=%s, src.m_choices_related_relationship=%s", m_choices_related_relationship.c_str(), src.m_choices_related_relationship.c_str());
+//g_warning("FieldFormatting::operator=: m_choices_related_relationship=%s, src.m_choices_related_relationship=%s", m_choices_related_relationship->c_str(), src.m_choices_related_relationship->c_str());
   return *this;
 }
 
@@ -91,7 +92,7 @@ void FieldFormatting::set_text_format_multiline(bool value)
 
 bool FieldFormatting::get_has_choices() const
 {
-  return ( m_choices_related && m_choices_related_relationship.get_name_not_empty() && !m_choices_related_field.empty() ) ||
+  return ( m_choices_related && get_has_relationship_name() && !m_choices_related_field.empty() ) ||
          ( m_choices_custom && !m_choices_custom_list.empty() );
 }
 
@@ -135,18 +136,20 @@ void FieldFormatting::set_has_related_choices(bool val)
   m_choices_related = val;
 }
 
-void FieldFormatting::get_choices(Glib::ustring& relationship_name, Glib::ustring& field, Glib::ustring& field_second) const
+void FieldFormatting::get_choices(sharedptr<Relationship>& relationship, Glib::ustring& field, Glib::ustring& field_second) const
 {
-  relationship_name = m_choices_related_relationship.get_name();
+  relationship = get_relationship();
+
   field = m_choices_related_field;
   field_second = m_choices_related_field_second;
 
-  //g_warning("FieldFormatting::get_choices, %s, %s, %s", m_choices_related_relationship.c_str(), m_choices_related_field.c_str(), m_choices_related_field_second.c_str());
+  //g_warning("FieldFormatting::get_choices, %s, %s, %s", m_choices_related_relationship->c_str(), m_choices_related_field.c_str(), m_choices_related_field_second.c_str());
 }
 
-void FieldFormatting::set_choices(const Glib::ustring& relationship_name, const Glib::ustring& field, const Glib::ustring& field_second)
+void FieldFormatting::set_choices(const sharedptr<Relationship>& relationship, const Glib::ustring& field, const Glib::ustring& field_second)
 {
-  m_choices_related_relationship.set_name(relationship_name);
+  set_relationship(relationship);
+
   m_choices_related_field = field;
   m_choices_related_field_second = field_second;
 }
@@ -154,22 +157,16 @@ void FieldFormatting::set_choices(const Glib::ustring& relationship_name, const 
 void FieldFormatting::change_field_name(const Glib::ustring& table_name, const Glib::ustring& field_name, const Glib::ustring& field_name_new)
 {
   //Update choices:
-  if(m_choices_related_relationship.get_to_table() == table_name)
+  sharedptr<Relationship> relationship = get_relationship();
+  if(!relationship)
+    return;
+
+  if(relationship->get_to_table() == table_name)
   {
     if(m_choices_related_field == field_name)
        m_choices_related_field = field_name_new;
-       
+
     if(m_choices_related_field_second == field_name)
        m_choices_related_field_second = field_name_new; 
-  }
-}
-
-void FieldFormatting::change_relationship_name(const Glib::ustring& table_name, const Glib::ustring& name, const Glib::ustring& name_new)
-{
-  //Update choices:
-  if(m_choices_related_relationship.get_from_table() == table_name)
-  {
-    if(m_choices_related_relationship.get_name() == name)
-       m_choices_related_relationship.set_name(name_new);
   }
 }

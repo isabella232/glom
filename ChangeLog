@@ -1,3 +1,9 @@
+2006-01-26  Murray Cumming <murrayc@murrayc.com>
+
+	* Many: Use relationship via sharedptr so we can translate its title too.
+        Derive LayoutItem_Field, LayoutItem_Portal, LayoutItem_Group, FieldFormatting 
+	from new UsesRelationship class to simplify the code.
+
 2006-01-25  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/application.cc: Reuse the Translations window, so it shows the 

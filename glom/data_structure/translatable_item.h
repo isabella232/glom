@@ -23,6 +23,7 @@
 
 #include <glibmm/ustring.h>
 #include <map>
+#include "../sharedptr.h"
 
 ///TranslatableItem have a map of translation strings - one string for each locale.
 class TranslatableItem
@@ -132,6 +133,15 @@ protected:
 
   static Glib::ustring m_current_locale, m_original_locale;
 };
+
+template <class T_object>
+Glib::ustring glom_get_sharedptr_name(const sharedptr<T_object>& item)
+{
+  if(item)
+    return item->get_name();
+  else
+    return Glib::ustring();
+}
 
 #endif //GLOM_DATASTRUCTURE_TRANSLATABLE_ITEM_H
 

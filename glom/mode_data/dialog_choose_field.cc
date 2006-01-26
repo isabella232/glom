@@ -68,10 +68,10 @@ void Dialog_ChooseField::set_document(Document_Glom* document, const Glib::ustri
 
   if(field.get_has_relationship_name())
   {
-    m_combo_relationship->set_active_text( field.get_relationship_name() );
+    m_combo_relationship->set_selected_relationship( field.get_relationship() );
   }
   else
-    m_combo_relationship->set_active_text(table_name);
+    m_combo_relationship->set_selected_parent_table(table_name); //TODO: Show the title too.
 
   //Select the current field at the start:
   const Glib::ustring field_name = field.get_name();
@@ -112,23 +112,16 @@ void Dialog_ChooseField::set_document(Document_Glom* document, const Glib::ustri
   if(document)
   {
     //Fill the list of relationships:
-    m_combo_relationship->clear_text();
-    Document_Glom::type_vecRelationships vecRelationships = document->get_relationships(table_name);
+    const Document_Glom::type_vecRelationships vecRelationships = document->get_relationships(table_name);
 
     //Add a special option for the current table:
-    m_combo_relationship->append_text(table_name);
+    m_combo_relationship->set_display_parent_table(table_name);
 
     //Add the relationships for this table:
-    if(!vecRelationships.empty())
-      m_combo_relationship->append_separator();
-
-    for(Document_Glom::type_vecRelationships::iterator iter = vecRelationships.begin(); iter != vecRelationships.end(); ++iter)
-    {
-      m_combo_relationship->append_text(iter->get_name());
-    }
+    m_combo_relationship->set_relationships(vecRelationships, table_name, document->get_table_title(table_name));
 
     //Set the table name and title:
-    m_combo_relationship->set_active_text(table_name);
+    m_combo_relationship->set_selected_parent_table(table_name);
 
     //Fill the treeview:
     m_model->clear();
@@ -175,16 +168,12 @@ bool Dialog_ChooseField::get_field_chosen(LayoutItem_Field& field) const
 
 
   //Relationship:
-  Glib::ustring relationship_name = m_combo_relationship->get_active_text();
-  if(relationship_name == m_table_name)
-    relationship_name.clear();
+  //Note that a null relationship means that the parent table was selected instead.
+  sharedptr<Relationship> relationship = m_combo_relationship->get_selected_relationship();
 
   //field.set_relationship_name(relationship_name);
 
-  if(!relationship_name.empty())
-  {
-    m_document->get_relationship(m_table_name, relationship_name, field.m_relationship);
-  }
+  field.set_relationship(relationship);
 
   //Field:
   Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = m_treeview->get_selection();
@@ -212,7 +201,7 @@ void Dialog_ChooseField::on_row_activated(const Gtk::TreePath& /* path */, Gtk::
 
 void Dialog_ChooseField::on_combo_relationship_changed()
 {
-  Glib::ustring relationship_name = m_combo_relationship->get_active_text();
+  sharedptr<Relationship> relationship = m_combo_relationship->get_selected_relationship();
 
   Document_Glom* pDocument = m_document;
   if(pDocument)
@@ -220,14 +209,11 @@ void Dialog_ChooseField::on_combo_relationship_changed()
     //Show the list of fields from this relationship:
 
     Document_Glom::type_vecFields vecFields;
-    if(relationship_name == m_table_name)
+    if(!relationship)
       vecFields = pDocument->get_table_fields(m_table_name);
     else
     {
-      Relationship relationship;
-      pDocument->get_relationship(m_table_name, relationship_name, relationship);
-
-      vecFields = pDocument->get_table_fields(relationship.get_to_table());
+      vecFields = pDocument->get_table_fields(relationship->get_to_table());
     }
 
     m_model->clear();

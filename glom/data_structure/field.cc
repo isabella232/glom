@@ -59,7 +59,7 @@ Field& Field::operator=(const Field& src)
   m_field_info = src.m_field_info;
   m_data = src.m_data;
 
-  m_strLookupRelationship = src.m_strLookupRelationship;
+  m_lookup_relationship = src.m_lookup_relationship;
   m_strLookupField = src.m_strLookupField;
 
   m_calculation = src.m_calculation;
@@ -79,7 +79,7 @@ bool Field::operator==(const Field& src) const
   bResult = bResult && (m_glom_type == src.m_glom_type);
   bResult = bResult && (m_data == src.m_data);
 
-  bResult = bResult && (m_strLookupRelationship == src.m_strLookupRelationship);
+  bResult = bResult && (m_lookup_relationship == src.m_lookup_relationship);
   bResult = bResult && (m_strLookupField == src.m_strLookupField);
 
   bResult = bResult && (m_calculation == src.m_calculation);
@@ -134,14 +134,14 @@ void Field::set_data(const Gnome::Gda::Value& data)
   m_data = data;
 }
 
-Glib::ustring Field::get_lookup_relationship() const
+sharedptr<Relationship> Field::get_lookup_relationship() const
 {
-  return m_strLookupRelationship;
+  return m_lookup_relationship;
 }
 
-void Field::set_lookup_relationship(const Glib::ustring& strRelationship)
+void Field::set_lookup_relationship(const sharedptr<Relationship>& relationship)
 {
-  m_strLookupRelationship = strRelationship;
+  m_lookup_relationship = relationship;
 }
 
 Glib::ustring Field::get_lookup_field() const
@@ -157,7 +157,7 @@ void Field::set_lookup_field(const Glib::ustring& strField)
 bool Field::get_is_lookup() const
 {
   //It's a lookup if the lookup relationship and field are set:
-  return ( (m_strLookupRelationship.size() > 0) && (m_strLookupField.size() > 0) );
+  return ( m_lookup_relationship && (!m_strLookupField.empty()) );
 }
 
 namespace { //anonymous

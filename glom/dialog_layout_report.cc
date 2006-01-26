@@ -494,9 +494,9 @@ void Dialog_Layout_Report::on_button_add()
 }
 
 
-bool Dialog_Layout_Report::offer_relationship_list(Relationship& relationship)
+sharedptr<Relationship> Dialog_Layout_Report::offer_relationship_list()
 {
-  bool result = false;
+  sharedptr<Relationship> result;
 
   try
   {
@@ -514,7 +514,7 @@ bool Dialog_Layout_Report::offer_relationship_list(Relationship& relationship)
       if(response == Gtk::RESPONSE_OK)
       {
         //Get the chosen relationship:
-        result = dialog->get_relationship_chosen(relationship);
+        result = dialog->get_relationship_chosen();
       }
 
       delete dialog;

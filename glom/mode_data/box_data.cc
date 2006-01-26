@@ -418,12 +418,11 @@ Box_Data::type_vecLayoutFields Box_Data::get_related_fields(const Glib::ustring&
       if(layout_field->get_has_relationship_name())
       {
         //Get the relationship information:
-        Relationship relationship;
-        bool test = document->get_relationship(m_strTableName, layout_field->get_relationship_name(), relationship);
-        if(test)
+        sharedptr<const Relationship> relationship = document->get_relationship(m_strTableName, layout_field->get_relationship_name());
+        if(relationship)
         {
           //If the relationship uses the specified field:
-          if(relationship.get_from_field() == field_name)
+          if(relationship->get_from_field() == field_name)
           {
             //Add it:
             result.push_back(layout_field);
@@ -483,12 +482,11 @@ Box_Data::type_list_lookups Box_Data::get_lookup_fields(const Glib::ustring& fie
       if(field->get_is_lookup())
       {
         //Get the relationship information:
-        Relationship relationship;
-        bool test = document->get_relationship(m_strTableName, field->get_lookup_relationship(), relationship);
-        if(test)
+        sharedptr<Relationship> relationship = field->get_lookup_relationship();
+        if(relationship)
         {
           //If the relationship is triggererd by the specified field:
-          if(relationship.get_from_field() == field_name)
+          if(relationship->get_from_field() == field_name)
           {
             //Add it:
             LayoutItem_Field item;
@@ -503,15 +501,15 @@ Box_Data::type_list_lookups Box_Data::get_lookup_fields(const Glib::ustring& fie
   return result;
 }
 
-Gnome::Gda::Value Box_Data::get_lookup_value(const Relationship& relationship, const sharedptr<const Field>& source_field, const Gnome::Gda::Value& key_value)
+Gnome::Gda::Value Box_Data::get_lookup_value(const sharedptr<const Relationship>& relationship, const sharedptr<const Field>& source_field, const Gnome::Gda::Value& key_value)
 {
   Gnome::Gda::Value result;
 
-  sharedptr<Field> to_key_field = get_fields_for_table_one_field(relationship.get_to_table(), relationship.get_to_field());
+  sharedptr<Field> to_key_field = get_fields_for_table_one_field(relationship->get_to_table(), relationship->get_to_field());
   if(to_key_field)
   {
-    Glib::ustring strQuery = "SELECT " + relationship.get_to_table() + "." + source_field->get_name() + " FROM " +  relationship.get_to_table();
-    strQuery += " WHERE " + relationship.get_to_field() + " = " + to_key_field->sql(key_value);
+    Glib::ustring strQuery = "SELECT " + relationship->get_to_table() + "." + source_field->get_name() + " FROM " +  relationship->get_to_table();
+    strQuery += " WHERE " + relationship->get_to_field() + " = " + to_key_field->sql(key_value);
 
     Glib::RefPtr<Gnome::Gda::DataModel> data_model = Query_execute(strQuery);
     if(data_model && data_model->get_n_rows())
@@ -673,7 +671,9 @@ bool Box_Data::set_field_value_in_database(const Gtk::TreeModel::iterator& row, 
     if(field_layout.get_has_relationship_name())
     {
       //The field is in a related table.
-      table_name = field_layout.m_relationship.get_to_table();
+      sharedptr<Relationship> rel = field_layout.get_relationship();
+      if(rel)
+        table_name = rel->get_to_table();
     }
     else
       table_name = m_strTableName;
@@ -754,17 +754,16 @@ void Box_Data::fill_layout_group_field_info(LayoutGroup& group, const Privileges
       {
         //Get the full field information:
         const Glib::ustring relationship_name = item_field->get_relationship_name();
-        Relationship relationship;
-        bool test = document->get_relationship(m_strTableName, relationship_name, relationship);
-        if(test)
+        sharedptr<const Relationship> relationship = document->get_relationship(m_strTableName, relationship_name);
+        if(relationship)
         {
-          sharedptr<Field> field = get_fields_for_table_one_field(relationship.get_to_table(), item->get_name());
+          sharedptr<Field> field = get_fields_for_table_one_field(relationship->get_to_table(), item->get_name());
           if(field)
           {
             item_field->set_full_field_details(field);
 
             //TODO_Performance: Don't do this repeatedly for the same table.
-            const Privileges privs = get_current_privs(relationship.get_to_table());
+            const Privileges privs = get_current_privs(relationship->get_to_table());
             item_field->m_priv_view = privs.m_view;
             item_field->m_priv_edit = privs.m_edit;
           }
@@ -865,7 +864,7 @@ Glib::ustring Box_Data::build_sql_select_with_where_clause(const Glib::ustring& 
       bool test = document->get_relationship(table_name, relationship_name, relationship);
       if(test)
       {
-        const Glib::ustring field_table_name = relationship.get_to_table();
+        const Glib::ustring field_table_name = relationship->get_to_table();
         sql_part_fields += ( field_table_name + "." );
 
         //Add the relationship to the list:
@@ -886,9 +885,9 @@ Glib::ustring Box_Data::build_sql_select_with_where_clause(const Glib::ustring& 
   for(type_list_relationships::const_iterator iter = list_relationships.begin(); iter != list_relationships.end(); ++iter)
   {
     const Relationship& relationship = *iter;
-    sql_part_leftouterjoin += " LEFT OUTER JOIN " + relationship.get_to_table() +
-      " ON (" + relationship.get_from_table() + "." + relationship.get_from_field() + " = " +
-      relationship.get_to_table() + "." + relationship.get_to_field() +
+    sql_part_leftouterjoin += " LEFT OUTER JOIN " + relationship->get_to_table() +
+      " ON (" + relationship->get_from_table() + "." + relationship->get_from_field() + " = " +
+      relationship->get_to_table() + "." + relationship->get_to_field() +
       ")";
   }
 
@@ -901,16 +900,16 @@ Glib::ustring Box_Data::build_sql_select_with_where_clause(const Glib::ustring& 
 }
 */
 
-bool Box_Data::get_related_record_exists(const Relationship& relationship, const sharedptr<const Field>& key_field, const Gnome::Gda::Value& key_value)
+bool Box_Data::get_related_record_exists(const sharedptr<const Relationship>& relationship, const sharedptr<const Field>& key_field, const Gnome::Gda::Value& key_value)
 {
   bool result = false;
 
   //TODO_Performance: It's very possible that this is slow.
   //We don't care how many records there are, only whether there are more than zero.
-  const Glib::ustring to_field = relationship.get_to_table() = relationship.get_to_field();
+  const Glib::ustring to_field = relationship->get_to_table() = relationship->get_to_field();
 
   //TODO_Performance: Is this the best way to just find out whether there is one record that meets this criteria?
-  const Glib::ustring query = "SELECT " + to_field + " FROM " + relationship.get_to_table() + " WHERE " + to_field + " = " + key_field->sql(key_value);
+  const Glib::ustring query = "SELECT " + to_field + " FROM " + relationship->get_to_table() + " WHERE " + to_field + " = " + key_field->sql(key_value);
   Glib::RefPtr<Gnome::Gda::DataModel> records = Query_execute(query);
   if(!records)
     handle_error();
@@ -924,7 +923,7 @@ bool Box_Data::get_related_record_exists(const Relationship& relationship, const
   return result;
 }
 
-bool Box_Data::add_related_record_for_field(const LayoutItem_Field& layout_item_parent, const Relationship& relationship, const sharedptr<const Field>& primary_key_field, const Gnome::Gda::Value& primary_key_value_provided)
+bool Box_Data::add_related_record_for_field(const LayoutItem_Field& layout_item_parent, const sharedptr<const Relationship>& relationship, const sharedptr<const Field>& primary_key_field, const Gnome::Gda::Value& primary_key_value_provided)
 {
   Gnome::Gda::Value primary_key_value = primary_key_value_provided;
 
@@ -936,7 +935,7 @@ bool Box_Data::add_related_record_for_field(const LayoutItem_Field& layout_item_
   else
   {
     //To store the entered data in the related field, we would first have to create a related record.
-    if(!relationship.get_auto_create())
+    if(!relationship->get_auto_create())
     {
       //Warn the user:
       //TODO: Make the field insensitive until it can receive data, so people never see this dialog.
@@ -977,12 +976,12 @@ bool Box_Data::add_related_record_for_field(const LayoutItem_Field& layout_item_
         //Create the related record:
         if(key_is_auto_increment)
         {
-          primary_key_value = generate_next_auto_increment(relationship.get_to_table(), primary_key_field->get_name());
+          primary_key_value = generate_next_auto_increment(relationship->get_to_table(), primary_key_field->get_name());
 
           //Generate the new key value;
         }
 
-        const Glib::ustring strQuery = "INSERT INTO " + relationship.get_to_table() + " (" + primary_key_field->get_name() + ") VALUES (" + primary_key_field->sql(primary_key_value) + ")";
+        const Glib::ustring strQuery = "INSERT INTO " + relationship->get_to_table() + " (" + primary_key_field->get_name() + ") VALUES (" + primary_key_field->sql(primary_key_value) + ")";
         bool test = Query_execute(strQuery);
         if(test)
         {
@@ -990,13 +989,13 @@ bool Box_Data::add_related_record_for_field(const LayoutItem_Field& layout_item_
           {
             //Set the key in the parent table
             LayoutItem_Field item_from_key;
-            item_from_key.set_name(relationship.get_from_field());
+            item_from_key.set_name(relationship->get_from_field());
 
             //Show the new from key in the parent table's layout:
             set_entered_field_data(item_from_key, primary_key_value);
 
             //Set it in the database too:
-            sharedptr<Field> field_from_key = get_fields_for_table_one_field(relationship.get_from_table(), relationship.get_from_field()); //TODO_Performance.
+            sharedptr<Field> field_from_key = get_fields_for_table_one_field(relationship->get_from_table(), relationship->get_from_field()); //TODO_Performance.
             if(field_from_key)
             {
               sharedptr<Field> parent_primary_key_field = get_field_primary_key();
@@ -1015,8 +1014,8 @@ bool Box_Data::add_related_record_for_field(const LayoutItem_Field& layout_item_
                 }
                 else
                 {
-                  const Glib::ustring strQuery = "UPDATE  " + relationship.get_from_table() + " SET " + relationship.get_from_field() + " = " + primary_key_field->sql(primary_key_value) +
-                    " WHERE " + relationship.get_from_table() + "." + parent_primary_key_field->get_name() + " = " + parent_primary_key_field->sql(parent_primary_key_value);
+                  const Glib::ustring strQuery = "UPDATE  " + relationship->get_from_table() + " SET " + relationship->get_from_field() + " = " + primary_key_field->sql(primary_key_value) +
+                    " WHERE " + relationship->get_from_table() + "." + parent_primary_key_field->get_name() + " = " + parent_primary_key_field->sql(parent_primary_key_value);
                   bool test = Query_execute(strQuery);
                   return test;
                 }

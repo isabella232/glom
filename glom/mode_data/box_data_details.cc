@@ -501,11 +501,10 @@ void Box_Data_Details::on_flowtable_field_open_details_requested(const LayoutIte
   if(GlomConversions::value_is_empty(field_value))
     return; //Ignore empty ID fields.
 
-  Relationship relationship;
-  const bool related_to_one = get_document()->get_field_used_in_relationship_to_one(m_strTableName, layout_field.get_name(), relationship);
-  if(related_to_one)
+  sharedptr<Relationship> relationship = get_document()->get_field_used_in_relationship_to_one(m_strTableName, layout_field.get_name());
+  if(relationship)
   {
-    signal_requested_related_details().emit(relationship.get_to_table(), field_value);
+    signal_requested_related_details().emit(relationship->get_to_table(), field_value);
   }
 }
 
@@ -537,19 +536,18 @@ void Box_Data_Details::on_flowtable_field_edited(const LayoutItem_Field& layout_
 
       Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
 
-      Relationship relationship;
-      bool test = document->get_relationship(get_table_name(), relationship_name, relationship);
-      if(test)
+      sharedptr<Relationship> relationship = document->get_relationship(get_table_name(), relationship_name);
+      if(relationship)
       {
-        table_name = relationship.get_to_table();
-        const Glib::ustring to_field_name = relationship.get_to_field();
+        table_name = relationship->get_to_table();
+        const Glib::ustring to_field_name = relationship->get_to_field();
         //Get the key field in the other table (the table that we will change)
         primary_key_field = get_fields_for_table_one_field(table_name, to_field_name); //TODO_Performance.
         if(primary_key_field)
         {
           //Get the value of the corresponding key in the current table (that identifies the record in the table that we will change)
           LayoutItem_Field layout_item;
-          layout_item.set_name(relationship.get_from_field());
+          layout_item.set_name(relationship->get_from_field());
 
           primary_key_value = get_entered_field_data(layout_item);
 
@@ -602,7 +600,7 @@ void Box_Data_Details::on_flowtable_field_edited(const LayoutItem_Field& layout_
         {
           const Relationship& relationship = *iter;
 
-          if(relationship.get_from_field() == strFieldName)
+          if(relationship->get_from_field() == strFieldName)
           {
             bIsForeignKey = true;
             break;
@@ -723,11 +721,11 @@ void Box_Data_Details::do_lookups(const Gtk::TreeModel::iterator& /* row */, con
    {
      const LayoutItem_Field& layout_item = iter->first;
 
-     const Relationship relationship = iter->second;
+     sharedptr<const Relationship> relationship = iter->second;
      const sharedptr<const Field>& field_lookup = layout_item.get_full_field_details();
      const Glib::ustring field_lookup_name = field_lookup->get_name();
 
-     sharedptr<const Field> field_source = get_fields_for_table_one_field(relationship.get_to_table(), field_lookup->get_lookup_field());
+     sharedptr<const Field> field_source = get_fields_for_table_one_field(relationship->get_to_table(), field_lookup->get_lookup_field());
      if(field_source)
      {
        Gnome::Gda::Value value = get_lookup_value(iter->second /* relationship */,  field_source /* the field to look in to get the value */, field_value /* Value of to and from fields */);
@@ -789,11 +787,10 @@ void Box_Data_Details::print_layout_group(xmlpp::Element* node_parent, const Lay
 
           //Box_Data_List_Related* pPortalWidget = m_FlowTable.get_portals();
 
-          Relationship relationship;
-          bool relationship_found = get_document()->get_relationship(m_strTableName, pLayoutPortal->get_relationship(), relationship);
-          if(relationship_found)
+          sharedptr<Relationship> relationship = get_document()->get_relationship(m_strTableName, pLayoutPortal->get_relationship_name());
+          if(relationship)
           {
-            nodePortal->set_attribute("title", relationship.get_title_or_name());
+            nodePortal->set_attribute("title", relationship->get_title_or_name());
 
             //TODO:
 

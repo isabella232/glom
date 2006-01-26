@@ -41,7 +41,7 @@ protected:
   virtual void on_adddel_Delete(const Gtk::TreeModel::iterator& rowStart, const Gtk::TreeModel::iterator& rowEnd);
   virtual void on_adddel_Edit(const Gtk::TreeModel::iterator& row);
   virtual void on_adddel_changed(const Gtk::TreeModel::iterator& row, guint column);
-  
+
   virtual void on_show_hidden_toggled();
 
   virtual void on_userlevel_changed(AppState::userlevels userlevel);
@@ -52,7 +52,7 @@ protected:
   guint m_colHidden;
   guint m_colTitle;
   guint m_colDefault;
-  
+
   mutable AddDel_WithButtons m_AddDel; //mutable because its get_ methods aren't const.
 };
 

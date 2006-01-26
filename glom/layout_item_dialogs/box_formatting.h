@@ -27,6 +27,7 @@
 #include "../box_db.h"
 #include "../utility_widgets/combo_textglade.h"
 #include "../utility_widgets/comboentry_currency.h"
+#include "../combobox_relationship.h"
 
 class Box_Formatting
  : public Gtk::VBox,
@@ -64,7 +65,7 @@ protected:
   Gtk::CheckButton* m_checkbutton_choices_restricted;
   AddDel_WithButtons* m_adddel_choices_custom;
   guint m_col_index_custom_choices;
-  Combo_TextGlade* m_combo_choices_relationship;
+  ComboBox_Relationship* m_combo_choices_relationship;
   Combo_TextGlade* m_combo_choices_field;
   Combo_TextGlade* m_combo_choices_field_second;
 

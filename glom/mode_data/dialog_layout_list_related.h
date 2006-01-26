@@ -23,6 +23,7 @@
 
 #include "dialog_layout.h"
 #include "../utility_widgets/combo_textglade.h"
+#include "../combobox_relationship.h"
 
 class Dialog_Layout_List_Related : public Dialog_Layout
 {
@@ -39,7 +40,7 @@ public:
   virtual void set_document(const Glib::ustring& layout, Document_Glom* document, const LayoutItem_Portal& portal);
   virtual void update_ui(bool including_relationships_list = true);
 
-  virtual Glib::ustring get_relationship_name() const;
+  sharedptr<Relationship> get_relationship() const;
   LayoutItem_Portal get_portal_layout();
 
 protected:
@@ -83,7 +84,7 @@ protected:
   Gtk::Button* m_button_field_edit;
   Gtk::Button* m_button_field_formatting;
 
-  Combo_TextGlade* m_combo_relationship_name;
+  ComboBox_Relationship* m_combo_relationship;
   LayoutItem_Portal m_portal;
 
   Glib::RefPtr<Gtk::ListStore> m_model_fields;

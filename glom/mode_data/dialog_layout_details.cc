@@ -169,7 +169,7 @@ void Dialog_Layout_Details::fill_group(const Gtk::TreeModel::iterator& iter, Lay
 
         field.set_name( rowChild[m_model_items->m_columns.m_col_name] );
 
-        field.m_relationship = rowChild[m_model_items->m_columns.m_col_relationship];
+        field.set_relationship( rowChild[m_model_items->m_columns.m_col_relationship] );
 
         //if(!relationship_name.empty())
         //{
@@ -238,7 +238,7 @@ void Dialog_Layout_Details::add_group(const Gtk::TreeModel::iterator& parent, co
             row[m_model_items->m_columns.m_col_type] = TreeStore_Layout::TYPE_FIELD;
             row[m_model_items->m_columns.m_col_field_formatting] = *field;
             row[m_model_items->m_columns.m_col_name] = field->get_name();
-            row[m_model_items->m_columns.m_col_relationship] = field->m_relationship;
+            row[m_model_items->m_columns.m_col_relationship] = field->get_relationship();
 
             row[m_model_items->m_columns.m_col_editable] = field->get_editable();
           }
@@ -485,7 +485,7 @@ void Dialog_Layout_Details::on_button_field_add()
       Gtk::TreeModel::Row row = *iter;
       row[m_model_items->m_columns.m_col_type] = TreeStore_Layout::TYPE_FIELD;
       row[m_model_items->m_columns.m_col_name] = layout_item.get_name();
-      row[m_model_items->m_columns.m_col_relationship] = layout_item.m_relationship;
+      row[m_model_items->m_columns.m_col_relationship] = layout_item.get_relationship();
       row[m_model_items->m_columns.m_col_editable] = true; //A sane default.
 
       LayoutItem_Field field_for_formatting;
@@ -506,9 +506,9 @@ void Dialog_Layout_Details::on_button_field_add()
 }
 
 
-bool Dialog_Layout_Details::offer_relationship_list(Relationship& relationship)
+sharedptr<Relationship> Dialog_Layout_Details::offer_relationship_list()
 {
-  bool result = false;
+  sharedptr<Relationship> result;
 
   try
   {
@@ -526,7 +526,7 @@ bool Dialog_Layout_Details::offer_relationship_list(Relationship& relationship)
       if(response == Gtk::RESPONSE_OK)
       {
         //Get the chosen relationship:
-        result = dialog->get_relationship_chosen(relationship);
+        result = dialog->get_relationship_chosen();
       }
 
       delete dialog;
@@ -612,9 +612,8 @@ void Dialog_Layout_Details::on_button_add_related()
 {
   Gtk::TreeModel::iterator parent = get_selected_group_parent();
 
-  Relationship relationship;
-  bool test = offer_relationship_list(relationship);
-  if(test)
+  sharedptr<Relationship> relationship = offer_relationship_list();
+  if(relationship)
   {
     //Add the field details to the layout treeview:
     Gtk::TreeModel::iterator iter;
@@ -636,9 +635,9 @@ void Dialog_Layout_Details::on_button_add_related()
     {
       Gtk::TreeModel::Row row = *iter;
       row[m_model_items->m_columns.m_col_type] = TreeStore_Layout::TYPE_PORTAL;
-      
+
       LayoutItem_Portal portal;
-      portal.set_relationship(relationship.get_name());
+      portal.set_relationship(relationship);
       row[m_model_items->m_columns.m_col_portal] = portal;
       row[m_model_items->m_columns.m_col_editable] = true; //A sane default.
       //row[m_model_items->m_columns.m_col_title] = field.get_title();
@@ -798,7 +797,7 @@ void Dialog_Layout_Details::on_button_field_edit()
         {
           LayoutItem_Field field;
           field.set_name( row[m_model_items->m_columns.m_col_name] ); //Start with this one selected.
-          field.m_relationship = row[m_model_items->m_columns.m_col_relationship];
+          field.set_relationship( row[m_model_items->m_columns.m_col_relationship] );
 
           //if(!relationship_name.empty())
           //{
@@ -810,7 +809,7 @@ void Dialog_Layout_Details::on_button_field_edit()
           if(test)
           {
             row[m_model_items->m_columns.m_col_name] = field.get_name();
-            row[m_model_items->m_columns.m_col_relationship] = field.m_relationship;
+            row[m_model_items->m_columns.m_col_relationship] = field.get_relationship();
 
             row[m_model_items->m_columns.m_col_editable] = field.get_editable();
           }
@@ -819,13 +818,14 @@ void Dialog_Layout_Details::on_button_field_edit()
         }
         case TreeStore_Layout::TYPE_PORTAL:
         {
-          Relationship relationship;
           LayoutItem_Portal portal = row[m_model_items->m_columns.m_col_portal];
-          relationship.set_name( portal.get_relationship() ); //Start with this one selected.
-          bool test = offer_relationship_list(relationship);
-          if(test)
+
+          sharedptr<Relationship> relationship(new Relationship());
+          relationship->set_name( portal.get_relationship_name() ); //Start with this one selected.
+          relationship = offer_relationship_list();
+          if(relationship)
           {
-            portal.set_relationship(relationship.get_name());
+            portal.set_relationship(relationship);
             row[m_model_items->m_columns.m_col_portal] = portal;
           }
 
@@ -911,17 +911,17 @@ void Dialog_Layout_Details::on_cell_data_name(Gtk::CellRenderer* renderer, const
       else if(is_relationship)
       {
         const LayoutItem_Portal portal = row[m_model_items->m_columns.m_col_portal];
-        markup = _("Related: ") + portal.get_relationship();
+        markup = _("Related: ") + portal.get_relationship_name();
       }
       else
       {
         //It's a field:
 
         //Indicate that it's a field in another table.
-        const Relationship& rel = row[m_model_items->m_columns.m_col_relationship];
-        const Glib::ustring relationship = rel.get_name();
-        if(!relationship.empty())
-          markup = relationship + "::";
+        sharedptr<Relationship> relationship = row[m_model_items->m_columns.m_col_relationship];
+        const Glib::ustring relationship_name = glom_get_sharedptr_name(relationship);
+        if(!(relationship_name.empty()))
+          markup = (relationship_name + "::");
 
         markup += row[m_model_items->m_columns.m_col_name];
 

@@ -350,19 +350,18 @@ void Box_Data_List::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, 
 
         Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
 
-        Relationship relationship;
-        bool test = document->get_relationship(m_strTableName, relationship_name, relationship);
-        if(test)
+        sharedptr<Relationship> relationship = document->get_relationship(m_strTableName, relationship_name);
+        if(relationship)
         {
-          table_name = relationship.get_to_table();
-          const Glib::ustring to_field_name = relationship.get_to_field();
+          table_name = relationship->get_to_table();
+          const Glib::ustring to_field_name = relationship->get_to_field();
           //Get the key field in the other table (the table that we will change)
           primary_key_field = get_fields_for_table_one_field(table_name, to_field_name); //TODO_Performance.
           if(primary_key_field)
           {
             //Get the value of the corresponding key in the current table (that identifies the record in the table that we will change)
             LayoutItem_Field layout_item;
-            layout_item.set_name(relationship.get_from_field());
+            layout_item.set_name(relationship->get_from_field());
 
             primary_key_value = get_entered_field_data(layout_item);
 
@@ -384,7 +383,7 @@ void Box_Data_List::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, 
 
       //Update the field in the record (the record with this primary key):
       const Gnome::Gda::Value field_value = m_AddDel.get_value(row, layout_field);
-      std::cout << "Box_Data_List::on_adddel_user_changed(): field_value = " << field_value.to_string() << std::endl;
+      //std::cout << "Box_Data_List::on_adddel_user_changed(): field_value = " << field_value.to_string() << std::endl;
       //const sharedptr<const Field>& field = layout_field.m_field;
       //const Glib::ustring strFieldName = layout_field.get_name();
 
@@ -503,10 +502,10 @@ void Box_Data_List::do_lookups(const Gtk::TreeModel::iterator& row, const Layout
    {
      const LayoutItem_Field& layout_Item = iter->first;
 
-     const Relationship relationship = iter->second;
-     const sharedptr<const Field>& field_lookup = layout_Item.get_full_field_details();
+     sharedptr<const Relationship> relationship = iter->second;
+     const sharedptr<const Field> field_lookup = layout_Item.get_full_field_details();
 
-     sharedptr<const Field> field_source = get_fields_for_table_one_field(relationship.get_to_table(), field_lookup->get_lookup_field());
+     sharedptr<const Field> field_source = get_fields_for_table_one_field(relationship->get_to_table(), field_lookup->get_lookup_field());
      if(field_source)
      {
        Gnome::Gda::Value value = get_lookup_value(iter->second /* relationship */,  field_source /* the field to look in to get the value */, field_value /* Value of to and from fields */);

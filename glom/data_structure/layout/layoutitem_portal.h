@@ -25,7 +25,9 @@
 #include "../field.h"
 #include "../relationship.h"
 
-class LayoutItem_Portal : public LayoutGroup
+class LayoutItem_Portal
+: public LayoutGroup,
+  public UsesRelationship
 {
 public:
 
@@ -36,20 +38,12 @@ public:
 
   virtual LayoutItem* clone() const;
 
-  Glib::ustring get_relationship() const;
-  void set_relationship(const Glib::ustring& relationship);
-
   virtual Glib::ustring get_part_type_name() const;
-  
+
   virtual void change_field_item_name(const Glib::ustring& table_name, const Glib::ustring& field_name, const Glib::ustring& field_name_new);
   virtual void change_related_field_item_name(const Glib::ustring& table_name, const Glib::ustring& field_name, const Glib::ustring& field_name_new);
-  
-  virtual void change_relationship_name(const Glib::ustring& table_name, const Glib::ustring& name, const Glib::ustring& name_new);
-  virtual void change_related_relationship_name(const Glib::ustring& table_name, const Glib::ustring& name, const Glib::ustring& name_new);
-  
-  virtual void debug(guint level = 0) const;
 
-  Relationship m_relationship; //Public, for more efficient access.
+  virtual void debug(guint level = 0) const;
 
 protected:
 

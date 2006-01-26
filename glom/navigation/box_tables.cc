@@ -329,7 +329,7 @@ void Box_Tables::on_adddel_Edit(const Gtk::TreeModel::iterator& row)
     else
     {
        //Go ahead:
-       
+ 
        save_to_document();
 
        //Emit the signal:
@@ -345,9 +345,12 @@ void Box_Tables::save_to_document()
     //Save the hidden tables. TODO_usermode: Only if we are in developer mode.
     Document_Glom::type_listTableInfo listTables;
 
+    Document_Glom* document = get_document();
+
     for(Gtk::TreeModel::iterator iter = m_AddDel.get_model()->children().begin(); iter != m_AddDel.get_model()->children().end(); ++iter)
     {
-      sharedptr<TableInfo> table_info(new TableInfo());
+      const Glib::ustring table_name = m_AddDel.get_value(iter, m_colTableName); //The name has already been changed in the document.
+      sharedptr<TableInfo> table_info = document->get_table(table_name); //Start with the existing table_info, to preserve extra information, such as translations.
       table_info->set_name( m_AddDel.get_value(iter, m_colTableName) );
 
       if(!table_info->get_name().empty())
@@ -360,7 +363,6 @@ void Box_Tables::save_to_document()
       }
     }
 
-    Document_Glom* document = get_document();
     if(document)
       document->set_tables( listTables); //TODO: Don't save all new tables - just the ones already in the document.
   }
@@ -403,7 +405,7 @@ void Box_Tables::on_adddel_changed(const Gtk::TreeModel::iterator& row, guint co
           {
             //Change the AddDel item's key:
             m_AddDel.set_value_key(row, table_name_new);
-            
+
             set_modified();
 
             //Tell the document that this table's name has changed:

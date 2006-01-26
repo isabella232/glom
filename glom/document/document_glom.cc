@@ -191,7 +191,7 @@ void Document_Glom::set_connection_database(const Glib::ustring& strVal)
   }
 }
 
-void Document_Glom::set_relationship(const Glib::ustring& table_name, const Relationship& relationship)
+void Document_Glom::set_relationship(const Glib::ustring& table_name, const sharedptr<Relationship>& relationship)
 {
   //Find the existing relationship:
   type_tables::iterator iterFind = m_tables.find(table_name);
@@ -201,13 +201,13 @@ void Document_Glom::set_relationship(const Glib::ustring& table_name, const Rela
 
     //Look for the relationship with this name:
     bool existing = false;
-    const Glib::ustring relationship_name = relationship.get_name();
+    const Glib::ustring relationship_name = glom_get_sharedptr_name(relationship);
 
     for(type_vecRelationships::iterator iter = info.m_relationships.begin(); iter != info.m_relationships.end(); ++iter)
     {
-      if(iter->get_name() == relationship_name)
+      if((*iter)->get_name() == relationship_name)
       {
-        *iter = relationship;
+        *iter = relationship; //Changes the relationship. All references (sharedptrs) to the relationship will get the informatin too, because it is shared.
         existing = true;
       } 
     }
@@ -218,14 +218,11 @@ void Document_Glom::set_relationship(const Glib::ustring& table_name, const Rela
       info.m_relationships.push_back(relationship);
     }
   }
-
-  update_cached_relationships();
 }
 
-bool Document_Glom::get_relationship(const Glib::ustring& table_name, const Glib::ustring& relationship_name, Relationship& relationship) const
+sharedptr<Relationship> Document_Glom::get_relationship(const Glib::ustring& table_name, const Glib::ustring& relationship_name) const
 {
-  //Initialize output parameter:
-  relationship = Relationship();
+  sharedptr<Relationship> result;
 
   type_tables::const_iterator iterFind = m_tables.find(table_name);
   if(iterFind != m_tables.end())
@@ -235,18 +232,16 @@ bool Document_Glom::get_relationship(const Glib::ustring& table_name, const Glib
     //Look for the relationship with this name:
     for(type_vecRelationships::const_iterator iter = info.m_relationships.begin(); iter != info.m_relationships.end(); ++iter)
     {
-      if(iter->get_name() == relationship_name)
+      if(*iter && ((*iter)->get_name() == relationship_name))
       {
-        relationship = *iter;
-        return true; //found
+        result = *iter;
       }
     }
   }
 
-  return false; //Not found.
+  return result;
 }
 
-  
 Document_Glom::type_vecRelationships Document_Glom::get_relationships(const Glib::ustring& table_name) const
 {
   type_tables::const_iterator iterFind = m_tables.find(table_name);
@@ -256,7 +251,7 @@ Document_Glom::type_vecRelationships Document_Glom::get_relationships(const Glib
     return type_vecRelationships(); 
 }
 
-void Document_Glom::set_relationships(const Glib::ustring& table_name, const type_vecRelationships& vecRelationships)
+void Document_Glom::set_relationships(const Glib::ustring& table_name, const type_vecRelationships& vecRelationships) //TODO_shared_relationships
 {
   if(!table_name.empty())
   {
@@ -267,18 +262,20 @@ void Document_Glom::set_relationships(const Glib::ustring& table_name, const typ
   }
 }
 
-void Document_Glom::remove_relationship(const Relationship& relationship)
+void Document_Glom::remove_relationship(const sharedptr<const Relationship>& relationship)
 {
   //Get the table that this relationship is part of:
-  type_tables::iterator iter = m_tables.find(relationship.get_from_table());
+  type_tables::iterator iter = m_tables.find(relationship->get_from_table());
   if(iter != m_tables.end())
   {
     DocumentTableInfo& info = iter->second;
 
+    const Glib::ustring relationship_name = glom_get_sharedptr_name(relationship);
+
     //Find the relationship and remove it:
     for(type_vecRelationships::iterator iter = info.m_relationships.begin(); iter != info.m_relationships.end(); ++iter)
     {
-      if(iter->get_name() == relationship.get_name())
+      if(*iter && ((*iter)->get_name() == relationship_name))
       {
         iter = info.m_relationships.erase(iter);
 
@@ -304,25 +301,27 @@ void Document_Glom::remove_table(const Glib::ustring& table_name)
   for(type_tables::iterator iter = m_tables.begin(); iter != m_tables.end(); ++iter)
   {
     DocumentTableInfo& info = iter->second;
-    
+
     if(!(info.m_relationships.empty()))
     {
       type_vecRelationships::iterator iterRel = info.m_relationships.begin();
       bool something_changed = true;
       while(something_changed && !info.m_relationships.empty())
       {
-        if(iterRel->get_to_table() == table_name)
+        sharedptr<Relationship> relationship = *iterRel;
+
+        if(relationship->get_to_table() == table_name)
         {
           //Loop again, because we have changed the structure:
-          remove_relationship(*iterRel); //Also removes anything that uses the relationship.
-  
+          remove_relationship(relationship); //Also removes anything that uses the relationship.
+
           something_changed = true;
           iterRel = info.m_relationships.begin();
         }
         else
         {
           ++iterRel;
-          
+
           if(iterRel == info.m_relationships.end())
             something_changed = false; //We've looked at them all, without changing things.
         }
@@ -411,21 +410,23 @@ void Document_Glom::change_field_name(const Glib::ustring& table_name, const Gli
       //Look at each relationship in the table:
       for(type_vecRelationships::iterator iterRels = iter->second.m_relationships.begin(); iterRels != iter->second.m_relationships.end(); ++iterRels)
       {
-        if(iterRels->get_from_table() == table_name)
+        sharedptr<Relationship> relationship = *iterRels;
+
+        if(relationship->get_from_table() == table_name)
         {
-          if(iterRels->get_from_field() == strFieldNameOld)
+          if(relationship->get_from_field() == strFieldNameOld)
           {
             //Change it:
-            iterRels->set_from_field(strFieldNameNew);
+            relationship->set_from_field(strFieldNameNew);
           }
         }
 
-        if(iterRels->get_to_table() == table_name)
+        if(relationship->get_to_table() == table_name)
         {
-          if(iterRels->get_to_field() == strFieldNameOld)
+          if(relationship->get_to_field() == strFieldNameOld)
           {
             //Change it:
-            iterRels->set_to_field(strFieldNameNew);
+            relationship->set_to_field(strFieldNameNew);
           }
         }
       }
@@ -442,7 +443,7 @@ void Document_Glom::change_field_name(const Glib::ustring& table_name, const Gli
       //Look at each layout:
       for(DocumentTableInfo::type_layouts::iterator iterLayouts = iter->second.m_layouts.begin(); iterLayouts != iter->second.m_layouts.end(); ++iterLayouts)
       {
- 
+
         //Look at each group:
         for(type_mapLayoutGroupSequence::iterator iterGroup = iterLayouts->m_layout_groups.begin(); iterGroup != iterLayouts->m_layout_groups.end(); ++iterGroup)
         {
@@ -494,16 +495,18 @@ void Document_Glom::change_table_name(const Glib::ustring& strTableNameOld, cons
       //Look at each relationship in the table:
       for(type_vecRelationships::iterator iterRels = iter->second.m_relationships.begin(); iterRels != iter->second.m_relationships.end(); ++iterRels)
       {
-        if(iterRels->get_from_table() == strTableNameOld)
+        sharedptr<Relationship> relationship = *iterRels;
+
+        if(relationship->get_from_table() == strTableNameOld)
         {
           //Change it:
-           iterRels->set_from_table(strTableNameNew);
+           relationship->set_from_table(strTableNameNew);
         }
 
-        if(iterRels->get_to_table() == strTableNameOld)
+        if(relationship->get_to_table() == strTableNameOld)
         {
           //Change it:
-           iterRels->set_to_table(strTableNameNew);
+           relationship->set_to_table(strTableNameNew);
         }
       }
     }
@@ -522,13 +525,16 @@ void Document_Glom::change_relationship_name(const Glib::ustring& table_name, co
     //Change the relationship name:
     type_vecRelationships::iterator iterRelFind = std::find_if( iterFindTable->second.m_relationships.begin(), iterFindTable->second.m_relationships.end(), predicate_FieldHasName<Relationship>(name) );
     if(iterRelFind != iterFindTable->second.m_relationships.end())
-      iterRelFind->set_name(name_new);
+      (*iterRelFind)->set_name(name_new);
 
 
-    //Find any layouts or reports that use this field
+    //Any layouts, reports, etc that use this relationship will already have the new name via the sharedptr<Relationship>.
+
+
     //Look at each table:
     for(type_tables::iterator iter = m_tables.begin(); iter != m_tables.end(); ++iter)
     {
+      /*
        //Look at all field formatting:
       for(type_vecFields::iterator iterFields = iter->second.m_fields.begin(); iterFields != iter->second.m_fields.end(); ++iterFields)
       {
@@ -561,6 +567,9 @@ void Document_Glom::change_relationship_name(const Glib::ustring& table_name, co
         else
           iterReports->second->m_layout_group.change_related_relationship_name(table_name, name, name_new);
       }
+      */
+
+     //TODO_SharedRelationshipCheck lookups.
 
     }
 
@@ -650,6 +659,17 @@ Document_Glom::type_listTableInfo Document_Glom::get_tables() const
   return result;
 }
 
+
+sharedptr<TableInfo> Document_Glom::get_table(const Glib::ustring table_name) const
+{
+  type_tables::const_iterator iterfind = m_tables.find(table_name);
+  if(iterfind != m_tables.end())
+    return iterfind->second.m_info;
+  else
+    return sharedptr<TableInfo>();
+}
+
+
 void Document_Glom::set_tables(const type_listTableInfo& tables)
 {
   //TODO: Avoid adding information about tables that we don't know about - that should be done explicitly.
@@ -691,7 +711,7 @@ void Document_Glom::fill_layout_field_details(const Glib::ustring& parent_table_
     if(layout_field)
     {
       if(layout_field->get_has_relationship_name()) //If it is a related field, instead of a field in parent_table_name
-        layout_field->set_full_field_details( get_field(layout_field->m_relationship.get_to_table(), layout_field->get_name()) );
+        layout_field->set_full_field_details( get_field(layout_field->get_relationship()->get_to_table(), layout_field->get_name()) );
       else  
         layout_field->set_full_field_details( get_field(parent_table_name, layout_field->get_name()) );
     }
@@ -699,7 +719,7 @@ void Document_Glom::fill_layout_field_details(const Glib::ustring& parent_table_
     {
       LayoutItem_Portal* layout_portal_child = dynamic_cast<LayoutItem_Portal*>(layout_item);
       if(layout_portal_child)
-        fill_layout_field_details(layout_portal_child->m_relationship.get_to_table(), *layout_portal_child); //recurse
+        fill_layout_field_details(layout_portal_child->get_relationship()->get_to_table(), *layout_portal_child); //recurse
       else
       {
         LayoutGroup* layout_group_child = dynamic_cast<LayoutGroup*>(layout_item);
@@ -1117,10 +1137,15 @@ void Document_Glom::load_after_layout_item_field_formatting(const xmlpp::Element
 
   format.set_has_related_choices( get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED) );
 
-  format.set_choices(get_node_attribute_value(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_RELATIONSHIP),
-    get_node_attribute_value(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_FIELD),
-    get_node_attribute_value(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_SECOND) );
-  //Full details are updated in filled-in ().
+  const Glib::ustring relationship_name = get_node_attribute_value(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_RELATIONSHIP);
+  if(!relationship_name.empty())
+  {
+    sharedptr<Relationship> relationship = get_relationship(table_name, relationship_name);
+    format.set_choices(relationship,
+      get_node_attribute_value(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_FIELD),
+      get_node_attribute_value(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_SECOND) );
+    //Full details are updated in filled-in ().
+  }
 
 }
 
@@ -1129,7 +1154,8 @@ void Document_Glom::load_after_layout_item_field(const xmlpp::Element* element, 
   const Glib::ustring name = get_node_attribute_value(element, GLOM_ATTRIBUTE_NAME);
   item.set_name(name);
 
-  item.m_relationship.set_name( get_node_attribute_value(element, GLOM_ATTRIBUTE_RELATIONSHIP_NAME) ); //Full details are updated in filled-in ().
+  const Glib::ustring relationship_name = get_node_attribute_value(element, GLOM_ATTRIBUTE_RELATIONSHIP_NAME);
+  item.set_relationship( get_relationship(table_name, relationship_name) ); 
 
   item.set_editable( get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_EDITABLE) );
 
@@ -1199,7 +1225,9 @@ void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Gl
       else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_PORTAL)
       {
         LayoutItem_Portal portal;
-        portal.set_relationship( get_node_attribute_value(element, GLOM_ATTRIBUTE_RELATIONSHIP_NAME) );
+
+        const Glib::ustring relationship_name = get_node_attribute_value(element, GLOM_ATTRIBUTE_RELATIONSHIP_NAME);
+        portal.set_relationship( get_relationship(table_name, relationship_name) );
 
         //Recurse:
         load_after_layout_group(element, table_name, portal);
@@ -1323,6 +1351,37 @@ bool Document_Glom::load_after()
           //Translations:
           load_after_translations(nodeTable, *(doctableinfo.m_info));
 
+          //Relationships:
+          //These should be loaded before the fields, because the fields use them.
+          const xmlpp::Element* nodeRelationships = get_node_child_named(nodeTable, GLOM_NODE_RELATIONSHIPS);
+          if(nodeRelationships)
+          {
+            const xmlpp::Node::NodeList listNodes = nodeRelationships->get_children(GLOM_NODE_RELATIONSHIP);
+            for(xmlpp::Node::NodeList::const_iterator iter = listNodes.begin(); iter != listNodes.end(); iter++)
+            {
+              const xmlpp::Element* nodeChild = dynamic_cast<xmlpp::Element*>(*iter);
+              if(nodeChild)
+              {
+                sharedptr<Relationship> relationship(new Relationship());
+                const Glib::ustring relationship_name = get_node_attribute_value(nodeChild, GLOM_ATTRIBUTE_NAME);
+
+                relationship->set_from_table(table_name);
+                relationship->set_name(relationship_name);;
+
+                relationship->set_from_field( get_node_attribute_value(nodeChild, GLOM_ATTRIBUTE_KEY) );
+                relationship->set_to_table( get_node_attribute_value(nodeChild, GLOM_ATTRIBUTE_OTHER_TABLE) );
+                relationship->set_to_field( get_node_attribute_value(nodeChild, GLOM_ATTRIBUTE_OTHER_KEY) );
+                relationship->set_auto_create( get_node_attribute_value_as_bool(nodeChild, GLOM_ATTRIBUTE_AUTO_CREATE) );
+                relationship->set_allow_edit( get_node_attribute_value_as_bool(nodeChild, GLOM_ATTRIBUTE_ALLOW_EDIT) );
+
+                //Translations:
+                load_after_translations(nodeChild, *relationship);
+
+                doctableinfo.m_relationships.push_back(relationship);
+              }
+            }
+          }
+
           //Fields:
           const xmlpp::Element* nodeFields = get_node_child_named(nodeTable, GLOM_NODE_FIELDS);
           if(nodeFields)
@@ -1349,7 +1408,10 @@ bool Document_Glom::load_after()
                 xmlpp::Element* nodeLookup = get_node_child_named(nodeChild, GLOM_NODE_FIELD_LOOKUP);
                 if(nodeLookup)
                 {
-                  field->set_lookup_relationship( get_node_attribute_value(nodeLookup, GLOM_ATTRIBUTE_RELATIONSHIP_NAME) );
+                  const Glib::ustring lookup_relationship_name = get_node_attribute_value(nodeLookup, GLOM_ATTRIBUTE_RELATIONSHIP_NAME);
+                  sharedptr<Relationship> lookup_relationship = get_relationship(table_name, lookup_relationship_name);
+                  field->set_lookup_relationship(lookup_relationship);
+
                   field->set_lookup_field( get_node_attribute_value(nodeLookup, GLOM_ATTRIBUTE_FIELD) );
                 }
 
@@ -1383,36 +1445,6 @@ bool Document_Glom::load_after()
                 load_after_translations(nodeChild, *field);
 
                 doctableinfo.m_fields.push_back(field);
-              }
-            }
-          }
-
-          //Relationships:
-          const xmlpp::Element* nodeRelationships = get_node_child_named(nodeTable, GLOM_NODE_RELATIONSHIPS);
-          if(nodeRelationships)
-          {
-            const xmlpp::Node::NodeList listNodes = nodeRelationships->get_children(GLOM_NODE_RELATIONSHIP);
-            for(xmlpp::Node::NodeList::const_iterator iter = listNodes.begin(); iter != listNodes.end(); iter++)
-            {
-              const xmlpp::Element* nodeChild = dynamic_cast<xmlpp::Element*>(*iter);
-              if(nodeChild)
-              {
-                Relationship relationship;
-                const Glib::ustring relationship_name = get_node_attribute_value(nodeChild, GLOM_ATTRIBUTE_NAME);
-
-                relationship.set_from_table( table_name );
-                relationship.set_name( relationship_name );;
-
-                relationship.set_from_field( get_node_attribute_value(nodeChild, GLOM_ATTRIBUTE_KEY) );
-                relationship.set_to_table( get_node_attribute_value(nodeChild, GLOM_ATTRIBUTE_OTHER_TABLE) );
-                relationship.set_to_field( get_node_attribute_value(nodeChild, GLOM_ATTRIBUTE_OTHER_KEY) );
-                relationship.set_auto_create( get_node_attribute_value_as_bool(nodeChild, GLOM_ATTRIBUTE_AUTO_CREATE) );
-                 relationship.set_allow_edit( get_node_attribute_value_as_bool(nodeChild, GLOM_ATTRIBUTE_ALLOW_EDIT) );
-
-                //Translations:
-                load_after_translations(nodeChild, relationship);
-
-                doctableinfo.m_relationships.push_back(relationship);
               }
             }
           }
@@ -1557,7 +1589,6 @@ bool Document_Glom::load_after()
   }
 
   m_block_cache_update = false;
-  update_cached_relationships();
 
   return result;
 }
@@ -1591,9 +1622,11 @@ void Document_Glom::save_before_layout_item_field_formatting(xmlpp::Element* nod
 
   set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED, format.get_has_related_choices() );
 
-  Glib::ustring choice_relationship, choice_field, choice_second;
+  sharedptr<Relationship> choice_relationship;
+  Glib::ustring choice_field, choice_second;
   format.get_choices(choice_relationship, choice_field, choice_second);
-  set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_RELATIONSHIP, choice_relationship);
+
+  set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_RELATIONSHIP, glom_get_sharedptr_name(choice_relationship));
   set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_FIELD, choice_field);
   set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_SECOND, choice_second);
 }
@@ -1646,7 +1679,7 @@ void Document_Glom::save_before_layout_group(xmlpp::Element* node, const LayoutG
       if(portal) //If it is a related records portal
       {
         child = node->add_child(GLOM_NODE_DATA_LAYOUT_PORTAL);
-        child->set_attribute(GLOM_ATTRIBUTE_RELATIONSHIP_NAME, portal->get_relationship());
+        child->set_attribute(GLOM_ATTRIBUTE_RELATIONSHIP_NAME, portal->get_relationship_name());
       }
       else
       {
@@ -1724,8 +1757,6 @@ void Document_Glom::save_before_translations(xmlpp::Element* element, const Tran
 
 bool Document_Glom::save_before()
 {
-  update_cached_relationships(); //It's helpful to update this whenever something has changed.
-
   xmlpp::Element* nodeRoot = get_node_document();
   if(nodeRoot)
   {
@@ -1803,7 +1834,10 @@ bool Document_Glom::save_before()
           if(field->get_is_lookup())
           {
             xmlpp::Element* elemFieldLookup = elemField->add_child(GLOM_NODE_FIELD_LOOKUP);
-            set_node_attribute_value(elemFieldLookup, GLOM_ATTRIBUTE_RELATIONSHIP_NAME, field->get_lookup_relationship());
+
+            sharedptr<Relationship> lookup_relationship = field->get_lookup_relationship();
+            set_node_attribute_value(elemFieldLookup, GLOM_ATTRIBUTE_RELATIONSHIP_NAME, glom_get_sharedptr_name(lookup_relationship));
+
             set_node_attribute_value(elemFieldLookup, GLOM_ATTRIBUTE_FIELD, field->get_lookup_field());
           }
 
@@ -1822,18 +1856,20 @@ bool Document_Glom::save_before()
         //Add each <relationship> node:
         for(type_vecRelationships::const_iterator iter = doctableinfo.m_relationships.begin(); iter != doctableinfo.m_relationships.end(); iter++)
         {
-          const Relationship& relationship = *iter;
+          sharedptr<const Relationship> relationship = *iter;
+          if(relationship)
+          {
+            xmlpp::Element* elemRelationship = elemRelationships->add_child(GLOM_NODE_RELATIONSHIP);
+            set_node_attribute_value(elemRelationship, GLOM_ATTRIBUTE_NAME, relationship->get_name());
+            set_node_attribute_value(elemRelationship, GLOM_ATTRIBUTE_KEY, relationship->get_from_field());
+            set_node_attribute_value(elemRelationship, GLOM_ATTRIBUTE_OTHER_TABLE, relationship->get_to_table());
+            set_node_attribute_value(elemRelationship, GLOM_ATTRIBUTE_OTHER_KEY, relationship->get_to_field());
+            set_node_attribute_value_as_bool(elemRelationship, GLOM_ATTRIBUTE_AUTO_CREATE, relationship->get_auto_create());
+            set_node_attribute_value_as_bool(elemRelationship, GLOM_ATTRIBUTE_ALLOW_EDIT, relationship->get_allow_edit());
 
-          xmlpp::Element* elemRelationship = elemRelationships->add_child(GLOM_NODE_RELATIONSHIP);
-          set_node_attribute_value(elemRelationship, GLOM_ATTRIBUTE_NAME, relationship.get_name());
-          set_node_attribute_value(elemRelationship, GLOM_ATTRIBUTE_KEY, relationship.get_from_field());
-          set_node_attribute_value(elemRelationship, GLOM_ATTRIBUTE_OTHER_TABLE, relationship.get_to_table());
-          set_node_attribute_value(elemRelationship, GLOM_ATTRIBUTE_OTHER_KEY, relationship.get_to_field());
-          set_node_attribute_value_as_bool(elemRelationship, GLOM_ATTRIBUTE_AUTO_CREATE, relationship.get_auto_create());
-          set_node_attribute_value_as_bool(elemRelationship, GLOM_ATTRIBUTE_ALLOW_EDIT, relationship.get_allow_edit());
-
-          //Translations:
-          save_before_translations(elemRelationship, relationship);
+            //Translations:
+            save_before_translations(elemRelationship, *relationship);
+          }
         }
 
 
@@ -1986,107 +2022,6 @@ void Document_Glom::remove_group(const Glib::ustring& group_name)
   }
 }
 
-void Document_Glom::update_cached_relationships(FieldFormatting& formatting, const Glib::ustring& table_name)
-{
-  if(formatting.m_choices_related_relationship.get_name_not_empty())
-  {
-    get_relationship(table_name, formatting.m_choices_related_relationship.get_name(), formatting.m_choices_related_relationship);
-  }
-}
-
-void Document_Glom::update_cached_relationships(LayoutGroup& group, const Glib::ustring& table_name)
-{
-  const bool old_block_modified_set = m_block_modified_set;
-  m_block_modified_set = true; //Don't let any of this cause a document save. It's just a cache.
-
-  //Find any LayoutItem_Fields, and fill in their full relationship details:
-  for(LayoutGroup::type_map_items::iterator iter = group.m_map_items.begin(); iter != group.m_map_items.end(); ++iter)
-  {
-    LayoutItem* pItem = iter->second;
-
-    LayoutItem_Field* pField = dynamic_cast<LayoutItem_Field*>(pItem);
-    if(pField)
-    {
-       if(pField->m_relationship.get_name_not_empty())
-       {
-         get_relationship(table_name, pField->m_relationship.get_name(), pField->m_relationship);
-       }
-
-       if(pField->m_formatting.m_choices_related_relationship.get_name_not_empty())
-       {
-         get_relationship(table_name, pField->m_formatting.m_choices_related_relationship.get_name(), pField->m_formatting.m_choices_related_relationship);
-       }
-    }
-    else
-    {
-      LayoutItem_Portal* pPortal = dynamic_cast<LayoutItem_Portal*>(pItem);
-      if(pPortal)
-      {
-        get_relationship(table_name, pPortal->get_relationship(), pPortal->m_relationship);
-
-        //Update the Portal's group: TODO:
-        update_cached_relationships(*pPortal, pPortal->m_relationship.get_to_table());
-      }
-      else
-      {
-        LayoutItem_GroupBy* pGroupBy = dynamic_cast<LayoutItem_GroupBy*>(pItem);
-        if(pGroupBy)
-        {
-          update_cached_relationships(*pGroupBy, table_name); //recurse:
-
-          update_cached_relationships(pGroupBy->m_group_secondary_fields, table_name); //recuse.
-        }
-        else
-        {
-          LayoutGroup* pGroup = dynamic_cast<LayoutGroup*>(pItem);
-          if(pGroup)
-            update_cached_relationships(*pGroup, table_name); //recurse:
-        }
-      }
-    }
-  }
-
-  m_block_modified_set = old_block_modified_set;
-}
-
-void Document_Glom::update_cached_relationships()
-{
-  if(m_block_cache_update)
-    return;
-
-
-  //Update all the formatting and groups (groups are in layouts, in tables)
-  for(type_tables::iterator iterTable = m_tables.begin(); iterTable != m_tables.end(); ++iterTable)
-  {
-    DocumentTableInfo& tableInfo = iterTable->second;
-
-    //Fields (formatting):
-    for(type_vecFields::iterator iterField = tableInfo.m_fields.begin(); iterField != tableInfo.m_fields.end(); ++iterField)
-    {
-       update_cached_relationships((*iterField)->m_default_formatting, tableInfo.m_info->get_name());
-    }
-
-    //Layouts:
-    for(DocumentTableInfo::type_layouts::iterator iterLayout = tableInfo.m_layouts.begin(); iterLayout != tableInfo.m_layouts.end(); ++iterLayout)
-    {
-      if(tableInfo.m_info->get_name() == iterLayout->m_parent_table) //If it is not a related layout:
-      {
-        type_mapLayoutGroupSequence& groups = iterLayout->m_layout_groups;
-        for(type_mapLayoutGroupSequence::iterator iterGroup = groups.begin(); iterGroup != groups.end(); ++iterGroup)
-        {
-          update_cached_relationships(iterGroup->second, tableInfo.m_info->get_name());
-        }
-      }
-    }
-
-    //Reports:
-    for(DocumentTableInfo::type_reports::iterator iterReport = tableInfo.m_reports.begin(); iterReport != tableInfo.m_reports.end(); ++iterReport)
-    {
-      update_cached_relationships(iterReport->second->m_layout_group, tableInfo.m_info->get_name());
-    }
-  }
-}
-
 Document_Glom::type_listReports Document_Glom::get_report_names(const Glib::ustring& table_name) const
 {
   type_tables::const_iterator iterFind = m_tables.find(table_name);
@@ -2156,11 +2091,10 @@ void Document_Glom::remove_report(const Glib::ustring& table_name, const Glib::u
 
 bool Document_Glom::get_relationship_is_to_one(const Glib::ustring& table_name, const Glib::ustring& relationship_name) const
 {
-  Relationship relationship;
-  bool found = get_relationship(table_name, relationship_name, relationship);
-  if(found)
+  sharedptr<const Relationship> relationship = get_relationship(table_name, relationship_name);
+  if(relationship)
   {
-    sharedptr<const Field> field_to = get_field(relationship.get_to_table(), relationship.get_to_field());
+    sharedptr<const Field> field_to = get_field(relationship->get_to_table(), relationship->get_to_field());
     if(field_to)
       return (field_to->get_primary_key() || field_to->get_unique_key());
   }
@@ -2168,10 +2102,9 @@ bool Document_Glom::get_relationship_is_to_one(const Glib::ustring& table_name, 
   return false;
 }
 
-bool Document_Glom::get_field_used_in_relationship_to_one(const Glib::ustring& table_name, const Glib::ustring& field_name, Relationship& relationship) const
+sharedptr<Relationship> Document_Glom::get_field_used_in_relationship_to_one(const Glib::ustring& table_name, const Glib::ustring& field_name) const
 {
-  //Initialize input parameter:
-  relationship = Relationship();
+  sharedptr<Relationship> result;
 
   type_tables::const_iterator iterFind = m_tables.find(table_name);
   if(iterFind != m_tables.end())
@@ -2179,29 +2112,27 @@ bool Document_Glom::get_field_used_in_relationship_to_one(const Glib::ustring& t
     //Look at each relationship:
     for(type_vecRelationships::const_iterator iterRel = iterFind->second.m_relationships.begin(); iterRel != iterFind->second.m_relationships.end(); ++iterRel)
     {
-      //If the relationship uses the field
-      if(iterRel->get_from_field() == field_name)
+      sharedptr<Relationship> relationship = *iterRel;
+      if(relationship)
       {
-        //if the to_table is not hidden:
-        if(!get_table_is_hidden(iterRel->get_to_table()))
+        //If the relationship uses the field
+        if(relationship->get_from_field() == field_name)
         {
-          //TODO_Performance: The use of this convenience method means we get the full relationship information again:
-          if(get_relationship_is_to_one(table_name, iterRel->get_name()))
+          //if the to_table is not hidden:
+          if(!get_table_is_hidden(relationship->get_to_table()))
           {
-            relationship = *iterRel;
-            return true;
+            //TODO_Performance: The use of this convenience method means we get the full relationship information again:
+            if(get_relationship_is_to_one(table_name, relationship->get_name()))
+            {
+              result = relationship;
+            }
           }
         }
       }
     }
   }
-  return false;
-}
 
-bool Document_Glom::get_field_used_in_relationship_to_one(const Glib::ustring& table_name, const Glib::ustring& field_name) const
-{
-  Relationship relationship; //ignored.
-  return get_field_used_in_relationship_to_one(table_name, field_name, relationship);
+  return result;
 }
 
 void Document_Glom::set_layout_record_viewed(const Glib::ustring& table_name, const Glib::ustring& layout_name, const Gnome::Gda::Value& primary_key_value)

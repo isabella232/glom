@@ -22,11 +22,14 @@
 #define GLOM_DATASTRUCTURE_LAYOUTITEM_FIELD_H
 
 #include "layoutitem.h"
+#include "usesrelationship.h"
 #include "../field.h"
 #include "../numeric_format.h"
 #include "../relationship.h"
 
-class LayoutItem_Field : public LayoutItem
+class LayoutItem_Field 
+ : public LayoutItem,
+   public UsesRelationship
 {
 public:
 
@@ -51,10 +54,6 @@ public:
    */
   virtual Glib::ustring get_layout_display_name() const;
 
-  virtual bool get_has_relationship_name() const;
-  virtual Glib::ustring get_relationship_name() const;
-  //virtual void set_relationship_name(const Glib::ustring& relationship_name);
-
   virtual Glib::ustring get_part_type_name() const;
 
   void set_full_field_details(const sharedptr<const Field>& field);
@@ -76,10 +75,6 @@ public:
   bool m_priv_view;
   bool m_priv_edit;
 
-  //TODO_Performance: This is just cached data, so we don't need to always lookup the relationship details from the document, from the name.
-  //Maybe use a smartpointer?
-  Relationship m_relationship;
-
   FieldFormatting m_formatting;
 
   bool get_formatting_use_default() const;
@@ -93,7 +88,6 @@ protected:
   sharedptr<const Field> m_field;
   bool m_field_cache_valid; //Whetehr m_field is up-to-date.
 
-  //Glib::ustring m_relationship_name; //bool m_related;
   bool m_hidden;
   bool m_formatting_use_default;
 };
