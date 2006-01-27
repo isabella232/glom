@@ -240,6 +240,8 @@ Glib::ustring TranslatableItem::get_translatable_type_name(enumTranslatableItemT
     return _("Report");
  else if(item_type == TRANSLATABLE_TYPE_TABLE)
     return _("Table");
+  else if(item_type == TRANSLATABLE_TYPE_LAYOUT_ITEM)
+    return _("Layout Group");
  else
     return _("Unknown");
 }

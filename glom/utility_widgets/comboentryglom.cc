@@ -45,7 +45,7 @@ ComboEntryGlom::ComboEntryGlom()
   init();
 }
 
-ComboEntryGlom::ComboEntryGlom(const LayoutItem_Field& field_second)
+ComboEntryGlom::ComboEntryGlom(const sharedptr<LayoutItem_Field>& field_second)
 : ComboGlomChoicesBase(field_second)
 {
   setup_menu();
@@ -85,13 +85,13 @@ ComboEntryGlom::~ComboEntryGlom()
 {
 }
 
-void ComboEntryGlom::set_layout_item(LayoutItem* layout_item, const Glib::ustring& table_name)
+void ComboEntryGlom::set_layout_item(const sharedptr<LayoutItem>& layout_item, const Glib::ustring& table_name)
 {
   //Call base class:
   ComboGlomChoicesBase::set_layout_item(layout_item, table_name);
 
   //Right-align numbers:
-  const LayoutItem_Field* layout_field = dynamic_cast<const LayoutItem_Field*>(get_layout_item());
+  sharedptr<const LayoutItem_Field> layout_field = sharedptr<const LayoutItem_Field>::cast_dynamic(get_layout_item());
   if(layout_field && layout_field->get_glom_type() == Field::TYPE_NUMERIC)
       get_entry()->set_alignment(1.0); //Align numbers to the right.
 }
@@ -104,7 +104,7 @@ void ComboEntryGlom::check_for_change()
     //Validate the input:
     bool success = false;
 
-    const LayoutItem_Field* layout_item = dynamic_cast<const LayoutItem_Field*>(get_layout_item());
+    sharedptr<const LayoutItem_Field> layout_item = sharedptr<const LayoutItem_Field>::cast_dynamic(get_layout_item());
     Gnome::Gda::Value value = GlomConversions::parse_value(layout_item->get_glom_type(), get_entry()->get_text(), layout_item->get_formatting_used().m_numeric_format, success);
 
     if(success)
@@ -158,7 +158,7 @@ void ComboEntryGlom::on_entry_changed()
 
 void ComboEntryGlom::set_value(const Gnome::Gda::Value& value)
 {
-  const LayoutItem_Field* layout_item = dynamic_cast<const LayoutItem_Field*>(get_layout_item());
+  sharedptr<const LayoutItem_Field> layout_item = sharedptr<const LayoutItem_Field>::cast_dynamic(get_layout_item());
   if(layout_item)
   {
     set_text(GlomConversions::get_text_for_gda_value(layout_item->get_glom_type(), value, layout_item->get_formatting_used().m_numeric_format));
@@ -177,7 +177,7 @@ Gnome::Gda::Value ComboEntryGlom::get_value() const
 {
   bool success = false;
 
-  const LayoutItem_Field* layout_item = dynamic_cast<const LayoutItem_Field*>(get_layout_item());
+  sharedptr<const LayoutItem_Field> layout_item = sharedptr<const LayoutItem_Field>::cast_dynamic(get_layout_item());
   return GlomConversions::parse_value(layout_item->get_glom_type(), get_entry()->get_text(), layout_item->get_formatting_used().m_numeric_format, success);
 }
 

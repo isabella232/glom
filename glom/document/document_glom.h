@@ -121,7 +121,7 @@ public:
   virtual sharedptr<Field> get_field(const Glib::ustring& table_name, const Glib::ustring& strFieldName) const;
 
 
-  typedef std::map<guint, LayoutGroup> type_mapLayoutGroupSequence;
+  typedef std::map<guint, sharedptr<LayoutGroup> > type_mapLayoutGroupSequence;
   type_mapLayoutGroupSequence get_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name) const;
 
   void set_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name, const type_mapLayoutGroupSequence& groups);
@@ -134,8 +134,12 @@ public:
 
   type_mapLayoutGroupSequence get_data_layout_groups_default(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name) const;
 
-  void fill_layout_field_details(const Glib::ustring& parent_table_name, LayoutGroup& layout_group) const;
+  typedef std::list< sharedptr<TranslatableItem> > type_list_translatables;
+  type_list_translatables get_translatable_layout_items(const Glib::ustring& table_name);
+
+  void fill_layout_field_details(const Glib::ustring& parent_table_name, const sharedptr<LayoutGroup>& layout_group) const;
   void fill_layout_field_details(const Glib::ustring& parent_table_name, type_mapLayoutGroupSequence& sequence) const;
+
 
 
   ///When a field name is changed, change it in the relationships, layouts, reports, and fields data:
@@ -236,22 +240,24 @@ protected:
   virtual bool load_after();
   virtual bool save_before();
 
-  void load_after_layout_group(const xmlpp::Element* node, const Glib::ustring table_name, LayoutGroup& group);
-  void save_before_layout_group(xmlpp::Element* node, const LayoutGroup& group);
+  void load_after_layout_group(const xmlpp::Element* node, const Glib::ustring table_name, const sharedptr<LayoutGroup>& group);
+  void save_before_layout_group(xmlpp::Element* node, const sharedptr<const LayoutGroup>& group);
 
-  void load_after_layout_item_field(const xmlpp::Element* element, const Glib::ustring& table_name, LayoutItem_Field& item);
+  void load_after_layout_item_field(const xmlpp::Element* element, const Glib::ustring& table_name, const sharedptr<LayoutItem_Field>& item);
   void load_after_layout_item_field_formatting(const xmlpp::Element* element, FieldFormatting& format, Field::glom_field_type field_type, const Glib::ustring& table_name, const Glib::ustring& field_name);
 
   void load_after_translations(const xmlpp::Element* element, TranslatableItem& item);
 
-  void save_before_layout_item_field(xmlpp::Element* nodeItem, const LayoutItem_Field& item);
+  void save_before_layout_item_field(xmlpp::Element* nodeItem, const sharedptr<const LayoutItem_Field>& item);
   void save_before_layout_item_field_formatting(xmlpp::Element* nodeItem, const FieldFormatting& format, Field::glom_field_type field_type);
 
   void save_before_translations(xmlpp::Element* nodeItem, const TranslatableItem& item);
 
   void save_changes();
 
-  virtual void on_app_state_userlevel_changed(AppState::userlevels userleve);
+  virtual void on_app_state_userlevel_changed(AppState::userlevels userlevel);
+
+  void fill_translatable_layout_items(const sharedptr<LayoutGroup>& group, type_list_translatables& the_list);
 
   static bool get_node_attribute_value_as_bool(const xmlpp::Element* node, const Glib::ustring& strAttributeName);
   static void set_node_attribute_value_as_bool(xmlpp::Element* node, const Glib::ustring& strAttributeName, bool value = true);

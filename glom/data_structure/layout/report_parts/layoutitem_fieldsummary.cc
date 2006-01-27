@@ -103,9 +103,10 @@ void LayoutItem_FieldSummary::set_summary_type_from_sql(const Glib::ustring& sum
     m_summary_type = TYPE_INVALID;
 }
 
-void LayoutItem_FieldSummary::set_field(const LayoutItem_Field& field)
+void LayoutItem_FieldSummary::set_field(const sharedptr<LayoutItem_Field>& field)
 {
-  LayoutItem_Field::operator=(field);
+  if(field)
+    LayoutItem_Field::operator=(*field);
 }
 
 Glib::ustring LayoutItem_FieldSummary::get_layout_display_name() const

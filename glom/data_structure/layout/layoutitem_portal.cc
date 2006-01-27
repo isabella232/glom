@@ -65,7 +65,8 @@ void LayoutItem_Portal::change_field_item_name(const Glib::ustring& table_name, 
   //Look at each item:
   for(LayoutGroup::type_map_items::iterator iterItem = m_map_items.begin(); iterItem != m_map_items.end(); ++iterItem)
   {
-    LayoutItem_Field* field_item = dynamic_cast<LayoutItem_Field*>(iterItem->second);
+    sharedptr<LayoutItem> item = iterItem->second;
+    sharedptr<LayoutItem_Field> field_item = sharedptr<LayoutItem_Field>::cast_dynamic(item);
     if(field_item)
     {
       if(field_item->get_has_relationship_name()) //If it's a related table (this would be a self-relationship)
@@ -88,7 +89,7 @@ void LayoutItem_Portal::change_field_item_name(const Glib::ustring& table_name, 
     }
     else
     {
-      LayoutGroup* sub_group = dynamic_cast<LayoutGroup*>(iterItem->second);
+      sharedptr<LayoutGroup> sub_group = sharedptr<LayoutGroup>::cast_dynamic(item);
       if(sub_group)
         sub_group->change_field_item_name(table_name, field_name, field_name_new);
     }
@@ -98,5 +99,5 @@ void LayoutItem_Portal::change_field_item_name(const Glib::ustring& table_name, 
 void LayoutItem_Portal::debug(guint level) const
 {
   g_warning("LayoutItem_Portal::debug: level = %d", level);
-  LayoutGroup::debug(level);
+  //LayoutGroup::debug(level);
 }

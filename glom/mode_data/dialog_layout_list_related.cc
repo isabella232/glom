@@ -69,7 +69,7 @@ Dialog_Layout_List_Related::Dialog_Layout_List_Related(BaseObjectType* cobject, 
     m_model_fields->signal_row_changed().connect( sigc::mem_fun(*this, &Dialog_Layout_List_Related::on_treemodel_row_changed) );
   }
 
- 
+
   refGlade->get_widget("button_field_up", m_button_field_up);
   m_button_field_up->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout_List_Related::on_button_field_up) );
 
@@ -96,61 +96,66 @@ Dialog_Layout_List_Related::~Dialog_Layout_List_Related()
 {
 }
 
-void Dialog_Layout_List_Related::set_document(const Glib::ustring& layout, Document_Glom* document, const LayoutItem_Portal& portal)
+void Dialog_Layout_List_Related::set_document(const Glib::ustring& layout, Document_Glom* document, const sharedptr<const LayoutItem_Portal>& portal)
 {
   type_vecLayoutFields empty_fields; //Just to satisfy the base class.
-  Dialog_Layout::set_document(layout, document, portal.get_relationship()->get_from_table(), empty_fields);
+  Dialog_Layout::set_document(layout, document, portal->get_relationship()->get_from_table(), empty_fields);
   //m_table_name is now actually the parent_table_name.
 
-  m_portal = portal;
+  m_portal = glom_sharedptr_clone(portal);
 
   update_ui();
 }
 
 void Dialog_Layout_List_Related::update_ui(bool including_relationship_list)
 {
+  if(!m_portal || !(m_portal->get_relationship()))
+   return;
+
   m_modified = false;
 
   //Update the tree models from the document
   Document_Glom* document = get_document();
   if(document)
   {
+    const Glib::ustring parent_relationship_name = m_portal->get_relationship()->get_name();
+    const Glib::ustring parent_relationship_title = m_portal->get_relationship()->get_title_or_name();
+
     //Fill the relationships combo:
     if(including_relationship_list)
     {
-      const Glib::ustring parent_table_name = m_portal.get_relationship()->get_from_table();
-      const Glib::ustring parent_table_title = document->get_table_title(parent_table_name);
-      const Document_Glom::type_vecRelationships vecRelationships = document->get_relationships(parent_table_title);
-      m_combo_relationship->set_relationships(vecRelationships, parent_table_name, parent_table_title);
+      const Document_Glom::type_vecRelationships vecRelationships = document->get_relationships(m_portal->get_relationship()->get_from_table());
+      m_combo_relationship->set_relationships(vecRelationships); //We don't show the optional parent table because portal use _only_ relationships, of course.
     }
 
     //Set the table name and title:
-    m_combo_relationship->set_selected_relationship(m_portal.get_relationship()); 
+    sharedptr<LayoutItem_Portal> portal_temp = m_portal;
+    m_combo_relationship->set_selected_relationship(m_portal->get_relationship()); 
 
-    m_entry_table_title->set_text( m_portal.get_relationship()->get_title() );
+    m_entry_table_title->set_text( parent_relationship_title );
 
     Document_Glom::type_mapLayoutGroupSequence mapGroups;
     mapGroups[0] = m_portal;
-    document->fill_layout_field_details(m_portal.get_relationship()->get_to_table(), mapGroups); //Update with full field information.
+    document->fill_layout_field_details(m_portal->get_relationship()->get_to_table(), mapGroups); //Update with full field information.
 
     //If no information is stored in the document, then start with something:
 
     if(mapGroups.empty())
     {
-      const Glib::ustring table_name = m_portal.get_relationship()->get_to_table();
+      const Glib::ustring table_name = m_portal->get_relationship()->get_to_table();
       Document_Glom::type_vecFields table_fields = document->get_table_fields(table_name);
 
-      LayoutGroup group;
-      group.set_name("main");
+      sharedptr<LayoutGroup> group = sharedptr<LayoutGroup>::create();
+      group->set_name("main");
 
       guint field_sequence = 1; //0 means no sequence
       for(Document_Glom::type_vecFields::const_iterator iter = table_fields.begin(); iter != table_fields.end(); ++iter)
       {
-        LayoutItem_Field item;
-        item.set_name((*iter)->get_name());
-        item.m_sequence = field_sequence;
+        sharedptr<LayoutItem_Field> item = sharedptr<LayoutItem_Field>::create();
+        item->set_full_field_details(*iter);
+        item->m_sequence = field_sequence;
 
-        group.add_item(item, field_sequence);
+        group->add_item(item, field_sequence);
 
         ++field_sequence;
       }
@@ -166,19 +171,19 @@ void Dialog_Layout_List_Related::update_ui(bool including_relationship_list)
     guint field_sequence = 1; //0 means no sequence
     for(Document_Glom::type_mapLayoutGroupSequence::const_iterator iter = mapGroups.begin(); iter != mapGroups.end(); ++iter)
     {
-      const LayoutGroup& group = iter->second;
+      sharedptr<const LayoutGroup> group = iter->second;
 
       //Add the group's fields:
-      LayoutGroup::type_map_const_items items = group.get_items();
+      LayoutGroup::type_map_const_items items = group->get_items();
       for(LayoutGroup::type_map_const_items::const_iterator iter = items.begin(); iter != items.end(); ++iter)
       {
-        const LayoutItem_Field* item = dynamic_cast<const LayoutItem_Field*>(iter->second);
+        sharedptr<const LayoutItem_Field> item = sharedptr<const LayoutItem_Field>::cast_dynamic(iter->second);
         if(item)
         {
           Gtk::TreeModel::iterator iterTree = m_model_fields->append();
           Gtk::TreeModel::Row row = *iterTree;
 
-          row[m_ColumnsFields.m_col_layout_item] = *item;
+          row[m_ColumnsFields.m_col_layout_item] = glom_sharedptr_clone(item);
           row[m_ColumnsFields.m_col_sequence] = field_sequence;
           ++field_sequence;
         }
@@ -256,20 +261,20 @@ void Dialog_Layout_List_Related::save_to_document()
 
     //Add the fields to the portal:
     //The code that created this dialog must read m_portal back out again.
-    m_portal.remove_all_items();
+    m_portal->remove_all_items();
 
     guint field_sequence = 1; //0 means no sequence
     for(Gtk::TreeModel::iterator iterFields = m_model_fields->children().begin(); iterFields != m_model_fields->children().end(); ++iterFields)
     {
       Gtk::TreeModel::Row row = *iterFields;
 
-      LayoutItem_Field item = row[m_ColumnsFields.m_col_layout_item];
-      const Glib::ustring field_name = item.get_name();
+      sharedptr<LayoutItem_Field> item = row[m_ColumnsFields.m_col_layout_item];
+      const Glib::ustring field_name = item->get_name();
       if(!field_name.empty())
       {
-        item.m_sequence = field_sequence;
+        item->m_sequence = field_sequence;
 
-        m_portal.add_item(item, field_sequence); //Add it to the group:
+        m_portal->add_item(item, field_sequence); //Add it to the group:
 
         ++field_sequence;
       }
@@ -279,23 +284,29 @@ void Dialog_Layout_List_Related::save_to_document()
     if(document)
     {
       //Save the relationship title, which will be used elsewhere too:
-      m_portal.get_relationship()->set_title(m_entry_table_title->get_text());
-      document->set_relationship(m_table_name, m_portal.get_relationship());
+      m_portal->get_relationship()->set_title(m_entry_table_title->get_text());
+      document->set_relationship(m_table_name, m_portal->get_relationship());
     }
   }
 }
 
 void Dialog_Layout_List_Related::on_combo_relationship_changed()
 {
+  if(!m_portal)
+    return;
+
   sharedptr<Relationship> relationship = m_combo_relationship->get_selected_relationship();
-  m_portal.set_relationship(relationship);
+  if(relationship)
+  {
+    m_portal->set_relationship(relationship);
 
-  //Refresh everything for the new relationship:
-  update_ui(false /* not including the list of relationships */);
+    //Refresh everything for the new relationship:
+    update_ui(false /* not including the list of relationships */);
 
-  m_modified = true;
+    m_modified = true;
+  }
 }
- 
+
 void Dialog_Layout_List_Related::on_treeview_fields_selection_changed()
 {
   enable_buttons();
@@ -312,31 +323,31 @@ void Dialog_Layout_List_Related::on_button_add_field()
 
     if(dialog)
     {
-      dialog->set_document(get_document(), m_portal.get_relationship()->get_to_table());
+      dialog->set_document(get_document(), m_portal->get_relationship()->get_to_table());
       dialog->set_transient_for(*this);
       int response = dialog->run();
       if(response == Gtk::RESPONSE_OK)
       {
         //Get the chosen field:
-        LayoutItem_Field field;
-        dialog->get_field_chosen(field);
-
-        //Add the field details to the layout treeview:
-        Gtk::TreeModel::iterator iter =  m_model_fields->append();
-
-        if(iter)
+        sharedptr<LayoutItem_Field> field = dialog->get_field_chosen();
+        if(field)
         {
-          Gtk::TreeModel::Row row = *iter;
-          row[m_ColumnsFields.m_col_layout_item] = field;
+          //Add the field details to the layout treeview:
+          Gtk::TreeModel::iterator iter =  m_model_fields->append();
+          if(iter)
+          {
+            Gtk::TreeModel::Row row = *iter;
+            row[m_ColumnsFields.m_col_layout_item] = field;
 
-          //Scroll to, and select, the new row:
-          Glib::RefPtr<Gtk::TreeView::Selection> refTreeSelection = m_treeview_fields->get_selection();
-          if(refTreeSelection)
-            refTreeSelection->select(iter);
+            //Scroll to, and select, the new row:
+            Glib::RefPtr<Gtk::TreeView::Selection> refTreeSelection = m_treeview_fields->get_selection();
+            if(refTreeSelection)
+              refTreeSelection->select(iter);
 
-          m_treeview_fields->scroll_to_row( Gtk::TreeModel::Path(iter) );
+            m_treeview_fields->scroll_to_row( Gtk::TreeModel::Path(iter) );
 
-          treeview_fill_sequences(m_model_fields, m_ColumnsFields.m_col_sequence); //The document should have checked this already, but it does not hurt to check again.
+            treeview_fill_sequences(m_model_fields, m_ColumnsFields.m_col_sequence); //The document should have checked this already, but it does not hurt to check again.
+          }
         }
       }
     }
@@ -382,14 +393,14 @@ void Dialog_Layout_List_Related::on_cell_data_name(Gtk::CellRenderer* renderer, 
       Gtk::TreeModel::Row row = *iter;
 
       //Indicate that it's a field in another table.
-      const LayoutItem_Field item = row[m_ColumnsFields.m_col_layout_item]; //TODO_performance: Reduce copying.
+      sharedptr<LayoutItem_Field> item = row[m_ColumnsFields.m_col_layout_item]; //TODO_performance: Reduce copying.
 
       Glib::ustring markup;
 
-      if(item.get_has_relationship_name())
-        markup = item.get_relationship_name() + "::";
+      if(item->get_has_relationship_name())
+        markup = item->get_relationship_name() + "::";
 
-      markup += item.get_name();
+      markup += item->get_name();
 
       renderer_text->property_markup() = markup;
 
@@ -417,31 +428,32 @@ void Dialog_Layout_List_Related::on_button_edit_field()
         if(iter)
         {
           Gtk::TreeModel::Row row = *iter;
-          const LayoutItem_Field& field = row[m_ColumnsFields.m_col_layout_item];
+          sharedptr<LayoutItem_Field> field = row[m_ColumnsFields.m_col_layout_item];
 
-          dialog->set_document(get_document(), m_portal.get_relationship()->get_to_table(), field);
+          dialog->set_document(get_document(), m_portal->get_relationship()->get_to_table(), field);
           dialog->set_transient_for(*this);
           int response = dialog->run();
           if(response == Gtk::RESPONSE_OK)
           {
             //Get the chosen field:
-            LayoutItem_Field field;
-            dialog->get_field_chosen(field);
+            sharedptr<LayoutItem_Field> field = dialog->get_field_chosen();
+            if(field)
+            {
+              //Set the field details in the layout treeview:
 
-            //Set the field details in the layout treeview:
+              row[m_ColumnsFields.m_col_layout_item] = field;
 
-            row[m_ColumnsFields.m_col_layout_item] = field;
+              //Scroll to, and select, the new row:
+              /*
+              Glib::RefPtr<Gtk::TreeView::Selection> refTreeSelection = m_treeview_fields->get_selection();
+              if(refTreeSelection)
+                refTreeSelection->select(iter);
 
-            //Scroll to, and select, the new row:
-            /*
-            Glib::RefPtr<Gtk::TreeView::Selection> refTreeSelection = m_treeview_fields->get_selection();
-            if(refTreeSelection)
-              refTreeSelection->select(iter);
+              m_treeview_fields->scroll_to_row( Gtk::TreeModel::Path(iter) );
 
-            m_treeview_fields->scroll_to_row( Gtk::TreeModel::Path(iter) );
-
-            treeview_fill_sequences(m_model_fields, m_ColumnsFields.m_col_sequence); //The document should have checked this already, but it does not hurt to check again.
-            */
+              treeview_fill_sequences(m_model_fields, m_ColumnsFields.m_col_sequence); //The document should have checked this already, but it does not hurt to check again.
+              */
+            }
           }
         }
       }
@@ -476,17 +488,17 @@ void Dialog_Layout_List_Related::on_button_field_formatting()
         if(iter)
         {
           Gtk::TreeModel::Row row = *iter;
-          LayoutItem_Field field = row[m_ColumnsFields.m_col_layout_item];
+          sharedptr<LayoutItem_Field> field = row[m_ColumnsFields.m_col_layout_item];
 
-          dialog->set_field(field, m_portal.get_relationship()->get_to_table());
+          dialog->set_field(field, m_portal->get_relationship()->get_to_table());
           dialog->set_transient_for(*this);
           int response = dialog->run();
           dialog->hide();
           if(response == Gtk::RESPONSE_OK)
           {
             //Get the chosen field:
-            bool test = dialog->get_field_chosen(field);
-            if(test)
+            sharedptr<LayoutItem_Field> field = dialog->get_field_chosen();
+            if(field)
               row[m_ColumnsFields.m_col_layout_item] = field;
           }
         }
@@ -502,7 +514,7 @@ void Dialog_Layout_List_Related::on_button_field_formatting()
   }
 }
 
-LayoutItem_Portal Dialog_Layout_List_Related::get_portal_layout()
+sharedptr<LayoutItem_Portal> Dialog_Layout_List_Related::get_portal_layout()
 {
   return m_portal;
 }

@@ -235,13 +235,13 @@ Glib::ustring GlomUtils::build_sql_select_with_where_clause(const Glib::ustring&
 }
 
 
-GlomUtils::type_list_values_with_second GlomUtils::get_choice_values(const LayoutItem_Field& field)
+GlomUtils::type_list_values_with_second GlomUtils::get_choice_values(const sharedptr<const LayoutItem_Field>& field)
 {
   type_list_values_with_second list_values;
 
   sharedptr<Relationship> choice_relationship;
   Glib::ustring choice_field, choice_second;
-  field.get_formatting_used().get_choices(choice_relationship, choice_field, choice_second);
+  field->get_formatting_used().get_choices(choice_relationship, choice_field, choice_second);
   if(!choice_relationship)
     return list_values;
 

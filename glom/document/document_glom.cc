@@ -447,11 +447,15 @@ void Document_Glom::change_field_name(const Glib::ustring& table_name, const Gli
         //Look at each group:
         for(type_mapLayoutGroupSequence::iterator iterGroup = iterLayouts->m_layout_groups.begin(); iterGroup != iterLayouts->m_layout_groups.end(); ++iterGroup)
         {
-          //Change the field if it is in this group:
-          if(is_parent_table)
-            iterGroup->second.change_field_item_name(table_name, strFieldNameOld, strFieldNameNew);
-          else
-            iterGroup->second.change_related_field_item_name(table_name, strFieldNameOld, strFieldNameNew);
+          sharedptr<LayoutGroup> group = iterGroup->second;
+          if(group)
+          {
+            //Change the field if it is in this group:
+            if(is_parent_table)
+              group->change_field_item_name(table_name, strFieldNameOld, strFieldNameNew);
+            else
+              group->change_related_field_item_name(table_name, strFieldNameOld, strFieldNameNew);
+          }
         }
       }
 
@@ -460,10 +464,14 @@ void Document_Glom::change_field_name(const Glib::ustring& table_name, const Gli
       for(DocumentTableInfo::type_reports::iterator iterReports = iter->second.m_reports.begin(); iterReports != iter->second.m_reports.end(); ++iterReports)
       {
         //Change the field if it is in this group:
-        if(is_parent_table)
-          iterReports->second->m_layout_group.change_field_item_name(table_name, strFieldNameOld, strFieldNameNew);
-        else
-          iterReports->second->m_layout_group.change_related_field_item_name(table_name, strFieldNameOld, strFieldNameNew);
+        sharedptr<Report> report = iterReports->second;
+        if(report)
+        {
+          if(is_parent_table)
+            report->m_layout_group->change_field_item_name(table_name, strFieldNameOld, strFieldNameNew);
+          else
+            report->m_layout_group->change_related_field_item_name(table_name, strFieldNameOld, strFieldNameNew);
+        }
       }
 
     }
@@ -563,9 +571,9 @@ void Document_Glom::change_relationship_name(const Glib::ustring& table_name, co
       {
         //Change the field if it is in this group:
         if(is_parent_table)
-          iterReports->second->m_layout_group.change_relationship_name(table_name, name, name_new);
+          iterReports->second->m_layout_group->change_relationship_name(table_name, name, name_new);
         else
-          iterReports->second->m_layout_group.change_related_relationship_name(table_name, name, name_new);
+          iterReports->second->m_layout_group->change_related_relationship_name(table_name, name, name_new);
       }
       */
 
@@ -699,15 +707,15 @@ void Document_Glom::set_tables(const type_listTableInfo& tables)
     set_modified();
 }
 
-void Document_Glom::fill_layout_field_details(const Glib::ustring& parent_table_name, LayoutGroup& layout_group) const
+void Document_Glom::fill_layout_field_details(const Glib::ustring& parent_table_name, const sharedptr<LayoutGroup>& layout_group) const
 {
   //Get the full field information for the LayoutItem_Fields in this group:
 
-  for(LayoutGroup::type_map_items::iterator iter = layout_group.m_map_items.begin(); iter != layout_group.m_map_items.end(); ++iter)
+  for(LayoutGroup::type_map_items::iterator iter = layout_group->m_map_items.begin(); iter != layout_group->m_map_items.end(); ++iter)
   {
-    LayoutItem* layout_item = iter->second;
+    sharedptr<LayoutItem> layout_item = iter->second;
 
-    LayoutItem_Field* layout_field = dynamic_cast<LayoutItem_Field*>(layout_item);
+    sharedptr<LayoutItem_Field> layout_field = sharedptr<LayoutItem_Field>::cast_dynamic(layout_item);
     if(layout_field)
     {
       if(layout_field->get_has_relationship_name()) //If it is a related field, instead of a field in parent_table_name
@@ -717,14 +725,14 @@ void Document_Glom::fill_layout_field_details(const Glib::ustring& parent_table_
     }
     else
     {
-      LayoutItem_Portal* layout_portal_child = dynamic_cast<LayoutItem_Portal*>(layout_item);
+      sharedptr<LayoutItem_Portal> layout_portal_child = sharedptr<LayoutItem_Portal>::cast_dynamic(layout_item);
       if(layout_portal_child)
-        fill_layout_field_details(layout_portal_child->get_relationship()->get_to_table(), *layout_portal_child); //recurse
+        fill_layout_field_details(layout_portal_child->get_relationship()->get_to_table(), layout_portal_child); //recurse
       else
       {
-        LayoutGroup* layout_group_child = dynamic_cast<LayoutGroup*>(layout_item);
+        sharedptr<LayoutGroup> layout_group_child = sharedptr<LayoutGroup>::cast_dynamic(layout_item);
         if(layout_group_child)
-          fill_layout_field_details(parent_table_name, *layout_group_child); //recurse
+          fill_layout_field_details(parent_table_name, layout_group_child); //recurse
       }
     }
   }
@@ -734,7 +742,9 @@ void Document_Glom::fill_layout_field_details(const Glib::ustring& parent_table_
 {
   for(type_mapLayoutGroupSequence::iterator iterGroups = sequence.begin(); iterGroups != sequence.end(); ++iterGroups)
   {
-    fill_layout_field_details(parent_table_name, iterGroups->second);
+    sharedptr<LayoutGroup> group = iterGroups->second;
+    if(group)
+      fill_layout_field_details(parent_table_name, group);
   }
 }
 
@@ -745,31 +755,31 @@ Document_Glom::type_mapLayoutGroupSequence Document_Glom::get_data_layout_groups
   type_mapLayoutGroupSequence result;
 
   //Add one if necessary:
-  LayoutGroup* pTopLevel = 0;
-  LayoutGroup* pOverview = 0;
-  LayoutGroup* pDetails = 0;
+  sharedptr<LayoutGroup> pTopLevel;
+  sharedptr<LayoutGroup> pOverview;
+  sharedptr<LayoutGroup> pDetails;
   if(!pTopLevel)
   {
-    LayoutGroup group;
-    group.set_name("main");
-    group.m_sequence = 1;
-    group.m_columns_count = 1;
+    sharedptr<LayoutGroup> group = sharedptr<LayoutGroup>::create();
+    group->set_name("main");
+    group->m_sequence = 1;
+    group->m_columns_count = 1;
     result[1] = group;
-    pTopLevel = &(result[1]);
+    pTopLevel = group;
 
     if(layout_name == "details") //The Details default layut is a bit more complicated.
     {
-      LayoutGroup overview;
-      overview.set_name("overview");
-      overview.set_title_original("Overview"); //Don't translate this, but TODO: add standard translations.
-      overview.m_columns_count = 2;
-      pOverview = dynamic_cast<LayoutGroup*>(pTopLevel->add_item(overview));
+      sharedptr<LayoutGroup> overview = sharedptr<LayoutGroup>::create();;
+      overview->set_name("overview");
+      overview->set_title_original("Overview"); //Don't translate this, but TODO: add standard translations.
+      overview->m_columns_count = 2;
+      pOverview = sharedptr<LayoutGroup>::cast_dynamic(pTopLevel->add_item(overview));
 
-      LayoutGroup details;
-      details.set_name("details");
-      details.set_title_original("Details"); //Don't translate this, but TODO: add standard translations.
-      details.m_columns_count = 2;
-      pDetails = dynamic_cast<LayoutGroup*>(pTopLevel->add_item(details));
+      sharedptr<LayoutGroup> details = sharedptr<LayoutGroup>::create();
+      details->set_name("details");
+      details->set_title_original("Details"); //Don't translate this, but TODO: add standard translations.
+      details->m_columns_count = 2;
+      pDetails = sharedptr<LayoutGroup>::cast_dynamic(pTopLevel->add_item(details));
     }
   }
 
@@ -793,7 +803,7 @@ Document_Glom::type_mapLayoutGroupSequence Document_Glom::get_data_layout_groups
       bool found = false; //TODO: This is horrible.
       for(type_mapLayoutGroupSequence::const_iterator iterFind = result.begin(); iterFind != result.end(); ++iterFind)
       {
-        if(iterFind->second.has_field(field_name))
+        if(iterFind->second->has_field(field_name))
         {
           found = true;
           break;
@@ -802,13 +812,13 @@ Document_Glom::type_mapLayoutGroupSequence Document_Glom::get_data_layout_groups
 
       if(!found)
       {
-        LayoutItem_Field layout_item;
-        layout_item.set_full_field_details(*iter);
+        sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
+        layout_item->set_full_field_details(*iter);
         //layout_item.set_table_name(child_table_name); //TODO: Allow viewing of fields through relationships.
         //layout_item.m_sequence = sequence;  add_item() will fill this.
 
         //std::cout << "  debug: add_item(): " << layout_item.get_name() << std::endl;
-        if(layout_item.get_full_field_details()->get_primary_key())
+        if(layout_item->get_full_field_details()->get_primary_key())
           pOverview->add_item(layout_item);
         else
           pDetails->add_item(layout_item);
@@ -1149,43 +1159,44 @@ void Document_Glom::load_after_layout_item_field_formatting(const xmlpp::Element
 
 }
 
-void Document_Glom::load_after_layout_item_field(const xmlpp::Element* element, const Glib::ustring& table_name, LayoutItem_Field& item)
+void Document_Glom::load_after_layout_item_field(const xmlpp::Element* element, const Glib::ustring& table_name, const sharedptr<LayoutItem_Field>& item)
 {
   const Glib::ustring name = get_node_attribute_value(element, GLOM_ATTRIBUTE_NAME);
-  item.set_name(name);
+  item->set_name(name);
 
   const Glib::ustring relationship_name = get_node_attribute_value(element, GLOM_ATTRIBUTE_RELATIONSHIP_NAME);
-  item.set_relationship( get_relationship(table_name, relationship_name) ); 
+  item->set_relationship( get_relationship(table_name, relationship_name) ); 
 
-  item.set_editable( get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_EDITABLE) );
+  item->set_editable( get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_EDITABLE) );
 
   const xmlpp::Element* elementFormatting = get_node_child_named(element, GLOM_NODE_FORMAT);
   if(elementFormatting)
   {
     //TODO: Provide the name of the relationship's table if there is a relationship:
-    load_after_layout_item_field_formatting(elementFormatting, item.m_formatting, item.get_glom_type(), table_name, name);
+    load_after_layout_item_field_formatting(elementFormatting, item->m_formatting, item->get_glom_type(), table_name, name);
   }
 
-  item.set_formatting_use_default( get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_DATA_LAYOUT_ITEM_FIELD_USE_DEFAULT_FORMATTING) );
+  item->set_formatting_use_default( get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_DATA_LAYOUT_ITEM_FIELD_USE_DEFAULT_FORMATTING) );
 }
 
-void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Glib::ustring table_name, LayoutGroup& group)
+void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Glib::ustring table_name, const sharedptr<LayoutGroup>& group)
 {
-  if(!node)
+  if(!node && !group)
   {
     //g_warning("Document_Glom::load_after_layout_group(): node is NULL");
     return;
   }
 
   //Get the group details:
-  group.set_name( get_node_attribute_value(node, GLOM_ATTRIBUTE_NAME) );
-  group.set_title( get_node_attribute_value(node, GLOM_ATTRIBUTE_TITLE) );
-  group.m_columns_count = get_node_attribute_value_as_decimal(node, GLOM_ATTRIBUTE_COLUMNS_COUNT);
+  group->set_name( get_node_attribute_value(node, GLOM_ATTRIBUTE_NAME) );
+  group->set_title( get_node_attribute_value(node, GLOM_ATTRIBUTE_TITLE) );
+  group->m_columns_count = get_node_attribute_value_as_decimal(node, GLOM_ATTRIBUTE_COLUMNS_COUNT);
 
-  group.m_sequence = get_node_attribute_value_as_decimal(node, GLOM_ATTRIBUTE_SEQUENCE);
+  group->m_sequence = get_node_attribute_value_as_decimal(node, GLOM_ATTRIBUTE_SEQUENCE);
 
   //Translations:
-  load_after_translations(node, group);
+  sharedptr<LayoutGroup> temp = group;
+  load_after_translations(node, *temp);
 
   //Get the child items:
   xmlpp::Node::NodeList listNodes = node->get_children();
@@ -1197,57 +1208,61 @@ void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Gl
       const guint sequence = get_node_attribute_value_as_decimal(element, GLOM_ATTRIBUTE_SEQUENCE);
       if(element->get_name() == GLOM_NODE_DATA_LAYOUT_ITEM)
       {
-        LayoutItem_Field item;
+        sharedptr<LayoutItem_Field> item = sharedptr<LayoutItem_Field>::create();
         //item.set_full_field_details_empty();
         load_after_layout_item_field(element, table_name, item);
 
-        item.m_sequence = sequence;
-        group.add_item(item, sequence);
+        item->m_sequence = sequence;
+        group->add_item(item, sequence);
       }
       else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_ITEM_FIELDSUMMARY)
       {
-        LayoutItem_FieldSummary item;
+        sharedptr<LayoutItem_FieldSummary> item = sharedptr<LayoutItem_FieldSummary>::create();
         //item.set_full_field_details_empty();
         load_after_layout_item_field(element, table_name, item);
-        item.set_summary_type_from_sql( get_node_attribute_value(element, GLOM_ATTRIBUTE_LAYOUT_ITEM_FIELDSUMMARY_SUMMARYTYPE) );
+        item->set_summary_type_from_sql( get_node_attribute_value(element, GLOM_ATTRIBUTE_LAYOUT_ITEM_FIELDSUMMARY_SUMMARYTYPE) );
 
-        item.m_sequence = sequence;
-        group.add_item(item, sequence);
+        item->m_sequence = sequence;
+        group->add_item(item, sequence);
       }
       else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_GROUP)
       {
-        LayoutGroup child_group;
+        sharedptr<LayoutGroup> child_group = sharedptr<LayoutGroup>::create();
         //Recurse:
         load_after_layout_group(element, table_name, child_group);
 
-        group.add_item(child_group);
+        group->add_item(child_group);
       }
       else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_PORTAL)
       {
-        LayoutItem_Portal portal;
+        sharedptr<LayoutItem_Portal> portal = sharedptr<LayoutItem_Portal>::create();
 
         const Glib::ustring relationship_name = get_node_attribute_value(element, GLOM_ATTRIBUTE_RELATIONSHIP_NAME);
-        portal.set_relationship( get_relationship(table_name, relationship_name) );
+        portal->set_relationship( get_relationship(table_name, relationship_name) );
 
         //Recurse:
         load_after_layout_group(element, table_name, portal);
-        group.add_item(portal);
+        group->add_item(portal);
       }
       else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_ITEM_GROUPBY)
       {
-        LayoutItem_GroupBy child_group;
+        sharedptr<LayoutItem_GroupBy> child_group = sharedptr<LayoutItem_GroupBy>::create();
         //Recurse:
         load_after_layout_group(element, table_name, child_group);
 
-        LayoutItem_Field field_groupby; //TODO: Handle related fields too.
+        sharedptr<LayoutItem_Field> field_groupby = sharedptr<LayoutItem_Field>::create(); //TODO: Handle related fields too.
         //field_groupby.set_full_field_details_empty();
-        field_groupby.set_name( get_node_attribute_value(element, GLOM_ATTRIBUTE_REPORT_ITEM_GROUPBY_GROUPBY) );
-        child_group.set_field_group_by(field_groupby);
 
-        LayoutItem_Field field_sortby;
+        const Glib::ustring groupby_field_name = get_node_attribute_value(element, GLOM_ATTRIBUTE_REPORT_ITEM_GROUPBY_GROUPBY);
+        field_groupby->set_full_field_details( get_field(table_name, groupby_field_name) );
+        child_group->set_field_group_by(field_groupby);
+
+        sharedptr<LayoutItem_Field> field_sortby = sharedptr<LayoutItem_Field>::create();
         //field_groupby.set_full_field_details_empty();
-        field_sortby.set_name( get_node_attribute_value(element, GLOM_ATTRIBUTE_REPORT_ITEM_GROUPBY_SORTBY) );
-        child_group.set_field_sort_by(field_sortby);
+
+        const Glib::ustring sortyby_groupname = get_node_attribute_value(element, GLOM_ATTRIBUTE_REPORT_ITEM_GROUPBY_SORTBY);
+        field_sortby->set_full_field_details( get_field(table_name, sortyby_groupname) );
+        child_group->set_field_sort_by(field_sortby);
 
         //Secondary fields:
         xmlpp::Element* elementSecondary = get_node_child_named(element, GLOM_NODE_DATA_LAYOUT_GROUP_SECONDARYFIELDS);
@@ -1256,19 +1271,19 @@ void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Gl
           xmlpp::Element* elementGroup = get_node_child_named(elementSecondary, GLOM_NODE_DATA_LAYOUT_GROUP);
           if(elementGroup)
           {
-            load_after_layout_group(elementGroup, table_name, child_group.m_group_secondary_fields);
+            load_after_layout_group(elementGroup, table_name, child_group->m_group_secondary_fields);
           }
         }
 
-        group.add_item(child_group);
+        group->add_item(child_group);
       }
       else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_ITEM_SUMMARY)
       {
-        LayoutItem_Summary child_group;
+        sharedptr<LayoutItem_Summary> child_group = sharedptr<LayoutItem_Summary>::create();
         //Recurse:
         load_after_layout_group(element, table_name, child_group);
 
-        group.add_item(child_group);
+        group->add_item(child_group);
       }
     }
   }
@@ -1479,10 +1494,10 @@ bool Document_Glom::load_after()
                       const Glib::ustring group_name = get_node_attribute_value(node, GLOM_ATTRIBUTE_NAME);
                       if(!group_name.empty())
                       {
-                        LayoutGroup group;
+                        sharedptr<LayoutGroup> group(new LayoutGroup());
                         load_after_layout_group(node, table_name, group);
 
-                        layout_groups[group.m_sequence] = group;
+                        layout_groups[group->m_sequence] = group;
                       }
                     }
                   }
@@ -1525,7 +1540,7 @@ bool Document_Glom::load_after()
                     const xmlpp::Element* node = dynamic_cast<const xmlpp::Element*>(*iter);
                     if(node)
                     {
-                      LayoutGroup group;
+                      sharedptr<LayoutGroup> group = sharedptr<LayoutGroup>::create();
                       load_after_layout_group(node, table_name, group);
 
                       //layout_groups[group.m_sequence] = group;
@@ -1631,35 +1646,41 @@ void Document_Glom::save_before_layout_item_field_formatting(xmlpp::Element* nod
   set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_SECOND, choice_second);
 }
 
-void Document_Glom::save_before_layout_item_field(xmlpp::Element* nodeItem, const LayoutItem_Field& field)
+void Document_Glom::save_before_layout_item_field(xmlpp::Element* nodeItem, const sharedptr<const LayoutItem_Field>& field)
 {
-  nodeItem->set_attribute(GLOM_ATTRIBUTE_NAME, field.get_name());
-  nodeItem->set_attribute(GLOM_ATTRIBUTE_RELATIONSHIP_NAME, field.get_relationship_name());
-  set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_EDITABLE, field.get_editable());
+  if(!field)
+    return;
+
+  nodeItem->set_attribute(GLOM_ATTRIBUTE_NAME, field->get_name());
+  nodeItem->set_attribute(GLOM_ATTRIBUTE_RELATIONSHIP_NAME, field->get_relationship_name());
+  set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_EDITABLE, field->get_editable());
 
   xmlpp::Element* elementFormat = nodeItem->add_child(GLOM_NODE_FORMAT);
-  save_before_layout_item_field_formatting(elementFormat, field.m_formatting, field.get_glom_type());
+  save_before_layout_item_field_formatting(elementFormat, field->m_formatting, field->get_glom_type());
 
-  set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_DATA_LAYOUT_ITEM_FIELD_USE_DEFAULT_FORMATTING, field.get_formatting_use_default());
+  set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_DATA_LAYOUT_ITEM_FIELD_USE_DEFAULT_FORMATTING, field->get_formatting_use_default());
 
-  set_node_attribute_value_as_decimal(nodeItem, GLOM_ATTRIBUTE_SEQUENCE, field.m_sequence);
+  set_node_attribute_value_as_decimal(nodeItem, GLOM_ATTRIBUTE_SEQUENCE, field->m_sequence);
 }
 
-void Document_Glom::save_before_layout_group(xmlpp::Element* node, const LayoutGroup& group)
+void Document_Glom::save_before_layout_group(xmlpp::Element* node, const sharedptr<const LayoutGroup>& group)
 {
   //g_warning("save_before_layout_group");
 
   xmlpp::Element* child = 0;
 
-  const LayoutItem_GroupBy* group_by = dynamic_cast<const LayoutItem_GroupBy*>(&group);
+  sharedptr<const LayoutItem_GroupBy> group_by = sharedptr<const LayoutItem_GroupBy>::cast_dynamic(group);
   if(group_by) //If it is a GroupBy report part.
   {
     child = node->add_child(GLOM_NODE_DATA_LAYOUT_ITEM_GROUPBY);
 
-    set_node_attribute_value(child, GLOM_ATTRIBUTE_REPORT_ITEM_GROUPBY_GROUPBY, group_by->get_field_group_by()->get_name());
-    set_node_attribute_value(child, GLOM_ATTRIBUTE_REPORT_ITEM_GROUPBY_SORTBY, group_by->get_field_sort_by()->get_name());
+    if(group_by->get_has_field_group_by())
+      set_node_attribute_value(child, GLOM_ATTRIBUTE_REPORT_ITEM_GROUPBY_GROUPBY, group_by->get_field_group_by()->get_name());
 
-    if(!group_by->m_group_secondary_fields.m_map_items.empty())
+    if(group_by->get_has_field_sort_by())
+      set_node_attribute_value(child, GLOM_ATTRIBUTE_REPORT_ITEM_GROUPBY_SORTBY, group_by->get_field_sort_by()->get_name());
+
+    if(!group_by->m_group_secondary_fields->m_map_items.empty())
     {
       xmlpp::Element* secondary_fields = child->add_child(GLOM_NODE_DATA_LAYOUT_GROUP_SECONDARYFIELDS);
       save_before_layout_group(secondary_fields, group_by->m_group_secondary_fields);
@@ -1667,7 +1688,7 @@ void Document_Glom::save_before_layout_group(xmlpp::Element* node, const LayoutG
   }
   else
   {
-    const LayoutItem_Summary* summary = dynamic_cast<const LayoutItem_Summary*>(&group);
+    sharedptr<const LayoutItem_Summary> summary = sharedptr<const LayoutItem_Summary>::cast_dynamic(group);
     if(summary) //If it is a GroupBy report part.
     {
       child = node->add_child(GLOM_NODE_DATA_LAYOUT_ITEM_SUMMARY);
@@ -1675,7 +1696,7 @@ void Document_Glom::save_before_layout_group(xmlpp::Element* node, const LayoutG
     }
     else
     {
-      const LayoutItem_Portal* portal = dynamic_cast<const LayoutItem_Portal*>(&group);
+      sharedptr<const LayoutItem_Portal> portal = sharedptr<const LayoutItem_Portal>::cast_dynamic(group);
       if(portal) //If it is a related records portal
       {
         child = node->add_child(GLOM_NODE_DATA_LAYOUT_PORTAL);
@@ -1688,43 +1709,43 @@ void Document_Glom::save_before_layout_group(xmlpp::Element* node, const LayoutG
     }
   }
 
-  child->set_attribute(GLOM_ATTRIBUTE_NAME, group.get_name());
-  set_node_attribute_value_as_decimal(child, GLOM_ATTRIBUTE_COLUMNS_COUNT, group.m_columns_count);
+  child->set_attribute(GLOM_ATTRIBUTE_NAME, group->get_name());
+  set_node_attribute_value_as_decimal(child, GLOM_ATTRIBUTE_COLUMNS_COUNT, group->m_columns_count);
 
-  set_node_attribute_value_as_decimal(child, GLOM_ATTRIBUTE_SEQUENCE, group.m_sequence);
+  set_node_attribute_value_as_decimal(child, GLOM_ATTRIBUTE_SEQUENCE, group->m_sequence);
 
   //Translations:
-  save_before_translations(child, group);
+  save_before_translations(child, *group);
 
   //Add the child items:
-  LayoutGroup::type_map_const_items items = group.get_items();
+  LayoutGroup::type_map_const_items items = group->get_items();
   for(LayoutGroup::type_map_const_items::const_iterator iterItems = items.begin(); iterItems != items.end(); ++iterItems)
   {
-    const LayoutItem* item = iterItems->second;
+    sharedptr<const LayoutItem> item = iterItems->second;
     //g_warning("save_before_layout_group: child part type=%s", item->get_part_type_name().c_str());
 
-    const LayoutGroup* child_group = dynamic_cast<const LayoutGroup*>(item);
+    sharedptr<const LayoutGroup> child_group = sharedptr<const LayoutGroup>::cast_dynamic(item);
     if(child_group) //If it is a group, portal, summary, or groupby.
     {
       //recurse:
-      save_before_layout_group(child, *child_group);
+      save_before_layout_group(child, child_group);
     }
     else
     {
-      const LayoutItem_FieldSummary* fieldsummary = dynamic_cast<const LayoutItem_FieldSummary*>(item);
+      sharedptr<const LayoutItem_FieldSummary> fieldsummary = sharedptr<const LayoutItem_FieldSummary>::cast_dynamic(item);
       if(fieldsummary) //If it is a summaryfield
       {
         xmlpp::Element* nodeItem = child->add_child(GLOM_NODE_DATA_LAYOUT_ITEM_FIELDSUMMARY);
-        save_before_layout_item_field(nodeItem, *fieldsummary);
+        save_before_layout_item_field(nodeItem, fieldsummary);
         set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_LAYOUT_ITEM_FIELDSUMMARY_SUMMARYTYPE, fieldsummary->get_summary_type_sql()); //The SQL name is as good as anything as an identifier for the summary function.
       }
       else
       {
-        const LayoutItem_Field* field = dynamic_cast<const LayoutItem_Field*>(item);
+        sharedptr<const LayoutItem_Field> field = sharedptr<const LayoutItem_Field>::cast_dynamic(item);
         if(field) //If it is a field
         {
           xmlpp::Element* nodeItem = child->add_child(GLOM_NODE_DATA_LAYOUT_ITEM);
-          save_before_layout_item_field(nodeItem, *field);
+          save_before_layout_item_field(nodeItem, field);
         }
       }
     }
@@ -2203,3 +2224,48 @@ Glib::ustring Document_Glom::get_translation_original_locale() const
 {
   return m_translation_original_locale;
 }
+
+Document_Glom::type_list_translatables Document_Glom::get_translatable_layout_items(const Glib::ustring& table_name)
+{
+  type_list_translatables result;
+
+  type_tables::iterator iterFindTable = m_tables.find(table_name);
+  if(iterFindTable != m_tables.end())
+  {
+    //Look at each layout:
+    for(DocumentTableInfo::type_layouts::iterator iterLayouts = iterFindTable->second.m_layouts.begin(); iterLayouts != iterFindTable->second.m_layouts.end(); ++iterLayouts)
+    {
+      //Look at each group:
+      for(type_mapLayoutGroupSequence::iterator iterGroup = iterLayouts->m_layout_groups.begin(); iterGroup != iterLayouts->m_layout_groups.end(); ++iterGroup)
+      {
+        sharedptr<LayoutGroup> group = iterGroup->second;
+        if(group)
+        {
+          fill_translatable_layout_items(group, result);
+        }
+      }
+    }
+  }
+
+  return result;
+}
+
+void Document_Glom::fill_translatable_layout_items(const sharedptr<LayoutGroup>& group, type_list_translatables& the_list)
+{
+  the_list.push_back(group);
+
+  //Look at each item:
+  LayoutGroup::type_map_items items = group->get_items();
+  for(LayoutGroup::type_map_items::const_iterator iterItems = items.begin(); iterItems != items.end(); ++iterItems)
+  {
+    sharedptr<LayoutItem> item = iterItems->second;
+
+    sharedptr<LayoutGroup> child_group = sharedptr<LayoutGroup>::cast_dynamic(item);
+    if(child_group) //If it is a group, portal, summary, or groupby.
+    {
+      //recurse:
+      fill_translatable_layout_items(child_group, the_list);
+    }
+  }
+}
+

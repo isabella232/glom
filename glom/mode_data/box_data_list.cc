@@ -250,9 +250,7 @@ void Box_Data_List::on_adddel_user_added(const Gtk::TreeModel::iterator& row, gu
   else
   {
     //This only works when the primary key is already stored: primary_key_value = get_primary_key_value(row);
-    LayoutItem_Field layout_item;
-    layout_item.set_full_field_details(field_primary_key);
-    primary_key_value = get_entered_field_data(layout_item);
+    primary_key_value = get_entered_field_data_field_only(field_primary_key);
   }
 
   //If no primary key value is available yet, then don't add the record yet:
@@ -272,8 +270,8 @@ void Box_Data_List::on_adddel_user_added(const Gtk::TreeModel::iterator& row, gu
         //If it's an auto-increment, then get the value and show it:
         if(field_primary_key->get_auto_increment())
         {
-          LayoutItem_Field layout_item;
-          layout_item.set_full_field_details(field_primary_key);
+          sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
+          layout_item->set_full_field_details(field_primary_key);
           m_AddDel.set_value(row, layout_item, primary_key_value);
         }
 
@@ -299,18 +297,18 @@ void Box_Data_List::on_adddel_user_reordered_columns()
   Document_Glom* pDoc = dynamic_cast<Document_Glom*>(get_document());
   if(pDoc)
   {
-    LayoutGroup group;
-    group.set_name("toplevel");
+    sharedptr<LayoutGroup> group = sharedptr<LayoutGroup>::create();
+    group->set_name("toplevel");
 
     AddDel::type_vecStrings vec_field_names = m_AddDel.get_columns_order();
 
     guint index = 0;
     for(AddDel::type_vecStrings::iterator iter = vec_field_names.begin(); iter != vec_field_names.end(); ++iter)
     {
-      LayoutItem_Field layout_item;
-      layout_item.set_name(*iter);
-      layout_item.m_sequence = index;
-      group.add_item(layout_item, index); 
+      sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
+      layout_item->set_name(*iter);
+      layout_item->m_sequence = index;
+      group->add_item(layout_item, index); 
       ++index;
     }
 
@@ -330,13 +328,13 @@ void Box_Data_List::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, 
     //Just update the record:
     try
     {
-      LayoutItem_Field layout_field = m_AddDel.get_column_field(col);
+      sharedptr<const LayoutItem_Field> layout_field = m_AddDel.get_column_field(col);
 
       Glib::ustring table_name = m_strTableName;
       sharedptr<Field> primary_key_field;
       Gnome::Gda::Value primary_key_value;
 
-      if(!layout_field.get_has_relationship_name())
+      if(!layout_field->get_has_relationship_name())
       {
         table_name = m_strTableName;
         primary_key_field = m_AddDel.get_key_field();
@@ -346,7 +344,7 @@ void Box_Data_List::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, 
       {
         //If it's a related field then discover the actual table that it's in,
         //plus how to identify the record in that table.
-        const Glib::ustring relationship_name = layout_field.get_relationship_name();
+        const Glib::ustring relationship_name = layout_field->get_relationship_name();
 
         Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
 
@@ -360,12 +358,12 @@ void Box_Data_List::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, 
           if(primary_key_field)
           {
             //Get the value of the corresponding key in the current table (that identifies the record in the table that we will change)
-            LayoutItem_Field layout_item;
-            layout_item.set_name(relationship->get_from_field());
+            sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
+            layout_item->set_name(relationship->get_from_field());
 
             primary_key_value = get_entered_field_data(layout_item);
 
-            bool test = add_related_record_for_field(layout_field, relationship, primary_key_field, primary_key_value);
+            const bool test = add_related_record_for_field(layout_field, relationship, primary_key_field, primary_key_value);
             if(!test)
               return;
 
@@ -384,8 +382,8 @@ void Box_Data_List::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, 
       //Update the field in the record (the record with this primary key):
       const Gnome::Gda::Value field_value = m_AddDel.get_value(row, layout_field);
       //std::cout << "Box_Data_List::on_adddel_user_changed(): field_value = " << field_value.to_string() << std::endl;
-      //const sharedptr<const Field>& field = layout_field.m_field;
-      //const Glib::ustring strFieldName = layout_field.get_name();
+      //const sharedptr<const Field>& field = layout_field->m_field;
+      //const Glib::ustring strFieldName = layout_field->get_name();
 
       const bool bTest = set_field_value_in_database(row, layout_field, field_value, primary_key_field, primary_key_value);
 
@@ -440,14 +438,14 @@ void Box_Data_List::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, 
 
 }
 
-void Box_Data_List::refresh_related_fields(const Gtk::TreeModel::iterator& row, const LayoutItem_Field& field_changed, const Gnome::Gda::Value& /* field_value */, const sharedptr<const Field>& primary_key, const Gnome::Gda::Value& primary_key_value)
+void Box_Data_List::refresh_related_fields(const Gtk::TreeModel::iterator& row, const sharedptr<const LayoutItem_Field>& field_changed, const Gnome::Gda::Value& /* field_value */, const sharedptr<const Field>& primary_key, const Gnome::Gda::Value& primary_key_value)
 {
-  if(field_changed.get_has_relationship_name())
+  if(field_changed->get_has_relationship_name())
     return; //TODO: Handle these too.
 
   //Get values for lookup fields, if this field triggers those relationships:
   //TODO_performance: There is a LOT of iterating and copying here.
-  const Glib::ustring strFieldName = field_changed.get_name();
+  const Glib::ustring strFieldName = field_changed->get_name();
   type_vecLayoutFields fieldsToGet = get_related_fields(strFieldName);
 
   if(!fieldsToGet.empty())
@@ -476,7 +474,7 @@ void Box_Data_List::refresh_related_fields(const Gtk::TreeModel::iterator& row, 
           //g_warning("list fill: field_name=%s", iterFields->get_name().c_str());
           //g_warning("  value_as_string=%s", value.to_string().c_str());
 
-          m_AddDel.set_value(row, *layout_item, value);
+          m_AddDel.set_value(row, layout_item, value);
             //g_warning("addedel size=%d", m_AddDel.get_count());
 
           ++iterFields;
@@ -488,22 +486,22 @@ void Box_Data_List::refresh_related_fields(const Gtk::TreeModel::iterator& row, 
   }
 }
 
-void Box_Data_List::do_lookups(const Gtk::TreeModel::iterator& row, const LayoutItem_Field& field_changed, const Gnome::Gda::Value& field_value, const sharedptr<const Field>& primary_key, const Gnome::Gda::Value& primary_key_value)
+void Box_Data_List::do_lookups(const Gtk::TreeModel::iterator& row, const sharedptr<const LayoutItem_Field>& field_changed, const Gnome::Gda::Value& field_value, const sharedptr<const Field>& primary_key, const Gnome::Gda::Value& primary_key_value)
 {
-   if(field_changed.get_has_relationship_name())
+   if(field_changed->get_has_relationship_name())
     return; //TODO: Handle these too.
 
 
    //Get values for lookup fields, if this field triggers those relationships:
    //TODO_performance: There is a LOT of iterating and copying here.
-   const Glib::ustring strFieldName = field_changed.get_name();
+   const Glib::ustring strFieldName = field_changed->get_name();
    type_list_lookups lookups = get_lookup_fields(strFieldName);
    for(type_list_lookups::const_iterator iter = lookups.begin(); iter != lookups.end(); ++iter)
    {
-     const LayoutItem_Field& layout_Item = iter->first;
+     sharedptr<const LayoutItem_Field> layout_Item = iter->first;
 
      sharedptr<const Relationship> relationship = iter->second;
-     const sharedptr<const Field> field_lookup = layout_Item.get_full_field_details();
+     const sharedptr<const Field> field_lookup = layout_Item->get_full_field_details();
 
      sharedptr<const Field> field_source = get_fields_for_table_one_field(relationship->get_to_table(), field_lookup->get_lookup_field());
      if(field_source)
@@ -641,12 +639,12 @@ Gnome::Gda::Value Box_Data_List::get_primary_key_value_first()
   return Gnome::Gda::Value();
 }
 
-Gnome::Gda::Value Box_Data_List::get_entered_field_data(const LayoutItem_Field& field) const
+Gnome::Gda::Value Box_Data_List::get_entered_field_data(const sharedptr<const LayoutItem_Field>& field) const
 {
   return m_AddDel.get_value_selected(field);
 }
 
-void Box_Data_List::set_entered_field_data(const LayoutItem_Field& field, const Gnome::Gda::Value& value)
+void Box_Data_List::set_entered_field_data(const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value)
 {
   return m_AddDel.set_value_selected(field, value);
 }
@@ -682,7 +680,7 @@ void Box_Data_List::create_layout()
 
       //Add extra possibly-non-visible columns that we need:
       //TODO: Only add it if it is not already there.
-      sharedptr<LayoutItem_Field> layout_item(new LayoutItem_Field);
+      sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
       layout_item->set_hidden();
       layout_item->set_full_field_details(m_AddDel.get_key_field());
       m_FieldsShown.push_back(layout_item);
@@ -696,7 +694,7 @@ void Box_Data_List::create_layout()
           field->set_editable(false);
 
         //std::cout << "Adding field: name=" << field->get_name() << ", titleorname=" << field->get_title_or_name() << std::endl;
-        m_AddDel.add_column(*field);
+        m_AddDel.add_column(field);
       }
 
       m_AddDel.set_where_clause(m_strWhereClause);
@@ -772,14 +770,14 @@ void Box_Data_List::print_layout()
     //Add all the fields from the layout:
     for(type_vecLayoutFields::const_iterator iter = m_FieldsShown.begin(); iter != m_FieldsShown.end(); ++iter)
     {
-      report_temp->m_layout_group.add_item(*(*iter));
+      report_temp->m_layout_group->add_item(*iter);
     }
 
     report_build(m_strTableName, report_temp, m_strWhereClause);
   }
 }
 
-void Box_Data_List::print_layout_group(xmlpp::Element* /* node_parent */, const LayoutGroup& /* group */)
+void Box_Data_List::print_layout_group(xmlpp::Element* /* node_parent */, const sharedptr<const LayoutGroup>& /* group */)
 {
 }
 

@@ -32,7 +32,7 @@ public:
   explicit ComboGlomChoicesBase();
 
   ///You must call set_layout_item() to specify the field type and formatting of the main column.
-  explicit ComboGlomChoicesBase(const LayoutItem_Field& field_second);
+  explicit ComboGlomChoicesBase(const sharedptr<LayoutItem_Field>& field_second);
 
   virtual ~ComboGlomChoicesBase();
 
@@ -61,7 +61,7 @@ protected:
   Glib::RefPtr<Gtk::ListStore> m_refModel;
 
   bool m_with_second;
-  LayoutItem_Field m_layoutitem_second;
+  sharedptr<const LayoutItem_Field> m_layoutitem_second;
   //Gnome::Gda::Value m_value; //The last-stored value. We have this because the displayed value might be unparseable.
 };
 

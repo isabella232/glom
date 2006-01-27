@@ -60,36 +60,39 @@ Dialog_ChooseField::~Dialog_ChooseField()
 {
 }
 
-void Dialog_ChooseField::set_document(Document_Glom* document, const Glib::ustring& table_name,  const LayoutItem_Field& field)
+void Dialog_ChooseField::set_document(Document_Glom* document, const Glib::ustring& table_name, const sharedptr<const LayoutItem_Field>& field)
 {
   set_document(document, table_name);
 
   //Select the current relationship at the start:
 
-  if(field.get_has_relationship_name())
+  if(field && field->get_has_relationship_name())
   {
-    m_combo_relationship->set_selected_relationship( field.get_relationship() );
+    m_combo_relationship->set_selected_relationship( field->get_relationship() );
   }
   else
     m_combo_relationship->set_selected_parent_table(table_name); //TODO: Show the title too.
 
   //Select the current field at the start:
-  const Glib::ustring field_name = field.get_name();
-
-  //Get the iterator for the row:
-  Gtk::TreeModel::iterator iterFound = m_model->children().end();
-  for(Gtk::TreeModel::iterator iter = m_model->children().begin(); iter != m_model->children().end(); ++iter)
+  if(field)
   {
-    if(field_name == (*iter)[m_ColumnsFields.m_col_name])
+    const Glib::ustring field_name = field->get_name();
+
+    //Get the iterator for the row:
+    Gtk::TreeModel::iterator iterFound = m_model->children().end();
+    for(Gtk::TreeModel::iterator iter = m_model->children().begin(); iter != m_model->children().end(); ++iter)
     {
-      iterFound = iter;
-      break;
+      if(field_name == (*iter)[m_ColumnsFields.m_col_name])
+      {
+        iterFound = iter;
+        break;
+      }
     }
-  }
 
-  if(iterFound != m_model->children().end())
-  {
-    m_treeview->get_selection()->select(iterFound);
+    if(iterFound != m_model->children().end())
+    {
+      m_treeview->get_selection()->select(iterFound);
+    }
   }
 }
 
@@ -115,7 +118,7 @@ void Dialog_ChooseField::set_document(Document_Glom* document, const Glib::ustri
     const Document_Glom::type_vecRelationships vecRelationships = document->get_relationships(table_name);
 
     //Add a special option for the current table:
-    m_combo_relationship->set_display_parent_table(table_name);
+    m_combo_relationship->set_display_parent_table(table_name, document->get_table_title(table_name));
 
     //Add the relationships for this table:
     m_combo_relationship->set_relationships(vecRelationships, table_name, document->get_table_title(table_name));
@@ -160,20 +163,13 @@ void Dialog_ChooseField::select_item(const Field& field)
 }
 */
 
-bool Dialog_ChooseField::get_field_chosen(LayoutItem_Field& field) const
+sharedptr<LayoutItem_Field> Dialog_ChooseField::get_field_chosen() const
 {
   //Don't initialize output argument,
   //because it might contain other useful data.
   //TODO: Store a LayoutItem_Field as a member.
 
-
-  //Relationship:
-  //Note that a null relationship means that the parent table was selected instead.
-  sharedptr<Relationship> relationship = m_combo_relationship->get_selected_relationship();
-
-  //field.set_relationship_name(relationship_name);
-
-  field.set_relationship(relationship);
+  sharedptr<LayoutItem_Field> field;
 
   //Field:
   Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = m_treeview->get_selection();
@@ -182,16 +178,25 @@ bool Dialog_ChooseField::get_field_chosen(LayoutItem_Field& field) const
     Gtk::TreeModel::iterator iter = refTreeSelection->get_selected();
     if(iter)
     {
+      field = sharedptr<LayoutItem_Field>::create(); //TODO_Translation: Preserve existing.
+
+      //Relationship:
+      //Note that a null relationship means that the parent table was selected instead.
+      sharedptr<Relationship> relationship = m_combo_relationship->get_selected_relationship();
+
+      //field.set_relationship_name(relationship_name);
+
+      field->set_relationship(relationship);
+
+
       Gtk::TreeModel::Row row = *iter;
       sharedptr<Field> field_details = row[m_ColumnsFields.m_col_field];
-      field.set_full_field_details(field_details);
-      field.set_name(row[m_ColumnsFields.m_col_name]);
-
-      return true;
+      field->set_full_field_details(field_details);
+      field->set_name(row[m_ColumnsFields.m_col_name]);
     }
   }
 
-  return false;
+  return field;
 }
 
 void Dialog_ChooseField::on_row_activated(const Gtk::TreePath& /* path */, Gtk::TreeViewColumn* /* view_column */)

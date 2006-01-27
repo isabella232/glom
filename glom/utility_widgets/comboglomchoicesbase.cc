@@ -34,7 +34,7 @@ ComboGlomChoicesBase::ComboGlomChoicesBase()
   init();
 }
 
-ComboGlomChoicesBase::ComboGlomChoicesBase(const LayoutItem_Field& field_second)
+ComboGlomChoicesBase::ComboGlomChoicesBase(const sharedptr<LayoutItem_Field>& field_second)
 : m_with_second(true),
   m_layoutitem_second(field_second)
 {
@@ -59,14 +59,14 @@ void ComboGlomChoicesBase::set_choices_with_second(const type_list_values_with_s
     Gtk::TreeModel::iterator iterTree = m_refModel->append();
     Gtk::TreeModel::Row row = *iterTree;
 
-    LayoutItem_Field* layout_item = dynamic_cast<LayoutItem_Field*>(get_layout_item());
+    sharedptr<const LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::cast_dynamic(get_layout_item());
     if(layout_item)
     {
       row[m_Columns.m_col_first] = GlomConversions::get_text_for_gda_value(layout_item->get_glom_type(), iter->first, layout_item->get_formatting_used().m_numeric_format);;
 
       if(m_with_second)
       {
-        row[m_Columns.m_col_second] = GlomConversions::get_text_for_gda_value(m_layoutitem_second.get_glom_type(), iter->second, layout_item->get_formatting_used().m_numeric_format);
+        row[m_Columns.m_col_second] = GlomConversions::get_text_for_gda_value(m_layoutitem_second->get_glom_type(), iter->second, layout_item->get_formatting_used().m_numeric_format);
       }
     }
   }
@@ -82,7 +82,7 @@ void ComboGlomChoicesBase::set_choices(const FieldFormatting::type_list_values& 
     Gtk::TreeModel::iterator iterTree = m_refModel->append();
     Gtk::TreeModel::Row row = *iterTree;
 
-    LayoutItem_Field* layout_item = dynamic_cast<LayoutItem_Field*>(get_layout_item());
+    sharedptr<const LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::cast_dynamic(get_layout_item());
     if(layout_item)
     {
       const Gnome::Gda::Value value = *iter;

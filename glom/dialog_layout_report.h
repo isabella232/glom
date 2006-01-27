@@ -23,6 +23,8 @@
 
 #include "mode_data/dialog_layout.h"
 #include "data_structure/report.h"
+//#include "data_structure/layout/layoutitem.h"
+//#include "sharedptr.h"
 
 class Dialog_Layout_Report : public Dialog_Layout
 {
@@ -37,8 +39,6 @@ public:
 
 protected:
 
-  typedef sharedptr<LayoutItem> type_item_ptr;
-
   class ModelColumnsGroups : public Gtk::TreeModel::ColumnRecord
   {
   public:
@@ -47,27 +47,27 @@ protected:
     { add(m_col_item); }
 
     //We use sharedptr<> so that the underlying LayoutItem will be destroyed automatically when the model is destroyed.
-    Gtk::TreeModelColumn< type_item_ptr > m_col_item;
+    Gtk::TreeModelColumn< sharedptr<LayoutItem> > m_col_item;
   };
 
   ModelColumnsGroups m_columns_parts;
 
   ModelColumnsGroups m_columns_available_parts;
 
-  virtual void add_group(const Gtk::TreeModel::iterator& parent, const LayoutGroup& group);
+  virtual void add_group(const Gtk::TreeModel::iterator& parent, const sharedptr<const LayoutGroup>& group);
 
-  void fill_group_children(LayoutGroup& group, const Gtk::TreeModel::iterator& iter);
-  LayoutGroup* fill_group(const Gtk::TreeModel::iterator& iter);
+  void fill_group_children(const sharedptr<LayoutGroup>& group, const Gtk::TreeModel::iterator& iter);
+  sharedptr<LayoutGroup> fill_group(const Gtk::TreeModel::iterator& iter);
 
   //Enable/disable buttons, depending on treeview selection:
   virtual void enable_buttons();
 
-  bool may_be_child_of(const LayoutItem& parent, const LayoutItem& suggested_child);
+  bool may_be_child_of(const sharedptr<const LayoutItem>& parent, const sharedptr<const LayoutItem>& suggested_child);
 
   virtual void save_to_document();
 
   sharedptr<Relationship> offer_relationship_list();
-  bool offer_field_layout(LayoutItem_Field& field);
+   sharedptr<LayoutItem_Field> offer_field_layout(const  sharedptr<LayoutItem_Field>& start_field);
   Gtk::TreeModel::iterator get_selected_group_parent() const;
 
   Gtk::TreeModel::iterator get_selected_available() const;

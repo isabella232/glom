@@ -78,7 +78,7 @@ Glib::ustring Box_Data::get_find_where_clause() const
   {
     Glib::ustring strClausePart;
 
-    const Gnome::Gda::Value data = get_entered_field_data(*(*iter));
+    const Gnome::Gda::Value data = get_entered_field_data(*iter);
 
     if(!GlomConversions::value_is_empty(data))
     {
@@ -137,7 +137,7 @@ Box_Data::type_map_fields Box_Data::get_record_field_values(const Gnome::Gda::Va
     type_vecLayoutFields fieldsToGet;
     for(Document_Glom::type_vecFields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
     {
-      sharedptr<LayoutItem_Field> layout_item(new LayoutItem_Field());
+      sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
       layout_item->set_full_field_details(*iter);
 
       fieldsToGet.push_back(layout_item);
@@ -181,7 +181,7 @@ Glib::RefPtr<Gnome::Gda::DataModel> Box_Data::record_new(bool use_entered_data, 
     type_vecLayoutFields::const_iterator iterFind = std::find_if(fieldsToAdd.begin(), fieldsToAdd.end(), predicate_FieldHasName<LayoutItem_Field>((*iter)->get_name()));
     if(iterFind == fieldsToAdd.end())
     {
-      sharedptr<LayoutItem_Field> layout_item(new LayoutItem_Field);
+      sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
       layout_item->set_full_field_details(*iter);
 
       fieldsToAdd.push_back(layout_item);
@@ -194,7 +194,7 @@ Glib::RefPtr<Gnome::Gda::DataModel> Box_Data::record_new(bool use_entered_data, 
     sharedptr<LayoutItem_Field> layout_item = *iter;
 
     //If the user did not enter something in this field:
-    Gnome::Gda::Value value = get_entered_field_data(*layout_item);
+    Gnome::Gda::Value value = get_entered_field_data(layout_item);
 
     if(GlomConversions::value_is_empty(value)) //This deals with empty strings too.
     {
@@ -208,7 +208,7 @@ Glib::RefPtr<Gnome::Gda::DataModel> Box_Data::record_new(bool use_entered_data, 
 
         const Gnome::Gda::Value value = glom_evaluate_python_function_implementation(field->get_glom_type(), calculation, field_values,
           get_document(), m_strTableName);
-        set_entered_field_data(*layout_item, value);
+        set_entered_field_data(layout_item, value);
       }
 
       //Use default values (These are also specified in postgres as part of the field definition,
@@ -219,7 +219,7 @@ Glib::RefPtr<Gnome::Gda::DataModel> Box_Data::record_new(bool use_entered_data, 
         const Gnome::Gda::Value default_value = field->get_default_value();
         if(!GlomConversions::value_is_empty(default_value))
         {
-          set_entered_field_data(*layout_item, default_value);
+          set_entered_field_data(layout_item, default_value);
         }
       }
     }
@@ -254,7 +254,7 @@ Glib::RefPtr<Gnome::Gda::DataModel> Box_Data::record_new(bool use_entered_data, 
         else
         {
           if(use_entered_data || !field->get_calculation().empty()) //TODO_Performance: Use a get_has_calculation() method.
-            value = get_entered_field_data(*layout_item);
+            value = get_entered_field_data(layout_item);
         }
 
         Glib::ustring strFieldValue = field->sql(value);
@@ -489,8 +489,8 @@ Box_Data::type_list_lookups Box_Data::get_lookup_fields(const Glib::ustring& fie
           if(relationship->get_from_field() == field_name)
           {
             //Add it:
-            LayoutItem_Field item;
-            item.set_full_field_details(field);
+            sharedptr<LayoutItem_Field> item = sharedptr<LayoutItem_Field>::create();
+            item->set_full_field_details(field);
             result.push_back( type_pairFieldTrigger(item, relationship) );
           }
         }
@@ -563,8 +563,8 @@ void Box_Data::calculate_field(const sharedptr<const Field>& field, const shared
 
     refCalcProgress.m_calc_in_progress = true; //Let the recursive calls to calculate_field() check this.
 
-    LayoutItem_Field layout_item;
-    layout_item.set_full_field_details(refCalcProgress.m_field);
+    sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
+    layout_item->set_full_field_details(refCalcProgress.m_field);
 
     //Calculate dependencies first:
     const Field::type_list_strings fields_needed = field->get_calculation_fields();
@@ -608,8 +608,8 @@ void Box_Data::calculate_field(const sharedptr<const Field>& field, const shared
       refCalcProgress.m_calc_finished = true;
       refCalcProgress.m_calc_in_progress = false;
 
-      LayoutItem_Field layout_item;
-      layout_item.set_full_field_details(field);
+      sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
+      layout_item->set_full_field_details(field);
 
       //show it:
       set_entered_field_data(layout_item, refCalcProgress.m_value );
@@ -624,9 +624,9 @@ void Box_Data::calculate_field(const sharedptr<const Field>& field, const shared
 }
 
 
-void Box_Data::do_calculations(const LayoutItem_Field& field_changed, const sharedptr<const Field>& primary_key, const Gnome::Gda::Value& primary_key_value, bool first_calc_field)
+void Box_Data::do_calculations(const sharedptr<const LayoutItem_Field>& field_changed, const sharedptr<const Field>& primary_key, const Gnome::Gda::Value& primary_key_value, bool first_calc_field)
 {
-  //g_warning("Box_Data::do_calculations(): triggered by =%s", field_changed.get_name().c_str());
+  //g_warning("Box_Data::do_calculations(): triggered by =%s", field_changed->get_name().c_str());
 
   if(first_calc_field)
   {
@@ -635,7 +635,7 @@ void Box_Data::do_calculations(const LayoutItem_Field& field_changed, const shar
   }
 
   //Recalculate fields that are triggered by a change of this field's value, not including calculations that these calculations use.
-  type_field_calcs calculated_fields = get_calculated_fields(field_changed.get_name()); //TODO: Just return the Fields, not the CalcInProgress.
+  type_field_calcs calculated_fields = get_calculated_fields(field_changed->get_name()); //TODO: Just return the Fields, not the CalcInProgress.
   for(type_field_calcs::iterator iter = calculated_fields.begin(); iter != calculated_fields.end(); ++iter)
   {
     sharedptr<const Field> field = iter->second.m_field;
@@ -643,8 +643,8 @@ void Box_Data::do_calculations(const LayoutItem_Field& field_changed, const shar
     calculate_field(field, primary_key, primary_key_value); //And any dependencies.
 
     //Calculate anything that depends on this.
-    LayoutItem_Field layout_item;
-    layout_item.set_full_field_details(field);
+    sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
+    layout_item->set_full_field_details(field);
 
     do_calculations(layout_item, primary_key, primary_key_value, false /* recurse, reusing m_FieldsCalculationInProgress */);
   }
@@ -653,25 +653,25 @@ void Box_Data::do_calculations(const LayoutItem_Field& field_changed, const shar
     m_FieldsCalculationInProgress.clear();
 }
 
-bool Box_Data::set_field_value_in_database(const LayoutItem_Field& field_layout, const Gnome::Gda::Value& field_value, const sharedptr<const Field>& primary_key_field, const Gnome::Gda::Value& primary_key_value, bool use_current_calculations)
+bool Box_Data::set_field_value_in_database(const sharedptr<const LayoutItem_Field>& field_layout, const Gnome::Gda::Value& field_value, const sharedptr<const Field>& primary_key_field, const Gnome::Gda::Value& primary_key_value, bool use_current_calculations)
 {
   return set_field_value_in_database(Gtk::TreeModel::iterator(), field_layout, field_value, primary_key_field, primary_key_value, use_current_calculations);
 }
 
-bool Box_Data::set_field_value_in_database(const Gtk::TreeModel::iterator& row, const LayoutItem_Field& field_layout, const Gnome::Gda::Value& field_value, const sharedptr<const Field>& primary_key_field, const Gnome::Gda::Value& primary_key_value, bool use_current_calculations)
+bool Box_Data::set_field_value_in_database(const Gtk::TreeModel::iterator& row, const sharedptr<const LayoutItem_Field>& field_layout, const Gnome::Gda::Value& field_value, const sharedptr<const Field>& primary_key_field, const Gnome::Gda::Value& primary_key_value, bool use_current_calculations)
 {
   //row is invalid, and ignored, for Box_Data_Details.
 
-  const sharedptr<const Field> field = field_layout.get_full_field_details();
+  const sharedptr<const Field> field = field_layout->get_full_field_details();
 
-  const Glib::ustring field_name = field_layout.get_name();
+  const Glib::ustring field_name = field_layout->get_name();
   if(!field_name.empty()) //This should not happen.
   {
     Glib::ustring table_name;
-    if(field_layout.get_has_relationship_name())
+    if(field_layout->get_has_relationship_name())
     {
       //The field is in a related table.
-      sharedptr<Relationship> rel = field_layout.get_relationship();
+      sharedptr<Relationship> rel = field_layout->get_relationship();
       if(rel)
         table_name = rel->get_to_table();
     }
@@ -738,15 +738,18 @@ Document_Glom::type_mapLayoutGroupSequence Box_Data::get_data_layout_groups(cons
   return layout_groups;
 }
 
-void Box_Data::fill_layout_group_field_info(LayoutGroup& group, const Privileges& table_privs)
+void Box_Data::fill_layout_group_field_info(const sharedptr<LayoutGroup>& group, const Privileges& table_privs)
 { 
+  if(!group)
+   return;
+
   const Document_Glom* document = get_document();
 
-  LayoutGroup::type_map_items items = group.get_items();
+  LayoutGroup::type_map_items items = group->get_items();
   for(LayoutGroup::type_map_items::iterator iter = items.begin(); iter != items.end(); ++iter)
   {
-    LayoutItem* item = iter->second;
-    LayoutItem_Field* item_field = dynamic_cast<LayoutItem_Field*>(item);
+    sharedptr<LayoutItem> item = iter->second;
+    sharedptr<LayoutItem_Field> item_field = sharedptr<LayoutItem_Field>::cast_dynamic(item);
     if(item_field) //If is a field rather than some other layout item
     {
 
@@ -783,11 +786,11 @@ void Box_Data::fill_layout_group_field_info(LayoutGroup& group, const Privileges
     }
     else
     {
-      LayoutGroup* item_group = dynamic_cast<LayoutGroup*>(item);
+      sharedptr<LayoutGroup> item_group = sharedptr<LayoutGroup>::cast_dynamic(item);
       if(item_group) //If it is a group
       {
         //recurse, to fill the fields info in this group:
-        fill_layout_group_field_info(*item_group, table_privs);
+        fill_layout_group_field_info(item_group, table_privs);
       }
     }
   }
@@ -923,7 +926,7 @@ bool Box_Data::get_related_record_exists(const sharedptr<const Relationship>& re
   return result;
 }
 
-bool Box_Data::add_related_record_for_field(const LayoutItem_Field& layout_item_parent, const sharedptr<const Relationship>& relationship, const sharedptr<const Field>& primary_key_field, const Gnome::Gda::Value& primary_key_value_provided)
+bool Box_Data::add_related_record_for_field(const sharedptr<const LayoutItem_Field>& layout_item_parent, const sharedptr<const Relationship>& relationship, const sharedptr<const Field>& primary_key_field, const Gnome::Gda::Value& primary_key_value_provided)
 {
   Gnome::Gda::Value primary_key_value = primary_key_value_provided;
 
@@ -988,8 +991,8 @@ bool Box_Data::add_related_record_for_field(const LayoutItem_Field& layout_item_
           if(key_is_auto_increment)
           {
             //Set the key in the parent table
-            LayoutItem_Field item_from_key;
-            item_from_key.set_name(relationship->get_from_field());
+            sharedptr<LayoutItem_Field> item_from_key = sharedptr<LayoutItem_Field>::create();
+            item_from_key->set_name(relationship->get_from_field());
 
             //Show the new from key in the parent table's layout:
             set_entered_field_data(item_from_key, primary_key_value);

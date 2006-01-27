@@ -173,7 +173,7 @@ Base_DB::type_vecStrings Base_DB::get_table_names(bool ignore_system_tables) con
           table_name = value.get_string();
 
           bool add_it = true;
-          
+
           if(ignore_system_tables)
           {
             //Check whether it's a system table:
@@ -182,11 +182,11 @@ Base_DB::type_vecStrings Base_DB::get_table_names(bool ignore_system_tables) con
             if(table_prefix == prefix)
               add_it = false;
           }
-          
+
           //Ignore the pga_* tables that pgadmin adds when you use it:
           if(table_name.substr(0, 4) == "pga_")
             add_it = false;
-            
+
           if(add_it)
             result.push_back(table_name);
         }
@@ -695,7 +695,7 @@ Privileges Base_DB::get_table_privileges(const Glib::ustring& group_name, const 
         if(vecParts.size() == 2)
         {
           const Glib::ustring this_group_name = vecParts[0];
-          if(this_group_name == group_name) //Only look at permissions for the requested group.
+          if(this_group_name == group_name) //Only look at permissions for the requested group->
           {
             Glib::ustring group_permissions = vecParts[1];
 
@@ -1315,9 +1315,14 @@ bool Base_DB::insert_example_data(const Glib::ustring& table_name) const
   return insert_succeeded;
 }
 
-bool Base_DB::offer_field_list(LayoutItem_Field& field, const Glib::ustring& table_name)
+sharedptr<LayoutItem_Field> Base_DB::offer_field_list(const Glib::ustring& table_name)
 {
-  bool result = false;
+  return offer_field_list(sharedptr<LayoutItem_Field>(), table_name);
+}
+
+sharedptr<LayoutItem_Field> Base_DB::offer_field_list(const sharedptr<LayoutItem_Field>& start_field, const Glib::ustring& table_name)
+{
+  sharedptr<LayoutItem_Field> result;
 
   try
   {
@@ -1328,13 +1333,13 @@ bool Base_DB::offer_field_list(LayoutItem_Field& field, const Glib::ustring& tab
 
     if(dialog)
     {
-      dialog->set_document(get_document(), table_name, field);
+      dialog->set_document(get_document(), table_name, start_field);
       //TODO: dialog->set_transient_for(*get_app_window());
       int response = dialog->run();
       if(response == Gtk::RESPONSE_OK)
       {
         //Get the chosen field:
-        result = dialog->get_field_chosen(field);
+        result = dialog->get_field_chosen();
       }
 
       delete dialog;
@@ -1348,26 +1353,26 @@ bool Base_DB::offer_field_list(LayoutItem_Field& field, const Glib::ustring& tab
   return result;
 }
 
-void Base_DB::fill_full_field_details(const Glib::ustring& parent_table_name, LayoutItem_Field& layout_item)
+void Base_DB::fill_full_field_details(const Glib::ustring& parent_table_name, sharedptr<LayoutItem_Field>& layout_item)
 {
   Glib::ustring table_name = parent_table_name;
 
-  if(layout_item.get_has_relationship_name())
+  if(layout_item->get_has_relationship_name())
   {
-    sharedptr<const Relationship> rel = layout_item.get_relationship();;
+    sharedptr<const Relationship> rel = layout_item->get_relationship();;
     table_name = rel->get_to_table();
   }
 
-  layout_item.set_full_field_details( get_document()->get_field(table_name, layout_item.get_name()) );
+  layout_item->set_full_field_details( get_document()->get_field(table_name, layout_item->get_name()) );
 }
 
-Glib::ustring Base_DB::get_layout_item_table_name(const LayoutItem_Field& layout_item, const Glib::ustring& table_name)
+Glib::ustring Base_DB::get_layout_item_table_name(const sharedptr<const LayoutItem_Field>& layout_item, const Glib::ustring& table_name)
 {
-  if(!layout_item.get_has_relationship_name())
+  if(!layout_item->get_has_relationship_name())
     return table_name;
   else
   {
-    const Glib::ustring relationship_name = layout_item.get_relationship_name();
+    const Glib::ustring relationship_name = layout_item->get_relationship_name();
 
     //TODO: We should not need to do this. It should be updated in the LayoutItem_Field already.
     Document_Glom* document = get_document();
@@ -1379,36 +1384,37 @@ Glib::ustring Base_DB::get_layout_item_table_name(const LayoutItem_Field& layout
   return Glib::ustring();
 }
 
-void Base_DB::report_build_summary(const Glib::ustring& table_name, xmlpp::Element& parent_node, LayoutItem_Summary& summary, const Glib::ustring& where_clause)
+void Base_DB::report_build_summary(const Glib::ustring& table_name, xmlpp::Element& parent_node, const sharedptr<LayoutItem_Summary>& summary, const Glib::ustring& where_clause)
 {
   //Add XML node:
   xmlpp::Element* nodeSummary = parent_node.add_child("summary");
 
   //Get fields
   GlomUtils::type_vecLayoutFields fieldsToGet;
-  for(LayoutGroup::type_map_items::iterator iterChildren = summary.m_map_items.begin(); iterChildren != summary.m_map_items.end(); ++iterChildren)
+  for(LayoutGroup::type_map_items::iterator iterChildren = summary->m_map_items.begin(); iterChildren != summary->m_map_items.end(); ++iterChildren)
   {
-    LayoutItem_Field* pField = dynamic_cast<LayoutItem_Field*>(iterChildren->second);
+    sharedptr<LayoutItem> item = iterChildren->second;
+    sharedptr<LayoutItem_Field> pField = sharedptr<LayoutItem_Field>::cast_dynamic(item);
     if(pField)
     {
-      fill_full_field_details(table_name, *pField);
-      fieldsToGet.push_back( sharedptr<LayoutItem_Field>( static_cast<LayoutItem_Field*>(pField->clone() ) ) );
+      fill_full_field_details(table_name, pField);
+      fieldsToGet.push_back( glom_sharedptr_clone(pField) );
     }
     else
     {
-      LayoutItem_GroupBy* pGroupBy = dynamic_cast<LayoutItem_GroupBy*>(iterChildren->second);
+      sharedptr<LayoutItem_GroupBy> pGroupBy = sharedptr<LayoutItem_GroupBy>::cast_dynamic(item);
       if(pGroupBy)
       {
         //Recurse, adding a sub-groupby block:
-        report_build_groupby(table_name, *nodeSummary, *pGroupBy, where_clause);
+        report_build_groupby(table_name, *nodeSummary, pGroupBy, where_clause);
       }
       else
       {
-        LayoutItem_Summary* pSummary = dynamic_cast<LayoutItem_Summary*>(iterChildren->second);
+        sharedptr<LayoutItem_Summary> pSummary = sharedptr<LayoutItem_Summary>::cast_dynamic(item);
         if(pSummary)
         {
           //Recurse, adding a summary block:
-          report_build_summary(table_name, *nodeSummary, *pSummary, where_clause);
+          report_build_summary(table_name, *nodeSummary, pSummary, where_clause);
         }
       }
     }
@@ -1421,16 +1427,16 @@ void Base_DB::report_build_summary(const Glib::ustring& table_name, xmlpp::Eleme
   }
 }
 
-void Base_DB::report_build_groupby(const Glib::ustring& table_name, xmlpp::Element& parent_node, LayoutItem_GroupBy& group_by, const Glib::ustring& where_clause_parent)
+void Base_DB::report_build_groupby(const Glib::ustring& table_name, xmlpp::Element& parent_node, const sharedptr<LayoutItem_GroupBy>& group_by, const Glib::ustring& where_clause_parent)
 {
   //Get the possible heading values.
-  LayoutItem_Field* field_group_by = group_by.get_field_group_by();
+  sharedptr<LayoutItem_Field> field_group_by = group_by->get_field_group_by();
   if(field_group_by)
   {
-    fill_full_field_details(table_name, *field_group_by);
+    fill_full_field_details(table_name, field_group_by);
 
     //Get the possible group values, ignoring repeats by using GROUP BY.
-    const Glib::ustring group_field_table_name = get_layout_item_table_name(*field_group_by, table_name);
+    const Glib::ustring group_field_table_name = get_layout_item_table_name(field_group_by, table_name);
     Glib::ustring sql_query = "SELECT " + group_field_table_name + "." + field_group_by->get_name() +
       " FROM " + group_field_table_name;
 
@@ -1459,18 +1465,19 @@ void Base_DB::report_build_groupby(const Glib::ustring& table_name, xmlpp::Eleme
           where_clause += " AND (" + where_clause_parent + ")";
 
         //Secondary fields. For instance, the Contact Name, in addition to the Contact ID that we group by.
-        if(!(group_by.m_group_secondary_fields.m_map_items.empty()))
+        if(!(group_by->m_group_secondary_fields->m_map_items.empty()))
         {
           xmlpp::Element* nodeSecondaryFields = nodeGroupBy->add_child("secondary_fields");
 
           GlomUtils::type_vecLayoutFields fieldsToGet;
-          for(LayoutGroup::type_map_items::iterator iterChildren = group_by.m_group_secondary_fields.m_map_items.begin(); iterChildren != group_by.m_group_secondary_fields.m_map_items.end(); ++iterChildren)
+          for(LayoutGroup::type_map_items::iterator iterChildren = group_by->m_group_secondary_fields->m_map_items.begin(); iterChildren != group_by->m_group_secondary_fields->m_map_items.end(); ++iterChildren)
           {
-            LayoutItem_Field* pField = dynamic_cast<LayoutItem_Field*>(iterChildren->second);
+            sharedptr<LayoutItem> item = iterChildren->second;
+            sharedptr<LayoutItem_Field> pField = sharedptr<LayoutItem_Field>::cast_dynamic(item);
             if(pField)
             {
-              fill_full_field_details(table_name, *pField);
-              fieldsToGet.push_back( sharedptr<LayoutItem_Field>( static_cast<LayoutItem_Field*>(pField->clone() ) ) );
+              fill_full_field_details(table_name, pField);
+              fieldsToGet.push_back( glom_sharedptr_clone(pField) );
             }
           }
 
@@ -1483,29 +1490,30 @@ void Base_DB::report_build_groupby(const Glib::ustring& table_name, xmlpp::Eleme
 
         //Get data and add child rows:
         GlomUtils::type_vecLayoutFields fieldsToGet;
-        for(LayoutGroup::type_map_items::iterator iterChildren = group_by.m_map_items.begin(); iterChildren != group_by.m_map_items.end(); ++iterChildren)
+        for(LayoutGroup::type_map_items::iterator iterChildren = group_by->m_map_items.begin(); iterChildren != group_by->m_map_items.end(); ++iterChildren)
         {
-          LayoutItem_Field* pField = dynamic_cast<LayoutItem_Field*>(iterChildren->second);
+          sharedptr<LayoutItem> item = iterChildren->second;
+          sharedptr<LayoutItem_Field> pField = sharedptr<LayoutItem_Field>::cast_dynamic(item);
           if(pField)
           {
-            fill_full_field_details(table_name, *pField);
-            fieldsToGet.push_back( sharedptr<LayoutItem_Field>( static_cast<LayoutItem_Field*>(pField->clone() ) ) );
+            fill_full_field_details(table_name, pField);
+            fieldsToGet.push_back( glom_sharedptr_clone(pField) );
           }
           else
           {
-            LayoutItem_GroupBy* pGroupBy = dynamic_cast<LayoutItem_GroupBy*>(iterChildren->second);
+            sharedptr<LayoutItem_GroupBy> pGroupBy = sharedptr<LayoutItem_GroupBy>::cast_dynamic(item);
             if(pGroupBy)
             {
               //Recurse, adding a sub-groupby block:
-              report_build_groupby(table_name, *nodeGroupBy, *pGroupBy, where_clause);
+              report_build_groupby(table_name, *nodeGroupBy, pGroupBy, where_clause);
             }
             else
             {
-              LayoutItem_Summary* pSummary = dynamic_cast<LayoutItem_Summary*>(iterChildren->second);
+              sharedptr<LayoutItem_Summary> pSummary = sharedptr<LayoutItem_Summary>::cast_dynamic(item);
               if(pSummary)
               {
                 //Recurse, adding a summary block:
-                report_build_summary(table_name, *nodeGroupBy, *pSummary, where_clause);
+                report_build_summary(table_name, *nodeGroupBy, pSummary, where_clause);
               }
             }
           }
@@ -1515,8 +1523,8 @@ void Base_DB::report_build_groupby(const Glib::ustring& table_name, xmlpp::Eleme
         {
           //Rows, with data:
           Glib::ustring sort_clause;
-          if(group_by.get_field_sort_by())
-            sort_clause = group_by.get_field_sort_by()->get_name(); //TODO: Deal with related fields too.
+          if(group_by->get_has_field_sort_by())
+            sort_clause = group_by->get_field_sort_by()->get_name(); //TODO: Deal with related fields too.
 
           report_build_records(table_name, *nodeGroupBy, fieldsToGet, where_clause, sort_clause);
         }
@@ -1580,7 +1588,7 @@ void Base_DB::report_build_records(const Glib::ustring& table_name, xmlpp::Eleme
           Glib::ustring text_value = GlomConversions::get_text_for_gda_value(field_type, datamodel->get_value_at(col, row), field->get_formatting_used().m_numeric_format);
 
           //The Postgres summary functions return NULL when summarising NULL records, but 0 is more sensible:
-          if(text_value.empty() && dynamic_cast<LayoutItem_FieldSummary*>(field.obj()) && (field_type == Field::TYPE_NUMERIC))
+          if(text_value.empty() && sharedptr<LayoutItem_FieldSummary>::cast_dynamic(field) && (field_type == Field::TYPE_NUMERIC))
           {
             //Use get_text_for_gda_value() instead of "0" so we get the correct numerical formatting:
             Gnome::Gda::Value value = GlomConversions::parse_value(0);
@@ -1627,28 +1635,28 @@ void Base_DB::report_build(const Glib::ustring& table_name, const sharedptr<cons
 
   GlomUtils::type_vecLayoutFields fieldsToGet_TopLevel;
 
-  for(LayoutGroup::type_map_items::const_iterator iter = report->m_layout_group.m_map_items.begin(); iter != report->m_layout_group.m_map_items.end(); ++iter)
+  for(LayoutGroup::type_map_items::const_iterator iter = report->m_layout_group->m_map_items.begin(); iter != report->m_layout_group->m_map_items.end(); ++iter)
   {
-    LayoutItem* pPart = iter->second;
+    sharedptr<LayoutItem> pPart = iter->second;
 
     //The Group, and the details for each record in the group:
-    LayoutItem_GroupBy* pGroupBy = dynamic_cast<LayoutItem_GroupBy*>(pPart);
+    sharedptr<LayoutItem_GroupBy> pGroupBy = sharedptr<LayoutItem_GroupBy>::cast_dynamic(pPart);
     if(pGroupBy)
-      report_build_groupby(table_name, *nodeParent, *pGroupBy, where_clause);
+      report_build_groupby(table_name, *nodeParent, pGroupBy, where_clause);
     else
     {
-      LayoutItem_Summary* pSummary = dynamic_cast<LayoutItem_Summary*>(pPart);
+      sharedptr<LayoutItem_Summary> pSummary = sharedptr<LayoutItem_Summary>::cast_dynamic(pPart);
       if(pSummary)
       {
         //Recurse, adding a summary block:
-        report_build_summary(table_name, *nodeParent, *pSummary, where_clause);
+        report_build_summary(table_name, *nodeParent, pSummary, where_clause);
       }
       else
       {
-        LayoutItem_Field* pField = dynamic_cast<LayoutItem_Field*>(pPart);
+        sharedptr<LayoutItem_Field> pField = sharedptr<LayoutItem_Field>::cast_dynamic(pPart);
         if(pField)
         {
-          fieldsToGet_TopLevel.push_back( sharedptr<LayoutItem_Field>( static_cast<LayoutItem_Field*>(pField->clone() ) ) );
+          fieldsToGet_TopLevel.push_back( glom_sharedptr_clone(pField) );
         }
       }
     }
@@ -1802,18 +1810,18 @@ sharedptr<Field> Base_DB::get_field_primary_key_for_table(const Glib::ustring& t
   return sharedptr<Field>();
 }
 
-void Base_DB::get_table_fields_to_show_for_sequence_add_group(const Glib::ustring& table_name, const Privileges& table_privs, const type_vecFields& all_db_fields, const LayoutGroup& group, Base_DB::type_vecLayoutFields& vecFields) const
+void Base_DB::get_table_fields_to_show_for_sequence_add_group(const Glib::ustring& table_name, const Privileges& table_privs, const type_vecFields& all_db_fields, const sharedptr<const LayoutGroup>& group, Base_DB::type_vecLayoutFields& vecFields) const
 {
-  //g_warning("Box_Data::get_table_fields_to_show_for_sequence_add_group(): table_name=%s, all_db_fields.size()=%d, group.name=%s", table_name.c_str(), all_db_fields.size(), group.get_name().c_str());
+  //g_warning("Box_Data::get_table_fields_to_show_for_sequence_add_group(): table_name=%s, all_db_fields.size()=%d, group->name=%s", table_name.c_str(), all_db_fields.size(), group->get_name().c_str());
 
   const Document_Glom* document = get_document();
 
-  LayoutGroup::type_map_const_items items = group.get_items();
+  LayoutGroup::type_map_const_items items = group->get_items();
   for(LayoutGroup::type_map_const_items::const_iterator iterItems = items.begin(); iterItems != items.end(); ++iterItems)
   {
-    const LayoutItem* item = iterItems->second;
+    sharedptr<const LayoutItem> item = iterItems->second;
 
-    const LayoutItem_Field* item_field = dynamic_cast<const LayoutItem_Field*>(item);
+    sharedptr<const LayoutItem_Field> item_field = sharedptr<const LayoutItem_Field>::cast_dynamic(item);
     if(item_field)
     {
       //Get the field info:
@@ -1830,16 +1838,16 @@ void Base_DB::get_table_fields_to_show_for_sequence_add_group(const Glib::ustrin
           sharedptr<Field> field = get_fields_for_table_one_field(relationship->get_to_table(), item->get_name());
           if(field)
           {
-            LayoutItem_Field layout_item = *item_field; //TODO_Performance: Reduce the copying.
-            layout_item.set_full_field_details(field); //Fill in the full field information for later.
+            sharedptr<LayoutItem_Field> layout_item = glom_sharedptr_clone(item_field); //TODO_Performance: Reduce the copying.
+            layout_item->set_full_field_details(field); //Fill in the full field information for later.
 
 
             //TODO_Performance: We do this once for each related field, even if there are 2 from the same table:
             const Privileges privs_related = get_current_privs(relationship->get_to_table());
-            layout_item.m_priv_view = privs_related.m_view;
-            layout_item.m_priv_edit = privs_related.m_edit;
+            layout_item->m_priv_view = privs_related.m_view;
+            layout_item->m_priv_edit = privs_related.m_edit;
 
-            vecFields.push_back( sharedptr<LayoutItem_Field>(new LayoutItem_Field(layout_item)) );
+            vecFields.push_back(layout_item);
           }
         }
       }
@@ -1850,26 +1858,26 @@ void Base_DB::get_table_fields_to_show_for_sequence_add_group(const Glib::ustrin
         //If the field does not exist anymore then we won't try to show it:
         if(iterFind != all_db_fields.end() )
         {
-          LayoutItem_Field layout_item = *item_field; //TODO_Performance: Reduce the copying here.
-          layout_item.set_full_field_details(*iterFind); //Fill the LayoutItem with the full field information.
+          sharedptr<LayoutItem_Field> layout_item = glom_sharedptr_clone(item_field); //TODO_Performance: Reduce the copying here.
+          layout_item->set_full_field_details(*iterFind); //Fill the LayoutItem with the full field information.
 
-          //std::cout << "get_table_fields_to_show_for_sequence_add_group(): name=" << layout_item.get_name() << std::endl;
+          //std::cout << "get_table_fields_to_show_for_sequence_add_group(): name=" << layout_item->get_name() << std::endl;
 
           //Prevent editing of the field if the user may not edit this table:
-          layout_item.m_priv_view = table_privs.m_view;
-          layout_item.m_priv_edit = table_privs.m_edit;
+          layout_item->m_priv_view = table_privs.m_view;
+          layout_item->m_priv_edit = table_privs.m_edit;
 
-          vecFields.push_back( sharedptr<LayoutItem_Field>(new LayoutItem_Field(layout_item)) );
+          vecFields.push_back(layout_item);
         }
       }
     }
     else
     {
-      const LayoutGroup* item_group = dynamic_cast<const LayoutGroup*>(item);
+      sharedptr<const LayoutGroup> item_group = sharedptr<const LayoutGroup>::cast_dynamic(item);
       if(item_group)
       {
         //Recurse:
-        get_table_fields_to_show_for_sequence_add_group(table_name, table_privs, all_db_fields, *item_group, vecFields);
+        get_table_fields_to_show_for_sequence_add_group(table_name, table_privs, all_db_fields, item_group, vecFields);
       }
     }
   }
@@ -1902,7 +1910,7 @@ Base_DB::type_vecLayoutFields Base_DB::get_table_fields_to_show_for_sequence(con
       Glib::ustring primary_key_field_name;
       if(bPrimaryKeyFound)
       {
-        sharedptr<LayoutItem_Field> layout_item(new LayoutItem_Field);
+        sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
         layout_item->set_full_field_details(all_fields[iPrimaryKey]);
 
         //Don't use thousands separators with ID numbers:
@@ -1924,7 +1932,7 @@ Base_DB::type_vecLayoutFields Base_DB::get_table_fields_to_show_for_sequence(con
 
         if((*iter)->get_name() != primary_key_field_name) //We already added the primary key.
         {
-          sharedptr<LayoutItem_Field> layout_item(new LayoutItem_Field);
+          sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
           layout_item->set_full_field_details(field_info);
 
           layout_item->set_editable(true); //A sensible default.
@@ -1944,9 +1952,9 @@ Base_DB::type_vecLayoutFields Base_DB::get_table_fields_to_show_for_sequence(con
       //We will show the fields that the document says we should:
       for(Document_Glom::type_mapLayoutGroupSequence::const_iterator iter = mapGroupSequence.begin(); iter != mapGroupSequence.end(); ++iter)
       {
-        const LayoutGroup& group = iter->second;
+        sharedptr<const LayoutGroup> group = iter->second;
 
-        if(true) //!group.m_hidden)
+        if(true) //!group->m_hidden)
         {
           //Get the fields:
           get_table_fields_to_show_for_sequence_add_group(table_name, table_privs, all_fields, group, result);

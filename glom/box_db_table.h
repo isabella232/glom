@@ -46,8 +46,9 @@ protected:
 
   //virtual Glib::RefPtr<Gnome::Gda::DataModel> record_new(Gnome::Gda::Value primary_key_value);
 
-  virtual Gnome::Gda::Value get_entered_field_data(const LayoutItem_Field& field) const;
-  virtual void set_entered_field_data(const LayoutItem_Field& field, const Gnome::Gda::Value& value);
+  Gnome::Gda::Value get_entered_field_data_field_only(const sharedptr<const Field>& field) const;
+  virtual Gnome::Gda::Value get_entered_field_data(const sharedptr<const LayoutItem_Field>& field) const;
+  virtual void set_entered_field_data(const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
 
   //static sharedptr<Field> get_field_primary_key(const type_vecFields& fields);
 

@@ -39,7 +39,7 @@ public:
   DbAddDelColumnInfo(const DbAddDelColumnInfo& src);
   DbAddDelColumnInfo& operator=(const DbAddDelColumnInfo& src);
 
-  LayoutItem_Field m_field;
+  sharedptr<const LayoutItem_Field> m_field;
 
   typedef std::vector<Glib::ustring> type_vecStrings;
   type_vecStrings m_choices;
@@ -79,7 +79,7 @@ public:
 
   void remove_all();
 
-  Gnome::Gda::Value get_value(const Gtk::TreeModel::iterator& iter, const LayoutItem_Field& layout_item);
+  Gnome::Gda::Value get_value(const Gtk::TreeModel::iterator& iter, const sharedptr<const LayoutItem_Field>& layout_item);
 
   /** Get the row's hidden key
    */
@@ -92,7 +92,7 @@ public:
   /** @param col A value returned from add_column().
    * @result The value on the selected row.
    */
-  Gnome::Gda::Value get_value_selected(const LayoutItem_Field& layout_item);
+  Gnome::Gda::Value get_value_selected(const sharedptr<const LayoutItem_Field>& layout_item);
   Gnome::Gda::Value get_value_key_selected();
 
   Gtk::TreeModel::iterator get_item_selected();
@@ -113,13 +113,13 @@ public:
    * @param layout_item Describes the column(s) whose values should be changed.
    * @param value The new value.
    */
-  virtual void set_value(const Gtk::TreeModel::iterator& iter, const LayoutItem_Field& layout_item, const Gnome::Gda::Value& value);
+  virtual void set_value(const Gtk::TreeModel::iterator& iter, const sharedptr<const LayoutItem_Field>& layout_item, const Gnome::Gda::Value& value);
 
   /** 
    * @param col A value returned from add_column().
    * @param value The new value.
    */
-  virtual void set_value_selected(const LayoutItem_Field& layout_item, const Gnome::Gda::Value& value);
+  virtual void set_value_selected(const sharedptr<const LayoutItem_Field>& layout_item, const Gnome::Gda::Value& value);
 
   bool get_is_first_row(const Gtk::TreeModel::iterator& iter) const;
   bool get_is_last_row(const Gtk::TreeModel::iterator& iter) const;
@@ -143,7 +143,7 @@ public:
 
   /** @result The index of the new column.
    */
-  guint add_column(const LayoutItem_Field& field);
+  guint add_column(const sharedptr<const LayoutItem_Field>& field);
 
   /// Specify which records to show:
   void set_where_clause(const Glib::ustring& where_clause);
@@ -155,7 +155,7 @@ public:
 
   guint get_columns_count() const;
 
-  LayoutItem_Field get_column_field(guint column_index) const;
+  sharedptr<const LayoutItem_Field> get_column_field(guint column_index) const;
 
   typedef DbAddDelColumnInfo::type_vecStrings type_vecStrings;
 
@@ -238,7 +238,7 @@ protected:
 
   typedef std::list<guint> type_list_indexes;
   ///Return the column indexes of any columns that display this field.
-  virtual type_list_indexes get_column_index(const LayoutItem_Field& layout_item) const;
+  virtual type_list_indexes get_column_index(const sharedptr<const LayoutItem_Field>& layout_item) const;
 
   virtual void setup_menu();
   virtual Gnome::Gda::Value treeview_get_key(const Gtk::TreeModel::iterator& row);

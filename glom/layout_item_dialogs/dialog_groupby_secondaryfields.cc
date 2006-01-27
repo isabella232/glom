@@ -115,12 +115,12 @@ void Dialog_GroupBy_SecondaryFields::set_fields(const Glib::ustring& table_name,
     guint field_sequence = 0;
     for(LayoutGroup::type_map_items::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
     {
-      const LayoutItem_Field* item = dynamic_cast<const LayoutItem_Field*>(iter->second);
+      sharedptr<const LayoutItem_Field> item = sharedptr<const LayoutItem_Field>::cast_dynamic(iter->second);
 
       Gtk::TreeModel::iterator iterTree = m_model_fields->append();
       Gtk::TreeModel::Row row = *iterTree;
 
-      row[m_ColumnsFields.m_col_layout_item] = *item;
+      row[m_ColumnsFields.m_col_layout_item] = item;
       row[m_ColumnsFields.m_col_sequence] = field_sequence;
       ++field_sequence;
     }
@@ -192,13 +192,14 @@ LayoutGroup::type_map_items Dialog_GroupBy_SecondaryFields::get_fields() const
   {
     Gtk::TreeModel::Row row = *iterFields;
 
-    LayoutItem_Field item = row[m_ColumnsFields.m_col_layout_item];
-    const Glib::ustring field_name = item.get_name();
+    sharedptr<const LayoutItem_Field> item = row[m_ColumnsFields.m_col_layout_item];
+    const Glib::ustring field_name = item->get_name();
     if(!field_name.empty())
     {
-      item.m_sequence = field_sequence;
+      sharedptr<LayoutItem_Field> field_copy = glom_sharedptr_clone(item);
+      field_copy->m_sequence = field_sequence;
 
-      result[field_sequence] = item.clone();
+      result[field_sequence] = field_copy; 
 
       ++field_sequence;
     }
@@ -229,8 +230,7 @@ void Dialog_GroupBy_SecondaryFields::on_button_add_field()
       if(response == Gtk::RESPONSE_OK)
       {
         //Get the chosen field:
-        LayoutItem_Field field;
-        dialog->get_field_chosen(field);
+        sharedptr<LayoutItem_Field> field = dialog->get_field_chosen();
 
         //Add the field details to the layout treeview:
         Gtk::TreeModel::iterator iter =  m_model_fields->append();
@@ -288,14 +288,14 @@ void Dialog_GroupBy_SecondaryFields::on_cell_data_name(Gtk::CellRenderer* render
       Gtk::TreeModel::Row row = *iter;
 
       //Indicate that it's a field in another table.
-      const LayoutItem_Field item = row[m_ColumnsFields.m_col_layout_item]; //TODO_performance: Reduce copying.
+      sharedptr<const LayoutItem_Field> item = row[m_ColumnsFields.m_col_layout_item]; //TODO_performance: Reduce copying.
 
       Glib::ustring markup;
 
-      if(item.get_has_relationship_name())
-        markup = item.get_relationship_name() + "::";
+      if(item->get_has_relationship_name())
+        markup = item->get_relationship_name() + "::";
 
-      markup += item.get_name();
+      markup += item->get_name();
 
       renderer_text->property_markup() = markup;
 
@@ -324,29 +324,28 @@ void Dialog_GroupBy_SecondaryFields::on_button_edit_field()
         if(iter)
         {
           Gtk::TreeModel::Row row = *iter;
-          const LayoutItem_Field& field = row[m_ColumnsFields.m_col_layout_item];
+          sharedptr<const LayoutItem_Field> field = row[m_ColumnsFields.m_col_layout_item];
 
           dialog->set_document(get_document(), m_table_name, field);
           dialog->set_transient_for(*this);
-          int response = dialog->run();
+          const int response = dialog->run();
           if(response == Gtk::RESPONSE_OK)
           {
             //Get the chosen field:
-            LayoutItem_Field field;
-            dialog->get_field_chosen(field);
-  
+            sharedptr<LayoutItem_Field> field = dialog->get_field_chosen();
+
             //Set the field details in the layout treeview:
-  
+
             row[m_ColumnsFields.m_col_layout_item] = field;
-  
+
             //Scroll to, and select, the new row:
             /*
             Glib::RefPtr<Gtk::TreeView::Selection> refTreeSelection = m_treeview_fields->get_selection();
             if(refTreeSelection)
               refTreeSelection->select(iter);
-  
+
             m_treeview_fields->scroll_to_row( Gtk::TreeModel::Path(iter) );
-  
+
             treeview_fill_sequences(m_model_fields, m_ColumnsFields.m_col_sequence); //The document should have checked this already, but it does not hurt to check again.
             */
           }
@@ -384,19 +383,18 @@ void Dialog_GroupBy_SecondaryFields::on_button_field_formatting()
         if(iter)
         {
           Gtk::TreeModel::Row row = *iter;
-          LayoutItem_Field field = row[m_ColumnsFields.m_col_layout_item];
+          sharedptr<const LayoutItem_Field> field = row[m_ColumnsFields.m_col_layout_item];
           //g_warning("field_name = %s, %s", field.m_field->get_name().c_str(), field.get_name().c_str());
 
           dialog->set_field(field, m_table_name);
           dialog->set_transient_for(*this);
-          int response = dialog->run();
+          const int response = dialog->run();
           dialog->hide();
           if(response == Gtk::RESPONSE_OK)
           {
             //Get the chosen field:
-            bool test = dialog->get_field_chosen(field);
-            if(test)
-              row[m_ColumnsFields.m_col_layout_item] = field;
+            field = dialog->get_field_chosen();
+            row[m_ColumnsFields.m_col_layout_item] = field;
           }
         }
       }

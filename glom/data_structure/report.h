@@ -33,7 +33,7 @@ public:
   Report(const Report& src);
   Report& operator=(const Report& src);
 
-  LayoutGroup m_layout_group;
+  sharedptr<LayoutGroup> m_layout_group;
 };
 
 #endif //GLOM_DATASTRUCTURE_REPORT_H

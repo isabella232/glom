@@ -62,31 +62,29 @@ Dialog_FieldLayout::~Dialog_FieldLayout()
   remove_view(m_box_formatting);
 }
 
-void Dialog_FieldLayout::set_field(const LayoutItem_Field& field, const Glib::ustring& table_name)
+void Dialog_FieldLayout::set_field(const sharedptr<const LayoutItem_Field>& field, const Glib::ustring& table_name)
 {
-  m_layout_item = field;
+  m_layout_item = glom_sharedptr_clone(field);
   m_table_name = table_name;
 
-  m_label_field_name->set_text( field.get_layout_display_name() );
+  m_label_field_name->set_text( field->get_layout_display_name() );
 
-  m_checkbutton_editable->set_active( field.get_editable() );
+  m_checkbutton_editable->set_active( field->get_editable() );
 
-  m_radiobutton_custom_formatting->set_active( !field.get_formatting_use_default() );
-  m_box_formatting->set_formatting(field.m_formatting, table_name, field.get_full_field_details());
+  m_radiobutton_custom_formatting->set_active( !field->get_formatting_use_default() );
+  m_box_formatting->set_formatting(field->m_formatting, table_name, field->get_full_field_details());
 
   enforce_constraints();
 }
 
-bool Dialog_FieldLayout::get_field_chosen(LayoutItem_Field& field) const
+sharedptr<LayoutItem_Field> Dialog_FieldLayout::get_field_chosen() const
 {
-  m_layout_item.set_editable( m_checkbutton_editable->get_active() );
+  m_layout_item->set_editable( m_checkbutton_editable->get_active() );
 
-  m_layout_item.set_formatting_use_default( !m_radiobutton_custom_formatting->get_active() );
-  m_box_formatting->get_formatting(m_layout_item.m_formatting);
+  m_layout_item->set_formatting_use_default( !m_radiobutton_custom_formatting->get_active() );
+  m_box_formatting->get_formatting(m_layout_item->m_formatting);
 
-  field = m_layout_item;
-
-  return true;
+  return glom_sharedptr_clone(m_layout_item);
 }
 
 void Dialog_FieldLayout::on_radiobutton_custom_formatting()

@@ -131,6 +131,11 @@ public:
   template <class T_CastFrom>
   static inline sharedptr<T_obj> cast_const(const sharedptr<T_CastFrom>& src);
 
+  static inline sharedptr<T_obj>  create()
+  {
+    return sharedptr<T_obj>(new T_obj());
+  }
+
   ///Get the underlying instance:
   inline T_obj* obj();
 
@@ -352,10 +357,11 @@ sharedptr<T_obj> sharedptr<T_obj>::cast_dynamic(const sharedptr<T_CastFrom>& src
 {
   T_obj *const pCppObject = dynamic_cast<T_obj*>(src.operator->());
 
+  sharedptr<T_obj> result(pCppObject);
   if(pCppObject)
-    ref();
+    result.ref();
 
-  return sharedptr<T_obj>(pCppObject);
+  return result;
 }
 
 template <class T_obj>
@@ -365,10 +371,11 @@ sharedptr<T_obj> sharedptr<T_obj>::cast_static(const sharedptr<T_CastFrom>& src)
 {
   T_obj *const pCppObject = static_cast<T_obj*>(src.operator->());
 
+  sharedptr<T_obj> result(pCppObject);
   if(pCppObject)
-    ref();
+    result.ref();
 
-  return sharedptr<T_obj>(pCppObject);
+  return result;
 }
 
 template <class T_obj>
@@ -378,12 +385,30 @@ sharedptr<T_obj> sharedptr<T_obj>::cast_const(const sharedptr<T_CastFrom>& src)
 {
   T_obj *const pCppObject = const_cast<T_obj*>(src.operator->());
 
+  sharedptr<T_obj> result(pCppObject);
   if(pCppObject)
-    ref();
+    result.ref();
 
-  return sharedptr<T_obj>(pCppObject);
+  return result;
 }
 
+template <class T_obj>
+sharedptr<T_obj> glom_sharedptr_clone(const sharedptr<T_obj>& src)
+{
+  if(src)
+    return sharedptr<T_obj>((T_obj*) src->clone());
+  else
+    return sharedptr<T_obj>();
+}
+
+template <class T_obj>
+sharedptr<T_obj> glom_sharedptr_clone(const sharedptr<const T_obj>& src)
+{
+  if(src)
+    return sharedptr<T_obj>((T_obj*) src->clone());
+  else
+    return sharedptr<T_obj>();
+}
 
 
 #endif //GLOM_SHAREDPTR_H

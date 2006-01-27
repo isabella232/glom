@@ -41,24 +41,26 @@ public:
 
   virtual LayoutItem* clone() const;
 
-  LayoutItem_Field* get_field_group_by();
-  const LayoutItem_Field* get_field_group_by() const;
+  sharedptr<LayoutItem_Field> get_field_group_by();
+  sharedptr<const LayoutItem_Field> get_field_group_by() const;
+  bool get_has_field_group_by() const;
 
-  void set_field_group_by(const LayoutItem_Field& field);
+  void set_field_group_by(const sharedptr<LayoutItem_Field>& field);
 
   //How to sort the records in this group:
-  LayoutItem_Field* get_field_sort_by();
-  const LayoutItem_Field* get_field_sort_by() const;
+  sharedptr<LayoutItem_Field> get_field_sort_by();
+  sharedptr<const LayoutItem_Field> get_field_sort_by() const;
+  bool get_has_field_sort_by() const;
 
-  void set_field_sort_by(const LayoutItem_Field& field);
+  void set_field_sort_by(const sharedptr<LayoutItem_Field>& field);
 
   virtual Glib::ustring get_part_type_name() const;
 
-  LayoutGroup m_group_secondary_fields; //For instance, show a contact name as well as the contact ID that we group by.
+  sharedptr<LayoutGroup> m_group_secondary_fields; //For instance, show a contact name as well as the contact ID that we group by.
 
 protected:
-  LayoutItem_Field m_field_group_by;
-  LayoutItem_Field m_field_sort_by;
+  sharedptr<LayoutItem_Field> m_field_group_by;
+  sharedptr<LayoutItem_Field> m_field_sort_by;
 };
 
 #endif //GLOM_DATASTRUCTURE_LAYOUTITEM_GROUPBY_H

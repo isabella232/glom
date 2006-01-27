@@ -55,7 +55,7 @@ public:
   /// This is used when loading the XML document, because we use get_summary_type_sql() when writing it.
   void set_summary_type_from_sql(const Glib::ustring& summary_type);
 
-  void set_field(const LayoutItem_Field& field);
+  void set_field(const sharedptr<LayoutItem_Field>& field);
 
   virtual Glib::ustring get_title_or_name() const;
 

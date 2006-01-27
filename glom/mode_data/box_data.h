@@ -84,23 +84,23 @@ protected:
   ///Fill the existing layout with data from the database.
   virtual bool fill_from_database(); //override.
 
-  virtual void do_lookups(const Gtk::TreeModel::iterator& row, const LayoutItem_Field& field_changed, const Gnome::Gda::Value& field_value, const sharedptr<const Field>& primary_key, const Gnome::Gda::Value& primary_key_value) = 0;
-  virtual void refresh_related_fields(const Gtk::TreeModel::iterator& row, const LayoutItem_Field& field_changed, const Gnome::Gda::Value& field_value, const sharedptr<const Field>& primary_key, const Gnome::Gda::Value& primary_key_value) = 0;
+  virtual void do_lookups(const Gtk::TreeModel::iterator& row, const sharedptr<const LayoutItem_Field>& field_changed, const Gnome::Gda::Value& field_value, const sharedptr<const Field>& primary_key, const Gnome::Gda::Value& primary_key_value) = 0;
+  virtual void refresh_related_fields(const Gtk::TreeModel::iterator& row, const sharedptr<const LayoutItem_Field>& field_changed, const Gnome::Gda::Value& field_value, const sharedptr<const Field>& primary_key, const Gnome::Gda::Value& primary_key_value) = 0;
 
   virtual type_vecLayoutFields get_fields_to_show() const;
   static Glib::ustring build_sql_select(const Glib::ustring& table_name, const type_vecLayoutFields& fieldsToGet, const sharedptr<const Field>& primary_key_field, const Gnome::Gda::Value& primary_key_value);
   //virtual Glib::ustring build_sql_select_with_where_clause(const Glib::ustring& table_name, const type_vecLayoutFields& fieldsToGet, const Glib::ustring& where_clause);
   virtual bool get_related_record_exists(const sharedptr<const Relationship>& relationship, const sharedptr<const Field>& key_field, const Gnome::Gda::Value& key_value);
-  virtual bool add_related_record_for_field(const LayoutItem_Field& layout_item_parent, const sharedptr<const Relationship>& relationship, const sharedptr<const Field>& primary_key_field, const Gnome::Gda::Value& primary_key_value_provided);
+  virtual bool add_related_record_for_field(const sharedptr<const LayoutItem_Field>& layout_item_parent, const sharedptr<const Relationship>& relationship, const sharedptr<const Field>& primary_key_field, const Gnome::Gda::Value& primary_key_value_provided);
 
   type_vecLayoutFields get_table_fields_to_show(const Glib::ustring& table_name) const;
 
   /** Get the layout groups, with the Field information filled in.
    */
   Document_Glom::type_mapLayoutGroupSequence get_data_layout_groups(const Glib::ustring& layout);
-  void fill_layout_group_field_info(LayoutGroup& group, const Privileges& table_privs);
+  void fill_layout_group_field_info(const sharedptr<LayoutGroup>& group, const Privileges& table_privs);
 
-  typedef std::pair< LayoutItem_Field, sharedptr<Relationship> > type_pairFieldTrigger;
+  typedef std::pair< sharedptr<LayoutItem_Field>, sharedptr<Relationship> > type_pairFieldTrigger;
   typedef std::list<type_pairFieldTrigger> type_list_lookups;
 
   /** Get the fields whose values should be looked up when @a field_name changes, with
@@ -128,15 +128,15 @@ protected:
    * @param priamry_key_value: The primary key value for this record.
    * @param first_calc_field: false if this is called recursively.
    */
-  virtual void do_calculations(const LayoutItem_Field& field_changed, const sharedptr<const Field>& primary_key, const Gnome::Gda::Value& primary_key_value, bool first_calc_field = false);
+  virtual void do_calculations(const sharedptr<const LayoutItem_Field>& field_changed, const sharedptr<const Field>& primary_key, const Gnome::Gda::Value& primary_key_value, bool first_calc_field = false);
 
   /** Calculate a field value, show it and set it in the database.
    * This will do the same for any dependent calculations.
    */
   void calculate_field(const sharedptr<const Field>& field, const sharedptr<const Field>& primary_key, const Gnome::Gda::Value& primary_key_value);
 
-  bool set_field_value_in_database(const LayoutItem_Field& field_layout, const Gnome::Gda::Value& field_value, const sharedptr<const Field>& primary_key, const Gnome::Gda::Value& primary_key_value, bool use_current_calculations = false);
-  bool set_field_value_in_database(const Gtk::TreeModel::iterator& row, const LayoutItem_Field& field_layout, const Gnome::Gda::Value& field_value, const sharedptr<const Field>& primary_key, const Gnome::Gda::Value& primary_key_value, bool use_current_calculations = false);
+  bool set_field_value_in_database(const sharedptr<const LayoutItem_Field>& field_layout, const Gnome::Gda::Value& field_value, const sharedptr<const Field>& primary_key, const Gnome::Gda::Value& primary_key_value, bool use_current_calculations = false);
+  bool set_field_value_in_database(const Gtk::TreeModel::iterator& row, const sharedptr<const LayoutItem_Field>& field_layout, const Gnome::Gda::Value& field_value, const sharedptr<const Field>& primary_key, const Gnome::Gda::Value& primary_key_value, bool use_current_calculations = false);
 
   virtual bool record_delete(const Gnome::Gda::Value& primary_key_value);
   virtual Glib::RefPtr<Gnome::Gda::DataModel> record_new(bool use_entered_data = true, const Gnome::Gda::Value& primary_key_value = Gnome::Gda::Value()); //New record with all entered field values.

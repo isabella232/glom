@@ -143,5 +143,14 @@ Glib::ustring glom_get_sharedptr_name(const sharedptr<T_object>& item)
     return Glib::ustring();
 }
 
+template <class T_object>
+Glib::ustring glom_get_sharedptr_title_or_name(const sharedptr<T_object>& item)
+{
+  if(item)
+    return item->get_title_or_name();
+  else
+    return Glib::ustring();
+}
+
 #endif //GLOM_DATASTRUCTURE_TRANSLATABLE_ITEM_H
 

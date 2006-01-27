@@ -24,6 +24,7 @@
 
 LayoutItem_GroupBy::LayoutItem_GroupBy()
 {
+  m_group_secondary_fields = sharedptr<LayoutGroup>::create(); //So that we dont need to create it from outside.
 }
 
 LayoutItem_GroupBy::LayoutItem_GroupBy(const LayoutItem_GroupBy& src)
@@ -60,37 +61,54 @@ LayoutItem_GroupBy& LayoutItem_GroupBy::operator=(const LayoutItem_GroupBy& src)
   return *this;
 }
 
-LayoutItem_Field* LayoutItem_GroupBy::get_field_group_by()
+sharedptr<LayoutItem_Field> LayoutItem_GroupBy::get_field_group_by()
 {
-  return &m_field_group_by;
+  return m_field_group_by;
 }
 
-const LayoutItem_Field* LayoutItem_GroupBy::get_field_group_by() const
+sharedptr<const LayoutItem_Field> LayoutItem_GroupBy::get_field_group_by() const
 {
-  return &m_field_group_by;
+  return m_field_group_by;
 }
 
-LayoutItem_Field* LayoutItem_GroupBy::get_field_sort_by()
+bool LayoutItem_GroupBy::get_has_field_group_by() const
 {
-  return &m_field_sort_by;
+  if(!m_field_group_by)
+    return false;
+
+  return m_field_group_by->get_name_not_empty();
 }
 
-const LayoutItem_Field* LayoutItem_GroupBy::get_field_sort_by() const
+sharedptr<LayoutItem_Field> LayoutItem_GroupBy::get_field_sort_by()
 {
-  return &m_field_sort_by;
+  return m_field_sort_by;
 }
+
+sharedptr<const LayoutItem_Field> LayoutItem_GroupBy::get_field_sort_by() const
+{
+  return m_field_sort_by;
+}
+
+bool LayoutItem_GroupBy::get_has_field_sort_by() const
+{
+  if(!m_field_sort_by)
+    return false;
+
+  return m_field_sort_by->get_name_not_empty();
+}
+
 
 Glib::ustring LayoutItem_GroupBy::get_part_type_name() const
 {
   return _("Group By");
 }
 
-void LayoutItem_GroupBy::set_field_group_by(const LayoutItem_Field& field)
+void LayoutItem_GroupBy::set_field_group_by(const sharedptr<LayoutItem_Field>& field)
 {
   m_field_group_by = field;
 }
 
-void LayoutItem_GroupBy::set_field_sort_by(const LayoutItem_Field& field)
+void LayoutItem_GroupBy::set_field_sort_by(const sharedptr<LayoutItem_Field>& field)
 {
   m_field_sort_by = field;
 }

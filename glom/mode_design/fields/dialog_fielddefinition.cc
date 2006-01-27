@@ -141,11 +141,11 @@ void Dialog_FieldDefinition::set_field(const sharedptr<const Field>& field, cons
 
   //We use a regular DataWidget for the default value, so we can reuse its functionality,
   //but it's not a real field - hence the special title.
-  LayoutItem_Field layout_item;
+  sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
   sharedptr<Field> field_default_value = sharedptr<Field>(m_Field->clone());
   field_default_value->set_name("glom_temp_default_value");
   field_default_value->set_title(_("Default Value"));
-  layout_item.set_full_field_details(field_default_value);
+  layout_item->set_full_field_details(field_default_value);
   m_pDataWidget_DefaultValueSimple = Gtk::manage( new DataWidget(layout_item, "", get_document()) );
   on_foreach_connect(*m_pDataWidget_DefaultValueSimple);
 

@@ -82,15 +82,16 @@ public:
   typedef std::vector< sharedptr<LayoutItem_Field> > type_vecLayoutFields;
 
 protected:
-  bool offer_field_list(LayoutItem_Field& field, const Glib::ustring& table_name);
+  sharedptr<LayoutItem_Field> offer_field_list(const Glib::ustring& table_name);
+  sharedptr<LayoutItem_Field> offer_field_list(const sharedptr<LayoutItem_Field>& start_field, const Glib::ustring& table_name);
 
   ///@result Whether the user would like to find again.
   static bool show_warning_no_records_found(Gtk::Window& transient_for);
 
-  void fill_full_field_details(const Glib::ustring& parent_table_name, LayoutItem_Field& layout_item);
+  void fill_full_field_details(const Glib::ustring& parent_table_name, sharedptr<LayoutItem_Field>& layout_item);
 
   ///Get the table name. It's either the current table or the relationship's to_table:
-  Glib::ustring get_layout_item_table_name(const LayoutItem_Field& layout_item, const Glib::ustring& table_name);
+  Glib::ustring get_layout_item_table_name(const sharedptr<const LayoutItem_Field>& layout_item, const Glib::ustring& table_name);
 
   typedef std::vector<Glib::ustring> type_vecStrings;
   type_vecStrings get_table_names(bool ignore_system_tables = false) const;
@@ -118,8 +119,8 @@ protected:
   void set_database_preferences(const SystemPrefs& prefs);
 
   void report_build(const Glib::ustring& table_name, const sharedptr<const Report>& report, const Glib::ustring& where_clause);
-  void report_build_groupby(const Glib::ustring& table_name, xmlpp::Element& parent_node, LayoutItem_GroupBy& group_by, const Glib::ustring& where_clause_parent);
-  void report_build_summary(const Glib::ustring& table_name, xmlpp::Element& parent_node, LayoutItem_Summary& summary, const Glib::ustring& where_clause_parent);
+  void report_build_groupby(const Glib::ustring& table_name, xmlpp::Element& parent_node, const sharedptr<LayoutItem_GroupBy>& group_by, const Glib::ustring& where_clause_parent);
+  void report_build_summary(const Glib::ustring& table_name, xmlpp::Element& parent_node, const sharedptr<LayoutItem_Summary>& summary, const Glib::ustring& where_clause_parent);
 
   ///@show_null_records means show a summary of zero values when there are no records to actually summarise.
   void report_build_records(const Glib::ustring& table_name, xmlpp::Element& parent_node, const type_vecLayoutFields& fieldsToGet, const Glib::ustring& where_clause, const Glib::ustring& sort_clause = Glib::ustring(), bool one_record_only = false);
@@ -143,7 +144,7 @@ protected:
   virtual void on_userlevel_changed(AppState::userlevels userlevel);
 
   type_vecLayoutFields get_table_fields_to_show_for_sequence(const Glib::ustring& table_name, const Document_Glom::type_mapLayoutGroupSequence& mapGroupSequence) const;
-  void get_table_fields_to_show_for_sequence_add_group(const Glib::ustring& table_name, const Privileges& table_privs, const type_vecFields& all_db_fields, const LayoutGroup& group, type_vecLayoutFields& vecFields) const;
+  void get_table_fields_to_show_for_sequence_add_group(const Glib::ustring& table_name, const Privileges& table_privs, const type_vecFields& all_db_fields, const sharedptr<const LayoutGroup>& group, type_vecLayoutFields& vecFields) const;
 
   static bool get_field_primary_key_index_for_fields(const type_vecFields& fields, guint& field_column);
   static bool get_field_primary_key_index_for_fields(const type_vecLayoutFields& fields, guint& field_column);

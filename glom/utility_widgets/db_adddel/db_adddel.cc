@@ -337,7 +337,7 @@ void DbAddDel::remove_all()
 }
 
 
-Gnome::Gda::Value DbAddDel::get_value(const Gtk::TreeModel::iterator& iter, const LayoutItem_Field& layout_item)
+Gnome::Gda::Value DbAddDel::get_value(const Gtk::TreeModel::iterator& iter, const sharedptr<const LayoutItem_Field>& layout_item)
 {
   Gnome::Gda::Value value;
 
@@ -350,7 +350,7 @@ Gnome::Gda::Value DbAddDel::get_value(const Gtk::TreeModel::iterator& iter, cons
       type_list_indexes list_indexes = get_column_index(layout_item);
       if(!list_indexes.empty())
       {
-        type_list_indexes::const_iterator iter = list_indexes.begin(); //Just get the first displayed instance of this field.
+        type_list_indexes::const_iterator iter = list_indexes.begin(); //Just get the first displayed instance of this field->
 
         const guint col_real = *iter + get_count_hidden_system_columns();
         treerow.get_value(col_real, value);
@@ -372,7 +372,7 @@ Gnome::Gda::Value DbAddDel::get_value_key_selected()
     return Gnome::Gda::Value();
 }
 
-Gnome::Gda::Value DbAddDel::get_value_selected(const LayoutItem_Field& layout_item)
+Gnome::Gda::Value DbAddDel::get_value_selected(const sharedptr<const LayoutItem_Field>& layout_item)
 {
   return get_value(get_item_selected(), layout_item);
 }
@@ -529,7 +529,7 @@ void DbAddDel::construct_specified_columns()
 
       record.add( *pModelColumn );
 
-      fields.push_back(sharedptr<LayoutItem_Field>(new LayoutItem_Field(iter->m_field)));
+      fields.push_back( glom_sharedptr_clone(iter->m_field) );
 
       i++;
     }
@@ -591,14 +591,14 @@ void DbAddDel::construct_specified_columns()
   for(type_vecModelColumns::iterator iter = vecModelColumns.begin(); iter != vecModelColumns.end(); ++iter)
   {
     DbAddDelColumnInfo& column_info = m_ColumnTypes[model_column_index];
-    if(column_info.m_visible && !(column_info.m_field.get_hidden())) //TODO: We shouldn't need both of these.
+    if(column_info.m_visible && !(column_info.m_field->get_hidden())) //TODO: We shouldn't need both of these.
     {
-      const Glib::ustring column_name = column_info.m_field.get_title_or_name();
-      const Glib::ustring column_id = column_info.m_field.get_name();
+      const Glib::ustring column_name = column_info.m_field->get_title_or_name();
+      const Glib::ustring column_id = column_info.m_field->get_name();
 
       int cols_count = 0;
       Gtk::CellRenderer* pCellRenderer = 0;
-      switch(column_info.m_field.get_glom_type())
+      switch(column_info.m_field->get_glom_type())
       {
         case(Field::TYPE_BOOLEAN):
         {
@@ -608,10 +608,10 @@ void DbAddDel::construct_specified_columns()
         }
         default:
         {
-          if(column_info.m_field.get_formatting_used().get_has_choices())
+          if(column_info.m_field->get_formatting_used().get_has_choices())
           {
             CellRendererList* rendererList = Gtk::manage( new CellRendererList() );
-            rendererList->set_restrict_values_to_list(column_info.m_field.get_formatting_used().get_choices_restricted());
+            rendererList->set_restrict_values_to_list(column_info.m_field->get_formatting_used().get_choices_restricted());
 
             pCellRenderer = rendererList;
           }
@@ -635,7 +635,7 @@ void DbAddDel::construct_specified_columns()
           //Make it editable:
           pCellRenderer->property_editable() = true;
 
-          if( column_info.m_field.get_glom_type() == Field::TYPE_NUMERIC )
+          if( column_info.m_field->get_glom_type() == Field::TYPE_NUMERIC )
             pCellRenderer->property_xalign() = 1.0; //Align right.
 
           //Connect to its signal:
@@ -647,23 +647,23 @@ void DbAddDel::construct_specified_columns()
           {
             pCellRendererCombo->remove_all_list_items();
 
-            if(column_info.m_field.get_formatting_used().get_has_custom_choices())
+            if(column_info.m_field->get_formatting_used().get_has_custom_choices())
             {
               pCellRendererCombo->set_use_second(false); //Custom choices have only one column.
 
               //set_choices() needs this, for the numeric layout:
               //pCellRendererCombo->set_layout_item(get_layout_item()->clone(), table_name); //TODO_Performance: We only need this for the numerical format.
-              const FieldFormatting::type_list_values list_values = column_info.m_field.get_formatting_used().get_choices_custom();
+              const FieldFormatting::type_list_values list_values = column_info.m_field->get_formatting_used().get_choices_custom();
               for(FieldFormatting::type_list_values::const_iterator iter = list_values.begin(); iter != list_values.end(); ++iter)
               {
-                pCellRendererCombo->append_list_item( GlomConversions::get_text_for_gda_value(column_info.m_field.get_glom_type(), *iter, column_info.m_field.get_formatting_used().m_numeric_format) );
+                pCellRendererCombo->append_list_item( GlomConversions::get_text_for_gda_value(column_info.m_field->get_glom_type(), *iter, column_info.m_field->get_formatting_used().m_numeric_format) );
               }
             }
-            else if(column_info.m_field.get_formatting_used().get_has_related_choices())
+            else if(column_info.m_field->get_formatting_used().get_has_related_choices())
             {
               sharedptr<Relationship> choice_relationship;
               Glib::ustring choice_field, choice_second;
-              column_info.m_field.get_formatting_used().get_choices(choice_relationship, choice_field, choice_second);
+              column_info.m_field->get_formatting_used().get_choices(choice_relationship, choice_field, choice_second);
 
               if(choice_relationship && !choice_field.empty())
               {
@@ -672,7 +672,7 @@ void DbAddDel::construct_specified_columns()
                 const bool use_second = !choice_second.empty();
                 pCellRendererCombo->set_use_second(use_second);
 
-                LayoutItem_Field layout_field_second;
+                const sharedptr<LayoutItem_Field> layout_field_second = sharedptr<LayoutItem_Field>::create();
                 if(use_second)
                 {
                   Document_Glom* document = get_document();
@@ -680,20 +680,20 @@ void DbAddDel::construct_specified_columns()
                   {
                     sharedptr<Field> field_second = document->get_field(to_table, choice_second); //TODO: Actually show this in the combo:
 
-                    layout_field_second.set_full_field_details(field_second);
+                    layout_field_second->set_full_field_details(field_second);
 
-                    //We use the default formatting for this field.
+                    //We use the default formatting for this field->
                   }
                 }
 
                 GlomUtils::type_list_values_with_second list_values = GlomUtils::get_choice_values(column_info.m_field);
                 for(GlomUtils::type_list_values_with_second::const_iterator iter = list_values.begin(); iter != list_values.end(); ++iter)
                 {
-                  const Glib::ustring first = GlomConversions::get_text_for_gda_value(column_info.m_field.get_glom_type(), iter->first, column_info.m_field.get_formatting_used().m_numeric_format);
+                  const Glib::ustring first = GlomConversions::get_text_for_gda_value(column_info.m_field->get_glom_type(), iter->first, column_info.m_field->get_formatting_used().m_numeric_format);
 
                   Glib::ustring second;
                   if(use_second)
-                    second = GlomConversions::get_text_for_gda_value(layout_field_second.get_glom_type(), iter->second, layout_field_second.get_formatting_used().m_numeric_format);
+                    second = GlomConversions::get_text_for_gda_value(layout_field_second->get_glom_type(), iter->second, layout_field_second->get_formatting_used().m_numeric_format);
 
                   pCellRendererCombo->append_list_item(first, second);
                 }
@@ -763,7 +763,7 @@ bool DbAddDel::refresh_from_database_blank()
   return true;
 }
 
-void DbAddDel::set_value(const Gtk::TreeModel::iterator& iter, const LayoutItem_Field& layout_item, const Gnome::Gda::Value& value)
+void DbAddDel::set_value(const Gtk::TreeModel::iterator& iter, const sharedptr<const LayoutItem_Field>& layout_item, const Gnome::Gda::Value& value)
 {
   //g_warning("DbAddDel::set_value begin");
 
@@ -798,7 +798,7 @@ void DbAddDel::set_value(const Gtk::TreeModel::iterator& iter, const LayoutItem_
   //g_warning("DbAddDel::set_value end");
 }
 
-void DbAddDel::set_value_selected(const LayoutItem_Field& layout_item, const Gnome::Gda::Value& value)
+void DbAddDel::set_value_selected(const sharedptr<const LayoutItem_Field>& layout_item, const Gnome::Gda::Value& value)
 {
   set_value(get_item_selected(), layout_item, value);
 }
@@ -815,7 +815,7 @@ void DbAddDel::set_table_name(const Glib::ustring& table_name)
   m_table_name = table_name;
 }
 
-guint DbAddDel::add_column(const LayoutItem_Field& field)
+guint DbAddDel::add_column(const sharedptr<const LayoutItem_Field>& field)
 {
   InnerIgnore innerIgnore(this); //Stop on_treeview_columns_changed() from doing anything when it is called just because we add a new column.
 
@@ -825,10 +825,10 @@ guint DbAddDel::add_column(const LayoutItem_Field& field)
   //column_info.m_visible = visible;
 
   //Make it non-editable if it is auto-generated:
-  if(field.get_full_field_details()->get_auto_increment())
+  if(field->get_full_field_details()->get_auto_increment())
     column_info.m_editable = false;
   else
-    column_info.m_editable = field.get_editable_and_allowed();
+    column_info.m_editable = field->get_editable_and_allowed();
 
   m_ColumnTypes.push_back(column_info);
 
@@ -858,19 +858,19 @@ void DbAddDel::set_columns_ready()
   construct_specified_columns();
 }
 
-DbAddDel::type_list_indexes DbAddDel::get_column_index(const LayoutItem_Field& layout_item) const
+DbAddDel::type_list_indexes DbAddDel::get_column_index(const sharedptr<const LayoutItem_Field>& layout_item) const
 {
   //TODO_Performance: Replace all this looping by a cache/map:
 
   type_list_indexes list_indexes;
 
-  const Glib::ustring field_name = layout_item.get_name();
-  const Glib::ustring relationship_name = layout_item.get_relationship_name();
+  const Glib::ustring field_name = layout_item->get_name();
+  const Glib::ustring relationship_name = layout_item->get_relationship_name();
 
   guint i = 0;
   for(type_ColumnTypes::const_iterator iter = m_ColumnTypes.begin(); iter != m_ColumnTypes.end(); ++iter)
   {
-    if( (iter->m_field.get_name() == field_name) && (iter->m_field.get_relationship_name() == relationship_name) )
+    if( (iter->m_field->get_name() == field_name) && (iter->m_field->get_relationship_name() == relationship_name) )
     {
       list_indexes.push_back(i);
     }
@@ -881,12 +881,12 @@ DbAddDel::type_list_indexes DbAddDel::get_column_index(const LayoutItem_Field& l
   return list_indexes;
 }
 
-LayoutItem_Field DbAddDel::get_column_field(guint column_index) const
+sharedptr<const LayoutItem_Field> DbAddDel::get_column_field(guint column_index) const
 {
   if(column_index < m_ColumnTypes.size())
     return m_ColumnTypes[column_index].m_field;
 
-  return LayoutItem_Field();
+  return sharedptr<const LayoutItem_Field>();
 }
 
 bool DbAddDel::get_prevent_user_signals() const
@@ -1173,12 +1173,12 @@ void DbAddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const G
       }
     }
 
-    const Field::glom_field_type field_type = m_ColumnTypes[model_column_index].m_field.get_glom_type();
+    const Field::glom_field_type field_type = m_ColumnTypes[model_column_index].m_field->get_glom_type();
     if(field_type != Field::TYPE_INVALID) //If a field type was specified for this column.
     {
       //Make sure that the entered data is suitable for this field type:
       bool success = false;
-      Gnome::Gda::Value value = GlomConversions::parse_value(field_type, new_text, m_ColumnTypes[model_column_index].m_field.get_formatting_used().m_numeric_format, success);
+      Gnome::Gda::Value value = GlomConversions::parse_value(field_type, new_text, m_ColumnTypes[model_column_index].m_field->get_formatting_used().m_numeric_format, success);
       if(!success)
       {
           //Tell the user and offer to revert or try again:
@@ -1395,7 +1395,7 @@ guint DbAddDel::treeview_append_column(const Glib::ustring& title, Gtk::CellRend
   pViewColumn->set_min_width(100);
 
   //Save the extra ID, using the title if the column_id is empty:
-  Glib::ustring column_id = m_ColumnTypes[model_column_index].m_field.get_name();
+  Glib::ustring column_id = m_ColumnTypes[model_column_index].m_field->get_name();
   pViewColumn->set_column_id( (column_id.empty() ? title : column_id) );
 
   //TODO pViewColumn->signal_button_press_event().connect( sigc::mem_fun(*this, &DbAddDel::on_treeview_columnheader_button_press_event) );
@@ -1579,7 +1579,7 @@ void DbAddDel::treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gt
     treerow->get_value(col_real, value);
 
     DbAddDelColumnInfo& column_info = m_ColumnTypes[model_column_index];
-    switch(column_info.m_field.get_glom_type())
+    switch(column_info.m_field->get_glom_type())
     {
       case(Field::TYPE_BOOLEAN):
       {
@@ -1593,7 +1593,7 @@ void DbAddDel::treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gt
         //TODO: Maybe we should have custom cellrenderers for time, date, and numbers.
         Gtk::CellRendererText* pDerived = dynamic_cast<Gtk::CellRendererText*>(renderer);
 
-        const Glib::ustring text = GlomConversions::get_text_for_gda_value(column_info.m_field.get_glom_type(), value, column_info.m_field.get_formatting_used().m_numeric_format);
+        const Glib::ustring text = GlomConversions::get_text_for_gda_value(column_info.m_field->get_glom_type(), value, column_info.m_field->get_formatting_used().m_numeric_format);
         //g_assert(text != "NULL");
         pDerived->property_text() = text;
 

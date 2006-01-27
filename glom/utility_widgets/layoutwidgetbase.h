@@ -34,11 +34,11 @@ public:
   virtual ~LayoutWidgetBase();
 
   ///Takes ownership.
-  virtual void set_layout_item(LayoutItem* layout_item, const Glib::ustring& table_name);
+  virtual void set_layout_item(const sharedptr<LayoutItem>& layout_item, const Glib::ustring& table_name);
 
   //The caller should call clone().
-  const LayoutItem* get_layout_item() const;
-  LayoutItem* get_layout_item();
+  sharedptr<const LayoutItem> get_layout_item() const;
+  sharedptr<LayoutItem> get_layout_item();
 
   //Popup-menu:
   virtual void setup_menu();
@@ -64,7 +64,7 @@ public:
 protected:
   virtual App_Glom* get_application() const; // = 0;
 
-  LayoutItem* m_pLayoutItem;
+  sharedptr<LayoutItem> m_pLayoutItem;
   Glib::ustring m_table_name;
 
   type_signal_layout_changed m_signal_layout_changed;

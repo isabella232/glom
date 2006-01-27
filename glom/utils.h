@@ -43,7 +43,7 @@ Glib::ustring build_sql_select_with_where_clause(const Glib::ustring& table_name
 
 
 typedef std::list< std::pair<Gnome::Gda::Value, Gnome::Gda::Value> > type_list_values_with_second;
-type_list_values_with_second get_choice_values(const LayoutItem_Field& field);
+type_list_values_with_second get_choice_values(const sharedptr<const LayoutItem_Field>& field);
 
 /** Guess an appropriate identifier name based on a human-readable title
  */

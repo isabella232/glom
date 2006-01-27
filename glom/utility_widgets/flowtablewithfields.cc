@@ -69,30 +69,28 @@ void FlowTableWithFields::set_table(const Glib::ustring& table_name)
   }
 }
 
-void FlowTableWithFields::add_layout_item(const LayoutItem& item)
+void FlowTableWithFields::add_layout_item(const sharedptr<LayoutItem>& item)
 {
   add_layout_item_at_position(item, m_list_layoutwidgets.end()); 
 }
 
-void FlowTableWithFields::add_layout_item_at_position(const LayoutItem& item, const type_list_layoutwidgets::iterator& add_before)
+void FlowTableWithFields::add_layout_item_at_position(const sharedptr<LayoutItem>& item, const type_list_layoutwidgets::iterator& add_before)
 {
-  const LayoutItem* pItem = &item;
-
   //Get derived type and do the appropriate thing:
-  const LayoutItem_Field* field = dynamic_cast<const LayoutItem_Field*>(pItem);
+  sharedptr<LayoutItem_Field> field = sharedptr<LayoutItem_Field>::cast_dynamic(item);
   if(field)
   {
-    add_field_at_position(*field, m_table_name, add_before);
+    add_field_at_position(field, m_table_name, add_before);
 
     //Do not allow editing of auto-increment fields:
     if(field->get_full_field_details()->get_auto_increment())
-      set_field_editable(*field, false);
+      set_field_editable(field, false);
     else
-      set_field_editable(*field, field->get_editable_and_allowed());
+      set_field_editable(field, field->get_editable_and_allowed());
   }
   else
   {
-    const LayoutItem_Portal* portal = dynamic_cast<const LayoutItem_Portal*>(pItem);
+    sharedptr<LayoutItem_Portal> portal = sharedptr<LayoutItem_Portal>::cast_dynamic(item);
     if(portal)
     {
       Document_Glom* pDocument = static_cast<Document_Glom*>(get_document());
@@ -104,9 +102,9 @@ void FlowTableWithFields::add_layout_item_at_position(const LayoutItem& item, co
           Box_Data_List_Related* portal_box = Gtk::manage(new Box_Data_List_Related);
           add_view(portal_box); //Give it access to the document, needed to get the layout and fields information.
 
-          portal_box->init_db_details(*portal); //Create the layout
+          portal_box->init_db_details(portal); //Create the layout
 
-          portal_box->set_layout_item(portal->clone(), relationship->get_to_table());
+          portal_box->set_layout_item(portal, relationship->get_to_table());
           portal_box->show();
           add(*portal_box, true /* expand */);
 
@@ -115,35 +113,38 @@ void FlowTableWithFields::add_layout_item_at_position(const LayoutItem& item, co
 
           //Connect signals:
           portal_box->signal_record_changed().connect( sigc::mem_fun(*this, &FlowTableWithFields::on_portal_record_changed) );
-          
+
           portal_box->signal_user_requested_details().connect( sigc::bind( sigc::mem_fun(*this, &FlowTableWithFields::on_portal_user_requested_details), portal_box));
         }
       }
     }
     else
     {
-     const LayoutGroup* group = dynamic_cast<const LayoutGroup*>(pItem);
+     sharedptr<LayoutGroup> group = sharedptr<LayoutGroup>::cast_dynamic(item);
       if(group)
-        add_layout_group_at_position(*group, add_before);
+        add_layout_group_at_position(group, add_before);
     }
   }
 }
 
-void FlowTableWithFields::add_layout_group(const LayoutGroup& group)
+void FlowTableWithFields::add_layout_group(const sharedptr<LayoutGroup>& group)
 {
   add_layout_group_at_position(group, m_list_layoutwidgets.end());
 }
 
-void FlowTableWithFields::add_layout_group_at_position(const LayoutGroup& group, const type_list_layoutwidgets::iterator& add_before)
+void FlowTableWithFields::add_layout_group_at_position(const sharedptr<LayoutGroup>& group, const type_list_layoutwidgets::iterator& add_before)
 {
+  if(!group)
+    return;
+
   if(true)//!fields.empty() && !group_name.empty())
   {
     Gtk::Frame* frame = Gtk::manage( new Gtk::Frame );
 
-    if(!group.get_title().empty())
+    if(!group->get_title().empty())
     {
       Gtk::Label* label = Gtk::manage( new Gtk::Label );
-      label->set_text( Bakery::App_Gtk::util_bold_message(group.get_title()) );
+      label->set_text( Bakery::App_Gtk::util_bold_message(group->get_title()) );
       label->set_use_markup();
       label->show();
       frame->set_label_widget(*label);
@@ -154,7 +155,7 @@ void FlowTableWithFields::add_layout_group_at_position(const LayoutGroup& group,
 
     Gtk::Alignment* alignment = Gtk::manage( new Gtk::Alignment );
 
-    if(!group.get_title().empty()) //Don't indent if it has no title, to allow use of groups just for positioning.
+    if(!group->get_title().empty()) //Don't indent if it has no title, to allow use of groups just for positioning.
       alignment->set_padding(6, 0, 6, 0);
 
     alignment->show();
@@ -164,25 +165,25 @@ void FlowTableWithFields::add_layout_group_at_position(const LayoutGroup& group,
     add_view(flow_table); //Allow these sub-flowtables to access the document too.
     flow_table->set_table(m_table_name);
 
-    flow_table->set_columns_count(group.m_columns_count);
+    flow_table->set_columns_count(group->m_columns_count);
     flow_table->set_padding(6);
     flow_table->show();
     alignment->add(*flow_table);
 
-    LayoutGroup::type_map_const_items items = group.get_items(); 
-    for(LayoutGroup::type_map_const_items::const_iterator iter = items.begin(); iter != items.end(); ++iter)
+    LayoutGroup::type_map_items items = group->get_items(); 
+    for(LayoutGroup::type_map_items::const_iterator iter = items.begin(); iter != items.end(); ++iter)
     {
-      const LayoutItem* item = iter->second;
+      sharedptr<LayoutItem> item = iter->second;
       if(item)
       {
-        flow_table->add_layout_item(*item);
+        flow_table->add_layout_item(item);
       }
     }
 
     add(*frame, true /* expand */);
 
     m_sub_flow_tables.push_back(flow_table);
-    flow_table->set_layout_item(group.clone(), m_table_name);
+    flow_table->set_layout_item(group, m_table_name);
     add_layoutwidgetbase(flow_table, add_before);
 
     //Connect signal:
@@ -245,12 +246,12 @@ void FlowTableWithFields::add_group(const Glib::ustring& group_name, const Glib:
 }
 */
 
-void FlowTableWithFields::add_field(const LayoutItem_Field& layoutitem_field, const Glib::ustring& table_name)
+void FlowTableWithFields::add_field(const sharedptr<LayoutItem_Field>& layoutitem_field, const Glib::ustring& table_name)
 {
   add_field_at_position(layoutitem_field, table_name, m_list_layoutwidgets.end());
 }
 
-void FlowTableWithFields::add_field_at_position(const LayoutItem_Field& layoutitem_field, const Glib::ustring& table_name, const type_list_layoutwidgets::iterator& add_before)
+void FlowTableWithFields::add_field_at_position(const sharedptr<LayoutItem_Field>& layoutitem_field, const Glib::ustring& table_name, const type_list_layoutwidgets::iterator& add_before)
 {
   Info info;
   info.m_field = layoutitem_field;
@@ -282,7 +283,7 @@ void FlowTableWithFields::add_field_at_position(const LayoutItem_Field& layoutit
 
   //Expand multiline text fields to take up the maximum possible width:
   bool expand_second = false;
-  if( (layoutitem_field.get_glom_type() == Field::TYPE_TEXT) && layoutitem_field.get_formatting_used().get_text_format_multiline())
+  if( (layoutitem_field->get_glom_type() == Field::TYPE_TEXT) && layoutitem_field->get_formatting_used().get_text_format_multiline())
     expand_second = true;
 
   add(*(info.m_first), *(info.m_second), expand_second);
@@ -290,7 +291,7 @@ void FlowTableWithFields::add_field_at_position(const LayoutItem_Field& layoutit
   info.m_second->signal_edited().connect( sigc::bind(sigc::mem_fun(*this, &FlowTableWithFields::on_entry_edited), layoutitem_field)  ); //TODO:  Is it a good idea to bind the LayoutItem? sigc::bind() probably stores a copy at this point.
   info.m_second->signal_layout_item_added().connect( sigc::bind(
     sigc::mem_fun(*this, &FlowTableWithFields::on_datawidget_layout_item_added), info.m_second) );
-    
+
   info.m_second->signal_open_details_requested().connect( sigc::bind(sigc::mem_fun(*this, &FlowTableWithFields::on_entry_open_details_requested), layoutitem_field)  );
 
   m_listFields.push_back(info); //This would be the wrong position, but you should only use this method directly when you expect it to be followed by a complete re-layout.
@@ -300,7 +301,7 @@ void FlowTableWithFields::remove_field(const Glib::ustring& id)
 {
   for(type_listFields::iterator iter = m_listFields.begin(); iter != m_listFields.end(); ++iter)
   {
-    if(iter->m_field.get_name() == id)
+    if(iter->m_field->get_name() == id)
     {
       Info info = *iter;
       remove(*(info.m_first));
@@ -322,7 +323,7 @@ void FlowTableWithFields::remove_field(const Glib::ustring& id)
   } 
 }
 
-void FlowTableWithFields::set_field_value(const LayoutItem_Field& field, const Gnome::Gda::Value& value)
+void FlowTableWithFields::set_field_value(const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value)
 {
   //Set widgets which should show the value of this field:
   type_list_widgets list_widgets = get_field(field);
@@ -348,7 +349,7 @@ void FlowTableWithFields::set_field_value(const LayoutItem_Field& field, const G
   }
 }
 
-Gnome::Gda::Value FlowTableWithFields::get_field_value(const LayoutItem_Field& field) const
+Gnome::Gda::Value FlowTableWithFields::get_field_value(const sharedptr<const LayoutItem_Field>& field) const
 {
   type_list_const_widgets list_widgets = get_field(field);
   if(!list_widgets.empty())
@@ -363,7 +364,7 @@ Gnome::Gda::Value FlowTableWithFields::get_field_value(const LayoutItem_Field& f
   return Gnome::Gda::Value(); //null.
 }
 
-void FlowTableWithFields::set_field_editable(const LayoutItem_Field& field, bool editable)
+void FlowTableWithFields::set_field_editable(const sharedptr<const LayoutItem_Field>& field, bool editable)
 {
   type_list_widgets list_widgets = get_field(field);
   for(type_list_widgets::iterator iter = list_widgets.begin(); iter != list_widgets.end(); ++iter)
@@ -377,11 +378,11 @@ void FlowTableWithFields::set_field_editable(const LayoutItem_Field& field, bool
 }
 
 
-FlowTableWithFields::type_list_widgets FlowTableWithFields::get_portals(const LayoutItem_Field& from_key)
+FlowTableWithFields::type_list_widgets FlowTableWithFields::get_portals(const sharedptr<const LayoutItem_Field>& from_key)
 {
   type_list_widgets result;
 
-  const Glib::ustring from_key_name = from_key.get_name();
+  const Glib::ustring from_key_name = from_key->get_name();
 
   //Check the single-item widgets:
    for(type_portals::const_iterator iter = m_portals.begin(); iter != m_portals.end(); ++iter)
@@ -414,15 +415,15 @@ FlowTableWithFields::type_list_widgets FlowTableWithFields::get_portals(const La
   return result;
 }
 
-FlowTableWithFields::type_list_const_widgets FlowTableWithFields::get_field(const LayoutItem_Field& layout_item) const
+FlowTableWithFields::type_list_const_widgets FlowTableWithFields::get_field(const sharedptr<const LayoutItem_Field>& layout_item) const
 {
   type_list_const_widgets result;
 
-  const Glib::ustring layout_item_name = layout_item.get_name();
-  const Glib::ustring layout_item_relationship_name = layout_item.get_relationship_name();
+  const Glib::ustring layout_item_name = layout_item->get_name();
+  const Glib::ustring layout_item_relationship_name = layout_item->get_relationship_name();
   for(type_listFields::const_iterator iter = m_listFields.begin(); iter != m_listFields.end(); ++iter)
   {
-    if( (iter->m_field.get_name() == layout_item_name) && (iter->m_field.get_relationship_name() == layout_item_relationship_name) )
+    if( (iter->m_field->get_name() == layout_item_name) && (iter->m_field->get_relationship_name() == layout_item_relationship_name) )
     {
       const Info& info = *iter;
       if(info.m_checkbutton)
@@ -450,16 +451,16 @@ FlowTableWithFields::type_list_const_widgets FlowTableWithFields::get_field(cons
   return result;
 }
 
-FlowTableWithFields::type_list_widgets FlowTableWithFields::get_field(const LayoutItem_Field& layout_item)
+FlowTableWithFields::type_list_widgets FlowTableWithFields::get_field(const sharedptr<const LayoutItem_Field>& layout_item)
 {
   //TODO: Avoid duplication
   type_list_widgets result;
 
-  const Glib::ustring layout_item_name = layout_item.get_name();
-  const Glib::ustring layout_item_relationship_name = layout_item.get_relationship_name();
+  const Glib::ustring layout_item_name = layout_item->get_name();
+  const Glib::ustring layout_item_relationship_name = layout_item->get_relationship_name();
   for(type_listFields::const_iterator iter = m_listFields.begin(); iter != m_listFields.end(); ++iter)
   {
-    if( (iter->m_field.get_name() == layout_item_name) && (iter->m_field.get_relationship_name() == layout_item_relationship_name) )
+    if( (iter->m_field->get_name() == layout_item_name) && (iter->m_field->get_relationship_name() == layout_item_relationship_name) )
     {
       const Info& info = *iter;
       if(info.m_checkbutton)
@@ -557,22 +558,22 @@ FlowTableWithFields::type_signal_requested_related_details FlowTableWithFields::
   return m_signal_requested_related_details;
 }
 
-void FlowTableWithFields::on_entry_edited(const Gnome::Gda::Value& value, LayoutItem_Field field)
+void FlowTableWithFields::on_entry_edited(const Gnome::Gda::Value& value, sharedptr<const LayoutItem_Field> field)
 {
   m_signal_field_edited.emit(field, value);
 }
 
-void FlowTableWithFields::on_entry_open_details_requested(const Gnome::Gda::Value& value, LayoutItem_Field field)
+void FlowTableWithFields::on_entry_open_details_requested(const Gnome::Gda::Value& value, sharedptr<const LayoutItem_Field> field)
 {
   m_signal_field_open_details_requested.emit(field, value);
 }
 
-void FlowTableWithFields::on_flowtable_entry_edited(const LayoutItem_Field& field, const Gnome::Gda::Value& value)
+void FlowTableWithFields::on_flowtable_entry_edited(const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value)
 {
   m_signal_field_edited.emit(field, value);
 }
 
-void FlowTableWithFields::on_flowtable_entry_open_details_requested(const LayoutItem_Field& field, const Gnome::Gda::Value& value)
+void FlowTableWithFields::on_flowtable_entry_open_details_requested(const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value)
 {
   m_signal_field_open_details_requested.emit(field, value);
 }
@@ -590,6 +591,7 @@ void FlowTableWithFields::set_design_mode(bool value)
   }
 }
 
+/*
 void FlowTableWithFields::get_layout_groups(Document_Glom::type_mapLayoutGroupSequence& groups)
 {
   //This is only called on the top-level FlowTable.
@@ -605,27 +607,30 @@ void FlowTableWithFields::get_layout_groups(Document_Glom::type_mapLayoutGroupSe
       if(pFlowTable)
       {
         //recurse:
-        LayoutGroup group_child;
-        pFlowTable->get_layout_group(group_child);
+        sharedptr<LayoutGroup> group_child = pFlowTable->get_layout_group();
         groups[sequence] = group_child;
-        
+
         ++sequence;
       }
     }
   }
- 
-}
 
-void FlowTableWithFields::get_layout_group(LayoutGroup& group)
+}
+*/
+
+/*
+sharedptr<LayoutGroup> FlowTableWithFields::get_layout_group()
 {
+  sharedptr<LayoutGroup> group;
+
   //Initialize output parameter:
   //group = LayoutGroup();
-  const LayoutGroup* pGroupExisting = dynamic_cast<LayoutGroup*>(get_layout_item());
+  sharedptr<const LayoutGroup> pGroupExisting = sharedptr<const LayoutGroup>::cast_dynamic(get_layout_item());
   if(pGroupExisting)
   {
     //Start with the same information:
-    group = *pGroupExisting; //TODO_Performance: Copy without copying/clone the children.
-    group.remove_all_items(); //We will readd these.
+    group = glom_sharedptr_clone(pGroupExisting); //TODO_Performance: Copy without copying/clone the children.
+    group->remove_all_items(); //We will readd these.
   }
 
   //Iterate over the data widgets:
@@ -638,23 +643,24 @@ void FlowTableWithFields::get_layout_group(LayoutGroup& group)
       if(pFlowTable)
       {
         //recurse:
-        LayoutGroup group_child;
-        pFlowTable->get_layout_group(group_child);
-        group.add_item(group_child);
+        sharedptr<LayoutGroup> group_child = pFlowTable->get_layout_group();
+        group->add_item(group_child);
       }
       else
       {
-        const LayoutItem* pLayoutItem = (*iter)->get_layout_item();
-
+        sharedptr<const LayoutItem> pLayoutItem = (*iter)->get_layout_item();
         if(pLayoutItem)
         {
-          group.add_item(*pLayoutItem);
+          group->add_item(pLayoutItem);
         }
-          
+
       }
     }
   }
+
+  return group;
 }
+*/
 
 void FlowTableWithFields::add_layoutwidgetbase(LayoutWidgetBase* layout_widget)
 {
@@ -671,12 +677,15 @@ void FlowTableWithFields::add_layoutwidgetbase(LayoutWidgetBase* layout_widget, 
 
 void FlowTableWithFields::on_layoutwidget_changed()
 {
-  LayoutGroup* pLayoutItem = dynamic_cast<LayoutGroup*>(get_layout_item());
+  /*
+  sharedptr<LayoutGroup> pLayoutItem = sharedptr<LayoutGroup>::cast_dynamic(get_layout_item());
   if(pLayoutItem)
   {
     //Update tha LayoutItem by looking at the child widgets:
-    get_layout_group(*pLayoutItem);
+    sharedptr<LayoutGroup> group = get_layout_group();
+    set_layout_item(group, m_table_name);
   }
+  */
 
   //Forward the signal to the container:
   signal_layout_changed().emit();
@@ -695,9 +704,8 @@ void FlowTableWithFields::on_datawidget_layout_item_added(TreeStore_Layout::enum
 
   if(item_type == TreeStore_Layout::TYPE_FIELD)
   {
-    LayoutItem_Field layout_item_field;
-    bool test = pDataWidget->offer_field_list(m_table_name, layout_item_field);
-    if(test)
+    sharedptr<LayoutItem_Field> layout_item_field = pDataWidget->offer_field_list(m_table_name);
+    if(layout_item_field)
     {
       //TODO: privileges.
       add_layout_item_at_position(layout_item_field, iterAfter);
@@ -705,8 +713,8 @@ void FlowTableWithFields::on_datawidget_layout_item_added(TreeStore_Layout::enum
   }
   else if(item_type == TreeStore_Layout::TYPE_GROUP)
   {
-    LayoutGroup layout_item;
-    layout_item.set_title(_("New Group"));
+    sharedptr<LayoutGroup> layout_item = sharedptr<LayoutGroup>::create();
+    layout_item->set_title(_("New Group"));
     add_layout_item_at_position(layout_item, iterAfter);
   }
   else if(item_type == TreeStore_Layout::TYPE_PORTAL)
@@ -731,8 +739,8 @@ void FlowTableWithFields::on_datawidget_layout_item_added(TreeStore_Layout::enum
           sharedptr<Relationship> relationship  = dialog->get_relationship_chosen();
           if(relationship)
           {
-            LayoutItem_Portal layout_item;
-            layout_item.set_relationship(relationship);
+            sharedptr<LayoutItem_Portal> layout_item = sharedptr<LayoutItem_Portal>::create();
+            layout_item->set_relationship(relationship);
             add_layout_item_at_position(layout_item, iterAfter);
           }
         }

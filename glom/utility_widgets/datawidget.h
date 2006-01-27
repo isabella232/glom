@@ -38,7 +38,7 @@ class DataWidget
 {
 public:
   //explicit DataWidget(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
-  explicit DataWidget(const LayoutItem_Field& field, const Glib::ustring& table_name, const Document_Glom* document);
+  explicit DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ustring& table_name, const Document_Glom* document);
   virtual ~DataWidget();
 
   virtual Gtk::Label* get_label();
@@ -55,16 +55,17 @@ public:
   virtual void set_editable(bool editable = true);
   virtual void set_viewable(bool viewable = true);
 
-  virtual bool offer_field_list(const Glib::ustring& table_name, LayoutItem_Field& field);
-  virtual bool offer_field_layout(LayoutItem_Field& field);
+  sharedptr<LayoutItem_Field> offer_field_list(const Glib::ustring& table_name);
+  sharedptr<LayoutItem_Field> offer_field_list(const Glib::ustring& table_name, const sharedptr<const LayoutItem_Field>& start_field);
+  sharedptr<LayoutItem_Field> offer_field_layout(const sharedptr<const LayoutItem_Field>& start_field);
 
   /// Get the actual child widget used to show the data:
   Gtk::Widget* get_data_child_widget();
   const Gtk::Widget* get_data_child_widget() const;
-  
+
   typedef sigc::signal<void, const Gnome::Gda::Value&> type_signal_edited;
   type_signal_edited signal_edited();
-  
+
   typedef sigc::signal<void, const Gnome::Gda::Value&> type_signal_open_details_requested;
   type_signal_open_details_requested signal_open_details_requested();
 
@@ -86,8 +87,8 @@ protected:
 
   App_Glom* get_application();
 
-  int get_suitable_width(const LayoutItem_Field& field_layout);
-  
+  int get_suitable_width(const sharedptr<const LayoutItem_Field>& field_layout);
+
   /** Show a dialog with a Find so that the user can choose an ID value to indicate the related record.
    */
   bool offer_related_record_id_find(Gnome::Gda::Value& chosen_id);

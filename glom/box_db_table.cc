@@ -59,14 +59,22 @@ bool Box_DB_Table::refresh_data_from_database()
   return fill_from_database();
 }
 
-Gnome::Gda::Value Box_DB_Table::get_entered_field_data(const LayoutItem_Field& /* field */) const
+Gnome::Gda::Value Box_DB_Table::get_entered_field_data_field_only(const sharedptr<const Field>& field) const
+{
+  sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
+  layout_item->set_full_field_details(field); 
+
+  return get_entered_field_data(layout_item);
+}
+
+Gnome::Gda::Value Box_DB_Table::get_entered_field_data(const sharedptr<const LayoutItem_Field>& /* field */) const
 {
   //Override this to use Field::set_data() too.
 
   return Gnome::Gda::Value(); //null
 }
 
-void Box_DB_Table::set_entered_field_data(const LayoutItem_Field& /* field */, const Gnome::Gda::Value& /* value */)
+void Box_DB_Table::set_entered_field_data(const sharedptr<const LayoutItem_Field>& /* field */, const Gnome::Gda::Value& /* value */)
 {
   //Override this.
 }

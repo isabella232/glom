@@ -1,4 +1,13 @@
-2006-01-26  Murray Cumming <murrayc@murrayc.com>
+2006-01-27  Murray Cumming  <murrayc@murrayc.com>
+
+	* Many: Use LayoutItems via sharedptr so we can translate the titles of 
+	groups, portals, and report parts. LayoutItems are now created during 
+	document loading, and by layout editing dialogs, but then just shared by the 
+	various widgets. This means that we no longer need to rebuild the whole layout 
+	from the widgets when a widget is changed - it is just shared, so we just 
+	mark the document as modified.
+
+2006-01-26  Murray Cumming  <murrayc@murrayc.com>
 
 	* Many: Use relationship via sharedptr so we can translate its title too.
         Derive LayoutItem_Field, LayoutItem_Portal, LayoutItem_Group, FieldFormatting 

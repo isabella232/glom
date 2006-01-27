@@ -69,7 +69,7 @@ void EntryGlom::check_for_change()
     //Validate the input:
     bool success = false;
 
-    const LayoutItem_Field* layout_item = dynamic_cast<const LayoutItem_Field*>(get_layout_item());
+    sharedptr<const LayoutItem_Field> layout_item = sharedptr<const LayoutItem_Field>::cast_dynamic(get_layout_item());
     Gnome::Gda::Value value = GlomConversions::parse_value(m_glom_type, get_text(), layout_item->get_formatting_used().m_numeric_format, success);
 
     if(success)
@@ -127,7 +127,7 @@ void EntryGlom::on_insert_text(const Glib::ustring& text, int* position)
 
 void EntryGlom::set_value(const Gnome::Gda::Value& value)
 {
-  const LayoutItem_Field* layout_item = dynamic_cast<const LayoutItem_Field*>(get_layout_item());
+  sharedptr<const LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::cast_dynamic(get_layout_item());
   if(layout_item)
     set_text(GlomConversions::get_text_for_gda_value(m_glom_type, value, layout_item->get_formatting_used().m_numeric_format));
 }
@@ -144,7 +144,7 @@ Gnome::Gda::Value EntryGlom::get_value() const
 {
   bool success = false;
 
-  const LayoutItem_Field* layout_item = dynamic_cast<const LayoutItem_Field*>(get_layout_item());
+  sharedptr<const LayoutItem_Field> layout_item = sharedptr<const LayoutItem_Field>::cast_dynamic(get_layout_item());
   return GlomConversions::parse_value(m_glom_type, get_text(), layout_item->get_formatting_used().m_numeric_format, success);
 }
 

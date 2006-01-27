@@ -36,8 +36,8 @@ public:
   virtual Gnome::Gda::Value get_primary_key_value_selected();
   Gnome::Gda::Value get_primary_key_value_first();
 
-  virtual Gnome::Gda::Value get_entered_field_data(const LayoutItem_Field& field) const;
-  virtual void set_entered_field_data(const LayoutItem_Field& field, const Gnome::Gda::Value& value);
+  virtual Gnome::Gda::Value get_entered_field_data(const sharedptr<const LayoutItem_Field>& field) const;
+  virtual void set_entered_field_data(const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
 
   bool get_showing_multiple_records() const;
 
@@ -70,8 +70,8 @@ protected:
   virtual bool get_field_primary_key_index(guint& field_column) const; //TODO: visible 
   virtual sharedptr<Field> get_field_primary_key() const;
 
-  void do_lookups(const Gtk::TreeModel::iterator& row, const LayoutItem_Field& field_changed, const Gnome::Gda::Value& field_value, const sharedptr<const Field>& primary_key, const Gnome::Gda::Value& primary_key_value);
-  void refresh_related_fields(const Gtk::TreeModel::iterator& row, const LayoutItem_Field& field_changed, const Gnome::Gda::Value& field_value, const sharedptr<const Field>& primary_key, const Gnome::Gda::Value& primary_key_value);
+  void do_lookups(const Gtk::TreeModel::iterator& row, const sharedptr<const LayoutItem_Field>& field_changed, const Gnome::Gda::Value& field_value, const sharedptr<const Field>& primary_key, const Gnome::Gda::Value& primary_key_value);
+  void refresh_related_fields(const Gtk::TreeModel::iterator& row, const sharedptr<const LayoutItem_Field>& field_changed, const Gnome::Gda::Value& field_value, const sharedptr<const Field>& primary_key, const Gnome::Gda::Value& primary_key_value);
 
   //Signal handlers:
   virtual void on_adddel_user_requested_add();
@@ -90,7 +90,7 @@ protected:
   virtual bool get_field_column_index(const Glib::ustring& field_name, guint& index) const;
 
   virtual void print_layout();
-  virtual void print_layout_group(xmlpp::Element* node_parent, const LayoutGroup& group);
+  virtual void print_layout_group(xmlpp::Element* node_parent, const sharedptr<const LayoutGroup>& group);
 
   //Member widgers:
   mutable DbAddDel_WithButtons m_AddDel; //mutable because its get_ methods aren't const.

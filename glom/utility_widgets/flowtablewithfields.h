@@ -51,20 +51,20 @@ public:
    * @param layoutitem_field The layout item that describes this field,
    * @param table_name The table on which this layout appears.
    */
-  virtual void add_field(const LayoutItem_Field& layoutitem_field, const Glib::ustring& table_name);
+  virtual void add_field(const sharedptr<LayoutItem_Field>& layoutitem_field, const Glib::ustring& table_name);
   virtual void remove_field(const Glib::ustring& id);
 
   typedef std::map<int, Field> type_map_field_sequence;
   //virtual void add_group(const Glib::ustring& group_name, const Glib::ustring& group_title, const type_map_field_sequence& fields);
 
-  virtual void add_layout_item(const LayoutItem& group);
-  virtual void add_layout_group(const LayoutGroup& group);
+  virtual void add_layout_item(const sharedptr<LayoutItem>& group);
+  virtual void add_layout_group(const sharedptr<LayoutGroup>& group);
 
-  virtual void set_field_editable(const LayoutItem_Field& field, bool editable = true);
+  virtual void set_field_editable(const sharedptr<const LayoutItem_Field>& field, bool editable = true);
 
-  virtual Gnome::Gda::Value get_field_value(const LayoutItem_Field& field) const;
+  virtual Gnome::Gda::Value get_field_value(const sharedptr<const LayoutItem_Field>& field) const;
   //virtual Gnome::Gda::Value get_field_value(const Glib::ustring& id) const;
-  virtual void set_field_value(const LayoutItem_Field& field, const Gnome::Gda::Value& value);
+  virtual void set_field_value(const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
   //virtual void set_field_value(const Glib::ustring& id, const Gnome::Gda::Value& value);
 
 
@@ -82,19 +82,19 @@ public:
    * for instance, if the user chose a new field for a DataWidget, 
    * or a new relationship for a portal.
    */
-  virtual void get_layout_groups(Document_Glom::type_mapLayoutGroupSequence& groups);
-  virtual void get_layout_group(LayoutGroup& group);
+  //void get_layout_groups(Document_Glom::type_mapLayoutGroupSequence& groups);
+  //sharedptr<LayoutGroup> get_layout_group();
 
   /** For instance,
-   * void on_flowtable_field_edited(const LayoutItem_Field& field, const Gnome::Gda::Value& value);
+   * void on_flowtable_field_edited(const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
    */
-  typedef sigc::signal<void, const LayoutItem_Field&, const Gnome::Gda::Value&> type_signal_field_edited;
+  typedef sigc::signal<void, const sharedptr<const LayoutItem_Field>&, const Gnome::Gda::Value&> type_signal_field_edited;
   type_signal_field_edited signal_field_edited();
   
   /** For instance,
-   * void on_flowtable_field_open_details_requested(const LayoutItem_Field& field, const Gnome::Gda::Value& value);
+   * void on_flowtable_field_open_details_requested(const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
    */
-  typedef sigc::signal<void, const LayoutItem_Field&, const Gnome::Gda::Value&> type_signal_field_open_details_requested;
+  typedef sigc::signal<void, const sharedptr<const LayoutItem_Field>&, const Gnome::Gda::Value&> type_signal_field_open_details_requested;
   type_signal_field_open_details_requested signal_field_open_details_requested();
 
   /** For instance,
@@ -111,18 +111,18 @@ public:
 
 protected:
 
-  virtual type_list_widgets get_field(const LayoutItem_Field& field);
-  virtual type_list_const_widgets get_field(const LayoutItem_Field& field) const;
+  virtual type_list_widgets get_field(const sharedptr<const LayoutItem_Field>& field);
+  virtual type_list_const_widgets get_field(const sharedptr<const LayoutItem_Field>& field) const;
 
   ///Get portals whose relationships have @a from_key as the from_key.
-  virtual type_list_widgets get_portals(const LayoutItem_Field& from_key);
+  virtual type_list_widgets get_portals(const sharedptr<const LayoutItem_Field>& from_key);
 
   //int get_suitable_width(Field::glom_field_type field_type);
 
-  void on_entry_edited(const Gnome::Gda::Value& value,  LayoutItem_Field field);
-  void on_entry_open_details_requested(const Gnome::Gda::Value& value, LayoutItem_Field field);
-  void on_flowtable_entry_edited(const LayoutItem_Field& field, const Gnome::Gda::Value& value);
-  void on_flowtable_entry_open_details_requested(const LayoutItem_Field& field, const Gnome::Gda::Value& value); 
+  void on_entry_edited(const Gnome::Gda::Value& value, sharedptr<const LayoutItem_Field> field);
+  void on_entry_open_details_requested(const Gnome::Gda::Value& value, sharedptr<const LayoutItem_Field> field);
+  void on_flowtable_entry_edited(const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
+  void on_flowtable_entry_open_details_requested(const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value); 
 
   void on_portal_record_changed(const Glib::ustring& relationship_name);
   void on_flowtable_related_record_changed(const Glib::ustring& relationship_name);
@@ -140,7 +140,7 @@ protected:
   public:
     Info();
 
-    LayoutItem_Field m_field; //Store the field information so we know the title, ID, and type.
+    sharedptr<const LayoutItem_Field> m_field; //Store the field information so we know the title, ID, and type.
     Glib::ustring m_group;
 
     Gtk::Alignment* m_first;
@@ -162,11 +162,11 @@ protected:
   typedef std::list< LayoutWidgetBase* > type_list_layoutwidgets;
   type_list_layoutwidgets m_list_layoutwidgets;
 
-  void add_field_at_position(const LayoutItem_Field& layoutitem_field, const Glib::ustring& table_name, const type_list_layoutwidgets::iterator& add_before);
+  void add_field_at_position(const sharedptr<LayoutItem_Field>& layoutitem_field, const Glib::ustring& table_name, const type_list_layoutwidgets::iterator& add_before);
   void add_layoutwidgetbase(LayoutWidgetBase* layout_widget);
   void add_layoutwidgetbase(LayoutWidgetBase* layout_widget, const type_list_layoutwidgets::iterator& add_before);
-  void add_layout_item_at_position(const LayoutItem& item, const type_list_layoutwidgets::iterator& add_before);
-  void add_layout_group_at_position(const LayoutGroup& group, const type_list_layoutwidgets::iterator& add_before);
+  void add_layout_item_at_position(const sharedptr<LayoutItem>& item, const type_list_layoutwidgets::iterator& add_before);
+  void add_layout_group_at_position(const sharedptr<LayoutGroup>& group, const type_list_layoutwidgets::iterator& add_before);
 
   Glib::ustring m_table_name;
 

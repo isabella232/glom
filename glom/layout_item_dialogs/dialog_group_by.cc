@@ -57,40 +57,43 @@ Dialog_GroupBy::~Dialog_GroupBy()
   }
 }
 
-void Dialog_GroupBy::set_item(const LayoutItem_GroupBy& item, const Glib::ustring& table_name)
+void Dialog_GroupBy::set_item(const sharedptr<const LayoutItem_GroupBy>& item, const Glib::ustring& table_name)
 {
-  m_layout_item = item;
+  m_layout_item = glom_sharedptr_clone(item);
   m_table_name = table_name;
 
-  m_label_group_by->set_text( item.get_field_group_by()->get_layout_display_name() );
-  m_label_sort_by->set_text( item.get_field_sort_by()->get_layout_display_name() );
+  if(item->get_has_field_group_by())
+    m_label_group_by->set_text( item->get_field_group_by()->get_layout_display_name() );
+  else
+    m_label_group_by->set_text( Glib::ustring() );
+
+  if(item->get_has_field_sort_by())
+    m_label_sort_by->set_text( item->get_field_sort_by()->get_layout_display_name() );
+  else
+    m_label_sort_by->set_text( Glib::ustring() );
 }
 
-bool Dialog_GroupBy::get_item(LayoutItem_GroupBy& item) const
+sharedptr<LayoutItem_GroupBy> Dialog_GroupBy::get_item() const
 {
-  item = m_layout_item;
-
-  return true;
+  return glom_sharedptr_clone(m_layout_item);
 }
 
 void Dialog_GroupBy::on_button_field_group_by()
 {
-  LayoutItem_Field field;
-  bool test = offer_field_list(field, m_table_name);
-  if(test)
+  sharedptr<LayoutItem_Field> field = offer_field_list(m_table_name);
+  if(field)
   {
-    m_layout_item.set_field_group_by(field);
+    m_layout_item->set_field_group_by(field);
     set_item(m_layout_item, m_table_name); //Update the UI.
   }
 }
 
 void Dialog_GroupBy::on_button_field_sort_by()
 {
-  LayoutItem_Field field;
-  bool test = offer_field_list(field, m_table_name);
-  if(test)
+  sharedptr<LayoutItem_Field> field = offer_field_list(m_table_name);
+  if(field)
   {
-    m_layout_item.set_field_sort_by(field);
+    m_layout_item->set_field_sort_by(field);
     set_item(m_layout_item, m_table_name); //Update the UI.
   }
 }
@@ -113,14 +116,14 @@ void Dialog_GroupBy::on_button_secondary_fields()
 
   if(m_dialog_choose_secondary_fields)
   {
-    m_dialog_choose_secondary_fields->set_fields(m_table_name, m_layout_item.m_group_secondary_fields.m_map_items);
+    m_dialog_choose_secondary_fields->set_fields(m_table_name, m_layout_item->m_group_secondary_fields->m_map_items);
 
     int response = m_dialog_choose_secondary_fields->run();
     m_dialog_choose_secondary_fields->hide();
     if(response == Gtk::RESPONSE_OK && m_dialog_choose_secondary_fields->get_modified())
     {
-      m_layout_item.m_group_secondary_fields.remove_all_items(); //Free the existing member items.
-      m_layout_item.m_group_secondary_fields.m_map_items = m_dialog_choose_secondary_fields->get_fields();
+      m_layout_item->m_group_secondary_fields->remove_all_items(); //Free the existing member items.
+      m_layout_item->m_group_secondary_fields->m_map_items = m_dialog_choose_secondary_fields->get_fields();
     }
   }
 }

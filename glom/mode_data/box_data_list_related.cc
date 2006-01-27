@@ -85,22 +85,22 @@ Box_Data_List_Related::~Box_Data_List_Related()
 void Box_Data_List_Related::enable_buttons()
 {
   bool to_table_is_hidden = false;
-  if(m_portal.get_has_relationship_name())
+  if(m_portal->get_has_relationship_name())
   {
-    to_table_is_hidden = get_document()->get_table_is_hidden(m_portal.get_relationship()->get_to_table());
+    to_table_is_hidden = get_document()->get_table_is_hidden(m_portal->get_relationship()->get_to_table());
   }
 
   m_AddDel.set_allow_view_details(!to_table_is_hidden); //Don't allow the user to go to a record in a hidden table.
 }
 
-bool Box_Data_List_Related::init_db_details(const LayoutItem_Portal& portal)
+bool Box_Data_List_Related::init_db_details(const sharedptr<const LayoutItem_Portal>& portal)
 {
-  m_portal = portal;
-  m_strTableName = m_portal.get_relationship()->get_to_table();
+  m_portal = sharedptr<LayoutItem_Portal>((LayoutItem_Portal*)portal->clone());
+  m_strTableName = m_portal->get_relationship()->get_to_table();
 
-  m_Label.set_markup(Bakery::App_Gtk::util_bold_message( m_portal.get_relationship()->get_title_or_name() ));
+  m_Label.set_markup(Bakery::App_Gtk::util_bold_message( m_portal->get_relationship()->get_title_or_name() ));
 
-  m_key_field = get_fields_for_table_one_field(m_portal.get_relationship()->get_to_table(), m_portal.get_relationship()->get_to_field());
+  m_key_field = get_fields_for_table_one_field(m_portal->get_relationship()->get_to_table(), m_portal->get_relationship()->get_to_field());
   if(!m_key_field)
   {
     g_warning("Box_Data_List_Related::init_db_details(): key_field not found.");
@@ -108,7 +108,7 @@ bool Box_Data_List_Related::init_db_details(const LayoutItem_Portal& portal)
 
   enable_buttons();
 
-  return Box_Data_List::init_db_details(m_portal.get_relationship()->get_to_table()); //Calls create_layout() and fill_from_database().
+  return Box_Data_List::init_db_details(m_portal->get_relationship()->get_to_table()); //Calls create_layout() and fill_from_database().
 }
 
 bool Box_Data_List_Related::refresh_data_from_database_with_foreign_key(const Gnome::Gda::Value& foreign_key_value)
@@ -166,7 +166,7 @@ bool Box_Data_List_Related::fill_from_database()
 
   //Prevent addition of new records if that is what the relationship specifies:
   if(allow_add)
-    allow_add = m_portal.get_relationship()->get_auto_create();
+    allow_add = m_portal->get_relationship()->get_auto_create();
 
   m_AddDel.set_allow_add(allow_add);
 
@@ -184,8 +184,8 @@ void Box_Data_List_Related::on_record_added(const Gnome::Gda::Value& primary_key
   {
     Gnome::Gda::Value key_value;
     //m_key_field is the field in this table that must match another field in the parent table.
-    LayoutItem_Field layout_item;
-    layout_item.set_full_field_details(m_key_field);
+    sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
+    layout_item->set_full_field_details(m_key_field);
     key_value = m_AddDel.get_value(iter, layout_item);
 
     Box_Data_List::on_record_added(key_value); //adds blank row.
@@ -207,15 +207,15 @@ void Box_Data_List_Related::on_record_added(const Gnome::Gda::Value& primary_key
       sharedptr<Field> field_primary_key = m_AddDel.get_key_field();
 
       //Create the link by setting the foreign key
-      Glib::ustring strQuery = "UPDATE " + m_portal.get_relationship()->get_to_table();
+      Glib::ustring strQuery = "UPDATE " + m_portal->get_relationship()->get_to_table();
       strQuery += " SET " +  /* get_table_name() + "." +*/ m_key_field->get_name() + " = " + m_key_field->sql(m_key_value);
       strQuery += " WHERE " + get_table_name() + "." + field_primary_key->get_name() + " = " + field_primary_key->sql(primary_key_value);
       bool test = Query_execute(strQuery);
       if(test)
       {
         //Show it on the view, if it's visible:
-        LayoutItem_Field layout_item;
-        layout_item.set_full_field_details(field_primary_key);
+        sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
+        layout_item->set_full_field_details(field_primary_key);
 
         m_AddDel.set_value(iter, layout_item, m_key_value);
       }
@@ -227,7 +227,7 @@ void Box_Data_List_Related::on_record_added(const Gnome::Gda::Value& primary_key
 
 sharedptr<Relationship> Box_Data_List_Related::get_relationship() const
 {
-  return m_portal.get_relationship();
+  return m_portal->get_relationship();
 }
 
 sharedptr<const Field> Box_Data_List_Related::get_key_field() const
@@ -238,7 +238,7 @@ sharedptr<const Field> Box_Data_List_Related::get_key_field() const
 void Box_Data_List_Related::on_record_deleted(const Gnome::Gda::Value& /* primary_key_value */)
 {
   //Allow the parent record (Details view) to recalculate aggregations:
-  signal_record_changed().emit(m_portal.get_relationship_name());
+  signal_record_changed().emit(m_portal->get_relationship_name());
 }
 
 
@@ -249,7 +249,7 @@ void Box_Data_List_Related::on_adddel_user_changed(const Gtk::TreeModel::iterato
 
   //Let parent respond:
   if(row)
-    signal_record_changed().emit(m_portal.get_relationship_name());
+    signal_record_changed().emit(m_portal->get_relationship_name());
 }
 
 void Box_Data_List_Related::on_adddel_user_added(const Gtk::TreeModel::iterator& row, guint col_with_first_value)
@@ -290,7 +290,7 @@ Box_Data_List_Related::type_vecLayoutFields Box_Data_List_Related::get_fields_to
   {
     Document_Glom::type_mapLayoutGroupSequence mapGroups;
     mapGroups[0] = m_portal;
-    return get_table_fields_to_show_for_sequence(m_portal.get_relationship()->get_to_table(), mapGroups);
+    return get_table_fields_to_show_for_sequence(m_portal->get_relationship()->get_to_table(), mapGroups);
   }
 
   return type_vecLayoutFields();
@@ -313,18 +313,17 @@ Box_Data_List_Related::type_signal_record_changed Box_Data_List_Related::signal_
 void Box_Data_List_Related::on_dialog_layout_hide()
 {
   m_portal = m_pDialogLayoutRelated->get_portal_layout();
-  
-  
+
+
   //Update the UI:
-  init_db_details(m_portal);
-  
+  init_db_details(m_portal); 
 
   Box_Data::on_dialog_layout_hide();
 
-  LayoutItem_Portal* pLayoutItem = dynamic_cast<LayoutItem_Portal*>(get_layout_item());
+  sharedptr<LayoutItem_Portal> pLayoutItem = sharedptr<LayoutItem_Portal>::cast_dynamic(get_layout_item());
   if(pLayoutItem)
   {
-    *pLayoutItem = m_portal;
+    *pLayoutItem = *m_portal;
     signal_layout_changed().emit(); //TODO: Check whether it has really changed.
   }
 }
@@ -333,6 +332,6 @@ void Box_Data_List_Related::on_adddel_user_requested_add()
 {
   //Prevent an add on a portal with no fields:
   //TODO: Warn the user instead of just doing nothing.
-  if(!m_portal.m_map_items.empty())
+  if(!m_portal->m_map_items.empty())
     Box_Data_List::on_adddel_user_requested_add();
 }

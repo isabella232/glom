@@ -39,7 +39,7 @@ public:
   explicit ComboEntryGlom();
 
   ///You must call set_layout_item() to specify the field type and formatting of the main column.
-  explicit ComboEntryGlom(const LayoutItem_Field& field_second);
+  explicit ComboEntryGlom(const sharedptr<LayoutItem_Field>& field_second);
 
   virtual ~ComboEntryGlom();
 
@@ -53,7 +53,7 @@ public:
 
   virtual Gnome::Gda::Value get_value() const;
 
-  virtual void set_layout_item(LayoutItem* layout_item, const Glib::ustring& table_name);
+  virtual void set_layout_item(const sharedptr<LayoutItem>& layout_item, const Glib::ustring& table_name);
 
 protected:
   void init();

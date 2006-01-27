@@ -43,30 +43,29 @@ Dialog_FieldSummary::~Dialog_FieldSummary()
 {
 }
 
-void Dialog_FieldSummary::set_item(const LayoutItem_FieldSummary& item, const Glib::ustring& table_name)
+void Dialog_FieldSummary::set_item(const sharedptr<const LayoutItem_FieldSummary>& item, const Glib::ustring& table_name)
 {
-  m_layout_item = item;
+  m_layout_item = glom_sharedptr_clone(item);
   m_table_name = table_name;
 
-  m_label_field->set_text( item.get_layout_display_name_field() );
-  m_combo_summarytype->set_summary_type( item.get_summary_type() );
+  m_label_field->set_text( item->get_layout_display_name_field() );
+  m_combo_summarytype->set_summary_type( item->get_summary_type() );
 }
 
-bool Dialog_FieldSummary::get_item(LayoutItem_FieldSummary& item) const
+sharedptr<LayoutItem_FieldSummary> Dialog_FieldSummary::get_item() const
 {
-  item = m_layout_item;
-  item.set_summary_type( m_combo_summarytype->get_summary_type() );
+  sharedptr<LayoutItem_FieldSummary> result = glom_sharedptr_clone(m_layout_item);
+  result->set_summary_type( m_combo_summarytype->get_summary_type() );
 
-  return true;
+  return result;
 }
 
 void Dialog_FieldSummary::on_button_field()
 {
-  LayoutItem_Field field;
-  bool test = offer_field_list(field, m_table_name);
-  if(test)
+  sharedptr<LayoutItem_Field> field = offer_field_list(field, m_table_name);
+  if(field)
   {
-    m_layout_item.set_field(field);
+    m_layout_item->set_field(field);
     set_item(m_layout_item, m_table_name); //Update the UI.
   }
 }

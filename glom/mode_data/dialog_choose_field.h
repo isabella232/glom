@@ -40,13 +40,13 @@ public:
    * @param table_name The table name.
    * @param field The starting field information.
    */
-  virtual void set_document(Document_Glom* document, const Glib::ustring& table_name, const LayoutItem_Field& field);
+  virtual void set_document(Document_Glom* document, const Glib::ustring& table_name, const sharedptr<const LayoutItem_Field>& field);
   virtual void set_document(Document_Glom* document, const Glib::ustring& table_name);
 
 
   //void select_item(const sharedptr<const Field>& field);
 
-  bool get_field_chosen(LayoutItem_Field& field) const;
+  sharedptr<LayoutItem_Field> get_field_chosen() const;
 
 protected:
 

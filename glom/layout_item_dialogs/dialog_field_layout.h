@@ -42,9 +42,9 @@ public:
    * @param field The starting field information.
    * @param table_name The field's table.
    */
-  virtual void set_field(const LayoutItem_Field& field, const Glib::ustring& table_name);
+  virtual void set_field(const sharedptr<const LayoutItem_Field>& field, const Glib::ustring& table_name);
 
-  bool get_field_chosen(LayoutItem_Field& field) const;
+  sharedptr<LayoutItem_Field> get_field_chosen() const;
 
 protected:
   void on_radiobutton_custom_formatting();
@@ -56,7 +56,7 @@ protected:
   Gtk::RadioButton* m_radiobutton_custom_formatting;
   Box_Formatting* m_box_formatting;
 
-  mutable LayoutItem_Field m_layout_item;
+  mutable sharedptr<LayoutItem_Field> m_layout_item;
 
   Glib::ustring m_table_name;
 };

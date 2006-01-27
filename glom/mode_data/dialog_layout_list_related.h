@@ -37,11 +37,11 @@ public:
    * @param table_name The table name.
    * @param table_fields: The actual fields in the table, in case the document does not yet know about them all.
    */
-  virtual void set_document(const Glib::ustring& layout, Document_Glom* document, const LayoutItem_Portal& portal);
+  virtual void set_document(const Glib::ustring& layout, Document_Glom* document, const sharedptr<const LayoutItem_Portal>& portal);
   virtual void update_ui(bool including_relationships_list = true);
 
   sharedptr<Relationship> get_relationship() const;
-  LayoutItem_Portal get_portal_layout();
+  sharedptr<LayoutItem_Portal>  get_portal_layout();
 
 protected:
 
@@ -69,7 +69,7 @@ protected:
     ModelColumns_Fields()
     { add(m_col_layout_item); add(m_col_sequence); }
 
-    Gtk::TreeModelColumn<LayoutItem_Field> m_col_layout_item;
+    Gtk::TreeModelColumn< sharedptr<LayoutItem_Field> > m_col_layout_item;
     Gtk::TreeModelColumn<guint> m_col_sequence;
   };
 
@@ -85,7 +85,7 @@ protected:
   Gtk::Button* m_button_field_formatting;
 
   ComboBox_Relationship* m_combo_relationship;
-  LayoutItem_Portal m_portal;
+  sharedptr<LayoutItem_Portal> m_portal;
 
   Glib::RefPtr<Gtk::ListStore> m_model_fields;
 };

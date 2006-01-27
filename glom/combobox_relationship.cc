@@ -94,8 +94,11 @@ void ComboBox_Relationship::set_selected_relationship(const Glib::ustring& relat
   }
 
   //Not found, so mark it as blank:
-  std::cerr << "ComboBox_Relationship::set_selected_relationship(): relationship not found in list: " << relationship_name << std::endl;
-  unset_active();
+  //std::cerr << "ComboBox_Relationship::set_selected_relationship(): relationship not found in list: " << relationship_name << std::endl;
+
+  //Avoid calling unset_active() if nothing is selected, because it triggers the changed signal unnecessarily.
+  if(get_active()) //If something is active (selected).
+    unset_active();
 }
 
 void ComboBox_Relationship::set_relationships(const type_vecRelationships& relationships, const Glib::ustring& parent_table_name, const Glib::ustring& parent_table_title)
@@ -138,7 +141,7 @@ void ComboBox_Relationship::on_cell_data_title(const Gtk::TreeModel::const_itera
   }
   else
   {
-    std::cerr << "ComboBox_Relationship::on_cell_data_title(): empty relationshpi and no m_extra_table_name. m_extra_table_name=" << m_extra_table_name << std::endl;
+    //std::cerr << "ComboBox_Relationship::on_cell_data_title(): empty relationship and no m_extra_table_name. m_extra_table_name=" << m_extra_table_name << std::endl;
   }
 }
 
@@ -149,11 +152,14 @@ void ComboBox_Relationship::on_cell_data_fromfield(const Gtk::TreeModel::const_i
   if(relationship)
     m_renderer_fromfield->property_text() = _("Triggered by: ") + relationship->get_to_field();
   else
-    m_renderer_fromfield->property_text() = Glib::ustring();
+    m_renderer_fromfield->property_text() = Glib::ustring(); //_("This Table");
 }
 
 void ComboBox_Relationship::set_display_parent_table(const Glib::ustring& table_name, const Glib::ustring& table_title)
 {
+  if(table_name.empty())
+    return;
+
   const bool already_added = get_has_parent_table() && !(m_model->children().empty());
 
   //We don't need to recreate the model row when these change, because the callback just uses the new values.

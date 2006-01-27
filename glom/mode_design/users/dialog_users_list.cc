@@ -136,7 +136,7 @@ void Dialog_UsersList::set_document(const Glib::ustring& layout, Document_Glom* 
     //guint group_sequence = 1; //0 means no sequence
     for(Document_Glom::type_mapLayoutGroupSequence::const_iterator iter = mapGroups.begin(); iter != mapGroups.end(); ++iter)
     {
-      const LayoutGroup& group = iter->second;
+      sharedptr<const LayoutGroup> group = iter->second;
 
       add_group(Gtk::TreeModel::iterator(), group);
     }

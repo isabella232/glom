@@ -39,28 +39,20 @@ LayoutWidgetBase::LayoutWidgetBase()
 
 LayoutWidgetBase::~LayoutWidgetBase()
 {
-  if(m_pLayoutItem)
-  {
-    delete m_pLayoutItem;
-    m_pLayoutItem = 0;
-  }
 }
 
-void LayoutWidgetBase::set_layout_item(LayoutItem* layout_item, const Glib::ustring& table_name)
+void LayoutWidgetBase::set_layout_item(const sharedptr<LayoutItem>& layout_item, const Glib::ustring& table_name)
 {
-  if(m_pLayoutItem)
-    delete m_pLayoutItem;
-
   m_pLayoutItem = layout_item;
   m_table_name = table_name;
 }
 
-const LayoutItem* LayoutWidgetBase::get_layout_item() const
+sharedptr<const LayoutItem> LayoutWidgetBase::get_layout_item() const
 {
   return m_pLayoutItem;
 }
 
-LayoutItem* LayoutWidgetBase::get_layout_item()
+sharedptr<LayoutItem> LayoutWidgetBase::get_layout_item()
 {
   return m_pLayoutItem;
 }

@@ -41,8 +41,8 @@ public:
   virtual Gnome::Gda::Value get_primary_key_value() const; //Actual primary key value of this record.
   virtual Gnome::Gda::Value get_primary_key_value_selected(); //Value in the primary key's cell.
 
-  virtual Gnome::Gda::Value get_entered_field_data(const LayoutItem_Field& field) const;
-  virtual void set_entered_field_data(const LayoutItem_Field& field, const Gnome::Gda::Value& value);
+  virtual Gnome::Gda::Value get_entered_field_data(const sharedptr<const LayoutItem_Field>& field) const;
+  virtual void set_entered_field_data(const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
 
   //Signals:
   typedef sigc::signal<void> type_signal_void;
@@ -65,12 +65,12 @@ protected:
   virtual void create_layout();
   //virtual void fill_related();
 
-  virtual void do_lookups(const Gtk::TreeModel::iterator& row, const LayoutItem_Field& field_changed, const Gnome::Gda::Value& field_value, const sharedptr<const Field>& primary_key, const Gnome::Gda::Value& primary_key_value);
-  virtual void refresh_related_fields(const Gtk::TreeModel::iterator& row, const LayoutItem_Field& field_changed, const Gnome::Gda::Value& field_value, const sharedptr<const Field>& primary_key, const Gnome::Gda::Value& primary_key_value);
+  virtual void do_lookups(const Gtk::TreeModel::iterator& row, const sharedptr<const LayoutItem_Field>& field_changed, const Gnome::Gda::Value& field_value, const sharedptr<const Field>& primary_key, const Gnome::Gda::Value& primary_key_value);
+  virtual void refresh_related_fields(const Gtk::TreeModel::iterator& row, const sharedptr<const LayoutItem_Field>& field_changed, const Gnome::Gda::Value& field_value, const sharedptr<const Field>& primary_key, const Gnome::Gda::Value& primary_key_value);
 
   virtual sharedptr<Field> get_field_primary_key() const;
 
-  void print_layout_group(xmlpp::Element* node_parent, const LayoutGroup& group);
+  void print_layout_group(xmlpp::Element* node_parent, const sharedptr<const LayoutGroup>& group);
 
   //Signal handlers:
   virtual void on_button_new();
@@ -90,8 +90,8 @@ protected:
   //Signal handler: The last arg is bind-ed.
   //virtual void on_related_user_requested_details(Gnome::Gda::Value key_value, Glib::ustring strTableName);
 
-  virtual void on_flowtable_field_edited(const LayoutItem_Field& id, const Gnome::Gda::Value& value);
-  virtual void on_flowtable_field_open_details_requested(const LayoutItem_Field& id, const Gnome::Gda::Value& value);
+  virtual void on_flowtable_field_edited(const sharedptr<const LayoutItem_Field>& id, const Gnome::Gda::Value& value);
+  virtual void on_flowtable_field_open_details_requested(const sharedptr<const LayoutItem_Field>& id, const Gnome::Gda::Value& value);
   virtual void on_flowtable_related_record_changed(const Glib::ustring& relationship_name);
   virtual void on_flowtable_requested_related_details(const Glib::ustring& table_name, Gnome::Gda::Value primary_key_value);
 

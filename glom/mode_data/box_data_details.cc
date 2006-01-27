@@ -211,7 +211,7 @@ bool Box_Data_Details::fill_from_database()
       if(table_privs.m_view)
       {
         //Add extra possibly-non-visible columns that we need:
-        sharedptr<LayoutItem_Field> layout_item(new LayoutItem_Field);
+        sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
         layout_item->set_full_field_details(m_field_primary_key);
         fieldsToGet.push_back(layout_item);
 
@@ -261,7 +261,7 @@ bool Box_Data_Details::fill_from_database()
                 value = GlomConversions::get_empty_value(layout_item->get_glom_type());
               }
 
-              m_FlowTable.set_field_value(*layout_item, value);
+              m_FlowTable.set_field_value(layout_item, value);
             }
           }
         }
@@ -360,12 +360,12 @@ void Box_Data_Details::on_button_nav_last()
     signal_nav_last().emit();
 }
 
-Gnome::Gda::Value Box_Data_Details::get_entered_field_data(const LayoutItem_Field& field) const
+Gnome::Gda::Value Box_Data_Details::get_entered_field_data(const sharedptr<const LayoutItem_Field>& field) const
 {
   return m_FlowTable.get_field_value(field);
 }
 
-void Box_Data_Details::set_entered_field_data(const LayoutItem_Field& field, const Gnome::Gda::Value& value)
+void Box_Data_Details::set_entered_field_data(const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value)
 {
   m_FlowTable.set_field_value(field, value);
 }
@@ -395,8 +395,8 @@ void Box_Data_Details::recalculate_fields_for_related_records(const Glib::ustrin
       calculate_field(field, m_field_primary_key, primary_key_value); //And any dependencies.
 
       //Calculate anything that depends on this.
-      LayoutItem_Field layout_item;
-      layout_item.set_full_field_details(field);
+      sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
+      layout_item->set_full_field_details(field);
 
       do_calculations(layout_item, m_field_primary_key, primary_key_value, false /* recurse, reusing m_FieldsCalculationInProgress */);
     }
@@ -468,13 +468,14 @@ Box_Data_Details::type_signal_requested_related_details Box_Data_Details::signal
 void Box_Data_Details::on_flowtable_layout_changed()
 {
   //Get new layout:
-  Document_Glom::type_mapLayoutGroupSequence layout_groups;
-  m_FlowTable.get_layout_groups(layout_groups);
+  //Document_Glom::type_mapLayoutGroupSequence layout_groups;
+  //m_FlowTable.get_layout_groups(layout_groups);
 
   //Store it in the document:
   Document_Glom* document = get_document();
-  if(document)
-    document->set_data_layout_groups(m_layout_name, m_strTableName, layout_groups);
+  document->set_modified();
+  //if(document)
+  //  document->set_data_layout_groups(m_layout_name, m_strTableName, layout_groups);
 
   //Build the view again from the new layout:
   create_layout();
@@ -496,24 +497,24 @@ void Box_Data_Details::on_flowtable_related_record_changed(const Glib::ustring& 
   recalculate_fields_for_related_records(relationship_name);
 }
 
-void Box_Data_Details::on_flowtable_field_open_details_requested(const LayoutItem_Field& layout_field, const Gnome::Gda::Value& field_value)
+void Box_Data_Details::on_flowtable_field_open_details_requested(const sharedptr<const LayoutItem_Field>& layout_field, const Gnome::Gda::Value& field_value)
 {
   if(GlomConversions::value_is_empty(field_value))
     return; //Ignore empty ID fields.
 
-  sharedptr<Relationship> relationship = get_document()->get_field_used_in_relationship_to_one(m_strTableName, layout_field.get_name());
+  sharedptr<Relationship> relationship = get_document()->get_field_used_in_relationship_to_one(m_strTableName, layout_field->get_name());
   if(relationship)
   {
     signal_requested_related_details().emit(relationship->get_to_table(), field_value);
   }
 }
 
-void Box_Data_Details::on_flowtable_field_edited(const LayoutItem_Field& layout_field, const Gnome::Gda::Value& field_value)
+void Box_Data_Details::on_flowtable_field_edited(const sharedptr<const LayoutItem_Field>& layout_field, const Gnome::Gda::Value& field_value)
 {
   if(m_ignore_signals)
     return;
 
-  const Glib::ustring strFieldName = layout_field.get_name();
+  const Glib::ustring strFieldName = layout_field->get_name();
 
   Gnome::Gda::Value primary_key_value = get_primary_key_value();
   if(!GlomConversions::value_is_empty(primary_key_value)) //If there is not a primary key value:
@@ -522,7 +523,7 @@ void Box_Data_Details::on_flowtable_field_edited(const LayoutItem_Field& layout_
     sharedptr<Field> primary_key_field;
     Gnome::Gda::Value primary_key_value;
 
-    if(!layout_field.get_has_relationship_name())
+    if(!layout_field->get_has_relationship_name())
     {
       table_name = get_table_name();
       primary_key_field = m_field_primary_key;
@@ -532,7 +533,7 @@ void Box_Data_Details::on_flowtable_field_edited(const LayoutItem_Field& layout_
     {
       //If it's a related field then discover the actual table that it's in,
       //plus how to identify the record in that table.
-      const Glib::ustring relationship_name = layout_field.get_relationship_name();
+      const Glib::ustring relationship_name = layout_field->get_relationship_name();
 
       Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
 
@@ -546,12 +547,12 @@ void Box_Data_Details::on_flowtable_field_edited(const LayoutItem_Field& layout_
         if(primary_key_field)
         {
           //Get the value of the corresponding key in the current table (that identifies the record in the table that we will change)
-          LayoutItem_Field layout_item;
-          layout_item.set_name(relationship->get_from_field());
+          sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
+          layout_item->set_full_field_details( document->get_field(relationship->get_from_table(), relationship->get_from_field()) );
 
           primary_key_value = get_entered_field_data(layout_item);
 
-          bool test = add_related_record_for_field(layout_field, relationship, primary_key_field, primary_key_value);
+          const bool test = add_related_record_for_field(layout_field, relationship, primary_key_field, primary_key_value);
           if(!test)
             return;
 
@@ -567,10 +568,10 @@ void Box_Data_Details::on_flowtable_field_edited(const LayoutItem_Field& layout_
       }
     }
 
-    //const sharedptr<const Field>& field = layout_field.m_field;
+    //const sharedptr<const Field>& field = layout_field->m_field;
 
     //Set the value in all instances of this field in the layout (The field might be on the layout more than once):
-    if(layout_field.get_glom_type() != Field::TYPE_IMAGE) //TODO For now, don't do this for images, because the ImageGlom widget expects a broken GdaValue, because gda_value_get_binary() needs to be fixed.
+    if(layout_field->get_glom_type() != Field::TYPE_IMAGE) //TODO For now, don't do this for images, because the ImageGlom widget expects a broken GdaValue, because gda_value_get_binary() needs to be fixed.
       m_FlowTable.set_field_value(layout_field, field_value);
 
     //Update the field in the record (the record with this primary key):
@@ -664,14 +665,14 @@ void Box_Data_Details::on_flowtable_field_edited(const LayoutItem_Field& layout_
   } //if(get_primary_key_value().size())
 }
 
-void Box_Data_Details::refresh_related_fields(const Gtk::TreeModel::iterator& /* row */, const LayoutItem_Field& field_changed, const Gnome::Gda::Value& /* field_value */, const sharedptr<const Field>& primary_key, const Gnome::Gda::Value& primary_key_value)
+void Box_Data_Details::refresh_related_fields(const Gtk::TreeModel::iterator& /* row */, const sharedptr<const LayoutItem_Field>& field_changed, const Gnome::Gda::Value& /* field_value */, const sharedptr<const Field>& primary_key, const Gnome::Gda::Value& primary_key_value)
 {
-  if(field_changed.get_has_relationship_name())
+  if(field_changed->get_has_relationship_name())
     return; //TODO: Handle these too.
 
   //Get values for lookup fields, if this field triggers those relationships:
   //TODO_performance: There is a LOT of iterating and copying here.
-  const Glib::ustring strFieldName = field_changed.get_name();
+  const Glib::ustring strFieldName = field_changed->get_name();
   type_vecLayoutFields fieldsToGet = get_related_fields(strFieldName);
 
   if(!fieldsToGet.empty())
@@ -699,7 +700,7 @@ void Box_Data_Details::refresh_related_fields(const Gtk::TreeModel::iterator& /*
           //g_warning("list fill: field_name=%s", iterFields->get_name().c_str());
           //g_warning("  value_as_string=%s", value.to_string().c_str());
 
-          m_FlowTable.set_field_value(*layout_item, value);
+          m_FlowTable.set_field_value(layout_item, value);
 
           ++iterFields;
         }
@@ -708,21 +709,21 @@ void Box_Data_Details::refresh_related_fields(const Gtk::TreeModel::iterator& /*
   }
 }
 
-void Box_Data_Details::do_lookups(const Gtk::TreeModel::iterator& /* row */, const LayoutItem_Field& field_changed, const Gnome::Gda::Value& field_value, const sharedptr<const Field>& primary_key, const Gnome::Gda::Value& primary_key_value)
+void Box_Data_Details::do_lookups(const Gtk::TreeModel::iterator& /* row */, const sharedptr<const LayoutItem_Field>& field_changed, const Gnome::Gda::Value& field_value, const sharedptr<const Field>& primary_key, const Gnome::Gda::Value& primary_key_value)
 {
-   if(field_changed.get_has_relationship_name())
+   if(field_changed->get_has_relationship_name())
     return; //TODO: Handle these too.
 
    //Get values for lookup fields, if this field triggers those relationships:
    //TODO_performance: There is a LOT of iterating and copying here.
-   const Glib::ustring strFieldName = field_changed.get_name();
+   const Glib::ustring strFieldName = field_changed->get_name();
    const type_list_lookups lookups = get_lookup_fields(strFieldName);
    for(type_list_lookups::const_iterator iter = lookups.begin(); iter != lookups.end(); ++iter)
    {
-     const LayoutItem_Field& layout_item = iter->first;
+     sharedptr<const LayoutItem_Field> layout_item = iter->first;
 
      sharedptr<const Relationship> relationship = iter->second;
-     const sharedptr<const Field>& field_lookup = layout_item.get_full_field_details();
+     const sharedptr<const Field>& field_lookup = layout_item->get_full_field_details();
      const Glib::ustring field_lookup_name = field_lookup->get_name();
 
      sharedptr<const Field> field_source = get_fields_for_table_one_field(relationship->get_to_table(), field_lookup->get_lookup_field());
@@ -731,7 +732,7 @@ void Box_Data_Details::do_lookups(const Gtk::TreeModel::iterator& /* row */, con
        Gnome::Gda::Value value = get_lookup_value(iter->second /* relationship */,  field_source /* the field to look in to get the value */, field_value /* Value of to and from fields */);
 
        //Add it to the view:
-       //TODO? layout_item.set_relationship_name();
+       //TODO? layout_item->set_relationship_name();
        set_entered_field_data(layout_item, value);
 
        //Add it to the database (even if it is not shown in the view)
@@ -750,29 +751,29 @@ sharedptr<Field> Box_Data_Details::get_field_primary_key() const
   return m_field_primary_key;
 }
 
-void Box_Data_Details::print_layout_group(xmlpp::Element* node_parent, const LayoutGroup& group)
+void Box_Data_Details::print_layout_group(xmlpp::Element* node_parent, const sharedptr<const LayoutGroup>& group)
 {
   xmlpp::Element* nodeChildGroup = node_parent->add_child("group");
-  nodeChildGroup->set_attribute("title", group.get_title());
+  nodeChildGroup->set_attribute("title", group->get_title());
 
-  LayoutGroup::type_map_const_items items = group.get_items();
+  LayoutGroup::type_map_const_items items = group->get_items();
   for(LayoutGroup::type_map_const_items::const_iterator iter = items.begin(); iter != items.end(); ++iter)
   {
-    const LayoutItem* layout_item = iter->second;
+    sharedptr<const LayoutItem> layout_item = iter->second;
 
-    const LayoutGroup* pLayoutGroup = dynamic_cast<const LayoutGroup*>(layout_item);
+    sharedptr<const LayoutGroup> pLayoutGroup = sharedptr<const LayoutGroup>::cast_dynamic(layout_item);
     if(pLayoutGroup)
-      print_layout_group(nodeChildGroup, *pLayoutGroup); //recurse
+      print_layout_group(nodeChildGroup, pLayoutGroup); //recurse
     else
     {
-      const LayoutItem_Field* pLayoutField = dynamic_cast<const LayoutItem_Field*>(layout_item);
+      sharedptr<const LayoutItem_Field> pLayoutField = sharedptr<const LayoutItem_Field>::cast_dynamic(layout_item);
       if(pLayoutField)
       {
         xmlpp::Element* nodeField = nodeChildGroup->add_child("field");
 
         nodeField->set_attribute("title", pLayoutField->get_title_or_name());
 
-        Gnome::Gda::Value value = m_FlowTable.get_field_value(*pLayoutField);
+        Gnome::Gda::Value value = m_FlowTable.get_field_value(pLayoutField);
         const Glib::ustring text_representation = GlomConversions::get_text_for_gda_value(pLayoutField->get_glom_type(), value,
           pLayoutField->get_formatting_used().m_numeric_format); //In the current locale.
 
@@ -780,7 +781,7 @@ void Box_Data_Details::print_layout_group(xmlpp::Element* node_parent, const Lay
       }
       else
       {
-        const LayoutItem_Portal* pLayoutPortal = dynamic_cast<const LayoutItem_Portal*>(layout_item);
+        sharedptr<const LayoutItem_Portal> pLayoutPortal = sharedptr<const LayoutItem_Portal>::cast_dynamic(layout_item);
         if(pLayoutPortal)
         {
           xmlpp::Element* nodePortal = nodeChildGroup->add_child("related_records");
@@ -838,7 +839,7 @@ void Box_Data_Details::print_layout()
     Document_Glom::type_mapLayoutGroupSequence layout_groups = get_data_layout_groups(m_layout_name);
     for(Document_Glom::type_mapLayoutGroupSequence::const_iterator iter = layout_groups.begin(); iter != layout_groups.end(); ++iter)
     {
-      const LayoutGroup& layout_group = iter->second;
+      sharedptr<const LayoutGroup> layout_group = iter->second;
       print_layout_group(nodeParent, layout_group);
     }
 

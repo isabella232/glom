@@ -39,7 +39,7 @@ public:
   explicit ComboGlom();
 
   ///You must call set_layout_item() to specify the field type and formatting of the main column.
-  explicit ComboGlom(const LayoutItem_Field& field_second);
+  explicit ComboGlom(const sharedptr<LayoutItem_Field>& field_second);
 
   virtual ~ComboGlom();
 

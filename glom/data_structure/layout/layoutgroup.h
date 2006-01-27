@@ -39,8 +39,8 @@ public:
 
   bool has_field(const Glib::ustring& field_name) const;
 
-  LayoutItem* add_item(const LayoutItem& item);
-  LayoutItem* add_item(const LayoutItem& item, guint sequence);
+  sharedptr<LayoutItem> add_item(const sharedptr<LayoutItem>& item);
+  sharedptr<LayoutItem> add_item(const sharedptr<LayoutItem>& item, guint sequence);
 //  void add_item(const LayoutGroup& item);
 //  void add_item(const LayoutGroup& item, guint sequence);
 
@@ -49,14 +49,14 @@ public:
 
   void remove_all_items();
 
-  virtual void debug(guint level = 0) const;
+  //virtual void debug(guint level = 0) const;
 
   guint m_columns_count;
 
-  typedef std::map<int, LayoutItem*> type_map_items;
+  typedef std::map<int, sharedptr<LayoutItem> > type_map_items;
   type_map_items get_items();
 
-  typedef std::map<int, const LayoutItem*> type_map_const_items;
+  typedef std::map<int, sharedptr<const LayoutItem> > type_map_const_items;
   type_map_const_items get_items() const;
 
   virtual Glib::ustring get_part_type_name() const;

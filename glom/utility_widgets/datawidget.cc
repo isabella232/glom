@@ -38,14 +38,14 @@ DataWidget::DataWidget(Field::glom_field_type glom_type, const Glib::ustring& ti
   m_pMenuPopup(0)
 */
 
-DataWidget::DataWidget(const LayoutItem_Field& field, const Glib::ustring& table_name, const Document_Glom* document)
+DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ustring& table_name, const Document_Glom* document)
 {
-  const Field::glom_field_type glom_type = field.get_glom_type();
-  set_layout_item(field.clone(), table_name); //takes ownership
+  const Field::glom_field_type glom_type = field->get_glom_type();
+  set_layout_item(field, table_name);
 
   m_child = 0;
   LayoutWidgetField* pFieldWidget = 0;
-  const Glib::ustring title = field.get_title_or_name();
+  const Glib::ustring title = field->get_title_or_name();
   if(glom_type == Field::TYPE_BOOLEAN)
   {
     Gtk::CheckButton* checkbutton = Gtk::manage( new Gtk::CheckButton( title ) );
@@ -82,27 +82,27 @@ DataWidget::DataWidget(const LayoutItem_Field& field, const Glib::ustring& table
     m_label.show();
 
     //Use a Combo if there is a drop-down of choices (A "value list"), else an Entry:
-    if(field.get_formatting_used().get_has_choices())
+    if(field->get_formatting_used().get_has_choices())
     {
       ComboGlomChoicesBase* combo = 0; //Gtk::manage(new ComboEntryGlom());
 
-      if(field.get_formatting_used().get_has_custom_choices())
+      if(field->get_formatting_used().get_has_custom_choices())
       {
-        if(field.get_formatting_used().get_choices_restricted())
+        if(field->get_formatting_used().get_choices_restricted())
           combo = Gtk::manage(new ComboGlom());
         else
           combo = Gtk::manage(new ComboEntryGlom());
 
         //set_choices() needs this, for the numeric layout:
-        combo->set_layout_item(get_layout_item()->clone(), table_name); //TODO_Performance: We only need this for the numerical format.
+        combo->set_layout_item( get_layout_item(), table_name);
 
-        combo->set_choices( field.get_formatting_used().get_choices_custom() );
+        combo->set_choices( field->get_formatting_used().get_choices_custom() );
       }
-      else if(field.get_formatting_used().get_has_related_choices())
+      else if(field->get_formatting_used().get_has_related_choices())
       {
         sharedptr<Relationship> choice_relationship;
         Glib::ustring choice_field, choice_second;
-        field.get_formatting_used().get_choices(choice_relationship, choice_field, choice_second);
+        field->get_formatting_used().get_choices(choice_relationship, choice_field, choice_second);
         if(choice_relationship && !choice_field.empty())
         {
           const Glib::ustring to_table = choice_relationship->get_to_table();
@@ -113,25 +113,25 @@ DataWidget::DataWidget(const LayoutItem_Field& field, const Glib::ustring& table
           {
             sharedptr<Field> field_second = document->get_field(to_table, choice_second);
 
-            LayoutItem_Field layout_field_second;
-            layout_field_second.set_full_field_details(field_second);
-            //We use the default formatting for this field.
+            sharedptr<LayoutItem_Field> layout_field_second = sharedptr<LayoutItem_Field>::create();
+            layout_field_second->set_full_field_details(field_second);
+            //We use the default formatting for this field->
 
-            if(field.get_formatting_used().get_choices_restricted())
+            if(field->get_formatting_used().get_choices_restricted())
               combo = Gtk::manage(new ComboGlom(layout_field_second));
             else
               combo = Gtk::manage(new ComboEntryGlom(layout_field_second));
           }
           else
           {
-            if(field.get_formatting_used().get_choices_restricted())
+            if(field->get_formatting_used().get_choices_restricted())
               combo = Gtk::manage(new ComboGlom());
             else
               combo = Gtk::manage(new ComboEntryGlom());
           }
 
           //set_choices() needs this, for the numeric layout:
-          combo->set_layout_item(get_layout_item()->clone(), table_name);
+          combo->set_layout_item( get_layout_item(), table_name);
 
           combo->set_choices_with_second( GlomUtils::get_choice_values(field) );
         }
@@ -145,7 +145,7 @@ DataWidget::DataWidget(const LayoutItem_Field& field, const Glib::ustring& table
     }
     else
     {
-      if(field.get_formatting_used().get_text_format_multiline())
+      if(field->get_formatting_used().get_text_format_multiline())
       {
         TextViewGlom* textview = Gtk::manage(new TextViewGlom(glom_type));
         pFieldWidget = textview;
@@ -156,7 +156,7 @@ DataWidget::DataWidget(const LayoutItem_Field& field, const Glib::ustring& table
         pFieldWidget = entry;
       }
 
-      pFieldWidget->set_layout_item(get_layout_item()->clone(), table_name); //TODO_Performance: We only need this for the numerical format.
+      pFieldWidget->set_layout_item( get_layout_item(), table_name); //TODO_Performance: We only need this for the numerical format.
     }
   }
   
@@ -170,8 +170,8 @@ DataWidget::DataWidget(const LayoutItem_Field& field, const Glib::ustring& table
 
 
     m_child = dynamic_cast<Gtk::Widget*>(pFieldWidget);
-    int width = get_suitable_width(field);
-    
+    const int width = get_suitable_width(field);
+
     if(glom_type == Field::TYPE_IMAGE) //GtkImage widgets default to no size (invisible) if they are empty.
       m_child->set_size_request(width, width);
     else
@@ -183,7 +183,7 @@ DataWidget::DataWidget(const LayoutItem_Field& field, const Glib::ustring& table
   if(m_child)
   {
     bool child_added = false; //Don't use an extra container unless necessary.
-    if(document->get_field_used_in_relationship_to_one(table_name, field.get_name()))
+    if(document->get_field_used_in_relationship_to_one(table_name, field->get_name()))
     {
       Gtk::HBox* hbox_parent = Gtk::manage( new Gtk::HBox() ); //We put the child (and any extra stuff) in this:
       hbox_parent->set_spacing(6);
@@ -277,11 +277,11 @@ const Gtk::Label* DataWidget::get_label() const
   return &m_label;
 }
 
-int DataWidget::get_suitable_width(const LayoutItem_Field& field_layout)
+int DataWidget::get_suitable_width(const sharedptr<const LayoutItem_Field>& field_layout)
 {
   int result = 150;
 
-  const Field::glom_field_type field_type = field_layout.get_glom_type();
+  const Field::glom_field_type field_type = field_layout->get_glom_type();
 
   Glib::ustring example_text;
   switch(field_type)
@@ -312,7 +312,7 @@ int DataWidget::get_suitable_width(const LayoutItem_Field& field_layout)
     case(Field::TYPE_TEXT):
     case(Field::TYPE_IMAGE): //Give images the same width as text fields, so they will often line up.
     {
-      //if(!field_layout.get_text_format_multiline()) //Use the full width for multi-line text.
+      //if(!field_layout->get_text_format_multiline()) //Use the full width for multi-line text.
         example_text = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
       break;
     }
@@ -475,9 +475,14 @@ bool DataWidget::on_button_press_event(GdkEventButton *event)
   return Gtk::EventBox::on_button_press_event(event);
 }
 
-bool DataWidget::offer_field_list(const Glib::ustring& table_name, LayoutItem_Field& field)
+sharedptr<LayoutItem_Field> DataWidget::offer_field_list(const Glib::ustring& table_name)
 {
-  bool result = false;
+  return offer_field_list(table_name, sharedptr<LayoutItem_Field>());
+}
+
+sharedptr<LayoutItem_Field> DataWidget::offer_field_list(const Glib::ustring& table_name, const sharedptr<const LayoutItem_Field>& start_field)
+{
+  sharedptr<LayoutItem_Field> result;
 
   try
   {
@@ -488,15 +493,14 @@ bool DataWidget::offer_field_list(const Glib::ustring& table_name, LayoutItem_Fi
 
     if(dialog)
     {
-      dialog->set_document(get_document(), table_name, field);
+      dialog->set_document(get_document(), table_name, start_field);
       dialog->set_transient_for(*get_application());
       int response = dialog->run();
       dialog->hide();
       if(response == Gtk::RESPONSE_OK)
       {
         //Get the chosen field:
-        const bool test  = dialog->get_field_chosen(field);
-        result = test;
+        result = dialog->get_field_chosen();
       }
 
       delete dialog;
@@ -510,9 +514,9 @@ bool DataWidget::offer_field_list(const Glib::ustring& table_name, LayoutItem_Fi
   return result;
 }
 
-bool DataWidget::offer_field_layout( LayoutItem_Field& field)
+sharedptr<LayoutItem_Field> DataWidget::offer_field_layout(const sharedptr<const LayoutItem_Field>& start_field)
 {
-  bool result = false;
+  sharedptr<LayoutItem_Field> result;
 
   try
   {
@@ -524,15 +528,14 @@ bool DataWidget::offer_field_layout( LayoutItem_Field& field)
     if(dialog)
     {
       add_view(dialog); //Give it access to the document.
-      dialog->set_field(field, m_table_name);
+      dialog->set_field(start_field, m_table_name);
       dialog->set_transient_for(*get_application());
-      int response = dialog->run();
+      const int response = dialog->run();
       dialog->hide();
       if(response == Gtk::RESPONSE_OK)
       {
         //Get the chosen field:
-        const bool test = dialog->get_field_chosen(field);
-        result = test;
+        result = dialog->get_field_chosen();
       }
 
       remove_view(dialog);
@@ -558,12 +561,13 @@ void DataWidget::on_menupopup_activate_layout()
 {
   //finish_editing();
 
-  LayoutItem_Field* layoutField = dynamic_cast<LayoutItem_Field*>(get_layout_item());
+  sharedptr<LayoutItem_Field> layoutField = sharedptr<LayoutItem_Field>::cast_dynamic(get_layout_item());
   if(layoutField)
   {
-    bool test = offer_field_list(m_table_name, *layoutField);
-    if(test)
+    sharedptr<LayoutItem_Field> itemchosen = offer_field_list(m_table_name, layoutField);
+    if(itemchosen)
     {
+      *layoutField = *itemchosen;
       signal_layout_changed().emit();
     }
   }
@@ -573,12 +577,13 @@ void DataWidget::on_menupopup_activate_layout_properties()
 {
   //finish_editing();
 
-  LayoutItem_Field* layoutField = dynamic_cast<LayoutItem_Field*>(get_layout_item());
+  sharedptr<LayoutItem_Field> layoutField = sharedptr<LayoutItem_Field>::cast_dynamic(get_layout_item());
   if(layoutField)
   {
-    bool test = offer_field_layout(*layoutField);
-    if(test)
+    sharedptr<LayoutItem_Field> itemchosen = offer_field_layout(layoutField);
+    if(itemchosen)
     {
+      set_layout_item(itemchosen, m_table_name);
       signal_layout_changed().emit();
     }
   }
@@ -637,7 +642,7 @@ const Gtk::Widget* DataWidget::get_data_child_widget() const
      m_signal_edited.emit(chosen_id);
    }
  }
- 
+
  bool DataWidget::offer_related_record_id_find(Gnome::Gda::Value& chosen_id)
  {
   bool result = false;
@@ -660,7 +665,7 @@ const Gtk::Widget* DataWidget::get_data_child_widget() const
 
       //Discover the related table, in the relationship that uses this ID field:
       Glib::ustring related_table_name;
-      LayoutItem_Field* layoutField = dynamic_cast<LayoutItem_Field*>(get_layout_item());
+      sharedptr<LayoutItem_Field> layoutField = sharedptr<LayoutItem_Field>::cast_dynamic(get_layout_item());
       if(layoutField)
       {
         sharedptr<Relationship> relationship = get_document()->get_field_used_in_relationship_to_one(m_table_name, layoutField->get_name());

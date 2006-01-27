@@ -37,7 +37,7 @@ public:
   /**
    * @param portal: The full portal details
    */
-  virtual bool init_db_details(const LayoutItem_Portal& portal);
+  virtual bool init_db_details(const sharedptr<const LayoutItem_Portal>& portal);
 
   /**
    * @param foreign_key_value: The value that should be found in this table.
@@ -75,7 +75,7 @@ protected:
   Gtk::Label m_Label;
   Dialog_Layout_List_Related* m_pDialogLayoutRelated;
 
-  LayoutItem_Portal m_portal;
+  sharedptr<LayoutItem_Portal> m_portal;
   sharedptr<Field> m_key_field;
   Gnome::Gda::Value m_key_value;
 

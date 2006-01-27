@@ -49,14 +49,14 @@ public:
     Gtk::TreeModelColumn<enumType> m_col_type;
     Gtk::TreeModelColumn<Glib::ustring> m_col_name;
     Gtk::TreeModelColumn< sharedptr<Relationship> > m_col_relationship; //Only for fields
-    Gtk::TreeModelColumn<LayoutItem_Field> m_col_field_formatting; //Only for fields
+    Gtk::TreeModelColumn< sharedptr<LayoutItem_Field> > m_col_field_formatting; //Only for fields
     Gtk::TreeModelColumn<Glib::ustring> m_col_title; //only for groups
     Gtk::TreeModelColumn<bool> m_col_editable; 
     Gtk::TreeModelColumn<guint> m_col_sequence;
     Gtk::TreeModelColumn<guint> m_col_columns_count; //Only for groups.
 
     Gtk::TreeModelColumn<Glib::ustring> m_col_portal_relationship; //Only for portals.
-    Gtk::TreeModelColumn<LayoutItem_Portal> m_col_portal;
+    Gtk::TreeModelColumn< sharedptr<LayoutItem_Portal> > m_col_portal;
   };
 
   ModelColumns m_columns;

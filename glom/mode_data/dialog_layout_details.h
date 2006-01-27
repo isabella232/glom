@@ -40,8 +40,8 @@ public:
 
 protected:
 
-  virtual void add_group(const Gtk::TreeModel::iterator& parent, const LayoutGroup& group);
-  virtual void fill_group(const Gtk::TreeModel::iterator& iter, LayoutGroup& group);
+  virtual void add_group(const Gtk::TreeModel::iterator& parent, const sharedptr<const LayoutGroup>& group);
+  virtual void fill_group(const Gtk::TreeModel::iterator& iter, const sharedptr<LayoutGroup>& group);
 
   //Enable/disable buttons, depending on treeview selection:
   virtual void enable_buttons();
@@ -49,8 +49,9 @@ protected:
   virtual void save_to_document();
 
   sharedptr<Relationship> offer_relationship_list();
-  bool offer_field_list(LayoutItem_Field& field);
-  bool offer_field_layout(LayoutItem_Field& field);
+  sharedptr<LayoutItem_Field> offer_field_list();
+  sharedptr<LayoutItem_Field> offer_field_list(const sharedptr<const LayoutItem_Field>& start_field);
+  sharedptr<LayoutItem_Field> offer_field_layout(const sharedptr<const LayoutItem_Field>& start_field);
   Gtk::TreeModel::iterator get_selected_group_parent() const;
 
   //signal handlers:

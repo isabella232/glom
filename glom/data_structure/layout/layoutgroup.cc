@@ -34,7 +34,7 @@ LayoutGroup::LayoutGroup(const LayoutGroup& src)
   //Deep copy of the items map:
   for(type_map_items::const_iterator iter = src.m_map_items.begin(); iter != src.m_map_items.end(); ++iter)
   {
-    m_map_items[iter->first] = iter->second->clone();
+    m_map_items[iter->first] = sharedptr<LayoutItem>(iter->second->clone());
   }
 }
 
@@ -46,13 +46,6 @@ LayoutGroup::~LayoutGroup()
 void LayoutGroup::remove_all_items()
 {
   //Delete the items:
-  for(type_map_items::iterator iter = m_map_items.begin(); iter != m_map_items.end(); ++iter)
-  {
-    LayoutItem* item = iter->second;
-    if(item)
-      delete item;
-  }
-
   m_map_items.clear();
 }
 
@@ -74,10 +67,10 @@ LayoutGroup& LayoutGroup::operator=(const LayoutGroup& src)
     remove_all_items();
     for(type_map_items::const_iterator iter = src.m_map_items.begin(); iter != src.m_map_items.end(); ++iter)
     {
-      m_map_items[iter->first] = iter->second->clone();
+      m_map_items[iter->first] = sharedptr<LayoutItem>(iter->second->clone());
     }
   }
-  
+
   return *this;
 }
 
@@ -85,7 +78,8 @@ bool LayoutGroup::has_field(const Glib::ustring& field_name) const
 {
   for(type_map_items::const_iterator iter = m_map_items.begin(); iter != m_map_items.end(); ++iter)
   {
-    LayoutItem_Field* field_item = dynamic_cast<LayoutItem_Field*>(iter->second);
+    sharedptr<LayoutItem> item = iter->second;
+    sharedptr<LayoutItem_Field> field_item = sharedptr<LayoutItem_Field>::cast_dynamic(item);
     if(field_item)
     {
       if(field_item->get_name() == field_name)
@@ -94,7 +88,7 @@ bool LayoutGroup::has_field(const Glib::ustring& field_name) const
     else
     {
       //Recurse into the child groups:
-      LayoutGroup* group_item = dynamic_cast<LayoutGroup*>(iter->second);
+      sharedptr<LayoutGroup> group_item = sharedptr<LayoutGroup>::cast_dynamic(item);
       if(group_item)
       {
         if(group_item->has_field(field_name))
@@ -106,7 +100,7 @@ bool LayoutGroup::has_field(const Glib::ustring& field_name) const
   return false;
 }
 
-LayoutItem* LayoutGroup::add_item(const LayoutItem& item)
+sharedptr<LayoutItem> LayoutGroup::add_item(const sharedptr<LayoutItem>& item)
 {
   //Get next available sequence:
   guint sequence = 0;
@@ -118,24 +112,29 @@ LayoutItem* LayoutGroup::add_item(const LayoutItem& item)
   return add_item(item, sequence);
 }
 
-LayoutItem* LayoutGroup::add_item(const LayoutItem& item, guint sequence)
+sharedptr<LayoutItem> LayoutGroup::add_item(const sharedptr<LayoutItem>& item, guint sequence)
 {
-/*
-  if(m_map_items.find(sequence) != m_map_items.end())
+  sharedptr<LayoutItem> result;
+
+  if(item)
   {
-    g_warning("LayoutGroup::add_item(item, sequence): Replacing item: item.name = %s, sequence=%d", item.get_name().c_str(), sequence);
+  /*
+    if(m_map_items.find(sequence) != m_map_items.end())
+    {
+      g_warning("LayoutGroup::add_item(item, sequence): Replacing item: item.name = %s, sequence=%d", item.get_name().c_str(), sequence);
+    }
+  */
+
+    //Delete any existing item at this position:
+    remove_item(sequence);
+
+    //Add the new item:
+    result = item;
+    m_map_items[sequence] = result;
+    m_map_items[sequence]->m_sequence = sequence;
   }
-*/
 
-  //Delete any existing item at this position:
-  remove_item(sequence);
-
-  //Add the new item:
-  LayoutItem* pStoredItem = item.clone(); //Deleted in LayoutGroup destructor.
-  m_map_items[sequence] = pStoredItem;
-  m_map_items[sequence]->m_sequence = sequence;
-
-  return pStoredItem;
+  return result;
 }
 
 void LayoutGroup::remove_item(guint sequence)
@@ -144,12 +143,6 @@ void LayoutGroup::remove_item(guint sequence)
   type_map_items::iterator iterFind = m_map_items.find(sequence);
   if(iterFind != m_map_items.end())
   {
-    if(iterFind->second)
-    {
-      delete iterFind->second;
-      iterFind->second = 0;
-    }
-
     m_map_items.erase(iterFind);
   }
 }
@@ -200,7 +193,8 @@ void LayoutGroup::change_related_field_item_name(const Glib::ustring& table_name
   //Look at each item:
   for(LayoutGroup::type_map_items::iterator iterItem = m_map_items.begin(); iterItem != m_map_items.end(); ++iterItem)
   {
-    LayoutItem_Field* field_item = dynamic_cast<LayoutItem_Field*>(iterItem->second);
+    sharedptr<LayoutItem> item = iterItem->second;
+    sharedptr<LayoutItem_Field> field_item = sharedptr<LayoutItem_Field>::cast_dynamic(item);
     if(field_item)
     {
       if(field_item->get_has_relationship_name()) //If it's related table.
@@ -218,7 +212,7 @@ void LayoutGroup::change_related_field_item_name(const Glib::ustring& table_name
     }
     else
     {
-      LayoutGroup* sub_group = dynamic_cast<LayoutGroup*>(iterItem->second);
+      sharedptr<LayoutGroup> sub_group = sharedptr<LayoutGroup>::cast_dynamic(item);
       if(sub_group)
         sub_group->change_field_item_name(table_name, field_name, field_name_new);
     }
@@ -230,7 +224,8 @@ void LayoutGroup::change_field_item_name(const Glib::ustring& table_name, const 
   //Look at each item:
   for(LayoutGroup::type_map_items::iterator iterItem = m_map_items.begin(); iterItem != m_map_items.end(); ++iterItem)
   {
-    LayoutItem_Field* field_item = dynamic_cast<LayoutItem_Field*>(iterItem->second);
+    sharedptr<LayoutItem> item = iterItem->second;
+    sharedptr<LayoutItem_Field> field_item = sharedptr<LayoutItem_Field>::cast_dynamic(item);
     if(field_item)
     {
       if(field_item->get_has_relationship_name()) //If it's a related table (this would be a self-relationship)
@@ -255,7 +250,7 @@ void LayoutGroup::change_field_item_name(const Glib::ustring& table_name, const 
     }
     else
     {
-      LayoutGroup* sub_group = dynamic_cast<LayoutGroup*>(iterItem->second);
+      sharedptr<LayoutGroup> sub_group = sharedptr<LayoutGroup>::cast_dynamic(item);
       if(sub_group)
         sub_group->change_field_item_name(table_name, field_name, field_name_new);
     }
@@ -297,10 +292,11 @@ Glib::ustring LayoutGroup::get_part_type_name() const
   return _("Group");
 }
 
+/*
 void LayoutGroup::debug(guint level) const
 {
   g_warning("LayoutGroup::debug() level =%d", level);
-  
+
   for(type_map_items::const_iterator iter = m_map_items.begin(); iter != m_map_items.end(); ++iter)
   {
     const LayoutGroup* group = dynamic_cast<const LayoutGroup*>(iter->second);
@@ -316,3 +312,5 @@ void LayoutGroup::debug(guint level) const
     }
   }
 }
+*/
+

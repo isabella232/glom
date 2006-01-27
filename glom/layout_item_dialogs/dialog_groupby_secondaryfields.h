@@ -59,7 +59,7 @@ protected:
     ModelColumns_Fields()
     { add(m_col_layout_item); add(m_col_sequence); }
 
-    Gtk::TreeModelColumn<LayoutItem_Field> m_col_layout_item;
+    Gtk::TreeModelColumn< sharedptr<const LayoutItem_Field> > m_col_layout_item;
     Gtk::TreeModelColumn<guint> m_col_sequence;
   };
 
