@@ -1,5 +1,11 @@
 2006-01-27  Murray Cumming  <murrayc@murrayc.com>
 
+	* examples/example_smallbusiness.glom: Add German translations.
+	* glom/navigation/box_tables.cc: Avoid a null-sharedptr crash when 
+	doing a Save As Example.
+
+2006-01-27  Murray Cumming  <murrayc@murrayc.com>
+
 	* Many: Use LayoutItems via sharedptr so we can translate the titles of 
 	groups, portals, and report parts. LayoutItems are now created during 
 	document loading, and by layout editing dialogs, but then just shared by the 

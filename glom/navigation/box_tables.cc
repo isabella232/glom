@@ -351,15 +351,18 @@ void Box_Tables::save_to_document()
     {
       const Glib::ustring table_name = m_AddDel.get_value(iter, m_colTableName); //The name has already been changed in the document.
       sharedptr<TableInfo> table_info = document->get_table(table_name); //Start with the existing table_info, to preserve extra information, such as translations.
-      table_info->set_name( m_AddDel.get_value(iter, m_colTableName) );
-
-      if(!table_info->get_name().empty())
+      if(table_info)
       {
-        table_info->m_hidden  = m_AddDel.get_value_as_bool(iter, m_colHidden);
-        table_info->set_title( m_AddDel.get_value(iter, m_colTitle) ); //TODO_Translations: Store the TableInfo in the TreeView.
-        table_info->m_default  = m_AddDel.get_value_as_bool(iter, m_colDefault);
+        table_info->set_name( m_AddDel.get_value(iter, m_colTableName) );
 
-        listTables.push_back(table_info);
+        if(!table_info->get_name().empty())
+        {
+          table_info->m_hidden  = m_AddDel.get_value_as_bool(iter, m_colHidden);
+          table_info->set_title( m_AddDel.get_value(iter, m_colTitle) ); //TODO_Translations: Store the TableInfo in the TreeView.
+          table_info->m_default  = m_AddDel.get_value_as_bool(iter, m_colDefault);
+
+          listTables.push_back(table_info);
+        }
       }
     }
 
