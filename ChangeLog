@@ -1,4 +1,8 @@
-2006-01-27  Murray Cumming  <murrayc@murrayc.com>
+2006-01-24  Clytie Siddall <clytie@riverland.net.au>
+
+	* configure.in	Added vi in ALL_LINGUAS line.
+	
+	2006-01-27  Murray Cumming  <murrayc@murrayc.com>
 
 	* examples/example_smallbusiness.glom: Add German translations.
 	* glom/navigation/box_tables.cc: Avoid a null-sharedptr crash when 
