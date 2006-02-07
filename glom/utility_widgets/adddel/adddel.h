@@ -260,9 +260,6 @@ protected:
   template<class T_ModelColumnType>
   guint treeview_append_column(const Glib::ustring& title, const Gtk::TreeModelColumn<T_ModelColumnType>& column, const Glib::ustring& column_id);
 
-
-  static Glib::ustring string_escape_underscores(const Glib::ustring& text);
-
   typedef Gtk::VBox type_base;
 
   //Member widgets:

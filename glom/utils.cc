@@ -383,3 +383,17 @@ Glib::ustring GlomUtils::xslt_process(const xmlpp::Document& xml_document, const
 
   return result;
 }
+
+Glib::ustring GlomUtils::string_escape_underscores(const Glib::ustring& text)
+{
+  Glib::ustring result;
+  for(Glib::ustring::const_iterator iter = text.begin(); iter != text.end(); ++iter)
+  {
+    if(*iter == '_')
+      result += "__";
+    else
+      result += *iter;
+  }
+
+  return result;
+}

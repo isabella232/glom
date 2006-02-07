@@ -77,7 +77,7 @@ Dialog_Layout_Report::Dialog_Layout_Report(BaseObjectType* cobject, const Glib::
     Gtk::TreeView::Column* column_part = Gtk::manage( new Gtk::TreeView::Column(_("Part")) );
     m_treeview_available_parts->append_column(*column_part);
 
-    Gtk::CellRendererText* renderer_part = Gtk::manage(new Gtk::CellRendererText);
+    Gtk::CellRendererText* renderer_part = Gtk::manage(new Gtk::CellRendererText());
     column_part->pack_start(*renderer_part);
     column_part->set_cell_data_func(*renderer_part, sigc::mem_fun(*this, &Dialog_Layout_Report::on_cell_data_available_part));
 

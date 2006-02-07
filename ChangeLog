@@ -1,8 +1,19 @@
+2006-02-07  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/application.cc: Use string_escape_underscores when building 
+	the reports and tables menus.
+	* glom/utility_widgets/adddel/adddel.cc:
+	* glom/utility_widgets/adddel/adddel.h:
+	* glom/utility_widgets/db_adddel/db_adddel.cc:
+	* glom/utility_widgets/db_adddel/db_adddel.h:
+	* glom/utils.cc:
+	* glom/utils.h: Move string_escape_underscores() to here.
+
 2006-01-24  Clytie Siddall <clytie@riverland.net.au>
 
 	* configure.in	Added vi in ALL_LINGUAS line.
 	
-	2006-01-27  Murray Cumming  <murrayc@murrayc.com>
+2006-01-27  Murray Cumming  <murrayc@murrayc.com>
 
 	* examples/example_smallbusiness.glom: Add German translations.
 	* glom/navigation/box_tables.cc: Avoid a null-sharedptr crash when 

@@ -52,6 +52,8 @@ Glib::ustring create_name_from_title(const Glib::ustring& title);
 void transform_and_open(const xmlpp::Document& xml_document, const Glib::ustring& xsl_file_path);
 Glib::ustring xslt_process(const xmlpp::Document& xml_document, const std::string& filepath_xslt);
 
+Glib::ustring string_escape_underscores(const Glib::ustring& text);
+
 } //namespace GlomUtils
 
 #endif //GLOM_UTILS_H

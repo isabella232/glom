@@ -1303,20 +1303,6 @@ DbAddDel::type_signal_user_reordered_columns DbAddDel::signal_user_reordered_col
   return m_signal_user_reordered_columns;
 }
 
-Glib::ustring DbAddDel::string_escape_underscores(const Glib::ustring& text)
-{
-  Glib::ustring result;
-  for(Glib::ustring::const_iterator iter = text.begin(); iter != text.end(); ++iter)
-  {
-    if(*iter == '_')
-      result += "__";
-    else
-      result += *iter;
-  }
- 
-  return result;
-}
-
 void DbAddDel::on_treeview_button_press_event(GdkEventButton* event)
 {
   if(event->type == GDK_BUTTON_PRESS) //Whatever would cause cellrenderer activation.

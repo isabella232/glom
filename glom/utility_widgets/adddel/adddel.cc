@@ -25,6 +25,7 @@
 #include "treeviewcolumn_glom.h"
 #include "../../data_structure/glomconversions.h"
 #include "../../dialog_invalid_data.h"
+#include "../../utils.h"
 #include <iostream> //For debug output.
 
 #include "eggcolumnchooser/eggcolumnchooserdialog.h"
@@ -593,7 +594,7 @@ void AddDel::construct_specified_columns()
           // Append the View column.
           // We use a derived Gtk::TreeViewColumn so that we can store extra information in it.
           // This means that we must reimplement the code from the convenience template methods from gtkmm.
-          cols_count = treeview_append_column( string_escape_underscores(column_name), *pCellRenderer,  *pModelColumn, column_id);
+          cols_count = treeview_append_column( GlomUtils::string_escape_underscores(column_name), *pCellRenderer,  *pModelColumn, column_id);
 
           break;
         }
@@ -606,7 +607,7 @@ void AddDel::construct_specified_columns()
 
           Gtk::TreeModelColumn<bool>* pModelColumnDerived = static_cast< Gtk::TreeModelColumn<bool>* >(pModelColumn);
           if(pModelColumnDerived)
-            cols_count = treeview_append_column(string_escape_underscores(column_name), *pModelColumnDerived, column_id);
+            cols_count = treeview_append_column(GlomUtils::string_escape_underscores(column_name), *pModelColumnDerived, column_id);
 
           break;
         }
@@ -618,7 +619,7 @@ void AddDel::construct_specified_columns()
           //to use the correct specialization:
           Gtk::TreeModelColumn<Glib::ustring>* pModelColumnDerived = static_cast< Gtk::TreeModelColumn<Glib::ustring>* >(pModelColumn);
           if(pModelColumnDerived)
-            cols_count = treeview_append_column(string_escape_underscores(column_name), *pModelColumnDerived, column_id);
+            cols_count = treeview_append_column(GlomUtils::string_escape_underscores(column_name), *pModelColumnDerived, column_id);
 
           break;
         }
@@ -1241,20 +1242,6 @@ AddDel::type_signal_user_activated AddDel::signal_user_activated()
 AddDel::type_signal_user_reordered_columns AddDel::signal_user_reordered_columns()
 {
   return m_signal_user_reordered_columns;
-}
-
-Glib::ustring AddDel::string_escape_underscores(const Glib::ustring& text)
-{
-  Glib::ustring result;
-  for(Glib::ustring::const_iterator iter = text.begin(); iter != text.end(); ++iter)
-  {
-    if(*iter == '_')
-      result += "__";
-    else
-      result += *iter;
-  }
- 
-  return result;
 }
 
 void AddDel::on_treeview_button_press_event(GdkEventButton* event)
