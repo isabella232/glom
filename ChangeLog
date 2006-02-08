@@ -1,5 +1,19 @@
 2006-02-08  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/data_structure/iso_codes.cc:
+	* glom/data_structure/iso_codes.h: Added get_locale_name(),
+	moving some of get_list_of_locales() into it.
+	* glom/data_structure/translatable_item.cc: get_title(): 
+	If there is no translation then use the first translation with 
+	the same language (ignoring the country).
+	* glom/translation/window_translations.cc: load_from_document(): 
+	Use get_locale_name() to show the (believed) locale of the original 
+	strings.
+	* glom/utils.cc:
+	* glom/utils.h: Added locale_language_id() so we can reuse the code.
+
+2006-02-08  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/base_db.cc:
 	* glom/dialog_database_preferences.cc:
 	* glom/mode_data/box_data.cc:

@@ -103,9 +103,10 @@ bool TranslatableItem::get_has_translations() const
 
 Glib::ustring TranslatableItem::get_title() const
 {
-  if(get_current_locale_not_original()) //Aviud this code if we don't need translations.
+  if(get_current_locale_not_original()) //Avoid this code if we don't need translations.
   {
-    const Glib::ustring translated_title = get_translation(get_current_locale());
+    const Glib::ustring current_locale_id = get_current_locale();
+    const Glib::ustring translated_title = get_translation(current_locale_id);
     if(!translated_title.empty())
       return translated_title;
     else if(!m_title.empty())
@@ -116,14 +117,26 @@ Glib::ustring TranslatableItem::get_title() const
     }
     else
     {
+      //return the first translation from a locale with the same language, if any.
+      //TODO_Performance: This is slow.
+      //Note that this would, for instance, give en_GB translations before en_US translations, if there are no en_AU translations.
+      const Glib::ustring current_locale_language_id = GlomUtils::locale_language_id(current_locale_id);
+      for(type_map_locale_to_translations::const_iterator iter = m_map_translations.begin(); iter != m_map_translations.end(); ++iter)
+      {
+        const Glib::ustring locale_id = iter->first;
+        if(GlomUtils::locale_language_id(locale_id) == current_locale_language_id)
+          return iter->second;
+      }
+
       //return the first translation, if any.
       //This would be quite unusual.
       type_map_locale_to_translations::const_iterator iter = m_map_translations.begin();
-      return iter->second;
+      if(iter != m_map_translations.end())
+        return iter->second;
     }
   }
-  else
-    return m_title;
+
+  return m_title;
 }
 
 Glib::ustring TranslatableItem::get_title(const Glib::ustring& locale) const

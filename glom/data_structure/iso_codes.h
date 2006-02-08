@@ -47,6 +47,7 @@ public:
 typedef std::list<Locale> type_list_locales;
 type_list_locales get_list_of_locales();
 
+Glib::ustring get_locale_name(const Glib::ustring& locale_id);
 }
 
 #endif //GLOM_DATASTRUCTURE_ISO_CODES_H

@@ -421,3 +421,16 @@ Glib::ustring GlomUtils::locale_simplify(const Glib::ustring& locale_id)
 
   return result;
 }
+
+Glib::ustring GlomUtils::locale_language_id(const Glib::ustring& locale_id)
+{
+  Glib::ustring result;
+
+  const Glib::ustring::size_type posUnderscore = locale_id.find("_");
+  if(posUnderscore != Glib::ustring::npos)
+  {
+    result = locale_id.substr(0, posUnderscore);
+  }
+
+  return result;
+}

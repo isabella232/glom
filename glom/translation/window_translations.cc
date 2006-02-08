@@ -160,6 +160,12 @@ void Window_Translations::load_from_document()
   if(!document)
     return;
 
+  std::cout << "document->get_translation_original_locale()=" << document->get_translation_original_locale() << std::endl;
+  Glib::ustring original_locale_name = IsoCodes::get_locale_name(document->get_translation_original_locale());
+  if(original_locale_name.empty())
+    original_locale_name = _("Unknown");
+  m_label_source_locale->set_text(original_locale_name);
+
   //Add tables:
   Document_Glom::type_listTableInfo tables = document->get_tables();
   for(Document_Glom::type_listTableInfo::const_iterator iter = tables.begin(); iter != tables.end(); ++iter)

@@ -31,6 +31,9 @@ namespace IsoCodes
 static type_list_currencies list_currencies;
 static type_list_locales list_locales;
 
+typedef std::map<Glib::ustring, Locale> type_map_locales; //ID to locale.
+static type_map_locales map_locales; //For quick lookup.
+
 type_list_currencies get_list_of_currency_symbols()
 {
   if(list_currencies.empty())
@@ -85,9 +88,10 @@ type_list_currencies get_list_of_currency_symbols()
   return list_currencies;
 }
 
-type_list_locales get_list_of_locales()
+Glib::ustring get_locale_name(const Glib::ustring& locale_id)
 {
-  if(list_locales.empty())
+  //Build the list of locales, with their translated language and countries names:
+  if(map_locales.empty())
   {
     //Get a list of locale IDs:
     typedef std::list<std::string> type_list_ids;
@@ -101,9 +105,8 @@ type_list_locales get_list_of_locales()
     }
     catch(const Glib::FileError& ex)
     {
-      std::cerr << "Glom: get_list_of_locales(): Could not open (or read) glibc locales directory: " << locales_path << "Error: " << ex.what() << std::endl;
+      std::cerr << "Glom: get_locale_name(): Could not open (or read) glibc locales directory: " << locales_path << "Error: " << ex.what() << std::endl;
     }
-
 
     //Get the (translated) language names:
     typedef std::map<Glib::ustring, Glib::ustring> type_map_language; //ID to language name.
@@ -207,10 +210,7 @@ type_list_locales get_list_of_locales()
       std::cerr << "Exception while parsing iso codes (locales): " << ex.what() << std::endl;
     }
 
-
-    //Build the list of locales, with their translated language and countries names:
-    typedef std::map<Glib::ustring, Locale> type_map_locales; //ID to locale.
-    type_map_locales map_locales; //Use a map so we can easily check for duplicates.
+      //Use a map so we can easily check for duplicates.
     for(type_list_ids::iterator iter = list_ids.begin(); iter != list_ids.end(); ++iter)
     {
       const Glib::ustring identifier = GlomUtils::locale_simplify(*iter);
@@ -218,16 +218,10 @@ type_list_locales get_list_of_locales()
       if(map_locales.find(identifier) == map_locales.end()) //Prevent duplicates.
       {
         //Split the locale ID into language and country parts:
-        Glib::ustring id_language;
+        Glib::ustring id_language = GlomUtils::locale_language_id(identifier);
         Glib::ustring id_country;
-        Glib::ustring::size_type posUnderscore = identifier.find("_");
-        if(posUnderscore != Glib::ustring::npos)
-        {
-          id_language = identifier.substr(0, posUnderscore);
-
-          if((posUnderscore + 1) < identifier.size())
-            id_country = identifier.substr(posUnderscore + 1);
-        }
+        if(!id_language.empty() && ((id_language.size() +1) < identifier.size()))
+            id_country = identifier.substr(id_language.size() + 1);
 
         //Get the translated human-readable names of the language and country:
         Glib::ustring name;
@@ -255,6 +249,22 @@ type_list_locales get_list_of_locales()
         }
       }
     }
+  }
+
+  Glib::ustring result;
+
+  type_map_locales::const_iterator iter = map_locales.find(locale_id);
+  if(iter != map_locales.end())
+    result = iter->second.m_name;
+
+  return result;
+}
+
+type_list_locales get_list_of_locales()
+{
+  if(list_locales.empty())
+  {
+    get_locale_name("temp"); //Fill the map.
 
     //Put the map into a list:
     for(type_map_locales::iterator iter = map_locales.begin(); iter != map_locales.end(); ++iter)

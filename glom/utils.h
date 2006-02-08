@@ -59,6 +59,10 @@ Glib::ustring string_escape_underscores(const Glib::ustring& text);
  */
 Glib::ustring locale_simplify(const Glib::ustring& locale_id);
 
+/** Get just the language ID part of a locale, such as de from "de_DE", 
+ */
+Glib::ustring locale_language_id(const Glib::ustring& locale_id);
+
 } //namespace GlomUtils
 
 #endif //GLOM_UTILS_H
