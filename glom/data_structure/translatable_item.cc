@@ -137,7 +137,9 @@ Glib::ustring TranslatableItem::get_title() const
           return iter->second;
       }
       else
+      {
         return m_title;
+      }
     }
   }
 
@@ -159,6 +161,7 @@ void TranslatableItem::set_title(const Glib::ustring& title)
 {
   if(get_current_locale_not_original()) //Avoid this code if we don't need translations.
   {
+    //std::cout << "TranslatableItem::set_title() setting translation: " << title;
     const Glib::ustring the_locale = get_current_locale();
     if(the_locale.empty())
       set_title_original(title);
@@ -168,7 +171,9 @@ void TranslatableItem::set_title(const Glib::ustring& title)
     }
   }
   else
+  {
     set_title_original(title);
+  }
 }
 
 void TranslatableItem::set_title(const Glib::ustring& locale, const Glib::ustring& title)
@@ -218,7 +223,7 @@ void TranslatableItem::set_original_locale(const Glib::ustring& locale)
 Glib::ustring TranslatableItem::get_original_locale()
 {
   if(m_original_locale.empty())
-    m_original_locale = "en"; //"en_US.UTF-8";
+    m_original_locale = "en_US"; //"en_US.UTF-8";
 
   return m_original_locale; 
 }

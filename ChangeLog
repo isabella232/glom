@@ -1,3 +1,11 @@
+2006-02-08  Murray Cumming <murrayc@murrayc.com>
+
+	* glom/document/document_glom.cc: Constructor: 
+	Call TranslatableItem::set_original_locale() so that 
+	TranslatableItem::set_title() does the right thing as early 
+	as possible. This means that the automatically-generated 
+	table titles will be visible when loading the document.
+
 2006-02-08  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/data_structure/field.cc:

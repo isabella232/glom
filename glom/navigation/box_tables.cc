@@ -61,10 +61,23 @@ void Box_Tables::fill_table_row(const Gtk::TreeModel::iterator& iter, const shar
 {
   if(iter)
   {
+    const bool developer_mode = (get_userlevel() == AppState::USERLEVEL_DEVELOPER);
+
     m_AddDel.set_value_key(iter, table_info->get_name());
     m_AddDel.set_value(iter, m_colTableName, table_info->get_name());
     m_AddDel.set_value(iter, m_colHidden, table_info->m_hidden);
-    m_AddDel.set_value(iter, m_colTitle, table_info->get_title());
+
+    if(developer_mode)
+    {
+      std::cout << "Box_Tables::fill_table_row(): dev title=" << table_info->get_title() << std::endl;
+      m_AddDel.set_value(iter, m_colTitle, table_info->get_title());
+    }
+    else
+    {
+      std::cout << "Box_Tables::fill_table_row(): op get_title_or_name=" << table_info->get_title_or_name() << std::endl;
+      m_AddDel.set_value(iter, m_colTitle, table_info->get_title_or_name());
+    }
+
     m_AddDel.set_value(iter, m_colDefault, table_info->m_default);
   }
 }
@@ -76,7 +89,7 @@ bool Box_Tables::fill_from_database()
   bool result = Box_DB::fill_from_database();
 
   //Enable/Disable extra widgets:
-  bool developer_mode = (get_userlevel() == AppState::USERLEVEL_DEVELOPER);
+  const bool developer_mode = (get_userlevel() == AppState::USERLEVEL_DEVELOPER);
 
   //Developers see more columns, so make it bigger:
   if(developer_mode)
@@ -136,6 +149,8 @@ bool Box_Tables::fill_from_database()
       if(iterFind != listTablesDocument.end())
       {
         table_info = *iterFind;
+
+        //std::cout << "fill_from_database(): name=" << (*iterFind)->get_name() << ", table_info->get_title()=" << (*iterFind)->get_title() << std::endl;
       }
       else
       {
@@ -146,7 +161,7 @@ bool Box_Tables::fill_from_database()
         table_info->m_hidden = true;
       }
 
-      bool hidden = table_info->m_hidden;
+      const bool hidden = table_info->m_hidden;
 
       bool bAddIt = true;
       if(hidden && !developer_mode)  //Don't add hidden tables unless we are in developer mode:
@@ -191,6 +206,7 @@ void Box_Tables::on_adddel_Add(const Gtk::TreeModel::iterator& row)
     //Primary key:
     sharedptr<Field> field_primary_key(new Field());
     field_primary_key->set_name(table_name + "_id");
+    field_primary_key->set_title(table_name + " ID");
     field_primary_key->set_primary_key();
     field_primary_key->set_auto_increment();
 
@@ -206,14 +222,14 @@ void Box_Tables::on_adddel_Add(const Gtk::TreeModel::iterator& row)
     //Description:
     sharedptr<Field> field_description(new Field());
     field_description->set_name("description");
-    field_description->set_title("Description");
+    field_description->set_title(_("Description")); //Use a translation, because the original locale will be marked as non-English if the current locale is non-English.
     field_description->set_glom_type(Field::TYPE_TEXT);
     fields.push_back(field_description);
 
     //Comments:
     sharedptr<Field> field_comments(new Field());
     field_comments->set_name("comments");
-    field_comments->set_title("Comments");
+    field_comments->set_title(_("Comments"));
     field_comments->set_glom_type(Field::TYPE_TEXT);
     field_comments->m_default_formatting.set_text_format_multiline();
     fields.push_back(field_comments);
@@ -359,6 +375,7 @@ void Box_Tables::save_to_document()
         {
           table_info->m_hidden  = m_AddDel.get_value_as_bool(iter, m_colHidden);
           table_info->set_title( m_AddDel.get_value(iter, m_colTitle) ); //TODO_Translations: Store the TableInfo in the TreeView.
+          std::cout << "save_to_document(): title=" << table_info->get_title() << std::endl;
           table_info->m_default  = m_AddDel.get_value_as_bool(iter, m_colDefault);
 
           listTables.push_back(table_info);
@@ -388,7 +405,7 @@ void Box_Tables::on_adddel_changed(const Gtk::TreeModel::iterator& row, guint co
     else if( (column == m_colTitle) || (column == m_colDefault) )
     {
       save_to_document();
-    } 
+    }
     else if(column == m_colTableName)
     {
       Glib::ustring table_name = m_AddDel.get_value_key(row);

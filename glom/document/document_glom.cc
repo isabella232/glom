@@ -142,6 +142,9 @@ Document_Glom::Document_Glom()
   if(get_connection_server().empty())
     set_connection_server("localhost");
 
+  set_translation_original_locale(TranslatableItem::get_current_locale());
+  TranslatableItem::set_original_locale(TranslatableItem::get_current_locale());//By default, we assume that the original is in the current locale. We must do this here so that TranslatableItem::set/get_title() knows.
+
   m_app_state.signal_userlevel_changed().connect( sigc::mem_fun(*this, &Document_Glom::on_app_state_userlevel_changed) );
 }
 
@@ -662,6 +665,7 @@ Document_Glom::type_listTableInfo Document_Glom::get_tables() const
   for(type_tables::const_iterator iter = m_tables.begin(); iter != m_tables.end(); ++iter)
   {
     result.push_back(iter->second.m_info);
+    //std::cout << "Document_Glom::get_tables(): title=" << iter->second.m_info->get_title() << std::endl;
   }
 
   return result;
@@ -693,11 +697,14 @@ void Document_Glom::set_tables(const type_listTableInfo& tables)
     type_listTableInfo::const_iterator iterfind = std::find_if(tables.begin(), tables.end(), predicate_FieldHasName<TableInfo>(table_name));
     if(iterfind != tables.end())
     {
-      sharedptr<TableInfo> info = iter->second.m_info;
-      //std::cout << "Document_Glom::set_tables() info.get_title_original() = " << info.get_title_origina() << std::endl;
- 
+      sharedptr<TableInfo> info = doctableinfo.m_info;
+
       sharedptr<TableInfo> infoFound = *iterfind;
       *info = *infoFound;
+
+      std::cout << "Document_Glom::set_tables() info->get_title() = " << info->get_title() << std::endl;
+      std::cout << "Document_Glom::set_tables() infoFound->get_title() = " << infoFound->get_title() << std::endl;
+
 
       something_changed = true;
     }
