@@ -579,7 +579,7 @@ void Box_Data_Details::on_flowtable_field_edited(const sharedptr<const LayoutIte
     {
       const bool bTest = set_field_value_in_database(layout_field, field_value, primary_key_field, primary_key_value);
 
-      //Glib::ustring strQuery = "UPDATE " + table_name;
+      //Glib::ustring strQuery = "UPDATE \"" + table_name + "\"";
       //strQuery += " SET " +  /* table_name + "." + postgres does not seem to like the table name here */ strFieldName + " = " + field.sql(field_value);
       //strQuery += " WHERE " + table_name + "." + primary_key_field.get_name() + " = " + primary_key_field.sql(primary_key_value);
       //bool bTest = Query_execute(strQuery);

@@ -1,5 +1,23 @@
 2006-02-08  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/base_db.cc:
+	* glom/connectionpool.cc:
+	* glom/dialog_database_preferences.cc:
+	* glom/mode_data/box_data.cc:
+	* glom/mode_data/box_data_details.cc:
+	* glom/mode_data/box_data_list.cc:
+	* glom/mode_data/box_data_list_related.cc:
+	* glom/mode_design/fields/box_db_table_definition.cc:
+	* glom/mode_design/users/dialog_users_list.cc:
+	* glom/navigation/box_tables.cc:
+	* glom/python_embed/python_module/py_glom_relatedrecord.cc:
+	* glom/utility_widgets/db_adddel/glom_db_treemodel.cc:
+	* glom/utils.cc: Put all table names in quotes in SQL statements, 
+	to avoid errors/crashes when using non-lowercase table names, and SQL keywords 
+	as table names.
+
+2006-02-08  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/data_structure/iso_codes.cc: get_list_of_locales(): 
 	Instead of just listing languages, get the full list of locale IDs from
 	/usr/share/i18n/locales/ (hopefully this works everywhere. If not, let's 

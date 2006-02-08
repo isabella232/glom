@@ -154,7 +154,7 @@ void Box_DB_Table_Definition::on_adddel_add(const Gtk::TreeModel::iterator& row)
   Glib::ustring strName = m_AddDel.get_value(row, m_colName);
   if(!strName.empty())
   {
-    bool bTest = Query_execute( "ALTER TABLE " + m_strTableName + " ADD " + strName + " NUMERIC" ); //TODO: Get schema type for Field::TYPE_NUMERIC
+    bool bTest = Query_execute( "ALTER TABLE \"" + m_strTableName + "\" ADD " + strName + " NUMERIC" ); //TODO: Get schema type for Field::TYPE_NUMERIC
     if(bTest)
     {
       //Show the new field (fill in the other cells):
@@ -194,7 +194,7 @@ void Box_DB_Table_Definition::on_adddel_delete(const Gtk::TreeModel::iterator& r
     Glib::ustring strName = m_AddDel.get_value_key(iter);
     if(!strName.empty())
     {
-      Query_execute( "ALTER TABLE " + m_strTableName + " DROP COLUMN " + strName );
+      Query_execute( "ALTER TABLE \"" + m_strTableName + "\" DROP COLUMN " + strName );
     }
   }
 
@@ -411,7 +411,7 @@ void Box_DB_Table_Definition::fill_fields()
 
 void  Box_DB_Table_Definition::postgres_add_column(const sharedptr<const Field>& field, bool not_extras)
 {
-  bool bTest = Query_execute(  "ALTER TABLE " + m_strTableName + " ADD " + field->get_name() + " " +  field->get_sql_type() );
+  bool bTest = Query_execute(  "ALTER TABLE \"" + m_strTableName + "\" ADD " + field->get_name() + " " +  field->get_sql_type() );
   if(bTest)
   {
     if(not_extras)
@@ -512,17 +512,17 @@ void  Box_DB_Table_Definition::postgres_change_column_type(const sharedptr<const
             }
           }
 
-          Glib::RefPtr<Gnome::Gda::DataModel> datamodel = Query_execute( "UPDATE " + m_strTableName + " SET  " + fieldTemp->get_name() + " = " + conversion_command );  //TODO: Not full type details.
+          Glib::RefPtr<Gnome::Gda::DataModel> datamodel = Query_execute( "UPDATE \"" + m_strTableName + "\" SET  " + fieldTemp->get_name() + " = " + conversion_command );  //TODO: Not full type details.
           if(!datamodel)
             conversion_failed = true;
         }
 
         if(!conversion_failed)
         {
-          Glib::RefPtr<Gnome::Gda::DataModel> datamodel = Query_execute( "ALTER TABLE " + m_strTableName + " DROP COLUMN " +  field_old->get_name() );
+          Glib::RefPtr<Gnome::Gda::DataModel> datamodel = Query_execute( "ALTER TABLE \"" + m_strTableName + "\" DROP COLUMN " +  field_old->get_name() );
           if(datamodel)
           {
-            datamodel = Query_execute( "ALTER TABLE " + m_strTableName + " RENAME COLUMN " + fieldTemp->get_name() + " TO " + field->get_name() );
+            datamodel = Query_execute( "ALTER TABLE \"" + m_strTableName + "\" RENAME COLUMN " + fieldTemp->get_name() + " TO " + field->get_name() );
             if(datamodel)
             {
               bool test = gda_connection->commit_transaction(transaction);
@@ -551,7 +551,7 @@ void Box_DB_Table_Definition::postgres_change_column_extras(const sharedptr<cons
 
   if(field->get_name() != field_old->get_name())
   {
-     Glib::RefPtr<Gnome::Gda::DataModel>  datamodel = Query_execute( "ALTER TABLE " + m_strTableName + " RENAME COLUMN " + field_old->get_name() + " TO " + field->get_name() );
+     Glib::RefPtr<Gnome::Gda::DataModel>  datamodel = Query_execute( "ALTER TABLE \"" + m_strTableName + "\" RENAME COLUMN " + field_old->get_name() + " TO " + field->get_name() );
      if(!datamodel)
      {
        handle_error();
@@ -566,7 +566,7 @@ void Box_DB_Table_Definition::postgres_change_column_extras(const sharedptr<cons
     if(field_old->get_primary_key() == false)
       add_or_drop = "DROP";
 
-    Glib::RefPtr<Gnome::Gda::DataModel>  datamodel = Query_execute( "ALTER TABLE " + m_strTableName + " " + add_or_drop + " PRIMARY KEY (" + field->get_name() + ")");
+    Glib::RefPtr<Gnome::Gda::DataModel>  datamodel = Query_execute( "ALTER TABLE \"" + m_strTableName + "\" " + add_or_drop + " PRIMARY KEY (" + field->get_name() + ")");
     if(!datamodel)
     {
       handle_error();
@@ -579,7 +579,7 @@ void Box_DB_Table_Definition::postgres_change_column_extras(const sharedptr<cons
     if(set_anyway || (field->get_unique_key() != field_old->get_unique_key()))
     {
        /* TODO: Is there an easier way than adding an index manually?
-       Glib::RefPtr<Gnome::Gda::DataModel>  datamodel = Query_execute( "ALTER TABLE " + m_strTableName + " RENAME COLUMN " + field_info_old.get_name() + " TO " + field_info.get_name() );
+       Glib::RefPtr<Gnome::Gda::DataModel>  datamodel = Query_execute( "ALTER TABLE \"" + m_strTableName + "\" RENAME COLUMN " + field_info_old.get_name() + " TO " + field_info.get_name() );
        if(!datamodel)
        {
          handle_error();
@@ -595,7 +595,7 @@ void Box_DB_Table_Definition::postgres_change_column_extras(const sharedptr<cons
     {
       if(set_anyway || (default_value != default_value_old))
       {
-        Glib::RefPtr<Gnome::Gda::DataModel> datamodel = Query_execute( "ALTER TABLE " + m_strTableName + " ALTER COLUMN "+ field->get_name() + " SET DEFAULT " + field->sql(field->get_default_value()) );
+        Glib::RefPtr<Gnome::Gda::DataModel> datamodel = Query_execute( "ALTER TABLE \"" + m_strTableName + "\" ALTER COLUMN "+ field->get_name() + " SET DEFAULT " + field->sql(field->get_default_value()) );
         if(!datamodel)
         {
           handle_error();

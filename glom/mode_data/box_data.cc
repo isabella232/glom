@@ -279,7 +279,7 @@ Glib::RefPtr<Gnome::Gda::DataModel> Box_Data::record_new(bool use_entered_data, 
   //Put it all together to create the record with these field values:
   if(!strNames.empty() && !strValues.empty())
   {
-    Glib::ustring strQuery = "INSERT INTO " + m_strTableName + " (" + strNames + ") VALUES (" + strValues + ")";
+    Glib::ustring strQuery = "INSERT INTO \"" + m_strTableName + "\" (" + strNames + ") VALUES (" + strValues + ")";
     return Query_execute(strQuery);
   }
   else
@@ -379,7 +379,7 @@ Gnome::Gda::Value Box_Data::generate_next_auto_increment(const Glib::ustring& ta
   //This is a workaround for postgres problems. Ideally, we need to use the postgres serial type and find out how to get the generated value after we add a row.
 
   double result = 0;
-  Glib::RefPtr<Gnome::Gda::DataModel> data_model = Query_execute("SELECT max(" + field_name + ") FROM " + table_name);
+  Glib::RefPtr<Gnome::Gda::DataModel> data_model = Query_execute("SELECT max(" + field_name + ") FROM \"" + table_name + "\"");
   if(!data_model && data_model->get_n_rows())
     handle_error();
   else
@@ -508,7 +508,7 @@ Gnome::Gda::Value Box_Data::get_lookup_value(const sharedptr<const Relationship>
   sharedptr<Field> to_key_field = get_fields_for_table_one_field(relationship->get_to_table(), relationship->get_to_field());
   if(to_key_field)
   {
-    Glib::ustring strQuery = "SELECT " + relationship->get_to_table() + "." + source_field->get_name() + " FROM " +  relationship->get_to_table();
+    Glib::ustring strQuery = "SELECT \"" + relationship->get_to_table() + "\"." + source_field->get_name() + " FROM \"" +  relationship->get_to_table() + "\"";
     strQuery += " WHERE " + relationship->get_to_field() + " = " + to_key_field->sql(key_value);
 
     Glib::RefPtr<Gnome::Gda::DataModel> data_model = Query_execute(strQuery);
@@ -684,7 +684,7 @@ bool Box_Data::set_field_value_in_database(const Gtk::TreeModel::iterator& row, 
       return false;
     }
 
-    Glib::ustring strQuery = "UPDATE " + table_name;
+    Glib::ustring strQuery = "UPDATE \"" + table_name + "\"";
     strQuery += " SET " + field_name + " = " + field->sql(field_value);
     strQuery += " WHERE " + primary_key_field->get_name() + " = " + primary_key_field->sql(primary_key_value);
     Glib::RefPtr<Gnome::Gda::DataModel> datamodel = Query_execute(strQuery);  //TODO: Handle errors
@@ -802,7 +802,7 @@ bool Box_Data::record_delete(const Gnome::Gda::Value& primary_key_value)
   sharedptr<Field> field_primary_key = get_field_primary_key();
   if(field_primary_key && !GlomConversions::value_is_empty(primary_key_value))
   {
-    return Query_execute( "DELETE FROM " + m_strTableName + " WHERE " + m_strTableName + "." + field_primary_key->get_name() + " = " + field_primary_key->sql(primary_key_value) );
+    return Query_execute( "DELETE FROM \"" + m_strTableName + "\" WHERE \"" + m_strTableName + "\"." + field_primary_key->get_name() + " = " + field_primary_key->sql(primary_key_value) );
   }
   else
   {
@@ -831,7 +831,7 @@ Glib::ustring Box_Data::build_sql_select(const Glib::ustring& table_name, const 
 {
   if(!GlomConversions::value_is_empty(primary_key_value)) //If there is a record to show:
   {
-    const Glib::ustring where_clause = table_name + "." + primary_key_field->get_name() + " = " + primary_key_field->sql(primary_key_value);
+    const Glib::ustring where_clause = "\"" + table_name + "\"." + primary_key_field->get_name() + " = " + primary_key_field->sql(primary_key_value);
     return GlomUtils::build_sql_select_with_where_clause(table_name, fieldsToGet, where_clause);
   }
 
@@ -881,7 +881,7 @@ Glib::ustring Box_Data::build_sql_select_with_where_clause(const Glib::ustring& 
   }
 
   result =  "SELECT " + sql_part_fields +
-    " FROM " + table_name;
+    " FROM \"" + table_name + "\"";
 
   //LEFT OUTER JOIN will get the field values from the other tables, and give us our fields for this table even if there is no corresponding value in the other table.
   Glib::ustring sql_part_leftouterjoin; 
@@ -912,7 +912,7 @@ bool Box_Data::get_related_record_exists(const sharedptr<const Relationship>& re
   const Glib::ustring to_field = relationship->get_to_table() = relationship->get_to_field();
 
   //TODO_Performance: Is this the best way to just find out whether there is one record that meets this criteria?
-  const Glib::ustring query = "SELECT " + to_field + " FROM " + relationship->get_to_table() + " WHERE " + to_field + " = " + key_field->sql(key_value);
+  const Glib::ustring query = "SELECT " + to_field + " FROM \"" + relationship->get_to_table() + "\" WHERE " + to_field + " = " + key_field->sql(key_value);
   Glib::RefPtr<Gnome::Gda::DataModel> records = Query_execute(query);
   if(!records)
     handle_error();
@@ -984,7 +984,7 @@ bool Box_Data::add_related_record_for_field(const sharedptr<const LayoutItem_Fie
           //Generate the new key value;
         }
 
-        const Glib::ustring strQuery = "INSERT INTO " + relationship->get_to_table() + " (" + primary_key_field->get_name() + ") VALUES (" + primary_key_field->sql(primary_key_value) + ")";
+        const Glib::ustring strQuery = "INSERT INTO \"" + relationship->get_to_table() + "\" (" + primary_key_field->get_name() + ") VALUES (" + primary_key_field->sql(primary_key_value) + ")";
         bool test = Query_execute(strQuery);
         if(test)
         {
@@ -1017,8 +1017,8 @@ bool Box_Data::add_related_record_for_field(const sharedptr<const LayoutItem_Fie
                 }
                 else
                 {
-                  const Glib::ustring strQuery = "UPDATE  " + relationship->get_from_table() + " SET " + relationship->get_from_field() + " = " + primary_key_field->sql(primary_key_value) +
-                    " WHERE " + relationship->get_from_table() + "." + parent_primary_key_field->get_name() + " = " + parent_primary_key_field->sql(parent_primary_key_value);
+                  const Glib::ustring strQuery = "UPDATE \"" + relationship->get_from_table() + "\" SET " + relationship->get_from_field() + " = " + primary_key_field->sql(primary_key_value) +
+                    " WHERE \"" + relationship->get_from_table() + "\"." + parent_primary_key_field->get_name() + " = " + parent_primary_key_field->sql(parent_primary_key_value);
                   bool test = Query_execute(strQuery);
                   return test;
                 }

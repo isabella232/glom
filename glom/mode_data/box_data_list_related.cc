@@ -207,9 +207,9 @@ void Box_Data_List_Related::on_record_added(const Gnome::Gda::Value& primary_key
       sharedptr<Field> field_primary_key = m_AddDel.get_key_field();
 
       //Create the link by setting the foreign key
-      Glib::ustring strQuery = "UPDATE " + m_portal->get_relationship()->get_to_table();
+      Glib::ustring strQuery = "UPDATE \"" + m_portal->get_relationship()->get_to_table() + "\"";
       strQuery += " SET " +  /* get_table_name() + "." +*/ m_key_field->get_name() + " = " + m_key_field->sql(m_key_value);
-      strQuery += " WHERE " + get_table_name() + "." + field_primary_key->get_name() + " = " + field_primary_key->sql(primary_key_value);
+      strQuery += " WHERE \"" + get_table_name() + "\"." + field_primary_key->get_name() + " = " + field_primary_key->sql(primary_key_value);
       bool test = Query_execute(strQuery);
       if(test)
       {

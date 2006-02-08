@@ -343,12 +343,16 @@ bool ConnectionPool::handle_error(bool cerr_only)
         std::cerr << "Internal error: " << error_details << std::endl;
       }
 
+      //For debugging only:
+      //Gtk::Dialog* dialog = 0;
+      //dialog->run(); //Force a crash.
+
       if(!cerr_only)
       {
-	Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Internal error")), true, Gtk::MESSAGE_WARNING );
-	dialog.set_secondary_text(error_details);
-	//TODO: dialog.set_transient_for(*get_application());
-	dialog.run();
+        Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Internal error")), true, Gtk::MESSAGE_WARNING );
+        dialog.set_secondary_text(error_details);
+        //TODO: dialog.set_transient_for(*get_application());
+        dialog.run();
       }
 
       return true; //There really was an error.

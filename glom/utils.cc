@@ -154,7 +154,7 @@ Glib::ustring GlomUtils::build_sql_select_with_where_clause(const Glib::ustring&
 
     if(!layout_item->get_has_relationship_name())
     {
-      one_sql_part += ( table_name + "." );
+      one_sql_part += ( "\"" + table_name + "\"." );
     }
     else
     {
@@ -208,7 +208,7 @@ Glib::ustring GlomUtils::build_sql_select_with_where_clause(const Glib::ustring&
   else
   {
     result =  "SELECT " + sql_part_fields +
-      " FROM " + table_name;
+      " FROM \"" + table_name + "\"";
   }
 
   //LEFT OUTER JOIN will get the field values from the other tables, and give us our fields for this table even if there is no corresponding value in the other table.
@@ -216,9 +216,9 @@ Glib::ustring GlomUtils::build_sql_select_with_where_clause(const Glib::ustring&
   for(type_list_relationships::const_iterator iter = list_relationships.begin(); iter != list_relationships.end(); ++iter)
   {
     sharedptr<const Relationship> relationship = *iter;
-    sql_part_leftouterjoin += " LEFT OUTER JOIN " + relationship->get_to_table() + 
+    sql_part_leftouterjoin += " LEFT OUTER JOIN \"" + relationship->get_to_table() + "\"" + 
       " AS relationship_" + relationship->get_name() + //Specify an alias, to avoid ambiguity when using 2 relationships to the same table.
-      " ON (" + relationship->get_from_table() + "." + relationship->get_from_field() + " = relationship_" +
+      " ON (\"" + relationship->get_from_table() + "\"." + relationship->get_from_field() + " = relationship_" +
       relationship->get_name() + "." + relationship->get_to_field() +
       ")";
   }
@@ -253,14 +253,14 @@ GlomUtils::type_list_values_with_second GlomUtils::get_choice_values(const share
   }
 
   const bool with_second = !choice_second.empty();
-  const Glib::ustring sql_second = to_table + "." + choice_second;
+  const Glib::ustring sql_second = "\"" + to_table + "\"." + choice_second;
 
   //Get possible values from database, sorted by the first column.
-  Glib::ustring sql_query = "SELECT " + to_table + "." + choice_field;
+  Glib::ustring sql_query = "SELECT \"" + to_table + "\"." + choice_field;
   if(with_second)
     sql_query += ", " + sql_second;
 
-  sql_query += " FROM " + choice_relationship->get_to_table() + " ORDER BY " + to_table + "." + choice_field;
+  sql_query += " FROM \"" + choice_relationship->get_to_table() + "\" ORDER BY \"" + to_table + "\"." + choice_field;
 
   //Connect to database:
   sharedptr<SharedConnection> connection = ConnectionPool::get_instance()->connect();

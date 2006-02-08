@@ -226,8 +226,8 @@ void Box_Tables::on_adddel_Add(const Gtk::TreeModel::iterator& row)
 
     //Create a table with 1 "ID" field:
    //MSYQL:
-    //Query_execute( "CREATE TABLE " + table_name + " (" + primary_key_name + " INT NOT NULL AUTO_INCREMENT PRIMARY KEY)" );
-    //Query_execute( "INSERT INTO " + table_name + " VALUES (0)" );
+    //Query_execute( "CREATE TABLE \"" + table_name + "\" (" + primary_key_name + " INT NOT NULL AUTO_INCREMENT PRIMARY KEY)" );
+    //Query_execute( "INSERT INTO \"" + table_name + "\" VALUES (0)" );
 
     //PostgresSQL:
     //Query_execute( "CREATE TABLE " + table_name + " (" + primary_key_name + " serial NOT NULL  PRIMARY KEY)" );
@@ -403,7 +403,7 @@ void Box_Tables::on_adddel_changed(const Gtk::TreeModel::iterator& row, guint co
         //Rename the table:
         if(iButtonClicked == Gtk::RESPONSE_OK)
         {
-          bool test = Query_execute( "ALTER TABLE " + table_name + " RENAME TO " + table_name_new);
+          bool test = Query_execute( "ALTER TABLE \"" + table_name + "\" RENAME TO \"" + table_name_new + "\"");
           if(test)
           {
             //Change the AddDel item's key:

@@ -387,7 +387,7 @@ void Box_Data_List::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, 
 
       const bool bTest = set_field_value_in_database(row, layout_field, field_value, primary_key_field, primary_key_value);
 
-      //Glib::ustring strQuery = "UPDATE " + table_name;
+      //Glib::ustring strQuery = "UPDATE \"" + table_name + "\"";
       //strQuery += " SET " +  /* table_name + "." + postgres does not seem to like the table name here */ strFieldName + " = " + field.sql(field_value);
       //strQuery += " WHERE " + table_name + "." + primary_key_field.get_name() + " = " + primary_key_field.sql(primary_key_value);
       //bool bTest = Query_execute(strQuery);
@@ -513,7 +513,7 @@ void Box_Data_List::do_lookups(const Gtk::TreeModel::iterator& row, const shared
 
        //Add it to the database (even if it is not shown in the view)
        set_field_value_in_database(row, layout_Item, value, primary_key, primary_key_value); //Also does dependent lookups/recalcs.
-       //Glib::ustring strQuery = "UPDATE " + m_strTableName;
+       //Glib::ustring strQuery = "UPDATE \"" + m_strTableName + "\"";
        //strQuery += " SET " + field_lookup.get_name() + " = " + field_lookup.sql(value);
        //strQuery += " WHERE " + primary_key.get_name() + " = " + primary_key.sql(primary_key_value);
        //Query_execute(strQuery);  //TODO: Handle errors

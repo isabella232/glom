@@ -278,7 +278,7 @@ void Dialog_UsersList::on_button_user_add()
 
     for(Document_Glom::type_listTableInfo::const_iterator iter = table_list.begin(); iter != table_list.end(); ++iter)
     {
-      Glib::ustring strQuery = "REVOKE ALL PRIVILEGES ON " + (*iter)->get_name() + " FROM " + user;
+      Glib::ustring strQuery = "REVOKE ALL PRIVILEGES ON \"" + (*iter)->get_name() + "\" FROM " + user;
       Query_execute(strQuery);
     }
 

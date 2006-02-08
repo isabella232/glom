@@ -205,7 +205,7 @@ bool DbTreeModel::refresh_from_database(const Glib::ustring& where_clause)
   {
     const Glib::ustring sql_query = GlomUtils::build_sql_select_with_where_clause(m_table_name, m_column_fields, m_where_clause);
 
-    //std::cout << "DbTreeModel: Executing SQL: " << sql_query << std::endl;
+    std::cout << "DbTreeModel: Executing SQL: " << sql_query << std::endl;
     m_gda_datamodel = m_connection->get_gda_connection()->execute_single_command(sql_query);
     if(!m_gda_datamodel || (m_gda_datamodel->get_n_rows() == 0))
     {
@@ -859,7 +859,7 @@ void DbTreeModel::get_record_counts(gulong& total, gulong& found) const
     {
       //Ask the database how many records there are in the whole table:
       //TODO: Apparently, this is very slow:
-      const Glib::ustring sql_query = "SELECT count(*) FROM " + m_table_name;
+      const Glib::ustring sql_query = "SELECT count(*) FROM \"" + m_table_name + "\"";
       Glib::RefPtr<Gnome::Gda::DataModel> datamodel = m_connection->get_gda_connection()->execute_single_command(sql_query);
 
       if(datamodel)
