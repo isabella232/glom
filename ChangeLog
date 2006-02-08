@@ -1,6 +1,17 @@
 2006-02-08  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/base_db.cc:
+	* glom/dialog_database_preferences.cc:
+	* glom/mode_data/box_data.cc:
+	* glom/mode_data/box_data_list_related.cc:
+	* glom/mode_design/fields/box_db_table_definition.cc:
+	* glom/python_embed/python_module/py_glom_relatedrecord.cc:
+	* glom/utils.cc: Put all field names in quotes too, to avoid 
+	crashes when using uppercase characters in field names.
+
+2006-02-08  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/base_db.cc:
 	* glom/connectionpool.cc:
 	* glom/dialog_database_preferences.cc:
 	* glom/mode_data/box_data.cc:

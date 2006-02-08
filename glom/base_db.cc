@@ -519,7 +519,7 @@ Base_DB::type_vecStrings Base_DB::get_database_groups() const
 {
   type_vecStrings result;
 
-  Glib::ustring strQuery = "SELECT \"pg_group\".groname FROM \"pg_group\"";
+  Glib::ustring strQuery = "SELECT \"pg_group\".\"groname\" FROM \"pg_group\"";
   Glib::RefPtr<Gnome::Gda::DataModel> data_model = Query_execute(strQuery);
   if(data_model)
   {
@@ -542,7 +542,7 @@ Base_DB::type_vecStrings Base_DB::get_database_users(const Glib::ustring& group_
   if(group_name.empty())
   {
     //pg_shadow contains the users. pg_users is a view of pg_shadow without the password.
-    Glib::ustring strQuery = "SELECT \"pg_shadow\".usename FROM \"pg_shadow\"";
+    Glib::ustring strQuery = "SELECT \"pg_shadow\".\"usename\" FROM \"pg_shadow\"";
     Glib::RefPtr<Gnome::Gda::DataModel> data_model = Query_execute(strQuery);
     if(data_model)
     {
@@ -557,7 +557,7 @@ Base_DB::type_vecStrings Base_DB::get_database_users(const Glib::ustring& group_
   }
   else
   {
-    Glib::ustring strQuery = "SELECT \"pg_group\".groname, \"pg_group\".grolist FROM \"pg_group\" WHERE pg_group.groname = '" + group_name + "'";
+    Glib::ustring strQuery = "SELECT \"pg_group\".\"groname\", \"pg_group\".\"grolist\" FROM \"pg_group\" WHERE \"pg_group\".\"groname\" = '" + group_name + "'";
     Glib::RefPtr<Gnome::Gda::DataModel> data_model = Query_execute(strQuery);
     if(data_model && data_model->get_n_rows())
     {
@@ -575,7 +575,7 @@ Base_DB::type_vecStrings Base_DB::get_database_users(const Glib::ustring& group_
         for(type_vecStrings::const_iterator iter = vecUserIds.begin(); iter != vecUserIds.end(); ++iter)
         {
           //TODO_Performance: Can we do this in one SQL SELECT?
-          Glib::ustring strQuery = "SELECT \"pg_user\".usename FROM \"pg_user\" WHERE \"pg_user\".usesysid = '" + *iter + "'";
+          Glib::ustring strQuery = "SELECT \"pg_user\".\"usename\" FROM \"pg_user\" WHERE \"pg_user\".\"usesysid\" = '" + *iter + "'";
           Glib::RefPtr<Gnome::Gda::DataModel> data_model = Query_execute(strQuery);
           if(data_model)
           {
@@ -664,7 +664,7 @@ Privileges Base_DB::get_table_privileges(const Glib::ustring& group_name, const 
   }
 
   //Get the permissions:
-  Glib::ustring strQuery = "SELECT \"pg_class\".relacl FROM \"pg_class\" WHERE pg_class.relname = '" + table_name + "'";
+  Glib::ustring strQuery = "SELECT \"pg_class\".\"relacl\" FROM \"pg_class\" WHERE \"pg_class\".\"relname\" = '" + table_name + "'";
   Glib::RefPtr<Gnome::Gda::DataModel> data_model = Query_execute(strQuery);
   if(data_model && data_model->get_n_rows())
   {
@@ -796,13 +796,13 @@ bool Base_DB::add_standard_tables() const
       if(test)
       {
         //Add the single record:
-        Query_execute("INSERT INTO \"" GLOM_STANDARD_TABLE_PREFS_TABLE_NAME "\" (" GLOM_STANDARD_TABLE_PREFS_FIELD_ID ") VALUES (1)");
+        Query_execute("INSERT INTO \"" GLOM_STANDARD_TABLE_PREFS_TABLE_NAME "\" (\"" GLOM_STANDARD_TABLE_PREFS_FIELD_ID "\") VALUES (1)");
 
         //Use the database title from the document, if there is one:
         const Glib::ustring system_name = get_document()->get_database_title();
         if(!system_name.empty())
         {
-          Query_execute("UPDATE \"" GLOM_STANDARD_TABLE_PREFS_TABLE_NAME "\" SET  " GLOM_STANDARD_TABLE_PREFS_FIELD_NAME " = '" + system_name + "' WHERE " GLOM_STANDARD_TABLE_PREFS_FIELD_ID " = 1");
+          Query_execute("UPDATE \"" GLOM_STANDARD_TABLE_PREFS_TABLE_NAME "\" SET  " "\"" GLOM_STANDARD_TABLE_PREFS_FIELD_NAME "\" = '" + system_name + "' WHERE \"" GLOM_STANDARD_TABLE_PREFS_FIELD_ID "\" = 1");
         }
       }
       else
@@ -898,9 +898,9 @@ Gnome::Gda::Value Base_DB::auto_increment_insert_first_if_necessary(const Glib::
 {
   Gnome::Gda::Value value;
 
-  const Glib::ustring sql_query = "SELECT \"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME "\".next_value FROM \"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME "\""
-   " WHERE " GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME " = '" + table_name + "' AND "
-             GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_FIELD_NAME " = '" + field_name + "'";
+  const Glib::ustring sql_query = "SELECT \"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME "\".\"next_value\" FROM \"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME "\""
+   " WHERE \"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME "\" = '" + table_name + "' AND "
+          "\"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_FIELD_NAME "\" = '" + field_name + "'";
 
   Glib::RefPtr<Gnome::Gda::DataModel> datamodel = Query_execute(sql_query);
   if(!datamodel || (datamodel->get_n_rows() == 0))
@@ -937,7 +937,7 @@ void Base_DB::recalculate_next_auto_increment_value(const Glib::ustring& table_n
   auto_increment_insert_first_if_necessary(table_name, field_name);
 
   //Get the max key value in the database:
-  const Glib::ustring sql_query = "SELECT MAX(\"" + table_name + "\"." + field_name + ") FROM \"" + table_name + "\"";
+  const Glib::ustring sql_query = "SELECT MAX(\"" + table_name + "\".\"" + field_name + "\") FROM \"" + table_name + "\"";
   Glib::RefPtr<Gnome::Gda::DataModel> datamodel = Query_execute(sql_query);
   if(datamodel && datamodel->get_n_rows() && datamodel->get_n_columns())
   {
@@ -949,9 +949,9 @@ void Base_DB::recalculate_next_auto_increment_value(const Glib::ustring& table_n
     //Set it in the glom system table:
     const Gnome::Gda::Value next_value = GlomConversions::parse_value(num_max);
     const Glib::ustring sql_query = "UPDATE \"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME "\" SET "
-      GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_NEXT_VALUE " = " + next_value.to_string() + //TODO: Don't use to_string().
-      " WHERE " GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME " = '" + table_name + "' AND "
-                GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_FIELD_NAME " = '" + field_name + "'";
+      "\"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_NEXT_VALUE "\" = " + next_value.to_string() + //TODO: Don't use to_string().
+      " WHERE \"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME "\" = '" + table_name + "' AND "
+             "\"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_FIELD_NAME "\" = '" + field_name + "'";
 
     Glib::RefPtr<Gnome::Gda::DataModel> datamodel = Query_execute(sql_query);
     if(!datamodel)
@@ -977,9 +977,9 @@ Gnome::Gda::Value Base_DB::get_next_auto_increment_value(const Glib::ustring& ta
   const Gnome::Gda::Value next_value = GlomConversions::parse_value(num_result);
 
   const Glib::ustring sql_query = "UPDATE \"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME "\" SET "
-      GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_NEXT_VALUE " = " + next_value.to_string() +
-      " WHERE " GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME " = '" + table_name + "' AND "
-                GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_FIELD_NAME " = '" + field_name + "'";
+      "\"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_NEXT_VALUE "\" = " + next_value.to_string() +
+      " WHERE \"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME "\" = '" + table_name + "' AND "
+            "\""  GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_FIELD_NAME "\" = '" + field_name + "'";
 
   Glib::RefPtr<Gnome::Gda::DataModel> datamodel = Query_execute(sql_query);
   if(!datamodel)
@@ -1146,14 +1146,14 @@ SystemPrefs Base_DB::get_database_preferences() const
   SystemPrefs result;
 
   const Glib::ustring sql_query = "SELECT "
-      "\"" GLOM_STANDARD_TABLE_PREFS_TABLE_NAME "\"." GLOM_STANDARD_TABLE_PREFS_FIELD_NAME ", "
-      "\"" GLOM_STANDARD_TABLE_PREFS_TABLE_NAME "\"." GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_NAME ", "
-      "\"" GLOM_STANDARD_TABLE_PREFS_TABLE_NAME "\"." GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_STREET ", "
-      "\"" GLOM_STANDARD_TABLE_PREFS_TABLE_NAME "\"." GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_STREET2 ", "
-      "\"" GLOM_STANDARD_TABLE_PREFS_TABLE_NAME "\"." GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_TOWN ", "
-      "\"" GLOM_STANDARD_TABLE_PREFS_TABLE_NAME "\"." GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_COUNTY ", "
-      "\"" GLOM_STANDARD_TABLE_PREFS_TABLE_NAME "\"." GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_COUNTRY ", "
-      "\"" GLOM_STANDARD_TABLE_PREFS_TABLE_NAME "\"." GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_POSTCODE
+      "\"" GLOM_STANDARD_TABLE_PREFS_TABLE_NAME "\".\"" GLOM_STANDARD_TABLE_PREFS_FIELD_NAME "\", "
+      "\"" GLOM_STANDARD_TABLE_PREFS_TABLE_NAME "\".\"" GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_NAME "\", "
+      "\"" GLOM_STANDARD_TABLE_PREFS_TABLE_NAME "\".\"" GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_STREET "\", "
+      "\"" GLOM_STANDARD_TABLE_PREFS_TABLE_NAME "\".\"" GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_STREET2 "\", "
+      "\"" GLOM_STANDARD_TABLE_PREFS_TABLE_NAME "\".\"" GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_TOWN "\", "
+      "\"" GLOM_STANDARD_TABLE_PREFS_TABLE_NAME "\".\"" GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_COUNTY "\", "
+      "\"" GLOM_STANDARD_TABLE_PREFS_TABLE_NAME "\".\"" GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_COUNTRY "\", "
+      "\"" GLOM_STANDARD_TABLE_PREFS_TABLE_NAME "\".\"" GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_POSTCODE "\""
       " FROM \"" GLOM_STANDARD_TABLE_PREFS_TABLE_NAME "\"";
 
   try
@@ -1184,15 +1184,15 @@ void Base_DB::set_database_preferences(const SystemPrefs& prefs)
     add_standard_tables();
 
   const Glib::ustring sql_query = "UPDATE \"" GLOM_STANDARD_TABLE_PREFS_TABLE_NAME "\" SET "
-      GLOM_STANDARD_TABLE_PREFS_FIELD_NAME " = '" + prefs.m_name + "', "
-      GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_NAME " = '" + prefs.m_org_name + "', "
-      GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_STREET " = '" + prefs.m_org_address_street + "', "
-      GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_STREET2 " = '" + prefs.m_org_address_street2 + "', "
-      GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_TOWN " = '" + prefs.m_org_address_town + "', "
-      GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_COUNTY " = '" + prefs.m_org_address_county + "', "
-      GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_COUNTRY " = '" + prefs.m_org_address_country + "', "
-      GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_POSTCODE " = '" + prefs.m_org_address_postcode + "'"
-      " WHERE " GLOM_STANDARD_TABLE_PREFS_FIELD_ID " = 1";
+      "\"" GLOM_STANDARD_TABLE_PREFS_FIELD_NAME "\" = '" + prefs.m_name + "', "
+      "\"" GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_NAME "\" = '" + prefs.m_org_name + "', "
+      "\"" GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_STREET "\" = '" + prefs.m_org_address_street + "', "
+      "\"" GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_STREET2 "\" = '" + prefs.m_org_address_street2 + "', "
+      "\"" GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_TOWN "\" = '" + prefs.m_org_address_town + "', "
+      "\"" GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_COUNTY "\" = '" + prefs.m_org_address_county + "', "
+      "\"" GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_COUNTRY "\" = '" + prefs.m_org_address_country + "', "
+      "\"" GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_POSTCODE "\" = '" + prefs.m_org_address_postcode + "'"
+      " WHERE \"" GLOM_STANDARD_TABLE_PREFS_FIELD_ID "\" = 1";
 
     try
     {
@@ -1278,7 +1278,7 @@ bool Base_DB::insert_example_data(const Glib::ustring& table_name) const
     if(!strNames.empty())
       strNames += ", ";
 
-    strNames += (*iter)->get_name();
+    strNames += "\"" + (*iter)->get_name() + "\"";
   }
 
   if(strNames.empty())
@@ -1435,7 +1435,7 @@ void Base_DB::report_build_groupby(const Glib::ustring& table_name, xmlpp::Eleme
 
     //Get the possible group values, ignoring repeats by using GROUP BY.
     const Glib::ustring group_field_table_name = get_layout_item_table_name(field_group_by, table_name);
-    Glib::ustring sql_query = "SELECT \"" + group_field_table_name + "\"." + field_group_by->get_name() +
+    Glib::ustring sql_query = "SELECT \"" + group_field_table_name + "\".\"" + field_group_by->get_name() + "\""
       " FROM \"" + group_field_table_name + "\"";
 
     if(!where_clause_parent.empty())
@@ -1458,7 +1458,7 @@ void Base_DB::report_build_groupby(const Glib::ustring& table_name, xmlpp::Eleme
         nodeGroupBy->set_attribute("group_value",
           GlomConversions::get_text_for_gda_value(field_group_by->get_glom_type(), group_value, field_group_by->get_formatting_used().m_numeric_format) );
 
-        Glib::ustring where_clause = group_field_table_name + "." + field_group_by->get_name() + " = " + field_group_by->get_full_field_details()->sql(group_value);
+        Glib::ustring where_clause = "\"" + group_field_table_name + "\".\"" + field_group_by->get_name() + "\" = " + field_group_by->get_full_field_details()->sql(group_value);
         if(!where_clause_parent.empty())
           where_clause += " AND (" + where_clause_parent + ")";
 

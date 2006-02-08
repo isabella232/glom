@@ -184,8 +184,8 @@ RelatedRecord_tp_as_mapping_getitem(PyGlomRelatedRecord *self, PyObject *item)
 
             const Glib::ustring related_key_name = (*(self->m_relationship))->get_to_field();
 
-            Glib::ustring sql_query = "SELECT \"" + related_table + "\"." + field_name + " FROM \"" + related_table + "\""
-              + " WHERE \"" + related_table + "\"." + related_key_name + " = " + *(self->m_from_key_value_sqlized);
+            Glib::ustring sql_query = "SELECT \"" + related_table + "\".\"" + field_name + "\" FROM \"" + related_table + "\""
+              + " WHERE \"" + related_table + "\".\"" + related_key_name + "\" = " + *(self->m_from_key_value_sqlized);
 
             std::cout << "PyGlomRelatedRecord: Executing:  " << sql_query << std::endl;
             Glib::RefPtr<Gnome::Gda::DataModel> datamodel = gda_connection->execute_single_command(sql_query);
@@ -268,8 +268,8 @@ RelatedRecord_generic_aggregate(PyGlomRelatedRecord* self, PyObject *args, PyObj
 
         const Glib::ustring related_key_name = (*(self->m_relationship))->get_to_field();
 
-        Glib::ustring sql_query = "SELECT " + aggregate + "(\"" + related_table + "\"." + field_name + ") FROM \"" + related_table + "\""
-          + " WHERE \"" + related_table + "\"." + related_key_name + " = " + *(self->m_from_key_value_sqlized);
+        Glib::ustring sql_query = "SELECT " + aggregate + "(\"" + related_table + "\".\"" + field_name + "\") FROM \"" + related_table + "\""
+          + " WHERE \"" + related_table + "\".\"" + related_key_name + "\" = " + *(self->m_from_key_value_sqlized);
 
         //std::cout << "PyGlomRelatedRecord: Executing:  " << sql_query << std::endl;
         Glib::RefPtr<Gnome::Gda::DataModel> datamodel = gda_connection->execute_single_command(sql_query);

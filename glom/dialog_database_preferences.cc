@@ -91,9 +91,9 @@ void Dialog_Database_Preferences::on_treeview_cell_edited_next_value(const Glib:
     const Gnome::Gda::Value next_value = GlomConversions::parse_value(new_value);
 
     const Glib::ustring sql_query = "UPDATE \"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME "\" SET "
-        GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_NEXT_VALUE " = " + next_value.to_string() +
-        " WHERE " GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME " = '" + table_name + "' AND "
-                  GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_FIELD_NAME " = '" + field_name +"'";
+        "\"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_NEXT_VALUE "\" = " + next_value.to_string() +
+        " WHERE \"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME "\" = '" + table_name + "' AND "
+               "\"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_FIELD_NAME "\" = '" + field_name +"'";
 
     Glib::RefPtr<Gnome::Gda::DataModel> datamodel = Query_execute(sql_query);
     if(!datamodel)
@@ -130,9 +130,9 @@ void Dialog_Database_Preferences::load_from_document()
   m_model_autoincrements->clear();
 
   const Glib::ustring sql_query = "SELECT "
-    "\"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME "\"." GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME ", "
-    "\"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME "\"." GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_FIELD_NAME ", "
-    "\"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME "\"." GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_NEXT_VALUE
+    "\"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME "\".\"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME "\", "
+    "\"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME "\".\"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_FIELD_NAME "\", "
+    "\"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME "\".\"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_NEXT_VALUE "\""
     " FROM \"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME "\"";
 
   NumericFormat numeric_format; //ignored

@@ -117,7 +117,7 @@ bool Box_Data_List_Related::refresh_data_from_database_with_foreign_key(const Gn
 
   if(!GlomConversions::value_is_empty(m_key_value))
   {
-    const Glib::ustring strWhereClause = m_key_field->get_name() + " = " + m_key_field->sql(m_key_value);
+    const Glib::ustring strWhereClause = "\"" + m_key_field->get_name() + "\" = " + m_key_field->sql(m_key_value);
 
     //g_warning("refresh_data_from_database(): where_clause=%s", strWhereClause.c_str());
     return Box_Data_List::refresh_data_from_database_with_where_clause(strWhereClause);
@@ -208,8 +208,8 @@ void Box_Data_List_Related::on_record_added(const Gnome::Gda::Value& primary_key
 
       //Create the link by setting the foreign key
       Glib::ustring strQuery = "UPDATE \"" + m_portal->get_relationship()->get_to_table() + "\"";
-      strQuery += " SET " +  /* get_table_name() + "." +*/ m_key_field->get_name() + " = " + m_key_field->sql(m_key_value);
-      strQuery += " WHERE \"" + get_table_name() + "\"." + field_primary_key->get_name() + " = " + field_primary_key->sql(primary_key_value);
+      strQuery += " SET \"" +  /* get_table_name() + "." +*/ m_key_field->get_name() + "\" = " + m_key_field->sql(m_key_value);
+      strQuery += " WHERE \"" + get_table_name() + "\".\"" + field_primary_key->get_name() + "\" = " + field_primary_key->sql(primary_key_value);
       bool test = Query_execute(strQuery);
       if(test)
       {

@@ -182,7 +182,7 @@ Glib::ustring GlomUtils::build_sql_select_with_where_clause(const Glib::ustring&
     const Glib::ustring name = layout_item->get_name();
     if(!name.empty())
     {
-      one_sql_part += name;
+      one_sql_part += ("\"" + name + "\"");
 
       //Close the summary bracket if necessary.
       if(is_summary)
@@ -218,8 +218,8 @@ Glib::ustring GlomUtils::build_sql_select_with_where_clause(const Glib::ustring&
     sharedptr<const Relationship> relationship = *iter;
     sql_part_leftouterjoin += " LEFT OUTER JOIN \"" + relationship->get_to_table() + "\"" + 
       " AS relationship_" + relationship->get_name() + //Specify an alias, to avoid ambiguity when using 2 relationships to the same table.
-      " ON (\"" + relationship->get_from_table() + "\"." + relationship->get_from_field() + " = relationship_" +
-      relationship->get_name() + "." + relationship->get_to_field() +
+      " ON (\"" + relationship->get_from_table() + "\".\"" + relationship->get_from_field() + "\" = relationship_" +
+      relationship->get_name() + ".\"" + relationship->get_to_field() + "\"" + 
       ")";
   }
 
@@ -253,14 +253,14 @@ GlomUtils::type_list_values_with_second GlomUtils::get_choice_values(const share
   }
 
   const bool with_second = !choice_second.empty();
-  const Glib::ustring sql_second = "\"" + to_table + "\"." + choice_second;
+  const Glib::ustring sql_second = "\"" + to_table + "\".\"" + choice_second + "\"";
 
   //Get possible values from database, sorted by the first column.
-  Glib::ustring sql_query = "SELECT \"" + to_table + "\"." + choice_field;
+  Glib::ustring sql_query = "SELECT \"" + to_table + "\".\"" + choice_field + "\"";
   if(with_second)
     sql_query += ", " + sql_second;
 
-  sql_query += " FROM \"" + choice_relationship->get_to_table() + "\" ORDER BY \"" + to_table + "\"." + choice_field;
+  sql_query += " FROM \"" + choice_relationship->get_to_table() + "\" ORDER BY \"" + to_table + "\".\"" + choice_field + "\"";
 
   //Connect to database:
   sharedptr<SharedConnection> connection = ConnectionPool::get_instance()->connect();
