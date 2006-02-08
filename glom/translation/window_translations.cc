@@ -157,6 +157,8 @@ void Window_Translations::load_from_document()
   m_model->clear(); //Remove all rows.
 
   Document_Glom* document = get_document();
+  if(!document)
+    return;
 
   //Add tables:
   Document_Glom::type_listTableInfo tables = document->get_tables();

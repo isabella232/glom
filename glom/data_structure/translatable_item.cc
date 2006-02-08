@@ -19,6 +19,7 @@
  */
 
 #include "translatable_item.h"
+#include "../utils.h"
 #include <glibmm/i18n.h>
 #include <iostream>
 
@@ -168,17 +169,7 @@ Glib::ustring TranslatableItem::get_current_locale()
     if(cLocale)
     {
       //std::cout << "TranslatableItem::get_current_locale(): locale=" << cLocale << std::endl;
-      m_current_locale = cLocale;
-
-      //Remove the part after _ or ., because we want, for instance, "en" instead of "en_US.UTF-8".
-      //because we do not have a list of locales yet - only a list of languages.
-      Glib::ustring::size_type pos = m_current_locale.find("_");
-      if(pos != Glib::ustring::npos)
-        m_current_locale = m_current_locale.substr(0, pos);
-
-      pos = m_current_locale.find(".");
-      if(pos != Glib::ustring::npos)
-        m_current_locale = m_current_locale.substr(0, pos);
+      m_current_locale = GlomUtils::locale_simplify(cLocale);
     }
     else
       m_current_locale = "C";

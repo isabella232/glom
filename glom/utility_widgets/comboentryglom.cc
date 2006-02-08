@@ -71,7 +71,7 @@ void ComboEntryGlom::init()
     //pack_start(m_Columns.m_col_second);
 
     Gtk::CellRenderer* cell_second = Gtk::manage(new Gtk::CellRendererText);
-    cell_second->property_xalign() = 0.0;
+    cell_second->property_xalign() = 0.0f;
 
     //Use the renderer:
     pack_start(*cell_second);

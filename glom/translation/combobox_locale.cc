@@ -39,11 +39,17 @@ ComboBox_Locale::ComboBox_Locale(BaseObjectType* cobject, const Glib::RefPtr<Gno
     row[m_model_columns.m_name] = the_locale.m_name;
   }
 
+  m_model->set_sort_column(m_model_columns.m_name, Gtk::SORT_ASCENDING);
+
   set_model(m_model);
   pack_start(m_model_columns.m_identifier); //TODO: Hide this.
 
   //Show this too.
-  pack_start(m_model_columns.m_name);
+  //Create the cell renderer manually, so we can specify the alignment:
+  Gtk::CellRendererText* cell = Gtk::manage(new Gtk::CellRendererText());
+  cell->property_xalign() = 0.0f;
+  pack_start(*cell);
+  add_attribute(cell->property_text(), m_model_columns.m_name);
 }
 
 

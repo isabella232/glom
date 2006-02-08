@@ -636,7 +636,7 @@ void DbAddDel::construct_specified_columns()
           pCellRenderer->property_editable() = true;
 
           if( column_info.m_field->get_glom_type() == Field::TYPE_NUMERIC )
-            pCellRenderer->property_xalign() = 1.0; //Align right.
+            pCellRenderer->property_xalign() = 1.0f; //Align right.
 
           //Connect to its signal:
           pCellRenderer->signal_edited().connect(

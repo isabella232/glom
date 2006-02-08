@@ -1,3 +1,21 @@
+2006-02-08  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/data_structure/iso_codes.cc: get_list_of_locales(): 
+	Instead of just listing languages, get the full list of locale IDs from
+	/usr/share/i18n/locales/ (hopefully this works everywhere. If not, let's 
+	have some configure.in stuff), and build the locale name from the language 
+	part and country part. So it now also parses iso_3166.xml from iso-codes 
+	to get translated country names. 
+	* glom/utils.cc:
+	* glom/utils.h: Added locale_simplify() so we can ignore weird parts of 
+	locale IDs.
+	* glom/data_structure/translatable_item.cc: get_current_locale(): Return 
+	a locale instead of just a language.
+	* glom/translation/combobox_locale.cc: Try (unsuccessfully) to align the 
+	second column. Sort it by name.
+	* glom/translation/window_translations.cc: load_from_document(): Prevent 
+	a crash when the document is 0.
+
 2006-02-07  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/application.cc: Use string_escape_underscores when building 

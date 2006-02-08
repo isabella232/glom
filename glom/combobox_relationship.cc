@@ -44,6 +44,7 @@ ComboBox_Relationship::ComboBox_Relationship(BaseObjectType* cobject, const Glib
   //Add from field (as hint) column:
   m_renderer_fromfield = Gtk::manage(new Gtk::CellRendererText());
   pack_start(*m_renderer_fromfield);
+  m_renderer_fromfield->property_xalign() = 0.0f;
   set_cell_data_func(*m_renderer_fromfield, sigc::mem_fun(*this, &ComboBox_Relationship::on_cell_data_fromfield));
 }
 

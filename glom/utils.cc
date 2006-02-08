@@ -397,3 +397,27 @@ Glib::ustring GlomUtils::string_escape_underscores(const Glib::ustring& text)
 
   return result;
 }
+
+/** Get just the first part of a locale, such as de_DE, 
+ * ignoring, for instance, .UTF-8 or @euro at the end.
+ */
+Glib::ustring GlomUtils::locale_simplify(const Glib::ustring& locale_id)
+{
+  Glib::ustring result = locale_id;
+
+  //Get everything before the .:
+  Glib::ustring::size_type posDot = locale_id.find(".");
+  if(posDot != Glib::ustring::npos)
+  {
+    result = result.substr(0, posDot);
+  }
+
+  //Get everything before the @:
+  Glib::ustring::size_type posAt = locale_id.find("@");
+  if(posAt != Glib::ustring::npos)
+  {
+    result = result.substr(0, posAt);
+  }
+
+  return result;
+}

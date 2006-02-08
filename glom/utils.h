@@ -54,6 +54,11 @@ Glib::ustring xslt_process(const xmlpp::Document& xml_document, const std::strin
 
 Glib::ustring string_escape_underscores(const Glib::ustring& text);
 
+/** Get just the first part of a locale, such as de_DE, 
+ * ignoring, for instance, .UTF-8 or @euro at the end.
+ */
+Glib::ustring locale_simplify(const Glib::ustring& locale_id);
+
 } //namespace GlomUtils
 
 #endif //GLOM_UTILS_H

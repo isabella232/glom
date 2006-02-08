@@ -42,7 +42,7 @@ void c_callback_CellRendererList_on_editing_started(GtkCellRenderer* /* self */,
     //pComboBox->pack_start(pCppSelf->m_model_columns.m_col_extra);
 
     Gtk::CellRenderer* cell_second = Gtk::manage(new Gtk::CellRendererText);
-    cell_second->property_xalign() = 0.0;
+    cell_second->property_xalign() = 0.0f;
 
     //Use the renderer:
     pComboBox->pack_start(*cell_second);

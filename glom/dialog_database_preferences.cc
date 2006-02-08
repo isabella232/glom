@@ -54,7 +54,7 @@ Dialog_Database_Preferences::Dialog_Database_Preferences(BaseObjectType* cobject
   {
     //Make it editable:
     pCellRenderer->property_editable() = true;
-    pCellRenderer->property_xalign() = 1.0; //Align right.
+    pCellRenderer->property_xalign() = 1.0f; //Align right.
 
     //Connect to its signal:
     pCellRenderer->signal_edited().connect(
