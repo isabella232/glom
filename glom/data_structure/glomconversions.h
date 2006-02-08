@@ -57,6 +57,8 @@ namespace GlomConversions
 
   Glib::ustring get_escaped_binary_data(guint8* buffer, size_t buffer_size);
   Gnome::Gda::Value parse_escaped_binary_data(const Glib::ustring& escaped_data);
+
+  Gnome::Gda::Value convert_value(const Gnome::Gda::Value& value, Field::glom_field_type target_glom_type);
 }
 
 //Copied from Postgres's PQunescapeBytea() so I don't have the trouble of finding and linking to the 

@@ -486,7 +486,7 @@ Field::glom_field_type Field::get_glom_type_for_gda_type(Gnome::Gda::ValueType g
   init_map();
 
   Field::glom_field_type result = TYPE_INVALID;
-  
+
   //Get the glom type used for this gda type:
   {
     type_map_gda_type_to_glom_type::iterator iterFind = m_map_gda_type_to_glom_type.find(gda_type);
@@ -534,14 +534,14 @@ void Field::init_map()
     m_map_gda_type_to_glom_type[Gnome::Gda::VALUE_TYPE_DATE] = TYPE_DATE;
     m_map_gda_type_to_glom_type[Gnome::Gda::VALUE_TYPE_BOOLEAN] = TYPE_BOOLEAN;
     m_map_gda_type_to_glom_type[Gnome::Gda::VALUE_TYPE_BINARY] = TYPE_IMAGE;
-        
+
     m_map_glom_type_to_gda_type[TYPE_NUMERIC] = Gnome::Gda::VALUE_TYPE_NUMERIC;
     m_map_glom_type_to_gda_type[TYPE_TEXT] = Gnome::Gda::VALUE_TYPE_STRING;
     m_map_glom_type_to_gda_type[TYPE_TIME] = Gnome::Gda::VALUE_TYPE_TIME;
     m_map_glom_type_to_gda_type[TYPE_DATE] = Gnome::Gda::VALUE_TYPE_DATE;
     m_map_glom_type_to_gda_type[TYPE_BOOLEAN] = Gnome::Gda::VALUE_TYPE_BOOLEAN;
     m_map_glom_type_to_gda_type[TYPE_IMAGE] = Gnome::Gda::VALUE_TYPE_BINARY;
-        
+
     m_map_type_names_ui[TYPE_INVALID] = _("Invalid");
     m_map_type_names_ui[TYPE_NUMERIC] = _("Number");
     m_map_type_names_ui[TYPE_TEXT] = _("Text");
@@ -558,14 +558,14 @@ void Field::init_map()
     m_map_type_names[TYPE_DATE] = "Date";
     m_map_type_names[TYPE_BOOLEAN] = "Boolean";
     m_map_type_names[TYPE_IMAGE] = "Image";
-    
-    
+
+
     //Conversions:
     //These are the conversions know to be supported by the used version of postgres
     m_map_conversions.clear();
-  
+
     type_list_conversion_targets list_conversions;
-  
+
     //Numeric:
     list_conversions.clear();
     list_conversions.push_back(Field::TYPE_BOOLEAN);
@@ -573,7 +573,7 @@ void Field::init_map()
     list_conversions.push_back(Field::TYPE_DATE);
     list_conversions.push_back(Field::TYPE_TIME);
     m_map_conversions[Field::TYPE_NUMERIC] = list_conversions;
-    
+
     //Text:
     list_conversions.clear();
     list_conversions.push_back(Field::TYPE_BOOLEAN);
@@ -581,7 +581,7 @@ void Field::init_map()
     list_conversions.push_back(Field::TYPE_DATE);
     list_conversions.push_back(Field::TYPE_TIME);
     m_map_conversions[Field::TYPE_TEXT] = list_conversions;
-    
+
     //Boolean:
     list_conversions.clear();
     list_conversions.push_back(Field::TYPE_TEXT);
@@ -589,22 +589,22 @@ void Field::init_map()
     list_conversions.push_back(Field::TYPE_DATE);
     list_conversions.push_back(Field::TYPE_TIME);
     m_map_conversions[Field::TYPE_BOOLEAN] = list_conversions;
-    
+
     //Date:
     list_conversions.clear();
     list_conversions.push_back(Field::TYPE_TEXT);
     list_conversions.push_back(Field::TYPE_NUMERIC);
     list_conversions.push_back(Field::TYPE_BOOLEAN);
     m_map_conversions[Field::TYPE_DATE] = list_conversions;
-    
+
     //Time:
     list_conversions.clear();
     list_conversions.push_back(Field::TYPE_TEXT);
     list_conversions.push_back(Field::TYPE_NUMERIC);
     list_conversions.push_back(Field::TYPE_BOOLEAN);
     m_map_conversions[Field::TYPE_TIME] = list_conversions;
-    
-  
+
+
     m_maps_inited = true;
   }
 }

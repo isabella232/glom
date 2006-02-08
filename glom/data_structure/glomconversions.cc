@@ -295,7 +295,7 @@ Gnome::Gda::Value GlomConversions::parse_value(Field::glom_field_type glom_type,
     gda_date.year = the_c_time.tm_year + 1900; //The C time starts at 1900.
     gda_date.month = the_c_time.tm_mon + 1; //The C month starts at 0.
     gda_date.day = the_c_time.tm_mday; //THe C mday starts at 1.
-    
+
     return Gnome::Gda::Value(gda_date);
   }
   else if(glom_type == Field::TYPE_TIME)
@@ -810,6 +810,19 @@ Gnome::Gda::Value GlomConversions::parse_escaped_binary_data(const Glib::ustring
   return result;
 }
 
+Gnome::Gda::Value GlomConversions::convert_value(const Gnome::Gda::Value& value, Field::glom_field_type target_glom_type)
+{
+  const Field::glom_field_type source_glom_type = Field::get_glom_type_for_gda_type(value.get_value_type());
+  if(source_glom_type == target_glom_type)
+    return value; //No conversion necessary.
+  else
+  {
+    const Glib::ustring text = get_text_for_gda_value(source_glom_type, value);
+    bool test = false;
+    return parse_value(target_glom_type, text, test, true /* iso_format */);
+  }
 
+  return value;
+}
 
 

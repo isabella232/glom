@@ -1,3 +1,14 @@
+2006-02-09  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/data_structure/glomconversions.cc:
+	* glom/data_structure/glomconversions.h: Added convert_value(), 
+	which attemps to convert between differing value types if 
+	necessary.
+	* glom/mode_data/box_data_details.cc:  do_lookups():
+	* glom/mode_data/box_data_list.cc: do_lookups(): Use 
+	convert_value() to avoid errors when looking up a value from 
+	a field with a different field type.
+
 0.9.3:
 
 2006-02-08  Murray Cumming  <murrayc@murrayc.com>

@@ -729,14 +729,15 @@ void Box_Data_Details::do_lookups(const Gtk::TreeModel::iterator& /* row */, con
      sharedptr<const Field> field_source = get_fields_for_table_one_field(relationship->get_to_table(), field_lookup->get_lookup_field());
      if(field_source)
      {
-       Gnome::Gda::Value value = get_lookup_value(iter->second /* relationship */,  field_source /* the field to look in to get the value */, field_value /* Value of to and from fields */);
+       const Gnome::Gda::Value value = get_lookup_value(iter->second /* relationship */,  field_source /* the field to look in to get the value */, field_value /* Value of to and from fields */);
 
        //Add it to the view:
        //TODO? layout_item->set_relationship_name();
-       set_entered_field_data(layout_item, value);
+       const Gnome::Gda::Value value_converted = GlomConversions::convert_value(value, layout_item->get_glom_type());
+       set_entered_field_data(layout_item, value_converted);
 
        //Add it to the database (even if it is not shown in the view)
-       set_field_value_in_database(layout_item, value, primary_key, primary_key_value);
+       set_field_value_in_database(layout_item, value_converted, primary_key, primary_key_value);
      }
    }
 }
