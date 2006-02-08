@@ -109,13 +109,7 @@ Glib::ustring TranslatableItem::get_title() const
     const Glib::ustring translated_title = get_translation(current_locale_id);
     if(!translated_title.empty())
       return translated_title;
-    else if(!m_title.empty())
-      return m_title; //The original, if there is no translation.
-    else if(m_map_translations.empty())
-    {
-      return Glib::ustring();
-    }
-    else
+    else if(!(m_map_translations.empty()))
     {
       //return the first translation from a locale with the same language, if any.
       //TODO_Performance: This is slow.
@@ -125,7 +119,10 @@ Glib::ustring TranslatableItem::get_title() const
       {
         const Glib::ustring locale_id = iter->first;
         if(GlomUtils::locale_language_id(locale_id) == current_locale_language_id)
-          return iter->second;
+        {
+          if(!(iter->second.empty()))
+            return iter->second;
+        }
       }
 
       if(m_title.empty())

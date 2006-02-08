@@ -1,5 +1,13 @@
 2006-02-08  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/data_structure/translatable_item.cc: get_title(): Really 
+	fall back to related translations. For instance, if you are in 
+	the German (Austria) locale, and there is no German (Austria) 
+	translation for a title, but there is one for German (Germany), 
+	use it.
+
+2006-02-08  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/document/document_glom.cc: 
 	set_translation_original_locale(): Mark the document 
 	as modified so that this is saved.
