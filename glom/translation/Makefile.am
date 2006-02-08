@@ -9,8 +9,10 @@ INCLUDES = -I@top_srcdir@/ $(GLOM_CFLAGS) $(PYTHON_INCLUDES) \
 noinst_LIBRARIES = libtranslation.a
 libtranslation_a_SOURCES = window_translations.cc window_translations.h \
                            combobox_locale.h combobox_locale.cc \
-                           dialog_change_language.h dialog_change_language.cc
- 
+                           dialog_change_language.h dialog_change_language.cc \
+                           dialog_identify_original.h dialog_identify_original.cc \
+                           dialog_copy_translation.h dialog_copy_translation.cc
+
 
 
 

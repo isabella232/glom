@@ -69,12 +69,12 @@ void Box_Tables::fill_table_row(const Gtk::TreeModel::iterator& iter, const shar
 
     if(developer_mode)
     {
-      std::cout << "Box_Tables::fill_table_row(): dev title=" << table_info->get_title() << std::endl;
+      //std::cout << "Box_Tables::fill_table_row(): dev title=" << table_info->get_title() << std::endl;
       m_AddDel.set_value(iter, m_colTitle, table_info->get_title());
     }
     else
     {
-      std::cout << "Box_Tables::fill_table_row(): op get_title_or_name=" << table_info->get_title_or_name() << std::endl;
+      //std::cout << "Box_Tables::fill_table_row(): op get_title_or_name=" << table_info->get_title_or_name() << std::endl;
       m_AddDel.set_value(iter, m_colTitle, table_info->get_title_or_name());
     }
 
@@ -215,6 +215,7 @@ void Box_Tables::on_adddel_Add(const Gtk::TreeModel::iterator& row)
     field_primary_key->set_field_info(field_info);
 
     field_primary_key->set_glom_type(Field::TYPE_NUMERIC);
+    //std::cout << "field_primary_key->get_auto_increment():" << field_primary_key->get_auto_increment() << std::endl;
 
     type_vecFields fields;
     fields.push_back(field_primary_key);
@@ -375,7 +376,7 @@ void Box_Tables::save_to_document()
         {
           table_info->m_hidden  = m_AddDel.get_value_as_bool(iter, m_colHidden);
           table_info->set_title( m_AddDel.get_value(iter, m_colTitle) ); //TODO_Translations: Store the TableInfo in the TreeView.
-          std::cout << "save_to_document(): title=" << table_info->get_title() << std::endl;
+          //std::cout << "save_to_document(): title=" << table_info->get_title() << std::endl;
           table_info->m_default  = m_AddDel.get_value_as_bool(iter, m_colDefault);
 
           listTables.push_back(table_info);

@@ -31,8 +31,7 @@ Dialog_Relationships::Dialog_Relationships(BaseObjectType* cobject, const Glib::
 {
   refGlade->get_widget_derived("vbox_placeholder", m_box);
 
-  m_label_frame->set_text( Bakery::App_Gtk::util_bold_message(_("Relationships")) );
-  m_label_frame->set_use_markup();
+  m_label_frame->set_markup( Bakery::App_Gtk::util_bold_message(_("Relationships")) );
 
   //Fill composite view:
   add_view(m_box);

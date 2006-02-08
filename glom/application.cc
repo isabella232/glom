@@ -55,7 +55,10 @@ App_Glom::App_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml
 App_Glom::~App_Glom()
 {
   if(m_window_translations)
+  {
+    m_pFrame->remove_view(m_window_translations);
     delete m_window_translations;
+  }
 }
 
 bool App_Glom::init(const Glib::ustring& document_uri)
@@ -1230,6 +1233,7 @@ void App_Glom::on_menu_developer_translations()
     refXml->get_widget_derived("window_translations", m_window_translations);
     if(m_window_translations)
     {
+      m_pFrame->add_view(m_window_translations);
       m_window_translations->set_transient_for(*this);
       m_window_translations->set_document(static_cast<Document_Glom*>(m_pDocument));
       m_window_translations->load_from_document();

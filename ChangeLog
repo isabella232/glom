@@ -1,3 +1,21 @@
+2006-02-08  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/document/document_glom.cc: 
+	set_translation_original_locale(): Mark the document 
+	as modified so that this is saved.
+	* glom/glom.glade: Use language everywhere instead of 
+	locale.
+	* glom/translation/Makefile.am:
+	* glom/translation/dialog_change_language.h:
+	* glom/translation/dialog_identify_original.cc:
+	* glom/translation/dialog_identify_original.h: Show the 
+	locale name, not the ID.
+	* glom/translation/dialog_copy_translation.cc:
+	* glom/translation/dialog_copy_translation.h:
+	* glom/translation/window_translations.cc:
+	* glom/translation/window_translations.h: Implement 
+	original locale identification and translation copying.
+
 2006-02-08  Murray Cumming <murrayc@murrayc.com>
 
 	* glom/document/document_glom.cc: Constructor: 

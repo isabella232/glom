@@ -20,6 +20,8 @@
 
 #include "window_translations.h"
 #include "combobox_locale.h"
+#include "dialog_identify_original.h"
+#include "dialog_copy_translation.h"
 #include <bakery/App/App_Gtk.h> //For util_bold_message().
 
 //#include <libgnome/gnome-i18n.h>
@@ -78,6 +80,10 @@ Window_Translations::Window_Translations(BaseObjectType* cobject, const Glib::Re
   refGlade->get_widget("button_cancel", m_button_cancel);
   m_button_cancel->signal_clicked().connect( sigc::mem_fun(*this, &Window_Translations::on_button_cancel) );
 
+  refGlade->get_widget("button_copy_translation", m_button_copy_translation);
+  m_button_copy_translation->signal_clicked().connect( sigc::mem_fun(*this, &Window_Translations::on_button_copy_translation) );
+
+
   show_all_children();
 
   //Start with the currently-used/tested translation, if appropriate:
@@ -101,7 +107,31 @@ void Window_Translations::enable_buttons()
 
 void Window_Translations::on_button_identify()
 {
+  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_translation_identify_original");
+  if(refXml)
+  {
+    Dialog_IdentifyOriginal* dialog = 0;
+    refXml->get_widget_derived("dialog_translation_identify_original", dialog);
+    if(dialog)
+    {
+      add_view(dialog);
+      dialog->load_from_document(); //Doesn't seem to happen otherwise.
+      dialog->set_transient_for(*this);
+      const int response = dialog->run();
+      dialog->hide();
 
+      if(response == Gtk::RESPONSE_OK)
+      {
+        get_document()->set_translation_original_locale(dialog->get_locale());
+
+        //Save and update:
+        on_combo_target_locale_changed();
+      }
+
+      remove_view(dialog);
+      delete dialog;
+    }
+  }
 }
 
 
@@ -279,6 +309,51 @@ void Window_Translations::on_button_ok()
 {
   save_to_document();
   hide();
+}
+
+void Window_Translations::on_button_copy_translation()
+{
+   Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_translation_copy");
+  if(refXml)
+  {
+    Dialog_CopyTranslation* dialog = 0;
+    refXml->get_widget_derived("dialog_translation_copy", dialog);
+    if(dialog)
+    {
+      dialog->set_transient_for(*this);
+      const int response = dialog->run();
+      dialog->hide();
+
+      if(response == Gtk::RESPONSE_OK)
+      {
+        const Glib::ustring copy_source_locale = dialog->get_locale();
+        if(!copy_source_locale.empty())
+        {
+          //Save and update:
+          on_combo_target_locale_changed();
+
+          for(Gtk::TreeModel::iterator iter = m_model->children().begin(); iter != m_model->children().end(); ++iter)
+          {
+            Gtk::TreeModel::Row row = *iter;
+
+            sharedptr<TranslatableItem> item = row[m_columns.m_col_item];
+            if(item)
+            {
+              //Copy the translation from the chosen locale to the current locale:
+              const Glib::ustring translation = item->get_title(copy_source_locale);
+              row[m_columns.m_col_translation] = translation;
+            }
+          }
+
+          //Save and update:
+          m_treeview_modified = true;
+          save_to_document();
+        }
+      }
+
+      delete dialog;
+    }
+  }
 }
 
 void Window_Translations::on_combo_target_locale_changed()

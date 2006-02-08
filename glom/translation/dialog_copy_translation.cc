@@ -18,45 +18,24 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include "dialog_fields.h"
-#include "../box_db_table.h"
-//#include <libgnome/gnome-i18n.h>
+#include "dialog_copy_translation.h"
 #include <bakery/App/App_Gtk.h> //For util_bold_message().
 #include <glibmm/i18n.h>
 
-
-Dialog_Fields::Dialog_Fields(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
-: Dialog_Design(cobject, refGlade),
-  m_box(0)
+Dialog_CopyTranslation::Dialog_CopyTranslation(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
+: Gtk::Dialog(cobject),
+  m_combo_locale(0)
 {
-  refGlade->get_widget_derived("vbox_placeholder", m_box);
+  refGlade->get_widget_derived("combobox_locale", m_combo_locale);
 
-  m_label_frame->set_markup( Bakery::App_Gtk::util_bold_message(_("Field Definitions")) );
-
-
-  //Fill composite view:
-  add_view(m_box);
-
-  show_all_children();
+  m_combo_locale->set_selected_locale(TranslatableItem::get_current_locale());
 }
 
-Dialog_Fields::~Dialog_Fields()
+Dialog_CopyTranslation::~Dialog_CopyTranslation()
 {
-  remove_view(m_box);
 }
 
-bool Dialog_Fields::init_db_details(const Glib::ustring& strTableName)
+Glib::ustring Dialog_CopyTranslation::get_locale() const
 {
-  if(m_box)
-  {
-    m_box->load_from_document();
-
-    Dialog_Design::init_db_details(strTableName);
-
-    m_box->init_db_details(strTableName);
-  }
-
-  return true;
+  return m_combo_locale->get_selected_locale();
 }
-
-

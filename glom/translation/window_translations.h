@@ -29,7 +29,7 @@ class ComboBox_Locale;
 
 class Window_Translations
 : public Gtk::Window,
-  public View_Glom //So it can use the document.
+  public View_Composite_Glom //So it can use the document.
 {
 public:
   Window_Translations(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
@@ -53,6 +53,7 @@ protected:
 
   void on_button_cancel();
   void on_button_ok();
+  void on_button_copy_translation();
 
   //Tree model columns:
   class ModelColumns : public Gtk::TreeModel::ColumnRecord
@@ -81,6 +82,7 @@ protected:
 
   Gtk::Button* m_button_ok;
   Gtk::Button* m_button_cancel;
+  Gtk::Button* m_button_copy_translation;
 
   bool m_treeview_modified;
 };

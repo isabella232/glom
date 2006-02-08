@@ -1,3 +1,20 @@
+0.9.3:
+
+* Prevent crashes when using Table or Field names with uppercase characters.
+* Translation:
+  Added Translations menu item to Developer menu. Use this to specify 
+  translated table titles, field titles, layout part titles, report titles, 
+  etc, to be used when your Glom system is used in that locale.
+* Prevent underscores from being interpreted as navigation markup in table 
+  and report titles.
+* Performance improvements.
+* The .desktop file can now be translated.
+* New Translations:
+  - Vietnamese (Clytie Siddall)
+* Updated Translations:
+  - Canadian English (Adam Weinberger)
+  - Spanish (Francisco Javier F. Serrador)
+
 0.9.2:
 
 * Examples:

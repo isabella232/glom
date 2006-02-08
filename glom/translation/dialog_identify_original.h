@@ -18,27 +18,32 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef GLOM_TRANSLATIONS_DIALOG_CHANGE_LANGUAGE_H
-#define GLOM_TRANSLATIONS_DIALOG_CHANGE_LANGUAGE_H
+#ifndef GLOM_TRANSLATIONS_DIALOG_IDENTIFY_ORIGINAL_H
+#define GLOM_TRANSLATIONS_DIALOG_IDENTIFY_ORIGINAL_H
 
 #include "combobox_locale.h"
+#include "../document/document_glom.h" // For View_Glom
 #include <libglademm.h>
 #include <gtkmm/dialog.h>
 
-/** 
+/**
  */
-class Dialog_ChangeLanguage
-  : public Gtk::Dialog
+class Dialog_IdentifyOriginal
+  : public Gtk::Dialog,
+    public View_Glom
 {
 public:
-  Dialog_ChangeLanguage(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
-  virtual ~Dialog_ChangeLanguage();
+  Dialog_IdentifyOriginal(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  virtual ~Dialog_IdentifyOriginal();
 
   Glib::ustring get_locale() const;
 
+  virtual void load_from_document(); //override
+
 protected:
+  Gtk::Label* m_label_original;
   ComboBox_Locale* m_combo_locale;
 };
 
-#endif //GLOM_TRANSLATIONS_DIALOG_CHANGE_LANGUAGE_H
+#endif //GLOM_TRANSLATIONS_DIALOG_IDENTIFY_ORIGINAL_H
 

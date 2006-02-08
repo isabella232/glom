@@ -142,8 +142,7 @@ Document_Glom::Document_Glom()
   if(get_connection_server().empty())
     set_connection_server("localhost");
 
-  set_translation_original_locale(TranslatableItem::get_current_locale());
-  TranslatableItem::set_original_locale(TranslatableItem::get_current_locale());//By default, we assume that the original is in the current locale. We must do this here so that TranslatableItem::set/get_title() knows.
+  set_translation_original_locale(TranslatableItem::get_current_locale()); //By default, we assume that the original is in the current locale. We must do this here so that TranslatableItem::set/get_title() knows.
 
   m_app_state.signal_userlevel_changed().connect( sigc::mem_fun(*this, &Document_Glom::on_app_state_userlevel_changed) );
 }
@@ -701,10 +700,6 @@ void Document_Glom::set_tables(const type_listTableInfo& tables)
 
       sharedptr<TableInfo> infoFound = *iterfind;
       *info = *infoFound;
-
-      std::cout << "Document_Glom::set_tables() info->get_title() = " << info->get_title() << std::endl;
-      std::cout << "Document_Glom::set_tables() infoFound->get_title() = " << infoFound->get_title() << std::endl;
-
 
       something_changed = true;
     }
@@ -2224,6 +2219,8 @@ void Document_Glom::set_is_example_file(bool value)
 void Document_Glom::set_translation_original_locale(const Glib::ustring& locale)
 {
   m_translation_original_locale = locale;
+  TranslatableItem::set_original_locale(m_translation_original_locale);
+  set_modified();
 }
 
 
