@@ -48,11 +48,9 @@ GroupInfo& GroupInfo::operator=(const GroupInfo& src)
 
 bool GroupInfo::operator==(const GroupInfo& src) const
 {
-  bool result = TranslatableItem::operator==(src);
-  result = result && (m_developer == src.m_developer);
-  result = result && (m_map_privileges == src.m_map_privileges);
-
-  return result;
+  return TranslatableItem::operator==(src) &&
+         (m_developer == src.m_developer) &&
+         (m_map_privileges == src.m_map_privileges);
 }
 
 bool GroupInfo::operator!=(const GroupInfo& src) const

@@ -73,22 +73,15 @@ Field& Field::operator=(const Field& src)
 
 bool Field::operator==(const Field& src) const
 {
-  bool bResult = TranslatableItem::operator==(src);
-
-  bResult = (m_field_info == src.m_field_info);
-  bResult = bResult && (m_glom_type == src.m_glom_type);
-  bResult = bResult && (m_data == src.m_data);
-
-  bResult = bResult && (m_lookup_relationship == src.m_lookup_relationship);
-  bResult = bResult && (m_strLookupField == src.m_strLookupField);
-
-  bResult = bResult && (m_calculation == src.m_calculation);
-
-  bResult = bResult && (m_visible == src.m_visible);
-
-  bResult = bResult && (m_default_formatting == src.m_default_formatting);
-
-  return bResult;
+  return TranslatableItem::operator==(src)
+         && (m_field_info == src.m_field_info)
+         && (m_glom_type == src.m_glom_type)
+         && (m_data == src.m_data)
+         && (m_lookup_relationship == src.m_lookup_relationship)
+         && (m_strLookupField == src.m_strLookupField)
+         && (m_calculation == src.m_calculation)
+         && (m_visible == src.m_visible)
+         && (m_default_formatting == src.m_default_formatting);
 }
 
 bool Field::operator!=(const Field& src) const

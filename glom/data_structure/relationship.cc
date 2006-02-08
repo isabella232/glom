@@ -52,16 +52,13 @@ Relationship& Relationship::operator=(const Relationship& src)
 
 bool Relationship::operator==(const Relationship& src) const
 {
-  bool bEqual = TranslatableItem::operator==(src);
-
-  bEqual = bEqual && (m_strFrom_Table == src.m_strFrom_Table);
-  bEqual = bEqual && (m_strFrom_Field == src.m_strFrom_Field);
-  bEqual = bEqual && (m_strTo_Table == src.m_strTo_Table);
-  bEqual = bEqual && (m_strTo_Field == src.m_strTo_Field);
-  bEqual = bEqual && (m_allow_edit == src.m_allow_edit);
-  bEqual = bEqual && (m_auto_create == src.m_auto_create);
-
-  return bEqual;
+  return TranslatableItem::operator==(src)
+         && (m_strFrom_Table == src.m_strFrom_Table)
+         && (m_strFrom_Field == src.m_strFrom_Field)
+         && (m_strTo_Table == src.m_strTo_Table)
+         && (m_strTo_Field == src.m_strTo_Field)
+         && (m_allow_edit == src.m_allow_edit)
+         && (m_auto_create == src.m_auto_create);
 }
 
 Glib::ustring Relationship::get_from_table() const

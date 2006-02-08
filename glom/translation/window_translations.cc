@@ -160,7 +160,7 @@ void Window_Translations::load_from_document()
   if(!document)
     return;
 
-  std::cout << "document->get_translation_original_locale()=" << document->get_translation_original_locale() << std::endl;
+  //std::cout << "document->get_translation_original_locale()=" << document->get_translation_original_locale() << std::endl;
   Glib::ustring original_locale_name = IsoCodes::get_locale_name(document->get_translation_original_locale());
   if(original_locale_name.empty())
     original_locale_name = _("Unknown");

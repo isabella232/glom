@@ -1,5 +1,20 @@
 2006-02-08  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/data_structure/field.cc:
+	* glom/data_structure/groupinfo.cc:
+	* glom/data_structure/numeric_format.cc:
+	* glom/data_structure/privileges.cc:
+	* glom/data_structure/relationship.cc:
+	* glom/data_structure/translatable_item.cc:
+	Optimize the operator==() implementations, fixing 
+	Field::operator==() along the way, so that entered field titles 
+	when in non-original locales are used as translations for that 
+	locale.
+	* glom/translation/combobox_locale.cc: Constructor: 
+	Hide the locale IDs because they are not human-readable.
+
+2006-02-08  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/data_structure/iso_codes.cc:
 	* glom/data_structure/iso_codes.h: Added get_locale_name(),
 	moving some of get_list_of_locales() into it.

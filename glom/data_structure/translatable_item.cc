@@ -55,10 +55,10 @@ TranslatableItem& TranslatableItem::operator=(const TranslatableItem& src)
 
 bool TranslatableItem::operator==(const TranslatableItem& src) const
 {
-  bool bResult = (m_name == src.m_name);
-  bResult == bResult &&  (m_title == src.m_title);
-  bResult == bResult &&  (m_map_translations == src.m_map_translations);
-  bResult == bResult && (m_translatable_item_type == src.m_translatable_item_type);
+  bool bResult = (m_name == src.m_name)
+                 && (m_title == src.m_title)
+                 && (m_translatable_item_type == src.m_translatable_item_type)
+                 && (m_map_translations == src.m_map_translations);
 
   return bResult;
 }
@@ -128,11 +128,16 @@ Glib::ustring TranslatableItem::get_title() const
           return iter->second;
       }
 
-      //return the first translation, if any.
-      //This would be quite unusual.
-      type_map_locale_to_translations::const_iterator iter = m_map_translations.begin();
-      if(iter != m_map_translations.end())
-        return iter->second;
+      if(m_title.empty())
+      {
+        //return the first translation, if any.
+        //This would be quite unusual.
+        type_map_locale_to_translations::const_iterator iter = m_map_translations.begin();
+        if(iter != m_map_translations.end())
+          return iter->second;
+      }
+      else
+        return m_title;
     }
   }
 
@@ -152,13 +157,15 @@ Glib::ustring TranslatableItem::get_title_original() const
 
 void TranslatableItem::set_title(const Glib::ustring& title)
 {
-  if(get_current_locale_not_original()) //Aviud this code if we don't need translations.
+  if(get_current_locale_not_original()) //Avoid this code if we don't need translations.
   {
     const Glib::ustring the_locale = get_current_locale();
     if(the_locale.empty())
       set_title_original(title);
     else
+    {
       set_translation(the_locale, title);
+    }
   }
   else
     set_title_original(title);

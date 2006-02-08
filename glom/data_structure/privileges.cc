@@ -49,11 +49,9 @@ Privileges& Privileges::operator=(const Privileges& src)
 
 bool Privileges::operator==(const Privileges& src) const
 {
-  bool bEqual = (m_view == src.m_view);
-  bEqual = bEqual && (m_edit == src.m_edit);
-  bEqual = bEqual && (m_create == src.m_create);
-  bEqual = bEqual && (m_delete == src.m_delete);
-
-  return bEqual;
+  return (m_view == src.m_view)
+         && (m_edit == src.m_edit)
+         && (m_create == src.m_create)
+         && (m_delete == src.m_delete);
 }
 

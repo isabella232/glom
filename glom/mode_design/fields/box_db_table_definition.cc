@@ -92,7 +92,7 @@ void Box_DB_Table_Definition::fill_field_row(const Gtk::TreeModel::iterator& ite
 
   m_AddDel.set_value(iter, m_colName, field->get_name());
 
-  Glib::ustring title = field->get_title();
+  const Glib::ustring title = field->get_title();
   m_AddDel.set_value(iter, m_colTitle, title);
 
   //Type:
@@ -228,16 +228,16 @@ void Box_DB_Table_Definition::on_adddel_changed(const Gtk::TreeModel::iterator& 
       if(*m_Field_BeingEdited != *fieldNew) //If it has really changed.
       {
         //If we are changing a non-glom type:
-       //Refuse to edit field definitions that were not created by glom:
-       if(Field::get_glom_type_for_gda_type( m_Field_BeingEdited->get_field_info().get_gdatype() )  == Field::TYPE_INVALID)
-       {
-         Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Invalid database structure")), true);
-         dialog.set_secondary_text(_("This database field was created or edited outside of Glom. It has a data type that is not supported by Glom. Your system administrator may be able to correct this."));
-         //TODO: dialog.set_transient_for(*get_application());
-         dialog.run();
-       }
-       else
-         change_definition(m_Field_BeingEdited, fieldNew);
+        //Refuse to edit field definitions that were not created by glom:
+        if(Field::get_glom_type_for_gda_type( m_Field_BeingEdited->get_field_info().get_gdatype() )  == Field::TYPE_INVALID)
+        {
+          Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Invalid database structure")), true);
+          dialog.set_secondary_text(_("This database field was created or edited outside of Glom. It has a data type that is not supported by Glom. Your system administrator may be able to correct this."));
+          //TODO: dialog.set_transient_for(*get_application());
+          dialog.run();
+        }
+        else
+          change_definition(m_Field_BeingEdited, fieldNew);
       }
     }
   }

@@ -413,7 +413,7 @@ Glib::ustring GlomUtils::locale_simplify(const Glib::ustring& locale_id)
   }
 
   //Get everything before the @:
-  Glib::ustring::size_type posAt = locale_id.find("@");
+  const Glib::ustring::size_type posAt = locale_id.find("@");
   if(posAt != Glib::ustring::npos)
   {
     result = result.substr(0, posAt);

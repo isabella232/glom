@@ -48,12 +48,10 @@ NumericFormat& NumericFormat::operator=(const NumericFormat& src)
 
 bool NumericFormat::operator==(const NumericFormat& src) const
 {
-  bool result = (m_currency_symbol == src.m_currency_symbol);
-  result = result && (m_use_thousands_separator == src.m_use_thousands_separator);
-  result = result && (m_decimal_places_restricted == src.m_decimal_places_restricted);
-  result = result && (m_decimal_places == src.m_decimal_places);
-
-  return result;
+  return (m_currency_symbol == src.m_currency_symbol) && 
+         (m_use_thousands_separator == src.m_use_thousands_separator) &&
+         (m_decimal_places_restricted == src.m_decimal_places_restricted) &&
+         (m_decimal_places == src.m_decimal_places);
 }
 
 bool NumericFormat::operator!=(const NumericFormat& src) const

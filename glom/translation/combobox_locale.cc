@@ -42,7 +42,8 @@ ComboBox_Locale::ComboBox_Locale(BaseObjectType* cobject, const Glib::RefPtr<Gno
   m_model->set_sort_column(m_model_columns.m_name, Gtk::SORT_ASCENDING);
 
   set_model(m_model);
-  pack_start(m_model_columns.m_identifier); //TODO: Hide this.
+
+  //Do not show the non-human-readable ID: pack_start(m_model_columns.m_identifier);
 
   //Show this too.
   //Create the cell renderer manually, so we can specify the alignment:
