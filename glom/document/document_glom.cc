@@ -289,6 +289,58 @@ void Document_Glom::remove_relationship(const sharedptr<const Relationship>& rel
   }
 }
 
+void Document_Glom::remove_field(const Glib::ustring& table_name, const Glib::ustring& field_name)
+{
+  //Remove any relationships that use this field:
+  for(type_tables::iterator iter = m_tables.begin(); iter != m_tables.end(); ++iter)
+  {
+    DocumentTableInfo& info = iter->second;
+
+    if(!(info.m_relationships.empty()))
+    {
+      type_vecRelationships::iterator iterRel = info.m_relationships.begin();
+      bool something_changed = true;
+      while(something_changed && !info.m_relationships.empty())
+      {
+        sharedptr<Relationship> relationship = *iterRel;
+
+        if( ((relationship->get_from_table() == table_name) && (relationship->get_from_field() == field_name))
+          || ((relationship->get_to_table() == table_name) && (relationship->get_to_field() == field_name)) )
+        {
+          //Loop again, because we have changed the structure:
+          remove_relationship(relationship); //Also removes anything that uses the relationship.
+
+          something_changed = true;
+          iterRel = info.m_relationships.begin();
+        }
+        else
+        {
+          ++iterRel;
+
+          if(iterRel == info.m_relationships.end())
+            something_changed = false; //We've looked at them all, without changing things.
+        }
+      }
+    }
+
+    //Remove field from any layouts:
+    for(DocumentTableInfo::type_layouts::iterator iterLayouts = info.m_layouts.begin(); iterLayouts != info.m_layouts.end(); ++iterLayouts)
+    {
+       LayoutInfo& layout_info = *iterLayouts;
+       for(type_mapLayoutGroupSequence::iterator iter = layout_info.m_layout_groups.begin(); iter != layout_info.m_layout_groups.end(); ++iter)
+       {
+         //Remove regular fields if the field is in this layout's table:
+         if(info.m_info->get_name() == table_name)
+           iter->second->remove_field(field_name);
+
+         //Remove the field wherever it is a related field:
+         iter->second->remove_field(table_name, field_name);
+       }
+    }
+  }
+
+
+}
 
 void Document_Glom::remove_table(const Glib::ustring& table_name)
 {

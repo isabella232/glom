@@ -1,5 +1,15 @@
 2006-02-09  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/data_structure/layout/layoutgroup.cc:
+	* glom/data_structure/layout/layoutgroup.h: Added remove_field().
+	* glom/document/document_glom.cc:
+	* glom/document/document_glom.h: Added remove_field().
+	* glom/mode_design/fields/box_db_table_definition.cc:
+	on_adddel_delete(): Call Document_Glom::remove_field() to prevent 
+	a crash when deleting a field that is used on a layout.
+
+2006-02-09  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/mode_data/box_data.cc: get_lookup_value(): 
 	Convert the key field value, in case the relationship's keys 
 	have different types.

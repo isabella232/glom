@@ -31,7 +31,7 @@ public:
   virtual ~Dialog_Fields();
 
   virtual bool init_db_details(const Glib::ustring& strTableName);
-    
+
 protected:
 
   Box_DB_Table_Definition* m_box;

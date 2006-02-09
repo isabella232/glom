@@ -20,6 +20,7 @@
 
 #include "layoutgroup.h"
 #include "layoutitem_field.h"
+#include "layoutitem_portal.h"
 #include <glibmm/i18n.h>
 
 LayoutGroup::LayoutGroup()
@@ -186,6 +187,79 @@ LayoutGroup::type_map_const_items LayoutGroup::get_items() const
   }
 
   return result;
+}
+
+void LayoutGroup::remove_field(const Glib::ustring& field_name)
+{
+  //Look at each item:
+  LayoutGroup::type_map_items::iterator iterItem = m_map_items.begin();
+  while(iterItem != m_map_items.end())
+  {
+    sharedptr<LayoutItem> item = iterItem->second;
+    sharedptr<LayoutItem_Field> field_item = sharedptr<LayoutItem_Field>::cast_dynamic(item);
+    if(field_item)
+    {
+      if(!(field_item->get_has_relationship_name())) //If it's not a related table.
+      {
+        if(field_item->get_name() == field_name)
+        {
+          m_map_items.erase(iterItem);
+          iterItem = m_map_items.begin(); //Start again, because we changed the container.AddDel 
+          continue;
+        }
+      }
+    }
+    else
+    {
+      sharedptr<LayoutItem_Portal> sub_portal = sharedptr<LayoutItem_Portal>::cast_dynamic(item);
+      if(!sub_portal) //It could only be a related field in a portal - use remove_field(table, field) for that.
+      {
+        sharedptr<LayoutGroup> sub_group = sharedptr<LayoutGroup>::cast_dynamic(item);
+        if(sub_group)
+          sub_group->remove_field(field_name);
+      }
+    }
+
+    ++iterItem;
+  }
+}
+
+void LayoutGroup::remove_field(const Glib::ustring& table_name, const Glib::ustring& field_name)
+{
+  //Look at each item:
+  LayoutGroup::type_map_items::iterator iterItem = m_map_items.begin();
+  while(iterItem != m_map_items.end())
+  {
+    sharedptr<LayoutItem> item = iterItem->second;
+    sharedptr<LayoutItem_Field> field_item = sharedptr<LayoutItem_Field>::cast_dynamic(item);
+    if(field_item)
+    {
+      if(field_item->get_has_relationship_name()) //If it's related table.
+      {
+        sharedptr<const Relationship> relationship = field_item->get_relationship();
+        if(relationship)
+        {
+          if(relationship->get_to_table() == table_name)
+          {
+            if(field_item->get_name() == field_name)
+            {
+              m_map_items.erase(iterItem);
+              iterItem = m_map_items.begin(); //Start again, because we changed the container.AddDel 
+              continue;
+            }
+          }
+        }
+      }
+    }
+    else
+    {
+      sharedptr<LayoutGroup> sub_group = sharedptr<LayoutGroup>::cast_dynamic(item);
+      if(sub_group)
+        sub_group->remove_field(table_name, field_name);
+    }
+
+    ++iterItem;
+  }
 }
 
 void LayoutGroup::change_related_field_item_name(const Glib::ustring& table_name, const Glib::ustring& field_name, const Glib::ustring& field_name_new)

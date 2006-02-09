@@ -183,7 +183,7 @@ void Box_DB_Table_Definition::on_adddel_add(const Gtk::TreeModel::iterator& row)
   }
 }
 
-void Box_DB_Table_Definition::on_adddel_delete(const Gtk::TreeModel::iterator& rowStart, const Gtk::TreeModel::iterator&  rowEnd)
+void Box_DB_Table_Definition::on_adddel_delete(const Gtk::TreeModel::iterator& rowStart, const Gtk::TreeModel::iterator& rowEnd)
 {
   Gtk::TreeModel::iterator iterAfterEnd = rowEnd;
   if(iterAfterEnd != m_AddDel.get_model()->children().end())
@@ -195,6 +195,9 @@ void Box_DB_Table_Definition::on_adddel_delete(const Gtk::TreeModel::iterator& r
     if(!strName.empty())
     {
       Query_execute( "ALTER TABLE \"" + m_strTableName + "\" DROP COLUMN \"" + strName + "\"");
+
+      //Remove it from all layouts, reports, etc:
+      get_document()->remove_field(m_strTableName, strName);
     }
   }
 

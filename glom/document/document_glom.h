@@ -120,6 +120,11 @@ public:
 
   virtual sharedptr<Field> get_field(const Glib::ustring& table_name, const Glib::ustring& strFieldName) const;
 
+  /** Use this after removing a field from a table,
+   * so that it is not used anymore in relationships, layouts, reports, etc.
+   */
+  void remove_field(const Glib::ustring& table_name, const Glib::ustring& field_name);
+
 
   typedef std::map<guint, sharedptr<LayoutGroup> > type_mapLayoutGroupSequence;
   type_mapLayoutGroupSequence get_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name) const;

@@ -44,8 +44,18 @@ public:
 //  void add_item(const LayoutGroup& item);
 //  void add_item(const LayoutGroup& item, guint sequence);
 
+  /** Any instance of the field (from the current table) from the layout.
+   */
+  virtual void remove_field(const Glib::ustring& field_name);
+
+  /** Any instance of the related field from the layout.
+   */
+  virtual void remove_field(const Glib::ustring& table_name, const Glib::ustring& field_name);
+
   virtual void change_field_item_name(const Glib::ustring& table_name, const Glib::ustring& field_name, const Glib::ustring& field_name_new);
   virtual void change_related_field_item_name(const Glib::ustring& table_name, const Glib::ustring& field_name, const Glib::ustring& field_name_new);
+
+
 
   void remove_all_items();
 
