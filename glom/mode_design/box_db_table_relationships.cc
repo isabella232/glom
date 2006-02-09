@@ -136,19 +136,19 @@ void Box_DB_Table_Relationships::save_to_document()
         get_document()->change_relationship_name(m_strTableName, old_name, name); //Update layouts and reports.
 
       sharedptr<Relationship> relationship = document->get_relationship(m_strTableName, name); //Preserve other information, such as translations.
-      if(relationship)
-      {
-        relationship->set_name(name);
-        relationship->set_title(m_AddDel.get_value(iter, m_colTitle));
-        relationship->set_from_table(m_strTableName);
-        relationship->set_from_field(m_AddDel.get_value(iter, m_colFromField));
-        relationship->set_to_table(m_AddDel.get_value(iter, m_colToTable));
-        relationship->set_to_field(m_AddDel.get_value(iter, m_colToField));
-        relationship->set_allow_edit(m_AddDel.get_value_as_bool(iter, m_colAllowEdit));
-        relationship->set_auto_create(m_AddDel.get_value_as_bool(iter, m_colAutoCreate));
+      if(!relationship)
+        relationship = sharedptr<Relationship>(new Relationship());
+      
+      relationship->set_name(name);
+      relationship->set_title(m_AddDel.get_value(iter, m_colTitle));
+      relationship->set_from_table(m_strTableName);
+      relationship->set_from_field(m_AddDel.get_value(iter, m_colFromField));
+      relationship->set_to_table(m_AddDel.get_value(iter, m_colToTable));
+      relationship->set_to_field(m_AddDel.get_value(iter, m_colToField));
+      relationship->set_allow_edit(m_AddDel.get_value_as_bool(iter, m_colAllowEdit));
+      relationship->set_auto_create(m_AddDel.get_value_as_bool(iter, m_colAutoCreate));
 
-        vecRelationships.push_back(relationship);
-      }
+      vecRelationships.push_back(relationship);
     }
   }
 
@@ -162,14 +162,14 @@ void Box_DB_Table_Relationships::save_to_document()
 void Box_DB_Table_Relationships::on_adddel_user_added(const Gtk::TreeModel::iterator& row)
 {
   const guint col_with_first_value = m_colName;
-  
+
   if(col_with_first_value == m_colName)
   {
     //The name is the key:
     Glib::ustring new_name = m_AddDel.get_value(row, m_colName);
     if(!new_name.empty())
       m_AddDel.set_value_key(row, new_name);
-      
+
     //Set a suitable starting title, if there is none already:
     Glib::ustring title = m_AddDel.get_value(row, m_colTitle);
     if(title.empty())
@@ -179,7 +179,7 @@ void Box_DB_Table_Relationships::on_adddel_user_added(const Gtk::TreeModel::iter
     }
   }
 }
-  
+
 void Box_DB_Table_Relationships::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, guint col)
 {
   if(col == m_colName)
