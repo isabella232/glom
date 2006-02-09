@@ -1,4 +1,10 @@
-2006-02-09  Murray Cumming, <murrayc@murrayc.com>
+2006-02-09  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/mode_data/box_data.cc: get_lookup_value(): 
+	Convert the key field value, in case the relationship's keys 
+	have different types.
+
+2006-02-09  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/mode_design/box_db_table_relationships.cc:
 	save_to_document(): Actually add new relationships.

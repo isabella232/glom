@@ -508,8 +508,11 @@ Gnome::Gda::Value Box_Data::get_lookup_value(const sharedptr<const Relationship>
   sharedptr<Field> to_key_field = get_fields_for_table_one_field(relationship->get_to_table(), relationship->get_to_field());
   if(to_key_field)
   {
+    //Convert the value, in case the from and to fields have different types:
+    const Gnome::Gda::Value value_to_key_field = GlomConversions::convert_value(key_value, to_key_field->get_glom_type());
+
     Glib::ustring strQuery = "SELECT \"" + relationship->get_to_table() + "\".\"" + source_field->get_name() + "\" FROM \"" +  relationship->get_to_table() + "\"";
-    strQuery += " WHERE \"" + relationship->get_to_field() + "\" = " + to_key_field->sql(key_value);
+    strQuery += " WHERE \"" + to_key_field->get_name() + "\" = " + to_key_field->sql(value_to_key_field);
 
     Glib::RefPtr<Gnome::Gda::DataModel> data_model = Query_execute(strQuery);
     if(data_model && data_model->get_n_rows())
