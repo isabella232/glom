@@ -1,3 +1,10 @@
+0.9.4:
+
+* Relationships: Really save new relationships. (Fixes a regression.)
+* Prevent crash when doing a lookup from a field of a different type, or via 
+  a relationship whose key fields are of different types.
+* Prevent crashes when deleting field or relationships that are used on a layout.
+
 0.9.3:
 
 * Prevent crashes when using Table or Field names with uppercase characters.
