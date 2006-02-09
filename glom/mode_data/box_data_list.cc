@@ -502,27 +502,28 @@ void Box_Data_List::do_lookups(const Gtk::TreeModel::iterator& row, const shared
 
      sharedptr<const Relationship> relationship = iter->second;
      const sharedptr<const Field> field_lookup = layout_item->get_full_field_details();
-
-     sharedptr<const Field> field_source = get_fields_for_table_one_field(relationship->get_to_table(), field_lookup->get_lookup_field());
-     if(field_source)
+     if(field_lookup)
      {
-       const Gnome::Gda::Value value = get_lookup_value(iter->second /* relationship */,  field_source /* the field to look in to get the value */, field_value /* Value of to and from fields */);
+      sharedptr<const Field> field_source = get_fields_for_table_one_field(relationship->get_to_table(), field_lookup->get_lookup_field());
+      if(field_source)
+      {
+        const Gnome::Gda::Value value = get_lookup_value(iter->second /* relationship */,  field_source /* the field to look in to get the value */, field_value /* Value of to and from fields */);
 
-       const Gnome::Gda::Value value_converted = GlomConversions::convert_value(value, layout_item->get_glom_type());
-       //Add it to the view:
-       m_AddDel.set_value(row, layout_item, value_converted);
+        const Gnome::Gda::Value value_converted = GlomConversions::convert_value(value, layout_item->get_glom_type());
+        //Add it to the view:
+        m_AddDel.set_value(row, layout_item, value_converted);
 
-       //Add it to the database (even if it is not shown in the view)
-       set_field_value_in_database(row, layout_item, value_converted, primary_key, primary_key_value); //Also does dependent lookups/recalcs.
-       //Glib::ustring strQuery = "UPDATE \"" + m_strTableName + "\"";
-       //strQuery += " SET " + field_lookup.get_name() + " = " + field_lookup.sql(value);
-       //strQuery += " WHERE " + primary_key.get_name() + " = " + primary_key.sql(primary_key_value);
-       //Query_execute(strQuery);  //TODO: Handle errors
+        //Add it to the database (even if it is not shown in the view)
+        set_field_value_in_database(row, layout_item, value_converted, primary_key, primary_key_value); //Also does dependent lookups/recalcs.
+        //Glib::ustring strQuery = "UPDATE \"" + m_strTableName + "\"";
+        //strQuery += " SET " + field_lookup.get_name() + " = " + field_lookup.sql(value);
+        //strQuery += " WHERE " + primary_key.get_name() + " = " + primary_key.sql(primary_key_value);
+        //Query_execute(strQuery);  //TODO: Handle errors
 
-       //TODO: Handle lookups triggered by these fields (recursively)? TODO: Check for infinitely looping lookups.
-     }
-   }
-
+        //TODO: Handle lookups triggered by these fields (recursively)? TODO: Check for infinitely looping lookups.
+      }
+    }
+  }
 }
 
 void Box_Data_List::on_details_nav_first()

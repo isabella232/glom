@@ -138,7 +138,7 @@ void Box_DB_Table_Relationships::save_to_document()
       sharedptr<Relationship> relationship = document->get_relationship(m_strTableName, name); //Preserve other information, such as translations.
       if(!relationship)
         relationship = sharedptr<Relationship>(new Relationship());
-      
+
       relationship->set_name(name);
       relationship->set_title(m_AddDel.get_value(iter, m_colTitle));
       relationship->set_from_table(m_strTableName);
@@ -243,10 +243,30 @@ void Box_DB_Table_Relationships::on_adddel_user_activated(const Gtk::TreeModel::
   }
 }
 
-void Box_DB_Table_Relationships::on_adddel_user_requested_delete(const Gtk::TreeModel::iterator& rowStart, const Gtk::TreeModel::iterator& /* rowEnd TODO */)
+void Box_DB_Table_Relationships::on_adddel_user_requested_delete(const Gtk::TreeModel::iterator& rowStart, const Gtk::TreeModel::iterator& /* rowEnd */)
 {
-  //Remove the row:
-  m_AddDel.remove_item(rowStart);
+  //Gtk::TreeModel::iterator iterAfter = rowEnd;
+  //++iterAfter;
+
+  //for(Gtk::TreeModel::iterator iter = rowStart; iter != iterAfter; ++iter)
+  //{ //AddDel::remove_item() can't cope with this.
+    Gtk::TreeModel::iterator iter = rowStart;
+    const Glib::ustring relationship_name = m_AddDel.get_value_key(iter);
+
+    //Remove the row:
+    m_AddDel.remove_item(iter);
+
+    //Remove it from any layouts, reports, field lookups, etc:
+    Document_Glom* document = get_document();
+    if(document)
+    {
+      sharedptr<const Relationship> relationship = document->get_relationship(m_strTableName, relationship_name);
+      if(relationship)
+      {
+        document->remove_relationship(relationship);
+      }
+    }
+  //}
 
   set_modified();
 }

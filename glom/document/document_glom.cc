@@ -275,16 +275,53 @@ void Document_Glom::remove_relationship(const sharedptr<const Relationship>& rel
     const Glib::ustring relationship_name = glom_get_sharedptr_name(relationship);
 
     //Find the relationship and remove it:
-    for(type_vecRelationships::iterator iter = info.m_relationships.begin(); iter != info.m_relationships.end(); ++iter)
+    type_vecRelationships::iterator iterRel = std::find_if(info.m_relationships.begin(), info.m_relationships.end(), predicate_FieldHasName<Relationship>(relationship_name));
+    if(iterRel != info.m_relationships.end())
     {
-      if(*iter && ((*iter)->get_name() == relationship_name))
+      info.m_relationships.erase(iterRel);
+
+      set_modified(true);
+    }
+
+    //Remove relationship from any layouts:
+    DocumentTableInfo::type_layouts::iterator iterLayouts = info.m_layouts.begin();
+    while(iterLayouts != info.m_layouts.end())
+    {
+      LayoutInfo& layout_info = *iterLayouts;
+
+      type_mapLayoutGroupSequence::iterator iterGroups = layout_info.m_layout_groups.begin(); 
+      while(iterGroups != layout_info.m_layout_groups.end())
       {
-        iter = info.m_relationships.erase(iter);
+        //Remove any layout parts that use this relationship:
+        sharedptr<LayoutGroup> group = iterGroups->second;
+        sharedptr<UsesRelationship> uses_rel = sharedptr<UsesRelationship>::cast_dynamic(group);
+        if(uses_rel && uses_rel->get_has_relationship_name())
+        {
+          if(*(uses_rel->get_relationship()) == *relationship) //TODO_Performance: Slow when there are many translations.
+          {
+            layout_info.m_layout_groups.erase(iterGroups);
+            iterGroups = layout_info.m_layout_groups.begin(); //Start again because we changed the structure.
+            continue;
+          }
+        }
 
-        //TODO: Remove any lookups, view fields, or related records portals, that use this relationship.
+        if(group)
+          group->remove_relationship(relationship);
 
-        set_modified(true);
+        ++iterGroups;
       }
+
+       ++iterLayouts;
+    }
+
+     //Remove relationshp from any reports:
+    for(DocumentTableInfo::type_reports::iterator iterReports = info.m_reports.begin(); iterReports != info.m_reports.end(); ++iterReports)
+    {
+      sharedptr<Report> report = iterReports->second;
+      sharedptr<LayoutGroup> group = report->m_layout_group;
+
+      //Remove the field wherever it is a related field:
+      group->remove_relationship(relationship);
     }
   }
 }
@@ -326,19 +363,32 @@ void Document_Glom::remove_field(const Glib::ustring& table_name, const Glib::us
     //Remove field from any layouts:
     for(DocumentTableInfo::type_layouts::iterator iterLayouts = info.m_layouts.begin(); iterLayouts != info.m_layouts.end(); ++iterLayouts)
     {
-       LayoutInfo& layout_info = *iterLayouts;
-       for(type_mapLayoutGroupSequence::iterator iter = layout_info.m_layout_groups.begin(); iter != layout_info.m_layout_groups.end(); ++iter)
-       {
-         //Remove regular fields if the field is in this layout's table:
-         if(info.m_info->get_name() == table_name)
-           iter->second->remove_field(field_name);
+      LayoutInfo& layout_info = *iterLayouts;
+      for(type_mapLayoutGroupSequence::iterator iter = layout_info.m_layout_groups.begin(); iter != layout_info.m_layout_groups.end(); ++iter)
+      {
+        //Remove regular fields if the field is in this layout's table:
+        if(info.m_info->get_name() == table_name)
+          iter->second->remove_field(field_name);
 
-         //Remove the field wherever it is a related field:
-         iter->second->remove_field(table_name, field_name);
-       }
+        //Remove the field wherever it is a related field:
+        iter->second->remove_field(table_name, field_name);
+      }
+    }
+
+     //Remove field from any reports:
+    for(DocumentTableInfo::type_reports::iterator iterReports = info.m_reports.begin(); iterReports != info.m_reports.end(); ++iterReports)
+    {
+      sharedptr<Report> report = iterReports->second;
+      sharedptr<LayoutGroup> group = report->m_layout_group;
+
+      //Remove regular fields if the field is in this layout's table:
+      if(info.m_info->get_name() == table_name)
+        group->remove_field(field_name);
+
+      //Remove the field wherever it is a related field:
+      group->remove_field(table_name, field_name);
     }
   }
-
 
 }
 

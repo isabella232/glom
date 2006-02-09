@@ -83,17 +83,19 @@ Glib::ustring Box_Data::get_find_where_clause() const
     if(!GlomConversions::value_is_empty(data))
     {
       const sharedptr<const Field> field = (*iter)->get_full_field_details();
-
-      bool use_this_field = true;
-      if(field->get_glom_type() == Field::TYPE_BOOLEAN) //TODO: We need an intermediate state for boolean fields, so that they can be ignored in searches.
+      if(field)
       {
-        if(!data.get_bool())
-          use_this_field = false;
-      }
-
-      if(use_this_field)
-      {
-        strClausePart = m_strTableName + "." + field->get_name() + " " + field->sql_find_operator() + " " +  field->sql_find(data); //% is mysql wildcard for 0 or more characters.
+        bool use_this_field = true;
+        if(field->get_glom_type() == Field::TYPE_BOOLEAN) //TODO: We need an intermediate state for boolean fields, so that they can be ignored in searches.
+        {
+          if(!data.get_bool())
+            use_this_field = false;
+        }
+  
+        if(use_this_field)
+        {
+          strClausePart = m_strTableName + "." + field->get_name() + " " + field->sql_find_operator() + " " +  field->sql_find(data); //% is mysql wildcard for 0 or more characters.
+        }
       }
     }
 
@@ -199,27 +201,29 @@ Glib::RefPtr<Gnome::Gda::DataModel> Box_Data::record_new(bool use_entered_data, 
     if(GlomConversions::value_is_empty(value)) //This deals with empty strings too.
     {
       const sharedptr<const Field>& field = layout_item->get_full_field_details();
-
-      //If the default value should be calculated, then calculate it:
-      if(field->get_has_calculation())
+      if(field)
       {
-        const Glib::ustring calculation = field->get_calculation();
-        const type_map_fields field_values = get_record_field_values(primary_key_value);
-
-        const Gnome::Gda::Value value = glom_evaluate_python_function_implementation(field->get_glom_type(), calculation, field_values,
-          get_document(), m_strTableName);
-        set_entered_field_data(layout_item, value);
-      }
-
-      //Use default values (These are also specified in postgres as part of the field definition,
-      //so we could theoretically just not specify it here.
-      //TODO_Performance: Add has_default_value()?
-      if(GlomConversions::value_is_empty(value))
-      {
-        const Gnome::Gda::Value default_value = field->get_default_value();
-        if(!GlomConversions::value_is_empty(default_value))
+        //If the default value should be calculated, then calculate it:
+        if(field->get_has_calculation())
         {
-          set_entered_field_data(layout_item, default_value);
+          const Glib::ustring calculation = field->get_calculation();
+          const type_map_fields field_values = get_record_field_values(primary_key_value);
+  
+          const Gnome::Gda::Value value = glom_evaluate_python_function_implementation(field->get_glom_type(), calculation, field_values,
+            get_document(), m_strTableName);
+          set_entered_field_data(layout_item, value);
+        }
+  
+        //Use default values (These are also specified in postgres as part of the field definition,
+        //so we could theoretically just not specify it here.
+        //TODO_Performance: Add has_default_value()?
+        if(GlomConversions::value_is_empty(value))
+        {
+          const Gnome::Gda::Value default_value = field->get_default_value();
+          if(!GlomConversions::value_is_empty(default_value))
+          {
+            set_entered_field_data(layout_item, default_value);
+          }
         }
       }
     }
@@ -245,32 +249,34 @@ Glib::RefPtr<Gnome::Gda::DataModel> Box_Data::record_new(bool use_entered_data, 
         Gnome::Gda::Value value;
 
         const sharedptr<const Field>& field = layout_item->get_full_field_details();
-
-        //Use the specified (generated) primary key value, if there is one:
-        if(primary_key_name == field_name && !GlomConversions::value_is_empty(primary_key_value))
+        if(field)
         {
-          value = primary_key_value;
-        }
-        else
-        {
-          if(use_entered_data || !field->get_calculation().empty()) //TODO_Performance: Use a get_has_calculation() method.
-            value = get_entered_field_data(layout_item);
-        }
-
-        Glib::ustring strFieldValue = field->sql(value);
-
-        if(!strFieldValue.empty())
-        {
-          if(!strNames.empty())
+          //Use the specified (generated) primary key value, if there is one:
+          if(primary_key_name == field_name && !GlomConversions::value_is_empty(primary_key_value))
           {
-            strNames += ", ";
-            strValues += ", ";
+            value = primary_key_value;
           }
-
-          strNames += "\"" + field_name + "\"";
-          strValues += strFieldValue;
-
-          map_added[field_name] = true;
+          else
+          {
+            if(use_entered_data || !field->get_calculation().empty()) //TODO_Performance: Use a get_has_calculation() method.
+              value = get_entered_field_data(layout_item);
+          }
+  
+          Glib::ustring strFieldValue = field->sql(value);
+  
+          if(!strFieldValue.empty())
+          {
+            if(!strNames.empty())
+            {
+              strNames += ", ";
+              strValues += ", ";
+            }
+  
+            strNames += "\"" + field_name + "\"";
+            strValues += strFieldValue;
+  
+            map_added[field_name] = true;
+          }
         }
       }
     }
@@ -666,6 +672,8 @@ bool Box_Data::set_field_value_in_database(const Gtk::TreeModel::iterator& row, 
   //row is invalid, and ignored, for Box_Data_Details.
 
   const sharedptr<const Field> field = field_layout->get_full_field_details();
+  if(!field)
+    return false;
 
   const Glib::ustring field_name = field_layout->get_name();
   if(!field_name.empty()) //This should not happen.

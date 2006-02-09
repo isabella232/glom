@@ -1,6 +1,16 @@
 2006-02-09  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/data_structure/layout/layoutgroup.cc:
+	* glom/data_structure/layout/layoutgroup.h: 
+	Added remove_relationship(), to remove any 
+	child items that use the relationship.
+	* glom/document/document_glom.cc:
+	remove_relationship(): Also remove any layout or report 
+	parts that use the relationship.
+
+2006-02-09  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/data_structure/layout/layoutgroup.cc:
 	* glom/data_structure/layout/layoutgroup.h: Added remove_field().
 	* glom/document/document_glom.cc:
 	* glom/document/document_glom.h: Added remove_field().

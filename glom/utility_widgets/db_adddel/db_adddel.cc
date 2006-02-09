@@ -541,10 +541,14 @@ void DbAddDel::construct_specified_columns()
   for(type_model_store::type_vec_fields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
   {
     sharedptr<LayoutItem_Field> layout_item = *iter;
-    if( !(layout_item->get_has_relationship_name()) && (layout_item->get_full_field_details()->get_primary_key()) )
+    if( !(layout_item->get_has_relationship_name()) )
     {
-      key_found = true;
-      break;
+      sharedptr<const Field> field_full = layout_item->get_full_field_details();
+      if(field_full && field_full->get_primary_key() )
+      {
+        key_found = true;
+        break;
+      }
     }
 
     ++column_index_key;
@@ -825,7 +829,8 @@ guint DbAddDel::add_column(const sharedptr<const LayoutItem_Field>& field)
   //column_info.m_visible = visible;
 
   //Make it non-editable if it is auto-generated:
-  if(field->get_full_field_details()->get_auto_increment())
+  sharedptr<const Field> field_full = field->get_full_field_details();
+  if(field_full && field_full->get_auto_increment())
     column_info.m_editable = false;
   else
     column_info.m_editable = field->get_editable_and_allowed();

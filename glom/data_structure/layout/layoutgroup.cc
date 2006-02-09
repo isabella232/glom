@@ -189,6 +189,34 @@ LayoutGroup::type_map_const_items LayoutGroup::get_items() const
   return result;
 }
 
+void LayoutGroup::remove_relationship(const sharedptr<const Relationship>& relationship)
+{
+  LayoutGroup::type_map_items::iterator iterItem = m_map_items.begin();
+  while(iterItem != m_map_items.end())
+  {
+    sharedptr<LayoutItem> item = iterItem->second;
+    sharedptr<UsesRelationship> uses_rel = sharedptr<UsesRelationship>::cast_dynamic(item);
+    if(uses_rel)
+    {
+      if(uses_rel->get_has_relationship_name())
+      {
+        if(*(uses_rel->get_relationship()) == *relationship) //TODO_Performance: Slow if there are lots of translations.
+        {
+          m_map_items.erase(iterItem);
+          iterItem = m_map_items.begin(); //Start again, because we changed the container.AddDel 
+          continue;
+        }
+      }
+    }
+
+    sharedptr<LayoutGroup> sub_group = sharedptr<LayoutGroup>::cast_dynamic(item);
+    if(sub_group)
+      sub_group->remove_relationship(relationship);
+
+    ++iterItem;
+  }
+}
+
 void LayoutGroup::remove_field(const Glib::ustring& field_name)
 {
   //Look at each item:

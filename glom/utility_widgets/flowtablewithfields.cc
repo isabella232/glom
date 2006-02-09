@@ -83,10 +83,14 @@ void FlowTableWithFields::add_layout_item_at_position(const sharedptr<LayoutItem
     add_field_at_position(field, m_table_name, add_before);
 
     //Do not allow editing of auto-increment fields:
-    if(field->get_full_field_details()->get_auto_increment())
-      set_field_editable(field, false);
-    else
-      set_field_editable(field, field->get_editable_and_allowed());
+    sharedptr<const Field> field_details = field->get_full_field_details();
+    if(field_details)
+    {
+      if(field_details->get_auto_increment())
+        set_field_editable(field, false);
+      else
+        set_field_editable(field, field->get_editable_and_allowed());
+    }
   }
   else
   {

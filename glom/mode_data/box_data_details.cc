@@ -711,35 +711,38 @@ void Box_Data_Details::refresh_related_fields(const Gtk::TreeModel::iterator& /*
 
 void Box_Data_Details::do_lookups(const Gtk::TreeModel::iterator& /* row */, const sharedptr<const LayoutItem_Field>& field_changed, const Gnome::Gda::Value& field_value, const sharedptr<const Field>& primary_key, const Gnome::Gda::Value& primary_key_value)
 {
-   if(field_changed->get_has_relationship_name())
-    return; //TODO: Handle these too.
+  if(field_changed->get_has_relationship_name())
+  return; //TODO: Handle these too.
 
-   //Get values for lookup fields, if this field triggers those relationships:
-   //TODO_performance: There is a LOT of iterating and copying here.
-   const Glib::ustring strFieldName = field_changed->get_name();
-   const type_list_lookups lookups = get_lookup_fields(strFieldName);
-   for(type_list_lookups::const_iterator iter = lookups.begin(); iter != lookups.end(); ++iter)
-   {
-     sharedptr<const LayoutItem_Field> layout_item = iter->first;
+  //Get values for lookup fields, if this field triggers those relationships:
+  //TODO_performance: There is a LOT of iterating and copying here.
+  const Glib::ustring strFieldName = field_changed->get_name();
+  const type_list_lookups lookups = get_lookup_fields(strFieldName);
+  for(type_list_lookups::const_iterator iter = lookups.begin(); iter != lookups.end(); ++iter)
+  {
+    sharedptr<const LayoutItem_Field> layout_item = iter->first;
 
-     sharedptr<const Relationship> relationship = iter->second;
-     const sharedptr<const Field>& field_lookup = layout_item->get_full_field_details();
-     const Glib::ustring field_lookup_name = field_lookup->get_name();
+    sharedptr<const Relationship> relationship = iter->second;
+    const sharedptr<const Field>& field_lookup = layout_item->get_full_field_details();
+    if(field_lookup)
+    {
+      const Glib::ustring field_lookup_name = field_lookup->get_name();
 
-     sharedptr<const Field> field_source = get_fields_for_table_one_field(relationship->get_to_table(), field_lookup->get_lookup_field());
-     if(field_source)
-     {
-       const Gnome::Gda::Value value = get_lookup_value(iter->second /* relationship */,  field_source /* the field to look in to get the value */, field_value /* Value of to and from fields */);
+      sharedptr<const Field> field_source = get_fields_for_table_one_field(relationship->get_to_table(), field_lookup->get_lookup_field());
+      if(field_source)
+      {
+        const Gnome::Gda::Value value = get_lookup_value(iter->second /* relationship */,  field_source /* the field to look in to get the value */, field_value /* Value of to and from fields */);
 
-       //Add it to the view:
-       //TODO? layout_item->set_relationship_name();
-       const Gnome::Gda::Value value_converted = GlomConversions::convert_value(value, layout_item->get_glom_type());
-       set_entered_field_data(layout_item, value_converted);
+        //Add it to the view:
+        //TODO? layout_item->set_relationship_name();
+        const Gnome::Gda::Value value_converted = GlomConversions::convert_value(value, layout_item->get_glom_type());
+        set_entered_field_data(layout_item, value_converted);
 
-       //Add it to the database (even if it is not shown in the view)
-       set_field_value_in_database(layout_item, value_converted, primary_key, primary_key_value);
-     }
-   }
+        //Add it to the database (even if it is not shown in the view)
+        set_field_value_in_database(layout_item, value_converted, primary_key, primary_key_value);
+      }
+    }
+  }
 }
 
 void Box_Data_Details::on_userlevel_changed(AppState::userlevels user_level)
