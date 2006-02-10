@@ -1,3 +1,11 @@
+2006-02-10  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/application.cc: on_document_load(): When saving from an 
+	example, do not open the Save As dialog box in the examples directory, 
+	because it is usually read-only and it is not a wise place to put your 
+	own stuff. Also see the latest Bakery 2.3.17 for fixes to prevent Save As 
+	in read-only paths.
+
 0.9.4:
 
 2006-02-09  Murray Cumming  <murrayc@murrayc.com>

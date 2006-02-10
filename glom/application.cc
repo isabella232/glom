@@ -433,6 +433,7 @@ bool App_Glom::on_document_load()
             return false;
           else
           {
+            pDocument->set_file_uri(Glib::ustring()); //Prevent it from defaulting to the read-only examples directory when offering saveas.
             offer_saveas();
             if(get_operation_cancelled())
               return false;
