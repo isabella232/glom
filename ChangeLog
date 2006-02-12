@@ -1,3 +1,26 @@
+2006-02-12  Murray Cumming  <murrayc@murrayc.com>
+
+	* po/POTFILES.in:
+	* glom/Makefile.am:
+	* glom/data_structure/layout/Makefile.am:
+	* glom/data_structure/layout/layoutitem_button.cc:
+	* glom/data_structure/layout/layoutitem_button.h: Add Button 
+	layout item.
+	* glom/glom.glade: Details Layout: 
+	Put the Add buttons vertically at the right-hand side Add 
+	an Add Button button.
+	* glom/mode_data/treestore_layout.cc:
+	* glom/mode_data/treestore_layout.h:
+	* glom/mode_data/dialog_layout_details.h:
+	* glom/mode_data/dialog_layout_details.cc: 
+	Use the LayoutItems only in the model, simplifying this 
+	dramatically, and making it easier to add new types of 
+	layout items.
+	* glom/utility_widgets/Makefile.am:
+	* glom/utility_widgets/buttonglom.cc:
+	* glom/utility_widgets/buttonglom.h: Add a (non yet useful) 
+	button widget.
+
 2006-02-10  Murray Cumming  <murrayc@murrayc.com
 
 	* Makefile.am: Install the logo used by the desktop file.

@@ -95,7 +95,7 @@ void Box_Data_List_Related::enable_buttons()
 
 bool Box_Data_List_Related::init_db_details(const sharedptr<const LayoutItem_Portal>& portal)
 {
-  m_portal = sharedptr<LayoutItem_Portal>((LayoutItem_Portal*)portal->clone());
+  m_portal = glom_sharedptr_clone(portal);
   m_strTableName = m_portal->get_relationship()->get_to_table();
 
   m_Label.set_markup(Bakery::App_Gtk::util_bold_message( m_portal->get_relationship()->get_title_or_name() ));

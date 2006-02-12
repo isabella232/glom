@@ -275,7 +275,7 @@ sharedptr<Field> Box_DB_Table_Definition::get_field_definition(const Gtk::TreeMo
 
     if((iterFind != vecFields.end()) && (*iterFind)) //If it was found:
     {
-      fieldResult = sharedptr<Field>((*iterFind)->clone());
+      fieldResult = glom_sharedptr_clone(*iterFind);
     }
     else
     {
@@ -385,7 +385,7 @@ void Box_DB_Table_Definition::change_definition(const sharedptr<const Field>& fi
     else
     {
       //Add it, because it's not there already:
-      vecFields.push_back( sharedptr<Field>(field->clone()) );
+      vecFields.push_back( glom_sharedptr_clone(field) );
     }
 
     pDoc->set_table_fields(m_strTableName, vecFields);
@@ -469,7 +469,7 @@ void  Box_DB_Table_Definition::postgres_change_column_type(const sharedptr<const
         //TODO: Warn about a delay, and possible loss of precision, before actually doing this.
         //TODO: Try to use a unique name for the temp column:
 
-        sharedptr<Field> fieldTemp = sharedptr<Field>(field->clone());
+        sharedptr<Field> fieldTemp = glom_sharedptr_clone(field);
         fieldTemp->set_name("glom_temp_column");
         postgres_add_column(fieldTemp); //This might also involves several commands.
 

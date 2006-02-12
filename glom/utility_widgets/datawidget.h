@@ -77,13 +77,13 @@ protected:
   virtual bool on_button_press_event(GdkEventButton* event); //override.
   virtual void on_child_user_requested_layout();
   virtual void on_child_user_requested_layout_properties();
-  virtual void on_child_layout_item_added(TreeStore_Layout::enumType item_type);
+  virtual void on_child_layout_item_added(LayoutWidgetBase::enumType item_type);
   void on_button_open_details();
   void on_button_select_id();
 
   virtual void on_menupopup_activate_layout(); //override
   virtual void on_menupopup_activate_layout_properties(); //override
-  //virtual void on_menupopup_add_item(TreeStore_Layout::enumType item);
+  //virtual void on_menupopup_add_item(LayoutWidgetBase::enumType item);
 
   App_Glom* get_application();
 

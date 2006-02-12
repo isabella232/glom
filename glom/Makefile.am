@@ -62,6 +62,7 @@ glom_LDADD = document/libdocument.a \
              data_structure/libdata_structure.a \
              relationships_overview/librelationshipsoverview.a \
              translation/libtranslation.a \
+             data_structure/layout/libdata_structure_layout.a \
              python_embed/libpython_embed.a \
              python_embed/python_module/glom.la \
              $(GLOM_LIBS) $(PYTHON_LDFLAGS) -lutil

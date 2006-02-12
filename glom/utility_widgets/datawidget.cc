@@ -377,13 +377,13 @@ void DataWidget::setup_menu()
     sigc::mem_fun(*this, &DataWidget::on_menupopup_activate_layout_properties) );
 
   m_refActionGroup->add(m_refContextAddField,
-    sigc::bind( sigc::mem_fun(*this, &DataWidget::on_menupopup_add_item), TreeStore_Layout::TYPE_FIELD ) );
+    sigc::bind( sigc::mem_fun(*this, &DataWidget::on_menupopup_add_item), LayoutWidgetBase::TYPE_FIELD ) );
 
   m_refActionGroup->add(m_refContextAddRelatedRecords,
-    sigc::bind( sigc::mem_fun(*this, &DataWidget::on_menupopup_add_item), TreeStore_Layout::TYPE_PORTAL ) );
+    sigc::bind( sigc::mem_fun(*this, &DataWidget::on_menupopup_add_item), LayoutWidgetBase::TYPE_PORTAL ) );
 
   m_refActionGroup->add(m_refContextAddGroup,
-    sigc::bind( sigc::mem_fun(*this, &DataWidget::on_menupopup_add_item), TreeStore_Layout::TYPE_GROUP ) );
+    sigc::bind( sigc::mem_fun(*this, &DataWidget::on_menupopup_add_item), LayoutWidgetBase::TYPE_GROUP ) );
 
   //TODO: This does not work until this widget is in a container in the window:s
   App_Glom* pApp = get_application();
@@ -551,7 +551,7 @@ sharedptr<LayoutItem_Field> DataWidget::offer_field_layout(const sharedptr<const
 }
 
 /*
-void DataWidget::on_menupopup_add_item(TreeStore_Layout::enumType item)
+void DataWidget::on_menupopup_add_item(LayoutWidgetBase::enumType item)
 {
   signal_layout_item_added().emit(item);
 }
@@ -607,7 +607,7 @@ App_Glom* DataWidget::get_application()
   return dynamic_cast<App_Glom*>(pWindow);
 }
 
-void DataWidget::on_child_layout_item_added(TreeStore_Layout::enumType item_type)
+void DataWidget::on_child_layout_item_added(LayoutWidgetBase::enumType item_type)
 {
   signal_layout_item_added().emit(item_type);
 }

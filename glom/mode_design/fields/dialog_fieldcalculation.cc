@@ -51,7 +51,7 @@ void Dialog_FieldCalculation::set_field(const sharedptr<const Field>& field, con
 {
   //set_blocked();
 
-  m_field = sharedptr<Field>(field->clone()); //Remember it so we save any details that are not in our UI.
+  m_field = glom_sharedptr_clone(field); //Remember it so we save any details that are not in our UI.
   m_table_name = table_name;  //Used for lookup combo boxes.
 
   m_text_view->get_buffer()->set_text( field->get_calculation() );
@@ -64,7 +64,7 @@ void Dialog_FieldCalculation::set_field(const sharedptr<const Field>& field, con
 
 sharedptr<Field> Dialog_FieldCalculation::get_field() const
 {
-  sharedptr<Field> field = sharedptr<Field>(m_field->clone()); //Start with the old details, to preserve anything that is not in our UI.
+  sharedptr<Field> field = glom_sharedptr_clone(m_field); //Start with the old details, to preserve anything that is not in our UI.
 
   field->set_calculation( m_text_view->get_buffer()->get_text() );
 

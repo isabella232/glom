@@ -107,7 +107,7 @@ void Dialog_FieldDefinition::set_field(const sharedptr<const Field>& field, cons
 {
   set_blocked();
 
-  m_Field = sharedptr<Field>(field->clone()); //Remember it so we save any details that are not in our UI.
+  m_Field = glom_sharedptr_clone(field); //Remember it so we save any details that are not in our UI.
   m_table_name = table_name;  //Used for lookup combo boxes.
 
   //Set the Widgets from the field info:
@@ -142,7 +142,7 @@ void Dialog_FieldDefinition::set_field(const sharedptr<const Field>& field, cons
   //We use a regular DataWidget for the default value, so we can reuse its functionality,
   //but it's not a real field - hence the special title.
   sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
-  sharedptr<Field> field_default_value = sharedptr<Field>(m_Field->clone());
+  sharedptr<Field> field_default_value = glom_sharedptr_clone(m_Field);
   field_default_value->set_name("glom_temp_default_value");
   field_default_value->set_title(_("Default Value"));
   layout_item->set_full_field_details(field_default_value);
@@ -203,7 +203,7 @@ void Dialog_FieldDefinition::set_field(const sharedptr<const Field>& field, cons
 
 sharedptr<Field> Dialog_FieldDefinition::get_field() const
 {
-  sharedptr<Field> field = sharedptr<Field>(m_Field->clone()); //Start with the old details, to preserve anything that is not in our UI.
+  sharedptr<Field> field = glom_sharedptr_clone(m_Field); //Start with the old details, to preserve anything that is not in our UI.
 
   //Get the field info from the widgets:
 

@@ -20,6 +20,7 @@
  
 #include "flowtablewithfields.h"
 #include "datawidget.h"
+#include "buttonglom.h"
 #include <gtkmm/checkbutton.h>
 #include "../data_structure/glomconversions.h"
 #include "../mode_data/box_data_list_related.h"
@@ -124,9 +125,15 @@ void FlowTableWithFields::add_layout_item_at_position(const sharedptr<LayoutItem
     }
     else
     {
-     sharedptr<LayoutGroup> group = sharedptr<LayoutGroup>::cast_dynamic(item);
+      sharedptr<LayoutGroup> group = sharedptr<LayoutGroup>::cast_dynamic(item);
       if(group)
         add_layout_group_at_position(group, add_before);
+      else
+      {
+        sharedptr<LayoutItem_Button> layout_button = sharedptr<LayoutItem_Button>::cast_dynamic(item);
+        if(layout_button)
+          add_button_at_position(layout_button, m_table_name, add_before);
+      }
     }
   }
 }
@@ -298,6 +305,18 @@ void FlowTableWithFields::add_field_at_position(const sharedptr<LayoutItem_Field
   info.m_second->signal_open_details_requested().connect( sigc::bind(sigc::mem_fun(*this, &FlowTableWithFields::on_entry_open_details_requested), layoutitem_field)  );
 
   m_listFields.push_back(info); //This would be the wrong position, but you should only use this method directly when you expect it to be followed by a complete re-layout.
+}
+
+
+void FlowTableWithFields::add_button_at_position(const sharedptr<LayoutItem_Button>& layoutitem_button, const Glib::ustring& table_name, const type_list_layoutwidgets::iterator& add_before)
+{
+  //Add the widget:
+  ButtonGlom* button = Gtk::manage(new ButtonGlom());
+
+  add_layoutwidgetbase(button, add_before);
+  //add_view(button); //So it can get the document.
+
+  add(*button);
 }
 
 void FlowTableWithFields::remove_field(const Glib::ustring& id)
@@ -694,7 +713,7 @@ void FlowTableWithFields::on_layoutwidget_changed()
   signal_layout_changed().emit();
 }
 
-void FlowTableWithFields::on_datawidget_layout_item_added(TreeStore_Layout::enumType item_type, DataWidget* pDataWidget)
+void FlowTableWithFields::on_datawidget_layout_item_added(LayoutWidgetBase::enumType item_type, DataWidget* pDataWidget)
 {
   //Get the position of the selected item:
   type_list_layoutwidgets::iterator iterAfter = m_list_layoutwidgets.end();
@@ -705,7 +724,7 @@ void FlowTableWithFields::on_datawidget_layout_item_added(TreeStore_Layout::enum
     ++iterAfter; //std::list<>::insert() inserts before, but we want to insert after, so we increment..
   }
 
-  if(item_type == TreeStore_Layout::TYPE_FIELD)
+  if(item_type == LayoutWidgetBase::TYPE_FIELD)
   {
     sharedptr<LayoutItem_Field> layout_item_field = pDataWidget->offer_field_list(m_table_name);
     if(layout_item_field)
@@ -714,13 +733,13 @@ void FlowTableWithFields::on_datawidget_layout_item_added(TreeStore_Layout::enum
       add_layout_item_at_position(layout_item_field, iterAfter);
     }
   }
-  else if(item_type == TreeStore_Layout::TYPE_GROUP)
+  else if(item_type == LayoutWidgetBase::TYPE_GROUP)
   {
     sharedptr<LayoutGroup> layout_item = sharedptr<LayoutGroup>::create();
     layout_item->set_title(_("New Group"));
     add_layout_item_at_position(layout_item, iterAfter);
   }
-  else if(item_type == TreeStore_Layout::TYPE_PORTAL)
+  else if(item_type == LayoutWidgetBase::TYPE_PORTAL)
   {
     try
     {

@@ -151,7 +151,7 @@ void Dialog_Layout_List::set_document(const Glib::ustring& layout, Document_Glom
           Gtk::TreeModel::iterator iterTree = m_model_fields->append();
           Gtk::TreeModel::Row row = *iterTree;
 
-          sharedptr<LayoutItem_Field> newitem((LayoutItem_Field*)item->clone());
+          sharedptr<LayoutItem_Field> newitem = glom_sharedptr_clone(item);
           row[m_ColumnsFields.m_col_layout_item] = newitem;
           row[m_ColumnsFields.m_col_sequence] = field_sequence;
           ++field_sequence;

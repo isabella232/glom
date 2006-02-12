@@ -23,6 +23,7 @@
 
 #include <gtkmm/treestore.h>
 #include "../data_structure/layout/layoutitem_portal.h"
+#include "../data_structure/layout/layoutitem_button.h"
 
 class TreeStore_Layout : public Gtk::TreeStore
 {
@@ -31,32 +32,16 @@ protected:
 
 public:
 
-   enum enumType
-   {
-     TYPE_FIELD,
-     TYPE_GROUP,
-     TYPE_PORTAL
-   };
-
   //Tree model columns:  
   class ModelColumns : public Gtk::TreeModel::ColumnRecord
   {
   public:
 
     ModelColumns()
-    { add(m_col_type); add(m_col_name); add(m_col_relationship); add(m_col_field_formatting); add(m_col_title); add(m_col_editable); add(m_col_sequence); add(m_col_columns_count); add(m_col_portal_relationship); add(m_col_portal); }
+    { add(m_col_layout_item); add(m_col_sequence); }
 
-    Gtk::TreeModelColumn<enumType> m_col_type;
-    Gtk::TreeModelColumn<Glib::ustring> m_col_name;
-    Gtk::TreeModelColumn< sharedptr<Relationship> > m_col_relationship; //Only for fields
-    Gtk::TreeModelColumn< sharedptr<LayoutItem_Field> > m_col_field_formatting; //Only for fields
-    Gtk::TreeModelColumn<Glib::ustring> m_col_title; //only for groups
-    Gtk::TreeModelColumn<bool> m_col_editable; 
+    Gtk::TreeModelColumn< sharedptr<LayoutItem> > m_col_layout_item;
     Gtk::TreeModelColumn<guint> m_col_sequence;
-    Gtk::TreeModelColumn<guint> m_col_columns_count; //Only for groups.
-
-    Gtk::TreeModelColumn<Glib::ustring> m_col_portal_relationship; //Only for portals.
-    Gtk::TreeModelColumn< sharedptr<LayoutItem_Portal> > m_col_portal;
   };
 
   ModelColumns m_columns;

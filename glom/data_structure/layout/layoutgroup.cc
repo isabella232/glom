@@ -35,7 +35,8 @@ LayoutGroup::LayoutGroup(const LayoutGroup& src)
   //Deep copy of the items map:
   for(type_map_items::const_iterator iter = src.m_map_items.begin(); iter != src.m_map_items.end(); ++iter)
   {
-    m_map_items[iter->first] = sharedptr<LayoutItem>(iter->second->clone());
+    if(iter->second)
+      m_map_items[iter->first] = glom_sharedptr_clone(iter->second);
   }
 }
 
@@ -68,7 +69,8 @@ LayoutGroup& LayoutGroup::operator=(const LayoutGroup& src)
     remove_all_items();
     for(type_map_items::const_iterator iter = src.m_map_items.begin(); iter != src.m_map_items.end(); ++iter)
     {
-      m_map_items[iter->first] = sharedptr<LayoutItem>(iter->second->clone());
+      if(iter->second)
+        m_map_items[iter->first] = glom_sharedptr_clone(iter->second);
     }
   }
 

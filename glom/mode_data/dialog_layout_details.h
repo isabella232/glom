@@ -41,7 +41,7 @@ public:
 protected:
 
   virtual void add_group(const Gtk::TreeModel::iterator& parent, const sharedptr<const LayoutGroup>& group);
-  virtual void fill_group(const Gtk::TreeModel::iterator& iter, const sharedptr<LayoutGroup>& group);
+  virtual void fill_group(const Gtk::TreeModel::iterator& iter, sharedptr<LayoutGroup>& group);
 
   //Enable/disable buttons, depending on treeview selection:
   virtual void enable_buttons();
@@ -61,16 +61,20 @@ protected:
   virtual void on_button_field_add();  
   virtual void on_button_field_add_group();
   virtual void on_button_add_related();
+  virtual void on_button_add_button();
   virtual void on_button_field_formatting();
   virtual void on_button_field_edit();
   virtual void on_treeview_fields_selection_changed();
 
-  virtual void on_cell_data_name(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter);
-  virtual void on_cell_data_title(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter);
-  virtual void on_cell_data_columns_count(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter);
+  void on_cell_data_name(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter);
+  void on_cell_data_title(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter);
+  void on_cell_data_columns_count(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter);
 
-  virtual void on_treeview_cell_edited_text(const Glib::ustring& path_string, const Glib::ustring& new_text, const Gtk::TreeModelColumn<Glib::ustring>& model_column);
-  virtual void on_treeview_cell_edited_numeric(const Glib::ustring& path_string, const Glib::ustring& new_text, const Gtk::TreeModelColumn<guint>& model_column);
+  void on_treeview_cell_edited_name(const Glib::ustring& path_string, const Glib::ustring& new_text);
+  void on_treeview_cell_edited_title(const Glib::ustring& path_string, const Glib::ustring& new_text);
+  void on_treeview_cell_edited_columns_count(const Glib::ustring& path_string, const Glib::ustring& new_text);
+
+  Gtk::TreeModel::iterator append_appropriate_row();
 
   Gtk::TreeView* m_treeview_fields;
   Gtk::Button* m_button_field_up;
@@ -78,6 +82,7 @@ protected:
   Gtk::Button* m_button_field_add;
   Gtk::Button* m_button_field_add_group;
   Gtk::Button* m_button_add_related;
+  Gtk::Button* m_button_add_button;
   Gtk::Button* m_button_field_delete;
   Gtk::Button* m_button_field_formatting;
   Gtk::Button* m_button_field_edit;

@@ -25,6 +25,7 @@
 #include "../data_structure/layout/layoutgroup.h"
 #include "../data_structure/layout/layoutitem_field.h"
 #include "../data_structure/layout/layoutitem_portal.h"
+#include "../data_structure/layout/layoutitem_button.h"
 #include "../data_structure/field.h"
 #include "../document/document_glom.h"
 #include "../mode_data/box_data_list_related.h"
@@ -57,7 +58,7 @@ public:
   typedef std::map<int, Field> type_map_field_sequence;
   //virtual void add_group(const Glib::ustring& group_name, const Glib::ustring& group_title, const type_map_field_sequence& fields);
 
-  virtual void add_layout_item(const sharedptr<LayoutItem>& group);
+  virtual void add_layout_item(const sharedptr<LayoutItem>& item);
   virtual void add_layout_group(const sharedptr<LayoutGroup>& group);
 
   virtual void set_field_editable(const sharedptr<const LayoutItem_Field>& field, bool editable = true);
@@ -131,7 +132,7 @@ protected:
   /// Remember the layout widget so we can iterate through them later.
   void on_layoutwidget_changed();
 
-  void on_datawidget_layout_item_added(TreeStore_Layout::enumType item_type, DataWidget* pDataWidget);
+  void on_datawidget_layout_item_added(LayoutWidgetBase::enumType item_type, DataWidget* pDataWidget);
 
   void on_portal_user_requested_details(Gnome::Gda::Value primary_key_value, Box_Data_List_Related* portal_box);
 
@@ -163,6 +164,8 @@ protected:
   type_list_layoutwidgets m_list_layoutwidgets;
 
   void add_field_at_position(const sharedptr<LayoutItem_Field>& layoutitem_field, const Glib::ustring& table_name, const type_list_layoutwidgets::iterator& add_before);
+  void add_button_at_position(const sharedptr<LayoutItem_Button>& layoutitem_button, const Glib::ustring& table_name, const type_list_layoutwidgets::iterator& add_before);
+
   void add_layoutwidgetbase(LayoutWidgetBase* layout_widget);
   void add_layoutwidgetbase(LayoutWidgetBase* layout_widget, const type_list_layoutwidgets::iterator& add_before);
   void add_layout_item_at_position(const sharedptr<LayoutItem>& item, const type_list_layoutwidgets::iterator& add_before);

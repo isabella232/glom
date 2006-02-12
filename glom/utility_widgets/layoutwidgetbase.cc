@@ -34,7 +34,7 @@ LayoutWidgetBase::LayoutWidgetBase()
   m_refContextAddField =  Gtk::Action::create("ContextAddField", _("Add Field"));
   m_refContextAddRelatedRecords =  Gtk::Action::create("ContextAddRelatedRecords", _("Add Related Records"));
   m_refContextAddGroup =  Gtk::Action::create("ContextAddGroup", _("Add Group"));
-
+  m_refContextAddButton =  Gtk::Action::create("ContextAddButton", _("Add Button"));
 }
 
 LayoutWidgetBase::~LayoutWidgetBase()
@@ -66,13 +66,17 @@ void LayoutWidgetBase::setup_menu()
     sigc::mem_fun(*this, &LayoutWidgetBase::on_menupopup_activate_layout_properties) );
 
   m_refActionGroup->add(m_refContextAddField,
-    sigc::bind( sigc::mem_fun(*this, &LayoutWidgetBase::on_menupopup_add_item), TreeStore_Layout::TYPE_FIELD ) );
+    sigc::bind( sigc::mem_fun(*this, &LayoutWidgetBase::on_menupopup_add_item), TYPE_FIELD ) );
 
   m_refActionGroup->add(m_refContextAddRelatedRecords,
-    sigc::bind( sigc::mem_fun(*this, &LayoutWidgetBase::on_menupopup_add_item), TreeStore_Layout::TYPE_PORTAL ) );
+    sigc::bind( sigc::mem_fun(*this, &LayoutWidgetBase::on_menupopup_add_item), TYPE_PORTAL ) );
 
   m_refActionGroup->add(m_refContextAddGroup,
-    sigc::bind( sigc::mem_fun(*this, &LayoutWidgetBase::on_menupopup_add_item), TreeStore_Layout::TYPE_GROUP ) );
+    sigc::bind( sigc::mem_fun(*this, &LayoutWidgetBase::on_menupopup_add_item), TYPE_GROUP ) );
+
+  m_refActionGroup->add(m_refContextAddButton,
+    sigc::bind( sigc::mem_fun(*this, &LayoutWidgetBase::on_menupopup_add_item), TYPE_BUTTON ) );
+
 
   //TODO: This does not work until this widget is in a container in the window:s
   App_Glom* pApp = get_application();
@@ -83,6 +87,7 @@ void LayoutWidgetBase::setup_menu()
     pApp->add_developer_action(m_refContextAddField);
     pApp->add_developer_action(m_refContextAddRelatedRecords);
     pApp->add_developer_action(m_refContextAddGroup);
+    pApp->add_developer_action(m_refContextAddButton);
 
     pApp->update_userlevel_ui(); //Update our action's sensitivity. 
   }
@@ -103,6 +108,7 @@ void LayoutWidgetBase::setup_menu()
         "    <menuitem action='ContextAddField'/>"
         "    <menuitem action='ContextAddRelatedRecords'/>"
         "    <menuitem action='ContextAddGroup'/>"
+        "    <menuitem action='ContextAddButton'/>"
         "  </popup>"
         "</ui>";
 
@@ -123,7 +129,7 @@ void LayoutWidgetBase::setup_menu()
     m_refContextLayout->set_sensitive(pApp->get_userlevel() == AppState::USERLEVEL_DEVELOPER);
 }
 
-void LayoutWidgetBase::on_menupopup_add_item(TreeStore_Layout::enumType item)
+void LayoutWidgetBase::on_menupopup_add_item(enumType item)
 {
   signal_layout_item_added().emit(item);
 }

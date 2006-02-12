@@ -76,7 +76,12 @@ bool TreeStore_Layout::row_drop_possible_vfunc(const Gtk::TreeModel::Path& dest,
     if(iter_dragged)
     {
       Gtk::TreeModel::Row row = *iter_dragged;
-      return row[m_columns.m_col_type] == TYPE_GROUP; //Only groups can be dragged to the top-level.
+
+      sharedptr<LayoutItem> layout_item = row[m_columns.m_col_layout_item];
+      sharedptr<LayoutGroup> layout_group = sharedptr<LayoutGroup>::cast_dynamic(layout_item);
+      const bool is_group = layout_group;
+
+      return is_group; //Only groups can be dragged to the top-level.
     }
   }
   else
@@ -92,7 +97,12 @@ bool TreeStore_Layout::row_drop_possible_vfunc(const Gtk::TreeModel::Path& dest,
     if(iter_dest_parent)
     {
       Gtk::TreeModel::Row row_parent = *iter_dest_parent;
-      return row_parent[m_columns.m_col_type] == TYPE_GROUP; //Only groups can contain other items.
+
+      sharedptr<LayoutItem> layout_item = row_parent[m_columns.m_col_layout_item];
+      sharedptr<LayoutGroup> layout_group = sharedptr<LayoutGroup>::cast_dynamic(layout_item);
+      const bool is_group = layout_group;
+
+      return is_group; //Only groups can contain other items.
     }
   }
 
@@ -125,7 +135,7 @@ void TreeStore_Layout::fill_sequences(const iterator& iter)
 
     //Recurse:
     fill_sequences(iter_children);
-  }   
+  }
 }
 
 

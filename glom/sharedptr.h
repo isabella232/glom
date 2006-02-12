@@ -396,7 +396,10 @@ template <class T_obj>
 sharedptr<T_obj> glom_sharedptr_clone(const sharedptr<T_obj>& src)
 {
   if(src)
-    return sharedptr<T_obj>((T_obj*) src->clone());
+  {
+    //std::cout << "glom_sharedptr_clone src.name=" << src->get_name() << std::endl;
+    return sharedptr<T_obj>(static_cast<T_obj*>(src->clone()));
+  }
   else
     return sharedptr<T_obj>();
 }
@@ -405,7 +408,10 @@ template <class T_obj>
 sharedptr<T_obj> glom_sharedptr_clone(const sharedptr<const T_obj>& src)
 {
   if(src)
-    return sharedptr<T_obj>((T_obj*) src->clone());
+  {
+    //std::cout << "glom_sharedptr_cloneconst src.name=" << src->get_name() << std::endl;
+    return sharedptr<T_obj>(static_cast<T_obj*>(src->clone()));
+  }
   else
     return sharedptr<T_obj>();
 }

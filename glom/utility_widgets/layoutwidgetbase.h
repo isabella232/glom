@@ -40,17 +40,25 @@ public:
   sharedptr<const LayoutItem> get_layout_item() const;
   sharedptr<LayoutItem> get_layout_item();
 
+  enum enumType
+  {
+    TYPE_FIELD,
+    TYPE_GROUP,
+    TYPE_PORTAL,
+    TYPE_BUTTON
+  };
+
   //Popup-menu:
   virtual void setup_menu();
   virtual void on_menupopup_activate_layout();
   virtual void on_menupopup_activate_layout_properties();
-  virtual void on_menupopup_add_item(TreeStore_Layout::enumType item);
+  virtual void on_menupopup_add_item(enumType item);
 
 
   typedef sigc::signal<void> type_signal_layout_changed;
   type_signal_layout_changed signal_layout_changed();
 
-  typedef sigc::signal<void, TreeStore_Layout::enumType> type_signal_layout_item_added;
+  typedef sigc::signal<void, enumType> type_signal_layout_item_added;
   type_signal_layout_item_added signal_layout_item_added();
 
   //Allow a child widget to delegate to a parent widget:
@@ -76,7 +84,7 @@ protected:
   Gtk::Menu* m_pMenuPopup;
   Glib::RefPtr<Gtk::ActionGroup> m_refActionGroup;
   Glib::RefPtr<Gtk::UIManager> m_refUIManager;
-  Glib::RefPtr<Gtk::Action> m_refContextLayout, m_refContextLayoutProperties, m_refContextAddField, m_refContextAddRelatedRecords, m_refContextAddGroup;
+  Glib::RefPtr<Gtk::Action> m_refContextLayout, m_refContextLayoutProperties, m_refContextAddField, m_refContextAddRelatedRecords, m_refContextAddGroup, m_refContextAddButton;
 
 };
 

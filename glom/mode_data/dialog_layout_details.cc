@@ -35,6 +35,7 @@ Dialog_Layout_Details::Dialog_Layout_Details(BaseObjectType* cobject, const Glib
   m_button_field_add(0),
   m_button_field_add_group(0),
   m_button_add_related(0),
+  m_button_add_button(0),
   m_button_field_delete(0),
   m_button_field_formatting(0),
   m_button_field_edit(0),
@@ -65,8 +66,7 @@ Dialog_Layout_Details::Dialog_Layout_Details(BaseObjectType* cobject, const Glib
 
     //Connect to its signal:
     renderer_name->property_editable() = true;
-    renderer_name->signal_edited().connect(
-      sigc::bind( sigc::mem_fun(*this, &Dialog_Layout_Details::on_treeview_cell_edited_text), m_model_items->m_columns.m_col_name) );
+    renderer_name->signal_edited().connect( sigc::mem_fun(*this, &Dialog_Layout_Details::on_treeview_cell_edited_name) );
 
 
     //Title column:
@@ -78,8 +78,7 @@ Dialog_Layout_Details::Dialog_Layout_Details(BaseObjectType* cobject, const Glib
     column_title->set_cell_data_func(*renderer_title, sigc::mem_fun(*this, &Dialog_Layout_Details::on_cell_data_title));
 
     //Connect to its signal:
-    renderer_title->signal_edited().connect(
-      sigc::bind( sigc::mem_fun(*this, &Dialog_Layout_Details::on_treeview_cell_edited_text), m_model_items->m_columns.m_col_title) );
+    renderer_title->signal_edited().connect( sigc::mem_fun(*this, &Dialog_Layout_Details::on_treeview_cell_edited_title) );
 
 
     //Columns-count column:
@@ -91,8 +90,7 @@ Dialog_Layout_Details::Dialog_Layout_Details(BaseObjectType* cobject, const Glib
     column_count->set_cell_data_func(*renderer_count, sigc::mem_fun(*this, &Dialog_Layout_Details::on_cell_data_columns_count));
 
     //Connect to its signal:
-    renderer_count->signal_edited().connect(
-      sigc::bind( sigc::mem_fun(*this, &Dialog_Layout_Details::on_treeview_cell_edited_numeric), m_model_items->m_columns.m_col_columns_count) );
+    renderer_count->signal_edited().connect( sigc::mem_fun(*this, &Dialog_Layout_Details::on_treeview_cell_edited_columns_count) );
 
     //Respond to changes of selection:
     Glib::RefPtr<Gtk::TreeView::Selection> refSelection = m_treeview_fields->get_selection();
@@ -125,6 +123,9 @@ Dialog_Layout_Details::Dialog_Layout_Details(BaseObjectType* cobject, const Glib
   refGlade->get_widget("button_add_related", m_button_add_related);
   m_button_add_related->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout_Details::on_button_add_related) );
 
+  refGlade->get_widget("button_add_button", m_button_add_button);
+  m_button_add_button->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout_Details::on_button_add_button) );
+
   refGlade->get_widget("button_edit", m_button_field_edit);
   m_button_field_edit->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout_Details::on_button_field_edit) );
 
@@ -135,52 +136,59 @@ Dialog_Layout_Details::~Dialog_Layout_Details()
 {
 }
 
-void Dialog_Layout_Details::fill_group(const Gtk::TreeModel::iterator& iter, const sharedptr<LayoutGroup>& group)
+void Dialog_Layout_Details::fill_group(const Gtk::TreeModel::iterator& iter, sharedptr<LayoutGroup>& group)
 {
+  sharedptr<LayoutItem_Portal> portal = sharedptr<LayoutItem_Portal>::cast_dynamic(group);
+  if(portal)
+    return; //This method is not for portals.
+
   if(iter)
   {
     Gtk::TreeModel::Row row = *iter;
+    sharedptr<LayoutItem> layout_item_top = row[m_model_items->m_columns.m_col_layout_item];
+    sharedptr<LayoutGroup> group_row = sharedptr<LayoutGroup>::cast_dynamic(layout_item_top);
+    if(!group_row)
+      return;
 
-    group->set_name( row[m_model_items->m_columns.m_col_name] );
-    group->m_columns_count = row[m_model_items->m_columns.m_col_columns_count];
-    group->set_title( row[m_model_items->m_columns.m_col_title] );
+    sharedptr<LayoutItem_Portal> portal_row = sharedptr<LayoutItem_Portal>::cast_dynamic(group_row);
+    if(portal_row) //This is only for groups.
+      return;
+
+    *group = *group_row; //Copy name, title, columns count, etc.
+    group->remove_all_items(); //Remove the copied child items, if any, so we can add them.
 
     //Get child layout items:
     for(Gtk::TreeModel::iterator iterChild = row.children().begin(); iterChild != row.children().end(); ++iterChild)
     {
       Gtk::TreeModel::Row rowChild = *iterChild;
 
-      if(rowChild[m_model_items->m_columns.m_col_type] == TreeStore_Layout::TYPE_PORTAL)
+      sharedptr<LayoutItem> layout_item = rowChild[m_model_items->m_columns.m_col_layout_item];
+
+      sharedptr<LayoutItem_Portal> layout_portal = sharedptr<LayoutItem_Portal>::cast_dynamic(layout_item);
+      if(layout_portal)
       {
-        sharedptr<LayoutItem_Portal> portal = rowChild[m_model_items->m_columns.m_col_portal];
-        group->add_item(portal);
+        //std::cout << "fill_group(): adding portal." << std::endl;
+        group->add_item(glom_sharedptr_clone(layout_portal));
       }
-      else if(rowChild[m_model_items->m_columns.m_col_type] == TreeStore_Layout::TYPE_GROUP)
+      else
       {
-        //Recurse:
-        sharedptr<LayoutGroup> group_child = sharedptr<LayoutGroup>::create();
-        fill_group(iterChild, group_child);
-        group->add_item(group_child);
-      }
-      else if(rowChild[m_model_items->m_columns.m_col_type] == TreeStore_Layout::TYPE_FIELD)
-      {
-        //Add field:
-        sharedptr<LayoutItem_Field> field = rowChild[m_model_items->m_columns.m_col_field_formatting]; //TODO: Use _only_ this for fields in future?
-        if(field)
+        //std::cout << "fill_group(): adding group." << std::endl;
+        sharedptr<LayoutGroup> layout_group = sharedptr<LayoutGroup>::cast_dynamic(layout_item);
+        sharedptr<LayoutItem_Portal> layout_portal = sharedptr<LayoutItem_Portal>::cast_dynamic(layout_group);
+        if(layout_group && !layout_portal)
         {
-          field->set_name( rowChild[m_model_items->m_columns.m_col_name] );
+          //Recurse:
+          sharedptr<LayoutGroup> group_child = glom_sharedptr_clone(layout_group);
+          fill_group(iterChild, group_child);
+          group->add_item(group_child);
+        }
+        else if(layout_item)
+        {
+          //std::cout << "fill_group(): adding item." << std::endl;
 
-          field->set_relationship( rowChild[m_model_items->m_columns.m_col_relationship] );
-
-          //if(!relationship_name.empty())
-          //{
-          //  get_document()->get_table_relationship(m_table_name, field->m_relationship);
-          //}
-
-          const bool editable = rowChild[m_model_items->m_columns.m_col_editable];
-          field->set_editable(editable);
-
-          group->add_item(field);
+          //Add field or button:
+          sharedptr<LayoutItem> item = glom_sharedptr_clone(layout_item);
+          group->add_item(item);
         }
       }
     }
@@ -190,6 +198,13 @@ void Dialog_Layout_Details::fill_group(const Gtk::TreeModel::iterator& iter, con
 
 void Dialog_Layout_Details::add_group(const Gtk::TreeModel::iterator& parent, const sharedptr<const LayoutGroup>& group)
 {
+  if(!group)
+   return;
+
+  sharedptr<const LayoutItem_Portal> portal = sharedptr<const LayoutItem_Portal>::cast_dynamic(group);
+  if(portal)
+    return; //This method is not for portals.
+
   Gtk::TreeModel::iterator iterNewGroup;
   if(!parent)
   {
@@ -204,13 +219,12 @@ void Dialog_Layout_Details::add_group(const Gtk::TreeModel::iterator& parent, co
   if(iterNewGroup)
   {
     Gtk::TreeModel::Row rowGroup = *iterNewGroup;
-    rowGroup[m_model_items->m_columns.m_col_type] = TreeStore_Layout::TYPE_GROUP;
-    rowGroup[m_model_items->m_columns.m_col_name] = group->get_name();
-    rowGroup[m_model_items->m_columns.m_col_columns_count] = group->m_columns_count;
-    rowGroup[m_model_items->m_columns.m_col_title] = group->get_title();
-    rowGroup[m_model_items->m_columns.m_col_editable] = group->get_editable();
 
-    //Add the child items:
+    sharedptr<LayoutGroup> group_inserted = glom_sharedptr_clone(group);
+    group_inserted->remove_all_items();
+    rowGroup[m_model_items->m_columns.m_col_layout_item] = group_inserted;
+
+    //Add the child items: (TODO_Performance: The child items are ignored/wasted because we clone them again.)
     LayoutGroup::type_map_const_items items = group->get_items();
     for(LayoutGroup::type_map_const_items::const_iterator iter = items.begin(); iter != items.end(); ++iter)
     {
@@ -221,8 +235,7 @@ void Dialog_Layout_Details::add_group(const Gtk::TreeModel::iterator& parent, co
       {
         Gtk::TreeModel::iterator iterField = m_model_items->append(iterNewGroup->children());
         Gtk::TreeModel::Row row = *iterField;
-        row[m_model_items->m_columns.m_col_type] = TreeStore_Layout::TYPE_PORTAL;
-        row[m_model_items->m_columns.m_col_portal] = glom_sharedptr_clone(portal);
+        row[m_model_items->m_columns.m_col_layout_item] = glom_sharedptr_clone(portal);
       }
       else
       {
@@ -237,12 +250,18 @@ void Dialog_Layout_Details::add_group(const Gtk::TreeModel::iterator& parent, co
             //Add the field to the treeview:
             Gtk::TreeModel::iterator iterField = m_model_items->append(iterNewGroup->children());
             Gtk::TreeModel::Row row = *iterField;
-            row[m_model_items->m_columns.m_col_type] = TreeStore_Layout::TYPE_FIELD;
-            row[m_model_items->m_columns.m_col_field_formatting] = glom_sharedptr_clone(field);
-            row[m_model_items->m_columns.m_col_name] = field->get_name();
-            row[m_model_items->m_columns.m_col_relationship] = field->get_relationship();
-
-            row[m_model_items->m_columns.m_col_editable] = field->get_editable();
+            row[m_model_items->m_columns.m_col_layout_item] = glom_sharedptr_clone(field);
+          }
+          else
+          {
+            sharedptr<const LayoutItem_Button> button = sharedptr<const LayoutItem_Button>::cast_dynamic(item);
+            if(button) //If it is a button
+            {
+              //Add the button to the treeview:
+              Gtk::TreeModel::iterator iterField = m_model_items->append(iterNewGroup->children());
+              Gtk::TreeModel::Row row = *iterField;
+              row[m_model_items->m_columns.m_col_layout_item] = glom_sharedptr_clone(button);
+            }
           }
         }
       }
@@ -301,8 +320,9 @@ void Dialog_Layout_Details::set_document(const Glib::ustring& layout, Document_G
     for(Document_Glom::type_mapLayoutGroupSequence::const_iterator iter = mapGroups.begin(); iter != mapGroups.end(); ++iter)
     {
       sharedptr<const LayoutGroup> group = iter->second;
-
-      add_group(Gtk::TreeModel::iterator() /* null == top-level */, group);
+      sharedptr<const LayoutGroup> portal = sharedptr<const LayoutItem_Portal>::cast_dynamic(group);
+      if(group && !portal)
+        add_group(Gtk::TreeModel::iterator() /* null == top-level */, group);
     }
 
     //treeview_fill_sequences(m_model_items, m_model_items->m_columns.m_col_sequence); //The document should have checked this already, but it does not hurt to check again.
@@ -364,7 +384,11 @@ void Dialog_Layout_Details::enable_buttons()
 
       m_button_field_delete->set_sensitive(true);
 
-      m_button_field_formatting->set_sensitive( (*iter)[m_model_items->m_columns.m_col_type] == TreeStore_Layout::TYPE_FIELD);
+      //Only fields have formatting:
+      sharedptr<LayoutItem> layout_item = (*iter)[m_model_items->m_columns.m_col_layout_item];
+      sharedptr<LayoutItem_Field> layout_item_field = sharedptr<LayoutItem_Field>::cast_dynamic(layout_item);
+      const bool is_field = layout_item_field;
+      m_button_field_formatting->set_sensitive(is_field);
     }
     else
     {
@@ -460,39 +484,15 @@ void Dialog_Layout_Details::on_button_field_down()
 
 void Dialog_Layout_Details::on_button_field_add()
 {
-  Gtk::TreeModel::iterator parent = get_selected_group_parent();
-
   sharedptr<LayoutItem_Field> layout_item = offer_field_list();
   if(layout_item)
   {
     //Add the field details to the layout treeview:
-    Gtk::TreeModel::iterator iter;
-    if(parent)
-      iter = m_model_items->append(parent->children());
-    else
-    {
-      //Find the first group, and make the new row a child of that:
-      Gtk::TreeModel::iterator iter_first = m_model_items->children().begin();
-      if(iter_first)
-      {
-        Gtk::TreeModel::Row row = *iter_first;
-        if(row[m_model_items->m_columns.m_col_type] == TreeStore_Layout::TYPE_GROUP)
-          iter = m_model_items->append(iter_first->children());
-      }
-    }
-
+    Gtk::TreeModel::iterator iter = append_appropriate_row();
     if(iter)
     {
       Gtk::TreeModel::Row row = *iter;
-      row[m_model_items->m_columns.m_col_type] = TreeStore_Layout::TYPE_FIELD;
-      row[m_model_items->m_columns.m_col_name] = layout_item->get_name();
-      row[m_model_items->m_columns.m_col_relationship] = layout_item->get_relationship();
-      row[m_model_items->m_columns.m_col_editable] = true; //A sane default.
-
-      sharedptr<LayoutItem_Field> field_for_formatting = sharedptr<LayoutItem_Field>::create();
-      //field_for_formatting.set_full_field_details_empty();
-      row[m_model_items->m_columns.m_col_field_formatting] = field_for_formatting; //A sane default.
-      //row[m_model_items->m_columns.m_col_title] = field->get_title();
+      row[m_model_items->m_columns.m_col_layout_item] = glom_sharedptr_clone(layout_item);
 
       //Scroll to, and select, the new row:
       Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = m_treeview_fields->get_selection();
@@ -614,6 +614,58 @@ sharedptr<LayoutItem_Field> Dialog_Layout_Details::offer_field_layout(const shar
   return result;
 }
 
+Gtk::TreeModel::iterator Dialog_Layout_Details::append_appropriate_row()
+{
+  Gtk::TreeModel::iterator result;
+
+  Gtk::TreeModel::iterator parent = get_selected_group_parent();
+
+  //Add the field details to the layout treeview:
+  Gtk::TreeModel::iterator iter;
+  if(parent)
+    result = m_model_items->append(parent->children());
+  else
+  {
+    //Find the first group, and make the new row a child of that:
+    Gtk::TreeModel::iterator iter_first = m_model_items->children().begin();
+    if(iter_first)
+    {
+      Gtk::TreeModel::Row row = *iter_first;
+
+      sharedptr<LayoutItem> layout_item = row[m_model_items->m_columns.m_col_layout_item];
+      sharedptr<LayoutGroup> layout_group = sharedptr<LayoutGroup>::cast_dynamic(layout_item);
+      sharedptr<LayoutItem_Portal> layout_portal = sharedptr<LayoutItem_Portal>::cast_dynamic(layout_item);
+
+      if(layout_group && !layout_portal)
+        result = m_model_items->append(iter_first->children());
+    }
+  }
+
+  return result;
+}
+
+void Dialog_Layout_Details::on_button_add_button()
+{
+  Gtk::TreeModel::iterator iter = append_appropriate_row();
+  if(iter)
+  {
+    Gtk::TreeModel::Row row = *iter;
+
+    //Add a new button:
+    sharedptr<LayoutItem_Button> button = sharedptr<LayoutItem_Button>::create();
+    row[m_model_items->m_columns.m_col_layout_item] = button;
+
+    //Scroll to, and select, the new row:
+    Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = m_treeview_fields->get_selection();
+    if(refTreeSelection)
+      refTreeSelection->select(iter);
+
+    m_treeview_fields->scroll_to_row( Gtk::TreeModel::Path(iter) );
+  }
+
+  enable_buttons();
+}
+
 void Dialog_Layout_Details::on_button_add_related()
 {
   Gtk::TreeModel::iterator parent = get_selected_group_parent();
@@ -621,32 +673,14 @@ void Dialog_Layout_Details::on_button_add_related()
   sharedptr<Relationship> relationship = offer_relationship_list();
   if(relationship)
   {
-    //Add the field details to the layout treeview:
-    Gtk::TreeModel::iterator iter;
-    if(parent)
-      iter = m_model_items->append(parent->children());
-    else
-    {
-      //Find the first group, and make the new row a child of that:
-      Gtk::TreeModel::iterator iter_first = m_model_items->children().begin();
-      if(iter_first)
-      {
-        Gtk::TreeModel::Row row = *iter_first;
-        if(row[m_model_items->m_columns.m_col_type] == TreeStore_Layout::TYPE_GROUP)
-          iter = m_model_items->append(iter_first->children());
-      }
-    }
-
+    Gtk::TreeModel::iterator iter = append_appropriate_row();
     if(iter)
     {
       Gtk::TreeModel::Row row = *iter;
-      row[m_model_items->m_columns.m_col_type] = TreeStore_Layout::TYPE_PORTAL;
 
       sharedptr<LayoutItem_Portal> portal = sharedptr<LayoutItem_Portal>::create();
       portal->set_relationship(relationship);
-      row[m_model_items->m_columns.m_col_portal] = portal;
-      row[m_model_items->m_columns.m_col_editable] = true; //A sane default.
-      //row[m_model_items->m_columns.m_col_title] = field->get_title();
+      row[m_model_items->m_columns.m_col_layout_item] = portal;
 
       //Scroll to, and select, the new row:
       Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = m_treeview_fields->get_selection();
@@ -673,7 +707,12 @@ Gtk::TreeModel::iterator Dialog_Layout_Details::get_selected_group_parent() cons
     if(iter)
     {
       Gtk::TreeModel::Row row = *iter;
-      if(row[m_model_items->m_columns.m_col_type] == TreeStore_Layout::TYPE_GROUP)
+
+      sharedptr<LayoutItem> layout_item = row[m_model_items->m_columns.m_col_layout_item];
+      sharedptr<LayoutGroup> layout_group = sharedptr<LayoutGroup>::cast_dynamic(layout_item);
+      sharedptr<LayoutItem_Portal> layout_portal = sharedptr<LayoutItem_Portal>::cast_dynamic(layout_item);
+
+      if(layout_group && !layout_portal)
       {
         //Add a group under this group:
         parent = iter;
@@ -707,10 +746,7 @@ void Dialog_Layout_Details::on_button_field_add_group()
   if(iterNewGroup)
   {
     Gtk::TreeModel::Row row = *iterNewGroup;
-    row[m_model_items->m_columns.m_col_type] = TreeStore_Layout::TYPE_GROUP;
-    row[m_model_items->m_columns.m_col_name] = "Untitled group";
-    row[m_model_items->m_columns.m_col_columns_count] = 1;
-    row[m_model_items->m_columns.m_col_editable] = true; //A sane default.
+    row[m_model_items->m_columns.m_col_layout_item] = sharedptr<LayoutGroup>::create();
 
     //Scroll to, and select, the new row:
     Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = m_treeview_fields->get_selection();
@@ -749,11 +785,10 @@ void Dialog_Layout_Details::on_button_field_formatting()
         {
           add_view(dialog); //Give it access to the document.
 
-          sharedptr<LayoutItem_Field> field = row[m_model_items->m_columns.m_col_field_formatting];
+          sharedptr<LayoutItem> layout_item = row[m_model_items->m_columns.m_col_layout_item];
+          sharedptr<LayoutItem_Field> field = sharedptr<LayoutItem_Field>::cast_dynamic(layout_item);
           if(field)
           {
-            field->set_editable(row[m_model_items->m_columns.m_col_editable]);
-
             dialog->set_field(field, m_table_name);
             dialog->set_transient_for(*this);
             const int response = dialog->run();
@@ -764,8 +799,7 @@ void Dialog_Layout_Details::on_button_field_formatting()
               sharedptr<LayoutItem_Field> itemchosen = dialog->get_field_chosen();
               if(field)
               {
-                row[m_model_items->m_columns.m_col_field_formatting] = itemchosen;
-                row[m_model_items->m_columns.m_col_editable] = itemchosen->get_editable();
+                row[m_model_items->m_columns.m_col_layout_item] = itemchosen;
               }
             }
           }
@@ -795,50 +829,39 @@ void Dialog_Layout_Details::on_button_field_edit()
       //This is unpleasant, but so is this whole dialog.
       //This whole dialog is just a temporary way to edit the layout before we have a visual DnD way.
       Gtk::TreeModel::Row row = *iter;
-      switch( row[m_model_items->m_columns.m_col_type])
+
+      sharedptr<LayoutItem> layout_item = row[m_model_items->m_columns.m_col_layout_item];
+
+      sharedptr<LayoutItem_Portal> layout_portal = sharedptr<LayoutItem_Portal>::cast_dynamic(layout_item);
+      if(layout_portal)
       {
-        case TreeStore_Layout::TYPE_GROUP:
+        sharedptr<Relationship> relationship(new Relationship());
+        relationship->set_name( layout_portal->get_relationship_name() ); //TODO: Start with this one selected.
+        relationship = offer_relationship_list();
+        if(relationship)
         {
-          //TODO: Start editing the name.
-          break;
+          layout_portal->set_relationship(relationship);
+          row[m_model_items->m_columns.m_col_layout_item] = layout_portal;
         }
-        case TreeStore_Layout::TYPE_FIELD:
+      }
+      else
+      {
+        sharedptr<LayoutGroup> layout_group = sharedptr<LayoutGroup>::cast_dynamic(layout_item);
+        if(layout_group)
         {
-          sharedptr<LayoutItem_Field> field = sharedptr<LayoutItem_Field>::create();
-          field->set_name( row[m_model_items->m_columns.m_col_name] ); //Start with this one selected.
-          field->set_relationship( row[m_model_items->m_columns.m_col_relationship] );
-
-          //if(!relationship_name.empty())
-          //{
-          //  get_document()->get_table_relationship(m_table_name, field->m_relationship);
-          //}
-
-          field->set_editable( row[m_model_items->m_columns.m_col_editable] );
-          sharedptr<LayoutItem_Field> chosenitem = offer_field_list(field);
-          if(chosenitem)
-          {
-            row[m_model_items->m_columns.m_col_name] = chosenitem->get_name();
-            row[m_model_items->m_columns.m_col_relationship] = chosenitem->get_relationship();
-
-            row[m_model_items->m_columns.m_col_editable] = chosenitem->get_editable();
-          }
-
-          break;
+            //TODO: Start editing the name.
         }
-        case TreeStore_Layout::TYPE_PORTAL:
+        else
         {
-          sharedptr<LayoutItem_Portal> portal = row[m_model_items->m_columns.m_col_portal];
-
-          sharedptr<Relationship> relationship(new Relationship());
-          relationship->set_name( portal->get_relationship_name() ); //Start with this one selected.
-          relationship = offer_relationship_list();
-          if(relationship)
+          sharedptr<LayoutItem_Field> layout_item_field = sharedptr<LayoutItem_Field>::cast_dynamic(layout_item);
+          if(layout_item_field)
           {
-            portal->set_relationship(relationship);
-            row[m_model_items->m_columns.m_col_portal] = portal;
+            sharedptr<LayoutItem_Field> chosenitem = offer_field_list(layout_item_field);
+            if(chosenitem)
+            {
+              row[m_model_items->m_columns.m_col_layout_item] = chosenitem;
+            }
           }
-
-          break;
         }
       }
     }
@@ -871,7 +894,11 @@ void Dialog_Layout_Details::save_to_document()
     for(Gtk::TreeModel::iterator iterFields = m_model_items->children().begin(); iterFields != m_model_items->children().end(); ++iterFields)
     {
       Gtk::TreeModel::Row row = *iterFields;
-      if(row[m_model_items->m_columns.m_col_type] == TreeStore_Layout::TYPE_GROUP) //There may be top-level groups, but no top-level fields, because the fields must be in a group (so that they are in columns)
+
+      sharedptr<LayoutItem> layout_item = row[m_model_items->m_columns.m_col_layout_item];
+      sharedptr<LayoutGroup> layout_group = sharedptr<LayoutGroup>::cast_dynamic(layout_item);
+      sharedptr<LayoutItem_Portal> layout_portal = sharedptr<LayoutItem_Portal>::cast_dynamic(layout_item);
+      if(layout_group && !layout_portal) //There may be top-level groups, but no top-level fields, because the fields must be in a group (so that they are in columns)
       {
         sharedptr<LayoutGroup> group = sharedptr<LayoutGroup>::create();
         group->m_sequence = group_sequence;
@@ -907,36 +934,46 @@ void Dialog_Layout_Details::on_cell_data_name(Gtk::CellRenderer* renderer, const
     {
       Gtk::TreeModel::Row row = *iter;
 
-      const bool is_group = row[m_model_items->m_columns.m_col_type] == TreeStore_Layout::TYPE_GROUP;
-      const bool is_relationship = row[m_model_items->m_columns.m_col_type] == TreeStore_Layout::TYPE_PORTAL;
+      sharedptr<LayoutItem> layout_item = row[m_model_items->m_columns.m_col_layout_item];
 
       //Use the markup property instead of the text property, so that we can give the text some style:
       Glib::ustring markup;
-      if(is_group)
+
+      bool is_group = false;
+
+      sharedptr<LayoutItem_Portal> layout_portal = sharedptr<LayoutItem_Portal>::cast_dynamic(layout_item);
+      if(layout_portal)
       {
-        //Make group names bold:
-        markup = Bakery::App_Gtk::util_bold_message( row[m_model_items->m_columns.m_col_name] );
-      }
-      else if(is_relationship)
-      {
-        sharedptr<LayoutItem_Portal> portal = row[m_model_items->m_columns.m_col_portal];
-        markup = _("Related: ") + portal->get_relationship_name();
+        markup = _("Related: ") + layout_portal->get_relationship_name();
       }
       else
       {
-        //It's a field:
+        sharedptr<LayoutGroup> layout_group = sharedptr<LayoutGroup>::cast_dynamic(layout_item);
+        if(layout_group)
+        {
+          is_group = true;
 
-        //Indicate that it's a field in another table.
-        sharedptr<Relationship> relationship = row[m_model_items->m_columns.m_col_relationship];
-        const Glib::ustring relationship_name = glom_get_sharedptr_name(relationship);
-        if(!(relationship_name.empty()))
-          markup = (relationship_name + "::");
+          //Make group names bold:
+          markup = Bakery::App_Gtk::util_bold_message( layout_item->get_name() );
+        }
+        else
+        {
+          sharedptr<LayoutItem_Field> layout_item_field = sharedptr<LayoutItem_Field>::cast_dynamic(layout_item);
+          if(layout_item_field)
+          {
+            //Indicate if it's a field in another table.
+            sharedptr<Relationship> relationship = layout_item_field->get_relationship();
+            const Glib::ustring relationship_name = glom_get_sharedptr_name(relationship);
+            if(!(relationship_name.empty()))
+              markup = (relationship_name + "::");
 
-        markup += row[m_model_items->m_columns.m_col_name];
+            markup += layout_item_field->get_name();
 
-        //Just for debugging:
-        //if(!row[m_model_items->m_columns.m_col_editable])
-        // markup += " *";
+            //Just for debugging:
+            //if(!row[m_model_items->m_columns.m_col_editable])
+            // markup += " *";
+          }
+        }
       }
 
       renderer_text->property_markup() = markup;
@@ -958,9 +995,16 @@ void Dialog_Layout_Details::on_cell_data_title(Gtk::CellRenderer* renderer, cons
     if(iter)
     {
       Gtk::TreeModel::Row row = *iter;
+      sharedptr<LayoutItem> layout_item = row[m_model_items->m_columns.m_col_layout_item];
+      if(layout_item)
+        renderer_text->property_text() = layout_item->get_title();
+      else
+        renderer_text->property_text() = Glib::ustring();
 
-      renderer_text->property_text() = row[m_model_items->m_columns.m_col_title];
-      renderer_text->property_editable() = row[m_model_items->m_columns.m_col_type] == TreeStore_Layout::TYPE_GROUP; //Only groups have titles that can be edited.
+      sharedptr<LayoutGroup> layout_group = sharedptr<LayoutGroup>::cast_dynamic(layout_item);
+      sharedptr<LayoutItem_Portal> layout_portal = sharedptr<LayoutItem_Portal>::cast_dynamic(layout_item);
+      const bool editable = layout_group && !layout_portal; //Only groups have titles that can be edited.
+      renderer_text->property_editable() = editable;
     }
   }
 }
@@ -974,8 +1018,12 @@ void Dialog_Layout_Details::on_cell_data_columns_count(Gtk::CellRenderer* render
     if(iter)
     {
       Gtk::TreeModel::Row row = *iter;
+      sharedptr<LayoutItem> layout_item = row[m_model_items->m_columns.m_col_layout_item];
 
-      const bool is_group = row[m_model_items->m_columns.m_col_type] == TreeStore_Layout::TYPE_GROUP; //Only groups have column_count that can be edited.
+      sharedptr<LayoutGroup> layout_group = sharedptr<LayoutGroup>::cast_dynamic(layout_item);
+      sharedptr<LayoutItem_Portal> layout_portal = sharedptr<LayoutItem_Portal>::cast_dynamic(layout_item);
+
+      const bool is_group = layout_group && !layout_portal; //Only groups have column_counts.
 
       //Get a text representation of the number:
       Glib::ustring text;
@@ -983,7 +1031,7 @@ void Dialog_Layout_Details::on_cell_data_columns_count(Gtk::CellRenderer* render
       {
         std::stringstream the_stream;
         //the_stream.imbue(std::locale::classic());
-        guint number = row[m_model_items->m_columns.m_col_columns_count];
+        const guint number = layout_group->m_columns_count;
         the_stream << number;
         text = the_stream.str();
       }
@@ -998,7 +1046,7 @@ void Dialog_Layout_Details::on_cell_data_columns_count(Gtk::CellRenderer* render
   }
 }
 
-void Dialog_Layout_Details::on_treeview_cell_edited_text(const Glib::ustring& path_string, const Glib::ustring& new_text, const Gtk::TreeModelColumn<Glib::ustring>& model_column)
+void Dialog_Layout_Details::on_treeview_cell_edited_title(const Glib::ustring& path_string, const Glib::ustring& new_text)
 {
   if(!path_string.empty())
   {
@@ -1008,14 +1056,41 @@ void Dialog_Layout_Details::on_treeview_cell_edited_text(const Glib::ustring& pa
     Gtk::TreeModel::iterator iter = m_model_items->get_iter(path);
     if(iter)
     {
-      //Store the user's new text in the model:
-      Gtk::TreeRow row = *iter;
-      row[model_column] = new_text;
+      Gtk::TreeModel::Row row = *iter;
+      sharedptr<LayoutItem> layout_item = row[m_model_items->m_columns.m_col_layout_item];
+      if(layout_item)
+      {
+        //Store the user's new text in the model:
+        Gtk::TreeRow row = *iter;
+        layout_item->set_title(new_text);
+      }
     }
   }
 }
 
-void Dialog_Layout_Details::on_treeview_cell_edited_numeric(const Glib::ustring& path_string, const Glib::ustring& new_text, const Gtk::TreeModelColumn<guint>& model_column)
+void Dialog_Layout_Details::on_treeview_cell_edited_name(const Glib::ustring& path_string, const Glib::ustring& new_text)
+{
+  if(!path_string.empty())
+  {
+    Gtk::TreePath path(path_string);
+
+    //Get the row from the path:
+    Gtk::TreeModel::iterator iter = m_model_items->get_iter(path);
+    if(iter)
+    {
+      Gtk::TreeModel::Row row = *iter;
+      sharedptr<LayoutItem> layout_item = row[m_model_items->m_columns.m_col_layout_item];
+      if(layout_item)
+      {
+        //Store the user's new text in the model:
+        Gtk::TreeRow row = *iter;
+        layout_item->set_name(new_text);
+      }
+    }
+  }
+}
+
+void Dialog_Layout_Details::on_treeview_cell_edited_columns_count(const Glib::ustring& path_string, const Glib::ustring& new_text)
 {
   //This is used on numerical model columns:
   if(path_string.empty())
@@ -1027,21 +1102,27 @@ void Dialog_Layout_Details::on_treeview_cell_edited_numeric(const Glib::ustring&
   Gtk::TreeModel::iterator iter = m_model_items->get_iter(path);
   if(iter)
   {
-    //std::istringstream astream(new_text); //Put it in a stream.
-    //ColumnType new_value = ColumnType();
-    //new_value << astream; //Get it out of the stream as the numerical type.
+    Gtk::TreeModel::Row row = *iter;
+    sharedptr<LayoutItem> layout_item = row[m_model_items->m_columns.m_col_layout_item];
+    sharedptr<LayoutGroup> layout_group = sharedptr<LayoutGroup>::cast_dynamic(layout_item);
+    sharedptr<LayoutItem_Portal> layout_portal = sharedptr<LayoutItem_Portal>::cast_dynamic(layout_item);
+    if(layout_group && !layout_portal)
+    {
+      //std::istringstream astream(new_text); //Put it in a stream.
+      //ColumnType new_value = ColumnType();
+      //new_value << astream; //Get it out of the stream as the numerical type.
 
-    //Convert the text to a number, using the same logic used by GtkCellRendererText when it stores numbers.
-    char* pchEnd = 0;
-    guint new_value = static_cast<guint>( strtod(new_text.c_str(), &pchEnd) );
+      //Convert the text to a number, using the same logic used by GtkCellRendererText when it stores numbers.
+      char* pchEnd = 0;
+      guint new_value = static_cast<guint>( strtod(new_text.c_str(), &pchEnd) );
 
-    //Don't allow a 0 columns_count:
-    if(new_value == 0)
-      new_value = 1;
-      
-    //Store the user's new text in the model:
-    Gtk::TreeRow row = *iter;
-    row[model_column] = (guint)new_value;
+      //Don't allow a 0 columns_count:
+      if(new_value == 0)
+        new_value = 1;
+
+      //Store the user's new text in the model:
+      layout_group->m_columns_count = new_value;
+    }
   }
 }
 
