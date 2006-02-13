@@ -1,3 +1,14 @@
+0.9.5:
+
+* Details Layout:
+  - Add Button layout item, to run arbitrary Python code, with access to 
+    the record data.
+  - Fix bugs that caused the layout changes to be forgotten (regressions).
+* Opening Examples:
+  Do not open the Save As dialog box in the examples directory. 
+  Also see the latest Bakery (2.3.17) for fixes to prevent Save As in read-only paths.
+* Build: Install the logo, for use by the Applications menu.
+
 0.9.4:
 
 * Relationships: Really save new relationships. (Fixes a regression.)
