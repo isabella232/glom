@@ -117,7 +117,9 @@ Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
   m_FlowTable.signal_layout_changed().connect( sigc::mem_fun(*this, &Box_Data_Details::on_flowtable_layout_changed) );
 
   m_FlowTable.signal_requested_related_details().connect( sigc::mem_fun(*this, &Box_Data_Details::on_flowtable_requested_related_details) );
-    
+
+  m_FlowTable.signal_script_button_clicked().connect( sigc::mem_fun(*this, &Box_Data_Details::on_flowtable_script_button_clicked) );
+
   m_ignore_signals = false;
 }
 
@@ -506,6 +508,18 @@ void Box_Data_Details::on_flowtable_field_open_details_requested(const sharedptr
   if(relationship)
   {
     signal_requested_related_details().emit(relationship->get_to_table(), field_value);
+  }
+}
+
+void Box_Data_Details::on_flowtable_script_button_clicked(const sharedptr<const LayoutItem_Button>& layout_item)
+{
+  if(layout_item)
+  {
+    const Gnome::Gda::Value primary_key_value = get_primary_key_value();
+    const type_map_fields field_values = get_record_field_values(primary_key_value);
+
+    glom_execute_python_function_implementation(layout_item->get_script(), field_values, //TODO: Maybe use the field's type here.
+    get_document(), get_table_name());
   }
 }
 

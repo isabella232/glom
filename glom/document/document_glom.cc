@@ -88,6 +88,7 @@
 #define GLOM_ATTRIBUTE_FIELD "field"
 #define GLOM_ATTRIBUTE_EDITABLE "editable"
 #define GLOM_ATTRIBUTE_EXAMPLE_ROWS "example_rows"
+#define GLOM_ATTRIBUTE_BUTTON_SCRIPT "script"
 
 
 
@@ -1324,10 +1325,11 @@ void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Gl
       if(element->get_name() == GLOM_NODE_DATA_LAYOUT_BUTTON)
       {
         sharedptr<LayoutItem_Button> item = sharedptr<LayoutItem_Button>::create();
+
+        item->set_script( get_node_attribute_value(element, GLOM_ATTRIBUTE_BUTTON_SCRIPT) );
         load_after_translations(element, *item);
 
         item->m_sequence = sequence;
-        std::cout << "button sequence = " << sequence << std::endl;
         group->add_item(item, sequence);
       }
       else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_ITEM_FIELDSUMMARY)
@@ -1870,6 +1872,7 @@ void Document_Glom::save_before_layout_group(xmlpp::Element* node, const sharedp
           if(button) //If it is a button
           {
             nodeItem = child->add_child(GLOM_NODE_DATA_LAYOUT_BUTTON);
+            set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_BUTTON_SCRIPT, button->get_script());
             save_before_translations(nodeItem, *button);
           }
         }

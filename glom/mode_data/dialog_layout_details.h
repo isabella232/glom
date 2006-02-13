@@ -53,6 +53,7 @@ protected:
   sharedptr<LayoutItem_Field> offer_field_list(const sharedptr<const LayoutItem_Field>& start_field);
   sharedptr<LayoutItem_Field> offer_field_layout(const sharedptr<const LayoutItem_Field>& start_field);
   Gtk::TreeModel::iterator get_selected_group_parent() const;
+  sharedptr<LayoutItem_Button>offer_button_script_edit(const sharedptr<const LayoutItem_Button>& button);
 
   //signal handlers:
   virtual void on_button_field_up();
@@ -63,7 +64,7 @@ protected:
   virtual void on_button_add_related();
   virtual void on_button_add_button();
   virtual void on_button_field_formatting();
-  virtual void on_button_field_edit();
+  virtual void on_button_edit();
   virtual void on_treeview_fields_selection_changed();
 
   void on_cell_data_name(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter);
@@ -77,6 +78,8 @@ protected:
   Gtk::TreeModel::iterator append_appropriate_row();
 
   Gtk::TreeView* m_treeview_fields;
+  Gtk::TreeView::Column* m_treeview_column_title;
+
   Gtk::Button* m_button_field_up;
   Gtk::Button* m_button_field_down;
   Gtk::Button* m_button_field_add;
@@ -85,7 +88,7 @@ protected:
   Gtk::Button* m_button_add_button;
   Gtk::Button* m_button_field_delete;
   Gtk::Button* m_button_field_formatting;
-  Gtk::Button* m_button_field_edit;
+  Gtk::Button* m_button_edit;
   Gtk::Label* m_label_table_name;
 
   Glib::RefPtr<TreeStore_Layout> m_model_items;

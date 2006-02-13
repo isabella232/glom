@@ -201,6 +201,8 @@ void FlowTableWithFields::add_layout_group_at_position(const sharedptr<LayoutGro
     flow_table->signal_field_open_details_requested().connect( sigc::mem_fun(*this, &FlowTableWithFields::on_flowtable_entry_open_details_requested) );
     flow_table->signal_related_record_changed().connect( sigc::mem_fun(*this, &FlowTableWithFields::on_flowtable_related_record_changed) );
     flow_table->signal_requested_related_details().connect( sigc::mem_fun(*this, &FlowTableWithFields::on_flowtable_requested_related_details) );
+
+    flow_table->signal_script_button_clicked().connect( sigc::mem_fun(*this, &FlowTableWithFields::on_script_button_clicked) );
   }
 }
 
@@ -313,7 +315,13 @@ void FlowTableWithFields::add_button_at_position(const sharedptr<LayoutItem_Butt
   //Add the widget:
   ButtonGlom* button = Gtk::manage(new ButtonGlom());
   button->set_label(layoutitem_button->get_title_or_name());
-  button->show();
+
+  button->signal_clicked().connect(
+    sigc::bind(
+      sigc::mem_fun(*this, &FlowTableWithFields::on_script_button_clicked),
+      layoutitem_button) );
+
+  button->show(), 
 
   add_layoutwidgetbase(button, add_before);
   //add_view(button); //So it can get the document.
@@ -580,6 +588,16 @@ FlowTableWithFields::type_signal_related_record_changed FlowTableWithFields::sig
 FlowTableWithFields::type_signal_requested_related_details FlowTableWithFields::signal_requested_related_details()
 {
   return m_signal_requested_related_details;
+}
+
+FlowTableWithFields::type_signal_script_button_clicked FlowTableWithFields::signal_script_button_clicked()
+{
+  return m_signal_script_button_clicked;
+}
+
+void FlowTableWithFields::on_script_button_clicked(const sharedptr< LayoutItem_Button>& layout_item)
+{
+  m_signal_script_button_clicked.emit(layout_item);
 }
 
 void FlowTableWithFields::on_entry_edited(const Gnome::Gda::Value& value, sharedptr<const LayoutItem_Field> field)

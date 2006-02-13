@@ -29,7 +29,8 @@ LayoutItem_Button::LayoutItem_Button()
 }
 
 LayoutItem_Button::LayoutItem_Button(const LayoutItem_Button& src)
-: LayoutItem(src)
+: LayoutItem(src),
+  m_script(src.m_script)
 {
 }
 
@@ -44,7 +45,8 @@ LayoutItem* LayoutItem_Button::clone() const
 
 bool LayoutItem_Button::operator==(const LayoutItem_Button& src) const
 {
-  bool result = LayoutItem::operator==(src);
+  bool result = LayoutItem::operator==(src) && 
+                (m_script == src.m_script);
 
   return result;
 }
@@ -54,6 +56,8 @@ LayoutItem_Button& LayoutItem_Button::operator=(const LayoutItem_Button& src)
 {
   LayoutItem::operator=(src);
 
+  m_script = src.m_script;
+
   return *this;
 }
 
@@ -62,4 +66,13 @@ Glib::ustring LayoutItem_Button::get_part_type_name() const
   return _("Button");
 }
 
+Glib::ustring LayoutItem_Button::get_script() const
+{
+  return m_script;
+}
+
+void LayoutItem_Button::set_script(const Glib::ustring& script)
+{
+  m_script = script;
+}
 

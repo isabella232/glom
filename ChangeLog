@@ -1,6 +1,35 @@
 2006-02-13  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/data_structure/layout/layoutitem_button.cc:
+	* glom/data_structure/layout/layoutitem_button.h:
+	Added get/set_script().
+	* glom/document/document_glom.cc: load_after_layout_group(), 
+	save_before_layout_group(): Load/Save the scripts for buttons.
+	* glom/utility_widgets/buttonglom.cc:
+	* glom/utility_widgets/flowtablewithfields.cc:
+	* glom/utility_widgets/flowtablewithfields.h:
+	* glom/mode_data/box_data_details.cc:
+	* glom/mode_data/box_data_details.h: Handle button clicks and 
+	run the python code.
+	* glom/glom.glade: Add a script editing dialog.
+	* glom/mode_data/dialog_layout_details.cc:
+	* glom/mode_data/dialog_layout_details.h: on_button_edit(): 
+	Allow editing of buttons and start editing of the title column 
+	if the item is a group.
+	* glom/mode_design/Makefile.am:
+	* glom/mode_design/dialog_buttonscript.cc:
+	* glom/mode_design/dialog_buttonscript.h: Added button script 
+	editing dialog.
+	* glom/python_embed/glom_python.cc:
+	* glom/python_embed/glom_python.h: Added 
+	glom_execute_python_function_implementation() because we buttons 
+	do not care about the result.
+	* examples/example_smallbusiness.glom: Add a Test Button to the 
+	Contacts layout, with a pygtk hello world script behind it.
+
+2006-02-13  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/data_structure/layout/layoutitem_button.cc:
 	* glom/data_structure/translatable_item.cc:
 	* glom/data_structure/translatable_item.h: Give it a 
 	translatable item type and name so it shows up properly in the 

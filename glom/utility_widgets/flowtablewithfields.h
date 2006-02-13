@@ -103,12 +103,18 @@ public:
    */
   typedef sigc::signal<void, const Glib::ustring&> type_signal_related_record_changed;
   type_signal_related_record_changed signal_related_record_changed();
-  
+
   /** For instance,
-   * void on_requested_related_details(const Glib::ustring& table_name, Gnome::Gda::Value primary_key_value);-
+   * void on_requested_related_details(const Glib::ustring& table_name, Gnome::Gda::Value primary_key_value);
    */
   typedef sigc::signal<void, const Glib::ustring&, Gnome::Gda::Value> type_signal_requested_related_details;
   type_signal_requested_related_details signal_requested_related_details();
+
+ /** For instance,
+   * void on_script_button_clicked(const sharedptr<LayoutItem_Button>& layout_item>);
+   */
+  typedef sigc::signal<void, const sharedptr<LayoutItem_Button>&> type_signal_script_button_clicked;
+  type_signal_script_button_clicked signal_script_button_clicked();
 
 protected:
 
@@ -128,6 +134,8 @@ protected:
   void on_portal_record_changed(const Glib::ustring& relationship_name);
   void on_flowtable_related_record_changed(const Glib::ustring& relationship_name);
   void on_flowtable_requested_related_details(const Glib::ustring& table_name, Gnome::Gda::Value primary_key_value);
+
+  void on_script_button_clicked(const sharedptr<LayoutItem_Button>& layout_item);
 
   /// Remember the layout widget so we can iterate through them later.
   void on_layoutwidget_changed();
@@ -179,6 +187,8 @@ protected:
   //type_signal_related_record_added m_signal_related_record_added;
   type_signal_related_record_changed m_signal_related_record_changed;
   type_signal_requested_related_details m_signal_requested_related_details;
+
+  type_signal_script_button_clicked m_signal_script_button_clicked;
 };
 
 

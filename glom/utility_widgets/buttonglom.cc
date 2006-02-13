@@ -53,3 +53,4 @@ App_Glom* ButtonGlom::get_application()
 
   return dynamic_cast<App_Glom*>(pWindow);
 }
+

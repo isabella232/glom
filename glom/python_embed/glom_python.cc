@@ -62,6 +62,11 @@ void HandlePythonError()
     PyErr_Print();
 }
 
+void glom_execute_python_function_implementation(const Glib::ustring& func_impl, const type_map_fields& field_values, Document_Glom* pDocument, const Glib::ustring& table_name)
+{
+  glom_evaluate_python_function_implementation(Field::TYPE_TEXT, func_impl, field_values, pDocument, table_name);
+}
+
 Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field_type result_type, const Glib::ustring& func_impl,
     const type_map_fields& field_values, Document_Glom* pDocument, const Glib::ustring& table_name)
 {

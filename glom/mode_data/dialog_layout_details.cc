@@ -22,6 +22,7 @@
 #include "dialog_choose_field.h"
 #include "../layout_item_dialogs/dialog_field_layout.h"
 #include "dialog_choose_relationship.h"
+#include "../mode_design/dialog_buttonscript.h"
 //#include <libgnome/gnome-i18n.h>
 #include <bakery/App/App_Gtk.h> //For util_bold_message().
 #include <glibmm/i18n.h>
@@ -30,6 +31,7 @@
 Dialog_Layout_Details::Dialog_Layout_Details(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
 : Dialog_Layout(cobject, refGlade),
   m_treeview_fields(0),
+  m_treeview_column_title(0),
   m_button_field_up(0),
   m_button_field_down(0),
   m_button_field_add(0),
@@ -38,7 +40,7 @@ Dialog_Layout_Details::Dialog_Layout_Details(BaseObjectType* cobject, const Glib
   m_button_add_button(0),
   m_button_field_delete(0),
   m_button_field_formatting(0),
-  m_button_field_edit(0),
+  m_button_edit(0),
   m_label_table_name(0)
 {
   refGlade->get_widget("label_table_name", m_label_table_name);
@@ -70,12 +72,12 @@ Dialog_Layout_Details::Dialog_Layout_Details(BaseObjectType* cobject, const Glib
 
 
     //Title column:
-    Gtk::TreeView::Column* column_title = Gtk::manage( new Gtk::TreeView::Column(_("Title")) );
-    m_treeview_fields->append_column(*column_title);
+    m_treeview_column_title = Gtk::manage( new Gtk::TreeView::Column(_("Title")) );
+    m_treeview_fields->append_column(*m_treeview_column_title);
 
     Gtk::CellRendererText* renderer_title = Gtk::manage(new Gtk::CellRendererText);
-    column_title->pack_start(*renderer_title);
-    column_title->set_cell_data_func(*renderer_title, sigc::mem_fun(*this, &Dialog_Layout_Details::on_cell_data_title));
+    m_treeview_column_title->pack_start(*renderer_title);
+    m_treeview_column_title->set_cell_data_func(*renderer_title, sigc::mem_fun(*this, &Dialog_Layout_Details::on_cell_data_title));
 
     //Connect to its signal:
     renderer_title->signal_edited().connect( sigc::mem_fun(*this, &Dialog_Layout_Details::on_treeview_cell_edited_title) );
@@ -126,8 +128,8 @@ Dialog_Layout_Details::Dialog_Layout_Details(BaseObjectType* cobject, const Glib
   refGlade->get_widget("button_add_button", m_button_add_button);
   m_button_add_button->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout_Details::on_button_add_button) );
 
-  refGlade->get_widget("button_edit", m_button_field_edit);
-  m_button_field_edit->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout_Details::on_button_field_edit) );
+  refGlade->get_widget("button_edit", m_button_edit);
+  m_button_edit->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout_Details::on_button_edit) );
 
   show_all_children();
 }
@@ -509,6 +511,40 @@ void Dialog_Layout_Details::on_button_field_add()
 }
 
 
+sharedptr<LayoutItem_Button> Dialog_Layout_Details::offer_button_script_edit(const sharedptr<const LayoutItem_Button>& button)
+{
+  sharedptr<LayoutItem_Button> result;
+
+  try
+  {
+    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_button_script");
+
+    Dialog_ButtonScript* dialog = 0;
+    refXml->get_widget_derived("window_button_script", dialog);
+
+    if(dialog)
+    {
+      dialog->set_script(button, m_table_name);
+      dialog->set_transient_for(*this);
+      const int response = dialog->run();
+      dialog->hide();
+      if(response == Gtk::RESPONSE_OK)
+      {
+        //Get the chosen relationship:
+        result = dialog->get_script();
+      }
+
+      delete dialog;
+    }
+  }
+  catch(const Gnome::Glade::XmlError& ex)
+  {
+    std::cerr << ex.what() << std::endl;
+  }
+
+  return result;
+}
+
 sharedptr<Relationship> Dialog_Layout_Details::offer_relationship_list()
 {
   sharedptr<Relationship> result;
@@ -524,7 +560,7 @@ sharedptr<Relationship> Dialog_Layout_Details::offer_relationship_list()
     {
       dialog->set_document(get_document(), m_table_name);
       dialog->set_transient_for(*this);
-      int response = dialog->run();
+      const int response = dialog->run();
       dialog->hide();
       if(response == Gtk::RESPONSE_OK)
       {
@@ -824,7 +860,7 @@ void Dialog_Layout_Details::on_button_field_formatting()
   }
 }
 
-void Dialog_Layout_Details::on_button_field_edit()
+void Dialog_Layout_Details::on_button_edit()
 {
   //Get the selected item:
   Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = m_treeview_fields->get_selection();
@@ -858,7 +894,8 @@ void Dialog_Layout_Details::on_button_field_edit()
         sharedptr<LayoutGroup> layout_group = sharedptr<LayoutGroup>::cast_dynamic(layout_item);
         if(layout_group)
         {
-            //TODO: Start editing the name.
+            Gtk::TreeModel::Path path = m_model_items->get_path(iter);
+            m_treeview_fields->set_cursor(path, *m_treeview_column_title, true /* start_editing */);
         }
         else
         {
@@ -870,6 +907,21 @@ void Dialog_Layout_Details::on_button_field_edit()
             {
               row[m_model_items->m_columns.m_col_layout_item] = chosenitem;
               m_modified = true;
+            }
+          }
+          else
+          {
+            sharedptr<LayoutItem_Button> layout_item_button = sharedptr<LayoutItem_Button>::cast_dynamic(layout_item);
+            if(layout_item_button)
+            {
+              sharedptr<LayoutItem_Button> chosen = offer_button_script_edit(layout_item_button);
+              if(chosen)
+              {
+                *layout_item_button = *chosen;
+                //std::cout << "script: " << layout_item_button->get_script() << std::endl;
+
+                m_modified = true;
+              }
             }
           }
         }

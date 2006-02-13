@@ -39,8 +39,16 @@ public:
 
   virtual Glib::ustring get_part_type_name() const;
 
-protected:
+  /** Set the python code that will be executed when the button is pressed.
+   */
+  Glib::ustring get_script() const;
 
+  /** Get the python code that will be executed when the button is pressed.
+   */
+  void set_script(const Glib::ustring& script);
+
+protected:
+  Glib::ustring m_script;
 };
 
 #endif //GLOM_DATASTRUCTURE_LAYOUTITEM_BUTTON_H
