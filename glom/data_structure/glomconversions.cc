@@ -341,7 +341,7 @@ Gnome::Gda::Value GlomConversions::parse_value(Field::glom_field_type glom_type,
     std::stringstream clocale_stream;
     clocale_stream.imbue( std::locale::classic() ); //The C locale.
     clocale_stream << the_number;
-    Glib::ustring  number_canonical_text = clocale_stream.str(); //Avoid << because it does implicit character conversion (though that might not be a problem here. Not sure). murrayc
+    Glib::ustring number_canonical_text = clocale_stream.str(); //Avoid << because it does implicit character conversion (though that might not be a problem here. Not sure). murrayc
 
     //TODO: What about the precision and width values?
     /* From the postgres docs:
@@ -564,6 +564,37 @@ bool GlomConversions::value_is_empty(const Gnome::Gda::Value& value)
     default:
       return false; //None of the other types can be empty. (An empty numeric, date, or time type shows up as a null.
   }
+}
+
+Gnome::Gda::Value GlomConversions::get_empty_value_suitable_for_python(Field::glom_field_type field_type)
+{
+  Gnome::Gda::Value value = get_empty_value(field_type);
+  if(value.get_value_type() == Gnome::Gda::VALUE_TYPE_NULL)
+  {
+    switch(field_type)
+    {
+      case(Field::TYPE_TEXT):
+        return Gnome::Gda::Value( Glib::ustring() );
+      case(Field::TYPE_NUMERIC):
+      {
+        return parse_value(0);
+      }
+      case(Field::TYPE_DATE):
+      {
+        bool success = false;
+        return parse_value(Field::TYPE_DATE, "01/01/00" /* arbitrary*/, success, true /* iso_format */);
+      }
+      case(Field::TYPE_TIME):
+      {
+        bool success = false;
+        return parse_value(Field::TYPE_TIME, "00:00" /* arbitrary*/, success, true /* iso_format */);
+      }
+      default:
+        return Gnome::Gda::Value(); //A NULL instance. Should never happen.
+    }
+  }
+  else
+    return value;
 }
 
 Gnome::Gda::Value GlomConversions::get_empty_value(Field::glom_field_type field_type)

@@ -137,13 +137,33 @@ Record_tp_as_mapping_getitem(PyGlomRecord *self, PyObject *item)
     if(pchKey)
     {
       const Glib::ustring key(pchKey);
-      PyGlomRecord::type_map_field_values::const_iterator iterFind = self->m_pMap_field_values->find(key);
-      if(iterFind != self->m_pMap_field_values->end())
+      if(self && self->m_pMap_field_values)
       {
-        return pygda_value_as_pyobject(iterFind->second.gobj(), true /* copy */);
+        PyGlomRecord::type_map_field_values::const_iterator iterFind = self->m_pMap_field_values->find(key);
+        if(iterFind != self->m_pMap_field_values->end())
+        {
+          return pygda_value_as_pyobject(iterFind->second.gobj(), true /* copy */);
+        }
+        else
+        {
+          g_warning("Record_tp_as_mapping_getitem(): item not found in m_pMap_field_values. size=%d, item=%s", self->m_pMap_field_values->size(), pchKey);
+        }
+      }
+      else
+      {
+        g_warning("Record_tp_as_mapping_getitem(): self or self->m_pMap_field_values is NULL.");
       }
     }
+    else
+    {
+       g_warning("Record_tp_as_mapping_getitem(): PyString_AsString(item) returned NULL.");
+    }
   }
+  else
+  {
+    g_warning("Record_tp_as_mapping_getitem(): PyString_Check(item) failed.");
+  }
+
 
   g_warning("Record_tp_as_mapping_getitem(): return null.");
   PyErr_SetString(PyExc_IndexError, "field not found");

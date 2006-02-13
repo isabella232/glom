@@ -53,6 +53,11 @@ namespace GlomConversions
   bool value_is_empty(const Gnome::Gda::Value& value);
   Gnome::Gda::Value get_empty_value(Field::glom_field_type field_type);
 
+  /** This is like get_empty_value(), but it never returns a NULL-type object, 
+   * which would be useless to calculations.
+   */
+  Gnome::Gda::Value get_empty_value_suitable_for_python(Field::glom_field_type field_type);
+
   Gnome::Gda::Value get_example_value(Field::glom_field_type field_type);
 
   Glib::ustring get_escaped_binary_data(guint8* buffer, size_t buffer_size);

@@ -1,3 +1,14 @@
+2006-02-13  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/data_structure/glomconversions.cc:
+	* glom/data_structure/glomconversions.h: Added 
+	get_empty_value_suitable_for_python().
+	* glom/mode_data/box_data.cc: get_record_field_values(): 
+	Get full set of suitable empty values if there is no primary key, 
+	and replace null values with suitable non-null empty values, with 
+	get_empty_value_suitable_for_python(). This avoids warnings on the 
+	command line when adding records.
+
 0.9.5:
 
 2006-02-13  Murray Cumming  <murrayc@murrayc.com>

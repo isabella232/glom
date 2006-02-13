@@ -188,7 +188,7 @@ void Box_Data_List::on_adddel_user_requested_add()
       bool test = get_field_column_index(m_FieldsShown[index_field_to_edit]->get_name(), treemodel_column);
       if(test)
       {
-        std::cout << "on_adddel_user_requested_add(): editing column=" << treemodel_column << std::endl;
+        //std::cout << "on_adddel_user_requested_add(): editing column=" << treemodel_column << std::endl;
         m_AddDel.select_item(iter, treemodel_column, true /* start_editing */);
       }
     }

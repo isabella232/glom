@@ -127,8 +127,6 @@ Box_Data::type_map_fields Box_Data::get_record_field_values(const Gnome::Gda::Va
 {
   type_map_fields field_values;
 
-  sharedptr<const Field> fieldPrimaryKey = get_field_primary_key();
-
   Document_Glom* document = get_document();
   if(document)
   {
@@ -145,22 +143,46 @@ Box_Data::type_map_fields Box_Data::get_record_field_values(const Gnome::Gda::Va
       fieldsToGet.push_back(layout_item);
     }
 
-    const Glib::ustring query = build_sql_select(m_strTableName, fieldsToGet, fieldPrimaryKey, primary_key_value);
-    Glib::RefPtr<Gnome::Gda::DataModel> data_model = Query_execute(query);
-
-    if(data_model && data_model->get_n_rows())
+    if(!GlomConversions::value_is_empty(primary_key_value))
     {
-      int col_index = 0;
-      for(Document_Glom::type_vecFields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
+      sharedptr<const Field> fieldPrimaryKey = get_field_primary_key();
+
+      const Glib::ustring query = build_sql_select(m_strTableName, fieldsToGet, fieldPrimaryKey, primary_key_value);
+      Glib::RefPtr<Gnome::Gda::DataModel> data_model = Query_execute(query);
+
+      if(data_model && data_model->get_n_rows())
       {
-        //There should be only 1 row. Well, there could be more but we will ignore them.
-        field_values[(*iter)->get_name()] = data_model->get_value_at(col_index, 0);
-        ++col_index;
+        int col_index = 0;
+        for(Document_Glom::type_vecFields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
+        {
+          //There should be only 1 row. Well, there could be more but we will ignore them.
+          sharedptr<const Field> field = *iter;
+
+          Gnome::Gda::Value value = data_model->get_value_at(col_index, 0);
+
+          //Never give a NULL-type value to the python calculation,
+          //to prevent errors:
+          if(value.get_value_type() == Gnome::Gda::VALUE_TYPE_NULL)
+            value = GlomConversions::get_empty_value_suitable_for_python(field->get_glom_type());
+
+          field_values[field->get_name()] = value;
+          ++col_index;
+        }
+      }
+      else
+      {
+        handle_error();
       }
     }
-    else
+
+    if(field_values.empty()) //Maybe there was no primary key, or maybe the record is not yet in the database.
     {
-      handle_error();
+      //Create appropriate empty values:
+      for(Document_Glom::type_vecFields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
+      {
+        sharedptr<const Field> field = *iter;
+        field_values[field->get_name()] = GlomConversions::get_empty_value_suitable_for_python(field->get_glom_type());
+      }
     }
   }
 
