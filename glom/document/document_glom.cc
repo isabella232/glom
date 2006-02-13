@@ -22,6 +22,7 @@
 #include "../data_structure/glomconversions.h"
 #include "../data_structure/layout/report_parts/layoutitem_summary.h"
 #include "../data_structure/layout/report_parts/layoutitem_fieldsummary.h"
+#include "../data_structure/layout/layoutitem_button.h"
 //#include "config.h" //To get GLOM_DTD_INSTALL_DIR - dependent on configure prefix.
 #include <algorithm> //For std::find_if().
 #include <sstream> //For stringstream
@@ -40,7 +41,8 @@
 #define GLOM_ATTRIBUTE_PARENT_TABLE_NAME "parent_table"
 
 #define GLOM_NODE_DATA_LAYOUT_PORTAL "data_layout_portal"
-#define GLOM_NODE_DATA_LAYOUT_ITEM "data_layout_item"
+#define GLOM_NODE_DATA_LAYOUT_ITEM "data_layout_item" //A field.
+#define GLOM_NODE_DATA_LAYOUT_BUTTON "data_layout_button"
 #define GLOM_ATTRIBUTE_DATA_LAYOUT_ITEM_FIELD_USE_DEFAULT_FORMATTING "use_default_formatting"
 #define GLOM_NODE_DATA_LAYOUT_ITEM_GROUPBY "data_layout_item_groupby"
 #define GLOM_NODE_DATA_LAYOUT_GROUP_SECONDARYFIELDS "secondary_fields"
@@ -1319,6 +1321,15 @@ void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Gl
         item->m_sequence = sequence;
         group->add_item(item, sequence);
       }
+      if(element->get_name() == GLOM_NODE_DATA_LAYOUT_BUTTON)
+      {
+        sharedptr<LayoutItem_Button> item = sharedptr<LayoutItem_Button>::create();
+        load_after_translations(element, *item);
+
+        item->m_sequence = sequence;
+        std::cout << "button sequence = " << sequence << std::endl;
+        group->add_item(item, sequence);
+      }
       else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_ITEM_FIELDSUMMARY)
       {
         sharedptr<LayoutItem_FieldSummary> item = sharedptr<LayoutItem_FieldSummary>::create();
@@ -1836,10 +1847,12 @@ void Document_Glom::save_before_layout_group(xmlpp::Element* node, const sharedp
     }
     else
     {
+      xmlpp::Element* nodeItem = 0;
+
       sharedptr<const LayoutItem_FieldSummary> fieldsummary = sharedptr<const LayoutItem_FieldSummary>::cast_dynamic(item);
       if(fieldsummary) //If it is a summaryfield
       {
-        xmlpp::Element* nodeItem = child->add_child(GLOM_NODE_DATA_LAYOUT_ITEM_FIELDSUMMARY);
+        nodeItem = child->add_child(GLOM_NODE_DATA_LAYOUT_ITEM_FIELDSUMMARY);
         save_before_layout_item_field(nodeItem, fieldsummary);
         set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_LAYOUT_ITEM_FIELDSUMMARY_SUMMARYTYPE, fieldsummary->get_summary_type_sql()); //The SQL name is as good as anything as an identifier for the summary function.
       }
@@ -1848,10 +1861,22 @@ void Document_Glom::save_before_layout_group(xmlpp::Element* node, const sharedp
         sharedptr<const LayoutItem_Field> field = sharedptr<const LayoutItem_Field>::cast_dynamic(item);
         if(field) //If it is a field
         {
-          xmlpp::Element* nodeItem = child->add_child(GLOM_NODE_DATA_LAYOUT_ITEM);
+          nodeItem = child->add_child(GLOM_NODE_DATA_LAYOUT_ITEM);
           save_before_layout_item_field(nodeItem, field);
         }
+        else
+        {
+          sharedptr<const LayoutItem_Button> button = sharedptr<const LayoutItem_Button>::cast_dynamic(item);
+          if(button) //If it is a button
+          {
+            nodeItem = child->add_child(GLOM_NODE_DATA_LAYOUT_BUTTON);
+            save_before_translations(nodeItem, *button);
+          }
+        }
       }
+
+      if(nodeItem)
+        set_node_attribute_value_as_decimal(nodeItem, GLOM_ATTRIBUTE_SEQUENCE, item->m_sequence);
     }
 
     //g_warning("save_before_layout_group: after child part type=%s", item->get_part_type_name().c_str());
@@ -2371,6 +2396,13 @@ void Document_Glom::fill_translatable_layout_items(const sharedptr<LayoutGroup>&
     {
       //recurse:
       fill_translatable_layout_items(child_group, the_list);
+    }
+    else
+    {
+      //Buttons too:
+      sharedptr<LayoutItem_Button> button = sharedptr<LayoutItem_Button>::cast_dynamic(item);
+      if(button)
+        the_list.push_back(button);
     }
   }
 }

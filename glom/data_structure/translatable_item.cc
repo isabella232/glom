@@ -249,13 +249,15 @@ Glib::ustring TranslatableItem::get_translatable_type_name(enumTranslatableItemT
     return _("Relationship");
   else if(item_type == TRANSLATABLE_TYPE_RELATIONSHIP)
     return _("Layout Item");
- else if(item_type == TRANSLATABLE_TYPE_REPORT)
+  else if(item_type == TRANSLATABLE_TYPE_REPORT)
     return _("Report");
- else if(item_type == TRANSLATABLE_TYPE_TABLE)
+  else if(item_type == TRANSLATABLE_TYPE_TABLE)
     return _("Table");
   else if(item_type == TRANSLATABLE_TYPE_LAYOUT_ITEM)
     return _("Layout Group");
- else
+  else if(item_type == TRANSLATABLE_TYPE_BUTTON)
+    return _("Button");
+  else
     return _("Unknown");
 }
 

@@ -312,6 +312,8 @@ void FlowTableWithFields::add_button_at_position(const sharedptr<LayoutItem_Butt
 {
   //Add the widget:
   ButtonGlom* button = Gtk::manage(new ButtonGlom());
+  button->set_label(layoutitem_button->get_title_or_name());
+  button->show();
 
   add_layoutwidgetbase(button, add_before);
   //add_view(button); //So it can get the document.

@@ -1,3 +1,21 @@
+2006-02-13  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/data_structure/layout/layoutitem_button.cc:
+	* glom/data_structure/translatable_item.cc:
+	* glom/data_structure/translatable_item.h: Give it a 
+	translatable item type and name so it shows up properly in the 
+	translations list.
+	* glom/document/document_glom.cc: save_before_layout_item_field():
+	Load the sequence number of child items. It was pure luck that this 
+	worked sometimes without this.
+	* glom/document/document_glom.h:
+	* glom/mode_data/dialog_layout_details.cc: on_button_*(): Set m_modified, 
+	so that all changes are always saved. I am surprised that this worked before.
+	on_cell_data_name(): Mark buttons as such.
+	on_cell_data_title(): Allow button titles to be edited.
+	* glom/utility_widgets/flowtablewithfields.cc:
+	add_button_at_position(): Set the button title and really show the widget.
+
 2006-02-12  Murray Cumming  <murrayc@murrayc.com>
 
 	* po/POTFILES.in:
@@ -18,7 +36,7 @@
 	layout items.
 	* glom/utility_widgets/Makefile.am:
 	* glom/utility_widgets/buttonglom.cc:
-	* glom/utility_widgets/buttonglom.h: Add a (non yet useful) 
+	* glom/utility_widgets/buttonglom.h: Add a (not yet useful) 
 	button widget.
 
 2006-02-10  Murray Cumming  <murrayc@murrayc.com

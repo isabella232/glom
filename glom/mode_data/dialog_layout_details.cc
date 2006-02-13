@@ -258,8 +258,8 @@ void Dialog_Layout_Details::add_group(const Gtk::TreeModel::iterator& parent, co
             if(button) //If it is a button
             {
               //Add the button to the treeview:
-              Gtk::TreeModel::iterator iterField = m_model_items->append(iterNewGroup->children());
-              Gtk::TreeModel::Row row = *iterField;
+              Gtk::TreeModel::iterator iterButton = m_model_items->append(iterNewGroup->children());
+              Gtk::TreeModel::Row row = *iterButton;
               row[m_model_items->m_columns.m_col_layout_item] = glom_sharedptr_clone(button);
             }
           }
@@ -500,6 +500,8 @@ void Dialog_Layout_Details::on_button_field_add()
         refTreeSelection->select(iter);
 
       m_treeview_fields->scroll_to_row( Gtk::TreeModel::Path(iter) );
+
+      m_modified = true;
     }
   }
 
@@ -653,6 +655,7 @@ void Dialog_Layout_Details::on_button_add_button()
 
     //Add a new button:
     sharedptr<LayoutItem_Button> button = sharedptr<LayoutItem_Button>::create();
+    button->set_title(_("New Button")); //Give the button a default title, so it is big enough, and so people see that they should change it.
     row[m_model_items->m_columns.m_col_layout_item] = button;
 
     //Scroll to, and select, the new row:
@@ -661,6 +664,8 @@ void Dialog_Layout_Details::on_button_add_button()
       refTreeSelection->select(iter);
 
     m_treeview_fields->scroll_to_row( Gtk::TreeModel::Path(iter) );
+
+    m_modified = true;
   }
 
   enable_buttons();
@@ -688,6 +693,8 @@ void Dialog_Layout_Details::on_button_add_related()
         refTreeSelection->select(iter);
 
       m_treeview_fields->scroll_to_row( Gtk::TreeModel::Path(iter) );
+
+      m_modified = true;
     }
   }
 
@@ -800,6 +807,7 @@ void Dialog_Layout_Details::on_button_field_formatting()
               if(field)
               {
                 row[m_model_items->m_columns.m_col_layout_item] = itemchosen;
+                m_modified = true;
               }
             }
           }
@@ -842,6 +850,7 @@ void Dialog_Layout_Details::on_button_field_edit()
         {
           layout_portal->set_relationship(relationship);
           row[m_model_items->m_columns.m_col_layout_item] = layout_portal;
+          m_modified = true;
         }
       }
       else
@@ -860,6 +869,7 @@ void Dialog_Layout_Details::on_button_field_edit()
             if(chosenitem)
             {
               row[m_model_items->m_columns.m_col_layout_item] = chosenitem;
+              m_modified = true;
             }
           }
         }
@@ -961,11 +971,12 @@ void Dialog_Layout_Details::on_cell_data_name(Gtk::CellRenderer* renderer, const
           sharedptr<LayoutItem_Field> layout_item_field = sharedptr<LayoutItem_Field>::cast_dynamic(layout_item);
           if(layout_item_field)
           {
+            markup = _("Field: "); //TODO: Put this all in a sprintf-style string so it can be translated properly.
             //Indicate if it's a field in another table.
             sharedptr<Relationship> relationship = layout_item_field->get_relationship();
             const Glib::ustring relationship_name = glom_get_sharedptr_name(relationship);
             if(!(relationship_name.empty()))
-              markup = (relationship_name + "::");
+              markup += (relationship_name + "::");
 
             markup += layout_item_field->get_name();
 
@@ -973,6 +984,8 @@ void Dialog_Layout_Details::on_cell_data_name(Gtk::CellRenderer* renderer, const
             //if(!row[m_model_items->m_columns.m_col_editable])
             // markup += " *";
           }
+          else if(layout_item)
+            markup = layout_item->get_name();
         }
       }
 
@@ -1003,7 +1016,8 @@ void Dialog_Layout_Details::on_cell_data_title(Gtk::CellRenderer* renderer, cons
 
       sharedptr<LayoutGroup> layout_group = sharedptr<LayoutGroup>::cast_dynamic(layout_item);
       sharedptr<LayoutItem_Portal> layout_portal = sharedptr<LayoutItem_Portal>::cast_dynamic(layout_item);
-      const bool editable = layout_group && !layout_portal; //Only groups have titles that can be edited.
+      sharedptr<LayoutItem_Button> layout_button = sharedptr<LayoutItem_Button>::cast_dynamic(layout_item);
+      const bool editable = (layout_group && !layout_portal) || layout_button; //Only groups and buttons have titles that can be edited.
       renderer_text->property_editable() = editable;
     }
   }
@@ -1063,6 +1077,8 @@ void Dialog_Layout_Details::on_treeview_cell_edited_title(const Glib::ustring& p
         //Store the user's new text in the model:
         Gtk::TreeRow row = *iter;
         layout_item->set_title(new_text);
+
+        m_modified = true;
       }
     }
   }
@@ -1085,6 +1101,8 @@ void Dialog_Layout_Details::on_treeview_cell_edited_name(const Glib::ustring& pa
         //Store the user's new text in the model:
         Gtk::TreeRow row = *iter;
         layout_item->set_name(new_text);
+
+        m_modified = true;
       }
     }
   }
@@ -1122,6 +1140,8 @@ void Dialog_Layout_Details::on_treeview_cell_edited_columns_count(const Glib::us
 
       //Store the user's new text in the model:
       layout_group->m_columns_count = new_value;
+
+      m_modified = true;
     }
   }
 }
