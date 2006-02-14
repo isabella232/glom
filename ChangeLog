@@ -1,5 +1,19 @@
 2006-02-14  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/data_structure/relationship.cc:
+	* glom/data_structure/relationship.h: Added 
+	get_has_fields() to identify relationships that 
+	actually link fields in tables.
+	* glom/mode_data/box_data_list_related.cc: init_db_details(), 
+	fill_from_database(): Get all rows (with no where clause) if the 
+	relationship does not specify linking fields.
+	* glom/mode_design/box_db_table_relationships.cc:
+	* glom/utils.cc: build_sql_select_with_where(): 
+	If a related field's relationship doesn't specify 
+	linking fields, don't attempt a JOIN.
+
+2006-02-14  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/base_db.cc:
 	* glom/box_db_table.cc:
 	* glom/box_db_table.h:

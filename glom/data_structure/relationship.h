@@ -53,6 +53,11 @@ public:
   bool get_allow_edit() const;
   void set_allow_edit(bool val = true);
 
+  /** Whether the relationship specifies from and to fields.
+   * If not, then it specifies all records in the to table.
+   */
+  bool get_has_fields() const;
+
 protected:
   Glib::ustring m_strFrom_Table;
   Glib::ustring m_strFrom_Field;

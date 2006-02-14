@@ -20,6 +20,7 @@
 
 #include <libglademm.h>
 #include "box_db_table_relationships.h"
+#include <algorithm>
 #include <glibmm/i18n.h>
 
 Box_DB_Table_Relationships::Box_DB_Table_Relationships()
@@ -135,20 +136,23 @@ void Box_DB_Table_Relationships::save_to_document()
       if(!old_name.empty() && (old_name != name))
         get_document()->change_relationship_name(m_table_name, old_name, name); //Update layouts and reports.
 
-      sharedptr<Relationship> relationship = document->get_relationship(m_table_name, name); //Preserve other information, such as translations.
-      if(!relationship)
-        relationship = sharedptr<Relationship>(new Relationship());
+      if(std::find_if(vecRelationships.begin(), vecRelationships.end(), predicate_FieldHasName<Relationship>(name)) == vecRelationships.end()) //Don't add 2 relationships with the same name.
+      {
+        sharedptr<Relationship> relationship = document->get_relationship(m_table_name, name); //Preserve other information, such as translations.
+        if(!relationship)
+          relationship = sharedptr<Relationship>::create();
 
-      relationship->set_name(name);
-      relationship->set_title(m_AddDel.get_value(iter, m_colTitle));
-      relationship->set_from_table(m_table_name);
-      relationship->set_from_field(m_AddDel.get_value(iter, m_colFromField));
-      relationship->set_to_table(m_AddDel.get_value(iter, m_colToTable));
-      relationship->set_to_field(m_AddDel.get_value(iter, m_colToField));
-      relationship->set_allow_edit(m_AddDel.get_value_as_bool(iter, m_colAllowEdit));
-      relationship->set_auto_create(m_AddDel.get_value_as_bool(iter, m_colAutoCreate));
+        relationship->set_name(name);
+        relationship->set_title(m_AddDel.get_value(iter, m_colTitle));
+        relationship->set_from_table(m_table_name);
+        relationship->set_from_field(m_AddDel.get_value(iter, m_colFromField));
+        relationship->set_to_table(m_AddDel.get_value(iter, m_colToTable));
+        relationship->set_to_field(m_AddDel.get_value(iter, m_colToField));
+        relationship->set_allow_edit(m_AddDel.get_value_as_bool(iter, m_colAllowEdit));
+        relationship->set_auto_create(m_AddDel.get_value_as_bool(iter, m_colAutoCreate));
 
-      vecRelationships.push_back(relationship);
+        vecRelationships.push_back(relationship);
+      }
     }
   }
 

@@ -120,3 +120,8 @@ void Relationship::set_allow_edit(bool val)
 {
   m_allow_edit = val;
 }
+
+bool Relationship::get_has_fields() const
+{
+  return !m_strTo_Field.empty() && !m_strFrom_Field.empty() && !m_strTo_Table.empty() && !m_strFrom_Table.empty();
+}

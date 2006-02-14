@@ -99,37 +99,50 @@ bool Box_Data_List_Related::init_db_details(const sharedptr<const LayoutItem_Por
   LayoutWidgetBase::m_table_name = m_portal->get_relationship()->get_to_table();
   Box_DB_Table::m_table_name = LayoutWidgetBase::m_table_name;
 
-  m_Label.set_markup(Bakery::App_Gtk::util_bold_message( m_portal->get_relationship()->get_title_or_name() ));
+  sharedptr<const Relationship> relationship = portal->get_relationship();
 
-  m_key_field = get_fields_for_table_one_field(m_portal->get_relationship()->get_to_table(), m_portal->get_relationship()->get_to_field());
-  if(!m_key_field)
-  {
-    g_warning("Box_Data_List_Related::init_db_details(): key_field not found.");
-  }
+  m_Label.set_markup(Bakery::App_Gtk::util_bold_message( glom_get_sharedptr_title_or_name(relationship) ));
+
+  if(relationship)
+    m_key_field = get_fields_for_table_one_field(m_portal->get_relationship()->get_to_table(), m_portal->get_relationship()->get_to_field());
+  else
+    m_key_field = sharedptr<Field>();
 
   enable_buttons();
 
-  return Box_Data_List::init_db_details(m_portal->get_relationship()->get_to_table()); //Calls create_layout() and fill_from_database().
+  if(relationship)
+  {
+    return Box_Data_List::init_db_details(relationship->get_to_table()); //Calls create_layout() and fill_from_database().
+  }
+  else
+    return false;
 }
 
 bool Box_Data_List_Related::refresh_data_from_database_with_foreign_key(const Gnome::Gda::Value& foreign_key_value)
 {
   m_key_value = foreign_key_value;
 
-  if(!GlomConversions::value_is_empty(m_key_value))
+  if(m_key_field)
   {
-    const Glib::ustring where_clause = "\"" + m_key_field->get_name() + "\" = " + m_key_field->sql(m_key_value);
+    if(!GlomConversions::value_is_empty(m_key_value))
+    {
+      const Glib::ustring where_clause = "\"" + m_key_field->get_name() + "\" = " + m_key_field->sql(m_key_value);
 
-    //g_warning("refresh_data_from_database(): where_clause=%s", where_clause.c_str());
-    return Box_Data_List::refresh_data_from_database_with_where_clause(where_clause);
+      //g_warning("refresh_data_from_database(): where_clause=%s", where_clause.c_str());
+      return Box_Data_List::refresh_data_from_database_with_where_clause(where_clause);
+    }
+    else
+    {
+      //g_warning("Box_Data_List_Related::refresh_data_from_database_with_foreign_key(): m_key_value is NULL.");
+      refresh_data_from_database_blank();
+      return false;
+    }
   }
   else
   {
-    //g_warning("Box_Data_List_Related::refresh_data_from_database_with_foreign_key(): m_key_value is NULL.");
-    refresh_data_from_database_blank();
-    return false;
+    //If there is no to field then this relationship specifies all relationships in the table.
+    return Box_Data_List::refresh_data_from_database_with_where_clause(Glib::ustring());
   }
-  //TODO: Clear the list if there is no key value?
 }
 
 bool Box_Data_List_Related::fill_from_database()
@@ -137,24 +150,7 @@ bool Box_Data_List_Related::fill_from_database()
   bool result = false;
   bool allow_add = true;
 
-  if(!m_where_clause.empty())
-  {
-    result = Box_Data_List::fill_from_database();
-
-
-    //Is there already one record here?
-    if(m_has_one_or_more_records) //This was set by Box_Data_List::fill_from_database().
-    {
-      //Is the to_field unique? If so, there can not be more than one.
-      if(m_key_field->get_unique_key()) //automatically true if it is a primary key
-        allow_add = false;
-    }
-
-    //TODO: Disable add if the from_field already has a value and the to_field is auto-incrementing because
-    //- we cannot override the auto-increment in the to_field.
-    //- we cannot change the value in the from_field to the new auto_increment value in the to_field.
-  }
-  else
+  if(m_key_field && m_where_clause.empty()) //There's a key field, but no value.
   {
     //No Foreign Key value, so just show the field names:
 
@@ -164,9 +160,26 @@ bool Box_Data_List_Related::fill_from_database()
 
     fill_end();
   }
+  else
+  {
+    result = Box_Data_List::fill_from_database();
+
+
+    //Is there already one record here?
+    if(m_has_one_or_more_records) //This was set by Box_Data_List::fill_from_database().
+    {
+      //Is the to_field unique? If so, there can not be more than one.
+      if(m_key_field && m_key_field->get_unique_key()) //automatically true if it is a primary key
+        allow_add = false;
+    }
+
+    //TODO: Disable add if the from_field already has a value and the to_field is auto-incrementing because
+    //- we cannot override the auto-increment in the to_field.
+    //- we cannot change the value in the from_field to the new auto_increment value in the to_field.
+  }
 
   //Prevent addition of new records if that is what the relationship specifies:
-  if(allow_add)
+  if(allow_add && m_portal->get_relationship())
     allow_add = m_portal->get_relationship()->get_auto_create();
 
   m_AddDel.set_allow_add(allow_add);
@@ -184,10 +197,14 @@ void Box_Data_List_Related::on_record_added(const Gnome::Gda::Value& primary_key
   if(iter)
   {
     Gnome::Gda::Value key_value;
-    //m_key_field is the field in this table that must match another field in the parent table.
-    sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
-    layout_item->set_full_field_details(m_key_field);
-    key_value = m_AddDel.get_value(iter, layout_item);
+
+    if(m_key_field)
+    {
+      //m_key_field is the field in this table that must match another field in the parent table.
+      sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
+      layout_item->set_full_field_details(m_key_field);
+      key_value = m_AddDel.get_value(iter, layout_item);
+    }
 
     Box_Data_List::on_record_added(key_value); //adds blank row.
 
@@ -208,17 +225,20 @@ void Box_Data_List_Related::on_record_added(const Gnome::Gda::Value& primary_key
       sharedptr<Field> field_primary_key = m_AddDel.get_key_field();
 
       //Create the link by setting the foreign key
-      Glib::ustring strQuery = "UPDATE \"" + m_portal->get_relationship()->get_to_table() + "\"";
-      strQuery += " SET \"" +  /* get_table_name() + "." +*/ m_key_field->get_name() + "\" = " + m_key_field->sql(m_key_value);
-      strQuery += " WHERE \"" + get_table_name() + "\".\"" + field_primary_key->get_name() + "\" = " + field_primary_key->sql(primary_key_value);
-      bool test = Query_execute(strQuery);
-      if(test)
+      if(m_key_field)
       {
-        //Show it on the view, if it's visible:
-        sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
-        layout_item->set_full_field_details(field_primary_key);
+        Glib::ustring strQuery = "UPDATE \"" + m_portal->get_relationship()->get_to_table() + "\"";
+        strQuery += " SET \"" +  /* get_table_name() + "." +*/ m_key_field->get_name() + "\" = " + m_key_field->sql(m_key_value);
+        strQuery += " WHERE \"" + get_table_name() + "\".\"" + field_primary_key->get_name() + "\" = " + field_primary_key->sql(primary_key_value);
+        bool test = Query_execute(strQuery);
+        if(test)
+        {
+          //Show it on the view, if it's visible:
+          sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
+          layout_item->set_full_field_details(field_primary_key);
 
-        m_AddDel.set_value(iter, layout_item, m_key_value);
+          m_AddDel.set_value(iter, layout_item, m_key_value);
+        }
       }
 
       //on_adddel_user_changed(iter, iKey); //Update the database.
@@ -261,7 +281,7 @@ void Box_Data_List_Related::on_adddel_user_added(const Gtk::TreeModel::iterator&
 
   bool bAllowAdd = true;
 
-  if(m_key_field->get_unique_key() || m_key_field->get_primary_key())
+  if(m_key_field && (m_key_field->get_unique_key() || m_key_field->get_primary_key()))
   {
     if(m_AddDel.get_count() > 0) //If there is already 1 record
       bAllowAdd = false;
@@ -291,7 +311,12 @@ Box_Data_List_Related::type_vecLayoutFields Box_Data_List_Related::get_fields_to
   {
     Document_Glom::type_mapLayoutGroupSequence mapGroups;
     mapGroups[0] = m_portal;
-    return get_table_fields_to_show_for_sequence(m_portal->get_relationship()->get_to_table(), mapGroups);
+
+    sharedptr<const Relationship> relationship = m_portal->get_relationship();
+    if(relationship)
+    {
+      return get_table_fields_to_show_for_sequence(relationship->get_to_table(), mapGroups);
+    }
   }
 
   return type_vecLayoutFields();
