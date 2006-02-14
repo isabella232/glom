@@ -6,8 +6,8 @@ msgid ""
 ""
 msgstr "Project-Id-Version: glom HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-02-10 02:04+0100\n"
-"PO-Revision-Date: 2006-02-10 16:34+1030\n"
+"POT-Creation-Date: 2006-02-14 02:03+0100\n"
+"PO-Revision-Date: 2006-02-14 19:23+1030\n"
 "Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
 "Language-Team: Vietnamese <gnomevi-list@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -20,7 +20,7 @@ msgstr "Project-Id-Version: glom HEAD\n"
 msgid "A user-friendly database environment."
 msgstr "Một môi trường cơ sở dữ liệu thân thiện với người dùng."
 
-#:../glom.desktop.in.in.h:2 ../glom/glom.glade.h:115 ../glom/main.cc:90
+#:../glom.desktop.in.in.h:2 ../glom/glom.glade.h:117 ../glom/main.cc:90
 msgid "Glom"
 msgstr "Glom"
 
@@ -203,7 +203,8 @@ msgid ""
 "start of the current translation?"
 msgstr "<span weight=\"bold\" size=\"larger\">Chép bản dịch</span>\n"
 "\n"
-"Bạn có muốn sao chép những bản sao để sử dụng là gốc của bản dịch mới, từ ngôn ngữ nào?"
+"Bạn có muốn sao chép những bản sao để sử dụng là gốc của bản dịch mới, từ "
+"ngôn ngữ nào?"
 
 #:../glom/glom.glade.h:48
 msgid ""
@@ -297,213 +298,221 @@ msgstr "<span weight=\"bold\" size=\"larger\">Kiểm tra bản dịch</span>\n"
 "sổ hộp thoại, sẽ được dịch vhỉ khi bạn khởi chạy Glom trên máy tính được "
 "thiết lập để sử dụng ngôn ngữ đó."
 
-#:../glom/glom.glade.h:75
+#:../glom/glom.glade.h:75 ../glom/utility_widgets/layoutwidgetbase.cc:37
+msgid "Add Button"
+msgstr "Tạo nút"
+
+#:../glom/glom.glade.h:76
 msgid "Add Related"
 msgstr "Thêm Tương ứng"
 
-#:../glom/glom.glade.h:76
+#:../glom/glom.glade.h:77
 msgid "Add _Group"
 msgstr "Thêm _nhóm"
 
-#:../glom/glom.glade.h:77
+#:../glom/glom.glade.h:78
 #:../glom/mode_design/box_db_table_relationships.cc:45
 msgid "Allow Editing"
 msgstr "Cho phép Sửa"
 
-#:../glom/glom.glade.h:78
+#:../glom/glom.glade.h:79
 msgid "Also show"
 msgstr "Cũng hiện"
 
-#:../glom/glom.glade.h:79
+#:../glom/glom.glade.h:80
 msgid "Auto-increment"
 msgstr "Tự động dần dần"
 
-#:../glom/glom.glade.h:80
+#:../glom/glom.glade.h:81
 msgid "Auto-increment values"
 msgstr "Tự động dần dần giá trị"
 
-#:../glom/glom.glade.h:81
+#:../glom/glom.glade.h:82
+msgid "Button Script"
+msgstr "Tập lệnh nút"
+
+#:../glom/glom.glade.h:83
 msgid "Calculate value"
 msgstr "Tính giá trị"
 
-#:../glom/glom.glade.h:82
+#:../glom/glom.glade.h:84
 msgid "Choices From Related Records"
 msgstr "Lựa chọn từ mục ghi tương ứng"
 
-#:../glom/glom.glade.h:83
+#:../glom/glom.glade.h:85
 msgid "Choose User"
 msgstr "Chọn người dùng"
 
-#:../glom/glom.glade.h:84
+#:../glom/glom.glade.h:86
 msgid "Confirm Password"
 msgstr "Xác nhận mật khẩu"
 
-#:../glom/glom.glade.h:85
+#:../glom/glom.glade.h:87
 msgid "Connect"
 msgstr "Kết nối"
 
-#:../glom/glom.glade.h:86
+#:../glom/glom.glade.h:88
 msgid "Copy From Existing Translation"
 msgstr "Chép từ bản dịch đã có"
 
-#:../glom/glom.glade.h:87
+#:../glom/glom.glade.h:89
 msgid "Country"
 msgstr "Quốc gia"
 
-#:../glom/glom.glade.h:88 ../glom/mode_design/users/dialog_groups_list.cc:76
+#:../glom/glom.glade.h:90 ../glom/mode_design/users/dialog_groups_list.cc:76
 msgid "Create"
 msgstr "Tạo"
 
-#:../glom/glom.glade.h:89
+#:../glom/glom.glade.h:91
 msgid "Create Group"
 msgstr "Tạo nhóm"
 
-#:../glom/glom.glade.h:90
+#:../glom/glom.glade.h:92
 msgid "Creating Glom Database"
 msgstr "Đang tạo cơ sở dữ liệu Glom"
 
-#:../glom/glom.glade.h:91
+#:../glom/glom.glade.h:93
 msgid "Creating Glom database from example file."
 msgstr "Đang tạo cơ sở dữ liệu Glom từ tập tin thí dụ."
 
-#:../glom/glom.glade.h:92
+#:../glom/glom.glade.h:94
 msgid "Currency Symbol"
 msgstr "Ký hiệu tiền tệ"
 
-#:../glom/glom.glade.h:93
+#:../glom/glom.glade.h:95
 msgid "Custom Choice List"
 msgstr "Danh sách lựa chọn riêng"
 
-#:../glom/glom.glade.h:94 ../glom/frame_glom.cc:413
+#:../glom/glom.glade.h:96 ../glom/frame_glom.cc:413
 msgid "Data"
 msgstr "Dữ liệu"
 
-#:../glom/glom.glade.h:95
+#:../glom/glom.glade.h:97
 msgid "Database"
 msgstr "Cơ sở dữ liệu"
 
-#:../glom/glom.glade.h:96
+#:../glom/glom.glade.h:98
 msgid "Database Preferences"
 msgstr "Tùy thích cơ sở dữ liệu"
 
-#:../glom/glom.glade.h:97
+#:../glom/glom.glade.h:99
 msgid "Decimal Places"
 msgstr "Lần số"
 
-#:../glom/glom.glade.h:98
+#:../glom/glom.glade.h:100
 msgid "Default Formatting"
 msgstr "Dạng thức mặc định"
 
-#:../glom/glom.glade.h:99
+#:../glom/glom.glade.h:101
 #:../glom/mode_design/fields/dialog_fielddefinition.cc:147
 msgid "Default Value"
 msgstr "Giá trị mặc định"
 
-#:../glom/glom.glade.h:100
+#:../glom/glom.glade.h:102
 msgid "Details Layout"
 msgstr "Bố trí chi tiết"
 
 #.Add new menu items:
-#:../glom/glom.glade.h:101 ../glom/mode_design/users/dialog_groups_list.cc:73
+#:../glom/glom.glade.h:103 ../glom/mode_design/users/dialog_groups_list.cc:73
 #:../glom/utility_widgets/adddel/adddel.cc:206
 msgid "Edit"
 msgstr "Hiệu chỉnh"
 
-#:../glom/glom.glade.h:102
+#:../glom/glom.glade.h:104
 msgid "English"
 msgstr "Tiếng Anh"
 
-#:../glom/glom.glade.h:103
+#:../glom/glom.glade.h:105
 msgid "Export Format"
 msgstr "Xuất dạng thức"
 
-#:../glom/glom.glade.h:104 ../glom/data_structure/translatable_item.cc:247
+#:../glom/glom.glade.h:106 ../glom/data_structure/translatable_item.cc:247
 #:../glom/data_structure/layout/layoutitem_field.cc:161
 #:../glom/dialog_database_preferences.cc:49
 msgid "Field"
 msgstr "Trường"
 
-#:../glom/glom.glade.h:105
+#:../glom/glom.glade.h:107
 msgid "Field Calculation"
 msgstr "Tính trường"
 
-#:../glom/glom.glade.h:106
+#:../glom/glom.glade.h:108
 msgid "Field Definition"
 msgstr "Định nghĩa trường"
 
-#:../glom/glom.glade.h:107 ../glom/mode_design/dialog_fields.cc:34
+#:../glom/glom.glade.h:109 ../glom/mode_design/dialog_fields.cc:34
 msgid "Field Definitions"
 msgstr "Định nghĩa trường"
 
-#:../glom/glom.glade.h:108
+#:../glom/glom.glade.h:110
 msgid "Field Layout"
 msgstr "Bố trí trường"
 
-#:../glom/glom.glade.h:109
+#:../glom/glom.glade.h:111
 #:../glom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:67
 msgid "Field Summary"
 msgstr "Tóm tắt trường"
 
-#:../glom/glom.glade.h:110
+#:../glom/glom.glade.h:112
 msgid "Field:"
 msgstr "Trường:"
 
-#:../glom/glom.glade.h:111
+#:../glom/glom.glade.h:113
 msgid "Find All"
 msgstr "Tìm hết"
 
-#:../glom/glom.glade.h:112
+#:../glom/glom.glade.h:114
 msgid "Find Related Record"
 msgstr "Tìm mục ghi tương ứng"
 
-#:../glom/glom.glade.h:113
+#:../glom/glom.glade.h:115
 msgid "Formatting"
 msgstr "Dạng thức"
 
-#:../glom/glom.glade.h:114
+#:../glom/glom.glade.h:116
 msgid "Found:"
 msgstr "Đã tìm:"
 
-#:../glom/glom.glade.h:116 ../glom/data_structure/layout/layoutgroup.cc:394
+#:../glom/glom.glade.h:118 ../glom/data_structure/layout/layoutgroup.cc:396
 msgid "Group"
 msgstr "Nhóm"
 
-#:../glom/glom.glade.h:117
+#:../glom/glom.glade.h:119
 #:../glom/data_structure/layout/report_parts/layoutitem_groupby.cc:103
 msgid "Group By"
 msgstr "Nhóm lại theo"
 
-#:../glom/glom.glade.h:118
+#:../glom/glom.glade.h:120
 msgid "Group By - Secondary Fields"
 msgstr "Nhóm lại theo : trường phụ"
 
-#:../glom/glom.glade.h:119
+#:../glom/glom.glade.h:121
 msgid "Group Name"
 msgstr "Tên nhóm"
 
-#:../glom/glom.glade.h:120
+#:../glom/glom.glade.h:122
 msgid "Groups"
 msgstr "Nhóm"
 
-#:../glom/glom.glade.h:121
+#:../glom/glom.glade.h:123
 msgid "Host"
 msgstr "Máy"
 
-#:../glom/glom.glade.h:122
+#:../glom/glom.glade.h:124
 msgid "Identify Original"
 msgstr "Nhận diện gốc"
 
-#:../glom/glom.glade.h:123
+#:../glom/glom.glade.h:125
 msgid "Identify Source"
 msgstr "Nhận diện nguồn"
 
-#:../glom/glom.glade.h:124
+#:../glom/glom.glade.h:126
 msgid ""
 "If the text is not actually in this language, please choose the correct "
 "language."
 msgstr "Nếu văn bản không phải bằng ngôn ngữ này, hãy chọn ngôn ngữ đúng."
 
-#:../glom/glom.glade.h:125
+#:../glom/glom.glade.h:127
 msgid ""
 "If this is not selected then a thousands separator will not be used, even if "
 "your locale would normally use one. If it is selected then a thousands "
@@ -512,27 +521,27 @@ msgstr "Nếu chưa chọn, đồ phân cách ngàn sẽ không được dùng, 
 "phương của bạn thường sử dụng nó. Nếu chọn, đồ phân cách ngàn sẽ được dùng, "
 "chí nếu miền địa phương của bạn thường sử dụng nó. "
 
-#:../glom/glom.glade.h:126
+#:../glom/glom.glade.h:128
 msgid "Language"
 msgstr "Ngôn ngữ"
 
-#:../glom/glom.glade.h:127
+#:../glom/glom.glade.h:129
 msgid "List Layout"
 msgstr "Bố trí danh sách"
 
-#:../glom/glom.glade.h:128
+#:../glom/glom.glade.h:130
 msgid "Locale"
 msgstr "Miền địa phương"
 
-#:../glom/glom.glade.h:129
+#:../glom/glom.glade.h:131
 msgid "Lookup value when a field changes."
 msgstr "Tra tìm giá trị khi trường thay đổi."
 
-#:../glom/glom.glade.h:130
+#:../glom/glom.glade.h:132
 msgid "Mode:"
 msgstr "Chế độ :"
 
-#:../glom/glom.glade.h:131
+#:../glom/glom.glade.h:133
 msgid "Multi-line"
 msgstr "Đa dòng"
 
@@ -543,11 +552,11 @@ msgstr "Đa dòng"
 #.Append the View columns:
 #.Append the View columns:
 #.Append the View columns:
-#:../glom/glom.glade.h:132 ../glom/box_reports.cc:87
+#:../glom/glom.glade.h:134 ../glom/box_reports.cc:87
 #:../glom/layout_item_dialogs/dialog_groupby_secondaryfields.cc:49
 #:../glom/mode_data/dialog_choose_field.cc:43
 #:../glom/mode_data/dialog_choose_relationship.cc:49
-#:../glom/mode_data/dialog_layout_details.cc:59
+#:../glom/mode_data/dialog_layout_details.cc:62
 #:../glom/mode_data/dialog_layout_export.cc:49
 #:../glom/mode_data/dialog_layout_list.cc:49
 #:../glom/mode_data/dialog_layout_list_related.cc:51
@@ -557,130 +566,131 @@ msgstr "Đa dòng"
 msgid "Name"
 msgstr "Tên"
 
-#:../glom/glom.glade.h:133
+#:../glom/glom.glade.h:135
 msgid "New From Example"
 msgstr "Mới từ thí dụ"
 
-#:../glom/glom.glade.h:134
+#:../glom/glom.glade.h:136
 msgid "No Choices"
 msgstr "Không có lựa chọn"
 
-#:../glom/glom.glade.h:135 ../glom/mode_design/dialog_design.cc:50
+#:../glom/glom.glade.h:137 ../glom/mode_design/dialog_design.cc:50
 msgid "None selected"
 msgstr "Chưa chọn"
 
-#:../glom/glom.glade.h:136
+#:../glom/glom.glade.h:138
 msgid "Organisation"
 msgstr "Tổ chức"
 
-#:../glom/glom.glade.h:137
+#:../glom/glom.glade.h:139
 msgid "Password"
 msgstr "Mật khẩu"
 
-#:../glom/glom.glade.h:138
+#:../glom/glom.glade.h:140
 msgid "Primary Key"
 msgstr "Khoá chính"
 
-#:../glom/glom.glade.h:139
+#:../glom/glom.glade.h:141
 msgid "Quick Find"
 msgstr "Tìm nhanh"
 
-#:../glom/glom.glade.h:140
+#:../glom/glom.glade.h:142
 msgid "Records: "
 msgstr "Mục ghi: "
 
-#:../glom/glom.glade.h:141
+#:../glom/glom.glade.h:143
 msgid "Related Records Layout"
 msgstr "Bố trí mục ghi tương ứng"
 
-#:../glom/glom.glade.h:142 ../glom/data_structure/translatable_item.cc:249
+#:../glom/glom.glade.h:144 ../glom/data_structure/translatable_item.cc:249
 msgid "Relationship"
 msgstr "Quan hệ"
 
-#:../glom/glom.glade.h:143
+#:../glom/glom.glade.h:145
 msgid "Report Layout"
 msgstr "Bố trí báo cáo"
 
-#:../glom/glom.glade.h:144
+#:../glom/glom.glade.h:146
 msgid "Reports"
 msgstr "Báo cáo"
 
-#:../glom/glom.glade.h:145
+#:../glom/glom.glade.h:147
 msgid "Restrict data to these choices"
 msgstr "Hạn chế dữ liệu thành những lựa chọn này"
 
-#:../glom/glom.glade.h:146
+#:../glom/glom.glade.h:148
 msgid "Revert"
 msgstr "Hoàn nguyên"
 
-#:../glom/glom.glade.h:147
+#:../glom/glom.glade.h:149
 msgid "Secondary Fields:"
 msgstr "Trường phụ :"
 
-#:../glom/glom.glade.h:148 ../glom/utility_widgets/imageglom.cc:342
+#:../glom/glom.glade.h:150 ../glom/utility_widgets/imageglom.cc:342
 #:../glom/utility_widgets/dialog_choose_id.cc:79
 msgid "Select"
 msgstr "Chọn"
 
-#:../glom/glom.glade.h:149
+#:../glom/glom.glade.h:151
 msgid "Select Field"
 msgstr "Chọn trường"
 
-#:../glom/glom.glade.h:150
+#:../glom/glom.glade.h:152
 msgid "Select Relationship"
 msgstr "Chọn quan hệ"
 
-#:../glom/glom.glade.h:151
+#:../glom/glom.glade.h:153
 msgid "Show hidden tables"
 msgstr "Hiện các bảng ẩn"
 
-#:../glom/glom.glade.h:152
+#:../glom/glom.glade.h:154
 msgid "Sort Field:"
 msgstr "Sắp xếp trường:"
 
-#:../glom/glom.glade.h:153
+#:../glom/glom.glade.h:155
 msgid ""
 "Start a translation for this target locale by copying the strings from "
 "another target locale."
-msgstr "Sở khởi một bản dịch cho miền đích này, bằng cách sao chép những chuỗi từ một miền đích khác."
+msgstr "Sở khởi một bản dịch cho miền đích này, bằng cách sao chép những chuỗi từ "
+"một miền đích khác."
 
-#:../glom/glom.glade.h:154
+#:../glom/glom.glade.h:156
 msgid "State/County"
 msgstr "Tỉnh"
 
-#:../glom/glom.glade.h:155
+#:../glom/glom.glade.h:157
 msgid "Street"
 msgstr "Đường"
 
-#:../glom/glom.glade.h:156
+#:../glom/glom.glade.h:158
 msgid "Street (Line 2)"
 msgstr "Đường (dòng 2)"
 
-#:../glom/glom.glade.h:157
+#:../glom/glom.glade.h:159
 msgid "Summary Type:"
 msgstr "Kiểu tóm tắt:"
 
-#:../glom/glom.glade.h:158
+#:../glom/glom.glade.h:160
 msgid "System Name"
 msgstr "Tên hệ thống"
 
-#:../glom/glom.glade.h:159
+#:../glom/glom.glade.h:161
 msgid "Table:"
 msgstr "Bảng:"
 
-#:../glom/glom.glade.h:160
+#:../glom/glom.glade.h:162
 msgid "Table: "
 msgstr "Bảng: "
 
-#:../glom/glom.glade.h:161
+#:../glom/glom.glade.h:163
 msgid "Test"
 msgstr "Kiểm tra"
 
-#:../glom/glom.glade.h:162
+#:../glom/glom.glade.h:164
 msgid "Test Translation"
 msgstr "Kiểm tra bản dịch"
 
-#:../glom/glom.glade.h:163
+#:../glom/glom.glade.h:165
 msgid ""
 "The field value will be the return value of the python function, which you "
 "implement here."
@@ -688,70 +698,77 @@ msgstr "Giá trị trường sẽ là giá trị gởi trả của hàm python, 
 "đây."
 
 #.Title column:
-#:../glom/glom.glade.h:164 ../glom/box_reports.cc:88
+#:../glom/glom.glade.h:166 ../glom/box_reports.cc:88
 #:../glom/mode_data/dialog_choose_field.cc:44
-#:../glom/mode_data/dialog_layout_details.cc:73
+#:../glom/mode_data/dialog_layout_details.cc:75
 #:../glom/mode_design/box_db_table_relationships.cc:40
 #:../glom/mode_design/fields/box_db_table_definition.cc:50
 #:../glom/navigation/box_tables.cc:113
 msgid "Title"
 msgstr "Tựa"
 
-#:../glom/glom.glade.h:165
+#:../glom/glom.glade.h:167
 msgid "Town"
 msgstr "Phố"
 
-#:../glom/glom.glade.h:166
+#:../glom/glom.glade.h:168
 msgid "Translations"
 msgstr "Bản dịch"
 
-#:../glom/glom.glade.h:167
+#:../glom/glom.glade.h:169
 msgid "Triggered by:"
 msgstr "Được gây ra bởi:"
 
-#:../glom/glom.glade.h:168
+#:../glom/glom.glade.h:170
 #:../glom/mode_design/fields/box_db_table_definition.cc:52
 msgid "Type"
 msgstr "Kiểu"
 
-#:../glom/glom.glade.h:169
+#:../glom/glom.glade.h:171
 msgid "Unique"
 msgstr "Duy nhất"
 
-#:../glom/glom.glade.h:170
+#:../glom/glom.glade.h:172
 msgid "Use 1000s separator"
 msgstr "Dùng bộ phân cách ngàn"
 
-#:../glom/glom.glade.h:171
+#:../glom/glom.glade.h:173
 msgid "Use custom formatting"
 msgstr "Dùng dạng thức riêng"
 
-#:../glom/glom.glade.h:172
+#:../glom/glom.glade.h:174
 msgid "Use default formatting"
 msgstr "Dùng dạng thức mặc định"
 
 #.Append the View columns:
-#:../glom/glom.glade.h:173 ../glom/mode_design/users/dialog_users_list.cc:63
+#:../glom/glom.glade.h:175 ../glom/mode_design/users/dialog_users_list.cc:63
 msgid "User"
 msgstr "Người dùng"
 
-#:../glom/glom.glade.h:174
+#:../glom/glom.glade.h:176
 msgid "Users"
 msgstr "Người dùng"
 
-#:../glom/glom.glade.h:175
+#:../glom/glom.glade.h:177
+msgid ""
+"When the button is clicked it will run the python function which you "
+"implement here."
+msgstr "Khi cái nút được bấm, nó sẽ chạy hàm python mà bạn sẽ thực hiện vào "
+"đây."
+
+#:../glom/glom.glade.h:178
 msgid "Zip/Postal Code"
 msgstr "Mã bưu điện"
 
-#:../glom/glom.glade.h:176
+#:../glom/glom.glade.h:179
 msgid "example data format"
 msgstr "dạng thức dữ liệu thí dụ"
 
-#:../glom/glom.glade.h:177
+#:../glom/glom.glade.h:180
 msgid "field name"
 msgstr "tên trường"
 
-#:../glom/glom.glade.h:178
+#:../glom/glom.glade.h:181
 msgid ""
 "import glom\n"
 "\n"
@@ -760,11 +777,20 @@ msgstr "nhập glom\n"
 "\n"
 "<b>định nghĩa tính giá trị trường (mục ghi):</b>"
 
-#:../glom/glom.glade.h:181
+#:../glom/glom.glade.h:184
+msgid ""
+"import glom\n"
+"\n"
+"<b>def on_button_clicked(record):</b>"
+msgstr "nhập glom\n"
+"\n"
+"<b>định nghĩa khi_bấm_nút (mục ghi):</b>"
+
+#:../glom/glom.glade.h:187
 msgid "table name"
 msgstr "tên bảng"
 
-#:../glom/glom.glade.h:182
+#:../glom/glom.glade.h:188
 msgid "table_name"
 msgstr "tên_bảng"
 
@@ -888,46 +914,46 @@ msgid ""
 msgstr "Để sử dụng thí dụ này, bạn phải lưu một bản sao tập tin này có khả năng sửa "
 "đổi. Một cơ sở dữ liệu mới sẽ cũng được tạo trên máy phục vụ."
 
-#:../glom/application.cc:449
+#:../glom/application.cc:450
 msgid "Opening Read-Only File."
 msgstr "Đang mở tập tin chỉ-đọc."
 
-#:../glom/application.cc:450
+#:../glom/application.cc:451
 msgid ""
 "This file is read only, so you will not be able to enter Developer mode to "
 "make design changes."
 msgstr "Tập tin này chỉ cho phép đọc, thì bạn sẽ không thể vào chế độ Nhà phát triển "
 "để thay đổi cách thiết kế."
 
-#:../glom/application.cc:453
+#:../glom/application.cc:454
 msgid "Continue without Developer Mode"
 msgstr "Tiếp tục mà không có chế độ Nhà phát triển"
 
 #.The connection to the server is OK, but the database is not there yet.
-#:../glom/application.cc:525
+#:../glom/application.cc:526
 msgid "Database Not Found On Server"
 msgstr "Không tìm thấy cơ sở dữ liệu trên máy phục vụ"
 
-#:../glom/application.cc:525
+#:../glom/application.cc:526
 msgid ""
 "The database could not be found on the server. Please consult your system "
 "administrator."
 msgstr "Không tìm thấy cơ sở dữ liệu trên máy phục vụ. Vui lòng liên lạc với quản "
 "trị hệ thống."
 
-#:../glom/application.cc:781
+#:../glom/application.cc:782
 msgid "_Contents"
 msgstr "_Nội dung"
 
-#:../glom/application.cc:781
+#:../glom/application.cc:782
 msgid "Help with the application"
 msgstr "Trợ giúp về ứng dụng này"
 
-#:../glom/application.cc:1169
+#:../glom/application.cc:1170
 msgid "Save failed."
 msgstr "Việc lưu bị lỗi."
 
-#:../glom/application.cc:1169
+#:../glom/application.cc:1170
 msgid ""
 "There was an error while saving the file. Your changes have not been saved."
 msgstr "Gặp lỗi khi lưu tập tin nên chưa lưu thay đổi của bạn."
@@ -1011,7 +1037,13 @@ msgstr "Bảng"
 msgid "Layout Group"
 msgstr "Nhóm bố trí"
 
-#:../glom/data_structure/translatable_item.cc:259 ../glom/frame_glom.cc:432
+#:../glom/data_structure/translatable_item.cc:259
+#:../glom/data_structure/layout/layoutitem_button.cc:28
+#:../glom/data_structure/layout/layoutitem_button.cc:66
+msgid "Button"
+msgstr "Nút"
+
+#:../glom/data_structure/translatable_item.cc:261 ../glom/frame_glom.cc:432
 #:../glom/translation/window_translations.cc:196
 msgid "Unknown"
 msgstr "Không rõ"
@@ -1147,11 +1179,11 @@ msgid ""
 msgstr "Bạn chưa gõ tiêu chuẩn tìm. Hãy cố gõ gì vào trường."
 
 #.Ask user to confirm loss of data:
-#:../glom/mode_data/box_data.cc:325
+#:../glom/mode_data/box_data.cc:347
 msgid "No primary key value"
 msgstr "Không có giá trị khoá chính"
 
-#:../glom/mode_data/box_data.cc:326
+#:../glom/mode_data/box_data.cc:348
 msgid ""
 "This data cannot be stored in the database because you have not provided a "
 "primary key.\n"
@@ -1162,11 +1194,11 @@ msgstr "Dữ liệu này không thể được lưu vào cơ sở dữ liệu v�
 
 #.Warn the user:
 #.TODO: Make the field insensitive until it can receive data, so people never see this dialog.
-#:../glom/mode_data/box_data.cc:956
+#:../glom/mode_data/box_data.cc:978
 msgid "Related Record Does Not Exist"
 msgstr "Không có mục ghi tương ứng."
 
-#:../glom/mode_data/box_data.cc:957
+#:../glom/mode_data/box_data.cc:979
 msgid ""
 "Data may not be entered into this related field, because the related record "
 "does not yet exist, and the relationship does not allow automatic creation "
@@ -1176,12 +1208,12 @@ msgstr "Không thể nhập dữ liệu vào trường tương ứng này, vì m
 
 #.Warn the user:
 #.TODO: Make the field insensitive until it can receive data, so people never see this dialog.
-#:../glom/mode_data/box_data.cc:975
+#:../glom/mode_data/box_data.cc:997
 msgid "Related Record Cannot Be Created"
 msgstr "Không thể tạo mục ghi tương ứng"
 
 #.TODO: This is a very complex error message:
-#:../glom/mode_data/box_data.cc:977
+#:../glom/mode_data/box_data.cc:999
 msgid ""
 "Data may not be entered into this related field, because the related record "
 "does not yet exist, and the key in the related record is auto-generated and "
@@ -1191,11 +1223,11 @@ msgstr "Không thể nhập dữ liệu vào trường tương ứng này, vì m
 "thể được tạo bằng giá trị khoá trong mục ghi này."
 
 #.Ask the user for confirmation:
-#:../glom/mode_data/box_data.cc:1064
+#:../glom/mode_data/box_data.cc:1086
 msgid "Delete record"
 msgstr "Xoá bỏ mục ghi"
 
-#:../glom/mode_data/box_data.cc:1065
+#:../glom/mode_data/box_data.cc:1087
 msgid ""
 "Are you sure that you would like to delete this record? The data in this "
 "record will then be permanently lost."
@@ -1203,20 +1235,20 @@ msgstr "Bạn có chấc muốn xoá bỏ mục ghi này không? Vậy dữ li�
 "bị mất hoàn toàn."
 
 #.Tell user that a primary key is needed to delete a record:
-#:../glom/mode_data/box_data_details.cc:318
+#:../glom/mode_data/box_data_details.cc:320
 msgid "No primary key value."
 msgstr "Không có giá trị khoá chính"
 
-#:../glom/mode_data/box_data_details.cc:319
+#:../glom/mode_data/box_data_details.cc:321
 msgid "This record cannot be deleted because there is no primary key."
 msgstr "Không thể xoá bỏ mục ghi này, vì không có khoá chính."
 
 #.Warn user that they can't choose their own primary key:
-#:../glom/mode_data/box_data_details.cc:631
+#:../glom/mode_data/box_data_details.cc:645
 msgid "Primary key auto increments"
 msgstr "Tự động dần dần khoá chính"
 
-#:../glom/mode_data/box_data_details.cc:632
+#:../glom/mode_data/box_data_details.cc:646
 msgid ""
 "The primary key is auto-incremented.\n"
 " You may not enter your own primary key value."
@@ -1242,13 +1274,21 @@ msgstr "Bạn đã cố thêm một mục ghi tương ứng mới, nhưng có th
 "tương ứng, vì quan hệ sử dụng một khoá duy nhất."
 
 #.Columns-count column:
-#:../glom/mode_data/dialog_layout_details.cc:86
+#:../glom/mode_data/dialog_layout_details.cc:87
 msgid "Columns Count"
 msgstr "Số đếm cột"
 
-#:../glom/mode_data/dialog_layout_details.cc:923
+#:../glom/mode_data/dialog_layout_details.cc:694
+msgid "New Button"
+msgstr "Nút mới"
+
+#:../glom/mode_data/dialog_layout_details.cc:1009
 msgid "Related: "
 msgstr "Tương ứng: "
+
+#:../glom/mode_data/dialog_layout_details.cc:1026
+msgid "Field: "
+msgstr "Trường: "
 
 #:../glom/mode_design/box_db_table_relationships.cc:42
 msgid "From Field"
@@ -1395,7 +1435,7 @@ msgstr "Chọn cột"
 msgid "Layout"
 msgstr "Bố trí"
 
-#:../glom/utility_widgets/flowtablewithfields.cc:720
+#:../glom/utility_widgets/flowtablewithfields.cc:759
 msgid "New Group"
 msgstr "Nhóm mới"
 
