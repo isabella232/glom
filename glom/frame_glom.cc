@@ -377,15 +377,15 @@ void Frame_Glom::alert_no_table()
 
 void Frame_Glom::show_table_refresh()
 {
-  show_table(m_strTableName);
+  show_table(m_table_name);
 }
 
-void Frame_Glom::show_table(const Glib::ustring& strTableName)
+void Frame_Glom::show_table(const Glib::ustring& table_name)
 {
   App_Glom* pApp = dynamic_cast<App_Glom*>(get_app_window());
 
   //Check that there is a table to show:
-  if(strTableName.empty())
+  if(table_name.empty())
   {
     alert_no_table();
   }
@@ -396,7 +396,7 @@ void Frame_Glom::show_table(const Glib::ustring& strTableName)
       set_mode(m_Mode);
 
     //Show the table:
-    m_strTableName = strTableName;
+    m_table_name = table_name;
     Glib::ustring strMode;
 
     //Update the document with any new information in the database if necessary (though the database _should never have changed information)
@@ -411,7 +411,7 @@ void Frame_Glom::show_table(const Glib::ustring& strTableName)
       case(MODE_Data):
       {
         strMode = _("Data");
-        m_Notebook_Data.init_db_details(m_strTableName);
+        m_Notebook_Data.init_db_details(m_table_name);
         set_mode_widget(m_Notebook_Data);
 
         //Show how many records were found:
@@ -422,7 +422,7 @@ void Frame_Glom::show_table(const Glib::ustring& strTableName)
       case(MODE_Find):
       {
         strMode = _("Find");
-        m_Notebook_Find.init_db_details(m_strTableName);
+        m_Notebook_Find.init_db_details(m_table_name);
         set_mode_widget(m_Notebook_Find);
         break;
       }
@@ -440,7 +440,7 @@ void Frame_Glom::show_table(const Glib::ustring& strTableName)
   show_table_title();
 
   //List the reports in the menu:
-  pApp->fill_menu_reports(strTableName);
+  pApp->fill_menu_reports(table_name);
 
   //show_all();
 }
@@ -499,13 +499,13 @@ void Frame_Glom::on_menu_file_export()
 {
   //Start with a sequence based on the Details view:
   //The user can changed this by clicking the button in the FileChooser:
-  Document_Glom::type_mapLayoutGroupSequence mapGroupSequence =  get_document()->get_data_layout_groups_plus_new_fields("details", m_strTableName);
+  Document_Glom::type_mapLayoutGroupSequence mapGroupSequence =  get_document()->get_data_layout_groups_plus_new_fields("details", m_table_name);
 
   Gtk::Window* pWindowApp = get_app_window();
   g_assert(pWindowApp);
 
   //Do not try to export the data if the user may not view it:
-  Privileges table_privs = get_current_privs(m_strTableName);
+  Privileges table_privs = get_current_privs(m_table_name);
   if(!table_privs.m_view)
   {
     show_ok_dialog(_("Export Not Allowed."), _("You do not have permission to view the data in this table, so you may not export the data."), *pWindowApp, Gtk::MESSAGE_ERROR);
@@ -514,7 +514,7 @@ void Frame_Glom::on_menu_file_export()
 
   //Ask the user for the new file location, and to optionally modify the format:
   FileChooser_Export dialog;
-  dialog.set_export_layout(mapGroupSequence, m_strTableName, get_document());
+  dialog.set_export_layout(mapGroupSequence, m_table_name, get_document());
   const int response = dialog.run();
   dialog.hide();
 
@@ -538,7 +538,7 @@ void Frame_Glom::on_menu_file_export()
     return;
   }
 
-  export_data_to_stream(the_stream, m_strTableName, mapGroupSequence, found_set_where_clause);
+  export_data_to_stream(the_stream, m_table_name, mapGroupSequence, found_set_where_clause);
 }
 
 void Frame_Glom::export_data_to_string(Glib::ustring& the_string, const Glib::ustring table_name, const Document_Glom::type_mapLayoutGroupSequence& sequence, const Glib::ustring& where_clause)
@@ -652,13 +652,13 @@ void Frame_Glom::on_menu_file_print()
 void Frame_Glom::on_menu_Mode_Data()
 {
   if(set_mode(MODE_Data))
-    show_table(m_strTableName);
+    show_table(m_table_name);
 }
 
 void Frame_Glom::on_menu_Mode_Find()
 {
   if(set_mode(MODE_Find))
-    show_table(m_strTableName);
+    show_table(m_table_name);
 }
 
 /*
@@ -777,15 +777,15 @@ void Frame_Glom::on_button_quickfind()
   }
   else
   {
-    Glib::ustring where_clause = get_find_where_clause_quick(m_strTableName, Gnome::Gda::Value(criteria));
+    const Glib::ustring where_clause = get_find_where_clause_quick(m_table_name, Gnome::Gda::Value(criteria));
     //std::cout << "Frame_Glom::on_button_quickfind(): where_clause=" << where_clause << std::endl;
     on_notebook_find_criteria(where_clause);
   }
 }
 
-void Frame_Glom::on_notebook_find_criteria(const Glib::ustring& strWhereClause)
+void Frame_Glom::on_notebook_find_criteria(const Glib::ustring& where_clause)
 {
-  //std::cout << "Frame_Glom::on_notebook_find_criteria(): " << strWhereClause << std::endl;
+  //std::cout << "Frame_Glom::on_notebook_find_criteria(): " << where_clause << std::endl;
   //on_menu_Mode_Data();
 
   App_Glom* pApp = dynamic_cast<App_Glom*>(get_app_window());
@@ -793,13 +793,13 @@ void Frame_Glom::on_notebook_find_criteria(const Glib::ustring& strWhereClause)
   {
     pApp->set_mode_data();
 
-    //std::cout << "Frame_Glom::on_notebook_find_criteria: where_clause=" << strWhereClause << std::endl;
-    bool records_found = m_Notebook_Data.init_db_details(m_strTableName, strWhereClause);
+    //std::cout << "Frame_Glom::on_notebook_find_criteria: where_clause=" << where_clause << std::endl;
+    const bool records_found = m_Notebook_Data.init_db_details(m_table_name, where_clause);
     m_Notebook_Data.select_page_for_find_results();
 
     if(!records_found)
     {
-      bool find_again = show_warning_no_records_found(*get_app_window());
+      const bool find_again = show_warning_no_records_found(*get_app_window());
 
       if(find_again)
         pApp->set_mode_find();
@@ -830,18 +830,18 @@ void Frame_Glom::show_table_title()
   if(get_document())
   {
     //Show the table title:
-    Glib::ustring table_label = get_document()->get_table_title(m_strTableName);
+    Glib::ustring table_label = get_document()->get_table_title(m_table_name);
     if(!table_label.empty())
     {
       Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
       if(document)
       {
         if(document->get_userlevel() == AppState::USERLEVEL_DEVELOPER)
-          table_label += " (" + m_strTableName + ")"; //Show the table name as well, if in developer mode.
+          table_label += " (" + m_table_name + ")"; //Show the table name as well, if in developer mode.
       }
     }
     else //Use the table name if there is no table title.
-      table_label = m_strTableName;
+      table_label = m_table_name;
 
     m_pLabel_Table->set_markup("<b><span size=\"xx-large\">" + table_label + "</span></b>"); //Show the table title in large text, because it's very important to the user.
   }
@@ -858,7 +858,7 @@ void Frame_Glom::update_table_in_document_from_database()
   typedef Box_DB_Table::type_vecFields type_vecFields;
 
   //Get the fields information from the database:
-  Base_DB::type_vecFields fieldsDatabase = Base_DB::get_fields_for_table_from_database(m_strTableName);
+  Base_DB::type_vecFields fieldsDatabase = Base_DB::get_fields_for_table_from_database(m_table_name);
 
   Document_Glom* pDoc = dynamic_cast<const Document_Glom*>(get_document());
   if(pDoc)
@@ -867,7 +867,7 @@ void Frame_Glom::update_table_in_document_from_database()
 
     //Get the fields information from the document.
     //and add to, or update Document's list of fields:
-    type_vecFields fieldsDocument = pDoc->get_table_fields(m_strTableName);
+    type_vecFields fieldsDocument = pDoc->get_table_fields(m_table_name);
 
     for(Base_DB::type_vecFields::const_iterator iter = fieldsDatabase.begin(); iter != fieldsDatabase.end(); ++iter)
     {
@@ -924,7 +924,7 @@ void Frame_Glom::update_table_in_document_from_database()
     }
 
     if(document_must_to_be_updated)
-      pDoc->set_table_fields(m_strTableName, fieldsActual);
+      pDoc->set_table_fields(m_table_name, fieldsActual);
   }
 }
 
@@ -1002,14 +1002,14 @@ void Frame_Glom::on_menu_developer_database_preferences()
 void Frame_Glom::on_menu_developer_fields()
 {
   //Check that there is a table to show:
-  if(m_strTableName.empty())
+  if(m_table_name.empty())
   {
     alert_no_table(); //TODO: Disable the menu item instead.
   }
   else
   {
     m_pDialog_Fields->set_transient_for(*get_app_window());
-    m_pDialog_Fields->init_db_details(m_strTableName);
+    m_pDialog_Fields->init_db_details(m_table_name);
     m_pDialog_Fields->show();
   }
 }
@@ -1043,14 +1043,14 @@ void Frame_Glom::on_menu_developer_relationships_overview()
 void Frame_Glom::on_menu_developer_relationships()
 {
   //Check that there is a table to show:
-  if(m_strTableName.empty())
+  if(m_table_name.empty())
   {
     alert_no_table(); //TODO: Disable the menu item instead.
   }
   else
   {
     m_pDialog_Relationships->set_transient_for(*get_app_window());
-    m_pDialog_Relationships->init_db_details(m_strTableName);
+    m_pDialog_Relationships->init_db_details(m_table_name);
     m_pDialog_Relationships->show();
   }
 }
@@ -1081,13 +1081,13 @@ void Frame_Glom::on_menu_developer_users()
   //Update the Details and List layouts, in case the permissions have changed:
   //TODO: Also update them somehow if another user has changed them,
   //or respond to the failed SQL nicely.
-  show_table(m_strTableName);
+  show_table(m_table_name);
 }
 
 void Frame_Glom::on_menu_developer_layout()
 {
   //Check that there is a table to show:
-  if(m_strTableName.empty())
+  if(m_table_name.empty())
   {
     alert_no_table(); //TODO: Disable the menu item instead.
   }
@@ -1102,7 +1102,7 @@ void Frame_Glom::on_menu_developer_layout()
 void Frame_Glom::on_menu_developer_reports()
 {
   //Check that there is a table to show:
-  if(m_strTableName.empty())
+  if(m_table_name.empty())
   {
     alert_no_table(); //TODO: Disable the menu item instead.
   }
@@ -1111,7 +1111,7 @@ void Frame_Glom::on_menu_developer_reports()
     //Gtk::MessageDialog dialog("This is not working yet. It's just some test code."); //TODO: Remove this.
     //dialog.run();
 
-    m_pBox_Reports->init_db_details(m_strTableName);
+    m_pBox_Reports->init_db_details(m_table_name);
     m_pDialog_Reports->show();
   }
 }
@@ -1121,10 +1121,10 @@ void Frame_Glom::on_box_reports_selected(const Glib::ustring& report_name)
 {
   m_pDialog_Reports->hide();
 
-  sharedptr<Report> report = get_document()->get_report(m_strTableName, report_name);
+  sharedptr<Report> report = get_document()->get_report(m_table_name, report_name);
   if(report)
   {
-    m_pDialogLayoutReport->set_report(m_strTableName, report);
+    m_pDialogLayoutReport->set_report(m_table_name, report);
     m_pDialogLayoutReport->show();
   }
 }
@@ -1133,7 +1133,7 @@ void Frame_Glom::on_box_reports_selected(const Glib::ustring& report_name)
 void Frame_Glom::on_developer_dialog_hide()
 {
   //The dababase structure might have changed, so refresh the data view:
-  show_table(m_strTableName);
+  show_table(m_table_name);
 }
 
 bool Frame_Glom::connection_request_password_and_choose_new_database_name()
@@ -1371,7 +1371,7 @@ bool Frame_Glom::create_database(const Glib::ustring& database_name, const Glib:
 
 void Frame_Glom::on_menu_report_selected(const Glib::ustring& report_name)
 {
-  const Privileges table_privs = get_current_privs(m_strTableName);
+  const Privileges table_privs = get_current_privs(m_table_name);
 
   //Don't try to print tables that the user can't view.
   if(!table_privs.m_view)
@@ -1380,11 +1380,11 @@ void Frame_Glom::on_menu_report_selected(const Glib::ustring& report_name)
     return;
   }
 
-  sharedptr<Report> report = get_document()->get_report(m_strTableName, report_name);
+  sharedptr<Report> report = get_document()->get_report(m_table_name, report_name);
   if(!report)
     return;
 
-  report_build(m_strTableName, report, ""); //TODO: Use found set's where_claus.
+  report_build(m_table_name, report, ""); //TODO: Use found set's where_claus.
 }
 
 void Frame_Glom::on_dialog_layout_report_hide()
@@ -1396,15 +1396,15 @@ void Frame_Glom::on_dialog_layout_report_hide()
     const Glib::ustring original_name = m_pDialogLayoutReport->get_original_report_name();
     sharedptr<Report> report = m_pDialogLayoutReport->get_report();
     if(original_name != report->get_name())
-      document->remove_report(m_strTableName, original_name);
+      document->remove_report(m_table_name, original_name);
 
-    document->set_report(m_strTableName, report);
+    document->set_report(m_table_name, report);
   }
 
   //Update the reports menu:
   App_Glom* pApp = dynamic_cast<App_Glom*>(get_app_window());
   if(pApp)
-    pApp->fill_menu_reports(m_strTableName);
+    pApp->fill_menu_reports(m_table_name);
 }
 
 void Frame_Glom::on_dialog_reports_hide()
@@ -1412,7 +1412,7 @@ void Frame_Glom::on_dialog_reports_hide()
   //Update the reports menu:
   App_Glom* pApp = dynamic_cast<App_Glom*>(get_app_window());
   if(pApp)
-    pApp->fill_menu_reports(m_strTableName);
+    pApp->fill_menu_reports(m_table_name);
 }
 
 void Frame_Glom::on_dialog_tables_hide()
@@ -1428,7 +1428,7 @@ void Frame_Glom::on_dialog_tables_hide()
         pApp->fill_menu_tables();
 
       //Select a different table if the current one no longer exists:
-      if(!document->get_table_is_known(m_strTableName))
+      if(!document->get_table_is_known(m_table_name))
       {
         //Open the default table, or the first table if there is no default: 
         Glib::ustring table_name = document->get_default_table();
@@ -1489,6 +1489,6 @@ void Frame_Glom::update_records_count()
 void Frame_Glom::on_button_find_all()
 {
   //Change the found set to all records:
-  show_table(m_strTableName);
+  show_table(m_table_name);
 }
 

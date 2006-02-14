@@ -32,7 +32,7 @@ public:
   Notebook_Find();
   virtual ~Notebook_Find();
 
-  virtual bool init_db_details(const Glib::ustring& strTableName);
+  virtual bool init_db_details(const Glib::ustring& table_name);
 
   /** Emitted when the user has entered a find critera that
    * should be used to find and display records.
@@ -43,7 +43,7 @@ public:
 protected:
 
   //Signal handlers:
-  virtual void on_page_find_criteria(const Glib::ustring& strWhereClause);
+  virtual void on_page_find_criteria(const Glib::ustring& where_clause);
 
   //Member widgets:
   Box_Data_List_Find m_Box_List;

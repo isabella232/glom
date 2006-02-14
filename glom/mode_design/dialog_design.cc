@@ -43,7 +43,7 @@ Dialog_Design::~Dialog_Design()
 {
 }
 
-bool Dialog_Design::init_db_details(const Glib::ustring& strTableName)
+bool Dialog_Design::init_db_details(const Glib::ustring& table_name)
 {
   if(get_document())
   {
@@ -53,11 +53,11 @@ bool Dialog_Design::init_db_details(const Glib::ustring& strTableName)
      Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
      if(document)
      {
-       Glib::ustring table_title = document->get_table_title(strTableName);
+       Glib::ustring table_title = document->get_table_title(table_name);
        if(table_title.empty())
-         table_label = strTableName;
+         table_label = table_name;
        else
-         table_label = table_title + " (" + strTableName + ")";
+         table_label = table_title + " (" + table_name + ")";
      }
 
     m_label_table->set_text(table_label);

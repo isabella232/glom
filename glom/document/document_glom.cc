@@ -587,21 +587,21 @@ void Document_Glom::change_field_name(const Glib::ustring& table_name, const Gli
   }
 }
 
-void Document_Glom::change_table_name(const Glib::ustring& strTableNameOld, const Glib::ustring& strTableNameNew)
+void Document_Glom::change_table_name(const Glib::ustring& table_name_old, const Glib::ustring& table_name_new)
 {
-  type_tables::iterator iterFindTable = m_tables.find(strTableNameOld);
+  type_tables::iterator iterFindTable = m_tables.find(table_name_old);
   if(iterFindTable != m_tables.end())
   {
     //Change it:
     //We can't just change the key of the iterator (I think),
     //so we copy the whole thing and put it back in the map under a different key:
 
-    //iterFindTable->first = strTableNameNew;
+    //iterFindTable->first = table_name_new;
     DocumentTableInfo doctableinfo = iterFindTable->second;
     m_tables.erase(iterFindTable);
 
-    doctableinfo.m_info->set_name(strTableNameNew); 
-    m_tables[strTableNameNew] = doctableinfo; 
+    doctableinfo.m_info->set_name(table_name_new); 
+    m_tables[table_name_new] = doctableinfo; 
 
     //Find any relationships or layouts that use this table
     //Look at each table:
@@ -612,16 +612,16 @@ void Document_Glom::change_table_name(const Glib::ustring& strTableNameOld, cons
       {
         sharedptr<Relationship> relationship = *iterRels;
 
-        if(relationship->get_from_table() == strTableNameOld)
+        if(relationship->get_from_table() == table_name_old)
         {
           //Change it:
-           relationship->set_from_table(strTableNameNew);
+           relationship->set_from_table(table_name_new);
         }
 
-        if(relationship->get_to_table() == strTableNameOld)
+        if(relationship->get_to_table() == table_name_old)
         {
           //Change it:
-           relationship->set_to_table(strTableNameNew);
+           relationship->set_to_table(table_name_new);
         }
       }
     }

@@ -96,7 +96,8 @@ void Box_Data_List_Related::enable_buttons()
 bool Box_Data_List_Related::init_db_details(const sharedptr<const LayoutItem_Portal>& portal)
 {
   m_portal = glom_sharedptr_clone(portal);
-  m_strTableName = m_portal->get_relationship()->get_to_table();
+  LayoutWidgetBase::m_table_name = m_portal->get_relationship()->get_to_table();
+  Box_DB_Table::m_table_name = LayoutWidgetBase::m_table_name;
 
   m_Label.set_markup(Bakery::App_Gtk::util_bold_message( m_portal->get_relationship()->get_title_or_name() ));
 
@@ -117,10 +118,10 @@ bool Box_Data_List_Related::refresh_data_from_database_with_foreign_key(const Gn
 
   if(!GlomConversions::value_is_empty(m_key_value))
   {
-    const Glib::ustring strWhereClause = "\"" + m_key_field->get_name() + "\" = " + m_key_field->sql(m_key_value);
+    const Glib::ustring where_clause = "\"" + m_key_field->get_name() + "\" = " + m_key_field->sql(m_key_value);
 
-    //g_warning("refresh_data_from_database(): where_clause=%s", strWhereClause.c_str());
-    return Box_Data_List::refresh_data_from_database_with_where_clause(strWhereClause);
+    //g_warning("refresh_data_from_database(): where_clause=%s", where_clause.c_str());
+    return Box_Data_List::refresh_data_from_database_with_where_clause(where_clause);
   }
   else
   {
@@ -136,7 +137,7 @@ bool Box_Data_List_Related::fill_from_database()
   bool result = false;
   bool allow_add = true;
 
-  if(!m_strWhereClause.empty())
+  if(!m_where_clause.empty())
   {
     result = Box_Data_List::fill_from_database();
 

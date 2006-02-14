@@ -1,3 +1,36 @@
+2006-02-14  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/base_db.cc:
+	* glom/box_db_table.cc:
+	* glom/box_db_table.h:
+	* glom/box_reports.cc:
+	* glom/document/document_glom.cc:
+	* glom/document/document_glom.h:
+	* glom/frame_glom.cc:
+	* glom/frame_glom.h:
+	* glom/mode_data/box_data.cc:
+	* glom/mode_data/box_data.h:
+	* glom/mode_data/box_data_details.cc:
+	* glom/mode_data/box_data_details.h:
+	* glom/mode_data/box_data_list.cc:
+	* glom/mode_data/box_data_list_related.cc:
+	* glom/mode_data/notebook_data.cc:
+	* glom/mode_data/notebook_data.h:
+	* glom/mode_design/box_db_table_relationships.cc:
+	* glom/mode_design/dialog_design.cc:
+	* glom/mode_design/dialog_design.h:
+	* glom/mode_design/dialog_fields.cc:
+	* glom/mode_design/dialog_fields.h:
+	* glom/mode_design/dialog_relationships.cc:
+	* glom/mode_design/dialog_relationships.h:
+	* glom/mode_design/fields/box_db_table_definition.cc:
+	* glom/mode_find/box_data_details_find.cc:
+	* glom/mode_find/notebook_find.cc:
+	* glom/mode_find/notebook_find.h:
+	* glom/utils.cc: Code style uniformity: Change 
+	strTableName to table_name and strWhereClause to 
+	where_clause.
+
 2006-02-13  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/data_structure/glomconversions.cc:

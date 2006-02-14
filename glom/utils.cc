@@ -176,7 +176,9 @@ Glib::ustring GlomUtils::build_sql_select_with_where_clause(const Glib::ustring&
       //Add the relationship to the list:
       type_list_relationships::const_iterator iterFind = std::find_if(list_relationships.begin(), list_relationships.end(), predicate_FieldHasName<Relationship>( relationship_name ) );
       if(iterFind == list_relationships.end()) //If the table is not yet in the list:
+      {
         list_relationships.push_back(relationship);
+      }
     }
 
     const Glib::ustring name = layout_item->get_name();

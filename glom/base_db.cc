@@ -1357,6 +1357,7 @@ void Base_DB::fill_full_field_details(const Glib::ustring& parent_table_name, sh
 {
   Glib::ustring table_name = parent_table_name;
 
+  //It might be a related field:
   if(layout_item->get_has_relationship_name())
   {
     sharedptr<const Relationship> rel = layout_item->get_relationship();;

@@ -46,17 +46,17 @@ Dialog_Relationships::~Dialog_Relationships()
 
 /**
  * 
- * @param strTableName 
+ * @param table_name 
  */
-bool Dialog_Relationships::init_db_details(const Glib::ustring& strTableName)
+bool Dialog_Relationships::init_db_details(const Glib::ustring& table_name)
 {
   if(m_box)
   {
     m_box->load_from_document();
 
-    Dialog_Design::init_db_details(strTableName);
+    Dialog_Design::init_db_details(table_name);
 
-    return m_box->init_db_details(strTableName);
+    return m_box->init_db_details(table_name);
   }
 
   return false;

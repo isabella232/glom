@@ -47,26 +47,26 @@ Box_Data::~Box_Data()
   }
 }
 
-bool Box_Data::init_db_details(const Glib::ustring& strTableName, const Glib::ustring& strWhereClause)
+bool Box_Data::init_db_details(const Glib::ustring& table_name, const Glib::ustring& where_clause)
 {
-  m_strTableName = strTableName;
-  m_strWhereClause = strWhereClause;
+  m_table_name = table_name;
+  m_where_clause = where_clause;
 
   create_layout(); //So that fill_from_database() can succeed.
 
-  return Box_DB_Table::init_db_details(strTableName); //Calls fill_from_database().
+  return Box_DB_Table::init_db_details(table_name); //Calls fill_from_database().
 }
 
-bool Box_Data::refresh_data_from_database_with_where_clause(const Glib::ustring& strWhereClause)
+bool Box_Data::refresh_data_from_database_with_where_clause(const Glib::ustring& where_clause)
 {
-  m_strWhereClause = strWhereClause;
+  m_where_clause = where_clause;
 
   return Box_DB_Table::refresh_data_from_database(); //Calls fill_from_database().
 }
 
 Glib::ustring Box_Data::get_where_clause() const
 {
-  return m_strWhereClause;
+  return m_where_clause;
 }
 
 Glib::ustring Box_Data::get_find_where_clause() const
@@ -94,7 +94,7 @@ Glib::ustring Box_Data::get_find_where_clause() const
   
         if(use_this_field)
         {
-          strClausePart = m_strTableName + "." + field->get_name() + " " + field->sql_find_operator() + " " +  field->sql_find(data); //% is mysql wildcard for 0 or more characters.
+          strClausePart = m_table_name + "." + field->get_name() + " " + field->sql_find_operator() + " " +  field->sql_find(data); //% is mysql wildcard for 0 or more characters.
         }
       }
     }
@@ -131,7 +131,7 @@ Box_Data::type_map_fields Box_Data::get_record_field_values(const Gnome::Gda::Va
   if(document)
   {
     //TODO: Cache the list of all fields, as well as caching (m_Fields) the list of all visible fields:
-    const Document_Glom::type_vecFields fields = document->get_table_fields(m_strTableName);
+    const Document_Glom::type_vecFields fields = document->get_table_fields(m_table_name);
 
     //TODO: This seems silly. We should just have a build_sql_select() that can take this container:
     type_vecLayoutFields fieldsToGet;
@@ -147,7 +147,7 @@ Box_Data::type_map_fields Box_Data::get_record_field_values(const Gnome::Gda::Va
     {
       sharedptr<const Field> fieldPrimaryKey = get_field_primary_key();
 
-      const Glib::ustring query = build_sql_select(m_strTableName, fieldsToGet, fieldPrimaryKey, primary_key_value);
+      const Glib::ustring query = build_sql_select(m_table_name, fieldsToGet, fieldPrimaryKey, primary_key_value);
       Glib::RefPtr<Gnome::Gda::DataModel> data_model = Query_execute(query);
 
       if(data_model && data_model->get_n_rows())
@@ -232,7 +232,7 @@ Glib::RefPtr<Gnome::Gda::DataModel> Box_Data::record_new(bool use_entered_data, 
           const type_map_fields field_values = get_record_field_values(primary_key_value);
   
           const Gnome::Gda::Value value = glom_evaluate_python_function_implementation(field->get_glom_type(), calculation, field_values,
-            get_document(), m_strTableName);
+            get_document(), m_table_name);
           set_entered_field_data(layout_item, value);
         }
   
@@ -307,7 +307,7 @@ Glib::RefPtr<Gnome::Gda::DataModel> Box_Data::record_new(bool use_entered_data, 
   //Put it all together to create the record with these field values:
   if(!strNames.empty() && !strValues.empty())
   {
-    Glib::ustring strQuery = "INSERT INTO \"" + m_strTableName + "\" (" + strNames + ") VALUES (" + strValues + ")";
+    Glib::ustring strQuery = "INSERT INTO \"" + m_table_name + "\" (" + strNames + ") VALUES (" + strValues + ")";
     return Query_execute(strQuery);
   }
   else
@@ -329,7 +329,7 @@ void Box_Data::create_layout()
   set_unstored_data(false);
 
   //Cache the table information, for performance:
-  m_TableFields = get_fields_for_table(m_strTableName);
+  m_TableFields = get_fields_for_table(m_table_name);
 }
 
 bool Box_Data::fill_from_database()
@@ -361,7 +361,7 @@ void Box_Data::show_layout_dialog()
 {
   if(m_pDialogLayout)
   {
-    m_pDialogLayout->set_document(m_layout_name, get_document(), m_strTableName, m_FieldsShown); //TODO: Use m_TableFields?
+    m_pDialogLayout->set_document(m_layout_name, get_document(), m_table_name, m_FieldsShown); //TODO: Use m_TableFields?
     m_pDialogLayout->show();
   }
 }
@@ -377,12 +377,12 @@ void Box_Data::on_dialog_layout_hide()
 
 Box_Data::type_vecLayoutFields Box_Data::get_fields_to_show() const
 {
-  if(m_strTableName.empty())
+  if(m_table_name.empty())
   {
     return type_vecLayoutFields();
   }
   else
-    return get_table_fields_to_show(m_strTableName);
+    return get_table_fields_to_show(m_table_name);
 }
 
 Box_Data::type_vecLayoutFields Box_Data::get_table_fields_to_show(const Glib::ustring& table_name) const
@@ -446,7 +446,7 @@ Box_Data::type_vecLayoutFields Box_Data::get_related_fields(const Glib::ustring&
       if(layout_field->get_has_relationship_name())
       {
         //Get the relationship information:
-        sharedptr<const Relationship> relationship = document->get_relationship(m_strTableName, layout_field->get_relationship_name());
+        sharedptr<const Relationship> relationship = document->get_relationship(m_table_name, layout_field->get_relationship_name());
         if(relationship)
         {
           //If the relationship uses the specified field:
@@ -601,7 +601,7 @@ void Box_Data::calculate_field(const sharedptr<const Field>& field, const shared
     const Field::type_list_strings fields_needed = field->get_calculation_fields();
     for(Field::type_list_strings::const_iterator iterNeeded = fields_needed.begin(); iterNeeded != fields_needed.end(); ++iterNeeded)
     {
-      sharedptr<const Field> field_needed = get_document()->get_field(m_strTableName, *iterNeeded);
+      sharedptr<const Field> field_needed = get_document()->get_field(m_table_name, *iterNeeded);
       if(field_needed)
       {
         if(field_needed->get_has_calculation())
@@ -634,7 +634,7 @@ void Box_Data::calculate_field(const sharedptr<const Field>& field, const shared
 
       sharedptr<const Field> field = refCalcProgress.m_field;
       refCalcProgress.m_value  = glom_evaluate_python_function_implementation(field->get_glom_type(), field->get_calculation(), field_values,
-            get_document(), m_strTableName);
+            get_document(), m_table_name);
 
       refCalcProgress.m_calc_finished = true;
       refCalcProgress.m_calc_in_progress = false;
@@ -709,7 +709,7 @@ bool Box_Data::set_field_value_in_database(const Gtk::TreeModel::iterator& row, 
         table_name = rel->get_to_table();
     }
     else
-      table_name = m_strTableName;
+      table_name = m_table_name;
 
     if(table_name.empty())
     {
@@ -753,12 +753,12 @@ Document_Glom::type_mapLayoutGroupSequence Box_Data::get_data_layout_groups(cons
   Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
   if(document)
   {
-    if(!m_strTableName.empty())
+    if(!m_table_name.empty())
     {
       //Get the layout information from the document:
-      layout_groups = document->get_data_layout_groups_plus_new_fields(layout, m_strTableName);
+      layout_groups = document->get_data_layout_groups_plus_new_fields(layout, m_table_name);
 
-      const Privileges table_privs = get_current_privs(m_strTableName);
+      const Privileges table_privs = get_current_privs(m_table_name);
 
       //Fill in the field information for the fields mentioned in the layout:
       for(Document_Glom::type_mapLayoutGroupSequence::iterator iterGroups = layout_groups.begin(); iterGroups != layout_groups.end(); ++iterGroups)
@@ -790,7 +790,7 @@ void Box_Data::fill_layout_group_field_info(const sharedptr<LayoutGroup>& group,
       {
         //Get the full field information:
         const Glib::ustring relationship_name = item_field->get_relationship_name();
-        sharedptr<const Relationship> relationship = document->get_relationship(m_strTableName, relationship_name);
+        sharedptr<const Relationship> relationship = document->get_relationship(m_table_name, relationship_name);
         if(relationship)
         {
           sharedptr<Field> field = get_fields_for_table_one_field(relationship->get_to_table(), item->get_name());
@@ -808,7 +808,7 @@ void Box_Data::fill_layout_group_field_info(const sharedptr<LayoutGroup>& group,
       else
       {
         //Get the field info:
-        sharedptr<Field> field = get_fields_for_table_one_field(m_strTableName, item_field->get_name());
+        sharedptr<Field> field = get_fields_for_table_one_field(m_table_name, item_field->get_name());
         if(field)
         {
           item_field->set_full_field_details(field); //TODO_Performance: Just use this as the output arg?
@@ -835,7 +835,7 @@ bool Box_Data::record_delete(const Gnome::Gda::Value& primary_key_value)
   sharedptr<Field> field_primary_key = get_field_primary_key();
   if(field_primary_key && !GlomConversions::value_is_empty(primary_key_value))
   {
-    return Query_execute( "DELETE FROM \"" + m_strTableName + "\" WHERE \"" + m_strTableName + "\".\"" + field_primary_key->get_name() + "\" = " + field_primary_key->sql(primary_key_value) );
+    return Query_execute( "DELETE FROM \"" + m_table_name + "\" WHERE \"" + m_table_name + "\".\"" + field_primary_key->get_name() + "\" = " + field_primary_key->sql(primary_key_value) );
   }
   else
   {

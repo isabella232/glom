@@ -39,10 +39,10 @@ public:
   virtual ~Box_Data();
 
   ///Create the layout for the database structure, and fill it with data from the database.
-  virtual bool init_db_details(const Glib::ustring& strTableName, const Glib::ustring& strWhereClause = Glib::ustring());
+  virtual bool init_db_details(const Glib::ustring& table_name, const Glib::ustring& where_clause = Glib::ustring());
 
   //Fill the existing layout with data from the database:
-  virtual bool refresh_data_from_database_with_where_clause(const Glib::ustring& strWhereClause = Glib::ustring());
+  virtual bool refresh_data_from_database_with_where_clause(const Glib::ustring& where_clause = Glib::ustring());
 
   virtual void print_layout(); //A test, for now.
 
@@ -166,7 +166,7 @@ protected:
   Dialog_Layout* m_pDialogLayout;
   Glib::ustring m_layout_name;
 
-  Glib::ustring m_strWhereClause;
+  Glib::ustring m_where_clause;
 
   type_vecFields m_TableFields; //A cache, so we don't have to repeatedly get them from the Document.
   type_vecLayoutFields m_FieldsShown; //And any extra keys needed by shown fields.

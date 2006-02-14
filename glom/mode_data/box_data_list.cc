@@ -76,7 +76,7 @@ Box_Data_List::~Box_Data_List()
 
 void Box_Data_List::enable_buttons()
 {
-  const Privileges table_privs = get_current_privs(m_strTableName);
+  const Privileges table_privs = get_current_privs(m_table_name);
 
     //Enable/Disable record creation and deletion:
   bool allow_create = !m_read_only;
@@ -101,7 +101,7 @@ void Box_Data_List::refresh_data_from_database_blank()
 
 bool Box_Data_List::fill_from_database()
 {
-  //std::cout << "Box_Data_List::fill_from_database(): where_clause=" << m_strWhereClause << std::endl;
+  //std::cout << "Box_Data_List::fill_from_database(): where_clause=" << m_where_clause << std::endl;
 
   bool result = false;
 
@@ -123,11 +123,11 @@ bool Box_Data_List::fill_from_database()
       //Glib::RefPtr<Gnome::Gda::Connection> connection = sharedconnection->get_gda_connection();
 
     //Do not try to show the data if the user may not view it:
-    const Privileges table_privs = get_current_privs(m_strTableName);
+    const Privileges table_privs = get_current_privs(m_table_name);
 
     enable_buttons();
 
-    m_AddDel.set_where_clause(m_strWhereClause);
+    m_AddDel.set_where_clause(m_where_clause);
 
     result = m_AddDel.refresh_from_database();
 
@@ -245,7 +245,7 @@ void Box_Data_List::on_adddel_user_added(const Gtk::TreeModel::iterator& row, gu
   {
     //Auto-increment is awkward (we can't get the last-generated ID) with postgres, so we auto-generate it ourselves;
     const Glib::ustring& strPrimaryKeyName = field_primary_key->get_name();
-    primary_key_value = generate_next_auto_increment(m_strTableName, strPrimaryKeyName);  //TODO: return a Gnome::Gda::Value of an appropriate type.
+    primary_key_value = generate_next_auto_increment(m_table_name, strPrimaryKeyName);  //TODO: return a Gnome::Gda::Value of an appropriate type.
   }
   else
   {
@@ -315,7 +315,7 @@ void Box_Data_List::on_adddel_user_reordered_columns()
     Document_Glom::type_mapLayoutGroupSequence mapGroups;
     mapGroups[1] = group;
 
-    pDoc->set_data_layout_groups("list", m_strTableName, mapGroups);  
+    pDoc->set_data_layout_groups("list", m_table_name, mapGroups);  
   }
 }
 
@@ -330,13 +330,13 @@ void Box_Data_List::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, 
     {
       sharedptr<const LayoutItem_Field> layout_field = m_AddDel.get_column_field(col);
 
-      Glib::ustring table_name = m_strTableName;
+      Glib::ustring table_name = m_table_name;
       sharedptr<Field> primary_key_field;
       Gnome::Gda::Value primary_key_value;
 
       if(!layout_field->get_has_relationship_name())
       {
-        table_name = m_strTableName;
+        table_name = m_table_name;
         primary_key_field = m_AddDel.get_key_field();
         primary_key_value = parent_primary_key_value;
       }
@@ -348,7 +348,7 @@ void Box_Data_List::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, 
 
         Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
 
-        sharedptr<Relationship> relationship = document->get_relationship(m_strTableName, relationship_name);
+        sharedptr<Relationship> relationship = document->get_relationship(m_table_name, relationship_name);
         if(relationship)
         {
           table_name = relationship->get_to_table();
@@ -450,7 +450,7 @@ void Box_Data_List::refresh_related_fields(const Gtk::TreeModel::iterator& row, 
 
   if(!fieldsToGet.empty())
   {
-    const Glib::ustring query = build_sql_select(m_strTableName, fieldsToGet, primary_key, primary_key_value);
+    const Glib::ustring query = build_sql_select(m_table_name, fieldsToGet, primary_key, primary_key_value);
 
     Glib::RefPtr<Gnome::Gda::DataModel> result = Query_execute(query);
     if(!result)
@@ -515,7 +515,7 @@ void Box_Data_List::do_lookups(const Gtk::TreeModel::iterator& row, const shared
 
         //Add it to the database (even if it is not shown in the view)
         set_field_value_in_database(row, layout_item, value_converted, primary_key, primary_key_value); //Also does dependent lookups/recalcs.
-        //Glib::ustring strQuery = "UPDATE \"" + m_strTableName + "\"";
+        //Glib::ustring strQuery = "UPDATE \"" + m_table_name + "\"";
         //strQuery += " SET " + field_lookup.get_name() + " = " + field_lookup.sql(value);
         //strQuery += " WHERE " + primary_key.get_name() + " = " + primary_key.sql(primary_key_value);
         //Query_execute(strQuery);  //TODO: Handle errors
@@ -667,9 +667,9 @@ void Box_Data_List::create_layout()
     m_AddDel.remove_all_columns();
     //m_AddDel.set_columns_count(m_Fields.size());
 
-    m_AddDel.set_table_name(m_strTableName);
+    m_AddDel.set_table_name(m_table_name);
 
-    sharedptr<Field> field_primary_key = get_field_primary_key_for_table(m_strTableName);
+    sharedptr<Field> field_primary_key = get_field_primary_key_for_table(m_table_name);
     if(!field_primary_key)
     {
       //g_warning("Box_Data_List::create_layout(): primary key not found.");
@@ -699,7 +699,7 @@ void Box_Data_List::create_layout()
         m_AddDel.add_column(field);
       }
 
-      m_AddDel.set_where_clause(m_strWhereClause);
+      m_AddDel.set_where_clause(m_where_clause);
 
       m_AddDel.set_columns_ready();
      }
@@ -755,7 +755,7 @@ bool Box_Data_List::get_field_primary_key_index(guint& field_column) const
 
 void Box_Data_List::print_layout()
 {
-  const Privileges table_privs = get_current_privs(m_strTableName);
+  const Privileges table_privs = get_current_privs(m_table_name);
 
   //Don't try to print tables that the user can't view.
   if(!table_privs.m_view)
@@ -775,7 +775,7 @@ void Box_Data_List::print_layout()
       report_temp->m_layout_group->add_item(*iter);
     }
 
-    report_build(m_strTableName, report_temp, m_strWhereClause);
+    report_build(m_table_name, report_temp, m_where_clause);
   }
 }
 

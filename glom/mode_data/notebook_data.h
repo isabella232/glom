@@ -32,7 +32,7 @@ public:
   virtual ~Notebook_Data();
 
   //Create the layout for the database structure, and fill it with data.
-  virtual bool init_db_details(const Glib::ustring& strTableName, const Glib::ustring& strWhereClause = Glib::ustring());
+  virtual bool init_db_details(const Glib::ustring& table_name, const Glib::ustring& where_clause = Glib::ustring());
 
   ///Get the existing where clause, previously supplied to init_db_details().
   Glib::ustring get_where_clause() const;
@@ -65,7 +65,7 @@ protected:
 
   //Signal handlers:
   virtual void on_list_user_requested_details(const Gnome::Gda::Value& primary_key_value);
-  void on_Details_user_requested_related_details(const Glib::ustring& strTableName, Gnome::Gda::Value primary_key_value);
+  void on_Details_user_requested_related_details(const Glib::ustring& table_name, Gnome::Gda::Value primary_key_value);
 
   virtual void on_switch_page_handler(GtkNotebookPage* pPage, guint uiPageNumber);
 

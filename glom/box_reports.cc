@@ -95,10 +95,10 @@ bool Box_Reports::fill_from_database()
   Document_Glom* document = get_document();
   if(document)
   {
-    listTableReports = document->get_report_names(m_strTableName);
+    listTableReports = document->get_report_names(m_table_name);
     for(Document_Glom::type_listReports::const_iterator iter = listTableReports.begin(); iter != listTableReports.end(); ++iter)
     {
-      sharedptr<Report> report = document->get_report(m_strTableName, *iter);
+      sharedptr<Report> report = document->get_report(m_table_name, *iter);
       if(report)
       {
         Gtk::TreeModel::iterator row = m_AddDel.add_item(report->get_name());
@@ -124,7 +124,7 @@ void Box_Reports::on_adddel_Add(const Gtk::TreeModel::iterator& row)
   sharedptr<Report> report(new Report());
   report->set_name( m_AddDel.get_value(row, m_colReportName) );
 
-  get_document()->set_report(m_strTableName, report);
+  get_document()->set_report(m_table_name, report);
 }
 
 void Box_Reports::on_adddel_Delete(const Gtk::TreeModel::iterator& rowStart, const Gtk::TreeModel::iterator& /* TODO: rowEnd */)
@@ -132,7 +132,7 @@ void Box_Reports::on_adddel_Delete(const Gtk::TreeModel::iterator& rowStart, con
   const Glib::ustring name = m_AddDel.get_value_key(rowStart);
   if(!name.empty())
   {
-    get_document()->remove_report(m_strTableName, name);
+    get_document()->remove_report(m_table_name, name);
     m_AddDel.remove_item_by_key(name);
   }
 }
@@ -156,7 +156,7 @@ void Box_Reports::save_to_document()
   if(get_userlevel() == AppState::USERLEVEL_DEVELOPER)
   {
     //Add any reports that are not in the document:
-    Document_Glom::type_listReports listReports = get_document()->get_report_names(m_strTableName);
+    Document_Glom::type_listReports listReports = get_document()->get_report_names(m_table_name);
 
     bool modified = false;
     for(Gtk::TreeModel::iterator iter = m_AddDel.get_model()->children().begin(); iter != m_AddDel.get_model()->children().end(); ++iter)
@@ -170,7 +170,7 @@ void Box_Reports::save_to_document()
 
         report->set_title( m_AddDel.get_value(iter, m_colTitle) ); //TODO: Translations: Store the original in the TreeView.
 
-        get_document()->set_report(m_strTableName, report);
+        get_document()->set_report(m_table_name, report);
         modified = true;
      }
     }
@@ -187,14 +187,14 @@ void Box_Reports::on_adddel_changed(const Gtk::TreeModel::iterator& row, guint c
     const Glib::ustring report_name = m_AddDel.get_value_key(row);
     Document_Glom* document = get_document();
 
-    sharedptr<Report> report = document->get_report(m_strTableName, report_name);
+    sharedptr<Report> report = document->get_report(m_table_name, report_name);
     if(report)
     {
       if(column == m_colTitle)
       {
         report->set_title( m_AddDel.get_value(row, m_colTitle) );
         //TODO: Unnecessary:
-        document->set_report(m_strTableName, report);
+        document->set_report(m_table_name, report);
       }
       else if(column == m_colReportName)
       {
@@ -211,10 +211,10 @@ void Box_Reports::on_adddel_changed(const Gtk::TreeModel::iterator& row, guint c
           {
             m_AddDel.set_value_key(row, report_name_new);
 
-            document->remove_report(m_strTableName, report_name);
+            document->remove_report(m_table_name, report_name);
 
             report->set_name(report_name_new);
-            document->set_report(m_strTableName, report);
+            document->set_report(m_table_name, report);
           }
         }
       }

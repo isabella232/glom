@@ -33,7 +33,7 @@ public:
   Dialog_Design(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
   virtual ~Dialog_Design();
 
-  virtual bool init_db_details(const Glib::ustring& strTableName);
+  virtual bool init_db_details(const Glib::ustring& table_name);
 
 protected:
   virtual void on_button_close();

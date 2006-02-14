@@ -30,10 +30,10 @@ public:
   Dialog_Relationships(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
   virtual ~Dialog_Relationships();
 
-  virtual bool init_db_details(const Glib::ustring& strTableName);
+  virtual bool init_db_details(const Glib::ustring& table_name);
 
   virtual void on_hide();
-  
+
 protected:
 
   Box_DB_Table_Relationships* m_box;

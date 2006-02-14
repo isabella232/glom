@@ -32,7 +32,7 @@ public:
   Box_Data_Details(bool bWithNavButtons = true);
   virtual ~Box_Data_Details();
 
-  virtual bool init_db_details(const Glib::ustring& strTableName, const Gnome::Gda::Value& primary_key_value);
+  virtual bool init_db_details(const Glib::ustring& table_name, const Gnome::Gda::Value& primary_key_value);
   virtual bool refresh_data_from_database_with_primary_key(const Gnome::Gda::Value& primary_key_value);
   virtual bool refresh_data_from_database_blank();
 
@@ -88,7 +88,7 @@ protected:
   virtual void on_related_record_added(Gnome::Gda::Value key_value, Glib::ustring strFromKeyName);
 
   //Signal handler: The last arg is bind-ed.
-  //virtual void on_related_user_requested_details(Gnome::Gda::Value key_value, Glib::ustring strTableName);
+  //virtual void on_related_user_requested_details(Gnome::Gda::Value key_value, Glib::ustring table_name);
 
   void on_flowtable_field_edited(const sharedptr<const LayoutItem_Field>& id, const Gnome::Gda::Value& value);
   void on_flowtable_field_open_details_requested(const sharedptr<const LayoutItem_Field>& id, const Gnome::Gda::Value& value);

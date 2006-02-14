@@ -47,17 +47,17 @@ Notebook_Find::~Notebook_Find()
   remove_view(&m_Box_Details);
 }
 
-bool Notebook_Find::init_db_details(const Glib::ustring& strTableName)
+bool Notebook_Find::init_db_details(const Glib::ustring& table_name)
 {
-  bool result = m_Box_List.init_db_details(strTableName);
+  bool result = m_Box_List.init_db_details(table_name);
 
-  m_Box_Details.init_db_details(strTableName);
+  m_Box_Details.init_db_details(table_name);
 
   return result;
 }
 
-void Notebook_Find::on_page_find_criteria(const Glib::ustring& strWhereClause)
+void Notebook_Find::on_page_find_criteria(const Glib::ustring& where_clause)
 {
   //Pass it up to the application.
-  signal_find_criteria.emit(strWhereClause);
+  signal_find_criteria.emit(where_clause);
 }

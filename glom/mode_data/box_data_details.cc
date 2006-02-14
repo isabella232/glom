@@ -133,13 +133,13 @@ Gnome::Gda::Value Box_Data_Details::get_primary_key_value() const
   return m_primary_key_value;
 }
 
-bool Box_Data_Details::init_db_details(const Glib::ustring& strTableName, const Gnome::Gda::Value& primary_key_value)
+bool Box_Data_Details::init_db_details(const Glib::ustring& table_name, const Gnome::Gda::Value& primary_key_value)
 {
   m_primary_key_value = primary_key_value;
 
-  m_field_primary_key = get_field_primary_key_for_table(strTableName);
+  m_field_primary_key = get_field_primary_key_for_table(table_name);
 
-  return Box_Data::init_db_details(strTableName); //Calls create_layout(), then fill_from_database()
+  return Box_Data::init_db_details(table_name); //Calls create_layout(), then fill_from_database()
 }
 
 bool Box_Data_Details::refresh_data_from_database_with_primary_key(const Gnome::Gda::Value& primary_key_value)
@@ -165,7 +165,7 @@ void Box_Data_Details::create_layout()
   Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
   if(document)
   {
-    m_FlowTable.set_table(m_strTableName); //This allows portals to get full Relationship information
+    m_FlowTable.set_table(m_table_name); //This allows portals to get full Relationship information
 
     //This map of layout groups will also contain the field information from the database:
     Document_Glom::type_mapLayoutGroupSequence layout_groups = get_data_layout_groups(m_layout_name);
@@ -186,7 +186,7 @@ bool Box_Data_Details::fill_from_database()
 
   const bool primary_key_is_empty = GlomConversions::value_is_empty(m_primary_key_value);
   if(!primary_key_is_empty)
-    get_document()->set_layout_record_viewed(m_strTableName, m_layout_name, m_primary_key_value);
+    get_document()->set_layout_record_viewed(m_table_name, m_layout_name, m_primary_key_value);
 
   try
   {
@@ -204,7 +204,7 @@ bool Box_Data_Details::fill_from_database()
     if(!fieldsToGet.empty())
     {
       //Do not try to show the data if the user may not view it:
-      Privileges table_privs = get_current_privs(m_strTableName);
+      Privileges table_privs = get_current_privs(m_table_name);
 
       //Enable/Disable record creation and deletion:
       m_Button_New.set_sensitive(table_privs.m_create);
@@ -220,7 +220,7 @@ bool Box_Data_Details::fill_from_database()
         //g_warning("primary_key name = %s", m_field_primary_key->get_name().c_str());
         const int index_primary_key = fieldsToGet.size() - 1;
 
-        const Glib::ustring query = build_sql_select(m_strTableName, fieldsToGet, m_field_primary_key, m_primary_key_value);
+        const Glib::ustring query = build_sql_select(m_table_name, fieldsToGet, m_field_primary_key, m_primary_key_value);
         Glib::RefPtr<Gnome::Gda::DataModel> result;
 
         if(!primary_key_is_empty)
@@ -232,7 +232,7 @@ bool Box_Data_Details::fill_from_database()
           if(pDoc)
           {
             //Get glom-specific field info:
-            //Document_Glom::type_vecFields vecFields = pDoc->get_table_fields(m_strTableName);
+            //Document_Glom::type_vecFields vecFields = pDoc->get_table_fields(m_table_name);
 
             const int row_number = 0; //The only row.
             int cols_count = 0;
@@ -297,7 +297,7 @@ void Box_Data_Details::on_button_new()
     if(m_field_primary_key->get_auto_increment()) //If the primary key is an auto-increment:
     {
       //Just make a new record, and show it:
-      Gnome::Gda::Value primary_key_value = generate_next_auto_increment(m_strTableName, m_field_primary_key->get_name()); //TODO: This should return a Gda::Value
+      Gnome::Gda::Value primary_key_value = generate_next_auto_increment(m_table_name, m_field_primary_key->get_name()); //TODO: This should return a Gda::Value
 
       record_new(false /* use entered field data */, primary_key_value);
       refresh_data_from_database_with_primary_key(primary_key_value);
@@ -477,7 +477,7 @@ void Box_Data_Details::on_flowtable_layout_changed()
   Document_Glom* document = get_document();
   document->set_modified();
   //if(document)
-  //  document->set_data_layout_groups(m_layout_name, m_strTableName, layout_groups);
+  //  document->set_data_layout_groups(m_layout_name, m_table_name, layout_groups);
 
   //Build the view again from the new layout:
   create_layout();
@@ -504,7 +504,7 @@ void Box_Data_Details::on_flowtable_field_open_details_requested(const sharedptr
   if(GlomConversions::value_is_empty(field_value))
     return; //Ignore empty ID fields.
 
-  sharedptr<Relationship> relationship = get_document()->get_field_used_in_relationship_to_one(m_strTableName, layout_field->get_name());
+  sharedptr<Relationship> relationship = get_document()->get_field_used_in_relationship_to_one(m_table_name, layout_field->get_name());
   if(relationship)
   {
     signal_requested_related_details().emit(relationship->get_to_table(), field_value);
@@ -610,7 +610,7 @@ void Box_Data_Details::on_flowtable_field_edited(const sharedptr<const LayoutIte
         //If this is a foreign key then refresh the related records:
         /*
         bool bIsForeignKey = false;
-        Document_Glom::type_vecRelationships vecRelationships = get_document()->get_relationships(m_strTableName);
+        Document_Glom::type_vecRelationships vecRelationships = get_document()->get_relationships(m_table_name);
         for(Document_Glom::type_vecRelationships::iterator iter = vecRelationships.begin(); iter != vecRelationships.end(); iter++)
         {
           const Relationship& relationship = *iter;
@@ -650,7 +650,7 @@ void Box_Data_Details::on_flowtable_field_edited(const sharedptr<const LayoutIte
       else
       {
         //Make a new record, and show it:
-        Gnome::Gda::Value primary_key_value = generate_next_auto_increment(m_strTableName, m_field_primary_key->get_name());
+        Gnome::Gda::Value primary_key_value = generate_next_auto_increment(m_table_name, m_field_primary_key->get_name());
 
         record_new(true /* use entered field data */, primary_key_value);
         refresh_data_from_database_with_primary_key(primary_key_value);
@@ -691,7 +691,7 @@ void Box_Data_Details::refresh_related_fields(const Gtk::TreeModel::iterator& /*
 
   if(!fieldsToGet.empty())
   {
-    const Glib::ustring query = build_sql_select(m_strTableName, fieldsToGet, primary_key, primary_key_value);
+    const Glib::ustring query = build_sql_select(m_table_name, fieldsToGet, primary_key, primary_key_value);
 
     //g_warning("Box_Data_Details::refresh_related_fields(): get query = %s", query.c_str());
     
@@ -806,7 +806,7 @@ void Box_Data_Details::print_layout_group(xmlpp::Element* node_parent, const sha
 
           //Box_Data_List_Related* pPortalWidget = m_FlowTable.get_portals();
 
-          sharedptr<Relationship> relationship = get_document()->get_relationship(m_strTableName, pLayoutPortal->get_relationship_name());
+          sharedptr<Relationship> relationship = get_document()->get_relationship(m_table_name, pLayoutPortal->get_relationship_name());
           if(relationship)
           {
             nodePortal->set_attribute("title", relationship->get_title_or_name());
@@ -824,7 +824,7 @@ void Box_Data_Details::print_layout_group(xmlpp::Element* node_parent, const sha
 
 void Box_Data_Details::print_layout()
 {
-  const Privileges table_privs = get_current_privs(m_strTableName);
+  const Privileges table_privs = get_current_privs(m_table_name);
 
   //Don't try to print tables that the user can't view.
   if(!table_privs.m_view)
@@ -844,9 +844,9 @@ void Box_Data_Details::print_layout()
       nodeRoot = pDocument->create_root_node("details_print");
     }
 
-    Glib::ustring table_title = get_document()->get_table_title(m_strTableName);
+    Glib::ustring table_title = get_document()->get_table_title(m_table_name);
     if(table_title.empty())
-      table_title = m_strTableName;
+      table_title = m_table_name;
 
     nodeRoot->set_attribute("table", table_title);
 

@@ -65,7 +65,7 @@ bool Box_DB_Table_Relationships::fill_from_database()
   bool result = Box_DB_Table::fill_from_database();
 
   //Get relationships from the document:
-  Document_Glom::type_vecRelationships vecRelationships = get_document()->get_relationships(m_strTableName);
+  Document_Glom::type_vecRelationships vecRelationships = get_document()->get_relationships(m_table_name);
 
   m_AddDel.remove_all();
 
@@ -75,7 +75,7 @@ bool Box_DB_Table_Relationships::fill_from_database()
     Glib::RefPtr<Gnome::Gda::Connection> connection = sharedconnection->get_gda_connection();
 
     //Set combo choices:
-    m_AddDel.set_column_choices(m_colFromField, util_vecStrings_from_Fields(get_fields_for_table(m_strTableName)));
+    m_AddDel.set_column_choices(m_colFromField, util_vecStrings_from_Fields(get_fields_for_table(m_table_name)));
 
     type_vecStrings vecTableNames = get_table_names(true /* ignore_system_tables */);
     type_vecStrings vecTableNames_ustring(vecTableNames.begin(), vecTableNames.end());
@@ -133,15 +133,15 @@ void Box_DB_Table_Relationships::save_to_document()
     {
       //If it is a rename:
       if(!old_name.empty() && (old_name != name))
-        get_document()->change_relationship_name(m_strTableName, old_name, name); //Update layouts and reports.
+        get_document()->change_relationship_name(m_table_name, old_name, name); //Update layouts and reports.
 
-      sharedptr<Relationship> relationship = document->get_relationship(m_strTableName, name); //Preserve other information, such as translations.
+      sharedptr<Relationship> relationship = document->get_relationship(m_table_name, name); //Preserve other information, such as translations.
       if(!relationship)
         relationship = sharedptr<Relationship>(new Relationship());
 
       relationship->set_name(name);
       relationship->set_title(m_AddDel.get_value(iter, m_colTitle));
-      relationship->set_from_table(m_strTableName);
+      relationship->set_from_table(m_table_name);
       relationship->set_from_field(m_AddDel.get_value(iter, m_colFromField));
       relationship->set_to_table(m_AddDel.get_value(iter, m_colToTable));
       relationship->set_to_field(m_AddDel.get_value(iter, m_colToField));
@@ -153,7 +153,7 @@ void Box_DB_Table_Relationships::save_to_document()
   }
 
   //Update the Document with these relationships.
-  get_document()->set_relationships(m_strTableName, vecRelationships);
+  get_document()->set_relationships(m_table_name, vecRelationships);
 
   //Call base:
   Box_DB_Table::save_to_document();
@@ -260,7 +260,7 @@ void Box_DB_Table_Relationships::on_adddel_user_requested_delete(const Gtk::Tree
     Document_Glom* document = get_document();
     if(document)
     {
-      sharedptr<const Relationship> relationship = document->get_relationship(m_strTableName, relationship_name);
+      sharedptr<const Relationship> relationship = document->get_relationship(m_table_name, relationship_name);
       if(relationship)
       {
         document->remove_relationship(relationship);

@@ -38,12 +38,12 @@ Box_DB_Table::~Box_DB_Table()
 
 Glib::ustring Box_DB_Table::get_table_name()
 {
-  return m_strTableName;
+  return m_table_name;
 }
 
-bool Box_DB_Table::init_db_details(const Glib::ustring& strTableName)
+bool Box_DB_Table::init_db_details(const Glib::ustring& table_name)
 {
-  m_strTableName = strTableName;
+  m_table_name = table_name;
 
   if(!ConnectionPool::get_instance()->get_ready_to_connect())
     return false;

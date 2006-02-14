@@ -123,7 +123,7 @@ protected:
 
   //virtual void set_document(Document_Glom* pDocument); //override
 
-  void show_table(const Glib::ustring& strTableName);
+  void show_table(const Glib::ustring& table_name);
   void show_table_title();
   void update_table_in_document_from_database();
 
@@ -138,14 +138,14 @@ protected:
   void alert_no_table();
 
   //Signal handlers:
-  void on_notebook_find_criteria(const Glib::ustring& strWhereClause);
+  void on_notebook_find_criteria(const Glib::ustring& where_clause);
   void on_button_quickfind();
   void on_button_find_all();
   void on_notebook_data_record_details_requested(const Glib::ustring& table_name, Gnome::Gda::Value primary_key_value);
   void on_userlevel_changed(AppState::userlevels userlevel);
 
   //Member data:
-  Glib::ustring m_strTableName;
+  Glib::ustring m_table_name;
 
   //Child widgets:
   Gtk::Label* m_pLabel_Name;

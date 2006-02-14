@@ -34,7 +34,7 @@ public:
   Box_DB_Table(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
   virtual ~Box_DB_Table();
 
-  virtual bool init_db_details(const Glib::ustring& strTableName);
+  virtual bool init_db_details(const Glib::ustring& table_name);
   virtual bool refresh_data_from_database();
 
   virtual Glib::ustring get_table_name();
@@ -58,7 +58,7 @@ protected:
   //static type_vecFields get_fields_for_datamodel(const Glib::RefPtr<Gnome::Gda::DataModel>& data_model); 
   static Glib::ustring postgres_get_field_definition_for_sql(const Gnome::Gda::FieldAttributes& field_info);
 
-  Glib::ustring m_strTableName;
+  Glib::ustring m_table_name;
 };
 
 #endif //BOX_DB_TABLE_H

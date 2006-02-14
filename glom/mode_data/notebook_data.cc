@@ -62,12 +62,12 @@ Notebook_Data::~Notebook_Data()
   remove_view(&m_Box_Details);
 }
 
-bool Notebook_Data::init_db_details(const Glib::ustring& strTableName, const Glib::ustring& strWhereClause)
+bool Notebook_Data::init_db_details(const Glib::ustring& table_name, const Glib::ustring& where_clause)
 {
-  m_table_name = strTableName;
+  m_table_name = table_name;
 
   bool result = false;
-  //strWhereClause is only used as a result of a find.
+  //where_clause is only used as a result of a find.
 
   //Performance optimisation:
   //Keep the connection open during all these operations:
@@ -76,9 +76,9 @@ bool Notebook_Data::init_db_details(const Glib::ustring& strTableName, const Gli
 
     const Glib::ustring old_where_clause = m_Box_List.get_where_clause();
     //std::cout << "  old_where_clause=" << old_where_clause << std::endl;
-    //std::cout << "  strWhereClause=" << strWhereClause << std::endl;
-    const bool new_find_set = (strWhereClause != old_where_clause);
-    result = m_Box_List.init_db_details(m_table_name, strWhereClause);
+    //std::cout << "  where_clause=" << where_clause << std::endl;
+    const bool new_find_set = (where_clause != old_where_clause);
+    result = m_Box_List.init_db_details(m_table_name, where_clause);
     //m_Box_List.load_from_document();
 
     //Show the previously-shown record, if there is one, if this is not a new found-set (via a new where_clause)
@@ -151,9 +151,9 @@ void Notebook_Data::on_list_user_requested_details(const Gnome::Gda::Value& prim
   set_current_page(m_iPage_Details);
 }
 
-void Notebook_Data::on_Details_user_requested_related_details(const Glib::ustring& strTableName, Gnome::Gda::Value primary_key_value)
+void Notebook_Data::on_Details_user_requested_related_details(const Glib::ustring& table_name, Gnome::Gda::Value primary_key_value)
 {
-  signal_record_details_requested().emit(strTableName, primary_key_value);
+  signal_record_details_requested().emit(table_name, primary_key_value);
 
   /*
   //Show a different table:
