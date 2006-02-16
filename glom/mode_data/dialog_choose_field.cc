@@ -115,7 +115,7 @@ void Dialog_ChooseField::set_document(Document_Glom* document, const Glib::ustri
   if(document)
   {
     //Fill the list of relationships:
-    const Document_Glom::type_vecRelationships vecRelationships = document->get_relationships(table_name);
+    const Document_Glom::type_vecRelationships vecRelationships = document->get_relationships(table_name, true /* plus system properties */);
 
     //Add a special option for the current table:
     m_combo_relationship->set_display_parent_table(table_name, document->get_table_title(table_name));

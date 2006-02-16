@@ -20,6 +20,7 @@ glom/data_structure/layout/report_parts/layoutitem_summary.cc
 glom/dialog_database_preferences.cc
 glom/dialog_connection.cc
 glom/dialog_layout_report.cc
+glom/document/document_glom.cc
 glom/filechooser_export.cc
 glom/frame_glom.cc
 glom/layout_item_dialogs/dialog_field_layout.cc

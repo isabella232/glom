@@ -741,57 +741,8 @@ bool Base_DB::add_standard_tables() const
     //Name, address, etc:
     if(!get_table_exists_in_database(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME))
     {
-      sharedptr<TableInfo> prefs_table_info(new TableInfo());
-      prefs_table_info->set_name(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME);
-      prefs_table_info->set_title("System: Preferences"); //TODO: Provide standard translations.
-      prefs_table_info->m_hidden = true;
-
       Document_Glom::type_vecFields pref_fields;
-
-      sharedptr<Field> primary_key(new Field()); //It's not used, because there's only one record, but we must have one.
-      primary_key->set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ID);
-      primary_key->set_glom_type(Field::TYPE_NUMERIC);
-      pref_fields.push_back(primary_key);
-
-      sharedptr<Field> field_name(new Field());
-      field_name->set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_NAME);
-      field_name->set_glom_type(Field::TYPE_TEXT);
-      pref_fields.push_back(field_name);
-
-      sharedptr<Field> field_org_name(new Field());
-      field_org_name->set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_NAME);
-      field_org_name->set_glom_type(Field::TYPE_TEXT);
-      pref_fields.push_back(field_org_name);
-
-      sharedptr<Field> field_org_address_street(new Field());
-      field_org_address_street->set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_STREET);
-      field_org_address_street->set_glom_type(Field::TYPE_TEXT);
-      pref_fields.push_back(field_org_address_street);
-
-      sharedptr<Field> field_org_address_street2(new Field());
-      field_org_address_street2->set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_STREET2);
-      field_org_address_street2->set_glom_type(Field::TYPE_TEXT);
-      pref_fields.push_back(field_org_address_street2);
-
-      sharedptr<Field> field_org_address_town(new Field());
-      field_org_address_town->set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_TOWN);
-      field_org_address_town->set_glom_type(Field::TYPE_TEXT);
-      pref_fields.push_back(field_org_address_town);
-
-      sharedptr<Field> field_org_address_county(new Field());
-      field_org_address_county->set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_COUNTY);
-      field_org_address_county->set_glom_type(Field::TYPE_TEXT);
-      pref_fields.push_back(field_org_address_county);
-
-      sharedptr<Field> field_org_address_country(new Field());
-      field_org_address_country->set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_COUNTRY);
-      field_org_address_country->set_glom_type(Field::TYPE_TEXT);
-      pref_fields.push_back(field_org_address_country);
-
-      sharedptr<Field> field_org_address_postcode(new Field());
-      field_org_address_postcode->set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_POSTCODE);
-      field_org_address_postcode->set_glom_type(Field::TYPE_TEXT);
-      pref_fields.push_back(field_org_address_postcode);
+      sharedptr<TableInfo> prefs_table_info = Document_Glom::create_table_system_preferences(pref_fields);
 
       const bool test = create_table(prefs_table_info, pref_fields);
 
@@ -1853,6 +1804,14 @@ void Base_DB::get_table_fields_to_show_for_sequence_add_group(const Glib::ustrin
 
             vecFields.push_back(layout_item);
           }
+          else
+          {
+            std::cerr << "Base_DB::get_table_fields_to_show_for_sequence_add_group(): related field not found: relationship=" << relationship_name << ", field=" << item->get_name() << std::endl;
+          }
+        }
+        else
+        {
+          std::cerr << "Base_DB::get_table_fields_to_show_for_sequence_add_group(): related field's relationship not found: " << relationship_name << std::endl;
         }
       }
       else //It's a regular field in the table:

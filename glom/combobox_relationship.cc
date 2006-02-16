@@ -150,10 +150,10 @@ void ComboBox_Relationship::on_cell_data_fromfield(const Gtk::TreeModel::const_i
 {
   Gtk::TreeModel::Row row = *iter;
   sharedptr<Relationship> relationship = row[m_model_columns.m_relationship];
-  if(relationship)
+  if(relationship && relationship->get_has_fields())
     m_renderer_fromfield->property_text() = _("Triggered by: ") + relationship->get_to_field();
   else
-    m_renderer_fromfield->property_text() = Glib::ustring(); //_("This Table");
+    m_renderer_fromfield->property_text() = Glib::ustring();
 }
 
 void ComboBox_Relationship::set_display_parent_table(const Glib::ustring& table_name, const Glib::ustring& table_title)

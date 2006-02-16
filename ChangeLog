@@ -1,3 +1,19 @@
+2006-02-16  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/combobox_relationship.cc: Do not show the 
+	Triggered By information if there are not linking key 
+	fields for a relationship.
+	* glom/document/document_glom.cc:
+	* glom/document/document_glom.h: get_relationships(): 
+	Optionally also return the extra System Properties 
+	relationship.
+	get_relationship(): Return the extra System Properties 
+	relationship if it is asked for by name, even though it 
+	is not saved in the document.
+	* glom/mode_data/dialog_choose_field.cc: Show the extra 
+	System Properties relationship too.
+	* po/POTFILES.in: Added document_glom.cc
+
 2006-02-14  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/data_structure/relationship.cc:

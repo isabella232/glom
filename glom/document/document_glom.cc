@@ -23,6 +23,8 @@
 #include "../data_structure/layout/report_parts/layoutitem_summary.h"
 #include "../data_structure/layout/report_parts/layoutitem_fieldsummary.h"
 #include "../data_structure/layout/layoutitem_button.h"
+#include "../standard_table_prefs_fields.h"
+#include <glibmm/i18n.h>
 //#include "config.h" //To get GLOM_DTD_INSTALL_DIR - dependent on configure prefix.
 #include <algorithm> //For std::find_if().
 #include <sstream> //For stringstream
@@ -122,6 +124,9 @@
 #define GLOM_NODE_TRANSLATION "trans"
 #define GLOM_ATTRIBUTE_TRANSLATION_LOCALE "loc"
 #define GLOM_ATTRIBUTE_TRANSLATION_VALUE "val"
+
+//A built-in relationship that is available for every table:
+#define GLOM_RELATIONSHIP_NAME_SYSTEM_PROPERTIES "system_properties"
 
 Document_Glom::Document_Glom()
 : m_block_cache_update(false),
@@ -225,9 +230,92 @@ void Document_Glom::set_relationship(const Glib::ustring& table_name, const shar
   }
 }
 
+sharedptr<Relationship> Document_Glom::create_relationship_system_preferences(const Glib::ustring& table_name)
+{
+  sharedptr<Relationship> relationship = sharedptr<Relationship>::create();
+  relationship->set_name(GLOM_RELATIONSHIP_NAME_SYSTEM_PROPERTIES);
+  relationship->set_title(_("System Preferences"));
+  relationship->set_from_table(table_name);
+  relationship->set_to_table(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME);
+  relationship->set_allow_edit(false);
+
+  return relationship;
+}
+
+sharedptr<TableInfo> Document_Glom::create_table_system_preferences(type_vecFields& fields)
+{
+  sharedptr<TableInfo> prefs_table_info(new TableInfo());
+  prefs_table_info->set_name(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME);
+  prefs_table_info->set_title(_("System Preferences"));
+  prefs_table_info->m_hidden = true;
+
+
+  fields.clear();
+
+  sharedptr<Field> primary_key(new Field()); //It's not used, because there's only one record, but we must have one.
+  primary_key->set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ID);
+  primary_key->set_glom_type(Field::TYPE_NUMERIC);
+  fields.push_back(primary_key);
+
+  sharedptr<Field> field_name(new Field());
+  field_name->set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_NAME);
+  field_name->set_title(_("System Name"));
+  field_name->set_glom_type(Field::TYPE_TEXT);
+  fields.push_back(field_name);
+
+  sharedptr<Field> field_org_name(new Field());
+  field_org_name->set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_NAME);
+  field_org_name->set_title(_("Organisation Name"));
+  field_org_name->set_glom_type(Field::TYPE_TEXT);
+  fields.push_back(field_org_name);
+
+  sharedptr<Field> field_org_address_street(new Field());
+  field_org_address_street->set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_STREET);
+  field_org_address_street->set_title(_("Street"));
+  field_org_address_street->set_glom_type(Field::TYPE_TEXT);
+  fields.push_back(field_org_address_street);
+
+  sharedptr<Field> field_org_address_street2(new Field());
+  field_org_address_street2->set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_STREET2);
+  field_org_address_street2->set_title(_("Street (line 2)"));
+  field_org_address_street2->set_glom_type(Field::TYPE_TEXT);
+  fields.push_back(field_org_address_street2);
+
+  sharedptr<Field> field_org_address_town(new Field());
+  field_org_address_town->set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_TOWN);
+  field_org_address_town->set_title(_("City"));
+  field_org_address_town->set_glom_type(Field::TYPE_TEXT);
+  fields.push_back(field_org_address_town);
+
+  sharedptr<Field> field_org_address_county(new Field());
+  field_org_address_county->set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_COUNTY);
+  field_org_address_county->set_title(_("State"));
+  field_org_address_county->set_glom_type(Field::TYPE_TEXT);
+  fields.push_back(field_org_address_county);
+
+  sharedptr<Field> field_org_address_country(new Field());
+  field_org_address_country->set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_COUNTRY);
+  field_org_address_country->set_title(_("Country"));
+  field_org_address_country->set_glom_type(Field::TYPE_TEXT);
+  fields.push_back(field_org_address_country);
+
+  sharedptr<Field> field_org_address_postcode(new Field());
+  field_org_address_postcode->set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_POSTCODE);
+  field_org_address_postcode->set_title(_("Zip Code"));
+  field_org_address_postcode->set_glom_type(Field::TYPE_TEXT);
+  fields.push_back(field_org_address_postcode);
+
+  return prefs_table_info;
+}
+
 sharedptr<Relationship> Document_Glom::get_relationship(const Glib::ustring& table_name, const Glib::ustring& relationship_name) const
 {
   sharedptr<Relationship> result;
+
+  if(relationship_name == GLOM_RELATIONSHIP_NAME_SYSTEM_PROPERTIES)
+  {
+    return create_relationship_system_preferences(table_name);
+  }
 
   type_tables::const_iterator iterFind = m_tables.find(table_name);
   if(iterFind != m_tables.end())
@@ -247,11 +335,22 @@ sharedptr<Relationship> Document_Glom::get_relationship(const Glib::ustring& tab
   return result;
 }
 
-Document_Glom::type_vecRelationships Document_Glom::get_relationships(const Glib::ustring& table_name) const
+Document_Glom::type_vecRelationships Document_Glom::get_relationships(const Glib::ustring& table_name, bool plus_system_prefs) const
 {
   type_tables::const_iterator iterFind = m_tables.find(table_name);
   if(iterFind != m_tables.end())
-    return iterFind->second.m_relationships;
+  {
+    type_vecRelationships result = iterFind->second.m_relationships;
+
+    //Add the system properties if necessary:
+    if(plus_system_prefs)
+    {
+        if(std::find_if(result.begin(), result.end(), predicate_FieldHasName<Relationship>(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME)) == result.end())
+          result.push_back(create_relationship_system_preferences(table_name));
+    }
+
+    return result;
+  }
   else
     return type_vecRelationships(); 
 }
@@ -455,8 +554,18 @@ Document_Glom::type_vecFields Document_Glom::get_table_fields(const Glib::ustrin
     }
     else
     {
-      //g_warning("Document_Glom::get_table_fields: table not found in document: %s", table_name.c_str());
-      return type_vecFields();
+      //It's a standard table, not saved in the document:
+      if(table_name == GLOM_STANDARD_TABLE_PREFS_TABLE_NAME)
+      {
+        type_vecFields fields;
+        sharedptr<TableInfo> temp = create_table_system_preferences(fields);
+        return fields;
+      }
+      else
+      {
+        //g_warning("Document_Glom::get_table_fields: table not found in document: %s", table_name.c_str());
+        return type_vecFields();
+      }
     }
   }
   else
@@ -827,7 +936,7 @@ void Document_Glom::fill_layout_field_details(const Glib::ustring& parent_table_
     {
       if(layout_field->get_has_relationship_name()) //If it is a related field, instead of a field in parent_table_name
         layout_field->set_full_field_details( get_field(layout_field->get_relationship()->get_to_table(), layout_field->get_name()) );
-      else  
+      else
         layout_field->set_full_field_details( get_field(parent_table_name, layout_field->get_name()) );
     }
     else

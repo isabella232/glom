@@ -96,7 +96,7 @@ public:
   Glib::ustring get_translation_original_locale() const;
 
   typedef std::vector< sharedptr<Relationship> > type_vecRelationships;
-  virtual type_vecRelationships get_relationships(const Glib::ustring& table_name) const;
+  virtual type_vecRelationships get_relationships(const Glib::ustring& table_name, bool plus_system_prefs = false) const;
   void set_relationships(const Glib::ustring& table_name, const type_vecRelationships& vecRelationships);
 
   sharedptr<Relationship> get_relationship(const Glib::ustring& table_name, const Glib::ustring& relationship_name) const;
@@ -240,6 +240,8 @@ public:
 
   virtual void emit_userlevel_changed();
 
+  static sharedptr<TableInfo> Document_Glom::create_table_system_preferences(type_vecFields& fields);
+
 protected:
 
   //Overrides:
@@ -273,6 +275,8 @@ protected:
 
   static void set_node_attribute_value_as_value(xmlpp::Element* node, const Glib::ustring& strAttributeName, const Gnome::Gda::Value& value, Field::glom_field_type field_type);
   static Gnome::Gda::Value get_node_attribute_value_as_value(const xmlpp::Element* node, const Glib::ustring& strAttributeName, Field::glom_field_type field_type);
+
+  static sharedptr<Relationship> create_relationship_system_preferences(const Glib::ustring& table_name);
 
   AppState m_app_state;
   type_signal_userlevel_changed m_signal_userlevel_changed;

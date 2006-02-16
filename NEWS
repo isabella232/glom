@@ -1,3 +1,8 @@
+* New built-in System Properties relationship:
+  allows you to show fields from the system properties, such as 
+  the organisation's name and address, on a layout or report.
+* Avoid python warnings when adding new records.
+
 0.9.5:
 
 * Details Layout:
