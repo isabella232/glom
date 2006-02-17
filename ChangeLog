@@ -1,3 +1,10 @@
+2006-02-17  Murray Cumming,  <murrayc@murrayc.com>
+
+	* glom/document/document_glom.cc: get_translatable_items(): Return the CustomTitles of 
+	LayoutItem_Fields.
+	* glom/translation/window_translations.cc: load_from_document(): Do not try to get the 
+	custom titles here, because get_translatable_items() gets them instead.
+
 2006-02-17  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/data_structure/layout/Makefile.am:

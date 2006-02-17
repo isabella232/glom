@@ -1400,6 +1400,7 @@ void Document_Glom::load_after_layout_item_field(const xmlpp::Element* element, 
   {
     sharedptr<CustomTitle> custom_title = sharedptr<CustomTitle>::create();
     load_after_translations(nodeCustomTitle, *custom_title);
+    item->set_title_custom(custom_title);
   }
 }
 
@@ -2530,6 +2531,18 @@ void Document_Glom::fill_translatable_layout_items(const sharedptr<LayoutGroup>&
       sharedptr<LayoutItem_Button> button = sharedptr<LayoutItem_Button>::cast_dynamic(item);
       if(button)
         the_list.push_back(button);
+      else
+      {
+        sharedptr<LayoutItem_Field> layout_field = sharedptr<LayoutItem_Field>::cast_dynamic(item);
+        if(layout_field)
+        {
+          sharedptr<CustomTitle> custom_title = layout_field->get_title_custom();
+          if(custom_title)
+          {
+            the_list.push_back(custom_title);
+          }
+        }
+      }
     }
   }
 }

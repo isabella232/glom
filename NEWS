@@ -1,6 +1,11 @@
 * New built-in System Properties relationship:
   allows you to show fields from the system properties, such as 
   the organisation's name and address, on a layout or report.
+* The Field Layout Properties dialog (right-click on a field in 
+  developer mode to see the menu) now allows you to choose a custom title 
+  for the field for this instance, in case the regular field title is not 
+  appropriate. This is often the case for related fields.
+* Save Field Layout Properties when the dialog closes. (Fixes a regression)
 * Avoid python warnings when adding new records.
 
 0.9.5:
