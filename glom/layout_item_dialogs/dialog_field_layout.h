@@ -52,6 +52,13 @@ protected:
 
   Gtk::Label* m_label_field_name;
   Gtk::CheckButton* m_checkbutton_editable;
+
+  Gtk::CheckButton* m_radiobutton_title_default;
+  Gtk::Label* m_label_title_default;
+  Gtk::CheckButton* m_radiobutton_title_custom;
+  Gtk::Entry* m_entry_title_custom;
+
+
   Gtk::VBox* m_box_formatting_placeholder;
   Gtk::RadioButton* m_radiobutton_custom_formatting;
   Box_Formatting* m_box_formatting;

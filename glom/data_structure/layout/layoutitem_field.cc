@@ -39,7 +39,8 @@ LayoutItem_Field::LayoutItem_Field(const LayoutItem_Field& src)
   m_formatting(src.m_formatting),
   m_field_cache_valid(src.m_field_cache_valid),
   m_hidden(src.m_hidden),
-  m_formatting_use_default(src.m_formatting_use_default)
+  m_formatting_use_default(src.m_formatting_use_default),
+  m_title_custom(src.m_title_custom)
 {
 //g_warning("LayoutItem_Field::LayoutItem_Field: m_choices_related_relationship=%s, src.m_choices_related_relationship=%s", m_choices_related_relationship.c_str(), src.m_choices_related_relationship.c_str());
 
@@ -71,6 +72,11 @@ bool LayoutItem_Field::operator==(const LayoutItem_Field& src) const
   else
     result = result && (m_field == src.m_field);
 
+  if(m_title_custom && src.m_title_custom)
+    result == result && (*m_title_custom == *(src.m_title_custom));
+  else
+    result = result && (m_title_custom == src.m_title_custom);
+
   return result;
 }
 
@@ -91,6 +97,8 @@ LayoutItem_Field& LayoutItem_Field::operator=(const LayoutItem_Field& src)
   m_formatting_use_default = src.m_formatting_use_default;
   m_formatting = src.m_formatting;
 
+  m_title_custom = src.m_title_custom;
+
   return *this;
 }
 
@@ -109,6 +117,15 @@ Glib::ustring LayoutItem_Field::get_name() const
 
 Glib::ustring LayoutItem_Field::get_title_or_name() const
 {
+  //Use the custom title (overriding the field's default title), if there is one:
+  if(m_title_custom)
+  {
+    const Glib::ustring title_custom = m_title_custom->get_title();
+    if(!title_custom.empty())
+      return title_custom;
+  }
+
+  //Use the field's default title:
   if(m_field_cache_valid && m_field)
   {
     return m_field->get_title_or_name();
@@ -210,6 +227,22 @@ Field::glom_field_type LayoutItem_Field::get_glom_type() const
     return m_field->get_glom_type();
   else
     return Field::TYPE_INVALID;
+}
+
+
+sharedptr<const CustomTitle> LayoutItem_Field::get_title_custom() const
+{
+  return m_title_custom;
+}
+
+sharedptr<CustomTitle> LayoutItem_Field::get_title_custom()
+{
+  return m_title_custom;
+}
+
+void LayoutItem_Field::set_title_custom(const sharedptr<CustomTitle>& title)
+{
+  m_title_custom = title;
 }
 
 

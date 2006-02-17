@@ -26,6 +26,7 @@
 #include "../field.h"
 #include "../numeric_format.h"
 #include "../relationship.h"
+#include "custom_title.h"
 
 class LayoutItem_Field 
  : public LayoutItem,
@@ -47,6 +48,10 @@ public:
 
   virtual Glib::ustring get_title_or_name() const;
 
+  sharedptr<const CustomTitle> get_title_custom() const;
+  sharedptr<CustomTitle> get_title_custom();
+  void set_title_custom(const sharedptr<CustomTitle>& title);
+
   //virtual Glib::ustring get_table_name() const;
   //virtual void set_table_name(const Glib::ustring& table_name);
 
@@ -67,7 +72,7 @@ public:
 
   bool get_editable_and_allowed() const;
 
-  /// For extra fields, needed for SQL queries. The user should never be able to made an item hidden - he can just remove it.
+  /// For extra fields, needed for SQL queries. The user should never be able to make an item hidden - he can just remove it.
   bool get_hidden() const;
   void set_hidden(bool val = true);
 
@@ -90,6 +95,7 @@ protected:
 
   bool m_hidden;
   bool m_formatting_use_default;
+  sharedptr<CustomTitle> m_title_custom; //translatable.
 };
 
 #endif //GLOM_DATASTRUCTURE_LAYOUTITEM_FIELD_H

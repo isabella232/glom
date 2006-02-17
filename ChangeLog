@@ -1,3 +1,28 @@
+2006-02-17  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/data_structure/layout/Makefile.am:
+	* glom/data_structure/layout/custom_title.cc:
+	* glom/data_structure/layout/custom_title.h: New translatable 
+	item, for use when layout items can optionally have special 
+	titles, when the default (such as Street for contacts::address_street), 
+	is not appropriate.
+	* glom/data_structure/layout/layoutitem_field.cc:
+	* glom/data_structure/layout/layoutitem_field.h: Add get/set_title_custom().
+	* glom/data_structure/translatable_item.cc:
+	* glom/data_structure/translatable_item.h: Add new item type and name.
+	* glom/document/document_glom.cc: load_after_layout_item_field(), 
+	save_before_layout_item_field(): Load/Save the custom_title of 
+	LayoutItem_Field items.
+	* glom/glom.glade: dialog_layout_field_properties.
+	* glom/layout_item_dialogs/dialog_field_layout.cc:
+	* glom/layout_item_dialogs/dialog_field_layout.h: Add widgets to allow 
+	a custom title.
+	* glom/translation/window_translations.cc: load_from_document(): 
+	Add the custom titles to the list.
+	* glom/utility_widgets/datawidget.cc: on_menupopup_activate_layout(): 
+	Save the new field properties, instead of replacing the whole item, 
+	so that the document gets the new information. Makes this work again.
+
 2006-02-16  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/combobox_relationship.cc: Do not show the 

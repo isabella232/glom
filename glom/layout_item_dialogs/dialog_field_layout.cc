@@ -26,12 +26,21 @@ Dialog_FieldLayout::Dialog_FieldLayout(BaseObjectType* cobject, const Glib::RefP
 : Gtk::Dialog(cobject),
   m_label_field_name(0),
   m_checkbutton_editable(0),
+  m_radiobutton_title_default(0),
+  m_label_title_default(0),
+  m_radiobutton_title_custom(0),
+  m_entry_title_custom(0),
   m_box_formatting_placeholder(0),
   m_radiobutton_custom_formatting(0),
   m_box_formatting(0)
 {
   refGlade->get_widget("label_field_name", m_label_field_name);
   refGlade->get_widget("checkbutton_editable", m_checkbutton_editable);
+
+  refGlade->get_widget("radiobutton_use_title_default", m_radiobutton_title_default);
+  refGlade->get_widget("label_title_default", m_label_title_default);
+  refGlade->get_widget("radiobutton_use_title_custom", m_radiobutton_title_custom);
+  refGlade->get_widget("entry_title_custom", m_entry_title_custom);
 
   //Get the place to put the Formatting stuff:
   refGlade->get_widget("radiobutton_use_custom", m_radiobutton_custom_formatting);
@@ -71,6 +80,16 @@ void Dialog_FieldLayout::set_field(const sharedptr<const LayoutItem_Field>& fiel
 
   m_checkbutton_editable->set_active( field->get_editable() );
 
+  //Custom title:
+  Glib::ustring title_custom;
+  if(field->get_title_custom())
+    title_custom = field->get_title_custom()->get_title();
+
+  m_radiobutton_title_custom->set_active( !title_custom.empty() );
+  m_entry_title_custom->set_text(title_custom);
+  m_label_title_default->set_text(field->get_title_or_name());
+
+  //Formatting:
   m_radiobutton_custom_formatting->set_active( !field->get_formatting_use_default() );
   m_box_formatting->set_formatting(field->m_formatting, table_name, field->get_full_field_details());
 
@@ -83,6 +102,15 @@ sharedptr<LayoutItem_Field> Dialog_FieldLayout::get_field_chosen() const
 
   m_layout_item->set_formatting_use_default( !m_radiobutton_custom_formatting->get_active() );
   m_box_formatting->get_formatting(m_layout_item->m_formatting);
+
+  sharedptr<CustomTitle> title_custom = sharedptr<CustomTitle>::create();
+  if(m_radiobutton_title_custom->get_active())
+  {
+    std::cout << "setting title custom: " << m_entry_title_custom->get_text() << std::endl;
+    title_custom->set_title(m_entry_title_custom->get_text());
+  }
+
+  m_layout_item->set_title_custom(title_custom);
 
   return glom_sharedptr_clone(m_layout_item);
 }

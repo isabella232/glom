@@ -24,8 +24,6 @@
 LayoutItem_Button::LayoutItem_Button()
 {
   m_translatable_item_type = TRANSLATABLE_TYPE_BUTTON;
-
-  set_name(_("Button"));
 }
 
 LayoutItem_Button::LayoutItem_Button(const LayoutItem_Button& src)

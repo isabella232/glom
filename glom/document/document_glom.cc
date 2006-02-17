@@ -44,6 +44,7 @@
 
 #define GLOM_NODE_DATA_LAYOUT_PORTAL "data_layout_portal"
 #define GLOM_NODE_DATA_LAYOUT_ITEM "data_layout_item" //A field.
+#define GLOM_ATTRIBUTE_LAYOUT_ITEM_CUSTOM_TITLE "title_custom"
 #define GLOM_NODE_DATA_LAYOUT_BUTTON "data_layout_button"
 #define GLOM_ATTRIBUTE_DATA_LAYOUT_ITEM_FIELD_USE_DEFAULT_FORMATTING "use_default_formatting"
 #define GLOM_NODE_DATA_LAYOUT_ITEM_GROUPBY "data_layout_item_groupby"
@@ -1372,7 +1373,6 @@ void Document_Glom::load_after_layout_item_field_formatting(const xmlpp::Element
       get_node_attribute_value(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_SECOND) );
     //Full details are updated in filled-in ().
   }
-
 }
 
 void Document_Glom::load_after_layout_item_field(const xmlpp::Element* element, const Glib::ustring& table_name, const sharedptr<LayoutItem_Field>& item)
@@ -1393,6 +1393,14 @@ void Document_Glom::load_after_layout_item_field(const xmlpp::Element* element, 
   }
 
   item->set_formatting_use_default( get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_DATA_LAYOUT_ITEM_FIELD_USE_DEFAULT_FORMATTING) );
+
+
+  const xmlpp::Element* nodeCustomTitle = get_node_child_named(element, GLOM_ATTRIBUTE_LAYOUT_ITEM_CUSTOM_TITLE);
+  if(nodeCustomTitle)
+  {
+    sharedptr<CustomTitle> custom_title = sharedptr<CustomTitle>::create();
+    load_after_translations(nodeCustomTitle, *custom_title);
+  }
 }
 
 void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Glib::ustring table_name, const sharedptr<LayoutGroup>& group)
@@ -1885,6 +1893,13 @@ void Document_Glom::save_before_layout_item_field(xmlpp::Element* nodeItem, cons
   save_before_layout_item_field_formatting(elementFormat, field->m_formatting, field->get_glom_type());
 
   set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_DATA_LAYOUT_ITEM_FIELD_USE_DEFAULT_FORMATTING, field->get_formatting_use_default());
+
+  sharedptr<const CustomTitle> custom_title = field->get_title_custom();
+  if(custom_title)
+  {
+    xmlpp::Element* elementCustomTitle = nodeItem->add_child(GLOM_ATTRIBUTE_LAYOUT_ITEM_CUSTOM_TITLE);
+    save_before_translations(elementCustomTitle, *custom_title);
+  }
 
   set_node_attribute_value_as_decimal(nodeItem, GLOM_ATTRIBUTE_SEQUENCE, field->m_sequence);
 }

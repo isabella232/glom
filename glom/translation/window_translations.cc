@@ -261,14 +261,33 @@ void Window_Translations::load_from_document()
     for(Document_Glom::type_list_translatables::iterator iter = list_layout_items.begin(); iter != list_layout_items.end(); ++iter)
     {
       sharedptr<TranslatableItem> item = *iter;
-      if(item && !(item->get_title_original().empty()))
+      if(item)
       {
-        Gtk::TreeModel::iterator iterTree = m_model->append();
-        Gtk::TreeModel::Row row = *iterTree;
+        if(!(item->get_title_original().empty()))
+        {
+          Gtk::TreeModel::iterator iterTree = m_model->append();
+          Gtk::TreeModel::Row row = *iterTree;
 
-        row[m_columns.m_col_item] = item;
-        row[m_columns.m_col_translation] = item->get_title(m_translation_locale);
-        row[m_columns.m_col_parent_table] = table_name;
+          row[m_columns.m_col_item] = item;
+          row[m_columns.m_col_translation] = item->get_title(m_translation_locale);
+          row[m_columns.m_col_parent_table] = table_name;
+        }
+
+        sharedptr<LayoutItem_Field> layout_field = sharedptr<LayoutItem_Field>::cast_dynamic(item);
+        if(layout_field)
+        {
+          sharedptr<CustomTitle> custom_title = layout_field->get_title_custom();
+          if(custom_title && !(custom_title->get_title_original().empty()))
+          {
+            Gtk::TreeModel::iterator iterTree = m_model->append();
+            Gtk::TreeModel::Row row = *iterTree;
+
+            row[m_columns.m_col_item] = custom_title;
+            row[m_columns.m_col_translation] = custom_title->get_title(m_translation_locale);
+            row[m_columns.m_col_parent_table] = table_name;
+          }
+        }
+
       }
     }
 

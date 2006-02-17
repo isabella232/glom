@@ -583,7 +583,9 @@ void DataWidget::on_menupopup_activate_layout_properties()
     sharedptr<LayoutItem_Field> itemchosen = offer_field_layout(layoutField);
     if(itemchosen)
     {
-      set_layout_item(itemchosen, m_table_name);
+      *layoutField = *itemchosen;
+      //set_layout_item(itemchosen, m_table_name);
+
       signal_layout_changed().emit();
     }
   }
