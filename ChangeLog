@@ -1,4 +1,17 @@
-2006-02-17  Murray Cumming,  <murrayc@murrayc.com>
+2006-02-18  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/data_structure/relationship.cc:
+	* glom/data_structure/relationship.h: Added get_has_to_table(), for 	
+	performance, to avoid string copying.
+	* glom/utils.cc: build_sql_select_with_where_clause(): Add to_table to the 
+	FROM list for non-key-linked relationships. libpq adds the implicit FROM if we 
+	do not do this, but it prints a warning on stdout. 
+	* glom/mode_data/dialog_layout_list_related.cc: on_combo_relationship_changed(): 
+	Clear the list of fields when the relationship changes, so that there are no 
+	invalid fields.
+
+
+2006-02-17  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/document/document_glom.cc: get_translatable_items(): Return the CustomTitles of 
 	LayoutItem_Fields.

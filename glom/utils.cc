@@ -132,6 +132,7 @@ Glib::ustring GlomUtils::build_sql_select_with_where_clause(const Glib::ustring&
   Glib::ustring result;
 
   Glib::ustring sql_part_fields;
+  Glib::ustring sql_part_from;
 
   typedef std::list< sharedptr<const Relationship> > type_list_relationships;
   type_list_relationships list_relationships;
@@ -159,6 +160,7 @@ Glib::ustring GlomUtils::build_sql_select_with_where_clause(const Glib::ustring&
     else
     {
       sharedptr<const Relationship> relationship = layout_item->get_relationship();
+      const Glib::ustring relationship_name = relationship->get_name();
       if(relationship->get_has_fields()) //relationships that link to tables together via a field
       {
         /*
@@ -171,15 +173,7 @@ Glib::ustring GlomUtils::build_sql_select_with_where_clause(const Glib::ustring&
 
         //We use relationship_name.field_name instead of related_table_name.field_name,
         //because, in the JOIN below, will specify the relationship_name as an alias for the related table name
-        const Glib::ustring relationship_name = relationship->get_name();
         one_sql_part += ( "relationship_" + relationship_name + "." );
-
-        //Add the relationship to the list:
-        type_list_relationships::const_iterator iterFind = std::find_if(list_relationships.begin(), list_relationships.end(), predicate_FieldHasName<Relationship>( relationship_name ) );
-        if(iterFind == list_relationships.end()) //If the table is not yet in the list:
-        {
-          list_relationships.push_back(relationship);
-        }
       }
       else
       {
@@ -188,6 +182,13 @@ Glib::ustring GlomUtils::build_sql_select_with_where_clause(const Glib::ustring&
         {
           one_sql_part += ( "\"" + to_table_name + "\"." );
         }
+      }
+
+      //Add the relationship to the list:
+      type_list_relationships::const_iterator iterFind = std::find_if(list_relationships.begin(), list_relationships.end(), predicate_FieldHasName<Relationship>( relationship_name ) );
+      if(iterFind == list_relationships.end()) //If the table is not yet in the list:
+      {
+        list_relationships.push_back(relationship);
       }
     }
 
@@ -236,9 +237,21 @@ Glib::ustring GlomUtils::build_sql_select_with_where_clause(const Glib::ustring&
         relationship->get_name() + ".\"" + relationship->get_to_field() + "\"" + 
         ")";
     }
+    else if(relationship->get_has_to_table())
+    {
+      //It is a relationship that only specifies the table, without specifying linking fields:
+      if(!(sql_part_from.empty()))
+        sql_part_from += ", ";
+
+      sql_part_from += relationship->get_to_table();
+    }
   }
 
-  result += sql_part_leftouterjoin;
+  if(!sql_part_from.empty())
+    result += ("," + sql_part_from);
+
+  if(!sql_part_leftouterjoin.empty())
+    result += (" " + sql_part_leftouterjoin);
 
   if(!where_clause.empty())
     result += " WHERE " + where_clause;

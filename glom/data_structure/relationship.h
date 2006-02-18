@@ -58,6 +58,10 @@ public:
    */
   bool get_has_fields() const;
 
+  /** Whether the relationship specifies a related table.
+   */
+  bool get_has_to_table() const;
+
 protected:
   Glib::ustring m_strFrom_Table;
   Glib::ustring m_strFrom_Field;

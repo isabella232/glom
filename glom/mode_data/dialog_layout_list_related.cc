@@ -298,7 +298,16 @@ void Dialog_Layout_List_Related::on_combo_relationship_changed()
   sharedptr<Relationship> relationship = m_combo_relationship->get_selected_relationship();
   if(relationship)
   {
+    //Clear the list of fields if the relationship has changed, because the fields could not possible be correct for the new table:
+    bool relationship_changed = false;
+    const Glib::ustring old_relationship_name = glom_get_sharedptr_name(m_portal->get_relationship());
+    if(old_relationship_name !=  glom_get_sharedptr_name(relationship))
+      relationship_changed = true;
+
     m_portal->set_relationship(relationship);
+
+    if(relationship_changed)
+      m_portal->remove_all_items();
 
     //Refresh everything for the new relationship:
     update_ui(false /* not including the list of relationships */);

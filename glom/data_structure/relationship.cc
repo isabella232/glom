@@ -125,3 +125,8 @@ bool Relationship::get_has_fields() const
 {
   return !m_strTo_Field.empty() && !m_strFrom_Field.empty() && !m_strTo_Table.empty() && !m_strFrom_Table.empty();
 }
+
+bool Relationship::get_has_to_table() const
+{
+  return !m_strTo_Table.empty();
+}
