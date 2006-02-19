@@ -1,7 +1,12 @@
+2006-02-19  Murray Cumming, <murrayc@murrayc.com>
+
+	* glom/utility_widgets/imageglom.cc: scale(): Call Gtk::Image::get_storage_type() 
+	before Gtk::Image::get_pixbuf(), to avoid a critical warning.
+
 2006-02-19  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/utility_widgets/imageglom.cc:
-	* glom/utility_widgets/imageglom.h: Overried on_expose_event() so we can 
+	* glom/utility_widgets/imageglom.h: Override on_expose_event() so we can 
 	scale the image when we actually have a real (>1) allocation.
 	scale(): Do not call set_image() if the scaled pixbuf has exactly the same 
 	dimensions as the existing image. And do not try to scale the image if the 

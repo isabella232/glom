@@ -178,6 +178,7 @@ void ImageGlom::set_value(const Gnome::Gda::Value& value)
             //  g_warning("%02X (%c), ", (guint8)puiData[i], (char)puiData[i]);
 
             refPixbufLoader->write(puiData, (glong)buffer_binary_length);
+
             m_pixbuf_original = refPixbufLoader->get_pixbuf();
             m_image.set(m_pixbuf_original);
             pixbuf_set = true;
@@ -277,7 +278,11 @@ void ImageGlom::scale()
         else 
         {
           //Don't set a new pixbuf if the dimenstions have not changed:
-          Glib::RefPtr<const Gdk::Pixbuf> pixbuf_in_image = m_image.get_pixbuf();
+          Glib::RefPtr<const Gdk::Pixbuf> pixbuf_in_image;
+
+          if(m_image.get_storage_type() == Gtk::IMAGE_PIXBUF) //Prevent warning.
+            pixbuf_in_image = m_image.get_pixbuf();
+
           if( !pixbuf_in_image || (pixbuf_in_image->get_height() != pixbuf_scaled->get_height()) || (pixbuf_in_image->get_width() != pixbuf_scaled->get_width()) )
             m_image.set(pixbuf_scaled);
         }
