@@ -1,3 +1,5 @@
+0.9.6:
+
 2006-02-19  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/mode_data/box_data_details.h: Make on_flowtable_field_edited()

@@ -1,3 +1,5 @@
+0.9.6:
+
 * New built-in System Properties relationship:
   allows you to show fields from the system properties, such as 
   the organisation's name and address, on a layout or report.
@@ -6,6 +8,11 @@
   for the field for this instance, in case the regular field title is not 
   appropriate. This is often the case for related fields.
 * Save Field Layout Properties when the dialog closes. (Fixes a regression)
+* Find:
+  - Fix oddness in Details view when finding. (Fixes a regression)
+  - Start Find mode on the current View, instead of always going to the Details view.
+  - Find works again when you start on the Details view. (Fixes a regression)
+  - Do a Find All if the find is not successful, if the user doesn't want to try again.
 * Avoid python warnings when adding new records.
 * Stop images from disappearing when refreshing layouts.
 
