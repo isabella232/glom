@@ -1,5 +1,10 @@
 2006-02-19  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/frame_glom.cc: on_notebook_find_criteria(): Show all records if 
+	the find was not successful, and the user did not want to try again.
+
+2006-02-19  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/frame_glom.cc: on_menu_Mode_Find(): Start the Find mode 
 	on the same layout (Details or List) as the Data mode was in.
 	Add a little hack to make sure that we go back into Data mode in List 

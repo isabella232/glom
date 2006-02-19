@@ -824,6 +824,8 @@ void Frame_Glom::on_notebook_find_criteria(const Glib::ustring& where_clause)
 
       if(find_again)
         pApp->set_mode_find();
+      else
+        on_button_find_all();
     }
     else
     {
