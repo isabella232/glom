@@ -212,6 +212,9 @@ bool DbTreeModel::refresh_from_database(const Glib::ustring& where_clause)
       m_data_model_rows_count = 0;
       m_data_model_columns_count = m_columns_count;
 
+      std::cerr << "DbTreeModel::refresh_from_database(): Error while executing SQL" << std::endl <<
+                   "  " <<  sql_query << std::endl;
+
       ConnectionPool::handle_error();
       return false; //No records were found.
     }

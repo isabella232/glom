@@ -311,6 +311,11 @@ GlomUtils::type_list_values_with_second GlomUtils::get_choice_values(const share
       list_values.push_back(itempair);
     }
   }
+  else
+  {
+      std::cerr << "Glom  get_choice_values(): Error while executing SQL" << std::endl <<
+                   "  " <<  sql_query << std::endl;
+  }
 
   return list_values;
 }

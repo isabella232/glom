@@ -1,5 +1,15 @@
 2006-02-19  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/mode_data/box_data_details.h: Make on_flowtable_field_edited()
+	virtual again so that the override in BoxDataDetails_Find works again, 
+	to avoid odd regressions when finding.
+	* glom/utility_widgets/db_adddel/glom_db_treemodel.cc:
+	* glom/utils.cc:
+	* glom/base_db.cc: Try to print the SQL command on stdout when there 
+	is a problem with it.
+
+2006-02-19  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/frame_glom.cc: on_notebook_find_criteria(): Show all records if 
 	the find was not successful, and the user did not want to try again.
 

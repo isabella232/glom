@@ -112,6 +112,8 @@ Glib::RefPtr<Gnome::Gda::DataModel> Base_DB::Query_execute(const Glib::ustring& 
     result = gda_connection->execute_single_command(strQuery);
     if(!result)
     {
+      std::cerr << "Glom  Base_DB::Query_execute(): Error while executing SQL" << std::endl <<
+                   "  " <<  strQuery << std::endl;
       handle_error();
     }
   }
