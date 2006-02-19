@@ -1,3 +1,10 @@
+2006-02-20  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/connectionpool.cc:
+	* glom/connectionpool.h: connect(): Parse the result of SELECT version() and return 
+	it from get_postgres_server_version(), so we can optionally use some new features,
+ 	behind the scenes.
+
 2006-02-19  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/combobox_relationship.cc:

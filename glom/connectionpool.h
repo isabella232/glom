@@ -115,6 +115,13 @@ public:
 
   const FieldTypes* get_field_types() const;
 
+  /** Return the version number of the connected postgres server.
+   * This can be used to adapt to different server features.
+   *
+   * @result The version, or 0 if no connection has been made.
+   */
+  float get_postgres_server_version();
+
   //Show the gda error in a dialog.
   static bool handle_error(bool cerr_only = false);
 
@@ -130,8 +137,10 @@ protected:
   bool m_ready_to_connect;
   Glib::ustring m_host, m_user, m_password, m_database;
   FieldTypes* m_pFieldTypes;
+  float m_postgres_server_version;
 
   static ConnectionPool* m_instance;
+
 };
 
 

@@ -202,6 +202,29 @@ sharedptr<SharedConnection> ConnectionPool::connect()
             m_refGdaConnection->change_database(m_database);
           */
 
+          //Get postgres version:
+          Glib::RefPtr<Gnome::Gda::DataModel> data_model = m_refGdaConnection->execute_single_command("SELECT version()");
+          if(data_model && data_model->get_n_rows() && data_model->get_n_columns())
+          {
+            Gnome::Gda::Value value = data_model->get_value_at(0, 0);
+            if(value.get_value_type() == Gnome::Gda::VALUE_TYPE_STRING)
+            {
+              const Glib::ustring version_text = value.get_string();
+
+              //This seems to have the format "PostgreSQL 7.4.11 on i486-pc-linux"
+              const Glib::ustring namePart = "PostgreSQL ";
+              const Glib::ustring::size_type posName = version_text.find(namePart);
+              if(posName != Glib::ustring::npos)
+              {
+                const Glib::ustring versionPart = version_text.substr(namePart.size());
+                char* end = 0;
+                m_postgres_server_version = strtof(versionPart.c_str(), &end);
+              }
+            }
+          }
+
+          std::cout << "  Postgres Server version: " << get_postgres_server_version() << std::endl;
+
           return connect(); //Call this method recursively. This time m_refGdaConnection exists.
         }
         else
@@ -301,7 +324,7 @@ const FieldTypes* ConnectionPool::get_field_types() const
 void ConnectionPool::on_sharedconnection_finished()
 {
   //g_warning("ConnectionPool::on_sharedconnection_finished().");
-  
+
   //One SharedConnection is no longer being used:
   m_sharedconnection_refcount--;
 
@@ -363,3 +386,7 @@ bool ConnectionPool::handle_error(bool cerr_only)
    return false;
 }
 
+float ConnectionPool::get_postgres_server_version()
+{
+  return m_postgres_server_version;
+}
