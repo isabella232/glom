@@ -51,7 +51,8 @@ protected:
   void on_combo_type_changed();
   void on_combo_lookup_relationship_changed();
   void on_check_lookup_toggled();
-  void on_check_calculate_toggled();
+  void on_radio_calculate_toggled();
+  void on_radio_userentry_toggled();
   void on_button_edit_calculation();
 
   //void on_foreach(Gtk::Widget& widget);
@@ -67,13 +68,16 @@ protected:
   Gtk::CheckButton* m_pCheck_PrimaryKey;
   Gtk::CheckButton* m_pCheck_AutoIncrement;
 
-  Gtk::VBox* m_pBox_DefaultValue;
+  Gtk::VBox* m_pBox_ValueTab;
+
+  Gtk::RadioButton* m_pRadio_UserEntry;
+  Gtk::Alignment* m_pAlignment_UserEntry;
   Gtk::CheckButton* m_pCheck_Lookup;
   Gtk::Table* m_pTable_Lookup;
   ComboBox_Relationship* m_pCombo_LookupRelationship;
   Combo_TextGlade* m_pCombo_LookupField;
 
-  Gtk::CheckButton* m_pCheck_Calculate;
+  Gtk::RadioButton* m_pRadio_Calculate;
   Gtk::Alignment* m_pAlignment_Calculate;
   Gtk::TextView* m_pTextView_Calculation;
   Gtk::Button* m_pButton_EditCalculation;

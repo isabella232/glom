@@ -1,3 +1,10 @@
+2006-02-19  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/glom.glade:
+	* glom/mode_design/fields/dialog_fielddefinition.cc:
+	* glom/mode_design/fields/dialog_fielddefinition.h: Rename the Default Value tab 
+	to Value. Use radiobuttons to make the calculation and the rest mutually exclusive.
+
 0.9.6:
 
 2006-02-19  Murray Cumming  <murrayc@murrayc.com>
