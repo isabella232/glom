@@ -118,7 +118,7 @@ bool ImageGlom::get_has_original_data() const
 }
 
 void ImageGlom::set_value(const Gnome::Gda::Value& value)
-{ 
+{
   bool pixbuf_set = false;
 
   if(value.get_value_type() == Gnome::Gda::VALUE_TYPE_BINARY)
@@ -151,6 +151,8 @@ void ImageGlom::set_value(const Gnome::Gda::Value& value)
         GdkPixbufLoader* loader = gdk_pixbuf_loader_new_with_type(GLOM_IMAGE_FORMAT, &error);
         if(!error)
           refPixbufLoader = Glib::wrap(loader);
+        else
+          std::cerr << "ImageGlom::set_value(): Error while calling gdk_pixbuf_loader_new_with_type()." << std::endl;
 
         /*
         try
@@ -245,6 +247,13 @@ Gnome::Gda::Value ImageGlom::get_value() const
   return result;
 }
 
+bool ImageGlom::on_expose_event(GdkEventExpose* event)
+{
+  const bool result = Gtk::EventBox::on_expose_event(event);
+  scale();
+  return result;
+}
+
 void ImageGlom::scale()
 {
   Glib::RefPtr<Gdk::Pixbuf> pixbuf = m_pixbuf_original;
@@ -258,8 +267,21 @@ void ImageGlom::scale()
     if( (pixbuf_height > allocation.get_height()) ||
         (pixbuf_width > allocation.get_width()) )
     {
-      Glib::RefPtr<Gdk::Pixbuf> pixbuf_scaled = scale_keeping_ratio(pixbuf, allocation.get_height(), allocation.get_width());
-      m_image.set(pixbuf_scaled);
+      if(allocation.get_height() > 10 || allocation.get_width() > 10)
+      {
+        Glib::RefPtr<Gdk::Pixbuf> pixbuf_scaled = scale_keeping_ratio(pixbuf, allocation.get_height(), allocation.get_width());
+        if(!pixbuf_scaled)
+        {
+          std::cerr << "ImageGlom::scale(): scale_keeping_ratio() returned NULL pixbuf." << std::endl;
+        }
+        else 
+        {
+          //Don't set a new pixbuf if the dimenstions have not changed:
+          Glib::RefPtr<const Gdk::Pixbuf> pixbuf_in_image = m_image.get_pixbuf();
+          if( !pixbuf_in_image || (pixbuf_in_image->get_height() != pixbuf_scaled->get_height()) || (pixbuf_in_image->get_width() != pixbuf_scaled->get_width()) )
+            m_image.set(pixbuf_scaled);
+        }
+      }
     }
   }
   else
@@ -321,7 +343,6 @@ Glib::RefPtr<Gdk::Pixbuf> ImageGlom::scale_keeping_ratio(const Glib::RefPtr<Gdk:
 
  if( (target_height == 0) || (target_width == 0) )
  {
-   //g_warning("ImageGlom::scale_keeping_ratio(): calculated dimension is zero: target_width=%d, target_height=%d", target_width, target_height); 
    return Glib::RefPtr<Gdk::Pixbuf>(); //This shouldn't happen anyway. It seems to happen sometimes though, when ratio is very small.
  }
 

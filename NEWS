@@ -7,6 +7,7 @@
   appropriate. This is often the case for related fields.
 * Save Field Layout Properties when the dialog closes. (Fixes a regression)
 * Avoid python warnings when adding new records.
+* Stop images from disappearing when refreshing layouts.
 
 0.9.5:
 
