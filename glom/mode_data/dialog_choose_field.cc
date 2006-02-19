@@ -71,7 +71,7 @@ void Dialog_ChooseField::set_document(Document_Glom* document, const Glib::ustri
     m_combo_relationship->set_selected_relationship( field->get_relationship() );
   }
   else
-    m_combo_relationship->set_selected_parent_table(table_name); //TODO: Show the title too.
+    m_combo_relationship->set_selected_parent_table(table_name, document->get_table_title(table_name)); 
 
   //Select the current field at the start:
   if(field)
@@ -121,10 +121,11 @@ void Dialog_ChooseField::set_document(Document_Glom* document, const Glib::ustri
     m_combo_relationship->set_display_parent_table(table_name, document->get_table_title(table_name));
 
     //Add the relationships for this table:
-    m_combo_relationship->set_relationships(vecRelationships, table_name, document->get_table_title(table_name));
+    const Glib::ustring table_title = document->get_table_title(table_name);
+    m_combo_relationship->set_relationships(vecRelationships, table_name, table_title);
 
     //Set the table name and title:
-    m_combo_relationship->set_selected_parent_table(table_name);
+    m_combo_relationship->set_selected_parent_table(table_name, table_title);
 
     //Fill the treeview:
     m_model->clear();
