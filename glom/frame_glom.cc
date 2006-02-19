@@ -657,8 +657,26 @@ void Frame_Glom::on_menu_Mode_Data()
 
 void Frame_Glom::on_menu_Mode_Find()
 {
+  const bool previously_in_data_mode = (m_Mode == MODE_Data);
+
+  const Notebook_Data::dataview list_or_details = m_Notebook_Data.get_current_view();
+
+  //A workaround hack to make sure that the list view will be active when the results are shown.
+  //Because the list doesn't refresh properly (to give the first result) when the Details view was active first.
+  //murrayc.
+  if(previously_in_data_mode && (list_or_details == Notebook_Data::DATA_VIEW_Details))
+    m_Notebook_Data.set_current_view(Notebook_Data::DATA_VIEW_List);
+
   if(set_mode(MODE_Find))
+  {
     show_table(m_table_name);
+
+    if(previously_in_data_mode)
+    {
+      //Show the same layout in Find mode as was just being viewed in Data mode:
+      m_Notebook_Find.set_current_view(list_or_details);
+    }
+  }
 }
 
 /*
@@ -795,7 +813,10 @@ void Frame_Glom::on_notebook_find_criteria(const Glib::ustring& where_clause)
 
     //std::cout << "Frame_Glom::on_notebook_find_criteria: where_clause=" << where_clause << std::endl;
     const bool records_found = m_Notebook_Data.init_db_details(m_table_name, where_clause);
+
+    //std::cout << "Frame_Glom::on_notebook_find_criteria(): BEFORE  m_Notebook_Data.select_page_for_find_results()" << std::endl;
     m_Notebook_Data.select_page_for_find_results();
+    //std::cout << "Frame_Glom::on_notebook_find_criteria(): AFTER  m_Notebook_Data.select_page_for_find_results()" << std::endl;
 
     if(!records_found)
     {

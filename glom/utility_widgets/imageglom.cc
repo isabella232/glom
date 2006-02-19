@@ -289,8 +289,8 @@ void ImageGlom::scale()
       }
     }
   }
-  else
-    g_warning("ImageGlom::scale(): attempt to scale a null pixbuf.");
+  //else
+  //  g_warning("ImageGlom::scale(): attempt to scale a null pixbuf.");
 }
 
 //static:

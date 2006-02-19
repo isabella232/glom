@@ -90,15 +90,25 @@ bool Notebook_Data::init_db_details(const Glib::ustring& table_name, const Glib:
 
       if(!new_find_set)
       {
+        //std::cout << "debug: no new_found_set" << std::endl;
         primary_key_for_details = document->get_layout_record_viewed(m_table_name, m_Box_Details.get_layout_name());
+      }
+      else
+      {
+         //std::cout << "debug: new_found_set" << std::endl;
       }
 
       if(GlomConversions::value_is_empty(primary_key_for_details))
       {
         //Make sure that the details view is not empty, if there are any records to show:
         primary_key_for_details = m_Box_List.get_primary_key_value_selected();
+        //std::cout << "debug:  m_Box_List.get_primary_key_value_selected()=" << primary_key_for_details.to_string() << std::endl;
         if(GlomConversions::value_is_empty(primary_key_for_details))
+        {
+          //std::cout << "debug: calling list.get_primary_key_value_first()" << std::endl;
           primary_key_for_details = m_Box_List.get_primary_key_value_first();
+          //std::cout << "  debug:  result=" <<  primary_key_for_details.to_string() << std::endl;
+        }
       }
 
       m_Box_Details.init_db_details(m_table_name, primary_key_for_details);
@@ -164,6 +174,14 @@ void Notebook_Data::on_Details_user_requested_related_details(const Glib::ustrin
   */
 }
 
+void Notebook_Data::set_current_view(dataview view)
+{
+  if(view == DATA_VIEW_List)
+    set_current_page(m_iPage_List);
+  else
+    set_current_page(m_iPage_Details);
+}
+
 void Notebook_Data::select_page_for_find_results()
 {
   if(m_Box_List.get_showing_multiple_records())
@@ -213,7 +231,7 @@ Notebook_Data::dataview Notebook_Data::get_current_view() const
   const int current_page = get_current_page();
 
   dataview result = DATA_VIEW_Details;
-  if(current_page == 1)
+  if(current_page == m_iPage_List)
     result = DATA_VIEW_List;
 
   return result;

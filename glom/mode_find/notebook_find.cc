@@ -22,12 +22,17 @@
 #include <glibmm/i18n.h>
 
 Notebook_Find::Notebook_Find()
+: m_iPage_Details(0),
+  m_iPage_List(0)
 {
 
   pages().push_back(Gtk::Notebook_Helpers::TabElem(m_Box_List, _("List")));
-  pages().push_back(Gtk::Notebook_Helpers::TabElem(m_Box_Details, _("Details")));
+  m_iPage_List = 0;
 
-  set_current_page(1); //Show the details page by default. It's more obvious for a Find.
+  pages().push_back(Gtk::Notebook_Helpers::TabElem(m_Box_Details, _("Details")));
+  m_iPage_Details = 1;
+
+  set_current_page(m_iPage_Details); //Show the details page by default. It's more obvious for a Find.
   //TODO: Show the same layout that is being edited at the time that the mode was changed.
 
   //Connect Signals:
@@ -37,7 +42,7 @@ Notebook_Find::Notebook_Find()
   //Fill composite view:
   add_view(&m_Box_List);
   add_view(&m_Box_Details);
-  
+
   show_all_children();
 }
 
@@ -61,3 +66,12 @@ void Notebook_Find::on_page_find_criteria(const Glib::ustring& where_clause)
   //Pass it up to the application.
   signal_find_criteria.emit(where_clause);
 }
+
+void Notebook_Find::set_current_view(Notebook_Data::dataview view)
+{
+  if(view == Notebook_Data::DATA_VIEW_List)
+    set_current_page(m_iPage_List);
+  else
+    set_current_page(m_iPage_Details);
+}
+

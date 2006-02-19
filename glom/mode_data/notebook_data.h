@@ -53,7 +53,8 @@ public:
     DATA_VIEW_List
   };
 
-  virtual dataview get_current_view() const;
+  dataview get_current_view() const;
+  void set_current_view(dataview view);
 
   typedef sigc::signal<void, const Glib::ustring&, Gnome::Gda::Value> type_signal_record_details_requested;
   type_signal_record_details_requested signal_record_details_requested();

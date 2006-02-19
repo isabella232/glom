@@ -95,14 +95,13 @@ void Box_Data_List::enable_buttons()
 
 void Box_Data_List::refresh_data_from_database_blank()
 {
+  m_AddDel.set_where_clause(Glib::ustring());
   m_AddDel.refresh_from_database_blank();
-  m_AddDel.set_where_clause("");
+  m_where_clause = Glib::ustring();
 }
 
 bool Box_Data_List::fill_from_database()
 {
-  //std::cout << "Box_Data_List::fill_from_database(): where_clause=" << m_where_clause << std::endl;
-
   bool result = false;
 
   Bakery::BusyCursor(*get_app_window());
@@ -622,6 +621,8 @@ Gnome::Gda::Value Box_Data_List::get_primary_key_value_selected()
 
 Gnome::Gda::Value Box_Data_List::get_primary_key_value_first()
 {
+  //std::cout << "Box_Data_List(): get_primary_key_value_first() records_count = " << m_AddDel.get_count() << std::endl;
+
   Glib::RefPtr<Gtk::TreeModel> model = m_AddDel.get_model();
   if(model)
   {
@@ -631,13 +632,18 @@ Gnome::Gda::Value Box_Data_List::get_primary_key_value_first()
       Gnome::Gda::Value value = get_primary_key_value(iter);
       if(GlomConversions::value_is_empty(value))
       {
+       //std::cout << "Box_Data_List(): get_primary_key_value_first() iter val is NULL" << std::endl;
         ++iter;
       }
       else
+      {
+         //std::cout << "Box_Data_List(): get_primary_key_value_first() returning: " << value.to_string() << std::endl;
         return value;
+      }
     }
   }
 
+ // std::cout << "Box_Data_List(): get_primary_key_value_first() return NULL" << std::endl;
   return Gnome::Gda::Value();
 }
 

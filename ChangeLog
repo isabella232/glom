@@ -1,4 +1,16 @@
-2006-02-19  Murray Cumming, <murrayc@murrayc.com>
+2006-02-19  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/frame_glom.cc: on_menu_Mode_Find(): Start the Find mode 
+	on the same layout (Details or List) as the Data mode was in.
+	Add a little hack to make sure that we go back into Data mode in List 
+	view at first, to make sure that the first result will show up 
+	properly in the Details mode.
+	* glom/mode_data/notebook_data.cc:
+	* glom/mode_data/notebook_data.h: Added set_current_view().
+	* glom/mode_find/notebook_find.cc:
+	* glom/mode_find/notebook_find.h: Added set_current_view().
+
+2006-02-19  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/utility_widgets/imageglom.cc: scale(): Call Gtk::Image::get_storage_type() 
 	before Gtk::Image::get_pixbuf(), to avoid a critical warning.

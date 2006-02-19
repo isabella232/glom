@@ -34,6 +34,8 @@ public:
 
   virtual bool init_db_details(const Glib::ustring& table_name);
 
+  void set_current_view(Notebook_Data::dataview view);
+
   /** Emitted when the user has entered a find critera that
    * should be used to find and display records.
    * @param find_criteria The SQL where clause.
@@ -42,6 +44,7 @@ public:
 
 protected:
 
+
   //Signal handlers:
   virtual void on_page_find_criteria(const Glib::ustring& where_clause);
 
@@ -49,6 +52,7 @@ protected:
   Box_Data_List_Find m_Box_List;
   Box_Data_Details_Find m_Box_Details;
 
+  guint m_iPage_Details, m_iPage_List;
 };
 
 #endif
