@@ -1,5 +1,10 @@
 2006-02-19  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/mode_design/fields/dialog_fielddefinition.cc: set_field(): Do not show the 
+	current table name in the list of relationships for lookups.
+
+2006-02-19  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/glom.glade:
 	* glom/mode_design/fields/dialog_fielddefinition.cc:
 	* glom/mode_design/fields/dialog_fielddefinition.h: Rename the Default Value tab 

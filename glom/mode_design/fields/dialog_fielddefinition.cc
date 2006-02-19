@@ -172,7 +172,7 @@ void Dialog_FieldDefinition::set_field(const sharedptr<const Field>& field, cons
   if(document)
   {
     const Document_Glom::type_vecRelationships vecRelationships = document->get_relationships(table_name);
-    m_pCombo_LookupRelationship->set_relationships(vecRelationships, table_name, document->get_table_title(table_name));
+    m_pCombo_LookupRelationship->set_relationships(vecRelationships);
   }
 
   sharedptr<Relationship> lookup_relationship;
@@ -190,7 +190,11 @@ void Dialog_FieldDefinition::set_field(const sharedptr<const Field>& field, cons
 
   //Calculation:
   const Glib::ustring calculation = field->get_calculation();
-  m_pRadio_Calculate->set_active(!calculation.empty());
+  if(calculation.empty())
+   m_pRadio_UserEntry->set_active();
+  else
+    m_pRadio_Calculate->set_active();
+
   on_check_lookup_toggled();
 
   m_pTextView_Calculation->get_buffer()->set_text(calculation);
@@ -272,7 +276,7 @@ void Dialog_FieldDefinition::on_combo_type_changed()
 }
 
 void Dialog_FieldDefinition::enforce_constraints()
-{  
+{
   if(m_pCheck_PrimaryKey->get_active())
   {
     m_pCheck_Unique->set_active(true); //Primary keys must be unique.
@@ -291,8 +295,11 @@ void Dialog_FieldDefinition::enforce_constraints()
     m_pBox_ValueTab->set_sensitive(true);
   }
 
-  bool enable_calc = m_pRadio_Calculate->get_active();
+  const bool enable_calc = m_pRadio_Calculate->get_active();
   m_pAlignment_Calculate->set_sensitive(enable_calc);
+
+  const bool enable_userentry = m_pRadio_UserEntry->get_active();
+  m_pAlignment_UserEntry->set_sensitive(enable_userentry);
 }
 
 void Dialog_FieldDefinition::on_check_lookup_toggled()
