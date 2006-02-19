@@ -55,6 +55,7 @@ protected:
   //void on_cell_data_name(const Gtk::TreeModel::const_iterator& iter);
   void on_cell_data_title(const Gtk::TreeModel::const_iterator& iter);
   void on_cell_data_fromfield(const Gtk::TreeModel::const_iterator& iter);
+  bool on_row_separator(const Glib::RefPtr<Gtk::TreeModel>& model, const Gtk::TreeModel::const_iterator& iter);
 
   bool get_has_parent_table() const;
 
@@ -64,9 +65,10 @@ protected:
   {
   public:
     ModelColumns()
-    { add(m_relationship); }
+    { add(m_relationship); add(m_separator); }
 
     Gtk::TreeModelColumn< sharedptr<Relationship> > m_relationship;
+    Gtk::TreeModelColumn<bool> m_separator;
   };
 
   ModelColumns m_model_columns;

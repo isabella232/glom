@@ -46,6 +46,8 @@ ComboBox_Relationship::ComboBox_Relationship(BaseObjectType* cobject, const Glib
   pack_start(*m_renderer_fromfield);
   m_renderer_fromfield->property_xalign() = 0.0f;
   set_cell_data_func(*m_renderer_fromfield, sigc::mem_fun(*this, &ComboBox_Relationship::on_cell_data_fromfield));
+
+  set_row_separator_func(sigc::mem_fun(*this, &ComboBox_Relationship::on_row_separator));
 }
 
 ComboBox_Relationship::~ComboBox_Relationship()
@@ -115,6 +117,7 @@ void ComboBox_Relationship::set_relationships(const type_vecRelationships& relat
     Gtk::TreeModel::Row row = *tree_iter;
 
     row[m_model_columns.m_relationship] = *iter;
+    row[m_model_columns.m_separator] = false;
   }
 }
 
@@ -146,6 +149,13 @@ void ComboBox_Relationship::on_cell_data_title(const Gtk::TreeModel::const_itera
   }
 }
 
+bool ComboBox_Relationship::on_row_separator(const Glib::RefPtr<Gtk::TreeModel>& model, const Gtk::TreeModel::const_iterator& iter)
+{
+  Gtk::TreeModel::Row row = *iter;
+  const bool separator = row[m_model_columns.m_separator];
+  return separator;
+}
+
 void ComboBox_Relationship::on_cell_data_fromfield(const Gtk::TreeModel::const_iterator& iter)
 {
   Gtk::TreeModel::Row row = *iter;
@@ -169,10 +179,17 @@ void ComboBox_Relationship::set_display_parent_table(const Glib::ustring& table_
 
   if(!already_added)
   {
+    //Add a separator row after the table name:
     Gtk::TreeModel::iterator tree_iter = m_model->prepend();
     Gtk::TreeModel::Row row = *tree_iter;
+    row[m_model_columns.m_separator] = true;
 
+    tree_iter = m_model->prepend();
+    row = *tree_iter;
     row[m_model_columns.m_relationship] = sharedptr<Relationship>(); //A marker for the parent table's item. See the on_data_* signal handlers.
+    row[m_model_columns.m_separator] = false;
+
+   
   }
 }
 

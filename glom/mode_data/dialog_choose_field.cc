@@ -92,6 +92,9 @@ void Dialog_ChooseField::set_document(Document_Glom* document, const Glib::ustri
     if(iterFound != m_model->children().end())
     {
       m_treeview->get_selection()->select(iterFound);
+
+      //Make sure that it is scrolled into view:
+      m_treeview->scroll_to_row(Gtk::TreeModel::Path(iterFound));
     }
   }
 }
