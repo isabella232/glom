@@ -1,5 +1,23 @@
 2006-02-20  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/box_db_table.cc:
+	* glom/box_db_table.h:
+	* glom/mode_data/box_data.cc:
+	* glom/mode_data/box_data.h:
+	* glom/mode_data/box_data_details.cc:
+	* glom/mode_data/box_data_details.h:
+	* glom/mode_data/box_data_list.cc:
+	* glom/mode_data/box_data_list.h:
+	* glom/base_db.cc:
+	* glom/base_db.h: Moved calculate_field(), get_record_field_values(), 
+	set_entered_field_data(), set_field_value_in_database(), build_sql_select(), 
+	do_calculations(), get_calculated_fields(), do_lookups(), get_lookup_fields(), 
+	get_lookup_value(), and refresh_related_fields() down to the Base_DB class, 
+	with extra table_name arguments, so we can recalculate/lookup fields even if they 
+	the tables or records are not being shown currently.
+
+2006-02-20  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/connectionpool.cc:
 	* glom/connectionpool.h: connect(): Parse the result of SELECT version() and return 
 	it from get_postgres_server_version(), so we can optionally use some new features,

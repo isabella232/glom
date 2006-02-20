@@ -74,11 +74,6 @@ Gnome::Gda::Value Box_DB_Table::get_entered_field_data(const sharedptr<const Lay
   return Gnome::Gda::Value(); //null
 }
 
-void Box_DB_Table::set_entered_field_data(const sharedptr<const LayoutItem_Field>& /* field */, const Gnome::Gda::Value& /* value */)
-{
-  //Override this.
-}
-
 unsigned long Box_DB_Table::get_last_auto_increment_value(const Glib::RefPtr<Gnome::Gda::DataModel>& data_model, const Glib::ustring& /* field_name */)
 {
   sharedptr<SharedConnection> sharedconnection = connect_to_server();

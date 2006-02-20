@@ -43,6 +43,7 @@ public:
 
   virtual Gnome::Gda::Value get_entered_field_data(const sharedptr<const LayoutItem_Field>& field) const;
   virtual void set_entered_field_data(const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
+  virtual void set_entered_field_data(const Gtk::TreeModel::iterator& row, const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
 
   //Signals:
   typedef sigc::signal<void> type_signal_void;
@@ -64,9 +65,6 @@ protected:
   virtual bool fill_from_database(); //override.
   virtual void create_layout();
   //virtual void fill_related();
-
-  virtual void do_lookups(const Gtk::TreeModel::iterator& row, const sharedptr<const LayoutItem_Field>& field_changed, const Gnome::Gda::Value& field_value, const sharedptr<const Field>& primary_key, const Gnome::Gda::Value& primary_key_value);
-  virtual void refresh_related_fields(const Gtk::TreeModel::iterator& row, const sharedptr<const LayoutItem_Field>& field_changed, const Gnome::Gda::Value& field_value, const sharedptr<const Field>& primary_key, const Gnome::Gda::Value& primary_key_value);
 
   virtual sharedptr<Field> get_field_primary_key() const;
 

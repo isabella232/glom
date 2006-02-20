@@ -384,7 +384,7 @@ void Box_Data_List::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, 
       //const sharedptr<const Field>& field = layout_field->m_field;
       //const Glib::ustring strFieldName = layout_field->get_name();
 
-      const bool bTest = set_field_value_in_database(row, layout_field, field_value, primary_key_field, primary_key_value);
+      const bool bTest = set_field_value_in_database(m_table_name, row, layout_field, field_value, primary_key_field, primary_key_value);
 
       //Glib::ustring strQuery = "UPDATE \"" + table_name + "\"";
       //strQuery += " SET " +  /* table_name + "." + postgres does not seem to like the table name here */ strFieldName + " = " + field.sql(field_value);
@@ -402,7 +402,7 @@ void Box_Data_List::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, 
         do_lookups(row, layout_field, field_value, primary_key_field, primary_key_value);
 
         //Recalculate calculated fields, if this field is used by them:
-        do_calculations(layout_field, primary_key_field, primary_key_value);
+        do_calculations(m_table_name, layout_field, primary_key_field, primary_key_value);
 
         //Update related fields, if this field is used in the relationship:
         refresh_related_fields(row, layout_field, field_value, primary_key_field, primary_key_value);
@@ -437,93 +437,7 @@ void Box_Data_List::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, 
 
 }
 
-void Box_Data_List::refresh_related_fields(const Gtk::TreeModel::iterator& row, const sharedptr<const LayoutItem_Field>& field_changed, const Gnome::Gda::Value& /* field_value */, const sharedptr<const Field>& primary_key, const Gnome::Gda::Value& primary_key_value)
-{
-  if(field_changed->get_has_relationship_name())
-    return; //TODO: Handle these too.
 
-  //Get values for lookup fields, if this field triggers those relationships:
-  //TODO_performance: There is a LOT of iterating and copying here.
-  const Glib::ustring strFieldName = field_changed->get_name();
-  type_vecLayoutFields fieldsToGet = get_related_fields(strFieldName);
-
-  if(!fieldsToGet.empty())
-  {
-    const Glib::ustring query = build_sql_select(m_table_name, fieldsToGet, primary_key, primary_key_value);
-
-    Glib::RefPtr<Gnome::Gda::DataModel> result = Query_execute(query);
-    if(!result)
-    {
-      g_warning("Box_Data_List::refresh_related_fields(): no result.");
-      handle_error();
-    }
-    else
-    {
-      //Field contents:
-      if(result->get_n_rows())
-      {
-        type_vecLayoutFields::const_iterator iterFields = fieldsToGet.begin();
-
-        guint cols_count = result->get_n_columns();
-        for(guint uiCol = 0; uiCol < cols_count; uiCol++)
-        {
-          const Gnome::Gda::Value value = result->get_value_at(uiCol, 0 /* row */);
-          sharedptr<LayoutItem_Field> layout_item = *iterFields;
-
-          //g_warning("list fill: field_name=%s", iterFields->get_name().c_str());
-          //g_warning("  value_as_string=%s", value.to_string().c_str());
-
-          m_AddDel.set_value(row, layout_item, value);
-            //g_warning("addedel size=%d", m_AddDel.get_count());
-
-          ++iterFields;
-        }
-      }
-      else
-       g_warning("Box_Data_List::refresh_related_fields(): no records found.");
-    }
-  }
-}
-
-void Box_Data_List::do_lookups(const Gtk::TreeModel::iterator& row, const sharedptr<const LayoutItem_Field>& field_changed, const Gnome::Gda::Value& field_value, const sharedptr<const Field>& primary_key, const Gnome::Gda::Value& primary_key_value)
-{
-   if(field_changed->get_has_relationship_name())
-    return; //TODO: Handle these too.
-
-
-   //Get values for lookup fields, if this field triggers those relationships:
-   //TODO_performance: There is a LOT of iterating and copying here.
-   const Glib::ustring strFieldName = field_changed->get_name();
-   type_list_lookups lookups = get_lookup_fields(strFieldName);
-   for(type_list_lookups::const_iterator iter = lookups.begin(); iter != lookups.end(); ++iter)
-   {
-     sharedptr<const LayoutItem_Field> layout_item = iter->first;
-
-     sharedptr<const Relationship> relationship = iter->second;
-     const sharedptr<const Field> field_lookup = layout_item->get_full_field_details();
-     if(field_lookup)
-     {
-      sharedptr<const Field> field_source = get_fields_for_table_one_field(relationship->get_to_table(), field_lookup->get_lookup_field());
-      if(field_source)
-      {
-        const Gnome::Gda::Value value = get_lookup_value(iter->second /* relationship */,  field_source /* the field to look in to get the value */, field_value /* Value of to and from fields */);
-
-        const Gnome::Gda::Value value_converted = GlomConversions::convert_value(value, layout_item->get_glom_type());
-        //Add it to the view:
-        m_AddDel.set_value(row, layout_item, value_converted);
-
-        //Add it to the database (even if it is not shown in the view)
-        set_field_value_in_database(row, layout_item, value_converted, primary_key, primary_key_value); //Also does dependent lookups/recalcs.
-        //Glib::ustring strQuery = "UPDATE \"" + m_table_name + "\"";
-        //strQuery += " SET " + field_lookup.get_name() + " = " + field_lookup.sql(value);
-        //strQuery += " WHERE " + primary_key.get_name() + " = " + primary_key.sql(primary_key_value);
-        //Query_execute(strQuery);  //TODO: Handle errors
-
-        //TODO: Handle lookups triggered by these fields (recursively)? TODO: Check for infinitely looping lookups.
-      }
-    }
-  }
-}
 
 void Box_Data_List::on_details_nav_first()
 {
@@ -655,6 +569,11 @@ Gnome::Gda::Value Box_Data_List::get_entered_field_data(const sharedptr<const La
 void Box_Data_List::set_entered_field_data(const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value)
 {
   return m_AddDel.set_value_selected(field, value);
+}
+
+void Box_Data_List::set_entered_field_data(const Gtk::TreeModel::iterator& row, const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value)
+{
+  return m_AddDel.set_value(row, field, value);
 }
 
 bool Box_Data_List::get_showing_multiple_records() const

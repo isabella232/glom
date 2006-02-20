@@ -377,6 +377,11 @@ void Box_Data_Details::set_entered_field_data(const sharedptr<const LayoutItem_F
   m_FlowTable.set_field_value(field, value);
 }
 
+void Box_Data_Details::set_entered_field_data(const Gtk::TreeModel::iterator& /* row */, const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value)
+{
+  set_entered_field_data(field, value);
+}
+
 Gnome::Gda::Value Box_Data_Details::get_primary_key_value_selected()
 {
   return m_primary_key_value;
@@ -399,13 +404,13 @@ void Box_Data_Details::recalculate_fields_for_related_records(const Glib::ustrin
     {
       sharedptr<Field> field = *iter;
 
-      calculate_field(field, m_field_primary_key, primary_key_value); //And any dependencies.
+      calculate_field(m_table_name, field, m_field_primary_key, primary_key_value); //And any dependencies.
 
       //Calculate anything that depends on this.
       sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
       layout_item->set_full_field_details(field);
 
-      do_calculations(layout_item, m_field_primary_key, primary_key_value, false /* recurse, reusing m_FieldsCalculationInProgress */);
+      do_calculations(m_table_name, layout_item, m_field_primary_key, primary_key_value, false /* recurse, reusing m_FieldsCalculationInProgress */);
     }
   }
 
@@ -521,7 +526,7 @@ void Box_Data_Details::on_flowtable_script_button_clicked(const sharedptr<const 
   if(layout_item)
   {
     const Gnome::Gda::Value primary_key_value = get_primary_key_value();
-    const type_map_fields field_values = get_record_field_values(primary_key_value);
+    const type_map_fields field_values = get_record_field_values(m_table_name, m_field_primary_key, primary_key_value);
 
     glom_execute_python_function_implementation(layout_item->get_script(), field_values, //TODO: Maybe use the field's type here.
     get_document(), get_table_name());
@@ -596,7 +601,7 @@ void Box_Data_Details::on_flowtable_field_edited(const sharedptr<const LayoutIte
     //Update the field in the record (the record with this primary key):
     try
     {
-      const bool bTest = set_field_value_in_database(layout_field, field_value, primary_key_field, primary_key_value);
+      const bool bTest = set_field_value_in_database(m_table_name, layout_field, field_value, primary_key_field, primary_key_value);
 
       //Glib::ustring strQuery = "UPDATE \"" + table_name + "\"";
       //strQuery += " SET " +  /* table_name + "." + postgres does not seem to like the table name here */ strFieldName + " = " + field.sql(field_value);
@@ -682,86 +687,6 @@ void Box_Data_Details::on_flowtable_field_edited(const sharedptr<const LayoutIte
       }
     }
   } //if(get_primary_key_value().size())
-}
-
-void Box_Data_Details::refresh_related_fields(const Gtk::TreeModel::iterator& /* row */, const sharedptr<const LayoutItem_Field>& field_changed, const Gnome::Gda::Value& /* field_value */, const sharedptr<const Field>& primary_key, const Gnome::Gda::Value& primary_key_value)
-{
-  if(field_changed->get_has_relationship_name())
-    return; //TODO: Handle these too.
-
-  //Get values for lookup fields, if this field triggers those relationships:
-  //TODO_performance: There is a LOT of iterating and copying here.
-  const Glib::ustring strFieldName = field_changed->get_name();
-  type_vecLayoutFields fieldsToGet = get_related_fields(strFieldName);
-
-  if(!fieldsToGet.empty())
-  {
-    const Glib::ustring query = build_sql_select(m_table_name, fieldsToGet, primary_key, primary_key_value);
-
-    //g_warning("Box_Data_Details::refresh_related_fields(): get query = %s", query.c_str());
-    
-    Glib::RefPtr<Gnome::Gda::DataModel> result = Query_execute(query);
-    if(!result)
-      handle_error();
-    else
-    {
-      //Field contents:
-      if(result->get_n_rows())
-      {
-        type_vecLayoutFields::const_iterator iterFields = fieldsToGet.begin();
-
-        guint cols_count = result->get_n_columns();
-        for(guint uiCol = 0; uiCol < cols_count; uiCol++)
-        {
-          const Gnome::Gda::Value value = result->get_value_at(uiCol, 0 /* row */);
-          sharedptr<LayoutItem_Field> layout_item = *iterFields;
-
-          //g_warning("list fill: field_name=%s", iterFields->get_name().c_str());
-          //g_warning("  value_as_string=%s", value.to_string().c_str());
-
-          m_FlowTable.set_field_value(layout_item, value);
-
-          ++iterFields;
-        }
-      }
-    }
-  }
-}
-
-void Box_Data_Details::do_lookups(const Gtk::TreeModel::iterator& /* row */, const sharedptr<const LayoutItem_Field>& field_changed, const Gnome::Gda::Value& field_value, const sharedptr<const Field>& primary_key, const Gnome::Gda::Value& primary_key_value)
-{
-  if(field_changed->get_has_relationship_name())
-  return; //TODO: Handle these too.
-
-  //Get values for lookup fields, if this field triggers those relationships:
-  //TODO_performance: There is a LOT of iterating and copying here.
-  const Glib::ustring strFieldName = field_changed->get_name();
-  const type_list_lookups lookups = get_lookup_fields(strFieldName);
-  for(type_list_lookups::const_iterator iter = lookups.begin(); iter != lookups.end(); ++iter)
-  {
-    sharedptr<const LayoutItem_Field> layout_item = iter->first;
-
-    sharedptr<const Relationship> relationship = iter->second;
-    const sharedptr<const Field>& field_lookup = layout_item->get_full_field_details();
-    if(field_lookup)
-    {
-      const Glib::ustring field_lookup_name = field_lookup->get_name();
-
-      sharedptr<const Field> field_source = get_fields_for_table_one_field(relationship->get_to_table(), field_lookup->get_lookup_field());
-      if(field_source)
-      {
-        const Gnome::Gda::Value value = get_lookup_value(iter->second /* relationship */,  field_source /* the field to look in to get the value */, field_value /* Value of to and from fields */);
-
-        //Add it to the view:
-        //TODO? layout_item->set_relationship_name();
-        const Gnome::Gda::Value value_converted = GlomConversions::convert_value(value, layout_item->get_glom_type());
-        set_entered_field_data(layout_item, value_converted);
-
-        //Add it to the database (even if it is not shown in the view)
-        set_field_value_in_database(layout_item, value_converted, primary_key, primary_key_value);
-      }
-    }
-  }
 }
 
 void Box_Data_Details::on_userlevel_changed(AppState::userlevels user_level)
