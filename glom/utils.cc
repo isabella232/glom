@@ -263,11 +263,11 @@ Glib::ustring GlomUtils::build_sql_select_with_where_clause(const Glib::ustring&
   return result;
 }
 
-Glib::ustring GlomUtils::build_sql_select_with_primary_key(const Glib::ustring& table_name, const type_vecLayoutFields& fieldsToGet, const sharedptr<const Field>& primary_key_field, const Gnome::Gda::Value& primary_key_value)
+Glib::ustring GlomUtils::build_sql_select_with__key(const Glib::ustring& table_name, const type_vecLayoutFields& fieldsToGet, const sharedptr<const Field>& key_field, const Gnome::Gda::Value& key_value)
 {
-  if(!GlomConversions::value_is_empty(primary_key_value)) //If there is a record to show:
+  if(!GlomConversions::value_is_empty(key_value)) //If there is a record to show:
   {
-    const Glib::ustring where_clause = "\"" + table_name + "\".\"" + primary_key_field->get_name() + "\" = " + primary_key_field->sql(primary_key_value);
+    const Glib::ustring where_clause = "\"" + table_name + "\".\"" + key_field->get_name() + "\" = " + key_field->sql(key_value);
     return GlomUtils::build_sql_select_with_where_clause(table_name, fieldsToGet, where_clause);
   }
 
