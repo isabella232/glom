@@ -263,7 +263,7 @@ Glib::ustring GlomUtils::build_sql_select_with_where_clause(const Glib::ustring&
   return result;
 }
 
-Glib::ustring GlomUtils::build_sql_select_with__key(const Glib::ustring& table_name, const type_vecLayoutFields& fieldsToGet, const sharedptr<const Field>& key_field, const Gnome::Gda::Value& key_value)
+Glib::ustring GlomUtils::build_sql_select_with_key(const Glib::ustring& table_name, const type_vecLayoutFields& fieldsToGet, const sharedptr<const Field>& key_field, const Gnome::Gda::Value& key_value)
 {
   if(!GlomConversions::value_is_empty(key_value)) //If there is a record to show:
   {

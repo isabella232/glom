@@ -117,13 +117,13 @@ protected:
     FieldInRecord()
     {}
 
-    FieldInRecord(const Glib::ustring& table_name, const sharedptr<const Field>& field, const sharedptr<const Field>& primary_key, const Gnome::Gda::Value& primary_key_value)
-    : m_table_name(table_name), m_field(field), m_primary_key(primary_key), m_primary_key_value(primary_key_value)
+    FieldInRecord(const Glib::ustring& table_name, const sharedptr<const Field>& field, const sharedptr<const Field>& key, const Gnome::Gda::Value& key_value)
+    : m_table_name(table_name), m_field(field), m_key(key), m_key_value(key_value)
     {
     }
 
-    FieldInRecord(const sharedptr<const LayoutItem_Field>& layout_item, const Glib::ustring& parent_table_name, const sharedptr<const Field>& parent_primary_key, const Gnome::Gda::Value& primary_key_value, const Document_Glom& document)
-    : m_primary_key_value(primary_key_value)
+    FieldInRecord(const sharedptr<const LayoutItem_Field>& layout_item, const Glib::ustring& parent_table_name, const sharedptr<const Field>& parent_key, const Gnome::Gda::Value& key_value, const Document_Glom& document)
+    : m_key_value(key_value)
     {
       m_field = layout_item->get_full_field_details();
 
@@ -136,13 +136,13 @@ protected:
           m_table_name = rel->get_to_table();
 
           //Actually a foreign key:
-          m_primary_key = document.get_field(m_table_name, rel->get_to_field());
+          m_key = document.get_field(m_table_name, rel->get_to_field());
         }
       }
       else
       {
         m_table_name = parent_table_name;
-        m_primary_key = parent_primary_key;
+        m_key = parent_key;
       }
     }
 
@@ -151,8 +151,8 @@ protected:
     sharedptr<const Field> m_field;
 
     //Identify the record:
-    sharedptr<const Field> m_primary_key;
-    Gnome::Gda::Value m_primary_key_value;
+    sharedptr<const Field> m_key;
+    Gnome::Gda::Value m_key_value;
   };
 
   /** Calculate values for fields, set them in the database, and show them in the layout.

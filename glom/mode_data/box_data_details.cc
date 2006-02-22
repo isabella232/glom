@@ -225,7 +225,7 @@ bool Box_Data_Details::fill_from_database()
         //g_warning("primary_key name = %s", m_field_primary_key->get_name().c_str());
         const int index_primary_key = fieldsToGet.size() - 1;
 
-        const Glib::ustring query = GlomUtils::build_sql_select_with_primary_key(m_table_name, fieldsToGet, m_field_primary_key, m_primary_key_value);
+        const Glib::ustring query = GlomUtils::build_sql_select_with_key(m_table_name, fieldsToGet, m_field_primary_key, m_primary_key_value);
         Glib::RefPtr<Gnome::Gda::DataModel> result;
 
         if(!primary_key_is_empty)

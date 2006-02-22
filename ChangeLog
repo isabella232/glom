@@ -1,5 +1,17 @@
 2006-02-22  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/base_db.cc:
+	* glom/base_db.h: FieldInRecord: Change primary_key* 
+	to key*, so we can use this for foreign keys for 
+	related records.
+	* glom/mode_data/box_data.cc:
+	* glom/mode_data/box_data_details.cc: Adapt.
+	* glom/utils.cc:
+	* glom/utils.h: Rename build_sql_select_with_primary_key() to 
+	build_sql_select_with_key
+
+2006-02-22  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/utils.cc:
 	* glom/utils.h: Added build_sql_select_with_primary_key().
 	* glom/base_db.cc:

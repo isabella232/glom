@@ -2220,7 +2220,7 @@ void Base_DB::do_calculations(const FieldInRecord& field_changed, bool first_cal
     {
 
       //TODO: What if the field is in another table?
-      FieldInRecord triggered_field(field_changed.m_table_name, field, field_changed.m_primary_key, field_changed.m_primary_key_value);
+      FieldInRecord triggered_field(field_changed.m_table_name, field, field_changed.m_key, field_changed.m_key_value);
       calculate_field(triggered_field); //And any dependencies.
   
       //Calculate anything that depends on this.

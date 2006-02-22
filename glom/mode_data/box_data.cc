@@ -410,7 +410,7 @@ void Box_Data::refresh_related_fields(const FieldInRecord& field_in_record_chang
 
   if(!fieldsToGet.empty())
   {
-    const Glib::ustring query = GlomUtils::build_sql_select_with_primary_key(field_in_record_changed.m_table_name, fieldsToGet, field_in_record_changed.m_primary_key, field_in_record_changed.m_primary_key_value);
+    const Glib::ustring query = GlomUtils::build_sql_select_with_key(field_in_record_changed.m_table_name, fieldsToGet, field_in_record_changed.m_key, field_in_record_changed.m_key_value);
 
     Glib::RefPtr<Gnome::Gda::DataModel> result = Query_execute(query);
     if(!result)
