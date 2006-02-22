@@ -610,6 +610,12 @@ void DbAddDel::construct_specified_columns()
 
           break;
         }
+        case(Field::TYPE_IMAGE):
+        {
+          pCellRenderer = Gtk::manage( new Gtk::CellRendererPixbuf() );
+
+          break;
+        }
         default:
         {
           if(column_info.m_field->get_formatting_used().get_has_choices())
@@ -707,15 +713,23 @@ void DbAddDel::construct_specified_columns()
         }
         else
         {
-           Gtk::CellRendererToggle* pCellRenderer = dynamic_cast<Gtk::CellRendererToggle*>(m_TreeView.get_column_cell_renderer(view_column_index));
-           if(pCellRenderer)
-           {
-             pCellRenderer->property_activatable() = true;
+          Gtk::CellRendererToggle* pCellRenderer = dynamic_cast<Gtk::CellRendererToggle*>(m_TreeView.get_column_cell_renderer(view_column_index));
+          if(pCellRenderer)
+          {
+            pCellRenderer->property_activatable() = true;
 
-             //Connect to its signal:
-             pCellRenderer->signal_toggled().connect(
-               sigc::bind( sigc::mem_fun(*this, &DbAddDel::on_treeview_cell_edited_bool), model_column_index ) );
-           }
+            //Connect to its signal:
+            pCellRenderer->signal_toggled().connect(
+              sigc::bind( sigc::mem_fun(*this, &DbAddDel::on_treeview_cell_edited_bool), model_column_index ) );
+          }
+          else
+          {
+            Gtk::CellRendererPixbuf* pCellRenderer = dynamic_cast<Gtk::CellRendererPixbuf*>(m_TreeView.get_column_cell_renderer(view_column_index));
+            if(pCellRenderer)
+            {
+              //TODO: Do something when it's clicked, such as show the big image in a window?
+            }
+          }
         }
       }
 
@@ -1575,7 +1589,16 @@ void DbAddDel::treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gt
       case(Field::TYPE_BOOLEAN):
       {
         Gtk::CellRendererToggle* pDerived = dynamic_cast<Gtk::CellRendererToggle*>(renderer);
-        pDerived->set_active( value.get_bool() ); 
+        if(pDerived)
+          pDerived->set_active( value.get_bool() ); 
+
+        break;
+      }
+      case(Field::TYPE_IMAGE):
+      {
+        //Gtk::CellRendererPixbuf* pDerived = dynamic_cast<Gtk::CellRendererPixbuf*>(renderer);
+        //if(pDerived)
+        //  //TODO: Reuse get_binary() and scaling code from ImageGlom.
 
         break;
       }
@@ -1583,10 +1606,12 @@ void DbAddDel::treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gt
       {
         //TODO: Maybe we should have custom cellrenderers for time, date, and numbers.
         Gtk::CellRendererText* pDerived = dynamic_cast<Gtk::CellRendererText*>(renderer);
-
-        const Glib::ustring text = GlomConversions::get_text_for_gda_value(column_info.m_field->get_glom_type(), value, column_info.m_field->get_formatting_used().m_numeric_format);
-        //g_assert(text != "NULL");
-        pDerived->property_text() = text;
+        if(pDerived)
+        {
+          const Glib::ustring text = GlomConversions::get_text_for_gda_value(column_info.m_field->get_glom_type(), value, column_info.m_field->get_formatting_used().m_numeric_format);
+          //g_assert(text != "NULL");
+          pDerived->property_text() = text;
+        }
 
         break;
       } 

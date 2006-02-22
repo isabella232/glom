@@ -21,6 +21,7 @@
 #include "dialog_layout_list.h"
 #include "dialog_choose_field.h"
 #include "../layout_item_dialogs/dialog_field_layout.h"
+#include "../frame_glom.h"
 #include <bakery/App/App_Gtk.h> //For util_bold_message().
 
 //#include <libgnome/gnome-i18n.h>
@@ -270,6 +271,11 @@ void Dialog_Layout_List::on_treeview_fields_selection_changed()
   enable_buttons();
 }
 
+void Dialog_Layout_List::warn_about_images()
+{
+  Frame_Glom::show_ok_dialog(_("Images Not Allowed On List View"), _("The list view cannot display image fields."), *this, Gtk::MESSAGE_WARNING); //TODO: Scale them down to thumbnails in a GtkCellRenderPixbuf?
+}
+
 void Dialog_Layout_List::on_button_add_field()
 {
   try
@@ -290,22 +296,31 @@ void Dialog_Layout_List::on_button_add_field()
         sharedptr<LayoutItem_Field> field = dialog->get_field_chosen();
         if(field)
         {
-          //Add the field details to the layout treeview:
-          Gtk::TreeModel::iterator iter =  m_model_fields->append();
-
-          if(iter)
+          if(field->get_glom_type() == Field::TYPE_IMAGE)
           {
-            Gtk::TreeModel::Row row = *iter;
-            row[m_ColumnsFields.m_col_layout_item] = field;
+            warn_about_images();
+          }
+          else
+          {
+            //Add the field details to the layout treeview:
+            Gtk::TreeModel::iterator iter =  m_model_fields->append();
 
-            //Scroll to, and select, the new row:
-            Glib::RefPtr<Gtk::TreeView::Selection> refTreeSelection = m_treeview_fields->get_selection();
-            if(refTreeSelection)
-              refTreeSelection->select(iter);
+            if(iter)
+            {
+              Gtk::TreeModel::Row row = *iter;
+              row[m_ColumnsFields.m_col_layout_item] = field;
 
-            m_treeview_fields->scroll_to_row( Gtk::TreeModel::Path(iter) );
+              //Scroll to, and select, the new row:
+              Glib::RefPtr<Gtk::TreeView::Selection> refTreeSelection = m_treeview_fields->get_selection();
+              if(refTreeSelection)
+                refTreeSelection->select(iter);
 
-            treeview_fill_sequences(m_model_fields, m_ColumnsFields.m_col_sequence); //The document should have checked this already, but it does not hurt to check again.
+              m_treeview_fields->scroll_to_row( Gtk::TreeModel::Path(iter) );
+
+              treeview_fill_sequences(m_model_fields, m_ColumnsFields.m_col_sequence); //The document should have checked this already, but it does not hurt to check again.
+
+              m_modified = true;
+            }
           }
         }
       }
@@ -400,7 +415,15 @@ void Dialog_Layout_List::on_button_edit_field()
             {
               //Set the field details in the layout treeview:
 
-              row[m_ColumnsFields.m_col_layout_item] = field;
+              if(field->get_glom_type() == Field::TYPE_IMAGE)
+              {
+                warn_about_images();
+              }
+              else
+              {
+                row[m_ColumnsFields.m_col_layout_item] = field;
+                m_modified = true;
+              }
 
               //Scroll to, and select, the new row:
               /*
@@ -460,7 +483,17 @@ void Dialog_Layout_List::on_button_field_formatting()
             //Get the chosen field:
             sharedptr<LayoutItem_Field> field = dialog->get_field_chosen();
             if(field)
-              row[m_ColumnsFields.m_col_layout_item] = field;
+            {
+              if(field->get_glom_type() == Field::TYPE_IMAGE)
+              {
+                warn_about_images();
+              }
+              else
+              {
+                row[m_ColumnsFields.m_col_layout_item] = field;
+                m_modified = true;
+              }
+            }
           }
         }
       }

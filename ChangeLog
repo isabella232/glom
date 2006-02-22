@@ -1,5 +1,15 @@
 2006-02-22  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/mode_data/dialog_layout_list.cc:
+	* glom/mode_data/dialog_layout_list.h: Do not allow people to put image 
+	fields on the list view, because it can not show them yet.
+	* glom/utility_widgets/db_adddel/db_adddel.cc: Some skeleton code to 
+	support (very scaled-down) images on the list view. But I have not actually 
+	implemented it because I do not want yet more versions of the code that 
+	works around the libgda 1.2 binary escaping problem. 
+
+2006-02-22  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/mode_design/fields/box_db_table_definition.cc: 
 	postgres_change_column_type(): Use textcat() to add a preceding 0 when 
 	using to_number(), so that it always succeeds. Now I can not make glom 
