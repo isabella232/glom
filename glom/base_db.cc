@@ -1949,19 +1949,27 @@ void Base_DB::calculate_field_in_all_records(const Glib::ustring& table_name, co
     return;
   }
 
+  FieldInRecord field_in_record;
+  field_in_record.m_table_name = table_name;
+  field_in_record.m_field = field;
+  field_in_record.m_primary_key = primary_key;
+
   //Calculate the value for the field in every record:
   const int rows_count = data_model->get_n_rows();
   for(int row = 0; row < rows_count; ++row)
   {
     const Gnome::Gda::Value primary_key_value = data_model->get_value_at(row, 0);
     if(!GlomConversions::value_is_empty(primary_key_value))
-      calculate_field(table_name, field, primary_key, primary_key_value);
+    {
+      field_in_record.m_primary_key_value = primary_key_value;
+      calculate_field(field_in_record);
+    }
   }
 }
 
-void Base_DB::calculate_field(const Glib::ustring& table_name, const sharedptr<const Field>& field, const sharedptr<const Field>& primary_key, const Gnome::Gda::Value& primary_key_value)
+void Base_DB::calculate_field(const FieldInRecord& field_in_record)
 {
-  const Glib::ustring field_name = field->get_name();
+  const Glib::ustring field_name = field_in_record.m_field->get_name();
   //g_warning("Box_Data::calculate_field(): field_name=%s", field_name.c_str());
 
   //Do we already have this in our list?
@@ -1970,7 +1978,7 @@ void Base_DB::calculate_field(const Glib::ustring& table_name, const sharedptr<c
   {
     //Add it:
     CalcInProgress item;
-    item.m_field = field;
+    item.m_field = field_in_record.m_field;
     m_FieldsCalculationInProgress[field_name] = item;
 
     iterFind = m_FieldsCalculationInProgress.find(field_name); //Always succeeds.
@@ -2000,16 +2008,19 @@ void Base_DB::calculate_field(const Glib::ustring& table_name, const sharedptr<c
     layout_item->set_full_field_details(refCalcProgress.m_field);
 
     //Calculate dependencies first:
-    const Field::type_list_strings fields_needed = field->get_calculation_fields();
+    const Field::type_list_strings fields_needed = field_in_record.m_field->get_calculation_fields();
     for(Field::type_list_strings::const_iterator iterNeeded = fields_needed.begin(); iterNeeded != fields_needed.end(); ++iterNeeded)
     {
-      sharedptr<const Field> field_needed = get_document()->get_field(table_name, *iterNeeded);
+      sharedptr<const Field> field_needed = get_document()->get_field(field_in_record.m_table_name, *iterNeeded);
       if(field_needed)
       {
         if(field_needed->get_has_calculation())
         {
           //g_warning("  calling calculate_field() for %s", iterNeeded->c_str());
-          calculate_field(table_name, field_needed, primary_key, primary_key_value);
+          //TODO: What if the field is in a different table?
+
+          FieldInRecord needed_field_in_record(field_in_record.m_table_name, field_needed, field_in_record.m_primary_key, field_in_record.m_primary_key_value);
+          calculate_field(needed_field_in_record);
         }
         else
         {
@@ -2032,25 +2043,35 @@ void Base_DB::calculate_field(const Glib::ustring& table_name, const sharedptr<c
     {
       //recalculate:
       //TODO_Performance: We don't know what fields the python calculation will use, so we give it all of them:
-      const type_map_fields field_values = get_record_field_values(table_name, primary_key, primary_key_value);
+      const type_map_fields field_values = get_record_field_values(field_in_record.m_table_name, field_in_record.m_primary_key, field_in_record.m_primary_key_value);
+      if(!field_values.empty())
+      {
+        sharedptr<const Field> field = refCalcProgress.m_field;
+        if(field)
+        {
+          refCalcProgress.m_value = glom_evaluate_python_function_implementation(field->get_glom_type(), field->get_calculation(), field_values, get_document(), field_in_record.m_table_name);
 
-      sharedptr<const Field> field = refCalcProgress.m_field;
-      refCalcProgress.m_value  = glom_evaluate_python_function_implementation(field->get_glom_type(), field->get_calculation(), field_values,
-            get_document(), table_name);
+          refCalcProgress.m_calc_finished = true;
+          refCalcProgress.m_calc_in_progress = false;
 
-      refCalcProgress.m_calc_finished = true;
-      refCalcProgress.m_calc_in_progress = false;
+          sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
+          layout_item->set_full_field_details(field);
 
-      sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
-      layout_item->set_full_field_details(field);
+          //show it:
+          set_entered_field_data(layout_item, refCalcProgress.m_value ); //TODO: If this record is shown.
 
-      //show it:
-      set_entered_field_data(layout_item, refCalcProgress.m_value ); //TODO: If this records is shown.
+          //Add it to the database (even if it is not shown in the view)
+          //Using true for the last parameter means we use existing calculations where possible,
+          //instead of recalculating a field that is being calculated already, and for which this dependent field is being calculated anyway.
+          Document_Glom* document = get_document();
+          if(document)
+          {
+            FieldInRecord field_in_record_layout(layout_item, field_in_record.m_table_name /* parent */, field_in_record.m_primary_key, field_in_record.m_primary_key_value, *document);
 
-      //Add it to the database (even if it is not shown in the view)
-      //Using true for the last parameter means we use existing calculations where possible,
-      //instead of recalculating a field that is being calculated already, and for which this dependent field is being calculated anyway.
-      set_field_value_in_database(table_name, layout_item, refCalcProgress.m_value, primary_key, primary_key_value, true); //This triggers other recalculations/lookups.
+            set_field_value_in_database(field_in_record_layout, refCalcProgress.m_value, true); //This triggers other recalculations/lookups.
+          }
+        }
+      }
     }
   }
 
@@ -2080,7 +2101,7 @@ Base_DB::type_map_fields Base_DB::get_record_field_values(const Glib::ustring& t
     {
       //sharedptr<const Field> fieldPrimaryKey = get_field_primary_key();
 
-      const Glib::ustring query = build_sql_select(table_name, fieldsToGet, primary_key, primary_key_value);
+      const Glib::ustring query = GlomUtils::build_sql_select_with_primary_key(table_name, fieldsToGet, primary_key, primary_key_value);
       Glib::RefPtr<Gnome::Gda::DataModel> data_model = Query_execute(query);
 
       if(data_model && data_model->get_n_rows())
@@ -2133,42 +2154,24 @@ void Base_DB::set_entered_field_data(const Gtk::TreeModel::iterator& /* row */, 
   //Override this.
 }
 
-bool Base_DB::set_field_value_in_database(const Glib::ustring& table_name, const sharedptr<const LayoutItem_Field>& field_layout, const Gnome::Gda::Value& field_value, const sharedptr<const Field>& primary_key_field, const Gnome::Gda::Value& primary_key_value, bool use_current_calculations)
+bool Base_DB::set_field_value_in_database(const FieldInRecord& field_in_record, const Gnome::Gda::Value& field_value, bool use_current_calculations)
 {
-  return set_field_value_in_database(table_name, Gtk::TreeModel::iterator(), field_layout, field_value, primary_key_field, primary_key_value, use_current_calculations);
+  return set_field_value_in_database(field_in_record, Gtk::TreeModel::iterator(), field_value, use_current_calculations);
 }
 
-bool Base_DB::set_field_value_in_database(const Glib::ustring& table_name, const Gtk::TreeModel::iterator& row, const sharedptr<const LayoutItem_Field>& field_layout, const Gnome::Gda::Value& field_value, const sharedptr<const Field>& primary_key_field, const Gnome::Gda::Value& primary_key_value, bool use_current_calculations)
+bool Base_DB::set_field_value_in_database(const FieldInRecord& field_in_record, const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& field_value, bool use_current_calculations)
 {
   //row is invalid, and ignored, for Box_Data_Details.
-
-  const sharedptr<const Field> field = field_layout->get_full_field_details();
-  if(!field)
+  if(!(field_in_record.m_field) || !(field_in_record.m_primary_key))
     return false;
 
-  const Glib::ustring field_name = field_layout->get_name();
+  const Glib::ustring field_name = field_in_record.m_field->get_name();
   if(!field_name.empty()) //This should not happen.
   {
-    Glib::ustring table_name_this_field;
-    if(field_layout->get_has_relationship_name())
-    {
-      //The field is in a related table.
-      sharedptr<Relationship> rel = field_layout->get_relationship();
-      if(rel)
-        table_name_this_field = rel->get_to_table();
-    }
-    else
-      table_name_this_field = table_name;
 
-    if(table_name_this_field.empty())
-    {
-      g_warning("Box_Data::set_field_value_in_database(): table_name_this_field is empty.");
-      return false;
-    }
-
-    Glib::ustring strQuery = "UPDATE \"" + table_name_this_field + "\"";
-    strQuery += " SET \"" + field_name + "\" = " + field->sql(field_value);
-    strQuery += " WHERE \"" + primary_key_field->get_name() + "\" = " + primary_key_field->sql(primary_key_value);
+    Glib::ustring strQuery = "UPDATE \"" + field_in_record.m_table_name + "\"";
+    strQuery += " SET \"" + field_in_record.m_field->get_name() + "\" = " + field_in_record.m_field->sql(field_value);
+    strQuery += " WHERE \"" + field_in_record.m_primary_key->get_name() + "\" = " + field_in_record.m_primary_key->sql(field_in_record.m_primary_key_value);
     Glib::RefPtr<Gnome::Gda::DataModel> datamodel = Query_execute(strQuery);  //TODO: Handle errors
     if(!datamodel)
     {
@@ -2177,10 +2180,10 @@ bool Base_DB::set_field_value_in_database(const Glib::ustring& table_name, const
     }
 
     //Get-and-set values for lookup fields, if this field triggers those relationships:
-    do_lookups(table_name, row, field_layout, field_value, primary_key_field, primary_key_value);
+    do_lookups(field_in_record, row, field_value);
 
     //Update related fields, if this field is used in the relationship:
-    refresh_related_fields(table_name, row, field_layout, field_value, primary_key_field, primary_key_value);
+    refresh_related_fields(field_in_record, row, field_value);
 
     //Calculate any dependent fields.
     //TODO: Make lookups part of this?
@@ -2188,25 +2191,17 @@ bool Base_DB::set_field_value_in_database(const Glib::ustring& table_name, const
     {
       //Recalculate any calculated fields that depend on this calculated field.
       //g_warning("Box_Data::set_field_value_in_database(): calling do_calculations");
-      do_calculations(table_name, field_layout, primary_key_field, primary_key_value, !use_current_calculations);
+
+      std::cout << "debug 0 value=" << field_in_record.m_primary_key_value.to_string() << std::endl;
+      do_calculations(field_in_record, !use_current_calculations);
     }
   }
 
   return true;
 }
 
-Glib::ustring Base_DB::build_sql_select(const Glib::ustring& table_name, const type_vecLayoutFields& fieldsToGet, const sharedptr<const Field>& primary_key_field, const Gnome::Gda::Value& primary_key_value)
-{
-  if(!GlomConversions::value_is_empty(primary_key_value)) //If there is a record to show:
-  {
-    const Glib::ustring where_clause = "\"" + table_name + "\".\"" + primary_key_field->get_name() + "\" = " + primary_key_field->sql(primary_key_value);
-    return GlomUtils::build_sql_select_with_where_clause(table_name, fieldsToGet, where_clause);
-  }
 
-  return Glib::ustring();
-}
-
-void Base_DB::do_calculations(const Glib::ustring& table_name, const sharedptr<const LayoutItem_Field>& field_changed, const sharedptr<const Field>& primary_key, const Gnome::Gda::Value& primary_key_value, bool first_calc_field)
+void Base_DB::do_calculations(const FieldInRecord& field_changed, bool first_calc_field)
 {
   //g_warning("Box_Data::do_calculations(): triggered by =%s", field_changed->get_name().c_str());
 
@@ -2217,18 +2212,20 @@ void Base_DB::do_calculations(const Glib::ustring& table_name, const sharedptr<c
   }
 
   //Recalculate fields that are triggered by a change of this field's value, not including calculations that these calculations use.
-  type_field_calcs calculated_fields = get_calculated_fields(table_name, field_changed->get_name()); //TODO: Just return the Fields, not the CalcInProgress.
+  type_field_calcs calculated_fields = get_calculated_fields(field_changed.m_table_name, field_changed.m_field->get_name()); //TODO: Just return the Fields, not the CalcInProgress.
   for(type_field_calcs::iterator iter = calculated_fields.begin(); iter != calculated_fields.end(); ++iter)
   {
     sharedptr<const Field> field = iter->second.m_field;
+    if(field)
+    {
 
-    calculate_field(table_name, field, primary_key, primary_key_value); //And any dependencies.
-
-    //Calculate anything that depends on this.
-    sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
-    layout_item->set_full_field_details(field);
-
-    do_calculations(table_name, layout_item, primary_key, primary_key_value, false /* recurse, reusing m_FieldsCalculationInProgress */);
+      //TODO: What if the field is in another table?
+      FieldInRecord triggered_field(field_changed.m_table_name, field, field_changed.m_primary_key, field_changed.m_primary_key_value);
+      calculate_field(triggered_field); //And any dependencies.
+  
+      //Calculate anything that depends on this.
+      do_calculations(triggered_field, false /* recurse, reusing m_FieldsCalculationInProgress */);
+    }
   }
 
   if(first_calc_field)
@@ -2265,15 +2262,12 @@ Base_DB::type_field_calcs Base_DB::get_calculated_fields(const Glib::ustring& ta
 }
 
 
-void Base_DB::do_lookups(const Glib::ustring& table_name, const Gtk::TreeModel::iterator& row, const sharedptr<const LayoutItem_Field>& field_changed, const Gnome::Gda::Value& field_value, const sharedptr<const Field>& primary_key, const Gnome::Gda::Value& primary_key_value)
+void Base_DB::do_lookups(const FieldInRecord& field_in_record, const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& field_value)
 {
-   if(field_changed->get_has_relationship_name())
-    return; //TODO: Handle these too.
-
    //Get values for lookup fields, if this field triggers those relationships:
    //TODO_performance: There is a LOT of iterating and copying here.
-   const Glib::ustring strFieldName = field_changed->get_name();
-   type_list_lookups lookups = get_lookup_fields(table_name, strFieldName);
+   const Glib::ustring strFieldName = field_in_record.m_field->get_name();
+   const type_list_lookups lookups = get_lookup_fields(field_in_record.m_table_name, strFieldName);
    for(type_list_lookups::const_iterator iter = lookups.begin(); iter != lookups.end(); ++iter)
    {
      sharedptr<const LayoutItem_Field> layout_item = iter->first;
@@ -2285,16 +2279,18 @@ void Base_DB::do_lookups(const Glib::ustring& table_name, const Gtk::TreeModel::
       sharedptr<const Field> field_source = get_fields_for_table_one_field(relationship->get_to_table(), field_lookup->get_lookup_field());
       if(field_source)
       {
-        const Gnome::Gda::Value value = get_lookup_value(table_name, iter->second /* relationship */,  field_source /* the field to look in to get the value */, field_value /* Value of to and from fields */);
+        const Gnome::Gda::Value value = get_lookup_value(field_in_record.m_table_name, iter->second /* relationship */,  field_source /* the field to look in to get the value */, field_value /* Value of to and from fields */);
 
         const Gnome::Gda::Value value_converted = GlomConversions::convert_value(value, layout_item->get_glom_type());
+
+        FieldInRecord field_in_record(layout_item, field_in_record.m_table_name /* parent table */, field_in_record.m_primary_key, field_in_record.m_primary_key_value, *(get_document()));
 
         //Add it to the view:
         set_entered_field_data(row, layout_item, value_converted);
         //m_AddDel.set_value(row, layout_item, value_converted);
 
         //Add it to the database (even if it is not shown in the view)
-        set_field_value_in_database(table_name, row, layout_item, value_converted, primary_key, primary_key_value); //Also does dependent lookups/recalcs.
+        set_field_value_in_database(field_in_record, row, value_converted); //Also does dependent lookups/recalcs.
         //Glib::ustring strQuery = "UPDATE \"" + m_table_name + "\"";
         //strQuery += " SET " + field_lookup.get_name() + " = " + field_lookup.sql(value);
         //strQuery += " WHERE " + primary_key.get_name() + " = " + primary_key.sql(primary_key_value);
@@ -2347,7 +2343,7 @@ Base_DB::type_list_lookups Base_DB::get_lookup_fields(const Glib::ustring& table
   return result;
 }
 
-void Base_DB::refresh_related_fields(const Glib::ustring& table_name, const Gtk::TreeModel::iterator& row, const sharedptr<const LayoutItem_Field>& field_changed, const Gnome::Gda::Value& /* field_value */, const sharedptr<const Field>& primary_key, const Gnome::Gda::Value& primary_key_value)
+void Base_DB::refresh_related_fields(const FieldInRecord& field_in_record_changed, const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& /* field_value */)
 {
   //overridden in Box_Data.
 }

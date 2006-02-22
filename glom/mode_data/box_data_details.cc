@@ -225,7 +225,7 @@ bool Box_Data_Details::fill_from_database()
         //g_warning("primary_key name = %s", m_field_primary_key->get_name().c_str());
         const int index_primary_key = fieldsToGet.size() - 1;
 
-        const Glib::ustring query = build_sql_select(m_table_name, fieldsToGet, m_field_primary_key, m_primary_key_value);
+        const Glib::ustring query = GlomUtils::build_sql_select_with_primary_key(m_table_name, fieldsToGet, m_field_primary_key, m_primary_key_value);
         Glib::RefPtr<Gnome::Gda::DataModel> result;
 
         if(!primary_key_is_empty)
@@ -392,6 +392,7 @@ void Box_Data_Details::recalculate_fields_for_related_records(const Glib::ustrin
   m_FieldsCalculationInProgress.clear();
 
   const Gnome::Gda::Value primary_key_value = get_primary_key_value();
+  std::cout << "Box_Data_Details::recalculate_fields_for_related_records(): primary_key_value=" << primary_key_value.to_string() << std::endl;
 
   for(type_vecFields::iterator iter = m_TableFields.begin(); iter != m_TableFields.end(); ++iter)
   {
@@ -403,14 +404,17 @@ void Box_Data_Details::recalculate_fields_for_related_records(const Glib::ustrin
     if(iterFind != triggered_by.end()) //If it was found
     {
       sharedptr<Field> field = *iter;
+      if(field)
+      {
+        FieldInRecord field_in_record(m_table_name, field, m_field_primary_key, primary_key_value);
+        calculate_field(field_in_record); //And any dependencies.
 
-      calculate_field(m_table_name, field, m_field_primary_key, primary_key_value); //And any dependencies.
+        //Calculate anything that depends on this.
+        //sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
+        //layout_item->set_full_field_details(field);
 
-      //Calculate anything that depends on this.
-      sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
-      layout_item->set_full_field_details(field);
-
-      do_calculations(m_table_name, layout_item, m_field_primary_key, primary_key_value, false /* recurse, reusing m_FieldsCalculationInProgress */);
+        do_calculations(field_in_record, false /* recurse, reusing m_FieldsCalculationInProgress */);
+      }
     }
   }
 
@@ -601,7 +605,8 @@ void Box_Data_Details::on_flowtable_field_edited(const sharedptr<const LayoutIte
     //Update the field in the record (the record with this primary key):
     try
     {
-      const bool bTest = set_field_value_in_database(m_table_name, layout_field, field_value, primary_key_field, primary_key_value);
+      FieldInRecord field_in_record(layout_field, m_table_name /* parent table */, primary_key_field, primary_key_value, *(get_document()));
+      const bool bTest = set_field_value_in_database(field_in_record, field_value);
 
       //Glib::ustring strQuery = "UPDATE \"" + table_name + "\"";
       //strQuery += " SET " +  /* table_name + "." + postgres does not seem to like the table name here */ strFieldName + " = " + field.sql(field_value);

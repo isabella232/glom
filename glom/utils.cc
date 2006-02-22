@@ -21,6 +21,7 @@
 #include "utils.h"
 #include "connectionpool.h"
 #include "data_structure/layout/report_parts/layoutitem_fieldsummary.h"
+#include "data_structure/glomconversions.h"
 #include <libxml++/libxml++.h>
 #include <libxslt/transform.h>
 #include <libgnomevfsmm.h>
@@ -262,6 +263,16 @@ Glib::ustring GlomUtils::build_sql_select_with_where_clause(const Glib::ustring&
   return result;
 }
 
+Glib::ustring GlomUtils::build_sql_select_with_primary_key(const Glib::ustring& table_name, const type_vecLayoutFields& fieldsToGet, const sharedptr<const Field>& primary_key_field, const Gnome::Gda::Value& primary_key_value)
+{
+  if(!GlomConversions::value_is_empty(primary_key_value)) //If there is a record to show:
+  {
+    const Glib::ustring where_clause = "\"" + table_name + "\".\"" + primary_key_field->get_name() + "\" = " + primary_key_field->sql(primary_key_value);
+    return GlomUtils::build_sql_select_with_where_clause(table_name, fieldsToGet, where_clause);
+  }
+
+  return Glib::ustring();
+}
 
 GlomUtils::type_list_values_with_second GlomUtils::get_choice_values(const sharedptr<const LayoutItem_Field>& field)
 {

@@ -1,3 +1,18 @@
+2006-02-22  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/utils.cc:
+	* glom/utils.h: Added build_sql_select_with_primary_key().
+	* glom/base_db.cc:
+	* glom/base_db.h: Added FieldInRecord inner class and 
+	used it to reduce the number of parameters for 
+	do_calculations(), do_lookups(), refresh_related_field(), 
+	calculate_field(), set_field_value_in_database().
+	* glom/mode_data/box_data.cc:
+	* glom/mode_data/box_data.h:
+	* glom/mode_data/box_data_details.cc:
+	* glom/mode_data/box_data_list.cc: Change the method
+	overrides and implementations to match.
+
 2006-02-20  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/box_db_table.cc:

@@ -398,22 +398,19 @@ Box_Data::type_vecLayoutFields Box_Data::get_related_fields(const Glib::ustring&
   return result;
 }
 
-void Box_Data::refresh_related_fields(const Glib::ustring& table_name, const Gtk::TreeModel::iterator& row, const sharedptr<const LayoutItem_Field>& field_changed, const Gnome::Gda::Value& /* field_value */, const sharedptr<const Field>& primary_key, const Gnome::Gda::Value& primary_key_value)
+void Box_Data::refresh_related_fields(const FieldInRecord& field_in_record_changed, const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& field_value)
 {
-  if(table_name != m_table_name)
-    return;
-
-  if(field_changed->get_has_relationship_name())
-    return; //TODO: Handle these too.
+  if(field_in_record_changed.m_table_name != m_table_name)
+    return; //TODO: Handle these too?
 
   //Get values for lookup fields, if this field triggers those relationships:
   //TODO_performance: There is a LOT of iterating and copying here.
-  const Glib::ustring strFieldName = field_changed->get_name();
+  const Glib::ustring strFieldName = field_in_record_changed.m_field->get_name();
   type_vecLayoutFields fieldsToGet = get_related_fields(strFieldName);
 
   if(!fieldsToGet.empty())
   {
-    const Glib::ustring query = build_sql_select(table_name, fieldsToGet, primary_key, primary_key_value);
+    const Glib::ustring query = GlomUtils::build_sql_select_with_primary_key(field_in_record_changed.m_table_name, fieldsToGet, field_in_record_changed.m_primary_key, field_in_record_changed.m_primary_key_value);
 
     Glib::RefPtr<Gnome::Gda::DataModel> result = Query_execute(query);
     if(!result)
