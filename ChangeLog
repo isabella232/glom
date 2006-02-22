@@ -1,5 +1,13 @@
 2006-02-22  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/mode_design/fields/box_db_table_definition.cc: 
+	postgres_change_column_type(): Use textcat() to add a preceding 0 when 
+	using to_number(), so that it always succeeds. Now I can not make glom 
+	crash or error when converting field types, though the results are a bit 
+	strange for text<->to date.
+
+2006-02-22  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/base_db.cc:
 	* glom/base_db.h: Add override of 
 	calculate_field_in_all_records() that does not need the primary key 

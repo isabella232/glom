@@ -350,7 +350,7 @@ void Box_DB_Table_Definition::on_Properties_apply()
         {
           //TODO: Only show this when there are > 100 records?
           Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Recalculation Required")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE);
-          dialog.set_secondary_text(_("You have changed the calculation used by this field so Glom must recalculate the values for this field in all records. If the table contains many records then this could take a long time."));
+          dialog.set_secondary_text(_("You have changed the calculation used by this field so Glom must recalculate the value in all records. If the table contains many records then this could take a long time."));
           //dialog.set_transient_for(*get_app_window());
           dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
           dialog.add_button(_("Recalculate"), Gtk::RESPONSE_OK);
@@ -522,7 +522,12 @@ void  Box_DB_Table_Definition::postgres_change_column_type(const sharedptr<const
             }
             case Field::TYPE_NUMERIC: //CAST does not work if the destination type is numeric.
             {
-              conversion_command = "to_number( \"" + field_old->get_name() + "\", '999999999.99' )";
+              //We use to_number, with textcat() so that to_number always has usable data.
+              //Otherwise, it says 
+              //invalid input syntax for type numeric: " "
+              //
+              //We must use single quotes with the 0, otherwise it says "column 0 does not exist.".
+              conversion_command = "to_number( textcat(\'0\', \"" + field_old->get_name() + "\"), '999999999.99999999' )";
               break;
             }
             case Field::TYPE_DATE: //CAST does not work if the destination type is numeric.

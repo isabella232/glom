@@ -6,6 +6,8 @@
     User Entry and are mutually exclusive with Calculation.
   - When changing a calculation, all values will be recalculated, 
     with a warning and the chance to cancel.
+  - Fix crash when changing field type to number, when not all 
+    existing values are valid numbers.
 
 0.9.6:
 
