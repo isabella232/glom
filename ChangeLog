@@ -1,5 +1,18 @@
 2006-02-22  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/base_db.cc:
+	* glom/base_db.h: Add override of 
+	calculate_field_in_all_records() that does not need the primary key 
+	spoon-fed to it. Get all the primary key values, not all the calculated 
+	field values.
+	* glom/mode_design/fields/box_db_table_definition.cc:
+	on_Properties_apply(): Warn about necessary recalculation and 
+	allow the user to cancel the change of field definition.
+	change_definition(): Recalculate all values if necessary. This 
+	even works.
+
+2006-02-22  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/data_structure/field.cc:
 	* glom/data_structure/field.h:
 	* glom/base_db.cc:

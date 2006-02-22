@@ -1185,7 +1185,7 @@ void AddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const Gli
                 if(refTreeSelection)
                 {
                   refTreeSelection->select(row); //TODO: This does not seem to work.
-        
+
                  Gtk::TreeModel::Path path = m_refListStore->get_path(row);
                  Gtk::TreeView::Column* pColumn = m_TreeView.get_column(model_column_index); //TODO: This might the the view column index, not the model column index.
                  m_TreeView.set_cursor(path, *pColumn, true /* start_editing */); //This highlights the cell, but does not seem to actually start the editing.

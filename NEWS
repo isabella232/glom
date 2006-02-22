@@ -1,3 +1,12 @@
+0.9.7:
+
+* Field Definition:
+  - Default Value tab renamed to Value.
+  - Default Values and lookups are now grouped as 
+    User Entry and are mutually exclusive with Calculation.
+  - When changing a calculation, all values will be recalculated, 
+    with a warning and the chance to cancel.
+
 0.9.6:
 
 * New built-in System Properties relationship:

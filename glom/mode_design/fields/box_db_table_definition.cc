@@ -342,8 +342,27 @@ void Box_DB_Table_Definition::on_Properties_apply()
     }
     else
     {
-      change_definition(m_Field_BeingEdited, field_New);
-      m_Field_BeingEdited = field_New;
+      //Warn about recalculation:
+      bool change_def = true;
+      if(field_New->get_has_calculation())
+      {
+        if(field_New->get_calculation() != m_Field_BeingEdited->get_calculation())
+        {
+          //TODO: Only show this when there are > 100 records?
+          Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Recalculation Required")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE);
+          dialog.set_secondary_text(_("You have changed the calculation used by this field so Glom must recalculate the values for this field in all records. If the table contains many records then this could take a long time."));
+          //dialog.set_transient_for(*get_app_window());
+          dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+          dialog.add_button(_("Recalculate"), Gtk::RESPONSE_OK);
+          change_def = (dialog.run() == Gtk::RESPONSE_OK);
+        }
+      }
+
+      if(change_def)
+      {
+        change_definition(m_Field_BeingEdited, field_New);
+        m_Field_BeingEdited = field_New;
+      }
     }
 
     //Update the list:
@@ -394,6 +413,14 @@ void Box_DB_Table_Definition::change_definition(const sharedptr<const Field>& fi
     if(field_name_old != field->get_name())
     {
       pDoc->change_field_name(m_table_name, field_name_old, field->get_name());
+    }
+
+    //Recalculate if necessary:
+    if(field->get_has_calculation())
+    {
+      const Glib::ustring calculation = field->get_calculation();
+      if(calculation != fieldOld->get_calculation())
+        calculate_field_in_all_records(m_table_name, field);
     }
   }
 

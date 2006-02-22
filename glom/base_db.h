@@ -177,6 +177,7 @@ protected:
 
   void calculate_field(const FieldInRecord& field_in_record);
 
+  void calculate_field_in_all_records(const Glib::ustring& table_name, const sharedptr<const Field>& field);
   void calculate_field_in_all_records(const Glib::ustring& table_name, const sharedptr<const Field>& field, const sharedptr<const Field>& primary_key);
 
   typedef std::map<Glib::ustring, Gnome::Gda::Value> type_map_fields;

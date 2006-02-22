@@ -231,7 +231,7 @@ Notebook_Data::dataview Notebook_Data::get_current_view() const
   const int current_page = get_current_page();
 
   dataview result = DATA_VIEW_Details;
-  if(current_page == m_iPage_List)
+  if(current_page == (int)m_iPage_List)
     result = DATA_VIEW_List;
 
   return result;

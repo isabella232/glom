@@ -1937,11 +1937,17 @@ Base_DB::type_vecLayoutFields Base_DB::get_table_fields_to_show_for_sequence(con
   return result;
 }
 
+void Base_DB::calculate_field_in_all_records(const Glib::ustring& table_name, const sharedptr<const Field>& field)
+{
+  sharedptr<const Field> primary_key = get_field_primary_key_for_table(table_name);
+  calculate_field_in_all_records(table_name, field, primary_key);
+}
 
 void Base_DB::calculate_field_in_all_records(const Glib::ustring& table_name, const sharedptr<const Field>& field, const sharedptr<const Field>& primary_key)
 {
+
   //Get primary key values for every record:
-  const Glib::ustring query = "SELECT \"" + table_name + "\".\"" + field->get_name() + "\" FROM \"" + table_name + "\"";
+  const Glib::ustring query = "SELECT \"" + table_name + "\".\"" + primary_key->get_name() + "\" FROM \"" + table_name + "\"";
   Glib::RefPtr<Gnome::Gda::DataModel> data_model = Query_execute(query);
   if(!data_model || !data_model->get_n_rows() || !data_model->get_n_columns())
   {
@@ -1958,10 +1964,12 @@ void Base_DB::calculate_field_in_all_records(const Glib::ustring& table_name, co
   const int rows_count = data_model->get_n_rows();
   for(int row = 0; row < rows_count; ++row)
   {
-    const Gnome::Gda::Value primary_key_value = data_model->get_value_at(row, 0);
+    const Gnome::Gda::Value primary_key_value = data_model->get_value_at(0, row);
     if(!GlomConversions::value_is_empty(primary_key_value))
     {
       field_in_record.m_key_value = primary_key_value;
+
+      m_FieldsCalculationInProgress.clear();
       calculate_field(field_in_record);
     }
   }
@@ -2027,7 +2035,7 @@ void Base_DB::calculate_field(const FieldInRecord& field_in_record)
           {
             //g_warning("  calling calculate_field() for %s", iterNeeded->c_str());
             //TODO: What if the field is in a different table?
-  
+
             FieldInRecord needed_field_in_record(field_in_record.m_table_name, field_needed, field_in_record.m_key, field_in_record.m_key_value);
             calculate_field(needed_field_in_record);
           }
@@ -2182,6 +2190,9 @@ bool Base_DB::set_field_value_in_database(const FieldInRecord& field_in_record, 
     Glib::ustring strQuery = "UPDATE \"" + field_in_record.m_table_name + "\"";
     strQuery += " SET \"" + field_in_record.m_field->get_name() + "\" = " + field_in_record.m_field->sql(field_value);
     strQuery += " WHERE \"" + field_in_record.m_key->get_name() + "\" = " + field_in_record.m_key->sql(field_in_record.m_key_value);
+
+    //std::cout << "debug: set_field_value_in_database(): " << std::endl << "  " << strQuery << std::endl;
+
     Glib::RefPtr<Gnome::Gda::DataModel> datamodel = Query_execute(strQuery);  //TODO: Handle errors
     if(!datamodel)
     {
