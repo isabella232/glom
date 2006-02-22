@@ -169,6 +169,12 @@ protected:
    */
   type_field_calcs get_calculated_fields(const Glib::ustring& table_name, const Glib::ustring& field_name);
 
+  typedef std::list< sharedptr<LayoutItem_Field> > type_list_field_items;
+
+  /** Get the fields used, if any, in the calculation of this field.
+   */
+  type_list_field_items get_calculation_fields(const Glib::ustring& table_name, const sharedptr<const Field>& field);
+
   void calculate_field(const FieldInRecord& field_in_record);
 
   void calculate_field_in_all_records(const Glib::ustring& table_name, const sharedptr<const Field>& field, const sharedptr<const Field>& primary_key);
@@ -176,8 +182,6 @@ protected:
   typedef std::map<Glib::ustring, Gnome::Gda::Value> type_map_fields;
   //TODO: Performance: This is massively inefficient:
   type_map_fields get_record_field_values(const Glib::ustring& table_name, const sharedptr<const Field> primary_key, const Gnome::Gda::Value& primary_key_value);
-
-
 
 
   void do_lookups(const FieldInRecord& field_in_record, const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& field_value);

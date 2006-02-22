@@ -392,8 +392,6 @@ void Box_Data_Details::recalculate_fields_for_related_records(const Glib::ustrin
   m_FieldsCalculationInProgress.clear();
 
   const Gnome::Gda::Value primary_key_value = get_primary_key_value();
-  std::cout << "Box_Data_Details::recalculate_fields_for_related_records(): primary_key_value=" << primary_key_value.to_string() << std::endl;
-
   for(type_vecFields::iterator iter = m_TableFields.begin(); iter != m_TableFields.end(); ++iter)
   {
     const sharedptr<const Field> field = *iter;

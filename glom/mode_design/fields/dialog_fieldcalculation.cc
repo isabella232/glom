@@ -96,17 +96,18 @@ void Dialog_FieldCalculation::on_button_test()
 
 
   //Show what fields would trigger the recalculation:
-  Field temp;
-  temp.set_calculation(calculation);
-  const Field::type_list_strings triggered_fields = temp.get_calculation_fields();
+  sharedptr<Field> temp = sharedptr<Field>::create();
+  temp->set_calculation(calculation);
+  const type_list_field_items triggered_fields = get_calculation_fields(m_table_name, temp);
 
   Glib::ustring field_names;
-  for(Field::type_list_strings::const_iterator iter = triggered_fields.begin(); iter != triggered_fields.end(); ++iter)
+  for(type_list_field_items::const_iterator iter = triggered_fields.begin(); iter != triggered_fields.end(); ++iter)
   {
-    field_names += ( *iter + ", " );
+    sharedptr<LayoutItem_Field> layout_item_field = *iter;
+    field_names += ( (*iter)->get_layout_display_name() + ", " );
   }
 
-  const Field::type_list_strings triggered_relationships = temp.get_calculation_relationships();
+  const Field::type_list_strings triggered_relationships = temp->get_calculation_relationships();
 
   for(Field::type_list_strings::const_iterator iter = triggered_relationships.begin(); iter != triggered_relationships.end(); ++iter)
   {

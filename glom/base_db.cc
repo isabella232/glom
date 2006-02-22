@@ -2008,23 +2008,33 @@ void Base_DB::calculate_field(const FieldInRecord& field_in_record)
     layout_item->set_full_field_details(refCalcProgress.m_field);
 
     //Calculate dependencies first:
-    const Field::type_list_strings fields_needed = field_in_record.m_field->get_calculation_fields();
-    for(Field::type_list_strings::const_iterator iterNeeded = fields_needed.begin(); iterNeeded != fields_needed.end(); ++iterNeeded)
+    //TODO: Prevent unncessary recalculations?
+    const type_list_field_items fields_needed = get_calculation_fields(field_in_record.m_table_name, field_in_record.m_field);
+    for(type_list_field_items::const_iterator iterNeeded = fields_needed.begin(); iterNeeded != fields_needed.end(); ++iterNeeded)
     {
-      sharedptr<const Field> field_needed = get_document()->get_field(field_in_record.m_table_name, *iterNeeded);
-      if(field_needed)
-      {
-        if(field_needed->get_has_calculation())
-        {
-          //g_warning("  calling calculate_field() for %s", iterNeeded->c_str());
-          //TODO: What if the field is in a different table?
+      sharedptr<const LayoutItem_Field> field_item_needed = *iterNeeded;
 
-          FieldInRecord needed_field_in_record(field_in_record.m_table_name, field_needed, field_in_record.m_key, field_in_record.m_key_value);
-          calculate_field(needed_field_in_record);
-        }
-        else
+      if(field_item_needed->get_has_relationship_name())
+      {
+        //TOOD: Handle related fields? We already handle whole relationships.
+      }
+      else
+      {
+        sharedptr<const Field> field_needed = field_item_needed->get_full_field_details();
+        if(field_needed)
         {
-          //g_warning("  not a calculated field->");
+          if(field_needed->get_has_calculation())
+          {
+            //g_warning("  calling calculate_field() for %s", iterNeeded->c_str());
+            //TODO: What if the field is in a different table?
+  
+            FieldInRecord needed_field_in_record(field_in_record.m_table_name, field_needed, field_in_record.m_key, field_in_record.m_key_value);
+            calculate_field(needed_field_in_record);
+          }
+          else
+          {
+            //g_warning("  not a calculated field->");
+          }
         }
       }
     }
@@ -2192,7 +2202,6 @@ bool Base_DB::set_field_value_in_database(const FieldInRecord& field_in_record, 
       //Recalculate any calculated fields that depend on this calculated field.
       //g_warning("Box_Data::set_field_value_in_database(): calling do_calculations");
 
-      std::cout << "debug 0 value=" << field_in_record.m_key_value.to_string() << std::endl;
       do_calculations(field_in_record, !use_current_calculations);
     }
   }
@@ -2222,7 +2231,7 @@ void Base_DB::do_calculations(const FieldInRecord& field_changed, bool first_cal
       //TODO: What if the field is in another table?
       FieldInRecord triggered_field(field_changed.m_table_name, field, field_changed.m_key, field_changed.m_key_value);
       calculate_field(triggered_field); //And any dependencies.
-  
+
       //Calculate anything that depends on this.
       do_calculations(triggered_field, false /* recurse, reusing m_FieldsCalculationInProgress */);
     }
@@ -2246,16 +2255,65 @@ Base_DB::type_field_calcs Base_DB::get_calculated_fields(const Glib::ustring& ta
       sharedptr<const Field> field = *iter;
 
       //Does this field's calculation use the field?
-      const Field::type_list_strings fields_triggered = field->get_calculation_fields();
-      Field::type_list_strings::const_iterator iterFind = std::find(fields_triggered.begin(), fields_triggered.end(), field_name);
+      const type_list_field_items fields_triggered = get_calculation_fields(table_name, field);
+      type_list_field_items::const_iterator iterFind = std::find_if(fields_triggered.begin(), fields_triggered.end(), predicate_FieldHasName<LayoutItem_Field>(field_name));
       if(iterFind != fields_triggered.end())
       {
-        CalcInProgress item;
-        item.m_field = field;
+        if(!(*iterFind)->get_has_relationship_name()) //TODO: skip past related fields instead of just giving up.
+        {
+          CalcInProgress item;
+          item.m_field = field;
 
-        result[field->get_name()] = item;
+          result[field->get_name()] = item;
+        }
       }
     }
+  }
+
+  return result;
+}
+
+Base_DB::type_list_field_items Base_DB::get_calculation_fields(const Glib::ustring& table_name, const sharedptr<const Field>& field)
+{
+  //TODO: Use regex, for instance with pcre here?
+  //TODO: Better?: Run the calculation on some example data, and record the touched fields? But this could not exercise every code path.
+  //TODO_Performance: Just cache the result whenever m_calculation changes.
+
+  type_list_field_items result;
+
+  Glib::ustring::size_type index = 0;
+  const Glib::ustring calculation = field->get_calculation();
+  if(calculation.empty())
+    return result;
+
+  Document_Glom* document = get_document();
+  if(!document)
+    return result;
+
+  const Glib::ustring::size_type count = calculation.size();
+  const Glib::ustring prefix = "record[\"";
+  const Glib::ustring::size_type prefix_size = prefix.size();
+
+  while(index < count)
+  {
+    Glib::ustring::size_type pos_find = calculation.find(prefix, index);
+    if(pos_find != Glib::ustring::npos)
+    {
+      Glib::ustring::size_type pos_find_end = calculation.find("\"]", pos_find);
+      if(pos_find_end  != Glib::ustring::npos)
+      {
+        Glib::ustring::size_type pos_start = pos_find + prefix_size;
+        const Glib::ustring field_name = calculation.substr(pos_start, pos_find_end - pos_start);
+
+        sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
+        layout_item->set_full_field_details( document->get_field(table_name, field_name) );
+
+        result.push_back(layout_item);
+        index = pos_find_end + 1;
+      }
+    }
+
+    ++index;
   }
 
   return result;
