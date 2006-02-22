@@ -8,6 +8,11 @@
     with a warning and the chance to cancel.
   - Fix crash when changing field type to number, when not all 
     existing values are valid numbers.
+* List layout: Warn that image fields are not supported on the 
+  list view yet.
+* Updated Translations:
+  - Catalan (Josep Puigdemont)
+  - Vietnamese (Clytie Siddall)
 
 0.9.6:
 
