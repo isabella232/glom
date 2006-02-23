@@ -71,6 +71,7 @@ $(POFILES) $(SOURCES)
 EXTRA_DISTFILES = POTFILES.skip Makevars LINGUAS
 
 POTFILES = \
+#This Gets Replace for some reason
 
 CATALOGS = @CATALOGS@
 CATOBJEXT = @CATOBJEXT@

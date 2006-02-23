@@ -1,3 +1,9 @@
+2006-02-23  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/mode_design/fields/box_db_table_definition.cc: postgres_change_column_type():
+	Data conversion commands: Fix crashes when converting from text to boolean, and from 
+	boolean to number. Preserve information when converting from anything to boolean.
+
 0.9.7:
 
 2006-02-22  Murray Cumming  <murrayc@murrayc.com>

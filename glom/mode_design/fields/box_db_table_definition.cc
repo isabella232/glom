@@ -490,7 +490,7 @@ void  Box_DB_Table_Definition::postgres_change_column_type(const sharedptr<const
       //    COMMIT;
 
       Glib::RefPtr<Gnome::Gda::Transaction> transaction = Gnome::Gda::Transaction::create("glom_transaction_change_field_type");
-      bool test = gda_connection->begin_transaction(transaction);
+      const bool test = gda_connection->begin_transaction(transaction);
       if(test)
       {
         //TODO: Warn about a delay, and possible loss of precision, before actually doing this.
@@ -513,36 +513,71 @@ void  Box_DB_Table_Definition::postgres_change_column_type(const sharedptr<const
           WHERE _aaa <> '     ';  
           */
           Glib::ustring conversion_command;
+          const Glib::ustring field_name_old_quoted = "\"" + field_old->get_name() + "\"";
+          const Field::glom_field_type old_field_type = field_old->get_glom_type();
           switch(field->get_glom_type())
           {
-            case Field::TYPE_BOOLEAN: //CAST does not work if the destination type is numeric.
+            case Field::TYPE_BOOLEAN: //CAST does not work if the destination type is boolean.
             {
-              conversion_command = "FALSE"; //TODO: Find a way to convert: "to_number( " + field_old->get_name() + ", '999999999.99' )";
+              if(old_field_type == Field::TYPE_NUMERIC)
+              {
+                conversion_command = "(CASE WHEN " + field_name_old_quoted + " >0 THEN true "
+                                           "WHEN " + field_name_old_quoted + " = 0 THEN false "
+                                           "WHEN " + field_name_old_quoted + " IS NULL THEN false END)";
+              }
+              else if(old_field_type == Field::TYPE_TEXT)
+                conversion_command = "(" + field_name_old_quoted + " !~~* \'false\')"; // !~~* means ! ILIKE.
+              else //Dates and Times:
+                conversion_command = "(" + field_name_old_quoted + " IS NOT NULL')";
+
               break;
             }
             case Field::TYPE_NUMERIC: //CAST does not work if the destination type is numeric.
             {
-              //We use to_number, with textcat() so that to_number always has usable data.
-              //Otherwise, it says 
-              //invalid input syntax for type numeric: " "
-              //
-              //We must use single quotes with the 0, otherwise it says "column 0 does not exist.".
-              conversion_command = "to_number( textcat(\'0\', \"" + field_old->get_name() + "\"), '999999999.99999999' )";
+              if(old_field_type == Field::TYPE_BOOLEAN)
+              {
+                conversion_command = "(CASE WHEN " + field_name_old_quoted + " = true THEN 1 "
+                                           "WHEN " + field_name_old_quoted + " = false THEN 0 "
+                                           "WHEN " + field_name_old_quoted + " IS NULL THEN 0 END)";
+              }
+              else
+              {
+                //We use to_number, with textcat() so that to_number always has usable data.
+                //Otherwise, it says 
+                //invalid input syntax for type numeric: " "
+                //
+                //We must use single quotes with the 0, otherwise it says "column 0 does not exist.".
+                conversion_command = "to_number( textcat(\'0\', " + field_name_old_quoted + "), '999999999.99999999' )";
+              }
+
               break;
             }
             case Field::TYPE_DATE: //CAST does not work if the destination type is numeric.
             {
-              conversion_command = "to_date( \"" + field_old->get_name() + "\", 'YYYYMMDD' )"; //TODO: standardise date storage format.
+              conversion_command = "to_date( " + field_name_old_quoted + ", 'YYYYMMDD' )"; //TODO: standardise date storage format.
               break;
             }
             case Field::TYPE_TIME: //CAST does not work if the destination type is numeric.
             {
-              conversion_command = "to_timestamp( \"" + field_old->get_name() + "\", 'HHMMSS' )";  //TODO: standardise time storage format.
+              conversion_command = "to_timestamp( " + field_name_old_quoted + ", 'HHMMSS' )";  //TODO: standardise time storage format.
               break;
             }
             default:
             {
-              conversion_command = "CAST(\"" +  field_old->get_name() + "\" AS " + field->get_sql_type() + ")";
+              //To Text:
+
+              //bool to text:
+              if(old_field_type == Field::TYPE_BOOLEAN)
+              {
+                 conversion_command = "(CASE WHEN " + field_name_old_quoted + " = true THEN \'true\' "
+                                            "WHEN " + field_name_old_quoted + " = false THEN \'false\' "
+                                            "WHEN " + field_name_old_quoted + " IS NULL THEN \'false\' END)";
+              }
+              else
+              {
+                //This works for most to-text conversions:
+                conversion_command = "CAST(\"" +  field_old->get_name() + "\" AS " + field->get_sql_type() + ")";
+              }
               break;
             }
           }
