@@ -109,6 +109,9 @@ bool Box_Tables::fill_from_database()
   const bool editable = developer_mode;
   const bool visible_extras = developer_mode;
   m_colTableName = m_AddDel.add_column(_("Tables"), AddDelColumnInfo::STYLE_Text, editable, visible_extras);
+  m_AddDel.prevent_duplicates(m_colTableName); //Prevent two tables with the same name from being added.
+  m_AddDel.set_prevent_duplicates_warning(_("This table already exists. Please choose a different table name"));
+
   m_colHidden = m_AddDel.add_column(_("Hidden"), AddDelColumnInfo::STYLE_Boolean, editable, visible_extras);
   m_colTitle =  m_AddDel.add_column(_("Title"), AddDelColumnInfo::STYLE_Text, editable, true);
   m_colDefault =  m_AddDel.add_column(_("Default"), AddDelColumnInfo::STYLE_Boolean,  editable, visible_extras);

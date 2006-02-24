@@ -85,6 +85,9 @@ bool Box_Reports::fill_from_database()
   const bool editable = developer_mode;
   const bool visible_extras = developer_mode;
   m_colReportName = m_AddDel.add_column(_("Name"), AddDelColumnInfo::STYLE_Text, editable, visible_extras);
+  m_AddDel.prevent_duplicates(m_colReportName); //Don't allow a relationship to be added twice.
+  m_AddDel.set_prevent_duplicates_warning(_("This report already exists. Please choose a different report name"));
+
   m_colTitle = m_AddDel.add_column(_("Title"), AddDelColumnInfo::STYLE_Text, editable, true);
 
   //_("Server: ") +  m_strServerName + ", " + 

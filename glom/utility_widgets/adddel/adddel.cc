@@ -26,6 +26,7 @@
 #include "../../data_structure/glomconversions.h"
 #include "../../dialog_invalid_data.h"
 #include "../../utils.h"
+#include "bakery/App/App_Gtk.h"
 #include <iostream> //For debug output.
 
 #include "eggcolumnchooser/eggcolumnchooserdialog.h"
@@ -35,7 +36,8 @@ AddDelColumnInfo::AddDelColumnInfo()
 : m_style(STYLE_Text),
   m_field_type(Field::TYPE_INVALID),
   m_editable(true),
-  m_visible(true)
+  m_visible(true),
+  m_prevent_duplicates(false)
 {
 }
 
@@ -46,7 +48,8 @@ AddDelColumnInfo::AddDelColumnInfo(const AddDelColumnInfo& src)
   m_field_type(src.m_field_type),
   m_choices(src.m_choices),
   m_editable(src.m_editable),
-  m_visible(src.m_visible)
+  m_visible(src.m_visible),
+  m_prevent_duplicates(src.m_prevent_duplicates)
 {
 }
 
@@ -59,6 +62,7 @@ AddDelColumnInfo& AddDelColumnInfo::operator=(const AddDelColumnInfo& src)
   m_choices = src.m_choices;
   m_editable = src.m_editable;
   m_visible = src.m_visible;
+  m_prevent_duplicates = src.m_prevent_duplicates;
 
   return *this;
 }
@@ -135,6 +139,19 @@ AddDel::~AddDel()
 {
 }
 
+void AddDel::warn_about_duplicate()
+{
+  Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Duplicate")), true, Gtk::MESSAGE_WARNING, Gtk::BUTTONS_OK);
+  //TODO: dialog.set_transient_for(get_parent_window());
+
+  if(m_prevent_duplicates_warning.empty())
+    dialog.set_secondary_text(_("This item already exists. Please try again."));
+  else
+    dialog.set_secondary_text(m_prevent_duplicates_warning); //Something more specific and helpful.
+
+  dialog.run();
+}
+
 void
 AddDel::on_MenuPopup_activate_Edit()
 {
@@ -147,21 +164,28 @@ AddDel::on_MenuPopup_activate_Edit()
       //Discover whether it's the last (empty) row:
       if(get_is_placeholder_row(iter))
       {
-        //This is a new entry:
-        signal_user_added()(iter);
+        if(row_has_duplicates(iter))
+        {
+          warn_about_duplicate();
+        }
+        else
+        {
+          //This is a new entry:
+          signal_user_added()(iter);
 
-        /*
-        bool bRowAdded = true;
+          /*
+          bool bRowAdded = true;
 
-        //The rows might be re-ordered:
-        Gtk::TreeModel::iterator rowAdded = iter;
-        Glib::ustring strValue_Added =  get_value_key(iter);
-        if(strValue_Added != strValue)
-          rowAdded = get_row(strValue);
+          //The rows might be re-ordered:
+          Gtk::TreeModel::iterator rowAdded = iter;
+          Glib::ustring strValue_Added =  get_value_key(iter);
+          if(strValue_Added != strValue)
+            rowAdded = get_row(strValue);
 
-        if(bRowAdded)
-          signal_user_requested_edit()(rowAdded);
-        */
+          if(bRowAdded)
+            signal_user_requested_edit()(rowAdded);
+          */
+        }
       }
       else
       {
@@ -877,7 +901,7 @@ void AddDel::set_column_choices(guint col, const type_vecStrings& vecStrings)
   guint view_column_index = 0;
   bool test = get_view_column_index(col, view_column_index);
   if(test)
-  { 
+  {
     CellRendererList* pCellRenderer = dynamic_cast<CellRendererList*>( m_TreeView.get_column_cell_renderer(view_column_index) );
     if(pCellRenderer)
     {
@@ -1030,7 +1054,7 @@ void AddDel::on_treeview_cell_edited_bool(const Glib::ustring& path_string, int 
 {
   if(path_string.empty())
     return;
-    
+
   Gtk::TreePath path(path_string);
 
   //Get the row from the path:
@@ -1105,7 +1129,7 @@ void AddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const Gli
 {
   if(path_string.empty())
     return;
-  
+
   Gtk::TreePath path(path_string);
 
   //Get the row from the path:
@@ -1133,11 +1157,20 @@ void AddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const Gli
       {
         bool bPreventUserSignals = get_prevent_user_signals();
         set_prevent_user_signals(true); //Stops extra signal_user_changed.
-        
-        //Mark this row as no longer a placeholder, because it has data now. The client code must set an actual key for this in the signal_user_added() or m_signal_user_changed signal handlers.
-        set_value_key(iter, "glom_unknown");
-        
-        add_item_placeholder(); //Add the next blank for the next user add.
+
+
+        if(row_has_duplicates(iter))
+        {
+          warn_about_duplicate();
+          return;
+        }
+        else
+        {
+          //Mark this row as no longer a placeholder, because it has data now. The client code must set an actual key for this in the signal_user_added() or m_signal_user_changed signal handlers.
+          set_value_key(iter, "glom_unknown");
+
+          add_item_placeholder(); //Add the next blank for the next user add.
+        }
         set_prevent_user_signals(bPreventUserSignals);
 
         bIsAdd = true; //Signal that a new key was added.
@@ -1160,7 +1193,7 @@ void AddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const Gli
       if(new_text != strTextOld)
       {
         bool do_signal = true;
-        
+
         const Field::glom_field_type field_type = m_ColumnTypes[model_column_index].m_field_type;
         if(field_type != Field::TYPE_INVALID) //If a field type was specified for this column.
         {
@@ -1274,10 +1307,10 @@ void AddDel::on_treeview_button_press_event(GdkEventButton* event)
         {
           if(*iter == pColumn)
             tree_col = col_index; //Found.
-  
+
           col_index++;
         }
-      
+
         signal_user_activated().emit(iterRow, tree_col);
       }
     }
@@ -1535,7 +1568,7 @@ bool AddDel::get_view_column_index(guint model_column_index, guint& view_column_
 
   if(model_column_index >=  m_ColumnTypes.size())
     return false;
-    
+
   if( !(m_ColumnTypes[model_column_index].m_visible) )
     return false;
 
@@ -1561,6 +1594,87 @@ void AddDel::set_rules_hint(bool val)
   m_TreeView.set_rules_hint(val);
 }
 
-  
-      
+void AddDel::prevent_duplicates(guint column_number)
+{
+  if(column_number < m_ColumnTypes.size())
+    m_ColumnTypes[column_number].m_prevent_duplicates = true;
+}
+
+void AddDel::set_prevent_duplicates_warning(const Glib::ustring& warning_text)
+{
+  m_prevent_duplicates_warning = warning_text;
+}
+
+bool AddDel::row_has_duplicates(const Gtk::TreeModel::iterator& iter) const
+{
+  const type_ColumnTypes::size_type cols_count = m_ColumnTypes.size();
+  for(type_ColumnTypes::size_type col = 0; col < cols_count; ++col)
+  {
+    if(m_ColumnTypes[col].m_prevent_duplicates)
+    {
+      Gtk::TreeModel::Row row = *iter;
+
+      //We can't just use ValueBase, because Glib::ValueBase has no operator==, because there is no g_value_equal
+      //Glib::ValueBase value_this_row;
+      //iter->get_value(col, value_this_row);
+
+      Glib::ustring value_text;
+      bool value_bool = false;
+      int value_int = 0;
+
+      if(m_ColumnTypes[col].m_style == AddDelColumnInfo::STYLE_Text)
+        row.get_value(col, value_text);
+      else if(m_ColumnTypes[col].m_style == AddDelColumnInfo::STYLE_Boolean)
+         row.get_value(col, value_bool);
+      else if(m_ColumnTypes[col].m_style == AddDelColumnInfo::STYLE_Numerical)
+         row.get_value(col, value_int);
+
+      //std::cout << "value_text=" << value_text << std::endl;
+
+      //Look at each other row to see whether the value exists there already:
+      for(Gtk::TreeModel::iterator iterCheck = m_refListStore->children().begin(); iterCheck != m_refListStore->children().end(); iterCheck++)
+      {
+        if(iterCheck != iter) //Don't compare the row with itself
+        {
+          Gtk::TreeModel::Row check_row = *iterCheck;
+          ////Glib::ValueBase has no operator==, because there is no g_value_equal
+          //Glib::ValueBase value_check_row;
+          //iterCheck->get_value(col, value_check_row);
+          //
+          //if(value_check_row == value_this_row)
+          //  return false; //Duplicate found.
+
+          Glib::ustring check_value_text;
+          bool check_value_bool = false;
+          int check_value_int = 0;
+
+          if(m_ColumnTypes[col].m_style == AddDelColumnInfo::STYLE_Text)
+          {
+            check_row.get_value(col, check_value_text);
+
+            //std::cout << "  check_value_text=" << value_text << std::endl;
+
+            if(check_value_text == value_text)
+              return true;
+          }
+          else if(m_ColumnTypes[col].m_style == AddDelColumnInfo::STYLE_Boolean)
+          {
+            check_row.get_value(col, check_value_bool);
+            if(check_value_text == value_text)
+              return true;
+          }
+          else if(m_ColumnTypes[col].m_style == AddDelColumnInfo::STYLE_Numerical)
+          {
+            check_row.get_value(col, check_value_int);
+            if(check_value_text == value_text)
+              return true;
+          }
+        }
+      }
+    }
+  }
+
+  return false;
+}
+
 

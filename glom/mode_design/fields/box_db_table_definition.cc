@@ -46,6 +46,8 @@ void Box_DB_Table_Definition::init()
 
   pack_start(m_AddDel);
   m_colName = m_AddDel.add_column(_("Name"));
+  m_AddDel.prevent_duplicates(m_colName); //Don't allow adding of fields that already exist.
+  m_AddDel.set_prevent_duplicates_warning(_("This field already exists. Please choose a different field name"));
 
   m_colTitle = m_AddDel.add_column(_("Title"));
 

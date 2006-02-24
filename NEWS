@@ -1,3 +1,10 @@
+* Prevent duplicate table, field, relationship, and report names, 
+  to prevent crashes.
+* Field Defintion:
+  - Fix crashes when converting from text to boolean.
+  - Fix crashes when converting from boolean to number.
+  - Preserve information when converting from anything to boolean.
+
 0.9.7:
 
 * Field Definition:

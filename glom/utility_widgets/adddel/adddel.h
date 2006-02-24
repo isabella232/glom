@@ -45,7 +45,7 @@ public:
     STYLE_Boolean,
     STYLE_Choices
   };
-  
+
   enumStyles m_style;
   Glib::ustring m_name;
   Glib::ustring m_id;
@@ -56,6 +56,7 @@ public:
 
   bool m_editable;
   bool m_visible;
+  bool m_prevent_duplicates;
 };
 
 //For adding/deleting/selecting multi-columned lists of items.
@@ -75,7 +76,7 @@ public:
   virtual void set_allow_add(bool val = true);
   virtual void set_allow_delete(bool val = true);
 
-  virtual void set_allow_column_chooser(bool value = true);
+  void set_allow_column_chooser(bool value = true);
 
   virtual Gtk::TreeModel::iterator add_item(const Glib::ustring& strKey); //Return index of new row.
 
@@ -132,8 +133,12 @@ public:
   virtual guint add_column(const Glib::ustring& strTitle, AddDelColumnInfo::enumStyles style = AddDelColumnInfo::STYLE_Text, bool editable = true, bool visible = true);
   virtual guint add_column(const Glib::ustring& strTitle, const Glib::ustring& column_id, AddDelColumnInfo::enumStyles style = AddDelColumnInfo::STYLE_Text, bool editable = true, bool visible = true);
 
+  void prevent_duplicates(guint column_number);
 
-  virtual guint get_columns_count() const;
+  ///Allow the warning message about duplicate items to be more explicit.
+  void set_prevent_duplicates_warning(const Glib::ustring& warning_text);
+
+  guint get_columns_count() const;
 
   virtual Glib::ustring get_column_field(guint column_index) const;
 
@@ -142,7 +147,7 @@ public:
   /** Retrieves the column order, even after they have been reordered by the user.
    * @result a vector of column_id. These column_ids were provided in the call to add_column().
    */
-  virtual type_vecStrings get_columns_order() const;
+  type_vecStrings get_columns_order() const;
 
   virtual void remove_all_columns();
   //virtual void set_columns_count(guint count);
@@ -154,7 +159,7 @@ public:
 
   virtual void construct_specified_columns(); //Delay actual use of set_column_*() stuff until this method is called.
 
-  virtual void set_show_column_titles(bool bVal = true);
+  void set_show_column_titles(bool bVal = true);
 
   virtual Gtk::TreeModel::iterator get_row(const Glib::ustring& key);
 
@@ -166,12 +171,12 @@ public:
    * Use set_auto_add(false) if you want to provide default values for columns in the new row, or if you want to place the cursor in a different column.
    * If @a value is false then signal_user_requested_add will be emitted so that you can add the row explicitly.
    */
-  virtual void set_auto_add(bool value = true);
+  void set_auto_add(bool value = true);
 
   Glib::RefPtr<Gtk::TreeModel> get_model();
   Glib::RefPtr<const Gtk::TreeModel> get_model() const;
 
-  virtual void set_rules_hint(bool val = true);
+  void set_rules_hint(bool val = true);
 
   //Signals:
   //row number.
@@ -212,7 +217,7 @@ protected:
    * You can then add the row to your underlying data store when some data has been filled, by handling signal_user_changed.
    */
   virtual Gtk::TreeModel::iterator add_item_placeholder(); //Return index of new row.
- 
+
   virtual void setup_menu();
   virtual Glib::ustring treeview_get_key(const Gtk::TreeModel::iterator& row);
 
@@ -241,9 +246,10 @@ protected:
   /** Set the menu to popup when the user right-clicks on the column titles.
    * This method does not take ownership of the Gtk::Menu.
    */
-  virtual void set_column_header_popup(Gtk::Menu& popup);
+  void set_column_header_popup(Gtk::Menu& popup);
 
-
+  bool row_has_duplicates(const Gtk::TreeModel::iterator& iter) const;
+  void warn_about_duplicate();
 
   bool get_prevent_user_signals() const;
 
@@ -270,7 +276,7 @@ protected:
   Glib::RefPtr<Gtk::ListStore> m_refListStore;
   guint m_col_key; //The index of the hidden model column.
   guint m_col_placeholder; //The index of the placeholder-marker model column.
-   
+
   typedef std::vector<AddDelColumnInfo> type_ColumnTypes;
   type_ColumnTypes m_ColumnTypes;
 
@@ -280,16 +286,17 @@ protected:
 
   bool m_bPreventUserSignals;
   bool m_bIgnoreSheetSignals;
-  
+
   type_vecStrings m_vecColumnIDs; //We give each ViewColumn a special ID, so we know where they are after a reorder.
-  
+
   Glib::ustring m_strTextActiveCell; //value before the change
   Gtk::Menu* m_pColumnHeaderPopup;
   bool m_allow_column_chooser;
   bool m_auto_add;
   bool m_allow_add;
   bool m_allow_delete;
-  
+  Glib::ustring m_prevent_duplicates_warning;
+
   //signals:
   type_signal_user_added m_signal_user_added;
   type_signal_user_changed m_signal_user_changed;
@@ -320,7 +327,7 @@ guint AddDel::treeview_append_column(const Glib::ustring& title, const Gtk::Tree
   Gtk::CellRenderer* pCellRenderer = manage( Gtk::CellRenderer_Generation::generate_cellrenderer<T_ModelColumnType>() );
   return treeview_append_column(title, *pCellRenderer, column, column_id);
 }
-  
+
 
 
 

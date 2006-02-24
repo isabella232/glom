@@ -38,6 +38,9 @@ void Box_DB_Table_Relationships::init()
 {
   pack_start(m_AddDel);
   m_colName = m_AddDel.add_column(_("Name"));
+  m_AddDel.prevent_duplicates(m_colName); //Don't allow a relationship to be added twice.
+  m_AddDel.set_prevent_duplicates_warning(_("This relationship already exists. Please choose a different relationship name"));
+
   m_colTitle = m_AddDel.add_column(_("Title"));
 
   m_colFromField = m_AddDel.add_column(_("From Field"), AddDelColumnInfo::STYLE_Choices);

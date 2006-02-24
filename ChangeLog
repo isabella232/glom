@@ -1,3 +1,13 @@
+2006-02-24  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/utility_widgets/adddel/adddel.cc:
+	* glom/utility_widgets/adddel/adddel.h: Added set_prevent_duplicates() and 
+	set_prevent_duplicates_warning().
+	* glom/mode_design/box_db_table_relationships.cc:
+	* glom/mode_design/fields/box_db_table_definition.cc:
+	* glom/navigation/box_tables.cc: Use the new AddDel methods to prevent, and warn about, 
+	duplicate tables, fields, and relationships, to prevent crashes.
+
 2006-02-23  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/mode_design/fields/box_db_table_definition.cc: postgres_change_column_type():
