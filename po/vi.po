@@ -6,8 +6,8 @@ msgid ""
 ""
 msgstr "Project-Id-Version: glom HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-02-21 03:20+0100\n"
-"PO-Revision-Date: 2006-02-21 18:01+1030\n"
+"POT-Creation-Date: 2006-02-24 11:04+0100\n"
+"PO-Revision-Date: 2006-02-24 22:02+1030\n"
 "Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
 "Language-Team: Vietnamese <gnomevi-list@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -561,7 +561,7 @@ msgstr "Đa dòng"
 #:../glom/mode_data/dialog_choose_relationship.cc:49
 #:../glom/mode_data/dialog_layout_details.cc:62
 #:../glom/mode_data/dialog_layout_export.cc:49
-#:../glom/mode_data/dialog_layout_list.cc:49
+#:../glom/mode_data/dialog_layout_list.cc:50
 #:../glom/mode_data/dialog_layout_list_related.cc:51
 #:../glom/mode_design/box_db_table_relationships.cc:40
 #:../glom/mode_design/fields/box_db_table_definition.cc:48
@@ -1243,11 +1243,11 @@ msgstr "Dữ liệu này không thể được lưu vào cơ sở dữ liệu v�
 
 #.Warn the user:
 #.TODO: Make the field insensitive until it can receive data, so people never see this dialog.
-#:../glom/mode_data/box_data.cc:671
+#:../glom/mode_data/box_data.cc:668
 msgid "Related Record Does Not Exist"
 msgstr "Không có mục ghi tương ứng."
 
-#:../glom/mode_data/box_data.cc:672
+#:../glom/mode_data/box_data.cc:669
 msgid ""
 "Data may not be entered into this related field, because the related record "
 "does not yet exist, and the relationship does not allow automatic creation "
@@ -1257,12 +1257,12 @@ msgstr "Không thể nhập dữ liệu vào trường tương ứng này, vì m
 
 #.Warn the user:
 #.TODO: Make the field insensitive until it can receive data, so people never see this dialog.
-#:../glom/mode_data/box_data.cc:690
+#:../glom/mode_data/box_data.cc:687
 msgid "Related Record Cannot Be Created"
 msgstr "Không thể tạo mục ghi tương ứng"
 
 #.TODO: This is a very complex error message:
-#:../glom/mode_data/box_data.cc:692
+#:../glom/mode_data/box_data.cc:689
 msgid ""
 "Data may not be entered into this related field, because the related record "
 "does not yet exist, and the key in the related record is auto-generated and "
@@ -1272,11 +1272,11 @@ msgstr "Không thể nhập dữ liệu vào trường tương ứng này, vì m
 "thể được tạo bằng giá trị khoá trong mục ghi này."
 
 #.Ask the user for confirmation:
-#:../glom/mode_data/box_data.cc:779
+#:../glom/mode_data/box_data.cc:776
 msgid "Delete record"
 msgstr "Xoá bỏ mục ghi"
 
-#:../glom/mode_data/box_data.cc:780
+#:../glom/mode_data/box_data.cc:777
 msgid ""
 "Are you sure that you would like to delete this record? The data in this "
 "record will then be permanently lost."
@@ -1293,11 +1293,11 @@ msgid "This record cannot be deleted because there is no primary key."
 msgstr "Không thể xoá bỏ mục ghi này, vì không có khoá chính."
 
 #.Warn user that they can't choose their own primary key:
-#:../glom/mode_data/box_data_details.cc:655
+#:../glom/mode_data/box_data_details.cc:658
 msgid "Primary key auto increments"
 msgstr "Tự động dần dần khoá chính"
 
-#:../glom/mode_data/box_data_details.cc:656
+#:../glom/mode_data/box_data_details.cc:659
 msgid ""
 "The primary key is auto-incremented.\n"
 " You may not enter your own primary key value."
@@ -1305,7 +1305,7 @@ msgstr "Khoá chính được dần dần tự động.\n"
 "Bạn không thể nhập giá trị khoá chính mình."
 
 #.Add Pages:
-#:../glom/mode_data/box_data_list.cc:695
+#:../glom/mode_data/box_data_list.cc:696
 #:../glom/mode_data/notebook_data.cc:28 ../glom/mode_find/notebook_find.cc:29
 msgid "List"
 msgstr "Danh sách"
@@ -1339,6 +1339,14 @@ msgstr "Tương ứng: "
 msgid "Field: "
 msgstr "Trường: "
 
+#:../glom/mode_data/dialog_layout_list.cc:276
+msgid "Images Not Allowed On List View"
+msgstr "Không cho phép ảnh trong khung xem danh sách."
+
+#:../glom/mode_data/dialog_layout_list.cc:276
+msgid "The list view cannot display image fields."
+msgstr "Khung xem danh sách không thể hiển thị trường ảnh."
+
 #:../glom/mode_design/box_db_table_relationships.cc:43
 msgid "From Field"
 msgstr "Từ trường"
@@ -1368,6 +1376,22 @@ msgid ""
 "correct this."
 msgstr "Trường cơ sở dữ liệu này đã được tạo hay sửa đổi ở ngoài Glom. Nó có kiểu dữ "
 "liệu không được hỗ trợ bởi Glom. Quản trị hệ thống có lẽ sẽ sửa đó."
+
+#.TODO: Only show this when there are > 100 records?
+#:../glom/mode_design/fields/box_db_table_definition.cc:352
+msgid "Recalculation Required"
+msgstr "Cần thiết tính lại"
+
+#:../glom/mode_design/fields/box_db_table_definition.cc:353
+msgid ""
+"You have changed the calculation used by this field so Glom must recalculate "
+"the value in all records. If the table contains many records then this could "
+"take a long time."
+msgstr "Bạn đã thay đổi phép tính được dùng bởi trường này, vì vậy trình Glom phải tính lại giá trị trong mọi mục ghi. Nếu bảng chứa rất nhiều mục ghi, việc này có thể mất nhiều thời gian."
+
+#:../glom/mode_design/fields/box_db_table_definition.cc:356
+msgid "Recalculate"
+msgstr "Tính lại"
 
 #:../glom/mode_design/fields/dialog_fieldcalculation.cc:95
 msgid "Calculation result"
