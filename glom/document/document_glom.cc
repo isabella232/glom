@@ -1907,6 +1907,9 @@ void Document_Glom::save_before_layout_item_field(xmlpp::Element* nodeItem, cons
 
 void Document_Glom::save_before_layout_group(xmlpp::Element* node, const sharedptr<const LayoutGroup>& group)
 {
+  if(!group)
+    return;
+
   //g_warning("save_before_layout_group");
 
   xmlpp::Element* child = 0;
@@ -1944,12 +1947,15 @@ void Document_Glom::save_before_layout_group(xmlpp::Element* node, const sharedp
         child = node->add_child(GLOM_NODE_DATA_LAYOUT_PORTAL);
         child->set_attribute(GLOM_ATTRIBUTE_RELATIONSHIP_NAME, portal->get_relationship_name());
       }
-      else
+      else if(group)
       {
         child = node->add_child(GLOM_NODE_DATA_LAYOUT_GROUP);
       }
     }
   }
+
+  if(!child)
+    return;
 
   child->set_attribute(GLOM_ATTRIBUTE_NAME, group->get_name());
   set_node_attribute_value_as_decimal(child, GLOM_ATTRIBUTE_COLUMNS_COUNT, group->m_columns_count);
@@ -2183,7 +2189,8 @@ bool Document_Glom::save_before()
           nodeReport->set_attribute(GLOM_ATTRIBUTE_NAME, report->get_name());
 
           xmlpp::Element* nodeGroups = nodeReport->add_child(GLOM_NODE_DATA_LAYOUT_GROUPS);
-          save_before_layout_group(nodeGroups, report->m_layout_group);
+          if(report->m_layout_group)
+            save_before_layout_group(nodeGroups, report->m_layout_group);
 
           //Translations:
           save_before_translations(nodeReport, *report);

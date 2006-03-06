@@ -812,7 +812,8 @@ void Dialog_Layout_Report::on_cell_data_details(Gtk::CellRenderer* renderer, con
       if(pGroup)
       {
         //TODO: Internationalize this properly:
-        text = pGroup->get_field_group_by()->get_layout_display_name();
+        if(pGroup->get_has_field_group_by())
+          text = pGroup->get_field_group_by()->get_layout_display_name();
 
         if(pGroup->get_has_field_sort_by())
           text += "(sort by: " + pGroup->get_field_sort_by()->get_layout_display_name() + ")";

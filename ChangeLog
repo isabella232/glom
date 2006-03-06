@@ -1,3 +1,11 @@
+2006-03-06  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/box_reports.cc:
+	* glom/data_structure/report.cc:
+	* glom/dialog_layout_report.cc:
+	* glom/document/document_glom.cc: Prevent crashes when adding reports, 
+	or editing them.
+
 2006-03-02  Ilkka Tuohela  <hile@iki.fi>
 
 	* configure.in: Added "fi" to ALL_LINGUAS

@@ -23,6 +23,7 @@
 Report::Report()
 {
   m_translatable_item_type = TRANSLATABLE_TYPE_REPORT;
+  m_layout_group = sharedptr<LayoutGroup>::create();
 }
 
 Report::Report(const Report& src)
