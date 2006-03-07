@@ -1036,8 +1036,16 @@ void Dialog_Layout_Details::on_cell_data_name(Gtk::CellRenderer* renderer, const
             //if(!row[m_model_items->m_columns.m_col_editable])
             // markup += " *";
           }
-          else if(layout_item)
-            markup = layout_item->get_name();
+          else
+          {
+            sharedptr<LayoutItem_Button> layout_item_button = sharedptr<LayoutItem_Button>::cast_dynamic(layout_item);
+            if(layout_item_button)
+            {
+              markup = _("Button"); //Buttons don't have names - just titles. TODO: Would they be useful?
+            }
+            else if(layout_item)
+              markup = layout_item->get_name();
+          }
         }
       }
 

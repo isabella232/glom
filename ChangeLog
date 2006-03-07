@@ -1,3 +1,12 @@
+0.9.7:
+
+2006-03-07  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/main.cc: Call PySys_SetArgv, to prevent use of pygtk from 
+	crashing when using pygtk 2.9/2.10.
+	* glom/mode_data/dialog_layout_details.cc: on_cell_data_name(): Name buttons as 
+	buttons in the name column, instead of leaving it blank.
+
 2006-03-07  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/application.cc: on_document_load(): When saving from an example, temporarily increase 
@@ -35,8 +44,6 @@
 	* glom/mode_design/fields/box_db_table_definition.cc: postgres_change_column_type():
 	Data conversion commands: Fix crashes when converting from text to boolean, and from 
 	boolean to number. Preserve information when converting from anything to boolean.
-
-0.9.7:
 
 2006-02-22  Murray Cumming  <murrayc@murrayc.com>
 

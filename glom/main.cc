@@ -82,6 +82,7 @@ main(int argc, char* argv[])
 
   //We use python for calculated-fields:
   Py_Initialize();
+  PySys_SetArgv(argc, argv);
 
   try
   {

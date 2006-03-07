@@ -1,15 +1,10 @@
+0.9.7:
+
 * When creating from a read-only example, really do not mark the saved file 
   as not an example, and save the new database name, so you can open it 
   again from the saved file.
 * Prevent duplicate table, field, relationship, and report names, 
   to prevent crashes.
-* Field Definition:
-  - Fix crashes when converting from text to boolean.
-  - Fix crashes when converting from boolean to number.
-  - Preserve information when converting from anything to boolean.
-
-0.9.7:
-
 * Field Definition:
   - Default Value tab renamed to Value.
   - Default Values and lookups are now grouped as 
@@ -18,8 +13,13 @@
     with a warning and the chance to cancel.
   - Fix crash when changing field type to number, when not all 
     existing values are valid numbers.
+  - Fix crashes when converting from text to boolean.
+  - Fix crashes when converting from boolean to number.
+  - Preserve information when converting from anything to boolean.
 * List layout: Warn that image fields are not supported on the 
   list view yet.
+* New Translations:
+  - Finnish (Ilkka Tuohela)
 * Updated Translations:
   - Catalan (Josep Puigdemont)
   - Vietnamese (Clytie Siddall)
