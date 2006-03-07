@@ -514,6 +514,15 @@ bool App_Glom::on_document_load()
 
               return false;
             }
+            else
+            {
+              //Make sure that the changes (mark as non example, and save the new database name) are really saved:
+              //Change the user level temporarily so that save_changes() actually saves:
+              const AppState::userlevels user_level = pDocument->get_userlevel();
+              pDocument->set_userlevel(AppState::USERLEVEL_DEVELOPER);
+              pDocument->set_modified(true);
+              pDocument->set_userlevel(user_level); //Change it back.
+            }
           }
         }
         catch(const ExceptionConnection& ex)

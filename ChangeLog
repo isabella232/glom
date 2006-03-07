@@ -1,3 +1,13 @@
+2006-03-07  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/application.cc: on_document_load(): When saving from an example, temporarily increase 
+	the user level, so that save_changes() always saves.
+	* glom/document/document_glom.cc: 
+	set_modified(): Save even if modified is already set, because this can happen 
+	after unblocking save-on-modified. If there are endless loops then we need to 
+	fix them elsewhere instead.
+	load_after(): Block setting of modified state while loading.
+
 2006-03-06  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/box_reports.cc:

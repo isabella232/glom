@@ -1335,11 +1335,11 @@ bool Frame_Glom::create_database(const Glib::ustring& database_name, const Glib:
       Glib::RefPtr<Gnome::Gda::Connection> connection = sharedconnection->get_gda_connection();
       if(connection)
       {
-        bool result = connection->create_database(database_name);
-        if(result)
-        {
-          std::cout << "Frame_Glom::create_database(): Creation succeeded: database_name=" << database_name << std::endl;
-        }
+        connection->create_database(database_name);
+        //if(result)
+        //{
+        //  std::cout << "Frame_Glom::create_database(): Creation succeeded: database_name=" << database_name << std::endl;
+        //}
       }
     }
   }
@@ -1367,19 +1367,19 @@ bool Frame_Glom::create_database(const Glib::ustring& database_name, const Glib:
     //If we got this far then the user must really have developer privileges already:
     add_standard_groups();
 
-    std::cout << "Frame_Glom::create_database(): Creation of standard tables and groups finished." << std::endl;
+    //std::cout << "Frame_Glom::create_database(): Creation of standard tables and groups finished." << std::endl;
 
     //Set the title based on the title in the example document, or the user-supplied title when creating new documents:
     SystemPrefs prefs = get_database_preferences();
     if(prefs.m_name.empty())
     {
-      std::cout << "Frame_Glom::create_database(): Setting title in the database." << std::endl;
+      //std::cout << "Frame_Glom::create_database(): Setting title in the database." << std::endl;
       prefs.m_name = title;
       set_database_preferences(prefs);
     }
     else
     {
-      std::cout << "Frame_Glom::create_database(): database has title: " << prefs.m_name << std::endl;
+      //std::cout << "Frame_Glom::create_database(): database has title: " << prefs.m_name << std::endl;
     }
 
     return true;

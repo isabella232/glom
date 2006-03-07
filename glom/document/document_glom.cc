@@ -1226,7 +1226,7 @@ bool Document_Glom::set_userlevel(AppState::userlevels userlevel)
     return false;
   }
   else
-  { 
+  {
     m_app_state.set_userlevel(userlevel);
     return true;
   }
@@ -1290,6 +1290,7 @@ void Document_Glom::save_changes()
       bool test = save_before();
       if(test)
       {
+        //std::cout << "Document_Glom::save_changes(): calling write_to_disk()." << std::endl;
         test = write_to_disk();
         if(test)
         {
@@ -1297,22 +1298,32 @@ void Document_Glom::save_changes()
         }
       }
   }
+  else
+  {
+    //std::cout << "Document_Glom::save_changes(): Not saving, because not AppState::USERLEVEL_DEVELOPER" << std::endl;
+  }
 }
 
 void Document_Glom::set_modified(bool value)
 {
-  if(value && m_block_modified_set)
-    return;
+  //std::cout << "Document_Glom::set_modified()" << std::endl;
 
-  if(value != get_modified()) //Prevent endless loops
+  if(value && m_block_modified_set) //For instance, don't save changes while loading.
   {
+    //std::cout << "  Document_Glom::set_modified() m_block_modified_set" << std::endl;
+    return;
+  }
+
+  //if(value != get_modified()) //Prevent endless loops
+  //{
     Bakery::Document_XML::set_modified(value);
 
     if(value)
     {
+      //std::cout << "  Document_Glom::set_modified() save_changes" << std::endl;
       save_changes();
     }
-  }
+  //}
 }
 
 void Document_Glom::load_after_layout_item_field_formatting(const xmlpp::Element* element, FieldFormatting& format, Field::glom_field_type field_type, const Glib::ustring& table_name, const Glib::ustring& field_name)
@@ -1550,6 +1561,8 @@ void Document_Glom::load_after_translations(const xmlpp::Element* element, Trans
 
 bool Document_Glom::load_after()
 {
+  m_block_modified_set = true; //Orevent the set_ functions from trigerring a save.
+
   bool result = Bakery::Document_XML::load_after();  
 
   m_block_cache_update = true; //Don't waste time repeatedly updating this until we have finished.
@@ -1839,6 +1852,8 @@ bool Document_Glom::load_after()
   }
 
   m_block_cache_update = false;
+
+  m_block_modified_set = false;
 
   return result;
 }

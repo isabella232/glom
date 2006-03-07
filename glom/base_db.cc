@@ -1165,7 +1165,7 @@ void Base_DB::set_database_preferences(const SystemPrefs& prefs)
 
 bool Base_DB::create_table(const sharedptr<const TableInfo>& table_info, const Document_Glom::type_vecFields& fields) const
 {
-  std::cout << "Base_DB::create_table(): " << table_info->get_name() << ", title=" << table_info->get_title() << std::endl;
+  //std::cout << "Base_DB::create_table(): " << table_info->get_name() << ", title=" << table_info->get_title() << std::endl;
 
   bool table_creation_succeeded = false;
 
