@@ -2,6 +2,20 @@
 
 2006-03-07  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/data_structure/layout/layoutitem_field.cc: get_editable_and_allowed():
+	Report calculated fields as always non-editable.
+	* glom/layout_item_dialogs/dialog_field_layout.cc: set_field(): Do not allow 
+	calculated fields to be editable, by graying-out the checkbox.
+	* glom/main.cc: Translate the command-line options, and add a --version 
+	option.
+	* glom/utility_widgets/comboglomchoicesbase.cc: set_choices_with_second(): 
+	For the optional second column in the popdown, use the correct formatting, 
+	instead of reusing the formatting from the first column.
+	* glom/utility_widgets/datawidget.cc: set_editable(): For ComboBoxEntry 
+	widgets, set the child entry as non-editable.
+
+2006-03-07  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/main.cc: Call PySys_SetArgv, to prevent use of pygtk from 
 	crashing when using pygtk 2.9/2.10.
 	* glom/mode_data/dialog_layout_details.cc: on_cell_data_name(): Name buttons as 

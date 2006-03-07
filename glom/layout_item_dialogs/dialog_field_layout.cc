@@ -80,6 +80,11 @@ void Dialog_FieldLayout::set_field(const sharedptr<const LayoutItem_Field>& fiel
 
   m_checkbutton_editable->set_active( field->get_editable() );
 
+  //Calculated fields can never be edited:
+  sharedptr<const Field> field_details = field->get_full_field_details();
+  const bool editable_allowed = field_details && !field_details->get_has_calculation();
+  m_checkbutton_editable->set_sensitive(editable_allowed);
+
   //Custom title:
   Glib::ustring title_custom;
   if(field->get_title_custom())

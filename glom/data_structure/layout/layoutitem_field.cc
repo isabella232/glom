@@ -136,7 +136,7 @@ Glib::ustring LayoutItem_Field::get_title_or_name() const
 
 bool LayoutItem_Field::get_editable_and_allowed() const
 {
-  //Thre relationship might forbid editing of any fields through itself:
+  //The relationship might forbid editing of any fields through itself:
   if(get_has_relationship_name())
   {
     sharedptr<const Relationship> rel = get_relationship();
@@ -145,6 +145,10 @@ bool LayoutItem_Field::get_editable_and_allowed() const
       if(!(rel->get_allow_edit()))
         return false;
     }
+  }
+  else if(m_field && m_field->get_has_calculation())
+  {
+    return false; //Calculations can never be edited.
   }
 
   return m_editable && m_priv_edit;

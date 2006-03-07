@@ -43,16 +43,24 @@ public:
   //These int instances should live as long as the OptionGroup to which they are added, 
   //and as long as the OptionContext to which those OptionGroups are added.
   std::string m_arg_filename;
+  bool m_arg_version;
 };
 
 ExampleOptionGroup::ExampleOptionGroup()
-: Glib::OptionGroup("Glom", "Glom options", "Debug options for glom")
+: Glib::OptionGroup("Glom", _("Glom options"), _("Command-line options for glom")),
+  m_arg_version(false)
 {
   Glib::OptionEntry entry;
   entry.set_long_name("file");
   entry.set_short_name('f');
-  entry.set_description("The Filename");
+  entry.set_description(_("The Filename"));
   add_entry_filename(entry, m_arg_filename);
+
+  Glib::OptionEntry entry_version;
+  entry_version.set_long_name("version");
+  entry_version.set_short_name('V');
+  entry_version.set_description(_("The version of this application."));
+  add_entry(entry_version, m_arg_version);
 }
 
 
@@ -80,6 +88,13 @@ main(int argc, char* argv[])
     std::cout << "Exception: " << ex.what() << std::endl;
   }
 
+
+  if(group.m_arg_version)
+  {
+    std::cout << VERSION << std::endl;
+    return 0;
+  }
+
   //We use python for calculated-fields:
   Py_Initialize();
   PySys_SetArgv(argc, argv);
@@ -88,17 +103,17 @@ main(int argc, char* argv[])
   {
     //Initialize gnome_program, so that we can use gnome_help_display().    
     gnome_program_init(PACKAGE_NAME, PACKAGE_VERSION, LIBGNOME_MODULE, argc, argv,
-		    GNOME_PARAM_HUMAN_READABLE_NAME, _("Glom"),
-		    GNOME_PROGRAM_STANDARD_PROPERTIES, NULL);
-    
-    
+        GNOME_PARAM_HUMAN_READABLE_NAME, _("Glom"),
+        GNOME_PROGRAM_STANDARD_PROPERTIES, NULL);
+
+
     Gtk::Main mainInstance(argc, argv, context);
     Bakery::init();
     Gnome::Canvas::init();
 
     //Get command-line parameters, if any:
     Glib::ustring input_uri = group.m_arg_filename;
-    
+
     // The GOption documentation says that options without names will be returned to the application as "rest arguments".
     // I guess this means they will be left in the argv. Murray.
     if(input_uri.empty() && (argc > 1))
@@ -114,7 +129,7 @@ main(int argc, char* argv[])
       input_uri = Gnome::Vfs::Uri::make_from_shell_arg(input_uri);
       //std::cout << "URI = " << input_uri << std::endl;
     }
-     
+
     //debugging:
     //input_uri = "file:///home/murrayc/cvs/gnome212/glom/examples/example_smallbusiness.glom";
 

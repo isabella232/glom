@@ -364,6 +364,16 @@ void DataWidget::set_editable(bool editable)
     Gtk::CheckButton* checkbutton = dynamic_cast<Gtk::CheckButton*>(child);
     if(checkbutton)
       checkbutton->set_sensitive(editable);
+    else
+    {
+      Gtk::ComboBoxEntry* comboboxentry = dynamic_cast<Gtk::ComboBoxEntry*>(child);
+      if(comboboxentry)
+      {
+        Gtk::Entry* entry = comboboxentry->get_entry();
+        if(entry)
+          entry->set_editable(editable);
+      }
+    }
   }
 }
 
