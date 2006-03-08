@@ -16,6 +16,11 @@
   - Fix crashes when converting from text to boolean.
   - Fix crashes when converting from boolean to number.
   - Preserve information when converting from anything to boolean.
+* Details and List Views: Do not allow editing of calculated fields.
+* Details View: Use the correct formatting for second columns in combo boxes for 
+  related choices.
+* List View: Do not add a record when clicking on the Edit button on the last row 
+  - just go to the Details view.
 * List layout: Warn that image fields are not supported on the 
   list view yet.
 * New Translations:

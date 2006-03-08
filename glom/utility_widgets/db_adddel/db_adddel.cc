@@ -129,11 +129,11 @@ DbAddDel::on_MenuPopup_activate_Edit()
     if(iter)
     {
       //Discover whether it's the last (empty) row:
-      if(get_is_placeholder_row(iter))
-      {
+      //if(get_is_placeholder_row(iter))
+     // {
         //This is a new entry:
-        if(m_allow_add)
-          signal_user_added().emit(iter, 0);
+       // if(m_allow_add)
+       //   signal_user_added().emit(iter, 0);
 
         /*
         bool bRowAdded = true;
@@ -147,12 +147,12 @@ DbAddDel::on_MenuPopup_activate_Edit()
         if(bRowAdded)
           signal_user_requested_edit()(rowAdded);
         */
-      }
-      else
-      {
+     // }
+     // else
+     // {
         //Value changed:
         signal_user_requested_edit()(iter);
-      }
+     // }
     }
 
   }
@@ -1635,11 +1635,10 @@ void DbAddDel::set_allow_view(bool val)
 void DbAddDel::set_allow_view_details(bool val)
 {
   m_allow_view_details = val;
-  
+
   //Hide it if it was visible:
   if(m_treeviewcolumn_button)
     m_treeviewcolumn_button->property_visible() = get_allow_view_details();
-    
 }
 
 bool DbAddDel::get_allow_view_details() const
