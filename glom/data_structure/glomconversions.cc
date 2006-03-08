@@ -302,6 +302,12 @@ Gnome::Gda::Value GlomConversions::parse_value(Field::glom_field_type glom_type,
   {
     tm the_c_time = parse_time(text, the_locale, success);
 
+    if(!success)
+    {
+      //Fall back to trying both the current locale and C locale:
+      the_c_time = parse_time(text, success);
+    }
+
     Gnome::Gda::Time gda_time = {0, 0, 0, 0};
     gda_time.hour = the_c_time.tm_hour;
     gda_time.minute = the_c_time.tm_min;
@@ -458,12 +464,18 @@ tm GlomConversions::parse_time(const Glib::ustring& text, bool& success)
 {
   //return parse_time( text, std::locale("") /* the user's current locale */ ); //Get the current locale.
 
+  std::cout << "GlomConversions::parse_time(text): text=" << text << std::endl;
+
   //time_get() does not seem to work with non-C locales.  TODO: Try again.
   tm the_time = parse_time( text, std::locale("") /* the user's current locale */, success );
   if(success)
+  {
     return the_time;
+  }
   else
   {
+    std::cout << "  Specific locale failed. Falling back to the C locale." << text << std::endl;
+
     //Fallback:
     //Try interpreting it as the C locale instead.
     //For instance, time_get::get_time() does not seem to be able to parse any time in a non-C locale (even "en_US" or "en_US.UTF-8").
@@ -474,6 +486,8 @@ tm GlomConversions::parse_time(const Glib::ustring& text, bool& success)
 
 tm GlomConversions::parse_time(const Glib::ustring& text, const std::locale& locale, bool& success)
 {
+  std::cout << "GlomConversions::parse_time(text, locale): text=" << text << std::endl;
+
   //The sequence of statements here seems to be very fragile. If you move things then it stops working.
 
   //return parse_tm(text, locale, 'X' /* time */);
@@ -515,6 +529,8 @@ tm GlomConversions::parse_time(const Glib::ustring& text, const std::locale& loc
   }
   else
   {
+    std::cout << "  tg.get_time() failed" << text << std::endl;
+
     tm blank_time = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     success = false;
     return blank_time;
