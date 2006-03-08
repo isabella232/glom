@@ -1,9 +1,15 @@
+0.9.7:
+
+2006-03-08  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/data_structure/glomconversions.cc: parse_date(): Fix incorrect sanity check 
+	of the month, so that January is not changed to February. tm.tm_mon _does_ start 
+	with 0.
+
 2006-03-08  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/data_structure/glomconversions.cc: parse_value(): If parsing of the time 
 	fails, fall back to trying the C locale. This is usually necessary. No idea why.
-
-0.9.7:
 
 2006-03-08  Murray Cumming  <murrayc@murrayc.com>
 

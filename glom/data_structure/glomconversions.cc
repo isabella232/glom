@@ -393,7 +393,7 @@ tm GlomConversions::parse_date(const Glib::ustring& text, const std::locale& loc
    * When not, I get just zeros.
    */
   tm the_c_time = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-  
+
   std::ios_base::iostate err = std::ios_base::goodbit;  //The initialization is essential because time_get seems to a) not initialize this output argument and b) check its value.
 
   //For some reason, the stream must be instantiated after we get the facet. This is a worryingly strange "bug".
@@ -402,7 +402,7 @@ tm GlomConversions::parse_date(const Glib::ustring& text, const std::locale& loc
   the_stream << text;
 
   // Get a time_get facet:
- 
+
   typedef std::time_get<char> type_time_get;
   typedef type_time_get::iter_type type_iterator;
 
@@ -426,13 +426,13 @@ tm GlomConversions::parse_date(const Glib::ustring& text, const std::locale& loc
     {
       tm null_c_time = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
       the_c_time = null_c_time;
-      
+
       if(date.get_year() != Glib::Date::BAD_YEAR)
         the_c_time.tm_year = date.get_year() - 1900; //C years start are the AD year - 1900. So, 01 is 1901.
-      
+
       if(date.get_month() != Glib::Date::BAD_MONTH)
         the_c_time.tm_mon = date.get_month() - 1; //C months start at 0.
-        
+
       if(date.get_day() != Glib::Date::BAD_DAY)
         the_c_time.tm_mday = date.get_day(); //starts at 1
 
@@ -450,11 +450,13 @@ tm GlomConversions::parse_date(const Glib::ustring& text, const std::locale& loc
   }
 
   //Prevent some nonsense values:
+  //tm_day starts from 1.
   if(the_c_time.tm_mday == 0)
     the_c_time.tm_mday = 1;
 
-  if(the_c_time.tm_mon == 0)
-      the_c_time.tm_mon = 1;
+  //tm_mon starts from 0, so 0 is an acceptable value.
+  //if(the_c_time.tm_mon == 0)
+  //    the_c_time.tm_mon = 1;
 
   return the_c_time;
 }
@@ -464,8 +466,6 @@ tm GlomConversions::parse_time(const Glib::ustring& text, bool& success)
 {
   //return parse_time( text, std::locale("") /* the user's current locale */ ); //Get the current locale.
 
-  std::cout << "GlomConversions::parse_time(text): text=" << text << std::endl;
-
   //time_get() does not seem to work with non-C locales.  TODO: Try again.
   tm the_time = parse_time( text, std::locale("") /* the user's current locale */, success );
   if(success)
@@ -474,8 +474,6 @@ tm GlomConversions::parse_time(const Glib::ustring& text, bool& success)
   }
   else
   {
-    std::cout << "  Specific locale failed. Falling back to the C locale." << text << std::endl;
-
     //Fallback:
     //Try interpreting it as the C locale instead.
     //For instance, time_get::get_time() does not seem to be able to parse any time in a non-C locale (even "en_US" or "en_US.UTF-8").
@@ -486,8 +484,6 @@ tm GlomConversions::parse_time(const Glib::ustring& text, bool& success)
 
 tm GlomConversions::parse_time(const Glib::ustring& text, const std::locale& locale, bool& success)
 {
-  std::cout << "GlomConversions::parse_time(text, locale): text=" << text << std::endl;
-
   //The sequence of statements here seems to be very fragile. If you move things then it stops working.
 
   //return parse_tm(text, locale, 'X' /* time */);
@@ -529,7 +525,7 @@ tm GlomConversions::parse_time(const Glib::ustring& text, const std::locale& loc
   }
   else
   {
-    std::cout << "  tg.get_time() failed" << text << std::endl;
+    //std::cout << "  tg.get_time() failed" << text << std::endl;
 
     tm blank_time = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     success = false;
