@@ -99,12 +99,12 @@ bool Box_Data_List_Related::init_db_details(const sharedptr<const LayoutItem_Por
   LayoutWidgetBase::m_table_name = m_portal->get_relationship()->get_to_table();
   Box_DB_Table::m_table_name = LayoutWidgetBase::m_table_name;
 
-  sharedptr<const Relationship> relationship = portal->get_relationship();
+  sharedptr<const Relationship> relationship = m_portal->get_relationship();
 
   m_Label.set_markup(Bakery::App_Gtk::util_bold_message( glom_get_sharedptr_title_or_name(relationship) ));
 
   if(relationship)
-    m_key_field = get_fields_for_table_one_field(m_portal->get_relationship()->get_to_table(), m_portal->get_relationship()->get_to_field());
+    m_key_field = get_fields_for_table_one_field(relationship->get_to_table(), relationship->get_to_field());
   else
     m_key_field = sharedptr<Field>();
 

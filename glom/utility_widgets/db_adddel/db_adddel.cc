@@ -529,6 +529,9 @@ void DbAddDel::construct_specified_columns()
 
       record.add( *pModelColumn );
 
+      //if(iter->m_field->get_has_relationship_name())
+      //  std::cout << "  DEBUG: relationship=" << iter->m_field->get_relationship()->get_name() << std::endl;
+
       fields.push_back( glom_sharedptr_clone(iter->m_field) );
 
       i++;

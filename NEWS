@@ -23,6 +23,7 @@
   - just go to the Details view.
 * List layout: Warn that image fields are not supported on the 
   list view yet.
+* Date and Time Parsing improvements.
 * New Translations:
   - Finnish (Ilkka Tuohela)
 * Updated Translations:

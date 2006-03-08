@@ -1814,7 +1814,7 @@ void Base_DB::get_table_fields_to_show_for_sequence_add_group(const Glib::ustrin
         }
         else
         {
-          std::cerr << "Base_DB::get_table_fields_to_show_for_sequence_add_group(): related field's relationship not found: " << relationship_name << std::endl;
+          std::cerr << "Base_DB::get_table_fields_to_show_for_sequence_add_group(): related field's relationship not found: parent_table_name=" << table_name << ", relationship_name=" << relationship_name << std::endl;
         }
       }
       else //It's a regular field in the table:
@@ -1842,8 +1842,12 @@ void Base_DB::get_table_fields_to_show_for_sequence_add_group(const Glib::ustrin
       sharedptr<const LayoutGroup> item_group = sharedptr<const LayoutGroup>::cast_dynamic(item);
       if(item_group)
       {
-        //Recurse:
-        get_table_fields_to_show_for_sequence_add_group(table_name, table_privs, all_db_fields, item_group, vecFields);
+        sharedptr<const LayoutItem_Portal> item_portal = sharedptr<const LayoutItem_Portal>::cast_dynamic(item);
+        if(!item_portal) //Do not recurse into portals. They are filled by means of a separate SQL query.
+        {
+          //Recurse:
+          get_table_fields_to_show_for_sequence_add_group(table_name, table_privs, all_db_fields, item_group, vecFields);
+        }
       }
     }
   }

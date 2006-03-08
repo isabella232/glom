@@ -1484,10 +1484,15 @@ void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Gl
         sharedptr<LayoutItem_Portal> portal = sharedptr<LayoutItem_Portal>::create();
 
         const Glib::ustring relationship_name = get_node_attribute_value(element, GLOM_ATTRIBUTE_RELATIONSHIP_NAME);
-        portal->set_relationship( get_relationship(table_name, relationship_name) );
+        sharedptr<Relationship> relationship = get_relationship(table_name, relationship_name);
+        portal->set_relationship(relationship);
 
         //Recurse:
-        load_after_layout_group(element, table_name, portal);
+        Glib::ustring related_table_name = table_name;
+        if(relationship)
+          related_table_name = relationship->get_to_table();
+
+        load_after_layout_group(element, related_table_name, portal);
         group->add_item(portal);
       }
       else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_ITEM_GROUPBY)

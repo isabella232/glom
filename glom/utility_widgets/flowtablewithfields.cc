@@ -773,7 +773,7 @@ void FlowTableWithFields::on_datawidget_layout_item_added(LayoutWidgetBase::enum
         Document_Glom* pDocument = static_cast<Document_Glom*>(get_document());
         dialog->set_document(pDocument, m_table_name);
         //TODO: dialog->set_transient_for(*get_app_window());
-        int response = dialog->run();
+        const int response = dialog->run();
         dialog->hide();
         if(response == Gtk::RESPONSE_OK)
         {
