@@ -1,3 +1,11 @@
+0.9.8:
+
+* Lookups: Fix intermittent problem that caused looked-up values to 
+  not be stored in the database.
+* Related Records: Correctly reload portal layouts that use related 
+  (from the related table) fields, rather than just fields in the related table.
+* Performance: Avoid querying for some unnecessary fields on Details view.
+
 0.9.7:
 
 * When creating from a read-only example, really do not mark the saved file 
