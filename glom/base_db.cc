@@ -2184,8 +2184,17 @@ bool Base_DB::set_field_value_in_database(const FieldInRecord& field_in_record, 
 bool Base_DB::set_field_value_in_database(const FieldInRecord& field_in_record, const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& field_value, bool use_current_calculations)
 {
   //row is invalid, and ignored, for Box_Data_Details.
-  if(!(field_in_record.m_field) || !(field_in_record.m_key))
+  if(!(field_in_record.m_field))
+  {
+    std::cerr << "Base_DB::set_field_value_in_database(): field_in_record.m_field is empty." << std::endl;
     return false;
+  }
+
+  if(!(field_in_record.m_key))
+  {
+    std::cerr << "Base_DB::set_field_value_in_database(): field_in_record.m_key is empty." << std::endl;
+    return false;
+  }
 
   const Glib::ustring field_name = field_in_record.m_field->get_name();
   if(!field_name.empty()) //This should not happen.
@@ -2341,9 +2350,12 @@ void Base_DB::do_lookups(const FieldInRecord& field_in_record, const Gtk::TreeMo
    //TODO_performance: There is a LOT of iterating and copying here.
    const Glib::ustring strFieldName = field_in_record.m_field->get_name();
    const type_list_lookups lookups = get_lookup_fields(field_in_record.m_table_name, strFieldName);
+   //std::cout << "Base_DB::do_lookups(): lookups size=" << lookups.size() << std::endl;
    for(type_list_lookups::const_iterator iter = lookups.begin(); iter != lookups.end(); ++iter)
    {
      sharedptr<const LayoutItem_Field> layout_item = iter->first;
+
+     //std::cout << "Base_DB::do_lookups(): item=" << layout_item->get_name() << std::endl;
 
      sharedptr<const Relationship> relationship = iter->second;
      const sharedptr<const Field> field_lookup = layout_item->get_full_field_details();
@@ -2356,14 +2368,14 @@ void Base_DB::do_lookups(const FieldInRecord& field_in_record, const Gtk::TreeMo
 
         const Gnome::Gda::Value value_converted = GlomConversions::convert_value(value, layout_item->get_glom_type());
 
-        FieldInRecord field_in_record(layout_item, field_in_record.m_table_name /* parent table */, field_in_record.m_key, field_in_record.m_key_value, *(get_document()));
+        FieldInRecord field_in_record_to_set(layout_item, field_in_record.m_table_name /* parent table */, field_in_record.m_key, field_in_record.m_key_value, *(get_document()));
 
         //Add it to the view:
         set_entered_field_data(row, layout_item, value_converted);
         //m_AddDel.set_value(row, layout_item, value_converted);
 
         //Add it to the database (even if it is not shown in the view)
-        set_field_value_in_database(field_in_record, row, value_converted); //Also does dependent lookups/recalcs.
+        set_field_value_in_database(field_in_record_to_set, row, value_converted); //Also does dependent lookups/recalcs.
         //Glib::ustring strQuery = "UPDATE \"" + m_table_name + "\"";
         //strQuery += " SET " + field_lookup.get_name() + " = " + field_lookup.sql(value);
         //strQuery += " WHERE " + primary_key.get_name() + " = " + primary_key.sql(primary_key_value);

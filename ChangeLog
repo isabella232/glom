@@ -1,5 +1,10 @@
 2006-03-08  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/base_db.cc: do_lookups(): Do not pass a instance constructor its own member 
+	variables. Avoids occasional crash and occasional non-working lookups.
+
+2006-03-08  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/base_db.cc:
 	get_table_fields_to_show_for_sequence_add_group(): Do not recurse into portals, 
 	to avoid adding their fields to the SQL query for the parent table details view.
