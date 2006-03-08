@@ -207,7 +207,7 @@ bool DbTreeModel::refresh_from_database(const Glib::ustring& where_clause)
 
     //std::cout << "DbTreeModel: Executing SQL: " << sql_query << std::endl;
     m_gda_datamodel = m_connection->get_gda_connection()->execute_single_command(sql_query);
-    if(!m_gda_datamodel || (m_gda_datamodel->get_n_rows() == 0))
+    if(!m_gda_datamodel)
     {
       m_data_model_rows_count = 0;
       m_data_model_columns_count = m_columns_count;

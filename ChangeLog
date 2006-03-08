@@ -1,5 +1,11 @@
 0.9.7:
 
+2006-03-08  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/utility_widgets/db_adddel/glom_db_treemodel.cc: refresh_from_database(): 
+	If there are no rows it is not an error. There are just no records in the table 
+	yet.
+
 2006-03-07  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/data_structure/layout/layoutitem_field.cc: get_editable_and_allowed():
