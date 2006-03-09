@@ -227,8 +227,9 @@ protected:
   void report_build_groupby(const Glib::ustring& table_name, xmlpp::Element& parent_node, const sharedptr<LayoutItem_GroupBy>& group_by, const Glib::ustring& where_clause_parent);
   void report_build_summary(const Glib::ustring& table_name, xmlpp::Element& parent_node, const sharedptr<LayoutItem_Summary>& summary, const Glib::ustring& where_clause_parent);
 
-  ///@show_null_records means show a summary of zero values when there are no records to actually summarise.
-  void report_build_records(const Glib::ustring& table_name, xmlpp::Element& parent_node, const type_vecLayoutFields& fieldsToGet, const Glib::ustring& where_clause, const Glib::ustring& sort_clause = Glib::ustring(), bool one_record_only = false);
+  typedef std::vector< sharedptr<LayoutItem> > type_vecLayoutItems;
+
+  void report_build_records(const Glib::ustring& table_name, xmlpp::Element& parent_node, const type_vecLayoutItems& items, const Glib::ustring& where_clause, const Glib::ustring& sort_clause = Glib::ustring(), bool one_record_only = false);
 
   Gnome::Gda::Value auto_increment_insert_first_if_necessary(const Glib::ustring& table_name, const Glib::ustring& field_name) const;
 

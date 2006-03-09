@@ -1,6 +1,13 @@
 2006-03-09  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/base_db.cc:
+	* glom/base_db.h: report_build_records() takes a vector of LayoutItem 
+	instead of LayoutItem_Field, so it can handle text items. So text objects 
+	now work on record rows of reports.
+
+2006-03-09  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/base_db.cc:
 	* glom/base_db.h: Added offer_textobject().
 	* glom/data_structure/layout/Makefile.am:
 	* glom/data_structure/layout/layoutitem_text.cc:

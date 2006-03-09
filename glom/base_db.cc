@@ -1380,15 +1380,18 @@ void Base_DB::report_build_summary(const Glib::ustring& table_name, xmlpp::Eleme
   xmlpp::Element* nodeSummary = parent_node.add_child("summary");
 
   //Get fields
-  GlomUtils::type_vecLayoutFields fieldsToGet;
+  type_vecLayoutItems itemsToGet;
   for(LayoutGroup::type_map_items::iterator iterChildren = summary->m_map_items.begin(); iterChildren != summary->m_map_items.end(); ++iterChildren)
   {
     sharedptr<LayoutItem> item = iterChildren->second;
     sharedptr<LayoutItem_Field> pField = sharedptr<LayoutItem_Field>::cast_dynamic(item);
-    if(pField)
+    sharedptr<LayoutItem_Text> pText = sharedptr<LayoutItem_Text>::cast_dynamic(item);
+    if(pField || pText)
     {
-      fill_full_field_details(table_name, pField);
-      fieldsToGet.push_back( glom_sharedptr_clone(pField) );
+      if(pField)
+        fill_full_field_details(table_name, pField);
+
+      itemsToGet.push_back( glom_sharedptr_clone(item) );
     }
     else
     {
@@ -1410,10 +1413,10 @@ void Base_DB::report_build_summary(const Glib::ustring& table_name, xmlpp::Eleme
     }
   }
 
-  if(!fieldsToGet.empty())
+  if(!itemsToGet.empty())
   {
     //Rows, with data:
-    report_build_records(table_name, *nodeSummary, fieldsToGet, where_clause, Glib::ustring() /* No sort_clause because there is only one row */);
+    report_build_records(table_name, *nodeSummary, itemsToGet, where_clause, Glib::ustring() /* No sort_clause because there is only one row */);
   }
 }
 
@@ -1459,35 +1462,41 @@ void Base_DB::report_build_groupby(const Glib::ustring& table_name, xmlpp::Eleme
         {
           xmlpp::Element* nodeSecondaryFields = nodeGroupBy->add_child("secondary_fields");
 
-          GlomUtils::type_vecLayoutFields fieldsToGet;
+          type_vecLayoutItems itemsToGet;
           for(LayoutGroup::type_map_items::iterator iterChildren = group_by->m_group_secondary_fields->m_map_items.begin(); iterChildren != group_by->m_group_secondary_fields->m_map_items.end(); ++iterChildren)
           {
             sharedptr<LayoutItem> item = iterChildren->second;
             sharedptr<LayoutItem_Field> pField = sharedptr<LayoutItem_Field>::cast_dynamic(item);
-            if(pField)
+            sharedptr<LayoutItem_Text> pText = sharedptr<LayoutItem_Text>::cast_dynamic(item);
+            if(pField || pText)
             {
-              fill_full_field_details(table_name, pField);
-              fieldsToGet.push_back( glom_sharedptr_clone(pField) );
+              if(pField)
+                fill_full_field_details(table_name, pField);
+
+              itemsToGet.push_back( glom_sharedptr_clone(item) );
             }
           }
 
-          if(!fieldsToGet.empty())
+          if(!itemsToGet.empty())
           {
-            report_build_records(table_name, *nodeSecondaryFields, fieldsToGet, where_clause, Glib::ustring(), true /* one record only */);
+            report_build_records(table_name, *nodeSecondaryFields, itemsToGet, where_clause, Glib::ustring(), true /* one record only */);
           }
         }
 
 
         //Get data and add child rows:
-        GlomUtils::type_vecLayoutFields fieldsToGet;
+        type_vecLayoutItems itemsToGet;
         for(LayoutGroup::type_map_items::iterator iterChildren = group_by->m_map_items.begin(); iterChildren != group_by->m_map_items.end(); ++iterChildren)
         {
           sharedptr<LayoutItem> item = iterChildren->second;
           sharedptr<LayoutItem_Field> pField = sharedptr<LayoutItem_Field>::cast_dynamic(item);
-          if(pField)
+          sharedptr<LayoutItem_Text> pText = sharedptr<LayoutItem_Text>::cast_dynamic(item);
+          if(pField || pText)
           {
-            fill_full_field_details(table_name, pField);
-            fieldsToGet.push_back( glom_sharedptr_clone(pField) );
+            if(pField)
+              fill_full_field_details(table_name, pField);
+
+            itemsToGet.push_back( glom_sharedptr_clone(item) );
           }
           else
           {
@@ -1509,37 +1518,48 @@ void Base_DB::report_build_groupby(const Glib::ustring& table_name, xmlpp::Eleme
           }
         }
 
-        if(!fieldsToGet.empty())
+        if(!itemsToGet.empty())
         {
           //Rows, with data:
           Glib::ustring sort_clause;
           if(group_by->get_has_field_sort_by())
             sort_clause = group_by->get_field_sort_by()->get_name(); //TODO: Deal with related fields too.
 
-          report_build_records(table_name, *nodeGroupBy, fieldsToGet, where_clause, sort_clause);
+          report_build_records(table_name, *nodeGroupBy, itemsToGet, where_clause, sort_clause);
         }
       }
     }
   }
 }
 
-void Base_DB::report_build_records(const Glib::ustring& table_name, xmlpp::Element& parent_node, const GlomUtils::type_vecLayoutFields& fieldsToGet, const Glib::ustring& where_clause, const Glib::ustring& sort_clause, bool one_record_only)
+void Base_DB::report_build_records(const Glib::ustring& table_name, xmlpp::Element& parent_node, const type_vecLayoutItems& items, const Glib::ustring& where_clause, const Glib::ustring& sort_clause, bool one_record_only)
 {
-  if(!fieldsToGet.empty())
+  if(!items.empty())
   {
-    //Field headings:
-    for(GlomUtils::type_vecLayoutFields::const_iterator iter = fieldsToGet.begin(); iter != fieldsToGet.end(); ++iter)
+    //Add Field headings:
+    for(type_vecLayoutItems::const_iterator iter = items.begin(); iter != items.end(); ++iter)
     {
-      sharedptr<LayoutItem_Field> layout_item = *iter;
+      sharedptr<LayoutItem> layout_item = *iter;
+      sharedptr<LayoutItem_Field> layoutitem_field = sharedptr<LayoutItem_Field>::cast_dynamic(layout_item);
 
       xmlpp::Element* nodeFieldHeading = 0;
-      if(layout_item->get_glom_type() == Field::TYPE_NUMERIC)
+      if(layoutitem_field && layoutitem_field->get_glom_type() == Field::TYPE_NUMERIC)
         nodeFieldHeading = parent_node.add_child("field_heading_numeric"); //This is quite hacky. murrayc.
       else
         nodeFieldHeading = parent_node.add_child("field_heading");
 
       nodeFieldHeading->set_attribute("name", layout_item->get_name()); //Not really necessary, but maybe useful.
       nodeFieldHeading->set_attribute("title", layout_item->get_title_or_name());
+    }
+
+    //Get list of fields to get from the database.
+    GlomUtils::type_vecLayoutFields fieldsToGet;
+    for(type_vecLayoutItems::const_iterator iter = items.begin(); iter != items.end(); ++iter)
+    {
+      sharedptr<LayoutItem> layout_item = *iter;
+      sharedptr<LayoutItem_Field> layoutitem_field = sharedptr<LayoutItem_Field>::cast_dynamic(layout_item);
+      if(layoutitem_field)
+        fieldsToGet.push_back(layoutitem_field);
     }
 
     Glib::ustring sql_query = GlomUtils::build_sql_select_with_where_clause(table_name,
@@ -1562,30 +1582,50 @@ void Base_DB::report_build_records(const Glib::ustring& table_name, xmlpp::Eleme
       {
         xmlpp::Element* nodeRow = parent_node.add_child("row");
 
-        for(guint col = 0; col < fieldsToGet.size(); ++col)
+        guint colField = 0;
+        for(type_vecLayoutItems::const_iterator iter = items.begin(); iter != items.end(); ++iter)
         {
-          sharedptr<LayoutItem_Field> field = fieldsToGet[col];
-          const Field::glom_field_type field_type = field->get_glom_type();
-
           xmlpp::Element* nodeField = 0;
-          if(field_type == Field::TYPE_NUMERIC)
-             nodeField = nodeRow->add_child("field_numeric"); //TODO: I would prefer just to add a field_type attribute to the "field" node and use an <xsl::if> instead. murrayc.
-          else
-             nodeField = nodeRow->add_child("field");
 
-          nodeField->set_attribute("name", field->get_name()); //Not really necessary, but maybe useful.
-
-          Glib::ustring text_value = GlomConversions::get_text_for_gda_value(field_type, datamodel->get_value_at(col, row), field->get_formatting_used().m_numeric_format);
-
-          //The Postgres summary functions return NULL when summarising NULL records, but 0 is more sensible:
-          if(text_value.empty() && sharedptr<LayoutItem_FieldSummary>::cast_dynamic(field) && (field_type == Field::TYPE_NUMERIC))
+          sharedptr<LayoutItem> item = *iter;
+          sharedptr<LayoutItem_Field> field = sharedptr<LayoutItem_Field>::cast_dynamic(item);
+          if(field)
           {
-            //Use get_text_for_gda_value() instead of "0" so we get the correct numerical formatting:
-            Gnome::Gda::Value value = GlomConversions::parse_value(0);
-            text_value = GlomConversions::get_text_for_gda_value(field_type, value, field->get_formatting_used().m_numeric_format);
+            const Field::glom_field_type field_type = field->get_glom_type();
+
+            xmlpp::Element* nodeField = 0;
+            if(field_type == Field::TYPE_NUMERIC)
+              nodeField = nodeRow->add_child("field_numeric"); //TODO: I would prefer just to add a field_type attribute to the "field" node and use an <xsl::if> instead. murrayc.
+            else
+              nodeField = nodeRow->add_child("field");
+
+
+            Glib::ustring text_value = GlomConversions::get_text_for_gda_value(field_type, datamodel->get_value_at(colField, row), field->get_formatting_used().m_numeric_format);
+
+            //The Postgres summary functions return NULL when summarising NULL records, but 0 is more sensible:
+            if(text_value.empty() && sharedptr<LayoutItem_FieldSummary>::cast_dynamic(field) && (field_type == Field::TYPE_NUMERIC))
+            {
+              //Use get_text_for_gda_value() instead of "0" so we get the correct numerical formatting:
+              Gnome::Gda::Value value = GlomConversions::parse_value(0);
+              text_value = GlomConversions::get_text_for_gda_value(field_type, value, field->get_formatting_used().m_numeric_format);
+            }
+
+            nodeField->set_attribute("value", text_value);
+
+            ++colField;
+          }
+          else
+          {
+            //Text object:
+            xmlpp::Element* nodeField = nodeRow->add_child("field");
+
+            sharedptr<LayoutItem_Text> item_text = sharedptr<LayoutItem_Text>::cast_dynamic(item);
+            if(item_text)
+              nodeField->set_attribute("value", item_text->get_text());
           }
 
-          nodeField->set_attribute("value", text_value);
+          if(nodeField)
+            nodeField->set_attribute("name", item->get_name()); //Not really necessary, but maybe useful.
         }
       }
 
@@ -1623,7 +1663,7 @@ void Base_DB::report_build(const Glib::ustring& table_name, const sharedptr<cons
 
   nodeRoot->set_attribute("title", report->get_title_or_name());
 
-  GlomUtils::type_vecLayoutFields fieldsToGet_TopLevel;
+  type_vecLayoutItems itemsToGet_TopLevel;
 
   for(LayoutGroup::type_map_items::const_iterator iter = report->m_layout_group->m_map_items.begin(); iter != report->m_layout_group->m_map_items.end(); ++iter)
   {
@@ -1644,23 +1684,20 @@ void Base_DB::report_build(const Glib::ustring& table_name, const sharedptr<cons
       else
       {
         sharedptr<LayoutItem_Field> pField = sharedptr<LayoutItem_Field>::cast_dynamic(pPart);
-        if(pField)
+        sharedptr<LayoutItem_Text> pText = sharedptr<LayoutItem_Text>::cast_dynamic(pPart);
+        if(pField || pText)
         {
-          fieldsToGet_TopLevel.push_back( glom_sharedptr_clone(pField) );
-        }
-        else
-        {
-          //TODO: LayoutItem_Text
+          itemsToGet_TopLevel.push_back( glom_sharedptr_clone(pPart) );
         }
       }
     }
   }
 
   //Add top-level records, outside of any groupby or summary, if fields have been specified:
-  if(!fieldsToGet_TopLevel.empty())
+  if(!itemsToGet_TopLevel.empty())
   {
     xmlpp::Element* nodeGroupBy = nodeParent->add_child("ungrouped_records");
-    report_build_records(table_name, *nodeGroupBy, fieldsToGet_TopLevel, where_clause, Glib::ustring() /* no sort clause */);
+    report_build_records(table_name, *nodeGroupBy, itemsToGet_TopLevel, where_clause, Glib::ustring() /* no sort clause */);
   }
 
   GlomUtils::transform_and_open(*pDocument, "print_report_to_html.xsl");
