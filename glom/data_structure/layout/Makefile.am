@@ -8,6 +8,7 @@ libdata_structure_layout_a_SOURCES = layoutitem.h layoutitem.cc \
                               layoutitem_field.h layoutitem_field.cc \
                               layoutitem_portal.h layoutitem_portal.cc \
                               layoutitem_button.h layoutitem_button.cc \
+                              layoutitem_text.h layoutitem_text.cc \
                               usesrelationship.h usesrelationship.cc \
                               fieldformatting.h fieldformatting.cc \
                               custom_title.h custom_title.cc

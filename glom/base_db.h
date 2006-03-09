@@ -85,6 +85,7 @@ public:
 protected:
   sharedptr<LayoutItem_Field> offer_field_list(const Glib::ustring& table_name);
   sharedptr<LayoutItem_Field> offer_field_list(const sharedptr<LayoutItem_Field>& start_field, const Glib::ustring& table_name);
+  sharedptr<LayoutItem_Text> offer_textobject(const sharedptr<LayoutItem_Text>& start_textobject);
 
   ///@result Whether the user would like to find again.
   static bool show_warning_no_records_found(Gtk::Window& transient_for);

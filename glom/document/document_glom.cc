@@ -23,6 +23,7 @@
 #include "../data_structure/layout/report_parts/layoutitem_summary.h"
 #include "../data_structure/layout/report_parts/layoutitem_fieldsummary.h"
 #include "../data_structure/layout/layoutitem_button.h"
+#include "../data_structure/layout/layoutitem_text.h"
 #include "../standard_table_prefs_fields.h"
 #include <glibmm/i18n.h>
 //#include "config.h" //To get GLOM_DTD_INSTALL_DIR - dependent on configure prefix.
@@ -46,6 +47,8 @@
 #define GLOM_NODE_DATA_LAYOUT_ITEM "data_layout_item" //A field.
 #define GLOM_ATTRIBUTE_LAYOUT_ITEM_CUSTOM_TITLE "title_custom"
 #define GLOM_NODE_DATA_LAYOUT_BUTTON "data_layout_button"
+#define GLOM_NODE_DATA_LAYOUT_TEXTOBJECT "data_layout_text"
+#define GLOM_NODE_DATA_LAYOUT_TEXTOBJECT_TEXT "text"
 #define GLOM_ATTRIBUTE_DATA_LAYOUT_ITEM_FIELD_USE_DEFAULT_FORMATTING "use_default_formatting"
 #define GLOM_NODE_DATA_LAYOUT_ITEM_GROUPBY "data_layout_item_groupby"
 #define GLOM_NODE_DATA_LAYOUT_GROUP_SECONDARYFIELDS "secondary_fields"
@@ -1451,12 +1454,29 @@ void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Gl
         item->m_sequence = sequence;
         group->add_item(item, sequence);
       }
-      if(element->get_name() == GLOM_NODE_DATA_LAYOUT_BUTTON)
+      else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_BUTTON)
       {
         sharedptr<LayoutItem_Button> item = sharedptr<LayoutItem_Button>::create();
 
         item->set_script( get_node_attribute_value(element, GLOM_ATTRIBUTE_BUTTON_SCRIPT) );
         load_after_translations(element, *item);
+
+        item->m_sequence = sequence;
+        group->add_item(item, sequence);
+      }
+      else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_TEXTOBJECT)
+      {
+        sharedptr<LayoutItem_Text> item = sharedptr<LayoutItem_Text>::create();
+        load_after_translations(element, *item);
+
+        //The text can be translated too, so it has its own node:
+        const xmlpp::Element* element_text = get_node_child_named(element, GLOM_NODE_DATA_LAYOUT_TEXTOBJECT_TEXT);
+        if(element_text)
+        {
+          sharedptr<TranslatableItem> translatable_text = sharedptr<TranslatableItem>::create();
+          load_after_translations(element_text, *translatable_text);
+          item->m_text = translatable_text;
+        }
 
         item->m_sequence = sequence;
         group->add_item(item, sequence);
@@ -2025,6 +2045,19 @@ void Document_Glom::save_before_layout_group(xmlpp::Element* node, const sharedp
             nodeItem = child->add_child(GLOM_NODE_DATA_LAYOUT_BUTTON);
             set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_BUTTON_SCRIPT, button->get_script());
             save_before_translations(nodeItem, *button);
+          }
+          else
+          {
+            sharedptr<const LayoutItem_Text> textobject = sharedptr<const LayoutItem_Text>::cast_dynamic(item);
+            if(textobject) //If it is a button
+            {
+              nodeItem = child->add_child(GLOM_NODE_DATA_LAYOUT_TEXTOBJECT);
+              save_before_translations(nodeItem, *textobject);
+
+              //The text is translatable too, so we use a node for it:
+              xmlpp::Element* element_text = nodeItem->add_child(GLOM_NODE_DATA_LAYOUT_TEXTOBJECT_TEXT);
+              save_before_translations(element_text, *(textobject->m_text));
+            }
           }
         }
       }

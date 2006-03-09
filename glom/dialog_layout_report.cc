@@ -23,8 +23,10 @@
 #include "data_structure/layout/report_parts/layoutitem_summary.h"
 #include "data_structure/layout/report_parts/layoutitem_fieldsummary.h"
 #include "data_structure/layout/layoutitem_field.h"
+#include "data_structure/layout/layoutitem_text.h"
 #include "mode_data/dialog_choose_field.h"
 #include "layout_item_dialogs/dialog_field_layout.h"
+#include "mode_design/dialog_textobject.h"
 #include "layout_item_dialogs/dialog_group_by.h"
 #include "layout_item_dialogs/dialog_field_summary.h"
 #include "mode_data/dialog_choose_relationship.h"
@@ -60,13 +62,18 @@ Dialog_Layout_Report::Dialog_Layout_Report(BaseObjectType* cobject, const Glib::
 
     Gtk::TreeModel::iterator iter = m_model_available_parts->append();
     (*iter)[m_columns_available_parts.m_col_item] = sharedptr<LayoutItem>(static_cast<LayoutItem*>(new LayoutItem_GroupBy()));
-    iter = m_model_available_parts->append(iter->children()); //Place Field under GroupBy to indicate that that's where it belongs in the actual layout.
-    (*iter)[m_columns_available_parts.m_col_item] = sharedptr<LayoutItem>(static_cast<LayoutItem*>(new LayoutItem_Field()));
+
+    Gtk::TreeModel::iterator iterField = m_model_available_parts->append(iter->children()); //Place Field under GroupBy to indicate that that's where it belongs in the actual layout.
+    (*iterField)[m_columns_available_parts.m_col_item] = sharedptr<LayoutItem>(static_cast<LayoutItem*>(new LayoutItem_Field()));
+
+    Gtk::TreeModel::iterator  iterText = m_model_available_parts->append(iter->children());
+    (*iterText)[m_columns_available_parts.m_col_item] = sharedptr<LayoutItem>(static_cast<LayoutItem*>(new LayoutItem_Text()));
+
     iter = m_model_available_parts->append();
     (*iter)[m_columns_available_parts.m_col_item] = sharedptr<LayoutItem>(static_cast<LayoutItem*>(new LayoutItem_Summary()));
     iter = m_model_available_parts->append(iter->children());
     (*iter)[m_columns_available_parts.m_col_item] = sharedptr<LayoutItem>(static_cast<LayoutItem*>(new LayoutItem_FieldSummary()));
-    
+
     m_treeview_available_parts->set_model(m_model_available_parts);
     m_treeview_available_parts->expand_all();
 
@@ -635,7 +642,7 @@ void Dialog_Layout_Report::on_button_edit()
             dialog->set_item(fieldsummary, m_table_name);
             dialog->set_transient_for(*this);
 
-            int response = dialog->run();
+            const int response = dialog->run();
             dialog->hide();
 
             if(response == Gtk::RESPONSE_OK)
@@ -673,43 +680,56 @@ void Dialog_Layout_Report::on_button_edit()
         }
         else
         {
-          sharedptr<LayoutItem_GroupBy> group_by = sharedptr<LayoutItem_GroupBy>::cast_dynamic(item);
-          if(group_by)
+          sharedptr<LayoutItem_Text> layout_item_text = sharedptr<LayoutItem_Text>::cast_dynamic(item);
+          if(layout_item_text)
           {
-            try
+            sharedptr<LayoutItem_Text> chosen = offer_textobject(layout_item_text);
+            if(chosen)
             {
-              Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_group_by");
-
-              Dialog_GroupBy* dialog = 0;
-              refXml->get_widget_derived("dialog_group_by", dialog);
-
-              if(dialog)
-              {
-                add_view(dialog);
-                dialog->set_item(group_by, m_table_name);
-                dialog->set_transient_for(*this);
-
-                const int response = dialog->run();
-                dialog->hide();
-
-                if(response == Gtk::RESPONSE_OK)
-                {
-                  //Get the chosen relationship:
-                  sharedptr<LayoutItem_GroupBy> chosenitem = dialog->get_item();
-                  if(chosenitem)
-                  {
-                    *group_by = *chosenitem;
-                    m_model_parts->row_changed(Gtk::TreePath(iter), iter); //TODO: Add row_changed(iter) to gtkmm?
-                  }
-                }
-
-                remove_view(dialog);
-                delete dialog;
-              }
+              *layout_item_text = *chosen;
+              m_model_parts->row_changed(Gtk::TreePath(iter), iter); //TODO: Add row_changed(iter) to gtkmm?
             }
-            catch(const Gnome::Glade::XmlError& ex)
+          }
+          else
+          {
+            sharedptr<LayoutItem_GroupBy> group_by = sharedptr<LayoutItem_GroupBy>::cast_dynamic(item);
+            if(group_by)
             {
-              std::cerr << ex.what() << std::endl;
+              try
+              {
+                Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_group_by");
+
+                Dialog_GroupBy* dialog = 0;
+                refXml->get_widget_derived("dialog_group_by", dialog);
+
+                if(dialog)
+                {
+                  add_view(dialog);
+                  dialog->set_item(group_by, m_table_name);
+                  dialog->set_transient_for(*this);
+
+                  const int response = dialog->run();
+                  dialog->hide();
+
+                  if(response == Gtk::RESPONSE_OK)
+                  {
+                    //Get the chosen relationship:
+                    sharedptr<LayoutItem_GroupBy> chosenitem = dialog->get_item();
+                    if(chosenitem)
+                    {
+                      *group_by = *chosenitem;
+                      m_model_parts->row_changed(Gtk::TreePath(iter), iter); //TODO: Add row_changed(iter) to gtkmm?
+                    }
+                  }
+
+                  remove_view(dialog);
+                  delete dialog;
+                }
+              }
+              catch(const Gnome::Glade::XmlError& ex)
+              {
+                std::cerr << ex.what() << std::endl;
+              }
             }
           }
         }

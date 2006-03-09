@@ -20,6 +20,7 @@
 
 #include "datawidget.h"
 #include "entryglom.h"
+#include "labelglom.h"
 #include "comboentryglom.h"
 #include "comboglom.h"
 #include "textviewglom.h"

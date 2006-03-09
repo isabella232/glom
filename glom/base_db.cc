@@ -25,6 +25,7 @@
 #include "document/document_glom.h"
 #include "data_structure/glomconversions.h"
 #include "mode_data/dialog_choose_field.h"
+#include "mode_design/dialog_textobject.h"
 //#include "dialog_layout_report.h"
 #include "utils.h"
 #include "data_structure/glomconversions.h"
@@ -1307,6 +1308,40 @@ sharedptr<LayoutItem_Field> Base_DB::offer_field_list(const sharedptr<LayoutItem
   return result;
 }
 
+sharedptr<LayoutItem_Text> Base_DB::offer_textobject(const sharedptr<LayoutItem_Text>& start_textobject)
+{
+  sharedptr<LayoutItem_Text> result;
+
+  try
+  {
+    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_textobject");
+
+    Dialog_TextObject* dialog = 0;
+    refXml->get_widget_derived("window_textobject", dialog);
+
+    if(dialog)
+    {
+      dialog->set_textobject(start_textobject, Glib::ustring());
+      //dialog->set_transient_for(*this);
+      const int response = dialog->run();
+      dialog->hide();
+      if(response == Gtk::RESPONSE_OK)
+      {
+        //Get the chosen relationship:
+        result = dialog->get_textobject();
+      }
+
+      delete dialog;
+    }
+  }
+  catch(const Gnome::Glade::XmlError& ex)
+  {
+    std::cerr << ex.what() << std::endl;
+  }
+
+  return result;
+}
+
 void Base_DB::fill_full_field_details(const Glib::ustring& parent_table_name, sharedptr<LayoutItem_Field>& layout_item)
 {
   Glib::ustring table_name = parent_table_name;
@@ -1612,6 +1647,10 @@ void Base_DB::report_build(const Glib::ustring& table_name, const sharedptr<cons
         if(pField)
         {
           fieldsToGet_TopLevel.push_back( glom_sharedptr_clone(pField) );
+        }
+        else
+        {
+          //TODO: LayoutItem_Text
         }
       }
     }

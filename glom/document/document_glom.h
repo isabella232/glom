@@ -28,6 +28,7 @@
 #include "../data_structure/layout/layoutgroup.h"
 #include "../data_structure/layout/layoutitem_portal.h"
 #include "../data_structure/layout/layoutitem_button.h"
+#include "../data_structure/layout/layoutitem_text.h"
 #include "../data_structure/tableinfo.h"
 #include "../data_structure/groupinfo.h"
 #include "../data_structure/report.h"

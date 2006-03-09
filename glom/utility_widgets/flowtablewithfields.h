@@ -26,6 +26,7 @@
 #include "../data_structure/layout/layoutitem_field.h"
 #include "../data_structure/layout/layoutitem_portal.h"
 #include "../data_structure/layout/layoutitem_button.h"
+#include "../data_structure/layout/layoutitem_text.h"
 #include "../data_structure/field.h"
 #include "../document/document_glom.h"
 #include "../mode_data/box_data_list_related.h"
@@ -173,6 +174,7 @@ protected:
 
   void add_field_at_position(const sharedptr<LayoutItem_Field>& layoutitem_field, const Glib::ustring& table_name, const type_list_layoutwidgets::iterator& add_before);
   void add_button_at_position(const sharedptr<LayoutItem_Button>& layoutitem_button, const Glib::ustring& table_name, const type_list_layoutwidgets::iterator& add_before);
+  void add_textobject_at_position(const sharedptr<LayoutItem_Text>& layoutitem_text, const Glib::ustring& table_name, const type_list_layoutwidgets::iterator& add_before);
 
   void add_layoutwidgetbase(LayoutWidgetBase* layout_widget);
   void add_layoutwidgetbase(LayoutWidgetBase* layout_widget, const type_list_layoutwidgets::iterator& add_before);

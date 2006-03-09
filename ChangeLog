@@ -1,3 +1,35 @@
+2006-03-09  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/base_db.cc:
+	* glom/base_db.h: Added offer_textobject().
+	* glom/data_structure/layout/Makefile.am:
+	* glom/data_structure/layout/layoutitem_text.cc:
+	* glom/data_structure/layout/layoutitem_text.h:
+	Added Text layout part, for adding arbitrary text or empty text 
+	with a title, to a details layout. Does not work on reports yet.
+	* glom/data_structure/translatable_item.cc:
+	* glom/data_structure/translatable_item.h: get_translatable_type_name():
+	Update.
+	* glom/dialog_layout_report.cc: Constructor: Add the Text object as a 
+	possible part to add.
+	* glom/document/document_glom.cc:
+	* glom/document/document_glom.h: load_after_group(), save_before_group(): 
+	Handle the text object layout part.
+	* glom/glom.glade:
+	* glom/mode_data/dialog_layout_details.cc:
+	* glom/mode_data/dialog_layout_details.h: Added Add Text button and 
+	handled it.
+	* glom/mode_design/Makefile.am:
+        * glom/mode_design/dialog_textobject.h
+        * glom/mode_design/dialog_textobject.cc: New dialog for editing the 
+	text object.
+	* glom/utility_widgets/Makefile.am:
+	* glom/utility_widgets/flowtablewithfields.cc:
+	* glom/utility_widgets/flowtablewithfields.h: 
+	add_layout_item_at_position(): Add a LabelGlom for text objects.
+	* glom/utility_widgets/labelglom.cc:
+	* glom/utility_widgets/labelglom.h: New widget for the text object.
+
 0.9.8:
 
 2006-03-08  Murray Cumming  <murrayc@murrayc.com>

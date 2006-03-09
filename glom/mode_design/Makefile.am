@@ -12,7 +12,8 @@ libmode_design_a_SOURCES = box_db_table_relationships.cc box_db_table_relationsh
                                                            dialog_fields.cc dialog_fields.h  \
                                                            dialog_design.cc dialog_design.h \
                                                            dialog_relationships.cc dialog_relationships.h \
-                                                           dialog_buttonscript.cc dialog_buttonscript.h
+                                                           dialog_buttonscript.cc dialog_buttonscript.h \
+                                                           dialog_textobject.cc dialog_textobject.h
 
 libmode_design_a_LIBADD = fields/libmode_design_fields.a \
                           users/libmode_design_users.a

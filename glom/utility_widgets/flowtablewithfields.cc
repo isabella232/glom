@@ -21,6 +21,7 @@
 #include "flowtablewithfields.h"
 #include "datawidget.h"
 #include "buttonglom.h"
+#include "labelglom.h"
 #include <gtkmm/checkbutton.h>
 #include "../data_structure/glomconversions.h"
 #include "../mode_data/box_data_list_related.h"
@@ -133,6 +134,12 @@ void FlowTableWithFields::add_layout_item_at_position(const sharedptr<LayoutItem
         sharedptr<LayoutItem_Button> layout_button = sharedptr<LayoutItem_Button>::cast_dynamic(item);
         if(layout_button)
           add_button_at_position(layout_button, m_table_name, add_before);
+        else
+        {
+          sharedptr<LayoutItem_Text> layout_textobject = sharedptr<LayoutItem_Text>::cast_dynamic(item);
+          if(layout_textobject)
+            add_textobject_at_position(layout_textobject, m_table_name, add_before);
+        }
       }
     }
   }
@@ -327,6 +334,37 @@ void FlowTableWithFields::add_button_at_position(const sharedptr<LayoutItem_Butt
   //add_view(button); //So it can get the document.
 
   add(*button);
+}
+
+void FlowTableWithFields::add_textobject_at_position(const sharedptr<LayoutItem_Text>& layoutitem_text, const Glib::ustring& table_name, const type_list_layoutwidgets::iterator& add_before)
+{
+  //Add the widget:
+  Gtk::Alignment* alignment_label = Gtk::manage(new Gtk::Alignment());
+  alignment_label->set(Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER);
+  alignment_label->show();
+
+  LabelGlom* label = Gtk::manage(new LabelGlom(layoutitem_text->get_text(), 0.0 /* xalign */, 0.5 /* yalign */)); //The alignment here seems to be necessary as well (or instead of) the parent Gtk::Alignment.
+  label->show();
+  alignment_label->add(*label);
+
+  add_layoutwidgetbase(label, add_before);
+  //add_view(button); //So it can get the document.
+
+  const Glib::ustring title = layoutitem_text->get_title();
+  if(title.empty())
+    add(*alignment_label);
+  else
+  {
+    Gtk::Alignment* alignment_title = Gtk::manage(new Gtk::Alignment());
+    alignment_title->set(Gtk::ALIGN_RIGHT, Gtk::ALIGN_CENTER);
+    alignment_title->show();
+
+    Gtk::Label* title_label = Gtk::manage(new Gtk::Label(title));
+    title_label->show();
+    alignment_title->add(*title_label);
+
+    add(*alignment_title, *alignment_label, true /* expand */);
+  }
 }
 
 void FlowTableWithFields::remove_field(const Glib::ustring& id)
