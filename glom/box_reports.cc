@@ -125,9 +125,15 @@ bool Box_Reports::fill_from_database()
 void Box_Reports::on_adddel_Add(const Gtk::TreeModel::iterator& row)
 {
   sharedptr<Report> report = sharedptr<Report>::create();
-  report->set_name( m_AddDel.get_value(row, m_colReportName) );
 
-  get_document()->set_report(m_table_name, report);
+  const Glib::ustring report_name = m_AddDel.get_value(row, m_colReportName);
+  if(!report_name.empty())
+  {
+    report->set_name(report_name);
+    m_AddDel.set_value_key(row, report_name);
+
+    get_document()->set_report(m_table_name, report);
+  }
 }
 
 void Box_Reports::on_adddel_Delete(const Gtk::TreeModel::iterator& rowStart, const Gtk::TreeModel::iterator& /* TODO: rowEnd */)

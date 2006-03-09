@@ -1,5 +1,10 @@
 2006-03-09  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/box_reports.cc: on_adddel_Add(): Set the new report name in the 
+	row key, so we know what row to edit in subsequent steps.
+
+2006-03-09  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/data_structure/layout/layoutgroup.cc:
 	* glom/data_structure/layout/layoutgroup.h: Added get_items_count().
 	* glom/dialog_layout_report.cc: get_original_report_name(): Do not crash if 
