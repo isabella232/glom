@@ -396,6 +396,11 @@ Glib::ustring LayoutGroup::get_part_type_name() const
   return _("Group");
 }
 
+guint LayoutGroup::get_items_count() const
+{
+  return m_map_items.size();
+}
+
 /*
 void LayoutGroup::debug(guint level) const
 {

@@ -64,6 +64,8 @@ public:
 
   //virtual void debug(guint level = 0) const;
 
+  guint get_items_count() const;
+
   guint m_columns_count;
 
   typedef std::map<int, sharedptr<LayoutItem> > type_map_items;

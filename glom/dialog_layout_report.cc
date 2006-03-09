@@ -896,13 +896,45 @@ sharedptr<Report> Dialog_Layout_Report::get_report()
 
   guint group_sequence = 0;
   m_report->m_layout_group->remove_all_items();
+  sharedptr<LayoutGroup> groupTopLevel = sharedptr<LayoutGroup>::create();
   for(Gtk::TreeModel::iterator iter = m_model_parts->children().begin(); iter != m_model_parts->children().end(); ++iter)
   {
     sharedptr<LayoutGroup> group = fill_group(iter);
-    group->m_sequence = group_sequence;
 
-    m_report->m_layout_group->m_map_items[group_sequence] = group;
-    ++group_sequence;
+    if(group)
+    {
+      //Add any top-level items so far:
+      if(groupTopLevel->get_items_count())
+      {
+        groupTopLevel->m_sequence = group_sequence;
+
+        m_report->m_layout_group->m_map_items[group_sequence] = groupTopLevel;
+        ++group_sequence;
+
+        //Start another top-level group for any items after the group item:
+        groupTopLevel = sharedptr<LayoutGroup>::create();
+      }
+
+      //Add the group:
+      group->m_sequence = group_sequence;
+
+      m_report->m_layout_group->m_map_items[group_sequence] = group;
+      ++group_sequence;
+    }
+    else
+    {
+      //Add it to the list of top-level items:
+      sharedptr<LayoutItem> item = (*iter)[m_columns_parts.m_col_item];
+      groupTopLevel->add_item(item);
+    }
+  }
+
+  //Add any remaining top-level items:
+  if(groupTopLevel->get_items_count())
+  {
+    groupTopLevel->m_sequence = group_sequence;
+
+    m_report->m_layout_group->m_map_items[group_sequence] = groupTopLevel;
   }
 
   return m_report;

@@ -1,5 +1,15 @@
 2006-03-09  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/data_structure/layout/layoutgroup.cc:
+	* glom/data_structure/layout/layoutgroup.h: Added get_items_count().
+	* glom/dialog_layout_report.cc: get_original_report_name(): Do not crash if 
+	there are top-level fields. Still need to handle this properly though.
+	* glom/utility_widgets/datawidget.cc: set_editable(): 
+	Call set_sensitive() on ComboBoxes, because the menu still changes the 
+	value if we just call set_editable on its Entry.
+
+2006-03-09  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/base_db.cc:
 	* glom/base_db.h: report_build_records() takes a vector of LayoutItem 
 	instead of LayoutItem_Field, so it can handle text items. So text objects 
