@@ -1,3 +1,7 @@
+2006-03-10  Murray Cumming  <murrayc@murrayc.com>
+
+	* po/POTFILES.in: Added data_structure/layout/layoutitem_text.cc
+
 2006-03-09  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/box_reports.cc: on_adddel_Add(): Set the new report name in the 

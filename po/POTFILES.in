@@ -14,6 +14,7 @@ glom/data_structure/layout/layoutgroup.cc
 glom/data_structure/layout/layoutitem_button.cc
 glom/data_structure/layout/layoutitem_field.cc
 glom/data_structure/layout/layoutitem_portal.cc
+glom/data_structure/layout/layoutitem_text.cc
 glom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc
 glom/data_structure/layout/report_parts/layoutitem_groupby.cc
 glom/data_structure/layout/report_parts/layoutitem_summary.cc
