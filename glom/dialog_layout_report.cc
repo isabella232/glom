@@ -243,7 +243,13 @@ void Dialog_Layout_Report::add_group(const Gtk::TreeModel::iterator& parent, con
         Gtk::TreeModel::iterator iterChildRow = m_model_parts->append(iterNewItem->children());
 
         Gtk::TreeModel::Row row = *iterChildRow;
-        row[m_columns_parts.m_col_item] = sharedptr<LayoutItem>(pItem->clone());
+
+        sharedptr<LayoutItem> pCloned = sharedptr<LayoutItem>(pItem->clone());
+        row[m_columns_parts.m_col_item] = pCloned;
+
+        //sharedptr<LayoutItem_Field> pField = sharedptr<LayoutItem_Field>::cast_dynamic(pCloned);
+        //if(pField)
+        //  fill_full_field_details(m_table_name, pField);
       }
     }
 
@@ -832,7 +838,7 @@ void Dialog_Layout_Report::on_cell_data_part(Gtk::CellRenderer* renderer, const 
     {
       Gtk::TreeModel::Row row = *iter;
       sharedptr<LayoutItem> pItem = row[m_columns_parts.m_col_item];
-      Glib::ustring part = pItem->get_part_type_name();
+      const Glib::ustring part = pItem->get_part_type_name();
 
       renderer_text->property_text() = part;
       renderer_text->property_editable() = false; //Part names can never be edited.
@@ -876,7 +882,9 @@ void Dialog_Layout_Report::on_cell_data_details(Gtk::CellRenderer* renderer, con
         */
           sharedptr<LayoutItem_Field> pField = sharedptr<LayoutItem_Field>::cast_dynamic(pItem);
           if(pField)
+          {
             text = pField->get_layout_display_name();
+          }
         //}
       }
 

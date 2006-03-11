@@ -159,7 +159,9 @@ Glib::ustring LayoutItem_Field::get_layout_display_name() const
   Glib::ustring result;
 
   if(m_field_cache_valid && m_field)
-    result= m_field->get_name();
+    result = m_field->get_name();
+  else
+    result = m_name;
 
   if(get_has_relationship_name())
     result == get_relationship_name() + "::" + result;

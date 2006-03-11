@@ -1818,6 +1818,8 @@ bool Document_Glom::load_after()
 
                       //layout_groups[group.m_sequence] = group;
                       report->m_layout_group = group; //TODO: Get rid of the for loop here.
+
+                      fill_layout_field_details(table_name, report->m_layout_group); //Get full field details from the field names.
                     }
                   }
                 }

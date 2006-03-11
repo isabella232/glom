@@ -1,5 +1,12 @@
 2006-03-11  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/data_structure/layout/layoutitem_field.cc: get_layout_display_name(): Return the 
+	name even if the full details cache is invalid.
+	* glom/document/document_glom.cc: load_after(): Fill the full field details when loading 
+	report items, so that they show up in the report when it is edited.
+
+2006-03-11  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/dialog_layout_report.cc: enable_buttons(): Enable the Add button even if the item 
 	can not be a parent of the new item, so that the new item can become a sibling instead, if 
 	parent would allow that.
