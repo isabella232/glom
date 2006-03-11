@@ -1554,11 +1554,9 @@ void Base_DB::report_build_records(const Glib::ustring& table_name, xmlpp::Eleme
       sharedptr<LayoutItem> layout_item = *iter;
       sharedptr<LayoutItem_Field> layoutitem_field = sharedptr<LayoutItem_Field>::cast_dynamic(layout_item);
 
-      xmlpp::Element* nodeFieldHeading = 0;
+      xmlpp::Element* nodeFieldHeading = parent_node.add_child("field_heading");
       if(layoutitem_field && layoutitem_field->get_glom_type() == Field::TYPE_NUMERIC)
-        nodeFieldHeading = parent_node.add_child("field_heading_numeric"); //This is quite hacky. murrayc.
-      else
-        nodeFieldHeading = parent_node.add_child("field_heading");
+        nodeFieldHeading->set_attribute("field_type", "numeric"); //TODO: More sophisticated formatting.
 
       nodeFieldHeading->set_attribute("name", layout_item->get_name()); //Not really necessary, but maybe useful.
       nodeFieldHeading->set_attribute("title", layout_item->get_title_or_name());
@@ -1605,12 +1603,9 @@ void Base_DB::report_build_records(const Glib::ustring& table_name, xmlpp::Eleme
           {
             const Field::glom_field_type field_type = field->get_glom_type();
 
-            xmlpp::Element* nodeField = 0;
+            xmlpp::Element* nodeField = nodeRow->add_child("field");
             if(field_type == Field::TYPE_NUMERIC)
-              nodeField = nodeRow->add_child("field_numeric"); //TODO: I would prefer just to add a field_type attribute to the "field" node and use an <xsl::if> instead. murrayc.
-            else
-              nodeField = nodeRow->add_child("field");
-
+              nodeField->set_attribute("field_type", "numeric"); //TODO: More sophisticated formatting.
 
             Glib::ustring text_value = GlomConversions::get_text_for_gda_value(field_type, datamodel->get_value_at(colField, row), field->get_formatting_used().m_numeric_format);
 

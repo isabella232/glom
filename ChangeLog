@@ -1,5 +1,14 @@
 2006-03-11  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/base_db.cc: report_build_records(): Instead of generating different 
+	node names for numeric field headings and field values, just add a field_type 
+	attribute.
+	* xslt/print_report_to_html.xsl: In <xsl:template match="field_heading"> and 
+	<xsl:template match="field">: Use xls:choose to do align="right" if the node has 
+	a field_type="numeric" attribute.
+
+2006-03-11  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/base_db.cc:
 	* glom/base_db.h: report_build_groupby(): Move child record generation into 
 	new report_build_groupby_children() method. Output child records even if there is no 
