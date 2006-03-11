@@ -63,7 +63,11 @@ table
 <xsl:template match="group_by">
 <div class="group_by">
 <p>
+
+<xsl:if test="string(@group_field)">
 <xsl:value-of select="@group_field"/>: <b><xsl:value-of select="@group_value"/></b>
+</xsl:if>
+
 <xsl:apply-templates select="secondary_fields"/>
 </p>
 <xsl:apply-templates select="group_by"/>

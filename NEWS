@@ -1,3 +1,8 @@
+* Reports:
+  - Allow top-level fields in reports, for non-grouped-by reports.
+  - Allow use of Group By parts without specified group-by fields, so they 
+    can be (mis)used just to specify a sort field for non-grouped-by records.
+
 0.9.8:
 
 * Lookups: Fix intermittent problem that caused looked-up values to 

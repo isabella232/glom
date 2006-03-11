@@ -1420,12 +1420,59 @@ void Base_DB::report_build_summary(const Glib::ustring& table_name, xmlpp::Eleme
   }
 }
 
+void Base_DB::report_build_groupby_children(const Glib::ustring& table_name, xmlpp::Element& nodeGroupBy, const sharedptr<LayoutItem_GroupBy>& group_by, const Glib::ustring& where_clause)
+{
+  //Get data and add child rows:
+  type_vecLayoutItems itemsToGet;
+  for(LayoutGroup::type_map_items::iterator iterChildren = group_by->m_map_items.begin(); iterChildren != group_by->m_map_items.end(); ++iterChildren)
+  {
+    sharedptr<LayoutItem> item = iterChildren->second;
+    sharedptr<LayoutItem_Field> pField = sharedptr<LayoutItem_Field>::cast_dynamic(item);
+    sharedptr<LayoutItem_Text> pText = sharedptr<LayoutItem_Text>::cast_dynamic(item);
+    if(pField || pText)
+    {
+      if(pField)
+        fill_full_field_details(table_name, pField);
+
+      itemsToGet.push_back( glom_sharedptr_clone(item) );
+    }
+    else
+    {
+      sharedptr<LayoutItem_GroupBy> pGroupBy = sharedptr<LayoutItem_GroupBy>::cast_dynamic(item);
+      if(pGroupBy)
+      {
+        //Recurse, adding a sub-groupby block:
+        report_build_groupby(table_name, nodeGroupBy, pGroupBy, where_clause);
+      }
+      else
+      {
+        sharedptr<LayoutItem_Summary> pSummary = sharedptr<LayoutItem_Summary>::cast_dynamic(item);
+        if(pSummary)
+        {
+          //Recurse, adding a summary block:
+          report_build_summary(table_name, nodeGroupBy, pSummary, where_clause);
+        }
+      }
+    }
+  }
+
+  if(!itemsToGet.empty())
+  {
+    //Rows, with data:
+    Glib::ustring sort_clause;
+    if(group_by->get_has_field_sort_by())
+      sort_clause = group_by->get_field_sort_by()->get_name(); //TODO: Deal with related fields too.
+
+    report_build_records(table_name, nodeGroupBy, itemsToGet, where_clause, sort_clause);
+  }
+}
+
 void Base_DB::report_build_groupby(const Glib::ustring& table_name, xmlpp::Element& parent_node, const sharedptr<LayoutItem_GroupBy>& group_by, const Glib::ustring& where_clause_parent)
 {
   //Get the possible heading values.
-  sharedptr<LayoutItem_Field> field_group_by = group_by->get_field_group_by();
-  if(field_group_by)
+  if(group_by->get_has_field_group_by())
   {
+    sharedptr<LayoutItem_Field> field_group_by = group_by->get_field_group_by();
     fill_full_field_details(table_name, field_group_by);
 
     //Get the possible group values, ignoring repeats by using GROUP BY.
@@ -1483,52 +1530,17 @@ void Base_DB::report_build_groupby(const Glib::ustring& table_name, xmlpp::Eleme
           }
         }
 
-
         //Get data and add child rows:
-        type_vecLayoutItems itemsToGet;
-        for(LayoutGroup::type_map_items::iterator iterChildren = group_by->m_map_items.begin(); iterChildren != group_by->m_map_items.end(); ++iterChildren)
-        {
-          sharedptr<LayoutItem> item = iterChildren->second;
-          sharedptr<LayoutItem_Field> pField = sharedptr<LayoutItem_Field>::cast_dynamic(item);
-          sharedptr<LayoutItem_Text> pText = sharedptr<LayoutItem_Text>::cast_dynamic(item);
-          if(pField || pText)
-          {
-            if(pField)
-              fill_full_field_details(table_name, pField);
-
-            itemsToGet.push_back( glom_sharedptr_clone(item) );
-          }
-          else
-          {
-            sharedptr<LayoutItem_GroupBy> pGroupBy = sharedptr<LayoutItem_GroupBy>::cast_dynamic(item);
-            if(pGroupBy)
-            {
-              //Recurse, adding a sub-groupby block:
-              report_build_groupby(table_name, *nodeGroupBy, pGroupBy, where_clause);
-            }
-            else
-            {
-              sharedptr<LayoutItem_Summary> pSummary = sharedptr<LayoutItem_Summary>::cast_dynamic(item);
-              if(pSummary)
-              {
-                //Recurse, adding a summary block:
-                report_build_summary(table_name, *nodeGroupBy, pSummary, where_clause);
-              }
-            }
-          }
-        }
-
-        if(!itemsToGet.empty())
-        {
-          //Rows, with data:
-          Glib::ustring sort_clause;
-          if(group_by->get_has_field_sort_by())
-            sort_clause = group_by->get_field_sort_by()->get_name(); //TODO: Deal with related fields too.
-
-          report_build_records(table_name, *nodeGroupBy, itemsToGet, where_clause, sort_clause);
-        }
+        report_build_groupby_children(table_name, *nodeGroupBy, group_by, where_clause);
       }
     }
+  }
+  else
+  {
+    //There is no group-by field, so ouput all the found records.
+    //For instance, the user could use the GroupBy part just to specify a sort, though that would be a bit of a hack:
+    xmlpp::Element* nodeGroupBy = parent_node.add_child("group_by"); //We need this to create the HTML table.
+    report_build_groupby_children(table_name, *nodeGroupBy, group_by, where_clause_parent);
   }
 }
 
@@ -1697,6 +1709,7 @@ void Base_DB::report_build(const Glib::ustring& table_name, const sharedptr<cons
   if(!itemsToGet_TopLevel.empty())
   {
     xmlpp::Element* nodeGroupBy = nodeParent->add_child("ungrouped_records");
+    std::cout << "DEBUG: top level." << std::endl;
     report_build_records(table_name, *nodeGroupBy, itemsToGet_TopLevel, where_clause, Glib::ustring() /* no sort clause */);
   }
 

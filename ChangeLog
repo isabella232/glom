@@ -1,5 +1,18 @@
 2006-03-11  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/base_db.cc:
+	* glom/base_db.h: report_build_groupby(): Move child record generation into 
+	new report_build_groupby_children() method. Output child records even if there is no 
+	group_by field in the GroupBy part, so users can use it just to sort records, though 
+	that's a bit of a hack. I think adding an explicit SortBy part would confuse things, 
+	because it might not be clear what group of records are being sorted. But maybe it 
+	would work.
+	* xslt/print_report_to_html.xsl: In <xsl:template match="group_by">: 
+	Do not print the group-by field title and value (with the : separator) if there is no 
+	group-by field, to avoid a lone :.
+
+2006-03-11  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/dialog_layout_report.cc: set_report(), get_report(): Allow non-group 
 	LayoutItems at the top level, instead of putting them inside an automatically-created 
 	group.
