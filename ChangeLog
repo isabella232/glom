@@ -1,3 +1,9 @@
+2006-03-11  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/dialog_layout_report.cc: set_report(), get_report(): Allow non-group 
+	LayoutItems at the top level, instead of putting them inside an automatically-created 
+	group.
+
 2006-03-10  Murray Cumming  <murrayc@murrayc.com>
 
 	* po/POTFILES.in: Added data_structure/layout/layoutitem_text.cc

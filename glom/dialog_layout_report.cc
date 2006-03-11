@@ -213,20 +213,20 @@ void Dialog_Layout_Report::fill_group_children(const sharedptr<LayoutGroup>& gro
 
 void Dialog_Layout_Report::add_group(const Gtk::TreeModel::iterator& parent, const sharedptr<const LayoutGroup>& group)
 {
-  Gtk::TreeModel::iterator iterNewGroup;
+  Gtk::TreeModel::iterator iterNewItem;
   if(!parent)
   {
     //Add it at the top-level, because nothing was selected:
-    iterNewGroup = m_model_parts->append();
+    iterNewItem = m_model_parts->append();
   }
   else
   {
-    iterNewGroup = m_model_parts->append(parent->children());
+    iterNewItem = m_model_parts->append(parent->children());
   }
 
-  if(iterNewGroup)
+  if(iterNewItem)
   {
-    Gtk::TreeModel::Row row = *iterNewGroup;
+    Gtk::TreeModel::Row row = *iterNewItem;
 
     row[m_columns_parts.m_col_item] = sharedptr<LayoutItem>(static_cast<LayoutItem*>(group->clone()));
 
@@ -237,10 +237,10 @@ void Dialog_Layout_Report::add_group(const Gtk::TreeModel::iterator& parent, con
 
       sharedptr<const LayoutGroup> pGroup = sharedptr<const LayoutGroup>::cast_dynamic(pItem);
       if(pGroup)
-        add_group(iterNewGroup /*parent of the new group */, pGroup); //recurse
+        add_group(iterNewItem /*parent of the new group */, pGroup); //recurse
       else
       {
-        Gtk::TreeModel::iterator iterChildRow = m_model_parts->append(iterNewGroup->children());
+        Gtk::TreeModel::iterator iterChildRow = m_model_parts->append(iterNewItem->children());
 
         Gtk::TreeModel::Row row = *iterChildRow;
         row[m_columns_parts.m_col_item] = sharedptr<LayoutItem>(pItem->clone());
@@ -285,9 +285,16 @@ void Dialog_Layout_Report::set_report(const Glib::ustring& table_name, const sha
     //guint group_sequence = 1; //0 means no sequence
     for(LayoutGroup::type_map_items::const_iterator iter = report->m_layout_group->m_map_items.begin(); iter != report->m_layout_group->m_map_items.end(); ++iter)
     {
-      sharedptr<const LayoutGroup> group = sharedptr<const LayoutGroup>::cast_dynamic(iter->second);
+      sharedptr<const LayoutItem> item = iter->second;
+      sharedptr<const LayoutGroup> group = sharedptr<const LayoutGroup>::cast_dynamic(item);
       if(group)
         add_group(Gtk::TreeModel::iterator() /* null == top-level */, group);
+      else
+      {
+        Gtk::TreeModel::iterator iter = m_model_parts->append();
+        Gtk::TreeModel::Row row = *iter;
+        row[m_columns_parts.m_col_item] = glom_sharedptr_clone(item);
+      }
     }
 
     //treeview_fill_sequences(m_model_parts, m_model_parts->m_columns.m_col_sequence); //The document should have checked this already, but it does not hurt to check again.
@@ -894,47 +901,32 @@ sharedptr<Report> Dialog_Layout_Report::get_report()
 
   m_report->m_layout_group->remove_all_items();
 
-  guint group_sequence = 0;
+  guint item_sequence = 0;
   m_report->m_layout_group->remove_all_items();
-  sharedptr<LayoutGroup> groupTopLevel = sharedptr<LayoutGroup>::create();
+
   for(Gtk::TreeModel::iterator iter = m_model_parts->children().begin(); iter != m_model_parts->children().end(); ++iter)
   {
+    //Recurse into a group if necessary:
     sharedptr<LayoutGroup> group = fill_group(iter);
-
     if(group)
     {
-      //Add any top-level items so far:
-      if(groupTopLevel->get_items_count())
-      {
-        groupTopLevel->m_sequence = group_sequence;
-
-        m_report->m_layout_group->m_map_items[group_sequence] = groupTopLevel;
-        ++group_sequence;
-
-        //Start another top-level group for any items after the group item:
-        groupTopLevel = sharedptr<LayoutGroup>::create();
-      }
-
       //Add the group:
-      group->m_sequence = group_sequence;
+      group->m_sequence = item_sequence;
 
-      m_report->m_layout_group->m_map_items[group_sequence] = group;
-      ++group_sequence;
+      m_report->m_layout_group->m_map_items[item_sequence] = group;
+      ++item_sequence;
     }
     else
     {
-      //Add it to the list of top-level items:
       sharedptr<LayoutItem> item = (*iter)[m_columns_parts.m_col_item];
-      groupTopLevel->add_item(item);
+      if(item)
+      {
+        item->m_sequence = item_sequence;
+
+        m_report->m_layout_group->m_map_items[item_sequence] = item;
+        ++item_sequence;
+      }
     }
-  }
-
-  //Add any remaining top-level items:
-  if(groupTopLevel->get_items_count())
-  {
-    groupTopLevel->m_sequence = group_sequence;
-
-    m_report->m_layout_group->m_map_items[group_sequence] = groupTopLevel;
   }
 
   return m_report;
