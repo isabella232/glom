@@ -1,3 +1,28 @@
+2006-03-12  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/base_db.cc:
+	* glom/data_structure/layout/layoutgroup.cc:
+	* glom/data_structure/layout/layoutgroup.h: Added get/set_border_width() for use 
+	when creating reports, for some slight formatting choice.
+	* glom/document/document_glom.cc:
+	* glom/document/document_glom.h: load_after_layout_group(), save_before_layout_group(): 
+	Handle the border_width.
+	* glom/glom.glade:
+	* glom/layout_item_dialogs/dialog_group_by.cc:
+	* glom/layout_item_dialogs/dialog_group_by.h: Allow the user to choose a border width 
+	for the rows in the group.
+	* glom/layout_item_dialogs/Makefile.am:
+	* glom/layout_item_dialogs/comboentry_borderwidth.cc:
+	* glom/layout_item_dialogs/comboentry_borderwidth.h: New widget for choosing the 
+	border width.
+	* glom/mode_data/dialog_layout_details.cc:
+	* glom/mode_data/dialog_layout_details.h: Simplify the if/ifelse blocks that deal with 
+	layout parts.
+	* xslt/print_report_to_html.xsl: Reduce copy/paste by using xsl::variables (though those 
+	xsl::variable blocks are copy/pasted). Use xsl::variables to apply a border-width style to 
+	td and the HTML blocks, depending on the border_width of the group-by. Add a horizontal line 
+	after the group-by titles.
+
 2006-03-11  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/data_structure/layout/layoutitem_field.cc: get_layout_display_name(): Return the 

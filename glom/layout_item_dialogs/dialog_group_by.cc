@@ -20,6 +20,7 @@
 
 #include "dialog_group_by.h"
 #include "../data_structure/glomconversions.h"
+#include <sstream> //For stringstream
 #include <glibmm/i18n.h>
 
 Dialog_GroupBy::Dialog_GroupBy(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
@@ -30,6 +31,7 @@ Dialog_GroupBy::Dialog_GroupBy(BaseObjectType* cobject, const Glib::RefPtr<Gnome
   m_button_field_group_by(0),
   m_button_field_sort_by(0),
   m_button_secondary_fields(0),
+  m_comboboxentry_border_width(0),
   m_dialog_choose_secondary_fields(0)
 {
   refGlade->get_widget("label_group_by", m_label_group_by);
@@ -39,6 +41,8 @@ Dialog_GroupBy::Dialog_GroupBy(BaseObjectType* cobject, const Glib::RefPtr<Gnome
   refGlade->get_widget("button_select_group_by", m_button_field_group_by);
   refGlade->get_widget("button_select_sort_by", m_button_field_sort_by);
   refGlade->get_widget("button_secondary_edit", m_button_secondary_fields);
+
+  refGlade->get_widget_derived("comboboxentry_border_width", m_comboboxentry_border_width);
 
   //Connect signals:
   m_button_field_group_by->signal_clicked().connect(sigc::mem_fun(*this, &Dialog_GroupBy::on_button_field_group_by));
@@ -71,10 +75,28 @@ void Dialog_GroupBy::set_item(const sharedptr<const LayoutItem_GroupBy>& item, c
     m_label_sort_by->set_text( item->get_field_sort_by()->get_layout_display_name() );
   else
     m_label_sort_by->set_text( Glib::ustring() );
+
+  Glib::ustring border_width_as_text;
+  std::stringstream the_stream;
+  the_stream.imbue(std::locale("")); //Current locale.
+  the_stream << m_layout_item->get_border_width();
+  border_width_as_text = the_stream.str();
+  std::cout << "set_item: border_width_as_text=" << border_width_as_text << std::endl;
+  m_comboboxentry_border_width->get_entry()->set_text(border_width_as_text);
 }
 
 sharedptr<LayoutItem_GroupBy> Dialog_GroupBy::get_item() const
 {
+  std::stringstream the_stream;
+  the_stream.imbue(std::locale("")); //Current locale.
+  the_stream << m_comboboxentry_border_width->get_entry()->get_text();
+
+  double border_width_as_number = 0;
+  the_stream >> border_width_as_number;
+   std::cout << "get_item: border_width_as_number=" << border_width_as_number << std::endl;
+  m_layout_item->set_border_width(border_width_as_number);
+std::cout << "get_item: set_border_width()=" << m_layout_item->get_border_width() << std::endl;
+
   return glom_sharedptr_clone(m_layout_item);
 }
 

@@ -54,7 +54,7 @@ protected:
   sharedptr<LayoutItem_Field> offer_field_layout(const sharedptr<const LayoutItem_Field>& start_field);
   Gtk::TreeModel::iterator get_selected_group_parent() const;
   sharedptr<LayoutItem_Button> offer_button_script_edit(const sharedptr<const LayoutItem_Button>& button);
-  sharedptr<LayoutItem_Text> offer_textobject_edit(const sharedptr<const LayoutItem_Text>& textobject);
+  //sharedptr<LayoutItem_Text> offer_textobject_edit(const sharedptr<const LayoutItem_Text>& textobject);
 
   //signal handlers:
   virtual void on_button_field_up();

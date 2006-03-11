@@ -62,6 +62,9 @@ public:
 
   void remove_all_items();
 
+  double get_border_width() const;
+  void set_border_width(double border_width);
+
   //virtual void debug(guint level = 0) const;
 
   guint get_items_count() const;
@@ -83,6 +86,8 @@ public:
 protected:
 
   void remove_item(guint sequence);
+
+  double m_border_width; //For use on reports.
 };
 
 #endif //GLOM_DATASTRUCTURE_LAYOUTGROUP_H

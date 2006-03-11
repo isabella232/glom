@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns="http://www.w3.org/1999/xhtml" version="1.0">
-<xsl:output encoding="utf8" method="xml" doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN" doctype-system="DTD/xhtml1-strict.dtd"/>
+<xsl:output encoding="utf8" method="xml" indent="yes" doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN" doctype-system="DTD/xhtml1-strict.dtd"/>
 
 <xsl:template match="report_print">
 <html xml:lang="en" lang="en">
@@ -15,12 +15,26 @@
 
 table
 {
-  border-spacing: 0.3em;
+  border-collapse: collapse; /* So we get border lines between the cells, instead of lines around separated cells squares */
+  border-style: solid;
+  border-color: black; /* Though it has a 0 width by default. */
+  border-width: 0em;
 }
 
 .group_by
 {
   margin-left: 2em;
+  border-style: solid;
+  border-color: black;
+  border-width: 0em;
+}
+
+.group_by_title
+{
+  margin-left: 2em;
+  border-style: solid;
+  border-color: black;
+  border-width: 0.0em 0em 0.1em 0em; /* Put a line under the group-by title value. */
 }
 
 .summary
@@ -30,17 +44,28 @@ table
 
 .records
 {
-  margin-left: 2em;
+  margin-left: 2em; /* Indent each group-by set of records. */
+}
+
+th
+{
+  padding: 0.2em;
+  border-style: solid;
+  border-color: black; /* Though it has a 0 width by default. */
+  border-width: 0em;
+}
+
+td
+{
+  padding: 0.2em;
+  border-style: solid;
+  border-color: black; /* Though it has a 0 width by default. */
+  border-width: 0em;
 }
 
 .records_summary
 {
-  margin-left: 2em;
-}
-
-.field_numerical
-{
-  text-align: right;
+  margin-left: 2em; /* Indent each summary set of records. */
 }
 
 </style>
@@ -65,25 +90,47 @@ table
 <p>
 
 <xsl:if test="string(@group_field)">
+<div class="group_by_title">
 <xsl:value-of select="@group_field"/>: <b><xsl:value-of select="@group_value"/></b>
+</div>
+<xsl:text>
+</xsl:text>
 </xsl:if>
 
 <xsl:apply-templates select="secondary_fields"/>
 </p>
 <xsl:apply-templates select="group_by"/>
 <p>
-<table class="records">
+
+<xsl:text>
+</xsl:text>
+
+<xsl:variable name="attStyleBorderWidth">
+<xsl:choose>
+  <xsl:when test="string(@border_width)"><xsl:value-of select="@border_width"/></xsl:when>
+  <xsl:otherwise>0</xsl:otherwise>
+</xsl:choose>
+</xsl:variable>
+
+<table class="records" style="border-width: {$attStyleBorderWidth}em;">
+<xsl:text>
+</xsl:text>
   <xsl:apply-templates select="field_heading"/>
+<xsl:text>
+</xsl:text>
   <xsl:apply-templates select="row"/>
 </table>
+
 </p>
 <xsl:apply-templates select="summary"/>
 </div>
+<xsl:text>
+</xsl:text>
 </xsl:template>
 
 <xsl:template match="secondary_fields">
 <table class="group_by_secondary_fields">
-  <xsl:apply-templates select="field_heading|field_heading_numeric"/>
+  <xsl:apply-templates select="field_heading"/>
   <xsl:apply-templates select="row"/>
 </table>
 </xsl:template>
@@ -111,31 +158,51 @@ table
 </xsl:template>
 
 <xsl:template match="field_heading">
+
+<xsl:variable name="attAlign">
 <xsl:choose>
-  <xsl:when test="@field_type = 'numeric'">
-<th class="field_heading" align="right"> <xsl:value-of select="@title"/> </th>
-  </xsl:when>
-  <xsl:otherwise>
-<th class="field_heading" align="left"> <xsl:value-of select="@title"/> </th>
-  </xsl:otherwise>
+  <xsl:when test="@field_type = 'numeric'">right</xsl:when>
+  <xsl:otherwise>left</xsl:otherwise>
 </xsl:choose>
+</xsl:variable>
+
+<xsl:variable name="attStyleBorderWidth">
+<xsl:choose>
+  <xsl:when test="string(../@border_width)"><xsl:value-of select="../@border_width"/></xsl:when>
+  <xsl:otherwise>0</xsl:otherwise>
+</xsl:choose>
+</xsl:variable>
+
+<th class="field_heading" align="{$attAlign}" style="border-width: {$attStyleBorderWidth}em;"> <xsl:value-of select="@title"/> </th>
+<xsl:text>
+</xsl:text>
 </xsl:template>
 
 <xsl:template match="row">
 <tr class="row">
 <xsl:apply-templates/>
 </tr>
+<xsl:text>
+</xsl:text>
 </xsl:template>
 
 <xsl:template match="field">
+
+<xsl:variable name="attAlign">
 <xsl:choose>
-  <xsl:when test="@field_type = 'numeric'">
-<td class="field" align="right"><xsl:value-of select="@value"/></td>
-  </xsl:when>
-  <xsl:otherwise>
-<td class="field" align="left"><xsl:value-of select="@value"/></td>
-  </xsl:otherwise>
+  <xsl:when test="@field_type = 'numeric'">right</xsl:when>
+  <xsl:otherwise>left</xsl:otherwise>
 </xsl:choose>
+</xsl:variable>
+
+<xsl:variable name="attStyleBorderWidth">
+<xsl:choose>
+  <xsl:when test="string(../../@border_width)"><xsl:value-of select="../../@border_width"/></xsl:when>
+  <xsl:otherwise>0</xsl:otherwise>
+</xsl:choose>
+</xsl:variable>
+
+<td class="field" align="{$attAlign}" style="border-width: {$attStyleBorderWidth}em;"><xsl:value-of select="@value"/></td>
 </xsl:template>
 
 </xsl:stylesheet>

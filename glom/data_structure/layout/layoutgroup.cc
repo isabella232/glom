@@ -24,13 +24,15 @@
 #include <glibmm/i18n.h>
 
 LayoutGroup::LayoutGroup()
-: m_columns_count(1) //A sensible default
+: m_columns_count(1), //A sensible default
+  m_border_width(0)
 {
 }
 
 LayoutGroup::LayoutGroup(const LayoutGroup& src)
 : LayoutItem(src),
-  m_columns_count(src.m_columns_count)
+  m_columns_count(src.m_columns_count),
+  m_border_width(src.m_border_width)
 {
   //Deep copy of the items map:
   for(type_map_items::const_iterator iter = src.m_map_items.begin(); iter != src.m_map_items.end(); ++iter)
@@ -64,6 +66,8 @@ LayoutGroup& LayoutGroup::operator=(const LayoutGroup& src)
     LayoutItem::operator=(src);
 
     m_columns_count = src.m_columns_count;
+
+    m_border_width = src.m_border_width;
 
     //Deep copy of the items map:
     remove_all_items();
@@ -422,4 +426,14 @@ void LayoutGroup::debug(guint level) const
   }
 }
 */
+
+double LayoutGroup::get_border_width() const
+{
+  return m_border_width;
+}
+
+void LayoutGroup::set_border_width(double border_width)
+{
+  m_border_width = border_width;
+}
 

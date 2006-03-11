@@ -561,6 +561,7 @@ sharedptr<LayoutItem_Button> Dialog_Layout_Details::offer_button_script_edit(con
   return result;
 }
 
+/*
 sharedptr<LayoutItem_Text> Dialog_Layout_Details::offer_textobject_edit(const sharedptr<const LayoutItem_Text>& textobject)
 {
   sharedptr<LayoutItem_Text> result;
@@ -594,6 +595,7 @@ sharedptr<LayoutItem_Text> Dialog_Layout_Details::offer_textobject_edit(const sh
 
   return result;
 }
+*/
 
 sharedptr<Relationship> Dialog_Layout_Details::offer_relationship_list()
 {
@@ -1003,7 +1005,7 @@ void Dialog_Layout_Details::on_button_edit()
               sharedptr<LayoutItem_Text> layout_item_text = sharedptr<LayoutItem_Text>::cast_dynamic(layout_item);
               if(layout_item_text)
               {
-                sharedptr<LayoutItem_Text> chosen = offer_textobject_edit(layout_item_text);
+                sharedptr<LayoutItem_Text> chosen = offer_textobject(layout_item_text);
                 if(chosen)
                 {
                   *layout_item_text = *chosen;

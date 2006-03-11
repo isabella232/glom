@@ -1377,38 +1377,31 @@ Glib::ustring Base_DB::get_layout_item_table_name(const sharedptr<const LayoutIt
 void Base_DB::report_build_summary(const Glib::ustring& table_name, xmlpp::Element& parent_node, const sharedptr<LayoutItem_Summary>& summary, const Glib::ustring& where_clause)
 {
   //Add XML node:
-  xmlpp::Element* nodeSummary = parent_node.add_child("summary");
+  xmlpp::Element* node = parent_node.add_child("summary");
 
   //Get fields
   type_vecLayoutItems itemsToGet;
   for(LayoutGroup::type_map_items::iterator iterChildren = summary->m_map_items.begin(); iterChildren != summary->m_map_items.end(); ++iterChildren)
   {
     sharedptr<LayoutItem> item = iterChildren->second;
-    sharedptr<LayoutItem_Field> pField = sharedptr<LayoutItem_Field>::cast_dynamic(item);
-    sharedptr<LayoutItem_Text> pText = sharedptr<LayoutItem_Text>::cast_dynamic(item);
-    if(pField || pText)
-    {
-      if(pField)
-        fill_full_field_details(table_name, pField);
 
-      itemsToGet.push_back( glom_sharedptr_clone(item) );
+    sharedptr<LayoutItem_GroupBy> pGroupBy = sharedptr<LayoutItem_GroupBy>::cast_dynamic(item);
+    if(pGroupBy)
+    {
+      //Recurse, adding a sub-groupby block:
+      report_build_groupby(table_name, *node, pGroupBy, where_clause);
     }
     else
     {
-      sharedptr<LayoutItem_GroupBy> pGroupBy = sharedptr<LayoutItem_GroupBy>::cast_dynamic(item);
-      if(pGroupBy)
+      sharedptr<LayoutItem_Summary> pSummary = sharedptr<LayoutItem_Summary>::cast_dynamic(item);
+      if(pSummary)
       {
-        //Recurse, adding a sub-groupby block:
-        report_build_groupby(table_name, *nodeSummary, pGroupBy, where_clause);
+        //Recurse, adding a summary block:
+        report_build_summary(table_name, *node, pSummary, where_clause);
       }
       else
       {
-        sharedptr<LayoutItem_Summary> pSummary = sharedptr<LayoutItem_Summary>::cast_dynamic(item);
-        if(pSummary)
-        {
-          //Recurse, adding a summary block:
-          report_build_summary(table_name, *nodeSummary, pSummary, where_clause);
-        }
+        itemsToGet.push_back( glom_sharedptr_clone(item) );
       }
     }
   }
@@ -1416,42 +1409,35 @@ void Base_DB::report_build_summary(const Glib::ustring& table_name, xmlpp::Eleme
   if(!itemsToGet.empty())
   {
     //Rows, with data:
-    report_build_records(table_name, *nodeSummary, itemsToGet, where_clause, Glib::ustring() /* No sort_clause because there is only one row */);
+    report_build_records(table_name, *node, itemsToGet, where_clause, Glib::ustring() /* No sort_clause because there is only one row */);
   }
 }
 
-void Base_DB::report_build_groupby_children(const Glib::ustring& table_name, xmlpp::Element& nodeGroupBy, const sharedptr<LayoutItem_GroupBy>& group_by, const Glib::ustring& where_clause)
+void Base_DB::report_build_groupby_children(const Glib::ustring& table_name, xmlpp::Element& node, const sharedptr<LayoutItem_GroupBy>& group_by, const Glib::ustring& where_clause)
 {
   //Get data and add child rows:
   type_vecLayoutItems itemsToGet;
   for(LayoutGroup::type_map_items::iterator iterChildren = group_by->m_map_items.begin(); iterChildren != group_by->m_map_items.end(); ++iterChildren)
   {
     sharedptr<LayoutItem> item = iterChildren->second;
-    sharedptr<LayoutItem_Field> pField = sharedptr<LayoutItem_Field>::cast_dynamic(item);
-    sharedptr<LayoutItem_Text> pText = sharedptr<LayoutItem_Text>::cast_dynamic(item);
-    if(pField || pText)
-    {
-      if(pField)
-        fill_full_field_details(table_name, pField);
 
-      itemsToGet.push_back( glom_sharedptr_clone(item) );
+    sharedptr<LayoutItem_GroupBy> pGroupBy = sharedptr<LayoutItem_GroupBy>::cast_dynamic(item);
+    if(pGroupBy)
+    {
+      //Recurse, adding a sub-groupby block:
+      report_build_groupby(table_name, node, pGroupBy, where_clause);
     }
     else
     {
-      sharedptr<LayoutItem_GroupBy> pGroupBy = sharedptr<LayoutItem_GroupBy>::cast_dynamic(item);
-      if(pGroupBy)
+      sharedptr<LayoutItem_Summary> pSummary = sharedptr<LayoutItem_Summary>::cast_dynamic(item);
+      if(pSummary)
       {
-        //Recurse, adding a sub-groupby block:
-        report_build_groupby(table_name, nodeGroupBy, pGroupBy, where_clause);
+        //Recurse, adding a summary block:
+        report_build_summary(table_name, node, pSummary, where_clause);
       }
       else
       {
-        sharedptr<LayoutItem_Summary> pSummary = sharedptr<LayoutItem_Summary>::cast_dynamic(item);
-        if(pSummary)
-        {
-          //Recurse, adding a summary block:
-          report_build_summary(table_name, nodeGroupBy, pSummary, where_clause);
-        }
+        itemsToGet.push_back( glom_sharedptr_clone(item) );
       }
     }
   }
@@ -1463,7 +1449,7 @@ void Base_DB::report_build_groupby_children(const Glib::ustring& table_name, xml
     if(group_by->get_has_field_sort_by())
       sort_clause = group_by->get_field_sort_by()->get_name(); //TODO: Deal with related fields too.
 
-    report_build_records(table_name, nodeGroupBy, itemsToGet, where_clause, sort_clause);
+    report_build_records(table_name, node, itemsToGet, where_clause, sort_clause);
   }
 }
 
@@ -1495,6 +1481,7 @@ void Base_DB::report_build_groupby(const Glib::ustring& table_name, xmlpp::Eleme
 
         //Add XML node:
         xmlpp::Element* nodeGroupBy = parent_node.add_child("group_by");
+        Document_Glom::set_node_attribute_value_as_decimal_double(nodeGroupBy, "border_width", group_by->get_border_width());
 
         nodeGroupBy->set_attribute("group_field", field_group_by->get_title_or_name());
         nodeGroupBy->set_attribute("group_value",
@@ -1513,15 +1500,7 @@ void Base_DB::report_build_groupby(const Glib::ustring& table_name, xmlpp::Eleme
           for(LayoutGroup::type_map_items::iterator iterChildren = group_by->m_group_secondary_fields->m_map_items.begin(); iterChildren != group_by->m_group_secondary_fields->m_map_items.end(); ++iterChildren)
           {
             sharedptr<LayoutItem> item = iterChildren->second;
-            sharedptr<LayoutItem_Field> pField = sharedptr<LayoutItem_Field>::cast_dynamic(item);
-            sharedptr<LayoutItem_Text> pText = sharedptr<LayoutItem_Text>::cast_dynamic(item);
-            if(pField || pText)
-            {
-              if(pField)
-                fill_full_field_details(table_name, pField);
-
-              itemsToGet.push_back( glom_sharedptr_clone(item) );
-            }
+            itemsToGet.push_back( glom_sharedptr_clone(item) );
           }
 
           if(!itemsToGet.empty())
@@ -1624,7 +1603,7 @@ void Base_DB::report_build_records(const Glib::ustring& table_name, xmlpp::Eleme
           else
           {
             //Text object:
-            xmlpp::Element* nodeField = nodeRow->add_child("field");
+            xmlpp::Element* nodeField = nodeRow->add_child("field"); //We reuse this node type for text objects.
 
             sharedptr<LayoutItem_Text> item_text = sharedptr<LayoutItem_Text>::cast_dynamic(item);
             if(item_text)
@@ -1690,12 +1669,7 @@ void Base_DB::report_build(const Glib::ustring& table_name, const sharedptr<cons
       }
       else
       {
-        sharedptr<LayoutItem_Field> pField = sharedptr<LayoutItem_Field>::cast_dynamic(pPart);
-        sharedptr<LayoutItem_Text> pText = sharedptr<LayoutItem_Text>::cast_dynamic(pPart);
-        if(pField || pText)
-        {
-          itemsToGet_TopLevel.push_back( glom_sharedptr_clone(pPart) );
-        }
+        itemsToGet_TopLevel.push_back( glom_sharedptr_clone(pPart) );
       }
     }
   }

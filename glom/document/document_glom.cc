@@ -38,6 +38,7 @@
 #define GLOM_NODE_DATA_LAYOUT_GROUPS "data_layout_groups"
 #define GLOM_NODE_DATA_LAYOUT_GROUP "data_layout_group"
 #define GLOM_ATTRIBUTE_COLUMNS_COUNT "columns_count"
+#define GLOM_ATTRIBUTE_BORDER_WIDTH "border_width"
 
 #define GLOM_NODE_DATA_LAYOUTS "data_layouts"
 #define GLOM_NODE_DATA_LAYOUT "data_layout"
@@ -835,9 +836,41 @@ void Document_Glom::set_node_attribute_value_as_decimal(xmlpp::Element* node, co
   set_node_attribute_value(node, strAttributeName, sequence_string);
 }
 
+void Document_Glom::set_node_attribute_value_as_decimal_double(xmlpp::Element* node, const Glib::ustring& strAttributeName, double value)
+{
+  if(!value && !node->get_attribute(strAttributeName))
+    return; //Use the non-existance of an attribute to mean zero, to save space.
+
+  //Get text representation of int:
+  std::stringstream thestream;
+  thestream.imbue( std::locale::classic() ); //The C locale.
+  thestream << value;
+  const Glib::ustring sequence_string = thestream.str();
+
+  set_node_attribute_value(node, strAttributeName, sequence_string);
+}
+
 guint Document_Glom::get_node_attribute_value_as_decimal(const xmlpp::Element* node, const Glib::ustring& strAttributeName)
 {
   guint result = 0;
+  const Glib::ustring value_string = get_node_attribute_value(node, strAttributeName);
+
+  //Get number for string:
+  if(!value_string.empty())
+  {
+    //Visible fields, with sequence:
+    std::stringstream thestream;
+    thestream.imbue( std::locale::classic() ); //The C locale.
+    thestream.str(value_string);
+    thestream >> result;
+  }
+
+  return result;
+}
+
+double Document_Glom::get_node_attribute_value_as_decimal_double(const xmlpp::Element* node, const Glib::ustring& strAttributeName)
+{
+  double result = 0;
   const Glib::ustring value_string = get_node_attribute_value(node, strAttributeName);
 
   //Get number for string:
@@ -1430,8 +1463,11 @@ void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Gl
   group->set_name( get_node_attribute_value(node, GLOM_ATTRIBUTE_NAME) );
   group->set_title( get_node_attribute_value(node, GLOM_ATTRIBUTE_TITLE) );
   group->m_columns_count = get_node_attribute_value_as_decimal(node, GLOM_ATTRIBUTE_COLUMNS_COUNT);
+  group->set_border_width( get_node_attribute_value_as_decimal_double(node, GLOM_ATTRIBUTE_BORDER_WIDTH) );
 
   group->m_sequence = get_node_attribute_value_as_decimal(node, GLOM_ATTRIBUTE_SEQUENCE);
+
+
 
   //Translations:
   sharedptr<LayoutGroup> temp = group;
@@ -2003,6 +2039,8 @@ void Document_Glom::save_before_layout_group(xmlpp::Element* node, const sharedp
   set_node_attribute_value_as_decimal(child, GLOM_ATTRIBUTE_COLUMNS_COUNT, group->m_columns_count);
 
   set_node_attribute_value_as_decimal(child, GLOM_ATTRIBUTE_SEQUENCE, group->m_sequence);
+
+  set_node_attribute_value_as_decimal_double(child, GLOM_ATTRIBUTE_BORDER_WIDTH, group->get_border_width());
 
   //Translations:
   save_before_translations(child, *group);
