@@ -308,6 +308,9 @@ void Dialog_Layout_Report::set_report(const Glib::ustring& table_name, const sha
 
 bool Dialog_Layout_Report::may_be_child_of(const sharedptr<const LayoutItem>& parent, const sharedptr<const LayoutItem>& suggested_child)
 {
+  if(!parent)
+    return true; //Anything may be at the top-level.
+
   if(!(sharedptr<const LayoutGroup>::cast_dynamic(parent)))
     return false; //Only LayoutGroup (and derived types) may have children.
 
@@ -388,11 +391,26 @@ void Dialog_Layout_Report::enable_buttons()
       m_button_up->set_sensitive(false);
       m_button_delete->set_sensitive(false);
     }
-  }
 
-  //Not all parts may be children of all other parts.
-  if(layout_item_available && layout_item_parent)
-    enable_add = may_be_child_of(layout_item_parent, layout_item_available);
+     //Not all parts may be children of all other parts.
+    if(layout_item_available && layout_item_parent)
+    {
+      const bool may_be_child_of_parent = may_be_child_of(layout_item_parent, layout_item_available);
+      enable_add = may_be_child_of_parent;
+
+      if(!may_be_child_of_parent)
+      {
+        //Maybe it can be a sibling of the parent instead (and that's what would happen if Add was clicked).
+        sharedptr<LayoutItem> layout_item_parent_of_parent;
+
+        Gtk::TreeModel::iterator iterParent = iter->parent();
+        if(iterParent)
+          layout_item_parent_of_parent = (*iterParent)[m_columns_parts.m_col_item];
+
+        enable_add = may_be_child_of(layout_item_parent_of_parent, layout_item_available);
+      }
+    }
+  }
 
   m_button_add->set_sensitive(enable_add);
 }

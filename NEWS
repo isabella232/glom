@@ -2,6 +2,8 @@
   - Allow top-level fields in reports, for non-grouped-by reports.
   - Allow use of Group By parts without specified group-by fields, so they 
     can be (mis)used just to specify a sort field for non-grouped-by records.
+  - Allow adding of fields as siblings while selecting the field, instead of 
+    requiring the user to select the parent group.
 
 0.9.8:
 
