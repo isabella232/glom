@@ -102,7 +102,7 @@ std::cout << "get_item: set_border_width()=" << m_layout_item->get_border_width(
 
 void Dialog_GroupBy::on_button_field_group_by()
 {
-  sharedptr<LayoutItem_Field> field = offer_field_list(m_table_name);
+  sharedptr<LayoutItem_Field> field = offer_field_list(m_table_name, this);
   if(field)
   {
     m_layout_item->set_field_group_by(field);
@@ -112,7 +112,7 @@ void Dialog_GroupBy::on_button_field_group_by()
 
 void Dialog_GroupBy::on_button_field_sort_by()
 {
-  sharedptr<LayoutItem_Field> field = offer_field_list(m_table_name);
+  sharedptr<LayoutItem_Field> field = offer_field_list(m_table_name, this);
   if(field)
   {
     m_layout_item->set_field_sort_by(field);

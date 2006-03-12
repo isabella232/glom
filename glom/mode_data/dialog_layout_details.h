@@ -49,9 +49,7 @@ protected:
   virtual void save_to_document();
 
   sharedptr<Relationship> offer_relationship_list();
-  sharedptr<LayoutItem_Field> offer_field_list();
-  sharedptr<LayoutItem_Field> offer_field_list(const sharedptr<const LayoutItem_Field>& start_field);
-  sharedptr<LayoutItem_Field> offer_field_layout(const sharedptr<const LayoutItem_Field>& start_field);
+
   Gtk::TreeModel::iterator get_selected_group_parent() const;
   sharedptr<LayoutItem_Button> offer_button_script_edit(const sharedptr<const LayoutItem_Button>& button);
   //sharedptr<LayoutItem_Text> offer_textobject_edit(const sharedptr<const LayoutItem_Text>& textobject);

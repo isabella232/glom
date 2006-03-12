@@ -25,6 +25,7 @@
 #include "document/document_glom.h"
 #include "data_structure/glomconversions.h"
 #include "mode_data/dialog_choose_field.h"
+#include "layout_item_dialogs/dialog_field_layout.h"
 #include "mode_design/dialog_textobject.h"
 //#include "dialog_layout_report.h"
 #include "utils.h"
@@ -1270,12 +1271,12 @@ bool Base_DB::insert_example_data(const Glib::ustring& table_name) const
   return insert_succeeded;
 }
 
-sharedptr<LayoutItem_Field> Base_DB::offer_field_list(const Glib::ustring& table_name)
+sharedptr<LayoutItem_Field> Base_DB::offer_field_list(const Glib::ustring& table_name, Gtk::Window* transient_for)
 {
-  return offer_field_list(sharedptr<LayoutItem_Field>(), table_name);
+  return offer_field_list(sharedptr<LayoutItem_Field>(), table_name, transient_for);
 }
 
-sharedptr<LayoutItem_Field> Base_DB::offer_field_list(const sharedptr<LayoutItem_Field>& start_field, const Glib::ustring& table_name)
+sharedptr<LayoutItem_Field> Base_DB::offer_field_list(const sharedptr<const LayoutItem_Field>& start_field, const Glib::ustring& table_name, Gtk::Window* transient_for)
 {
   sharedptr<LayoutItem_Field> result;
 
@@ -1288,9 +1289,12 @@ sharedptr<LayoutItem_Field> Base_DB::offer_field_list(const sharedptr<LayoutItem
 
     if(dialog)
     {
+      if(transient_for)
+        dialog->set_transient_for(*transient_for);
+
       dialog->set_document(get_document(), table_name, start_field);
       //TODO: dialog->set_transient_for(*get_app_window());
-      int response = dialog->run();
+      const int response = dialog->run();
       if(response == Gtk::RESPONSE_OK)
       {
         //Get the chosen field:
@@ -1308,7 +1312,47 @@ sharedptr<LayoutItem_Field> Base_DB::offer_field_list(const sharedptr<LayoutItem
   return result;
 }
 
-sharedptr<LayoutItem_Text> Base_DB::offer_textobject(const sharedptr<LayoutItem_Text>& start_textobject)
+sharedptr<LayoutItem_Field> Base_DB::offer_field_formatting(const sharedptr<const LayoutItem_Field>& start_field, const Glib::ustring& table_name, Gtk::Window* transient_for)
+{
+  sharedptr<LayoutItem_Field> result;
+
+  try
+  {
+    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_layout_field_properties");
+
+    Dialog_FieldLayout* dialog = 0;
+    refXml->get_widget_derived("dialog_layout_field_properties", dialog);
+
+    if(dialog)
+    {
+      if(transient_for)
+        dialog->set_transient_for(*transient_for);
+
+      add_view(dialog);
+
+      dialog->set_field(start_field, table_name);
+
+
+      const int response = dialog->run();
+      if(response == Gtk::RESPONSE_OK)
+      {
+        //Get the chosen field:
+        result = dialog->get_field_chosen();
+      }
+
+      remove_view(dialog);
+      delete dialog;
+    }
+  }
+  catch(const Gnome::Glade::XmlError& ex)
+  {
+    std::cerr << ex.what() << std::endl;
+  }
+
+  return result;
+}
+
+sharedptr<LayoutItem_Text> Base_DB::offer_textobject(const sharedptr<LayoutItem_Text>& start_textobject, Gtk::Window* transient_for)
 {
   sharedptr<LayoutItem_Text> result;
 
@@ -1318,9 +1362,11 @@ sharedptr<LayoutItem_Text> Base_DB::offer_textobject(const sharedptr<LayoutItem_
 
     Dialog_TextObject* dialog = 0;
     refXml->get_widget_derived("window_textobject", dialog);
-
     if(dialog)
     {
+      if(transient_for)
+        dialog->set_transient_for(*transient_for);
+
       dialog->set_textobject(start_textobject, Glib::ustring());
       //dialog->set_transient_for(*this);
       const int response = dialog->run();

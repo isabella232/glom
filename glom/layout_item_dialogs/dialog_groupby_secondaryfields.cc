@@ -19,7 +19,6 @@
  */
 
 #include "dialog_groupby_secondaryfields.h"
-#include "../mode_data/dialog_choose_field.h"
 #include "dialog_field_layout.h"
 #include <bakery/App/App_Gtk.h> //For util_bold_message().
 
@@ -68,7 +67,7 @@ Dialog_GroupBy_SecondaryFields::Dialog_GroupBy_SecondaryFields(BaseObjectType* c
     m_model_fields->signal_row_changed().connect( sigc::mem_fun(*this, &Dialog_GroupBy_SecondaryFields::on_treemodel_row_changed) );
   }
 
- 
+
   refGlade->get_widget("button_field_up", m_button_field_up);
   m_button_field_up->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_GroupBy_SecondaryFields::on_button_field_up) );
 
@@ -215,48 +214,27 @@ void Dialog_GroupBy_SecondaryFields::on_treeview_fields_selection_changed()
 
 void Dialog_GroupBy_SecondaryFields::on_button_add_field()
 {
-  try
+  //Get the chosen field:
+  sharedptr<LayoutItem_Field> field = offer_field_list(m_table_name, this);
+  if(field)
   {
-    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_choose_field");
+    //Add the field details to the layout treeview:
+    Gtk::TreeModel::iterator iter =  m_model_fields->append();
 
-    Dialog_ChooseField* dialog = 0;
-    refXml->get_widget_derived("dialog_choose_field", dialog);
-
-    if(dialog)
+    if(iter)
     {
-      dialog->set_document(get_document(), m_table_name);
-      dialog->set_transient_for(*this);
-      int response = dialog->run();
-      if(response == Gtk::RESPONSE_OK)
-      {
-        //Get the chosen field:
-        sharedptr<LayoutItem_Field> field = dialog->get_field_chosen();
+      Gtk::TreeModel::Row row = *iter;
+      row[m_ColumnsFields.m_col_layout_item] = field;
 
-        //Add the field details to the layout treeview:
-        Gtk::TreeModel::iterator iter =  m_model_fields->append();
+      //Scroll to, and select, the new row:
+      Glib::RefPtr<Gtk::TreeView::Selection> refTreeSelection = m_treeview_fields->get_selection();
+      if(refTreeSelection)
+        refTreeSelection->select(iter);
 
-        if(iter)
-        {
-          Gtk::TreeModel::Row row = *iter;
-          row[m_ColumnsFields.m_col_layout_item] = field;
+      m_treeview_fields->scroll_to_row( Gtk::TreeModel::Path(iter) );
 
-          //Scroll to, and select, the new row:
-          Glib::RefPtr<Gtk::TreeView::Selection> refTreeSelection = m_treeview_fields->get_selection();
-          if(refTreeSelection)
-            refTreeSelection->select(iter);
-
-          m_treeview_fields->scroll_to_row( Gtk::TreeModel::Path(iter) );
-
-          treeview_fill_sequences(m_model_fields, m_ColumnsFields.m_col_sequence); //The document should have checked this already, but it does not hurt to check again.
-        }
-      }
+      treeview_fill_sequences(m_model_fields, m_ColumnsFields.m_col_sequence); //The document should have checked this already, but it does not hurt to check again.
     }
-
-    delete dialog;
-  }
-  catch(const Gnome::Glade::XmlError& ex)
-  {
-    std::cerr << ex.what() << std::endl;
   }
 }
 
@@ -307,105 +285,55 @@ void Dialog_GroupBy_SecondaryFields::on_cell_data_name(Gtk::CellRenderer* render
 
 void Dialog_GroupBy_SecondaryFields::on_button_edit_field()
 {
-  try
+  Glib::RefPtr<Gtk::TreeView::Selection> refTreeSelection = m_treeview_fields->get_selection();
+  if(refTreeSelection)
   {
-    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_choose_field");
-
-    Dialog_ChooseField* dialog = 0;
-    refXml->get_widget_derived("dialog_choose_field", dialog);
-
-    if(dialog)
+    //TODO: Handle multiple-selection:
+    Gtk::TreeModel::iterator iter = refTreeSelection->get_selected();
+    if(iter)
     {
+      Gtk::TreeModel::Row row = *iter;
+      sharedptr<const LayoutItem_Field> field = row[m_ColumnsFields.m_col_layout_item];
+
+      //Get the chosen field:
+      sharedptr<LayoutItem_Field> field_chosen = offer_field_list(field, m_table_name, this);
+      if(field_chosen)
+
+      //Set the field details in the layout treeview:
+
+      row[m_ColumnsFields.m_col_layout_item] = field_chosen;
+
+      //Scroll to, and select, the new row:
+      /*
       Glib::RefPtr<Gtk::TreeView::Selection> refTreeSelection = m_treeview_fields->get_selection();
       if(refTreeSelection)
-      {
-        //TODO: Handle multiple-selection:
-        Gtk::TreeModel::iterator iter = refTreeSelection->get_selected();
-        if(iter)
-        {
-          Gtk::TreeModel::Row row = *iter;
-          sharedptr<const LayoutItem_Field> field = row[m_ColumnsFields.m_col_layout_item];
+        refTreeSelection->select(iter);
 
-          dialog->set_document(get_document(), m_table_name, field);
-          dialog->set_transient_for(*this);
-          const int response = dialog->run();
-          if(response == Gtk::RESPONSE_OK)
-          {
-            //Get the chosen field:
-            sharedptr<LayoutItem_Field> field = dialog->get_field_chosen();
+      m_treeview_fields->scroll_to_row( Gtk::TreeModel::Path(iter) );
 
-            //Set the field details in the layout treeview:
-
-            row[m_ColumnsFields.m_col_layout_item] = field;
-
-            //Scroll to, and select, the new row:
-            /*
-            Glib::RefPtr<Gtk::TreeView::Selection> refTreeSelection = m_treeview_fields->get_selection();
-            if(refTreeSelection)
-              refTreeSelection->select(iter);
-
-            m_treeview_fields->scroll_to_row( Gtk::TreeModel::Path(iter) );
-
-            treeview_fill_sequences(m_model_fields, m_ColumnsFields.m_col_sequence); //The document should have checked this already, but it does not hurt to check again.
-            */
-          }
-        }
-      }
+      treeview_fill_sequences(m_model_fields, m_ColumnsFields.m_col_sequence); //The document should have checked this already, but it does not hurt to check again.
+      */
     }
-
-    delete dialog;
-  }
-  catch(const Gnome::Glade::XmlError& ex)
-  {
-    std::cerr << ex.what() << std::endl;
   }
 }
 
-
 void Dialog_GroupBy_SecondaryFields::on_button_field_formatting()
 {
-  try
+  Glib::RefPtr<Gtk::TreeView::Selection> refTreeSelection = m_treeview_fields->get_selection();
+  if(refTreeSelection)
   {
-    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_layout_field_properties");
-
-    Dialog_FieldLayout* dialog = 0;
-    refXml->get_widget_derived("dialog_layout_field_properties", dialog);
-
-    if(dialog)
+    //TODO: Handle multiple-selection:
+    Gtk::TreeModel::iterator iter = refTreeSelection->get_selected();
+    if(iter)
     {
-      add_view(dialog); //Give it access to the document.
-
-      Glib::RefPtr<Gtk::TreeView::Selection> refTreeSelection = m_treeview_fields->get_selection();
-      if(refTreeSelection)
+      Gtk::TreeModel::Row row = *iter;
+      sharedptr<const LayoutItem_Field> field = row[m_ColumnsFields.m_col_layout_item];
+      if(field)
       {
-        //TODO: Handle multiple-selection:
-        Gtk::TreeModel::iterator iter = refTreeSelection->get_selected();
-        if(iter)
-        {
-          Gtk::TreeModel::Row row = *iter;
-          sharedptr<const LayoutItem_Field> field = row[m_ColumnsFields.m_col_layout_item];
-          //g_warning("field_name = %s, %s", field.m_field->get_name().c_str(), field.get_name().c_str());
-
-          dialog->set_field(field, m_table_name);
-          dialog->set_transient_for(*this);
-          const int response = dialog->run();
-          dialog->hide();
-          if(response == Gtk::RESPONSE_OK)
-          {
-            //Get the chosen field:
-            field = dialog->get_field_chosen();
-            row[m_ColumnsFields.m_col_layout_item] = field;
-          }
-        }
+        field = offer_field_formatting(field, m_table_name, this);
+        row[m_ColumnsFields.m_col_layout_item] = field;
       }
     }
-
-    remove_view(dialog);
-    delete dialog;
-  }
-  catch(const Gnome::Glade::XmlError& ex)
-  {
-    std::cerr << ex.what() << std::endl;
   }
 }
 

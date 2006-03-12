@@ -19,8 +19,6 @@
  */
 
 #include "dialog_layout_details.h"
-#include "dialog_choose_field.h"
-#include "../layout_item_dialogs/dialog_field_layout.h"
 #include "dialog_choose_relationship.h"
 #include "../mode_design/dialog_buttonscript.h"
 #include "../mode_design/dialog_textobject.h"
@@ -502,7 +500,7 @@ void Dialog_Layout_Details::on_button_field_down()
 
 void Dialog_Layout_Details::on_button_field_add()
 {
-  sharedptr<LayoutItem_Field> layout_item = offer_field_list();
+  sharedptr<LayoutItem_Field> layout_item = offer_field_list(m_table_name, this);
   if(layout_item)
   {
     //Add the field details to the layout treeview:
@@ -620,79 +618,6 @@ sharedptr<Relationship> Dialog_Layout_Details::offer_relationship_list()
         result = dialog->get_relationship_chosen();
       }
 
-      delete dialog;
-    }
-  }
-  catch(const Gnome::Glade::XmlError& ex)
-  {
-    std::cerr << ex.what() << std::endl;
-  }
-
-  return result;
-}
-
-sharedptr<LayoutItem_Field> Dialog_Layout_Details::offer_field_list()
-{
-  return offer_field_list(sharedptr<LayoutItem_Field>());
-}
-
-sharedptr<LayoutItem_Field> Dialog_Layout_Details::offer_field_list(const sharedptr<const LayoutItem_Field>& start_field)
-{
-  sharedptr<LayoutItem_Field> result;
-
-  try
-  {
-    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_choose_field");
-
-    Dialog_ChooseField* dialog = 0;
-    refXml->get_widget_derived("dialog_choose_field", dialog);
-
-    if(dialog)
-    {
-      dialog->set_document(get_document(), m_table_name, start_field);
-      dialog->set_transient_for(*this);
-      int response = dialog->run();
-      if(response == Gtk::RESPONSE_OK)
-      {
-        //Get the chosen field:
-        result = dialog->get_field_chosen();
-      }
-
-      delete dialog;
-    }
-  }
-  catch(const Gnome::Glade::XmlError& ex)
-  {
-    std::cerr << ex.what() << std::endl;
-  }
-
-  return result;
-}
-
-sharedptr<LayoutItem_Field> Dialog_Layout_Details::offer_field_layout(const sharedptr<const LayoutItem_Field>& start_field)
-{
-  sharedptr<LayoutItem_Field> result;
-
-  try
-  {
-    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_layout_field_properties");
-
-    Dialog_FieldLayout* dialog = 0;
-    refXml->get_widget_derived("dialog_layout_field_properties", dialog);
-
-    if(dialog)
-    {
-      add_view(dialog); //Give it access to the document.
-      dialog->set_field(start_field, m_table_name);
-      dialog->set_transient_for(*this);
-      int response = dialog->run();
-      if(response == Gtk::RESPONSE_OK)
-      {
-        //Get the chosen field:
-        result = dialog->get_field_chosen();
-      }
-
-      remove_view(dialog);
       delete dialog;
     }
   }
@@ -894,44 +819,16 @@ void Dialog_Layout_Details::on_button_field_formatting()
     {
       Gtk::TreeModel::Row row = *iter;
 
-      try
+      sharedptr<LayoutItem> layout_item = row[m_model_items->m_columns.m_col_layout_item];
+      sharedptr<LayoutItem_Field> field = sharedptr<LayoutItem_Field>::cast_dynamic(layout_item);
+      if(field)
       {
-        Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_layout_field_properties");
-
-        Dialog_FieldLayout* dialog = 0;
-        refXml->get_widget_derived("dialog_layout_field_properties", dialog);
-
-        if(dialog)
+        sharedptr<LayoutItem_Field> chosenitem = offer_field_formatting(field, m_table_name, this);
+        if(chosenitem)
         {
-          add_view(dialog); //Give it access to the document.
-
-          sharedptr<LayoutItem> layout_item = row[m_model_items->m_columns.m_col_layout_item];
-          sharedptr<LayoutItem_Field> field = sharedptr<LayoutItem_Field>::cast_dynamic(layout_item);
-          if(field)
-          {
-            dialog->set_field(field, m_table_name);
-            dialog->set_transient_for(*this);
-            const int response = dialog->run();
-            dialog->hide();
-            if(response == Gtk::RESPONSE_OK)
-            {
-              //Get the chosen field:
-              sharedptr<LayoutItem_Field> itemchosen = dialog->get_field_chosen();
-              if(field)
-              {
-                row[m_model_items->m_columns.m_col_layout_item] = itemchosen;
-                m_modified = true;
-              }
-            }
-          }
-
-          remove_view(dialog);
-          delete dialog;
+          *field = *chosenitem; //TODO_Performance.
+          //m_model_parts->row_changed(Gtk::TreePath(iter), iter); //TODO: Add row_changed(iter) to gtkmm?
         }
-      }
-      catch(const Gnome::Glade::XmlError& ex)
-      {
-        std::cerr << ex.what() << std::endl;
       }
     }
   }
@@ -979,7 +876,7 @@ void Dialog_Layout_Details::on_button_edit()
           sharedptr<LayoutItem_Field> layout_item_field = sharedptr<LayoutItem_Field>::cast_dynamic(layout_item);
           if(layout_item_field)
           {
-            sharedptr<LayoutItem_Field> chosenitem = offer_field_list(layout_item_field);
+            sharedptr<LayoutItem_Field> chosenitem = offer_field_list(layout_item_field, m_table_name, this);
             if(chosenitem)
             {
               row[m_model_items->m_columns.m_col_layout_item] = chosenitem;

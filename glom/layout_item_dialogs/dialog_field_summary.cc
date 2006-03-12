@@ -62,7 +62,7 @@ sharedptr<LayoutItem_FieldSummary> Dialog_FieldSummary::get_item() const
 
 void Dialog_FieldSummary::on_button_field()
 {
-  sharedptr<LayoutItem_Field> field = offer_field_list(field, m_table_name);
+  sharedptr<LayoutItem_Field> field = offer_field_list(field, m_table_name, this);
   if(field)
   {
     m_layout_item->set_field(field);

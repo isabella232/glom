@@ -1,6 +1,26 @@
 2006-03-12  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/base_db.cc:
+	* glom/base_db.h:
+	* glom/layout_item_dialogs/dialog_field_summary.cc:
+	* glom/layout_item_dialogs/dialog_group_by.cc:
+	* glom/layout_item_dialogs/dialog_groupby_secondaryfields.cc:
+	* glom/mode_data/dialog_layout_details.cc:
+	* glom/mode_data/dialog_layout_details.h:
+	* glom/mode_data/dialog_layout_export.cc:
+	* glom/mode_data/dialog_layout_list.cc:
+	* glom/mode_data/dialog_layout_list_related.cc: Remove a lot of copying and pasting 
+	of near-identical offer_field_list() and offer_field_formatting() functions. Just use 
+	the one in Base_DB. Also made sure that these dialogs are always transient, by adding a 
+	Window* parameter.
+	* glom/glom.glade:
+	* glom/dialog_layout_report.cc:
+	* glom/dialog_layout_report.h: Added a Formatting button. For instance, this allows 
+	the field titles to be changed (or removed) on reports.
+
+2006-03-12  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/base_db.cc:
 	* glom/data_structure/layout/layoutgroup.cc:
 	* glom/data_structure/layout/layoutgroup.h: Added get/set_border_width() for use 
 	when creating reports, for some slight formatting choice.

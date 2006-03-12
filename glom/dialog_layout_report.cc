@@ -44,6 +44,7 @@ Dialog_Layout_Report::Dialog_Layout_Report(BaseObjectType* cobject, const Glib::
   m_button_add(0),
   m_button_delete(0),
   m_button_edit(0),
+  m_button_formatting(0),
   m_label_table_name(0),
   m_entry_name(0),
   m_entry_title(0)
@@ -156,6 +157,9 @@ Dialog_Layout_Report::Dialog_Layout_Report(BaseObjectType* cobject, const Glib::
 
   refGlade->get_widget("button_edit", m_button_edit);
   m_button_edit->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout_Report::on_button_edit) );
+
+  refGlade->get_widget("button_formatting", m_button_formatting);
+  m_button_formatting->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout_Report::on_button_formatting) );
 
   show_all_children();
 }
@@ -388,6 +392,14 @@ void Dialog_Layout_Report::enable_buttons()
 
       m_button_delete->set_sensitive(true);
 
+      //The [Formatting] button:
+      bool enable_formatting = false;
+      sharedptr<LayoutItem_Field> item_field = sharedptr<LayoutItem_Field>::cast_dynamic(layout_item_parent);
+      if(item_field)
+        enable_formatting = true; 
+
+      m_button_formatting->set_sensitive(enable_formatting);
+
       //m_button_formatting->set_sensitive( (*iter)[m_columns_parts->m_columns.m_col_type] == TreeStore_Layout::TYPE_FIELD);
     }
     else
@@ -396,6 +408,7 @@ void Dialog_Layout_Report::enable_buttons()
       m_button_down->set_sensitive(false);
       m_button_up->set_sensitive(false);
       m_button_delete->set_sensitive(false);
+      m_button_formatting->set_sensitive(false);
     }
 
      //Not all parts may be children of all other parts.
@@ -564,41 +577,6 @@ sharedptr<Relationship> Dialog_Layout_Report::offer_relationship_list()
   return result;
 }
 
-sharedptr<LayoutItem_Field> Dialog_Layout_Report::offer_field_layout(const sharedptr<LayoutItem_Field>& start_field)
-{
-  sharedptr<LayoutItem_Field> result;
-
-  try
-  {
-    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_layout_field_properties");
-
-    Dialog_FieldLayout* dialog = 0;
-    refXml->get_widget_derived("dialog_layout_field_properties", dialog);
-
-    if(dialog)
-    {
-      add_view(dialog); //Give it access to the document.
-      dialog->set_field(start_field, m_table_name);
-      dialog->set_transient_for(*this);
-      int response = dialog->run();
-      if(response == Gtk::RESPONSE_OK)
-      {
-        //Get the chosen field:
-        result = dialog->get_field_chosen();
-      }
-
-      remove_view(dialog);
-      delete dialog;
-    }
-  }
-  catch(const Gnome::Glade::XmlError& ex)
-  {
-    std::cerr << ex.what() << std::endl;
-  }
-
-  return result;
-}
-
 Gtk::TreeModel::iterator Dialog_Layout_Report::get_selected_group_parent() const
 {
   //Get the selected group, or a suitable parent group, or the first group:
@@ -642,6 +620,33 @@ Gtk::TreeModel::iterator Dialog_Layout_Report::get_selected_available() const
   }
 
   return iter;
+}
+
+
+void Dialog_Layout_Report::on_button_formatting()
+{
+  //Get the selected item:
+  Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = m_treeview_parts->get_selection();
+  if(refTreeSelection)
+  {
+    Gtk::TreeModel::iterator iter = refTreeSelection->get_selected();
+    if(iter)
+    {
+      Gtk::TreeModel::Row row = *iter;
+      sharedptr<LayoutItem> item = row[m_columns_parts.m_col_item];
+
+      sharedptr<LayoutItem_Field> field = sharedptr<LayoutItem_Field>::cast_dynamic(item);
+      if(field)
+      {
+        sharedptr<LayoutItem_Field> field_chosen = offer_field_formatting(field, m_table_name, this);
+        if(field_chosen)
+        {
+          *field = *field_chosen;
+          m_model_parts->row_changed(Gtk::TreePath(iter), iter);
+        }
+      }
+    }
+  }
 }
 
 void Dialog_Layout_Report::on_button_edit()
@@ -702,11 +707,12 @@ void Dialog_Layout_Report::on_button_edit()
         sharedptr<LayoutItem_Field> field = sharedptr<LayoutItem_Field>::cast_dynamic(item);
         if(field)
         {
-          sharedptr<LayoutItem_Field> chosenitem = offer_field_list(field, m_table_name);
+          sharedptr<LayoutItem_Field> chosenitem = offer_field_list(field, m_table_name, this);
           if(chosenitem)
           {
             *field = *chosenitem; //TODO_Performance.
             m_model_parts->row_changed(Gtk::TreePath(iter), iter); //TODO: Add row_changed(iter) to gtkmm?
+            m_modified = true;
           }
         }
         else

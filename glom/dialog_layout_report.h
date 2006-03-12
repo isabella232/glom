@@ -67,7 +67,6 @@ protected:
   virtual void save_to_document();
 
   sharedptr<Relationship> offer_relationship_list();
-   sharedptr<LayoutItem_Field> offer_field_layout(const  sharedptr<LayoutItem_Field>& start_field);
   Gtk::TreeModel::iterator get_selected_group_parent() const;
 
   Gtk::TreeModel::iterator get_selected_available() const;
@@ -80,6 +79,7 @@ protected:
   virtual void on_button_delete();
 
   virtual void on_button_edit();
+  virtual void on_button_formatting();
 
   virtual void on_treeview_parts_selection_changed();
   virtual void on_treeview_available_parts_selection_changed();
@@ -97,6 +97,7 @@ protected:
   Gtk::Button* m_button_add;
   Gtk::Button* m_button_delete;
   Gtk::Button* m_button_edit;
+  Gtk::Button* m_button_formatting;
   Gtk::Label* m_label_table_name;
   Gtk::Entry* m_entry_name;
   Gtk::Entry* m_entry_title;
