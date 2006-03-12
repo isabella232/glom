@@ -1,5 +1,12 @@
 2006-03-12  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/data_structure/layout/layoutitem_field.cc:
+	* glom/mode_data/dialog_layout_details.cc: on_cell_data_name(): Move the code to 
+	create the field display name (with the :: separators) into LayoutItem_Field::get_display_name(), 
+	to avoid copy/paste wasteage and to make it show up properly in the Reports layout dialog.
+
+2006-03-12  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/combobox_relationship.cc: set_selected_relationship() Fix a crash caused by use of wrong 
 	iterator.
 	* glom/mode_data/dialog_choose_field.cc: set_document(): Specify the related_relationship if there is 

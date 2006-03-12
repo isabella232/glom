@@ -163,8 +163,12 @@ Glib::ustring LayoutItem_Field::get_layout_display_name() const
   else
     result = m_name;
 
+  //Indicate if it's a field in another table.
+  if(get_has_related_relationship_name())
+    result = get_related_relationship_name() + "::" + result;
+
   if(get_has_relationship_name())
-    result == get_relationship_name() + "::" + result;
+    result = get_relationship_name() + "::" + result;
 
   return result;
 }

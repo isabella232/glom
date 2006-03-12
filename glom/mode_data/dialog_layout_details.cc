@@ -1012,16 +1012,7 @@ void Dialog_Layout_Details::on_cell_data_name(Gtk::CellRenderer* renderer, const
           sharedptr<LayoutItem_Field> layout_item_field = sharedptr<LayoutItem_Field>::cast_dynamic(layout_item);
           if(layout_item_field)
           {
-            markup = _("Field: "); //TODO: Put this all in a sprintf-style string so it can be translated properly.
-
-            //Indicate if it's a field in another table.
-            if(layout_item_field->get_has_relationship_name())
-              markup += (layout_item_field->get_relationship_name() + "::");
-
-            if(layout_item_field->get_has_related_relationship_name())
-              markup += (layout_item_field->get_related_relationship_name() + "::");
-
-            markup += layout_item_field->get_name();
+            markup = _("Field: ") + layout_item_field->get_layout_display_name(); //TODO: Put this all in a sprintf-style string so it can be translated properly.
 
             //Just for debugging:
             //if(!row[m_model_items->m_columns.m_col_editable])
