@@ -1,9 +1,16 @@
+* View Layouts and Reports:
+  - Allow doubly-related fields. For instance, Actor::Agent::name on the Details of a 
+    a Character record.
+  - Add a Text layout part, for arbitrary text on the Details view, or reports.
 * Reports:
   - Allow top-level fields in reports, for non-grouped-by reports.
   - Allow use of Group By parts without specified group-by fields, so they 
     can be (mis)used just to specify a sort field for non-grouped-by records.
   - Allow adding of fields as siblings while selecting the field, instead of 
     requiring the user to select the parent group.
+  - Allow custom formatting of fields.
+  - Allow a border width to be specified for the records table cells.
+  - Added a horizontal line below group-by titles.
 
 0.9.8:
 
