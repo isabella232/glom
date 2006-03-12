@@ -70,10 +70,12 @@ void Dialog_ChooseField::set_document(Document_Glom* document, const Glib::ustri
   set_document(document, table_name);
 
   //Select the current relationship at the start:
-
   if(field && field->get_has_relationship_name())
   {
-    m_combo_relationship->set_selected_relationship( field->get_relationship() );
+    if(field->get_has_related_relationship_name())
+      m_checkbutton_show_related_relationships->set_active(true); //We'll need the full list of relationships to show this.
+
+    m_combo_relationship->set_selected_relationship( field->get_relationship(), field->get_related_relationship());
   }
   else
     m_combo_relationship->set_selected_parent_table(table_name, document->get_table_title(table_name)); 

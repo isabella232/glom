@@ -98,7 +98,7 @@ void ComboBox_Relationship::set_selected_relationship(const sharedptr<const Rela
 void ComboBox_Relationship::set_selected_relationship(const sharedptr<const Relationship>& relationship, const sharedptr<const Relationship>& related_relationship)
 {
   if(relationship)
-    set_selected_relationship(relationship->get_name());
+    set_selected_relationship(relationship->get_name(), glom_get_sharedptr_name(related_relationship));
   else
     set_selected_relationship(Glib::ustring());
 }
@@ -125,7 +125,7 @@ void ComboBox_Relationship::set_selected_relationship(const Glib::ustring& relat
         }
         else
         {
-          for(Gtk::TreeModel::iterator iterChildren = iter->children().begin(); iter != iter->children().end(); ++iter)
+          for(Gtk::TreeModel::iterator iterChildren = iter->children().begin(); iterChildren != iter->children().end(); ++iterChildren)
           {
             Gtk::TreeModel::Row row = *iterChildren;
             sharedptr<Relationship> relationship = row[m_model_columns.m_relationship];
@@ -294,8 +294,6 @@ void ComboBox_Relationship::set_display_parent_table(const Glib::ustring& table_
     row = *tree_iter;
     row[m_model_columns.m_relationship] = sharedptr<Relationship>(); //A marker for the parent table's item. See the on_data_* signal handlers.
     row[m_model_columns.m_separator] = false;
-
-   
   }
 }
 
