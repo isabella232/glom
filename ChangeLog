@@ -1,5 +1,36 @@
 2006-03-12  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/glom.glade:
+	* glom/combobox_relationship.cc:
+	* glom/combobox_relationship.h:
+	* glom/mode_data/dialog_choose_field.cc:
+	* glom/mode_data/dialog_choose_field.h: Optionally show related relationships, to 
+	allow specifying doubly-related fields.
+	* glom/data_structure/layout/layoutitem_field.cc:
+	* glom/data_structure/layout/layoutitem_field.h: Added get_is_same_field() to check the name, 
+	and both relationships easily.
+	* glom/utility_widgets/flowtablewithfields.cc: get_field(): Use get_is_same_field() 
+	to handle doubly-related fields.
+	* glom/data_structure/layout/usesrelationship.cc:
+	* glom/data_structure/layout/usesrelationship.h: Added get/set_related_relationship() 
+	and associated methods.
+	Added get_sql_join_alias_name() and get_sql_join_alias_definition(), moving SQL generation 
+	code from GlomUtils::build_sql_select_with_where_clause().
+	* glom/utils.cc: GlomUtils::build_sql_select_with_where_clause(): Simplify by using the 
+	UsesRelationships methods. This can now support doubly-related fields by creating aliases in 
+	terms of other aliases.
+	* glom/document/document_glom.cc:
+	* glom/document/document_glom.h: Load/Save the related_relationship. Load layouts after all other 
+	table information has been loaded for all tables, because the layouts need the full information.
+	* glom/data_structure/layout/fieldformatting.cc:
+	* glom/data_structure/layout/layoutgroup.cc:
+	* glom/data_structure/layout/layoutitem_portal.cc:
+	* glom/mode_data/dialog_layout_details.cc:
+	* glom/mode_data/dialog_layout_list.cc:
+	* glom/mode_data/box_data.cc: Update appropriately.
+
+2006-03-12  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/base_db.cc:
 	* glom/base_db.h:
 	* glom/layout_item_dialogs/dialog_field_summary.cc:

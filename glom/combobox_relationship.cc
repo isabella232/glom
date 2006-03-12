@@ -27,7 +27,7 @@ ComboBox_Relationship::ComboBox_Relationship(BaseObjectType* cobject, const Glib
   m_renderer_title(0),
   m_renderer_fromfield(0)
 {
-  m_model = Gtk::ListStore::create(m_model_columns);
+  m_model = Gtk::TreeStore::create(m_model_columns);
 
   set_model(m_model);
 
@@ -67,6 +67,26 @@ sharedptr<Relationship> ComboBox_Relationship::get_selected_relationship() const
     return sharedptr<Relationship>();
 }
 
+sharedptr<Relationship> ComboBox_Relationship::get_selected_relationship(sharedptr<Relationship>& related_relationship) const
+{
+  Gtk::TreeModel::iterator iter = get_active();
+  if(iter)
+  {
+    Gtk::TreeModel::Row row = *iter;
+    Gtk::TreeModel::iterator iterParent = row.parent();
+    if(iterParent)
+    {
+      //It's a related relationship:
+      related_relationship = row[m_model_columns.m_relationship];
+      return (*iterParent)[m_model_columns.m_relationship];
+    }
+    else
+      return row[m_model_columns.m_relationship];
+  }
+  else
+    return sharedptr<Relationship>();
+}
+
 void ComboBox_Relationship::set_selected_relationship(const sharedptr<const Relationship>& relationship)
 {
   if(relationship)
@@ -75,7 +95,15 @@ void ComboBox_Relationship::set_selected_relationship(const sharedptr<const Rela
     set_selected_relationship(Glib::ustring());
 }
 
-void ComboBox_Relationship::set_selected_relationship(const Glib::ustring& relationship_name)
+void ComboBox_Relationship::set_selected_relationship(const sharedptr<const Relationship>& relationship, const sharedptr<const Relationship>& related_relationship)
+{
+  if(relationship)
+    set_selected_relationship(relationship->get_name());
+  else
+    set_selected_relationship(Glib::ustring());
+}
+
+void ComboBox_Relationship::set_selected_relationship(const Glib::ustring& relationship_name, const Glib::ustring& related_relationship_name)
 {
   //Look for the row with this text, and activate it:
   Glib::RefPtr<Gtk::TreeModel> model = get_model();
@@ -90,8 +118,25 @@ void ComboBox_Relationship::set_selected_relationship(const Glib::ustring& relat
       //(An empty name means Select the parent table item.)
       if(this_name == relationship_name)
       {
-        set_active(iter);
-        return; //success
+        if(related_relationship_name.empty())
+        {
+           set_active(iter);
+           return; //success
+        }
+        else
+        {
+          for(Gtk::TreeModel::iterator iterChildren = iter->children().begin(); iter != iter->children().end(); ++iter)
+          {
+            Gtk::TreeModel::Row row = *iterChildren;
+            sharedptr<Relationship> relationship = row[m_model_columns.m_relationship];
+            const Glib::ustring this_name = glom_get_sharedptr_name(relationship);
+            if(this_name == related_relationship_name)
+            {
+              set_active(iterChildren);
+              return; //success
+            }
+          }
+        }
       }
     }
   }
@@ -102,6 +147,44 @@ void ComboBox_Relationship::set_selected_relationship(const Glib::ustring& relat
   //Avoid calling unset_active() if nothing is selected, because it triggers the changed signal unnecessarily.
   if(get_active()) //If something is active (selected).
     unset_active();
+}
+
+void ComboBox_Relationship::set_relationships(Document_Glom* document, const Glib::ustring parent_table_name, bool show_related_relationships)
+{
+  if(!document)
+    return;
+
+  const Document_Glom::type_vecRelationships relationships = document->get_relationships(parent_table_name, true /* plus system properties */);
+
+  m_model->clear();
+
+  set_display_parent_table(parent_table_name, document->get_table_title(parent_table_name));
+
+  //Fill the model:
+  for(type_vecRelationships::const_iterator iter = relationships.begin(); iter != relationships.end(); ++iter)
+  {
+    Gtk::TreeModel::iterator tree_iter = m_model->append();
+    Gtk::TreeModel::Row row = *tree_iter;
+
+    sharedptr<Relationship> rel = *iter;
+    row[m_model_columns.m_relationship] = rel;
+    row[m_model_columns.m_separator] = false;
+
+    //Children:
+    if(show_related_relationships && !Document_Glom::get_relationship_is_system_properties(rel))
+    {
+      const Document_Glom::type_vecRelationships sub_relationships = document->get_relationships(rel->get_to_table(), false /* plus system properties */);
+      for(type_vecRelationships::const_iterator iter = sub_relationships.begin(); iter != sub_relationships.end(); ++iter)
+      {
+        Gtk::TreeModel::iterator tree_iter_child = m_model->append(tree_iter->children());
+        Gtk::TreeModel::Row row = *tree_iter_child;
+
+        sharedptr<Relationship> rel = *iter;
+        row[m_model_columns.m_relationship] = rel;
+        row[m_model_columns.m_separator] = false;
+      }
+    }
+  }
 }
 
 void ComboBox_Relationship::set_relationships(const type_vecRelationships& relationships, const Glib::ustring& parent_table_name, const Glib::ustring& parent_table_title)
@@ -138,7 +221,18 @@ void ComboBox_Relationship::on_cell_data_title(const Gtk::TreeModel::const_itera
   Gtk::TreeModel::Row row = *iter;
   sharedptr<Relationship> relationship = row[m_model_columns.m_relationship];
   if(relationship)
-    m_renderer_title->property_text() = relationship->get_title_or_name();
+  {
+    Gtk::TreeModel::iterator iterParent = row->parent();
+    if(iterParent)
+    {
+      //related relationship:
+      sharedptr<Relationship> parent_relationship = (*iterParent)[m_model_columns.m_relationship];
+      if(relationship)
+        m_renderer_title->property_text() = parent_relationship->get_title_or_name() + "::" + relationship->get_title_or_name();
+    }
+    else
+      m_renderer_title->property_text() = relationship->get_title_or_name();
+  }
   else if(get_has_parent_table())
   {
     m_renderer_title->property_text() = (m_extra_table_title.empty() ? m_extra_table_name : m_extra_table_title);
@@ -161,7 +255,19 @@ void ComboBox_Relationship::on_cell_data_fromfield(const Gtk::TreeModel::const_i
   Gtk::TreeModel::Row row = *iter;
   sharedptr<Relationship> relationship = row[m_model_columns.m_relationship];
   if(relationship && relationship->get_has_fields())
-    m_renderer_fromfield->property_text() = _("Triggered by: ") + relationship->get_to_field();
+  {
+    Gtk::TreeModel::iterator iterParent = iter->parent();
+    if(iterParent)
+    {
+      sharedptr<Relationship> parent_relationship = (*iterParent)[m_model_columns.m_relationship];
+      if(parent_relationship)
+        m_renderer_fromfield->property_text() = _(" Via: ") + parent_relationship->get_title() + "::" + relationship->get_from_field();
+    }
+    else
+    {
+      m_renderer_fromfield->property_text() = _(" Via: ") + relationship->get_to_field();
+    }
+  }
   else
     m_renderer_fromfield->property_text() = Glib::ustring();
 }

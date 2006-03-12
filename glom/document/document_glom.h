@@ -241,10 +241,13 @@ public:
 
   virtual void emit_userlevel_changed();
 
-  static sharedptr<TableInfo> Document_Glom::create_table_system_preferences(type_vecFields& fields);
+  static sharedptr<TableInfo> create_table_system_preferences(type_vecFields& fields);
+  static bool get_relationship_is_system_properties(const sharedptr<const Relationship>& relationship);
 
   static void set_node_attribute_value_as_decimal(xmlpp::Element* node, const Glib::ustring& strAttributeName, int value);
   static void set_node_attribute_value_as_decimal_double(xmlpp::Element* node, const Glib::ustring& strAttributeName, double value);
+
+
 
 protected:
 

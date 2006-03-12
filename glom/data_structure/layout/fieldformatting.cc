@@ -157,11 +157,7 @@ void FieldFormatting::set_choices(const sharedptr<Relationship>& relationship, c
 void FieldFormatting::change_field_name(const Glib::ustring& table_name, const Glib::ustring& field_name, const Glib::ustring& field_name_new)
 {
   //Update choices:
-  sharedptr<Relationship> relationship = get_relationship();
-  if(!relationship)
-    return;
-
-  if(relationship->get_to_table() == table_name)
+  if(get_has_relationship_name() && get_table_used(Glib::ustring()) == table_name)
   {
     if(m_choices_related_field == field_name)
        m_choices_related_field = field_name_new;

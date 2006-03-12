@@ -33,6 +33,45 @@
 #include <iostream>   // for cout, endl
 #include <iomanip>
 
+template<class T_Element>
+class predicate_UsesRelationshipHasRelationships
+{
+public:
+  predicate_UsesRelationshipHasRelationships(const Glib::ustring& relationship_name, const Glib::ustring& related_relationship_name = Glib::ustring())
+  : m_relationship_name(relationship_name),
+    m_related_relationship_name(related_relationship_name)
+  {
+  }
+
+  predicate_UsesRelationshipHasRelationships(const sharedptr<const UsesRelationship> uses_relationship_name)
+  : m_relationship_name(uses_relationship_name->get_relationship_name()),
+    m_related_relationship_name(uses_relationship_name->get_related_relationship_name())
+  {
+  }
+
+  virtual ~predicate_UsesRelationshipHasRelationships()
+  {
+  }
+
+  bool operator() (const T_Element& element)
+  {
+    return (element.get_relationship_name() == m_relationship_name) && (element.get_related_relationship_name() == m_related_relationship_name);
+  }
+
+  bool operator() (const sharedptr<T_Element>& element)
+  {
+    return (element->get_relationship_name() == m_relationship_name) && (element->get_related_relationship_name() == m_related_relationship_name);
+  }
+
+  bool operator() (const sharedptr<const T_Element>& element)
+  {
+    return (element->get_relationship_name() == m_relationship_name) && (element->get_related_relationship_name() == m_related_relationship_name);
+  }
+
+protected:
+  Glib::ustring m_relationship_name, m_related_relationship_name;
+};
+
 
 Glib::ustring GlomUtils::trim_whitespace(const Glib::ustring& text)
 {
@@ -135,7 +174,7 @@ Glib::ustring GlomUtils::build_sql_select_with_where_clause(const Glib::ustring&
   Glib::ustring sql_part_fields;
   Glib::ustring sql_part_from;
 
-  typedef std::list< sharedptr<const Relationship> > type_list_relationships;
+  typedef std::list< sharedptr<const UsesRelationship> > type_list_relationships;
   type_list_relationships list_relationships;
 
 
@@ -160,25 +199,13 @@ Glib::ustring GlomUtils::build_sql_select_with_where_clause(const Glib::ustring&
     }
     else
     {
-      sharedptr<const Relationship> relationship = layout_item->get_relationship();
-      const Glib::ustring relationship_name = relationship->get_name();
-      if(relationship->get_has_fields()) //relationships that link to tables together via a field
-      {
-        /*
-        const Glib::ustring field_table_name = relationship->get_to_table();
-        if(field_table_name.empty())
-        {
-          g_warning("build_sql_select_with_where_clause(): field_table_name is null. relationship name = %s", relationship->get_name().c_str());
-        }
-        */
-
-        //We use relationship_name.field_name instead of related_table_name.field_name,
-        //because, in the JOIN below, will specify the relationship_name as an alias for the related table name
-        one_sql_part += ( "relationship_" + relationship_name + "." );
-      }
+      const Glib::ustring relationship_alias_name = layout_item->get_sql_join_alias_name();
+      if(!relationship_alias_name.empty())
+        one_sql_part += (relationship_alias_name + "." );
       else
       {
-        const Glib::ustring to_table_name = relationship->get_to_table();
+        //Non-linked-fields relationship:
+        const Glib::ustring to_table_name = layout_item->get_table_used(table_name);
         if(!to_table_name.empty()) //Relationships that just specify a table.
         {
           one_sql_part += ( "\"" + to_table_name + "\"." );
@@ -186,10 +213,13 @@ Glib::ustring GlomUtils::build_sql_select_with_where_clause(const Glib::ustring&
       }
 
       //Add the relationship to the list:
-      type_list_relationships::const_iterator iterFind = std::find_if(list_relationships.begin(), list_relationships.end(), predicate_FieldHasName<Relationship>( relationship_name ) );
+      type_list_relationships::const_iterator iterFind = std::find_if(list_relationships.begin(), list_relationships.end(), predicate_UsesRelationshipHasRelationships<UsesRelationship>(layout_item) );
       if(iterFind == list_relationships.end()) //If the table is not yet in the list:
       {
-        list_relationships.push_back(relationship);
+        sharedptr<UsesRelationship> uses_rel = sharedptr<UsesRelationship>::create();
+        uses_rel->set_relationship(layout_item->get_relationship());
+        uses_rel->set_related_relationship(layout_item->get_related_relationship());
+        list_relationships.push_back(uses_rel);
       }
     }
 
@@ -229,14 +259,11 @@ Glib::ustring GlomUtils::build_sql_select_with_where_clause(const Glib::ustring&
   Glib::ustring sql_part_leftouterjoin; 
   for(type_list_relationships::const_iterator iter = list_relationships.begin(); iter != list_relationships.end(); ++iter)
   {
-    sharedptr<const Relationship> relationship = *iter;
-    if(relationship->get_has_fields())
+    sharedptr<const UsesRelationship> uses_relationship = *iter;
+    sharedptr<const Relationship> relationship = uses_relationship->get_relationship();
+    if(relationship->get_has_fields()) //TODO: Handle related_record has_fields.
     {
-      sql_part_leftouterjoin += " LEFT OUTER JOIN \"" + relationship->get_to_table() + "\"" + 
-        " AS relationship_" + relationship->get_name() + //Specify an alias, to avoid ambiguity when using 2 relationships to the same table.
-        " ON (\"" + relationship->get_from_table() + "\".\"" + relationship->get_from_field() + "\" = relationship_" +
-        relationship->get_name() + ".\"" + relationship->get_to_field() + "\"" + 
-        ")";
+      sql_part_leftouterjoin += uses_relationship->get_sql_join_alias_definition();
     }
     else if(relationship->get_has_to_table())
     {

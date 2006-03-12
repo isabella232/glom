@@ -1390,34 +1390,9 @@ sharedptr<LayoutItem_Text> Base_DB::offer_textobject(const sharedptr<LayoutItem_
 
 void Base_DB::fill_full_field_details(const Glib::ustring& parent_table_name, sharedptr<LayoutItem_Field>& layout_item)
 {
-  Glib::ustring table_name = parent_table_name;
-
-  //It might be a related field:
-  if(layout_item->get_has_relationship_name())
-  {
-    sharedptr<const Relationship> rel = layout_item->get_relationship();;
-    table_name = rel->get_to_table();
-  }
+  const Glib::ustring table_name = layout_item->get_table_used(parent_table_name);
 
   layout_item->set_full_field_details( get_document()->get_field(table_name, layout_item->get_name()) );
-}
-
-Glib::ustring Base_DB::get_layout_item_table_name(const sharedptr<const LayoutItem_Field>& layout_item, const Glib::ustring& table_name)
-{
-  if(!layout_item->get_has_relationship_name())
-    return table_name;
-  else
-  {
-    const Glib::ustring relationship_name = layout_item->get_relationship_name();
-
-    //TODO: We should not need to do this. It should be updated in the LayoutItem_Field already.
-    Document_Glom* document = get_document();
-    sharedptr<Relationship> relationship = document->get_relationship(table_name, relationship_name);
-    if(relationship)
-      return relationship->get_to_table();
-  }
-
-  return Glib::ustring();
 }
 
 void Base_DB::report_build_summary(const Glib::ustring& table_name, xmlpp::Element& parent_node, const sharedptr<LayoutItem_Summary>& summary, const Glib::ustring& where_clause)
@@ -1508,7 +1483,7 @@ void Base_DB::report_build_groupby(const Glib::ustring& table_name, xmlpp::Eleme
     fill_full_field_details(table_name, field_group_by);
 
     //Get the possible group values, ignoring repeats by using GROUP BY.
-    const Glib::ustring group_field_table_name = get_layout_item_table_name(field_group_by, table_name);
+    const Glib::ustring group_field_table_name = field_group_by->get_table_used(table_name);
     Glib::ustring sql_query = "SELECT \"" + group_field_table_name + "\".\"" + field_group_by->get_name() + "\""
       " FROM \"" + group_field_table_name + "\"";
 
@@ -1905,7 +1880,7 @@ void Base_DB::get_table_fields_to_show_for_sequence_add_group(const Glib::ustrin
 
 
             //TODO_Performance: We do this once for each related field, even if there are 2 from the same table:
-            const Privileges privs_related = get_current_privs(relationship->get_to_table());
+            const Privileges privs_related = get_current_privs(item_field->get_table_used(table_name));
             layout_item->m_priv_view = privs_related.m_view;
             layout_item->m_priv_edit = privs_related.m_edit;
 

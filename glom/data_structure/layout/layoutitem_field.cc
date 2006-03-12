@@ -251,7 +251,12 @@ void LayoutItem_Field::set_title_custom(const sharedptr<CustomTitle>& title)
   m_title_custom = title;
 }
 
-
+bool LayoutItem_Field::is_same_field(const sharedptr<const LayoutItem_Field>& field) const
+{
+  return (get_name() == field->get_name()) &&
+         (get_relationship_name() == field->get_relationship_name()) &&
+         (get_related_relationship_name() == field->get_related_relationship_name());
+}
 
 
 

@@ -69,17 +69,10 @@ void LayoutItem_Portal::change_field_item_name(const Glib::ustring& table_name, 
     sharedptr<LayoutItem_Field> field_item = sharedptr<LayoutItem_Field>::cast_dynamic(item);
     if(field_item)
     {
-      if(field_item->get_has_relationship_name()) //If it's a related table (this would be a self-relationship)
+      if(field_item->get_table_used(Glib::ustring()) == table_name) //If it's a related table (this would be a self-relationship)
       {
-        sharedptr<const Relationship> rel = field_item->get_relationship();
-        if(rel)
-        {
-          if(rel->get_to_table() == table_name)
-          {
-            if(field_item->get_name() == field_name)
-              field_item->set_name(field_name_new); //Change it.
-          }
-        }
+        if(field_item->get_name() == field_name)
+          field_item->set_name(field_name_new); //Change it.
       }
       else
       {

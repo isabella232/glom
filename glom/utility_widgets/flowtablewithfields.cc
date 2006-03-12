@@ -17,7 +17,7 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
- 
+
 #include "flowtablewithfields.h"
 #include "datawidget.h"
 #include "buttonglom.h"
@@ -489,11 +489,9 @@ FlowTableWithFields::type_list_const_widgets FlowTableWithFields::get_field(cons
 {
   type_list_const_widgets result;
 
-  const Glib::ustring layout_item_name = layout_item->get_name();
-  const Glib::ustring layout_item_relationship_name = layout_item->get_relationship_name();
   for(type_listFields::const_iterator iter = m_listFields.begin(); iter != m_listFields.end(); ++iter)
   {
-    if( (iter->m_field->get_name() == layout_item_name) && (iter->m_field->get_relationship_name() == layout_item_relationship_name) )
+    if( (iter->m_field->is_same_field(layout_item)) )
     {
       const Info& info = *iter;
       if(info.m_checkbutton)
@@ -526,11 +524,9 @@ FlowTableWithFields::type_list_widgets FlowTableWithFields::get_field(const shar
   //TODO: Avoid duplication
   type_list_widgets result;
 
-  const Glib::ustring layout_item_name = layout_item->get_name();
-  const Glib::ustring layout_item_relationship_name = layout_item->get_relationship_name();
   for(type_listFields::const_iterator iter = m_listFields.begin(); iter != m_listFields.end(); ++iter)
   {
-    if( (iter->m_field->get_name() == layout_item_name) && (iter->m_field->get_relationship_name() == layout_item_relationship_name) )
+    if( (iter->m_field->is_same_field(layout_item)) )
     {
       const Info& info = *iter;
       if(info.m_checkbutton)
@@ -845,6 +841,8 @@ void FlowTableWithFields::on_portal_record_changed(const Glib::ustring& relation
 
 void FlowTableWithFields::on_flowtable_related_record_changed(const Glib::ustring& relationship_name)
 {
+  //TODO_DoublyRelated
+
   //Forward it to the parent:
   signal_related_record_changed().emit(relationship_name);
 }

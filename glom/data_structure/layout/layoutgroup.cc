@@ -268,20 +268,13 @@ void LayoutGroup::remove_field(const Glib::ustring& table_name, const Glib::ustr
     sharedptr<LayoutItem_Field> field_item = sharedptr<LayoutItem_Field>::cast_dynamic(item);
     if(field_item)
     {
-      if(field_item->get_has_relationship_name()) //If it's related table.
+      if(field_item->get_table_used(Glib::ustring()) == table_name)
       {
-        sharedptr<const Relationship> relationship = field_item->get_relationship();
-        if(relationship)
+        if(field_item->get_name() == field_name)
         {
-          if(relationship->get_to_table() == table_name)
-          {
-            if(field_item->get_name() == field_name)
-            {
-              m_map_items.erase(iterItem);
-              iterItem = m_map_items.begin(); //Start again, because we changed the container.AddDel 
-              continue;
-            }
-          }
+          m_map_items.erase(iterItem);
+          iterItem = m_map_items.begin(); //Start again, because we changed the container.AddDel 
+          continue;
         }
       }
     }

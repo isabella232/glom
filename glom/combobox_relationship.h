@@ -24,9 +24,10 @@
 #include <gtkmm/combobox.h>
 #include <libglademm.h>
 #include "data_structure/relationship.h"
+#include "document/document_glom.h"
 #include "sharedptr.h"
 
-#include <gtkmm/liststore.h>
+#include <gtkmm/treestore.h>
 
 
 class ComboBox_Relationship : public Gtk::ComboBox
@@ -38,9 +39,13 @@ public:
   typedef std::vector< sharedptr<Relationship> > type_vecRelationships;
   void set_relationships(const type_vecRelationships& relationships, const Glib::ustring& parent_table_name = Glib::ustring(), const Glib::ustring& parent_table_title = Glib::ustring());
 
+  void set_relationships(Document_Glom* document, const Glib::ustring parent_table_name, bool show_related_relationships = false);
+
   void set_selected_relationship(const sharedptr<const Relationship>& relationship);
-  void set_selected_relationship(const Glib::ustring& name);
+  void set_selected_relationship(const sharedptr<const Relationship>& relationship, const sharedptr<const Relationship>& related_relationship);
+  void set_selected_relationship(const Glib::ustring& name, const Glib::ustring& related_relationship_name = Glib::ustring());
   sharedptr<Relationship> get_selected_relationship() const;
+  sharedptr<Relationship> get_selected_relationship(sharedptr<Relationship>& related_relatioship) const;
 
   //Sometimes we want to show the parent table as an option too, instead of just relationships:
 
@@ -72,7 +77,7 @@ protected:
   };
 
   ModelColumns m_model_columns;
-  Glib::RefPtr<Gtk::ListStore> m_model;
+  Glib::RefPtr<Gtk::TreeStore> m_model;
 
   //Gtk::CellRendererText* m_renderer_name;
   Gtk::CellRendererText* m_renderer_title;

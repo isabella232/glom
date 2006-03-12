@@ -632,7 +632,7 @@ bool Box_Data::get_related_record_exists(const sharedptr<const Relationship>& re
 
   //TODO_Performance: It's very possible that this is slow.
   //We don't care how many records there are, only whether there are more than zero.
-  const Glib::ustring to_field = relationship->get_to_table() = relationship->get_to_field();
+  const Glib::ustring to_field = relationship->get_to_field();
 
   //TODO_Performance: Is this the best way to just find out whether there is one record that meets this criteria?
   const Glib::ustring query = "SELECT \"" + to_field + "\" FROM \"" + relationship->get_to_table() + "\" WHERE \"" + to_field + "\" = " + key_field->sql(key_value);

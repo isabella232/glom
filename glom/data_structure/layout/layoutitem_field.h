@@ -87,6 +87,10 @@ public:
 
   const FieldFormatting& get_formatting_used() const;
 
+  /** Compare the name, relationship, and related_relationship.
+   */
+  bool is_same_field(const sharedptr<const LayoutItem_Field>& field) const;
+
 protected:
 
   //This is just a cache, filled in by looking at the database structure:

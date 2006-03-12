@@ -53,6 +53,7 @@ protected:
   virtual void on_row_activated(const Gtk::TreePath& path, Gtk::TreeViewColumn* view_column);
   virtual void on_treeview_selection_changed();
   virtual void on_combo_relationship_changed();
+  virtual void on_checkbutton_related_relationships_toggled();
 
   //Tree model columns:
   class ModelColumns_Fields : public Gtk::TreeModel::ColumnRecord
@@ -71,7 +72,7 @@ protected:
 
   ComboBox_Relationship* m_combo_relationship;
   Gtk::Button* m_button_select;
-  Gtk::CheckButton* m_checkbutton_editable;
+  Gtk::CheckButton* m_checkbutton_show_related_relationships;
   Gtk::TreeView* m_treeview;
   Glib::RefPtr<Gtk::ListStore> m_model;
 

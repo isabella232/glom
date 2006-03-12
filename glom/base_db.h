@@ -93,9 +93,6 @@ protected:
 
   void fill_full_field_details(const Glib::ustring& parent_table_name, sharedptr<LayoutItem_Field>& layout_item);
 
-  ///Get the table name. It's either the current table or the relationship's to_table:
-  Glib::ustring get_layout_item_table_name(const sharedptr<const LayoutItem_Field>& layout_item, const Glib::ustring& table_name);
-
   typedef std::vector<Glib::ustring> type_vecStrings;
   type_vecStrings get_table_names(bool ignore_system_tables = false) const;
 
@@ -128,22 +125,33 @@ protected:
     : m_key_value(key_value)
     {
       m_field = layout_item->get_full_field_details();
+      m_table_name = layout_item->get_table_used(parent_table_name);
 
+      //The key:
       if(layout_item->get_has_relationship_name())
       {
         //The field is in a related table.
         sharedptr<const Relationship> rel = layout_item->get_relationship();
         if(rel)
         {
-          m_table_name = rel->get_to_table();
-
-          //Actually a foreign key:
-          m_key = document.get_field(m_table_name, rel->get_to_field());
+          if(layout_item->get_has_related_relationship_name()) //For doubly-related fields
+          {
+            sharedptr<const Relationship> rel = layout_item->get_related_relationship();
+            if(rel)
+            {
+              //Actually a foreign key in a doubly-related table:
+              m_key = document.get_field(m_table_name, rel->get_to_field());
+            }
+          }
+          else
+          {
+            //Actually a foreign key:
+            m_key = document.get_field(m_table_name, rel->get_to_field());
+          }
         }
       }
       else
       {
-        m_table_name = parent_table_name;
         m_key = parent_key;
       }
     }

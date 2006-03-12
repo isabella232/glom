@@ -1013,11 +1013,13 @@ void Dialog_Layout_Details::on_cell_data_name(Gtk::CellRenderer* renderer, const
           if(layout_item_field)
           {
             markup = _("Field: "); //TODO: Put this all in a sprintf-style string so it can be translated properly.
+
             //Indicate if it's a field in another table.
-            sharedptr<Relationship> relationship = layout_item_field->get_relationship();
-            const Glib::ustring relationship_name = glom_get_sharedptr_name(relationship);
-            if(!(relationship_name.empty()))
-              markup += (relationship_name + "::");
+            if(layout_item_field->get_has_relationship_name())
+              markup += (layout_item_field->get_relationship_name() + "::");
+
+            if(layout_item_field->get_has_related_relationship_name())
+              markup += (layout_item_field->get_related_relationship_name() + "::");
 
             markup += layout_item_field->get_name();
 

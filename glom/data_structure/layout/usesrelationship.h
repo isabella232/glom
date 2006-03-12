@@ -41,18 +41,34 @@ public:
   bool operator==(const UsesRelationship& src) const;
 
   bool get_has_relationship_name() const;
+  bool get_has_related_relationship_name() const;
 
   /** Convenience function, equivalent to get_relationship()->get_name().
    */
   Glib::ustring get_relationship_name() const;
 
+  /** Convenience function, equivalent to get_relationship()->get_name().
+   */
+  Glib::ustring get_related_relationship_name() const;
+
   sharedptr<Relationship> get_relationship() const;
   void set_relationship(const sharedptr<Relationship>& relationship);
+
+  sharedptr<Relationship> get_related_relationship() const;
+  void set_related_relationship(const sharedptr<Relationship>& relationship);
+
+  /** Returns either the @a parent_table, related to table, or doubly-related to-table.
+   */
+  Glib::ustring get_table_used(const Glib::ustring& parent_table) const;
+
+  Glib::ustring get_sql_join_alias_name() const;
+  Glib::ustring get_sql_join_alias_definition() const;
 
 protected:
 
   //This is just cached data, so we don't need to always lookup the relationship details from the document, from the name.
   sharedptr<Relationship> m_relationship;
+  sharedptr<Relationship> m_related_relationship; //Rarely used. It is for showing fields from the (related) relationships of related tables.
 
 };
 

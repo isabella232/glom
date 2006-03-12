@@ -26,9 +26,14 @@ Dialog_ChooseField::Dialog_ChooseField(BaseObjectType* cobject, const Glib::RefP
 : Gtk::Dialog(cobject),
   m_combo_relationship(0),
   m_button_select(0),
+  m_checkbutton_show_related_relationships(0),
   m_treeview(0),
   m_document(0)
 {
+  refGlade->get_widget("checkbutton_show_related_relationships", m_checkbutton_show_related_relationships);
+  m_checkbutton_show_related_relationships->set_active(false); //Start with the simpler list, to avoid confusing people.
+  m_checkbutton_show_related_relationships->signal_toggled().connect(sigc::mem_fun(*this, &Dialog_ChooseField::on_checkbutton_related_relationships_toggled));
+
   refGlade->get_widget("button_select", m_button_select);
   refGlade->get_widget_derived("combobox_relationship", m_combo_relationship);
   m_combo_relationship->signal_changed().connect(sigc::mem_fun(*this, &Dialog_ChooseField::on_combo_relationship_changed));
@@ -118,14 +123,13 @@ void Dialog_ChooseField::set_document(Document_Glom* document, const Glib::ustri
   if(document)
   {
     //Fill the list of relationships:
-    const Document_Glom::type_vecRelationships vecRelationships = document->get_relationships(table_name, true /* plus system properties */);
 
     //Add a special option for the current table:
     m_combo_relationship->set_display_parent_table(table_name, document->get_table_title(table_name));
 
     //Add the relationships for this table:
     const Glib::ustring table_title = document->get_table_title(table_name);
-    m_combo_relationship->set_relationships(vecRelationships, table_name, table_title);
+    m_combo_relationship->set_relationships(document, table_name, false /* show related relationships */);
 
     //Set the table name and title:
     m_combo_relationship->set_selected_parent_table(table_name, table_title);
@@ -186,11 +190,13 @@ sharedptr<LayoutItem_Field> Dialog_ChooseField::get_field_chosen() const
 
       //Relationship:
       //Note that a null relationship means that the parent table was selected instead.
-      sharedptr<Relationship> relationship = m_combo_relationship->get_selected_relationship();
+      sharedptr<Relationship> related_relationship;
+      sharedptr<Relationship> relationship = m_combo_relationship->get_selected_relationship(related_relationship);
 
       //field.set_relationship_name(relationship_name);
 
       field->set_relationship(relationship);
+      field->set_related_relationship(related_relationship);
 
 
       Gtk::TreeModel::Row row = *iter;
@@ -206,6 +212,23 @@ sharedptr<LayoutItem_Field> Dialog_ChooseField::get_field_chosen() const
 void Dialog_ChooseField::on_row_activated(const Gtk::TreePath& /* path */, Gtk::TreeViewColumn* /* view_column */)
 {
   response(Gtk::RESPONSE_OK);
+}
+
+void Dialog_ChooseField::on_checkbutton_related_relationships_toggled()
+{
+  if(!m_document)
+    return;
+
+  const bool show_related_relationships = m_checkbutton_show_related_relationships->get_active();
+
+  //Preserve the selection:
+  sharedptr<Relationship> related_relationship;
+  sharedptr<Relationship> relationship = m_combo_relationship->get_selected_relationship(related_relationship);
+
+  //Refresh the list, hiding or showing the child relationships:
+  m_combo_relationship->set_relationships(m_document, m_table_name, show_related_relationships);
+
+  m_combo_relationship->set_selected_relationship(relationship, related_relationship);
 }
 
 void Dialog_ChooseField::on_combo_relationship_changed()

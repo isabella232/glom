@@ -350,6 +350,9 @@ void Dialog_Layout_List::on_cell_data_name(Gtk::CellRenderer* renderer, const Gt
       if(item->get_has_relationship_name())
         markup = item->get_relationship_name() + "::";
 
+      if(item->get_has_related_relationship_name())
+        markup += item->get_related_relationship_name() + "::";
+
       markup += item->get_name();
 
       renderer_text->property_markup() = markup;

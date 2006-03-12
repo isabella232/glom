@@ -100,6 +100,7 @@
 
 
 #define GLOM_ATTRIBUTE_RELATIONSHIP_NAME "relationship"
+#define GLOM_ATTRIBUTE_RELATED_RELATIONSHIP_NAME "related_relationship"
 
 #define GLOM_NODE_REPORTS "reports"
 #define GLOM_NODE_REPORT "report"
@@ -311,6 +312,11 @@ sharedptr<TableInfo> Document_Glom::create_table_system_preferences(type_vecFiel
   fields.push_back(field_org_address_postcode);
 
   return prefs_table_info;
+}
+
+bool Document_Glom::get_relationship_is_system_properties(const sharedptr<const Relationship>& relationship)
+{
+  return relationship->get_name() == GLOM_RELATIONSHIP_NAME_SYSTEM_PROPERTIES;
 }
 
 sharedptr<Relationship> Document_Glom::get_relationship(const Glib::ustring& table_name, const Glib::ustring& relationship_name) const
@@ -971,16 +977,13 @@ void Document_Glom::fill_layout_field_details(const Glib::ustring& parent_table_
     sharedptr<LayoutItem_Field> layout_field = sharedptr<LayoutItem_Field>::cast_dynamic(layout_item);
     if(layout_field)
     {
-      if(layout_field->get_has_relationship_name()) //If it is a related field, instead of a field in parent_table_name
-        layout_field->set_full_field_details( get_field(layout_field->get_relationship()->get_to_table(), layout_field->get_name()) );
-      else
-        layout_field->set_full_field_details( get_field(parent_table_name, layout_field->get_name()) );
+      layout_field->set_full_field_details( get_field(layout_field->get_table_used(parent_table_name), layout_field->get_name()) );
     }
     else
     {
       sharedptr<LayoutItem_Portal> layout_portal_child = sharedptr<LayoutItem_Portal>::cast_dynamic(layout_item);
       if(layout_portal_child)
-        fill_layout_field_details(layout_portal_child->get_relationship()->get_to_table(), layout_portal_child); //recurse
+        fill_layout_field_details(layout_portal_child->get_table_used(parent_table_name), layout_portal_child); //recurse
       else
       {
         sharedptr<LayoutGroup> layout_group_child = sharedptr<LayoutGroup>::cast_dynamic(layout_item);
@@ -1428,7 +1431,18 @@ void Document_Glom::load_after_layout_item_field(const xmlpp::Element* element, 
   item->set_name(name);
 
   const Glib::ustring relationship_name = get_node_attribute_value(element, GLOM_ATTRIBUTE_RELATIONSHIP_NAME);
-  item->set_relationship( get_relationship(table_name, relationship_name) ); 
+  sharedptr<Relationship> relationship = get_relationship(table_name, relationship_name);
+  item->set_relationship(relationship); 
+
+  const Glib::ustring related_relationship_name = get_node_attribute_value(element, GLOM_ATTRIBUTE_RELATED_RELATIONSHIP_NAME);
+  if(!related_relationship_name.empty() && relationship)
+  {
+    sharedptr<Relationship> related_relationship = get_relationship(relationship->get_to_table(), related_relationship_name);
+    if(!related_relationship)
+      std::cerr << "Document_Glom::load_after_layout_item_field(): related relationship not found in table=" << relationship->get_to_table() << ",  name=" << related_relationship_name << std::endl;
+
+    item->set_related_relationship(related_relationship); 
+  }
 
   item->set_editable( get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_EDITABLE) );
 
@@ -1543,12 +1557,7 @@ void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Gl
         sharedptr<Relationship> relationship = get_relationship(table_name, relationship_name);
         portal->set_relationship(relationship);
 
-        //Recurse:
-        Glib::ustring related_table_name = table_name;
-        if(relationship)
-          related_table_name = relationship->get_to_table();
-
-        load_after_layout_group(element, related_table_name, portal);
+        load_after_layout_group(element, portal->get_table_used(table_name), portal);
         group->add_item(portal);
       }
       else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_ITEM_GROUPBY)
@@ -1771,7 +1780,20 @@ bool Document_Glom::load_after()
                 doctableinfo.m_fields.push_back(field);
               }
             }
-          }
+          } //Fields
+        } //if(table)
+      } //Tables.
+
+      //Look at each "table" node.
+      //We do load the layouts separately, because we needed to load all the tables' relationships and tables 
+      //before we can load layouts that can use them.
+      for(xmlpp::Node::NodeList::const_iterator iter = listNodes.begin(); iter != listNodes.end(); iter++)
+      {
+        xmlpp::Element* nodeTable = dynamic_cast<xmlpp::Element*>(*iter);
+        if(nodeTable)
+        {
+          const Glib::ustring table_name = get_node_attribute_value(nodeTable, GLOM_ATTRIBUTE_NAME);
+          DocumentTableInfo& doctableinfo = m_tables[table_name]; //Setting stuff directly in the reference is more efficient than copying it later:
 
           //Layouts:
           const xmlpp::Element* nodeDataLayouts = get_node_child_named(nodeTable, GLOM_NODE_DATA_LAYOUTS);
@@ -1964,8 +1986,9 @@ void Document_Glom::save_before_layout_item_field(xmlpp::Element* nodeItem, cons
   if(!field)
     return;
 
-  nodeItem->set_attribute(GLOM_ATTRIBUTE_NAME, field->get_name());
-  nodeItem->set_attribute(GLOM_ATTRIBUTE_RELATIONSHIP_NAME, field->get_relationship_name());
+  set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_NAME, field->get_name());
+  set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_RELATIONSHIP_NAME, field->get_relationship_name());
+  set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_RELATED_RELATIONSHIP_NAME, field->get_related_relationship_name());
   set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_EDITABLE, field->get_editable());
 
   xmlpp::Element* elementFormat = nodeItem->add_child(GLOM_NODE_FORMAT);
