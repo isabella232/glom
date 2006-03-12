@@ -96,6 +96,7 @@
 #define GLOM_ATTRIBUTE_EDITABLE "editable"
 #define GLOM_ATTRIBUTE_EXAMPLE_ROWS "example_rows"
 #define GLOM_ATTRIBUTE_BUTTON_SCRIPT "script"
+#define GLOM_ATTRIBUTE_SORT_ASCENDING "sort_ascending"
 
 
 
@@ -105,7 +106,7 @@
 #define GLOM_NODE_REPORTS "reports"
 #define GLOM_NODE_REPORT "report"
 #define GLOM_ATTRIBUTE_REPORT_ITEM_GROUPBY_GROUPBY "groupby"
-#define GLOM_ATTRIBUTE_REPORT_ITEM_GROUPBY_SORTBY "sortby"
+#define GLOM_NODE_REPORT_ITEM_GROUPBY_SORTBY "sortby"
 #define GLOM_ATTRIBUTE_LAYOUT_ITEM_FIELDSUMMARY_SUMMARYTYPE "summarytype"
 
 #define GLOM_NODE_FORMAT "formatting"
@@ -1465,9 +1466,37 @@ void Document_Glom::load_after_layout_item_field(const xmlpp::Element* element, 
   }
 }
 
+void Document_Glom::load_after_sort_by(const xmlpp::Element* node, const Glib::ustring table_name, LayoutItem_GroupBy::type_list_sort_fields& list_fields)
+{
+  list_fields.clear();
+
+  if(!node)
+    return;
+
+  xmlpp::Node::NodeList listNodes = node->get_children(GLOM_NODE_DATA_LAYOUT_ITEM);
+  for(xmlpp::Node::NodeList::iterator iter = listNodes.begin(); iter != listNodes.end(); ++iter)
+  {
+    const xmlpp::Element* element = dynamic_cast<const xmlpp::Element*>(*iter);
+    if(element)
+    {
+      sharedptr<LayoutItem_Field> item = sharedptr<LayoutItem_Field>::create();
+      //item.set_full_field_details_empty();
+      load_after_layout_item_field(element, table_name, item);
+      item->set_full_field_details( get_field(item->get_table_used(table_name), item->get_name()) );
+
+      const guint sequence = get_node_attribute_value_as_decimal(element, GLOM_ATTRIBUTE_SEQUENCE);
+      item->m_sequence = sequence;
+
+      const bool ascending = get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_SORT_ASCENDING);
+
+      list_fields.push_back( LayoutItem_GroupBy::type_pair_sort_field(item, ascending) );
+    }
+  }
+}
+
 void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Glib::ustring table_name, const sharedptr<LayoutGroup>& group)
 {
-  if(!node && !group)
+  if(!node || !group)
   {
     //g_warning("Document_Glom::load_after_layout_group(): node is NULL");
     return;
@@ -1576,9 +1605,14 @@ void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Gl
         sharedptr<LayoutItem_Field> field_sortby = sharedptr<LayoutItem_Field>::create();
         //field_groupby.set_full_field_details_empty();
 
-        const Glib::ustring sortyby_groupname = get_node_attribute_value(element, GLOM_ATTRIBUTE_REPORT_ITEM_GROUPBY_SORTBY);
-        field_sortby->set_full_field_details( get_field(table_name, sortyby_groupname) );
-        child_group->set_field_sort_by(field_sortby);
+        //Sort fields:
+        xmlpp::Element* elementSortBy = get_node_child_named(element, GLOM_NODE_REPORT_ITEM_GROUPBY_SORTBY);
+        if(elementSortBy)
+        {
+          LayoutItem_GroupBy::type_list_sort_fields sort_fields;
+          load_after_sort_by(elementSortBy, table_name, sort_fields);
+          child_group->set_fields_sort_by(sort_fields);
+        }
 
         //Secondary fields:
         xmlpp::Element* elementSecondary = get_node_child_named(element, GLOM_NODE_DATA_LAYOUT_GROUP_SECONDARYFIELDS);
@@ -2006,9 +2040,25 @@ void Document_Glom::save_before_layout_item_field(xmlpp::Element* nodeItem, cons
   set_node_attribute_value_as_decimal(nodeItem, GLOM_ATTRIBUTE_SEQUENCE, field->m_sequence);
 }
 
+void Document_Glom::save_before_sort_by(xmlpp::Element* node, const LayoutItem_GroupBy::type_list_sort_fields& list_fields)
+{
+  if(!node)
+    return;
+
+  for(LayoutItem_GroupBy::type_list_sort_fields::const_iterator iter = list_fields.begin(); iter != list_fields.end(); ++iter)
+  {
+    sharedptr<const LayoutItem_Field> field = iter->first;
+
+    xmlpp::Element* nodeChild = node->add_child(GLOM_NODE_DATA_LAYOUT_ITEM);
+    save_before_layout_item_field(nodeChild, field);
+
+    set_node_attribute_value_as_bool(nodeChild, GLOM_ATTRIBUTE_SORT_ASCENDING, iter->second);
+  }
+}
+
 void Document_Glom::save_before_layout_group(xmlpp::Element* node, const sharedptr<const LayoutGroup>& group)
 {
-  if(!group)
+  if(!node || !group)
     return;
 
   //g_warning("save_before_layout_group");
@@ -2023,9 +2073,14 @@ void Document_Glom::save_before_layout_group(xmlpp::Element* node, const sharedp
     if(group_by->get_has_field_group_by())
       set_node_attribute_value(child, GLOM_ATTRIBUTE_REPORT_ITEM_GROUPBY_GROUPBY, group_by->get_field_group_by()->get_name());
 
-    if(group_by->get_has_field_sort_by())
-      set_node_attribute_value(child, GLOM_ATTRIBUTE_REPORT_ITEM_GROUPBY_SORTBY, group_by->get_field_sort_by()->get_name());
+    //Sort fields:
+    if(group_by->get_has_fields_sort_by())
+    {
+      xmlpp::Element* nodeSortBy = child->add_child(GLOM_NODE_REPORT_ITEM_GROUPBY_SORTBY);
+      save_before_sort_by(nodeSortBy, group_by->get_fields_sort_by());
+    }
 
+    //Secondary fields:
     if(!group_by->m_group_secondary_fields->m_map_items.empty())
     {
       xmlpp::Element* secondary_fields = child->add_child(GLOM_NODE_DATA_LAYOUT_GROUP_SECONDARYFIELDS);

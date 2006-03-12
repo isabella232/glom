@@ -65,4 +65,7 @@ void LayoutItem::set_editable(bool val)
   m_editable = val;
 }
 
-
+Glib::ustring LayoutItem::get_layout_display_name() const
+{
+  return Glib::ustring();
+}

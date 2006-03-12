@@ -1466,9 +1466,27 @@ void Base_DB::report_build_groupby_children(const Glib::ustring& table_name, xml
   if(!itemsToGet.empty())
   {
     //Rows, with data:
+
+    //Sort Fields:
     Glib::ustring sort_clause;
-    if(group_by->get_has_field_sort_by())
-      sort_clause = group_by->get_field_sort_by()->get_name(); //TODO: Deal with related fields too.
+    {
+      if(group_by->get_has_fields_sort_by())
+      {
+        sort_clause += " ORDER BY ";
+
+        bool first = true;
+        LayoutItem_GroupBy::type_list_sort_fields group_sort_fields = group_by->get_fields_sort_by();
+        for(LayoutItem_GroupBy::type_list_sort_fields::const_iterator iter = group_sort_fields.begin(); iter != group_sort_fields.end(); ++iter)
+        {
+          if(!first)
+            sort_clause += ", ";
+
+          sharedptr<LayoutItem_Field> item_field = sharedptr<LayoutItem_Field>::cast_dynamic(iter->first);
+          sort_clause += "\"" + item_field->get_table_used(table_name) + "\".\"" + item_field->get_name() + "\" " + (iter->second ? "ASC" : "DESC");
+          first = false;
+        }
+      }
+    }
 
     report_build_records(table_name, node, itemsToGet, where_clause, sort_clause);
   }

@@ -30,8 +30,8 @@ LayoutItem_GroupBy::LayoutItem_GroupBy()
 LayoutItem_GroupBy::LayoutItem_GroupBy(const LayoutItem_GroupBy& src)
 : LayoutGroup(src),
   m_group_secondary_fields(src.m_group_secondary_fields),
-  m_field_group_by(src.m_field_group_by),
-  m_field_sort_by(src.m_field_sort_by)
+  m_fields_sort_by(src.m_fields_sort_by),
+  m_field_group_by(src.m_field_group_by)
 {
 }
 
@@ -55,7 +55,7 @@ LayoutItem_GroupBy& LayoutItem_GroupBy::operator=(const LayoutItem_GroupBy& src)
 
     m_group_secondary_fields = src.m_group_secondary_fields;
     m_field_group_by = src.m_field_group_by;
-    m_field_sort_by = src.m_field_sort_by;
+    m_fields_sort_by = src.m_fields_sort_by;
   }
 
   return *this;
@@ -79,24 +79,20 @@ bool LayoutItem_GroupBy::get_has_field_group_by() const
   return m_field_group_by->get_name_not_empty();
 }
 
-sharedptr<LayoutItem_Field> LayoutItem_GroupBy::get_field_sort_by()
+LayoutItem_GroupBy::type_list_sort_fields LayoutItem_GroupBy::get_fields_sort_by()
 {
-  return m_field_sort_by;
+  return m_fields_sort_by;
 }
 
-sharedptr<const LayoutItem_Field> LayoutItem_GroupBy::get_field_sort_by() const
+LayoutItem_GroupBy::type_list_sort_fields LayoutItem_GroupBy::get_fields_sort_by() const
 {
-  return m_field_sort_by;
+  return m_fields_sort_by;
 }
 
-bool LayoutItem_GroupBy::get_has_field_sort_by() const
+bool LayoutItem_GroupBy::get_has_fields_sort_by() const
 {
-  if(!m_field_sort_by)
-    return false;
-
-  return m_field_sort_by->get_name_not_empty();
+  return !m_fields_sort_by.empty();
 }
-
 
 Glib::ustring LayoutItem_GroupBy::get_part_type_name() const
 {
@@ -108,8 +104,37 @@ void LayoutItem_GroupBy::set_field_group_by(const sharedptr<LayoutItem_Field>& f
   m_field_group_by = field;
 }
 
-void LayoutItem_GroupBy::set_field_sort_by(const sharedptr<LayoutItem_Field>& field)
+void LayoutItem_GroupBy::set_fields_sort_by(const type_list_sort_fields& fields)
 {
-  m_field_sort_by = field;
+  m_fields_sort_by = fields;
+}
+
+Glib::ustring LayoutItem_GroupBy::get_layout_display_name() const
+{
+  Glib::ustring result;
+
+  //TODO: Internationalize this properly:
+  if(get_has_field_group_by())
+    result = get_field_group_by()->get_layout_display_name();
+
+  if(get_has_fields_sort_by())
+  {
+    result += "(sort by: ";
+
+    Glib::ustring sort_fields_names;
+
+    //List all the sort fields:
+    for(type_list_sort_fields::const_iterator iter = m_fields_sort_by.begin(); iter != m_fields_sort_by.end(); ++iter)
+    {
+      if(!sort_fields_names.empty())
+        sort_fields_names += ", ";
+
+      sort_fields_names += iter->first->get_layout_display_name();
+    }
+
+    result += sort_fields_names + ")";
+  }
+
+  return result;
 }
 

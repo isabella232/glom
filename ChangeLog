@@ -1,3 +1,23 @@
+2006-03-13  Murray Cumming <murrayc@murrayc.com>
+
+	* glom/data_structure/layout/report_parts/layoutitem_groupby.cc:
+	* glom/data_structure/layout/report_parts/layoutitem_groupby.h: Use a list of 
+	sort fields, instead of just one, for multiple sort levels.
+	* glom/base_db.cc:
+	* glom/dialog_layout_report.cc:
+	* glom/document/document_glom.cc:
+	* glom/document/document_glom.h:
+	* glom/glom.glade:
+	* glom/layout_item_dialogs/Makefile.am:
+	* glom/layout_item_dialogs/dialog_group_by.cc:
+	* glom/layout_item_dialogs/dialog_group_by.h:
+	* glom/layout_item_dialogs/dialog_groupby_sortfields.cc:
+	* glom/layout_item_dialogs/dialog_groupby_sortfields.h:
+	* glom/utils.cc: Handle the lsit of sort fields.
+	* glom/data_structure/layout/layoutitem.cc:
+	* glom/data_structure/layout/layoutitem.h: Add get_layout_display_name() as virtual 
+	method here, so we can call it polymorphically.
+
 2006-03-12  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/layout_item_dialogs/dialog_groupby_secondaryfields.cc:

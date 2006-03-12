@@ -864,37 +864,7 @@ void Dialog_Layout_Report::on_cell_data_details(Gtk::CellRenderer* renderer, con
 
       Gtk::TreeModel::Row row = *iter;
       sharedptr<LayoutItem> pItem = row[m_columns_parts.m_col_item];
-
-      sharedptr<LayoutItem_GroupBy> pGroup = sharedptr<LayoutItem_GroupBy>::cast_dynamic(pItem);
-      if(pGroup)
-      {
-        //TODO: Internationalize this properly:
-        if(pGroup->get_has_field_group_by())
-          text = pGroup->get_field_group_by()->get_layout_display_name();
-
-        if(pGroup->get_has_field_sort_by())
-          text += "(sort by: " + pGroup->get_field_sort_by()->get_layout_display_name() + ")";
-      }
-      else
-      {
-        /*
-        const LayoutItem_FieldSummary* pFieldSummary = dynamic_cast<const LayoutItem_FieldSummary*>(pItem);
-        if(pFieldSummary)
-        {
-           text = pFieldSummary.LayoutItem_Field::get_layout_display_name_field();
-        }
-        else
-        {
-        */
-          sharedptr<LayoutItem_Field> pField = sharedptr<LayoutItem_Field>::cast_dynamic(pItem);
-          if(pField)
-          {
-            text = pField->get_layout_display_name();
-          }
-        //}
-      }
-
-      renderer_text->property_text() = text;
+      renderer_text->property_text() = pItem->get_layout_display_name();
       renderer_text->property_editable() = false;
     }
   }

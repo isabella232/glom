@@ -28,6 +28,7 @@
 #include "../utility_widgets/combo_textglade.h"
 #include "../utility_widgets/comboentry_currency.h"
 #include "dialog_groupby_secondaryfields.h"
+#include "dialog_groupby_sortfields.h"
 #include "comboentry_borderwidth.h"
 
 
@@ -55,6 +56,8 @@ protected:
   void on_button_secondary_fields();
   void on_dialog_secondary_fields_hide();
 
+  void update_labels();
+
   Gtk::Label* m_label_group_by;
   Gtk::Label* m_label_sort_by;
   Gtk::Label* m_label_secondary_fields;
@@ -64,6 +67,7 @@ protected:
   ComboEntry_BorderWidth* m_comboboxentry_border_width;
 
   Dialog_GroupBy_SecondaryFields* m_dialog_choose_secondary_fields;
+  Dialog_GroupBy_SortFields* m_dialog_choose_sort_fields;
 
   mutable sharedptr<LayoutItem_GroupBy> m_layout_item;
 

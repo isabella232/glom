@@ -32,7 +32,8 @@ Dialog_GroupBy::Dialog_GroupBy(BaseObjectType* cobject, const Glib::RefPtr<Gnome
   m_button_field_sort_by(0),
   m_button_secondary_fields(0),
   m_comboboxentry_border_width(0),
-  m_dialog_choose_secondary_fields(0)
+  m_dialog_choose_secondary_fields(0),
+  m_dialog_choose_sort_fields(0)
 {
   refGlade->get_widget("label_group_by", m_label_group_by);
   refGlade->get_widget("label_sort_by", m_label_sort_by);
@@ -59,6 +60,12 @@ Dialog_GroupBy::~Dialog_GroupBy()
     remove_view(m_dialog_choose_secondary_fields);
     delete m_dialog_choose_secondary_fields;
   }
+
+  if(m_dialog_choose_sort_fields)
+  {
+    remove_view(m_dialog_choose_sort_fields);
+    delete m_dialog_choose_sort_fields;
+  }
 }
 
 void Dialog_GroupBy::set_item(const sharedptr<const LayoutItem_GroupBy>& item, const Glib::ustring& table_name)
@@ -66,22 +73,13 @@ void Dialog_GroupBy::set_item(const sharedptr<const LayoutItem_GroupBy>& item, c
   m_layout_item = glom_sharedptr_clone(item);
   m_table_name = table_name;
 
-  if(item->get_has_field_group_by())
-    m_label_group_by->set_text( item->get_field_group_by()->get_layout_display_name() );
-  else
-    m_label_group_by->set_text( Glib::ustring() );
-
-  if(item->get_has_field_sort_by())
-    m_label_sort_by->set_text( item->get_field_sort_by()->get_layout_display_name() );
-  else
-    m_label_sort_by->set_text( Glib::ustring() );
+  update_labels();
 
   Glib::ustring border_width_as_text;
   std::stringstream the_stream;
   the_stream.imbue(std::locale("")); //Current locale.
   the_stream << m_layout_item->get_border_width();
   border_width_as_text = the_stream.str();
-  std::cout << "set_item: border_width_as_text=" << border_width_as_text << std::endl;
   m_comboboxentry_border_width->get_entry()->set_text(border_width_as_text);
 }
 
@@ -93,10 +91,7 @@ sharedptr<LayoutItem_GroupBy> Dialog_GroupBy::get_item() const
 
   double border_width_as_number = 0;
   the_stream >> border_width_as_number;
-   std::cout << "get_item: border_width_as_number=" << border_width_as_number << std::endl;
   m_layout_item->set_border_width(border_width_as_number);
-std::cout << "get_item: set_border_width()=" << m_layout_item->get_border_width() << std::endl;
-
   return glom_sharedptr_clone(m_layout_item);
 }
 
@@ -112,12 +107,32 @@ void Dialog_GroupBy::on_button_field_group_by()
 
 void Dialog_GroupBy::on_button_field_sort_by()
 {
-  sharedptr<LayoutItem_Field> field = offer_field_list(m_table_name, this);
-  if(field)
+  if(!m_dialog_choose_sort_fields)
   {
-    m_layout_item->set_field_sort_by(field);
-    set_item(m_layout_item, m_table_name); //Update the UI.
+    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_groupby_sort_fields");
+    if(refXml)
+    {
+      refXml->get_widget_derived("dialog_groupby_sort_fields", m_dialog_choose_sort_fields);
+      if(m_dialog_choose_sort_fields)
+      {
+        add_view(m_dialog_choose_sort_fields); //Give it access to the document.
+      }
+    }
   }
+
+  if(m_dialog_choose_sort_fields)
+  {
+    m_dialog_choose_sort_fields->set_fields(m_table_name, m_layout_item->get_fields_sort_by());
+
+    const int response = m_dialog_choose_sort_fields->run();
+    m_dialog_choose_sort_fields->hide();
+    if(response == Gtk::RESPONSE_OK && m_dialog_choose_sort_fields->get_modified())
+    {
+      m_layout_item->set_fields_sort_by( m_dialog_choose_sort_fields->get_fields() );
+    }
+  }
+
+  update_labels();
 }
 
 void Dialog_GroupBy::on_button_secondary_fields()
@@ -131,7 +146,6 @@ void Dialog_GroupBy::on_button_secondary_fields()
       if(m_dialog_choose_secondary_fields)
       {
         add_view(m_dialog_choose_secondary_fields); //Give it access to the document.
-        m_dialog_choose_secondary_fields->signal_hide().connect( sigc::mem_fun(*this, &Dialog_GroupBy::on_dialog_secondary_fields_hide) );
       }
     }
   }
@@ -140,7 +154,7 @@ void Dialog_GroupBy::on_button_secondary_fields()
   {
     m_dialog_choose_secondary_fields->set_fields(m_table_name, m_layout_item->m_group_secondary_fields->m_map_items);
 
-    int response = m_dialog_choose_secondary_fields->run();
+    const int response = m_dialog_choose_secondary_fields->run();
     m_dialog_choose_secondary_fields->hide();
     if(response == Gtk::RESPONSE_OK && m_dialog_choose_secondary_fields->get_modified())
     {
@@ -148,9 +162,31 @@ void Dialog_GroupBy::on_button_secondary_fields()
       m_layout_item->m_group_secondary_fields->m_map_items = m_dialog_choose_secondary_fields->get_fields();
     }
   }
+
+  update_labels();
 }
 
-void Dialog_GroupBy::on_dialog_secondary_fields_hide()
+void Dialog_GroupBy::update_labels()
 {
+  if(m_layout_item->get_has_field_group_by())
+    m_label_group_by->set_text( m_layout_item->get_field_group_by()->get_layout_display_name() );
+  else
+    m_label_group_by->set_text( Glib::ustring() );
 
+  if(m_layout_item->get_has_fields_sort_by())
+  {
+    Glib::ustring text;
+    LayoutItem_GroupBy::type_list_sort_fields list_fields = m_layout_item->get_fields_sort_by();
+    for(LayoutItem_GroupBy::type_list_sort_fields::const_iterator iter = list_fields.begin(); iter != list_fields.end(); ++iter)
+    {
+      if(!text.empty())
+        text += ", ";
+
+      text += iter->first->get_layout_display_name();
+    }
+
+    m_label_sort_by->set_text(text);
+  }
+  else
+    m_label_sort_by->set_text( Glib::ustring() );
 }

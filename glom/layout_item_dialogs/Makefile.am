@@ -14,5 +14,6 @@ liblayoutitemdialogs_a_SOURCES = \
                          combo_summarytype.h combo_summarytype.cc \
                          comboentry_borderwidth.h comboentry_borderwidth.cc \
                          dialog_groupby_secondaryfields.h dialog_groupby_secondaryfields.cc \
+                         dialog_groupby_sortfields.h dialog_groupby_sortfields.cc \
                          box_formatting.h box_formatting.cc
 

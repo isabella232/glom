@@ -258,6 +258,9 @@ protected:
   void load_after_layout_group(const xmlpp::Element* node, const Glib::ustring table_name, const sharedptr<LayoutGroup>& group);
   void save_before_layout_group(xmlpp::Element* node, const sharedptr<const LayoutGroup>& group);
 
+  void load_after_sort_by(const xmlpp::Element* node, const Glib::ustring table_name, LayoutItem_GroupBy::type_list_sort_fields& list_fields);
+  void save_before_sort_by(xmlpp::Element* node, const LayoutItem_GroupBy::type_list_sort_fields& list_fields);
+
   void load_after_layout_item_field(const xmlpp::Element* element, const Glib::ustring& table_name, const sharedptr<LayoutItem_Field>& item);
   void load_after_layout_item_field_formatting(const xmlpp::Element* element, FieldFormatting& format, Field::glom_field_type field_type, const Glib::ustring& table_name, const Glib::ustring& field_name);
 

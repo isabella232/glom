@@ -41,6 +41,9 @@ public:
 
   virtual LayoutItem* clone() const;
 
+  typedef std::pair< sharedptr<LayoutItem_Field>, bool /* is_ascending */> type_pair_sort_field;
+  typedef std::list<type_pair_sort_field> type_list_sort_fields;
+
   sharedptr<LayoutItem_Field> get_field_group_by();
   sharedptr<const LayoutItem_Field> get_field_group_by() const;
   bool get_has_field_group_by() const;
@@ -48,22 +51,28 @@ public:
   void set_field_group_by(const sharedptr<LayoutItem_Field>& field);
 
   //How to sort the records in this group:
-  sharedptr<LayoutItem_Field> get_field_sort_by();
-  sharedptr<const LayoutItem_Field> get_field_sort_by() const;
-  bool get_has_field_sort_by() const;
+  type_list_sort_fields get_fields_sort_by();
+  type_list_sort_fields get_fields_sort_by() const;
+  bool get_has_fields_sort_by() const;
 
-  void set_field_sort_by(const sharedptr<LayoutItem_Field>& field);
+  void set_fields_sort_by(const type_list_sort_fields& field);
+
+  /** Get a text representation for the a layout.
+   */
+  virtual Glib::ustring get_layout_display_name() const;
 
   virtual Glib::ustring get_part_type_name() const;
 
   sharedptr<LayoutGroup> m_group_secondary_fields; //For instance, show a contact name as well as the contact ID that we group by.
 
+  type_list_sort_fields m_fields_sort_by;
+
 protected:
   sharedptr<LayoutItem_Field> m_field_group_by;
-  sharedptr<LayoutItem_Field> m_field_sort_by;
+
 };
 
-#endif //GLOM_DATASTRUCTURE_LAYOUTITEM_GROUPBY_H
+#endif //GLOM_DATASTRUCTURE_LayoutGroupBY_H
 
 
 
