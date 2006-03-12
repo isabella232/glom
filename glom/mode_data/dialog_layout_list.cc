@@ -344,18 +344,7 @@ void Dialog_Layout_List::on_cell_data_name(Gtk::CellRenderer* renderer, const Gt
 
       //Indicate that it's a field in another table.
       sharedptr<LayoutItem_Field> item = row[m_ColumnsFields.m_col_layout_item]; //TODO_performance: Reduce copying.
-
-      Glib::ustring markup;
-
-      if(item->get_has_relationship_name())
-        markup = item->get_relationship_name() + "::";
-
-      if(item->get_has_related_relationship_name())
-        markup += item->get_related_relationship_name() + "::";
-
-      markup += item->get_name();
-
-      renderer_text->property_markup() = markup;
+      renderer_text->property_markup() = item->get_layout_display_name();
 
       renderer_text->property_editable() = false; //Names can never be edited.
     }
@@ -374,7 +363,6 @@ void Dialog_Layout_List::on_button_edit_field()
     {
       Gtk::TreeModel::Row row = *iter;
       sharedptr<LayoutItem_Field> field = row[m_ColumnsFields.m_col_layout_item];
-      std::cout << "DEBUG: field=" << field->get_name();
 
       sharedptr<LayoutItem_Field> field_chosen = offer_field_list(field, m_table_name, this);
       if(field_chosen)

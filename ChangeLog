@@ -1,8 +1,16 @@
 2006-03-12  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/layout_item_dialogs/dialog_groupby_secondaryfields.cc:
+	* glom/mode_data/dialog_layout_export.cc:
+	* glom/mode_data/dialog_layout_list.cc:
+	* glom/mode_data/dialog_layout_list_related.cc: More removal of copy/pasted code. Using 
+	get_layout_display_name() instead.
+
+2006-03-12  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/data_structure/layout/layoutitem_field.cc:
 	* glom/mode_data/dialog_layout_details.cc: on_cell_data_name(): Move the code to 
-	create the field display name (with the :: separators) into LayoutItem_Field::get_display_name(), 
+	create the field display name (with the :: separators) into LayoutItem_Field::get_layout_display_name(), 
 	to avoid copy/paste wasteage and to make it show up properly in the Reports layout dialog.
 
 2006-03-12  Murray Cumming  <murrayc@murrayc.com>
