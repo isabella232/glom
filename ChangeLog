@@ -1,5 +1,11 @@
 2006-03-13  Murray Cumming <murrayc@murrayc.com>
 
+	* glom/utility_widgets/db_adddel/db_adddel.cc: treeviewcolumn_on_cell_data(): 
+	Check the type of the GdaValue before calling get_bool, to avoid warnings about 
+	it not being bool. It seems to be null sometimes. Not sure why.
+
+2006-03-13  Murray Cumming <murrayc@murrayc.com>
+
 	* glom/base_db.cc: report_build_groupby(): Use the border width also 
 	when using the group_by node for non-grouped records.
 	* glom/layout_item_dialogs/comboentry_borderwidth.cc: 

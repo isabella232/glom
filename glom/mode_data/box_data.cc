@@ -91,7 +91,7 @@ Glib::ustring Box_Data::get_find_where_clause() const
           if(!data.get_bool())
             use_this_field = false;
         }
-  
+
         if(use_this_field)
         {
           strClausePart = m_table_name + "." + field->get_name() + " " + field->sql_find_operator() + " " +  field->sql_find(data); //% is mysql wildcard for 0 or more characters.

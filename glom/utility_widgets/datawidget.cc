@@ -242,7 +242,7 @@ void DataWidget::set_value(const Gnome::Gda::Value& value)
     if(checkbutton)
     {
       bool bValue = false;
-      if(!value.is_null())
+      if(!value.is_null() && value.get_value_type() == Gnome::Gda::VALUE_TYPE_BOOLEAN)
         bValue = value.get_bool();
 
       checkbutton->set_active( bValue );
