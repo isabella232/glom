@@ -44,6 +44,7 @@
 #define GLOM_NODE_DATA_LAYOUT "data_layout"
 #define GLOM_ATTRIBUTE_PARENT_TABLE_NAME "parent_table"
 
+#define GLOM_NODE_DATA_LAYOUT_NOTEBOOK "data_layout_notebook"
 #define GLOM_NODE_DATA_LAYOUT_PORTAL "data_layout_portal"
 #define GLOM_NODE_DATA_LAYOUT_ITEM "data_layout_item" //A field.
 #define GLOM_NODE_LAYOUT_ITEM_CUSTOM_TITLE "title_custom"
@@ -1582,6 +1583,12 @@ void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Gl
 
         group->add_item(child_group);
       }
+      else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_NOTEBOOK)
+      {
+        sharedptr<LayoutItem_Notebook> notebook = sharedptr<LayoutItem_Notebook>::create();
+        load_after_layout_group(element, table_name, notebook);
+        group->add_item(notebook);
+      }
       else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_PORTAL)
       {
         sharedptr<LayoutItem_Portal> portal = sharedptr<LayoutItem_Portal>::create();
@@ -2116,9 +2123,17 @@ void Document_Glom::save_before_layout_group(xmlpp::Element* node, const sharedp
         child = node->add_child(GLOM_NODE_DATA_LAYOUT_PORTAL);
         child->set_attribute(GLOM_ATTRIBUTE_RELATIONSHIP_NAME, portal->get_relationship_name());
       }
-      else if(group)
+      else
       {
-        child = node->add_child(GLOM_NODE_DATA_LAYOUT_GROUP);
+        sharedptr<const LayoutItem_Notebook> notebook = sharedptr<const LayoutItem_Notebook>::cast_dynamic(group);
+        if(notebook) //If it is a related records portal
+        {
+          child = node->add_child(GLOM_NODE_DATA_LAYOUT_NOTEBOOK);
+        }
+        else if(group)
+        {
+          child = node->add_child(GLOM_NODE_DATA_LAYOUT_GROUP);
+        }
       }
     }
   }

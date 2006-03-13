@@ -24,6 +24,7 @@
 #include "flowtable.h"
 #include "../data_structure/layout/layoutgroup.h"
 #include "../data_structure/layout/layoutitem_field.h"
+#include "../data_structure/layout/layoutitem_notebook.h"
 #include "../data_structure/layout/layoutitem_portal.h"
 #include "../data_structure/layout/layoutitem_button.h"
 #include "../data_structure/layout/layoutitem_text.h"
@@ -180,6 +181,7 @@ protected:
   void add_layoutwidgetbase(LayoutWidgetBase* layout_widget, const type_list_layoutwidgets::iterator& add_before);
   void add_layout_item_at_position(const sharedptr<LayoutItem>& item, const type_list_layoutwidgets::iterator& add_before);
   void add_layout_group_at_position(const sharedptr<LayoutGroup>& group, const type_list_layoutwidgets::iterator& add_before);
+  void add_layout_notebook_at_position(const sharedptr<LayoutItem_Notebook>& notebook, const type_list_layoutwidgets::iterator& add_before);
 
   Glib::ustring m_table_name;
 

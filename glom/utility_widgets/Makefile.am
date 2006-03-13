@@ -16,6 +16,7 @@ libutility_widgets_a_SOURCES = alignment_justified.cc alignment_justified.h \
                                flowtablewithfields.cc flowtablewithfields.h \
                                datawidget.h datawidget.cc \
                                buttonglom.h buttonglom.cc \
+                               notebookglom.h notebookglom.cc \
                                entryglom.h entryglom.cc \
                                comboglom.h comboglom.cc \
                                comboglomchoicesbase.h comboglomchoicesbase.cc \

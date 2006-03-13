@@ -1,5 +1,29 @@
 2006-03-13  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/base_db.cc:
+	* glom/base_db.h:
+	* glom/data_structure/layout/Makefile.am:
+	* glom/data_structure/layout/layoutitem_notebook.cc:
+	* glom/data_structure/layout/layoutitem_notebook.h:
+	* glom/document/document_glom.cc:
+	* glom/document/document_glom.h:
+	* glom/glom.glade:
+	* glom/layout_item_dialogs/Makefile.am:
+	* glom/layout_item_dialogs/dialog_notebook.cc:
+	* glom/layout_item_dialogs/dialog_notebook.h:
+	* glom/mode_data/dialog_layout_details.cc:
+	* glom/mode_data/dialog_layout_details.h:
+	* glom/utility_widgets/Makefile.am:
+	* glom/utility_widgets/flowtablewithfields.cc:
+	* glom/utility_widgets/flowtablewithfields.h:
+	* glom/utility_widgets/layoutwidgetbase.cc:
+	* glom/utility_widgets/layoutwidgetbase.h:
+	* glom/utility_widgets/notebookglom.cc:
+	* glom/utility_widgets/notebookglom.h:
+	* po/POTFILES.in: Added Notebook part, which has Groups as child items for tabs.
+
+2006-03-13  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/base_db.cc: get_table_fields_to_show_for_sequence_add_group(): When getting 
 	full field details for related fields, use get_table_used() instead of the single-related to_table, 
 	so that this works with doubly-related fields. This makes doubly-related fields work in portals.

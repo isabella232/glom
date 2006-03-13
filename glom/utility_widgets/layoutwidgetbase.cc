@@ -33,8 +33,10 @@ LayoutWidgetBase::LayoutWidgetBase()
   m_refContextLayoutProperties =  Gtk::Action::create("ContextLayoutProperties", _("Field Layout Properties"));
   m_refContextAddField =  Gtk::Action::create("ContextAddField", _("Add Field"));
   m_refContextAddRelatedRecords =  Gtk::Action::create("ContextAddRelatedRecords", _("Add Related Records"));
+  m_refContextAddNotebook =  Gtk::Action::create("ContextAddNotebook", _("Add Notebook"));
   m_refContextAddGroup =  Gtk::Action::create("ContextAddGroup", _("Add Group"));
   m_refContextAddButton =  Gtk::Action::create("ContextAddButton", _("Add Button"));
+  m_refContextAddText =  Gtk::Action::create("ContextAddText", _("Add Text"));
 }
 
 LayoutWidgetBase::~LayoutWidgetBase()
@@ -74,9 +76,14 @@ void LayoutWidgetBase::setup_menu()
   m_refActionGroup->add(m_refContextAddGroup,
     sigc::bind( sigc::mem_fun(*this, &LayoutWidgetBase::on_menupopup_add_item), TYPE_GROUP ) );
 
+  m_refActionGroup->add(m_refContextAddNotebook,
+    sigc::bind( sigc::mem_fun(*this, &LayoutWidgetBase::on_menupopup_add_item), TYPE_NOTEBOOK ) );
+
   m_refActionGroup->add(m_refContextAddButton,
     sigc::bind( sigc::mem_fun(*this, &LayoutWidgetBase::on_menupopup_add_item), TYPE_BUTTON ) );
 
+  m_refActionGroup->add(m_refContextAddText,
+    sigc::bind( sigc::mem_fun(*this, &LayoutWidgetBase::on_menupopup_add_item), TYPE_TEXT ) );
 
   //TODO: This does not work until this widget is in a container in the window:s
   App_Glom* pApp = get_application();
@@ -86,8 +93,10 @@ void LayoutWidgetBase::setup_menu()
     pApp->add_developer_action(m_refContextLayoutProperties); //So that it can be disabled when not in developer mode.
     pApp->add_developer_action(m_refContextAddField);
     pApp->add_developer_action(m_refContextAddRelatedRecords);
+    pApp->add_developer_action(m_refContextAddNotebook);
     pApp->add_developer_action(m_refContextAddGroup);
     pApp->add_developer_action(m_refContextAddButton);
+    pApp->add_developer_action(m_refContextAddText);
 
     pApp->update_userlevel_ui(); //Update our action's sensitivity. 
   }
@@ -107,8 +116,10 @@ void LayoutWidgetBase::setup_menu()
         "    <menuitem action='ContextLayoutProperties'/>"
         "    <menuitem action='ContextAddField'/>"
         "    <menuitem action='ContextAddRelatedRecords'/>"
+        "    <menuitem action='ContextAddNotebook'/>"
         "    <menuitem action='ContextAddGroup'/>"
         "    <menuitem action='ContextAddButton'/>"
+        "    <menuitem action='ContextAddText'/>"
         "  </popup>"
         "</ui>";
 

@@ -13,6 +13,7 @@ glom/data_structure/translatable_item.cc
 glom/data_structure/layout/layoutgroup.cc
 glom/data_structure/layout/layoutitem_button.cc
 glom/data_structure/layout/layoutitem_field.cc
+glom/data_structure/layout/layoutitem_notebook.cc
 glom/data_structure/layout/layoutitem_portal.cc
 glom/data_structure/layout/layoutitem_text.cc
 glom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc
@@ -28,6 +29,7 @@ glom/layout_item_dialogs/dialog_field_layout.cc
 glom/layout_item_dialogs/dialog_group_by.cc
 glom/layout_item_dialogs/dialog_groupby_secondaryfields.cc
 glom/layout_item_dialogs/dialog_field_summary.cc
+glom/layout_item_dialogs/dialog_notebook.cc
 glom/layout_item_dialogs/combo_summarytype.cc
 glom/main.cc
 glom/mode_data/box_data.cc

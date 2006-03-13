@@ -44,8 +44,10 @@ public:
   {
     TYPE_FIELD,
     TYPE_GROUP,
+    TYPE_NOTEBOOK,
     TYPE_PORTAL,
-    TYPE_BUTTON
+    TYPE_BUTTON,
+    TYPE_TEXT
   };
 
   //Popup-menu:
@@ -82,9 +84,11 @@ protected:
   type_signal_user_requested_layout_properties m_signal_user_requested_layout_properties;
 
   Gtk::Menu* m_pMenuPopup;
+
+  //TODO_Performance: //Presumably we waste lots of memory by having this in each layout widget. Maybe we can use one shared menu.
   Glib::RefPtr<Gtk::ActionGroup> m_refActionGroup;
   Glib::RefPtr<Gtk::UIManager> m_refUIManager;
-  Glib::RefPtr<Gtk::Action> m_refContextLayout, m_refContextLayoutProperties, m_refContextAddField, m_refContextAddRelatedRecords, m_refContextAddGroup, m_refContextAddButton;
+  Glib::RefPtr<Gtk::Action> m_refContextLayout, m_refContextLayoutProperties, m_refContextAddField, m_refContextAddRelatedRecords, m_refContextAddGroup, m_refContextAddNotebook, m_refContextAddButton, m_refContextAddText;
 
 };
 

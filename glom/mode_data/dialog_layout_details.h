@@ -60,6 +60,7 @@ protected:
   virtual void on_button_field_delete();
   virtual void on_button_field_add();  
   virtual void on_button_field_add_group();
+  virtual void on_button_add_notebook();
   virtual void on_button_add_related();
   virtual void on_button_add_button();
   virtual void on_button_add_text();
@@ -84,6 +85,7 @@ protected:
   Gtk::Button* m_button_field_down;
   Gtk::Button* m_button_field_add;
   Gtk::Button* m_button_field_add_group;
+  Gtk::Button* m_button_add_notebook;
   Gtk::Button* m_button_add_related;
   Gtk::Button* m_button_add_button;
   Gtk::Button* m_button_add_text;

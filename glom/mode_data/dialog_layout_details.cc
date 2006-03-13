@@ -22,6 +22,8 @@
 #include "dialog_choose_relationship.h"
 #include "../mode_design/dialog_buttonscript.h"
 #include "../mode_design/dialog_textobject.h"
+#include "../layout_item_dialogs/dialog_notebook.h"
+#include "../frame_glom.h" //For show_ok_dialog()
 //#include <libgnome/gnome-i18n.h>
 #include <bakery/App/App_Gtk.h> //For util_bold_message().
 #include <glibmm/i18n.h>
@@ -35,6 +37,7 @@ Dialog_Layout_Details::Dialog_Layout_Details(BaseObjectType* cobject, const Glib
   m_button_field_down(0),
   m_button_field_add(0),
   m_button_field_add_group(0),
+  m_button_add_notebook(0),
   m_button_add_related(0),
   m_button_add_button(0),
   m_button_add_text(0),
@@ -121,6 +124,9 @@ Dialog_Layout_Details::Dialog_Layout_Details(BaseObjectType* cobject, const Glib
 
   refGlade->get_widget("button_field_add_group", m_button_field_add_group);
   m_button_field_add_group->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout_Details::on_button_field_add_group) );
+
+  refGlade->get_widget("button_add_notebook", m_button_add_notebook);
+  m_button_add_notebook->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout_Details::on_button_add_notebook) );
 
   refGlade->get_widget("button_add_related", m_button_add_related);
   m_button_add_related->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout_Details::on_button_add_related) );
@@ -709,6 +715,32 @@ void Dialog_Layout_Details::on_button_add_text()
   enable_buttons();
 }
 
+void Dialog_Layout_Details::on_button_add_notebook()
+{
+  Gtk::TreeModel::iterator parent = get_selected_group_parent();
+
+  Gtk::TreeModel::iterator iter = append_appropriate_row();
+  if(iter)
+  {
+    Gtk::TreeModel::Row row = *iter;
+
+    sharedptr<LayoutItem_Notebook> notebook = sharedptr<LayoutItem_Notebook>::create();
+    notebook->set_name(_("notebook"));
+    row[m_model_items->m_columns.m_col_layout_item] = notebook;
+
+    //Scroll to, and select, the new row:
+    Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = m_treeview_fields->get_selection();
+    if(refTreeSelection)
+      refTreeSelection->select(iter);
+
+    m_treeview_fields->scroll_to_row( Gtk::TreeModel::Path(iter) );
+
+    m_modified = true;
+  }
+
+  enable_buttons();
+}
+
 void Dialog_Layout_Details::on_button_add_related()
 {
   Gtk::TreeModel::iterator parent = get_selected_group_parent();
@@ -791,7 +823,9 @@ void Dialog_Layout_Details::on_button_field_add_group()
   if(iterNewGroup)
   {
     Gtk::TreeModel::Row row = *iterNewGroup;
-    row[m_model_items->m_columns.m_col_layout_item] = sharedptr<LayoutGroup>::create();
+    sharedptr<LayoutGroup> layout_item = sharedptr<LayoutGroup>::create();
+    layout_item->set_name(_("group"));
+    row[m_model_items->m_columns.m_col_layout_item] = layout_item;
 
     //Scroll to, and select, the new row:
     Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = m_treeview_fields->get_selection();
@@ -865,50 +899,66 @@ void Dialog_Layout_Details::on_button_edit()
       }
       else
       {
-        sharedptr<LayoutGroup> layout_group = sharedptr<LayoutGroup>::cast_dynamic(layout_item);
-        if(layout_group)
+        sharedptr<LayoutItem_Notebook> layout_notebook = sharedptr<LayoutItem_Notebook>::cast_dynamic(layout_item);
+        if(layout_notebook)
         {
-            Gtk::TreeModel::Path path = m_model_items->get_path(iter);
-            m_treeview_fields->set_cursor(path, *m_treeview_column_title, true /* start_editing */);
+          Frame_Glom::show_ok_dialog(_("Notebook Tabs"), _("Add child groups to the notebook to add tabs."), *this);
+          /*
+          sharedptr<LayoutItem_Notebook> chosen = offer_notebook(layout_notebook);
+          if(chosen)
+          {
+            row[m_model_items->m_columns.m_col_layout_item] = chosen;
+            m_modified = true;
+          }
+          */
         }
         else
         {
-          sharedptr<LayoutItem_Field> layout_item_field = sharedptr<LayoutItem_Field>::cast_dynamic(layout_item);
-          if(layout_item_field)
+          sharedptr<LayoutGroup> layout_group = sharedptr<LayoutGroup>::cast_dynamic(layout_item);
+          if(layout_group)
           {
-            sharedptr<LayoutItem_Field> chosenitem = offer_field_list(layout_item_field, m_table_name, this);
-            if(chosenitem)
-            {
-              row[m_model_items->m_columns.m_col_layout_item] = chosenitem;
-              m_modified = true;
-            }
+              Gtk::TreeModel::Path path = m_model_items->get_path(iter);
+              m_treeview_fields->set_cursor(path, *m_treeview_column_title, true /* start_editing */);
           }
           else
           {
-            sharedptr<LayoutItem_Button> layout_item_button = sharedptr<LayoutItem_Button>::cast_dynamic(layout_item);
-            if(layout_item_button)
+            sharedptr<LayoutItem_Field> layout_item_field = sharedptr<LayoutItem_Field>::cast_dynamic(layout_item);
+            if(layout_item_field)
             {
-              sharedptr<LayoutItem_Button> chosen = offer_button_script_edit(layout_item_button);
-              if(chosen)
+              sharedptr<LayoutItem_Field> chosenitem = offer_field_list(layout_item_field, m_table_name, this);
+              if(chosenitem)
               {
-                *layout_item_button = *chosen;
-                //std::cout << "script: " << layout_item_button->get_script() << std::endl;
-
+                row[m_model_items->m_columns.m_col_layout_item] = chosenitem;
                 m_modified = true;
               }
             }
             else
             {
-              sharedptr<LayoutItem_Text> layout_item_text = sharedptr<LayoutItem_Text>::cast_dynamic(layout_item);
-              if(layout_item_text)
+              sharedptr<LayoutItem_Button> layout_item_button = sharedptr<LayoutItem_Button>::cast_dynamic(layout_item);
+              if(layout_item_button)
               {
-                sharedptr<LayoutItem_Text> chosen = offer_textobject(layout_item_text);
+                sharedptr<LayoutItem_Button> chosen = offer_button_script_edit(layout_item_button);
                 if(chosen)
                 {
-                  *layout_item_text = *chosen;
+                  *layout_item_button = *chosen;
                   //std::cout << "script: " << layout_item_button->get_script() << std::endl;
-
+  
                   m_modified = true;
+                }
+              }
+              else
+              {
+                sharedptr<LayoutItem_Text> layout_item_text = sharedptr<LayoutItem_Text>::cast_dynamic(layout_item);
+                if(layout_item_text)
+                {
+                  sharedptr<LayoutItem_Text> chosen = offer_textobject(layout_item_text);
+                  if(chosen)
+                  {
+                    *layout_item_text = *chosen;
+                    //std::cout << "script: " << layout_item_button->get_script() << std::endl;
+  
+                    m_modified = true;
+                  }
                 }
               }
             }
@@ -1059,8 +1109,11 @@ void Dialog_Layout_Details::on_cell_data_title(Gtk::CellRenderer* renderer, cons
     {
       Gtk::TreeModel::Row row = *iter;
       sharedptr<LayoutItem> layout_item = row[m_model_items->m_columns.m_col_layout_item];
+      sharedptr<LayoutItem_Notebook> layout_notebook = sharedptr<LayoutItem_Notebook>::cast_dynamic(layout_item);
       if(layout_item)
         renderer_text->property_text() = layout_item->get_title();
+      else if(layout_notebook)
+        renderer_text->property_text() = _("(Notebook)");
       else
         renderer_text->property_text() = Glib::ustring();
 

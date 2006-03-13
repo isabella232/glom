@@ -26,6 +26,7 @@
 #include "data_structure/glomconversions.h"
 #include "mode_data/dialog_choose_field.h"
 #include "layout_item_dialogs/dialog_field_layout.h"
+#include "layout_item_dialogs/dialog_notebook.h"
 #include "mode_design/dialog_textobject.h"
 //#include "dialog_layout_report.h"
 #include "utils.h"
@@ -1375,6 +1376,42 @@ sharedptr<LayoutItem_Text> Base_DB::offer_textobject(const sharedptr<LayoutItem_
       {
         //Get the chosen relationship:
         result = dialog->get_textobject();
+      }
+
+      delete dialog;
+    }
+  }
+  catch(const Gnome::Glade::XmlError& ex)
+  {
+    std::cerr << ex.what() << std::endl;
+  }
+
+  return result;
+}
+
+sharedptr<LayoutItem_Notebook> Base_DB::offer_notebook(const sharedptr<LayoutItem_Notebook>& start_notebook, Gtk::Window* transient_for)
+{
+  sharedptr<LayoutItem_Notebook> result;
+
+  try
+  {
+    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_notebook");
+
+    Dialog_Notebook* dialog = 0;
+    refXml->get_widget_derived("dialog_notebook", dialog);
+    if(dialog)
+    {
+      if(transient_for)
+        dialog->set_transient_for(*transient_for);
+
+      dialog->set_notebook(start_notebook);
+      //dialog->set_transient_for(*this);
+      const int response = dialog->run();
+      dialog->hide();
+      if(response == Gtk::RESPONSE_OK)
+      {
+        //Get the chosen relationship:
+        result = dialog->get_notebook();
       }
 
       delete dialog;

@@ -21,6 +21,7 @@
 #include "flowtablewithfields.h"
 #include "datawidget.h"
 #include "buttonglom.h"
+#include "notebookglom.h"
 #include "labelglom.h"
 #include <gtkmm/checkbutton.h>
 #include "../data_structure/glomconversions.h"
@@ -126,19 +127,25 @@ void FlowTableWithFields::add_layout_item_at_position(const sharedptr<LayoutItem
     }
     else
     {
-      sharedptr<LayoutGroup> group = sharedptr<LayoutGroup>::cast_dynamic(item);
-      if(group)
-        add_layout_group_at_position(group, add_before);
+      sharedptr<LayoutItem_Notebook> notebook = sharedptr<LayoutItem_Notebook>::cast_dynamic(item);
+      if(notebook)
+        add_layout_notebook_at_position(notebook, add_before);
       else
       {
-        sharedptr<LayoutItem_Button> layout_button = sharedptr<LayoutItem_Button>::cast_dynamic(item);
-        if(layout_button)
-          add_button_at_position(layout_button, m_table_name, add_before);
+        sharedptr<LayoutGroup> group = sharedptr<LayoutGroup>::cast_dynamic(item);
+        if(group)
+          add_layout_group_at_position(group, add_before);
         else
         {
-          sharedptr<LayoutItem_Text> layout_textobject = sharedptr<LayoutItem_Text>::cast_dynamic(item);
-          if(layout_textobject)
-            add_textobject_at_position(layout_textobject, m_table_name, add_before);
+          sharedptr<LayoutItem_Button> layout_button = sharedptr<LayoutItem_Button>::cast_dynamic(item);
+          if(layout_button)
+            add_button_at_position(layout_button, m_table_name, add_before);
+          else
+          {
+            sharedptr<LayoutItem_Text> layout_textobject = sharedptr<LayoutItem_Text>::cast_dynamic(item);
+            if(layout_textobject)
+              add_textobject_at_position(layout_textobject, m_table_name, add_before);
+          }
         }
       }
     }
@@ -211,6 +218,61 @@ void FlowTableWithFields::add_layout_group_at_position(const sharedptr<LayoutGro
 
     flow_table->signal_script_button_clicked().connect( sigc::mem_fun(*this, &FlowTableWithFields::on_script_button_clicked) );
   }
+}
+
+void FlowTableWithFields::add_layout_notebook_at_position(const sharedptr<LayoutItem_Notebook>& notebook, const type_list_layoutwidgets::iterator& add_before)
+{
+  if(!notebook)
+    return;
+
+  //Add the widget:
+  NotebookGlom* notebook_widget = Gtk::manage(new NotebookGlom());
+
+  notebook_widget->show();
+
+  for(LayoutGroup::type_map_items::iterator iter = notebook->m_map_items.begin(); iter != notebook->m_map_items.end(); ++iter)
+  {
+    sharedptr<LayoutGroup> group = sharedptr<LayoutGroup>::cast_dynamic(iter->second);
+    if(group)
+    {
+      FlowTableWithFields* flow_table = Gtk::manage( new FlowTableWithFields() );
+      add_view(flow_table); //Allow these sub-flowtables to access the document too.
+      flow_table->set_table(m_table_name);
+
+      flow_table->set_columns_count(group->m_columns_count);
+      flow_table->set_padding(6);
+      flow_table->show();
+      notebook_widget->append_page(*flow_table, group->get_title_or_name());
+
+      //Add child items:
+      LayoutGroup::type_map_items items = group->get_items(); 
+      for(LayoutGroup::type_map_items::const_iterator iter = items.begin(); iter != items.end(); ++iter)
+      {
+        sharedptr<LayoutItem> item = iter->second;
+        if(item)
+        {
+          flow_table->add_layout_item(item);
+        }
+      }
+
+      m_sub_flow_tables.push_back(flow_table);
+      flow_table->set_layout_item(group, m_table_name);
+      add_layoutwidgetbase(flow_table, add_before);
+
+      //Connect signal:
+      flow_table->signal_field_edited().connect( sigc::mem_fun(*this, &FlowTableWithFields::on_flowtable_entry_edited) );
+      flow_table->signal_field_open_details_requested().connect( sigc::mem_fun(*this, &FlowTableWithFields::on_flowtable_entry_open_details_requested) );
+      flow_table->signal_related_record_changed().connect( sigc::mem_fun(*this, &FlowTableWithFields::on_flowtable_related_record_changed) );
+      flow_table->signal_requested_related_details().connect( sigc::mem_fun(*this, &FlowTableWithFields::on_flowtable_requested_related_details) );
+
+      flow_table->signal_script_button_clicked().connect( sigc::mem_fun(*this, &FlowTableWithFields::on_script_button_clicked) );
+    }
+  }
+
+  add_layoutwidgetbase(notebook_widget, add_before);
+  //add_view(button); //So it can get the document.
+
+  add(*notebook_widget, true /* expand */);
 }
 
 /*
@@ -793,6 +855,19 @@ void FlowTableWithFields::on_datawidget_layout_item_added(LayoutWidgetBase::enum
     layout_item->set_title(_("New Group"));
     add_layout_item_at_position(layout_item, iterAfter);
   }
+  else if(item_type == LayoutWidgetBase::TYPE_NOTEBOOK)
+  {
+    sharedptr<LayoutItem_Notebook> layout_item = sharedptr<LayoutItem_Notebook>::create();
+    layout_item->set_name(_("notebook"));
+
+    //Add an example tab, so that it shows up.
+    sharedptr<LayoutGroup> group_tab = sharedptr<LayoutGroup>::create();
+    group_tab->set_name(_("tab1"));
+    group_tab->set_title(_("Tab One"));
+    layout_item->add_item(group_tab);
+
+    add_layout_item_at_position(layout_item, iterAfter);
+  }
   else if(item_type == LayoutWidgetBase::TYPE_PORTAL)
   {
     try
@@ -828,6 +903,20 @@ void FlowTableWithFields::on_datawidget_layout_item_added(LayoutWidgetBase::enum
     {
       std::cerr << ex.what() << std::endl;
     }
+  }
+  else if(item_type == LayoutWidgetBase::TYPE_BUTTON)
+  {
+    sharedptr<LayoutItem_Button> layout_item = sharedptr<LayoutItem_Button>::create();
+    layout_item->set_name(_("button"));
+    layout_item->set_title(_("New Button"));
+    add_layout_item_at_position(layout_item, iterAfter);
+  }
+  else if(item_type == LayoutWidgetBase::TYPE_BUTTON)
+  {
+    sharedptr<LayoutItem_Text> layout_item = sharedptr<LayoutItem_Text>::create();
+    layout_item->set_name(_("text"));
+    layout_item->set_text(_("New Text"));
+    add_layout_item_at_position(layout_item, iterAfter);
   }
 
   //TODO: Only if it has really changed:
