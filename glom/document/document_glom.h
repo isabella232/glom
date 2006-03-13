@@ -143,6 +143,7 @@ public:
 
   typedef std::list< sharedptr<TranslatableItem> > type_list_translatables;
   type_list_translatables get_translatable_layout_items(const Glib::ustring& table_name);
+  type_list_translatables get_translatable_report_items(const Glib::ustring& table_name, const Glib::ustring& report_title);
 
   void fill_layout_field_details(const Glib::ustring& parent_table_name, const sharedptr<LayoutGroup>& layout_group) const;
   void fill_layout_field_details(const Glib::ustring& parent_table_name, type_mapLayoutGroupSequence& sequence) const;

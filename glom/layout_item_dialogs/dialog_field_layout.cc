@@ -90,9 +90,9 @@ void Dialog_FieldLayout::set_field(const sharedptr<const LayoutItem_Field>& fiel
   if(field->get_title_custom())
     title_custom = field->get_title_custom()->get_title();
 
-  m_radiobutton_title_custom->set_active( !title_custom.empty() );
+  m_radiobutton_title_custom->set_active( field->get_title_custom() && field->get_title_custom()->get_use_custom_title() );
   m_entry_title_custom->set_text(title_custom);
-  m_label_title_default->set_text(field->get_title_or_name());
+  m_label_title_default->set_text(field->get_title_or_name_no_custom());
 
   //Formatting:
   m_radiobutton_custom_formatting->set_active( !field->get_formatting_use_default() );
@@ -109,11 +109,8 @@ sharedptr<LayoutItem_Field> Dialog_FieldLayout::get_field_chosen() const
   m_box_formatting->get_formatting(m_layout_item->m_formatting);
 
   sharedptr<CustomTitle> title_custom = sharedptr<CustomTitle>::create();
-  if(m_radiobutton_title_custom->get_active())
-  {
-    std::cout << "setting title custom: " << m_entry_title_custom->get_text() << std::endl;
-    title_custom->set_title(m_entry_title_custom->get_text());
-  }
+  title_custom->set_use_custom_title(m_radiobutton_title_custom->get_active()); //For instance, tell it to really use a blank title.
+  title_custom->set_title(m_entry_title_custom->get_text());
 
   m_layout_item->set_title_custom(title_custom);
 

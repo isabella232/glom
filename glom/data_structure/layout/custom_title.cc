@@ -22,12 +22,14 @@
 #include <glibmm/i18n.h>
 
 CustomTitle::CustomTitle()
+: m_use_custom_title(false)
 {
   m_translatable_item_type = TRANSLATABLE_TYPE_CUSTOM_TITLE;
 }
 
 CustomTitle::CustomTitle(const CustomTitle& src)
-: TranslatableItem(src)
+: TranslatableItem(src),
+  m_use_custom_title(src.m_use_custom_title)
 {
 }
 
@@ -37,7 +39,8 @@ CustomTitle::~CustomTitle()
 
 bool CustomTitle::operator==(const CustomTitle& src) const
 {
-  bool result = TranslatableItem::operator==(src);
+  const bool result = TranslatableItem::operator==(src) &&
+                      (m_use_custom_title == src.m_use_custom_title);
 
   return result;
 }
@@ -47,6 +50,19 @@ CustomTitle& CustomTitle::operator=(const CustomTitle& src)
 {
   TranslatableItem::operator=(src);
 
+  m_use_custom_title = src.m_use_custom_title;
+
   return *this;
+}
+
+
+bool CustomTitle::get_use_custom_title() const
+{
+  return m_use_custom_title;
+}
+
+void CustomTitle::set_use_custom_title(bool use_custom_title)
+{
+  m_use_custom_title = use_custom_title;
 }
 

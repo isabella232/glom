@@ -48,7 +48,7 @@ public:
 
   bool get_name_not_empty() const; //For performance.
 
-  virtual Glib::ustring TranslatableItem::get_title_or_name() const;
+  virtual Glib::ustring get_title_or_name() const;
 
   /** Get the title's translation for the current locale.
    */

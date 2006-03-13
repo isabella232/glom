@@ -48,6 +48,8 @@ public:
 
   virtual Glib::ustring get_title_or_name() const;
 
+  Glib::ustring get_title_or_name_no_custom() const;
+
   sharedptr<const CustomTitle> get_title_custom() const;
   sharedptr<CustomTitle> get_title_custom();
   void set_title_custom(const sharedptr<CustomTitle>& title);

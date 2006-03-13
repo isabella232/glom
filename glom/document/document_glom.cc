@@ -46,7 +46,8 @@
 
 #define GLOM_NODE_DATA_LAYOUT_PORTAL "data_layout_portal"
 #define GLOM_NODE_DATA_LAYOUT_ITEM "data_layout_item" //A field.
-#define GLOM_ATTRIBUTE_LAYOUT_ITEM_CUSTOM_TITLE "title_custom"
+#define GLOM_NODE_LAYOUT_ITEM_CUSTOM_TITLE "title_custom"
+#define GLOM_ATTRIBUTE_LAYOUT_ITEM_CUSTOM_TITLE_USE "use_custom"
 #define GLOM_NODE_DATA_LAYOUT_BUTTON "data_layout_button"
 #define GLOM_NODE_DATA_LAYOUT_TEXTOBJECT "data_layout_text"
 #define GLOM_NODE_DATA_LAYOUT_TEXTOBJECT_TEXT "text"
@@ -1457,10 +1458,12 @@ void Document_Glom::load_after_layout_item_field(const xmlpp::Element* element, 
   item->set_formatting_use_default( get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_DATA_LAYOUT_ITEM_FIELD_USE_DEFAULT_FORMATTING) );
 
 
-  const xmlpp::Element* nodeCustomTitle = get_node_child_named(element, GLOM_ATTRIBUTE_LAYOUT_ITEM_CUSTOM_TITLE);
+  const xmlpp::Element* nodeCustomTitle = get_node_child_named(element, GLOM_NODE_LAYOUT_ITEM_CUSTOM_TITLE);
   if(nodeCustomTitle)
   {
     sharedptr<CustomTitle> custom_title = sharedptr<CustomTitle>::create();
+    custom_title->set_use_custom_title( get_node_attribute_value_as_bool(nodeCustomTitle, GLOM_ATTRIBUTE_LAYOUT_ITEM_CUSTOM_TITLE_USE) );
+
     load_after_translations(nodeCustomTitle, *custom_title);
     item->set_title_custom(custom_title);
   }
@@ -2038,7 +2041,9 @@ void Document_Glom::save_before_layout_item_field(xmlpp::Element* nodeItem, cons
   sharedptr<const CustomTitle> custom_title = field->get_title_custom();
   if(custom_title)
   {
-    xmlpp::Element* elementCustomTitle = nodeItem->add_child(GLOM_ATTRIBUTE_LAYOUT_ITEM_CUSTOM_TITLE);
+    xmlpp::Element* elementCustomTitle = nodeItem->add_child(GLOM_NODE_LAYOUT_ITEM_CUSTOM_TITLE);
+    set_node_attribute_value_as_bool(elementCustomTitle, GLOM_ATTRIBUTE_LAYOUT_ITEM_CUSTOM_TITLE_USE, custom_title->get_use_custom_title());
+
     save_before_translations(elementCustomTitle, *custom_title);
   }
 
@@ -2695,6 +2700,18 @@ Document_Glom::type_list_translatables Document_Glom::get_translatable_layout_it
   return result;
 }
 
+
+Document_Glom::type_list_translatables Document_Glom::get_translatable_report_items(const Glib::ustring& table_name, const Glib::ustring& report_title)
+{
+  Document_Glom::type_list_translatables the_list;
+
+  sharedptr<Report> report = get_report(table_name, report_title);
+  if(report)
+    fill_translatable_layout_items(report->m_layout_group, the_list);
+
+  return the_list;
+}
+
 void Document_Glom::fill_translatable_layout_items(const sharedptr<LayoutGroup>& group, type_list_translatables& the_list)
 {
   the_list.push_back(group);
@@ -2708,6 +2725,19 @@ void Document_Glom::fill_translatable_layout_items(const sharedptr<LayoutGroup>&
     sharedptr<LayoutGroup> child_group = sharedptr<LayoutGroup>::cast_dynamic(item);
     if(child_group) //If it is a group, portal, summary, or groupby.
     {
+      sharedptr<LayoutItem_GroupBy> group_by = sharedptr<LayoutItem_GroupBy>::cast_dynamic(child_group);
+      if(group_by)
+      {
+        sharedptr<LayoutItem_Field> field = group_by->get_field_group_by();
+        sharedptr<CustomTitle> custom_title = field->get_title_custom();
+        if(custom_title)
+        {
+          the_list.push_back(custom_title);
+        }
+
+        fill_translatable_layout_items(group_by->m_group_secondary_fields, the_list);
+      }
+
       //recurse:
       fill_translatable_layout_items(child_group, the_list);
     }

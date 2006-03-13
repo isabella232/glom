@@ -245,6 +245,8 @@ Glib::ustring TranslatableItem::get_translatable_type_name(enumTranslatableItemT
 {
   if(item_type == TRANSLATABLE_TYPE_FIELD)
     return _("Field");
+  else if(item_type == TRANSLATABLE_TYPE_CUSTOM_TITLE)
+    return _("Custom Title");
   else if(item_type == TRANSLATABLE_TYPE_RELATIONSHIP)
     return _("Relationship");
   else if(item_type == TRANSLATABLE_TYPE_RELATIONSHIP)

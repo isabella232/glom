@@ -28,7 +28,7 @@ AppState::AppState()
 
 AppState::~AppState()
 {
-  
+
 }
 
 AppState::userlevels AppState::get_userlevel() const

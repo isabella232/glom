@@ -1,5 +1,25 @@
 2006-03-13  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/data_structure/layout/custom_title.cc:
+	* glom/data_structure/layout/custom_title.h: Added get/set_use_custom_title().
+	* glom/data_structure/layout/layoutitem_field.cc:
+	* glom/data_structure/layout/layoutitem_field.h: Added get_title_or_name_no_custom().
+	get_title_or_name(): Return an empty custom title if use_custom_title is set.
+	* glom/data_structure/translatable_item.cc:
+	* glom/data_structure/translatable_item.h: get_translatable_type_name(): Add a result for 
+	custom field titles.
+	* glom/document/document_glom.cc:
+	* glom/document/document_glom.h: load_after_layout_item_field(), save_before_layout_item_field(): 
+	Load/Save a bool use_custom_title attribute, to allow for empty custom titles.
+	Added get_translatable_report_items().
+	get_translatable_layout_items(): Handle GroupBy group-by fields and secondary fields.
+	* glom/layout_item_dialogs/dialog_field_layout.cc: set_field(): Show the non-custom 
+	title as the default title, so it does not change if there is a custom title.
+	* glom/translation/window_translations.cc: Use get_translatable_report_items() to get 
+	custom titles and GroupBy fields.
+
+2006-03-13  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/document/document_glom.cc: load_after_layout_group(), save_before_layout_group(): 
 	For GroupBy parts, save a whole LayoutItem node for the group-by field, so we can use 
 	related fields and custom formatting for it.

@@ -34,6 +34,14 @@ public:
   virtual ~CustomTitle();
 
   bool operator==(const CustomTitle& src) const;
+
+  bool get_use_custom_title() const;
+  void set_use_custom_title(bool use_custom_title = true);
+
+protected:
+
+  //We need this in order to specify that an empty custom title should really be used.
+  bool m_use_custom_title;
 };
 
 #endif //GLOM_DATASTRUCTURE_LAYOUT_CUSTOM_TITLE_H

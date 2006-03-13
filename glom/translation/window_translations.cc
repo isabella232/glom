@@ -244,15 +244,36 @@ void Window_Translations::load_from_document()
     Document_Glom::type_listReports listReports = document->get_report_names(table_name);
     for(Document_Glom::type_listReports::iterator iter = listReports.begin(); iter != listReports.end(); ++iter)
     {
-      sharedptr<Report> report = document->get_report(table_name, *iter);
+      const Glib::ustring report_name = *iter;
+      sharedptr<Report> report = document->get_report(table_name, report_name);
       if(report)
       {
+        //Translatable report title:
         Gtk::TreeModel::iterator iterTree = m_model->append();
         Gtk::TreeModel::Row row = *iterTree;
 
         row[m_columns.m_col_item] = report;
         row[m_columns.m_col_translation] = report->get_title(m_translation_locale);
         row[m_columns.m_col_parent_table] = table_name;
+
+        //Translatable report items:
+        Document_Glom::type_list_translatables list_layout_items = document->get_translatable_report_items(table_name, report_name);
+        for(Document_Glom::type_list_translatables::iterator iter = list_layout_items.begin(); iter != list_layout_items.end(); ++iter)
+        {
+          sharedptr<TranslatableItem> item = *iter;
+          if(item)
+          {
+            if(!(item->get_title_original().empty()))
+            {
+              Gtk::TreeModel::iterator iterTree = m_model->append();
+              Gtk::TreeModel::Row row = *iterTree;
+
+              row[m_columns.m_col_item] = item;
+              row[m_columns.m_col_translation] = item->get_title(m_translation_locale);
+              row[m_columns.m_col_parent_table] = table_name;
+            }
+          }
+        }
       }
     }
 
