@@ -1870,8 +1870,6 @@ void Base_DB::get_table_fields_to_show_for_sequence_add_group(const Glib::ustrin
 {
   //g_warning("Box_Data::get_table_fields_to_show_for_sequence_add_group(): table_name=%s, all_db_fields.size()=%d, group->name=%s", table_name.c_str(), all_db_fields.size(), group->get_name().c_str());
 
-  const Document_Glom* document = get_document();
-
   LayoutGroup::type_map_const_items items = group->get_items();
   for(LayoutGroup::type_map_const_items::const_iterator iterItems = items.begin(); iterItems != items.end(); ++iterItems)
   {
@@ -1885,34 +1883,24 @@ void Base_DB::get_table_fields_to_show_for_sequence_add_group(const Glib::ustrin
 
       if(item_field->get_has_relationship_name()) //If it's a field in a related table.
       {
-        //Get the full field information:
-        const Glib::ustring relationship_name = item_field->get_relationship_name();
-        sharedptr<Relationship> relationship = document->get_relationship(table_name, relationship_name);
-        if(relationship)
+        //TODO_Performance: get_fields_for_table_one_field() is probably very inefficient
+        sharedptr<Field> field = get_fields_for_table_one_field(item_field->get_table_used(table_name), item->get_name());
+        if(field)
         {
-          //TODO_Performance: get_fields_for_table_one_field() is probably very inefficient
-          sharedptr<Field> field = get_fields_for_table_one_field(relationship->get_to_table(), item->get_name());
-          if(field)
-          {
-            sharedptr<LayoutItem_Field> layout_item = glom_sharedptr_clone(item_field); //TODO_Performance: Reduce the copying.
-            layout_item->set_full_field_details(field); //Fill in the full field information for later.
+          sharedptr<LayoutItem_Field> layout_item = glom_sharedptr_clone(item_field); //TODO_Performance: Reduce the copying.
+          layout_item->set_full_field_details(field); //Fill in the full field information for later.
 
 
-            //TODO_Performance: We do this once for each related field, even if there are 2 from the same table:
-            const Privileges privs_related = get_current_privs(item_field->get_table_used(table_name));
-            layout_item->m_priv_view = privs_related.m_view;
-            layout_item->m_priv_edit = privs_related.m_edit;
+          //TODO_Performance: We do this once for each related field, even if there are 2 from the same table:
+          const Privileges privs_related = get_current_privs(item_field->get_table_used(table_name));
+          layout_item->m_priv_view = privs_related.m_view;
+          layout_item->m_priv_edit = privs_related.m_edit;
 
-            vecFields.push_back(layout_item);
-          }
-          else
-          {
-            std::cerr << "Base_DB::get_table_fields_to_show_for_sequence_add_group(): related field not found: relationship=" << relationship_name << ", field=" << item->get_name() << std::endl;
-          }
+          vecFields.push_back(layout_item);
         }
         else
         {
-          std::cerr << "Base_DB::get_table_fields_to_show_for_sequence_add_group(): related field's relationship not found: parent_table_name=" << table_name << ", relationship_name=" << relationship_name << std::endl;
+          std::cerr << "Base_DB::get_table_fields_to_show_for_sequence_add_group(): related field not found: field=" << item->get_layout_display_name() << std::endl;
         }
       }
       else //It's a regular field in the table:

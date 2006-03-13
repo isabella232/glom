@@ -886,13 +886,10 @@ DbAddDel::type_list_indexes DbAddDel::get_column_index(const sharedptr<const Lay
 
   type_list_indexes list_indexes;
 
-  const Glib::ustring field_name = layout_item->get_name();
-  const Glib::ustring relationship_name = layout_item->get_relationship_name();
-
   guint i = 0;
   for(type_ColumnTypes::const_iterator iter = m_ColumnTypes.begin(); iter != m_ColumnTypes.end(); ++iter)
   {
-    if( (iter->m_field->get_name() == field_name) && (iter->m_field->get_relationship_name() == relationship_name) )
+    if(iter->m_field->is_same_field(layout_item))
     {
       list_indexes.push_back(i);
     }

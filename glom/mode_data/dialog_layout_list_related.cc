@@ -399,7 +399,7 @@ void Dialog_Layout_List_Related::on_button_edit_field()
       sharedptr<LayoutItem_Field> field = row[m_ColumnsFields.m_col_layout_item];
 
       //Get the chosen field:
-      sharedptr<LayoutItem_Field> field_chosen = offer_field_list(field, m_table_name, this);
+      sharedptr<LayoutItem_Field> field_chosen = offer_field_list(field, m_portal->get_relationship()->get_to_table(), this);
       if(field_chosen)
       {
         //Set the field details in the layout treeview:

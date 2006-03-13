@@ -1,5 +1,15 @@
 2006-03-13  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/base_db.cc: get_table_fields_to_show_for_sequence_add_group(): When getting 
+	full field details for related fields, use get_table_used() instead of the single-related to_table, 
+	so that this works with doubly-related fields. This makes doubly-related fields work in portals.
+	* glom/mode_data/dialog_layout_list_related.cc: on_button_edit_field(): Show fields to the to_table, 
+	not the parent table.
+	* glom/utility_widgets/db_adddel/db_adddel.cc: get_column_index(): Use is_same_field(), so that it 
+	works for doubly-related fields too.
+
+2006-03-13  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/data_structure/layout/custom_title.cc:
 	* glom/data_structure/layout/custom_title.h: Added get/set_use_custom_title().
 	* glom/data_structure/layout/layoutitem_field.cc:
