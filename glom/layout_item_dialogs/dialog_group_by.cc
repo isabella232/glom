@@ -168,11 +168,13 @@ void Dialog_GroupBy::on_button_secondary_fields()
 
 void Dialog_GroupBy::update_labels()
 {
+  //Group-by Field:
   if(m_layout_item->get_has_field_group_by())
     m_label_group_by->set_text( m_layout_item->get_field_group_by()->get_layout_display_name() );
   else
     m_label_group_by->set_text( Glib::ustring() );
 
+  //Sort fields:
   if(m_layout_item->get_has_fields_sort_by())
   {
     Glib::ustring text;
@@ -189,4 +191,20 @@ void Dialog_GroupBy::update_labels()
   }
   else
     m_label_sort_by->set_text( Glib::ustring() );
+
+  //Secondary Fields:
+  Glib::ustring text_secondary_fields;
+  if(m_layout_item->m_group_secondary_fields)
+  {
+    const LayoutGroup::type_map_items& map_items = m_layout_item->m_group_secondary_fields->m_map_items;
+    for(LayoutGroup::type_map_items::const_iterator iter = map_items.begin(); iter != map_items.end(); ++iter)
+    {
+      if(!text_secondary_fields.empty())
+        text_secondary_fields += ", ";
+
+      text_secondary_fields += iter->second->get_layout_display_name();
+    }
+  }
+
+  m_label_secondary_fields->set_text(text_secondary_fields);
 }

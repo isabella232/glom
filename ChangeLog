@@ -1,5 +1,22 @@
 2006-03-13  Murray Cumming <murrayc@murrayc.com>
 
+	* glom/base_db.cc: report_build_groupby_children(): 
+	In the ORDER BY clause, use the relationship alias name, instead of 
+	the table name, to avoid getting extra records because we would not be using 
+	the join.
+	* glom/data_structure/layout/usesrelationship.cc:
+	* glom/data_structure/layout/usesrelationship.h: Added get_sql_table_or_join_alias_name() 
+	for convenience.
+	* glom/utils.cc: build_sql_select_with_where_clause(): Use get_sql_table_or_join_alias_name() 
+	to simplify the code.
+	* glom/document/document_glom.cc: load_after_layout_group(): Fill the full field details for 
+	secondary fields of GroupBy parts.
+	* glom/layout_item_dialogs/dialog_group_by.cc: update_labels(): Show the list of secondary fields.
+	* xslt/print_report_to_html.xsl: Only indent child group_by divs, to avoid wasting space at the left 
+	margin.
+
+2006-03-13  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/utility_widgets/db_adddel/db_adddel.cc: treeviewcolumn_on_cell_data(): 
 	Check the type of the GdaValue before calling get_bool, to avoid warnings about 
 	it not being bool. It seems to be null sometimes. Not sure why.

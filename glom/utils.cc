@@ -193,25 +193,9 @@ Glib::ustring GlomUtils::build_sql_select_with_where_clause(const Glib::ustring&
     if(is_summary)
       one_sql_part += fieldsummary->get_summary_type_sql() + "(";
 
-    if(!layout_item->get_has_relationship_name())
+    one_sql_part += ( "\"" + layout_item->get_sql_table_or_join_alias_name(table_name) + "\"." );
+    if(layout_item->get_has_relationship_name())
     {
-      one_sql_part += ( "\"" + table_name + "\"." );
-    }
-    else
-    {
-      const Glib::ustring relationship_alias_name = layout_item->get_sql_join_alias_name();
-      if(!relationship_alias_name.empty())
-        one_sql_part += (relationship_alias_name + "." );
-      else
-      {
-        //Non-linked-fields relationship:
-        const Glib::ustring to_table_name = layout_item->get_table_used(table_name);
-        if(!to_table_name.empty()) //Relationships that just specify a table.
-        {
-          one_sql_part += ( "\"" + to_table_name + "\"." );
-        }
-      }
-
       //Add the relationship to the list:
       type_list_relationships::const_iterator iterFind = std::find_if(list_relationships.begin(), list_relationships.end(), predicate_UsesRelationshipHasRelationships<UsesRelationship>(layout_item) );
       if(iterFind == list_relationships.end()) //If the table is not yet in the list:

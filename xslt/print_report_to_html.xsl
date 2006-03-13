@@ -6,9 +6,15 @@
 <html xml:lang="en" lang="en">
 
 <head>
+<xsl:text>
+
+</xsl:text>
 <title>
   <xsl:value-of select="@table"/>: <xsl:value-of select="@title"/>
 </title>
+<xsl:text>
+
+</xsl:text>
 
 <!-- Very simple styling. -->
 <style type="text/css">
@@ -23,7 +29,15 @@ table
 
 .group_by
 {
-  margin-left: 2em;
+  margin-left: 0em;
+  border-style: solid;
+  border-color: black;
+  border-width: 0em;
+}
+
+.group_by > .group_by
+{
+  margin-left: 2em; /* Indent all sub-groups, without indenting top-level groups. */
   border-style: solid;
   border-color: black;
   border-width: 0em;
@@ -31,7 +45,7 @@ table
 
 .group_by_title
 {
-  margin-left: 2em;
+  margin-left: 0em;
   border-style: solid;
   border-color: black;
   border-width: 0.0em 0em 0.1em 0em; /* Put a line under the group-by title value. */
@@ -42,9 +56,13 @@ table
   margin-left: 2em;
 }
 
+.group_by_secondary_fields
+{
+}
+
 .records
 {
-  margin-left: 2em; /* Indent each group-by set of records. */
+  margin-left: 0em;
 }
 
 th
@@ -69,15 +87,23 @@ td
 }
 
 </style>
+<xsl:text>
+
+</xsl:text>
 
 </head>
+<xsl:text>
 
+</xsl:text>
 <body>
+<xsl:text>
+</xsl:text>
 
 <h1>
   <xsl:value-of select="@table"/>: <xsl:value-of select="@title"/>
 </h1>
-
+<xsl:text>
+</xsl:text>
 
 <xsl:apply-templates/>
 
@@ -120,6 +146,9 @@ td
 </xsl:text>
   <xsl:apply-templates select="row"/>
 </table>
+<xsl:text>
+
+</xsl:text>
 
 </p>
 <xsl:apply-templates select="summary"/>
@@ -130,18 +159,28 @@ td
 
 <xsl:template match="secondary_fields">
 <table class="group_by_secondary_fields">
+<xsl:text>
+</xsl:text>
   <xsl:apply-templates select="field_heading"/>
   <xsl:apply-templates select="row"/>
 </table>
+<xsl:text>
+
+</xsl:text>
 </xsl:template>
 
 <xsl:template match="summary">
 <div class="summary">
 <p>
 <table class="records_summary">
+<xsl:text>
+</xsl:text>
   <xsl:apply-templates select="field_heading"/>
   <xsl:apply-templates select="row"/>
 </table>
+<xsl:text>
+
+</xsl:text>
 </p>
 </div>
 </xsl:template>
@@ -150,9 +189,14 @@ td
 <div class="ungrouped_records">
 <p>
 <table class="records">
+<xsl:text>
+</xsl:text>
   <xsl:apply-templates select="field_heading"/>
   <xsl:apply-templates select="row"/>
 </table>
+<xsl:text>
+
+</xsl:text>
 </p>
 </div>
 </xsl:template>

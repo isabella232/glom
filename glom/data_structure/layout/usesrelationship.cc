@@ -103,6 +103,23 @@ void UsesRelationship::set_related_relationship(const sharedptr<Relationship>& r
   m_related_relationship = relationship;
 }
 
+Glib::ustring UsesRelationship::get_sql_table_or_join_alias_name(const Glib::ustring& parent_table)
+{
+  if(get_has_relationship_name() || get_has_related_relationship_name())
+  {
+    const Glib::ustring result = get_sql_join_alias_name();
+    if(result.empty())
+    {
+      //Non-linked-fields relationship:
+      return get_table_used(parent_table);
+    }
+    else
+      return result;
+  }
+  else
+    return parent_table;
+}
+
 Glib::ustring UsesRelationship::get_table_used(const Glib::ustring& parent_table) const
 {
   if(m_related_relationship)

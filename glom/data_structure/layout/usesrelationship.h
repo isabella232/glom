@@ -64,6 +64,8 @@ public:
   Glib::ustring get_sql_join_alias_name() const;
   Glib::ustring get_sql_join_alias_definition() const;
 
+  Glib::ustring get_sql_table_or_join_alias_name(const Glib::ustring& parent_table);
+
 protected:
 
   //This is just cached data, so we don't need to always lookup the relationship details from the document, from the name.

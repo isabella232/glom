@@ -101,7 +101,7 @@ Glib::RefPtr<Gnome::Gda::DataModel> Base_DB::Query_execute(const Glib::ustring& 
   {
     Glib::RefPtr<Gnome::Gda::Connection> gda_connection = sharedconnection->get_gda_connection();
 
-    /*
+    
     try
     {
       std::cout << "Debug: Query_execute():  " << strQuery << std::endl;
@@ -110,7 +110,7 @@ Glib::RefPtr<Gnome::Gda::DataModel> Base_DB::Query_execute(const Glib::ustring& 
     {
       std::cout << "Debug: query string could not be converted to std::cout: " << ex.what() << std::endl;
     }
-    */
+    
 
     result = gda_connection->execute_single_command(strQuery);
     if(!result)
@@ -1482,7 +1482,7 @@ void Base_DB::report_build_groupby_children(const Glib::ustring& table_name, xml
             sort_clause += ", ";
 
           sharedptr<LayoutItem_Field> item_field = sharedptr<LayoutItem_Field>::cast_dynamic(iter->first);
-          sort_clause += "\"" + item_field->get_table_used(table_name) + "\".\"" + item_field->get_name() + "\" " + (iter->second ? "ASC" : "DESC");
+          sort_clause += "\"" + item_field->get_sql_table_or_join_alias_name(table_name) + "\".\"" + item_field->get_name() + "\" " + (iter->second ? "ASC" : "DESC");
           first = false;
         }
       }

@@ -1565,6 +1565,7 @@ void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Gl
         sharedptr<LayoutItem_FieldSummary> item = sharedptr<LayoutItem_FieldSummary>::create();
         //item.set_full_field_details_empty();
         load_after_layout_item_field(element, table_name, item);
+        item->set_full_field_details( get_field(item->get_table_used(table_name), item->get_name()) );
         item->set_summary_type_from_sql( get_node_attribute_value(element, GLOM_ATTRIBUTE_LAYOUT_ITEM_FIELDSUMMARY_SUMMARYTYPE) );
 
         item->m_sequence = sequence;
@@ -1622,6 +1623,7 @@ void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Gl
           if(elementGroup)
           {
             load_after_layout_group(elementGroup, table_name, child_group->m_group_secondary_fields);
+            fill_layout_field_details(table_name, child_group->m_group_secondary_fields); //Get full field details from the field names.
           }
         }
 
