@@ -1558,6 +1558,7 @@ void Base_DB::report_build_groupby(const Glib::ustring& table_name, xmlpp::Eleme
     //There is no group-by field, so ouput all the found records.
     //For instance, the user could use the GroupBy part just to specify a sort, though that would be a bit of a hack:
     xmlpp::Element* nodeGroupBy = parent_node.add_child("group_by"); //We need this to create the HTML table.
+    Document_Glom::set_node_attribute_value_as_decimal_double(nodeGroupBy, "border_width", group_by->get_border_width());
     report_build_groupby_children(table_name, *nodeGroupBy, group_by, where_clause_parent);
   }
 }

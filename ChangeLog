@@ -1,5 +1,12 @@
 2006-03-13  Murray Cumming <murrayc@murrayc.com>
 
+	* glom/base_db.cc: report_build_groupby(): Use the border width also 
+	when using the group_by node for non-grouped records.
+	* glom/layout_item_dialogs/comboentry_borderwidth.cc: 
+	Constructor add a 0.05em border width choice, for a finer line.
+
+2006-03-13  Murray Cumming <murrayc@murrayc.com>
+
 	* glom/data_structure/layout/report_parts/layoutitem_groupby.cc:
 	* glom/data_structure/layout/report_parts/layoutitem_groupby.h: Use a list of 
 	sort fields, instead of just one, for multiple sort levels.

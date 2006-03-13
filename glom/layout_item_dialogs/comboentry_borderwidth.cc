@@ -29,6 +29,8 @@ ComboEntry_BorderWidth::ComboEntry_BorderWidth(BaseObjectType* cobject, const Gl
 
   //Fill the model:
   Gtk::TreeModel::iterator iter = m_model->append();
+  (*iter)[m_model_columns.m_value] = string_for_number(0.05);
+  iter = m_model->append();
   (*iter)[m_model_columns.m_value] = string_for_number(0.1);
   iter = m_model->append();
   (*iter)[m_model_columns.m_value] = string_for_number(0.2);
