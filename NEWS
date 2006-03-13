@@ -1,3 +1,6 @@
+* Details layouts:
+  - Added a Notebook layout part, with tabs, so the details can show more information, 
+    such as several related layouts portals.
 * View Layouts and Reports:
   - Allow doubly-related fields. For instance, Actor::Agent::name on the Details of a 
     a Character record.
