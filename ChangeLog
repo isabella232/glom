@@ -1,4 +1,15 @@
-2006-03-13  Murray Cumming <murrayc@murrayc.com>
+2006-03-13  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/document/document_glom.cc: load_after_layout_group(), save_before_layout_group(): 
+	For GroupBy parts, save a whole LayoutItem node for the group-by field, so we can use 
+	related fields and custom formatting for it.
+	* glom/glom.glade: dialog_group_by: Rename the Select button for Sort Fields to 
+	Edit, to match the button for secondary fields, which also has more than one field.
+	* glom/layout_item_dialogs/dialog_group_by.cc:
+	* glom/layout_item_dialogs/dialog_group_by.h: Added Formatting button, to allow us, 
+	for instance, to change the title of the group-by field.
+
+2006-03-13  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/base_db.cc: report_build_groupby_children(): 
 	In the ORDER BY clause, use the relationship alias name, instead of 

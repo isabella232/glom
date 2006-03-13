@@ -105,7 +105,7 @@
 
 #define GLOM_NODE_REPORTS "reports"
 #define GLOM_NODE_REPORT "report"
-#define GLOM_ATTRIBUTE_REPORT_ITEM_GROUPBY_GROUPBY "groupby"
+#define GLOM_NODE_REPORT_ITEM_GROUPBY_GROUPBY "groupby"
 #define GLOM_NODE_REPORT_ITEM_GROUPBY_SORTBY "sortby"
 #define GLOM_ATTRIBUTE_LAYOUT_ITEM_FIELDSUMMARY_SUMMARYTYPE "summarytype"
 
@@ -1596,14 +1596,17 @@ void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Gl
         //Recurse:
         load_after_layout_group(element, table_name, child_group);
 
-        sharedptr<LayoutItem_Field> field_groupby = sharedptr<LayoutItem_Field>::create(); //TODO: Handle related fields too.
-        //field_groupby.set_full_field_details_empty();
-
-        const Glib::ustring groupby_field_name = get_node_attribute_value(element, GLOM_ATTRIBUTE_REPORT_ITEM_GROUPBY_GROUPBY);
-        field_groupby->set_full_field_details( get_field(table_name, groupby_field_name) );
+        //Group-By field:
+        sharedptr<LayoutItem_Field> field_groupby = sharedptr<LayoutItem_Field>::create();
+        xmlpp::Element* elementGroupBy = get_node_child_named(element, GLOM_NODE_REPORT_ITEM_GROUPBY_GROUPBY);
+        if(elementGroupBy)
+        {
+          load_after_layout_item_field(elementGroupBy, table_name, field_groupby);
+          field_groupby->set_full_field_details( get_field(field_groupby->get_table_used(table_name), field_groupby->get_name()) );
+        }
         child_group->set_field_group_by(field_groupby);
 
-        sharedptr<LayoutItem_Field> field_sortby = sharedptr<LayoutItem_Field>::create();
+
         //field_groupby.set_full_field_details_empty();
 
         //Sort fields:
@@ -2073,7 +2076,10 @@ void Document_Glom::save_before_layout_group(xmlpp::Element* node, const sharedp
     child = node->add_child(GLOM_NODE_DATA_LAYOUT_ITEM_GROUPBY);
 
     if(group_by->get_has_field_group_by())
-      set_node_attribute_value(child, GLOM_ATTRIBUTE_REPORT_ITEM_GROUPBY_GROUPBY, group_by->get_field_group_by()->get_name());
+    {
+      xmlpp::Element* nodeGroupBy = child->add_child(GLOM_NODE_REPORT_ITEM_GROUPBY_GROUPBY);
+      save_before_layout_item_field(nodeGroupBy, group_by->get_field_group_by());
+    }
 
     //Sort fields:
     if(group_by->get_has_fields_sort_by())

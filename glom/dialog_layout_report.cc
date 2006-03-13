@@ -690,6 +690,7 @@ void Dialog_Layout_Report::on_button_edit()
                 *fieldsummary = *chosenitem; //TODO_Performance.
 
                 m_model_parts->row_changed(Gtk::TreePath(iter), iter); //TODO: Add row_changed(iter) to gtkmm?
+                m_modified = true;
               }
             }
 
@@ -725,6 +726,7 @@ void Dialog_Layout_Report::on_button_edit()
             {
               *layout_item_text = *chosen;
               m_model_parts->row_changed(Gtk::TreePath(iter), iter); //TODO: Add row_changed(iter) to gtkmm?
+              m_modified = true;
             }
           }
           else
@@ -756,6 +758,7 @@ void Dialog_Layout_Report::on_button_edit()
                     {
                       *group_by = *chosenitem;
                       m_model_parts->row_changed(Gtk::TreePath(iter), iter); //TODO: Add row_changed(iter) to gtkmm?
+                      m_modified = true;
                     }
                   }
 

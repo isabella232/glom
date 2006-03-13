@@ -29,6 +29,7 @@ Dialog_GroupBy::Dialog_GroupBy(BaseObjectType* cobject, const Glib::RefPtr<Gnome
   m_label_sort_by(0),
   m_label_secondary_fields(0),
   m_button_field_group_by(0),
+  m_button_formatting_group_by(0),
   m_button_field_sort_by(0),
   m_button_secondary_fields(0),
   m_comboboxentry_border_width(0),
@@ -40,6 +41,7 @@ Dialog_GroupBy::Dialog_GroupBy(BaseObjectType* cobject, const Glib::RefPtr<Gnome
   refGlade->get_widget("label_secondary_fields", m_label_secondary_fields);
 
   refGlade->get_widget("button_select_group_by", m_button_field_group_by);
+  refGlade->get_widget("button_formatting_group_by", m_button_formatting_group_by);
   refGlade->get_widget("button_select_sort_by", m_button_field_sort_by);
   refGlade->get_widget("button_secondary_edit", m_button_secondary_fields);
 
@@ -47,6 +49,7 @@ Dialog_GroupBy::Dialog_GroupBy(BaseObjectType* cobject, const Glib::RefPtr<Gnome
 
   //Connect signals:
   m_button_field_group_by->signal_clicked().connect(sigc::mem_fun(*this, &Dialog_GroupBy::on_button_field_group_by));
+  m_button_formatting_group_by->signal_clicked().connect(sigc::mem_fun(*this, &Dialog_GroupBy::on_button_formatting_group_by));
   m_button_field_sort_by->signal_clicked().connect(sigc::mem_fun(*this, &Dialog_GroupBy::on_button_field_sort_by));
   m_button_secondary_fields->signal_clicked().connect(sigc::mem_fun(*this, &Dialog_GroupBy::on_button_secondary_fields));
 
@@ -97,11 +100,24 @@ sharedptr<LayoutItem_GroupBy> Dialog_GroupBy::get_item() const
 
 void Dialog_GroupBy::on_button_field_group_by()
 {
-  sharedptr<LayoutItem_Field> field = offer_field_list(m_table_name, this);
+  sharedptr<LayoutItem_Field> field = offer_field_list(m_layout_item->get_field_group_by(), m_table_name, this);
   if(field)
   {
     m_layout_item->set_field_group_by(field);
     set_item(m_layout_item, m_table_name); //Update the UI.
+  }
+}
+
+void Dialog_GroupBy::on_button_formatting_group_by()
+{
+  if(m_layout_item)
+  {
+    sharedptr<LayoutItem_Field> field = offer_field_formatting(m_layout_item->get_field_group_by(), m_table_name, this);
+    if(field)
+    {
+      m_layout_item->set_field_group_by(field);
+      set_item(m_layout_item, m_table_name); //Update the UI.
+    }
   }
 }
 
@@ -170,9 +186,15 @@ void Dialog_GroupBy::update_labels()
 {
   //Group-by Field:
   if(m_layout_item->get_has_field_group_by())
+  {
     m_label_group_by->set_text( m_layout_item->get_field_group_by()->get_layout_display_name() );
+    m_button_formatting_group_by->set_sensitive(true);
+  }
   else
+  {
     m_label_group_by->set_text( Glib::ustring() );
+    m_button_formatting_group_by->set_sensitive(false);
+  }
 
   //Sort fields:
   if(m_layout_item->get_has_fields_sort_by())

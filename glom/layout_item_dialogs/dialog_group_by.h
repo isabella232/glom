@@ -52,6 +52,7 @@ public:
 protected:
   //Signal handlers:
   void on_button_field_group_by();
+  void on_button_formatting_group_by();
   void on_button_field_sort_by();
   void on_button_secondary_fields();
   void on_dialog_secondary_fields_hide();
@@ -62,6 +63,7 @@ protected:
   Gtk::Label* m_label_sort_by;
   Gtk::Label* m_label_secondary_fields;
   Gtk::Button* m_button_field_group_by;
+  Gtk::Button* m_button_formatting_group_by;
   Gtk::Button* m_button_field_sort_by;
   Gtk::Button* m_button_secondary_fields;
   ComboEntry_BorderWidth* m_comboboxentry_border_width;
