@@ -11,6 +11,7 @@
     can be (mis)used just to specify a sort field for non-grouped-by records.
   - Allow Group By parts to be sorted by multiple fields, and allow the sort 
     order (ascending or descending) to be specified.
+  - Added Vertical Group report part, for packing more information into a row.
   - Allow adding of fields as siblings while selecting the field, instead of 
     requiring the user to select the parent group.
   - Allow custom formatting of fields.

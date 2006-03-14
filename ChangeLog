@@ -1,3 +1,22 @@
+2006-03-14  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/base_db.cc:
+	* glom/base_db.h: Moved some code into report_build_records_field() and 
+	report_build_records_text(). Added report_build_records_verticalgroup(). 
+	report_build() and report_build_records(): Handle vertical groups (recursively).
+	* glom/data_structure/layout/report_parts/Makefile.am:
+	* glom/data_structure/layout/report_parts/layoutitem_verticalgroup.cc:
+	* glom/data_structure/layout/report_parts/layoutitem_verticalgroup.h:
+	Added new report part, for stacked rows of fields in one cell of a record, 
+	for fitting more stuff into one row of a report.
+	* glom/document/document_glom.cc: Load/Save the new layout item.
+	* glom/dialog_layout_report.cc:
+	* xslt/print_report_to_html.xsl: Handle vertical_group and field_vertical.
+	* glom/utility_widgets/flowtablewithfields.cc: 
+	add_layout_notebook_at_position(): Make the notebook tabs bold, so they 
+	are as visible as group titles, which is what they are really. Make sure 
+	that the notebook pages have border spacing.
+
 2006-03-13  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/base_db.cc:

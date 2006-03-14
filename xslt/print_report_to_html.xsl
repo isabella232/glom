@@ -35,6 +35,14 @@ table
   border-width: 0em;
 }
 
+.group_vertical
+{
+  margin-left: 0em;
+  border-style: solid;
+  border-color: black;
+  border-width: 0em;
+}
+
 .group_by > .group_by
 {
   margin-left: 2em; /* Indent all sub-groups, without indenting top-level groups. */
@@ -71,6 +79,7 @@ th
   border-style: solid;
   border-color: black; /* Though it has a 0 width by default. */
   border-width: 0em;
+  vertical-align: top;
 }
 
 td
@@ -79,6 +88,7 @@ td
   border-style: solid;
   border-color: black; /* Though it has a 0 width by default. */
   border-width: 0em;
+  vertical-align: top;
 }
 
 .records_summary
@@ -201,6 +211,29 @@ td
 </div>
 </xsl:template>
 
+<xsl:template match="group_vertical">
+<xsl:variable name="attStyleBorderWidth">
+<xsl:choose>
+  <xsl:when test="string(../../@border_width)"><xsl:value-of select="../../@border_width"/></xsl:when>
+  <xsl:otherwise>0</xsl:otherwise>
+</xsl:choose>
+</xsl:variable>
+
+<xsl:text>
+
+</xsl:text>
+<td class="group_vertical" style="border-width: {$attStyleBorderWidth}em;">
+<div class="group_vertical">
+<table>
+<xsl:apply-templates/>
+</table>
+</div>
+</td>
+<xsl:text>
+
+</xsl:text>
+</xsl:template>
+
 <xsl:template match="field_heading">
 
 <xsl:variable name="attAlign">
@@ -248,5 +281,31 @@ td
 
 <td class="field" align="{$attAlign}" style="border-width: {$attStyleBorderWidth}em;"><xsl:value-of select="@value"/></td>
 </xsl:template>
+
+
+<xsl:template match="field_vertical">
+
+<xsl:variable name="attAlign">
+<xsl:choose>
+  <xsl:when test="@field_type = 'numeric'">right</xsl:when>
+  <xsl:otherwise>left</xsl:otherwise>
+</xsl:choose>
+</xsl:variable>
+
+<xsl:variable name="attStyleBorderWidth">
+<xsl:choose>
+  <xsl:when test="string(../@border_width)"><xsl:value-of select="../@border_width"/></xsl:when>
+  <xsl:otherwise>0</xsl:otherwise>
+</xsl:choose>
+</xsl:variable>
+
+<tr>
+<th class="field_heading" align="right" style="border-width: {$attStyleBorderWidth}em;"><xsl:value-of select="@title"/></th>
+<td class="field" align="{$attAlign}" style="border-width: {$attStyleBorderWidth}em;"><xsl:value-of select="@value"/></td>
+</tr>
+<xsl:text>
+</xsl:text>
+</xsl:template>
+
 
 </xsl:stylesheet>

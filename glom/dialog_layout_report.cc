@@ -22,6 +22,7 @@
 #include "data_structure/layout/report_parts/layoutitem_groupby.h"
 #include "data_structure/layout/report_parts/layoutitem_summary.h"
 #include "data_structure/layout/report_parts/layoutitem_fieldsummary.h"
+#include "data_structure/layout/report_parts/layoutitem_verticalgroup.h"
 #include "data_structure/layout/layoutitem_field.h"
 #include "data_structure/layout/layoutitem_text.h"
 #include "mode_data/dialog_choose_field.h"
@@ -67,8 +68,11 @@ Dialog_Layout_Report::Dialog_Layout_Report(BaseObjectType* cobject, const Glib::
     Gtk::TreeModel::iterator iterField = m_model_available_parts->append(iter->children()); //Place Field under GroupBy to indicate that that's where it belongs in the actual layout.
     (*iterField)[m_columns_available_parts.m_col_item] = sharedptr<LayoutItem>(static_cast<LayoutItem*>(new LayoutItem_Field()));
 
-    Gtk::TreeModel::iterator  iterText = m_model_available_parts->append(iter->children());
+    Gtk::TreeModel::iterator iterText = m_model_available_parts->append(iter->children());
     (*iterText)[m_columns_available_parts.m_col_item] = sharedptr<LayoutItem>(static_cast<LayoutItem*>(new LayoutItem_Text()));
+
+    Gtk::TreeModel::iterator iterVerticalGroup = m_model_available_parts->append(iter->children());
+    (*iterVerticalGroup)[m_columns_available_parts.m_col_item] = sharedptr<LayoutItem>(static_cast<LayoutItem*>(new LayoutItem_VerticalGroup()));
 
     iter = m_model_available_parts->append();
     (*iter)[m_columns_available_parts.m_col_item] = sharedptr<LayoutItem>(static_cast<LayoutItem*>(new LayoutItem_Summary()));

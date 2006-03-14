@@ -242,7 +242,20 @@ void FlowTableWithFields::add_layout_notebook_at_position(const sharedptr<Layout
       flow_table->set_columns_count(group->m_columns_count);
       flow_table->set_padding(6);
       flow_table->show();
-      notebook_widget->append_page(*flow_table, group->get_title_or_name());
+
+      //This doesn't work (probably because we haven't implmented it in our custom container),
+      //so we put the flowtable in an alignment and give that a border instead.
+      //flow_table->set_border_width(6); //Put some space between the page child and the page edges.
+      Gtk::Alignment* alignment = Gtk::manage(new Gtk::Alignment());
+      alignment->set_border_width(6);
+      alignment->add(*flow_table);
+      alignment->show();
+
+      const Glib::ustring tab_title = group->get_title_or_name();
+      Gtk::Label* tab_label = Gtk::manage(new Gtk::Label());
+      tab_label->set_markup(Bakery::App_Gtk::util_bold_message(tab_title));
+      tab_label->show();
+      notebook_widget->append_page(*alignment, *tab_label);
 
       //Add child items:
       LayoutGroup::type_map_items items = group->get_items(); 

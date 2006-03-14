@@ -22,6 +22,7 @@
 #include "../data_structure/glomconversions.h"
 #include "../data_structure/layout/report_parts/layoutitem_summary.h"
 #include "../data_structure/layout/report_parts/layoutitem_fieldsummary.h"
+#include "../data_structure/layout/report_parts/layoutitem_verticalgroup.h"
 #include "../data_structure/layout/layoutitem_button.h"
 #include "../data_structure/layout/layoutitem_text.h"
 #include "../standard_table_prefs_fields.h"
@@ -55,6 +56,7 @@
 #define GLOM_ATTRIBUTE_DATA_LAYOUT_ITEM_FIELD_USE_DEFAULT_FORMATTING "use_default_formatting"
 #define GLOM_NODE_DATA_LAYOUT_ITEM_GROUPBY "data_layout_item_groupby"
 #define GLOM_NODE_DATA_LAYOUT_GROUP_SECONDARYFIELDS "secondary_fields"
+#define GLOM_NODE_DATA_LAYOUT_ITEM_VERTICALGROUP "data_layout_item_verticalgroup"
 #define GLOM_NODE_DATA_LAYOUT_ITEM_SUMMARY "data_layout_item_summary"
 #define GLOM_NODE_DATA_LAYOUT_ITEM_FIELDSUMMARY "data_layout_item_fieldsummary"
 #define GLOM_NODE_TABLE "table"
@@ -1642,6 +1644,14 @@ void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Gl
 
         group->add_item(child_group);
       }
+      else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_ITEM_VERTICALGROUP)
+      {
+        sharedptr<LayoutItem_VerticalGroup> child_group = sharedptr<LayoutItem_VerticalGroup>::create();
+        //Recurse:
+        load_after_layout_group(element, table_name, child_group);
+
+        group->add_item(child_group);
+      }
       else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_ITEM_SUMMARY)
       {
         sharedptr<LayoutItem_Summary> child_group = sharedptr<LayoutItem_Summary>::create();
@@ -2117,22 +2127,30 @@ void Document_Glom::save_before_layout_group(xmlpp::Element* node, const sharedp
     }
     else
     {
-      sharedptr<const LayoutItem_Portal> portal = sharedptr<const LayoutItem_Portal>::cast_dynamic(group);
-      if(portal) //If it is a related records portal
+      sharedptr<const LayoutItem_VerticalGroup> verticalgroup = sharedptr<const LayoutItem_VerticalGroup>::cast_dynamic(group);
+      if(verticalgroup) //If it is a GroupBy report part.
       {
-        child = node->add_child(GLOM_NODE_DATA_LAYOUT_PORTAL);
-        child->set_attribute(GLOM_ATTRIBUTE_RELATIONSHIP_NAME, portal->get_relationship_name());
+        child = node->add_child(GLOM_NODE_DATA_LAYOUT_ITEM_VERTICALGROUP);
       }
       else
       {
-        sharedptr<const LayoutItem_Notebook> notebook = sharedptr<const LayoutItem_Notebook>::cast_dynamic(group);
-        if(notebook) //If it is a related records portal
+        sharedptr<const LayoutItem_Portal> portal = sharedptr<const LayoutItem_Portal>::cast_dynamic(group);
+        if(portal) //If it is a related records portal
         {
-          child = node->add_child(GLOM_NODE_DATA_LAYOUT_NOTEBOOK);
+          child = node->add_child(GLOM_NODE_DATA_LAYOUT_PORTAL);
+          child->set_attribute(GLOM_ATTRIBUTE_RELATIONSHIP_NAME, portal->get_relationship_name());
         }
-        else if(group)
+        else
         {
-          child = node->add_child(GLOM_NODE_DATA_LAYOUT_GROUP);
+          sharedptr<const LayoutItem_Notebook> notebook = sharedptr<const LayoutItem_Notebook>::cast_dynamic(group);
+          if(notebook) //If it is a related records portal
+          {
+            child = node->add_child(GLOM_NODE_DATA_LAYOUT_NOTEBOOK);
+          }
+          else if(group)
+          {
+            child = node->add_child(GLOM_NODE_DATA_LAYOUT_GROUP);
+          }
         }
       }
     }

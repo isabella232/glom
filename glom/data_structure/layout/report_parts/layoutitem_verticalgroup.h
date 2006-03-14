@@ -18,38 +18,33 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef GLOM_DATASTRUCTURE_LAYOUTITEM_PORTAL_H
-#define GLOM_DATASTRUCTURE_LAYOUTITEM_PORTAL_H
+#ifndef GLOM_DATASTRUCTURE_LAYOUTITEM_VERTICALGROUP_H
+#define GLOM_DATASTRUCTURE_LAYOUTITEM_VERTICALGROUP_H
 
-#include "layoutgroup.h"
-#include "../field.h"
-#include "../relationship.h"
+#include "../layoutgroup.h"
+#include "../../field.h"
 
-class LayoutItem_Portal
-: public LayoutGroup,
-  public UsesRelationship
+/** The child items are arranged vertically in a row on a report.
+ */
+class LayoutItem_VerticalGroup
+: public LayoutGroup
 {
 public:
 
-  LayoutItem_Portal();
-  LayoutItem_Portal(const LayoutItem_Portal& src);
-  LayoutItem_Portal& operator=(const LayoutItem_Portal& src);
-  virtual ~LayoutItem_Portal();
+  LayoutItem_VerticalGroup();
+  LayoutItem_VerticalGroup(const LayoutItem_VerticalGroup& src);
+  LayoutItem_VerticalGroup& operator=(const LayoutItem_VerticalGroup& src);
+  virtual ~LayoutItem_VerticalGroup();
 
   virtual LayoutItem* clone() const;
 
   virtual Glib::ustring get_part_type_name() const;
 
-  virtual void change_field_item_name(const Glib::ustring& table_name, const Glib::ustring& field_name, const Glib::ustring& field_name_new);
-  virtual void change_related_field_item_name(const Glib::ustring& table_name, const Glib::ustring& field_name, const Glib::ustring& field_name_new);
-
-  virtual void debug(guint level = 0) const;
-
 protected:
 
 };
 
-#endif //GLOM_DATASTRUCTURE_LAYOUTITEM_PORTAL_H
+#endif //GLOM_DATASTRUCTURE_LAYOUTITEM_VERTICALGROUP_H
 
 
 

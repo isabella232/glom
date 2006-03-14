@@ -17,44 +17,38 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
-
-#include "notebookglom.h"
-#include <gtkmm/messagedialog.h>
-#include "../application.h"
+ 
+#include "layoutitem_verticalgroup.h"
 #include <glibmm/i18n.h>
-//#include <sstream> //For stringstream
 
-NotebookGlom::NotebookGlom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& /* refGlade */)
-: Gtk::Notebook(cobject)
-{
-  setup_menu();
-  init();
-
-  //set_size_request(400, -1); //It doesn't seem to demand the space used by its children.
-}
-
-NotebookGlom::NotebookGlom()
-{
-  setup_menu();
-  init();
-
-  //set_size_request(400, -1); //It doesn't seem to demand the space used by its children.
-}
-
-NotebookGlom::~NotebookGlom()
+LayoutItem_VerticalGroup::LayoutItem_VerticalGroup()
 {
 }
 
-void NotebookGlom::init()
+LayoutItem_VerticalGroup::LayoutItem_VerticalGroup(const LayoutItem_VerticalGroup& src)
+: LayoutGroup(src)
 {
-
 }
 
-App_Glom* NotebookGlom::get_application()
+LayoutItem_VerticalGroup::~LayoutItem_VerticalGroup()
 {
-  Gtk::Container* pWindow = get_toplevel();
-  //TODO: This only works when the child widget is already in its parent.
+}
 
-  return dynamic_cast<App_Glom*>(pWindow);
+LayoutItem* LayoutItem_VerticalGroup::clone() const
+{
+  return new LayoutItem_VerticalGroup(*this);
+}
+
+
+LayoutItem_VerticalGroup& LayoutItem_VerticalGroup::operator=(const LayoutItem_VerticalGroup& src)
+{
+  LayoutGroup::operator=(src);
+
+  return *this;
+}
+
+Glib::ustring LayoutItem_VerticalGroup::get_part_type_name() const
+{
+  return _("Vertical Group");
 }
 

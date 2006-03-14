@@ -33,6 +33,7 @@
 #include "data_structure/glomconversions.h"
 #include "data_structure/layout/report_parts/layoutitem_summary.h"
 #include "data_structure/layout/report_parts/layoutitem_fieldsummary.h"
+#include "data_structure/layout/report_parts/layoutitem_verticalgroup.h"
 #include "python_embed/glom_python.h"
 #include <glibmm/i18n.h>
 //#include <libgnomeui/gnome-app-helper.h>
@@ -1471,6 +1472,8 @@ void Base_DB::report_build_summary(const Glib::ustring& table_name, xmlpp::Eleme
   }
 }
 
+
+
 void Base_DB::report_build_groupby_children(const Glib::ustring& table_name, xmlpp::Element& node, const sharedptr<LayoutItem_GroupBy>& group_by, const Glib::ustring& where_clause)
 {
   //Get data and add child rows:
@@ -1519,8 +1522,11 @@ void Base_DB::report_build_groupby_children(const Glib::ustring& table_name, xml
             sort_clause += ", ";
 
           sharedptr<LayoutItem_Field> item_field = sharedptr<LayoutItem_Field>::cast_dynamic(iter->first);
-          sort_clause += "\"" + item_field->get_sql_table_or_join_alias_name(table_name) + "\".\"" + item_field->get_name() + "\" " + (iter->second ? "ASC" : "DESC");
-          first = false;
+          if(item_field)
+          {
+            sort_clause += "\"" + item_field->get_sql_table_or_join_alias_name(table_name) + "\".\"" + item_field->get_name() + "\" " + (iter->second ? "ASC" : "DESC");
+            first = false;
+          }
         }
       }
     }
@@ -1600,6 +1606,26 @@ void Base_DB::report_build_groupby(const Glib::ustring& table_name, xmlpp::Eleme
   }
 }
 
+void Base_DB::report_build_records_get_fields(const Glib::ustring& table_name, const sharedptr<LayoutGroup>& group, type_vecLayoutFields& items)
+{
+  for(LayoutGroup::type_map_items::iterator iterChildren = group->m_map_items.begin(); iterChildren != group->m_map_items.end(); ++iterChildren)
+  {
+    sharedptr<LayoutItem> item = iterChildren->second;
+
+    sharedptr<LayoutItem_VerticalGroup> pVerticalGroup = sharedptr<LayoutItem_VerticalGroup>::cast_dynamic(item);
+    if(pVerticalGroup)
+    {
+      report_build_records_get_fields(table_name, pVerticalGroup, items);
+    }
+    else
+    {
+      sharedptr<LayoutItem_Field> pField = sharedptr<LayoutItem_Field>::cast_dynamic(item);
+      if(pField)
+        items.push_back(pField);
+    }
+  }
+}
+
 void Base_DB::report_build_records(const Glib::ustring& table_name, xmlpp::Element& parent_node, const type_vecLayoutItems& items, const Glib::ustring& where_clause, const Glib::ustring& sort_clause, bool one_record_only)
 {
   if(!items.empty())
@@ -1610,6 +1636,7 @@ void Base_DB::report_build_records(const Glib::ustring& table_name, xmlpp::Eleme
       sharedptr<LayoutItem> layout_item = *iter;
       sharedptr<LayoutItem_Field> layoutitem_field = sharedptr<LayoutItem_Field>::cast_dynamic(layout_item);
 
+      //This adds a field heading (and therefore, column) for fields, or for a vertical group. 
       xmlpp::Element* nodeFieldHeading = parent_node.add_child("field_heading");
       if(layoutitem_field && layoutitem_field->get_glom_type() == Field::TYPE_NUMERIC)
         nodeFieldHeading->set_attribute("field_type", "numeric"); //TODO: More sophisticated formatting.
@@ -1626,6 +1653,15 @@ void Base_DB::report_build_records(const Glib::ustring& table_name, xmlpp::Eleme
       sharedptr<LayoutItem_Field> layoutitem_field = sharedptr<LayoutItem_Field>::cast_dynamic(layout_item);
       if(layoutitem_field)
         fieldsToGet.push_back(layoutitem_field);
+      else
+      {
+        sharedptr<LayoutItem_VerticalGroup> vertical_group = sharedptr<LayoutItem_VerticalGroup>::cast_dynamic(layout_item);
+        if(vertical_group)
+        {
+          //Get all the fields in this group:
+          report_build_records_get_fields(table_name, vertical_group, fieldsToGet);
+        }
+      }
     }
 
     Glib::ustring sql_query = GlomUtils::build_sql_select_with_where_clause(table_name,
@@ -1657,34 +1693,24 @@ void Base_DB::report_build_records(const Glib::ustring& table_name, xmlpp::Eleme
           sharedptr<LayoutItem_Field> field = sharedptr<LayoutItem_Field>::cast_dynamic(item);
           if(field)
           {
-            const Field::glom_field_type field_type = field->get_glom_type();
-
-            xmlpp::Element* nodeField = nodeRow->add_child("field");
-            if(field_type == Field::TYPE_NUMERIC)
-              nodeField->set_attribute("field_type", "numeric"); //TODO: More sophisticated formatting.
-
-            Glib::ustring text_value = GlomConversions::get_text_for_gda_value(field_type, datamodel->get_value_at(colField, row), field->get_formatting_used().m_numeric_format);
-
-            //The Postgres summary functions return NULL when summarising NULL records, but 0 is more sensible:
-            if(text_value.empty() && sharedptr<LayoutItem_FieldSummary>::cast_dynamic(field) && (field_type == Field::TYPE_NUMERIC))
-            {
-              //Use get_text_for_gda_value() instead of "0" so we get the correct numerical formatting:
-              Gnome::Gda::Value value = GlomConversions::parse_value(0);
-              text_value = GlomConversions::get_text_for_gda_value(field_type, value, field->get_formatting_used().m_numeric_format);
-            }
-
-            nodeField->set_attribute("value", text_value);
-
-            ++colField;
+            report_build_records_field(table_name, *nodeRow, field, datamodel, row, colField);
           }
           else
           {
-            //Text object:
-            xmlpp::Element* nodeField = nodeRow->add_child("field"); //We reuse this node type for text objects.
-
             sharedptr<LayoutItem_Text> item_text = sharedptr<LayoutItem_Text>::cast_dynamic(item);
             if(item_text)
-              nodeField->set_attribute("value", item_text->get_text());
+            {
+              report_build_records_text(table_name, *nodeRow, item_text);
+            }
+            else
+            {
+              sharedptr<LayoutItem_VerticalGroup> item_verticalgroup = sharedptr<LayoutItem_VerticalGroup>::cast_dynamic(item);
+              if(item_verticalgroup)
+              {
+                report_build_records_vertical_group(table_name, *nodeRow, item_verticalgroup, datamodel, row, colField);
+                //TODO
+              }
+            }
           }
 
           if(nodeField)
@@ -1696,6 +1722,61 @@ void Base_DB::report_build_records(const Glib::ustring& table_name, xmlpp::Eleme
 
     //If there are no records, show zero
     //if(!rows_found && show_null_row)
+  }
+}
+
+void Base_DB::report_build_records_field(const Glib::ustring& table_name, xmlpp::Element& nodeParent, const sharedptr<const LayoutItem_Field>& field, const Glib::RefPtr<Gnome::Gda::DataModel>& datamodel, guint row, guint& colField, bool vertical)
+{
+  const Field::glom_field_type field_type = field->get_glom_type();
+
+  xmlpp::Element* nodeField = nodeParent.add_child(vertical ? "field_vertical" : "field");
+  if(field_type == Field::TYPE_NUMERIC)
+    nodeField->set_attribute("field_type", "numeric"); //TODO: More sophisticated formatting.
+
+  Glib::ustring text_value = GlomConversions::get_text_for_gda_value(field_type, datamodel->get_value_at(colField, row), field->get_formatting_used().m_numeric_format);
+
+  //The Postgres summary functions return NULL when summarising NULL records, but 0 is more sensible:
+  if(text_value.empty() && sharedptr<const LayoutItem_FieldSummary>::cast_dynamic(field) && (field_type == Field::TYPE_NUMERIC))
+  {
+    //Use get_text_for_gda_value() instead of "0" so we get the correct numerical formatting:
+    Gnome::Gda::Value value = GlomConversions::parse_value(0);
+    text_value = GlomConversions::get_text_for_gda_value(field_type, value, field->get_formatting_used().m_numeric_format);
+  }
+
+  nodeField->set_attribute("title", field->get_title_or_name()); //Not always used, but useful.
+  nodeField->set_attribute("value", text_value);
+
+  ++colField;
+}
+
+void Base_DB::report_build_records_text(const Glib::ustring& table_name, xmlpp::Element& nodeParent, const sharedptr<const LayoutItem_Text>& textobject)
+{
+  //Text object:
+  xmlpp::Element* nodeField = nodeParent.add_child("field"); //We reuse this node type for text objects.
+  nodeField->set_attribute("value", textobject->get_text());
+}
+
+void Base_DB::report_build_records_vertical_group(const Glib::ustring& table_name, xmlpp::Element& parentNode, const sharedptr<LayoutItem_VerticalGroup>& group, const Glib::RefPtr<Gnome::Gda::DataModel>& datamodel, guint row, guint& field_index)
+{
+  xmlpp::Element* nodeGroupVertical = parentNode.add_child("group_vertical");
+
+  for(LayoutGroup::type_map_items::iterator iterChildren = group->m_map_items.begin(); iterChildren != group->m_map_items.end(); ++iterChildren)
+  {
+    sharedptr<LayoutItem> item = iterChildren->second;
+
+    sharedptr<LayoutItem_VerticalGroup> pVerticalGroup = sharedptr<LayoutItem_VerticalGroup>::cast_dynamic(item);
+    if(pVerticalGroup)
+    {
+      report_build_records_vertical_group(table_name, *nodeGroupVertical, pVerticalGroup, datamodel, row, field_index);
+    }
+    else
+    {
+      sharedptr<LayoutItem_Field> pField = sharedptr<LayoutItem_Field>::cast_dynamic(item);
+      if(pField)
+      {
+        report_build_records_field(table_name, *nodeGroupVertical, pField, datamodel, row, field_index, true /* vertical, so we get a row for each field too. */);
+      }
+    }
   }
 }
 
@@ -1755,7 +1836,6 @@ void Base_DB::report_build(const Glib::ustring& table_name, const sharedptr<cons
   if(!itemsToGet_TopLevel.empty())
   {
     xmlpp::Element* nodeGroupBy = nodeParent->add_child("ungrouped_records");
-    std::cout << "DEBUG: top level." << std::endl;
     report_build_records(table_name, *nodeGroupBy, itemsToGet_TopLevel, where_clause, Glib::ustring() /* no sort clause */);
   }
 
