@@ -1,5 +1,12 @@
 2006-03-14  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/mode_data/box_data.cc: record_new(): Do not ignore entered field data for 
+	related fields, because we just calculated them, and they are correct. Somehow or 
+	other this fixes the bug that caused calculated field values from the last-shown 
+	record to be inserted into new records.
+
+2006-03-14  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/utility_widgets/imageglom.cc: set_value(): When clearing the image, 
 	also clear m_pixbuf_original, so that it doesn't come back when the image 
 	is rescaled. For instance, this makes sure that picture fields are empty when 

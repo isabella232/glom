@@ -165,12 +165,12 @@ Glib::RefPtr<Gnome::Gda::DataModel> Box_Data::record_new(bool use_entered_data, 
         {
           const Glib::ustring calculation = field->get_calculation();
           const type_map_fields field_values = get_record_field_values(m_table_name, fieldPrimaryKey, primary_key_value);
-  
+
           const Gnome::Gda::Value value = glom_evaluate_python_function_implementation(field->get_glom_type(), calculation, field_values,
             get_document(), m_table_name);
           set_entered_field_data(layout_item, value);
         }
-  
+
         //Use default values (These are also specified in postgres as part of the field definition,
         //so we could theoretically just not specify it here.
         //TODO_Performance: Add has_default_value()?
@@ -215,12 +215,12 @@ Glib::RefPtr<Gnome::Gda::DataModel> Box_Data::record_new(bool use_entered_data, 
           }
           else
           {
-            if(use_entered_data || !field->get_calculation().empty()) //TODO_Performance: Use a get_has_calculation() method.
+            if(use_entered_data)
               value = get_entered_field_data(layout_item);
           }
-  
+
           Glib::ustring strFieldValue = field->sql(value);
-  
+
           if(!strFieldValue.empty())
           {
             if(!strNames.empty())
