@@ -204,7 +204,53 @@ void ImageGlom::set_value(const Gnome::Gda::Value& value)
 
   if(!pixbuf_set)
   {
-    m_image.set(Gtk::Stock::MISSING_IMAGE, Gtk::ICON_SIZE_DIALOG);
+    /*
+    std::cout << "Debug: Setting MISSING_IMAGE" << std::endl;
+    
+    //Check that this stock icon size is really available,
+    //though it would be a distro error if it is not.
+    Glib::RefPtr<Gtk::Style> style = get_style();
+    if(style)
+    {
+      std::cout << "Debug: Setting MISSING_IMAGE 3" << std::endl;
+
+      const Gtk::IconSet iconset = style->lookup_icon_set(Gtk::Stock::MISSING_IMAGE);
+
+      std::cout << "Debug: Setting MISSING_IMAGE 4" << std::endl;
+
+      typedef std::vector<Gtk::IconSize> type_vecSizes;
+      type_vecSizes sizes = iconset.get_sizes();
+      type_vecSizes::iterator iterFind = std::find(sizes.begin(), sizes.end(), Gtk::ICON_SIZE_DIALOG);
+      if(iterFind != sizes.end())
+      {
+     */
+        m_image.set(Gtk::Stock::MISSING_IMAGE, Gtk::ICON_SIZE_DIALOG);
+     /*      
+      }
+      else
+      {
+        std::cerr << "Glom: The current theme does not seem to havae the Gtk::Stock::MISSING_IMAGE icon in size Gtk::ICON_SIZE_DIALOG" << std::endl;
+
+        if(!sizes.empty() && (sizes[0] > 0))
+        {
+          std::cerr << "  Using alternative stock icon size." << std::endl;
+          m_image.set(Gtk::Stock::MISSING_IMAGE, sizes[0]);
+        }
+        else
+        {
+          std::cerr << "  No alternative stock icon size available either, for this stock icon." << std::endl;
+          m_image.set("");
+        }
+      }
+    }
+    else
+    {
+      std::cerr << "Glom: No Gtk::Style available for this widget (yet), so not setting MISSING_IMAGE icon." << std::endl;
+      m_image.set("");
+    }
+    */
+
+    m_pixbuf_original = Glib::RefPtr<Gdk::Pixbuf>();
   }
 }
 

@@ -1,5 +1,12 @@
 2006-03-14  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/utility_widgets/imageglom.cc: set_value(): When clearing the image, 
+	also clear m_pixbuf_original, so that it doesn't come back when the image 
+	is rescaled. For instance, this makes sure that picture fields are empty when 
+	adding new records on the detail view.
+
+2006-03-14  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/document/document_glom.cc: set_userlevel(): Add some debug output.
 	* glom/frame_glom.cc: on_menu_userlevel_Developer(): Add some debug output, 
 	because someone has reported that they can not go to developer mode. This 

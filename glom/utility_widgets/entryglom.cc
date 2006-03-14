@@ -129,7 +129,12 @@ void EntryGlom::set_value(const Gnome::Gda::Value& value)
 {
   sharedptr<const LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::cast_dynamic(get_layout_item());
   if(layout_item)
-    set_text(GlomConversions::get_text_for_gda_value(m_glom_type, value, layout_item->get_formatting_used().m_numeric_format));
+  {
+    const Glib::ustring text = GlomConversions::get_text_for_gda_value(m_glom_type, value, layout_item->get_formatting_used().m_numeric_format);
+    set_text(text);
+
+    //std::cout << "debug: EntryGlom::set_value(): name=" << layout_item->get_name() << ", text=" << text << std::endl;
+  }
 }
 
 void EntryGlom::set_text(const Glib::ustring& text)

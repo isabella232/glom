@@ -235,7 +235,12 @@ void DataWidget::set_value(const Gnome::Gda::Value& value)
   Gtk::Widget* widget = get_data_child_widget();
   LayoutWidgetField* generic_field_widget = dynamic_cast<LayoutWidgetField*>(widget);
   if(generic_field_widget)
+  {
+    //if(generic_field_widget->get_layout_item())
+    //  std::cout << "DataWidget::set_value(): generic_field_widget->get_layout_item()->get_name()=" << generic_field_widget->get_layout_item()->get_name() << std::endl;
+
     generic_field_widget->set_value(value);
+  }
   else
   {
     Gtk::CheckButton* checkbutton = dynamic_cast<Gtk::CheckButton*>(widget);
