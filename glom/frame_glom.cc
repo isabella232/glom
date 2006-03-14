@@ -458,9 +458,16 @@ void Frame_Glom::on_menu_userlevel_Developer(const Glib::RefPtr<Gtk::RadioAction
       bool test = get_user_is_in_group(connection_pool->get_user(), GLOM_STANDARD_GROUP_NAME_DEVELOPER);
       if(test)
       {
+        std::cout << "DEBUG: User=" << connection_pool->get_user() << " _is_ in the developer group on the server." << std::endl;
         //Avoid double signals:
         //if(document->get_userlevel() != AppState::USERLEVEL_DEVELOPER)
         test = document->set_userlevel(AppState::USERLEVEL_DEVELOPER);
+        if(!test)
+          std::cout << "  DEBUG: But document->set_userlevel(AppState::USERLEVEL_DEVELOPER) failed." << std::endl;
+      }
+      else
+      {
+        std::cout << "DEBUG: User=" << connection_pool->get_user() << " is _not_ in the developer group on the server." << std::endl;
       }
 
       //If this was not possible then revert the menu:

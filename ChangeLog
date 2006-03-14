@@ -1,5 +1,20 @@
 2006-03-14  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/document/document_glom.cc: set_userlevel(): Add some debug output.
+	* glom/frame_glom.cc: on_menu_userlevel_Developer(): Add some debug output, 
+	because someone has reported that they can not go to developer mode. This 
+	might help us find out exactly why.
+	* glom/mode_data/box_data_list_related.cc:
+	* glom/mode_data/box_data_list_related.h: init_db(): Add optional 
+	show_title parameter.
+	* glom/utility_widgets/flowtablewithfields.cc:
+	* glom/utility_widgets/flowtablewithfields.h: add_layout_notebook_at_position(): 
+	Support Related Records portals as direct children of Notebook parts, putting their 
+	titles in the tab instead of having an alignment tab, and instead of requiring them 
+	to be inside a group.
+
+2006-03-14  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/base_db.cc:
 	* glom/base_db.h: Moved some code into report_build_records_field() and 
 	report_build_records_text(). Added report_build_records_verticalgroup(). 

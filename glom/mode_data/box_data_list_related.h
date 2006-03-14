@@ -37,7 +37,7 @@ public:
   /**
    * @param portal: The full portal details
    */
-  virtual bool init_db_details(const sharedptr<const LayoutItem_Portal>& portal);
+  virtual bool init_db_details(const sharedptr<const LayoutItem_Portal>& portal, bool show_title = true);
 
   /**
    * @param foreign_key_value: The value that should be found in this table.

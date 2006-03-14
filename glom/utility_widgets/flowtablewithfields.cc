@@ -100,36 +100,15 @@ void FlowTableWithFields::add_layout_item_at_position(const sharedptr<LayoutItem
     sharedptr<LayoutItem_Portal> portal = sharedptr<LayoutItem_Portal>::cast_dynamic(item);
     if(portal)
     {
-      Document_Glom* pDocument = static_cast<Document_Glom*>(get_document());
-      if(pDocument)
-      {
-        sharedptr<Relationship> relationship = pDocument->get_relationship(m_table_name, portal->get_relationship_name());
-        if(relationship)
-        {
-          Box_Data_List_Related* portal_box = Gtk::manage(new Box_Data_List_Related);
-          add_view(portal_box); //Give it access to the document, needed to get the layout and fields information.
-
-          portal_box->init_db_details(portal); //Create the layout
-
-          portal_box->set_layout_item(portal, relationship->get_to_table());
-          portal_box->show();
-          add(*portal_box, true /* expand */);
-
-          m_portals.push_back(portal_box);
-          add_layoutwidgetbase(portal_box, add_before);
-
-          //Connect signals:
-          portal_box->signal_record_changed().connect( sigc::mem_fun(*this, &FlowTableWithFields::on_portal_record_changed) );
-
-          portal_box->signal_user_requested_details().connect( sigc::bind( sigc::mem_fun(*this, &FlowTableWithFields::on_portal_user_requested_details), portal_box));
-        }
-      }
+      add_layout_related_at_position(portal, add_before);
     }
     else
     {
       sharedptr<LayoutItem_Notebook> notebook = sharedptr<LayoutItem_Notebook>::cast_dynamic(item);
       if(notebook)
+      {
         add_layout_notebook_at_position(notebook, add_before);
+      }
       else
       {
         sharedptr<LayoutGroup> group = sharedptr<LayoutGroup>::cast_dynamic(item);
@@ -220,6 +199,49 @@ void FlowTableWithFields::add_layout_group_at_position(const sharedptr<LayoutGro
   }
 }
 
+Box_Data_List_Related* FlowTableWithFields::create_related(const sharedptr<LayoutItem_Portal>& portal, bool show_title)
+{
+  if(!portal)
+    return 0;
+
+  Document_Glom* pDocument = static_cast<Document_Glom*>(get_document());
+  if(pDocument)
+  {
+    sharedptr<Relationship> relationship = pDocument->get_relationship(m_table_name, portal->get_relationship_name());
+    if(relationship)
+    {
+      Box_Data_List_Related* portal_box = Gtk::manage(new Box_Data_List_Related);
+      add_view(portal_box); //Give it access to the document, needed to get the layout and fields information.
+
+      portal_box->init_db_details(portal, show_title); //Create the layout
+
+      portal_box->set_layout_item(portal, relationship->get_to_table());
+      portal_box->show();
+
+      m_portals.push_back(portal_box);
+
+      return portal_box;
+    }
+  }
+
+  return 0;
+}
+
+void FlowTableWithFields::add_layout_related_at_position(const sharedptr<LayoutItem_Portal>& portal, const type_list_layoutwidgets::iterator& add_before)
+{
+  Box_Data_List_Related* portal_box = create_related(portal);
+  if(portal_box)
+  {
+    add(*portal_box, true /* expand */);
+    add_layoutwidgetbase(portal_box, add_before);
+
+    //Connect signals:
+    portal_box->signal_record_changed().connect( sigc::mem_fun(*this, &FlowTableWithFields::on_portal_record_changed) );
+
+    portal_box->signal_user_requested_details().connect( sigc::bind( sigc::mem_fun(*this, &FlowTableWithFields::on_portal_user_requested_details), portal_box));
+  }
+}
+
 void FlowTableWithFields::add_layout_notebook_at_position(const sharedptr<LayoutItem_Notebook>& notebook, const type_list_layoutwidgets::iterator& add_before)
 {
   if(!notebook)
@@ -235,55 +257,76 @@ void FlowTableWithFields::add_layout_notebook_at_position(const sharedptr<Layout
     sharedptr<LayoutGroup> group = sharedptr<LayoutGroup>::cast_dynamic(iter->second);
     if(group)
     {
-      FlowTableWithFields* flow_table = Gtk::manage( new FlowTableWithFields() );
-      add_view(flow_table); //Allow these sub-flowtables to access the document too.
-      flow_table->set_table(m_table_name);
-
-      flow_table->set_columns_count(group->m_columns_count);
-      flow_table->set_padding(6);
-      flow_table->show();
-
-      //This doesn't work (probably because we haven't implmented it in our custom container),
-      //so we put the flowtable in an alignment and give that a border instead.
-      //flow_table->set_border_width(6); //Put some space between the page child and the page edges.
-      Gtk::Alignment* alignment = Gtk::manage(new Gtk::Alignment());
-      alignment->set_border_width(6);
-      alignment->add(*flow_table);
-      alignment->show();
-
-      const Glib::ustring tab_title = group->get_title_or_name();
       Gtk::Label* tab_label = Gtk::manage(new Gtk::Label());
-      tab_label->set_markup(Bakery::App_Gtk::util_bold_message(tab_title));
       tab_label->show();
-      notebook_widget->append_page(*alignment, *tab_label);
 
-      //Add child items:
-      LayoutGroup::type_map_items items = group->get_items(); 
-      for(LayoutGroup::type_map_items::const_iterator iter = items.begin(); iter != items.end(); ++iter)
+      sharedptr<LayoutItem_Portal> portal = sharedptr<LayoutItem_Portal>::cast_dynamic(group);
+      if(portal)
       {
-        sharedptr<LayoutItem> item = iter->second;
-        if(item)
+        const Glib::ustring tab_title = glom_get_sharedptr_title_or_name(portal->get_relationship());
+        tab_label->set_markup(Bakery::App_Gtk::util_bold_message(tab_title));
+
+        //Add a Related Records list for this portal:
+        Box_Data_List_Related* portal_box = create_related(portal, false /* no label, because it's in the tab instead. */);
+        //portal_box->set_border_width(6); It has "padding" around the Alignment instead.
+        portal_box->show();
+        notebook_widget->append_page(*portal_box, *tab_label);
+
+        //add_layoutwidgetbase(portal_box, add_before);
+      }
+      else
+      {
+        const Glib::ustring tab_title = group->get_title_or_name();
+        tab_label->set_markup(Bakery::App_Gtk::util_bold_message(tab_title));
+
+        //Add a FlowTable for this group:
+        FlowTableWithFields* flow_table = Gtk::manage( new FlowTableWithFields() );
+        add_view(flow_table); //Allow these sub-flowtables to access the document too.
+        flow_table->set_table(m_table_name);
+
+        flow_table->set_columns_count(group->m_columns_count);
+        flow_table->set_padding(6);
+        flow_table->show();
+
+        //This doesn't work (probably because we haven't implmented it in our custom container),
+        //so we put the flowtable in an alignment and give that a border instead.
+        //flow_table->set_border_width(6); //Put some space between the page child and the page edges.
+        Gtk::Alignment* alignment = Gtk::manage(new Gtk::Alignment());
+        alignment->set_border_width(6);
+        alignment->add(*flow_table);
+        alignment->show();
+
+        notebook_widget->append_page(*alignment, *tab_label);
+
+        //Add child items:
+        LayoutGroup::type_map_items items = group->get_items(); 
+        for(LayoutGroup::type_map_items::const_iterator iter = items.begin(); iter != items.end(); ++iter)
         {
-          flow_table->add_layout_item(item);
+          sharedptr<LayoutItem> item = iter->second;
+          if(item)
+          {
+            flow_table->add_layout_item(item);
+          }
         }
+
+        m_sub_flow_tables.push_back(flow_table);
+        flow_table->set_layout_item(group, m_table_name);
+        add_layoutwidgetbase(flow_table, add_before);
+
+        //Connect signal:
+        flow_table->signal_field_edited().connect( sigc::mem_fun(*this, &FlowTableWithFields::on_flowtable_entry_edited) );
+        flow_table->signal_field_open_details_requested().connect( sigc::mem_fun(*this, &FlowTableWithFields::on_flowtable_entry_open_details_requested) );
+        flow_table->signal_related_record_changed().connect( sigc::mem_fun(*this, &FlowTableWithFields::on_flowtable_related_record_changed) );
+        flow_table->signal_requested_related_details().connect( sigc::mem_fun(*this, &FlowTableWithFields::on_flowtable_requested_related_details) );
+
+        flow_table->signal_script_button_clicked().connect( sigc::mem_fun(*this, &FlowTableWithFields::on_script_button_clicked) );
       }
 
-      m_sub_flow_tables.push_back(flow_table);
-      flow_table->set_layout_item(group, m_table_name);
-      add_layoutwidgetbase(flow_table, add_before);
-
-      //Connect signal:
-      flow_table->signal_field_edited().connect( sigc::mem_fun(*this, &FlowTableWithFields::on_flowtable_entry_edited) );
-      flow_table->signal_field_open_details_requested().connect( sigc::mem_fun(*this, &FlowTableWithFields::on_flowtable_entry_open_details_requested) );
-      flow_table->signal_related_record_changed().connect( sigc::mem_fun(*this, &FlowTableWithFields::on_flowtable_related_record_changed) );
-      flow_table->signal_requested_related_details().connect( sigc::mem_fun(*this, &FlowTableWithFields::on_flowtable_requested_related_details) );
-
-      flow_table->signal_script_button_clicked().connect( sigc::mem_fun(*this, &FlowTableWithFields::on_script_button_clicked) );
     }
   }
 
   add_layoutwidgetbase(notebook_widget, add_before);
-  //add_view(button); //So it can get the document.
+    //add_view(button); //So it can get the document.
 
   add(*notebook_widget, true /* expand */);
 }
@@ -959,3 +1002,4 @@ void FlowTableWithFields::on_flowtable_requested_related_details(const Glib::ust
   //Forward it to the parent:
   signal_requested_related_details().emit(table_name, primary_key_value);
 }
+

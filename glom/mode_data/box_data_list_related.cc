@@ -93,7 +93,7 @@ void Box_Data_List_Related::enable_buttons()
   m_AddDel.set_allow_view_details(!to_table_is_hidden); //Don't allow the user to go to a record in a hidden table.
 }
 
-bool Box_Data_List_Related::init_db_details(const sharedptr<const LayoutItem_Portal>& portal)
+bool Box_Data_List_Related::init_db_details(const sharedptr<const LayoutItem_Portal>& portal, bool show_title)
 {
   m_portal = glom_sharedptr_clone(portal);
   LayoutWidgetBase::m_table_name = m_portal->get_relationship()->get_to_table();
@@ -101,7 +101,20 @@ bool Box_Data_List_Related::init_db_details(const sharedptr<const LayoutItem_Por
 
   sharedptr<const Relationship> relationship = m_portal->get_relationship();
 
-  m_Label.set_markup(Bakery::App_Gtk::util_bold_message( glom_get_sharedptr_title_or_name(relationship) ));
+  if(show_title)
+  {
+    m_Label.set_markup(Bakery::App_Gtk::util_bold_message( glom_get_sharedptr_title_or_name(relationship) ));
+    m_Label.show();
+
+    m_Alignment.set_padding(6 /* top */, 0, 12 /* left */, 0);
+  }
+  else
+  {
+    m_Label.set_markup(Glib::ustring());
+    m_Label.hide();
+
+    m_Alignment.set_padding(0, 0, 0, 0); //The box itself has padding of 6.
+  }
 
   if(relationship)
     m_key_field = get_fields_for_table_one_field(relationship->get_to_table(), relationship->get_to_field());

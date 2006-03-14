@@ -1266,6 +1266,10 @@ bool Document_Glom::set_userlevel(AppState::userlevels userlevel)
   //Prevent incorrect user level:
   if((userlevel == AppState::USERLEVEL_DEVELOPER) && get_read_only())
   {
+    std::cout << "DEBUG: Document_Glom::set_userlevel(): Developer mode denied because get_read_only() returned true." << std::endl;
+    std::cout << "  DEBUG: get_read_only()=" << get_read_only() << std::endl;
+    std::cout << "  DEBUG: get_file_uri()=" << get_file_uri() << std::endl;
+
     m_app_state.set_userlevel(AppState::USERLEVEL_OPERATOR);
     return false;
   }
