@@ -21,6 +21,7 @@
 #include "glomconversions.h"
 #include "../connectionpool.h"
 #include "../utils.h"
+#include <glibmm/i18n.h>
 #include <sstream> //For stringstream
 
 #include <locale>     // for locale, time_put
@@ -39,10 +40,10 @@ Glib::ustring GlomConversions::format_time(const tm& tm_data, const std::locale&
 {
   if(iso_format)
   {
-    return format_tm(tm_data, locale, 'T' /* I see no iso-format time in the list, but this looks like the standard C-locale format. murrayc*/);
+    return format_tm(tm_data, locale, "%T" /* I see no iso-format time in the list, but this looks like the standard C-locale format. murrayc*/);
   }
   else
-    return format_tm(tm_data, locale, 'X' /* time */);
+    return format_tm(tm_data, locale, _("%X") /* time */);
 }
 
 Glib::ustring GlomConversions::format_date(const tm& tm_data)
@@ -50,17 +51,27 @@ Glib::ustring GlomConversions::format_date(const tm& tm_data)
   return format_date( tm_data, std::locale("") /* the user's current locale */ ); //Get the current locale.
 }
 
+#define GLOM_NON_TRANSLATED_LOCALE_DATE_FORMAT "%x"
+
+static const char* glom_get_locale_date_format()
+{
+  /* TRANSLATORS: Please only translate this string if you know that strftime() shows only 2 year digits when using format "x". We want to always display 4 year digits. For instance, en_GB should translate it to "%d/%m/%Y". To discover if your locale has this problem, try the testdateput_allformats.cc test case in http://bugzilla.gnome.org/show_bug.cgi?id=334648. Thanks. */
+  return _("%x");
+}
 
 Glib::ustring GlomConversions::format_date(const tm& tm_data, const std::locale& locale, bool iso_format)
 {
   if(iso_format)
-    return format_tm(tm_data, locale, 'F' /* iso-format date */);
+    return format_tm(tm_data, locale, "%F" /* iso-format date */);
   else
-    return format_tm(tm_data, locale, 'x' /* date */);
+  {
+    /* TRANSLATORS: Please only translate this string if you know that strftime() shows only 2 year digits when using format "x". We want to always display 4 year digits. For instance, en_GB should translate it to "%d/%m/%Y". To discover if your locale has this problem, try the testdateput_allformats.cc test case in http://bugzilla.gnome.org/show_bug.cgi?id=334648. Thanks. */
+    return format_tm(tm_data, locale, glom_get_locale_date_format() /* date */);
+  }
 }
 
 
-Glib::ustring GlomConversions::format_tm(const tm& tm_data, const std::locale& locale, char format)
+Glib::ustring GlomConversions::format_tm(const tm& tm_data, const std::locale& locale, const char* format)
 {
   //This is based on docs found here:
   //http://www.roguewave.com/support/docs/sourcepro/stdlibref/time-put.html
@@ -76,7 +87,7 @@ Glib::ustring GlomConversions::format_tm(const tm& tm_data, const std::locale& l
   const type_time_put& tp = std::use_facet<type_time_put>(locale);
 
   //type_iterator begin(the_stream);
-  tp.put(the_stream /* iter to beginning of stream */, the_stream, ' ' /* fill */, &tm_data, format, 0 /* 'E' */ /* use locale's alternative format */);
+  tp.put(the_stream /* iter to beginning of stream */, the_stream, ' ' /* fill */, &tm_data, format, format + strlen(format) /* 'E' */ /* use locale's alternative format */);
 
   Glib::ustring text = the_stream.str();
 
@@ -394,32 +405,48 @@ tm GlomConversions::parse_date(const Glib::ustring& text, const std::locale& loc
    */
   tm the_c_time = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
+  //If the standard locale date format is not appropriate for display then it's also not appropriate for parsing,
+  //because std::get_time() stupidly parses _only_ that format.
+  //Some implementations parse extra formats, in unspecified/non-standard ways, but not g++'s libstdc++
+  //So just use the fallback instead. It's probably good enough.
+  const bool is_iso_locale = (locale == std::locale::classic());
+  const bool skip_time_get = !is_iso_locale && (strcmp(GLOM_NON_TRANSLATED_LOCALE_DATE_FORMAT, glom_get_locale_date_format()) != 0);
+
   std::ios_base::iostate err = std::ios_base::goodbit;  //The initialization is essential because time_get seems to a) not initialize this output argument and b) check its value.
 
-  //For some reason, the stream must be instantiated after we get the facet. This is a worryingly strange "bug".
-  type_stream the_stream;
-  the_stream.imbue(locale); //Make it format things for this locale. (Actually, I don't know if this is necessary, because we mention the locale in the time_put<> constructor.
-  the_stream << text;
+  if(!skip_time_get)
+  {
+    //For some reason, the stream must be instantiated after we get the facet. This is a worryingly strange "bug".
+    type_stream the_stream;
+    the_stream.imbue(locale); //Make it format things for this locale. (Actually, I don't know if this is necessary, because we mention the locale in the time_put<> constructor.
+    the_stream << text;
 
-  // Get a time_get facet:
+    // Get a time_get facet:
 
-  typedef std::time_get<char> type_time_get;
-  typedef type_time_get::iter_type type_iterator;
+    typedef std::time_get<char> type_time_get;
+    typedef type_time_get::iter_type type_iterator;
 
-  const type_time_get& tg = std::use_facet<type_time_get>(locale);
+    const type_time_get& tg = std::use_facet<type_time_get>(locale);
 
-  type_iterator the_begin(the_stream);
-  type_iterator the_end;
+    type_iterator the_begin(the_stream);
+    type_iterator the_end;
 
-  tg.get_date(the_begin, the_end, the_stream, err, &the_c_time);
+    tg.get_date(the_begin, the_end, the_stream, err, &the_c_time);
+  }
+  else
+  {
+    std::cout << "DEBUG: Skipping std::time_get<>  because it is incapable of parsing 4-digit years in the current locale." << std::endl;
+  }
 
-  if(err != std::ios_base::failbit)
+  if(!skip_time_get && err != std::ios_base::failbit)
   {
     success = true;
   }
   else
   {
-    //time_get can fail just because you have entered "1/2/1903" instead "01/02/1903", so let's try another, more liberal, way:
+    //time_get can fail just because you have entered "1/2/1903" instead "01/02/1903", 
+    //or maybe we chose to skip it because it is not useful in this locale,
+    //so let's try another, more liberal, way:
     Glib::Date date;
     date.set_parse(text); //I think this uses the current locale. murrayc.
     if(date.valid())

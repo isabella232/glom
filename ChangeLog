@@ -1,9 +1,21 @@
 2006-03-15  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/data_structure/glomconversions.cc:
+	* glom/data_structure/glomconversions.h: format_date(): Takes a char* format, instead 
+	of a char format, so we can use a greater variety of formats. Mark the locale-specific 
+	x format as translated, and advise translators to translate it if their locales (stupidly)
+	represent/parse dates as only 2 digits.	
+	parse_date(): If the format was translated, then it's useless here too, so just use 
+	the Glib::Date fallback.
+	* po/en_GB.po: Translate the date format, so that dates are shown and parsed with 
+	4-digit years. Bug found by Phill Gillespie.
+
+2006-03-15  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/base_db.cc: add_standard_groups(): Add the current user to the developer group 
 	here, rather than expecting the caller to do it (it did not always do it), so that 
 	people who create databases successfully are always marked as developers, so they can 
-	always change their databases.
+	always change their databases. Bug found by Ryan Paul.
         * glom/applicationcc: recreate_database(): Do not make the user a developer here - 
 	let add_standard_groups() do it.
 

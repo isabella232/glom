@@ -1,3 +1,11 @@
+0.9.91
+
+* Creating databases: Make sure that the user is in the developer group, even if he has never 
+  opened an example, allowing him to change his own database.
+* Date fields:
+ - Show and parse 4 digits for the year, even if the locale (stftime) stupidly thinks otherwise, 
+   though this need attention from translators in affected locales. Fixed for en_GB (Britain).
+   Was not a problem for en_US or de_DE.
 * Details layouts:
  - Fields with choices are no longer insensitive when read-only, so you can now, 
    for instance, select and copy text out of them, or see what is in their menus.

@@ -47,7 +47,7 @@ namespace GlomConversions
   tm parse_time(const Glib::ustring& text, bool& success);
   tm parse_time(const Glib::ustring& text, const std::locale& locale, bool& success);
 
-  Glib::ustring format_tm(const tm& tm_data, const std::locale& locale, char format);
+  Glib::ustring format_tm(const tm& tm_data, const std::locale& locale, const char* format);
   //static tm parse_tm(const Glib::ustring& text, const std::locale& locale, char format);
 
   bool value_is_empty(const Gnome::Gda::Value& value);
