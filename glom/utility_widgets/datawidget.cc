@@ -380,7 +380,7 @@ void DataWidget::set_editable(bool editable)
           entry->set_editable(editable);
 
         //But the menu still causes the entry to change, so we must disable it completely:
-        comboboxentry->set_sensitive(editable);
+        //comboboxentry->set_sensitive(editable);
       }
     }
   }

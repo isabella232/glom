@@ -98,6 +98,22 @@ void ComboEntryGlom::set_layout_item(const sharedptr<LayoutItem>& layout_item, c
 
 void ComboEntryGlom::check_for_change()
 {
+  if(!(get_entry()->get_editable()))
+  {
+    //Don't allow editing via the menu either, if the Entry is non-editable.
+
+    //Give the user some kind of warning.
+    //We could just remove the menu (by using a normal Entry for read-only fields with choices), 
+    //but I think that the choice is a useful recognisable visual hint about the field,
+    //which shouldn't change sometimes just because the field is read-only.
+    Gtk::Window* top_level_window = get_application();
+    if(top_level_window)
+      Frame_Glom::show_ok_dialog(_("Read-only field."), _("This field may not be edited here."), *top_level_window, Gtk::MESSAGE_INFO);
+
+    //Change the entry back to the old value:
+    get_entry()->set_text(m_old_text);
+  }
+
   Glib::ustring new_text = get_entry()->get_text();
   if(new_text != m_old_text)
   {
@@ -116,7 +132,7 @@ void ComboEntryGlom::check_for_change()
     else
     {
       //Tell the user and offer to revert or try again:
-      bool revert = glom_show_dialog_invalid_data(layout_item->get_glom_type());
+      const bool revert = glom_show_dialog_invalid_data(layout_item->get_glom_type());
       if(revert)
       {
         set_text(m_old_text);
