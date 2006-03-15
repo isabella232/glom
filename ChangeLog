@@ -1,5 +1,14 @@
 2006-03-15  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/base_db.cc: add_standard_groups(): Add the current user to the developer group 
+	here, rather than expecting the caller to do it (it did not always do it), so that 
+	people who create databases successfully are always marked as developers, so they can 
+	always change their databases.
+        * glom/applicationcc: recreate_database(): Do not make the user a developer here - 
+	let add_standard_groups() do it.
+
+2006-03-15  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/utility_widgets/comboentryglom.cc: check_changes(): Do not allow any 
 	changes when the Entry is set to sensitive, to prevent changes via the 
 	combo menu. GtkComboBox has no set_editable() of its own. Show and informative dialog 

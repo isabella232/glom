@@ -1,4 +1,10 @@
 * Details layouts:
+ - Fields with choices are no longer insensitive when read-only, so you can now, 
+   for instance, select and copy text out of them, or see what is in their menus.
+
+0.9.9:
+
+* Details layouts:
   - Added a Notebook layout part, with tabs, so the details can show more information, 
     such as several related layouts portals.
   - Stop pictures and calculated values from existing records appearing on new empty records.

@@ -928,9 +928,6 @@ bool App_Glom::recreate_database(bool& user_cancelled)
       dialog_progress->pulse();
       m_pFrame->add_standard_groups();
 
-      Glib::ustring strQuery = "ALTER GROUP " GLOM_STANDARD_GROUP_NAME_DEVELOPER " ADD USER " + connection_pool->get_user();
-      m_pFrame->Query_execute(strQuery);
-
       //Add any example data to the table:
       dialog_progress->pulse();
       const bool table_insert_succeeded = m_pFrame->insert_example_data(table_info->get_name());

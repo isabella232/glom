@@ -831,6 +831,15 @@ void Base_DB::add_standard_groups()
   if(iterFind == vecGroups.end())
   {
     Query_execute("CREATE GROUP " GLOM_STANDARD_GROUP_NAME_DEVELOPER);
+
+    //Make sure the current user is in the developer group.
+    //(If he is capable of creating these groups then he is obviously a developer, and has developer rights on the postgres server.)
+    const Glib::ustring current_user = ConnectionPool::get_instance()->get_user();
+    Glib::ustring strQuery = "ALTER GROUP " GLOM_STANDARD_GROUP_NAME_DEVELOPER " ADD USER " + current_user;
+    Query_execute(strQuery);
+
+    std::cout << "DEBUG: Added user " << current_user << " to glom developer group on postgres server." << std::endl;
+
     Privileges priv_devs;
     priv_devs.m_view = true;
     priv_devs.m_edit = true;
@@ -845,6 +854,7 @@ void Base_DB::add_standard_groups()
       if(table_info)
         set_table_privileges(devgroup, table_info->get_name(), priv_devs, true /* developer privileges */);
     }
+
 
     //Make sure that it is in the database too:
     GroupInfo group_info;
