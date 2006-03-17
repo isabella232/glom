@@ -1,5 +1,9 @@
 2006-03-17  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/utils.cc: Added #includes to fix the build.
+
+2006-03-17  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/data_structure/layout/report_parts/Makefile.am:
 	* glom/data_structure/layout/report_parts/layoutitem_footer.cc:
 	* glom/data_structure/layout/report_parts/layoutitem_footer.h:

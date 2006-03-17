@@ -22,9 +22,11 @@
 #include "connectionpool.h"
 #include "data_structure/layout/report_parts/layoutitem_fieldsummary.h"
 #include "data_structure/glomconversions.h"
+#include "frame_glom.h"
 #include <libxml++/libxml++.h>
 #include <libxslt/transform.h>
 #include <libgnomevfsmm.h>
+#include <glibmm/i18n.h>
 #include <libgnome/gnome-url.h>
 #include <sstream> //For stringstream
 
