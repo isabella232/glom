@@ -1791,7 +1791,7 @@ void Base_DB::report_build_records_vertical_group(const Glib::ustring& table_nam
 }
 
 
-void Base_DB::report_build(const Glib::ustring& table_name, const sharedptr<const Report>& report, const Glib::ustring& where_clause)
+void Base_DB::report_build(const Glib::ustring& table_name, const sharedptr<const Report>& report, const Glib::ustring& where_clause, Gtk::Window* parent_window)
 {
   //Create a DOM Document with the XML:
   xmlpp::DomParser dom_parser;;
@@ -1849,7 +1849,7 @@ void Base_DB::report_build(const Glib::ustring& table_name, const sharedptr<cons
     report_build_records(table_name, *nodeGroupBy, itemsToGet_TopLevel, where_clause, Glib::ustring() /* no sort clause */);
   }
 
-  GlomUtils::transform_and_open(*pDocument, "print_report_to_html.xsl");
+  GlomUtils::transform_and_open(*pDocument, "print_report_to_html.xsl", parent_window);
 }
 
 //static

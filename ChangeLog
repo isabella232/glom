@@ -1,3 +1,18 @@
+2006-03-17  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/base_db.cc:
+	* glom/base_db.h: report_build(): Take extra Gtk::Window* parameter.
+	* glom/frame_glom.cc:
+	* glom/mode_data/box_data_details.cc:
+	* glom/mode_data/box_data_list.cc: Call report_build() with extra 
+	Gtk::Window* parameter so that the dialog can be transient.
+	* glom/utils.cc:
+	* glom/utils.h: transform_and_open(): Show a dialog to hint to the user 
+	that they should look in their open web browser to see the report.
+	* po/POTFILES.in: Added utils.c
+
+0.9.91
+
 2006-03-15  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/data_structure/glomconversions.cc:

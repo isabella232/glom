@@ -50,7 +50,7 @@ type_list_values_with_second get_choice_values(const sharedptr<const LayoutItem_
  */
 Glib::ustring create_name_from_title(const Glib::ustring& title);
 
-void transform_and_open(const xmlpp::Document& xml_document, const Glib::ustring& xsl_file_path);
+void transform_and_open(const xmlpp::Document& xml_document, const Glib::ustring& xsl_file_path, Gtk::Window* parent_window = 0);
 Glib::ustring xslt_process(const xmlpp::Document& xml_document, const std::string& filepath_xslt);
 
 Glib::ustring string_escape_underscores(const Glib::ustring& text);

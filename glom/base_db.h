@@ -234,7 +234,7 @@ protected:
   SystemPrefs get_database_preferences() const;
   void set_database_preferences(const SystemPrefs& prefs);
 
-  void report_build(const Glib::ustring& table_name, const sharedptr<const Report>& report, const Glib::ustring& where_clause);
+  void report_build(const Glib::ustring& table_name, const sharedptr<const Report>& report, const Glib::ustring& where_clause, Gtk::Window* parent_window = 0);
 
   void report_build_groupby(const Glib::ustring& table_name, xmlpp::Element& parent_node, const sharedptr<LayoutItem_GroupBy>& group_by, const Glib::ustring& where_clause_parent);
   void report_build_groupby_children(const Glib::ustring& table_name, xmlpp::Element& nodeGroupBy, const sharedptr<LayoutItem_GroupBy>& group_by, const Glib::ustring& where_clause);

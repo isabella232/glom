@@ -794,6 +794,6 @@ void Box_Data_Details::print_layout()
       print_layout_group(nodeParent, layout_group);
     }
 
-    GlomUtils::transform_and_open(*pDocument, "print_details_to_html.xsl");
+    GlomUtils::transform_and_open(*pDocument, "print_details_to_html.xsl", get_app_window());
   }
 }

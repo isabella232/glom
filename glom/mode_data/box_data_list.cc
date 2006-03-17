@@ -701,7 +701,7 @@ void Box_Data_List::print_layout()
       report_temp->m_layout_group->add_item(*iter);
     }
 
-    report_build(m_table_name, report_temp, m_where_clause);
+    report_build(m_table_name, report_temp, m_where_clause, get_app_window());
   }
 }
 

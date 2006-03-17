@@ -343,7 +343,7 @@ GlomUtils::type_list_values_with_second GlomUtils::get_choice_values(const share
 }
 
 
-void GlomUtils::transform_and_open(const xmlpp::Document& xml_document, const Glib::ustring& xsl_file_path)
+void GlomUtils::transform_and_open(const xmlpp::Document& xml_document, const Glib::ustring& xsl_file_path, Gtk::Window* parent_window)
 {
   //Use libxslt to convert the XML to HTML:
   Glib::ustring result = xslt_process(xml_document, GLOM_XSLTDIR + xsl_file_path);
@@ -378,6 +378,10 @@ void GlomUtils::transform_and_open(const xmlpp::Document& xml_document, const Gl
     // If the operation was not successful, print the error and abort
     return; //print_error(ex, output_uri_string);
   }
+
+  //Give the user a clue, in case the web browser opens in the background, for instance in a new tab:
+  if(parent_window)
+    Frame_Glom::show_ok_dialog(_("Report Finished"), _("The report will now be opened in your web browser."), *parent_window, Gtk::MESSAGE_INFO);
 
   //Use the GNOME browser:
   GError* error = 0;
