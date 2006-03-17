@@ -67,6 +67,11 @@ Glib::ustring LayoutItem_FieldSummary::get_part_type_name() const
   return _("Field Summary");
 }
 
+Glib::ustring LayoutItem_FieldSummary::get_report_part_id() const
+{
+  return "field";
+}
+
 LayoutItem_FieldSummary::summaryType LayoutItem_FieldSummary::get_summary_type() const
 {
   return m_summary_type;

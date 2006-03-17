@@ -23,6 +23,8 @@
 #include "data_structure/layout/report_parts/layoutitem_summary.h"
 #include "data_structure/layout/report_parts/layoutitem_fieldsummary.h"
 #include "data_structure/layout/report_parts/layoutitem_verticalgroup.h"
+#include "data_structure/layout/report_parts/layoutitem_header.h"
+#include "data_structure/layout/report_parts/layoutitem_footer.h"
 #include "data_structure/layout/layoutitem_field.h"
 #include "data_structure/layout/layoutitem_text.h"
 #include "mode_data/dialog_choose_field.h"
@@ -62,6 +64,9 @@ Dialog_Layout_Report::Dialog_Layout_Report(BaseObjectType* cobject, const Glib::
     //These are deleted in the destructor:
     m_model_available_parts = Gtk::TreeStore::create(m_columns_available_parts);
 
+//     Gtk::TreeModel::iterator iterHeader = m_model_available_parts->append();
+//     (*iterHeader)[m_columns_available_parts.m_col_item] = sharedptr<LayoutItem>(static_cast<LayoutItem*>(new LayoutItem_Header()));
+
     Gtk::TreeModel::iterator iter = m_model_available_parts->append();
     (*iter)[m_columns_available_parts.m_col_item] = sharedptr<LayoutItem>(static_cast<LayoutItem*>(new LayoutItem_GroupBy()));
 
@@ -78,6 +83,9 @@ Dialog_Layout_Report::Dialog_Layout_Report(BaseObjectType* cobject, const Glib::
     (*iter)[m_columns_available_parts.m_col_item] = sharedptr<LayoutItem>(static_cast<LayoutItem*>(new LayoutItem_Summary()));
     iter = m_model_available_parts->append(iter->children());
     (*iter)[m_columns_available_parts.m_col_item] = sharedptr<LayoutItem>(static_cast<LayoutItem*>(new LayoutItem_FieldSummary()));
+
+//     Gtk::TreeModel::iterator iterFooter = m_model_available_parts->append();
+//     (*iterFooter)[m_columns_available_parts.m_col_item] = sharedptr<LayoutItem>(static_cast<LayoutItem*>(new LayoutItem_Footer()));
 
     m_treeview_available_parts->set_model(m_model_available_parts);
     m_treeview_available_parts->expand_all();
@@ -328,17 +336,28 @@ bool Dialog_Layout_Report::may_be_child_of(const sharedptr<const LayoutItem>& pa
   if(!(sharedptr<const LayoutGroup>::cast_dynamic(parent)))
     return false; //Only LayoutGroup (and derived types) may have children.
 
-  const bool fieldsummary = sharedptr<const LayoutItem_FieldSummary>::cast_dynamic(suggested_child);
+  const bool child_fieldsummary = sharedptr<const LayoutItem_FieldSummary>::cast_dynamic(suggested_child);
 
   sharedptr<const LayoutItem_Summary> summary =  sharedptr<const LayoutItem_Summary>::cast_dynamic(parent);
 
   //A Summary may only have FieldSummary children:
-  if(summary && !fieldsummary)
+  if(summary && !child_fieldsummary)
       return false;
 
   //FieldSummary may only be a member of Summary:
-  if(fieldsummary && !summary)
+  if(child_fieldsummary && !summary)
     return false;
+
+
+  const bool header = sharedptr<const LayoutItem_Header>::cast_dynamic(parent);
+
+  const bool footer = sharedptr<const LayoutItem_Footer>::cast_dynamic(parent);
+
+  const bool child_groupby = sharedptr<const LayoutItem_GroupBy>::cast_dynamic(suggested_child);
+  const bool child_summary = sharedptr<const LayoutItem_Summary>::cast_dynamic(suggested_child);
+
+  if((header || footer) && (child_summary || child_groupby))
+    return false; //Nothing that needs data can be in a Header or Footer. A field is allowed because it could show constans from System Preferences.
 
   return true;
 }
@@ -521,13 +540,33 @@ void Dialog_Layout_Report::on_button_down()
 void Dialog_Layout_Report::on_button_add()
 {
   Gtk::TreeModel::iterator parent = get_selected_group_parent();
+  sharedptr<LayoutItem> pParentPart;
+  if(parent)
+    pParentPart = (*parent)[m_columns_available_parts.m_col_item];
+
   Gtk::TreeModel::iterator available = get_selected_available();
+  sharedptr<LayoutItem> pAvailablePart;
+  if(available)
+    pAvailablePart = (*available)[m_columns_available_parts.m_col_item];
+
+
+  //Check whether the available part may be a child of the selected parent:
+  if(pParentPart && !may_be_child_of(pParentPart, pAvailablePart))
+  {
+    //Maybe it may be a child of the items' parent instead,
+    //to become a sibling of the selected item.
+    parent = (*parent).parent();
+    if(parent)
+    {
+      pParentPart = (*parent)[m_columns_available_parts.m_col_item];
+      if(!may_be_child_of(pParentPart, pAvailablePart))
+        return; //Not allowed either.
+    }
+  }
 
   //Copy the available part to the list of parts:
   if(available)
   {
-    sharedptr<LayoutItem> pAvailable = (*available)[m_columns_available_parts.m_col_item];
-
     Gtk::TreeModel::iterator iter;
     if(parent)
     {
@@ -537,7 +576,7 @@ void Dialog_Layout_Report::on_button_add()
     else
       iter = m_model_parts->append();
 
-    (*iter)[m_columns_parts.m_col_item] = sharedptr<LayoutItem>(pAvailable->clone());
+    (*iter)[m_columns_parts.m_col_item] = sharedptr<LayoutItem>(pAvailablePart->clone());
   }
 
   if(parent)

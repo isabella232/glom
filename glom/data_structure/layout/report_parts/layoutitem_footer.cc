@@ -52,3 +52,9 @@ Glib::ustring LayoutItem_Footer::get_part_type_name() const
   return _("Footer");
 }
 
+Glib::ustring LayoutItem_Footer::get_report_part_id() const
+{
+  return "footer";
+}
+
+

@@ -1,5 +1,41 @@
 2006-03-17  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/data_structure/layout/layoutgroup.cc:
+	* glom/data_structure/layout/layoutgroup.h:
+	* glom/data_structure/layout/layoutitem.cc:
+	* glom/data_structure/layout/layoutitem.h:
+	* glom/data_structure/layout/layoutitem_field.cc:
+	* glom/data_structure/layout/layoutitem_field.h:
+	* glom/data_structure/layout/layoutitem_text.cc:
+	* glom/data_structure/layout/layoutitem_text.h:
+	* glom/data_structure/layout/report_parts/layoutitem_fieldsummary.c
+	c:
+	* glom/data_structure/layout/report_parts/layoutitem_fieldsummary.h
+	:
+	* glom/data_structure/layout/report_parts/layoutitem_groupby.cc:
+	* glom/data_structure/layout/report_parts/layoutitem_groupby.h:
+
+	* glom/data_structure/layout/report_parts/layoutitem_summary.cc:
+	* glom/data_structure/layout/report_parts/layoutitem_summary.h:
+	* glom/data_structure/layout/report_parts/layoutitem_verticalgroup.
+	cc:
+	* glom/data_structure/layout/report_parts/layoutitem_verticalgroup.
+	h: Added virtual get_report_path_id() instead of hard-coding the 
+	node IDs in build_report() and friends.
+	* glom/dialog_layout_report.cc:
+	* glom/data_structure/layout/report_parts/layoutitem_footer.cc:
+	* glom/data_structure/layout/report_parts/layoutitem_footer.h:
+	* glom/data_structure/layout/report_parts/layoutitem_header.cc:
+	* glom/data_structure/layout/report_parts/layoutitem_header.h: 
+	New layout report parts, not used yet.
+	* glom/document/document_glom.cc: Load/Save the new report parts.
+	* xslt/print_report_to_html.xsl: Some XSL to handle headers and footers. 
+	Might even work.
+	* glom/base_db.cc:
+	* glom/base_db.h: Added report_build_headerfooter(). Needs work.
+
+2006-03-17  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/frame_glom.cc: on_menu_report_selected(): Build the report with 
 	the current found set only.
 

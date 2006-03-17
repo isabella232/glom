@@ -27,6 +27,14 @@ table
   border-width: 0em;
 }
 
+.header
+{
+}
+
+.footer
+{
+}
+
 .group_by
 {
   margin-left: 0em;
@@ -120,6 +128,28 @@ td
 </body>
 </html>
 </xsl:template>
+
+
+<xsl:template match="header">
+<xsl:text>
+</xsl:text>
+<div class="header">
+
+<xsl:apply-templates />
+<xsl:text>
+</xsl:text>
+</xsl:template>
+
+<xsl:template match="footer">
+<xsl:text>
+</xsl:text>
+<div class="footer">
+
+<xsl:apply-templates />
+<xsl:text>
+</xsl:text>
+</xsl:template>
+
 
 <xsl:template match="group_by">
 <div class="group_by">

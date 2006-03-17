@@ -193,6 +193,11 @@ Glib::ustring LayoutItem_Field::get_part_type_name() const
   return _("Field");
 }
 
+Glib::ustring LayoutItem_Field::get_report_part_id() const
+{
+  return "field";
+}
+
 bool LayoutItem_Field::get_formatting_use_default() const
 {
   return m_formatting_use_default;

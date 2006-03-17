@@ -34,6 +34,8 @@
 #include "data_structure/layout/report_parts/layoutitem_summary.h"
 #include "data_structure/layout/report_parts/layoutitem_fieldsummary.h"
 #include "data_structure/layout/report_parts/layoutitem_verticalgroup.h"
+#include "data_structure/layout/report_parts/layoutitem_header.h"
+#include "data_structure/layout/report_parts/layoutitem_footer.h"
 #include "python_embed/glom_python.h"
 #include <glibmm/i18n.h>
 //#include <libgnomeui/gnome-app-helper.h>
@@ -1443,10 +1445,31 @@ void Base_DB::fill_full_field_details(const Glib::ustring& parent_table_name, sh
   layout_item->set_full_field_details( get_document()->get_field(table_name, layout_item->get_name()) );
 }
 
+void Base_DB::report_build_headerfooter(const Glib::ustring& table_name, xmlpp::Element& parent_node, const sharedptr<LayoutGroup>& group, const Glib::ustring& where_clause)
+{
+  //Add XML node:
+  xmlpp::Element* node = parent_node.add_child(group->get_report_part_id());
+
+  //Add child parts:
+  type_vecLayoutItems itemsToGet;
+  for(LayoutGroup::type_map_items::iterator iterChildren = group->m_map_items.begin(); iterChildren != group->m_map_items.end(); ++iterChildren)
+  {
+    sharedptr<LayoutItem> item = iterChildren->second;
+
+    sharedptr<LayoutItem_Text> pText = sharedptr<LayoutItem_Text>::cast_dynamic(item);
+    if(pText)
+    {
+      //Recurse, adding a sub-groupby block:
+      //TODO: report_build_groupby(table_name, node, pGroupBy, where_clause);
+    }
+  }
+
+}
+
 void Base_DB::report_build_summary(const Glib::ustring& table_name, xmlpp::Element& parent_node, const sharedptr<LayoutItem_Summary>& summary, const Glib::ustring& where_clause)
 {
   //Add XML node:
-  xmlpp::Element* node = parent_node.add_child("summary");
+  xmlpp::Element* node = parent_node.add_child(summary->get_report_part_id());
 
   //Get fields
   type_vecLayoutItems itemsToGet;
@@ -1572,7 +1595,7 @@ void Base_DB::report_build_groupby(const Glib::ustring& table_name, xmlpp::Eleme
         const Gnome::Gda::Value group_value = datamodel->get_value_at(0 /* col*/, row);
 
         //Add XML node:
-        xmlpp::Element* nodeGroupBy = parent_node.add_child("group_by");
+        xmlpp::Element* nodeGroupBy = parent_node.add_child(group_by->get_report_part_id());
         Document_Glom::set_node_attribute_value_as_decimal_double(nodeGroupBy, "border_width", group_by->get_border_width());
 
         nodeGroupBy->set_attribute("group_field", field_group_by->get_title_or_name());
@@ -1610,7 +1633,7 @@ void Base_DB::report_build_groupby(const Glib::ustring& table_name, xmlpp::Eleme
   {
     //There is no group-by field, so ouput all the found records.
     //For instance, the user could use the GroupBy part just to specify a sort, though that would be a bit of a hack:
-    xmlpp::Element* nodeGroupBy = parent_node.add_child("group_by"); //We need this to create the HTML table.
+    xmlpp::Element* nodeGroupBy = parent_node.add_child(group_by->get_report_part_id()); //We need this to create the HTML table.
     Document_Glom::set_node_attribute_value_as_decimal_double(nodeGroupBy, "border_width", group_by->get_border_width());
     report_build_groupby_children(table_name, *nodeGroupBy, group_by, where_clause_parent);
   }
@@ -1739,7 +1762,7 @@ void Base_DB::report_build_records_field(const Glib::ustring& table_name, xmlpp:
 {
   const Field::glom_field_type field_type = field->get_glom_type();
 
-  xmlpp::Element* nodeField = nodeParent.add_child(vertical ? "field_vertical" : "field");
+  xmlpp::Element* nodeField = nodeParent.add_child(vertical ? "field_vertical" : field->get_report_part_id());
   if(field_type == Field::TYPE_NUMERIC)
     nodeField->set_attribute("field_type", "numeric"); //TODO: More sophisticated formatting.
 
@@ -1762,13 +1785,13 @@ void Base_DB::report_build_records_field(const Glib::ustring& table_name, xmlpp:
 void Base_DB::report_build_records_text(const Glib::ustring& table_name, xmlpp::Element& nodeParent, const sharedptr<const LayoutItem_Text>& textobject)
 {
   //Text object:
-  xmlpp::Element* nodeField = nodeParent.add_child("field"); //We reuse this node type for text objects.
+  xmlpp::Element* nodeField = nodeParent.add_child(textobject->get_report_part_id()); //We reuse this node type for text objects.
   nodeField->set_attribute("value", textobject->get_text());
 }
 
 void Base_DB::report_build_records_vertical_group(const Glib::ustring& table_name, xmlpp::Element& parentNode, const sharedptr<LayoutItem_VerticalGroup>& group, const Glib::RefPtr<Gnome::Gda::DataModel>& datamodel, guint row, guint& field_index)
 {
-  xmlpp::Element* nodeGroupVertical = parentNode.add_child("group_vertical");
+  xmlpp::Element* nodeGroupVertical = parentNode.add_child(group->get_report_part_id());
 
   for(LayoutGroup::type_map_items::iterator iterChildren = group->m_map_items.begin(); iterChildren != group->m_map_items.end(); ++iterChildren)
   {
@@ -1837,7 +1860,19 @@ void Base_DB::report_build(const Glib::ustring& table_name, const sharedptr<cons
       }
       else
       {
-        itemsToGet_TopLevel.push_back( glom_sharedptr_clone(pPart) );
+        sharedptr<LayoutGroup> pGroup = sharedptr<LayoutGroup>::cast_dynamic(pPart);
+        if(pGroup)
+        {
+          sharedptr<LayoutItem_Header> pHeader = sharedptr<LayoutItem_Header>::cast_dynamic(pPart);
+          sharedptr<LayoutItem_Footer> pFooter = sharedptr<LayoutItem_Footer>::cast_dynamic(pPart);
+          if(pHeader && pFooter)
+          {
+            //Recurse, adding a summary block:
+            report_build_headerfooter(table_name, *nodeParent, pGroup, where_clause);
+          }
+        }
+        else
+          itemsToGet_TopLevel.push_back( glom_sharedptr_clone(pPart) );
       }
     }
   }

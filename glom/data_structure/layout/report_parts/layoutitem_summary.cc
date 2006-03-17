@@ -58,3 +58,7 @@ Glib::ustring LayoutItem_Summary::get_part_type_name() const
   return _("Summary");
 }
 
+Glib::ustring LayoutItem_Summary::get_report_part_id() const
+{
+  return "summary";
+}

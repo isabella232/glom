@@ -78,6 +78,7 @@ public:
   type_map_const_items get_items() const;
 
   virtual Glib::ustring get_part_type_name() const;
+  virtual Glib::ustring get_report_part_id() const;
 
 //Allow more efficient access: protected:
 

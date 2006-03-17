@@ -138,3 +138,9 @@ Glib::ustring LayoutItem_GroupBy::get_layout_display_name() const
   return result;
 }
 
+Glib::ustring LayoutItem_GroupBy::get_report_part_id() const
+{
+  return "group_by";
+}
+
+

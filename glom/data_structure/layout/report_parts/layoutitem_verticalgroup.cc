@@ -52,3 +52,8 @@ Glib::ustring LayoutItem_VerticalGroup::get_part_type_name() const
   return _("Vertical Group");
 }
 
+Glib::ustring LayoutItem_VerticalGroup::get_report_part_id() const
+{
+  return "vertical_group";
+}
+

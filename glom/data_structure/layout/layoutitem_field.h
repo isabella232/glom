@@ -63,6 +63,8 @@ public:
 
   virtual Glib::ustring get_part_type_name() const;
 
+  virtual Glib::ustring get_report_part_id() const;
+
   void set_full_field_details(const sharedptr<const Field>& field);
   sharedptr<const Field> get_full_field_details() const;
 

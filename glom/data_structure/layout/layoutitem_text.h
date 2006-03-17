@@ -38,6 +38,7 @@ public:
   bool operator==(const LayoutItem_Text& src) const;
 
   virtual Glib::ustring get_part_type_name() const;
+  virtual Glib::ustring get_report_part_id() const;
 
   /** Set the text that will be shown on each record.
    */

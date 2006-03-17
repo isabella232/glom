@@ -65,6 +65,11 @@ Glib::ustring LayoutItem_Text::get_part_type_name() const
   return _("Text");
 }
 
+Glib::ustring LayoutItem_Text::get_report_part_id() const
+{
+  return "field"; //We reuse this for this node.
+}
+
 Glib::ustring LayoutItem_Text::get_text() const
 {
   return m_text->get_title();

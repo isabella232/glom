@@ -62,6 +62,7 @@ public:
   virtual Glib::ustring get_layout_display_name() const;
 
   virtual Glib::ustring get_part_type_name() const;
+  virtual Glib::ustring get_report_part_id() const;
 
   sharedptr<LayoutGroup> m_group_secondary_fields; //For instance, show a contact name as well as the contact ID that we group by.
 

@@ -69,3 +69,8 @@ Glib::ustring LayoutItem::get_layout_display_name() const
 {
   return Glib::ustring();
 }
+
+Glib::ustring LayoutItem::get_report_part_id() const
+{
+  return "unexpected_report_part_id"; //This should never be used.
+}

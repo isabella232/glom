@@ -393,6 +393,11 @@ Glib::ustring LayoutGroup::get_part_type_name() const
   return _("Group");
 }
 
+Glib::ustring LayoutGroup::get_report_part_id() const
+{
+  return "group";
+}
+
 guint LayoutGroup::get_items_count() const
 {
   return m_map_items.size();

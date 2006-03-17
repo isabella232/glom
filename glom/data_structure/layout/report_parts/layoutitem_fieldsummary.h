@@ -37,6 +37,7 @@ public:
   bool operator==(const LayoutItem_FieldSummary& src) const;
 
   virtual Glib::ustring get_part_type_name() const;
+  virtual Glib::ustring get_report_part_id() const;
 
   enum summaryType
   {

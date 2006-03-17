@@ -52,3 +52,8 @@ Glib::ustring LayoutItem_Header::get_part_type_name() const
   return _("Header");
 }
 
+Glib::ustring LayoutItem_Header::get_report_part_id() const
+{
+  return "header";
+}
+

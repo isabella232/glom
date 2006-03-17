@@ -23,6 +23,8 @@
 #include "../data_structure/layout/report_parts/layoutitem_summary.h"
 #include "../data_structure/layout/report_parts/layoutitem_fieldsummary.h"
 #include "../data_structure/layout/report_parts/layoutitem_verticalgroup.h"
+#include "../data_structure/layout/report_parts/layoutitem_header.h"
+#include "../data_structure/layout/report_parts/layoutitem_footer.h"
 #include "../data_structure/layout/layoutitem_button.h"
 #include "../data_structure/layout/layoutitem_text.h"
 #include "../standard_table_prefs_fields.h"
@@ -59,6 +61,8 @@
 #define GLOM_NODE_DATA_LAYOUT_ITEM_VERTICALGROUP "data_layout_item_verticalgroup"
 #define GLOM_NODE_DATA_LAYOUT_ITEM_SUMMARY "data_layout_item_summary"
 #define GLOM_NODE_DATA_LAYOUT_ITEM_FIELDSUMMARY "data_layout_item_fieldsummary"
+#define GLOM_NODE_DATA_LAYOUT_ITEM_HEADER "data_layout_item_header"
+#define GLOM_NODE_DATA_LAYOUT_ITEM_FOOTER "data_layout_item_footer"
 #define GLOM_NODE_TABLE "table"
 #define GLOM_NODE_FIELDS "fields"
 #define GLOM_NODE_FIELD "field"
@@ -1581,6 +1585,22 @@ void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Gl
         item->m_sequence = sequence;
         group->add_item(item, sequence);
       }
+      else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_ITEM_HEADER)
+      {
+        sharedptr<LayoutItem_Header> child_group = sharedptr<LayoutItem_Header>::create();
+        //Recurse:
+        load_after_layout_group(element, table_name, child_group);
+
+        group->add_item(child_group);
+      }
+      else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_ITEM_FOOTER)
+      {
+        sharedptr<LayoutItem_Footer> child_group = sharedptr<LayoutItem_Footer>::create();
+        //Recurse:
+        load_after_layout_group(element, table_name, child_group);
+
+        group->add_item(child_group);
+      }
       else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_GROUP)
       {
         sharedptr<LayoutGroup> child_group = sharedptr<LayoutGroup>::create();
@@ -2138,22 +2158,38 @@ void Document_Glom::save_before_layout_group(xmlpp::Element* node, const sharedp
       }
       else
       {
-        sharedptr<const LayoutItem_Portal> portal = sharedptr<const LayoutItem_Portal>::cast_dynamic(group);
-        if(portal) //If it is a related records portal
+        sharedptr<const LayoutItem_Header> headerGroup = sharedptr<const LayoutItem_Header>::cast_dynamic(group);
+        if(headerGroup) //If it is a GroupBy report part.
         {
-          child = node->add_child(GLOM_NODE_DATA_LAYOUT_PORTAL);
-          child->set_attribute(GLOM_ATTRIBUTE_RELATIONSHIP_NAME, portal->get_relationship_name());
+          child = node->add_child(GLOM_NODE_DATA_LAYOUT_ITEM_HEADER);
         }
         else
         {
-          sharedptr<const LayoutItem_Notebook> notebook = sharedptr<const LayoutItem_Notebook>::cast_dynamic(group);
-          if(notebook) //If it is a related records portal
+          sharedptr<const LayoutItem_Footer> footerGroup = sharedptr<const LayoutItem_Footer>::cast_dynamic(group);
+          if(footerGroup) //If it is a GroupBy report part.
           {
-            child = node->add_child(GLOM_NODE_DATA_LAYOUT_NOTEBOOK);
+            child = node->add_child(GLOM_NODE_DATA_LAYOUT_ITEM_FOOTER);
           }
-          else if(group)
+          else
           {
-            child = node->add_child(GLOM_NODE_DATA_LAYOUT_GROUP);
+            sharedptr<const LayoutItem_Portal> portal = sharedptr<const LayoutItem_Portal>::cast_dynamic(group);
+            if(portal) //If it is a related records portal
+            {
+              child = node->add_child(GLOM_NODE_DATA_LAYOUT_PORTAL);
+              child->set_attribute(GLOM_ATTRIBUTE_RELATIONSHIP_NAME, portal->get_relationship_name());
+            }
+            else
+            {
+              sharedptr<const LayoutItem_Notebook> notebook = sharedptr<const LayoutItem_Notebook>::cast_dynamic(group);
+              if(notebook) //If it is a related records portal
+              {
+                child = node->add_child(GLOM_NODE_DATA_LAYOUT_NOTEBOOK);
+              }
+              else if(group)
+              {
+                child = node->add_child(GLOM_NODE_DATA_LAYOUT_GROUP);
+              }
+            }
           }
         }
       }

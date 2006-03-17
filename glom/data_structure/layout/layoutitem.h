@@ -46,6 +46,11 @@ public:
   virtual Glib::ustring get_layout_display_name() const;
   virtual Glib::ustring get_part_type_name() const = 0;
 
+  /** Gets the node name to use for the intermediate XML,
+   * (and usually, the CSS style class to use for the resulting HTML).
+   */
+  virtual Glib::ustring get_report_part_id() const;
+
   guint m_sequence;
   //bool m_hidden;
 
