@@ -1,5 +1,15 @@
 2006-03-17  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/data_structure/layout/report_parts/Makefile.am:
+	* glom/data_structure/layout/report_parts/layoutitem_footer.cc:
+	* glom/data_structure/layout/report_parts/layoutitem_footer.h:
+	* glom/data_structure/layout/report_parts/layoutitem_header.cc:
+	* glom/data_structure/layout/report_parts/layoutitem_header.h: Add 
+	header and footer parts for reports, though they are not used yet.
+	* po/POTFILES.in: Add the new files.
+
+2006-03-17  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/base_db.cc:
 	* glom/base_db.h: report_build(): Take extra Gtk::Window* parameter.
 	* glom/frame_glom.cc:

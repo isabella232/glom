@@ -17,6 +17,8 @@ glom/data_structure/layout/layoutitem_notebook.cc
 glom/data_structure/layout/layoutitem_portal.cc
 glom/data_structure/layout/layoutitem_text.cc
 glom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc
+glom/data_structure/layout/report_parts/layoutitem_footer.cc
+glom/data_structure/layout/report_parts/layoutitem_header.cc
 glom/data_structure/layout/report_parts/layoutitem_groupby.cc
 glom/data_structure/layout/report_parts/layoutitem_summary.cc
 glom/dialog_database_preferences.cc
