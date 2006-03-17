@@ -1,5 +1,10 @@
 2006-03-17  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/frame_glom.cc: on_menu_report_selected(): Build the report with 
+	the current found set only.
+
+2006-03-17  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/utils.cc: Added #includes to fix the build.
 
 2006-03-17  Murray Cumming  <murrayc@murrayc.com>

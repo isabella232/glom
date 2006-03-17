@@ -1414,7 +1414,7 @@ void Frame_Glom::on_menu_report_selected(const Glib::ustring& report_name)
   if(!report)
     return;
 
-  report_build(m_table_name, report, "", get_app_window()); //TODO: Use found set's where_clause.
+  report_build(m_table_name, report, m_Notebook_Data.get_where_clause(), get_app_window()); //TODO: Use found set's where_clause.
 }
 
 void Frame_Glom::on_dialog_layout_report_hide()
