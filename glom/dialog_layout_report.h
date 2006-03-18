@@ -54,7 +54,11 @@ protected:
 
   ModelColumnsGroups m_columns_available_parts;
 
-  virtual void add_group(const Gtk::TreeModel::iterator& parent, const sharedptr<const LayoutGroup>& group);
+  typedef Gtk::TreeStore type_model;
+
+  virtual void add_group(const Glib::RefPtr<type_model>& model_parts, const Gtk::TreeModel::iterator& parent, const sharedptr<const LayoutGroup>& group);
+
+  void add_group_children(const Glib::RefPtr<type_model>& model_parts, const Gtk::TreeModel::iterator& parent, const sharedptr<const LayoutGroup>& group);
 
   void fill_group_children(const sharedptr<LayoutGroup>& group, const Gtk::TreeModel::iterator& iter);
   sharedptr<LayoutGroup> fill_group(const Gtk::TreeModel::iterator& iter);
@@ -67,9 +71,17 @@ protected:
   virtual void save_to_document();
 
   sharedptr<Relationship> offer_relationship_list();
+
+  ///Depends on the active notebook tab.
+  Glib::RefPtr<type_model> get_selected_model();
+  Gtk::TreeView* get_selected_treeview();
+  const Gtk::TreeView* get_selected_treeview() const;
+
   Gtk::TreeModel::iterator get_selected_group_parent() const;
 
   Gtk::TreeModel::iterator get_selected_available() const;
+
+  void setup_model(Gtk::TreeView& treeview, Glib::RefPtr<type_model>& model);
 
   //signal handlers:
   virtual void on_button_add();
@@ -89,7 +101,15 @@ protected:
 
   void on_cell_data_available_part(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter);
 
-  Gtk::TreeView* m_treeview_parts;
+  void on_notebook_switch_page(GtkNotebookPage*, guint);
+
+  void fill_report_parts(sharedptr<LayoutGroup>& group, const Glib::RefPtr<const type_model> parts_model);
+
+  Gtk::Notebook* m_notebook_parts;
+  Gtk::TreeView* m_treeview_parts_header;
+  Gtk::TreeView* m_treeview_parts_footer;
+  Gtk::TreeView* m_treeview_parts_main;
+
   Gtk::TreeView* m_treeview_available_parts;
 
   Gtk::Button* m_button_up;
@@ -102,8 +122,12 @@ protected:
   Gtk::Entry* m_entry_name;
   Gtk::Entry* m_entry_title;
 
-  Glib::RefPtr<Gtk::TreeStore> m_model_parts;
-  Glib::RefPtr<Gtk::TreeStore> m_model_available_parts;
+
+  Glib::RefPtr<type_model> m_model_parts_header;
+  Glib::RefPtr<type_model> m_model_parts_footer;
+  Glib::RefPtr<type_model> m_model_parts_main;
+
+  Glib::RefPtr<type_model> m_model_available_parts;
 
   Glib::ustring m_name_original;
   sharedptr<Report> m_report;

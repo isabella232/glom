@@ -134,8 +134,8 @@ td
 <xsl:text>
 </xsl:text>
 <div class="header">
-
 <xsl:apply-templates />
+</div>
 <xsl:text>
 </xsl:text>
 </xsl:template>
@@ -144,8 +144,8 @@ td
 <xsl:text>
 </xsl:text>
 <div class="footer">
-
 <xsl:apply-templates />
+</div>
 <xsl:text>
 </xsl:text>
 </xsl:template>

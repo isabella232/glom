@@ -157,7 +157,7 @@ Document_Glom::Document_Glom()
 
   set_dtd_root_node_name("glom_document");
 
-  set_write_formatted(); //Make the output more human-readable, just in case.
+  set_write_formatted(); //Make the output more human-readable, just in case. TODO: This does not seem to work.
 
   //Set default database name:
   //This is also the XML attribute default value,

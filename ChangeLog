@@ -1,3 +1,18 @@
+2006-03-18  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/glom.glade:
+	* glom/dialog_layout_report.cc:
+	* glom/dialog_layout_report.h: Put the report 
+	parts into a Notebook, with extra tabs, with extra treeviews 
+	for the header and footer, because there is no point in 
+	allowing them to be added by the user anywhere but the start and end.
+	* glom/base_db.cc: report_build(): Handle the Header and Footer parts, 
+	though it is reusing some datemodel-row-based functions in a hacky way, 
+	and it needs to create an equivalent of the HTML table and tr for the 
+	header parts.
+	* xslt/print_report_to_html.xsl: Initial handling of header and footer 
+	parts.
+
 2006-03-17  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/data_structure/layout/layoutgroup.cc:

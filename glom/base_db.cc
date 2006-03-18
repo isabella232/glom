@@ -1456,11 +1456,23 @@ void Base_DB::report_build_headerfooter(const Glib::ustring& table_name, xmlpp::
   {
     sharedptr<LayoutItem> item = iterChildren->second;
 
-    sharedptr<LayoutItem_Text> pText = sharedptr<LayoutItem_Text>::cast_dynamic(item);
-    if(pText)
+    sharedptr<LayoutItem_Text> item_text = sharedptr<LayoutItem_Text>::cast_dynamic(item);
+    if(item_text)
     {
+      report_build_records_text(table_name, *node, item_text);
+
       //Recurse, adding a sub-groupby block:
       //TODO: report_build_groupby(table_name, node, pGroupBy, where_clause);
+    }
+    else
+    {
+      sharedptr<LayoutItem_VerticalGroup> vertical_group = sharedptr<LayoutItem_VerticalGroup>::cast_dynamic(item);
+      if(vertical_group)
+      {
+        //Reuse (a bit hacky) this function for the header and footer:
+        guint col_index = 0; //Ignored, because the model is null.
+        report_build_records_vertical_group(table_name, *node, vertical_group, Glib::RefPtr<Gnome::Gda::DataModel>(), 0, col_index);
+      }
     }
   }
 
@@ -1766,6 +1778,9 @@ void Base_DB::report_build_records_field(const Glib::ustring& table_name, xmlpp:
   if(field_type == Field::TYPE_NUMERIC)
     nodeField->set_attribute("field_type", "numeric"); //TODO: More sophisticated formatting.
 
+  if(!datamodel) //We call this for headers and footers too, just in case a Field is in there somehow.
+    return;
+
   Glib::ustring text_value = GlomConversions::get_text_for_gda_value(field_type, datamodel->get_value_at(colField, row), field->get_formatting_used().m_numeric_format);
 
   //The Postgres summary functions return NULL when summarising NULL records, but 0 is more sensible:
@@ -1808,6 +1823,14 @@ void Base_DB::report_build_records_vertical_group(const Glib::ustring& table_nam
       if(pField)
       {
         report_build_records_field(table_name, *nodeGroupVertical, pField, datamodel, row, field_index, true /* vertical, so we get a row for each field too. */);
+      }
+      else
+      {
+        sharedptr<LayoutItem_Text> pText = sharedptr<LayoutItem_Text>::cast_dynamic(item);
+        if(pText)
+        {
+          report_build_records_text(table_name, *nodeGroupVertical, pText);
+        }
       }
     }
   }
@@ -1865,7 +1888,7 @@ void Base_DB::report_build(const Glib::ustring& table_name, const sharedptr<cons
         {
           sharedptr<LayoutItem_Header> pHeader = sharedptr<LayoutItem_Header>::cast_dynamic(pPart);
           sharedptr<LayoutItem_Footer> pFooter = sharedptr<LayoutItem_Footer>::cast_dynamic(pPart);
-          if(pHeader && pFooter)
+          if(pHeader || pFooter)
           {
             //Recurse, adding a summary block:
             report_build_headerfooter(table_name, *nodeParent, pGroup, where_clause);
