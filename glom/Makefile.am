@@ -1,4 +1,4 @@
-SUBDIRS = data_structure document mode_data mode_design mode_find navigation utility_widgets layout_item_dialogs python_embed relationships_overview translation
+SUBDIRS = data_structure document mode_data mode_design mode_find navigation utility_widgets layout_item_dialogs python_embed relationships_overview reports translation
 
 gladedir = $(datadir)/glom/glade/
 glomxsltdir = $(datadir)/glom/xslt/
@@ -35,7 +35,6 @@ glom_SOURCES = main.cc \
                dialog_invalid_data.h dialog_invalid_data.cc \
                dialog_new_database.h dialog_new_database.cc \
                dialog_database_preferences.h dialog_database_preferences.cc \
-               dialog_layout_report.h dialog_layout_report.cc \
                dialog_progress_creating.h dialog_progress_creating.cc \
                filechooser_export.h filechooser_export.cc \
                sharedptr.h \
@@ -44,6 +43,7 @@ glom_SOURCES = main.cc \
                utils.h utils.cc
 
 glom_LDADD = document/libdocument.a \
+             reports/libreports.a \
              data_structure/libdata_structure.a \
              data_structure/layout/libdata_structure_layout.a \
              data_structure/layout/report_parts/libdata_structure_layout_reportparts.a \

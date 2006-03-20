@@ -23,7 +23,7 @@
 #include "appstate.h"
 #include "mode_design/users/dialog_groups_list.h"
 #include "dialog_database_preferences.h"
-#include "dialog_layout_report.h"
+#include "reports/dialog_layout_report.h"
 #include "utils.h"
 #include "data_structure/glomconversions.h"
 #include "data_structure/layout/report_parts/layoutitem_summary.h"

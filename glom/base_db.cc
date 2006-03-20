@@ -28,7 +28,7 @@
 #include "layout_item_dialogs/dialog_field_layout.h"
 #include "layout_item_dialogs/dialog_notebook.h"
 #include "mode_design/dialog_textobject.h"
-//#include "dialog_layout_report.h"
+//#include "reports/dialog_layout_report.h"
 #include "utils.h"
 #include "data_structure/glomconversions.h"
 #include "data_structure/layout/report_parts/layoutitem_summary.h"

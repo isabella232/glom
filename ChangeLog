@@ -1,3 +1,17 @@
+2006-03-20  Murray Cumming  <murrayc@murrayc.com>
+
+	* configure.in:
+	* glom/Makefile.am:
+	* glom/reports/Makefile.am:
+	* glom/reports/dialog_layout_report.cc:
+	* glom/reports/dialog_layout_report.h: Moved this dialog into 
+	a sub directory. Show different (less) available items for headers 
+	and footers, to avoid some confusion.
+	* glom/reports/treestore_report_layout.cc:
+	* glom/reports/treestore_report_layout.h: Added a custom treemodel, 
+	so that we can override row_drop_possible_vfunc(), to control 
+	what can be dropped where.
+
 2006-03-18  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/glom.glade:
