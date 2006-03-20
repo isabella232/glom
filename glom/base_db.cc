@@ -1470,7 +1470,7 @@ void Base_DB::report_build_headerfooter(const Glib::ustring& table_name, xmlpp::
       if(pField)
       {
         guint col_index = 0; //ignored.
-        report_build_records_field(table_name, *node, pField, Glib::RefPtr<Gnome::Gda::DataModel>(), 0, col_index, true /* vertical, so we get a row for each field too. */);
+        report_build_records_field(table_name, *node, pField, Glib::RefPtr<Gnome::Gda::DataModel>(), 0, col_index);
       }
       else
       {
@@ -1787,10 +1787,28 @@ void Base_DB::report_build_records_field(const Glib::ustring& table_name, xmlpp:
   if(field_type == Field::TYPE_NUMERIC)
     nodeField->set_attribute("field_type", "numeric"); //TODO: More sophisticated formatting.
 
-  if(!datamodel) //We call this for headers and footers too, just in case a Field is in there somehow.
-    return;
+  Glib::ustring text_value;
 
-  Glib::ustring text_value = GlomConversions::get_text_for_gda_value(field_type, datamodel->get_value_at(colField, row), field->get_formatting_used().m_numeric_format);
+  if(!datamodel) //We call this for headers and footers too.
+  {
+    //In this case it can only be a system preferences field.
+    //So let's get that data here:
+    const Glib::ustring table_used = field->get_table_used(table_name);
+    const Glib::ustring query = "SELECT \"" + table_used + "\".\"" + field->get_name() + "\" FROM \""+ table_used + "\" LIMIT 1";
+    Glib::RefPtr<Gnome::Gda::DataModel> datamodel = Query_execute(query);
+
+    if(!datamodel)
+      return;
+
+    text_value = GlomConversions::get_text_for_gda_value(field_type, datamodel->get_value_at(colField, row), field->get_formatting_used().m_numeric_format);
+
+    colField = 0;
+    row = 0;
+  }
+  else
+  {
+    text_value = GlomConversions::get_text_for_gda_value(field_type, datamodel->get_value_at(colField, row), field->get_formatting_used().m_numeric_format);
+  }
 
   //The Postgres summary functions return NULL when summarising NULL records, but 0 is more sensible:
   if(text_value.empty() && sharedptr<const LayoutItem_FieldSummary>::cast_dynamic(field) && (field_type == Field::TYPE_NUMERIC))

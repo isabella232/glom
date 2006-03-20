@@ -1,4 +1,9 @@
 2006-03-20  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/base_db.cc: report_build_records_field(): Handle fields in headers 
+	and footers, assuming that they are to single records, such as system preferences.
+
+2006-03-20  Murray Cumming  <murrayc@murrayc.com>
 	* glom/base_db.cc:
 	* glom/base_db.h: report_build_records_text(): Take bool vertical parameter, 
 	like report_build_records_field(), so we can handle these properly in 
