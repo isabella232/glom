@@ -1,5 +1,9 @@
 2006-03-20  Murray Cumming  <murrayc@murrayc.com>
 
+	* po/POTFILES.in: Added some missing files.
+
+2006-03-20  Murray Cumming  <murrayc@murrayc.com>
+
 	* configure.in:
 	* glom/Makefile.am:
 	* glom/reports/Makefile.am:
