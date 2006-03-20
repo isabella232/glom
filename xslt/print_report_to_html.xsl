@@ -27,13 +27,10 @@ table
   border-width: 0em;
 }
 
-.header
+.headerfooter
 {
 }
 
-.footer
-{
-}
 
 .group_by
 {
@@ -130,21 +127,15 @@ td
 </xsl:template>
 
 
-<xsl:template match="header">
+<xsl:template match="header|footer">
 <xsl:text>
 </xsl:text>
-<div class="header">
+<div class="headerfooter">
+<table>
+<tr>
 <xsl:apply-templates />
-</div>
-<xsl:text>
-</xsl:text>
-</xsl:template>
-
-<xsl:template match="footer">
-<xsl:text>
-</xsl:text>
-<div class="footer">
-<xsl:apply-templates />
+</tr>
+</table>
 </div>
 <xsl:text>
 </xsl:text>

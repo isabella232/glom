@@ -1,4 +1,13 @@
 2006-03-20  Murray Cumming  <murrayc@murrayc.com>
+	* glom/base_db.cc:
+	* glom/base_db.h: report_build_records_text(): Take bool vertical parameter, 
+	like report_build_records_field(), so we can handle these properly in 
+	vertical groups.
+	* glom/data_structure/layout/report_parts/layoutitem_verticalgroup.
+	cc: Correct node name for XML/XSL reports.
+	* xslt/print_report_to_html.xsl: Handle headers and footers.
+
+2006-03-20  Murray Cumming  <murrayc@murrayc.com>
 
 	* po/POTFILES.in: Added some missing files.
 

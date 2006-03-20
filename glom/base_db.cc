@@ -1466,12 +1466,21 @@ void Base_DB::report_build_headerfooter(const Glib::ustring& table_name, xmlpp::
     }
     else
     {
-      sharedptr<LayoutItem_VerticalGroup> vertical_group = sharedptr<LayoutItem_VerticalGroup>::cast_dynamic(item);
-      if(vertical_group)
+      sharedptr<LayoutItem_Field> pField = sharedptr<LayoutItem_Field>::cast_dynamic(item);
+      if(pField)
       {
-        //Reuse (a bit hacky) this function for the header and footer:
-        guint col_index = 0; //Ignored, because the model is null.
-        report_build_records_vertical_group(table_name, *node, vertical_group, Glib::RefPtr<Gnome::Gda::DataModel>(), 0, col_index);
+        guint col_index = 0; //ignored.
+        report_build_records_field(table_name, *node, pField, Glib::RefPtr<Gnome::Gda::DataModel>(), 0, col_index, true /* vertical, so we get a row for each field too. */);
+      }
+      else
+      {
+        sharedptr<LayoutItem_VerticalGroup> vertical_group = sharedptr<LayoutItem_VerticalGroup>::cast_dynamic(item);
+        if(vertical_group)
+        {
+          //Reuse (a bit hacky) this function for the header and footer:
+          guint col_index = 0; //Ignored, because the model is null.
+          report_build_records_vertical_group(table_name, *node, vertical_group, Glib::RefPtr<Gnome::Gda::DataModel>(), 0, col_index);
+        }
       }
     }
   }
@@ -1797,10 +1806,10 @@ void Base_DB::report_build_records_field(const Glib::ustring& table_name, xmlpp:
   ++colField;
 }
 
-void Base_DB::report_build_records_text(const Glib::ustring& table_name, xmlpp::Element& nodeParent, const sharedptr<const LayoutItem_Text>& textobject)
+void Base_DB::report_build_records_text(const Glib::ustring& table_name, xmlpp::Element& nodeParent, const sharedptr<const LayoutItem_Text>& textobject, bool vertical)
 {
   //Text object:
-  xmlpp::Element* nodeField = nodeParent.add_child(textobject->get_report_part_id()); //We reuse this node type for text objects.
+  xmlpp::Element* nodeField = nodeParent.add_child(vertical ? "field_vertical" : textobject->get_report_part_id()); //We reuse this node type for text objects.
   nodeField->set_attribute("value", textobject->get_text());
 }
 
@@ -1829,7 +1838,7 @@ void Base_DB::report_build_records_vertical_group(const Glib::ustring& table_nam
         sharedptr<LayoutItem_Text> pText = sharedptr<LayoutItem_Text>::cast_dynamic(item);
         if(pText)
         {
-          report_build_records_text(table_name, *nodeGroupVertical, pText);
+          report_build_records_text(table_name, *nodeGroupVertical, pText, true);
         }
       }
     }

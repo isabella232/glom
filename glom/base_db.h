@@ -246,7 +246,7 @@ protected:
   void report_build_records(const Glib::ustring& table_name, xmlpp::Element& parent_node, const type_vecLayoutItems& items, const Glib::ustring& where_clause, const Glib::ustring& sort_clause = Glib::ustring(), bool one_record_only = false);
   void report_build_records_get_fields(const Glib::ustring& table_name, const sharedptr<LayoutGroup>& group, type_vecLayoutFields& items);
   void report_build_records_field(const Glib::ustring& table_name, xmlpp::Element& nodeParent, const sharedptr<const LayoutItem_Field>& field, const Glib::RefPtr<Gnome::Gda::DataModel>& datamodel, guint row, guint& colField, bool vertical = false);
-  void report_build_records_text(const Glib::ustring& table_name, xmlpp::Element& nodeParent, const sharedptr<const LayoutItem_Text>& textobject);
+  void report_build_records_text(const Glib::ustring& table_name, xmlpp::Element& nodeParent, const sharedptr<const LayoutItem_Text>& textobject, bool vertical = false);
   void report_build_records_vertical_group(const Glib::ustring& table_name, xmlpp::Element& vertical_group_node, const sharedptr<LayoutItem_VerticalGroup>& group, const Glib::RefPtr<Gnome::Gda::DataModel>& datamodel, guint row, guint& field_index);
 
 
