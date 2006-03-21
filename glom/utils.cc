@@ -534,7 +534,11 @@ Glib::ustring GlomUtils::create_local_image_uri(const Gnome::Gda::Value& value)
         free(buffer_binary);
       }
     }
+    else
+       std::cerr << "GlomUtils::create_local_image_uri(): binary GdaValue contains no data." << std::endl;
   }
+  //else
+  //  std::cerr << "GlomUtils::create_local_image_uri(): type != BINARY" << std::endl;
 
   if(result.empty())
     result = "/tmp/glom_report_image_invalid.png";

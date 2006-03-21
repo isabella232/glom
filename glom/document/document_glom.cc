@@ -1582,7 +1582,9 @@ void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Gl
         sharedptr<LayoutItem_Image> item = sharedptr<LayoutItem_Image>::create();
         load_after_translations(element, *item);
 
+        std::cout << "debug 1" << std::endl;
         item->set_image(get_node_attribute_value_as_value(element, GLOM_ATTRIBUTE_DATA_LAYOUT_IMAGEOBJECT_IMAGE, Field::TYPE_IMAGE));
+        std::cout << "debug 2" << std::endl;
 
         item->m_sequence = sequence;
         group->add_item(item, sequence);

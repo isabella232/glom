@@ -376,6 +376,18 @@ Gnome::Gda::Value GlomConversions::parse_value(Field::glom_field_type glom_type,
     success = true;
     return Gnome::Gda::Value( (text == "TRUE" ? true : false) ); //TODO: Internationalize this, but it should never be used anyway.
   }
+  else if(glom_type == Field::TYPE_IMAGE)
+  {
+    //We assume that the text is the same format that we use in the document when saving examples.
+    //(The SQL format).
+    Gnome::Gda::Value result;
+
+    //libgda currently assumes that this buffer is an already-escaped string.
+    //TODO: Unescape the text when libgda has been fixed.
+    result.set(text.c_str(), text.size());
+    success = true;
+    return result;
+  }
 
   success = true;
   return Gnome::Gda::Value(text);

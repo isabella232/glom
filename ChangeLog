@@ -1,5 +1,14 @@
 2006-03-21  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/data_structure/glomconversions.cc: parse_value(): Handle images, 
+	assuming that the text is the escaped SQL image format. This means that 
+	the image layout items are actually loaded from the document.
+	* glom/utility_widgets/flowtablewithfields.cc: add_textobject_at_position(), 
+	add_imageobject_at_position(): Pass true to add(), so that these widgets 
+	take up the full available width when they have no titles.
+
+2006-03-21  Murray Cumming  <murrayc@murrayc.com>
+
         * po/POTFILES.in: 
 	* glom/data_structure/layout/Makefile.am:
 	* glom/data_structure/layout/layoutitem_image.cc:

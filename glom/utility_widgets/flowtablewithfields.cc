@@ -477,7 +477,7 @@ void FlowTableWithFields::add_textobject_at_position(const sharedptr<LayoutItem_
 
   const Glib::ustring title = layoutitem_text->get_title();
   if(title.empty())
-    add(*alignment_label);
+    add(*alignment_label, true /* expand */);
   else
   {
     Gtk::Alignment* alignment_title = Gtk::manage(new Gtk::Alignment());
@@ -506,7 +506,7 @@ void FlowTableWithFields::add_imageobject_at_position(const sharedptr<LayoutItem
 
   const Glib::ustring title = layoutitem_image->get_title();
   if(title.empty())
-    add(*image);
+    add(*image, true /* expand */);
   else
   {
     Gtk::Alignment* alignment_title = Gtk::manage(new Gtk::Alignment());
