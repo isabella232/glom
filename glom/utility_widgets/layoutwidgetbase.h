@@ -71,6 +71,8 @@ public:
   typedef sigc::signal<void> type_signal_user_requested_layout_properties;
   type_signal_user_requested_layout_properties signal_user_requested_layout_properties();
 
+  virtual void set_read_only(bool read_only = true);
+
 protected:
   virtual App_Glom* get_application() const; // = 0;
 

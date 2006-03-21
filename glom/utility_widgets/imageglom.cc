@@ -36,6 +36,19 @@ ImageGlom::ImageGlom()
 : m_image(Gtk::Stock::MISSING_IMAGE, Gtk::ICON_SIZE_DIALOG), //The widget is invisible if we don't specify an image.
   m_pMenuPopup_UserMode(0)
 {
+  init();
+}
+
+ImageGlom::ImageGlom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& /* refGlade */)
+: Gtk::EventBox(cobject)
+{
+  init();
+}
+
+void ImageGlom::init()
+{
+  m_read_only = false;
+
   setup_menu();
   setup_menu_usermode();
 
@@ -48,6 +61,8 @@ ImageGlom::ImageGlom()
 
   add(m_frame);
 }
+
+
 
 ImageGlom::~ImageGlom()
 {
@@ -117,6 +132,14 @@ bool ImageGlom::get_has_original_data() const
   return true; //TODO.
 }
 
+void ImageGlom::set_pixbuf(const Glib::RefPtr<Gdk::Pixbuf>& pixbuf)
+{
+  m_pixbuf_original = pixbuf;
+  m_image.set(m_pixbuf_original);
+
+  scale();
+}
+
 void ImageGlom::set_value(const Gnome::Gda::Value& value)
 {
   bool pixbuf_set = false;
@@ -179,8 +202,7 @@ void ImageGlom::set_value(const Gnome::Gda::Value& value)
 
             refPixbufLoader->write(puiData, (glong)buffer_binary_length);
 
-            m_pixbuf_original = refPixbufLoader->get_pixbuf();
-            m_image.set(m_pixbuf_original);
+            set_pixbuf(refPixbufLoader->get_pixbuf());
             pixbuf_set = true;
 
             scale();
@@ -225,7 +247,7 @@ void ImageGlom::set_value(const Gnome::Gda::Value& value)
       {
      */
         m_image.set(Gtk::Stock::MISSING_IMAGE, Gtk::ICON_SIZE_DIALOG);
-     /*      
+     /*
       }
       else
       {
@@ -402,6 +424,9 @@ Glib::RefPtr<Gdk::Pixbuf> ImageGlom::scale_keeping_ratio(const Glib::RefPtr<Gdk:
 
 void ImageGlom::on_menupopup_activate_select_file()
 {
+  if(m_read_only)
+    return;
+
   Gtk::FileChooserDialog dialog(_("Choose image"), Gtk::FILE_CHOOSER_ACTION_OPEN);
 
   //Get image formats only:
@@ -459,11 +484,14 @@ void ImageGlom::on_clipboard_get(Gtk::SelectionData& selection_data, guint /* in
   else
   {
     g_warning("ExampleWindow::on_clipboard_get(): Unexpected clipboard target format.");
-  } 
+  }
 }
 
 void ImageGlom::on_clipboard_clear()
 {
+  if(m_read_only)
+    return;
+
   m_pixbuf_clipboard.clear();
 }
 
@@ -489,6 +517,9 @@ void ImageGlom::on_menupopup_activate_copy()
 
 void ImageGlom::on_clipboard_received_image(const Glib::RefPtr<Gdk::Pixbuf>& pixbuf)
 {
+  if(m_read_only)
+    return;
+
   if(pixbuf)
   {
     m_pixbuf_original = pixbuf;
@@ -502,6 +533,9 @@ void ImageGlom::on_clipboard_received_image(const Glib::RefPtr<Gdk::Pixbuf>& pix
 
 void ImageGlom::on_menupopup_activate_paste()
 {
+  if(m_read_only)
+    return;
+
   //Tell the clipboard to call our method when it is ready:
   Glib::RefPtr<Gtk::Clipboard> refClipboard = Gtk::Clipboard::get();
 
@@ -511,6 +545,9 @@ void ImageGlom::on_menupopup_activate_paste()
 
 void ImageGlom::on_menupopup_activate_clear()
 {
+  if(m_read_only)
+    return;
+
   m_pixbuf_original.clear();
   m_image.set(Gtk::Stock::MISSING_IMAGE, Gtk::ICON_SIZE_DIALOG);
   signal_edited().emit();
@@ -568,3 +605,14 @@ void ImageGlom::setup_menu_usermode()
   if(!m_pMenuPopup_UserMode)
     g_warning("menu not found");
 }
+
+void ImageGlom::do_choose_image()
+{
+  on_menupopup_activate_select_file();
+}
+
+void ImageGlom::set_read_only(bool read_only)
+{
+  m_read_only = read_only;
+}
+

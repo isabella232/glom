@@ -64,6 +64,8 @@ Glib::ustring locale_simplify(const Glib::ustring& locale_id);
  */
 Glib::ustring locale_language_id(const Glib::ustring& locale_id);
 
+Glib::ustring create_local_image_uri(const Gnome::Gda::Value& value);
+
 } //namespace GlomUtils
 
 #endif //GLOM_UTILS_H

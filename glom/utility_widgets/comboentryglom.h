@@ -55,8 +55,11 @@ public:
 
   virtual void set_layout_item(const sharedptr<LayoutItem>& layout_item, const Glib::ustring& table_name);
 
+  virtual void set_read_only(bool read_only = true);
+
 protected:
   void init();
+
 
   //Overrides of default signal handlers:
   virtual void on_entry_changed(); //From Gtk::Entry.

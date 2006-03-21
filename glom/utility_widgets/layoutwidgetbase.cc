@@ -185,3 +185,7 @@ LayoutWidgetBase::type_signal_user_requested_layout_properties LayoutWidgetBase:
 {
   return m_signal_user_requested_layout_properties;
 }
+
+void LayoutWidgetBase::set_read_only(bool /* read_only */)
+{
+}

@@ -27,6 +27,7 @@
 #include "../data_structure/layout/report_parts/layoutitem_footer.h"
 #include "../data_structure/layout/layoutitem_button.h"
 #include "../data_structure/layout/layoutitem_text.h"
+#include "../data_structure/layout/layoutitem_image.h"
 #include "../standard_table_prefs_fields.h"
 #include <glibmm/i18n.h>
 //#include "config.h" //To get GLOM_DTD_INSTALL_DIR - dependent on configure prefix.
@@ -55,6 +56,8 @@
 #define GLOM_NODE_DATA_LAYOUT_BUTTON "data_layout_button"
 #define GLOM_NODE_DATA_LAYOUT_TEXTOBJECT "data_layout_text"
 #define GLOM_NODE_DATA_LAYOUT_TEXTOBJECT_TEXT "text"
+#define GLOM_NODE_DATA_LAYOUT_IMAGEOBJECT "data_layout_image"
+#define GLOM_ATTRIBUTE_DATA_LAYOUT_IMAGEOBJECT_IMAGE "text"
 #define GLOM_ATTRIBUTE_DATA_LAYOUT_ITEM_FIELD_USE_DEFAULT_FORMATTING "use_default_formatting"
 #define GLOM_NODE_DATA_LAYOUT_ITEM_GROUPBY "data_layout_item_groupby"
 #define GLOM_NODE_DATA_LAYOUT_GROUP_SECONDARYFIELDS "secondary_fields"
@@ -1574,6 +1577,16 @@ void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Gl
         item->m_sequence = sequence;
         group->add_item(item, sequence);
       }
+      else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_IMAGEOBJECT)
+      {
+        sharedptr<LayoutItem_Image> item = sharedptr<LayoutItem_Image>::create();
+        load_after_translations(element, *item);
+
+        item->set_image(get_node_attribute_value_as_value(element, GLOM_ATTRIBUTE_DATA_LAYOUT_IMAGEOBJECT_IMAGE, Field::TYPE_IMAGE));
+
+        item->m_sequence = sequence;
+        group->add_item(item, sequence);
+      }
       else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_ITEM_FIELDSUMMARY)
       {
         sharedptr<LayoutItem_FieldSummary> item = sharedptr<LayoutItem_FieldSummary>::create();
@@ -2253,7 +2266,7 @@ void Document_Glom::save_before_layout_group(xmlpp::Element* node, const sharedp
           else
           {
             sharedptr<const LayoutItem_Text> textobject = sharedptr<const LayoutItem_Text>::cast_dynamic(item);
-            if(textobject) //If it is a button
+            if(textobject) //If it is a text object.
             {
               nodeItem = child->add_child(GLOM_NODE_DATA_LAYOUT_TEXTOBJECT);
               save_before_translations(nodeItem, *textobject);
@@ -2261,6 +2274,17 @@ void Document_Glom::save_before_layout_group(xmlpp::Element* node, const sharedp
               //The text is translatable too, so we use a node for it:
               xmlpp::Element* element_text = nodeItem->add_child(GLOM_NODE_DATA_LAYOUT_TEXTOBJECT_TEXT);
               save_before_translations(element_text, *(textobject->m_text));
+            }
+            else
+            {
+              sharedptr<const LayoutItem_Image> imageobject = sharedptr<const LayoutItem_Image>::cast_dynamic(item);
+              if(imageobject) //If it is an image object.
+              {
+                nodeItem = child->add_child(GLOM_NODE_DATA_LAYOUT_IMAGEOBJECT);
+                save_before_translations(nodeItem, *imageobject);
+
+                set_node_attribute_value_as_value(nodeItem, GLOM_ATTRIBUTE_DATA_LAYOUT_IMAGEOBJECT_IMAGE, imageobject->get_image(), Field::TYPE_IMAGE);
+              }
             }
           }
         }

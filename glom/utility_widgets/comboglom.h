@@ -43,6 +43,8 @@ public:
 
   virtual ~ComboGlom();
 
+  virtual void set_read_only(bool read_only = true);
+
 
   //Override this so we can store the text to compare later.
   //This is not virtual, so you must not use it via Gtk::Entry.

@@ -193,3 +193,8 @@ App_Glom* EntryGlom::get_application()
 
   return dynamic_cast<App_Glom*>(pWindow);
 }
+
+void EntryGlom::set_read_only(bool read_only)
+{
+  set_editable(!read_only);
+}

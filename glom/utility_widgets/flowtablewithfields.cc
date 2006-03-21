@@ -22,6 +22,7 @@
 #include "datawidget.h"
 #include "buttonglom.h"
 #include "notebookglom.h"
+#include "imageglom.h"
 #include "labelglom.h"
 #include <gtkmm/checkbutton.h>
 #include "../data_structure/glomconversions.h"
@@ -124,6 +125,12 @@ void FlowTableWithFields::add_layout_item_at_position(const sharedptr<LayoutItem
             sharedptr<LayoutItem_Text> layout_textobject = sharedptr<LayoutItem_Text>::cast_dynamic(item);
             if(layout_textobject)
               add_textobject_at_position(layout_textobject, m_table_name, add_before);
+            else
+            {
+              sharedptr<LayoutItem_Image> layout_imageobject = sharedptr<LayoutItem_Image>::cast_dynamic(item);
+              if(layout_imageobject)
+                add_imageobject_at_position(layout_imageobject, m_table_name, add_before);
+            }
           }
         }
       }
@@ -484,6 +491,36 @@ void FlowTableWithFields::add_textobject_at_position(const sharedptr<LayoutItem_
     add(*alignment_title, *alignment_label, true /* expand */);
   }
 }
+
+void FlowTableWithFields::add_imageobject_at_position(const sharedptr<LayoutItem_Image>& layoutitem_image, const Glib::ustring& table_name, const type_list_layoutwidgets::iterator& add_before)
+{
+  //Add the widget:
+  ImageGlom* image = Gtk::manage(new ImageGlom());
+  image->set_size_request(200, 200);
+  image->set_value(layoutitem_image->get_image());
+  image->set_read_only(); //Only field images can be changed by the user when they are on a layout.
+  image->show();
+
+  add_layoutwidgetbase(image, add_before);
+  //add_view(button); //So it can get the document.
+
+  const Glib::ustring title = layoutitem_image->get_title();
+  if(title.empty())
+    add(*image);
+  else
+  {
+    Gtk::Alignment* alignment_title = Gtk::manage(new Gtk::Alignment());
+    alignment_title->set(Gtk::ALIGN_RIGHT, Gtk::ALIGN_CENTER);
+    alignment_title->show();
+
+    Gtk::Label* title_label = Gtk::manage(new Gtk::Label(title));
+    title_label->show();
+    alignment_title->add(*title_label);
+
+    add(*alignment_title, *image, true /* expand */);
+  }
+}
+
 
 void FlowTableWithFields::remove_field(const Glib::ustring& id)
 {

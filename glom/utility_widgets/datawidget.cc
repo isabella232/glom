@@ -367,21 +367,14 @@ void DataWidget::set_editable(bool editable)
     entry->set_editable(editable);
   else
   {
-    Gtk::CheckButton* checkbutton = dynamic_cast<Gtk::CheckButton*>(child);
-    if(checkbutton)
-      checkbutton->set_sensitive(editable);
+    LayoutWidgetBase* base = dynamic_cast<LayoutWidgetBase*>(child);
+    if(base)
+      base->set_read_only(!editable);
     else
     {
-      Gtk::ComboBoxEntry* comboboxentry = dynamic_cast<Gtk::ComboBoxEntry*>(child);
-      if(comboboxentry)
-      {
-        Gtk::Entry* entry = comboboxentry->get_entry();
-        if(entry)
-          entry->set_editable(editable);
-
-        //But the menu still causes the entry to change, so we must disable it completely:
-        //comboboxentry->set_sensitive(editable);
-      }
+      Gtk::CheckButton* checkbutton = dynamic_cast<Gtk::CheckButton*>(child);
+      if(checkbutton)
+        checkbutton->set_sensitive(editable);
     }
   }
 }
@@ -647,12 +640,12 @@ const Gtk::Widget* DataWidget::get_data_child_widget() const
  {
    return m_signal_open_details_requested;
  }
- 
+
  void DataWidget::on_button_open_details()
  {
    signal_open_details_requested().emit(get_value());
  }
- 
+
  void DataWidget::on_button_select_id()
  {
    Gnome::Gda::Value chosen_id;

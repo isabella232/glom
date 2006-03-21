@@ -263,6 +263,8 @@ Glib::ustring TranslatableItem::get_translatable_type_name(enumTranslatableItemT
     return _("Button");
   else if(item_type == TRANSLATABLE_TYPE_TEXTOBJECT)
     return _("Text");
+ else if(item_type == TRANSLATABLE_TYPE_IMAGEOBJECT)
+    return _("Image");
   else
     return _("Unknown");
 }

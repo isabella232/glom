@@ -21,7 +21,6 @@
 #include "dialog_layout_details.h"
 #include "dialog_choose_relationship.h"
 #include "../mode_design/dialog_buttonscript.h"
-#include "../mode_design/dialog_textobject.h"
 #include "../layout_item_dialogs/dialog_notebook.h"
 #include "../frame_glom.h" //For show_ok_dialog()
 //#include <libgnome/gnome-i18n.h>
@@ -41,6 +40,7 @@ Dialog_Layout_Details::Dialog_Layout_Details(BaseObjectType* cobject, const Glib
   m_button_add_related(0),
   m_button_add_button(0),
   m_button_add_text(0),
+  m_button_add_image(0),
   m_button_field_delete(0),
   m_button_field_formatting(0),
   m_button_edit(0),
@@ -136,6 +136,9 @@ Dialog_Layout_Details::Dialog_Layout_Details(BaseObjectType* cobject, const Glib
 
   refGlade->get_widget("button_add_text", m_button_add_text);
   m_button_add_text->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout_Details::on_button_add_text) );
+
+  refGlade->get_widget("button_add_image", m_button_add_image);
+  m_button_add_image->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout_Details::on_button_add_image) );
 
   refGlade->get_widget("button_edit", m_button_edit);
   m_button_edit->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout_Details::on_button_edit) );
@@ -244,8 +247,9 @@ void Dialog_Layout_Details::add_group(const Gtk::TreeModel::iterator& parent, co
       sharedptr<const LayoutItem_Portal> portal = sharedptr<const LayoutItem_Portal>::cast_dynamic(item);
       if(portal) //If it is a portal
       {
-        Gtk::TreeModel::iterator iterField = m_model_items->append(iterNewGroup->children());
-        Gtk::TreeModel::Row row = *iterField;
+        //Handle this differently to regular groups, so we do not also add its children:
+        Gtk::TreeModel::iterator iter = m_model_items->append(iterNewGroup->children());
+        Gtk::TreeModel::Row row = *iter;
         row[m_model_items->m_columns.m_col_layout_item] = glom_sharedptr_clone(portal);
       }
       else
@@ -255,36 +259,10 @@ void Dialog_Layout_Details::add_group(const Gtk::TreeModel::iterator& parent, co
           add_group(iterNewGroup, child_group); //recursive
         else
         {
-          sharedptr<const LayoutItem_Field> field = sharedptr<const LayoutItem_Field>::cast_dynamic(item);
-          if(field) //If it is a field
-          {
-            //Add the field to the treeview:
-            Gtk::TreeModel::iterator iterField = m_model_items->append(iterNewGroup->children());
-            Gtk::TreeModel::Row row = *iterField;
-            row[m_model_items->m_columns.m_col_layout_item] = glom_sharedptr_clone(field);
-          }
-          else
-          {
-            sharedptr<const LayoutItem_Button> button = sharedptr<const LayoutItem_Button>::cast_dynamic(item);
-            if(button) //If it is a button
-            {
-              //Add the button to the treeview:
-              Gtk::TreeModel::iterator iterButton = m_model_items->append(iterNewGroup->children());
-              Gtk::TreeModel::Row row = *iterButton;
-              row[m_model_items->m_columns.m_col_layout_item] = glom_sharedptr_clone(button);
-            }
-            else
-            {
-              sharedptr<const LayoutItem_Text> textobject = sharedptr<const LayoutItem_Text>::cast_dynamic(item);
-              if(textobject) //If it is a text object
-              {
-                //Add the textobject to the treeview:
-                Gtk::TreeModel::iterator iterTextObject = m_model_items->append(iterNewGroup->children());
-                Gtk::TreeModel::Row row = *iterTextObject;
-                row[m_model_items->m_columns.m_col_layout_item] = glom_sharedptr_clone(textobject);
-              }
-            }
-          }
+          //Add the item to the treeview:
+          Gtk::TreeModel::iterator iter = m_model_items->append(iterNewGroup->children());
+          Gtk::TreeModel::Row row = *iter;
+          row[m_model_items->m_columns.m_col_layout_item] = glom_sharedptr_clone(item);
         }
       }
     }
@@ -715,6 +693,31 @@ void Dialog_Layout_Details::on_button_add_text()
   enable_buttons();
 }
 
+void Dialog_Layout_Details::on_button_add_image()
+{
+  Gtk::TreeModel::iterator iter = append_appropriate_row();
+  if(iter)
+  {
+    Gtk::TreeModel::Row row = *iter;
+
+    //Add a new button:
+    sharedptr<LayoutItem_Image> imageobject = sharedptr<LayoutItem_Image>::create();
+    imageobject->set_title(_("Image Title")); //Give the item a default title, so it is big enough, and so people see that they should change it.
+    row[m_model_items->m_columns.m_col_layout_item] = imageobject;
+
+    //Scroll to, and select, the new row:
+    Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = m_treeview_fields->get_selection();
+    if(refTreeSelection)
+      refTreeSelection->select(iter);
+
+    m_treeview_fields->scroll_to_row( Gtk::TreeModel::Path(iter) );
+
+    m_modified = true;
+  }
+
+  enable_buttons();
+}
+
 void Dialog_Layout_Details::on_button_add_notebook()
 {
   Gtk::TreeModel::iterator parent = get_selected_group_parent();
@@ -942,7 +945,7 @@ void Dialog_Layout_Details::on_button_edit()
                 {
                   *layout_item_button = *chosen;
                   //std::cout << "script: " << layout_item_button->get_script() << std::endl;
-  
+
                   m_modified = true;
                 }
               }
@@ -956,8 +959,23 @@ void Dialog_Layout_Details::on_button_edit()
                   {
                     *layout_item_text = *chosen;
                     //std::cout << "script: " << layout_item_button->get_script() << std::endl;
-  
+
                     m_modified = true;
+                  }
+                }
+                else
+                {
+                  sharedptr<LayoutItem_Image> layout_item_image = sharedptr<LayoutItem_Image>::cast_dynamic(layout_item);
+                  if(layout_item_image)
+                  {
+                    sharedptr<LayoutItem_Image> chosen = offer_imageobject(layout_item_image);
+                    if(chosen)
+                    {
+                      *layout_item_image = *chosen;
+                      //std::cout << "script: " << layout_item_button->get_script() << std::endl;
+
+                      m_modified = true;
+                    }
                   }
                 }
               }
@@ -1082,8 +1100,16 @@ void Dialog_Layout_Details::on_cell_data_name(Gtk::CellRenderer* renderer, const
               {
                 markup = _("Text"); //Text objects don't have names - just titles. TODO: Would they be useful?
               }
-              else if(layout_item)
-                markup = layout_item->get_name();
+              else
+              {
+                sharedptr<LayoutItem_Image> layout_item_image = sharedptr<LayoutItem_Image>::cast_dynamic(layout_item);
+                if(layout_item_image)
+                {
+                  markup = _("Image"); //Image objects don't have names - just titles. TODO: Would they be useful?
+                }
+                else if(layout_item)
+                  markup = layout_item->get_name();
+              }
             }
           }
         }
@@ -1110,12 +1136,10 @@ void Dialog_Layout_Details::on_cell_data_title(Gtk::CellRenderer* renderer, cons
       Gtk::TreeModel::Row row = *iter;
       sharedptr<LayoutItem> layout_item = row[m_model_items->m_columns.m_col_layout_item];
       sharedptr<LayoutItem_Notebook> layout_notebook = sharedptr<LayoutItem_Notebook>::cast_dynamic(layout_item);
-      if(layout_item)
-        renderer_text->property_text() = layout_item->get_title();
-      else if(layout_notebook)
+      if(layout_notebook)
         renderer_text->property_text() = _("(Notebook)");
       else
-        renderer_text->property_text() = Glib::ustring();
+        renderer_text->property_text() = layout_item->get_title();
 
       sharedptr<LayoutGroup> layout_group = sharedptr<LayoutGroup>::cast_dynamic(layout_item);
       sharedptr<LayoutItem_Portal> layout_portal = sharedptr<LayoutItem_Portal>::cast_dynamic(layout_item);

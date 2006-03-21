@@ -27,9 +27,9 @@
 #include "../data_structure/layout/report_parts/layoutitem_footer.h"
 #include "../data_structure/layout/layoutitem_field.h"
 #include "../data_structure/layout/layoutitem_text.h"
+#include "../data_structure/layout/layoutitem_image.h"
 #include "../mode_data/dialog_choose_field.h"
 #include "../layout_item_dialogs/dialog_field_layout.h"
-#include "../mode_design/dialog_textobject.h"
 #include "../layout_item_dialogs/dialog_group_by.h"
 #include "../layout_item_dialogs/dialog_field_summary.h"
 #include "../mode_data/dialog_choose_relationship.h"
@@ -103,6 +103,9 @@ Dialog_Layout_Report::Dialog_Layout_Report(BaseObjectType* cobject, const Glib::
       Gtk::TreeModel::iterator iterText = m_model_available_parts_main->append(iter->children());
       (*iterText)[m_model_available_parts_main->m_columns.m_col_item] = sharedptr<LayoutItem>(static_cast<LayoutItem*>(new LayoutItem_Text()));
 
+      Gtk::TreeModel::iterator iterImage = m_model_available_parts_main->append(iter->children());
+      (*iterImage)[m_model_available_parts_main->m_columns.m_col_item] = sharedptr<LayoutItem>(static_cast<LayoutItem*>(new LayoutItem_Image()));
+
       Gtk::TreeModel::iterator iterVerticalGroup = m_model_available_parts_main->append(iter->children());
       (*iterVerticalGroup)[m_model_available_parts_main->m_columns.m_col_item] = sharedptr<LayoutItem>(static_cast<LayoutItem*>(new LayoutItem_VerticalGroup()));
 
@@ -127,6 +130,9 @@ Dialog_Layout_Report::Dialog_Layout_Report(BaseObjectType* cobject, const Glib::
 
       Gtk::TreeModel::iterator iterText = m_model_available_parts_headerfooter->append(iterVerticalGroup->children());
       (*iterText)[m_model_available_parts_headerfooter->m_columns.m_col_item] = sharedptr<LayoutItem>(static_cast<LayoutItem*>(new LayoutItem_Text()));
+
+      Gtk::TreeModel::iterator iterImage = m_model_available_parts_headerfooter->append(iterVerticalGroup->children());
+      (*iterImage)[m_model_available_parts_headerfooter->m_columns.m_col_item] = sharedptr<LayoutItem>(static_cast<LayoutItem*>(new LayoutItem_Image()));
     }
 
     m_treeview_available_parts->set_model(m_model_available_parts_main);

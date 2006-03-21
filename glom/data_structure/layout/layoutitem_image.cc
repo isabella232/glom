@@ -18,65 +18,71 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include "layoutitem_text.h"
+#include "layoutitem_image.h"
+#include "../../utils.h"
 #include <glibmm/i18n.h>
 
-LayoutItem_Text::LayoutItem_Text()
+LayoutItem_Image::LayoutItem_Image()
 {
-  m_translatable_item_type = TRANSLATABLE_TYPE_TEXTOBJECT;
-  m_text = sharedptr<TranslatableItem>::create();
+  m_translatable_item_type = TRANSLATABLE_TYPE_IMAGEOBJECT;
 }
 
-LayoutItem_Text::LayoutItem_Text(const LayoutItem_Text& src)
+LayoutItem_Image::LayoutItem_Image(const LayoutItem_Image& src)
 : LayoutItem(src),
-  m_text(src.m_text)
+  m_image(src.m_image)
 {
 }
 
-LayoutItem_Text::~LayoutItem_Text()
+LayoutItem_Image::~LayoutItem_Image()
 {
 }
 
-LayoutItem* LayoutItem_Text::clone() const
+LayoutItem* LayoutItem_Image::clone() const
 {
-  return new LayoutItem_Text(*this);
+  return new LayoutItem_Image(*this);
 }
 
-bool LayoutItem_Text::operator==(const LayoutItem_Text& src) const
+bool LayoutItem_Image::operator==(const LayoutItem_Image& src) const
 {
   bool result = LayoutItem::operator==(src) && 
-                (*m_text == *(src.m_text));
+                (m_image == src.m_image);
 
   return result;
 }
 
 //Avoid using this, for performance:
-LayoutItem_Text& LayoutItem_Text::operator=(const LayoutItem_Text& src)
+LayoutItem_Image& LayoutItem_Image::operator=(const LayoutItem_Image& src)
 {
   LayoutItem::operator=(src);
 
-  m_text = src.m_text;
+  m_image = src.m_image;
 
   return *this;
 }
 
-Glib::ustring LayoutItem_Text::get_part_type_name() const
+Glib::ustring LayoutItem_Image::get_part_type_name() const
 {
-  return _("Text");
+  return _("Image");
 }
 
-Glib::ustring LayoutItem_Text::get_report_part_id() const
+Glib::ustring LayoutItem_Image::get_report_part_id() const
 {
   return "field"; //We reuse this for this node.
 }
 
-Glib::ustring LayoutItem_Text::get_text() const
+Gnome::Gda::Value LayoutItem_Image::get_image() const
 {
-  return m_text->get_title();
+  return m_image;
 }
 
-void LayoutItem_Text::set_text(const Glib::ustring& text)
+void LayoutItem_Image::set_image(const Gnome::Gda::Value& image)
 {
-  m_text->set_title(text);
+  m_image = image;
+}
+
+
+Glib::ustring LayoutItem_Image::create_local_image_uri() const
+{
+  return GlomUtils::create_local_image_uri(m_image);
 }
 

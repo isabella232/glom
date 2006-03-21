@@ -24,6 +24,7 @@
 #include <gtkmm.h>
 #include "../data_structure/field.h"
 #include "layoutwidgetfield.h"
+#include <libglademm.h>
 
 class App_Glom;
 
@@ -33,6 +34,8 @@ class ImageGlom
 {
 public:
   ImageGlom();
+  explicit ImageGlom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+
 
   virtual ~ImageGlom();
 
@@ -40,7 +43,16 @@ public:
   virtual Gnome::Gda::Value get_value() const;
   virtual bool get_has_original_data() const;
 
+  //Optionally use this instead of set_value(), to avoid creating an unncessary Value.
+  void set_pixbuf(const Glib::RefPtr<Gdk::Pixbuf>& pixbuf);
+
+  void do_choose_image();
+
+  void set_read_only(bool read_only = true);
+
 protected:
+  void init();
+
 
   virtual bool on_expose_event(GdkEventExpose* event);
 
@@ -70,6 +82,8 @@ protected:
   Glib::RefPtr<Gtk::ActionGroup> m_refActionGroup_UserModePopup;
   Glib::RefPtr<Gtk::UIManager> m_refUIManager_UserModePopup;
   Glib::RefPtr<Gtk::Action> m_refActionSelectFile, m_refActionCopy, m_refActionPaste, m_refActionClear;
+
+  bool m_read_only;
 };
 
 #endif //GLOM_UTILITY_WIDGETS_COMBOENTRY_GLOM_H

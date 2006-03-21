@@ -254,3 +254,11 @@ void ComboEntryGlom::on_changed()
   }
   //Entry of text that is not in the menu will be handled by the ->get_entry() signal handlers._
 }
+
+void ComboEntryGlom::set_read_only(bool read_only)
+{
+  Gtk::Entry* entry = get_entry();
+  if(entry)
+    entry->set_editable(!read_only);
+}
+

@@ -49,6 +49,8 @@ public:
 
   virtual Gnome::Gda::Value get_value() const;
 
+  virtual void set_read_only(bool read_only = true);
+
 protected:
   void init();
 

@@ -300,7 +300,18 @@ td
 </xsl:choose>
 </xsl:variable>
 
-<td class="field" align="{$attAlign}" style="border-width: {$attStyleBorderWidth}em;"><xsl:value-of select="@value"/></td>
+<td class="field" align="{$attAlign}" style="border-width: {$attStyleBorderWidth}em;">
+<xsl:choose>
+  <xsl:when test="string(@image_uri)">
+    <img>
+      <xsl:attribute name="src">
+        <xsl:value-of select="@image_uri" />
+      </xsl:attribute>
+    </img>
+  </xsl:when>
+  <xsl:otherwise><xsl:value-of select="@value"/></xsl:otherwise>
+</xsl:choose>
+</td>
 </xsl:template>
 
 

@@ -1,3 +1,37 @@
+2006-03-21  Murray Cumming  <murrayc@murrayc.com>
+
+        * po/POTFILES.in: 
+	* glom/data_structure/layout/Makefile.am:
+	* glom/data_structure/layout/layoutitem_image.cc:
+	* glom/data_structure/layout/layoutitem_image.h:
+	Added new image type, for arbitrary images on 
+	layouts and reports.
+	* glom/base_db.cc:
+	* glom/base_db.h: Added build_records_imageobject() and 
+	offer_imageobject(). Handle image fields in 
+	report_build_records_field().
+	* glom/glom.glade:
+	* glom/mode_data/dialog_layout_details.cc:
+	* glom/mode_data/dialog_layout_details.h: Added Add Image 
+	button and handled it.
+	* glom/document/document_glom.cc:
+	* glom/document/document_glom.h: Load/Save the new layout 
+	item.
+	* glom/layout_item_dialogs/Makefile.am:
+	* glom/layout_item_dialogs/dialog_imageobject.cc:
+	* glom/layout_item_dialogs/dialog_imageobject.h:
+	New dialog for editing the new layout item.
+	* glom/reports/dialog_layout_report.cc: Constructor: 
+	Add new image item to available parts.
+	* glom/utils.cc:
+	* glom/utils.h: Added create_local_image_uri(), to 
+	save a temporary copy of the image to the filesystem, 
+	for use in HTML report.
+	* glom/utility_widgets/imageglom.cc:
+	* glom/utility_widgets/imageglom.h: Added set_read_only().
+	* xslt/print_report_to_html.xsl: Handle field nodes that 
+	have image_uri instead of value.
+
 2006-03-20  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/base_db.cc: report_build_records_field(): Handle fields in headers 

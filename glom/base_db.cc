@@ -28,6 +28,7 @@
 #include "layout_item_dialogs/dialog_field_layout.h"
 #include "layout_item_dialogs/dialog_notebook.h"
 #include "mode_design/dialog_textobject.h"
+#include "layout_item_dialogs/dialog_imageobject.h"
 //#include "reports/dialog_layout_report.h"
 #include "utils.h"
 #include "data_structure/glomconversions.h"
@@ -1382,13 +1383,47 @@ sharedptr<LayoutItem_Text> Base_DB::offer_textobject(const sharedptr<LayoutItem_
         dialog->set_transient_for(*transient_for);
 
       dialog->set_textobject(start_textobject, Glib::ustring());
-      //dialog->set_transient_for(*this);
       const int response = dialog->run();
       dialog->hide();
       if(response == Gtk::RESPONSE_OK)
       {
         //Get the chosen relationship:
         result = dialog->get_textobject();
+      }
+
+      delete dialog;
+    }
+  }
+  catch(const Gnome::Glade::XmlError& ex)
+  {
+    std::cerr << ex.what() << std::endl;
+  }
+
+  return result;
+}
+
+sharedptr<LayoutItem_Image> Base_DB::offer_imageobject(const sharedptr<LayoutItem_Image>& start_imageobject, Gtk::Window* transient_for)
+{
+  sharedptr<LayoutItem_Image> result;
+
+  try
+  {
+    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_imageobject");
+
+    Dialog_ImageObject* dialog = 0;
+    refXml->get_widget_derived("window_imageobject", dialog);
+    if(dialog)
+    {
+      if(transient_for)
+        dialog->set_transient_for(*transient_for);
+
+      dialog->set_imageobject(start_imageobject, Glib::ustring());
+      const int response = dialog->run();
+      dialog->hide();
+      if(response == Gtk::RESPONSE_OK)
+      {
+        //Get the chosen relationship:
+        result = dialog->get_imageobject();
       }
 
       delete dialog;
@@ -1787,6 +1822,7 @@ void Base_DB::report_build_records_field(const Glib::ustring& table_name, xmlpp:
   if(field_type == Field::TYPE_NUMERIC)
     nodeField->set_attribute("field_type", "numeric"); //TODO: More sophisticated formatting.
 
+  Gnome::Gda::Value value;
   Glib::ustring text_value;
 
   if(!datamodel) //We call this for headers and footers too.
@@ -1800,26 +1836,35 @@ void Base_DB::report_build_records_field(const Glib::ustring& table_name, xmlpp:
     if(!datamodel)
       return;
 
-    text_value = GlomConversions::get_text_for_gda_value(field_type, datamodel->get_value_at(colField, row), field->get_formatting_used().m_numeric_format);
+    value = datamodel->get_value_at(colField, row);
 
     colField = 0;
     row = 0;
   }
   else
   {
-    text_value = GlomConversions::get_text_for_gda_value(field_type, datamodel->get_value_at(colField, row), field->get_formatting_used().m_numeric_format);
-  }
-
-  //The Postgres summary functions return NULL when summarising NULL records, but 0 is more sensible:
-  if(text_value.empty() && sharedptr<const LayoutItem_FieldSummary>::cast_dynamic(field) && (field_type == Field::TYPE_NUMERIC))
-  {
-    //Use get_text_for_gda_value() instead of "0" so we get the correct numerical formatting:
-    Gnome::Gda::Value value = GlomConversions::parse_value(0);
-    text_value = GlomConversions::get_text_for_gda_value(field_type, value, field->get_formatting_used().m_numeric_format);
+    value = datamodel->get_value_at(colField, row);
   }
 
   nodeField->set_attribute("title", field->get_title_or_name()); //Not always used, but useful.
-  nodeField->set_attribute("value", text_value);
+
+  //Handle the value:
+  if(field_type == Field::TYPE_IMAGE)
+     nodeField->set_attribute("image_uri", GlomUtils::create_local_image_uri(value));
+  else
+  {
+    Glib::ustring text_value = GlomConversions::get_text_for_gda_value(field_type, value, field->get_formatting_used().m_numeric_format);
+
+    //The Postgres summary functions return NULL when summarising NULL records, but 0 is more sensible:
+    if(text_value.empty() && sharedptr<const LayoutItem_FieldSummary>::cast_dynamic(field) && (field_type == Field::TYPE_NUMERIC))
+    {
+      //Use get_text_for_gda_value() instead of "0" so we get the correct numerical formatting:
+      Gnome::Gda::Value value = GlomConversions::parse_value(0);
+      text_value = GlomConversions::get_text_for_gda_value(field_type, value, field->get_formatting_used().m_numeric_format);
+    }
+
+    nodeField->set_attribute("value", text_value);
+  }
 
   ++colField;
 }
@@ -1829,6 +1874,13 @@ void Base_DB::report_build_records_text(const Glib::ustring& table_name, xmlpp::
   //Text object:
   xmlpp::Element* nodeField = nodeParent.add_child(vertical ? "field_vertical" : textobject->get_report_part_id()); //We reuse this node type for text objects.
   nodeField->set_attribute("value", textobject->get_text());
+}
+
+void Base_DB::report_build_records_image(const Glib::ustring& table_name, xmlpp::Element& nodeParent, const sharedptr<const LayoutItem_Image>& imageobject, bool vertical)
+{
+  //Text object:
+  xmlpp::Element* nodeImage = nodeParent.add_child(vertical ? "field_vertical" : imageobject->get_report_part_id()); //We reuse this node type for text objects.
+  nodeImage->set_attribute("image_uri", imageobject->create_local_image_uri());
 }
 
 void Base_DB::report_build_records_vertical_group(const Glib::ustring& table_name, xmlpp::Element& parentNode, const sharedptr<LayoutItem_VerticalGroup>& group, const Glib::RefPtr<Gnome::Gda::DataModel>& datamodel, guint row, guint& field_index)

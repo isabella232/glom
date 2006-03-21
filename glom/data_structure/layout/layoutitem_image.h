@@ -18,40 +18,46 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef GLOM_DATASTRUCTURE_LAYOUTITEM_TEXT_H
-#define GLOM_DATASTRUCTURE_LAYOUTITEM_TEXT_H
+#ifndef GLOM_DATASTRUCTURE_LAYOUTITEM_IMAGE_H
+#define GLOM_DATASTRUCTURE_LAYOUTITEM_IMAGE_H
 
 #include "layoutitem.h"
+#include <libgdamm/value.h>
 
-class LayoutItem_Text 
+class LayoutItem_Image 
  : public LayoutItem
 {
 public:
 
-  LayoutItem_Text();
-  LayoutItem_Text(const LayoutItem_Text& src);
-  LayoutItem_Text& operator=(const LayoutItem_Text& src);
-  virtual ~LayoutItem_Text();
+  LayoutItem_Image();
+  LayoutItem_Image(const LayoutItem_Image& src);
+  LayoutItem_Image& operator=(const LayoutItem_Image& src);
+  virtual ~LayoutItem_Image();
 
   virtual LayoutItem* clone() const;
 
-  bool operator==(const LayoutItem_Text& src) const;
+  bool operator==(const LayoutItem_Image& src) const;
 
   virtual Glib::ustring get_part_type_name() const;
   virtual Glib::ustring get_report_part_id() const;
 
-  /** Get the text that will be shown on each record.
+  /** Get the image that will be shown on each record.
    */
-  Glib::ustring get_text() const;
+  Gnome::Gda::Value get_image() const;
 
-  /** Set the text that will be shown on each record.
+  /** Set the image that will be shown on each record.
    */
-  void set_text(const Glib::ustring& text);
+  void set_image(const Gnome::Gda::Value& image);
 
-  sharedptr<TranslatableItem> m_text; //Reuse the title concept of this class to give us translatable text.
+  //Saves the image to a temporary file and provides the file URI.
+  Glib::ustring create_local_image_uri() const;
+
+protected:
+
+  Gnome::Gda::Value m_image;
 };
 
-#endif //GLOM_DATASTRUCTURE_LAYOUTITEM_TEXT_H
+#endif //GLOM_DATASTRUCTURE_LAYOUTITEM_IMAGE_H
 
 
 
