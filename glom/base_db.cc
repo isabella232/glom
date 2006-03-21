@@ -1495,26 +1495,31 @@ void Base_DB::report_build_headerfooter(const Glib::ustring& table_name, xmlpp::
     if(item_text)
     {
       report_build_records_text(table_name, *node, item_text);
-
-      //Recurse, adding a sub-groupby block:
-      //TODO: report_build_groupby(table_name, node, pGroupBy, where_clause);
     }
     else
     {
-      sharedptr<LayoutItem_Field> pField = sharedptr<LayoutItem_Field>::cast_dynamic(item);
-      if(pField)
+      sharedptr<LayoutItem_Image> item_image = sharedptr<LayoutItem_Image>::cast_dynamic(item);
+      if(item_image)
       {
-        guint col_index = 0; //ignored.
-        report_build_records_field(table_name, *node, pField, Glib::RefPtr<Gnome::Gda::DataModel>(), 0, col_index);
+        report_build_records_image(table_name, *node, item_image);
       }
       else
       {
-        sharedptr<LayoutItem_VerticalGroup> vertical_group = sharedptr<LayoutItem_VerticalGroup>::cast_dynamic(item);
-        if(vertical_group)
+        sharedptr<LayoutItem_Field> pField = sharedptr<LayoutItem_Field>::cast_dynamic(item);
+        if(pField)
         {
-          //Reuse (a bit hacky) this function for the header and footer:
-          guint col_index = 0; //Ignored, because the model is null.
-          report_build_records_vertical_group(table_name, *node, vertical_group, Glib::RefPtr<Gnome::Gda::DataModel>(), 0, col_index);
+          guint col_index = 0; //ignored.
+          report_build_records_field(table_name, *node, pField, Glib::RefPtr<Gnome::Gda::DataModel>(), 0, col_index);
+        }
+        else
+        {
+          sharedptr<LayoutItem_VerticalGroup> vertical_group = sharedptr<LayoutItem_VerticalGroup>::cast_dynamic(item);
+          if(vertical_group)
+          {
+            //Reuse (a bit hacky) this function for the header and footer:
+            guint col_index = 0; //Ignored, because the model is null.
+            report_build_records_vertical_group(table_name, *node, vertical_group, Glib::RefPtr<Gnome::Gda::DataModel>(), 0, col_index);
+          }
         }
       }
     }
@@ -1818,9 +1823,12 @@ void Base_DB::report_build_records_field(const Glib::ustring& table_name, xmlpp:
 {
   const Field::glom_field_type field_type = field->get_glom_type();
 
-  xmlpp::Element* nodeField = nodeParent.add_child(vertical ? "field_vertical" : field->get_report_part_id());
+  xmlpp::Element* nodeField = nodeParent.add_child(field->get_report_part_id());
   if(field_type == Field::TYPE_NUMERIC)
     nodeField->set_attribute("field_type", "numeric"); //TODO: More sophisticated formatting.
+
+  if(vertical)
+    nodeField->set_attribute("vertical", "true");
 
   Gnome::Gda::Value value;
   Glib::ustring text_value;
@@ -1872,15 +1880,21 @@ void Base_DB::report_build_records_field(const Glib::ustring& table_name, xmlpp:
 void Base_DB::report_build_records_text(const Glib::ustring& table_name, xmlpp::Element& nodeParent, const sharedptr<const LayoutItem_Text>& textobject, bool vertical)
 {
   //Text object:
-  xmlpp::Element* nodeField = nodeParent.add_child(vertical ? "field_vertical" : textobject->get_report_part_id()); //We reuse this node type for text objects.
+  xmlpp::Element* nodeField = nodeParent.add_child(textobject->get_report_part_id()); //We reuse this node type for text objects.
   nodeField->set_attribute("value", textobject->get_text());
+
+  if(vertical)
+    nodeField->set_attribute("vertical", "true");
 }
 
 void Base_DB::report_build_records_image(const Glib::ustring& table_name, xmlpp::Element& nodeParent, const sharedptr<const LayoutItem_Image>& imageobject, bool vertical)
 {
   //Text object:
-  xmlpp::Element* nodeImage = nodeParent.add_child(vertical ? "field_vertical" : imageobject->get_report_part_id()); //We reuse this node type for text objects.
+  xmlpp::Element* nodeImage = nodeParent.add_child(imageobject->get_report_part_id()); //We reuse this node type for text objects.
   nodeImage->set_attribute("image_uri", imageobject->create_local_image_uri());
+
+  if(vertical)
+    nodeImage->set_attribute("vertical", "true");
 }
 
 void Base_DB::report_build_records_vertical_group(const Glib::ustring& table_name, xmlpp::Element& parentNode, const sharedptr<LayoutItem_VerticalGroup>& group, const Glib::RefPtr<Gnome::Gda::DataModel>& datamodel, guint row, guint& field_index)

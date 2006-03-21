@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns="http://www.w3.org/1999/xhtml" version="1.0">
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xsl:version="1.0"
+                xmlns="http://www.w3.org/1999/xhtml">
 <xsl:output encoding="utf8" method="xml" indent="yes" doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN" doctype-system="DTD/xhtml1-strict.dtd"/>
 
 <xsl:template match="report_print">
@@ -295,11 +297,22 @@ td
 
 <xsl:variable name="attStyleBorderWidth">
 <xsl:choose>
-  <xsl:when test="string(../../@border_width)"><xsl:value-of select="../../@border_width"/></xsl:when>
-  <xsl:otherwise>0</xsl:otherwise>
+  <xsl:when test="string(@vertical)">
+    <xsl:choose>
+      <xsl:when test="string(../../@border_width)"><xsl:value-of select="../../@border_width"/></xsl:when>
+      <xsl:otherwise>0</xsl:otherwise>
+    </xsl:choose>
+  </xsl:when>
+  <xsl:otherwise>
+    <xsl:choose>
+      <xsl:when test="string(../@border_width)"><xsl:value-of select="../@border_width"/></xsl:when>
+      <xsl:otherwise>0</xsl:otherwise>
+    </xsl:choose>
+  </xsl:otherwise>
 </xsl:choose>
 </xsl:variable>
 
+<xsl:variable name="tdNodesField">
 <td class="field" align="{$attAlign}" style="border-width: {$attStyleBorderWidth}em;">
 <xsl:choose>
   <xsl:when test="string(@image_uri)">
@@ -312,32 +325,24 @@ td
   <xsl:otherwise><xsl:value-of select="@value"/></xsl:otherwise>
 </xsl:choose>
 </td>
-</xsl:template>
-
-
-<xsl:template match="field_vertical">
-
-<xsl:variable name="attAlign">
-<xsl:choose>
-  <xsl:when test="@field_type = 'numeric'">right</xsl:when>
-  <xsl:otherwise>left</xsl:otherwise>
-</xsl:choose>
 </xsl:variable>
 
-<xsl:variable name="attStyleBorderWidth">
 <xsl:choose>
-  <xsl:when test="string(../@border_width)"><xsl:value-of select="../@border_width"/></xsl:when>
-  <xsl:otherwise>0</xsl:otherwise>
-</xsl:choose>
-</xsl:variable>
+  <xsl:when test="string(@vertical)">
+    <th class="field_heading" align="right" style="border-width: {$attStyleBorderWidth}em;"><xsl:value-of select="@title"/></th>
+    <tr>
+     <xsl:copy-of select="$tdNodesField" />
+    </tr>
+  </xsl:when>
 
-<tr>
-<th class="field_heading" align="right" style="border-width: {$attStyleBorderWidth}em;"><xsl:value-of select="@title"/></th>
-<td class="field" align="{$attAlign}" style="border-width: {$attStyleBorderWidth}em;"><xsl:value-of select="@value"/></td>
-</tr>
-<xsl:text>
-</xsl:text>
+  <xsl:otherwise>
+    <xsl:copy-of select="$tdNodesField" />
+  </xsl:otherwise>
+</xsl:choose>
+
+
 </xsl:template>
+
 
 
 </xsl:stylesheet>

@@ -877,44 +877,58 @@ void Dialog_Layout_Report::on_button_edit()
           }
           else
           {
-            sharedptr<LayoutItem_GroupBy> group_by = sharedptr<LayoutItem_GroupBy>::cast_dynamic(item);
-            if(group_by)
+            sharedptr<LayoutItem_Image> layout_item_image = sharedptr<LayoutItem_Image>::cast_dynamic(item);
+            if(layout_item_image)
             {
-              try
+              sharedptr<LayoutItem_Image> chosen = offer_imageobject(layout_item_image);
+              if(chosen)
               {
-                Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_group_by");
-
-                Dialog_GroupBy* dialog = 0;
-                refXml->get_widget_derived("dialog_group_by", dialog);
-
-                if(dialog)
-                {
-                  add_view(dialog);
-                  dialog->set_item(group_by, m_table_name);
-                  dialog->set_transient_for(*this);
-
-                  const int response = dialog->run();
-                  dialog->hide();
-
-                  if(response == Gtk::RESPONSE_OK)
-                  {
-                    //Get the chosen relationship:
-                    sharedptr<LayoutItem_GroupBy> chosenitem = dialog->get_item();
-                    if(chosenitem)
-                    {
-                      *group_by = *chosenitem;
-                      model->row_changed(Gtk::TreePath(iter), iter); //TODO: Add row_changed(iter) to gtkmm?
-                      m_modified = true;
-                    }
-                  }
-
-                  remove_view(dialog);
-                  delete dialog;
-                }
+                *layout_item_image = *chosen;
+                model->row_changed(Gtk::TreePath(iter), iter); //TODO: Add row_changed(iter) to gtkmm?
+                m_modified = true;
               }
-              catch(const Gnome::Glade::XmlError& ex)
+            }
+            else
+            {
+              sharedptr<LayoutItem_GroupBy> group_by = sharedptr<LayoutItem_GroupBy>::cast_dynamic(item);
+              if(group_by)
               {
-                std::cerr << ex.what() << std::endl;
+                try
+                {
+                  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_group_by");
+  
+                  Dialog_GroupBy* dialog = 0;
+                  refXml->get_widget_derived("dialog_group_by", dialog);
+  
+                  if(dialog)
+                  {
+                    add_view(dialog);
+                    dialog->set_item(group_by, m_table_name);
+                    dialog->set_transient_for(*this);
+  
+                    const int response = dialog->run();
+                    dialog->hide();
+  
+                    if(response == Gtk::RESPONSE_OK)
+                    {
+                      //Get the chosen relationship:
+                      sharedptr<LayoutItem_GroupBy> chosenitem = dialog->get_item();
+                      if(chosenitem)
+                      {
+                        *group_by = *chosenitem;
+                        model->row_changed(Gtk::TreePath(iter), iter); //TODO: Add row_changed(iter) to gtkmm?
+                        m_modified = true;
+                      }
+                    }
+  
+                    remove_view(dialog);
+                    delete dialog;
+                  }
+                }
+                catch(const Gnome::Glade::XmlError& ex)
+                {
+                  std::cerr << ex.what() << std::endl;
+                }
               }
             }
           }

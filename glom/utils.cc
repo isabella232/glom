@@ -25,6 +25,7 @@
 #include "frame_glom.h"
 #include <libxml++/libxml++.h>
 #include <libxslt/transform.h>
+//#include <libexslt/exslt.h> //For exsltRegisterAll().
 #include <libgnomevfsmm.h>
 #include <glibmm/i18n.h>
 #include <libgnome/gnome-url.h>
@@ -414,6 +415,10 @@ Glib::ustring GlomUtils::xslt_process(const xmlpp::Document& xml_document, const
   xmlDocPtr style = xmlReadFile(filepath_xslt.c_str(), 0, 0);
   if(style)
   {
+    //We need this to be able to use the exsl: functions, even if we declare the namespace at the start of the xsl.
+    //We don't need this anymore - we use xsl:copy-of instead of exsl:node-set (which didn't work as expected anyway):
+    //exsltRegisterAll();
+
     //Parse the stylesheet:
     xsltStylesheetPtr cur = xsltParseStylesheetDoc(style);
     if(cur)
