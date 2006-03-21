@@ -287,6 +287,12 @@ sharedptr<TableInfo> Document_Glom::create_table_system_preferences(type_vecFiel
   field_org_name->set_glom_type(Field::TYPE_TEXT);
   fields.push_back(field_org_name);
 
+  sharedptr<Field> field_org_logo(new Field());
+  field_org_logo->set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_LOGO);
+  field_org_logo->set_title(_("Organisation Logo"));
+  field_org_logo->set_glom_type(Field::TYPE_IMAGE);
+  fields.push_back(field_org_logo);
+
   sharedptr<Field> field_org_address_street(new Field());
   field_org_address_street->set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_STREET);
   field_org_address_street->set_title(_("Street"));

@@ -441,19 +441,6 @@ void Box_DB_Table_Definition::fill_fields()
   m_vecFields = get_fields_for_table(m_table_name);
 }
 
-void  Box_DB_Table_Definition::postgres_add_column(const sharedptr<const Field>& field, bool not_extras)
-{
-  const bool bTest = Query_execute(  "ALTER TABLE \"" + m_table_name + "\" ADD \"" + field->get_name() + "\" " +  field->get_sql_type() );
-  if(bTest)
-  {
-    if(not_extras)
-    {
-      //We must do this separately:
-      postgres_change_column_extras(field, field, true /* set them even though the fields are the same */);
-    }
-  }
-}
-
 void  Box_DB_Table_Definition::postgres_change_column(const sharedptr<const Field>& field_old, const sharedptr<const Field>& field)
 {
   const Gnome::Gda::FieldAttributes field_info = field->get_field_info();
@@ -467,9 +454,10 @@ void  Box_DB_Table_Definition::postgres_change_column(const sharedptr<const Fiel
   else
   {
     //Change other stuff, without changing the type:
-    postgres_change_column_extras(field_old, field);
+    postgres_change_column_extras(m_table_name, field_old, field);
   }
 }
+
 
 void  Box_DB_Table_Definition::postgres_change_column_type(const sharedptr<const Field>& field_old, const sharedptr<const Field>& field)
 {
@@ -500,7 +488,7 @@ void  Box_DB_Table_Definition::postgres_change_column_type(const sharedptr<const
 
         sharedptr<Field> fieldTemp = glom_sharedptr_clone(field);
         fieldTemp->set_name("glom_temp_column");
-        postgres_add_column(fieldTemp); //This might also involves several commands.
+        postgres_add_column(m_table_name, fieldTemp); //This might also involves several commands.
 
 
         bool conversion_failed = false;
@@ -597,7 +585,7 @@ void  Box_DB_Table_Definition::postgres_change_column_type(const sharedptr<const
             datamodel = Query_execute( "ALTER TABLE \"" + m_table_name + "\" RENAME COLUMN \"" + fieldTemp->get_name() + "\" TO \"" + field->get_name() + "\"");
             if(datamodel)
             {
-              bool test = gda_connection->commit_transaction(transaction);
+              const bool test = gda_connection->commit_transaction(transaction);
               if(!test)
               {
                 handle_error();
@@ -611,88 +599,10 @@ void  Box_DB_Table_Definition::postgres_change_column_type(const sharedptr<const
     }  /// If the datatype has changed:
 
     if(!new_column_created) //We don't need to change anything else if everything was alrady correctly set as a new column:
-      postgres_change_column_extras(field_old, field);
+      postgres_change_column_extras(m_table_name, field_old, field);
   }
 }
 
-
-void Box_DB_Table_Definition::postgres_change_column_extras(const sharedptr<const Field>& field_old, const sharedptr<const Field>& field, bool set_anyway)
-{
-  //Gnome::Gda::FieldAttributes field_info = field->get_field_info();
-  //Gnome::Gda::FieldAttributes field_info_old = field_old->get_field_info();
-
-  if(field->get_name() != field_old->get_name())
-  {
-     Glib::RefPtr<Gnome::Gda::DataModel>  datamodel = Query_execute( "ALTER TABLE \"" + m_table_name + "\" RENAME COLUMN \"" + field_old->get_name() + "\" TO \"" + field->get_name() + "\"" );
-     if(!datamodel)
-     {
-       handle_error();
-       return;
-     }
-  }
-
-  if(set_anyway || (field->get_primary_key() != field_old->get_primary_key()))
-  {
-    //TODO: Check that there is only one primary key.
-    Glib::ustring add_or_drop = "ADD";
-    if(field_old->get_primary_key() == false)
-      add_or_drop = "DROP";
-
-    Glib::RefPtr<Gnome::Gda::DataModel>  datamodel = Query_execute( "ALTER TABLE \"" + m_table_name + "\" " + add_or_drop + " PRIMARY KEY (\"" + field->get_name() + "\")");
-    if(!datamodel)
-    {
-      handle_error();
-      return;
-    }
-  }
-
-  if( !field->get_primary_key() ) //Postgres automatically makes primary keys unique, so we do not need to do that separately if we have already made it a primary key
-  {
-    if(set_anyway || (field->get_unique_key() != field_old->get_unique_key()))
-    {
-       /* TODO: Is there an easier way than adding an index manually?
-       Glib::RefPtr<Gnome::Gda::DataModel>  datamodel = Query_execute( "ALTER TABLE \"" + m_table_name + "\" RENAME COLUMN " + field_info_old.get_name() + " TO " + field_info.get_name() );
-       if(!datamodel)
-       {
-         handle_error();
-         return;
-       }
-       */
-    }
-
-    Gnome::Gda::Value default_value = field->get_default_value();
-    Gnome::Gda::Value default_value_old = field_old->get_default_value();
-
-    if(!field->get_auto_increment()) //Postgres auto-increment fields have special code as their default values.
-    {
-      if(set_anyway || (default_value != default_value_old))
-      {
-        Glib::RefPtr<Gnome::Gda::DataModel> datamodel = Query_execute( "ALTER TABLE \"" + m_table_name + "\" ALTER COLUMN \""+ field->get_name() + "\" SET DEFAULT " + field->sql(field->get_default_value()) );
-        if(!datamodel)
-        {
-          handle_error();
-          return;
-        }
-      }
-    }
-  }
-
-  /* This should have been dealt with by postgres_change_column_type(), because postgres uses a different ("serial") field type for auto-incrementing fields.
-  if(field_info.get_auto_increment() != field_info_old.get_auto_increment())
-  {
-
-  }
-  */
- 
-   /*
-    //If the not-nullness has changed:
-    if( set_anyway ||  (field->get_field_info().get_allow_null() != field_old->get_field_info().get_allow_null()) )
-    {
-      Glib::ustring nullness = (field->get_field_info().get_allow_null() ? "NULL" : "NOT NULL");
-      Query_execute(  "ALTER TABLE " + m_table_name + " ALTER COLUMN " + field->get_name() + "  SET " + nullness);
-    }
-  */ 
-}
 
 
 

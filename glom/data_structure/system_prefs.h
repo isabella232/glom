@@ -17,17 +17,19 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
- 
+
 #ifndef GLOM_DATASTRUCTURE_SYSTEMPREFS_H
 #define GLOM_DATASTRUCTURE_SYSTEMPREFS_H
 
 #include <glibmm/ustring.h>
+#include <libgdamm/value.h>
 
 class SystemPrefs
 {
 public:
  Glib::ustring m_name, m_org_name,
     m_org_address_street, m_org_address_street2, m_org_address_town, m_org_address_county, m_org_address_country, m_org_address_postcode;
+ Gnome::Gda::Value m_org_logo; //TYPE_IMAGE.
 };
 
 #endif //GLOM_DATASTRUCTURE_SYSTEMPREFS_H

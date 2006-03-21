@@ -66,6 +66,7 @@ public:
   typedef std::vector< sharedptr<Field> > type_vecFields;
 
   static type_vecFields get_fields_for_table_from_database(const Glib::ustring& table_name);
+  static bool get_field_exists_in_database(const Glib::ustring& table_name, const Glib::ustring& field_name);
 
   /** Create an appropriate title for an ID string.
    * For instance, date_of_birth would become Date Of Birth.
@@ -79,6 +80,7 @@ public:
   bool add_standard_tables() const;
 
   bool create_table(const sharedptr<const TableInfo>& table_info, const Document_Glom::type_vecFields& fields) const;
+  bool create_table_add_missing_fields(const sharedptr<const TableInfo>& table_info, const Document_Glom::type_vecFields& fields) const;
   bool insert_example_data(const Glib::ustring& table_name) const;
 
   typedef std::vector< sharedptr<LayoutItem_Field> > type_vecLayoutFields;
@@ -288,6 +290,13 @@ protected:
   static type_vecStrings string_separate(const Glib::ustring& str, const Glib::ustring& separator);
   static type_vecStrings pg_list_separate(const Glib::ustring& str);
 
+  /** @param not_extras If this is true, then do not set extra details, such as NOT NULL. You should do that later, when you are ready.
+   */
+  bool postgres_add_column(const Glib::ustring& table_name, const sharedptr<const Field>& field, bool not_extras = false) const;
+
+  /** @param set_anyway If this is true, then set the extra details even if @field_old has the same properties.
+   */
+  void postgres_change_column_extras(const Glib::ustring& table_name, const sharedptr<const Field>& field_old, const sharedptr<const Field>& field, bool set_anyway = false) const;
 
   void handle_error(const std::exception& ex) const; //TODO_port: This is probably useless now.
   bool handle_error() const;

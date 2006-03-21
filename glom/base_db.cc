@@ -290,6 +290,12 @@ Base_DB::type_vecStrings Base_DB::util_vecStrings_from_Fields(const type_vecFiel
   return vecNames;
 }
 
+bool Base_DB::get_field_exists_in_database(const Glib::ustring& table_name, const Glib::ustring& field_name)
+{
+  type_vecFields vecFields = get_fields_for_table_from_database(table_name);
+  type_vecFields::const_iterator iterFind = std::find_if(vecFields.begin(), vecFields.end(), predicate_FieldHasName<Field>(field_name));
+  return iterFind != vecFields.end();
+}
 
 Base_DB::type_vecFields Base_DB::get_fields_for_table_from_database(const Glib::ustring& table_name)
 {
@@ -748,12 +754,12 @@ bool Base_DB::add_standard_tables() const
 {
   try
   {
+    Document_Glom::type_vecFields pref_fields;
+    sharedptr<TableInfo> prefs_table_info = Document_Glom::create_table_system_preferences(pref_fields);
+
     //Name, address, etc:
     if(!get_table_exists_in_database(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME))
     {
-      Document_Glom::type_vecFields pref_fields;
-      sharedptr<TableInfo> prefs_table_info = Document_Glom::create_table_system_preferences(pref_fields);
-
       const bool test = create_table(prefs_table_info, pref_fields);
 
       if(test)
@@ -773,6 +779,12 @@ bool Base_DB::add_standard_tables() const
         g_warning("Base_DB::add_standard_tables(): create_table(prefs) failed.");
         return false;
       }
+    }
+    else
+    {
+      //Make sure that it has all the fields it should have,
+      //because we sometimes add some in new Glom versions:
+      create_table_add_missing_fields(prefs_table_info, pref_fields);
     }
 
     //Auto-increment next values:
@@ -815,7 +827,9 @@ bool Base_DB::add_standard_tables() const
       return true;
     }
     else
+    {
       return false;
+    }
   }
   catch(const std::exception& ex)
   {
@@ -1118,6 +1132,8 @@ SystemPrefs Base_DB::get_database_preferences() const
 
   SystemPrefs result;
 
+  const bool optional_org_logo = get_field_exists_in_database(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME, GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_LOGO);
+
   const Glib::ustring sql_query = "SELECT "
       "\"" GLOM_STANDARD_TABLE_PREFS_TABLE_NAME "\".\"" GLOM_STANDARD_TABLE_PREFS_FIELD_NAME "\", "
       "\"" GLOM_STANDARD_TABLE_PREFS_TABLE_NAME "\".\"" GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_NAME "\", "
@@ -1127,6 +1143,7 @@ SystemPrefs Base_DB::get_database_preferences() const
       "\"" GLOM_STANDARD_TABLE_PREFS_TABLE_NAME "\".\"" GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_COUNTY "\", "
       "\"" GLOM_STANDARD_TABLE_PREFS_TABLE_NAME "\".\"" GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_COUNTRY "\", "
       "\"" GLOM_STANDARD_TABLE_PREFS_TABLE_NAME "\".\"" GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_POSTCODE "\""
+      + Glib::ustring(optional_org_logo ? ", \"" GLOM_STANDARD_TABLE_PREFS_TABLE_NAME "\".\"" GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_LOGO "\"" : "") +
       " FROM \"" GLOM_STANDARD_TABLE_PREFS_TABLE_NAME "\"";
 
   try
@@ -1141,7 +1158,13 @@ SystemPrefs Base_DB::get_database_preferences() const
       result.m_org_address_town = GlomConversions::get_text_for_gda_value(Field::TYPE_TEXT, datamodel->get_value_at(4, 0));
       result.m_org_address_county = GlomConversions::get_text_for_gda_value(Field::TYPE_TEXT, datamodel->get_value_at(5, 0));
       result.m_org_address_country = GlomConversions::get_text_for_gda_value(Field::TYPE_TEXT, datamodel->get_value_at(6, 0));
-      result.m_org_address_postcode = GlomConversions::get_text_for_gda_value(Field::TYPE_TEXT, datamodel->get_value_at(7, 0));      }
+      result.m_org_address_postcode = GlomConversions::get_text_for_gda_value(Field::TYPE_TEXT, datamodel->get_value_at(7, 0));
+
+      //We need to be more clever about these column indexes if we add more new fields:
+      if(optional_org_logo)
+        result.m_org_logo = datamodel->get_value_at(8, 0);
+
+    }
   }
   catch(const std::exception& ex)
   {
@@ -1156,9 +1179,20 @@ void Base_DB::set_database_preferences(const SystemPrefs& prefs)
   if(get_userlevel() == AppState::USERLEVEL_DEVELOPER)
     add_standard_tables();
 
+  //The logo field was introduced in a later version of Glom.
+  //If the user is not in developer mode then the new field has not yet been added:
+  Glib::ustring optional_part_logo;
+  if(get_field_exists_in_database(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME, GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_LOGO))
+  {
+    Field field_temp_logo;
+    field_temp_logo.set_glom_type(Field::TYPE_IMAGE);
+    const Glib::ustring logo_escaped = field_temp_logo.sql(prefs.m_org_logo);
+    optional_part_logo =  "\"" GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_LOGO "\" = " + logo_escaped + ", ";
+  }
+
   const Glib::ustring sql_query = "UPDATE \"" GLOM_STANDARD_TABLE_PREFS_TABLE_NAME "\" SET "
       "\"" GLOM_STANDARD_TABLE_PREFS_FIELD_NAME "\" = '" + prefs.m_name + "', "
-      "\"" GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_NAME "\" = '" + prefs.m_org_name + "', "
+      + optional_part_logo +
       "\"" GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_STREET "\" = '" + prefs.m_org_address_street + "', "
       "\"" GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_STREET2 "\" = '" + prefs.m_org_address_street2 + "', "
       "\"" GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_TOWN "\" = '" + prefs.m_org_address_town + "', "
@@ -1232,6 +1266,127 @@ bool Base_DB::create_table(const sharedptr<const TableInfo>& table_info, const D
 
   return table_creation_succeeded;
 }
+
+bool Base_DB::create_table_add_missing_fields(const sharedptr<const TableInfo>& table_info, const Document_Glom::type_vecFields& fields) const
+{
+  const Glib::ustring table_name = table_info->get_name();
+
+  for(Document_Glom::type_vecFields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
+  {
+    sharedptr<const Field> field = *iter;
+    if(!get_field_exists_in_database(table_name, field->get_name()))
+    {
+      const bool test = postgres_add_column(table_name, field);
+      if(!test)
+       return test;
+    }
+  }
+
+  return true;
+}
+
+bool Base_DB::postgres_add_column(const Glib::ustring& table_name, const sharedptr<const Field>& field, bool not_extras) const
+{
+  sharedptr<Field> field_to_add = glom_sharedptr_clone(field);
+
+  Gnome::Gda::FieldAttributes field_info = field_to_add->get_field_info();
+  if((field_info.get_gdatype() == Gnome::Gda::VALUE_TYPE_UNKNOWN) || (field_info.get_gdatype() == Gnome::Gda::VALUE_TYPE_NULL))
+  {
+    field_info.set_gdatype( Field::get_gda_type_for_glom_type(field_to_add->get_glom_type()) );
+    field_to_add->set_field_info(field_info);
+  }
+
+  const bool bTest = Query_execute(  "ALTER TABLE \"" + table_name + "\" ADD \"" + field_to_add->get_name() + "\" " +  field_to_add->get_sql_type() );
+  if(bTest)
+  {
+    if(not_extras)
+    {
+      //We must do this separately:
+      postgres_change_column_extras(table_name, field_to_add, field_to_add, true /* set them even though the fields are the same */);
+    }
+  }
+
+  return bTest;
+}
+
+void Base_DB::postgres_change_column_extras(const Glib::ustring& table_name, const sharedptr<const Field>& field_old, const sharedptr<const Field>& field, bool set_anyway) const
+{
+  //Gnome::Gda::FieldAttributes field_info = field->get_field_info();
+  //Gnome::Gda::FieldAttributes field_info_old = field_old->get_field_info();
+
+  if(field->get_name() != field_old->get_name())
+  {
+     Glib::RefPtr<Gnome::Gda::DataModel>  datamodel = Query_execute( "ALTER TABLE \"" + table_name + "\" RENAME COLUMN \"" + field_old->get_name() + "\" TO \"" + field->get_name() + "\"" );
+     if(!datamodel)
+     {
+       handle_error();
+       return;
+     }
+  }
+
+  if(set_anyway || (field->get_primary_key() != field_old->get_primary_key()))
+  {
+    //TODO: Check that there is only one primary key.
+    Glib::ustring add_or_drop = "ADD";
+    if(field_old->get_primary_key() == false)
+      add_or_drop = "DROP";
+
+    Glib::RefPtr<Gnome::Gda::DataModel>  datamodel = Query_execute( "ALTER TABLE \"" + table_name + "\" " + add_or_drop + " PRIMARY KEY (\"" + field->get_name() + "\")");
+    if(!datamodel)
+    {
+      handle_error();
+      return;
+    }
+  }
+
+  if( !field->get_primary_key() ) //Postgres automatically makes primary keys unique, so we do not need to do that separately if we have already made it a primary key
+  {
+    if(set_anyway || (field->get_unique_key() != field_old->get_unique_key()))
+    {
+       /* TODO: Is there an easier way than adding an index manually?
+       Glib::RefPtr<Gnome::Gda::DataModel>  datamodel = Query_execute( "ALTER TABLE \"" + m_table_name + "\" RENAME COLUMN " + field_info_old.get_name() + " TO " + field_info.get_name() );
+       if(!datamodel)
+       {
+         handle_error();
+         return;
+       }
+       */
+    }
+
+    Gnome::Gda::Value default_value = field->get_default_value();
+    Gnome::Gda::Value default_value_old = field_old->get_default_value();
+
+    if(!field->get_auto_increment()) //Postgres auto-increment fields have special code as their default values.
+    {
+      if(set_anyway || (default_value != default_value_old))
+      {
+        Glib::RefPtr<Gnome::Gda::DataModel> datamodel = Query_execute( "ALTER TABLE \"" + table_name + "\" ALTER COLUMN \""+ field->get_name() + "\" SET DEFAULT " + field->sql(field->get_default_value()) );
+        if(!datamodel)
+        {
+          handle_error();
+          return;
+        }
+      }
+    }
+  }
+
+  /* This should have been dealt with by postgres_change_column_type(), because postgres uses a different ("serial") field type for auto-incrementing fields.
+  if(field_info.get_auto_increment() != field_info_old.get_auto_increment())
+  {
+
+  }
+  */
+ 
+   /*
+    //If the not-nullness has changed:
+    if( set_anyway ||  (field->get_field_info().get_allow_null() != field_old->get_field_info().get_allow_null()) )
+    {
+      Glib::ustring nullness = (field->get_field_info().get_allow_null() ? "NULL" : "NOT NULL");
+      Query_execute(  "ALTER TABLE " + m_table_name + " ALTER COLUMN " + field->get_name() + "  SET " + nullness);
+    }
+  */ 
+}
+
 
 bool Base_DB::insert_example_data(const Glib::ustring& table_name) const
 {

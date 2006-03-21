@@ -1,5 +1,6 @@
 0.9.92
 
+* Database Preferences: Added Organisation Logo field.
 * Details layouts and report:
   * Added Image layout part, for arbitrary images on the layout.
 * Reports:

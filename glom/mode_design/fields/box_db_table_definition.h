@@ -52,15 +52,8 @@ protected:
 
   //Postgres needs some complex stuff:
 
-    /** @param not_extras If this is true, then do not set extra details, such as NOT NULL. You should do that later, when you are ready.
-   */
-  virtual void postgres_add_column(const sharedptr<const Field>& field, bool not_extras = false);
   virtual void postgres_change_column(const sharedptr<const Field>& field_old, const sharedptr<const Field>& field);
   virtual void postgres_change_column_type(const sharedptr<const Field>& field_old, const sharedptr<const Field>& field);
-
-  /** @param set_anyway If this is true, then set the extra details even if @field_old has the same properties.
-   */
-  virtual void postgres_change_column_extras(const sharedptr<const Field>& field_old, const sharedptr<const Field>& field, bool set_anyway = false);
 
   mutable AddDel_WithButtons m_AddDel; //mutable because its get_ methods aren't const.
 

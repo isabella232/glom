@@ -38,7 +38,9 @@ Dialog_Database_Preferences::Dialog_Database_Preferences(BaseObjectType* cobject
   m_glade_variables_map.connect_widget("entry_org_address_country", m_system_prefs.m_org_address_country);
   m_glade_variables_map.connect_widget("entry_org_address_postcode", m_system_prefs.m_org_address_postcode);
 
-
+  refGlade->get_widget_derived("imageglom", m_image);
+  refGlade->get_widget("button_choose_image", m_button_choose_image);
+  m_button_choose_image->signal_clicked().connect(sigc::mem_fun(*this, &Dialog_Database_Preferences::on_button_choose_image));
 
   refGlade->get_widget("treeview_autoincrements", m_treeview_autoincrements);
 
@@ -110,6 +112,7 @@ void Dialog_Database_Preferences::load_from_document()
 
   //Show the data in the UI:
   m_glade_variables_map.transfer_variables_to_widgets();
+  m_image->set_value(m_system_prefs.m_org_logo);
 
 
   //Make sure that all auto-increment values are setup:
@@ -169,6 +172,8 @@ int Dialog_Database_Preferences::on_autoincrements_sort(const Gtk::TreeModel::it
 void Dialog_Database_Preferences::save_to_document()
 {
   m_glade_variables_map.transfer_widgets_to_variables();
+  m_system_prefs.m_org_logo = m_image->get_value();
+
   set_database_preferences(m_system_prefs);
 }
 
@@ -178,3 +183,7 @@ void Dialog_Database_Preferences::on_response(int response_id)
     save_to_document();
 }
 
+void Dialog_Database_Preferences::on_button_choose_image()
+{
+   m_image->do_choose_image();
+}

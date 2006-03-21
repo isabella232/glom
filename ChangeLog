@@ -1,5 +1,30 @@
 2006-03-21  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/standard_table_prefs_fields.h:
+	* glom/document/document_glom.cc: 
+	create_table_system_preferences(): Added a logo image 
+	field to the system preferences table.
+	* glom/mode_design/fields/box_db_table_definition.cc:
+	* glom/mode_design/fields/box_db_table_definition.h:
+	* glom/base_db.cc:
+	* glom/base_db.h: Moved postgres_add_column() and 
+	postgres_change_column_extras() to Base_DB.
+	Added create_table_add_missing_fields() and called it from 
+	add_standard_tables() to make sure that existing databases 
+	get new fields.
+	Added get_field_exists_in_database()
+	get_database_preferences(), set_database_preferences(): 
+	Check that the new field is in the database and do not try 
+	to use if it is it not there.
+	* glom/data_structure/system_prefs.h: Added logo as a 
+	Gda::Value.
+	* glom/glom.glade:
+	* glom/dialog_database_preferences.cc:
+	* glom/dialog_database_preferences.h: Add a new notebook 
+	tab for the logo.
+
+2006-03-21  Murray Cumming  <murrayc@murrayc.com>
+
 	* xslt/print_report_to_html.xsl: field: Correct the xpaths to get the 
 	correct border-widths. Use more specific apply-templates pattern, to put 
 	the header above the title.

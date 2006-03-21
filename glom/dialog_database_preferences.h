@@ -29,6 +29,7 @@
 #include "base_db.h"
 #include "data_structure/system_prefs.h"
 #include "connectionpool.h"
+#include "utility_widgets/imageglom.h"
 
 class Dialog_Database_Preferences
   : public Gtk::Dialog,
@@ -46,6 +47,7 @@ public:
 protected:
   void on_response(int response_id);
 
+  void on_button_choose_image();
   void on_treeview_cell_edited_next_value(const Glib::ustring& path_string, const Glib::ustring& new_text);
   int on_autoincrements_sort(const Gtk::TreeModel::iterator& a, const Gtk::TreeModel::iterator& b);
 
@@ -69,6 +71,9 @@ protected:
 
   Gnome::Glade::VariablesMap m_glade_variables_map;
   Gtk::TreeView* m_treeview_autoincrements;
+
+  ImageGlom* m_image;
+  Gtk::Button* m_button_choose_image;
 
   SystemPrefs m_system_prefs;
 };
