@@ -1,5 +1,11 @@
 2006-03-21  Murray Cumming  <murrayc@murrayc.com>
 
+	* xslt/print_report_to_html.xsl: field: Correct the xpaths to get the 
+	correct border-widths. Use more specific apply-templates pattern, to put 
+	the header above the title.
+
+2006-03-21  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/base_db.cc: report_build_headerfooter(): Handle images, so they 
 	appear on header/footer parts of reports.
 	* glom/reports/dialog_layout_report.cc: on_button_edit(): Handle images, so 

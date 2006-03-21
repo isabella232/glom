@@ -116,13 +116,15 @@ td
 <xsl:text>
 </xsl:text>
 
+<xsl:apply-templates select="header" />
+
 <h1>
   <xsl:value-of select="@table"/>: <xsl:value-of select="@title"/>
 </h1>
 <xsl:text>
 </xsl:text>
 
-<xsl:apply-templates/>
+<xsl:apply-templates select="*[not(self::header)]" />
 
 </body>
 </html>
@@ -299,13 +301,13 @@ td
 <xsl:choose>
   <xsl:when test="string(@vertical)">
     <xsl:choose>
-      <xsl:when test="string(../../@border_width)"><xsl:value-of select="../../@border_width"/></xsl:when>
+      <xsl:when test="string(../@border_width)"><xsl:value-of select="../@border_width"/></xsl:when>
       <xsl:otherwise>0</xsl:otherwise>
     </xsl:choose>
   </xsl:when>
   <xsl:otherwise>
     <xsl:choose>
-      <xsl:when test="string(../@border_width)"><xsl:value-of select="../@border_width"/></xsl:when>
+      <xsl:when test="string(../../@border_width)"><xsl:value-of select="../../@border_width"/></xsl:when>
       <xsl:otherwise>0</xsl:otherwise>
     </xsl:choose>
   </xsl:otherwise>
@@ -329,8 +331,8 @@ td
 
 <xsl:choose>
   <xsl:when test="string(@vertical)">
-    <th class="field_heading" align="right" style="border-width: {$attStyleBorderWidth}em;"><xsl:value-of select="@title"/></th>
     <tr>
+    <th class="field_heading" align="right" style="border-width: {$attStyleBorderWidth}em;"><xsl:value-of select="@title"/></th>
      <xsl:copy-of select="$tdNodesField" />
     </tr>
   </xsl:when>
