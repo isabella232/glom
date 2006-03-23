@@ -58,7 +58,11 @@ DbAddDelColumnInfo& DbAddDelColumnInfo::operator=(const DbAddDelColumnInfo& src)
 }
 
 DbAddDel::DbAddDel()
-: m_pMenuPopup(0),
+: m_column_sorted(0),
+  m_pMenuPopup(0),
+  m_bAllowUserActions(true),
+  m_bPreventUserSignals(false),
+  m_bIgnoreTreeViewSignals(false),
   m_auto_add(true),
   m_allow_add(true),
   m_allow_delete(true),
@@ -68,11 +72,9 @@ DbAddDel::DbAddDel()
   m_treeviewcolumn_button(0)
 {
   set_prevent_user_signals();
-  set_ignore_treeview_signals();
+  set_ignore_treeview_signals(true);
 
   set_spacing(6);
-
-  m_bAllowUserActions = true;
 
   //Start with a useful default TreeModel:
   //set_columns_count(1);
@@ -762,7 +764,7 @@ bool DbAddDel::refresh_from_database()
   if(m_refListStore)
   {
     //Glib::RefPtr<Gtk::TreeModel> refNull;
-    bool result = m_refListStore->refresh_from_database(m_found_set);
+    const bool result = m_refListStore->refresh_from_database(m_found_set);
     //m_TreeView.set_model(refNull); //TODO: This causes a g_warning(): gtk_tree_view_unref_tree_helper: assertion `node != NULL' failed
     if(m_TreeView.get_model())
       gtk_tree_view_set_model(m_TreeView.gobj(), 0); //This gives the same warning.
@@ -993,16 +995,6 @@ void DbAddDel::finish_editing()
 //  set_ignore_treeview_signals(bIgnoreSheetSignals);
 }
 
-void DbAddDel::set_ignore_treeview_signals(bool bVal)
-{
-  m_bIgnoreSheetSignals = bVal;
-}
-
-bool DbAddDel::get_ignore_treeview_signals() const
-{
-  return m_bIgnoreSheetSignals;
-}
-
 /*
 void DbAddDel::reactivate()
 {
@@ -1029,6 +1021,16 @@ void DbAddDel::remove_item(const Gtk::TreeModel::iterator& iter)
     m_refListStore->erase(iter);
 }
 
+bool DbAddDel::get_ignore_treeview_signals() const
+{
+  return m_bIgnoreTreeViewSignals;
+}
+
+void DbAddDel::set_ignore_treeview_signals(bool ignore)
+{
+  m_bIgnoreTreeViewSignals = ignore;
+}
+
 DbAddDel::InnerIgnore::InnerIgnore(DbAddDel* pOuter)
 {
   m_pOuter = pOuter;
@@ -1038,7 +1040,7 @@ DbAddDel::InnerIgnore::InnerIgnore(DbAddDel* pOuter)
     m_bPreventUserSignals = m_pOuter->get_prevent_user_signals();
     m_pOuter->set_prevent_user_signals();
 
-    m_bIgnoreSheetSignals = m_pOuter->get_ignore_treeview_signals();
+    m_bIgnoreTreeViewSignals = m_pOuter->get_ignore_treeview_signals();
     m_pOuter->set_ignore_treeview_signals();
   }
 }
@@ -1050,7 +1052,7 @@ DbAddDel::InnerIgnore::~InnerIgnore()
   if(m_pOuter)
   {
     m_pOuter->set_prevent_user_signals(m_bPreventUserSignals);
-    m_pOuter->set_ignore_treeview_signals(m_bIgnoreSheetSignals);
+    m_pOuter->set_ignore_treeview_signals(m_bIgnoreTreeViewSignals);
   }
 
   m_pOuter = false;
@@ -1406,12 +1408,43 @@ guint DbAddDel::treeview_append_column(const Glib::ustring& title, Gtk::CellRend
 
   //TODO pViewColumn->signal_button_press_event().connect( sigc::mem_fun(*this, &DbAddDel::on_treeview_columnheader_button_press_event) );
 
+  //Let the user click on the column header to sort.
+  pViewColumn->set_clickable();
+  pViewColumn->signal_clicked().connect(
+    sigc::bind( sigc::mem_fun(*this, &DbAddDel::on_treeview_column_clicked), model_column_index) );
+
   return cols_count;
+}
+
+void DbAddDel::on_treeview_column_clicked(int model_column_index)
+{
+  if(model_column_index >= (int)m_ColumnTypes.size())
+    return;
+
+  sharedptr<const LayoutItem_Field> layout_item = m_ColumnTypes[model_column_index].m_field;
+  if(layout_item && layout_item->get_name_not_empty())
+  {
+    m_found_set.m_sort_clause = "\"" + layout_item->get_table_used(m_found_set.m_table_name) + "\".\"" + layout_item->get_name() + "\"";
+
+    Glib::ustring direction = "ASC";
+    if(!m_column_sorted_direction.empty() && (m_column_sorted == model_column_index))
+    {
+      //Reverse the existing direction:
+      direction = (m_column_sorted_direction == "ASC" ? "DESC" : "ASC");
+    }
+
+    m_column_sorted_direction = direction;
+    m_column_sorted = model_column_index;
+
+    m_found_set.m_sort_clause += (" " + direction);
+  }
+
+  refresh_from_database();
 }
 
 void DbAddDel::on_treeview_columns_changed()
 {
-  if(!get_ignore_treeview_signals())
+  if(!m_bIgnoreTreeViewSignals)
   {
     //Get the new column order, and save it in m_vecColumnIDs:
     m_vecColumnIDs.clear();

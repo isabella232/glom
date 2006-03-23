@@ -265,13 +265,10 @@ protected:
   virtual void on_treeview_button_press_event(GdkEventButton* event);
 
   virtual bool on_treeview_columnheader_button_press_event(GdkEventButton* event);
-  virtual void on_cell_button_clicked(const Gtk::TreeModel::Path& path);  
+  virtual void on_treeview_column_clicked(int model_column_index);
+  virtual void on_cell_button_clicked(const Gtk::TreeModel::Path& path);
 
   bool get_prevent_user_signals() const;
-
-  //Sometimes the sheet sends signals when it shouldn't:
-  void set_ignore_treeview_signals(bool bVal = true);
-  bool get_ignore_treeview_signals() const;
 
   /** @param model_column_index A value returned from add_column().
    * @param view_column_index The index of the corresponding view column.
@@ -301,6 +298,8 @@ protected:
   typedef std::vector<DbAddDelColumnInfo> type_ColumnTypes;
   type_ColumnTypes m_ColumnTypes;
   FoundSet m_found_set; //table, where_clause, sort_clause.
+  Glib::ustring m_column_sorted_direction; //ASC or DESC, if sorted by m_column_sorted. If empty, then m_column_sorted should not be used.
+  guint m_column_sorted; //Previously-clicked (on the treeview header) column. Remember it so we can reverse the sort order on a second click.
   Glib::ustring m_open_button_title; //Allow us to change "Open" to "Select".
 
   Gtk::Menu* m_pMenuPopup;
@@ -311,7 +310,7 @@ protected:
   bool m_bAllowUserActions;
 
   bool m_bPreventUserSignals;
-  bool m_bIgnoreSheetSignals;
+  bool m_bIgnoreTreeViewSignals;
 
   type_vecStrings m_vecColumnIDs; //We give each ViewColumn a special ID, so we know where they are after a reorder.
 
@@ -336,6 +335,9 @@ protected:
   type_signal_user_activated m_signal_user_activated;
   type_signal_user_reordered_columns m_signal_user_reordered_columns;
 
+  bool get_ignore_treeview_signals() const;
+  void set_ignore_treeview_signals(bool ignore = true);
+
   //An instance of InnerIgnore remembers the ignore settings,
   //then restores them when it goes out of scope and is destroyed.
   class InnerIgnore
@@ -346,7 +348,7 @@ protected:
 
   protected:
     DbAddDel* m_pOuter;
-    bool m_bPreventUserSignals, m_bIgnoreSheetSignals;
+    bool m_bPreventUserSignals, m_bIgnoreTreeViewSignals;
   };
 
 /*

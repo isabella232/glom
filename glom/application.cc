@@ -42,6 +42,9 @@ App_Glom::App_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml
   m_menu_tables_ui_merge_id(0),
   m_menu_reports_ui_merge_id(0)
 {
+  //Show the icon in the window manager's window title bar and in the list of running applications:
+  set_icon_from_file(GLOM_ICON_DIR "/glom.png");
+
   //Load widgets from glade file:
   refGlade->get_widget("bakery_vbox", m_pBoxTop);
   refGlade->get_widget_derived("vbox_frame", m_pFrame); //This one is derived. There's a lot happening here.
