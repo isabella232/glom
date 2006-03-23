@@ -40,7 +40,9 @@ Box_Data_Details_Find::~Box_Data_Details_Find()
 
 bool Box_Data_Details_Find::init_db_details(const Glib::ustring& table_name)
 {
-  return Box_Data_Details::init_db_details(table_name, Gnome::Gda::Value());
+  FoundSet found_set;
+  found_set.m_table_name = table_name;
+  return Box_Data_Details::init_db_details(found_set, Gnome::Gda::Value());
 }
 
 bool Box_Data_Details_Find::fill_from_database()

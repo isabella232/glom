@@ -32,10 +32,10 @@ public:
   virtual ~Notebook_Data();
 
   //Create the layout for the database structure, and fill it with data.
-  virtual bool init_db_details(const Glib::ustring& table_name, const Glib::ustring& where_clause = Glib::ustring());
+  virtual bool init_db_details(const FoundSet& found_set);
 
   ///Get the existing where clause, previously supplied to init_db_details().
-  Glib::ustring get_where_clause() const;
+  FoundSet get_found_set() const;
 
   ///Show the details for a particular record, without affecting the list view:
   virtual void show_details(const Gnome::Gda::Value& primary_key_value);

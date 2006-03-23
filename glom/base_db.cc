@@ -43,6 +43,34 @@
 
 #include <sstream> //For stringstream
 
+FoundSet::FoundSet()
+{
+}
+
+FoundSet::FoundSet(const FoundSet& src)
+:  m_table_name(src.m_table_name),
+   m_where_clause(src.m_where_clause),
+   m_sort_clause(src.m_sort_clause)
+{
+}
+
+FoundSet& FoundSet::operator=(const FoundSet& src)
+{
+  m_table_name = src.m_table_name;
+  m_where_clause = src.m_where_clause;
+  m_sort_clause = src.m_sort_clause;
+
+  return *this;
+}
+
+bool FoundSet::operator==(const FoundSet& src) const
+{
+  return (m_table_name == src.m_table_name)
+      && (m_where_clause == src.m_where_clause)
+      && (m_sort_clause == src.m_sort_clause);
+}
+
+
 Base_DB::Base_DB()
 {
   //m_pDocument = 0;
@@ -1635,7 +1663,7 @@ void Base_DB::fill_full_field_details(const Glib::ustring& parent_table_name, sh
   layout_item->set_full_field_details( get_document()->get_field(table_name, layout_item->get_name()) );
 }
 
-void Base_DB::report_build_headerfooter(const Glib::ustring& table_name, xmlpp::Element& parent_node, const sharedptr<LayoutGroup>& group, const Glib::ustring& where_clause)
+void Base_DB::report_build_headerfooter(const FoundSet& found_set, xmlpp::Element& parent_node, const sharedptr<LayoutGroup>& group)
 {
   //Add XML node:
   xmlpp::Element* node = parent_node.add_child(group->get_report_part_id());
@@ -1649,14 +1677,14 @@ void Base_DB::report_build_headerfooter(const Glib::ustring& table_name, xmlpp::
     sharedptr<LayoutItem_Text> item_text = sharedptr<LayoutItem_Text>::cast_dynamic(item);
     if(item_text)
     {
-      report_build_records_text(table_name, *node, item_text);
+      report_build_records_text(found_set, *node, item_text);
     }
     else
     {
       sharedptr<LayoutItem_Image> item_image = sharedptr<LayoutItem_Image>::cast_dynamic(item);
       if(item_image)
       {
-        report_build_records_image(table_name, *node, item_image);
+        report_build_records_image(found_set, *node, item_image);
       }
       else
       {
@@ -1664,7 +1692,7 @@ void Base_DB::report_build_headerfooter(const Glib::ustring& table_name, xmlpp::
         if(pField)
         {
           guint col_index = 0; //ignored.
-          report_build_records_field(table_name, *node, pField, Glib::RefPtr<Gnome::Gda::DataModel>(), 0, col_index);
+          report_build_records_field(found_set, *node, pField, Glib::RefPtr<Gnome::Gda::DataModel>(), 0, col_index);
         }
         else
         {
@@ -1673,7 +1701,7 @@ void Base_DB::report_build_headerfooter(const Glib::ustring& table_name, xmlpp::
           {
             //Reuse (a bit hacky) this function for the header and footer:
             guint col_index = 0; //Ignored, because the model is null.
-            report_build_records_vertical_group(table_name, *node, vertical_group, Glib::RefPtr<Gnome::Gda::DataModel>(), 0, col_index);
+            report_build_records_vertical_group(found_set, *node, vertical_group, Glib::RefPtr<Gnome::Gda::DataModel>(), 0, col_index);
           }
         }
       }
@@ -1682,7 +1710,7 @@ void Base_DB::report_build_headerfooter(const Glib::ustring& table_name, xmlpp::
 
 }
 
-void Base_DB::report_build_summary(const Glib::ustring& table_name, xmlpp::Element& parent_node, const sharedptr<LayoutItem_Summary>& summary, const Glib::ustring& where_clause)
+void Base_DB::report_build_summary(const FoundSet& found_set, xmlpp::Element& parent_node, const sharedptr<LayoutItem_Summary>& summary)
 {
   //Add XML node:
   xmlpp::Element* node = parent_node.add_child(summary->get_report_part_id());
@@ -1697,7 +1725,7 @@ void Base_DB::report_build_summary(const Glib::ustring& table_name, xmlpp::Eleme
     if(pGroupBy)
     {
       //Recurse, adding a sub-groupby block:
-      report_build_groupby(table_name, *node, pGroupBy, where_clause);
+      report_build_groupby(found_set, *node, pGroupBy);
     }
     else
     {
@@ -1705,7 +1733,7 @@ void Base_DB::report_build_summary(const Glib::ustring& table_name, xmlpp::Eleme
       if(pSummary)
       {
         //Recurse, adding a summary block:
-        report_build_summary(table_name, *node, pSummary, where_clause);
+        report_build_summary(found_set, *node, pSummary);
       }
       else
       {
@@ -1717,13 +1745,13 @@ void Base_DB::report_build_summary(const Glib::ustring& table_name, xmlpp::Eleme
   if(!itemsToGet.empty())
   {
     //Rows, with data:
-    report_build_records(table_name, *node, itemsToGet, where_clause, Glib::ustring() /* No sort_clause because there is only one row */);
+    report_build_records(found_set, *node, itemsToGet);
   }
 }
 
 
 
-void Base_DB::report_build_groupby_children(const Glib::ustring& table_name, xmlpp::Element& node, const sharedptr<LayoutItem_GroupBy>& group_by, const Glib::ustring& where_clause)
+void Base_DB::report_build_groupby_children(const FoundSet& found_set, xmlpp::Element& node, const sharedptr<LayoutItem_GroupBy>& group_by)
 {
   //Get data and add child rows:
   type_vecLayoutItems itemsToGet;
@@ -1735,7 +1763,7 @@ void Base_DB::report_build_groupby_children(const Glib::ustring& table_name, xml
     if(pGroupBy)
     {
       //Recurse, adding a sub-groupby block:
-      report_build_groupby(table_name, node, pGroupBy, where_clause);
+      report_build_groupby(found_set, node, pGroupBy);
     }
     else
     {
@@ -1743,7 +1771,7 @@ void Base_DB::report_build_groupby_children(const Glib::ustring& table_name, xml
       if(pSummary)
       {
         //Recurse, adding a summary block:
-        report_build_summary(table_name, node, pSummary, where_clause);
+        report_build_summary(found_set, node, pSummary);
       }
       else
       {
@@ -1761,8 +1789,6 @@ void Base_DB::report_build_groupby_children(const Glib::ustring& table_name, xml
     {
       if(group_by->get_has_fields_sort_by())
       {
-        sort_clause += " ORDER BY ";
-
         bool first = true;
         LayoutItem_GroupBy::type_list_sort_fields group_sort_fields = group_by->get_fields_sort_by();
         for(LayoutItem_GroupBy::type_list_sort_fields::const_iterator iter = group_sort_fields.begin(); iter != group_sort_fields.end(); ++iter)
@@ -1773,32 +1799,34 @@ void Base_DB::report_build_groupby_children(const Glib::ustring& table_name, xml
           sharedptr<LayoutItem_Field> item_field = sharedptr<LayoutItem_Field>::cast_dynamic(iter->first);
           if(item_field)
           {
-            sort_clause += "\"" + item_field->get_sql_table_or_join_alias_name(table_name) + "\".\"" + item_field->get_name() + "\" " + (iter->second ? "ASC" : "DESC");
+            sort_clause += "\"" + item_field->get_sql_table_or_join_alias_name(found_set.m_table_name) + "\".\"" + item_field->get_name() + "\" " + (iter->second ? "ASC" : "DESC");
             first = false;
           }
         }
       }
     }
 
-    report_build_records(table_name, node, itemsToGet, where_clause, sort_clause);
+    FoundSet found_set_records = found_set;
+    found_set_records.m_sort_clause = sort_clause;
+    report_build_records(found_set_records, node, itemsToGet);
   }
 }
 
-void Base_DB::report_build_groupby(const Glib::ustring& table_name, xmlpp::Element& parent_node, const sharedptr<LayoutItem_GroupBy>& group_by, const Glib::ustring& where_clause_parent)
+void Base_DB::report_build_groupby(const FoundSet& found_set_parent, xmlpp::Element& parent_node, const sharedptr<LayoutItem_GroupBy>& group_by)
 {
   //Get the possible heading values.
   if(group_by->get_has_field_group_by())
   {
     sharedptr<LayoutItem_Field> field_group_by = group_by->get_field_group_by();
-    fill_full_field_details(table_name, field_group_by);
+    fill_full_field_details(found_set_parent.m_table_name, field_group_by);
 
     //Get the possible group values, ignoring repeats by using GROUP BY.
-    const Glib::ustring group_field_table_name = field_group_by->get_table_used(table_name);
+    const Glib::ustring group_field_table_name = field_group_by->get_table_used(found_set_parent.m_table_name);
     Glib::ustring sql_query = "SELECT \"" + group_field_table_name + "\".\"" + field_group_by->get_name() + "\""
       " FROM \"" + group_field_table_name + "\"";
 
-    if(!where_clause_parent.empty())
-      sql_query += " WHERE " + where_clause_parent;
+    if(!found_set_parent.m_where_clause.empty())
+      sql_query += " WHERE " + found_set_parent.m_where_clause;
 
     sql_query += " GROUP BY " + field_group_by->get_name(); //rTODO: And restrict to the current found set.
 
@@ -1819,8 +1847,11 @@ void Base_DB::report_build_groupby(const Glib::ustring& table_name, xmlpp::Eleme
           GlomConversions::get_text_for_gda_value(field_group_by->get_glom_type(), group_value, field_group_by->get_formatting_used().m_numeric_format) );
 
         Glib::ustring where_clause = "\"" + group_field_table_name + "\".\"" + field_group_by->get_name() + "\" = " + field_group_by->get_full_field_details()->sql(group_value);
-        if(!where_clause_parent.empty())
-          where_clause += " AND (" + where_clause_parent + ")";
+        if(!found_set_parent.m_where_clause.empty())
+          where_clause += " AND (" + found_set_parent.m_where_clause + ")";
+
+        FoundSet found_set_records = found_set_parent;
+        found_set_records.m_where_clause = where_clause;
 
         //Secondary fields. For instance, the Contact Name, in addition to the Contact ID that we group by.
         if(!(group_by->m_group_secondary_fields->m_map_items.empty()))
@@ -1836,12 +1867,12 @@ void Base_DB::report_build_groupby(const Glib::ustring& table_name, xmlpp::Eleme
 
           if(!itemsToGet.empty())
           {
-            report_build_records(table_name, *nodeSecondaryFields, itemsToGet, where_clause, Glib::ustring(), true /* one record only */);
+            report_build_records(found_set_records, *nodeSecondaryFields, itemsToGet, true /* one record only */);
           }
         }
 
         //Get data and add child rows:
-        report_build_groupby_children(table_name, *nodeGroupBy, group_by, where_clause);
+        report_build_groupby_children(found_set_records, *nodeGroupBy, group_by);
       }
     }
   }
@@ -1851,11 +1882,11 @@ void Base_DB::report_build_groupby(const Glib::ustring& table_name, xmlpp::Eleme
     //For instance, the user could use the GroupBy part just to specify a sort, though that would be a bit of a hack:
     xmlpp::Element* nodeGroupBy = parent_node.add_child(group_by->get_report_part_id()); //We need this to create the HTML table.
     Document_Glom::set_node_attribute_value_as_decimal_double(nodeGroupBy, "border_width", group_by->get_border_width());
-    report_build_groupby_children(table_name, *nodeGroupBy, group_by, where_clause_parent);
+    report_build_groupby_children(found_set_parent, *nodeGroupBy, group_by);
   }
 }
 
-void Base_DB::report_build_records_get_fields(const Glib::ustring& table_name, const sharedptr<LayoutGroup>& group, type_vecLayoutFields& items)
+void Base_DB::report_build_records_get_fields(const FoundSet& found_set, const sharedptr<LayoutGroup>& group, type_vecLayoutFields& items)
 {
   for(LayoutGroup::type_map_items::iterator iterChildren = group->m_map_items.begin(); iterChildren != group->m_map_items.end(); ++iterChildren)
   {
@@ -1864,7 +1895,7 @@ void Base_DB::report_build_records_get_fields(const Glib::ustring& table_name, c
     sharedptr<LayoutItem_VerticalGroup> pVerticalGroup = sharedptr<LayoutItem_VerticalGroup>::cast_dynamic(item);
     if(pVerticalGroup)
     {
-      report_build_records_get_fields(table_name, pVerticalGroup, items);
+      report_build_records_get_fields(found_set, pVerticalGroup, items);
     }
     else
     {
@@ -1875,7 +1906,7 @@ void Base_DB::report_build_records_get_fields(const Glib::ustring& table_name, c
   }
 }
 
-void Base_DB::report_build_records(const Glib::ustring& table_name, xmlpp::Element& parent_node, const type_vecLayoutItems& items, const Glib::ustring& where_clause, const Glib::ustring& sort_clause, bool one_record_only)
+void Base_DB::report_build_records(const FoundSet& found_set, xmlpp::Element& parent_node, const type_vecLayoutItems& items, bool one_record_only)
 {
   if(!items.empty())
   {
@@ -1908,14 +1939,14 @@ void Base_DB::report_build_records(const Glib::ustring& table_name, xmlpp::Eleme
         if(vertical_group)
         {
           //Get all the fields in this group:
-          report_build_records_get_fields(table_name, vertical_group, fieldsToGet);
+          report_build_records_get_fields(found_set, vertical_group, fieldsToGet);
         }
       }
     }
 
-    Glib::ustring sql_query = GlomUtils::build_sql_select_with_where_clause(table_name,
+    Glib::ustring sql_query = GlomUtils::build_sql_select_with_where_clause(found_set.m_table_name,
       fieldsToGet,
-      where_clause, sort_clause);
+      found_set.m_where_clause, found_set.m_sort_clause);
 
     //For instance, when we just want to get a name corresponding to a contact ID, and want to ignore duplicates.
     if(one_record_only)
@@ -1942,21 +1973,21 @@ void Base_DB::report_build_records(const Glib::ustring& table_name, xmlpp::Eleme
           sharedptr<LayoutItem_Field> field = sharedptr<LayoutItem_Field>::cast_dynamic(item);
           if(field)
           {
-            report_build_records_field(table_name, *nodeRow, field, datamodel, row, colField);
+            report_build_records_field(found_set, *nodeRow, field, datamodel, row, colField);
           }
           else
           {
             sharedptr<LayoutItem_Text> item_text = sharedptr<LayoutItem_Text>::cast_dynamic(item);
             if(item_text)
             {
-              report_build_records_text(table_name, *nodeRow, item_text);
+              report_build_records_text(found_set, *nodeRow, item_text);
             }
             else
             {
               sharedptr<LayoutItem_VerticalGroup> item_verticalgroup = sharedptr<LayoutItem_VerticalGroup>::cast_dynamic(item);
               if(item_verticalgroup)
               {
-                report_build_records_vertical_group(table_name, *nodeRow, item_verticalgroup, datamodel, row, colField);
+                report_build_records_vertical_group(found_set, *nodeRow, item_verticalgroup, datamodel, row, colField);
                 //TODO
               }
             }
@@ -1974,7 +2005,7 @@ void Base_DB::report_build_records(const Glib::ustring& table_name, xmlpp::Eleme
   }
 }
 
-void Base_DB::report_build_records_field(const Glib::ustring& table_name, xmlpp::Element& nodeParent, const sharedptr<const LayoutItem_Field>& field, const Glib::RefPtr<Gnome::Gda::DataModel>& datamodel, guint row, guint& colField, bool vertical)
+void Base_DB::report_build_records_field(const FoundSet& found_set, xmlpp::Element& nodeParent, const sharedptr<const LayoutItem_Field>& field, const Glib::RefPtr<Gnome::Gda::DataModel>& datamodel, guint row, guint& colField, bool vertical)
 {
   const Field::glom_field_type field_type = field->get_glom_type();
 
@@ -1992,7 +2023,7 @@ void Base_DB::report_build_records_field(const Glib::ustring& table_name, xmlpp:
   {
     //In this case it can only be a system preferences field.
     //So let's get that data here:
-    const Glib::ustring table_used = field->get_table_used(table_name);
+    const Glib::ustring table_used = field->get_table_used(found_set.m_table_name);
     const Glib::ustring query = "SELECT \"" + table_used + "\".\"" + field->get_name() + "\" FROM \""+ table_used + "\" LIMIT 1";
     Glib::RefPtr<Gnome::Gda::DataModel> datamodel = Query_execute(query);
 
@@ -2032,7 +2063,7 @@ void Base_DB::report_build_records_field(const Glib::ustring& table_name, xmlpp:
   ++colField;
 }
 
-void Base_DB::report_build_records_text(const Glib::ustring& table_name, xmlpp::Element& nodeParent, const sharedptr<const LayoutItem_Text>& textobject, bool vertical)
+void Base_DB::report_build_records_text(const FoundSet& found_set, xmlpp::Element& nodeParent, const sharedptr<const LayoutItem_Text>& textobject, bool vertical)
 {
   //Text object:
   xmlpp::Element* nodeField = nodeParent.add_child(textobject->get_report_part_id()); //We reuse this node type for text objects.
@@ -2042,7 +2073,7 @@ void Base_DB::report_build_records_text(const Glib::ustring& table_name, xmlpp::
     nodeField->set_attribute("vertical", "true");
 }
 
-void Base_DB::report_build_records_image(const Glib::ustring& table_name, xmlpp::Element& nodeParent, const sharedptr<const LayoutItem_Image>& imageobject, bool vertical)
+void Base_DB::report_build_records_image(const FoundSet& found_set, xmlpp::Element& nodeParent, const sharedptr<const LayoutItem_Image>& imageobject, bool vertical)
 {
   //Text object:
   xmlpp::Element* nodeImage = nodeParent.add_child(imageobject->get_report_part_id()); //We reuse this node type for text objects.
@@ -2052,7 +2083,7 @@ void Base_DB::report_build_records_image(const Glib::ustring& table_name, xmlpp:
     nodeImage->set_attribute("vertical", "true");
 }
 
-void Base_DB::report_build_records_vertical_group(const Glib::ustring& table_name, xmlpp::Element& parentNode, const sharedptr<LayoutItem_VerticalGroup>& group, const Glib::RefPtr<Gnome::Gda::DataModel>& datamodel, guint row, guint& field_index)
+void Base_DB::report_build_records_vertical_group(const FoundSet& found_set, xmlpp::Element& parentNode, const sharedptr<LayoutItem_VerticalGroup>& group, const Glib::RefPtr<Gnome::Gda::DataModel>& datamodel, guint row, guint& field_index)
 {
   xmlpp::Element* nodeGroupVertical = parentNode.add_child(group->get_report_part_id());
 
@@ -2063,21 +2094,21 @@ void Base_DB::report_build_records_vertical_group(const Glib::ustring& table_nam
     sharedptr<LayoutItem_VerticalGroup> pVerticalGroup = sharedptr<LayoutItem_VerticalGroup>::cast_dynamic(item);
     if(pVerticalGroup)
     {
-      report_build_records_vertical_group(table_name, *nodeGroupVertical, pVerticalGroup, datamodel, row, field_index);
+      report_build_records_vertical_group(found_set, *nodeGroupVertical, pVerticalGroup, datamodel, row, field_index);
     }
     else
     {
       sharedptr<LayoutItem_Field> pField = sharedptr<LayoutItem_Field>::cast_dynamic(item);
       if(pField)
       {
-        report_build_records_field(table_name, *nodeGroupVertical, pField, datamodel, row, field_index, true /* vertical, so we get a row for each field too. */);
+        report_build_records_field(found_set, *nodeGroupVertical, pField, datamodel, row, field_index, true /* vertical, so we get a row for each field too. */);
       }
       else
       {
         sharedptr<LayoutItem_Text> pText = sharedptr<LayoutItem_Text>::cast_dynamic(item);
         if(pText)
         {
-          report_build_records_text(table_name, *nodeGroupVertical, pText, true);
+          report_build_records_text(found_set, *nodeGroupVertical, pText, true);
         }
       }
     }
@@ -2085,7 +2116,7 @@ void Base_DB::report_build_records_vertical_group(const Glib::ustring& table_nam
 }
 
 
-void Base_DB::report_build(const Glib::ustring& table_name, const sharedptr<const Report>& report, const Glib::ustring& where_clause, Gtk::Window* parent_window)
+void Base_DB::report_build(const FoundSet& found_set, const sharedptr<const Report>& report, Gtk::Window* parent_window)
 {
   //Create a DOM Document with the XML:
   xmlpp::DomParser dom_parser;;
@@ -2098,9 +2129,9 @@ void Base_DB::report_build(const Glib::ustring& table_name, const sharedptr<cons
     nodeRoot = pDocument->create_root_node("report_print");
   }
 
-  Glib::ustring table_title = get_document()->get_table_title(table_name);
+  Glib::ustring table_title = get_document()->get_table_title(found_set.m_table_name);
   if(table_title.empty())
-    table_title = table_name;
+    table_title = found_set.m_table_name;
 
   nodeRoot->set_attribute("table", table_title);
 
@@ -2120,14 +2151,14 @@ void Base_DB::report_build(const Glib::ustring& table_name, const sharedptr<cons
     //The Group, and the details for each record in the group:
     sharedptr<LayoutItem_GroupBy> pGroupBy = sharedptr<LayoutItem_GroupBy>::cast_dynamic(pPart);
     if(pGroupBy)
-      report_build_groupby(table_name, *nodeParent, pGroupBy, where_clause);
+      report_build_groupby(found_set, *nodeParent, pGroupBy);
     else
     {
       sharedptr<LayoutItem_Summary> pSummary = sharedptr<LayoutItem_Summary>::cast_dynamic(pPart);
       if(pSummary)
       {
         //Recurse, adding a summary block:
-        report_build_summary(table_name, *nodeParent, pSummary, where_clause);
+        report_build_summary(found_set, *nodeParent, pSummary);
       }
       else
       {
@@ -2139,7 +2170,7 @@ void Base_DB::report_build(const Glib::ustring& table_name, const sharedptr<cons
           if(pHeader || pFooter)
           {
             //Recurse, adding a summary block:
-            report_build_headerfooter(table_name, *nodeParent, pGroup, where_clause);
+            report_build_headerfooter(found_set, *nodeParent, pGroup);
           }
         }
         else
@@ -2152,7 +2183,7 @@ void Base_DB::report_build(const Glib::ustring& table_name, const sharedptr<cons
   if(!itemsToGet_TopLevel.empty())
   {
     xmlpp::Element* nodeGroupBy = nodeParent->add_child("ungrouped_records");
-    report_build_records(table_name, *nodeGroupBy, itemsToGet_TopLevel, where_clause, Glib::ustring() /* no sort clause */);
+    report_build_records(found_set, *nodeGroupBy, itemsToGet_TopLevel);
   }
 
   GlomUtils::transform_and_open(*pDocument, "print_report_to_html.xsl", parent_window);

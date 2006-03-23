@@ -275,7 +275,7 @@ Glib::ustring GlomUtils::build_sql_select_with_where_clause(const Glib::ustring&
     result += " WHERE " + where_clause;
 
   if(!sort_clause.empty())
-    result += " " + sort_clause;
+    result += " ORDER BY " + sort_clause;
 
   return result;
 }

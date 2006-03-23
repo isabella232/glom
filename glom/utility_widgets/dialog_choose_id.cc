@@ -110,10 +110,12 @@ void Dialog_ChooseID::on_box_find_criteria(const Glib::ustring& where_clause)
   //Use the find criteria to show a list of results:
   if(!where_clause.empty())
   {
-    bool records_found = m_box_select.init_db_details(m_table_name, where_clause);
+    FoundSet found_set = m_box_select.get_found_set();
+    found_set.m_where_clause = where_clause;
+    const bool records_found = m_box_select.init_db_details(found_set);
     if(!records_found)
     {
-      bool find_again = show_warning_no_records_found(*this);
+      const bool find_again = show_warning_no_records_found(*this);
 
       if(!find_again)
         response(Gtk::RESPONSE_CANCEL);

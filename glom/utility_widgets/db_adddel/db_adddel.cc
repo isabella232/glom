@@ -569,7 +569,7 @@ void DbAddDel::construct_specified_columns()
   }
 
   //Create the model from the ColumnRecord:
-  m_refListStore = type_model_store::create(record, m_table_name, fields, column_index_key, m_allow_view, m_where_clause);
+  m_refListStore = type_model_store::create(record, m_found_set, fields, column_index_key, m_allow_view);
 
   m_TreeView.set_model(m_refListStore);
 
@@ -762,7 +762,7 @@ bool DbAddDel::refresh_from_database()
   if(m_refListStore)
   {
     //Glib::RefPtr<Gtk::TreeModel> refNull;
-    bool result = m_refListStore->refresh_from_database(m_where_clause);
+    bool result = m_refListStore->refresh_from_database(m_found_set);
     //m_TreeView.set_model(refNull); //TODO: This causes a g_warning(): gtk_tree_view_unref_tree_helper: assertion `node != NULL' failed
     if(m_TreeView.get_model())
       gtk_tree_view_set_model(m_TreeView.gobj(), 0); //This gives the same warning.
@@ -833,7 +833,7 @@ void DbAddDel::remove_all_columns()
 
 void DbAddDel::set_table_name(const Glib::ustring& table_name)
 {
-  m_table_name = table_name;
+  m_found_set.m_table_name = table_name;
 }
 
 guint DbAddDel::add_column(const sharedptr<const LayoutItem_Field>& field)
@@ -864,14 +864,14 @@ guint DbAddDel::add_column(const sharedptr<const LayoutItem_Field>& field)
   return m_ColumnTypes.size() - 1;
 }
 
-void DbAddDel::set_where_clause(const Glib::ustring& where_clause)
+void DbAddDel::set_found_set(const FoundSet& found_set)
 {
-  m_where_clause = where_clause;
+  m_found_set = found_set;
 }
 
-Glib::ustring DbAddDel::get_where_clause() const
+FoundSet DbAddDel::get_found_set() const
 {
-  return m_where_clause;
+  return m_found_set;
 }
 
 void DbAddDel::set_columns_ready()

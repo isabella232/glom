@@ -411,7 +411,15 @@ void Frame_Glom::show_table(const Glib::ustring& table_name)
       case(MODE_Data):
       {
         strMode = _("Data");
-        m_Notebook_Data.init_db_details(m_table_name);
+        FoundSet found_set;
+        found_set.m_table_name = m_table_name;
+
+        //Sort by the ID, just so we sort by something, so that the order is predictable:
+        sharedptr<Field> field_primary_key = get_field_primary_key_for_table(m_table_name);
+        if(field_primary_key)
+          found_set.m_sort_clause = "\"" + m_table_name + "\".\"" + field_primary_key->get_name() + "\"";
+
+        m_Notebook_Data.init_db_details(found_set);
         set_mode_widget(m_Notebook_Data);
 
         //Show how many records were found:
@@ -536,7 +544,7 @@ void Frame_Glom::on_menu_file_export()
 
   //const int index_primary_key = fieldsSequence.size() - 1;
 
-  const Glib::ustring found_set_where_clause = m_Notebook_Data.get_where_clause();
+  const FoundSet found_set = m_Notebook_Data.get_found_set();
 
   std::fstream the_stream(filepath.c_str(), std::ios_base::out | std::ios_base::trunc);
   if(!the_stream)
@@ -545,17 +553,17 @@ void Frame_Glom::on_menu_file_export()
     return;
   }
 
-  export_data_to_stream(the_stream, m_table_name, mapGroupSequence, found_set_where_clause);
+  export_data_to_stream(the_stream, found_set, mapGroupSequence);
 }
 
-void Frame_Glom::export_data_to_string(Glib::ustring& the_string, const Glib::ustring table_name, const Document_Glom::type_mapLayoutGroupSequence& sequence, const Glib::ustring& where_clause)
+void Frame_Glom::export_data_to_string(Glib::ustring& the_string, const FoundSet& found_set, const Document_Glom::type_mapLayoutGroupSequence& sequence)
 {
-  type_vecLayoutFields fieldsSequence = get_table_fields_to_show_for_sequence(table_name, sequence);
+  type_vecLayoutFields fieldsSequence = get_table_fields_to_show_for_sequence(found_set.m_table_name, sequence);
 
   if(fieldsSequence.empty())
     return;
 
-  const Glib::ustring query = GlomUtils::build_sql_select_with_where_clause(table_name, fieldsSequence, where_clause);
+  const Glib::ustring query = GlomUtils::build_sql_select_with_where_clause(found_set.m_table_name, fieldsSequence, found_set.m_where_clause, found_set.m_sort_clause);
 
   //TODO: Lock the database (prevent changes) during export.
   Glib::RefPtr<Gnome::Gda::DataModel> result = Query_execute(query);
@@ -597,14 +605,14 @@ void Frame_Glom::export_data_to_string(Glib::ustring& the_string, const Glib::us
   }
 }
 
-void Frame_Glom::export_data_to_stream(std::ostream& the_stream, const Glib::ustring table_name, const Document_Glom::type_mapLayoutGroupSequence& sequence, const Glib::ustring& where_clause)
+void Frame_Glom::export_data_to_stream(std::ostream& the_stream, const FoundSet& found_set, const Document_Glom::type_mapLayoutGroupSequence& sequence)
 {
-  type_vecLayoutFields fieldsSequence = get_table_fields_to_show_for_sequence(table_name, sequence);
+  type_vecLayoutFields fieldsSequence = get_table_fields_to_show_for_sequence(found_set.m_table_name, sequence);
 
   if(fieldsSequence.empty())
     return;
 
-  const Glib::ustring query = GlomUtils::build_sql_select_with_where_clause(table_name, fieldsSequence, where_clause);
+  const Glib::ustring query = GlomUtils::build_sql_select_with_where_clause(found_set.m_table_name, fieldsSequence, found_set.m_where_clause, found_set.m_sort_clause);
 
   //TODO: Lock the database (prevent changes) during export.
   Glib::RefPtr<Gnome::Gda::DataModel> result = Query_execute(query);
@@ -819,7 +827,10 @@ void Frame_Glom::on_notebook_find_criteria(const Glib::ustring& where_clause)
     pApp->set_mode_data();
 
     //std::cout << "Frame_Glom::on_notebook_find_criteria: where_clause=" << where_clause << std::endl;
-    const bool records_found = m_Notebook_Data.init_db_details(m_table_name, where_clause);
+    FoundSet found_set;
+    found_set.m_table_name = m_table_name;
+    found_set.m_where_clause = where_clause;
+    const bool records_found = m_Notebook_Data.init_db_details(found_set);
 
     //std::cout << "Frame_Glom::on_notebook_find_criteria(): BEFORE  m_Notebook_Data.select_page_for_find_results()" << std::endl;
     m_Notebook_Data.select_page_for_find_results();
@@ -1414,7 +1425,8 @@ void Frame_Glom::on_menu_report_selected(const Glib::ustring& report_name)
   if(!report)
     return;
 
-  report_build(m_table_name, report, m_Notebook_Data.get_where_clause(), get_app_window()); //TODO: Use found set's where_clause.
+  FoundSet found_set = m_Notebook_Data.get_found_set();
+  report_build(found_set, report, get_app_window()); //TODO: Use found set's where_clause.
 }
 
 void Frame_Glom::on_dialog_layout_report_hide()

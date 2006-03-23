@@ -29,6 +29,8 @@ public:
   Box_Data_List_Find();
   virtual ~Box_Data_List_Find();
 
+  virtual bool init_db_details(const Glib::ustring& table_name);
+
   virtual Gtk::Widget* get_default_button(); //override
 
 protected:

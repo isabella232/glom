@@ -1,3 +1,35 @@
+2006-03-23  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/base_db.cc:
+	* glom/base_db.h: Added FoundSet class, instead of 
+	passing table_name, where_clause, and sort_clause 
+	around separately.
+	* glom/application.cc:
+	* glom/mode_data/box_data.cc:
+	* glom/mode_data/box_data.h:
+	* glom/mode_data/box_data_details.cc:
+	* glom/mode_data/box_data_details.h:
+	* glom/mode_data/box_data_list.cc:
+	* glom/mode_data/box_data_list_related.cc:
+	* glom/mode_data/notebook_data.cc:
+	* glom/mode_data/notebook_data.h:
+	* glom/mode_find/box_data_details_find.cc:
+	* glom/mode_find/box_data_list_find.cc:
+	* glom/mode_find/box_data_list_find.h:
+	* glom/utility_widgets/db_adddel/db_adddel.cc:
+	* glom/utility_widgets/db_adddel/db_adddel.h:
+	* glom/utility_widgets/db_adddel/glom_db_treemodel.cc:
+	* glom/utility_widgets/db_adddel/glom_db_treemodel.h:
+	* glom/utility_widgets/dialog_choose_id.cc:
+	* glom/utils.cc: Use FoundSet instead of separate 
+	parameters.
+	* glom/frame_glom.cc:
+	* glom/frame_glom.h: show_table(): Sort the list by 
+	primary key by default, so that the order is at least 
+	predictable.
+
+0.9.92:
+
 2006-03-21  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/standard_table_prefs_fields.h:

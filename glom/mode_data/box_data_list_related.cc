@@ -125,7 +125,9 @@ bool Box_Data_List_Related::init_db_details(const sharedptr<const LayoutItem_Por
 
   if(relationship)
   {
-    return Box_Data_List::init_db_details(relationship->get_to_table()); //Calls create_layout() and fill_from_database().
+    FoundSet found_set;
+    found_set.m_table_name = relationship->get_to_table();
+    return Box_Data_List::init_db_details(found_set); //Calls create_layout() and fill_from_database().
   }
   else
     return false;
@@ -139,10 +141,11 @@ bool Box_Data_List_Related::refresh_data_from_database_with_foreign_key(const Gn
   {
     if(!GlomConversions::value_is_empty(m_key_value))
     {
-      const Glib::ustring where_clause = "\"" + m_key_field->get_name() + "\" = " + m_key_field->sql(m_key_value);
+      FoundSet found_set = m_found_set;
+      found_set.m_where_clause = "\"" + m_key_field->get_name() + "\" = " + m_key_field->sql(m_key_value);
 
       //g_warning("refresh_data_from_database(): where_clause=%s", where_clause.c_str());
-      return Box_Data_List::refresh_data_from_database_with_where_clause(where_clause);
+      return Box_Data_List::refresh_data_from_database_with_where_clause(found_set);
     }
     else
     {
@@ -154,7 +157,9 @@ bool Box_Data_List_Related::refresh_data_from_database_with_foreign_key(const Gn
   else
   {
     //If there is no to field then this relationship specifies all relationships in the table.
-    return Box_Data_List::refresh_data_from_database_with_where_clause(Glib::ustring());
+    FoundSet found_set = m_found_set;
+    found_set.m_where_clause = Glib::ustring();
+    return Box_Data_List::refresh_data_from_database_with_where_clause(found_set);
   }
 }
 
@@ -163,7 +168,7 @@ bool Box_Data_List_Related::fill_from_database()
   bool result = false;
   bool allow_add = true;
 
-  if(m_key_field && m_where_clause.empty()) //There's a key field, but no value.
+  if(m_key_field && m_found_set.m_where_clause.empty()) //There's a key field, but no value.
   {
     //No Foreign Key value, so just show the field names:
 

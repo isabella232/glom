@@ -146,9 +146,9 @@ public:
   guint add_column(const sharedptr<const LayoutItem_Field>& field);
 
   /// Specify which records to show:
-  void set_where_clause(const Glib::ustring& where_clause);
+  void set_found_set(const FoundSet& found_set);
 
-  Glib::ustring get_where_clause() const;
+  FoundSet get_found_set() const;
 
   /// Start using the added columns.
   void set_columns_ready();
@@ -300,7 +300,7 @@ protected:
   //Columns, not including the hidden internal columns:
   typedef std::vector<DbAddDelColumnInfo> type_ColumnTypes;
   type_ColumnTypes m_ColumnTypes;
-  Glib::ustring m_table_name, m_where_clause;
+  FoundSet m_found_set; //table, where_clause, sort_clause.
   Glib::ustring m_open_button_title; //Allow us to change "Open" to "Select".
 
   Gtk::Menu* m_pMenuPopup;

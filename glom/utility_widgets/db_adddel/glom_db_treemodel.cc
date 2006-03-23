@@ -140,12 +140,11 @@ DbTreeModel::GlueItem* DbTreeModel::GlueList::get_existing_item(const type_datam
 //Intialize static variable:
 bool DbTreeModel::m_iface_initialized = false;
 
-DbTreeModel::DbTreeModel(const Gtk::TreeModelColumnRecord& columns, const Glib::ustring& table_name, const type_vec_fields& column_fields, int column_index_key, bool get_records, const Glib::ustring& where_clause)
+DbTreeModel::DbTreeModel(const Gtk::TreeModelColumnRecord& columns, const FoundSet& found_set, const type_vec_fields& column_fields, int column_index_key, bool get_records)
 : Glib::ObjectBase( typeid(DbTreeModel) ), //register a custom GType.
   Glib::Object(), //The custom GType is actually registered here.
   m_columns_count(0),
-  m_table_name(table_name),
-  m_where_clause(where_clause),
+  m_found_set(found_set),
   m_column_fields(column_fields),
   m_column_index_key(column_index_key),
   m_data_model_rows_count(0),
@@ -179,14 +178,14 @@ DbTreeModel::~DbTreeModel()
 }
 
 //static:
-Glib::RefPtr<DbTreeModel> DbTreeModel::create(const Gtk::TreeModelColumnRecord& columns, const Glib::ustring& table_name, const type_vec_fields& column_fields, int column_index_key, bool get_records, const Glib::ustring& where_clause)
+Glib::RefPtr<DbTreeModel> DbTreeModel::create(const Gtk::TreeModelColumnRecord& columns, const FoundSet& found_set, const type_vec_fields& column_fields, int column_index_key, bool get_records)
 {
-  return Glib::RefPtr<DbTreeModel>( new DbTreeModel(columns, table_name, column_fields, column_index_key, get_records, where_clause) );
+  return Glib::RefPtr<DbTreeModel>( new DbTreeModel(columns, found_set, column_fields, column_index_key, get_records) );
 }
 
-bool DbTreeModel::refresh_from_database(const Glib::ustring& where_clause)
+bool DbTreeModel::refresh_from_database(const FoundSet& found_set)
 {
-  m_where_clause = where_clause;
+  m_found_set = found_set;
 
   if(!m_get_records)
     return false;
@@ -201,9 +200,9 @@ bool DbTreeModel::refresh_from_database(const Glib::ustring& where_clause)
      m_connection = connection_pool->connect();
   }
 
-  if(m_connection && !m_table_name.empty() && m_get_records)
+  if(m_connection && !m_found_set.m_table_name.empty() && m_get_records)
   {
-    const Glib::ustring sql_query = GlomUtils::build_sql_select_with_where_clause(m_table_name, m_column_fields, m_where_clause);
+    const Glib::ustring sql_query = GlomUtils::build_sql_select_with_where_clause(m_found_set.m_table_name, m_column_fields, m_found_set.m_where_clause, m_found_set.m_sort_clause);
 
     //std::cout << "DbTreeModel: Executing SQL: " << sql_query << std::endl << std::endl;
     m_gda_datamodel = m_connection->get_gda_connection()->execute_single_command(sql_query);
@@ -856,13 +855,13 @@ void DbTreeModel::get_record_counts(gulong& total, gulong& found) const
   {
     found = (gulong)m_gda_datamodel->get_n_rows();
 
-    if(m_where_clause.empty())
+    if(m_found_set.m_where_clause.empty())
       total = found;
     else
     {
       //Ask the database how many records there are in the whole table:
       //TODO: Apparently, this is very slow:
-      const Glib::ustring sql_query = "SELECT count(*) FROM \"" + m_table_name + "\"";
+      const Glib::ustring sql_query = "SELECT count(*) FROM \"" + m_found_set.m_table_name + "\"";
       Glib::RefPtr<Gnome::Gda::DataModel> datamodel = m_connection->get_gda_connection()->execute_single_command(sql_query);
 
       if(datamodel)

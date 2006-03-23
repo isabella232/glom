@@ -47,26 +47,26 @@ Box_Data::~Box_Data()
   }
 }
 
-bool Box_Data::init_db_details(const Glib::ustring& table_name, const Glib::ustring& where_clause)
+bool Box_Data::init_db_details(const FoundSet& found_set)
 {
-  m_table_name = table_name;
-  m_where_clause = where_clause;
+  m_table_name = found_set.m_table_name;
+  m_found_set = found_set;
 
   create_layout(); //So that fill_from_database() can succeed.
 
-  return Box_DB_Table::init_db_details(table_name); //Calls fill_from_database().
+  return Box_DB_Table::init_db_details(m_table_name); //Calls fill_from_database().
 }
 
-bool Box_Data::refresh_data_from_database_with_where_clause(const Glib::ustring& where_clause)
+bool Box_Data::refresh_data_from_database_with_where_clause(const FoundSet& found_set)
 {
-  m_where_clause = where_clause;
+  m_found_set = found_set;
 
   return Box_DB_Table::refresh_data_from_database(); //Calls fill_from_database().
 }
 
-Glib::ustring Box_Data::get_where_clause() const
+FoundSet Box_Data::get_found_set() const
 {
-  return m_where_clause;
+  return m_found_set;
 }
 
 Glib::ustring Box_Data::get_find_where_clause() const

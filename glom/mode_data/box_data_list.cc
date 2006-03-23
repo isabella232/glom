@@ -95,9 +95,12 @@ void Box_Data_List::enable_buttons()
 
 void Box_Data_List::refresh_data_from_database_blank()
 {
-  m_AddDel.set_where_clause(Glib::ustring());
+  FoundSet found_set = m_found_set;
+  found_set.m_where_clause = Glib::ustring();
+  m_AddDel.set_found_set(found_set);
+
   m_AddDel.refresh_from_database_blank();
-  m_where_clause = Glib::ustring();
+  m_found_set = found_set;
 }
 
 bool Box_Data_List::fill_from_database()
@@ -126,7 +129,7 @@ bool Box_Data_List::fill_from_database()
 
     enable_buttons();
 
-    m_AddDel.set_where_clause(m_where_clause);
+    m_AddDel.set_found_set(m_found_set);
 
     result = m_AddDel.refresh_from_database();
 
@@ -625,7 +628,7 @@ void Box_Data_List::create_layout()
         m_AddDel.add_column(field);
       }
 
-      m_AddDel.set_where_clause(m_where_clause);
+      m_AddDel.set_found_set(m_found_set);
 
       m_AddDel.set_columns_ready();
      }
@@ -701,7 +704,7 @@ void Box_Data_List::print_layout()
       report_temp->m_layout_group->add_item(*iter);
     }
 
-    report_build(m_table_name, report_temp, m_where_clause, get_app_window());
+    report_build(m_found_set, report_temp, get_app_window());
   }
 }
 

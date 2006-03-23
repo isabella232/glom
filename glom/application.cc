@@ -1161,7 +1161,9 @@ void App_Glom::on_menu_file_save_as_example()
         //std::cout << "debug: table_name=" << table_name << std::endl;
 
         Glib::ustring row_text;
-        m_pFrame->export_data_to_string(row_text, table_name, sequence);
+        FoundSet found_set;
+        found_set.m_table_name = table_name;
+        m_pFrame->export_data_to_string(row_text, found_set, sequence);
         //std::cout << "  debug after row_text=" << row_text << std::endl;
 
         document->set_table_example_data(table_name, row_text);

@@ -71,13 +71,13 @@ public:
 
 protected:
   //Create a TreeModel with @a columns_count number of columns, each of type Glib::ustring.
-  DbTreeModel(const Gtk::TreeModelColumnRecord& columns, const Glib::ustring& table_name, const type_vec_fields& column_fields, int column_index_key, bool get_records = true, const Glib::ustring& where_clause = Glib::ustring());
+  DbTreeModel(const Gtk::TreeModelColumnRecord& columns, const FoundSet& found_set, const type_vec_fields& column_fields, int column_index_key, bool get_records = true);
   virtual ~DbTreeModel();
 
 public:
-  static Glib::RefPtr<DbTreeModel> create(const Gtk::TreeModelColumnRecord& columns, const Glib::ustring& table_name, const type_vec_fields& column_fields, int column_index_key, bool get_records = true, const Glib::ustring& where_clause = Glib::ustring());
+  static Glib::RefPtr<DbTreeModel> create(const Gtk::TreeModelColumnRecord& columns, const FoundSet& found_set, const type_vec_fields& column_fields, int column_index_key, bool get_records = true);
 
-  bool refresh_from_database(const Glib::ustring& where_clause = Glib::ustring());
+  bool refresh_from_database(const FoundSet& found_set);
 
   typedef DbTreeModelRow::DbValue DbValue;
 
@@ -202,7 +202,7 @@ private:
 
    //Structure:
    unsigned int m_columns_count;
-   Glib::ustring m_table_name, m_where_clause;
+   FoundSet m_found_set;
    type_vec_fields m_column_fields;
    int m_column_index_key;
 

@@ -81,3 +81,10 @@ void Box_Data_List_Find::on_adddel_user_added(const Gtk::TreeModel::iterator& /*
 {
   //Ignore this, instead of updating the database, as the base class does.
 }
+
+bool Box_Data_List_Find::init_db_details(const Glib::ustring& table_name)
+{
+  FoundSet found_set;
+  found_set.m_table_name = table_name;
+  return Box_Data_List::init_db_details(found_set);
+}

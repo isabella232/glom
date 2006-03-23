@@ -133,15 +133,15 @@ Gnome::Gda::Value Box_Data_Details::get_primary_key_value() const
   return m_primary_key_value;
 }
 
-bool Box_Data_Details::init_db_details(const Glib::ustring& table_name, const Gnome::Gda::Value& primary_key_value)
+bool Box_Data_Details::init_db_details(const FoundSet& found_set, const Gnome::Gda::Value& primary_key_value)
 {
   //std::cout << "Box_Data_Details::init_db_details(): primary_key_value.to_string()=" << primary_key_value.to_string() << std::endl;
 
   m_primary_key_value = primary_key_value;
 
-  m_field_primary_key = get_field_primary_key_for_table(table_name);
+  m_field_primary_key = get_field_primary_key_for_table(found_set.m_table_name);
 
-  return Box_Data::init_db_details(table_name); //Calls create_layout(), then fill_from_database()
+  return Box_Data::init_db_details(found_set); //Calls create_layout(), then fill_from_database()
 }
 
 bool Box_Data_Details::refresh_data_from_database_with_primary_key(const Gnome::Gda::Value& primary_key_value)

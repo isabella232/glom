@@ -62,9 +62,9 @@ Notebook_Data::~Notebook_Data()
   remove_view(&m_Box_Details);
 }
 
-bool Notebook_Data::init_db_details(const Glib::ustring& table_name, const Glib::ustring& where_clause)
+bool Notebook_Data::init_db_details(const FoundSet& found_set)
 {
-  m_table_name = table_name;
+  m_table_name = found_set.m_table_name;
 
   bool result = false;
   //where_clause is only used as a result of a find.
@@ -74,11 +74,11 @@ bool Notebook_Data::init_db_details(const Glib::ustring& table_name, const Glib:
   {
     sharedptr<SharedConnection> sharedconnection = connect_to_server();
 
-    const Glib::ustring old_where_clause = m_Box_List.get_where_clause();
+    const FoundSet old_found_set = m_Box_List.get_found_set();
     //std::cout << "  old_where_clause=" << old_where_clause << std::endl;
     //std::cout << "  where_clause=" << where_clause << std::endl;
-    const bool new_find_set = (where_clause != old_where_clause);
-    result = m_Box_List.init_db_details(m_table_name, where_clause);
+    const bool new_find_set = !(found_set == old_found_set);
+    result = m_Box_List.init_db_details(found_set);
     //m_Box_List.load_from_document();
 
     //Show the previously-shown record, if there is one, if this is not a new found-set (via a new where_clause)
@@ -111,7 +111,7 @@ bool Notebook_Data::init_db_details(const Glib::ustring& table_name, const Glib:
         }
       }
 
-      m_Box_Details.init_db_details(m_table_name, primary_key_for_details);
+      m_Box_Details.init_db_details(found_set, primary_key_for_details);
     }
   }
 
@@ -150,9 +150,9 @@ bool Notebook_Data::init_db_details(const Glib::ustring& table_name, const Glib:
   return result;
 }
 
-Glib::ustring Notebook_Data::get_where_clause() const
+FoundSet Notebook_Data::get_found_set() const
 {
-  return m_Box_List.get_where_clause();
+  return m_Box_List.get_found_set();
 }
 
 void Notebook_Data::on_list_user_requested_details(const Gnome::Gda::Value& primary_key_value)
