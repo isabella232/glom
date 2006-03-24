@@ -1,3 +1,9 @@
+2006-03-24  Peter Williams  <peter@newton.cx>
+
+	* glom/frame_glom.h: Remove Frame_Glom:: from the 
+	connection_request_password_and_choose_new_database_name() declaration,
+	to fix the build with g++ 4.1 (in Fedora Core 5).
+
 2006-03-23  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/Makefile.am:
