@@ -1,5 +1,10 @@
 2006-03-24  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/mode_design/users/dialog_groups_list.cc: fill_group_list(): 
+	Avoid a warning when using selection on a treeview with no model yet.
+
+2006-03-24  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/base_db.cc: get_database_users():
 	* glom/mode_design/users/dialog_groups_list.cc:
 	* glom/mode_design/users/dialog_users_list.cc:

@@ -45,7 +45,6 @@ Dialog_GroupsList::Dialog_GroupsList(BaseObjectType* cobject, const Glib::RefPtr
   m_model_groups = Gtk::ListStore::create(m_model_columns_groups);
   m_model_tables = Gtk::ListStore::create(m_model_columns_tables);
 
-
   fill_group_list();
   //fill_table_list();
 
@@ -62,10 +61,9 @@ Dialog_GroupsList::Dialog_GroupsList(BaseObjectType* cobject, const Glib::RefPtr
 
   m_treeview_groups->append_column(_("Description"), m_model_columns_groups.m_col_description);
 
-
-
   //Tables:
   m_treeview_tables->append_column(_("Table"), m_model_columns_tables.m_col_name);
+
 
   treeview_append_bool_column(*m_treeview_tables, _("View"), m_model_columns_tables.m_col_view,
     sigc::mem_fun( *this, &Dialog_GroupsList::on_treeview_tables_toggled_view) );
@@ -92,8 +90,6 @@ Dialog_GroupsList::Dialog_GroupsList(BaseObjectType* cobject, const Glib::RefPtr
     refSelection->signal_changed().connect( sigc::mem_fun(*this, &Dialog_GroupsList::on_treeview_tables_selection_changed) );
   }
 
-
-
   refGlade->get_widget("button_group_new", m_button_group_new);
   m_button_group_new->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_GroupsList::on_button_group_new) );
 
@@ -102,7 +98,6 @@ Dialog_GroupsList::Dialog_GroupsList(BaseObjectType* cobject, const Glib::RefPtr
 
   refGlade->get_widget("button_group_users", m_button_group_users);
   m_button_group_users->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_GroupsList::on_button_group_users) );
-
 
   enable_buttons();
 
@@ -377,14 +372,17 @@ void Dialog_GroupsList::fill_group_list()
       row[m_model_columns_groups.m_col_description] = _("Full access.");
   }
 
-  //Select the first item, so that there is always something in the tables TreeView:
-  Glib::RefPtr<Gtk::TreeView::Selection> refSelection = m_treeview_groups->get_selection();
-  if(refSelection)
+  if(m_treeview_groups && m_treeview_groups->get_model()) //Avoid a warning.
   {
-    Gtk::TreeModel::iterator iterFirst = m_model_groups->children().begin();
-    if(iterFirst)
+    //Select the first item, so that there is always something in the tables TreeView:
+    Glib::RefPtr<Gtk::TreeView::Selection> refSelection = m_treeview_groups->get_selection();
+    if(refSelection)
     {
-      refSelection->select(iterFirst);
+      Gtk::TreeModel::iterator iterFirst = m_model_groups->children().begin();
+      if(iterFirst)
+      {
+        refSelection->select(iterFirst);
+      }
     }
   }
 }
