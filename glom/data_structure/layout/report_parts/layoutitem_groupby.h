@@ -41,7 +41,7 @@ public:
 
   virtual LayoutItem* clone() const;
 
-  typedef std::pair< sharedptr<LayoutItem_Field>, bool /* is_ascending */> type_pair_sort_field;
+  typedef std::pair< sharedptr<const LayoutItem_Field>, bool /* is_ascending */> type_pair_sort_field;
   typedef std::list<type_pair_sort_field> type_list_sort_fields;
 
   sharedptr<LayoutItem_Field> get_field_group_by();

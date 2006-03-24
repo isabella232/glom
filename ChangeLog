@@ -1,3 +1,22 @@
+2006-03-24  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/application.cc:
+	* glom/base_db.cc:
+	* glom/base_db.h:
+	* glom/data_structure/layout/report_parts/layoutitem_groupby.h:
+	* glom/frame_glom.cc:
+	* glom/utility_widgets/db_adddel/db_adddel.cc:
+	* glom/utility_widgets/db_adddel/db_adddel.h:
+	* glom/utility_widgets/db_adddel/glom_db_treemodel.cc:
+	* glom/utils.cc:
+	* glom/utils.h: Pass sort_clause as a list of 
+	LayoutItem_Fields, so that build_sql_select_with_where_clause() can define 
+	the relationships used by the sort clause.
+	* glom/data_structure/layout/usesrelationship.cc:
+	* glom/data_structure/layout/usesrelationship.h: 
+	get_sql_join_alias_definition(): Put quotes around the relationship names, in 
+	some places where I forgot to do that.
+
 2006-03-24  Peter Williams  <peter@newton.cx>
 
 	* glom/frame_glom.h: Remove Frame_Glom:: from the 

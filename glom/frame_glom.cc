@@ -417,7 +417,13 @@ void Frame_Glom::show_table(const Glib::ustring& table_name)
         //Sort by the ID, just so we sort by something, so that the order is predictable:
         sharedptr<Field> field_primary_key = get_field_primary_key_for_table(m_table_name);
         if(field_primary_key)
-          found_set.m_sort_clause = "\"" + m_table_name + "\".\"" + field_primary_key->get_name() + "\"";
+        {
+          sharedptr<LayoutItem_Field> layout_item_sort = sharedptr<LayoutItem_Field>::create();
+          layout_item_sort->set_full_field_details(field_primary_key);
+
+          found_set.m_sort_clause.clear();
+          found_set.m_sort_clause.push_back( type_pair_sort_field(layout_item_sort, true /* ascending */) );
+        }
 
         m_Notebook_Data.init_db_details(found_set);
         set_mode_widget(m_Notebook_Data);
@@ -1379,11 +1385,15 @@ bool Frame_Glom::create_database(const Glib::ustring& database_name, const Glib:
 
   if(sharedconnection)
   {
-    add_standard_tables(); //Add internal, hidden, tables.
+    bool test = add_standard_tables(); //Add internal, hidden, tables.
+    if(!test)
+      return false;
 
     //Create the developer group, and make this user a member of it:
     //If we got this far then the user must really have developer privileges already:
-    add_standard_groups();
+    test = add_standard_groups();
+    if(!test)
+      return false;
 
     //std::cout << "Frame_Glom::create_database(): Creation of standard tables and groups finished." << std::endl;
 

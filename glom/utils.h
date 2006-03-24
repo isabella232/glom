@@ -28,6 +28,10 @@
 #include "base_db.h"
 #include <libxml++/libxml++.h>
 
+///field, ascending
+typedef std::pair< sharedptr<const LayoutItem_Field>, bool> type_pair_sort_field;
+typedef std::list<type_pair_sort_field> type_sort_clause;
+
 namespace GlomUtils
 {
 
@@ -39,7 +43,7 @@ Glib::ustring string_replace(const Glib::ustring& src, const Glib::ustring searc
 typedef std::vector< sharedptr<LayoutItem_Field> > type_vecLayoutFields;
 
   //TODO: Move this to its own file:
-Glib::ustring build_sql_select_with_where_clause(const Glib::ustring& table_name, const type_vecLayoutFields& fieldsToGet, const Glib::ustring& where_clause = Glib::ustring(), const Glib::ustring& sort_clause = Glib::ustring());
+Glib::ustring build_sql_select_with_where_clause(const Glib::ustring& table_name, const type_vecLayoutFields& fieldsToGet, const Glib::ustring& where_clause = Glib::ustring(), const type_sort_clause& sort_clause = type_sort_clause());
 
 Glib::ustring build_sql_select_with_key(const Glib::ustring& table_name, const type_vecLayoutFields& fieldsToGet, const sharedptr<const Field>& key_field, const Gnome::Gda::Value& key_value);
 

@@ -173,18 +173,59 @@ Glib::ustring GlomUtils::string_replace(const Glib::ustring& src, const Glib::us
 
 
 
-Glib::ustring GlomUtils::build_sql_select_with_where_clause(const Glib::ustring& table_name, const type_vecLayoutFields& fieldsToGet, const Glib::ustring& where_clause, const Glib::ustring& sort_clause)
+Glib::ustring GlomUtils::build_sql_select_with_where_clause(const Glib::ustring& table_name, const type_vecLayoutFields& fieldsToGet, const Glib::ustring& where_clause, const type_sort_clause& sort_clause)
 {
   Glib::ustring result;
+
+
+
+
+  //Get all relationships used in the query:
+  typedef std::list< sharedptr<const UsesRelationship> > type_list_relationships;
+  type_list_relationships list_relationships;
+
+  for(type_vecLayoutFields::const_iterator iter = fieldsToGet.begin(); iter != fieldsToGet.end(); ++iter)
+  {
+    sharedptr<LayoutItem_Field> layout_item = *iter;
+
+    if(layout_item->get_has_relationship_name())
+    {
+      //Add the relationship to the list:
+      type_list_relationships::const_iterator iterFind = std::find_if(list_relationships.begin(), list_relationships.end(), predicate_UsesRelationshipHasRelationships<UsesRelationship>(layout_item) );
+      if(iterFind == list_relationships.end()) //If the table is not yet in the list:
+      {
+        sharedptr<UsesRelationship> uses_rel = sharedptr<UsesRelationship>::create();
+        uses_rel->set_relationship(layout_item->get_relationship());
+        uses_rel->set_related_relationship(layout_item->get_related_relationship());
+        list_relationships.push_back(uses_rel);
+      }
+    }
+  }
+
+  for(type_sort_clause::const_iterator iter = sort_clause.begin(); iter != sort_clause.end(); ++iter)
+  {
+    sharedptr<const LayoutItem_Field> layout_item = iter->first;
+
+    if(layout_item->get_has_relationship_name())
+    {
+      //Add the relationship to the list:
+      type_list_relationships::const_iterator iterFind = std::find_if(list_relationships.begin(), list_relationships.end(), predicate_UsesRelationshipHasRelationships<UsesRelationship>(layout_item) );
+      if(iterFind == list_relationships.end()) //If the table is not yet in the list:
+      {
+        sharedptr<UsesRelationship> uses_rel = sharedptr<UsesRelationship>::create();
+        uses_rel->set_relationship(layout_item->get_relationship());
+        uses_rel->set_related_relationship(layout_item->get_related_relationship());
+        list_relationships.push_back(uses_rel);
+      }
+    }
+  }
+
+
 
   Glib::ustring sql_part_fields;
   Glib::ustring sql_part_from;
 
-  typedef std::list< sharedptr<const UsesRelationship> > type_list_relationships;
-  type_list_relationships list_relationships;
-
-
-  for(type_vecLayoutFields::const_iterator iter =  fieldsToGet.begin(); iter != fieldsToGet.end(); ++iter)
+  for(type_vecLayoutFields::const_iterator iter = fieldsToGet.begin(); iter != fieldsToGet.end(); ++iter)
   {
     Glib::ustring one_sql_part;
 
@@ -200,18 +241,6 @@ Glib::ustring GlomUtils::build_sql_select_with_where_clause(const Glib::ustring&
       one_sql_part += fieldsummary->get_summary_type_sql() + "(";
 
     one_sql_part += ( "\"" + layout_item->get_sql_table_or_join_alias_name(table_name) + "\"." );
-    if(layout_item->get_has_relationship_name())
-    {
-      //Add the relationship to the list:
-      type_list_relationships::const_iterator iterFind = std::find_if(list_relationships.begin(), list_relationships.end(), predicate_UsesRelationshipHasRelationships<UsesRelationship>(layout_item) );
-      if(iterFind == list_relationships.end()) //If the table is not yet in the list:
-      {
-        sharedptr<UsesRelationship> uses_rel = sharedptr<UsesRelationship>::create();
-        uses_rel->set_relationship(layout_item->get_relationship());
-        uses_rel->set_related_relationship(layout_item->get_related_relationship());
-        list_relationships.push_back(uses_rel);
-      }
-    }
 
     const Glib::ustring name = layout_item->get_name();
     if(!name.empty())
@@ -274,8 +303,27 @@ Glib::ustring GlomUtils::build_sql_select_with_where_clause(const Glib::ustring&
   if(!where_clause.empty())
     result += " WHERE " + where_clause;
 
+  //Sort clause:
   if(!sort_clause.empty())
-    result += " ORDER BY " + sort_clause;
+  {
+    Glib::ustring str_sort_clause;
+    for(type_sort_clause::const_iterator iter = sort_clause.begin(); iter != sort_clause.end(); ++iter)
+    {
+      sharedptr<const LayoutItem_Field> layout_item = iter->first;
+      if(layout_item)
+      {
+        const bool ascending = iter->second;
+
+        if(!str_sort_clause.empty())
+          str_sort_clause += ", ";
+
+        str_sort_clause += "\"" + layout_item->get_sql_table_or_join_alias_name(table_name) + "\".\"" + layout_item->get_name() + "\" " + (ascending ? "ASC" : "DESC");
+      }
+    }
+
+    if(!str_sort_clause.empty())
+      result += " ORDER BY " + str_sort_clause;
+  }
 
   return result;
 }
@@ -397,7 +445,7 @@ void GlomUtils::transform_and_open(const xmlpp::Document& xml_document, const Gl
 Glib::ustring GlomUtils::create_name_from_title(const Glib::ustring& title)
 {
   Glib::ustring result = string_replace(title, " ", "");
-  return result.lowercase(); //Database titles must be lowercase, it seems. TODO: Maybe they need to be ASCII (not UTF8)?
+  return result.lowercase(); //TODO: Maybe they need to be ASCII (not UTF8)?
 }
 
 Glib::ustring GlomUtils::xslt_process(const xmlpp::Document& xml_document, const std::string& filepath_xslt)

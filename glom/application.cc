@@ -929,7 +929,9 @@ bool App_Glom::recreate_database(bool& user_cancelled)
       //Create the developer group, and make this user a member of it:
       //If we got this far then the user must really have developer privileges already:
       dialog_progress->pulse();
-      m_pFrame->add_standard_groups();
+      const bool test = m_pFrame->add_standard_groups();
+      if(!test)
+        return false;
 
       //Add any example data to the table:
       dialog_progress->pulse();

@@ -48,7 +48,11 @@ public:
 
   Glib::ustring m_table_name;
   Glib::ustring m_where_clause;
-  Glib::ustring m_sort_clause;
+
+  ///field, ascending
+  typedef std::pair< sharedptr<const LayoutItem_Field>, bool> type_pair_sort_field;
+  typedef std::list<type_pair_sort_field> type_sort_clause;
+  type_sort_clause m_sort_clause;
 };
 
 /** A base class that is a Bakery View with some database functionality.
@@ -90,7 +94,7 @@ public:
   //This is const because const means not changing this instance, not whether we change the database.
   virtual Glib::RefPtr<Gnome::Gda::DataModel> Query_execute(const Glib::ustring& strQuery) const;
 
-  void add_standard_groups();
+  bool add_standard_groups();
   bool add_standard_tables() const;
 
   bool create_table(const sharedptr<const TableInfo>& table_info, const Document_Glom::type_vecFields& fields) const;

@@ -58,7 +58,9 @@ DbAddDelColumnInfo& DbAddDelColumnInfo::operator=(const DbAddDelColumnInfo& src)
 }
 
 DbAddDel::DbAddDel()
-: m_column_sorted(0),
+: m_column_is_sorted(false),
+  m_column_sorted_direction(false),
+  m_column_sorted(0),
   m_pMenuPopup(0),
   m_bAllowUserActions(true),
   m_bPreventUserSignals(false),
@@ -1424,19 +1426,21 @@ void DbAddDel::on_treeview_column_clicked(int model_column_index)
   sharedptr<const LayoutItem_Field> layout_item = m_ColumnTypes[model_column_index].m_field;
   if(layout_item && layout_item->get_name_not_empty())
   {
-    m_found_set.m_sort_clause = "\"" + layout_item->get_table_used(m_found_set.m_table_name) + "\".\"" + layout_item->get_name() + "\"";
-
-    Glib::ustring direction = "ASC";
-    if(!m_column_sorted_direction.empty() && (m_column_sorted == model_column_index))
+    bool ascending = true;
+    if(m_column_is_sorted && ((int)m_column_sorted == model_column_index))
     {
       //Reverse the existing direction:
-      direction = (m_column_sorted_direction == "ASC" ? "DESC" : "ASC");
+      ascending = !m_column_sorted_direction;
     }
 
-    m_column_sorted_direction = direction;
+    //Remember the user's chosen sort, so we can reverse it if he clicks again:
+    m_column_is_sorted = true;
+    m_column_sorted_direction = ascending;
     m_column_sorted = model_column_index;
 
-    m_found_set.m_sort_clause += (" " + direction);
+    //Set the sort clause to be used by refresh_from_database():
+    m_found_set.m_sort_clause.clear();
+    m_found_set.m_sort_clause.push_back( type_pair_sort_field(layout_item, ascending) );
   }
 
   refresh_from_database();

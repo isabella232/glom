@@ -866,7 +866,7 @@ bool Base_DB::add_standard_tables() const
   }
 }
 
-void Base_DB::add_standard_groups()
+bool Base_DB::add_standard_groups()
 {
   //Add the glom_developer group if it does not exist:
   const Glib::ustring devgroup = GLOM_STANDARD_GROUP_NAME_DEVELOPER;
@@ -875,13 +875,23 @@ void Base_DB::add_standard_groups()
   type_vecStrings::const_iterator iterFind = std::find(vecGroups.begin(), vecGroups.end(), devgroup);
   if(iterFind == vecGroups.end())
   {
-    Query_execute("CREATE GROUP " GLOM_STANDARD_GROUP_NAME_DEVELOPER);
+    bool test = Query_execute("CREATE GROUP " GLOM_STANDARD_GROUP_NAME_DEVELOPER);
+    if(!test)
+    {
+      std::cerr << "Glom Base_DB::add_standard_groups(): CREATE GROUP failed when adding the developer group." << std::endl;
+      return false;
+    }
 
     //Make sure the current user is in the developer group.
     //(If he is capable of creating these groups then he is obviously a developer, and has developer rights on the postgres server.)
     const Glib::ustring current_user = ConnectionPool::get_instance()->get_user();
     Glib::ustring strQuery = "ALTER GROUP " GLOM_STANDARD_GROUP_NAME_DEVELOPER " ADD USER " + current_user;
-    Query_execute(strQuery);
+    test = Query_execute(strQuery);
+    if(!test)
+    {
+      std::cerr << "Glom Base_DB::add_standard_groups(): ALTER GROUP failed when adding the user to the developer group." << std::endl;
+      return false;
+    }
 
     std::cout << "DEBUG: Added user " << current_user << " to glom developer group on postgres server." << std::endl;
 
@@ -907,6 +917,8 @@ void Base_DB::add_standard_groups()
     group_info.m_developer = true;
     get_document()->set_group(group_info);
   }
+
+  return true;
 }
 
 Gnome::Gda::Value Base_DB::auto_increment_insert_first_if_necessary(const Glib::ustring& table_name, const Glib::ustring& field_name) const
@@ -1783,31 +1795,8 @@ void Base_DB::report_build_groupby_children(const FoundSet& found_set, xmlpp::El
   if(!itemsToGet.empty())
   {
     //Rows, with data:
-
-    //Sort Fields:
-    Glib::ustring sort_clause;
-    {
-      if(group_by->get_has_fields_sort_by())
-      {
-        bool first = true;
-        LayoutItem_GroupBy::type_list_sort_fields group_sort_fields = group_by->get_fields_sort_by();
-        for(LayoutItem_GroupBy::type_list_sort_fields::const_iterator iter = group_sort_fields.begin(); iter != group_sort_fields.end(); ++iter)
-        {
-          if(!first)
-            sort_clause += ", ";
-
-          sharedptr<LayoutItem_Field> item_field = sharedptr<LayoutItem_Field>::cast_dynamic(iter->first);
-          if(item_field)
-          {
-            sort_clause += "\"" + item_field->get_sql_table_or_join_alias_name(found_set.m_table_name) + "\".\"" + item_field->get_name() + "\" " + (iter->second ? "ASC" : "DESC");
-            first = false;
-          }
-        }
-      }
-    }
-
     FoundSet found_set_records = found_set;
-    found_set_records.m_sort_clause = sort_clause;
+    found_set_records.m_sort_clause = group_by->get_fields_sort_by();
     report_build_records(found_set_records, node, itemsToGet);
   }
 }

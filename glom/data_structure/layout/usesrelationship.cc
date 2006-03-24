@@ -103,7 +103,7 @@ void UsesRelationship::set_related_relationship(const sharedptr<Relationship>& r
   m_related_relationship = relationship;
 }
 
-Glib::ustring UsesRelationship::get_sql_table_or_join_alias_name(const Glib::ustring& parent_table)
+Glib::ustring UsesRelationship::get_sql_table_or_join_alias_name(const Glib::ustring& parent_table) const
 {
   if(get_has_relationship_name() || get_has_related_relationship_name())
   {
@@ -164,18 +164,18 @@ Glib::ustring UsesRelationship::get_sql_join_alias_definition() const
   if(!get_has_related_relationship_name())
   {
     result = " LEFT OUTER JOIN \"" + m_relationship->get_to_table() + "\""
-             + " AS " + get_sql_join_alias_name() + //Specify an alias, to avoid ambiguity when using 2 relationships to the same table.
-             + " ON (\"" + m_relationship->get_from_table() + "\".\"" + m_relationship->get_from_field() + "\" = "
-             + get_sql_join_alias_name() + ".\"" + m_relationship->get_to_field() + "\")";
+             + " AS \"" + get_sql_join_alias_name() + "\"" //Specify an alias, to avoid ambiguity when using 2 relationships to the same table.
+             + " ON (\"" + m_relationship->get_from_table() + "\".\"" + m_relationship->get_from_field() + "\" = \""
+             + get_sql_join_alias_name() + "\".\"" + m_relationship->get_to_field() + "\")";
   }
   else
   {
      UsesRelationship parent_relationship;
      parent_relationship.set_relationship(m_relationship);
      result = " LEFT OUTER JOIN \"" + m_related_relationship->get_to_table() + "\""
-             + " AS " + get_sql_join_alias_name() + //Specify an alias, to avoid ambiguity when using 2 relationships to the same table.
-             + " ON (" + parent_relationship.get_sql_join_alias_name() + ".\"" + m_related_relationship->get_from_field() + "\" = "
-             + get_sql_join_alias_name() + ".\"" + m_related_relationship->get_to_field() + "\")";
+             + " AS \"" + get_sql_join_alias_name() + "\"" //Specify an alias, to avoid ambiguity when using 2 relationships to the same table.
+             + " ON (\"" + parent_relationship.get_sql_join_alias_name() + "\".\"" + m_related_relationship->get_from_field() + "\" = \""
+             + get_sql_join_alias_name() + "\".\"" + m_related_relationship->get_to_field() + "\")";
   }
   return result;
 }

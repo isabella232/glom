@@ -298,8 +298,11 @@ protected:
   typedef std::vector<DbAddDelColumnInfo> type_ColumnTypes;
   type_ColumnTypes m_ColumnTypes;
   FoundSet m_found_set; //table, where_clause, sort_clause.
-  Glib::ustring m_column_sorted_direction; //ASC or DESC, if sorted by m_column_sorted. If empty, then m_column_sorted should not be used.
+
+  bool m_column_is_sorted; //If empty, then m_column_sorted and m_column_sorted_direction should not be used.
+  bool m_column_sorted_direction; //true means ascending. 
   guint m_column_sorted; //Previously-clicked (on the treeview header) column. Remember it so we can reverse the sort order on a second click.
+
   Glib::ustring m_open_button_title; //Allow us to change "Open" to "Select".
 
   Gtk::Menu* m_pMenuPopup;

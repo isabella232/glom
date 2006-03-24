@@ -190,7 +190,6 @@ bool DbTreeModel::refresh_from_database(const FoundSet& found_set)
   if(!m_get_records)
     return false;
 
-
   clear(); //Clear existing shown records.
 
   //Connect to database:
@@ -211,15 +210,13 @@ bool DbTreeModel::refresh_from_database(const FoundSet& found_set)
       m_data_model_rows_count = 0;
       m_data_model_columns_count = m_columns_count;
 
-      std::cerr << "DbTreeModel::refresh_from_database(): Error while executing SQL" << std::endl <<
-                   "  " <<  sql_query << std::endl;
-
       ConnectionPool::handle_error();
       return false; //No records were found.
     }
     else
     {
-      m_data_model_rows_count = m_gda_datamodel->get_n_rows(); //TODO_Performance: This probably gets all the data.
+      m_data_model_rows_count = m_gda_datamodel->get_n_rows(); //TODO_Performance: This probably gets all the data
+
       m_data_model_columns_count = m_gda_datamodel->get_n_columns();
 
       /*
