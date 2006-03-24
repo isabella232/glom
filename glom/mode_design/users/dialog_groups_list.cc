@@ -179,6 +179,9 @@ void Dialog_GroupsList::set_document(const Glib::ustring& layout, Document_Glom*
 
 void Dialog_GroupsList::enable_buttons()
 {
+  if(!m_button_group_users)
+    return;
+
   Glib::RefPtr<Gtk::TreeView::Selection> refSelection = m_treeview_groups->get_selection();
   if(refSelection)
   {
@@ -478,7 +481,7 @@ bool Dialog_GroupsList::set_table_privilege(const Glib::ustring& table_name, con
   else if(priv == PRIV_DELETE)
     strPrivilege = "DELETE";
 
-  strQuery += " " + strPrivilege + " ON " + table_name + " ";
+  strQuery += " " + strPrivilege + " ON \"" + table_name + "\" ";
 
   //This must match the Grant or Revoke:
   if(grant)
@@ -486,7 +489,7 @@ bool Dialog_GroupsList::set_table_privilege(const Glib::ustring& table_name, con
   else
     strQuery += "FROM";
 
-  strQuery += " GROUP " + group_name;
+  strQuery += " GROUP \"" + group_name + "\"";
 
   Query_execute(strQuery); //TODO: Handle errors.
 

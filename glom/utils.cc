@@ -177,9 +177,6 @@ Glib::ustring GlomUtils::build_sql_select_with_where_clause(const Glib::ustring&
 {
   Glib::ustring result;
 
-
-
-
   //Get all relationships used in the query:
   typedef std::list< sharedptr<const UsesRelationship> > type_list_relationships;
   type_list_relationships list_relationships;

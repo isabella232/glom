@@ -1,5 +1,14 @@
 2006-03-24  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/base_db.cc: get_database_users():
+	* glom/mode_design/users/dialog_groups_list.cc:
+	* glom/mode_design/users/dialog_users_list.cc:
+	* glom/utils.cc: build_sql_select_with_where_clause():
+	Quote the table, group, and user names, because they otherwise fail 
+	when using reserved names, such as cast.
+
+2006-03-24  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/application.cc:
 	* glom/base_db.cc:
 	* glom/base_db.h:

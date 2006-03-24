@@ -685,12 +685,12 @@ void Base_DB::set_table_privileges(const Glib::ustring& group_name, const Glib::
     }
   }
 
-  strQuery += " " + strPrivilege + " ON " + table_name + " ";
+  strQuery += " " + strPrivilege + " ON \"" + table_name + "\" ";
 
   //This must match the Grant or Revoke:
   strQuery += "TO";
 
-  strQuery += " GROUP " + group_name;
+  strQuery += " GROUP \"" + group_name + "\"";
 
   Query_execute(strQuery);
 }
@@ -774,7 +774,7 @@ Privileges Base_DB::get_table_privileges(const Glib::ustring& group_name, const 
     }
   }
 
-  g_warning("get_table_privileges(group_name=%s, table_name=%s) returning: %d", group_name.c_str(), table_name.c_str(), result.m_create);
+  //g_warning("get_table_privileges(group_name=%s, table_name=%s) returning: %d", group_name.c_str(), table_name.c_str(), result.m_create);
   return result;
 }
 
@@ -875,7 +875,7 @@ bool Base_DB::add_standard_groups()
   type_vecStrings::const_iterator iterFind = std::find(vecGroups.begin(), vecGroups.end(), devgroup);
   if(iterFind == vecGroups.end())
   {
-    bool test = Query_execute("CREATE GROUP " GLOM_STANDARD_GROUP_NAME_DEVELOPER);
+    bool test = Query_execute("CREATE GROUP \"" GLOM_STANDARD_GROUP_NAME_DEVELOPER "\"");
     if(!test)
     {
       std::cerr << "Glom Base_DB::add_standard_groups(): CREATE GROUP failed when adding the developer group." << std::endl;
@@ -885,7 +885,7 @@ bool Base_DB::add_standard_groups()
     //Make sure the current user is in the developer group.
     //(If he is capable of creating these groups then he is obviously a developer, and has developer rights on the postgres server.)
     const Glib::ustring current_user = ConnectionPool::get_instance()->get_user();
-    Glib::ustring strQuery = "ALTER GROUP " GLOM_STANDARD_GROUP_NAME_DEVELOPER " ADD USER " + current_user;
+    Glib::ustring strQuery = "ALTER GROUP \"" GLOM_STANDARD_GROUP_NAME_DEVELOPER "\" ADD USER \"" + current_user + "\"";
     test = Query_execute(strQuery);
     if(!test)
     {
