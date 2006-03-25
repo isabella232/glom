@@ -162,7 +162,7 @@ public:
   virtual void change_relationship_name(const Glib::ustring& table_name, const Glib::ustring& name, const Glib::ustring& name_new);
 
   typedef std::list< sharedptr<TableInfo> > type_listTableInfo;
-  virtual type_listTableInfo get_tables() const;
+  virtual type_listTableInfo get_tables(bool plus_system_prefs = false) const;
   virtual void set_tables(const type_listTableInfo& tables);
 
   sharedptr<TableInfo> get_table(const Glib::ustring table_name) const;
@@ -244,7 +244,9 @@ public:
 
   virtual void emit_userlevel_changed();
 
+  static sharedptr<TableInfo> create_table_system_preferences();
   static sharedptr<TableInfo> create_table_system_preferences(type_vecFields& fields);
+  static sharedptr<Relationship>  create_relationship_system_preferences(const Glib::ustring& table_name);
   static bool get_relationship_is_system_properties(const sharedptr<const Relationship>& relationship);
 
   static void set_node_attribute_value_as_decimal(xmlpp::Element* node, const Glib::ustring& strAttributeName, int value);
@@ -288,8 +290,6 @@ protected:
 
   static void set_node_attribute_value_as_value(xmlpp::Element* node, const Glib::ustring& strAttributeName, const Gnome::Gda::Value& value, Field::glom_field_type field_type);
   static Gnome::Gda::Value get_node_attribute_value_as_value(const xmlpp::Element* node, const Glib::ustring& strAttributeName, Field::glom_field_type field_type);
-
-  static sharedptr<Relationship> create_relationship_system_preferences(const Glib::ustring& table_name);
 
   AppState m_app_state;
   type_signal_userlevel_changed m_signal_userlevel_changed;

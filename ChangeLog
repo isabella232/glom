@@ -1,3 +1,21 @@
+2006-03-25  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/base_db.cc: set_table_privileges(): When granting 
+	create privileges, make sure to also grant edit privileges in the 
+	hidden autoincrement table.
+	add_standard_groups(): Give them access to the standard prefs table too.
+	auto_increment_insert_first_if_necessary(): Check that the user is allowed 
+	to edit the autoincrement table, and warn the user about this serious error if not.
+	get_database_prefefrences(): Check that the user is allowed to view this table.
+	* glom/document/document_glom.cc:
+	* glom/document/document_glom.h: Added create_table_system_preferences() with 
+	no arguments.
+	get_tables(): Added optional plus_system_prefs boolean.
+	* glom/mode_design/users/dialog_groups_list.cc:
+	* glom/mode_design/users/dialog_groups_list.h: Show the table title instead of the 
+	name, and show the system prefs table too.
+	on_button_group_new(): Grant access to the autoincrements table too.
+
 2006-03-24  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/mode_design/users/dialog_groups_list.cc: fill_group_list(): 

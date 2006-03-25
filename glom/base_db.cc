@@ -692,7 +692,20 @@ void Base_DB::set_table_privileges(const Glib::ustring& group_name, const Glib::
 
   strQuery += " GROUP \"" + group_name + "\"";
 
-  Query_execute(strQuery);
+  const bool test = Query_execute(strQuery);
+
+  if(test)
+  {
+    if( (table_name != GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME) && privs.m_create )
+    {
+      //To create a record, you will usually need write access to the autoincrements table,
+      //so grant this too:
+      Privileges priv_autoincrements;
+      priv_autoincrements.m_view = true;
+      priv_autoincrements.m_edit = true;
+      set_table_privileges(group_name, GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME, priv_autoincrements);
+    }
+  }
 }
 
 Privileges Base_DB::get_table_privileges(const Glib::ustring& group_name, const Glib::ustring& table_name) const
@@ -901,7 +914,7 @@ bool Base_DB::add_standard_groups()
     priv_devs.m_create = true;
     priv_devs.m_delete = true;
 
-    Document_Glom::type_listTableInfo table_list = get_document()->get_tables();
+    Document_Glom::type_listTableInfo table_list = get_document()->get_tables(true /* including system prefs */);
 
     for(Document_Glom::type_listTableInfo::const_iterator iter = table_list.begin(); iter != table_list.end(); ++iter)
     {
@@ -909,7 +922,6 @@ bool Base_DB::add_standard_groups()
       if(table_info)
         set_table_privileges(devgroup, table_info->get_name(), priv_devs, true /* developer privileges */);
     }
-
 
     //Make sure that it is in the database too:
     GroupInfo group_info;
@@ -924,6 +936,15 @@ bool Base_DB::add_standard_groups()
 Gnome::Gda::Value Base_DB::auto_increment_insert_first_if_necessary(const Glib::ustring& table_name, const Glib::ustring& field_name) const
 {
   Gnome::Gda::Value value;
+
+  //Check that the user is allowd to view and edit this table:
+  Privileges table_privs = get_current_privs(GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME);
+  if(!table_privs.m_view || !table_privs.m_edit)
+  {
+    //This should not happen:
+    std::cerr << "Glom: Base_DB::auto_increment_insert_first_if_necessary(): The current user may not edit the autoincrements table. Any user who has create rights for a table should have edit rights to the autoincrements table." << std::endl;
+  }
+
 
   const Glib::ustring sql_query = "SELECT \"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME "\".\"next_value\" FROM \"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME "\""
    " WHERE \"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME "\" = '" + table_name + "' AND "
@@ -1171,6 +1192,11 @@ SystemPrefs Base_DB::get_database_preferences() const
   //  add_standard_tables();
 
   SystemPrefs result;
+
+  //Check that the user is allowd to even view this table:
+  Privileges table_privs = get_current_privs(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME);
+  if(!table_privs.m_view)
+    return result;
 
   const bool optional_org_logo = get_field_exists_in_database(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME, GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_LOGO);
 

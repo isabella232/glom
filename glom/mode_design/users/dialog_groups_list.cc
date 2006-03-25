@@ -22,6 +22,7 @@
 #include "dialog_user.h"
 #include "dialog_users_list.h"
 #include "dialog_new_group.h"
+#include "../../standard_table_prefs_fields.h"
 //#include <libgnome/gnome-i18n.h>
 #include <bakery/App/App_Gtk.h> //For util_bold_message().
 #include <glibmm/i18n.h>
@@ -62,7 +63,7 @@ Dialog_GroupsList::Dialog_GroupsList(BaseObjectType* cobject, const Glib::RefPtr
   m_treeview_groups->append_column(_("Description"), m_model_columns_groups.m_col_description);
 
   //Tables:
-  m_treeview_tables->append_column(_("Table"), m_model_columns_tables.m_col_name);
+  m_treeview_tables->append_column(_("Table"), m_model_columns_tables.m_col_title);
 
 
   treeview_append_bool_column(*m_treeview_tables, _("View"), m_model_columns_tables.m_col_view,
@@ -265,12 +266,15 @@ void Dialog_GroupsList::on_button_group_new()
     priv.m_view = true;
     priv.m_edit = true;
 
-    Document_Glom::type_listTableInfo table_list = get_document()->get_tables();
+    Document_Glom::type_listTableInfo table_list = get_document()->get_tables(true /* plus system prefs */);
 
     for(Document_Glom::type_listTableInfo::const_iterator iter = table_list.begin(); iter != table_list.end(); ++iter)
     {
       set_table_privileges(group_name, (*iter)->get_name(), priv);
     }
+
+    //Let them edit the autoincrements too:
+    set_table_privileges(group_name, GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME, priv);
 
     fill_group_list();
   }
@@ -400,7 +404,7 @@ void Dialog_GroupsList::fill_table_list(const Glib::ustring& group_name)
      GroupInfo group_info;
      group_info.set_name(group_name);
 
-    Document_Glom::type_listTableInfo table_list = pDocument->get_tables();
+    Document_Glom::type_listTableInfo table_list = pDocument->get_tables(true /* plus system prefs */);
 
     for(Document_Glom::type_listTableInfo::const_iterator iter = table_list.begin(); iter != table_list.end(); ++iter)
     {
@@ -410,6 +414,7 @@ void Dialog_GroupsList::fill_table_list(const Glib::ustring& group_name)
       const Glib::ustring table_name = (*iter)->get_name();
 
       row[m_model_columns_tables.m_col_name] = table_name;
+      row[m_model_columns_tables.m_col_title] = (*iter)->get_title_or_name();
 
       const Privileges privs = get_table_privileges(group_name, table_name);
       row[m_model_columns_tables.m_col_view] = privs.m_view;

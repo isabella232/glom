@@ -260,9 +260,15 @@ sharedptr<Relationship> Document_Glom::create_relationship_system_preferences(co
   return relationship;
 }
 
+sharedptr<TableInfo> Document_Glom::create_table_system_preferences()
+{
+  type_vecFields fields_ignored;
+  return create_table_system_preferences(fields_ignored);
+}
+
 sharedptr<TableInfo> Document_Glom::create_table_system_preferences(type_vecFields& fields)
 {
-  sharedptr<TableInfo> prefs_table_info(new TableInfo());
+  sharedptr<TableInfo> prefs_table_info = sharedptr<TableInfo>::create();
   prefs_table_info->set_name(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME);
   prefs_table_info->set_title(_("System Preferences"));
   prefs_table_info->m_hidden = true;
@@ -374,7 +380,7 @@ Document_Glom::type_vecRelationships Document_Glom::get_relationships(const Glib
     //Add the system properties if necessary:
     if(plus_system_prefs)
     {
-        if(std::find_if(result.begin(), result.end(), predicate_FieldHasName<Relationship>(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME)) == result.end())
+        if(std::find_if(result.begin(), result.end(), predicate_FieldHasName<Relationship>(GLOM_RELATIONSHIP_NAME_SYSTEM_PROPERTIES)) == result.end())
           result.push_back(create_relationship_system_preferences(table_name));
     }
 
@@ -932,7 +938,7 @@ Gnome::Gda::Value Document_Glom::get_node_attribute_value_as_value(const xmlpp::
 
 
 
-Document_Glom::type_listTableInfo Document_Glom::get_tables() const
+Document_Glom::type_listTableInfo Document_Glom::get_tables(bool plus_system_prefs) const
 {
   type_listTableInfo result;
 
@@ -940,6 +946,13 @@ Document_Glom::type_listTableInfo Document_Glom::get_tables() const
   {
     result.push_back(iter->second.m_info);
     //std::cout << "Document_Glom::get_tables(): title=" << iter->second.m_info->get_title() << std::endl;
+  }
+
+  //Add the system properties if necessary:
+  if(plus_system_prefs)
+  {
+      if(std::find_if(result.begin(), result.end(), predicate_FieldHasName<TableInfo>(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME)) == result.end())
+        result.push_back(create_table_system_preferences());
   }
 
   return result;

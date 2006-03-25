@@ -90,9 +90,10 @@ protected:
   public:
 
     ModelColumnsTables()
-    { add(m_col_name); add(m_col_view); add(m_col_edit); add(m_col_create); add(m_col_delete); }
+    { add(m_col_name); add(m_col_title); add(m_col_view); add(m_col_edit); add(m_col_create); add(m_col_delete); }
 
-    Gtk::TreeModelColumn<Glib::ustring> m_col_name;
+    Gtk::TreeModelColumn<Glib::ustring> m_col_name; //Not shown in view.
+    Gtk::TreeModelColumn<Glib::ustring> m_col_title;
     Gtk::TreeModelColumn<bool> m_col_view, m_col_edit, m_col_create, m_col_delete;
   };
 
