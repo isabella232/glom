@@ -1,5 +1,11 @@
 2006-03-25  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/application.cc: offer_new_or_existing(): If creation of a new database 
+	fails, offer again.
+	* glom/frame_glom.cc: create_database(): Warn the user if creation failed.
+
+2006-03-25  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/base_db.cc: set_table_privileges(): When granting 
 	create privileges, make sure to also grant edit privileges in the 
 	hidden autoincrement table.

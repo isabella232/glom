@@ -87,7 +87,7 @@ bool App_Glom::init(const Glib::ustring& document_uri)
   }
   else
   {
-    bool test = open_document(document_uri);
+    const bool test = open_document(document_uri);
     if(!test)
       return offer_new_or_existing();
   }
@@ -499,23 +499,12 @@ bool App_Glom::on_document_load()
               //If the database was not successfully recreated:
               if(!user_cancelled)
               {
-                //Tell the user:
-                Gtk::Dialog* dialog = 0;
-                try
-                {
-                  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_error_create_database");
-                  refXml->get_widget("dialog_error_create_database", dialog);
-                  dialog->set_transient_for(*this);
-                  dialog->run();
-                  delete dialog;
-                }
-                catch(const Gnome::Glade::XmlError& ex)
-                {
-                  std::cerr << ex.what() << std::endl;
-                }
+                //Let the user try again.
+                //A warning has already been shown.
+                return offer_new_or_existing();
               }
-
-              return false;
+              else
+                return false;
             }
             else
             {
@@ -736,7 +725,8 @@ bool App_Glom::offer_new_or_existing()
                 }
                 else
                 {
-                  return false;
+                  //Ask again:
+                  return offer_new_or_existing();
                 }
               }
               else

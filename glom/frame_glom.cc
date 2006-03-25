@@ -1352,14 +1352,38 @@ bool Frame_Glom::create_database(const Glib::ustring& database_name, const Glib:
       return false;
     }
 
+
     if(sharedconnection)
     {
-      Bakery::BusyCursor(*get_app_window());
+      Gtk::Window* pWindowApp = get_app_window();
+      g_assert(pWindowApp);
+
+      Bakery::BusyCursor busycursor(*pWindowApp);
 
       Glib::RefPtr<Gnome::Gda::Connection> connection = sharedconnection->get_gda_connection();
       if(connection)
       {
-        connection->create_database(database_name);
+        const bool test = connection->create_database(database_name);
+        if(!test)
+        {
+          //Tell the user:
+          Gtk::Dialog* dialog = 0;
+          try
+          {
+            Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_error_create_database");
+            refXml->get_widget("dialog_error_create_database", dialog);
+            dialog->set_transient_for(*pWindowApp);
+            dialog->run();
+            delete dialog;
+          }
+          catch(const Gnome::Glade::XmlError& ex)
+          {
+            std::cerr << ex.what() << std::endl;
+          }
+
+           return false;
+        }
+
         //if(result)
         //{
         //  std::cout << "Frame_Glom::create_database(): Creation succeeded: database_name=" << database_name << std::endl;
@@ -1367,6 +1391,9 @@ bool Frame_Glom::create_database(const Glib::ustring& database_name, const Glib:
       }
     }
   }
+
+  std::cout << "Frame_Glom::create_database(): debug 5" << std::endl;
+
 
   //Connect to the actual database:
   ConnectionPool* connection_pool = ConnectionPool::get_instance();
