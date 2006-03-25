@@ -107,7 +107,7 @@ bool Box_Data_List::fill_from_database()
 {
   bool result = false;
 
-  Bakery::BusyCursor(*get_app_window());
+  Bakery::BusyCursor busy_cursor(get_app_window());
 
   try
   {

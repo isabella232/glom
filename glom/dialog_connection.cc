@@ -44,7 +44,7 @@ sharedptr<SharedConnection> Dialog_Connection::connect_to_server_with_connection
 {
   //std::cout << "debug: Dialog_Connection::connect_to_server_with_connection_settings()" << std::endl;
 
-  //TODO: Bakery::BusyCursor(*get_app_window());
+  //TODO: Bakery::BusyCursor busy_cursor(get_app_window());
 
   sharedptr<SharedConnection> result(0);
 

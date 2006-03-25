@@ -64,7 +64,7 @@ void Box_Reports::fill_row(const Gtk::TreeModel::iterator& iter, const sharedptr
 
 bool Box_Reports::fill_from_database()
 {
-  Bakery::BusyCursor(*get_app_window());
+  Bakery::BusyCursor busy_cursor(get_app_window());
 
   bool result = Box_DB::fill_from_database();
 

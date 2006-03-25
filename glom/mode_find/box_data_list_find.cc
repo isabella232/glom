@@ -45,7 +45,7 @@ void Box_Data_List_Find::create_layout()
 
 bool Box_Data_List_Find::fill_from_database()
 {
-  Bakery::BusyCursor(*get_app_window());
+  Bakery::BusyCursor busy_cursor(get_app_window());
 
   bool result = Box_DB_Table::fill_from_database();
 

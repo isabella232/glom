@@ -84,7 +84,7 @@ void Box_Tables::fill_table_row(const Gtk::TreeModel::iterator& iter, const shar
 
 bool Box_Tables::fill_from_database()
 {
-  Bakery::BusyCursor(*get_app_window());
+  Bakery::BusyCursor busy_cursor(get_app_window());
 
   bool result = Box_DB::fill_from_database();
 

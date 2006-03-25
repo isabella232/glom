@@ -47,7 +47,7 @@ bool Box_Data_Details_Find::init_db_details(const Glib::ustring& table_name)
 
 bool Box_Data_Details_Find::fill_from_database()
 {
-  Bakery::BusyCursor(*get_app_window());
+  Bakery::BusyCursor busy_cursor(get_app_window());
 
   bool result = Box_DB_Table::fill_from_database();
 

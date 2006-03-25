@@ -158,7 +158,7 @@ bool Box_Data_Details::refresh_data_from_database_blank()
 
 void Box_Data_Details::create_layout()
 {
-  Bakery::BusyCursor(*get_app_window());
+  Bakery::BusyCursor busy_cursor(get_app_window());
 
   Box_Data::create_layout(); //Fills m_TableFields.
 
@@ -187,7 +187,7 @@ bool Box_Data_Details::fill_from_database()
 
   bool bResult = false;
 
-  Bakery::BusyCursor(*get_app_window());
+  Bakery::BusyCursor busy_cursor(get_app_window());
 
   const bool primary_key_is_empty = GlomConversions::value_is_empty(m_primary_key_value);
   if(!primary_key_is_empty)

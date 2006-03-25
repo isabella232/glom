@@ -376,7 +376,7 @@ void Box_DB_Table_Definition::on_Properties_apply()
 
 void Box_DB_Table_Definition::change_definition(const sharedptr<const Field>& fieldOld, const sharedptr<const Field>& field)
 {
-  Bakery::BusyCursor(*get_app_window());
+  Bakery::BusyCursor busy_cursor(get_app_window());
 
   //DB field defintion:
 

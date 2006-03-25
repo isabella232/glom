@@ -877,7 +877,7 @@ bool App_Glom::recreate_database(bool& user_cancelled)
     connection_pool->set_database(db_name); //Specify the new database when connecting from now on.
 
   dialog_progress->pulse();
-  Bakery::BusyCursor(*this);
+  Bakery::BusyCursor busy_cursor(this);
 
   sharedptr<SharedConnection> sharedconnection;
   try

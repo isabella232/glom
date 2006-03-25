@@ -104,7 +104,7 @@ void Base_DB::fill_end()
 //static:
 sharedptr<SharedConnection> Base_DB::connect_to_server()
 {
-  Bakery::BusyCursor(*get_application());
+  //TODO: Bakery::BusyCursor busy_cursor(get_app_window());
 
   return ConnectionPool::get_and_connect();
 }
@@ -127,7 +127,7 @@ Glib::RefPtr<Gnome::Gda::DataModel> Base_DB::Query_execute(const Glib::ustring& 
 {
   Glib::RefPtr<Gnome::Gda::DataModel> result;
 
-  Bakery::BusyCursor(*get_application());
+  //TODO: Bakery::BusyCursor busy_cursor(get_app_window());
 
   sharedptr<SharedConnection> sharedconnection = connect_to_server();
   if(sharedconnection)
@@ -347,7 +347,7 @@ Base_DB::type_vecFields Base_DB::get_fields_for_table_from_database(const Glib::
     DATAMODEL_FIELDS_COL_DEFAULTVALUE = 8
   };
 
-  Bakery::BusyCursor(*get_application());
+  //TODO: Bakery::BusyCursor busy_cursor(get_application());
 
   sharedptr<SharedConnection> sharedconnection = connect_to_server();
   if(!sharedconnection)
