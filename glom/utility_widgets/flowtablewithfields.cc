@@ -227,6 +227,11 @@ Box_Data_List_Related* FlowTableWithFields::create_related(const sharedptr<Layou
 
       m_portals.push_back(portal_box);
 
+      //Connect signals:
+      portal_box->signal_record_changed().connect( sigc::mem_fun(*this, &FlowTableWithFields::on_portal_record_changed) );
+
+      portal_box->signal_user_requested_details().connect( sigc::bind( sigc::mem_fun(*this, &FlowTableWithFields::on_portal_user_requested_details), portal_box));
+
       return portal_box;
     }
   }
@@ -241,11 +246,6 @@ void FlowTableWithFields::add_layout_related_at_position(const sharedptr<LayoutI
   {
     add(*portal_box, true /* expand */);
     add_layoutwidgetbase(portal_box, add_before);
-
-    //Connect signals:
-    portal_box->signal_record_changed().connect( sigc::mem_fun(*this, &FlowTableWithFields::on_portal_record_changed) );
-
-    portal_box->signal_user_requested_details().connect( sigc::bind( sigc::mem_fun(*this, &FlowTableWithFields::on_portal_user_requested_details), portal_box));
   }
 }
 

@@ -1,5 +1,10 @@
 2006-03-27  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/utility_widgets/flowtablewithfields.cc: create_related(): Connect to signals 
+	here, instead of from the caller. This makes the row details button work in Notebooks.
+
+2006-03-27  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/document/document_glom.cc:
 	* glom/document/document_glom.h:
 	get_table_fields(): Hide the hidden system field, though it 
