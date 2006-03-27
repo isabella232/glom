@@ -86,6 +86,7 @@ DbAddDel::DbAddDel()
   m_ScrolledWindow.add(m_TreeView);
   m_ScrolledWindow.set_shadow_type(Gtk::SHADOW_IN);
 
+  m_TreeView.set_fixed_height_mode();
   m_TreeView.show();
   //m_TreeView.set_fixed_height_mode(); //This allows some optimizations.
   pack_start(m_ScrolledWindow);
@@ -591,10 +592,15 @@ void DbAddDel::construct_specified_columns()
     GlomCellRenderer_Button* pCellButton = Gtk::manage(new GlomCellRenderer_Button());
     pCellButton->signal_clicked().connect(sigc::mem_fun(*this, &DbAddDel::on_cell_button_clicked));
 
-    const int viewcols_count = m_TreeView.append_column(Glib::ustring(), *pCellButton);
-    m_treeviewcolumn_button = m_TreeView.get_column(viewcols_count - 1);
 
-    m_treeviewcolumn_button->property_visible() = get_allow_view_details();
+    Gtk::TreeViewColumn* m_treeviewcolumn_button = Gtk::manage(new Gtk::TreeViewColumn());
+    m_treeviewcolumn_button->pack_start(*pCellButton);
+
+    m_treeviewcolumn_button->set_sizing(Gtk::TREE_VIEW_COLUMN_FIXED); //Need by fixed-height mode.
+    m_treeviewcolumn_button->set_fixed_width(25); //Otherwise it doesn't show up. TODO: Discover the width of the contents.
+    m_treeviewcolumn_button->property_visible() = true; //get_allow_view_details();
+
+    m_TreeView.append_column(*m_treeviewcolumn_button);
 
     ++view_column_index;
   }
@@ -1389,6 +1395,8 @@ bool DbAddDel::on_treeview_column_drop(Gtk::TreeView* /* treeview */, Gtk::TreeV
 guint DbAddDel::treeview_append_column(const Glib::ustring& title, Gtk::CellRenderer& cellrenderer, int model_column_index)
 {
   DbTreeViewColumnGlom* pViewColumn = Gtk::manage( new DbTreeViewColumnGlom(GlomUtils::string_escape_underscores(title), cellrenderer) );
+  pViewColumn->set_sizing(Gtk::TREE_VIEW_COLUMN_FIXED); //Need by fixed-height mode.
+
   guint cols_count = m_TreeView.append_column(*pViewColumn);
 
   //Tell the TreeView how to render the Gnome::Gda::Values:

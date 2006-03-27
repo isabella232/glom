@@ -25,7 +25,7 @@ GlomCellRenderer_Button::GlomCellRenderer_Button()
 {
   const Gtk::StockID stock_id = Gtk::Stock::OPEN;
   property_stock_id() = stock_id.get_string();
-  
+
   property_mode() = Gtk::CELL_RENDERER_MODE_ACTIVATABLE; //So that it calls activate_vfunc().
 }
 
@@ -40,14 +40,14 @@ GlomCellRenderer_Button::type_signal_clicked GlomCellRenderer_Button::signal_cli
 bool GlomCellRenderer_Button::activate_vfunc(GdkEvent* event, Gtk::Widget& widget, const Glib::ustring& path, const Gdk::Rectangle& background_area, const Gdk::Rectangle& cell_area, Gtk::CellRendererState flags)
 {
   //TODO: It would be nice to depress this like a real button.
-  
+
   //Call base class:
   bool result = CellRendererPixbuf::activate_vfunc(event, widget, path, background_area, cell_area, flags);
-  
+
   m_signal_clicked.emit( Gtk::TreeModel::Path(path) );
-  
+
   return result;
 }
-  
+
 
 
