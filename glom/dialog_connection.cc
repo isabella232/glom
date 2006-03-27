@@ -71,7 +71,7 @@ sharedptr<SharedConnection> Dialog_Connection::connect_to_server_with_connection
 
     connection_pool->set_ready_to_connect(); //Box_DB::connect_to_server() will now attempt the connection-> Shared instances of m_Connection will also be usable.
 
-    result = Box_DB::connect_to_server();
+    result = Box_DB::connect_to_server(const_cast<Dialog_Connection*>(this));
 
     /*
     if(document)

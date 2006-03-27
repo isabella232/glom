@@ -72,7 +72,7 @@ bool Notebook_Data::init_db_details(const FoundSet& found_set)
   //Performance optimisation:
   //Keep the connection open during all these operations:
   {
-    sharedptr<SharedConnection> sharedconnection = connect_to_server();
+    sharedptr<SharedConnection> sharedconnection = connect_to_server(get_app_window());
 
     const FoundSet old_found_set = m_Box_List.get_found_set();
     //std::cout << "  old_where_clause=" << old_where_clause << std::endl;

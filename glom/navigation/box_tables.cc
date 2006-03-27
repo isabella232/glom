@@ -133,7 +133,7 @@ bool Box_Tables::fill_from_database()
     g_warning("Box_Tables::fill_from_database(): document is null");
 
   //Get the list of tables in the database, from the server:
-  sharedptr<SharedConnection> sharedconnection = connect_to_server();
+  sharedptr<SharedConnection> sharedconnection = connect_to_server(get_app_window());
   if(sharedconnection)
   {
     m_AddDel.remove_all();
@@ -313,7 +313,7 @@ void Box_Tables::on_adddel_Delete(const Gtk::TreeModel::iterator& rowStart, cons
           //Delete the table:
           if(iButtonClicked == Gtk::RESPONSE_OK)
           {
-            Query_execute( "DROP TABLE " + table_name);
+            Query_execute( "DROP TABLE " + table_name, get_app_window());
             get_document()->remove_table(table_name); //Forget about it in the document too.
             something_changed = true;
           }
@@ -424,7 +424,7 @@ void Box_Tables::on_adddel_changed(const Gtk::TreeModel::iterator& row, guint co
         //Rename the table:
         if(iButtonClicked == Gtk::RESPONSE_OK)
         {
-          bool test = Query_execute( "ALTER TABLE \"" + table_name + "\" RENAME TO \"" + table_name_new + "\"");
+          const bool test = Query_execute( "ALTER TABLE \"" + table_name + "\" RENAME TO \"" + table_name_new + "\"", get_app_window());
           if(test)
           {
             //Change the AddDel item's key:

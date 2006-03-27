@@ -41,5 +41,7 @@
 #define GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_FIELD_NAME "field_name"
 #define GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_NEXT_VALUE "next_value" //Numeric
 
+#define GLOM_STANDARD_FIELD_LOCK "glom_lock" //Text. In every table. Not used yet.
+
 #endif //GLOM_STANDARD_TABLE_PREFS_FIELDS_H
 

@@ -1388,7 +1388,7 @@ bool DbAddDel::on_treeview_column_drop(Gtk::TreeView* /* treeview */, Gtk::TreeV
 
 guint DbAddDel::treeview_append_column(const Glib::ustring& title, Gtk::CellRenderer& cellrenderer, int model_column_index)
 {
-  DbTreeViewColumnGlom* pViewColumn = Gtk::manage( new DbTreeViewColumnGlom(title, cellrenderer) );
+  DbTreeViewColumnGlom* pViewColumn = Gtk::manage( new DbTreeViewColumnGlom(GlomUtils::string_escape_underscores(title), cellrenderer) );
   guint cols_count = m_TreeView.append_column(*pViewColumn);
 
   //Tell the TreeView how to render the Gnome::Gda::Values:

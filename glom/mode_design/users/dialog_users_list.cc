@@ -193,7 +193,7 @@ void Dialog_UsersList::on_button_user_remove()
         if(!user.empty())
         {
           Glib::ustring strQuery = "ALTER GROUP \"" + m_combo_group->get_active_text() + "\" DROP USER \"" + user + "\"";
-          Query_execute(strQuery);
+          Query_execute(strQuery, this);
 
           fill_list();
         }
@@ -230,7 +230,7 @@ void Dialog_UsersList::on_button_user_delete()
           if(response == Gtk::RESPONSE_OK)
           {
             Glib::ustring strQuery = "DROP USER " + user;
-            Query_execute(strQuery);
+            Query_execute(strQuery, this);
 
             fill_list();
           }
@@ -274,7 +274,7 @@ void Dialog_UsersList::on_button_user_add()
   {
     //Add it to the group:
     Glib::ustring strQuery = "ALTER GROUP \"" + m_combo_group->get_active_text() + "\" ADD USER " + user;
-    Query_execute(strQuery);
+    Query_execute(strQuery, this);
 
     //Remove any user rights, so that all rights come from the user's presence in the group:
     Document_Glom::type_listTableInfo table_list = get_document()->get_tables();
@@ -282,7 +282,7 @@ void Dialog_UsersList::on_button_user_add()
     for(Document_Glom::type_listTableInfo::const_iterator iter = table_list.begin(); iter != table_list.end(); ++iter)
     {
       Glib::ustring strQuery = "REVOKE ALL PRIVILEGES ON \"" + (*iter)->get_name() + "\" FROM \"" + user + "\"";
-      Query_execute(strQuery);
+      Query_execute(strQuery, this);
     }
 
     fill_list();
@@ -318,11 +318,11 @@ void Dialog_UsersList::on_button_user_new()
   {
     //Create the user:
     Glib::ustring strQuery = "CREATE USER \"" + user + "\" PASSWORD '" + password + "'" ;
-    Glib::RefPtr<Gnome::Gda::DataModel> data_model = Query_execute(strQuery);
+    Glib::RefPtr<Gnome::Gda::DataModel> data_model = Query_execute(strQuery, this);
 
     //Add it to the group:
     strQuery = "ALTER GROUP \"" + m_combo_group->get_active_text() + "\" ADD USER \"" + user + "\"";
-    data_model = Query_execute(strQuery);
+    data_model = Query_execute(strQuery, this);
 
     fill_list();
   }
@@ -383,7 +383,7 @@ void Dialog_UsersList::on_button_user_edit()
       if(!user.empty() && !password.empty())
       {
         Glib::ustring strQuery = "ALTER USER \"" + user + "\" PASSWORD '" + password + "'" ;
-        Glib::RefPtr<Gnome::Gda::DataModel> data_model = Query_execute(strQuery);
+        Glib::RefPtr<Gnome::Gda::DataModel> data_model = Query_execute(strQuery, this);
 
         //Change the password in the current connection, if this is the current user.
          ConnectionPool* connection_pool = ConnectionPool::get_instance();

@@ -156,7 +156,7 @@ void Box_DB_Table_Definition::on_adddel_add(const Gtk::TreeModel::iterator& row)
   Glib::ustring name = m_AddDel.get_value(row, m_colName);
   if(!name.empty())
   {
-    bool bTest = Query_execute( "ALTER TABLE \"" + m_table_name + "\" ADD \"" + name + "\" NUMERIC" ); //TODO: Get schema type for Field::TYPE_NUMERIC
+    bool bTest = Query_execute( "ALTER TABLE \"" + m_table_name + "\" ADD \"" + name + "\" NUMERIC", get_app_window()); //TODO: Get schema type for Field::TYPE_NUMERIC
     if(bTest)
     {
       //Show the new field (fill in the other cells):
@@ -196,7 +196,7 @@ void Box_DB_Table_Definition::on_adddel_delete(const Gtk::TreeModel::iterator& r
     Glib::ustring name = m_AddDel.get_value_key(iter);
     if(!name.empty())
     {
-      Query_execute( "ALTER TABLE \"" + m_table_name + "\" DROP COLUMN \"" + name + "\"");
+      Query_execute( "ALTER TABLE \"" + m_table_name + "\" DROP COLUMN \"" + name + "\"", get_app_window());
 
       //Remove it from all layouts, reports, etc:
       get_document()->remove_field(m_table_name, name);
@@ -461,7 +461,7 @@ void  Box_DB_Table_Definition::postgres_change_column(const sharedptr<const Fiel
 
 void  Box_DB_Table_Definition::postgres_change_column_type(const sharedptr<const Field>& field_old, const sharedptr<const Field>& field)
 {
-  sharedptr<SharedConnection> sharedconnection = connect_to_server();
+  sharedptr<SharedConnection> sharedconnection = connect_to_server(get_app_window());
   if(sharedconnection)
   {
     Glib::RefPtr<Gnome::Gda::Connection> gda_connection = sharedconnection->get_gda_connection();
@@ -572,17 +572,17 @@ void  Box_DB_Table_Definition::postgres_change_column_type(const sharedptr<const
             }
           }
 
-          Glib::RefPtr<Gnome::Gda::DataModel> datamodel = Query_execute( "UPDATE \"" + m_table_name + "\" SET \"" + fieldTemp->get_name() + "\" = " + conversion_command );  //TODO: Not full type details.
+          Glib::RefPtr<Gnome::Gda::DataModel> datamodel = Query_execute( "UPDATE \"" + m_table_name + "\" SET \"" + fieldTemp->get_name() + "\" = " + conversion_command, get_app_window());  //TODO: Not full type details.
           if(!datamodel)
             conversion_failed = true;
         }
 
         if(!conversion_failed)
         {
-          Glib::RefPtr<Gnome::Gda::DataModel> datamodel = Query_execute( "ALTER TABLE \"" + m_table_name + "\" DROP COLUMN \"" +  field_old->get_name() + "\"");
+          Glib::RefPtr<Gnome::Gda::DataModel> datamodel = Query_execute( "ALTER TABLE \"" + m_table_name + "\" DROP COLUMN \"" +  field_old->get_name() + "\"", get_app_window());
           if(datamodel)
           {
-            datamodel = Query_execute( "ALTER TABLE \"" + m_table_name + "\" RENAME COLUMN \"" + fieldTemp->get_name() + "\" TO \"" + field->get_name() + "\"");
+            datamodel = Query_execute( "ALTER TABLE \"" + m_table_name + "\" RENAME COLUMN \"" + fieldTemp->get_name() + "\" TO \"" + field->get_name() + "\"", get_app_window());
             if(datamodel)
             {
               const bool test = gda_connection->commit_transaction(transaction);

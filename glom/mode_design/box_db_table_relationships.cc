@@ -73,7 +73,7 @@ bool Box_DB_Table_Relationships::fill_from_database()
 
   m_AddDel.remove_all();
 
-  sharedptr<SharedConnection> sharedconnection = connect_to_server();
+  sharedptr<SharedConnection> sharedconnection = connect_to_server(get_app_window());
   if(sharedconnection)
   {
     Glib::RefPtr<Gnome::Gda::Connection> connection = sharedconnection->get_gda_connection();
@@ -229,7 +229,7 @@ void Box_DB_Table_Relationships::on_adddel_user_activated(const Gtk::TreeModel::
       //Set list of 'To' fields depending on table:
       m_AddDel.set_value(row, m_colToField, Glib::ustring(""));
 
-      sharedptr<SharedConnection> sharedconnection = connect_to_server();
+      sharedptr<SharedConnection> sharedconnection = connect_to_server(get_app_window());
       if(sharedconnection)
       {
         Glib::RefPtr<Gnome::Gda::Connection> connection = sharedconnection->get_gda_connection();

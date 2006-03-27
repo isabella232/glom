@@ -248,7 +248,7 @@ void Box_Data_List_Related::on_record_added(const Gnome::Gda::Value& primary_key
         Glib::ustring strQuery = "UPDATE \"" + m_portal->get_relationship()->get_to_table() + "\"";
         strQuery += " SET \"" +  /* get_table_name() + "." +*/ m_key_field->get_name() + "\" = " + m_key_field->sql(m_key_value);
         strQuery += " WHERE \"" + get_table_name() + "\".\"" + field_primary_key->get_name() + "\" = " + field_primary_key->sql(primary_key_value);
-        bool test = Query_execute(strQuery);
+        bool test = Query_execute(strQuery, get_app_window());
         if(test)
         {
           //Show it on the view, if it's visible:

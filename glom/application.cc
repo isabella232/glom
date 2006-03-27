@@ -381,7 +381,9 @@ void App_Glom::init_create_document()
 {
   if(!m_pDocument)
   {
-    m_pDocument = new Document_Glom();
+    Document_Glom* document_glom = new Document_Glom();
+    m_pDocument = document_glom;
+    document_glom->set_parent_window(this); //So that it can show a BusyCursor when loading and saving.
 
     //Tell document about view:
     m_pDocument->set_view(m_pFrame);
@@ -474,7 +476,7 @@ bool App_Glom::on_document_load()
         connection_pool->set_user(pDocument->get_connection_user());
         connection_pool->set_database(pDocument->get_connection_database());
 
-        connection_pool->set_ready_to_connect(); //Box_DB::connect_to_server() will now attempt the connection-> Shared instances of m_Connection will also be usable.
+        connection_pool->set_ready_to_connect(this); //Box_DB::connect_to_server() will now attempt the connection-> Shared instances of m_Connection will also be usable.
 
         //Attempt to connect to the specified database:
         try

@@ -243,7 +243,7 @@ Glib::RefPtr<Gnome::Gda::DataModel> Box_Data::record_new(bool use_entered_data, 
   if(!strNames.empty() && !strValues.empty())
   {
     Glib::ustring strQuery = "INSERT INTO \"" + m_table_name + "\" (" + strNames + ") VALUES (" + strValues + ")";
-    return Query_execute(strQuery);
+    return Query_execute(strQuery, get_app_window());
   }
   else
     return Glib::RefPtr<Gnome::Gda::DataModel>();
@@ -412,7 +412,7 @@ void Box_Data::refresh_related_fields(const FieldInRecord& field_in_record_chang
   {
     const Glib::ustring query = GlomUtils::build_sql_select_with_key(field_in_record_changed.m_table_name, fieldsToGet, field_in_record_changed.m_key, field_in_record_changed.m_key_value);
 
-    Glib::RefPtr<Gnome::Gda::DataModel> result = Query_execute(query);
+    Glib::RefPtr<Gnome::Gda::DataModel> result = Query_execute(query, get_app_window());
     if(!result)
     {
       g_warning("Box_Data_List::refresh_related_fields(): no result.");
@@ -536,7 +536,7 @@ bool Box_Data::record_delete(const Gnome::Gda::Value& primary_key_value)
   sharedptr<Field> field_primary_key = get_field_primary_key();
   if(field_primary_key && !GlomConversions::value_is_empty(primary_key_value))
   {
-    return Query_execute( "DELETE FROM \"" + m_table_name + "\" WHERE \"" + m_table_name + "\".\"" + field_primary_key->get_name() + "\" = " + field_primary_key->sql(primary_key_value) );
+    return Query_execute( "DELETE FROM \"" + m_table_name + "\" WHERE \"" + m_table_name + "\".\"" + field_primary_key->get_name() + "\" = " + field_primary_key->sql(primary_key_value), get_app_window());
   }
   else
   {
@@ -636,7 +636,7 @@ bool Box_Data::get_related_record_exists(const sharedptr<const Relationship>& re
 
   //TODO_Performance: Is this the best way to just find out whether there is one record that meets this criteria?
   const Glib::ustring query = "SELECT \"" + to_field + "\" FROM \"" + relationship->get_to_table() + "\" WHERE \"" + to_field + "\" = " + key_field->sql(key_value);
-  Glib::RefPtr<Gnome::Gda::DataModel> records = Query_execute(query);
+  Glib::RefPtr<Gnome::Gda::DataModel> records = Query_execute(query, get_app_window());
   if(!records)
     handle_error();
   else
@@ -708,7 +708,7 @@ bool Box_Data::add_related_record_for_field(const sharedptr<const LayoutItem_Fie
         }
 
         const Glib::ustring strQuery = "INSERT INTO \"" + relationship->get_to_table() + "\" (\"" + primary_key_field->get_name() + "\") VALUES (" + primary_key_field->sql(primary_key_value) + ")";
-        bool test = Query_execute(strQuery);
+        bool test = Query_execute(strQuery, get_app_window());
         if(test)
         {
           if(key_is_auto_increment)
@@ -742,7 +742,7 @@ bool Box_Data::add_related_record_for_field(const sharedptr<const LayoutItem_Fie
                 {
                   const Glib::ustring strQuery = "UPDATE \"" + relationship->get_from_table() + "\" SET \"" + relationship->get_from_field() + "\" = " + primary_key_field->sql(primary_key_value) +
                     " WHERE \"" + relationship->get_from_table() + "\".\"" + parent_primary_key_field->get_name() + "\" = " + parent_primary_key_field->sql(parent_primary_key_value);
-                  const bool test = Query_execute(strQuery);
+                  const bool test = Query_execute(strQuery, get_app_window());
                   return test;
                 }
               }

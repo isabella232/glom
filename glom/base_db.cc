@@ -102,9 +102,9 @@ void Base_DB::fill_end()
 }
 
 //static:
-sharedptr<SharedConnection> Base_DB::connect_to_server()
+sharedptr<SharedConnection> Base_DB::connect_to_server(Gtk::Window* parent_window)
 {
-  //TODO: Bakery::BusyCursor busy_cursor(get_app_window());
+  Bakery::BusyCursor busy_cursor(parent_window);
 
   return ConnectionPool::get_and_connect();
 }
@@ -123,7 +123,7 @@ bool Base_DB::handle_error() const
 }
 
 
-Glib::RefPtr<Gnome::Gda::DataModel> Base_DB::Query_execute(const Glib::ustring& strQuery) const
+Glib::RefPtr<Gnome::Gda::DataModel> Base_DB::Query_execute(const Glib::ustring& strQuery, Gtk::Window* parent_window) const
 {
   Glib::RefPtr<Gnome::Gda::DataModel> result;
 
@@ -325,7 +325,7 @@ bool Base_DB::get_field_exists_in_database(const Glib::ustring& table_name, cons
   return iterFind != vecFields.end();
 }
 
-Base_DB::type_vecFields Base_DB::get_fields_for_table_from_database(const Glib::ustring& table_name)
+Base_DB::type_vecFields Base_DB::get_fields_for_table_from_database(const Glib::ustring& table_name, bool including_system_fields)
 {
   type_vecFields result;
 
@@ -456,13 +456,18 @@ Base_DB::type_vecFields Base_DB::get_fields_for_table_from_database(const Glib::
     //g_warning("Base_DB::get_fields_for_table_from_database(): returning empty result.");
   }
 
+  //Hide system fields.
+  type_vecFields::iterator iterFind = std::find_if(result.begin(), result.end(), predicate_FieldHasName<Field>(GLOM_STANDARD_FIELD_LOCK));
+  if(iterFind != result.end())
+    result.erase(iterFind);
+
   return result;
 }
 
-Base_DB::type_vecFields Base_DB::get_fields_for_table(const Glib::ustring& table_name) const
+Base_DB::type_vecFields Base_DB::get_fields_for_table(const Glib::ustring& table_name, bool including_system_fields) const
 {
   //Get field definitions from the database:
-  type_vecFields fieldsDatabase = get_fields_for_table_from_database(table_name);
+  type_vecFields fieldsDatabase = get_fields_for_table_from_database(table_name, including_system_fields);
 
   const Document_Glom* pDoc = dynamic_cast<const Document_Glom*>(get_document());
   if(!pDoc)
@@ -1280,11 +1285,23 @@ void Base_DB::set_database_preferences(const SystemPrefs& prefs)
     get_document()->set_database_title(prefs.m_name);
 }
 
-bool Base_DB::create_table(const sharedptr<const TableInfo>& table_info, const Document_Glom::type_vecFields& fields) const
+bool Base_DB::create_table(const sharedptr<const TableInfo>& table_info, const Document_Glom::type_vecFields& fields_in) const
 {
   //std::cout << "Base_DB::create_table(): " << table_info->get_name() << ", title=" << table_info->get_title() << std::endl;
 
   bool table_creation_succeeded = false;
+
+
+  Document_Glom::type_vecFields fields = fields_in;
+
+  //Create the standard field too:
+  if(std::find_if(fields.begin(), fields.end(), predicate_FieldHasName<Field>(GLOM_STANDARD_FIELD_LOCK)) == fields.end())
+  {
+    sharedptr<Field> field = sharedptr<Field>::create();
+    field->set_name(GLOM_STANDARD_FIELD_LOCK);
+    field->set_glom_type(Field::TYPE_TEXT);
+    fields.push_back(field);
+  }
 
   //Create SQL to describe all fields in this table:
   Glib::ustring sql_fields;
@@ -2741,12 +2758,12 @@ void Base_DB::set_entered_field_data(const Gtk::TreeModel::iterator& /* row */, 
   //Override this.
 }
 
-bool Base_DB::set_field_value_in_database(const FieldInRecord& field_in_record, const Gnome::Gda::Value& field_value, bool use_current_calculations)
+bool Base_DB::set_field_value_in_database(const FieldInRecord& field_in_record, const Gnome::Gda::Value& field_value, bool use_current_calculations, Gtk::Window* parent_window)
 {
-  return set_field_value_in_database(field_in_record, Gtk::TreeModel::iterator(), field_value, use_current_calculations);
+  return set_field_value_in_database(field_in_record, Gtk::TreeModel::iterator(), field_value, use_current_calculations, parent_window);
 }
 
-bool Base_DB::set_field_value_in_database(const FieldInRecord& field_in_record, const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& field_value, bool use_current_calculations)
+bool Base_DB::set_field_value_in_database(const FieldInRecord& field_in_record, const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& field_value, bool use_current_calculations, Gtk::Window* parent_window)
 {
   //row is invalid, and ignored, for Box_Data_Details.
   if(!(field_in_record.m_field))
@@ -2771,7 +2788,7 @@ bool Base_DB::set_field_value_in_database(const FieldInRecord& field_in_record, 
 
     //std::cout << "debug: set_field_value_in_database(): " << std::endl << "  " << strQuery << std::endl;
 
-    Glib::RefPtr<Gnome::Gda::DataModel> datamodel = Query_execute(strQuery);  //TODO: Handle errors
+    Glib::RefPtr<Gnome::Gda::DataModel> datamodel = Query_execute(strQuery, parent_window);  //TODO: Handle errors
     if(!datamodel)
     {
       g_warning("Box_Data::set_field_value_in_database(): UPDATE failed.");

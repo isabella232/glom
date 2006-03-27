@@ -1,4 +1,5 @@
 * List view: You can now click on the column headings to sort by a field.
+* The busy cursor is shown during most communication or disk activity.
 
 0.9.92
 

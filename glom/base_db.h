@@ -76,14 +76,14 @@ public:
   virtual AppState::userlevels get_userlevel() const;
   virtual void set_userlevel(AppState::userlevels value);
 
-  static sharedptr<SharedConnection> connect_to_server();
+  static sharedptr<SharedConnection> connect_to_server(Gtk::Window* parent_window = 0);
 
   virtual void set_document(Document_Glom* pDocument); //View override
   virtual void load_from_document(); //View override
 
   typedef std::vector< sharedptr<Field> > type_vecFields;
 
-  static type_vecFields get_fields_for_table_from_database(const Glib::ustring& table_name);
+  static type_vecFields get_fields_for_table_from_database(const Glib::ustring& table_name, bool including_system_fields = false);
   static bool get_field_exists_in_database(const Glib::ustring& table_name, const Glib::ustring& field_name);
 
   /** Create an appropriate title for an ID string.
@@ -92,7 +92,7 @@ public:
   static Glib::ustring util_title_from_string(const Glib::ustring& text);
 
   //This is const because const means not changing this instance, not whether we change the database.
-  virtual Glib::RefPtr<Gnome::Gda::DataModel> Query_execute(const Glib::ustring& strQuery) const;
+  virtual Glib::RefPtr<Gnome::Gda::DataModel> Query_execute(const Glib::ustring& strQuery, Gtk::Window* parent_window = 0) const;
 
   bool add_standard_groups();
   bool add_standard_tables() const;
@@ -121,7 +121,7 @@ protected:
 
   bool get_table_exists_in_database(const Glib::ustring& table_name) const;
 
-  type_vecFields get_fields_for_table(const Glib::ustring& table_name) const;
+  type_vecFields get_fields_for_table(const Glib::ustring& table_name, bool including_system_fields = false) const;
   sharedptr<Field> get_fields_for_table_one_field(const Glib::ustring& table_name, const Glib::ustring& field_name) const;
 
   sharedptr<Field> get_field_primary_key_for_table(const Glib::ustring& table_name) const;
@@ -238,8 +238,8 @@ protected:
 
 
 
-  bool set_field_value_in_database(const FieldInRecord& field_in_record, const Gnome::Gda::Value& field_value, bool use_current_calculations = false);
-  bool set_field_value_in_database(const FieldInRecord& field_in_record, const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& field_value, bool use_current_calculations = false);
+  bool set_field_value_in_database(const FieldInRecord& field_in_record, const Gnome::Gda::Value& field_value, bool use_current_calculations = false, Gtk::Window* parent_window = 0);
+  bool set_field_value_in_database(const FieldInRecord& field_in_record, const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& field_value, bool use_current_calculations = false, Gtk::Window* parent_window = 0);
 
 
   type_vecStrings get_database_groups() const;

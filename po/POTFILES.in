@@ -13,6 +13,7 @@ glom/data_structure/translatable_item.cc
 glom/data_structure/layout/layoutgroup.cc
 glom/data_structure/layout/layoutitem_button.cc
 glom/data_structure/layout/layoutitem_field.cc
+glom/data_structure/layout/layoutitem_image.cc
 glom/data_structure/layout/layoutitem_notebook.cc
 glom/data_structure/layout/layoutitem_portal.cc
 glom/data_structure/layout/layoutitem_text.cc

@@ -29,6 +29,7 @@
 #include "../data_structure/layout/layoutitem_text.h"
 #include "../data_structure/layout/layoutitem_image.h"
 #include "../standard_table_prefs_fields.h"
+#include <bakery/Utilities/BusyCursor.h>
 #include <glibmm/i18n.h>
 //#include "config.h" //To get GLOM_DTD_INSTALL_DIR - dependent on configure prefix.
 #include <algorithm> //For std::find_if().
@@ -150,7 +151,8 @@ Document_Glom::Document_Glom()
 : m_block_cache_update(false),
   m_block_modified_set(false),
   m_allow_auto_save(true), //Save all changes immediately, by default.
-  m_is_example(false)
+  m_is_example(false),
+  m_parent_window(0)
 {
   //Conscious use of virtual methods in a constructor:
   set_file_extension("glom");
@@ -575,6 +577,8 @@ void Document_Glom::remove_table(const Glib::ustring& table_name)
 
 Document_Glom::type_vecFields Document_Glom::get_table_fields(const Glib::ustring& table_name) const
 {
+  type_vecFields result;
+
   if(!table_name.empty())
   {
     type_tables::const_iterator iterFind = m_tables.find(table_name);
@@ -594,20 +598,25 @@ Document_Glom::type_vecFields Document_Glom::get_table_fields(const Glib::ustrin
       {
         type_vecFields fields;
         sharedptr<TableInfo> temp = create_table_system_preferences(fields);
-        return fields;
+        result = fields;
       }
       else
       {
         //g_warning("Document_Glom::get_table_fields: table not found in document: %s", table_name.c_str());
-        return type_vecFields();
       }
     }
   }
   else
   {
     //g_warning("Document_Glom::get_table_fields: table name is empty.");
-    return type_vecFields();
   }
+
+  //Hide any system fields:
+  type_vecFields::iterator iterFind = std::find_if(result.begin(), result.end(), predicate_FieldHasName<Field>(GLOM_STANDARD_FIELD_LOCK));
+  if(iterFind != result.end())
+    result.erase(iterFind);
+
+  return result;
 }
 
 void Document_Glom::set_table_fields(const Glib::ustring& table_name, const type_vecFields& vecFields)
@@ -1746,7 +1755,9 @@ void Document_Glom::load_after_translations(const xmlpp::Element* element, Trans
 
 bool Document_Glom::load_after()
 {
-  m_block_modified_set = true; //Orevent the set_ functions from trigerring a save.
+  Bakery::BusyCursor busy_cursor(m_parent_window);
+
+  m_block_modified_set = true; //Prevent the set_ functions from trigerring a save.
 
   bool result = Bakery::Document_XML::load_after();  
 
@@ -2341,6 +2352,8 @@ void Document_Glom::save_before_translations(xmlpp::Element* element, const Tran
 
 bool Document_Glom::save_before()
 {
+  Bakery::BusyCursor busy_cursor(m_parent_window);
+
   xmlpp::Element* nodeRoot = get_node_document();
   if(nodeRoot)
   {
@@ -2877,5 +2890,10 @@ void Document_Glom::fill_translatable_layout_items(const sharedptr<LayoutGroup>&
       }
     }
   }
+}
+
+void Document_Glom::set_parent_window(Gtk::Window* window)
+{
+  m_parent_window = window;
 }
 

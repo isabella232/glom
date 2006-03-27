@@ -111,7 +111,7 @@ bool Box_Data_List::fill_from_database()
 
   try
   {
-    sharedptr<SharedConnection> sharedconnection = connect_to_server();
+    sharedptr<SharedConnection> sharedconnection = connect_to_server(get_app_window());
 
     Box_Data::fill_from_database();
 
@@ -258,7 +258,7 @@ void Box_Data_List::on_adddel_user_added(const Gtk::TreeModel::iterator& row, gu
   //If no primary key value is available yet, then don't add the record yet:
   if(!GlomConversions::value_is_empty(primary_key_value))
   {
-    sharedptr<SharedConnection> sharedconnection = connect_to_server(); //Keep it alive while we need the data_model.
+    sharedptr<SharedConnection> sharedconnection = connect_to_server(get_app_window()); //Keep it alive while we need the data_model.
     if(sharedconnection)
     {
       Glib::RefPtr<Gnome::Gda::DataModel> data_model = record_new(true /* use entered field data*/, primary_key_value);
@@ -388,7 +388,7 @@ void Box_Data_List::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, 
       //const Glib::ustring strFieldName = layout_field->get_name();
 
       FieldInRecord field_in_record(layout_field, m_table_name /* parent */, primary_key_field, primary_key_value, *(get_document()));
-      const bool bTest = set_field_value_in_database(field_in_record, row, field_value);
+      const bool bTest = set_field_value_in_database(field_in_record, row, field_value, get_app_window());
 
       //Glib::ustring strQuery = "UPDATE \"" + table_name + "\"";
       //strQuery += " SET " +  /* table_name + "." + postgres does not seem to like the table name here */ strFieldName + " = " + field.sql(field_value);

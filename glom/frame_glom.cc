@@ -572,7 +572,7 @@ void Frame_Glom::export_data_to_string(Glib::ustring& the_string, const FoundSet
   const Glib::ustring query = GlomUtils::build_sql_select_with_where_clause(found_set.m_table_name, fieldsSequence, found_set.m_where_clause, found_set.m_sort_clause);
 
   //TODO: Lock the database (prevent changes) during export.
-  Glib::RefPtr<Gnome::Gda::DataModel> result = Query_execute(query);
+  Glib::RefPtr<Gnome::Gda::DataModel> result = Query_execute(query, get_app_window());
 
   guint rows_count = 0;
   if(result)
@@ -621,7 +621,7 @@ void Frame_Glom::export_data_to_stream(std::ostream& the_stream, const FoundSet&
   const Glib::ustring query = GlomUtils::build_sql_select_with_where_clause(found_set.m_table_name, fieldsSequence, found_set.m_where_clause, found_set.m_sort_clause);
 
   //TODO: Lock the database (prevent changes) during export.
-  Glib::RefPtr<Gnome::Gda::DataModel> result = Query_execute(query);
+  Glib::RefPtr<Gnome::Gda::DataModel> result = Query_execute(query, get_app_window());
 
   guint rows_count = 0;
   if(result)

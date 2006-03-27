@@ -35,6 +35,7 @@
 #include "../data_structure/groupinfo.h"
 #include "../data_structure/report.h"
 #include "../appstate.h"
+#include <gtkmm/window.h>
 #include <vector>
 #include <map>
 
@@ -244,6 +245,8 @@ public:
 
   virtual void emit_userlevel_changed();
 
+  void set_parent_window(Gtk::Window* window);
+
   static sharedptr<TableInfo> create_table_system_preferences();
   static sharedptr<TableInfo> create_table_system_preferences(type_vecFields& fields);
   static sharedptr<Relationship>  create_relationship_system_preferences(const Glib::ustring& table_name);
@@ -350,6 +353,8 @@ protected:
   bool m_block_modified_set;
   bool m_allow_auto_save;
   bool m_is_example;
+
+  Gtk::Window* m_parent_window; //Needed by BusyCursor.(gtype_0)
 };
 
 //The base View for this document;

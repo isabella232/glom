@@ -198,7 +198,7 @@ bool Box_Data_Details::fill_from_database()
 
     //TODO: This should keep the connection open, so we don't need to 
     //reconnect many times..
-    sharedptr<SharedConnection> sharedconnection = connect_to_server();
+    sharedptr<SharedConnection> sharedconnection = connect_to_server(get_app_window());
 
 
     bResult = Box_Data::fill_from_database();
@@ -229,7 +229,7 @@ bool Box_Data_Details::fill_from_database()
         Glib::RefPtr<Gnome::Gda::DataModel> result;
 
         if(!primary_key_is_empty)
-          result = Query_execute(query);
+          result = Query_execute(query, get_app_window());
 
         if((result && result->get_n_rows()) || primary_key_is_empty) //either a working result or no result needed.
         {
@@ -604,7 +604,7 @@ void Box_Data_Details::on_flowtable_field_edited(const sharedptr<const LayoutIte
     try
     {
       FieldInRecord field_in_record(layout_field, m_table_name /* parent table */, primary_key_field, primary_key_value, *(get_document()));
-      const bool bTest = set_field_value_in_database(field_in_record, field_value);
+      const bool bTest = set_field_value_in_database(field_in_record, field_value, get_app_window());
 
       //Glib::ustring strQuery = "UPDATE \"" + table_name + "\"";
       //strQuery += " SET " +  /* table_name + "." + postgres does not seem to like the table name here */ strFieldName + " = " + field.sql(field_value);
