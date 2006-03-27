@@ -1031,7 +1031,25 @@ void FlowTableWithFields::on_flowtable_related_record_changed(const Glib::ustrin
 
 void FlowTableWithFields::on_portal_user_requested_details(Gnome::Gda::Value primary_key_value, Box_Data_List_Related* portal_box)
 {
-  signal_requested_related_details().emit(portal_box->get_relationship()->get_to_table(), primary_key_value);
+  sharedptr<const Relationship> relationship = portal_box->get_relationship();
+  if(!relationship)
+    return;
+
+  const Glib::ustring related_table = relationship->get_to_table();
+  if(get_document()->get_table_is_hidden(related_table))
+  {
+    //Try to find a doubly-related table that is not hidden, and open that instead:
+    Glib::ustring doubly_related_table_name;
+    Gnome::Gda::Value doubly_related_primary_key;
+    portal_box->get_suitable_record_to_view_details(primary_key_value, doubly_related_table_name, doubly_related_primary_key);
+
+    if(!(doubly_related_table_name.empty()))
+       signal_requested_related_details().emit(doubly_related_table_name, doubly_related_primary_key);
+  }
+  else
+  {
+    signal_requested_related_details().emit(related_table, primary_key_value);
+  }
 }
 
 void FlowTableWithFields::on_flowtable_requested_related_details(const Glib::ustring& table_name, Gnome::Gda::Value primary_key_value)

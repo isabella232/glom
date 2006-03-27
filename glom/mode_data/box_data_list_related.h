@@ -52,6 +52,9 @@ public:
 
   sigc::signal<void, Gnome::Gda::Value> signal_record_added;
 
+  bool get_has_suitable_record_to_view_details() const;
+  void get_suitable_record_to_view_details(const Gnome::Gda::Value& primary_key_value, Glib::ustring& table_name, Gnome::Gda::Value& table_primary_key_value);
+
   ///@param relationship_name
   typedef sigc::signal<void, const Glib::ustring&> type_signal_record_changed;
   type_signal_record_changed signal_record_changed();
@@ -59,6 +62,9 @@ public:
 protected:
   virtual bool fill_from_database(); //Override.
   virtual type_vecLayoutFields get_fields_to_show() const; //override
+
+  sharedptr<const LayoutItem_Field> get_field_is_from_non_hidden_related_record() const;
+  sharedptr<const LayoutItem_Field> get_field_identifies_non_hidden_related_record() const;
 
   virtual void on_adddel_user_requested_add();
   virtual void on_adddel_user_changed(const Gtk::TreeModel::iterator& row, guint col);

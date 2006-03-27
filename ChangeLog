@@ -1,5 +1,15 @@
 2006-03-27  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/mode_data/box_data_list_related.cc:
+	* glom/mode_data/box_data_list_related.h: Added get_suitable_record_to_view_details() 
+	and get_has_suitable_record_to_view_details() so that the row button can go to a 
+	doubly-related record if the related table is hidden, based on the first related field 
+	in the portal.
+	* glom/utility_widgets/flowtablewithfields.cc: on_portal_user_requested_details(): 
+	If the related table is hidden, use get_has_suitable_record_to_view_details() instead.
+
+2006-03-27  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/utility_widgets/flowtablewithfields.cc: create_related(): Connect to signals 
 	here, instead of from the caller. This makes the row details button work in Notebooks.
 

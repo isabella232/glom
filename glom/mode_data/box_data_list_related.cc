@@ -84,13 +84,8 @@ Box_Data_List_Related::~Box_Data_List_Related()
 
 void Box_Data_List_Related::enable_buttons()
 {
-  bool to_table_is_hidden = false;
-  if(m_portal->get_has_relationship_name())
-  {
-    to_table_is_hidden = get_document()->get_table_is_hidden(m_portal->get_relationship()->get_to_table());
-  }
-
-  m_AddDel.set_allow_view_details(!to_table_is_hidden); //Don't allow the user to go to a record in a hidden table.
+  const bool view_details_possible = get_has_suitable_record_to_view_details();
+  m_AddDel.set_allow_view_details(view_details_possible); //Don't allow the user to go to a record in a hidden table.
 }
 
 bool Box_Data_List_Related::init_db_details(const sharedptr<const LayoutItem_Portal>& portal, bool show_title)
@@ -378,4 +373,152 @@ void Box_Data_List_Related::on_adddel_user_requested_add()
   //TODO: Warn the user instead of just doing nothing.
   if(!m_portal->m_map_items.empty())
     Box_Data_List::on_adddel_user_requested_add();
+}
+
+sharedptr<const LayoutItem_Field> Box_Data_List_Related::get_field_identifies_non_hidden_related_record() const
+{
+  //Find the first field that is from a non-hidden related table.
+  sharedptr<LayoutItem_Field> result;
+
+  const Document_Glom* document = get_document();
+  if(!document)
+    return result;
+
+  for(type_vecLayoutFields::const_iterator iter = m_FieldsShown.begin(); iter != m_FieldsShown.end(); ++iter)
+  {
+    sharedptr<const LayoutItem_Field> field = *iter;
+    if(field && !(field->get_has_relationship_name()))
+    {
+      sharedptr<Relationship> relationship = document->get_field_used_in_relationship_to_one(LayoutWidgetBase::m_table_name, field->get_name());
+      if(relationship)
+      {
+        const Glib::ustring table_name = relationship->get_to_table();
+        if(!(table_name.empty()))
+        {
+          if(!(document->get_table_is_hidden(table_name)))
+            return field;
+        }
+      }
+    }
+  }
+
+  return result;
+}
+
+sharedptr<const LayoutItem_Field> Box_Data_List_Related::get_field_is_from_non_hidden_related_record() const
+{
+  //Find the first field that is from a non-hidden related table.
+  sharedptr<LayoutItem_Field> result;
+
+  const Document_Glom* document = get_document();
+  if(!document)
+    return result;
+
+  for(type_vecLayoutFields::const_iterator iter = m_FieldsShown.begin(); iter != m_FieldsShown.end(); ++iter)
+  {
+    sharedptr<const LayoutItem_Field> field = *iter;
+    if(field)
+    {
+      if(field->get_has_relationship_name())
+      {
+        const Glib::ustring table_name = field->get_table_used(LayoutWidgetBase::m_table_name);
+        if(!(document->get_table_is_hidden(table_name)))
+          return field;
+      }
+
+    }
+  }
+
+  return result;
+}
+
+bool Box_Data_List_Related::get_has_suitable_record_to_view_details() const
+{
+  const Document_Glom* document = get_document();
+  if(!document)
+    return false;
+
+  if(!(document->get_table_is_hidden(LayoutWidgetBase::m_table_name)))
+  {
+    return true;
+  }
+  else
+  {
+    //Find a suitable related table by finding the first layout field that mentions one:
+    sharedptr<const LayoutItem_Field> field = get_field_is_from_non_hidden_related_record();
+    if(field)
+      return true;
+    else
+    {
+      sharedptr<const LayoutItem_Field> field = get_field_identifies_non_hidden_related_record();
+      if(field)
+       return true;
+    }
+  }
+
+  return false;
+}
+
+void Box_Data_List_Related::get_suitable_record_to_view_details(const Gnome::Gda::Value& primary_key_value, Glib::ustring& table_name, Gnome::Gda::Value& table_primary_key_value)
+{
+  //Initialize output parameters:
+  table_name = Glib::ustring();
+  table_primary_key_value = Gnome::Gda::Value();
+
+  const Document_Glom* document = get_document();
+  if(!document)
+    return;
+
+  if(!(document->get_table_is_hidden(LayoutWidgetBase::m_table_name)))
+  {
+    table_name = LayoutWidgetBase::m_table_name;
+    table_primary_key_value = primary_key_value;
+  }
+  else
+  {
+    //Find a suitable related table by finding the first layout field that mentions one:
+    sharedptr<const LayoutItem_Field> field = get_field_is_from_non_hidden_related_record();
+    if(field)
+    {
+      table_name = field->get_table_used(LayoutWidgetBase::m_table_name);
+
+      sharedptr<Field> related_primary_key = get_field_primary_key_for_table(table_name);
+      if(related_primary_key)
+      {
+        //Get the value of the related primary key:
+        sharedptr<LayoutItem_Field> layout_item = glom_sharedptr_clone(field); //To keep the relationship info.
+        layout_item->set_name(related_primary_key->get_name());
+        layout_item->set_full_field_details(related_primary_key);
+
+        type_vecLayoutFields fieldsToGet;
+        fieldsToGet.push_back(layout_item);
+
+        //std::cout << "PRIMARY_KEY_TABLE=" << LayoutWidgetBase::m_table_name << std::endl;
+        //std::cout << "PRIMARY_KEY_TABLE_TO=" << m_portal->get_relationship()->get_to_table() << std::endl;
+        //std::cout << "PRIMARY_KEY_VALUE=" << primary_key_value.to_string() << std::endl;
+
+        const Glib::ustring query = GlomUtils::build_sql_select_with_key(LayoutWidgetBase::m_table_name, fieldsToGet, m_AddDel.get_key_field(), primary_key_value);
+        Glib::RefPtr<Gnome::Gda::DataModel> data_model = Query_execute(query);
+        if(data_model && data_model->get_n_rows() && data_model->get_n_columns())
+        {
+          table_primary_key_value = data_model->get_value_at(0, 0);
+          //std::cout << "Box_Data_List_Related::get_suitable_record_to_view_details(): table_primary_key_value=" << table_primary_key_value.to_string() << std::endl;
+        }
+        else
+        {
+           std::cout << "Box_Data_List_Related::get_suitable_record_to_view_details(): SQL query returned no suitable primary key" << std::endl;
+        }
+      }
+    }
+    else
+    {
+       sharedptr<const LayoutItem_Field> field = get_field_identifies_non_hidden_related_record();
+       if(field)
+       {
+         //TODO: We need the relationship, and we need to worry about doubly-related fields.
+         //table_name = field->get_table_used();
+       }
+    }
+
+  }
 }
