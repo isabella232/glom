@@ -1,0 +1,190 @@
+? Doxyfile
+? aclocal.m4
+? add1000.patch
+? autom4te.cache
+? bool_return_added.patch
+? changelanguage_dialog.patch
+? config.guess
+? config.h
+? config.log
+? config.status
+? config.sub
+? configure
+? debug
+? export_picture.csv
+? fromexamplenowdev.glom
+? glom-0.9.91
+? glom-0.9.91.tar.gz
+? glom-0.9.92
+? glom-0.9.92.tar.gz
+? glom.desktop
+? glom.desktop.in
+? glom.kdevelop
+? glom.kdevelop.pcs
+? glom.kdevses
+? glomtest1.glom
+? glomtest2.glom
+? glomusrsaveas1.glom
+? intltool-extract
+? intltool-extract.in
+? intltool-merge
+? intltool-merge.in
+? intltool-update
+? intltool-update.in
+? invoices.csv
+? libtool
+? ltmain.sh
+? mkinstalldirs
+? pgadmin.log
+? saveasexample1.glom
+? shared_layoutitems.patch
+? stamp-h1
+? temp.patch
+? temp_implicit_placeholder.patch
+? test.csv
+? test.glom
+? test10.glom
+? test11.glom
+? test2.glom
+? test3.csv
+? test3.glom
+? test4.glom
+? test5.glom
+? test6.glom
+? test7.glom
+? test8.glom
+? test9.glom
+? testexample.glom
+? testexample2.glom
+? testnew.glom
+? testnewnotdev.glom
+? testnodev.glom
+? testnonexample_a1.glom
+? testnonexample_a2.glom
+? testnonexample_a3.glom
+? testnonexample_a4.glom
+? testnonexample_a5.glom
+? testnonexample_a6.glom
+? testnotexample.glom
+? testy2.glom
+? text.csv
+? docs/Makefile
+? docs/Makefile.in
+? docs/user-guide/Makefile
+? docs/user-guide/Makefile.in
+? docs/user-guide/C/Makefile
+? docs/user-guide/C/Makefile.in
+? docs/user-guide/C/glom-C.omf.out
+? docs/user-guide/C/omf_timestamp
+? docs/user-guide/C/figures/Makefile
+? docs/user-guide/C/figures/Makefile.in
+? docs/user-guide/de/.xml2po.mo
+? docs/user-guide/de/glom.xml
+? examples/Makefile
+? examples/Makefile.in
+? examples/example_smallbusiness.glom_bup
+? examples/example_smallbusiness_readonly.glom
+? examples/example_smallbusiness_savedas.glom
+? examples/example_smallbusiness_savedas2.glom
+? examples/film_savedas.glom
+? examples/readonlydir
+? examples/test1.glom
+? glom/glom
+? glom/glom.gladep
+? glom/test2.csv
+? glom/test_pyembed
+? glom/data_structure/Makefile
+? glom/data_structure/Makefile.in
+? glom/data_structure/a.out
+? glom/data_structure/testdate.cc
+? glom/data_structure/testdate_allformats.cc
+? glom/data_structure/testtimeget.cc
+? glom/data_structure/time_put_all_formats.txt
+? glom/data_structure/time_put_all_formats_C.txt
+? glom/data_structure/time_put_all_formats_de.txt
+? glom/data_structure/time_put_all_formats_en_US.txt
+? glom/data_structure/time_put_all_formats_en_us.txt
+? glom/data_structure/time_put_all_formats_uk.txt
+? glom/data_structure/layout/Makefile
+? glom/data_structure/layout/Makefile.in
+? glom/data_structure/layout/report_parts/Makefile
+? glom/data_structure/layout/report_parts/Makefile.in
+? glom/document/Makefile
+? glom/document/Makefile.in
+? glom/layout_item_dialogs/Makefile
+? glom/layout_item_dialogs/Makefile.in
+? glom/mode_data/Makefile
+? glom/mode_data/Makefile.in
+? glom/mode_design/Makefile
+? glom/mode_design/Makefile.in
+? glom/mode_design/fields/Makefile
+? glom/mode_design/fields/Makefile.in
+? glom/mode_design/users/Makefile
+? glom/mode_design/users/Makefile.in
+? glom/mode_find/Makefile
+? glom/mode_find/Makefile.in
+? glom/navigation/Makefile
+? glom/navigation/Makefile.in
+? glom/python_embed/Makefile
+? glom/python_embed/Makefile.in
+? glom/python_embed/python_module/Makefile
+? glom/python_embed/python_module/Makefile.in
+? glom/relationships_overview/Makefile
+? glom/relationships_overview/Makefile.in
+? glom/reports/Makefile
+? glom/reports/Makefile.in
+? glom/translation/Makefile
+? glom/translation/Makefile.in
+? glom/utility_widgets/Makefile
+? glom/utility_widgets/Makefile.in
+? glom/utility_widgets/test
+? glom/utility_widgets/adddel/Makefile
+? glom/utility_widgets/adddel/Makefile.in
+? glom/utility_widgets/adddel/eggcolumnchooser/Makefile
+? glom/utility_widgets/adddel/eggcolumnchooser/Makefile.in
+? glom/utility_widgets/db_adddel/Makefile
+? glom/utility_widgets/db_adddel/Makefile.in
+? macros/Makefile
+? macros/Makefile.in
+? po/stamp-it
+? xslt/test.xml
+Index: glom/mode_data/box_data.cc
+===================================================================
+RCS file: /cvs/gnome/glom/glom/mode_data/box_data.cc,v
+retrieving revision 1.96
+diff -u -p -r1.96 box_data.cc
+--- glom/mode_data/box_data.cc	27 Mar 2006 09:03:38 -0000	1.96
++++ glom/mode_data/box_data.cc	27 Mar 2006 13:17:43 -0000
+@@ -216,7 +216,7 @@ Glib::RefPtr<Gnome::Gda::DataModel> Box_
+           else
+           {
+             if(use_entered_data)
+-              value = get_entered_field_data(layout_item);
++              value = GlomConversions::get_example_value(field->get_glom_type());
+           }
+ 
+           Glib::ustring strFieldValue = field->sql(value);
+Index: glom/mode_data/box_data_details.cc
+===================================================================
+RCS file: /cvs/gnome/glom/glom/mode_data/box_data_details.cc,v
+retrieving revision 1.111
+diff -u -p -r1.111 box_data_details.cc
+--- glom/mode_data/box_data_details.cc	27 Mar 2006 09:03:38 -0000	1.111
++++ glom/mode_data/box_data_details.cc	27 Mar 2006 13:17:43 -0000
+@@ -297,6 +297,8 @@ bool Box_Data_Details::fill_from_databas
+ 
+ void Box_Data_Details::on_button_new()
+ {
++  for(unsigned long i = 0; i < 1000; ++i)
++  {
+   if(confirm_discard_unstored_data())
+   {
+     if(m_field_primary_key->get_auto_increment()) //If the primary key is an auto-increment:
+@@ -315,6 +317,7 @@ void Box_Data_Details::on_button_new()
+     }
+ 
+   } //if(confirm_discard_unstored_data())
++  }
+ }
+ 
+ void Box_Data_Details::on_button_del()
