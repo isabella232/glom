@@ -117,6 +117,7 @@
 
 #define GLOM_NODE_REPORTS "reports"
 #define GLOM_NODE_REPORT "report"
+#define GLOM_ATTRIBUTE_REPORT_SHOW_TABLE_TITLE "show_table_title"
 #define GLOM_NODE_REPORT_ITEM_GROUPBY_GROUPBY "groupby"
 #define GLOM_NODE_REPORT_ITEM_GROUPBY_SORTBY "sortby"
 #define GLOM_ATTRIBUTE_LAYOUT_ITEM_FIELDSUMMARY_SUMMARYTYPE "summarytype"
@@ -1981,11 +1982,13 @@ bool Document_Glom::load_after()
               if(node)
               {
                 const Glib::ustring report_name = get_node_attribute_value(node, GLOM_ATTRIBUTE_NAME);
+                const bool show_table_title = get_node_attribute_value_as_bool(node, GLOM_ATTRIBUTE_REPORT_SHOW_TABLE_TITLE);
 
                 //type_mapLayoutGroupSequence layout_groups;
 
                 sharedptr<Report> report(new Report());
                 report->set_name(report_name);
+                report->set_show_table_title(show_table_title);
 
                 const xmlpp::Element* nodeGroups = get_node_child_named(node, GLOM_NODE_DATA_LAYOUT_GROUPS);
                 if(nodeGroups)
@@ -2500,6 +2503,7 @@ bool Document_Glom::save_before()
 
           sharedptr<const Report> report = iter->second;
           nodeReport->set_attribute(GLOM_ATTRIBUTE_NAME, report->get_name());
+          set_node_attribute_value_as_bool(nodeReport, GLOM_ATTRIBUTE_REPORT_SHOW_TABLE_TITLE, report->get_show_table_title());
 
           xmlpp::Element* nodeGroups = nodeReport->add_child(GLOM_NODE_DATA_LAYOUT_GROUPS);
           if(report->m_layout_group)

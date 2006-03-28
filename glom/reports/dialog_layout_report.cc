@@ -53,11 +53,13 @@ Dialog_Layout_Report::Dialog_Layout_Report(BaseObjectType* cobject, const Glib::
   m_button_formatting(0),
   m_label_table_name(0),
   m_entry_name(0),
-  m_entry_title(0)
+  m_entry_title(0),
+  m_checkbutton_table_title(0)
 {
   refGlade->get_widget("label_table_name", m_label_table_name);
   refGlade->get_widget("entry_name", m_entry_name);
   refGlade->get_widget("entry_title", m_entry_title);
+  refGlade->get_widget("checkbutton_table_title", m_checkbutton_table_title);
 
   refGlade->get_widget("button_up", m_button_up);
   m_button_up->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout_Report::on_button_up) );
@@ -338,6 +340,7 @@ void Dialog_Layout_Report::set_report(const Glib::ustring& table_name, const sha
 
   m_entry_name->set_text(report->get_name()); 
   m_entry_title->set_text(report->get_title());
+  m_checkbutton_table_title->set_active(report->get_show_table_title());
 
   //Update the tree models from the document
 
@@ -1065,6 +1068,7 @@ sharedptr<Report> Dialog_Layout_Report::get_report()
 {
   m_report->set_name( m_entry_name->get_text() );
   m_report->set_title( m_entry_title->get_text() );
+  m_report->set_show_table_title( m_checkbutton_table_title->get_active() );
 
   m_report->m_layout_group->remove_all_items();
 

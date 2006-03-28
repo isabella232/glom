@@ -604,7 +604,7 @@ void Box_Data_Details::on_flowtable_field_edited(const sharedptr<const LayoutIte
     try
     {
       FieldInRecord field_in_record(layout_field, m_table_name /* parent table */, primary_key_field, primary_key_value, *(get_document()));
-      const bool bTest = set_field_value_in_database(field_in_record, field_value, get_app_window());
+      const bool bTest = set_field_value_in_database(field_in_record, field_value, false /* don't use current calculations */, get_app_window());
 
       //Glib::ustring strQuery = "UPDATE \"" + table_name + "\"";
       //strQuery += " SET " +  /* table_name + "." + postgres does not seem to like the table name here */ strFieldName + " = " + field.sql(field_value);

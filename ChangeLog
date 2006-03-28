@@ -1,3 +1,22 @@
+2006-03-28  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/mode_data/box_data_details.cc:
+	* glom/mode_data/box_data_list.cc: Call set_field_value_in_database() with the optional 
+	use_current_calculations value instead of mistakenly casting the window pointer to bool.
+
+2006-03-28  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/glom.glade: window_layout_report: 
+	* glom/reports/dialog_layout_report.cc:
+	* glom/reports/dialog_layout_report.h: Add a show_table_title checkbutton, because the 
+	table title is sometimes superfluous.
+	* glom/document/document_glom.cc: load_after(), save_before(): load and save 
+	the new report property.
+	* glom/base_db.cc: build_report(): Put show_table_title in the xml.
+	* xslt/print_report_to_html.xsl: Interepret show_table_title in the xml.
+	* glom/data_structure/report.cc:
+	* glom/data_structure/report.h: Added get/set_show_table_title().
+
 2006-03-27  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/utility_widgets/db_adddel/db_adddel.cc: Use TreeView::set_fixed_height_mode() and 

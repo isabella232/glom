@@ -17,10 +17,11 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
- 
+
 #include "report.h"
 
 Report::Report()
+: m_show_table_title(true)
 {
   m_translatable_item_type = TRANSLATABLE_TYPE_REPORT;
   m_layout_group = sharedptr<LayoutGroup>::create();
@@ -28,7 +29,8 @@ Report::Report()
 
 Report::Report(const Report& src)
 : TranslatableItem(src),
-  m_layout_group(src.m_layout_group)
+  m_layout_group(src.m_layout_group),
+  m_show_table_title(src.m_show_table_title)
 {
 }
 
@@ -37,7 +39,18 @@ Report& Report::operator=(const Report& src)
   TranslatableItem::operator=(src);
 
   m_layout_group = src.m_layout_group;
+  m_show_table_title = src.m_show_table_title;
 
   return *this;
+}
+
+bool Report::get_show_table_title() const
+{
+  return m_show_table_title;
+}
+
+void Report::set_show_table_title(bool show_table_title)
+{
+  m_show_table_title = show_table_title;
 }
 

@@ -2166,6 +2166,8 @@ void Base_DB::report_build(const FoundSet& found_set, const sharedptr<const Repo
     table_title = found_set.m_table_name;
 
   nodeRoot->set_attribute("table", table_title);
+  if(report->get_show_table_title())
+    nodeRoot->set_attribute("show_table_title", "true");
 
 
   //The groups:
@@ -2818,7 +2820,7 @@ bool Base_DB::set_field_value_in_database(const FieldInRecord& field_in_record, 
 
 void Base_DB::do_calculations(const FieldInRecord& field_changed, bool first_calc_field)
 {
-  //g_warning("Box_Data::do_calculations(): triggered by =%s", field_changed->get_name().c_str());
+  //g_warning("Box_Data::do_calculations(): triggered by =%s", field_changed.m_field->get_name().c_str());
 
   if(first_calc_field)
   {
@@ -2833,7 +2835,6 @@ void Base_DB::do_calculations(const FieldInRecord& field_changed, bool first_cal
     sharedptr<const Field> field = iter->second.m_field;
     if(field)
     {
-
       //TODO: What if the field is in another table?
       FieldInRecord triggered_field(field_changed.m_table_name, field, field_changed.m_key, field_changed.m_key_value);
       calculate_field(triggered_field); //And any dependencies.

@@ -106,6 +106,7 @@ protected:
   Gtk::Label* m_label_table_name;
   Gtk::Entry* m_entry_name;
   Gtk::Entry* m_entry_title;
+  Gtk::CheckButton* m_checkbutton_table_title;
 
 
   Glib::RefPtr<type_model> m_model_parts_header;

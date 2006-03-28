@@ -1,5 +1,8 @@
+1.0:
+
 * List view: You can now click on the column headings to sort by a field.
 * The busy cursor is shown during most communication or disk activity.
+* Reports: The table title is now optional.
 
 0.9.92
 

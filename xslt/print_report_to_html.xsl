@@ -12,7 +12,12 @@
 
 </xsl:text>
 <title>
-  <xsl:value-of select="@table"/>: <xsl:value-of select="@title"/>
+  <xsl:if test="string(@show_table_title)">
+    <xsl:if test="string(@table)">
+      <xsl:value-of select="@table"/>:
+    </xsl:if>
+  </xsl:if>
+  <xsl:value-of select="@title"/>
 </title>
 <xsl:text>
 
@@ -119,7 +124,12 @@ td
 <xsl:apply-templates select="header" />
 
 <h1>
-  <xsl:value-of select="@table"/>: <xsl:value-of select="@title"/>
+  <xsl:if test="string(@show_table_title)">
+    <xsl:if test="string(@table)">
+      <xsl:value-of select="@table"/>:
+    </xsl:if>
+  </xsl:if>
+  <xsl:value-of select="@title"/>
 </h1>
 <xsl:text>
 </xsl:text>
