@@ -93,7 +93,10 @@ void Dialog_Connection::load_from_document()
   if(document)
   {
     //Load server and user:
-    m_entry_host->set_text(document->get_connection_server());
+    Glib::ustring host = document->get_connection_server();
+    if(host.empty())
+      host = "localhost";
+    m_entry_host->set_text(host);
 
     Glib::ustring user = document->get_connection_user(); //TODO: Offer a drop-down list of users.
 

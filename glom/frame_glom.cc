@@ -1244,7 +1244,16 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
           std::cout << "Frame_Glom::connection_request_password_and_choose_new_database_name(): unused database name successfully found: " << database_name_possible << std::endl; 
           //The connection to the server is OK, but the specified database does not exist.
           //That's good - we were looking for an unused database name.
-          get_document()->set_connection_database(database_name_possible);
+          Document_Glom* document = get_document();
+          if(document)
+          {
+            document->set_connection_database(database_name_possible);
+
+            ConnectionPool* connection_pool = ConnectionPool::get_instance();
+            if(connection_pool)
+              document->set_connection_server(connection_pool->get_host());
+          }
+
           return true;
         }
       }
