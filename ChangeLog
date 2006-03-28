@@ -1,3 +1,10 @@
+1.0.0:
+
+2006-03-28  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/mode_data/box_data_list_related.cc: get_fields_to_show() Really make fields 
+	non-editable if the relationship does not allow editing.
+
 2006-03-28  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/dialog_connection.cc: load_from_document(): Use localhost if the host name is 

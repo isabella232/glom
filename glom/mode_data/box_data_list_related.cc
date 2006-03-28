@@ -278,6 +278,12 @@ void Box_Data_List_Related::on_record_deleted(const Gnome::Gda::Value& /* primar
 
 void Box_Data_List_Related::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, guint col)
 {
+  if(!(get_relationship()->get_allow_edit()))
+  {
+    std::cerr << "Box_Data_List_Related::on_adddel_user_added() called on non-editable portal. This should not happen." << std::endl;
+   return;
+  }
+
   //Call base class:
   Box_Data_List::on_adddel_user_changed(row, col);
 
@@ -288,6 +294,13 @@ void Box_Data_List_Related::on_adddel_user_changed(const Gtk::TreeModel::iterato
 
 void Box_Data_List_Related::on_adddel_user_added(const Gtk::TreeModel::iterator& row, guint col_with_first_value)
 {
+  sharedptr<const Relationship> relationship = get_relationship();
+  if(!relationship->get_allow_edit())
+  {
+    std::cerr << "Box_Data_List_Related::on_adddel_user_added() called on non-editable portal. This should not happen." << std::endl;
+   return;
+  }
+
   //Like Box_Data_List::on_adddel_user_added(),
   //but it doesn't allow adding if the new record cannot be a related record.
   //This would happen if there is already one related record and the relationship uses the primary key in the related record.
@@ -328,7 +341,20 @@ Box_Data_List_Related::type_vecLayoutFields Box_Data_List_Related::get_fields_to
     sharedptr<const Relationship> relationship = m_portal->get_relationship();
     if(relationship)
     {
-      return get_table_fields_to_show_for_sequence(relationship->get_to_table(), mapGroups);
+      type_vecLayoutFields result = get_table_fields_to_show_for_sequence(relationship->get_to_table(), mapGroups);
+
+      //If the relationship does not allow editing, then mark all these fields as non-editable:
+      if(!(get_relationship()->get_allow_edit()))
+      {
+        for(type_vecLayoutFields::iterator iter = result.begin(); iter != result.end(); ++iter)
+        {
+          sharedptr<LayoutItem_Field> item = *iter;
+          if(item)
+            item->set_editable(false);
+        }
+      }
+
+      return result;
     }
   }
 
