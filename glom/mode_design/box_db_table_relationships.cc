@@ -68,8 +68,12 @@ bool Box_DB_Table_Relationships::fill_from_database()
 
   bool result = Box_DB_Table::fill_from_database();
 
+  Document_Glom* document = get_document();
+  if(!document)
+    return false;
+
   //Get relationships from the document:
-  Document_Glom::type_vecRelationships vecRelationships = get_document()->get_relationships(m_table_name);
+  Document_Glom::type_vecRelationships vecRelationships = document->get_relationships(m_table_name);
 
   m_AddDel.remove_all();
 
@@ -81,7 +85,7 @@ bool Box_DB_Table_Relationships::fill_from_database()
     //Set combo choices:
     m_AddDel.set_column_choices(m_colFromField, util_vecStrings_from_Fields(get_fields_for_table(m_table_name)));
 
-    type_vecStrings vecTableNames = get_table_names(true /* ignore_system_tables */);
+    type_vecStrings vecTableNames = document->get_table_names(false /* ignore_system_tables */);
     type_vecStrings vecTableNames_ustring(vecTableNames.begin(), vecTableNames.end());
     m_AddDel.set_column_choices(m_colToTable, vecTableNames_ustring);
 

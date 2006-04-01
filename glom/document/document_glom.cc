@@ -968,6 +968,19 @@ Document_Glom::type_listTableInfo Document_Glom::get_tables(bool plus_system_pre
   return result;
 }
 
+std::vector<Glib::ustring> Document_Glom::get_table_names(bool plus_system_prefs) const
+{
+  type_listTableInfo list_full = get_tables(plus_system_prefs);
+  std::vector<Glib::ustring> result;
+  for(type_listTableInfo::iterator iter = list_full.begin(); iter != list_full.end(); ++iter)
+  {
+    sharedptr<TableInfo> info = *iter;
+    if(info)
+      result.push_back(info->get_name());
+  }
+
+  return result;
+}
 
 sharedptr<TableInfo> Document_Glom::get_table(const Glib::ustring table_name) const
 {

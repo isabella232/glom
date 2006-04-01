@@ -1,5 +1,17 @@
 2006-04-01  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/document/document_glom.cc:
+	* glom/document/document_glom.h: Added get_table_names(), using get_tables().
+	* glom/base_db.cc:
+	* glom/base_db.h: Renamed get_table_names() to get_table_names_from_database(), 
+	to be more explicit.
+	* glom/mode_design/box_db_table_relationships.cc:
+	* glom/navigation/box_tables.cc: Call the appropriate get_table_names*(), so we 
+	never show table names that are not in the document, because that usually leads to 
+	problems later.
+
+2006-04-01  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/navigation/box_tables.cc: on_adddel_Add(): If the table exists on the server, 
 	then try to reuse it and store it in the document. This should never happen, but it 
 	was just useful to me when I lost a more recent copy of my .glom document. It adds a 

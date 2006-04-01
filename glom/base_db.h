@@ -117,7 +117,7 @@ protected:
   void fill_full_field_details(const Glib::ustring& parent_table_name, sharedptr<LayoutItem_Field>& layout_item);
 
   typedef std::vector<Glib::ustring> type_vecStrings;
-  type_vecStrings get_table_names(bool ignore_system_tables = false) const;
+  type_vecStrings get_table_names_from_database(bool ignore_system_tables = false) const;
 
   bool get_table_exists_in_database(const Glib::ustring& table_name) const;
 

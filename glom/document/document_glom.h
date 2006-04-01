@@ -164,6 +164,8 @@ public:
 
   typedef std::list< sharedptr<TableInfo> > type_listTableInfo;
   virtual type_listTableInfo get_tables(bool plus_system_prefs = false) const;
+  std::vector<Glib::ustring> get_table_names(bool plus_system_prefs = false) const;
+
   virtual void set_tables(const type_listTableInfo& tables);
 
   sharedptr<TableInfo> get_table(const Glib::ustring table_name) const;

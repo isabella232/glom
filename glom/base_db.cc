@@ -177,14 +177,14 @@ bool Base_DB::get_table_exists_in_database(const Glib::ustring& table_name) cons
 {
   //TODO_Performance
 
-  type_vecStrings tables = get_table_names();
+  type_vecStrings tables = get_table_names_from_database();
   type_vecStrings::const_iterator iterFind = std::find(tables.begin(), tables.end(), table_name);
   bool result = (iterFind != tables.end());
 
   return result;
 }
 
-Base_DB::type_vecStrings Base_DB::get_table_names(bool ignore_system_tables) const
+Base_DB::type_vecStrings Base_DB::get_table_names_from_database(bool ignore_system_tables) const
 {
   type_vecStrings result;
 
@@ -195,7 +195,7 @@ Base_DB::type_vecStrings Base_DB::get_table_names(bool ignore_system_tables) con
     Glib::RefPtr<Gnome::Gda::DataModel> data_model_tables = gda_connection->get_schema(Gnome::Gda::CONNECTION_SCHEMA_TABLES);
     if(data_model_tables && (data_model_tables->get_n_columns() == 0))
     {
-      std::cerr << "Base_DB_Table::get_table_names(): libgda reported 0 tables for the database." << std::endl;
+      std::cerr << "Base_DB_Table::get_table_names_from_database(): libgda reported 0 tables for the database." << std::endl;
     }
     else if(data_model_tables)
     {
