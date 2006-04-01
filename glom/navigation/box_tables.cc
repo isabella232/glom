@@ -242,7 +242,31 @@ void Box_Tables::on_adddel_Add(const Gtk::TreeModel::iterator& row)
     table_info->set_name(table_name);
     table_info->set_title( util_title_from_string( table_name ) ); //Start with a title that might be appropriate.
 
-    const bool test = create_table(table_info, fields);
+    //Check whether it exists already. (Maybe it is somehow in the database but not in the document. That shouldn't happen.)
+    const bool exists_in_db = get_table_exists_in_database(table_name);
+    bool created = false; 
+    if(exists_in_db)
+    {
+      //Ask the user if they want us to try to cope with this:
+      Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Table Already Exists")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_OK_CANCEL);
+      dialog.set_secondary_text(_("This table already exists on the database server, though it is not mentioned in the .glom file. This should not happen. Would you like Glom to attempt to use the existing table?"));
+      dialog.set_transient_for(*get_app_window());
+
+      const int response = dialog.run();
+      dialog.hide();
+
+      if(response == Gtk::RESPONSE_OK)
+      {
+        //Maybe Glom will cope with whatever fields are there. Let's see.
+        created = true;
+      }
+
+      created = true;
+    }
+    else
+    {
+      created = create_table(table_info, fields);
+    }
 
     //Create a table with 1 "ID" field:
    //MSYQL:
@@ -258,7 +282,7 @@ void Box_Tables::on_adddel_Add(const Gtk::TreeModel::iterator& row)
     //  extra_field_comments + "varchar" +
     //  ")" );
 
-    if(test)
+    if(created)
     {
       //Show the new information for this whole row:
       fill_table_row(row, table_info);
