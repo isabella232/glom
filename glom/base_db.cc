@@ -923,9 +923,13 @@ bool Base_DB::add_standard_groups()
 
     for(Document_Glom::type_listTableInfo::const_iterator iter = table_list.begin(); iter != table_list.end(); ++iter)
     {
-      sharedptr<TableInfo> table_info = *iter;
+      sharedptr<const TableInfo> table_info = *iter;
       if(table_info)
-        set_table_privileges(devgroup, table_info->get_name(), priv_devs, true /* developer privileges */);
+      {
+        const Glib::ustring table_name = table_info->get_name();
+        if(get_table_exists_in_database(table_name)) //Maybe the table has not been created yet.
+          set_table_privileges(devgroup, table_name, priv_devs, true /* developer privileges */);
+      }
     }
 
     //Make sure that it is in the database too:

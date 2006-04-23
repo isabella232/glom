@@ -1,3 +1,25 @@
+1.0.2:
+
+2006-04-23  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/utility_widgets/Makefile.am:
+	* glom/glom.glade:
+	* glom/utility_widgets/dialog_choose_date.cc:
+	* glom/utility_widgets/dialog_choose_date.h: New dialog, for choosing a date 
+	from a calendar.
+	* glom/utility_widgets/datawidget.cc:
+	* glom/utility_widgets/datawidget.h: Constructor: Add a ... button next to 
+	dates so people can choose the date from a calendar. This might help to give clues 
+	about a strange locale bug that someone is experiencing with date fields.
+
+1.0.1:
+
+2006-04-22  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/base_db.cc: add_standard_groups(): Do not grant developer access to a 
+	table if the table does not exist yet. This avoids the failure during the first 
+	creation of the first example (though a second try worked.)
+
 2006-04-01  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/document/document_glom.cc:

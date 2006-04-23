@@ -29,6 +29,7 @@
 #include "../application.h"
 #include "../mode_data/dialog_choose_field.h"
 #include "dialog_choose_id.h"
+#include "dialog_choose_date.h"
 #include "../layout_item_dialogs/dialog_field_layout.h"
 #include "../utils.h"
 #include <glibmm/i18n.h>
@@ -184,15 +185,33 @@ DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ust
   if(m_child)
   {
     bool child_added = false; //Don't use an extra container unless necessary.
-    if(document->get_field_used_in_relationship_to_one(table_name, field->get_name()))
+    const bool field_used_in_relationship_to_one = document->get_field_used_in_relationship_to_one(table_name, field->get_name());
+
+    Gtk::HBox* hbox_parent = 0; //Only used if there are extra widgets.
+    const bool with_extra_widgets = field_used_in_relationship_to_one || (glom_type == Field::TYPE_DATE);
+    if(with_extra_widgets)
     {
-      Gtk::HBox* hbox_parent = Gtk::manage( new Gtk::HBox() ); //We put the child (and any extra stuff) in this:
+      hbox_parent = Gtk::manage( new Gtk::HBox() ); //We put the child (and any extra stuff) in this:
       hbox_parent->set_spacing(6);
 
       hbox_parent->pack_start(*m_child);
       add(*hbox_parent);
 
+      child_added = true;
+    }
 
+    if(glom_type == Field::TYPE_DATE)
+    {
+      //Let the user choose a date from a calendar dialog:
+      Gtk::Button* button_date = Gtk::manage(new Gtk::Button(_("..."))); //TODO: A better label/icon for "Choose Date". 
+      button_date->show();
+      hbox_parent->pack_start(*button_date);
+      button_date->signal_clicked().connect(sigc::mem_fun(*this, &DataWidget::on_button_choose_date));
+    }
+
+    if(field_used_in_relationship_to_one && hbox_parent)
+    {
+      //Add buttons for related record navigation:
       Gtk::Button* button_go_to_details = Gtk::manage(new Gtk::Button(Gtk::Stock::OPEN));
       hbox_parent->pack_start(*button_go_to_details);
       button_go_to_details->signal_clicked().connect(sigc::mem_fun(*this, &DataWidget::on_button_open_details));
@@ -200,14 +219,11 @@ DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ust
       Gtk::Button* button_select = Gtk::manage(new Gtk::Button(Gtk::Stock::FIND));
       hbox_parent->pack_start(*button_select);
       button_select->signal_clicked().connect(sigc::mem_fun(*this, &DataWidget::on_button_select_id));
-
-      child_added = true;
     }
 
     if(!child_added)
       add(*m_child);
   }
-
 
 
   setup_menu();
@@ -655,6 +671,37 @@ const Gtk::Widget* DataWidget::get_data_child_widget() const
      set_value(chosen_id);
      m_signal_edited.emit(chosen_id);
    }
+ }
+
+void DataWidget::on_button_choose_date()
+{  
+  try
+  {
+    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_choose_date");
+
+    Dialog_ChooseDate* dialog = 0;
+    refXml->get_widget_derived("dialog_choose_date", dialog);
+
+    if(dialog)
+    {
+      dialog->set_transient_for(*get_application());
+      dialog->set_date_chosen(get_value());
+
+      const int response = dialog->run();
+      dialog->hide();
+      if(response == Gtk::RESPONSE_OK)
+      {
+        //Get the chosen date
+        set_value(dialog->get_date_chosen());
+      }
+
+      delete dialog;
+    }
+  }
+  catch(const Gnome::Glade::XmlError& ex)
+  {
+    std::cerr << ex.what() << std::endl;
+  }
  }
 
  bool DataWidget::offer_related_record_id_find(Gnome::Gda::Value& chosen_id)

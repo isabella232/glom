@@ -1,3 +1,19 @@
+1.0.2:
+
+* Added a "..." (better suggestions welcome) next to date fields, to 
+  show a calendar dialog. New features like this should not be in the stable 
+  series, but this could help to solve a strange locale bug that someone is 
+  experiencing.
+
+1.0.1:
+
+* Correct failure while creating an example for the first time.
+  (though it worked when you tried again.)
+* Updated translations: 
+  - Finnish (Ilkka Tuohela)
+  - Vietnamese (Clytie Siddall)
+  - Spanish (Francisco Javier F. Serrador)
+
 1.0:
 
 * List view: You can now click on the column headings to sort by a field.

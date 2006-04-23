@@ -80,6 +80,7 @@ protected:
   virtual void on_child_layout_item_added(LayoutWidgetBase::enumType item_type);
   void on_button_open_details();
   void on_button_select_id();
+  void on_button_choose_date();
 
   virtual void on_menupopup_activate_layout(); //override
   virtual void on_menupopup_activate_layout_properties(); //override
