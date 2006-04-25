@@ -169,7 +169,10 @@ Glib::ustring GlomConversions::get_text_for_gda_value(Field::glom_field_type glo
   {
     Gnome::Gda::Date gda_date = value.get_date();
 
-    tm the_c_time = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    //tm the_c_time = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    tm the_c_time;
+    memset(&the_c_time, 0, sizeof(the_c_time));
+
     the_c_time.tm_year = gda_date.year - 1900; //C years start are the AD year - 1900. So, 01 is 1901.
     the_c_time.tm_mon = gda_date.month - 1; //C months start at 0.
     the_c_time.tm_mday = gda_date.day; //starts at 1
@@ -186,7 +189,10 @@ Glib::ustring GlomConversions::get_text_for_gda_value(Field::glom_field_type glo
   {
     Gnome::Gda::Time gda_time = value.get_time();
 
-    tm the_c_time = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    //tm the_c_time = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    tm the_c_time;
+    memset(&the_c_time, 0, sizeof(the_c_time));
+
     the_c_time.tm_hour = gda_time.hour;
     the_c_time.tm_min = gda_time.minute;
     the_c_time.tm_sec = gda_time.second;
@@ -415,7 +421,9 @@ tm GlomConversions::parse_date(const Glib::ustring& text, const std::locale& loc
   /* This seems to be necessary - when I do this, as found here ( http://www.tacc.utexas.edu/services/userguides/pgi/pgC++_lib/stdlibcr/tim_0622.htm ) then the time is correctly parsed (it is changed).
    * When not, I get just zeros.
    */
-  tm the_c_time = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+  //tm the_c_time = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+  tm the_c_time;
+  memset(&the_c_time, 0, sizeof(the_c_time));
 
   //If the standard locale date format is not appropriate for display then it's also not appropriate for parsing,
   //because std::get_time() stupidly parses _only_ that format.
@@ -463,7 +471,10 @@ tm GlomConversions::parse_date(const Glib::ustring& text, const std::locale& loc
     date.set_parse(text); //I think this uses the current locale. murrayc.
     if(date.valid())
     {
-      tm null_c_time = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+      //tm null_c_time = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+      tm null_c_time;
+      memset(&null_c_time, 0, sizeof(null_c_time));
+
       the_c_time = null_c_time;
 
       if(date.get_year() != Glib::Date::BAD_YEAR)
@@ -480,7 +491,10 @@ tm GlomConversions::parse_date(const Glib::ustring& text, const std::locale& loc
     else //It really really failed.
     {
       //Note that 0 would be invalid for some of these.
-      tm blank_time = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+      //tm blank_time = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+      tm blank_time;
+      memset(&blank_time, 0, sizeof(blank_time));
+
       blank_time.tm_mday = 1;
       blank_time.tm_mon = 1;
       the_c_time = blank_time;
@@ -538,7 +552,9 @@ tm GlomConversions::parse_time(const Glib::ustring& text, const std::locale& loc
   /* This seems to be necessary - when I do this, as found here ( http://www.tacc.utexas.edu/services/userguides/pgi/pgC++_lib/stdlibcr/tim_0622.htm ) then the time is correctly parsed (it is changed).
    * When not, I get just zeros.
    */
-  tm the_c_time = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+  //tm the_c_time = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+  tm the_c_time;
+  memset(&the_c_time, 0, sizeof(the_c_time));
 
   std::ios_base::iostate err = std::ios_base::goodbit; //The initialization is essential because time_get seems to a) not initialize this output argument and b) check its value.
 
@@ -566,7 +582,10 @@ tm GlomConversions::parse_time(const Glib::ustring& text, const std::locale& loc
   {
     //std::cout << "  tg.get_time() failed" << text << std::endl;
 
-    tm blank_time = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    //tm blank_time = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    tm blank_time ;
+    memset(&blank_time , 0, sizeof(blank_time ));
+
     success = false;
     return blank_time;
   }
@@ -593,7 +612,10 @@ tm GlomConversions::parse_tm(const Glib::ustring& text, const std::locale& local
 
   the_stream << text;
 
-  tm the_c_time = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+  //tm the_c_time = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+  tm the_c_time;
+  memset(&the_c_time, 0, sizeof(the_c_time));
+
   type_iterator the_begin(the_stream);
   type_iterator the_end;
   std::ios_base::iostate state;  // Unused

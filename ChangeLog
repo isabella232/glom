@@ -1,3 +1,8 @@
+2006-04-23  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/data_structure/glomconversions.cc: Use memset to zero the tm structures, 
+	to fix a build problem with cygwin. Bug #338844 from Yselkowitz.
+
 1.0.2:
 
 2006-04-23  Murray Cumming  <murrayc@murrayc.com>
