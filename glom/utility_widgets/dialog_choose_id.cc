@@ -111,6 +111,7 @@ void Dialog_ChooseID::on_box_find_criteria(const Glib::ustring& where_clause)
   if(!where_clause.empty())
   {
     FoundSet found_set = m_box_select.get_found_set();
+    found_set.m_table_name = m_table_name;
     found_set.m_where_clause = where_clause;
     const bool records_found = m_box_select.init_db_details(found_set);
     if(!records_found)

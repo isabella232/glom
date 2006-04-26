@@ -1,3 +1,9 @@
+2006-04-26  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/utility_widgets/dialog_choose_id.cc: on_box_find_criteria:
+	Set the table name in the FoundSet, so that the init_db_details() can succeed, 
+	and not falsely say that there are no results.
+
 2006-04-23  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/data_structure/glomconversions.cc: Use memset to zero the tm structures, 
