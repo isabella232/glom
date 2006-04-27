@@ -658,8 +658,8 @@ Glib::ustring Field::get_type_name_ui(glom_field_type glom_type)
 {
   Glib::ustring result = "Invalid";
 
-  type_map_type_names::iterator iterFind = m_map_type_names.find(glom_type);
-  if(iterFind != m_map_type_names.end())
+  type_map_type_names::iterator iterFind = m_map_type_names_ui.find(glom_type);
+  if(iterFind != m_map_type_names_ui.end())
     result = iterFind->second;
 
   return result;

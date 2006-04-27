@@ -1,5 +1,11 @@
 2006-04-27  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/data_structure/field.cc: get_type_name_ui(): Actually return 
+	the translated string instead of the string for SQL. This prevents an error+crash 
+	when adding a field in any locale that has been translated. Kind of important.
+
+2006-04-27  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/base_db.cc:
 	* glom/layout_item_dialogs/Makefile.am:
 	* glom/layout_item_dialogs/dialog_buttonscript.cc:
