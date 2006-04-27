@@ -8,11 +8,13 @@ INCLUDES = -I@top_srcdir@/ $(GLOM_CFLAGS) $(PYTHON_INCLUDES) \
 
 noinst_LIBRARIES = liblayoutitemdialogs.a
 liblayoutitemdialogs_a_SOURCES = \
+                         dialog_buttonscript.cc dialog_buttonscript.h \
                          dialog_field_layout.cc dialog_field_layout.h \
                          dialog_imageobject.cc dialog_imageobject.h \
                          dialog_notebook.cc dialog_notebook.h \
                          dialog_group_by.cc dialog_group_by.h \
                          dialog_field_summary.cc dialog_field_summary.h \
+                         dialog_textobject.cc dialog_textobject.h \
                          combo_summarytype.h combo_summarytype.cc \
                          comboentry_borderwidth.h comboentry_borderwidth.cc \
                          dialog_groupby_secondaryfields.h dialog_groupby_secondaryfields.cc \

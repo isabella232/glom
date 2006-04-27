@@ -1,3 +1,19 @@
+2006-04-27  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/base_db.cc:
+	* glom/layout_item_dialogs/Makefile.am:
+	* glom/layout_item_dialogs/dialog_buttonscript.cc:
+	* glom/layout_item_dialogs/dialog_buttonscript.h:
+	* glom/layout_item_dialogs/dialog_textobject.cc:
+	* glom/layout_item_dialogs/dialog_textobject.h:
+	* glom/mode_data/dialog_layout_details.cc:
+	* glom/mode_design/Makefile.am:
+	* glom/mode_design/dialog_buttonscript.cc:
+	* glom/mode_design/dialog_buttonscript.h:
+	* glom/mode_design/dialog_textobject.cc:
+	* glom/mode_design/dialog_textobject.h: Moved these dialog classes into 
+	the layout_item_dialogs/ directory where they belong.
+
 2006-04-26  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/utility_widgets/dialog_choose_id.cc: on_box_find_criteria:

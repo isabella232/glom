@@ -20,7 +20,7 @@
 
 #include "dialog_layout_details.h"
 #include "dialog_choose_relationship.h"
-#include "../mode_design/dialog_buttonscript.h"
+#include "../layout_item_dialogs/dialog_buttonscript.h"
 #include "../layout_item_dialogs/dialog_notebook.h"
 #include "../frame_glom.h" //For show_ok_dialog()
 //#include <libgnome/gnome-i18n.h>

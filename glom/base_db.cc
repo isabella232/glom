@@ -27,7 +27,7 @@
 #include "mode_data/dialog_choose_field.h"
 #include "layout_item_dialogs/dialog_field_layout.h"
 #include "layout_item_dialogs/dialog_notebook.h"
-#include "mode_design/dialog_textobject.h"
+#include "layout_item_dialogs/dialog_textobject.h"
 #include "layout_item_dialogs/dialog_imageobject.h"
 //#include "reports/dialog_layout_report.h"
 #include "utils.h"
