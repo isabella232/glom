@@ -19,14 +19,14 @@
  */
 
 #include "treestore_report_layout.h"
-#include "../data_structure/layout/report_parts/layoutitem_groupby.h"
-#include "../data_structure/layout/report_parts/layoutitem_summary.h"
-#include "../data_structure/layout/report_parts/layoutitem_fieldsummary.h"
-#include "../data_structure/layout/report_parts/layoutitem_verticalgroup.h"
-#include "../data_structure/layout/report_parts/layoutitem_header.h"
-#include "../data_structure/layout/report_parts/layoutitem_footer.h"
-#include "../data_structure/layout/layoutitem_field.h"
-#include "../data_structure/layout/layoutitem_text.h"
+#include <glom/libglom/data_structure/layout/report_parts/layoutitem_groupby.h>
+#include <glom/libglom/data_structure/layout/report_parts/layoutitem_summary.h>
+#include <glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.h>
+#include <glom/libglom/data_structure/layout/report_parts/layoutitem_verticalgroup.h>
+#include <glom/libglom/data_structure/layout/report_parts/layoutitem_header.h>
+#include <glom/libglom/data_structure/layout/report_parts/layoutitem_footer.h>
+#include <glom/libglom/data_structure/layout/layoutitem_field.h>
+#include <glom/libglom/data_structure/layout/layoutitem_text.h>
 #include <iostream>
 
 TreeStore_ReportLayout::TreeStore_ReportLayout()

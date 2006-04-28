@@ -23,7 +23,7 @@
 
 #include <gtkmm.h>
 #include <libglademm.h>
-#include "../data_structure/layout/layoutitem_image.h"
+#include <glom/libglom/data_structure/layout/layoutitem_image.h>
 #include "../base_db.h"
 #include "../utility_widgets/imageglom.h"
 

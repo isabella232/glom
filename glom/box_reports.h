@@ -22,7 +22,7 @@
 #define BOX_REPORTS_H
 
 #include "box_db_table.h"
-#include "data_structure/report.h"
+#include <glom/libglom/data_structure/report.h>
 
 
 class Box_Reports : public Box_DB_Table

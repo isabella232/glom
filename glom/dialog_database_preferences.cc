@@ -20,8 +20,8 @@
  
 #include "dialog_database_preferences.h"
 #include "box_db.h" //For Box_DB::connect_to_server().
-#include "standard_table_prefs_fields.h"
-#include "data_structure/glomconversions.h"
+#include <glom/libglom/standard_table_prefs_fields.h>
+#include <glom/libglom/data_structure/glomconversions.h>
 #include <bakery/Utilities/BusyCursor.h>
 #include <glibmm/i18n.h>
 

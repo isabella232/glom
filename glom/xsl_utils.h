@@ -18,27 +18,31 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef GLOM_DATA_STRUCTURE_PRIVILEGES_H
-#define GLOM_DATA_STRUCTURE_PRIVILEGES_H
+#ifndef GLOM_XSL_UTILS_H
+#define GLOM_XSL_UTILS_H
 
+#include <glom/libglom/data_structure/field.h>
+#include <glom/libglom/data_structure/numeric_format.h>
 
-#include <glibmm/ustring.h>
+#include <glom/libglom/data_structure/layout/layoutitem_field.h>
+#include <libxml++/libxml++.h>
 
-#define GLOM_STANDARD_GROUP_NAME_DEVELOPER "glom_developer"
+///field, ascending
+typedef std::pair< sharedptr<const LayoutItem_Field>, bool> type_pair_sort_field;
+typedef std::list<type_pair_sort_field> type_sort_clause;
 
-class Privileges
+namespace Gtk
 {
-public: 
-  Privileges();
-  Privileges(const Privileges& src);
-  virtual ~Privileges();
+  class Window;
+}
 
-  Privileges& operator=(const Privileges& src);
+namespace GlomXslUtils
+{
 
-  bool operator==(const Privileges& src) const;
+void transform_and_open(const xmlpp::Document& xml_document, const Glib::ustring& xsl_file_path, Gtk::Window* parent_window = 0);
+Glib::ustring xslt_process(const xmlpp::Document& xml_document, const std::string& filepath_xslt);
 
+} //namespace GlomXslUtils
 
-  bool m_view, m_edit, m_create, m_delete;
-};
+#endif //GLOM_XSL_UTILS_H
 
-#endif //GLOM_DATA_STRUCTURE_PRIVILEGES_H

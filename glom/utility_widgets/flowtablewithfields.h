@@ -22,14 +22,14 @@
 #define GLOM_UTILITYWIDGETS_FLOWTABLEWITHFIELDS_H
 
 #include "flowtable.h"
-#include "../data_structure/layout/layoutgroup.h"
-#include "../data_structure/layout/layoutitem_field.h"
-#include "../data_structure/layout/layoutitem_notebook.h"
-#include "../data_structure/layout/layoutitem_portal.h"
-#include "../data_structure/layout/layoutitem_button.h"
-#include "../data_structure/layout/layoutitem_text.h"
-#include "../data_structure/field.h"
-#include "../document/document_glom.h"
+#include <glom/libglom/data_structure/layout/layoutgroup.h>
+#include <glom/libglom/data_structure/layout/layoutitem_field.h>
+#include <glom/libglom/data_structure/layout/layoutitem_notebook.h>
+#include <glom/libglom/data_structure/layout/layoutitem_portal.h>
+#include <glom/libglom/data_structure/layout/layoutitem_button.h>
+#include <glom/libglom/data_structure/layout/layoutitem_text.h>
+#include <glom/libglom/data_structure/field.h>
+#include <glom/libglom/document/document_glom.h>
 #include "../mode_data/box_data_list_related.h"
 #include "layoutwidgetbase.h"
 #include "../mode_data/treestore_layout.h" //Forthe enum.

@@ -24,9 +24,9 @@
 #include "placeholder.h"
 #include "layoutwidgetbase.h"
 #include <gtkmm/label.h>
-#include "../data_structure/field.h"
-#include "../document/document_glom.h"
-#include "../data_structure/layout/layoutitem_field.h"
+#include <glom/libglom/data_structure/field.h>
+#include <glom/libglom/document/document_glom.h>
+#include <glom/libglom/data_structure/layout/layoutitem_field.h>
 #include "../mode_data/treestore_layout.h" //Forthe enum.
 
 class App_Glom;

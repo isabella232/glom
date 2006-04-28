@@ -22,10 +22,10 @@
 #define GLOM_DB_ADDDEL_H
 
 #include "gtkmm.h"
-#include "../../data_structure/layout/layoutitem_field.h"
+#include <glom/libglom/data_structure/layout/layoutitem_field.h>
 #include <libgdamm.h>
 #include "glom_db_treemodel.h"
-#include "../../document/document_glom.h"
+#include <glom/libglom/document/document_glom.h>
 
 #include <vector>
 #include <map>

@@ -23,7 +23,7 @@
 
 #include <gtkmm.h>
 #include <libglademm.h>
-#include "../document/document_glom.h"
+#include <glom/libglom/document/document_glom.h>
 
 class Dialog_Design
 : public Gtk::Dialog,

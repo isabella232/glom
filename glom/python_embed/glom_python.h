@@ -21,7 +21,7 @@
 #ifndef GLOM_PYTHON_H
 #define GLOM_PYTHON_H
 
-#include "../data_structure/field.h"
+#include <glom/libglom/data_structure/field.h>
 #include <glibmm/ustring.h>
 
 typedef std::map<Glib::ustring, Gnome::Gda::Value> type_map_fields;

@@ -19,10 +19,10 @@
  */
 
 #include "textviewglom.h"
-#include "../data_structure/glomconversions.h"
+#include <glom/libglom/data_structure/glomconversions.h>
 #include <gtkmm/messagedialog.h>
 #include "../dialog_invalid_data.h"
-#include "../data_structure/glomconversions.h"
+#include <glom/libglom/data_structure/glomconversions.h>
 #include "../application.h"
 #include <glibmm/i18n.h>
 //#include <sstream> //For stringstream

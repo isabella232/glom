@@ -21,7 +21,7 @@
 #ifndef GLOM_DIALOG_RELATIONSHIPS_OVERVIEW
 #define GLOM_DIALOG_RELATIONSHIPS_OVERVIEW
 
-#include "../document/document_glom.h"
+#include <glom/libglom/document/document_glom.h>
 #include <gtkmm/dialog.h>
 #include <libglademm.h>
 #include "relationships_canvas.h"

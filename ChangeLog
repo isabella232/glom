@@ -1,3 +1,14 @@
+2006-04-28  Murray Cumming  <murrayc@murrayc.com>
+
+	* configure.in:
+	* glom/Makefile.am:
+	* po/POTFILES.in:
+	* many files: Moved data_structure, document, and part of python_embed directories 
+	into libglom, so that the glom python module does not need to use symbols in the 
+	glom executable, because this is not allowed in cygwin, using --no-undefined.
+	In future, this can be used as public API to make the document/database structure 
+	available to separate utilities and a web UI.
+
 2006-04-27  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/data_structure/field.cc: get_type_name_ui(): Actually return 

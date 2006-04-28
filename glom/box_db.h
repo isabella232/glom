@@ -24,9 +24,9 @@
 #include "gtkmm.h"
 #include "utility_widgets/adddel/adddel_withbuttons.h"
 
-#include "document/document_glom.h"
-#include "connectionpool.h"
-#include "appstate.h"
+#include <glom/libglom/document/document_glom.h>
+#include <glom/libglom/connectionpool.h>
+#include <glom/libglom/appstate.h>
 #include "base_db.h"
 #include <bakery/Utilities/BusyCursor.h>
 #include <libglademm.h>

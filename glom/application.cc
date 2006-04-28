@@ -23,7 +23,7 @@
 #include "dialog_progress_creating.h"
 #include "translation/dialog_change_language.h"
 #include "translation/window_translations.h"
-#include "utils.h"
+#include <glom/libglom/utils.h>
 #include <libgnome/gnome-help.h> //For gnome_help_display
 #include "config.h" //For VERSION.
 #include <cstdio>

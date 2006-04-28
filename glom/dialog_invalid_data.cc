@@ -19,7 +19,7 @@
  */
  
 #include "dialog_invalid_data.h"
-#include "data_structure/glomconversions.h"
+#include <glom/libglom/data_structure/glomconversions.h>
 
 /** Show the dialog.
  * @result true if the data in the field should be reverted.

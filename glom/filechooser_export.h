@@ -21,7 +21,7 @@
 #ifndef FILECHOOSER_EXPORT_GLOM_H
 #define FILECHOOSER_EXPORT_GLOM_H
 
-#include "document/document_glom.h"
+#include <glom/libglom/document/document_glom.h>
 #include <gtkmm/filechooserdialog.h>
 
 class Dialog_Layout_Export;

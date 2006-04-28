@@ -19,7 +19,7 @@
  */
 
 #include "dialog_field_layout.h"
-#include "../data_structure/glomconversions.h"
+#include <glom/libglom/data_structure/glomconversions.h>
 #include <glibmm/i18n.h>
 
 Dialog_FieldLayout::Dialog_FieldLayout(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)

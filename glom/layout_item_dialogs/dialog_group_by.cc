@@ -19,7 +19,7 @@
  */
 
 #include "dialog_group_by.h"
-#include "../data_structure/glomconversions.h"
+#include <glom/libglom/data_structure/glomconversions.h>
 #include <sstream> //For stringstream
 #include <glibmm/i18n.h>
 

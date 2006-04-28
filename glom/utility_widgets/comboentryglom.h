@@ -22,7 +22,7 @@
 #define GLOM_UTILITY_WIDGETS_COMBOENTRY_GLOM_H
 
 #include <gtkmm.h>
-#include "../data_structure/field.h"
+#include <glom/libglom/data_structure/field.h>
 #include "comboglomchoicesbase.h"
 #include <libglademm.h>
 

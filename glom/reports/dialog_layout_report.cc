@@ -19,15 +19,15 @@
  */
 
 #include "dialog_layout_report.h"
-#include "../data_structure/layout/report_parts/layoutitem_groupby.h"
-#include "../data_structure/layout/report_parts/layoutitem_summary.h"
-#include "../data_structure/layout/report_parts/layoutitem_fieldsummary.h"
-#include "../data_structure/layout/report_parts/layoutitem_verticalgroup.h"
-#include "../data_structure/layout/report_parts/layoutitem_header.h"
-#include "../data_structure/layout/report_parts/layoutitem_footer.h"
-#include "../data_structure/layout/layoutitem_field.h"
-#include "../data_structure/layout/layoutitem_text.h"
-#include "../data_structure/layout/layoutitem_image.h"
+#include <glom/libglom/data_structure/layout/report_parts/layoutitem_groupby.h>
+#include <glom/libglom/data_structure/layout/report_parts/layoutitem_summary.h>
+#include <glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.h>
+#include <glom/libglom/data_structure/layout/report_parts/layoutitem_verticalgroup.h>
+#include <glom/libglom/data_structure/layout/report_parts/layoutitem_header.h>
+#include <glom/libglom/data_structure/layout/report_parts/layoutitem_footer.h>
+#include <glom/libglom/data_structure/layout/layoutitem_field.h>
+#include <glom/libglom/data_structure/layout/layoutitem_text.h>
+#include <glom/libglom/data_structure/layout/layoutitem_image.h>
 #include "../mode_data/dialog_choose_field.h"
 #include "../layout_item_dialogs/dialog_field_layout.h"
 #include "../layout_item_dialogs/dialog_group_by.h"

@@ -22,7 +22,7 @@
 #define ADDDEL_H
 
 #include "gtkmm.h"
-#include "../../data_structure/field.h"
+#include <glom/libglom/data_structure/field.h>
 #include <libgdamm.h>
 #include <libglademm.h>
 

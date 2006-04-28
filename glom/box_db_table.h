@@ -23,7 +23,7 @@
 #define BOX_DB_TABLE_H
 
 #include "box_db.h"
-#include "data_structure/field.h"
+#include <glom/libglom/data_structure/field.h>
 #include <algorithm> //find_if used in various places.
 
 

@@ -20,14 +20,14 @@
 
 #include "frame_glom.h"
 #include "application.h"
-#include "appstate.h"
+#include <glom/libglom/appstate.h>
 #include "mode_design/users/dialog_groups_list.h"
 #include "dialog_database_preferences.h"
 #include "reports/dialog_layout_report.h"
-#include "utils.h"
-#include "data_structure/glomconversions.h"
-#include "data_structure/layout/report_parts/layoutitem_summary.h"
-#include "data_structure/layout/report_parts/layoutitem_fieldsummary.h"
+#include <glom/libglom/utils.h>
+#include <glom/libglom/data_structure/glomconversions.h>
+#include <glom/libglom/data_structure/layout/report_parts/layoutitem_summary.h>
+#include <glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.h>
 #include "relationships_overview/dialog_relationships_overview.h"
 #include "filechooser_export.h"
 #include <sstream> //For stringstream.

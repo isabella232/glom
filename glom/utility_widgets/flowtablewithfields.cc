@@ -25,7 +25,7 @@
 #include "imageglom.h"
 #include "labelglom.h"
 #include <gtkmm/checkbutton.h>
-#include "../data_structure/glomconversions.h"
+#include <glom/libglom/data_structure/glomconversions.h>
 #include "../mode_data/box_data_list_related.h"
 #include "../mode_data/dialog_choose_relationship.h"
 #include <bakery/App/App_Gtk.h> //For util_bold_message().

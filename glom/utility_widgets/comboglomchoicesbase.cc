@@ -19,7 +19,7 @@
  */
 
 #include "comboglomchoicesbase.h"
-#include "../data_structure/glomconversions.h"
+#include <glom/libglom/data_structure/glomconversions.h>
 #include <glibmm/i18n.h>
 //#include <sstream> //For stringstream
 

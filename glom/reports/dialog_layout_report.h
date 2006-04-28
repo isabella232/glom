@@ -22,10 +22,10 @@
 #define GLOM_DIALOG_LAYOUT_REPORT
 
 #include "../mode_data/dialog_layout.h"
-#include "../data_structure/report.h"
+#include <glom/libglom/data_structure/report.h>
 #include "treestore_report_layout.h"
-//#include "data_structure/layout/layoutitem.h"
-//#include "sharedptr.h"
+//#include <glom/libglom/data_structure/layout/layoutitem.h>
+//#include <glom/libglom/sharedptr.h>
 
 class Dialog_Layout_Report : public Dialog_Layout
 {

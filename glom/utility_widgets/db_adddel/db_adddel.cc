@@ -23,10 +23,10 @@
 #include <glibmm/i18n.h>
 #include "../cellrendererlist.h"
 #include "db_treeviewcolumn_glom.h"
-#include "../../data_structure/glomconversions.h"
+#include <glom/libglom/data_structure/glomconversions.h>
 #include "../../dialog_invalid_data.h"
 #include "../../application.h"
-#include "../../utils.h"
+#include <glom/libglom/utils.h>
 #include "cellrenderer_button.h"
 //#include "../cellrendererlist.h"
 #include <iostream> //For debug output.

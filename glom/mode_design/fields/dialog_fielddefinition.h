@@ -29,7 +29,7 @@
 //#include "../../utility_widgets/entry_numerical.h"
 #include "../../utility_widgets/dialog_properties.h"
 #include "../../utility_widgets/datawidget.h"
-#include "../../data_structure/field.h"
+#include <glom/libglom/data_structure/field.h>
 #include "../../layout_item_dialogs/box_formatting.h"
 #include "../../base_db.h"
 

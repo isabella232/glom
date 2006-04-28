@@ -22,7 +22,7 @@
 #include "dialog_user.h"
 #include "dialog_users_list.h"
 #include "dialog_new_group.h"
-#include "../../standard_table_prefs_fields.h"
+#include <glom/libglom/standard_table_prefs_fields.h>
 //#include <libgnome/gnome-i18n.h>
 #include <bakery/App/App_Gtk.h> //For util_bold_message().
 #include <glibmm/i18n.h>

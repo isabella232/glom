@@ -23,7 +23,7 @@
 
 #include <gtkmm.h>
 #include <libglademm.h>
-#include "../../data_structure/field.h"
+#include <glom/libglom/data_structure/field.h>
 #include "../../base_db.h"
 
 class Dialog_FieldCalculation

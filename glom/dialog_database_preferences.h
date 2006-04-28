@@ -27,8 +27,8 @@
 #include <gtkmm/entry.h>
 #include <gtkmm/label.h>
 #include "base_db.h"
-#include "data_structure/system_prefs.h"
-#include "connectionpool.h"
+#include <glom/libglom/data_structure/system_prefs.h>
+#include <glom/libglom/connectionpool.h>
 #include "utility_widgets/imageglom.h"
 
 class Dialog_Database_Preferences

@@ -23,7 +23,7 @@
 
 #include <gtkmm/dialog.h>
 #include <gtkmm/entry.h>
-#include "data_structure/field.h"
+#include <glom/libglom/data_structure/field.h>
 #include <libglademm.h>
 
 /** Show the dialog.

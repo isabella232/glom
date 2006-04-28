@@ -23,7 +23,7 @@
 
 #include "../base_db.h"
 #include "../mode_data/dialog_layout.h"
-#include "../data_structure/layout/layoutitem_notebook.h"
+#include <glom/libglom/data_structure/layout/layoutitem_notebook.h>
 #include <libglademm.h>
 
 class Dialog_Notebook

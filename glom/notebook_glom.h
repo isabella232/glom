@@ -22,7 +22,7 @@
 #define NOTEBOOK_GLOM_H
 
 #include "box_db.h"
-#include "document/document_glom.h"
+#include <glom/libglom/document/document_glom.h>
 
 /**Notebook with document methods.
   */

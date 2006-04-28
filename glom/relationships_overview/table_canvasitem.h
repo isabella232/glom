@@ -25,7 +25,7 @@
 #include <libgnomecanvasmm.h>
 #include "relationshipscanvas_tablewidget.h"
 #include "../base_db.h"
-#include "../data_structure/tableinfo.h"
+#include <glom/libglom/data_structure/tableinfo.h>
 
 
 class TableCanvasItem

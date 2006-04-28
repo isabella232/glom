@@ -36,6 +36,8 @@ AC_LANG_CPLUSPLUS
 # Checks for libraries
 # We need libgnome only for gnome_help_display().:
 PKG_CHECK_MODULES(GLOM, bakery-2.4 >= 2.3.18 gtkmm-2.4 >= 2.6.1 gthread-2.0 gnome-vfsmm-2.6 >= 2.11.1 libgnomecanvasmm-2.6 >= 2.10.0 libxslt >= 1.1.10 pygda-1.2 pygtk-2.0 >= 2.6.0 libgnome-2.0 >= 2.6.0 iso-codes libgdamm-2.0 >= 1.3.7 )
+
+GLOM_LIBS+=" --no-undefined"
 AC_SUBST(GLOM_CFLAGS)
 AC_SUBST(GLOM_LIBS)
 
@@ -64,10 +66,12 @@ AC_OUTPUT(Makefile \
   docs/Makefile \
     docs/user-guide/Makefile \
   glom/Makefile \
-    glom/data_structure/Makefile \
-      glom/data_structure/layout/Makefile \
-        glom/data_structure/layout/report_parts/Makefile \
-    glom/document/Makefile \
+    glom/libglom/Makefile \
+      glom/libglom/data_structure/Makefile \
+        glom/libglom/data_structure/layout/Makefile \
+          glom/libglom/data_structure/layout/report_parts/Makefile \
+      glom/libglom/document/Makefile \
+      glom/libglom/python_embed/Makefile \
     glom/layout_item_dialogs/Makefile \
     glom/mode_data/Makefile \
     glom/mode_design/Makefile \

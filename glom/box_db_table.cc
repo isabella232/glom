@@ -19,7 +19,7 @@
  */
 
 #include "box_db_table.h"
-#include "data_structure/glomconversions.h"
+#include <glom/libglom/data_structure/glomconversions.h>
 #include "python_embed/glom_python.h"
 #include <sstream>
 

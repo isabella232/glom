@@ -20,7 +20,7 @@
 
 #include "combobox_locale.h"
 #include <gtk/gtkcomboboxentry.h>
-#include "../data_structure/iso_codes.h"
+#include <glom/libglom/data_structure/iso_codes.h>
 
 ComboBox_Locale::ComboBox_Locale(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& /* refGlade */)
 : Gtk::ComboBox(cobject)

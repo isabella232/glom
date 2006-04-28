@@ -26,7 +26,7 @@
 #include <gtkmm/entry.h>
 #include <gtkmm/label.h>
 #include "base_db.h"
-#include "connectionpool.h"
+#include <glom/libglom/connectionpool.h>
 
 class Dialog_Connection
   : public Gtk::Dialog,

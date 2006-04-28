@@ -19,7 +19,7 @@
  */
 
 #include "box_data_list.h"
-#include "../data_structure/glomconversions.h"
+#include <glom/libglom/data_structure/glomconversions.h>
 #include "dialog_layout_list.h"
 #include <bakery/App/App_Gtk.h> //For util_bold_message().
 //#include <../utility_widgets/db_adddel/glom_db_treemodel.h> //For DbTreeModel.

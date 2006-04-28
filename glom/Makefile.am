@@ -1,4 +1,4 @@
-SUBDIRS = data_structure document mode_data mode_design mode_find navigation utility_widgets layout_item_dialogs python_embed relationships_overview reports translation
+SUBDIRS = libglom mode_data mode_design mode_find navigation utility_widgets layout_item_dialogs python_embed relationships_overview reports translation
 
 gladedir = $(datadir)/glom/glade/
 glomxsltdir = $(datadir)/glom/xslt/
@@ -7,7 +7,7 @@ glom_icon_dir = $(datadir)/icons/hicolor/48x48/apps
 
 # We define GLOM_GLADEDIR so that we can get the installed .glade file at runtime.
 # We define PREFIX, SYSCONFDIR, LIBDIR, and DATADIR for the GNOME_PROGRAM_STANDARD_PROPERTIES macro.
-INCLUDES = $(GLOM_CFLAGS) $(PYTHON_INCLUDES) \
+INCLUDES = -I@top_srcdir@/ $(GLOM_CFLAGS) $(PYTHON_INCLUDES) \
            -DGLOM_GLADEDIR=\""$(gladedir)/"\" \
            -DLOCALEDIR=\""$(datadir)/locale"\" \
            -DPREFIX=\""$(prefix)"\" \
@@ -24,7 +24,6 @@ noinst_PROGRAMS = test_pyembed
 
 glom_SOURCES = main.cc \
                application.cc application.h \
-               appstate.cc appstate.h \
                base_db.h base_db.cc \
                box_db.h box_db.cc \
                box_db_table.h box_db_table.cc \
@@ -32,23 +31,16 @@ glom_SOURCES = main.cc \
                frame_glom.h frame_glom.cc \
                notebook_glom.h notebook_glom.cc \
                combobox_relationship.h combobox_relationship.cc \
-               connectionpool.h connectionpool.cc \
                dialog_connection.h dialog_connection.cc \
                dialog_invalid_data.h dialog_invalid_data.cc \
                dialog_new_database.h dialog_new_database.cc \
                dialog_database_preferences.h dialog_database_preferences.cc \
                dialog_progress_creating.h dialog_progress_creating.cc \
                filechooser_export.h filechooser_export.cc \
-               sharedptr.h \
-               standard_table_prefs_fields.h \
                box_reports.h box_reports.cc \
-               utils.h utils.cc
+               xsl_utils.h xsl_utils.cc
 
-glom_LDADD = document/libdocument.a \
-             reports/libreports.a \
-             data_structure/libdata_structure.a \
-             data_structure/layout/libdata_structure_layout.a \
-             data_structure/layout/report_parts/libdata_structure_layout_reportparts.a \
+glom_LDADD = reports/libreports.a \
              mode_data/libmode_data.a \
              mode_find/libmode_find.a \
              mode_design/libmode_design.a \
@@ -61,13 +53,13 @@ glom_LDADD = document/libdocument.a \
              utility_widgets/adddel/eggcolumnchooser/libutility_widgets_adddel_eggcolumnchooserdialog.a \
              utility_widgets/db_adddel/libutility_widgets_db_adddel.a \
              utility_widgets/libutility_widgets.a \
-             data_structure/libdata_structure.a \
              relationships_overview/librelationshipsoverview.a \
              translation/libtranslation.a \
-             data_structure/layout/libdata_structure_layout.a \
              python_embed/libpython_embed.a \
-             python_embed/python_module/glom.la \
+             $(top_builddir)/glom/libglom/libglom.la \
              $(GLOM_LIBS) $(PYTHON_LDFLAGS) -lutil
+
+             #python_embed/python_module/glom.la
 
 #             python_embed/boost/config/libpython_embed_boost_config.a 
 #             python_embed/boost/python/libpython_embed_boost_python.a 

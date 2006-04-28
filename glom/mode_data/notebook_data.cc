@@ -19,7 +19,7 @@
  */
 
 #include "notebook_data.h"
-#include "../data_structure/glomconversions.h"
+#include <glom/libglom/data_structure/glomconversions.h>
 #include <glibmm/i18n.h>
 
 Notebook_Data::Notebook_Data()

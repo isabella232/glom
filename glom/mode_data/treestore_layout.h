@@ -22,8 +22,8 @@
 #define GLOM_MODE_DATA_TREESTORE_LAYOUT_H
 
 #include <gtkmm/treestore.h>
-#include "../data_structure/layout/layoutitem_portal.h"
-#include "../data_structure/layout/layoutitem_button.h"
+#include <glom/libglom/data_structure/layout/layoutitem_portal.h>
+#include <glom/libglom/data_structure/layout/layoutitem_button.h>
 
 class TreeStore_Layout : public Gtk::TreeStore
 {

@@ -19,11 +19,12 @@
  */
 
 #include "box_data_details.h"
-#include "../data_structure/field.h"
-#include "../data_structure/relationship.h"
-#include "../data_structure/glomconversions.h"
+#include <glom/libglom/data_structure/field.h>
+#include <glom/libglom/data_structure/relationship.h>
+#include <glom/libglom/data_structure/glomconversions.h>
 #include "dialog_layout_details.h"
-#include "../utils.h"
+#include <glom/libglom/utils.h>
+#include "../xsl_utils.h"
 #include <bakery/App/App_Gtk.h> //For util_bold_message().
 #include "../python_embed/glom_python.h"
 #include <sstream> //For stringstream
@@ -794,6 +795,6 @@ void Box_Data_Details::print_layout()
       print_layout_group(nodeParent, layout_group);
     }
 
-    GlomUtils::transform_and_open(*pDocument, "print_details_to_html.xsl", get_app_window());
+    GlomXslUtils::transform_and_open(*pDocument, "print_details_to_html.xsl", get_app_window());
   }
 }

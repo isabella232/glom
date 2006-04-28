@@ -21,9 +21,9 @@
 #include <iostream>
 #include "glom_db_treemodel.h"
 
-#include "../../connectionpool.h"
-#include "../../data_structure/glomconversions.h" //For util_build_sql
-#include "../../utils.h"
+#include <glom/libglom/connectionpool.h>
+#include <glom/libglom/data_structure/glomconversions.h> //For util_build_sql
+#include <glom/libglom/utils.h>
 
 
 DbTreeModelRow::DbTreeModelRow()

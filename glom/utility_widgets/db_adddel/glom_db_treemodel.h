@@ -23,8 +23,8 @@
 
 #include <gtkmm/treemodel.h>
 #include <gtkmm/treepath.h>
-#include "../../data_structure/layout/layoutitem_field.h"
-#include "../../connectionpool.h"
+#include <glom/libglom/data_structure/layout/layoutitem_field.h>
+#include <glom/libglom/connectionpool.h>
 #include "../../base_db.h"
 
 class DbTreeModel;

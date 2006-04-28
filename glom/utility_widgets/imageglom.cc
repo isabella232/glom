@@ -21,7 +21,7 @@
 #include "imageglom.h"
 #include <glibmm/i18n.h>
 #include "../application.h"
-#include "../data_structure/glomconversions.h"
+#include <glom/libglom/data_structure/glomconversions.h>
 //#include <sstream> //For stringstream
 
 #include <iostream>   // for cout, endl
