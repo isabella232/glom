@@ -279,7 +279,7 @@ void FlowTableWithFields::add_layout_notebook_at_position(const sharedptr<Layout
         portal_box->show();
         notebook_widget->append_page(*portal_box, *tab_label);
 
-        //add_layoutwidgetbase(portal_box, add_before);
+        add_layoutwidgetbase(portal_box, add_before);
       }
       else
       {
@@ -822,76 +822,6 @@ void FlowTableWithFields::set_design_mode(bool value)
   }
 }
 
-/*
-void FlowTableWithFields::get_layout_groups(Document_Glom::type_mapLayoutGroupSequence& groups)
-{
-  //This is only called on the top-level FlowTable.
-  //It assumes that there are only groups in this FlowTable,
-  //and no other layout items:
-  Document_Glom::type_mapLayoutGroupSequence::size_type sequence = 1; //0 means no position.
-  for(type_list_layoutwidgets::iterator iter = m_list_layoutwidgets.begin(); iter != m_list_layoutwidgets.end(); ++iter)
-  {
-    LayoutWidgetBase* pLayoutWidget = *iter;
-    if(pLayoutWidget)
-    {
-      FlowTableWithFields* pFlowTable = dynamic_cast<FlowTableWithFields*>(pLayoutWidget);
-      if(pFlowTable)
-      {
-        //recurse:
-        sharedptr<LayoutGroup> group_child = pFlowTable->get_layout_group();
-        groups[sequence] = group_child;
-
-        ++sequence;
-      }
-    }
-  }
-
-}
-*/
-
-/*
-sharedptr<LayoutGroup> FlowTableWithFields::get_layout_group()
-{
-  sharedptr<LayoutGroup> group;
-
-  //Initialize output parameter:
-  //group = LayoutGroup();
-  sharedptr<const LayoutGroup> pGroupExisting = sharedptr<const LayoutGroup>::cast_dynamic(get_layout_item());
-  if(pGroupExisting)
-  {
-    //Start with the same information:
-    group = glom_sharedptr_clone(pGroupExisting); //TODO_Performance: Copy without copying/clone the children.
-    group->remove_all_items(); //We will readd these.
-  }
-
-  //Iterate over the data widgets:
-  for(type_list_layoutwidgets::iterator iter = m_list_layoutwidgets.begin(); iter != m_list_layoutwidgets.end(); ++iter)
-  {
-    LayoutWidgetBase* pLayoutWidget = *iter;
-    if(pLayoutWidget)
-    {
-      FlowTableWithFields* pFlowTable = dynamic_cast<FlowTableWithFields*>(pLayoutWidget);
-      if(pFlowTable)
-      {
-        //recurse:
-        sharedptr<LayoutGroup> group_child = pFlowTable->get_layout_group();
-        group->add_item(group_child);
-      }
-      else
-      {
-        sharedptr<const LayoutItem> pLayoutItem = (*iter)->get_layout_item();
-        if(pLayoutItem)
-        {
-          group->add_item(pLayoutItem);
-        }
-
-      }
-    }
-  }
-
-  return group;
-}
-*/
 
 void FlowTableWithFields::add_layoutwidgetbase(LayoutWidgetBase* layout_widget)
 {
@@ -908,16 +838,6 @@ void FlowTableWithFields::add_layoutwidgetbase(LayoutWidgetBase* layout_widget, 
 
 void FlowTableWithFields::on_layoutwidget_changed()
 {
-  /*
-  sharedptr<LayoutGroup> pLayoutItem = sharedptr<LayoutGroup>::cast_dynamic(get_layout_item());
-  if(pLayoutItem)
-  {
-    //Update tha LayoutItem by looking at the child widgets:
-    sharedptr<LayoutGroup> group = get_layout_group();
-    set_layout_item(group, m_table_name);
-  }
-  */
-
   //Forward the signal to the container:
   signal_layout_changed().emit();
 }

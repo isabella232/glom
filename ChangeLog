@@ -1,5 +1,11 @@
 2006-04-28  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/utility_widgets/flowtablewithfields.cc: add_layout_notebook_at_position(): 
+	Use add_layoutwidgetbase(portal) so that we connect signals, so that we save portal 	
+	layout changes to the document.
+
+2006-04-28  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/base_db.cc: handle_error():
 	* glom/libglom/connectionpool.cc: handle_error(): Print more detailed information about 
 	exceptions to stderr.
