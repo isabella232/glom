@@ -1,7 +1,14 @@
 1.0.3:
 
-* Fix the [Find] button next to ID fields. It was wrongly saying that there 
+* Fields: Prevent crash when adding field in non-English locale.
+* Find:
+  - Fix the [Find] button next to ID fields. It was wrongly saying that there 
   were no results.
+  - Really offer a second find when no results are found.
+  - Show the busy cursor while finding.
+* Layout: Really save changes of related records portal layouts and of custom 
+  field formatting. 
+* Some Windows/Cygwin build fixes.
 
 1.0.2:
 

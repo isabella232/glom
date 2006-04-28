@@ -1,3 +1,5 @@
+1.0.3:
+
 2006-04-28  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/frame_glom.cc:  on_notebook_find_criteria(): Show a busy cursor while waiting 
