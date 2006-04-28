@@ -192,7 +192,7 @@ RelatedRecord_tp_as_mapping_getitem(PyGlomRelatedRecord *self, PyObject *item)
             if(datamodel && datamodel->get_n_rows())
             {
               Gnome::Gda::Value value = datamodel->get_value_at(0, 0);
-              g_warning("RelatedRecord_tp_as_mapping_getitem(): value from datamodel = %s", value.to_string().c_str());
+              //g_warning("RelatedRecord_tp_as_mapping_getitem(): value from datamodel = %s", value.to_string().c_str());
 
               //Cache it, in case it's asked-for again.
               (*(self->m_pMap_field_values))[field_name] = value;

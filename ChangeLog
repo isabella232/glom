@@ -1,5 +1,11 @@
 2006-04-28  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/base_db.cc: handle_error():
+	* glom/libglom/connectionpool.cc: handle_error(): Print more detailed information about 
+	exceptions to stderr.
+
+2006-04-28  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/utility_widgets/db_adddel/glom_db_treemodel.cc: refresh_from_database(): 
 	Return false if the query returns no records, so that on_notebook_find_criteria() 
 	can offer a new find if none are found.
