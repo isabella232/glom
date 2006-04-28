@@ -1,5 +1,12 @@
 2006-04-28  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/frame_glom.cc:  on_notebook_find_criteria(): Show a busy cursor while waiting 
+	for the results.
+	on_menu_Mode_Find(): Show a busy cursor while showing the appropriate view, because it 
+	takes a long time to do that, unfortunately.
+
+2006-04-28  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/utility_widgets/flowtablewithfields.cc: add_layout_notebook_at_position(): 
 	Use add_layoutwidgetbase(portal) so that we connect signals, so that we save portal 	
 	layout changes to the document.

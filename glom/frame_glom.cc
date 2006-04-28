@@ -678,6 +678,10 @@ void Frame_Glom::on_menu_Mode_Data()
 
 void Frame_Glom::on_menu_Mode_Find()
 {
+  //This can take quite a long time, flicking between 1 or 2 intermediate screens. 
+  //It shouldn't, but until we fix that, let's show the busy cursor while it's working:
+  Bakery::BusyCursor busy_cursor(get_app_window());
+
   const bool previously_in_data_mode = (m_Mode == MODE_Data);
 
   const Notebook_Data::dataview list_or_details = m_Notebook_Data.get_current_view();
@@ -830,17 +834,23 @@ void Frame_Glom::on_notebook_find_criteria(const Glib::ustring& where_clause)
   App_Glom* pApp = dynamic_cast<App_Glom*>(get_app_window());
   if(pApp)
   {
-    pApp->set_mode_data();
+    bool records_found = false;
 
-    //std::cout << "Frame_Glom::on_notebook_find_criteria: where_clause=" << where_clause << std::endl;
-    FoundSet found_set;
-    found_set.m_table_name = m_table_name;
-    found_set.m_where_clause = where_clause;
-    const bool records_found = m_Notebook_Data.init_db_details(found_set);
+    { //Extra scope, to control the lifetime of the busy cursor. 
+      Bakery::BusyCursor busy_cursor(pApp);
 
-    //std::cout << "Frame_Glom::on_notebook_find_criteria(): BEFORE  m_Notebook_Data.select_page_for_find_results()" << std::endl;
-    m_Notebook_Data.select_page_for_find_results();
-    //std::cout << "Frame_Glom::on_notebook_find_criteria(): AFTER  m_Notebook_Data.select_page_for_find_results()" << std::endl;
+      pApp->set_mode_data();
+
+      //std::cout << "Frame_Glom::on_notebook_find_criteria: where_clause=" << where_clause << std::endl;
+      FoundSet found_set;
+      found_set.m_table_name = m_table_name;
+      found_set.m_where_clause = where_clause;
+      records_found = m_Notebook_Data.init_db_details(found_set);
+
+      //std::cout << "Frame_Glom::on_notebook_find_criteria(): BEFORE  m_Notebook_Data.select_page_for_find_results()" << std::endl;
+      m_Notebook_Data.select_page_for_find_results();
+      //std::cout << "Frame_Glom::on_notebook_find_criteria(): AFTER  m_Notebook_Data.select_page_for_find_results()" << std::endl;
+    }
 
     if(!records_found)
     {
