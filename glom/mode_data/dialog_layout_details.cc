@@ -864,6 +864,7 @@ void Dialog_Layout_Details::on_button_field_formatting()
         if(chosenitem)
         {
           *field = *chosenitem; //TODO_Performance.
+          m_modified = true;
           //m_model_parts->row_changed(Gtk::TreePath(iter), iter); //TODO: Add row_changed(iter) to gtkmm?
         }
       }
