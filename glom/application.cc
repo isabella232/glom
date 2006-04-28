@@ -774,7 +774,7 @@ void App_Glom::set_mode_data()
 
 void App_Glom::set_mode_find()
 {
-  m_action_mode_data->activate();
+  m_action_mode_find->activate();
 }
 
 

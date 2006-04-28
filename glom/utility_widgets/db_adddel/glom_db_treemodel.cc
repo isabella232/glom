@@ -239,7 +239,7 @@ bool DbTreeModel::refresh_from_database(const FoundSet& found_set)
       }
       */
 
-      return true;
+      return (m_data_model_rows_count > 0); //false is not really a failure, but the caller needs to know whether the foundset found any records.
     }
   }
   else

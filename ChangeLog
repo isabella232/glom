@@ -1,5 +1,13 @@
 2006-04-28  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/utility_widgets/db_adddel/glom_db_treemodel.cc: refresh_from_database(): 
+	Return false if the query returns no records, so that on_notebook_find_criteria() 
+	can offer a new find if none are found.
+	* glom/application.cc: set_mode_find(): Actually activate the find action, not the 
+	data action, so that a second find really works. 
+
+2006-04-28  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/mode_data/dialog_layout_details.cc: on_button_field_formatting(): 
 	Set m_modified so that the new formatting is actually used.
 
