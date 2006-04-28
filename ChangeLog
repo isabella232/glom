@@ -1,5 +1,13 @@
 2006-04-28  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/utility_widgets/flowtablewithfields.cc: on_datawidget_layout_item_added(): 
+	Add a LayoutItem to the LayoutGroup of the flowtable, which is shared with the document, 
+	and just let the parent rebuild the layout, instead of adding the actual widget here, 
+	and expecting the parent to read layout from that. This makes right-click adding work 
+	again.
+
+2006-04-28  Murray Cumming  <murrayc@murrayc.com>
+
 	* configure.in:
 	* glom/Makefile.am:
 	* po/POTFILES.in:

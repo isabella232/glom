@@ -924,29 +924,64 @@ void FlowTableWithFields::on_layoutwidget_changed()
 
 void FlowTableWithFields::on_datawidget_layout_item_added(LayoutWidgetBase::enumType item_type, DataWidget* pDataWidget)
 {
-  //Get the position of the selected item:
-  type_list_layoutwidgets::iterator iterAfter = m_list_layoutwidgets.end();
-  type_list_layoutwidgets::iterator iterFind = std::find(m_list_layoutwidgets.begin(), m_list_layoutwidgets.end(), pDataWidget);
-  if(iterFind != m_list_layoutwidgets.end())
+  //Get the widget's layout item:
+  sharedptr<const LayoutItem> layout_item = pDataWidget->get_layout_item();
+  if(!layout_item)
   {
-    iterAfter = iterFind;
-    ++iterAfter; //std::list<>::insert() inserts before, but we want to insert after, so we increment..
+    std::cerr << "FlowTableWithFields::on_datawidget_layout_item_added(): layout_item is null." << std::endl;
+    return;
   }
 
+  //std::cout << "debug: layout_item name=" << layout_item->get_name() << std::endl;
+
+
+  //Get the group that the widget's layout item is in:
+  sharedptr<LayoutGroup> layout_group = sharedptr<LayoutGroup>::cast_dynamic(get_layout_item());
+  if(!layout_group)
+  {
+    std::cerr << "FlowTableWithFields::on_datawidget_layout_item_added(): layout_group is null." << std::endl;
+    return;
+  }
+
+  //Get the position of the selected item in its group:
+  int position = -1;
+  LayoutGroup::type_map_items& map_items = layout_group->m_map_items;
+  for(LayoutGroup::type_map_items::const_iterator iter = map_items.begin(); iter != map_items.end(); ++iter)
+  {
+    sharedptr<const LayoutItem> item = iter->second;
+    if(item && (item.obj() == layout_item.obj()))
+    {
+      position = iter->first;
+ 
+      //std::cout << "debug: position found = " << position << ", name=" << iter->second->get_name() << std::endl;
+
+      break;
+    }
+  }
+
+  if(position == -1)
+  {
+    std::cerr << "FlowTableWithFields::on_datawidget_layout_item_added(): can't find layout_item in layout_group." << std::endl;
+    return;
+  }
+
+  
+  //Create/Choose the new layout item:
+  sharedptr<LayoutItem> layout_item_new;
   if(item_type == LayoutWidgetBase::TYPE_FIELD)
   {
     sharedptr<LayoutItem_Field> layout_item_field = pDataWidget->offer_field_list(m_table_name);
     if(layout_item_field)
     {
       //TODO: privileges.
-      add_layout_item_at_position(layout_item_field, iterAfter);
+      layout_item_new = layout_item_field; 
     }
   }
   else if(item_type == LayoutWidgetBase::TYPE_GROUP)
   {
     sharedptr<LayoutGroup> layout_item = sharedptr<LayoutGroup>::create();
     layout_item->set_title(_("New Group"));
-    add_layout_item_at_position(layout_item, iterAfter);
+    layout_item_new = layout_item;
   }
   else if(item_type == LayoutWidgetBase::TYPE_NOTEBOOK)
   {
@@ -959,7 +994,7 @@ void FlowTableWithFields::on_datawidget_layout_item_added(LayoutWidgetBase::enum
     group_tab->set_title(_("Tab One"));
     layout_item->add_item(group_tab);
 
-    add_layout_item_at_position(layout_item, iterAfter);
+    layout_item_new = layout_item;
   }
   else if(item_type == LayoutWidgetBase::TYPE_PORTAL)
   {
@@ -985,7 +1020,7 @@ void FlowTableWithFields::on_datawidget_layout_item_added(LayoutWidgetBase::enum
           {
             sharedptr<LayoutItem_Portal> layout_item = sharedptr<LayoutItem_Portal>::create();
             layout_item->set_relationship(relationship);
-            add_layout_item_at_position(layout_item, iterAfter);
+            layout_item_new = layout_item;
           }
         }
 
@@ -1002,18 +1037,48 @@ void FlowTableWithFields::on_datawidget_layout_item_added(LayoutWidgetBase::enum
     sharedptr<LayoutItem_Button> layout_item = sharedptr<LayoutItem_Button>::create();
     layout_item->set_name(_("button"));
     layout_item->set_title(_("New Button"));
-    add_layout_item_at_position(layout_item, iterAfter);
+    layout_item_new = layout_item;
   }
   else if(item_type == LayoutWidgetBase::TYPE_BUTTON)
   {
     sharedptr<LayoutItem_Text> layout_item = sharedptr<LayoutItem_Text>::create();
     layout_item->set_name(_("text"));
     layout_item->set_text(_("New Text"));
-    add_layout_item_at_position(layout_item, iterAfter);
+    layout_item_new = layout_item;
   }
 
-  //TODO: Only if it has really changed:
-  signal_layout_changed().emit(); //This should result in a complete re-layout.
+
+  if(layout_item_new)
+  {
+    //Move the subsequent items forwards:
+    LayoutGroup::type_map_items::iterator iterPos = map_items.find(position);
+    if(iterPos == map_items.end())
+    {
+      std::cerr << "FlowTableWithFields::on_datawidget_layout_item_added(): Can not find iter for layout_item in layout_group with found position." << std::endl;
+      return;
+    }
+
+    LayoutGroup::type_map_items::iterator iterBeforeEnd = map_items.end();
+    --iterBeforeEnd;
+    for(LayoutGroup::type_map_items::iterator iter = iterBeforeEnd; iter != iterPos; --iter)
+    {
+      const int position_next = iter->first + 1;
+      iter->second->m_sequence = position_next;
+      map_items[position_next] = iter->second;  
+      iter->second = sharedptr<LayoutItem>();
+    }
+
+    //This position is now free for us to insert something:
+    const int position_new = position + 1;
+    //std::cout << "debug: position_new=" << position_new << std::endl;  
+
+    layout_item_new->m_sequence = position_new;
+    map_items[position_new] = layout_item_new;
+  
+    //We have changed the structure itself in the document, because we are using the same structure via sharedptr.
+    //So we just tell the parent widgets to rebuild the layout from the document:
+    signal_layout_changed().emit(); //This should result in a complete re-layout.
+  }
 }
 
 void FlowTableWithFields::on_portal_record_changed(const Glib::ustring& relationship_name)
