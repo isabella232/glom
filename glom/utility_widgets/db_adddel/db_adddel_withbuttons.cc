@@ -58,8 +58,7 @@ void DbAddDel_WithButtons::on_button_add()
     Gtk::TreeModel::iterator iter = get_item_placeholder();
     if(iter)
     {
-      guint first_visible = get_count_hidden_system_columns();
-      select_item(iter, first_visible, true /* start_editing */);
+      select_item(iter, true /* start_editing */);
     }
   }
   else

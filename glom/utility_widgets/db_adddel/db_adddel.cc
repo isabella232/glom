@@ -176,8 +176,7 @@ void DbAddDel::on_MenuPopup_activate_Add()
     Gtk::TreeModel::iterator iter = get_item_placeholder();
     if(iter)
     {
-      guint first_visible = get_count_hidden_system_columns();
-      select_item(iter, first_visible, true /* start_editing */);
+      select_item(iter, true /* start_editing */);
     }
   }
   else
@@ -412,14 +411,24 @@ Gtk::TreeModel::iterator DbAddDel::get_row(const Gnome::Gda::Value& key)
   return  m_refListStore->children().end();
 }
 
-bool DbAddDel::select_item(const Gtk::TreeModel::iterator& iter)
+bool DbAddDel::select_item(const Gtk::TreeModel::iterator& iter, bool start_editing)
 {
-  guint col_first = 0;
-  get_model_column_index(0, col_first);
-  return select_item(iter, col_first);
+  //Find the first column with a layout_item:
+  sharedptr<const LayoutItem_Field> layout_item;
+  for(type_ColumnTypes::iterator iter_columns = m_ColumnTypes.begin(); iter_columns != m_ColumnTypes.end(); ++iter_columns)
+  {
+    DbAddDelColumnInfo& column_info = *iter_columns;
+    if(column_info.m_field)
+    {
+      layout_item = column_info.m_field;
+      break;
+    }
+  }
+
+  return select_item(iter, layout_item, start_editing);
 }
 
-bool DbAddDel::select_item(const Gtk::TreeModel::iterator& iter, guint column, bool start_editing)
+bool DbAddDel::select_item(const Gtk::TreeModel::iterator& iter, const sharedptr<const LayoutItem_Field>& layout_item, bool start_editing)
 {
   if(!m_refListStore)
     return false;
@@ -430,6 +439,19 @@ bool DbAddDel::select_item(const Gtk::TreeModel::iterator& iter, guint column, b
 
   if(iter)
   {
+    //Get the model column:
+    guint treemodel_col = 0;
+    type_list_indexes list_indexes = get_column_index(layout_item);
+    if(list_indexes.empty())
+      return false;
+    else
+      treemodel_col = *(list_indexes.begin());
+
+    treemodel_col += get_count_hidden_system_columns();
+
+    std::cout << "DbAddDel::select_item name=" << layout_item->get_name() << ", treemodel_col=" << treemodel_col << std::endl;
+
+
     Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = m_TreeView.get_selection();
     if(refTreeSelection)
     {
@@ -438,17 +460,23 @@ bool DbAddDel::select_item(const Gtk::TreeModel::iterator& iter, guint column, b
       Gtk::TreeModel::Path path = m_refListStore->get_path(iter);
 
       guint view_column_index = 0;
-      bool test = get_view_column_index(column, view_column_index);
+      const bool test = get_view_column_index(treemodel_col, view_column_index);
       if(test)
       {
+        std::cout << "debug: view_column_index=" << view_column_index << std::endl;
         Gtk::TreeView::Column* pColumn = m_TreeView.get_column(view_column_index);
         if(pColumn)
-          m_TreeView.set_cursor(path, *pColumn, start_editing);
+        {
+          std::cout << "debug title=" << pColumn->get_title() << std::endl;
+
+          if(pColumn != m_treeviewcolumn_button) //This would activate the button. Let's avoid this, though it should never happen.
+            m_TreeView.set_cursor(path, *pColumn, start_editing);
+        }
         else
            g_warning("DbAddDel::select_item:TreeViewColumn not found.");
       }
       else
-           g_warning("DbAddDel::select_item:TreeViewColumn index not found. column=%d", column);
+           g_warning("DbAddDel::select_item:TreeViewColumn index not found. column=%d", treemodel_col);
     }
 
     bResult = true;
@@ -593,7 +621,7 @@ void DbAddDel::construct_specified_columns()
     pCellButton->signal_clicked().connect(sigc::mem_fun(*this, &DbAddDel::on_cell_button_clicked));
 
 
-    Gtk::TreeViewColumn* m_treeviewcolumn_button = Gtk::manage(new Gtk::TreeViewColumn());
+    m_treeviewcolumn_button = Gtk::manage(new Gtk::TreeViewColumn());
     m_treeviewcolumn_button->pack_start(*pCellButton);
 
     m_treeviewcolumn_button->set_sizing(Gtk::TREE_VIEW_COLUMN_FIXED); //Need by fixed-height mode.
@@ -1594,6 +1622,12 @@ bool DbAddDel::get_view_column_index(guint model_column_index, guint& view_colum
     return false;
 
   view_column_index = model_column_index;
+  if(m_treeviewcolumn_button)
+  {
+    ++view_column_index;
+  }
+  else
+    std::cout << "m_treeviewcolumn_button is null." << std::endl;
 
   return true;
 }
@@ -1697,8 +1731,7 @@ void DbAddDel::on_cell_button_clicked(const Gtk::TreeModel::Path& path)
   Gtk::TreeModel::iterator iter = m_refListStore->get_iter(path);
   if(iter)
   {
-    const guint first_visible = get_count_hidden_system_columns();
-    select_item(iter, first_visible, false /* start_editing */);
+    select_item(iter, false /* start_editing */);
   }
 
   on_MenuPopup_activate_Edit();

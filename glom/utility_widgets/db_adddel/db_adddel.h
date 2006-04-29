@@ -103,8 +103,8 @@ public:
    * @param start_editing Whether editing should start in the cell.
    * @result Whether the row was successfully selected.
    */
-  bool select_item(const Gtk::TreeModel::iterator& iter, guint column, bool start_editing = false);  //bool indicates success.
-  bool select_item(const Gtk::TreeModel::iterator& iter);
+  bool select_item(const Gtk::TreeModel::iterator& iter, const sharedptr<const LayoutItem_Field>& layout_item, bool start_editing = false);  //bool indicates success.
+  bool select_item(const Gtk::TreeModel::iterator& iter, bool start_editing = false);
 
   guint get_count() const;
 
@@ -227,14 +227,16 @@ public:
   typedef sigc::signal<void> type_signal_user_reordered_columns;
   type_signal_user_reordered_columns signal_user_reordered_columns();
 
-  bool get_model_column_index(guint view_column_index, guint& model_column_index);
-
+ 
   virtual Gtk::TreeModel::iterator get_last_row();
   virtual Gtk::TreeModel::iterator get_last_row() const;
 
   virtual void set_open_button_title(const Glib::ustring& title);
 
 protected:
+
+  bool get_model_column_index(guint view_column_index, guint& model_column_index);
+
 
   typedef std::list<guint> type_list_indexes;
   ///Return the column indexes of any columns that display this field.

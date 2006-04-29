@@ -157,42 +157,49 @@ bool Box_Data_List::fill_from_database()
 
 void Box_Data_List::on_adddel_user_requested_add()
 {
+ std::cout << "debug 1" << std::endl;
+
  if(m_FieldsShown.empty())
     return; //Don't try to add a record to a list with no fields.
 
   Gtk::TreeModel::iterator iter = m_AddDel.get_item_placeholder();
   if(iter)
   {
-    //Start editing in the primary key or the first cell if the primary key is auto-incremented (because there is no point in editing an auto-generated value)..
+    sharedptr<LayoutItem_Field> fieldToEdit;
+
+    //Start editing in the primary key or the first cell if the primary key is auto-incremented (because there is no point in editing an auto-generated value)
     guint index_primary_key = 0;
     const bool bPresent = get_field_primary_key_index(index_primary_key); //If there is no primary key then the default of 0 is OK.
-    guint index_field_to_edit = 0;
     if(bPresent)
     {
-      index_field_to_edit = index_primary_key;
-
       sharedptr<Field> fieldPrimaryKey = get_field_primary_key();
       if(fieldPrimaryKey && fieldPrimaryKey->get_auto_increment())
       {
-        //Start editing in the first cell that is not the primary key:
-        if(index_primary_key == 0)
+        //Start editing in the first cell that is not auto_increment:
+        for(type_vecLayoutFields::const_iterator iter = m_FieldsShown.begin(); iter != m_FieldsShown.end(); ++iter)
         {
-          index_field_to_edit += 1;
+          sharedptr<LayoutItem_Field> layout_item = *iter;
+          if(!(layout_item->get_full_field_details()->get_auto_increment()))
+          {
+            fieldToEdit = layout_item;
+            break;
+          }
         }
-        else
-          index_field_to_edit = 0;
+      }
+      else
+      {
+        //The primary key is not auto-increment, so start by editing it:
+        fieldToEdit = sharedptr<LayoutItem_Field>::create();
+        fieldToEdit->set_full_field_details(fieldPrimaryKey);
       }
     }
 
-    if(index_field_to_edit < m_FieldsShown.size())
+    //std::cout << "debug: index_field_to_edit=" << index_field_to_edit << std::endl;
+
+    if(fieldToEdit)
     {
-      guint treemodel_column = 0;
-      bool test = get_field_column_index(m_FieldsShown[index_field_to_edit]->get_name(), treemodel_column);
-      if(test)
-      {
-        //std::cout << "on_adddel_user_requested_add(): editing column=" << treemodel_column << std::endl;
-        m_AddDel.select_item(iter, treemodel_column, true /* start_editing */);
-      }
+      std::cout << "on_adddel_user_requested_add(): editing column=" << fieldToEdit->get_name() << std::endl;
+      m_AddDel.select_item(iter, fieldToEdit, true /* start_editing */);
     }
     else
     {
@@ -203,6 +210,8 @@ void Box_Data_List::on_adddel_user_requested_add()
       //g_warning("Box_Data_List::on_adddel_user_requested_add(): index_field_to_edit does not exist: %d", index_field_to_edit);
     }
   }
+
+std::cout << "debug 1" << std::endl;
 }
 
 void Box_Data_List::on_adddel_user_requested_edit(const Gtk::TreeModel::iterator& row)
@@ -660,26 +669,6 @@ void Box_Data_List::on_record_added(const Gnome::Gda::Value& /* strPrimaryKey */
 Box_Data_List::type_signal_user_requested_details Box_Data_List::signal_user_requested_details()
 {
   return m_signal_user_requested_details;
-}
-
-bool Box_Data_List::get_field_column_index(const Glib::ustring& field_name, guint& index) const
-{
-  //Initialize output parameter:
-  index = 0;
-
-  //Get the index of the field with this name:
-  guint i = 0;
-  for(type_vecLayoutFields::const_iterator iter = m_FieldsShown.begin(); iter != m_FieldsShown.end(); ++iter)
-  {
-    if((*iter)->get_name() == field_name)
-    {
-      return m_AddDel.get_model_column_index(i, index); //Add the extra model columns to get the model column index from the field column index
-    }
-
-    ++i;
-  }
-
-  return false; //failure.
 }
 
 sharedptr<Field> Box_Data_List::get_field_primary_key() const

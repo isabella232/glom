@@ -1,5 +1,19 @@
 2006-04-29  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/mode_data/box_data_details.cc:
+	* glom/mode_data/box_data_list.cc:
+	* glom/mode_data/box_data_list.h:
+	* glom/mode_data/notebook_data.cc:
+	* glom/utility_widgets/db_adddel/db_adddel.cc:
+	* glom/utility_widgets/db_adddel/db_adddel.h:
+	* glom/utility_widgets/db_adddel/db_adddel_withbuttons.cc: Changes select_item() to 
+	take a LayoutItem_Field instead of an index, to simplify things.
+	get_view_column_index(): Take the button column into account, so that, for instance, 
+	clicking Add on the list view doesn't sometimes activate the button, taking us to the 
+	details view instead.
+
+2006-04-29  Murray Cumming  <murrayc@murrayc.com>
+
 	* regexxered some method names to all lowercase.
 
 2006-04-29  Murray Cumming  <murrayc@murrayc.com>

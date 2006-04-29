@@ -85,8 +85,6 @@ protected:
   virtual void on_record_added(const Gnome::Gda::Value& primary_key_value); //Not a signal handler. To be overridden.
   virtual void on_record_deleted(const Gnome::Gda::Value& primary_key_value);
 
-  virtual bool get_field_column_index(const Glib::ustring& field_name, guint& index) const;
-
   virtual void print_layout();
   virtual void print_layout_group(xmlpp::Element* node_parent, const sharedptr<const LayoutGroup>& group);
 

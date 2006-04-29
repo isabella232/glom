@@ -148,7 +148,7 @@ bool Box_Data_Details::init_db_details(const FoundSet& found_set, const Gnome::G
 
 bool Box_Data_Details::refresh_data_from_database_with_primary_key(const Gnome::Gda::Value& primary_key_value)
 {
-  //std::cout << "refresh_data_from_database_with_primary_key(): primary_key_value.to_string()=" << primary_key_value.to_string() << std::endl;
+  std::cout << "refresh_data_from_database_with_primary_key(): primary_key_value.to_string()=" << primary_key_value.to_string() << std::endl;
   m_primary_key_value = primary_key_value;
   return fill_from_database();
 }

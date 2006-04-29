@@ -157,6 +157,7 @@ FoundSet Notebook_Data::get_found_set() const
 
 void Notebook_Data::on_list_user_requested_details(const Gnome::Gda::Value& primary_key_value)
 {
+  std::cout << "Notebook_Data::on_list_user_requested_details" << std::endl;
   m_Box_Details.refresh_data_from_database_with_primary_key(primary_key_value);
   set_current_page(m_iPage_Details);
 }
@@ -176,6 +177,8 @@ void Notebook_Data::on_details_user_requested_related_details(const Glib::ustrin
 
 void Notebook_Data::set_current_view(dataview view)
 {
+  std::cout << "Notebook_Data::set_current_view" << std::endl;
+
   if(view == DATA_VIEW_List)
     set_current_page(m_iPage_List);
   else
