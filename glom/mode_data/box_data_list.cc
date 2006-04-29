@@ -165,7 +165,7 @@ void Box_Data_List::on_adddel_user_requested_add()
   {
     //Start editing in the primary key or the first cell if the primary key is auto-incremented (because there is no point in editing an auto-generated value)..
     guint index_primary_key = 0;
-    bool bPresent = get_field_primary_key_index(index_primary_key); //If there is no primary key then the default of 0 is OK.
+    const bool bPresent = get_field_primary_key_index(index_primary_key); //If there is no primary key then the default of 0 is OK.
     guint index_field_to_edit = 0;
     if(bPresent)
     {
@@ -240,19 +240,21 @@ void Box_Data_List::on_adddel_user_added(const Gtk::TreeModel::iterator& row, gu
 
   Gnome::Gda::Value primary_key_value;
 
-  sharedptr<Field> field_primary_key = m_AddDel.get_key_field();
+  sharedptr<Field> primary_key_field = m_AddDel.get_key_field();
 
   //Get the new primary key value, if one is available now:
-  if(field_primary_key->get_auto_increment())
+  if(primary_key_field->get_auto_increment())
   {
     //Auto-increment is awkward (we can't get the last-generated ID) with postgres, so we auto-generate it ourselves;
-    const Glib::ustring& strPrimaryKeyName = field_primary_key->get_name();
+    const Glib::ustring& strPrimaryKeyName = primary_key_field->get_name();
     primary_key_value = generate_next_auto_increment(m_table_name, strPrimaryKeyName);  //TODO: return a Gnome::Gda::Value of an appropriate type.
   }
   else
   {
+    //Use the user-entered primary key value:
+
     //This only works when the primary key is already stored: primary_key_value = get_primary_key_value(row);
-    primary_key_value = get_entered_field_data_field_only(field_primary_key);
+    primary_key_value = get_entered_field_data_field_only(primary_key_field);
   }
 
   //If no primary key value is available yet, then don't add the record yet:
@@ -261,6 +263,16 @@ void Box_Data_List::on_adddel_user_added(const Gtk::TreeModel::iterator& row, gu
     sharedptr<SharedConnection> sharedconnection = connect_to_server(get_app_window()); //Keep it alive while we need the data_model.
     if(sharedconnection)
     {
+      sharedptr<LayoutItem_Field> layout_field = sharedptr<LayoutItem_Field>::create();
+      layout_field->set_full_field_details(primary_key_field);
+      if(!check_entered_value_for_uniqueness(m_table_name, layout_field, primary_key_value, get_app_window()))
+      {
+        //Revert to a blank value.
+        primary_key_value = GlomConversions::get_empty_value(layout_field->get_full_field_details()->get_glom_type());
+        set_entered_field_data(row, layout_field, primary_key_value);
+        return;
+      }
+
       Glib::RefPtr<Gnome::Gda::DataModel> data_model = record_new(true /* use entered field data*/, primary_key_value);
       if(data_model)
       {
@@ -270,17 +282,14 @@ void Box_Data_List::on_adddel_user_added(const Gtk::TreeModel::iterator& row, gu
         //Show the primary key in the row, if the primary key is visible:
 
         //If it's an auto-increment, then get the value and show it:
-        if(field_primary_key->get_auto_increment())
+        if(primary_key_field->get_auto_increment())
         {
           sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
-          layout_item->set_full_field_details(field_primary_key);
+          layout_item->set_full_field_details(primary_key_field);
           m_AddDel.set_value(row, layout_item, primary_key_value);
         }
 
         on_record_added(primary_key_value);
-
-        //Do any lookups, etc, trigerred by the change of value of the original changed field:
-        on_adddel_user_changed(row, col_with_first_value);
       }
       else
         handle_error();
@@ -324,14 +333,14 @@ void Box_Data_List::on_adddel_user_reordered_columns()
 void Box_Data_List::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, guint col)
 {
   const Gnome::Gda::Value parent_primary_key_value = get_primary_key_value(row);
+  sharedptr<const LayoutItem_Field> layout_field = m_AddDel.get_column_field(col);
 
   if(!GlomConversions::value_is_empty(parent_primary_key_value)) //If the record's primary key is filled in:
   {
     //Just update the record:
     try
     {
-      sharedptr<const LayoutItem_Field> layout_field = m_AddDel.get_column_field(col);
-
+      
       Glib::ustring table_name = m_table_name;
       sharedptr<Field> primary_key_field;
       Gnome::Gda::Value primary_key_value;
@@ -388,7 +397,20 @@ void Box_Data_List::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, 
       //const Glib::ustring strFieldName = layout_field->get_name();
 
       FieldInRecord field_in_record(layout_field, m_table_name /* parent */, primary_key_field, primary_key_value, *(get_document()));
-      const bool bTest = set_field_value_in_database(field_in_record, row, field_value, false /* don't use current calculations */, get_app_window());
+
+      //Check whether the value meets uniqueness constraints:
+      Gtk::Window* window = get_app_window();
+      if(!check_entered_value_for_uniqueness(m_table_name, row, layout_field, field_value, window))
+      {
+        //Revert to the value in the database:
+        const Gnome::Gda::Value value_old = get_field_value_in_database(field_in_record, window);
+        set_entered_field_data(row, layout_field, value_old);
+
+        return; //The value has been reverted to the value in the database.
+      }
+
+
+      const bool bTest = set_field_value_in_database(field_in_record, row, field_value, false /* don't use current calculations */, window);
 
       //Glib::ustring strQuery = "UPDATE \"" + table_name + "\"";
       //strQuery += " SET " +  /* table_name + "." + postgres does not seem to like the table name here */ strFieldName + " = " + field.sql(field_value);
@@ -399,19 +421,6 @@ void Box_Data_List::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, 
         //Update failed.
         fill_from_database(); //Replace with correct values.
       }
-      /*
-      else
-      {
-        //Get-and-set values for lookup fields, if this field triggers those relationships:
-        do_lookups(row, layout_field, field_value, primary_key_field, primary_key_value);
-
-        //Recalculate calculated fields, if this field is used by them:
-        do_calculations(m_table_name, layout_field, primary_key_field, primary_key_value);
-
-        //Update related fields, if this field is used in the relationship:
-        refresh_related_fields(row, layout_field, field_value, primary_key_field, primary_key_value);
-      }
-      */
     }
     catch(const std::exception& ex)
     {
@@ -424,13 +433,14 @@ void Box_Data_List::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, 
     //Add new record, which will generate the primary key:
     //Actually, on_adddel_user_added() is usually just called directly in response to the user_added signal.
     on_adddel_user_added(row, col);
-
-    //TODO: When the primary is non auto-incrementing, this sets it again, though it was INSERTED in on_adddel_user_added().
-    //That's harmless, but inefficient.
+    
     const Gnome::Gda::Value primaryKeyValue = get_primary_key_value(row); //TODO_Value
     if(!(GlomConversions::value_is_empty(primaryKeyValue))) //If the Add succeeeded:
     {
-      on_adddel_user_changed(row, col); //Change this field in the new record.
+      if(!(layout_field->get_full_field_details()->get_primary_key())) //Don't try to re-set the primary key field, because we just inserted the record with it.
+      {
+        on_adddel_user_changed(row, col); //Change this field in the new record.
+      }
     }
     else
     {

@@ -2797,11 +2797,19 @@ bool Base_DB::set_field_value_in_database(const FieldInRecord& field_in_record, 
 
     //std::cout << "debug: set_field_value_in_database(): " << std::endl << "  " << strQuery << std::endl;
 
-    Glib::RefPtr<Gnome::Gda::DataModel> datamodel = Query_execute(strQuery, parent_window);  //TODO: Handle errors
-    if(!datamodel)
+    try
     {
-      g_warning("Box_Data::set_field_value_in_database(): UPDATE failed.");
-      return false; //failed.
+      Glib::RefPtr<Gnome::Gda::DataModel> datamodel = Query_execute(strQuery, parent_window);  //TODO: Handle errors
+      if(!datamodel)
+      {
+        g_warning("Box_Data::set_field_value_in_database(): UPDATE failed.");
+        return false; //failed.
+      }
+    }
+    catch(const std::exception& ex)
+    {
+      handle_error(ex);
+      return false;
     }
 
     //Get-and-set values for lookup fields, if this field triggers those relationships:
@@ -2824,6 +2832,45 @@ bool Base_DB::set_field_value_in_database(const FieldInRecord& field_in_record, 
   return true;
 }
 
+Gnome::Gda::Value Base_DB::get_field_value_in_database(const FieldInRecord& field_in_record, Gtk::Window* parent_window)
+{
+  Gnome::Gda::Value result;  //TODO: Return suitable empty value for the field when failing?
+
+  //row is invalid, and ignored, for Box_Data_Details.
+  if(!(field_in_record.m_field))
+  {
+    std::cerr << "Base_DB:gset_field_value_in_database(): field_in_record.m_field is empty." << std::endl;
+    return result;
+  }
+
+  if(!(field_in_record.m_key))
+  {
+    std::cerr << "Base_DB::get_field_value_in_database(): field_in_record.m_key is empty." << std::endl;
+    return result;
+  }
+
+  type_vecLayoutFields list_fields;
+  sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
+  layout_item->set_full_field_details(field_in_record.m_field);
+  list_fields.push_back(layout_item);
+  const Glib::ustring sql_query = GlomUtils::build_sql_select_with_key(field_in_record.m_table_name,
+      list_fields, field_in_record.m_key, field_in_record.m_key_value);
+
+  Glib::RefPtr<Gnome::Gda::DataModel> data_model = Query_execute(sql_query);
+  if(data_model)
+  {
+    if(data_model->get_n_rows())
+    {
+      result = data_model->get_value_at(0, 0);
+    }
+  }
+  else
+  {
+    handle_error();
+  }
+
+  return result;
+}
 
 void Base_DB::do_calculations(const FieldInRecord& field_changed, bool first_calc_field)
 {
@@ -3051,3 +3098,54 @@ Gnome::Gda::Value Base_DB::get_lookup_value(const Glib::ustring& table_name, con
   return result;
 }
 
+bool Base_DB::get_field_value_is_unique(const Glib::ustring& table_name, const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value)
+{
+  bool result = true;  //Arbitrarily default to saying it's unique if we can't get any result.
+
+  const Glib::ustring table_name_used = field->get_table_used(table_name); 
+  Glib::ustring strQuery = "SELECT \"" + table_name_used + "\".\"" + field->get_name() + "\" FROM \"" + table_name_used + "\"";
+  strQuery += " WHERE \"" + field->get_name() + "\" = " + field->get_full_field_details()->sql(value);
+
+  Glib::RefPtr<Gnome::Gda::DataModel> data_model = Query_execute(strQuery);
+  if(data_model)
+  {
+    std::cout << "debug: Base_DB::get_field_value_is_unique(): table_name=" << table_name << ", field name=" << field->get_name() << ", value=" << value.to_string() << ", rows count=" << data_model->get_n_rows() << std::endl;
+    //The value is unique for this field, if the query returned no existing rows:
+
+    result = (data_model->get_n_rows() == 0);
+  }
+  else
+  {
+    handle_error();
+  }
+
+  return result;
+}
+
+bool Base_DB::check_entered_value_for_uniqueness(const Glib::ustring& table_name, const sharedptr<const LayoutItem_Field>& layout_field, const Gnome::Gda::Value& field_value, Gtk::Window* parent_window)
+{
+  return check_entered_value_for_uniqueness(table_name, Gtk::TreeModel::iterator(), layout_field, field_value, parent_window);
+}
+
+bool Base_DB::check_entered_value_for_uniqueness(const Glib::ustring& table_name, const Gtk::TreeModel::iterator& /* row */,  const sharedptr<const LayoutItem_Field>& layout_field, const Gnome::Gda::Value& field_value, Gtk::Window* parent_window)
+{
+  //Check whether the value meets uniqueness constraints, if any:
+  const sharedptr<const Field>& field = layout_field->get_full_field_details();
+  if(field && (field->get_primary_key() || field->get_unique_key()))
+  {
+    if(!get_field_value_is_unique(table_name, layout_field, field_value))
+    {
+      //std::cout << "debug Base_DB::check_entered_value_for_uniqueness(): field=" << layout_field->get_name() << ", value is not unique: " << field_value.to_string() << std::endl;
+
+      //Warn the user and revert the value:
+      if(parent_window)
+        Frame_Glom::show_ok_dialog(_("Value Is Not Unique"), _("The field's value must be unique, but a record with this value already exists."), *parent_window);
+         
+      return false; //Failed.
+    }
+    else
+      return true; //Succeed, because the value is unique.
+  }
+  else
+    return true; //Succeed, because the value does not need to be unique.
+}

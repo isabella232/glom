@@ -241,6 +241,9 @@ protected:
   bool set_field_value_in_database(const FieldInRecord& field_in_record, const Gnome::Gda::Value& field_value, bool use_current_calculations = false, Gtk::Window* parent_window = 0);
   bool set_field_value_in_database(const FieldInRecord& field_in_record, const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& field_value, bool use_current_calculations = false, Gtk::Window* parent_window = 0);
 
+  //Get a single field value from the database.
+  Gnome::Gda::Value get_field_value_in_database(const FieldInRecord& field_in_record, Gtk::Window* parent_window);
+
 
   type_vecStrings get_database_groups() const;
   type_vecStrings get_database_users(const Glib::ustring& group_name = Glib::ustring()) const;
@@ -284,6 +287,11 @@ protected:
    * Add a row for this field in the system table if it does not exist already.
    */
   void recalculate_next_auto_increment_value(const Glib::ustring& table_name, const Glib::ustring& field_name) const;
+
+  bool get_field_value_is_unique(const Glib::ustring& table_name, const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
+
+  bool check_entered_value_for_uniqueness(const Glib::ustring& table_name, const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value, Gtk::Window* parent_window);
+  bool check_entered_value_for_uniqueness(const Glib::ustring& table_name, const Gtk::TreeModel::iterator& /* row */,  const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value, Gtk::Window* parent_window);
 
   virtual bool fill_from_database();
   virtual void fill_end(); //Call this from the end of fill_from_database() overrides.

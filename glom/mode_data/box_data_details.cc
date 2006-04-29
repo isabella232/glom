@@ -19,6 +19,7 @@
  */
 
 #include "box_data_details.h"
+#include "../frame_glom.h" //For show_ok_dialog().
 #include <glom/libglom/data_structure/field.h>
 #include <glom/libglom/data_structure/relationship.h>
 #include <glom/libglom/data_structure/glomconversions.h>
@@ -543,6 +544,8 @@ void Box_Data_Details::on_flowtable_field_edited(const sharedptr<const LayoutIte
 
   const Glib::ustring strFieldName = layout_field->get_name();
 
+  Gtk::Window* window = get_app_window();
+
   Gnome::Gda::Value primary_key_value = get_primary_key_value();
   if(!GlomConversions::value_is_empty(primary_key_value)) //If there is not a primary key value:
   {
@@ -595,22 +598,27 @@ void Box_Data_Details::on_flowtable_field_edited(const sharedptr<const LayoutIte
       }
     }
 
-    //const sharedptr<const Field>& field = layout_field->m_field;
+
+    FieldInRecord field_in_record(layout_field, m_table_name /* parent table */, primary_key_field, primary_key_value, *(get_document()));
+
+    //Check whether the value meets uniqueness constraints:
+    if(!check_entered_value_for_uniqueness(m_table_name, layout_field, field_value, window))
+    {
+      //Revert to the value in the database:
+      const Gnome::Gda::Value value_old = get_field_value_in_database(field_in_record, window);
+      set_entered_field_data(layout_field, value_old);
+   
+      return; 
+    }
 
     //Set the value in all instances of this field in the layout (The field might be on the layout more than once):
     //if(layout_field->get_glom_type() != Field::TYPE_IMAGE) //TODO For now, don't do this for images, because the ImageGlom widget expects a broken GdaValue, because gda_value_get_binary() needs to be fixed.
-      m_FlowTable.set_field_value(layout_field, field_value);
+    m_FlowTable.set_field_value(layout_field, field_value);
 
     //Update the field in the record (the record with this primary key):
     try
     {
-      FieldInRecord field_in_record(layout_field, m_table_name /* parent table */, primary_key_field, primary_key_value, *(get_document()));
       const bool bTest = set_field_value_in_database(field_in_record, field_value, false /* don't use current calculations */, get_app_window());
-
-      //Glib::ustring strQuery = "UPDATE \"" + table_name + "\"";
-      //strQuery += " SET " +  /* table_name + "." + postgres does not seem to like the table name here */ strFieldName + " = " + field.sql(field_value);
-      //strQuery += " WHERE " + table_name + "." + primary_key_field.get_name() + " = " + primary_key_field.sql(primary_key_value);
-      //bool bTest = Query_execute(strQuery);
 
       if(!bTest)
       {
@@ -674,12 +682,21 @@ void Box_Data_Details::on_flowtable_field_edited(const sharedptr<const LayoutIte
     {
       //It is not auto-generated:
 
-      if(strFieldName == m_field_primary_key->get_name()) //if it is the primary key that' being edited.
+      if(strFieldName == m_field_primary_key->get_name()) //if it is the primary key that is being edited.
       {
-        //Create new record with this primary key,
-        //and all the other field values too.
-        //see comments after 'else':
-        record_new(true /* use entered field data */);
+        if(!check_entered_value_for_uniqueness(m_table_name, layout_field, field_value, window))
+        {
+          //Revert to a blank value:
+          const Gnome::Gda::Value value_old = GlomConversions::get_empty_value(layout_field->get_full_field_details()->get_glom_type());
+          set_entered_field_data(layout_field, value_old);
+        }
+        else
+        {
+          //Create new record with this primary key,
+          //and all the other field values too.
+          //see comments after 'else':
+          record_new(true /* use entered field data */);
+        }
       }
       else
       {

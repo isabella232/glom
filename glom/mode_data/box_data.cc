@@ -219,6 +219,17 @@ Glib::RefPtr<Gnome::Gda::DataModel> Box_Data::record_new(bool use_entered_data, 
               value = get_entered_field_data(layout_item);
           }
 
+          /* //TODO: This would be too many small queries when adding one record.
+          //Check whether the value meets uniqueness constraints:
+          if(field->get_primary_key() || field->get_unique_key())
+          {
+            if(!get_field_value_is_unique(m_table_name, layout_item, value))
+            {
+              //Ignore this field value. TODO: Warn the user about it.
+            } 
+          }
+          */
+
           Glib::ustring strFieldValue = field->sql(value);
 
           if(!strFieldValue.empty())
