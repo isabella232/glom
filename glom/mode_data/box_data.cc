@@ -254,7 +254,7 @@ Glib::RefPtr<Gnome::Gda::DataModel> Box_Data::record_new(bool use_entered_data, 
   if(!strNames.empty() && !strValues.empty())
   {
     Glib::ustring strQuery = "INSERT INTO \"" + m_table_name + "\" (" + strNames + ") VALUES (" + strValues + ")";
-    return Query_execute(strQuery, get_app_window());
+    return query_execute(strQuery, get_app_window());
   }
   else
     return Glib::RefPtr<Gnome::Gda::DataModel>();
@@ -353,7 +353,7 @@ Gnome::Gda::Value Box_Data::generate_next_auto_increment(const Glib::ustring& ta
   //This is a workaround for postgres problems. Ideally, we need to use the postgres serial type and find out how to get the generated value after we add a row.
 
   double result = 0;
-  Glib::RefPtr<Gnome::Gda::DataModel> data_model = Query_execute("SELECT max(" + field_name + ") FROM \"" + table_name + "\"");
+  Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute("SELECT max(" + field_name + ") FROM \"" + table_name + "\"");
   if(!data_model && data_model->get_n_rows())
     handle_error();
   else
@@ -423,7 +423,7 @@ void Box_Data::refresh_related_fields(const FieldInRecord& field_in_record_chang
   {
     const Glib::ustring query = GlomUtils::build_sql_select_with_key(field_in_record_changed.m_table_name, fieldsToGet, field_in_record_changed.m_key, field_in_record_changed.m_key_value);
 
-    Glib::RefPtr<Gnome::Gda::DataModel> result = Query_execute(query, get_app_window());
+    Glib::RefPtr<Gnome::Gda::DataModel> result = query_execute(query, get_app_window());
     if(!result)
     {
       g_warning("Box_Data_List::refresh_related_fields(): no result.");
@@ -547,7 +547,7 @@ bool Box_Data::record_delete(const Gnome::Gda::Value& primary_key_value)
   sharedptr<Field> field_primary_key = get_field_primary_key();
   if(field_primary_key && !GlomConversions::value_is_empty(primary_key_value))
   {
-    return Query_execute( "DELETE FROM \"" + m_table_name + "\" WHERE \"" + m_table_name + "\".\"" + field_primary_key->get_name() + "\" = " + field_primary_key->sql(primary_key_value), get_app_window());
+    return query_execute( "DELETE FROM \"" + m_table_name + "\" WHERE \"" + m_table_name + "\".\"" + field_primary_key->get_name() + "\" = " + field_primary_key->sql(primary_key_value), get_app_window());
   }
   else
   {
@@ -647,7 +647,7 @@ bool Box_Data::get_related_record_exists(const sharedptr<const Relationship>& re
 
   //TODO_Performance: Is this the best way to just find out whether there is one record that meets this criteria?
   const Glib::ustring query = "SELECT \"" + to_field + "\" FROM \"" + relationship->get_to_table() + "\" WHERE \"" + to_field + "\" = " + key_field->sql(key_value);
-  Glib::RefPtr<Gnome::Gda::DataModel> records = Query_execute(query, get_app_window());
+  Glib::RefPtr<Gnome::Gda::DataModel> records = query_execute(query, get_app_window());
   if(!records)
     handle_error();
   else
@@ -719,7 +719,7 @@ bool Box_Data::add_related_record_for_field(const sharedptr<const LayoutItem_Fie
         }
 
         const Glib::ustring strQuery = "INSERT INTO \"" + relationship->get_to_table() + "\" (\"" + primary_key_field->get_name() + "\") VALUES (" + primary_key_field->sql(primary_key_value) + ")";
-        bool test = Query_execute(strQuery, get_app_window());
+        bool test = query_execute(strQuery, get_app_window());
         if(test)
         {
           if(key_is_auto_increment)
@@ -753,7 +753,7 @@ bool Box_Data::add_related_record_for_field(const sharedptr<const LayoutItem_Fie
                 {
                   const Glib::ustring strQuery = "UPDATE \"" + relationship->get_from_table() + "\" SET \"" + relationship->get_from_field() + "\" = " + primary_key_field->sql(primary_key_value) +
                     " WHERE \"" + relationship->get_from_table() + "\".\"" + parent_primary_key_field->get_name() + "\" = " + parent_primary_key_field->sql(parent_primary_key_value);
-                  const bool test = Query_execute(strQuery, get_app_window());
+                  const bool test = query_execute(strQuery, get_app_window());
                   return test;
                 }
               }

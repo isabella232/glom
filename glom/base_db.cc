@@ -126,7 +126,7 @@ bool Base_DB::handle_error() const
 }
 
 
-Glib::RefPtr<Gnome::Gda::DataModel> Base_DB::Query_execute(const Glib::ustring& strQuery, Gtk::Window* parent_window) const
+Glib::RefPtr<Gnome::Gda::DataModel> Base_DB::query_execute(const Glib::ustring& strQuery, Gtk::Window* parent_window) const
 {
   Glib::RefPtr<Gnome::Gda::DataModel> result;
 
@@ -140,7 +140,7 @@ Glib::RefPtr<Gnome::Gda::DataModel> Base_DB::Query_execute(const Glib::ustring& 
     /*
     try
     {
-      std::cout << "Debug: Query_execute():  " << strQuery << std::endl;
+      std::cout << "Debug: query_execute():  " << strQuery << std::endl;
     }
     catch(const Glib::Exception& ex)
     {
@@ -151,14 +151,14 @@ Glib::RefPtr<Gnome::Gda::DataModel> Base_DB::Query_execute(const Glib::ustring& 
     result = gda_connection->execute_single_command(strQuery);
     if(!result)
     {
-      std::cerr << "Glom  Base_DB::Query_execute(): Error while executing SQL" << std::endl <<
+      std::cerr << "Glom  Base_DB::query_execute(): Error while executing SQL" << std::endl <<
                    "  " <<  strQuery << std::endl;
       handle_error();
     }
   }
   else
   {
-    g_warning("Base_DB::Query_execute(): No connection yet.");
+    g_warning("Base_DB::query_execute(): No connection yet.");
   }
 
   return result;
@@ -574,7 +574,7 @@ Base_DB::type_vecStrings Base_DB::get_database_groups() const
   type_vecStrings result;
 
   Glib::ustring strQuery = "SELECT \"pg_group\".\"groname\" FROM \"pg_group\"";
-  Glib::RefPtr<Gnome::Gda::DataModel> data_model = Query_execute(strQuery);
+  Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute(strQuery);
   if(data_model)
   {
     const int rows_count = data_model->get_n_rows();
@@ -597,7 +597,7 @@ Base_DB::type_vecStrings Base_DB::get_database_users(const Glib::ustring& group_
   {
     //pg_shadow contains the users. pg_users is a view of pg_shadow without the password.
     Glib::ustring strQuery = "SELECT \"pg_shadow\".\"usename\" FROM \"pg_shadow\"";
-    Glib::RefPtr<Gnome::Gda::DataModel> data_model = Query_execute(strQuery);
+    Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute(strQuery);
     if(data_model)
     {
       const int rows_count = data_model->get_n_rows();
@@ -612,7 +612,7 @@ Base_DB::type_vecStrings Base_DB::get_database_users(const Glib::ustring& group_
   else
   {
     Glib::ustring strQuery = "SELECT \"pg_group\".\"groname\", \"pg_group\".\"grolist\" FROM \"pg_group\" WHERE \"pg_group\".\"groname\" = '" + group_name + "'";
-    Glib::RefPtr<Gnome::Gda::DataModel> data_model = Query_execute(strQuery);
+    Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute(strQuery);
     if(data_model && data_model->get_n_rows())
     {
       const int rows_count = data_model->get_n_rows();
@@ -630,7 +630,7 @@ Base_DB::type_vecStrings Base_DB::get_database_users(const Glib::ustring& group_
         {
           //TODO_Performance: Can we do this in one SQL SELECT?
           Glib::ustring strQuery = "SELECT \"pg_user\".\"usename\" FROM \"pg_user\" WHERE \"pg_user\".\"usesysid\" = '" + *iter + "'";
-          Glib::RefPtr<Gnome::Gda::DataModel> data_model = Query_execute(strQuery);
+          Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute(strQuery);
           if(data_model)
           {
             const Gnome::Gda::Value value = data_model->get_value_at(0, 0); 
@@ -700,7 +700,7 @@ void Base_DB::set_table_privileges(const Glib::ustring& group_name, const Glib::
 
   strQuery += " GROUP \"" + group_name + "\"";
 
-  const bool test = Query_execute(strQuery);
+  const bool test = query_execute(strQuery);
 
   if(test)
   {
@@ -732,7 +732,7 @@ Privileges Base_DB::get_table_privileges(const Glib::ustring& group_name, const 
 
   //Get the permissions:
   Glib::ustring strQuery = "SELECT \"pg_class\".\"relacl\" FROM \"pg_class\" WHERE \"pg_class\".\"relname\" = '" + table_name + "'";
-  Glib::RefPtr<Gnome::Gda::DataModel> data_model = Query_execute(strQuery);
+  Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute(strQuery);
   if(data_model && data_model->get_n_rows())
   {
     const Gnome::Gda::Value value = data_model->get_value_at(0, 0);
@@ -814,13 +814,13 @@ bool Base_DB::add_standard_tables() const
       if(test)
       {
         //Add the single record:
-        Query_execute("INSERT INTO \"" GLOM_STANDARD_TABLE_PREFS_TABLE_NAME "\" (\"" GLOM_STANDARD_TABLE_PREFS_FIELD_ID "\") VALUES (1)");
+        query_execute("INSERT INTO \"" GLOM_STANDARD_TABLE_PREFS_TABLE_NAME "\" (\"" GLOM_STANDARD_TABLE_PREFS_FIELD_ID "\") VALUES (1)");
 
         //Use the database title from the document, if there is one:
         const Glib::ustring system_name = get_document()->get_database_title();
         if(!system_name.empty())
         {
-          Query_execute("UPDATE \"" GLOM_STANDARD_TABLE_PREFS_TABLE_NAME "\" SET  " "\"" GLOM_STANDARD_TABLE_PREFS_FIELD_NAME "\" = '" + system_name + "' WHERE \"" GLOM_STANDARD_TABLE_PREFS_FIELD_ID "\" = 1");
+          query_execute("UPDATE \"" GLOM_STANDARD_TABLE_PREFS_TABLE_NAME "\" SET  " "\"" GLOM_STANDARD_TABLE_PREFS_FIELD_NAME "\" = '" + system_name + "' WHERE \"" GLOM_STANDARD_TABLE_PREFS_FIELD_ID "\" = 1");
         }
       }
       else
@@ -896,7 +896,7 @@ bool Base_DB::add_standard_groups()
   type_vecStrings::const_iterator iterFind = std::find(vecGroups.begin(), vecGroups.end(), devgroup);
   if(iterFind == vecGroups.end())
   {
-    bool test = Query_execute("CREATE GROUP \"" GLOM_STANDARD_GROUP_NAME_DEVELOPER "\"");
+    bool test = query_execute("CREATE GROUP \"" GLOM_STANDARD_GROUP_NAME_DEVELOPER "\"");
     if(!test)
     {
       std::cerr << "Glom Base_DB::add_standard_groups(): CREATE GROUP failed when adding the developer group." << std::endl;
@@ -907,7 +907,7 @@ bool Base_DB::add_standard_groups()
     //(If he is capable of creating these groups then he is obviously a developer, and has developer rights on the postgres server.)
     const Glib::ustring current_user = ConnectionPool::get_instance()->get_user();
     Glib::ustring strQuery = "ALTER GROUP \"" GLOM_STANDARD_GROUP_NAME_DEVELOPER "\" ADD USER \"" + current_user + "\"";
-    test = Query_execute(strQuery);
+    test = query_execute(strQuery);
     if(!test)
     {
       std::cerr << "Glom Base_DB::add_standard_groups(): ALTER GROUP failed when adding the user to the developer group." << std::endl;
@@ -962,7 +962,7 @@ Gnome::Gda::Value Base_DB::auto_increment_insert_first_if_necessary(const Glib::
    " WHERE \"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME "\" = '" + table_name + "' AND "
           "\"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_FIELD_NAME "\" = '" + field_name + "'";
 
-  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = Query_execute(sql_query);
+  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute(sql_query);
   if(!datamodel || (datamodel->get_n_rows() == 0))
   {
     //Start with zero:
@@ -972,7 +972,7 @@ Gnome::Gda::Value Base_DB::auto_increment_insert_first_if_necessary(const Glib::
       GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME ", " GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_FIELD_NAME ", " GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_NEXT_VALUE
       ") VALUES ('" + table_name + "', '" + field_name + "', 0)";
 
-    Glib::RefPtr<Gnome::Gda::DataModel> datamodel = Query_execute(sql_query);
+    Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute(sql_query);
     if(!datamodel)
     {
       g_warning("Base_DB::auto_increment_insert_first_if_necessary(): INSERT of new row failed.");
@@ -998,7 +998,7 @@ void Base_DB::recalculate_next_auto_increment_value(const Glib::ustring& table_n
 
   //Get the max key value in the database:
   const Glib::ustring sql_query = "SELECT MAX(\"" + table_name + "\".\"" + field_name + "\") FROM \"" + table_name + "\"";
-  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = Query_execute(sql_query);
+  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute(sql_query);
   if(datamodel && datamodel->get_n_rows() && datamodel->get_n_columns())
   {
     //Increment it:
@@ -1013,7 +1013,7 @@ void Base_DB::recalculate_next_auto_increment_value(const Glib::ustring& table_n
       " WHERE \"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME "\" = '" + table_name + "' AND "
              "\"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_FIELD_NAME "\" = '" + field_name + "'";
 
-    Glib::RefPtr<Gnome::Gda::DataModel> datamodel = Query_execute(sql_query);
+    Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute(sql_query);
     if(!datamodel)
     {
       g_warning("Base_DB::recalculate_next_auto_increment_value(): UPDATE failed.");
@@ -1041,7 +1041,7 @@ Gnome::Gda::Value Base_DB::get_next_auto_increment_value(const Glib::ustring& ta
       " WHERE \"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME "\" = '" + table_name + "' AND "
             "\""  GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_FIELD_NAME "\" = '" + field_name + "'";
 
-  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = Query_execute(sql_query);
+  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute(sql_query);
   if(!datamodel)
   {
     g_warning("Base_DB::get_next_auto_increment_value(): Increment failed.");
@@ -1226,7 +1226,7 @@ SystemPrefs Base_DB::get_database_preferences() const
 
   try
   {
-    Glib::RefPtr<Gnome::Gda::DataModel> datamodel = Query_execute(sql_query);
+    Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute(sql_query);
     if(datamodel && (datamodel->get_n_rows() != 0))
     {
       result.m_name = GlomConversions::get_text_for_gda_value(Field::TYPE_TEXT, datamodel->get_value_at(0, 0));
@@ -1281,7 +1281,7 @@ void Base_DB::set_database_preferences(const SystemPrefs& prefs)
 
     try
     {
-      Glib::RefPtr<Gnome::Gda::DataModel> datamodel = Query_execute(sql_query);
+      Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute(sql_query);
     }
     catch(const std::exception& ex)
     {
@@ -1343,7 +1343,7 @@ bool Base_DB::create_table(const sharedptr<const TableInfo>& table_info, const D
   //Actually create the table
   try
   {
-    Glib::RefPtr<Gnome::Gda::DataModel> data_model = Query_execute( "CREATE TABLE \"" + table_info->get_name() + "\" (" + sql_fields + ")" );
+    Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute( "CREATE TABLE \"" + table_info->get_name() + "\" (" + sql_fields + ")" );
     if(!data_model)
       table_creation_succeeded = false;
     else
@@ -1386,7 +1386,7 @@ bool Base_DB::postgres_add_column(const Glib::ustring& table_name, const sharedp
     field_to_add->set_field_info(field_info);
   }
 
-  const bool bTest = Query_execute(  "ALTER TABLE \"" + table_name + "\" ADD \"" + field_to_add->get_name() + "\" " +  field_to_add->get_sql_type() );
+  const bool bTest = query_execute(  "ALTER TABLE \"" + table_name + "\" ADD \"" + field_to_add->get_name() + "\" " +  field_to_add->get_sql_type() );
   if(bTest)
   {
     if(not_extras)
@@ -1406,7 +1406,7 @@ void Base_DB::postgres_change_column_extras(const Glib::ustring& table_name, con
 
   if(field->get_name() != field_old->get_name())
   {
-     Glib::RefPtr<Gnome::Gda::DataModel>  datamodel = Query_execute( "ALTER TABLE \"" + table_name + "\" RENAME COLUMN \"" + field_old->get_name() + "\" TO \"" + field->get_name() + "\"" );
+     Glib::RefPtr<Gnome::Gda::DataModel>  datamodel = query_execute( "ALTER TABLE \"" + table_name + "\" RENAME COLUMN \"" + field_old->get_name() + "\" TO \"" + field->get_name() + "\"" );
      if(!datamodel)
      {
        handle_error();
@@ -1421,7 +1421,7 @@ void Base_DB::postgres_change_column_extras(const Glib::ustring& table_name, con
     if(field_old->get_primary_key() == false)
       add_or_drop = "DROP";
 
-    Glib::RefPtr<Gnome::Gda::DataModel>  datamodel = Query_execute( "ALTER TABLE \"" + table_name + "\" " + add_or_drop + " PRIMARY KEY (\"" + field->get_name() + "\")");
+    Glib::RefPtr<Gnome::Gda::DataModel>  datamodel = query_execute( "ALTER TABLE \"" + table_name + "\" " + add_or_drop + " PRIMARY KEY (\"" + field->get_name() + "\")");
     if(!datamodel)
     {
       handle_error();
@@ -1434,7 +1434,7 @@ void Base_DB::postgres_change_column_extras(const Glib::ustring& table_name, con
     if(set_anyway || (field->get_unique_key() != field_old->get_unique_key()))
     {
        /* TODO: Is there an easier way than adding an index manually?
-       Glib::RefPtr<Gnome::Gda::DataModel>  datamodel = Query_execute( "ALTER TABLE \"" + m_table_name + "\" RENAME COLUMN " + field_info_old.get_name() + " TO " + field_info.get_name() );
+       Glib::RefPtr<Gnome::Gda::DataModel>  datamodel = query_execute( "ALTER TABLE \"" + m_table_name + "\" RENAME COLUMN " + field_info_old.get_name() + " TO " + field_info.get_name() );
        if(!datamodel)
        {
          handle_error();
@@ -1450,7 +1450,7 @@ void Base_DB::postgres_change_column_extras(const Glib::ustring& table_name, con
     {
       if(set_anyway || (default_value != default_value_old))
       {
-        Glib::RefPtr<Gnome::Gda::DataModel> datamodel = Query_execute( "ALTER TABLE \"" + table_name + "\" ALTER COLUMN \""+ field->get_name() + "\" SET DEFAULT " + field->sql(field->get_default_value()) );
+        Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute( "ALTER TABLE \"" + table_name + "\" ALTER COLUMN \""+ field->get_name() + "\" SET DEFAULT " + field->sql(field->get_default_value()) );
         if(!datamodel)
         {
           handle_error();
@@ -1472,7 +1472,7 @@ void Base_DB::postgres_change_column_extras(const Glib::ustring& table_name, con
     if( set_anyway ||  (field->get_field_info().get_allow_null() != field_old->get_field_info().get_allow_null()) )
     {
       Glib::ustring nullness = (field->get_field_info().get_allow_null() ? "NULL" : "NOT NULL");
-      Query_execute(  "ALTER TABLE " + m_table_name + " ALTER COLUMN " + field->get_name() + "  SET " + nullness);
+      query_execute(  "ALTER TABLE " + m_table_name + " ALTER COLUMN " + field->get_name() + "  SET " + nullness);
     }
   */ 
 }
@@ -1512,7 +1512,7 @@ bool Base_DB::insert_example_data(const Glib::ustring& table_name) const
     try
     {
       const Glib::ustring strQuery = "INSERT INTO \"" + table_name + "\" (" + strNames + ") VALUES (" + *iter + ")";
-      Query_execute(strQuery); //TODO: Test result.
+      query_execute(strQuery); //TODO: Test result.
       insert_succeeded = true;
     }
     catch(const ExceptionConnection& ex)
@@ -1869,7 +1869,7 @@ void Base_DB::report_build_groupby(const FoundSet& found_set_parent, xmlpp::Elem
 
     sql_query += " GROUP BY " + field_group_by->get_name(); //rTODO: And restrict to the current found set.
 
-    Glib::RefPtr<Gnome::Gda::DataModel> datamodel = Query_execute(sql_query);
+    Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute(sql_query);
     if(datamodel)
     {
       guint rows_count = datamodel->get_n_rows();
@@ -1992,7 +1992,7 @@ void Base_DB::report_build_records(const FoundSet& found_set, xmlpp::Element& pa
       sql_query += "LIMIT 1";
 
     bool records_found = false;
-    Glib::RefPtr<Gnome::Gda::DataModel> datamodel = Query_execute(sql_query);
+    Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute(sql_query);
     if(datamodel)
     {
       guint rows_count = datamodel->get_n_rows();
@@ -2064,7 +2064,7 @@ void Base_DB::report_build_records_field(const FoundSet& found_set, xmlpp::Eleme
     //So let's get that data here:
     const Glib::ustring table_used = field->get_table_used(found_set.m_table_name);
     const Glib::ustring query = "SELECT \"" + table_used + "\".\"" + field->get_name() + "\" FROM \""+ table_used + "\" LIMIT 1";
-    Glib::RefPtr<Gnome::Gda::DataModel> datamodel = Query_execute(query);
+    Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute(query);
 
     if(!datamodel)
       return;
@@ -2543,7 +2543,7 @@ void Base_DB::calculate_field_in_all_records(const Glib::ustring& table_name, co
 
   //Get primary key values for every record:
   const Glib::ustring query = "SELECT \"" + table_name + "\".\"" + primary_key->get_name() + "\" FROM \"" + table_name + "\"";
-  Glib::RefPtr<Gnome::Gda::DataModel> data_model = Query_execute(query);
+  Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute(query);
   if(!data_model || !data_model->get_n_rows() || !data_model->get_n_columns())
   {
     //HandleError();
@@ -2715,7 +2715,7 @@ Base_DB::type_map_fields Base_DB::get_record_field_values(const Glib::ustring& t
       //sharedptr<const Field> fieldPrimaryKey = get_field_primary_key();
 
       const Glib::ustring query = GlomUtils::build_sql_select_with_key(table_name, fieldsToGet, primary_key, primary_key_value);
-      Glib::RefPtr<Gnome::Gda::DataModel> data_model = Query_execute(query);
+      Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute(query);
 
       if(data_model && data_model->get_n_rows())
       {
@@ -2799,7 +2799,7 @@ bool Base_DB::set_field_value_in_database(const FieldInRecord& field_in_record, 
 
     try
     {
-      Glib::RefPtr<Gnome::Gda::DataModel> datamodel = Query_execute(strQuery, parent_window);  //TODO: Handle errors
+      Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute(strQuery, parent_window);  //TODO: Handle errors
       if(!datamodel)
       {
         g_warning("Box_Data::set_field_value_in_database(): UPDATE failed.");
@@ -2856,7 +2856,7 @@ Gnome::Gda::Value Base_DB::get_field_value_in_database(const FieldInRecord& fiel
   const Glib::ustring sql_query = GlomUtils::build_sql_select_with_key(field_in_record.m_table_name,
       list_fields, field_in_record.m_key, field_in_record.m_key_value);
 
-  Glib::RefPtr<Gnome::Gda::DataModel> data_model = Query_execute(sql_query);
+  Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute(sql_query);
   if(data_model)
   {
     if(data_model->get_n_rows())
@@ -3016,7 +3016,7 @@ void Base_DB::do_lookups(const FieldInRecord& field_in_record, const Gtk::TreeMo
         //Glib::ustring strQuery = "UPDATE \"" + m_table_name + "\"";
         //strQuery += " SET " + field_lookup.get_name() + " = " + field_lookup.sql(value);
         //strQuery += " WHERE " + primary_key.get_name() + " = " + primary_key.sql(primary_key_value);
-        //Query_execute(strQuery);  //TODO: Handle errors
+        //query_execute(strQuery);  //TODO: Handle errors
 
         //TODO: Handle lookups triggered by these fields (recursively)? TODO: Check for infinitely looping lookups.
       }
@@ -3083,7 +3083,7 @@ Gnome::Gda::Value Base_DB::get_lookup_value(const Glib::ustring& table_name, con
     Glib::ustring strQuery = "SELECT \"" + relationship->get_to_table() + "\".\"" + source_field->get_name() + "\" FROM \"" +  relationship->get_to_table() + "\"";
     strQuery += " WHERE \"" + to_key_field->get_name() + "\" = " + to_key_field->sql(value_to_key_field);
 
-    Glib::RefPtr<Gnome::Gda::DataModel> data_model = Query_execute(strQuery);
+    Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute(strQuery);
     if(data_model && data_model->get_n_rows())
     {
       //There should be only 1 row. Well, there could be more but we will ignore them.
@@ -3106,7 +3106,7 @@ bool Base_DB::get_field_value_is_unique(const Glib::ustring& table_name, const s
   Glib::ustring strQuery = "SELECT \"" + table_name_used + "\".\"" + field->get_name() + "\" FROM \"" + table_name_used + "\"";
   strQuery += " WHERE \"" + field->get_name() + "\" = " + field->get_full_field_details()->sql(value);
 
-  Glib::RefPtr<Gnome::Gda::DataModel> data_model = Query_execute(strQuery);
+  Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute(strQuery);
   if(data_model)
   {
     std::cout << "debug: Base_DB::get_field_value_is_unique(): table_name=" << table_name << ", field name=" << field->get_name() << ", value=" << value.to_string() << ", rows count=" << data_model->get_n_rows() << std::endl;

@@ -270,13 +270,13 @@ void Box_Tables::on_adddel_Add(const Gtk::TreeModel::iterator& row)
 
     //Create a table with 1 "ID" field:
    //MSYQL:
-    //Query_execute( "CREATE TABLE \"" + table_name + "\" (" + primary_key_name + " INT NOT NULL AUTO_INCREMENT PRIMARY KEY)" );
-    //Query_execute( "INSERT INTO \"" + table_name + "\" VALUES (0)" );
+    //query_execute( "CREATE TABLE \"" + table_name + "\" (" + primary_key_name + " INT NOT NULL AUTO_INCREMENT PRIMARY KEY)" );
+    //query_execute( "INSERT INTO \"" + table_name + "\" VALUES (0)" );
 
     //PostgresSQL:
-    //Query_execute( "CREATE TABLE " + table_name + " (" + primary_key_name + " serial NOT NULL  PRIMARY KEY)" );
+    //query_execute( "CREATE TABLE " + table_name + " (" + primary_key_name + " serial NOT NULL  PRIMARY KEY)" );
 
-    //Query_execute( "CREATE TABLE \"" + table_name + "\" (" +
+    //query_execute( "CREATE TABLE \"" + table_name + "\" (" +
     //  field_primary_key->get_name() + " numeric NOT NULL  PRIMARY KEY," + 
     //  extra_field_description + "varchar, " +
     //  extra_field_comments + "varchar" +
@@ -337,7 +337,7 @@ void Box_Tables::on_adddel_Delete(const Gtk::TreeModel::iterator& rowStart, cons
           //Delete the table:
           if(iButtonClicked == Gtk::RESPONSE_OK)
           {
-            Query_execute( "DROP TABLE " + table_name, get_app_window());
+            query_execute( "DROP TABLE " + table_name, get_app_window());
             get_document()->remove_table(table_name); //Forget about it in the document too.
             something_changed = true;
           }
@@ -449,7 +449,7 @@ void Box_Tables::on_adddel_changed(const Gtk::TreeModel::iterator& row, guint co
         //Rename the table:
         if(iButtonClicked == Gtk::RESPONSE_OK)
         {
-          const bool test = Query_execute( "ALTER TABLE \"" + table_name + "\" RENAME TO \"" + table_name_new + "\"", get_app_window());
+          const bool test = query_execute( "ALTER TABLE \"" + table_name + "\" RENAME TO \"" + table_name_new + "\"", get_app_window());
           if(test)
           {
             //Change the AddDel item's key:

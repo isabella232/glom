@@ -243,7 +243,7 @@ void Box_Data_List_Related::on_record_added(const Gnome::Gda::Value& primary_key
         Glib::ustring strQuery = "UPDATE \"" + m_portal->get_relationship()->get_to_table() + "\"";
         strQuery += " SET \"" +  /* get_table_name() + "." +*/ m_key_field->get_name() + "\" = " + m_key_field->sql(m_key_value);
         strQuery += " WHERE \"" + get_table_name() + "\".\"" + field_primary_key->get_name() + "\" = " + field_primary_key->sql(primary_key_value);
-        bool test = Query_execute(strQuery, get_app_window());
+        bool test = query_execute(strQuery, get_app_window());
         if(test)
         {
           //Show it on the view, if it's visible:
@@ -524,7 +524,7 @@ void Box_Data_List_Related::get_suitable_record_to_view_details(const Gnome::Gda
         //std::cout << "PRIMARY_KEY_VALUE=" << primary_key_value.to_string() << std::endl;
 
         const Glib::ustring query = GlomUtils::build_sql_select_with_key(LayoutWidgetBase::m_table_name, fieldsToGet, m_AddDel.get_key_field(), primary_key_value);
-        Glib::RefPtr<Gnome::Gda::DataModel> data_model = Query_execute(query);
+        Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute(query);
         if(data_model && data_model->get_n_rows() && data_model->get_n_columns())
         {
           table_primary_key_value = data_model->get_value_at(0, 0);

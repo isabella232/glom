@@ -1,5 +1,9 @@
 2006-04-29  Murray Cumming  <murrayc@murrayc.com>
 
+	* regexxered some method names to all lowercase.
+
+2006-04-29  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/base_db.cc:
 	* glom/base_db.h: Added check_entered_value_for_uniqueness()
 	and get_field_value_is_unique() and get_field_value_in_database().

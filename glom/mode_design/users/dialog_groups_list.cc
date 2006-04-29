@@ -221,7 +221,7 @@ void Dialog_GroupsList::on_button_group_delete()
         if(response == Gtk::RESPONSE_OK)
         {
           Glib::ustring strQuery = "DROP GROUP " + user;
-          Query_execute(strQuery, this);
+          query_execute(strQuery, this);
 
           fill_group_list();
         }
@@ -259,7 +259,7 @@ void Dialog_GroupsList::on_button_group_new()
   if(!group_name.empty())
   {
     Glib::ustring strQuery = "CREATE GROUP " + group_name;
-    Glib::RefPtr<Gnome::Gda::DataModel> data_model = Query_execute(strQuery, this);
+    Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute(strQuery, this);
 
     //Give the new group some sensible default privileges:
     Privileges priv;
@@ -494,7 +494,7 @@ bool Dialog_GroupsList::set_table_privilege(const Glib::ustring& table_name, con
 
   strQuery += " GROUP \"" + group_name + "\"";
 
-  Query_execute(strQuery, this); //TODO: Handle errors.
+  query_execute(strQuery, this); //TODO: Handle errors.
 
   return true;
 }

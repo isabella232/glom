@@ -59,7 +59,7 @@ public:
   virtual void on_details_nav_previous();
   virtual void on_details_nav_next();
   virtual void on_details_nav_last();
-  virtual void on_Details_record_deleted(const Gnome::Gda::Value& primary_key_value);
+  virtual void on_details_record_deleted(const Gnome::Gda::Value& primary_key_value);
 
   void get_record_counts(gulong& total, gulong& found) const;
 

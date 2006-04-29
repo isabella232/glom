@@ -415,7 +415,7 @@ void Box_Data_List::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, 
       //Glib::ustring strQuery = "UPDATE \"" + table_name + "\"";
       //strQuery += " SET " +  /* table_name + "." + postgres does not seem to like the table name here */ strFieldName + " = " + field.sql(field_value);
       //strQuery += " WHERE " + table_name + "." + primary_key_field.get_name() + " = " + primary_key_field.sql(primary_key_value);
-      //bool bTest = Query_execute(strQuery);
+      //bool bTest = query_execute(strQuery);
       if(!bTest)
       {
         //Update failed.
@@ -504,7 +504,7 @@ void Box_Data_List::on_details_nav_last()
     signal_user_requested_details().emit(Gnome::Gda::Value()); //Show a blank record if there are no records.
 }
 
-void Box_Data_List::on_Details_record_deleted(const Gnome::Gda::Value& primary_key_value)
+void Box_Data_List::on_details_record_deleted(const Gnome::Gda::Value& primary_key_value)
 {
   //Find out which row is affected:
   Gtk::TreeModel::iterator iter = m_AddDel.get_row(primary_key_value);

@@ -92,7 +92,7 @@ public:
   static Glib::ustring util_title_from_string(const Glib::ustring& text);
 
   //This is const because const means not changing this instance, not whether we change the database.
-  virtual Glib::RefPtr<Gnome::Gda::DataModel> Query_execute(const Glib::ustring& strQuery, Gtk::Window* parent_window = 0) const;
+  virtual Glib::RefPtr<Gnome::Gda::DataModel> query_execute(const Glib::ustring& strQuery, Gtk::Window* parent_window = 0) const;
 
   bool add_standard_groups();
   bool add_standard_tables() const;
