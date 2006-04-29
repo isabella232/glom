@@ -157,7 +157,7 @@ FoundSet Notebook_Data::get_found_set() const
 
 void Notebook_Data::on_list_user_requested_details(const Gnome::Gda::Value& primary_key_value)
 {
-  std::cout << "Notebook_Data::on_list_user_requested_details" << std::endl;
+  //std::cout << "Notebook_Data::on_list_user_requested_details" << std::endl;
   m_Box_Details.refresh_data_from_database_with_primary_key(primary_key_value);
   set_current_page(m_iPage_Details);
 }

@@ -449,9 +449,6 @@ bool DbAddDel::select_item(const Gtk::TreeModel::iterator& iter, const sharedptr
 
     treemodel_col += get_count_hidden_system_columns();
 
-    std::cout << "DbAddDel::select_item name=" << layout_item->get_name() << ", treemodel_col=" << treemodel_col << std::endl;
-
-
     Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = m_TreeView.get_selection();
     if(refTreeSelection)
     {
@@ -463,12 +460,9 @@ bool DbAddDel::select_item(const Gtk::TreeModel::iterator& iter, const sharedptr
       const bool test = get_view_column_index(treemodel_col, view_column_index);
       if(test)
       {
-        std::cout << "debug: view_column_index=" << view_column_index << std::endl;
         Gtk::TreeView::Column* pColumn = m_TreeView.get_column(view_column_index);
         if(pColumn)
         {
-          std::cout << "debug title=" << pColumn->get_title() << std::endl;
-
           if(pColumn != m_treeviewcolumn_button) //This would activate the button. Let's avoid this, though it should never happen.
             m_TreeView.set_cursor(path, *pColumn, start_editing);
         }

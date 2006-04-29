@@ -157,8 +157,6 @@ bool Box_Data_List::fill_from_database()
 
 void Box_Data_List::on_adddel_user_requested_add()
 {
- std::cout << "debug 1" << std::endl;
-
  if(m_FieldsShown.empty())
     return; //Don't try to add a record to a list with no fields.
 
@@ -198,7 +196,6 @@ void Box_Data_List::on_adddel_user_requested_add()
 
     if(fieldToEdit)
     {
-      std::cout << "on_adddel_user_requested_add(): editing column=" << fieldToEdit->get_name() << std::endl;
       m_AddDel.select_item(iter, fieldToEdit, true /* start_editing */);
     }
     else
@@ -210,8 +207,6 @@ void Box_Data_List::on_adddel_user_requested_add()
       //g_warning("Box_Data_List::on_adddel_user_requested_add(): index_field_to_edit does not exist: %d", index_field_to_edit);
     }
   }
-
-std::cout << "debug 1" << std::endl;
 }
 
 void Box_Data_List::on_adddel_user_requested_edit(const Gtk::TreeModel::iterator& row)
