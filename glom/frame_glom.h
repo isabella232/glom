@@ -123,7 +123,7 @@ protected:
 
   //virtual void set_document(Document_Glom* pDocument); //override
 
-  void show_table(const Glib::ustring& table_name);
+  void show_table(const Glib::ustring& table_name, const Gnome::Gda::Value& primary_key_value_for_details = Gnome::Gda::Value());
   void show_table_title();
   void update_table_in_document_from_database();
 

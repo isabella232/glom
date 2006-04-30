@@ -62,9 +62,10 @@ Notebook_Data::~Notebook_Data()
   remove_view(&m_Box_Details);
 }
 
-bool Notebook_Data::init_db_details(const FoundSet& found_set)
+bool Notebook_Data::init_db_details(const FoundSet& found_set, const Gnome::Gda::Value& primary_key_value_for_details)
 {
   m_table_name = found_set.m_table_name;
+  const bool details_record_specified = !GlomConversions::value_is_empty(primary_key_value_for_details);
 
   bool result = false;
   //where_clause is only used as a result of a find.
@@ -88,10 +89,14 @@ bool Notebook_Data::init_db_details(const FoundSet& found_set)
     {
       Gnome::Gda::Value primary_key_for_details;
 
-      if(!new_find_set)
+      if(!new_find_set && !details_record_specified)
       {
         //std::cout << "debug: no new_found_set" << std::endl;
         primary_key_for_details = document->get_layout_record_viewed(m_table_name, m_Box_Details.get_layout_name());
+      }
+      else if(details_record_specified)
+      {
+        primary_key_for_details = primary_key_value_for_details;
       }
       else
       {
@@ -115,36 +120,44 @@ bool Notebook_Data::init_db_details(const FoundSet& found_set)
     }
   }
 
-  //Select the last-viewed layout:
-  bool found = false;
-  Document_Glom* document = get_document();
-  if(document)
+  //Select the last-viewed layout, or the details layout, if a specific details record was specified:
+  if(details_record_specified)
   {
-    const Glib::ustring current_layout = get_document()->get_layout_current(m_table_name);
-    if(!current_layout.empty())
+    set_current_page(m_iPage_Details);
+  }
+  else
+  {
+    //Select the last-viewed layout:
+    bool found = false;
+    Document_Glom* document = get_document();
+    if(document)
     {
-      const int count = get_n_pages();
-      int page = 0;
-      while(!found && (page < count))
+      const Glib::ustring current_layout = get_document()->get_layout_current(m_table_name);
+      if(!current_layout.empty())
       {
-        Box_Data* box = dynamic_cast<Box_Data*>(get_nth_page(page));
-        if(box && (box->get_layout_name() == current_layout))
-          found = true;
-        else
-          ++page;
-      }
+        const int count = get_n_pages();
+        int page = 0;
+        while(!found && (page < count))
+        {
+          Box_Data* box = dynamic_cast<Box_Data*>(get_nth_page(page));
+          if(box && (box->get_layout_name() == current_layout))
+            found = true;
+          else
+            ++page;
+        }
 
-      if(found)
-      {
-        set_current_page(page);
+        if(found)
+        {
+          set_current_page(page);
+        }
       }
     }
-  }
 
-  if(!found)
-  {
-    //Select List as default:
-    set_current_page(m_iPage_List);
+    if(!found)
+    {
+      //Select List as default:
+     set_current_page(m_iPage_List);
+    }
   }
 
   return result;

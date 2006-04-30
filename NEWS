@@ -1,3 +1,10 @@
+* Related Records: When clicking the details buttons, just show the details, instead 
+  of flicking between details, list, and then details. That was annoying.
+* List View:
+  - When clicking Add, put the cursor in the appropriate column. 
+* Check for uniqueness before setting a value for a unique or primary-key field in the 
+  database.
+
 1.0.3:
 
 * Fields: Prevent crash when adding field in non-English locale.

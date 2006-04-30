@@ -32,7 +32,7 @@ public:
   virtual ~Notebook_Data();
 
   //Create the layout for the database structure, and fill it with data.
-  virtual bool init_db_details(const FoundSet& found_set);
+  virtual bool init_db_details(const FoundSet& found_set, const Gnome::Gda::Value& primary_key_value_for_details = Gnome::Gda::Value());
 
   ///Get the existing where clause, previously supplied to init_db_details().
   FoundSet get_found_set() const;

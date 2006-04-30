@@ -380,7 +380,7 @@ void Frame_Glom::show_table_refresh()
   show_table(m_table_name);
 }
 
-void Frame_Glom::show_table(const Glib::ustring& table_name)
+void Frame_Glom::show_table(const Glib::ustring& table_name, const Gnome::Gda::Value& primary_key_value_for_details)
 {
   App_Glom* pApp = dynamic_cast<App_Glom*>(get_app_window());
 
@@ -425,7 +425,7 @@ void Frame_Glom::show_table(const Glib::ustring& table_name)
           found_set.m_sort_clause.push_back( type_pair_sort_field(layout_item_sort, true /* ascending */) );
         }
 
-        m_Notebook_Data.init_db_details(found_set);
+        m_Notebook_Data.init_db_details(found_set, primary_key_value_for_details);
         set_mode_widget(m_Notebook_Data);
 
         //Show how many records were found:
@@ -1541,8 +1541,8 @@ void Frame_Glom::on_dialog_tables_hide()
 
 void Frame_Glom::on_notebook_data_record_details_requested(const Glib::ustring& table_name, Gnome::Gda::Value primary_key_value)
 {
-  show_table(table_name);
-  m_Notebook_Data.show_details(primary_key_value);
+  show_table(table_name, primary_key_value);
+  //m_Notebook_Data.show_details(primary_key_value);
 }
 
 void Frame_Glom::update_records_count()

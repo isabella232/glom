@@ -1,3 +1,14 @@
+2006-04-30  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/frame_glom.cc:
+	* glom/frame_glom.h: show_table(): init_db_details(): Added optional primary_key_value_for_details 
+	parameter. Pass it to show_table().
+	on_notebook_data_record_details_requested(): Pass the primary key value to show_table() instead of 
+	calling show_details() afterwards, so that Glom does not show intermediate layouts.
+	* glom/mode_data/notebook_data.cc:
+	* glom/mode_data/notebook_data.h: Added optional primary_key_value_for_details parameter and 
+	show the details layout with this record when it is specified.
+
 2006-04-29  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/mode_data/box_data_details.cc:
