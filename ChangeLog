@@ -1,5 +1,11 @@
 2006-05-05  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/utility_widgets/flowtablewithfields.cc:
+	* glom/utility_widgets/flowtablewithfields.h: Do not put the labels in Gtk::Alignments. 
+	They are not necessary. This should save a little memory and speed.
+
+2006-05-05  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/utility_widgets/flowtable.cc:
 	* glom/utility_widgets/flowtable.h: on_size_allocate(): Give the full max first-item width to 
 	first items, instead of just what they request, so that labels can expand and align in the 

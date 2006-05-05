@@ -410,20 +410,16 @@ void FlowTableWithFields::add_field_at_position(const sharedptr<LayoutItem_Field
   info.m_second = pDataWidget; 
   info.m_second->show_all();
 
-  info.m_first = Gtk::manage(new Gtk::Alignment());
-
   //Add a label, if one is necessary:
   Gtk::Label* label = info.m_second->get_label();
+  info.m_first = label;
   if(label && !label->get_text().empty())
   {
-    info.m_first->add( *label );
     label->property_xalign() = 0.0f; //Equivalent to Gtk::ALIGN_LEFT, but we can't use that here.
     label->property_yalign() = 0.5f; //Equivalent ot Gtk::ALIGN_CENTER, but we can't use that here.; 
     label->show();
 
-    info.m_first->show();
-    //info.m_first->set(Gtk::ALIGN_RIGHT, Gtk::ALIGN_CENTER);
-    info.m_first->show_all_children(); //This does not seem to work, so we show the label explicitly.
+    label->show();
   }
 
   //info.m_group = layoutitem_field.m_group;

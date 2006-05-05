@@ -154,7 +154,7 @@ protected:
     sharedptr<const LayoutItem_Field> m_field; //Store the field information so we know the title, ID, and type.
     Glib::ustring m_group;
 
-    Gtk::Alignment* m_first;
+    Gtk::Label* m_first;
     DataWidget* m_second;
     Gtk::CheckButton* m_checkbutton; //Used instead of first and second if it's a bool.
   };
