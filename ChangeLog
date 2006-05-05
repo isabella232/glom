@@ -1,5 +1,10 @@
 2006-05-05  Murray Cumming  <murrayc@murrayc.com>
 
+	* Makefile.am: Define ACLOCAL_AMFLAGS so that autoreconf works. Bug #338844 from 
+	Yselkowitz.
+
+2006-05-05  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/utility_widgets/flowtablewithfields.cc: Do not make notebook tab titles bold. It gets 
 	annoying when there are many tabs, and is not that helpful, as well as being non-HIG.
 

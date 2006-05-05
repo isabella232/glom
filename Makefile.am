@@ -3,6 +3,11 @@
 #Build in these directories:
 SUBDIRS = po glom docs macros examples xslt
 
+# For running autoreconf
+# (The documentation for this macro says that it is only useful in this top-level Makefile.am)
+ACLOCAL_AMFLAGS = -I macros
+
+
 #Copied from gnome-terminal's Makefile.am:
 desktopdir = $(datadir)/applications
 desktop_in_files = glom.desktop.in.in
