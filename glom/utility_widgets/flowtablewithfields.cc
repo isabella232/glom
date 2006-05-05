@@ -273,7 +273,8 @@ void FlowTableWithFields::add_layout_notebook_at_position(const sharedptr<Layout
       if(portal)
       {
         const Glib::ustring tab_title = glom_get_sharedptr_title_or_name(portal->get_relationship());
-        tab_label->set_markup(Bakery::App_Gtk::util_bold_message(tab_title));
+        //tab_label->set_markup(Bakery::App_Gtk::util_bold_message(tab_title));
+        tab_label->set_label(tab_title);
 
         //Add a Related Records list for this portal:
         Box_Data_List_Related* portal_box = create_related(portal, false /* no label, because it's in the tab instead. */);
@@ -286,7 +287,8 @@ void FlowTableWithFields::add_layout_notebook_at_position(const sharedptr<Layout
       else
       {
         const Glib::ustring tab_title = group->get_title_or_name();
-        tab_label->set_markup(Bakery::App_Gtk::util_bold_message(tab_title));
+        //tab_label->set_markup(Bakery::App_Gtk::util_bold_message(tab_title));
+        tab_label->set_label(tab_title);
 
         //Add a FlowTable for this group:
         FlowTableWithFields* flow_table = Gtk::manage( new FlowTableWithFields() );

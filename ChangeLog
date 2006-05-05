@@ -1,5 +1,10 @@
 2006-05-05  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/utility_widgets/flowtablewithfields.cc: Do not make notebook tab titles bold. It gets 
+	annoying when there are many tabs, and is not that helpful, as well as being non-HIG.
+
+2006-05-05  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/utility_widgets/flowtablewithfields.cc:
 	* glom/utility_widgets/flowtablewithfields.h: Do not put the labels in Gtk::Alignments. 
 	They are not necessary. This should save a little memory and speed.
