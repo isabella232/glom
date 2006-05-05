@@ -14,14 +14,6 @@ libglom_la_LIBADD  = document/libdocument.la \
                      data_structure/libdata_structure.la \
                      data_structure/layout/libdata_structure_layout.la \
                      data_structure/layout/report_parts/libdata_structure_layout_reportparts.la \
-                     python_embed/libglom_python_embed.la
-   
-libglom_la_LDFLAGS = $(common_ldflags) \
+                     python_embed/libglom_python_embed.la \
                      $(GLOM_LIBS) $(PYTHON_LDFLAGS) -lutil
                    
-#libglom_la__LDFLAGS =
-
-
-#libglom_la_LIBADD = boost/python/libpython_embed_boost_python.a
-
-

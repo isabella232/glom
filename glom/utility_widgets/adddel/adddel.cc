@@ -261,7 +261,7 @@ bool AddDel::on_button_press_event_Popup(GdkEventButton *event)
     if(event->type == GDK_2BUTTON_PRESS)
     {
       //Double-click means edit.
-      on_MenuPopup_activate_Edit();
+      //Disable this, because it is confusing when single-click activates editable cells too. on_MenuPopup_activate_Edit();
     }
   }
 

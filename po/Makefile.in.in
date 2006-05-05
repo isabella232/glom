@@ -54,9 +54,9 @@ GENPOT   = INTLTOOL_EXTRACT=$(INTLTOOL_EXTRACT) srcdir=$(srcdir) $(INTLTOOL_UPDA
 
 ALL_LINGUAS = @ALL_LINGUAS@
 
-PO_LINGUAS=$(shell if test -e LINGUAS; then grep -v ^\# LINGUAS; fi)
+PO_LINGUAS=$(shell if test -r LINGUAS; then grep -v "^\#" LINGUAS; fi)
 
-POFILES = $(shell if test -n "$(PO_LINGUAS)"; then LINGUAS="$(PO_LINGUAS)"; else LINGUAS="$(ALL_LINGUAS)"; fi; for lang in $$LINGUAS; do echo $$lang.po; done)
+POFILES=$(shell if test -n "$(PO_LINGUAS)"; then LINGUAS="$(PO_LINGUAS)"; else LINGUAS="$(ALL_LINGUAS)"; fi; for lang in $$LINGUAS; do printf "$$lang.po "; done)
 
 DISTFILES = ChangeLog Makefile.in.in POTFILES.in $(POFILES)
 EXTRA_DISTFILES = POTFILES.skip Makevars LINGUAS
@@ -64,7 +64,7 @@ EXTRA_DISTFILES = POTFILES.skip Makevars LINGUAS
 POTFILES = \
 #This Gets Replace for some reason
 
-CATALOGS=$(shell if test -n "$(PO_LINGUAS)"; then LINGUAS="$(PO_LINGUAS)"; else LINGUAS="$(ALL_LINGUAS)"; fi; for lang in $$LINGUAS; do echo $$lang.gmo; done)
+CATALOGS=$(shell if test -n "$(PO_LINGUAS)"; then LINGUAS="$(PO_LINGUAS)"; else LINGUAS="$(ALL_LINGUAS)"; fi; for lang in $$LINGUAS; do printf "$$lang.gmo "; done)
 
 .SUFFIXES:
 .SUFFIXES: .po .pox .gmo .mo .msg .cat
