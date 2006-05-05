@@ -1433,14 +1433,26 @@ void Base_DB::postgres_change_column_extras(const Glib::ustring& table_name, con
   {
     if(set_anyway || (field->get_unique_key() != field_old->get_unique_key()))
     {
-       /* TODO: Is there an easier way than adding an index manually?
-       Glib::RefPtr<Gnome::Gda::DataModel>  datamodel = query_execute( "ALTER TABLE \"" + m_table_name + "\" RENAME COLUMN " + field_info_old.get_name() + " TO " + field_info.get_name() );
+       Glib::RefPtr<Gnome::Gda::DataModel> datamodel;
+       
+       //Postgres needs us to add/drop constraints explicitly when changing existing fields, though it can create them implicitly when creating the field:
+       if(field->get_unique_key())
+       {
+         //Add uniqueness:
+         datamodel = query_execute( "ALTER TABLE \"" + table_name + "\" ADD CONSTRAINT \"" + field->get_name() + "_key\" UNIQUE (\"" + field->get_name() + "\")" );
+
+       }
+       else
+       {
+         //Remove uniqueness:
+         datamodel = query_execute( "ALTER TABLE \"" + table_name + "\" DROP CONSTRAINT \"" + field->get_name() + "_key\"" );
+       }
+
        if(!datamodel)
        {
          handle_error();
          return;
        }
-       */
     }
 
     Gnome::Gda::Value default_value = field->get_default_value();

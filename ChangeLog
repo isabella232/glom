@@ -1,5 +1,11 @@
 2006-05-05  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/base_db.cc: postgres_change_column_extras(): Really set/unset the uniqueness 
+ 	constraint. This is very Postgres specific. We should do this with libgda one day, if it 
+	can do it.
+
+2006-05-05  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/python_embed/python_module/Makefile.am: Put some stuff in LIBADD instead of LDFLAGS. 
 	This seems to work, and seems to be necessary on cygwin. Bug #338844 from 
 	Yselkowitz.
