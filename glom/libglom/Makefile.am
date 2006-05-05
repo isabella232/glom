@@ -10,7 +10,7 @@ libglom_la_SOURCES = appstate.h appstate.cc \
                      sharedptr.h \
                      standard_table_prefs_fields.h
 
-libglom_la_LIBADD  =  document/libdocument.la \
+libglom_la_LIBADD  = document/libdocument.la \
                      data_structure/libdata_structure.la \
                      data_structure/layout/libdata_structure_layout.la \
                      data_structure/layout/report_parts/libdata_structure_layout_reportparts.la \
