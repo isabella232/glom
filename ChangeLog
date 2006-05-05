@@ -1,5 +1,11 @@
 2006-05-05  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/python_embed/python_module/Makefile.am: Put some stuff in LIBADD instead of LDFLAGS. 
+	This seems to work, and seems to be necessary on cygwin. Bug #338844 from 
+	Yselkowitz.
+
+2006-05-05  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/utility_widgets/adddel/adddel.cc: on_button_press_event_Popup(): Do not edit 
 	on double-click because it is annoying/confusing when the cells are editable on 
 	single click as well. This affects the table list, and the field list, all of which 
