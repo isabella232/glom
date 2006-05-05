@@ -24,7 +24,6 @@
 #define NO_IMPORT_PYGTK //To avoid a multiple definition in pygtk.
 #include <pygtk/pygtk.h> //For the PyGObject and PyGBoxed struct definitions.
 
-#include <Python.h>
 #include <glom/libglom/document/document_glom.h>
 #include <glom/libglom/data_structure/field.h>
 #include <glibmm/ustring.h>

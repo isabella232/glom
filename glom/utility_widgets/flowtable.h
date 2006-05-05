@@ -81,7 +81,7 @@ protected:
 
     Gtk::Widget* m_first;
     Gtk::Widget* m_second;
-    bool m_expand_first;
+    bool m_expand_first_full;
     bool m_expand_second;
 
     //Cache the positions, so we can use them in on_expose_event:

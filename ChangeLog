@@ -1,3 +1,15 @@
+2006-05-05  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/utility_widgets/flowtable.cc:
+	* glom/utility_widgets/flowtable.h: on_size_allocate(): Give the full max first-item width to 
+	first items, instead of just what they request, so that labels can expand and align in the 
+	actually-available space, so that xalign is useful.
+	* glom/utility_widgets/flowtablewithfields.cc: add_field_at_position(): 
+	Use label xalign and yalign instead of the Gtk::Aligment alignment, because it is not 
+	needed. Align labels left, though I previously was trying to align them right. Right alignment 
+	is untidy when using groups, because the entries do not line up across groups, and that would be 
+	very difficult to implement. The vertical alignment of labels seems to be neater now. 
+
 2006-04-30  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/frame_glom.cc:

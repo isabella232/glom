@@ -31,6 +31,8 @@
 #include <bakery/App/App_Gtk.h> //For util_bold_message().
 #include <glibmm/i18n.h>
 
+
+
 FlowTableWithFields::Info::Info()
 : m_first(0),
   m_second(0),
@@ -415,11 +417,12 @@ void FlowTableWithFields::add_field_at_position(const sharedptr<LayoutItem_Field
   if(label && !label->get_text().empty())
   {
     info.m_first->add( *label );
-    label->set_alignment(Gtk::ALIGN_RIGHT, Gtk::ALIGN_CENTER); //Align right.
+    label->property_xalign() = 0.0f; //Equivalent to Gtk::ALIGN_LEFT, but we can't use that here.
+    label->property_yalign() = 0.5f; //Equivalent ot Gtk::ALIGN_CENTER, but we can't use that here.; 
     label->show();
 
     info.m_first->show();
-    info.m_first->set(Gtk::ALIGN_RIGHT, Gtk::ALIGN_CENTER);
+    //info.m_first->set(Gtk::ALIGN_RIGHT, Gtk::ALIGN_CENTER);
     info.m_first->show_all_children(); //This does not seem to work, so we show the label explicitly.
   }
 
@@ -428,7 +431,16 @@ void FlowTableWithFields::add_field_at_position(const sharedptr<LayoutItem_Field
   //Expand multiline text fields to take up the maximum possible width:
   bool expand_second = false;
   if( (layoutitem_field->get_glom_type() == Field::TYPE_TEXT) && layoutitem_field->get_formatting_used().get_text_format_multiline())
+  {
     expand_second = true;
+    if(label)
+      label->property_yalign() = 0.0f; //Equivalent to Gtk::ALIGN_TOP. Center is neater next to entries, but center is silly next to multi-line text boxes.
+  }
+  else if(layoutitem_field->get_glom_type() == Field::TYPE_IMAGE)
+  {
+    if(label)
+      label->property_yalign() = 0.0f; //Equivalent to Gtk::ALIGN_TOP. Center is neater next to entries, but center is silly next to large images.
+  }
 
   add(*(info.m_first), *(info.m_second), expand_second);
 

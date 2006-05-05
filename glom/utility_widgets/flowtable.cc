@@ -23,7 +23,7 @@
 #include "gdk/gdktypes.h"
 
 FlowTable::FlowTableItem::FlowTableItem()
-: m_expand_first(false),
+: m_expand_first_full(false),
   m_expand_second(false)
 {
 }
@@ -53,7 +53,7 @@ void FlowTable::add(Gtk::Widget& first, Gtk::Widget& second, bool expand_second)
   FlowTableItem item;
   item.m_first = &first;
   item.m_second = &second;
-  item.m_expand_second = expand_second;
+  item.m_expand_second = expand_second; //Expand to fill the width for all of the second item.
   m_children.push_back(item);
 
   gtk_widget_set_parent(first.gobj(), GTK_WIDGET(gobj()));
@@ -64,7 +64,7 @@ void FlowTable::add(Gtk::Widget& first, bool expand)
 {
   FlowTableItem item;
   item.m_first = &first;
-  item.m_expand_first = expand;
+  item.m_expand_first_full = expand; //Expand to fill the width for first and second.
   item.m_second = 0;
   m_children.push_back(item);
 
@@ -490,8 +490,9 @@ void FlowTable::on_size_allocate(Gtk::Allocation& allocation)
       {
         //Assign space to the child:
 
-        //Make all the left edges line up:
-        item.m_first_allocation = assign_child(first, column_x_start, column_child_y_start);
+        //Make all the left edges line up, and give the full first-item width, even if that's more width than it requested,
+        //so that it can align itself in the available space.
+        item.m_first_allocation = assign_child(first, column_x_start, column_child_y_start, first_max_width, item_height);
         something_added = true;
       }
 
@@ -505,7 +506,7 @@ void FlowTable::on_size_allocate(Gtk::Allocation& allocation)
           item.m_second_allocation = assign_child(second, column_x_start_second, column_child_y_start);
         else
         {
-          int second_width_available = column_max_width - first_max_width - m_padding;
+          const int second_width_available = column_max_width - first_max_width - m_padding;
           item.m_second_allocation = assign_child(second, column_x_start_second, column_child_y_start, second_width_available, item_height);
         }
 
@@ -517,7 +518,7 @@ void FlowTable::on_size_allocate(Gtk::Allocation& allocation)
       //There is only one item - so let it take up the whole width of the column, if requested:
 
       //Assign space to the child:
-      if(!(item.m_expand_first))
+      if(!(item.m_expand_first_full))
         item.m_first_allocation = assign_child(first, column_x_start, column_child_y_start);
       else
       {
