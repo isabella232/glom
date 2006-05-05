@@ -320,9 +320,14 @@ protected:
    */
   bool postgres_add_column(const Glib::ustring& table_name, const sharedptr<const Field>& field, bool not_extras = false) const;
 
-  /** @param set_anyway If this is true, then set the extra details even if @field_old has the same properties.
+  /**
+   * @param table_name The name of the table that will be affected.
+   * @param field_old The definition of the field that will be changed.
+   * @param field The new definition to give the field.
+   * @param set_anyway If this is true, then set the extra details even if @field_old has the same properties.
+   * @result The new field definition, with any necessary changes.
    */
-  void postgres_change_column_extras(const Glib::ustring& table_name, const sharedptr<const Field>& field_old, const sharedptr<const Field>& field, bool set_anyway = false) const;
+  sharedptr<Field> postgres_change_column_extras(const Glib::ustring& table_name, const sharedptr<const Field>& field_old, const sharedptr<const Field>& field, bool set_anyway = false) const;
 
   void handle_error(const std::exception& ex) const; //TODO_port: This is probably useless now.
   bool handle_error() const;

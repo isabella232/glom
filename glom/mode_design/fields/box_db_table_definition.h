@@ -40,7 +40,7 @@ protected:
 
   sharedptr<Field> get_field_definition(const Gtk::TreeModel::iterator& row);
 
-  virtual void change_definition(const sharedptr<const Field>& fieldOld, const sharedptr<const Field>& field);
+  virtual sharedptr<Field> change_definition(const sharedptr<const Field>& fieldOld, const sharedptr<const Field>& field);
 
   //Signal handlers:
   virtual void on_adddel_add(const Gtk::TreeModel::iterator& row);
@@ -52,7 +52,7 @@ protected:
 
   //Postgres needs some complex stuff:
 
-  virtual void postgres_change_column(const sharedptr<const Field>& field_old, const sharedptr<const Field>& field);
+  virtual sharedptr<Field> postgres_change_column(const sharedptr<const Field>& field_old, const sharedptr<const Field>& field);
   virtual void postgres_change_column_type(const sharedptr<const Field>& field_old, const sharedptr<const Field>& field);
 
   mutable AddDel_WithButtons m_AddDel; //mutable because its get_ methods aren't const.

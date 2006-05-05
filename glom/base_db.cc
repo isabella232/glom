@@ -437,6 +437,8 @@ Base_DB::type_vecFields Base_DB::get_fields_for_table_from_database(const Glib::
         Gnome::Gda::Value value_unique = data_model_fields->get_value_at(DATAMODEL_FIELDS_COL_UNIQUEINDEX, row);
         if(value_unique.get_value_type() ==  Gnome::Gda::VALUE_TYPE_BOOLEAN)
           field_info.set_unique_key( value_unique.get_bool() );
+        else if(field_info.get_primary_key()) //All primaries keys are unique, so force this.
+          field_info.set_unique_key();
 
         //Get whether it is autoincrements
         /* libgda does not provide this yet.
@@ -1399,10 +1401,12 @@ bool Base_DB::postgres_add_column(const Glib::ustring& table_name, const sharedp
   return bTest;
 }
 
-void Base_DB::postgres_change_column_extras(const Glib::ustring& table_name, const sharedptr<const Field>& field_old, const sharedptr<const Field>& field, bool set_anyway) const
+sharedptr<Field> Base_DB::postgres_change_column_extras(const Glib::ustring& table_name, const sharedptr<const Field>& field_old, const sharedptr<const Field>& field, bool set_anyway) const
 {
   //Gnome::Gda::FieldAttributes field_info = field->get_field_info();
   //Gnome::Gda::FieldAttributes field_info_old = field_old->get_field_info();
+
+  sharedptr<Field> result = glom_sharedptr_clone(field);
 
   if(field->get_name() != field_old->get_name())
   {
@@ -1410,53 +1414,96 @@ void Base_DB::postgres_change_column_extras(const Glib::ustring& table_name, con
      if(!datamodel)
      {
        handle_error();
-       return;
+       return result;
      }
   }
 
+  bool primary_key_was_set = false;
+  bool primary_key_was_unset = false;
   if(set_anyway || (field->get_primary_key() != field_old->get_primary_key()))
   {
-    //TODO: Check that there is only one primary key.
-    Glib::ustring add_or_drop = "ADD";
-    if(field_old->get_primary_key() == false)
-      add_or_drop = "DROP";
+     //TODO: Check that there is only one primary key.
+     //When unsetting a primary key, ask which one should replace it.
 
-    Glib::RefPtr<Gnome::Gda::DataModel>  datamodel = query_execute( "ALTER TABLE \"" + table_name + "\" " + add_or_drop + " PRIMARY KEY (\"" + field->get_name() + "\")");
-    if(!datamodel)
-    {
-      handle_error();
-      return;
+     Glib::RefPtr<Gnome::Gda::DataModel> datamodel;
+       
+     //TODO: Somehow discover whether these constraint names really exists, so we can be more robust in strange situations. This needs libgda 2, which has GDA_CONNECTION_SCHEMA_CONSTRAINTS.
+     //Postgres needs us to add/drop constraints explicitly when changing existing fields, though it can create them implicitly when creating the field:
+     if(field->get_primary_key())
+     {
+       //Set field as primary key :
+       datamodel = query_execute( "ALTER TABLE \"" + table_name + "\" ADD PRIMARY KEY (\"" + field->get_name() + "\")");
+       primary_key_was_set = true;
+
+       //Tell the caller about a constraint:
+       result->set_unique_key(); //All primary keys are unique.
+     }
+     else
+     {
+       //Unset field as primary key:
+       datamodel = query_execute( "ALTER TABLE \"" + table_name + "\" DROP CONSTRAINT \"" + table_name + "_pkey\"" );
+       primary_key_was_unset = true;
+
+       //Make sure that the caller knows that a field stops being unique when it stops being a primary key, 
+       //because its uniqueness was just a side-effect of it being a primary key.
+       result->set_unique_key(false); //All primary keys are unique.
+     }
+
+     if(!datamodel)
+     {
+       handle_error();
+       return result;
+     }
+
+     if(primary_key_was_set && field_old->get_unique_key())
+     {
+       //If the key already had a uniqueness constraint, without also being a primary key, remove that now, because it is superfluous and we will not expect it later:
+       Glib::RefPtr<Gnome::Gda::DataModel>  datamodel = query_execute( "ALTER TABLE \"" + table_name + "\" DROP CONSTRAINT \"" + field->get_name() + "_key\"" );
+      if(!datamodel)
+      {
+        handle_error();
+        return result;
+      }
     }
   }
 
-  if( !field->get_primary_key() ) //Postgres automatically makes primary keys unique, so we do not need to do that separately if we have already made it a primary key
+  if(set_anyway || (field->get_unique_key() != field_old->get_unique_key()))
   {
-    if(set_anyway || (field->get_unique_key() != field_old->get_unique_key()))
-    {
-       Glib::RefPtr<Gnome::Gda::DataModel> datamodel;
+    Glib::RefPtr<Gnome::Gda::DataModel> datamodel;
        
-       //Postgres needs us to add/drop constraints explicitly when changing existing fields, though it can create them implicitly when creating the field:
-       if(field->get_unique_key())
-       {
-         //Add uniqueness:
-         datamodel = query_execute( "ALTER TABLE \"" + table_name + "\" ADD CONSTRAINT \"" + field->get_name() + "_key\" UNIQUE (\"" + field->get_name() + "\")" );
-
-       }
-       else
-       {
-         //Remove uniqueness:
-         datamodel = query_execute( "ALTER TABLE \"" + table_name + "\" DROP CONSTRAINT \"" + field->get_name() + "_key\"" );
-       }
-
-       if(!datamodel)
-       {
-         handle_error();
-         return;
-       }
+    //Postgres needs us to add/drop constraints explicitly when changing existing fields, though it can create them implicitly when creating the field:
+    if(!primary_key_was_set && field->get_unique_key()) //Postgres automatically makes primary keys unique, so we do not need to do that separately if we have already made it a primary key
+    {
+      //Add uniqueness:
+      Glib::RefPtr<Gnome::Gda::DataModel>  datamodel = query_execute( "ALTER TABLE \"" + table_name + "\" ADD CONSTRAINT \"" + field->get_name() + "_key\" UNIQUE (\"" + field->get_name() + "\")" );
+      if(!datamodel)
+      {
+        handle_error();
+        return result;
+      }
+    }
+    else if(!primary_key_was_unset && !field->get_unique_key()) //This would implicitly have removed the uniqueness constraint which was in the primary key constraint 
+    {      
+      if(field->get_primary_key())
+      {
+        //Primary keys must be unique:
+        result->set_unique_key();
+      }
+      else
+      {
+        //Remove uniqueness:
+        Glib::RefPtr<Gnome::Gda::DataModel>  datamodel = query_execute( "ALTER TABLE \"" + table_name + "\" DROP CONSTRAINT \"" + field->get_name() + "_key\"" );
+        if(!datamodel)
+        {
+          handle_error();
+          return result;
+        }
+      }
     }
 
-    Gnome::Gda::Value default_value = field->get_default_value();
-    Gnome::Gda::Value default_value_old = field_old->get_default_value();
+
+    const Gnome::Gda::Value default_value = field->get_default_value();
+    const Gnome::Gda::Value default_value_old = field_old->get_default_value();
 
     if(!field->get_auto_increment()) //Postgres auto-increment fields have special code as their default values.
     {
@@ -1466,7 +1513,7 @@ void Base_DB::postgres_change_column_extras(const Glib::ustring& table_name, con
         if(!datamodel)
         {
           handle_error();
-          return;
+          return result;
         }
       }
     }
@@ -1487,6 +1534,8 @@ void Base_DB::postgres_change_column_extras(const Glib::ustring& table_name, con
       query_execute(  "ALTER TABLE " + m_table_name + " ALTER COLUMN " + field->get_name() + "  SET " + nullness);
     }
   */ 
+
+  return result;
 }
 
 

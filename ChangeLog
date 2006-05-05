@@ -1,5 +1,25 @@
 2006-05-05  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/base_db.cc:
+	* glom/base_db.h: get_fields_for_table_from_database(): Report all primary keys are also 
+	being unique, because they all must be.
+	postgres_change_column_extras(): When changing whether a field is a primary key, deal with 
+	the fact that the uniqueness was a side-effect of it being a primary key, and do not try 
+	to add/drop a non-existant uniqueness constraint, or specify uniqueness with both constraints.
+	Also, use the correct postgres SQL syntax  for setting/unsetting whether a field is a primary 
+	key. It is very postgres specific.
+	Return a modified version of the field definition, so that callers can display the new 
+	field definition correctly, so the constraints can be witnessed by the user.
+	* glom/mode_design/fields/box_db_table_definition.cc:
+	* glom/mode_design/fields/box_db_table_definition.h: on_adddel_changed(): Update the row to 
+	show any constraints enforced when changing the field definition. This makes primary keys always 
+	unique and unchecks unique when it removes primary key, though uniquness can then be specified 
+	separately.
+	* glom/mode_data/box_data_list.cc: get_record_counts(): Avoid a segfault when the model is 
+	null, which happens at the moment when there is no primary key.
+
+2006-05-05  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/base_db.cc: postgres_change_column_extras(): Really set/unset the uniqueness 
  	constraint. This is very Postgres specific. We should do this with libgda one day, if it 
 	can do it.

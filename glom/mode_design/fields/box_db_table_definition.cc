@@ -213,7 +213,6 @@ void Box_DB_Table_Definition::on_adddel_changed(const Gtk::TreeModel::iterator& 
   Document_Glom* pDoc = static_cast<Document_Glom*>(get_document());
   if(pDoc)
   {
-    //Glom-specific stuff: //TODO_portiter
     const Glib::ustring strFieldNameBeingEdited = m_AddDel.get_value_key(row);
 
     sharedptr<const Field> constfield = pDoc->get_field(m_table_name, strFieldNameBeingEdited);
@@ -242,7 +241,12 @@ void Box_DB_Table_Definition::on_adddel_changed(const Gtk::TreeModel::iterator& 
           dialog.run();
         }
         else
-          change_definition(m_Field_BeingEdited, fieldNew);
+        {
+          sharedptr<Field> fieldNewWithModifications = change_definition(m_Field_BeingEdited, fieldNew);
+
+          //Update the row to show any extra changes (such as unique being set/unset whenever the primary key is set/unset) 
+          fill_field_row(row, fieldNewWithModifications);
+        }
       }
     }
   }
@@ -374,14 +378,31 @@ void Box_DB_Table_Definition::on_Properties_apply()
   m_pDialog->hide();
 }
 
-void Box_DB_Table_Definition::change_definition(const sharedptr<const Field>& fieldOld, const sharedptr<const Field>& field)
+sharedptr<Field> Box_DB_Table_Definition::change_definition(const sharedptr<const Field>& fieldOld, const sharedptr<const Field>& field)
 {
   Bakery::BusyCursor busy_cursor(get_app_window());
 
   //DB field defintion:
 
-  postgres_change_column(fieldOld, field);
+  sharedptr<Field> result;
 
+  try
+  {
+    result = postgres_change_column(fieldOld, field);
+  }
+  catch(const std::exception& ex) //In case the database reports an error.
+  {
+    handle_error(ex);
+
+    //Give up. Don't update the document. Hope that we can read the current field properties from the database.
+    fill_fields();
+    //fill_from_database(); //We should not change the database definition in a cell renderer signal handler.
+
+    //Select the same field again:
+    m_AddDel.select_item(field->get_name(), m_colName, false);
+
+    return glom_sharedptr_clone(field); 
+  }
 
    //MySQL does this all with ALTER_TABLE, with "CHANGE" followed by the same details used with "CREATE TABLE",
    //MySQL also makes it easier to change the type.
@@ -401,12 +422,12 @@ void Box_DB_Table_Definition::change_definition(const sharedptr<const Field>& fi
     {
       //Change it to the new Fields's value:
       sharedptr<Field> refField = *iterFind;
-      *refField = *field;
+      *refField = *result; //Remember, result is field with any necessary changes due to constraints.
     }
     else
     {
       //Add it, because it's not there already:
-      vecFields.push_back( glom_sharedptr_clone(field) );
+      vecFields.push_back( glom_sharedptr_clone(result) );
     }
 
     pDoc->set_table_fields(m_table_name, vecFields);
@@ -434,6 +455,8 @@ void Box_DB_Table_Definition::change_definition(const sharedptr<const Field>& fi
 
   //Select the same field again:
   m_AddDel.select_item(field->get_name(), m_colName, false);
+
+  return result;
 }
 
 void Box_DB_Table_Definition::fill_fields()
@@ -441,7 +464,7 @@ void Box_DB_Table_Definition::fill_fields()
   m_vecFields = get_fields_for_table(m_table_name);
 }
 
-void  Box_DB_Table_Definition::postgres_change_column(const sharedptr<const Field>& field_old, const sharedptr<const Field>& field)
+sharedptr<Field> Box_DB_Table_Definition::postgres_change_column(const sharedptr<const Field>& field_old, const sharedptr<const Field>& field)
 {
   const Gnome::Gda::FieldAttributes field_info = field->get_field_info();
   const Gnome::Gda::FieldAttributes field_info_old = field_old->get_field_info();
@@ -450,11 +473,12 @@ void  Box_DB_Table_Definition::postgres_change_column(const sharedptr<const Fiel
   if( field_info.get_gdatype() != field_info_old.get_gdatype() )
   {
     postgres_change_column_type(field_old, field); //This will also change everything else at the same time.
+    return glom_sharedptr_clone(field);
   }
   else
   {
     //Change other stuff, without changing the type:
-    postgres_change_column_extras(m_table_name, field_old, field);
+    return postgres_change_column_extras(m_table_name, field_old, field);
   }
 }
 

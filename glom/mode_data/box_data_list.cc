@@ -730,10 +730,15 @@ void Box_Data_List::set_primary_key_value_selected(const Gnome::Gda::Value& prim
 
 void Box_Data_List::get_record_counts(gulong& total, gulong& found) const
 {
+  //Initialize output parameters:
+  total = 0;
+  found = 0;
+
   Glib::RefPtr<Gtk::TreeModel> refModel = m_AddDel.get_model();
   Glib::RefPtr<DbTreeModel> refModelDerived = Glib::RefPtr<DbTreeModel>::cast_dynamic(refModel);
-
-  refModelDerived->get_record_counts(total, found);
+  
+  if(refModelDerived)
+    refModelDerived->get_record_counts(total, found);
 }
 
 
