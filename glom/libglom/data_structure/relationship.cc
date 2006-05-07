@@ -61,6 +61,11 @@ bool Relationship::operator==(const Relationship& src) const
          && (m_auto_create == src.m_auto_create);
 }
 
+Relationship* Relationship::clone() const
+{
+  return new Relationship(*this);
+}
+
 Glib::ustring Relationship::get_from_table() const
 {
   return m_strFrom_Table;

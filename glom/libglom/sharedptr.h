@@ -211,9 +211,12 @@ void sharedptr<T_obj>::swap(sharedptr<T_obj>& other)
 template< typename T_obj>
 sharedptr<T_obj>& sharedptr<T_obj>::operator=(const sharedptr<T_obj>& src)
 {
- sharedptr<T_obj> temp(src); //Increases ref
- this->swap(temp); //temp forgets everything and gives it to this.
- return *this;
+ if(this != &src)
+ {
+   sharedptr<T_obj> temp(src); //Increases ref
+   this->swap(temp); //temp forgets everything and gives it to this.
+ }
+   return *this;
 }
 
 template <class T_obj>

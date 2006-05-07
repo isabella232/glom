@@ -1,3 +1,19 @@
+2006-05-07  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/libglom/data_structure/relationship.cc:
+	* glom/libglom/data_structure/relationship.h: Added clone() methods, though we do not use them 
+	yet.
+	* glom/libglom/sharedptr.h: operator==() check for equality, though this did not stop the crash.
+	* glom/mode_data/dialog_choose_relationship.cc: select_item(): If the relationship is null, 
+	unselect all items.
+	* glom/mode_data/dialog_layout_details.cc:
+	* glom/mode_data/dialog_layout_details.h: offer_relationship_list(): Optionally take the current 
+	relationship as a parameter so that the current one is highlighted in the dialog. Just change the 
+	existing portal, instead of setting the portal in the model row, because this causes some kind of 
+	memory management confusion that caused a crash, and it is inefficient anyway. Bug #340888 from 
+	Hendrik Richter.
+	Call row_changed() to tell the TreeView to update the display.
+
 2006-05-05  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/base_db.cc:

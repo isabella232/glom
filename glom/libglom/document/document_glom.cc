@@ -1835,7 +1835,7 @@ bool Document_Glom::load_after()
               const xmlpp::Element* nodeChild = dynamic_cast<xmlpp::Element*>(*iter);
               if(nodeChild)
               {
-                sharedptr<Relationship> relationship(new Relationship());
+                sharedptr<Relationship> relationship = sharedptr<Relationship>::create();
                 const Glib::ustring relationship_name = get_node_attribute_value(nodeChild, GLOM_ATTRIBUTE_NAME);
 
                 relationship->set_from_table(table_name);

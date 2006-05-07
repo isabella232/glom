@@ -49,6 +49,7 @@ protected:
   virtual void save_to_document();
 
   sharedptr<Relationship> offer_relationship_list();
+  sharedptr<Relationship> offer_relationship_list(const sharedptr<const Relationship>& relationship);
 
   Gtk::TreeModel::iterator get_selected_group_parent() const;
   sharedptr<LayoutItem_Button> offer_button_script_edit(const sharedptr<const LayoutItem_Button>& button);

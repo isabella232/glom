@@ -581,7 +581,12 @@ sharedptr<LayoutItem_Text> Dialog_Layout_Details::offer_textobject_edit(const sh
 
 sharedptr<Relationship> Dialog_Layout_Details::offer_relationship_list()
 {
-  sharedptr<Relationship> result;
+  return offer_relationship_list(sharedptr<Relationship>());
+}
+
+sharedptr<Relationship> Dialog_Layout_Details::offer_relationship_list(const sharedptr<const Relationship>& item)
+{
+  sharedptr<Relationship> result = glom_sharedptr_clone(item);
 
   try
   {
@@ -593,6 +598,7 @@ sharedptr<Relationship> Dialog_Layout_Details::offer_relationship_list()
     if(dialog)
     {
       dialog->set_document(get_document(), m_table_name);
+      dialog->select_item(item);
       dialog->set_transient_for(*this);
       const int response = dialog->run();
       dialog->hide();
@@ -891,13 +897,14 @@ void Dialog_Layout_Details::on_button_edit()
       sharedptr<LayoutItem_Portal> layout_portal = sharedptr<LayoutItem_Portal>::cast_dynamic(layout_item);
       if(layout_portal)
       {
-        sharedptr<Relationship> relationship(new Relationship());
-        relationship->set_name( layout_portal->get_relationship_name() ); //TODO: Start with this one selected.
-        relationship = offer_relationship_list();
+        sharedptr<Relationship> relationship = offer_relationship_list(layout_portal->get_relationship());
         if(relationship)
         {
           layout_portal->set_relationship(relationship);
-          row[m_model_items->m_columns.m_col_layout_item] = layout_portal;
+ 
+          //This is unnecessary and seems to cause a crash.
+          //row[m_model_items->m_columns.m_col_layout_item] = layout_portal;
+
           m_modified = true;
         }
       }
@@ -932,7 +939,8 @@ void Dialog_Layout_Details::on_button_edit()
               sharedptr<LayoutItem_Field> chosenitem = offer_field_list(layout_item_field, m_table_name, this);
               if(chosenitem)
               {
-                row[m_model_items->m_columns.m_col_layout_item] = chosenitem;
+                *layout_item_field = *chosenitem;
+                //row[m_model_items->m_columns.m_col_layout_item] = chosenitem;
                 m_modified = true;
               }
             }
@@ -983,6 +991,12 @@ void Dialog_Layout_Details::on_button_edit()
             }
           }
         }
+      }
+
+      if(m_modified)
+      {
+        Gtk::TreeModel::Path path = m_model_items->get_path(iter);
+        m_model_items->row_changed(path, iter);
       }
     }
   }

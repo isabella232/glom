@@ -88,19 +88,26 @@ void Dialog_ChooseRelationship::set_document(Document_Glom* document, const Glib
 
 void Dialog_ChooseRelationship::select_item(const sharedptr<const Relationship>& relationship)
 {
-  //Find any items with the same name:
-  for(Gtk::TreeModel::iterator iter = m_model->children().begin(); iter != m_model->children().end(); ++iter)
-  {
-    const Glib::ustring relationship_name = glom_get_sharedptr_name(relationship);
+  Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = m_treeview->get_selection();
+  if(!refTreeSelection)
+    return; //Should never happen.
 
-    Gtk::TreeModel::Row row = *iter;
-    sharedptr<Relationship> relationship_item = row[m_ColumnsRelationships.m_col_relationship];
-    if(glom_get_sharedptr_name(relationship_item) == relationship_name)
+  if(!relationship)
+    refTreeSelection->unselect_all();
+  else
+  {
+    //Find any items with the same name:
+    for(Gtk::TreeModel::iterator iter = m_model->children().begin(); iter != m_model->children().end(); ++iter)
     {
-      //Select the item:
-      Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = m_treeview->get_selection();
-      if(refTreeSelection)
+      const Glib::ustring relationship_name = glom_get_sharedptr_name(relationship);
+
+      Gtk::TreeModel::Row row = *iter;
+      sharedptr<Relationship> relationship_item = row[m_ColumnsRelationships.m_col_relationship];
+      if(glom_get_sharedptr_name(relationship_item) == relationship_name)
+      {
+        //Select the item:
         refTreeSelection->select(iter);
+      }
     }
   }
 }

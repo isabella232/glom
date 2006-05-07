@@ -35,6 +35,8 @@ public:
 
   bool operator==(const Relationship& src) const;
 
+  Relationship* clone() const;
+
   Glib::ustring get_from_table() const;
   Glib::ustring get_from_field() const;
   Glib::ustring get_to_table() const;
