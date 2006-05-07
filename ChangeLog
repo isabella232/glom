@@ -1,5 +1,10 @@
 2006-05-07  Murray Cumming  <murrayc@murrayc.com>
 
+	* examples/example_smallbusiness.glom: Invoices: Mark the invoice lines relationship as allowing 
+	editing, so that people can actually edit the invoice lines portal. Bug #340919 from Hendrik Richter.
+
+2006-05-07  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/mode_data/box_data_details.cc: refresh_from_database(): Check for a null m_primary_key_field, 
 	to prevent a crash when editing the fields so that no field is a primary key.
 
