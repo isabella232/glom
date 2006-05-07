@@ -195,6 +195,12 @@ bool Box_Data_Details::fill_from_database()
   if(!primary_key_is_empty)
     get_document()->set_layout_record_viewed(m_table_name, m_layout_name, m_primary_key_value);
 
+  if(!m_field_primary_key)
+  {
+    //refresh_data_from_database_blank(); //shows blank record
+    return false;
+  }
+
   try
   {
 
