@@ -93,6 +93,8 @@ ConnectionPool::ConnectionPool()
   m_ready_to_connect(false),
   m_pFieldTypes(0)
 {
+  m_list_ports.push_back("5433"); //Ubuntu Dapper seems to default to this for Postgres 8.1, probably to avoid a clash with Postgres 7.4
+  m_list_ports.push_back("5432"); 
 }
 
 ConnectionPool::~ConnectionPool()
@@ -163,7 +165,9 @@ sharedptr<SharedConnection> ConnectionPool::connect()
       //Create a new connection:
 
       m_GdaClient = Gnome::Gda::Client::create();
-             //We must specify _some_ database even when we just want to create a database.
+
+
+      //We must specify _some_ database even when we just want to create a database.
       //This _might_ be different on some systems. I hope not. murrayc
       const Glib::ustring default_database = "template1"; 
       if(m_GdaClient)
@@ -171,99 +175,118 @@ sharedptr<SharedConnection> ConnectionPool::connect()
         //m_GdaDataSourceInfo = Gnome::Gda::DataSourceInfo(); //init_db_details it.
         //m_GdaDataSourceInfo->
 
-        Glib::ustring cnc_string = "HOST=" + get_host() + ";USER=" + m_user + ";PASSWORD=" + m_password;
+        bool connection_to_default_database_possible = false;
 
-        if(!m_database.empty())
-          cnc_string += (";DATABASE=" + m_database);
-        else
-          cnc_string += (";DATABASE=" + default_database);
+        //Try each possible network port:
+        for(type_list_ports::const_iterator iter_port = m_list_ports.begin(); iter_port != m_list_ports.end(); ++iter_port)
+        { 
+          const Glib::ustring cnc_string_main = "HOST=" + get_host() + ";USER=" + m_user + ";PASSWORD=" + m_password + ";PORT=" + *iter_port;
 
-        //std::cout << "connecting: cnc string: " << cnc_string << std::endl;
-        std::cout << "Glom: connecting." << std::endl;
+          Glib::ustring cnc_string = cnc_string_main;
 
-        //*m_refGdaConnection = m_GdaClient->open_connection(m_GdaDataSourceInfo.get_name(), m_GdaDataSourceInfo.get_username(), m_GdaDataSourceInfo.get_password() );
-        //m_refGdaConnection.clear(); //Make sure any previous connection is really forgotten.
-        m_refGdaConnection = m_GdaClient->open_connection_from_string("PostgreSQL", cnc_string);
-        if(m_refGdaConnection)
-        {
-          //g_warning("ConnectionPool: connection opened");
-
-          //Create the fieldtypes member if it has not already been done:
-          if(!m_pFieldTypes)
-            m_pFieldTypes = new FieldTypes(m_refGdaConnection);  
-
-          //Enforce ISO formats in the communication:
-          m_refGdaConnection->execute_single_command("SET DATESTYLE = 'ISO'");  
-
-          //Open the database, if one has been specified:
-          /* This does not seem to work in libgda's postgres provider, so we specify it in the cnc_string instead:
-          std::cout << "  database = " << m_database << std::endl;
           if(!m_database.empty())
-            m_refGdaConnection->change_database(m_database);
-          */
+            cnc_string += (";DATABASE=" + m_database);
+          else
+            cnc_string += (";DATABASE=" + default_database);
 
-          //Get postgres version:
-          Glib::RefPtr<Gnome::Gda::DataModel> data_model = m_refGdaConnection->execute_single_command("SELECT version()");
-          if(data_model && data_model->get_n_rows() && data_model->get_n_columns())
+          //std::cout << "connecting: cnc string: " << cnc_string << std::endl;
+          std::cout << std::endl << "Glom: trying to connect on port=" << *iter_port << std::endl;
+
+          //*m_refGdaConnection = m_GdaClient->open_connection(m_GdaDataSourceInfo.get_name(), m_GdaDataSourceInfo.get_username(), m_GdaDataSourceInfo.get_password() );
+          //m_refGdaConnection.clear(); //Make sure any previous connection is really forgotten.
+          m_refGdaConnection = m_GdaClient->open_connection_from_string("PostgreSQL", cnc_string);
+          if(m_refGdaConnection)
           {
-            Gnome::Gda::Value value = data_model->get_value_at(0, 0);
-            if(value.get_value_type() == Gnome::Gda::VALUE_TYPE_STRING)
-            {
-              const Glib::ustring version_text = value.get_string();
+            //g_warning("ConnectionPool: connection opened");
 
-              //This seems to have the format "PostgreSQL 7.4.11 on i486-pc-linux"
-              const Glib::ustring namePart = "PostgreSQL ";
-              const Glib::ustring::size_type posName = version_text.find(namePart);
-              if(posName != Glib::ustring::npos)
+            //Remember what port is working:
+            m_port = *iter_port;
+
+            //Create the fieldtypes member if it has not already been done:
+            if(!m_pFieldTypes)
+              m_pFieldTypes = new FieldTypes(m_refGdaConnection);  
+
+            //Enforce ISO formats in the communication:
+            m_refGdaConnection->execute_single_command("SET DATESTYLE = 'ISO'");  
+
+            //Open the database, if one has been specified:
+            /* This does not seem to work in libgda's postgres provider, so we specify it in the cnc_string instead:
+            std::cout << "  database = " << m_database << std::endl;
+            if(!m_database.empty())
+              m_refGdaConnection->change_database(m_database);
+            */
+
+            //Get postgres version:
+            Glib::RefPtr<Gnome::Gda::DataModel> data_model = m_refGdaConnection->execute_single_command("SELECT version()");
+            if(data_model && data_model->get_n_rows() && data_model->get_n_columns())
+            {
+              Gnome::Gda::Value value = data_model->get_value_at(0, 0);
+              if(value.get_value_type() == Gnome::Gda::VALUE_TYPE_STRING)
               {
-                const Glib::ustring versionPart = version_text.substr(namePart.size());
-                char* end = 0;
-                m_postgres_server_version = strtof(versionPart.c_str(), &end);
+                const Glib::ustring version_text = value.get_string();
+
+                //This seems to have the format "PostgreSQL 7.4.11 on i486-pc-linux"
+                const Glib::ustring namePart = "PostgreSQL ";
+                const Glib::ustring::size_type posName = version_text.find(namePart);
+                if(posName != Glib::ustring::npos)
+                {
+                  const Glib::ustring versionPart = version_text.substr(namePart.size());
+                  char* end = 0;
+                  m_postgres_server_version = strtof(versionPart.c_str(), &end);
+                }
               }
             }
+
+            std::cout << "  Postgres Server version: " << get_postgres_server_version() << std::endl << std::endl;
+
+            return connect(); //Call this method recursively. This time m_refGdaConnection exists.
           }
-
-          std::cout << "  Postgres Server version: " << get_postgres_server_version() << std::endl;
-
-          return connect(); //Call this method recursively. This time m_refGdaConnection exists.
-        }
-        else
-        {
-          std::cout << "ConnectionPool::connect() Attempt to connect to database failed: " << m_database << std::endl;
-
-          bool bJustDatabaseMissing = false;
-          if(!m_database.empty())
-          {
-             std::cout << "  ConnectionPool::connect() Attempting to connect without specifying the database." << std::endl;
-
-             //If the connection failed while looking for a database,
-             //then try connecting without the database:
-             Glib::ustring cnc_string = "HOST=" + get_host() + ";USER=" + m_user + ";PASSWORD=" + m_password;
-             cnc_string += (";DATABASE=" + default_database);
-
-             //std::cout << "connecting: cnc string: " << cnc_string << std::endl;
-             std::cout << "Glom: connecting." << std::endl;
-
-             Glib::RefPtr<Gnome::Gda::Connection> gda_connection =  m_GdaClient->open_connection_from_string("PostgreSQL", cnc_string);
-             if(gda_connection) //If we could connect without specifying the database.
-               bJustDatabaseMissing = true;
-             else
-             {
-                 std::cerr << "    ConnectionPool::connect() connection also failed when not specifying database." << std::endl;
-             }
-          }
-
-          g_warning("ConnectionPool::connect() throwing exception.");
-          if(bJustDatabaseMissing)
-            std::cout << "  (Connection succeeds, but not to the specific database: " << m_database << std::endl;
           else
-            std::cerr << "  (Could not connect even to the default database: " << default_database << std::endl;
+          {
+            std::cout << "ConnectionPool::connect() Attempt to connect to database failed on port=" << *iter_port << ", database=" << m_database << std::endl;
+
+            bool bJustDatabaseMissing = false;
+            if(!m_database.empty())
+            {
+              std::cout << "  ConnectionPool::connect() Attempting to connect without specifying the database." << std::endl;
+
+              //If the connection failed while looking for a database,
+              //then try connecting without the database:
+              Glib::ustring cnc_string = cnc_string_main;
+              cnc_string += (";DATABASE=" + default_database);
+
+              //std::cout << "connecting: cnc string: " << cnc_string << std::endl;
+              std::cout << "Glom: connecting." << std::endl;
+
+              Glib::RefPtr<Gnome::Gda::Connection> gda_connection =  m_GdaClient->open_connection_from_string("PostgreSQL", cnc_string);
+              if(gda_connection) //If we could connect without specifying the database.
+              {
+                bJustDatabaseMissing = true;
+                connection_to_default_database_possible = true;
+                m_port = *iter_port;
+              }
+              else
+              {
+                std::cerr << "    ConnectionPool::connect() connection also failed when not specifying database." << std::endl;
+              }
+            }
+
+            if(bJustDatabaseMissing)
+              std::cout << "  (Connection succeeds, but not to the specific database on port=" << *iter_port << ", database=" << m_database << std::endl;
+            else
+              std::cerr << "  (Could not connect even to the default database on port=" << *iter_port << ", database=" << m_database  << std::endl;
 
 
-          //handle_error(true /* cerr only */);
-
-          throw ExceptionConnection(bJustDatabaseMissing ? ExceptionConnection::FAILURE_NO_DATABASE : ExceptionConnection::FAILURE_NO_SERVER);
+            //handle_error(true /* cerr only */);
+          }
         }
+
+        g_warning("ConnectionPool::connect() throwing exception.");
+        if(connection_to_default_database_possible)
+          std::cout << "  (Connection succeeds, but not to the specific database on port=" << m_port << ", database=" << m_database << std::endl;
+        else
+              std::cerr << "  (Could not connect even to the default database on any port. database=" << m_database  << std::endl;
+        throw ExceptionConnection(connection_to_default_database_possible ? ExceptionConnection::FAILURE_NO_DATABASE : ExceptionConnection::FAILURE_NO_SERVER);
       }
     }
   }

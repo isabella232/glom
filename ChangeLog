@@ -1,5 +1,12 @@
 2006-05-07  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/libglom/connectionpool.cc:
+	* glom/libglom/connectionpool.h: connect(): Attempt the connection on both 
+	port 5433 and 5432, to make life easier for Ubuntu Dapper users, because it 
+	defaults postgres 8.1 to port 5433. Bug #340836 from Paul Schulz.
+
+2006-05-07  Murray Cumming  <murrayc@murrayc.com>
+
 	* examples/example_smallbusiness.glom: Invoices: Mark the invoice lines relationship as allowing 
 	editing, so that people can actually edit the invoice lines portal. Bug #340919 from Hendrik Richter.
 

@@ -3170,7 +3170,7 @@ bool Base_DB::get_field_value_is_unique(const Glib::ustring& table_name, const s
   Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute(strQuery);
   if(data_model)
   {
-    std::cout << "debug: Base_DB::get_field_value_is_unique(): table_name=" << table_name << ", field name=" << field->get_name() << ", value=" << value.to_string() << ", rows count=" << data_model->get_n_rows() << std::endl;
+    //std::cout << "debug: Base_DB::get_field_value_is_unique(): table_name=" << table_name << ", field name=" << field->get_name() << ", value=" << value.to_string() << ", rows count=" << data_model->get_n_rows() << std::endl;
     //The value is unique for this field, if the query returned no existing rows:
 
     result = (data_model->get_n_rows() == 0);
