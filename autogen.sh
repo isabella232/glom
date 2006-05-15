@@ -60,14 +60,14 @@ echo "- libtoolize."		&& \
   libtoolize --copy --force --automake 	&& \
 echo "- gnome-doc-prepare."	&& \
   gnome-doc-prepare --force 	&& \
-echo "- aclocal"		&& \
-  aclocal -I "$srcdir/macros" $ACLOCAL_FLAGS && \
-echo "- autoheader"		&& \
-  autoheader			&& \
-echo "- autoconf."		&& \
-  autoconf			&& \
-echo "- automake."		&& \
-  automake --add-missing --gnu	&& \
+echo "- aclocal-1.9"		&& \
+  aclocal-1.9 -I "$srcdir/macros" $ACLOCAL_FLAGS && \
+echo "- autoheader2.50"		&& \
+  autoheader2.50			&& \
+echo "- autoconf2.50."		&& \
+  autoconf2.50			&& \
+echo "- automake-1.9."		&& \
+  automake-1.9 --add-missing --gnu	&& \
 echo "- configure --enable-maintainer-mode" $enable_warnings "$@"	&& \
   ./configure --enable-maintainer-mode $enable_warnings "$@"		&& exit 0
 

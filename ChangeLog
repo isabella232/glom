@@ -1,3 +1,11 @@
+2006-05-15  Murray Cumming  <murrayc@murrayc.com>
+
+	* autogen.sh: Use specific versions of aclocal, autoheader, autoconf, and automake, 
+	because the default version on Ubuntu Dapper (and probably Debian) does not have 
+	AM_PATH_PYTHON(). This should help people not using jhbuild, though I guess it might 
+	make life worse for others if those versioned executables are not present. Tell me if 
+	it is a problem.
+
 2006-05-07  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/libglom/connectionpool.cc:
