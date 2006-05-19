@@ -41,6 +41,8 @@ public:
   virtual Gnome::Gda::Value get_primary_key_value() const; //Actual primary key value of this record.
   virtual Gnome::Gda::Value get_primary_key_value_selected(); //Value in the primary key's cell.
 
+  virtual void set_primary_key_value(const Gtk::TreeModel::iterator& /* row */, const Gnome::Gda::Value& value);
+
   virtual Gnome::Gda::Value get_entered_field_data(const sharedptr<const LayoutItem_Field>& field) const;
   virtual void set_entered_field_data(const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
   virtual void set_entered_field_data(const Gtk::TreeModel::iterator& row, const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);

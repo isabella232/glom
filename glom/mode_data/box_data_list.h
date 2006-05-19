@@ -36,6 +36,9 @@ public:
   virtual Gnome::Gda::Value get_primary_key_value_selected();
   Gnome::Gda::Value get_primary_key_value_first();
 
+  ///This allows Box_Data::record_new() to set the generated/entered primary key value, needed by Box_Data_List:
+  virtual void set_primary_key_value(const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& value);
+
   virtual Gnome::Gda::Value get_entered_field_data(const sharedptr<const LayoutItem_Field>& field) const;
   virtual void set_entered_field_data(const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
   virtual void set_entered_field_data(const Gtk::TreeModel::iterator& row, const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
@@ -82,7 +85,7 @@ protected:
 
   virtual void on_adddel_user_changed(const Gtk::TreeModel::iterator& row, guint col);
 
-  virtual void on_record_added(const Gnome::Gda::Value& primary_key_value); //Not a signal handler. To be overridden.
+  virtual void on_record_added(const Gnome::Gda::Value& primary_key_value, const Gtk::TreeModel::iterator& row); //Not a signal handler. To be overridden.
   virtual void on_record_deleted(const Gnome::Gda::Value& primary_key_value);
 
   virtual void print_layout();

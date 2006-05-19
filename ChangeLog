@@ -1,3 +1,24 @@
+2006-05-19  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/mode_data/box_data.cc:
+	* glom/mode_data/box_data.h: Added virtual set_primary_key_value(),
+	so that record_new() can set the primary key as soon as it has been 
+	set in the database.
+	record_new(): Take a row iterator, so we can update the list row.
+	After inserting the record, set the primary key value, 
+	and do lookups and refresh-related so that the other row fields update.
+	Return the datamodel.
+	* glom/mode_data/box_data_details.cc:
+	* glom/mode_data/box_data_details.h: Override set_primary_key_value()
+	* glom/mode_data/box_data_list.cc:
+	* glom/mode_data/box_data_list.h: Override set_primary_key_value().
+	on_adddel_user_added(): Provide the row iterator to record_new() and to 
+	on_record_added().
+	on_record_added(): Take the row iterator
+	* glom/mode_data/box_data_list_related.cc:
+	* glom/mode_data/box_data_list_related.h: on_record_added(): Take the row iterator, 
+	to avoid a slow lookup to discover it.
+
 2006-05-15  Murray Cumming  <murrayc@murrayc.com>
 
 	* autogen.sh: Use specific versions of aclocal, autoheader, autoconf, and automake, 

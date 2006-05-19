@@ -123,8 +123,17 @@ void Box_Data::on_Button_Find()
     signal_find_criteria.emit(where_clause);
 }
 
-
 Glib::RefPtr<Gnome::Gda::DataModel> Box_Data::record_new(bool use_entered_data, const Gnome::Gda::Value& primary_key_value)
+{
+  return record_new(use_entered_data, primary_key_value, Gtk::TreeModel::iterator());
+}
+
+void Box_Data::set_primary_key_value(const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& value)
+{
+  //Box_Data_List overrides this.
+}
+
+Glib::RefPtr<Gnome::Gda::DataModel> Box_Data::record_new(bool use_entered_data, const Gnome::Gda::Value& primary_key_value, const Gtk::TreeModel::iterator& row)
 {
   sharedptr<const Field> fieldPrimaryKey = get_field_primary_key();
 
@@ -147,6 +156,8 @@ Glib::RefPtr<Gnome::Gda::DataModel> Box_Data::record_new(bool use_entered_data, 
     }
   }
 
+  Document_Glom* document = get_document();
+
   //Calculate any necessary field values and enter them:
   for(type_vecLayoutFields::const_iterator iter = fieldsToAdd.begin(); iter != fieldsToAdd.end(); ++iter)
   {
@@ -166,8 +177,7 @@ Glib::RefPtr<Gnome::Gda::DataModel> Box_Data::record_new(bool use_entered_data, 
           const Glib::ustring calculation = field->get_calculation();
           const type_map_fields field_values = get_record_field_values(m_table_name, fieldPrimaryKey, primary_key_value);
 
-          const Gnome::Gda::Value value = glom_evaluate_python_function_implementation(field->get_glom_type(), calculation, field_values,
-            get_document(), m_table_name);
+          const Gnome::Gda::Value value = glom_evaluate_python_function_implementation(field->get_glom_type(), calculation, field_values, document, m_table_name);
           set_entered_field_data(layout_item, value);
         }
 
@@ -251,13 +261,39 @@ Glib::RefPtr<Gnome::Gda::DataModel> Box_Data::record_new(bool use_entered_data, 
   }
 
   //Put it all together to create the record with these field values:
+  Glib::RefPtr<Gnome::Gda::DataModel> result;
   if(!strNames.empty() && !strValues.empty())
   {
-    Glib::ustring strQuery = "INSERT INTO \"" + m_table_name + "\" (" + strNames + ") VALUES (" + strValues + ")";
-    return query_execute(strQuery, get_app_window());
+    const Glib::ustring strQuery = "INSERT INTO \"" + m_table_name + "\" (" + strNames + ") VALUES (" + strValues + ")";
+    result = query_execute(strQuery, get_app_window());
+    if(result)
+    {
+      set_primary_key_value(row, primary_key_value); //Needed by Box_Data_List::on_adddel_user_changed().
+
+      //Update any lookups, related fields, or calculations:
+      for(type_vecLayoutFields::const_iterator iter = fieldsToAdd.begin(); iter != fieldsToAdd.end(); ++iter)
+      {
+         sharedptr<const LayoutItem_Field> layout_item = *iter;
+         
+         //TODO_Performance: We just set this with set_entered_field_data() above. Maybe we could just remember it.
+         const Gnome::Gda::Value field_value = get_entered_field_data(layout_item);
+
+         FieldInRecord field_in_record(layout_item, m_table_name, fieldPrimaryKey, primary_key_value, *document);
+
+         //Get-and-set values for lookup fields, if this field triggers those relationships:
+         do_lookups(field_in_record, row, field_value);
+
+         //Update related fields, if this field is used in the relationship:
+         refresh_related_fields(field_in_record, row, field_value);
+      }
+    }
+    else
+    {
+      std::cerr << "Box_Data::record_new(): INSERT returned null DataModel." << std::endl; 
+    }
   }
-  else
-    return Glib::RefPtr<Gnome::Gda::DataModel>();
+
+  return result; //Failed.
 }
 
 void Box_Data::set_unstored_data(bool bVal)

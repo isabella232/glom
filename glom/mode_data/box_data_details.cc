@@ -135,6 +135,11 @@ Gnome::Gda::Value Box_Data_Details::get_primary_key_value() const
   return m_primary_key_value;
 }
 
+void Box_Data_Details::set_primary_key_value(const Gtk::TreeModel::iterator& /* row */, const Gnome::Gda::Value& value)
+{
+  m_primary_key_value = value;
+}
+
 bool Box_Data_Details::init_db_details(const FoundSet& found_set, const Gnome::Gda::Value& primary_key_value)
 {
   //std::cout << "Box_Data_Details::init_db_details(): primary_key_value.to_string()=" << primary_key_value.to_string() << std::endl;
@@ -552,6 +557,8 @@ void Box_Data_Details::on_flowtable_field_edited(const sharedptr<const LayoutIte
 
   Gtk::Window* window = get_app_window();
 
+  Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
+
   Gnome::Gda::Value primary_key_value = get_primary_key_value();
   if(!GlomConversions::value_is_empty(primary_key_value)) //If there is not a primary key value:
   {
@@ -570,8 +577,6 @@ void Box_Data_Details::on_flowtable_field_edited(const sharedptr<const LayoutIte
       //If it's a related field then discover the actual table that it's in,
       //plus how to identify the record in that table.
       const Glib::ustring relationship_name = layout_field->get_relationship_name();
-
-      Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
 
       sharedptr<Relationship> relationship = document->get_relationship(get_table_name(), relationship_name);
       if(relationship)
@@ -605,7 +610,7 @@ void Box_Data_Details::on_flowtable_field_edited(const sharedptr<const LayoutIte
     }
 
 
-    FieldInRecord field_in_record(layout_field, m_table_name /* parent table */, primary_key_field, primary_key_value, *(get_document()));
+    FieldInRecord field_in_record(layout_field, m_table_name /* parent table */, primary_key_field, primary_key_value, *document);
 
     //Check whether the value meets uniqueness constraints:
     if(!check_entered_value_for_uniqueness(m_table_name, layout_field, field_value, window))

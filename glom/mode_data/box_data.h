@@ -102,8 +102,15 @@ protected:
   */
   type_vecLayoutFields get_related_fields(const Glib::ustring& field_name) const;
 
-  virtual bool record_delete(const Gnome::Gda::Value& primary_key_value);
-  virtual Glib::RefPtr<Gnome::Gda::DataModel> record_new(bool use_entered_data = true, const Gnome::Gda::Value& primary_key_value = Gnome::Gda::Value()); //New record with all entered field values.
+  bool record_delete(const Gnome::Gda::Value& primary_key_value);
+
+  ///This allows record_new() to set the generated/entered primary key value, needed by Box_Data_List:
+  virtual void set_primary_key_value(const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& value);
+
+  ///New record with all entered field values.
+  Glib::RefPtr<Gnome::Gda::DataModel> record_new(bool use_entered_data = true, const Gnome::Gda::Value& primary_key_value = Gnome::Gda::Value()); 
+  Glib::RefPtr<Gnome::Gda::DataModel> record_new(bool use_entered_data, const Gnome::Gda::Value& primary_key_value, const Gtk::TreeModel::iterator& row);
+
   Gnome::Gda::Value generate_next_auto_increment(const Glib::ustring& table_name, const Glib::ustring field_name);
 
   virtual sharedptr<Field> get_field_primary_key() const = 0;

@@ -238,6 +238,12 @@ void Box_Data_List::on_adddel_user_requested_delete(const Gtk::TreeModel::iterat
   }
 }
 
+
+void Box_Data_List::set_primary_key_value(const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& value)
+{
+  m_AddDel.set_value_key(row, value);
+}
+
 void Box_Data_List::on_adddel_user_added(const Gtk::TreeModel::iterator& row, guint col_with_first_value)
 {
   //std::cout << "Box_Data_List::on_adddel_user_added" << std::endl;
@@ -277,11 +283,12 @@ void Box_Data_List::on_adddel_user_added(const Gtk::TreeModel::iterator& row, gu
         return;
       }
 
-      Glib::RefPtr<Gnome::Gda::DataModel> data_model = record_new(true /* use entered field data*/, primary_key_value);
+      Glib::RefPtr<Gnome::Gda::DataModel> data_model = record_new(true /* use entered field data*/, primary_key_value, row);
       if(data_model)
       {
+        
         //Save the primary key value for later use:
-        m_AddDel.set_value_key(row, primary_key_value);
+        //record_new() did this: m_AddDel.set_value_key(row, primary_key_value);
 
         //Show the primary key in the row, if the primary key is visible:
 
@@ -293,7 +300,7 @@ void Box_Data_List::on_adddel_user_added(const Gtk::TreeModel::iterator& row, gu
           m_AddDel.set_value(row, layout_item, primary_key_value);
         }
 
-        on_record_added(primary_key_value);
+        on_record_added(primary_key_value, row);
       }
       else
         handle_error();
@@ -655,7 +662,7 @@ void Box_Data_List::on_record_deleted(const Gnome::Gda::Value& /* primary_key_va
    //Overridden by Box_Data_List_Related.
 }
 
-void Box_Data_List::on_record_added(const Gnome::Gda::Value& /* strPrimaryKey */)
+void Box_Data_List::on_record_added(const Gnome::Gda::Value& /* strPrimaryKey */, const Gtk::TreeModel::iterator& /* row */)
 {
   //Overridden by Box_Data_List_Related.
   //m_AddDel.add_item(strPrimaryKey); //Add blank row.
