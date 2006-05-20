@@ -2671,7 +2671,7 @@ void Base_DB::calculate_field_in_all_records(const Glib::ustring& table_name, co
 void Base_DB::calculate_field(const LayoutFieldInRecord& field_in_record)
 {
   const Glib::ustring field_name = field_in_record.m_field->get_name();
-  g_warning("Box_Data::calculate_field(): field_name=%s", field_name.c_str());
+  //g_warning("Box_Data::calculate_field(): field_name=%s", field_name.c_str());
 
   //Do we already have this in our list?
   type_field_calcs::iterator iterFind = m_FieldsCalculationInProgress.find(field_name);
@@ -2978,8 +2978,6 @@ void Base_DB::do_calculations(const LayoutFieldInRecord& field_changed, bool fir
 {
   //std::cout << "debug: Base_DB::do_calcualtions(): field_changed=" << field_changed.m_field->get_name() << std::endl;
  
-  //g_warning("Box_Data::do_calculations(): triggered by =%s", field_changed.m_field->get_name().c_str());
-
   if(first_calc_field)
   {
     //g_warning("  clearing m_FieldsCalculationInProgress");
@@ -3086,15 +3084,40 @@ Base_DB::type_list_const_field_items Base_DB::get_calculation_fields(const Glib:
         Glib::ustring::size_type pos_start = pos_find + prefix_size;
         const Glib::ustring field_name = calculation.substr(pos_start, pos_find_end - pos_start);
 
-        sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
-        layout_item->set_full_field_details( document->get_field(table_name, field_name) );
+        sharedptr<Field> field_found = document->get_field(table_name, field_name);
+        if(field)
+        {
+          sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
+          layout_item->set_full_field_details(field_found);
 
-        result.push_back(layout_item);
+          result.push_back(layout_item);
+        }
+
         index = pos_find_end + 1;
       }
     }
 
     ++index;
+  }
+
+  //Check the use of related records too:
+  const Field::type_list_strings relationships_used = field->get_calculation_relationships();
+  for(Field::type_list_strings::const_iterator iter = relationships_used.begin(); iter != relationships_used.end(); ++iter)
+  {
+    sharedptr<Relationship> relationship = document->get_relationship(table_name, *iter);
+    if(relationship)
+    {
+      //If the field uses this relationship then it should be triggered by a change in the key that specifies which record the relationship points to:
+      const Glib::ustring field_from_name = relationship->get_from_field();
+      sharedptr<Field> field_from = document->get_field(table_name, field_from_name);
+      if(field_from)
+      {
+        sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
+        layout_item->set_full_field_details(field_from);
+
+        result.push_back(layout_item);
+      }
+    }
   }
 
   return result;

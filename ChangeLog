@@ -1,5 +1,13 @@
 2006-05-20  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/base_db.cc: get_calculation_fields(): Check the relationships used by the 
+	calculation. If a relationship is used, report that the from-field should trigger the 
+	calculation.
+	This did not actually need the big changes below, though they might be useful some 
+	time.
+
+2006-05-20  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/base_db.cc:
 	* glom/base_db.h: Added predicate_LayoutItemIsEqual class for std::find_if.
 	calculate_field(), set_field_value_in_database(), get_field_value_in_database(), 

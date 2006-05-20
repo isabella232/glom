@@ -4,9 +4,14 @@
   - When clicking Add, put the cursor in the appropriate column. 
 * Check for uniqueness before setting a value for a unique or primary-key field in the 
   database.
+* Calculations:
+  - Allow the calculations to detect empty non-text fields, via the None object.
+  - Recalculate calculations when a relationship's from key is changed, if that 
+  relationship is used in the calculation.
 * In the Edit Tables dialog and Field Defintions dialog, do not double-click to open/edit, 
   because this leads to awkwardsness/surprise because single click edits the cells too.
 * Layout: Slight performance and positioning improvements.
+  (Murray Cumming)
 * Some more Windows/Cygwin build fixes. (Yselkowitz)  
 
 1.0.3:
