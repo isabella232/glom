@@ -639,37 +639,6 @@ bool GlomConversions::value_is_empty(const Gnome::Gda::Value& value)
   }
 }
 
-Gnome::Gda::Value GlomConversions::get_empty_value_suitable_for_python(Field::glom_field_type field_type)
-{
-  Gnome::Gda::Value value = get_empty_value(field_type);
-  if(value.get_value_type() == Gnome::Gda::VALUE_TYPE_NULL)
-  {
-    switch(field_type)
-    {
-      case(Field::TYPE_TEXT):
-        return Gnome::Gda::Value( Glib::ustring() );
-      case(Field::TYPE_NUMERIC):
-      {
-        return parse_value(0);
-      }
-      case(Field::TYPE_DATE):
-      {
-        bool success = false;
-        return parse_value(Field::TYPE_DATE, "01/01/00" /* arbitrary*/, success, true /* iso_format */);
-      }
-      case(Field::TYPE_TIME):
-      {
-        bool success = false;
-        return parse_value(Field::TYPE_TIME, "00:00" /* arbitrary*/, success, true /* iso_format */);
-      }
-      default:
-        return Gnome::Gda::Value(); //A NULL instance. Should never happen.
-    }
-  }
-  else
-    return value;
-}
-
 Gnome::Gda::Value GlomConversions::get_empty_value(Field::glom_field_type field_type)
 {
   switch(field_type)

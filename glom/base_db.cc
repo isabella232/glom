@@ -2717,7 +2717,7 @@ void Base_DB::calculate_field(const FieldInRecord& field_in_record)
     {
       //recalculate:
       //TODO_Performance: We don't know what fields the python calculation will use, so we give it all of them:
-      const type_map_fields field_values = get_record_field_values(field_in_record.m_table_name, field_in_record.m_key, field_in_record.m_key_value);
+      const type_map_fields field_values = get_record_field_values_for_calculation(field_in_record.m_table_name, field_in_record.m_key, field_in_record.m_key_value);
       if(!field_values.empty())
       {
         sharedptr<const Field> field = refCalcProgress.m_field;
@@ -2751,7 +2751,7 @@ void Base_DB::calculate_field(const FieldInRecord& field_in_record)
 
 }
 
-Base_DB::type_map_fields Base_DB::get_record_field_values(const Glib::ustring& table_name, const sharedptr<const Field> primary_key, const Gnome::Gda::Value& primary_key_value)
+Base_DB::type_map_fields Base_DB::get_record_field_values_for_calculation(const Glib::ustring& table_name, const sharedptr<const Field> primary_key, const Gnome::Gda::Value& primary_key_value)
 {
   type_map_fields field_values;
 
@@ -2788,10 +2788,10 @@ Base_DB::type_map_fields Base_DB::get_record_field_values(const Glib::ustring& t
 
           Gnome::Gda::Value value = data_model->get_value_at(col_index, 0);
 
-          //Never give a NULL-type value to the python calculation,
+          //Never give a NULL-type value to the python calculation for types that don't use them:
           //to prevent errors:
           if(value.get_value_type() == Gnome::Gda::VALUE_TYPE_NULL)
-            value = GlomConversions::get_empty_value_suitable_for_python(field->get_glom_type());
+            value = GlomConversions::get_empty_value(field->get_glom_type());
 
           field_values[field->get_name()] = value;
           ++col_index;
@@ -2809,7 +2809,7 @@ Base_DB::type_map_fields Base_DB::get_record_field_values(const Glib::ustring& t
       for(Document_Glom::type_vecFields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
       {
         sharedptr<const Field> field = *iter;
-        field_values[field->get_name()] = GlomConversions::get_empty_value_suitable_for_python(field->get_glom_type());
+        field_values[field->get_name()] = GlomConversions::get_empty_value(field->get_glom_type());
       }
     }
   }

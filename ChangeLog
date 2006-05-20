@@ -1,3 +1,29 @@
+2006-05-20  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/base_db.cc:
+	* glom/base_db.h: Rename get_record_field_values() to 
+	get_record_field_values_for_calculation() to make things clearer.
+	* glom/libglom/python_embed/py_glom_related.cc: Related_tp_as_mapping_getitem():
+	Leave key_value_sqlized as empty if there is no key value to find related records.
+	* glom/libglom/python_embed/py_glom_relatedrecord.cc:
+	PyGlomRelatedRecord_SetRelationship(): Leave key_value_sqlized as null if there is 
+	no key value to find related records.
+	RelatedRecord_generic_aggregate(), RelatedRecord_tp_as_mapping_getitem(): Do not 
+	try to get related records if the key is empty. This then returns a Py_None when 
+	the python calculation tries to get related records. It could test for it, or just 
+	let the error cause an overall Py_None return result. 
+	* glom/python_embed/glom_python.cc: glom_execute_python_function_implementation: 
+	Check whether the result is Py_None. If it 
+	is then return a suitable empty value, instead of converting it to a string.
+	* glom/libglom/data_structure/glomconversions.cc:
+	* glom/libglom/data_structure/glomconversions.h: 
+	Remove get_empty_value_suitable_for_python().
+	* glom/mode_data/box_data.cc: 
+	* glom/mode_data/box_data_details.cc: Use get_empty_value() instead of 
+	get_empty_value_suitable_for_python() because the python calculations
+	(and our code for getting related records from python) do need to know whether non-text 	
+	fields are empty. 
+
 2006-05-19  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/mode_data/box_data.cc:

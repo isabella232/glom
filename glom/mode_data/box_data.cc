@@ -175,7 +175,7 @@ Glib::RefPtr<Gnome::Gda::DataModel> Box_Data::record_new(bool use_entered_data, 
         if(field->get_has_calculation())
         {
           const Glib::ustring calculation = field->get_calculation();
-          const type_map_fields field_values = get_record_field_values(m_table_name, fieldPrimaryKey, primary_key_value);
+          const type_map_fields field_values = get_record_field_values_for_calculation(m_table_name, fieldPrimaryKey, primary_key_value);
 
           const Gnome::Gda::Value value = glom_evaluate_python_function_implementation(field->get_glom_type(), calculation, field_values, document, m_table_name);
           set_entered_field_data(layout_item, value);

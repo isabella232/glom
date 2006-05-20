@@ -541,7 +541,7 @@ void Box_Data_Details::on_flowtable_script_button_clicked(const sharedptr<const 
   if(layout_item)
   {
     const Gnome::Gda::Value primary_key_value = get_primary_key_value();
-    const type_map_fields field_values = get_record_field_values(m_table_name, m_field_primary_key, primary_key_value);
+    const type_map_fields field_values = get_record_field_values_for_calculation(m_table_name, m_field_primary_key, primary_key_value);
 
     glom_execute_python_function_implementation(layout_item->get_script(), field_values, //TODO: Maybe use the field's type here.
     get_document(), get_table_name());

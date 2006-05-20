@@ -70,6 +70,12 @@ void glom_execute_python_function_implementation(const Glib::ustring& func_impl,
 Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field_type result_type, const Glib::ustring& func_impl,
     const type_map_fields& field_values, Document_Glom* pDocument, const Glib::ustring& table_name)
 {
+  //std::cout << "glom_evaluate_python_function_implementation()" << std::endl;
+  //for(type_map_fields::const_iterator iter = field_values.begin(); iter != field_values.end(); ++iter)
+  //{
+  //  std::cout << "  field_value: name=" << iter->first << ", value=" << iter->second.to_string() << std::endl; 
+  //}
+
   g_assert(result_type != Field::TYPE_INVALID);
 
   //g_warning("glom_evaluate_python_function_implementation: func=%s", func_impl.c_str());
@@ -178,8 +184,8 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
         //g_warning("debug: pyResult->ob_type->tp_name=%s", pyResult->ob_type->tp_name);
         //g_warning("debug: pyTypeGdaValue->tp_name=%s", ((PyTypeObject*)pyTypeGdaValue)->tp_name);
 
-        int test = PyType_IsSubtype(pyResult->ob_type, (PyTypeObject*)pyTypeGdaValue);
-        if(test == -1)
+        const int test = PyType_IsSubtype(pyResult->ob_type, (PyTypeObject*)pyTypeGdaValue);
+        if(test == -1) //-1 means error.
           HandlePythonError();
 
         if(test == 1) // 0 means false, -1 means error.
@@ -205,23 +211,33 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
         {
           //g_warning("debug: pyResult is not a gda.value");
 
-          //TODO: Handle numeric/date/time types:
-
-          //Treat this as a string or something that can be converted to a string:
-          PyObject* pyObjectResult = PyObject_Str(pyResult);
-          if(PyString_Check(pyObjectResult))
+          //For instance, if one of the fields was empty, then the calculation might want to return an empty value,
+          //instead of returning 0.
+          if(pyResult == Py_None) //Direct comparison is possible and recommended, because there is only one pyNone object.
           {
-            const char* pchResult = PyString_AsString(pyObjectResult);
-            if(pchResult)
-            {
-              bool success = false;
-              valueResult = GlomConversions::parse_value(result_type, pchResult, success, true /* iso_format */);
-            }
-            else
-              g_warning("pchResult is null");
+            //The result should be an appropriate empty value for this field type:
+            valueResult = GlomConversions::get_empty_value(result_type);
           }
           else
-            g_warning("PyString_Check returned false");
+          {
+            //TODO: Handle numeric/date/time types:
+
+            //Treat this as a string or something that can be converted to a string:
+            PyObject* pyObjectResult = PyObject_Str(pyResult);
+            if(PyString_Check(pyObjectResult))
+            {
+              const char* pchResult = PyString_AsString(pyObjectResult);
+              if(pchResult)
+              {
+                bool success = false;
+                valueResult = GlomConversions::parse_value(result_type, pchResult, success, true /* iso_format */);
+              }
+              else
+                g_warning("pchResult is null");
+            }
+            else
+              g_warning("PyString_Check returned false");
+          }
         }
 
         Py_DECREF(pyResult);

@@ -29,6 +29,7 @@
 #include <glom/libglom/python_embed/py_glom_relatedrecord.h>
 
 #include <glom/libglom/data_structure/field.h>
+#include <glom/libglom/data_structure/glomconversions.h>
 #include <glibmm/ustring.h>
 
 
@@ -150,7 +151,12 @@ Related_tp_as_mapping_getitem(PyGlomRelated *self, PyObject *item)
             from_key_field = self->m_record->m_document->get_field(*(self->m_record->m_table_name), from_key);
             if(from_key_field)
             {
-              const Glib::ustring key_value_sqlized = from_key_field->sql(from_key_value);
+              Glib::ustring key_value_sqlized;
+              //std::cout << "from_key_field=" << from_key_field->get_name() << ", from_key_value=" << from_key_value.to_string() << std::endl;
+
+              if(!GlomConversions::value_is_empty(from_key_value)) //Do not link on null-values. That would cause us to link on 0, or "0".
+                key_value_sqlized = from_key_field->sql(from_key_value);
+
               PyGlomRelatedRecord_SetRelationship(pyRelatedRecord, iterFind->second, key_value_sqlized, self->m_record->m_document);
 
               //Store it in the cache:

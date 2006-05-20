@@ -184,10 +184,15 @@ RelatedRecord_tp_as_mapping_getitem(PyGlomRelatedRecord *self, PyObject *item)
 
             const Glib::ustring related_key_name = (*(self->m_relationship))->get_to_field();
 
+            //Do not try to get a value based on a null key value:
+            if(!(self->m_from_key_value_sqlized))
+              return Py_None;
+       
+            //Get the single value from the related records:
             Glib::ustring sql_query = "SELECT \"" + related_table + "\".\"" + field_name + "\" FROM \"" + related_table + "\""
               + " WHERE \"" + related_table + "\".\"" + related_key_name + "\" = " + *(self->m_from_key_value_sqlized);
 
-            std::cout << "PyGlomRelatedRecord: Executing:  " << sql_query << std::endl;
+            //std::cout << "PyGlomRelatedRecord: Executing:  " << sql_query << std::endl;
             Glib::RefPtr<Gnome::Gda::DataModel> datamodel = gda_connection->execute_single_command(sql_query);
             if(datamodel && datamodel->get_n_rows())
             {
@@ -268,7 +273,12 @@ RelatedRecord_generic_aggregate(PyGlomRelatedRecord* self, PyObject *args, PyObj
 
         const Glib::ustring related_key_name = (*(self->m_relationship))->get_to_field();
 
-        Glib::ustring sql_query = "SELECT " + aggregate + "(\"" + related_table + "\".\"" + field_name + "\") FROM \"" + related_table + "\""
+        //Do not try to get a value based on a null key value:
+        if(!(self->m_from_key_value_sqlized))
+          return Py_None;
+       
+        //Get the aggregate value from the related records:
+        const Glib::ustring sql_query = "SELECT " + aggregate + "(\"" + related_table + "\".\"" + field_name + "\") FROM \"" + related_table + "\""
           + " WHERE \"" + related_table + "\".\"" + related_key_name + "\" = " + *(self->m_from_key_value_sqlized);
 
         //std::cout << "PyGlomRelatedRecord: Executing:  " << sql_query << std::endl;
@@ -395,7 +405,12 @@ PyTypeObject* PyGlomRelatedRecord_GetPyType()
 void PyGlomRelatedRecord_SetRelationship(PyGlomRelatedRecord* self, const sharedptr<const Relationship>& relationship, const Glib::ustring& from_key_value_sqlized,  Document_Glom* document)
 {
   self->m_relationship = new sharedptr<const Relationship>(relationship);
-  self->m_from_key_value_sqlized = new Glib::ustring(from_key_value_sqlized);
+
+  if(!from_key_value_sqlized.empty())
+    self->m_from_key_value_sqlized = new Glib::ustring(from_key_value_sqlized);
+  else
+    self->m_from_key_value_sqlized = 0;
+
   self->m_document = document;
 }
 

@@ -43,7 +43,7 @@ public:
   virtual Gnome::Gda::Value get_value() const;
   virtual bool get_has_original_data() const;
 
-  //Optionally use this instead of set_value(), to avoid creating an unncessary Value.
+  //Optionally use this instead of set_value(), to avoid creating an unnecessary Value.
   void set_pixbuf(const Glib::RefPtr<Gdk::Pixbuf>& pixbuf);
 
   void do_choose_image();
