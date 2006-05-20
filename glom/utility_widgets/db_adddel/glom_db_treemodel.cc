@@ -210,7 +210,15 @@ bool DbTreeModel::refresh_from_database(const FoundSet& found_set)
     const Glib::ustring sql_query = GlomUtils::build_sql_select_with_where_clause(m_found_set.m_table_name, m_column_fields, m_found_set.m_where_clause, m_found_set.m_sort_clause);
 
     //std::cout << "DbTreeModel: Executing SQL: " << sql_query << std::endl << std::endl;
-    m_gda_datamodel = m_connection->get_gda_connection()->execute_single_command(sql_query);
+    try
+    {
+      m_gda_datamodel = m_connection->get_gda_connection()->execute_single_command(sql_query);
+    }
+    catch(const std::exception& ex)
+    {
+      m_gda_datamodel.clear(); //So that it is 0, so we can handle it below.
+    }
+
     if(!m_gda_datamodel)
     {
       m_data_model_rows_count = 0;
