@@ -168,8 +168,19 @@ Glib::ustring GlomUtils::string_replace(const Glib::ustring& src, const Glib::us
 }
 
 
-
 Glib::ustring GlomUtils::build_sql_select_with_where_clause(const Glib::ustring& table_name, const type_vecLayoutFields& fieldsToGet, const Glib::ustring& where_clause, const type_sort_clause& sort_clause)
+{
+  //TODO_Performance:
+  type_vecConstLayoutFields constFieldsToGet;
+  for(type_vecLayoutFields::const_iterator iter = fieldsToGet.begin(); iter != fieldsToGet.end(); ++iter)
+  {
+    constFieldsToGet.push_back(*iter);
+  }
+
+  return build_sql_select_with_where_clause(table_name, constFieldsToGet, where_clause, sort_clause);
+}
+
+Glib::ustring GlomUtils::build_sql_select_with_where_clause(const Glib::ustring& table_name, const type_vecConstLayoutFields& fieldsToGet, const Glib::ustring& where_clause, const type_sort_clause& sort_clause)
 {
   Glib::ustring result;
 
@@ -177,9 +188,9 @@ Glib::ustring GlomUtils::build_sql_select_with_where_clause(const Glib::ustring&
   typedef std::list< sharedptr<const UsesRelationship> > type_list_relationships;
   type_list_relationships list_relationships;
 
-  for(type_vecLayoutFields::const_iterator iter = fieldsToGet.begin(); iter != fieldsToGet.end(); ++iter)
+  for(type_vecConstLayoutFields::const_iterator iter = fieldsToGet.begin(); iter != fieldsToGet.end(); ++iter)
   {
-    sharedptr<LayoutItem_Field> layout_item = *iter;
+    sharedptr<const LayoutItem_Field> layout_item = *iter;
 
     if(layout_item->get_has_relationship_name())
     {
@@ -218,14 +229,14 @@ Glib::ustring GlomUtils::build_sql_select_with_where_clause(const Glib::ustring&
   Glib::ustring sql_part_fields;
   Glib::ustring sql_part_from;
 
-  for(type_vecLayoutFields::const_iterator iter = fieldsToGet.begin(); iter != fieldsToGet.end(); ++iter)
+  for(type_vecConstLayoutFields::const_iterator iter = fieldsToGet.begin(); iter != fieldsToGet.end(); ++iter)
   {
     Glib::ustring one_sql_part;
 
-    sharedptr<LayoutItem_Field> layout_item = *iter;
+    sharedptr<const LayoutItem_Field> layout_item = *iter;
 
     bool is_summary = false;
-    LayoutItem_FieldSummary* fieldsummary = dynamic_cast<LayoutItem_FieldSummary*>(layout_item.obj());
+    const LayoutItem_FieldSummary* fieldsummary = dynamic_cast<const LayoutItem_FieldSummary*>(layout_item.obj());
     if(fieldsummary)
       is_summary = true;
 
@@ -321,7 +332,22 @@ Glib::ustring GlomUtils::build_sql_select_with_where_clause(const Glib::ustring&
   return result;
 }
 
+
 Glib::ustring GlomUtils::build_sql_select_with_key(const Glib::ustring& table_name, const type_vecLayoutFields& fieldsToGet, const sharedptr<const Field>& key_field, const Gnome::Gda::Value& key_value)
+{
+  //TODO_Performance:
+  type_vecConstLayoutFields constFieldsToGet;
+  for(type_vecLayoutFields::const_iterator iter = fieldsToGet.begin(); iter != fieldsToGet.end(); ++iter)
+  {
+    constFieldsToGet.push_back(*iter);
+  }
+
+  return build_sql_select_with_key(table_name, constFieldsToGet, key_field, key_value);
+
+
+}
+
+Glib::ustring GlomUtils::build_sql_select_with_key(const Glib::ustring& table_name, const type_vecConstLayoutFields& fieldsToGet, const sharedptr<const Field>& key_field, const Gnome::Gda::Value& key_value)
 {
   if(!GlomConversions::value_is_empty(key_value)) //If there is a record to show:
   {

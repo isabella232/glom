@@ -102,6 +102,7 @@ public:
   bool insert_example_data(const Glib::ustring& table_name) const;
 
   typedef std::vector< sharedptr<LayoutItem_Field> > type_vecLayoutFields;
+  typedef std::vector< sharedptr<const LayoutItem_Field> > type_vecConstLayoutFields;
 
 protected:
   sharedptr<LayoutItem_Field> offer_field_list(const Glib::ustring& table_name, Gtk::Window* transient_for = 0);
@@ -188,27 +189,57 @@ protected:
     Gnome::Gda::Value m_key_value;
   };
 
+
+  class LayoutFieldInRecord
+  {
+  public:
+    LayoutFieldInRecord()
+    {}
+
+    LayoutFieldInRecord(const sharedptr<const LayoutItem_Field>& layout_item, const Glib::ustring& parent_table_name, const sharedptr<const Field>& parent_key, const Gnome::Gda::Value& key_value)
+    : m_key_value(key_value)
+    {
+      m_field = layout_item;
+      m_table_name = parent_table_name;
+      m_key = parent_key;
+    }
+
+    FieldInRecord get_fieldinrecord(const Document_Glom& document) const
+    {
+      return FieldInRecord(m_field, m_table_name, m_key, m_key_value, document);
+    }
+
+    //Identify the field:
+    Glib::ustring m_table_name;
+    sharedptr<const LayoutItem_Field> m_field;
+
+    //Identify the record:
+    sharedptr<const Field> m_key;
+    Gnome::Gda::Value m_key_value;
+  };
+
   /** Calculate values for fields, set them in the database, and show them in the layout.
    * @param field_changed The field that has changed, causing other fields to be recalculated because they use its value.
    * @param primary_key The primary key field for this table.
    * @param priamry_key_value: The primary key value for this record.
    * @param first_calc_field: false if this is called recursively.
    */
-  void do_calculations(const FieldInRecord& field_changed, bool first_calc_field);
+  void do_calculations(const LayoutFieldInRecord& field_changed, bool first_calc_field);
 
   typedef std::map<Glib::ustring, CalcInProgress> type_field_calcs;
 
+  typedef std::list< sharedptr<LayoutItem_Field> > type_list_field_items;
+  typedef std::list< sharedptr<const LayoutItem_Field> > type_list_const_field_items;
+
   /** Get the fields whose values should be recalculated when @a field_name changes.
    */
-  type_field_calcs get_calculated_fields(const Glib::ustring& table_name, const Glib::ustring& field_name);
-
-  typedef std::list< sharedptr<LayoutItem_Field> > type_list_field_items;
+  type_list_const_field_items get_calculated_fields(const Glib::ustring& table_name, const sharedptr<const LayoutItem_Field>& field);
 
   /** Get the fields used, if any, in the calculation of this field.
    */
-  type_list_field_items get_calculation_fields(const Glib::ustring& table_name, const sharedptr<const Field>& field);
+  type_list_const_field_items get_calculation_fields(const Glib::ustring& table_name, const sharedptr<const LayoutItem_Field>& field);
 
-  void calculate_field(const FieldInRecord& field_in_record);
+  void calculate_field(const LayoutFieldInRecord& field_in_record);
 
   void calculate_field_in_all_records(const Glib::ustring& table_name, const sharedptr<const Field>& field);
   void calculate_field_in_all_records(const Glib::ustring& table_name, const sharedptr<const Field>& field, const sharedptr<const Field>& primary_key);
@@ -218,7 +249,7 @@ protected:
   type_map_fields get_record_field_values_for_calculation(const Glib::ustring& table_name, const sharedptr<const Field> primary_key, const Gnome::Gda::Value& primary_key_value);
 
 
-  void do_lookups(const FieldInRecord& field_in_record, const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& field_value);
+  void do_lookups(const LayoutFieldInRecord& field_in_record, const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& field_value);
 
   typedef std::pair< sharedptr<LayoutItem_Field>, sharedptr<Relationship> > type_pairFieldTrigger;
   typedef std::list<type_pairFieldTrigger> type_list_lookups;
@@ -234,15 +265,15 @@ protected:
   Gnome::Gda::Value get_lookup_value(const Glib::ustring& table_name, const sharedptr<const Relationship>& relationship, const sharedptr<const Field>& source_field, const Gnome::Gda::Value & key_value);
 
 
-  virtual void refresh_related_fields(const FieldInRecord& field_in_record_changed, const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& field_value);
+  virtual void refresh_related_fields(const LayoutFieldInRecord& field_in_record_changed, const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& field_value);
 
 
 
-  bool set_field_value_in_database(const FieldInRecord& field_in_record, const Gnome::Gda::Value& field_value, bool use_current_calculations = false, Gtk::Window* parent_window = 0);
-  bool set_field_value_in_database(const FieldInRecord& field_in_record, const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& field_value, bool use_current_calculations = false, Gtk::Window* parent_window = 0);
+  bool set_field_value_in_database(const LayoutFieldInRecord& field_in_record, const Gnome::Gda::Value& field_value, bool use_current_calculations = false, Gtk::Window* parent_window = 0);
+  bool set_field_value_in_database(const LayoutFieldInRecord& field_in_record, const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& field_value, bool use_current_calculations = false, Gtk::Window* parent_window = 0);
 
   //Get a single field value from the database.
-  Gnome::Gda::Value get_field_value_in_database(const FieldInRecord& field_in_record, Gtk::Window* parent_window);
+  Gnome::Gda::Value get_field_value_in_database(const LayoutFieldInRecord& field_in_record, Gtk::Window* parent_window);
 
 
   type_vecStrings get_database_groups() const;

@@ -407,7 +407,7 @@ void Box_Data_List::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, 
       //const sharedptr<const Field>& field = layout_field->m_field;
       //const Glib::ustring strFieldName = layout_field->get_name();
 
-      FieldInRecord field_in_record(layout_field, m_table_name /* parent */, primary_key_field, primary_key_value, *(get_document()));
+      LayoutFieldInRecord field_in_record(layout_field, m_table_name /* parent */, primary_key_field, primary_key_value);
 
       //Check whether the value meets uniqueness constraints:
       Gtk::Window* window = get_app_window();

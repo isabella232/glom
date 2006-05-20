@@ -278,7 +278,7 @@ Glib::RefPtr<Gnome::Gda::DataModel> Box_Data::record_new(bool use_entered_data, 
          //TODO_Performance: We just set this with set_entered_field_data() above. Maybe we could just remember it.
          const Gnome::Gda::Value field_value = get_entered_field_data(layout_item);
 
-         FieldInRecord field_in_record(layout_item, m_table_name, fieldPrimaryKey, primary_key_value, *document);
+         LayoutFieldInRecord field_in_record(layout_item, m_table_name, fieldPrimaryKey, primary_key_value);
 
          //Get-and-set values for lookup fields, if this field triggers those relationships:
          do_lookups(field_in_record, row, field_value);
@@ -414,13 +414,14 @@ Gnome::Gda::Value Box_Data::generate_next_auto_increment(const Glib::ustring& ta
 
 /** Get the shown fields that are in related tables, via a relationship using @a field_name changes.
  */
-Box_Data::type_vecLayoutFields Box_Data::get_related_fields(const Glib::ustring& field_name) const
+Box_Data::type_vecLayoutFields Box_Data::get_related_fields(const sharedptr<const LayoutItem_Field>& field) const
 {
   type_vecLayoutFields result;
 
   const Document_Glom* document = dynamic_cast<const Document_Glom*>(get_document());
   if(document)
   {
+    const Glib::ustring field_name = field->get_name(); //At the moment, relationships can not be based on related fields on the from side.
     for(type_vecLayoutFields::const_iterator iter = m_FieldsShown.begin(); iter != m_FieldsShown.end();  ++iter)
     {
       sharedptr<LayoutItem_Field> layout_field = *iter;
@@ -445,15 +446,15 @@ Box_Data::type_vecLayoutFields Box_Data::get_related_fields(const Glib::ustring&
   return result;
 }
 
-void Box_Data::refresh_related_fields(const FieldInRecord& field_in_record_changed, const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& field_value)
+void Box_Data::refresh_related_fields(const LayoutFieldInRecord& field_in_record_changed, const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& field_value)
 {
   if(field_in_record_changed.m_table_name != m_table_name)
     return; //TODO: Handle these too?
 
   //Get values for lookup fields, if this field triggers those relationships:
   //TODO_performance: There is a LOT of iterating and copying here.
-  const Glib::ustring strFieldName = field_in_record_changed.m_field->get_name();
-  type_vecLayoutFields fieldsToGet = get_related_fields(strFieldName);
+  //const Glib::ustring strFieldName = field_in_record_changed.m_field->get_name();
+  type_vecLayoutFields fieldsToGet = get_related_fields(field_in_record_changed.m_field);
 
   if(!fieldsToGet.empty())
   {

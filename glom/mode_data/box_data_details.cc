@@ -404,6 +404,7 @@ void Box_Data_Details::recalculate_fields_for_related_records(const Glib::ustrin
 {
   m_FieldsCalculationInProgress.clear();
 
+  //Check all fields in the parent table:
   const Gnome::Gda::Value primary_key_value = get_primary_key_value();
   for(type_vecFields::iterator iter = m_TableFields.begin(); iter != m_TableFields.end(); ++iter)
   {
@@ -417,7 +418,9 @@ void Box_Data_Details::recalculate_fields_for_related_records(const Glib::ustrin
       sharedptr<Field> field = *iter;
       if(field)
       {
-        FieldInRecord field_in_record(m_table_name, field, m_field_primary_key, primary_key_value);
+        sharedptr<LayoutItem_Field> layoutitem_field = sharedptr<LayoutItem_Field>::create();
+        layoutitem_field->set_full_field_details(field);
+        LayoutFieldInRecord field_in_record(layoutitem_field, m_table_name, m_field_primary_key, primary_key_value);
         calculate_field(field_in_record); //And any dependencies.
 
         //Calculate anything that depends on this.
@@ -610,7 +613,7 @@ void Box_Data_Details::on_flowtable_field_edited(const sharedptr<const LayoutIte
     }
 
 
-    FieldInRecord field_in_record(layout_field, m_table_name /* parent table */, primary_key_field, primary_key_value, *document);
+    LayoutFieldInRecord field_in_record(layout_field, m_table_name /* parent table */, primary_key_field, primary_key_value);
 
     //Check whether the value meets uniqueness constraints:
     if(!check_entered_value_for_uniqueness(m_table_name, layout_field, field_value, window))

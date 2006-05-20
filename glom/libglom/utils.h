@@ -39,11 +39,14 @@ Glib::ustring string_replace(const Glib::ustring& src, const Glib::ustring searc
 
 //typedef Base_DB::type_vecLayoutFields type_vecLayoutFields;
 typedef std::vector< sharedptr<LayoutItem_Field> > type_vecLayoutFields;
+typedef std::vector< sharedptr<const LayoutItem_Field> > type_vecConstLayoutFields;
 
   //TODO: Move this to its own file:
 Glib::ustring build_sql_select_with_where_clause(const Glib::ustring& table_name, const type_vecLayoutFields& fieldsToGet, const Glib::ustring& where_clause = Glib::ustring(), const type_sort_clause& sort_clause = type_sort_clause());
+Glib::ustring build_sql_select_with_where_clause(const Glib::ustring& table_name, const type_vecConstLayoutFields& fieldsToGet, const Glib::ustring& where_clause = Glib::ustring(), const type_sort_clause& sort_clause = type_sort_clause());
 
 Glib::ustring build_sql_select_with_key(const Glib::ustring& table_name, const type_vecLayoutFields& fieldsToGet, const sharedptr<const Field>& key_field, const Gnome::Gda::Value& key_value);
+Glib::ustring build_sql_select_with_key(const Glib::ustring& table_name, const type_vecConstLayoutFields& fieldsToGet, const sharedptr<const Field>& key_field, const Gnome::Gda::Value& key_value);
 
 typedef std::list< std::pair<Gnome::Gda::Value, Gnome::Gda::Value> > type_list_values_with_second;
 type_list_values_with_second get_choice_values(const sharedptr<const LayoutItem_Field>& field);

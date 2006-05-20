@@ -1,6 +1,26 @@
 2006-05-20  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/base_db.cc:
+	* glom/base_db.h: Added predicate_LayoutItemIsEqual class for std::find_if.
+	calculate_field(), set_field_value_in_database(), get_field_value_in_database(), 
+	do_calculations(), get_calculated_fields(), get_calculation_fields(), 
+	do_lookups(), refresh_related_fields(): Deal in LayoutItem_Field rather than Field, 
+	so we can trigger recalculations from related fields.
+	Added LayoutFieldInRecord to replace FieldInRecord in most places. It preserves the 
+	parent table information.
+	* glom/libglom/utils.cc:
+	* glom/libglom/utils.h: Added build_sql_select_with_where_clause() and 
+	build_sql_select_with_key() that takes lists of non-const LayoutItems. This is 
+	annoying, but better than removing const from everywhere else. 
+	* glom/mode_data/box_data.cc:
+	* glom/mode_data/box_data.h:
+	* glom/mode_data/box_data_details.cc:
+	* glom/mode_data/box_data_list.cc:
+	* glom/mode_design/fields/dialog_fieldcalculation.cc: Adapted to API changes.
+
+2006-05-20  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/base_db.cc:
 	* glom/base_db.h: Rename get_record_field_values() to 
 	get_record_field_values_for_calculation() to make things clearer.
 	* glom/libglom/python_embed/py_glom_related.cc: Related_tp_as_mapping_getitem():

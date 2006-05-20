@@ -83,7 +83,7 @@ protected:
   ///Fill the existing layout with data from the database.
   virtual bool fill_from_database(); //override.
 
-  virtual void refresh_related_fields(const FieldInRecord& field_in_record_changed, const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& field_value);
+  virtual void refresh_related_fields(const LayoutFieldInRecord& field_in_record_changed, const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& field_value);
 
   virtual type_vecLayoutFields get_fields_to_show() const;
   //virtual Glib::ustring build_sql_select_with_where_clause(const Glib::ustring& table_name, const type_vecLayoutFields& fieldsToGet, const Glib::ustring& where_clause);
@@ -100,7 +100,7 @@ protected:
 
   /** Get the fields that are in related tables, via a relationship using @a field_name changes.
   */
-  type_vecLayoutFields get_related_fields(const Glib::ustring& field_name) const;
+  type_vecLayoutFields get_related_fields(const sharedptr<const LayoutItem_Field>& field) const;
 
   bool record_delete(const Gnome::Gda::Value& primary_key_value);
 
