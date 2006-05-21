@@ -1,3 +1,5 @@
+1.0.4:
+
 * Related Records: When clicking the details buttons, just show the details, instead 
   of flicking between details, list, and then details. That was annoying.
 * List View:
@@ -13,6 +15,7 @@
 * Layout: Slight performance and positioning improvements.
   (Murray Cumming)
 * Some more Windows/Cygwin build fixes. (Yselkowitz)  
+* Slightly (very slightly) more tango-like application icon. (Murray Cumming)
 
 1.0.3:
 

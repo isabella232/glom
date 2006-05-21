@@ -2084,7 +2084,7 @@ void Base_DB::report_build_records(const FoundSet& found_set, xmlpp::Element& pa
 
     //For instance, when we just want to get a name corresponding to a contact ID, and want to ignore duplicates.
     if(one_record_only)
-      sql_query += "LIMIT 1";
+      sql_query += " LIMIT 1";
 
     bool records_found = false;
     Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute(sql_query);

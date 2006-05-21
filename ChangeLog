@@ -1,5 +1,10 @@
 2006-05-21  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/base_db.cc: report_build_records(): Add a space before LIMIT, 
+	to avoid it ever clashing with the ASC before it.
+
+2006-05-21  Murray Cumming  <murrayc@murrayc.com>
+
 	* configure.in: Use IT_PROG_INTLTOOL instead of AC_PROG_INTLTOOL 
 	for intltool. It is apparently the new way.
 
