@@ -1,5 +1,10 @@
 2006-05-21  Murray Cumming  <murrayc@murrayc.com>
 
+	* configure.in: Use IT_PROG_INTLTOOL instead of AC_PROG_INTLTOOL 
+	for intltool. It is apparently the new way.
+
+2006-05-21  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom.desktop.in.in: Remove the .png extension from the 
 	icon name, as advised by http://live.gnome.org/GnomeGoals/AppIcon .
 	* glom/mode_design/fields/dialog_fieldcalculation.cc: Remove the [?] 

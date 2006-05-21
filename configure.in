@@ -23,7 +23,7 @@ AC_DEFINE_UNQUOTED([GETTEXT_PACKAGE], ["$GETTEXT_PACKAGE"],
 ALL_LINGUAS="ca cs de en_CA en_GB es fi fr gu it ne nl pa pt pt_BR rw sq sv tr vi zh_CN"
 
 AM_GLIB_GNU_GETTEXT
-AC_PROG_INTLTOOL
+IT_PROG_INTLTOOL([0.35.0])
 
 #AC_CONFIG_AUX_DIR(macros)
 AC_SUBST([ACLOCAL_AMFLAGS], ['-I macros ${ACLOCAL_FLAGS}'])
