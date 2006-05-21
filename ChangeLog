@@ -1,5 +1,10 @@
 2006-05-21  Murray Cumming  <murrayc@murrayc.com>
 
+	* logo/glom_icon.svg: Change canvas size to 480x480, so I can use 10px sizes 
+	that will be 1px in the 48x48px icon.
+
+2006-05-21  Murray Cumming  <murrayc@murrayc.com>
+
 	* logo/glom_icon.svg: Use the Tango color palette, though there is surely more 
 	to do to make it a tango icon.
 
