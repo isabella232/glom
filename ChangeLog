@@ -1,5 +1,25 @@
 2006-05-21  Murray Cumming  <murrayc@murrayc.com>
 
+	* Makefile.am:
+	* configure.in:
+	* glom.png: Removed. We use the stuff in icons/ instead.
+	* icons/Makefile.am:
+	* icons/glom.png:
+	* icons/glom.svg:
+	* icons/glom_icon_large.png:
+	* logo/glom_icon.png:
+	* logo/glom_icon.svg:
+	* logo/glom_icon.xcf:
+	* logo/glom_icon_large.png: Moved files from logo/ to icons/ and 
+	used the Makefile snippet from 
+	http://live.gnome.org/GnomeGoals/AppIcon .
+	Among other things, this means that the scalable icon is installed.
+	glom.svg: I increased the size of the window shape and removed the 
+	database-cylinder shadow to prevent wasted space.
+	glom.png was regenerated from the svg.
+
+2006-05-21  Murray Cumming  <murrayc@murrayc.com>
+
 	* logo/glom_icon.svg: Change canvas size to 480x480, so I can use 10px sizes 
 	that will be 1px in the 48x48px icon.
 

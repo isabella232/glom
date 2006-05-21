@@ -1,7 +1,7 @@
 ## top-level Makefile.am
 
 #Build in these directories:
-SUBDIRS = po glom docs macros examples xslt
+SUBDIRS = po glom docs macros examples xslt icons
 
 # For running autoreconf
 # (The documentation for this macro says that it is only useful in this top-level Makefile.am)
@@ -30,17 +30,12 @@ MimeDatabase_DATA = glom.xml
 # appregdir = $(datadir)/application-registry
 # appreg_DATA = glom.applications
 
-# This icons install location is copied from vino.
-# In the past they were installed in $(datadir)/pixmaps.
-# but this is the new location. murrayc 
-iconsdir   = $(datadir)/icons/hicolor/48x48/apps
-icons_DATA = glom.png
 
 install-data-hook: 
 	-update-mime-database "$(DESTDIR)${datadir}/mime"
 
 EXTRA_DIST = $(desktop_in_files) $(MimeDatabase_DATA) $(appreg_DATA) $(mimeinfo_DATA) \
-             autogen.sh $(icons_DATA) \
+             autogen.sh \
              gnome-doc-utils.make \
              intltool-extract.in intltool-merge.in intltool-update.in xmldocs.make omf.make
 

@@ -88,6 +88,7 @@ AC_OUTPUT(Makefile \
     glom/relationships_overview/Makefile \
     glom/reports/Makefile \
     glom/translation/Makefile \
+    icons/Makefile \
     xslt/Makefile \
     po/Makefile.in \
   macros/Makefile \
