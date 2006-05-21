@@ -1,3 +1,16 @@
+2006-05-21  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/base_db.cc:
+	* glom/base_db.h:
+	* glom/frame_glom.cc:
+	* glom/mode_data/box_data_list.cc:
+	* glom/reports/Makefile.am:
+	* glom/reports/report_builder.cc:
+	* glom/reports/report_builder.h: Moved the Base_DB::report_*() 
+	methods into a ReportBuilder object and use an instantiation of 
+	that object wherever we would call report_builder. This is a start on 
+	reducing the insane size of base_db.[h|cc].
+
 1.0.4:
 
 2006-05-21  Murray Cumming  <murrayc@murrayc.com>

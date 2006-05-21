@@ -28,6 +28,7 @@
 #include <glom/libglom/data_structure/glomconversions.h>
 #include <glom/libglom/data_structure/layout/report_parts/layoutitem_summary.h>
 #include <glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.h>
+#include <glom/reports/report_builder.h>
 #include "relationships_overview/dialog_relationships_overview.h"
 #include "filechooser_export.h"
 #include <sstream> //For stringstream.
@@ -1477,12 +1478,16 @@ void Frame_Glom::on_menu_report_selected(const Glib::ustring& report_name)
     return;
   }
 
-  sharedptr<Report> report = get_document()->get_report(m_table_name, report_name);
+  Document_Glom* document = get_document();
+  sharedptr<Report> report = document->get_report(m_table_name, report_name);
   if(!report)
     return;
 
   FoundSet found_set = m_Notebook_Data.get_found_set();
-  report_build(found_set, report, get_app_window()); //TODO: Use found set's where_clause.
+
+  ReportBuilder report_builder;
+  report_builder.set_document(document);
+  report_builder.report_build(found_set, report, get_app_window()); //TODO: Use found set's where_clause.
 }
 
 void Frame_Glom::on_dialog_layout_report_hide()

@@ -20,6 +20,7 @@
 
 #include "box_data_list.h"
 #include <glom/libglom/data_structure/glomconversions.h>
+#include <glom/reports/report_builder.h>
 #include "dialog_layout_list.h"
 #include <bakery/App/App_Gtk.h> //For util_bold_message().
 //#include <../utility_widgets/db_adddel/glom_db_treemodel.h> //For DbTreeModel.
@@ -705,7 +706,9 @@ void Box_Data_List::print_layout()
       report_temp->m_layout_group->add_item(*iter);
     }
 
-    report_build(m_found_set, report_temp, get_app_window());
+    ReportBuilder report_builder;
+    report_builder.set_document(get_document());
+    report_builder.report_build(m_found_set, report_temp, get_app_window());
   }
 }
 

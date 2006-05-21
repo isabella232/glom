@@ -8,7 +8,8 @@ INCLUDES = -I@top_srcdir@/ $(GLOM_CFLAGS) $(PYTHON_INCLUDES) \
 
 noinst_LIBRARIES = libreports.a
 libreports_a_SOURCES = dialog_layout_report.cc dialog_layout_report.h \
-                       treestore_report_layout.cc treestore_report_layout.h
+                       treestore_report_layout.cc treestore_report_layout.h \
+                       report_builder.cc report_builder.h
 
 
 
