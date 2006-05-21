@@ -2319,7 +2319,17 @@ void Base_DB::report_build(const FoundSet& found_set, const sharedptr<const Repo
   if(!itemsToGet_TopLevel.empty())
   {
     xmlpp::Element* nodeGroupBy = nodeParent->add_child("ungrouped_records");
-    report_build_records(found_set, *nodeGroupBy, itemsToGet_TopLevel);
+
+    try
+    {
+      report_build_records(found_set, *nodeGroupBy, itemsToGet_TopLevel);
+    }
+    catch(const std::exception& ex)
+    {
+      //Handle database errors here rather than crashing the whole application:
+      handle_error(ex);
+      return;
+    }
   }
 
   GlomXslUtils::transform_and_open(*pDocument, "print_report_to_html.xsl", parent_window);

@@ -399,6 +399,7 @@ bool ConnectionPool::handle_error(bool cerr_only)
         dialog.set_secondary_text(error_details);
         //TODO: dialog.set_transient_for(*get_application());
         dialog.run();
+        std::cout << "debug: after Internal Error dialog run()." << std::endl;
       }
 
       return true; //There really was an error.

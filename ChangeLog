@@ -1,3 +1,15 @@
+1.0.4:
+
+2006-05-21  Murray Cumming  <murrayc@murrayc.com>
+
+	* examples/example_smallbusiness.glom: Contacts reports: Restore the 
+	group-by fields. I wonder why these were lost.
+
+2006-05-21  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/base_db.cc: report_build(): Try to catch the exception here, 
+	but it still crashes if there is a SQL error during report building.
+
 2006-05-21  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/base_db.cc: report_build_records(): Add a space before LIMIT, 
