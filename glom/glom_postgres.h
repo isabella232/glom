@@ -43,6 +43,11 @@ public:
    * @result The new field definition, with any necessary changes.
    */
   static sharedptr<Field> postgres_change_column_extras(const Glib::ustring& table_name, const sharedptr<const Field>& field_old, const sharedptr<const Field>& field, bool set_anyway = false);
+
+protected:
+  //Utility functions to help with the odd formats of postgres internal catalog fields:
+  static type_vecStrings pg_list_separate(const Glib::ustring& str);
+
 };
 
 #endif //DB_POSTGRES_H

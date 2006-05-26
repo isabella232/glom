@@ -22,6 +22,7 @@
 #include <glom/libglom/data_structure/glomconversions.h>
 #include <glom/reports/report_builder.h>
 #include "dialog_layout_list.h"
+#include <glom/glom_privs.h>
 #include <bakery/App/App_Gtk.h> //For util_bold_message().
 //#include <../utility_widgets/db_adddel/glom_db_treemodel.h> //For DbTreeModel.
 #include <sstream> //For stringstream
@@ -77,7 +78,7 @@ Box_Data_List::~Box_Data_List()
 
 void Box_Data_List::enable_buttons()
 {
-  const Privileges table_privs = get_current_privs(m_table_name);
+  const Privileges table_privs = GlomPrivs::get_current_privs(m_table_name);
 
     //Enable/Disable record creation and deletion:
   bool allow_create = !m_read_only;
@@ -126,7 +127,7 @@ bool Box_Data_List::fill_from_database()
       //Glib::RefPtr<Gnome::Gda::Connection> connection = sharedconnection->get_gda_connection();
 
     //Do not try to show the data if the user may not view it:
-    const Privileges table_privs = get_current_privs(m_table_name);
+    const Privileges table_privs = GlomPrivs::get_current_privs(m_table_name);
 
     enable_buttons();
 
@@ -686,7 +687,7 @@ bool Box_Data_List::get_field_primary_key_index(guint& field_column) const
 
 void Box_Data_List::print_layout()
 {
-  const Privileges table_privs = get_current_privs(m_table_name);
+  const Privileges table_privs = GlomPrivs::get_current_privs(m_table_name);
 
   //Don't try to print tables that the user can't view.
   if(!table_privs.m_view)

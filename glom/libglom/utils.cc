@@ -519,3 +519,112 @@ Glib::ustring GlomUtils::create_local_image_uri(const Gnome::Gda::Value& value)
 
   return ("file://" + result);
 }
+
+Glib::ustring GlomUtils::string_from_decimal(guint decimal)
+{
+  //TODO_Performance:
+
+  std::stringstream stream;
+  stream << decimal;
+
+  Glib::ustring result;
+  stream >> result;
+
+  return result;
+}
+
+guint GlomUtils::decimal_from_string(const Glib::ustring& str)
+{
+  //TODO_Performance:
+
+  //Convert it to a numeric type:
+  std::stringstream stream;
+  stream << str;
+  guint id_numeric = 0;
+  stream >> id_numeric;
+
+  return id_numeric;
+}
+
+Glib::ustring GlomUtils::title_from_string(const Glib::ustring& text)
+{
+  Glib::ustring result;
+
+  bool capitalise_next_char = true;
+  for(Glib::ustring::const_iterator iter = text.begin(); iter != text.end(); ++iter)
+  {
+    const gunichar& ch = *iter;
+    if(ch == '_') //Replace _ with space.
+    {
+      capitalise_next_char = true; //Capitalise all words.
+      result += " ";
+    }
+    else
+    {
+      if(capitalise_next_char)
+        result += Glib::Unicode::toupper(*iter);
+      else
+        result += *iter;
+
+      capitalise_next_char = false;
+    }
+  }
+
+  return result;
+}
+
+GlomUtils::type_vecStrings GlomUtils::string_separate(const Glib::ustring& str, const Glib::ustring& separator)
+{
+  type_vecStrings result;
+
+  Glib::ustring unprocessed = str;
+  while(!unprocessed.empty())
+  {
+    Glib::ustring::size_type posComma = unprocessed.find(separator);
+
+    Glib::ustring item;
+    if(posComma != Glib::ustring::npos)
+    {
+      item = unprocessed.substr(0, posComma);
+      unprocessed = unprocessed.substr(posComma + separator.size());
+    }
+    else
+    {
+        item = unprocessed;
+        unprocessed.clear();
+    }
+
+    if(!item.empty())
+      result.push_back(item);
+
+    unprocessed = string_trim(unprocessed, " ");
+  }
+
+  return result;
+}
+
+Glib::ustring GlomUtils::string_trim(const Glib::ustring& str, const Glib::ustring& to_remove)
+{
+   Glib::ustring result = str;
+
+   //Remove from the start:
+   Glib::ustring::size_type posOpenBracket = result.find(to_remove);
+   if(posOpenBracket == 0)
+   {
+//g_warning("string_trim: before start trim: %s", result.c_str());
+      result = result.substr(to_remove.size());
+//g_warning("string_trim: after start trim: %s", result.c_str());
+   }
+
+   //Remove from the end:
+   Glib::ustring::size_type posCloseBracket = result.rfind(to_remove);
+   if(posCloseBracket == (result.size() - to_remove.size()))
+   {
+     //g_warning("string_trim: before end trim: %s", result.c_str());
+    result = result.substr(0, posCloseBracket);
+     //g_warning("string_trim: after end trim: %s", result.c_str());
+   }
+
+  return result;
+}
+

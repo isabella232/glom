@@ -23,6 +23,7 @@
 #include "dialog_users_list.h"
 #include "dialog_new_group.h"
 #include <glom/libglom/standard_table_prefs_fields.h>
+#include <glom/glom_privs.h>
 //#include <libgnome/gnome-i18n.h>
 #include <bakery/App/App_Gtk.h> //For util_bold_message().
 #include <glibmm/i18n.h>
@@ -270,11 +271,11 @@ void Dialog_GroupsList::on_button_group_new()
 
     for(Document_Glom::type_listTableInfo::const_iterator iter = table_list.begin(); iter != table_list.end(); ++iter)
     {
-      set_table_privileges(group_name, (*iter)->get_name(), priv);
+      GlomPrivs::set_table_privileges(group_name, (*iter)->get_name(), priv);
     }
 
     //Let them edit the autoincrements too:
-    set_table_privileges(group_name, GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME, priv);
+    GlomPrivs::set_table_privileges(group_name, GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME, priv);
 
     fill_group_list();
   }
@@ -364,7 +365,7 @@ void Dialog_GroupsList::fill_group_list()
   //Fill the model rows:
   m_model_groups->clear();
 
-  type_vecStrings group_list = get_database_groups();
+  type_vecStrings group_list = GlomPrivs::get_database_groups();
   for(type_vecStrings::const_iterator iter = group_list.begin(); iter != group_list.end(); ++iter)
   {
     Gtk::TreeModel::iterator iterTree = m_model_groups->append();
@@ -416,7 +417,7 @@ void Dialog_GroupsList::fill_table_list(const Glib::ustring& group_name)
       row[m_model_columns_tables.m_col_name] = table_name;
       row[m_model_columns_tables.m_col_title] = (*iter)->get_title_or_name();
 
-      const Privileges privs = get_table_privileges(group_name, table_name);
+      const Privileges privs = GlomPrivs::get_table_privileges(group_name, table_name);
       row[m_model_columns_tables.m_col_view] = privs.m_view;
       row[m_model_columns_tables.m_col_edit] = privs.m_edit;
       row[m_model_columns_tables.m_col_create] = privs.m_create;
@@ -579,7 +580,7 @@ void Dialog_GroupsList::on_treeview_tables_toggled_create(const Glib::ustring& p
     const Glib::ustring group_name = get_selected_group();
     const Glib::ustring table_name = row[m_model_columns_tables.m_col_name];
 
-    bool test = set_table_privilege(table_name, group_name, bActive, PRIV_CREATE);
+    const bool test = set_table_privilege(table_name, group_name, bActive, PRIV_CREATE);
 
     if(test)
       row[m_model_columns_tables.m_col_create] = bActive;
@@ -603,7 +604,7 @@ void Dialog_GroupsList::on_treeview_tables_toggled_delete(const Glib::ustring& p
     const Glib::ustring group_name = get_selected_group();
     const Glib::ustring table_name = row[m_model_columns_tables.m_col_name];
 
-    bool test = set_table_privilege(table_name, group_name, bActive, PRIV_DELETE);
+    const bool test = set_table_privilege(table_name, group_name, bActive, PRIV_DELETE);
 
     if(test)
       row[m_model_columns_tables.m_col_delete] = bActive;
@@ -622,7 +623,7 @@ void Dialog_GroupsList::on_cell_data_group_name(Gtk::CellRenderer* renderer, con
 
       Glib::ustring name = row[m_model_columns_groups.m_col_name];
 
-      renderer_text->property_text() = get_user_visible_group_name(name);
+      renderer_text->property_text() = GlomPrivs::get_user_visible_group_name(name);
     }
   }
 }

@@ -169,7 +169,7 @@ void Box_DB_Table_Definition::on_adddel_add(const Gtk::TreeModel::iterator& row)
       //This must match the SQL statement above:
       sharedptr<Field> field(new Field());
       field->set_name(name);
-      field->set_title( util_title_from_string(name) ); //Start with a title that might be useful.
+      field->set_title( GlomUtils::title_from_string(name) ); //Start with a title that might be useful.
       field->set_glom_type(Field::TYPE_NUMERIC);
 
       Gnome::Gda::FieldAttributes field_info = field->get_field_info();

@@ -39,6 +39,7 @@
 #include <glom/libglom/data_structure/layout/report_parts/layoutitem_footer.h>
 #include "python_embed/glom_python.h"
 #include <glom/glom_postgres.h>
+#include <glom/glom_privs.h>
 #include <glibmm/i18n.h>
 //#include <libgnomeui/gnome-app-helper.h>
 
@@ -301,27 +302,7 @@ void Base_DB::on_userlevel_changed(AppState::userlevels /* userlevel */)
   //Override this in derived classes.
 }
 
-Glib::ustring Base_DB::util_string_from_decimal(guint decimal)
-{
-    std::stringstream stream;
-    stream << decimal;
 
-    Glib::ustring result;
-    stream >> result;
-
-    return result;
-}
-
-guint Base_DB::util_decimal_from_string(const Glib::ustring& str)
-{
-    //Convert it to a numeric type:
-    std::stringstream stream;
-    stream << str;
-    guint id_numeric = 0;
-    stream >> id_numeric;
-
-    return id_numeric;
-}
 
 void Base_DB::set_document(Document_Glom* pDocument)
 {
@@ -567,274 +548,6 @@ Base_DB::type_vecFields Base_DB::get_fields_for_table(const Glib::ustring& table
 
 }
 
-bool Base_DB::util_string_has_whitespace(const Glib::ustring& text)
-{
- for(Glib::ustring::const_iterator iter = text.begin(); iter != text.end(); ++iter)
- {
-   if(Glib::Unicode::isspace(*iter))
-     return true; //White space was found.
- }
-
- return false; //No white space found.
-}
-
-Glib::ustring Base_DB::util_title_from_string(const Glib::ustring& text)
-{
-  Glib::ustring result;
-
-  bool capitalise_next_char = true;
-  for(Glib::ustring::const_iterator iter = text.begin(); iter != text.end(); ++iter)
-  {
-    const gunichar& ch = *iter;
-    if(ch == '_') //Replace _ with space.
-    {
-      capitalise_next_char = true; //Capitalise all words.
-      result += " ";
-    }
-    else
-    {
-      if(capitalise_next_char)
-        result += Glib::Unicode::toupper(*iter);
-      else
-        result += *iter;
-
-      capitalise_next_char = false;
-    }
-  }
-
-  return result;
-}
-
-Base_DB::type_vecStrings Base_DB::get_database_groups() const
-{
-  type_vecStrings result;
-
-  Glib::ustring strQuery = "SELECT \"pg_group\".\"groname\" FROM \"pg_group\"";
-  Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute(strQuery);
-  if(data_model)
-  {
-    const int rows_count = data_model->get_n_rows();
-    for(int row = 0; row < rows_count; ++row)
-    {
-      const Gnome::Gda::Value value = data_model->get_value_at(0, row);
-      const Glib::ustring name = value.get_string();
-      result.push_back(name);
-    }
-  }
-
-  return result;
-}
-
-Base_DB::type_vecStrings Base_DB::get_database_users(const Glib::ustring& group_name) const
-{
-  type_vecStrings result;
-
-  if(group_name.empty())
-  {
-    //pg_shadow contains the users. pg_users is a view of pg_shadow without the password.
-    Glib::ustring strQuery = "SELECT \"pg_shadow\".\"usename\" FROM \"pg_shadow\"";
-    Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute(strQuery);
-    if(data_model)
-    {
-      const int rows_count = data_model->get_n_rows();
-      for(int row = 0; row < rows_count; ++row)
-      {
-        const Gnome::Gda::Value value = data_model->get_value_at(0, row);
-        const Glib::ustring name = value.get_string();
-        result.push_back(name);
-      }
-    }
-  }
-  else
-  {
-    Glib::ustring strQuery = "SELECT \"pg_group\".\"groname\", \"pg_group\".\"grolist\" FROM \"pg_group\" WHERE \"pg_group\".\"groname\" = '" + group_name + "'";
-    Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute(strQuery);
-    if(data_model && data_model->get_n_rows())
-    {
-      const int rows_count = data_model->get_n_rows();
-      for(int row = 0; row < rows_count; ++row)
-      {
-        const Gnome::Gda::Value value = data_model->get_value_at(1, row); //Column 1 is the /* the user list.
-        //pg_group is a string, formatted, bizarrely, like so: "{100, 101}".
-
-        Glib::ustring group_list;
-        if(!value.is_null())
-          group_list = value.get_string();
-
-        type_vecStrings vecUserIds = pg_list_separate(group_list);
-        for(type_vecStrings::const_iterator iter = vecUserIds.begin(); iter != vecUserIds.end(); ++iter)
-        {
-          //TODO_Performance: Can we do this in one SQL SELECT?
-          Glib::ustring strQuery = "SELECT \"pg_user\".\"usename\" FROM \"pg_user\" WHERE \"pg_user\".\"usesysid\" = '" + *iter + "'";
-          Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute(strQuery);
-          if(data_model)
-          {
-            const Gnome::Gda::Value value = data_model->get_value_at(0, 0); 
-           result.push_back(value.get_string());
-          }
-        }
-
-      }
-    }
-  }
-
-  return result;
-}
-
-void Base_DB::set_table_privileges(const Glib::ustring& group_name, const Glib::ustring& table_name, const Privileges& privs, bool developer_privs)
-{
-  if(group_name.empty() || table_name.empty())
-    return;
-
-  //Change the permission in the database:
-
-  //Build the SQL statement:
-
-  //Grant or revoke:
-  Glib::ustring strQuery = "GRANT";
-  //TODO: Revoke the ones that are not specified.
-
-  //What to grant or revoke:
-  Glib::ustring strPrivilege;
-
-  if(developer_privs)
-    strPrivilege = "ALL PRIVILEGES";
-  else
-  {
-    if(privs.m_view)
-      strPrivilege += "SELECT";
-
-    if(privs.m_edit)
-    {
-      if(!strPrivilege.empty())
-        strPrivilege += ", ";
-
-      strPrivilege += "UPDATE";
-    }
-
-    if(privs.m_create)
-    {
-      if(!strPrivilege.empty())
-        strPrivilege += ", ";
-
-      strPrivilege += "INSERT";
-    }
-
-    if(privs.m_delete)
-    {
-      if(!strPrivilege.empty())
-        strPrivilege += ", ";
-
-      strPrivilege += "DELETE";
-    }
-  }
-
-  strQuery += " " + strPrivilege + " ON \"" + table_name + "\" ";
-
-  //This must match the Grant or Revoke:
-  strQuery += "TO";
-
-  strQuery += " GROUP \"" + group_name + "\"";
-
-  const bool test = query_execute(strQuery);
-
-  if(test)
-  {
-    if( (table_name != GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME) && privs.m_create )
-    {
-      //To create a record, you will usually need write access to the autoincrements table,
-      //so grant this too:
-      Privileges priv_autoincrements;
-      priv_autoincrements.m_view = true;
-      priv_autoincrements.m_edit = true;
-      set_table_privileges(group_name, GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME, priv_autoincrements);
-    }
-  }
-}
-
-Privileges Base_DB::get_table_privileges(const Glib::ustring& group_name, const Glib::ustring& table_name) const
-{
-  Privileges result;
-
-  if(group_name == GLOM_STANDARD_GROUP_NAME_DEVELOPER)
-  {
-    //Always give developers full access:
-    result.m_view = true;
-    result.m_edit = true;
-    result.m_create = true;
-    result.m_delete = true;
-    return result;
-  }
-
-  //Get the permissions:
-  Glib::ustring strQuery = "SELECT \"pg_class\".\"relacl\" FROM \"pg_class\" WHERE \"pg_class\".\"relname\" = '" + table_name + "'";
-  Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute(strQuery);
-  if(data_model && data_model->get_n_rows())
-  {
-    const Gnome::Gda::Value value = data_model->get_value_at(0, 0);
-    Glib::ustring access_details;
-    if(!value.is_null())
-      access_details = value.get_string();
-
-    //Parse the strange postgres permissions format:
-    const type_vecStrings vecItems = pg_list_separate(access_details);
-    for(type_vecStrings::const_iterator iterItems = vecItems.begin(); iterItems != vecItems.end(); ++iterItems)
-    {
-      Glib::ustring item = *iterItems;
-      item = string_trim(item, "\""); //Remove quotes from front and back.
-
-      //Find group permissions, ignoring user permissions:
-      const Glib::ustring strgroup = "group ";
-      Glib::ustring::size_type posFind = item.find(strgroup);
-      if(posFind == 0)
-      {
-        //It is a group permision:
-        item = item.substr(strgroup.size());
-
-        //Get the parts before and after the =:
-        const type_vecStrings vecParts = string_separate(item, "=");
-        if(vecParts.size() == 2)
-        {
-          const Glib::ustring this_group_name = vecParts[0];
-          if(this_group_name == group_name) //Only look at permissions for the requested group->
-          {
-            Glib::ustring group_permissions = vecParts[1];
-
-            //Get the part before the /user_who_granted_the_privileges:
-            const type_vecStrings vecParts = string_separate(group_permissions, "/");
-            if(!vecParts.empty())
-              group_permissions = vecParts[0];
-
-            //g_warning("  group=%s", group_name.c_str());
-            //g_warning("  permisisons=%s", group_permissions.c_str());
-
-            //Iterate through the characters:
-            for(Glib::ustring::iterator iter = group_permissions.begin(); iter != group_permissions.end(); ++iter)
-            {
-              gunichar chperm = *iter;
-              Glib::ustring perm(1, chperm);
-
-              //See http://www.postgresql.org/docs/8.0/interactive/sql-grant.html
-              if(perm == "r")
-                result.m_view = true;
-              else if (perm == "w")
-                result.m_edit = true;
-              else if (perm == "a")
-                result.m_create = true;
-              else if (perm == "d")
-                result.m_delete = true;
-            }
-          }
-        }
-      }
-
-    }
-  }
-
-  //g_warning("get_table_privileges(group_name=%s, table_name=%s) returning: %d", group_name.c_str(), table_name.c_str(), result.m_create);
-  return result;
-}
-
 bool Base_DB::add_standard_tables() const
 {
   try
@@ -928,7 +641,7 @@ bool Base_DB::add_standard_groups()
   //Add the glom_developer group if it does not exist:
   const Glib::ustring devgroup = GLOM_STANDARD_GROUP_NAME_DEVELOPER;
 
-  const type_vecStrings vecGroups = get_database_groups();
+  const type_vecStrings vecGroups = GlomPrivs::get_database_groups();
   type_vecStrings::const_iterator iterFind = std::find(vecGroups.begin(), vecGroups.end(), devgroup);
   if(iterFind == vecGroups.end())
   {
@@ -967,7 +680,7 @@ bool Base_DB::add_standard_groups()
       {
         const Glib::ustring table_name = table_info->get_name();
         if(get_table_exists_in_database(table_name)) //Maybe the table has not been created yet.
-          set_table_privileges(devgroup, table_name, priv_devs, true /* developer privileges */);
+          GlomPrivs::set_table_privileges(devgroup, table_name, priv_devs, true /* developer privileges */);
       }
     }
 
@@ -986,7 +699,7 @@ Gnome::Gda::Value Base_DB::auto_increment_insert_first_if_necessary(const Glib::
   Gnome::Gda::Value value;
 
   //Check that the user is allowd to view and edit this table:
-  Privileges table_privs = get_current_privs(GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME);
+  Privileges table_privs = GlomPrivs::get_current_privs(GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME);
   if(!table_privs.m_view || !table_privs.m_edit)
   {
     //This should not happen:
@@ -1039,7 +752,7 @@ void Base_DB::recalculate_next_auto_increment_value(const Glib::ustring& table_n
   {
     //Increment it:
     const Gnome::Gda::Value value_max = datamodel->get_value_at(0, 0);
-    long num_max = util_decimal_from_string(value_max.to_string()); //TODO: Is this sensible? Probably not.
+    long num_max = GlomUtils::decimal_from_string(value_max.to_string()); //TODO: Is this sensible? Probably not.
     ++num_max;
 
     //Set it in the glom system table:
@@ -1065,7 +778,7 @@ Gnome::Gda::Value Base_DB::get_next_auto_increment_value(const Glib::ustring& ta
 {
   const Gnome::Gda::Value result = auto_increment_insert_first_if_necessary(table_name, field_name);
   long num_result = 0;
-  num_result = util_decimal_from_string(result.to_string()); //TODO: Is this sensible? Probably not.
+  num_result = GlomUtils::decimal_from_string(result.to_string()); //TODO: Is this sensible? Probably not.
 
 
   //Increment the next_value:
@@ -1086,154 +799,6 @@ Gnome::Gda::Value Base_DB::get_next_auto_increment_value(const Glib::ustring& ta
   return result;
 }
 
-
-Glib::ustring Base_DB::string_trim(const Glib::ustring& str, const Glib::ustring& to_remove)
-{
-   Glib::ustring result = str;
-
-   //Remove from the start:
-   Glib::ustring::size_type posOpenBracket = result.find(to_remove);
-   if(posOpenBracket == 0)
-   {
-//g_warning("string_trim: before start trim: %s", result.c_str());
-      result = result.substr(to_remove.size());
-//g_warning("string_trim: after start trim: %s", result.c_str());
-   }
-
-   //Remove from the end:
-   Glib::ustring::size_type posCloseBracket = result.rfind(to_remove);
-   if(posCloseBracket == (result.size() - to_remove.size()))
-   {
-     //g_warning("string_trim: before end trim: %s", result.c_str());
-    result = result.substr(0, posCloseBracket);
-     //g_warning("string_trim: after end trim: %s", result.c_str());
-   }
-
-  return result;
-}
-
-Base_DB::type_vecStrings Base_DB::string_separate(const Glib::ustring& str, const Glib::ustring& separator)
-{
-  type_vecStrings result;
-
-  Glib::ustring unprocessed = str;
-  while(!unprocessed.empty())
-  {
-    Glib::ustring::size_type posComma = unprocessed.find(separator);
-
-    Glib::ustring item;
-    if(posComma != Glib::ustring::npos)
-    {
-      item = unprocessed.substr(0, posComma);
-      unprocessed = unprocessed.substr(posComma + separator.size());
-    }
-    else
-    {
-        item = unprocessed;
-        unprocessed.clear();
-    }
-
-    if(!item.empty())
-      result.push_back(item);
-
-    unprocessed = string_trim(unprocessed, " ");
-  }
-
-  return result;
-}
-
-Base_DB::type_vecStrings Base_DB::pg_list_separate(const Glib::ustring& str)
-{
-  //Remove the first { and the last }:
-  Glib::ustring without_brackets = string_trim(str, "{");
-  without_brackets = string_trim(without_brackets, "}");
-
-  //Get the comma-separated items:
-  return string_separate(without_brackets, ",");
-}
-
-Glib::ustring Base_DB::get_user_visible_group_name(const Glib::ustring& group_name) const
-{
-  Glib::ustring result = group_name;
-
-  //Remove the special prefix:
-  const Glib::ustring prefix = "glom_";
-  if(result.substr(0, prefix.size()) == prefix)
-    result = result.substr(prefix.size());
-
-  return result;
-}
-
-Base_DB::type_vecStrings Base_DB::get_groups_of_user(const Glib::ustring& user) const
-{
-  //TODO_Performance
-
-  type_vecStrings result;
-
-  //Look at each group:
-  type_vecStrings groups = get_database_groups();
-  for(type_vecStrings::const_iterator iter = groups.begin(); iter != groups.end(); ++iter)
-  {
-    //See whether the user is in this group:
-    if(get_user_is_in_group(user, *iter))
-    {
-      //Add the group to the result:
-      result.push_back(*iter);
-    }
-  }
-
-  return result;
-}
-
-bool Base_DB::get_user_is_in_group(const Glib::ustring& user, const Glib::ustring& group) const
-{
-  const type_vecStrings users = get_database_users(group);
-  type_vecStrings::const_iterator iterFind = std::find(users.begin(), users.end(), user);
-  return (iterFind != users.end());
-}
-
-Privileges Base_DB::get_current_privs(const Glib::ustring& table_name) const
-{
-  //TODO_Performance: There's lots of database access here.
-  //We could maybe replace some with the postgres has_table_* function().
-
-  Privileges result;
-
-  ConnectionPool* connection_pool = ConnectionPool::get_instance();
-  const Glib::ustring current_user = connection_pool->get_user();
-
-  //Is the user in the special developers group?
-  /*
-  type_vecStrings developers = get_database_users(GLOM_STANDARD_GROUP_NAME_DEVELOPER);
-  type_vecStrings::const_iterator iterFind = std::find(developers.begin(), developers.end(), current_user);
-  if(iterFind != developers.end())
-  {
-    result.m_developer = true;
-  }
-  */
-
-  //Get the "true" rights for any groups that the user is in:
-  type_vecStrings groups = get_groups_of_user(current_user);
-  for(type_vecStrings::const_iterator iter = groups.begin(); iter != groups.end(); ++iter)
-  {
-    Privileges privs = get_table_privileges(*iter, table_name);
-
-    if(privs.m_view)
-      result.m_view = true;
-
-    if(privs.m_edit)
-      result.m_edit = true;
-
-    if(privs.m_create)
-      result.m_create = true;
-
-    if(privs.m_delete)
-      result.m_delete = true;
-  }
-
-  return result;
-}
-
 SystemPrefs Base_DB::get_database_preferences() const
 {
   //if(get_userlevel() == AppState::USERLEVEL_DEVELOPER)
@@ -1242,7 +807,7 @@ SystemPrefs Base_DB::get_database_preferences() const
   SystemPrefs result;
 
   //Check that the user is allowd to even view this table:
-  Privileges table_privs = get_current_privs(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME);
+  Privileges table_privs = GlomPrivs::get_current_privs(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME);
   if(!table_privs.m_view)
     return result;
 
@@ -1438,7 +1003,7 @@ bool Base_DB::insert_example_data(const Glib::ustring& table_name) const
   }
 
   //Actually insert the data:
-  type_vecStrings vec_rows = string_separate(example_rows, "\n");
+  type_vecStrings vec_rows = GlomUtils::string_separate(example_rows, "\n");
 
   for(type_vecStrings::const_iterator iter = vec_rows.begin(); iter != vec_rows.end(); ++iter)
   {
@@ -1826,7 +1391,7 @@ void Base_DB::get_table_fields_to_show_for_sequence_add_group(const Glib::ustrin
 
 
           //TODO_Performance: We do this once for each related field, even if there are 2 from the same table:
-          const Privileges privs_related = get_current_privs(item_field->get_table_used(table_name));
+          const Privileges privs_related = GlomPrivs::get_current_privs(item_field->get_table_used(table_name));
           layout_item->m_priv_view = privs_related.m_view;
           layout_item->m_priv_edit = privs_related.m_edit;
 
@@ -1883,7 +1448,7 @@ Base_DB::type_vecLayoutFields Base_DB::get_table_fields_to_show_for_sequence(con
   //Get field definitions from the database, with corrections from the document:
   type_vecFields all_fields = get_fields_for_table(table_name);
 
-  const Privileges table_privs = get_current_privs(table_name);
+  const Privileges table_privs = GlomPrivs::get_current_privs(table_name);
 
   //Get fields that the document says we should show:
   type_vecLayoutFields result;

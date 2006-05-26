@@ -68,6 +68,19 @@ Glib::ustring locale_language_id(const Glib::ustring& locale_id);
 
 Glib::ustring create_local_image_uri(const Gnome::Gda::Value& value);
 
+Glib::ustring string_from_decimal(guint decimal);
+guint decimal_from_string(const Glib::ustring& str);
+
+/** Create an appropriate title for an ID string.
+ * For instance, date_of_birth would become Date Of Birth.
+ */
+Glib::ustring title_from_string(const Glib::ustring& text);
+
+typedef std::vector<Glib::ustring> type_vecStrings;
+type_vecStrings string_separate(const Glib::ustring& str, const Glib::ustring& separator);
+
+Glib::ustring string_trim(const Glib::ustring& str, const Glib::ustring& to_remove);
+
 } //namespace GlomUtils
 
 #endif //GLOM_UTILS_H

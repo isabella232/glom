@@ -1,6 +1,29 @@
 2006-05-26  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/Makefile.am:
+	* glom/application.cc:
+	* glom/base_db.cc:
+	* glom/base_db.h:
+	* glom/frame_glom.cc:
+	* glom/glom_postgres.cc:
+	* glom/glom_postgres.h:
+	* glom/glom_privs.cc:
+	* glom/glom_privs.h:
+	* glom/libglom/utils.cc:
+	* glom/libglom/utils.h:
+	* glom/mode_data/box_data.cc:
+	* glom/mode_data/box_data_details.cc:
+	* glom/mode_data/box_data_list.cc:
+	* glom/mode_design/box_db_table_relationships.cc:
+	* glom/mode_design/fields/box_db_table_definition.cc:
+	* glom/mode_design/users/dialog_groups_list.cc:
+	* glom/mode_design/users/dialog_users_list.cc:
+	* glom/navigation/box_tables.cc: Moved static methods from 
+	Base_DB to GlomPrivs, GlomPostgres and GlomUtils. 
+
+2006-05-26  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/Makefile.am:
 	* glom/base_db.cc:
 	* glom/base_db.h:
 	* glom/glom_postgres.cc:

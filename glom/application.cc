@@ -676,7 +676,7 @@ bool App_Glom::offer_new_or_existing()
 
           //Set suitable defaults:
           const Glib::ustring filename = document->get_name(); //Get the filename without the path and extension.
-          dialog->set_input( Base_DB::util_title_from_string( filename ) ); //Start with something suitable.
+          dialog->set_input( GlomUtils::title_from_string( filename ) ); //Start with something suitable.
 
           bool keep_asking = true;
           while(keep_asking)

@@ -22,6 +22,7 @@
 #include <glom/libglom/data_structure/glomconversions.h>
 #include <glom/libglom/utils.h>
 #include <glom/libglom/data_structure/layout/layoutitem_field.h>
+#include <glom/glom_privs.h>
 #include "../python_embed/glom_python.h"
 #include <bakery/App/App_Gtk.h> //For util_bold_message().
 #include <algorithm> //For std::find()
@@ -401,7 +402,7 @@ Gnome::Gda::Value Box_Data::generate_next_auto_increment(const Glib::ustring& ta
     //if(value.is_number())
     //  result = value.get_integer();
     //else
-    result = util_decimal_from_string(value.to_string());
+    result = decimal_from_string(value.to_string());
 
     ++result; 
   }
@@ -507,7 +508,7 @@ Document_Glom::type_mapLayoutGroupSequence Box_Data::get_data_layout_groups(cons
       //Get the layout information from the document:
       layout_groups = document->get_data_layout_groups_plus_new_fields(layout, m_table_name);
 
-      const Privileges table_privs = get_current_privs(m_table_name);
+      const Privileges table_privs = GlomPrivs::get_current_privs(m_table_name);
 
       //Fill in the field information for the fields mentioned in the layout:
       for(Document_Glom::type_mapLayoutGroupSequence::iterator iterGroups = layout_groups.begin(); iterGroups != layout_groups.end(); ++iterGroups)
@@ -548,7 +549,7 @@ void Box_Data::fill_layout_group_field_info(const sharedptr<LayoutGroup>& group,
             item_field->set_full_field_details(field);
 
             //TODO_Performance: Don't do this repeatedly for the same table.
-            const Privileges privs = get_current_privs(relationship->get_to_table());
+            const Privileges privs = GlomPrivs::get_current_privs(relationship->get_to_table());
             item_field->m_priv_view = privs.m_view;
             item_field->m_priv_edit = privs.m_edit;
           }

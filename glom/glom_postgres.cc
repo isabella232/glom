@@ -180,3 +180,13 @@ sharedptr<Field> GlomPostgres::postgres_change_column_extras(const Glib::ustring
 
   return result;
 }
+
+GlomPostgres::type_vecStrings GlomPostgres::pg_list_separate(const Glib::ustring& str)
+{
+  //Remove the first { and the last }:
+  Glib::ustring without_brackets = GlomUtils::string_trim(str, "{");
+  without_brackets = GlomUtils::string_trim(without_brackets, "}");
+
+  //Get the comma-separated items:
+  return GlomUtils::string_separate(without_brackets, ",");
+}

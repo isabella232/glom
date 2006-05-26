@@ -25,6 +25,7 @@
 #include <glom/libglom/data_structure/glomconversions.h>
 #include "dialog_layout_details.h"
 #include <glom/libglom/utils.h>
+#include <glom/glom_privs.h>
 #include "../xsl_utils.h"
 #include <bakery/App/App_Gtk.h> //For util_bold_message().
 #include "../python_embed/glom_python.h"
@@ -222,7 +223,7 @@ bool Box_Data_Details::fill_from_database()
     if(!fieldsToGet.empty())
     {
       //Do not try to show the data if the user may not view it:
-      Privileges table_privs = get_current_privs(m_table_name);
+      Privileges table_privs = GlomPrivs::get_current_privs(m_table_name);
 
       //Enable/Disable record creation and deletion:
       m_Button_New.set_sensitive(table_privs.m_create);
@@ -789,7 +790,7 @@ void Box_Data_Details::print_layout_group(xmlpp::Element* node_parent, const sha
 
 void Box_Data_Details::print_layout()
 {
-  const Privileges table_privs = get_current_privs(m_table_name);
+  const Privileges table_privs = GlomPrivs::get_current_privs(m_table_name);
 
   //Don't try to print tables that the user can't view.
   if(!table_privs.m_view)

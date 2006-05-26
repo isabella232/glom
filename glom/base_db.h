@@ -86,10 +86,6 @@ public:
   static type_vecFields get_fields_for_table_from_database(const Glib::ustring& table_name, bool including_system_fields = false);
   static bool get_field_exists_in_database(const Glib::ustring& table_name, const Glib::ustring& field_name);
 
-  /** Create an appropriate title for an ID string.
-   * For instance, date_of_birth would become Date Of Birth.
-   */
-  static Glib::ustring util_title_from_string(const Glib::ustring& text);
 
   //This is const because const means not changing this instance, not whether we change the database.
   static Glib::RefPtr<Gnome::Gda::DataModel> query_execute(const Glib::ustring& strQuery, Gtk::Window* parent_window = 0);
@@ -276,16 +272,6 @@ protected:
   Gnome::Gda::Value get_field_value_in_database(const LayoutFieldInRecord& field_in_record, Gtk::Window* parent_window);
 
 
-  type_vecStrings get_database_groups() const;
-  type_vecStrings get_database_users(const Glib::ustring& group_name = Glib::ustring()) const;
-  Privileges get_table_privileges(const Glib::ustring& group_name, const Glib::ustring& table_name) const;
-  void set_table_privileges(const Glib::ustring& group_name, const Glib::ustring& table_name, const Privileges& privs, bool developer_privs = false);
-  Glib::ustring get_user_visible_group_name(const Glib::ustring& group_name) const;
-
-  type_vecStrings get_groups_of_user(const Glib::ustring& user) const;
-  bool get_user_is_in_group(const Glib::ustring& user, const Glib::ustring& group) const;
-  Privileges get_current_privs(const Glib::ustring& table_name) const;
-
   SystemPrefs get_database_preferences() const;
   void set_database_preferences(const SystemPrefs& prefs);
 
@@ -318,17 +304,10 @@ protected:
   static bool get_field_primary_key_index_for_fields(const type_vecFields& fields, guint& field_column);
   static bool get_field_primary_key_index_for_fields(const type_vecLayoutFields& fields, guint& field_column);
 
-  static Glib::ustring util_string_from_decimal(guint decimal);
-  static guint util_decimal_from_string(const Glib::ustring& str);
 
-  static bool util_string_has_whitespace(const Glib::ustring& text);
 
   static type_vecStrings util_vecStrings_from_Fields(const type_vecFields& fields);
 
-  //Utlility functions to help with the odd formats of postgres internal catalog fields:
-  static Glib::ustring string_trim(const Glib::ustring& str, const Glib::ustring& to_remove);
-  static type_vecStrings string_separate(const Glib::ustring& str, const Glib::ustring& separator);
-  static type_vecStrings pg_list_separate(const Glib::ustring& str);
 
   static void handle_error(const std::exception& ex); //TODO_port: This is probably useless now.
   static bool handle_error();

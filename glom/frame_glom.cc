@@ -31,6 +31,7 @@
 #include <glom/reports/report_builder.h>
 #include "relationships_overview/dialog_relationships_overview.h"
 #include "filechooser_export.h"
+#include <glom/glom_privs.h>
 #include <sstream> //For stringstream.
 #include <fstream>
 #include <glibmm/i18n.h>
@@ -470,7 +471,7 @@ void Frame_Glom::on_menu_userlevel_Developer(const Glib::RefPtr<Gtk::RadioAction
 
       //Check whether the current user has developer privileges:
       const ConnectionPool* connection_pool = ConnectionPool::get_instance();
-      bool test = get_user_is_in_group(connection_pool->get_user(), GLOM_STANDARD_GROUP_NAME_DEVELOPER);
+      bool test = GlomPrivs::get_user_is_in_group(connection_pool->get_user(), GLOM_STANDARD_GROUP_NAME_DEVELOPER);
       if(test)
       {
         std::cout << "DEBUG: User=" << connection_pool->get_user() << " _is_ in the developer group on the server." << std::endl;
@@ -527,7 +528,7 @@ void Frame_Glom::on_menu_file_export()
   g_assert(pWindowApp);
 
   //Do not try to export the data if the user may not view it:
-  Privileges table_privs = get_current_privs(m_table_name);
+  Privileges table_privs = GlomPrivs::get_current_privs(m_table_name);
   if(!table_privs.m_view)
   {
     show_ok_dialog(_("Export Not Allowed."), _("You do not have permission to view the data in this table, so you may not export the data."), *pWindowApp, Gtk::MESSAGE_ERROR);
@@ -1469,7 +1470,7 @@ bool Frame_Glom::create_database(const Glib::ustring& database_name, const Glib:
 
 void Frame_Glom::on_menu_report_selected(const Glib::ustring& report_name)
 {
-  const Privileges table_privs = get_current_privs(m_table_name);
+  const Privileges table_privs = GlomPrivs::get_current_privs(m_table_name);
 
   //Don't try to print tables that the user can't view.
   if(!table_privs.m_view)
