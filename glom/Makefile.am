@@ -27,6 +27,7 @@ glom_SOURCES = main.cc \
                base_db.h base_db.cc \
                box_db.h box_db.cc \
                box_db_table.h box_db_table.cc \
+               glom_postgres.h glom_postgres.cc \
                dialog_glom.h dialog_glom.cc \
                frame_glom.h frame_glom.cc \
                notebook_glom.h notebook_glom.cc \

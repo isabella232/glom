@@ -20,6 +20,7 @@
 
 #include "box_db_table_definition.h"
 #include <bakery/App/App_Gtk.h> //For util_bold_message().
+#include <glom/glom_postgres.h>
 #include "../../../config.h"
 #include <glibmm/i18n.h>
 
@@ -478,7 +479,7 @@ sharedptr<Field> Box_DB_Table_Definition::postgres_change_column(const sharedptr
   else
   {
     //Change other stuff, without changing the type:
-    return postgres_change_column_extras(m_table_name, field_old, field);
+    return GlomPostgres::postgres_change_column_extras(m_table_name, field_old, field);
   }
 }
 
@@ -512,7 +513,7 @@ void  Box_DB_Table_Definition::postgres_change_column_type(const sharedptr<const
 
         sharedptr<Field> fieldTemp = glom_sharedptr_clone(field);
         fieldTemp->set_name("glom_temp_column");
-        postgres_add_column(m_table_name, fieldTemp); //This might also involves several commands.
+        GlomPostgres::postgres_add_column(m_table_name, fieldTemp); //This might also involves several commands.
 
 
         bool conversion_failed = false;
@@ -623,7 +624,7 @@ void  Box_DB_Table_Definition::postgres_change_column_type(const sharedptr<const
     }  /// If the datatype has changed:
 
     if(!new_column_created) //We don't need to change anything else if everything was alrady correctly set as a new column:
-      postgres_change_column_extras(m_table_name, field_old, field);
+      GlomPostgres::postgres_change_column_extras(m_table_name, field_old, field);
   }
 }
 

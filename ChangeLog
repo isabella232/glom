@@ -1,3 +1,14 @@
+2006-05-26  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/Makefile.am:
+	* glom/base_db.cc:
+	* glom/base_db.h:
+	* glom/glom_postgres.cc:
+	* glom/glom_postgres.h:
+	* glom/mode_design/fields/box_db_table_definition.cc: Moved 
+	Base_DB::postgres_*() methods into Glom_Postgres class which has 
+	only static methods. Just to keep things separate.
+
 2006-05-21  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/base_db.cc:

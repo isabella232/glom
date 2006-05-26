@@ -92,7 +92,7 @@ public:
   static Glib::ustring util_title_from_string(const Glib::ustring& text);
 
   //This is const because const means not changing this instance, not whether we change the database.
-  virtual Glib::RefPtr<Gnome::Gda::DataModel> query_execute(const Glib::ustring& strQuery, Gtk::Window* parent_window = 0) const;
+  static Glib::RefPtr<Gnome::Gda::DataModel> query_execute(const Glib::ustring& strQuery, Gtk::Window* parent_window = 0);
 
   bool add_standard_groups();
   bool add_standard_tables() const;
@@ -330,21 +330,8 @@ protected:
   static type_vecStrings string_separate(const Glib::ustring& str, const Glib::ustring& separator);
   static type_vecStrings pg_list_separate(const Glib::ustring& str);
 
-  /** @param not_extras If this is true, then do not set extra details, such as NOT NULL. You should do that later, when you are ready.
-   */
-  bool postgres_add_column(const Glib::ustring& table_name, const sharedptr<const Field>& field, bool not_extras = false) const;
-
-  /**
-   * @param table_name The name of the table that will be affected.
-   * @param field_old The definition of the field that will be changed.
-   * @param field The new definition to give the field.
-   * @param set_anyway If this is true, then set the extra details even if @field_old has the same properties.
-   * @result The new field definition, with any necessary changes.
-   */
-  sharedptr<Field> postgres_change_column_extras(const Glib::ustring& table_name, const sharedptr<const Field>& field_old, const sharedptr<const Field>& field, bool set_anyway = false) const;
-
-  void handle_error(const std::exception& ex) const; //TODO_port: This is probably useless now.
-  bool handle_error() const;
+  static void handle_error(const std::exception& ex); //TODO_port: This is probably useless now.
+  static bool handle_error();
 
   type_field_calcs m_FieldsCalculationInProgress; //Prevent circular calculations and recalculations.
 };
