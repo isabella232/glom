@@ -136,7 +136,7 @@ main(int argc, char* argv[])
 
     // Main app
     Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_main");
-    App_Glom* pApp_Glom = 0;
+    Glom::App_Glom* pApp_Glom = 0;
     refXml->get_widget_derived("window_main", pApp_Glom);
 
     pApp_Glom->set_command_line_args(argc, argv);

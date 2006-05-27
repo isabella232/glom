@@ -28,6 +28,9 @@
 #include <gtkmm/liststore.h>
 
 
+namespace Glom
+{
+
 class ComboBox_Locale : public Gtk::ComboBox
 {
 public:
@@ -54,6 +57,8 @@ protected:
   ModelColumns m_model_columns;
   Glib::RefPtr<Gtk::ListStore> m_model;
 };
+
+} //namespace Glom
 
 #endif //GLOM_TRANSLATION_COMBOBOX_LOCALE_HH
 

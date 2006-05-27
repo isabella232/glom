@@ -24,6 +24,9 @@
 #include <glom/libglom/utils.h>
 #include <glibmm/i18n.h>
 
+namespace Glom
+{
+
 //Initialize static data:
 Field::type_map_gda_type_to_glom_type Field::m_map_gda_type_to_glom_type;
 Field::type_map_glom_type_to_gda_type Field::m_map_glom_type_to_gda_type;
@@ -740,3 +743,5 @@ bool Field::get_visible() const
 {
   return m_visible;
 }
+
+} //namespace Glom

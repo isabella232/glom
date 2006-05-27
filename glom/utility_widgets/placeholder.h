@@ -24,6 +24,9 @@
 #include <gtkmm.h>
 #include <libglademm.h>
 
+namespace Glom
+{
+
 class PlaceHolder : public Gtk::VBox
 {
 public:
@@ -40,5 +43,7 @@ public:
 protected:
   Gtk::Widget* m_pChild;
 };
+
+} //namespace Glom
 
 #endif //GLOM_UTILITY_WIDGETS_PLACEHOLDER_H

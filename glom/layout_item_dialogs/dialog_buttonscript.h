@@ -26,6 +26,9 @@
 #include <glom/libglom/data_structure/layout/layoutitem_button.h>
 #include "../base_db.h"
 
+namespace Glom
+{
+
 class Dialog_ButtonScript
  : public Gtk::Dialog,
    public Base_DB //Give this class access to the current document, and to some utility methods.
@@ -47,5 +50,7 @@ protected:
   sharedptr<LayoutItem_Button> m_script;
   Glib::ustring m_table_name;
 };
+
+} //namespace Glom
 
 #endif //DIALOG_BUTTONSCRIPT_H

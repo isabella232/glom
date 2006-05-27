@@ -20,6 +20,9 @@
  
 #include "dialog_glom.h"
 
+namespace Glom
+{
+
 Dialog_Glom::Dialog_Glom(Box_DB* pBox)
 {
   set_border_width(6);
@@ -48,3 +51,5 @@ void Dialog_Glom::on_box_cancelled()
 {
   hide();
 }
+
+} //namespace Glom

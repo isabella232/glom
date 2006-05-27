@@ -24,6 +24,9 @@
 #include "dialog_design.h"
 #include "fields/box_db_table_definition.h"
 
+namespace Glom
+{
+
 class Dialog_Fields : public Dialog_Design
 {
 public:
@@ -36,5 +39,7 @@ protected:
 
   Box_DB_Table_Definition* m_box;
 };
+
+} //namespace Glom
 
 #endif //DIALOG_FIELDS_H

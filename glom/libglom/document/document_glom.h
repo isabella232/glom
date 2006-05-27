@@ -39,6 +39,9 @@
 #include <vector>
 #include <map>
 
+namespace Glom
+{
+
 template<class T_Element>
 class predicate_Layout
 {
@@ -363,5 +366,6 @@ protected:
 typedef Bakery::View<Document_Glom> View_Glom;
 typedef Bakery::View_Composite<Document_Glom> View_Composite_Glom;
 
+} //namespace Glom
 
 #endif //DOCUMENT_GLOM_H

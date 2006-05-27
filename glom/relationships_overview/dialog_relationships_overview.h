@@ -26,6 +26,9 @@
 #include <libglademm.h>
 #include "relationships_canvas.h"
 
+namespace Glom
+{
+
 class Dialog_RelationshipsOverview 
   : public Gtk::Dialog,
     public Base_DB //Give it access to the document, and to the database utilities
@@ -40,5 +43,7 @@ protected:
   RelationshipsCanvas m_canvas;
   //Gnome::Canvas::Group m_canvas_group;
 };
+
+} //namespace Glom
 
 #endif //GLOM_DIALOG_RELATIONSHIPS_OVERVIEW

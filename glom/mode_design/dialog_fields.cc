@@ -24,6 +24,8 @@
 #include <bakery/App/App_Gtk.h> //For util_bold_message().
 #include <glibmm/i18n.h>
 
+namespace Glom
+{
 
 Dialog_Fields::Dialog_Fields(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
 : Dialog_Design(cobject, refGlade),
@@ -59,4 +61,5 @@ bool Dialog_Fields::init_db_details(const Glib::ustring& table_name)
   return true;
 }
 
+} //namespace Glom
 

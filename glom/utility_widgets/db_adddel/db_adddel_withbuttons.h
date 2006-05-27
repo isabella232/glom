@@ -23,6 +23,9 @@
 
 #include "db_adddel.h"
 
+namespace Glom
+{
+
 class DbAddDel_WithButtons : public DbAddDel
 {
 public: 
@@ -51,5 +54,7 @@ protected:
   Gtk::Button m_Button_Del;
   Gtk::Button m_Button_Edit;
 };
+
+} //namespace Glom
 
 #endif //GLOM_DB_ADDDEL_WITHBUTTONS_H

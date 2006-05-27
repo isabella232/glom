@@ -28,9 +28,8 @@
 #include <algorithm> //For std::find_if
 #include <libglademm.h>
 
-/**
-  *@author Murray Cumming
-  */
+namespace Glom
+{
 
 //Predicate for use with algorithms with maps.
 template<class T_map>
@@ -93,3 +92,4 @@ protected:
 
 #endif //COMBO_FIELDTYPE_HH
 
+} //namespace Glom

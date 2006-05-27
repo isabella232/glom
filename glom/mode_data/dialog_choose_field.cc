@@ -22,6 +22,9 @@
 //#include <libgnome/gnome-i18n.h>
 #include <glibmm/i18n.h>
 
+namespace Glom
+{
+
 Dialog_ChooseField::Dialog_ChooseField(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
 : Gtk::Dialog(cobject),
   m_combo_relationship(0),
@@ -285,3 +288,5 @@ void Dialog_ChooseField::on_treeview_selection_changed()
     }
   }
 }
+
+} //namespace Glom

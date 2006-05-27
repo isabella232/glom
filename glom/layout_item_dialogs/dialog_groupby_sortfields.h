@@ -25,6 +25,9 @@
 #include "../mode_data/dialog_layout.h"
 #include <libglademm.h>
 
+namespace Glom
+{
+
 class Dialog_GroupBy_SortFields
  : public Dialog_Layout //It has some useful stuff
 {
@@ -77,5 +80,7 @@ protected:
 
   Gtk::Label* m_label_table_name;
 };
+
+} //namespace Glom
 
 #endif //GLOM_MODE_DATA_DIALOG_GROUPBY_SORTFIELDS_HH

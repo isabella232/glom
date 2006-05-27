@@ -26,6 +26,9 @@
 
 #include <iostream>   // for cout, endl
 
+namespace Glom
+{
+
 //JPEG seems to give ugly results when saved to the database and shown again.
 //#define GLOM_IMAGE_FORMAT "jpeg"
 //#define GLOM_IMAGE_FORMAT_MIME_TYPE "image/jpeg"
@@ -618,3 +621,5 @@ void ImageGlom::set_read_only(bool read_only)
   m_read_only = read_only;
 }
 
+
+} //namespace Glom

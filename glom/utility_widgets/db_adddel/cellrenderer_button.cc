@@ -21,6 +21,9 @@
 #include "cellrenderer_button.h"
 #include <gtkmm/stock.h>
 
+namespace Glom
+{
+
 GlomCellRenderer_Button::GlomCellRenderer_Button()
 {
   const Gtk::StockID stock_id = Gtk::Stock::OPEN;
@@ -49,5 +52,7 @@ bool GlomCellRenderer_Button::activate_vfunc(GdkEvent* event, Gtk::Widget& widge
   return result;
 }
 
+
+} //namespace Glom
 
 

@@ -24,6 +24,9 @@
 #include "translatable_item.h"
 #include <glibmm/ustring.h>
 
+namespace Glom
+{
+
 class TableInfo : public TranslatableItem
 {
 public:
@@ -35,6 +38,8 @@ public:
   bool m_hidden;
   bool m_default;
 };
+
+} //namespace Glom
 
 #endif //GLOM_DATASTRUCTURE_TABLEINFO_H
 

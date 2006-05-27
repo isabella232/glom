@@ -33,6 +33,9 @@
 #include <glibmm/ustring.h>
 
 
+namespace Glom
+{
+
 //Allocate a new object:
 //TODO: Why not parse the args here as well as in Related_init()?
 static PyObject *
@@ -253,4 +256,5 @@ void PyGlomRelated_SetRelationships(PyGlomRelated* self, const PyGlomRelated::ty
   *(self->m_pMap_relationships) = relationships;
 }
 
+} //namespace Glom
 

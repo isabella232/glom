@@ -27,6 +27,9 @@
 #include <glom/libglom/sharedptr.h>
 #include <libgdamm.h>
 
+namespace Glom
+{
+
 class FieldFormatting : public UsesRelationship //The UsesRelationship base has the relationship for the choices.
 {
 public:
@@ -73,6 +76,8 @@ protected:
 
   Glib::ustring m_choices_related_field, m_choices_related_field_second;
 };
+
+} //namespace Glom
 
 #endif //GLOM_DATASTRUCTURE_FIELDFORMATTING_H
 

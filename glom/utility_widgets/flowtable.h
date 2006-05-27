@@ -23,6 +23,8 @@
 
 #include <gtkmm.h>
 
+namespace Glom
+{
 
 class FlowTable : public Gtk::Container
 {
@@ -115,5 +117,7 @@ protected:
   Glib::RefPtr<Gdk::Window> m_refGdkWindow;
   Glib::RefPtr<Gdk::GC> m_refGC;
 };
+
+} //namespace Glom
 
 #endif //GLOM_UTILITYWIDGETS_FLOWTABLE_H

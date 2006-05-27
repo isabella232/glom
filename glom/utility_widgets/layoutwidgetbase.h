@@ -25,6 +25,9 @@
 #include <gtkmm.h>
 #include "../mode_data/treestore_layout.h" //Forthe enum.
 
+namespace Glom
+{
+
 class App_Glom;
 
 class LayoutWidgetBase : virtual public sigc::trackable
@@ -93,5 +96,7 @@ protected:
   Glib::RefPtr<Gtk::Action> m_refContextLayout, m_refContextLayoutProperties, m_refContextAddField, m_refContextAddRelatedRecords, m_refContextAddGroup, m_refContextAddNotebook, m_refContextAddButton, m_refContextAddText;
 
 };
+
+} //namespace Glom
 
 #endif //GLOM_MODE_DATA_LAYOUT_WIDGET_BASE_H

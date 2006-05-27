@@ -21,6 +21,9 @@
 #include "dialog_invalid_data.h"
 #include <glom/libglom/data_structure/glomconversions.h>
 
+namespace Glom
+{
+
 /** Show the dialog.
  * @result true if the data in the field should be reverted.
  */
@@ -89,3 +92,5 @@ void Dialog_InvalidData::set_example_data(Field::glom_field_type glom_type)
   if(m_label)
     m_label->set_text(example_text);
 }
+
+} //namespace Glom

@@ -20,6 +20,9 @@
 
 #include "layoutwidgetfield.h"
 
+namespace Glom
+{
+
 LayoutWidgetField::LayoutWidgetField()
 : m_entered_data_stored(false)
 {
@@ -40,3 +43,5 @@ bool LayoutWidgetField::get_has_original_data() const
   //Override this method for widgets that don't.
   return true;
 }
+
+} //namespace Glom

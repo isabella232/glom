@@ -29,6 +29,8 @@
 #include <vector>
 #include <map>
 
+namespace Glom
+{
 
 class AddDelColumnInfo
 {
@@ -328,7 +330,7 @@ guint AddDel::treeview_append_column(const Glib::ustring& title, const Gtk::Tree
   return treeview_append_column(title, *pCellRenderer, column, column_id);
 }
 
-
+} //namespace Glom
 
 
 #endif //ADDDEL_H

@@ -23,6 +23,9 @@
 
 #include "layoutitem.h"
 
+namespace Glom
+{
+
 class LayoutItem_Text 
  : public LayoutItem
 {
@@ -50,6 +53,8 @@ public:
 
   sharedptr<TranslatableItem> m_text; //Reuse the title concept of this class to give us translatable text.
 };
+
+} //namespace Glom
 
 #endif //GLOM_DATASTRUCTURE_LAYOUTITEM_TEXT_H
 

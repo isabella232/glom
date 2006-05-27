@@ -25,6 +25,9 @@
 #include <glom/libglom/data_structure/report.h>
 #include <glom/libglom/sharedptr.h>
 
+namespace Glom
+{
+
 class ReportBuilder : public Base_DB
 {
 public:
@@ -53,8 +56,8 @@ protected:
   void report_build_records_text(const FoundSet& found_set, xmlpp::Element& nodeParent, const sharedptr<const LayoutItem_Text>& textobject, bool vertical = false);
   void report_build_records_image(const FoundSet& found_set, xmlpp::Element& nodeParent, const sharedptr<const LayoutItem_Image>& imageobject, bool vertical = false);
   void report_build_records_vertical_group(const FoundSet& found_set, xmlpp::Element& vertical_group_node, const sharedptr<LayoutItem_VerticalGroup>& group, const Glib::RefPtr<Gnome::Gda::DataModel>& datamodel, guint row, guint& field_index);
-
-
 };
+
+} //namespace Glom
 
 #endif //GLOM_REPORTS_REPORT_BUILDER

@@ -26,6 +26,9 @@
 #include "layoutwidgetfield.h"
 #include <libglademm.h>
 
+namespace Glom
+{
+
 class App_Glom;
 
 class TextViewGlom
@@ -70,6 +73,8 @@ protected:
   //Gnome::Gda::Value m_value; //The last-stored value. We have this because the displayed value might be unparseable.
   Gtk::TextView m_TextView;
 };
+
+} //namespace Glom
 
 #endif //GLOM_UTILITY_WIDGETS_TEXTVIEW_GLOM_H
 

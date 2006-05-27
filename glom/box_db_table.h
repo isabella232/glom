@@ -26,6 +26,8 @@
 #include <glom/libglom/data_structure/field.h>
 #include <algorithm> //find_if used in various places.
 
+namespace Glom
+{
 
 class Box_DB_Table : public Box_DB
 {
@@ -59,5 +61,7 @@ protected:
 
   Glib::ustring m_table_name;
 };
+
+} //namespace Glom
 
 #endif //BOX_DB_TABLE_H

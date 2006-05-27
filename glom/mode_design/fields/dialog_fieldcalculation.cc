@@ -28,6 +28,9 @@
 //#include <libgnome/gnome-i18n.h>
 #include <glibmm/i18n.h>
 
+namespace Glom
+{
+
 Dialog_FieldCalculation::Dialog_FieldCalculation(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
 : Gtk::Dialog(cobject)
 {
@@ -118,6 +121,7 @@ void Dialog_FieldCalculation::on_button_test()
   m_label_triggered_by->set_text(field_names);
 }
 
+} //namespace Glom
 
 
 

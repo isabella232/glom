@@ -39,13 +39,13 @@ initglom(void)
 
   //pyglom_RecordType.tp_new = PyType_GenericNew;
 
-  if(PyType_Ready(PyGlomRecord_GetPyType()) < 0)
+  if(PyType_Ready(Glom::PyGlomRecord_GetPyType()) < 0)
     return;
 
-  if(PyType_Ready(PyGlomRelated_GetPyType()) < 0)
+  if(PyType_Ready(Glom::PyGlomRelated_GetPyType()) < 0)
     return;
 
-  if(PyType_Ready(PyGlomRelatedRecord_GetPyType()) < 0)
+  if(PyType_Ready(Glom::PyGlomRelatedRecord_GetPyType()) < 0)
     return;
 
 
@@ -53,14 +53,14 @@ initglom(void)
                       "Python module for Glom caluclated fields.");
 
 
-  Py_INCREF(PyGlomRecord_GetPyType());
-  PyModule_AddObject(m, "Record", (PyObject *)PyGlomRecord_GetPyType());
+  Py_INCREF(Glom::PyGlomRecord_GetPyType());
+  PyModule_AddObject(m, "Record", (PyObject *)Glom::PyGlomRecord_GetPyType());
 
-  Py_INCREF(PyGlomRelated_GetPyType());
-  PyModule_AddObject(m, "Related", (PyObject *)PyGlomRelated_GetPyType());
+  Py_INCREF(Glom::PyGlomRelated_GetPyType());
+  PyModule_AddObject(m, "Related", (PyObject *)Glom::PyGlomRelated_GetPyType());
 
-  Py_INCREF(PyGlomRelated_GetPyType());
-  PyModule_AddObject(m, "RelatedRecord", (PyObject *)PyGlomRelated_GetPyType());
+  Py_INCREF(Glom::PyGlomRelated_GetPyType());
+  PyModule_AddObject(m, "RelatedRecord", (PyObject *)Glom::PyGlomRelated_GetPyType());
 
 
   if(PyErr_Occurred())

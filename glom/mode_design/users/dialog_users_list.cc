@@ -26,6 +26,9 @@
 //#include <libgnome/gnome-i18n.h>
 #include <glibmm/i18n.h>
 
+namespace Glom
+{
+
 Dialog_UsersList::Dialog_UsersList(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
 : Gtk::Dialog(cobject),
   m_treeview_users(0),
@@ -470,14 +473,4 @@ bool Dialog_UsersList::warn_about_empty_standard_group()
   return true;
 }
 
-
-
-
-
-
-
-
-
-
-
-
+} //namespace Glom

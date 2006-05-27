@@ -22,6 +22,9 @@
 #include <gtk/gtkcomboboxentry.h>
 #include <glom/libglom/data_structure/iso_codes.h>
 
+namespace Glom
+{
+
 ComboEntry_Currency::ComboEntry_Currency(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& /* refGlade */)
 : Gtk::ComboBoxEntry(cobject)
 {
@@ -51,6 +54,8 @@ ComboEntry_Currency::~ComboEntry_Currency()
 {
 
 }
+
+} //namespace Glom
 
 
 

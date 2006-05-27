@@ -22,6 +22,9 @@
 #include <gtk/gtkcomboboxentry.h>
 #include <sstream> //For stringstream.
 
+namespace Glom
+{
+
 ComboEntry_BorderWidth::ComboEntry_BorderWidth(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& /* refGlade */)
 : Gtk::ComboBoxEntry(cobject)
 {
@@ -56,6 +59,8 @@ Glib::ustring ComboEntry_BorderWidth::string_for_number(double number)
   the_stream << number;
   return the_stream.str();
 }
+
+} //namespace Glom
 
 
 

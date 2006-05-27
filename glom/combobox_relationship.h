@@ -29,6 +29,8 @@
 
 #include <gtkmm/treestore.h>
 
+namespace Glom
+{
 
 class ComboBox_Relationship : public Gtk::ComboBox
 {
@@ -85,6 +87,8 @@ protected:
 
   Glib::ustring m_extra_table_name, m_extra_table_title;
 };
+
+} //namespace Glom
 
 #endif //GLOM_TRANSLATION_COMBOBOX_RELATIONSHIP_HH
 

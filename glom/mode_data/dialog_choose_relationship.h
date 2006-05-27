@@ -26,6 +26,9 @@
 #include <glom/libglom/document/document_glom.h>
 #include "../box_db.h"
 
+namespace Glom
+{
+
 class Dialog_ChooseRelationship : public Gtk::Dialog
 {
 public:
@@ -69,5 +72,7 @@ protected:
 
   Document_Glom* m_document;
 };
+
+} //namespace Glom
 
 #endif //GLOM_MODE_DATA_DIALOG_CHOOSE_RELATIONSHIP_H

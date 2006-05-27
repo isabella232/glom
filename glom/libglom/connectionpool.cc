@@ -23,6 +23,9 @@
 #include <bakery/bakery.h>
 #include <glibmm/i18n.h>
 
+namespace Glom
+{
+
 ExceptionConnection::ExceptionConnection(failure_type failure)
 : m_failure_type(failure)
 {
@@ -414,3 +417,5 @@ float ConnectionPool::get_postgres_server_version()
 {
   return m_postgres_server_version;
 }
+
+} //namespace Glom

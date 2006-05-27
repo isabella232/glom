@@ -22,6 +22,9 @@
 #include <glom/libglom/data_structure/glomconversions.h>
 #include <glibmm/i18n.h>
 
+namespace Glom
+{
+
 Box_Formatting::Box_Formatting(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
 : Gtk::VBox(cobject),
   m_frame_numeric_format(0),
@@ -207,3 +210,4 @@ void Box_Formatting::enforce_constraints()
     m_frame_text_format->hide();
 }
 
+} //namespace Glom

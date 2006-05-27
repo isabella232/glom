@@ -24,6 +24,9 @@
 #include "../translatable_item.h"
 #include <glibmm/ustring.h>
 
+namespace Glom
+{
+
 class LayoutItem : public TranslatableItem
 {
 public:
@@ -58,6 +61,8 @@ protected:
   Glib::ustring m_name;
   bool m_editable;
 };
+
+} //namespace Glom
 
 #endif //GLOM_DATASTRUCTURE_LAYOUTITEM_H
 

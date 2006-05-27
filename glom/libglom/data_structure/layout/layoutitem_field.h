@@ -28,6 +28,9 @@
 #include "../relationship.h"
 #include "custom_title.h"
 
+namespace Glom
+{
+
 class LayoutItem_Field 
  : public LayoutItem,
    public UsesRelationship
@@ -105,6 +108,8 @@ protected:
   bool m_formatting_use_default;
   sharedptr<CustomTitle> m_title_custom; //translatable.
 };
+
+} //namespace Glom
 
 #endif //GLOM_DATASTRUCTURE_LAYOUTITEM_FIELD_H
 

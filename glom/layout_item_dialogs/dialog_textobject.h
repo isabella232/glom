@@ -26,6 +26,9 @@
 #include <glom/libglom/data_structure/layout/layoutitem_text.h>
 #include "../base_db.h"
 
+namespace Glom
+{
+
 class Dialog_TextObject
  : public Gtk::Dialog,
    public Base_DB //Give this class access to the current document, and to some utility methods.
@@ -45,5 +48,7 @@ protected:
   sharedptr<LayoutItem_Text> m_textobject;
   Glib::ustring m_table_name;
 };
+
+} //namespace Glom
 
 #endif //DIALOG_TEXTOBJECT_H

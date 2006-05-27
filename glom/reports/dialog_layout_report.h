@@ -27,6 +27,9 @@
 //#include <glom/libglom/data_structure/layout/layoutitem.h>
 //#include <glom/libglom/sharedptr.h>
 
+namespace Glom
+{
+
 class Dialog_Layout_Report : public Dialog_Layout
 {
 public:
@@ -119,5 +122,7 @@ protected:
   Glib::ustring m_name_original;
   sharedptr<Report> m_report;
 };
+
+} //namespace Glom
 
 #endif //GLOM_DIALOG_LAYOUT_REPORT

@@ -22,6 +22,9 @@
 #include "box_db.h" //For Box_DB::connect_to_server().
 #include <glibmm/i18n.h>
 
+namespace Glom
+{
+
 Dialog_Connection::Dialog_Connection(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
 : Gtk::Dialog(cobject),
   Base_DB(),
@@ -128,3 +131,4 @@ void Dialog_Connection::set_database_name(const Glib::ustring& name)
     m_label_database->set_text(name);
 }
 
+} //namespace Glom

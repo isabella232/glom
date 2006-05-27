@@ -23,6 +23,9 @@
 #include <bakery/App/App_Gtk.h> //For util_bold_message().
 #include <glibmm/i18n.h>
 
+namespace Glom
+{
+
 Dialog_IdentifyOriginal::Dialog_IdentifyOriginal(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
 : Gtk::Dialog(cobject),
   m_label_original(0),
@@ -54,3 +57,5 @@ Glib::ustring Dialog_IdentifyOriginal::get_locale() const
 {
   return m_combo_locale->get_selected_locale();
 }
+
+} //namespace Glom

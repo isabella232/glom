@@ -26,6 +26,9 @@
 #include <glom/libglom/data_structure/field.h>
 #include "../../base_db.h"
 
+namespace Glom
+{
+
 class Dialog_FieldCalculation
  : public Gtk::Dialog,
    public Base_DB //Give this class access to the current document, and to some utility methods.
@@ -48,5 +51,7 @@ protected:
   sharedptr<Field> m_field;
   Glib::ustring m_table_name;
 };
+
+} //namespace Glom
 
 #endif //DIALOG_FIELDCALCULATION_H

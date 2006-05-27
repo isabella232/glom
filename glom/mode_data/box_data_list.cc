@@ -28,6 +28,9 @@
 #include <sstream> //For stringstream
 #include <glibmm/i18n.h>
 
+namespace Glom
+{
+
 Box_Data_List::Box_Data_List()
 : m_has_one_or_more_records(false),
   m_read_only(false)
@@ -752,6 +755,7 @@ void Box_Data_List::get_record_counts(gulong& total, gulong& found) const
     refModelDerived->get_record_counts(total, found);
 }
 
+} //namespace Glom
 
 
 

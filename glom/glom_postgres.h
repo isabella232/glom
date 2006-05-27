@@ -27,6 +27,9 @@
 #include <glom/libglom/document/document_glom.h>
 #include <glom/libglom/connectionpool.h>
 
+namespace Glom
+{
+
 class GlomPostgres : public Base_DB
 {
 public:
@@ -49,6 +52,8 @@ protected:
   static type_vecStrings pg_list_separate(const Glib::ustring& str);
 
 };
+
+} //namespace Glom
 
 #endif //DB_POSTGRES_H
 

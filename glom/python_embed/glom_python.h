@@ -24,11 +24,16 @@
 #include <glom/libglom/data_structure/field.h>
 #include <glibmm/ustring.h>
 
+namespace Glom
+{
+
 typedef std::map<Glib::ustring, Gnome::Gda::Value> type_map_fields;
 
 void glom_execute_python_function_implementation(const Glib::ustring& func_impl, const type_map_fields& field_values, Document_Glom* pDocument, const Glib::ustring& table_name);
 
 Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field_type result_type, const Glib::ustring& func_impl,
   const type_map_fields& field_values, Document_Glom* pDocument, const Glib::ustring& table_name);
+
+} //namespace Glom
 
 #endif //GLOM_PYTHON_H

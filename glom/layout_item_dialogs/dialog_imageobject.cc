@@ -26,6 +26,9 @@
 //#include <libgnome/gnome-i18n.h>
 #include <glibmm/i18n.h>
 
+namespace Glom
+{
+
 Dialog_ImageObject::Dialog_ImageObject(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
 : Gtk::Dialog(cobject)
 {
@@ -76,6 +79,8 @@ sharedptr<LayoutItem_Image> Dialog_ImageObject::get_imageobject() const
 
   return result;
 }
+
+} //namespace Glom
 
 
 

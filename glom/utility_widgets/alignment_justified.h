@@ -23,9 +23,8 @@
 
 #include <gtkmm/alignment.h>
 
-/**
-  *@author Murray Cumming
-  */
+namespace Glom
+{
 
 //A Gtk::Alignment with a simpler interface.
 class Alignment_Justified : public Gtk::Alignment
@@ -37,5 +36,7 @@ public:
   void set_justification(Gtk::Justification justification);
   
 };
+
+} //namespace Glom
 
 #endif

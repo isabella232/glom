@@ -28,6 +28,9 @@
 #include <gtkmm/liststore.h>
 
 
+namespace Glom
+{
+
 class ComboEntry_Currency : public Gtk::ComboBoxEntry
 {
 public:
@@ -51,6 +54,8 @@ protected:
   ModelColumns m_model_columns;
   Glib::RefPtr<Gtk::ListStore> m_model;
 };
+
+} //namespace Glom
 
 #endif //GLOM_MODE_DESIGN_COMBOENTRY_CURRENCY_HH
 

@@ -33,6 +33,9 @@
 #include <glibmm/i18n.h>
 
 
+namespace Glom
+{
+
 App_Glom::App_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
 : Gtk::Window(cobject), //It's a virtual base class, so we have to call the specific constructor to prevent the default constructor from being called.
   type_base(cobject, "Glom"),
@@ -1263,5 +1266,7 @@ void App_Glom::on_window_translations_hide()
   }
 }
 
+
+} //namespace Glom
 
 

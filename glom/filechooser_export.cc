@@ -23,6 +23,9 @@
 #include <gtkmm/stock.h>
 #include <glibmm/i18n.h>
 
+namespace Glom
+{
+
 FileChooser_Export::FileChooser_Export()
 : Gtk::FileChooserDialog(_("Export To File."), Gtk::FILE_CHOOSER_ACTION_SAVE),
   m_extra_widget(false, 6),
@@ -90,5 +93,7 @@ void FileChooser_Export::get_layout_groups(Document_Glom::type_mapLayoutGroupSeq
 {
   layout_groups = m_layout_groups; //TODO_Performance: Avoid copying so much.
 }
+
+} //namespace Glom
 
 

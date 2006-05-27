@@ -27,6 +27,9 @@
 #include <glom/libglom/connectionpool.h>
 #include "../../base_db.h"
 
+namespace Glom
+{
+
 class DbTreeModel;
 
 class DbTreeModelRow
@@ -232,6 +235,8 @@ private:
 
    static bool m_iface_initialized;
 };
+
+} //namespace Glom
 
 #endif //GLOM_MODE_DATA_DB_TREEMODEL_H
 

@@ -24,6 +24,9 @@
 #include "../../../config.h"
 #include <glibmm/i18n.h>
 
+namespace Glom
+{
+
 Box_DB_Table_Definition::Box_DB_Table_Definition()
 {
   init();
@@ -628,6 +631,7 @@ void  Box_DB_Table_Definition::postgres_change_column_type(const sharedptr<const
   }
 }
 
+} //namespace Glom
 
 
 

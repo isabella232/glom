@@ -21,6 +21,9 @@
 #include "layoutitem_button.h"
 #include <glibmm/i18n.h>
 
+namespace Glom
+{
+
 LayoutItem_Button::LayoutItem_Button()
 {
   m_translatable_item_type = TRANSLATABLE_TYPE_BUTTON;
@@ -74,3 +77,4 @@ void LayoutItem_Button::set_script(const Glib::ustring& script)
   m_script = script;
 }
 
+} //namespace Glom

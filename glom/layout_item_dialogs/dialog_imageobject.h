@@ -27,6 +27,9 @@
 #include "../base_db.h"
 #include "../utility_widgets/imageglom.h"
 
+namespace Glom
+{
+
 class Dialog_ImageObject
  : public Gtk::Dialog,
    public Base_DB //Give this class access to the current document, and to some utility methods.
@@ -49,5 +52,7 @@ protected:
   sharedptr<LayoutItem_Image> m_imageobject;
   Glib::ustring m_table_name;
 };
+
+} //namespace Glom
 
 #endif //DIALOG_IMAGEOBJECT_H

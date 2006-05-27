@@ -23,6 +23,9 @@
 
 #include "layoutwidgetbase.h"
 
+namespace Glom
+{
+
 class LayoutWidgetField : public LayoutWidgetBase
 {
 public: 
@@ -45,5 +48,7 @@ protected:
   type_signal_edited m_signal_edited;
   bool m_entered_data_stored;
 };
+
+} //namespace Glom
 
 #endif //GLOM_MODE_DATA_LAYOUT_WIDGET_FIELD_H

@@ -23,6 +23,9 @@
 
 #include <gtkmm/treeviewcolumn.h>
 
+namespace Glom
+{
+
 class DbTreeViewColumnGlom : public Gtk::TreeViewColumn
 {
 public:
@@ -35,5 +38,7 @@ public:
 protected:
   Glib::ustring m_column_id; 
 };
+
+} //namespace Glom
 
 #endif //GLOM_DB_ADDDEL_TREEVIEWCOLUMN_GLOM_H

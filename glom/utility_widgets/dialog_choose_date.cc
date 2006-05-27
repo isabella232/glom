@@ -23,6 +23,8 @@
 //#include <libgnome/gnome-i18n.h>
 #include <glibmm/i18n.h>
 
+namespace Glom
+{
 
 Dialog_ChooseDate::Dialog_ChooseDate()
 : m_calendar(0)
@@ -82,5 +84,6 @@ void Dialog_ChooseDate::on_day_selected_double_click()
   response(Gtk::RESPONSE_OK);
 }
 
+} //namespace Glom
 
 

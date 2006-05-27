@@ -31,6 +31,9 @@
 #include <ctime>     // for struct tm
 #include <iostream>   // for cout, endl
 
+namespace Glom
+{
+
 TextViewGlom::TextViewGlom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& /* refGlade */)
 : Gtk::ScrolledWindow(cobject),
   m_glom_type(Field::TYPE_TEXT)
@@ -206,3 +209,5 @@ App_Glom* TextViewGlom::get_application()
 
   return dynamic_cast<App_Glom*>(pWindow);
 }
+
+} //namespace Glom

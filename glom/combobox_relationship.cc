@@ -22,6 +22,9 @@
 #include <gtk/gtkcomboboxentry.h>
 #include <glibmm/i18n.h>
 
+namespace Glom
+{
+
 ComboBox_Relationship::ComboBox_Relationship(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& /* refGlade */)
 : Gtk::ComboBox(cobject),
   m_renderer_title(0),
@@ -310,6 +313,7 @@ bool ComboBox_Relationship::get_has_parent_table() const
   return !(m_extra_table_name.empty()) || !(m_extra_table_title.empty());
 }
 
+} //namespace Glom
 
 
 

@@ -22,6 +22,9 @@
 #include <glom/libglom/data_structure/glomconversions.h>
 #include <glibmm/i18n.h>
 
+namespace Glom
+{
+
 Dialog_FieldLayout::Dialog_FieldLayout(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
 : Gtk::Dialog(cobject),
   m_label_field_name(0),
@@ -128,5 +131,7 @@ void Dialog_FieldLayout::enforce_constraints()
   const bool custom = m_radiobutton_custom_formatting->get_active();
   m_box_formatting->set_sensitive(custom);
 }
+
+} //namespace Glom
 
 

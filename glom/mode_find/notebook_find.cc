@@ -21,6 +21,9 @@
 #include "notebook_find.h"
 #include <glibmm/i18n.h>
 
+namespace Glom
+{
+
 Notebook_Find::Notebook_Find()
 : m_iPage_Details(0),
   m_iPage_List(0)
@@ -75,3 +78,4 @@ void Notebook_Find::set_current_view(Notebook_Data::dataview view)
     set_current_page(m_iPage_Details);
 }
 
+} //namespace Glom

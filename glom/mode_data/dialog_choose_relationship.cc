@@ -22,6 +22,9 @@
 //#include <libgnome/gnome-i18n.h>
 #include <glibmm/i18n.h>
 
+namespace Glom
+{
+
 Dialog_ChooseRelationship::Dialog_ChooseRelationship()
 : m_label_table_name(0),
   m_button_select(0),
@@ -129,3 +132,5 @@ sharedptr<Relationship> Dialog_ChooseRelationship::get_relationship_chosen() con
 
   return result;
 }
+
+} //namespace Glom

@@ -25,6 +25,8 @@
 #include "box_data_list_find.h"
 #include "box_data_details_find.h"
 
+namespace Glom
+{
 
 class Notebook_Find : public Notebook_Glom
 {
@@ -54,5 +56,7 @@ protected:
 
   guint m_iPage_Details, m_iPage_List;
 };
+
+} //namespace Glom
 
 #endif

@@ -25,6 +25,9 @@
 #include <libglademm.h>
 #include "../../base_db.h"
 
+namespace Glom
+{
+
 class Dialog_GroupsList
   : public Gtk::Dialog,
     public Base_DB
@@ -124,5 +127,7 @@ protected:
 
   Glib::RefPtr<Gtk::ListStore> m_model_groups;
 };
+
+} //namespace Glom
 
 #endif //GLOM_MODE_DESIGN_DIALOG_GROUPS_LIST_H

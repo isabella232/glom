@@ -25,6 +25,9 @@
 #include <glom/libglom/sharedptr.h>
 #include <glom/libglom/data_structure/fieldtypes.h>
 
+namespace Glom
+{
+
 class ExceptionConnection : public std::exception
 {
 public:
@@ -146,6 +149,7 @@ protected:
 
 };
 
+} //namespace Glom
 
 #endif //GLOM_CONNECTIONPOOL_H
 

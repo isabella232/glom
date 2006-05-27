@@ -23,6 +23,9 @@
 
 #include <glom/libglom/data_structure/field.h>
 
+namespace Glom
+{
+
 class CalcInProgress
 {
 public:
@@ -33,6 +36,8 @@ public:
   bool m_calc_in_progress;
   bool m_calc_finished;
 };
+
+} //namespace Glom
 
 #endif //GLOM_MODE_DATA_CALCINPROGRESS_H
 

@@ -23,6 +23,9 @@
 
 #include <glibmm.h>
 
+namespace Glom
+{
+
 /** There is one instance per document.
  * This is for storing volatile application state.
  * It is not for configuration that should be the same after the application is closed and restarted - use gconf for that.
@@ -62,5 +65,6 @@ protected:
   type_signal_userlevel_changed m_signal_userlevel_changed;
 };
 
+} //namespace Glom
 
 #endif //GLOM_APPSTATE_H

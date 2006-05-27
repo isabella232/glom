@@ -22,6 +22,9 @@
 #include <glom/libglom/utils.h>
 #include <glibmm/i18n.h>
 
+namespace Glom
+{
+
 LayoutItem_Image::LayoutItem_Image()
 {
   m_translatable_item_type = TRANSLATABLE_TYPE_IMAGEOBJECT;
@@ -85,4 +88,6 @@ Glib::ustring LayoutItem_Image::create_local_image_uri() const
 {
   return GlomUtils::create_local_image_uri(m_image);
 }
+
+} //namespace Glom
 

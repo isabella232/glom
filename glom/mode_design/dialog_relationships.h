@@ -24,6 +24,9 @@
 #include "dialog_design.h"
 #include "box_db_table_relationships.h"
 
+namespace Glom
+{
+
 class Dialog_Relationships : public Dialog_Design
 {
 public:
@@ -38,5 +41,7 @@ protected:
 
   Box_DB_Table_Relationships* m_box;
 };
+
+} //namespace Glom
 
 #endif //DIALOG_RELATIONSHIPS_H

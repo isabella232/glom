@@ -21,6 +21,9 @@
 #include "dialog_change_language.h"
 #include <glibmm/i18n.h>
 
+namespace Glom
+{
+
 Dialog_ChangeLanguage::Dialog_ChangeLanguage(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
 : Gtk::Dialog(cobject),
   m_combo_locale(0)
@@ -38,3 +41,5 @@ Glib::ustring Dialog_ChangeLanguage::get_locale() const
 {
   return m_combo_locale->get_selected_locale();
 }
+
+} //namespace Glom

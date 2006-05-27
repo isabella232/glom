@@ -25,6 +25,9 @@
 #include "privileges.h"
 #include <map>
 
+namespace Glom
+{
+
 class GroupInfo : public TranslatableItem
 {
 public:
@@ -44,6 +47,8 @@ public:
 
   //typedef std::vector<Glib::ustring> type_users;
   //type_users m_users;
-  };
+};
+
+} //namespace Glom
 
 #endif //GLOM_DATA_STRUCTURE_GROUPINFO_H

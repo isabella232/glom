@@ -23,6 +23,9 @@
 #include "layoutitem_portal.h"
 #include <glibmm/i18n.h>
 
+namespace Glom
+{
+
 LayoutGroup::LayoutGroup()
 : m_columns_count(1), //A sensible default
   m_border_width(0)
@@ -435,3 +438,4 @@ void LayoutGroup::set_border_width(double border_width)
   m_border_width = border_width;
 }
 
+} //namespace Glom

@@ -26,6 +26,8 @@
 #include "../base_db.h"
 #include "table_canvasitem.h"
 
+namespace Glom
+{
 
 class RelationshipsCanvas
   : public Gnome::Canvas::Canvas,
@@ -48,5 +50,7 @@ protected:
   type_map_items m_map_items;
   
 };
+
+} //namespace Glom
 
 #endif //GLOM_RELATIONSHIPS_OVERVIEW_RELATIONSHIPS_CANVAS_H

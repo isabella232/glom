@@ -31,6 +31,8 @@
 #include <glom/libglom/data_structure/field.h>
 #include <glibmm/ustring.h>
 
+namespace Glom
+{
 
 //Allocate a new object:
 //TODO: Why not parse the args here as well as in Record_init()?
@@ -306,5 +308,6 @@ void PyGlomRecord_SetFields(PyGlomRecord* self, const PyGlomRecord::type_map_fie
   */
 }
 
+} //namespace Glom
 
 

@@ -25,6 +25,9 @@
 #include <glibmm/ustring.h>
 #include <map>
 
+namespace Glom
+{
+
 class NumericFormat
 {
 public:
@@ -42,5 +45,7 @@ public:
   bool m_decimal_places_restricted;
   guint m_decimal_places;
 };
+
+} //namespace Glom
 
 #endif //GLOM_DATA_STRUCTURE_NUMERIC_FORMAT_H

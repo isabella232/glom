@@ -24,6 +24,9 @@
 #include "dialog_layout.h"
 #include "treestore_layout.h"
 
+namespace Glom
+{
+
 class Dialog_Layout_Details : public Dialog_Layout
 {
 public:
@@ -98,5 +101,7 @@ protected:
 
   Glib::RefPtr<TreeStore_Layout> m_model_items;
 };
+
+} //namespace Glom
 
 #endif //GLOM_MODE_DATA_DIALOG_LAYOUT_DETAILS_H

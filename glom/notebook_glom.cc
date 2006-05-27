@@ -21,6 +21,9 @@
 #include "notebook_glom.h"
 #include "application.h"
 
+namespace Glom
+{
+
 Notebook_Glom::Notebook_Glom()
 {
   m_uiPreviousPage = 0;
@@ -134,3 +137,5 @@ void Notebook_Glom::do_menu_file_print()
 {
   //Override this.
 }
+
+} //namespace Glom

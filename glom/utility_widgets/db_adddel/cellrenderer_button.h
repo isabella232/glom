@@ -25,6 +25,9 @@
 #include <gtkmm/treepath.h>
 #include <gtkmm/treemodel.h>
 
+namespace Glom
+{
+
 class GlomCellRenderer_Button : public Gtk::CellRendererPixbuf
 {
 public: 
@@ -39,5 +42,7 @@ protected:
 
   type_signal_clicked m_signal_clicked;
 };
+
+} //namespace Glom
 
 #endif //GLOM_CELLRENDERER_BUTTON_H

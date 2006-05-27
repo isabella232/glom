@@ -28,6 +28,9 @@
 #include "base_db.h"
 #include <glom/libglom/connectionpool.h>
 
+namespace Glom
+{
+
 class Dialog_Connection
   : public Gtk::Dialog,
     public Base_DB
@@ -52,6 +55,8 @@ protected:
   Gtk::Label* m_label_database;
   Glib::ustring m_database_name;
 };
+
+} //namespace Glom
 
 #endif //GLOM_DIALOG_CONNECTION_H
 

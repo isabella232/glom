@@ -23,6 +23,9 @@
 #include <sstream> //For stringstream
 #include <glibmm/i18n.h>
 
+namespace Glom
+{
+
 Dialog_GroupBy::Dialog_GroupBy(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
 : Gtk::Dialog(cobject),
   m_label_group_by(0),
@@ -230,3 +233,5 @@ void Dialog_GroupBy::update_labels()
 
   m_label_secondary_fields->set_text(text_secondary_fields);
 }
+
+} //namespace Glom

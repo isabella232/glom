@@ -24,6 +24,9 @@
 #include "../../box_db_table.h"
 #include "dialog_fielddefinition.h"
 
+namespace Glom
+{
+
 class Box_DB_Table_Definition : public Box_DB_Table
 {
 public: 
@@ -63,5 +66,7 @@ protected:
   sharedptr<const Field> m_Field_BeingEdited; //TODO_FieldShared
   type_vecFields m_vecFields;
 };
+
+} //namespace Glom
 
 #endif

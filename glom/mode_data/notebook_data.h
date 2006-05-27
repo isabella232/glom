@@ -25,6 +25,9 @@
 #include "box_data_list.h"
 #include "box_data_details.h"
 
+namespace Glom
+{
+
 class Notebook_Data : public Notebook_Glom
 {
 public: 
@@ -78,5 +81,7 @@ protected:
   Glib::ustring m_table_name;
   type_signal_record_details_requested m_signal_record_details_requested;
 };
+
+} //namespace Glom
 
 #endif

@@ -21,6 +21,9 @@
 #include "layoutitem_footer.h"
 #include <glibmm/i18n.h>
 
+namespace Glom
+{
+
 LayoutItem_Footer::LayoutItem_Footer()
 {
 }
@@ -56,5 +59,7 @@ Glib::ustring LayoutItem_Footer::get_report_part_id() const
 {
   return "footer";
 }
+
+} //namespace Glom
 
 

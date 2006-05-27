@@ -23,6 +23,9 @@
 
 #include "../mode_data/box_data_list.h"
 
+namespace Glom
+{
+
 class Box_Data_List_Find : public Box_Data_List
 {
 public: 
@@ -45,5 +48,7 @@ protected:
   //Member widgets:
   Gtk::HBox m_HBox;
 };
+
+} //namespace Glom
 
 #endif

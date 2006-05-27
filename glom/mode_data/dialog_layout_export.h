@@ -23,6 +23,9 @@
 
 #include "dialog_layout.h"
 
+namespace Glom
+{
+
 class Dialog_Layout_Export : public Dialog_Layout
 {
 public:
@@ -79,5 +82,7 @@ protected:
 
   Gtk::Label* m_label_table_name;
 };
+
+} //namespace Glom
 
 #endif //GLOM_MODE_DATA_DIALOG_LAYOUT_EXPORT_H

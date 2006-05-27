@@ -20,6 +20,9 @@
 
 #include "relationshipscanvas_tablewidget.h"
 
+namespace Glom
+{
+
 RelationshipsCanvasTableWidget::RelationshipsCanvasTableWidget()
 {
 }
@@ -32,3 +35,5 @@ RelationshipsCanvasTableWidget::RelationshipsCanvasTableWidget(BaseObjectType* c
 RelationshipsCanvasTableWidget::~RelationshipsCanvasTableWidget()
 {
 }
+
+} //namespace Glom

@@ -25,6 +25,9 @@
 #include "alignment_justified.h"
 #include <vector>
 
+namespace Glom
+{
+
 class Table_Columns : public Gtk::Table
 {
 public: 
@@ -44,5 +47,7 @@ protected:
 
   guint m_uiNextRow;
 };
+
+} //namespace Glom
 
 #endif

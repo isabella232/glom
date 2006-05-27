@@ -28,6 +28,9 @@
 
 //Predicate, for use with std::find_if():
 
+namespace Glom
+{
+
 template<class T_Element>
 class predicate_FieldHasName
 {
@@ -228,6 +231,8 @@ protected:
   Glib::ustring m_calculation;
   bool m_visible; //Whether it will be shown to the user.
 };
+
+} //namespace Glom
 
 #endif //GLOM_DATASTRUCTURE_FIELD_H
 

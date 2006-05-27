@@ -25,7 +25,8 @@
 
 #include <iostream> //Just for debugging.
 
-
+namespace Glom
+{
 
 /**A ref-counting smart-pointer for the underlying C object.
  * You can copy these smarpointers-of-C-resources, and therefore the C++ classes can
@@ -419,6 +420,7 @@ sharedptr<T_obj> glom_sharedptr_clone(const sharedptr<const T_obj>& src)
     return sharedptr<T_obj>();
 }
 
+} //namespace Glom
 
 #endif //GLOM_SHAREDPTR_H
 

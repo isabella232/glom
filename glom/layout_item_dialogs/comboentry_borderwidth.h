@@ -26,6 +26,8 @@
 
 #include <gtkmm/liststore.h>
 
+namespace Glom
+{
 
 class ComboEntry_BorderWidth : public Gtk::ComboBoxEntry
 {
@@ -53,6 +55,8 @@ protected:
   ModelColumns m_model_columns;
   Glib::RefPtr<Gtk::ListStore> m_model;
 };
+
+} //namespace Glom
 
 #endif //GLOM_MODE_DESIGN_COMBOENTRY_BORDERWIDTH_HH
 

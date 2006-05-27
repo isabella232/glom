@@ -24,6 +24,9 @@
 #include "box_data.h"
 #include "../utility_widgets/db_adddel/db_adddel_withbuttons.h"
 
+namespace Glom
+{
+
 class Box_Data_List : public Box_Data
 {
 public: 
@@ -99,5 +102,7 @@ protected:
 
   type_signal_user_requested_details m_signal_user_requested_details;
 };
+
+} //namespace Glom
 
 #endif

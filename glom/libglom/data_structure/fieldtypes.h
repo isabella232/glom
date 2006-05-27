@@ -24,6 +24,9 @@
 
 #include <libgdamm.h>
 
+namespace Glom
+{
+
 /* This class maps the SQL type names (seen in libgda schema datamodels, and in SQL) to the Gda Types.
  */
 class FieldTypes
@@ -43,6 +46,8 @@ protected:
   typedef std::map<Gnome::Gda::ValueType, Glib::ustring> type_mapGdaTypesToSchemaStrings;
   type_mapGdaTypesToSchemaStrings m_mapGdaTypesToSchemaStrings;
 };
+
+} //namespace Glom
 
 #endif  //GLOM_DATASTRUCTURE_FIELDTYPES_H
 

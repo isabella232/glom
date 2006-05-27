@@ -21,6 +21,9 @@
 #include "layoutitem_verticalgroup.h"
 #include <glibmm/i18n.h>
 
+namespace Glom
+{
+
 LayoutItem_VerticalGroup::LayoutItem_VerticalGroup()
 {
 }
@@ -57,3 +60,4 @@ Glib::ustring LayoutItem_VerticalGroup::get_report_part_id() const
   return "group_vertical";
 }
 
+} //namespace Glom

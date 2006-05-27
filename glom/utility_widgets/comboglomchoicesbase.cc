@@ -28,6 +28,9 @@
 #include <iostream>   // for cout, endl
 
 
+namespace Glom
+{
+
 ComboGlomChoicesBase::ComboGlomChoicesBase()
 : m_with_second(false)
 {
@@ -93,3 +96,5 @@ void ComboGlomChoicesBase::set_choices(const FieldFormatting::type_list_values& 
   }
 }
 
+
+} //namespace Glom

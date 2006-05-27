@@ -24,6 +24,8 @@
 #include <bakery/App/App_Gtk.h> //For util_bold_message().
 #include <glibmm/i18n.h>
 
+namespace Glom
+{
 
 Dialog_Relationships::Dialog_Relationships(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
 : Dialog_Design(cobject, refGlade),
@@ -71,4 +73,5 @@ void Dialog_Relationships::on_hide()
   Dialog_Design::on_hide();
 }
 
+} //namespace Glom
 

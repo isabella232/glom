@@ -24,6 +24,9 @@
 #include "translatable_item.h"
 #include <glibmm/ustring.h>
 
+namespace Glom
+{
+
 class Relationship : public TranslatableItem
 {
 public: 
@@ -71,5 +74,7 @@ protected:
   Glib::ustring m_strTo_Field;
   bool m_allow_edit, m_auto_create;
 };
+
+} //namespace Glom
 
 #endif

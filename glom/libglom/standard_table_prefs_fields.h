@@ -22,6 +22,9 @@
 #ifndef GLOM_STANDARD_TABLE_PREFS_FIELDS_H
 #define GLOM_STANDARD_TABLE_PREFS_FIELDS_H
 
+namespace Glom
+{
+
 //Define these to avoid entering the string literals repeatedly.
 #define GLOM_STANDARD_TABLE_PREFS_TABLE_NAME "glom_system_preferences"
 #define GLOM_STANDARD_TABLE_PREFS_FIELD_ID "system_prefs_id"
@@ -42,6 +45,8 @@
 #define GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_NEXT_VALUE "next_value" //Numeric
 
 #define GLOM_STANDARD_FIELD_LOCK "glom_lock" //Text. In every table. Not used yet.
+
+} //namespace Glom
 
 #endif //GLOM_STANDARD_TABLE_PREFS_FIELDS_H
 

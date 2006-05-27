@@ -25,6 +25,8 @@
 #include "layout/report_parts/layoutitem_groupby.h"
 #include <glibmm/ustring.h>
 
+namespace Glom
+{
 
 class Report : public TranslatableItem
 {
@@ -41,6 +43,8 @@ public:
 protected:
   bool m_show_table_title;
 };
+
+} //namespace Glom
 
 #endif //GLOM_DATASTRUCTURE_REPORT_H
 

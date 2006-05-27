@@ -29,6 +29,9 @@
 #include <glom/libglom/data_structure/layout/layoutitem_field.h>
 #include "../mode_data/treestore_layout.h" //Forthe enum.
 
+namespace Glom
+{
+
 class App_Glom;
 
 class DataWidget
@@ -100,6 +103,8 @@ protected:
   Gtk::Label m_label;
   Gtk::Widget* m_child;
 };
+
+} //namespace Glom
 
 #endif //GLOM_UTILITY_WIDGETS_DATAWIDGET_H
 

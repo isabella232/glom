@@ -20,6 +20,9 @@
 
 #include "layoutitem.h"
 
+namespace Glom
+{
+
 LayoutItem::LayoutItem()
 : m_sequence(0),
   m_editable(true)
@@ -74,3 +77,6 @@ Glib::ustring LayoutItem::get_report_part_id() const
 {
   return "unexpected_report_part_id"; //This should never be used.
 }
+
+} //namespace Glom
+

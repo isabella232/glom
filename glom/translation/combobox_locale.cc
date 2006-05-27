@@ -22,6 +22,9 @@
 #include <gtk/gtkcomboboxentry.h>
 #include <glom/libglom/data_structure/iso_codes.h>
 
+namespace Glom
+{
+
 ComboBox_Locale::ComboBox_Locale(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& /* refGlade */)
 : Gtk::ComboBox(cobject)
 {
@@ -94,8 +97,5 @@ void ComboBox_Locale::set_selected_locale(const Glib::ustring& locale)
   unset_active();
 }
 
-
-
-
-
+} //namespace Glom
 

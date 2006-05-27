@@ -27,6 +27,9 @@
 #include <glom/libglom/data_structure/layout/layoutitem_field.h>
 #include <libxml++/libxml++.h>
 
+namespace Glom
+{
+
 namespace GlomConversions
 {
   ///Get text for display to the user.
@@ -65,6 +68,8 @@ namespace GlomConversions
 //postgres libraries directly, without the benefit of a pkg-config .pc file. murrayc.
 unsigned char *
 Glom_PQunescapeBytea(const unsigned char *strtext, size_t *retbuflen);
+
+} //namespace Glom
 
 #endif //GLOM_DATASTRUCTURE_GLOMCONVERSIONS_H
 

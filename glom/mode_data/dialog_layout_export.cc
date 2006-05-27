@@ -26,6 +26,9 @@
 //#include <libgnome/gnome-i18n.h>
 #include <glibmm/i18n.h>
 
+namespace Glom
+{
+
 Dialog_Layout_Export::Dialog_Layout_Export(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
 : Dialog_Layout(cobject, refGlade, false /* no table title */),
   m_treeview_fields(0),
@@ -356,4 +359,4 @@ void Dialog_Layout_Export::on_button_edit_field()
   }
 }
 
-
+} //namespace Glom

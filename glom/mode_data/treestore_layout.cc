@@ -21,6 +21,9 @@
 #include "treestore_layout.h"
 #include <iostream>
 
+namespace Glom
+{
+
 TreeStore_Layout::TreeStore_Layout()
 : Gtk::TreeStore()
 {
@@ -138,6 +141,7 @@ void TreeStore_Layout::fill_sequences(const iterator& iter)
   }
 }
 
+} //namespace Glom
 
 
 

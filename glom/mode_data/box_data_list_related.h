@@ -24,6 +24,9 @@
 #include "box_data_list.h"
 #include "../utility_widgets/layoutwidgetbase.h"
 
+namespace Glom
+{
+
 class Dialog_Layout_List_Related;
 
 class Box_Data_List_Related : 
@@ -87,5 +90,7 @@ protected:
 
   type_signal_record_changed m_signal_record_changed;
 };
+
+} //namespace Glom
 
 #endif

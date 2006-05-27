@@ -22,6 +22,9 @@
 #include "gtkmm/main.h"
 #include <glibmm/i18n.h>
 
+namespace Glom
+{
+
 Dialog_ProgressCreating::Dialog_ProgressCreating(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
 : Gtk::Window(cobject),
   m_progress(0)
@@ -45,3 +48,5 @@ void Dialog_ProgressCreating::pulse()
   while(Gtk::Main::instance()->events_pending())
     Gtk::Main::instance()->iteration();
 }
+
+} //namespace Glom

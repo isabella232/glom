@@ -27,6 +27,9 @@
 
 #include <gtkmm/liststore.h>
 
+namespace Glom
+{
+
 /** This class should just derive from Gtk::ComboBoxText and provide a constuctor suitable for libglade's get_widget_derived() template.
  * However, I have reimplemented Gtk::ComboBoxText here temporarily, until the fixes in gtkmm 2.4.3 are widely available.
  */
@@ -68,6 +71,8 @@ protected:
   TextModelColumns m_text_columns;
   Glib::RefPtr<Gtk::ListStore> m_model;
 };
+
+} //namespace Glom
 
 #endif //GLOM_MODE_DESIGN_COMBO_TEXTGLADE_HH
 

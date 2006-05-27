@@ -31,6 +31,8 @@
 
 #include "eggcolumnchooser/eggcolumnchooserdialog.h"
 
+namespace Glom
+{
 
 AddDelColumnInfo::AddDelColumnInfo()
 : m_style(STYLE_Text),
@@ -1678,3 +1680,4 @@ bool AddDel::row_has_duplicates(const Gtk::TreeModel::iterator& iter) const
 }
 
 
+} //namespace Glom

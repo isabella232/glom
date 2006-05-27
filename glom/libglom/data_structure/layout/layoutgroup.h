@@ -24,6 +24,9 @@
 #include "layoutitem_field.h"
 #include <map>
 
+namespace Glom
+{
+
 class LayoutItem_Field;
 
 class LayoutGroup : public LayoutItem
@@ -90,6 +93,8 @@ protected:
 
   double m_border_width; //For use on reports.
 };
+
+} //namespace Glom
 
 #endif //GLOM_DATASTRUCTURE_LAYOUTGROUP_H
 

@@ -24,6 +24,9 @@
 #include <glibmm/i18n.h>
 //#include <sstream> //For stringstream
 
+namespace Glom
+{
+
 NotebookGlom::NotebookGlom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& /* refGlade */)
 : Gtk::Notebook(cobject)
 {
@@ -57,4 +60,6 @@ App_Glom* NotebookGlom::get_application()
 
   return dynamic_cast<App_Glom*>(pWindow);
 }
+
+} //namespace Glom
 

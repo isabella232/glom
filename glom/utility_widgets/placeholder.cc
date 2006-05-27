@@ -20,6 +20,9 @@
 
 #include "placeholder.h"
 
+namespace Glom
+{
+
 PlaceHolder::PlaceHolder()
 : m_pChild(0)
 {
@@ -62,3 +65,5 @@ const Gtk::Widget* PlaceHolder::get_child() const
   return m_pChild;
 }
  
+} //namespace Glom
+

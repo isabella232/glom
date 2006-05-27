@@ -22,6 +22,9 @@
 #include <gtk/gtkcombobox.h>
 #include <glibmm/i18n.h>
 
+namespace Glom
+{
+
 Combo_SummaryType::Combo_SummaryType(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& /* refGlade */)
 : Gtk::ComboBox(cobject)
 {
@@ -82,6 +85,8 @@ LayoutItem_FieldSummary::summaryType Combo_SummaryType::get_summary_type() const
 
   return LayoutItem_FieldSummary::TYPE_INVALID;
 }
+
+} //namespace Glom
 
 
 

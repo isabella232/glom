@@ -29,14 +29,14 @@ main(int argc, char* argv[])
 
   Gtk::Window window;
   //Gtk::VBox flowtable;
-  FlowTable flowtable;
+  Glom::FlowTable flowtable;
   flowtable.set_columns_count(2);
 
   Gtk::Entry button1; //"one");
   button1.show();
   button1.set_text("debug");
 
-  FlowTable inner_table;
+  Glom::FlowTable inner_table;
   inner_table.set_padding(20);
   inner_table.set_design_mode();
   inner_table.set_columns_count(1);

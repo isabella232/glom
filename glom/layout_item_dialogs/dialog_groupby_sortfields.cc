@@ -25,6 +25,9 @@
 //#include <libgnome/gnome-i18n.h>
 #include <glibmm/i18n.h>
 
+namespace Glom
+{
+
 Dialog_GroupBy_SortFields::Dialog_GroupBy_SortFields(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
 : Dialog_Layout(cobject, refGlade, false /* means no table title */),
   m_treeview_fields(0),
@@ -306,5 +309,7 @@ void Dialog_GroupBy_SortFields::on_button_edit_field()
     }
   }
 }
+
+} //namespace Glom
 
 

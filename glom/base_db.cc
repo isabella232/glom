@@ -45,6 +45,9 @@
 
 #include <sstream> //For stringstream
 
+namespace Glom
+{
+
 FoundSet::FoundSet()
 {
 }
@@ -2191,3 +2194,6 @@ bool Base_DB::check_entered_value_for_uniqueness(const Glib::ustring& table_name
   else
     return true; //Succeed, because the value does not need to be unique.
 }
+
+
+} //namespace Glom

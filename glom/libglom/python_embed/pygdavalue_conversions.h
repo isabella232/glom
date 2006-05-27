@@ -6,6 +6,7 @@
 
 G_BEGIN_DECLS
 
+
 int
 pygda_value_from_pyobject(GdaValue *boxed, PyObject *input);
 

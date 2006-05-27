@@ -21,6 +21,9 @@
 #include "fieldformatting.h"
 #include <glibmm/i18n.h>
 
+namespace Glom
+{
+
 FieldFormatting::FieldFormatting()
 : m_choices_restricted(false),
   m_choices_custom(false),
@@ -166,3 +169,5 @@ void FieldFormatting::change_field_name(const Glib::ustring& table_name, const G
        m_choices_related_field_second = field_name_new; 
   }
 }
+
+} //namespace Glom

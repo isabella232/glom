@@ -27,14 +27,17 @@
 #include <glom/libglom/data_structure/layout/layoutitem_field.h>
 #include <libxml++/libxml++.h>
 
-///field, ascending
-typedef std::pair< sharedptr<const LayoutItem_Field>, bool> type_pair_sort_field;
-typedef std::list<type_pair_sort_field> type_sort_clause;
-
 namespace Gtk
 {
   class Window;
 }
+
+namespace Glom
+{
+
+///field, ascending
+typedef std::pair< sharedptr<const LayoutItem_Field>, bool> type_pair_sort_field;
+typedef std::list<type_pair_sort_field> type_sort_clause;
 
 namespace GlomXslUtils
 {
@@ -43,6 +46,8 @@ void transform_and_open(const xmlpp::Document& xml_document, const Glib::ustring
 Glib::ustring xslt_process(const xmlpp::Document& xml_document, const std::string& filepath_xslt);
 
 } //namespace GlomXslUtils
+
+} //namespace Glom
 
 #endif //GLOM_XSL_UTILS_H
 

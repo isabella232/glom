@@ -25,6 +25,9 @@
 
 #include <sstream> //For stringstream
 
+namespace Glom
+{
+
 Box_DB::Box_DB()
 : m_Box_Buttons(false, 6),
   m_Button_Cancel(Gtk::Stock::CANCEL)
@@ -118,4 +121,6 @@ Gtk::Widget* Box_DB::get_default_button()
   return 0; //Override this if the box has a default button.
 }
 
+
+} //namespace Glom
 

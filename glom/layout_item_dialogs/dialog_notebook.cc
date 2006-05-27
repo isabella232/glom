@@ -25,6 +25,9 @@
 //#include <libgnome/gnome-i18n.h>
 #include <glibmm/i18n.h>
 
+namespace Glom
+{
+
 Dialog_Notebook::Dialog_Notebook(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
 : Dialog_Layout(cobject, refGlade, false /* means no table title */),
   m_treeview(0),
@@ -227,5 +230,7 @@ void Dialog_Notebook::on_button_delete()
     }
   }
 }
+
+} //namespace Glom
 
 

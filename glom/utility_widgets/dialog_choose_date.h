@@ -27,6 +27,9 @@
 #include "../mode_find/box_data_details_find.h"
 #include "../mode_data/box_data_list.h"
 
+namespace Glom
+{
+
 class Dialog_ChooseDate
   : public Gtk::Dialog
 {
@@ -43,5 +46,7 @@ protected:
 
   Gtk::Calendar* m_calendar;
 };
+
+} //namespace Glom
 
 #endif //GLOM_MODE_DATA_DIALOG_CHOOSE_DATE_H

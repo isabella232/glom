@@ -22,6 +22,9 @@
 #include <iostream> //For debug output
 #include <glom/libglom/connectionpool.h>
 
+namespace Glom
+{
+
 FieldTypes::FieldTypes(const Glib::RefPtr<Gnome::Gda::Connection>& gda_connection)
 {
   // These are documented here:
@@ -111,5 +114,6 @@ Glib::ustring FieldTypes::get_string_name_for_gdavaluetype(Gnome::Gda::ValueType
     return iterFind->second;
 }
 
+} //namespace Glom
 
 

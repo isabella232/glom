@@ -24,6 +24,9 @@
 #include <glom/libglom/document/document_glom.h>
 #include <gtkmm/filechooserdialog.h>
 
+namespace Glom
+{
+
 class Dialog_Layout_Export;
 
 class FileChooser_Export :
@@ -51,5 +54,7 @@ protected:
   Document_Glom::type_mapLayoutGroupSequence m_layout_groups;
   Document_Glom* m_document;
 };
+
+} //namespace Glom
 
 #endif

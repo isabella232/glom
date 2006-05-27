@@ -20,6 +20,9 @@
 
 #include "db_treeviewcolumn_glom.h"
 
+namespace Glom
+{
+
 DbTreeViewColumnGlom::DbTreeViewColumnGlom(const Glib::ustring& title, Gtk::CellRenderer& cell)
 : Gtk::TreeViewColumn(title, cell)
 {
@@ -38,3 +41,5 @@ void DbTreeViewColumnGlom::set_column_id(const Glib::ustring& value)
 {
   m_column_id = value;
 }
+
+} //namespace Glom

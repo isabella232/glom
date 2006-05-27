@@ -25,6 +25,9 @@
 #include <glom/libglom/data_structure/field.h>
 #include "layoutwidgetfield.h"
 
+namespace Glom
+{
+
 class ComboGlomChoicesBase : public LayoutWidgetField
 {
 public:
@@ -64,6 +67,8 @@ protected:
   sharedptr<const LayoutItem_Field> m_layoutitem_second;
   //Gnome::Gda::Value m_value; //The last-stored value. We have this because the displayed value might be unparseable.
 };
+
+} //namespace Glom
 
 #endif //GLOM_UTILITY_WIDGETS_COMBO_GLOM_CHOICESBASE_H
 

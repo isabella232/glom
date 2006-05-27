@@ -32,6 +32,9 @@
 #include <sstream> //For stringstream
 #include <glibmm/i18n.h>
 
+namespace Glom
+{
+
 Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
 : m_HBox(false, 6),
   m_Button_New(Gtk::Stock::ADD),
@@ -830,3 +833,5 @@ void Box_Data_Details::print_layout()
     GlomXslUtils::transform_and_open(*pDocument, "print_details_to_html.xsl", get_app_window());
   }
 }
+
+} //namespace Glom

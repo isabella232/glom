@@ -31,6 +31,9 @@
 #include <bakery/Utilities/BusyCursor.h>
 #include <libglademm.h>
 
+namespace Glom
+{
+
 class Box_DB :
   public Gtk::VBox,
   public Base_DB
@@ -71,5 +74,7 @@ protected:
   Gtk::HBox m_Box_Buttons;
   Gtk::Button m_Button_Cancel; //Derived classes can use it if it's necessary.
 };
+
+} //namespace Glom
 
 #endif //BOX_DB_H

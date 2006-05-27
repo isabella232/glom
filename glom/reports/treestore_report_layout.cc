@@ -29,6 +29,9 @@
 #include <glom/libglom/data_structure/layout/layoutitem_text.h>
 #include <iostream>
 
+namespace Glom
+{
+
 TreeStore_ReportLayout::TreeStore_ReportLayout()
 : Gtk::TreeStore()
 {
@@ -163,6 +166,4 @@ bool TreeStore_ReportLayout::may_be_child_of(const sharedptr<const LayoutItem>& 
   return true;
 }
 
-
-
-
+} //namespace Glom

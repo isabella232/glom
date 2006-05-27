@@ -25,6 +25,9 @@
 #include "../layoutitem_field.h"
 #include <map>
 
+namespace Glom
+{
+
 class LayoutItem_Field;
 
 /** The child items are fields to be shown for each record in the group.
@@ -72,6 +75,8 @@ protected:
   sharedptr<LayoutItem_Field> m_field_group_by;
 
 };
+
+} //namespace Glom
 
 #endif //GLOM_DATASTRUCTURE_LayoutGroupBY_H
 

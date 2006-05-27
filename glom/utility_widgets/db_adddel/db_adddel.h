@@ -30,6 +30,9 @@
 #include <vector>
 #include <map>
 
+namespace Glom
+{
+
 class App_Glom;
 
 class DbAddDelColumnInfo
@@ -365,6 +368,8 @@ protected:
 */
 };
  
+
+} //namespace Glom
 
 
 

@@ -33,6 +33,9 @@
 #include <list>
 #include <glib.h> //For g_warning().
 
+namespace Glom
+{
+
 std::list<Glib::ustring> ustring_tokenize(const Glib::ustring& msg, const Glib::ustring& separators, int maxParts)
 {
   std::list<Glib::ustring> result;
@@ -264,3 +267,5 @@ examples:
 
   return record.related_records["invoice lines"].sum("cost") )
 */
+
+} //namespace Glom

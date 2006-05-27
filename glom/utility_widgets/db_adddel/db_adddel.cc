@@ -32,6 +32,9 @@
 #include <iostream> //For debug output.
 #include <gtk/gtktreeview.h>
 
+namespace Glom
+{
+
 DbAddDelColumnInfo::DbAddDelColumnInfo()
 :
   m_editable(true),
@@ -1736,5 +1739,7 @@ void DbAddDel::set_open_button_title(const Glib::ustring& title)
   m_open_button_title = title;
 }
 
+
+} //namespace Glom
 
 

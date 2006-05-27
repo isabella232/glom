@@ -28,6 +28,9 @@
 #include <glibmm/i18n.h>
 #include <sstream> //For stringstream
 
+namespace Glom
+{
+
 Dialog_Layout_Details::Dialog_Layout_Details(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
 : Dialog_Layout(cobject, refGlade),
   m_treeview_fields(0),
@@ -1288,6 +1291,8 @@ void Dialog_Layout_Details::on_treeview_cell_edited_columns_count(const Glib::us
     }
   }
 }
+
+} //namespace Glom
 
 
 

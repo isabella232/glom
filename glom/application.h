@@ -24,6 +24,10 @@
 #include "bakery/bakery.h"
 #include "frame_glom.h"
 
+
+namespace Glom
+{
+
 class Window_Translations;
 
 class App_Glom : public Bakery::App_WithDoc_Gtk
@@ -99,5 +103,7 @@ protected:
   type_listActions m_listNavTableActions, m_listNavReportActions;
   Gtk::UIManager::ui_merge_id m_menu_tables_ui_merge_id, m_menu_reports_ui_merge_id;
 };
+
+} //namespace Glom
 
 #endif //HEADER_APP_GLOM

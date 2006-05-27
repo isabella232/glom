@@ -20,6 +20,9 @@
 
 #include "groupinfo.h"
 
+namespace Glom
+{
+
 GroupInfo::GroupInfo()
 : m_developer(false)
 {
@@ -57,3 +60,5 @@ bool GroupInfo::operator!=(const GroupInfo& src) const
 {
   return !(operator==(src));
 }
+
+} //namespace Glom

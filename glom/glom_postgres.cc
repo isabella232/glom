@@ -20,6 +20,9 @@
 
 #include "glom_postgres.h"
 
+namespace Glom
+{
+
 bool GlomPostgres::postgres_add_column(const Glib::ustring& table_name, const sharedptr<const Field>& field, bool not_extras)
 {
   sharedptr<Field> field_to_add = glom_sharedptr_clone(field);
@@ -190,3 +193,5 @@ GlomPostgres::type_vecStrings GlomPostgres::pg_list_separate(const Glib::ustring
   //Get the comma-separated items:
   return GlomUtils::string_separate(without_brackets, ",");
 }
+
+} //namespace Glom

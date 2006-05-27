@@ -23,6 +23,9 @@
 
 #include "../box_db.h"
 
+namespace Glom
+{
+
 class Box_Tables : public Box_DB
 {
 public:
@@ -55,6 +58,8 @@ protected:
 
   mutable AddDel_WithButtons m_AddDel; //mutable because its get_ methods aren't const.
 };
+
+} //namespace Glom
 
 #endif //BOX_TABLES_H
 

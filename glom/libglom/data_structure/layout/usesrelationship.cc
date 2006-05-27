@@ -21,6 +21,9 @@
 #include "fieldformatting.h"
 #include <glibmm/i18n.h>
 
+namespace Glom
+{
+
 UsesRelationship::UsesRelationship()
 {
 }
@@ -180,5 +183,6 @@ Glib::ustring UsesRelationship::get_sql_join_alias_definition() const
   return result;
 }
 
+} //namespace Glom
 
 

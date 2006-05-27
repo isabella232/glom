@@ -33,6 +33,9 @@
 #include <glibmm/ustring.h>
 
 
+namespace Glom
+{
+
 //Allocate a new object:
 //TODO: Why not parse the args here as well as in RelatedRecord_init()?
 static PyObject *
@@ -414,5 +417,6 @@ void PyGlomRelatedRecord_SetRelationship(PyGlomRelatedRecord* self, const shared
   self->m_document = document;
 }
 
+} //namespace Glom
 
 

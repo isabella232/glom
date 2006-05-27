@@ -21,6 +21,9 @@
 #include "layoutitem_text.h"
 #include <glibmm/i18n.h>
 
+namespace Glom
+{
+
 LayoutItem_Text::LayoutItem_Text()
 {
   m_translatable_item_type = TRANSLATABLE_TYPE_TEXTOBJECT;
@@ -79,4 +82,6 @@ void LayoutItem_Text::set_text(const Glib::ustring& text)
 {
   m_text->set_title(text);
 }
+
+} //namespace Glom
 

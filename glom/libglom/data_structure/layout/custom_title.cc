@@ -21,6 +21,9 @@
 #include "custom_title.h"
 #include <glibmm/i18n.h>
 
+namespace Glom
+{
+
 CustomTitle::CustomTitle()
 : m_use_custom_title(false)
 {
@@ -66,3 +69,4 @@ void CustomTitle::set_use_custom_title(bool use_custom_title)
   m_use_custom_title = use_custom_title;
 }
 
+} //namespace Glom

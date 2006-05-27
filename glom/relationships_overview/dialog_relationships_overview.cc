@@ -25,6 +25,9 @@
 #include <glibmm/i18n.h>
 #include <sstream> //For stringstream
 
+namespace Glom
+{
+
 Dialog_RelationshipsOverview::Dialog_RelationshipsOverview(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
 : Gtk::Dialog(cobject),
   m_scrolledwindow_canvas(0)
@@ -42,10 +45,7 @@ Dialog_RelationshipsOverview::~Dialog_RelationshipsOverview()
   remove_view(&m_canvas);
 }
 
-
-
-
-
+} //namespace Glom
 
 
 

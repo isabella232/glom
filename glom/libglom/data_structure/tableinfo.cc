@@ -20,6 +20,9 @@
 
 #include "tableinfo.h"
 
+namespace Glom
+{
+
 TableInfo::TableInfo()
 : m_sequence(0),
   m_hidden(false),
@@ -46,3 +49,5 @@ TableInfo& TableInfo::operator=(const TableInfo& src)
 
   return *this;
 }
+
+} //namespace Glom

@@ -22,6 +22,9 @@
 #include "../layoutitem_field.h"
 #include <glibmm/i18n.h>
 
+namespace Glom
+{
+
 LayoutItem_Summary::LayoutItem_Summary()
 {
 }
@@ -62,3 +65,5 @@ Glib::ustring LayoutItem_Summary::get_report_part_id() const
 {
   return "summary";
 }
+
+} //namespace Glom

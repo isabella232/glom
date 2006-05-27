@@ -28,6 +28,9 @@
 #include <glom/libglom/data_structure/field.h>
 #include <glibmm/ustring.h>
 
+namespace Glom
+{
+
 class PyGlomRecord;
 
 struct PyGlomRelatedRecord
@@ -58,6 +61,7 @@ void PyGlomRelatedRecord_SetRelationship(PyGlomRelatedRecord* self, const shared
 void PyGlomRelatedRecord_SetConnection(PyGlomRelatedRecord* self, const Glib::RefPtr<Gnome::Gda::Connection>& connection);
 */
 
+} //namespace Glom
 
 
 #endif //GLOM_PYTHON_GLOM_RELATEDRECORD_H

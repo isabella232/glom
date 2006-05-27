@@ -26,6 +26,9 @@
 #include <glom/libglom/utils.h>
 
 
+namespace Glom
+{
+
 DbTreeModelRow::DbTreeModelRow()
 : m_values_retrieved(false),
   m_removed(false),
@@ -891,3 +894,5 @@ void DbTreeModel::get_record_counts(gulong& total, gulong& found) const
     found = 0;
   }
 }
+
+} //namespace Glom

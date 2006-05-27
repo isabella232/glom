@@ -20,6 +20,9 @@
  
 #include "dialog_new_database.h"
 
+namespace Glom
+{
+
 Dialog_NewDatabase::Dialog_NewDatabase(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
 : Gtk::Dialog(cobject),
   m_entry_title(0),
@@ -52,3 +55,5 @@ void Dialog_NewDatabase::get_input(Glib::ustring& title)
 {
   title = m_entry_title->get_text();
 }
+
+} //namespace Glom

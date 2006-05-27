@@ -26,6 +26,9 @@
 #include <glom/libglom/data_structure/field.h>
 #include <libglademm.h>
 
+namespace Glom
+{
+
 /** Show the dialog.
  * @result true if the data in the field should be reverted.
  */
@@ -44,6 +47,8 @@ public:
 protected:
   Gtk::Label* m_label;
 };
+
+} //namespace Glom
 
 #endif //GLOM_DIALOG_INVALIDDATA_H
 

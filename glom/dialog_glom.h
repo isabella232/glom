@@ -25,6 +25,8 @@
 #include <gtkmm/dialog.h>
 #include <gtkmm/button.h>
 
+namespace Glom
+{
 
 class Dialog_Glom :
   public Gtk::Dialog
@@ -41,5 +43,7 @@ protected:
   //Member widgets:
   Box_DB* m_pBox;
 };
+
+} //namespace Glom
 
 #endif

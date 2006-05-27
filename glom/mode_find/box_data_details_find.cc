@@ -21,6 +21,9 @@
 #include "box_data_details_find.h"
 #include <glibmm/i18n.h>
 
+namespace Glom
+{
+
 Box_Data_Details_Find::Box_Data_Details_Find()
 : Box_Data_Details(false)
 {
@@ -101,3 +104,4 @@ Gtk::Widget* Box_Data_Details_Find::get_default_button() //override
   return &m_Button_Find;
 }
  
+} //namespace Glom

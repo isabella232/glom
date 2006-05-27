@@ -23,6 +23,9 @@
 #include <gtk/gtkcombobox.h>
 
 
+namespace Glom
+{
+
 void c_callback_CellRendererList_on_editing_started(GtkCellRenderer* /* self */, GtkCellEditable* cell_editable, const gchar* /* path */, void* data)
 {
   CellRendererList* pCppSelf = (CellRendererList*)data;
@@ -128,3 +131,5 @@ void CellRendererList::set_use_second(bool use_second)
 {
   m_use_second = use_second;
 }
+
+} //namespace Glom

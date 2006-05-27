@@ -27,6 +27,9 @@
 //#include <libgnome/gnome-i18n.h>
 #include <glibmm/i18n.h>
 
+namespace Glom
+{
+
 Dialog_Layout_List::Dialog_Layout_List(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
 : Dialog_Layout(cobject, refGlade),
   m_treeview_fields(0),
@@ -410,3 +413,4 @@ void Dialog_Layout_List::on_button_field_formatting()
   }
 }
 
+} //namespace Glom

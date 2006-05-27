@@ -28,6 +28,9 @@
 #include <bakery/App/App_Gtk.h> //For util_bold_message().
 #include <glibmm/i18n.h>
 
+namespace Glom
+{
+
 Dialog_GroupsList::Dialog_GroupsList(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
 : Gtk::Dialog(cobject),
   m_treeview_groups(0),
@@ -628,10 +631,6 @@ void Dialog_GroupsList::on_cell_data_group_name(Gtk::CellRenderer* renderer, con
   }
 }
 
-
-
-
-
-
+} //namespace Glom
 
 

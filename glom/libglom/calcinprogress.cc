@@ -20,9 +20,14 @@
 
 #include "calcinprogress.h"
 
+namespace Glom
+{
+
 CalcInProgress::CalcInProgress()
 : m_calc_in_progress(false),
   m_calc_finished(false)
 {
 
 }
+
+} //namespace Glom

@@ -21,6 +21,9 @@
 #include "layoutitem_header.h"
 #include <glibmm/i18n.h>
 
+namespace Glom
+{
+
 LayoutItem_Header::LayoutItem_Header()
 {
 }
@@ -56,4 +59,6 @@ Glib::ustring LayoutItem_Header::get_report_part_id() const
 {
   return "header";
 }
+
+} //namespace Glom
 

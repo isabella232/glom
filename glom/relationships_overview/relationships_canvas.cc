@@ -20,6 +20,9 @@
 
 #include "relationships_canvas.h"
 
+namespace Glom
+{
+
 RelationshipsCanvas::RelationshipsCanvas()
 {
 }
@@ -144,3 +147,5 @@ bool RelationshipsCanvas::on_item_event(GdkEvent* event, Gnome::Canvas::Item* it
 
   return false;
 }
+
+} //namespace Glom

@@ -29,6 +29,9 @@
 #include "config.h"
 #include <glibmm/i18n.h>
 
+namespace Glom
+{
+
 Box_Data::Box_Data()
 : m_Button_Find(Gtk::Stock::FIND),
   m_pDialogLayout(0)
@@ -831,3 +834,6 @@ bool Box_Data::confirm_delete_record()
   const int response = dialog.run();
   return (response == Gtk::RESPONSE_OK);
 }
+
+} //namespace Glom
+

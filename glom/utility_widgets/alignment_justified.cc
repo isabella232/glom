@@ -20,6 +20,9 @@
 
 #include "alignment_justified.h"
 
+namespace Glom
+{
+
 Alignment_Justified::Alignment_Justified()
 {
   set_border_width(2); //Useful default.
@@ -54,3 +57,5 @@ void Alignment_Justified::set_justification(Gtk::Justification justification)
     }
   }
 }
+
+} //namespace Glom

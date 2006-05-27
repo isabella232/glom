@@ -26,6 +26,9 @@
 #include "layoutwidgetfield.h"
 #include <libglademm.h>
 
+namespace Glom
+{
+
 class App_Glom;
 
 class ImageGlom
@@ -85,6 +88,8 @@ protected:
 
   bool m_read_only;
 };
+
+} //namespace Glom
 
 #endif //GLOM_UTILITY_WIDGETS_COMBOENTRY_GLOM_H
 

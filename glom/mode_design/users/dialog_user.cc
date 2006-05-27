@@ -22,6 +22,9 @@
 //#include <libgnome/gnome-i18n.h>
 #include <glibmm/i18n.h>
 
+namespace Glom
+{
+
 Dialog_User::Dialog_User(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
 : Gtk::Dialog(cobject)
 {
@@ -103,6 +106,7 @@ void Dialog_User::set_document(const Glib::ustring& layout, Document_Glom* docum
 }
 */
 
+} //namespace Glom
 
 
 

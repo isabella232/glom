@@ -29,6 +29,9 @@
 #include "../utility_widgets/combo_textglade.h"
 #include "combo_summarytype.h"
 
+namespace Glom
+{
+
 class Dialog_FieldSummary
  : public Gtk::Dialog,
    public Base_DB
@@ -58,5 +61,7 @@ protected:
 
   Glib::ustring m_table_name;
 };
+
+} //namespace Glom
 
 #endif //GLOM_LAYOUT_ITEM_DIALOGS_FIELD_SUMMARY_H

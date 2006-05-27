@@ -26,6 +26,9 @@
 #include "../../base_db.h"
 #include "../../utility_widgets/combo_textglade.h"
 
+namespace Glom
+{
+
 class Dialog_UsersList
   : public Gtk::Dialog,
     public Base_DB
@@ -84,5 +87,7 @@ protected:
 
   Glib::RefPtr<Gtk::ListStore> m_model_users;
 };
+
+} //namespace Glom
 
 #endif //GLOM_MODE_DESIGN_DIALOG_USERS_LIST_H

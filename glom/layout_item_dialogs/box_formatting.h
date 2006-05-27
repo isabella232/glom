@@ -29,6 +29,9 @@
 #include "../utility_widgets/comboentry_currency.h"
 #include "../combobox_relationship.h"
 
+namespace Glom
+{
+
 class Box_Formatting
  : public Gtk::VBox,
    public Base_DB
@@ -74,5 +77,7 @@ protected:
   Glib::ustring m_table_name;
   sharedptr<const Field> m_field;
 };
+
+} //namespace Glom
 
 #endif //GLOM_BOX_FORMATTING_H

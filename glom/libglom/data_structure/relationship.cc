@@ -20,6 +20,9 @@
 
 #include "relationship.h"
 
+namespace Glom
+{
+
 Relationship::Relationship()
 : m_allow_edit(true), m_auto_create(false)
 {
@@ -135,3 +138,5 @@ bool Relationship::get_has_to_table() const
 {
   return !m_strTo_Table.empty();
 }
+
+} //namespace Glom

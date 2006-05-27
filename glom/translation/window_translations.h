@@ -25,6 +25,9 @@
 #include <gtkmm.h>
 #include <libglademm.h>
 
+namespace Glom
+{
+
 class ComboBox_Locale;
 
 class Window_Translations
@@ -86,5 +89,7 @@ protected:
 
   bool m_treeview_modified;
 };
+
+} //namespace Glom
 
 #endif //GLOM_TRANSLATIONS_DIALOG_TRANSLATIONS_H

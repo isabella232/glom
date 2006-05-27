@@ -21,6 +21,9 @@
 #include "combo_textglade.h"
 #include <gtk/gtkcombobox.h>
 
+namespace Glom
+{
+
 Combo_TextGlade::Combo_TextGlade(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& /* refGlade */)
 : Gtk::ComboBox(cobject)
 {
@@ -121,6 +124,6 @@ void Combo_TextGlade::set_first_active()
   set_active(iter);
 }
 
-
+} //namespace Glom
 
 

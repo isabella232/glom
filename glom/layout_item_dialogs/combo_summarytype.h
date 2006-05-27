@@ -27,6 +27,8 @@
 
 #include <gtkmm/liststore.h>
 
+namespace Glom
+{
 
 class Combo_SummaryType : public Gtk::ComboBox
 {
@@ -54,6 +56,8 @@ protected:
   ModelColumns m_model_columns;
   Glib::RefPtr<Gtk::ListStore> m_model;
 };
+
+} //namespace Glom
 
 #endif //GLOM_MODE_DESIGN_COMBO_SUMMARYTYPE_HH
 

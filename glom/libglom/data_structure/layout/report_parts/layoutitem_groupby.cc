@@ -22,6 +22,9 @@
 #include "../layoutitem_field.h"
 #include <glibmm/i18n.h>
 
+namespace Glom
+{
+
 LayoutItem_GroupBy::LayoutItem_GroupBy()
 {
   m_group_secondary_fields = sharedptr<LayoutGroup>::create(); //So that we dont need to create it from outside.
@@ -143,4 +146,5 @@ Glib::ustring LayoutItem_GroupBy::get_report_part_id() const
   return "group_by";
 }
 
+} //namespace Glom
 

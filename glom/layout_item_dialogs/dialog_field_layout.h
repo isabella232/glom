@@ -29,6 +29,9 @@
 #include "../utility_widgets/comboentry_currency.h"
 #include "box_formatting.h"
 
+namespace Glom
+{
+
 class Dialog_FieldLayout
  : public Gtk::Dialog,
    public View_Composite_Glom //Give it access to the document.
@@ -67,5 +70,7 @@ protected:
 
   Glib::ustring m_table_name;
 };
+
+} //namespace Glom
 
 #endif //GLOM_MODE_DATA_DIALOG_FIELD_LAYOUT_H

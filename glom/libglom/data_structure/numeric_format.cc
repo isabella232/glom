@@ -20,6 +20,9 @@
 
 #include "numeric_format.h"
 
+namespace Glom
+{
+
 NumericFormat::NumericFormat()
 : m_use_thousands_separator(true), //A sensible default.
   m_decimal_places_restricted(false),
@@ -58,3 +61,5 @@ bool NumericFormat::operator!=(const NumericFormat& src) const
 {
   return !(operator==(src));
 }
+
+} //namespace Glom

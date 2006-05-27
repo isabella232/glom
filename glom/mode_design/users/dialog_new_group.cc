@@ -20,6 +20,9 @@
  
 #include "dialog_new_group.h"
 
+namespace Glom
+{
+
 Dialog_NewGroup::Dialog_NewGroup(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
 : Gtk::Dialog(cobject),
   m_entry_name(0)
@@ -33,3 +36,4 @@ Dialog_NewGroup::~Dialog_NewGroup()
 {
 }
 
+} //namespace Glom

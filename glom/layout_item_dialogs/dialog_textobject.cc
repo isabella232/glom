@@ -26,6 +26,9 @@
 //#include <libgnome/gnome-i18n.h>
 #include <glibmm/i18n.h>
 
+namespace Glom
+{
+
 Dialog_TextObject::Dialog_TextObject(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
 : Gtk::Dialog(cobject)
 {
@@ -67,6 +70,8 @@ sharedptr<LayoutItem_Text> Dialog_TextObject::get_textobject() const
 
   return result;
 }
+
+} //namespace Glom
 
 
 

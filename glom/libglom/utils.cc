@@ -35,6 +35,9 @@
 #include <iostream>   // for cout, endl
 #include <iomanip>
 
+namespace Glom
+{
+
 template<class T_Element>
 class predicate_UsesRelationshipHasRelationships
 {
@@ -628,3 +631,4 @@ Glib::ustring GlomUtils::string_trim(const Glib::ustring& str, const Glib::ustri
   return result;
 }
 
+} //namespace Glom

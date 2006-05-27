@@ -21,6 +21,9 @@
 #include "box_data_list_find.h"
 #include <glibmm/i18n.h>
 
+namespace Glom
+{
+
 Box_Data_List_Find::Box_Data_List_Find()
 : m_HBox(false, 6)
 {
@@ -88,3 +91,5 @@ bool Box_Data_List_Find::init_db_details(const Glib::ustring& table_name)
   found_set.m_table_name = table_name;
   return Box_Data_List::init_db_details(found_set);
 }
+
+} //namespace Glom

@@ -25,6 +25,9 @@
 #include <gtkmm/dialog.h>
 #include <gtkmm/entry.h>
 
+namespace Glom
+{
+
 class Dialog_NewDatabase : public Gtk::Dialog
 {
 public:
@@ -43,6 +46,8 @@ protected:
   Gtk::Entry* m_entry_title;
   Gtk::Button* m_button_ok;
 };
+
+} //namespace Glom
 
 #endif //GLOM_DIALOG_NEWDATABASE_H
 

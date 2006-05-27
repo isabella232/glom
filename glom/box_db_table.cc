@@ -23,6 +23,9 @@
 #include "python_embed/glom_python.h"
 #include <sstream>
 
+namespace Glom
+{
+
 Box_DB_Table::Box_DB_Table()
 {
 }
@@ -207,5 +210,7 @@ Glib::ustring Box_DB_Table::postgres_get_field_definition_for_sql(const Gnome::G
   return strResult;
 }
 
+
+} //namespace Glom
 
 

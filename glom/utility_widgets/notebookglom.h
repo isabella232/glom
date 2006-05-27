@@ -26,6 +26,9 @@
 #include <glom/libglom/data_structure/layout/layoutitem_notebook.h>
 #include <libglademm.h>
 
+namespace Glom
+{
+
 class App_Glom;
 
 class NotebookGlom
@@ -42,6 +45,8 @@ protected:
 
   virtual App_Glom* get_application();
 };
+
+} //namespace Glom
 
 #endif //GLOM_UTILITY_WIDGETS_BUTTON_GLOM_H
 

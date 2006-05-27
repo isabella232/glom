@@ -25,6 +25,9 @@
 #include <gtkmm/window.h>
 #include <gtkmm/progressbar.h>
 
+namespace Glom
+{
+
 /** Use this to show the user that something is happening.
  */
 class Dialog_ProgressCreating
@@ -39,6 +42,8 @@ public:
 protected:
   Gtk::ProgressBar* m_progress;
 };
+
+} //namespace Glom
 
 #endif //GLOM_DIALOG_PROGRESS_CREATING_H
 

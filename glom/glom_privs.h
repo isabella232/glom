@@ -25,6 +25,9 @@
 
 #include <glom/glom_postgres.h>
 
+namespace Glom
+{
+
 class GlomPrivs : public GlomPostgres
 {
 public:
@@ -39,6 +42,8 @@ public:
   static bool get_user_is_in_group(const Glib::ustring& user, const Glib::ustring& group);
   static Privileges get_current_privs(const Glib::ustring& table_name);
 };
+
+} //namespace Glom
 
 #endif //GLOM_PRIVS_H
 

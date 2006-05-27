@@ -24,6 +24,9 @@
 #include <glibmm/i18n.h>
 //#include <sstream> //For stringstream
 
+namespace Glom
+{
+
 LabelGlom::LabelGlom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& /* refGlade */)
 : Gtk::Label(cobject)
 {
@@ -61,3 +64,5 @@ App_Glom* LabelGlom::get_application()
   return dynamic_cast<App_Glom*>(pWindow);
 }
 
+
+} //namespace Glom

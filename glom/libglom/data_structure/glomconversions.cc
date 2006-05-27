@@ -30,6 +30,9 @@
 #include <iomanip>
 
 
+namespace Glom
+{
+
 Glib::ustring GlomConversions::format_time(const tm& tm_data)
 {
   return format_time( tm_data, std::locale("") /* the user's current locale */ ); //Get the current locale.
@@ -898,4 +901,5 @@ Gnome::Gda::Value GlomConversions::convert_value(const Gnome::Gda::Value& value,
   return value;
 }
 
+} //namespace Glom
 

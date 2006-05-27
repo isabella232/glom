@@ -24,6 +24,9 @@
 #include <gtkmm/window.h>
 #include "placeholder.h"
 
+namespace Glom
+{
+
 class Dialog_Properties : public Gtk::Window
 {
 public:
@@ -68,5 +71,7 @@ protected:
 
   //typedef std::list<sigc::connection> type_listConnections; //Store the connections so that we can remove them later.	
 };
+
+} //namespace Glom
 
 #endif //GLOM_DIALOG_PROPERTIES_H

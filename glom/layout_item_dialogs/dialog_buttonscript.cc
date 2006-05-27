@@ -26,6 +26,9 @@
 //#include <libgnome/gnome-i18n.h>
 #include <glibmm/i18n.h>
 
+namespace Glom
+{
+
 Dialog_ButtonScript::Dialog_ButtonScript(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
 : Gtk::Dialog(cobject)
 {
@@ -88,6 +91,8 @@ void Dialog_ButtonScript::on_button_test()
   glom_execute_python_function_implementation(calculation, field_values, //TODO: Maybe use the field's type here.
     document, m_table_name);
 }
+
+} //namespace Glom
 
 
 

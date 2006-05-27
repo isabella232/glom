@@ -33,6 +33,9 @@
 #include "bakery/View/View.h"
 #include <bakery/Utilities/BusyCursor.h>
 
+namespace Glom
+{
+
 class LayoutItem_GroupBy;
 class LayoutItem_Summary;
 class LayoutItem_VerticalGroup;
@@ -314,5 +317,7 @@ protected:
 
   type_field_calcs m_FieldsCalculationInProgress; //Prevent circular calculations and recalculations.
 };
+
+} //namespace Glom
 
 #endif //BASE_DB_H

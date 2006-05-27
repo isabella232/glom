@@ -21,6 +21,9 @@
 #include "dialog_properties.h"
 #include "adddel/adddel.h"
 
+namespace Glom
+{
+
 Dialog_Properties::Dialog_Properties(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
 : Gtk::Window(cobject),
   m_block(false),
@@ -150,5 +153,6 @@ void Dialog_Properties::enforce_constraints()
 
 }
 
+} //namespace Glom
 
 

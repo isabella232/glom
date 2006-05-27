@@ -26,6 +26,9 @@
 #include <gtkmm/entry.h>
 #include "../../utility_widgets/combo_textglade.h"
 
+namespace Glom
+{
+
 class Dialog_ChooseUser : public Gtk::Dialog
 {
 public:
@@ -40,6 +43,8 @@ public:
 protected:
   Combo_TextGlade* m_combo_name;
 };
+
+} //namespace Glom
 
 #endif //GLOM_MODE_DESIGN_USERS_DIALOG_NEWGROUP_H
 

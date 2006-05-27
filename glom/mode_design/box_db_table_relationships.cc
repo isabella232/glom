@@ -23,6 +23,9 @@
 #include <algorithm>
 #include <glibmm/i18n.h>
 
+namespace Glom
+{
+
 Box_DB_Table_Relationships::Box_DB_Table_Relationships()
 {
   init();
@@ -281,3 +284,5 @@ void Box_DB_Table_Relationships::on_adddel_user_requested_delete(const Gtk::Tree
 
   set_modified();
 }
+
+} //namespace Glom

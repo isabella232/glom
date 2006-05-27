@@ -38,6 +38,9 @@
 #include <glibmm/i18n.h>
 #include <sstream> //For stringstream
 
+namespace Glom
+{
+
 Dialog_Layout_Report::Dialog_Layout_Report(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
 : Dialog_Layout(cobject, refGlade, false /* No table title */),
   m_notebook_parts(0),
@@ -1138,3 +1141,5 @@ void Dialog_Layout_Report::on_notebook_switch_page(GtkNotebookPage*, guint page_
   enable_buttons();
 }
 
+
+} //namespace Glom

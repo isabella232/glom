@@ -26,6 +26,9 @@
 #include <libglademm.h>
 #include <gtkmm/dialog.h>
 
+namespace Glom
+{
+
 /**
  */
 class Dialog_CopyTranslation
@@ -40,6 +43,8 @@ public:
 protected:
   ComboBox_Locale* m_combo_locale;
 };
+
+} //namespace Glom
 
 #endif //GLOM_TRANSLATIONS_DIALOG_COPY_TRANSLATION_H
 

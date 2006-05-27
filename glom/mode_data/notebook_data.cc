@@ -22,6 +22,9 @@
 #include <glom/libglom/data_structure/glomconversions.h>
 #include <glibmm/i18n.h>
 
+namespace Glom
+{
+
 Notebook_Data::Notebook_Data()
 {
   //Add Pages:
@@ -295,3 +298,5 @@ void Notebook_Data::get_record_counts(gulong& total, gulong& found)
 {
   m_Box_List.get_record_counts(total, found);
 }
+
+} //namespace Glom

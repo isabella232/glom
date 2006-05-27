@@ -35,6 +35,9 @@
 #include <algorithm> //For std::find_if().
 #include <sstream> //For stringstream
 
+namespace Glom
+{
+
 #define GLOM_NODE_CONNECTION "connection"
 #define GLOM_ATTRIBUTE_SERVER "server"
 #define GLOM_ATTRIBUTE_USER "user"
@@ -2914,4 +2917,6 @@ void Document_Glom::set_parent_window(Gtk::Window* window)
 {
   m_parent_window = window;
 }
+
+} //namespace Glom
 

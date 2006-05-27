@@ -27,6 +27,8 @@
 #include "../base_db.h"
 #include <glom/libglom/data_structure/tableinfo.h>
 
+namespace Glom
+{
 
 class TableCanvasItem
   : public Gnome::Canvas::Group,
@@ -63,5 +65,7 @@ protected:
 
   sharedptr<const TableInfo> m_table_info;
 };
+
+} //namespace Glom
 
 #endif //GLOM_RELATIONSHIPS_OVERVIEW_TABLE_CANVASITEM_H

@@ -21,6 +21,9 @@
 #include "layoutitem_fieldsummary.h"
 #include <glibmm/i18n.h>
 
+namespace Glom
+{
+
 LayoutItem_FieldSummary::LayoutItem_FieldSummary()
 {
 }
@@ -147,3 +150,4 @@ Glib::ustring LayoutItem_FieldSummary::get_summary_type_name(summaryType summary
     return _("Invalid");
 }
 
+} //namespace Glom

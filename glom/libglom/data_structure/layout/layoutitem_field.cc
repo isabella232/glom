@@ -21,6 +21,9 @@
 #include "layoutitem_field.h"
 #include <glibmm/i18n.h>
 
+namespace Glom
+{
+
 LayoutItem_Field::LayoutItem_Field()
 : m_priv_view(false),
   m_priv_edit(false),
@@ -272,5 +275,6 @@ bool LayoutItem_Field::is_same_field(const sharedptr<const LayoutItem_Field>& fi
          (get_related_relationship_name() == field->get_related_relationship_name());
 }
 
+} //namespace Glom
 
 

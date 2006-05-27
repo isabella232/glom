@@ -21,6 +21,9 @@
 #include "appstate.h"
 
 
+namespace Glom
+{
+
 AppState::AppState()
 : m_userlevel(USERLEVEL_DEVELOPER)
 {
@@ -56,3 +59,6 @@ void AppState::emit_userlevel_changed()
 {
    m_signal_userlevel_changed.emit(m_userlevel);
 }
+
+} //namespace Glom
+

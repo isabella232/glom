@@ -23,6 +23,9 @@
 #include <glibmm/i18n.h>
 #include <iostream>
 
+namespace Glom
+{
+
 Glib::ustring TranslatableItem::m_current_locale;
 Glib::ustring TranslatableItem::m_original_locale;
 
@@ -293,3 +296,4 @@ Glib::ustring TranslatableItem::get_title_or_name() const
     return title;
 }
 
+} //namespace Glom

@@ -23,6 +23,9 @@
 
 #include "../layoutitem_field.h"
 
+namespace Glom
+{
+
 class LayoutItem_FieldSummary : public LayoutItem_Field
 {
 public:
@@ -69,6 +72,8 @@ public:
 protected:
   summaryType m_summary_type;
 };
+
+} //namespace Glom
 
 #endif //GLOM_DATASTRUCTURE_LAYOUTITEM_FIELDSUMMARY_H
 

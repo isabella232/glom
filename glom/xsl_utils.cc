@@ -40,6 +40,9 @@
 #include <iomanip>
 
 
+namespace Glom
+{
+
 void GlomXslUtils::transform_and_open(const xmlpp::Document& xml_document, const Glib::ustring& xsl_file_path, Gtk::Window* parent_window)
 {
   //Use libxslt to convert the XML to HTML:
@@ -137,3 +140,5 @@ Glib::ustring GlomXslUtils::xslt_process(const xmlpp::Document& xml_document, co
 
   return result;
 }
+
+} //namespace Glom

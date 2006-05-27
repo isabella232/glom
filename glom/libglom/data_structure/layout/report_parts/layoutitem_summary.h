@@ -23,6 +23,9 @@
 
 #include "../layoutgroup.h"
 
+namespace Glom
+{
+
 class LayoutItem_Field;
 
 class LayoutItem_Summary : public LayoutGroup
@@ -39,6 +42,8 @@ public:
   virtual Glib::ustring get_part_type_name() const;
   virtual Glib::ustring get_report_part_id() const;
 };
+
+} //namespace Glom
 
 #endif //GLOM_DATASTRUCTURE_LAYOUTITEM_SUMMARY_H
 

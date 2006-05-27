@@ -23,6 +23,8 @@
 //#include <libgnome/gnome-i18n.h>
 #include <glibmm/i18n.h>
 
+namespace Glom
+{
 
 Dialog_Design::Dialog_Design(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
 : Gtk::Dialog(cobject),
@@ -75,3 +77,4 @@ void Dialog_Design::on_button_close()
   hide();
 }
 
+} //namespace Glom

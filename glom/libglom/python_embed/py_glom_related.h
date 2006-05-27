@@ -24,6 +24,9 @@
 #include <glom/libglom/python_embed/py_glom_record.h>
 #include <glom/libglom/data_structure/relationship.h>
 
+namespace Glom
+{
+
 class PyGlomRelatedRecord;
 
 class PyGlomRelated
@@ -46,6 +49,6 @@ PyTypeObject* PyGlomRelated_GetPyType();
 void PyGlomRelated_SetRelationships(PyGlomRelated* self, const PyGlomRelated::type_map_relationships& relationships);
 
 
-
+} //namespace Glom
 
 #endif //GLOM_PYTHON_GLOM_RELATED_H

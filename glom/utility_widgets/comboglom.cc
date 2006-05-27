@@ -31,6 +31,9 @@
 #include <ctime>     // for struct tm
 #include <iostream>   // for cout, endl
 
+namespace Glom
+{
+
 ComboGlom::ComboGlom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& /* refGlade */)
 : Gtk::ComboBox(cobject)
 {
@@ -228,3 +231,5 @@ void ComboGlom::set_read_only(bool read_only)
 {
   //TODO
 }
+
+} //namespace Glom

@@ -22,6 +22,9 @@
 #include <bakery/App/App_Gtk.h> //For util_bold_message().
 #include <glibmm/i18n.h>
 
+namespace Glom
+{
+
 Box_Tables::Box_Tables(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
 : Box_DB(cobject),
   m_pLabelFrameTitle(0),
@@ -474,3 +477,5 @@ void Box_Tables::on_userlevel_changed(AppState::userlevels /* userlevel */)
 {
   fill_from_database();
 }
+
+} //namespace Glom

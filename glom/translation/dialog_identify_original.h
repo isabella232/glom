@@ -26,6 +26,9 @@
 #include <libglademm.h>
 #include <gtkmm/dialog.h>
 
+namespace Glom
+{
+
 /**
  */
 class Dialog_IdentifyOriginal
@@ -44,6 +47,8 @@ protected:
   Gtk::Label* m_label_original;
   ComboBox_Locale* m_combo_locale;
 };
+
+} //namespace Glom
 
 #endif //GLOM_TRANSLATIONS_DIALOG_IDENTIFY_ORIGINAL_H
 

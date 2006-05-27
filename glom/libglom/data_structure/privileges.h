@@ -24,6 +24,9 @@
 
 #include <glibmm/ustring.h>
 
+namespace Glom
+{
+
 #define GLOM_STANDARD_GROUP_NAME_DEVELOPER "glom_developer"
 
 class Privileges
@@ -40,5 +43,7 @@ public:
 
   bool m_view, m_edit, m_create, m_delete;
 };
+
+} //namespace Glom
 
 #endif //GLOM_DATA_STRUCTURE_PRIVILEGES_H

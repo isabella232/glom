@@ -22,6 +22,9 @@
 #include <glom/libglom/data_structure/glomconversions.h>
 #include <glibmm/i18n.h>
 
+namespace Glom
+{
+
 Dialog_FieldSummary::Dialog_FieldSummary(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
 : Gtk::Dialog(cobject),
   m_label_field(0),
@@ -69,3 +72,5 @@ void Dialog_FieldSummary::on_button_field()
     set_item(m_layout_item, m_table_name); //Update the UI.
   }
 }
+
+} //namespace Glom

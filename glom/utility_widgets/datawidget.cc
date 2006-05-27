@@ -34,6 +34,9 @@
 #include <glom/libglom/utils.h>
 #include <glibmm/i18n.h>
 
+namespace Glom
+{
+
 /*
 DataWidget::DataWidget(Field::glom_field_type glom_type, const Glib::ustring& title)
 : m_glom_type(glom_type),
@@ -758,3 +761,5 @@ void DataWidget::on_button_choose_date()
 
   return result;
 }
+
+} //namespace Glom

@@ -23,6 +23,9 @@
 
 #include "adddel.h"
 
+namespace Glom
+{
+
 class AddDel_WithButtons : public AddDel
 {
 public: 
@@ -48,5 +51,7 @@ protected:
   Gtk::Button m_Button_Del;
   Gtk::Button m_Button_Edit;
 };
+
+} //namespace Glom
 
 #endif //ADDDEL_WITHBUTTONS_H

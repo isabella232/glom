@@ -40,6 +40,9 @@
 
 #include "mode_data/box_data_list_related.h" //only for m_HackToFixLinkerError.
 
+namespace Glom
+{
+
 class Dialog_Layout_Report;
 
 class Frame_Glom :
@@ -185,5 +188,7 @@ protected:
 
   Box_Data_List_Related m_HackToFixLinkerError; //The implementation of this class does not seem to be in the library unless I do this. murrayc.
 };
+
+} //namespace Glom
 
 #endif //FRAME_GLOM_H

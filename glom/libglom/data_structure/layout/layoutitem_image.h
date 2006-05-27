@@ -24,6 +24,9 @@
 #include "layoutitem.h"
 #include <libgdamm/value.h>
 
+namespace Glom
+{
+
 class LayoutItem_Image 
  : public LayoutItem
 {
@@ -56,6 +59,8 @@ protected:
 
   Gnome::Gda::Value m_image;
 };
+
+} //namespace Glom
 
 #endif //GLOM_DATASTRUCTURE_LAYOUTITEM_IMAGE_H
 

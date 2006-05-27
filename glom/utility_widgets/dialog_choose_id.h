@@ -27,6 +27,9 @@
 #include "../mode_find/box_data_details_find.h"
 #include "../mode_data/box_data_list.h"
 
+namespace Glom
+{
+
 class Dialog_ChooseID
   : public Gtk::Dialog,
     public Base_DB
@@ -72,5 +75,7 @@ protected:
 
   enumStage m_stage;
 };
+
+} //namespace Glom
 
 #endif //GLOM_MODE_DATA_DIALOG_CHOOSE_ID_H

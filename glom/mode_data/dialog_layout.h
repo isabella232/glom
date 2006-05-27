@@ -26,6 +26,9 @@
 #include <glom/libglom/document/document_glom.h>
 #include "../box_db.h"
 
+namespace Glom
+{
+
 class Dialog_Layout :
   public Gtk::Dialog,
   public Base_DB //Give it access to the document, and to the database utilities
@@ -68,5 +71,7 @@ protected:
   //Document_Glom* m_document;  
   bool m_modified;
 };
+
+} //namespace Glom
 
 #endif //GLOM_MODE_DATA_DIALOG_LAYOUT_H

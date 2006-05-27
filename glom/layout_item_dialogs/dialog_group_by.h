@@ -31,6 +31,8 @@
 #include "dialog_groupby_sortfields.h"
 #include "comboentry_borderwidth.h"
 
+namespace Glom
+{
 
 class Dialog_GroupBy
  : public Gtk::Dialog,
@@ -75,5 +77,7 @@ protected:
 
   Glib::ustring m_table_name;
 };
+
+} //namespace Glom
 
 #endif //GLOM_LAYOUT_ITEM_DIALOGS_GROUP_BY_H

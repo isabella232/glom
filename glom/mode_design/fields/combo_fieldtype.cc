@@ -23,6 +23,9 @@
 #include <gtk/gtkliststore.h> //For debugging.
 #include <glibmm/i18n.h>
 
+namespace Glom
+{
+
 Combo_FieldType::Combo_FieldType(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& /* refGlade */)
 : Gtk::ComboBox(cobject)
 {
@@ -33,6 +36,7 @@ Combo_FieldType::Combo_FieldType()
 {
   init();
 }
+
 void Combo_FieldType::init()
 {
   m_refTreeModel = Gtk::ListStore::create(m_Columns);
@@ -98,3 +102,5 @@ Field::glom_field_type Combo_FieldType::get_field_type() const
 
   return result;
 }
+
+} //namespace Glom

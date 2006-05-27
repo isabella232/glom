@@ -33,6 +33,8 @@
 #include "../../layout_item_dialogs/box_formatting.h"
 #include "../../base_db.h"
 
+namespace Glom
+{
 
 class Dialog_FieldDefinition
  : public Dialog_Properties,
@@ -92,5 +94,7 @@ protected:
   sharedptr<Field> m_Field;
   Glib::ustring m_table_name;
 };
+
+} //namespace Glom
 
 #endif //DIALOG_FIELDDEFINITION_H

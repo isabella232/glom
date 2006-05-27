@@ -21,6 +21,9 @@
 #include "table_columns.h"
 #include <gtkmm/label.h>
 
+namespace Glom
+{
+
 Table_Columns::Table_Columns()
 {
   m_uiNextRow = 0;
@@ -76,3 +79,5 @@ void Table_Columns::set_column_justification(guint col, Gtk::Justification justi
 
   m_vecJustification[col] = justification;
 }
+
+} //namespace Glom

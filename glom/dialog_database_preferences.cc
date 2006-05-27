@@ -25,6 +25,9 @@
 #include <bakery/Utilities/BusyCursor.h>
 #include <glibmm/i18n.h>
 
+namespace Glom
+{
+
 Dialog_Database_Preferences::Dialog_Database_Preferences(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
 : Gtk::Dialog(cobject),
   Base_DB(),
@@ -190,3 +193,5 @@ void Dialog_Database_Preferences::on_button_choose_image()
 {
    m_image->do_choose_image();
 }
+
+} //namespace Glom

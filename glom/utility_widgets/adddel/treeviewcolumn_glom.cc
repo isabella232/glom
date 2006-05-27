@@ -20,6 +20,9 @@
 
 #include "treeviewcolumn_glom.h"
 
+namespace Glom
+{
+
 TreeViewColumnGlom::TreeViewColumnGlom(const Glib::ustring& title, Gtk::CellRenderer& cell)
 : Gtk::TreeViewColumn(title, cell)
 {
@@ -38,3 +41,5 @@ void TreeViewColumnGlom::set_column_id(const Glib::ustring& value)
 {
   m_column_id = value;
 }
+
+} //namespace Glom

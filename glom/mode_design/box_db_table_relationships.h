@@ -23,9 +23,8 @@
 
 #include "../box_db_table.h"
 
-/**
-  *@author Murray Cumming
-  */
+namespace Glom
+{
 
 class Box_DB_Table_Relationships : public Box_DB_Table
 {
@@ -52,6 +51,8 @@ protected:
   mutable AddDel_WithButtons m_AddDel; //mutable because its get_ methods aren't const.
   Gtk::Button m_Button_Guess;
 };
+
+} //namespace Glom
 
 #endif //BOX_DB_TABLE_RELATIONSHIPS_H
 

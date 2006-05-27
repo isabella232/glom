@@ -24,6 +24,8 @@
 #include "box_db_table.h"
 #include <glom/libglom/data_structure/report.h>
 
+namespace Glom
+{
 
 class Box_Reports : public Box_DB_Table
 {
@@ -53,6 +55,8 @@ protected:
 
   mutable AddDel_WithButtons m_AddDel; //mutable because its get_ methods aren't const.
 };
+
+} //namespace Glom
 
 #endif //BOX_REPORTS_H
 

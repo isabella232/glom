@@ -26,6 +26,9 @@
 #include <glom/libglom/sharedptr.h>
 #include <libgdamm.h>
 
+namespace Glom
+{
+
 /* Base class for classes that need to store a relationship name 
 * and a cache of the actual relationship information.
 */
@@ -73,6 +76,8 @@ protected:
   sharedptr<Relationship> m_related_relationship; //Rarely used. It is for showing fields from the (related) relationships of related tables.
 
 };
+
+} //namespace Glom
 
 #endif //GLOM_DATASTRUCTURE_LAYOUT_USESRELATIONSHIP_H
 

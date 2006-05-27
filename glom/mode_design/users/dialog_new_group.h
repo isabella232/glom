@@ -25,6 +25,9 @@
 #include <gtkmm/dialog.h>
 #include <gtkmm/entry.h>
 
+namespace Glom
+{
+
 class Dialog_NewGroup : public Gtk::Dialog
 {
 public:
@@ -33,6 +36,8 @@ public:
 
   Gtk::Entry* m_entry_name;
 };
+
+} //namespace Glom
 
 #endif //GLOM_MODE_DESIGN_USERS_DIALOG_NEWGROUP_H
 

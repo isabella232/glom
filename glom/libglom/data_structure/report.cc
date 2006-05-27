@@ -20,6 +20,9 @@
 
 #include "report.h"
 
+namespace Glom
+{
+
 Report::Report()
 : m_show_table_title(true)
 {
@@ -54,3 +57,4 @@ void Report::set_show_table_title(bool show_table_title)
   m_show_table_title = show_table_title;
 }
 
+} //namespace Glom

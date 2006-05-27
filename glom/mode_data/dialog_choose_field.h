@@ -29,6 +29,9 @@
 #include "../combobox_relationship.h"
 #include "../utility_widgets/comboentry_currency.h"
 
+namespace Glom
+{
+
 class Dialog_ChooseField : public Gtk::Dialog
 {
 public:
@@ -80,5 +83,7 @@ protected:
 
   Document_Glom* m_document;
 };
+
+} //namespace Glom
 
 #endif //GLOM_MODE_DATA_DIALOG_CHOOSE_FIELD_H

@@ -26,6 +26,9 @@
 #include "../utility_widgets/placeholder.h"
 #include "../utility_widgets/flowtablewithfields.h"
 
+namespace Glom
+{
+
 class Box_Data_Details : public Box_Data
 {
 public: 
@@ -133,5 +136,7 @@ protected:
   type_signal_record_deleted m_signal_record_deleted;
   type_signal_requested_related_details m_signal_requested_related_details;
 };
+
+} //namespace Glom
 
 #endif //BOX_DATA_DETAILS_H

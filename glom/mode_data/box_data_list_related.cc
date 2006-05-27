@@ -24,6 +24,9 @@
 #include <bakery/App/App_Gtk.h> //For util_bold_message().
 #include <glibmm/i18n.h>
 
+namespace Glom
+{
+
 Box_Data_List_Related::Box_Data_List_Related()
 : m_pDialogLayoutRelated(0)
 {
@@ -546,3 +549,5 @@ void Box_Data_List_Related::get_suitable_record_to_view_details(const Gnome::Gda
 
   }
 }
+
+} //namespace Glom

@@ -22,6 +22,9 @@
 //#include <libgnome/gnome-i18n.h>
 #include <glibmm/i18n.h>
 
+namespace Glom
+{
+
 Dialog_Layout::Dialog_Layout(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade, bool with_table_title)
 : Gtk::Dialog(cobject),
   m_entry_table_title(0),
@@ -185,3 +188,5 @@ bool Dialog_Layout::get_modified() const
 {
   return m_modified;
 }
+
+} //namespace Glom

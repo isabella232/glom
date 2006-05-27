@@ -24,6 +24,9 @@
 //#include <libgnome/gnome-i18n.h>
 #include <glibmm/i18n.h>
 
+namespace Glom
+{
+
 Dialog_FieldDefinition::Dialog_FieldDefinition(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
 : Dialog_Properties(cobject, refGlade),
   m_pDataWidget_DefaultValueSimple(0),
@@ -386,6 +389,7 @@ void Dialog_FieldDefinition::on_button_edit_calculation()
   }
 }
 
+} //namespace Glom
 
 
 

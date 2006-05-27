@@ -22,6 +22,9 @@
 #include <bakery/App/App_Gtk.h> //For util_bold_message().
 #include <glibmm/i18n.h>
 
+namespace Glom
+{
+
 Dialog_CopyTranslation::Dialog_CopyTranslation(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
 : Gtk::Dialog(cobject),
   m_combo_locale(0)
@@ -39,3 +42,5 @@ Glib::ustring Dialog_CopyTranslation::get_locale() const
 {
   return m_combo_locale->get_selected_locale();
 }
+
+} //namespace Glom

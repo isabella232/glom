@@ -22,6 +22,9 @@
 #include <glibmm/i18n.h>
 #include "../application.h"
 
+namespace Glom
+{
+
 LayoutWidgetBase::LayoutWidgetBase()
 : m_pLayoutItem(0),
   m_pMenuPopup(0)
@@ -189,3 +192,5 @@ LayoutWidgetBase::type_signal_user_requested_layout_properties LayoutWidgetBase:
 void LayoutWidgetBase::set_read_only(bool /* read_only */)
 {
 }
+
+} //namespace Glom

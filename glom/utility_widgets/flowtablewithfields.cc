@@ -31,7 +31,8 @@
 #include <bakery/App/App_Gtk.h> //For util_bold_message().
 #include <glibmm/i18n.h>
 
-
+namespace Glom
+{
 
 FlowTableWithFields::Info::Info()
 : m_first(0),
@@ -1053,3 +1054,4 @@ void FlowTableWithFields::on_flowtable_requested_related_details(const Glib::ust
   signal_requested_related_details().emit(table_name, primary_key_value);
 }
 
+} //namespace Glom

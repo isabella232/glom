@@ -25,6 +25,9 @@
 #include <libglademm.h>
 #include "../../utility_widgets/combo_textglade.h"
 
+namespace Glom
+{
+
 class Dialog_User : public Gtk::Dialog
 {
 public:
@@ -46,14 +49,12 @@ public:
 
 protected:
 
-
-
   //virtual void save_to_document();
 
   //signal handlers:
 
-
-
 };
+
+} //namespace Glom
 
 #endif //GLOM_MODE_DESIGN_DIALOG_USER_H

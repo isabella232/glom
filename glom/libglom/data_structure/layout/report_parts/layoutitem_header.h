@@ -24,6 +24,9 @@
 #include "../layoutgroup.h"
 #include "../../field.h"
 
+namespace Glom
+{
+
 /** 
  */
 class LayoutItem_Header
@@ -44,6 +47,8 @@ public:
 protected:
 
 };
+
+} //namespace Glom
 
 #endif //GLOM_DATASTRUCTURE_LAYOUTITEM_HEADER_H
 

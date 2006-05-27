@@ -22,6 +22,9 @@
 #include "gtk/gtkwidget.h"
 #include "gdk/gdktypes.h"
 
+namespace Glom
+{
+
 FlowTable::FlowTableItem::FlowTableItem()
 : m_expand_first_full(false),
   m_expand_second(false)
@@ -736,5 +739,6 @@ bool FlowTable::on_expose_event(GdkEventExpose* event)
   return Gtk::Container::on_expose_event(event);
 }
 
+} //namespace Glom
 
 

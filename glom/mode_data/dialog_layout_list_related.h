@@ -25,6 +25,9 @@
 #include "../utility_widgets/combo_textglade.h"
 #include "../combobox_relationship.h"
 
+namespace Glom
+{
+
 class Dialog_Layout_List_Related : public Dialog_Layout
 {
 public:
@@ -89,5 +92,7 @@ protected:
 
   Glib::RefPtr<Gtk::ListStore> m_model_fields;
 };
+
+} //namespace Glom
 
 #endif //GLOM_MODE_DATA_DIALOG_LAYOUT_LIST_RELATED_H

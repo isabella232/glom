@@ -25,6 +25,9 @@
 #include <gtkmm/liststore.h>
 
 
+namespace Glom
+{
+
 void c_callback_CellRendererList_on_editing_started(GtkCellRenderer* /* self */, GtkCellEditable* cell_editable, const gchar* /* path */, void* data);
 
 class CellRendererList : public Gtk::CellRendererCombo
@@ -64,6 +67,8 @@ protected:
   Glib::RefPtr<Gtk::ListStore> m_refModel;
   bool m_use_second;
 };
+
+} //namespace Glom
 
 #endif //ADDDEL_CELLRENDERERLIST_H
 

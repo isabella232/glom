@@ -20,6 +20,9 @@
 
 #include "privileges.h"
 
+namespace Glom
+{
+
 Privileges::Privileges()
 : m_view(false),
   m_edit(false),
@@ -55,3 +58,4 @@ bool Privileges::operator==(const Privileges& src) const
          && (m_delete == src.m_delete);
 }
 
+} //namespace Glom

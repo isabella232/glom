@@ -22,6 +22,9 @@
 #include <bakery/App/App_Gtk.h> //For util_bold_message().
 #include <glibmm/i18n.h>
 
+namespace Glom
+{
+
 Box_Reports::Box_Reports(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
 : Box_DB_Table(cobject, refGlade),
   m_pLabelFrameTitle(0),
@@ -235,3 +238,5 @@ void Box_Reports::on_userlevel_changed(AppState::userlevels /* userlevel */)
 {
   fill_from_database();
 }
+
+} //namespace Glom

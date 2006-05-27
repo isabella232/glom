@@ -25,6 +25,9 @@
 #include "../field.h"
 #include "../relationship.h"
 
+namespace Glom
+{
+
 /** The child items are LayoutGroups, each of which will be shown on its own tab.
  */
 class LayoutItem_Notebook
@@ -44,6 +47,8 @@ public:
 protected:
 
 };
+
+} //namespace Glom
 
 #endif //GLOM_DATASTRUCTURE_LAYOUTITEM_NOTEBOOK_H
 

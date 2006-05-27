@@ -26,6 +26,9 @@
 #include <glom/libglom/data_structure/layout/layoutitem_button.h>
 #include <libglademm.h>
 
+namespace Glom
+{
+
 class App_Glom;
 
 class LabelGlom
@@ -43,6 +46,8 @@ protected:
 
   virtual App_Glom* get_application();
 };
+
+} //namespace Glom
 
 #endif //GLOM_UTILITY_WIDGETS_LABEL_GLOM_H
 

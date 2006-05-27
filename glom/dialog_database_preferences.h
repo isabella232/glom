@@ -31,6 +31,9 @@
 #include <glom/libglom/connectionpool.h>
 #include "utility_widgets/imageglom.h"
 
+namespace Glom
+{
+
 class Dialog_Database_Preferences
   : public Gtk::Dialog,
     public Base_DB
@@ -77,6 +80,8 @@ protected:
 
   SystemPrefs m_system_prefs;
 };
+
+} //namespace Glom
 
 #endif //GLOM_DIALOG_DATABASE_PREFERENCES_H
 

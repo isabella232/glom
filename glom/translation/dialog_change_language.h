@@ -25,6 +25,9 @@
 #include <libglademm.h>
 #include <gtkmm/dialog.h>
 
+namespace Glom
+{
+
 /** 
  */
 class Dialog_ChangeLanguage
@@ -39,6 +42,8 @@ public:
 protected:
   ComboBox_Locale* m_combo_locale;
 };
+
+} //namespace Glom
 
 #endif //GLOM_TRANSLATIONS_DIALOG_CHANGE_LANGUAGE_H
 

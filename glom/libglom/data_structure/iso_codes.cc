@@ -25,6 +25,9 @@
 #include <glibmm/i18n.h>
 #include "config.h" //For ISO_CODES_PREFIX.
 
+namespace Glom
+{
+
 namespace IsoCodes
 {
 
@@ -276,6 +279,7 @@ type_list_locales get_list_of_locales()
   return list_locales;
 }
 
+} //namespace Glom
 
 } //namespace IsoCodes
 

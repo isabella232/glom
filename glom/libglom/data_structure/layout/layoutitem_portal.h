@@ -25,6 +25,9 @@
 #include "../field.h"
 #include "../relationship.h"
 
+namespace Glom
+{
+
 class LayoutItem_Portal
 : public LayoutGroup,
   public UsesRelationship
@@ -48,6 +51,8 @@ public:
 protected:
 
 };
+
+} //namespace Glom
 
 #endif //GLOM_DATASTRUCTURE_LAYOUTITEM_PORTAL_H
 

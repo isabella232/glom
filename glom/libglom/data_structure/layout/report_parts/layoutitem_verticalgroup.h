@@ -24,6 +24,9 @@
 #include "../layoutgroup.h"
 #include "../../field.h"
 
+namespace Glom
+{
+
 /** The child items are arranged vertically in a row on a report.
  */
 class LayoutItem_VerticalGroup
@@ -44,6 +47,8 @@ public:
 protected:
 
 };
+
+} //namespace Glom
 
 #endif //GLOM_DATASTRUCTURE_LAYOUTITEM_VERTICALGROUP_H
 

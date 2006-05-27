@@ -20,6 +20,9 @@
  
 #include "dialog_choose_user.h"
 
+namespace Glom
+{
+
 Dialog_ChooseUser::Dialog_ChooseUser(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
 : Gtk::Dialog(cobject),
   m_combo_name(0)
@@ -46,3 +49,4 @@ Glib::ustring Dialog_ChooseUser::get_user() const
   return m_combo_name->get_active_text();
 }
 
+} //namespace Glom

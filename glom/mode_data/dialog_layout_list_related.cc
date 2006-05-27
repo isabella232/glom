@@ -26,6 +26,9 @@
 //#include <libgnome/gnome-i18n.h>
 #include <glibmm/i18n.h>
 
+namespace Glom
+{
+
 Dialog_Layout_List_Related::Dialog_Layout_List_Related(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
 : Dialog_Layout(cobject, refGlade),
   m_treeview_fields(0),
@@ -473,4 +476,5 @@ sharedptr<LayoutItem_Portal> Dialog_Layout_List_Related::get_portal_layout()
   return m_portal;
 }
 
+} //namespace Glom
 

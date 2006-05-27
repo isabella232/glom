@@ -21,6 +21,9 @@
 #include "layoutitem_notebook.h"
 #include <glibmm/i18n.h>
 
+namespace Glom
+{
+
 LayoutItem_Notebook::LayoutItem_Notebook()
 {
 }
@@ -51,4 +54,6 @@ Glib::ustring LayoutItem_Notebook::get_part_type_name() const
 {
   return _("Notebook");
 }
+
+} //namespace Glom
 

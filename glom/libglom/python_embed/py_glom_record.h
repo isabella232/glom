@@ -30,6 +30,9 @@
 #include <glom/libglom/data_structure/field.h>
 #include <glibmm/ustring.h>
 
+namespace Glom
+{
+
 class PyGlomRelated;
 
 struct PyGlomRecord
@@ -54,5 +57,6 @@ PyTypeObject* PyGlomRecord_GetPyType();
 
 void PyGlomRecord_SetFields(PyGlomRecord* self, const PyGlomRecord::type_map_field_values& field_values, Document_Glom* document, const Glib::ustring& table_name);
 
+} //namespace Glom
 
 #endif //GLOM_PYTHON_GLOM_RECORD_H

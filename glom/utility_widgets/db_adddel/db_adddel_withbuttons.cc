@@ -21,6 +21,9 @@
 #include "db_adddel_withbuttons.h"
 //#include <libgnome/gnome-i18n.h>
 
+namespace Glom
+{
+
 DbAddDel_WithButtons::DbAddDel_WithButtons()
 : m_HBox(false, 6),
   m_Button_Add(Gtk::Stock::ADD),
@@ -137,3 +140,5 @@ void DbAddDel_WithButtons::set_allow_view_details(bool val)
   setup_buttons();
 }
 
+
+} //namespace Glom

@@ -24,6 +24,9 @@
 #include <gtkmm.h>
 #include <libglademm.h>
 
+namespace Glom
+{
+
 class RelationshipsCanvasTableWidget : public Gtk::Alignment
 {
 public:
@@ -31,5 +34,7 @@ public:
   RelationshipsCanvasTableWidget(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
   virtual ~RelationshipsCanvasTableWidget();
 };
+
+} //namespace Glom
 
 #endif //GLOM_RELATIONSHIPS_OVERVIEW_TABLE_WIDGET_H

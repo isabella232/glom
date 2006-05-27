@@ -24,6 +24,9 @@
 #include <glom/libglom/data_structure/layout/layoutitem.h>
 #include <gtkmm/treestore.h>
 
+namespace Glom
+{
+
 class TreeStore_ReportLayout : public Gtk::TreeStore
 {
 protected:
@@ -58,6 +61,8 @@ protected:
   virtual bool row_drop_possible_vfunc(const Gtk::TreeModel::Path& dest, const Gtk::SelectionData& selection_data) const;
 
 };
+
+} //namespace Glom
 
 #endif //GLOM_MODE_DATA_TREESTORE_REPORT_LAYOUT_H
 

@@ -21,6 +21,9 @@
 #include "adddel_withbuttons.h"
 //#include <libgnome/gnome-i18n.h>
 
+namespace Glom
+{
+
 AddDel_WithButtons::AddDel_WithButtons()
 : m_HBox(false, 6),
   m_Button_Add(Gtk::Stock::ADD),
@@ -141,4 +144,5 @@ void AddDel_WithButtons::setup_buttons()
   }
 }
 
+} //namespace Glom
 

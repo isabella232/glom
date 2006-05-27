@@ -24,6 +24,8 @@
 #include "../box_db_table.h"
 #include "dialog_layout.h"
 
+namespace Glom
+{
 
 /** Call init_db_details() to create the layout and fill it with data from the database.
  * Call refresh_data_from_database() to fill the existing layout with up-to-date data from the database.
@@ -137,5 +139,7 @@ protected:
   type_vecFields m_TableFields; //A cache, so we don't have to repeatedly get them from the Document.
   type_vecLayoutFields m_FieldsShown; //And any extra keys needed by shown fields.
 };
+
+} //namespace Glom
 
 #endif

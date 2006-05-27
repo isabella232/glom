@@ -36,6 +36,9 @@
 #include <map>
 #include <list>
 
+namespace Glom
+{
+
 class DataWidget;
 
 class FlowTableWithFields
@@ -199,5 +202,6 @@ protected:
   type_signal_script_button_clicked m_signal_script_button_clicked;
 };
 
+} //namespace Glom
 
 #endif //GLOM_UTILITYWIDGETS_FLOWTABLEWITHFIELDS_H

@@ -23,6 +23,9 @@
 
 #include "layoutitem.h"
 
+namespace Glom
+{
+
 class LayoutItem_Button 
  : public LayoutItem
 {
@@ -50,6 +53,8 @@ public:
 protected:
   Glib::ustring m_script;
 };
+
+} //namespace Glom
 
 #endif //GLOM_DATASTRUCTURE_LAYOUTITEM_BUTTON_H
 

@@ -23,6 +23,9 @@
 
 #include "../mode_data/box_data_details.h"
 
+namespace Glom
+{
+
 class Box_Data_Details_Find : public Box_Data_Details
 {
 public: 
@@ -41,5 +44,7 @@ protected:
   virtual void on_flowtable_field_edited(const sharedptr<const LayoutItem_Field>& id, const Gnome::Gda::Value& value);
 
 };
+
+} //namespace Glom
 
 #endif

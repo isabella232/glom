@@ -21,6 +21,8 @@
 #include "glom_privs.h"
 #include <glom/libglom/standard_table_prefs_fields.h>
 
+namespace Glom
+{
 
 GlomPrivs::type_vecStrings GlomPrivs::get_database_groups()
 {
@@ -335,3 +337,4 @@ Privileges GlomPrivs::get_current_privs(const Glib::ustring& table_name)
   return result;
 }
 
+} //namespace Glom

@@ -26,6 +26,9 @@
 
 #include <glom/libglom/data_structure/layout/layoutitem_field.h>
 
+namespace Glom
+{
+
 ///field, ascending
 typedef std::pair< sharedptr<const LayoutItem_Field>, bool> type_pair_sort_field;
 typedef std::list<type_pair_sort_field> type_sort_clause;
@@ -82,6 +85,8 @@ type_vecStrings string_separate(const Glib::ustring& str, const Glib::ustring& s
 Glib::ustring string_trim(const Glib::ustring& str, const Glib::ustring& to_remove);
 
 } //namespace GlomUtils
+
+} //namespace Glom
 
 #endif //GLOM_UTILS_H
 

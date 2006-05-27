@@ -28,6 +28,9 @@
 #include <glom/libglom/data_structure/layout/report_parts/layoutitem_footer.h>
 #include <glom/xsl_utils.h>
 
+namespace Glom
+{
+
 ReportBuilder::ReportBuilder()
 {
 }
@@ -552,3 +555,5 @@ void ReportBuilder::report_build(const FoundSet& found_set, const sharedptr<cons
   GlomXslUtils::transform_and_open(*pDocument, "print_report_to_html.xsl", parent_window);
 }
 
+
+} //namespace Glom

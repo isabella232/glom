@@ -36,6 +36,9 @@
 #include <fstream>
 #include <glibmm/i18n.h>
 
+namespace Glom
+{
+
 Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
 : PlaceHolder(cobject, refGlade),
   m_pLabel_Name(0),
@@ -1595,4 +1598,6 @@ void Frame_Glom::on_button_find_all()
   //Change the found set to all records:
   show_table(m_table_name);
 }
+
+} //namespace Glom
 

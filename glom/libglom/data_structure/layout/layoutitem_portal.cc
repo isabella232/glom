@@ -21,6 +21,9 @@
 #include "layoutitem_portal.h"
 #include <glibmm/i18n.h>
 
+namespace Glom
+{
+
 LayoutItem_Portal::LayoutItem_Portal()
 {
 }
@@ -94,3 +97,5 @@ void LayoutItem_Portal::debug(guint level) const
   g_warning("LayoutItem_Portal::debug: level = %d", level);
   //LayoutGroup::debug(level);
 }
+
+} //namespace Glom

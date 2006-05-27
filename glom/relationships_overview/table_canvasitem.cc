@@ -20,6 +20,9 @@
 
 #include "table_canvasitem.h"
 
+namespace Glom
+{
+
 TableCanvasItem::TableCanvasItem(Gnome::Canvas::Group& parent_group, const sharedptr<const TableInfo>& table_info)
 : Gnome::Canvas::Group(parent_group),
   m_canvas_widget(0),
@@ -111,3 +114,5 @@ void TableCanvasItem::on_cell_data_name(Gtk::CellRenderer* renderer, const Gtk::
     }
   }
 }
+
+} //namespace Glom

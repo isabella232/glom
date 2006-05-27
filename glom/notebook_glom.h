@@ -24,9 +24,11 @@
 #include "box_db.h"
 #include <glom/libglom/document/document_glom.h>
 
-/**Notebook with document methods.
-  */
+namespace Glom
+{
 
+/** Notebook with document methods.
+  */
 class Notebook_Glom :
   public Gtk::Notebook,
   public Base_DB
@@ -58,5 +60,7 @@ protected:
   guint m_uiPreviousPage;
   bool m_destructor_in_progress; //A hack to prevent calling wrap() on dead C instances.
 };
+
+} //namespace Glom
 
 #endif

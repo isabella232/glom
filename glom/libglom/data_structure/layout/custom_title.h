@@ -23,6 +23,9 @@
 
 #include "../translatable_item.h"
 
+namespace Glom
+{
+
 class CustomTitle 
  : public TranslatableItem
 {
@@ -43,6 +46,8 @@ protected:
   //We need this in order to specify that an empty custom title should really be used.
   bool m_use_custom_title;
 };
+
+} //namespace Glom
 
 #endif //GLOM_DATASTRUCTURE_LAYOUT_CUSTOM_TITLE_H
 

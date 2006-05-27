@@ -24,6 +24,9 @@
 #include <glom/libglom/data_structure/field.h>
 #include <glom/libglom/data_structure/numeric_format.h>
 
+namespace Glom
+{
+
 namespace IsoCodes
 {
 
@@ -49,6 +52,8 @@ type_list_locales get_list_of_locales();
 
 Glib::ustring get_locale_name(const Glib::ustring& locale_id);
 }
+
+} //namespace Glom
 
 #endif //GLOM_DATASTRUCTURE_ISO_CODES_H
 

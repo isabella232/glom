@@ -27,6 +27,9 @@
 //#include <libgnome/gnome-i18n.h>
 #include <glibmm/i18n.h>
 
+namespace Glom
+{
+
 Window_Translations::Window_Translations(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
 : Gtk::Window(cobject),
   m_treeview(0),
@@ -393,3 +396,5 @@ void Window_Translations::on_treeview_edited(const Glib::ustring& /* path */, co
   m_treeview_modified = true;
 }
 
+
+} //namespace Glom

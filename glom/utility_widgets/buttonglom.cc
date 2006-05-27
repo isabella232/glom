@@ -24,6 +24,9 @@
 #include <glibmm/i18n.h>
 //#include <sstream> //For stringstream
 
+namespace Glom
+{
+
 ButtonGlom::ButtonGlom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& /* refGlade */)
 : Gtk::Button(cobject)
 {
@@ -54,3 +57,4 @@ App_Glom* ButtonGlom::get_application()
   return dynamic_cast<App_Glom*>(pWindow);
 }
 
+} //namespace Glom

@@ -25,6 +25,9 @@
 #include <libglademm.h>
 #include <glom/libglom/document/document_glom.h>
 
+namespace Glom
+{
+
 class Dialog_Design
 : public Gtk::Dialog,
   public View_Composite_Glom
@@ -41,5 +44,7 @@ protected:
   Gtk::Label* m_label_table;
   Gtk::Label* m_label_frame;
 };
+
+} //namespace Glom
 
 #endif //GLOM_DIALOG_DESIGN_H

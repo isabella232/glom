@@ -26,6 +26,9 @@
 #include <glom/libglom/data_structure/layout/layoutitem_notebook.h>
 #include <libglademm.h>
 
+namespace Glom
+{
+
 class Dialog_Notebook
  : public Dialog_Layout //It has some useful stuff
 {
@@ -76,5 +79,7 @@ protected:
 
   sharedptr<const LayoutItem_Notebook> m_layout_item;
 };
+
+} //namespace Glom
 
 #endif //GLOM_MODE_DATA_DIALOG_NOTEBOOK_HH
