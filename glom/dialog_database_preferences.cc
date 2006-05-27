@@ -94,7 +94,7 @@ void Dialog_Database_Preferences::on_treeview_cell_edited_next_value(const Glib:
     const Glib::ustring table_name = row[m_columns.m_col_table];
     const Glib::ustring field_name = row[m_columns.m_col_field];
 
-    const Gnome::Gda::Value next_value = GlomConversions::parse_value(new_value);
+    const Gnome::Gda::Value next_value = Conversions::parse_value(new_value);
 
     const Glib::ustring sql_query = "UPDATE \"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME "\" SET "
         "\"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_NEXT_VALUE "\" = " + next_value.to_string() +
@@ -150,8 +150,8 @@ void Dialog_Database_Preferences::load_from_document()
   {
     Gtk::TreeModel::iterator iter = m_model_autoincrements->append();
     Gtk::TreeModel::Row row = *iter;
-    row[m_columns.m_col_table] = GlomConversions::get_text_for_gda_value(Field::TYPE_TEXT, datamodel->get_value_at(0, i), numeric_format);
-    row[m_columns.m_col_field] = GlomConversions::get_text_for_gda_value(Field::TYPE_TEXT, datamodel->get_value_at(1, i), numeric_format);
+    row[m_columns.m_col_table] = Conversions::get_text_for_gda_value(Field::TYPE_TEXT, datamodel->get_value_at(0, i), numeric_format);
+    row[m_columns.m_col_field] = Conversions::get_text_for_gda_value(Field::TYPE_TEXT, datamodel->get_value_at(1, i), numeric_format);
 
     //TODO: Careful of locale:
     row[m_columns.m_col_next_value] = atol(datamodel->get_value_at(2, i).to_string().c_str());

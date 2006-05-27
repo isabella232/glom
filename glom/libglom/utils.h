@@ -33,7 +33,7 @@ namespace Glom
 typedef std::pair< sharedptr<const LayoutItem_Field>, bool> type_pair_sort_field;
 typedef std::list<type_pair_sort_field> type_sort_clause;
 
-namespace GlomUtils
+namespace Utils
 {
 
 Glib::ustring trim_whitespace(const Glib::ustring& text);
@@ -84,7 +84,7 @@ type_vecStrings string_separate(const Glib::ustring& str, const Glib::ustring& s
 
 Glib::ustring string_trim(const Glib::ustring& str, const Glib::ustring& to_remove);
 
-} //namespace GlomUtils
+} //namespace Utils
 
 } //namespace Glom
 

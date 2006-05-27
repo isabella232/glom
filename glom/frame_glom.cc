@@ -474,7 +474,7 @@ void Frame_Glom::on_menu_userlevel_Developer(const Glib::RefPtr<Gtk::RadioAction
 
       //Check whether the current user has developer privileges:
       const ConnectionPool* connection_pool = ConnectionPool::get_instance();
-      bool test = GlomPrivs::get_user_is_in_group(connection_pool->get_user(), GLOM_STANDARD_GROUP_NAME_DEVELOPER);
+      bool test = Privs::get_user_is_in_group(connection_pool->get_user(), GLOM_STANDARD_GROUP_NAME_DEVELOPER);
       if(test)
       {
         std::cout << "DEBUG: User=" << connection_pool->get_user() << " _is_ in the developer group on the server." << std::endl;
@@ -531,7 +531,7 @@ void Frame_Glom::on_menu_file_export()
   g_assert(pWindowApp);
 
   //Do not try to export the data if the user may not view it:
-  Privileges table_privs = GlomPrivs::get_current_privs(m_table_name);
+  Privileges table_privs = Privs::get_current_privs(m_table_name);
   if(!table_privs.m_view)
   {
     show_ok_dialog(_("Export Not Allowed."), _("You do not have permission to view the data in this table, so you may not export the data."), *pWindowApp, Gtk::MESSAGE_ERROR);
@@ -574,7 +574,7 @@ void Frame_Glom::export_data_to_string(Glib::ustring& the_string, const FoundSet
   if(fieldsSequence.empty())
     return;
 
-  const Glib::ustring query = GlomUtils::build_sql_select_with_where_clause(found_set.m_table_name, fieldsSequence, found_set.m_where_clause, found_set.m_sort_clause);
+  const Glib::ustring query = Utils::build_sql_select_with_where_clause(found_set.m_table_name, fieldsSequence, found_set.m_where_clause, found_set.m_sort_clause);
 
   //TODO: Lock the database (prevent changes) during export.
   Glib::RefPtr<Gnome::Gda::DataModel> result = query_execute(query, get_app_window());
@@ -623,7 +623,7 @@ void Frame_Glom::export_data_to_stream(std::ostream& the_stream, const FoundSet&
   if(fieldsSequence.empty())
     return;
 
-  const Glib::ustring query = GlomUtils::build_sql_select_with_where_clause(found_set.m_table_name, fieldsSequence, found_set.m_where_clause, found_set.m_sort_clause);
+  const Glib::ustring query = Utils::build_sql_select_with_where_clause(found_set.m_table_name, fieldsSequence, found_set.m_where_clause, found_set.m_sort_clause);
 
   //TODO: Lock the database (prevent changes) during export.
   Glib::RefPtr<Gnome::Gda::DataModel> result = query_execute(query, get_app_window());
@@ -655,7 +655,7 @@ void Frame_Glom::export_data_to_stream(std::ostream& the_stream, const FoundSet&
 
             if(layout_item->get_glom_type() == Field::TYPE_IMAGE) //This is too much data.
             {
-              if(!GlomConversions::value_is_empty(value))
+              if(!Conversions::value_is_empty(value))
                 std::cout << "  field name=" << layout_item->get_name() << ", image value not empty=" << std::endl;
             }
             //std::cout << "  field name=" << layout_item->get_name() << ", value=" << layout_item->m_field.sql(value) << std::endl;
@@ -1473,7 +1473,7 @@ bool Frame_Glom::create_database(const Glib::ustring& database_name, const Glib:
 
 void Frame_Glom::on_menu_report_selected(const Glib::ustring& report_name)
 {
-  const Privileges table_privs = GlomPrivs::get_current_privs(m_table_name);
+  const Privileges table_privs = Privs::get_current_privs(m_table_name);
 
   //Don't try to print tables that the user can't view.
   if(!table_privs.m_view)

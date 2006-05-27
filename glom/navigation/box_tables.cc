@@ -243,7 +243,7 @@ void Box_Tables::on_adddel_Add(const Gtk::TreeModel::iterator& row)
 
     sharedptr<TableInfo> table_info(new TableInfo());
     table_info->set_name(table_name);
-    table_info->set_title( GlomUtils::title_from_string( table_name ) ); //Start with a title that might be appropriate.
+    table_info->set_title( Utils::title_from_string( table_name ) ); //Start with a title that might be appropriate.
 
     //Check whether it exists already. (Maybe it is somehow in the database but not in the document. That shouldn't happen.)
     const bool exists_in_db = get_table_exists_in_database(table_name);

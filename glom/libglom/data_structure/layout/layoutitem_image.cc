@@ -86,7 +86,7 @@ void LayoutItem_Image::set_image(const Gnome::Gda::Value& image)
 
 Glib::ustring LayoutItem_Image::create_local_image_uri() const
 {
-  return GlomUtils::create_local_image_uri(m_image);
+  return Utils::create_local_image_uri(m_image);
 }
 
 } //namespace Glom

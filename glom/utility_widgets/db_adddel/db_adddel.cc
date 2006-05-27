@@ -704,7 +704,7 @@ void DbAddDel::construct_specified_columns()
               const FieldFormatting::type_list_values list_values = column_info.m_field->get_formatting_used().get_choices_custom();
               for(FieldFormatting::type_list_values::const_iterator iter = list_values.begin(); iter != list_values.end(); ++iter)
               {
-                pCellRendererCombo->append_list_item( GlomConversions::get_text_for_gda_value(column_info.m_field->get_glom_type(), *iter, column_info.m_field->get_formatting_used().m_numeric_format) );
+                pCellRendererCombo->append_list_item( Conversions::get_text_for_gda_value(column_info.m_field->get_glom_type(), *iter, column_info.m_field->get_formatting_used().m_numeric_format) );
               }
             }
             else if(column_info.m_field->get_formatting_used().get_has_related_choices())
@@ -734,14 +734,14 @@ void DbAddDel::construct_specified_columns()
                   }
                 }
 
-                GlomUtils::type_list_values_with_second list_values = GlomUtils::get_choice_values(column_info.m_field);
-                for(GlomUtils::type_list_values_with_second::const_iterator iter = list_values.begin(); iter != list_values.end(); ++iter)
+                Utils::type_list_values_with_second list_values = Utils::get_choice_values(column_info.m_field);
+                for(Utils::type_list_values_with_second::const_iterator iter = list_values.begin(); iter != list_values.end(); ++iter)
                 {
-                  const Glib::ustring first = GlomConversions::get_text_for_gda_value(column_info.m_field->get_glom_type(), iter->first, column_info.m_field->get_formatting_used().m_numeric_format);
+                  const Glib::ustring first = Conversions::get_text_for_gda_value(column_info.m_field->get_glom_type(), iter->first, column_info.m_field->get_formatting_used().m_numeric_format);
 
                   Glib::ustring second;
                   if(use_second)
-                    second = GlomConversions::get_text_for_gda_value(layout_field_second->get_glom_type(), iter->second, layout_field_second->get_formatting_used().m_numeric_format);
+                    second = Conversions::get_text_for_gda_value(layout_field_second->get_glom_type(), iter->second, layout_field_second->get_formatting_used().m_numeric_format);
 
                   pCellRendererCombo->append_list_item(first, second);
                 }
@@ -839,7 +839,7 @@ void DbAddDel::set_value(const Gtk::TreeModel::iterator& iter, const sharedptr<c
         treerow.set_value(treemodel_col, value);
 
         //Mark this row as not a placeholder because it has real data now.
-        if(!(GlomConversions::value_is_empty(value)))
+        if(!(Conversions::value_is_empty(value)))
         {
           //treerow.set_value(m_col_key, Glib::ustring("placeholder debug value setted"));
           //treerow.set_value(m_col_placeholder, false);
@@ -1233,7 +1233,7 @@ void DbAddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const G
     {
       //Make sure that the entered data is suitable for this field type:
       bool success = false;
-      Gnome::Gda::Value value = GlomConversions::parse_value(field_type, new_text, m_ColumnTypes[model_column_index].m_field->get_formatting_used().m_numeric_format, success);
+      Gnome::Gda::Value value = Conversions::parse_value(field_type, new_text, m_ColumnTypes[model_column_index].m_field->get_formatting_used().m_numeric_format, success);
       if(!success)
       {
           //Tell the user and offer to revert or try again:
@@ -1419,7 +1419,7 @@ bool DbAddDel::on_treeview_column_drop(Gtk::TreeView* /* treeview */, Gtk::TreeV
 
 guint DbAddDel::treeview_append_column(const Glib::ustring& title, Gtk::CellRenderer& cellrenderer, int model_column_index)
 {
-  DbTreeViewColumnGlom* pViewColumn = Gtk::manage( new DbTreeViewColumnGlom(GlomUtils::string_escape_underscores(title), cellrenderer) );
+  DbTreeViewColumnGlom* pViewColumn = Gtk::manage( new DbTreeViewColumnGlom(Utils::string_escape_underscores(title), cellrenderer) );
   pViewColumn->set_sizing(Gtk::TREE_VIEW_COLUMN_FIXED); //Need by fixed-height mode.
 
   guint cols_count = m_TreeView.append_column(*pViewColumn);
@@ -1566,7 +1566,7 @@ void DbAddDel::set_value_key(const Gtk::TreeModel::iterator& iter, const Gnome::
   {
     Gtk::TreeModel::Row row = *iter;
 
-    if(!(GlomConversions::value_is_empty(value)))
+    if(!(Conversions::value_is_empty(value)))
     {
       //This is not a placeholder anymore, if it every was:
       m_refListStore->set_is_not_placeholder(iter);
@@ -1685,7 +1685,7 @@ void DbAddDel::treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gt
         Gtk::CellRendererText* pDerived = dynamic_cast<Gtk::CellRendererText*>(renderer);
         if(pDerived)
         {
-          const Glib::ustring text = GlomConversions::get_text_for_gda_value(column_info.m_field->get_glom_type(), value, column_info.m_field->get_formatting_used().m_numeric_format);
+          const Glib::ustring text = Conversions::get_text_for_gda_value(column_info.m_field->get_glom_type(), value, column_info.m_field->get_formatting_used().m_numeric_format);
           //g_assert(text != "NULL");
           pDerived->property_text() = text;
         }

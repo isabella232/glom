@@ -188,7 +188,7 @@ void Box_DB_Table_Relationships::on_adddel_user_added(const Gtk::TreeModel::iter
     Glib::ustring title = m_AddDel.get_value(row, m_colTitle);
     if(title.empty())
     {
-      title = GlomUtils::title_from_string(new_name);
+      title = Utils::title_from_string(new_name);
       m_AddDel.set_value(row, m_colTitle, title);
     }
   }
@@ -207,7 +207,7 @@ void Box_DB_Table_Relationships::on_adddel_user_changed(const Gtk::TreeModel::it
     Glib::ustring title = m_AddDel.get_value(row, m_colTitle);
     if(title.empty())
     {
-      title = GlomUtils::title_from_string(new_name);
+      title = Utils::title_from_string(new_name);
       m_AddDel.set_value(row, m_colTitle, title);
     }
   }

@@ -157,7 +157,7 @@ Related_tp_as_mapping_getitem(PyGlomRelated *self, PyObject *item)
               Glib::ustring key_value_sqlized;
               //std::cout << "from_key_field=" << from_key_field->get_name() << ", from_key_value=" << from_key_value.to_string() << std::endl;
 
-              if(!GlomConversions::value_is_empty(from_key_value)) //Do not link on null-values. That would cause us to link on 0, or "0".
+              if(!Conversions::value_is_empty(from_key_value)) //Do not link on null-values. That would cause us to link on 0, or "0".
                 key_value_sqlized = from_key_field->sql(from_key_value);
 
               PyGlomRelatedRecord_SetRelationship(pyRelatedRecord, iterFind->second, key_value_sqlized, self->m_record->m_document);

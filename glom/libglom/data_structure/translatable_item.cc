@@ -117,11 +117,11 @@ Glib::ustring TranslatableItem::get_title() const
       //return the first translation from a locale with the same language, if any.
       //TODO_Performance: This is slow.
       //Note that this would, for instance, give en_GB translations before en_US translations, if there are no en_AU translations.
-      const Glib::ustring current_locale_language_id = GlomUtils::locale_language_id(current_locale_id);
+      const Glib::ustring current_locale_language_id = Utils::locale_language_id(current_locale_id);
       for(type_map_locale_to_translations::const_iterator iter = m_map_translations.begin(); iter != m_map_translations.end(); ++iter)
       {
         const Glib::ustring locale_id = iter->first;
-        if(GlomUtils::locale_language_id(locale_id) == current_locale_language_id)
+        if(Utils::locale_language_id(locale_id) == current_locale_language_id)
         {
           if(!(iter->second.empty()))
             return iter->second;
@@ -194,7 +194,7 @@ Glib::ustring TranslatableItem::get_current_locale()
     if(cLocale)
     {
       //std::cout << "TranslatableItem::get_current_locale(): locale=" << cLocale << std::endl;
-      m_current_locale = GlomUtils::locale_simplify(cLocale);
+      m_current_locale = Utils::locale_simplify(cLocale);
     }
     else
       m_current_locale = "C";

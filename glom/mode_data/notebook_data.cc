@@ -68,7 +68,7 @@ Notebook_Data::~Notebook_Data()
 bool Notebook_Data::init_db_details(const FoundSet& found_set, const Gnome::Gda::Value& primary_key_value_for_details)
 {
   m_table_name = found_set.m_table_name;
-  const bool details_record_specified = !GlomConversions::value_is_empty(primary_key_value_for_details);
+  const bool details_record_specified = !Conversions::value_is_empty(primary_key_value_for_details);
 
   bool result = false;
   //where_clause is only used as a result of a find.
@@ -106,12 +106,12 @@ bool Notebook_Data::init_db_details(const FoundSet& found_set, const Gnome::Gda:
          //std::cout << "debug: new_found_set" << std::endl;
       }
 
-      if(GlomConversions::value_is_empty(primary_key_for_details))
+      if(Conversions::value_is_empty(primary_key_for_details))
       {
         //Make sure that the details view is not empty, if there are any records to show:
         primary_key_for_details = m_Box_List.get_primary_key_value_selected();
         //std::cout << "debug:  m_Box_List.get_primary_key_value_selected()=" << primary_key_for_details.to_string() << std::endl;
-        if(GlomConversions::value_is_empty(primary_key_for_details))
+        if(Conversions::value_is_empty(primary_key_for_details))
         {
           //std::cout << "debug: calling list.get_primary_key_value_first()" << std::endl;
           primary_key_for_details = m_Box_List.get_primary_key_value_first();

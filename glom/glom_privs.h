@@ -28,7 +28,7 @@
 namespace Glom
 {
 
-class GlomPrivs : public GlomPostgres
+class Privs : public GlomPostgres
 {
 public:
 

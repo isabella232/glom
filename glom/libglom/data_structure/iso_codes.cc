@@ -216,12 +216,12 @@ Glib::ustring get_locale_name(const Glib::ustring& locale_id)
       //Use a map so we can easily check for duplicates.
     for(type_list_ids::iterator iter = list_ids.begin(); iter != list_ids.end(); ++iter)
     {
-      const Glib::ustring identifier = GlomUtils::locale_simplify(*iter);
+      const Glib::ustring identifier = Utils::locale_simplify(*iter);
 
       if(map_locales.find(identifier) == map_locales.end()) //Prevent duplicates.
       {
         //Split the locale ID into language and country parts:
-        Glib::ustring id_language = GlomUtils::locale_language_id(identifier);
+        Glib::ustring id_language = Utils::locale_language_id(identifier);
         Glib::ustring id_country;
         if(!id_language.empty() && ((id_language.size() +1) < identifier.size()))
             id_country = identifier.substr(id_language.size() + 1);

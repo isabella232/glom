@@ -95,7 +95,7 @@ void ComboGlom::check_for_change()
     bool success = false;
 
     sharedptr<const LayoutItem_Field> layout_item = sharedptr<const LayoutItem_Field>::cast_dynamic(get_layout_item());
-    const Gnome::Gda::Value value = GlomConversions::parse_value(layout_item->get_glom_type(), new_text, layout_item->get_formatting_used().m_numeric_format, success);
+    const Gnome::Gda::Value value = Conversions::parse_value(layout_item->get_glom_type(), new_text, layout_item->get_formatting_used().m_numeric_format, success);
 
     if(success)
     {
@@ -121,7 +121,7 @@ void ComboGlom::set_value(const Gnome::Gda::Value& value)
 {
   sharedptr<const LayoutItem_Field> layout_item = sharedptr<const LayoutItem_Field>::cast_dynamic(get_layout_item());
   if(layout_item)
-    set_text(GlomConversions::get_text_for_gda_value(layout_item->get_glom_type(), value, layout_item->get_formatting_used().m_numeric_format));
+    set_text(Conversions::get_text_for_gda_value(layout_item->get_glom_type(), value, layout_item->get_formatting_used().m_numeric_format));
 }
 
 void ComboGlom::set_text(const Glib::ustring& text)
@@ -151,7 +151,7 @@ Gnome::Gda::Value ComboGlom::get_value() const
   bool success = false;
 
   const Glib::ustring text = get_text();
-  return GlomConversions::parse_value(layout_item->get_glom_type(), text, layout_item->get_formatting_used().m_numeric_format, success);
+  return Conversions::parse_value(layout_item->get_glom_type(), text, layout_item->get_formatting_used().m_numeric_format, success);
 }
 
 Glib::ustring ComboGlom::get_text() const

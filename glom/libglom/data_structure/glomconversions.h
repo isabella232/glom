@@ -30,7 +30,7 @@
 namespace Glom
 {
 
-namespace GlomConversions
+namespace Conversions
 {
   ///Get text for display to the user.
   Glib::ustring get_text_for_gda_value(Field::glom_field_type glom_type, const Gnome::Gda::Value& value, const NumericFormat& numeric_format = NumericFormat());

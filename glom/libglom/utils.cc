@@ -78,7 +78,7 @@ protected:
 };
 
 
-Glib::ustring GlomUtils::trim_whitespace(const Glib::ustring& text)
+Glib::ustring Utils::trim_whitespace(const Glib::ustring& text)
 {
   //TODO_Performance:
 
@@ -122,7 +122,7 @@ Glib::ustring GlomUtils::trim_whitespace(const Glib::ustring& text)
   return result;
 }
 
-Glib::ustring GlomUtils::string_replace(const Glib::ustring& src, const Glib::ustring search_for, const Glib::ustring& replace_with)
+Glib::ustring Utils::string_replace(const Glib::ustring& src, const Glib::ustring search_for, const Glib::ustring& replace_with)
 {
   std::string result = src;
 
@@ -171,7 +171,7 @@ Glib::ustring GlomUtils::string_replace(const Glib::ustring& src, const Glib::us
 }
 
 
-Glib::ustring GlomUtils::build_sql_select_with_where_clause(const Glib::ustring& table_name, const type_vecLayoutFields& fieldsToGet, const Glib::ustring& where_clause, const type_sort_clause& sort_clause)
+Glib::ustring Utils::build_sql_select_with_where_clause(const Glib::ustring& table_name, const type_vecLayoutFields& fieldsToGet, const Glib::ustring& where_clause, const type_sort_clause& sort_clause)
 {
   //TODO_Performance:
   type_vecConstLayoutFields constFieldsToGet;
@@ -183,7 +183,7 @@ Glib::ustring GlomUtils::build_sql_select_with_where_clause(const Glib::ustring&
   return build_sql_select_with_where_clause(table_name, constFieldsToGet, where_clause, sort_clause);
 }
 
-Glib::ustring GlomUtils::build_sql_select_with_where_clause(const Glib::ustring& table_name, const type_vecConstLayoutFields& fieldsToGet, const Glib::ustring& where_clause, const type_sort_clause& sort_clause)
+Glib::ustring Utils::build_sql_select_with_where_clause(const Glib::ustring& table_name, const type_vecConstLayoutFields& fieldsToGet, const Glib::ustring& where_clause, const type_sort_clause& sort_clause)
 {
   Glib::ustring result;
 
@@ -272,7 +272,7 @@ Glib::ustring GlomUtils::build_sql_select_with_where_clause(const Glib::ustring&
 
   if(sql_part_fields.empty())
   {
-    std::cerr << "GlomUtils::build_sql_select_with_where_clause(): sql_part_fields.empty(): fieldsToGet.size()=" << fieldsToGet.size() << std::endl;
+    std::cerr << "Utils::build_sql_select_with_where_clause(): sql_part_fields.empty(): fieldsToGet.size()=" << fieldsToGet.size() << std::endl;
     return result;
   }
   else
@@ -336,7 +336,7 @@ Glib::ustring GlomUtils::build_sql_select_with_where_clause(const Glib::ustring&
 }
 
 
-Glib::ustring GlomUtils::build_sql_select_with_key(const Glib::ustring& table_name, const type_vecLayoutFields& fieldsToGet, const sharedptr<const Field>& key_field, const Gnome::Gda::Value& key_value)
+Glib::ustring Utils::build_sql_select_with_key(const Glib::ustring& table_name, const type_vecLayoutFields& fieldsToGet, const sharedptr<const Field>& key_field, const Gnome::Gda::Value& key_value)
 {
   //TODO_Performance:
   type_vecConstLayoutFields constFieldsToGet;
@@ -350,18 +350,18 @@ Glib::ustring GlomUtils::build_sql_select_with_key(const Glib::ustring& table_na
 
 }
 
-Glib::ustring GlomUtils::build_sql_select_with_key(const Glib::ustring& table_name, const type_vecConstLayoutFields& fieldsToGet, const sharedptr<const Field>& key_field, const Gnome::Gda::Value& key_value)
+Glib::ustring Utils::build_sql_select_with_key(const Glib::ustring& table_name, const type_vecConstLayoutFields& fieldsToGet, const sharedptr<const Field>& key_field, const Gnome::Gda::Value& key_value)
 {
-  if(!GlomConversions::value_is_empty(key_value)) //If there is a record to show:
+  if(!Conversions::value_is_empty(key_value)) //If there is a record to show:
   {
     const Glib::ustring where_clause = "\"" + table_name + "\".\"" + key_field->get_name() + "\" = " + key_field->sql(key_value);
-    return GlomUtils::build_sql_select_with_where_clause(table_name, fieldsToGet, where_clause);
+    return Utils::build_sql_select_with_where_clause(table_name, fieldsToGet, where_clause);
   }
 
   return Glib::ustring();
 }
 
-GlomUtils::type_list_values_with_second GlomUtils::get_choice_values(const sharedptr<const LayoutItem_Field>& field)
+Utils::type_list_values_with_second Utils::get_choice_values(const sharedptr<const LayoutItem_Field>& field)
 {
   type_list_values_with_second list_values;
 
@@ -419,13 +419,13 @@ GlomUtils::type_list_values_with_second GlomUtils::get_choice_values(const share
 }
 
 
-Glib::ustring GlomUtils::create_name_from_title(const Glib::ustring& title)
+Glib::ustring Utils::create_name_from_title(const Glib::ustring& title)
 {
   Glib::ustring result = string_replace(title, " ", "");
   return result.lowercase(); //TODO: Maybe they need to be ASCII (not UTF8)?
 }
 
-Glib::ustring GlomUtils::string_escape_underscores(const Glib::ustring& text)
+Glib::ustring Utils::string_escape_underscores(const Glib::ustring& text)
 {
   Glib::ustring result;
   for(Glib::ustring::const_iterator iter = text.begin(); iter != text.end(); ++iter)
@@ -442,7 +442,7 @@ Glib::ustring GlomUtils::string_escape_underscores(const Glib::ustring& text)
 /** Get just the first part of a locale, such as de_DE, 
  * ignoring, for instance, .UTF-8 or @euro at the end.
  */
-Glib::ustring GlomUtils::locale_simplify(const Glib::ustring& locale_id)
+Glib::ustring Utils::locale_simplify(const Glib::ustring& locale_id)
 {
   Glib::ustring result = locale_id;
 
@@ -463,7 +463,7 @@ Glib::ustring GlomUtils::locale_simplify(const Glib::ustring& locale_id)
   return result;
 }
 
-Glib::ustring GlomUtils::locale_language_id(const Glib::ustring& locale_id)
+Glib::ustring Utils::locale_language_id(const Glib::ustring& locale_id)
 {
   Glib::ustring result;
 
@@ -476,7 +476,7 @@ Glib::ustring GlomUtils::locale_language_id(const Glib::ustring& locale_id)
   return result;
 }
 
-Glib::ustring GlomUtils::create_local_image_uri(const Gnome::Gda::Value& value)
+Glib::ustring Utils::create_local_image_uri(const Gnome::Gda::Value& value)
 {
   static guint m_temp_image_uri_number = 0;
 
@@ -512,10 +512,10 @@ Glib::ustring GlomUtils::create_local_image_uri(const Gnome::Gda::Value& value)
       }
     }
     else
-       std::cerr << "GlomUtils::create_local_image_uri(): binary GdaValue contains no data." << std::endl;
+       std::cerr << "Utils::create_local_image_uri(): binary GdaValue contains no data." << std::endl;
   }
   //else
-  //  std::cerr << "GlomUtils::create_local_image_uri(): type != BINARY" << std::endl;
+  //  std::cerr << "Utils::create_local_image_uri(): type != BINARY" << std::endl;
 
   if(result.empty())
     result = "/tmp/glom_report_image_invalid.png";
@@ -523,7 +523,7 @@ Glib::ustring GlomUtils::create_local_image_uri(const Gnome::Gda::Value& value)
   return ("file://" + result);
 }
 
-Glib::ustring GlomUtils::string_from_decimal(guint decimal)
+Glib::ustring Utils::string_from_decimal(guint decimal)
 {
   //TODO_Performance:
 
@@ -536,7 +536,7 @@ Glib::ustring GlomUtils::string_from_decimal(guint decimal)
   return result;
 }
 
-guint GlomUtils::decimal_from_string(const Glib::ustring& str)
+guint Utils::decimal_from_string(const Glib::ustring& str)
 {
   //TODO_Performance:
 
@@ -549,7 +549,7 @@ guint GlomUtils::decimal_from_string(const Glib::ustring& str)
   return id_numeric;
 }
 
-Glib::ustring GlomUtils::title_from_string(const Glib::ustring& text)
+Glib::ustring Utils::title_from_string(const Glib::ustring& text)
 {
   Glib::ustring result;
 
@@ -576,7 +576,7 @@ Glib::ustring GlomUtils::title_from_string(const Glib::ustring& text)
   return result;
 }
 
-GlomUtils::type_vecStrings GlomUtils::string_separate(const Glib::ustring& str, const Glib::ustring& separator)
+Utils::type_vecStrings Utils::string_separate(const Glib::ustring& str, const Glib::ustring& separator)
 {
   type_vecStrings result;
 
@@ -606,7 +606,7 @@ GlomUtils::type_vecStrings GlomUtils::string_separate(const Glib::ustring& str, 
   return result;
 }
 
-Glib::ustring GlomUtils::string_trim(const Glib::ustring& str, const Glib::ustring& to_remove)
+Glib::ustring Utils::string_trim(const Glib::ustring& str, const Glib::ustring& to_remove)
 {
    Glib::ustring result = str;
 

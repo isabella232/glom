@@ -198,7 +198,7 @@ void ReportBuilder::report_build_groupby(const FoundSet& found_set_parent, xmlpp
 
         nodeGroupBy->set_attribute("group_field", field_group_by->get_title_or_name());
         nodeGroupBy->set_attribute("group_value",
-          GlomConversions::get_text_for_gda_value(field_group_by->get_glom_type(), group_value, field_group_by->get_formatting_used().m_numeric_format) );
+          Conversions::get_text_for_gda_value(field_group_by->get_glom_type(), group_value, field_group_by->get_formatting_used().m_numeric_format) );
 
         Glib::ustring where_clause = "\"" + group_field_table_name + "\".\"" + field_group_by->get_name() + "\" = " + field_group_by->get_full_field_details()->sql(group_value);
         if(!found_set_parent.m_where_clause.empty())
@@ -280,7 +280,7 @@ void ReportBuilder::report_build_records(const FoundSet& found_set, xmlpp::Eleme
     }
 
     //Get list of fields to get from the database.
-    GlomUtils::type_vecLayoutFields fieldsToGet;
+    Utils::type_vecLayoutFields fieldsToGet;
     for(type_vecLayoutItems::const_iterator iter = items.begin(); iter != items.end(); ++iter)
     {
       sharedptr<LayoutItem> layout_item = *iter;
@@ -298,7 +298,7 @@ void ReportBuilder::report_build_records(const FoundSet& found_set, xmlpp::Eleme
       }
     }
 
-    Glib::ustring sql_query = GlomUtils::build_sql_select_with_where_clause(found_set.m_table_name,
+    Glib::ustring sql_query = Utils::build_sql_select_with_where_clause(found_set.m_table_name,
       fieldsToGet,
       found_set.m_where_clause, found_set.m_sort_clause);
 
@@ -398,17 +398,17 @@ void ReportBuilder::report_build_records_field(const FoundSet& found_set, xmlpp:
 
   //Handle the value:
   if(field_type == Field::TYPE_IMAGE)
-     nodeField->set_attribute("image_uri", GlomUtils::create_local_image_uri(value));
+     nodeField->set_attribute("image_uri", Utils::create_local_image_uri(value));
   else
   {
-    Glib::ustring text_value = GlomConversions::get_text_for_gda_value(field_type, value, field->get_formatting_used().m_numeric_format);
+    Glib::ustring text_value = Conversions::get_text_for_gda_value(field_type, value, field->get_formatting_used().m_numeric_format);
 
     //The Postgres summary functions return NULL when summarising NULL records, but 0 is more sensible:
     if(text_value.empty() && sharedptr<const LayoutItem_FieldSummary>::cast_dynamic(field) && (field_type == Field::TYPE_NUMERIC))
     {
       //Use get_text_for_gda_value() instead of "0" so we get the correct numerical formatting:
-      Gnome::Gda::Value value = GlomConversions::parse_value(0);
-      text_value = GlomConversions::get_text_for_gda_value(field_type, value, field->get_formatting_used().m_numeric_format);
+      Gnome::Gda::Value value = Conversions::parse_value(0);
+      text_value = Conversions::get_text_for_gda_value(field_type, value, field->get_formatting_used().m_numeric_format);
     }
 
     nodeField->set_attribute("value", text_value);

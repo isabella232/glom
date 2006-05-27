@@ -274,11 +274,11 @@ void Dialog_GroupsList::on_button_group_new()
 
     for(Document_Glom::type_listTableInfo::const_iterator iter = table_list.begin(); iter != table_list.end(); ++iter)
     {
-      GlomPrivs::set_table_privileges(group_name, (*iter)->get_name(), priv);
+      Privs::set_table_privileges(group_name, (*iter)->get_name(), priv);
     }
 
     //Let them edit the autoincrements too:
-    GlomPrivs::set_table_privileges(group_name, GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME, priv);
+    Privs::set_table_privileges(group_name, GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME, priv);
 
     fill_group_list();
   }
@@ -368,7 +368,7 @@ void Dialog_GroupsList::fill_group_list()
   //Fill the model rows:
   m_model_groups->clear();
 
-  type_vecStrings group_list = GlomPrivs::get_database_groups();
+  type_vecStrings group_list = Privs::get_database_groups();
   for(type_vecStrings::const_iterator iter = group_list.begin(); iter != group_list.end(); ++iter)
   {
     Gtk::TreeModel::iterator iterTree = m_model_groups->append();
@@ -420,7 +420,7 @@ void Dialog_GroupsList::fill_table_list(const Glib::ustring& group_name)
       row[m_model_columns_tables.m_col_name] = table_name;
       row[m_model_columns_tables.m_col_title] = (*iter)->get_title_or_name();
 
-      const Privileges privs = GlomPrivs::get_table_privileges(group_name, table_name);
+      const Privileges privs = Privs::get_table_privileges(group_name, table_name);
       row[m_model_columns_tables.m_col_view] = privs.m_view;
       row[m_model_columns_tables.m_col_edit] = privs.m_edit;
       row[m_model_columns_tables.m_col_create] = privs.m_create;
@@ -626,7 +626,7 @@ void Dialog_GroupsList::on_cell_data_group_name(Gtk::CellRenderer* renderer, con
 
       Glib::ustring name = row[m_model_columns_groups.m_col_name];
 
-      renderer_text->property_text() = GlomPrivs::get_user_visible_group_name(name);
+      renderer_text->property_text() = Privs::get_user_visible_group_name(name);
     }
   }
 }

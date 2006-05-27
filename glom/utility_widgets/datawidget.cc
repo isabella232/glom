@@ -138,7 +138,7 @@ DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ust
           //set_choices() needs this, for the numeric layout:
           combo->set_layout_item( get_layout_item(), table_name);
 
-          combo->set_choices_with_second( GlomUtils::get_choice_values(field) );
+          combo->set_choices_with_second( Utils::get_choice_values(field) );
         }
       }
       else
@@ -317,7 +317,7 @@ int DataWidget::get_suitable_width(const sharedptr<const LayoutItem_Field>& fiel
       date.day = 31;
       date.month = 12;
       date.year = 2000;
-      example_text = GlomConversions::get_text_for_gda_value(field_type, Gnome::Gda::Value(date));
+      example_text = Conversions::get_text_for_gda_value(field_type, Gnome::Gda::Value(date));
       break;
     }
     case(Field::TYPE_TIME):
@@ -326,7 +326,7 @@ int DataWidget::get_suitable_width(const sharedptr<const LayoutItem_Field>& fiel
       time.hour = 24;
       time.minute = 59;
       time.second = 59;
-      example_text = GlomConversions::get_text_for_gda_value(field_type, Gnome::Gda::Value(time));
+      example_text = Conversions::get_text_for_gda_value(field_type, Gnome::Gda::Value(time));
       break;
     }
     case(Field::TYPE_NUMERIC):

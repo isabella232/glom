@@ -33,13 +33,13 @@
 namespace Glom
 {
 
-Glib::ustring GlomConversions::format_time(const tm& tm_data)
+Glib::ustring Conversions::format_time(const tm& tm_data)
 {
   return format_time( tm_data, std::locale("") /* the user's current locale */ ); //Get the current locale.
 }
 
 
-Glib::ustring GlomConversions::format_time(const tm& tm_data, const std::locale& locale, bool iso_format)
+Glib::ustring Conversions::format_time(const tm& tm_data, const std::locale& locale, bool iso_format)
 {
   if(iso_format)
   {
@@ -49,7 +49,7 @@ Glib::ustring GlomConversions::format_time(const tm& tm_data, const std::locale&
     return format_tm(tm_data, locale, _("%X") /* time */);
 }
 
-Glib::ustring GlomConversions::format_date(const tm& tm_data)
+Glib::ustring Conversions::format_date(const tm& tm_data)
 {
   return format_date( tm_data, std::locale("") /* the user's current locale */ ); //Get the current locale.
 }
@@ -62,7 +62,7 @@ static const char* glom_get_locale_date_format()
   return _("%x");
 }
 
-Glib::ustring GlomConversions::format_date(const tm& tm_data, const std::locale& locale, bool iso_format)
+Glib::ustring Conversions::format_date(const tm& tm_data, const std::locale& locale, bool iso_format)
 {
   if(iso_format)
     return format_tm(tm_data, locale, "%F" /* iso-format date */);
@@ -74,7 +74,7 @@ Glib::ustring GlomConversions::format_date(const tm& tm_data, const std::locale&
 }
 
 
-Glib::ustring GlomConversions::format_tm(const tm& tm_data, const std::locale& locale, const char* format)
+Glib::ustring Conversions::format_tm(const tm& tm_data, const std::locale& locale, const char* format)
 {
   //This is based on docs found here:
   //http://www.roguewave.com/support/docs/sourcepro/stdlibref/time-put.html
@@ -127,7 +127,7 @@ Glib::ustring GlomConversions::format_tm(const tm& tm_data, const std::locale& l
   while((bufsize *= 2) <= 65536);
 
   // This error is quite unlikely (unless strftime is buggy).
-  g_warning("GlomConversions::format_time(): maximum size of strftime buffer exceeded, giving up");
+  g_warning("Conversions::format_time(): maximum size of strftime buffer exceeded, giving up");
 
   return Glib::ustring();
   */
@@ -156,12 +156,12 @@ class numpunct_no_thousands_separator: public std::numpunct<char>
 
 } //anonymous namespace
 
-Glib::ustring GlomConversions::get_text_for_gda_value(Field::glom_field_type glom_type, const Gnome::Gda::Value& value, const NumericFormat& numeric_format)
+Glib::ustring Conversions::get_text_for_gda_value(Field::glom_field_type glom_type, const Gnome::Gda::Value& value, const NumericFormat& numeric_format)
 {
   return get_text_for_gda_value(glom_type, value, std::locale("") /* the user's current locale */, numeric_format); //Get the current locale.
 }
 
-Glib::ustring GlomConversions::get_text_for_gda_value(Field::glom_field_type glom_type, const Gnome::Gda::Value& value, const std::locale& locale, const NumericFormat& numeric_format, bool iso_format)
+Glib::ustring Conversions::get_text_for_gda_value(Field::glom_field_type glom_type, const Gnome::Gda::Value& value, const std::locale& locale, const NumericFormat& numeric_format, bool iso_format)
 {
   if(value.get_value_type() == Gnome::Gda::VALUE_TYPE_NULL) //The type can be null for any of the actual field types.
   {
@@ -261,7 +261,7 @@ Glib::ustring GlomConversions::get_text_for_gda_value(Field::glom_field_type glo
   }
 }
 
-Gnome::Gda::Value GlomConversions::parse_value(double number)
+Gnome::Gda::Value Conversions::parse_value(double number)
 {
   //This is just a way to get a NUMERIC Gda::Value from a numeric type:
   //Try to parse the inputted number, according to the current locale.
@@ -285,13 +285,13 @@ Gnome::Gda::Value GlomConversions::parse_value(double number)
   return Gnome::Gda::Value(&gda_numeric);
 }
 
-Gnome::Gda::Value GlomConversions::parse_value(Field::glom_field_type glom_type, const Glib::ustring& text, bool& success, bool iso_format)
+Gnome::Gda::Value Conversions::parse_value(Field::glom_field_type glom_type, const Glib::ustring& text, bool& success, bool iso_format)
 {
   NumericFormat ignore_format;
   return parse_value(glom_type, text, ignore_format, success, iso_format);
 }
 
-Gnome::Gda::Value GlomConversions::parse_value(Field::glom_field_type glom_type, const Glib::ustring& text, const NumericFormat& numeric_format, bool& success, bool iso_format)
+Gnome::Gda::Value Conversions::parse_value(Field::glom_field_type glom_type, const Glib::ustring& text, const NumericFormat& numeric_format, bool& success, bool iso_format)
 {
   std::locale the_locale = (iso_format ? std::locale::classic() :  std::locale("") /* The user's current locale */);
 
@@ -337,7 +337,7 @@ Gnome::Gda::Value GlomConversions::parse_value(Field::glom_field_type glom_type,
   }
   else if(glom_type == Field::TYPE_NUMERIC)
   {
-    Glib::ustring text_to_parse = GlomUtils::trim_whitespace(text);
+    Glib::ustring text_to_parse = Utils::trim_whitespace(text);
 
     if(!(numeric_format.m_currency_symbol.empty()))
     {
@@ -346,7 +346,7 @@ Gnome::Gda::Value GlomConversions::parse_value(Field::glom_field_type glom_type,
       if(text_to_parse.substr(0, numeric_format.m_currency_symbol.size()) == numeric_format.m_currency_symbol)
       {
         text_to_parse = text_to_parse.substr(numeric_format.m_currency_symbol.size());
-        text_to_parse = GlomUtils::trim_whitespace(text_to_parse); //remove any whitespace between the currency symbol and the number.
+        text_to_parse = Utils::trim_whitespace(text_to_parse); //remove any whitespace between the currency symbol and the number.
       }
     }
 
@@ -403,12 +403,12 @@ Gnome::Gda::Value GlomConversions::parse_value(Field::glom_field_type glom_type,
 
 }
 
-tm GlomConversions::parse_date(const Glib::ustring& text, bool& success)
+tm Conversions::parse_date(const Glib::ustring& text, bool& success)
 {
   return parse_date( text, std::locale("") /* the user's current locale */, success ); //Get the current locale.
 }
 
-tm GlomConversions::parse_date(const Glib::ustring& text, const std::locale& locale, bool& success)
+tm Conversions::parse_date(const Glib::ustring& text, const std::locale& locale, bool& success)
 {
   //return parse_tm(text, locale, 'x' /* date */);
 
@@ -518,7 +518,7 @@ tm GlomConversions::parse_date(const Glib::ustring& text, const std::locale& loc
 }
 
 
-tm GlomConversions::parse_time(const Glib::ustring& text, bool& success)
+tm Conversions::parse_time(const Glib::ustring& text, bool& success)
 {
   //return parse_time( text, std::locale("") /* the user's current locale */ ); //Get the current locale.
 
@@ -538,7 +538,7 @@ tm GlomConversions::parse_time(const Glib::ustring& text, bool& success)
 }
 
 
-tm GlomConversions::parse_time(const Glib::ustring& text, const std::locale& locale, bool& success)
+tm Conversions::parse_time(const Glib::ustring& text, const std::locale& locale, bool& success)
 {
   //The sequence of statements here seems to be very fragile. If you move things then it stops working.
 
@@ -597,7 +597,7 @@ tm GlomConversions::parse_time(const Glib::ustring& text, const std::locale& loc
 
 
 /* This requires an extension to the standard - time_get<>.get().:
-tm GlomConversions::parse_tm(const Glib::ustring& text, const std::locale& locale, char format)
+tm Conversions::parse_tm(const Glib::ustring& text, const std::locale& locale, char format)
 {
   //This is based on docs found here:
   //http://www.roguewave.com/support/docs/sourcepro/stdlibref/time-get.html
@@ -629,7 +629,7 @@ tm GlomConversions::parse_tm(const Glib::ustring& text, const std::locale& local
 }
 */
 
-bool GlomConversions::value_is_empty(const Gnome::Gda::Value& value)
+bool Conversions::value_is_empty(const Gnome::Gda::Value& value)
 {
   switch(value.get_value_type())
   {
@@ -642,7 +642,7 @@ bool GlomConversions::value_is_empty(const Gnome::Gda::Value& value)
   }
 }
 
-Gnome::Gda::Value GlomConversions::get_empty_value(Field::glom_field_type field_type)
+Gnome::Gda::Value Conversions::get_empty_value(Field::glom_field_type field_type)
 {
   switch(field_type)
   {
@@ -653,7 +653,7 @@ Gnome::Gda::Value GlomConversions::get_empty_value(Field::glom_field_type field_
   }
 }
 
-Gnome::Gda::Value GlomConversions::get_example_value(Field::glom_field_type field_type)
+Gnome::Gda::Value Conversions::get_example_value(Field::glom_field_type field_type)
 {
   switch(field_type)
   {
@@ -827,9 +827,9 @@ Glom_PQunescapeBytea(const unsigned char *strtext, size_t *retbuflen)
   return tmpbuf;
 }
 
-Glib::ustring GlomConversions::get_escaped_binary_data(guint8* buffer, size_t buffer_size)
+Glib::ustring Conversions::get_escaped_binary_data(guint8* buffer, size_t buffer_size)
 {
-  //g_warning("GlomConversions::get_escaped_binary_data: debug: buffer ");
+  //g_warning("Conversions::get_escaped_binary_data: debug: buffer ");
   //for(int i = 0; i < 10; ++i)
   //  g_warning("%02X (%c), ", (guint8)buffer[i], buffer[i]);
 
@@ -869,7 +869,7 @@ Glib::ustring GlomConversions::get_escaped_binary_data(guint8* buffer, size_t bu
   return result;
 }
 
-Gnome::Gda::Value GlomConversions::parse_escaped_binary_data(const Glib::ustring& escaped_data)
+Gnome::Gda::Value Conversions::parse_escaped_binary_data(const Glib::ustring& escaped_data)
 {
   //Hopefully we don't need to use this because Gda does it for us when we read a part of a "SELECT" result into a Gnome::Value.
   //TODO: Performance
@@ -886,7 +886,7 @@ Gnome::Gda::Value GlomConversions::parse_escaped_binary_data(const Glib::ustring
   return result;
 }
 
-Gnome::Gda::Value GlomConversions::convert_value(const Gnome::Gda::Value& value, Field::glom_field_type target_glom_type)
+Gnome::Gda::Value Conversions::convert_value(const Gnome::Gda::Value& value, Field::glom_field_type target_glom_type)
 {
   const Field::glom_field_type source_glom_type = Field::get_glom_type_for_gda_type(value.get_value_type());
   if(source_glom_type == target_glom_type)

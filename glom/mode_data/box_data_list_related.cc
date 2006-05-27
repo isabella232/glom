@@ -137,7 +137,7 @@ bool Box_Data_List_Related::refresh_data_from_database_with_foreign_key(const Gn
 
   if(m_key_field)
   {
-    if(!GlomConversions::value_is_empty(m_key_value))
+    if(!Conversions::value_is_empty(m_key_value))
     {
       FoundSet found_set = m_found_set;
       found_set.m_where_clause = "\"" + m_key_field->get_name() + "\" = " + m_key_field->sql(m_key_value);
@@ -226,12 +226,12 @@ void Box_Data_List_Related::on_record_added(const Gnome::Gda::Value& primary_key
   //Make sure that the new related record is related,
   //by setting the foreign key:
   //If it's not auto-generated.
-  if(!GlomConversions::value_is_empty(key_value)) //If there is already a value.
+  if(!Conversions::value_is_empty(key_value)) //If there is already a value.
   {
     //It was auto-generated. Tell the parent about it, so it can make a link.
     signal_record_added.emit(key_value);
   }
-  else if(GlomConversions::value_is_empty(m_key_value))
+  else if(Conversions::value_is_empty(m_key_value))
   {
     g_warning("Box_Data_List_Related::on_record_added(): m_key_value is NULL.");
   }
@@ -524,7 +524,7 @@ void Box_Data_List_Related::get_suitable_record_to_view_details(const Gnome::Gda
         //std::cout << "PRIMARY_KEY_TABLE_TO=" << m_portal->get_relationship()->get_to_table() << std::endl;
         //std::cout << "PRIMARY_KEY_VALUE=" << primary_key_value.to_string() << std::endl;
 
-        const Glib::ustring query = GlomUtils::build_sql_select_with_key(LayoutWidgetBase::m_table_name, fieldsToGet, m_AddDel.get_key_field(), primary_key_value);
+        const Glib::ustring query = Utils::build_sql_select_with_key(LayoutWidgetBase::m_table_name, fieldsToGet, m_AddDel.get_key_field(), primary_key_value);
         Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute(query);
         if(data_model && data_model->get_n_rows() && data_model->get_n_columns())
         {

@@ -84,7 +84,7 @@ void TextViewGlom::check_for_change()
     bool success = false;
 
     sharedptr<const LayoutItem_Field>layout_item = sharedptr<const LayoutItem_Field>::cast_dynamic(get_layout_item());
-    Gnome::Gda::Value value = GlomConversions::parse_value(m_glom_type, new_text, layout_item->get_formatting_used().m_numeric_format, success);
+    Gnome::Gda::Value value = Conversions::parse_value(m_glom_type, new_text, layout_item->get_formatting_used().m_numeric_format, success);
 
     if(success)
     {
@@ -148,7 +148,7 @@ void TextViewGlom::set_value(const Gnome::Gda::Value& value)
 {
   sharedptr<const LayoutItem_Field>layout_item = sharedptr<const LayoutItem_Field>::cast_dynamic(get_layout_item());
   if(layout_item)
-    set_text(GlomConversions::get_text_for_gda_value(m_glom_type, value, layout_item->get_formatting_used().m_numeric_format));
+    set_text(Conversions::get_text_for_gda_value(m_glom_type, value, layout_item->get_formatting_used().m_numeric_format));
 }
 
 void TextViewGlom::set_text(const Glib::ustring& text)
@@ -166,7 +166,7 @@ Gnome::Gda::Value TextViewGlom::get_value() const
   sharedptr<const LayoutItem_Field>layout_item = sharedptr<const LayoutItem_Field>::cast_dynamic(get_layout_item());
 
   TextViewGlom* pNonConstThis = const_cast<TextViewGlom*>(this); //Gtk::TextBuffer::get_text() is non-const in gtkmm <=2.6.
-  return GlomConversions::parse_value(m_glom_type, pNonConstThis->m_TextView.get_buffer()->get_text(true), layout_item->get_formatting_used().m_numeric_format, success);
+  return Conversions::parse_value(m_glom_type, pNonConstThis->m_TextView.get_buffer()->get_text(true), layout_item->get_formatting_used().m_numeric_format, success);
 }
 
 bool TextViewGlom::on_button_press_event(GdkEventButton *event)

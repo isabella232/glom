@@ -620,7 +620,7 @@ void AddDel::construct_specified_columns()
           // Append the View column.
           // We use a derived Gtk::TreeViewColumn so that we can store extra information in it.
           // This means that we must reimplement the code from the convenience template methods from gtkmm.
-          cols_count = treeview_append_column( GlomUtils::string_escape_underscores(column_name), *pCellRenderer,  *pModelColumn, column_id);
+          cols_count = treeview_append_column( Utils::string_escape_underscores(column_name), *pCellRenderer,  *pModelColumn, column_id);
 
           break;
         }
@@ -633,7 +633,7 @@ void AddDel::construct_specified_columns()
 
           Gtk::TreeModelColumn<bool>* pModelColumnDerived = static_cast< Gtk::TreeModelColumn<bool>* >(pModelColumn);
           if(pModelColumnDerived)
-            cols_count = treeview_append_column(GlomUtils::string_escape_underscores(column_name), *pModelColumnDerived, column_id);
+            cols_count = treeview_append_column(Utils::string_escape_underscores(column_name), *pModelColumnDerived, column_id);
 
           break;
         }
@@ -645,7 +645,7 @@ void AddDel::construct_specified_columns()
           //to use the correct specialization:
           Gtk::TreeModelColumn<Glib::ustring>* pModelColumnDerived = static_cast< Gtk::TreeModelColumn<Glib::ustring>* >(pModelColumn);
           if(pModelColumnDerived)
-            cols_count = treeview_append_column(GlomUtils::string_escape_underscores(column_name), *pModelColumnDerived, column_id);
+            cols_count = treeview_append_column(Utils::string_escape_underscores(column_name), *pModelColumnDerived, column_id);
 
           break;
         }
@@ -735,7 +735,7 @@ void AddDel::set_value(const Gtk::TreeModel::iterator& iter, guint col, const Gn
     }
     default:
     {
-      set_value( iter, col, GlomConversions::get_text_for_gda_value(m_ColumnTypes[col].m_field_type, value) );
+      set_value( iter, col, Conversions::get_text_for_gda_value(m_ColumnTypes[col].m_field_type, value) );
       break;
     }
   }
@@ -1202,7 +1202,7 @@ void AddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const Gli
           //Make sure that the entered data is suitable for this field type:
           bool success = false;
           Glib::ustring text = get_value(row, model_column_index);
-          Gnome::Gda::Value value = GlomConversions::parse_value(field_type, new_text, success);
+          Gnome::Gda::Value value = Conversions::parse_value(field_type, new_text, success);
           if(!success)
           {
              //Tell the user and offer to revert or try again:
@@ -1232,7 +1232,7 @@ void AddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const Gli
           else
           {
             //Actually show the canonical text representation, so that the user sees how his input was interpreted:
-            Glib::ustring text_canonical = GlomConversions::get_text_for_gda_value(field_type, value);
+            Glib::ustring text_canonical = Conversions::get_text_for_gda_value(field_type, value);
             row.set_value(model_column_index, text_canonical);
           }
         }

@@ -200,7 +200,7 @@ bool Box_Data_Details::fill_from_database()
 
   Bakery::BusyCursor busy_cursor(get_app_window());
 
-  const bool primary_key_is_empty = GlomConversions::value_is_empty(m_primary_key_value);
+  const bool primary_key_is_empty = Conversions::value_is_empty(m_primary_key_value);
   if(!primary_key_is_empty)
     get_document()->set_layout_record_viewed(m_table_name, m_layout_name, m_primary_key_value);
 
@@ -226,7 +226,7 @@ bool Box_Data_Details::fill_from_database()
     if(!fieldsToGet.empty())
     {
       //Do not try to show the data if the user may not view it:
-      Privileges table_privs = GlomPrivs::get_current_privs(m_table_name);
+      Privileges table_privs = Privs::get_current_privs(m_table_name);
 
       //Enable/Disable record creation and deletion:
       m_Button_New.set_sensitive(table_privs.m_create);
@@ -242,7 +242,7 @@ bool Box_Data_Details::fill_from_database()
         //g_warning("primary_key name = %s", m_field_primary_key->get_name().c_str());
         const int index_primary_key = fieldsToGet.size() - 1;
 
-        const Glib::ustring query = GlomUtils::build_sql_select_with_key(m_table_name, fieldsToGet, m_field_primary_key, m_primary_key_value);
+        const Glib::ustring query = Utils::build_sql_select_with_key(m_table_name, fieldsToGet, m_field_primary_key, m_primary_key_value);
         Glib::RefPtr<Gnome::Gda::DataModel> result;
 
         if(!primary_key_is_empty)
@@ -282,7 +282,7 @@ bool Box_Data_Details::fill_from_database()
                 value = result->get_value_at(i, row_number);
               else
               {
-                value = GlomConversions::get_empty_value(layout_item->get_glom_type());
+                value = Conversions::get_empty_value(layout_item->get_glom_type());
               }
 
               m_FlowTable.set_field_value(layout_item, value);
@@ -336,7 +336,7 @@ void Box_Data_Details::on_button_new()
 
 void Box_Data_Details::on_button_del()
 {
-  if( GlomConversions::value_is_empty(get_primary_key_value()) )
+  if( Conversions::value_is_empty(get_primary_key_value()) )
   {
     //Tell user that a primary key is needed to delete a record:
     Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("No primary key value.")), true);
@@ -520,7 +520,7 @@ void Box_Data_Details::on_flowtable_layout_changed()
 
 void Box_Data_Details::on_flowtable_requested_related_details(const Glib::ustring& table_name, Gnome::Gda::Value primary_key_value)
 {
-  if(GlomConversions::value_is_empty(primary_key_value))
+  if(Conversions::value_is_empty(primary_key_value))
     return; //Ignore empty ID fields.
 
   signal_requested_related_details().emit(table_name, primary_key_value);
@@ -533,7 +533,7 @@ void Box_Data_Details::on_flowtable_related_record_changed(const Glib::ustring& 
 
 void Box_Data_Details::on_flowtable_field_open_details_requested(const sharedptr<const LayoutItem_Field>& layout_field, const Gnome::Gda::Value& field_value)
 {
-  if(GlomConversions::value_is_empty(field_value))
+  if(Conversions::value_is_empty(field_value))
     return; //Ignore empty ID fields.
 
   sharedptr<Relationship> relationship = get_document()->get_field_used_in_relationship_to_one(m_table_name, layout_field->get_name());
@@ -567,7 +567,7 @@ void Box_Data_Details::on_flowtable_field_edited(const sharedptr<const LayoutIte
   Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
 
   Gnome::Gda::Value primary_key_value = get_primary_key_value();
-  if(!GlomConversions::value_is_empty(primary_key_value)) //If there is not a primary key value:
+  if(!Conversions::value_is_empty(primary_key_value)) //If there is not a primary key value:
   {
     Glib::ustring table_name;
     sharedptr<Field> primary_key_field;
@@ -705,7 +705,7 @@ void Box_Data_Details::on_flowtable_field_edited(const sharedptr<const LayoutIte
         if(!check_entered_value_for_uniqueness(m_table_name, layout_field, field_value, window))
         {
           //Revert to a blank value:
-          const Gnome::Gda::Value value_old = GlomConversions::get_empty_value(layout_field->get_full_field_details()->get_glom_type());
+          const Gnome::Gda::Value value_old = Conversions::get_empty_value(layout_field->get_full_field_details()->get_glom_type());
           set_entered_field_data(layout_field, value_old);
         }
         else
@@ -761,7 +761,7 @@ void Box_Data_Details::print_layout_group(xmlpp::Element* node_parent, const sha
         nodeField->set_attribute("title", pLayoutField->get_title_or_name());
 
         Gnome::Gda::Value value = m_FlowTable.get_field_value(pLayoutField);
-        const Glib::ustring text_representation = GlomConversions::get_text_for_gda_value(pLayoutField->get_glom_type(), value,
+        const Glib::ustring text_representation = Conversions::get_text_for_gda_value(pLayoutField->get_glom_type(), value,
           pLayoutField->get_formatting_used().m_numeric_format); //In the current locale.
 
         nodeField->set_attribute("value", text_representation);
@@ -793,7 +793,7 @@ void Box_Data_Details::print_layout_group(xmlpp::Element* node_parent, const sha
 
 void Box_Data_Details::print_layout()
 {
-  const Privileges table_privs = GlomPrivs::get_current_privs(m_table_name);
+  const Privileges table_privs = Privs::get_current_privs(m_table_name);
 
   //Don't try to print tables that the user can't view.
   if(!table_privs.m_view)

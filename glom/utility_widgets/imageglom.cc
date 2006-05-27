@@ -306,7 +306,7 @@ Gnome::Gda::Value ImageGlom::get_value() const
 
       //libgda currently assumes that this buffer is an already-escaped string.
       //TODO: Just use the raw buffer when libgda (in libgda-2.0) has been fixed:
-      Glib::ustring binary_escaped = GlomConversions::get_escaped_binary_data((guint8*)buffer, buffer_size);
+      Glib::ustring binary_escaped = Conversions::get_escaped_binary_data((guint8*)buffer, buffer_size);
       result.set(binary_escaped.c_str(), binary_escaped.size());
 
       g_free(buffer);

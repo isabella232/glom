@@ -932,7 +932,7 @@ double Document_Glom::get_node_attribute_value_as_decimal_double(const xmlpp::El
 void Document_Glom::set_node_attribute_value_as_value(xmlpp::Element* node, const Glib::ustring& strAttributeName, const Gnome::Gda::Value& value,  Field::glom_field_type field_type)
 {
   NumericFormat format_ignored; //Because we use ISO format.
-  const Glib::ustring value_as_text = GlomConversions::get_text_for_gda_value(field_type, value, std::locale() /* Use the C locale */, format_ignored, true /* ISO standard */);
+  const Glib::ustring value_as_text = Conversions::get_text_for_gda_value(field_type, value, std::locale() /* Use the C locale */, format_ignored, true /* ISO standard */);
 
   set_node_attribute_value(node, strAttributeName, value_as_text);
 }
@@ -942,7 +942,7 @@ Gnome::Gda::Value Document_Glom::get_node_attribute_value_as_value(const xmlpp::
   const Glib::ustring value_string = get_node_attribute_value(node, strAttributeName);
 
   bool success = false;
-  Gnome::Gda::Value  result = GlomConversions::parse_value(field_type, value_string, success, true /* iso_format */);
+  Gnome::Gda::Value  result = Conversions::parse_value(field_type, value_string, success, true /* iso_format */);
   if(success)
     return result;
   else 

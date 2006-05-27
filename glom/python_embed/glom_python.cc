@@ -219,7 +219,7 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
           if(pyResult == Py_None) //Direct comparison is possible and recommended, because there is only one pyNone object.
           {
             //The result should be an appropriate empty value for this field type:
-            valueResult = GlomConversions::get_empty_value(result_type);
+            valueResult = Conversions::get_empty_value(result_type);
           }
           else
           {
@@ -233,7 +233,7 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
               if(pchResult)
               {
                 bool success = false;
-                valueResult = GlomConversions::parse_value(result_type, pchResult, success, true /* iso_format */);
+                valueResult = Conversions::parse_value(result_type, pchResult, success, true /* iso_format */);
               }
               else
                 g_warning("pchResult is null");

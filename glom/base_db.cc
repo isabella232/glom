@@ -644,7 +644,7 @@ bool Base_DB::add_standard_groups()
   //Add the glom_developer group if it does not exist:
   const Glib::ustring devgroup = GLOM_STANDARD_GROUP_NAME_DEVELOPER;
 
-  const type_vecStrings vecGroups = GlomPrivs::get_database_groups();
+  const type_vecStrings vecGroups = Privs::get_database_groups();
   type_vecStrings::const_iterator iterFind = std::find(vecGroups.begin(), vecGroups.end(), devgroup);
   if(iterFind == vecGroups.end())
   {
@@ -683,7 +683,7 @@ bool Base_DB::add_standard_groups()
       {
         const Glib::ustring table_name = table_info->get_name();
         if(get_table_exists_in_database(table_name)) //Maybe the table has not been created yet.
-          GlomPrivs::set_table_privileges(devgroup, table_name, priv_devs, true /* developer privileges */);
+          Privs::set_table_privileges(devgroup, table_name, priv_devs, true /* developer privileges */);
       }
     }
 
@@ -702,7 +702,7 @@ Gnome::Gda::Value Base_DB::auto_increment_insert_first_if_necessary(const Glib::
   Gnome::Gda::Value value;
 
   //Check that the user is allowd to view and edit this table:
-  Privileges table_privs = GlomPrivs::get_current_privs(GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME);
+  Privileges table_privs = Privs::get_current_privs(GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME);
   if(!table_privs.m_view || !table_privs.m_edit)
   {
     //This should not happen:
@@ -732,7 +732,7 @@ Gnome::Gda::Value Base_DB::auto_increment_insert_first_if_necessary(const Glib::
 
     //GdaNumeric is a pain, so we take a short-cut:
     bool success = false;
-    value = GlomConversions::parse_value(Field::TYPE_NUMERIC, "0", success, true /* iso_format */);
+    value = Conversions::parse_value(Field::TYPE_NUMERIC, "0", success, true /* iso_format */);
   }
   else
   {
@@ -755,11 +755,11 @@ void Base_DB::recalculate_next_auto_increment_value(const Glib::ustring& table_n
   {
     //Increment it:
     const Gnome::Gda::Value value_max = datamodel->get_value_at(0, 0);
-    long num_max = GlomUtils::decimal_from_string(value_max.to_string()); //TODO: Is this sensible? Probably not.
+    long num_max = Utils::decimal_from_string(value_max.to_string()); //TODO: Is this sensible? Probably not.
     ++num_max;
 
     //Set it in the glom system table:
-    const Gnome::Gda::Value next_value = GlomConversions::parse_value(num_max);
+    const Gnome::Gda::Value next_value = Conversions::parse_value(num_max);
     const Glib::ustring sql_query = "UPDATE \"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME "\" SET "
       "\"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_NEXT_VALUE "\" = " + next_value.to_string() + //TODO: Don't use to_string().
       " WHERE \"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME "\" = '" + table_name + "' AND "
@@ -781,12 +781,12 @@ Gnome::Gda::Value Base_DB::get_next_auto_increment_value(const Glib::ustring& ta
 {
   const Gnome::Gda::Value result = auto_increment_insert_first_if_necessary(table_name, field_name);
   long num_result = 0;
-  num_result = GlomUtils::decimal_from_string(result.to_string()); //TODO: Is this sensible? Probably not.
+  num_result = Utils::decimal_from_string(result.to_string()); //TODO: Is this sensible? Probably not.
 
 
   //Increment the next_value:
   ++num_result;
-  const Gnome::Gda::Value next_value = GlomConversions::parse_value(num_result);
+  const Gnome::Gda::Value next_value = Conversions::parse_value(num_result);
 
   const Glib::ustring sql_query = "UPDATE \"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME "\" SET "
       "\"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_NEXT_VALUE "\" = " + next_value.to_string() +
@@ -810,7 +810,7 @@ SystemPrefs Base_DB::get_database_preferences() const
   SystemPrefs result;
 
   //Check that the user is allowd to even view this table:
-  Privileges table_privs = GlomPrivs::get_current_privs(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME);
+  Privileges table_privs = Privs::get_current_privs(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME);
   if(!table_privs.m_view)
     return result;
 
@@ -833,14 +833,14 @@ SystemPrefs Base_DB::get_database_preferences() const
     Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute(sql_query);
     if(datamodel && (datamodel->get_n_rows() != 0))
     {
-      result.m_name = GlomConversions::get_text_for_gda_value(Field::TYPE_TEXT, datamodel->get_value_at(0, 0));
-      result.m_org_name = GlomConversions::get_text_for_gda_value(Field::TYPE_TEXT, datamodel->get_value_at(1, 0));
-      result.m_org_address_street = GlomConversions::get_text_for_gda_value(Field::TYPE_TEXT, datamodel->get_value_at(2, 0));
-      result.m_org_address_street2 = GlomConversions::get_text_for_gda_value(Field::TYPE_TEXT, datamodel->get_value_at(3, 0));
-      result.m_org_address_town = GlomConversions::get_text_for_gda_value(Field::TYPE_TEXT, datamodel->get_value_at(4, 0));
-      result.m_org_address_county = GlomConversions::get_text_for_gda_value(Field::TYPE_TEXT, datamodel->get_value_at(5, 0));
-      result.m_org_address_country = GlomConversions::get_text_for_gda_value(Field::TYPE_TEXT, datamodel->get_value_at(6, 0));
-      result.m_org_address_postcode = GlomConversions::get_text_for_gda_value(Field::TYPE_TEXT, datamodel->get_value_at(7, 0));
+      result.m_name = Conversions::get_text_for_gda_value(Field::TYPE_TEXT, datamodel->get_value_at(0, 0));
+      result.m_org_name = Conversions::get_text_for_gda_value(Field::TYPE_TEXT, datamodel->get_value_at(1, 0));
+      result.m_org_address_street = Conversions::get_text_for_gda_value(Field::TYPE_TEXT, datamodel->get_value_at(2, 0));
+      result.m_org_address_street2 = Conversions::get_text_for_gda_value(Field::TYPE_TEXT, datamodel->get_value_at(3, 0));
+      result.m_org_address_town = Conversions::get_text_for_gda_value(Field::TYPE_TEXT, datamodel->get_value_at(4, 0));
+      result.m_org_address_county = Conversions::get_text_for_gda_value(Field::TYPE_TEXT, datamodel->get_value_at(5, 0));
+      result.m_org_address_country = Conversions::get_text_for_gda_value(Field::TYPE_TEXT, datamodel->get_value_at(6, 0));
+      result.m_org_address_postcode = Conversions::get_text_for_gda_value(Field::TYPE_TEXT, datamodel->get_value_at(7, 0));
 
       //We need to be more clever about these column indexes if we add more new fields:
       if(optional_org_logo)
@@ -1006,7 +1006,7 @@ bool Base_DB::insert_example_data(const Glib::ustring& table_name) const
   }
 
   //Actually insert the data:
-  type_vecStrings vec_rows = GlomUtils::string_separate(example_rows, "\n");
+  type_vecStrings vec_rows = Utils::string_separate(example_rows, "\n");
 
   for(type_vecStrings::const_iterator iter = vec_rows.begin(); iter != vec_rows.end(); ++iter)
   {
@@ -1394,7 +1394,7 @@ void Base_DB::get_table_fields_to_show_for_sequence_add_group(const Glib::ustrin
 
 
           //TODO_Performance: We do this once for each related field, even if there are 2 from the same table:
-          const Privileges privs_related = GlomPrivs::get_current_privs(item_field->get_table_used(table_name));
+          const Privileges privs_related = Privs::get_current_privs(item_field->get_table_used(table_name));
           layout_item->m_priv_view = privs_related.m_view;
           layout_item->m_priv_edit = privs_related.m_edit;
 
@@ -1451,7 +1451,7 @@ Base_DB::type_vecLayoutFields Base_DB::get_table_fields_to_show_for_sequence(con
   //Get field definitions from the database, with corrections from the document:
   type_vecFields all_fields = get_fields_for_table(table_name);
 
-  const Privileges table_privs = GlomPrivs::get_current_privs(table_name);
+  const Privileges table_privs = Privs::get_current_privs(table_name);
 
   //Get fields that the document says we should show:
   type_vecLayoutFields result;
@@ -1560,7 +1560,7 @@ void Base_DB::calculate_field_in_all_records(const Glib::ustring& table_name, co
   for(int row = 0; row < rows_count; ++row)
   {
     const Gnome::Gda::Value primary_key_value = data_model->get_value_at(0, row);
-    if(!GlomConversions::value_is_empty(primary_key_value))
+    if(!Conversions::value_is_empty(primary_key_value))
     {
       field_in_record.m_key_value = primary_key_value;
 
@@ -1593,7 +1593,7 @@ void Base_DB::calculate_field(const LayoutFieldInRecord& field_in_record)
   if(refCalcProgress.m_calc_in_progress)
   {
     //g_warning("  Box_Data::calculate_field(): Circular calculation detected. field_name=%s", field_name.c_str());
-    //refCalcProgress.m_value = GlomConversions::get_empty_value(field->get_glom_type()); //Give up.
+    //refCalcProgress.m_value = Conversions::get_empty_value(field->get_glom_type()); //Give up.
   }
   else if(refCalcProgress.m_calc_finished)
   {
@@ -1710,11 +1710,11 @@ Base_DB::type_map_fields Base_DB::get_record_field_values_for_calculation(const 
       fieldsToGet.push_back(layout_item);
     }
 
-    if(!GlomConversions::value_is_empty(primary_key_value))
+    if(!Conversions::value_is_empty(primary_key_value))
     {
       //sharedptr<const Field> fieldPrimaryKey = get_field_primary_key();
 
-      const Glib::ustring query = GlomUtils::build_sql_select_with_key(table_name, fieldsToGet, primary_key, primary_key_value);
+      const Glib::ustring query = Utils::build_sql_select_with_key(table_name, fieldsToGet, primary_key, primary_key_value);
       Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute(query);
 
       if(data_model && data_model->get_n_rows())
@@ -1730,7 +1730,7 @@ Base_DB::type_map_fields Base_DB::get_record_field_values_for_calculation(const 
           //Never give a NULL-type value to the python calculation for types that don't use them:
           //to prevent errors:
           if(value.get_value_type() == Gnome::Gda::VALUE_TYPE_NULL)
-            value = GlomConversions::get_empty_value(field->get_glom_type());
+            value = Conversions::get_empty_value(field->get_glom_type());
 
           field_values[field->get_name()] = value;
           ++col_index;
@@ -1748,7 +1748,7 @@ Base_DB::type_map_fields Base_DB::get_record_field_values_for_calculation(const 
       for(Document_Glom::type_vecFields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
       {
         sharedptr<const Field> field = *iter;
-        field_values[field->get_name()] = GlomConversions::get_empty_value(field->get_glom_type());
+        field_values[field->get_name()] = Conversions::get_empty_value(field->get_glom_type());
       }
     }
   }
@@ -1857,7 +1857,7 @@ Gnome::Gda::Value Base_DB::get_field_value_in_database(const LayoutFieldInRecord
   type_vecConstLayoutFields list_fields;
   sharedptr<const LayoutItem_Field> layout_item = field_in_record.m_field;
   list_fields.push_back(layout_item);
-  const Glib::ustring sql_query = GlomUtils::build_sql_select_with_key(field_in_record.m_table_name,
+  const Glib::ustring sql_query = Utils::build_sql_select_with_key(field_in_record.m_table_name,
       list_fields, field_in_record.m_key, field_in_record.m_key_value);
 
   Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute(sql_query);
@@ -2048,7 +2048,7 @@ void Base_DB::do_lookups(const LayoutFieldInRecord& field_in_record, const Gtk::
       {
         const Gnome::Gda::Value value = get_lookup_value(field_in_record.m_table_name, iter->second /* relationship */,  field_source /* the field to look in to get the value */, field_value /* Value of to and from fields */);
 
-        const Gnome::Gda::Value value_converted = GlomConversions::convert_value(value, layout_item->get_glom_type());
+        const Gnome::Gda::Value value_converted = Conversions::convert_value(value, layout_item->get_glom_type());
 
         LayoutFieldInRecord field_in_record_to_set(layout_item, field_in_record.m_table_name /* parent table */, field_in_record.m_key, field_in_record.m_key_value);
 
@@ -2123,7 +2123,7 @@ Gnome::Gda::Value Base_DB::get_lookup_value(const Glib::ustring& table_name, con
   if(to_key_field)
   {
     //Convert the value, in case the from and to fields have different types:
-    const Gnome::Gda::Value value_to_key_field = GlomConversions::convert_value(key_value, to_key_field->get_glom_type());
+    const Gnome::Gda::Value value_to_key_field = Conversions::convert_value(key_value, to_key_field->get_glom_type());
 
     Glib::ustring strQuery = "SELECT \"" + relationship->get_to_table() + "\".\"" + source_field->get_name() + "\" FROM \"" +  relationship->get_to_table() + "\"";
     strQuery += " WHERE \"" + to_key_field->get_name() + "\" = " + to_key_field->sql(value_to_key_field);

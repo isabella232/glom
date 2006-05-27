@@ -24,7 +24,7 @@
 namespace Glom
 {
 
-GlomPrivs::type_vecStrings GlomPrivs::get_database_groups()
+Privs::type_vecStrings Privs::get_database_groups()
 {
   type_vecStrings result;
 
@@ -44,7 +44,7 @@ GlomPrivs::type_vecStrings GlomPrivs::get_database_groups()
   return result;
 }
 
-GlomPrivs::type_vecStrings GlomPrivs::get_database_users(const Glib::ustring& group_name)
+Privs::type_vecStrings Privs::get_database_users(const Glib::ustring& group_name)
 {
   type_vecStrings result;
 
@@ -100,7 +100,7 @@ GlomPrivs::type_vecStrings GlomPrivs::get_database_users(const Glib::ustring& gr
   return result;
 }
 
-void GlomPrivs::set_table_privileges(const Glib::ustring& group_name, const Glib::ustring& table_name, const Privileges& privs, bool developer_privs)
+void Privs::set_table_privileges(const Glib::ustring& group_name, const Glib::ustring& table_name, const Privileges& privs, bool developer_privs)
 {
   if(group_name.empty() || table_name.empty())
     return;
@@ -171,7 +171,7 @@ void GlomPrivs::set_table_privileges(const Glib::ustring& group_name, const Glib
   }
 }
 
-Privileges GlomPrivs::get_table_privileges(const Glib::ustring& group_name, const Glib::ustring& table_name)
+Privileges Privs::get_table_privileges(const Glib::ustring& group_name, const Glib::ustring& table_name)
 {
   Privileges result;
 
@@ -200,7 +200,7 @@ Privileges GlomPrivs::get_table_privileges(const Glib::ustring& group_name, cons
     for(type_vecStrings::const_iterator iterItems = vecItems.begin(); iterItems != vecItems.end(); ++iterItems)
     {
       Glib::ustring item = *iterItems;
-      item = GlomUtils::string_trim(item, "\""); //Remove quotes from front and back.
+      item = Utils::string_trim(item, "\""); //Remove quotes from front and back.
 
       //Find group permissions, ignoring user permissions:
       const Glib::ustring strgroup = "group ";
@@ -211,7 +211,7 @@ Privileges GlomPrivs::get_table_privileges(const Glib::ustring& group_name, cons
         item = item.substr(strgroup.size());
 
         //Get the parts before and after the =:
-        const type_vecStrings vecParts = GlomUtils::string_separate(item, "=");
+        const type_vecStrings vecParts = Utils::string_separate(item, "=");
         if(vecParts.size() == 2)
         {
           const Glib::ustring this_group_name = vecParts[0];
@@ -220,7 +220,7 @@ Privileges GlomPrivs::get_table_privileges(const Glib::ustring& group_name, cons
             Glib::ustring group_permissions = vecParts[1];
 
             //Get the part before the /user_who_granted_the_privileges:
-            const type_vecStrings vecParts = GlomUtils::string_separate(group_permissions, "/");
+            const type_vecStrings vecParts = Utils::string_separate(group_permissions, "/");
             if(!vecParts.empty())
               group_permissions = vecParts[0];
 
@@ -255,7 +255,7 @@ Privileges GlomPrivs::get_table_privileges(const Glib::ustring& group_name, cons
 }
 
 
-Glib::ustring GlomPrivs::get_user_visible_group_name(const Glib::ustring& group_name)
+Glib::ustring Privs::get_user_visible_group_name(const Glib::ustring& group_name)
 {
   Glib::ustring result = group_name;
 
@@ -267,7 +267,7 @@ Glib::ustring GlomPrivs::get_user_visible_group_name(const Glib::ustring& group_
   return result;
 }
 
-Base_DB::type_vecStrings GlomPrivs::get_groups_of_user(const Glib::ustring& user)
+Base_DB::type_vecStrings Privs::get_groups_of_user(const Glib::ustring& user)
 {
   //TODO_Performance
 
@@ -288,14 +288,14 @@ Base_DB::type_vecStrings GlomPrivs::get_groups_of_user(const Glib::ustring& user
   return result;
 }
 
-bool GlomPrivs::get_user_is_in_group(const Glib::ustring& user, const Glib::ustring& group)
+bool Privs::get_user_is_in_group(const Glib::ustring& user, const Glib::ustring& group)
 {
   const type_vecStrings users = get_database_users(group);
   type_vecStrings::const_iterator iterFind = std::find(users.begin(), users.end(), user);
   return (iterFind != users.end());
 }
 
-Privileges GlomPrivs::get_current_privs(const Glib::ustring& table_name)
+Privileges Privs::get_current_privs(const Glib::ustring& table_name)
 {
   //TODO_Performance: There's lots of database access here.
   //We could maybe replace some with the postgres has_table_* function().

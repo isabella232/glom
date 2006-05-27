@@ -81,7 +81,7 @@ Box_Data_List::~Box_Data_List()
 
 void Box_Data_List::enable_buttons()
 {
-  const Privileges table_privs = GlomPrivs::get_current_privs(m_table_name);
+  const Privileges table_privs = Privs::get_current_privs(m_table_name);
 
     //Enable/Disable record creation and deletion:
   bool allow_create = !m_read_only;
@@ -130,7 +130,7 @@ bool Box_Data_List::fill_from_database()
       //Glib::RefPtr<Gnome::Gda::Connection> connection = sharedconnection->get_gda_connection();
 
     //Do not try to show the data if the user may not view it:
-    const Privileges table_privs = GlomPrivs::get_current_privs(m_table_name);
+    const Privileges table_privs = Privs::get_current_privs(m_table_name);
 
     enable_buttons();
 
@@ -273,7 +273,7 @@ void Box_Data_List::on_adddel_user_added(const Gtk::TreeModel::iterator& row, gu
   }
 
   //If no primary key value is available yet, then don't add the record yet:
-  if(!GlomConversions::value_is_empty(primary_key_value))
+  if(!Conversions::value_is_empty(primary_key_value))
   {
     sharedptr<SharedConnection> sharedconnection = connect_to_server(get_app_window()); //Keep it alive while we need the data_model.
     if(sharedconnection)
@@ -283,7 +283,7 @@ void Box_Data_List::on_adddel_user_added(const Gtk::TreeModel::iterator& row, gu
       if(!check_entered_value_for_uniqueness(m_table_name, layout_field, primary_key_value, get_app_window()))
       {
         //Revert to a blank value.
-        primary_key_value = GlomConversions::get_empty_value(layout_field->get_full_field_details()->get_glom_type());
+        primary_key_value = Conversions::get_empty_value(layout_field->get_full_field_details()->get_glom_type());
         set_entered_field_data(row, layout_field, primary_key_value);
         return;
       }
@@ -351,7 +351,7 @@ void Box_Data_List::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, 
   const Gnome::Gda::Value parent_primary_key_value = get_primary_key_value(row);
   sharedptr<const LayoutItem_Field> layout_field = m_AddDel.get_column_field(col);
 
-  if(!GlomConversions::value_is_empty(parent_primary_key_value)) //If the record's primary key is filled in:
+  if(!Conversions::value_is_empty(parent_primary_key_value)) //If the record's primary key is filled in:
   {
     //Just update the record:
     try
@@ -451,7 +451,7 @@ void Box_Data_List::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, 
     on_adddel_user_added(row, col);
     
     const Gnome::Gda::Value primaryKeyValue = get_primary_key_value(row); //TODO_Value
-    if(!(GlomConversions::value_is_empty(primaryKeyValue))) //If the Add succeeeded:
+    if(!(Conversions::value_is_empty(primaryKeyValue))) //If the Add succeeeded:
     {
       if(!(layout_field->get_full_field_details()->get_primary_key())) //Don't try to re-set the primary key field, because we just inserted the record with it.
       {
@@ -574,7 +574,7 @@ Gnome::Gda::Value Box_Data_List::get_primary_key_value_first()
     while(iter != model->children().end())
     {
       Gnome::Gda::Value value = get_primary_key_value(iter);
-      if(GlomConversions::value_is_empty(value))
+      if(Conversions::value_is_empty(value))
       {
        //std::cout << "Box_Data_List(): get_primary_key_value_first() iter val is NULL" << std::endl;
         ++iter;
@@ -690,7 +690,7 @@ bool Box_Data_List::get_field_primary_key_index(guint& field_column) const
 
 void Box_Data_List::print_layout()
 {
-  const Privileges table_privs = GlomPrivs::get_current_privs(m_table_name);
+  const Privileges table_privs = Privs::get_current_privs(m_table_name);
 
   //Don't try to print tables that the user can't view.
   if(!table_privs.m_view)

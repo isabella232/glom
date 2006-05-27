@@ -1,4 +1,11 @@
 2006-05-27  Murray Cumming  <murrayc@murrayc.com>
+	
+	* Changed namespaces:
+	GlomUtils to Glom::Utils.
+	GlomConversions to Glom::Conversions.
+	GlomPrivs to Glom::Privs.
+
+2006-05-27  Murray Cumming  <murrayc@murrayc.com>
 
 	Almost all files: Put everthing in the Glom namespace.
 

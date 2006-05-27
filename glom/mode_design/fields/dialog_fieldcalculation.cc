@@ -87,7 +87,7 @@ void Dialog_FieldCalculation::on_button_test()
     for(Document_Glom::type_vecFields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
     {
       const sharedptr<const Field> field = *iter;
-      const Gnome::Gda::Value example_value = GlomConversions::get_example_value(field->get_glom_type());
+      const Gnome::Gda::Value example_value = Conversions::get_example_value(field->get_glom_type());
       field_values[field->get_name()] = example_value;
     }
   }

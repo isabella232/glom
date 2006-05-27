@@ -226,7 +226,7 @@ static std::string glom_escape_text(const std::string src)
 
       //Also escape any ";" characters, because these also cause problems, at least with libgda:
       //See bug #326325.
-      escaped = GlomUtils::string_replace(escaped, ";", "\\073");
+      escaped = Utils::string_replace(escaped, ";", "\\073");
 
       return ("'" + escaped + "'"); //Add single-quotes. Actually escape it 
       //std::cout << "glom_escape_text: escaped and quoted: " << str << std::endl;
@@ -288,7 +288,7 @@ Glib::ustring Field::sql(const Gnome::Gda::Value& value) const
     case(TYPE_TIME):
     {
       NumericFormat format_ignored; //Because we use ISO format.
-      str = GlomConversions::get_text_for_gda_value(m_glom_type, value, std::locale() /* SQL uses the C locale */, format_ignored, true /* ISO standard */);
+      str = Conversions::get_text_for_gda_value(m_glom_type, value, std::locale() /* SQL uses the C locale */, format_ignored, true /* ISO standard */);
       if(str != "NULL")
          str = "'" + str + "'"; //Add single-quotes.
 
@@ -296,7 +296,7 @@ Glib::ustring Field::sql(const Gnome::Gda::Value& value) const
     }
     case(TYPE_NUMERIC):
     {
-      str =  GlomConversions::get_text_for_gda_value(m_glom_type, value, std::locale() /* SQL uses the C locale */); //No quotes for numbers.
+      str =  Conversions::get_text_for_gda_value(m_glom_type, value, std::locale() /* SQL uses the C locale */); //No quotes for numbers.
       break;
     }
     case(TYPE_BOOLEAN):
@@ -321,7 +321,7 @@ Glib::ustring Field::sql(const Gnome::Gda::Value& value) const
           str = glom_escape_text(escaped_binary_data) /* has quotes */ + "::bytea";
 
           //Use this when libgda unescapes the binary data internally, as it should: 
-          //str = "'" + GlomConversions::get_escaped_binary_data((guint8*)buffer, buffer_size) + "'::bytea";
+          //str = "'" + Conversions::get_escaped_binary_data((guint8*)buffer, buffer_size) + "'::bytea";
         }
       }
       else

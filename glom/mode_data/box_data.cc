@@ -84,7 +84,7 @@ Glib::ustring Box_Data::get_find_where_clause() const
 
     const Gnome::Gda::Value data = get_entered_field_data(*iter);
 
-    if(!GlomConversions::value_is_empty(data))
+    if(!Conversions::value_is_empty(data))
     {
       const sharedptr<const Field> field = (*iter)->get_full_field_details();
       if(field)
@@ -170,7 +170,7 @@ Glib::RefPtr<Gnome::Gda::DataModel> Box_Data::record_new(bool use_entered_data, 
     //If the user did not enter something in this field:
     Gnome::Gda::Value value = get_entered_field_data(layout_item);
 
-    if(GlomConversions::value_is_empty(value)) //This deals with empty strings too.
+    if(Conversions::value_is_empty(value)) //This deals with empty strings too.
     {
       const sharedptr<const Field>& field = layout_item->get_full_field_details();
       if(field)
@@ -188,10 +188,10 @@ Glib::RefPtr<Gnome::Gda::DataModel> Box_Data::record_new(bool use_entered_data, 
         //Use default values (These are also specified in postgres as part of the field definition,
         //so we could theoretically just not specify it here.
         //TODO_Performance: Add has_default_value()?
-        if(GlomConversions::value_is_empty(value))
+        if(Conversions::value_is_empty(value))
         {
           const Gnome::Gda::Value default_value = field->get_default_value();
-          if(!GlomConversions::value_is_empty(default_value))
+          if(!Conversions::value_is_empty(default_value))
           {
             set_entered_field_data(layout_item, default_value);
           }
@@ -223,7 +223,7 @@ Glib::RefPtr<Gnome::Gda::DataModel> Box_Data::record_new(bool use_entered_data, 
         if(field)
         {
           //Use the specified (generated) primary key value, if there is one:
-          if(primary_key_name == field_name && !GlomConversions::value_is_empty(primary_key_value))
+          if(primary_key_name == field_name && !Conversions::value_is_empty(primary_key_value))
           {
             value = primary_key_value;
           }
@@ -412,7 +412,7 @@ Gnome::Gda::Value Box_Data::generate_next_auto_increment(const Glib::ustring& ta
 
   //Get a string representation of the number, so we can put it back in a NUMERIC Gda::Value:
 
-  return GlomConversions::parse_value(result);
+  return Conversions::parse_value(result);
   */
 }
 
@@ -462,7 +462,7 @@ void Box_Data::refresh_related_fields(const LayoutFieldInRecord& field_in_record
 
   if(!fieldsToGet.empty())
   {
-    const Glib::ustring query = GlomUtils::build_sql_select_with_key(field_in_record_changed.m_table_name, fieldsToGet, field_in_record_changed.m_key, field_in_record_changed.m_key_value);
+    const Glib::ustring query = Utils::build_sql_select_with_key(field_in_record_changed.m_table_name, fieldsToGet, field_in_record_changed.m_key, field_in_record_changed.m_key_value);
 
     Glib::RefPtr<Gnome::Gda::DataModel> result = query_execute(query, get_app_window());
     if(!result)
@@ -511,7 +511,7 @@ Document_Glom::type_mapLayoutGroupSequence Box_Data::get_data_layout_groups(cons
       //Get the layout information from the document:
       layout_groups = document->get_data_layout_groups_plus_new_fields(layout, m_table_name);
 
-      const Privileges table_privs = GlomPrivs::get_current_privs(m_table_name);
+      const Privileges table_privs = Privs::get_current_privs(m_table_name);
 
       //Fill in the field information for the fields mentioned in the layout:
       for(Document_Glom::type_mapLayoutGroupSequence::iterator iterGroups = layout_groups.begin(); iterGroups != layout_groups.end(); ++iterGroups)
@@ -552,7 +552,7 @@ void Box_Data::fill_layout_group_field_info(const sharedptr<LayoutGroup>& group,
             item_field->set_full_field_details(field);
 
             //TODO_Performance: Don't do this repeatedly for the same table.
-            const Privileges privs = GlomPrivs::get_current_privs(relationship->get_to_table());
+            const Privileges privs = Privs::get_current_privs(relationship->get_to_table());
             item_field->m_priv_view = privs.m_view;
             item_field->m_priv_edit = privs.m_edit;
           }
@@ -586,7 +586,7 @@ bool Box_Data::record_delete(const Gnome::Gda::Value& primary_key_value)
 {
 
   sharedptr<Field> field_primary_key = get_field_primary_key();
-  if(field_primary_key && !GlomConversions::value_is_empty(primary_key_value))
+  if(field_primary_key && !Conversions::value_is_empty(primary_key_value))
   {
     return query_execute( "DELETE FROM \"" + m_table_name + "\" WHERE \"" + m_table_name + "\".\"" + field_primary_key->get_name() + "\" = " + field_primary_key->sql(primary_key_value), get_app_window());
   }
@@ -732,7 +732,7 @@ bool Box_Data::add_related_record_for_field(const sharedptr<const LayoutItem_Fie
       const bool key_is_auto_increment = primary_key_field->get_auto_increment();
 
       //If we would have to set an otherwise auto-increment key to add the record.
-      if( key_is_auto_increment && !GlomConversions::value_is_empty(primary_key_value) )
+      if( key_is_auto_increment && !Conversions::value_is_empty(primary_key_value) )
       {
         //Warn the user:
         //TODO: Make the field insensitive until it can receive data, so people never see this dialog.
