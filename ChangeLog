@@ -1,3 +1,7 @@
+2006-05-29  Kjartan Maraas  <kmaraas@gnome.org>
+
+	* configure.in: Added nb to ALL_LINGUAS.
+
 2006-05-27  Murray Cumming  <murrayc@murrayc.com>
 	
 	* Changed namespaces:
