@@ -1,3 +1,8 @@
+2006-06-14  Elijah Newren  <newren gmail com>
+
+	* autogen.sh: Don't hardcode for autoheader2.50 and autoconf2.50
+	especially since it works with newer versions too.  #344807.
+
 2006-05-29  Kjartan Maraas  <kmaraas@gnome.org>
 
 	* configure.in: Added nb to ALL_LINGUAS.

@@ -62,10 +62,10 @@ echo "- gnome-doc-prepare."	&& \
   gnome-doc-prepare --force 	&& \
 echo "- aclocal-1.9"		&& \
   aclocal-1.9 -I "$srcdir/macros" $ACLOCAL_FLAGS && \
-echo "- autoheader2.50"		&& \
-  autoheader2.50			&& \
-echo "- autoconf2.50."		&& \
-  autoconf2.50			&& \
+echo "- autoheader"		&& \
+  autoheader			&& \
+echo "- autoconf"		&& \
+  autoconf			&& \
 echo "- automake-1.9."		&& \
   automake-1.9 --add-missing --gnu	&& \
 echo "- configure --enable-maintainer-mode" $enable_warnings "$@"	&& \
