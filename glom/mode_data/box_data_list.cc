@@ -249,7 +249,7 @@ void Box_Data_List::set_primary_key_value(const Gtk::TreeModel::iterator& row, c
   m_AddDel.set_value_key(row, value);
 }
 
-void Box_Data_List::on_adddel_user_added(const Gtk::TreeModel::iterator& row, guint col_with_first_value)
+void Box_Data_List::on_adddel_user_added(const Gtk::TreeModel::iterator& row, guint /* col_with_first_value */)
 {
   //std::cout << "Box_Data_List::on_adddel_user_added" << std::endl;
 

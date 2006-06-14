@@ -1,5 +1,16 @@
 2006-06-14  Elijah Newren  <newren gmail com>
 
+	* glom/base_db.cc:
+	* glom/combobox_relationship.cc:
+	* glom/mode_data/box_data.cc:
+	* glom/mode_data/box_data_list.cc:
+	* glom/reports/report_builder.cc:
+	* glom/utility_widgets/comboglom.cc:
+	* glom/utility_widgets/flowtablewithfields.cc:
+	Fix unused variable warnings.  #344815
+
+2006-06-14  Elijah Newren  <newren gmail com>
+
 	* autogen.sh: Don't hardcode for autoheader2.50 and autoconf2.50
 	especially since it works with newer versions too.  #344807.
 

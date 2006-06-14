@@ -453,7 +453,7 @@ void FlowTableWithFields::add_field_at_position(const sharedptr<LayoutItem_Field
 }
 
 
-void FlowTableWithFields::add_button_at_position(const sharedptr<LayoutItem_Button>& layoutitem_button, const Glib::ustring& table_name, const type_list_layoutwidgets::iterator& add_before)
+void FlowTableWithFields::add_button_at_position(const sharedptr<LayoutItem_Button>& layoutitem_button, const Glib::ustring& /* table_name */, const type_list_layoutwidgets::iterator& add_before)
 {
   //Add the widget:
   ButtonGlom* button = Gtk::manage(new ButtonGlom());
@@ -472,7 +472,7 @@ void FlowTableWithFields::add_button_at_position(const sharedptr<LayoutItem_Butt
   add(*button);
 }
 
-void FlowTableWithFields::add_textobject_at_position(const sharedptr<LayoutItem_Text>& layoutitem_text, const Glib::ustring& table_name, const type_list_layoutwidgets::iterator& add_before)
+void FlowTableWithFields::add_textobject_at_position(const sharedptr<LayoutItem_Text>& layoutitem_text, const Glib::ustring& /* table_name */, const type_list_layoutwidgets::iterator& add_before)
 {
   //Add the widget:
   Gtk::Alignment* alignment_label = Gtk::manage(new Gtk::Alignment());
@@ -503,7 +503,7 @@ void FlowTableWithFields::add_textobject_at_position(const sharedptr<LayoutItem_
   }
 }
 
-void FlowTableWithFields::add_imageobject_at_position(const sharedptr<LayoutItem_Image>& layoutitem_image, const Glib::ustring& table_name, const type_list_layoutwidgets::iterator& add_before)
+void FlowTableWithFields::add_imageobject_at_position(const sharedptr<LayoutItem_Image>& layoutitem_image, const Glib::ustring& /* table_name */, const type_list_layoutwidgets::iterator& add_before)
 {
   //Add the widget:
   ImageGlom* image = Gtk::manage(new ImageGlom());

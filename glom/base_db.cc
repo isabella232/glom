@@ -164,7 +164,7 @@ bool Base_DB::handle_error()
 }
 
 //static:
-Glib::RefPtr<Gnome::Gda::DataModel> Base_DB::query_execute(const Glib::ustring& strQuery, Gtk::Window* parent_window)
+Glib::RefPtr<Gnome::Gda::DataModel> Base_DB::query_execute(const Glib::ustring& strQuery, Gtk::Window* /* parent_window */)
 {
   Glib::RefPtr<Gnome::Gda::DataModel> result;
 
@@ -346,7 +346,7 @@ bool Base_DB::get_field_exists_in_database(const Glib::ustring& table_name, cons
   return iterFind != vecFields.end();
 }
 
-Base_DB::type_vecFields Base_DB::get_fields_for_table_from_database(const Glib::ustring& table_name, bool including_system_fields)
+Base_DB::type_vecFields Base_DB::get_fields_for_table_from_database(const Glib::ustring& table_name, bool /* including_system_fields */)
 {
   type_vecFields result;
 
@@ -1837,7 +1837,7 @@ bool Base_DB::set_field_value_in_database(const LayoutFieldInRecord& layoutfield
   return true;
 }
 
-Gnome::Gda::Value Base_DB::get_field_value_in_database(const LayoutFieldInRecord& field_in_record, Gtk::Window* parent_window)
+Gnome::Gda::Value Base_DB::get_field_value_in_database(const LayoutFieldInRecord& field_in_record, Gtk::Window* /* parent_window */)
 {
   Gnome::Gda::Value result;  //TODO: Return suitable empty value for the field when failing?
 
@@ -2110,12 +2110,12 @@ Base_DB::type_list_lookups Base_DB::get_lookup_fields(const Glib::ustring& table
   return result;
 }
 
-void Base_DB::refresh_related_fields(const LayoutFieldInRecord& field_in_record_changed, const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& /* field_value */)
+void Base_DB::refresh_related_fields(const LayoutFieldInRecord& /* field_in_record_changed */, const Gtk::TreeModel::iterator& /* row */, const Gnome::Gda::Value& /* field_value */)
 {
   //overridden in Box_Data.
 }
 
-Gnome::Gda::Value Base_DB::get_lookup_value(const Glib::ustring& table_name, const sharedptr<const Relationship>& relationship, const sharedptr<const Field>& source_field, const Gnome::Gda::Value& key_value)
+Gnome::Gda::Value Base_DB::get_lookup_value(const Glib::ustring& /* table_name */, const sharedptr<const Relationship>& relationship, const sharedptr<const Field>& source_field, const Gnome::Gda::Value& key_value)
 {
   Gnome::Gda::Value result;
 

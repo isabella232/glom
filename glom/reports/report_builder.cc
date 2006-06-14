@@ -417,7 +417,7 @@ void ReportBuilder::report_build_records_field(const FoundSet& found_set, xmlpp:
   ++colField;
 }
 
-void ReportBuilder::report_build_records_text(const FoundSet& found_set, xmlpp::Element& nodeParent, const sharedptr<const LayoutItem_Text>& textobject, bool vertical)
+void ReportBuilder::report_build_records_text(const FoundSet& /* found_set */, xmlpp::Element& nodeParent, const sharedptr<const LayoutItem_Text>& textobject, bool vertical)
 {
   //Text object:
   xmlpp::Element* nodeField = nodeParent.add_child(textobject->get_report_part_id()); //We reuse this node type for text objects.
@@ -427,7 +427,7 @@ void ReportBuilder::report_build_records_text(const FoundSet& found_set, xmlpp::
     nodeField->set_attribute("vertical", "true");
 }
 
-void ReportBuilder::report_build_records_image(const FoundSet& found_set, xmlpp::Element& nodeParent, const sharedptr<const LayoutItem_Image>& imageobject, bool vertical)
+void ReportBuilder::report_build_records_image(const FoundSet& /* found_set */, xmlpp::Element& nodeParent, const sharedptr<const LayoutItem_Image>& imageobject, bool vertical)
 {
   //Text object:
   xmlpp::Element* nodeImage = nodeParent.add_child(imageobject->get_report_part_id()); //We reuse this node type for text objects.

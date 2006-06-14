@@ -227,7 +227,7 @@ void ComboGlom::on_changed()
   //Entry of text that is not in the menu will be handled by the ->get_entry() signal handlers._
 }
 
-void ComboGlom::set_read_only(bool read_only)
+void ComboGlom::set_read_only(bool /* read_only */)
 {
   //TODO
 }

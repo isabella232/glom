@@ -132,7 +132,7 @@ Glib::RefPtr<Gnome::Gda::DataModel> Box_Data::record_new(bool use_entered_data, 
   return record_new(use_entered_data, primary_key_value, Gtk::TreeModel::iterator());
 }
 
-void Box_Data::set_primary_key_value(const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& value)
+void Box_Data::set_primary_key_value(const Gtk::TreeModel::iterator& /* row */, const Gnome::Gda::Value& /* value */)
 {
   //Box_Data_List overrides this.
 }
@@ -450,7 +450,7 @@ Box_Data::type_vecLayoutFields Box_Data::get_related_fields(const sharedptr<cons
   return result;
 }
 
-void Box_Data::refresh_related_fields(const LayoutFieldInRecord& field_in_record_changed, const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& field_value)
+void Box_Data::refresh_related_fields(const LayoutFieldInRecord& field_in_record_changed, const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& /* field_value */)
 {
   if(field_in_record_changed.m_table_name != m_table_name)
     return; //TODO: Handle these too?

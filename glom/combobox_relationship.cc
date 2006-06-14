@@ -246,7 +246,7 @@ void ComboBox_Relationship::on_cell_data_title(const Gtk::TreeModel::const_itera
   }
 }
 
-bool ComboBox_Relationship::on_row_separator(const Glib::RefPtr<Gtk::TreeModel>& model, const Gtk::TreeModel::const_iterator& iter)
+bool ComboBox_Relationship::on_row_separator(const Glib::RefPtr<Gtk::TreeModel>& /* model */, const Gtk::TreeModel::const_iterator& iter)
 {
   Gtk::TreeModel::Row row = *iter;
   const bool separator = row[m_model_columns.m_separator];
