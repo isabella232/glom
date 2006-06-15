@@ -1,3 +1,8 @@
+2006-06-15  Murray Cumming  <murrayc@murrayc.com>
+
+	* add1000.patch: Removed old test patch from cvs.
+	* gnome-doc-utils.make: Removed generated file from cvs.
+
 2006-06-14  Elijah Newren  <newren gmail com>
 
 	* glom/base_db.cc:
