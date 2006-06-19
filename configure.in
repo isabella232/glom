@@ -25,6 +25,12 @@ ALL_LINGUAS="ca cs de en_CA en_GB es fi fr gu hu it nb ne nl pa pt pt_BR rw sq s
 AM_GLIB_GNU_GETTEXT
 IT_PROG_INTLTOOL([0.35.0])
 
+C_ARG_ENABLE([scrollkeeper],
+[AC_HELP_STRING([--disable-scrollkeeper],
+   [do not make updates to the scrollkeeper database])],,
+   enable_scrollkeeper=yes)
+AM_CONDITIONAL(ENABLE_SK, test "x$enable_scrollkeeper" = "xyes")
+
 #AC_CONFIG_AUX_DIR(macros)
 AC_SUBST([ACLOCAL_AMFLAGS], ['-I macros ${ACLOCAL_FLAGS}'])
 
