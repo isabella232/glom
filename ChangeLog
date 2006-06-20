@@ -1,3 +1,9 @@
+2006-06-20  Murray Cumming  <murrayc@murrayc.com>
+
+	* configure.in: Fixed typo to fix the build.
+	* examples/example_project_manager.glom: Added some tables and 
+	relationships and related records portals.
+
 2006-06-19  Murray Cumming  <murrayc@murrayc.com>
 
 	* gnome-doc-utils.make: Restore this file, because it does 
