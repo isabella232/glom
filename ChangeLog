@@ -1,3 +1,12 @@
+2006-06-21  Murray Cumming <murrayc@murrayc.com>
+
+	* docs/user-guide/C/figures/glom_design_fields.png:
+	* docs/user-guide/C/figures/glom_design_fields_dialog_calculated.pn
+	g: Added screenshots for use in the user guide.
+	* docs/user-guide/C/figures/start.png: Updated.
+	* docs/user-guide/C/glom.xml: Added Calculated Fields appendix, based 
+	on the content in the Wiki.
+
 2006-06-20  Murray Cumming  <murrayc@murrayc.com>
 
 	* gnome-doc-utils.make: Hmm, now gnome-doc-utils.make _does_ seem 

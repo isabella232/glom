@@ -163,18 +163,6 @@
     		</menuchoice>. </para>
     		</listitem>
     	</varlistentry>
-    	<varlistentry>
-    		<term>Command line</term>
-    		<listitem>
-    		<para>To start <application>&app;</application> from a command line,
-		 type the following command, then press <keycap>Return</keycap>:</para>
-    		<para> 
-			<command>&app;</command> 
-    		</para> 
-    		<para> there are no command line parameters at this time.
-    		</para> 
-    		</listitem>
-    	</varlistentry>
     </variablelist>
     </sect2>
 
@@ -282,6 +270,7 @@
 <listitem><simpara>Date</simpara></listitem>
 <listitem><simpara>Time</simpara></listitem>
 <listitem><simpara>Boolean - either true or false</simpara></listitem>
+<listitem><simpara>Image</simpara></listitem>
 </orderedlist>
     </para>
     </sect3>
@@ -300,7 +289,7 @@
     <para>For the <literal>List</literal> view, you can specify the sequence of field columns, and whether some fields are hidden.</para>
     <para>For the <literal>Details</literal> view, you can create groups of fields, and give these groups titles. You can then place fields in these groups and specify the sequence fo fields in these groups. You can also specify the sequence of these groups. For instance, in a &quot;Contacts&quot; table, you might create a &quot;Name&quot; group, and place the &quot;title&quot;, &quot;first_name&quot; and  &quot;last_name&quot; fields in that group. You might have other groups for the &quot;Address&quot; fields.</para>
 
-    <para>Date and Time fields will be displayed, and entered, in the correct format according to the user's locale, but stored in the database in a canonical form. Therefore, a German user can enter a date in the German format, but this will later be displayed to a U.S. user in the U.S. format.</para> 
+    <para>Date and Time fields will be displayed, and entered, in the correct format according to the user's locale, but stored in the database in a canonical form. Therefore, a German user can enter a date in the German format, but this will later be displayed to a U.S. user in the U.S. format.</para>
     </sect2>
 
     <sect2 id="sec-developer-relationships">
@@ -320,375 +309,93 @@
 
    <sect2>
    <title>Users Administration</title>
-   <para>To define the <literal>Operators</literal> who can use your database, and to specify what access they have to the various tables, choose <literal>Users</literal> from the <literal>Developer</literal> menu. TODO: Implement the User adminstration.</para> 
+   <para>To define the <literal>Operators</literal> who can use your database, and to specify what access they have to the various tables, choose <literal>Users</literal> from the <literal>Developer</literal> menu..</para> 
    </sect2>
   
   </sect1>
 
+  <appendix  id="sec-calculated-fields">
+  <title>Calculated Fields</title>
+  <para>Calculated fields use the Python programming language. The calculation is the implementation of a function whose signature is provided for you.</para>
 
-<!-- Customization/Settings not yet implemented...
-  <- ============= Customization ============================= ->
-  <- Use this section to describe how to customize the application. ->
-  <sect1 id="myapp-prefs"> 
-    <title>Settings</title> 
-    <para>To configure &app;, choose 
-      <menuchoice> 
-	<guimenu>Settings</guimenu> 
-	<guimenuitem>Preferences</guimenuitem> 
-      </menuchoice>. The 
-      <guilabel>Preferences</guilabel> dialog contains the following tabbed
-      sections:</para> 
-    <itemizedlist> 
-      <listitem> 
-	<para> 
-	  <xref linkend="myapp-prefs-display"/></para> 
-      </listitem> 
-      <listitem> 
-	<para> 
-	  <xref linkend="myapp-prefs-viewers"/></para> 
-      </listitem> 
-    </itemizedlist>
-<- =============== Customization Subsection ================ ->
-<- Use a new section to describe different tabbed sections on the Settings or Preferences
-	     dialog. ->
-    <sect2 id="myapp-prefs-display"> 
-      <title>Display</title> 
-      <variablelist> 
-	<varlistentry> 
-	  <term> 
-	    <guilabel>Interpolation type</guilabel> </term> 
-	  <listitem> 
-	    <para>Use this drop-down list box to specify the
-	      interpolation method that
-	      &app; uses when the
-	      application resizes images. Select one of the following
-	      options:</para>
-	    <itemizedlist> 
-	      <listitem> 
-		<para> 
-		  <guilabel>Nearest neighbor</guilabel> </para> 
-		<para>This method of interpolation takes a location in the
-		  original image and replicates the pixel that is
-		  nearest to this location. When 
-		  you zoom in on an image, the pixels are
-		  replicated. When you zoom out of an 
-		  image, the image loses some of its detail. </para> 
-	      </listitem> 
-	      <listitem> 
-		<para> 
-		  <guilabel>Bilinear</guilabel> </para> 
-		<para>This is a simple and fast method of interpolation. When
-		  you zoom in on an image, &app; uses up to four
-		  adjacent pixels to compute the colors of the new
-		  pixels. When you zoom out of 
-		  an image, &app; averages regions of color in the
-		  existing image to compute the colors of the pixels. </para> 
-	      </listitem> 
-	      <listitem> 
-		<para> 
-		  <guilabel>Hyperbolic</guilabel> </para> 
-		<para>This is a high-quality, slow method of interpolation. The
-		  application performs interpolation on the image in
-		  the manner described in 
-		  Digital Image Warping by George Wolberg.</para> 
-	      </listitem> 
-	    </itemizedlist> 
-	    <para>Default: 
-	      <guilabel>Nearest neighbor</guilabel>.</para> 
-	  </listitem> 
-	</varlistentry> 
-	<varlistentry> 
-	  <term> 
-	    <guilabel>Transparency type</guilabel> </term> 
-	  <listitem> 
-	    <para>Use this drop-down list box to specify how
-	      &app; displays transparent or partially opaque
-	      backgrounds in images. Select one of the following options:</para> 
-	    <itemizedlist> 
-	      <listitem> 
-		<para> 
-		  <guilabel>Dark checks</guilabel> </para> 
-		<para>This option displays black and dark gray checks.</para> 
-	      </listitem> 
-	      <listitem> 
-		<para> 
-		  <guilabel>Midtone checks</guilabel> </para> 
-		<para>This option displays dark gray and light gray
-		  checks.</para> 
-	      </listitem> 
-	      <listitem> 
-		<para> 
-		  <guilabel>Light checks</guilabel> </para> 
-		<para>This option displays light gray and white checks.</para> 
-	      </listitem> 
-	      <listitem> 
-		<para> 
-		  <guilabel>Black only</guilabel> </para> 
-		<para>This option displays solid black.</para> 
-	      </listitem> 
-	      <listitem> 
-		<para> 
-		  <guilabel>Gray only</guilabel> </para> 
-		<para>This option displays solid gray.</para> 
-	      </listitem> 
-	      <listitem> 
-		<para> 
-		  <guilabel>White only</guilabel> </para> 
-		<para>This option displays solid white.</para> 
-	      </listitem> 
-	    </itemizedlist> 
-	    <para>Default: 
-	      <guilabel>Dark checks</guilabel>.</para> 
-	  </listitem> 
-	</varlistentry> 
-	<varlistentry> 
-	  <term> 
-	    <guilabel>Check size</guilabel> </term> 
-	  <listitem> 
-	    <para>Use this drop-down list box to specify the size of the checks
-	      to use to display transparent or partially opaque
-	      backgrounds in images. This 
-	      option is only relevant if you choose 
-	      <guilabel>Dark checks</guilabel>, 
-	      <guilabel>Midtone checks</guilabel>, or 
-	      <guilabel>Light checks</guilabel> from the 
-	      <guilabel>Transparency type</guilabel> drop-down list box.
-	      Select one of the following options:</para> 
-	    <itemizedlist> 
-	      <listitem> 
-		<para> 
-		  <guilabel>Small</guilabel></para> 
-	      </listitem> 
-	      <listitem> 
-		<para> 
-		  <guilabel>Medium</guilabel></para> 
-	      </listitem> 
-	      <listitem> 
-		<para> 
-		  <guilabel>Large</guilabel></para> 
-	      </listitem> 
-	    </itemizedlist> 
-	    <para>Default: 
-	      <guilabel>Small</guilabel>.</para> 
-	  </listitem> 
-	</varlistentry> 
-	<varlistentry> 
-	  <term> 
-	    <guilabel>Dither type</guilabel> </term> 
-	  <listitem> 
-	    <para>Use this drop-down list box to specify the dithering method
-	      to use to display images. Dithering is a technique that
-	      is used to simulate 
-	      colors in the original image file but that your system
-	      can not display. Select 
-	      one of the following options:</para> 
-	    <itemizedlist> 
-	      <listitem> 
-		<para> 
-		  <guilabel>None</guilabel> </para> 
-		<para>This option does not use dithering. </para> 
-	      </listitem> 
-	      <listitem> 
-		<para> 
-		  <guilabel>Normal (pseudocolor)</guilabel> </para> 
-		<para>This option performs dithering on pseudocolor displays,
-		  which use a limited palette of colors. </para> 
-	      </listitem> 
-	      <listitem> 
-		<para> 
-		  <guilabel>Maximum (high color)</guilabel> </para> 
-		<para>This option performs dithering on pseudocolor and high
-		  color displays. </para> 
-	      </listitem> 
-	    </itemizedlist> 
-	    <para>Default: 
-	      <guilabel>None</guilabel>.</para> 
-	  </listitem> 
-	</varlistentry> 
-	<varlistentry> 
-	  <term> 
-	    <guilabel>Two-pass scrolling</guilabel> </term> 
-	  <listitem> 
-	    <para>Select this option to render an image in two passes
-	      when you scroll the image quickly. The first pass
-	      renders a low quality version of the image. The second
-	      pass renders a full quality version of the image over
-	      the low quality version. Two-pass scrolling enables you
-	      to view at least a low quality version of the image at
-	      all times regardless of how quickly you scroll the
-	      image. 
-	    </para>
-	    <para>Default: unselected.</para> 
-	  </listitem> 
-	</varlistentry> 
-      </variablelist> 
-    </sect2>
-    <- ============= Customization Subsection ===================== ->
-    <- Another tabbed section on the Preferences dialog. ->
-    <sect2 id="myapp-prefs-viewers"> 
-      <title>Viewers</title> 
-      <para>You can set the following viewer preferences: 
-	<itemizedlist> 
-	  <listitem> 
-	    <para> 
-	      <xref linkend="myapp-viewer-prefs-image-window"/></para> 
-	  </listitem> 
-	  <listitem> 
-	    <para> 
-	      <xref linkend="myapp-viewer-prefs-full-screen"/></para> 
-	  </listitem> 
-	</itemizedlist> </para> 
-      <sect3 id="myapp-viewer-prefs-image-window"> 
-	<title>Image Windows</title> 
-	<para>The 
-	  <guilabel>Image Windows</guilabel> group contains the preferences
-	  that you can set to view images in image windows.</para> 
-	<variablelist> 
-	  <varlistentry> 
-	    <term> 
-	      <guilabel>Use scrollbars</guilabel> </term> 
-	    <listitem> 
-	      <para>Use this drop-down list box to specify when to use
-		scrollbars to scroll through an image. Select one of
-		the following options:</para> 
-	      <itemizedlist> 
-		<listitem> 
-		  <para> 
-		    <guilabel>Never</guilabel> </para> 
-		  <para>This option never displays scrollbars. You can use the
-		    arrow keys on the keyboard or the mouse to scroll
-		    through the image. </para>  
-		</listitem> 
-		<listitem> 
-		  <para> 
-		    <guilabel>Only if image does not fit</guilabel> </para> 
-		  <para>This option displays scrollbars when the image is
-		    larger than the image window.</para> 
-		</listitem> 
-	      </itemizedlist> 
-	      <para>Default: 
-		<guilabel>Never</guilabel>.</para> 
-	    </listitem> 
-	  </varlistentry> 
-	  <varlistentry> 
-	    <term> 
-	      <guilabel>Pick window size and zoom factor
-		automatically</guilabel> </term> 
-	    <listitem> 
-	      <para>Select this option to resize the image window to fit the
-		image or to resize the image to fit the image
-		window. If the image is small, 
-		&app; resizes the image window to fit the image. If
-		the image is large, &app; resizes the image to fit
-		the image window. </para> 
-	      <para>Default: unselected.</para> 
-	    </listitem> 
-	  </varlistentry> 
-	  <varlistentry> 
-	    <term> 
-	      <guilabel>Open images in a new window</guilabel> </term> 
-	    <listitem> 
-	      <para>Select this option to open a new
-		&app; window each time you open an image. If you do
-		not select this option, &app; replaces the existing
-		image with the new image when you open an image. </para> 
-	      <para>Default: unselected.</para> 
-	    </listitem> 
-	  </varlistentry> 
-	</variablelist> 
-      </sect3> 
-      <sect3 id="myapp-viewer-prefs-full-screen"> 
-	<title>Full Screen</title> 
-	<para>The 
-	  <guilabel>Full Screen</guilabel> group contains the preferences that
-	  you can set to view images in full screen mode.</para> 
-	<variablelist> 
-	  <varlistentry> 
-	    <term> 
-	      <guilabel>Use scrollbars</guilabel> </term> 
-	    <listitem> 
-	      <para>Use this drop-down list box to specify when to use
-		scrollbars to scroll through an image. Select one of the following
-		options:</para> 
-	      <itemizedlist> 
-		<listitem> 
-		  <para> 
-		    <guilabel>Never</guilabel> </para> 
-		  <para>This option never displays scrollbars. You can use the
-		    arrow keys on the keyboard or the mouse to scroll
-		    through the image. </para>  
-		</listitem> 
-		<listitem> 
-		  <para> 
-		    <guilabel>Only if image does not fit</guilabel> </para> 
-		  <para>This option displays scrollbars when the image is
-		    larger than the full screen. </para> 
-		</listitem> 
-	      </itemizedlist> 
-	      <para>Default: 
-		<guilabel>Never</guilabel>.</para> 
-	    </listitem> 
-	  </varlistentry> 
-	  <varlistentry> 
-	    <term> 
-	      <guilabel>Use 1:1 zoom factor</guilabel> </term> 
-	    <listitem> 
-	      <para>Select this option to use the 1:1 zoom factor when you open
-		an image. The 1:1 zoom factor displays the image at
-		its actual size. </para>  
-	      <para>Default: selected.</para> 
-	    </listitem> 
-	  </varlistentry> 
-	  <varlistentry> 
-	    <term> 
-	      <guilabel>Use same zoom factor as image window</guilabel> </term>
-	    
-	    <listitem> 
-	      <para>Select this option to use the same zoom factor that the
-		application uses to display the image in an image
-	      window. </para>  
-	      <para>Default: unselected.</para> 
-	    </listitem> 
-	  </varlistentry> 
-	  <varlistentry> 
-	    <term> 
-	      <guilabel>Fit all images to screen</guilabel> </term> 
-	    <listitem> 
-	      <para>Select this option to resize images to fill the full screen
-		when you open the images in full screen mode. </para> 
-	      <para>Default: unselected.</para> 
-	    </listitem> 
-	  </varlistentry> 
-	  <varlistentry> 
-	    <term> 
-	      <guilabel>Fit standard-sized images to screen</guilabel> </term> 
-	    <listitem> 
-	      <para>Select this option to automatically resize images
-		that are the same size as standard screens so that the
-		images fill the full screen when you open them in full
-		screen mode. If you select this option, &app; ignores
-		the settings for the previous three options when you
-		open an image that is the same size as a standard
-		screen.  Examples of standard screen sizes are 640 x
-		480 pixels, 1024 x 768 pixels, and so on. </para>
-	      <para>Default: unselected.</para> 
-	    </listitem> 
-	  </varlistentry> 
-	  <varlistentry> 
-	    <term> 
-	      <guilabel>Put a bevel around the edge of the screen</guilabel>
-	    </term> 
-	    <listitem> 
-	      <para>Select this option to display a 3D beveled border around
-		the full screen view of an image. </para> 
-	      <para>Default: unselected.</para> 
-	    </listitem> 
-	  </varlistentry> 
-	</variablelist> 
-      </sect3> 
-    </sect2> 
+     <figure id="developer-editing-fields-calculated"> 
+	<title>Editing the definition of a calculated field</title> 
+	<screenshot> 
+	  <mediaobject> 
+	    <imageobject><imagedata
+		fileref="figures/glom_design_fields_dialog_calculated.png" format="PNG"/> 
+	    </imageobject>
+	    <textobject> 
+	      <phrase>Editing the definition of a calculated field.
+	      </phrase> 
+	    </textobject> 
+	  </mediaobject> 
+	</screenshot> 
+     </figure>
+
+  <sect1>
+  <title>Field values</title>
+  <para>For instance, <programlisting>record["name_first"]</programlisting> is the value of the name_first field in the current record.</para>
   </sect1>
--->
+
+  <sect1>
+  <title>Related Records</title>
+  <para>For instance, <programlisting>record.related["location"]</programlisting> provides the related records for the current record.</para>
+
+  <sect2>
+  <title>Single related records</title>
+  <para>For relationships that specify a single record, you can get the value of a field in that record. For instance, <programlisting>record.related["location"]["name"]</programlisting> is the value of the name field in the table indicated by the location relationship (often called location::name).</para>
+  </sect2>
+
+  <sect2>
+  <title>Multiple related records</title>
+  <para>For relationships that specify multiple records, you can use the aggregate functions (sum, count, average) to get overall values. For instance, <programlisting>record.related["invoice_lines"].sum("total_price")</programlisting>.</para>
+  </sect2>
+
+  </sect1>
+
+  <sect1>
+  <title>Testing for empty values</title>
+
+  <sect2>
+  <title>Non-text fields</title>
+  <para>Non-text fields may be empty, indicating that the user has not entered any value in the field. For instance, Glom does not assume that an empty value in a numeric field should mean 0.</para>
+  <para>You can test whether a field is empty by using Python's None. For instance:
+  <programlisting>
+  if(record["contact_id"] == None):
+    return "No Contact"
+  else:
+    return record.related["contacts"]["name_full"]
+  </programlisting>
+  <para>You might also test whether there are any related records. For instance:</para>
+  <programlisting>
+  if(record.related["contacts"] == None):
+    return "No Contact"
+  else:
+    return record.related["contacts"]["name_full"]
+  </programlisting>
+  </para>
+  </sect2>
+
+  <sect2>
+  <title>Text fields</title>
+  <para>For text fields, you should check for zero-length strings. It is not possible in Glom to distinguish between zero-length strings and the absence of any string, because there is no advantage to doing so. For instance:</para>
+  <programlisting>
+  if(record["name_full"] == ""):
+    return "No Name"
+  else:
+    return record["name_full"]
+  </programlisting>
+  </sect2>
+
+  <para>
+  </para>
+  </sect1>
+
+  </appendix>
+
+
+
 <!-- ============= Bugs ================================== -->
 <!-- This section is optional and is commented out by default. 
      You can use it to describe known bugs and limitations of the 
