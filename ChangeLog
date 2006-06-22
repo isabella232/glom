@@ -1,3 +1,8 @@
+2006-06-22  Murray Cumming <murrayc@murrayc.com>
+
+	* examples/Makefile.am:
+	* examples/example_music_collection.glom: Added a new simple example.
+
 2006-06-21  Murray Cumming <murrayc@murrayc.com>
 
 	* docs/user-guide/C/figures/glom_design_fields.png:
