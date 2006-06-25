@@ -1390,6 +1390,9 @@ bool Frame_Glom::create_database(const Glib::ustring& database_name, const Glib:
         const bool test = connection->create_database(database_name);
         if(!test)
         {
+          //TODO: Discover the cause of the error somehow.
+          std::cerr << "Frame_Glom::create_database() failed." << std::endl;
+
           //Tell the user:
           Gtk::Dialog* dialog = 0;
           try

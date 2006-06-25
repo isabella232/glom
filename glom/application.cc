@@ -45,8 +45,15 @@ App_Glom::App_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml
   m_menu_tables_ui_merge_id(0),
   m_menu_reports_ui_merge_id(0)
 {
-  //Show the icon in the window manager's window title bar and in the list of running applications:
-  set_icon_from_file(GLOM_ICON_DIR "/glom.png");
+  try
+  {
+    //Show the icon in the window manager's window title bar and in the list of running applications:
+    set_icon_from_file(GLOM_ICON_DIR "/glom.png");
+  }
+  catch(const Glib::Error& ex)
+  {
+    std::cerr << "App_Glom::App_Glom(): Could not set icon: " << ex.what() << std::endl;
+  } 
 
   //Load widgets from glade file:
   refGlade->get_widget("bakery_vbox", m_pBoxTop);
@@ -840,7 +847,7 @@ bool App_Glom::recreate_database(bool& user_cancelled)
     if(ex.get_failure_type() == ExceptionConnection::FAILURE_NO_SERVER)
     {
       user_cancelled = true; //Eventually, the user will cancel after retrying.
-      g_warning("App_Glom::recreate_database(): Failed because connection to server failed, without specifying a databse.");
+      g_warning("App_Glom::recreate_database(): Failed because connection to server failed, without specifying a database.");
       return false;
     }
 
@@ -872,7 +879,7 @@ bool App_Glom::recreate_database(bool& user_cancelled)
 
   //Create the database: (This will show a connection dialog)
   connection_pool->set_database( Glib::ustring() );
-  bool db_created = m_pFrame->create_database(db_name, pDocument->get_database_title(), false /* Don't ask for password etc again. */);
+  const bool db_created = m_pFrame->create_database(db_name, pDocument->get_database_title(), false /* Don't ask for password etc again. */);
 
   if(!db_created)
   {

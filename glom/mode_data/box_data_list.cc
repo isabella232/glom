@@ -104,6 +104,7 @@ void Box_Data_List::refresh_data_from_database_blank()
   found_set.m_where_clause = Glib::ustring();
   m_AddDel.set_found_set(found_set);
 
+  std::cout << "debug: Box_Data_List::refresh_data_from_database_blank(): before refresh_from_database_blank()." << std::endl;
   m_AddDel.refresh_from_database_blank();
   m_found_set = found_set;
 }

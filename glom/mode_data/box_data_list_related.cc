@@ -147,14 +147,14 @@ bool Box_Data_List_Related::refresh_data_from_database_with_foreign_key(const Gn
     }
     else
     {
-      //g_warning("Box_Data_List_Related::refresh_data_from_database_with_foreign_key(): m_key_value is NULL.");
+      //If there is no from key value then no records can be shown:
       refresh_data_from_database_blank();
-      return false;
+      return true;
     }
   }
   else
   {
-    //If there is no to field then this relationship specifies all relationships in the table.
+    //If there is no to field then this relationship specifies all records in the table.
     FoundSet found_set = m_found_set;
     found_set.m_where_clause = Glib::ustring();
     return Box_Data_List::refresh_data_from_database_with_where_clause(found_set);
