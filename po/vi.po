@@ -1455,7 +1455,7 @@ msgstr "Xoá bỏ mục ghi"
 msgid ""
 "Are you sure that you would like to delete this record? The data in this "
 "record will then be permanently lost."
-msgstr "Bạn có chấc muốn xoá bỏ mục ghi này không? Vậy dữ liệu trong mục ghi này sẽ "
+msgstr "Bạn có chắc muốn xoá bỏ mục ghi này không? Vậy dữ liệu trong mục ghi này sẽ "
 "bị mất hoàn toàn."
 
 #.Tell user that a primary key is needed to delete a record:
