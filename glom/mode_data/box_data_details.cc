@@ -316,7 +316,7 @@ void Box_Data_Details::on_button_new()
 {
   if(confirm_discard_unstored_data())
   {
-    if(m_field_primary_key->get_auto_increment()) //If the primary key is an auto-increment:
+    if(m_field_primary_key && m_field_primary_key->get_auto_increment()) //If the primary key is an auto-increment:
     {
       //Just make a new record, and show it:
       Gnome::Gda::Value primary_key_value = generate_next_auto_increment(m_table_name, m_field_primary_key->get_name()); //TODO: This should return a Gda::Value
@@ -677,7 +677,7 @@ void Box_Data_Details::on_flowtable_field_edited(const sharedptr<const LayoutIte
   {
     //There is no current primary key value:
 
-    if(m_field_primary_key->get_auto_increment()) //If the primary key is an auto-increment:
+    if(m_field_primary_key && m_field_primary_key->get_auto_increment()) //If the primary key is an auto-increment:
     {
       if(strFieldName == m_field_primary_key->get_name()) //If edited field is the primary key.
       {

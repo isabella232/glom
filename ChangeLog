@@ -1,5 +1,11 @@
 2006-08-15  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/mode_data/box_data_details.cc: on_button_new(): Do not 
+	dereference a null field, to avoid crashing when adding a record when 
+	there is no primary key.
+
+2006-08-15  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/frame_glom.cc: Frame_Glom::create_database(): 
 	When Gda::Connection::create_database() fails, output a more exact 
 	error message for debugging. Added comment mentioning that, 
