@@ -1384,6 +1384,8 @@ bool Frame_Glom::create_database(const Glib::ustring& database_name, const Glib:
 
       Bakery::BusyCursor busycursor(*pWindowApp);
 
+      //std::cout << "Frame_Glom::create_database():  debug: before calling sharedconnection->get_gda_connection." << std::endl;
+
       Glib::RefPtr<Gnome::Gda::Connection> connection = sharedconnection->get_gda_connection();
       if(connection)
       {
@@ -1391,7 +1393,9 @@ bool Frame_Glom::create_database(const Glib::ustring& database_name, const Glib:
         if(!test)
         {
           //TODO: Discover the cause of the error somehow.
-          std::cerr << "Frame_Glom::create_database() failed." << std::endl;
+          //I think a failure here might be caused by installing unstable libgda, which seems to affect stable libgda-1.2.
+          //Doing a "make install" in libgda-1.2 seems to fix this:
+          std::cerr << "Frame_Glom::create_database():  Gnome::Gda::Connection::create_database(" << database_name << ") failed." << std::endl;
 
           //Tell the user:
           Gtk::Dialog* dialog = 0;

@@ -1,3 +1,11 @@
+2006-08-15  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/frame_glom.cc: Frame_Glom::create_database(): 
+	When Gda::Connection::create_database() fails, output a more exact 
+	error message for debugging. Added comment mentioning that, 
+	when this fails, it might be due to installation of the unstable 
+	libgda, which might not do a completely parallel install.
+
 2006-06-25  Murray Cumming <murrayc@murrayc.com>
 
 	* glom/application.cc: App_Glom::App_Glom(): Catch the exception if 
