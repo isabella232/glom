@@ -401,7 +401,7 @@ bool ConnectionPool::handle_error(bool cerr_only)
         Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Internal error")), true, Gtk::MESSAGE_WARNING );
         dialog.set_secondary_text(error_details);
         //TODO: dialog.set_transient_for(*get_application());
-        dialog.run();
+        dialog.run(); //TODO: This segfaults in gtk_window_set_modal() when this method is run a second time, for instance if there are two database errors.
         std::cout << "debug: after Internal Error dialog run()." << std::endl;
       }
 

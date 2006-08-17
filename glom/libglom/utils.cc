@@ -35,6 +35,8 @@
 #include <iostream>   // for cout, endl
 #include <iomanip>
 
+#include <stack>
+
 namespace Glom
 {
 
@@ -576,20 +578,91 @@ Glib::ustring Utils::title_from_string(const Glib::ustring& text)
   return result;
 }
 
-Utils::type_vecStrings Utils::string_separate(const Glib::ustring& str, const Glib::ustring& separator)
+Utils::type_vecStrings Utils::string_separate(const Glib::ustring& str, const Glib::ustring& separator, bool ignore_quoted_separator)
 {
   type_vecStrings result;
 
   Glib::ustring unprocessed = str;
+  std::string::size_type unprocessed_start = 0; //We refind after a quote if we find one.
   while(!unprocessed.empty())
   {
-    Glib::ustring::size_type posComma = unprocessed.find(separator);
+    //Search for a separator at the start, or after a previously found quoted separator:
+    std::string::size_type posComma = std::string::npos;
+    if(unprocessed_start < unprocessed.size())
+      posComma = unprocessed.find(separator, unprocessed_start);
 
-    Glib::ustring item;
+    Glib::ustring item; //A potential item, between separators.
     if(posComma != Glib::ustring::npos)
     {
-      item = unprocessed.substr(0, posComma);
-      unprocessed = unprocessed.substr(posComma + separator.size());
+      const Glib::ustring temp_item = unprocessed.substr(0, posComma); //TODO_performance: This is an unnecessary extra copy, if ignore_quoted_separator is false.
+
+      //Check that the separator was not in quotes:
+      bool in_quotes = false;
+
+      if(ignore_quoted_separator)
+      {
+        Glib::ustring::size_type posLastQuote = 0;
+   
+        //A stack of quotes, so that we can handle nested quotes, whether they are " or ':
+        typedef std::stack<Glib::ustring> type_queue_quotes; 
+        type_queue_quotes m_current_quotes;
+  
+        bool bContinue = true;
+        while(bContinue)
+        {
+          Glib::ustring closing_quote; 
+          if(!m_current_quotes.empty())
+            closing_quote = m_current_quotes.top();
+
+          const Glib::ustring::size_type posSingleQuote = temp_item.find("'", posLastQuote);
+          const Glib::ustring::size_type posDoubleQuote = temp_item.find("\"", posLastQuote);
+
+          //Which quote, if any, is first:
+          Glib::ustring::size_type posFirstQuote = posSingleQuote;
+          if( (posDoubleQuote != Glib::ustring::npos) && (posDoubleQuote < posFirstQuote) )
+	    posFirstQuote = posDoubleQuote;
+
+          //If any quote character was found:
+          if(posFirstQuote != Glib::ustring::npos)
+          {
+            //Which quote was it?
+            const Glib::ustring first_quote =  (posFirstQuote == posSingleQuote ? "'" : "\"");
+
+            //Was it an expected closing quote, if we expected any:
+            if(first_quote == closing_quote)
+            {
+              //Yes, so remove that quote from our stack, because we found the closing quote:
+              m_current_quotes.pop();
+            }
+            else
+            {
+              //This must be an opening quote, so remember it:
+              m_current_quotes.push(first_quote);
+            }
+
+            posLastQuote = posFirstQuote + 1; //Do the next find after the quote.
+          }
+          else
+          {
+            //There were no quotes, or no closing quotes:
+            bContinue = false;
+          }
+        }
+
+        //If there were any unclosed quotes then this separator must have been in quotes:
+        if(!m_current_quotes.empty())
+          in_quotes = true;
+      }
+
+      if(!in_quotes) //or if we don't care about quotes.
+      {
+        item = temp_item;
+        unprocessed = unprocessed.substr(posComma + separator.size()); //The while loops stops when this is empty.
+      }
+      else 
+      {
+        unprocessed_start += (temp_item.size() + separator.size()); //Start after the comma, because this comma was in quotes, so it's not a separator.
+      }
     }
     else
     {

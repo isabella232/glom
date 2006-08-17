@@ -983,19 +983,27 @@ bool Base_DB::insert_example_data(const Glib::ustring& table_name) const
 {
   const Glib::ustring example_rows = get_document()->get_table_example_data(table_name);
   if(example_rows.empty())
+  {
+    std::cout << "debug: Base_DB::insert_example_data(): No example data available." << std::endl;
     return true;
+  }
 
   bool insert_succeeded = false;
 
 
   //Get field names:
   Document_Glom::type_vecFields vec_fields = get_document()->get_table_fields(table_name);
+
   Glib::ustring strNames;
+  unsigned int fields_count = 0;
   for(Document_Glom::type_vecFields::const_iterator iter = vec_fields.begin(); iter != vec_fields.end(); ++iter)
   {
     //Append it:
     if(!strNames.empty())
+    {
       strNames += ", ";
+      ++fields_count;
+    }
 
     strNames += "\"" + (*iter)->get_name() + "\"";
   }
@@ -1006,18 +1014,31 @@ bool Base_DB::insert_example_data(const Glib::ustring& table_name) const
   }
 
   //Actually insert the data:
-  type_vecStrings vec_rows = Utils::string_separate(example_rows, "\n");
+  const type_vecStrings vec_rows = Utils::string_separate(example_rows, "\n"); //TODO ignore \n inside quotes.
+  std::cout << "debug: Base_DB::insert_example_data(): number of rows of data: " << vec_rows.size() << std::endl;
 
   for(type_vecStrings::const_iterator iter = vec_rows.begin(); iter != vec_rows.end(); ++iter)
   {
     try
     {
-      const Glib::ustring strQuery = "INSERT INTO \"" + table_name + "\" (" + strNames + ") VALUES (" + *iter + ")";
-      query_execute(strQuery); //TODO: Test result.
-      insert_succeeded = true;
+      //Check that the row contains the correct number of columns.
+      //This check will slow this down, but it seems useful:
+      //TODO: This can only work if we can distinguish , inside "" and , outside "":
+      //const Glib::ustring& row_data = *iter;
+      //const type_vecStrings vec_values = Utils::string_separate(row_data, ",");
+      //if(vec_values.size() == fields_count)
+      //{
+        const Glib::ustring strQuery = "INSERT INTO \"" + table_name + "\" (" + strNames + ") VALUES (" + *iter + ")";
+        std::cout << "debug: before query: " << strQuery << std::endl;
+        query_execute(strQuery); //TODO: Test result.
+        std::cout << "debug: after query: " << strQuery << std::endl;
+        insert_succeeded = true;
+      //}
     }
     catch(const ExceptionConnection& ex)
     {
+      std::cerr << "debug: Base_DB::insert_example_data(): query_execute() failed: " << ex.what() << std::endl;
+   
       insert_succeeded = false;
       break;
     }
