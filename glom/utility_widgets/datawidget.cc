@@ -695,7 +695,10 @@ void DataWidget::on_button_choose_date()
       if(response == Gtk::RESPONSE_OK)
       {
         //Get the chosen date
-        set_value(dialog->get_date_chosen());
+        const Gnome::Gda::Value value = dialog->get_date_chosen();
+        set_value(value);
+
+        m_signal_edited.emit(value);
       }
 
       delete dialog;

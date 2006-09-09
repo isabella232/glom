@@ -1,3 +1,9 @@
+2006-09-08  Johannes Schmid <jhs@gnome.org>
+
+	* glom/utility_widgets/datawidget.cc: DataWidget::on_button_choose_date():
+	Fixed #349359 (Dates added with the calendar dialog are not preserved), by 
+	emitting the edited signal.
+
 2006-08-17  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/libglom/utils.cc:
