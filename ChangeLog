@@ -1,3 +1,10 @@
+2006-09-09  Fryderyk Dziarmagowski  <freetz@gmx.net>
+
+	* configure.in: Added update-mime-database configure option which sets/unsets UPDATE_MIME_DATABASE.
+	* Makefile.am: Do not update the mime database if UPDATE_MIME_DATABASE is not set.
+	This is apparently helpful for distro packagers, and other GNOME source tarballs have the same thing.
+	Bug #351989.
+
 2006-09-09  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/base_db.cc: insert_example_data(): Use the new ignore_quoted_separators 

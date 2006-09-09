@@ -30,9 +30,10 @@ MimeDatabase_DATA = glom.xml
 # appregdir = $(datadir)/application-registry
 # appreg_DATA = glom.applications
 
-
+if UPDATE_MIME_DATABASE
 install-data-hook: 
 	-update-mime-database "$(DESTDIR)${datadir}/mime"
+endif
 
 EXTRA_DIST = $(desktop_in_files) $(MimeDatabase_DATA) $(appreg_DATA) $(mimeinfo_DATA) \
              autogen.sh \
