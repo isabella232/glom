@@ -1,3 +1,9 @@
+2006-09-09  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/glom.glade: dialog_connection: Use underline mnemonics for the labels 
+	and mark them as labels for the entries, for accessibility. Also use an underline 
+	mnemonic for the Connect button. Bug #349357 from Ryan Paul.
+
 2006-09-09  Fryderyk Dziarmagowski  <freetz@gmx.net>
 
 	* configure.in: Added update-mime-database configure option which sets/unsets UPDATE_MIME_DATABASE.
