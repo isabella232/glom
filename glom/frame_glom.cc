@@ -1423,9 +1423,6 @@ bool Frame_Glom::create_database(const Glib::ustring& database_name, const Glib:
     }
   }
 
-  std::cout << "Frame_Glom::create_database(): debug 5" << std::endl;
-
-
   //Connect to the actual database:
   ConnectionPool* connection_pool = ConnectionPool::get_instance();
   connection_pool->set_database(database_name);

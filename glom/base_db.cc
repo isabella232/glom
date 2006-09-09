@@ -984,11 +984,11 @@ bool Base_DB::insert_example_data(const Glib::ustring& table_name) const
   const Glib::ustring example_rows = get_document()->get_table_example_data(table_name);
   if(example_rows.empty())
   {
-    std::cout << "debug: Base_DB::insert_example_data(): No example data available." << std::endl;
+    //std::cout << "debug: Base_DB::insert_example_data(): No example data available." << std::endl;
     return true;
   }
 
-  bool insert_succeeded = false;
+  bool insert_succeeded = true;
 
 
   //Get field names:
@@ -1014,7 +1014,7 @@ bool Base_DB::insert_example_data(const Glib::ustring& table_name) const
   }
 
   //Actually insert the data:
-  const type_vecStrings vec_rows = Utils::string_separate(example_rows, "\n"); //TODO ignore \n inside quotes.
+  const type_vecStrings vec_rows = Utils::string_separate(example_rows, "\n", false /* ignore \n inside quotes. */);
   std::cout << "debug: Base_DB::insert_example_data(): number of rows of data: " << vec_rows.size() << std::endl;
 
   for(type_vecStrings::const_iterator iter = vec_rows.begin(); iter != vec_rows.end(); ++iter)
@@ -1024,16 +1024,32 @@ bool Base_DB::insert_example_data(const Glib::ustring& table_name) const
       //Check that the row contains the correct number of columns.
       //This check will slow this down, but it seems useful:
       //TODO: This can only work if we can distinguish , inside "" and , outside "":
-      //const Glib::ustring& row_data = *iter;
-      //const type_vecStrings vec_values = Utils::string_separate(row_data, ",");
-      //if(vec_values.size() == fields_count)
-      //{
-        const Glib::ustring strQuery = "INSERT INTO \"" + table_name + "\" (" + strNames + ") VALUES (" + *iter + ")";
-        std::cout << "debug: before query: " << strQuery << std::endl;
-        query_execute(strQuery); //TODO: Test result.
-        std::cout << "debug: after query: " << strQuery << std::endl;
-        insert_succeeded = true;
-      //}
+      const Glib::ustring& row_data = *iter;
+      if(!row_data.empty())
+      {
+        const type_vecStrings vec_values = Utils::string_separate(row_data, ",", true /* ignore , inside quotes */);
+        if(true) //vec_values.size() == fields_count)
+	{
+          //Do not allow any unescaped newlines in the row data.
+          //Note that this is checking for newlines ("\n"), not escaped newlines ("\\n").
+          if(row_data.find("\n") == Glib::ustring::npos) 
+          {
+            const Glib::ustring strQuery = "INSERT INTO \"" + table_name + "\" (" + strNames + ") VALUES (" + row_data + ")";
+            std::cout << "debug: before query: " << strQuery << std::endl;
+            query_execute(strQuery); //TODO: Test result.
+            std::cout << "debug: after query: " << strQuery << std::endl;
+            insert_succeeded = true;
+          }
+          else
+          {
+            std::cerr << "Glom: Base_DB::insert_example_data(): nested newline found in row data: " << row_data << std::endl;
+          }
+        }
+        else
+        {
+          std::cerr << "Glom: Base_DB::insert_example_data(): vec_values.size()=" << vec_values.size() << " != fields_count="<< fields_count << std::endl;
+        }
+      }
     }
     catch(const ExceptionConnection& ex)
     {

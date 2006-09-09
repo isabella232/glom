@@ -1,3 +1,11 @@
+2006-09-09  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/base_db.cc: insert_example_data(): Use the new ignore_quoted_separators 
+	option with Utils::string_separate() so we are not confused by nested newlines. 
+	And check for newlines in the resulting row so we can ignore those rows as errors.
+	* glom/libglom/utils.cc: string_separate(): More efficient implementation when ignoring 
+	quoted separators, doing less memory copying.
+
 2006-09-08  Johannes Schmid <jhs@gnome.org>
 
 	* glom/utility_widgets/datawidget.cc: DataWidget::on_button_choose_date():

@@ -582,60 +582,80 @@ Utils::type_vecStrings Utils::string_separate(const Glib::ustring& str, const Gl
 {
   type_vecStrings result;
 
-  Glib::ustring unprocessed = str;
-  std::string::size_type unprocessed_start = 0; //We refind after a quote if we find one.
-  while(!unprocessed.empty())
-  {
-    //Search for a separator at the start, or after a previously found quoted separator:
-    std::string::size_type posComma = std::string::npos;
-    if(unprocessed_start < unprocessed.size())
-      posComma = unprocessed.find(separator, unprocessed_start);
+  const Glib::ustring::size_type size = str.size();
+  const Glib::ustring::size_type size_separator = separator.size();
 
-    Glib::ustring item; //A potential item, between separators.
+  //A stack of quotes, so that we can handle nested quotes, whether they are " or ':
+  typedef std::stack<Glib::ustring> type_queue_quotes; 
+  type_queue_quotes m_current_quotes;
+
+  Glib::ustring::size_type unprocessed_start = 0;
+  Glib::ustring::size_type item_start = 0;
+  while(unprocessed_start < size)
+  { 
+    //std::cout << "while unprocessed: un_processed_start=" << unprocessed_start << std::endl;
+    Glib::ustring::size_type posComma = str.find(separator, unprocessed_start);
+
+    Glib::ustring item;
     if(posComma != Glib::ustring::npos)
     {
-      const Glib::ustring temp_item = unprocessed.substr(0, posComma); //TODO_performance: This is an unnecessary extra copy, if ignore_quoted_separator is false.
-
       //Check that the separator was not in quotes:
       bool in_quotes = false;
 
-      if(ignore_quoted_separator)
+      if(!ignore_quoted_separator)
       {
-        Glib::ustring::size_type posLastQuote = 0;
-   
-        //A stack of quotes, so that we can handle nested quotes, whether they are " or ':
-        typedef std::stack<Glib::ustring> type_queue_quotes; 
-        type_queue_quotes m_current_quotes;
+        //std::cout << "  debug: attempting to ignore quoted separators: " << separator << std::endl;
+       
+        Glib::ustring::size_type posLastQuote = unprocessed_start;
+
+        //std::cout << "    debug: posLastQuote=" << posLastQuote << std::endl;
+        //std::cout << "    debug: posComma=" << posComma << std::endl;
+ 
   
         bool bContinue = true;
-        while(bContinue)
+        while(bContinue && (posLastQuote < posComma))
         {
+          //std::cout << "  continue" << std::endl;
           Glib::ustring closing_quote; 
           if(!m_current_quotes.empty())
             closing_quote = m_current_quotes.top();
 
-          const Glib::ustring::size_type posSingleQuote = temp_item.find("'", posLastQuote);
-          const Glib::ustring::size_type posDoubleQuote = temp_item.find("\"", posLastQuote);
+          //std::cout << "   posLastQuote=" << posLastQuote << std::endl;
+          const Glib::ustring::size_type posSingleQuote = str.find("'", posLastQuote);
+          const Glib::ustring::size_type posDoubleQuote = str.find("\"", posLastQuote);
+
+         // std::cout << "   posSingleQuote=" << posSingleQuote << "posDoubleQuote=" << posDoubleQuote << std::endl;
 
           //Which quote, if any, is first:
           Glib::ustring::size_type posFirstQuote = posSingleQuote;
           if( (posDoubleQuote != Glib::ustring::npos) && (posDoubleQuote < posFirstQuote) )
 	    posFirstQuote = posDoubleQuote;
 
+          //Ignore quotes that are _after_ the separator:
+          if( posFirstQuote >= posComma)
+            posFirstQuote = Glib::ustring::npos;
+
+          //std::cout << "   posFirstQuote=" << posFirstQuote << std::endl;
+
           //If any quote character was found:
           if(posFirstQuote != Glib::ustring::npos)
           {
+            //std::cout << "quote found: posFirstQuote=" << posFirstQuote << std::endl;
+
             //Which quote was it?
             const Glib::ustring first_quote =  (posFirstQuote == posSingleQuote ? "'" : "\"");
+            //std::cout << "   first_quote=" << first_quote << std::endl;
 
             //Was it an expected closing quote, if we expected any:
             if(first_quote == closing_quote)
             {
+              //std::cout << "   popping quote" << std::endl;
               //Yes, so remove that quote from our stack, because we found the closing quote:
               m_current_quotes.pop();
             }
             else
             {
+              //std::cout << "   pushing quote" << std::endl;
               //This must be an opening quote, so remember it:
               m_current_quotes.push(first_quote);
             }
@@ -647,34 +667,36 @@ Utils::type_vecStrings Utils::string_separate(const Glib::ustring& str, const Gl
             //There were no quotes, or no closing quotes:
             bContinue = false;
           }
-        }
+        } //while(bContinue)
 
         //If there were any unclosed quotes then this separator must have been in quotes:
         if(!m_current_quotes.empty())
           in_quotes = true;
-      }
+      } //If ignore_quoted_separator
 
       if(!in_quotes) //or if we don't care about quotes.
       {
-        item = temp_item;
-        unprocessed = unprocessed.substr(posComma + separator.size()); //The while loops stops when this is empty.
+        //std::cout << "!in_quotes" << std::endl;
+
+        //Store this item, and start the next item after it:
+        item = str.substr(item_start, posComma - item_start);
+        //std::cout << "ITEM. pos_comma=" << posComma << ", ITEM= " << item << std::endl;
+	item_start = posComma + size_separator;
       }
-      else 
-      {
-        unprocessed_start += (temp_item.size() + separator.size()); //Start after the comma, because this comma was in quotes, so it's not a separator.
-      }
+      //else
+      //  std::cout << "in quotes." << std::endl;
+     
+      unprocessed_start = posComma + size_separator; //The while loops stops when this is empty.
     }
-    else
+    else //if no separator found:
     {
-        item = unprocessed;
-        unprocessed.clear();
+        item = str.substr(item_start);
+        unprocessed_start = size; //Stop.
     }
 
-    if(!item.empty())
-      result.push_back(item);
-
-    unprocessed = string_trim(unprocessed, " ");
-  }
+    item = string_trim(item, " ");
+    result.push_back(item);
+  } //while
 
   return result;
 }
