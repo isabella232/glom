@@ -314,88 +314,6 @@
   
   </sect1>
 
-  <appendix  id="sec-calculated-fields">
-  <title>Calculated Fields</title>
-  <para>Calculated fields use the Python programming language. The calculation is the implementation of a function whose signature is provided for you.</para>
-
-     <figure id="developer-editing-fields-calculated"> 
-	<title>Editing the definition of a calculated field</title> 
-	<screenshot> 
-	  <mediaobject> 
-	    <imageobject><imagedata
-		fileref="figures/glom_design_fields_dialog_calculated.png" format="PNG"/> 
-	    </imageobject>
-	    <textobject> 
-	      <phrase>Editing the definition of a calculated field.
-	      </phrase> 
-	    </textobject> 
-	  </mediaobject> 
-	</screenshot> 
-     </figure>
-
-  <sect1>
-  <title>Field values</title>
-  <para>For instance, <programlisting>record["name_first"]</programlisting> is the value of the name_first field in the current record.</para>
-  </sect1>
-
-  <sect1>
-  <title>Related Records</title>
-  <para>For instance, <programlisting>record.related["location"]</programlisting> provides the related records for the current record.</para>
-
-  <sect2>
-  <title>Single related records</title>
-  <para>For relationships that specify a single record, you can get the value of a field in that record. For instance, <programlisting>record.related["location"]["name"]</programlisting> is the value of the name field in the table indicated by the location relationship (often called location::name).</para>
-  </sect2>
-
-  <sect2>
-  <title>Multiple related records</title>
-  <para>For relationships that specify multiple records, you can use the aggregate functions (sum, count, average) to get overall values. For instance, <programlisting>record.related["invoice_lines"].sum("total_price")</programlisting>.</para>
-  </sect2>
-
-  </sect1>
-
-  <sect1>
-  <title>Testing for empty values</title>
-
-  <sect2>
-  <title>Non-text fields</title>
-  <para>Non-text fields may be empty, indicating that the user has not entered any value in the field. For instance, Glom does not assume that an empty value in a numeric field should mean 0.</para>
-  <para>You can test whether a field is empty by using Python's None. For instance:
-  <programlisting>
-  if(record["contact_id"] == None):
-    return "No Contact"
-  else:
-    return record.related["contacts"]["name_full"]
-  </programlisting>
-  <para>You might also test whether there are any related records. For instance:</para>
-  <programlisting>
-  if(record.related["contacts"] == None):
-    return "No Contact"
-  else:
-    return record.related["contacts"]["name_full"]
-  </programlisting>
-  </para>
-  </sect2>
-
-  <sect2>
-  <title>Text fields</title>
-  <para>For text fields, you should check for zero-length strings. It is not possible in Glom to distinguish between zero-length strings and the absence of any string, because there is no advantage to doing so. For instance:</para>
-  <programlisting>
-  if(record["name_full"] == ""):
-    return "No Name"
-  else:
-    return record["name_full"]
-  </programlisting>
-  </sect2>
-
-  <para>
-  </para>
-  </sect1>
-
-  </appendix>
-
-
-
 <!-- ============= Bugs ================================== -->
 <!-- This section is optional and is commented out by default. 
      You can use it to describe known bugs and limitations of the 
@@ -450,6 +368,92 @@
 <listitem><simpara><literal>Relationships</literal>: Each table might be related to other tables, via fields in both tables. For instance, a &quot;Customers&quot; table could have a relationship to the &quot;Invoices&quot; table, so that people could see all the invoices for that customer. Only developers need to understand this concept. In other documents and applications, relationships are sometimes called &quot;Joins&quot;.</simpara></listitem> 
 </orderedlist>
   </para>
+  </appendix>
+
+  <appendix  id="sec-calculated-fields">
+  <title>Calculated Fields</title>
+  <para>Calculated fields use the Python programming language. The calculation is the implementation of a function whose signature is provided for you.</para>
+
+     <figure id="developer-editing-fields-calculated"> 
+	<title>Editing the definition of a calculated field</title> 
+	<screenshot> 
+	  <mediaobject> 
+	    <imageobject><imagedata
+		fileref="figures/glom_design_fields_dialog_calculated.png" format="PNG"/> 
+	    </imageobject>
+	    <textobject> 
+	      <phrase>Editing the definition of a calculated field.
+	      </phrase> 
+	    </textobject> 
+	  </mediaobject> 
+	</screenshot> 
+     </figure>
+
+  <sect1>
+  <title>Field values</title>
+  <para>For instance, <programlisting>record["name_first"]</programlisting> is the value of the name_first field in the current record.</para>
+  </sect1>
+
+  <sect1>
+  <title>Related Records</title>
+  <para>For instance, <programlisting>record.related["location"]</programlisting> provides the related records for the current record.</para>
+
+  <sect2>
+  <title>Single related records</title>
+  <para>For relationships that specify a single record, you can get the value of a field in that record. For instance, <programlisting>record.related["location"]["name"]</programlisting> is the value of the name field in the table indicated by the location relationship (often called location::name).</para>
+  </sect2>
+
+  <sect2>
+  <title>Multiple related records</title>
+  <para>For relationships that specify multiple records, you can use the aggregate functions (sum, count, average) to get overall values. For instance, <programlisting>record.related["invoice_lines"].sum("total_price")</programlisting>.</para>
+  </sect2>
+
+  </sect1>
+
+  <sect1>
+  <title>Testing for empty values</title>
+  <para>
+  How you test for empty values depends on the type of field:
+  </para>
+
+  <sect2>
+  <title>Non-text fields</title>
+  <para>Non-text fields may be empty, indicating that the user has not entered any value in the field. For instance, Glom does not assume that an empty value in a numeric field should mean 0.</para>
+  <para>You can test whether a field is empty by using Python's None. For instance:</para>
+  <para>
+  <programlisting>
+  if(record["contact_id"] == None):
+    return "No Contact"
+  else:
+    return record.related["contacts"]["name_full"]
+  </programlisting>
+  </para>
+  <para>You might also test whether there are any related records. For instance:</para>
+  <para>
+  <programlisting>
+  if(record.related["contacts"] == None):
+    return "No Contact"
+  else:
+    return record.related["contacts"]["name_full"]
+  </programlisting>
+  </para>
+  </sect2>
+
+  <sect2>
+  <title>Text fields</title>
+  <para>For text fields, you should check for zero-length strings. It is not possible in Glom to distinguish between zero-length strings and the absence of any string, because there is no advantage to doing so. For instance:</para>
+  <para>
+  <programlisting>
+  if(record["name_full"] == ""):
+    return "No Name"
+  else:
+    return record["name_full"]
+  </programlisting>
+  </para>
+  </sect2>
+
+  </sect1>
+
   </appendix>
 
  

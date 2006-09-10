@@ -1,3 +1,10 @@
+1.0.5:
+
+2006-09-10  Murray Cumming  <murrayc@murrayc.com>
+
+	* docs/user-guide/C/glom.xml: Fixed some validation problems.
+	* examples/Makefile.am: Add all example files to EXTRA_DIST, to fix distcheck.
+
 2006-09-10  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/mode_design/fields/box_db_table_definition.h:
