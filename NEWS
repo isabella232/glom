@@ -1,3 +1,22 @@
+1.0.5:
+
+* Connection dialog: Use mnemonics for accessibility navigation.
+  Bug #349357 from Ryan Paul.
+* Details view: Date fields: Really save the new value when selecting dates from 
+  the calendar. Bug #349359. (Johannes Schmid).
+* Loading from examples: Handle quoted commas in the example data and reject badly 
+  formatted example data.
+* Build:
+  - Added disable-update-mime-database configure option is apparently helpful 
+  for distro packagers. Bug #351989. (Fryderyk Dziarmagowski)
+  - Fixed warnings with gcc 4. Bug #344815. (Elijah Newren)
+* Avoid some crashes when dealing with unusual situations. (Murray Cumming)
+* Examples: New examples added: 
+  - Music Collection
+  - Film Production Manager
+  - Project Manager
+* Documentation: Added section about calculated fields. (Murray Cumming)
+
 1.0.4:
 
 * Related Records: When clicking the details buttons, just show the details, instead 
