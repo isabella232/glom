@@ -211,6 +211,67 @@ void Box_DB_Table_Definition::on_adddel_delete(const Gtk::TreeModel::iterator& r
   fill_from_database();
 }
 
+bool Box_DB_Table_Definition::check_field_change(const sharedptr<const Field>& field_old, const sharedptr<const Field>& field_new)
+{
+  bool result = true; //Tells the caller whether to continue.
+
+  Gtk::Window* parent_window = get_app_window();
+
+  //Warn about a long slow recalculation, and offer the chance to cancel it:
+  if(field_new->get_has_calculation())
+  {
+    if(field_new->get_calculation() != field_old->get_calculation())
+    {
+      //TODO: Only show this when there are > 100 records?
+      Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Recalculation Required")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE);
+      dialog.set_secondary_text(_("You have changed the calculation used by this field so Glom must recalculate the value in all records. If the table contains many records then this could take a long time."));
+      if(parent_window)
+        dialog.set_transient_for(*parent_window);
+
+      dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+      dialog.add_button(_("Recalculate"), Gtk::RESPONSE_OK);
+      result = (dialog.run() == Gtk::RESPONSE_OK);
+    }
+  }
+
+  //If we are changing a non-glom type:
+  //Refuse to edit field definitions that were not created by glom:
+  if(Field::get_glom_type_for_gda_type( field_old->get_field_info().get_gdatype() )  == Field::TYPE_INVALID)
+  {
+    Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Invalid database structure")), true);
+    dialog.set_secondary_text(_("This database field was created or edited outside of Glom. It has a data type that is not supported by Glom. Your system administrator may be able to correct this."));
+    if(parent_window)
+       dialog.set_transient_for(*parent_window);
+
+    dialog.run();
+
+    result = false;
+  }
+  else
+  {
+    //Refuse to set a second primary key:
+    bool bcontinue = true;
+    if(field_new->get_primary_key() && !field_old->get_primary_key()) //Was the primary key column checked?
+    {
+      //Is there an existing primary key?
+      sharedptr<Field> existing_primary_key = get_field_primary_key_for_table(m_table_name);
+      if(existing_primary_key)
+      {
+        //Warn the user and refuse to make the change:
+        Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Too many primary keys")), true);
+        dialog.set_secondary_text(_("You may not specify more than one field as the primary key."));
+        if(parent_window)
+          dialog.set_transient_for(*parent_window);
+        dialog.run();
+
+        result = false;
+      }
+    }
+  }
+
+  return result;
+}
+
 void Box_DB_Table_Definition::on_adddel_changed(const Gtk::TreeModel::iterator& row, guint /* col */)
 {
   //Get old field definition:
@@ -235,21 +296,18 @@ void Box_DB_Table_Definition::on_adddel_changed(const Gtk::TreeModel::iterator& 
       //Change it:
       if(*m_Field_BeingEdited != *fieldNew) //If it has really changed.
       {
-        //If we are changing a non-glom type:
-        //Refuse to edit field definitions that were not created by glom:
-        if(Field::get_glom_type_for_gda_type( m_Field_BeingEdited->get_field_info().get_gdatype() )  == Field::TYPE_INVALID)
-        {
-          Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Invalid database structure")), true);
-          dialog.set_secondary_text(_("This database field was created or edited outside of Glom. It has a data type that is not supported by Glom. Your system administrator may be able to correct this."));
-          //TODO: dialog.set_transient_for(*get_application());
-          dialog.run();
-        }
-        else
+        const bool bcontinue = check_field_change(m_Field_BeingEdited, fieldNew);
+        if(bcontinue)
         {
           sharedptr<Field> fieldNewWithModifications = change_definition(m_Field_BeingEdited, fieldNew);
 
           //Update the row to show any extra changes (such as unique being set/unset whenever the primary key is set/unset) 
           fill_field_row(row, fieldNewWithModifications);
+        }
+        else
+        {
+          //revert:
+          fill_field_row(row, m_Field_BeingEdited);
         }
       }
     }
@@ -341,38 +399,11 @@ void Box_DB_Table_Definition::on_Properties_apply()
 
   if(*m_Field_BeingEdited != *field_New)
   {
-    //If we are changing a non-glom type:
-    //Refuse to edit field definitions that were not created by glom:
-    if( Field::get_glom_type_for_gda_type(m_Field_BeingEdited->get_field_info().get_gdatype()) == Field::TYPE_INVALID )
+    const bool bcontinue = check_field_change(m_Field_BeingEdited, field_New);
+    if(bcontinue)
     {
-      Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Invalid database structure")), true);
-         dialog.set_secondary_text(_("This database field was created or edited outside of Glom. It has a data type that is not supported by Glom. Your system administrator may be able to correct this."));
-      //TODO: dialog.set_transient_for(*get_app_window());
-      dialog.run();
-    }
-    else
-    {
-      //Warn about recalculation:
-      bool change_def = true;
-      if(field_New->get_has_calculation())
-      {
-        if(field_New->get_calculation() != m_Field_BeingEdited->get_calculation())
-        {
-          //TODO: Only show this when there are > 100 records?
-          Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Recalculation Required")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE);
-          dialog.set_secondary_text(_("You have changed the calculation used by this field so Glom must recalculate the value in all records. If the table contains many records then this could take a long time."));
-          //dialog.set_transient_for(*get_app_window());
-          dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
-          dialog.add_button(_("Recalculate"), Gtk::RESPONSE_OK);
-          change_def = (dialog.run() == Gtk::RESPONSE_OK);
-        }
-      }
-
-      if(change_def)
-      {
-        change_definition(m_Field_BeingEdited, field_New);
-        m_Field_BeingEdited = field_New;
-      }
+      change_definition(m_Field_BeingEdited, field_New);
+      m_Field_BeingEdited = field_New;
     }
 
     //Update the list:

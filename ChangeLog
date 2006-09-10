@@ -1,3 +1,11 @@
+2006-09-10  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/mode_design/fields/box_db_table_definition.h:
+	* glom/mode_design/fields/box_db_table_definition.cc: Moved some checks from on_adddel_changed() 
+	to check_field_change(), and added a check for an existing primary key, so we can give a nice 
+	refusal warning to the user instead of a postgres error. This is then used from on_adddel_changed() 
+	and on_Properties_apply(). Bug #350636.
+
 2006-09-09  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/glom.glade: dialog_connection: Use underline mnemonics for the labels 

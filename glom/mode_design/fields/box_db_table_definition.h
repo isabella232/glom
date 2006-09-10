@@ -53,6 +53,8 @@ protected:
 
   virtual void on_Properties_apply();
 
+  bool check_field_change(const sharedptr<const Field>& field_old, const sharedptr<const Field>& field_new);
+
   //Postgres needs some complex stuff:
 
   virtual sharedptr<Field> postgres_change_column(const sharedptr<const Field>& field_old, const sharedptr<const Field>& field);
