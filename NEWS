@@ -4,6 +4,8 @@
   Bug #349357 from Ryan Paul.
 * Details view: Date fields: Really save the new value when selecting dates from 
   the calendar. Bug #349359. (Johannes Schmid).
+* Design Tables: Allow table names to contain special characters such as -.
+  (You will need a newer libgda to allow database names to contain these characters too.)
 * Loading from examples: Handle quoted commas in the example data and reject badly 
   formatted example data.
 * Build:
