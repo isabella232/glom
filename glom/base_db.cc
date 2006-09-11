@@ -927,7 +927,7 @@ bool Base_DB::create_table(const sharedptr<const TableInfo>& table_info, const D
     info.set_gdatype( Field::get_gda_type_for_glom_type(field->get_glom_type()) );
     field->set_field_info(info); //TODO_Performance
 
-    Glib::ustring sql_field_description = field->get_name() + " " + field->get_sql_type();
+    Glib::ustring sql_field_description = "\"" + field->get_name() + "\" " + field->get_sql_type();
 
     if(field->get_primary_key())
       sql_field_description += " NOT NULL  PRIMARY KEY";
@@ -1015,7 +1015,7 @@ bool Base_DB::insert_example_data(const Glib::ustring& table_name) const
 
   //Actually insert the data:
   const type_vecStrings vec_rows = Utils::string_separate(example_rows, "\n", false /* ignore \n inside quotes. */);
-  std::cout << "debug: Base_DB::insert_example_data(): number of rows of data: " << vec_rows.size() << std::endl;
+  //std::cout << "debug: Base_DB::insert_example_data(): number of rows of data: " << vec_rows.size() << std::endl;
 
   for(type_vecStrings::const_iterator iter = vec_rows.begin(); iter != vec_rows.end(); ++iter)
   {
@@ -1035,9 +1035,9 @@ bool Base_DB::insert_example_data(const Glib::ustring& table_name) const
           if(row_data.find("\n") == Glib::ustring::npos) 
           {
             const Glib::ustring strQuery = "INSERT INTO \"" + table_name + "\" (" + strNames + ") VALUES (" + row_data + ")";
-            std::cout << "debug: before query: " << strQuery << std::endl;
+            //std::cout << "debug: before query: " << strQuery << std::endl;
             query_execute(strQuery); //TODO: Test result.
-            std::cout << "debug: after query: " << strQuery << std::endl;
+            //std::cout << "debug: after query: " << strQuery << std::endl;
             insert_succeeded = true;
           }
           else

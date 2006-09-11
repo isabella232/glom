@@ -1,5 +1,10 @@
 1.0.5:
 
+2006-09-11  Murray Cumming,  <murrayc@murrayc.com>
+
+	* glom/base_db.cc:  Base_DB::create_table(): Quote the field names to avoid a postgres error when 
+	creating the table with an id field based on a table name with special characters such as -.
+
 2006-09-10  Murray Cumming  <murrayc@murrayc.com>
 
 	* docs/user-guide/C/glom.xml: Fixed some validation problems.

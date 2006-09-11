@@ -277,7 +277,7 @@ void Box_Tables::on_adddel_Add(const Gtk::TreeModel::iterator& row)
     //query_execute( "INSERT INTO \"" + table_name + "\" VALUES (0)" );
 
     //PostgresSQL:
-    //query_execute( "CREATE TABLE " + table_name + " (" + primary_key_name + " serial NOT NULL  PRIMARY KEY)" );
+    //query_execute( "CREATE TABLE " + table_name + " (\"" + primary_key_name + "\" serial NOT NULL  PRIMARY KEY)" );
 
     //query_execute( "CREATE TABLE \"" + table_name + "\" (" +
     //  field_primary_key->get_name() + " numeric NOT NULL  PRIMARY KEY," + 
@@ -388,8 +388,6 @@ void Box_Tables::on_adddel_Edit(const Gtk::TreeModel::iterator& row)
 
 void Box_Tables::save_to_document()
 {
-  std::cout << "debug: Box_Tables::save_to_document" << std::endl;
-
   if(get_userlevel() == AppState::USERLEVEL_DEVELOPER)
   {
     //Save the hidden tables. TODO_usermode: Only if we are in developer mode.
@@ -403,7 +401,6 @@ void Box_Tables::save_to_document()
       sharedptr<TableInfo> table_info = document->get_table(table_name); //Start with the existing table_info, to preserve extra information, such as translations.
       if(table_info)
       {
-        std::cout << "  debug: table=" << m_AddDel.get_value(iter, m_colTableName) << std::endl;
         table_info->set_name( m_AddDel.get_value(iter, m_colTableName) );
 
         if(!table_info->get_name().empty())
