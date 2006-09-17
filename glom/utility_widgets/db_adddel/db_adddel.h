@@ -285,6 +285,8 @@ protected:
   //The column_id is extra information that we can use later to discover what the column shows, even when columns have been reordered.
   guint treeview_append_column(const Glib::ustring& title, Gtk::CellRenderer& cellrenderer, int model_column_index);
 
+  int get_fixed_cell_height();
+
   App_Glom* get_application();
 
   typedef Gtk::VBox type_base;
@@ -366,8 +368,9 @@ protected:
     type_vecColumns m_vecColumns;
   };
 */
+
+  int m_fixed_cell_height;
 };
- 
 
 } //namespace Glom
 

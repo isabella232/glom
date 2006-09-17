@@ -1,6 +1,16 @@
+2006-09-17  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/utility_widgets/db_adddel/db_adddel.cc:
+	* glom/utility_widgets/db_adddel/db_adddel.h: Added get_fixed_cell_height().
+	construct_specified_columns() Use CellRenderer::set_fixed_size(), using 
+	get_fixed_cell_height(), which asks Pango how high some example text should 
+	be. This should prevent multiline rows, and might be necessary for optimization.
+
+This is the glom-1-0 branch. See the HEAD branch for new features.
+
 1.0.5:
 
-2006-09-11  Murray Cumming,  <murrayc@murrayc.com>
+2006-09-11  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/base_db.cc:  Base_DB::create_table(): Quote the field names to avoid a postgres error when 
 	creating the table with an id field based on a table name with special characters such as -.
