@@ -30,6 +30,7 @@ Box_Formatting::Box_Formatting(BaseObjectType* cobject, const Glib::RefPtr<Gnome
   m_frame_numeric_format(0),
   m_frame_text_format(0),
   m_checkbox_format_text_multiline(0),
+  m_spinbutton_format_text_multiline_height(0),
   m_adddel_choices_custom(0),
   m_col_index_custom_choices(0)
 {
@@ -43,6 +44,8 @@ Box_Formatting::Box_Formatting(BaseObjectType* cobject, const Glib::RefPtr<Gnome
   //Text formatting:
   refGlade->get_widget("frame_text_format", m_frame_text_format);
   refGlade->get_widget("checkbutton_format_text_multiline", m_checkbox_format_text_multiline);
+
+  refGlade->get_widget("spinbutton_format_text_multiline_height", m_spinbutton_format_text_multiline_height);
 
   refGlade->get_widget_derived("adddel_choices", m_adddel_choices_custom);
   m_col_index_custom_choices = m_adddel_choices_custom->add_column("Choices");
@@ -83,6 +86,9 @@ void Box_Formatting::set_formatting(const FieldFormatting& format, const Glib::u
   m_entry_currency_symbol->get_entry()->set_text(format.m_numeric_format.m_currency_symbol);
 
   m_checkbox_format_text_multiline->set_active(format.get_text_format_multiline());
+  m_checkbox_format_text_multiline->signal_toggled().connect( sigc::mem_fun(*this, &Box_Formatting::on_checkbox_text_multiline) );
+
+  m_spinbutton_format_text_multiline_height->set_value(format.get_text_format_multiline_height_lines());
 
   //Choices:
   m_checkbutton_choices_restricted->set_active(format.get_choices_restricted());
@@ -132,6 +138,7 @@ bool Box_Formatting::get_formatting(FieldFormatting& format) const
 
   //Text formatting:
   m_format.set_text_format_multiline(m_checkbox_format_text_multiline->get_active());
+  m_format.set_text_format_multiline_height_lines( m_spinbutton_format_text_multiline_height->get_value_as_int() );
 
   //Choices:
   m_format.set_choices_restricted(m_checkbutton_choices_restricted->get_active());
@@ -205,9 +212,20 @@ void Box_Formatting::enforce_constraints()
 
   const bool is_text = (m_field->get_glom_type() == Field::TYPE_TEXT);
   if(is_text)
+  {
     m_frame_text_format->show();
+
+    //Do not allow the user to specify a text height if it is not going to be multiline:
+    const bool text_height_sensitive = m_checkbox_format_text_multiline->get_active();
+    m_spinbutton_format_text_multiline_height->set_sensitive(text_height_sensitive);
+  }
   else
     m_frame_text_format->hide();
+}
+
+void Box_Formatting::on_checkbox_text_multiline()
+{
+  enforce_constraints();
 }
 
 } //namespace Glom

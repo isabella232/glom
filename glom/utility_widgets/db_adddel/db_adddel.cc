@@ -683,6 +683,11 @@ void DbAddDel::construct_specified_columns()
           //Make it editable:
           pCellRenderer->property_editable() = true;
 
+          //Use an ellipze to indicate excessive text, 
+          //so that similar values do not look equal, 
+          //and to avoid multi-line comments. TODO: Is there a better way to restrict the height? This doesn't actually truncate multilines anyway.
+          pCellRenderer->property_ellipsize() = Pango::ELLIPSIZE_END;
+
           if( column_info.m_field->get_glom_type() == Field::TYPE_NUMERIC )
             pCellRenderer->property_xalign() = 1.0f; //Align right.
 

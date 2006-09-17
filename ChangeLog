@@ -1,3 +1,28 @@
+2006-09-17  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/base_db.cc:
+	* glom/glom.glade: Field Formatting: For text fields, added a 
+	spin button to specify the number of lines to show.
+	* glom/libglom/data_structure/layout/fieldformatting.cc:
+	* glom/libglom/data_structure/layout/fieldformatting.h: Added 
+	get/set_text_format_multiline_height_lines(), which defaults to 
+	6.
+	* glom/layout_item_dialogs/box_formatting.cc:
+	* glom/layout_item_dialogs/box_formatting.h: 
+	enforce_constraints(): Only make the new spin button sensitive 
+	when the multiline checkbox is checked.
+	get/set_formatting(): get/set the new value to interpret and 
+	present it.
+	* glom/libglom/document/document_glom.cc:
+	save_before_layout_item_field_formatting(),
+	load_after_layout_item_field_formatting(): Handle the new option.
+	* glom/utility_widgets/datawidget.cc: Constructor: If the 
+	field is multiline text, ask pango how high it should be, 
+	based on the new option. 
+	* glom/utility_widgets/db_adddel/db_adddel.cc: construct_specified_columns(): 
+	Use an ellipsize on text cells when their text is too long. This will be 
+	more likely with multiline fields.
+
 This is the HEAD branch, for Glom 1.2.
 There is also a glom 1.0 branch for maintenance.
 

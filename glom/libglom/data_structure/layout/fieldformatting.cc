@@ -21,6 +21,8 @@
 #include "fieldformatting.h"
 #include <glibmm/i18n.h>
 
+const guint MULTILINE_TEXT_DEFAULT_HEIGHT_LINES = 6;
+//const char* MULTILINE_TEXT_DEFAULT_WIDTH_EXAMPLE = "abcdefghijklmnopqrstuvwxyz"
 namespace Glom
 {
 
@@ -28,7 +30,8 @@ FieldFormatting::FieldFormatting()
 : m_choices_restricted(false),
   m_choices_custom(false),
   m_choices_related(false),
-  m_text_format_multiline(false)
+  m_text_format_multiline(false),
+  m_text_multiline_height_lines(MULTILINE_TEXT_DEFAULT_HEIGHT_LINES)
 {
 }
 
@@ -40,6 +43,7 @@ FieldFormatting::FieldFormatting(const FieldFormatting& src)
   m_choices_custom(src.m_choices_custom),
   m_choices_related(src.m_choices_related),
   m_text_format_multiline(src.m_text_format_multiline),
+  m_text_multiline_height_lines(src.m_text_multiline_height_lines),
   m_choices_related_field(src.m_choices_related_field),
   m_choices_related_field_second(src.m_choices_related_field_second)
 {
@@ -59,7 +63,8 @@ bool FieldFormatting::operator==(const FieldFormatting& src) const
     (m_choices_related == src.m_choices_related) &&
     (m_choices_related_field == src.m_choices_related_field) &&
     (m_choices_related_field_second == src.m_choices_related_field_second) &&
-    (m_text_format_multiline == src.m_text_format_multiline);
+    (m_text_format_multiline == src.m_text_format_multiline) &&
+    (m_text_multiline_height_lines == src.m_text_multiline_height_lines);
 }
 
 
@@ -77,11 +82,11 @@ FieldFormatting& FieldFormatting::operator=(const FieldFormatting& src)
   m_choices_related_field_second = src.m_choices_related_field_second;
 
   m_text_format_multiline = src.m_text_format_multiline;
+  m_text_multiline_height_lines = src.m_text_multiline_height_lines;
 
 //g_warning("FieldFormatting::operator=: m_choices_related_relationship=%s, src.m_choices_related_relationship=%s", m_choices_related_relationship->c_str(), src.m_choices_related_relationship->c_str());
   return *this;
 }
-
 
 bool FieldFormatting::get_text_format_multiline() const
 {
@@ -91,6 +96,20 @@ bool FieldFormatting::get_text_format_multiline() const
 void FieldFormatting::set_text_format_multiline(bool value)
 {
   m_text_format_multiline = value;
+}
+
+guint FieldFormatting::get_text_format_multiline_height_lines() const
+{
+  return m_text_multiline_height_lines;
+}
+
+void FieldFormatting::set_text_format_multiline_height_lines(guint value)
+{
+  //Do not allow inappropriate values. TODO: Respond when they are entered, not later here.
+  if(value < 2)
+    value = MULTILINE_TEXT_DEFAULT_HEIGHT_LINES;
+
+  m_text_multiline_height_lines = value;
 }
 
 bool FieldFormatting::get_has_choices() const

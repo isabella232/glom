@@ -51,6 +51,7 @@ public:
 protected:
   //Signal handlers:
   void on_combo_choices_relationship_changed();
+  void on_checkbox_text_multiline();
 
   void enforce_constraints();
 
@@ -62,6 +63,7 @@ protected:
 
   Gtk::Frame* m_frame_text_format;
   Gtk::CheckButton* m_checkbox_format_text_multiline;
+  Gtk::SpinButton* m_spinbutton_format_text_multiline_height;
 
   Gtk::RadioButton* m_radiobutton_choices_custom;
   Gtk::RadioButton* m_radiobutton_choices_related;

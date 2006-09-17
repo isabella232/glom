@@ -371,7 +371,10 @@ Utils::type_list_values_with_second Utils::get_choice_values(const sharedptr<con
   Glib::ustring choice_field, choice_second;
   field->get_formatting_used().get_choices(choice_relationship, choice_field, choice_second);
   if(!choice_relationship)
+  {
+    //std::cout <<" debug: field has no choices: " << field->get_name() << std::endl;
     return list_values;
+  }
 
   const Glib::ustring to_table = choice_relationship->get_to_table();
   if(to_table.empty())
@@ -390,6 +393,7 @@ Utils::type_list_values_with_second Utils::get_choice_values(const sharedptr<con
 
   sql_query += " FROM \"" + choice_relationship->get_to_table() + "\" ORDER BY \"" + to_table + "\".\"" + choice_field + "\"";
 
+  //std::cout << "debug: get_choice_values(): query: " << sql_query << std::endl;
   //Connect to database:
   sharedptr<SharedConnection> connection = ConnectionPool::get_instance()->connect();
 
@@ -399,14 +403,15 @@ Utils::type_list_values_with_second Utils::get_choice_values(const sharedptr<con
 
   if(datamodel)
   {
-    guint count = datamodel->get_n_rows();
+    const guint count = datamodel->get_n_rows();
+    //std::cout << "  result: count=" << count << std::endl;
     for(guint row = 0; row < count; ++row)
     {
       std::pair<Gnome::Gda::Value, Gnome::Gda::Value> itempair;
       itempair.first = datamodel->get_value_at(0, row);
 
       if(with_second)
-        itempair.second = datamodel->get_value_at(1, row);
+			itempair.second = datamodel->get_value_at(1, row);
 
       list_values.push_back(itempair);
     }

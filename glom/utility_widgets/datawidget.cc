@@ -164,7 +164,7 @@ DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ust
       pFieldWidget->set_layout_item( get_layout_item(), table_name); //TODO_Performance: We only need this for the numerical format.
     }
   }
-  
+
   if(pFieldWidget)
   {
     pFieldWidget->signal_edited().connect( sigc::mem_fun(*this, &DataWidget::on_widget_edited)  );
@@ -180,7 +180,20 @@ DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ust
     if(glom_type == Field::TYPE_IMAGE) //GtkImage widgets default to no size (invisible) if they are empty.
       m_child->set_size_request(width, width);
     else
-      m_child->set_size_request(width, -1 /* auto */);
+    {
+      int height = -1; //auto.
+      if(field->get_formatting_used().get_text_format_multiline())
+      {
+        int example_width = 0;
+        int example_height = 0;
+        Glib::RefPtr<Pango::Layout> refLayout = create_pango_layout("example"); //TODO: Use different text, according to the current locale, or allow the user to choose an example?
+        refLayout->get_pixel_size(example_width, example_height);
+        if(example_height > 0)
+          height = example_height * field->get_formatting_used().get_text_format_multiline_height_lines();
+      }
+
+      m_child->set_size_request(width, height);
+    }
 
     m_child->show_all();
   }

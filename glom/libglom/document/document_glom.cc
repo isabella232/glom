@@ -132,6 +132,7 @@ namespace Glom
 #define GLOM_ATTRIBUTE_FORMAT_CURRENCY_SYMBOL "format_currency_symbol"
 
 #define GLOM_ATTRIBUTE_FORMAT_TEXT_MULTILINE "format_text_multiline"
+#define GLOM_ATTRIBUTE_FORMAT_TEXT_MULTILINE_HEIGHT_LINES "format_text_multiline_height_lines"
 
 #define GLOM_ATTRIBUTE_FORMAT_CHOICES_RESTRICTED "choices_restricted"
 #define GLOM_ATTRIBUTE_FORMAT_CHOICES_CUSTOM "choices_custom"
@@ -1436,6 +1437,7 @@ void Document_Glom::load_after_layout_item_field_formatting(const xmlpp::Element
 
   //Text formatting:
   format.set_text_format_multiline( get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_FORMAT_TEXT_MULTILINE) );
+  format.set_text_format_multiline_height_lines( get_node_attribute_value_as_decimal(element, GLOM_ATTRIBUTE_FORMAT_TEXT_MULTILINE_HEIGHT_LINES) );
 
   //Choices:
   format.set_choices_restricted( get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_RESTRICTED) );
@@ -2102,6 +2104,7 @@ void Document_Glom::save_before_layout_item_field_formatting(xmlpp::Element* nod
 
   //Text formatting:
   set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_FORMAT_TEXT_MULTILINE, format.get_text_format_multiline());
+  set_node_attribute_value_as_decimal(nodeItem, GLOM_ATTRIBUTE_FORMAT_TEXT_MULTILINE_HEIGHT_LINES, format.get_text_format_multiline_height_lines());
 
   //Choices:
   if(format.get_has_custom_choices())
