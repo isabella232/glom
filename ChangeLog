@@ -1,5 +1,13 @@
 2006-09-17  Murray Cumming  <murrayc@murrayc.com>
 
+        * glom/utility_widgets/db_adddel/db_adddel.cc:
+        * glom/utility_widgets/db_adddel/db_adddel.h: Added get_fixed_cell_height().
+        construct_specified_columns() Use CellRenderer::set_fixed_size(), using
+        get_fixed_cell_height(), which asks Pango how high some example text should
+        be. This should prevent multiline rows, and might be necessary for optimization
+
+2006-09-17  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/base_db.cc:
 	* glom/glom.glade: Field Formatting: For text fields, added a 
 	spin button to specify the number of lines to show.

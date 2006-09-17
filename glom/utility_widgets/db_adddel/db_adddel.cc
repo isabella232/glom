@@ -74,7 +74,8 @@ DbAddDel::DbAddDel()
   m_columns_ready(false),
   m_allow_view(true),
   m_allow_view_details(false),
-  m_treeviewcolumn_button(0)
+  m_treeviewcolumn_button(0),
+  m_fixed_cell_height(0)
 {
   set_prevent_user_signals();
   set_ignore_treeview_signals(true);
@@ -527,6 +528,23 @@ void DbAddDel::set_column_title(guint col, const Glib::ustring& strText)
 }
 */
 
+int DbAddDel::get_fixed_cell_height()
+{
+  if(m_fixed_cell_height > 0)
+    return m_fixed_cell_height;
+  else
+  {
+    //Discover a suitable height:
+    Glib::RefPtr<Pango::Layout> refLayout = create_pango_layout("example");
+    int width = 0;
+    int height = 0;
+    refLayout->get_pixel_size(width, height);
+
+    m_fixed_cell_height = height;
+    return m_fixed_cell_height;
+  }
+}
+
 void DbAddDel::construct_specified_columns()
 {
   InnerIgnore innerIgnore(this);
@@ -688,6 +706,10 @@ void DbAddDel::construct_specified_columns()
           //and to avoid multi-line comments. TODO: Is there a better way to restrict the height? This doesn't actually truncate multilines anyway.
           pCellRenderer->property_ellipsize() = Pango::ELLIPSIZE_END;
 
+          //Restrict the height, to prevent multiline text cells,
+          //and to allow TreeView performance optimisation:
+          pCellRenderer->set_fixed_size(-1, get_fixed_cell_height() );
+
           if( column_info.m_field->get_glom_type() == Field::TYPE_NUMERIC )
             pCellRenderer->property_xalign() = 1.0f; //Align right.
 
@@ -777,7 +799,7 @@ void DbAddDel::construct_specified_columns()
       }
 
     ++view_column_index;
- 
+
     } //is visible
 
     ++model_column_index;
