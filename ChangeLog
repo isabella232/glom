@@ -1,3 +1,10 @@
+2006-09-20  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/glom.glade: Field calculation editor, and button script editor:
+	Mark the label with the first part of the calculation as not for translation.
+	Layout editors: Add tooltips to explain what the buttons do. 
+	This partly addreses bug #354073 from Peter Williams.
+
 2006-09-17  Murray Cumming  <murrayc@murrayc.com>
 
         * glom/utility_widgets/db_adddel/db_adddel.cc:
