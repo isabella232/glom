@@ -73,6 +73,7 @@ public:
   virtual ~Document_Glom();
 
   virtual void set_modified(bool value = true);
+  virtual void set_file_uri(const Glib::ustring& file_uri, bool bEnforceFileExtension = false);
 
   /** The document usually saves itself when you call set_modified().
    * Pass false to this function to prevent that temporarily.
