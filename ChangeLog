@@ -1,5 +1,12 @@
 2006-09-23  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/libglom/document/document_glom.cc:
+	* glom/libglom/document/document_glom.h: Override set_file_uri() to avoid 
+	the call to set_modified() triggering a save of the file to the old filename.
+	This is necessary because we override/hack set_modified().
+
+2006-09-23  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/application.cc: App_Glom::recreate_database(): Add the standard groups 
 	after creating the tables, instead of once for every table. This should be 
 	more efficient.

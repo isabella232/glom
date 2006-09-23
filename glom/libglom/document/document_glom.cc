@@ -2375,6 +2375,8 @@ void Document_Glom::save_before_translations(xmlpp::Element* element, const Tran
 
 bool Document_Glom::save_before()
 {
+  std::cout << "debug: save_before(): uri=" << get_file_uri() << std::endl;
+ 
   Bakery::BusyCursor busy_cursor(m_parent_window);
 
   xmlpp::Element* nodeRoot = get_node_document();
@@ -2919,6 +2921,25 @@ void Document_Glom::fill_translatable_layout_items(const sharedptr<LayoutGroup>&
 void Document_Glom::set_parent_window(Gtk::Window* window)
 {
   m_parent_window = window;
+}
+
+void Document_Glom::set_file_uri(const Glib::ustring& file_uri, bool bEnforceFileExtension /* = false */)
+{
+  //We override this because set_modified() triggers a save (to the old filename) in this derived class.
+
+  //I'm not sure why this is in the base class's method anyway. murrayc:
+  //if(file_uri != m_file_uri)
+  //  set_modified(); //Ready to save() for a Save As.
+
+  m_file_uri = file_uri;
+
+  //Enforce file extension:
+  if(bEnforceFileExtension)
+    m_file_uri = get_file_uri_with_extension(m_file_uri);
+
+  //Put this here instead. In the base class it's at the start:
+  if(file_uri != m_file_uri)
+    set_modified(); //Ready to save() for a Save As.
 }
 
 } //namespace Glom
