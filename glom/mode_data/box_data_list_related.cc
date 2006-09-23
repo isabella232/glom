@@ -403,7 +403,7 @@ void Box_Data_List_Related::on_adddel_user_requested_add()
     Box_Data_List::on_adddel_user_requested_add();
 }
 
-sharedptr<const LayoutItem_Field> Box_Data_List_Related::get_field_identifies_non_hidden_related_record() const
+sharedptr<const LayoutItem_Field> Box_Data_List_Related::get_field_identifies_non_hidden_related_record(sharedptr<const Relationship>& used_in_relationship) const
 {
   //Find the first field that is from a non-hidden related table.
   sharedptr<LayoutItem_Field> result;
@@ -424,7 +424,10 @@ sharedptr<const LayoutItem_Field> Box_Data_List_Related::get_field_identifies_no
         if(!(table_name.empty()))
         {
           if(!(document->get_table_is_hidden(table_name)))
+          {
+            used_in_relationship = relationship;
             return field;
+          }
         }
       }
     }
@@ -478,7 +481,8 @@ bool Box_Data_List_Related::get_has_suitable_record_to_view_details() const
       return true;
     else
     {
-      sharedptr<const LayoutItem_Field> field = get_field_identifies_non_hidden_related_record();
+      sharedptr<const Relationship> used_in_relationship;
+      sharedptr<const LayoutItem_Field> field = get_field_identifies_non_hidden_related_record(used_in_relationship);
       if(field)
        return true;
     }
@@ -499,13 +503,31 @@ void Box_Data_List_Related::get_suitable_record_to_view_details(const Gnome::Gda
 
   if(!(document->get_table_is_hidden(LayoutWidgetBase::m_table_name)))
   {
+    //Non-hidden tables can just be shown directly. Navigate to it: 
     table_name = LayoutWidgetBase::m_table_name;
     table_primary_key_value = primary_key_value;
   }
   else
   {
-    //Find a suitable related table by finding the first layout field that mentions one:
+    //For hidden tables, find a suitable related non-hidden table by finding the first layout field that mentions one:
     sharedptr<const LayoutItem_Field> field = get_field_is_from_non_hidden_related_record();
+    if(!field)
+    {
+      //Instead, find a key field that's used in a relationship, and pretend that we are showing the to field as a related field:
+      sharedptr<const Relationship> used_in_relationship;
+      sharedptr<const LayoutItem_Field> field_identifies = get_field_identifies_non_hidden_related_record(used_in_relationship);
+      if(field_identifies && used_in_relationship)
+      {
+          sharedptr<LayoutItem_Field> fake_item = sharedptr<LayoutItem_Field>::create();
+          fake_item->set_relationship( glom_sharedptr_clone(used_in_relationship) ); //Clone to avoid the const.
+
+          fake_item->set_name(used_in_relationship->get_to_field());
+          fill_full_field_details(LayoutWidgetBase::m_table_name, fake_item);
+          field = fake_item;
+      }
+    }
+
+    //Get the value of the to field:
     if(field)
     {
       table_name = field->get_table_used(LayoutWidgetBase::m_table_name);
@@ -558,12 +580,7 @@ void Box_Data_List_Related::get_suitable_record_to_view_details(const Gnome::Gda
     }
     else
     {
-       sharedptr<const LayoutItem_Field> field = get_field_identifies_non_hidden_related_record();
-       if(field)
-       {
-         //TODO: We need the relationship, and we need to worry about doubly-related fields.
-         //table_name = field->get_table_used();
-       }
+      //TODO: We need to worry about doubly-related fields.
     }
 
   }

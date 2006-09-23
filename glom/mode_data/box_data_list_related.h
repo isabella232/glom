@@ -67,7 +67,7 @@ protected:
   virtual type_vecLayoutFields get_fields_to_show() const; //override
 
   sharedptr<const LayoutItem_Field> get_field_is_from_non_hidden_related_record() const;
-  sharedptr<const LayoutItem_Field> get_field_identifies_non_hidden_related_record() const;
+  sharedptr<const LayoutItem_Field> get_field_identifies_non_hidden_related_record(sharedptr<const Relationship>& used_in_relationship) const;
 
   virtual void on_adddel_user_requested_add();
   virtual void on_adddel_user_changed(const Gtk::TreeModel::iterator& row, guint col);

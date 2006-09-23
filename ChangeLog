@@ -1,5 +1,15 @@
 2006-09-24  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/mode_data/box_data_list_related.cc:
+	* glom/mode_data/box_data_list_related.h:
+	get_field_identifies_non_hidden_related_record(): Return the relationship 
+	used by the field, and use this to navigate to the related record 
+	even if no doubly-related field is show. For instance, this allows 
+	navigation when showing a product id, but not showing the product 
+	description.
+
+2006-09-24  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/mode_data/box_data_list_related.cc: 
 	get_suitable_record_to_view_details(): If the ID is invalid, because 
 	no such record exists, warn the user with a dialog.
