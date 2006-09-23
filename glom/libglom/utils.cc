@@ -585,6 +585,8 @@ Glib::ustring Utils::title_from_string(const Glib::ustring& text)
 
 Utils::type_vecStrings Utils::string_separate(const Glib::ustring& str, const Glib::ustring& separator, bool ignore_quoted_separator)
 {
+  //std::cout << "Utils::string_separate(): separator=" << separator << std::endl;
+
   type_vecStrings result;
 
   const Glib::ustring::size_type size = str.size();
@@ -685,7 +687,7 @@ Utils::type_vecStrings Utils::string_separate(const Glib::ustring& str, const Gl
 
         //Store this item, and start the next item after it:
         item = str.substr(item_start, posComma - item_start);
-        //std::cout << "ITEM. pos_comma=" << posComma << ", ITEM= " << item << std::endl;
+        //std::cout << "  ITEM. pos_comma=" << posComma << ", ITEM= " << item << std::endl;
 	item_start = posComma + size_separator;
       }
       //else

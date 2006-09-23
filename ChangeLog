@@ -1,3 +1,9 @@
+2006-09-23  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/application.cc: App_Glom::recreate_database(): Add the standard groups 
+	after creating the tables, instead of once for every table. This should be 
+	more efficient.
+
 2006-09-20  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/glom.glade: Field calculation editor, and button script editor:

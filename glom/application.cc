@@ -923,27 +923,40 @@ bool App_Glom::recreate_database(bool& user_cancelled)
       g_warning("App_Glom::recreate_database(): CREATE TABLE failed with the newly-created database.");
       return false;
     }
-    else
-    {
-      dialog_progress->pulse();
-      m_pFrame->add_standard_tables(); //Add internal, hidden, tables.
+  }
 
-      //Create the developer group, and make this user a member of it:
-      //If we got this far then the user must really have developer privileges already:
-      dialog_progress->pulse();
-      const bool test = m_pFrame->add_standard_groups();
-      if(!test)
-        return false;
+  dialog_progress->pulse();
+  m_pFrame->add_standard_tables(); //Add internal, hidden, tables.
 
-      //Add any example data to the table:
-      dialog_progress->pulse();
+  //Create the developer group, and make this user a member of it:
+  //If we got this far then the user must really have developer privileges already:
+  dialog_progress->pulse();
+  const bool test = m_pFrame->add_standard_groups();
+  if(!test)
+    return false;
+
+  for(Document_Glom::type_listTableInfo::const_iterator iter = tables.begin(); iter != tables.end(); ++iter)
+  {
+    sharedptr<const TableInfo> table_info = *iter;
+
+    //Add any example data to the table:
+    dialog_progress->pulse();
+
+    //try
+    //{
       const bool table_insert_succeeded = m_pFrame->insert_example_data(table_info->get_name());
+      
       if(!table_insert_succeeded)
       {
         g_warning("App_Glom::recreate_database(): INSERT of example data failed with the newly-created database.");
         return false;
       }
-    }
+    //}
+    //catch(const std::exception& ex)
+    //{
+    //  std::cerr << "App_Glom::recreate_database(): exception: " << ex.what() << std::endl;
+      //HandleError(ex);
+    //}
 
   } //for(tables)
 

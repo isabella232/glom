@@ -1825,6 +1825,7 @@ bool Document_Glom::load_after()
           doctableinfo.m_info = table_info;
 
           doctableinfo.m_example_rows = get_node_attribute_value(nodeTable, GLOM_ATTRIBUTE_EXAMPLE_ROWS);
+          std::cout << "  loading: table=" << table_name << ", m_example_rows.size()=" << doctableinfo.m_example_rows.size() << std::endl;
 
           //Translations:
           load_after_translations(nodeTable, *(doctableinfo.m_info));

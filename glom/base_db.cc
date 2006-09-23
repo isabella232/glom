@@ -175,7 +175,7 @@ Glib::RefPtr<Gnome::Gda::DataModel> Base_DB::query_execute(const Glib::ustring& 
   {
     Glib::RefPtr<Gnome::Gda::Connection> gda_connection = sharedconnection->get_gda_connection();
 
-    
+    /*
     try
     {
       std::cout << "Debug: query_execute():  " << strQuery << std::endl;
@@ -184,6 +184,7 @@ Glib::RefPtr<Gnome::Gda::DataModel> Base_DB::query_execute(const Glib::ustring& 
     {
       std::cout << "Debug: query string could not be converted to std::cout: " << ex.what() << std::endl;
     }
+    */
     
 
     result = gda_connection->execute_single_command(strQuery);
@@ -988,6 +989,8 @@ bool Base_DB::insert_example_data(const Glib::ustring& table_name) const
     return true;
   }
 
+  //std::cout << "debug: inserting example_rows for table: " << table_name << std::endl;
+
   bool insert_succeeded = true;
 
 
@@ -1015,7 +1018,7 @@ bool Base_DB::insert_example_data(const Glib::ustring& table_name) const
 
   //Actually insert the data:
   const type_vecStrings vec_rows = Utils::string_separate(example_rows, "\n", false /* ignore \n inside quotes. */);
-  //std::cout << "debug: Base_DB::insert_example_data(): number of rows of data: " << vec_rows.size() << std::endl;
+  //std::cout << "  debug: Base_DB::insert_example_data(): number of rows of data: " << vec_rows.size() << std::endl;
 
   for(type_vecStrings::const_iterator iter = vec_rows.begin(); iter != vec_rows.end(); ++iter)
   {
