@@ -21,6 +21,7 @@
 #include "box_data_list_related.h"
 #include "dialog_layout_list_related.h"
 #include <glom/libglom/data_structure/glomconversions.h>
+#include <glom/frame_glom.h> //For show_ok_dialog()
 #include <bakery/App/App_Gtk.h> //For util_bold_message().
 #include <glibmm/i18n.h>
 
@@ -526,14 +527,32 @@ void Box_Data_List_Related::get_suitable_record_to_view_details(const Gnome::Gda
 
         const Glib::ustring query = Utils::build_sql_select_with_key(LayoutWidgetBase::m_table_name, fieldsToGet, m_AddDel.get_key_field(), primary_key_value);
         Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute(query);
+
+        bool value_found = true;
         if(data_model && data_model->get_n_rows() && data_model->get_n_columns())
         {
           table_primary_key_value = data_model->get_value_at(0, 0);
           //std::cout << "Box_Data_List_Related::get_suitable_record_to_view_details(): table_primary_key_value=" << table_primary_key_value.to_string() << std::endl;
+
+          //The value is empty when there there is no record to match the key in the related table:
+          //For instance, if an invoice lines record mentions a product id, but the product does not exist in the products table.
+          if(Conversions::value_is_empty(table_primary_key_value))
+          {
+            value_found = false;
+            std::cout << "debug: Box_Data_List_Related::get_suitable_record_to_view_details(): SQL query returned empty primary key." << std::endl;
+          }
         }
         else
         {
-           std::cout << "Box_Data_List_Related::get_suitable_record_to_view_details(): SQL query returned no suitable primary key" << std::endl;
+           value_found = false;
+           std::cout << "debug: Box_Data_List_Related::get_suitable_record_to_view_details(): SQL query returned no suitable primary key." << std::endl;
+        }
+
+        if(!value_found)
+        {
+           Gtk::Window* window = get_app_window();
+           if(window)
+             Frame_Glom::show_ok_dialog(_("No Corresponding Record Exists"), _("No record with this value exists. Therefore navigation to the related record is not possible."), *window, Gtk::MESSAGE_WARNING); //TODO: Make it more clear to the user exactly what record, what field, and what value, we are talking about.
         }
       }
     }

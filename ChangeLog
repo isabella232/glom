@@ -1,3 +1,14 @@
+2006-09-24  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/mode_data/box_data_list_related.cc: 
+	get_suitable_record_to_view_details(): If the ID is invalid, because 
+	no such record exists, warn the user with a dialog.
+	* glom/utility_widgets/flowtablewithfields.cc:
+	on_portal_user_requested_details(): Do not bother signalling further if 
+	the primary key is empty.
+
+1.1.1:
+
 2006-09-23  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/utility_widgets/db_adddel/db_adddel.cc:

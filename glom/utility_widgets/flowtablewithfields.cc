@@ -1039,7 +1039,7 @@ void FlowTableWithFields::on_portal_user_requested_details(Gnome::Gda::Value pri
     Gnome::Gda::Value doubly_related_primary_key;
     portal_box->get_suitable_record_to_view_details(primary_key_value, doubly_related_table_name, doubly_related_primary_key);
 
-    if(!(doubly_related_table_name.empty()))
+    if(!(doubly_related_table_name.empty()) && !Conversions::value_is_empty(doubly_related_primary_key))
        signal_requested_related_details().emit(doubly_related_table_name, doubly_related_primary_key);
   }
   else
