@@ -1,5 +1,13 @@
 2006-09-23  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/utility_widgets/db_adddel/db_adddel.cc:
+	* glom/utility_widgets/db_adddel/db_adddel.h: Add show_hints_model(), which 
+	shows a single row, with a hint about editing the layout of the list or 
+	related records portal, if no fields have been specified yet. 
+	Bug #354073 from Peter Williams.
+
+2006-09-23  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/libglom/document/document_glom.cc:
 	* glom/libglom/document/document_glom.h: Override set_file_uri() to avoid 
 	the call to set_modified() triggering a save of the file to the old filename.

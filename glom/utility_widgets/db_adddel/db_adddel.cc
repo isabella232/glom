@@ -85,14 +85,15 @@ DbAddDel::DbAddDel()
   //Start with a useful default TreeModel:
   //set_columns_count(1);
   //construct_specified_columns();
+  
 
   m_ScrolledWindow.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
   m_ScrolledWindow.add(m_TreeView);
   m_ScrolledWindow.set_shadow_type(Gtk::SHADOW_IN);
 
-  m_TreeView.set_fixed_height_mode();
+  m_TreeView.set_fixed_height_mode(); //This allows some optimizations.
   m_TreeView.show();
-  //m_TreeView.set_fixed_height_mode(); //This allows some optimizations.
+
   pack_start(m_ScrolledWindow);
 
   //Make sure that the TreeView doesn't start out only big enough for zero items.
@@ -554,7 +555,10 @@ void DbAddDel::construct_specified_columns()
   //Delay actual use of set_column_*() stuff until this method is called.
 
   if(m_ColumnTypes.empty())
+  {
+    show_hint_model();
     return;
+  }
 
   typedef Gtk::TreeModelColumn<Gnome::Gda::Value> type_modelcolumn_value;
   typedef std::vector< type_modelcolumn_value* > type_vecModelColumns;
@@ -648,11 +652,14 @@ void DbAddDel::construct_specified_columns()
     ++view_column_index;
   }
 
+  bool no_columns_used = true;
   for(type_vecModelColumns::iterator iter = vecModelColumns.begin(); iter != vecModelColumns.end(); ++iter)
   {
     DbAddDelColumnInfo& column_info = m_ColumnTypes[model_column_index];
     if(column_info.m_visible && !(column_info.m_field->get_hidden())) //TODO: We shouldn't need both of these.
     {
+      no_columns_used = false;
+
       const Glib::ustring column_name = column_info.m_field->get_title_or_name();
       const Glib::ustring column_id = column_info.m_field->get_name();
 
@@ -803,7 +810,7 @@ void DbAddDel::construct_specified_columns()
     } //is visible
 
     ++model_column_index;
-  }
+  } //for
 
   //Delete the vector's items:
   for(type_vecModelColumns::iterator iter = vecModelColumns.begin(); iter != vecModelColumns.end(); ++iter)
@@ -811,6 +818,17 @@ void DbAddDel::construct_specified_columns()
      type_modelcolumn_value* pModelColumn = *iter;
      if(pModelColumn)
        delete pModelColumn;
+  }
+
+  
+  if(no_columns_used)
+  {
+    show_hint_model();
+  }
+  else
+  {
+    //We must set this each time, because show_hint_model() might unset it:
+    m_TreeView.set_fixed_height_mode(); //This allows some optimizations.
   }
 
   m_TreeView.columns_autosize();
@@ -1766,6 +1784,20 @@ void DbAddDel::set_open_button_title(const Glib::ustring& title)
   m_open_button_title = title;
 }
 
+void DbAddDel::show_hint_model()
+{
+  m_TreeView.remove_all_columns();
+  m_treeviewcolumn_button = 0; //When we removed the view columns, this was deleted because it's manage()ed.
+
+  m_model_hint = Gtk::ListStore::create(m_columns_hint);
+  Gtk::TreeModel::iterator iter = m_model_hint->append();
+  (*iter)[m_columns_hint.m_col_hint] = _("Right-click to layout, to specify the related fields.");
+
+  m_TreeView.set_model(m_model_hint);
+
+  m_TreeView.set_fixed_height_mode(false); //fixed_height mode is incompatible with the default append_column() helper method.
+  m_TreeView.append_column("", m_columns_hint.m_col_hint);
+}
 
 } //namespace Glom
 

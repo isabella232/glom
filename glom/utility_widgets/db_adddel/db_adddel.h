@@ -285,6 +285,12 @@ protected:
   //The column_id is extra information that we can use later to discover what the column shows, even when columns have been reordered.
   guint treeview_append_column(const Glib::ustring& title, Gtk::CellRenderer& cellrenderer, int model_column_index);
 
+  /** Show a model that gives a visual hint to the developer,
+   * when he has not yet specified fields to show.
+   * TODO: Make this more obvious in a less strange way.
+   */
+  void show_hint_model();
+
   int get_fixed_cell_height();
 
   App_Glom* get_application();
@@ -368,6 +374,22 @@ protected:
     type_vecColumns m_vecColumns;
   };
 */
+
+  //When no columns have been chosen in the layout editor,
+  //show this model to give the user a hint about what to do:
+  class ModelColumnsEmptyHint : public Gtk::TreeModel::ColumnRecord
+  {
+  public:
+
+    ModelColumnsEmptyHint()
+    { add(m_col_hint); }
+
+    Gtk::TreeModelColumn<Glib::ustring> m_col_hint;
+  };
+ 
+  ModelColumnsEmptyHint m_columns_hint;
+  Glib::RefPtr<Gtk::ListStore> m_model_hint;
+
 
   int m_fixed_cell_height;
 };
