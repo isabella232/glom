@@ -1,6 +1,11 @@
-* Related records: When clicking the open button, show a warning dialog 
-  when the related record indicates a non-existant doubly-related record,
-  making navigation impossible.
+1.1.2:
+
+* Related records:
+  - When clicking the open button, show a warning dialog when the related 
+  record indicates a non-existant doubly-related record, making navigation 
+  impossible.
+  - Allow navigation to doubly-related records (such as products from 
+  invoice lines on an invoice record), even when only the ID key is shown.
 
 1.1.1:
 
