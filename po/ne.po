@@ -1,181 +1,229 @@
+# translation of glom.HEAD.ne.po to Nepali
 # translation of glom.HEAD.po to Nepali
 # This file is distributed under the same license as the PACKAGE package.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER.
 # Pawan Chitrakar <pawan@mpp.org.np>, 2005.
 # Jyotshna Shrestha <shresthajyo@hotmail.com>, 2005.
+# Jaydeep Bhusal <zaydeep@hotmail.com>, 2005.
+# Mahesh subedi <submanesh@hotmail.com>, 2006.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: glom.HEAD\n"
+"Project-Id-Version: glom.HEAD.ne\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-08-24 19:50+0545\n"
-"PO-Revision-Date: 2005-06-21 11:13+0545\n"
-"Last-Translator: Jyotshna Shrestha <shresthajyo@hotmail.com>\n"
+"POT-Creation-Date: 2006-05-15 11:24+0200\n"
+"PO-Revision-Date: 2006-06-11 11:58+0545\n"
+"Last-Translator: Mahesh subedi <submanesh@hotmail.com>\n"
 "Language-Team: Nepali <info@mpp.org.np>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.9.1\n"
-"Plural-Forms: nplurals=2;plural=(n!=0)\n"
+"X-Generator: KBabel 1.10.2\n"
+"Plural-Forms: nplurals=2;plural=(n!=1)\n"
+
+#: ../glom.desktop.in.in.h:1
+msgid "A user-friendly database environment."
+msgstr "एउटा प्रयोगकर्ता-मैत्रिपूर्ण डाटावेस वातावरण"
+
+#: ../glom.desktop.in.in.h:2 ../glom/glom.glade.h:130 ../glom/main.cc:106
+msgid "Glom"
+msgstr "ग्लोम"
 
 #: ../glom/glom.glade.h:1
-msgid "*"
-msgstr ""
+msgid "0"
+msgstr "0"
 
 #: ../glom/glom.glade.h:2
 msgid "<b><span size=\"xx-large\">None selected</span></b>"
-msgstr ""
+msgstr "<b><span size=\"xx-large\">कुनै पनि चयन नगरिएको</span></b>"
 
 #: ../glom/glom.glade.h:3
-#, fuzzy
 msgid "<b>Address</b>"
-msgstr "<b>प्रयोगकर्ताहरू</b>"
+msgstr "<b>ठेगाना</b>"
 
 #: ../glom/glom.glade.h:4
-#, fuzzy
 msgid "<b>Available Parts</b>"
-msgstr "<b>तालिकाहरू</b>"
+msgstr "<b>उपलब्ध भागहरू</b>"
 
 #: ../glom/glom.glade.h:5
-#, fuzzy
 msgid "<b>Choices</b>"
-msgstr "<b>क्षेत्रहरू</b>"
+msgstr "<b>चयनहरू</b>"
 
 #: ../glom/glom.glade.h:6
 msgid "<b>Connection</b>"
 msgstr "<b>जडान</b>"
 
 #: ../glom/glom.glade.h:7
+msgid "<b>English</b>"
+msgstr "<b>अंग्रेजि</b>"
+
+#: ../glom/glom.glade.h:8
 msgid "<b>Field Definitions</b>"
 msgstr "<b>क्षेत्रको परिभाषाहरू</b>"
 
-#: ../glom/glom.glade.h:8
-#, fuzzy
-msgid "<b>Field:</b>"
-msgstr "<b>क्षेत्रहरू</b>"
-
 #: ../glom/glom.glade.h:9
-msgid "<b>Fields</b>"
-msgstr "<b>क्षेत्रहरू</b>"
+msgid "<b>Field:</b>"
+msgstr "<b>फाटँ:</b>"
 
 #: ../glom/glom.glade.h:10
-#, fuzzy
-msgid "<b>Find Related Record</b>"
-msgstr "<b>क्षेत्रहरू</b>"
+msgid "<b>Fields</b>"
+msgstr "<b>फाँटहरू</b>"
 
 #: ../glom/glom.glade.h:11
-#, fuzzy
-msgid "<b>Group By</b>"
-msgstr "<b>समूहहरू</b>"
+msgid "<b>Find Related Record</b>"
+msgstr "<b>सम्बन्धित फाँटहरू फेला पार्नुहोस्</b>"
 
 #: ../glom/glom.glade.h:12
+msgid "<b>Formatting</b>"
+msgstr "<b>ढाँचाबद्ध गर्दै</b>"
+
+#: ../glom/glom.glade.h:13
+msgid "<b>Group By</b>"
+msgstr "<b>द्धारा समूह</b>"
+
+#: ../glom/glom.glade.h:14
 msgid "<b>Group:</b>"
 msgstr "<b>समूह:</b>"
 
-#: ../glom/glom.glade.h:13
+#: ../glom/glom.glade.h:15
 msgid "<b>Groups</b>"
 msgstr "<b>समूहहरू</b>"
 
-#: ../glom/glom.glade.h:14
-msgid "<b>Numeric Formatting</b>"
-msgstr "<b>अंकिय स्वरूपित</b>"
-
-#: ../glom/glom.glade.h:15
-#, fuzzy
-msgid "<b>Parts</b>"
-msgstr "<b>प्रयोगकर्ताहरू</b>"
-
 #: ../glom/glom.glade.h:16
+msgid "<b>Image</b>"
+msgstr "<b>छवि</b>"
+
+#: ../glom/glom.glade.h:17
+msgid "<b>Notebook Tabs</b>"
+msgstr "<b>नोटबुक ट्याबहरू</b>"
+
+#: ../glom/glom.glade.h:18
+msgid "<b>Numeric Formatting</b>"
+msgstr "<b>अंकिय ढाँचाबद्ध</b>"
+
+#: ../glom/glom.glade.h:19
+msgid "<b>Parts</b>"
+msgstr "<b>भागहरू</b>"
+
+#: ../glom/glom.glade.h:20
 msgid "<b>Relationship:</b>"
 msgstr "<b>सम्बन्ध:</b>"
 
-#: ../glom/glom.glade.h:17
-#, fuzzy
-msgid "<b>Relationships</b>"
-msgstr "<b>सम्बन्ध:</b>"
-
-#: ../glom/glom.glade.h:18
-#, fuzzy
-msgid "<b>Report name:</b>"
-msgstr "<b>प्रयोग गर्ने तह:</b>"
-
-#: ../glom/glom.glade.h:19
-#, fuzzy
-msgid "<b>Reports</b>"
-msgstr "<b>प्रयोगकर्ताहरू</b>"
-
-#: ../glom/glom.glade.h:20
-msgid "<b>Select Field</b>"
-msgstr "<b>क्षेत्र छनौट गर्नुहोस्</b>"
-
 #: ../glom/glom.glade.h:21
-msgid "<b>Select Relationship</b>"
-msgstr "<b>सम्बन्ध छनौट गर्नुहोस्</b>"
+msgid "<b>Relationships</b>"
+msgstr "<b>सम्बन्धहरू</b>"
 
 #: ../glom/glom.glade.h:22
-#, fuzzy
-msgid "<b>Summary Field</b>"
-msgstr "<b>क्षेत्रहरू</b>"
+msgid "<b>Report name:</b>"
+msgstr "<b>प्रतिवेदन नाम:</b>"
 
 #: ../glom/glom.glade.h:23
-#, fuzzy
-msgid "<b>Table Name</b>"
-msgstr "<b>तालिका:</b>"
+msgid "<b>Reports</b>"
+msgstr "<b>प्रतिवेदनहरू</b>"
 
 #: ../glom/glom.glade.h:24
+msgid "<b>Select Field</b>"
+msgstr "<b>फाँट चयन गर्नुहोस्</b>"
+
+#: ../glom/glom.glade.h:25
+msgid "<b>Select Relationship</b>"
+msgstr "<b>सम्बन्ध चयन गर्नुहोस्</b>"
+
+#: ../glom/glom.glade.h:26
+msgid "<b>Sort Fields</b>"
+msgstr "<b>क्रमबद्ध फाँटहरू</b>"
+
+#: ../glom/glom.glade.h:27
+msgid "<b>Source Language:</b>"
+msgstr "<b>स्रोत भाषा:</b>"
+
+#: ../glom/glom.glade.h:28
+msgid "<b>Summary Field</b>"
+msgstr "<b>संक्षेप फाँट</b>"
+
+#: ../glom/glom.glade.h:29
+msgid "<b>Table Name</b>"
+msgstr "<b>तालिका नाम</b>"
+
+#: ../glom/glom.glade.h:30
 msgid "<b>Table:</b>"
 msgstr "<b>तालिका:</b>"
 
-#: ../glom/glom.glade.h:25
+#: ../glom/glom.glade.h:31
 msgid "<b>Tables in database</b>"
-msgstr "<b>तालिकाहरू डाटाबेसमा</b>"
+msgstr "<b>डाटाबेसमा तालिकाहरू</b>"
 
-#: ../glom/glom.glade.h:26
+#: ../glom/glom.glade.h:32
 msgid "<b>Tables</b>"
 msgstr "<b>तालिकाहरू</b>"
 
-#: ../glom/glom.glade.h:27
-#, fuzzy
-msgid "<b>Text Formatting</b>"
-msgstr "<b>अंकिय स्वरूपित</b>"
+#: ../glom/glom.glade.h:33
+msgid "<b>Target Language:</b>"
+msgstr "<b>लक्षित भाषा:</b>"
 
-#: ../glom/glom.glade.h:28
+#: ../glom/glom.glade.h:34
+msgid "<b>Text Formatting</b>"
+msgstr "<b>पाठ ढाँचाबद्ध</b>"
+
+#: ../glom/glom.glade.h:35
+msgid "<b>Text</b>"
+msgstr "<b>पाठ</b>"
+
+#: ../glom/glom.glade.h:36
 msgid "<b>Title:</b>"
 msgstr "<b>शीर्षक:</b>"
 
-#: ../glom/glom.glade.h:29
+#: ../glom/glom.glade.h:37
+msgid "<b>Title</b>"
+msgstr "<b>शीर्षक</b>"
+
+#: ../glom/glom.glade.h:38
+msgid "<b>Translations</b>"
+msgstr "<b>अनुवादहरू</b>"
+
+#: ../glom/glom.glade.h:39
 msgid "<b>User Level:</b>"
 msgstr "<b>प्रयोग गर्ने तह:</b>"
 
-#: ../glom/glom.glade.h:30
+#: ../glom/glom.glade.h:40
 msgid "<b>User</b>"
 msgstr "<b>प्रयोगकर्ता</b>"
 
-#: ../glom/glom.glade.h:31
+#: ../glom/glom.glade.h:41
 msgid "<b>Users</b>"
 msgstr "<b>प्रयोगकर्ताहरू</b>"
 
-#: ../glom/glom.glade.h:32
+#: ../glom/glom.glade.h:42
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Add User To Group</span>\n"
 "\n"
 "Which user should be added to this group?"
 msgstr ""
-"<span weight=\"bold\" size=\"larger\">समुहमा प्रयोगकर्ता थप्नुहोस्</span>\n"
+"<span weight=\"bold\" size=\"larger\">समूहमा प्रयोगकर्ता थप्नुहोस्</span>\n"
 "\n"
-"कुन चाहि प्रयोगकर्ता यस समूहमा थप्नु पर्छ?"
+"कुन चाहि प्रयोगकर्ता यस समूहमा थप्नु पर्छ ?"
 
-#: ../glom/glom.glade.h:35
+#: ../glom/glom.glade.h:45
+msgid ""
+"<span weight=\"bold\" size=\"larger\">Choose Date</span>\n"
+"\n"
+"Please select a date to enter in this field."
+msgstr ""
+"<span weight=\"bold\" size=\"larger\">मिति छनौट गर्नुहोस्</span>\n"
+"\n"
+"कृपया यो फाँटमा प्रविष्ट गर्ने मिति चयन गर्नुहोस्।"
+
+#: ../glom/glom.glade.h:48
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Connect to Server</span>\n"
 "\n"
 "Please enter the connection details for your database server."
 msgstr ""
-"<span weight=\"bold\" size=\"larger\">सेवादायकमा जडान</span>\n"
+"<span weight=\"bold\" size=\"larger\">सर्भरमा जडान</span>\n"
 "\n"
-"कृपया तपाईको डाटावेस सेवादायकको लागी जडानको बिबरण प्रविष्ट गर्नुहोस्।"
+"कृपया तपाईँको डाटावेस सर्भरका लागि जडानको बिबरण प्रविष्ट गर्नुहोस्।"
 
-#: ../glom/glom.glade.h:38
+#: ../glom/glom.glade.h:51
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Connection Failed</span>\n"
 "\n"
@@ -185,45 +233,52 @@ msgid ""
 msgstr ""
 "<span weight=\"bold\" size=\"larger\">जडान असफल भयो</span>\n"
 "\n"
-"ग्लोम डाटावेस सेवादायकमा जडान हुन सकेन। सायद तपाईले बेठिक प्रयोगकर्ताको नाम वा "
-"प्रवेशचिन्ह प्रविष्ट गर्नु भयो होला, सायद पोस्टग्रेस डाटावेस सेवादायक संचालन भईराखेको छैन।"
+"ग्लोम डाटावेस सर्भरमा जडान हुन सकेन। सायद तपाईँले बेठीक प्रयोगकर्ताको नाम वा पासवर्ड "
+"प्रविष्ट गर्नुभयो होला, सायद पोस्टग्रेस डाटावेस सर्भर सञ्चालन भईराखेको छैन।"
 
-#: ../glom/glom.glade.h:41
+#: ../glom/glom.glade.h:54
+msgid ""
+"<span weight=\"bold\" size=\"larger\">Copy Translation</span>\n"
+"\n"
+"From what language would you like to copy the translations to use as the "
+"start of the current translation?"
+msgstr ""
+"<span weight=\"bold\" size=\"larger\">अनुवाद प्रतिलिपि बनाउनुहोस्</span>\n"
+"\n"
+"हालको अनुवादको सुरुको रूपमा प्रयोग गर्न कुन भाषाबाट तपाईँले अनुवाद प्रतिलिपि गर्न चाहनुहुन्छ ?"
+
+#: ../glom/glom.glade.h:57
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Create Group</span>\n"
 "\n"
 "What name should this group have?"
 msgstr ""
-"<span weight=\"bold\" size=\"larger\">समुह सृजना गर्नुहोस्</span>\n"
+"<span weight=\"bold\" size=\"larger\">समूह सिर्जना गर्नुहोस्</span>\n"
 "\n"
-"यस समूहसंग के नाम हुनु पर्दछ?"
+"यस समूहको के नाम हुनुपर्दछ ?"
 
-#: ../glom/glom.glade.h:44
+#: ../glom/glom.glade.h:60
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Database creation failed</span>\n"
 "\n"
 "Glom could not create the new database. Maybe you do not have the necessary "
 "access rights. Please contact your system administrator."
 msgstr ""
-"<span weight=\"bold\" size=\"larger\">डाटावेस सृजना गर्न असफल</span>\n"
+"<span weight=\"bold\" size=\"larger\">डाटावेस सिर्जना गर्न असफल</span>\n"
 "\n"
-"ग्लोमले नयाँ डाटावेस सृजना गर्न सकेन। सायद तपाईसंग आवश्यक प्रवेश अधिकार छैन होला। कृपया "
-"तपाईको प्रणाली प्रबन्धकलाई सम्पर्क गर्नुहोस्।"
+"ग्लोमले नयाँ डाटावेस सिर्जना गर्न सकेन। सायद तपाईँसँग आवश्यक प्रवेश अधिकार छैन होला। कृपया तपाईँको प्रणाली प्रबन्धकलाई सम्पर्क गर्नुहोस्।"
 
-#: ../glom/glom.glade.h:47
+#: ../glom/glom.glade.h:63
 msgid ""
-"<span weight=\"bold\" size=\"larger\">Database does not exist</span>\n"
+"<span weight=\"bold\" size=\"larger\">Identify Original</span>\n"
 "\n"
-"The database does not yet exist on the database server. Would you like to "
-"create the database with an empty structure?"
+"The language of the original text is currently identified as:"
 msgstr ""
-"<span weight=\"bold\" size=\"larger\">डाटावेस अवस्थित छैन</span>\n"
+"<span weight=\"bold\" size=\"larger\">मौलिक पहिचान गर्नुहोस्</span>\n"
 "\n"
-"डाटावेस डाटावेस सेवादायकमा अझै अवस्थित छैन। के तपाई खाली बनावटमा नै डाटावेस सृजना गर्न "
-"चहानुहुन्छ?"
+"मौलिक पाठको भाषा हालैमा यस रूपमा पहिचान गरियो:"
 
-#: ../glom/glom.glade.h:50
-#, fuzzy
+#: ../glom/glom.glade.h:66
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Invalid format</span>\n"
 "\n"
@@ -233,22 +288,22 @@ msgid ""
 msgstr ""
 "<span weight=\"bold\" size=\"larger\">अमान्य ढाँचा</span>\n"
 "\n"
-"क्षेत्रमा भएको डाटा परिचित छैन। कृपया डाटा सच्याउने कोशिश गर्नुहोस् वा पहिलेको मानमा "
-"उल्टाउनुहोस्। यहाँ यस क्षेत्रको लागी ठिक तरिकाले प्रारुपित गरिएको डाटाको उदाहरण छ।\n"
+"फाँटमा भएको डेटा परिचित छैन। कृपया डेटा सच्याउने कोशिश गर्नुहोस् वा पहिलेको मानमा "
+"उल्टाउनुहोस्। यहाँ यस फाँटका लागि ठीक तरिकाले प्रारूपित गरिएको डेटाको उदाहरण छ।\n"
 
-#: ../glom/glom.glade.h:54
+#: ../glom/glom.glade.h:70
 msgid ""
 "<span weight=\"bold\" size=\"larger\">New Database</span>\n"
 "\n"
-"Please choose a name and title for the new database. The name should not "
-"contain any spaces."
+"Please choose a human-readable title for the new database. You can change "
+"this later in the database properties. It may contan any characters."
 msgstr ""
 "<span weight=\"bold\" size=\"larger\">नयाँ डाटावेस</span>\n"
 "\n"
-"कृपया नयाँ डाटावेसको लागी नाम र शीर्षक छनौट गर्नुहोस्। नाममा कुनै खालीस्थानहरू समावेश "
-"भएको हुनुहुदैन।"
+"कृपया नयाँ डाटावेसका लागि मानव-पाढ्य शीर्षक चयन गर्नुहोस्। तपाईँले त्यसलाई पछि डाटावेसको गुणमा परिवर्तन गर्न सक्नुहुन्छ। यसले कुनै क्यारेक्टरहरू समावेश "
+"भएको हुनुसक्छ।"
 
-#: ../glom/glom.glade.h:57
+#: ../glom/glom.glade.h:73
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Open existing document, or create new "
 "document</span>\n"
@@ -258,212 +313,312 @@ msgid ""
 "\n"
 "Or would you like to create a new document, to design a new database?\n"
 msgstr ""
-"<span weight=\"bold\" size=\"larger\">खुल्ला अवस्थित कागजपत्र, वा नयाँ कागजपत्र "
-"सृजना</span>\n"
+"<span weight=\"bold\" size=\"larger\">खुल्ला अवस्थित कागजपत्र, वा नयाँ कागजपत्र सिर्जना</span>\n"
 "\n"
-"के तपाई अवस्थित डाटावेसमा जोड्नको लागी, अवस्थित कागजपत्र खोल्न चहानु हुन्छ?\n"
+"के तपाईँ अवस्थित डाटावेसमा जोड्नका लागि, अवस्थित कागजपत्र खोल्न चाहनुहुन्छ ?\n"
 "\n"
-"वा के तपाई नयाँ डाटाबेस डिजाईन गर्न नयाँ कागजपत्र सृजना गर्न चहानुहुन्छ?\n"
+"वा के तपाईँ नयाँ डाटाबेस डिजाईन गर्न नयाँ कागजपत्र सिर्जना गर्न चाहनुहुन्छ ?\n"
 
-#: ../glom/glom.glade.h:63
+#: ../glom/glom.glade.h:79
+msgid ""
+"<span weight=\"bold\" size=\"larger\">Test Translation</span>\n"
+"\n"
+"Choose a language to use temporarily to test the translations. These "
+"translations are normally used automatically when the application is started "
+"on a computer that uses the language.\n"
+"\n"
+"Note that the standard parts of the Glom user interface, such as menus and "
+"dialog windows, will only be translated when you start Glom on a computer "
+"that uses that language."
+msgstr ""
+"<span weight=\"bold\" size=\"larger\">अनुवाद परीक्षण गर्नुहोस्</span>\n"
+"\n"
+"अस्थायि रपमा अनुवाद परीक्षण गर्नका लागि एउटा भाषा छनौट गर्नुहोस्। कम्प्युटरमा अनुप्रयोग सुरु गरेको बेलामा ति अनुवादहरू साधारणतया स्वचालित रूपमा प्रयोग गरिन्छन् जसले भाषा प्रयोग गर्दछ।\n"
+"\n"
+"याद राख्नुहोस् गोल्म प्रयोगकर्ता इन्टरफेसको मानक भाग, जस्तै मेनु र संवाद सञ्झ्याल, तपाईँले भाषा प्रयोग गर्ने कम्प्युटरमा गोल्म सुरु गर्नुभएको बेलामा मात्र अनुबाद हुन्छ।"
+
+#: ../glom/glom.glade.h:84 ../glom/utility_widgets/layoutwidgetbase.cc:38
+msgid "Add Button"
+msgstr "बटन थप्नुहोस्"
+
+#: ../glom/glom.glade.h:85 ../glom/utility_widgets/layoutwidgetbase.cc:36
+msgid "Add Notebook"
+msgstr "नोटबुक थप्नुहोस्"
+
+#: ../glom/glom.glade.h:86
 msgid "Add Related"
 msgstr "सम्बन्धित थप्नुहोस्"
 
-#: ../glom/glom.glade.h:64
+#: ../glom/glom.glade.h:87 ../glom/utility_widgets/layoutwidgetbase.cc:39
+msgid "Add Text"
+msgstr "परीक्षण थप्नुहोस्"
+
+#: ../glom/glom.glade.h:88
 msgid "Add _Group"
 msgstr "समूह थप्नुहोस्"
 
-#: ../glom/glom.glade.h:65
-#: ../glom/mode_design/box_db_table_relationships.cc:45
+#: ../glom/glom.glade.h:89
+#: ../glom/mode_design/box_db_table_relationships.cc:49
 msgid "Allow Editing"
-msgstr "सम्पादन गर्न अनुमती"
+msgstr "सम्पादन गर्न अनुमति"
 
-#: ../glom/glom.glade.h:66
+#: ../glom/glom.glade.h:90
 msgid "Also show"
-msgstr ""
+msgstr "देखाउनुहोस् साथै"
 
-#: ../glom/glom.glade.h:67
+#: ../glom/glom.glade.h:91
 msgid "Auto-increment"
 msgstr "स्वत:वृद्धि"
 
-#: ../glom/glom.glade.h:68
-#, fuzzy
+#: ../glom/glom.glade.h:92
 msgid "Auto-increment values"
-msgstr "स्वत:वृद्धि"
+msgstr "स्वत:वृद्धि मानहरू"
 
-#: ../glom/glom.glade.h:69
-msgid "Calculate value"
-msgstr "मान हिसाब गर्नुहोस्"
+#: ../glom/glom.glade.h:93
+msgid "Border Width (ems)"
+msgstr "किनारा चौडाइ (ems)"
 
-#: ../glom/glom.glade.h:70
-#, fuzzy
+#: ../glom/glom.glade.h:94
+msgid "Button Script"
+msgstr "बटन स्क्रिप्ट"
+
+#: ../glom/glom.glade.h:95
+msgid "Calculate Value"
+msgstr "मान गणना गर्नुहोस्"
+
+#: ../glom/glom.glade.h:96
 msgid "Choices From Related Records"
-msgstr "सम्बन्धित रेकर्डहरुको ढाँचा"
+msgstr "सम्बन्धित रेकर्डहरूबाट छनौटहरू"
 
-#: ../glom/glom.glade.h:71
+#: ../glom/glom.glade.h:97
+msgid "Choose Date"
+msgstr "डेटा छनौट गर्नुहोस्"
+
+#: ../glom/glom.glade.h:98
 msgid "Choose User"
-msgstr "प्रयोगकर्ता छनौट गर्नुहोस्"
+msgstr "प्रयोगकर्ता चयन गर्नुहोस्"
 
-#: ../glom/glom.glade.h:72
+#: ../glom/glom.glade.h:99
 msgid "Confirm Password"
-msgstr "प्रवेशचिन्ह पक्का गर्नुहोस्"
+msgstr "पासवर्ड पक्का गर्नुहोस्"
 
-#: ../glom/glom.glade.h:73
+#: ../glom/glom.glade.h:100
 msgid "Connect"
 msgstr "जडान"
 
-#: ../glom/glom.glade.h:74
+#: ../glom/glom.glade.h:101
+msgid "Copy From Existing Translation"
+msgstr "अवस्थित अनुवादबाट प्रतिलिपि बनाउनुहोस्"
+
+#: ../glom/glom.glade.h:102 ../glom/libglom/document/document_glom.cc:331
 msgid "Country"
-msgstr ""
+msgstr "देश"
 
-#: ../glom/glom.glade.h:75 ../glom/mode_design/users/dialog_groups_list.cc:76
+#: ../glom/glom.glade.h:103 ../glom/mode_design/users/dialog_groups_list.cc:75
 msgid "Create"
-msgstr "सृजना"
+msgstr "सिर्जना गर्नुहोस्"
 
-#: ../glom/glom.glade.h:76
+#: ../glom/glom.glade.h:104
 msgid "Create Group"
-msgstr "समूह सृजना गर्नुहोस्"
+msgstr "समूह सिर्जना गर्नुहोस्"
 
-#: ../glom/glom.glade.h:77
+#: ../glom/glom.glade.h:105
+msgid "Creating Glom Database"
+msgstr "गोल्म डाटावेस सिर्जना गर्दै"
+
+#: ../glom/glom.glade.h:106
+msgid "Creating Glom database from example file."
+msgstr "उदाहरण फाइलबाट गोल्म डाटावेस सिर्जना गर्दैछ।"
+
+#: ../glom/glom.glade.h:107
 msgid "Currency Symbol"
 msgstr "मुद्रा चिन्ह"
 
-#: ../glom/glom.glade.h:78
+#: ../glom/glom.glade.h:108
 msgid "Custom Choice List"
-msgstr ""
+msgstr "अनुकूल छनौट सूची"
 
-#: ../glom/glom.glade.h:79 ../glom/frame_glom.cc:351
+#: ../glom/glom.glade.h:109 ../glom/frame_glom.cc:413
 msgid "Data"
-msgstr "डाटा"
+msgstr "डेटा"
 
-#: ../glom/glom.glade.h:80
+#: ../glom/glom.glade.h:110
 msgid "Database"
 msgstr "डाटाबेस"
 
-#: ../glom/glom.glade.h:81
+#: ../glom/glom.glade.h:111
 msgid "Database Preferences"
-msgstr ""
+msgstr "डाटावेस प्राथमिकताहरू"
 
-#: ../glom/glom.glade.h:82
+#: ../glom/glom.glade.h:112
 msgid "Decimal Places"
-msgstr "विन्दु ठाउँहरू"
+msgstr "बिन्दु ठाउँहरू"
 
-#: ../glom/glom.glade.h:83
+#: ../glom/glom.glade.h:113
 msgid "Default Formatting"
-msgstr ""
+msgstr "पूर्वनिर्धारित ढाँचाबद्धता"
 
-#: ../glom/glom.glade.h:84
-#: ../glom/mode_design/fields/dialog_fielddefinition.cc:144
-msgid "Default Value"
-msgstr "पूर्वनिर्धारित मान"
-
-#: ../glom/glom.glade.h:85
+#: ../glom/glom.glade.h:114
 msgid "Details Layout"
 msgstr "विस्तृत ढाचा"
 
 #. Add new menu items:
-#: ../glom/glom.glade.h:86 ../glom/mode_design/users/dialog_groups_list.cc:73
-#: ../glom/utility_widgets/adddel/adddel.cc:205
+#: ../glom/glom.glade.h:115 ../glom/mode_design/users/dialog_groups_list.cc:72
+#: ../glom/utility_widgets/adddel/adddel.cc:230
 msgid "Edit"
 msgstr "सम्पादन"
 
-#: ../glom/glom.glade.h:87
-#: ../glom/data_structure/layout/layoutitem_field.cc:143
-#: ../glom/dialog_database_preferences.cc:49
+#: ../glom/glom.glade.h:116
+msgid "English"
+msgstr "अग्रेजि"
+
+#: ../glom/glom.glade.h:117
+msgid "Export Format"
+msgstr "ढाँचा निर्यात गर्नुहोस्"
+
+#: ../glom/glom.glade.h:118
+#: ../glom/libglom/data_structure/translatable_item.cc:247
+#: ../glom/libglom/data_structure/layout/layoutitem_field.cc:193
+#: ../glom/dialog_database_preferences.cc:52
 msgid "Field"
-msgstr "क्षेत्र"
+msgstr "फाँट"
 
-#: ../glom/glom.glade.h:88
+#: ../glom/glom.glade.h:119
 msgid "Field Calculation"
-msgstr "क्षेत्रको गणना"
+msgstr "फाँट गणना"
 
-#: ../glom/glom.glade.h:89
+#: ../glom/glom.glade.h:120
 msgid "Field Definition"
-msgstr "क्षेत्रको परिभाषा"
+msgstr "फाँटको परिभाषा"
 
-#: ../glom/glom.glade.h:90 ../glom/mode_design/dialog_fields.cc:34
+#: ../glom/glom.glade.h:121 ../glom/mode_design/dialog_fields.cc:34
 msgid "Field Definitions"
-msgstr "क्षेत्रको परिभाषाहरू"
+msgstr "फाँटको परिभाषाहरू"
 
-#: ../glom/glom.glade.h:91
-#, fuzzy
+#: ../glom/glom.glade.h:122
 msgid "Field Layout"
-msgstr "सुची ढाँचा"
+msgstr "फाँट सजावट"
 
-#: ../glom/glom.glade.h:92
-#: ../glom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:67
+#: ../glom/glom.glade.h:123
+#: ../glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:67
 msgid "Field Summary"
-msgstr ""
+msgstr "फाँट संक्षेप"
 
-#: ../glom/glom.glade.h:93
-#, fuzzy
+#: ../glom/glom.glade.h:124
 msgid "Field:"
-msgstr "क्षेत्र"
+msgstr "फाँट:"
 
-#: ../glom/glom.glade.h:94
-#, fuzzy
+#: ../glom/glom.glade.h:125
+msgid "Find All"
+msgstr "सबै फेला पार्नुहोस्"
+
+#: ../glom/glom.glade.h:126
 msgid "Find Related Record"
-msgstr "सम्बन्धित रेकर्डहरुको ढाँचा"
+msgstr "सम्बन्धित रेकर्ड फेला पार्नुहोस्"
 
-#: ../glom/glom.glade.h:95
+#: ../glom/glom.glade.h:127
+#: ../glom/libglom/data_structure/layout/report_parts/layoutitem_footer.cc:52
+msgid "Footer"
+msgstr "फुटर"
+
+#: ../glom/glom.glade.h:128
 msgid "Formatting"
-msgstr ""
+msgstr "ढाँचाबद्धता"
 
-#: ../glom/glom.glade.h:96 ../glom/main.cc:90
-msgid "Glom"
-msgstr "ग्लोम"
+#: ../glom/glom.glade.h:129
+msgid "Found:"
+msgstr "फेला पर्यो:"
 
-#: ../glom/glom.glade.h:97 ../glom/data_structure/layout/layoutgroup.cc:290
+#: ../glom/glom.glade.h:131
+#: ../glom/libglom/data_structure/layout/layoutgroup.cc:393
 msgid "Group"
 msgstr "समूह"
 
-#: ../glom/glom.glade.h:98
-#: ../glom/data_structure/layout/report_parts/layoutitem_groupby.cc:85
-#, fuzzy
+#: ../glom/glom.glade.h:132
+#: ../glom/libglom/data_structure/layout/report_parts/layoutitem_groupby.cc:99
 msgid "Group By"
-msgstr "समूह"
+msgstr "द्धारा समूह"
 
-#: ../glom/glom.glade.h:99
+#: ../glom/glom.glade.h:133
 msgid "Group By - Secondary Fields"
-msgstr ""
+msgstr "द्धारा समूह - प्राथमिक फाँटहरू"
 
-#: ../glom/glom.glade.h:100
+#: ../glom/glom.glade.h:134
+msgid "Group By - Sort Fields"
+msgstr "द्धारा समूह - क्रमबद्ध फाँटहरू"
+
+#: ../glom/glom.glade.h:135
 msgid "Group Name"
-msgstr "समुहको नाम"
+msgstr "समूहको नाम"
 
-#: ../glom/glom.glade.h:101
+#: ../glom/glom.glade.h:136
 msgid "Groups"
 msgstr "समूहहरु"
 
-#: ../glom/glom.glade.h:102
+#: ../glom/glom.glade.h:137
+#: ../glom/libglom/data_structure/layout/report_parts/layoutitem_header.cc:52
+msgid "Header"
+msgstr "हेडेर"
+
+#: ../glom/glom.glade.h:138
 msgid "Host"
 msgstr "होस्ट"
 
-#: ../glom/glom.glade.h:103
+#: ../glom/glom.glade.h:139
+msgid "Identify Original"
+msgstr "मौलिक पहिचान गर्नुहोस्"
+
+#: ../glom/glom.glade.h:140
+msgid "Identify Source"
+msgstr "स्रोत पहिचान गर्नुहोस्"
+
+#: ../glom/glom.glade.h:141
+msgid ""
+"If the text is not actually in this language, please choose the correct "
+"language."
+msgstr "यदि सो भाषामा पाठ छैन भने, कृपया सहि भाषा छनौट गर्नुहोस्।"
+
+#: ../glom/glom.glade.h:142
 msgid ""
 "If this is not selected then a thousands separator will not be used, even if "
 "your locale would normally use one. If it is selected then a thousands "
 "separator will be used only if your locale normally uses one."
 msgstr ""
-"यदि यो छानिएन भने हजारौ विभाजक प्रयोग हुँदैन तपाईको स्थानियताले प्रयोग गरेतापनि। यदि "
-"यसलाई छानियो भने हजारौ विभाजक प्रयोग गरिन्छ यदि तपाईको स्थानियताले प्रयोग गर्यो भने "
+"यदि यो छानिएन भने हजारौ विभाजक प्रयोग हुँदैन, तपाईँको स्थानीयताले प्रयोग गरेतापनि। यदि "
+"यसलाई छानियो भने हजारौ विभाजक प्रयोग गरिन्छ, यदि तपाईँको स्थानीयताले प्रयोग गर्यो भने "
 "मात्र।"
 
-#: ../glom/glom.glade.h:104
+#: ../glom/glom.glade.h:143
+msgid "Language"
+msgstr "भाषा"
+
+#: ../glom/glom.glade.h:144
 msgid "List Layout"
-msgstr "सुची ढाँचा"
+msgstr "सूची सजावट"
 
-#: ../glom/glom.glade.h:105
+#: ../glom/glom.glade.h:145
+msgid "Locale"
+msgstr "स्थानीय"
+
+#: ../glom/glom.glade.h:146
+msgid "Logo"
+msgstr "लोगो"
+
+#: ../glom/glom.glade.h:147
 msgid "Lookup value when a field changes."
-msgstr "जब क्षेत्र परिवर्तन हुन्छ मान हेर्नुहोस्"
+msgstr "फाँट परिवर्तन भएको बेलामा मान हेर्नुहोस्"
 
-#: ../glom/glom.glade.h:106
+#: ../glom/glom.glade.h:148
+msgid "Main"
+msgstr "मुख्य"
+
+#: ../glom/glom.glade.h:149
 msgid "Mode:"
-msgstr ""
+msgstr "मोड:"
 
-#: ../glom/glom.glade.h:107
+#: ../glom/glom.glade.h:150
 msgid "Multi-line"
-msgstr ""
+msgstr "बहु-लाइन"
 
 #. Append the View columns:
 #. Append the View columns:
@@ -472,826 +627,1206 @@ msgstr ""
 #. Append the View columns:
 #. Append the View columns:
 #. Append the View columns:
-#: ../glom/glom.glade.h:108 ../glom/box_reports.cc:86
-#: ../glom/layout_item_dialogs/dialog_groupby_secondaryfields.cc:49
-#: ../glom/mode_data/dialog_choose_field.cc:43
+#: ../glom/glom.glade.h:151 ../glom/box_reports.cc:87
+#: ../glom/layout_item_dialogs/dialog_groupby_secondaryfields.cc:48
+#: ../glom/layout_item_dialogs/dialog_groupby_sortfields.cc:47
+#: ../glom/layout_item_dialogs/dialog_notebook.cc:43
+#: ../glom/mode_data/dialog_choose_field.cc:48
 #: ../glom/mode_data/dialog_choose_relationship.cc:49
-#: ../glom/mode_data/dialog_layout_details.cc:59
-#: ../glom/mode_data/dialog_layout_list.cc:49
+#: ../glom/mode_data/dialog_layout_details.cc:65
+#: ../glom/mode_data/dialog_layout_export.cc:49
+#: ../glom/mode_data/dialog_layout_list.cc:50
 #: ../glom/mode_data/dialog_layout_list_related.cc:51
-#: ../glom/mode_design/box_db_table_relationships.cc:39
+#: ../glom/mode_design/box_db_table_relationships.cc:40
 #: ../glom/mode_design/fields/box_db_table_definition.cc:48
 #: ../glom/mode_design/users/dialog_groups_list.cc:59
 msgid "Name"
 msgstr "नाम"
 
-#: ../glom/glom.glade.h:109
+#: ../glom/glom.glade.h:152
+msgid "New From Example"
+msgstr "उदाहरणबाट नयाँ"
+
+#: ../glom/glom.glade.h:153
 msgid "No Choices"
-msgstr ""
+msgstr "छनौट छैन"
 
-#: ../glom/glom.glade.h:110 ../glom/mode_design/dialog_design.cc:50
+#: ../glom/glom.glade.h:154 ../glom/mode_design/dialog_design.cc:50
 msgid "None selected"
-msgstr "केहि पनि छानिएको छैन"
+msgstr "केही पनि छानिएको छैन"
 
-#: ../glom/glom.glade.h:111
-msgid "Open Example"
-msgstr ""
+#: ../glom/glom.glade.h:155 ../glom/mode_data/dialog_layout_details.cc:916
+msgid "Notebook Tabs"
+msgstr "नोटबुक ट्याबहरू"
 
-#: ../glom/glom.glade.h:112
+#: ../glom/glom.glade.h:156
 msgid "Organisation"
-msgstr ""
+msgstr "संगठन"
 
-#: ../glom/glom.glade.h:113
+#: ../glom/glom.glade.h:157
 msgid "Password"
-msgstr "प्रवेशचिन्ह"
+msgstr "पासवर्ड"
 
-#: ../glom/glom.glade.h:114
+#: ../glom/glom.glade.h:158
 msgid "Primary Key"
-msgstr "प्राथमिक कुन्ज"
+msgstr "प्राथमिक कुञ्जी"
 
-#: ../glom/glom.glade.h:115
+#: ../glom/glom.glade.h:159
+msgid "Quick Find"
+msgstr "शिघ्र फेला पार्नु"
+
+#: ../glom/glom.glade.h:160
+msgid "Records: "
+msgstr "रेकर्ड: "
+
+#: ../glom/glom.glade.h:161
 msgid "Related Records Layout"
-msgstr "सम्बन्धित रेकर्डहरुको ढाँचा"
+msgstr "सम्बन्धित रेकर्डहरूको ढाँचा"
 
-#: ../glom/glom.glade.h:116
+#: ../glom/glom.glade.h:162
+#: ../glom/libglom/data_structure/translatable_item.cc:251
 msgid "Relationship"
 msgstr "सम्बन्ध"
 
-#: ../glom/glom.glade.h:117
-#, fuzzy
+#: ../glom/glom.glade.h:163
 msgid "Report Layout"
-msgstr "सुची ढाँचा"
+msgstr "प्रतिवेदन सजावट"
 
-#: ../glom/glom.glade.h:118
-#, fuzzy
+#: ../glom/glom.glade.h:164
 msgid "Reports"
-msgstr "पछाडि फर्कनुहोस्"
+msgstr "प्रतिवेदनहरू"
 
-#: ../glom/glom.glade.h:119
+#: ../glom/glom.glade.h:165
 msgid "Restrict data to these choices"
-msgstr ""
+msgstr "ति छनौटहरूमा डेटा कडा गर्नुहोस्"
 
-#: ../glom/glom.glade.h:120
+#: ../glom/glom.glade.h:166
 msgid "Revert"
 msgstr "पछाडि फर्कनुहोस्"
 
-#: ../glom/glom.glade.h:121
-#, fuzzy
+#: ../glom/glom.glade.h:167
 msgid "Secondary Fields:"
-msgstr "क्षेत्र छनौट गर्नुहोस्"
+msgstr "गौण फाँटहरू:"
 
-#: ../glom/glom.glade.h:122 ../glom/utility_widgets/imageglom.cc:338
-#: ../glom/utility_widgets/dialog_choose_id.cc:63
+#: ../glom/glom.glade.h:168 ../glom/utility_widgets/imageglom.cc:441
+#: ../glom/utility_widgets/dialog_choose_id.cc:79
 msgid "Select"
-msgstr "छनोट"
+msgstr "चयन गर्नुहोस्"
 
-#: ../glom/glom.glade.h:123
+#: ../glom/glom.glade.h:169
 msgid "Select Field"
-msgstr "क्षेत्र छनौट गर्नुहोस्"
+msgstr "फाँट चयन गर्नुहोस्"
 
-#: ../glom/glom.glade.h:124
+#: ../glom/glom.glade.h:170
 msgid "Select Relationship"
-msgstr "सम्बन्धित छनौट गर्नुहोस्"
+msgstr "सम्बन्ध चयन गर्नुहोस्"
 
-#: ../glom/glom.glade.h:125
+#: ../glom/glom.glade.h:171
+msgid "Show Related Relationships"
+msgstr "सम्बन्धित सम्बन्ध देखाउनुहोस्"
+
+#: ../glom/glom.glade.h:172
+msgid "Show Table Title"
+msgstr "तालिका शीर्षक देखाउनुहोस्"
+
+#: ../glom/glom.glade.h:173
 msgid "Show hidden tables"
-msgstr "लुकेका तालिकाहरु छनौट गर्नुहोस्"
+msgstr "लुकेका तालिकाहरू देखाउनुहोस्"
 
-#: ../glom/glom.glade.h:126
-#, fuzzy
-msgid "Sort Field:"
-msgstr "क्षेत्र छनौट गर्नुहोस्"
+#: ../glom/glom.glade.h:174
+msgid "Sort Fields:"
+msgstr "फाँटहरू क्रमबद्ध गर्नुहोस्:"
 
-#: ../glom/glom.glade.h:127
+#: ../glom/glom.glade.h:175
+msgid ""
+"Start a translation for this target locale by copying the strings from "
+"another target locale."
+msgstr "अन्य लक्षित स्थनियबाट स्ट्रिङहरू प्रतिलिपि गर्दै सो लक्षित स्थनियका लागि एउटा अनुवाद सुरु गर्नुहोस्।"
+
+#: ../glom/glom.glade.h:176
 msgid "State/County"
-msgstr ""
+msgstr "राज्य/देश"
 
-#: ../glom/glom.glade.h:128
-#, fuzzy
+#: ../glom/glom.glade.h:177 ../glom/libglom/document/document_glom.cc:307
 msgid "Street"
-msgstr "छनोट"
+msgstr "मार्ग"
 
-#: ../glom/glom.glade.h:129
+#: ../glom/glom.glade.h:178
 msgid "Street (Line 2)"
-msgstr ""
+msgstr "मार्ग (लाइन २)"
 
-#: ../glom/glom.glade.h:130
+#: ../glom/glom.glade.h:179
 msgid "Summary Type:"
-msgstr ""
+msgstr "संक्षेप प्रकार:"
 
-#: ../glom/glom.glade.h:131
+#: ../glom/glom.glade.h:180 ../glom/libglom/document/document_glom.cc:289
 msgid "System Name"
-msgstr ""
+msgstr "प्रणाली नाम"
 
-#: ../glom/glom.glade.h:132
+#: ../glom/glom.glade.h:181
 msgid "Table:"
 msgstr "तालिका:"
 
-#: ../glom/glom.glade.h:133
-#, fuzzy
+#: ../glom/glom.glade.h:182
 msgid "Table: "
-msgstr "तालिका:"
+msgstr "तालिका: "
 
-#: ../glom/glom.glade.h:134
+#: ../glom/glom.glade.h:183
 msgid "Test"
-msgstr "परिक्षण"
+msgstr "परीक्षण"
 
-#: ../glom/glom.glade.h:135
+#: ../glom/glom.glade.h:184
+msgid "Test Translation"
+msgstr "परीक्षण अनुवाद"
+
+#: ../glom/glom.glade.h:185
+msgid "Text Object"
+msgstr "पाठ वस्तु"
+
+#: ../glom/glom.glade.h:186
 msgid ""
 "The field value will be the return value of the python function, which you "
 "implement here."
-msgstr "क्षेत्र मान पाईथोन कार्यको फिर्ता आएका मान हुनेछ, जुन तपाईले यहाँ राख्नु भएको छ।"
+msgstr "क्षेत्र मान पाइथोन कार्यको फिर्ता आएका मान हुँनेछ, जुन तपाईँले यहाँ राख्नु भएको छ।"
 
 #. Title column:
-#: ../glom/glom.glade.h:136 ../glom/box_reports.cc:87
-#: ../glom/mode_data/dialog_choose_field.cc:44
-#: ../glom/mode_data/dialog_layout_details.cc:73
-#: ../glom/mode_design/box_db_table_relationships.cc:40
-#: ../glom/mode_design/fields/box_db_table_definition.cc:50
-#: ../glom/navigation/box_tables.cc:100
+#: ../glom/glom.glade.h:187 ../glom/box_reports.cc:91
+#: ../glom/layout_item_dialogs/dialog_notebook.cc:44
+#: ../glom/mode_data/dialog_choose_field.cc:49
+#: ../glom/mode_data/dialog_layout_details.cc:78
+#: ../glom/mode_design/box_db_table_relationships.cc:44
+#: ../glom/mode_design/fields/box_db_table_definition.cc:52
+#: ../glom/navigation/box_tables.cc:116
 msgid "Title"
 msgstr "शीर्षक"
 
-#: ../glom/glom.glade.h:137
+#: ../glom/glom.glade.h:188
 msgid "Town"
-msgstr ""
+msgstr "सहर"
 
-#: ../glom/glom.glade.h:138
+#: ../glom/glom.glade.h:189
+msgid "Translations"
+msgstr "अनुवादहरू"
+
+#: ../glom/glom.glade.h:190
 msgid "Triggered by:"
-msgstr ""
+msgstr "द्धारा ट्रिगर गरिएको:"
 
-#: ../glom/glom.glade.h:139
-#: ../glom/mode_design/fields/box_db_table_definition.cc:52
+#: ../glom/glom.glade.h:191
+#: ../glom/mode_design/fields/box_db_table_definition.cc:54
 msgid "Type"
 msgstr "प्रकार"
 
-#: ../glom/glom.glade.h:140
+#: ../glom/glom.glade.h:192
 msgid "Unique"
-msgstr "अनुपम"
+msgstr "अद्धितिय"
 
-#: ../glom/glom.glade.h:141
+#: ../glom/glom.glade.h:193
 msgid "Use 1000s separator"
 msgstr "१०००एस विभाजक प्रयोग गर्नुहोस्"
 
-#: ../glom/glom.glade.h:142
+#: ../glom/glom.glade.h:194
 msgid "Use custom formatting"
-msgstr ""
+msgstr "अनुकूल ढाँचाबद्ध गर्ने प्रयोग गर्नुहोस्"
 
-#: ../glom/glom.glade.h:143
+#: ../glom/glom.glade.h:195
+msgid "Use custom title"
+msgstr "अनुकूल शीर्षक प्रयोग गर्नुहोस्"
+
+#: ../glom/glom.glade.h:196
+msgid "Use default field title: "
+msgstr "पूर्वनिर्धारित फाँट शीर्षक प्रयोग गर्नुहोस्: "
+
+#: ../glom/glom.glade.h:197
 msgid "Use default formatting"
-msgstr ""
+msgstr "पूर्वनिर्धारित ढाँचाबद्ध गर्ने प्रयोग गर्नुहोस्"
 
 #. Append the View columns:
-#: ../glom/glom.glade.h:144 ../glom/mode_design/users/dialog_users_list.cc:63
+#: ../glom/glom.glade.h:198 ../glom/mode_design/users/dialog_users_list.cc:63
 msgid "User"
 msgstr "प्रयोगकर्ता"
 
-#: ../glom/glom.glade.h:145
+#: ../glom/glom.glade.h:199
+msgid "User Entry"
+msgstr "प्रयोगकर्ता प्रविष्टि"
+
+#: ../glom/glom.glade.h:200
 msgid "Users"
-msgstr "प्रयोगकर्ताहरु"
+msgstr "प्रयोगकर्ता"
 
-#: ../glom/glom.glade.h:146
+#: ../glom/glom.glade.h:201
+msgid "Value"
+msgstr "मान"
+
+#: ../glom/glom.glade.h:202
+msgid ""
+"When the button is clicked it will run the python function which you "
+"implement here."
+msgstr "तपाईँले यहाँ कार्यान्वयन गर्नुभएकोले बटनलाई क्लिक गरिए पछि यसले पाइथोन प्रकार्य चलाउन सक्छ।"
+
+#: ../glom/glom.glade.h:203
+msgid ""
+"When this is selected you will see extra relationships in the Table list, "
+"allowing you to choose fields from relationships in related tables, instead "
+"of just regular fields from those related tables."
+msgstr "यो चयन गरिए पछि तपाईँले तालिका सूचीमा तपाईँले अतिरिक्त सम्बन्ध हेर्न सक्नुहुन्छ, सम्बन्धित तालिकाहरूमा सम्बन्धबाट तपाईँलाई फाँटहरू छनौट गर्न अनुमति दिदै, ति सम्बन्धित तालिकाहरूबाट नियमित फाँठहरूको सट्टामा।"
+
+#: ../glom/glom.glade.h:204
 msgid "Zip/Postal Code"
-msgstr ""
+msgstr "जिप/हुलाक सङ्केत"
 
-#: ../glom/glom.glade.h:147
+#: ../glom/glom.glade.h:205
 msgid "example data format"
-msgstr "उदाहरण डाटा ढाँचा"
+msgstr "उदाहरण डेटा ढाँचा"
 
-#: ../glom/glom.glade.h:148
-#, fuzzy
+#: ../glom/glom.glade.h:206
 msgid "field name"
-msgstr "तालिकाको नाम"
+msgstr "फाँट नाम"
 
-#: ../glom/glom.glade.h:149
-#, fuzzy
+#: ../glom/glom.glade.h:207
 msgid ""
 "import glom\n"
 "\n"
 "<b>def calculate_field_value(record):</b>"
-msgstr "<b>def गणना_क्षेत्र_मान():</b>"
+msgstr ""
+"import glom\n"
+"\n"
+"<b>def calculate_field_value(record):</b>"
 
-#: ../glom/glom.glade.h:152
+#: ../glom/glom.glade.h:210
+msgid ""
+"import glom\n"
+"\n"
+"<b>def on_button_clicked(record):</b>"
+msgstr ""
+"import glom\n"
+"\n"
+"<b>def on_button_clicked(record):</b>"
+
+#: ../glom/glom.glade.h:213
 msgid "table name"
 msgstr "तालिकाको नाम"
 
-#: ../glom/glom.glade.h:153
-#, fuzzy
+#: ../glom/glom.glade.h:214
 msgid "table_name"
 msgstr "तालिकाको नाम"
 
-#: ../glom/application.cc:59
-msgid "(C) 2000-2005 Murray Cumming"
-msgstr ""
-
-#: ../glom/application.cc:59
-#, fuzzy
-msgid "A Database GUI"
-msgstr "डाटाबेस"
-
-#: ../glom/application.cc:143
-#, fuzzy
-msgid "_File"
+#: ../glom/glom.glade.h:215
+msgid "the title"
 msgstr "शीर्षक"
 
-#: ../glom/application.cc:144
+#: ../glom/application.cc:71
+msgid "(C) 2000-2005 Murray Cumming"
+msgstr "(C) 2000-2005 मुरारे कुमिङ्"
+
+#: ../glom/application.cc:71
+msgid "A Database GUI"
+msgstr "एउटा डाटावेस GUI"
+
+#: ../glom/application.cc:155
+msgid "_File"
+msgstr "फाइल"
+
+#: ../glom/application.cc:156
 msgid "_Recent Files"
-msgstr ""
+msgstr "भर्खरैको फाइलहरू"
+
+#: ../glom/application.cc:164
+msgid "Save As Example"
+msgstr "उदाहरणको रूपमा बचत गर्नुहोस्"
+
+#: ../glom/application.cc:169
+msgid "_Export"
+msgstr "निर्यात गर्नुहोस्"
 
 #. "Tables" menu:
-#: ../glom/application.cc:198
-#, fuzzy
+#: ../glom/application.cc:220
 msgid "_Tables"
-msgstr "तालिका:"
+msgstr "तालिकाहरू"
 
 #. Glib::RefPtr<Gtk::Action> action = Gtk::Action::create("GlomAction_Menu_Navigate_Database", _("_Database"));
 #. m_listDeveloperActions.push_back(action);
 #. m_refActionGroup_Others->add(action,
 #. sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_Navigate_Database) );
-#: ../glom/application.cc:206
+#: ../glom/application.cc:228
 msgid "_Edit Tables"
-msgstr ""
+msgstr "तालिकाहरू सम्पादन गर्नुहोस्"
 
 #. "Reports" menu:
-#: ../glom/application.cc:213
+#: ../glom/application.cc:235
 msgid "_Reports"
-msgstr ""
+msgstr "प्रतिवेदनहरू"
 
-#: ../glom/application.cc:215
+#: ../glom/application.cc:237
 msgid "_Edit Reports"
-msgstr ""
+msgstr "प्रतिवेदनहरू सम्पादन गर्नुहोस्"
 
 #. "UserLevel" menu:
-#: ../glom/application.cc:221
-#, fuzzy
+#: ../glom/application.cc:243
 msgid "_User Level"
-msgstr "<b>प्रयोग गर्ने तह:</b>"
+msgstr "प्रयोगकर्ता तह"
 
-#: ../glom/application.cc:224 ../glom/application.cc:246
+#: ../glom/application.cc:246 ../glom/application.cc:268
 msgid "_Developer"
-msgstr ""
-
-#: ../glom/application.cc:228
-msgid "_Operator"
-msgstr ""
-
-#. "Mode" menu:
-#: ../glom/application.cc:233
-msgid "_Mode"
-msgstr ""
-
-#. We remember this action, so that it can be explicitly activated later.
-#: ../glom/application.cc:238
-#, fuzzy
-msgid "D_ata"
-msgstr "डाटा"
-
-#: ../glom/application.cc:242
-#, fuzzy
-msgid "_Find"
-msgstr "क्षेत्र"
+msgstr "विकासकर्ता"
 
 #: ../glom/application.cc:250
-msgid "_Database Preferences"
-msgstr ""
+msgid "_Operator"
+msgstr "सञ्चालक"
 
+#. "Mode" menu:
 #: ../glom/application.cc:255
-#, fuzzy
+msgid "_Mode"
+msgstr "मोड"
+
+#. We remember this action, so that it can be explicitly activated later.
+#: ../glom/application.cc:260
+msgid "D_ata"
+msgstr "डेटा"
+
+#: ../glom/application.cc:264
+msgid "_Find"
+msgstr "फेला पार्नुहोस्"
+
+#: ../glom/application.cc:272
+msgid "_Database Preferences"
+msgstr "डाटावेस प्राथमिकताहरू"
+
+#: ../glom/application.cc:277
 msgid "_Fields"
-msgstr "क्षेत्र"
+msgstr "फाँटहरू"
 
-#: ../glom/application.cc:259
-#, fuzzy
+#: ../glom/application.cc:281
 msgid "_Relationships Overview"
-msgstr "सम्बन्ध"
+msgstr "सम्बन्ध समिक्षा"
 
-#: ../glom/application.cc:263
+#: ../glom/application.cc:285
 msgid "_Relationships for this Table"
-msgstr ""
+msgstr "यो तालिकाका लागि सम्बन्ध"
 
-#: ../glom/application.cc:267
-#, fuzzy
+#: ../glom/application.cc:289
 msgid "_Users"
-msgstr "प्रयोगकर्ताहरु"
+msgstr "प्रयोगकर्ता"
 
-#: ../glom/application.cc:271
+#: ../glom/application.cc:293
 msgid "R_eports"
-msgstr ""
+msgstr "प्रतिवेदनहरू"
 
-#: ../glom/application.cc:275
-#, fuzzy
+#: ../glom/application.cc:297
 msgid "_Layout"
-msgstr "सुची ढाँचा"
+msgstr "सजावट"
 
-#: ../glom/application.cc:441
-msgid "Creating from read-only file."
-msgstr ""
+#: ../glom/application.cc:301
+msgid "_Test Translation"
+msgstr "अनुवाद परीक्षण"
 
-#: ../glom/application.cc:442
+#: ../glom/application.cc:305
+msgid "_Translations"
+msgstr "अनुवादहरू"
+
+#: ../glom/application.cc:428
+msgid "Creating from example file."
+msgstr "उदाहरण फाइलबाट सिर्जना गर्दै"
+
+#: ../glom/application.cc:429
+msgid ""
+"To use this example file you must save an editable copy of the file. A new "
+"database will also be created on the server."
+msgstr "यो उदाहरण फाइल प्रयोग गर्न तपाईँले फाइलको एउटा सम्पादकिय प्रतिलिपि बचत गर्नपर्दछ। सर्भरमा एउटा नयाँ डाटावेस सिर्जना गरिनु पर्दछ।"
+
+#: ../glom/application.cc:455
+msgid "Opening Read-Only File."
+msgstr "पढ्य मात्र फाइल खोल्दै।"
+
+#: ../glom/application.cc:456
 msgid ""
 "This file is read only, so you will not be able to enter Developer mode to "
-"make design changes. Maybe this file is an installed example file. "
-"Therefore, you might want to create your own writeable copy of this file."
-msgstr ""
+"make design changes."
+msgstr "यो फाइल पढ्य मात्र हो, त्यसैले तपाईँ रूपरेखा परिवर्तन गर्न विकासकर्ता मोडमा प्रविष्ट गर्न सक्नुहुने छैन।"
 
-#. arbitrary response code.
-#: ../glom/application.cc:446
-msgid "Coninue without Developer Mode"
-msgstr ""
+#: ../glom/application.cc:459
+msgid "Continue without Developer Mode"
+msgstr "विकासकर्ता मोड विना नियमित गर्नुहोस्"
 
-#: ../glom/application.cc:719
-#, fuzzy
+#. The connection to the server is OK, but the database is not there yet.
+#: ../glom/application.cc:529
+msgid "Database Not Found On Server"
+msgstr "सर्भरमा डाटावेस फेला परेन"
+
+#: ../glom/application.cc:529
+msgid ""
+"The database could not be found on the server. Please consult your system "
+"administrator."
+msgstr "सर्भरमा डाटावेस फेलापार्न सकेन। कृपया तपाईँको प्रणाली प्रशासकसँग सम्पर्क राख्नुहोस्।"
+
+#: ../glom/application.cc:786
 msgid "_Contents"
-msgstr "जडान"
+msgstr "सामग्रिहरू"
 
-#: ../glom/application.cc:719
+#: ../glom/application.cc:786
 msgid "Help with the application"
-msgstr ""
+msgstr "अनुप्रयोगसँग मद्दत"
 
-#: ../glom/base_db.cc:78
+#: ../glom/application.cc:1175
+msgid "Save failed."
+msgstr "असफल बचत गर्नुहोस्।"
+
+#: ../glom/application.cc:1175
+msgid "There was an error while saving the file. Your changes have not been saved."
+msgstr "फाइल बचत गर्दा त्यहाँ एउटा त्रुटि थियो। तपाईँको परिवर्तनहरू बचत गरिएको छैन।"
+
+#: ../glom/base_db.cc:117 ../glom/libglom/connectionpool.cc:398
 msgid "Internal error"
-msgstr ""
+msgstr "आन्तरिक त्रुटि"
 
-#: ../glom/base_db.cc:740
-msgid "System: Preferences"
-msgstr ""
-
-#: ../glom/base_db.cc:804
-#, fuzzy
-msgid "System: Auto Increments"
-msgstr "स्वत:वृद्धि"
-
-#: ../glom/base_db.cc:1542
+#: ../glom/base_db.cc:2297
 msgid "No Records Found"
-msgstr ""
+msgstr "कुनै रेकर्डहरू फेला परेन"
 
-#: ../glom/base_db.cc:1544
+#: ../glom/base_db.cc:2299
 msgid "New Find"
-msgstr ""
+msgstr "नयाँ फेला पार्ने"
 
-#: ../glom/base_db.cc:1545
+#: ../glom/base_db.cc:2300
 msgid "Your find criteria did not match any records in the table."
-msgstr ""
+msgstr "तपाईँको फेला पार्ने दायरा तालिकामा कुनै रेकर्डसँग मिलेन।"
 
-#: ../glom/box_reports.cc:204
+#: ../glom/base_db.cc:3203
+msgid "Value Is Not Unique"
+msgstr "मान अद्धितिय छैन"
+
+#: ../glom/base_db.cc:3203
+msgid ""
+"The field's value must be unique, but a record with this value already "
+"exists."
+msgstr "फाँटको मान अद्धितिय हुनुपर्दछ, तर यो मान संगको एउटा रेकर्ड पहिल्यै अवस्थित छ।"
+
+#. Don't allow a relationship to be added twice.
+#: ../glom/box_reports.cc:89
+msgid "This report already exists. Please choose a different report name"
+msgstr "यो प्रतिवेदन पहिल्यै अवस्थित छ। कृपया फरक प्रतिवेदन नाम छनौट गर्नुहोस्"
+
+#: ../glom/box_reports.cc:213
 msgid "Are you sure that you want to rename this report?"
-msgstr ""
+msgstr "के तपाईँ पक्का पनि सो प्रतिवेदनको नाम फेर्न चाहनुहुन्छ ?"
 
 #. TODO: Show old and new names?
-#: ../glom/box_reports.cc:205
+#: ../glom/box_reports.cc:214
 msgid "Rename Report"
-msgstr ""
+msgstr "पुन: नामकरण प्रतिवेदन"
 
-#: ../glom/data_structure/field.cc:472
-#: ../glom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:133
-#: ../glom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:141
+#: ../glom/combobox_relationship.cc:264 ../glom/combobox_relationship.cc:268
+msgid " Via: "
+msgstr " हुदै: "
+
+#: ../glom/libglom/data_structure/field.cc:545
+#: ../glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:139
+#: ../glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:147
 msgid "Invalid"
-msgstr ""
+msgstr "अवैध"
 
-#: ../glom/data_structure/field.cc:473
-#, fuzzy
+#: ../glom/libglom/data_structure/field.cc:546
 msgid "Number"
-msgstr "नाम"
+msgstr "नम्बर"
 
-#: ../glom/data_structure/field.cc:474
-#, fuzzy
+#: ../glom/libglom/data_structure/field.cc:547
+#: ../glom/libglom/data_structure/translatable_item.cc:265
+#: ../glom/libglom/data_structure/layout/layoutitem_text.cc:65
+#: ../glom/mode_data/dialog_layout_details.cc:1116
 msgid "Text"
-msgstr "परिक्षण"
+msgstr "पाठ"
 
-#: ../glom/data_structure/field.cc:475
-#, fuzzy
+#: ../glom/libglom/data_structure/field.cc:548
 msgid "Time"
-msgstr "शीर्षक"
+msgstr "समय"
 
-#: ../glom/data_structure/field.cc:476
-#, fuzzy
+#: ../glom/libglom/data_structure/field.cc:549
 msgid "Date"
-msgstr "डाटा"
+msgstr "मिति"
 
-#: ../glom/data_structure/field.cc:477
+#: ../glom/libglom/data_structure/field.cc:550
 msgid "Boolean"
-msgstr ""
+msgstr "बोलेएन"
 
-#: ../glom/data_structure/field.cc:478
+#: ../glom/libglom/data_structure/field.cc:551
+#: ../glom/libglom/data_structure/translatable_item.cc:267
+#: ../glom/libglom/data_structure/layout/layoutitem_image.cc:65
+#: ../glom/mode_data/dialog_layout_details.cc:1123
 msgid "Image"
-msgstr ""
+msgstr "छवि"
 
-#: ../glom/data_structure/layout/layoutitem_portal.cc:67
-msgid "Portal"
-msgstr ""
+#: ../glom/libglom/data_structure/glomconversions.cc:46
+#, c-format
+msgid "%X"
+msgstr "%X"
 
-#: ../glom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:116
-msgid "No summary chosen"
-msgstr ""
+#. TRANSLATORS: Please only translate this string if you know that strftime() shows only 2 year digits when using format "x". We want to always display 4 year digits. For instance, en_GB should translate it to "%d/%m/%Y". To discover if your locale has this problem, try the testdateput_allformats.cc test case in http://bugzilla.gnome.org/show_bug.cgi?id=334648. Thanks.
+#: ../glom/libglom/data_structure/glomconversions.cc:59
+#, c-format
+msgid "%x"
+msgstr "%x"
 
-#: ../glom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:135
-msgid "Sum"
-msgstr ""
+#: ../glom/libglom/data_structure/translatable_item.cc:249
+msgid "Custom Title"
+msgstr "अनुकूल शीर्षक"
 
-#: ../glom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:137
-msgid "Average"
-msgstr ""
+#: ../glom/libglom/data_structure/translatable_item.cc:253
+msgid "Layout Item"
+msgstr "सजावट वस्तु"
 
-#: ../glom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:139
-#, fuzzy
-msgid "Count"
-msgstr "जडान"
-
-#: ../glom/data_structure/layout/report_parts/layoutitem_summary.cc:58
-msgid "Summary"
-msgstr ""
+#: ../glom/libglom/data_structure/translatable_item.cc:255
+msgid "Report"
+msgstr "प्रतिवेदन"
 
 #. Tables:
-#: ../glom/dialog_database_preferences.cc:48
-#: ../glom/mode_design/box_db_table_relationships.cc:43
-#: ../glom/mode_design/users/dialog_groups_list.cc:68
-#, fuzzy
+#: ../glom/libglom/data_structure/translatable_item.cc:257
+#: ../glom/dialog_database_preferences.cc:51
+#: ../glom/mode_design/box_db_table_relationships.cc:47
+#: ../glom/mode_design/users/dialog_groups_list.cc:66
 msgid "Table"
-msgstr "तालिका:"
+msgstr "तालिका"
 
-#: ../glom/dialog_database_preferences.cc:50
-#, fuzzy
+#: ../glom/libglom/data_structure/translatable_item.cc:259
+msgid "Layout Group"
+msgstr "सजावट समूह"
+
+#: ../glom/libglom/data_structure/translatable_item.cc:261
+msgid "Field Title"
+msgstr "फाँट शीर्षक"
+
+#: ../glom/libglom/data_structure/translatable_item.cc:263
+#: ../glom/libglom/data_structure/layout/layoutitem_button.cc:64
+#: ../glom/mode_data/dialog_layout_details.cc:1109
+msgid "Button"
+msgstr "बटन"
+
+#: ../glom/libglom/data_structure/translatable_item.cc:269
+#: ../glom/frame_glom.cc:446 ../glom/translation/window_translations.cc:196
+msgid "Unknown"
+msgstr "अज्ञात"
+
+#: ../glom/libglom/data_structure/layout/layoutitem_notebook.cc:52
+msgid "Notebook"
+msgstr "नोटबुक"
+
+#: ../glom/libglom/data_structure/layout/layoutitem_portal.cc:54
+msgid "Portal"
+msgstr "पोर्टल"
+
+#: ../glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:122
+msgid "No summary chosen"
+msgstr "कुनै पनि संक्षेप छनौट गरिएको छैन"
+
+#: ../glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:141
+msgid "Sum"
+msgstr "संक्षेप"
+
+#: ../glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:143
+msgid "Average"
+msgstr "औसत"
+
+#: ../glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:145
+msgid "Count"
+msgstr "गणना"
+
+#: ../glom/libglom/data_structure/layout/report_parts/layoutitem_summary.cc:58
+msgid "Summary"
+msgstr "संक्षेप"
+
+#: ../glom/libglom/data_structure/layout/report_parts/layoutitem_verticalgroup.cc:52
+msgid "Vertical Group"
+msgstr "ठाडो समूह"
+
+#: ../glom/libglom/document/document_glom.cc:258
+#: ../glom/libglom/document/document_glom.cc:276
+msgid "System Preferences"
+msgstr "प्रणाली प्राथमिकताहरू"
+
+#: ../glom/libglom/document/document_glom.cc:295
+msgid "Organisation Name"
+msgstr "संगठन नाम"
+
+#: ../glom/libglom/document/document_glom.cc:301
+msgid "Organisation Logo"
+msgstr "संगठन लोगो"
+
+#: ../glom/libglom/document/document_glom.cc:313
+msgid "Street (line 2)"
+msgstr "मार्ग (लाइन २)"
+
+#: ../glom/libglom/document/document_glom.cc:319
+msgid "City"
+msgstr "सहर"
+
+#: ../glom/libglom/document/document_glom.cc:325
+msgid "State"
+msgstr "राज्य"
+
+#: ../glom/libglom/document/document_glom.cc:337
+msgid "Zip Code"
+msgstr "जिप सङ्केत"
+
+#: ../glom/dialog_database_preferences.cc:53
 msgid "Next Value"
-msgstr "पूर्वनिर्धारित मान"
+msgstr "अर्को मान"
 
-#: ../glom/dialog_connection.cc:109
+#: ../glom/dialog_connection.cc:126
 msgid "Not yet created."
-msgstr ""
+msgstr "अझ सम्म सिर्जना गरिएको छैन।"
 
-#. Append the View columns:
-#. Use set_cell_data_func() to give more control over the cell attributes depending on the row:
-#. Name column:
-#: ../glom/dialog_layout_report.cc:77 ../glom/dialog_layout_report.cc:108
-msgid "Part"
-msgstr ""
+#: ../glom/filechooser_export.cc:27
+msgid "Export To File."
+msgstr "फाइलमा निर्यात गर्नुहोस्।"
 
-#. Details column:
-#: ../glom/dialog_layout_report.cc:116 ../glom/mode_data/notebook_data.cc:31
-#: ../glom/mode_find/notebook_find.cc:28
-#, fuzzy
-msgid "Details"
-msgstr "विस्तृत ढाचा"
+#: ../glom/filechooser_export.cc:29
+msgid "Define Data _Format"
+msgstr "डेटा ढाँचा परिभाषित गर्नुहोस्"
+
+#: ../glom/filechooser_export.cc:34
+msgid "Export"
+msgstr "निर्यात गर्नुहोस्"
 
 #. TODO: Obviously this document should have been deleted when the database-creation was cancelled.
 #. Note that "canceled" is the correct US spelling.
-#: ../glom/frame_glom.cc:317
-#, fuzzy
-msgid "No database"
-msgstr "डाटाबेस"
+#: ../glom/frame_glom.cc:374
+msgid "No table"
+msgstr "तालिका होइन"
 
-#: ../glom/frame_glom.cc:317
-msgid ""
-"This document does not specify any database. Maybe the document creation was "
-"canceled before the database could be created."
-msgstr ""
+#: ../glom/frame_glom.cc:374
+msgid "This database has no tables yet."
+msgstr "यो डाटाबेससँग अझसम्म टेबलहरू छैनन्।"
 
-#: ../glom/frame_glom.cc:358
-#, fuzzy
+#: ../glom/frame_glom.cc:438
 msgid "Find"
-msgstr "क्षेत्र"
+msgstr "फेला पार्नुहोस्"
 
-#: ../glom/frame_glom.cc:366
-msgid "Unknown"
-msgstr ""
-
-#: ../glom/frame_glom.cc:403
+#: ../glom/frame_glom.cc:490
 msgid "Developer mode not available."
-msgstr ""
+msgstr "विकासकर्ता मोड उपलब्ध छैन।"
 
-#: ../glom/frame_glom.cc:404
+#: ../glom/frame_glom.cc:491
 msgid ""
 "Developer mode is not available. Check that you have sufficient database "
 "access rights and that the glom file is not read-only."
-msgstr ""
+msgstr "विकासकर्ता मोड उपलब्ध छैन। तपाईँसँग यथेष्टमात्रामा डाटावेस पहुँच अधिकार छ र गोल्म फाइल पढ्य मात्र होइन।"
+
+#: ../glom/frame_glom.cc:532
+msgid "Export Not Allowed."
+msgstr "निर्यात अनुमति छैन।"
+
+#: ../glom/frame_glom.cc:532
+msgid ""
+"You do not have permission to view the data in this table, so you may not "
+"export the data."
+msgstr "तपाईँलाई तालिकामा डेटा हेर्न अनुमति छैन, त्यसैले तपाईँले डेटा निर्यात गर्न सक्नुहुन्न।"
+
+#: ../glom/frame_glom.cc:558
+msgid "Could Not Create File."
+msgstr "फाइल सिर्जना गर्न सकेन।"
+
+#: ../glom/frame_glom.cc:558
+msgid "Glom could not create the specified file."
+msgstr "गोल्मले निर्दिष्ट फाइल सिर्जना गर्न सकेन।"
+
+#: ../glom/frame_glom.cc:816 ../glom/mode_data/box_data.cc:117
+#: ../glom/utility_widgets/dialog_choose_id.cc:96
+msgid "No Find Criteria"
+msgstr "फेला पार्ने दायरा होइन"
+
+#: ../glom/frame_glom.cc:817 ../glom/utility_widgets/dialog_choose_id.cc:97
+msgid "You have not entered any quick find criteria."
+msgstr "तपाईँले कुनै शिघ्र फेला दायरा प्रविष्ट गर्नुभएको छैन।"
 
 #. show user level:
-#: ../glom/frame_glom.cc:579
+#: ../glom/frame_glom.cc:875
 msgid "Operator"
-msgstr ""
+msgstr "सञ्चालक"
 
-#: ../glom/frame_glom.cc:581
+#: ../glom/frame_glom.cc:877
 msgid "Developer"
-msgstr ""
+msgstr "विकासकर्ता"
 
-#: ../glom/mode_data/box_data.cc:110
-msgid "No Find Criteria"
-msgstr ""
+#. Show 0 instead of "all" when all of no records are found, to avoid confusion.
+#: ../glom/frame_glom.cc:1567
+msgid "All"
+msgstr "सबै"
 
-#: ../glom/mode_data/box_data.cc:111
+#: ../glom/layout_item_dialogs/dialog_groupby_sortfields.cc:54
+msgid "Ascending"
+msgstr "आरोही"
+
+#: ../glom/main.cc:50
+msgid "Glom options"
+msgstr "गोल्म विकल्पहरू"
+
+#: ../glom/main.cc:50
+msgid "Command-line options for glom"
+msgstr "गोल्मका लागि आदेश-लाइन विकासकर्ताहरू"
+
+#: ../glom/main.cc:56
+msgid "The Filename"
+msgstr "फाइलनाम"
+
+#: ../glom/main.cc:62
+msgid "The version of this application."
+msgstr "यो अनुप्रयोगको संस्करण"
+
+#: ../glom/mode_data/box_data.cc:118
 msgid ""
 "You have not entered any find criteria. Try entering information in the "
 "fields."
-msgstr ""
+msgstr "तपाईँले कुनै फेला दायरा प्रविष्ट गर्नुभएको छैन। फाँटहरूमा सूचना प्रविष्ट गर्न प्रयास गर्नुहोस्।"
 
 #. Ask user to confirm loss of data:
-#: ../glom/mode_data/box_data.cc:315
+#: ../glom/mode_data/box_data.cc:293
 msgid "No primary key value"
-msgstr ""
+msgstr "प्राथमिक कुञ्जी मान छैन"
 
-#: ../glom/mode_data/box_data.cc:316
+#: ../glom/mode_data/box_data.cc:294
 msgid ""
-"This data can not be stored in the database because you have not provided a "
+"This data cannot be stored in the database because you have not provided a "
 "primary key.\n"
 "Do you really want to discard this data?"
 msgstr ""
+"यो डेटा डाटावेसमा सङ्ग्रह गर्न सकिँदैन किनभने तपाईँले प्राथमिक कुञ्जी प्रदान गर्नुभएको छैन।\n"
+"के तपाईँले साँच्चिकै  यो डेटा छोड्न चाहनुहुन्छ ?"
 
 #. Warn the user:
 #. TODO: Make the field insensitive until it can receive data, so people never see this dialog.
-#: ../glom/mode_data/box_data.cc:1153
-#, fuzzy
+#: ../glom/mode_data/box_data.cc:679
 msgid "Related Record Does Not Exist"
-msgstr "सम्बन्धित रेकर्डहरुको ढाँचा"
+msgstr "सम्बन्धित रेकर्ड अवस्थित छैन"
 
-#: ../glom/mode_data/box_data.cc:1154
+#: ../glom/mode_data/box_data.cc:680
 msgid ""
 "Data may not be entered into this related field, because the related record "
 "does not yet exist, and the relationship does not allow automatic creation "
 "of new related records."
-msgstr ""
+msgstr "डेटा यो सम्बन्धित फाँटमा प्रविष्ट हुने छैन, किनभने सम्बन्धित रेकर्ड अझसम्म अवस्थित छैन, र सम्बन्धले नयाँ सम्बन्धित रेकर्डहरूको स्वचालित सिर्जनालाई अनुमति दिदैन।"
 
 #. Warn the user:
 #. TODO: Make the field insensitive until it can receive data, so people never see this dialog.
-#: ../glom/mode_data/box_data.cc:1172
-#, fuzzy
-msgid "Related Record Can Not Be Created"
-msgstr "सम्बन्धित रेकर्डहरुको ढाँचा"
+#: ../glom/mode_data/box_data.cc:698
+msgid "Related Record Cannot Be Created"
+msgstr "सम्बन्धित रेकर्ड सिर्जना गर्न सकिँदैन"
 
 #. TODO: This is a very complex error message:
-#: ../glom/mode_data/box_data.cc:1174
+#: ../glom/mode_data/box_data.cc:700
 msgid ""
 "Data may not be entered into this related field, because the related record "
 "does not yet exist, and the key in the related record is auto-generated and "
 "therefore can not be created with the key value in this record."
-msgstr ""
+msgstr "यो सम्बन्धित फाँटमा डेटा प्रविष्ट हुने छैन, किनभने सम्बन्धित रेकर्ड अझसम्म अवस्थित छैन, र सम्बन्धित रेकर्डमा कुञ्जी स्वत-उत्पन्न हुन्छ र त्यसकारणले सो रेकर्डमा कुञ्जी मानसँग सिर्जना गर्न सकिँदैन।"
 
 #. Ask the user for confirmation:
-#: ../glom/mode_data/box_data.cc:1263
+#: ../glom/mode_data/box_data.cc:787
 msgid "Delete record"
-msgstr ""
+msgstr "रेकर्ड मेट्नुहोस्"
 
-#: ../glom/mode_data/box_data.cc:1264
+#: ../glom/mode_data/box_data.cc:788
 msgid ""
 "Are you sure that you would like to delete this record? The data in this "
 "record will then be permanently lost."
-msgstr ""
+msgstr "तपाईँ सो रेकर्ड मेट्न यकिन हुनुहुन्छ ? त्यसपछि सो रेकर्डको डेटा सधैका लागि हट्ने छ।"
 
 #. Tell user that a primary key is needed to delete a record:
-#: ../glom/mode_data/box_data_details.cc:318
+#: ../glom/mode_data/box_data_details.cc:333
 msgid "No primary key value."
-msgstr ""
+msgstr "प्राथमिक कुञ्जी मान छैन।"
 
-#: ../glom/mode_data/box_data_details.cc:319
-msgid "This record can not be deleted because there is no primary key."
-msgstr ""
+#: ../glom/mode_data/box_data_details.cc:334
+msgid "This record cannot be deleted because there is no primary key."
+msgstr "यो रेकर्ड मेट्न सकिँदैन किनभने त्यहाँ प्राथमिक कुञ्जी छैन।"
 
 #. Warn user that they can't choose their own primary key:
-#: ../glom/mode_data/box_data_details.cc:632
+#: ../glom/mode_data/box_data_details.cc:673
 msgid "Primary key auto increments"
-msgstr ""
+msgstr "प्राथमिक कुञ्जी स्वत बढ्नु"
 
-#: ../glom/mode_data/box_data_details.cc:633
+#: ../glom/mode_data/box_data_details.cc:674
 msgid ""
 "The primary key is auto-incremented.\n"
 " You may not enter your own primary key value."
 msgstr ""
+"प्राथमिक कुञ्जी स्वत-बढ्ने छ।\n"
+" तपाईँले आफ्नो प्राथमिक कुञ्जी मान प्रविष्ट गर्न सक्नुहुन्न।"
 
 #. Add Pages:
-#: ../glom/mode_data/box_data_list.cc:758
-#: ../glom/mode_data/notebook_data.cc:28 ../glom/mode_find/notebook_find.cc:27
+#: ../glom/mode_data/box_data_list.cc:693
+#: ../glom/mode_data/notebook_data.cc:28 ../glom/mode_find/notebook_find.cc:29
 msgid "List"
-msgstr ""
+msgstr "सूची"
 
 #. Tell user that they can't do that:
-#: ../glom/mode_data/box_data_list_related.cc:270
+#: ../glom/mode_data/box_data_list_related.cc:323
 msgid "Extra related records not possible."
-msgstr ""
+msgstr "अतिरिक्त सम्बन्धित रेकर्डहरू सम्भव छैन।"
 
-#: ../glom/mode_data/box_data_list_related.cc:271
+#: ../glom/mode_data/box_data_list_related.cc:324
 msgid ""
 "You attempted to add a new related record, but there can only be one related "
 "record, because the relationship uses a unique key."
-msgstr ""
+msgstr "तपाईँले नयाँ सम्बन्धित रेकर्ड थप्न प्रयोस गर्नुभएको, तर त्यहाँ मात्र एक सम्बन्धित रेकर्ड हुनसक्छ, किनभने सम्बन्धले मात्र एक अद्धितिय कुञ्जी प्रयोग गर्दछ।"
 
 #. Columns-count column:
-#: ../glom/mode_data/dialog_layout_details.cc:86
+#: ../glom/mode_data/dialog_layout_details.cc:90
 msgid "Columns Count"
-msgstr ""
+msgstr "स्तम्भ गणना"
 
-#: ../glom/mode_data/dialog_layout_details.cc:889
-#, fuzzy
+#: ../glom/mode_data/dialog_layout_details.cc:661
+#: ../glom/utility_widgets/flowtablewithfields.cc:969
+msgid "New Button"
+msgstr "नयाँ बटन"
+
+#: ../glom/mode_data/dialog_layout_details.cc:686
+msgid "Text Title"
+msgstr "पाठ शीर्षक"
+
+#: ../glom/mode_data/dialog_layout_details.cc:711
+msgid "Image Title"
+msgstr "छवि शीर्षक"
+
+#: ../glom/mode_data/dialog_layout_details.cc:737
+#: ../glom/utility_widgets/flowtablewithfields.cc:919
+msgid "notebook"
+msgstr "नोटबुक"
+
+#: ../glom/mode_data/dialog_layout_details.cc:836
+msgid "group"
+msgstr "समूह"
+
+#: ../glom/mode_data/dialog_layout_details.cc:916
+msgid "Add child groups to the notebook to add tabs."
+msgstr "ट्याबहरू थप्नलाई नोटबुकमा शाखा समूहहरू थप्नुहोस्।"
+
+#: ../glom/mode_data/dialog_layout_details.cc:1081
 msgid "Related: "
-msgstr "सम्बन्धित थप्नुहोस्"
+msgstr "सम्बन्धित: "
 
+#: ../glom/mode_data/dialog_layout_details.cc:1098
+msgid "Field: "
+msgstr "फाँट: "
+
+#: ../glom/mode_data/dialog_layout_details.cc:1155
+msgid "(Notebook)"
+msgstr "(नोटबुक)"
+
+#: ../glom/mode_data/dialog_layout_list.cc:276
+msgid "Images Not Allowed On List View"
+msgstr "सूची दृश्यमा छविहरूलाई अनुमति छैन"
+
+#: ../glom/mode_data/dialog_layout_list.cc:276
+msgid "The list view cannot display image fields."
+msgstr "सूची दृश्यले छवि फाँटहरू प्रदर्शन गर्न सक्दैन।"
+
+#. Details column:
+#: ../glom/mode_data/notebook_data.cc:31 ../glom/mode_find/notebook_find.cc:32
+#: ../glom/reports/dialog_layout_report.cc:203
+msgid "Details"
+msgstr "विस्तृत"
+
+#. Don't allow a relationship to be added twice.
 #: ../glom/mode_design/box_db_table_relationships.cc:42
-#, fuzzy
-msgid "From Field"
-msgstr "क्षेत्र"
-
-#: ../glom/mode_design/box_db_table_relationships.cc:44
-#, fuzzy
-msgid "To Field"
-msgstr "क्षेत्र"
+msgid "This relationship already exists. Please choose a different relationship name"
+msgstr "यो सम्बन्ध पहिल्यै अवस्थित छ। कृपया एउटा फरक सम्बन्ध नाम छनौट गर्नुहोस्"
 
 #: ../glom/mode_design/box_db_table_relationships.cc:46
+msgid "From Field"
+msgstr "फाँट बाट"
+
+#: ../glom/mode_design/box_db_table_relationships.cc:48
+msgid "To Field"
+msgstr "फाँट लाई"
+
+#: ../glom/mode_design/box_db_table_relationships.cc:50
 msgid "Automatic Creation"
-msgstr ""
+msgstr "स्वचालित सिर्जना"
 
 #: ../glom/mode_design/dialog_relationships.cc:34
-#, fuzzy
 msgid "Relationships"
-msgstr "सम्बन्ध"
+msgstr "सम्बन्धहरू"
 
-#: ../glom/mode_design/fields/box_db_table_definition.cc:229
-#: ../glom/mode_design/fields/box_db_table_definition.cc:330
+#. Don't allow adding of fields that already exist.
+#: ../glom/mode_design/fields/box_db_table_definition.cc:50
+msgid "This field already exists. Please choose a different field name"
+msgstr "यो फाँट पहिल्यै अवस्थित छ। कृपया एउटा फरक फाँट नाम छनौट गर्नुहोस्"
+
+#: ../glom/mode_design/fields/box_db_table_definition.cc:238
+#: ../glom/mode_design/fields/box_db_table_definition.cc:344
 msgid "Invalid database structure"
-msgstr ""
+msgstr "अवैध डाटावेस बनावट"
 
-#: ../glom/mode_design/fields/box_db_table_definition.cc:230
-#: ../glom/mode_design/fields/box_db_table_definition.cc:331
+#: ../glom/mode_design/fields/box_db_table_definition.cc:239
+#: ../glom/mode_design/fields/box_db_table_definition.cc:345
 msgid ""
 "This database field was created or edited outside of Glom. It has a data "
 "type that is not supported by Glom. Your system administrator may be able to "
 "correct this."
-msgstr ""
+msgstr "यो डाटावेस फाँट गोल्मको बाहिर सम्पादन वा सिर्जना गरिएको हो। यससँग गोल्मले समर्थन नगर्ने एउटा डेटा टाइप छ। तपाईँको प्रणाली प्रशासकले यो सुधार गर्न सक्छ होला।"
 
-#: ../glom/mode_design/fields/dialog_fieldcalculation.cc:94
-#, fuzzy
+#. TODO: Only show this when there are > 100 records?
+#: ../glom/mode_design/fields/box_db_table_definition.cc:358
+msgid "Recalculation Required"
+msgstr "फेरि गणना आवश्यक"
+
+#: ../glom/mode_design/fields/box_db_table_definition.cc:359
+msgid ""
+"You have changed the calculation used by this field so Glom must recalculate "
+"the value in all records. If the table contains many records then this could "
+"take a long time."
+msgstr "यो फाँटद्धारा प्रयोग गरेको गणाना तपाईँले परिवर्तन गर्नुभएको छ। यदि तालिकाले धेरै रेकर्डहरू समावेश गर्दछ भने यसले धेरै समय लिन सक्छ।"
+
+#: ../glom/mode_design/fields/box_db_table_definition.cc:362
+msgid "Recalculate"
+msgstr "फेरि गणना गर्नुहोस्"
+
+#: ../glom/mode_design/fields/dialog_fieldcalculation.cc:95
 msgid "Calculation result"
-msgstr "क्षेत्रको गणना"
+msgstr "गणना नतिजा"
 
-#: ../glom/mode_design/fields/dialog_fieldcalculation.cc:94
+#: ../glom/mode_design/fields/dialog_fieldcalculation.cc:95
 msgid "The result of the calculation is:\n"
-msgstr ""
+msgstr "गणनाको नतिजा:\n"
 
-#: ../glom/mode_design/users/dialog_groups_list.cc:63
-msgid "Description"
-msgstr ""
-
-#: ../glom/mode_design/users/dialog_groups_list.cc:70
-msgid "View"
-msgstr ""
-
-#: ../glom/mode_design/users/dialog_groups_list.cc:79
-#: ../glom/utility_widgets/adddel/adddel.cc:211
-#, fuzzy
-msgid "Delete"
-msgstr "छनोट"
-
-#. TODO: Prevent deletion of standard groups
-#: ../glom/mode_design/users/dialog_groups_list.cc:215
-#, fuzzy
-msgid "Delete Group"
-msgstr "समूह सृजना गर्नुहोस्"
-
-#: ../glom/mode_design/users/dialog_groups_list.cc:216
-msgid "Are your sure that you wish to delete this group?"
-msgstr ""
-
-#: ../glom/mode_design/users/dialog_groups_list.cc:374
-msgid "Full access."
-msgstr ""
-
-#: ../glom/mode_design/users/dialog_users_list.cc:220
-msgid "Delete User"
-msgstr ""
-
-#: ../glom/mode_design/users/dialog_users_list.cc:221
-msgid "Are your sure that you wish to delete this user?"
-msgstr ""
-
-#: ../glom/mode_design/users/dialog_users_list.cc:457
-msgid "Developer group may not be empty."
-msgstr ""
-
-#: ../glom/mode_design/users/dialog_users_list.cc:458
-msgid "The developer group must contain at least one user."
-msgstr ""
-
-#: ../glom/navigation/box_tables.cc:98
-#, fuzzy
-msgid "Tables"
-msgstr "तालिका:"
-
-#: ../glom/navigation/box_tables.cc:99
-msgid "Hidden"
-msgstr ""
-
-#: ../glom/navigation/box_tables.cc:101
-#, fuzzy
-msgid "Default"
+#: ../glom/mode_design/fields/dialog_fielddefinition.cc:152
+msgid "Default Value"
 msgstr "पूर्वनिर्धारित मान"
 
-#. TODO: Do not show tables that are not in the document.
-#: ../glom/navigation/box_tables.cc:279
+#: ../glom/mode_design/users/dialog_groups_list.cc:63
+#: ../glom/navigation/box_tables.cc:229
+msgid "Description"
+msgstr "वर्णन"
+
+#: ../glom/mode_design/users/dialog_groups_list.cc:69
+msgid "View"
+msgstr "दृश्य"
+
+#: ../glom/mode_design/users/dialog_groups_list.cc:78
+#: ../glom/utility_widgets/adddel/adddel.cc:236
+msgid "Delete"
+msgstr "मेट्नुहोस्"
+
+#. TODO: Prevent deletion of standard groups
+#: ../glom/mode_design/users/dialog_groups_list.cc:214
+msgid "Delete Group"
+msgstr "समूह मेट्नुहोस्"
+
+#: ../glom/mode_design/users/dialog_groups_list.cc:215
+msgid "Are your sure that you wish to delete this group?"
+msgstr "तपाईँ सो समूह मेट्न  यकिन हुनुहुन्छ ?"
+
+#: ../glom/mode_design/users/dialog_groups_list.cc:376
+msgid "Full access."
+msgstr "पूर्ण पहुँच"
+
+#: ../glom/mode_design/users/dialog_users_list.cc:223
+msgid "Delete User"
+msgstr "प्रयोगकर्ता मेट्नुहोस्"
+
+#: ../glom/mode_design/users/dialog_users_list.cc:224
+msgid "Are your sure that you wish to delete this user?"
+msgstr "तपाईँ सो प्रयोगकर्ता मेट्न यकिन हुनुहुन्छ ?"
+
+#: ../glom/mode_design/users/dialog_users_list.cc:460
+msgid "Developer group may not be empty."
+msgstr "विकासकर्ता समूह खाली हुँदैन होला।"
+
+#: ../glom/mode_design/users/dialog_users_list.cc:461
+msgid "The developer group must contain at least one user."
+msgstr "विकासकर्ता समूहले कम्तीमा पनि एउटा प्रयोगकर्ता समाविष्ट गर्नु पर्दछ।"
+
+#. Append the View columns:
+#. Use set_cell_data_func() to give more control over the cell attributes depending on the row:
+#. Name column:
+#: ../glom/reports/dialog_layout_report.cc:147
+#: ../glom/reports/dialog_layout_report.cc:194
+msgid "Part"
+msgstr "भाग"
+
+#: ../glom/navigation/box_tables.cc:111
+msgid "Tables"
+msgstr "तालिका"
+
+#. Prevent two tables with the same name from being added.
+#: ../glom/navigation/box_tables.cc:113
+msgid "This table already exists. Please choose a different table name"
+msgstr "यो तालिका पहिल्यै अवस्थित छ। कृपया एउटा फरक तालिका नाम छनौट गर्नुहोस्"
+
+#: ../glom/navigation/box_tables.cc:115
+msgid "Hidden"
+msgstr "लुकेको"
+
+#: ../glom/navigation/box_tables.cc:117
+msgid "Default"
+msgstr "पूर्वनिर्धारित"
+
+#: ../glom/navigation/box_tables.cc:236
+msgid "Comments"
+msgstr "टिप्पणीहरू"
+
+#. Ask the user if they want us to try to cope with this:
+#: ../glom/navigation/box_tables.cc:251
+msgid "Table Already Exists"
+msgstr "तालिका पहिल्यै अवस्थित छ"
+
+#: ../glom/navigation/box_tables.cc:252
 msgid ""
-"You can not delete this table, because there is no information about this "
+"This table already exists on the database server, though it is not mentioned "
+"in the .glom file. This should not happen. Would you like Glom to attempt to "
+"use the existing table?"
+msgstr "यो तालिका डाटावेस सर्भरमा पहिल्यै अवस्थित छ, यद्यपि यो .glom फाइलमा जनाइएको छैन। के तपाईँले अवस्थित तालिका पाउनका लागि प्रयोग गर्न गोल्म चाहनुहुन्छ ?"
+
+#. TODO: Do not show tables that are not in the document.
+#: ../glom/navigation/box_tables.cc:324
+msgid ""
+"You cannot delete this table, because there is no information about this "
 "table in the document."
-msgstr ""
+msgstr "तपाईँले यो तालिका मेट्न सक्नुहुन्न, किनभने त्यँहा कागजातमा तालिका बारेमा कुनै जानकारी छैन।"
 
 #. Ask the user to confirm:
-#: ../glom/navigation/box_tables.cc:286
+#: ../glom/navigation/box_tables.cc:331
 msgid ""
 "Are you sure that you want to delete this table?\n"
 "Table name: "
 msgstr ""
+"तपाईँ यो तालिका मेट्न यकिन हुनुहुन्छ ?\n"
+"तालिका नाम: "
 
-#: ../glom/navigation/box_tables.cc:287
-#, fuzzy
+#: ../glom/navigation/box_tables.cc:332
 msgid "Delete Table"
-msgstr "पूर्वनिर्धारित मान"
+msgstr "तालिका मेट्नुहोस्"
 
 #. TODO: Do not show tables that are not in the document.
-#: ../glom/navigation/box_tables.cc:323
+#: ../glom/navigation/box_tables.cc:369
 msgid "Unknown Table"
-msgstr ""
+msgstr "अज्ञात तालिका"
 
-#: ../glom/navigation/box_tables.cc:324
+#: ../glom/navigation/box_tables.cc:370
 msgid ""
-"You can not open this table, because there is no information about this "
-"table in the document."
-msgstr ""
+"You cannot open this table, because there is no information about this table "
+"in the document."
+msgstr "तपाईँले यो तालिका मेट्न सक्नुहुन्न, किनभने कागजातमा तालिका बारेमा त्यँहा कुनै सूचना छैन।"
 
-#: ../glom/navigation/box_tables.cc:392
+#: ../glom/navigation/box_tables.cc:444
 msgid "Are you sure that you want to rename this table?"
-msgstr ""
+msgstr "तपाईँ सो तालिका मेट्न यकिन हुनुहुन्छ ?"
 
 #. TODO: Show old and new names?
-#: ../glom/navigation/box_tables.cc:393
+#: ../glom/navigation/box_tables.cc:445
 msgid "Rename Table"
-msgstr ""
+msgstr "तालिका पुन: नामकरण गर्नुहोस्"
 
-#: ../glom/utility_widgets/adddel/adddel.cc:218
-#, fuzzy
+#: ../glom/utility_widgets/adddel/adddel.cc:144
+msgid "Duplicate"
+msgstr "नक्कल गर्नुहोस्"
+
+#: ../glom/utility_widgets/adddel/adddel.cc:148
+msgid "This item already exists. Please try again."
+msgstr "यो वस्तु पहिल्यै अवस्थित छ। कृपया फेरि प्रयास गर्नुहोस्।"
+
+#: ../glom/utility_widgets/adddel/adddel.cc:243
 msgid "Choose columns"
-msgstr "प्रयोगकर्ता छनौट गर्नुहोस्"
+msgstr "स्तम्भ छनौट गर्नुहोस्"
 
-#: ../glom/utility_widgets/db_adddel/db_adddel.cc:223
-#, fuzzy
+#: ../glom/utility_widgets/comboentryglom.cc:111
+msgid "Read-only field."
+msgstr "पढ्य-मात्र फाँट"
+
+#: ../glom/utility_widgets/comboentryglom.cc:111
+msgid "This field may not be edited here."
+msgstr "यो फाँट यहाँ सम्पादन योग्य हुँदैन।"
+
+#. Let the user choose a date from a calendar dialog:
+#: ../glom/utility_widgets/datawidget.cc:206
+msgid "..."
+msgstr "..."
+
+#: ../glom/utility_widgets/db_adddel/db_adddel.cc:227
 msgid "Layout"
-msgstr "सुची ढाँचा"
+msgstr "सजावट"
 
-#: ../glom/utility_widgets/flowtablewithfields.cc:709
-#, fuzzy
+#: ../glom/utility_widgets/flowtablewithfields.cc:913
 msgid "New Group"
-msgstr "समूह"
+msgstr "नयाँ समूह"
 
-#: ../glom/utility_widgets/imageglom.cc:329
-#, fuzzy
+#: ../glom/utility_widgets/flowtablewithfields.cc:923
+msgid "tab1"
+msgstr "तालिका १"
+
+#: ../glom/utility_widgets/flowtablewithfields.cc:924
+msgid "Tab One"
+msgstr "ट्याब एक:"
+
+#: ../glom/utility_widgets/flowtablewithfields.cc:968
+msgid "button"
+msgstr "बटन"
+
+#: ../glom/utility_widgets/flowtablewithfields.cc:975
+msgid "text"
+msgstr "पाठ"
+
+#: ../glom/utility_widgets/flowtablewithfields.cc:976
+msgid "New Text"
+msgstr "नयाँ पाठ"
+
+#: ../glom/utility_widgets/imageglom.cc:432
 msgid "Choose image"
-msgstr "प्रयोगकर्ता छनौट गर्नुहोस्"
+msgstr "छवि छनौट गर्नुहोस्"
 
-#: ../glom/utility_widgets/imageglom.cc:333
+#: ../glom/utility_widgets/imageglom.cc:436
 msgid "Images"
-msgstr ""
+msgstr "छविहरू"
 
-#: ../glom/utility_widgets/imageglom.cc:365
+#: ../glom/utility_widgets/imageglom.cc:468
 msgid "Image loading failed"
-msgstr ""
+msgstr "छवि लोड गर्न असफल"
 
-#: ../glom/utility_widgets/imageglom.cc:365
+#: ../glom/utility_widgets/imageglom.cc:468
 msgid "The image file could not be opened:\n"
-msgstr ""
+msgstr "छवि फाइल खोल्न सकिँदैन:\n"
 
-#: ../glom/utility_widgets/imageglom.cc:442
-#, fuzzy
+#: ../glom/utility_widgets/imageglom.cc:563
 msgid "Choose File"
-msgstr "प्रयोगकर्ता छनौट गर्नुहोस्"
+msgstr "फाइल छनौट गर्नुहोस्"
 
 #: ../glom/utility_widgets/layoutwidgetbase.cc:32
-#, fuzzy
 msgid "Choose Field"
-msgstr "प्रयोगकर्ता छनौट गर्नुहोस्"
+msgstr "फाँट छनौट गर्नुहोस्"
 
 #: ../glom/utility_widgets/layoutwidgetbase.cc:33
 msgid "Field Layout Properties"
-msgstr ""
+msgstr "फाँट सजावट गुण"
 
 #: ../glom/utility_widgets/layoutwidgetbase.cc:34
-#, fuzzy
 msgid "Add Field"
-msgstr "क्षेत्र"
+msgstr "फाँट थप्नुहोस्"
 
 #: ../glom/utility_widgets/layoutwidgetbase.cc:35
-#, fuzzy
 msgid "Add Related Records"
-msgstr "सम्बन्धित थप्नुहोस्"
+msgstr "सम्बन्धित रेकर्डहरू थप्नुहोस्"
 
-#: ../glom/utility_widgets/layoutwidgetbase.cc:36
-#, fuzzy
+#: ../glom/utility_widgets/layoutwidgetbase.cc:37
 msgid "Add Group"
 msgstr "समूह थप्नुहोस्"
 
-#~ msgid "<b>Mode:</b>"
-#~ msgstr "<b>शैली:</b>"
+#: ../glom/xsl_utils.cc:81
+msgid "Report Finished"
+msgstr "प्रतिवेदन समाप्त"
 
-#~ msgid ""
-#~ "<span weight=\"bold\" size=\"larger\">Title</span>\n"
-#~ "\n"
-#~ "Information text.\n"
-#~ msgstr ""
-#~ "<span weight=\"bold\" size=\"larger\">शीर्षक</span>\n"
-#~ "\n"
-#~ "सुचना पाठ\n"
+#: ../glom/xsl_utils.cc:81
+msgid "The report will now be opened in your web browser."
+msgstr "प्रतिवेदन अहिले तपाईँको वेब ब्राउजरमा खोलिन्छ।"
 
-#~ msgid "Extra"
-#~ msgstr "अतिरिक्त"
+#. Append the View columns:
+#: ../glom/translation/window_translations.cc:49
+msgid "Original"
+msgstr "मौलिक"
+
+#: ../glom/translation/window_translations.cc:57
+msgid "Item"
+msgstr "वस्तु"
+
+#: ../glom/translation/window_translations.cc:65
+msgid "Translation"
+msgstr "अनुवाद"
+
