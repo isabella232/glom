@@ -897,6 +897,79 @@ void Base_DB::set_database_preferences(const SystemPrefs& prefs)
     get_document()->set_database_title(prefs.m_name);
 }
 
+bool Base_DB::create_table_with_default_fields(const Glib::ustring& table_name)
+{
+  if(table_name.empty())
+    return false;
+  
+  bool created = false;
+
+  //Primary key:
+  sharedptr<Field> field_primary_key(new Field());
+  field_primary_key->set_name(table_name + "_id");
+  field_primary_key->set_title(table_name + " ID");
+  field_primary_key->set_primary_key();
+  field_primary_key->set_auto_increment();
+
+  Gnome::Gda::FieldAttributes field_info = field_primary_key->get_field_info();
+  field_info.set_allow_null(false);
+  field_primary_key->set_field_info(field_info);
+
+  field_primary_key->set_glom_type(Field::TYPE_NUMERIC);
+  //std::cout << "field_primary_key->get_auto_increment():" << field_primary_key->get_auto_increment() << std::endl;
+
+  type_vecFields fields;
+  fields.push_back(field_primary_key);
+
+  //Description:
+  sharedptr<Field> field_description(new Field());
+  field_description->set_name("description");
+  field_description->set_title(_("Description")); //Use a translation, because the original locale will be marked as non-English if the current locale is non-English.
+  field_description->set_glom_type(Field::TYPE_TEXT);
+  fields.push_back(field_description);
+
+  //Comments:
+  sharedptr<Field> field_comments(new Field());
+  field_comments->set_name("comments");
+  field_comments->set_title(_("Comments"));
+  field_comments->set_glom_type(Field::TYPE_TEXT);
+  field_comments->m_default_formatting.set_text_format_multiline();
+  fields.push_back(field_comments);
+
+  sharedptr<TableInfo> table_info(new TableInfo());
+  table_info->set_name(table_name);
+  table_info->set_title( Utils::title_from_string( table_name ) ); //Start with a title that might be appropriate.
+
+  created = create_table(table_info, fields);
+
+    //Create a table with 1 "ID" field:
+   //MSYQL:
+    //query_execute( "CREATE TABLE \"" + table_name + "\" (" + primary_key_name + " INT NOT NULL AUTO_INCREMENT PRIMARY KEY)" );
+    //query_execute( "INSERT INTO \"" + table_name + "\" VALUES (0)" );
+
+    //PostgresSQL:
+    //query_execute( "CREATE TABLE " + table_name + " (\"" + primary_key_name + "\" serial NOT NULL  PRIMARY KEY)" );
+
+    //query_execute( "CREATE TABLE \"" + table_name + "\" (" +
+    //  field_primary_key->get_name() + " numeric NOT NULL  PRIMARY KEY," + 
+    //  extra_field_description + "varchar, " +
+    //  extra_field_comments + "varchar" +
+    //  ")" );
+
+  if(created)
+  {
+    //Save the changes in the document:
+    Document_Glom* document = get_document();
+    if(document)
+    {
+      document->add_table(table_info);
+      document->set_table_fields(table_info->get_name(), fields);
+    }
+  }
+
+  return created;
+}
+
 bool Base_DB::create_table(const sharedptr<const TableInfo>& table_info, const Document_Glom::type_vecFields& fields_in) const
 {
   //std::cout << "Base_DB::create_table(): " << table_info->get_name() << ", title=" << table_info->get_title() << std::endl;
@@ -907,6 +980,7 @@ bool Base_DB::create_table(const sharedptr<const TableInfo>& table_info, const D
   Document_Glom::type_vecFields fields = fields_in;
 
   //Create the standard field too:
+  //(We don't actually use this yet)
   if(std::find_if(fields.begin(), fields.end(), predicate_FieldHasName<Field>(GLOM_STANDARD_FIELD_LOCK)) == fields.end())
   {
     sharedptr<Field> field = sharedptr<Field>::create();

@@ -29,7 +29,7 @@ namespace Glom
 {
 
 class Dialog_Design
-: public Gtk::Dialog,
+: public Gtk::Window,
   public View_Composite_Glom
 {
 public:

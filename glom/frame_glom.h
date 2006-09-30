@@ -44,6 +44,7 @@ namespace Glom
 {
 
 class Dialog_Layout_Report;
+class Dialog_AddRelatedTable;
 
 class Frame_Glom :
   public PlaceHolder,
@@ -73,22 +74,28 @@ public:
   //virtual void on_menu_Navigate_Database();
   //virtual void do_menu_Navigate_Database(bool bUseList = true);
   void on_menu_Tables_EditTables();
+  void on_menu_Tables_AddRelatedTable();
   void do_menu_Navigate_Table(bool open_default = false);
 
   void on_menu_Tables_EditReports();
 
-  virtual void on_menu_developer_database_preferences();
-  virtual void on_menu_developer_fields();
-  virtual void on_menu_developer_relationships_overview();
-  virtual void on_menu_developer_relationships();
-  virtual void on_menu_developer_users();
-  virtual void on_menu_developer_layout();
-  virtual void on_menu_developer_reports();
+  void on_menu_developer_database_preferences();
+
+  void on_menu_developer_fields();
+  void do_menu_developer_fields(Gtk::Window& parent);
+
+  void on_menu_developer_relationships_overview();
+  void on_menu_developer_relationships();
+  void on_menu_developer_users();
+  void on_menu_developer_layout();
+  void on_menu_developer_reports();
 
   void on_developer_dialog_hide();
   void on_dialog_layout_report_hide();
   void on_dialog_reports_hide();
   void on_dialog_tables_hide();
+
+  void on_dialog_add_related_table_request_edit_fields();
 
   virtual void set_document(Document_Glom* pDocument); //View override
   virtual void load_from_document(); //View override
@@ -147,6 +154,8 @@ protected:
   void on_notebook_data_record_details_requested(const Glib::ustring& table_name, Gnome::Gda::Value primary_key_value);
   void on_userlevel_changed(AppState::userlevels userlevel);
 
+  void on_dialog_add_related_table_response(int response);
+
   //Member data:
   Glib::ustring m_table_name;
 
@@ -180,6 +189,7 @@ protected:
   //Developer:
   Dialog_Fields* m_pDialog_Fields;
   Dialog_Relationships* m_pDialog_Relationships;
+  Dialog_AddRelatedTable* m_dialog_addrelatedtable;
 
   Dialog_Connection* m_pDialogConnection;
   Gtk::Dialog* m_pDialogConnectionFailed;

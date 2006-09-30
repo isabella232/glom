@@ -29,6 +29,7 @@
 #include <glom/libglom/data_structure/layout/report_parts/layoutitem_summary.h>
 #include <glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.h>
 #include <glom/reports/report_builder.h>
+#include <glom/mode_design/dialog_add_related_table.h>
 #include "relationships_overview/dialog_relationships_overview.h"
 #include "filechooser_export.h"
 #include <glom/glom_privs.h>
@@ -59,6 +60,7 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
   m_pDialog_Reports(0),
   m_pDialog_Fields(0),
   m_pDialog_Relationships(0),
+  m_dialog_addrelatedtable(0),
   m_pDialogConnection(0),
   m_pDialogConnectionFailed(0),
   m_pDialogLayoutReport(0)
@@ -154,18 +156,6 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
   {
     Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_design");
 
-    refXml->get_widget_derived("window_design", m_pDialog_Fields);
-    m_pDialog_Fields->signal_hide().connect( sigc::mem_fun(*this, &Frame_Glom::on_developer_dialog_hide));
-  }
-  catch(const Gnome::Glade::XmlError& ex)
-  {
-    std::cerr << ex.what() << std::endl;
-  }
-
-  try
-  {
-    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_design");
-
     refXml->get_widget_derived("window_design", m_pDialog_Relationships);
     m_pDialog_Relationships->set_title("Relationships");
     m_pDialog_Relationships->signal_hide().connect( sigc::mem_fun(*this, &Frame_Glom::on_developer_dialog_hide));
@@ -218,7 +208,6 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
   //This means that set_document and load/save are delegated to these children:
   add_view(m_pBox_Tables);
   add_view(m_pBox_Reports);
-  add_view(m_pDialog_Fields); //Also a composite view.
   add_view(m_pDialog_Relationships); //Also a composite view.
   add_view(m_pDialogConnection); //Also a composite view.
   add_view(&m_Notebook_Data); //Also a composite view.
@@ -745,6 +734,113 @@ void Frame_Glom::on_menu_Tables_EditTables()
   do_menu_Navigate_Table(); 
 }
 
+void Frame_Glom::on_menu_Tables_AddRelatedTable()
+{
+  if(m_dialog_addrelatedtable)
+  {
+    delete m_dialog_addrelatedtable;
+    m_dialog_addrelatedtable = 0;
+  }
+
+  try
+  {
+    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_add_related_table");
+
+    refXml->get_widget_derived("dialog_add_related_table", m_dialog_addrelatedtable);
+  }
+  catch(const Gnome::Glade::XmlError& ex)
+  {
+    std::cerr << ex.what() << std::endl;
+  }
+
+  if(!m_dialog_addrelatedtable)
+    return;
+
+  add_view(m_dialog_addrelatedtable); //Give it access to the document.
+  m_dialog_addrelatedtable->set_fields(m_table_name);
+
+  m_dialog_addrelatedtable->signal_request_edit_fields().connect( sigc::mem_fun(*this, &Frame_Glom::on_dialog_add_related_table_request_edit_fields) );
+
+  m_dialog_addrelatedtable->signal_response().connect( sigc::mem_fun(*this, &Frame_Glom::on_dialog_add_related_table_response) );
+
+  Gtk::Window* parent = get_app_window();
+
+  if(parent)
+    m_dialog_addrelatedtable->set_transient_for(*parent);
+
+  m_dialog_addrelatedtable->set_modal(); //We don't want people to edit the main window while we are changing structure.
+  m_dialog_addrelatedtable->show();
+}
+
+void Frame_Glom::on_dialog_add_related_table_response(int response)
+{
+  if(!m_dialog_addrelatedtable)
+    return;
+
+  m_dialog_addrelatedtable->hide();
+
+  if(response == Gtk::RESPONSE_OK)
+  {
+    Glib::ustring table_name, relationship_name, from_key_name;
+    m_dialog_addrelatedtable->get_input(table_name, relationship_name, from_key_name);
+
+    if(!table_name.empty() && !relationship_name.empty() && !from_key_name.empty())
+    {
+      //TODO:
+     
+      //Create the new table:
+      const bool result = create_table_with_default_fields(table_name);
+      if(!result)
+      {
+        std::cerr << "Frame_Glom::on_menu_Tables_AddRelatedTable(): create_table_with_default_fields() failed." << std::endl;
+        return;
+      }
+   
+      //Create the new relationship: 
+      sharedptr<Relationship> relationship = sharedptr<Relationship>::create();
+
+      relationship->set_name(relationship_name);
+      relationship->set_title(Utils::title_from_string(relationship_name));
+      relationship->set_from_table(m_table_name);
+      relationship->set_from_field(from_key_name);
+      relationship->set_to_table(table_name);
+
+      sharedptr<Field> related_primary_key = get_field_primary_key_for_table(table_name); //This field was created by create_table_with_default_fields().
+      if(!related_primary_key)
+      {
+        std::cerr << "Frame_Glom::on_menu_Tables_AddRelatedTable(): get_field_primary_key_for_table() failed." << std::endl;
+        return;
+      }
+
+      relationship->set_to_field(related_primary_key->get_name());
+
+      relationship->set_allow_edit(true);
+      relationship->set_auto_create(true);
+
+      Document_Glom* document = get_document();
+      if(!document)
+        return;
+
+      document->set_relationship(m_table_name, relationship);
+
+      on_dialog_tables_hide(); //Update the menu.
+
+      Gtk::Window* parent = get_app_window();
+      if(parent)
+        show_ok_dialog(_("Related Table Created"), _("The new related table has been created."), *parent, Gtk::MESSAGE_INFO);
+    }
+  }
+
+  remove_view(m_dialog_addrelatedtable);
+  delete m_dialog_addrelatedtable;
+}
+
+void Frame_Glom::on_dialog_add_related_table_request_edit_fields()
+{
+  if(m_dialog_addrelatedtable)
+    do_menu_developer_fields(*m_dialog_addrelatedtable);
+}
+
 void Frame_Glom::do_menu_Navigate_Table(bool open_default)
 {
   if(get_document()->get_connection_database().empty())
@@ -1063,6 +1159,14 @@ void Frame_Glom::on_menu_developer_database_preferences()
 
 void Frame_Glom::on_menu_developer_fields()
 {
+  Gtk::Window* parent = get_app_window();
+  if(parent)
+    do_menu_developer_fields(*parent);
+
+}
+
+void Frame_Glom::do_menu_developer_fields(Gtk::Window& parent)
+{
   //Check that there is a table to show:
   if(m_table_name.empty())
   {
@@ -1070,7 +1174,24 @@ void Frame_Glom::on_menu_developer_fields()
   }
   else
   {
-    m_pDialog_Fields->set_transient_for(*get_app_window());
+    if(!m_pDialog_Fields)
+    {
+       try
+       {
+         Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_design");
+
+         refXml->get_widget_derived("window_design", m_pDialog_Fields);
+         m_pDialog_Fields->signal_hide().connect( sigc::mem_fun(*this, &Frame_Glom::on_developer_dialog_hide));
+       }
+       catch(const Gnome::Glade::XmlError& ex)
+       {
+         std::cerr << ex.what() << std::endl;
+       }
+
+       add_view(m_pDialog_Fields);
+    }
+
+    m_pDialog_Fields->set_transient_for(parent);
     m_pDialog_Fields->init_db_details(m_table_name);
     m_pDialog_Fields->show();
   }

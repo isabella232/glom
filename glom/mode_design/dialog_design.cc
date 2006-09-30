@@ -27,7 +27,7 @@ namespace Glom
 {
 
 Dialog_Design::Dialog_Design(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
-: Gtk::Dialog(cobject),
+: Gtk::Window(cobject),
   m_label_table(0),
   m_label_frame(0)
 {
@@ -37,6 +37,8 @@ Dialog_Design::Dialog_Design(BaseObjectType* cobject, const Glib::RefPtr<Gnome::
 
   refGlade->get_widget("label_table_name", m_label_table);
   refGlade->get_widget("label_frame_title", m_label_frame);
+
+  set_modal(); //We don't want people to edit the main window while we are changing structure.
 
   show_all_children();
 }

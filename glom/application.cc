@@ -240,6 +240,11 @@ void App_Glom::init_menus()
                         sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_Tables_EditTables) );
   m_listDeveloperActions.push_back(action);
 
+  action = Gtk::Action::create("GlomAction_Menu_AddRelatedTable", _("Add _Related Table"));
+  m_refActionGroup_Others->add(action,
+                        sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_Tables_AddRelatedTable) );
+  m_listDeveloperActions.push_back(action);
+
 
   //"Reports" menu:
   m_refActionGroup_Others->add( Gtk::Action::create("Glom_Menu_Reports", _("_Reports")) );
@@ -327,6 +332,7 @@ void App_Glom::init_menus()
     "        <placeholder name='Menu_Tables_Dynamic' />"
     "        <separator />"
     "        <menuitem action='GlomAction_Menu_EditTables' />"
+    "        <menuitem action='GlomAction_Menu_AddRelatedTable' />"
     "     </menu>"
     "     <menu action='Glom_Menu_Reports'>"
     "        <placeholder name='Menu_Reports_Dynamic' />"

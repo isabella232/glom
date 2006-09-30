@@ -634,9 +634,10 @@ void Document_Glom::set_table_fields(const Glib::ustring& table_name, const type
     }
 
     DocumentTableInfo& info = get_table_info_with_add(table_name);
+    const bool will_change = (info.m_fields == vecFields); //TODO: Does this do a deep comparison?
     info.m_fields = vecFields;
 
-    set_modified();
+    set_modified(will_change);
   }
 }
 
@@ -986,7 +987,7 @@ std::vector<Glib::ustring> Document_Glom::get_table_names(bool plus_system_prefs
   return result;
 }
 
-sharedptr<TableInfo> Document_Glom::get_table(const Glib::ustring table_name) const
+sharedptr<TableInfo> Document_Glom::get_table(const Glib::ustring& table_name) const
 {
   type_tables::const_iterator iterfind = m_tables.find(table_name);
   if(iterfind != m_tables.end())
@@ -995,6 +996,20 @@ sharedptr<TableInfo> Document_Glom::get_table(const Glib::ustring table_name) co
     return sharedptr<TableInfo>();
 }
 
+void Document_Glom::add_table(const sharedptr<TableInfo>& table_info)
+{
+  if(!table_info)
+    return;
+
+  type_tables::const_iterator iterfind = m_tables.find(table_info->get_name());
+  if(iterfind == m_tables.end())
+  {
+    DocumentTableInfo item;
+    item.m_info = table_info;
+    m_tables[table_info->get_name()] = item;
+    set_modified();
+  }
+}
 
 void Document_Glom::set_tables(const type_listTableInfo& tables)
 {
@@ -1530,7 +1545,7 @@ void Document_Glom::load_after_layout_item_field(const xmlpp::Element* element, 
   }
 }
 
-void Document_Glom::load_after_sort_by(const xmlpp::Element* node, const Glib::ustring table_name, LayoutItem_GroupBy::type_list_sort_fields& list_fields)
+void Document_Glom::load_after_sort_by(const xmlpp::Element* node, const Glib::ustring& table_name, LayoutItem_GroupBy::type_list_sort_fields& list_fields)
 {
   list_fields.clear();
 
@@ -1558,7 +1573,7 @@ void Document_Glom::load_after_sort_by(const xmlpp::Element* node, const Glib::u
   }
 }
 
-void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Glib::ustring table_name, const sharedptr<LayoutGroup>& group)
+void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Glib::ustring& table_name, const sharedptr<LayoutGroup>& group)
 {
   if(!node || !group)
   {

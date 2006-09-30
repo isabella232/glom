@@ -158,21 +158,22 @@ public:
 
 
   ///When a field name is changed, change it in the relationships, layouts, reports, and fields data:
-  virtual void change_field_name(const Glib::ustring& table_name, const Glib::ustring& strFieldNameOld, const Glib::ustring& strFieldNameNew);
+  void change_field_name(const Glib::ustring& table_name, const Glib::ustring& strFieldNameOld, const Glib::ustring& strFieldNameNew);
 
   ///When a table name is changed, change it in the relationships and tables data:
-  virtual void change_table_name(const Glib::ustring& table_name_old, const Glib::ustring& table_name_new);
+  void change_table_name(const Glib::ustring& table_name_old, const Glib::ustring& table_name_new);
 
   ///When a relationship name is changed, change it in layouts and reports:
-  virtual void change_relationship_name(const Glib::ustring& table_name, const Glib::ustring& name, const Glib::ustring& name_new);
+  void change_relationship_name(const Glib::ustring& table_name, const Glib::ustring& name, const Glib::ustring& name_new);
 
   typedef std::list< sharedptr<TableInfo> > type_listTableInfo;
   virtual type_listTableInfo get_tables(bool plus_system_prefs = false) const;
   std::vector<Glib::ustring> get_table_names(bool plus_system_prefs = false) const;
 
-  virtual void set_tables(const type_listTableInfo& tables);
+  void set_tables(const type_listTableInfo& tables);
 
-  sharedptr<TableInfo> get_table(const Glib::ustring table_name) const;
+  sharedptr<TableInfo> get_table(const Glib::ustring& table_name) const;
+  void add_table(const  sharedptr<TableInfo>& table_name);
 
   /** Use this after DROPing the table.
    * It removes information about the table, including fields and layouts,
@@ -269,10 +270,10 @@ protected:
   virtual bool load_after();
   virtual bool save_before();
 
-  void load_after_layout_group(const xmlpp::Element* node, const Glib::ustring table_name, const sharedptr<LayoutGroup>& group);
+  void load_after_layout_group(const xmlpp::Element* node, const Glib::ustring& table_name, const sharedptr<LayoutGroup>& group);
   void save_before_layout_group(xmlpp::Element* node, const sharedptr<const LayoutGroup>& group);
 
-  void load_after_sort_by(const xmlpp::Element* node, const Glib::ustring table_name, LayoutItem_GroupBy::type_list_sort_fields& list_fields);
+  void load_after_sort_by(const xmlpp::Element* node, const Glib::ustring& table_name, LayoutItem_GroupBy::type_list_sort_fields& list_fields);
   void save_before_sort_by(xmlpp::Element* node, const LayoutItem_GroupBy::type_list_sort_fields& list_fields);
 
   void load_after_layout_item_field(const xmlpp::Element* element, const Glib::ustring& table_name, const sharedptr<LayoutItem_Field>& item);

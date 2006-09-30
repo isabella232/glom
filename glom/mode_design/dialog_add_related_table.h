@@ -1,0 +1,73 @@
+/* Glom
+ *
+ * Copyright (C) 2001-2004 Murray Cumming
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public
+ * License along with this program; if not, write to the
+ * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+ * Boston, MA 02111-1307, USA.
+ */
+
+#ifndef GLOM_DIALOG_ADDRELATEDTABLE_H
+#define GLOM_DIALOG_ADDRELATEDTABLE_H
+
+#include <libglademm.h>
+#include <gtkmm/dialog.h>
+#include <gtkmm/entry.h>
+#include <glom/utility_widgets/combo_textglade.h>
+#include <glom/base_db.h>
+
+namespace Glom
+{
+
+class Dialog_AddRelatedTable
+  : public Gtk::Dialog,
+    public Base_DB
+{
+public:
+  Dialog_AddRelatedTable(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  virtual ~Dialog_AddRelatedTable();
+
+  void set_fields(const Glib::ustring& table_name);
+
+  //Get the user input:
+  void get_input(Glib::ustring& table_name, Glib::ustring& relationship_name, Glib::ustring& from_key_name);
+
+  typedef sigc::signal<void> type_signal_request_edit_fields;
+  type_signal_request_edit_fields signal_request_edit_fields();
+
+protected:
+
+  void on_entry_table_name();
+  void on_combo_field_name();
+  void on_button_edit_fields();
+
+  virtual void on_response(int response_id);
+ 
+  bool get_relationship_exists(const Glib::ustring& relationship_name);
+
+  Gtk::Entry* m_entry_table_name;
+  Gtk::Entry* m_entry_relationship_name;
+  Combo_TextGlade* m_combo_from_field;
+  Gtk::Button* m_button_edit_fields;
+  Gtk::Button* m_button_ok;
+
+  Glib::ustring m_table_name;
+
+  type_signal_request_edit_fields m_signal_request_edit_fields;
+};
+
+} //namespace Glom
+
+#endif //GLOM_DIALOG_ADDRELATEDTABLE_H
+

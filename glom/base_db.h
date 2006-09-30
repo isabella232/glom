@@ -98,6 +98,10 @@ public:
 
   bool create_table(const sharedptr<const TableInfo>& table_info, const Document_Glom::type_vecFields& fields) const;
   bool create_table_add_missing_fields(const sharedptr<const TableInfo>& table_info, const Document_Glom::type_vecFields& fields) const;
+
+  /// Also saves the table information in the document:
+  bool create_table_with_default_fields(const Glib::ustring& table_name);
+
   bool insert_example_data(const Glib::ustring& table_name) const;
 
   typedef std::vector< sharedptr<LayoutItem_Field> > type_vecLayoutFields;

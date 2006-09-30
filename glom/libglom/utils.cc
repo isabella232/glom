@@ -716,21 +716,42 @@ Glib::ustring Utils::string_trim(const Glib::ustring& str, const Glib::ustring& 
    Glib::ustring::size_type posOpenBracket = result.find(to_remove);
    if(posOpenBracket == 0)
    {
-//g_warning("string_trim: before start trim: %s", result.c_str());
       result = result.substr(to_remove.size());
-//g_warning("string_trim: after start trim: %s", result.c_str());
    }
 
    //Remove from the end:
    Glib::ustring::size_type posCloseBracket = result.rfind(to_remove);
    if(posCloseBracket == (result.size() - to_remove.size()))
    {
-     //g_warning("string_trim: before end trim: %s", result.c_str());
     result = result.substr(0, posCloseBracket);
-     //g_warning("string_trim: after end trim: %s", result.c_str());
    }
 
   return result;
+}
+
+Glib::ustring Utils::string_remove_suffix(const Glib::ustring& str, const Glib::ustring& suffix, bool case_sensitive)
+{
+  //There is also g_string_has_suffix(), but I assume that is case sensitive. murrayc.
+
+  const Glib::ustring::size_type size = str.size();
+  const Glib::ustring::size_type suffix_size = suffix.size();
+  if(size < suffix_size)
+    return str;
+
+  const Glib::ustring possible_suffix = str.substr(size - suffix_size);
+
+  if(case_sensitive)
+  {
+    if(possible_suffix == suffix)
+      return str.substr(0, size - suffix_size);
+  }
+  else
+  {
+    if(g_ascii_strcasecmp(possible_suffix.c_str(), suffix.c_str()) == 0) //TODO: I don't understand the warnings about using this function in the glib documentation. murrayc.
+      return str.substr(0, size - suffix_size);
+  }
+
+  return str;
 }
 
 } //namespace Glom

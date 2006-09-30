@@ -84,6 +84,8 @@ type_vecStrings string_separate(const Glib::ustring& str, const Glib::ustring& s
 
 Glib::ustring string_trim(const Glib::ustring& str, const Glib::ustring& to_remove);
 
+Glib::ustring string_remove_suffix(const Glib::ustring& str, const Glib::ustring& suffix, bool case_sensitive = true);
+
 } //namespace Utils
 
 } //namespace Glom

@@ -1,3 +1,8 @@
+* Added Add Related Table item to the Tables menu. This is a time-saving 
+  feature to quickly create a related table and a relationship to it,
+  and is a first step to implementing further refactoring functionality.
+  Bug #355975.
+
 1.1.2:
 
 * Related records:

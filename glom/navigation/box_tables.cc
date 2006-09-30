@@ -204,104 +204,58 @@ bool Box_Tables::fill_from_database()
 
 void Box_Tables::on_adddel_Add(const Gtk::TreeModel::iterator& row)
 {
-  //TODO: Handle cell renderer changes to prevent illegal table names (e.g. starting with numbers.)"
+  //TODO: Handle cell renderer changes to prevent illegal table names (e.g. starting with numbers.).
 
-  Glib::ustring table_name = m_AddDel.get_value(row, m_colTableName);
-  if(!table_name.empty())
+  const Glib::ustring table_name = m_AddDel.get_value(row, m_colTableName);
+  if(table_name.empty())
+    return;
+
+  bool created = false; 
+
+  //Check whether it exists already. (Maybe it is somehow in the database but not in the document. That shouldn't happen.)
+  const bool exists_in_db = get_table_exists_in_database(table_name);
+  if(exists_in_db)
   {
-    //Primary key:
-    sharedptr<Field> field_primary_key(new Field());
-    field_primary_key->set_name(table_name + "_id");
-    field_primary_key->set_title(table_name + " ID");
-    field_primary_key->set_primary_key();
-    field_primary_key->set_auto_increment();
+    //Ask the user if they want us to try to cope with this:
+    Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Table Already Exists")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_OK_CANCEL);
+    dialog.set_secondary_text(_("This table already exists on the database server, though it is not mentioned in the .glom file. This should not happen. Would you like Glom to attempt to use the existing table?"));
+    dialog.set_transient_for(*get_app_window());
 
-    Gnome::Gda::FieldAttributes field_info = field_primary_key->get_field_info();
-    field_info.set_allow_null(false);
-    field_primary_key->set_field_info(field_info);
+    const int response = dialog.run();
+    dialog.hide();
 
-    field_primary_key->set_glom_type(Field::TYPE_NUMERIC);
-    //std::cout << "field_primary_key->get_auto_increment():" << field_primary_key->get_auto_increment() << std::endl;
-
-    type_vecFields fields;
-    fields.push_back(field_primary_key);
-
-    //Description:
-    sharedptr<Field> field_description(new Field());
-    field_description->set_name("description");
-    field_description->set_title(_("Description")); //Use a translation, because the original locale will be marked as non-English if the current locale is non-English.
-    field_description->set_glom_type(Field::TYPE_TEXT);
-    fields.push_back(field_description);
-
-    //Comments:
-    sharedptr<Field> field_comments(new Field());
-    field_comments->set_name("comments");
-    field_comments->set_title(_("Comments"));
-    field_comments->set_glom_type(Field::TYPE_TEXT);
-    field_comments->m_default_formatting.set_text_format_multiline();
-    fields.push_back(field_comments);
-
-    sharedptr<TableInfo> table_info(new TableInfo());
-    table_info->set_name(table_name);
-    table_info->set_title( Utils::title_from_string( table_name ) ); //Start with a title that might be appropriate.
-
-    //Check whether it exists already. (Maybe it is somehow in the database but not in the document. That shouldn't happen.)
-    const bool exists_in_db = get_table_exists_in_database(table_name);
-    bool created = false; 
-    if(exists_in_db)
+    if(response == Gtk::RESPONSE_OK)
     {
-      //Ask the user if they want us to try to cope with this:
-      Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Table Already Exists")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_OK_CANCEL);
-      dialog.set_secondary_text(_("This table already exists on the database server, though it is not mentioned in the .glom file. This should not happen. Would you like Glom to attempt to use the existing table?"));
-      dialog.set_transient_for(*get_app_window());
-
-      const int response = dialog.run();
-      dialog.hide();
-
-      if(response == Gtk::RESPONSE_OK)
-      {
-        //Maybe Glom will cope with whatever fields are there. Let's see.
-        created = true;
-      }
-
+      //Maybe Glom will cope with whatever fields are there. Let's see.
       created = true;
     }
-    else
+  }
+  else
+  {
+    created = create_table_with_default_fields(table_name);
+  }
+  
+  if(created)
+  {
+    //Show the new information for this whole row:
+    
+    Document_Glom* document = get_document();
+    if(document)
     {
-      created = create_table(table_info, fields);
-    }
-
-    //Create a table with 1 "ID" field:
-   //MSYQL:
-    //query_execute( "CREATE TABLE \"" + table_name + "\" (" + primary_key_name + " INT NOT NULL AUTO_INCREMENT PRIMARY KEY)" );
-    //query_execute( "INSERT INTO \"" + table_name + "\" VALUES (0)" );
-
-    //PostgresSQL:
-    //query_execute( "CREATE TABLE " + table_name + " (\"" + primary_key_name + "\" serial NOT NULL  PRIMARY KEY)" );
-
-    //query_execute( "CREATE TABLE \"" + table_name + "\" (" +
-    //  field_primary_key->get_name() + " numeric NOT NULL  PRIMARY KEY," + 
-    //  extra_field_description + "varchar, " +
-    //  extra_field_comments + "varchar" +
-    //  ")" );
-
-    if(created)
-    {
-      //Show the new information for this whole row:
+      sharedptr<TableInfo> table_info = document->get_table(table_name);
       fill_table_row(row, table_info);
 
       //Save the field information directly into the database, because we cannot get all the correct information from the database.
       //Otherwise some information would be forgotten:
 
+      type_vecFields fields = document->get_table_fields(table_name);
+      document->set_table_fields(table_name, fields);
 
-
-      Document_Glom* document = get_document();
-      if(document)
-          document->set_table_fields(table_name, fields);
-
-      save_to_document();
-      //fill_from_database(); //We should not modify the model structure in a cellrenderer signal handler.
+      //TODO: Just let create_table_with_default_fields() update the document, and then reload the row.
     }
+
+    save_to_document();
+    //fill_from_database(); //We should not modify the model structure in a cellrenderer signal handler.
   }
 }
 
