@@ -268,6 +268,13 @@ Frame_Glom::~Frame_Glom()
     delete m_pDialog_Fields;
     m_pDialog_Fields = 0;
   }
+
+  if(m_dialog_addrelatedtable)
+  {
+    remove_view(m_dialog_addrelatedtable);
+    delete m_dialog_addrelatedtable;
+    m_dialog_addrelatedtable = 0;
+  }
 }
 
 void Frame_Glom::set_databases_selected(const Glib::ustring& strName)
@@ -736,8 +743,11 @@ void Frame_Glom::on_menu_Tables_EditTables()
 
 void Frame_Glom::on_menu_Tables_AddRelatedTable()
 {
+  //Delete and recreate the dialog,
+  //so we start with a blank one:
   if(m_dialog_addrelatedtable)
   {
+    remove_view(m_dialog_addrelatedtable);
     delete m_dialog_addrelatedtable;
     m_dialog_addrelatedtable = 0;
   }
@@ -779,15 +789,41 @@ void Frame_Glom::on_dialog_add_related_table_response(int response)
 
   m_dialog_addrelatedtable->hide();
 
+  bool stop_trying = false;
   if(response == Gtk::RESPONSE_OK)
   {
     Glib::ustring table_name, relationship_name, from_key_name;
     m_dialog_addrelatedtable->get_input(table_name, relationship_name, from_key_name);
 
-    if(!table_name.empty() && !relationship_name.empty() && !from_key_name.empty())
+    Gtk::Window* parent = get_app_window();
+
+    //It would be nice to put this in the dialog's on_response() instead,
+    //but I don't think we can stop the response from being returned. murrayc
+    if(get_table_exists_in_database(table_name))
     {
-      //TODO:
-     
+      Frame_Glom::show_ok_dialog(_("Table Exists Already"), _("A table with this name already exists in the database. Please choose a different table name."), *parent, Gtk::MESSAGE_ERROR);
+    }
+    else if(get_relationship_exists(m_table_name, relationship_name))
+    {
+      Frame_Glom::show_ok_dialog(_("Relationship Exists Already"), _("A relationship with this name already exists for this table. Please choose a different relationship name."), *parent, Gtk::MESSAGE_ERROR);
+    }
+    else if(table_name.empty() || relationship_name.empty() || relationship_name.empty())
+    {
+      Frame_Glom::show_ok_dialog(_("More information needed"), _("You must specify a field, a table name, and a relationship name."), *parent, Gtk::MESSAGE_ERROR);
+    }
+    else
+    {
+      stop_trying = true;
+    }
+
+    if(!stop_trying)
+    {
+      //Offer the dialog again:
+      //This signal handler should be called again when a button is clicked.
+      m_dialog_addrelatedtable->show();
+    }
+    else
+    {
       //Create the new table:
       const bool result = create_table_with_default_fields(table_name);
       if(!result)
@@ -830,9 +866,6 @@ void Frame_Glom::on_dialog_add_related_table_response(int response)
         show_ok_dialog(_("Related Table Created"), _("The new related table has been created."), *parent, Gtk::MESSAGE_INFO);
     }
   }
-
-  remove_view(m_dialog_addrelatedtable);
-  delete m_dialog_addrelatedtable;
 }
 
 void Frame_Glom::on_dialog_add_related_table_request_edit_fields()
@@ -1317,6 +1350,10 @@ void Frame_Glom::on_developer_dialog_hide()
 {
   //The dababase structure might have changed, so refresh the data view:
   show_table(m_table_name);
+
+  //TODO: This is a bit of a hack. It's not always useful to do this:
+  if(m_dialog_addrelatedtable)
+    m_dialog_addrelatedtable->set_fields(m_table_name);
 }
 
 bool Frame_Glom::connection_request_password_and_choose_new_database_name()

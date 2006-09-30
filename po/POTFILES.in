@@ -51,6 +51,7 @@ glom/mode_data/dialog_layout_list.cc
 glom/mode_data/dialog_layout_list_related.cc
 glom/mode_data/notebook_data.cc
 glom/mode_design/box_db_table_relationships.cc
+glom/mode_design/dialog_add_related_table.cc
 glom/mode_design/dialog_design.cc
 glom/mode_design/dialog_fields.cc
 glom/mode_design/dialog_relationships.cc

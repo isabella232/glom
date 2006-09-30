@@ -78,19 +78,6 @@ void Dialog_AddRelatedTable::set_fields(const Glib::ustring& table_name)
 
 }
 
-bool Dialog_AddRelatedTable::get_relationship_exists(const Glib::ustring& relationship_name)
-{
-  Document_Glom* document = get_document();
-  if(document)
-  { 
-    sharedptr<Relationship> relationship = document->get_relationship(m_table_name, relationship_name);
-    if(relationship)
-      return true;
-  }
- 
-  return false;
-}
-
 void Dialog_AddRelatedTable::on_entry_table_name()
 {
   const Glib::ustring table_name = m_entry_table_name->get_text();
@@ -108,12 +95,13 @@ void Dialog_AddRelatedTable::on_entry_table_name()
   int suffix_number = 1;
   while(exists_already)
   {
-    if(!get_relationship_exists(name_to_try))
+    if(!get_relationship_exists(m_table_name, name_to_try))
        exists_already = false; //Stop the while loop.
     else
     {
       //Append a numeric suffix and try again:
       name_to_try = possible_relationship_name + Utils::string_from_decimal(suffix_number);
+      ++suffix_number;
     }
   }
 
@@ -150,6 +138,7 @@ void Dialog_AddRelatedTable::on_combo_field_name()
     {
       //Append a numeric suffix and try again:
       name_to_try = possible_table_name + Utils::string_from_decimal(suffix_number);
+      ++suffix_number;
     }
   }
 
@@ -168,30 +157,6 @@ Dialog_AddRelatedTable::type_signal_request_edit_fields Dialog_AddRelatedTable::
   return m_signal_request_edit_fields;
 }
 
-void Dialog_AddRelatedTable::on_response(int response_id)
-{
-  if(response_id == Gtk::RESPONSE_OK)
-  {
-    //Check that the inputs are OK:
-
-    Glib::ustring table_name, relationship_name, from_key_name;
-    get_input(table_name, relationship_name, from_key_name);
-  
-    if(get_table_exists_in_database(table_name))
-    {
-      Frame_Glom::show_ok_dialog(_("Table Exists Already"), _("A table with this name already exists in the database. Please choose a different table name."), *this, Gtk::MESSAGE_ERROR);
-      return;
-    }
-    else if(get_relationship_exists(relationship_name))
-    {
-      Frame_Glom::show_ok_dialog(_("Relationship Exists Already"), _("A relationship with this name already exists for this table. Please choose a different relationship name."), *this, Gtk::MESSAGE_ERROR);
-      return;
-    }
-  }
-  
-  //Allow the dialog to close, so that run() returns with a response:
-  Gtk::Dialog::on_response(response_id);
-}
 
 
 } //namespace Glom

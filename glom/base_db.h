@@ -124,6 +124,7 @@ protected:
   type_vecStrings get_table_names_from_database(bool ignore_system_tables = false) const;
 
   bool get_table_exists_in_database(const Glib::ustring& table_name) const;
+  bool get_relationship_exists(const Glib::ustring& table_name, const Glib::ustring& relationship_name);
 
   type_vecFields get_fields_for_table(const Glib::ustring& table_name, bool including_system_fields = false) const;
   sharedptr<Field> get_fields_for_table_one_field(const Glib::ustring& table_name, const Glib::ustring& field_name) const;

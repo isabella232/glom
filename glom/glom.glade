@@ -15622,7 +15622,9 @@ Please select a date to enter in this field.</property>
 		      <child>
 			<widget class="GtkLabel" id="label259">
 			  <property name="visible">True</property>
-			  <property name="label" translatable="yes">This will add a new table and add a relationship that refers to the new  table. If a suitable related table exists already then you should instead cancel and just add a relationship to the existing table. </property>
+			  <property name="label" translatable="yes">This will add a new table and add a relationship that refers to the new  table, as a convenient alternative to doing this in separate steps.
+
+If a suitable related table already exists then you should instead cancel and just add a relationship.</property>
 			  <property name="use_underline">False</property>
 			  <property name="use_markup">False</property>
 			  <property name="justify">GTK_JUSTIFY_LEFT</property>
@@ -15653,7 +15655,7 @@ Please select a date to enter in this field.</property>
 			  <child>
 			    <widget class="GtkLabel" id="label253">
 			      <property name="visible">True</property>
-			      <property name="label" translatable="yes">From key:</property>
+			      <property name="label" translatable="yes">From Field:</property>
 			      <property name="use_underline">False</property>
 			      <property name="use_markup">False</property>
 			      <property name="justify">GTK_JUSTIFY_LEFT</property>

@@ -52,10 +52,6 @@ protected:
   void on_combo_field_name();
   void on_button_edit_fields();
 
-  virtual void on_response(int response_id);
- 
-  bool get_relationship_exists(const Glib::ustring& relationship_name);
-
   Gtk::Entry* m_entry_table_name;
   Gtk::Entry* m_entry_relationship_name;
   Combo_TextGlade* m_combo_from_field;

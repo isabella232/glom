@@ -2309,5 +2309,17 @@ bool Base_DB::check_entered_value_for_uniqueness(const Glib::ustring& table_name
     return true; //Succeed, because the value does not need to be unique.
 }
 
+bool Base_DB::get_relationship_exists(const Glib::ustring& table_name, const Glib::ustring& relationship_name)
+{
+  Document_Glom* document = get_document();
+  if(document)
+  { 
+    sharedptr<Relationship> relationship = document->get_relationship(table_name, relationship_name);
+    if(relationship)
+      return true;
+  }
+ 
+  return false;
+}
 
 } //namespace Glom

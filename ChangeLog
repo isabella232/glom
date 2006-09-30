@@ -1,5 +1,19 @@
 2006-09-30  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/mode_design/dialog_add_related_table.cc:
+	* glom/mode_design/dialog_add_related_table.h:
+	* glom/base_db.cc:
+	* glom/base_db.h: Moved get_relationship_exists() here 
+	so it can be used from frame_glom.cc.
+	* glom/frame_glom.cc: on_dialog_add_related_table_response(): 
+	Check the inputs here instead of in on_response() of the dialog, 
+	because we can not stop a dialog from finishing. Instead we 
+	show it again.
+	* glom/glom.glade: Change the dialog text slightly.
+	* po/POTFILES.in: Mentioned dialog_add_related_table.cc.
+
+2006-09-30  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/mode_design/dialog_design.cc:
 	* glom/mode_design/dialog_design.h: Derive from Window instead 
 	of Dialog, because that is what it is in the .glade file, and 
