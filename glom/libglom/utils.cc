@@ -609,7 +609,7 @@ Utils::type_vecStrings Utils::string_separate(const Glib::ustring& str, const Gl
       //Check that the separator was not in quotes:
       bool in_quotes = false;
 
-      if(!ignore_quoted_separator)
+      if(ignore_quoted_separator)
       {
         //std::cout << "  debug: attempting to ignore quoted separators: " << separator << std::endl;
        

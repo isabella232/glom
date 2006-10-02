@@ -1,3 +1,9 @@
+2006-10-02  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/libglom/utils.cc: string_separate(): Correct an if so that 
+	we really check for quoted separators when specified. This fixes a loss 
+	of rows when adding example data from an example glom file.
+
 2006-09-30  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/mode_design/dialog_add_related_table.cc:
