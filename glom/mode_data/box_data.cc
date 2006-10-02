@@ -104,7 +104,12 @@ Glib::ustring Box_Data::get_find_where_clause() const
     }
 
     if(!strClausePart.empty())
-      strClause += strClausePart + " ";
+    {
+      if(!strClause.empty())
+        strClause += "AND ";
+
+      strClause += "(" + strClausePart + ") ";
+    }
   }
 
   return strClause;
