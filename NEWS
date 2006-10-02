@@ -1,3 +1,9 @@
+1.0.6:
+
+* Avoid changing example files when using them to create new files.
+* Creating from examples: Correct a problem that could lead to Glom not 
+  using all the rows of example data.
+
 1.0.5:
 
 * Connection dialog: Use mnemonics for accessibility navigation.
