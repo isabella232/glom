@@ -1,3 +1,13 @@
+2006-10-02  Murray Cumming  <murrayc@murrayc.com>
+
+        * glom/mode_data/box_data.cc: get_find_where_clause():
+        When multiple fields are specified in a Find, join them together
+        in the SQL where clause with AND, instead of just joining them
+        together, because that would be an invalid SQL statement. Obviously.
+        * glom/utility_widgets/db_adddel/glom_db_treemodel.cc:
+        refresh_from_database(): When the SQL command fails, output it to
+        stdcerr, to help debugging.
+
 1.0.6:
 
 2006-10-02  Murray Cumming  <murrayc@murrayc.com>
