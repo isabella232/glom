@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glom\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-09-15 11:20+0300\n"
-"PO-Revision-Date: 2006-09-15 11:21+0300\n"
+"POT-Creation-Date: 2006-09-25 20:43+0300\n"
+"PO-Revision-Date: 2006-10-03 10:50+0300\n"
 "Last-Translator: Ilkka Tuohela <hile@iki.fi>\n"
 "Language-Team: Finnish <gnome-fi-laatu@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -19,7 +19,7 @@ msgstr ""
 msgid "A user-friendly database environment."
 msgstr "Käyttäjäystävällinen tietokantaympäristö."
 
-#: ../glom.desktop.in.in.h:2 ../glom/glom.glade.h:129 ../glom/main.cc:106
+#: ../glom.desktop.in.in.h:2 ../glom/glom.glade.h:136 ../glom/main.cc:106
 msgid "Glom"
 msgstr "Glom"
 
@@ -353,223 +353,286 @@ msgid "Add _Group"
 msgstr "Lisää _ryhmä"
 
 #: ../glom/glom.glade.h:88
+msgid ""
+"Add a button. Edit the button to define the script that will be run when the "
+"button is clicked."
+msgstr ""
+"Lisää painike ja määrittele painiketta painettaessa suoritettava skripti." 
+
+#: ../glom/glom.glade.h:89
+msgid ""
+"Add a group which can contain other layout items. Use this to group items "
+"together, such as fields."
+msgstr ""
+"Lisää ryhmä, joka voi sisältää muita asettelukohtia. Tällä voit ryhmitellä "
+"yhteen esimerkiksi kenttiä."
+
+#: ../glom/glom.glade.h:90
+msgid ""
+"Add a layout item that shows the data from a field in the record, and allows "
+"the user to edit that value."
+msgstr ""
+"Lisää asetteluun kohta, joka näyttää tietueen kentän arvon ja mahdollistaa "
+"arvon muokkaamisen."
+
+#: ../glom/glom.glade.h:91
+msgid ""
+"Add a related records portal. This is a list of records in a related table. "
+"Remember to edit this layout item to specify the relationship to use, and "
+"the  fields to show from the related table."
+msgstr ""
+"Lisää liittyvien tietueiden portaali. Tämä on lista tietueista riippuvissa "
+"tauluissa. Muista määritellä tähän asetteluun käytettävät suhteet ja "
+"liittyvistä tauluista näytettävät kentät."
+
+#: ../glom/glom.glade.h:92
+msgid ""
+"Add a tabbed notebook. Each page of the notebook may contain several other "
+"layout items, but only one page will be visible at one time."
+msgstr ""
+"Lisää muistikirja välilehdillä. Jokainen muistikirjan sivu voi sisältää "
+"muita asetteluita, mutta vain yksi sivu voi olla näkyvissä kerrallaan."
+
+#: ../glom/glom.glade.h:93
+msgid ""
+"Add an image to the layout, such as a logo. The image will be the same for "
+"every record viewed. To show an image field from a record, to show different "
+"images for each field, use the field layout item."
+msgstr ""
+"Lisää asetteluun kuva. Kuva voi olla sama kaikille näytettäville tietueille. "
+"Jos haluat näyttää kuvan tietueen kentästä, näyttäen eri kuvan kullekin "
+"tietueelle, sinun tulee käyttää kenttäasettelua."
+
+#: ../glom/glom.glade.h:94
+msgid ""
+"Add text to a layout, such as an explanation or a warning. The text will be "
+"the same for every record viewed."
+msgstr ""
+"Lisää tekstiä, esimerkiksi varoitus tai selitys, asetteluun. Teksti on "
+"sama jokaiselle näytetylle tietueelle."
+
+#: ../glom/glom.glade.h:95
 #: ../glom/mode_design/box_db_table_relationships.cc:52
 msgid "Allow Editing"
 msgstr "Salli muokkaus"
 
-#: ../glom/glom.glade.h:89
+#: ../glom/glom.glade.h:96
 msgid "Also show"
 msgstr "Näytä myös"
 
-#: ../glom/glom.glade.h:90
+#: ../glom/glom.glade.h:97
 msgid "Auto-increment"
 msgstr "Kasvata automaattisesti"
 
-#: ../glom/glom.glade.h:91
+#: ../glom/glom.glade.h:98
 msgid "Auto-increment values"
 msgstr "Automaattisen kasvatuksen arvot"
 
-#: ../glom/glom.glade.h:92
+#: ../glom/glom.glade.h:99
 msgid "Border Width (ems)"
 msgstr "Reunan leveys (ems)"
 
-#: ../glom/glom.glade.h:93
+#: ../glom/glom.glade.h:100
 msgid "Button Script"
 msgstr "Painikeskripti"
 
-#: ../glom/glom.glade.h:94
+#: ../glom/glom.glade.h:101
 msgid "C_onnect"
 msgstr "_Yhdistä"
 
-#: ../glom/glom.glade.h:95
+#: ../glom/glom.glade.h:102
 msgid "Calculate Value"
 msgstr "Laske arvo"
 
-#: ../glom/glom.glade.h:96
+#: ../glom/glom.glade.h:103
 msgid "Choices From Related Records"
 msgstr "Valinnat liittyvistä tietueista"
 
-#: ../glom/glom.glade.h:97
+#: ../glom/glom.glade.h:104
 msgid "Choose Date"
 msgstr "Valitse päiväys"
 
-#: ../glom/glom.glade.h:98
+#: ../glom/glom.glade.h:105
 msgid "Choose User"
 msgstr "Valitse käyttäjä"
 
-#: ../glom/glom.glade.h:99
+#: ../glom/glom.glade.h:106
 msgid "Confirm Password"
 msgstr "Vahvista salasana"
 
-#: ../glom/glom.glade.h:100
+#: ../glom/glom.glade.h:107
 msgid "Copy From Existing Translation"
 msgstr "Kopioi olemassaolevasta käännöksestä"
 
-#: ../glom/glom.glade.h:101 ../glom/libglom/document/document_glom.cc:334
+#: ../glom/glom.glade.h:108 ../glom/libglom/document/document_glom.cc:335
 msgid "Country"
 msgstr "Maa"
 
-#: ../glom/glom.glade.h:102 ../glom/mode_design/users/dialog_groups_list.cc:79
+#: ../glom/glom.glade.h:109 ../glom/mode_design/users/dialog_groups_list.cc:79
 msgid "Create"
 msgstr "Luo"
 
-#: ../glom/glom.glade.h:103
+#: ../glom/glom.glade.h:110
 msgid "Create Group"
 msgstr "Luo ryhmä"
 
-#: ../glom/glom.glade.h:104
+#: ../glom/glom.glade.h:111
 msgid "Creating Glom Database"
 msgstr "Luo Glomin tietokanta"
 
-#: ../glom/glom.glade.h:105
+#: ../glom/glom.glade.h:112
 msgid "Creating Glom database from example file."
 msgstr "Luo Glomin tietokanta esimerkkitiedostosta."
 
-#: ../glom/glom.glade.h:106
+#: ../glom/glom.glade.h:113
 msgid "Currency Symbol"
 msgstr "Valuutan merkki"
 
-#: ../glom/glom.glade.h:107
+#: ../glom/glom.glade.h:114
 msgid "Custom Choice List"
 msgstr "Lista omista valinnoista"
 
-#: ../glom/glom.glade.h:108 ../glom/frame_glom.cc:418
+#: ../glom/glom.glade.h:115 ../glom/frame_glom.cc:418
 msgid "Data"
 msgstr "Tiedot"
 
-#: ../glom/glom.glade.h:109
+#: ../glom/glom.glade.h:116
 msgid "Database"
 msgstr "Tietokanta"
 
-#: ../glom/glom.glade.h:110
+#: ../glom/glom.glade.h:117
 msgid "Database Preferences"
 msgstr "Tietokannan asetukset"
 
-#: ../glom/glom.glade.h:111
+#: ../glom/glom.glade.h:118
 msgid "Decimal Places"
 msgstr "Desimaaleja"
 
-#: ../glom/glom.glade.h:112
+#: ../glom/glom.glade.h:119
 msgid "Default Formatting"
 msgstr "Oletusmuotoilu"
 
-#: ../glom/glom.glade.h:113
+#: ../glom/glom.glade.h:120
 msgid "Details Layout"
 msgstr "Yksityiskohtien asettelu"
 
 #. Add new menu items:
-#: ../glom/glom.glade.h:114 ../glom/mode_design/users/dialog_groups_list.cc:76
+#: ../glom/glom.glade.h:121 ../glom/mode_design/users/dialog_groups_list.cc:76
 #: ../glom/utility_widgets/adddel/adddel.cc:232
 msgid "Edit"
 msgstr "Muokkaa"
 
-#: ../glom/glom.glade.h:115
+#: ../glom/glom.glade.h:122
 msgid "English"
 msgstr "English"
 
-#: ../glom/glom.glade.h:116
+#: ../glom/glom.glade.h:123
 msgid "Export Format"
 msgstr "Vientimuoto"
 
-#: ../glom/glom.glade.h:117
+#: ../glom/glom.glade.h:124
 #: ../glom/libglom/data_structure/translatable_item.cc:250
 #: ../glom/libglom/data_structure/layout/layoutitem_field.cc:196
 #: ../glom/dialog_database_preferences.cc:55
 msgid "Field"
 msgstr "Kenttä"
 
-#: ../glom/glom.glade.h:118
+#: ../glom/glom.glade.h:125
 msgid "Field Calculation"
 msgstr "Kentän laskenta"
 
-#: ../glom/glom.glade.h:119
+#: ../glom/glom.glade.h:126
 msgid "Field Definition"
 msgstr "Kentän määrittely"
 
-#: ../glom/glom.glade.h:120 ../glom/mode_design/dialog_fields.cc:36
+#: ../glom/glom.glade.h:127 ../glom/mode_design/dialog_fields.cc:36
 msgid "Field Definitions"
 msgstr "Kenttien määrittelyt"
 
-#: ../glom/glom.glade.h:121
+#: ../glom/glom.glade.h:128
 msgid "Field Layout"
 msgstr "Kentän asettelu"
 
-#: ../glom/glom.glade.h:122
+#: ../glom/glom.glade.h:129
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:70
 msgid "Field Summary"
 msgstr "Kentän yhteenveto"
 
-#: ../glom/glom.glade.h:123
+#: ../glom/glom.glade.h:130
 msgid "Field:"
 msgstr "Kenttä:"
 
-#: ../glom/glom.glade.h:124
+#: ../glom/glom.glade.h:131
 msgid "Find All"
 msgstr "Etsi kaikki"
 
-#: ../glom/glom.glade.h:125
+#: ../glom/glom.glade.h:132
 msgid "Find Related Record"
 msgstr "Etsi liittyvä tietue"
 
-#: ../glom/glom.glade.h:126
+#: ../glom/glom.glade.h:133
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_footer.cc:55
 msgid "Footer"
 msgstr "Alaviite"
 
-#: ../glom/glom.glade.h:127
+#: ../glom/glom.glade.h:134
 msgid "Formatting"
 msgstr "Muotoilu"
 
-#: ../glom/glom.glade.h:128
+#: ../glom/glom.glade.h:135
 msgid "Found:"
 msgstr "Löytyi:"
 
-#: ../glom/glom.glade.h:130
+#: ../glom/glom.glade.h:137
 #: ../glom/libglom/data_structure/layout/layoutgroup.cc:396
 msgid "Group"
 msgstr "Ryhmä"
 
-#: ../glom/glom.glade.h:131
+#: ../glom/glom.glade.h:138
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_groupby.cc:102
 msgid "Group By"
 msgstr "Ryhmittely"
 
-#: ../glom/glom.glade.h:132
+#: ../glom/glom.glade.h:139
 msgid "Group By - Secondary Fields"
 msgstr "Ryhmittely - toissijaiset kentät"
 
-#: ../glom/glom.glade.h:133
+#: ../glom/glom.glade.h:140
 msgid "Group By - Sort Fields"
 msgstr "Ryhmittely - järjestyskentät"
 
-#: ../glom/glom.glade.h:134
+#: ../glom/glom.glade.h:141
 msgid "Group Name"
 msgstr "Ryhmän nimi"
 
-#: ../glom/glom.glade.h:135
+#: ../glom/glom.glade.h:142
 msgid "Groups"
 msgstr "Ryhmät"
 
-#: ../glom/glom.glade.h:136
+#: ../glom/glom.glade.h:143
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_header.cc:55
 msgid "Header"
 msgstr "Yläviite"
 
-#: ../glom/glom.glade.h:137
+#: ../glom/glom.glade.h:144
+msgid "Height (lines)"
+msgstr "Korkeus (rivejä)"
+
+#: ../glom/glom.glade.h:145
 msgid "Identify Original"
 msgstr "Tunnista alkuperäinen"
 
-#: ../glom/glom.glade.h:138
+#: ../glom/glom.glade.h:146
 msgid "Identify Source"
 msgstr "Tunnista lähde"
 
-#: ../glom/glom.glade.h:139
+#: ../glom/glom.glade.h:147
 msgid ""
 "If the text is not actually in this language, please choose the correct "
 "language."
 msgstr "Valitse oikea kieli, jos teksti ei ole tunnistetulla kielellä."
 
-#: ../glom/glom.glade.h:140
+#: ../glom/glom.glade.h:148
 msgid ""
 "If this is not selected then a thousands separator will not be used, even if "
 "your locale would normally use one. If it is selected then a thousands "
@@ -579,35 +642,43 @@ msgstr ""
 "normaalisti käyttäisi sellaista. Jos tämä on valittu, käytetään tuhutlukujen "
 "erotinta vain, jos lokaalisi käyttää sellaista."
 
-#: ../glom/glom.glade.h:141
+#: ../glom/glom.glade.h:149
+msgid ""
+"If this is selected then the field value will be shown in a multi-line box "
+"with a scrollbar."
+msgstr ""
+"Jos tämä on valittu, kentän arvo näytetään monirivisessä laatikossa "
+"vierityspalkin kanssa."
+
+#: ../glom/glom.glade.h:150
 msgid "Language"
 msgstr "Kieli"
 
-#: ../glom/glom.glade.h:142
+#: ../glom/glom.glade.h:151
 msgid "List Layout"
 msgstr "Listan asettelu"
 
-#: ../glom/glom.glade.h:143
+#: ../glom/glom.glade.h:152
 msgid "Locale"
 msgstr "Lokaali"
 
-#: ../glom/glom.glade.h:144
+#: ../glom/glom.glade.h:153
 msgid "Logo"
 msgstr "Logo"
 
-#: ../glom/glom.glade.h:145
+#: ../glom/glom.glade.h:154
 msgid "Lookup value when a field changes."
 msgstr "Etsi arvo, kun kenttä vaihtuu."
 
-#: ../glom/glom.glade.h:146
+#: ../glom/glom.glade.h:155
 msgid "Main"
 msgstr "Pääikkuna"
 
-#: ../glom/glom.glade.h:147
+#: ../glom/glom.glade.h:156
 msgid "Mode:"
 msgstr "Tila:"
 
-#: ../glom/glom.glade.h:148
+#: ../glom/glom.glade.h:157
 msgid "Multi-line"
 msgstr "Monirivinen"
 
@@ -618,7 +689,7 @@ msgstr "Monirivinen"
 #. Append the View columns:
 #. Append the View columns:
 #. Append the View columns:
-#: ../glom/glom.glade.h:149 ../glom/box_reports.cc:90
+#: ../glom/glom.glade.h:158 ../glom/box_reports.cc:90
 #: ../glom/layout_item_dialogs/dialog_groupby_secondaryfields.cc:51
 #: ../glom/layout_item_dialogs/dialog_groupby_sortfields.cc:50
 #: ../glom/layout_item_dialogs/dialog_notebook.cc:46
@@ -634,101 +705,110 @@ msgstr "Monirivinen"
 msgid "Name"
 msgstr "Nimi"
 
-#: ../glom/glom.glade.h:150
+#: ../glom/glom.glade.h:159
 msgid "New From Example"
 msgstr "Uusi esimerkistä"
 
-#: ../glom/glom.glade.h:151
+#: ../glom/glom.glade.h:160
 msgid "No Choices"
 msgstr "Ei valintoja"
 
-#: ../glom/glom.glade.h:152 ../glom/mode_design/dialog_design.cc:52
+#: ../glom/glom.glade.h:161 ../glom/mode_design/dialog_design.cc:52
 msgid "None selected"
 msgstr "Ei valittua"
 
-#: ../glom/glom.glade.h:153 ../glom/mode_data/dialog_layout_details.cc:919
+#: ../glom/glom.glade.h:162 ../glom/mode_data/dialog_layout_details.cc:919
 msgid "Notebook Tabs"
 msgstr "Lehtiön välilehdet"
 
-#: ../glom/glom.glade.h:154
+#: ../glom/glom.glade.h:163
 msgid "Organisation"
 msgstr "Organisaatio"
 
-#: ../glom/glom.glade.h:155
+#: ../glom/glom.glade.h:164
 msgid "Password"
 msgstr "Salasana"
 
-#: ../glom/glom.glade.h:156
+#: ../glom/glom.glade.h:165
 msgid "Primary Key"
 msgstr "Pääavain"
 
-#: ../glom/glom.glade.h:157
+#: ../glom/glom.glade.h:166
 msgid "Quick Find"
 msgstr "Pikahaku"
 
-#: ../glom/glom.glade.h:158
+#: ../glom/glom.glade.h:167
 msgid "Records: "
 msgstr "Tietueet:"
 
-#: ../glom/glom.glade.h:159
+#: ../glom/glom.glade.h:168
 msgid "Related Records Layout"
 msgstr "Liittyvien tietueiden asettelu"
 
-#: ../glom/glom.glade.h:160
+#: ../glom/glom.glade.h:169
 #: ../glom/libglom/data_structure/translatable_item.cc:254
 msgid "Relationship"
 msgstr "Suhde"
 
-#: ../glom/glom.glade.h:161
+#: ../glom/glom.glade.h:170
+msgid ""
+"Remove the item from the layout. If you remove a field layout item, it will "
+"not remove the field from the table itself. It just will not be seen on the "
+"layout."
+msgstr ""
+"Poista kohta asettelusta. Jos poistat kentän asettelusta, ei kenttää "
+"poisteta kuitenkaan taulusta: sitä ei vaan näytetä enää asettelussa."
+
+#: ../glom/glom.glade.h:171
 msgid "Report Layout"
 msgstr "Raportin asettelu"
 
-#: ../glom/glom.glade.h:162
+#: ../glom/glom.glade.h:172
 msgid "Reports"
 msgstr "Raportit"
 
-#: ../glom/glom.glade.h:163
+#: ../glom/glom.glade.h:173
 msgid "Restrict data to these choices"
 msgstr "Rajoita tieto näihin valintoihin"
 
-#: ../glom/glom.glade.h:164
+#: ../glom/glom.glade.h:174
 msgid "Revert"
 msgstr "Peru"
 
-#: ../glom/glom.glade.h:165
+#: ../glom/glom.glade.h:175
 msgid "Secondary Fields:"
 msgstr "Toissijaiset kentät:"
 
-#: ../glom/glom.glade.h:166 ../glom/utility_widgets/imageglom.cc:444
+#: ../glom/glom.glade.h:176 ../glom/utility_widgets/imageglom.cc:444
 #: ../glom/utility_widgets/dialog_choose_id.cc:82
 msgid "Select"
 msgstr "Valitse"
 
-#: ../glom/glom.glade.h:167
+#: ../glom/glom.glade.h:177
 msgid "Select Field"
 msgstr "Valitse kenttä"
 
-#: ../glom/glom.glade.h:168
+#: ../glom/glom.glade.h:178
 msgid "Select Relationship"
 msgstr "Valitse suhde"
 
-#: ../glom/glom.glade.h:169
+#: ../glom/glom.glade.h:179
 msgid "Show Related Relationships"
 msgstr "Valitse liittyvien tietueiden suhteet"
 
-#: ../glom/glom.glade.h:170
+#: ../glom/glom.glade.h:180
 msgid "Show Table Title"
 msgstr "Näytä taulukon otsikko"
 
-#: ../glom/glom.glade.h:171
+#: ../glom/glom.glade.h:181
 msgid "Show hidden tables"
 msgstr "Näytä piilotetut taulut"
 
-#: ../glom/glom.glade.h:172
+#: ../glom/glom.glade.h:182
 msgid "Sort Fields:"
 msgstr "Järjestä kentät:"
 
-#: ../glom/glom.glade.h:173
+#: ../glom/glom.glade.h:183
 msgid ""
 "Start a translation for this target locale by copying the strings from "
 "another target locale."
@@ -736,54 +816,54 @@ msgstr ""
 "Aloita kääntäminen tälle kohdekielelle kopioimalla merkkijonot toisesta "
 "käännöksestä."
 
-#: ../glom/glom.glade.h:174
+#: ../glom/glom.glade.h:184
 msgid "State/County"
 msgstr "Osavaltio/lääni"
 
-#: ../glom/glom.glade.h:175 ../glom/libglom/document/document_glom.cc:310
+#: ../glom/glom.glade.h:185 ../glom/libglom/document/document_glom.cc:311
 msgid "Street"
 msgstr "Katuosoite"
 
-#: ../glom/glom.glade.h:176
+#: ../glom/glom.glade.h:186
 msgid "Street (Line 2)"
 msgstr "Katuosoite (rivi 2)"
 
-#: ../glom/glom.glade.h:177
+#: ../glom/glom.glade.h:187
 msgid "Summary Type:"
 msgstr "Yhteenvedon tyyppi:"
 
-#: ../glom/glom.glade.h:178 ../glom/libglom/document/document_glom.cc:292
+#: ../glom/glom.glade.h:188 ../glom/libglom/document/document_glom.cc:293
 msgid "System Name"
 msgstr "Järjestelmän nimi"
 
-#: ../glom/glom.glade.h:179
+#: ../glom/glom.glade.h:189
 msgid "Table:"
 msgstr "Taulu:"
 
-#: ../glom/glom.glade.h:180
+#: ../glom/glom.glade.h:190
 msgid "Table: "
 msgstr "Taulu: "
 
-#: ../glom/glom.glade.h:181
+#: ../glom/glom.glade.h:191
 msgid "Test"
 msgstr "Testi"
 
-#: ../glom/glom.glade.h:182
+#: ../glom/glom.glade.h:192
 msgid "Test Translation"
 msgstr "Testikäännös"
 
-#: ../glom/glom.glade.h:183
+#: ../glom/glom.glade.h:193
 msgid "Text Object"
 msgstr "Tekstiolio"
 
-#: ../glom/glom.glade.h:184
+#: ../glom/glom.glade.h:194
 msgid ""
 "The field value will be the return value of the python function, which you "
 "implement here."
 msgstr "Tämän kentän arvo on toteuttamasi python-funktion paluuarvo."
 
 #. Title column:
-#: ../glom/glom.glade.h:185 ../glom/box_reports.cc:94
+#: ../glom/glom.glade.h:195 ../glom/box_reports.cc:94
 #: ../glom/layout_item_dialogs/dialog_notebook.cc:47
 #: ../glom/mode_data/dialog_choose_field.cc:52
 #: ../glom/mode_data/dialog_layout_details.cc:81
@@ -793,71 +873,71 @@ msgstr "Tämän kentän arvo on toteuttamasi python-funktion paluuarvo."
 msgid "Title"
 msgstr "Otsikko"
 
-#: ../glom/glom.glade.h:186
+#: ../glom/glom.glade.h:196
 msgid "Town"
 msgstr "Kaupunki"
 
-#: ../glom/glom.glade.h:187
+#: ../glom/glom.glade.h:197
 msgid "Translations"
 msgstr "Käännökset"
 
-#: ../glom/glom.glade.h:188
+#: ../glom/glom.glade.h:198
 msgid "Triggered by:"
 msgstr "Käynnistänyt:"
 
-#: ../glom/glom.glade.h:189
+#: ../glom/glom.glade.h:199
 #: ../glom/mode_design/fields/box_db_table_definition.cc:58
 msgid "Type"
 msgstr "Tyyppi"
 
-#: ../glom/glom.glade.h:190
+#: ../glom/glom.glade.h:200
 msgid "Unique"
 msgstr "Yksilöllinen"
 
-#: ../glom/glom.glade.h:191
+#: ../glom/glom.glade.h:201
 msgid "Use 1000s separator"
 msgstr "Käytä 1000-erotinta"
 
-#: ../glom/glom.glade.h:192
+#: ../glom/glom.glade.h:202
 msgid "Use custom formatting"
 msgstr "Käytä omaa muotoilua"
 
-#: ../glom/glom.glade.h:193
+#: ../glom/glom.glade.h:203
 msgid "Use custom title"
 msgstr "Käytä omaa otsikkoa"
 
-#: ../glom/glom.glade.h:194
+#: ../glom/glom.glade.h:204
 msgid "Use default field title: "
 msgstr "Käytä kentän oletusotsikkoa: "
 
-#: ../glom/glom.glade.h:195
+#: ../glom/glom.glade.h:205
 msgid "Use default formatting"
 msgstr "Käytä oletusmuotoilua"
 
 #. Append the View columns:
-#: ../glom/glom.glade.h:196 ../glom/mode_design/users/dialog_users_list.cc:67
+#: ../glom/glom.glade.h:206 ../glom/mode_design/users/dialog_users_list.cc:67
 msgid "User"
 msgstr "Käyttäjä"
 
-#: ../glom/glom.glade.h:197
+#: ../glom/glom.glade.h:207
 msgid "User Entry"
 msgstr "Käyttäjäsyöte"
 
-#: ../glom/glom.glade.h:198
+#: ../glom/glom.glade.h:208
 msgid "Users"
 msgstr "Käyttäjät"
 
-#: ../glom/glom.glade.h:199
+#: ../glom/glom.glade.h:209
 msgid "Value"
 msgstr "Arvo"
 
-#: ../glom/glom.glade.h:200
+#: ../glom/glom.glade.h:210
 msgid ""
 "When the button is clicked it will run the python function which you "
 "implement here."
 msgstr "Kun painiketta napsautetaan, suoritetaan toteuttamasi python-funktio."
 
-#: ../glom/glom.glade.h:201
+#: ../glom/glom.glade.h:211
 msgid ""
 "When this is selected you will see extra relationships in the Table list, "
 "allowing you to choose fields from relationships in related tables, instead "
@@ -867,59 +947,39 @@ msgstr ""
 "liittyvissä tauluissa olevien suhteiden kenttien valinnan sen sijaan että "
 "voisit vain valita tavallisia kenttiä liittyvistä tauluista."
 
-#: ../glom/glom.glade.h:202
+#: ../glom/glom.glade.h:212
 msgid "Zip/Postal Code"
 msgstr "Postinumero"
 
-#: ../glom/glom.glade.h:203
+#: ../glom/glom.glade.h:213
 msgid "_Host"
 msgstr "_Palvelin"
 
-#: ../glom/glom.glade.h:204
+#: ../glom/glom.glade.h:214
 msgid "_Password"
 msgstr "_Salasana"
 
-#: ../glom/glom.glade.h:205
+#: ../glom/glom.glade.h:215
 msgid "_User"
 msgstr "_Käyttäjä"
 
-#: ../glom/glom.glade.h:206
+#: ../glom/glom.glade.h:216
 msgid "example data format"
 msgstr "tiedon esimerkkimuotoilu"
 
-#: ../glom/glom.glade.h:207
+#: ../glom/glom.glade.h:217
 msgid "field name"
 msgstr "kentän nimi"
 
-#: ../glom/glom.glade.h:208
-msgid ""
-"import glom\n"
-"\n"
-"<b>def calculate_field_value(record):</b>"
-msgstr ""
-"import glom\n"
-"\n"
-"<b>def calculate_field_value(record):</b>"
-
-#: ../glom/glom.glade.h:211
-msgid ""
-"import glom\n"
-"\n"
-"<b>def on_button_clicked(record):</b>"
-msgstr ""
-"import glom\n"
-"\n"
-"<b>def on_button_clicked(record):</b>"
-
-#: ../glom/glom.glade.h:214
+#: ../glom/glom.glade.h:218
 msgid "table name"
 msgstr "taulun nimi"
 
-#: ../glom/glom.glade.h:215
+#: ../glom/glom.glade.h:219
 msgid "table_name"
 msgstr "taulun_nimi"
 
-#: ../glom/glom.glade.h:216
+#: ../glom/glom.glade.h:220
 msgid "the title"
 msgstr "otsikko"
 
@@ -1081,11 +1141,11 @@ msgstr "_Sisältö"
 msgid "Help with the application"
 msgstr "Sovelluksen ohje"
 
-#: ../glom/application.cc:1185
+#: ../glom/application.cc:1198
 msgid "Save failed."
 msgstr "Tallennus epäonnistui."
 
-#: ../glom/application.cc:1185
+#: ../glom/application.cc:1198
 msgid ""
 "There was an error while saving the file. Your changes have not been saved."
 msgstr "Virhe tallennettaessa tiedostoa. Muutoksia ei ole tallennettu."
@@ -1094,23 +1154,23 @@ msgstr "Virhe tallennettaessa tiedostoa. Muutoksia ei ole tallennettu."
 msgid "Internal error"
 msgstr "Sisäinen virhe"
 
-#: ../glom/base_db.cc:1270
+#: ../glom/base_db.cc:1273
 msgid "No Records Found"
 msgstr "Tietueita ei löydy"
 
-#: ../glom/base_db.cc:1272
+#: ../glom/base_db.cc:1275
 msgid "New Find"
 msgstr "Uusi haku"
 
-#: ../glom/base_db.cc:1273
+#: ../glom/base_db.cc:1276
 msgid "Your find criteria did not match any records in the table."
 msgstr "Hakuehto ei vastannut yhtäkään tietuetta taulussa."
 
-#: ../glom/base_db.cc:2224
+#: ../glom/base_db.cc:2227
 msgid "Value Is Not Unique"
 msgstr "Arvo ei ole yksikäsitteinen"
 
-#: ../glom/base_db.cc:2224
+#: ../glom/base_db.cc:2227
 msgid ""
 "The field's value must be unique, but a record with this value already "
 "exists."
@@ -1254,32 +1314,32 @@ msgstr "Yhteenveto"
 msgid "Vertical Group"
 msgstr "Pystysuuntainen ryhmä"
 
-#: ../glom/libglom/document/document_glom.cc:261
-#: ../glom/libglom/document/document_glom.cc:279
+#: ../glom/libglom/document/document_glom.cc:262
+#: ../glom/libglom/document/document_glom.cc:280
 msgid "System Preferences"
 msgstr "Järjestelmän asetukset"
 
-#: ../glom/libglom/document/document_glom.cc:298
+#: ../glom/libglom/document/document_glom.cc:299
 msgid "Organisation Name"
 msgstr "Organisaation nimi"
 
-#: ../glom/libglom/document/document_glom.cc:304
+#: ../glom/libglom/document/document_glom.cc:305
 msgid "Organisation Logo"
 msgstr "Organisaation logo"
 
-#: ../glom/libglom/document/document_glom.cc:316
+#: ../glom/libglom/document/document_glom.cc:317
 msgid "Street (line 2)"
 msgstr "Katuosoite (rivi 2)"
 
-#: ../glom/libglom/document/document_glom.cc:322
+#: ../glom/libglom/document/document_glom.cc:323
 msgid "City"
 msgstr "Kaupunki"
 
-#: ../glom/libglom/document/document_glom.cc:328
+#: ../glom/libglom/document/document_glom.cc:329
 msgid "State"
 msgstr "Osavaltio"
 
-#: ../glom/libglom/document/document_glom.cc:340
+#: ../glom/libglom/document/document_glom.cc:341
 msgid "Zip Code"
 msgstr "Postinumero"
 
@@ -1487,17 +1547,29 @@ msgid "List"
 msgstr "Lista"
 
 #. Tell user that they can't do that:
-#: ../glom/mode_data/box_data_list_related.cc:324
+#: ../glom/mode_data/box_data_list_related.cc:325
 msgid "Extra related records not possible."
 msgstr "Ylimääräiset liittyvät tietueet eivät ole mahdollisia."
 
-#: ../glom/mode_data/box_data_list_related.cc:325
+#: ../glom/mode_data/box_data_list_related.cc:326
 msgid ""
 "You attempted to add a new related record, but there can only be one related "
 "record, because the relationship uses a unique key."
 msgstr ""
 "Yritit lisätä uuden liittyvän tietueen, mutta kussakin kohdassa voi olla "
 "vain yksi liittyvä tietue, koska suhteet käyttävät yksikäsitteisiä avaimia."
+
+#: ../glom/mode_data/box_data_list_related.cc:577
+msgid "No Corresponding Record Exists"
+msgstr "Vastaavaa tietuetta ei löydy"
+
+#: ../glom/mode_data/box_data_list_related.cc:577
+msgid ""
+"No record with this value exists. Therefore navigation to the related record "
+"is not possible."
+msgstr ""
+"Tällä arvolla ei löydy tietuetta, joten siirtyminen siihen liittyviin "
+"tietuesiin ei ole mahdollista."
 
 #. Columns-count column:
 #: ../glom/mode_data/dialog_layout_details.cc:93
@@ -1786,13 +1858,17 @@ msgid "This field may not be edited here."
 msgstr "Tätä kenttää ei voi muokata tässä."
 
 #. Let the user choose a date from a calendar dialog:
-#: ../glom/utility_widgets/datawidget.cc:209
+#: ../glom/utility_widgets/datawidget.cc:222
 msgid "..."
 msgstr "..."
 
-#: ../glom/utility_widgets/db_adddel/db_adddel.cc:230
+#: ../glom/utility_widgets/db_adddel/db_adddel.cc:232
 msgid "Layout"
 msgstr "Asettelu"
+
+#: ../glom/utility_widgets/db_adddel/db_adddel.cc:1794
+msgid "Right-click to layout, to specify the related fields."
+msgstr "Määrittele liittyvät kentät napsauttamalla asettelua oikealla napilla."
 
 #: ../glom/utility_widgets/flowtablewithfields.cc:914
 msgid "New Group"
@@ -1878,6 +1954,24 @@ msgstr "Kohde"
 #: ../glom/translation/window_translations.cc:68
 msgid "Translation"
 msgstr "Käännös"
+
+#~ msgid ""
+#~ "import glom\n"
+#~ "\n"
+#~ "<b>def calculate_field_value(record):</b>"
+#~ msgstr ""
+#~ "import glom\n"
+#~ "\n"
+#~ "<b>def calculate_field_value(record):</b>"
+
+#~ msgid ""
+#~ "import glom\n"
+#~ "\n"
+#~ "<b>def on_button_clicked(record):</b>"
+#~ msgstr ""
+#~ "import glom\n"
+#~ "\n"
+#~ "<b>def on_button_clicked(record):</b>"
 
 #~ msgid "<b>Connection</b>"
 #~ msgstr "<b>Yhteys</b>"
