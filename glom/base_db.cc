@@ -1482,16 +1482,16 @@ sharedptr<Field> Base_DB::get_field_primary_key_for_table(const Glib::ustring& t
   return sharedptr<Field>();
 }
 
-void Base_DB::get_table_fields_to_show_for_sequence_add_group(const Glib::ustring& table_name, const Privileges& table_privs, const type_vecFields& all_db_fields, const sharedptr<const LayoutGroup>& group, Base_DB::type_vecLayoutFields& vecFields) const
+void Base_DB::get_table_fields_to_show_for_sequence_add_group(const Glib::ustring& table_name, const Privileges& table_privs, const type_vecFields& all_db_fields, const sharedptr<LayoutGroup>& group, Base_DB::type_vecLayoutFields& vecFields) const
 {
   //g_warning("Box_Data::get_table_fields_to_show_for_sequence_add_group(): table_name=%s, all_db_fields.size()=%d, group->name=%s", table_name.c_str(), all_db_fields.size(), group->get_name().c_str());
 
-  LayoutGroup::type_map_const_items items = group->get_items();
-  for(LayoutGroup::type_map_const_items::const_iterator iterItems = items.begin(); iterItems != items.end(); ++iterItems)
+  LayoutGroup::type_map_items items = group->get_items();
+  for(LayoutGroup::type_map_items::iterator iterItems = items.begin(); iterItems != items.end(); ++iterItems)
   {
-    sharedptr<const LayoutItem> item = iterItems->second;
+    sharedptr<LayoutItem> item = iterItems->second;
 
-    sharedptr<const LayoutItem_Field> item_field = sharedptr<const LayoutItem_Field>::cast_dynamic(item);
+    sharedptr<LayoutItem_Field> item_field = sharedptr<LayoutItem_Field>::cast_dynamic(item);
     if(item_field)
     {
       //Get the field info:
@@ -1503,7 +1503,7 @@ void Base_DB::get_table_fields_to_show_for_sequence_add_group(const Glib::ustrin
         sharedptr<Field> field = get_fields_for_table_one_field(item_field->get_table_used(table_name), item->get_name());
         if(field)
         {
-          sharedptr<LayoutItem_Field> layout_item = glom_sharedptr_clone(item_field); //TODO_Performance: Reduce the copying.
+          sharedptr<LayoutItem_Field> layout_item = item_field;
           layout_item->set_full_field_details(field); //Fill in the full field information for later.
 
 
@@ -1526,7 +1526,7 @@ void Base_DB::get_table_fields_to_show_for_sequence_add_group(const Glib::ustrin
         //If the field does not exist anymore then we won't try to show it:
         if(iterFind != all_db_fields.end() )
         {
-          sharedptr<LayoutItem_Field> layout_item = glom_sharedptr_clone(item_field); //TODO_Performance: Reduce the copying here.
+          sharedptr<LayoutItem_Field> layout_item = item_field;
           layout_item->set_full_field_details(*iterFind); //Fill the LayoutItem with the full field information.
 
           //std::cout << "get_table_fields_to_show_for_sequence_add_group(): name=" << layout_item->get_name() << std::endl;
@@ -1541,10 +1541,10 @@ void Base_DB::get_table_fields_to_show_for_sequence_add_group(const Glib::ustrin
     }
     else
     {
-      sharedptr<const LayoutGroup> item_group = sharedptr<const LayoutGroup>::cast_dynamic(item);
+      sharedptr<LayoutGroup> item_group = sharedptr<LayoutGroup>::cast_dynamic(item);
       if(item_group)
       {
-        sharedptr<const LayoutItem_Portal> item_portal = sharedptr<const LayoutItem_Portal>::cast_dynamic(item);
+        sharedptr<LayoutItem_Portal> item_portal = sharedptr<LayoutItem_Portal>::cast_dynamic(item);
         if(!item_portal) //Do not recurse into portals. They are filled by means of a separate SQL query.
         {
           //Recurse:
@@ -1624,7 +1624,7 @@ Base_DB::type_vecLayoutFields Base_DB::get_table_fields_to_show_for_sequence(con
       //We will show the fields that the document says we should:
       for(Document_Glom::type_mapLayoutGroupSequence::const_iterator iter = mapGroupSequence.begin(); iter != mapGroupSequence.end(); ++iter)
       {
-        sharedptr<const LayoutGroup> group = iter->second;
+        sharedptr<LayoutGroup> group = iter->second;
 
         if(true) //!group->m_hidden)
         {

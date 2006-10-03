@@ -422,7 +422,7 @@ bool DbAddDel::select_item(const Gtk::TreeModel::iterator& iter, bool start_edit
   sharedptr<const LayoutItem_Field> layout_item;
   for(type_ColumnTypes::iterator iter_columns = m_ColumnTypes.begin(); iter_columns != m_ColumnTypes.end(); ++iter_columns)
   {
-    DbAddDelColumnInfo& column_info = *iter_columns;
+    const DbAddDelColumnInfo& column_info = *iter_columns;
     if(column_info.m_field)
     {
       layout_item = column_info.m_field;
@@ -655,7 +655,7 @@ void DbAddDel::construct_specified_columns()
   bool no_columns_used = true;
   for(type_vecModelColumns::iterator iter = vecModelColumns.begin(); iter != vecModelColumns.end(); ++iter)
   {
-    DbAddDelColumnInfo& column_info = m_ColumnTypes[model_column_index];
+    const DbAddDelColumnInfo& column_info = m_ColumnTypes[model_column_index];
     if(column_info.m_visible && !(column_info.m_field->get_hidden())) //TODO: We shouldn't need both of these.
     {
       no_columns_used = false;
@@ -916,7 +916,7 @@ void DbAddDel::set_table_name(const Glib::ustring& table_name)
   m_found_set.m_table_name = table_name;
 }
 
-guint DbAddDel::add_column(const sharedptr<const LayoutItem_Field>& field)
+guint DbAddDel::add_column(const sharedptr<LayoutItem_Field>& field)
 {
   InnerIgnore innerIgnore(this); //Stop on_treeview_columns_changed() from doing anything when it is called just because we add a new column.
 
@@ -1479,8 +1479,14 @@ guint DbAddDel::treeview_append_column(const Glib::ustring& title, Gtk::CellRend
   //Allow the column to be resized:
   pViewColumn->set_resizable();
 
-  //Set a faily sensible default width:
-  pViewColumn->set_min_width(100);
+  sharedptr<const LayoutItem_Field> layout_field = m_ColumnTypes[model_column_index].m_field;
+  
+  guint column_width = 0;
+  if(!layout_field->get_display_width(column_width)) //Not saved in document, but remembered when the column is resized.
+     column_width = 100; //Fairly sensible default.
+
+  pViewColumn->set_min_width((int)column_width);
+  //This property is read only: pViewColumn->property_width() = (int)column_width;
 
   //Save the extra ID, using the title if the column_id is empty:
   Glib::ustring column_id = m_ColumnTypes[model_column_index].m_field->get_name();
@@ -1493,7 +1499,26 @@ guint DbAddDel::treeview_append_column(const Glib::ustring& title, Gtk::CellRend
   pViewColumn->signal_clicked().connect(
     sigc::bind( sigc::mem_fun(*this, &DbAddDel::on_treeview_column_clicked), model_column_index) );
 
+
+  pViewColumn->property_width().signal_changed().connect( 
+    sigc::bind( sigc::mem_fun(*this, &DbAddDel::on_treeview_column_resized), model_column_index, pViewColumn) );
+
   return cols_count;
+}
+
+
+void DbAddDel::on_treeview_column_resized(int model_column_index, DbTreeViewColumnGlom* view_column)
+{
+  if(!view_column)
+    return;
+
+  DbAddDelColumnInfo& column_info = m_ColumnTypes[model_column_index];
+
+  guint width = (guint)view_column->get_width();
+  //std::cout << "  DbAddDel::on_treeview_column_resized(): width=" << width << std::endl;
+
+  if(column_info.m_field)
+      column_info.m_field->set_display_width(width);
 }
 
 void DbAddDel::on_treeview_column_clicked(int model_column_index)
@@ -1705,7 +1730,7 @@ void DbAddDel::treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gt
     Gnome::Gda::Value value;
     treerow->get_value(col_real, value);
 
-    DbAddDelColumnInfo& column_info = m_ColumnTypes[model_column_index];
+    const DbAddDelColumnInfo& column_info = m_ColumnTypes[model_column_index];
     switch(column_info.m_field->get_glom_type())
     {
       case(Field::TYPE_BOOLEAN):

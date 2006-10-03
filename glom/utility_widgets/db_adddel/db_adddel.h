@@ -42,7 +42,7 @@ public:
   DbAddDelColumnInfo(const DbAddDelColumnInfo& src);
   DbAddDelColumnInfo& operator=(const DbAddDelColumnInfo& src);
 
-  sharedptr<const LayoutItem_Field> m_field;
+  sharedptr<LayoutItem_Field> m_field;
 
   typedef std::vector<Glib::ustring> type_vecStrings;
   type_vecStrings m_choices;
@@ -146,7 +146,7 @@ public:
 
   /** @result The index of the new column.
    */
-  guint add_column(const sharedptr<const LayoutItem_Field>& field);
+  guint add_column(const sharedptr<LayoutItem_Field>& field);
 
   /// Specify which records to show:
   void set_found_set(const FoundSet& found_set);
@@ -271,6 +271,7 @@ protected:
 
   virtual bool on_treeview_columnheader_button_press_event(GdkEventButton* event);
   virtual void on_treeview_column_clicked(int model_column_index);
+  void on_treeview_column_resized(int model_column_index, DbTreeViewColumnGlom* view_column);
   virtual void on_cell_button_clicked(const Gtk::TreeModel::Path& path);
 
   bool get_prevent_user_signals() const;

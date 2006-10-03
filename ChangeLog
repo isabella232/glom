@@ -1,3 +1,23 @@
+2006-10-03  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/base_db.cc:
+	* glom/base_db.h: get_table_fields_to_show_for_sequence_add_group(), 
+	Do not clone the layout items - just supply the originals, so that 
+	we can store some data in them and have that data preserved for next 
+	time. This should also be more efficient because it does less 
+	object copying and therefore less memory copying.
+	* glom/libglom/data_structure/layout/layoutitem_field.cc:
+	* glom/libglom/data_structure/layout/layoutitem_field.h: Added 
+	get/set_display_width() which is not saved in the document for now.
+	* glom/utility_widgets/db_adddel/db_adddel.cc:
+	* glom/utility_widgets/db_adddel/db_adddel.h: add_column() Take a 
+	non-const layout item, so that we can store the display_width 
+	in it, in property changed signal for the ViewColumn width 
+	property. Use any previously set display_width when creating the 
+	columns.
+	This means that columns widths are remembered when navigating 
+	between tables. Bug #358089 from Peter Williams.
+
 2006-10-02  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/mode_data/box_data.cc: get_find_where_clause(): 

@@ -94,6 +94,9 @@ public:
 
   const FieldFormatting& get_formatting_used() const;
 
+  bool get_display_width(guint& width) const;
+  void set_display_width(guint value);
+
   /** Compare the name, relationship, and related_relationship.
    */
   bool is_same_field(const sharedptr<const LayoutItem_Field>& field) const;
@@ -107,6 +110,9 @@ protected:
   bool m_hidden;
   bool m_formatting_use_default;
   sharedptr<CustomTitle> m_title_custom; //translatable.
+
+  //Not saved in document:
+  guint m_display_width; //In pixels.
 };
 
 } //namespace Glom
