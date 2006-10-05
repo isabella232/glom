@@ -1,3 +1,9 @@
+1.0.7:
+
+* Find: Fix crash when searching on more than one field (an AND).
+* Fixed some memory management problems.
+  (Murray Cumming)
+
 1.0.6:
 
 * Avoid changing example files when using them to create new files.

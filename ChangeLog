@@ -1,3 +1,11 @@
+1.0.7:
+
+2006-10-05  Murray Cumming  <murrayc@murrayc.com>
+  
+	* glom/libglom/sharedptr.h: cast_*(): Make the new sharedptr 
+	share the refcount with the original, avoiding early deletions of 
+	the object that they share. That was stupid of me.
+
 2006-10-02  Murray Cumming  <murrayc@murrayc.com>
 
         * glom/mode_data/box_data.cc: get_find_where_clause():
