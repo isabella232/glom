@@ -44,6 +44,11 @@ public:
   ///Take ownership
   explicit sharedptr(T_obj* pobj);
 
+  /** Take ownership.
+   * This is only for internal use.
+   */
+  explicit sharedptr(T_obj* pobj, size_type* refcount);
+
   ///Share ownership
   sharedptr(const sharedptr& src);
 
@@ -168,8 +173,17 @@ template< typename T_obj>
 sharedptr<T_obj>::sharedptr(T_obj* pobj)
 : m_pRefCount(0), m_pobj(pobj)
 {
-    //Start refcounting:
-    ref();
+  //Start refcounting:
+  ref();
+}
+
+//This is only for use in the cast_*<> implementations: 
+template< typename T_obj>
+sharedptr<T_obj>::sharedptr(T_obj* pobj, size_t* refcount)
+: m_pRefCount(refcount), m_pobj(pobj)
+{
+  //Start refcounting:
+  ref();
 }
 
 template< typename T_obj>
@@ -361,11 +375,10 @@ sharedptr<T_obj> sharedptr<T_obj>::cast_dynamic(const sharedptr<T_CastFrom>& src
 {
   T_obj *const pCppObject = dynamic_cast<T_obj*>(src.operator->());
 
-  sharedptr<T_obj> result(pCppObject);
   if(pCppObject)
-    result.ref();
-
-  return result;
+    return sharedptr<T_obj>(pCppObject, src._get_refcount());
+  else
+    return sharedptr<T_obj>();
 }
 
 template <class T_obj>
@@ -375,11 +388,10 @@ sharedptr<T_obj> sharedptr<T_obj>::cast_static(const sharedptr<T_CastFrom>& src)
 {
   T_obj *const pCppObject = static_cast<T_obj*>(src.operator->());
 
-  sharedptr<T_obj> result(pCppObject);
   if(pCppObject)
-    result.ref();
-
-  return result;
+    return sharedptr<T_obj>(pCppObject, src._get_refcount());
+  else
+    return sharedptr<T_obj>();
 }
 
 template <class T_obj>
@@ -389,11 +401,10 @@ sharedptr<T_obj> sharedptr<T_obj>::cast_const(const sharedptr<T_CastFrom>& src)
 {
   T_obj *const pCppObject = const_cast<T_obj*>(src.operator->());
 
-  sharedptr<T_obj> result(pCppObject);
   if(pCppObject)
-    result.ref();
-
-  return result;
+    return sharedptr<T_obj>(pCppObject, src._get_refcount());
+  else
+    return sharedptr<T_obj>();
 }
 
 template <class T_obj>

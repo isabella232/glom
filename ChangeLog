@@ -1,5 +1,12 @@
 2006-10-05  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/libglom/sharedptr.h: cast_*(): Make the new sharedptr 
+	share the refcount with the original, avoiding early deletions of 
+	the object that they share. That was stupid of me.
+	* glom/libglom/test_sharedptr_layoutitem.cc: More testing.
+
+2006-10-05  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/libglom/Makefile.am:
 	* glom/libglom/test_sharedptr_layoutitem.cc: Added test.
 
