@@ -1,3 +1,5 @@
+1.1.4:
+
 2006-10-05  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/libglom/sharedptr.h: cast_*(): Make the new sharedptr 
