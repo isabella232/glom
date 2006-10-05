@@ -16,4 +16,10 @@ libglom_la_LIBADD  = document/libdocument.la \
                      data_structure/layout/report_parts/libdata_structure_layout_reportparts.la \
                      python_embed/libglom_python_embed.la \
                      $(GLOM_LIBS) $(PYTHON_LDFLAGS) -lutil
+
+
+noinst_PROGRAMS = test
+test_SOURCES = test_sharedptr_layoutitem.cc
+test_LDADD =  libglom.la \
+              $(GLOM_LIBS) -lutil
                    

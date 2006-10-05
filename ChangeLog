@@ -1,5 +1,10 @@
 2006-10-05  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/libglom/Makefile.am:
+	* glom/libglom/test_sharedptr_layoutitem.cc: Added test.
+
+2006-10-05  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/libglom/document/document_glom.cc: add_column(): Do an extra, 
 	probably unnecessary, check for a null field before dereferencing it.
 	construct_specified_columns(): Do not clone the field - just use it.
