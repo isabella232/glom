@@ -1166,10 +1166,17 @@ Document_Glom::type_mapLayoutGroupSequence Document_Glom::get_data_layout_groups
   bool create_default = false;
   if(result.empty())
     create_default = true;
-  //TODO: Also set create_default is all groups have no fields.
+  //TODO: Also set create_default if all groups have no fields.
 
   if(create_default)
+  {
     result = get_data_layout_groups_default(layout_name, parent_table_name);
+    
+    //Store this so we don't have to recreate it next time:
+    Document_Glom* nonconst_this = const_cast<Document_Glom*>(this); //TODO: This is not ideal.
+    nonconst_this->set_data_layout_groups(layout_name, parent_table_name, result);
+    nonconst_this->set_modified(false); //This might have happened in operator mode, but in that case we don't really need to save it, or mark the document as unsaved.
+  }
 
   return result;  
 }
@@ -1194,7 +1201,7 @@ Document_Glom::type_mapLayoutGroupSequence Document_Glom::get_data_layout_groups
 
 void Document_Glom::set_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name, const type_mapLayoutGroupSequence& groups)
 {
-  Glib::ustring child_table_name = parent_table_name; //TODO: Remove this cruft.
+  const Glib::ustring child_table_name = parent_table_name; //TODO: Remove this cruft.
 
   //g_warning("Document_Glom::set_data_layout_groups(): ADDING layout for table %s (child_table=%s), for layout %s", parent_table_name.c_str(), child_table_name.c_str(), layout_name.c_str());
 

@@ -574,19 +574,23 @@ void DbAddDel::construct_specified_columns()
     type_vecModelColumns::size_type i = 0;
     for(type_ColumnTypes::iterator iter = m_ColumnTypes.begin(); iter != m_ColumnTypes.end(); ++iter)
     {
-      type_modelcolumn_value* pModelColumn = new type_modelcolumn_value;
+      sharedptr<LayoutItem_Field> item_field = iter->m_field;
+      if(item_field)
+      {
+        type_modelcolumn_value* pModelColumn = new type_modelcolumn_value;
 
-      //Store it so we can use it and delete it later:
-      vecModelColumns[i] = pModelColumn;
+        //Store it so we can use it and delete it later:
+        vecModelColumns[i] = pModelColumn;
 
-      record.add( *pModelColumn );
+        record.add( *pModelColumn );
 
-      //if(iter->m_field->get_has_relationship_name())
-      //  std::cout << "  DEBUG: relationship=" << iter->m_field->get_relationship()->get_name() << std::endl;
+        //if(iter->m_field->get_has_relationship_name())
+        //  std::cout << "  DEBUG: relationship=" << iter->m_field->get_relationship()->get_name() << std::endl;
 
-      fields.push_back( glom_sharedptr_clone(iter->m_field) );
+        fields.push_back(item_field);
 
-      i++;
+        i++;
+      }
     }
   }
 
@@ -926,11 +930,14 @@ guint DbAddDel::add_column(const sharedptr<LayoutItem_Field>& field)
   //column_info.m_visible = visible;
 
   //Make it non-editable if it is auto-generated:
-  sharedptr<const Field> field_full = field->get_full_field_details();
-  if(field_full && field_full->get_auto_increment())
-    column_info.m_editable = false;
-  else
-    column_info.m_editable = field->get_editable_and_allowed();
+  if(field)
+  {
+    sharedptr<const Field> field_full = field->get_full_field_details();
+    if(field_full && field_full->get_auto_increment())
+      column_info.m_editable = false;
+    else
+      column_info.m_editable = field->get_editable_and_allowed();
+  }
 
   m_ColumnTypes.push_back(column_info);
 

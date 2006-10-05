@@ -1,3 +1,17 @@
+2006-10-05  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/libglom/document/document_glom.cc: add_column(): Do an extra, 
+	probably unnecessary, check for a null field before dereferencing it.
+	construct_specified_columns(): Do not clone the field - just use it.
+	* glom/utility_widgets/db_adddel/db_adddel.cc:
+	get_data_layout_groups_plus_new_fields(): When building a default 
+	layout, because no layout is defined, store that layout in the 
+	document (saving it to disk when in developer mode). This fixes a 
+	dereference of a deleted field, though that should not be necessary 
+	so I suspect a fundamental sharedptr problem. But luckily, this 
+	is the correct thing to do anyway, for efficiency, and so that 
+	layout data is preserved.
+
 2006-10-03  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/base_db.cc:
