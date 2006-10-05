@@ -36,13 +36,15 @@ protected:
 int
 main(int argc, char* argv[])
 {
-  Glom::sharedptr<Glom::LayoutItem_Field> field;
+  Glom::sharedptr<Glom::LayoutItem> layoutitem;
+  Glom::sharedptr<Glom::LayoutItem_Field> layoutitem_field;
   {
      FieldCreator creator;
-     field = creator.get_field();
+     layoutitem = creator.get_field();
   }
 
-  std::cout << "name=" << field->get_name() << std::endl;
+  layoutitem_field =  Glom::sharedptr<Glom::LayoutItem_Field>::cast_dynamic(layoutitem);
+  std::cout << "name=" << layoutitem_field->get_name() << std::endl;
 
   return 0;
 }
