@@ -1,5 +1,12 @@
 2006-10-06  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/utility_widgets/adddel/adddel.cc:
+	* glom/utility_widgets/db_adddel/db_adddel.cc: append_column(): 
+	Use set_fixed_width(), followed by set_resizable(), instead of 
+	set_min_width, so columns can be made smaller too.
+
+2006-10-06  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/libglom/utils.cc: build_sql_select_with_where_clause(): 
 	Define the first-level relationship (via a LEFT OUTER JOIN) of 
 	a related relationship, even if no fields from the intermediate 

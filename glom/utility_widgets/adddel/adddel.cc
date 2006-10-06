@@ -1360,7 +1360,8 @@ guint AddDel::treeview_append_column(const Glib::ustring& title, Gtk::CellRender
   pViewColumn->set_resizable();
 
   //Set a faily sensible default width:
-  pViewColumn->set_min_width(100);
+  pViewColumn->set_fixed_width(100); //This is the only way to set the width, so we need to set it as resizable again immediately afterwards.
+  pViewColumn->set_resizable();
 
   //Save the extra ID, using the title if the column_id is empty:
   pViewColumn->set_column_id( (column_id.empty() ? title : column_id) );

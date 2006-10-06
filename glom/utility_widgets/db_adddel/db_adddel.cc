@@ -1490,9 +1490,10 @@ guint DbAddDel::treeview_append_column(const Glib::ustring& title, Gtk::CellRend
   
   guint column_width = 0;
   if(!layout_field->get_display_width(column_width)) //Not saved in document, but remembered when the column is resized.
-     column_width = 100; //Fairly sensible default.
+     column_width = 100; //Fairly sensible default. TODO: Choose a width based on the first 100 values.
 
-  pViewColumn->set_min_width((int)column_width);
+  pViewColumn->set_fixed_width((int)column_width); //This is the only way to set the width, so we need to set it as resizable again immediately afterwards.
+  pViewColumn->set_resizable();
   //This property is read only: pViewColumn->property_width() = (int)column_width;
 
   //Save the extra ID, using the title if the column_id is empty:
