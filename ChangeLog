@@ -1,5 +1,40 @@
 2006-10-06  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/utility_widgets/db_adddel/Makefile.am:
+	* glom/utility_widgets/imageglom.cc: Moved value->pixbuf 
+	conversion code from here to:
+	* glom/libglom/data_structure/glomconversions.cc:
+	* glom/libglom/data_structure/glomconversions.h:
+	* glom/utility_widgets/db_adddel/cellrenderer_button.cc:
+	* glom/utility_widgets/db_adddel/cellrenderer_button.h: renamed 
+	to 
+        * glom/utility_widgets/db_adddel/cellrenderer_buttonimage.cc:
+	* glom/utility_widgets/db_adddel/cellrenderer_buttonimage.h: 
+ 	Added:
+        * glom/utility_widgets/db_adddel/cellrenderer_buttontext.cc:
+	* glom/utility_widgets/db_adddel/cellrenderer_buttontext.h:
+
+	* glom/utility_widgets/db_adddel/db_adddel.cc:
+	* glom/utility_widgets/db_adddel/db_adddel.h: add_column() now 
+	take a LayoutItem rather than only a LayoutItem_Field, so that 
+	the list can in future show other items, such as buttons.
+	* glom/libglom/data_structure/layout/layoutgroup.cc:
+	* glom/libglom/data_structure/layout/layoutitem.cc:
+	* glom/libglom/data_structure/layout/layoutitem.h:
+	* glom/libglom/data_structure/layout/layoutitem_field.cc:
+	* glom/libglom/data_structure/layout/layoutitem_field.h:
+	* glom/libglom/data_structure/layout/layoutitem_image.h:
+	* glom/libglom/data_structure/layout/layoutitem_portal.cc:
+	* glom/libglom/data_structure/layout/layoutitem_portal.h:
+	* glom/libglom/utils.cc:
+	* glom/mode_data/box_data.cc:
+	* glom/mode_data/box_data_list.cc:
+	* glom/mode_data/box_data_list.h:
+	* glom/mode_data/box_data_list_related.cc:
+	* glom/mode_data/box_data_list_related.h: Adapted.
+
+2006-10-06  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/utility_widgets/adddel/adddel.cc:
 	* glom/utility_widgets/db_adddel/db_adddel.cc: append_column(): 
 	Use set_fixed_width(), followed by set_resizable(), instead of 

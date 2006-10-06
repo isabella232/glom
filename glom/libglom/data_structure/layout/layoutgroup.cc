@@ -409,24 +409,31 @@ guint LayoutGroup::get_items_count() const
 /*
 void LayoutGroup::debug(guint level) const
 {
-  g_warning("LayoutGroup::debug() level =%d", level);
+  for(int i = 0; i < level; ++i)
+    std::cout << " ";
+
+  std::cout << "LayoutGroup::debug() level =" << level << std::endl;
 
   for(type_map_items::const_iterator iter = m_map_items.begin(); iter != m_map_items.end(); ++iter)
   {
-    const LayoutGroup* group = dynamic_cast<const LayoutGroup*>(iter->second);
+    sharedptr<LayoutGroup> group = sharedptr<LayoutGroup>::cast_dynamic(iter->second);
     if(group)
       group->debug(level + 1);
     else
     {
-      const LayoutItem_Field* field = dynamic_cast<const LayoutItem_Field*>(iter->second);
+      sharedptr<LayoutItem_Field> field = sharedptr<LayoutItem_Field>::cast_dynamic(iter->second);
       if(field)
       {
-        g_warning("  field: name=%s, relationship=%s", field->get_name().c_str(), field->get_relationship_name().c_str());
+        for(int i = 0; i < level; ++i)
+          std::cout << " ";
+
+        std::cout << " field: name=" << field->get_name() << ", relationship=" << field->get_relationship_name() << std::endl;
       }
     }
   }
 }
 */
+
 
 double LayoutGroup::get_border_width() const
 {

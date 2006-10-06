@@ -42,8 +42,9 @@ public:
   DbAddDelColumnInfo(const DbAddDelColumnInfo& src);
   DbAddDelColumnInfo& operator=(const DbAddDelColumnInfo& src);
 
-  sharedptr<LayoutItem_Field> m_field;
+  sharedptr<LayoutItem> m_item;
 
+  //For fields with choices:
   typedef std::vector<Glib::ustring> type_vecStrings;
   type_vecStrings m_choices;
 
@@ -106,7 +107,7 @@ public:
    * @param start_editing Whether editing should start in the cell.
    * @result Whether the row was successfully selected.
    */
-  bool select_item(const Gtk::TreeModel::iterator& iter, const sharedptr<const LayoutItem_Field>& layout_item, bool start_editing = false);  //bool indicates success.
+  bool select_item(const Gtk::TreeModel::iterator& iter, const sharedptr<const LayoutItem>& layout_item, bool start_editing = false);  //bool indicates success.
   bool select_item(const Gtk::TreeModel::iterator& iter, bool start_editing = false);
 
   guint get_count() const;
@@ -146,7 +147,7 @@ public:
 
   /** @result The index of the new column.
    */
-  guint add_column(const sharedptr<LayoutItem_Field>& field);
+  guint add_column(const sharedptr<LayoutItem>& layout_item);
 
   /// Specify which records to show:
   void set_found_set(const FoundSet& found_set);
@@ -237,13 +238,14 @@ public:
   virtual void set_open_button_title(const Glib::ustring& title);
 
 protected:
+  Gtk::CellRenderer* construct_specified_columns_cellrenderer(const sharedptr<LayoutItem>& layout_item, int model_column_index);
 
   bool get_model_column_index(guint view_column_index, guint& model_column_index);
 
 
   typedef std::list<guint> type_list_indexes;
   ///Return the column indexes of any columns that display this field.
-  virtual type_list_indexes get_column_index(const sharedptr<const LayoutItem_Field>& layout_item) const;
+  virtual type_list_indexes get_column_index(const sharedptr<const LayoutItem>& layout_item) const;
 
   virtual void setup_menu();
   virtual Gnome::Gda::Value treeview_get_key(const Gtk::TreeModel::iterator& row);
@@ -273,6 +275,7 @@ protected:
   virtual void on_treeview_column_clicked(int model_column_index);
   void on_treeview_column_resized(int model_column_index, DbTreeViewColumnGlom* view_column);
   virtual void on_cell_button_clicked(const Gtk::TreeModel::Path& path);
+  void on_cell_layout_button_clicked(int model_column_index);
 
   bool get_prevent_user_signals() const;
 

@@ -92,10 +92,12 @@ void LayoutItem_Portal::change_field_item_name(const Glib::ustring& table_name, 
   }
 }
 
+/*
 void LayoutItem_Portal::debug(guint level) const
 {
   g_warning("LayoutItem_Portal::debug: level = %d", level);
   //LayoutGroup::debug(level);
 }
+*/
 
 } //namespace Glom

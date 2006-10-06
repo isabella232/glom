@@ -762,4 +762,5 @@ Glib::ustring Utils::string_remove_suffix(const Glib::ustring& str, const Glib::
   return str;
 }
 
+
 } //namespace Glom

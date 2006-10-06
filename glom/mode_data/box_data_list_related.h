@@ -79,6 +79,8 @@ protected:
   virtual void enable_buttons(); //override
 
 protected:
+  virtual Document_Glom::type_mapLayoutGroupSequence create_layout_get_layout(); //override.
+
   Gtk::Frame m_Frame;
   Gtk::Alignment m_Alignment;
   Gtk::Label m_Label;

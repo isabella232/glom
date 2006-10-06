@@ -29,8 +29,7 @@ LayoutItem_Field::LayoutItem_Field()
   m_priv_edit(false),
   m_field_cache_valid(false),
   m_hidden(false),
-  m_formatting_use_default(true),
-  m_display_width(0)
+  m_formatting_use_default(true)
 {
 }
 
@@ -44,8 +43,7 @@ LayoutItem_Field::LayoutItem_Field(const LayoutItem_Field& src)
   m_field_cache_valid(src.m_field_cache_valid),
   m_hidden(src.m_hidden),
   m_formatting_use_default(src.m_formatting_use_default),
-  m_title_custom(src.m_title_custom),
-  m_display_width(src.m_display_width)
+  m_title_custom(src.m_title_custom)
 {
 //g_warning("LayoutItem_Field::LayoutItem_Field: m_choices_related_relationship=%s, src.m_choices_related_relationship=%s", m_choices_related_relationship.c_str(), src.m_choices_related_relationship.c_str());
 
@@ -70,8 +68,7 @@ bool LayoutItem_Field::operator==(const LayoutItem_Field& src) const
     (m_hidden == src.m_hidden) &&
     (m_formatting_use_default == src.m_formatting_use_default) &&
     (m_formatting == src.m_formatting) &&
-    (m_field_cache_valid == src.m_field_cache_valid) &&
-    (m_display_width == src.m_display_width); //careful of this - it's not saved in the document.
+    (m_field_cache_valid == src.m_field_cache_valid);
 
   if(m_field && src.m_field)
     result == result && (*m_field == *(src.m_field));
@@ -104,8 +101,6 @@ LayoutItem_Field& LayoutItem_Field::operator=(const LayoutItem_Field& src)
   m_formatting = src.m_formatting;
 
   m_title_custom = src.m_title_custom;
-
-  m_display_width = src.m_display_width;
 
   return *this;
 }
@@ -280,18 +275,6 @@ bool LayoutItem_Field::is_same_field(const sharedptr<const LayoutItem_Field>& fi
          (get_related_relationship_name() == field->get_related_relationship_name());
 }
 
-bool LayoutItem_Field::get_display_width(guint& width) const
-{
-  //Initialize output variable:
-  width = m_display_width;
-
-  return (m_display_width != 0); //Tell the caller whether a display width has even been specified.
-}
-
-void LayoutItem_Field::set_display_width(guint value)
-{
-  m_display_width = value;
-}
 
 } //namespace Glom
 

@@ -27,7 +27,8 @@
 #include "../../dialog_invalid_data.h"
 #include "../../application.h"
 #include <glom/libglom/utils.h>
-#include "cellrenderer_button.h"
+#include "cellrenderer_buttonimage.h"
+#include "cellrenderer_buttontext.h"
 //#include "../cellrendererlist.h"
 #include <iostream> //For debug output.
 #include <gtk/gtktreeview.h>
@@ -43,7 +44,7 @@ DbAddDelColumnInfo::DbAddDelColumnInfo()
 }
 
 DbAddDelColumnInfo::DbAddDelColumnInfo(const DbAddDelColumnInfo& src)
-: m_field(src.m_field),
+: m_item(src.m_item),
   m_choices(src.m_choices),
   m_editable(src.m_editable),
   m_visible(src.m_visible)
@@ -52,7 +53,7 @@ DbAddDelColumnInfo::DbAddDelColumnInfo(const DbAddDelColumnInfo& src)
 
 DbAddDelColumnInfo& DbAddDelColumnInfo::operator=(const DbAddDelColumnInfo& src)
 {
-  m_field = src.m_field;
+  m_item = src.m_item;
   m_choices = src.m_choices;
   m_editable = src.m_editable;
   m_visible = src.m_visible;
@@ -419,13 +420,13 @@ Gtk::TreeModel::iterator DbAddDel::get_row(const Gnome::Gda::Value& key)
 bool DbAddDel::select_item(const Gtk::TreeModel::iterator& iter, bool start_editing)
 {
   //Find the first column with a layout_item:
-  sharedptr<const LayoutItem_Field> layout_item;
+  sharedptr<const LayoutItem> layout_item;
   for(type_ColumnTypes::iterator iter_columns = m_ColumnTypes.begin(); iter_columns != m_ColumnTypes.end(); ++iter_columns)
   {
     const DbAddDelColumnInfo& column_info = *iter_columns;
-    if(column_info.m_field)
+    if(column_info.m_item)
     {
-      layout_item = column_info.m_field;
+      layout_item = column_info.m_item;
       break;
     }
   }
@@ -433,7 +434,7 @@ bool DbAddDel::select_item(const Gtk::TreeModel::iterator& iter, bool start_edit
   return select_item(iter, layout_item, start_editing);
 }
 
-bool DbAddDel::select_item(const Gtk::TreeModel::iterator& iter, const sharedptr<const LayoutItem_Field>& layout_item, bool start_editing)
+bool DbAddDel::select_item(const Gtk::TreeModel::iterator& iter, const sharedptr<const LayoutItem>& layout_item, bool start_editing)
 {
   if(!m_refListStore)
     return false;
@@ -546,6 +547,210 @@ int DbAddDel::get_fixed_cell_height()
   }
 }
 
+void DbAddDel::on_cell_layout_button_clicked(int /* model_column_index */)
+{
+
+}
+
+Gtk::CellRenderer* DbAddDel::construct_specified_columns_cellrenderer(const sharedptr<LayoutItem>& layout_item, int model_column_index)
+{
+  Gtk::CellRenderer* pCellRenderer = 0;
+
+  //Create the appropriate cellrenderer type:
+  sharedptr<LayoutItem_Field> item_field = sharedptr<LayoutItem_Field>::cast_dynamic(layout_item);
+  if(item_field)
+  {
+    if(item_field->get_hidden())
+      return 0;
+
+    switch(item_field->get_glom_type())
+    {
+      case(Field::TYPE_BOOLEAN):
+      {
+         pCellRenderer = Gtk::manage( new Gtk::CellRendererToggle() );
+
+          break;
+      }
+      case(Field::TYPE_IMAGE):
+      {
+        pCellRenderer = Gtk::manage( new Gtk::CellRendererPixbuf() );
+
+        break;
+      }
+      default:
+      {
+        if(item_field->get_formatting_used().get_has_choices())
+        {
+          CellRendererList* rendererList = Gtk::manage( new CellRendererList() );
+          rendererList->set_restrict_values_to_list(item_field->get_formatting_used().get_choices_restricted());
+
+          pCellRenderer = rendererList;
+        }
+        else
+          pCellRenderer = Gtk::manage( new Gtk::CellRendererText() );
+
+        break;
+      }
+    } //switch
+  }
+  else
+  {
+     //Non-fields:
+
+     sharedptr<LayoutItem_Image> item_image = sharedptr<LayoutItem_Image>::cast_dynamic(layout_item);
+     if(item_image)
+     {
+       Gtk::CellRendererPixbuf* pixbuf_renderer = Gtk::manage( new Gtk::CellRendererPixbuf() );
+
+       Glib::RefPtr<Gdk::Pixbuf> pixbuf = Conversions::get_pixbuf_for_gda_value(item_image->get_image());
+       if(pixbuf)
+         pixbuf_renderer->property_pixbuf() = pixbuf;
+       else
+         pixbuf_renderer->property_stock_id() = Gtk::Stock::MISSING_IMAGE.id; //TODO: Specify stock size?
+
+       pCellRenderer = pixbuf_renderer;
+     }
+     else
+     {
+       sharedptr<LayoutItem_Text> item_text = sharedptr<LayoutItem_Text>::cast_dynamic(layout_item);
+       if(item_text)
+       {
+         Gtk::CellRendererText* pCellText = Gtk::manage( new Gtk::CellRendererText() );
+         pCellText->property_text() = item_text->get_text();
+
+         pCellRenderer = pCellText;
+       }
+       else
+       {
+         sharedptr<LayoutItem_Button> item_button = sharedptr<LayoutItem_Button>::cast_dynamic(layout_item);
+         if(item_button)
+         {
+           GlomCellRenderer_ButtonText* pCellButton = Gtk::manage( new GlomCellRenderer_ButtonText() );
+           pCellButton->property_text() = item_button->get_title_or_name();
+           //pCellButton->set_fixed_width(50); //Otherwise it doesn't show up. TODO: Discover the width of the contents.
+
+           //TODO: pCellButton->signal_clicked().connect(
+           //  sigc::bind( sigc::mem_fun(*this, &DbAddDel::on_cell_layout_button_clicked), model_column_index) );
+
+           pCellRenderer = pCellButton;
+         }
+       }
+     }
+  }
+
+  
+  //Set extra cellrenderer attributes, depending on the type used:
+  Gtk::CellRendererText* pCellRendererText = dynamic_cast<Gtk::CellRendererText*>(pCellRenderer);
+  if(pCellRendererText)
+  {
+    //Use an ellipze to indicate excessive text, 
+    //so that similar values do not look equal, 
+    //and to avoid multi-line comments. TODO: Is there a better way to restrict the height? This doesn't actually truncate multilines anyway.
+    pCellRendererText->property_ellipsize() = Pango::ELLIPSIZE_END;
+
+    //Restrict the height, to prevent multiline text cells,
+    //and to allow TreeView performance optimisation:
+    pCellRendererText->set_fixed_size(-1, get_fixed_cell_height() );
+
+    //Connect to edited signal:
+    if(item_field) //Only fields can be edited:
+    {
+      //Make it editable:
+      pCellRendererText->property_editable() = true;
+
+      //Align numbers to the right: //TODO: Avoid this for ID keys.
+      if(item_field->get_glom_type() == Field::TYPE_NUMERIC )
+        pCellRenderer->property_xalign() = 1.0f; //Align right.
+
+      //Connect to its signal:
+      pCellRendererText->signal_edited().connect(
+        sigc::bind( sigc::mem_fun(*this, &DbAddDel::on_treeview_cell_edited), model_column_index) );
+
+    }
+
+    //Choices:
+    CellRendererList* pCellRendererCombo = dynamic_cast<CellRendererList*>(pCellRenderer);
+    if(pCellRendererCombo)
+    {
+      pCellRendererCombo->remove_all_list_items();
+
+      if(item_field && item_field->get_formatting_used().get_has_custom_choices())
+      {
+        pCellRendererCombo->set_use_second(false); //Custom choices have only one column.
+
+        //set_choices() needs this, for the numeric layout:
+        //pCellRendererCombo->set_layout_item(get_layout_item()->clone(), table_name); //TODO_Performance: We only need this for the numerical format.
+        const FieldFormatting::type_list_values list_values = item_field->get_formatting_used().get_choices_custom();
+        for(FieldFormatting::type_list_values::const_iterator iter = list_values.begin(); iter != list_values.end(); ++iter)
+        {
+          pCellRendererCombo->append_list_item( Conversions::get_text_for_gda_value(item_field->get_glom_type(), *iter, item_field->get_formatting_used().m_numeric_format) );
+        }
+      }
+      else if(item_field && item_field->get_formatting_used().get_has_related_choices())
+      {
+        sharedptr<Relationship> choice_relationship;
+        Glib::ustring choice_field, choice_second;
+        item_field->get_formatting_used().get_choices(choice_relationship, choice_field, choice_second);
+
+        if(choice_relationship && !choice_field.empty())
+        {
+          const Glib::ustring to_table = choice_relationship->get_to_table();
+
+          const bool use_second = !choice_second.empty();
+          pCellRendererCombo->set_use_second(use_second);
+
+          const sharedptr<LayoutItem_Field> layout_field_second = sharedptr<LayoutItem_Field>::create();
+          if(use_second)
+          {
+            Document_Glom* document = get_document();
+            if(document)
+            {
+              sharedptr<Field> field_second = document->get_field(to_table, choice_second); //TODO: Actually show this in the combo:
+              layout_field_second->set_full_field_details(field_second);
+
+              //We use the default formatting for this field->
+            }
+          }
+
+          Utils::type_list_values_with_second list_values = Utils::get_choice_values(item_field);
+          for(Utils::type_list_values_with_second::const_iterator iter = list_values.begin(); iter != list_values.end(); ++iter)
+          {
+            const Glib::ustring first = Conversions::get_text_for_gda_value(item_field->get_glom_type(), iter->first, item_field->get_formatting_used().m_numeric_format);
+
+            Glib::ustring second;
+            if(use_second)
+              second = Conversions::get_text_for_gda_value(layout_field_second->get_glom_type(), iter->second, layout_field_second->get_formatting_used().m_numeric_format);
+
+              pCellRendererCombo->append_list_item(first, second);
+          }
+        }
+      }
+    }
+  }
+  else
+  {
+    Gtk::CellRendererToggle* pCellRendererToggle = dynamic_cast<Gtk::CellRendererToggle*>(pCellRenderer);
+    if(pCellRendererToggle)
+    {
+      pCellRendererToggle->property_activatable() = true;
+
+      //Connect to its signal:
+      pCellRendererToggle->signal_toggled().connect(
+      sigc::bind( sigc::mem_fun(*this, &DbAddDel::on_treeview_cell_edited_bool), model_column_index ) );
+    }
+    else
+    {
+      Gtk::CellRendererPixbuf* pCellRendererPixbuf = dynamic_cast<Gtk::CellRendererPixbuf*>(pCellRenderer);
+      if(pCellRendererPixbuf)
+      {
+        //TODO: Do something when it's clicked, such as show the big image in a window or tooltip?
+      }
+    }
+  }
+
+  return pCellRenderer;
+}
+
 void DbAddDel::construct_specified_columns()
 {
   InnerIgnore innerIgnore(this);
@@ -574,7 +779,7 @@ void DbAddDel::construct_specified_columns()
     type_vecModelColumns::size_type i = 0;
     for(type_ColumnTypes::iterator iter = m_ColumnTypes.begin(); iter != m_ColumnTypes.end(); ++iter)
     {
-      sharedptr<LayoutItem_Field> item_field = iter->m_field;
+      sharedptr<LayoutItem_Field> item_field = sharedptr<LayoutItem_Field>::cast_dynamic(iter->m_item);
       if(item_field)
       {
         type_modelcolumn_value* pModelColumn = new type_modelcolumn_value;
@@ -584,8 +789,8 @@ void DbAddDel::construct_specified_columns()
 
         record.add( *pModelColumn );
 
-        //if(iter->m_field->get_has_relationship_name())
-        //  std::cout << "  DEBUG: relationship=" << iter->m_field->get_relationship()->get_name() << std::endl;
+        //if(iter->m_item->get_has_relationship_name())
+        //  std::cout << "  DEBUG: relationship=" << iter->m_item->get_relationship()->get_name() << std::endl;
 
         fields.push_back(item_field);
 
@@ -640,7 +845,7 @@ void DbAddDel::construct_specified_columns()
   int view_column_index = 0;
 
   {
-    GlomCellRenderer_Button* pCellButton = Gtk::manage(new GlomCellRenderer_Button());
+    GlomCellRenderer_ButtonImage* pCellButton = Gtk::manage(new GlomCellRenderer_ButtonImage());
     pCellButton->signal_clicked().connect(sigc::mem_fun(*this, &DbAddDel::on_cell_button_clicked));
 
 
@@ -660,156 +865,27 @@ void DbAddDel::construct_specified_columns()
   for(type_vecModelColumns::iterator iter = vecModelColumns.begin(); iter != vecModelColumns.end(); ++iter)
   {
     const DbAddDelColumnInfo& column_info = m_ColumnTypes[model_column_index];
-    if(column_info.m_visible && !(column_info.m_field->get_hidden())) //TODO: We shouldn't need both of these.
+    if(column_info.m_visible)
     {
+      
       no_columns_used = false;
 
-      const Glib::ustring column_name = column_info.m_field->get_title_or_name();
-      const Glib::ustring column_id = column_info.m_field->get_name();
-
-      int cols_count = 0;
-      Gtk::CellRenderer* pCellRenderer = 0;
-      switch(column_info.m_field->get_glom_type())
-      {
-        case(Field::TYPE_BOOLEAN):
-        {
-          pCellRenderer = Gtk::manage( new Gtk::CellRendererToggle() );
-
-          break;
-        }
-        case(Field::TYPE_IMAGE):
-        {
-          pCellRenderer = Gtk::manage( new Gtk::CellRendererPixbuf() );
-
-          break;
-        }
-        default:
-        {
-          if(column_info.m_field->get_formatting_used().get_has_choices())
-          {
-            CellRendererList* rendererList = Gtk::manage( new CellRendererList() );
-            rendererList->set_restrict_values_to_list(column_info.m_field->get_formatting_used().get_choices_restricted());
-
-            pCellRenderer = rendererList;
-          }
-          else
-            pCellRenderer = Gtk::manage( new Gtk::CellRendererText() );
-
-          break;
-        }
-      } //switch
-
-      ++cols_count;
+      const Glib::ustring column_name = column_info.m_item->get_title_or_name();
+      const Glib::ustring column_id = column_info.m_item->get_name();
 
       //Add the ViewColumn
-      treeview_append_column(column_name, *pCellRenderer, model_column_index);
-
-      if(column_info.m_editable)
+      Gtk::CellRenderer* pCellRenderer = construct_specified_columns_cellrenderer(column_info.m_item, model_column_index);
+      if(pCellRenderer)
       {
-        Gtk::CellRendererText* pCellRenderer = dynamic_cast<Gtk::CellRendererText*>(m_TreeView.get_column_cell_renderer(view_column_index));
-        if(pCellRenderer)
+        treeview_append_column(column_name, *pCellRenderer, model_column_index);
+
+        if(column_info.m_editable)
         {
-          //Make it editable:
-          pCellRenderer->property_editable() = true;
-
-          //Use an ellipze to indicate excessive text, 
-          //so that similar values do not look equal, 
-          //and to avoid multi-line comments. TODO: Is there a better way to restrict the height? This doesn't actually truncate multilines anyway.
-          pCellRenderer->property_ellipsize() = Pango::ELLIPSIZE_END;
-
-          //Restrict the height, to prevent multiline text cells,
-          //and to allow TreeView performance optimisation:
-          pCellRenderer->set_fixed_size(-1, get_fixed_cell_height() );
-
-          if( column_info.m_field->get_glom_type() == Field::TYPE_NUMERIC )
-            pCellRenderer->property_xalign() = 1.0f; //Align right.
-
-          //Connect to its signal:
-          pCellRenderer->signal_edited().connect(
-            sigc::bind( sigc::mem_fun(*this, &DbAddDel::on_treeview_cell_edited), model_column_index) );
-
-          CellRendererList* pCellRendererCombo = dynamic_cast<CellRendererList*>(pCellRenderer);
-          if(pCellRendererCombo)
-          {
-            pCellRendererCombo->remove_all_list_items();
-
-            if(column_info.m_field->get_formatting_used().get_has_custom_choices())
-            {
-              pCellRendererCombo->set_use_second(false); //Custom choices have only one column.
-
-              //set_choices() needs this, for the numeric layout:
-              //pCellRendererCombo->set_layout_item(get_layout_item()->clone(), table_name); //TODO_Performance: We only need this for the numerical format.
-              const FieldFormatting::type_list_values list_values = column_info.m_field->get_formatting_used().get_choices_custom();
-              for(FieldFormatting::type_list_values::const_iterator iter = list_values.begin(); iter != list_values.end(); ++iter)
-              {
-                pCellRendererCombo->append_list_item( Conversions::get_text_for_gda_value(column_info.m_field->get_glom_type(), *iter, column_info.m_field->get_formatting_used().m_numeric_format) );
-              }
-            }
-            else if(column_info.m_field->get_formatting_used().get_has_related_choices())
-            {
-              sharedptr<Relationship> choice_relationship;
-              Glib::ustring choice_field, choice_second;
-              column_info.m_field->get_formatting_used().get_choices(choice_relationship, choice_field, choice_second);
-
-              if(choice_relationship && !choice_field.empty())
-              {
-                const Glib::ustring to_table = choice_relationship->get_to_table();
-
-                const bool use_second = !choice_second.empty();
-                pCellRendererCombo->set_use_second(use_second);
-
-                const sharedptr<LayoutItem_Field> layout_field_second = sharedptr<LayoutItem_Field>::create();
-                if(use_second)
-                {
-                  Document_Glom* document = get_document();
-                  if(document)
-                  {
-                    sharedptr<Field> field_second = document->get_field(to_table, choice_second); //TODO: Actually show this in the combo:
-
-                    layout_field_second->set_full_field_details(field_second);
-
-                    //We use the default formatting for this field->
-                  }
-                }
-
-                Utils::type_list_values_with_second list_values = Utils::get_choice_values(column_info.m_field);
-                for(Utils::type_list_values_with_second::const_iterator iter = list_values.begin(); iter != list_values.end(); ++iter)
-                {
-                  const Glib::ustring first = Conversions::get_text_for_gda_value(column_info.m_field->get_glom_type(), iter->first, column_info.m_field->get_formatting_used().m_numeric_format);
-
-                  Glib::ustring second;
-                  if(use_second)
-                    second = Conversions::get_text_for_gda_value(layout_field_second->get_glom_type(), iter->second, layout_field_second->get_formatting_used().m_numeric_format);
-
-                  pCellRendererCombo->append_list_item(first, second);
-                }
-              }
-            }
-          }
+       
         }
-        else
-        {
-          Gtk::CellRendererToggle* pCellRenderer = dynamic_cast<Gtk::CellRendererToggle*>(m_TreeView.get_column_cell_renderer(view_column_index));
-          if(pCellRenderer)
-          {
-            pCellRenderer->property_activatable() = true;
 
-            //Connect to its signal:
-            pCellRenderer->signal_toggled().connect(
-              sigc::bind( sigc::mem_fun(*this, &DbAddDel::on_treeview_cell_edited_bool), model_column_index ) );
-          }
-          else
-          {
-            Gtk::CellRendererPixbuf* pCellRenderer = dynamic_cast<Gtk::CellRendererPixbuf*>(m_TreeView.get_column_cell_renderer(view_column_index));
-            if(pCellRenderer)
-            {
-              //TODO: Do something when it's clicked, such as show the big image in a window?
-            }
-          }
-        }
+        ++view_column_index;
       }
-
-    ++view_column_index;
 
     } //is visible
 
@@ -920,16 +996,24 @@ void DbAddDel::set_table_name(const Glib::ustring& table_name)
   m_found_set.m_table_name = table_name;
 }
 
-guint DbAddDel::add_column(const sharedptr<LayoutItem_Field>& field)
+guint DbAddDel::add_column(const sharedptr<LayoutItem>& layout_item)
 {
+  if(!layout_item)
+    return 0; //TODO: Do something more sensible.
+
   InnerIgnore innerIgnore(this); //Stop on_treeview_columns_changed() from doing anything when it is called just because we add a new column.
 
+  sharedptr<LayoutItem_Field> field = sharedptr<LayoutItem_Field>::cast_dynamic(layout_item);
+  if(!field)
+    return 0; //TODO: Do something more sensible.
+
   DbAddDelColumnInfo column_info;
-  column_info.m_field = field;
+  column_info.m_item = field;
   //column_info.m_editable = editable;
   //column_info.m_visible = visible;
 
   //Make it non-editable if it is auto-generated:
+
   if(field)
   {
     sharedptr<const Field> field_full = field->get_full_field_details();
@@ -967,16 +1051,23 @@ void DbAddDel::set_columns_ready()
   construct_specified_columns();
 }
 
-DbAddDel::type_list_indexes DbAddDel::get_column_index(const sharedptr<const LayoutItem_Field>& layout_item) const
+DbAddDel::type_list_indexes DbAddDel::get_column_index(const sharedptr<const LayoutItem>& layout_item) const
 {
   //TODO_Performance: Replace all this looping by a cache/map:
 
   type_list_indexes list_indexes;
 
+  sharedptr<const LayoutItem_Field> layout_item_field = sharedptr<const LayoutItem_Field>::cast_dynamic(layout_item);
+
   guint i = 0;
   for(type_ColumnTypes::const_iterator iter = m_ColumnTypes.begin(); iter != m_ColumnTypes.end(); ++iter)
   {
-    if(iter->m_field->is_same_field(layout_item))
+    sharedptr<const LayoutItem_Field> field = sharedptr<const LayoutItem_Field>::cast_dynamic(iter->m_item); //TODO_Performance: This would be unnecessary if !layout_item_field
+    if(field && layout_item_field && field->is_same_field(layout_item_field))
+    {
+      list_indexes.push_back(i);
+    }
+    else if(*(iter->m_item) == *(layout_item))
     {
       list_indexes.push_back(i);
     }
@@ -990,7 +1081,11 @@ DbAddDel::type_list_indexes DbAddDel::get_column_index(const sharedptr<const Lay
 sharedptr<const LayoutItem_Field> DbAddDel::get_column_field(guint column_index) const
 {
   if(column_index < m_ColumnTypes.size())
-    return m_ColumnTypes[column_index].m_field;
+  {
+    sharedptr<LayoutItem_Field> field = sharedptr<LayoutItem_Field>::cast_dynamic( m_ColumnTypes[column_index].m_item );
+    if(field)
+      return field;
+  }
 
   return sharedptr<const LayoutItem_Field>();
 }
@@ -1280,12 +1375,18 @@ void DbAddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const G
       }
     }
 
-    const Field::glom_field_type field_type = m_ColumnTypes[model_column_index].m_field->get_glom_type();
+
+    sharedptr<LayoutItem_Field> item_field = sharedptr<LayoutItem_Field>::cast_dynamic(m_ColumnTypes[model_column_index].m_item);
+    if(!item_field)
+      return;
+
+    const Field::glom_field_type field_type = item_field->get_glom_type();
     if(field_type != Field::TYPE_INVALID) //If a field type was specified for this column.
     {
       //Make sure that the entered data is suitable for this field type:
       bool success = false;
-      Gnome::Gda::Value value = Conversions::parse_value(field_type, new_text, m_ColumnTypes[model_column_index].m_field->get_formatting_used().m_numeric_format, success);
+
+      Gnome::Gda::Value value = Conversions::parse_value(field_type, new_text, item_field->get_formatting_used().m_numeric_format, success);
       if(!success)
       {
           //Tell the user and offer to revert or try again:
@@ -1486,10 +1587,10 @@ guint DbAddDel::treeview_append_column(const Glib::ustring& title, Gtk::CellRend
   //Allow the column to be resized:
   pViewColumn->set_resizable();
 
-  sharedptr<const LayoutItem_Field> layout_field = m_ColumnTypes[model_column_index].m_field;
+  sharedptr<const LayoutItem> layout_item = m_ColumnTypes[model_column_index].m_item;
   
   guint column_width = 0;
-  if(!layout_field->get_display_width(column_width)) //Not saved in document, but remembered when the column is resized.
+  if(!layout_item->get_display_width(column_width)) //Not saved in document, but remembered when the column is resized.
      column_width = 100; //Fairly sensible default. TODO: Choose a width based on the first 100 values.
 
   pViewColumn->set_fixed_width((int)column_width); //This is the only way to set the width, so we need to set it as resizable again immediately afterwards.
@@ -1497,7 +1598,7 @@ guint DbAddDel::treeview_append_column(const Glib::ustring& title, Gtk::CellRend
   //This property is read only: pViewColumn->property_width() = (int)column_width;
 
   //Save the extra ID, using the title if the column_id is empty:
-  Glib::ustring column_id = m_ColumnTypes[model_column_index].m_field->get_name();
+  Glib::ustring column_id = m_ColumnTypes[model_column_index].m_item->get_name();
   pViewColumn->set_column_id( (column_id.empty() ? title : column_id) );
 
   //TODO pViewColumn->signal_button_press_event().connect( sigc::mem_fun(*this, &DbAddDel::on_treeview_columnheader_button_press_event) );
@@ -1525,8 +1626,8 @@ void DbAddDel::on_treeview_column_resized(int model_column_index, DbTreeViewColu
   guint width = (guint)view_column->get_width();
   //std::cout << "  DbAddDel::on_treeview_column_resized(): width=" << width << std::endl;
 
-  if(column_info.m_field)
-      column_info.m_field->set_display_width(width);
+  if(column_info.m_item)
+      column_info.m_item->set_display_width(width);
 }
 
 void DbAddDel::on_treeview_column_clicked(int model_column_index)
@@ -1534,7 +1635,7 @@ void DbAddDel::on_treeview_column_clicked(int model_column_index)
   if(model_column_index >= (int)m_ColumnTypes.size())
     return;
 
-  sharedptr<const LayoutItem_Field> layout_item = m_ColumnTypes[model_column_index].m_field;
+  sharedptr<const LayoutItem_Field> layout_item = sharedptr<const LayoutItem_Field>::cast_dynamic(m_ColumnTypes[model_column_index].m_item); //We can only sort on fields, not on other layout item.
   if(layout_item && layout_item->get_name_not_empty())
   {
     bool ascending = true;
@@ -1739,37 +1840,42 @@ void DbAddDel::treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gt
     treerow->get_value(col_real, value);
 
     const DbAddDelColumnInfo& column_info = m_ColumnTypes[model_column_index];
-    switch(column_info.m_field->get_glom_type())
+
+    sharedptr<LayoutItem_Field> field = sharedptr<LayoutItem_Field>::cast_dynamic(column_info.m_item);
+    if(field)
     {
-      case(Field::TYPE_BOOLEAN):
+      switch(field->get_glom_type())
       {
-        Gtk::CellRendererToggle* pDerived = dynamic_cast<Gtk::CellRendererToggle*>(renderer);
-        if(pDerived)
-          pDerived->set_active( (value.get_value_type() == Gnome::Gda::VALUE_TYPE_BOOLEAN) && value.get_bool() ); 
-
-        break;
-      }
-      case(Field::TYPE_IMAGE):
-      {
-        //Gtk::CellRendererPixbuf* pDerived = dynamic_cast<Gtk::CellRendererPixbuf*>(renderer);
-        //if(pDerived)
-        //  //TODO: Reuse get_binary() and scaling code from ImageGlom.
-
-        break;
-      }
-      default:
-      {
-        //TODO: Maybe we should have custom cellrenderers for time, date, and numbers.
-        Gtk::CellRendererText* pDerived = dynamic_cast<Gtk::CellRendererText*>(renderer);
-        if(pDerived)
+        case(Field::TYPE_BOOLEAN):
         {
-          const Glib::ustring text = Conversions::get_text_for_gda_value(column_info.m_field->get_glom_type(), value, column_info.m_field->get_formatting_used().m_numeric_format);
-          //g_assert(text != "NULL");
-          pDerived->property_text() = text;
-        }
+          Gtk::CellRendererToggle* pDerived = dynamic_cast<Gtk::CellRendererToggle*>(renderer);
+          if(pDerived)
+            pDerived->set_active( (value.get_value_type() == Gnome::Gda::VALUE_TYPE_BOOLEAN) && value.get_bool() ); 
 
-        break;
-      } 
+          break;
+        }
+        case(Field::TYPE_IMAGE):
+        {
+          //Gtk::CellRendererPixbuf* pDerived = dynamic_cast<Gtk::CellRendererPixbuf*>(renderer);
+          //if(pDerived)
+          //  //TODO: Reuse get_binary() and scaling code from ImageGlom.
+
+          break;
+        }
+        default:
+        {
+          //TODO: Maybe we should have custom cellrenderers for time, date, and numbers.
+          Gtk::CellRendererText* pDerived = dynamic_cast<Gtk::CellRendererText*>(renderer);
+          if(pDerived)
+          {
+            const Glib::ustring text = Conversions::get_text_for_gda_value(field->get_glom_type(), value, field->get_formatting_used().m_numeric_format);
+            //g_assert(text != "NULL");
+            pDerived->property_text() = text;
+          }
+
+          break;
+        } 
+      }
     }
   }
 }

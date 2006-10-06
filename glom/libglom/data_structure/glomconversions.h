@@ -26,6 +26,7 @@
 
 #include <glom/libglom/data_structure/layout/layoutitem_field.h>
 #include <libxml++/libxml++.h>
+#include <gdkmm/pixbuf.h>
 
 namespace Glom
 {
@@ -62,6 +63,9 @@ namespace Conversions
   Gnome::Gda::Value parse_escaped_binary_data(const Glib::ustring& escaped_data);
 
   Gnome::Gda::Value convert_value(const Gnome::Gda::Value& value, Field::glom_field_type target_glom_type);
+
+
+  Glib::RefPtr<Gdk::Pixbuf> get_pixbuf_for_gda_value(const Gnome::Gda::Value& value);
 }
 
 //Copied from Postgres's PQunescapeBytea() so I don't have the trouble of finding and linking to the 

@@ -586,4 +586,15 @@ void Box_Data_List_Related::get_suitable_record_to_view_details(const Gnome::Gda
   }
 }
 
+Document_Glom::type_mapLayoutGroupSequence Box_Data_List_Related::create_layout_get_layout()
+{
+  Document_Glom::type_mapLayoutGroupSequence result;
+
+  if(m_portal)
+    result[0] = m_portal;
+  
+  return result;
+}
+
+
 } //namespace Glom

@@ -54,12 +54,18 @@ public:
    */
   virtual Glib::ustring get_report_part_id() const;
 
+  bool get_display_width(guint& width) const;
+  void set_display_width(guint value);
+
   guint m_sequence;
   //bool m_hidden;
 
 protected:
   Glib::ustring m_name;
   bool m_editable;
+
+  //Not saved in document:
+  guint m_display_width; //In pixels.
 };
 
 } //namespace Glom

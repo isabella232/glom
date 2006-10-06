@@ -522,6 +522,9 @@ Document_Glom::type_mapLayoutGroupSequence Box_Data::get_data_layout_groups(cons
       for(Document_Glom::type_mapLayoutGroupSequence::iterator iterGroups = layout_groups.begin(); iterGroups != layout_groups.end(); ++iterGroups)
       {
         fill_layout_group_field_info(iterGroups->second, table_privs);
+
+        //std::cout << "debug: Box_Data::get_data_layout_groups: " << std::endl;
+        //iterGroups->second->debug();
       }
     }
   }

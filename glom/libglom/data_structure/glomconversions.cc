@@ -21,6 +21,8 @@
 #include "glomconversions.h"
 #include <glom/libglom/connectionpool.h>
 #include <glom/libglom/utils.h>
+#include <gdkmm/pixbufloader.h>
+#include <glom/libglom/data_structure/layout/layoutitem_image.h> // For GLOM_IMAGE_FORMAT
 #include <glibmm/i18n.h>
 #include <sstream> //For stringstream
 
@@ -899,6 +901,90 @@ Gnome::Gda::Value Conversions::convert_value(const Gnome::Gda::Value& value, Fie
   }
 
   return value;
+}
+
+Glib::RefPtr<Gdk::Pixbuf> Conversions::get_pixbuf_for_gda_value(const Gnome::Gda::Value& value)
+{
+  Glib::RefPtr<Gdk::Pixbuf> result;
+
+  if(value.get_value_type() == Gnome::Gda::VALUE_TYPE_BINARY)
+  {
+    glong size = 0;
+    const gpointer pData = value.get_binary(size);
+    if(size && pData)
+    {
+      //libgda does not currently properly unescape binary data,
+      //so pData is actually a null terminated string, of escaped binary data.
+      //This workaround should be removed when libgda is fixed:
+      //(It is fixed in libgd-2.0 but is unlikely to be fixed in libgda-1.2)
+      size_t buffer_binary_length = 0;
+      guchar* buffer_binary =  Glom_PQunescapeBytea((const guchar*)pData /* must be null-terminated */, &buffer_binary_length); //freed by us later.
+      if(buffer_binary)
+      {
+        //typedef std::list<Gdk::PixbufFormat> type_list_formats;
+        //const type_list_formats formats = Gdk::Pixbuf::get_formats();
+        //std::cout << "Debug: Supported pixbuf formats:" << std::endl;
+        //for(type_list_formats::const_iterator iter = formats.begin(); iter != formats.end(); ++iter)
+        //{
+        //  std::cout << " name=" << iter->get_name() << ", writable=" << iter->is_writable() << std::endl;
+        //}
+
+        Glib::RefPtr<Gdk::PixbufLoader> refPixbufLoader;
+
+        // PixbufLoader::create() is broken in gtkmm before 2.6.something,
+        // so let's do this in C so it works with all 2.6 versions:
+        GError* error = 0;
+        GdkPixbufLoader* loader = gdk_pixbuf_loader_new_with_type(GLOM_IMAGE_FORMAT, &error);
+        if(!error)
+          refPixbufLoader = Glib::wrap(loader);
+        else
+          std::cerr << "ImageGlom::set_value(): Error while calling gdk_pixbuf_loader_new_with_type()." << std::endl;
+
+        /*
+        try
+        {
+          refPixbufLoader = Gdk::PixbufLoader::create(GLOM_IMAGE_FORMAT);
+          g_warning("debug a1");
+        }
+        catch(const Gdk::PixbufError& ex)
+        {
+          refPixbufLoader.clear();
+          g_warning("PixbufLoader::create failed: %s",ex.what().c_str());
+        }
+        */
+
+        if(refPixbufLoader)
+        {
+          try
+          {
+            guint8* puiData = (guint8*)buffer_binary;
+
+            //g_warning("ImageGlom::set_value(): debug: from db: ");
+            //for(int i = 0; i < 10; ++i)
+            //  g_warning("%02X (%c), ", (guint8)puiData[i], (char)puiData[i]);
+
+            refPixbufLoader->write(puiData, (glong)buffer_binary_length);
+
+            result = refPixbufLoader->get_pixbuf();
+
+            refPixbufLoader->close(); //This throws if write() threw, so it must be inside the try block.
+          }
+          catch(const Glib::Exception& ex)
+          {
+            g_warning("ImageGlom::set_value(): PixbufLoader::write() failed: %s", ex.what().c_str());
+          }
+
+          free(buffer_binary);
+        }
+      }
+
+      //TODO: load the image, using the mime type stored elsewhere.
+      //pixbuf = Gdk::Pixbuf::create_from_data(
+    }
+
+  }
+
+  return result;
 }
 
 } //namespace Glom

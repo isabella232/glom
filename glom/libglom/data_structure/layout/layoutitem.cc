@@ -25,7 +25,8 @@ namespace Glom
 
 LayoutItem::LayoutItem()
 : m_sequence(0),
-  m_editable(true)
+  m_editable(true),
+  m_display_width(0)
 {
   m_translatable_item_type = TRANSLATABLE_TYPE_LAYOUT_ITEM;
 }
@@ -33,7 +34,8 @@ LayoutItem::LayoutItem()
 LayoutItem::LayoutItem(const LayoutItem& src)
 : TranslatableItem(src),
   m_sequence(src.m_sequence),
-  m_editable(src.m_editable)
+  m_editable(src.m_editable),
+  m_display_width(src.m_display_width)
 {
 }
 
@@ -47,6 +49,7 @@ LayoutItem& LayoutItem::operator=(const LayoutItem& src)
 
   m_sequence = src.m_sequence;
   m_editable = src.m_editable;
+  m_display_width = src.m_display_width;
 
   return *this;
 }
@@ -55,7 +58,8 @@ bool LayoutItem::operator==(const LayoutItem& src) const
 {
   return (TranslatableItem::operator==(src)) &&
          (m_sequence == src.m_sequence) &&
-         (m_editable == src.m_editable);
+         (m_editable == src.m_editable) &&
+         (m_display_width == src.m_display_width);  //careful of this - it's not saved in the document.
 }
 
 bool LayoutItem::get_editable() const
@@ -76,6 +80,19 @@ Glib::ustring LayoutItem::get_layout_display_name() const
 Glib::ustring LayoutItem::get_report_part_id() const
 {
   return "unexpected_report_part_id"; //This should never be used.
+}
+
+bool LayoutItem::get_display_width(guint& width) const
+{
+  //Initialize output variable:
+  width = m_display_width;
+
+  return (m_display_width != 0); //Tell the caller whether a display width has even been specified.
+}
+
+void LayoutItem::set_display_width(guint value)
+{
+  m_display_width = value;
 }
 
 } //namespace Glom

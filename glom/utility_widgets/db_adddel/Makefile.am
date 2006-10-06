@@ -6,6 +6,7 @@ noinst_LIBRARIES = libutility_widgets_db_adddel.a
 libutility_widgets_db_adddel_a_SOURCES = db_adddel.cc db_adddel.h db_adddel_withbuttons.cc db_adddel_withbuttons.h \
                                       db_treeviewcolumn_glom.cc db_treeviewcolumn_glom.h \
                                       glom_db_treemodel.h glom_db_treemodel.cc \
-                                      cellrenderer_button.h cellrenderer_button.cc
+                                      cellrenderer_buttonimage.h cellrenderer_buttonimage.cc \
+                                      cellrenderer_buttontext.h cellrenderer_buttontext.cc
                                       
  
