@@ -50,10 +50,13 @@ public:
   {
   }
 
-  predicate_UsesRelationshipHasRelationships(const sharedptr<const UsesRelationship> uses_relationship_name)
+  predicate_UsesRelationshipHasRelationships(const sharedptr<const UsesRelationship> uses_relationship_name, bool first_level_only = false)
   : m_relationship_name(uses_relationship_name->get_relationship_name()),
     m_related_relationship_name(uses_relationship_name->get_related_relationship_name())
   {
+    //If first_level_only, search for relationships that have the same top-level relationship, but have no related relationship.
+    if(first_level_only)
+      m_related_relationship_name = Glib::ustring();
   }
 
   virtual ~predicate_UsesRelationshipHasRelationships()
@@ -185,6 +188,36 @@ Glib::ustring Utils::build_sql_select_with_where_clause(const Glib::ustring& tab
   return build_sql_select_with_where_clause(table_name, constFieldsToGet, where_clause, sort_clause);
 }
 
+
+static typedef std::list< sharedptr<const UsesRelationship> > type_list_relationships;
+
+static void add_to_relationships_list(type_list_relationships& list_relationships, const sharedptr<const LayoutItem_Field>& layout_item)
+{
+  if(!(layout_item->get_has_relationship_name()))
+    return;
+
+  //If this is a related relationship, add the first-level relationship too, so that the related relationship can be defined in terms of it:
+  type_list_relationships::const_iterator iterFind = std::find_if(list_relationships.begin(), list_relationships.end(), predicate_UsesRelationshipHasRelationships<UsesRelationship>(layout_item, true /* top_level_only */) );
+  if(iterFind == list_relationships.end()) //If the table is not yet in the list:
+  {
+    sharedptr<UsesRelationship> uses_rel = sharedptr<UsesRelationship>::create();
+    uses_rel->set_relationship(layout_item->get_relationship());
+    list_relationships.push_front(uses_rel); //These need to be at the front, so that related relationships can use them later in the SQL statement.
+  }
+
+  //Add the relationship to the list:
+  iterFind = std::find_if(list_relationships.begin(), list_relationships.end(), predicate_UsesRelationshipHasRelationships<UsesRelationship>(layout_item) );
+  if(iterFind == list_relationships.end()) //If the table is not yet in the list:
+  {
+    sharedptr<UsesRelationship> uses_rel = sharedptr<UsesRelationship>::create();
+    uses_rel->set_relationship(layout_item->get_relationship());
+    uses_rel->set_related_relationship(layout_item->get_related_relationship());
+    list_relationships.push_back(uses_rel);
+  }
+
+ 
+}
+
 Glib::ustring Utils::build_sql_select_with_where_clause(const Glib::ustring& table_name, const type_vecConstLayoutFields& fieldsToGet, const Glib::ustring& where_clause, const type_sort_clause& sort_clause)
 {
   Glib::ustring result;
@@ -196,39 +229,14 @@ Glib::ustring Utils::build_sql_select_with_where_clause(const Glib::ustring& tab
   for(type_vecConstLayoutFields::const_iterator iter = fieldsToGet.begin(); iter != fieldsToGet.end(); ++iter)
   {
     sharedptr<const LayoutItem_Field> layout_item = *iter;
-
-    if(layout_item->get_has_relationship_name())
-    {
-      //Add the relationship to the list:
-      type_list_relationships::const_iterator iterFind = std::find_if(list_relationships.begin(), list_relationships.end(), predicate_UsesRelationshipHasRelationships<UsesRelationship>(layout_item) );
-      if(iterFind == list_relationships.end()) //If the table is not yet in the list:
-      {
-        sharedptr<UsesRelationship> uses_rel = sharedptr<UsesRelationship>::create();
-        uses_rel->set_relationship(layout_item->get_relationship());
-        uses_rel->set_related_relationship(layout_item->get_related_relationship());
-        list_relationships.push_back(uses_rel);
-      }
-    }
+    add_to_relationships_list(list_relationships, layout_item);
   }
 
   for(type_sort_clause::const_iterator iter = sort_clause.begin(); iter != sort_clause.end(); ++iter)
   {
     sharedptr<const LayoutItem_Field> layout_item = iter->first;
-
-    if(layout_item->get_has_relationship_name())
-    {
-      //Add the relationship to the list:
-      type_list_relationships::const_iterator iterFind = std::find_if(list_relationships.begin(), list_relationships.end(), predicate_UsesRelationshipHasRelationships<UsesRelationship>(layout_item) );
-      if(iterFind == list_relationships.end()) //If the table is not yet in the list:
-      {
-        sharedptr<UsesRelationship> uses_rel = sharedptr<UsesRelationship>::create();
-        uses_rel->set_relationship(layout_item->get_relationship());
-        uses_rel->set_related_relationship(layout_item->get_related_relationship());
-        list_relationships.push_back(uses_rel);
-      }
-    }
+    add_to_relationships_list(list_relationships, layout_item);
   }
-
 
 
   Glib::ustring sql_part_fields;
