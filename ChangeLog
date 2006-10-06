@@ -1,3 +1,11 @@
+2006-10-06  Murray Cumming  <murrayc@murrayc.com>
+
+        * glom/libglom/utils.cc: build_sql_select_with_where_clause():
+        Define the first-level relationship (via a LEFT OUTER JOIN) of
+        a related relationship, even if no fields from the intermediate
+        relationship are shown, to avoid a SQL error and subsequent
+        crash.
+
 1.0.7:
 
 2006-10-05  Murray Cumming  <murrayc@murrayc.com>
