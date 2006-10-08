@@ -65,13 +65,13 @@ void HandlePythonError()
     PyErr_Print();
 }
 
-void glom_execute_python_function_implementation(const Glib::ustring& func_impl, const type_map_fields& field_values, Document_Glom* pDocument, const Glib::ustring& table_name)
+void glom_execute_python_function_implementation(const Glib::ustring& func_impl, const type_map_fields& field_values, Document_Glom* pDocument, const Glib::ustring& table_name, const Glib::RefPtr<Gnome::Gda::Connection>& opened_connection)
 {
-  glom_evaluate_python_function_implementation(Field::TYPE_TEXT, func_impl, field_values, pDocument, table_name);
+  glom_evaluate_python_function_implementation(Field::TYPE_TEXT, func_impl, field_values, pDocument, table_name, opened_connection);
 }
 
 Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field_type result_type, const Glib::ustring& func_impl,
-    const type_map_fields& field_values, Document_Glom* pDocument, const Glib::ustring& table_name)
+    const type_map_fields& field_values, Document_Glom* pDocument, const Glib::ustring& table_name, const Glib::RefPtr<Gnome::Gda::Connection>& opened_connection)
 {
   //std::cout << "glom_evaluate_python_function_implementation()" << std::endl;
   //for(type_map_fields::const_iterator iter = field_values.begin(); iter != field_values.end(); ++iter)
@@ -98,7 +98,6 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
 
   //prefix the def line:
   const Glib::ustring func_name = "glom_calc_field_value";
-  //TODO: When pygda packages are available: func_def = "def " + func_name + "(record):\n  import gda\n" + func_def;
   func_def = "def " + func_name + "(record):\n  import glom\n  import gda\n" + func_def;
   //We did this in main(): Py_Initialize();
 
@@ -161,7 +160,7 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
       Py_INCREF(pParam); //TODO: As I understand it, PyObject_New() should return a new reference, so this should not be necessary.
 
       //Fill the record's details:
-      PyGlomRecord_SetFields(pParam, field_values, pDocument, table_name);
+      PyGlomRecord_SetFields(pParam, field_values, pDocument, table_name, opened_connection);
 
       PyObject* pArgs = PyTuple_New(1);
       PyTuple_SetItem(pArgs, 0, (PyObject*)pParam); //The pParam reference is taken by PyTuple_SetItem().

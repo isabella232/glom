@@ -51,11 +51,13 @@ public:
   typedef std::map<Glib::ustring, Gnome::Gda::Value> type_map_field_values;
   //We use a pointer because python will not run the class/struct's default constructor.
   type_map_field_values* m_pMap_field_values;
+
+  Glib::RefPtr<Gnome::Gda::Connection>* m_connection;
 };
 
 PyTypeObject* PyGlomRecord_GetPyType();
 
-void PyGlomRecord_SetFields(PyGlomRecord* self, const PyGlomRecord::type_map_field_values& field_values, Document_Glom* document, const Glib::ustring& table_name);
+void PyGlomRecord_SetFields(PyGlomRecord* self, const PyGlomRecord::type_map_field_values& field_values, Document_Glom* document, const Glib::ustring& table_name, const Glib::RefPtr<Gnome::Gda::Connection>& opened_connection);
 
 } //namespace Glom
 

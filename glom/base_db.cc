@@ -1776,7 +1776,10 @@ void Base_DB::calculate_field(const LayoutFieldInRecord& field_in_record)
         sharedptr<const Field> field = refCalcProgress.m_field;
         if(field)
         {
-          refCalcProgress.m_value = glom_evaluate_python_function_implementation(field->get_glom_type(), field->get_calculation(), field_values, get_document(), field_in_record.m_table_name);
+          //We need the connection when we run the script, so that the script may use it.
+          sharedptr<SharedConnection> sharedconnection = connect_to_server(0 /* parent window */);
+
+          refCalcProgress.m_value = glom_evaluate_python_function_implementation(field->get_glom_type(), field->get_calculation(), field_values, get_document(), field_in_record.m_table_name, sharedconnection->get_gda_connection());
 
           refCalcProgress.m_calc_finished = true;
           refCalcProgress.m_calc_in_progress = false;

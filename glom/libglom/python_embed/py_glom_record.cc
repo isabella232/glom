@@ -80,9 +80,34 @@ Record_dealloc(PyGlomRecord* self)
     self->m_pMap_field_values = 0;
   }
 
+  if(self->m_table_name)
+  {
+    delete self->m_table_name;
+    self->m_table_name = 0;
+  }
+
+  if(self->m_connection)
+  {
+    delete self->m_connection;
+    self->m_connection = 0;
+  }
+
   self->ob_type->tp_free((PyObject*)self);
 }
 
+static PyObject *
+Record__get_connection(PyGlomRecord* self, void* /* closure */)
+{
+  //if(!self->m_connection)
+  //{
+    Py_INCREF(Py_None);
+    return Py_None;
+  //}
+  //else
+  //{
+  //  return gda_connection_to_pygda_connection(self->m_connection); //TODO: Implement this somehow.
+  //}
+}
 
 static PyObject *
 Record__get_related(PyGlomRecord* self, void* /* closure */)
@@ -118,6 +143,9 @@ Record__get_related(PyGlomRecord* self, void* /* closure */)
 static PyGetSetDef Record_getseters[] = {
     {"related",
      (getter)Record__get_related, (setter)0, 0, 0
+    },
+    {"connection",
+     (getter)Record__get_connection, (setter)0, 0, 0
     },
     {NULL, 0, 0, 0, 0, }  // Sentinel
 };
@@ -247,11 +275,18 @@ static void Record_HandlePythonError()
 */
 
 
-void PyGlomRecord_SetFields(PyGlomRecord* self, const PyGlomRecord::type_map_field_values& field_values, Document_Glom* document, const Glib::ustring& table_name)
+void PyGlomRecord_SetFields(PyGlomRecord* self, const PyGlomRecord::type_map_field_values& field_values, Document_Glom* document, const Glib::ustring& table_name, const Glib::RefPtr<Gnome::Gda::Connection>& opened_connection)
 {
-  *(self->m_pMap_field_values) = field_values;
-  self->m_table_name = new Glib::ustring(table_name);
-  self->m_document = document;
+  *(self->m_pMap_field_values) = field_values; //This was allocated in Record_new().
+
+  if(self->m_table_name == 0)
+    self->m_table_name = new Glib::ustring(table_name); //Deleted in Record_dealloc().
+
+  if(self->m_document == 0)
+    self->m_document = document;
+
+  if(self->m_connection == 0)
+  self->m_connection = new Glib::RefPtr<Gnome::Gda::Connection>(opened_connection);  //Deleted in Record_dealloc().
 
   /*
   if(self->m_fields_dict == 0)

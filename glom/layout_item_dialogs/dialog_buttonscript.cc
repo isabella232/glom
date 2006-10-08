@@ -88,8 +88,11 @@ void Dialog_ButtonScript::on_button_test()
     }
   }
 
+  //We need the connection when we run the script, so that the script may use it.
+  sharedptr<SharedConnection> sharedconnection = connect_to_server(this /* parent window */);
+
   glom_execute_python_function_implementation(calculation, field_values, //TODO: Maybe use the field's type here.
-    document, m_table_name);
+    document, m_table_name, sharedconnection->get_gda_connection());
 }
 
 } //namespace Glom

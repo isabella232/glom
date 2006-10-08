@@ -143,7 +143,7 @@ void Box_Data::set_primary_key_value(const Gtk::TreeModel::iterator& /* row */, 
 }
 
 Glib::RefPtr<Gnome::Gda::DataModel> Box_Data::record_new(bool use_entered_data, const Gnome::Gda::Value& primary_key_value, const Gtk::TreeModel::iterator& row)
-{
+{  
   sharedptr<const Field> fieldPrimaryKey = get_field_primary_key();
 
   const Glib::ustring primary_key_name = fieldPrimaryKey->get_name();
@@ -186,7 +186,10 @@ Glib::RefPtr<Gnome::Gda::DataModel> Box_Data::record_new(bool use_entered_data, 
           const Glib::ustring calculation = field->get_calculation();
           const type_map_fields field_values = get_record_field_values_for_calculation(m_table_name, fieldPrimaryKey, primary_key_value);
 
-          const Gnome::Gda::Value value = glom_evaluate_python_function_implementation(field->get_glom_type(), calculation, field_values, document, m_table_name);
+          //We need the connection when we run the script, so that the script may use it.
+          sharedptr<SharedConnection> sharedconnection = connect_to_server(get_app_window());
+
+          const Gnome::Gda::Value value = glom_evaluate_python_function_implementation(field->get_glom_type(), calculation, field_values, document, m_table_name, sharedconnection->get_gda_connection());
           set_entered_field_data(layout_item, value);
         }
 

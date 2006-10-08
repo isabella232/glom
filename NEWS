@@ -1,3 +1,15 @@
+1.1.5:
+
+* List view: When remembering column widths, allow the columns to be 
+  resized smaller again. Bug #358089 from Peter Williams.
+* Related Records:
+  - Avoid a SQL error when showing a doubly-related field without showing 
+  the key field that is used in the relationship. 
+  - Allow the developer to specify to what table the user will be taken 
+  when clicking on the row button, or just use the automatic choice.
+* Button scripts: Update the view after the script has run, in case it 
+  changed any data.
+
 1.1.4:
 
 * List view: Remember column widths when you resize them manually.
