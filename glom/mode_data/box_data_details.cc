@@ -552,6 +552,9 @@ void Box_Data_Details::on_flowtable_script_button_clicked(const sharedptr<const 
 
     glom_execute_python_function_implementation(layout_item->get_script(), field_values, //TODO: Maybe use the field's type here.
     get_document(), get_table_name());
+
+    //Refresh the view, in case the script changed any data:
+    refresh_data_from_database_with_primary_key(m_primary_key_value);
   }
 }
 
