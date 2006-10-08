@@ -54,15 +54,17 @@ protected:
   virtual void save_to_document();
 
   //signal handlers:
-  virtual void on_button_field_up();
-  virtual void on_button_field_down();
-  virtual void on_button_add_field();
-  virtual void on_button_delete();
-  virtual void on_button_edit_field();
-  virtual void on_button_field_formatting();
-  virtual void on_treeview_fields_selection_changed();
-  virtual void on_combo_relationship_changed();
-  virtual void on_cell_data_name(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter);
+  void on_button_field_up();
+  void on_button_field_down();
+  void on_button_add_field();
+  void on_button_delete();
+  void on_button_edit_field();
+  void on_button_field_formatting();
+  void on_treeview_fields_selection_changed();
+  void on_combo_relationship_changed();
+  void on_cell_data_name(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter);
+  
+  void Dialog_Layout_List_Related::on_combo_navigation_specific_changed();
 
   //Tree model columns:
   class ModelColumns_Fields : public Gtk::TreeModel::ColumnRecord
@@ -89,6 +91,11 @@ protected:
 
   ComboBox_Relationship* m_combo_relationship;
   sharedptr<LayoutItem_Portal> m_portal;
+
+  Gtk::RadioButton* m_radio_navigation_automatic;
+  Gtk::RadioButton* m_radio_navigation_specify;
+  Gtk::Label* m_label_navigation_automatic;
+  ComboBox_Relationship* m_combo_navigation_specify;
 
   Glib::RefPtr<Gtk::ListStore> m_model_fields;
 };

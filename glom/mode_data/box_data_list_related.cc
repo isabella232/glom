@@ -403,186 +403,138 @@ void Box_Data_List_Related::on_adddel_user_requested_add()
     Box_Data_List::on_adddel_user_requested_add();
 }
 
-sharedptr<const LayoutItem_Field> Box_Data_List_Related::get_field_identifies_non_hidden_related_record(sharedptr<const Relationship>& used_in_relationship) const
-{
-  //Find the first field that is from a non-hidden related table.
-  sharedptr<LayoutItem_Field> result;
 
-  const Document_Glom* document = get_document();
-  if(!document)
-    return result;
 
-  for(type_vecLayoutFields::const_iterator iter = m_FieldsShown.begin(); iter != m_FieldsShown.end(); ++iter)
-  {
-    sharedptr<const LayoutItem_Field> field = *iter;
-    if(field && !(field->get_has_relationship_name()))
-    {
-      sharedptr<Relationship> relationship = document->get_field_used_in_relationship_to_one(LayoutWidgetBase::m_table_name, field->get_name());
-      if(relationship)
-      {
-        const Glib::ustring table_name = relationship->get_to_table();
-        if(!(table_name.empty()))
-        {
-          if(!(document->get_table_is_hidden(table_name)))
-          {
-            used_in_relationship = relationship;
-            return field;
-          }
-        }
-      }
-    }
-  }
-
-  return result;
-}
-
-sharedptr<const LayoutItem_Field> Box_Data_List_Related::get_field_is_from_non_hidden_related_record() const
-{
-  //Find the first field that is from a non-hidden related table.
-  sharedptr<LayoutItem_Field> result;
-
-  const Document_Glom* document = get_document();
-  if(!document)
-    return result;
-
-  for(type_vecLayoutFields::const_iterator iter = m_FieldsShown.begin(); iter != m_FieldsShown.end(); ++iter)
-  {
-    sharedptr<const LayoutItem_Field> field = *iter;
-    if(field)
-    {
-      if(field->get_has_relationship_name())
-      {
-        const Glib::ustring table_name = field->get_table_used(LayoutWidgetBase::m_table_name);
-        if(!(document->get_table_is_hidden(table_name)))
-          return field;
-      }
-
-    }
-  }
-
-  return result;
-}
 
 bool Box_Data_List_Related::get_has_suitable_record_to_view_details() const
 {
-  const Document_Glom* document = get_document();
-  if(!document)
-    return false;
-
-  if(!(document->get_table_is_hidden(LayoutWidgetBase::m_table_name)))
-  {
-    return true;
-  }
-  else
-  {
-    //Find a suitable related table by finding the first layout field that mentions one:
-    sharedptr<const LayoutItem_Field> field = get_field_is_from_non_hidden_related_record();
-    if(field)
-      return true;
-    else
-    {
-      sharedptr<const Relationship> used_in_relationship;
-      sharedptr<const LayoutItem_Field> field = get_field_identifies_non_hidden_related_record(used_in_relationship);
-      if(field)
-       return true;
-    }
-  }
-
-  return false;
+  Glib::ustring navigation_table_name;
+  sharedptr<const UsesRelationship> navigation_relationship;
+  get_suitable_table_to_view_details(navigation_table_name, navigation_relationship);
+  return !(navigation_table_name.empty());
 }
 
-void Box_Data_List_Related::get_suitable_record_to_view_details(const Gnome::Gda::Value& primary_key_value, Glib::ustring& table_name, Gnome::Gda::Value& table_primary_key_value)
+void Box_Data_List_Related::get_suitable_table_to_view_details(Glib::ustring& table_name, sharedptr<const UsesRelationship>& relationship) const
 {
   //Initialize output parameters:
   table_name = Glib::ustring();
-  table_primary_key_value = Gnome::Gda::Value();
+
+  //Check whether a relationship was specified:
+  bool navigation_relationship_main = false;
+  sharedptr<const UsesRelationship> navigation_relationship = m_portal->get_navigation_relationship_specific(navigation_relationship_main);
+  if(!navigation_relationship_main && !navigation_relationship)
+  {
+    //std::cout << "debug: decide automatically." << std::endl;
+    //Decide automatically:
+    navigation_relationship_main = false;
+    navigation_relationship = get_portal_navigation_relationship_automatic(m_portal, navigation_relationship_main);
+    //std::cout << "debug: auto main=" << navigation_relationship_main << ", navigation_relationship=" << (navigation_relationship ? navigation_relationship->get_name() : navigation_relationship->get_relationship()->get_name()) << std::endl;
+  }
+  //else
+  //  std::cout << "debug: get_suitable_table_to_view_details(): Using specific nav." << std::endl;
 
   const Document_Glom* document = get_document();
   if(!document)
     return;
 
-  if(!(document->get_table_is_hidden(LayoutWidgetBase::m_table_name)))
+
+  //Get the navigation table name from the chosen relationship:
+  const Glib::ustring directly_related_table_name = m_portal->get_relationship()->get_to_table();
+  Glib::ustring navigation_table_name;
+  if(navigation_relationship_main)
   {
-    //Non-hidden tables can just be shown directly. Navigate to it: 
-    table_name = LayoutWidgetBase::m_table_name;
-    table_primary_key_value = primary_key_value;
+     std::cout << "  debug: using main rel" << std::endl;
+    navigation_table_name = directly_related_table_name;
+  }
+  else if(navigation_relationship)
+  {
+    //std::cout << "  debug: using rel: " << navigation_relationship->get_relationship_name() << std::endl;
+    navigation_table_name = navigation_relationship->get_table_used(directly_related_table_name);
+  }
+
+  if(navigation_table_name.empty())
+  {
+    std::cerr << "Box_Data_List_Related::get_suitable_table_to_view_details(): navigation_table_name is empty." << std::endl;
+    return;
+  }
+
+  if(document->get_table_is_hidden(navigation_table_name))
+  {
+    std::cerr << "Box_Data_List_Related::get_suitable_table_to_view_details(): navigation_table_name indicates a hidden table: " << navigation_table_name << std::endl;
+    return;
+  }
+
+  table_name = navigation_table_name;
+  relationship = navigation_relationship;
+}
+
+void Box_Data_List_Related::get_suitable_record_to_view_details(const Gnome::Gda::Value& primary_key_value, Glib::ustring& table_name, Gnome::Gda::Value& table_primary_key_value) const
+{
+  //Initialize output parameters:
+  table_name = Glib::ustring();
+  table_primary_key_value = Gnome::Gda::Value();
+
+  Glib::ustring navigation_table_name;
+  sharedptr<const UsesRelationship> navigation_relationship;
+  get_suitable_table_to_view_details(navigation_table_name, navigation_relationship);
+
+  if(navigation_table_name.empty())
+    return;
+
+  //Get the primary key of that table:
+  sharedptr<Field> navigation_table_primary_key = get_field_primary_key_for_table(navigation_table_name);
+
+  //Build a layout item to get the field's value:
+  sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
+  layout_item->set_full_field_details(navigation_table_primary_key);
+
+  if(navigation_relationship)
+  {
+    layout_item->set_relationship( navigation_relationship->get_relationship() );
+    //std::cout << "debug: navigation_relationship->get_relationship()= " << navigation_relationship->get_relationship()->get_name() << std::endl;
+    layout_item->set_related_relationship( navigation_relationship->get_related_relationship() );
+  }
+
+  //Get the value of the navigation related primary key:
+  type_vecLayoutFields fieldsToGet;
+  fieldsToGet.push_back(layout_item);
+
+  const Glib::ustring query = Utils::build_sql_select_with_key(m_portal->get_relationship()->get_to_table(), fieldsToGet, m_AddDel.get_key_field(), primary_key_value);
+  Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute(query);
+
+
+  bool value_found = true;
+  if(data_model && data_model->get_n_rows() && data_model->get_n_columns())
+  {
+    //Set the output parameters:
+    table_name = navigation_table_name;
+    table_primary_key_value = data_model->get_value_at(0, 0);
+
+    //std::cout << "Box_Data_List_Related::get_suitable_record_to_view_details(): table_primary_key_value=" << table_primary_key_value.to_string() << std::endl;
+
+    //The value is empty when there there is no record to match the key in the related table:
+    //For instance, if an invoice lines record mentions a product id, but the product does not exist in the products table.
+    if(Conversions::value_is_empty(table_primary_key_value))
+    {
+      value_found = false;
+      std::cout << "debug: Box_Data_List_Related::get_suitable_record_to_view_details(): SQL query returned empty primary key." << std::endl;
+    }
   }
   else
   {
-    //For hidden tables, find a suitable related non-hidden table by finding the first layout field that mentions one:
-    sharedptr<const LayoutItem_Field> field = get_field_is_from_non_hidden_related_record();
-    if(!field)
-    {
-      //Instead, find a key field that's used in a relationship, and pretend that we are showing the to field as a related field:
-      sharedptr<const Relationship> used_in_relationship;
-      sharedptr<const LayoutItem_Field> field_identifies = get_field_identifies_non_hidden_related_record(used_in_relationship);
-      if(field_identifies && used_in_relationship)
-      {
-          sharedptr<LayoutItem_Field> fake_item = sharedptr<LayoutItem_Field>::create();
-          fake_item->set_relationship( glom_sharedptr_clone(used_in_relationship) ); //Clone to avoid the const.
+    value_found = false;
+    std::cout << "debug: Box_Data_List_Related::get_suitable_record_to_view_details(): SQL query returned no suitable primary key." << std::endl;
+  }
 
-          fake_item->set_name(used_in_relationship->get_to_field());
-          fill_full_field_details(LayoutWidgetBase::m_table_name, fake_item);
-          field = fake_item;
-      }
-    }
+  if(!value_found)
+  {
+    //Clear the output parameters:
+    table_name = Glib::ustring();
+    table_primary_key_value = Gnome::Gda::Value();
 
-    //Get the value of the to field:
-    if(field)
-    {
-      table_name = field->get_table_used(LayoutWidgetBase::m_table_name);
-
-      sharedptr<Field> related_primary_key = get_field_primary_key_for_table(table_name);
-      if(related_primary_key)
-      {
-        //Get the value of the related primary key:
-        sharedptr<LayoutItem_Field> layout_item = glom_sharedptr_clone(field); //To keep the relationship info.
-        layout_item->set_name(related_primary_key->get_name());
-        layout_item->set_full_field_details(related_primary_key);
-
-        type_vecLayoutFields fieldsToGet;
-        fieldsToGet.push_back(layout_item);
-
-        //std::cout << "PRIMARY_KEY_TABLE=" << LayoutWidgetBase::m_table_name << std::endl;
-        //std::cout << "PRIMARY_KEY_TABLE_TO=" << m_portal->get_relationship()->get_to_table() << std::endl;
-        //std::cout << "PRIMARY_KEY_VALUE=" << primary_key_value.to_string() << std::endl;
-
-        const Glib::ustring query = Utils::build_sql_select_with_key(LayoutWidgetBase::m_table_name, fieldsToGet, m_AddDel.get_key_field(), primary_key_value);
-        Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute(query);
-
-        bool value_found = true;
-        if(data_model && data_model->get_n_rows() && data_model->get_n_columns())
-        {
-          table_primary_key_value = data_model->get_value_at(0, 0);
-          //std::cout << "Box_Data_List_Related::get_suitable_record_to_view_details(): table_primary_key_value=" << table_primary_key_value.to_string() << std::endl;
-
-          //The value is empty when there there is no record to match the key in the related table:
-          //For instance, if an invoice lines record mentions a product id, but the product does not exist in the products table.
-          if(Conversions::value_is_empty(table_primary_key_value))
-          {
-            value_found = false;
-            std::cout << "debug: Box_Data_List_Related::get_suitable_record_to_view_details(): SQL query returned empty primary key." << std::endl;
-          }
-        }
-        else
-        {
-           value_found = false;
-           std::cout << "debug: Box_Data_List_Related::get_suitable_record_to_view_details(): SQL query returned no suitable primary key." << std::endl;
-        }
-
-        if(!value_found)
-        {
-           Gtk::Window* window = get_app_window();
-           if(window)
-             Frame_Glom::show_ok_dialog(_("No Corresponding Record Exists"), _("No record with this value exists. Therefore navigation to the related record is not possible."), *window, Gtk::MESSAGE_WARNING); //TODO: Make it more clear to the user exactly what record, what field, and what value, we are talking about.
-        }
-      }
-    }
-    else
-    {
-      //TODO: We need to worry about doubly-related fields.
-    }
-
+    Gtk::Window* window = const_cast<Gtk::Window*>(get_app_window());
+    if(window)
+      Frame_Glom::show_ok_dialog(_("No Corresponding Record Exists"), _("No record with this value exists. Therefore navigation to the related record is not possible."), *window, Gtk::MESSAGE_WARNING); //TODO: Make it more clear to the user exactly what record, what field, and what value, we are talking about.
   }
 }
 

@@ -189,4 +189,24 @@ bool Dialog_Layout::get_modified() const
   return m_modified;
 }
 
+void Dialog_Layout::make_sensitivity_depend_on_toggle_button(Gtk::ToggleButton& toggle_button, Gtk::Widget& widget)
+{
+  toggle_button.signal_toggled().connect( 
+    sigc::bind( sigc::mem_fun(*this, &Dialog_Layout::on_sensitivity_toggle_button), &toggle_button, &widget) );
+
+  //Call the handler once, so that the initial state is set:
+  on_sensitivity_toggle_button(&toggle_button, &widget);
+}
+
+void Dialog_Layout::on_sensitivity_toggle_button(Gtk::ToggleButton* toggle_button, Gtk::Widget* widget)
+{
+  if(!toggle_button || !widget)
+    return;
+
+  const bool sensitivity = toggle_button->get_active();
+  widget->set_sensitive(sensitivity);
+
+  m_modified = true;
+}
+
 } //namespace Glom

@@ -54,6 +54,8 @@ namespace Glom
 
 #define GLOM_NODE_DATA_LAYOUT_NOTEBOOK "data_layout_notebook"
 #define GLOM_NODE_DATA_LAYOUT_PORTAL "data_layout_portal"
+#define GLOM_NODE_DATA_LAYOUT_PORTAL_NAVIGATIONRELATIONSHIP "portal_navigation_relationship"
+#define GLOM_ATTRIBUTE_PORTAL_NAVIGATIONRELATIONSHIP_MAIN "navigation_main"
 #define GLOM_NODE_DATA_LAYOUT_ITEM "data_layout_item" //A field.
 #define GLOM_NODE_LAYOUT_ITEM_CUSTOM_TITLE "title_custom"
 #define GLOM_ATTRIBUTE_LAYOUT_ITEM_CUSTOM_TITLE_USE "use_custom"
@@ -1510,10 +1512,10 @@ void Document_Glom::load_after_layout_item_field_formatting(const xmlpp::Element
   }
 }
 
-void Document_Glom::load_after_layout_item_field(const xmlpp::Element* element, const Glib::ustring& table_name, const sharedptr<LayoutItem_Field>& item)
+void Document_Glom::load_after_layout_item_usesrelationship(const xmlpp::Element* element, const Glib::ustring& table_name, const sharedptr<UsesRelationship>& item)
 {
-  const Glib::ustring name = get_node_attribute_value(element, GLOM_ATTRIBUTE_NAME);
-  item->set_name(name);
+  if(!element || !item)
+    return;
 
   const Glib::ustring relationship_name = get_node_attribute_value(element, GLOM_ATTRIBUTE_RELATIONSHIP_NAME);
   sharedptr<Relationship> relationship = get_relationship(table_name, relationship_name);
@@ -1528,6 +1530,14 @@ void Document_Glom::load_after_layout_item_field(const xmlpp::Element* element, 
 
     item->set_related_relationship(related_relationship); 
   }
+}
+
+void Document_Glom::load_after_layout_item_field(const xmlpp::Element* element, const Glib::ustring& table_name, const sharedptr<LayoutItem_Field>& item)
+{
+  const Glib::ustring name = get_node_attribute_value(element, GLOM_ATTRIBUTE_NAME);
+  item->set_name(name);
+
+  load_after_layout_item_usesrelationship(element, table_name, item);
 
   item->set_editable( get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_EDITABLE) );
 
@@ -1704,6 +1714,17 @@ void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Gl
         const Glib::ustring relationship_name = get_node_attribute_value(element, GLOM_ATTRIBUTE_RELATIONSHIP_NAME);
         sharedptr<Relationship> relationship = get_relationship(table_name, relationship_name);
         portal->set_relationship(relationship);
+
+        sharedptr<UsesRelationship> relationship_navigation_specific;
+        bool relationship_navigation_specific_main = false;
+        xmlpp::Element* elementNavigationRelationshipSpecific = get_node_child_named(element, GLOM_NODE_DATA_LAYOUT_PORTAL_NAVIGATIONRELATIONSHIP);
+        if(elementNavigationRelationshipSpecific)
+        {
+           load_after_layout_item_usesrelationship(elementNavigationRelationshipSpecific, table_name, relationship_navigation_specific);
+           relationship_navigation_specific_main = get_node_attribute_value_as_bool(elementNavigationRelationshipSpecific, GLOM_ATTRIBUTE_PORTAL_NAVIGATIONRELATIONSHIP_MAIN);
+        }
+
+        portal->set_navigation_relationship_specific(relationship_navigation_specific_main, relationship_navigation_specific);
 
         load_after_layout_group(element, portal->get_table_used(table_name), portal);
         group->add_item(portal);
@@ -2152,14 +2173,22 @@ void Document_Glom::save_before_layout_item_field_formatting(xmlpp::Element* nod
   set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_SECOND, choice_second);
 }
 
+void Document_Glom::save_before_layout_item_usesrelationship(xmlpp::Element* nodeItem, const sharedptr<const UsesRelationship>& item)
+{
+  if(!item)
+    return;
+
+  set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_RELATIONSHIP_NAME, item->get_relationship_name());
+  set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_RELATED_RELATIONSHIP_NAME, item->get_related_relationship_name());
+}
+
 void Document_Glom::save_before_layout_item_field(xmlpp::Element* nodeItem, const sharedptr<const LayoutItem_Field>& field)
 {
   if(!field)
     return;
 
   set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_NAME, field->get_name());
-  set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_RELATIONSHIP_NAME, field->get_relationship_name());
-  set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_RELATED_RELATIONSHIP_NAME, field->get_related_relationship_name());
+  save_before_layout_item_usesrelationship(nodeItem, field);
   set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_EDITABLE, field->get_editable());
 
   xmlpp::Element* elementFormat = nodeItem->add_child(GLOM_NODE_FORMAT);
@@ -2265,6 +2294,17 @@ void Document_Glom::save_before_layout_group(xmlpp::Element* node, const sharedp
             {
               child = node->add_child(GLOM_NODE_DATA_LAYOUT_PORTAL);
               child->set_attribute(GLOM_ATTRIBUTE_RELATIONSHIP_NAME, portal->get_relationship_name());
+
+              //Portal navigation details:
+              bool navigation_specific_main = false;
+              sharedptr<const UsesRelationship> relationship_navigation_specific = portal->get_navigation_relationship_specific(navigation_specific_main);
+              if(navigation_specific_main || relationship_navigation_specific) //Avoid wasting a node if these are not even specified.
+              {
+                xmlpp::Element* child_navigation_relationship_specific = child->add_child(GLOM_NODE_DATA_LAYOUT_PORTAL_NAVIGATIONRELATIONSHIP);
+
+                save_before_layout_item_usesrelationship(child_navigation_relationship_specific, relationship_navigation_specific);
+                set_node_attribute_value_as_bool(child_navigation_relationship_specific, GLOM_ATTRIBUTE_PORTAL_NAVIGATIONRELATIONSHIP_MAIN, navigation_specific_main);
+              }
             }
             else
             {

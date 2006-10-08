@@ -24,6 +24,7 @@
 #include <bakery/App/App_Gtk.h> //For util_bold_message().
 
 //#include <libgnome/gnome-i18n.h>
+#include <gtkmm/togglebutton.h>
 #include <glibmm/i18n.h>
 
 namespace Glom
@@ -37,7 +38,11 @@ Dialog_Layout_List_Related::Dialog_Layout_List_Related(BaseObjectType* cobject, 
   m_button_field_add(0),
   m_button_field_delete(0),
   m_button_field_edit(0),
-  m_combo_relationship(0)
+  m_combo_relationship(0),
+  m_radio_navigation_automatic(0),
+  m_radio_navigation_specify(0),
+  m_label_navigation_automatic(0),
+  m_combo_navigation_specify(0)
 {
   refGlade->get_widget_derived("combo_relationship_name", m_combo_relationship);
   m_combo_relationship->signal_changed().connect(sigc::mem_fun(*this, &Dialog_Layout_List_Related::on_combo_relationship_changed));
@@ -91,6 +96,16 @@ Dialog_Layout_List_Related::Dialog_Layout_List_Related(BaseObjectType* cobject, 
   refGlade->get_widget("button_field_formatting", m_button_field_formatting);
   m_button_field_formatting->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout_List_Related::on_button_field_formatting) );
 
+  refGlade->get_widget("radiobutton_navigation_automatic", m_radio_navigation_automatic);
+  refGlade->get_widget("label_navigation_automatic", m_label_navigation_automatic);
+  make_sensitivity_depend_on_toggle_button(*m_radio_navigation_automatic, *m_label_navigation_automatic);
+
+  refGlade->get_widget("radiobutton_navigation_specify", m_radio_navigation_specify);
+  refGlade->get_widget_derived("combobox_navigation_specify", m_combo_navigation_specify);
+  make_sensitivity_depend_on_toggle_button(*m_radio_navigation_specify, *m_combo_navigation_specify);
+  m_combo_navigation_specify->signal_changed().connect(sigc::mem_fun(*this, &Dialog_Layout_List_Related::on_combo_navigation_specific_changed));
+
+  m_modified = false;
 
   show_all_children();
 }
@@ -196,6 +211,62 @@ void Dialog_Layout_List_Related::update_ui(bool including_relationship_list)
     treeview_fill_sequences(m_model_fields, m_ColumnsFields.m_col_sequence); //The document should have checked this already, but it does not hurt to check again.
   }
 
+  //Show the navigation information:
+  //const Document_Glom::type_vecRelationships vecRelationships = document->get_relationships(m_portal->get_relationship()->get_from_table());
+  const Glib::ustring related_table_name = m_portal->get_relationship()->get_to_table();
+  m_combo_navigation_specify->set_relationships(document, related_table_name, true /* show related relationships */); //TODO: Don't show the hidden tables, and don't show relationships that are not used by any fields.
+  //m_combo_navigation_specify->set_display_parent_table(""); //This would be superfluous, and a bit confusing.
+
+  bool navigation_is_automatic = false;
+  bool navigation_specific_main = false;
+  sharedptr<UsesRelationship> navrel = m_portal->get_navigation_relationship_specific(navigation_specific_main);
+  if(navigation_specific_main)
+    m_combo_navigation_specify->set_selected_parent_table(related_table_name);
+  else if(navrel)
+  {
+    std::cout << "debug navrel=" << navrel->get_relationship()->get_name() << std::endl;
+    m_combo_navigation_specify->set_selected_relationship(navrel->get_relationship(), navrel->get_related_relationship());
+  }
+  else
+  {
+    navigation_is_automatic = true;
+
+    sharedptr<const Relationship> none;
+    m_combo_navigation_specify->set_selected_relationship(none);
+  }
+
+  //Set the appropriate radio button:
+  //std::cout << "debug: navigation_is_automatic=" << navigation_is_automatic << std::endl;
+  m_radio_navigation_automatic->set_active(navigation_is_automatic); 
+  m_radio_navigation_specify->set_active(!navigation_is_automatic); 
+
+
+  //Describe the automatic navigation:
+  sharedptr<const UsesRelationship> relationship_navigation_automatic;
+  bool navigation_automatic_main = false;
+  relationship_navigation_automatic = get_portal_navigation_relationship_automatic(m_portal, navigation_automatic_main);
+  Glib::ustring automatic_navigation_description;
+  
+  if(navigation_automatic_main)
+    automatic_navigation_description = m_portal->get_relationship()->get_name();
+  else if(relationship_navigation_automatic)
+  {
+    automatic_navigation_description = m_portal->get_relationship()->get_name();
+
+    if(relationship_navigation_automatic->get_has_relationship_name())
+      automatic_navigation_description += ("::" + relationship_navigation_automatic->get_relationship_name());
+
+    if(relationship_navigation_automatic->get_has_related_relationship_name())
+      automatic_navigation_description += ("::" + relationship_navigation_automatic->get_related_relationship_name());
+  }
+
+  if(automatic_navigation_description.empty())
+  {
+    automatic_navigation_description = _("None: No visible tables are specified by the fields.");
+  }
+
+  m_label_navigation_automatic->set_text(automatic_navigation_description);
+
   m_modified = false;
 }
 
@@ -281,6 +352,26 @@ void Dialog_Layout_List_Related::save_to_document()
 
         ++field_sequence;
       }
+    }
+
+    if(m_radio_navigation_specify->get_active())
+    {
+      sharedptr<Relationship> rel, rel_related;
+      rel = m_combo_navigation_specify->get_selected_relationship(rel_related);
+
+      bool specify_main = (!rel && !rel_related);
+      sharedptr<UsesRelationship> uses_rel = sharedptr<UsesRelationship>::create();
+      uses_rel->set_relationship(rel);
+      uses_rel->set_related_relationship(rel_related);
+
+      m_portal->set_navigation_relationship_specific(specify_main, uses_rel);
+      //std::cout << "debug99 main=specify_main" << ", relationship=" << (rel ? rel->get_name() : "none") << std::endl;
+    }
+    else
+    {
+      //std::cout << "debug: set_navigation_relationship_specific(false, none)" << std::endl;
+      sharedptr<UsesRelationship> none;
+      m_portal->set_navigation_relationship_specific(false, none);
     }
 
     Document_Glom* document = get_document();
@@ -475,6 +566,12 @@ sharedptr<LayoutItem_Portal> Dialog_Layout_List_Related::get_portal_layout()
 {
   return m_portal;
 }
+
+void Dialog_Layout_List_Related::on_combo_navigation_specific_changed()
+{
+  m_modified = true;
+}
+
 
 } //namespace Glom
 

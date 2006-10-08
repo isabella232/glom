@@ -25,12 +25,15 @@ namespace Glom
 {
 
 LayoutItem_Portal::LayoutItem_Portal()
+: m_navigation_relationship_specific_main(false)
 {
 }
 
 LayoutItem_Portal::LayoutItem_Portal(const LayoutItem_Portal& src)
 : LayoutGroup(src),
-  UsesRelationship(src)
+  UsesRelationship(src),
+  m_navigation_relationship_specific_main(src.m_navigation_relationship_specific_main),
+  m_navigation_relationship_specific(src.m_navigation_relationship_specific)
 {
 }
 
@@ -48,6 +51,9 @@ LayoutItem_Portal& LayoutItem_Portal::operator=(const LayoutItem_Portal& src)
 {
   LayoutGroup::operator=(src);
   UsesRelationship::operator=(src);
+
+  m_navigation_relationship_specific_main = src.m_navigation_relationship_specific_main;
+  m_navigation_relationship_specific = src.m_navigation_relationship_specific;
 
   return *this;
 }
@@ -90,6 +96,33 @@ void LayoutItem_Portal::change_field_item_name(const Glib::ustring& table_name, 
         sub_group->change_field_item_name(table_name, field_name, field_name_new);
     }
   }
+}
+
+sharedptr<UsesRelationship> LayoutItem_Portal::get_navigation_relationship_specific(bool& main_relationship)
+{
+  main_relationship = m_navigation_relationship_specific_main;
+  if(!main_relationship)
+    return m_navigation_relationship_specific;
+  else
+    return sharedptr<UsesRelationship>();
+}
+
+sharedptr<const UsesRelationship> LayoutItem_Portal::get_navigation_relationship_specific(bool& main_relationship) const
+{
+  main_relationship = m_navigation_relationship_specific_main;
+  if(!main_relationship)
+    return m_navigation_relationship_specific;
+  else
+    return sharedptr<UsesRelationship>();
+}
+
+void LayoutItem_Portal::set_navigation_relationship_specific(bool main_relationship, const sharedptr<UsesRelationship>& relationship)
+{
+  m_navigation_relationship_specific_main = main_relationship;
+  if(!m_navigation_relationship_specific_main)
+    m_navigation_relationship_specific = relationship;
+  else
+    m_navigation_relationship_specific = sharedptr<UsesRelationship>();
 }
 
 /*

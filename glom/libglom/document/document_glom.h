@@ -276,11 +276,13 @@ protected:
   void load_after_sort_by(const xmlpp::Element* node, const Glib::ustring& table_name, LayoutItem_GroupBy::type_list_sort_fields& list_fields);
   void save_before_sort_by(xmlpp::Element* node, const LayoutItem_GroupBy::type_list_sort_fields& list_fields);
 
+  void load_after_layout_item_usesrelationship(const xmlpp::Element* element, const Glib::ustring& table_name, const sharedptr<UsesRelationship>& item);
   void load_after_layout_item_field(const xmlpp::Element* element, const Glib::ustring& table_name, const sharedptr<LayoutItem_Field>& item);
   void load_after_layout_item_field_formatting(const xmlpp::Element* element, FieldFormatting& format, Field::glom_field_type field_type, const Glib::ustring& table_name, const Glib::ustring& field_name);
 
   void load_after_translations(const xmlpp::Element* element, TranslatableItem& item);
 
+  void save_before_layout_item_usesrelationship(xmlpp::Element* nodeItem, const sharedptr<const UsesRelationship>& item);
   void save_before_layout_item_field(xmlpp::Element* nodeItem, const sharedptr<const LayoutItem_Field>& item);
   void save_before_layout_item_field_formatting(xmlpp::Element* nodeItem, const FieldFormatting& format, Field::glom_field_type field_type);
 

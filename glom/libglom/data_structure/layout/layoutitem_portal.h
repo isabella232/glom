@@ -48,8 +48,15 @@ public:
 
   //virtual void debug(guint level = 0) const;
 
+  sharedptr<UsesRelationship> get_navigation_relationship_specific(bool& main_relationship);
+  sharedptr<const UsesRelationship> get_navigation_relationship_specific(bool& main_relationship) const;
+  void set_navigation_relationship_specific(bool main_relationship, const sharedptr<UsesRelationship>& relationship);
+
 protected:
 
+  //If no navigation relationship has been specified then it will be automatically chosen: 
+  bool m_navigation_relationship_specific_main;
+  sharedptr<UsesRelationship> m_navigation_relationship_specific; 
 };
 
 } //namespace Glom

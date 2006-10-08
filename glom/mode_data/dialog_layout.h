@@ -62,6 +62,9 @@ protected:
   virtual void on_entry_table_title_changed();
   virtual void on_button_close();
 
+  void make_sensitivity_depend_on_toggle_button(Gtk::ToggleButton& toggle_button, Gtk::Widget& widget);
+  void on_sensitivity_toggle_button(Gtk::ToggleButton* toggle_button, Gtk::Widget* widget);
+
   Gtk::Entry* m_entry_table_title;
 
   Glib::ustring m_table_name;

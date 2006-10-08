@@ -2322,4 +2322,120 @@ bool Base_DB::get_relationship_exists(const Glib::ustring& table_name, const Gli
   return false;
 }
 
+sharedptr<const LayoutItem_Field> Base_DB::get_field_is_from_non_hidden_related_record(const sharedptr<const LayoutItem_Portal>& portal) const
+{
+  //Find the first field that is from a non-hidden related table.
+  sharedptr<LayoutItem_Field> result;
+
+  if(!portal)
+    return result;
+
+  const Document_Glom* document = get_document();
+  if(!document)
+    return result;
+
+  LayoutItem_Portal::type_map_const_items items = portal->get_items(); 
+  for(LayoutItem_Portal::type_map_const_items::const_iterator iter = items.begin(); iter != items.end(); ++iter)
+  {
+    sharedptr<const LayoutItem_Field> field = sharedptr<const LayoutItem_Field>::cast_dynamic(iter->second);
+    if(field)
+    {
+      if(field->get_has_relationship_name())
+      {
+        const Glib::ustring table_name = field->get_table_used( portal->get_relationship()->get_to_table() );
+        if(!(document->get_table_is_hidden(table_name)))
+          return field;
+      }
+
+    }
+  }
+
+  return result;
+}
+
+sharedptr<const LayoutItem_Field> Base_DB::get_field_identifies_non_hidden_related_record(const sharedptr<const LayoutItem_Portal>& portal, sharedptr<const Relationship>& used_in_relationship) const
+{
+  //Find the first field that is from a non-hidden related table.
+  sharedptr<LayoutItem_Field> result;
+
+  const Document_Glom* document = get_document();
+  if(!document)
+    return result;
+
+  LayoutItem_Portal::type_map_const_items items = portal->get_items(); 
+  for(LayoutItem_Portal::type_map_const_items::const_iterator iter = items.begin(); iter != items.end(); ++iter)
+  {
+    sharedptr<const LayoutItem_Field> field = sharedptr<const LayoutItem_Field>::cast_dynamic(iter->second);
+    if(field && !(field->get_has_relationship_name()))
+    {
+      sharedptr<Relationship> relationship = document->get_field_used_in_relationship_to_one(portal->get_relationship()->get_to_table(), field->get_name());
+      if(relationship)
+      {
+        const Glib::ustring table_name = relationship->get_to_table();
+        if(!(table_name.empty()))
+        {
+          if(!(document->get_table_is_hidden(table_name)))
+          {
+            used_in_relationship = relationship;
+            return field;
+          }
+        }
+      }
+    }
+  }
+
+  return result;
+}
+
+sharedptr<const UsesRelationship> Base_DB::get_portal_navigation_relationship_automatic(const sharedptr<LayoutItem_Portal>& portal, bool& navigation_main) const
+{
+  //Initialize output parameters:
+  navigation_main = false;
+
+  const Document_Glom* document = get_document();
+  
+  //If the related table is not hidden then we can just navigate to that:
+  const Glib::ustring direct_related_table_name = portal->get_relationship()->get_to_table(); 
+  if(!(document->get_table_is_hidden(direct_related_table_name)))
+  {
+    //Non-hidden tables can just be shown directly. Navigate to it: 
+    navigation_main = true;
+    return sharedptr<UsesRelationship>();
+  }
+  else
+  {
+    //If the related table is hidden, 
+    //then find a suitable related non-hidden table by finding the first layout field that mentions one:
+    sharedptr<const LayoutItem_Field> field = get_field_is_from_non_hidden_related_record(portal);
+    if(field)
+    {
+      return field; //Returns the relationship part. (A relationship belonging to the portal's related table.)
+      //sharedptr<UsesRelationship> result = sharedptr<UsesRelationship>::create();
+      //result->set_relationship( portal->get_relationship() );
+      //result->set_related_relationship( field->get_relationship() );
+
+      //return result;
+    }
+    else
+    {
+      //Instead, find a key field that's used in a relationship, 
+      //and pretend that we are showing the to field as a related field:
+      sharedptr<const Relationship> used_in_relationship;
+      sharedptr<const LayoutItem_Field> field_identifies = get_field_identifies_non_hidden_related_record(portal, used_in_relationship);
+      if(field_identifies)
+      {
+        sharedptr<UsesRelationship> result = sharedptr<UsesRelationship>::create();
+       
+        sharedptr<Relationship> rel_nonconst = sharedptr<Relationship>::cast_const(used_in_relationship);
+        result->set_relationship(rel_nonconst);
+
+        return result;
+      }
+    }
+  }
+
+  //There was no suitable related table to show:
+  return sharedptr<UsesRelationship>(); 
+}
+
 } //namespace Glom

@@ -1,3 +1,29 @@
+2006-10-08  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/mode_data/dialog_layout_list_related.cc:
+	* glom/mode_data/dialog_layout_list_related.h:
+	* glom/glom.glade: Related Records layout: Add a Navigation frame, 
+	allowing the user to choose the default navigation (based on the shown 
+	fields and whether their tables are hidden, or manually choosing a relationship.
+	This is needed when the automatic choice is not appropriate, though it often is.
+	* glom/libglom/data_structure/layout/layoutitem_portal.cc:
+	* glom/libglom/data_structure/layout/layoutitem_portal.h:
+	Added set/get_navigation_relationship_specific().
+	* glom/libglom/document/document_glom.cc:
+	* glom/libglom/document/document_glom.h: Saved the extra portal information.
+	* glom/base_db.cc:
+	* glom/base_db.h: get_field_is_from_non_hidden_related_record(),
+	get_field_identifies_non_hidden_related_record():  Move these here 
+	from Box_Data_List_Related.
+	Added get_portal_navigation_relationship_automatic(), 
+	* glom/mode_data/box_data_list_related.cc:
+	* glom/mode_data/box_data_list_related.h: get_suitable_record_to_view_details(): 
+	Use the specified relationship if appropriate, and reuse the methods used to show 
+	the automatic navigation choice in the layout dialog.
+	* glom/mode_data/dialog_layout.cc:
+	* glom/mode_data/dialog_layout.h: Added the make_sensitivity_depend_on_toggle_button() 
+	convenience method.
+
 2006-10-06  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/utility_widgets/db_adddel/Makefile.am:

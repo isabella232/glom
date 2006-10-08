@@ -217,7 +217,7 @@ void Box_Data_List::on_adddel_user_requested_add()
 
 void Box_Data_List::on_adddel_user_requested_edit(const Gtk::TreeModel::iterator& row)
 {
-  Gnome::Gda::Value primary_key_value = m_AddDel.get_value_key(row); //The primary key is in the key.
+  const Gnome::Gda::Value primary_key_value = m_AddDel.get_value_key(row); //The primary key is in the key.
 
   signal_user_requested_details().emit(primary_key_value);
 }
