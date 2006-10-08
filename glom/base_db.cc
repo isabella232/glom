@@ -2441,4 +2441,34 @@ sharedptr<const UsesRelationship> Base_DB::get_portal_navigation_relationship_au
   return sharedptr<UsesRelationship>(); 
 }
 
+bool Base_DB::get_primary_key_is_in_foundset(const FoundSet& found_set, const Gnome::Gda::Value& primary_key_value)
+{
+  //TODO_Performance: This is probably called too often, when we should know that the key is in the found set.
+  sharedptr<const Field> primary_key = get_field_primary_key_for_table(found_set.m_table_name);
+  
+  type_vecLayoutFields fieldsToGet;
+    
+  sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
+  layout_item->set_full_field_details(primary_key);
+  fieldsToGet.push_back(layout_item);
+
+
+  Glib::ustring where_clause;
+  if(!found_set.m_where_clause.empty())
+    where_clause = "(" + found_set.m_where_clause + ") AND ";
+
+  where_clause += "(\"" + primary_key->get_name() + "\"=" + primary_key->sql(primary_key_value) + ")";
+
+  const Glib::ustring query = Utils::build_sql_select_with_where_clause(found_set.m_table_name, fieldsToGet, where_clause);
+  Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute(query);
+
+  if(data_model && data_model->get_n_rows())
+  {
+    //std::cout << "debug: Record found: " << query << std::endl;
+    return true; //A record was found in the record set with this value.
+  }
+  else  
+    return false;
+}
+
 } //namespace Glom

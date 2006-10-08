@@ -317,6 +317,7 @@ protected:
   sharedptr<const LayoutItem_Field> get_field_is_from_non_hidden_related_record(const sharedptr<const LayoutItem_Portal>& portal) const;
   sharedptr<const LayoutItem_Field> get_field_identifies_non_hidden_related_record(const sharedptr<const LayoutItem_Portal>& portal, sharedptr<const Relationship>& used_in_relationship) const;
 
+  bool get_primary_key_is_in_foundset(const FoundSet& found_set, const Gnome::Gda::Value& primary_key_value);
 
   static bool get_field_primary_key_index_for_fields(const type_vecFields& fields, guint& field_column);
   static bool get_field_primary_key_index_for_fields(const type_vecLayoutFields& fields, guint& field_column);

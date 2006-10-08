@@ -68,6 +68,8 @@ Notebook_Data::~Notebook_Data()
 bool Notebook_Data::init_db_details(const FoundSet& found_set, const Gnome::Gda::Value& primary_key_value_for_details)
 {
   m_table_name = found_set.m_table_name;
+  std::cout << "Notebook_Data::init_db_details: table_name=" << m_table_name << std::endl;
+
   const bool details_record_specified = !Conversions::value_is_empty(primary_key_value_for_details);
 
   bool result = false;
@@ -81,8 +83,8 @@ bool Notebook_Data::init_db_details(const FoundSet& found_set, const Gnome::Gda:
     const FoundSet old_found_set = m_Box_List.get_found_set();
     //std::cout << "  old_where_clause=" << old_where_clause << std::endl;
     //std::cout << "  where_clause=" << where_clause << std::endl;
-    const bool new_find_set = !(found_set == old_found_set);
-    result = m_Box_List.init_db_details(found_set);
+    //const bool new_find_set = !(found_set == old_found_set);
+    result = m_Box_List.init_db_details(found_set); //TODO: Select the last selected record.
     //m_Box_List.load_from_document();
 
     //Show the previously-shown record, if there is one, if this is not a new found-set (via a new where_clause)
@@ -92,7 +94,7 @@ bool Notebook_Data::init_db_details(const FoundSet& found_set, const Gnome::Gda:
     {
       Gnome::Gda::Value primary_key_for_details;
 
-      if(!new_find_set && !details_record_specified)
+      if(!details_record_specified)
       {
         //std::cout << "debug: no new_found_set" << std::endl;
         primary_key_for_details = document->get_layout_record_viewed(m_table_name, m_Box_Details.get_layout_name());
@@ -104,6 +106,14 @@ bool Notebook_Data::init_db_details(const FoundSet& found_set, const Gnome::Gda:
       else
       {
          //std::cout << "debug: new_found_set" << std::endl;
+      }
+
+
+      //If the specified (or remembered) primary key value is not in the found set, 
+      //then ignore it:
+      if(!get_primary_key_is_in_foundset(found_set, primary_key_for_details))
+      {
+        primary_key_for_details = Gnome::Gda::Value();
       }
 
       if(Conversions::value_is_empty(primary_key_for_details))
@@ -119,6 +129,7 @@ bool Notebook_Data::init_db_details(const FoundSet& found_set, const Gnome::Gda:
         }
       }
 
+   
       m_Box_Details.init_db_details(found_set, primary_key_for_details);
     }
   }
@@ -193,8 +204,6 @@ void Notebook_Data::on_details_user_requested_related_details(const Glib::ustrin
 
 void Notebook_Data::set_current_view(dataview view)
 {
-  std::cout << "Notebook_Data::set_current_view" << std::endl;
-
   if(view == DATA_VIEW_List)
     set_current_page(m_iPage_List);
   else
