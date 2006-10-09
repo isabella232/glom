@@ -64,7 +64,7 @@ protected:
   void on_combo_relationship_changed();
   void on_cell_data_name(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter);
   
-  void Dialog_Layout_List_Related::on_combo_navigation_specific_changed();
+  void on_combo_navigation_specific_changed();
 
   //Tree model columns:
   class ModelColumns_Fields : public Gtk::TreeModel::ColumnRecord
