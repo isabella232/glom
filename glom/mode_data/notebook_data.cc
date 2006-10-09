@@ -68,7 +68,7 @@ Notebook_Data::~Notebook_Data()
 bool Notebook_Data::init_db_details(const FoundSet& found_set, const Gnome::Gda::Value& primary_key_value_for_details)
 {
   m_table_name = found_set.m_table_name;
-  std::cout << "Notebook_Data::init_db_details: table_name=" << m_table_name << std::endl;
+  //std::cout << "Notebook_Data::init_db_details: table_name=" << m_table_name << std::endl;
 
   const bool details_record_specified = !Conversions::value_is_empty(primary_key_value_for_details);
 
@@ -111,9 +111,9 @@ bool Notebook_Data::init_db_details(const FoundSet& found_set, const Gnome::Gda:
 
       //If the specified (or remembered) primary key value is not in the found set, 
       //then ignore it:
-      if(!get_primary_key_is_in_foundset(found_set, primary_key_for_details))
+      if(!found_set.m_where_clause.empty() && !get_primary_key_is_in_foundset(found_set, primary_key_for_details))
       {
-        primary_key_for_details = Gnome::Gda::Value();
+        primary_key_for_details = Gnome::Gda::Value(); //TODO: We set it to empty just so we can test if for empty.
       }
 
       if(Conversions::value_is_empty(primary_key_for_details))
