@@ -1,3 +1,24 @@
+2006-10-09  Murray Cumming  <murrayc@murrayc.com>
+
+
+	* glom/mode_data/notebook_data.cc: init_db_details(): Do not bother 
+	checking that the remembered record is in the found set if we are looking 
+	at all records.
+
+2006-10-08  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/base_db.cc:
+	* glom/base_db.h: Added get_primary_key_is_in_foundset().
+	* glom/mode_data/notebook_data.cc: init_db_details(): Do not bother 
+	checking whether the found set has changed, because it has always 
+	changed when we are navigating to a different table. Therfore, always 
+	try to view the last-viewed record for the table. But use 
+	get_primary_key_is_in_foundset() to prevent showing a not-found record 
+	when doing a find.
+	* glom/reports/report_builder.cc: Put parts of the where clause in 
+	brackets, so that the AND has the desired effect, though I do not know 
+	of any bug caused by this.
+
 2006-10-06  Murray Cumming  <murrayc@murrayc.com>
 
         * glom/libglom/utils.cc: build_sql_select_with_where_clause():
@@ -4568,7 +4589,7 @@ This is the glom-1-0 branch. See the HEAD branch for new features.
 	* glom/utility_widgets/adddel/eggcolumnchooser/eggcolumnmodel.c:
 	Extra C casts needed for g++ 3.4.
 
-2005-04-16  Murray Cumming  <murrayc@murrayc.com>
+2006-10-08  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/python_embed/glom_python.cc:
 	* glom/python_embed/python_module/py_glom_record.cc:

@@ -311,6 +311,7 @@ protected:
 
   static type_vecStrings util_vecStrings_from_Fields(const type_vecFields& fields);
 
+  bool get_primary_key_is_in_foundset(const FoundSet& found_set, const Gnome::Gda::Value& primary_key_value);
 
   static void handle_error(const std::exception& ex); //TODO_port: This is probably useless now.
   static bool handle_error();
