@@ -98,15 +98,30 @@ Record_dealloc(PyGlomRecord* self)
 static PyObject *
 Record__get_connection(PyGlomRecord* self, void* /* closure */)
 {
-  //if(!self->m_connection)
-  //{
+  if( !self->m_connection || !(*(self->m_connection)) )
+  {
     Py_INCREF(Py_None);
     return Py_None;
-  //}
-  //else
-  //{
-  //  return gda_connection_to_pygda_connection(self->m_connection); //TODO: Implement this somehow.
-  //}
+  }
+  else
+  {
+   return pygobject_new( G_OBJECT( (*(self->m_connection))->gobj()) ); //Creates a pygda Connection object.
+  }
+}
+
+static PyObject *
+Record__get_table_name(PyGlomRecord* self, void* /* closure */)
+{
+  if( !self->m_table_name || (*(self->m_table_name)).empty() )
+  {
+    Py_INCREF(Py_None);
+    return Py_None;
+  }
+  else
+  {
+   const Glib::ustring& the_text = *(self->m_table_name); //Avoid that ugly dereference.
+   return PyString_FromString(the_text.c_str());
+  }
 }
 
 static PyObject *
@@ -146,6 +161,9 @@ static PyGetSetDef Record_getseters[] = {
     },
     {"connection",
      (getter)Record__get_connection, (setter)0, 0, 0
+    },
+    {"table_name",
+     (getter)Record__get_table_name, (setter)0, 0, 0
     },
     {NULL, 0, 0, 0, 0, }  // Sentinel
 };
@@ -286,7 +304,7 @@ void PyGlomRecord_SetFields(PyGlomRecord* self, const PyGlomRecord::type_map_fie
     self->m_document = document;
 
   if(self->m_connection == 0)
-  self->m_connection = new Glib::RefPtr<Gnome::Gda::Connection>(opened_connection);  //Deleted in Record_dealloc().
+    self->m_connection = new Glib::RefPtr<Gnome::Gda::Connection>(opened_connection);  //Deleted in Record_dealloc().
 
   /*
   if(self->m_fields_dict == 0)

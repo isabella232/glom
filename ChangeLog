@@ -1,3 +1,11 @@
+2006-10-10  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/libglom/python_embed/py_glom_record.cc: Actually implement the 
+	record.connection attribute. This is incredibly easy with pyobject_new().
+	Added a record.table_name attribute.
+	See http://www.glom.org/wiki/index.php?title=Calculated_Fields_API#Using_the_full_pygda_API
+	to see the wonderful things this makes possible.
+
 2006-10-09  Daniel Holbach  <daniel.holbach@ubuntu.com>
 
 	* glom/mode_data/dialog_layout_list_related.h: Removed the class prefix from 
