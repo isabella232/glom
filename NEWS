@@ -1,3 +1,15 @@
+1.1.6:
+
+* Really remember the last-viewed record on the details view when navigating 
+  between tables.
+* Python API (Calculated fields and button scripts):
+  Added record.connection and record.table_name attributes, so you can 
+  go wild with SQL with the whole pygda API, if you must.
+  The connection is even open already, you lucky people. 
+  See http://www.glom.org/wiki/index.php?title=Calculated_Fields_API#Using_the_full_pygda_API
+  (Murray Cumming)
+* Build fix. (Daniel Holbach)
+
 1.1.5:
 
 * List view: When remembering column widths, allow the columns to be 
