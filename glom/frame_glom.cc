@@ -1175,7 +1175,7 @@ void Frame_Glom::on_menu_developer_database_preferences()
       add_view(dialog);
       dialog->load_from_document();
 
-      dialog->run();
+     Glom::Utils::dialog_run_with_help(dialog, "dialog_database_preferences");
 
       remove_view(dialog);
       delete dialog;
@@ -1243,7 +1243,7 @@ void Frame_Glom::on_menu_developer_relationships_overview()
       add_view(dialog);
       dialog->load_from_document();
 
-      dialog->run();
+      Glom::Utils::dialog_run_with_help(dialog, "dialog_relationships_overview");
 
       remove_view(dialog);
       delete dialog;
@@ -1290,7 +1290,7 @@ void Frame_Glom::on_menu_developer_users()
   add_view(dialog); //Give it access to the document.
   dialog->load_from_document(); //Update the UI now that it has the document.
 
-  dialog->run();
+  Glom::Utils::dialog_run_with_help(dialog, "window_groups");
   remove_view(dialog);
   delete dialog;
 
@@ -1361,7 +1361,7 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
   //Ask for connection details:
   m_pDialogConnection->load_from_document(); //Get good defaults.
   m_pDialogConnection->set_transient_for(*get_app_window());
-  int response = m_pDialogConnection->run();
+  int response = Glom::Utils::dialog_run_with_help(m_pDialogConnection, "dialog_connection");
   m_pDialogConnection->hide();
 
   if(response == Gtk::RESPONSE_OK)
@@ -1400,14 +1400,14 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
         {
           //Warn the user, and let him try again:
           m_pDialogConnectionFailed->set_transient_for(*get_app_window());
-          int response = m_pDialogConnectionFailed->run();
+          int response = Glom::Utils::dialog_run_with_help(m_pDialogConnectionFailed, "dialog_error_connection");
           m_pDialogConnectionFailed->hide();
 
           //TODO: Combine these into one dialog.
           if(response != Gtk::RESPONSE_OK)
             return false; //The user cancelled.
 
-          response = m_pDialogConnection->run();
+          response = Glom::Utils::dialog_run_with_help(m_pDialogConnection, "dialog_connection");
           m_pDialogConnection->hide();
           if(response != Gtk::RESPONSE_OK)
             return false; //The user cancelled.
@@ -1445,7 +1445,7 @@ bool Frame_Glom::connection_request_password_and_attempt()
     //Ask for connection details:
     m_pDialogConnection->load_from_document(); //Get good defaults.
     m_pDialogConnection->set_transient_for(*get_app_window());
-    int response = m_pDialogConnection->run();
+    int response = Glom::Utils::dialog_run_with_help(m_pDialogConnection, "dialog_connection");
     m_pDialogConnection->hide();
 
     if(response == Gtk::RESPONSE_OK)
@@ -1464,7 +1464,7 @@ bool Frame_Glom::connection_request_password_and_attempt()
         {
           //Warn the user, and let him try again:
           m_pDialogConnectionFailed->set_transient_for(*get_app_window());
-          int response = m_pDialogConnectionFailed->run();
+          int response = Glom::Utils::dialog_run_with_help(m_pDialogConnectionFailed, "dialog_error_connection");
           m_pDialogConnectionFailed->hide();
 
           if(response != Gtk::RESPONSE_OK)
@@ -1562,7 +1562,7 @@ bool Frame_Glom::create_database(const Glib::ustring& database_name, const Glib:
             Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_error_create_database");
             refXml->get_widget("dialog_error_create_database", dialog);
             dialog->set_transient_for(*pWindowApp);
-            dialog->run();
+            Glom::Utils::dialog_run_with_help(dialog, "dialog_error_create_database");
             delete dialog;
           }
           catch(const Gnome::Glade::XmlError& ex)

@@ -1243,7 +1243,7 @@ sharedptr<LayoutItem_Text> Base_DB::offer_textobject(const sharedptr<LayoutItem_
         dialog->set_transient_for(*transient_for);
 
       dialog->set_textobject(start_textobject, Glib::ustring());
-      const int response = dialog->run();
+      int response = Glom::Utils::dialog_run_with_help(dialog, "window_textobject");
       dialog->hide();
       if(response == Gtk::RESPONSE_OK)
       {
@@ -1278,7 +1278,7 @@ sharedptr<LayoutItem_Image> Base_DB::offer_imageobject(const sharedptr<LayoutIte
         dialog->set_transient_for(*transient_for);
 
       dialog->set_imageobject(start_imageobject, Glib::ustring());
-      const int response = dialog->run();
+      const int response = Glom::Utils::dialog_run_with_help(dialog, "window_imageobject");
       dialog->hide();
       if(response == Gtk::RESPONSE_OK)
       {
@@ -1314,7 +1314,7 @@ sharedptr<LayoutItem_Notebook> Base_DB::offer_notebook(const sharedptr<LayoutIte
 
       dialog->set_notebook(start_notebook);
       //dialog->set_transient_for(*this);
-      const int response = dialog->run();
+      const int response = Glom::Utils::dialog_run_with_help(dialog, "dialog_notebook");
       dialog->hide();
       if(response == Gtk::RESPONSE_OK)
       {

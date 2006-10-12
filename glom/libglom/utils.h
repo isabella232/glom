@@ -26,6 +26,8 @@
 
 #include <glom/libglom/data_structure/layout/layoutitem_field.h>
 
+#include <gtkmm/dialog.h>
+
 namespace Glom
 {
 
@@ -86,6 +88,9 @@ Glib::ustring string_trim(const Glib::ustring& str, const Glib::ustring& to_remo
 
 Glib::ustring string_remove_suffix(const Glib::ustring& str, const Glib::ustring& suffix, bool case_sensitive = true);
 
+int dialog_run_with_help(Gtk::Dialog* dialog, const Glib::ustring& id = Glib::ustring());
+
+void show_help (const Glib::ustring& id = Glib::ustring());
 } //namespace Utils
 
 } //namespace Glom

@@ -314,6 +314,118 @@
   
   </sect1>
 
+<!-- =============Dialogs ================================= -->
+<!-- This section contains the help to all dialogs that contain help button -->
+
+<sect1 id="dialogs">
+<title>Dialogs</title>
+<sect2 id="dialog_new_database">
+<title>Dialog: New database</title>
+
+</sect2>
+
+<sect2 id="dialog_error_create_database">
+<title>Dialog: Create database</title>
+
+</sect2>
+
+<sect2 id="dialog_connection">
+<title>Dialog: Connection</title>
+
+</sect2>
+
+<sect2 id="dialog_database_preferences">
+<title>Dialog: Database preferences</title>
+
+</sect2>
+
+<sect2 id="dialog_change_language">
+<title>Dialog: Change language</title>
+
+</sect2>
+
+<sect2 id="window_textobject">
+<title>Window: Textobject</title>
+
+</sect2>
+
+<sect2 id="window_imageobject">
+<title>Window: Imageobject</title>
+
+</sect2>
+
+<sect2 id="dialog_notebook">
+<title>Dialog: Notebook</title>
+
+</sect2>
+
+<sect2 id="dialog_data_invalid_format">
+<title>Dialog: Data invalid format</title>
+
+</sect2>
+
+<sect2 id="dialog_relationship_overview">
+<title>Dialog: Relationship overview</title>
+
+</sect2>
+
+<sect2 id="window_groups">
+<title>Window: Groups</title>
+
+</sect2>
+
+<sect2 id="dialog_groupby_sort_fields">
+<title>Dialog: Group by sort fields</title>
+
+</sect2>
+
+<sect2 id="dialog_groupby_secondary_fields">
+<title>Dialog: Group by secondary fields</title>
+
+</sect2>
+
+<sect2 id="window_button_script">
+<title>Window: Button script</title>
+
+</sect2>
+
+<sect2 id="window_field_calculation">
+<title>Window: Field calculation</title>
+
+</sect2>
+
+<sect2 id="dialog_new_group">
+<title>Dialog: New group</title>
+
+</sect2>
+
+<sect2 id="dialog_choose_user">
+<title>Dialog: Choose user</title>
+
+</sect2>
+
+<sect2 id="dialog_user">
+<title>Dialog: User</title>
+
+</sect2>
+
+<sect2 id="dialog_translation_identify_original">
+<title>Dialog: Translation identify original</title>
+
+</sect2>
+
+<sect2 id="dialog_translation_copy">
+<title>Dialog: Translation copy</title>
+
+</sect2>
+
+<sect2 id="dialog_choose_date">
+<title>Dialog: Choose Date</title>
+
+</sect2>
+
+</sect1>
+
 <!-- ============= Bugs ================================== -->
 <!-- This section is optional and is commented out by default. 
      You can use it to describe known bugs and limitations of the 

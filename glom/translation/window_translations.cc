@@ -23,6 +23,7 @@
 #include "dialog_identify_original.h"
 #include "dialog_copy_translation.h"
 #include <bakery/App/App_Gtk.h> //For util_bold_message().
+#include "glom/libglom/utils.h"
 
 //#include <libgnome/gnome-i18n.h>
 #include <glibmm/i18n.h>
@@ -120,7 +121,7 @@ void Window_Translations::on_button_identify()
       add_view(dialog);
       dialog->load_from_document(); //Doesn't seem to happen otherwise.
       dialog->set_transient_for(*this);
-      const int response = dialog->run();
+      const int response = Glom::Utils::dialog_run_with_help(dialog, "dialog_translation_identify_original");
       dialog->hide();
 
       if(response == Gtk::RESPONSE_OK)
@@ -348,7 +349,7 @@ void Window_Translations::on_button_copy_translation()
     if(dialog)
     {
       dialog->set_transient_for(*this);
-      const int response = dialog->run();
+      const int response = Glom::Utils::dialog_run_with_help(dialog, "dialog_translation_copy");
       dialog->hide();
 
       if(response == Gtk::RESPONSE_OK)

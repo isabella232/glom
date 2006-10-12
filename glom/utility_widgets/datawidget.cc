@@ -703,7 +703,7 @@ void DataWidget::on_button_choose_date()
       dialog->set_transient_for(*get_application());
       dialog->set_date_chosen(get_value());
 
-      const int response = dialog->run();
+      const int response = Glom::Utils::dialog_run_with_help(dialog, "dialog_choose_date");
       dialog->hide();
       if(response == Gtk::RESPONSE_OK)
       {

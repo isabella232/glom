@@ -24,7 +24,9 @@
 #include <glom/libglom/data_structure/glomconversions.h>
 
 #include <glibmm/i18n.h>
+#include <gtkmm/messagedialog.h>
 #include <libgnome/gnome-url.h>
+#include <libgnome/gnome-help.h>
 #include <sstream> //For stringstream
 
 #include <iostream>
@@ -762,5 +764,47 @@ Glib::ustring Utils::string_remove_suffix(const Glib::ustring& str, const Glib::
   return str;
 }
 
+/* Run dialog and response on Help if appropriate */
+
+int Utils::dialog_run_with_help(Gtk::Dialog* dialog, const Glib::ustring& id)
+{
+  int result = dialog->run();
+  while (result == Gtk::RESPONSE_HELP)
+  {
+    show_help(id);
+    result = dialog->run();
+  }
+  dialog->hide();
+  return result;
+}
+
+/*
+ * Help::show_help(const std::string& id)
+ *
+ * Launch a help browser with the glom help and load the given id if given
+ * If the help cannot be found an error dialog will be shown
+ */
+
+void Utils::show_help(const Glib::ustring& id)
+{
+  GError* err = 0;
+  const gchar* pId;
+  if (id.length())
+  {
+    pId = id.c_str();
+  }
+  else
+  {
+    pId = 0;
+   }   
+  if (!gnome_help_display("glom.xml", pId, &err))
+  {
+     std::string message = std::string(_("Could not display help: ")) + err->message;
+     Gtk::MessageDialog* dialog = new Gtk::MessageDialog(message, false, Gtk::MESSAGE_ERROR);
+     dialog->run();
+     delete dialog;
+     g_error_free(err);
+   }
+}
 
 } //namespace Glom

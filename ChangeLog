@@ -1,3 +1,38 @@
+2006-10-12  Johannes Schmid <jhs@gnome.org>
+
+	For Openismus Gmbh (now that it's finally in place ;-)
+
+	* docs/user-guide/C/glom.xml:
+	Added ids for all dialogs to be filled with a documentation
+	
+	* docs/user-guide/Makefile.am:
+	* docs/user-guide/glom.omf.in:
+	* docs/user-guide/glom-C.omf.in (removed):
+	Mostly fixed documentation generation. There is still an issue with
+	scrollkeeper but I hope I get this fixed soon. 
+	
+	* glom/application.cc:
+	* glom/base_db.cc:
+	* glom/dialog_invalid_data.cc:
+	* glom/frame_glom.cc:
+	* glom/layout_item_dialogs/dialog_group_by.cc:
+	* glom/mode_data/dialog_layout_details.cc:
+	* glom/mode_design/fields/dialog_fielddefinition.cc:
+	* glom/mode_design/users/dialog_groups_list.cc:
+	* glom/mode_design/users/dialog_users_list.cc:
+	* glom/translation/window_translations.cc:
+	* glom/utility_widgets/datawidget.cc:
+	Use dialog_run_with_help for all dialogs that contain help
+	buttons.
+
+	* glom/libglom/utils.h:
+	* glim/libglom/utils.c:
+	Added Utils::show_help which calls gnome_help_display and does
+	some error handling.
+	Added Utils::dialog_run_with_help with runs a dialog and return the
+	Gtk::Reponse. If the user clicked help the dialog is kept up and a
+	help browser is launched.
+
 1.1.6:
 
 2006-10-10  Murray Cumming  <murrayc@murrayc.com>

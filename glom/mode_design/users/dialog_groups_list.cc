@@ -251,7 +251,7 @@ void Dialog_GroupsList::on_button_group_new()
   }
 
   dialog->set_transient_for(*this);
-  int response = dialog->run();
+  int response = Glom::Utils::dialog_run_with_help(dialog, "dialog_new_group");
 
   const Glib::ustring group_name = dialog->m_entry_name->get_text();
 
@@ -314,7 +314,7 @@ void Dialog_GroupsList::on_button_group_users()
 
       dialog->set_group(group_name);
 
-      dialog->run();
+      Glom::Utils::dialog_run_with_help(dialog, "window_groups");
 
       remove_view(dialog);
       delete dialog;

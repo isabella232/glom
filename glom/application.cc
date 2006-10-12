@@ -697,7 +697,7 @@ bool App_Glom::offer_new_or_existing()
           bool keep_asking = true;
           while(keep_asking)
           {
-            int response = dialog->run();
+            int response = Glom::Utils::dialog_run_with_help(dialog, "dialog_new_database");
 
             if(response == Gtk::RESPONSE_OK)
             {
@@ -820,7 +820,7 @@ void App_Glom::init_menus_help()
 
 void App_Glom::on_menu_help_contents()
 {
-  gnome_help_display("glom", 0, 0);
+  Glom::Utils::show_help();
 }
 
 bool App_Glom::recreate_database(bool& user_cancelled)
@@ -1241,7 +1241,7 @@ void App_Glom::on_menu_developer_changelanguage()
     if(dialog)
     {
       dialog->set_transient_for(*this);
-      const int response = dialog->run();
+      const int response =       Glom::Utils::dialog_run_with_help(dialog, "dialog_change_language");
       dialog->hide();
 
       if(response == Gtk::RESPONSE_OK)

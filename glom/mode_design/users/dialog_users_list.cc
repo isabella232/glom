@@ -265,7 +265,7 @@ void Dialog_UsersList::on_button_user_add()
   //Fill it with the list of users:
   dialog->set_user_list( Privs::get_database_users() );
 
-  int response = dialog->run();
+  int response = Glom::Utils::dialog_run_with_help(dialog, "dialog_choose_user");
 
   const Glib::ustring user = dialog->get_user();
 
@@ -308,7 +308,7 @@ void Dialog_UsersList::on_button_user_new()
   }
 
   dialog->set_transient_for(*this);
-  int response = dialog->run();
+  int response = Glom::Utils::dialog_run_with_help(dialog, "dialog_user");
 
   const Glib::ustring user = dialog->m_entry_user->get_text();
   const Glib::ustring password = dialog->m_entry_password->get_text();
