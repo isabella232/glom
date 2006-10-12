@@ -102,7 +102,7 @@ main(int argc, char* argv[])
   try
   {
     //Initialize gnome_program, so that we can use gnome_help_display().    
-    gnome_program_init(PACKAGE_NAME, PACKAGE_VERSION, LIBGNOME_MODULE, argc, argv,
+    gnome_program_init(PACKAGE, VERSION, LIBGNOME_MODULE, argc, argv,
         GNOME_PARAM_HUMAN_READABLE_NAME, _("Glom"),
         GNOME_PROGRAM_STANDARD_PROPERTIES, NULL);
 

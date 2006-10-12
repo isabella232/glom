@@ -1,5 +1,12 @@
 2006-10-12  Johannes Schmid <jhs@gnome.org>
 
+	* glom/main.cc: Fixed gnome_program_init to use PACKAGE and VERSION
+	instead of PACKAGE_NAME and PACKAGE_VERSION
+
+	Fixes (#349357) with special thanks to Don Scorgie
+
+2006-10-12  Johannes Schmid <jhs@gnome.org>
+
 	For Openismus Gmbh (now that it's finally in place ;-)
 
 	* docs/user-guide/C/glom.xml:
