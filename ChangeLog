@@ -1,3 +1,8 @@
+2006-10-13  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom.desktop.in.in: Added MimeType entry, so Glom should really be used 
+	to open .glom documents. Thanks to Denis Leroy.
+
 2006-10-12  Johannes Schmid <jhs@gnome.org>
 
 	* glom/main.cc: Fixed gnome_program_init to use PACKAGE and VERSION
