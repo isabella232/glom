@@ -1,5 +1,15 @@
 2006-10-13  Murray Cumming  <murrayc@murrayc.com>
 
+
+	* glom/mode_design/fields/box_db_table_definition.cc: on_adddel_edit(): 
+	Make sure that the details dialog is transient for the current window.
+	* glom/utility_widgets/dialog_properties.cc: Constructor: Call set_modal(), 
+	so that these windows are actually usuable when opened from other modal 
+	windows, such as dialogs. This was a bug that I introduced when I changed the 
+	base class from Dialog to Window. Fixed now.
+
+2006-10-13  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom.desktop.in.in: Added MimeType entry, so Glom should really be used 
 	to open .glom documents. Thanks to Denis Leroy.
 

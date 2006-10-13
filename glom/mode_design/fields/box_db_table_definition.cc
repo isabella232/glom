@@ -323,6 +323,10 @@ void Box_DB_Table_Definition::on_adddel_edit(const Gtk::TreeModel::iterator& row
 
   //m_pDialog->set_modified(false); //Disable [Apply] at start.
 
+  Gtk::Window* parent_window = get_app_window();
+  if(parent_window)
+    m_pDialog->set_transient_for(*parent_window);
+
   m_pDialog->show();
 }
 
