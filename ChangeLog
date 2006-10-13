@@ -1,5 +1,13 @@
-2006-10-09  Murray Cumming  <murrayc@murrayc.com>
+1.0.8:
 
+2006-10-13  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/utility_widgets/dialog_properties.cc: Constructor: Call set_modal(), 
+	so that these windows are actually usuable when opened from other modal 
+	windows, such as dialogs. This was a bug that I introduced when I changed the 
+	base class from Dialog to Window. Fixed now.
+
+2006-10-09  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/mode_data/notebook_data.cc: init_db_details(): Do not bother 
 	checking that the remembered record is in the found set if we are looking 

@@ -32,6 +32,8 @@ Dialog_Properties::Dialog_Properties(BaseObjectType* cobject, const Glib::RefPtr
   refGlade->get_widget("button_cancel", m_pButton_Cancel);
   refGlade->get_widget("button_save", m_pButton_Save);
 
+  set_modal();
+
   //Connect signal handlers:
   m_pButton_Cancel->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Properties::on_button_cancel) );
   m_pButton_Save->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Properties::on_button_save) );
