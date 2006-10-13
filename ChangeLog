@@ -1,5 +1,12 @@
 2006-10-13  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/libglom/document/document_glom.cc: load_after_layout_group(): When 
+	loading the portal navigation relationship, create the object before passing 
+	it to load_after_layout_item_usesrelationship(). This should have crashed 
+	before. Also, pass in the related table name, not the parent table name, 
+	so that the relationship can be found.
+
+2006-10-13  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/mode_design/fields/box_db_table_definition.cc: on_adddel_edit(): 
 	Make sure that the details dialog is transient for the current window.

@@ -224,7 +224,7 @@ void Dialog_Layout_List_Related::update_ui(bool including_relationship_list)
     m_combo_navigation_specify->set_selected_parent_table(related_table_name);
   else if(navrel)
   {
-    std::cout << "debug navrel=" << navrel->get_relationship()->get_name() << std::endl;
+    //std::cout << "debug navrel=" << navrel->get_relationship()->get_name() << std::endl;
     m_combo_navigation_specify->set_selected_relationship(navrel->get_relationship(), navrel->get_related_relationship());
   }
   else

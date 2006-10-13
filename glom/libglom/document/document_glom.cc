@@ -1518,8 +1518,18 @@ void Document_Glom::load_after_layout_item_usesrelationship(const xmlpp::Element
     return;
 
   const Glib::ustring relationship_name = get_node_attribute_value(element, GLOM_ATTRIBUTE_RELATIONSHIP_NAME);
-  sharedptr<Relationship> relationship = get_relationship(table_name, relationship_name);
-  item->set_relationship(relationship); 
+  sharedptr<Relationship> relationship;
+  if(!relationship_name.empty())
+  {
+    //std::cout << "  debug in : table_name=" << table_name << ", relationship_name=" << relationship_name << std::endl; 
+    relationship = get_relationship(table_name, relationship_name);
+    item->set_relationship(relationship); 
+
+    if(!relationship)
+    {
+      std::cerr << "Document_Glom::load_after_layout_item_usesrelationship(): relationship not found: " << relationship_name << ", in table:" << table_name << std::endl;
+    }
+  }
 
   const Glib::ustring related_relationship_name = get_node_attribute_value(element, GLOM_ATTRIBUTE_RELATED_RELATIONSHIP_NAME);
   if(!related_relationship_name.empty() && relationship)
@@ -1720,8 +1730,17 @@ void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Gl
         xmlpp::Element* elementNavigationRelationshipSpecific = get_node_child_named(element, GLOM_NODE_DATA_LAYOUT_PORTAL_NAVIGATIONRELATIONSHIP);
         if(elementNavigationRelationshipSpecific)
         {
-           load_after_layout_item_usesrelationship(elementNavigationRelationshipSpecific, table_name, relationship_navigation_specific);
+           std::cout << "debug: loading GLOM_NODE_DATA_LAYOUT_PORTAL_NAVIGATIONRELATIONSHIP" << std::endl;
+
+           relationship_navigation_specific = sharedptr<UsesRelationship>::create();
+           load_after_layout_item_usesrelationship(elementNavigationRelationshipSpecific, relationship->get_to_table(), relationship_navigation_specific);
            relationship_navigation_specific_main = get_node_attribute_value_as_bool(elementNavigationRelationshipSpecific, GLOM_ATTRIBUTE_PORTAL_NAVIGATIONRELATIONSHIP_MAIN);
+
+           if(relationship_navigation_specific)
+           {
+            std::cout << "  debug: relationship_navigation_specific->relationship=" << relationship_navigation_specific->get_relationship_name() << std::endl;
+
+           }
         }
 
         portal->set_navigation_relationship_specific(relationship_navigation_specific_main, relationship_navigation_specific);
