@@ -1,5 +1,11 @@
 2006-10-13  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/mode_data/box_data_details.cc: on_flowtable_script_button_clicked(): 
+	Check whether the current record still exists after the script has run, 
+	and signal that it was deleted if necessary.
+
+2006-10-13  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/libglom/document/document_glom.cc: load_after_layout_group(): When 
 	loading the portal navigation relationship, create the object before passing 
 	it to load_after_layout_item_usesrelationship(). This should have crashed 

@@ -348,7 +348,7 @@ void Box_Data_Details::on_button_del()
   {
     if(confirm_delete_record())
     {
-      bool bTest = record_delete(m_primary_key_value);
+      const bool bTest = record_delete(m_primary_key_value);
   
       if(bTest)
       {
@@ -557,7 +557,15 @@ void Box_Data_Details::on_flowtable_script_button_clicked(const sharedptr<const 
     get_document(), get_table_name(), sharedconnection->get_gda_connection());
 
     //Refresh the view, in case the script changed any data:
-    refresh_data_from_database_with_primary_key(m_primary_key_value);
+    if(get_primary_key_is_in_foundset(m_found_set, m_primary_key_value)) //Check, because maybe the script deleted the current record, or changed something so that it should no longer be shown in the found set.
+    {
+      refresh_data_from_database_with_primary_key(m_primary_key_value);
+    }
+    else
+    {
+      //Tell the parent to do something appropriate, such as show another record:
+      signal_record_deleted().emit(m_primary_key_value);
+    }
   }
 }
 
