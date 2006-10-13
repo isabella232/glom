@@ -1,3 +1,11 @@
+1.1.7:
+
+2006-10-13  Murray Cumming  <murrayc@murrayc.com>
+
+	* docs/user-guide/C/glom.xml: Added the section on the use of the full pygda 
+	API, from the wiki. We need to just publish the docbook to the web somehow 
+	instead.
+
 2006-10-13  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/mode_data/box_data_details.cc: on_flowtable_script_button_clicked(): 

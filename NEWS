@@ -1,3 +1,16 @@
+1.1.7:
+
+* Button scripts: After the script has run, check that the current record 
+  still exists, and act appropriately.
+* Related records portal: Correct the loading of the specific navigation 
+  details from the document, so it is not lost.
+* Field editing: Fix modality problem with the field details window that 
+  stopped it from being used.
+* Register Glom as capable of handling its own MIME type. (Denis Leroy)
+* Make the Help system work, though some more text is still needed.
+  Bug #349357
+  (Johannes Schmid, Don Scorgie) 
+
 1.1.6:
 
 * Really remember the last-viewed record on the details view when navigating 

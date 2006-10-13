@@ -321,107 +321,107 @@
 <title>Dialogs</title>
 <sect2 id="dialog_new_database">
 <title>Dialog: New database</title>
-
+<para></para>
 </sect2>
 
 <sect2 id="dialog_error_create_database">
 <title>Dialog: Create database</title>
-
+<para></para>
 </sect2>
 
 <sect2 id="dialog_connection">
 <title>Dialog: Connection</title>
-
+<para></para>
 </sect2>
 
 <sect2 id="dialog_database_preferences">
 <title>Dialog: Database preferences</title>
-
+<para></para>
 </sect2>
 
 <sect2 id="dialog_change_language">
 <title>Dialog: Change language</title>
-
+<para></para>
 </sect2>
 
 <sect2 id="window_textobject">
 <title>Window: Textobject</title>
-
+<para></para>
 </sect2>
 
 <sect2 id="window_imageobject">
 <title>Window: Imageobject</title>
-
+<para></para>
 </sect2>
 
 <sect2 id="dialog_notebook">
 <title>Dialog: Notebook</title>
-
+<para></para>
 </sect2>
 
 <sect2 id="dialog_data_invalid_format">
 <title>Dialog: Data invalid format</title>
-
+<para></para>
 </sect2>
 
 <sect2 id="dialog_relationship_overview">
 <title>Dialog: Relationship overview</title>
-
+<para></para>
 </sect2>
 
 <sect2 id="window_groups">
 <title>Window: Groups</title>
-
+<para></para>
 </sect2>
 
 <sect2 id="dialog_groupby_sort_fields">
 <title>Dialog: Group by sort fields</title>
-
+<para></para>
 </sect2>
 
 <sect2 id="dialog_groupby_secondary_fields">
 <title>Dialog: Group by secondary fields</title>
-
+<para></para>
 </sect2>
 
 <sect2 id="window_button_script">
 <title>Window: Button script</title>
-
+<para></para>
 </sect2>
 
 <sect2 id="window_field_calculation">
 <title>Window: Field calculation</title>
-
+<para></para>
 </sect2>
 
 <sect2 id="dialog_new_group">
 <title>Dialog: New group</title>
-
+<para></para>
 </sect2>
 
 <sect2 id="dialog_choose_user">
 <title>Dialog: Choose user</title>
-
+<para></para>
 </sect2>
 
 <sect2 id="dialog_user">
 <title>Dialog: User</title>
-
+<para></para>
 </sect2>
 
 <sect2 id="dialog_translation_identify_original">
 <title>Dialog: Translation identify original</title>
-
+<para></para>
 </sect2>
 
 <sect2 id="dialog_translation_copy">
 <title>Dialog: Translation copy</title>
-
+<para></para>
 </sect2>
 
 <sect2 id="dialog_choose_date">
 <title>Dialog: Choose Date</title>
-
+<para></para>
 </sect2>
 
 </sect1>
@@ -483,8 +483,8 @@
   </appendix>
 
   <appendix  id="sec-calculated-fields">
-  <title>Calculated Fields</title>
-  <para>Calculated fields use the Python programming language. The calculation is the implementation of a function whose signature is provided for you.</para>
+  <title>Calculated fields and button scripts</title>
+  <para>Calculated fields and button scripts use the Python programming language. The calculation or script is the implementation of a function whose signature is provided for you.</para>
 
      <figure id="developer-editing-fields-calculated"> 
 	<title>Editing the definition of a calculated field</title> 
@@ -563,6 +563,55 @@
   </programlisting>
   </para>
   </sect2>
+
+
+  <sect2>
+  <title>Using the full pygda API</title>
+  <para>pygda is a python API for the libgda API. The record's <literal>connection</literal> attribute provides a gda.connection that can be used to access the current database directly. This allows you to run any SQL query, for instance to read data from the database with a SELECT, or to change values in the database with an UPDATE. Note that the connection is already open so you can avoid the difficult work of specifying the connection details.</para>
+  <para>The record's <literal>table_name</literal> attribute also provides the name of the current table.</para>
+  <para>(Note that the <literal>record.connection</literal> and <literal>record.table_name</literal> attributes are only available since Glom 1.1.6.)</para>
+  <para>This example reads all data from the current table and prints the values to the terminal: </para>
+  <para>
+  <programlisting>
+# Use the current database's connection 
+# to get all the data for the current table.
+#
+# record.connection is an already-open gda.connection object,
+# saving us the bother of opening the connection,
+# or even knowing the name of the database.
+
+query = "SELECT * FROM %s" % record.table_name
+command = gda.Command(query)
+data_model = record.connection.execute_single_command(command)
+
+rows = data_model.get_n_rows()
+columns = data_model.get_n_columns()
+print "    Number of columns: ", columns
+
+for i in range(columns):
+    print "      column ", i;
+    print "        name=", data_model.get_column_title(i)
+
+    # Find out whether it's the primary key:
+    field = data_model.describe_column(i)
+    if field.get_primary_key():
+        print "        (primary key)"
+
+    print "\n";
+     
+print "    Number of rows: ", rows
+
+for row_index in range(rows):
+    print "      row ", row_index;
+
+    for col_index in range(columns):
+        print "        value=", data_model.get_value_at(col_index, row_index).get()
+
+    print "\n";
+  </programlisting>
+  </para>
+  </sect2>
+
 
   </sect1>
 
