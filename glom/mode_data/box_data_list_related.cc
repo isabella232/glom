@@ -443,7 +443,7 @@ void Box_Data_List_Related::get_suitable_table_to_view_details(Glib::ustring& ta
   Glib::ustring navigation_table_name;
   if(navigation_relationship_main)
   {
-     std::cout << "  debug: using main rel" << std::endl;
+    //std::cout << "  debug: using main rel" << std::endl;
     navigation_table_name = directly_related_table_name;
   }
   else if(navigation_relationship)
