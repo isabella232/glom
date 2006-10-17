@@ -2840,6 +2840,15 @@ sharedptr<Relationship> Document_Glom::get_field_used_in_relationship_to_one(con
   return result;
 }
 
+void Document_Glom::forget_layout_record_viewed(const Glib::ustring& table_name)
+{
+  type_tables::iterator iterFind = m_tables.find(table_name);
+  if(iterFind != m_tables.end())
+  {
+    iterFind->second.m_map_current_record.clear();
+  }
+}
+
 void Document_Glom::set_layout_record_viewed(const Glib::ustring& table_name, const Glib::ustring& layout_name, const Gnome::Gda::Value& primary_key_value)
 {
   type_tables::iterator iterFind = m_tables.find(table_name);

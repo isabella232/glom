@@ -1,5 +1,13 @@
 2006-10-17  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/libglom/document/document_glom.cc:
+	* glom/libglom/document/document_glom.h: Added forget_layout_record_viewed().
+	* glom/mode_design/fields/box_db_table_definition.cc: change_definition(): When 
+	changing whether a field is the primary key, use forget_layout_record_viewed() 
+	so that we do not try to use an inappropriate key value with a different field.
+
+2006-10-17  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/mode_design/fields/box_db_table_definition.cc:
 	* glom/mode_design/fields/box_db_table_definition.h: Added field_has_null_values().
 	change_definition(): If a field is being set to primary key, 

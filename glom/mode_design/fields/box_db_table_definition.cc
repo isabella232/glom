@@ -429,20 +429,28 @@ sharedptr<Field> Box_DB_Table_Definition::change_definition(const sharedptr<cons
   if(!fieldOld || !field)
     return result;
 
-  //If changing the primarykeyness, check whether this is likely to succeed:
-  if(!fieldOld->get_primary_key() && field->get_primary_key())
+  if(fieldOld->get_primary_key() != field->get_primary_key())
   {
-     if(field_has_null_values(fieldOld)) //Use the fieldOld because we only use the name, and we want to check the _existing_ field:
-     {
-       //TODO: Also check for unique values?
-       Gtk::Window* window = const_cast<Gtk::Window*>(get_app_window());
-       if(window)
-         Frame_Glom::show_ok_dialog(_("Field contains empty values."), _("The field may not yet be used as a primary key because it contains empty values."), *window, Gtk::MESSAGE_WARNING);
+    //If setting the primarykeyness, check whether this is likely to succeed:
+    if(!fieldOld->get_primary_key() && field->get_primary_key())
+    {
+      if(field_has_null_values(fieldOld)) //Use the fieldOld because we only use the name, and we want to check the _existing_ field:
+      {
+        //TODO: Also check for unique values?
+        Gtk::Window* window = const_cast<Gtk::Window*>(get_app_window());
+        if(window)
+          Frame_Glom::show_ok_dialog(_("Field contains empty values."), _("The field may not yet be used as a primary key because it contains empty values."), *window, Gtk::MESSAGE_WARNING);
 
-       //TODO: Offer to fill it in with generated ID numbers? That could give strange results if the existing values are human-readable.
+          //TODO: Offer to fill it in with generated ID numbers? That could give strange results if the existing values are human-readable.
 
-       return glom_sharedptr_clone(fieldOld); //No changes were made.
-     }
+        return glom_sharedptr_clone(fieldOld); //No changes were made.
+      }
+    }
+
+    //Forget the remembered currently-viewed primary key value, 
+    //because it will be useless with a different field as the primary key, or with no field as primary key:
+    Document_Glom* document = get_document();
+    document->forget_layout_record_viewed(m_table_name);
   }
 
   try

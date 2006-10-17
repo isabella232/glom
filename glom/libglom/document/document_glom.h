@@ -223,6 +223,7 @@ public:
   void remove_report(const Glib::ustring& table_name, const Glib::ustring& report_name);
 
   void set_layout_record_viewed(const Glib::ustring& table_name, const Glib::ustring& layout_name, const Gnome::Gda::Value& primary_key_value);
+  void forget_layout_record_viewed(const Glib::ustring& table_name);
   Gnome::Gda::Value get_layout_record_viewed(const Glib::ustring& table_name, const Glib::ustring& layout_name) const;
 
   void set_layout_current(const Glib::ustring& table_name, const Glib::ustring& layout_name);
