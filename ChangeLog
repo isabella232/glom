@@ -1,3 +1,11 @@
+2006-10-17  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/mode_design/fields/box_db_table_definition.cc:
+	* glom/mode_design/fields/box_db_table_definition.h: Added field_has_null_values().
+	change_definition(): If a field is being set to primary key, 
+	use field_has_null_values() to check and warn, to avoid an error from Postgres.
+	Bug #362838.
+
 1.1.7:
 
 2006-10-13  Murray Cumming  <murrayc@murrayc.com>

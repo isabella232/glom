@@ -1730,7 +1730,7 @@ void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Gl
         xmlpp::Element* elementNavigationRelationshipSpecific = get_node_child_named(element, GLOM_NODE_DATA_LAYOUT_PORTAL_NAVIGATIONRELATIONSHIP);
         if(elementNavigationRelationshipSpecific)
         {
-           std::cout << "debug: loading GLOM_NODE_DATA_LAYOUT_PORTAL_NAVIGATIONRELATIONSHIP" << std::endl;
+           //std::cout << "debug: loading GLOM_NODE_DATA_LAYOUT_PORTAL_NAVIGATIONRELATIONSHIP" << std::endl;
 
            relationship_navigation_specific = sharedptr<UsesRelationship>::create();
            load_after_layout_item_usesrelationship(elementNavigationRelationshipSpecific, relationship->get_to_table(), relationship_navigation_specific);

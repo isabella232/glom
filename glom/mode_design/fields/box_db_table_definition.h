@@ -43,7 +43,9 @@ protected:
 
   sharedptr<Field> get_field_definition(const Gtk::TreeModel::iterator& row);
 
-  virtual sharedptr<Field> change_definition(const sharedptr<const Field>& fieldOld, const sharedptr<const Field>& field);
+  sharedptr<Field> change_definition(const sharedptr<const Field>& fieldOld, const sharedptr<const Field>& field);
+
+  bool field_has_null_values(const sharedptr<const Field>& field);
 
   //Signal handlers:
   virtual void on_adddel_add(const Gtk::TreeModel::iterator& row);
@@ -56,7 +58,6 @@ protected:
   bool check_field_change(const sharedptr<const Field>& field_old, const sharedptr<const Field>& field_new);
 
   //Postgres needs some complex stuff:
-
   virtual sharedptr<Field> postgres_change_column(const sharedptr<const Field>& field_old, const sharedptr<const Field>& field);
   virtual void postgres_change_column_type(const sharedptr<const Field>& field_old, const sharedptr<const Field>& field);
 

@@ -19,6 +19,7 @@
  */
 
 #include "box_db_table_definition.h"
+#include <glom/frame_glom.h>
 #include <bakery/App/App_Gtk.h> //For util_bold_message().
 #include <glom/glom_postgres.h>
 #include "../../../config.h"
@@ -250,7 +251,7 @@ bool Box_DB_Table_Definition::check_field_change(const sharedptr<const Field>& f
   else
   {
     //Refuse to set a second primary key:
-    bool bcontinue = true;
+    //bool bcontinue = true;
     if(field_new->get_primary_key() && !field_old->get_primary_key()) //Was the primary key column checked?
     {
       //Is there an existing primary key?
@@ -421,9 +422,28 @@ sharedptr<Field> Box_DB_Table_Definition::change_definition(const sharedptr<cons
 {
   Bakery::BusyCursor busy_cursor(get_app_window());
 
-  //DB field defintion:
+  //DB field definition:
 
   sharedptr<Field> result;
+  
+  if(!fieldOld || !field)
+    return result;
+
+  //If changing the primarykeyness, check whether this is likely to succeed:
+  if(!fieldOld->get_primary_key() && field->get_primary_key())
+  {
+     if(field_has_null_values(fieldOld)) //Use the fieldOld because we only use the name, and we want to check the _existing_ field:
+     {
+       //TODO: Also check for unique values?
+       Gtk::Window* window = const_cast<Gtk::Window*>(get_app_window());
+       if(window)
+         Frame_Glom::show_ok_dialog(_("Field contains empty values."), _("The field may not yet be used as a primary key because it contains empty values."), *window, Gtk::MESSAGE_WARNING);
+
+       //TODO: Offer to fill it in with generated ID numbers? That could give strange results if the existing values are human-readable.
+
+       return glom_sharedptr_clone(fieldOld); //No changes were made.
+     }
+  }
 
   try
   {
@@ -522,9 +542,13 @@ sharedptr<Field> Box_DB_Table_Definition::postgres_change_column(const sharedptr
 }
 
 
-void  Box_DB_Table_Definition::postgres_change_column_type(const sharedptr<const Field>& field_old, const sharedptr<const Field>& field)
+void Box_DB_Table_Definition::postgres_change_column_type(const sharedptr<const Field>& field_old, const sharedptr<const Field>& field)
 {
-  sharedptr<SharedConnection> sharedconnection = connect_to_server(get_app_window());
+  Gtk::Window* parent_window = get_app_window();
+  if(!parent_window)
+    return;
+
+  sharedptr<SharedConnection> sharedconnection = connect_to_server(parent_window);
   if(sharedconnection)
   {
     Glib::RefPtr<Gnome::Gda::Connection> gda_connection = sharedconnection->get_gda_connection();
@@ -661,9 +685,32 @@ void  Box_DB_Table_Definition::postgres_change_column_type(const sharedptr<const
       }   //TODO: Abandon the transaction if something failed.
     }  /// If the datatype has changed:
 
-    if(!new_column_created) //We don't need to change anything else if everything was alrady correctly set as a new column:
+    if(!new_column_created) //We don't need to change anything else if everything was already correctly set as a new column:
       GlomPostgres::postgres_change_column_extras(m_table_name, field_old, field);
   }
+}
+
+bool Box_DB_Table_Definition::field_has_null_values(const sharedptr<const Field>& field)
+{
+  //Note that "= Null" doesn't work, though it doesn't error either.
+  //Note also that SELECT COUNT always returns 0 if all the values are NULL, so we can't use that to be more efficient.
+  const Glib::ustring sql_query = "SELECT \"" + field->get_name() + "\" FROM \"" + m_table_name + "\" WHERE \"" + m_table_name + "\".\"" + field->get_name() + "\" IS NULL ";
+  //std::cout << "sql_query: " << sql_query << std::endl;
+
+  long null_count = 0;
+  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute(sql_query, get_app_window());
+  if(datamodel && datamodel->get_n_rows() && datamodel->get_n_columns())
+  {
+    const Gnome::Gda::Value value = datamodel->get_value_at(0, 0);
+    null_count = datamodel->get_n_rows();
+    //std::cout << "debug: null_count = " << null_count << std::endl;
+  }
+  else
+  {
+    g_warning("Box_DB_Table_Definition::field_has_null_values(): SELECT COUNT() failed.");
+  }
+
+   return null_count > 0; 
 }
 
 } //namespace Glom
