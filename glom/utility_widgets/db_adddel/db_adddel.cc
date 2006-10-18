@@ -29,6 +29,7 @@
 #include <glom/libglom/utils.h>
 #include "cellrenderer_buttonimage.h"
 #include "cellrenderer_buttontext.h"
+#include <glom/utility_widgets/imageglom.h> //For ImageGlom::scale_keeping_ratio().
 //#include "../cellrendererlist.h"
 #include <iostream> //For debug output.
 #include <gtk/gtktreeview.h>
@@ -1856,9 +1857,19 @@ void DbAddDel::treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gt
         }
         case(Field::TYPE_IMAGE):
         {
-          //Gtk::CellRendererPixbuf* pDerived = dynamic_cast<Gtk::CellRendererPixbuf*>(renderer);
-          //if(pDerived)
-          //  //TODO: Reuse get_binary() and scaling code from ImageGlom.
+          Gtk::CellRendererPixbuf* pDerived = dynamic_cast<Gtk::CellRendererPixbuf*>(renderer);
+          if(pDerived)
+          {
+            Glib::RefPtr<Gdk::Pixbuf> pixbuf = Conversions::get_pixbuf_for_gda_value(value);
+         
+            //Scale it down to a sensible size.
+            if(pixbuf)
+              pixbuf = ImageGlom::scale_keeping_ratio(pixbuf,  get_fixed_cell_height(), pixbuf->get_width());
+
+            pDerived->property_pixbuf() = pixbuf;
+          }
+          else
+            g_warning("Field::sql(): glom_type is TYPE_IMAGE but gda type is not VALUE_TYPE_BINARY");
 
           break;
         }

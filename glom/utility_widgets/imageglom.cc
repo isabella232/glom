@@ -290,6 +290,9 @@ Glib::RefPtr<Gdk::Pixbuf> ImageGlom::scale_keeping_ratio(const Glib::RefPtr<Gdk:
   if( (target_height == 0) || (target_width == 0) )
     return Glib::RefPtr<Gdk::Pixbuf>(); //This shouldn't happen anyway.
 
+  if(!pixbuf)
+    return pixbuf;
+
   enum enum_scale_mode
   {
     SCALE_WIDTH,

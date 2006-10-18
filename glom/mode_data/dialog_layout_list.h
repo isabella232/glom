@@ -57,8 +57,6 @@ protected:
   virtual void on_treeview_fields_selection_changed();
   virtual void on_cell_data_name(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter);
 
-  void warn_about_images();
-
   //Tree model columns:
   class ModelColumns_Fields : public Gtk::TreeModel::ColumnRecord
   {

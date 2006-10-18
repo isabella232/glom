@@ -53,6 +53,8 @@ public:
 
   void set_read_only(bool read_only = true);
 
+  static Glib::RefPtr<Gdk::Pixbuf> scale_keeping_ratio(const Glib::RefPtr<Gdk::Pixbuf>& pixbuf, int target_height, int target_width);
+
 protected:
   void init();
 
@@ -74,8 +76,7 @@ protected:
   void setup_menu_usermode();
   void scale();
 
-  static Glib::RefPtr<Gdk::Pixbuf> scale_keeping_ratio(const Glib::RefPtr<Gdk::Pixbuf>& pixbuf, int target_height, int target_width);
-
+ 
   Gtk::Image m_image;
   Gtk::Frame m_frame;
   Glib::RefPtr<Gdk::Pixbuf> m_pixbuf_original; //Only stored temporarily, because it could be big.

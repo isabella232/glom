@@ -274,20 +274,15 @@ void Dialog_Layout_List::on_treeview_fields_selection_changed()
   enable_buttons();
 }
 
-void Dialog_Layout_List::warn_about_images()
-{
-  Frame_Glom::show_ok_dialog(_("Images Not Allowed On List View"), _("The list view cannot display image fields."), *this, Gtk::MESSAGE_WARNING); //TODO: Scale them down to thumbnails in a GtkCellRenderPixbuf?
-}
-
 void Dialog_Layout_List::on_button_add_field()
 {
   //Get the chosen field:
   sharedptr<LayoutItem_Field> field = offer_field_list(m_table_name, this);
   if(field)
   {
-    if(field->get_glom_type() == Field::TYPE_IMAGE)
+    if(false) //field->get_glom_type() == Field::TYPE_IMAGE)
     {
-      warn_about_images();
+      //warn_about_images();
     }
     else
     {
@@ -372,15 +367,8 @@ void Dialog_Layout_List::on_button_edit_field()
       {
         //Set the field details in the layout treeview:
 
-        if(field_chosen->get_glom_type() == Field::TYPE_IMAGE)
-        {
-          warn_about_images();
-        }
-        else
-        {
-          row[m_ColumnsFields.m_col_layout_item] = field_chosen;
-          m_modified = true;
-        }
+        row[m_ColumnsFields.m_col_layout_item] = field_chosen;
+        m_modified = true;
       }
     }
   }
