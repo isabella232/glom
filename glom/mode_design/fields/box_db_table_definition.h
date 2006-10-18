@@ -46,6 +46,7 @@ protected:
   sharedptr<Field> change_definition(const sharedptr<const Field>& fieldOld, const sharedptr<const Field>& field);
 
   bool field_has_null_values(const sharedptr<const Field>& field);
+  bool field_has_non_unique_values(const sharedptr<const Field>& field);
 
   //Signal handlers:
   virtual void on_adddel_add(const Gtk::TreeModel::iterator& row);

@@ -434,9 +434,9 @@ sharedptr<Field> Box_DB_Table_Definition::change_definition(const sharedptr<cons
     //If setting the primarykeyness, check whether this is likely to succeed:
     if(!fieldOld->get_primary_key() && field->get_primary_key())
     {
+      //Check for nulls:
       if(field_has_null_values(fieldOld)) //Use the fieldOld because we only use the name, and we want to check the _existing_ field:
       {
-        //TODO: Also check for unique values?
         Gtk::Window* window = const_cast<Gtk::Window*>(get_app_window());
         if(window)
           Frame_Glom::show_ok_dialog(_("Field contains empty values."), _("The field may not yet be used as a primary key because it contains empty values."), *window, Gtk::MESSAGE_WARNING);
@@ -445,6 +445,18 @@ sharedptr<Field> Box_DB_Table_Definition::change_definition(const sharedptr<cons
 
         return glom_sharedptr_clone(fieldOld); //No changes were made.
       }
+
+      //Check that the values are unique:
+      if(field_has_non_unique_values(fieldOld)) //Use the fieldOld because we only use the name, and we want to check the _existing_ field:
+      {
+        Gtk::Window* window = const_cast<Gtk::Window*>(get_app_window());
+        if(window)
+          Frame_Glom::show_ok_dialog(_("Field contains non-unique values."), _("The field may not yet be used as a primary key because it contains values that are not unique."), *window, Gtk::MESSAGE_WARNING);
+
+        return glom_sharedptr_clone(fieldOld); //No changes were made.
+      }
+
+   
     }
 
     //Forget the remembered currently-viewed primary key value, 
@@ -709,7 +721,6 @@ bool Box_DB_Table_Definition::field_has_null_values(const sharedptr<const Field>
   Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute(sql_query, get_app_window());
   if(datamodel && datamodel->get_n_rows() && datamodel->get_n_columns())
   {
-    const Gnome::Gda::Value value = datamodel->get_value_at(0, 0);
     null_count = datamodel->get_n_rows();
     //std::cout << "debug: null_count = " << null_count << std::endl;
   }
@@ -720,6 +731,44 @@ bool Box_DB_Table_Definition::field_has_null_values(const sharedptr<const Field>
 
    return null_count > 0; 
 }
+
+bool Box_DB_Table_Definition::field_has_non_unique_values(const sharedptr<const Field>& field)
+{
+  long count_distinct = 0;
+  long count_all = 0;
+
+  //Count the distint rows:
+  const Glib::ustring sql_query_distinct = "SELECT DISTINCT \"" + field->get_name() + "\" FROM \"" + m_table_name + "\"";
+  
+  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute(sql_query_distinct, get_app_window());
+  if(datamodel)
+  {
+    count_distinct = datamodel->get_n_rows();
+    //std::cout << "debug: null_count = " << null_count << std::endl;
+  }
+  else
+  {
+    g_warning("Box_DB_Table_Definition::field_has_non_unique_values(): SELECT COUNT() failed.");
+  }
+
+  //Count all rows, to compare. TODO_performance: Is there a more efficient way to do this? Maybe count(*), which apparently doesn't ignore NULL rows like count(somefield) would.
+  const Glib::ustring sql_query_all = "SELECT \"" + field->get_name() + "\" FROM \"" + m_table_name + "\"";
+  
+  datamodel = query_execute(sql_query_all, get_app_window());
+  if(datamodel)
+  {
+    count_all = datamodel->get_n_rows();
+    //std::cout << "debug: null_count = " << null_count << std::endl;
+  }
+  else
+  {
+    g_warning("Box_DB_Table_Definition::field_has_non_unique_values(): SELECT COUNT() failed.");
+  }
+
+
+  return count_distinct != count_all;
+}
+
 
 } //namespace Glom
 

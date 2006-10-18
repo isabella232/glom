@@ -1,3 +1,11 @@
+2006-10-18  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/mode_design/fields/box_db_table_definition.cc:
+	* glom/mode_design/fields/box_db_table_definition.h: Added field_has_non_unique_values().
+	change_definition(): If a field is being set to primary key, 
+	use field_has_non_unique_values() to check and warn, to avoid an error from Postgres.
+	Bug #362895.
+
 2006-10-17  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/libglom/document/document_glom.cc:
