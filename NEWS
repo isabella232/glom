@@ -1,3 +1,53 @@
+1.2.0:
+
+New features in Glom 1.2:
+
+* Really remember the last-viewed record on the details view when navigating 
+  between tables.
+* List view: Remember column widths when you resize them manually.
+  Bug #358089 from Peter Williams.
+* Related records:
+  - When clicking the open button, show a warning dialog when the related 
+  record indicates a non-existant doubly-related record, making navigation 
+  impossible.
+  - Allow navigation to doubly-related records (such as products from 
+  invoice lines on an invoice record), even when only the ID key is shown.
+* Help buttons now work, though more help text is needed.
+  (Johannes Schmid and Don Scorgie)
+
+* Developer mode:
+  - Added Add Related Table item to the Tables menu. This is a time-saving 
+    feature to quickly create a related table and a relationship to it,
+    and is a first step to implementing further refactoring functionality.
+    Bug #355975.
+  - Field definitions: Warn about null values and non-unique values 
+    when setting a primary key.
+  - Related records: Allow the developer to specify to what table the user 
+    will be taken, or use the automatic choice.
+  - List views and related records portals: 
+    - Allow image fields in the lists.
+    - When no fields are specified, show a hint about editing the layout.
+    Bug #354073 from Peter Williams.
+  - Python API (Calculated fields and button scripts):
+    Added record.connection and record.table_name attributes, so you can 
+    go wild with SQL with the whole pygda API, if you must.
+    The connection is even open already, you lucky people. 
+    See http://www.glom.org/wiki/index.php?title=Calculated_Fields_API#Using_the_full_pygda_API
+    (Murray Cumming)
+  - Button scripts: Update the view after the script has run, in case it 
+    changed any data.
+  - Field Formatting: You can now specify a number of text lines to show for 
+    multi-line text. Bug #355907 from Peter Williams.
+  - Layout editor dialogs: Added explanatory tooltips to the Add buttons.
+  - Field calculation editor: Prevent translators from translating the 
+    fragment of python code.
+
+Changes since 1.1.7:
+
+* List view: Can now show image fields.
+* Design: Fields: When marking a field as the primary key, avoid crashes 
+  and warn about null values and non-unique values in the field.
+ 
 1.1.7:
 
 * Button scripts: After the script has run, check that the current record 
