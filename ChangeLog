@@ -1,5 +1,11 @@
 2006-10-18  Murray Cumming  <murrayc@murrayc.com>
 
+	* examples/example_film_manager.glom: Mark this as an example, so users are 
+	asked to save a copy. I think this had example data once too, but it is gone 
+	now.
+
+2006-10-18  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/mode_data/dialog_layout_list.cc:
 	* glom/mode_data/dialog_layout_list.h: Remove warn_about_images() 
 	and don't use it in on_button_add_field() and on_button_edit_field().

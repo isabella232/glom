@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<glom_document database_title="Openismus Film Manager" is_example="false" translation_original_locale="en_US">
+<glom_document database_title="Openismus Film Manager" is_example="true" translation_original_locale="en_US">
   <connection server="localhost" user="" database="glom_film_production_manager1"/>
   
   
