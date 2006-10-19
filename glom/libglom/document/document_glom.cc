@@ -79,7 +79,8 @@ namespace Glom
 #define GLOM_ATTRIBUTE_DEFAULT_VALUE "default_value"
 #define GLOM_ATTRIBUTE_UNIQUE "unique"
 #define GLOM_ATTRIBUTE_AUTOINCREMENT "auto_increment"
-#define GLOM_ATTRIBUTE_CALCULATION "calculation"
+#define GLOM_DEPRECATED_ATTRIBUTE_CALCULATION "calculation"
+#define GLOM_NODE_CALCULATION "calculation"
 #define GLOM_ATTRIBUTE_TYPE "type"
 
 #define GLOM_NODE_FIELD_LOOKUP "field_lookup"
@@ -111,8 +112,10 @@ namespace Glom
 #define GLOM_ATTRIBUTE_DEFAULT "default"
 #define GLOM_ATTRIBUTE_FIELD "field"
 #define GLOM_ATTRIBUTE_EDITABLE "editable"
-#define GLOM_ATTRIBUTE_EXAMPLE_ROWS "example_rows"
-#define GLOM_ATTRIBUTE_BUTTON_SCRIPT "script"
+#define GLOM_DEPRECATED_ATTRIBUTE_EXAMPLE_ROWS "example_rows"
+#define GLOM_NODE_EXAMPLE_ROWS "example_rows"
+#define GLOM_DEPRECATED_ATTRIBUTE_BUTTON_SCRIPT "script"
+#define GLOM_NODE_BUTTON_SCRIPT "script"
 #define GLOM_ATTRIBUTE_SORT_ASCENDING "sort_ascending"
 
 
@@ -858,6 +861,32 @@ bool Document_Glom::get_node_attribute_value_as_bool(const xmlpp::Element* node,
 {
   Glib::ustring strValue = get_node_attribute_value(node, strAttributeName);
   return strValue == "true";
+}
+
+Glib::ustring Document_Glom::get_child_text_node(const xmlpp::Element* node, const Glib::ustring& child_node_name) const
+{
+  const xmlpp::Element* child = get_node_child_named(node, child_node_name);
+  if(child)
+  {
+     const xmlpp::TextNode* text_child = child->get_child_text();
+     if(text_child)
+       return text_child->get_content();
+  }
+
+  return Glib::ustring();
+}
+
+void Document_Glom::set_child_text_node(xmlpp::Element* node, const Glib::ustring& child_node_name, const Glib::ustring& text)
+{
+  xmlpp::Element* child = get_node_child_named(node, child_node_name);
+  if(!child)
+    child = node->add_child(child_node_name);
+
+  xmlpp::TextNode* text_child = child->get_child_text();
+  if(!text_child)
+    child->add_child_text(text);
+  else
+    text_child->set_content(text);
 }
 
 void Document_Glom::set_node_attribute_value_as_bool(xmlpp::Element* node, const Glib::ustring& strAttributeName, bool value)
@@ -1643,7 +1672,10 @@ void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Gl
       {
         sharedptr<LayoutItem_Button> item = sharedptr<LayoutItem_Button>::create();
 
-        item->set_script( get_node_attribute_value(element, GLOM_ATTRIBUTE_BUTTON_SCRIPT) );
+        item->set_script( get_child_text_node(element, GLOM_NODE_BUTTON_SCRIPT) );
+        if(!(item->get_has_script())) //Try the deprecated attribute instead
+           item->set_script( get_node_attribute_value(element, GLOM_DEPRECATED_ATTRIBUTE_BUTTON_SCRIPT) );
+
         load_after_translations(element, *item);
 
         item->m_sequence = sequence;
@@ -1886,7 +1918,10 @@ bool Document_Glom::load_after()
 
           doctableinfo.m_info = table_info;
 
-          doctableinfo.m_example_rows = get_node_attribute_value(nodeTable, GLOM_ATTRIBUTE_EXAMPLE_ROWS);
+          doctableinfo.m_example_rows = get_child_text_node(nodeTable, GLOM_NODE_EXAMPLE_ROWS);
+          if(doctableinfo.m_example_rows.empty()) //Try the deprecated attribute instead
+            doctableinfo.m_example_rows = get_node_attribute_value(nodeTable, GLOM_DEPRECATED_ATTRIBUTE_EXAMPLE_ROWS);
+
           //std::cout << "  debug: loading: table=" << table_name << ", m_example_rows.size()=" << doctableinfo.m_example_rows.size() << std::endl;
 
           //Translations:
@@ -1956,7 +1991,9 @@ bool Document_Glom::load_after()
                   field->set_lookup_field( get_node_attribute_value(nodeLookup, GLOM_ATTRIBUTE_FIELD) );
                 }
 
-                field->set_calculation( get_node_attribute_value(nodeChild, GLOM_ATTRIBUTE_CALCULATION) );
+                field->set_calculation( get_child_text_node(nodeChild, GLOM_NODE_CALCULATION) );
+                if(!(field->get_has_calculation())) //Try the deprecated attribute instead
+                  field->set_calculation( get_node_attribute_value(nodeChild, GLOM_DEPRECATED_ATTRIBUTE_CALCULATION) );
 
                 //Field Type:
                 const Glib::ustring field_type = get_node_attribute_value(nodeChild, GLOM_ATTRIBUTE_TYPE);
@@ -2394,7 +2431,7 @@ void Document_Glom::save_before_layout_group(xmlpp::Element* node, const sharedp
           if(button) //If it is a button
           {
             nodeItem = child->add_child(GLOM_NODE_DATA_LAYOUT_BUTTON);
-            set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_BUTTON_SCRIPT, button->get_script());
+            set_child_text_node(nodeItem, GLOM_NODE_BUTTON_SCRIPT, button->get_script());
             save_before_translations(nodeItem, *button);
           }
           else
@@ -2500,7 +2537,7 @@ bool Document_Glom::save_before()
         set_node_attribute_value_as_bool(nodeTable, GLOM_ATTRIBUTE_DEFAULT, doctableinfo.m_info->m_default);
 
         if(m_is_example) //The example data is useless to non-example files (and is big):
-          set_node_attribute_value(nodeTable, GLOM_ATTRIBUTE_EXAMPLE_ROWS, doctableinfo.m_example_rows);
+          set_child_text_node(nodeTable, GLOM_NODE_EXAMPLE_ROWS, doctableinfo.m_example_rows);
         //else
           //TODO: doctableinfo.m_example_rows.clear(); //Make sure we are not keeping this in memory unnecessarily.
 
@@ -2524,8 +2561,8 @@ bool Document_Glom::save_before()
           set_node_attribute_value_as_bool(elemField, GLOM_ATTRIBUTE_AUTOINCREMENT, field->get_auto_increment());
           set_node_attribute_value_as_value(elemField, GLOM_ATTRIBUTE_DEFAULT_VALUE, field->get_default_value(), field->get_glom_type());
 
-          set_node_attribute_value(elemField, GLOM_ATTRIBUTE_CALCULATION, field->get_calculation());
-
+          set_child_text_node(elemField, GLOM_NODE_CALCULATION, field->get_calculation());
+         
           Glib::ustring field_type;
           Field::type_map_type_names::const_iterator iterTypes = type_names.find( field->get_glom_type() );
           if(iterTypes != type_names.end())

@@ -46,6 +46,8 @@ public:
    */
   Glib::ustring get_script() const;
 
+  bool get_has_script() const;
+
   /** Get the python code that will be executed when the button is pressed.
    */
   void set_script(const Glib::ustring& script);

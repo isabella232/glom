@@ -72,6 +72,11 @@ Glib::ustring LayoutItem_Button::get_script() const
   return m_script;
 }
 
+bool LayoutItem_Button::get_has_script() const
+{
+  return !(m_script.empty());
+}
+
 void LayoutItem_Button::set_script(const Glib::ustring& script)
 {
   m_script = script;

@@ -1,3 +1,19 @@
+2006-10-19  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/libglom/data_structure/layout/layoutitem_button.cc:
+	* glom/libglom/data_structure/layout/layoutitem_button.h: Added get_has_script() 
+	method for efficient convenience.
+	* glom/libglom/document/document_glom.cc:
+	* glom/libglom/document/document_glom.h: Added set/get_child_text_node() utility 
+	methods.
+	load_after(), load_after_layout_group(): Load button scripts, field calculations, 
+	and example row data from child text nodes instead of attribute values, to avoid 
+	problems with newlines in attributes when using the .glom file with a different 
+	XML parser.
+	Fall back to the now-deprecated attribute values if no child text node was found.
+	save_before(), save_before_layout_group(): Save as child text nodes.
+	Bug #357567.
+
 2006-10-19  Johannes Schmid <jhs@gnome.org>
 
 	* glom/main.cc: Added --debug_sql argument  
