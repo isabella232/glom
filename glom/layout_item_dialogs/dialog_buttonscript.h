@@ -25,6 +25,7 @@
 #include <libglademm.h>
 #include <glom/libglom/data_structure/layout/layoutitem_button.h>
 #include "../base_db.h"
+#include <gtksourceviewmm/sourceview.h>
 
 namespace Glom
 {
@@ -44,7 +45,7 @@ public:
 protected:
   void on_button_test();
 
-  Gtk::TextView* m_text_view;
+  gtksourceview::SourceView* m_text_view;
   Gtk::Button* m_button_test;
 
   sharedptr<LayoutItem_Button> m_script;

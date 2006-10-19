@@ -3778,7 +3778,7 @@
 			      <property name="window_placement">GTK_CORNER_TOP_LEFT</property>
 
 			      <child>
-				<widget class="GtkTextView" id="textview_calculate">
+				<widget class="GtkSourceView" id="textview_calculate">
 				  <property name="visible">True</property>
 				  <property name="can_focus">True</property>
 				  <property name="editable">True</property>
@@ -4787,7 +4787,7 @@ The data in the field was not recognized. Please try to correct the data or reve
 		      <property name="shadow_type">GTK_SHADOW_IN</property>
 
 		      <child>
-			<widget class="GtkTextView" id="textview_calculation">
+			<widget class="GtkSourceView" id="textview_calculation">
 			  <property name="visible">True</property>
 			  <property name="can_focus">True</property>
 			  <property name="editable">True</property>
@@ -5077,7 +5077,7 @@ The data in the field was not recognized. Please try to correct the data or reve
 		      <property name="shadow_type">GTK_SHADOW_IN</property>
 
 		      <child>
-			<widget class="GtkTextView" id="textview_calculation">
+			<widget class="GtkSourceView" id="textview_calculation">
 			  <property name="visible">True</property>
 			  <property name="can_focus">True</property>
 			  <property name="editable">True</property>

@@ -200,7 +200,9 @@ void Dialog_FieldDefinition::set_field(const sharedptr<const Field>& field, cons
 
   on_check_lookup_toggled();
 
+   std::cout << "debug: dialog_fielddefinition.c:: m_pTextView_Calculation.gobj() gtype = " << G_OBJECT_TYPE_NAME(m_pTextView_Calculation->gobj()) << std::endl;
   m_pTextView_Calculation->get_buffer()->set_text(calculation);
+  std::cout << "  debug: dialog_fielddefinition.c:: after get_buffer()" << std::endl;
 
   m_pEntry_Title->set_text(field->get_title());
 

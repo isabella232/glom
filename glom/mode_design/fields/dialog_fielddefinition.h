@@ -32,6 +32,7 @@
 #include <glom/libglom/data_structure/field.h>
 #include "../../layout_item_dialogs/box_formatting.h"
 #include "../../base_db.h"
+#include <gtksourceviewmm/sourceview.h>
 
 namespace Glom
 {
@@ -81,7 +82,7 @@ protected:
 
   Gtk::RadioButton* m_pRadio_Calculate;
   Gtk::Alignment* m_pAlignment_Calculate;
-  Gtk::TextView* m_pTextView_Calculation;
+  gtksourceview::SourceView* m_pTextView_Calculation;
   Gtk::Button* m_pButton_EditCalculation;
 
   Gtk::Entry* m_pEntry_Title;

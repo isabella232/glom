@@ -22,6 +22,8 @@
 #include "dialog_buttonscript.h"
 #include "../python_embed/glom_python.h"
 #include <glom/libglom/data_structure/glomconversions.h>
+#include <gtksourceviewmm/sourcelanguagesmanager.h>
+
 
 //#include <libgnome/gnome-i18n.h>
 #include <glibmm/i18n.h>
@@ -39,6 +41,19 @@ Dialog_ButtonScript::Dialog_ButtonScript(BaseObjectType* cobject, const Glib::Re
   //on_foreach_connect(*this);
 
   //Dialog_Properties::set_modified(false);
+
+  //Set the SourceView to do syntax highlighting for Python:
+  //TODO: Shouldn't this be a singleton?
+  Glib::RefPtr<gtksourceview::SourceLanguagesManager> languages_manager = gtksourceview::SourceLanguagesManager::create();
+
+  Glib::RefPtr<gtksourceview::SourceLanguage> language = languages_manager->get_language_from_mime_type("application/x-python");
+  if(language)
+  {
+     //Createa a new buffer and set it, instead of getting the default buffer, in case libglade has tried to set it, using the wrong buffer type:
+     Glib::RefPtr<gtksourceview::SourceBuffer> buffer = gtksourceview::SourceBuffer::create(language);
+     buffer->set_highlight();
+     m_text_view->set_buffer(buffer);
+  }
 
   show_all_children();
 }

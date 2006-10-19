@@ -1,3 +1,18 @@
+2006-10-19  Murray Cumming  <murrayc@murrayc.com>
+
+	* configure.in: Check for libgtksourceviewmm-1.0.
+	* glom/main.cc: Initialize gtksourceviewmm.
+	* glom/glom.glade: Use a GtkSourceView instead of a TextView for 
+	calculated fields and the buttons script.
+	* glom/layout_item_dialogs/dialog_buttonscript.h:
+	* glom/mode_design/fields/dialog_fieldcalculation.cc:
+	* glom/mode_design/fields/dialog_fieldcalculation.h:
+	* glom/mode_design/fields/dialog_fielddefinition.h: Use a GtkSourceView 
+	instead of a TextView for calculated fields and the buttons script, and 
+	set the language as python.
+	Patch from bug #346896, with much help from Johannes Schmid and 
+	Dodju Seketeli.
+
 This is the HEAD branch for new features.
 See the glom-1-2 branch for bug-fixes without new features.
 

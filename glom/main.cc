@@ -26,6 +26,7 @@
 #include <libgnome/gnome-init.h> // For gnome_program_init().
 #include <libgnomevfsmm/uri.h>
 #include <libgnomecanvasmm.h>
+#include <gtksourceviewmm/init.h>
 #include <glibmm/i18n.h>
 
 
@@ -73,6 +74,7 @@ main(int argc, char* argv[])
   textdomain(GETTEXT_PACKAGE);
 
   Gnome::Gda::init("glom", VERSION, argc, argv);
+  gtksourceview::init();
 
   Glib::OptionContext context;
 
