@@ -10,4 +10,3 @@ libglom_python_embed_la_SOURCES = py_glom_record.h py_glom_record.cc \
 
 
 
-

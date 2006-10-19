@@ -25,6 +25,7 @@
 #include <glom/libglom/data_structure/glomconversions.h> //For util_build_sql
 #include <glom/libglom/utils.h>
 
+#include "glom/application.h"
 
 namespace Glom
 {
@@ -212,7 +213,18 @@ bool DbTreeModel::refresh_from_database(const FoundSet& found_set)
   {
     const Glib::ustring sql_query = Utils::build_sql_select_with_where_clause(m_found_set.m_table_name, m_column_fields, m_found_set.m_where_clause, m_found_set.m_sort_clause);
 
-    //std::cout << "DbTreeModel: Executing SQL: " << sql_query << std::endl << std::endl;
+    const App_Glom* app = App_Glom::get_application();
+    if(app && app->get_show_sql_debug())
+    { 
+      try
+      {
+        std::cout << "Debug: query_execute():  " << sql_query << std::endl;
+      }
+      catch(const Glib::Exception& ex)
+      {
+        std::cout << "Debug: query string could not be converted to std::cout: " << ex.what() << std::endl;
+      }
+    }
     try
     {
       m_gda_datamodel = m_connection->get_gda_connection()->execute_single_command(sql_query);

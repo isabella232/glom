@@ -36,6 +36,9 @@
 namespace Glom
 {
 
+// Global application variable
+App_Glom* global_application = NULL;
+
 App_Glom::App_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
 : Gtk::Window(cobject), //It's a virtual base class, so we have to call the specific constructor to prevent the default constructor from being called.
   type_base(cobject, "Glom"),
@@ -43,7 +46,8 @@ App_Glom::App_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml
   m_pFrame(0),
   m_window_translations(0),
   m_menu_tables_ui_merge_id(0),
-  m_menu_reports_ui_merge_id(0)
+  m_menu_reports_ui_merge_id(0),
+  m_show_sql_debug(false)
 {
   try
   {
@@ -63,6 +67,8 @@ App_Glom::App_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml
 
   //Hide the toolbar because it doesn't contain anything useful for this app.
   m_HandleBox_Toolbar.hide();
+  
+  global_application = this;
 }
 
 App_Glom::~App_Glom()
@@ -104,6 +110,16 @@ bool App_Glom::init(const Glib::ustring& document_uri)
 
   return true;
   //show_all();
+}
+
+bool App_Glom::get_show_sql_debug() const
+{
+  return m_show_sql_debug;
+}
+
+void App_Glom::set_show_sql_debug(bool val)
+{
+  m_show_sql_debug = val;
 }
 
 void App_Glom::init_layout()
@@ -184,8 +200,8 @@ void App_Glom::init_menus_file()
 
   m_refFileActionGroup->add(Gtk::Action::create("BakeryAction_File_Close", Gtk::Stock::CLOSE),
                         sigc::mem_fun((App_WithDoc&)*this, &App_WithDoc::on_menu_file_close));
-  m_refFileActionGroup->add(Gtk::Action::create("BakeryAction_File_Exit", Gtk::Stock::QUIT),
-                        sigc::mem_fun((App&)*this, &App::on_menu_file_exit));
+  /*m_refFileActionGroup->add(Gtk::Action::create("BakeryAction_File_Exit", Gtk::Stock::QUIT),
+                        sigc::mem_fun((App&)*this, &App::on_menu_file_exit));*/
 
   m_refUIManager->insert_action_group(m_refFileActionGroup);
 
@@ -205,7 +221,6 @@ void App_Glom::init_menus_file()
     "        <menuitem action='GlomAction_File_Print' />"
     "        <separator/>"
     "        <menuitem action='BakeryAction_File_Close' />"
-    "        <menuitem action='BakeryAction_File_Exit' />"
     "      </menu>"
     "    </placeholder>"
     "  </menubar>"
@@ -1292,6 +1307,10 @@ void App_Glom::on_window_translations_hide()
   }
 }
 
+App_Glom* App_Glom::get_application()
+{
+  return global_application;
+}
 
 } //namespace Glom
 

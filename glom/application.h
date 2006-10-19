@@ -58,6 +58,14 @@ public:
   void fill_menu_tables();
   void fill_menu_reports(const Glib::ustring& table_name);
 
+  ///Whether to show the generated SQL queries on stdout, for debugging.
+  bool get_show_sql_debug() const;
+
+  ///Whether to show the generated SQL queries on stdout, for debugging.
+  void set_show_sql_debug(bool val = true);
+
+  static App_Glom* get_application();
+
 protected:
   virtual void init_layout(); //override.
   virtual void init_menus_file(); //override.
@@ -102,6 +110,8 @@ protected:
   Glib::RefPtr<Gtk::ActionGroup> m_refNavTablesActionGroup, m_refNavReportsActionGroup;
   type_listActions m_listNavTableActions, m_listNavReportActions;
   Gtk::UIManager::ui_merge_id m_menu_tables_ui_merge_id, m_menu_reports_ui_merge_id;
+
+  bool m_show_sql_debug;
 };
 
 } //namespace Glom

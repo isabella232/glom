@@ -35,21 +35,25 @@
 
 #include "application.h"
 
+namespace Glom
+{
 
-class ExampleOptionGroup : public Glib::OptionGroup
+class OptionGroup : public Glib::OptionGroup
 { 
 public:
-  ExampleOptionGroup();
+  OptionGroup();
 
   //These int instances should live as long as the OptionGroup to which they are added, 
   //and as long as the OptionContext to which those OptionGroups are added.
   std::string m_arg_filename;
   bool m_arg_version;
+  bool m_arg_debug_sql;
 };
 
-ExampleOptionGroup::ExampleOptionGroup()
+OptionGroup::OptionGroup()
 : Glib::OptionGroup("Glom", _("Glom options"), _("Command-line options for glom")),
-  m_arg_version(false)
+  m_arg_version(false),
+  m_arg_debug_sql(false)
 {
   Glib::OptionEntry entry;
   entry.set_long_name("file");
@@ -62,8 +66,14 @@ ExampleOptionGroup::ExampleOptionGroup()
   entry_version.set_short_name('V');
   entry_version.set_description(_("The version of this application."));
   add_entry(entry_version, m_arg_version);
+
+  Glib::OptionEntry entry_debug_sql;
+  entry_version.set_long_name("debug_sql");
+  entry_version.set_description(_("Show the generated SQL queries on stdout, for debugging."));
+  add_entry(entry_version, m_arg_debug_sql);
 }
 
+} //namespace Glom
 
 int 
 main(int argc, char* argv[])
@@ -78,7 +88,7 @@ main(int argc, char* argv[])
 
   Glib::OptionContext context;
 
-  ExampleOptionGroup group;
+  Glom::OptionGroup group;
   context.set_main_group(group);
 
   try
@@ -142,6 +152,7 @@ main(int argc, char* argv[])
     refXml->get_widget_derived("window_main", pApp_Glom);
 
     pApp_Glom->set_command_line_args(argc, argv);
+    pApp_Glom->set_show_sql_debug(group.m_arg_debug_sql);
 
     bool test = pApp_Glom->init(input_uri); //Sets it up and shows it.
     if(test) //The user could cancel the offer of a new or existing database.

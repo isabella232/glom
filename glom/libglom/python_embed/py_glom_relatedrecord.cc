@@ -32,6 +32,7 @@
 #include <glom/libglom/data_structure/field.h>
 #include <glibmm/ustring.h>
 
+#include "glom/application.h"
 
 namespace Glom
 {
@@ -195,7 +196,19 @@ RelatedRecord_tp_as_mapping_getitem(PyGlomRelatedRecord *self, PyObject *item)
             Glib::ustring sql_query = "SELECT \"" + related_table + "\".\"" + field_name + "\" FROM \"" + related_table + "\""
               + " WHERE \"" + related_table + "\".\"" + related_key_name + "\" = " + *(self->m_from_key_value_sqlized);
 
-            //std::cout << "PyGlomRelatedRecord: Executing:  " << sql_query << std::endl;
+             /* TODO: Fix linking problems
+             const App_Glom* app = App_Glom::get_application();
+             if(app && app->get_show_sql_debug())
+             {
+                try
+                {
+                  std::cout << "Debug: query_execute():  " << sql_query << std::endl;
+                }
+                catch(const Glib::Exception& ex)
+                {
+                  std::cout << "Debug: query string could not be converted to std::cout: " << ex.what() << std::endl;
+                 }
+            }*/
             Glib::RefPtr<Gnome::Gda::DataModel> datamodel = gda_connection->execute_single_command(sql_query);
             if(datamodel && datamodel->get_n_rows())
             {

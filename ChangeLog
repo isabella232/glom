@@ -1,3 +1,24 @@
+2006-10-19  Johannes Schmid <jhs@gnome.org>
+
+	* glom/main.cc: Added --debug_sql argument  
+  
+	* glom/application.cc:
+	* glom/application.h:
+	Added a global application instance which is available to all modules via the static
+	Application::get_application() method
+	Added get/set_sql_debug()
+	Remove File->Exit, to simplify Glom by not supporting muliple documents per instance.
+	
+	* glom/base_db.cc:
+	* glom/base_db.h:
+	* glom/libglom/python_embed/Makefile.am:
+	* glom/utility_widgets/db_adddel/glom_db_treemodel.cc:
+	Added debugging code for sql statements.
+
+	* glom/libglom/python_embed/py_glom_relatedrecord.cc:
+	Added debugging code but commented out for now because of linking issues. The debug
+	flag needs to link against application.lo
+
 2006-10-19  Murray Cumming  <murrayc@murrayc.com>
 
 	* configure.in: Check for libgtksourceviewmm-1.0.
