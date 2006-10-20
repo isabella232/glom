@@ -736,6 +736,8 @@ Gtk::CellRenderer* DbAddDel::construct_specified_columns_cellrenderer(const shar
 
 void DbAddDel::construct_specified_columns()
 {
+  //std::cout << "debug: DbAddDel::construct_specified_columns" << std::endl;
+
   InnerIgnore innerIgnore(this);
 
   //TODO_optimisation: This is called many times, just to simplify the API.
@@ -902,6 +904,10 @@ void DbAddDel::construct_specified_columns()
 
 bool DbAddDel::refresh_from_database()
 {
+  construct_specified_columns();
+  return true;
+
+  /*
   if(m_refListStore)
   {
     //Glib::RefPtr<Gtk::TreeModel> refNull;
@@ -915,6 +921,7 @@ bool DbAddDel::refresh_from_database()
   }
   else
     return false;
+  */
 }
 
 bool DbAddDel::refresh_from_database_blank()

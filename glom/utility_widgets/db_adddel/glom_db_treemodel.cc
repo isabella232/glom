@@ -179,7 +179,7 @@ DbTreeModel::DbTreeModel(const Gtk::TreeModelColumnRecord& columns, const FoundS
 
   g_assert(m_columns_count == column_fields.size());
 
-  //refresh_from_database();
+  refresh_from_database(m_found_set);
 }
 
 DbTreeModel::~DbTreeModel()
@@ -195,6 +195,7 @@ Glib::RefPtr<DbTreeModel> DbTreeModel::create(const Gtk::TreeModelColumnRecord& 
 
 bool DbTreeModel::refresh_from_database(const FoundSet& found_set)
 {
+  //std::cout << "DbTreeModel::refresh_from_database()" << std::endl;
   m_found_set = found_set;
 
   if(!m_get_records)
@@ -212,6 +213,7 @@ bool DbTreeModel::refresh_from_database(const FoundSet& found_set)
   if(m_connection && !m_found_set.m_table_name.empty() && m_get_records)
   {
     const Glib::ustring sql_query = Utils::build_sql_select_with_where_clause(m_found_set.m_table_name, m_column_fields, m_found_set.m_where_clause, m_found_set.m_sort_clause);
+    //std::cout << "  Debug: query_execute():  " << sql_query << std::endl;
 
     const App_Glom* app = App_Glom::get_application();
     if(app && app->get_show_sql_debug())

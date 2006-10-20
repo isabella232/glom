@@ -80,8 +80,6 @@ protected:
 public:
   static Glib::RefPtr<DbTreeModel> create(const Gtk::TreeModelColumnRecord& columns, const FoundSet& found_set, const type_vec_fields& column_fields, int column_index_key, bool get_records = true);
 
-  bool refresh_from_database(const FoundSet& found_set);
-
   typedef DbTreeModelRow::DbValue DbValue;
 
   void set_is_not_placeholder(const TreeModel::iterator& iter);
@@ -116,6 +114,8 @@ public:
   void get_record_counts(gulong& total, gulong& found) const;
 
 protected:
+
+  bool refresh_from_database(const FoundSet& found_set);
 
    // Overrides:
    virtual Gtk::TreeModelFlags get_flags_vfunc() const;

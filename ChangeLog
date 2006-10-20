@@ -1,5 +1,20 @@
 2006-10-20  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/mode_data/box_data_list.cc: create_layout(): Do not call 
+	m_AddDel.set_columns_ready() because we do that in fill_from_database(), 
+	and we do not want to do it twice.
+	* glom/utility_widgets/db_adddel/glom_db_treemodel.cc:
+	* glom/utility_widgets/db_adddel/glom_db_treemodel.h:
+	Constructor: Call refresh_from_database(), and make 
+	refresh_from_database() a protected method, so that model creation is 
+	the only time that the SQL query is run.
+	* glom/utility_widgets/db_adddel/db_adddel.cc: refresh_from_database():
+	Just call construct_specified_columns(), to recreate the model, instead 
+	of trying to reuse the existing model via refresh_from_database(), 
+	because that was having some strange side-effects and seems complex to fix.
+
+2006-10-20  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/utility_widgets/db_adddel/db_adddel.cc:
 	* glom/utility_widgets/db_adddel/db_adddel.h: Remove (empty) remove_all() method. It 
 	does not make sense for a TreeModel that just shows what is in a database result.

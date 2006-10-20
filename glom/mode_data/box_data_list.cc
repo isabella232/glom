@@ -695,7 +695,9 @@ void Box_Data_List::create_layout()
 
     m_AddDel.set_found_set(m_found_set);
 
-    m_AddDel.set_columns_ready();
+    //Column-creation happens in fill_database() instead:
+    //otherwise the treeview will be filled twice.
+    //m_AddDel.set_columns_ready();
   }
 
 }
