@@ -121,8 +121,6 @@ bool Box_Data_List::fill_from_database()
 
     Box_Data::fill_from_database();
 
-    m_AddDel.remove_all();
-
     //Field Names:
     //create_layout();
 

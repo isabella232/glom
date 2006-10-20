@@ -330,24 +330,6 @@ Gtk::TreeModel::iterator DbAddDel::get_item_placeholder()
   return m_refListStore->get_placeholder_row();
 }
 
-void DbAddDel::remove_all()
-{
-  InnerIgnore innerIgnore(this); //see comments for InnerIgnore class.
-
-/* TODO
-  if(m_refListStore)
-  {
-    Gtk::TreeModel::iterator iter = m_refListStore->children().begin();
-    while(iter)
-    {
-      m_refListStore->erase(iter);
-      iter = m_refListStore->children().begin();
-    }
-  }
-*/
-}
-
-
 Gnome::Gda::Value DbAddDel::get_value(const Gtk::TreeModel::iterator& iter, const sharedptr<const LayoutItem_Field>& layout_item)
 {
   Gnome::Gda::Value value;

@@ -81,8 +81,6 @@ public:
 
   void remove_item(const Gtk::TreeModel::iterator& iter);
 
-  void remove_all();
-
   Gnome::Gda::Value get_value(const Gtk::TreeModel::iterator& iter, const sharedptr<const LayoutItem_Field>& layout_item);
 
   /** Get the row's hidden key

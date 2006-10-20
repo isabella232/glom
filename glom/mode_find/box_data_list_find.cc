@@ -52,8 +52,6 @@ bool Box_Data_List_Find::fill_from_database()
 
   bool result = Box_DB_Table::fill_from_database();
 
-  m_AddDel.remove_all();
-
   //Field Names:
   create_layout();
 
