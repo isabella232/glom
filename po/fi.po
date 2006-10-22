@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glom\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-10-14 20:53+0300\n"
-"PO-Revision-Date: 2006-10-14 21:16+0300\n"
+"POT-Creation-Date: 2006-10-22 08:21+0300\n"
+"PO-Revision-Date: 2006-10-22 08:26+0300\n"
 "Last-Translator: Ilkka Tuohela <hile@iki.fi>\n"
 "Language-Team: Finnish <gnome-fi-laatu@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -19,7 +19,7 @@ msgstr ""
 msgid "A user-friendly database environment."
 msgstr "Käyttäjäystävällinen tietokantaympäristö."
 
-#: ../glom.desktop.in.in.h:2 ../glom/glom.glade.h:142 ../glom/main.cc:106
+#: ../glom.desktop.in.in.h:2 ../glom/glom.glade.h:142 ../glom/main.cc:118
 msgid "Glom"
 msgstr "Glom"
 
@@ -488,7 +488,7 @@ msgstr "Vahvista salasana"
 msgid "Copy From Existing Translation"
 msgstr "Kopioi olemassaolevasta käännöksestä"
 
-#: ../glom/glom.glade.h:113 ../glom/libglom/document/document_glom.cc:337
+#: ../glom/glom.glade.h:113 ../glom/libglom/document/document_glom.cc:340
 msgid "Country"
 msgstr "Maa"
 
@@ -728,7 +728,7 @@ msgstr "Monirivinen"
 #: ../glom/mode_data/dialog_layout_list.cc:53
 #: ../glom/mode_data/dialog_layout_list_related.cc:59
 #: ../glom/mode_design/box_db_table_relationships.cc:43
-#: ../glom/mode_design/fields/box_db_table_definition.cc:52
+#: ../glom/mode_design/fields/box_db_table_definition.cc:53
 #: ../glom/mode_design/users/dialog_groups_list.cc:63
 msgid "Name"
 msgstr "Nimi"
@@ -815,7 +815,7 @@ msgstr "Peru"
 msgid "Secondary Fields:"
 msgstr "Toissijaiset kentät:"
 
-#: ../glom/glom.glade.h:184 ../glom/utility_widgets/imageglom.cc:362
+#: ../glom/glom.glade.h:184 ../glom/utility_widgets/imageglom.cc:365
 #: ../glom/utility_widgets/dialog_choose_id.cc:82
 msgid "Select"
 msgstr "Valitse"
@@ -856,7 +856,7 @@ msgstr ""
 msgid "State/County"
 msgstr "Osavaltio/lääni"
 
-#: ../glom/glom.glade.h:193 ../glom/libglom/document/document_glom.cc:313
+#: ../glom/glom.glade.h:193 ../glom/libglom/document/document_glom.cc:316
 msgid "Street"
 msgstr "Katuosoite"
 
@@ -868,7 +868,7 @@ msgstr "Katuosoite (rivi 2)"
 msgid "Summary Type:"
 msgstr "Yhteenvedon tyyppi:"
 
-#: ../glom/glom.glade.h:196 ../glom/libglom/document/document_glom.cc:295
+#: ../glom/glom.glade.h:196 ../glom/libglom/document/document_glom.cc:298
 msgid "System Name"
 msgstr "Järjestelmän nimi"
 
@@ -909,8 +909,8 @@ msgstr ""
 "Tämä lisää uuden taulun ja lisää siihen viittaavan suhteen yhdellä "
 "toimenpiteellä, sen sijaan että samat toimenpiteet tehtäisiin erikseen.\n"
 "\n"
-"Jos sopiva viitetaulu on jo olemassa, tulisi sinun keskeyttää tämä "
-"toiminto ja lisätä pelkkä suhde taulujen välille."
+"Jos sopiva viitetaulu on jo olemassa, tulisi sinun keskeyttää tämä toiminto "
+"ja lisätä pelkkä suhde taulujen välille."
 
 #. Title column:
 #: ../glom/glom.glade.h:206 ../glom/box_reports.cc:94
@@ -918,7 +918,7 @@ msgstr ""
 #: ../glom/mode_data/dialog_choose_field.cc:52
 #: ../glom/mode_data/dialog_layout_details.cc:81
 #: ../glom/mode_design/box_db_table_relationships.cc:47
-#: ../glom/mode_design/fields/box_db_table_definition.cc:56
+#: ../glom/mode_design/fields/box_db_table_definition.cc:57
 #: ../glom/navigation/box_tables.cc:119
 msgid "Title"
 msgstr "Otsikko"
@@ -936,7 +936,7 @@ msgid "Triggered by:"
 msgstr "Käynnistänyt:"
 
 #: ../glom/glom.glade.h:210
-#: ../glom/mode_design/fields/box_db_table_definition.cc:58
+#: ../glom/mode_design/fields/box_db_table_definition.cc:59
 msgid "Type"
 msgstr "Tyyppi"
 
@@ -994,8 +994,8 @@ msgid ""
 "of just regular fields from those related tables."
 msgstr ""
 "Kun tämä on valittu, näet lisäyhteyksiä taululistassa. Nämä mahdollistavat "
-"viitatuissa tauluissa olevien suhteiden kenttien valinnan sen sijaan, "
-"että voisit valita vain tavallisia kenttiä viitatuista tauluista."
+"viitatuissa tauluissa olevien suhteiden kenttien valinnan sen sijaan, että "
+"voisit valita vain tavallisia kenttiä viitatuista tauluista."
 
 #: ../glom/glom.glade.h:223
 msgid "Zip/Postal Code"
@@ -1033,32 +1033,32 @@ msgstr "taulun_nimi"
 msgid "the title"
 msgstr "otsikko"
 
-#: ../glom/application.cc:81
+#: ../glom/application.cc:87
 msgid "(C) 2000-2005 Murray Cumming"
 msgstr "(©) 2000-2005 Murray Cumming"
 
-#: ../glom/application.cc:81
+#: ../glom/application.cc:87
 msgid "A Database GUI"
 msgstr "Tietokantakäyttöliittymä"
 
-#: ../glom/application.cc:165
+#: ../glom/application.cc:181
 msgid "_File"
 msgstr "_Tiedosto"
 
-#: ../glom/application.cc:166
+#: ../glom/application.cc:182
 msgid "_Recent Files"
 msgstr "_Viimeisimmät tiedostot"
 
-#: ../glom/application.cc:174
+#: ../glom/application.cc:190
 msgid "Save As Example"
 msgstr "Tallenna esimerkkinä"
 
-#: ../glom/application.cc:179
+#: ../glom/application.cc:195
 msgid "_Export"
 msgstr "_Tuo"
 
 #. "Tables" menu:
-#: ../glom/application.cc:230
+#: ../glom/application.cc:245
 msgid "_Tables"
 msgstr "_Taulut"
 
@@ -1066,91 +1066,91 @@ msgstr "_Taulut"
 #. m_listDeveloperActions.push_back(action);
 #. m_refActionGroup_Others->add(action,
 #. sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_Navigate_Database) );
-#: ../glom/application.cc:238
+#: ../glom/application.cc:253
 msgid "_Edit Tables"
 msgstr "_Muokkaa tauluja"
 
-#: ../glom/application.cc:243
+#: ../glom/application.cc:258
 msgid "Add _Related Table"
 msgstr "Lisää _viitattu taulu"
 
 #. "Reports" menu:
-#: ../glom/application.cc:250
+#: ../glom/application.cc:265
 msgid "_Reports"
 msgstr "_Raportit"
 
-#: ../glom/application.cc:252
+#: ../glom/application.cc:267
 msgid "_Edit Reports"
 msgstr "_Muokkaa raportteja"
 
 #. "UserLevel" menu:
-#: ../glom/application.cc:258
+#: ../glom/application.cc:273
 msgid "_User Level"
 msgstr "_Käyttäjätaso"
 
-#: ../glom/application.cc:261 ../glom/application.cc:283
+#: ../glom/application.cc:276 ../glom/application.cc:298
 msgid "_Developer"
 msgstr "_Kehittäjä"
 
-#: ../glom/application.cc:265
+#: ../glom/application.cc:280
 msgid "_Operator"
 msgstr "_Ylläpitäjä"
 
 #. "Mode" menu:
-#: ../glom/application.cc:270
+#: ../glom/application.cc:285
 msgid "_Mode"
 msgstr "_Tila"
 
 #. We remember this action, so that it can be explicitly activated later.
-#: ../glom/application.cc:275
+#: ../glom/application.cc:290
 msgid "D_ata"
 msgstr "Ti_eto"
 
-#: ../glom/application.cc:279
+#: ../glom/application.cc:294
 msgid "_Find"
 msgstr "_Etsi"
 
-#: ../glom/application.cc:287
+#: ../glom/application.cc:302
 msgid "_Database Preferences"
 msgstr "_Tietokannan asetukset"
 
-#: ../glom/application.cc:292
+#: ../glom/application.cc:307
 msgid "_Fields"
 msgstr "_Kentät"
 
-#: ../glom/application.cc:296
+#: ../glom/application.cc:311
 msgid "_Relationships Overview"
 msgstr "Yhteenveto _suhteista"
 
-#: ../glom/application.cc:300
+#: ../glom/application.cc:315
 msgid "_Relationships for this Table"
 msgstr "Tämän taulun _suhteet"
 
-#: ../glom/application.cc:304
+#: ../glom/application.cc:319
 msgid "_Users"
 msgstr "_Käyttäjät"
 
-#: ../glom/application.cc:308
+#: ../glom/application.cc:323
 msgid "R_eports"
 msgstr "_Raportit"
 
-#: ../glom/application.cc:312
+#: ../glom/application.cc:327
 msgid "_Layout"
 msgstr "_Asettelu"
 
-#: ../glom/application.cc:316
+#: ../glom/application.cc:331
 msgid "_Test Translation"
 msgstr "_Kokeile käännöstä"
 
-#: ../glom/application.cc:320
+#: ../glom/application.cc:335
 msgid "_Translations"
 msgstr "_Käännökset"
 
-#: ../glom/application.cc:444
+#: ../glom/application.cc:459
 msgid "Creating from example file."
 msgstr "Luodaan esimerkkitiedostosta."
 
-#: ../glom/application.cc:445
+#: ../glom/application.cc:460
 msgid ""
 "To use this example file you must save an editable copy of the file. A new "
 "database will also be created on the server."
@@ -1158,11 +1158,11 @@ msgstr ""
 "Jos haluat käyttää tätä esimerkkitiedostoa, täytyy sinun tallentaa siitä "
 "muokattavissa oleva kopio. Samalla luodaan uusi tietokanta palvelimelle."
 
-#: ../glom/application.cc:471
+#: ../glom/application.cc:486
 msgid "Opening Read-Only File."
 msgstr "Avataan vain-luku -tiedostoa."
 
-#: ../glom/application.cc:472
+#: ../glom/application.cc:487
 msgid ""
 "This file is read only, so you will not be able to enter Developer mode to "
 "make design changes."
@@ -1170,16 +1170,16 @@ msgstr ""
 "Tiedosto on vain luettavissa, joten kehittäjätilaa ei voi käyttää sen "
 "muokkaamiseen."
 
-#: ../glom/application.cc:475
+#: ../glom/application.cc:490
 msgid "Continue without Developer Mode"
 msgstr "Jatka ilman kehittäjätoimintoja"
 
 #. The connection to the server is OK, but the database is not there yet.
-#: ../glom/application.cc:545
+#: ../glom/application.cc:560
 msgid "Database Not Found On Server"
 msgstr "Tietokantaa ei löydy palvelimelta"
 
-#: ../glom/application.cc:545
+#: ../glom/application.cc:560
 msgid ""
 "The database could not be found on the server. Please consult your system "
 "administrator."
@@ -1187,19 +1187,19 @@ msgstr ""
 "Tietokantaa ei löydy tietokantapalvelielta. Ota yhteyttä järjestelmäsi "
 "ylläpitäjään."
 
-#: ../glom/application.cc:802
+#: ../glom/application.cc:817
 msgid "_Contents"
 msgstr "_Sisältö"
 
-#: ../glom/application.cc:802
+#: ../glom/application.cc:817
 msgid "Help with the application"
 msgstr "Sovelluksen ohje"
 
-#: ../glom/application.cc:1204
+#: ../glom/application.cc:1219
 msgid "Save failed."
 msgstr "Tallennus epäonnistui."
 
-#: ../glom/application.cc:1204
+#: ../glom/application.cc:1219
 msgid ""
 "There was an error while saving the file. Your changes have not been saved."
 msgstr "Virhe tallennettaessa tiedostoa. Muutoksia ei ole tallennettu."
@@ -1208,31 +1208,31 @@ msgstr "Virhe tallennettaessa tiedostoa. Muutoksia ei ole tallennettu."
 msgid "Internal error"
 msgstr "Sisäinen virhe"
 
-#: ../glom/base_db.cc:927 ../glom/mode_design/users/dialog_groups_list.cc:67
+#: ../glom/base_db.cc:928 ../glom/mode_design/users/dialog_groups_list.cc:67
 msgid "Description"
 msgstr "Kuvaus"
 
-#: ../glom/base_db.cc:934
+#: ../glom/base_db.cc:935
 msgid "Comments"
 msgstr "Kommentit"
 
-#: ../glom/base_db.cc:1347
+#: ../glom/base_db.cc:1348
 msgid "No Records Found"
 msgstr "Tietueita ei löydy"
 
-#: ../glom/base_db.cc:1349
+#: ../glom/base_db.cc:1350
 msgid "New Find"
 msgstr "Uusi haku"
 
-#: ../glom/base_db.cc:1350
+#: ../glom/base_db.cc:1351
 msgid "Your find criteria did not match any records in the table."
 msgstr "Hakuehto ei vastannut yhtäkään tietuetta taulussa."
 
-#: ../glom/base_db.cc:2304
+#: ../glom/base_db.cc:2305
 msgid "Value Is Not Unique"
 msgstr "Arvo ei ole yksikäsitteinen"
 
-#: ../glom/base_db.cc:2304
+#: ../glom/base_db.cc:2305
 msgid ""
 "The field's value must be unique, but a record with this value already "
 "exists."
@@ -1376,32 +1376,32 @@ msgstr "Yhteenveto"
 msgid "Vertical Group"
 msgstr "Pystysuuntainen ryhmä"
 
-#: ../glom/libglom/document/document_glom.cc:264
-#: ../glom/libglom/document/document_glom.cc:282
+#: ../glom/libglom/document/document_glom.cc:267
+#: ../glom/libglom/document/document_glom.cc:285
 msgid "System Preferences"
 msgstr "Järjestelmän asetukset"
 
-#: ../glom/libglom/document/document_glom.cc:301
+#: ../glom/libglom/document/document_glom.cc:304
 msgid "Organisation Name"
 msgstr "Organisaation nimi"
 
-#: ../glom/libglom/document/document_glom.cc:307
+#: ../glom/libglom/document/document_glom.cc:310
 msgid "Organisation Logo"
 msgstr "Organisaation logo"
 
-#: ../glom/libglom/document/document_glom.cc:319
+#: ../glom/libglom/document/document_glom.cc:322
 msgid "Street (line 2)"
 msgstr "Katuosoite (rivi 2)"
 
-#: ../glom/libglom/document/document_glom.cc:325
+#: ../glom/libglom/document/document_glom.cc:328
 msgid "City"
 msgstr "Kaupunki"
 
-#: ../glom/libglom/document/document_glom.cc:331
+#: ../glom/libglom/document/document_glom.cc:334
 msgid "State"
 msgstr "Osavaltio"
 
-#: ../glom/libglom/document/document_glom.cc:343
+#: ../glom/libglom/document/document_glom.cc:346
 msgid "Zip Code"
 msgstr "Postinumero"
 
@@ -1483,8 +1483,7 @@ msgstr "Taulu on jo olemassa"
 msgid ""
 "A table with this name already exists in the database. Please choose a "
 "different table name."
-msgstr ""
-"Tämänniminen taulu on jo tietokannassa, valitse toinen taulun nimi."
+msgstr "Tämänniminen taulu on jo tietokannassa, valitse toinen taulun nimi."
 
 #: ../glom/frame_glom.cc:808
 msgid "Relationship Exists Already"
@@ -1495,7 +1494,8 @@ msgid ""
 "A relationship with this name already exists for this table. Please choose a "
 "different relationship name."
 msgstr ""
-"Tämänniminen suhde on jo olemassa tälle taululle, valitse toinen suhteen nimi."
+"Tämänniminen suhde on jo olemassa tälle taululle, valitse toinen suhteen "
+"nimi."
 
 #: ../glom/frame_glom.cc:812
 msgid "More information needed"
@@ -1540,21 +1540,25 @@ msgstr "Kaikki"
 msgid "Ascending"
 msgstr "Laskeva"
 
-#: ../glom/main.cc:50
+#: ../glom/main.cc:54
 msgid "Glom options"
 msgstr "Glomin valinnat"
 
-#: ../glom/main.cc:50
+#: ../glom/main.cc:54
 msgid "Command-line options for glom"
 msgstr "Glomin komentorivivalinna"
 
-#: ../glom/main.cc:56
+#: ../glom/main.cc:61
 msgid "The Filename"
 msgstr "Tiedostonimi"
 
-#: ../glom/main.cc:62
+#: ../glom/main.cc:67
 msgid "The version of this application."
 msgstr "Tämän sovelluksen versio."
+
+#: ../glom/main.cc:72
+msgid "Show the generated SQL queries on stdout, for debugging."
+msgstr "Näytä luodut SQL-kyselyt oletustulosteessa vianetsintää varten."
 
 #: ../glom/mode_data/box_data.cc:127
 msgid ""
@@ -1606,8 +1610,8 @@ msgid ""
 "therefore can not be created with the key value in this record."
 msgstr ""
 "Tietoa ei voida syöttää tässö viitattuun kenttään, koska viitattu tietue ei "
-"vielä ole olemassa ja viitatun tietueen avain luodaan automaattisesti. "
-"Tämän takia tietuetta ei voida luoda tässä tietuessa olevalla avainarvolla."
+"vielä ole olemassa ja viitatun tietueen avain luodaan automaattisesti. Tämän "
+"takia tietuetta ei voida luoda tässä tietuessa olevalla avainarvolla."
 
 #. Ask the user for confirmation:
 #: ../glom/mode_data/box_data.cc:839
@@ -1660,8 +1664,8 @@ msgid ""
 "You attempted to add a new related record, but there can only be one related "
 "record, because the relationship uses a unique key."
 msgstr ""
-"Yritit lisätä uuden viitetietueen, mutta kussakin kohdassa voi olla "
-"vain yksi viitetietue, koska suhde käyttää yksikäsitteisiä avaimia."
+"Yritit lisätä uuden viitetietueen, mutta kussakin kohdassa voi olla vain "
+"yksi viitetietue, koska suhde käyttää yksikäsitteisiä avaimia."
 
 #: ../glom/mode_data/box_data_list_related.cc:537
 msgid "No Corresponding Record Exists"
@@ -1718,14 +1722,6 @@ msgstr "Kenttä: "
 msgid "(Notebook)"
 msgstr "(Lehtiö)"
 
-#: ../glom/mode_data/dialog_layout_list.cc:279
-msgid "Images Not Allowed On List View"
-msgstr "Kuvia ei voi käyttää listanäkymässä"
-
-#: ../glom/mode_data/dialog_layout_list.cc:279
-msgid "The list view cannot display image fields."
-msgstr "Listanäkymä ei voi näyttää kuvakenttiä."
-
 #: ../glom/mode_data/dialog_layout_list_related.cc:265
 msgid "None: No visible tables are specified by the fields."
 msgstr "Ei mitään: Kentissä ei ole määritelty näkyviä tauluja."
@@ -1759,16 +1755,16 @@ msgid "Relationships"
 msgstr "Suhteet"
 
 #. Don't allow adding of fields that already exist.
-#: ../glom/mode_design/fields/box_db_table_definition.cc:54
+#: ../glom/mode_design/fields/box_db_table_definition.cc:55
 msgid "This field already exists. Please choose a different field name"
 msgstr "Kenttä on jo olemassa, valitse toinen kentän nimi"
 
 #. TODO: Only show this when there are > 100 records?
-#: ../glom/mode_design/fields/box_db_table_definition.cc:226
+#: ../glom/mode_design/fields/box_db_table_definition.cc:227
 msgid "Recalculation Required"
 msgstr "Uudestaanlaskenta vaaditaan"
 
-#: ../glom/mode_design/fields/box_db_table_definition.cc:227
+#: ../glom/mode_design/fields/box_db_table_definition.cc:228
 msgid ""
 "You have changed the calculation used by this field so Glom must recalculate "
 "the value in all records. If the table contains many records then this could "
@@ -1778,15 +1774,15 @@ msgstr ""
 "laskea arvo uudestaan kaikissa tieteissa. Jos taulussa on paljon tietueita "
 "voi tämä toimenpide kestää pitkään."
 
-#: ../glom/mode_design/fields/box_db_table_definition.cc:232
+#: ../glom/mode_design/fields/box_db_table_definition.cc:233
 msgid "Recalculate"
 msgstr "Laske uudestaan"
 
-#: ../glom/mode_design/fields/box_db_table_definition.cc:241
+#: ../glom/mode_design/fields/box_db_table_definition.cc:242
 msgid "Invalid database structure"
 msgstr "Virheellinen tietokantarakenne"
 
-#: ../glom/mode_design/fields/box_db_table_definition.cc:242
+#: ../glom/mode_design/fields/box_db_table_definition.cc:243
 msgid ""
 "This database field was created or edited outside of Glom. It has a data "
 "type that is not supported by Glom. Your system administrator may be able to "
@@ -1796,19 +1792,42 @@ msgstr ""
 "joka ei ole tuettu Glomissa. Järjestelmäsi ylläpitäjä voi ehkä korjata tämän."
 
 #. Warn the user and refuse to make the change:
-#: ../glom/mode_design/fields/box_db_table_definition.cc:261
+#: ../glom/mode_design/fields/box_db_table_definition.cc:262
 msgid "Too many primary keys"
 msgstr "Liian monta pääavainta"
 
-#: ../glom/mode_design/fields/box_db_table_definition.cc:262
+#: ../glom/mode_design/fields/box_db_table_definition.cc:263
 msgid "You may not specify more than one field as the primary key."
 msgstr "Voit määrittää vain yhden kentän pääavaimeksi."
 
-#: ../glom/mode_design/fields/dialog_fieldcalculation.cc:101
+#: ../glom/mode_design/fields/box_db_table_definition.cc:442
+msgid "Field contains empty values."
+msgstr "Kenttä sisältää tyhjiä arvoja."
+
+#: ../glom/mode_design/fields/box_db_table_definition.cc:442
+msgid ""
+"The field may not yet be used as a primary key because it contains empty "
+"values."
+msgstr ""
+"Kenttää ei voi vielä käyttää pääavaimena, sillä se sisältää tyhjiä arvoja."
+
+#: ../glom/mode_design/fields/box_db_table_definition.cc:454
+msgid "Field contains non-unique values."
+msgstr "Kenttä sisältää samoja arvoja."
+
+#: ../glom/mode_design/fields/box_db_table_definition.cc:454
+msgid ""
+"The field may not yet be used as a primary key because it contains values "
+"that are not unique."
+msgstr ""
+"Kenttää ei voi vielä käyttää pääavaimena, sillä se sisältää arvoja jotka "
+"eivät ole yksikäsitteisiä."
+
+#: ../glom/mode_design/fields/dialog_fieldcalculation.cc:119
 msgid "Calculation result"
 msgstr "Laskennan tulos"
 
-#: ../glom/mode_design/fields/dialog_fieldcalculation.cc:101
+#: ../glom/mode_design/fields/dialog_fieldcalculation.cc:119
 msgid "The result of the calculation is:\n"
 msgstr "Laskennan tulos on:\n"
 
@@ -1961,7 +1980,7 @@ msgstr "Tätä kenttää ei voi muokata tässä."
 msgid "..."
 msgstr "..."
 
-#: ../glom/utility_widgets/db_adddel/db_adddel.cc:233
+#: ../glom/utility_widgets/db_adddel/db_adddel.cc:234
 msgid "Layout"
 msgstr "Asettelu"
 
@@ -1993,23 +2012,23 @@ msgstr "teksti"
 msgid "New Text"
 msgstr "Uusi teksti"
 
-#: ../glom/utility_widgets/imageglom.cc:353
+#: ../glom/utility_widgets/imageglom.cc:356
 msgid "Choose image"
 msgstr "Valitse kuva"
 
-#: ../glom/utility_widgets/imageglom.cc:357
+#: ../glom/utility_widgets/imageglom.cc:360
 msgid "Images"
 msgstr "Kuvat"
 
-#: ../glom/utility_widgets/imageglom.cc:389
+#: ../glom/utility_widgets/imageglom.cc:392
 msgid "Image loading failed"
 msgstr "Kuvan lataus epäonnistui"
 
-#: ../glom/utility_widgets/imageglom.cc:389
+#: ../glom/utility_widgets/imageglom.cc:392
 msgid "The image file could not be opened:\n"
 msgstr "Kuvatiedostoa ei voi avata:\n"
 
-#: ../glom/utility_widgets/imageglom.cc:484
+#: ../glom/utility_widgets/imageglom.cc:487
 msgid "Choose File"
 msgstr "Valitse tiedosto"
 
@@ -2053,6 +2072,12 @@ msgstr "Kohde"
 #: ../glom/translation/window_translations.cc:69
 msgid "Translation"
 msgstr "Käännös"
+
+#~ msgid "Images Not Allowed On List View"
+#~ msgstr "Kuvia ei voi käyttää listanäkymässä"
+
+#~ msgid "The list view cannot display image fields."
+#~ msgstr "Listanäkymä ei voi näyttää kuvakenttiä."
 
 #~ msgid ""
 #~ "import glom\n"
