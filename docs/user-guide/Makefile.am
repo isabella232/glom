@@ -9,4 +9,4 @@ DOC_FIGURES = \
 	figures/glom_design_fields_dialog_calculated.png \
 	figures/start.png
 
-DOC_LINGUAS = de
+DOC_LINGUAS = de sv

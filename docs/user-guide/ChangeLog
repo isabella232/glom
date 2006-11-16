@@ -1,0 +1,4 @@
+2006-11-16  Daniel Nylander <po@danielnylander.se>
+
+	* sv/sv.po: Added initial Swedish translation.
+	* Makefile.am: Added sv to DOC_LINGUAS.
