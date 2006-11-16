@@ -1380,7 +1380,7 @@ Glib::ustring Base_DB::get_find_where_clause_quick(const Glib::ustring& table_na
 
       if(use_this_field)
       {
-        strClausePart = table_name + "." + field->get_name() + " " + field->sql_find_operator() + " " +  field->sql_find(quick_search);
+        strClausePart = "\"" + table_name + "\".\"" + field->get_name() + "\" " + field->sql_find_operator() + " " +  field->sql_find(quick_search);
       }
 
       if(!strClausePart.empty())

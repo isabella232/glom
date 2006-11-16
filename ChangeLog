@@ -1,5 +1,13 @@
 2006-11-16  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/base_db.cc: get_find_where_clause_quick():
+	* glom/mode_data/box_data.cc: get_find_where_clause(): 
+	Put quotes around the table names and field names, to avoid SQL errors when 
+	using names with, for instance, capital letters.
+	Bug #375605 from William Manley.
+
+2006-11-16  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/glom.glade: Revert unrelated changes introduced by the patch from 
 	Johannes. The left-alignment of labels had been removed. I guess that this 
 	might have been caused by glade-3.
