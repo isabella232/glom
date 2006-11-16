@@ -504,7 +504,22 @@ void Window_Translations::on_button_export()
   const int result = file_dlg.run();
   if (result == Gtk::RESPONSE_OK)
   {
-      const std::string filename = file_dlg.get_filename();
+      std::string filename = file_dlg.get_filename();
+      if(filename.empty())
+        return;
+
+      //Enforce the file extension:
+      const Glib::ustring extension = ".po";
+      bool add_extension = false;
+      if(filename.size() <= extension.size())
+         add_extension = true;
+      else if(filename.substr(filename.size() - extension.size()) != extension)
+         add_extension = true;
+
+      if(add_extension)
+        filename += extension;
+
+
       po_file_t po_file = po_file_create();
       po_message_iterator_t msg_iter = po_message_iterator(po_file, NULL);
       
@@ -561,6 +576,8 @@ void Window_Translations::on_button_import()
   {
       /* We cannot use an uri here */
       const std::string filename = file_dlg.get_filename();
+      if(filename.empty())
+        return;
 
       #ifdef HAVE_GETTEXTPO_XERROR
       po_xerror_handler error_handler = {&xerror, &xerror2, };

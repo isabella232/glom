@@ -1,5 +1,13 @@
 2006-11-16  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/glom.glade: Translations window: Use a regular HBox instead of 
+	a ButtonBox, because the ButtonBox leaves lots of empty space so it 
+	looks odd.
+	* glom/translation/window_translations.cc: on_button_export(): 
+	Append the .po extension if it is not already in the filename.
+
+2006-11-16  Murray Cumming  <murrayc@murrayc.com>
+
 	* configure.in: Added an AC_CHECK_MEMBER() check for the latest 
 	libggettextpo error-handling API, defining HAVE_GETTEXTPO_XERROR,
 	so we can build with both the old and new APIs.
