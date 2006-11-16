@@ -1,5 +1,11 @@
 2006-11-16  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/glom.glade: Revert unrelated changes introduced by the patch from 
+	Johannes. The left-alignment of labels had been removed. I guess that this 
+	might have been caused by glade-3.
+
+2006-11-16  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/glom.glade: Translations window: Use a regular HBox instead of 
 	a ButtonBox, because the ButtonBox leaves lots of empty space so it 
 	looks odd.
