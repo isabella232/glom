@@ -14,6 +14,14 @@ AC_PROG_CXX
 AM_PROG_LIBTOOL
 AM_SANITY_CHECK
 
+# libgettext-po changed its API, changing the error handler struct from po_error_handler to po_xerror_handler:
+AC_CHECK_MEMBER([struct po_xerror_handler.xerror], [have_gettext_po_xerror="yes"], [have_gettext_po_xerror="no"], [#include <gettext-po.h>])
+if test "$have_gettext_po_xerror" = "yes"; then
+{
+  AC_DEFINE([HAVE_GETTEXTPO_XERROR],[1], [Defined when libgettextpo has the new po_xerror_handler error handling struct.])
+}
+fi
+
 #Internationalisation:
 GETTEXT_PACKAGE=glom
 AC_SUBST(GETTEXT_PACKAGE)

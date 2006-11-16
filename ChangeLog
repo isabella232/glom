@@ -1,3 +1,28 @@
+2006-11-16  Murray Cumming  <murrayc@murrayc.com>
+
+	* configure.in: Added an AC_CHECK_MEMBER() check for the latest 
+	libggettextpo error-handling API, defining HAVE_GETTEXTPO_XERROR,
+	so we can build with both the old and new APIs.
+	* config.h.in: Added HAVE_GETTEXTPO_XERROR, 
+	defined in configure.
+	* glom/translation/window_translations.cc: Use ifdefs to add 
+	alternative code for the older libgettextpo API.
+
+2006-10-26  Johannes Schmid <jhs@gnome.org>
+
+  Openismus Gmbh:
+
+	* glom/Makefile.am:
+	Added -lgettext-po
+	
+	* glom/glom.glade:
+	Added Import/Export buttons to translation_window in a new buttonbox
+	
+	* glom/translation/window_translations.cc:
+	* glom/translation/window_translations.h:
+	on_button_import(), on_button_export()
+	Added the feature to export and import translation in po format using libgettext-po
+
 2006-10-20  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/mode_data/box_data_list.cc: create_layout(): Do not call 

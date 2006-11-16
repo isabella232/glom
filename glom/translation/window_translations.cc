@@ -25,8 +25,14 @@
 #include <bakery/App/App_Gtk.h> //For util_bold_message().
 #include "glom/libglom/utils.h"
 
-//#include <libgnome/gnome-i18n.h>
 #include <glibmm/i18n.h>
+
+// To read the .po files
+#include <gettext-po.h>
+#include "config.h" //For HAVE_GETTEXTPO_XERROR
+
+#include <libgnomevfsmm/handle.h>
+#include <sstream>
 
 namespace Glom
 {
@@ -39,6 +45,8 @@ Window_Translations::Window_Translations(BaseObjectType* cobject, const Glib::Re
   m_label_source_locale(0),
   m_button_ok(0),
   m_button_cancel(0),
+  m_button_import(0),
+  m_button_export(0),
   m_treeview_modified(false)
 {
   refGlade->get_widget("label_source_locale", m_label_source_locale);
@@ -87,6 +95,11 @@ Window_Translations::Window_Translations(BaseObjectType* cobject, const Glib::Re
   refGlade->get_widget("button_copy_translation", m_button_copy_translation);
   m_button_copy_translation->signal_clicked().connect( sigc::mem_fun(*this, &Window_Translations::on_button_copy_translation) );
 
+  refGlade->get_widget("button_import", m_button_import);
+  m_button_import->signal_clicked().connect( sigc::mem_fun(*this, &Window_Translations::on_button_import) );
+
+  refGlade->get_widget("button_export", m_button_export);
+  m_button_export->signal_clicked().connect( sigc::mem_fun(*this, &Window_Translations::on_button_export) );
 
   show_all_children();
 
@@ -397,5 +410,202 @@ void Window_Translations::on_treeview_edited(const Glib::ustring& /* path */, co
   m_treeview_modified = true;
 }
 
+static jmp_buf jump;
+
+static void show_gettext_error(int severity, const gchar* filename, const gchar* message)
+{
+  std::ostringstream msg_stream;
+  if (filename != NULL);
+    msg_stream << filename << ": ";
+  if (message != NULL)
+   msg_stream << message;
+  switch (severity)
+  {
+    #ifdef PO_SEVERITY_WARNING //This was introduced in libgettext-po some time after gettext version 0.14.5 
+    case PO_SEVERITY_WARNING:
+    {
+      // Show only debug output
+      std::cout << _("Gettext-Warning: ") << msg_stream.str() << std::endl;
+      break;
+    }
+    #endif //PO_SEVERITY_WARNING
+
+
+    #ifdef PO_SEVERITY_ERROR //This was introduced in libgettext-po some time after gettext version 0.14.5 
+    case PO_SEVERITY_ERROR:
+    #endif //PO_SEVERITY_ERROR
+
+    #ifdef PO_SEVERITY_FATAL_ERROR //This was introduced in libgettext-po some time after gettext version 0.14.5 
+    case PO_SEVERITY_FATAL_ERROR:
+    #endif //PO_SEVERITY_FATAL_ERROR
+
+    default:
+    {
+      Glib::ustring msg = Glib::ustring(_("Gettext-Error: ")) + " " + msg_stream.str();
+      Gtk::MessageDialog dlg(msg, false, Gtk::MESSAGE_ERROR);
+      dlg.run();
+      break;
+    }
+  }   
+}
+
+/*
+ * The exception handling of libgettext-po is very ugly! The following methods are called
+ * if an exception occurs and may not return in case of a fatal exception. We use setjmp
+ * and longjmp to bypass this and return to the caller
+ */
+#ifdef HAVE_GETTEXTPO_XERROR
+static void on_gettextpo_xerror (int severity, po_message_t message, const char *filename, size_t lineno, size_t column,
+		  int multiline_p, const char *message_text)
+{
+  show_gettext_error(severity, filename, message_text);
+
+  #ifdef PO_SEVERITY_FATAL_ERROR  //This was introduced in libgettext-po some time after gettext version 0.14.5 
+  if (severity == PO_SEVERITY_FATAL_ERROR)
+    longjmp(jump, 1);
+  #endif //PO_SEVERITY_FATAL_ERROR
+}
+
+static void on_gettextpo_xerror2 (int severity, po_message_t message1, const char *filename1, size_t lineno1, size_t column1,
+		   int multiline_p1, const char *message_text1,
+		   po_message_t message2, const char *filename2, size_t lineno2, size_t column2,
+		   int multiline_p2, const char *message_text2)
+{
+  show_gettext_error(severity, filename1, message_text1);
+  
+  #ifdef PO_SEVERITY_FATAL_ERROR  //This was introduced in libgettext-po some time after gettext version 0.14.5 
+  if (severity == PO_SEVERITY_FATAL_ERROR)
+    longjmp(jump, 1);
+  #endif //PO_SEVERITY_FATAL_ERROR
+}
+#else //HAVE_GETTEXTPO_XERROR
+static void on_gettextpo_error(int status, int errnum, const char * /* format */, ...)
+{
+  std::cerr << "gettext error (old libgettext-po API): status=" << status << ", errnum=" << errnum << std::endl;
+}
+#endif //HAVE_GETTEXTPO_XERROR
+
+void Window_Translations::on_button_export()
+{
+  if (setjmp(jump) != 0)
+    return;  
+  
+  Gtk::FileChooserDialog file_dlg(_("Choose .po file name"), Gtk::FILE_CHOOSER_ACTION_SAVE);
+  
+  // Only po files
+  Gtk::FileFilter filter;
+  filter.set_name(_("Po files"));
+  filter.add_pattern("*.po");
+  file_dlg.add_filter(filter);
+
+  file_dlg.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+  file_dlg.add_button(_("Export"), Gtk::RESPONSE_OK);  
+  
+  const int result = file_dlg.run();
+  if (result == Gtk::RESPONSE_OK)
+  {
+      const std::string filename = file_dlg.get_filename();
+      po_file_t po_file = po_file_create();
+      po_message_iterator_t msg_iter = po_message_iterator(po_file, NULL);
+      
+      for(Gtk::TreeModel::iterator iter = m_model->children().begin(); iter != m_model->children().end(); ++iter)
+      {
+        Gtk::TreeModel::Row row = *iter;
+
+        sharedptr<TranslatableItem> item = row[m_columns.m_col_item];
+        if(item)
+        {
+          po_message_t msg = po_message_create();
+          po_message_set_msgid(msg, item->get_title_original().c_str());
+          po_message_set_msgstr(msg, item->get_translation(m_translation_locale).c_str());
+          po_message_insert(msg_iter, msg);
+        }
+      }
+
+      po_message_iterator_free(msg_iter);
+
+      #ifdef HAVE_GETTEXTPO_XERROR
+      po_xerror_handler error_handler = {&xerror, &xerror2, };
+      error_handler.xerror = &on_gettextpo_xerror;
+      error_handler.xerror2 = &on_gettextpo_xerror2;
+      #else
+      po_error_handler error_handler;
+      error_handler.error = &on_gettextpo_error;
+      #endif //HAVE_GETTEXTPO_XERROR
+
+      if(po_file_write(po_file, filename.c_str(), &error_handler))
+      {
+        po_file_free(po_file);
+      }
+   }
+}
+
+void Window_Translations::on_button_import()
+{
+  if (setjmp(jump) != 0)
+    return;
+
+  Gtk::FileChooserDialog file_dlg(_("Choose .po file name"), Gtk::FILE_CHOOSER_ACTION_OPEN);
+  
+  // Only po files
+  Gtk::FileFilter filter;
+  filter.set_name(_("Po files"));
+  filter.add_pattern("*.po");
+  file_dlg.add_filter(filter);
+
+  file_dlg.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+  file_dlg.add_button(_("Import"), Gtk::RESPONSE_OK);  
+  
+  int result = file_dlg.run();
+  if (result == Gtk::RESPONSE_OK)
+  {
+      /* We cannot use an uri here */
+      const std::string filename = file_dlg.get_filename();
+
+      #ifdef HAVE_GETTEXTPO_XERROR
+      po_xerror_handler error_handler = {&xerror, &xerror2, };
+      error_handler.xerror = &on_gettextpo_xerror;
+      error_handler.xerror2 = &on_gettextpo_xerror2;
+      #else
+      po_error_handler error_handler;
+      error_handler.error = &on_gettextpo_error;
+      #endif //HAVE_GETTEXTPO_XERROR
+
+      po_file_t po_file = po_file_read(filename.c_str(), &error_handler);
+      if (!po_file)
+      {
+        // error message is already given by error_handle!
+        return;
+      }
+      const gchar* const* domains = po_file_domains(po_file);
+      for (int i=0; domains[i] != NULL; i++)
+      {
+        po_message_iterator_t iter = po_message_iterator(po_file, domains[i]);
+        po_message_t msg;
+        while ((msg = po_next_message(iter)))
+        {
+          Glib::ustring msgid = po_message_msgid(msg);
+          Glib::ustring msgstr = po_message_msgstr(msg);
+           for(Gtk::TreeModel::iterator iter = m_model->children().begin(); iter != m_model->children().end(); ++iter)
+          {
+            Gtk::TreeModel::Row row = *iter;
+
+            sharedptr<TranslatableItem> item = row[m_columns.m_col_item];
+            if(item)
+            {
+              if (item->get_title_original() == msgid)
+              {
+                item->set_translation(m_translation_locale, msgstr);
+                break;
+              }
+            }
+          }
+        }
+        po_message_iterator_free(iter);
+      }
+      po_file_free(po_file);
+      load_from_document();
+   }
+}
 
 } //namespace Glom

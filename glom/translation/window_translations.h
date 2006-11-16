@@ -25,6 +25,11 @@
 #include <gtkmm.h>
 #include <libglademm.h>
 
+#include <gettext-po.h>
+
+/* For really ugly hacks! */
+#include <setjmp.h>
+
 namespace Glom
 {
 
@@ -57,6 +62,10 @@ protected:
   void on_button_cancel();
   void on_button_ok();
   void on_button_copy_translation();
+  void on_button_import();
+  void on_button_export();
+  
+  void convert_po(std::string& po);
 
   //Tree model columns:
   class ModelColumns : public Gtk::TreeModel::ColumnRecord
@@ -86,6 +95,8 @@ protected:
   Gtk::Button* m_button_ok;
   Gtk::Button* m_button_cancel;
   Gtk::Button* m_button_copy_translation;
+  Gtk::Button* m_button_import;
+  Gtk::Button* m_button_export;
 
   bool m_treeview_modified;
 };
