@@ -540,11 +540,13 @@ void Window_Translations::on_button_export()
       po_message_iterator_free(msg_iter);
 
       #ifdef HAVE_GETTEXTPO_XERROR
-      po_xerror_handler error_handler = {&xerror, &xerror2, };
+      po_xerror_handler error_handler;
+      memset(&error_handler, 0, sizeof(error_handler));
       error_handler.xerror = &on_gettextpo_xerror;
       error_handler.xerror2 = &on_gettextpo_xerror2;
       #else
       po_error_handler error_handler;
+      memset(&error_handler, 0, sizeof(error_handler));
       error_handler.error = &on_gettextpo_error;
       #endif //HAVE_GETTEXTPO_XERROR
 
@@ -580,11 +582,13 @@ void Window_Translations::on_button_import()
         return;
 
       #ifdef HAVE_GETTEXTPO_XERROR
-      po_xerror_handler error_handler = {&xerror, &xerror2, };
+      po_xerror_handler error_handler;
+      memset(&error_handler, 0, sizeof(error_handler));
       error_handler.xerror = &on_gettextpo_xerror;
       error_handler.xerror2 = &on_gettextpo_xerror2;
       #else
       po_error_handler error_handler;
+      memset(&error_handler, 0, sizeof(error_handler));
       error_handler.error = &on_gettextpo_error;
       #endif //HAVE_GETTEXTPO_XERROR
 
