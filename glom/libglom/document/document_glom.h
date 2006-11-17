@@ -84,6 +84,17 @@ public:
   bool get_is_example_file() const;
   void set_is_example_file(bool value = true);
 
+  /* Get version of the document format used for this document.
+   *  This can increase when the file has been re-saved.
+   *  See get_latest_known_document_format_version().
+   *  Old versions of the application cannot open documents with a newer document format,
+   *  so saving with a version of the application that has a newer document format will 
+   *  make it impossible to open the document in a version of the application with an older document format.
+   */  
+  guint get_document_format_version();
+
+  static guint get_latest_known_document_format_version();
+
   virtual void set_connection_server(const Glib::ustring& strVal);
   virtual void set_connection_user(const Glib::ustring& strVal);
   virtual void set_connection_database(const Glib::ustring& strVal);
@@ -363,6 +374,7 @@ protected:
   bool m_block_modified_set;
   bool m_allow_auto_save;
   bool m_is_example;
+  guint m_document_format_version;
 
   Gtk::Window* m_parent_window; //Needed by BusyCursor.(gtype_0)
 };

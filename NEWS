@@ -1,3 +1,13 @@
+1.2.1
+
+* Find: Prevent SQL Errors when using capital letters in table and field names.
+  Bug #375605 from William Manley.
+* Document:
+  - Store the document format version in the document, warn when saving in 
+  a new format, and fail to load when the format version is too new.
+  (Murray Cumming)
+
+
 1.2.0:
 
 New features in Glom 1.2:
