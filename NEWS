@@ -8,9 +8,12 @@
   Bug #375605 from William Manley.
 * Button scripts and calculated fields: Code now uses Python syntax-highlighting 
   colors, using GtkSourceView. (Johannes Schmid, Dodji Seketeli, Murray Cumming)
-* Document: Store scripts and other multi-line text in XML text nodes, instead 
+* Document:
+  - Store scripts and other multi-line text in XML text nodes, instead 
   of attributes, to be more compatible with other (non-libxml) XML parsers, 
   such as Python's minidom.
+  - Store the document format version in the document, warn when saving in 
+  a new format, and fail to load when the format version is too new.
 * Added --debug-sql commmand-line option, which prints out the generated 
   SQL commands. (Johannes Schmid, Murray Cumming)
 
