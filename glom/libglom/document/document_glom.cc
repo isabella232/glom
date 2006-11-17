@@ -102,6 +102,7 @@ namespace Glom
 #define GLOM_ATTRIBUTE_PRIV_CREATE "priv_create"
 #define GLOM_ATTRIBUTE_PRIV_DELETE "priv_delete"
 
+#define GLOM_ATTRIBUTE_FORMAT_VERSION "format_version"
 #define GLOM_ATTRIBUTE_IS_EXAMPLE "is_example"
 #define GLOM_ATTRIBUTE_DATABASE_TITLE "database_title"
 #define GLOM_ATTRIBUTE_TRANSLATION_ORIGINAL_LOCALE "translation_original_locale"
@@ -164,6 +165,8 @@ Document_Glom::Document_Glom()
   m_is_example(false),
   m_parent_window(0)
 {
+  m_document_format_version = get_latest_known_document_format_version(); //Default to this for new documents.
+
   //Conscious use of virtual methods in a constructor:
   set_file_extension("glom");
 
@@ -1881,6 +1884,13 @@ bool Document_Glom::load_after()
     const xmlpp::Element* nodeRoot = get_node_document();
     if(nodeRoot)
     {
+      m_document_format_version = get_node_attribute_value_as_decimal(nodeRoot, GLOM_ATTRIBUTE_FORMAT_VERSION);
+
+      if(m_document_format_version > get_latest_known_document_format_version())
+      {
+        std::cerr << "Document_Glom::load_after(): Loading failed because format_version=" << m_document_format_version << ", but latest known format version is " << get_latest_known_document_format_version() << std::endl;
+        return false; //TODO: Provide more information so the application (or Bakery) can say exactly why loading failed.
+      }
       m_is_example = get_node_attribute_value_as_bool(nodeRoot, GLOM_ATTRIBUTE_IS_EXAMPLE);
       m_database_title = get_node_attribute_value(nodeRoot, GLOM_ATTRIBUTE_DATABASE_TITLE);
 
@@ -2500,6 +2510,11 @@ bool Document_Glom::save_before()
   xmlpp::Element* nodeRoot = get_node_document();
   if(nodeRoot)
   {
+    //Always save as the latest format,
+    //possibly making it impossible to open this document in older versions of Glom:
+    m_document_format_version = get_latest_known_document_format_version();
+    set_node_attribute_value_as_decimal(nodeRoot, GLOM_ATTRIBUTE_FORMAT_VERSION, m_document_format_version);
+
     set_node_attribute_value_as_bool(nodeRoot, GLOM_ATTRIBUTE_IS_EXAMPLE, m_is_example);
     set_node_attribute_value(nodeRoot, GLOM_ATTRIBUTE_DATABASE_TITLE, m_database_title);
 
@@ -3067,6 +3082,20 @@ void Document_Glom::set_file_uri(const Glib::ustring& file_uri, bool bEnforceFil
   //Put this here instead. In the base class it's at the start:
   if(file_uri != m_file_uri)
     set_modified(); //Ready to save() for a Save As.
+}
+
+guint Document_Glom::get_document_format_version()
+{
+  return m_document_format_version;
+}
+
+guint Document_Glom::get_latest_known_document_format_version()
+{
+  // History:
+  // Version 0: The first document format. (And the default version number when no version number was saved in the .XML)
+  // Version 1: Saved scripts and other multiline text in text nodes instead of attributes. Can open Version 1 documents.
+
+  return 1;
 }
 
 } //namespace Glom

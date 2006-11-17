@@ -1,5 +1,18 @@
 2006-11-17  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/libglom/document/document_glom.cc:
+	* glom/libglom/document/document_glom.h: Added get_document_format_version() 
+	and get_latest_known_document_format_version().
+	load_after(): Check the document format version, and fail if it is higher than 
+	we know about.
+	save_before(): Save the document format version (as the latest known) when 
+	saving changes.
+	* glom/frame_glom.cc: on_menu_userlevel_Developer(): When going into developer 
+	mode, warn that you might not be able to open the changed document with older 
+	versions of Glom.
+
+2006-11-17  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/libglom/connectionpool.cc: connect(): Remember the port after the first 
 	successful connection (even to the default database), and always try that first 
 	when connecting again, only trying the extra ports if it fails or if no port 

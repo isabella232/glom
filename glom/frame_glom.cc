@@ -492,6 +492,21 @@ void Frame_Glom::on_menu_userlevel_Developer(const Glib::RefPtr<Gtk::RadioAction
         dialog.set_secondary_text(_("Developer mode is not available. Check that you have sufficient database access rights and that the glom file is not read-only."));
         dialog.set_transient_for(*get_app_window());
         dialog.run();
+      }
+      else if(document->get_document_format_version() < Document_Glom::get_latest_known_document_format_version())
+      {
+        Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Saving in New Document Format")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE);
+        dialog.set_secondary_text(_("The document was created by an earlier version of the application. Making changes to the document will mean that the document cannot be opened by some earlier versions of the application."));
+        dialog.set_transient_for(*get_app_window());
+        dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+        dialog.add_button(_("Continue"), Gtk::RESPONSE_OK);
+        const int response = dialog.run();
+        test = (response == Gtk::RESPONSE_OK);
+      }
+
+      if(!test)
+      {
+        //Abort the change of user level:
 
         //This causes an endless loop, but it is not recursive so we can't block it.
         //TODO: Submit GTK+ bug.
