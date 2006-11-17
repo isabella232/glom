@@ -191,7 +191,7 @@ Glib::ustring Utils::build_sql_select_with_where_clause(const Glib::ustring& tab
 }
 
 
-static typedef std::list< sharedptr<const UsesRelationship> > type_list_relationships;
+typedef std::list< sharedptr<const UsesRelationship> > type_list_relationships;
 
 static void add_to_relationships_list(type_list_relationships& list_relationships, const sharedptr<const LayoutItem_Field>& layout_item)
 {

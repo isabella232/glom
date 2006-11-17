@@ -1,3 +1,8 @@
+2006-11-17  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/libglom/utils.cc: Remove unnessary static keyword to partly fix the 
+	cygwin build.
+
 1.2.1:
 
 2006-11-17  Murray Cumming  <murrayc@murrayc.com>
