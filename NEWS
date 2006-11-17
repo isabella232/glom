@@ -1,3 +1,20 @@
+1.3.1 (unstable):
+
+* Translations: Add Import and Export buttons, so you can use 
+  the standard .po format. (Johannes Schmid)
+* Connections: Don't bother trying alternative network ports 
+  after one port was successful. Bug #368787 from Craig Keogh.
+* Find: Prevent SQL Errors when using capital letters in table and field names.
+  Bug #375605 from William Manley.
+* Button scripts and calculated fields: Code now uses Python syntax-highlighting 
+  colors, using GtkSourceView. (Johannes Schmid, Dodji Seketeli, Murray Cumming)
+* Document: Store scripts and other multi-line text in XML text nodes, instead 
+  of attributes, to be more compatible with other (non-libxml) XML parsers, 
+  such as Python's minidom.
+* Added --debug-sql commmand-line option, which prints out the generated 
+  SQL commands. (Johannes Schmid, Murray Cumming)
+
+
 1.2.0:
 
 New features in Glom 1.2:

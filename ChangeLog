@@ -126,7 +126,7 @@
 	instead of a TextView for calculated fields and the buttons script, and 
 	set the language as python.
 	Patch from bug #346896, with much help from Johannes Schmid and 
-	Dodju Seketeli.
+	Dodji Seketeli.
 
 This is the HEAD branch for new features.
 See the glom-1-2 branch for bug-fixes without new features.
