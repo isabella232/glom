@@ -181,9 +181,23 @@ sharedptr<SharedConnection> ConnectionPool::connect()
         bool connection_to_default_database_possible = false;
 
         //Try each possible network port:
-        for(type_list_ports::const_iterator iter_port = m_list_ports.begin(); iter_port != m_list_ports.end(); ++iter_port)
+        type_list_ports::const_iterator iter_port = m_list_ports.begin();
+
+        //Start with the remembered-as-working port:
+        Glib::ustring port = m_port;
+
+        //If no port is known to work, start with the first possible port:
+        bool trying_remembered_port = true;
+        if(port.empty())
+        {
+          port = *iter_port;
+          trying_remembered_port = false;
+        }
+
+        bool try_another_port = true;
+        while(try_another_port)
         { 
-          const Glib::ustring cnc_string_main = "HOST=" + get_host() + ";USER=" + m_user + ";PASSWORD=" + m_password + ";PORT=" + *iter_port;
+          const Glib::ustring cnc_string_main = "HOST=" + get_host() + ";USER=" + m_user + ";PASSWORD=" + m_password + ";PORT=" + port;
 
           Glib::ustring cnc_string = cnc_string_main;
 
@@ -193,7 +207,7 @@ sharedptr<SharedConnection> ConnectionPool::connect()
             cnc_string += (";DATABASE=" + default_database);
 
           //std::cout << "connecting: cnc string: " << cnc_string << std::endl;
-          std::cout << std::endl << "Glom: trying to connect on port=" << *iter_port << std::endl;
+          std::cout << std::endl << "Glom: trying to connect on port=" << port << std::endl;
 
           //*m_refGdaConnection = m_GdaClient->open_connection(m_GdaDataSourceInfo.get_name(), m_GdaDataSourceInfo.get_username(), m_GdaDataSourceInfo.get_password() );
           //m_refGdaConnection.clear(); //Make sure any previous connection is really forgotten.
@@ -203,7 +217,7 @@ sharedptr<SharedConnection> ConnectionPool::connect()
             //g_warning("ConnectionPool: connection opened");
 
             //Remember what port is working:
-            m_port = *iter_port;
+            m_port = port;
 
             //Create the fieldtypes member if it has not already been done:
             if(!m_pFieldTypes)
@@ -246,7 +260,7 @@ sharedptr<SharedConnection> ConnectionPool::connect()
           }
           else
           {
-            std::cout << "ConnectionPool::connect() Attempt to connect to database failed on port=" << *iter_port << ", database=" << m_database << std::endl;
+            std::cout << "ConnectionPool::connect() Attempt to connect to database failed on port=" << port << ", database=" << m_database << std::endl;
 
             bool bJustDatabaseMissing = false;
             if(!m_database.empty())
@@ -266,7 +280,7 @@ sharedptr<SharedConnection> ConnectionPool::connect()
               {
                 bJustDatabaseMissing = true;
                 connection_to_default_database_possible = true;
-                m_port = *iter_port;
+                m_port = port;
               }
               else
               {
@@ -275,13 +289,34 @@ sharedptr<SharedConnection> ConnectionPool::connect()
             }
 
             if(bJustDatabaseMissing)
-              std::cout << "  (Connection succeeds, but not to the specific database on port=" << *iter_port << ", database=" << m_database << std::endl;
+              std::cout << "  (Connection succeeds, but not to the specific database on port=" << port << ", database=" << m_database << std::endl;
             else
-              std::cerr << "  (Could not connect even to the default database on port=" << *iter_port << ", database=" << m_database  << std::endl;
+              std::cerr << "  (Could not connect even to the default database on port=" << port << ", database=" << m_database  << std::endl;
 
 
             //handle_error(true /* cerr only */);
           }
+
+          //If we got this far then the connection failed, so we should try another port:
+          if(trying_remembered_port)
+            iter_port = m_list_ports.begin(); //Start looking at the possible ports.
+          else
+            ++iter_port;
+
+          if(iter_port == m_list_ports.end())
+            try_another_port = false;
+          else
+          {
+            if(port == *iter_port) //Don't bother trying the same port again.
+              ++iter_port;
+
+            if(iter_port == m_list_ports.end()) //Check again, in case we iterated again.
+              try_another_port = false;
+            else            
+              port = *iter_port;
+          }
+
+          trying_remembered_port = false;
         }
 
         g_warning("ConnectionPool::connect() throwing exception.");
@@ -304,7 +339,11 @@ sharedptr<SharedConnection> ConnectionPool::connect()
 
 void ConnectionPool::set_host(const Glib::ustring& value)
 {
-  m_host = value;  
+  if(value != m_host)
+  {
+    m_host = value;  
+    m_port = Glib::ustring(); /* Force us to try all ports again when connecting for the first time, then remember the working port again. */
+  }
 }
 
 void ConnectionPool::set_user(const Glib::ustring& value)

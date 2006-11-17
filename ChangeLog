@@ -1,3 +1,11 @@
+2006-11-17  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/libglom/connectionpool.cc: connect(): Remember the port after the first 
+	successful connection (even to the default database), and always try that first 
+	when connecting again, only trying the extra ports if it fails or if no port 
+	was remembered. This halves the number of connection attempts made.
+	Bug #368787 (Craig Keogh).
+
 2006-11-16  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/base_db.cc: get_find_where_clause_quick():
