@@ -1,4 +1,4 @@
-SUBDIRS = fields users
+SUBDIRS = fields script_library users
 
 gladedir = $(datadir)/glom/glade/
 
@@ -12,8 +12,8 @@ libmode_design_a_SOURCES = box_db_table_relationships.cc box_db_table_relationsh
                                                            dialog_fields.cc dialog_fields.h  \
                                                            dialog_design.cc dialog_design.h \
                                                            dialog_relationships.cc dialog_relationships.h \
-                                                           dialog_script_library.cc dialog_script_library.h \
                                                            dialog_add_related_table.cc dialog_add_related_table.h
 
 libmode_design_a_LIBADD = fields/libmode_design_fields.a \
-                          users/libmode_design_users.a
+                          users/libmode_design_users.a \
+                          script_library/libmode_design_script_library.a

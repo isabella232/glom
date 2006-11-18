@@ -341,7 +341,7 @@ bool Box_Data::confirm_discard_unstored_data() const
     Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("No primary key value")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_OK_CANCEL );
     dialog.set_secondary_text(_("This data cannot be stored in the database because you have not provided a primary key.\nDo you really want to discard this data?"));
     //TODO: It needs a const. I wonder if it should. murrayc. dialog.set_transient_for(*get_app_window());
-    int iButton = dialog.run();
+    const int iButton = dialog.run();
 
     return (iButton == Gtk::RESPONSE_OK);
   }

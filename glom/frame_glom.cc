@@ -30,7 +30,7 @@
 #include <glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.h>
 #include <glom/reports/report_builder.h>
 #include <glom/mode_design/dialog_add_related_table.h>
-#include <glom/mode_design/dialog_script_library.h>
+#include <glom/mode_design/script_library/dialog_script_library.h>
 #include "relationships_overview/dialog_relationships_overview.h"
 #include "filechooser_export.h"
 #include <glom/glom_privs.h>
@@ -1357,6 +1357,7 @@ void Frame_Glom::on_menu_developer_script_library()
   add_view(dialog); //Give it access to the document.
   dialog->load_from_document();
   Glom::Utils::dialog_run_with_help(dialog, "dialog_script_library"); //TODO: Create the help section.
+  dialog->save_to_document();
   remove_view(dialog);
   delete dialog;
 }

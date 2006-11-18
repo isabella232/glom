@@ -1,5 +1,22 @@
 2006-11-18  Murray Cumming  <murrayc@murrayc.com>
 
+	* configure.in:
+	* glom/Makefile.am:
+	* glom/frame_glom.cc:
+	* glom/glom.glade:
+	* glom/mode_data/box_data.cc:
+	* glom/mode_design/Makefile.am:
+	* glom/mode_design/script_library/Makefile.am:
+	* glom/mode_design/script_library/dialog_new_script.cc:
+	* glom/mode_design/script_library/dialog_new_script.h:
+	* glom/mode_design/script_library/dialog_script_library.cc:
+	* glom/mode_design/script_library/dialog_script_library.h:
+	The UI for a script library now works, and it is saved and loaded in the 
+	document. Now I just need to make the embedded python able to import these 
+	modules. 
+
+2006-11-18  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/frame_glom.cc:
 	* glom/glom.glade: 
 	* glom/libglom/document/document_glom.cc:

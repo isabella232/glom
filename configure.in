@@ -96,6 +96,7 @@ AC_OUTPUT(Makefile \
     glom/mode_design/Makefile \
       glom/mode_design/fields/Makefile \
       glom/mode_design/users/Makefile \
+      glom/mode_design/script_library/Makefile \
     glom/mode_find/Makefile \
     glom/navigation/Makefile \
     glom/utility_widgets/Makefile \

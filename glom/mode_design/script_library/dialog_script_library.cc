@@ -20,9 +20,11 @@
 
 
 #include "dialog_script_library.h"
-#include "../python_embed/glom_python.h"
+#include "../../python_embed/glom_python.h"
 #include <glom/libglom/data_structure/glomconversions.h>
+#include <glom/mode_design/script_library/dialog_new_script.h>
 #include <gtksourceviewmm/sourcelanguagesmanager.h>
+#include <glom/application.h>
 
 
 //#include <libgnome/gnome-i18n.h>
@@ -79,7 +81,6 @@ void Dialog_ScriptLibrary::on_button_check()
 
 void Dialog_ScriptLibrary::on_button_add()
 {
-
   //Save any outstanding changes:
   save_current_script();
 
@@ -87,16 +88,55 @@ void Dialog_ScriptLibrary::on_button_add()
   if(!document)
     return;
 
-  Glib::ustring name = "todonewname"; //TODO: Show dialog.
+  Dialog_NewScript* dialog = 0;
+  try
+  {
+    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_new_library_script");
+
+    refXml->get_widget_derived("dialog_new_library_script", dialog);
+  }
+  catch(const Gnome::Glade::XmlError& ex)
+  {
+    std::cerr << ex.what() << std::endl;
+  }
+
+  dialog->set_transient_for(*this);
+  const int response = Glom::Utils::dialog_run_with_help(dialog, "dialog_new_script");
+  dialog->hide();
+  if(response != Gtk::RESPONSE_OK)
+    return;
+
+  const Glib::ustring name = dialog->m_entry_name->get_text();
+  delete dialog;
+
+  if(name.empty())
+    return; //TODO Warn and retry.
+
+  if(!(document->get_library_module(name).empty())) //Don't add one that already exists.
+    return; //TODO Warn and retry.
+
   document->set_library_module(name, Glib::ustring());
-  m_current_name = name;
+
+  save_current_script();
+
   load_from_document(); //Fill the combo.
+  m_combobox_name->set_active_text(name);
 }
 
 void Dialog_ScriptLibrary::on_button_remove()
 {
   Document_Glom* document = get_document();
   if(!document)
+    return;
+
+  Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Remove library script")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE );
+  dialog.set_secondary_text(_("Do you really want to delete this script? This data can not be recovered"));
+  dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+  dialog.add_button(Gtk::Stock::REMOVE, Gtk::RESPONSE_OK);
+  dialog.set_transient_for(*this);
+  const int response = dialog.run();
+  dialog.hide();
+  if(response != Gtk::RESPONSE_OK)
     return;
 
   const Glib::ustring name = m_combobox_name->get_active_text();
@@ -178,6 +218,10 @@ void Dialog_ScriptLibrary::load_from_document()
   {
     m_combobox_name->set_first_active();
     m_current_name = m_combobox_name->get_active_text();
+  }
+  else
+  {
+    m_combobox_name->set_active_text(m_current_name);
   }
 
   //TODO: Maybe already done by the signal handler:

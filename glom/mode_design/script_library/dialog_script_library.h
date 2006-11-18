@@ -24,7 +24,7 @@
 #include <gtkmm.h>
 #include <libglademm.h>
 #include <glom/libglom/data_structure/layout/layoutitem_button.h>
-#include "../base_db.h"
+#include <glom/base_db.h>
 #include <gtksourceviewmm/sourceview.h>
 #include <glom/utility_widgets/combo_textglade.h>
 
