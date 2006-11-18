@@ -104,6 +104,29 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
   PyObject* pMain = PyImport_AddModule("__main__");
   PyObject* pDict = PyModule_GetDict(pMain);
 
+
+  //Allow the function to import from our script library:
+  const std::vector<Glib::ustring> module_names = pDocument->get_library_module_names();
+  for(std::vector<Glib::ustring>::const_iterator iter = module_names.begin(); iter != module_names.end(); ++iter)
+  {
+    const Glib::ustring name = *iter;
+    const Glib::ustring script = pDocument->get_library_module(name);
+    if(!name.empty() && !script.empty())
+    {
+//      _node* pn = PyParser_SimpleParseString(script.c_str(), Py_single_input /* "start token" for multiple lines of code. */); //TODO: Free this somehow?
+//       PyCodeObjec t* pModule = PyNode_Compile(pn, "test.pyc");
+//       PyNode_Free(pn);       
+//
+//      if(!pModule)
+//        HandlePythonError();
+
+//      PyObject* pObject = PyImport_ExecCodeModule(const_cast<char*>(name.c_str()), pModule); //Returns a reference. //This should make it importable.
+//      Py_DECREF(pObject);
+//      //TODO: When do these stop being importable? Should we unload them somehow later?
+    }
+  }
+
+
   PyObject* module_glom = PyImport_ImportModule("glom");
   if(!module_glom)
     g_warning("Could not import python glom module.");

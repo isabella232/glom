@@ -1,5 +1,10 @@
 2006-11-18  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/python_embed/glom_python.cc: Added some commented-out experiments into 
+	making the script library importable from our Python scripts.
+
+2006-11-18  Murray Cumming  <murrayc@murrayc.com>
+
 	* configure.in:
 	* glom/Makefile.am:
 	* glom/frame_glom.cc:
