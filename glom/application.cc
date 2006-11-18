@@ -324,6 +324,11 @@ void App_Glom::init_menus()
   m_listDeveloperActions.push_back(action);
   m_refActionGroup_Others->add(action, sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_reports));
 
+  action = Gtk::Action::create("GlomAction_Menu_Developer_Script_Library", _("Script _Library"));
+  m_listDeveloperActions.push_back(action);
+  m_refActionGroup_Others->add(action, sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_script_library));
+
+
   action = Gtk::Action::create("GlomAction_Menu_Developer_Layout", _("_Layout"));
   m_listDeveloperActions.push_back(action);
   m_refActionGroup_Others->add(action, sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_layout));
@@ -369,6 +374,7 @@ void App_Glom::init_menus()
     "        <menuitem action='GlomAction_Menu_Developer_Layout' />"
     "        <menuitem action='GlomAction_Menu_Developer_Users' />"
     "        <menuitem action='GlomAction_Menu_Developer_Reports' />"
+    "        <menuitem action='GlomAction_Menu_Developer_Script_Library' />"
     "        <separator />"
     "        <menuitem action='GlomAction_Menu_Developer_Translations' />"
     "        <menuitem action='GlomAction_Menu_Developer_ChangeLanguage' />"

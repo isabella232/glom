@@ -30,6 +30,7 @@
 #include <glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.h>
 #include <glom/reports/report_builder.h>
 #include <glom/mode_design/dialog_add_related_table.h>
+#include <glom/mode_design/dialog_script_library.h>
 #include "relationships_overview/dialog_relationships_overview.h"
 #include "filechooser_export.h"
 #include <glom/glom_privs.h>
@@ -1345,6 +1346,16 @@ void Frame_Glom::on_menu_developer_reports()
     m_pBox_Reports->init_db_details(m_table_name);
     m_pDialog_Reports->show();
   }
+}
+
+void Frame_Glom::on_menu_developer_script_library()
+{
+  Dialog_ScriptLibrary* dialog = 0;
+  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_script_library");
+  refXml->get_widget_derived("dialog_script_library", dialog);
+  dialog->set_transient_for(*(get_app_window()));
+  Glom::Utils::dialog_run_with_help(dialog, "dialog_script_library"); //TODO: Create the help section.
+  delete dialog;
 }
 
 

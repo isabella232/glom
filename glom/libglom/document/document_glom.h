@@ -209,11 +209,16 @@ public:
 
   virtual Glib::ustring get_name() const; //override.
 
-  virtual Glib::ustring get_default_table() const;
-  virtual Glib::ustring get_first_table() const;
+  Glib::ustring get_default_table() const;
+  Glib::ustring get_first_table() const;
 
-  virtual Glib::ustring get_database_title() const;
-  virtual void set_database_title(const Glib::ustring& title);
+  Glib::ustring get_database_title() const;
+  void set_database_title(const Glib::ustring& title);
+
+  std::vector<Glib::ustring> get_library_module_names() const;
+  void set_library_module(const Glib::ustring& name, const Glib::ustring& script);
+  Glib::ustring get_library_module(const Glib::ustring& name) const;
+  void remove_library_module(const Glib::ustring& name);
 
   /// These are only used when recreating a database from an example file. The actualy access-control is on the server, of course.
   typedef std::list<GroupInfo> type_list_groups;
@@ -372,6 +377,9 @@ protected:
 
   Glib::ustring m_database_title;
   Glib::ustring m_translation_original_locale;
+
+  typedef std::map<Glib::ustring, Glib::ustring> type_map_library_scripts;
+  type_map_library_scripts m_map_library_scripts;
 
   bool m_block_cache_update; //For efficiency.
   bool m_block_modified_set;

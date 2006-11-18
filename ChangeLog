@@ -1,3 +1,16 @@
+2006-11-18  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/application.cc:
+	* glom/frame_glom.cc:
+	* glom/frame_glom.h:
+	* glom/glom.glade:
+	* glom/libglom/document/document_glom.cc:
+	* glom/libglom/document/document_glom.h:
+	* glom/mode_design/Makefile.am:
+	* glom/mode_design/dialog_script_library.cc:
+	* glom/mode_design/dialog_script_library.h: Partial implementation of the UI 
+	for a reusable python script library.
+
 1.3.1:
 
 2006-11-17  Murray Cumming  <murrayc@murrayc.com>

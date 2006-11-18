@@ -3098,5 +3098,52 @@ guint Document_Glom::get_latest_known_document_format_version()
   return 1;
 }
 
+std::vector<Glib::ustring> Document_Glom::get_library_module_names() const
+{
+  std::vector<Glib::ustring> result;
+  for(type_map_library_scripts::const_iterator iter = m_map_library_scripts.begin(); iter != m_map_library_scripts.end(); ++iter)
+  {
+    result.push_back(iter->first);
+  }
+
+  return result;
+}
+
+void Document_Glom::set_library_module(const Glib::ustring& name, const Glib::ustring& script)
+{
+  type_map_library_scripts::iterator iter = m_map_library_scripts.find(name);
+  if(iter != m_map_library_scripts.end())
+  {
+    //Change the existing script:
+    iter->second = script;
+  }
+  else
+  {
+    //Add the script:
+    m_map_library_scripts[name] = script;
+  }
+}
+
+Glib::ustring Document_Glom::get_library_module(const Glib::ustring& name) const
+{
+  type_map_library_scripts::const_iterator iter = m_map_library_scripts.find(name);
+  if(iter != m_map_library_scripts.end())
+  {
+    return iter->second;
+  }
+
+  return Glib::ustring();
+}
+
+void Document_Glom::remove_library_module(const Glib::ustring& name)
+{
+  type_map_library_scripts::iterator iter = m_map_library_scripts.find(name);
+  if(iter != m_map_library_scripts.end())
+  {
+     m_map_library_scripts.erase(iter);
+  }
+}
+
+
 } //namespace Glom
 

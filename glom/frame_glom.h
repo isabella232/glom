@@ -89,6 +89,7 @@ public:
   void on_menu_developer_users();
   void on_menu_developer_layout();
   void on_menu_developer_reports();
+  void on_menu_developer_script_library();
 
   void on_developer_dialog_hide();
   void on_dialog_layout_report_hide();
