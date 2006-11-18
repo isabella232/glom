@@ -1,5 +1,14 @@
 2006-11-18  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/frame_glom.cc:
+	* glom/glom.glade: 
+	* glom/libglom/document/document_glom.cc:
+	* glom/mode_design/dialog_script_library.cc:
+	* glom/mode_design/dialog_script_library.h: Works slightly more.
+	Yes, I shouldn't check stuff in before it is finished.
+
+2006-11-18  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/application.cc:
 	* glom/frame_glom.cc:
 	* glom/frame_glom.h:

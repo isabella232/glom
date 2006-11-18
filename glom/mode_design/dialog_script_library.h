@@ -26,6 +26,7 @@
 #include <glom/libglom/data_structure/layout/layoutitem_button.h>
 #include "../base_db.h"
 #include <gtksourceviewmm/sourceview.h>
+#include <glom/utility_widgets/combo_textglade.h>
 
 namespace Glom
 {
@@ -39,33 +40,26 @@ public:
   Dialog_ScriptLibrary(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
   virtual ~Dialog_ScriptLibrary();
 
-protected:
-  void on_button_check();
-  void on_comboentry_name_changed();
-
   virtual void load_from_document();
   virtual void save_to_document();
+
+protected:
+  void on_button_add();
+  void on_button_remove();
+  void on_button_check();
+  void on_combo_name_changed();
+
+
 
   void load_current_script();
   void save_current_script();
 
-  Gtk::ComboBoxEntry* m_comboboxentry_name;
-
-  //ComboBoxEntry Tree model columns:
-  class ComboModelColumns : public Gtk::TreeModel::ColumnRecord
-  {
-  public:
-    ComboModelColumns()
-    { add(m_name); }
-
-    Gtk::TreeModelColumn<Glib::ustring> m_name;
-  };
-
-  ModelColumns m_combo_model_columns;
-  Glib::RefPtr<Gtk::ListStore> m_combo_model;
+  Combo_TextGlade* m_combobox_name;
 
   gtksourceview::SourceView* m_text_view;
   Gtk::Button* m_button_check;
+  Gtk::Button* m_button_add;
+  Gtk::Button* m_button_remove;
 
   Glib::ustring m_current_name;
 };

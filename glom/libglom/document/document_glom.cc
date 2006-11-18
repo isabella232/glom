@@ -155,6 +155,11 @@ namespace Glom
 #define GLOM_ATTRIBUTE_TRANSLATION_LOCALE "loc"
 #define GLOM_ATTRIBUTE_TRANSLATION_VALUE "val"
 
+#define GLOM_NODE_LIBRARY_MODULES "library_modules"
+#define GLOM_NODE_LIBRARY_MODULE "module"
+#define GLOM_ATTRIBUTE_LIBRARY_MODULE_NAME "name"
+#define GLOM_ATTRIBUTE_LIBRARY_MODULE_SCRIPT "script"
+
 //A built-in relationship that is available for every table:
 #define GLOM_RELATIONSHIP_NAME_SYSTEM_PROPERTIES "system_properties"
 
@@ -2188,6 +2193,27 @@ bool Document_Glom::load_after()
             }
           }
 
+
+          //Library Modules:
+          m_map_library_scripts.clear();
+
+          const xmlpp::Element* nodeModules = get_node_child_named(nodeRoot, GLOM_NODE_LIBRARY_MODULES);
+          if(nodeModules)
+          {
+            xmlpp::Node::NodeList listNodes = nodeModules->get_children(GLOM_NODE_LIBRARY_MODULE);
+            for(xmlpp::Node::NodeList::iterator iter = listNodes.begin(); iter != listNodes.end(); ++iter)
+            {
+              xmlpp::Element* node = dynamic_cast<xmlpp::Element*>(*iter);
+              if(node)
+              {
+                const Glib::ustring table_name = get_node_attribute_value(node, GLOM_ATTRIBUTE_LIBRARY_MODULE_NAME);
+                const Glib::ustring script = get_node_attribute_value(node, GLOM_ATTRIBUTE_LIBRARY_MODULE_SCRIPT);
+
+                m_map_library_scripts[table_name] = script;
+              }
+            }
+          }
+
         } //root
       }
     }
@@ -2708,6 +2734,26 @@ bool Document_Glom::save_before()
       }
     }
 
+
+    //Remove existing library modules::
+    listNodes = nodeRoot->get_children(GLOM_NODE_LIBRARY_MODULES);
+    for(xmlpp::Node::NodeList::iterator iter = listNodes.begin(); iter != listNodes.end(); ++iter)
+      nodeRoot->remove_child(*iter);
+
+    //Add groups:
+    xmlpp::Element* nodeModules = nodeRoot->add_child(GLOM_NODE_LIBRARY_MODULES);
+
+    for(type_map_library_scripts::const_iterator iter = m_map_library_scripts.begin(); iter != m_map_library_scripts.end(); ++iter)
+    {
+      const Glib::ustring& name = iter->first;
+      const Glib::ustring& script = iter->second;
+
+      xmlpp::Element* nodeModule = nodeModules->add_child(GLOM_NODE_LIBRARY_MODULE);
+
+      set_node_attribute_value(nodeModule, GLOM_ATTRIBUTE_LIBRARY_MODULE_NAME, name);
+      set_node_attribute_value(nodeModule, GLOM_ATTRIBUTE_LIBRARY_MODULE_SCRIPT, script);
+    }
+
   }
 
   return Bakery::Document_XML::save_before();  
@@ -3111,16 +3157,24 @@ std::vector<Glib::ustring> Document_Glom::get_library_module_names() const
 
 void Document_Glom::set_library_module(const Glib::ustring& name, const Glib::ustring& script)
 {
+  if(name.empty())
+    return;
+
   type_map_library_scripts::iterator iter = m_map_library_scripts.find(name);
   if(iter != m_map_library_scripts.end())
   {
-    //Change the existing script:
-    iter->second = script;
+    //Change the existing script, if necessary:
+    if(iter->second != script)
+    {
+      iter->second = script;
+      set_modified();
+    }
   }
   else
   {
     //Add the script:
     m_map_library_scripts[name] = script;
+    set_modified();
   }
 }
 
@@ -3141,6 +3195,7 @@ void Document_Glom::remove_library_module(const Glib::ustring& name)
   if(iter != m_map_library_scripts.end())
   {
      m_map_library_scripts.erase(iter);
+     set_modified();
   }
 }
 

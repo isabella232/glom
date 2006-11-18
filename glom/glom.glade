@@ -16277,6 +16277,7 @@ If a suitable related table already exists then you should instead cancel and ju
     <property name="default_height">600</property>
     <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
     <property name="has_separator">False</property>
+
     <child internal-child="vbox">
       <widget class="GtkVBox" id="dialog-vbox32">
         <property name="visible">True</property>
@@ -16297,9 +16298,11 @@ If a suitable related table already exists then you should instead cancel and ju
                 <property name="fill">False</property>
               </packing>
             </child>
+                
             <child>
               <widget class="GtkHBox" id="hbox1">
                 <property name="visible">True</property>
+                <property name="spacing">6</property>
                 <child>
                   <widget class="GtkLabel" id="label2">
                     <property name="visible">True</property>
@@ -16310,18 +16313,35 @@ If a suitable related table already exists then you should instead cancel and ju
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkComboBoxEntry" id="comboboxentry_name">
+                  <widget class="GtkComboBox" id="combobox_name">
                     <property name="visible">True</property>
-                    <child internal-child="entry">
-                      <widget class="GtkEntry" id="comboboxentry-entry3">
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK | GDK_ENTER_NOTIFY_MASK</property>
-                      </widget>
-                    </child>
                   </widget>
                   <packing>
                     <property name="position">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkButton" id="button_add">
+                    <property name="visible">True</property>
+                    <property name="label" translatable="yes">gtk-add</property>
+                    <property name="use_stock">True</property>
+                  </widget>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkButton" id="button_remove">
+                    <property name="visible">True</property>
+                    <property name="label" translatable="yes">gtk-remove</property>
+                    <property name="use_stock">True</property>
+                  </widget>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">3</property>
                   </packing>
                 </child>
               </widget>
@@ -16331,6 +16351,7 @@ If a suitable related table already exists then you should instead cancel and ju
                 <property name="position">1</property>
               </packing>
             </child>
+
             <child>
               <widget class="GtkAlignment" id="alignment1">
                 <property name="visible">True</property>

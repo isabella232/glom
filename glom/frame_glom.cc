@@ -1354,7 +1354,10 @@ void Frame_Glom::on_menu_developer_script_library()
   Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_script_library");
   refXml->get_widget_derived("dialog_script_library", dialog);
   dialog->set_transient_for(*(get_app_window()));
+  add_view(dialog); //Give it access to the document.
+  dialog->load_from_document();
   Glom::Utils::dialog_run_with_help(dialog, "dialog_script_library"); //TODO: Create the help section.
+  remove_view(dialog);
   delete dialog;
 }
 

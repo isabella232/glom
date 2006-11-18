@@ -35,18 +35,17 @@ Dialog_ScriptLibrary::Dialog_ScriptLibrary(BaseObjectType* cobject, const Glib::
 : Gtk::Dialog(cobject)
 {
   //Get child widgets:
-  refGlade->get_widget("comboboxentry_name", m_comboboxentry_name);
+  refGlade->get_widget_derived("combobox_name", m_combobox_name);
   refGlade->get_widget("textview_script",  m_text_view);
   refGlade->get_widget("button_check",  m_button_check);
-
-  //Setup the combo model:
-  m_combo_model = Gtk::ListStore::create(m_combo_model_columns);
-  m_comboboxentry_name->set_model(m_combo_model);
-  m_comboboxentry_name->set_text_column(m_combo_model_columns.m_name);
+  refGlade->get_widget("button_add",  m_button_add);
+  refGlade->get_widget("button_remove",  m_button_remove);
 
   //Connect signals:
   m_button_check->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_ScriptLibrary::on_button_check) );
-  m_comboboxentry_name->signal_changed().connect( sigc::mem_fun(*this, &&Dialog_ScriptLibrary::on_comboentry_name_changed) );
+  m_button_add->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_ScriptLibrary::on_button_add) );
+  m_button_remove->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_ScriptLibrary::on_button_remove) );
+  m_combobox_name->signal_changed().connect( sigc::mem_fun(*this, &Dialog_ScriptLibrary::on_combo_name_changed) );
   //on_foreach_connect(*this);
 
   //Dialog_Properties::set_modified(false);
@@ -78,9 +77,44 @@ void Dialog_ScriptLibrary::on_button_check()
   //TODO: glom_execute_python_function_implementation(script);
 }
 
-void Dialog_ScriptLibrary::on_comboentry_name_changed()
+void Dialog_ScriptLibrary::on_button_add()
 {
+
+  //Save any outstanding changes:
   save_current_script();
+
+  Document_Glom* document = get_document();
+  if(!document)
+    return;
+
+  Glib::ustring name = "todonewname"; //TODO: Show dialog.
+  document->set_library_module(name, Glib::ustring());
+  m_current_name = name;
+  load_from_document(); //Fill the combo.
+}
+
+void Dialog_ScriptLibrary::on_button_remove()
+{
+  Document_Glom* document = get_document();
+  if(!document)
+    return;
+
+  const Glib::ustring name = m_combobox_name->get_active_text();
+  if(!name.empty())
+  {
+    document->remove_library_module(name); //TODO: Show warning dialog.
+    load_from_document(); //Fill the combo.
+  }
+}
+
+
+void Dialog_ScriptLibrary::on_combo_name_changed()
+{
+  //Save the old script:
+  save_current_script();
+
+  //Lod the new script:
+  load_current_script();
 }
 
 void Dialog_ScriptLibrary::load_current_script()
@@ -90,9 +124,7 @@ void Dialog_ScriptLibrary::load_current_script()
     return;
 
   //Get the selected module name:
-  Gtk::TreeModel::itertator iter = m_comboboxentry_name->get_active();
-  Gtk::TreeModel::Row row = *iter;
-  const Glib::ustring name = iter[m_combo_model_columns.m_name];
+  const Glib::ustring name = m_combobox_name->get_active_text();
 
   //Get the module's script text:
   Glib::ustring script;
@@ -103,6 +135,8 @@ void Dialog_ScriptLibrary::load_current_script()
  
   //Show the script text:
   m_text_view->get_buffer()->set_text(script);
+
+  m_current_name = name;
 }
 
 void Dialog_ScriptLibrary::save_current_script()
@@ -131,15 +165,26 @@ void Dialog_ScriptLibrary::load_from_document()
     return;
 
   const std::vector<Glib::ustring> module_names = document->get_library_module_names();
-  m_combo_model->clear();
-  for(std::vector<Glib::ustring>::const_iterator iter = module_name.begin(); iter != module_names.end(); ++iter)
+  m_combobox_name->clear_text();
+ 
+  for(std::vector<Glib::ustring>::const_iterator iter = module_names.begin(); iter != module_names.end(); ++iter)
   {
     const Glib::ustring name = *iter;
-    //const Glib::ustring script = document->get_library_module(*iter);
-    Gtk::TreeModel::itertator iter = m_combo_model->append();
-    Gtk::TreeModel::Row row = *iter;
-    row[m_combo_model_columns.m_name] = name;
-  }  
+    m_combobox_name->append_text(name);
+  }
+
+  //Show the current script, or the first one, if there is one:
+  if(m_current_name.empty())
+  {
+    m_combobox_name->set_first_active();
+    m_current_name = m_combobox_name->get_active_text();
+  }
+
+  //TODO: Maybe already done by the signal handler:
+  if(m_current_name.empty())
+    m_text_view->get_buffer()->set_text(Glib::ustring());
+  else
+    load_current_script();
 }
 
 void Dialog_ScriptLibrary::save_to_document()
@@ -148,8 +193,7 @@ void Dialog_ScriptLibrary::save_to_document()
   if(!document)
     return;
 
-  const std::vector<Glib::ustring> module_names = document->get_library_module_names();
-  
+  save_current_script();  
 }
 
 
