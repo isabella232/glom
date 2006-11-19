@@ -1,3 +1,7 @@
+2006-11-19  Murray Cumming  <murrayc@murrayc.com>
+
+	* po/POTFILES.in: Added new files so they can be translated.
+
 2006-11-18  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/python_embed/glom_python.cc: Added some commented-out experiments into 
