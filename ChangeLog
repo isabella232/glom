@@ -1,3 +1,9 @@
+2006-12-03  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/mode_data/box_data_list.cc: create_layout_add_group(): Check that fields 
+	exist before adding them as columns, to avoid SQL errors when we have failed 
+	(we should not fail) to rename something everywhere.
+
 2006-11-17  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/libglom/utils.cc: Remove unnessary static keyword to partly fix the 
