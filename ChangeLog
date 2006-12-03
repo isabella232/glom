@@ -1,5 +1,11 @@
 2006-12-03  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/glom.glade: Start dialog: Change the packing options for the Entry, to 
+	try to stop the lines from breaking unnecessarily, but this does not seem to 
+	have any effect on it. Bug #369602 from Javier F. Serrador.
+
+2006-12-03  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/mode_data/box_data_list.cc: create_layout_add_group(): Check that fields 
 	exist before adding them as columns, to avoid SQL errors when we have failed 
 	(we should not fail) to rename something everywhere.
