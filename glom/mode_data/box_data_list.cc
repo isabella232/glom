@@ -633,6 +633,19 @@ void Box_Data_List::create_layout_add_group(const sharedptr<LayoutGroup>& layout
         child_item->set_editable(false);
 
       //std::cout << "debug: adding column: " << child_item->get_name() << std::endl;
+
+      sharedptr<LayoutItem_Field> child_field = sharedptr<LayoutItem_Field>::cast_dynamic(child_item);
+      if(child_field)
+      {
+        //Check that the field really exists, to avoid SQL errors.
+        //This could probably only happen if we have failed to rename something everywhere, when the user has renamed something.
+        if(!get_field_exists_in_database(child_field->get_table_used(m_table_name), child_field->get_name()))
+        {
+          std::cerr << "debug: Box_Data_List::create_layout_add_group(): Field does not exist in database: table_name=" << child_field->get_table_used(m_table_name) << ", field_name=" << child_field->get_name() << std::endl;
+          continue;
+        }
+      }
+
       m_AddDel.add_column(child_item);
     }
   }
