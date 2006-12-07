@@ -1,4 +1,10 @@
-1.2.1
+1.2.2:
+
+* Avoid relatively rare SQL errors about ambiguous fields and non-existant fields.
+
+* Build:Partial cygin build fix.
+
+1.2.1:
 
 * Find: Prevent SQL Errors when using capital letters in table and field names.
   Bug #375605 from William Manley.
