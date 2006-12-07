@@ -140,8 +140,11 @@ bool Box_Data_List_Related::refresh_data_from_database_with_foreign_key(const Gn
   {
     if(!Conversions::value_is_empty(m_key_value))
     {
+      sharedptr<const Relationship> relationship = m_portal->get_relationship();
+
       FoundSet found_set = m_found_set;
-      found_set.m_where_clause = "\"" + m_key_field->get_name() + "\" = " + m_key_field->sql(m_key_value);
+      found_set.m_table_name = relationship->get_to_table();
+      found_set.m_where_clause = "\"" + relationship->get_to_table() + "\".\"" + m_key_field->get_name() + "\" = " + m_key_field->sql(m_key_value);
 
       //g_warning("refresh_data_from_database(): where_clause=%s", where_clause.c_str());
       return Box_Data_List::refresh_data_from_database_with_where_clause(found_set);
