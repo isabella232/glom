@@ -148,11 +148,16 @@ bool Box_Data_List_Related::refresh_data_from_database_with_foreign_key(const Gn
       sharedptr<const Relationship> relationship_related = m_portal->get_related_relationship();
       if(relationship_related)
       {
+         //Add the extra JOIN:
          sharedptr<UsesRelationship> uses_rel_temp = sharedptr<UsesRelationship>::create();
          uses_rel_temp->set_relationship(relationship);
          //found_set.m_extra_join = uses_rel_temp->get_sql_join_alias_definition();
          found_set.m_extra_join = "LEFT OUTER JOIN \"" + relationship->get_to_table() + "\" AS \"" + uses_rel_temp->get_sql_join_alias_name() + "\" ON (\"" + uses_rel_temp->get_sql_join_alias_name() + "\".\"" + relationship_related->get_from_field() + "\" = \"" + relationship_related->get_to_table() + "\".\"" + relationship_related->get_to_field() + "\")";
- 
+
+         //Add an extra GROUP BY to ensure that we get no repeated records from the doubly-related table:
+         found_set.m_extra_group_by = "GROUP BY \"" + found_set.m_table_name + "\".\"" + m_key_field->get_name() + "\"";
+
+         //Adjust the WHERE clause appropriately for the extra JOIN:
          where_clause_to_table_name = uses_rel_temp->get_sql_join_alias_name();
 
          Glib::ustring to_field_name = uses_rel_temp->get_to_field_used();

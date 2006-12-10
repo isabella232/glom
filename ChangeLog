@@ -1,5 +1,17 @@
 2006-12-10  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/base_db.cc:
+	* glom/base_db.h:
+	* glom/frame_glom.cc:
+	* glom/libglom/utils.cc:
+	* glom/libglom/utils.h:
+	* glom/mode_data/box_data_list_related.cc:
+	* glom/utility_widgets/db_adddel/glom_db_treemodel.cc: For child relationships, add an extra 
+	GROUP_BY (on the key of the target table) to ensure that we only get distinct records, with 
+	no repeats. 
+
+2006-12-10  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/glom.glade:
 	* glom/mode_data/dialog_layout_list_related.cc: Hide the title label and entry. They are too 
 	confusing here.
