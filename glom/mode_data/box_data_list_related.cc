@@ -496,13 +496,10 @@ void Box_Data_List_Related::get_suitable_record_to_view_details(const Gnome::Gda
   table_name = Glib::ustring();
   table_primary_key_value = Gnome::Gda::Value();
 
-  std::cout << "debug: Box_Data_List_Related::get_suitable_record_to_view_details 1" << std::endl;
   Glib::ustring navigation_table_name;
   sharedptr<const UsesRelationship> navigation_relationship;
   get_suitable_table_to_view_details(navigation_table_name, navigation_relationship);
-   std::cout << "debug: Box_Data_List_Related::get_suitable_record_to_view_details 2" << std::endl;
  
-
   if(navigation_table_name.empty())
     return;
 

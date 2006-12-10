@@ -109,12 +109,15 @@ Dialog_Layout_List_Related::Dialog_Layout_List_Related(BaseObjectType* cobject, 
   make_sensitivity_depend_on_toggle_button(*m_radio_navigation_specify, *m_combo_navigation_specify);
   m_combo_navigation_specify->signal_changed().connect(sigc::mem_fun(*this, &Dialog_Layout_List_Related::on_combo_navigation_specific_changed));
 
-  if(m_entry_table_title)
-    m_entry_table_title->hide(); // We don't use this (it's from the base class).
-
+ 
   m_modified = false;
 
   show_all_children();
+
+  //This entry must be in the Glade file, because it's used by the base class,
+  //but we don't want it here, because it is confusing when dealing with relationships:
+  if(m_entry_table_title)
+    m_entry_table_title->hide(); // We don't use this (it's from the base class).
 }
 
 Dialog_Layout_List_Related::~Dialog_Layout_List_Related()

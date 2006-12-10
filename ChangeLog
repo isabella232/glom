@@ -1,5 +1,11 @@
 2006-12-10  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/glom.glade:
+	* glom/mode_data/dialog_layout_list_related.cc: Hide the title label and entry. They are too 
+	confusing here.
+
+2006-12-10  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/mode_data/dialog_layout_list_related.cc:
 	* glom/mode_data/dialog_layout_list_related.h:
 	* glom/glom.glade: Add a checkbox that allows us to use child (related) relationships, 
