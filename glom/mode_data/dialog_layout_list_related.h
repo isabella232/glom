@@ -65,6 +65,7 @@ protected:
   void on_cell_data_name(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter);
   
   void on_combo_navigation_specific_changed();
+  void on_checkbutton_show_child_relationships();
 
   //Tree model columns:
   class ModelColumns_Fields : public Gtk::TreeModel::ColumnRecord
@@ -90,6 +91,7 @@ protected:
   Gtk::Button* m_button_field_formatting;
 
   ComboBox_Relationship* m_combo_relationship;
+  Gtk::CheckButton* m_checkbutton_show_child_relationships;
   sharedptr<LayoutItem_Portal> m_portal;
 
   Gtk::RadioButton* m_radio_navigation_automatic;

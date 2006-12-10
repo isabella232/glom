@@ -300,7 +300,7 @@ void ReportBuilder::report_build_records(const FoundSet& found_set, xmlpp::Eleme
 
     Glib::ustring sql_query = Utils::build_sql_select_with_where_clause(found_set.m_table_name,
       fieldsToGet,
-      found_set.m_where_clause, found_set.m_sort_clause);
+      found_set.m_where_clause, Glib::ustring() /* extra_join */, found_set.m_sort_clause);
 
     //For instance, when we just want to get a name corresponding to a contact ID, and want to ignore duplicates.
     if(one_record_only)

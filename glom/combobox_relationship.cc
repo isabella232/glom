@@ -152,7 +152,7 @@ void ComboBox_Relationship::set_selected_relationship(const Glib::ustring& relat
     unset_active();
 }
 
-void ComboBox_Relationship::set_relationships(Document_Glom* document, const Glib::ustring parent_table_name, bool show_related_relationships)
+void ComboBox_Relationship::set_relationships(Document_Glom* document, const Glib::ustring parent_table_name, bool show_related_relationships, bool show_parent_table_name)
 {
   if(!document)
     return;
@@ -161,7 +161,8 @@ void ComboBox_Relationship::set_relationships(Document_Glom* document, const Gli
 
   m_model->clear();
 
-  set_display_parent_table(parent_table_name, document->get_table_title(parent_table_name));
+  if(show_parent_table_name)
+    set_display_parent_table(parent_table_name, document->get_table_title(parent_table_name));
 
   //Fill the model:
   for(type_vecRelationships::const_iterator iter = relationships.begin(); iter != relationships.end(); ++iter)

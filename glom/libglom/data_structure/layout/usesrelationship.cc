@@ -125,12 +125,54 @@ Glib::ustring UsesRelationship::get_sql_table_or_join_alias_name(const Glib::ust
 
 Glib::ustring UsesRelationship::get_table_used(const Glib::ustring& parent_table) const
 {
+  //std::cout << "UsesRelationship::get_table_used(): relationship=" << glom_get_sharedptr_name(m_relationship) << "related_relationship=" << glom_get_sharedptr_name(m_related_relationship) << std::endl;
+
   if(m_related_relationship)
     return m_related_relationship->get_to_table();
   else if(m_relationship)
     return m_relationship->get_to_table();
   else
     return parent_table;
+}
+
+Glib::ustring UsesRelationship::get_title_used(const Glib::ustring& parent_table_title) const
+{
+  if(m_related_relationship)
+    return m_related_relationship->get_title_or_name();
+  else if(m_relationship)
+    return m_relationship->get_title_or_name();
+  else
+    return parent_table_title;
+}
+
+Glib::ustring UsesRelationship::get_to_field_used() const
+{
+  if(m_related_relationship)
+    return m_related_relationship->get_to_field();
+  else if(m_relationship)
+    return m_relationship->get_to_field();
+  else
+    return Glib::ustring();
+}
+
+Glib::ustring UsesRelationship::get_relationship_name_used() const
+{
+  if(m_related_relationship)
+    return m_related_relationship->get_name();
+  else if(m_relationship)
+    return m_relationship->get_name();
+  else
+    return Glib::ustring();
+}
+
+bool UsesRelationship::get_relationship_used_allows_edit() const
+{
+  if(m_related_relationship)
+    return m_related_relationship->get_allow_edit();
+  else if(m_relationship)
+    return m_relationship->get_allow_edit();
+  else
+    return false; /* Arbitrary default. */
 }
 
 Glib::ustring UsesRelationship::get_sql_join_alias_name() const

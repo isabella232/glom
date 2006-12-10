@@ -95,14 +95,15 @@ void Box_Data_List_Related::enable_buttons()
 bool Box_Data_List_Related::init_db_details(const sharedptr<const LayoutItem_Portal>& portal, bool show_title)
 {
   m_portal = glom_sharedptr_clone(portal);
-  LayoutWidgetBase::m_table_name = m_portal->get_relationship()->get_to_table();
+
+  LayoutWidgetBase::m_table_name = m_portal->get_table_used(Glib::ustring() /* parent table_name, not used. */); 
   Box_DB_Table::m_table_name = LayoutWidgetBase::m_table_name;
 
-  sharedptr<const Relationship> relationship = m_portal->get_relationship();
-
+  const Glib::ustring relationship_title = m_portal->get_title_used(Glib::ustring() /* parent title - not relevant */);
+  
   if(show_title)
   {
-    m_Label.set_markup(Bakery::App_Gtk::util_bold_message( glom_get_sharedptr_title_or_name(relationship) ));
+    m_Label.set_markup(Bakery::App_Gtk::util_bold_message(relationship_title));
     m_Label.show();
 
     m_Alignment.set_padding(6 /* top */, 0, 12 /* left */, 0);
@@ -115,21 +116,13 @@ bool Box_Data_List_Related::init_db_details(const sharedptr<const LayoutItem_Por
     m_Alignment.set_padding(0, 0, 0, 0); //The box itself has padding of 6.
   }
 
-  if(relationship)
-    m_key_field = get_fields_for_table_one_field(relationship->get_to_table(), relationship->get_to_field());
-  else
-    m_key_field = sharedptr<Field>();
+  m_key_field = get_fields_for_table_one_field(LayoutWidgetBase::m_table_name, m_portal->get_to_field_used());
 
   enable_buttons();
 
-  if(relationship)
-  {
-    FoundSet found_set;
-    found_set.m_table_name = relationship->get_to_table();
-    return Box_Data_List::init_db_details(found_set); //Calls create_layout() and fill_from_database().
-  }
-  else
-    return false;
+  FoundSet found_set;
+  found_set.m_table_name = LayoutWidgetBase::m_table_name;
+  return Box_Data_List::init_db_details(found_set); //Calls create_layout() and fill_from_database().
 }
 
 bool Box_Data_List_Related::refresh_data_from_database_with_foreign_key(const Gnome::Gda::Value& foreign_key_value)
@@ -140,11 +133,37 @@ bool Box_Data_List_Related::refresh_data_from_database_with_foreign_key(const Gn
   {
     if(!Conversions::value_is_empty(m_key_value))
     {
-      sharedptr<const Relationship> relationship = m_portal->get_relationship();
+      sharedptr<Relationship> relationship = m_portal->get_relationship();
+
+      // Notice that, in the case that this is a portal to doubly-related records,
+      // The WHERE clause mentions the first-related table (though by the alias defined in extra_join)
+      // and we add an extra JOIN to mention the second-related table.
+
+      Glib::ustring where_clause_to_table_name = relationship->get_to_table();
+      sharedptr<Field> where_clause_to_key_field = m_key_field;
 
       FoundSet found_set = m_found_set;
-      found_set.m_table_name = relationship->get_to_table();
-      found_set.m_where_clause = "\"" + relationship->get_to_table() + "\".\"" + m_key_field->get_name() + "\" = " + m_key_field->sql(m_key_value);
+      found_set.m_table_name = m_portal->get_table_used(Glib::ustring() /* parent table - not relevant */);
+      
+      sharedptr<const Relationship> relationship_related = m_portal->get_related_relationship();
+      if(relationship_related)
+      {
+         sharedptr<UsesRelationship> uses_rel_temp = sharedptr<UsesRelationship>::create();
+         uses_rel_temp->set_relationship(relationship);
+         //found_set.m_extra_join = uses_rel_temp->get_sql_join_alias_definition();
+         found_set.m_extra_join = "LEFT OUTER JOIN \"" + relationship->get_to_table() + "\" AS \"" + uses_rel_temp->get_sql_join_alias_name() + "\" ON (\"" + uses_rel_temp->get_sql_join_alias_name() + "\".\"" + relationship_related->get_from_field() + "\" = \"" + relationship_related->get_to_table() + "\".\"" + relationship_related->get_to_field() + "\")";
+ 
+         where_clause_to_table_name = uses_rel_temp->get_sql_join_alias_name();
+
+         Glib::ustring to_field_name = uses_rel_temp->get_to_field_used();
+         where_clause_to_key_field = get_fields_for_table_one_field(relationship->get_to_table(), to_field_name);
+         //std::cout << "extra_join=" << found_set.m_extra_join << std::endl;
+ 
+         //std::cout << "extra_join where_clause_to_key_field=" << where_clause_to_key_field->get_name() << std::endl;
+      }
+
+      found_set.m_where_clause = "\"" + where_clause_to_table_name + "\".\"" + relationship->get_to_field() + "\" = " + where_clause_to_key_field->sql(m_key_value);
+
 
       //g_warning("refresh_data_from_database(): where_clause=%s", where_clause.c_str());
       return Box_Data_List::refresh_data_from_database_with_where_clause(found_set);
@@ -246,7 +265,7 @@ void Box_Data_List_Related::on_record_added(const Gnome::Gda::Value& primary_key
     //Create the link by setting the foreign key
     if(m_key_field)
     {
-      Glib::ustring strQuery = "UPDATE \"" + m_portal->get_relationship()->get_to_table() + "\"";
+      Glib::ustring strQuery = "UPDATE \"" + m_portal->get_table_used(Glib::ustring() /* not relevant */) + "\"";
       strQuery += " SET \"" +  /* get_table_name() + "." +*/ m_key_field->get_name() + "\" = " + m_key_field->sql(m_key_value);
       strQuery += " WHERE \"" + get_table_name() + "\".\"" + field_primary_key->get_name() + "\" = " + field_primary_key->sql(primary_key_value);
       const bool test = query_execute(strQuery, get_app_window());
@@ -264,9 +283,9 @@ void Box_Data_List_Related::on_record_added(const Gnome::Gda::Value& primary_key
   }
 }
 
-sharedptr<Relationship> Box_Data_List_Related::get_relationship() const
+sharedptr<LayoutItem_Portal> Box_Data_List_Related::get_portal() const
 {
-  return m_portal->get_relationship();
+  return m_portal;
 }
 
 sharedptr<const Field> Box_Data_List_Related::get_key_field() const
@@ -283,7 +302,7 @@ void Box_Data_List_Related::on_record_deleted(const Gnome::Gda::Value& /* primar
 
 void Box_Data_List_Related::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, guint col)
 {
-  if(!(get_relationship()->get_allow_edit()))
+  if(!(m_portal->get_relationship_used_allows_edit()))
   {
     std::cerr << "Box_Data_List_Related::on_adddel_user_added() called on non-editable portal. This should not happen." << std::endl;
    return;
@@ -299,8 +318,7 @@ void Box_Data_List_Related::on_adddel_user_changed(const Gtk::TreeModel::iterato
 
 void Box_Data_List_Related::on_adddel_user_added(const Gtk::TreeModel::iterator& row, guint col_with_first_value)
 {
-  sharedptr<const Relationship> relationship = get_relationship();
-  if(!relationship->get_allow_edit())
+  if(!m_portal->get_relationship_used_allows_edit())
   {
     std::cerr << "Box_Data_List_Related::on_adddel_user_added() called on non-editable portal. This should not happen." << std::endl;
    return;
@@ -346,10 +364,10 @@ Box_Data_List_Related::type_vecLayoutFields Box_Data_List_Related::get_fields_to
     sharedptr<const Relationship> relationship = m_portal->get_relationship();
     if(relationship)
     {
-      type_vecLayoutFields result = get_table_fields_to_show_for_sequence(relationship->get_to_table(), mapGroups);
+      type_vecLayoutFields result = get_table_fields_to_show_for_sequence(m_portal->get_table_used(Glib::ustring() /* not relevant */), mapGroups);
 
       //If the relationship does not allow editing, then mark all these fields as non-editable:
-      if(!(get_relationship()->get_allow_edit()))
+      if(!(m_portal->get_relationship_used_allows_edit()))
       {
         for(type_vecLayoutFields::iterator iter = result.begin(); iter != result.end(); ++iter)
         {
@@ -414,11 +432,13 @@ bool Box_Data_List_Related::get_has_suitable_record_to_view_details() const
   Glib::ustring navigation_table_name;
   sharedptr<const UsesRelationship> navigation_relationship;
   get_suitable_table_to_view_details(navigation_table_name, navigation_relationship);
+
   return !(navigation_table_name.empty());
 }
 
 void Box_Data_List_Related::get_suitable_table_to_view_details(Glib::ustring& table_name, sharedptr<const UsesRelationship>& relationship) const
 {
+ 
   //Initialize output parameters:
   table_name = Glib::ustring();
 
@@ -442,16 +462,15 @@ void Box_Data_List_Related::get_suitable_table_to_view_details(Glib::ustring& ta
 
 
   //Get the navigation table name from the chosen relationship:
-  const Glib::ustring directly_related_table_name = m_portal->get_relationship()->get_to_table();
+  const Glib::ustring directly_related_table_name = m_portal->get_table_used(Glib::ustring() /* not relevant */);
+ 
   Glib::ustring navigation_table_name;
   if(navigation_relationship_main)
   {
-    //std::cout << "  debug: using main rel" << std::endl;
     navigation_table_name = directly_related_table_name;
   }
   else if(navigation_relationship)
   {
-    //std::cout << "  debug: using rel: " << navigation_relationship->get_relationship_name() << std::endl;
     navigation_table_name = navigation_relationship->get_table_used(directly_related_table_name);
   }
 
@@ -477,9 +496,12 @@ void Box_Data_List_Related::get_suitable_record_to_view_details(const Gnome::Gda
   table_name = Glib::ustring();
   table_primary_key_value = Gnome::Gda::Value();
 
+  std::cout << "debug: Box_Data_List_Related::get_suitable_record_to_view_details 1" << std::endl;
   Glib::ustring navigation_table_name;
   sharedptr<const UsesRelationship> navigation_relationship;
   get_suitable_table_to_view_details(navigation_table_name, navigation_relationship);
+   std::cout << "debug: Box_Data_List_Related::get_suitable_record_to_view_details 2" << std::endl;
+ 
 
   if(navigation_table_name.empty())
     return;
@@ -502,7 +524,7 @@ void Box_Data_List_Related::get_suitable_record_to_view_details(const Gnome::Gda
   type_vecLayoutFields fieldsToGet;
   fieldsToGet.push_back(layout_item);
 
-  const Glib::ustring query = Utils::build_sql_select_with_key(m_portal->get_relationship()->get_to_table(), fieldsToGet, m_AddDel.get_key_field(), primary_key_value);
+  const Glib::ustring query = Utils::build_sql_select_with_key(m_portal->get_table_used(Glib::ustring() /* not relevant */), fieldsToGet, m_AddDel.get_key_field(), primary_key_value);
   Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute(query);
 
 

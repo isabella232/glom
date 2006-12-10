@@ -50,6 +50,7 @@ public:
   bool operator==(const FoundSet& src) const;
 
   Glib::ustring m_table_name;
+  Glib::ustring m_extra_join; // Only used for doubly-related related records (portals), in which case the WHERE clause is also slightly different.
   Glib::ustring m_where_clause;
 
   ///field, ascending

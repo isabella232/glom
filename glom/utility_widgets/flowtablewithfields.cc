@@ -624,12 +624,13 @@ FlowTableWithFields::type_list_widgets FlowTableWithFields::get_portals(const sh
    for(type_portals::const_iterator iter = m_portals.begin(); iter != m_portals.end(); ++iter)
   {
     //*iter is a FlowTableItem.
-    Box_Data_List_Related* pPortal = *iter;
-    if(pPortal)
+    Box_Data_List_Related* pPortalUI = *iter;
+    if(pPortalUI)
     {
-      sharedptr<Relationship> relationship = pPortal->get_relationship();
+      sharedptr<LayoutItem_Portal> portal = pPortalUI->get_portal();
+      sharedptr<Relationship> relationship = portal->get_relationship(); //In this case, we only care about the first relationship (not any child relationships), because that's what would trigger a change.
       if(relationship && (relationship->get_from_field() == from_key_name))
-        result.push_back(pPortal);
+        result.push_back(pPortalUI);
     }
   }
 
@@ -1027,11 +1028,14 @@ void FlowTableWithFields::on_flowtable_related_record_changed(const Glib::ustrin
 
 void FlowTableWithFields::on_portal_user_requested_details(Gnome::Gda::Value primary_key_value, Box_Data_List_Related* portal_box)
 {
-  sharedptr<const Relationship> relationship = portal_box->get_relationship();
-  if(!relationship)
+  sharedptr<const LayoutItem_Portal> portal = portal_box->get_portal();
+  if(!portal)
     return;
 
-  const Glib::ustring related_table = relationship->get_to_table();
+  const Glib::ustring related_table = portal->get_table_used(Glib::ustring() /* parent table - not relevant */);
+  if(related_table.empty())
+    return;
+
   if(get_document()->get_table_is_hidden(related_table))
   {
     //Try to find a doubly-related table that is not hidden, and open that instead:

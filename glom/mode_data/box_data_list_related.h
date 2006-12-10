@@ -48,7 +48,7 @@ public:
    */
   virtual bool refresh_data_from_database_with_foreign_key(const Gnome::Gda::Value& foreign_key_value);
 
-  virtual sharedptr<Relationship> get_relationship() const;
+  sharedptr<LayoutItem_Portal> get_portal() const;
   virtual sharedptr<const Field> get_key_field() const;
 
   virtual void show_layout_dialog();

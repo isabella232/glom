@@ -54,6 +54,7 @@ FoundSet::FoundSet()
 
 FoundSet::FoundSet(const FoundSet& src)
 :  m_table_name(src.m_table_name),
+   m_extra_join(src.m_extra_join),
    m_where_clause(src.m_where_clause),
    m_sort_clause(src.m_sort_clause)
 {
@@ -62,6 +63,7 @@ FoundSet::FoundSet(const FoundSet& src)
 FoundSet& FoundSet::operator=(const FoundSet& src)
 {
   m_table_name = src.m_table_name;
+  m_extra_join = src.m_extra_join;
   m_where_clause = src.m_where_clause;
   m_sort_clause = src.m_sort_clause;
 
@@ -71,6 +73,7 @@ FoundSet& FoundSet::operator=(const FoundSet& src)
 bool FoundSet::operator==(const FoundSet& src) const
 {
   return (m_table_name == src.m_table_name)
+      && (m_extra_join == src.m_extra_join)
       && (m_where_clause == src.m_where_clause)
       && (m_sort_clause == src.m_sort_clause);
 }
@@ -2338,6 +2341,8 @@ sharedptr<const LayoutItem_Field> Base_DB::get_field_is_from_non_hidden_related_
   if(!document)
     return result;
 
+  const Glib::ustring parent_table_name = portal->get_table_used(Glib::ustring() /* parent table - not relevant */); 
+
   LayoutItem_Portal::type_map_const_items items = portal->get_items(); 
   for(LayoutItem_Portal::type_map_const_items::const_iterator iter = items.begin(); iter != items.end(); ++iter)
   {
@@ -2346,7 +2351,7 @@ sharedptr<const LayoutItem_Field> Base_DB::get_field_is_from_non_hidden_related_
     {
       if(field->get_has_relationship_name())
       {
-        const Glib::ustring table_name = field->get_table_used( portal->get_relationship()->get_to_table() );
+        const Glib::ustring table_name = field->get_table_used(parent_table_name);
         if(!(document->get_table_is_hidden(table_name)))
           return field;
       }
@@ -2366,13 +2371,15 @@ sharedptr<const LayoutItem_Field> Base_DB::get_field_identifies_non_hidden_relat
   if(!document)
     return result;
 
+  const Glib::ustring parent_table_name = portal->get_table_used(Glib::ustring() /* parent table - not relevant */);
+
   LayoutItem_Portal::type_map_const_items items = portal->get_items(); 
   for(LayoutItem_Portal::type_map_const_items::const_iterator iter = items.begin(); iter != items.end(); ++iter)
   {
     sharedptr<const LayoutItem_Field> field = sharedptr<const LayoutItem_Field>::cast_dynamic(iter->second);
     if(field && !(field->get_has_relationship_name()))
     {
-      sharedptr<Relationship> relationship = document->get_field_used_in_relationship_to_one(portal->get_relationship()->get_to_table(), field->get_name());
+      sharedptr<Relationship> relationship = document->get_field_used_in_relationship_to_one(parent_table_name, field->get_name());
       if(relationship)
       {
         const Glib::ustring table_name = relationship->get_to_table();
@@ -2399,7 +2406,7 @@ sharedptr<const UsesRelationship> Base_DB::get_portal_navigation_relationship_au
   const Document_Glom* document = get_document();
   
   //If the related table is not hidden then we can just navigate to that:
-  const Glib::ustring direct_related_table_name = portal->get_relationship()->get_to_table(); 
+  const Glib::ustring direct_related_table_name = portal->get_table_used(Glib::ustring() /* parent table - not relevant */);
   if(!(document->get_table_is_hidden(direct_related_table_name)))
   {
     //Non-hidden tables can just be shown directly. Navigate to it: 

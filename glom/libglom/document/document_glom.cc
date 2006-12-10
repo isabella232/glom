@@ -1761,10 +1761,8 @@ void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Gl
       {
         sharedptr<LayoutItem_Portal> portal = sharedptr<LayoutItem_Portal>::create();
 
-        const Glib::ustring relationship_name = get_node_attribute_value(element, GLOM_ATTRIBUTE_RELATIONSHIP_NAME);
-        sharedptr<Relationship> relationship = get_relationship(table_name, relationship_name);
-        portal->set_relationship(relationship);
-
+        load_after_layout_item_usesrelationship(element, table_name, portal); 
+       
         sharedptr<UsesRelationship> relationship_navigation_specific;
         bool relationship_navigation_specific_main = false;
         xmlpp::Element* elementNavigationRelationshipSpecific = get_node_child_named(element, GLOM_NODE_DATA_LAYOUT_PORTAL_NAVIGATIONRELATIONSHIP);
@@ -1773,7 +1771,7 @@ void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Gl
            //std::cout << "debug: loading GLOM_NODE_DATA_LAYOUT_PORTAL_NAVIGATIONRELATIONSHIP" << std::endl;
 
            relationship_navigation_specific = sharedptr<UsesRelationship>::create();
-           load_after_layout_item_usesrelationship(elementNavigationRelationshipSpecific, relationship->get_to_table(), relationship_navigation_specific);
+           load_after_layout_item_usesrelationship(elementNavigationRelationshipSpecific, portal->get_table_used(table_name), relationship_navigation_specific);
            relationship_navigation_specific_main = get_node_attribute_value_as_bool(elementNavigationRelationshipSpecific, GLOM_ATTRIBUTE_PORTAL_NAVIGATIONRELATIONSHIP_MAIN);
 
            if(relationship_navigation_specific)
@@ -2385,7 +2383,7 @@ void Document_Glom::save_before_layout_group(xmlpp::Element* node, const sharedp
             if(portal) //If it is a related records portal
             {
               child = node->add_child(GLOM_NODE_DATA_LAYOUT_PORTAL);
-              child->set_attribute(GLOM_ATTRIBUTE_RELATIONSHIP_NAME, portal->get_relationship_name());
+              save_before_layout_item_usesrelationship(child, portal);
 
               //Portal navigation details:
               bool navigation_specific_main = false;

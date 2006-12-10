@@ -39,6 +39,7 @@ Dialog_Layout_List_Related::Dialog_Layout_List_Related(BaseObjectType* cobject, 
   m_button_field_delete(0),
   m_button_field_edit(0),
   m_combo_relationship(0),
+  m_checkbutton_show_child_relationships(0),
   m_radio_navigation_automatic(0),
   m_radio_navigation_specify(0),
   m_label_navigation_automatic(0),
@@ -46,6 +47,9 @@ Dialog_Layout_List_Related::Dialog_Layout_List_Related(BaseObjectType* cobject, 
 {
   refGlade->get_widget_derived("combo_relationship_name", m_combo_relationship);
   m_combo_relationship->signal_changed().connect(sigc::mem_fun(*this, &Dialog_Layout_List_Related::on_combo_relationship_changed));
+
+  refGlade->get_widget("checkbutton_show_child_relationships", m_checkbutton_show_child_relationships);
+  m_checkbutton_show_child_relationships->signal_toggled().connect(sigc::mem_fun(*this, &Dialog_Layout_List_Related::on_checkbutton_show_child_relationships));
 
   refGlade->get_widget("treeview_fields", m_treeview_fields);
   if(m_treeview_fields)
@@ -105,6 +109,9 @@ Dialog_Layout_List_Related::Dialog_Layout_List_Related(BaseObjectType* cobject, 
   make_sensitivity_depend_on_toggle_button(*m_radio_navigation_specify, *m_combo_navigation_specify);
   m_combo_navigation_specify->signal_changed().connect(sigc::mem_fun(*this, &Dialog_Layout_List_Related::on_combo_navigation_specific_changed));
 
+  if(m_entry_table_title)
+    m_entry_table_title->hide(); // We don't use this (it's from the base class).
+
   m_modified = false;
 
   show_all_children();
@@ -132,36 +139,44 @@ void Dialog_Layout_List_Related::update_ui(bool including_relationship_list)
 
   m_modified = false;
 
+  const Glib::ustring related_table_name = m_portal->get_table_used(Glib::ustring() /* parent table - not relevant*/);
+
   //Update the tree models from the document
   Document_Glom* document = get_document();
   if(document)
   {
-    const Glib::ustring parent_relationship_name = m_portal->get_relationship()->get_name();
-    const Glib::ustring parent_relationship_title = m_portal->get_relationship()->get_title_or_name();
-
     //Fill the relationships combo:
     if(including_relationship_list)
     {
-      const Document_Glom::type_vecRelationships vecRelationships = document->get_relationships(m_portal->get_relationship()->get_from_table());
-      m_combo_relationship->set_relationships(vecRelationships); //We don't show the optional parent table because portal use _only_ relationships, of course.
+      bool show_child_relationships = m_checkbutton_show_child_relationships->get_active();
+        
+      //For the showing of child relationships if necessary:
+      if(!show_child_relationships && m_portal->get_related_relationship())
+      {
+        show_child_relationships = true;
+      }
+
+      m_combo_relationship->set_relationships(document, m_portal->get_relationship()->get_from_table(), show_child_relationships, false /* don't show parent table */); //We don't show the optional parent table because portal use _only_ relationships, of course.
+
+      if(show_child_relationships != m_checkbutton_show_child_relationships->get_active())
+      {
+         m_checkbutton_show_child_relationships->set_active(show_child_relationships);
+      }
     }
 
     //Set the table name and title:
     sharedptr<LayoutItem_Portal> portal_temp = m_portal;
-    m_combo_relationship->set_selected_relationship(m_portal->get_relationship()); 
-
-    m_entry_table_title->set_text( parent_relationship_title );
+    m_combo_relationship->set_selected_relationship(m_portal->get_relationship(), m_portal->get_related_relationship()); 
 
     Document_Glom::type_mapLayoutGroupSequence mapGroups;
     mapGroups[0] = m_portal;
-    document->fill_layout_field_details(m_portal->get_relationship()->get_to_table(), mapGroups); //Update with full field information.
+    document->fill_layout_field_details(related_table_name, mapGroups); //Update with full field information.
 
     //If no information is stored in the document, then start with something:
 
     if(mapGroups.empty())
     {
-      const Glib::ustring table_name = m_portal->get_relationship()->get_to_table();
-      Document_Glom::type_vecFields table_fields = document->get_table_fields(table_name);
+      Document_Glom::type_vecFields table_fields = document->get_table_fields(related_table_name);
 
       sharedptr<LayoutGroup> group = sharedptr<LayoutGroup>::create();
       group->set_name("main");
@@ -213,8 +228,7 @@ void Dialog_Layout_List_Related::update_ui(bool including_relationship_list)
 
   //Show the navigation information:
   //const Document_Glom::type_vecRelationships vecRelationships = document->get_relationships(m_portal->get_relationship()->get_from_table());
-  const Glib::ustring related_table_name = m_portal->get_relationship()->get_to_table();
-  m_combo_navigation_specify->set_relationships(document, related_table_name, true /* show related relationships */); //TODO: Don't show the hidden tables, and don't show relationships that are not used by any fields.
+  m_combo_navigation_specify->set_relationships(document, related_table_name, true /* show related relationships */, false /* don't show parent table */); //TODO: Don't show the hidden tables, and don't show relationships that are not used by any fields.
   //m_combo_navigation_specify->set_display_parent_table(""); //This would be superfluous, and a bit confusing.
 
   bool navigation_is_automatic = false;
@@ -248,10 +262,10 @@ void Dialog_Layout_List_Related::update_ui(bool including_relationship_list)
   Glib::ustring automatic_navigation_description;
   
   if(navigation_automatic_main)
-    automatic_navigation_description = m_portal->get_relationship()->get_name();
+    automatic_navigation_description = m_portal->get_relationship_name_used();
   else if(relationship_navigation_automatic)
   {
-    automatic_navigation_description = m_portal->get_relationship()->get_name();
+    automatic_navigation_description = m_portal->get_relationship_name_used();
 
     if(relationship_navigation_automatic->get_has_relationship_name())
       automatic_navigation_description += ("::" + relationship_navigation_automatic->get_relationship_name());
@@ -373,15 +387,12 @@ void Dialog_Layout_List_Related::save_to_document()
       sharedptr<UsesRelationship> none;
       m_portal->set_navigation_relationship_specific(false, none);
     }
-
-    Document_Glom* document = get_document();
-    if(document)
-    {
-      //Save the relationship title, which will be used elsewhere too:
-      m_portal->get_relationship()->set_title(m_entry_table_title->get_text());
-      document->set_relationship(m_table_name, m_portal->get_relationship());
-    }
   }
+}
+
+void Dialog_Layout_List_Related::on_checkbutton_show_child_relationships()
+{
+  update_ui();
 }
 
 void Dialog_Layout_List_Related::on_combo_relationship_changed()
@@ -389,16 +400,20 @@ void Dialog_Layout_List_Related::on_combo_relationship_changed()
   if(!m_portal)
     return;
 
-  sharedptr<Relationship> relationship = m_combo_relationship->get_selected_relationship();
+  sharedptr<Relationship> relationship_related;
+  sharedptr<Relationship> relationship = m_combo_relationship->get_selected_relationship(relationship_related);
   if(relationship)
   {
     //Clear the list of fields if the relationship has changed, because the fields could not possible be correct for the new table:
     bool relationship_changed = false;
     const Glib::ustring old_relationship_name = glom_get_sharedptr_name(m_portal->get_relationship());
-    if(old_relationship_name !=  glom_get_sharedptr_name(relationship))
+    const Glib::ustring old_relationship_related_name = glom_get_sharedptr_name(m_portal->get_related_relationship());
+    if( (old_relationship_name != glom_get_sharedptr_name(relationship)) ||
+        (old_relationship_related_name != glom_get_sharedptr_name(relationship_related)) )
       relationship_changed = true;
 
     m_portal->set_relationship(relationship);
+    m_portal->set_related_relationship(relationship_related);
 
     if(relationship_changed)
       m_portal->remove_all_items();
@@ -418,7 +433,10 @@ void Dialog_Layout_List_Related::on_treeview_fields_selection_changed()
 void Dialog_Layout_List_Related::on_button_add_field()
 {
   //Get the chosen field:
-  sharedptr<LayoutItem_Field> field = offer_field_list(m_portal->get_relationship()->get_to_table(), this);
+  //std::cout << "debug: related relationship=" << glom_get_sharedptr_name(m_portal->get_related_relationship()) << std::endl;
+  //std::cout << "debug table used =" << m_portal->get_table_used(m_table_name) << std::endl;
+
+  sharedptr<LayoutItem_Field> field = offer_field_list(m_portal->get_table_used(m_table_name), this);
   if(field)
   {
     //Add the field details to the layout treeview:
@@ -458,6 +476,7 @@ void Dialog_Layout_List_Related::on_button_delete()
 
 sharedptr<Relationship> Dialog_Layout_List_Related::get_relationship() const
 {
+  std::cout << "debug: I wonder if this function is used." << std::endl;
   return m_combo_relationship->get_selected_relationship();
 }
 
@@ -493,7 +512,7 @@ void Dialog_Layout_List_Related::on_button_edit_field()
       sharedptr<LayoutItem_Field> field = row[m_ColumnsFields.m_col_layout_item];
 
       //Get the chosen field:
-      sharedptr<LayoutItem_Field> field_chosen = offer_field_list(field, m_portal->get_relationship()->get_to_table(), this);
+      sharedptr<LayoutItem_Field> field_chosen = offer_field_list(field, m_portal->get_table_used(m_table_name), this);
       if(field_chosen)
       {
         //Set the field details in the layout treeview:
@@ -538,7 +557,7 @@ void Dialog_Layout_List_Related::on_button_field_formatting()
           Gtk::TreeModel::Row row = *iter;
           sharedptr<LayoutItem_Field> field = row[m_ColumnsFields.m_col_layout_item];
 
-          dialog->set_field(field, m_portal->get_relationship()->get_to_table());
+          dialog->set_field(field, m_portal->get_table_used(Glib::ustring() /* parent table - not relevant */));
           dialog->set_transient_for(*this);
           int response = dialog->run();
           dialog->hide();

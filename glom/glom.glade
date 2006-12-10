@@ -2352,6 +2352,19 @@
 	    </packing>
 	  </child>
 
+          <child>
+              <widget class="GtkCheckButton" id="checkbutton_show_child_relationships">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">Show child relationships</property>
+                <property name="draw_indicator">True</property>
+              </widget>
+              <packing>
+	        <property name="padding">0</property>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+              </packing>
+            </child>
+
 	  <child>
 	    <widget class="GtkEntry" id="entry_table_title">
 	      <property name="visible">True</property>

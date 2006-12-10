@@ -29,6 +29,8 @@
 namespace Glom
 {
 
+class Field;
+
 /* Base class for classes that need to store a relationship name 
 * and a cache of the actual relationship information.
 */
@@ -63,6 +65,14 @@ public:
   /** Returns either the @a parent_table, related to table, or doubly-related to-table.
    */
   Glib::ustring get_table_used(const Glib::ustring& parent_table) const;
+
+  Glib::ustring get_title_used(const Glib::ustring& parent_table_title) const;
+
+  Glib::ustring get_to_field_used() const;
+
+  Glib::ustring get_relationship_name_used() const;
+
+  bool get_relationship_used_allows_edit() const;
 
   Glib::ustring get_sql_join_alias_name() const;
   Glib::ustring get_sql_join_alias_definition() const;

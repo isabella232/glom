@@ -178,7 +178,7 @@ Glib::ustring Utils::string_replace(const Glib::ustring& src, const Glib::ustrin
 }
 
 
-Glib::ustring Utils::build_sql_select_with_where_clause(const Glib::ustring& table_name, const type_vecLayoutFields& fieldsToGet, const Glib::ustring& where_clause, const type_sort_clause& sort_clause)
+Glib::ustring Utils::build_sql_select_with_where_clause(const Glib::ustring& table_name, const type_vecLayoutFields& fieldsToGet, const Glib::ustring& where_clause, const Glib::ustring& extra_join, const type_sort_clause& sort_clause)
 {
   //TODO_Performance:
   type_vecConstLayoutFields constFieldsToGet;
@@ -187,7 +187,7 @@ Glib::ustring Utils::build_sql_select_with_where_clause(const Glib::ustring& tab
     constFieldsToGet.push_back(*iter);
   }
 
-  return build_sql_select_with_where_clause(table_name, constFieldsToGet, where_clause, sort_clause);
+  return build_sql_select_with_where_clause(table_name, constFieldsToGet, where_clause, extra_join, sort_clause);
 }
 
 
@@ -220,7 +220,7 @@ static void add_to_relationships_list(type_list_relationships& list_relationship
  
 }
 
-Glib::ustring Utils::build_sql_select_with_where_clause(const Glib::ustring& table_name, const type_vecConstLayoutFields& fieldsToGet, const Glib::ustring& where_clause, const type_sort_clause& sort_clause)
+Glib::ustring Utils::build_sql_select_with_where_clause(const Glib::ustring& table_name, const type_vecConstLayoutFields& fieldsToGet, const Glib::ustring& where_clause, const Glib::ustring& extra_join, const type_sort_clause& sort_clause)
 {
   Glib::ustring result;
 
@@ -311,6 +311,11 @@ Glib::ustring Utils::build_sql_select_with_where_clause(const Glib::ustring& tab
 
       sql_part_from += relationship->get_to_table();
     }
+  }
+
+  if(!extra_join.empty())
+  {
+    sql_part_leftouterjoin += (" " + extra_join + " ");
   }
 
   if(!sql_part_from.empty())

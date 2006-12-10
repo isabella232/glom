@@ -41,7 +41,7 @@ public:
   typedef std::vector< sharedptr<Relationship> > type_vecRelationships;
   void set_relationships(const type_vecRelationships& relationships, const Glib::ustring& parent_table_name = Glib::ustring(), const Glib::ustring& parent_table_title = Glib::ustring());
 
-  void set_relationships(Document_Glom* document, const Glib::ustring parent_table_name, bool show_related_relationships = false);
+  void set_relationships(Document_Glom* document, const Glib::ustring parent_table_name, bool show_related_relationships = false, bool show_parent_table = true);
 
   void set_selected_relationship(const sharedptr<const Relationship>& relationship);
   void set_selected_relationship(const sharedptr<const Relationship>& relationship, const sharedptr<const Relationship>& related_relationship);
