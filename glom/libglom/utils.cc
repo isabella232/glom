@@ -327,6 +327,12 @@ Glib::ustring Utils::build_sql_select_with_where_clause(const Glib::ustring& tab
   if(!where_clause.empty())
     result += " WHERE " + where_clause;
 
+  //Extra GROUP_BY clause for doubly-related records. This must be before the ORDER BY sort clause:
+  if(!extra_group_by.empty())
+  {
+    result += (" " + extra_group_by + " ");
+  }
+
   //Sort clause:
   if(!sort_clause.empty())
   {
@@ -347,11 +353,6 @@ Glib::ustring Utils::build_sql_select_with_where_clause(const Glib::ustring& tab
 
     if(!str_sort_clause.empty())
       result += " ORDER BY " + str_sort_clause;
-  }
-
-  if(!extra_group_by.empty())
-  {
-    result += (" " + extra_group_by + " ");
   }
 
   return result;

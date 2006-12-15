@@ -331,6 +331,15 @@
 
 <sect2 id="dialog_connection">
 <title>Dialog: Connection</title>
+<para>This dialog requests a user name and password for connection to a database server. This is usually not the same username and password combination with which you log in to your system. All Glom systems require a database server on which the actual data will be stored. If the database server is not running on your local computer (&quot;localhost&quot;), then you must also provide its network hostname, such as &quot;glomserver.openismus.com&quot;, though your hostname will be different.</para>
+<para>Your system administrator can provide these database login details.</para>
+<para>If you are the system administrator, see Glom's <ulink url="http://www.glom.org/wiki/index.php?title=Initial_Postgres_Configuration" type="http">Postgres Configuration</ulink> web page for help with installing and configuring a database server.</para>
+</sect2>
+
+<sect2 id="dialog_error_connection">
+<title>Dialog: Connection Error</title>
+<para>This dialog is shown when Glom could not connect to the specified database server. Either the database server is not running at the specified hostname, or the user name and password were not accepted by the database server. See the <link linkend="dialog_connection">Connection Dialog</link> section for more details.</para>
+
 <para></para>
 </sect2>
 
