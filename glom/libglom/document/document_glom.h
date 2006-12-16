@@ -95,13 +95,13 @@ public:
 
   static guint get_latest_known_document_format_version();
 
-  virtual void set_connection_server(const Glib::ustring& strVal);
-  virtual void set_connection_user(const Glib::ustring& strVal);
-  virtual void set_connection_database(const Glib::ustring& strVal);
+  void set_connection_server(const Glib::ustring& strVal);
+  void set_connection_user(const Glib::ustring& strVal);
+  void set_connection_database(const Glib::ustring& strVal);
 
-  virtual Glib::ustring get_connection_server() const;
-  virtual Glib::ustring get_connection_user() const;
-  virtual Glib::ustring get_connection_database() const;
+  Glib::ustring get_connection_server() const;
+  Glib::ustring get_connection_user() const;
+  Glib::ustring get_connection_database() const;
 
   /** Set the language/locale used by original titles.
    * Title translations are translations of the text in this language.
@@ -115,7 +115,7 @@ public:
   Glib::ustring get_translation_original_locale() const;
 
   typedef std::vector< sharedptr<Relationship> > type_vecRelationships;
-  virtual type_vecRelationships get_relationships(const Glib::ustring& table_name, bool plus_system_prefs = false) const;
+  type_vecRelationships get_relationships(const Glib::ustring& table_name, bool plus_system_prefs = false) const;
   void set_relationships(const Glib::ustring& table_name, const type_vecRelationships& vecRelationships);
 
   sharedptr<Relationship> get_relationship(const Glib::ustring& table_name, const Glib::ustring& relationship_name) const;
@@ -135,10 +135,10 @@ public:
 
 
   typedef std::vector< sharedptr<Field> > type_vecFields;
-  virtual type_vecFields get_table_fields(const Glib::ustring& table_name) const;
-  virtual void set_table_fields(const Glib::ustring& table_name, const type_vecFields& vecFields);
+  type_vecFields get_table_fields(const Glib::ustring& table_name) const;
+  void set_table_fields(const Glib::ustring& table_name, const type_vecFields& vecFields);
 
-  virtual sharedptr<Field> get_field(const Glib::ustring& table_name, const Glib::ustring& strFieldName) const;
+  sharedptr<Field> get_field(const Glib::ustring& table_name, const Glib::ustring& strFieldName) const;
 
   /** Use this after removing a field from a table,
    * so that it is not used anymore in relationships, layouts, reports, etc.
@@ -178,7 +178,7 @@ public:
   void change_relationship_name(const Glib::ustring& table_name, const Glib::ustring& name, const Glib::ustring& name_new);
 
   typedef std::list< sharedptr<TableInfo> > type_listTableInfo;
-  virtual type_listTableInfo get_tables(bool plus_system_prefs = false) const;
+  type_listTableInfo get_tables(bool plus_system_prefs = false) const;
   std::vector<Glib::ustring> get_table_names(bool plus_system_prefs = false) const;
 
   void set_tables(const type_listTableInfo& tables);
@@ -190,13 +190,13 @@ public:
    * It removes information about the table, including fields and layouts,
    * and any place that parts of the table are used.
    */
-  virtual void remove_table(const Glib::ustring& table_name);
+  void remove_table(const Glib::ustring& table_name);
 
-  virtual bool get_table_is_known(const Glib::ustring& table_name) const;
-  virtual bool get_table_is_hidden(const Glib::ustring& table_name) const;
+  bool get_table_is_known(const Glib::ustring& table_name) const;
+  bool get_table_is_hidden(const Glib::ustring& table_name) const;
 
-  virtual Glib::ustring get_table_title(const Glib::ustring& table_name) const;
-  virtual void set_table_title(const Glib::ustring& table_name, const Glib::ustring& value);
+  Glib::ustring get_table_title(const Glib::ustring& table_name) const;
+  void set_table_title(const Glib::ustring& table_name, const Glib::ustring& value);
 
   /** Save example data into the document, for use when creating the example database on the server.
    * Don't use this for large amounts of data.
@@ -256,18 +256,18 @@ public:
    * @param reason The reason that the user is not a developer, if he is not.
    * @result Whether the user is a developer.
    */
-  virtual AppState::userlevels get_userlevel(userLevelReason& reason) const;
+  AppState::userlevels get_userlevel(userLevelReason& reason) const;
 
-  virtual AppState::userlevels get_userlevel() const;
+   AppState::userlevels get_userlevel() const;
 
   /** This is transitory information, not saved to disk.
    */
-  virtual bool set_userlevel(AppState::userlevels userlevel);
+  bool set_userlevel(AppState::userlevels userlevel);
 
   typedef sigc::signal<void, AppState::userlevels> type_signal_userlevel_changed;
   type_signal_userlevel_changed signal_userlevel_changed();
 
-  virtual void emit_userlevel_changed();
+  void emit_userlevel_changed();
 
   void set_parent_window(Gtk::Window* window);
 
@@ -307,7 +307,7 @@ protected:
 
   void save_changes();
 
-  virtual void on_app_state_userlevel_changed(AppState::userlevels userlevel);
+  void on_app_state_userlevel_changed(AppState::userlevels userlevel);
 
   void fill_translatable_layout_items(const sharedptr<LayoutGroup>& group, type_list_translatables& the_list);
 

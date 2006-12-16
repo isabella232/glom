@@ -1,3 +1,7 @@
+2006-12-16  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/libglom/document/document_glom.h: Remove unnecessary virtuals.
+
 2006-12-15  Murray Cumming  <murrayc@murrayc.com>
 
 	* docs/user-guide/C/glom.xml: Add text for the help sections for the connection and connection error 
