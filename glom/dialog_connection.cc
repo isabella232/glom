@@ -57,20 +57,24 @@ sharedptr<SharedConnection> Dialog_Connection::connect_to_server_with_connection
     //Set the connection details in the ConnectionPool singleton.
     //The ConnectionPool will now use these every time it tries to connect.
 
-    //const Document_Glom* document = get_document();
-    //if(document)
-    //{
+    const Document_Glom* document = get_document();
+    if(document)
+    {
       //std::cout << "debug: Dialog_Connection::connect_to_server_with_connection_settings(): m_database_name=" << m_database_name << std::endl;
       connection_pool->set_database(m_database_name);
 
-      connection_pool->set_host(m_entry_host->get_text());
+      if(document->get_connection_is_self_hosted())
+        connection_pool->set_host("localhost");
+      else
+        connection_pool->set_host(m_entry_host->get_text());
+ 
       connection_pool->set_user(m_entry_user->get_text());
       connection_pool->set_password(m_entry_password->get_text());
       //if(document)
       //{
       //  connection_pool->set_database(document->get_connection_database());
       //}
-    //}
+    }
 
     connection_pool->set_ready_to_connect(); //Box_DB::connect_to_server() will now attempt the connection-> Shared instances of m_Connection will also be usable.
 
@@ -96,10 +100,20 @@ void Dialog_Connection::load_from_document()
   if(document)
   {
     //Load server and user:
-    Glib::ustring host = document->get_connection_server();
-    if(host.empty())
-      host = "localhost";
-    m_entry_host->set_text(host);
+    if(document->get_connection_is_self_hosted())
+    {
+       m_entry_host->set_text("(self hosted)");
+       m_entry_host->set_sensitive(false);
+    }
+    else
+    {
+      Glib::ustring host = document->get_connection_server();
+      if(host.empty())
+        host = "localhost";
+     
+      m_entry_host->set_text(host);
+      m_entry_host->set_sensitive(true);
+    }
 
     Glib::ustring user = document->get_connection_user(); //TODO: Offer a drop-down list of users.
 
