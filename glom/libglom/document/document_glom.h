@@ -99,6 +99,17 @@ public:
   void set_connection_user(const Glib::ustring& strVal);
   void set_connection_database(const Glib::ustring& strVal);
 
+  /** When this returns true, the postgres database should be hosted by the local client,
+   *  instead of connecting to an external database server.
+   */
+  bool get_connection_is_self_hosted() const;
+
+  /** If the database should be hosted, this provides the 
+    * path to the directory that contains all the files needed to do that.
+    * This is usually a specifically-named directory at the same level as the .glom file. 
+    */   
+  std::string get_connection_self_hosted_directory_uri() const;
+
   Glib::ustring get_connection_server() const;
   Glib::ustring get_connection_user() const;
   Glib::ustring get_connection_database() const;
@@ -326,6 +337,7 @@ protected:
   AppState m_app_state;
   type_signal_userlevel_changed m_signal_userlevel_changed;
 
+  bool m_connection_is_self_hosted;
   Glib::ustring m_connection_server, m_connection_user, m_connection_database;
 
   class LayoutInfo

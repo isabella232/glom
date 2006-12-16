@@ -105,6 +105,10 @@ public:
 
   static sharedptr<SharedConnection> get_and_connect();
 
+  /** This specifies that Glom should start its own database server instance for this database,
+   *  using the database files stored at the specified uri.
+   */
+  void set_self_hosting(const std::string& data_uri);
 
   void set_host(const Glib::ustring& value);
   void set_user(const Glib::ustring& value);
@@ -125,11 +129,15 @@ public:
    */
   float get_postgres_server_version();
 
+  void start_self_hosting();
+  void stop_self_hosting();
+
   //Show the gda error in a dialog.
   static bool handle_error(bool cerr_only = false);
 
 protected:
   void on_sharedconnection_finished();
+
 
   typedef std::list<Glib::ustring> type_list_ports;
   type_list_ports m_list_ports; //Network ports on which to try connecting to postgres.
@@ -137,6 +145,8 @@ protected:
   Glib::RefPtr<Gnome::Gda::Client> m_GdaClient;
   //Gnome::Gda::DataSourceInfo m_GdaDataSourceInfo;
 
+  bool m_self_hosting_active;
+  std::string m_self_hosting_data_uri;
 
   Glib::RefPtr<Gnome::Gda::Connection> m_refGdaConnection;
   guint m_sharedconnection_refcount;

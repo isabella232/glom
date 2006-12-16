@@ -22,6 +22,7 @@
 #include <gtkmm/messagedialog.h>
 #include <bakery/bakery.h>
 #include <glibmm/i18n.h>
+#include "config.h"
 
 namespace Glom
 {
@@ -92,12 +93,13 @@ void SharedConnection::close()
 ConnectionPool* ConnectionPool::m_instance = 0;
 
 ConnectionPool::ConnectionPool()
-: m_sharedconnection_refcount(0),
+: m_self_hosting_active(false),
+  m_sharedconnection_refcount(0),
   m_ready_to_connect(false),
   m_pFieldTypes(0)
 {
   m_list_ports.push_back("5433"); //Ubuntu Dapper seems to default to this for Postgres 8.1, probably to avoid a clash with Postgres 7.4
-  m_list_ports.push_back("5432"); 
+  m_list_ports.push_back("5432");
 }
 
 ConnectionPool::~ConnectionPool()
@@ -336,6 +338,10 @@ sharedptr<SharedConnection> ConnectionPool::connect()
   return sharedptr<SharedConnection>(0);
 }
 
+void ConnectionPool::set_self_hosting(const std::string& data_uri)
+{
+  m_self_hosting_data_uri = data_uri;
+}
 
 void ConnectionPool::set_host(const Glib::ustring& value)
 {
@@ -455,6 +461,75 @@ bool ConnectionPool::handle_error(bool cerr_only)
 float ConnectionPool::get_postgres_server_version()
 {
   return m_postgres_server_version;
+}
+
+void ConnectionPool::start_self_hosting()
+{
+  if(m_self_hosting_active)
+    return; //Just do it once.
+
+  const std::string dbdir_uri = m_self_hosting_data_uri;
+  const std::string dbdir = Glib::filename_from_uri(dbdir_uri);
+  g_assert(!dbdir.empty());
+
+  try
+  {
+    // TODO: Detect other instances on the same computer, and use a different port number, 
+    // or refuse to continue, showing an error dialog.
+
+    // -D specifies the data directory.
+    // -c config_file= specifies the configuration file
+    // -k specifies a directory to use for the socket. This must be writable by us.
+    // POSTGRES_POSTMASTER_PATH is defined in config.h, based on the configure.
+    const std::string command_postgres_start = POSTGRES_UTILS_PATH "/postmaster -D \"" + dbdir + "/data\" "
+                                  + " -c config_file=\"" + dbdir + "/config/postgresql.conf\""
+                                  + " -c hba_file=\"" + dbdir + "/config/pg_hba.conf\""
+                                  + " -c ident_file=\"" + dbdir + "/config/pg_ident.conf\""
+                                  + " -k \"" + dbdir + "\""
+                                  + " --external_pid_file=\"" + dbdir + "/pid\"";
+
+    std::cout << "debug: command_postgres_start = " << std::endl << "  " << command_postgres_start << std::endl;
+
+    Glib::spawn_command_line_async(command_postgres_start);
+  }
+  catch(const Glib::SpawnError& ex)
+  {
+    std::cerr << "Exception while attempting to self-host a database: " << ex.what() << std::endl;
+  }
+
+  m_self_hosting_active = true;
+}
+
+void ConnectionPool::stop_self_hosting()
+{
+  if(!m_self_hosting_active)
+    return; //Don't try to stop it if we have not started it.
+
+  const std::string dbdir_uri = m_self_hosting_data_uri;
+  const std::string dbdir = Glib::filename_from_uri(dbdir_uri);
+  g_assert(!dbdir.empty());
+
+  try
+  {
+    // TODO: Detect other instances on the same computer, and use a different port number, 
+    // or refuse to continue, showing an error dialog.
+
+    // -D specifies the data directory.
+    // -c config_file= specifies the configuration file
+    // -k specifies a directory to use for the socket. This must be writable by us.
+    // POSTGRES_POSTMASTER_PATH is defined in config.h, based on the configure.
+    const std::string command_postgres_stop = POSTGRES_UTILS_PATH "/pg_ctl -D \"" + dbdir + "/data\" stop";
+
+    std::cout << "debug: command_postgres_stop = " << std::endl << "  " << command_postgres_stop << std::endl;
+
+    Glib::spawn_command_line_async(command_postgres_stop);
+  }
+  catch(const Glib::SpawnError& ex)
+  {
+    std::cerr << "Exception while attempting to stop self-hosting of the database: " << ex.what() << std::endl;
+  }
+
+  m_self_hosting_active = false;
 }
 
 } //namespace Glom

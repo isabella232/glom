@@ -85,11 +85,14 @@ protected:
   virtual void on_menu_developer_translations();
   virtual void on_window_translations_hide();
 
+  virtual void on_menu_file_close(); //override.
+
   virtual void on_userlevel_changed(AppState::userlevels userlevel);
 
   virtual Bakery::App* new_instance(); //Override
 
-  virtual bool recreate_database(bool& user_cancelled); //return indicates success.
+  bool recreate_database(bool& user_cancelled); //return indicates success.
+  void stop_self_hosting_of_document_database();
 
   typedef Bakery::App_WithDoc_Gtk type_base;
 

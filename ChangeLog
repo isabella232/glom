@@ -1,5 +1,24 @@
 2006-12-16  Murray Cumming  <murrayc@murrayc.com>
 
+	* configure.in:
+	* config.h.in: Add a --with-postgres-utils option, so we can specify the 
+	location of postmaster and pg_ctl.
+	* glom/application.cc:
+	* glom/application.h: Added stop_self_hosting_of_document_database().
+	on_document_load(): Start self-hosting before asking for connection details, 
+	if the document is marked as self-hosting. Stop self-hosting if the connection 
+	fails.
+	* glom/libglom/connectionpool.cc:
+	* glom/libglom/connectionpool.h: Added set_self_hosting(), 
+	start_self_hosting(), stop_self_hosting();
+	* glom/libglom/document/document_glom.cc:
+	* glom/libglom/document/document_glom.h: Added get_connection_is_self_hosted(), 
+	and get_connection_self_hosted_directory_uri(). This bool is loaded from and 
+	saved to the document, though it is not yet changed to true by anything in the UI.
+	Destructor: Stop self-hosting.
+
+2006-12-16  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/libglom/document/document_glom.h: Remove unnecessary virtuals.
 
 2006-12-15  Murray Cumming  <murrayc@murrayc.com>

@@ -30,6 +30,9 @@
 #include <glom/libglom/data_structure/layout/layoutitem_image.h>
 #include <glom/libglom/standard_table_prefs_fields.h>
 #include <bakery/Utilities/BusyCursor.h>
+
+#include <glom/libglom/connectionpool.h>
+
 #include <glibmm/i18n.h>
 //#include "config.h" //To get GLOM_DTD_INSTALL_DIR - dependent on configure prefix.
 #include <algorithm> //For std::find_if().
@@ -39,9 +42,10 @@ namespace Glom
 {
 
 #define GLOM_NODE_CONNECTION "connection"
-#define GLOM_ATTRIBUTE_SERVER "server"
-#define GLOM_ATTRIBUTE_USER "user"
-#define GLOM_ATTRIBUTE_DATABASE "database"
+#define GLOM_ATTRIBUTE_CONNECTION_SELF_HOSTED "self_hosted"
+#define GLOM_ATTRIBUTE_CONNECTION_SERVER "server"
+#define GLOM_ATTRIBUTE_CONNECTION_USER "user"
+#define GLOM_ATTRIBUTE_CONNECTION_DATABASE "database"
 
 #define GLOM_NODE_DATA_LAYOUT_GROUPS "data_layout_groups"
 #define GLOM_NODE_DATA_LAYOUT_GROUP "data_layout_group"
@@ -104,7 +108,7 @@ namespace Glom
 
 #define GLOM_ATTRIBUTE_FORMAT_VERSION "format_version"
 #define GLOM_ATTRIBUTE_IS_EXAMPLE "is_example"
-#define GLOM_ATTRIBUTE_DATABASE_TITLE "database_title"
+#define GLOM_ATTRIBUTE_CONNECTION_DATABASE_TITLE "database_title"
 #define GLOM_ATTRIBUTE_TRANSLATION_ORIGINAL_LOCALE "translation_original_locale"
 #define GLOM_ATTRIBUTE_NAME "name"
 #define GLOM_ATTRIBUTE_TITLE "title"
@@ -164,7 +168,8 @@ namespace Glom
 #define GLOM_RELATIONSHIP_NAME_SYSTEM_PROPERTIES "system_properties"
 
 Document_Glom::Document_Glom()
-: m_block_cache_update(false),
+: m_connection_is_self_hosted(false),
+  m_block_cache_update(false),
   m_block_modified_set(false),
   m_allow_auto_save(true), //Save all changes immediately, by default.
   m_is_example(false),
@@ -195,6 +200,35 @@ Document_Glom::Document_Glom()
 
 Document_Glom::~Document_Glom()
 {
+  //It would be better to do this in a Application::on_document_closed() virtual method,
+  //but that would need an ABI break in Bakery:
+  if(get_connection_is_self_hosted())
+  {
+    ConnectionPool* connection_pool = ConnectionPool::get_instance();
+    if(!connection_pool)
+      return;
+
+    connection_pool->stop_self_hosting();
+  }
+}
+
+bool Document_Glom::get_connection_is_self_hosted() const
+{
+  return m_connection_is_self_hosted;
+}
+
+std::string Document_Glom::get_connection_self_hosted_directory_uri() const
+{
+  const std::string uri_file = get_file_uri();
+  if(uri_file.empty())
+  {
+    g_warning("Document_Glom::get_connection_self_hosted_directory_uri(): file_uri is empty.");
+    return std::string();
+  }
+  else
+  {
+    return uri_file + "_glom_postgres_data";
+  }
 }
 
 Glib::ustring Document_Glom::get_connection_user() const
@@ -1895,7 +1929,7 @@ bool Document_Glom::load_after()
         return false; //TODO: Provide more information so the application (or Bakery) can say exactly why loading failed.
       }
       m_is_example = get_node_attribute_value_as_bool(nodeRoot, GLOM_ATTRIBUTE_IS_EXAMPLE);
-      m_database_title = get_node_attribute_value(nodeRoot, GLOM_ATTRIBUTE_DATABASE_TITLE);
+      m_database_title = get_node_attribute_value(nodeRoot, GLOM_ATTRIBUTE_CONNECTION_DATABASE_TITLE);
 
       m_translation_original_locale = get_node_attribute_value(nodeRoot, GLOM_ATTRIBUTE_TRANSLATION_ORIGINAL_LOCALE);
       TranslatableItem::set_original_locale(m_translation_original_locale);
@@ -1904,9 +1938,10 @@ bool Document_Glom::load_after()
       if(nodeConnection)
       {
         //Connection information:
-        m_connection_server = get_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_SERVER);
-        m_connection_user = get_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_USER);
-        m_connection_database = get_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_DATABASE);
+        m_connection_is_self_hosted = get_node_attribute_value_as_bool(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_SELF_HOSTED);
+        m_connection_server = get_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_SERVER);
+        m_connection_user = get_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_USER);
+        m_connection_database = get_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_DATABASE);
       }
 
       //Tables:
@@ -2540,7 +2575,7 @@ bool Document_Glom::save_before()
     set_node_attribute_value_as_decimal(nodeRoot, GLOM_ATTRIBUTE_FORMAT_VERSION, m_document_format_version);
 
     set_node_attribute_value_as_bool(nodeRoot, GLOM_ATTRIBUTE_IS_EXAMPLE, m_is_example);
-    set_node_attribute_value(nodeRoot, GLOM_ATTRIBUTE_DATABASE_TITLE, m_database_title);
+    set_node_attribute_value(nodeRoot, GLOM_ATTRIBUTE_CONNECTION_DATABASE_TITLE, m_database_title);
 
     //Assume that the first language used is the original locale.
     //It can be identified as a translation later.
@@ -2550,9 +2585,10 @@ bool Document_Glom::save_before()
     set_node_attribute_value(nodeRoot, GLOM_ATTRIBUTE_TRANSLATION_ORIGINAL_LOCALE, m_translation_original_locale);
 
     xmlpp::Element* nodeConnection = get_node_child_named_with_add(nodeRoot, GLOM_NODE_CONNECTION);
-    set_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_SERVER, m_connection_server);
-    set_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_USER, m_connection_user);
-    set_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_DATABASE, m_connection_database);
+    set_node_attribute_value_as_bool(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_SELF_HOSTED, m_connection_is_self_hosted);
+    set_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_SERVER, m_connection_server);
+    set_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_USER, m_connection_user);
+    set_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_DATABASE, m_connection_database);
 
     //Remove existing tables:
     xmlpp::Node::NodeList listNodes = nodeRoot->get_children(GLOM_NODE_TABLE);
@@ -3196,7 +3232,6 @@ void Document_Glom::remove_library_module(const Glib::ustring& name)
      set_modified();
   }
 }
-
 
 } //namespace Glom
 

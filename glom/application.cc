@@ -405,6 +405,26 @@ void App_Glom::on_menu_userlevel_operator()
     m_pFrame->on_menu_userlevel_Operator(m_action_menu_userlevel_operator);
 }
 
+void App_Glom::on_menu_file_close() //override
+{
+  // Call the base class implementation:
+  Bakery::App_WithDoc_Gtk::on_menu_file_close();
+}
+
+
+void App_Glom::stop_self_hosting_of_document_database()
+{
+  Document_Glom* pDocument = static_cast<Document_Glom*>(get_document());
+  if(pDocument && pDocument->get_connection_is_self_hosted())
+  {
+    ConnectionPool* connection_pool = ConnectionPool::get_instance();
+    if(!connection_pool)
+      return;
+
+    connection_pool->stop_self_hosting();
+  }
+}
+
 Bakery::App* App_Glom::new_instance() //Override
 {
   Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_main");
@@ -509,6 +529,15 @@ bool App_Glom::on_document_load()
       {
         //Set the connection details in the ConnectionPool singleton.
         //The ConnectionPool will now use these every time it tries to connect.
+        if(pDocument->get_connection_is_self_hosted())
+        {
+          // TODO: sleep, to give postgres time to start?
+          connection_pool->set_self_hosting(pDocument->get_connection_self_hosted_directory_uri());
+          connection_pool->start_self_hosting(); //Stopped in on_menu_file_close().
+        }
+        else
+          connection_pool->set_self_hosting(std::string());
+
         connection_pool->set_host(pDocument->get_connection_server());
         connection_pool->set_user(pDocument->get_connection_user());
         connection_pool->set_database(pDocument->get_connection_database());
@@ -525,7 +554,13 @@ bool App_Glom::on_document_load()
             test = m_pFrame->connection_request_password_and_attempt();
 
           if(!test) //It usually throws an exception instead of returning false.
+          {
+            //Stop self-hosting, if we are doing that:
+            std::cout << "debug: calling stop_self_hosting_of_document_database()" << std::endl;
+            stop_self_hosting_of_document_database();
+
             return false; //Failed. Close the document.
+          }
 
           if(is_example)
           {
