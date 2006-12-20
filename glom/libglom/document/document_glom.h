@@ -95,6 +95,11 @@ public:
 
   static guint get_latest_known_document_format_version();
 
+  /** When this is set, the postgres database is hosted by the local client,
+   *  instead of connecting to an external database server.
+   */
+  void set_connection_is_self_hosted(bool self_hosted = true);
+
   void set_connection_server(const Glib::ustring& strVal);
   void set_connection_user(const Glib::ustring& strVal);
   void set_connection_database(const Glib::ustring& strVal);

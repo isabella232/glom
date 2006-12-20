@@ -26,9 +26,11 @@ namespace Glom
 Dialog_NewDatabase::Dialog_NewDatabase(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
 : Gtk::Dialog(cobject),
   m_entry_title(0),
+  m_radiobutton_server_selfhosted(0),
   m_button_ok(0)
 {
   refGlade->get_widget("entry_title", m_entry_title);
+  refGlade->get_widget("radiobutton_server_selfhosting", m_radiobutton_server_selfhosted);
   refGlade->get_widget("button_ok", m_button_ok);
 
   m_entry_title->signal_changed().connect( sigc::mem_fun(*this, &Dialog_NewDatabase::on_entry_title_changed) );
@@ -51,9 +53,10 @@ void Dialog_NewDatabase::set_input(const Glib::ustring& title)
   m_entry_title->set_text(title);
 }
 
-void Dialog_NewDatabase::get_input(Glib::ustring& title)
+void Dialog_NewDatabase::get_input(Glib::ustring& title, bool& self_hosted)
 {
   title = m_entry_title->get_text();
+  self_hosted = m_radiobutton_server_selfhosted->get_active();
 }
 
 } //namespace Glom

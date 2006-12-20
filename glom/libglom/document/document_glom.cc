@@ -255,6 +255,15 @@ void Document_Glom::set_connection_user(const Glib::ustring& strVal)
   }
 }
 
+void Document_Glom::set_connection_is_self_hosted(bool self_hosted)
+{
+  if(self_hosted != m_connection_is_self_hosted)
+  {
+    m_connection_is_self_hosted = self_hosted;
+    set_modified();
+  }
+}
+
 void Document_Glom::set_connection_server(const Glib::ustring& strVal)
 {
   if(strVal != m_connection_server)

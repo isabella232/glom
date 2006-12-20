@@ -21,11 +21,48 @@
 #include <glom/libglom/connectionpool.h>
 #include <gtkmm/messagedialog.h>
 #include <bakery/bakery.h>
+#include <libgnomevfsmm.h>
+#include <glib/gstdio.h> //For g_remove().
 #include <glibmm/i18n.h>
 #include "config.h"
 
 namespace Glom
 {
+
+#define DEFAULT_CONFIG_PG_HBA "local   all         postgres                          ident sameuser\n\
+\n\
+# TYPE  DATABASE    USER        CIDR-ADDRESS          METHOD\n\
+\n\
+# local is for Unix domain socket connections only\n\
+local   all         all                               ident sameuser\n\
+# IPv4 local connections:\n\
+host    all         all         127.0.0.1/32          md5\n\
+# IPv6 local connections:\n\
+host    all         all         ::1/128               md5\n"
+
+#define DEFAULT_CONFIG_POSTGRESQL_CONF "listen_addresses = '*'\n\
+port = 5432\n"
+
+#define DEFAULT_CONFIG_PG_IDENT ""
+
+static bool execute_command_line_and_wait(const std::string& command)
+{
+  std::cout << std::endl << "debug: command_line: " << command << std::endl << std::endl;
+
+  int return_status = 0;
+  Glib::spawn_command_line_sync(command, NULL, NULL, &return_status);
+  return return_status == 0;
+}
+
+static bool execute_command_line_and_wait_fixed_seconds(const std::string& command, unsigned int seconds)
+{
+  std::cout << std::endl << "debug: command_line: " << command << std::endl << std::endl;
+
+  Glib::spawn_command_line_async(command);
+  sleep(seconds); //Give the command enough time to make something ready for us to continue.
+  return true;
+}
+
 
 ExceptionConnection::ExceptionConnection(failure_type failure)
 : m_failure_type(failure)
@@ -208,7 +245,7 @@ sharedptr<SharedConnection> ConnectionPool::connect()
           else
             cnc_string += (";DATABASE=" + default_database);
 
-          //std::cout << "connecting: cnc string: " << cnc_string << std::endl;
+          //std::cout << "debug: connecting: cnc string: " << cnc_string << std::endl;
           std::cout << std::endl << "Glom: trying to connect on port=" << port << std::endl;
 
           //*m_refGdaConnection = m_GdaClient->open_connection(m_GdaDataSourceInfo.get_name(), m_GdaDataSourceInfo.get_username(), m_GdaDataSourceInfo.get_password() );
@@ -274,7 +311,7 @@ sharedptr<SharedConnection> ConnectionPool::connect()
               Glib::ustring cnc_string = cnc_string_main;
               cnc_string += (";DATABASE=" + default_database);
 
-              //std::cout << "connecting: cnc string: " << cnc_string << std::endl;
+              //std::cout << "debug2: connecting: cnc string: " << cnc_string << std::endl;
               std::cout << "Glom: connecting." << std::endl;
 
               Glib::RefPtr<Gnome::Gda::Connection> gda_connection =  m_GdaClient->open_connection_from_string("PostgreSQL", cnc_string);
@@ -338,7 +375,7 @@ sharedptr<SharedConnection> ConnectionPool::connect()
   return sharedptr<SharedConnection>(0);
 }
 
-void ConnectionPool::set_self_hosting(const std::string& data_uri)
+void ConnectionPool::set_self_hosted(const std::string& data_uri)
 {
   m_self_hosting_data_uri = data_uri;
 }
@@ -354,6 +391,11 @@ void ConnectionPool::set_host(const Glib::ustring& value)
 
 void ConnectionPool::set_user(const Glib::ustring& value)
 {
+  if(value.empty())
+  {
+    std::cout << "debug: ConnectionPool::set_user(): user is empty." << std::endl;
+  }
+
   m_user = value;
 }
 
@@ -487,10 +529,7 @@ void ConnectionPool::start_self_hosting()
                                   + " -c ident_file=\"" + dbdir + "/config/pg_ident.conf\""
                                   + " -k \"" + dbdir + "\""
                                   + " --external_pid_file=\"" + dbdir + "/pid\"";
-
-    std::cout << "debug: command_postgres_start = " << std::endl << "  " << command_postgres_start << std::endl;
-
-    Glib::spawn_command_line_async(command_postgres_start);
+    execute_command_line_and_wait_fixed_seconds(command_postgres_start, 30 /* seconds to wait */); // This command does not return.
   }
   catch(const Glib::SpawnError& ex)
   {
@@ -519,10 +558,7 @@ void ConnectionPool::stop_self_hosting()
     // -k specifies a directory to use for the socket. This must be writable by us.
     // POSTGRES_POSTMASTER_PATH is defined in config.h, based on the configure.
     const std::string command_postgres_stop = POSTGRES_UTILS_PATH "/pg_ctl -D \"" + dbdir + "/data\" stop";
-
-    std::cout << "debug: command_postgres_stop = " << std::endl << "  " << command_postgres_stop << std::endl;
-
-    Glib::spawn_command_line_async(command_postgres_stop);
+    execute_command_line_and_wait(command_postgres_stop);
   }
   catch(const Glib::SpawnError& ex)
   {
@@ -531,5 +567,121 @@ void ConnectionPool::stop_self_hosting()
 
   m_self_hosting_active = false;
 }
+
+
+bool ConnectionPool::create_self_hosting()
+{
+  if(m_self_hosting_data_uri.empty())
+  {
+    std::cerr << "ConnectionPool::create_self_hosting(): m_self_hosting_data_uri is empty." << std::endl;
+    return false;
+  }
+
+  //Get the filepath of the directory that we should create:
+  const std::string dbdir_uri = m_self_hosting_data_uri;
+  //std::cout << "debug: dbdir_uri=" << dbdir_uri << std::endl;
+  const std::string dbdir = Glib::filename_from_uri(dbdir_uri);
+  //std::cout << "debug: dbdir=" << dbdir << std::endl;
+  g_assert(!dbdir.empty());
+
+  //0770 means "this user and his group can read and write and "execute" (meaning add sub-files) this non-executable file".
+  //The 0 prefix means that this is octal.
+  int mkdir_succeeded = g_mkdir_with_parents(dbdir.c_str(), 0770);
+  if(mkdir_succeeded == -1)
+  {
+    std::cerr << "Error from g_mkdir_with_parents() while trying to create directory: " << dbdir << std::endl;
+    perror("Error from g_mkdir_with_parents");
+    return false;
+  }
+
+  //Create the config directory:
+  const std::string dbdir_config = dbdir + "/config";
+  mkdir_succeeded = g_mkdir_with_parents(dbdir_config.c_str(), 0770);
+  if(mkdir_succeeded == -1)
+  {
+    std::cerr << "Error from g_mkdir_with_parents() while trying to create directory: " << dbdir_config << std::endl;
+    perror("Error from g_mkdir_with_parents");
+    return false;
+  }
+
+  //Create these files: environment  pg_hba.conf  pg_ident.conf  postgresql.conf  start.conf
+
+  const std::string dbdir_uri_config = dbdir_uri + "/config";
+  create_text_file(dbdir_uri_config + "/pg_hba.conf", DEFAULT_CONFIG_PG_HBA);
+  create_text_file(dbdir_uri_config + "/postgresql.conf", DEFAULT_CONFIG_POSTGRESQL_CONF);
+  create_text_file(dbdir_uri_config + "/pg_ident.conf", DEFAULT_CONFIG_PG_IDENT);
+
+  //Check that there is not an existing data directory:
+  const std::string dbdir_data = dbdir + "/data";
+  mkdir_succeeded = g_mkdir_with_parents(dbdir_data.c_str(), 0770);
+  g_assert(mkdir_succeeded != -1);
+
+  
+  try
+  {
+     // initdb creates a new postgres database cluster:
+     const std::string username = get_user();
+     if(username.empty())
+     {
+       std::cerr << "ConnectionPool::create_self_hosting(). Username was empty while attempting to create self-hosting  database" << std::endl;
+       return false;
+     }
+
+     const std::string temp_pwfile = "/tmp/glom_initdb_pwfile";
+     create_text_file(temp_pwfile, get_password());
+
+     const std::string command_initdb = POSTGRES_UTILS_PATH "/initdb -D \"" + dbdir + "/data\"" +
+                                        " -U " + username + " --pwfile=\"" + temp_pwfile + "\""; 
+     //Note that --pwfile takes the password from the first line of a file. It's an alternative to supplying it when prompted on stdin.
+     execute_command_line_and_wait(command_initdb);
+
+     const int temp_pwfile_removed = g_remove(temp_pwfile.c_str()); //Of course, we don't want this to stay around. It would be a security risk.
+     g_assert(temp_pwfile_removed == 0);
+  }
+  catch(const Glib::SpawnError& ex)
+  {
+    std::cerr << "Exception while attempting to create self-hosting database: " << ex.what() << std::endl;
+    return false;
+  }
+
+  return true;
+}
+
+bool ConnectionPool::create_text_file(const std::string& file_uri, const std::string& contents)
+{
+  Gnome::Vfs::Handle write_handle;
+
+  try
+  {
+    //0660 means "this user and his group can read and write this non-executable file".
+    //The 0 prefix means that this is octal.
+    write_handle.create(file_uri, Gnome::Vfs::OPEN_WRITE, false, 0660 /* leading zero means octal */);
+  }
+  catch(const Gnome::Vfs::exception& ex)
+  {
+    std::cerr << "ConnectionPool::create_text_file(): exception caught during file create: " << ex.what() << std::endl;
+
+    // If the operation was not successful, print the error and abort
+    return false; // print_error(ex, output_uri_string);
+  }
+
+  try
+  {
+    //Write the data to the output uri
+    GnomeVFSFileSize bytes_written = write_handle.write(contents.data(), contents.size());
+    if(bytes_written != contents.size())
+      return false;
+  }
+  catch(const Gnome::Vfs::exception& ex)
+  {
+    std::cerr << "ConnectionPool::create_text_file(): exception caught during write: " << ex.what() << std::endl;
+
+    // If the operation was not successful, print the error and abort
+    return false; //print_error(ex, output_uri_string);
+  }
+
+  return true; //Success. (At doing nothing, because nothing needed to be done.)
+}
+
 
 } //namespace Glom

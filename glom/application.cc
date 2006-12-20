@@ -532,11 +532,13 @@ bool App_Glom::on_document_load()
         if(pDocument->get_connection_is_self_hosted())
         {
           // TODO: sleep, to give postgres time to start?
-          connection_pool->set_self_hosting(pDocument->get_connection_self_hosted_directory_uri());
+          connection_pool->set_self_hosted(pDocument->get_connection_self_hosted_directory_uri());
           connection_pool->start_self_hosting(); //Stopped in on_menu_file_close().
         }
         else
-          connection_pool->set_self_hosting(std::string());
+        {
+          connection_pool->set_self_hosted(std::string());
+        }
 
         connection_pool->set_host(pDocument->get_connection_server());
         connection_pool->set_user(pDocument->get_connection_user());
@@ -753,12 +755,13 @@ bool App_Glom::offer_new_or_existing()
           bool keep_asking = true;
           while(keep_asking)
           {
-            int response = Glom::Utils::dialog_run_with_help(dialog, "dialog_new_database");
+            const int response = Glom::Utils::dialog_run_with_help(dialog, "dialog_new_database");
 
             if(response == Gtk::RESPONSE_OK)
             {
               Glib::ustring db_title;
-              dialog->get_input(db_title);
+              bool self_hosted = false;
+              dialog->get_input(db_title, self_hosted);
 
               //Create a database name based on the title.
               //The user will (almost) never see this anyway but it's nicer than using a random number:
@@ -773,6 +776,8 @@ bool App_Glom::offer_new_or_existing()
               {
                 //Connect to the server and choose a variation of this db_name that does not exist yet:
                 document->set_connection_database(db_name);
+                document->set_connection_is_self_hosted(self_hosted);
+               
                 const bool connected = m_pFrame->connection_request_password_and_choose_new_database_name();
                 if(!connected)
                   return false;

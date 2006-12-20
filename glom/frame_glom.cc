@@ -31,6 +31,7 @@
 #include <glom/reports/report_builder.h>
 #include <glom/mode_design/dialog_add_related_table.h>
 #include <glom/mode_design/script_library/dialog_script_library.h>
+#include <glom/dialog_new_self_hosted_connection.h>
 #include "relationships_overview/dialog_relationships_overview.h"
 #include "filechooser_export.h"
 #include <glom/glom_privs.h>
@@ -1388,15 +1389,84 @@ void Frame_Glom::on_developer_dialog_hide()
 
 bool Frame_Glom::connection_request_password_and_choose_new_database_name()
 {
-  //Ask for connection details:
-  m_pDialogConnection->load_from_document(); //Get good defaults.
-  m_pDialogConnection->set_transient_for(*get_app_window());
-  int response = Glom::Utils::dialog_run_with_help(m_pDialogConnection, "dialog_connection");
-  m_pDialogConnection->hide();
+  Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
+  if(!document)
+    return false;
+
+  //Give the ConnectionPool the self-hosted file path, 
+  //so that create_self_hosted() can succeed:
+  ConnectionPool* connection_pool = ConnectionPool::get_instance();
+  if(connection_pool && document && document->get_connection_is_self_hosted())
+  {
+    // TODO: sleep, to give postgres time to start?
+    connection_pool->set_self_hosted(document->get_connection_self_hosted_directory_uri());
+  }
+  else
+  {
+    connection_pool->set_self_hosted(std::string());
+  }
+
+  //Ask either for the existing username and password to use an existing database server,
+  //or ask for a new username and password to specify when creating a new self-hosted database.
+  int response = 0;
+  if(document->get_connection_is_self_hosted())
+  {
+    Dialog_NewSelfHostedConnection* dialog = 0;
+    try
+    {
+      Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_new_self_hosted_connection");
+
+      refXml->get_widget_derived("dialog_new_self_hosted_connection", dialog);
+    }
+    catch(const Gnome::Glade::XmlError& ex)
+    {
+      std::cerr << ex.what() << std::endl;
+    }
+
+    add_view(dialog);
+    response = Glom::Utils::dialog_run_with_help(dialog, "dialog_new_self_hosted_connection");
+    dialog->hide();
+ 
+    // Create the requested self-hosting database:
+    bool created = false;
+    if(response == Gtk::RESPONSE_OK)
+    {
+      created = dialog->create_self_hosted(); //TODO: Tell the user.
+      if(created)
+      {
+        connection_pool->start_self_hosting();
+      }
+
+      //dialog->create_self_hosted() has already set enough information in the ConnectionPool to allow a connection so we can create the database in the new database cluster:
+     
+      //Put the details into m_pDialogConnection too, because that's what we use to connect.
+      //This is a bit of a hack:
+      m_pDialogConnection->set_self_hosted_user_and_password(connection_pool->get_user(), connection_pool->get_password());
+    }
+
+    remove_view(dialog);
+
+    //std::cout << "DEBUG: after dialog->create_self_hosted(). The database cluster should now exist." << std::endl;
+
+    if(!created)
+      return false;
+  }
+  else
+  {
+    //Ask for connection details:
+    m_pDialogConnection->load_from_document(); //Get good defaults.
+    m_pDialogConnection->set_transient_for(*get_app_window());
+    response = Glom::Utils::dialog_run_with_help(m_pDialogConnection, "dialog_connection");
+    m_pDialogConnection->hide();
+  }
 
   if(response == Gtk::RESPONSE_OK)
   {
-    const Glib::ustring database_name = get_document()->get_connection_database();
+    const Glib::ustring database_name = document->get_connection_database();
+
+    //std::cout << "debug: database_name to create=" << database_name << std::endl;
+
+
     bool keep_trying = true;
     size_t extra_num = 0;
     while(keep_trying)
@@ -1414,7 +1484,7 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
       ++extra_num;
 
       m_pDialogConnection->set_database_name(database_name_possible);
-      //std::cout << "possible name=" << database_name_possible << std::endl;
+      //std::cout << "debug: possible name=" << database_name_possible << std::endl;
 
       try
       {
@@ -1450,6 +1520,7 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
           Document_Glom* document = get_document();
           if(document)
           {
+            std::cout << "debug: unused database name found: " << database_name_possible << std::endl;
             document->set_connection_database(database_name_possible);
 
             ConnectionPool* connection_pool = ConnectionPool::get_instance();

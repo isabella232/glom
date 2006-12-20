@@ -34,16 +34,17 @@ public:
   Dialog_NewDatabase(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
   virtual ~Dialog_NewDatabase();
 
-  //Set sensible defaults:
+  ///Set sensible defaults:
   virtual void set_input(const Glib::ustring& title);
 
-  //Get the user input:
-  virtual void get_input(Glib::ustring& title);
+  ///Get the user input:
+  virtual void get_input(Glib::ustring& title, bool& self_hosted);
 
 protected:
   virtual void on_entry_title_changed();
 
   Gtk::Entry* m_entry_title;
+  Gtk::RadioButton* m_radiobutton_server_selfhosted;
   Gtk::Button* m_button_ok;
 };
 

@@ -136,6 +136,12 @@ void Dialog_Connection::load_from_document()
 
 }
 
+void Dialog_Connection::set_self_hosted_user_and_password(const Glib::ustring& user, const Glib::ustring& password)
+{
+  m_entry_user->set_text(user);
+  m_entry_password->set_text(password);
+}
+
 void Dialog_Connection::set_database_name(const Glib::ustring& name)
 {
   m_database_name = name;

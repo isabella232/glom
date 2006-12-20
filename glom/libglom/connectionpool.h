@@ -108,7 +108,8 @@ public:
   /** This specifies that Glom should start its own database server instance for this database,
    *  using the database files stored at the specified uri.
    */
-  void set_self_hosting(const std::string& data_uri);
+  void set_self_hosted(const std::string& data_uri);
+
 
   void set_host(const Glib::ustring& value);
   void set_user(const Glib::ustring& value);
@@ -129,14 +130,25 @@ public:
    */
   float get_postgres_server_version();
 
+  /** Start a database server instance for the exisiting database files.
+   */
   void start_self_hosting();
+
+  /** Stop the database server instance for the database files.
+   */
   void stop_self_hosting();
+
+  /** Create new database files, for later use by their own  database server instance.
+   */
+  bool create_self_hosting();
 
   //Show the gda error in a dialog.
   static bool handle_error(bool cerr_only = false);
 
 protected:
   void on_sharedconnection_finished();
+
+  static bool create_text_file(const std::string& file_uri, const std::string& contents);
 
 
   typedef std::list<Glib::ustring> type_list_ports;

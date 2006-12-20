@@ -18,8 +18,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef GLOM_DIALOG_CONNECTION_H
-#define GLOM_DIALOG_CONNECTION_H
+#ifndef GLOM_DIALOG_NEWSELFHOSTEDCONNECTION_H
+#define GLOM_DIALOG_NEWSELFHOSTEDCONNECTION_H
 
 #include <libglademm.h>
 #include <gtkmm/dialog.h>
@@ -31,34 +31,25 @@
 namespace Glom
 {
 
-class Dialog_Connection
+class Dialog_NewSelfHostedConnection
   : public Gtk::Dialog,
     public Base_DB
 {
 public:
-  Dialog_Connection(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
-  virtual ~Dialog_Connection();
+  Dialog_NewSelfHostedConnection(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  virtual ~Dialog_NewSelfHostedConnection();
 
-  sharedptr<SharedConnection> connect_to_server_with_connection_settings() const;
+  bool create_self_hosted() const;
 
   virtual void load_from_document(); //override
-  
-  void set_self_hosted_user_and_password(const Glib::ustring& username, const Glib::ustring& password);
 
-  /** Use this to override the data from load_from_document().
-   * For instance, if you want to try to connect to a renamed database.
-   */
-  void set_database_name(const Glib::ustring& name);
 
 protected:
-  Gtk::Entry* m_entry_host;
   Gtk::Entry* m_entry_user;
   Gtk::Entry* m_entry_password;
-  Gtk::Label* m_label_database;
-  Glib::ustring m_database_name;
 };
 
 } //namespace Glom
 
-#endif //GLOM_DIALOG_CONNECTION_H
+#endif //GLOM_DIALOG_NEWSELFHOSTEDCONNECTION_H
 
