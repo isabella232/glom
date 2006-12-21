@@ -1,5 +1,10 @@
 2006-12-21  Murray Cumming  <murrayc@murrayc.com>
 
+	* configure.in: Do an extra sanity check on the postgres utils path, and complain if 
+	we can't find postmaster.
+
+2006-12-21  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/libglom/connectionpool.cc:
 	* glom/libglom/spawn_with_feedback.cc:
 	* glom/libglom/spawn_with_feedback.h:
