@@ -1,5 +1,12 @@
 2006-12-21  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/libglom/connectionpool.cc: execute_command_line_and_wait(): Take a human-readable message, 
+	and show it in a dialog while we are waiting. This is not ideal, but better than nothing. What 
+	we really need is to do the spawn_command_line_sync() in another thread, and wait for that thread 
+	to finish.
+
+2006-12-21  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/dialog_new_database.cc:
 	* glom/dialog_new_database.h: Added show_dialog_new_database() helper function.
 	* glom/application.cc: on_document_load(): When opening from an example, which always requires 

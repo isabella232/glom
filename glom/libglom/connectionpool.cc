@@ -45,8 +45,24 @@ port = 5432\n"
 
 #define DEFAULT_CONFIG_PG_IDENT ""
 
-static bool execute_command_line_and_wait(const std::string& command)
+
+/** Execute a command-line command, and wait for it to return.
+ * @param command The command-line command.
+ * @param message A human-readable message to be shown, for instance in a dialog, while waiting. 
+ */
+static bool execute_command_line_and_wait(const std::string& command, const Glib::ustring& message, Gtk::Window* parent_window = 0)
 {
+  Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(message), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE, true /* modal */); 
+  if(parent_window)
+    dialog.set_transient_for(*parent_window);
+  
+  dialog.show();
+
+  //Allow GTK+ to perform all updates for us
+  //Without this, the dialog will seem empty.
+  while(Gtk::Main::instance()->events_pending())
+    Gtk::Main::instance()->iteration();
+
   std::cout << std::endl << "debug: command_line: " << command << std::endl << std::endl;
 
   int return_status = 0;
@@ -54,8 +70,19 @@ static bool execute_command_line_and_wait(const std::string& command)
   return return_status == 0;
 }
 
-static bool execute_command_line_and_wait_fixed_seconds(const std::string& command, unsigned int seconds)
+static bool execute_command_line_and_wait_fixed_seconds(const std::string& command, unsigned int seconds, const Glib::ustring& message, Gtk::Window* parent_window = 0)
 {
+  Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(message), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE, true /* modal */); 
+  if(parent_window)
+    dialog.set_transient_for(*parent_window);
+
+  dialog.show();
+
+  //Allow GTK+ to perform all updates for us
+  //Without this, the dialog will seem empty.
+  while(Gtk::Main::instance()->events_pending())
+    Gtk::Main::instance()->iteration();
+
   std::cout << std::endl << "debug: command_line: " << command << std::endl << std::endl;
 
   Glib::spawn_command_line_async(command);
@@ -529,7 +556,7 @@ void ConnectionPool::start_self_hosting()
                                   + " -c ident_file=\"" + dbdir + "/config/pg_ident.conf\""
                                   + " -k \"" + dbdir + "\""
                                   + " --external_pid_file=\"" + dbdir + "/pid\"";
-    execute_command_line_and_wait_fixed_seconds(command_postgres_start, 30 /* seconds to wait */); // This command does not return.
+    execute_command_line_and_wait_fixed_seconds(command_postgres_start, 30 /* seconds to wait */, _("Starting Database Server")); // This command does not return.
   }
   catch(const Glib::SpawnError& ex)
   {
@@ -558,7 +585,7 @@ void ConnectionPool::stop_self_hosting()
     // -k specifies a directory to use for the socket. This must be writable by us.
     // POSTGRES_POSTMASTER_PATH is defined in config.h, based on the configure.
     const std::string command_postgres_stop = POSTGRES_UTILS_PATH "/pg_ctl -D \"" + dbdir + "/data\" stop";
-    execute_command_line_and_wait(command_postgres_stop);
+    execute_command_line_and_wait(command_postgres_stop, _("Stopping Database Server"));
   }
   catch(const Glib::SpawnError& ex)
   {
@@ -633,7 +660,7 @@ bool ConnectionPool::create_self_hosting()
      const std::string command_initdb = POSTGRES_UTILS_PATH "/initdb -D \"" + dbdir + "/data\"" +
                                         " -U " + username + " --pwfile=\"" + temp_pwfile + "\""; 
      //Note that --pwfile takes the password from the first line of a file. It's an alternative to supplying it when prompted on stdin.
-     execute_command_line_and_wait(command_initdb);
+     execute_command_line_and_wait(command_initdb, _("Creating Database Data"));
 
      const int temp_pwfile_removed = g_remove(temp_pwfile.c_str()); //Of course, we don't want this to stay around. It would be a security risk.
      g_assert(temp_pwfile_removed == 0);
