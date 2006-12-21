@@ -106,6 +106,10 @@ public:
 
   static Glib::ustring get_translatable_type_name(enumTranslatableItemType item_type);
 
+  /** The non-translated name is used for the context in gettext .po files.
+   */
+  static Glib::ustring get_translatable_type_name_nontranslated(enumTranslatableItemType item_type);
+
 
   /** Set the locale used for titles, to test translations.
    * Usually the current locale is just the locale at startup.

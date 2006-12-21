@@ -244,6 +244,36 @@ TranslatableItem::enumTranslatableItemType TranslatableItem::get_translatable_it
   return m_translatable_item_type;
 }
 
+Glib::ustring TranslatableItem::get_translatable_type_name_nontranslated(enumTranslatableItemType item_type)
+{
+  //TODO: Is there an easier way to do this, without duplicating code?
+
+  if(item_type == TRANSLATABLE_TYPE_FIELD)
+    return "Field";
+  else if(item_type == TRANSLATABLE_TYPE_CUSTOM_TITLE)
+    return "Custom Title";
+  else if(item_type == TRANSLATABLE_TYPE_RELATIONSHIP)
+    return "Relationship";
+  else if(item_type == TRANSLATABLE_TYPE_RELATIONSHIP)
+    return "Layout Item";
+  else if(item_type == TRANSLATABLE_TYPE_REPORT)
+    return "Report";
+  else if(item_type == TRANSLATABLE_TYPE_TABLE)
+    return "Table";
+  else if(item_type == TRANSLATABLE_TYPE_LAYOUT_ITEM)
+    return "Layout Group";
+  else if (item_type == TRANSLATABLE_TYPE_CUSTOM_TITLE)
+    return "Field Title";
+  else if(item_type == TRANSLATABLE_TYPE_BUTTON)
+    return "Button";
+  else if(item_type == TRANSLATABLE_TYPE_TEXTOBJECT)
+    return "Text";
+ else if(item_type == TRANSLATABLE_TYPE_IMAGEOBJECT)
+    return "Image";
+  else
+    return "Unknown";
+}
+
 Glib::ustring TranslatableItem::get_translatable_type_name(enumTranslatableItemType item_type)
 {
   if(item_type == TRANSLATABLE_TYPE_FIELD)

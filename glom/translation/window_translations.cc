@@ -412,7 +412,7 @@ void Window_Translations::on_treeview_edited(const Glib::ustring& /* path */, co
 
 static jmp_buf jump;
 
-static void show_gettext_error(int severity, const gchar* filename, const gchar* message)
+static void show_gettext_error(int severity, const char* filename, const gchar* message)
 {
   std::ostringstream msg_stream;
   if (filename != NULL);
@@ -485,12 +485,20 @@ static void on_gettextpo_error(int status, int errnum, const char * /* format */
 }
 #endif //HAVE_GETTEXTPO_XERROR
 
+Glib::ustring Window_Translations::get_po_context_for_item(const sharedptr<TranslatableItem>& item)
+{
+  // Note that this context string should use English rather than the translated strings,
+  // or the context would change depending on the locale of the user doing the export:
+  return TranslatableItem::get_translatable_type_name_nontranslated(item->get_translatable_item_type()) + " (" + item->get_name() + ")";
+}
+
 void Window_Translations::on_button_export()
 {
   if (setjmp(jump) != 0)
     return;  
   
-  Gtk::FileChooserDialog file_dlg(_("Choose .po file name"), Gtk::FILE_CHOOSER_ACTION_SAVE);
+  //Show the file-chooser dialog, to select an output .po file:
+  Gtk::FileChooserDialog file_dlg(_("Choose .po File Name"), Gtk::FILE_CHOOSER_ACTION_SAVE);
   
   // Only po files
   Gtk::FileFilter filter;
@@ -502,14 +510,14 @@ void Window_Translations::on_button_export()
   file_dlg.add_button(_("Export"), Gtk::RESPONSE_OK);  
   
   const int result = file_dlg.run();
-  if (result == Gtk::RESPONSE_OK)
+  if(result == Gtk::RESPONSE_OK)
   {
       std::string filename = file_dlg.get_filename();
       if(filename.empty())
         return;
 
       //Enforce the file extension:
-      const Glib::ustring extension = ".po";
+      const std::string extension = ".po";
       bool add_extension = false;
       if(filename.size() <= extension.size())
          add_extension = true;
@@ -533,6 +541,11 @@ void Window_Translations::on_button_export()
           po_message_t msg = po_message_create();
           po_message_set_msgid(msg, item->get_title_original().c_str());
           po_message_set_msgstr(msg, item->get_translation(m_translation_locale).c_str());
+
+          // Add "context" comments, to uniquely identify similar strings, used in different places,
+          // and to provide a hint for translators.
+          po_message_set_msgctxt(msg, get_po_context_for_item(item).c_str());
+
           po_message_insert(msg_iter, msg);
         }
       }
@@ -576,7 +589,7 @@ void Window_Translations::on_button_import()
   int result = file_dlg.run();
   if (result == Gtk::RESPONSE_OK)
   {
-      /* We cannot use an uri here */
+      // We cannot use an uri here:
       const std::string filename = file_dlg.get_filename();
       if(filename.empty())
         return;
@@ -595,37 +608,49 @@ void Window_Translations::on_button_import()
       po_file_t po_file = po_file_read(filename.c_str(), &error_handler);
       if (!po_file)
       {
-        // error message is already given by error_handle!
+        // error message is already given by error_handle.
         return;
       }
-      const gchar* const* domains = po_file_domains(po_file);
-      for (int i=0; domains[i] != NULL; i++)
+
+      //Look at each domain (could there be more than one?):
+      const char* const* domains = po_file_domains(po_file);
+      for (int i = 0; domains[i] != NULL; i++)
       {
+        //Look at each message:
         po_message_iterator_t iter = po_message_iterator(po_file, domains[i]);
         po_message_t msg;
         while ((msg = po_next_message(iter)))
         {
-          Glib::ustring msgid = po_message_msgid(msg);
-          Glib::ustring msgstr = po_message_msgstr(msg);
-           for(Gtk::TreeModel::iterator iter = m_model->children().begin(); iter != m_model->children().end(); ++iter)
+          //This message:
+          //TODO: Just use const char* instead of copying it in to a Glib::ustring,
+          //if we have performance problems here:
+          const Glib::ustring msgid = po_message_msgid(msg);
+          const Glib::ustring msgstr = po_message_msgstr(msg);
+          const Glib::ustring msgcontext = po_message_msgctxt(msg);
+
+          //Find the matching entry in the TreeModel:
+          for(Gtk::TreeModel::iterator iter = m_model->children().begin(); iter != m_model->children().end(); ++iter)
           {
             Gtk::TreeModel::Row row = *iter;
 
             sharedptr<TranslatableItem> item = row[m_columns.m_col_item];
             if(item)
             {
-              if (item->get_title_original() == msgid)
+              if( (item->get_title_original() == msgid) && 
+                  (get_po_context_for_item(item) == msgcontext) ) // This is not efficient, but it should be reliable.
               {
                 item->set_translation(m_translation_locale, msgstr);
-                break;
+                // Keep examining items, in case there are duplicates. break;
               }
             }
           }
         }
         po_message_iterator_free(iter);
       }
+
       po_file_free(po_file);
-      load_from_document();
+
+      save_to_document();
    }
 }
 

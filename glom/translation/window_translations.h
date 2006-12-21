@@ -65,7 +65,7 @@ protected:
   void on_button_import();
   void on_button_export();
   
-  void convert_po(std::string& po);
+  Glib::ustring get_po_context_for_item(const sharedptr<TranslatableItem>& item);
 
   //Tree model columns:
   class ModelColumns : public Gtk::TreeModel::ColumnRecord
