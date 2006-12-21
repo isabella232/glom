@@ -19,9 +19,39 @@
  */
  
 #include "dialog_new_database.h"
+#include <glom/libglom/utils.h>
 
 namespace Glom
 {
+
+bool show_dialog_new_database(Gtk::Window* parent_window, Glib::ustring& title, bool& self_hosted)
+{
+  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_new_database");
+  if(refXml)
+  {
+    Dialog_NewDatabase* dialog = 0;
+    refXml->get_widget_derived("dialog_new_database", dialog);
+    if(dialog)
+    {
+      std::auto_ptr<Dialog_NewDatabase> dialog_owner(dialog); //This will delete the dialog even when we return in the middle of this function.
+ 
+      if(parent_window)
+        dialog->set_transient_for(*parent_window);
+
+      //Set suitable defaults:
+      dialog->set_input(title);
+
+      const int response = Glom::Utils::dialog_run_with_help(dialog, "dialog_new_database");
+      if(response == Gtk::RESPONSE_OK)
+      {
+        dialog->get_input(title, self_hosted);
+        return true;
+      }
+    }
+  }
+
+  return false;
+}
 
 Dialog_NewDatabase::Dialog_NewDatabase(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
 : Gtk::Dialog(cobject),

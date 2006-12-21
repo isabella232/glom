@@ -28,6 +28,13 @@
 namespace Glom
 {
 
+/** Show the dialog, with the specified title.
+ * @param title The initial title. This will also be filled with the actual entered title.
+ * @param self_hosted This will be true if the user chose to self-host the database.
+ * @result This will be false if the user cancelled the dialog.
+ */
+bool show_dialog_new_database(Gtk::Window* parent_window, Glib::ustring& title, bool& self_hosted);
+
 class Dialog_NewDatabase : public Gtk::Dialog
 {
 public:

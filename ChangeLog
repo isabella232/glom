@@ -1,3 +1,11 @@
+2006-12-21  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/dialog_new_database.cc:
+	* glom/dialog_new_database.h: Added show_dialog_new_database() helper function.
+	* glom/application.cc: on_document_load(): When opening from an example, which always requires 
+	database creation, show the self-host question dialog. This also allows the user to change the 
+	database title, which is OK. 
+
 2006-12-20  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/dialog_new_database.cc:
