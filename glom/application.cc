@@ -460,7 +460,9 @@ bool App_Glom::on_document_load()
   //m_pFrame->load_from_document();
   Document_Glom* pDocument = static_cast<Document_Glom*>(get_document());
   if(!pDocument)
+  {
     return false;
+  }
   else
   {
     //Connect signals:
@@ -728,7 +730,7 @@ bool App_Glom::offer_new_or_existing()
     //Ask user to choose file to open:
     //g_warning("GLOM_EXAMPLES_DIR=%s", GLOM_EXAMPLES_DIR);
     Glib::ustring file_uri = ui_file_select_open(GLOM_EXAMPLES_DIR);
-    if(file_uri.empty())
+    if(!file_uri.empty())
       open_document(file_uri);
 
     //Check that a document was opened:

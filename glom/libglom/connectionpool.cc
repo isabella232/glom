@@ -41,7 +41,7 @@ host    all         all         127.0.0.1/32          md5\n\
 host    all         all         ::1/128               md5\n"
 
 #define DEFAULT_CONFIG_POSTGRESQL_CONF "listen_addresses = '*'\n\
-port = 5432\n"
+port = 5433\n"
 
 #define DEFAULT_CONFIG_PG_IDENT ""
 

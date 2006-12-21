@@ -190,6 +190,8 @@ bool execute_command_line_and_wait_until_second_command_returns_success(const st
   // Loop, updating the UI, repeatedly trying the second commmand, until the second command succeeds:
   while(true)
   {
+    sleep(1); // To stop us calling the second command too often.
+
     try
     {
       std::cout << std::endl << "debug: command_line (second): " << command << std::endl << std::endl;
@@ -206,7 +208,10 @@ bool execute_command_line_and_wait_until_second_command_returns_success(const st
         {
           std::cout << " debug: output=" << stdout_output << ", waiting for=" << success_text << std::endl;
           if(stdout_output.find(success_text) != std::string::npos)
+          {
+            sleep(3); //Sleep for a bit more, because I think that pg_ctl sometimes reports success too early.
             return true;
+          }
         }
       }
       else
@@ -223,8 +228,6 @@ bool execute_command_line_and_wait_until_second_command_returns_success(const st
 
     while(Gtk::Main::instance()->events_pending())
       Gtk::Main::instance()->iteration();
-
-    sleep(1); // To stop us calling the second command too often.
   }
 
   return false;

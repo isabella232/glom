@@ -1,4 +1,18 @@
-1.3.4 (ustable):
+1.3.5 (unstable):
+
+* Self-hosting of databases is now possible:
+  - When you create a new database (from scratch, or by opening an example template), 
+  you will be asked whether you want to create it locally or on an external database server.
+  If you create it locally then the database data will be contained in a local directory, 
+  and a separate postgres process will be started to host it.
+  - When you open an existing .glom file, if it was created as self-hosting, then the data 
+  will be found and hosted automatically.
+  - This is experimental, so please do report bugs. If you start from the terminal then you 
+  should see interesting debug output.
+* Added help documentation for the connection error dialogs, with a link to the web page 
+  about setting up PostgreSQL.
+
+1.3.4 (unstable):
 
 * Related Records: Fix SQL error when sorting doubly-related records.
 
