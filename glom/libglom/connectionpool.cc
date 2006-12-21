@@ -19,10 +19,10 @@
  */
  
 #include <glom/libglom/connectionpool.h>
-#include <gtkmm/messagedialog.h>
 #include <bakery/bakery.h>
 #include <libgnomevfsmm.h>
 #include <glib/gstdio.h> //For g_remove().
+#include <glom/libglom/spawn_with_feedback.h>
 #include <glibmm/i18n.h>
 #include "config.h"
 
@@ -44,51 +44,6 @@ host    all         all         ::1/128               md5\n"
 port = 5432\n"
 
 #define DEFAULT_CONFIG_PG_IDENT ""
-
-
-/** Execute a command-line command, and wait for it to return.
- * @param command The command-line command.
- * @param message A human-readable message to be shown, for instance in a dialog, while waiting. 
- */
-static bool execute_command_line_and_wait(const std::string& command, const Glib::ustring& message, Gtk::Window* parent_window = 0)
-{
-  Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(message), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE, true /* modal */); 
-  if(parent_window)
-    dialog.set_transient_for(*parent_window);
-  
-  dialog.show();
-
-  //Allow GTK+ to perform all updates for us
-  //Without this, the dialog will seem empty.
-  while(Gtk::Main::instance()->events_pending())
-    Gtk::Main::instance()->iteration();
-
-  std::cout << std::endl << "debug: command_line: " << command << std::endl << std::endl;
-
-  int return_status = 0;
-  Glib::spawn_command_line_sync(command, NULL, NULL, &return_status);
-  return return_status == 0;
-}
-
-static bool execute_command_line_and_wait_fixed_seconds(const std::string& command, unsigned int seconds, const Glib::ustring& message, Gtk::Window* parent_window = 0)
-{
-  Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(message), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE, true /* modal */); 
-  if(parent_window)
-    dialog.set_transient_for(*parent_window);
-
-  dialog.show();
-
-  //Allow GTK+ to perform all updates for us
-  //Without this, the dialog will seem empty.
-  while(Gtk::Main::instance()->events_pending())
-    Gtk::Main::instance()->iteration();
-
-  std::cout << std::endl << "debug: command_line: " << command << std::endl << std::endl;
-
-  Glib::spawn_command_line_async(command);
-  sleep(seconds); //Give the command enough time to make something ready for us to continue.
-  return true;
-}
 
 
 ExceptionConnection::ExceptionConnection(failure_type failure)
@@ -541,26 +496,24 @@ void ConnectionPool::start_self_hosting()
   const std::string dbdir = Glib::filename_from_uri(dbdir_uri);
   g_assert(!dbdir.empty());
 
-  try
-  {
-    // TODO: Detect other instances on the same computer, and use a different port number, 
-    // or refuse to continue, showing an error dialog.
 
-    // -D specifies the data directory.
-    // -c config_file= specifies the configuration file
-    // -k specifies a directory to use for the socket. This must be writable by us.
-    // POSTGRES_POSTMASTER_PATH is defined in config.h, based on the configure.
-    const std::string command_postgres_start = POSTGRES_UTILS_PATH "/postmaster -D \"" + dbdir + "/data\" "
+  // TODO: Detect other instances on the same computer, and use a different port number, 
+  // or refuse to continue, showing an error dialog.
+
+  // -D specifies the data directory.
+  // -c config_file= specifies the configuration file
+  // -k specifies a directory to use for the socket. This must be writable by us.
+  // POSTGRES_POSTMASTER_PATH is defined in config.h, based on the configure.
+  const std::string command_postgres_start = POSTGRES_UTILS_PATH "/postmaster -D \"" + dbdir + "/data\" "
                                   + " -c config_file=\"" + dbdir + "/config/postgresql.conf\""
                                   + " -c hba_file=\"" + dbdir + "/config/pg_hba.conf\""
                                   + " -c ident_file=\"" + dbdir + "/config/pg_ident.conf\""
                                   + " -k \"" + dbdir + "\""
                                   + " --external_pid_file=\"" + dbdir + "/pid\"";
-    execute_command_line_and_wait_fixed_seconds(command_postgres_start, 30 /* seconds to wait */, _("Starting Database Server")); // This command does not return.
-  }
-  catch(const Glib::SpawnError& ex)
+  const bool result = Glom::Spawn::execute_command_line_and_wait_fixed_seconds(command_postgres_start, 30 /* seconds to wait */, _("Starting Database Server")); // This command does not return.
+  if(!result)
   {
-    std::cerr << "Exception while attempting to self-host a database: " << ex.what() << std::endl;
+    std::cerr << "Error while attempting to self-host a database." << std::endl;
   }
 
   m_self_hosting_active = true;
@@ -575,21 +528,19 @@ void ConnectionPool::stop_self_hosting()
   const std::string dbdir = Glib::filename_from_uri(dbdir_uri);
   g_assert(!dbdir.empty());
 
-  try
-  {
-    // TODO: Detect other instances on the same computer, and use a different port number, 
-    // or refuse to continue, showing an error dialog.
 
-    // -D specifies the data directory.
-    // -c config_file= specifies the configuration file
-    // -k specifies a directory to use for the socket. This must be writable by us.
-    // POSTGRES_POSTMASTER_PATH is defined in config.h, based on the configure.
-    const std::string command_postgres_stop = POSTGRES_UTILS_PATH "/pg_ctl -D \"" + dbdir + "/data\" stop";
-    execute_command_line_and_wait(command_postgres_stop, _("Stopping Database Server"));
-  }
-  catch(const Glib::SpawnError& ex)
+  // TODO: Detect other instances on the same computer, and use a different port number, 
+  // or refuse to continue, showing an error dialog.
+
+  // -D specifies the data directory.
+  // -c config_file= specifies the configuration file
+  // -k specifies a directory to use for the socket. This must be writable by us.
+  // POSTGRES_POSTMASTER_PATH is defined in config.h, based on the configure.
+  const std::string command_postgres_stop = POSTGRES_UTILS_PATH "/pg_ctl -D \"" + dbdir + "/data\" stop";
+  const bool result = Glom::Spawn::execute_command_line_and_wait(command_postgres_stop, _("Stopping Database Server"));
+  if(!result)
   {
-    std::cerr << "Exception while attempting to stop self-hosting of the database: " << ex.what() << std::endl;
+    std::cerr << "Error while attempting to stop self-hosting of the database."  << std::endl;
   }
 
   m_self_hosting_active = false;
@@ -644,34 +595,30 @@ bool ConnectionPool::create_self_hosting()
   g_assert(mkdir_succeeded != -1);
 
   
-  try
+  // initdb creates a new postgres database cluster:
+  const std::string username = get_user();
+  if(username.empty())
   {
-     // initdb creates a new postgres database cluster:
-     const std::string username = get_user();
-     if(username.empty())
-     {
-       std::cerr << "ConnectionPool::create_self_hosting(). Username was empty while attempting to create self-hosting  database" << std::endl;
-       return false;
-     }
-
-     const std::string temp_pwfile = "/tmp/glom_initdb_pwfile";
-     create_text_file(temp_pwfile, get_password());
-
-     const std::string command_initdb = POSTGRES_UTILS_PATH "/initdb -D \"" + dbdir + "/data\"" +
-                                        " -U " + username + " --pwfile=\"" + temp_pwfile + "\""; 
-     //Note that --pwfile takes the password from the first line of a file. It's an alternative to supplying it when prompted on stdin.
-     execute_command_line_and_wait(command_initdb, _("Creating Database Data"));
-
-     const int temp_pwfile_removed = g_remove(temp_pwfile.c_str()); //Of course, we don't want this to stay around. It would be a security risk.
-     g_assert(temp_pwfile_removed == 0);
-  }
-  catch(const Glib::SpawnError& ex)
-  {
-    std::cerr << "Exception while attempting to create self-hosting database: " << ex.what() << std::endl;
+    std::cerr << "ConnectionPool::create_self_hosting(). Username was empty while attempting to create self-hosting  database" << std::endl;
     return false;
   }
 
-  return true;
+  const std::string temp_pwfile = "/tmp/glom_initdb_pwfile";
+  create_text_file(temp_pwfile, get_password());
+
+  const std::string command_initdb = POSTGRES_UTILS_PATH "/initdb -D \"" + dbdir + "/data\"" +
+                                        " -U " + username + " --pwfile=\"" + temp_pwfile + "\""; 
+  //Note that --pwfile takes the password from the first line of a file. It's an alternative to supplying it when prompted on stdin.
+  const bool result = Glom::Spawn::execute_command_line_and_wait(command_initdb, _("Creating Database Data"));
+  if(!result)
+  {
+    std::cerr << "Error while attempting to create self-hosting database." << std::endl;
+  }
+
+  const int temp_pwfile_removed = g_remove(temp_pwfile.c_str()); //Of course, we don't want this to stay around. It would be a security risk.
+  g_assert(temp_pwfile_removed == 0);
+ 
+  return result;
 }
 
 bool ConnectionPool::create_text_file(const std::string& file_uri, const std::string& contents)

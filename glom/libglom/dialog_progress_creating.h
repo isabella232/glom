@@ -18,35 +18,37 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include "dialog_progress_creating.h"
-#include "gtkmm/main.h"
-#include <glibmm/i18n.h>
+#ifndef GLOM_DIALOG_PROGRESS_CREATING_H
+#define GLOM_DIALOG_PROGRESS_CREATING_H
+
+#include <libglademm.h>
+#include <gtkmm/window.h>
+#include <gtkmm/label.h>
+#include <gtkmm/progressbar.h>
 
 namespace Glom
 {
 
-Dialog_ProgressCreating::Dialog_ProgressCreating(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
-: Gtk::Window(cobject),
-  m_progress(0)
+/** Use this to show the user that something is happening.
+ * Call pulse() repeatedly to show that we are still working. 
+ */
+class Dialog_ProgressCreating
+  : public Gtk::Window
 {
-  //set_modal();
-  refGlade->get_widget("progressbar", m_progress);
-  //m_progress->show();
-}
+public:
+  Dialog_ProgressCreating(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  virtual ~Dialog_ProgressCreating();
 
-Dialog_ProgressCreating::~Dialog_ProgressCreating()
-{
-}
+  void set_message(const Glib::ustring& title, const Glib::ustring& secondary_text);
 
-void Dialog_ProgressCreating::pulse()
-{
-  m_progress->pulse();
-  raise();
+  void pulse();
 
-  //Allow GTK+ to perform all updates for us
-  //Without this, the progress bar will appear to do nothing.
-  while(Gtk::Main::instance()->events_pending())
-    Gtk::Main::instance()->iteration();
-}
+protected:
+  Gtk::ProgressBar* m_progress;
+  Gtk::Label* m_label_message;
+};
 
 } //namespace Glom
+
+#endif //GLOM_DIALOG_PROGRESS_CREATING_H
+

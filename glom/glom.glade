@@ -14468,9 +14468,9 @@ Which user should be added to this group?</property>
   </child>
 </widget>
 
-<widget class="GtkWindow" id="window_progress_creating_from_example">
+<widget class="GtkWindow" id="window_progress">
   <property name="visible">True</property>
-  <property name="title" translatable="yes">Creating Glom Database</property>
+  <property name="title" translatable="yes">Processing</property>
   <property name="type">GTK_WINDOW_TOPLEVEL</property>
   <property name="window_position">GTK_WIN_POS_NONE</property>
   <property name="modal">False</property>
@@ -14492,9 +14492,9 @@ Which user should be added to this group?</property>
       <property name="spacing">6</property>
 
       <child>
-	<widget class="GtkLabel" id="label208">
+	<widget class="GtkLabel" id="label_message">
 	  <property name="visible">True</property>
-	  <property name="label" translatable="yes">Creating Glom database from example file.</property>
+	  <property name="label" translatable="yes">Processing</property>
 	  <property name="use_underline">False</property>
 	  <property name="use_markup">False</property>
 	  <property name="justify">GTK_JUSTIFY_LEFT</property>

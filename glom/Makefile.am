@@ -38,7 +38,6 @@ glom_SOURCES = main.cc \
                dialog_invalid_data.h dialog_invalid_data.cc \
                dialog_new_database.h dialog_new_database.cc \
                dialog_database_preferences.h dialog_database_preferences.cc \
-               dialog_progress_creating.h dialog_progress_creating.cc \
                filechooser_export.h filechooser_export.cc \
                box_reports.h box_reports.cc \
                xsl_utils.h xsl_utils.cc

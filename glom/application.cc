@@ -20,7 +20,7 @@
 
 #include "application.h"
 #include "dialog_new_database.h"
-#include "dialog_progress_creating.h"
+#include  <glom/libglom/dialog_progress_creating.h>
 #include "translation/dialog_change_language.h"
 #include "translation/window_translations.h"
 #include <glom/libglom/utils.h>
@@ -925,14 +925,15 @@ bool App_Glom::recreate_database(bool& user_cancelled)
   //Show the user that something is happening, because the INSERTS might take time.
   //TOOD: This doesn't actually show up until near the end, even with Gtk::Main::instance()->iteration().
   std::auto_ptr<Dialog_ProgressCreating> dialog_progress;
-  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_progress_creating_from_example");
+  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_progress");
   if(refXml)
   {
     Dialog_ProgressCreating* dialog_progress_temp = 0;
-    refXml->get_widget_derived("window_progress_creating_from_example", dialog_progress_temp);
+    refXml->get_widget_derived("window_progress", dialog_progress_temp);
     if(dialog_progress_temp)
     {
-      dialog_progress.reset(dialog_progress_temp); //The dialog will be deleted (and hidden) when this function returns.
+      dialog_progress_temp->set_message(_("Creating Glom Database"), _("Creating Glom database from example file."));
+      dialog_progress.reset(dialog_progress_temp); //Put the dialog in an auto_ptr so that it will be deleted (and hidden) when the current function returns.
 
       dialog_progress->set_transient_for(*this);
       dialog_progress->show();

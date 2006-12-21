@@ -18,32 +18,29 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef GLOM_DIALOG_PROGRESS_CREATING_H
-#define GLOM_DIALOG_PROGRESS_CREATING_H
+#ifndef GLOM_SPAWN_WITH_FEEDBACK_H
+#define GLOM_SPAWN_WITH_FEEDBACK_H
 
-#include <libglademm.h>
 #include <gtkmm/window.h>
-#include <gtkmm/progressbar.h>
 
 namespace Glom
 {
 
-/** Use this to show the user that something is happening.
- */
-class Dialog_ProgressCreating
-  : public Gtk::Window
+namespace Spawn
 {
-public:
-  Dialog_ProgressCreating(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
-  virtual ~Dialog_ProgressCreating();
 
-  void pulse();
 
-protected:
-  Gtk::ProgressBar* m_progress;
-};
+/** Execute a command-line command, and wait for it to return.
+ * @param command The command-line command.
+ * @param message A human-readable message to be shown, for instance in a dialog, while waiting. 
+ */
+bool execute_command_line_and_wait(const std::string& command, const Glib::ustring& message, Gtk::Window* parent_window = 0);
 
-} //namespace Glom
+bool execute_command_line_and_wait_fixed_seconds(const std::string& command, unsigned int seconds, const Glib::ustring& message, Gtk::Window* parent_window = 0);
 
-#endif //GLOM_DIALOG_PROGRESS_CREATING_H
 
+} //Spawn
+
+} //Glom
+
+#endif //GLOM_SPAWN_WITH_FEEDBACK_H

@@ -1,5 +1,25 @@
 2006-12-21  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/Makefile.am:
+	* glom/glom.glade:
+	* glom/libglom/Makefile.am:
+	* glom/libglom/dialog_progress_creating.cc:
+	* glom/libglom/dialog_progress_creating.h: Moved this class here, 
+	so we can use it from libglom, add add a set_message() method, so we can 
+	change the text for each use.
+	* glom/libglom/connectionpool.cc:
+	* glom/libglom/spawn_with_feedback.cc:
+	* glom/libglom/spawn_with_feedback.h: Moved the spawn utility functions 
+	here from connectionpool.cc.
+	execute_command_line_and_wait(): Added message parameter, shown in a 
+	dialog with a pulsing progress bar. The command-line command is run in a 
+	separate thread, which signals us with a Glib::Cond condition when it is 
+	finished, so we can update the UI in the meantime. 
+	* glom/application.cc:
+	* glom/main.cc: Call g_threads_init(), so we can use mutexes.
+
+2006-12-21  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/libglom/connectionpool.cc: execute_command_line_and_wait(): Take a human-readable message, 
 	and show it in a dialog while we are waiting. This is not ideal, but better than nothing. What 
 	we really need is to do the spawn_command_line_sync() in another thread, and wait for that thread 
