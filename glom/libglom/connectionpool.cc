@@ -510,7 +510,12 @@ void ConnectionPool::start_self_hosting()
                                   + " -c ident_file=\"" + dbdir + "/config/pg_ident.conf\""
                                   + " -k \"" + dbdir + "\""
                                   + " --external_pid_file=\"" + dbdir + "/pid\"";
-  const bool result = Glom::Spawn::execute_command_line_and_wait_fixed_seconds(command_postgres_start, 30 /* seconds to wait */, _("Starting Database Server")); // This command does not return.
+
+  const std::string command_check_postgres_has_started = POSTGRES_UTILS_PATH "/pg_ctl status -D \"" + dbdir + "/data\"";
+  const std::string second_command_success_text = "postmaster is running"; //TODO: This is not a stable API. Also, watch out for localisation.
+
+  //The first command does not return, but the second command can check whether it succeeded:
+  const bool result = Glom::Spawn::execute_command_line_and_wait_until_second_command_returns_success(command_postgres_start, command_check_postgres_has_started, _("Starting Database Server"), 0 /* window*/, second_command_success_text);
   if(!result)
   {
     std::cerr << "Error while attempting to self-host a database." << std::endl;

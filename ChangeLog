@@ -1,5 +1,17 @@
 2006-12-21  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/libglom/connectionpool.cc:
+	* glom/libglom/spawn_with_feedback.cc:
+	* glom/libglom/spawn_with_feedback.h:
+	Replaced execute_command_line_and_wait_fixed_seconds() with 
+	execute_command_line_and_wait_until_second_command_returns_success(), so we 
+	can use pg_ctl status to check whether postmaster has started, instead of 
+	waiting an arbitrary number of seconds. This actually checks the stdout output (!)
+	from pg_ctl, because I think that it always returns a success code, but I am 
+	not sure about that anymore.
+
+2006-12-21  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/Makefile.am:
 	* glom/glom.glade:
 	* glom/libglom/Makefile.am:

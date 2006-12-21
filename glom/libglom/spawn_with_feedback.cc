@@ -40,6 +40,7 @@ public:
   bool* m_result;
 };
 
+
 static void execute_command_line_on_thread_create(CommandLineThreadData* data)
 {
   std::cout << "  debug: thread start" << std::endl; 
@@ -65,75 +66,37 @@ static void execute_command_line_on_thread_create(CommandLineThreadData* data)
   data->m_mutex->unlock();
 }
 
-/** Perform the command in a separate thread, releasing the mutex when it is finished.
- * This function returns immediately.
- * You should repeatedly wait for the condition, to wait for the thread to finish, 
- * doing whatever else you need to do (such as updating the UI).
- */
-static void execute_command_line_and_wait_do_work(const std::string& command, Glib::Cond& condition, Glib::Mutex& condition_mutex, bool& result)
+static bool pulse_until_thread_finished(Dialog_ProgressCreating& dialog_progress, const std::string& command, const sigc::slot<void, CommandLineThreadData*>& thread_slot)
 {
-  CommandLineThreadData* data = new CommandLineThreadData(); //This will be deleted by the slot when it has finished.
-  data->m_command = command;
-  data->m_cond = &condition;
-  data->m_mutex = &condition_mutex;
-  data->m_result = &result;
-
-  // Create a thread, which will start by calling our slot
-  // We use sigc::bind to pass extra information to that slot.
-  //
-  // The slot locks the mutex and unlocks it when it has finished,
-  // so the caller can (try to) lock the mutex to block/loop until the thread has finished. 
-  try
-  {
-    Glib::Thread::create( sigc::bind(sigc::ptr_fun(&execute_command_line_on_thread_create), data), false /* joinable */);
-  }
-  catch(const Glib::ThreadError& ex)
-  {
-    std::cerr << "Glom::Spawn::execute_command_line_and_wait_do_work(): Glib::Thread::create() failed." << std::endl;
-  }
-}
-
-/** Execute a command-line command, and wait for it to return.
- * @param command The command-line command.
- * @param message A human-readable message to be shown, for instance in a dialog, while waiting. 
- */
-bool execute_command_line_and_wait(const std::string& command, const Glib::ustring& message, Gtk::Window* parent_window)
-{
-  std::auto_ptr<Dialog_ProgressCreating> dialog_progress;
-  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_progress");
-  if(refXml)
-  {
-    Dialog_ProgressCreating* dialog_progress_temp = 0;
-    refXml->get_widget_derived("window_progress", dialog_progress_temp);
-    if(dialog_progress_temp)
-    {
-      dialog_progress_temp->set_message(_("Processing"), message);
-      dialog_progress_temp->set_modal();
-
-      dialog_progress.reset(dialog_progress_temp); //Put the dialog in an auto_ptr so that it will be deleted (and hidden) when the current function returns.
-
-      if(parent_window)
-        dialog_progress->set_transient_for(*parent_window);
-
-      dialog_progress->show();
-
-      //Ensure that the dialog is shown, instead of waiting for the application to be idle:
-      while(Gtk::Main::instance()->events_pending())
-        Gtk::Main::instance()->iteration();
-    }
-  }
-
-  std::cout << std::endl << "debug: command_line: " << command << std::endl << std::endl;
-
- 
   // Spawn the command in a thread, waiting for a condition to be signalled by that thread when it has finished.
   // This allows us to update the UI in this thread while we wait:
   Glib::Cond cond;
   Glib::Mutex cond_mutex;
 
   bool result = false;
-  execute_command_line_and_wait_do_work(command, cond, cond_mutex, result);
+ 
+  CommandLineThreadData* data = new CommandLineThreadData(); //This will be deleted by the slot when it has finished.
+  data->m_command = command;
+  data->m_cond = &cond;
+  data->m_mutex = &cond_mutex;
+  data->m_result = &result;
 
+  // Create a thread, which will start by calling our slot
+  // We use sigc::bind to pass extra information to that slot.
+  //
+  // The slot signals the condition when it has finished.
+  // so the caller can repeatedly wait for the signal until the thread has finished. 
+  try
+  {
+    Glib::Thread::create( sigc::bind(thread_slot, data), false /* joinable */);
+  }
+  catch(const Glib::ThreadError& ex)
+  {
+    std::cerr << "Glom::Spawn::execute_command_line_and_wait_do_work(): Glib::Thread::create() failed." << std::endl;
+  }
+
+
+  // Loop, updating the UI, waiting for the condition to be signalled by the thread:
   cond_mutex.lock(); //The mutex used for timed_wait() must be locked.
   bool keep_waiting = true;
   while(keep_waiting)
@@ -147,7 +110,7 @@ bool execute_command_line_and_wait(const std::string& command, const Glib::ustri
     }
     else
     {
-      dialog_progress->pulse();
+      dialog_progress.pulse();
 
       while(Gtk::Main::instance()->events_pending())
         Gtk::Main::instance()->iteration();
@@ -159,7 +122,116 @@ bool execute_command_line_and_wait(const std::string& command, const Glib::ustri
 }
 
 
+static Dialog_ProgressCreating* get_and_show_pulse_dialog(const Glib::ustring& message, Gtk::Window* parent_window)
+{
+  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_progress");
+  if(refXml)
+  {
+    Dialog_ProgressCreating* dialog_progress = 0;
+    refXml->get_widget_derived("window_progress", dialog_progress);
+    if(dialog_progress)
+    {
+      dialog_progress->set_message(_("Processing"), message);
+      dialog_progress->set_modal();
 
+      if(parent_window)
+        dialog_progress->set_transient_for(*parent_window);
+
+      dialog_progress->show();
+
+      //Ensure that the dialog is shown, instead of waiting for the application to be idle:
+      while(Gtk::Main::instance()->events_pending())
+        Gtk::Main::instance()->iteration();
+
+      return dialog_progress;
+    }
+  }
+
+  return NULL;
+}
+
+
+
+bool execute_command_line_and_wait(const std::string& command, const Glib::ustring& message, Gtk::Window* parent_window)
+{
+  //Show a dialog with a pulsing progress bar and a human-readable message, while we wait for the command to finish:
+  //
+  //Put the dialog in an auto_ptr so that it will be deleted (and hidden) when the current function returns.
+  Dialog_ProgressCreating* dialog_temp = get_and_show_pulse_dialog(message, parent_window);
+  std::auto_ptr<Dialog_ProgressCreating> dialog_progress;
+  dialog_progress.reset(dialog_temp);
+
+
+  std::cout << std::endl << "debug: command_line: " << command << std::endl << std::endl;
+
+  return pulse_until_thread_finished(*dialog_progress, command, sigc::ptr_fun(&execute_command_line_on_thread_create) );
+}
+
+
+bool execute_command_line_and_wait_until_second_command_returns_success(const std::string& command, const std::string& second_command, const Glib::ustring& message, Gtk::Window* parent_window, const std::string& success_text)
+{
+  Dialog_ProgressCreating* dialog_temp = get_and_show_pulse_dialog(message, parent_window);
+  std::auto_ptr<Dialog_ProgressCreating> dialog_progress;
+  dialog_progress.reset(dialog_temp);
+
+
+  // Execute the first thread asynchronously (so we don't wait for it):
+  try
+  {
+    std::cout << std::endl << "debug: command_line: " << command << std::endl << std::endl;
+
+    Glib::spawn_command_line_async(command);
+  }
+  catch(const Glib::SpawnError& ex)
+  {
+    std::cerr << "Glom::Spawn::pulse_until_second_command_succeed() Exception while calling lib::spawn_command_line_async(): " << ex.what() << std::endl;
+  }
+
+  // Loop, updating the UI, repeatedly trying the second commmand, until the second command succeeds:
+  while(true)
+  {
+    try
+    {
+      std::cout << std::endl << "debug: command_line (second): " << command << std::endl << std::endl;
+
+
+      int return_status = 0;
+      std::string stdout_output;
+      Glib::spawn_command_line_sync(second_command, &stdout_output, NULL, &return_status);
+      if(return_status == 0)
+      {
+        if(success_text.empty()) //Just check the return code.
+          return true;
+        else //Check the output too.
+        {
+          std::cout << " debug: output=" << stdout_output << ", waiting for=" << success_text << std::endl;
+          if(stdout_output.find(success_text) != std::string::npos)
+            return true;
+        }
+      }
+      else
+      {
+         std::cout << " debug: second command failed. output=" << stdout_output << std::endl;
+      }
+    }
+    catch(const Glib::SpawnError& ex)
+    {
+      std::cerr << "Glom::execute_command_line_and_wait_until_second_command_returns_success() Exception while calling lib::spawn_command_line_sync(): " << ex.what() << std::endl;
+    }
+
+    dialog_progress->pulse();
+
+    while(Gtk::Main::instance()->events_pending())
+      Gtk::Main::instance()->iteration();
+
+    sleep(1); // To stop us calling the second command too often.
+  }
+
+  return false;
+}
+
+
+#if 0
 bool execute_command_line_and_wait_fixed_seconds(const std::string& command, unsigned int seconds, const Glib::ustring& message, Gtk::Window* parent_window)
 {
   Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(message), true, Gtk::MESSAGE_INFO, Gtk::BUTTONS_NONE, true /* modal */); 
@@ -187,6 +259,7 @@ bool execute_command_line_and_wait_fixed_seconds(const std::string& command, uns
   sleep(seconds); //Give the command enough time to make something ready for us to continue.
   return true;
 }
+#endif
 
 } //Spawn
 
