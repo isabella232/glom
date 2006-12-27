@@ -24,6 +24,7 @@ glom/libglom/data_structure/layout/report_parts/layoutitem_groupby.cc
 glom/libglom/data_structure/layout/report_parts/layoutitem_summary.cc
 glom/libglom/data_structure/layout/report_parts/layoutitem_verticalgroup.cc
 glom/libglom/document/document_glom.cc
+glom/libglom/spawn_with_feedback.cc
 glom/libglom/utils.cc
 glom/dialog_database_preferences.cc
 glom/dialog_connection.cc
