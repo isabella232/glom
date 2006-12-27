@@ -3,7 +3,7 @@ INCLUDES = -I@top_srcdir@/ $(GLOM_CFLAGS) $(PYTHON_INCLUDES)
 SUBDIRS =
 
 #This seems to stop libtool from complaining that glom.la is not named libglom.a
-common_ldflags = -module -avoid-version
+common_ldflags = -module -avoid-version -no-undefined
 
 # Build and install the python module:
 pyexec_LTLIBRARIES = glom.la
