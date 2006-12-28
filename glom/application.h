@@ -87,6 +87,8 @@ protected:
 
   virtual void on_menu_file_close(); //override.
 
+  virtual Glib::ustring ui_file_select_save(const Glib::ustring& old_file_uri); //override.
+
   virtual void on_userlevel_changed(AppState::userlevels userlevel);
 
   virtual Bakery::App* new_instance(); //Override
@@ -113,6 +115,10 @@ protected:
   Glib::RefPtr<Gtk::ActionGroup> m_refNavTablesActionGroup, m_refNavReportsActionGroup;
   type_listActions m_listNavTableActions, m_listNavReportActions;
   Gtk::UIManager::ui_merge_id m_menu_tables_ui_merge_id, m_menu_reports_ui_merge_id;
+
+  //Set these before calling offer_saveas() (which uses ui_file_select_save()), and clear it afterwards.
+  Glib::ustring m_ui_save_extra_title;
+  Glib::ustring m_ui_save_extra_message;
 
   bool m_show_sql_debug;
 };

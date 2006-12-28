@@ -20,9 +20,10 @@
 
 #include "application.h"
 #include "dialog_new_database.h"
-#include  <glom/libglom/dialog_progress_creating.h>
-#include "translation/dialog_change_language.h"
-#include "translation/window_translations.h"
+#include <glom/libglom/dialog_progress_creating.h>
+#include <glom/translation/dialog_change_language.h>
+#include <glom/translation/window_translations.h>
+#include <glom/utility_widgets/filechooserdialog.h>
 #include <glom/libglom/utils.h>
 #include <libgnome/gnome-help.h> //For gnome_help_display
 #include "config.h" //For VERSION.
@@ -411,6 +412,122 @@ void App_Glom::on_menu_file_close() //override
   Bakery::App_WithDoc_Gtk::on_menu_file_close();
 }
 
+static bool uri_is_writable(const Glib::RefPtr<const Gnome::Vfs::Uri>& uri)
+{
+  if(!uri)
+    return false;
+
+  Glib::RefPtr<const Gnome::Vfs::FileInfo> file_info = uri->get_file_info(Gnome::Vfs::FILE_INFO_GET_ACCESS_RIGHTS);
+  if(file_info)
+  {
+    const Gnome::Vfs::FilePermissions permissions = file_info->get_permissions();
+    return ((permissions & Gnome::Vfs::PERM_ACCESS_WRITABLE) == Gnome::Vfs::PERM_ACCESS_WRITABLE);
+  }
+  else
+    return true; //Not every URI protocol supports FILE_INFO_GET_ACCESS_RIGHTS, so assume that it's writable and complain later.
+}
+
+Glib::ustring App_Glom::ui_file_select_save(const Glib::ustring& old_file_uri) //override
+{
+  //Reimplement this whole function, just so we can use our custom FileChooserDialog class:
+  App& app = *this;
+
+  Glom::FileChooserDialog fileChooser_Save(gettext("Save Document"), Gtk::FILE_CHOOSER_ACTION_SAVE);
+  fileChooser_Save.set_do_overwrite_confirmation(); //Ask the user if the file already exists.
+
+  Gtk::Window* pWindow = dynamic_cast<Gtk::Window*>(&app);
+  if(pWindow)
+    fileChooser_Save.set_transient_for(*pWindow);
+
+  fileChooser_Save.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+  fileChooser_Save.add_button(Gtk::Stock::SAVE, Gtk::RESPONSE_OK);
+
+  fileChooser_Save.set_default_response(Gtk::RESPONSE_OK);
+
+  //This is the reason that we override this method:
+  if(!m_ui_save_extra_title.empty())
+    fileChooser_Save.set_title(m_ui_save_extra_title);
+
+  fileChooser_Save.set_extra_message(m_ui_save_extra_message);
+    
+
+  //Make the save dialog show the existing filename, if any:
+  if(!old_file_uri.empty())
+  {
+    //Just start with the parent folder,
+    //instead of the whole name, to avoid overwriting:
+    Glib::RefPtr<Gnome::Vfs::Uri> vfs_uri = Gnome::Vfs::Uri::create(old_file_uri);
+    if(vfs_uri)
+    {
+      Glib::ustring uri_parent = vfs_uri->extract_dirname();
+      fileChooser_Save.set_uri(uri_parent);
+    }
+  }
+
+
+  //bool tried_once_already = false;
+
+  bool try_again = true;
+  while(try_again)
+  {
+    try_again = false;
+
+    //Work around bug #330680 "GtkFileChooserDialog is too small when shown a second time.":
+    //(Commented-out because the workaround doesn't work)
+    /*
+    if(tried_once_already)
+    {
+      fileChooser_Save.set_default_size(-1, 600); 
+    }
+    else
+      tried_once_already = true;
+    */
+
+    const int response_id = fileChooser_Save.run();
+    fileChooser_Save.hide();
+    if(response_id != Gtk::RESPONSE_CANCEL)
+    {
+      const Glib::ustring uri = fileChooser_Save.get_uri();
+
+      Glib::RefPtr<Gnome::Vfs::Uri> vfs_uri = Gnome::Vfs::Uri::create(uri);
+      if(!vfs_uri)
+        return Glib::ustring(); //Failure.
+
+      //If the file exists (the FileChooser offers a "replace?" dialog, so this is possible.):
+      if(App_WithDoc::file_exists(uri))
+      {
+        //Check whether we have rights to the file to change it:
+        //Really, GtkFileChooser should do this for us.
+        if(!uri_is_writable(vfs_uri))
+        {
+           //Warn the user:
+           ui_warning(gettext("Read-only File."), gettext("You may not overwrite the existing file, because you do not have sufficient access rights."));
+           try_again = true; //Try again.
+           continue;
+        }
+      }
+
+      //Check whether we have rights to the directory, to create a new file in it:
+      //Really, GtkFileChooser should do this for us.
+      Glib::RefPtr<const Gnome::Vfs::Uri> vfs_uri_parent = vfs_uri->get_parent();
+      if(vfs_uri_parent)
+      {
+        if(!uri_is_writable(vfs_uri_parent))
+        {
+          //Warn the user:
+           ui_warning(gettext("Read-only Directory."), gettext("You may not create a file in this directory, because you do not have sufficient access rights."));
+           try_again = true; //Try again.
+           continue;
+        }
+      }
+
+      if(!try_again)
+        return uri;
+    }
+    else
+      return Glib::ustring(); //The user cancelled.
+  }
+}
 
 void App_Glom::stop_self_hosting_of_document_database()
 {
@@ -484,26 +601,19 @@ bool App_Glom::on_document_load()
       const bool is_example = pDocument->get_is_example_file();
       if(pDocument->get_is_example_file())
       {
-          Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Creating from example file.")), true,  Gtk::MESSAGE_INFO, Gtk::BUTTONS_NONE);
-          dialog.set_secondary_text(_("To use this example file you must save an editable copy of the file. A new database will also be created on the server.")); //TODO: Better explanation.
-          dialog.set_transient_for(*this);
+        pDocument->set_file_uri(Glib::ustring()); //Prevent it from defaulting to the read-only examples directory when offering saveas.
 
-          dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
-          dialog.add_button(Gtk::Stock::SAVE_AS, Gtk::RESPONSE_OK);
+        //m_ui_save_extra_* are used by offer_saveas() if it's not empty:
+        m_ui_save_extra_title = _("Creating From Example File");
+        m_ui_save_extra_message = _("To use this example file you must save an editable copy of the file. A new database will also be created on the server.");
+        offer_saveas();
+        m_ui_save_extra_message.clear();
+        m_ui_save_extra_title.clear();
 
-          const int response = dialog.run();
-          dialog.hide();
-          if(response == Gtk::RESPONSE_CANCEL)
-            return false;
-          else
-          {
-            pDocument->set_file_uri(Glib::ustring()); //Prevent it from defaulting to the read-only examples directory when offering saveas.
-            offer_saveas();
-            if(get_operation_cancelled())
-              return false;
-            else
-              pDocument->set_is_example_file(false);
-          }
+        if(get_operation_cancelled())
+          return false;
+        else
+          pDocument->set_is_example_file(false);
       }
 
       //Warn about read-only files, because users will otherwise wonder why they can't use Developer mode:

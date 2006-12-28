@@ -32,7 +32,8 @@ libutility_widgets_a_SOURCES = alignment_justified.cc alignment_justified.h \
                                imageglom.h imageglom.cc \
                                labelglom.h labelglom.cc \
                                dialog_choose_id.cc dialog_choose_id.h \
-                               dialog_choose_date.cc dialog_choose_date.h
+                               dialog_choose_date.cc dialog_choose_date.h \
+                               filechooserdialog.cc filechooserdialog.h
 
 libutility_widgets_a_LIBADD = adddel/libutility_widgets_adddel.a \
                               db_adddel/libutility_widgets_db_adddel.a

@@ -1,3 +1,23 @@
+2006-12-28  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/utility_widgets/filechooserdialog.cc:
+	* glom/utility_widgets/filechooserdialog.h: Add a derived Gtk::FileChooserDialog, 
+	which can show our extra widgets. At the moment it can just show an extra text 
+	message.
+	* glom/application.cc:
+	* glom/application.h: Override Bakery::App_WithDoc::ui_file_select_save(), so 
+	we can use our custom file chooser dialog, using member variables to set the title 
+	and extra message if necessary.
+	on_document_load(): Set the member variables so that we show the message about 
+	saving an example file in the file chooser dialog, instead of in a separate dialog.
+	This removes one of the many dialogs. 
+
+2006-12-27  Murray Cumming  <murrayc@murrayc.com>
+
+        * glom/libglom/Makefile.am:
+        * glom/python_embed/python_module/Makefile.am: Fix the cygwin (win32) build.
+        Bug #338844 from Yselkowitz.
+
 2006-12-21   Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/translation/window_translations.cc:
