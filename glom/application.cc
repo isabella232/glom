@@ -19,7 +19,6 @@
  */
 
 #include "application.h"
-#include "dialog_new_database.h"
 #include <glom/libglom/dialog_progress_creating.h>
 #include <glom/translation/dialog_change_language.h>
 #include <glom/translation/window_translations.h>
@@ -48,6 +47,7 @@ App_Glom::App_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml
   m_window_translations(0),
   m_menu_tables_ui_merge_id(0),
   m_menu_reports_ui_merge_id(0),
+  m_ui_save_extra_newdb_selfhosted(false),
   m_show_sql_debug(false)
 {
   try
@@ -449,7 +449,19 @@ Glib::ustring App_Glom::ui_file_select_save(const Glib::ustring& old_file_uri) /
     fileChooser_Save.set_title(m_ui_save_extra_title);
 
   fileChooser_Save.set_extra_message(m_ui_save_extra_message);
-    
+
+  //Start with something suitable:
+  Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
+  g_assert(document);
+  const Glib::ustring filename = document->get_name(); //Get the filename without the path and extension.
+
+  //Avoid ".". TODO: Find out why it happens:
+  if(filename == ".")
+    m_ui_save_extra_newdb_title = Glib::ustring();
+  else
+    m_ui_save_extra_newdb_title = Utils::title_from_string( filename ); //Start with something suitable.
+
+  fileChooser_Save.set_extra_newdb_details(m_ui_save_extra_newdb_title, m_ui_save_extra_newdb_selfhosted); 
 
   //Make the save dialog show the existing filename, if any:
   if(!old_file_uri.empty())
@@ -522,11 +534,24 @@ Glib::ustring App_Glom::ui_file_select_save(const Glib::ustring& old_file_uri) /
       }
 
       if(!try_again)
-        return uri;
+      {
+        //Get the extra details from the extended save dialog:
+        m_ui_save_extra_newdb_title = fileChooser_Save.get_extra_newdb_details(m_ui_save_extra_newdb_selfhosted); 
+        if(m_ui_save_extra_newdb_title.empty())
+        {
+          Frame_Glom::show_ok_dialog(_("Database Title missing"), _("You must specify a title for the new database."), *this, Gtk::MESSAGE_ERROR);
+
+          try_again = true;
+        }
+        else
+          return uri;
+      }
     }
     else
       return Glib::ustring(); //The user cancelled.
   }
+
+  return Glib::ustring();
 }
 
 void App_Glom::stop_self_hosting_of_document_database()
@@ -606,9 +631,18 @@ bool App_Glom::on_document_load()
         //m_ui_save_extra_* are used by offer_saveas() if it's not empty:
         m_ui_save_extra_title = _("Creating From Example File");
         m_ui_save_extra_message = _("To use this example file you must save an editable copy of the file. A new database will also be created on the server.");
+        m_ui_save_extra_newdb_title = "TODO";
+        m_ui_save_extra_newdb_selfhosted = true;
         offer_saveas();
         m_ui_save_extra_message.clear();
         m_ui_save_extra_title.clear();
+
+        //Get the results from the extended save dialog:
+        pDocument->set_database_title(m_ui_save_extra_newdb_title);
+        pDocument->set_connection_is_self_hosted(m_ui_save_extra_newdb_selfhosted);
+
+        m_ui_save_extra_newdb_title.clear();
+        m_ui_save_extra_newdb_selfhosted = false;
 
         if(get_operation_cancelled())
           return false;
@@ -645,7 +679,11 @@ bool App_Glom::on_document_load()
         {
           // TODO: sleep, to give postgres time to start?
           connection_pool->set_self_hosted(pDocument->get_connection_self_hosted_directory_uri());
-          connection_pool->start_self_hosting(); //Stopped in on_menu_file_close().
+
+          if(!is_example) /* It will be started later, after we have asked for the initial db name/title and created the files.*/
+          {
+            connection_pool->start_self_hosting(); //Stopped in on_menu_file_close().
+          }
         }
         else
         {
@@ -664,20 +702,7 @@ bool App_Glom::on_document_load()
           bool test = false;
           if(is_example)
           {
-            //Allow the user to change the database title, 
-            //and choose whether the new database will be self-hosting.
-            Glib::ustring db_title = pDocument->get_database_title();
-            bool self_hosted = false;
-
-            const bool not_cancelled = show_dialog_new_database(this, db_title, self_hosted);   
-            if(!not_cancelled)
-            {
-              return false;
-            }
-    
-            pDocument->set_database_title(db_title);
-            pDocument->set_connection_is_self_hosted(self_hosted);
-
+            //The user has already had the chance to specify a new filename and database name.
             test = m_pFrame->connection_request_password_and_choose_new_database_name();
           }
           else
@@ -854,12 +879,21 @@ bool App_Glom::offer_new_or_existing()
   else if(response_id == 2) //New
   {
     //Each document must have a location, so ask the user for one.
+    //This will use an extended save dialog that also asks for the database title and some hosting details:
+    Glib::ustring db_title;
+
     offer_saveas();
 
     //Check that the document was given a location:
     Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
     if(!document->get_file_uri().empty())
     {
+      //Get details from the extended save dialog:
+      const Glib::ustring db_title = m_ui_save_extra_newdb_title;
+      const bool self_hosted = m_ui_save_extra_newdb_selfhosted;
+      m_ui_save_extra_newdb_title.clear();
+      m_ui_save_extra_newdb_selfhosted = false;
+
       //Make sure that the user can do something with his new document:
       document->set_userlevel(AppState::USERLEVEL_DEVELOPER);
 
@@ -867,73 +901,60 @@ bool App_Glom::offer_new_or_existing()
       //so ask the user for the name of one to create:
       
 
-      //Set suitable defaults:
-      const Glib::ustring filename = document->get_name(); //Get the filename without the path and extension.
-      Glib::ustring db_title = Utils::title_from_string( filename ); //Start with something suitable.
-      bool self_hosted = false;
-
       bool keep_asking = true;
       while(keep_asking)
       {
-        const bool not_cancelled = show_dialog_new_database(this, db_title, self_hosted);
-            
-        if(not_cancelled)
+        //Create a database name based on the title.
+        //The user will (almost) never see this anyway but it's nicer than using a random number:
+        Glib::ustring db_name = Utils::create_name_from_title(db_title);
+
+        //Prefix glom_ to the database name, so it's more obvious
+        //for the system administrator.
+        //This database name should never be user-visible again, either prefixed or not prefixed.
+        db_name = "glom_" + db_name;
+
+        if(!db_name.empty()) //The dialog and prefix prevent this anyway.
         {
-          //Create a database name based on the title.
-          //The user will (almost) never see this anyway but it's nicer than using a random number:
-          Glib::ustring db_name = Utils::create_name_from_title(db_title);
-
-          //Prefix glom_ to the database name, so it's more obvious
-          //for the system administrator.
-          //This database name should never be user-visible again, either prefixed or not prefixed.
-          db_name = "glom_" + db_name;
-
-          if(!db_name.empty()) //The dialog prevents this anyway.
-          {
-            //Connect to the server and choose a variation of this db_name that does not exist yet:
-            document->set_connection_database(db_name);
-            document->set_connection_is_self_hosted(self_hosted);
+          //Connect to the server and choose a variation of this db_name that does not exist yet:
+          document->set_connection_database(db_name);
+          document->set_connection_is_self_hosted(self_hosted);
                
-            const bool connected = m_pFrame->connection_request_password_and_choose_new_database_name();
-            if(!connected)
-              return false;
+          const bool connected = m_pFrame->connection_request_password_and_choose_new_database_name();
+          if(!connected)
+            return false;
 
-            const bool db_created = m_pFrame->create_database(document->get_connection_database(), db_title, false /* do not request password */);
-            if(db_created)
+          const bool db_created = m_pFrame->create_database(document->get_connection_database(), db_title, false /* do not request password */);
+          if(db_created)
+          {
+            keep_asking = false;
+
+            //document->set_connection_database(db_name); //Select the database that was just created.
+
+            /*
+            ConnectionPool* connection_pool = ConnectionPool::get_instance();
+            if(connection_pool)
             {
-              keep_asking = false;
-
-              //document->set_connection_database(db_name); //Select the database that was just created.
-
-              /*
-              ConnectionPool* connection_pool = ConnectionPool::get_instance();
-              if(connection_pool)
-              {
-                connection_pool->set_database(db_name); //The rest has been set while creating the database.
-              }
-              */
-
-              const Glib::ustring database_name_used = document->get_connection_database();
-              ConnectionPool::get_instance()->set_database(database_name_used);
-              document->set_database_title(db_title);
-              m_pFrame->set_databases_selected(database_name_used);
+              connection_pool->set_database(db_name); //The rest has been set while creating the database.
             }
-            else
-            {
-              //Ask again:
-              return offer_new_or_existing();
-            }
+            */
+
+            const Glib::ustring database_name_used = document->get_connection_database();
+            ConnectionPool::get_instance()->set_database(database_name_used);
+            document->set_database_title(db_title);
+            m_pFrame->set_databases_selected(database_name_used);
           }
           else
           {
-             g_warning(" App_Glom::offer_new_or_existing(): db_name is empty.");
-             //And ask again, by going back to the start of the while() loop.
+            //Ask again:
+            return offer_new_or_existing();
           }
-        } /* if(response) */
+        }
         else
         {
-          return false; //The user cancelled.
+           g_warning(" App_Glom::offer_new_or_existing(): db_name is empty.");
+           //And ask again, by going back to the start of the while() loop.
         }
+
       } /* while() */
 
       return true; //File successfully created.

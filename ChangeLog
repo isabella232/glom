@@ -1,3 +1,21 @@
+2007-01-10  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/Makefile.am:
+	* glom/glom.glade:
+	* glom/dialog_new_database.cc:
+	* glom/dialog_new_database.h: Removed this class and dialog.
+	* glom/utility_widgets/filechooserdialog.cc:
+	* glom/utility_widgets/filechooserdialog.h: Add widgets from the 
+	DialogNewDatabase dialog (asking for the title, and whether to self-host).
+	* glom/application.cc:
+	* glom/application.h: Add new m_ui_save_extra member variables for getting the 
+	result of the extended save dialog while still using the Bakery file save API.
+	ui_file_select_save(): Set and get the new member variables.
+	on_document_load(): Use the new member variables (with values previously set by the 
+	extended save dialog) instead of showing a new dialog to get the information.
+
+	This removes one dialog, making new file creation simpler.
+
 2007-01-10  Pema Geyleg  <pema.geyleg@gmail.com>
 
 	* configure.in: Added 'dz' to ALL_LINGUAS.

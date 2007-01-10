@@ -24,6 +24,9 @@
 #include <gtkmm/filechooserdialog.h>
 #include <gtkmm/label.h>
 #include <gtkmm/box.h>
+#include <gtkmm/frame.h>
+#include <gtkmm/entry.h>
+#include <gtkmm/radiobutton.h>
 
 namespace Glom
 {
@@ -38,12 +41,21 @@ public:
   virtual ~FileChooserDialog();
 
   void set_extra_message(const Glib::ustring& message);
+  void set_extra_newdb_details(const Glib::ustring& title, bool self_hosted = true);
+
+  Glib::ustring get_extra_newdb_details(bool& self_hosted);
 
 protected:
   void create_child_widgets();
 
-  Gtk::HBox m_extra_widget;
+  Gtk::VBox m_extra_widget;
   Gtk::Label m_label_extra_message;
+
+  /* New database details: */
+  Gtk::Entry m_entry_title;
+  Gtk::RadioButton m_radiobutton_server_central;
+  Gtk::RadioButton m_radiobutton_server_selfhosted;
+  Gtk::Button m_button_ok;
 };
 
 } //namespace Glom

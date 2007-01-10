@@ -120,6 +120,9 @@ protected:
   Glib::ustring m_ui_save_extra_title;
   Glib::ustring m_ui_save_extra_message;
 
+  Glib::ustring m_ui_save_extra_newdb_title;
+  bool m_ui_save_extra_newdb_selfhosted;
+
   bool m_show_sql_debug;
 };
 
