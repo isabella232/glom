@@ -1,5 +1,10 @@
 2007-01-13  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/glom.glade: dialog_new_self_hosted_connection: Start with the focus in 
+	the user name instead of the password, because both are empty to start with.
+
+2007-01-13  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/application.cc:
 	* glom/application.h: ui_file_select_save(): 
 	When self-hosting, create a directory and put the file and the data directory 

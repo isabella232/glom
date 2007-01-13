@@ -6678,7 +6678,6 @@ Please enter the initial connection details for your new database. You may add a
 		    <widget class="GtkEntry" id="entry_password">
 		      <property name="visible">True</property>
 		      <property name="can_focus">True</property>
-		      <property name="has_focus">True</property>
 		      <property name="editable">True</property>
 		      <property name="visibility">False</property>
 		      <property name="max_length">0</property>
@@ -6700,6 +6699,7 @@ Please enter the initial connection details for your new database. You may add a
 		    <widget class="GtkEntry" id="entry_user">
 		      <property name="visible">True</property>
 		      <property name="can_focus">True</property>
+		      <property name="has_focus">True</property>
 		      <property name="editable">True</property>
 		      <property name="visibility">True</property>
 		      <property name="max_length">0</property>
