@@ -1,3 +1,10 @@
+2007-01-13  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/application.cc:
+	* glom/application.h: ui_file_select_save(): 
+	When self-hosting, create a directory and put the file and the data directory 
+	inside the directory, so that they are not separated easily.
+
 2007-01-10  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/Makefile.am:

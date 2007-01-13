@@ -96,6 +96,8 @@ protected:
   bool recreate_database(bool& user_cancelled); //return indicates success.
   void stop_self_hosting_of_document_database();
 
+  static Glib::ustring get_file_uri_without_extension(const Glib::ustring& uri);
+
   typedef Bakery::App_WithDoc_Gtk type_base;
 
   //Widgets:
@@ -122,6 +124,7 @@ protected:
 
   Glib::ustring m_ui_save_extra_newdb_title;
   bool m_ui_save_extra_newdb_selfhosted;
+
 
   bool m_show_sql_debug;
 };

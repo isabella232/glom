@@ -427,6 +427,30 @@ static bool uri_is_writable(const Glib::RefPtr<const Gnome::Vfs::Uri>& uri)
     return true; //Not every URI protocol supports FILE_INFO_GET_ACCESS_RIGHTS, so assume that it's writable and complain later.
 }
 
+
+Glib::ustring App_Glom::get_file_uri_without_extension(const Glib::ustring& uri)
+{
+  Glib::RefPtr<Gnome::Vfs::Uri> vfs_uri = Gnome::Vfs::Uri::create(uri);
+  if(!vfs_uri)
+    return uri; //Actually an error.
+
+  const Glib::ustring filename_part = vfs_uri->extract_short_name();
+  
+  const Glib::ustring::size_type pos_dot = filename_part.rfind(".");
+  if(pos_dot == Glib::ustring::npos)
+    return uri; //There was no extension, so just return the existing URI.
+  else
+  {
+    const Glib::ustring filename_part_without_ext = filename_part.substr(0, pos_dot);
+    const Glib::ustring uri_parent = vfs_uri->extract_dirname();
+
+    Glib::RefPtr<Gnome::Vfs::Uri> vfs_uri_without_extension = Gnome::Vfs::Uri::create(uri_parent);
+    vfs_uri_without_extension->append_string(filename_part_without_ext);
+
+    return vfs_uri_without_extension->to_string();
+  }
+}
+
 Glib::ustring App_Glom::ui_file_select_save(const Glib::ustring& old_file_uri) //override
 {
   //Reimplement this whole function, just so we can use our custom FileChooserDialog class:
@@ -449,6 +473,12 @@ Glib::ustring App_Glom::ui_file_select_save(const Glib::ustring& old_file_uri) /
     fileChooser_Save.set_title(m_ui_save_extra_title);
 
   fileChooser_Save.set_extra_message(m_ui_save_extra_message);
+    
+  //This is the reason that we override this method:
+  if(!m_ui_save_extra_title.empty())
+    fileChooser_Save.set_title(m_ui_save_extra_title);
+
+  fileChooser_Save.set_extra_message(m_ui_save_extra_message);
 
   //Start with something suitable:
   Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
@@ -462,6 +492,7 @@ Glib::ustring App_Glom::ui_file_select_save(const Glib::ustring& old_file_uri) /
     m_ui_save_extra_newdb_title = Utils::title_from_string( filename ); //Start with something suitable.
 
   fileChooser_Save.set_extra_newdb_details(m_ui_save_extra_newdb_title, m_ui_save_extra_newdb_selfhosted); 
+
 
   //Make the save dialog show the existing filename, if any:
   if(!old_file_uri.empty())
@@ -499,13 +530,18 @@ Glib::ustring App_Glom::ui_file_select_save(const Glib::ustring& old_file_uri) /
     fileChooser_Save.hide();
     if(response_id != Gtk::RESPONSE_CANCEL)
     {
-      const Glib::ustring uri = fileChooser_Save.get_uri();
+      const Glib::ustring uri_chosen = fileChooser_Save.get_uri();
 
+      //Change the URI, to put the file (and its data folder) in a folder:
+      const Glib::ustring uri = get_file_uri_without_extension(uri_chosen);
+
+      //Check whether the file exists, and that we have rights to it:
       Glib::RefPtr<Gnome::Vfs::Uri> vfs_uri = Gnome::Vfs::Uri::create(uri);
       if(!vfs_uri)
         return Glib::ustring(); //Failure.
 
-      //If the file exists (the FileChooser offers a "replace?" dialog, so this is possible.):
+
+      //If the file exists (the FileChooser offers a "replace?" dialog, so this is not possible.):
       if(App_WithDoc::file_exists(uri))
       {
         //Check whether we have rights to the file to change it:
@@ -543,8 +579,29 @@ Glib::ustring App_Glom::ui_file_select_save(const Glib::ustring& old_file_uri) /
 
           try_again = true;
         }
-        else
-          return uri;
+      }
+ 
+      if(!try_again && m_ui_save_extra_newdb_selfhosted)
+      {
+        //Create the directory, so that file creation can succeed later:
+        //0770 means "this user and his group can read and write this "executable" (can add child files) directory".
+        //The 0 prefix means that this is octal.
+        try
+        {
+          Gnome::Vfs::Handle::make_directory(uri, 0770 /* leading zero means octal */);
+        }
+        catch(const Gnome::Vfs::exception&  ex)
+        {
+          std::cerr << "Error during make_directory(): " << ex.what() << std::endl;
+        }
+
+        //Add the filename (Note that the caller with add the extension if necessary, so we don't do it here.)
+        Glib::RefPtr<Gnome::Vfs::Uri> uri_with_ext = Gnome::Vfs::Uri::create(uri_chosen);
+        const Glib::ustring filename_part = uri_with_ext->extract_short_name();
+
+        //Add the filename part to the newly-created directory:
+        Glib::RefPtr<Gnome::Vfs::Uri> uri_whole = vfs_uri->append_string(filename_part);
+        return uri_whole->to_string();
       }
     }
     else
@@ -977,7 +1034,6 @@ bool App_Glom::offer_new_or_existing()
 
   return true;
 }
-
 void App_Glom::set_mode_data()
 {
   m_action_mode_data->activate();
