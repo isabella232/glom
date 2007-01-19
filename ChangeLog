@@ -1,3 +1,10 @@
+2007-01-19  Murray Cumming  <murrayc@murrayc.com>
+
+	* configure.in: Require libgda 1.2.4, which has a fix for database and table 
+	encoding problem. Requiring this should encourage distro packagers to also update libgda, 
+	which should fix crashes when creating databases, tables, fields, etc, with unusual 
+	characters, which happens quite often.
+
 2007-01-13  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/glom.glade: dialog_new_self_hosted_connection: Start with the focus in 
