@@ -340,7 +340,7 @@ Gnome::Gda::Value DbAddDel::get_value(const Gtk::TreeModel::iterator& iter, cons
 
     if(treerow)
     {
-      type_list_indexes list_indexes = get_column_index(layout_item);
+      type_list_indexes list_indexes = get_data_model_column_index(layout_item);
       if(!list_indexes.empty())
       {
         type_list_indexes::const_iterator iter = list_indexes.begin(); //Just get the first displayed instance of this field->
@@ -530,12 +530,41 @@ int DbAddDel::get_fixed_cell_height()
   }
 }
 
-void DbAddDel::on_cell_layout_button_clicked(int /* model_column_index */)
+void DbAddDel::on_cell_layout_button_clicked(const Gtk::TreeModel::Path& path, int model_column_index)
 {
+  Gtk::TreeModel::iterator iter = m_refListStore->get_iter(path);
+  if(iter)
+  {
+    sharedptr<const LayoutItem> layout_item = m_ColumnTypes[model_column_index].m_item;
+    sharedptr<const LayoutItem_Button> item_button = sharedptr<const LayoutItem_Button>::cast_dynamic(layout_item);
+    if(item_button)
+    {
+#if 0 //TODO:
+      const Gnome::Gda::Value primary_key_value = get_primary_key_value(iter);
+      const type_map_fields field_values = get_record_field_values_for_calculation(m_table_name, m_field_primary_key, primary_key_value);
 
+     //We need the connection when we run the script, so that the script may use it.
+     sharedptr<SharedConnection> sharedconnection = connect_to_server(0 /* parent window */);
+
+     glom_execute_python_function_implementation(item_button->get_script(), field_values, //TODO: Maybe use the field's type here.
+     get_document(), get_table_name(), sharedconnection->get_gda_connection());
+
+     //Refresh the view, in case the script changed any data:
+     if(get_primary_key_is_in_foundset(m_found_set, m_primary_key_value)) //Check, because maybe the script deleted the current record, or changed something so that it should no longer be shown in the found set.
+     {
+       refresh_data_from_database_with_primary_key(m_primary_key_value);
+     }
+     else
+     {
+       //Tell the parent to do something appropriate, such as show another record:
+       signal_record_deleted().emit(m_primary_key_value);
+     }
+#endif
+    }
+  }
 }
 
-Gtk::CellRenderer* DbAddDel::construct_specified_columns_cellrenderer(const sharedptr<LayoutItem>& layout_item, int model_column_index)
+Gtk::CellRenderer* DbAddDel::construct_specified_columns_cellrenderer(const sharedptr<LayoutItem>& layout_item, int model_column_index, int data_model_column_index)
 {
   Gtk::CellRenderer* pCellRenderer = 0;
 
@@ -612,8 +641,8 @@ Gtk::CellRenderer* DbAddDel::construct_specified_columns_cellrenderer(const shar
            pCellButton->property_text() = item_button->get_title_or_name();
            //pCellButton->set_fixed_width(50); //Otherwise it doesn't show up. TODO: Discover the width of the contents.
 
-           //TODO: pCellButton->signal_clicked().connect(
-           //  sigc::bind( sigc::mem_fun(*this, &DbAddDel::on_cell_layout_button_clicked), model_column_index) );
+           pCellButton->signal_clicked().connect(
+             sigc::bind( sigc::mem_fun(*this, &DbAddDel::on_cell_layout_button_clicked), model_column_index) );
 
            pCellRenderer = pCellButton;
          }
@@ -647,7 +676,7 @@ Gtk::CellRenderer* DbAddDel::construct_specified_columns_cellrenderer(const shar
 
       //Connect to its signal:
       pCellRendererText->signal_edited().connect(
-        sigc::bind( sigc::mem_fun(*this, &DbAddDel::on_treeview_cell_edited), model_column_index) );
+        sigc::bind( sigc::mem_fun(*this, &DbAddDel::on_treeview_cell_edited), model_column_index, data_model_column_index) );
 
     }
 
@@ -717,9 +746,12 @@ Gtk::CellRenderer* DbAddDel::construct_specified_columns_cellrenderer(const shar
     {
       pCellRendererToggle->property_activatable() = true;
 
-      //Connect to its signal:
-      pCellRendererToggle->signal_toggled().connect(
-      sigc::bind( sigc::mem_fun(*this, &DbAddDel::on_treeview_cell_edited_bool), model_column_index ) );
+      if(item_field) //Only fields can be edited:
+      {
+        //Connect to its signal:
+        pCellRendererToggle->signal_toggled().connect(
+        sigc::bind( sigc::mem_fun(*this, &DbAddDel::on_treeview_cell_edited_bool), model_column_index, data_model_column_index ) );
+      }
     }
     else
     {
@@ -759,6 +791,7 @@ void DbAddDel::construct_specified_columns()
   Gtk::TreeModel::ColumnRecord record;
 
   //Database columns:
+  std::cout << "debug: m_ColumnTypes.size()=" << m_ColumnTypes.size() << std::endl;
   type_model_store::type_vec_fields fields;
   {
     type_vecModelColumns::size_type i = 0;
@@ -828,7 +861,6 @@ void DbAddDel::construct_specified_columns()
   //Add new View Colums:
   int model_column_index = 0; //Not including the hidden internal columns.
   int view_column_index = 0;
-
   {
     GlomCellRenderer_ButtonImage* pCellButton = Gtk::manage(new GlomCellRenderer_ButtonImage());
     pCellButton->signal_clicked().connect(sigc::mem_fun(*this, &DbAddDel::on_cell_button_clicked));
@@ -847,22 +879,35 @@ void DbAddDel::construct_specified_columns()
   }
 
   bool no_columns_used = true;
+  int data_model_column_index = 0;
+  
   for(type_vecModelColumns::iterator iter = vecModelColumns.begin(); iter != vecModelColumns.end(); ++iter)
   {
     const DbAddDelColumnInfo& column_info = m_ColumnTypes[model_column_index];
     if(column_info.m_visible)
     {
-      
       no_columns_used = false;
 
       const Glib::ustring column_name = column_info.m_item->get_title_or_name();
       const Glib::ustring column_id = column_info.m_item->get_name();
 
+      // Whenever we are dealing with real database fields, 
+      // we need to know the index of the field in the query:
+      int item_data_model_column_index = -1;
+      sharedptr<const LayoutItem> layout_item = m_ColumnTypes[model_column_index].m_item;
+      sharedptr<const LayoutItem_Field> item_field = sharedptr<const LayoutItem_Field>::cast_dynamic(layout_item);
+      if(item_field)
+      {
+        item_data_model_column_index = data_model_column_index;
+        ++data_model_column_index;
+      }
+
       //Add the ViewColumn
-      Gtk::CellRenderer* pCellRenderer = construct_specified_columns_cellrenderer(column_info.m_item, model_column_index);
+      Gtk::CellRenderer* pCellRenderer = construct_specified_columns_cellrenderer(column_info.m_item, model_column_index, item_data_model_column_index);
       if(pCellRenderer)
       {
-        treeview_append_column(column_name, *pCellRenderer, model_column_index);
+        //Get the index of the field in the query, if it is a field:
+        treeview_append_column(column_name, *pCellRenderer, model_column_index, item_data_model_column_index);
 
         if(column_info.m_editable)
         {
@@ -947,7 +992,7 @@ void DbAddDel::set_value(const Gtk::TreeModel::iterator& iter, const sharedptr<c
     Gtk::TreeModel::Row treerow = *iter;
     if(treerow)
     {
-      type_list_indexes list_indexes = get_column_index(layout_item);
+      type_list_indexes list_indexes = get_data_model_column_index(layout_item);
       for(type_list_indexes::const_iterator iter = list_indexes.begin(); iter != list_indexes.end(); ++iter)
       {
         guint treemodel_col = *iter + get_count_hidden_system_columns();
@@ -993,17 +1038,15 @@ guint DbAddDel::add_column(const sharedptr<LayoutItem>& layout_item)
 
   InnerIgnore innerIgnore(this); //Stop on_treeview_columns_changed() from doing anything when it is called just because we add a new column.
 
-  sharedptr<LayoutItem_Field> field = sharedptr<LayoutItem_Field>::cast_dynamic(layout_item);
-  if(!field)
-    return 0; //TODO: Do something more sensible.
-
+  
   DbAddDelColumnInfo column_info;
-  column_info.m_item = field;
+  column_info.m_item = layout_item;
   //column_info.m_editable = editable;
   //column_info.m_visible = visible;
 
   //Make it non-editable if it is auto-generated:
 
+  sharedptr<LayoutItem_Field> field = sharedptr<LayoutItem_Field>::cast_dynamic(layout_item);
   if(field)
   {
     sharedptr<const Field> field_full = field->get_full_field_details();
@@ -1039,6 +1082,33 @@ void DbAddDel::set_columns_ready()
 {
   m_columns_ready = true;
   construct_specified_columns();
+}
+
+DbAddDel::type_list_indexes DbAddDel::get_data_model_column_index(const sharedptr<const LayoutItem_Field>& layout_item_field) const
+{
+  //TODO_Performance: Replace all this looping by a cache/map:
+
+  type_list_indexes list_indexes;
+
+  if(!layout_item_field)
+    return list_indexes;
+
+  guint data_model_column_index = 0;
+  for(type_ColumnTypes::const_iterator iter = m_ColumnTypes.begin(); iter != m_ColumnTypes.end(); ++iter)
+  {
+    sharedptr<const LayoutItem_Field> field = sharedptr<const LayoutItem_Field>::cast_dynamic(iter->m_item); //TODO_Performance: This would be unnecessary if !layout_item_field
+    if(field)
+    {
+      if(field && field->is_same_field(layout_item_field))
+      {
+        list_indexes.push_back(data_model_column_index);
+      }
+
+      ++data_model_column_index;
+    }
+  }
+
+  return list_indexes;
 }
 
 DbAddDel::type_list_indexes DbAddDel::get_column_index(const sharedptr<const LayoutItem>& layout_item) const
@@ -1240,7 +1310,7 @@ Gnome::Gda::Value DbAddDel::treeview_get_key(const Gtk::TreeModel::iterator& row
   return value;
 }
 
-void DbAddDel::on_treeview_cell_edited_bool(const Glib::ustring& path_string, int model_column_index)
+void DbAddDel::on_treeview_cell_edited_bool(const Glib::ustring& path_string, int model_column_index, int data_model_column_index)
 {
   //Note:: model_column_index is actually the AddDel column index, not the TreeModel column index.
 
@@ -1255,7 +1325,7 @@ void DbAddDel::on_treeview_cell_edited_bool(const Glib::ustring& path_string, in
   {
     Gtk::TreeModel::Row row = *iter;
 
-    int tree_model_column_index = model_column_index + get_count_hidden_system_columns();
+    int tree_model_column_index = data_model_column_index + get_count_hidden_system_columns();
 
     Gnome::Gda::Value value_old;
     row.get_value(tree_model_column_index, value_old);
@@ -1321,7 +1391,7 @@ void DbAddDel::on_treeview_cell_edited_bool(const Glib::ustring& path_string, in
   }
 }
 
-void DbAddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const Glib::ustring& new_text, int model_column_index)
+void DbAddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const Glib::ustring& new_text, int model_column_index, int data_model_column_index)
 {
   //Note:: model_column_index is actually the AddDel column index, not the TreeModel column index.
   if(path_string.empty())
@@ -1335,7 +1405,7 @@ void DbAddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const G
   {
     Gtk::TreeModel::Row row = *iter;
 
-    const int treemodel_column_index = model_column_index + get_count_hidden_system_columns();
+    const int treemodel_column_index = data_model_column_index + get_count_hidden_system_columns();
 
     Gnome::Gda::Value valOld;
     row.get_value(treemodel_column_index, valOld);
@@ -1560,24 +1630,28 @@ bool DbAddDel::on_treeview_column_drop(Gtk::TreeView* /* treeview */, Gtk::TreeV
   return true;
 }
 
-guint DbAddDel::treeview_append_column(const Glib::ustring& title, Gtk::CellRenderer& cellrenderer, int model_column_index)
+guint DbAddDel::treeview_append_column(const Glib::ustring& title, Gtk::CellRenderer& cellrenderer, int model_column_index, int data_model_column_index)
 {
   DbTreeViewColumnGlom* pViewColumn = Gtk::manage( new DbTreeViewColumnGlom(Utils::string_escape_underscores(title), cellrenderer) );
   pViewColumn->set_sizing(Gtk::TREE_VIEW_COLUMN_FIXED); //Need by fixed-height mode.
 
   guint cols_count = m_TreeView.append_column(*pViewColumn);
 
+  sharedptr<const LayoutItem> layout_item = m_ColumnTypes[model_column_index].m_item;
+  sharedptr<const LayoutItem_Field> layout_item_field = sharedptr<const LayoutItem_Field>::cast_dynamic(layout_item);
+
   //Tell the TreeView how to render the Gnome::Gda::Values:
-  pViewColumn->set_cell_data_func(cellrenderer, 
-    sigc::bind( sigc::mem_fun(*this, &DbAddDel::treeviewcolumn_on_cell_data), model_column_index) );
+  if(layout_item_field)
+  {
+    pViewColumn->set_cell_data_func(cellrenderer, 
+      sigc::bind( sigc::mem_fun(*this, &DbAddDel::treeviewcolumn_on_cell_data), model_column_index, data_model_column_index) );
+  }
 
   //Allow the column to be reordered by dragging and dropping the column header:
   pViewColumn->set_reorderable();
 
   //Allow the column to be resized:
   pViewColumn->set_resizable();
-
-  sharedptr<const LayoutItem> layout_item = m_ColumnTypes[model_column_index].m_item;
   
   guint column_width = 0;
   if(!layout_item->get_display_width(column_width)) //Not saved in document, but remembered when the column is resized.
@@ -1820,20 +1894,20 @@ void DbAddDel::set_key_field(const sharedptr<Field>& field)
   m_key_field = field;
 }
 
-void DbAddDel::treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter, int model_column_index)
+void DbAddDel::treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter, int model_column_index, int data_model_column_index)
 {
   if(iter)
   {
-    const guint col_real = model_column_index + get_count_hidden_system_columns();
-    Gtk::TreeModel::Row treerow = *iter;
-    Gnome::Gda::Value value;
-    treerow->get_value(col_real, value);
-
     const DbAddDelColumnInfo& column_info = m_ColumnTypes[model_column_index];
 
     sharedptr<LayoutItem_Field> field = sharedptr<LayoutItem_Field>::cast_dynamic(column_info.m_item);
     if(field)
     {
+      const guint col_real = data_model_column_index + get_count_hidden_system_columns();
+      Gtk::TreeModel::Row treerow = *iter;
+      Gnome::Gda::Value value;
+      treerow->get_value(col_real, value);
+
       switch(field->get_glom_type())
       {
         case(Field::TYPE_BOOLEAN):

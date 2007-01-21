@@ -236,7 +236,7 @@ public:
   virtual void set_open_button_title(const Glib::ustring& title);
 
 protected:
-  Gtk::CellRenderer* construct_specified_columns_cellrenderer(const sharedptr<LayoutItem>& layout_item, int model_column_index);
+  Gtk::CellRenderer* construct_specified_columns_cellrenderer(const sharedptr<LayoutItem>& layout_item, int model_column_index, int data_model_column_index);
 
   bool get_model_column_index(guint view_column_index, guint& model_column_index);
 
@@ -245,6 +245,9 @@ protected:
   ///Return the column indexes of any columns that display this field.
   virtual type_list_indexes get_column_index(const sharedptr<const LayoutItem>& layout_item) const;
 
+  ///Return the query column index of any columns that display this field:
+  type_list_indexes get_data_model_column_index(const sharedptr<const LayoutItem_Field>& layout_item_field) const;
+
   virtual void setup_menu();
   virtual Gnome::Gda::Value treeview_get_key(const Gtk::TreeModel::iterator& row);
 
@@ -252,10 +255,10 @@ protected:
   //virtual Gtk::TreeModel::iterator get_next_available_row_with_add_if_necessary();
 
   //Signal handlers:
-  void treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter, int model_column_index);
+  void treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter, int model_column_index, int data_model_column_index);
 
-  virtual void on_treeview_cell_edited(const Glib::ustring& path_string, const Glib::ustring& new_text, int model_column_index);
-  virtual void on_treeview_cell_edited_bool(const Glib::ustring& path_string, int model_column_index);
+  virtual void on_treeview_cell_edited(const Glib::ustring& path_string, const Glib::ustring& new_text, int model_column_index, int data_model_column_index);
+  virtual void on_treeview_cell_edited_bool(const Glib::ustring& path_string, int model_column_index, int data_model_column_index);
 
   virtual bool on_treeview_column_drop(Gtk::TreeView* treeview, Gtk::TreeViewColumn* column, Gtk::TreeViewColumn* prev_column, Gtk::TreeViewColumn* next_column);
   virtual void on_treeview_columns_changed();
@@ -273,7 +276,7 @@ protected:
   virtual void on_treeview_column_clicked(int model_column_index);
   void on_treeview_column_resized(int model_column_index, DbTreeViewColumnGlom* view_column);
   virtual void on_cell_button_clicked(const Gtk::TreeModel::Path& path);
-  void on_cell_layout_button_clicked(int model_column_index);
+  void on_cell_layout_button_clicked(const Gtk::TreeModel::Path& path, int model_column_index);
 
   bool get_prevent_user_signals() const;
 
@@ -285,7 +288,7 @@ protected:
   guint get_count_hidden_system_columns();
 
   //The column_id is extra information that we can use later to discover what the column shows, even when columns have been reordered.
-  guint treeview_append_column(const Glib::ustring& title, Gtk::CellRenderer& cellrenderer, int model_column_index);
+  guint treeview_append_column(const Glib::ustring& title, Gtk::CellRenderer& cellrenderer, int model_column_index, int data_model_column_index);
 
   /** Show a model that gives a visual hint to the developer,
    * when he has not yet specified fields to show.
