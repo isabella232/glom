@@ -1,3 +1,7 @@
+2007-01-21  Murray Cumming  <murrayc@murrayc.com>
+
+	* po/POTFILES.in: Added glom/utility_widgets/filechooserdialog.cc
+
 2007-01-19  Murray Cumming  <murrayc@murrayc.com>
 
 	* configure.in: Require libgda 1.2.4, which has a fix for database and table 
