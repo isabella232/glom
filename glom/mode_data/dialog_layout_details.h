@@ -58,19 +58,19 @@ protected:
   sharedptr<LayoutItem_Button> offer_button_script_edit(const sharedptr<const LayoutItem_Button>& button);
 
   //signal handlers:
-  virtual void on_button_field_up();
-  virtual void on_button_field_down();
-  virtual void on_button_field_delete();
-  virtual void on_button_field_add();  
-  virtual void on_button_field_add_group();
-  virtual void on_button_add_notebook();
-  virtual void on_button_add_related();
-  virtual void on_button_add_button();
-  virtual void on_button_add_text();
-  virtual void on_button_add_image();
-  virtual void on_button_field_formatting();
-  virtual void on_button_edit();
-  virtual void on_treeview_fields_selection_changed();
+  void on_button_field_up();
+  void on_button_field_down();
+  void on_button_field_delete();
+  virtual void on_button_field_add(); //overridden in derived class. 
+  void on_button_field_add_group();
+  void on_button_add_notebook();
+  void on_button_add_related();
+  void on_button_add_button();
+  void on_button_add_text();
+  void on_button_add_image();
+  void on_button_field_formatting();
+  virtual void on_button_edit(); //overridden in derived class
+  void on_treeview_fields_selection_changed();
 
   void on_cell_data_name(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter);
   void on_cell_data_title(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter);
@@ -84,6 +84,11 @@ protected:
 
   Gtk::TreeView* m_treeview_fields;
   Gtk::TreeView::Column* m_treeview_column_title;
+
+  // Only one of these boxes should be shown:
+  Gtk::Box* m_box_table_widgets;
+  Gtk::Box* m_box_related_table_widgets;
+  Gtk::Frame* m_box_related_navigation;
 
   Gtk::Button* m_button_field_up;
   Gtk::Button* m_button_field_down;

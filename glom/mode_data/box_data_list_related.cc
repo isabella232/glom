@@ -60,11 +60,11 @@ Box_Data_List_Related::Box_Data_List_Related()
     m_pDialogLayout = 0;
   }
 
-  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_data_layout_list_related");
+  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_data_layout");
   if(refXml)
   {
     Dialog_Layout_List_Related* dialog = 0;
-    refXml->get_widget_derived("window_data_layout_list_related", dialog);
+    refXml->get_widget_derived("window_data_layout", dialog);
     if(dialog)
     {
       //Use the new dialog:

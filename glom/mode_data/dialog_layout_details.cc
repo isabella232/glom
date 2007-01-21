@@ -35,6 +35,9 @@ Dialog_Layout_Details::Dialog_Layout_Details(BaseObjectType* cobject, const Glib
 : Dialog_Layout(cobject, refGlade),
   m_treeview_fields(0),
   m_treeview_column_title(0),
+  m_box_table_widgets(0),
+  m_box_related_table_widgets(0),
+  m_box_related_navigation(0),
   m_button_field_up(0),
   m_button_field_down(0),
   m_button_field_add(0),
@@ -49,6 +52,15 @@ Dialog_Layout_Details::Dialog_Layout_Details(BaseObjectType* cobject, const Glib
   m_button_edit(0),
   m_label_table_name(0)
 {
+  // Get the alternate sets of widgets, only one of which should be shown:
+  // Derived classes will hide one and show the other:
+  refGlade->get_widget("hbox_table_widgets", m_box_table_widgets);
+  m_box_table_widgets->show();
+  refGlade->get_widget("hbox_related_table_widgets", m_box_related_table_widgets);
+  m_box_related_table_widgets->hide();
+  refGlade->get_widget("frame_related_table_navigation", m_box_related_navigation); 
+  m_box_related_navigation->hide();
+
   refGlade->get_widget("label_table_name", m_label_table_name);
 
   refGlade->get_widget("treeview_fields", m_treeview_fields);
@@ -146,7 +158,7 @@ Dialog_Layout_Details::Dialog_Layout_Details(BaseObjectType* cobject, const Glib
   refGlade->get_widget("button_edit", m_button_edit);
   m_button_edit->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout_Details::on_button_edit) );
 
-  show_all_children();
+  //show_all_children();
 }
 
 Dialog_Layout_Details::~Dialog_Layout_Details()
@@ -314,7 +326,7 @@ void Dialog_Layout_Details::set_document(const Glib::ustring& layout, Document_G
     }
 
     //Show the field layout
-    typedef std::list< Glib::ustring > type_listStrings;
+    //typedef std::list< Glib::ustring > type_listStrings;
 
     m_model_items->clear();
 

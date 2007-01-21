@@ -66,6 +66,7 @@ protected:
   void on_sensitivity_toggle_button(Gtk::ToggleButton* toggle_button, Gtk::Widget* widget);
 
   Gtk::Entry* m_entry_table_title;
+  Gtk::Label* m_label_table_title;
 
   Glib::ustring m_table_name;
   Glib::ustring m_layout_name;

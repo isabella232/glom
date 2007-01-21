@@ -21,14 +21,14 @@
 #ifndef GLOM_MODE_DATA_DIALOG_LAYOUT_LIST_RELATED_H
 #define GLOM_MODE_DATA_DIALOG_LAYOUT_LIST_RELATED_H
 
-#include "dialog_layout.h"
+#include "dialog_layout_list.h"
 #include "../utility_widgets/combo_textglade.h"
 #include "../combobox_relationship.h"
 
 namespace Glom
 {
 
-class Dialog_Layout_List_Related : public Dialog_Layout
+class Dialog_Layout_List_Related : public Dialog_Layout_List
 {
 public:
   Dialog_Layout_List_Related(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
@@ -48,47 +48,17 @@ public:
 
 protected:
 
-  //Enable/disable buttons, depending on treeview selection:
-  virtual void enable_buttons();
-
   virtual void save_to_document();
 
   //signal handlers:
-  void on_button_field_up();
-  void on_button_field_down();
-  void on_button_add_field();
-  void on_button_delete();
-  void on_button_edit_field();
-  void on_button_field_formatting();
-  void on_treeview_fields_selection_changed();
+  virtual void on_button_field_add(); //override
+  virtual void on_button_edit(); //override
+ 
   void on_combo_relationship_changed();
-  void on_cell_data_name(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter);
   
   void on_combo_navigation_specific_changed();
   void on_checkbutton_show_child_relationships();
 
-  //Tree model columns:
-  class ModelColumns_Fields : public Gtk::TreeModel::ColumnRecord
-  {
-  public:
-
-    ModelColumns_Fields()
-    { add(m_col_layout_item); add(m_col_sequence); }
-
-    Gtk::TreeModelColumn< sharedptr<LayoutItem_Field> > m_col_layout_item;
-    Gtk::TreeModelColumn<guint> m_col_sequence;
-  };
-
-  ModelColumns_Fields m_ColumnsFields;
-
-  //Tree model columns:
-  Gtk::TreeView* m_treeview_fields;
-  Gtk::Button* m_button_field_up;
-  Gtk::Button* m_button_field_down;
-  Gtk::Button* m_button_field_add;
-  Gtk::Button* m_button_field_delete;
-  Gtk::Button* m_button_field_edit;
-  Gtk::Button* m_button_field_formatting;
 
   ComboBox_Relationship* m_combo_relationship;
   Gtk::CheckButton* m_checkbutton_show_child_relationships;
@@ -98,8 +68,6 @@ protected:
   Gtk::RadioButton* m_radio_navigation_specify;
   Gtk::Label* m_label_navigation_automatic;
   ComboBox_Relationship* m_combo_navigation_specify;
-
-  Glib::RefPtr<Gtk::ListStore> m_model_fields;
 };
 
 } //namespace Glom

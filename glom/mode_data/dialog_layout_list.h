@@ -21,68 +21,20 @@
 #ifndef GLOM_MODE_DATA_DIALOG_LAYOUT_LIST_H
 #define GLOM_MODE_DATA_DIALOG_LAYOUT_LIST_H
 
-#include "dialog_layout.h"
+#include "dialog_layout_details.h"
 
 namespace Glom
 {
 
-class Dialog_Layout_List : public Dialog_Layout
+class Dialog_Layout_List : public Dialog_Layout_Details
 {
 public:
   Dialog_Layout_List(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
   virtual ~Dialog_Layout_List();
 
-  /**
-   * @param layout "list" or "details"
-   * @param document The document, so that the dialog can load the previous layout, and save changes.
-   * @param table_name The table name.
-   * @param table_fields: The actual fields in the table, in case the document does not yet know about them all.
-   */
-  virtual void set_document(const Glib::ustring& layout, Document_Glom* document, const Glib::ustring& table_name, const type_vecLayoutFields& table_fields);
-
 protected:
 
-  //Enable/disable buttons, depending on treeview selection:
-  virtual void enable_buttons();
 
-  virtual void save_to_document();
-
-  //signal handlers:
-  virtual void on_button_field_up();
-  virtual void on_button_field_down();
-  virtual void on_button_add_field();
-  virtual void on_button_delete();
-  virtual void on_button_edit_field();
-  virtual void on_button_field_formatting();
-  virtual void on_treeview_fields_selection_changed();
-  virtual void on_cell_data_name(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter);
-
-  //Tree model columns:
-  class ModelColumns_Fields : public Gtk::TreeModel::ColumnRecord
-  {
-  public:
-
-    ModelColumns_Fields()
-    { add(m_col_layout_item); add(m_col_sequence); }
-
-    Gtk::TreeModelColumn< sharedptr<LayoutItem_Field> > m_col_layout_item;
-    Gtk::TreeModelColumn<guint> m_col_sequence;
-  };
-
-  ModelColumns_Fields m_ColumnsFields;
-
-  //Tree model columns:
-  Gtk::TreeView* m_treeview_fields;
-  Gtk::Button* m_button_field_up;
-  Gtk::Button* m_button_field_down;
-  Gtk::Button* m_button_field_add;
-  Gtk::Button* m_button_field_delete;
-  Gtk::Button* m_button_field_edit;
-  Gtk::Button* m_button_field_formatting;
-
-  Glib::RefPtr<Gtk::ListStore> m_model_fields;
-  
-  Gtk::Label* m_label_table_name;
 };
 
 } //namespace Glom
