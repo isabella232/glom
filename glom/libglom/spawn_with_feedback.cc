@@ -194,12 +194,37 @@ bool execute_command_line_and_wait_until_second_command_returns_success(const st
 
     try
     {
-      std::cout << std::endl << "debug: command_line (second): " << command << std::endl << std::endl;
+      Glib::ustring stored_env_lang;
+      Glib::ustring stored_env_language;
+      if(!success_text.empty())
+      {
+        // If we are going to check the text output of the second command, 
+        // then we should make sure that we get a fairly canonical version of that text,
+        // so we set the LANG for this command.
+        // We have to set LANGUAGE (a GNU extension) as well as LANG, because it 
+        // is probably defined on the system already and that definition would override our LANG:  
+        // (Note that we can not just do "LANG=C;the_command", as on the command line, because g_spawn() does not support that.)
+        std::cout << std::endl << "debug: temporarily setting LANG and LANGUAGE environment variables to \"C\"" << std::endl;
+        stored_env_lang = Glib::getenv("LANG");
+        stored_env_language = Glib::getenv("LANGUAGE");
+        Glib::setenv("LANG", "C", true /* overwrite */);
+        Glib::setenv("LANGUAGE", "C", true /* overwrite */);
+      }
 
+      std::cout << std::endl << "debug: command_line (second): " << second_command << std::endl << std::endl;
 
       int return_status = 0;
       std::string stdout_output;
       Glib::spawn_command_line_sync(second_command, &stdout_output, NULL, &return_status);
+
+      if(!success_text.empty())
+      {
+        // Restore the previous environment variable values:
+        std::cout << std::endl << "debug: restoring the LANG and LANGUAGE environment variables." << std::endl;
+        Glib::setenv("LANG", stored_env_lang, true /* overwrite */);
+        Glib::setenv("LANGUAGE", stored_env_language, true /* overwrite */);
+      }
+
       if(return_status == 0)
       {
         if(success_text.empty()) //Just check the return code.
