@@ -791,7 +791,6 @@ void DbAddDel::construct_specified_columns()
   Gtk::TreeModel::ColumnRecord record;
 
   //Database columns:
-  std::cout << "debug: m_ColumnTypes.size()=" << m_ColumnTypes.size() << std::endl;
   type_model_store::type_vec_fields fields;
   {
     type_vecModelColumns::size_type i = 0;

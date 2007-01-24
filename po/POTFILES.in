@@ -6,6 +6,7 @@ glom/application.cc
 glom/base_db.cc
 glom/box_reports.cc
 glom/combobox_relationship.cc
+glom/combobox_fields.cc
 glom/libglom/connectionpool.cc
 glom/libglom/data_structure/field.cc
 glom/libglom/data_structure/glomconversions.cc

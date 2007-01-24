@@ -32,6 +32,7 @@ glom_SOURCES = main.cc \
                dialog_glom.h dialog_glom.cc \
                frame_glom.h frame_glom.cc \
                notebook_glom.h notebook_glom.cc \
+               combobox_fields.h combobox_fields.cc \
                combobox_relationship.h combobox_relationship.cc \
                dialog_connection.h dialog_connection.cc \
                dialog_new_self_hosted_connection.h dialog_new_self_hosted_connection.cc \

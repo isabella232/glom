@@ -25,9 +25,9 @@
 #include "../utility_widgets/dialog_properties.h"
 #include <glom/libglom/document/document_glom.h>
 #include "../box_db.h"
-#include "../utility_widgets/combo_textglade.h"
 #include "../utility_widgets/comboentry_currency.h"
 #include "../combobox_relationship.h"
+#include "../combobox_fields.h"
 
 namespace Glom
 {
@@ -71,8 +71,8 @@ protected:
   AddDel_WithButtons* m_adddel_choices_custom;
   guint m_col_index_custom_choices;
   ComboBox_Relationship* m_combo_choices_relationship;
-  Combo_TextGlade* m_combo_choices_field;
-  Combo_TextGlade* m_combo_choices_field_second;
+  ComboBox_Fields* m_combo_choices_field;
+  ComboBox_Fields* m_combo_choices_field_second;
 
   mutable FieldFormatting m_format;
 

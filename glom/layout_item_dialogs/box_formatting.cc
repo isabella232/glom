@@ -105,8 +105,8 @@ void Box_Formatting::set_formatting(const FieldFormatting& format, const Glib::u
 
   m_combo_choices_relationship->set_selected_relationship(choices_relationship);
   on_combo_choices_relationship_changed(); //Fill the combos so we can set their active items.
-  m_combo_choices_field->set_active_text(choices_field);
-  m_combo_choices_field_second->set_active_text(choices_field_second);
+  m_combo_choices_field->set_selected_field(choices_field);
+  m_combo_choices_field_second->set_selected_field(choices_field_second);
 
   //Custom choices:
   m_adddel_choices_custom->remove_all();
@@ -145,8 +145,8 @@ bool Box_Formatting::get_formatting(FieldFormatting& format) const
 
   sharedptr<Relationship> choices_relationship = m_combo_choices_relationship->get_selected_relationship();
   m_format.set_choices(choices_relationship,
-    m_combo_choices_field->get_active_text(),
-    m_combo_choices_field_second->get_active_text() );
+    m_combo_choices_field->get_selected_field_name(),
+    m_combo_choices_field_second->get_selected_field_name() );
 
   //Custom choices:
   FieldFormatting::type_list_values list_choice_values;
@@ -187,14 +187,8 @@ void Box_Formatting::on_combo_choices_relationship_changed()
     {
       Document_Glom::type_vecFields vecFields = pDocument->get_table_fields(relationship->get_to_table());
 
-      m_combo_choices_field->clear_text();
-      m_combo_choices_field_second->clear_text();
-      for(Document_Glom::type_vecFields::const_iterator iter = vecFields.begin(); iter != vecFields.end(); ++iter)
-      {
-        sharedptr<const Field> field = *iter;
-        m_combo_choices_field->append_text(field->get_name());
-        m_combo_choices_field_second->append_text(field->get_name());
-      }
+      m_combo_choices_field->set_fields(vecFields);
+      m_combo_choices_field_second->set_fields(vecFields, true /* with_none_item */); //We add a "None" item so this GtkComboBox can be cleared by the user.
     }
   }
 }

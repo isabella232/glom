@@ -1,5 +1,20 @@
 2007-01-24  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/Makefile.am:
+	* glom/combobox_fields.cc:
+	* glom/combobox_fields.h: Added derived ComboBox for 
+	showing a list of fields, with an optional None item.
+	* po/POTFILES.in: Added the new file.
+	* glom/layout_item_dialogs/box_formatting.cc:
+	* glom/layout_item_dialogs/box_formatting.h: 
+	Use ComboBox_Fields instead of Combo_TextGlade for the 
+	choices fields combo boxes, so we can show a None item 
+	for the Also Show field combo box, so the user can clear it 
+	after choosing something and then changing his mind.
+	Bug #365051 from L Davison.
+
+2007-01-24  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/libglom/spawn_with_feedback.cc:
 	execute_command_line_and_wait_until_second_command_returns_success():
 	When waiting for the specific text output from a second command, 
