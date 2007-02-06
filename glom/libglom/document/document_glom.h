@@ -339,6 +339,8 @@ protected:
   Glib::ustring get_child_text_node(const xmlpp::Element* node, const Glib::ustring& child_node_name) const;
   void set_child_text_node(xmlpp::Element* node, const Glib::ustring& child_node_name, const Glib::ustring& text);
 
+  void append_newline(xmlpp::Element* parent_node);
+
   AppState m_app_state;
   type_signal_userlevel_changed m_signal_userlevel_changed;
 

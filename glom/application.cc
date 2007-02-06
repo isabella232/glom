@@ -47,6 +47,7 @@ App_Glom::App_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml
   m_window_translations(0),
   m_menu_tables_ui_merge_id(0),
   m_menu_reports_ui_merge_id(0),
+  m_ui_save_extra_showextras(false),
   m_ui_save_extra_newdb_selfhosted(false),
   m_show_sql_debug(false)
 {
@@ -456,42 +457,54 @@ Glib::ustring App_Glom::ui_file_select_save(const Glib::ustring& old_file_uri) /
   //Reimplement this whole function, just so we can use our custom FileChooserDialog class:
   App& app = *this;
 
-  Glom::FileChooserDialog fileChooser_Save(gettext("Save Document"), Gtk::FILE_CHOOSER_ACTION_SAVE);
-  fileChooser_Save.set_do_overwrite_confirmation(); //Ask the user if the file already exists.
+  Gtk::FileChooserDialog* fileChooser_Save = 0;
+  Glom::FileChooserDialog* fileChooser_SaveExtras = 0;
+
+  //Create the appropriate dialog, depending on how the caller set m_ui_save_extra_showextras:
+  if(m_ui_save_extra_showextras)
+  {
+    fileChooser_SaveExtras = new Glom::FileChooserDialog(gettext("Save Document"), Gtk::FILE_CHOOSER_ACTION_SAVE);
+    fileChooser_Save = fileChooser_SaveExtras;
+  }
+  else
+  {
+    fileChooser_Save = new Gtk::FileChooserDialog(gettext("Save Document"), Gtk::FILE_CHOOSER_ACTION_SAVE);
+  }
+
+
+  fileChooser_Save->set_do_overwrite_confirmation(); //Ask the user if the file already exists.
 
   Gtk::Window* pWindow = dynamic_cast<Gtk::Window*>(&app);
   if(pWindow)
-    fileChooser_Save.set_transient_for(*pWindow);
+    fileChooser_Save->set_transient_for(*pWindow);
 
-  fileChooser_Save.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
-  fileChooser_Save.add_button(Gtk::Stock::SAVE, Gtk::RESPONSE_OK);
+  fileChooser_Save->add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+  fileChooser_Save->add_button(Gtk::Stock::SAVE, Gtk::RESPONSE_OK);
 
-  fileChooser_Save.set_default_response(Gtk::RESPONSE_OK);
+  fileChooser_Save->set_default_response(Gtk::RESPONSE_OK);
 
   //This is the reason that we override this method:
   if(!m_ui_save_extra_title.empty())
-    fileChooser_Save.set_title(m_ui_save_extra_title);
+    fileChooser_Save->set_title(m_ui_save_extra_title);
 
-  fileChooser_Save.set_extra_message(m_ui_save_extra_message);
+  if(fileChooser_SaveExtras)
+  {
+    fileChooser_SaveExtras->set_extra_message(m_ui_save_extra_message);
     
-  //This is the reason that we override this method:
-  if(!m_ui_save_extra_title.empty())
-    fileChooser_Save.set_title(m_ui_save_extra_title);
 
-  fileChooser_Save.set_extra_message(m_ui_save_extra_message);
+    //Start with something suitable:
+    Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
+    g_assert(document);
+    const Glib::ustring filename = document->get_name(); //Get the filename without the path and extension.
 
-  //Start with something suitable:
-  Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
-  g_assert(document);
-  const Glib::ustring filename = document->get_name(); //Get the filename without the path and extension.
+    //Avoid ".". TODO: Find out why it happens:
+    if(filename == ".")
+      m_ui_save_extra_newdb_title = Glib::ustring();
+    else
+      m_ui_save_extra_newdb_title = Utils::title_from_string( filename ); //Start with something suitable.
 
-  //Avoid ".". TODO: Find out why it happens:
-  if(filename == ".")
-    m_ui_save_extra_newdb_title = Glib::ustring();
-  else
-    m_ui_save_extra_newdb_title = Utils::title_from_string( filename ); //Start with something suitable.
-
-  fileChooser_Save.set_extra_newdb_details(m_ui_save_extra_newdb_title, m_ui_save_extra_newdb_selfhosted); 
+    fileChooser_SaveExtras->set_extra_newdb_details(m_ui_save_extra_newdb_title, m_ui_save_extra_newdb_selfhosted); 
+  }
 
 
   //Make the save dialog show the existing filename, if any:
@@ -503,7 +516,7 @@ Glib::ustring App_Glom::ui_file_select_save(const Glib::ustring& old_file_uri) /
     if(vfs_uri)
     {
       Glib::ustring uri_parent = vfs_uri->extract_dirname();
-      fileChooser_Save.set_uri(uri_parent);
+      fileChooser_Save->set_uri(uri_parent);
     }
   }
 
@@ -520,17 +533,17 @@ Glib::ustring App_Glom::ui_file_select_save(const Glib::ustring& old_file_uri) /
     /*
     if(tried_once_already)
     {
-      fileChooser_Save.set_default_size(-1, 600); 
+      fileChooser_Save->set_default_size(-1, 600); 
     }
     else
       tried_once_already = true;
     */
 
-    const int response_id = fileChooser_Save.run();
-    fileChooser_Save.hide();
+    const int response_id = fileChooser_Save->run();
+    fileChooser_Save->hide();
     if(response_id != Gtk::RESPONSE_CANCEL)
     {
-      const Glib::ustring uri_chosen = fileChooser_Save.get_uri();
+      const Glib::ustring uri_chosen = fileChooser_Save->get_uri();
 
       //Change the URI, to put the file (and its data folder) in a folder:
       const Glib::ustring uri = get_file_uri_without_extension(uri_chosen);
@@ -569,10 +582,10 @@ Glib::ustring App_Glom::ui_file_select_save(const Glib::ustring& old_file_uri) /
         }
       }
 
-      if(!try_again)
+      if(!try_again && fileChooser_SaveExtras)
       {
         //Get the extra details from the extended save dialog:
-        m_ui_save_extra_newdb_title = fileChooser_Save.get_extra_newdb_details(m_ui_save_extra_newdb_selfhosted); 
+        m_ui_save_extra_newdb_title = fileChooser_SaveExtras->get_extra_newdb_details(m_ui_save_extra_newdb_selfhosted); 
         if(m_ui_save_extra_newdb_title.empty())
         {
           Frame_Glom::show_ok_dialog(_("Database Title missing"), _("You must specify a title for the new database."), *this, Gtk::MESSAGE_ERROR);
@@ -581,7 +594,7 @@ Glib::ustring App_Glom::ui_file_select_save(const Glib::ustring& old_file_uri) /
         }
       }
  
-      if(!try_again && m_ui_save_extra_newdb_selfhosted)
+      if(!try_again && fileChooser_SaveExtras && m_ui_save_extra_newdb_selfhosted)
       {
         //Create the directory, so that file creation can succeed later:
         //0770 means "this user and his group can read and write this "executable" (can add child files) directory".
@@ -602,6 +615,10 @@ Glib::ustring App_Glom::ui_file_select_save(const Glib::ustring& old_file_uri) /
         //Add the filename part to the newly-created directory:
         Glib::RefPtr<Gnome::Vfs::Uri> uri_whole = vfs_uri->append_string(filename_part);
         return uri_whole->to_string();
+      }
+      else if(!try_again)
+      {
+        return uri_chosen;
       }
     }
     else
@@ -686,6 +703,7 @@ bool App_Glom::on_document_load()
         pDocument->set_file_uri(Glib::ustring()); //Prevent it from defaulting to the read-only examples directory when offering saveas.
 
         //m_ui_save_extra_* are used by offer_saveas() if it's not empty:
+        m_ui_save_extra_showextras = true;
         m_ui_save_extra_title = _("Creating From Example File");
         m_ui_save_extra_message = _("To use this example file you must save an editable copy of the file. A new database will also be created on the server.");
         m_ui_save_extra_newdb_title = "TODO";
@@ -700,6 +718,7 @@ bool App_Glom::on_document_load()
 
         m_ui_save_extra_newdb_title.clear();
         m_ui_save_extra_newdb_selfhosted = false;
+        m_ui_save_extra_showextras = false;
 
         if(get_operation_cancelled())
           return false;
@@ -1388,6 +1407,12 @@ void App_Glom::on_menu_file_save_as_example()
   //Show the save dialog:
   Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
   const Glib::ustring& file_uriOld = document->get_file_uri();
+
+  m_ui_save_extra_showextras = false;
+  m_ui_save_extra_title.clear();
+  m_ui_save_extra_message.clear();
+  m_ui_save_extra_newdb_title.clear();
+  m_ui_save_extra_newdb_selfhosted = false;
   Glib::ustring file_uri = ui_file_select_save(file_uriOld); //Also asks for overwrite confirmation.
   if(!file_uri.empty())
   {

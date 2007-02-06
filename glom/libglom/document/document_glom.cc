@@ -185,7 +185,9 @@ Document_Glom::Document_Glom()
 
   set_dtd_root_node_name("glom_document");
 
-  set_write_formatted(); //Make the output more human-readable, just in case. TODO: This does not seem to work.
+  //Don't add newlines automatically, because we have text nodes that this might affect:
+  //It doesn't seem to work anyway.
+  //set_write_formatted(); //Make the output more human-readable, just in case.
 
   //Set default database name:
   //This is also the XML attribute default value,
@@ -1033,7 +1035,10 @@ Gnome::Gda::Value Document_Glom::get_node_attribute_value_as_value(const xmlpp::
     return Gnome::Gda::Value();
 }
 
-
+void Document_Glom::append_newline(xmlpp::Element* parent_node)
+{
+  parent_node->add_child_text("\n");
+}
 
 Document_Glom::type_listTableInfo Document_Glom::get_tables(bool plus_system_prefs) const
 {
@@ -2598,6 +2603,7 @@ bool Document_Glom::save_before()
     set_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_SERVER, m_connection_server);
     set_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_USER, m_connection_user);
     set_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_DATABASE, m_connection_database);
+    append_newline(nodeRoot);
 
     //Remove existing tables:
     xmlpp::Node::NodeList listNodes = nodeRoot->get_children(GLOM_NODE_TABLE);
@@ -2671,7 +2677,11 @@ bool Document_Glom::save_before()
 
           //Translations:
           save_before_translations(elemField, *field);
-        }
+
+          append_newline(elemFields);
+        } /* fields */
+
+        append_newline(nodeTable);
 
         //Relationships:
         //Add new <relationships> node:
@@ -2693,8 +2703,12 @@ bool Document_Glom::save_before()
 
             //Translations:
             save_before_translations(elemRelationship, *relationship);
+
+            append_newline(elemRelationships);
           }
         }
+
+        append_newline(nodeTable);
 
 
         //Layouts:
@@ -2714,8 +2728,13 @@ bool Document_Glom::save_before()
           for(type_mapLayoutGroupSequence::const_iterator iterGroups = group_sequence.begin(); iterGroups != group_sequence.end(); ++iterGroups)
           {
             save_before_layout_group(nodeGroups, iterGroups->second);
+            append_newline(nodeGroups);
           }
+
+          append_newline(nodeDataLayouts);
         }
+
+        append_newline(nodeTable);
 
         //Reports:
         xmlpp::Element* nodeReports = nodeTable->add_child(GLOM_NODE_REPORTS);
@@ -2731,15 +2750,22 @@ bool Document_Glom::save_before()
 
           xmlpp::Element* nodeGroups = nodeReport->add_child(GLOM_NODE_DATA_LAYOUT_GROUPS);
           if(report->m_layout_group)
+          {
             save_before_layout_group(nodeGroups, report->m_layout_group);
+            append_newline(nodeGroups);
+          }
 
           //Translations:
           save_before_translations(nodeReport, *report);
+
+          append_newline(nodeReports);
         }
 
-
-        nodeTable->add_child_text("\n\n"); //Make it a bit easier to read, 
+        append_newline(nodeTable);
+        append_newline(nodeTable);
       }
+
+      append_newline(nodeRoot);
 
     } //for m_tables
 
@@ -2777,6 +2803,8 @@ bool Document_Glom::save_before()
       }
     }
 
+    append_newline(nodeRoot);
+
 
     //Remove existing library modules::
     listNodes = nodeRoot->get_children(GLOM_NODE_LIBRARY_MODULES);
@@ -2796,6 +2824,8 @@ bool Document_Glom::save_before()
       set_node_attribute_value(nodeModule, GLOM_ATTRIBUTE_LIBRARY_MODULE_NAME, name);
       set_node_attribute_value(nodeModule, GLOM_ATTRIBUTE_LIBRARY_MODULE_SCRIPT, script);
     }
+
+    append_newline(nodeRoot);
 
   }
 
@@ -3241,6 +3271,8 @@ void Document_Glom::remove_library_module(const Glib::ustring& name)
      set_modified();
   }
 }
+
+
 
 } //namespace Glom
 

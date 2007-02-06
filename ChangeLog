@@ -1,3 +1,14 @@
+2007-02-07  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/application.cc:
+	* glom/application.h: Add m_ui_save_extra_showextras so we can turn off use of 
+	the custom filechooser dialog completely in on_menu_file_save_as_example().
+	* glom/libglom/document/document_glom.cc:
+	* glom/libglom/document/document_glom.h: Added append_newline() and used it in 
+	save_before() to break up the incredibly long lines. This is not as nice as 
+	newlines plus indenting, but it is a start.
+	* examples/example_smallbusiness.glom: Resaved this, using the newlines.
+
 1.3.6:
 
 2007-01-24  Murray Cumming  <murrayc@murrayc.com>

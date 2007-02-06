@@ -119,6 +119,7 @@ protected:
   Gtk::UIManager::ui_merge_id m_menu_tables_ui_merge_id, m_menu_reports_ui_merge_id;
 
   //Set these before calling offer_saveas() (which uses ui_file_select_save()), and clear it afterwards.
+  bool m_ui_save_extra_showextras;
   Glib::ustring m_ui_save_extra_title;
   Glib::ustring m_ui_save_extra_message;
 
