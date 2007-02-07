@@ -249,8 +249,8 @@ Record_tp_as_mapping_setitem(PyGObject *self, PyObject *item, PyObject *value)
 */
 
 static PyMappingMethods Record_tp_as_mapping = {
-    (inquiry)Record_tp_as_mapping_length,
-    (binaryfunc)Record_tp_as_mapping_getitem,
+    Record_tp_as_mapping_length,
+    Record_tp_as_mapping_getitem,
     (objobjargproc)0 /* Record_tp_as_mapping_setitem */
 };
 

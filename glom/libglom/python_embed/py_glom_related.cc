@@ -205,8 +205,8 @@ Related_tp_as_mapping_setitem(PyGObject *self, PyObject *item, PyObject *value)
 */
 
 static PyMappingMethods Related_tp_as_mapping = {
-    (inquiry)Related_tp_as_mapping_length,
-    (binaryfunc)Related_tp_as_mapping_getitem,
+    Related_tp_as_mapping_length,
+    Related_tp_as_mapping_getitem,
     (objobjargproc)0 /* Related_tp_as_mapping_setitem */
 };
 
