@@ -1,5 +1,16 @@
 2007-02-07  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/libglom/python_embed/py_glom_record.cc:
+	* glom/libglom/python_embed/py_glom_related.cc: ifdef with PY_VERSION_HEX to 
+	adapt to the changed function pointer signature of the tp_as_mapping_length 
+	callbacks for PyMappingMethods in Python 2.5, which now have a Py_ssize_t 
+	return type. This broke the build on 64-bit systems.
+	Also, take a PyObject* object instead of our derived struct, and cast inside 
+	our functions, to avoid errors from more fussy compiler versions.
+	(Problems found by Daniel Holbach) 
+
+2007-02-07  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/application.cc:
 	* glom/application.h: Add m_ui_save_extra_showextras so we can turn off use of 
 	the custom filechooser dialog completely in on_menu_file_save_as_example().
