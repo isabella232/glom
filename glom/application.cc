@@ -959,6 +959,9 @@ bool App_Glom::offer_new_or_existing()
     //This will use an extended save dialog that also asks for the database title and some hosting details:
     Glib::ustring db_title;
 
+    m_ui_save_extra_showextras = true; //Offer self-hosting or central hosting, and offer the database title.
+    m_ui_save_extra_newdb_title.clear();
+    m_ui_save_extra_newdb_selfhosted = true; /* Default to self-hosting */
     offer_saveas();
 
     //Check that the document was given a location:
