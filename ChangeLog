@@ -1,5 +1,13 @@
 2007-02-11  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/libglom/connectionpool.cc:
+	* glom/libglom/connectionpool.h: Add discover_first_free_port() helper function, based on 
+	recommendation from Lennart Poettering. Use it to try a series of ports when deciding what port 
+	to use for self-hosting. However, this should be tested every time we start the server, not just 
+	when creating the files.
+
+2007-02-11  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/mode_data/box_data_details.cc:
 	* glom/mode_data/box_data_details.h: Remove the Gtk::Paned parent widget. Its functionality 
 	was not used. It was just a relic from a previous nasty UI. Replaced it with a ScrolledWindow 

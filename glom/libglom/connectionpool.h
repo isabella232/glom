@@ -150,6 +150,11 @@ protected:
 
   static bool create_text_file(const std::string& file_uri, const std::string& contents);
 
+  /** Examine ports one by one, starting at @a starting_port, in increasing order,
+   * and return the first one that is available.
+   */
+  int discover_first_free_port(int start_port, int end_port);
+
 
   typedef std::list<Glib::ustring> type_list_ports;
   type_list_ports m_list_ports; //Network ports on which to try connecting to postgres.

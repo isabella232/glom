@@ -24,6 +24,12 @@
 #include <glib/gstdio.h> //For g_remove().
 #include <glom/libglom/spawn_with_feedback.h>
 #include <glibmm/i18n.h>
+
+#include <sys/types.h>
+#include <sys/socket.h> 
+#include <sys/socket.h>
+#include <netinet/in.h> //For sockaddr_in
+
 #include "config.h"
 
 namespace Glom
@@ -40,8 +46,10 @@ host    all         all         127.0.0.1/32          md5\n\
 # IPv6 local connections:\n\
 host    all         all         ::1/128               md5\n"
 
+#define PORT_POSTGRESQL_SELF_HOSTED_START 5433
+#define PORT_POSTGRESQL_SELF_HOSTED_END 5500
 #define DEFAULT_CONFIG_POSTGRESQL_CONF "listen_addresses = '*'\n\
-port = 5433\n"
+port = %d\n" //Note that the ported is added via the printf format.
 
 #define DEFAULT_CONFIG_PG_IDENT ""
 
@@ -560,6 +568,13 @@ bool ConnectionPool::create_self_hosting()
     return false;
   }
 
+  const int available_port = discover_first_free_port(PORT_POSTGRESQL_SELF_HOSTED_START, PORT_POSTGRESQL_SELF_HOSTED_END);
+  if(available_port == 0)
+  {
+    std::cerr << "ConnectionPool::create_self_hosting(): No port was available between " << PORT_POSTGRESQL_SELF_HOSTED_START << " and " << PORT_POSTGRESQL_SELF_HOSTED_END << std::endl;
+    return false;
+  }
+
   //Get the filepath of the directory that we should create:
   const std::string dbdir_uri = m_self_hosting_data_uri;
   //std::cout << "debug: dbdir_uri=" << dbdir_uri << std::endl;
@@ -591,7 +606,12 @@ bool ConnectionPool::create_self_hosting()
 
   const std::string dbdir_uri_config = dbdir_uri + "/config";
   create_text_file(dbdir_uri_config + "/pg_hba.conf", DEFAULT_CONFIG_PG_HBA);
-  create_text_file(dbdir_uri_config + "/postgresql.conf", DEFAULT_CONFIG_POSTGRESQL_CONF);
+
+  std::cout << "debug: available_port=" << available_port << std::endl;
+  gchar* conf = g_strdup_printf(DEFAULT_CONFIG_POSTGRESQL_CONF, available_port);
+  create_text_file(dbdir_uri_config + "/postgresql.conf", conf);
+  g_free(conf);
+
   create_text_file(dbdir_uri_config + "/pg_ident.conf", DEFAULT_CONFIG_PG_IDENT);
 
   //Check that there is not an existing data directory:
@@ -662,5 +682,54 @@ bool ConnectionPool::create_text_file(const std::string& file_uri, const std::st
   return true; //Success. (At doing nothing, because nothing needed to be done.)
 }
 
+int ConnectionPool::discover_first_free_port(int start_port, int end_port)
+{
+  //Open a socket so we can try to bind it to a port:
+  const int fd = socket(AF_INET, SOCK_STREAM, 0);
+  if(fd == -1)
+  {
+    perror("Create socket");
+    return 0;
+  }
+
+  //This code was originally suggested by Lennart Poettering.
+
+  struct ::sockaddr_in sa;
+  memset(&sa, 0, sizeof(sa));
+  sa.sin_family = AF_INET;
+
+  int port_to_try = start_port;
+  while (port_to_try <= end_port)
+  {
+    sa.sin_port = htons(port_to_try);
+
+    const int result = bind(fd, (sockaddr*)&sa, sizeof(sa));
+    if((result == 0) || ((result < 0)
+#ifdef EADDRINUSE //Some BSDs don't have this.
+    && (errno != EADDRINUSE)
+#endif 
+#ifdef EPORTINUSE //Linux doesn't have this.
+    && (errno != EPORTINUSE)
+#endif
+    ))
+    {
+      close(fd);
+
+      std::cout << "debug: ConnectionPool::discover_first_free_port(): Found: returning " << port_to_try << std::endl;
+      return port_to_try;
+    }
+    else
+    {
+      std::cout << "debug: ConnectionPool::discover_first_free_port(): port in use: " << port_to_try << std::endl;
+    }
+
+    ++port_to_try;
+  }
+
+  close(fd);
+
+  std::cout << "debug: ConnectionPool::discover_first_free_port(): No port was available." << std::endl;
+  return 0;
+}
 
 } //namespace Glom
