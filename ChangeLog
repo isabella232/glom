@@ -1,5 +1,11 @@
 2007-02-11  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/libglom/connectionpool.cc: Always use a dynamically-found port number when starting 
+	self-hosting, instead of only determining it when creating the file, by using the -p and -h 
+	arguments to postmaster instead of specifying the same information in a postgresql.conf file.
+
+2007-02-11  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/libglom/connectionpool.cc:
 	* glom/libglom/connectionpool.h: Add discover_first_free_port() helper function, based on 
 	recommendation from Lennart Poettering. Use it to try a series of ports when deciding what port 

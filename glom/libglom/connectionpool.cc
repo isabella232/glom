@@ -23,6 +23,7 @@
 #include <libgnomevfsmm.h>
 #include <glib/gstdio.h> //For g_remove().
 #include <glom/libglom/spawn_with_feedback.h>
+#include <glom/libglom/utils.h>
 #include <glibmm/i18n.h>
 
 #include <sys/types.h>
@@ -48,8 +49,6 @@ host    all         all         ::1/128               md5\n"
 
 #define PORT_POSTGRESQL_SELF_HOSTED_START 5433
 #define PORT_POSTGRESQL_SELF_HOSTED_END 5500
-#define DEFAULT_CONFIG_POSTGRESQL_CONF "listen_addresses = '*'\n\
-port = %d\n" //Note that the ported is added via the printf format.
 
 #define DEFAULT_CONFIG_PG_IDENT ""
 
@@ -505,15 +504,23 @@ void ConnectionPool::start_self_hosting()
   g_assert(!dbdir.empty());
 
 
-  // TODO: Detect other instances on the same computer, and use a different port number, 
-  // or refuse to continue, showing an error dialog.
+  const int available_port = discover_first_free_port(PORT_POSTGRESQL_SELF_HOSTED_START, PORT_POSTGRESQL_SELF_HOSTED_END);
+  if(available_port == 0)
+  {
+    std::cerr << "ConnectionPool::create_self_hosting(): No port was available between " << PORT_POSTGRESQL_SELF_HOSTED_START << " and " << PORT_POSTGRESQL_SELF_HOSTED_END << std::endl;
+    return;
+  }
+
+  const Glib::ustring port_as_text = Utils::string_from_decimal(available_port);
+
 
   // -D specifies the data directory.
   // -c config_file= specifies the configuration file
   // -k specifies a directory to use for the socket. This must be writable by us.
   // POSTGRES_POSTMASTER_PATH is defined in config.h, based on the configure.
   const std::string command_postgres_start = POSTGRES_UTILS_PATH "/postmaster -D \"" + dbdir + "/data\" "
-                                  + " -c config_file=\"" + dbdir + "/config/postgresql.conf\""
+                                  + " -p " + port_as_text 
+                                  + " -h \"*\" " //Equivalent to listen_addresses in postgresql.conf. Listen to all IP addresses, so any client can connect (with a username+password)
                                   + " -c hba_file=\"" + dbdir + "/config/pg_hba.conf\""
                                   + " -c ident_file=\"" + dbdir + "/config/pg_ident.conf\""
                                   + " -k \"" + dbdir + "\""
@@ -529,6 +536,7 @@ void ConnectionPool::start_self_hosting()
     std::cerr << "Error while attempting to self-host a database." << std::endl;
   }
 
+  m_port = port_as_text;
   m_self_hosting_active = true;
 }
 
@@ -568,13 +576,6 @@ bool ConnectionPool::create_self_hosting()
     return false;
   }
 
-  const int available_port = discover_first_free_port(PORT_POSTGRESQL_SELF_HOSTED_START, PORT_POSTGRESQL_SELF_HOSTED_END);
-  if(available_port == 0)
-  {
-    std::cerr << "ConnectionPool::create_self_hosting(): No port was available between " << PORT_POSTGRESQL_SELF_HOSTED_START << " and " << PORT_POSTGRESQL_SELF_HOSTED_END << std::endl;
-    return false;
-  }
-
   //Get the filepath of the directory that we should create:
   const std::string dbdir_uri = m_self_hosting_data_uri;
   //std::cout << "debug: dbdir_uri=" << dbdir_uri << std::endl;
@@ -602,15 +603,10 @@ bool ConnectionPool::create_self_hosting()
     return false;
   }
 
-  //Create these files: environment  pg_hba.conf  pg_ident.conf  postgresql.conf  start.conf
+  //Create these files: environment  pg_hba.conf  pg_ident.conf  start.conf
 
   const std::string dbdir_uri_config = dbdir_uri + "/config";
   create_text_file(dbdir_uri_config + "/pg_hba.conf", DEFAULT_CONFIG_PG_HBA);
-
-  std::cout << "debug: available_port=" << available_port << std::endl;
-  gchar* conf = g_strdup_printf(DEFAULT_CONFIG_POSTGRESQL_CONF, available_port);
-  create_text_file(dbdir_uri_config + "/postgresql.conf", conf);
-  g_free(conf);
 
   create_text_file(dbdir_uri_config + "/pg_ident.conf", DEFAULT_CONFIG_PG_IDENT);
 
