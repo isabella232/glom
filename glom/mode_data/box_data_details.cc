@@ -69,24 +69,11 @@ Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
   //m_strHint = _("When you change the data in a field the database is updated immediately.\n Click [New] to add a new record.\n Leave automatic ID fields empty - they will be filled for you.");
 
 
-  //m_Paned.set_border_width(6);
-  m_Paned.set_position(200); //Set size of top pane.
-  pack_start(m_Paned);
-  m_Paned.add(m_FlowTable);
-
-  //Related records:
-  /*
-  m_Label_Related.set_text(Bakery::App_Gtk::util_bold_message(_("Related Records")));
-  m_Label_Related.set_use_markup(true);
-  m_Frame_Related.set_label_widget(m_Label_Related);
-  m_Frame_Related.set_shadow_type(Gtk::SHADOW_NONE);  
-  m_Frame_Related.add(m_Alignment_Related);
-  m_Alignment_Related.set_padding(0, 0, 12, 0);
-  
-  m_Notebook_Related.set_border_width(6);
-  m_Alignment_Related.add(m_Notebook_Related);
-  m_Paned.add(m_Frame_Related);
-  */
+  //m_ScrolledWindow.set_border_width(6);
+  m_ScrolledWindow.set_policy(Gtk::POLICY_NEVER, Gtk::POLICY_AUTOMATIC); /* Allow vertical scrolling, but never scroll horizontally. */
+  m_ScrolledWindow.set_shadow_type(Gtk::SHADOW_NONE); //SHADOW_IN is Recommended by the GNOME HIG, but looks odd. And there still seems to be some shadow even with SHADOW_NONE.
+  pack_start(m_ScrolledWindow);
+  m_ScrolledWindow.add(m_FlowTable);
 
   //Add or delete record:
   m_HBox.pack_start(m_Button_New, Gtk::PACK_SHRINK);

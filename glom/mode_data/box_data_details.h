@@ -106,7 +106,7 @@ protected:
   Gnome::Gda::Value m_primary_key_value;
 
   //Member widgets:
-  Gtk::VPaned m_Paned;
+  Gtk::ScrolledWindow m_ScrolledWindow;
   Gtk::HBox m_HBox;
   Gtk::Button m_Button_New;
   Gtk::Button m_Button_Del;

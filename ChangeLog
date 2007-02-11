@@ -1,5 +1,15 @@
 2007-02-11  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/mode_data/box_data_details.cc:
+	* glom/mode_data/box_data_details.h: Remove the Gtk::Paned parent widget. Its functionality 
+	was not used. It was just a relic from a previous nasty UI. Replaced it with a ScrolledWindow 
+	that does vertical scrolling when necessary. Hopefully this will prevent the window from sometimes 
+	being too high for the screen. Layout is variable height rather than variable width, so this makes 
+	sense.
+	I also need to make the window take as much vertical space as it can.
+
+2007-02-11  Murray Cumming  <murrayc@murrayc.com>
+
 	* NEWS:
 	* glom/Makefile.am:
 	* glom/application.cc:
