@@ -123,7 +123,6 @@ AC_OUTPUT(Makefile \
       glom/utility_widgets/db_adddel/Makefile \
       glom/python_embed/Makefile \
         glom/python_embed/python_module/Makefile \
-    glom/relationships_overview/Makefile \
     glom/reports/Makefile \
     glom/translation/Makefile \
     icons/Makefile \
@@ -133,3 +132,6 @@ AC_OUTPUT(Makefile \
   examples/Makefile \
   glom.desktop.in
 )
+
+#     glom/relationships_overview/Makefile \
+
