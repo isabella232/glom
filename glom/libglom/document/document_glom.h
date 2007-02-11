@@ -261,6 +261,27 @@ public:
   void set_layout_current(const Glib::ustring& table_name, const Glib::ustring& layout_name);
   Glib::ustring get_layout_current(const Glib::ustring& table_name) const;
 
+  // Used by Relationship Overview dialog to preserve table locations accross instantiations:
+    
+    /**
+     * Retrieve the x and y coordinates for the given table position.
+     * 
+     * @param table_name The name of the table to query.
+     * @param x The x coordinate of the table position.
+     * @param y The y coordinate of the table position.
+     * @return false if the table does not have any 
+     */
+    bool get_table_overview_position ( const Glib::ustring &table_name, float &x, float &y ) const;
+    
+    /**
+     * Set the position of a table in the relationship overview dialog.
+     * 
+     * @param table_name The name of the table to modify.
+     * @param x The x coordinate of the table position.
+     * @param y The y coordinate of the table position.
+     */
+    void set_table_overview_position ( const Glib::ustring &table_name, float x, float y );
+    
   enum userLevelReason
   {
     USER_LEVEL_REASON_UNKNOWN,
@@ -333,6 +354,8 @@ protected:
   static guint get_node_attribute_value_as_decimal(const xmlpp::Element* node, const Glib::ustring& strAttributeName);
   static double get_node_attribute_value_as_decimal_double(const xmlpp::Element* node, const Glib::ustring& strAttributeName);
 
+  static float get_node_attribute_value_as_float(const xmlpp::Element* node, const Glib::ustring& strAttributeName);
+  static void set_node_attribute_value_as_float( xmlpp::Element* node, const Glib::ustring& strAttributeName, float value );
   static void set_node_attribute_value_as_value(xmlpp::Element* node, const Glib::ustring& strAttributeName, const Gnome::Gda::Value& value, Field::glom_field_type field_type);
   static Gnome::Gda::Value get_node_attribute_value_as_value(const xmlpp::Element* node, const Glib::ustring& strAttributeName, Field::glom_field_type field_type);
 
@@ -360,6 +383,8 @@ protected:
   {
   public:
     DocumentTableInfo()
+        : m_overviewx ( std::numeric_limits<float>::infinity () ),
+          m_overviewy ( std::numeric_limits<float>::infinity () )
     {
       m_info = sharedptr<TableInfo>(new TableInfo()); //Avoid a null sharedptr.
     }
@@ -382,6 +407,8 @@ protected:
     type_map_layout_primarykeys m_map_current_record; //The record last viewed in each layout.
 
     Glib::ustring m_layout_current;
+    
+    float m_overviewx, m_overviewy;
   };
 
   DocumentTableInfo& get_table_info_with_add(const Glib::ustring& table_name);

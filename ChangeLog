@@ -1,3 +1,20 @@
+2007-02-11  Murray Cumming  <murrayc@murrayc.com>
+
+	* NEWS:
+	* glom/Makefile.am:
+	* glom/application.cc:
+	* glom/frame_glom.cc:
+	* glom/libglom/document/document_glom.cc:
+	* glom/libglom/document/document_glom.h:
+	* glom/relationships_overview/dialog_relationships_overview.cc:
+	* glom/relationships_overview/dialog_relationships_overview.h: Added unfinished 
+	code for Relationships Overview feature, by Rasmus Toftdahl Olesen.
+	(See http://halfdans.net/index.py/89 )
+	The actual use of goocanvas is disabled in configure.ac, frame_glom.cc, and glom/Makefile.am, 
+	because the code must be updated to build against the latest goocanvas API.
+
+1.3.7:
+
 2007-02-07  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/libglom/python_embed/py_glom_relatedrecord.cc: Made the same changes here - 

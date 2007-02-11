@@ -115,6 +115,8 @@ namespace Glom
 #define GLOM_ATTRIBUTE_SEQUENCE "sequence"
 #define GLOM_ATTRIBUTE_HIDDEN "hidden"
 #define GLOM_ATTRIBUTE_DEFAULT "default"
+#define GLOM_ATTRIBUTE_OVERVIEW_X "overview_x"
+#define GLOM_ATTRIBUTE_OVERVIEW_Y "overview_y"
 #define GLOM_ATTRIBUTE_FIELD "field"
 #define GLOM_ATTRIBUTE_EDITABLE "editable"
 #define GLOM_DEPRECATED_ATTRIBUTE_EXAMPLE_ROWS "example_rows"
@@ -1015,6 +1017,38 @@ double Document_Glom::get_node_attribute_value_as_decimal_double(const xmlpp::El
   return result;
 }
 
+void Document_Glom::set_node_attribute_value_as_float(xmlpp::Element* node, const Glib::ustring& strAttributeName, float value)
+{
+    if(value == std::numeric_limits<float>::infinity() && !node->get_attribute(strAttributeName))
+    return; //Use the non-existance of an attribute to mean "invalid"/infinity, to save space.
+  
+  //Get text representation of float:
+  std::stringstream thestream;
+  thestream.imbue( std::locale::classic() ); //The C locale.
+  thestream << value;
+  const Glib::ustring sequence_string = thestream.str();
+
+  set_node_attribute_value(node, strAttributeName, sequence_string);
+}
+
+float Document_Glom::get_node_attribute_value_as_float(const xmlpp::Element* node, const Glib::ustring& strAttributeName)
+{
+  float result = std::numeric_limits<float>::infinity();
+  const Glib::ustring value_string = get_node_attribute_value(node, strAttributeName);
+
+  //Get number for string:
+  if(!value_string.empty())
+  {
+    //Visible fields, with sequence:
+    std::stringstream thestream;
+    thestream.imbue( std::locale::classic() ); //The C locale.
+    thestream.str(value_string);
+    thestream >> result;
+  }
+
+  return result;
+}
+
 void Document_Glom::set_node_attribute_value_as_value(xmlpp::Element* node, const Glib::ustring& strAttributeName, const Gnome::Gda::Value& value,  Field::glom_field_type field_type)
 {
   NumericFormat format_ignored; //Because we use ISO format.
@@ -1098,6 +1132,38 @@ void Document_Glom::add_table(const sharedptr<TableInfo>& table_info)
   }
 }
 
+bool Document_Glom::get_table_overview_position ( const Glib::ustring &table_name,
+                                                  float &x, float &y ) const
+{
+  type_tables::const_iterator it = m_tables.find(table_name);
+  if(it != m_tables.end())
+  {
+    if ( it->second.m_overviewx == std::numeric_limits<float>::infinity() ||
+         it->second.m_overviewy == std::numeric_limits<float>::infinity() )
+    {
+      return false;
+    }
+    x = it->second.m_overviewx;
+    y = it->second.m_overviewy;
+    return true;
+  }
+  else
+  {
+    return false;
+  }
+}
+    
+void Document_Glom::set_table_overview_position ( const Glib::ustring &table_name,
+                                                  float x, float y )
+{
+  type_tables::iterator it = m_tables.find(table_name);
+  if(it != m_tables.end())
+  {
+    it->second.m_overviewx = x;
+    it->second.m_overviewy = y;
+  }
+}
+    
 void Document_Glom::set_tables(const type_listTableInfo& tables)
 {
   //TODO: Avoid adding information about tables that we don't know about - that should be done explicitly.
@@ -1981,6 +2047,9 @@ bool Document_Glom::load_after()
           doctableinfo.m_info = table_info;
 
           doctableinfo.m_example_rows = get_child_text_node(nodeTable, GLOM_NODE_EXAMPLE_ROWS);
+          doctableinfo.m_overviewx = get_node_attribute_value_as_float(nodeTable, GLOM_ATTRIBUTE_OVERVIEW_X);
+          doctableinfo.m_overviewy = get_node_attribute_value_as_float(nodeTable, GLOM_ATTRIBUTE_OVERVIEW_Y);
+
           if(doctableinfo.m_example_rows.empty()) //Try the deprecated attribute instead
             doctableinfo.m_example_rows = get_node_attribute_value(nodeTable, GLOM_DEPRECATED_ATTRIBUTE_EXAMPLE_ROWS);
 
@@ -2626,6 +2695,9 @@ bool Document_Glom::save_before()
         set_node_attribute_value_as_bool(nodeTable, GLOM_ATTRIBUTE_HIDDEN, doctableinfo.m_info->m_hidden);
         set_node_attribute_value_as_bool(nodeTable, GLOM_ATTRIBUTE_DEFAULT, doctableinfo.m_info->m_default);
 
+        set_node_attribute_value_as_float(nodeTable, GLOM_ATTRIBUTE_OVERVIEW_X, doctableinfo.m_overviewx);
+        set_node_attribute_value_as_float(nodeTable, GLOM_ATTRIBUTE_OVERVIEW_Y, doctableinfo.m_overviewy);
+        
         if(m_is_example) //The example data is useless to non-example files (and is big):
           set_child_text_node(nodeTable, GLOM_NODE_EXAMPLE_ROWS, doctableinfo.m_example_rows);
         //else

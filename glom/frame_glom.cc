@@ -32,7 +32,12 @@
 #include <glom/mode_design/dialog_add_related_table.h>
 #include <glom/mode_design/script_library/dialog_script_library.h>
 #include <glom/dialog_new_self_hosted_connection.h>
+
+//#define ENABLE_RELATIONSHIPS_OVERVIEW
+#ifdef ENABLE_RELATIONSHIPS_OVERVIEW
 #include "relationships_overview/dialog_relationships_overview.h"
+#endif
+
 #include "filechooser_export.h"
 #include <glom/glom_privs.h>
 #include <sstream> //For stringstream.
@@ -1247,8 +1252,10 @@ void Frame_Glom::do_menu_developer_fields(Gtk::Window& parent)
   }
 }
 
+
 void Frame_Glom::on_menu_developer_relationships_overview()
 {
+#ifdef ENABLE_RELATIONSHIPS_OVERVIEW
   Dialog_RelationshipsOverview* dialog = 0;
   try
   {
@@ -1271,7 +1278,11 @@ void Frame_Glom::on_menu_developer_relationships_overview()
   {
     std::cerr << ex.what() << std::endl;
   }
+#else
+  show_ok_dialog(_("Not Implemented"), _("This feature is not yet available."), *get_app_window(), Gtk::MESSAGE_WARNING);
+#endif //ENABLE_RELATIONSHIPS_OVERVIEW
 }
+
 
 void Frame_Glom::on_menu_developer_relationships()
 {
