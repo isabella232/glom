@@ -1,5 +1,16 @@
 2007-02-11  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/libglom/document/document_glom.cc: get_connection_self_hosted_directory_uri(): 
+	Use just glom_postgres_data for the subdirectory name, to create and to look for, for 
+	self hosting, instead of prefixing it by the glom file name. This is less ugly, and it should 
+	be safe enough because it is all inside the directory.
+	* glom/application.cc: get_file_uri_without_extension(): Do not ignore the return value of 
+	Gnome::Vfs::Uri::append_string(). This should not have worked before, and still seems to work 
+	now. Odd.
+
+
+2007-02-11  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/libglom/connectionpool.cc: Always use a dynamically-found port number when starting 
 	self-hosting, instead of only determining it when creating the file, by using the -p and -h 
 	arguments to postmaster instead of specifying the same information in a postgresql.conf file.

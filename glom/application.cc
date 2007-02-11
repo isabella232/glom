@@ -446,8 +446,8 @@ Glib::ustring App_Glom::get_file_uri_without_extension(const Glib::ustring& uri)
     const Glib::ustring filename_part_without_ext = filename_part.substr(0, pos_dot);
     const Glib::ustring uri_parent = vfs_uri->extract_dirname();
 
-    Glib::RefPtr<Gnome::Vfs::Uri> vfs_uri_without_extension = Gnome::Vfs::Uri::create(uri_parent);
-    vfs_uri_without_extension->append_string(filename_part_without_ext);
+    Glib::RefPtr<Gnome::Vfs::Uri> vfs_uri_parent = Gnome::Vfs::Uri::create(uri_parent);
+    Glib::RefPtr<Gnome::Vfs::Uri> vfs_uri_without_extension = vfs_uri_parent->append_string(filename_part_without_ext);
 
     return vfs_uri_without_extension->to_string();
   }

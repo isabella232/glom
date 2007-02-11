@@ -29,6 +29,7 @@
 #include <glom/libglom/data_structure/layout/layoutitem_text.h>
 #include <glom/libglom/data_structure/layout/layoutitem_image.h>
 #include <glom/libglom/standard_table_prefs_fields.h>
+#include <libgnomevfsmm/uri.h>
 #include <bakery/Utilities/BusyCursor.h>
 
 #include <glom/libglom/connectionpool.h>
@@ -231,7 +232,19 @@ std::string Document_Glom::get_connection_self_hosted_directory_uri() const
   }
   else
   {
-    return uri_file + "_glom_postgres_data";
+    Glib::RefPtr<Gnome::Vfs::Uri> vfsuri = Gnome::Vfs::Uri::create(uri_file);
+
+    Glib::RefPtr<Gnome::Vfs::Uri> vfsuri_parent = vfsuri->get_parent();
+    if(vfsuri_parent)
+    {
+      Glib::RefPtr<Gnome::Vfs::Uri> datadir = vfsuri_parent->append_string("glom_postgres_data");
+      return datadir->to_string();
+    }
+    else
+    {
+      g_warning("Document_Glom::get_connection_self_hosted_directory_uri(): get_parent() returned empty.");
+      return std::string();
+    }
   }
 }
 
