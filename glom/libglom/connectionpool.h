@@ -25,6 +25,9 @@
 #include <glom/libglom/sharedptr.h>
 #include <glom/libglom/data_structure/fieldtypes.h>
 
+typedef struct AvahiEntryGroup AvahiEntryGroup;
+typedef struct AvahiClient AvahiClient;
+
 namespace Glom
 {
 
@@ -153,8 +156,16 @@ protected:
   /** Examine ports one by one, starting at @a starting_port, in increasing order,
    * and return the first one that is available.
    */
-  int discover_first_free_port(int start_port, int end_port);
+  static int discover_first_free_port(int start_port, int end_port);
 
+  /** Advertize self-hosting via avahi:
+   */
+  void avahi_start_publishing();
+  void avahi_stop_publishing();
+
+public:
+  void avahi_create_services(AvahiClient *c);
+protected:
 
   typedef std::list<Glib::ustring> type_list_ports;
   type_list_ports m_list_ports; //Network ports on which to try connecting to postgres.
@@ -171,6 +182,14 @@ protected:
   Glib::ustring m_host, m_user, m_password, m_database, m_port;
   FieldTypes* m_pFieldTypes;
   float m_postgres_server_version;
+
+public:
+  AvahiEntryGroup* m_avahi_group;
+  AvahiClient* m_avahi_client;
+  GMainLoop* m_avahi_mainloop;
+  Glib::ustring m_avahi_service_name;
+
+private:
 
   static ConnectionPool* m_instance;
 

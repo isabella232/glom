@@ -1,3 +1,12 @@
+2007-02-12  Murray Cumming  <murrayc@murrayc.com>
+
+	* configure.in: Depend on avahi-glib.
+	* glom/libglom/connectionpool.cc:
+	* glom/libglom/connectionpool.h: Added avahi_start_publishing() and 
+	avahi_stop_publishing() and use them to advertise the database server when self-hosting, 
+	with a made-up avahi service type name. This is rough code based on the avahi examples. 
+	I want to clean it up and maybe separate it into a separate class.
+
 2007-02-11  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/application.cc: When creating a new database (not from an example) show the extended 
