@@ -26,7 +26,8 @@ libglom_la_SOURCES = appstate.h appstate.cc \
                      spawn_with_feedback.h spawn_with_feedback.cc \
                      utils.h utils.cc \
                      sharedptr.h \
-                     standard_table_prefs_fields.h
+                     standard_table_prefs_fields.h \
+		     gst-package.h gst-package.c
 
 libglom_la_LDFLAGS = -no-undefined
 

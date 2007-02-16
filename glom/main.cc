@@ -148,6 +148,12 @@ main(int argc, char* argv[])
     //input_uri = "file:///home/murrayc/cvs/gnome212/glom/examples/example_smallbusiness.glom";
 
 
+    //Check that PostgreSQL is really available:
+    const bool install_complete = Glom::ConnectionPool::check_postgres_is_available_with_warning();
+    if(!install_complete)
+      return -1; //There is no point in going further because the most useful Glom functionality will not work without Postgres. Only a very cut-down Glom client would be useful without self-hosting.
+
+
     // Main app
     Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_main");
     Glom::App_Glom* pApp_Glom = 0;

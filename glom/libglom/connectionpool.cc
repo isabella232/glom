@@ -39,6 +39,8 @@
 #include <avahi-glib/glib-watch.h>
 #include <avahi-glib/glib-malloc.h>
 
+#include "gst-package.h"
+
 #include "config.h"
 
 namespace Glom
@@ -745,6 +747,89 @@ int ConnectionPool::discover_first_free_port(int start_port, int end_port)
   return 0;
 }
 
+// Message to packagers:
+// If your Glom package does not depend on PostgreSQL, for some reason, 
+// then your distro-specific patch should uncomment this #define.
+// and implement ConnectionPool::install_posgres().
+// But please, just make your Glom package depend on PostgreSQL instead, 
+// because this is silly.
+//
+//#define DISTRO_SPECIFIC_POSTGRES_INSTALL_IMPLEMENTED 1
+
+bool ConnectionPool::check_postgres_is_available_with_warning()
+{
+  const std::string binpath = Glib::build_filename(POSTGRES_UTILS_PATH, "postmaster");
+  const Glib::ustring uri_binpath = Glib::filename_to_uri(binpath);
+  if(Bakery::App_WithDoc::file_exists(uri_binpath))
+    return true;
+  else
+  {
+    #ifdef DISTRO_SPECIFIC_POSTGRES_INSTALL_IMPLEMENTED
+
+    //Show message to the user about the broken installation:
+    //This is a packaging bug, but it would probably annoy packagers to mention that in the dialog:
+    Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Incomplete Glom Installation")), true /* use_markup */, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_NONE, true /* modal */);
+    dialog.set_secondary_text(_("Your installation of Glom is not complete, because PostgreSQL is not available on your system. PostgreSQL is needed for self-hosting of Glom databases.\n\nYou may now install PostgreSQL to complete the Glom installation."));
+    dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+    dialog.add_button(_("Install PostgreSQL"), Gtk::RESPONSE_OK);
+    const int response = dialog.run();
+    if(response != Gtk::RESPONSE_OK)
+      return false; //Failure. Glom should now quit.
+    else
+      return install_postgres(&dialog);
+
+    #else  //DISTRO_SPECIFIC_POSTGRES_INSTALL_IMPLEMENTED
+
+    //Show message to the user about the broken installation:
+    Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Incomplete Glom Installation")), true /* use_markup */, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true /* modal */);
+    dialog.set_secondary_text(_("Your installation of Glom is not complete, because PostgreSQL is not available on your system. PostgreSQL is needed for self-hosting of Glom databases.\n\nPlease report this bug to your vendor, or your system administrator so it can be corrected."));
+    dialog.run();
+    return false;
+
+    #endif //DISTRO_SPECIFIC_POSTGRES_INSTALL_IMPLEMENTED
+  }
+}
+
+/** Try to install postgres on the distro, though this will require a distro-specific 
+ * patch to the implementation.
+ */
+bool ConnectionPool::install_postgres(Gtk::Window* parent_window)
+{
+#if 0
+  // This  is example code for Ubuntu, and possibly Debian,
+  // using code from the gnome-system-tools Debian/Ubuntu patches.
+  // (But please, just fix the dependencies instead. PostgreSQL is not optional.)
+  //
+  // You will also need to remove the "ifdef 0"s around the code in gst-package.[h|c],
+  // and define DISTRO_SPECIFIC_POSTGRES_INSTALL_IMPLEMENTED above.
+
+  //Careful. Maybe you want a different version.
+  //Also, Glom will start its own instance of PostgreSQL, on its own port, when it needs to,
+  //so there is no need to start a Glom service after installation at system startup, 
+  //though it will not hurt Glom if you do that.
+  const gchar *packages[] = { "postgresql-8.1", NULL };
+  const bool result = gst_packages_install(parent_window->gobj() /* parent window */, packages);
+  if(result)
+  {
+    std::cout << "Glom: gst_packages_install() reports success." << std::endl;
+    //Double-check, because gst_packages_install() incorrectly returns TRUE if it fails because 
+    //a) synaptic is already running, or
+    //b) synaptic did not know about the package (no warning is shown in this case.)
+    //Maybe gst_packages_install() never returns FALSE.
+    return check_postgres_is_available_with_warning(); //This is recursive, but clicking Cancel will stop everything.
+  }
+  else
+  {
+    std::cout << "Glom: gst_packages_install() reports failure." << std::endl;
+    return false; //Failed to install postgres.
+  }
+#else
+  return false; //Failed to install postgres because no installation technique was implemented.
+#endif
+}
+
+
+
 static void entry_group_callback(AvahiEntryGroup *g, AvahiEntryGroupState state, void *userdata)
 {
     ConnectionPool* self = (ConnectionPool*)userdata;
@@ -1005,6 +1090,7 @@ void ConnectionPool::avahi_stop_publishing()
       m_avahi_mainloop = 0;
     }
 }
+
 
 
 } //namespace Glom

@@ -28,6 +28,11 @@
 typedef struct AvahiEntryGroup AvahiEntryGroup;
 typedef struct AvahiClient AvahiClient;
 
+namespace Gtk
+{
+  class Window;
+}
+
 namespace Glom
 {
 
@@ -147,6 +152,19 @@ public:
 
   //Show the gda error in a dialog.
   static bool handle_error(bool cerr_only = false);
+
+
+  /** Check whether PostgreSQL is really available for self-hosting,
+   * in case the distro package has incorrect dependencies.
+   *
+   * @results True if everything is OK.
+   */
+  static bool check_postgres_is_available_with_warning();
+
+  /** Try to install postgres on the distro, though this will require a distro-specific 
+   * patch to the implementation.
+   */
+  static bool install_postgres(Gtk::Window* parent_window);
 
 protected:
   void on_sharedconnection_finished();

@@ -1,3 +1,18 @@
+2007-02-16  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/libglom/Makefile.am:
+	* glom/libglom/connectionpool.cc:
+	* glom/libglom/connectionpool.h: Added check_postgres_is_available_with_warning(), 
+	and install_postgress(). That latter may be patched by distros that choose (wrongly, 
+	I believe) not to make Glom depend on Postgres at install-time.
+	There is some commented-out example code, with many helpful comments, implementing 
+	the install-at-runtime code for Ubuntu/Debian.
+	* glom/libglom/gst-package.c:
+	* glom/libglom/gst-package.h: ifdefed-out helper code, taken from the Ubuntu/Debian patches 
+	for gnome-system-tools.
+	* glom/main.cc:  main(): Call check_postgres_is_available_with_warning().
+	If Postgres is not installed, and cannot be installed, then Glom will quit.
+
 1.3.8:
 
 2007-02-12  Murray Cumming  <murrayc@murrayc.com>
