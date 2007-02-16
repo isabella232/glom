@@ -1,3 +1,14 @@
+1.3.9 (unstable)
+
+* At startup, double-check that PostgreSQL is really installed, 
+  and quit if it is not installed, or cannot be installed.
+  The source code contains example code for Ubuntu to allow the 
+  user to install PostgreSQL at this time, though I would prefer 
+  that the user did not need to do a two-stage install, 
+  because self-hosting with PostgreSQL is not an optional feature.
+  (That would be something for a cut-down client for embedded devices.)
+  (Murray Cumming)
+
 1.3.8 (unstable)
 
 * Self-hosting:
