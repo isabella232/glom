@@ -140,7 +140,7 @@ public:
 
   /** Start a database server instance for the exisiting database files.
    */
-  void start_self_hosting();
+  bool start_self_hosting();
 
   /** Stop the database server instance for the database files.
    */
@@ -184,6 +184,8 @@ protected:
 public:
   void avahi_create_services(AvahiClient *c);
 protected:
+
+  bool directory_exists(const std::string& uri);
 
   typedef std::list<Glib::ustring> type_list_ports;
   type_list_ports m_list_ports; //Network ports on which to try connecting to postgres.

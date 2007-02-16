@@ -1445,7 +1445,9 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
       created = dialog->create_self_hosted(); //TODO: Tell the user.
       if(created)
       {
-        connection_pool->start_self_hosting();
+        const bool test = connection_pool->start_self_hosting();
+        if(!test)
+          return false;
       }
 
       //dialog->create_self_hosted() has already set enough information in the ConnectionPool to allow a connection so we can create the database in the new database cluster:

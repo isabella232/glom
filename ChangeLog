@@ -1,5 +1,13 @@
 2007-02-16  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/application.cc:
+	* glom/frame_glom.cc:
+	* glom/libglom/connectionpool.cc:
+	* glom/libglom/connectionpool.h: When starting self-hosting, double-check that the directory 
+	is there so we can fail more pleasantly, in this rare case. 
+
+2007-02-16  Murray Cumming  <murrayc@murrayc.com>
+
 	* examples/example_music_collection.glom: Publishers table: Correct the Albums relationship, 
 	and add a list of related albums to the details view.
 

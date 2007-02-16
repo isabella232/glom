@@ -507,21 +507,42 @@ float ConnectionPool::get_postgres_server_version()
   return m_postgres_server_version;
 }
 
-void ConnectionPool::start_self_hosting()
+bool ConnectionPool::directory_exists(const std::string& uri)
+{
+  Glib::RefPtr<Gnome::Vfs::Uri> vfsuri = Gnome::Vfs::Uri::create(uri);
+  return vfsuri->uri_exists();
+}
+
+bool ConnectionPool::start_self_hosting()
 {
   if(m_self_hosting_active)
-    return; //Just do it once.
+    return true; //Just do it once.
 
   const std::string dbdir_uri = m_self_hosting_data_uri;
+
+  if(!(directory_exists(dbdir_uri)))
+  {
+    std::cerr << "ConnectionPool::create_self_hosting(): The directory could not be found: " << dbdir_uri << std::endl;
+    return false;
+  }
+
   const std::string dbdir = Glib::filename_from_uri(dbdir_uri);
   g_assert(!dbdir.empty());
+
+  const std::string dbdir_data = Glib::build_filename(dbdir, "data");
+  const std::string dbdir_data_uri = Glib::filename_to_uri(dbdir_data);
+  if(!(directory_exists(dbdir_data_uri)))
+  {
+    std::cerr << "ConnectionPool::create_self_hosting(): The data sub-directory could not be found." << dbdir_data_uri << std::endl;
+    return false;
+  }
 
 
   const int available_port = discover_first_free_port(PORT_POSTGRESQL_SELF_HOSTED_START, PORT_POSTGRESQL_SELF_HOSTED_END);
   if(available_port == 0)
   {
     std::cerr << "ConnectionPool::create_self_hosting(): No port was available between " << PORT_POSTGRESQL_SELF_HOSTED_START << " and " << PORT_POSTGRESQL_SELF_HOSTED_END << std::endl;
-    return;
+    return false;
   }
 
   const Glib::ustring port_as_text = Utils::string_from_decimal(available_port);
@@ -531,7 +552,7 @@ void ConnectionPool::start_self_hosting()
   // -c config_file= specifies the configuration file
   // -k specifies a directory to use for the socket. This must be writable by us.
   // POSTGRES_POSTMASTER_PATH is defined in config.h, based on the configure.
-  const std::string command_postgres_start = POSTGRES_UTILS_PATH "/postmaster -D \"" + dbdir + "/data\" "
+  const std::string command_postgres_start = POSTGRES_UTILS_PATH "/postmaster -D \"" + dbdir_data + "\" "
                                   + " -p " + port_as_text 
                                   + " -h \"*\" " //Equivalent to listen_addresses in postgresql.conf. Listen to all IP addresses, so any client can connect (with a username+password)
                                   + " -c hba_file=\"" + dbdir + "/config/pg_hba.conf\""
@@ -539,7 +560,7 @@ void ConnectionPool::start_self_hosting()
                                   + " -k \"" + dbdir + "\""
                                   + " --external_pid_file=\"" + dbdir + "/pid\"";
 
-  const std::string command_check_postgres_has_started = POSTGRES_UTILS_PATH "/pg_ctl status -D \"" + dbdir + "/data\"";
+  const std::string command_check_postgres_has_started = POSTGRES_UTILS_PATH "/pg_ctl status -D \"" + dbdir_data + "\"";
   const std::string second_command_success_text = "postmaster is running"; //TODO: This is not a stable API. Also, watch out for localisation.
 
   //The first command does not return, but the second command can check whether it succeeded:
@@ -554,6 +575,8 @@ void ConnectionPool::start_self_hosting()
 
   //Let clients discover this server via avahi:
   avahi_start_publishing();
+
+  return true;
 }
 
 void ConnectionPool::stop_self_hosting()
@@ -568,6 +591,8 @@ void ConnectionPool::stop_self_hosting()
   const std::string dbdir = Glib::filename_from_uri(dbdir_uri);
   g_assert(!dbdir.empty());
 
+  const std::string dbdir_data = Glib::build_filename(dbdir, "data");
+
 
   // TODO: Detect other instances on the same computer, and use a different port number, 
   // or refuse to continue, showing an error dialog.
@@ -576,7 +601,7 @@ void ConnectionPool::stop_self_hosting()
   // -c config_file= specifies the configuration file
   // -k specifies a directory to use for the socket. This must be writable by us.
   // POSTGRES_POSTMASTER_PATH is defined in config.h, based on the configure.
-  const std::string command_postgres_stop = POSTGRES_UTILS_PATH "/pg_ctl -D \"" + dbdir + "/data\" stop";
+  const std::string command_postgres_stop = POSTGRES_UTILS_PATH "/pg_ctl -D \"" + dbdir_data + "\" stop";
   const bool result = Glom::Spawn::execute_command_line_and_wait(command_postgres_stop, _("Stopping Database Server"));
   if(!result)
   {
@@ -646,7 +671,7 @@ bool ConnectionPool::create_self_hosting()
   const std::string temp_pwfile = "/tmp/glom_initdb_pwfile";
   create_text_file(temp_pwfile, get_password());
 
-  const std::string command_initdb = POSTGRES_UTILS_PATH "/initdb -D \"" + dbdir + "/data\"" +
+  const std::string command_initdb = POSTGRES_UTILS_PATH "/initdb -D \"" + dbdir_data + "\"" +
                                         " -U " + username + " --pwfile=\"" + temp_pwfile + "\""; 
   //Note that --pwfile takes the password from the first line of a file. It's an alternative to supplying it when prompted on stdin.
   const bool result = Glom::Spawn::execute_command_line_and_wait(command_initdb, _("Creating Database Data"));
