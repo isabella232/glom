@@ -65,7 +65,8 @@ protected:
   Document_Glom *m_document;
   std::map<GooCanvasItem*, TableView*> m_tables;
   std::map<Glib::ustring, TableView*> m_tableNames;
-  
+  static int m_last_size_x, m_last_size_y;
+ 
   typedef std::map<GooCanvasItem*, TableView*>::iterator TableIterator;
   typedef std::map< std::pair<TableView*, int>, int >::iterator RelationshipIterator;
 

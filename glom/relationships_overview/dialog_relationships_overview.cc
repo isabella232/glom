@@ -131,6 +131,9 @@ namespace Glom
     hide ();
   }
 
+  int Dialog_RelationshipsOverview::m_last_size_x = 0;
+  int Dialog_RelationshipsOverview::m_last_size_y = 0;
+  
   Dialog_RelationshipsOverview::Dialog_RelationshipsOverview(BaseObjectType* cobject,
                                                              const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
     : Gtk::Dialog(cobject),
@@ -139,12 +142,16 @@ namespace Glom
       m_scrolledwindow_canvas(0),
       m_document(0)
   {
-    
     refGlade->get_widget("scrolledwindow_canvas", m_scrolledwindow_canvas);
     
     m_canvas = Glib::wrap ( goo_canvas_new() );
     m_scrolledwindow_canvas->add(*m_canvas);
     m_canvas->show ();
+    
+    if ( m_last_size_x != 0 && m_last_size_y != 0  )
+    {
+      set_size_request ( m_last_size_x, m_last_size_y );
+    }
   }
 
   void Dialog_RelationshipsOverview::update_model ()
@@ -341,6 +348,7 @@ namespace Glom
   
   Dialog_RelationshipsOverview::~Dialog_RelationshipsOverview()
   {
+    get_size ( m_last_size_x, m_last_size_y );
     delete m_canvas;
   }
 
