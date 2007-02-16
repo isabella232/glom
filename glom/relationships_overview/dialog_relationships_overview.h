@@ -31,58 +31,58 @@
 
 #include "relationships_canvas.h"
 
-namespace Glom {
+namespace Glom
+{
 
 class Dialog_RelationshipsOverview  : public Gtk::Dialog,
-                                      public View_Composite_Glom {
+                    public View_Composite_Glom
+{
 public:
-    Dialog_RelationshipsOverview(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  Dialog_RelationshipsOverview(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
 
-    virtual ~Dialog_RelationshipsOverview();
-    
-    gboolean on_button_press_canvas ( GooCanvasItem *view, GooCanvasItem *target,
-                                      GdkEventButton *event );
-    gboolean on_button_release_canvas ( GooCanvasItem *view, GooCanvasItem *target,
-                                        GdkEventButton *event );
-    gboolean on_motion_canvas ( GooCanvasItem *view, GooCanvasItem *target, GdkEventMotion *event );
-    
-    virtual void load_from_document(); //overridden.
+  virtual ~Dialog_RelationshipsOverview();
+  
+  bool on_button_press_canvas ( GooCanvasItem *view, GooCanvasItem *target,
+                                GdkEventButton *event );
+  bool on_button_release_canvas ( GooCanvasItem *view, GooCanvasItem *target,
+                                  GdkEventButton *event );
+  bool on_motion_canvas ( GooCanvasItem *view, GooCanvasItem *target, GdkEventMotion *event );
+  
+  virtual void load_from_document(); //overridden.
 
 protected:
-    void updateModel ();
+  class TableView;
+  
+  void update_model ();
+  void update_relationships ( TableView * );
+  void on_response ( int id );
+  
+  bool m_modified;
+  bool m_dragging;
+  gdouble m_drag_x, m_drag_y;
+  Gtk::ScrolledWindow *m_scrolledwindow_canvas;
+  Gtk::Widget *m_canvas;
+  Document_Glom *m_document;
+  std::map<GooCanvasItem*, TableView*> m_tables;
+  std::map<Glib::ustring, TableView*> m_tableNames;
+  
+  typedef std::map<GooCanvasItem*, TableView*>::iterator TableIterator;
+  typedef std::map< std::pair<TableView*, int>, int >::iterator RelationshipIterator;
 
-    void on_response ( int id );
+  class TableView
+  {
+  public:
+    Glib::ustring tableName;
     
-    gboolean m_modified;
-    gboolean m_dragging;
-    gdouble m_drag_x, m_drag_y;
-    Gtk::ScrolledWindow *m_scrolledwindow_canvas;
-    Gtk::Widget *m_canvas;
-    Document_Glom *m_document;
+    GooCanvasItem *group;
     
-    class TableView {
-    public:
-        Glib::ustring tableName;
-        
-        GooCanvasItem *group;
-        
-        std::vector<GooCanvasItem*> lines;
-        
-        // pair<Foreign table, foreign field number> -> local field number
-        std::map<std::pair<TableView*, int>, int> relationships;
-        std::vector<TableView*> updateOnMove;
-        
-        float x1, y1, x2, y2;
-    };
-    std::map<GooCanvasItem*, TableView*> m_tables;
-    std::map<Glib::ustring, TableView*> m_tableNames;
-    typedef std::map<GooCanvasItem*, TableView*>::iterator TableIterator;
-    typedef std::map< std::pair<TableView*, int>, int >::iterator RelationshipIterator;
+    std::vector<GooCanvasItem*> lines;
     
-    void updateRelationships ( TableView * );
+    std::map<std::pair<TableView*, int>, int> relationships;
+    std::vector<TableView*> updateOnMove;
     
-
-  //Gnome::Canvas::Group m_canvas_group;
+    float x1, y1, x2, y2;
+  };
 };
 
 }; //namespace Glom

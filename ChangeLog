@@ -1,3 +1,9 @@
+2007-02-16  Rasmus Toftdahl Olesen  <halfdan@halfdans.net>
+
+	* glom/relationships_overview/dialog_relationships_overview.cc:
+	* glom/relationships_overview/dialog_relationships_overview.h:
+	Patch in Bug #408408 to correct the source code formatting.
+
 2007-02-16  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/mode_data/box_data_details.cc:
