@@ -183,6 +183,11 @@ bool Box_Data_Details::fill_from_database()
 {
   //std::cout << "Box_Data_Details::fill_from_database(): m_primary_key_value.to_string()=" << m_primary_key_value.to_string() << std::endl;
 
+ //Don't try to open a connection if there is no document,
+ //for instance, during application destruction.
+ if(!get_document())
+    return false;
+
   bool bResult = false;
 
   Bakery::BusyCursor busy_cursor(get_app_window());

@@ -113,6 +113,11 @@ bool Box_Data_List::fill_from_database()
 {
   bool result = false;
 
+  //Don't try to open a connection if there is no document,
+  //for instance, during application destruction.
+  if(!get_document())
+    return false;
+
   Bakery::BusyCursor busy_cursor(get_app_window());
 
   try

@@ -52,7 +52,9 @@ bool Box_Data_Details_Find::fill_from_database()
 {
   Bakery::BusyCursor busy_cursor(get_app_window());
 
-  bool result = Box_DB_Table::fill_from_database();
+  const bool result = Box_DB_Table::fill_from_database();
+  if(!result)
+    return result;
 
   m_FieldsShown = get_fields_to_show();
 

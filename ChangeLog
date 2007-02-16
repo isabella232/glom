@@ -1,5 +1,14 @@
 2007-02-16  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/mode_data/box_data_details.cc:
+	* glom/mode_data/box_data_list.cc:
+	* glom/mode_find/box_data_details_find.cc:
+	* glom/mode_find/box_data_list_find.cc: fill_from_database() methods: 
+	Do not try to open a connection if the document is NULL, to stop a connection error dialog 
+	while closing, after we have stopped self-hosting.
+
+2007-02-16  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/application.cc:
 	* glom/frame_glom.cc:
 	* glom/libglom/connectionpool.cc:
