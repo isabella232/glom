@@ -323,5 +323,11 @@ namespace Glom {
         delete m_canvas;
         //g_object_unref ( m_model );
     }
+
+    void Dialog_RelationshipsOverview::load_from_document()
+    {
+       updateModel();
+    }
+
     
 } //namespace Glom

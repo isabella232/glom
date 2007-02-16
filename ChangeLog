@@ -1,3 +1,9 @@
+2007-02-16  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/relationships_overview/dialog_relationships_overview.cc:
+	* glom/relationships_overview/dialog_relationships_overview.h: Added an override of 
+	load_from_document() so that the tables are actually shown on the canvas.
+
 2007-02-16  Rasmus Toftdahl Olesen  <halfdan@halfdans.net>
 
 	* glom/relationships_overview/dialog_relationships_overview.cc:

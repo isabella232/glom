@@ -37,7 +37,7 @@ class Dialog_RelationshipsOverview  : public Gtk::Dialog,
                                       public View_Composite_Glom {
 public:
     Dialog_RelationshipsOverview(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
-    void updateModel ();
+
     virtual ~Dialog_RelationshipsOverview();
     
     gboolean on_button_press_canvas ( GooCanvasItem *view, GooCanvasItem *target,
@@ -46,7 +46,11 @@ public:
                                         GdkEventButton *event );
     gboolean on_motion_canvas ( GooCanvasItem *view, GooCanvasItem *target, GdkEventMotion *event );
     
+    virtual void load_from_document(); //overridden.
+
 protected:
+    void updateModel ();
+
     void on_response ( int id );
     
     gboolean m_modified;
