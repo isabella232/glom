@@ -27,52 +27,42 @@
 #include <algorithm>
 
 namespace Glom {
-    static gboolean on_button_press ( GooCanvasItemView *view,
-                                      GooCanvasItemView *target,
+    static gboolean on_button_press ( GooCanvasItem *view,
+                                      GooCanvasItem *target,
                                       GdkEventButton *event,
                                       gpointer data ) {
         return static_cast<Dialog_RelationshipsOverview*>(data)->on_button_press_canvas(view,target,event);
     }
     
-    static gboolean on_motion_notify (GooCanvasItemView *view,
-                                      GooCanvasItemView *target,
+    static gboolean on_motion_notify (GooCanvasItem *view,
+                                      GooCanvasItem *target,
                                       GdkEventMotion *event,
                                       gpointer data) {
         return static_cast<Dialog_RelationshipsOverview*>(data)->on_motion_canvas ( view, target, event );
     }
         
-    static gboolean on_button_release (GooCanvasItemView *view,
-                                       GooCanvasItemView *target,
+    static gboolean on_button_release (GooCanvasItem *view,
+                                       GooCanvasItem *target,
                                        GdkEventButton *event,
                                        gpointer data) {
         return static_cast<Dialog_RelationshipsOverview*>(data)->on_button_release_canvas (view, target, event);
     }
-    
-    static void on_item_view_created_c ( GooCanvasView *view, GooCanvasItemView *item_view,
-                                         GooCanvasItem *item, gpointer data ) {
-        static_cast<Dialog_RelationshipsOverview*>(data)->on_item_view_created ( view, item_view, item );
-    }
-    
-    gboolean Dialog_RelationshipsOverview::on_button_release_canvas (GooCanvasItemView *view,
-                                                                     GooCanvasItemView *target,
+    gboolean Dialog_RelationshipsOverview::on_button_release_canvas (GooCanvasItem *view,
+                                                                     GooCanvasItem *target,
                                                                      GdkEventButton *event ) {
-        GooCanvasView *canvas_view = goo_canvas_item_view_get_canvas_view (view);
-        goo_canvas_view_pointer_ungrab (canvas_view, view, event->time);
+        goo_canvas_pointer_ungrab (GOO_CANVAS(m_canvas->gobj()), target, event->time);
         this->m_dragging = FALSE;
-        
         return TRUE;
     }
     
-    gboolean Dialog_RelationshipsOverview::on_button_press_canvas (GooCanvasItemView *view,
-                                                                   GooCanvasItemView *target,
-                                                                   GdkEventButton *event ) {
-        GooCanvasView *canvas_view;
+    gboolean Dialog_RelationshipsOverview::on_button_press_canvas ( GooCanvasItem *view,
+                                                                    GooCanvasItem *target,
+                                                                    GdkEventButton *event ) {
         GdkCursor *fleur;
-        GooCanvasItem *item;
+        GooCanvasItem *item = target;
         
         switch (event->button) {
         case 1:
-            item = goo_canvas_item_view_get_item (view);
             while ( item != NULL && !goo_canvas_item_is_container(item) )
                 item = goo_canvas_item_get_parent ( item );
             goo_canvas_item_raise ( item, NULL );
@@ -81,11 +71,10 @@ namespace Glom {
             this->m_drag_y = event->y;
             
             fleur = gdk_cursor_new (GDK_FLEUR);
-            canvas_view = goo_canvas_item_view_get_canvas_view (view);
-            goo_canvas_view_pointer_grab (canvas_view, view,
-                                          static_cast<GdkEventMask>(GDK_POINTER_MOTION_MASK | GDK_BUTTON_RELEASE_MASK),
-                                          fleur,
-                                          event->time );
+            goo_canvas_pointer_grab (GOO_CANVAS(m_canvas->gobj()), view,
+                                     static_cast<GdkEventMask>(GDK_POINTER_MOTION_MASK | GDK_BUTTON_RELEASE_MASK),
+                                     fleur,
+                                     event->time );
             gdk_cursor_unref (fleur);
             this->m_dragging = TRUE;
             break;
@@ -97,11 +86,11 @@ namespace Glom {
         return TRUE;
     }
 
-    gboolean Dialog_RelationshipsOverview::on_motion_canvas (GooCanvasItemView *view,
-                                                             GooCanvasItemView *target,
+    gboolean Dialog_RelationshipsOverview::on_motion_canvas (GooCanvasItem *view,
+                                                             GooCanvasItem *target,
                                                              GdkEventMotion *event ) {
         if ( view != NULL ) {
-            GooCanvasItem *item = goo_canvas_item_view_get_item (view);
+            GooCanvasItem *item = target;
             while ( item != NULL && !goo_canvas_item_is_container(item) )
                 item = goo_canvas_item_get_parent ( item );
             
@@ -127,19 +116,6 @@ namespace Glom {
         return TRUE;
     }
 
-    void Dialog_RelationshipsOverview::on_item_view_created ( GooCanvasView *view,
-                                                              GooCanvasItemView *view_item,
-                                                              GooCanvasItem *item ) {
-        if ( goo_canvas_item_is_container(item) ) {
-            g_signal_connect ( view_item, "motion_notify_event",
-                               G_CALLBACK(on_motion_notify), static_cast<gpointer>(this) );
-            g_signal_connect ( view_item, "button_press_event",
-                               (GtkSignalFunc) on_button_press, this);
-            g_signal_connect ( view_item, "button_release_event",
-                               (GtkSignalFunc) on_button_release, this);
-        }
-    }
-    
     void Dialog_RelationshipsOverview::on_response ( int id ) {
         if ( m_modified && m_document )
             m_document->set_modified ();
@@ -149,28 +125,27 @@ namespace Glom {
     Dialog_RelationshipsOverview::Dialog_RelationshipsOverview(BaseObjectType* cobject,
                                                                const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
         : Gtk::Dialog(cobject),
+          m_modified(false),
           m_dragging(false),
           m_scrolledwindow_canvas(0),
-          m_modified(false),
           m_document(0) {
         
         refGlade->get_widget("scrolledwindow_canvas", m_scrolledwindow_canvas);
         //this->signal_cancelled.connect(sigc::mem_fun(*this, &Dialog_RelationshipsOverview::on_cancel));
-        m_model = goo_canvas_model_simple_new ();
-        GtkWidget *canvas_temp = goo_canvas_view_new ();
-        goo_canvas_view_set_model ( GOO_CANVAS_VIEW (canvas_temp), GOO_CANVAS_MODEL(m_model) );
-        g_signal_connect ( canvas_temp, "item-view-created",
-                           G_CALLBACK(on_item_view_created_c), static_cast<gpointer>(this) );
         
-        m_canvas = Glib::wrap ( canvas_temp );
-        m_scrolledwindow_canvas->add(*m_canvas);
+        m_canvas = Glib::wrap ( goo_canvas_new() );
+        //GtkWidget *canvas_temp = goo_canvas_view_new ();
+        //goo_canvas_view_set_model ( GOO_CANVAS_VIEW (canvas_temp), GOO_CANVAS_MODEL(m_model) );
+        //g_signal_connect ( canvas_temp, "item-view-created",
+        //                    G_CALLBACK(on_item_view_created_c), static_cast<gpointer>(this) );
         m_canvas->show ();
+        m_scrolledwindow_canvas->add(*m_canvas);
     }
 
     void Dialog_RelationshipsOverview::updateModel () {
         TableView *tv, *tv_to;
         GooCanvasItem *root, *table_group, *table_rect, *table_text; //, *item;
-        root = goo_canvas_model_get_root_item ( GOO_CANVAS_MODEL(m_model) );
+        root = goo_canvas_get_root_item ( GOO_CANVAS(m_canvas->gobj()) );
         while ( goo_canvas_item_get_n_children(root) > 0 )
             goo_canvas_item_remove_child ( root, 0 );
         
@@ -190,7 +165,15 @@ namespace Glom {
             Document_Glom::type_vecFields::size_type i, j;
             for ( Document_Glom::type_listTableInfo::iterator it = tables.begin(); it != tables.end(); ++it ) {
                 Document_Glom::type_vecFields fields = m_document->get_table_fields ( (*it)->get_name() );
-                table_group = goo_canvas_group_new ( root );
+                //std::cout << (*it)->get_name() << std::endl;
+                table_group = goo_canvas_group_new ( root, NULL );
+                g_signal_connect ( table_group, "motion_notify_event",
+                                   G_CALLBACK(on_motion_notify), static_cast<gpointer>(this) );
+                g_signal_connect ( table_group, "button_press_event",
+                                   (GtkSignalFunc) on_button_press, this);
+                g_signal_connect ( table_group, "button_release_event",
+                                   (GtkSignalFunc) on_button_release, this);
+                
                 tv = new TableView ();
                 tv->tableName = (*it)->get_name();
                 tv->group = table_group;
@@ -262,7 +245,7 @@ namespace Glom {
                         
                         for ( j = 0; j < to_fields.size() && to_fields[j]->get_name() != (*rit)->get_to_field();
                               ++j ) {}
-                        
+
                         /*
                         std::cout << (*rit)->get_from_table() << "::" << (*rit)->get_from_field() << "[" << i
                                   << "] -> " << (*rit)->get_to_table() << "::" << (*rit)->get_to_field()
@@ -277,7 +260,10 @@ namespace Glom {
                 updateRelationships ( tv );
             }
             
-            goo_canvas_view_set_bounds ( GOO_CANVAS_VIEW(m_canvas->gobj()), 0, 0, sizex, max_table_height );
+            goo_canvas_set_bounds ( GOO_CANVAS(m_canvas->gobj()), 0, 0, sizex, max_table_height );
+            
+        } else {
+            std::cout << "ERROR: Could not retrieve the Glom document." << std::endl;
         }
     }
 
@@ -288,7 +274,7 @@ namespace Glom {
         double x_from, y_from, x_to, y_to;
         const int field_height = 20;
         
-        GooCanvasItem *root = goo_canvas_model_get_root_item(GOO_CANVAS_MODEL(m_model));
+        GooCanvasItem *root = goo_canvas_get_root_item(GOO_CANVAS(m_canvas->gobj()));
         for ( std::vector<GooCanvasItem*>::iterator it = table_from->lines.begin();
               it != table_from->lines.end(); ++it ) {
             goo_canvas_item_remove_child ( root, goo_canvas_item_find_child(root, *it) );
@@ -335,7 +321,7 @@ namespace Glom {
         //remove_view(&canvas);
         //g_object_unref ( canvas );
         delete m_canvas;
-        g_object_unref ( m_model );
+        //g_object_unref ( m_model );
     }
     
 } //namespace Glom

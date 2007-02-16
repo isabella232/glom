@@ -39,15 +39,12 @@ public:
     Dialog_RelationshipsOverview(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
     void updateModel ();
     virtual ~Dialog_RelationshipsOverview();
-    gboolean on_button_press_canvas ( GooCanvasItemView *view, GooCanvasItemView *target,
+    
+    gboolean on_button_press_canvas ( GooCanvasItem *view, GooCanvasItem *target,
                                       GdkEventButton *event );
-    gboolean on_button_release_canvas ( GooCanvasItemView *view, GooCanvasItemView *target,
+    gboolean on_button_release_canvas ( GooCanvasItem *view, GooCanvasItem *target,
                                         GdkEventButton *event );
-    gboolean on_motion_canvas ( GooCanvasItemView *view, GooCanvasItemView *target, GdkEventMotion *event );
-    void on_item_view_created ( GooCanvasView *view, GooCanvasItemView *item, GooCanvasItem *item );
-    //Glib::SignalProxy1< void,const Glib::RefPtr<Dialog_RelationshipsOverview>& > signal_canvas_motion ();
-    //Glib::SignalProxy3 < gboolean, GooCanvasItemView *,
-    //GooCanvasItemView *, GdkEventMotion * > signal_canvas_motion ();
+    gboolean on_motion_canvas ( GooCanvasItem *view, GooCanvasItem *target, GdkEventMotion *event );
     
 protected:
     void on_response ( int id );
@@ -57,7 +54,6 @@ protected:
     gdouble m_drag_x, m_drag_y;
     Gtk::ScrolledWindow *m_scrolledwindow_canvas;
     Gtk::Widget *m_canvas;
-    GooCanvasModelSimple *m_model;
     Document_Glom *m_document;
     
     class TableView {
@@ -65,7 +61,6 @@ protected:
         Glib::ustring tableName;
         
         GooCanvasItem *group;
-        GooCanvasBounds bounds;
         
         std::vector<GooCanvasItem*> lines;
         

@@ -1,3 +1,10 @@
+2007-02-16  Rasmus Toftdahl Olesen  <halfdan@halfdans.net>
+
+	* glom/relationships_overview/dialog_relationships_overview.cc:
+	* glom/relationships_overview/dialog_relationships_overview.h:
+	Updated for latest goocanvas API. Note that this code is disabled by default.
+	Bug #408408.
+
 1.3.9:
 
 2007-02-16  Murray Cumming  <murrayc@murrayc.com>
