@@ -34,18 +34,17 @@
 namespace Glom
 {
 
-class Dialog_RelationshipsOverview  : public Gtk::Dialog,
-                    public View_Composite_Glom
+class Dialog_RelationshipsOverview
+ : public Gtk::Dialog,
+   public View_Composite_Glom
 {
 public:
   Dialog_RelationshipsOverview(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
 
   virtual ~Dialog_RelationshipsOverview();
   
-  bool on_button_press_canvas ( GooCanvasItem *view, GooCanvasItem *target,
-                                GdkEventButton *event );
-  bool on_button_release_canvas ( GooCanvasItem *view, GooCanvasItem *target,
-                                  GdkEventButton *event );
+  bool on_button_press_canvas(GooCanvasItem *view, GooCanvasItem *target, GdkEventButton *event);
+  bool on_button_release_canvas(GooCanvasItem *view, GooCanvasItem *target, GdkEventButton *event);
   bool on_motion_canvas ( GooCanvasItem *view, GooCanvasItem *target, GdkEventMotion *event );
   
   virtual void load_from_document(); //overridden.
@@ -54,8 +53,8 @@ protected:
   class TableView;
   
   void update_model ();
-  void update_relationships ( TableView * );
-  void on_response ( int id );
+  void update_relationships(TableView * );
+  void on_response (int id);
   
   bool m_modified;
   bool m_dragging;
