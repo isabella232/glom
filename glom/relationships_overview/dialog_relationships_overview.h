@@ -52,18 +52,20 @@ public:
 protected:
   class TableView;
   
-  void update_model ();
-  void update_relationships(TableView * );
-  void on_response (int id);
+  void update_model();
+  void update_relationships(TableView* table_from);
+  void on_response(int id);
   
   bool m_modified;
   bool m_dragging;
   gdouble m_drag_x, m_drag_y;
-  Gtk::ScrolledWindow *m_scrolledwindow_canvas;
   Gtk::Widget *m_canvas;
-  Document_Glom *m_document;
-  std::map<GooCanvasItem*, TableView*> m_tables;
-  std::map<Glib::ustring, TableView*> m_tableNames;
+
+  typedef std::map<GooCanvasItem*, TableView*> type_map_item_tables;
+  type_map_item_tables m_tables;
+
+  typedef std::map<Glib::ustring, TableView*> type_map_table_names;
+  type_map_table_names m_table_names;
   static int m_last_size_x, m_last_size_y;
  
   typedef std::map<GooCanvasItem*, TableView*>::iterator TableIterator;
@@ -72,14 +74,20 @@ protected:
   class TableView
   {
   public:
-    Glib::ustring tableName;
+    TableView();
+
+    Glib::ustring m_table_name;
     
-    GooCanvasItem *group;
+    GooCanvasItem* m_group;
     
-    std::vector<GooCanvasItem*> lines;
+    typedef std::vector<GooCanvasItem*> type_vec_canvasitems;
+    type_vec_canvasitems m_lines;
     
-    std::map<std::pair<TableView*, int>, int> relationships;
-    std::vector<TableView*> updateOnMove;
+    typedef std::map< std::pair<TableView*, int>, int> type_map_relationships;
+    type_map_relationships m_relationships;
+
+    typedef std::vector<TableView*> type_vec_tableviews;
+    type_vec_tableviews m_update_on_move;
     
     float x1, y1, x2, y2;
   };

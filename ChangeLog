@@ -1,4 +1,10 @@
-2007-02-17  Murray Cumming,,,  <set EMAIL_ADDRESS environment variable>
+2007-02-17  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/relationships_overview/dialog_relationships_overview.cc:
+	* glom/relationships_overview/dialog_relationships_overview.h:
+	More cleanup.
+
+2007-02-17  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/relationships_overview/dialog_relationships_overview.cc:
 	* glom/relationships_overview/dialog_relationships_overview.h:
