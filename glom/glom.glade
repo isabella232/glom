@@ -11809,7 +11809,7 @@ Which user should be added to this group?</property>
 <widget class="GtkDialog" id="dialog_relationships_overview">
   <property name="border_width">6</property>
   <property name="visible">True</property>
-  <property name="title" translatable="yes">Users</property>
+  <property name="title" translatable="yes">Relationships Overview</property>
   <property name="type">GTK_WINDOW_TOPLEVEL</property>
   <property name="window_position">GTK_WIN_POS_NONE</property>
   <property name="modal">False</property>
