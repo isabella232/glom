@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glom HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-02-17 00:17+0000\n"
-"PO-Revision-Date: 2007-02-17 00:17-0000\n"
+"POT-Creation-Date: 2007-02-18 14:11+0000\n"
+"PO-Revision-Date: 2007-02-18 14:11-0000\n"
 "Last-Translator: David Lodge <dave@cirt.net>\n"
 "Language-Team: English/GB <en@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -752,122 +752,126 @@ msgid "Relationship"
 msgstr "Relationship"
 
 #: ../glom/glom.glade.h:183
+msgid "Relationships Overview"
+msgstr "Relationships Overview"
+
+#: ../glom/glom.glade.h:184
 msgid "Remove the item from the layout. If you remove a field layout item, it will not remove the field from the table itself. It just will not be seen on the layout."
 msgstr "Remove the item from the layout. If you remove a field layout item, it will not remove the field from the table itself. It just will not be seen on the layout."
 
-#: ../glom/glom.glade.h:184
+#: ../glom/glom.glade.h:185
 msgid "Report Layout"
 msgstr "Report Layout"
 
-#: ../glom/glom.glade.h:185
+#: ../glom/glom.glade.h:186
 msgid "Reports"
 msgstr "Reports"
 
-#: ../glom/glom.glade.h:186
+#: ../glom/glom.glade.h:187
 msgid "Restrict data to these choices"
 msgstr "Restrict data to these choices"
 
-#: ../glom/glom.glade.h:187
+#: ../glom/glom.glade.h:188
 msgid "Revert"
 msgstr "Revert"
 
-#: ../glom/glom.glade.h:188
+#: ../glom/glom.glade.h:189
 msgid "Script name:"
 msgstr "Script name:"
 
-#: ../glom/glom.glade.h:189
+#: ../glom/glom.glade.h:190
 msgid "Secondary Fields:"
 msgstr "Secondary Fields:"
 
-#: ../glom/glom.glade.h:190
+#: ../glom/glom.glade.h:191
 #: ../glom/utility_widgets/imageglom.cc:365
 #: ../glom/utility_widgets/dialog_choose_id.cc:82
 msgid "Select"
 msgstr "Select"
 
-#: ../glom/glom.glade.h:191
+#: ../glom/glom.glade.h:192
 msgid "Select Field"
 msgstr "Select Field"
 
-#: ../glom/glom.glade.h:192
+#: ../glom/glom.glade.h:193
 msgid "Select Relationship"
 msgstr "Select Relationship"
 
-#: ../glom/glom.glade.h:193
+#: ../glom/glom.glade.h:194
 msgid "Show Related Relationships"
 msgstr "Show Related Relationships"
 
-#: ../glom/glom.glade.h:194
+#: ../glom/glom.glade.h:195
 msgid "Show Table Title"
 msgstr "Show Table Title"
 
-#: ../glom/glom.glade.h:195
+#: ../glom/glom.glade.h:196
 msgid "Show child relationships"
 msgstr "Show child relationships"
 
-#: ../glom/glom.glade.h:196
+#: ../glom/glom.glade.h:197
 msgid "Show hidden tables"
 msgstr "Show hidden tables"
 
-#: ../glom/glom.glade.h:197
+#: ../glom/glom.glade.h:198
 msgid "Sort Fields:"
 msgstr "Sort Fields:"
 
-#: ../glom/glom.glade.h:198
+#: ../glom/glom.glade.h:199
 msgid "Start a translation for this target locale by copying the strings from another target locale."
 msgstr "Start a translation for this target locale by copying the strings from another target locale."
 
-#: ../glom/glom.glade.h:199
+#: ../glom/glom.glade.h:200
 msgid "State/County"
 msgstr "State/County"
 
-#: ../glom/glom.glade.h:200
+#: ../glom/glom.glade.h:201
 #: ../glom/libglom/document/document_glom.cc:384
 msgid "Street"
 msgstr "Street"
 
-#: ../glom/glom.glade.h:201
+#: ../glom/glom.glade.h:202
 msgid "Street (Line 2)"
 msgstr "Street (Line 2)"
 
-#: ../glom/glom.glade.h:202
+#: ../glom/glom.glade.h:203
 msgid "Summary Type:"
 msgstr "Summary Type:"
 
-#: ../glom/glom.glade.h:203
+#: ../glom/glom.glade.h:204
 #: ../glom/libglom/document/document_glom.cc:366
 msgid "System Name"
 msgstr "System Name"
 
-#: ../glom/glom.glade.h:204
+#: ../glom/glom.glade.h:205
 msgid "Table:"
 msgstr "Table:"
 
-#: ../glom/glom.glade.h:205
+#: ../glom/glom.glade.h:206
 msgid "Table: "
 msgstr "Table: "
 
-#: ../glom/glom.glade.h:206
+#: ../glom/glom.glade.h:207
 msgid "Test"
 msgstr "Test"
 
-#: ../glom/glom.glade.h:207
+#: ../glom/glom.glade.h:208
 msgid "Test Translation"
 msgstr "Test Translation"
 
-#: ../glom/glom.glade.h:208
+#: ../glom/glom.glade.h:209
 msgid "Text Object"
 msgstr "Text Object"
 
-#: ../glom/glom.glade.h:209
+#: ../glom/glom.glade.h:210
 msgid "The field value will be the return value of the python function, which you implement here."
 msgstr "The field value will be the return value of the python function, which you implement here."
 
-#: ../glom/glom.glade.h:210
+#: ../glom/glom.glade.h:211
 msgid "These modules will be available to your button scripts and field calculations via the python import keyword."
 msgstr "These modules will be available to your button scripts and field calculations via the python import keyword."
 
-#: ../glom/glom.glade.h:211
+#: ../glom/glom.glade.h:212
 msgid ""
 "This will add a new table and add a relationship that refers to the new  table, as a convenient alternative to doing this in separate steps.\n"
 "\n"
@@ -878,7 +882,7 @@ msgstr ""
 "If a suitable related table already exists then you should instead cancel and just add a relationship."
 
 #. Title column:
-#: ../glom/glom.glade.h:214
+#: ../glom/glom.glade.h:215
 #: ../glom/box_reports.cc:94
 #: ../glom/layout_item_dialogs/dialog_notebook.cc:47
 #: ../glom/mode_data/dialog_choose_field.cc:52
@@ -890,114 +894,114 @@ msgstr ""
 msgid "Title"
 msgstr "Title"
 
-#: ../glom/glom.glade.h:215
+#: ../glom/glom.glade.h:216
 msgid "Town"
 msgstr "Town"
 
-#: ../glom/glom.glade.h:216
+#: ../glom/glom.glade.h:217
 msgid "Translations"
 msgstr "Translations"
 
-#: ../glom/glom.glade.h:217
+#: ../glom/glom.glade.h:218
 msgid "Triggered by:"
 msgstr "Triggered by:"
 
-#: ../glom/glom.glade.h:218
+#: ../glom/glom.glade.h:219
 #: ../glom/mode_design/fields/box_db_table_definition.cc:59
 msgid "Type"
 msgstr "Type"
 
-#: ../glom/glom.glade.h:219
+#: ../glom/glom.glade.h:220
 msgid "Unique"
 msgstr "Unique"
 
-#: ../glom/glom.glade.h:220
+#: ../glom/glom.glade.h:221
 msgid "Use 1000s separator"
 msgstr "Use 1000s separator"
 
-#: ../glom/glom.glade.h:221
+#: ../glom/glom.glade.h:222
 msgid "Use custom formatting"
 msgstr "Use custom formatting"
 
-#: ../glom/glom.glade.h:222
+#: ../glom/glom.glade.h:223
 msgid "Use custom title"
 msgstr "Use custom title"
 
-#: ../glom/glom.glade.h:223
+#: ../glom/glom.glade.h:224
 msgid "Use default field title: "
 msgstr "Use default field title: "
 
-#: ../glom/glom.glade.h:224
+#: ../glom/glom.glade.h:225
 msgid "Use default formatting"
 msgstr "Use default formatting"
 
 #. Append the View columns:
-#: ../glom/glom.glade.h:225
+#: ../glom/glom.glade.h:226
 #: ../glom/mode_design/users/dialog_users_list.cc:67
 msgid "User"
 msgstr "User"
 
-#: ../glom/glom.glade.h:226
+#: ../glom/glom.glade.h:227
 msgid "User Entry"
 msgstr "User Entry"
 
-#: ../glom/glom.glade.h:227
+#: ../glom/glom.glade.h:228
 msgid "Users"
 msgstr "Users"
 
-#: ../glom/glom.glade.h:228
+#: ../glom/glom.glade.h:229
 msgid "Value"
 msgstr "Value"
 
-#: ../glom/glom.glade.h:229
+#: ../glom/glom.glade.h:230
 msgid "When the button is clicked it will run the python function which you implement here."
 msgstr "When the button is clicked it will run the python function which you implement here."
 
-#: ../glom/glom.glade.h:230
+#: ../glom/glom.glade.h:231
 msgid "When this is selected you will see extra relationships in the Table list, allowing you to choose fields from relationships in related tables, instead of just regular fields from those related tables."
 msgstr "When this is selected you will see extra relationships in the Table list, allowing you to choose fields from relationships in related tables, instead of just regular fields from those related tables."
 
-#: ../glom/glom.glade.h:231
+#: ../glom/glom.glade.h:232
 msgid "Zip/Postal Code"
 msgstr "Postcode"
 
-#: ../glom/glom.glade.h:232
+#: ../glom/glom.glade.h:233
 msgid "_Host"
 msgstr "_Host"
 
-#: ../glom/glom.glade.h:233
+#: ../glom/glom.glade.h:234
 msgid "_Password"
 msgstr "_Password"
 
-#: ../glom/glom.glade.h:234
+#: ../glom/glom.glade.h:235
 msgid "_User"
 msgstr "_User"
 
-#: ../glom/glom.glade.h:235
+#: ../glom/glom.glade.h:236
 msgid "example data format"
 msgstr "example data format"
 
-#: ../glom/glom.glade.h:236
+#: ../glom/glom.glade.h:237
 msgid "field name"
 msgstr "field name"
 
-#: ../glom/glom.glade.h:237
+#: ../glom/glom.glade.h:238
 msgid "gtk-add"
 msgstr "gtk-add"
 
-#: ../glom/glom.glade.h:238
+#: ../glom/glom.glade.h:239
 msgid "gtk-remove"
 msgstr "gtk-remove"
 
-#: ../glom/glom.glade.h:239
+#: ../glom/glom.glade.h:240
 msgid "table name"
 msgstr "table name"
 
-#: ../glom/glom.glade.h:240
+#: ../glom/glom.glade.h:241
 msgid "table_name"
 msgstr "table_name"
 
-#: ../glom/glom.glade.h:241
+#: ../glom/glom.glade.h:242
 msgid "the title"
 msgstr "the title"
 
