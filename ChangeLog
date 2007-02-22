@@ -1,3 +1,9 @@
+2007-02-22  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/libglom/connectionpool.cc: Add 5434 to the list of ports to try, because this 
+	is used in the current Ubuntu Feisty beta for Postgres 8.2, though this might be changed 
+	in later Ubuntu Feisty betas. Also added 5435 and 5436 for the future.
+
 2007-02-17  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/glom.glade: Corrected the title of the relationships overview 
