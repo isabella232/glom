@@ -59,7 +59,7 @@ echo "- intltoolize."		&& \
 echo "- libtoolize."		&& \
   libtoolize --copy --force --automake 	&& \
 echo "- gnome-doc-prepare."	&& \
-  gnome-doc-prepare --force 	&& \
+  gnome-doc-prepare --force --copy	&& \
 echo "- aclocal-1.9"		&& \
   aclocal-1.9 -I "$srcdir/macros" $ACLOCAL_FLAGS && \
 echo "- autoheader"		&& \

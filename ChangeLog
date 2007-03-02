@@ -1,3 +1,11 @@
+2007-03-02  Murray Cumming  <murrayc@murrayc-desktop>
+
+	* autogen.sh: Use --copy with gnome-doc-prepare, because that is 
+	what gnome-common does.
+	* configure.in: Specify 0.9.0 to GNOME_DOC_INIT()
+	Change the default postgres tools path to use 8.2, as used on Ubuntu Feisty, 
+	to make my life easier.
+
 1.3.10:
 
 2007-02-22  Murray Cumming  <murrayc@murrayc.com>

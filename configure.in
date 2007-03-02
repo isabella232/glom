@@ -43,7 +43,7 @@ AM_CONDITIONAL(ENABLE_SK, test "x$enable_scrollkeeper" = "xyes")
 AC_SUBST([ACLOCAL_AMFLAGS], ['-I macros ${ACLOCAL_FLAGS}'])
 
 #For gnome-doc-utils:
-GNOME_DOC_INIT
+GNOME_DOC_INIT([0.9.0])
 
 AC_LANG_CPLUSPLUS
 
@@ -84,9 +84,9 @@ AM_CONDITIONAL(UPDATE_MIME_DATABASE, test "$enable_update_mime_database" != "no"
 # Ask user for path to the directory containing the postgresql utilities, such as the postmaster executable, so we can self-host postgresql databases:
 # We default to the path used by Ubuntu (Dapper and Edgy) so that the build works at least somewhere by default.
 AC_ARG_WITH(postgres-utils,
-    [ --with-postgres-utils=<path> path to the postmaster executable. e.g. /usr/lib/postgresql/8.1/bin],
+    [ --with-postgres-utils=<path> path to the postmaster executable. e.g. /usr/lib/postgresql/8.2/bin],
     [POSTGRES_UTILS_PATH=$with_postgres_utils],
-    [POSTGRES_UTILS_PATH=/usr/lib/postgresql/8.1/bin]
+    [POSTGRES_UTILS_PATH=/usr/lib/postgresql/8.2/bin]
 )
 
 AC_SUBST(POSTGRES_UTILS_PATH)
