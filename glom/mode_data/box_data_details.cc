@@ -71,9 +71,13 @@ Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
 
   //m_ScrolledWindow.set_border_width(6);
   m_ScrolledWindow.set_policy(Gtk::POLICY_NEVER, Gtk::POLICY_AUTOMATIC); /* Allow vertical scrolling, but never scroll horizontally. */
-  m_ScrolledWindow.set_shadow_type(Gtk::SHADOW_NONE); //SHADOW_IN is Recommended by the GNOME HIG, but looks odd. And there still seems to be some shadow even with SHADOW_NONE.
+  m_ScrolledWindow.set_shadow_type(Gtk::SHADOW_NONE); //SHADOW_IN is Recommended by the GNOME HIG, but looks odd.
   pack_start(m_ScrolledWindow);
   m_ScrolledWindow.add(m_FlowTable);
+  // The FlowTable does not support native scrolling, so gtkmm adds it to a
+  // viewport first that also has some shadow we do not want.
+  Gtk::Viewport* viewport = dynamic_cast<Gtk::Viewport*>(m_FlowTable.get_parent());
+  if(viewport) viewport->set_shadow_type(Gtk::SHADOW_NONE);
 
   //Add or delete record:
   m_HBox.pack_start(m_Button_New, Gtk::PACK_SHRINK);

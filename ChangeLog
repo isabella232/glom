@@ -1,3 +1,8 @@
+2007-03-02  Armin Burgmeier  <armin@arbur.net>
+
+	* glom/mode_data/box_data_details.cc: Remove shadow from Viewport that
+	is created by Gtk::ScrolledWindow::add().
+
 2007-03-02  Murray Cumming  <murrayc@murrayc-desktop>
 
 	* autogen.sh: Use --copy with gnome-doc-prepare, because that is 
