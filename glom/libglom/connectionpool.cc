@@ -566,7 +566,11 @@ bool ConnectionPool::start_self_hosting()
                                   + " --external_pid_file=\"" + dbdir + "/pid\"";
 
   const std::string command_check_postgres_has_started = POSTGRES_UTILS_PATH "/pg_ctl status -D \"" + dbdir_data + "\"";
-  const std::string second_command_success_text = "postmaster is running"; //TODO: This is not a stable API. Also, watch out for localisation.
+
+  //For postgres 8.1, this is "postmaster is running".
+  //For postgres 8.2, this is "server is running".
+  //This is a big hack that we should avoid. murrayc.
+  const std::string second_command_success_text = "is running"; //TODO: This is not a stable API. Also, watch out for localisation.
 
   //The first command does not return, but the second command can check whether it succeeded:
   const bool result = Glom::Spawn::execute_command_line_and_wait_until_second_command_returns_success(command_postgres_start, command_check_postgres_has_started, _("Starting Database Server"), 0 /* window*/, second_command_success_text);

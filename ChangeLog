@@ -1,3 +1,11 @@
+2007-03-03  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/libglom/connectionpool.cc: When checking if the postgres instance 
+	has finished starting, check for "is running" rather than "postmaster is running", 
+	because this message has changed in postgres 8.2.
+	Yes, this is a nasty hack anyway, and we need a better way to programatically 
+	know when the local server is running.
+
 2007-03-02  Armin Burgmeier  <armin@arbur.net>
 
 	* glom/mode_data/box_data_details.cc: Remove shadow from Viewport that
