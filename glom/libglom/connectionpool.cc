@@ -570,6 +570,10 @@ bool ConnectionPool::start_self_hosting()
   //For postgres 8.1, this is "postmaster is running".
   //For postgres 8.2, this is "server is running".
   //This is a big hack that we should avoid. murrayc.
+  //
+  //pg_ctl actually seems to return a 0 result code for "is running" and a 1 for not running, at least with Postgres 8.2,
+  //so maybe we can avoid this in future.  
+  //Please do test it with your postgres version, using "echo $?" to see the result code of the last command.
   const std::string second_command_success_text = "is running"; //TODO: This is not a stable API. Also, watch out for localisation.
 
   //The first command does not return, but the second command can check whether it succeeded:
