@@ -89,6 +89,8 @@ protected:
   virtual void on_adddel_user_requested_layout();
 
   virtual void on_adddel_user_changed(const Gtk::TreeModel::iterator& row, guint col);
+  virtual void on_adddel_script_button_clicked(const sharedptr<const LayoutItem_Button>& layout_item, const Gtk::TreeModel::iterator& row);
+  virtual bool on_script_button_idle(const Gnome::Gda::Value& primary_key_value);
 
   virtual void on_record_added(const Gnome::Gda::Value& primary_key_value, const Gtk::TreeModel::iterator& row); //Not a signal handler. To be overridden.
   virtual void on_record_deleted(const Gnome::Gda::Value& primary_key_value);

@@ -782,5 +782,15 @@ bool Box_Data::confirm_delete_record()
   return (response == Gtk::RESPONSE_OK);
 }
 
-} //namespace Glom
+void Box_Data::execute_button_script(const sharedptr<const LayoutItem_Button>& layout_item, const Gnome::Gda::Value& primary_key_value)
+{
+  const type_map_fields field_values = get_record_field_values_for_calculation(m_table_name, get_field_primary_key(), primary_key_value);
 
+ //We need the connection when we run the script, so that the script may use it.
+ sharedptr<SharedConnection> sharedconnection = connect_to_server(0 /* parent window */);
+
+  glom_execute_python_function_implementation(layout_item->get_script(), field_values, //TODO: Maybe use the field's type here.
+    get_document(), get_table_name(), sharedconnection->get_gda_connection());
+}
+
+} //namespace Glom

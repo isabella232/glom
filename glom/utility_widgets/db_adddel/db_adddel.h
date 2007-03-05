@@ -229,6 +229,9 @@ public:
   typedef sigc::signal<void> type_signal_user_reordered_columns;
   type_signal_user_reordered_columns signal_user_reordered_columns();
 
+  typedef sigc::signal<void, const sharedptr<const LayoutItem_Button>&, const Gtk::TreeModel::iterator&> type_signal_script_button_clicked;
+  type_signal_script_button_clicked signal_script_button_clicked();
+
  
   virtual Gtk::TreeModel::iterator get_last_row();
   virtual Gtk::TreeModel::iterator get_last_row() const;
@@ -355,6 +358,7 @@ protected:
   type_signal_user_requested_layout m_signal_user_requested_layout;
   type_signal_user_activated m_signal_user_activated;
   type_signal_user_reordered_columns m_signal_user_reordered_columns;
+  type_signal_script_button_clicked m_signal_script_button_clicked;
 
   bool get_ignore_treeview_signals() const;
   void set_ignore_treeview_signals(bool ignore = true);

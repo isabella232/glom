@@ -63,6 +63,7 @@ Box_Data_List::Box_Data_List()
   m_AddDel.signal_user_requested_delete().connect(sigc::mem_fun(*this, &Box_Data_List::on_adddel_user_requested_delete));
   m_AddDel.signal_user_added().connect(sigc::mem_fun(*this, &Box_Data_List::on_adddel_user_added));
   m_AddDel.signal_user_changed().connect(sigc::mem_fun(*this, &Box_Data_List::on_adddel_user_changed));
+  m_AddDel.signal_script_button_clicked().connect(sigc::mem_fun(*this, &Box_Data_List::on_adddel_script_button_clicked));
   m_AddDel.signal_user_reordered_columns().connect(sigc::mem_fun(*this, &Box_Data_List::on_adddel_user_reordered_columns));
 
   m_AddDel.signal_user_requested_layout().connect(sigc::mem_fun(*this, &Box_Data_List::on_adddel_user_requested_layout));
@@ -471,7 +472,41 @@ void Box_Data_List::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, 
 
 }
 
+void Box_Data_List::on_adddel_script_button_clicked(const sharedptr<const LayoutItem_Button>& layout_item, const Gtk::TreeModel::iterator& row)
+{
+  if(layout_item)
+  {
+    const Gnome::Gda::Value primary_key_value = get_primary_key_value(row);
+    execute_button_script(layout_item, primary_key_value);
 
+    // Refill view from database as the script might have changed arbitrary records
+
+#if 0
+    // TODO: This is perhaps a better approach, but
+    // DbTreeModel::refresh_from_database is protected
+    Glib::RefPtr<Gtk::TreeModel> model = m_AddDel.get_model();
+    Glib::RefPtr<DbTreeModel> db_model = Glib::RefPtr<DbTreeModel>::cast_dynamic(model);
+    if(db_model) db_model->refresh_from_database(m_found_set);
+#endif
+
+    // TODO: Calling refresh_data_from_database() causes a crash somewhere
+    // down in GTK+, so it is done in a handler here.
+    // We are currently in a callback from the CellRendererButton_Text cell
+    // renderer which is deleted by a call to refresh_data_from_database().
+    // Probably this causes issues somewhere. 
+    Glib::signal_idle().connect(sigc::bind(sigc::mem_fun(*this, &Box_Data_List::on_script_button_idle), primary_key_value));
+
+    //refresh_data_from_database();
+    //set_primary_key_value_selected(primary_key);
+  }
+}
+
+bool Box_Data_List::on_script_button_idle(const Gnome::Gda::Value& primary_key)
+{
+  refresh_data_from_database();
+  set_primary_key_value_selected(primary_key);
+  return false;
+}
 
 void Box_Data_List::on_details_nav_first()
 {

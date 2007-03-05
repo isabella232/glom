@@ -539,27 +539,7 @@ void DbAddDel::on_cell_layout_button_clicked(const Gtk::TreeModel::Path& path, i
     sharedptr<const LayoutItem_Button> item_button = sharedptr<const LayoutItem_Button>::cast_dynamic(layout_item);
     if(item_button)
     {
-#if 0 //TODO:
-      const Gnome::Gda::Value primary_key_value = get_primary_key_value(iter);
-      const type_map_fields field_values = get_record_field_values_for_calculation(m_table_name, m_field_primary_key, primary_key_value);
-
-     //We need the connection when we run the script, so that the script may use it.
-     sharedptr<SharedConnection> sharedconnection = connect_to_server(0 /* parent window */);
-
-     glom_execute_python_function_implementation(item_button->get_script(), field_values, //TODO: Maybe use the field's type here.
-     get_document(), get_table_name(), sharedconnection->get_gda_connection());
-
-     //Refresh the view, in case the script changed any data:
-     if(get_primary_key_is_in_foundset(m_found_set, m_primary_key_value)) //Check, because maybe the script deleted the current record, or changed something so that it should no longer be shown in the found set.
-     {
-       refresh_data_from_database_with_primary_key(m_primary_key_value);
-     }
-     else
-     {
-       //Tell the parent to do something appropriate, such as show another record:
-       signal_record_deleted().emit(m_primary_key_value);
-     }
-#endif
+      m_signal_script_button_clicked.emit(item_button, iter);
     }
   }
 }
@@ -1568,6 +1548,11 @@ DbAddDel::type_signal_user_activated DbAddDel::signal_user_activated()
 DbAddDel::type_signal_user_reordered_columns DbAddDel::signal_user_reordered_columns()
 {
   return m_signal_user_reordered_columns;
+}
+
+DbAddDel::type_signal_script_button_clicked DbAddDel::signal_script_button_clicked()
+{
+  return m_signal_script_button_clicked;
 }
 
 void DbAddDel::on_treeview_button_press_event(GdkEventButton* event)

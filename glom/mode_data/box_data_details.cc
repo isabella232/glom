@@ -544,13 +544,7 @@ void Box_Data_Details::on_flowtable_script_button_clicked(const sharedptr<const 
   if(layout_item)
   {
     const Gnome::Gda::Value primary_key_value = get_primary_key_value();
-    const type_map_fields field_values = get_record_field_values_for_calculation(m_table_name, m_field_primary_key, primary_key_value);
-
-   //We need the connection when we run the script, so that the script may use it.
-   sharedptr<SharedConnection> sharedconnection = connect_to_server(0 /* parent window */);
-
-    glom_execute_python_function_implementation(layout_item->get_script(), field_values, //TODO: Maybe use the field's type here.
-    get_document(), get_table_name(), sharedconnection->get_gda_connection());
+    execute_button_script(layout_item, primary_key_value);
 
     //Refresh the view, in case the script changed any data:
     if(get_primary_key_is_in_foundset(m_found_set, m_primary_key_value)) //Check, because maybe the script deleted the current record, or changed something so that it should no longer be shown in the found set.
@@ -564,7 +558,7 @@ void Box_Data_Details::on_flowtable_script_button_clicked(const sharedptr<const 
     }
   }
 }
-
+     
 void Box_Data_Details::on_flowtable_field_edited(const sharedptr<const LayoutItem_Field>& layout_field, const Gnome::Gda::Value& field_value)
 {
   if(m_ignore_signals)

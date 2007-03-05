@@ -1,3 +1,22 @@
+2007-03-04  Armin Burgmeier  <armin@openismus.com>
+
+	* glom/utilitiy_widgets/db_adddel/db_adddel.h:
+	* glom/utilitiy_widgets/db_adddel/db_adddel.cc: Added a
+	signal_script_button_clicked that is emitted when the user
+	clicks on a list button.
+
+	* glom/mode_data/box_data.h:
+	* glom/mode_data/box_data.cc: Added a execute_button_script()
+	function.
+
+	* glom/mode_data/box_data_details.cc: Make use of it.
+
+	* glom/mode_data/box_data_list.h:
+	* glom/mode_data/box_data_list.cc: Listen on
+	signal_script_button_clicked from m_AddDel and execute the script.
+	Refresh the list because the script may have altered it. This is done
+	in an idle handler because it crashes Glom otherwise.
+
 2007-03-04  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/libglom/connectionpool.cc: Add a comment about the hope of using just the pg_ctl 

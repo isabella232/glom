@@ -121,6 +121,8 @@ protected:
 
   bool confirm_delete_record();
 
+  void execute_button_script(const sharedptr<const LayoutItem_Button>& layout_item, const Gnome::Gda::Value& primary_key_value);
+
   //Signal handlers:
   virtual void on_Button_Find(); //only used by _Find sub-classes. Should be MI.
 
