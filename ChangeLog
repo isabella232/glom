@@ -1,3 +1,16 @@
+2007-03-06  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/libglom/Makefile.am:
+	* glom/libglom/connectionpool.cc:
+	* glom/libglom/connectionpool.h: Moved the avahi code into its own class, 
+	to keep the ConnectionPool class simpler.
+	The async stuff might mean that we cannot tie the avahi publishing to an 
+	instance lifetime, but lets see.
+	* glom/libglom/test_avahi_publisher.cc: Added a test case for just the 
+	avahi utility class.
+
+1.3.11:
+
 2007-03-04  Armin Burgmeier  <armin@openismus.com>
 
 	* glom/utilitiy_widgets/db_adddel/db_adddel.h:

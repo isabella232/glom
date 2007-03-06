@@ -25,9 +25,6 @@
 #include <glom/libglom/sharedptr.h>
 #include <glom/libglom/data_structure/fieldtypes.h>
 
-typedef struct AvahiEntryGroup AvahiEntryGroup;
-typedef struct AvahiClient AvahiClient;
-
 namespace Gtk
 {
   class Window;
@@ -35,6 +32,8 @@ namespace Gtk
 
 namespace Glom
 {
+
+class AvahiPublisher;
 
 class ExceptionConnection : public std::exception
 {
@@ -181,8 +180,6 @@ protected:
   void avahi_start_publishing();
   void avahi_stop_publishing();
 
-public:
-  void avahi_create_services(AvahiClient *c);
 protected:
 
   bool directory_exists(const std::string& uri);
@@ -204,10 +201,7 @@ protected:
   float m_postgres_server_version;
 
 public:
-  AvahiEntryGroup* m_avahi_group;
-  AvahiClient* m_avahi_client;
-  GMainLoop* m_avahi_mainloop;
-  Glib::ustring m_avahi_service_name;
+  AvahiPublisher* m_avahi_publisher;
 
 private:
 
