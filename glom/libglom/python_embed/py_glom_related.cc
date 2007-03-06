@@ -163,7 +163,7 @@ Related_tp_as_mapping_getitem(PyObject *self, PyObject *item)
           PyGlomRecord::type_map_field_values::const_iterator iterFromKey = self_related->m_record->m_pMap_field_values->find(from_key);
           if(iterFromKey != self_related->m_record->m_pMap_field_values->end())
           {
-            const Gnome::Gda::Value from_key_value = iterFromKey->second;
+            const Glib::ValueBase from_key_value = iterFromKey->second;
 
             //TODO_Performance:
             //Get the full field details so we can sqlize its value:
@@ -172,7 +172,7 @@ Related_tp_as_mapping_getitem(PyObject *self, PyObject *item)
             if(from_key_field)
             {
               Glib::ustring key_value_sqlized;
-              //std::cout << "from_key_field=" << from_key_field->get_name() << ", from_key_value=" << from_key_value.to_string() << std::endl;
+              //std::cout << "from_key_field=" << from_key_field->get_name() << ", from_key_value=" << Gnome::Gda::value_to_string(from_key_value) << std::endl;
 
               if(!Conversions::value_is_empty(from_key_value)) //Do not link on null-values. That would cause us to link on 0, or "0".
                 key_value_sqlized = from_key_field->sql(from_key_value);

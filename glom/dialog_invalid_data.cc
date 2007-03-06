@@ -64,7 +64,7 @@ void Dialog_InvalidData::set_example_data(Field::glom_field_type glom_type)
       date.day = 31;
       date.month = 1;
       date.year = 2005;
-      example_text = Conversions::get_text_for_gda_value(glom_type, Gnome::Gda::Value(date));
+      example_text = Conversions::get_text_for_gda_value(glom_type, Glib::ValueBase(date));
       break;
     }
     case(Field::TYPE_TIME):
@@ -73,12 +73,12 @@ void Dialog_InvalidData::set_example_data(Field::glom_field_type glom_type)
       time.hour = 13;
       time.minute = 02;
       time.second = 03;
-      example_text = Conversions::get_text_for_gda_value(glom_type, Gnome::Gda::Value(time));
+      example_text = Conversions::get_text_for_gda_value(glom_type, Glib::ValueBase(time));
       break;
     }
     case(Field::TYPE_NUMERIC):
     {
-      Gnome::Gda::Value gda_value(12345678.91);
+      Glib::ValueBase gda_value(12345678.91);
       example_text = Conversions::get_text_for_gda_value(glom_type, gda_value);
       break;
     }

@@ -41,7 +41,7 @@ public:
 
   void set_choices(const FieldFormatting::type_list_values& list_values);
 
-  typedef std::list< std::pair<Gnome::Gda::Value, Gnome::Gda::Value> > type_list_values_with_second;
+  typedef std::list< std::pair<Glib::ValueBase, Glib::ValueBase> > type_list_values_with_second;
   void set_choices_with_second(const type_list_values_with_second& list_values);
 
 protected:
@@ -65,7 +65,7 @@ protected:
 
   bool m_with_second;
   sharedptr<const LayoutItem_Field> m_layoutitem_second;
-  //Gnome::Gda::Value m_value; //The last-stored value. We have this because the displayed value might be unparseable.
+  //Glib::ValueBase m_value; //The last-stored value. We have this because the displayed value might be unparseable.
 };
 
 } //namespace Glom

@@ -221,7 +221,7 @@ void Box_Data_List::on_adddel_user_requested_add()
 
 void Box_Data_List::on_adddel_user_requested_edit(const Gtk::TreeModel::iterator& row)
 {
-  const Gnome::Gda::Value primary_key_value = m_AddDel.get_value_key(row); //The primary key is in the key.
+  const Glib::ValueBase primary_key_value = m_AddDel.get_value_key(row); //The primary key is in the key.
 
   signal_user_requested_details().emit(primary_key_value);
 }
@@ -237,7 +237,7 @@ void Box_Data_List::on_adddel_user_requested_delete(const Gtk::TreeModel::iterat
   {
     if(confirm_delete_record())
     {
-      const Gnome::Gda::Value primary_key_value = get_primary_key_value(rowStart);
+      const Glib::ValueBase primary_key_value = get_primary_key_value(rowStart);
       record_delete(primary_key_value);
 
       //Remove the row:
@@ -249,7 +249,7 @@ void Box_Data_List::on_adddel_user_requested_delete(const Gtk::TreeModel::iterat
 }
 
 
-void Box_Data_List::set_primary_key_value(const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& value)
+void Box_Data_List::set_primary_key_value(const Gtk::TreeModel::iterator& row, const Glib::ValueBase& value)
 {
   m_AddDel.set_value_key(row, value);
 }
@@ -258,7 +258,7 @@ void Box_Data_List::on_adddel_user_added(const Gtk::TreeModel::iterator& row, gu
 {
   //std::cout << "Box_Data_List::on_adddel_user_added" << std::endl;
 
-  Gnome::Gda::Value primary_key_value;
+  Glib::ValueBase primary_key_value;
 
   sharedptr<Field> primary_key_field = m_AddDel.get_key_field();
 
@@ -267,7 +267,7 @@ void Box_Data_List::on_adddel_user_added(const Gtk::TreeModel::iterator& row, gu
   {
     //Auto-increment is awkward (we can't get the last-generated ID) with postgres, so we auto-generate it ourselves;
     const Glib::ustring& strPrimaryKeyName = primary_key_field->get_name();
-    primary_key_value = generate_next_auto_increment(m_table_name, strPrimaryKeyName);  //TODO: return a Gnome::Gda::Value of an appropriate type.
+    primary_key_value = generate_next_auto_increment(m_table_name, strPrimaryKeyName);  //TODO: return a Glib::ValueBase of an appropriate type.
   }
   else
   {
@@ -353,7 +353,7 @@ void Box_Data_List::on_adddel_user_reordered_columns()
 
 void Box_Data_List::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, guint col)
 {
-  const Gnome::Gda::Value parent_primary_key_value = get_primary_key_value(row);
+  const Glib::ValueBase parent_primary_key_value = get_primary_key_value(row);
   sharedptr<const LayoutItem_Field> layout_field = m_AddDel.get_column_field(col);
 
   if(!Conversions::value_is_empty(parent_primary_key_value)) //If the record's primary key is filled in:
@@ -364,7 +364,7 @@ void Box_Data_List::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, 
       
       Glib::ustring table_name = m_table_name;
       sharedptr<Field> primary_key_field;
-      Gnome::Gda::Value primary_key_value;
+      Glib::ValueBase primary_key_value;
 
       if(!layout_field->get_has_relationship_name())
       {
@@ -412,8 +412,8 @@ void Box_Data_List::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, 
       }
 
       //Update the field in the record (the record with this primary key):
-      const Gnome::Gda::Value field_value = m_AddDel.get_value(row, layout_field);
-      //std::cout << "Box_Data_List::on_adddel_user_changed(): field_value = " << field_value.to_string() << std::endl;
+      const Glib::ValueBase field_value = m_AddDel.get_value(row, layout_field);
+      //std::cout << "Box_Data_List::on_adddel_user_changed(): field_value = " << Gnome::Gda::value_to_string(field_value) << std::endl;
       //const sharedptr<const Field>& field = layout_field->m_field;
       //const Glib::ustring strFieldName = layout_field->get_name();
 
@@ -424,7 +424,7 @@ void Box_Data_List::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, 
       if(!check_entered_value_for_uniqueness(m_table_name, row, layout_field, field_value, window))
       {
         //Revert to the value in the database:
-        const Gnome::Gda::Value value_old = get_field_value_in_database(field_in_record, window);
+        const Glib::ValueBase value_old = get_field_value_in_database(field_in_record, window);
         set_entered_field_data(row, layout_field, value_old);
 
         return; //The value has been reverted to the value in the database.
@@ -455,7 +455,7 @@ void Box_Data_List::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, 
     //Actually, on_adddel_user_added() is usually just called directly in response to the user_added signal.
     on_adddel_user_added(row, col);
     
-    const Gnome::Gda::Value primaryKeyValue = get_primary_key_value(row); //TODO_Value
+    const Glib::ValueBase primaryKeyValue = get_primary_key_value(row); //TODO_Value
     if(!(Conversions::value_is_empty(primaryKeyValue))) //If the Add succeeeded:
     {
       if(!(layout_field->get_full_field_details()->get_primary_key())) //Don't try to re-set the primary key field, because we just inserted the record with it.
@@ -556,10 +556,10 @@ void Box_Data_List::on_details_nav_last()
     signal_user_requested_details().emit(m_AddDel.get_value_key_selected());
   }
   else
-    signal_user_requested_details().emit(Gnome::Gda::Value()); //Show a blank record if there are no records.
+    signal_user_requested_details().emit(Glib::ValueBase()); //Show a blank record if there are no records.
 }
 
-void Box_Data_List::on_details_record_deleted(const Gnome::Gda::Value& primary_key_value)
+void Box_Data_List::on_details_record_deleted(const Glib::ValueBase& primary_key_value)
 {
   //Find out which row is affected:
   Gtk::TreeModel::iterator iter = m_AddDel.get_row(primary_key_value);
@@ -592,17 +592,17 @@ void Box_Data_List::on_details_record_deleted(const Gnome::Gda::Value& primary_k
   }
 }
 
-Gnome::Gda::Value Box_Data_List::get_primary_key_value(const Gtk::TreeModel::iterator& row)
+Glib::ValueBase Box_Data_List::get_primary_key_value(const Gtk::TreeModel::iterator& row)
 {
   return m_AddDel.get_value_key(row);
 }
 
-Gnome::Gda::Value Box_Data_List::get_primary_key_value_selected()
+Glib::ValueBase Box_Data_List::get_primary_key_value_selected()
 {
   return m_AddDel.get_value_key_selected();
 }
 
-Gnome::Gda::Value Box_Data_List::get_primary_key_value_first()
+Glib::ValueBase Box_Data_List::get_primary_key_value_first()
 {
   //std::cout << "Box_Data_List(): get_primary_key_value_first() records_count = " << m_AddDel.get_count() << std::endl;
 
@@ -612,7 +612,7 @@ Gnome::Gda::Value Box_Data_List::get_primary_key_value_first()
     Gtk::TreeModel::iterator iter = model->children().begin();
     while(iter != model->children().end())
     {
-      Gnome::Gda::Value value = get_primary_key_value(iter);
+      Glib::ValueBase value = get_primary_key_value(iter);
       if(Conversions::value_is_empty(value))
       {
        //std::cout << "Box_Data_List(): get_primary_key_value_first() iter val is NULL" << std::endl;
@@ -620,27 +620,27 @@ Gnome::Gda::Value Box_Data_List::get_primary_key_value_first()
       }
       else
       {
-         //std::cout << "Box_Data_List(): get_primary_key_value_first() returning: " << value.to_string() << std::endl;
+         //std::cout << "Box_Data_List(): get_primary_key_value_first() returning: " << Gnome::Gda::value_to_string(value) << std::endl;
         return value;
       }
     }
   }
 
  // std::cout << "Box_Data_List(): get_primary_key_value_first() return NULL" << std::endl;
-  return Gnome::Gda::Value();
+  return Glib::ValueBase();
 }
 
-Gnome::Gda::Value Box_Data_List::get_entered_field_data(const sharedptr<const LayoutItem_Field>& field) const
+Glib::ValueBase Box_Data_List::get_entered_field_data(const sharedptr<const LayoutItem_Field>& field) const
 {
   return m_AddDel.get_value_selected(field);
 }
 
-void Box_Data_List::set_entered_field_data(const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value)
+void Box_Data_List::set_entered_field_data(const sharedptr<const LayoutItem_Field>& field, const Glib::ValueBase& value)
 {
   return m_AddDel.set_value_selected(field, value);
 }
 
-void Box_Data_List::set_entered_field_data(const Gtk::TreeModel::iterator& row, const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value)
+void Box_Data_List::set_entered_field_data(const Gtk::TreeModel::iterator& row, const sharedptr<const LayoutItem_Field>& field, const Glib::ValueBase& value)
 {
   return m_AddDel.set_value(row, field, value);
 }
@@ -755,12 +755,12 @@ void Box_Data_List::create_layout()
 
 }
 
-void Box_Data_List::on_record_deleted(const Gnome::Gda::Value& /* primary_key_value */)
+void Box_Data_List::on_record_deleted(const Glib::ValueBase& /* primary_key_value */)
 {
    //Overridden by Box_Data_List_Related.
 }
 
-void Box_Data_List::on_record_added(const Gnome::Gda::Value& /* strPrimaryKey */, const Gtk::TreeModel::iterator& /* row */)
+void Box_Data_List::on_record_added(const Glib::ValueBase& /* strPrimaryKey */, const Gtk::TreeModel::iterator& /* row */)
 {
   //Overridden by Box_Data_List_Related.
   //m_AddDel.add_item(strPrimaryKey); //Add blank row.
@@ -826,7 +826,7 @@ void Box_Data_List::set_open_button_title(const Glib::ustring& title)
   m_AddDel.set_open_button_title(title);
 }
 
-void Box_Data_List::set_primary_key_value_selected(const Gnome::Gda::Value& primary_key_value)
+void Box_Data_List::set_primary_key_value_selected(const Glib::ValueBase& primary_key_value)
 {
   Gtk::TreeModel::iterator iter = m_AddDel.get_row(primary_key_value);
   if(iter)

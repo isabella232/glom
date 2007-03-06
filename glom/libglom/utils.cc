@@ -359,7 +359,7 @@ Glib::ustring Utils::build_sql_select_with_where_clause(const Glib::ustring& tab
 }
 
 
-Glib::ustring Utils::build_sql_select_with_key(const Glib::ustring& table_name, const type_vecLayoutFields& fieldsToGet, const sharedptr<const Field>& key_field, const Gnome::Gda::Value& key_value)
+Glib::ustring Utils::build_sql_select_with_key(const Glib::ustring& table_name, const type_vecLayoutFields& fieldsToGet, const sharedptr<const Field>& key_field, const Glib::ValueBase& key_value)
 {
   //TODO_Performance:
   type_vecConstLayoutFields constFieldsToGet;
@@ -373,7 +373,7 @@ Glib::ustring Utils::build_sql_select_with_key(const Glib::ustring& table_name, 
 
 }
 
-Glib::ustring Utils::build_sql_select_with_key(const Glib::ustring& table_name, const type_vecConstLayoutFields& fieldsToGet, const sharedptr<const Field>& key_field, const Gnome::Gda::Value& key_value)
+Glib::ustring Utils::build_sql_select_with_key(const Glib::ustring& table_name, const type_vecConstLayoutFields& fieldsToGet, const sharedptr<const Field>& key_field, const Glib::ValueBase& key_value)
 {
   if(!Conversions::value_is_empty(key_value)) //If there is a record to show:
   {
@@ -428,7 +428,7 @@ Utils::type_list_values_with_second Utils::get_choice_values(const sharedptr<con
     //std::cout << "  result: count=" << count << std::endl;
     for(guint row = 0; row < count; ++row)
     {
-      std::pair<Gnome::Gda::Value, Gnome::Gda::Value> itempair;
+      std::pair<Glib::ValueBase, Glib::ValueBase> itempair;
       itempair.first = datamodel->get_value_at(0, row);
 
       if(with_second)
@@ -504,13 +504,13 @@ Glib::ustring Utils::locale_language_id(const Glib::ustring& locale_id)
   return result;
 }
 
-Glib::ustring Utils::create_local_image_uri(const Gnome::Gda::Value& value)
+Glib::ustring Utils::create_local_image_uri(const Glib::ValueBase& value)
 {
   static guint m_temp_image_uri_number = 0;
 
   Glib::ustring result;
 
-  if(value.get_value_type() == Gnome::Gda::VALUE_TYPE_BINARY)
+  if(G_VALUE_TYPE(value.gobj()) == Gnome::Gda::VALUE_TYPE_BINARY)
   {
     glong size = 0;
     const gpointer pData = value.get_binary(size);

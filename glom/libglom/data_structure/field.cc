@@ -79,7 +79,7 @@ bool Field::operator==(const Field& src) const
   return TranslatableItem::operator==(src)
          && (m_field_info == src.m_field_info)
          && (m_glom_type == src.m_glom_type)
-         && (m_data == src.m_data)
+         && Gnome::Gda::value_equal(m_data, src.m_data)
          && (m_lookup_relationship == src.m_lookup_relationship)
          && (m_strLookupField == src.m_strLookupField)
          && (m_calculation == src.m_calculation)
@@ -107,25 +107,25 @@ void Field::set_glom_type(glom_field_type fieldtype)
   m_glom_type = fieldtype;
 }
 
-Gnome::Gda::FieldAttributes Field::get_field_info() const
+Glib::RefPtr<Gnome::Gda::Column> Field::get_field_info() const
 {
   return m_field_info;
 }
 
-void Field::set_field_info(const Gnome::Gda::FieldAttributes& fieldInfo)
+void Field::set_field_info(const Glib::RefPtr<Gnome::Gda::Column>& fieldinfo)
 {
-  m_field_info = fieldInfo;
+  m_field_info = fieldinfo;
 
   //TODO: Maybe just do this in get_glom_type()?
-  set_glom_type( get_glom_type_for_gda_type(fieldInfo.get_gdatype()) );
+  set_glom_type( get_glom_type_for_gda_type(fieldinfo->get_type()) );
 }
 
-Gnome::Gda::Value Field::get_data() const
+Glib::ValueBase Field::get_data() const
 {
   return m_data;
 }
 
-void Field::set_data(const Gnome::Gda::Value& data)
+void Field::set_data(const Glib::ValueBase& data)
 {
   m_data = data;
 }
@@ -234,11 +234,11 @@ static std::string glom_escape_text(const std::string src)
   }
 }
 
-Glib::ustring Field::sql(const Gnome::Gda::Value& value) const
+Glib::ustring Field::sql(const Glib::ValueBase& value) const
 {
   //g_warning("Field::sql: glom_type=%d", get_glom_type());
 
-  if(value.is_null())
+  if(Gnome::Gda::value_is_null(value))
   {
     switch(get_glom_type())
     {
@@ -275,11 +275,12 @@ Glib::ustring Field::sql(const Gnome::Gda::Value& value) const
   {
     case(TYPE_TEXT):
     {
-      if(value.is_null())
+      if(Gnome::Gda::value_is_null(value))
         return "''"; //We want to ignore the concept of NULL strings, and deal only with empty strings.
       else
       {
-        str = glom_escape_text(value.get_string());
+        str = Gnome::Gda::value_get_string(value);
+        str = glom_escape_text(str);
       }
 
       break;
@@ -301,8 +302,8 @@ Glib::ustring Field::sql(const Gnome::Gda::Value& value) const
     }
     case(TYPE_BOOLEAN):
     {
-      if(value.get_value_type() == Gnome::Gda::VALUE_TYPE_BOOLEAN)
-        str = ( value.get_bool() ? "TRUE" : "FALSE" );
+      if(G_VALUE_TYPE(value.gobj()) == G_TYPE_BOOLEAN)
+        str = ( Gnome::Gda::value_get_boolean(value) ? "TRUE" : "FALSE" );
       else
         str = "FALSE";
 
@@ -310,13 +311,12 @@ Glib::ustring Field::sql(const Gnome::Gda::Value& value) const
     }
     case(TYPE_IMAGE):
     {
-      if(value.get_value_type() == Gnome::Gda::VALUE_TYPE_BINARY)
+      if(G_VALUE_TYPE(value.gobj()) == Gnome::Gda::VALUE_TYPE_BINARY)
       {
-        long buffer_size = 0;
-        const gpointer buffer = value.get_binary(buffer_size);
-        if(buffer && buffer_size)
+        const GdaBinary* gdabinary = Gnome::Gda::value_get_binary(value);
+        if(gdabinary && gdabinary->data && gdabinary->buffer_length)
         {
-          const std::string escaped_binary_data = std::string((char*)buffer, buffer_size);
+          const std::string escaped_binary_data = std::string((char*)gdabinary.data, gdabinary.buffer_length);
           //Now escape that text (to convert \ to \\, for instance):
           str = glom_escape_text(escaped_binary_data) /* has quotes */ + "::bytea";
 
@@ -331,7 +331,7 @@ Glib::ustring Field::sql(const Gnome::Gda::Value& value) const
     }
     default:
     {
-      str = value.to_string();
+      str = Gnome::Gda::value_to_string(value);
       if(str.empty() && (m_glom_type != Field::TYPE_TEXT))
         str = "NULL"; //This has probably been handled in get_text_for_gda_value() anyway.
 
@@ -342,7 +342,7 @@ Glib::ustring Field::sql(const Gnome::Gda::Value& value) const
   return str;
 }
 
-Glib::ustring Field::sql_find(const Gnome::Gda::Value& value) const
+Glib::ustring Field::sql_find(const Glib::ValueBase& value) const
 {
   switch(get_glom_type())
   {
@@ -350,10 +350,10 @@ Glib::ustring Field::sql_find(const Gnome::Gda::Value& value) const
     {
       //% means 0 or more characters.
       
-      if(value.is_null())
+      if(Gnome::Gda::value_is_null(value))
         return "''"; //We want to ignore the concept of NULL strings, and deal only with empty strings.
       else
-        return ("'%" + value.to_string() + "%'"); //Add single-quotes. Actually escape it.
+        return ("'%" + Gnome::Gda::value_to_string(value) + "%'"); //Add single-quotes. Actually escape it.
         
       break;
     }
@@ -393,57 +393,59 @@ Glib::ustring Field::sql_find_operator() const
 
 Glib::ustring Field::get_name() const
 {
-  return m_field_info.get_name();
+  return m_field_info->get_name();
 }
 
 void Field::set_name(const Glib::ustring& value)
 {
-  m_field_info.set_name(value);
+  m_field_info->set_name(value);
 }
 
 bool Field::get_auto_increment() const
 {
-  return m_field_info.get_auto_increment();
+  return m_field_info->get_auto_increment();
 }
 
 void Field::set_auto_increment(bool val)
 {
-  m_field_info.set_auto_increment(val);
+  m_field_info->set_auto_increment(val);
 }
 
 bool Field::get_primary_key() const
 {
-  return m_field_info.get_primary_key();
+  return m_field_info->get_primary_key();
 }
 
 void Field::set_primary_key(bool val)
 {
-  m_field_info.set_primary_key(val);
+  m_field_info->set_primary_key(val);
 }
 
 bool Field::get_unique_key() const
 {
-  return m_field_info.get_unique_key();
+  return m_field_info->get_unique_key();
 }
 
 void Field::set_unique_key(bool val)
 {
-  m_field_info.set_unique_key(val);
+  m_field_info->set_unique_key(val);
 }
 
-Gnome::Gda::Value Field::get_default_value() const
+Glib::ValueBase Field::get_default_value() const
 {
-  return m_field_info.get_default_value();
+  Glib::ValueBase value;
+  m_field_info->get_default_value(value);
+  return value;
 }
 
-void Field::set_default_value(const Gnome::Gda::Value& val)
+void Field::set_default_value(const Glib::ValueBase& val)
 {
-  m_field_info.set_default_value(val);
+  m_field_info->set_default_value(val);
 }
 
 Glib::ustring Field::get_sql_type() const
 {
-  if(false) //See generate_next_auto_increment() //m_field_info.get_auto_increment())
+  if(false) //See generate_next_auto_increment() //m_field_info->get_auto_increment())
     return "serial"; //See Postgres manual: http://www.postgresql.org/docs/7.4/interactive/datatype.html#DATATYPE-SERIAL. It's actually an integer..
   else
   {
@@ -458,14 +460,14 @@ Glib::ustring Field::get_sql_type() const
       const FieldTypes* pFieldTypes = pConnectionPool->get_field_types();
       if(pFieldTypes)
       {
-        const Gnome::Gda::ValueType fieldType = m_field_info.get_gdatype();
+        const GType fieldType = m_field_info->get_type();
         strType = pFieldTypes->get_string_name_for_gdavaluetype(fieldType);
       }
     }
 
     if(strType == "unknowntype")
     {
-      g_warning("Field::get_sql_type(): returning unknowntype for field name=%s , glom_type=%d, gda_type=%d", get_name().c_str(), get_glom_type(), m_field_info.get_gdatype());
+      g_warning("Field::get_sql_type(): returning unknowntype for field name=%s , glom_type=%d, gda_type=%d", get_name().c_str(), get_glom_type(), (int)m_field_info->get_type());
     }
 
     return strType;
@@ -473,18 +475,22 @@ Glib::ustring Field::get_sql_type() const
 }
 
 /// Ignores any part of FieldAttributes that libgda does not properly fill.
-bool Field::field_info_from_database_is_equal(const Gnome::Gda::FieldAttributes& field)
+bool Field::field_info_from_database_is_equal(const Glib::RefPtr<const Gnome::Gda::Column>& field)
 {
-  Gnome::Gda::FieldAttributes temp = m_field_info;
+  Glib::RefPtr<Gnome::Gda::Column> temp = m_field_info->copy();
 
-  temp.set_auto_increment( field.get_auto_increment() ); //Don't compare this, because the data is incorrect when libgda reads it from the database.
-  temp.set_default_value( field.get_default_value() ); //Don't compare this, because the data is incorrect when libgda reads it from the database.
-  temp.set_primary_key( field.get_primary_key() ); //Don't compare this, because the data is incorrect when libgda reads it from the database.
+  temp->set_auto_increment( field->get_auto_increment() ); //Don't compare this, because the data is incorrect when libgda reads it from the database.
 
-  return temp == field; 
+  Glib::ValueBase value;
+  field->get_default_value(value);
+  temp->set_default_value(value); //Don't compare this, because the data is incorrect when libgda reads it from the database.
+
+  temp->set_primary_key( field->get_primary_key() ); //Don't compare this, because the data is incorrect when libgda reads it from the database.
+
+  return temp->equal(field); 
 }
 
-Field::glom_field_type Field::get_glom_type_for_gda_type(Gnome::Gda::ValueType gda_type)
+Field::glom_field_type Field::get_glom_type_for_gda_type(GType gda_type)
 {
   init_map();
 
@@ -497,26 +503,26 @@ Field::glom_field_type Field::get_glom_type_for_gda_type(Gnome::Gda::ValueType g
       result = iterFind->second;
     else
     {
-      // g_warning("FieldType::FieldType(Gnome::Gda::ValueType gda_type): Invalid gda type: %d",  gda_type);
+      // g_warning("FieldType::FieldType(GType gda_type): Invalid gda type: %d",  gda_type);
     }
   }
 
   return result;
 }
 
-Gnome::Gda::ValueType Field::get_gda_type_for_glom_type(Field::glom_field_type glom_type)
+GType Field::get_gda_type_for_glom_type(Field::glom_field_type glom_type)
 {
   init_map();
 
   //Get the ideal gda type used for that glom type;
   type_map_glom_type_to_gda_type::iterator iterFind = m_map_glom_type_to_gda_type.find(glom_type);
-  Gnome::Gda::ValueType ideal_gda_type = Gnome::Gda::VALUE_TYPE_UNKNOWN;
+  GType ideal_gda_type = G_TYPE_NONE;
   if(iterFind != m_map_glom_type_to_gda_type.end())
     ideal_gda_type = iterFind->second;
 
-  if(ideal_gda_type == Gnome::Gda::VALUE_TYPE_UNKNOWN)
+  if(ideal_gda_type == G_TYPE_NONE)
   {
-    g_warning("Field::get_gda_type_for_glom_type(): Returning VALUE_TYPE_UNKNOWN for glom_type=%d", glom_type);
+    g_warning("Field::get_gda_type_for_glom_type(): Returning G_TYPE_NONE for glom_type=%d", glom_type);
   }
   
   return ideal_gda_type;
@@ -531,18 +537,18 @@ void Field::init_map()
 
     //Ideals:
     m_map_gda_type_to_glom_type[Gnome::Gda::VALUE_TYPE_NUMERIC] = TYPE_NUMERIC;
-    m_map_gda_type_to_glom_type[Gnome::Gda::VALUE_TYPE_INTEGER] = TYPE_NUMERIC; //Only for "serial" (auto-increment) fields.
-    m_map_gda_type_to_glom_type[Gnome::Gda::VALUE_TYPE_STRING] = TYPE_TEXT;
+    m_map_gda_type_to_glom_type[G_TYPE_INT] = TYPE_NUMERIC; //Only for "serial" (auto-increment) fields.
+    m_map_gda_type_to_glom_type[G_TYPE_STRING] = TYPE_TEXT;
     m_map_gda_type_to_glom_type[Gnome::Gda::VALUE_TYPE_TIME] = TYPE_TIME;
-    m_map_gda_type_to_glom_type[Gnome::Gda::VALUE_TYPE_DATE] = TYPE_DATE;
-    m_map_gda_type_to_glom_type[Gnome::Gda::VALUE_TYPE_BOOLEAN] = TYPE_BOOLEAN;
+    m_map_gda_type_to_glom_type[G_TYPE_DATE] = TYPE_DATE;
+    m_map_gda_type_to_glom_type[G_TYPE_BOOLEAN] = TYPE_BOOLEAN;
     m_map_gda_type_to_glom_type[Gnome::Gda::VALUE_TYPE_BINARY] = TYPE_IMAGE;
 
     m_map_glom_type_to_gda_type[TYPE_NUMERIC] = Gnome::Gda::VALUE_TYPE_NUMERIC;
-    m_map_glom_type_to_gda_type[TYPE_TEXT] = Gnome::Gda::VALUE_TYPE_STRING;
+    m_map_glom_type_to_gda_type[TYPE_TEXT] = G_TYPE_STRING;
     m_map_glom_type_to_gda_type[TYPE_TIME] = Gnome::Gda::VALUE_TYPE_TIME;
-    m_map_glom_type_to_gda_type[TYPE_DATE] = Gnome::Gda::VALUE_TYPE_DATE;
-    m_map_glom_type_to_gda_type[TYPE_BOOLEAN] = Gnome::Gda::VALUE_TYPE_BOOLEAN;
+    m_map_glom_type_to_gda_type[TYPE_DATE] = G_TYPE_DATE;
+    m_map_glom_type_to_gda_type[TYPE_BOOLEAN] = G_TYPE_BOOLEAN;
     m_map_glom_type_to_gda_type[TYPE_IMAGE] = Gnome::Gda::VALUE_TYPE_BINARY;
 
     m_map_type_names_ui[TYPE_INVALID] = _("Invalid");

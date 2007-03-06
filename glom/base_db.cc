@@ -251,11 +251,11 @@ Base_DB::type_vecStrings Base_DB::get_table_names_from_database(bool ignore_syst
       int rows = data_model_tables->get_n_rows();
       for(int i = 0; i < rows; ++i)
       {
-        Gnome::Gda::Value value = data_model_tables->get_value_at(0, i);
+        Glib::ValueBase value = data_model_tables->get_value_at(0, i);
 
         //Get the table name:
         Glib::ustring table_name;
-        if(value.get_value_type() ==  Gnome::Gda::VALUE_TYPE_STRING)
+        if(G_VALUE_TYPE(value.gobj()) ==  G_TYPE_STRING)
         {
           table_name = value.get_string();
 
@@ -411,22 +411,22 @@ Base_DB::type_vecFields Base_DB::get_fields_for_table_from_database(const Glib::
       guint rows_count = data_model_fields->get_n_rows();
       while(row < rows_count)
       {
-        Gnome::Gda::FieldAttributes field_info;
+        Glib::RefPtr<Gnome::Gda::Column> field_info;
 
         //Get the field name:
-        Gnome::Gda::Value value_name = data_model_fields->get_value_at(DATAMODEL_FIELDS_COL_NAME, row);
-        if(value_name.get_value_type() ==  Gnome::Gda::VALUE_TYPE_STRING)
+        Glib::ValueBase value_name = data_model_fields->get_value_at(DATAMODEL_FIELDS_COL_NAME, row);
+        if(value_name.get_value_type() ==  G_TYPE_STRING)
         {
           if(value_name.get_string().empty())
             g_warning("Base_DB::get_fields_for_table_from_database(): value_name is empty.");
 
-          field_info.set_name( value_name.get_string() ); //TODO: get_string() is a dodgy choice. murrayc.
+          field_info->set_name( value_name.get_string() ); //TODO: get_string() is a dodgy choice. murrayc.
         }
 
         //Get the field type:
-        //This is a string representation of the type, so we need to discover the Gnome::Gda::ValueType for it:
-        Gnome::Gda::Value value_fieldtype = data_model_fields->get_value_at(DATAMODEL_FIELDS_COL_TYPE, row);
-        if(value_fieldtype.get_value_type() ==  Gnome::Gda::VALUE_TYPE_STRING)
+        //This is a string representation of the type, so we need to discover the GType for it:
+        Glib::ValueBase value_fieldtype = data_model_fields->get_value_at(DATAMODEL_FIELDS_COL_TYPE, row);
+        if(value_fieldtype.get_value_type() ==  G_TYPE_STRING)
         {
            Glib::ustring schema_type_string = value_fieldtype.get_string();
            if(!schema_type_string.empty())
@@ -435,42 +435,42 @@ Base_DB::type_vecFields Base_DB::get_fields_for_table_from_database(const Glib::
              const FieldTypes* pFieldTypes = connection_pool->get_field_types();
              if(pFieldTypes)
              {
-               Gnome::Gda::ValueType gdatype = pFieldTypes->get_gdavalue_for_schema_type_string(schema_type_string);
-               field_info.set_gdatype(gdatype);
+               GType gdatype = pFieldTypes->get_gdavalue_for_schema_type_string(schema_type_string);
+               field_info->set_gdatype(gdatype);
              }
            }
         }
 
         //Get the default value:
         /* libgda does not return this correctly yet. TODO: check bug http://bugzilla.gnome.org/show_bug.cgi?id=143576
-        Gnome::Gda::Value value_defaultvalue = data_model_fields->get_value_at(DATAMODEL_FIELDS_COL_DEFAULTVALUE, row);
-        if(value_defaultvalue.get_value_type() ==  Gnome::Gda::VALUE_TYPE_STRING)
-          field_info.set_default_value(value_defaultvalue);
+        Glib::ValueBase value_defaultvalue = data_model_fields->get_value_at(DATAMODEL_FIELDS_COL_DEFAULTVALUE, row);
+        if(value_defaultG_VALUE_TYPE(value.gobj()) ==  G_TYPE_STRING)
+          field_info->set_default_value(value_defaultvalue);
         */
 
         //Get whether it can be null:
-        Gnome::Gda::Value value_notnull = data_model_fields->get_value_at(DATAMODEL_FIELDS_COL_NOTNULL, row);
-        if(value_notnull.get_value_type() ==  Gnome::Gda::VALUE_TYPE_BOOLEAN)
-          field_info.set_allow_null(value_notnull.get_bool());
+        Glib::ValueBase value_notnull = data_model_fields->get_value_at(DATAMODEL_FIELDS_COL_NOTNULL, row);
+        if(value_notnull.get_value_type() ==  G_TYPE_BOOLEAN)
+          field_info->set_allow_null(value_notnull.get_bool());
 
 
         //Get whether it is a primary key:
-        Gnome::Gda::Value value_primarykey = data_model_fields->get_value_at(DATAMODEL_FIELDS_COL_PRIMARYKEY, row);
-        if(value_primarykey.get_value_type() ==  Gnome::Gda::VALUE_TYPE_BOOLEAN)
-          field_info.set_primary_key( value_primarykey.get_bool() );
+        Glib::ValueBase value_primarykey = data_model_fields->get_value_at(DATAMODEL_FIELDS_COL_PRIMARYKEY, row);
+        if(value_primarykey.get_value_type() ==  G_TYPE_BOOLEAN)
+          field_info->set_primary_key( value_primarykey.get_bool() );
 
         //Get whether it is unique
-        Gnome::Gda::Value value_unique = data_model_fields->get_value_at(DATAMODEL_FIELDS_COL_UNIQUEINDEX, row);
-        if(value_unique.get_value_type() ==  Gnome::Gda::VALUE_TYPE_BOOLEAN)
-          field_info.set_unique_key( value_unique.get_bool() );
-        else if(field_info.get_primary_key()) //All primaries keys are unique, so force this.
-          field_info.set_unique_key();
+        Glib::ValueBase value_unique = data_model_fields->get_value_at(DATAMODEL_FIELDS_COL_UNIQUEINDEX, row);
+        if(value_unique.get_value_type() ==  G_TYPE_BOOLEAN)
+          field_info->set_unique_key( value_unique.get_bool() );
+        else if(field_info->get_primary_key()) //All primaries keys are unique, so force this.
+          field_info->set_unique_key();
 
         //Get whether it is autoincrements
         /* libgda does not provide this yet.
-        Gnome::Gda::Value value_autoincrement = data_model_fields->get_value_at(DATAMODEL_FIELDS_COL_AUTOINCREMENT, row);
-        if(value_autoincrement.get_value_type() ==  Gnome::Gda::VALUE_TYPE_BOOLEAN)
-          field_info.set_auto_increment( value_autoincrement.get_bool() );
+        Glib::ValueBase value_autoincrement = data_model_fields->get_value_at(DATAMODEL_FIELDS_COL_AUTOINCREMENT, row);
+        if(value_autoincrement.get_value_type() ==  G_TYPE_BOOLEAN)
+          field_info->set_auto_increment( value_autoincrement.get_bool() );
         */
 
         sharedptr<Field> field(new Field()); //TODO: Get glom-specific information from the document?
@@ -521,19 +521,19 @@ Base_DB::type_vecFields Base_DB::get_fields_for_table(const Glib::ustring& table
 
       if(iterFindDatabase != fieldsDatabase.end() ) //Ignore fields that don't exist in the database anymore.
       {
-        Gnome::Gda::FieldAttributes field_info_document = field->get_field_info();
+        Glib::RefPtr<Gnome::Gda::Column> field_info_document = field->get_field_info();
 
         //Update the Field information that _might_ have changed in the database.
-        Gnome::Gda::FieldAttributes field_info = (*iterFindDatabase)->get_field_info();
+        Glib::RefPtr<Gnome::Gda::Column> field_info = (*iterFindDatabase)->get_field_info();
 
         //libgda does not tell us whether the field is auto_incremented, so we need to get that from the document.
-        field_info.set_auto_increment( field_info_document.get_auto_increment() );
+        field_info->set_auto_increment( field_info_document.get_auto_increment() );
 
         //libgda does not tell us whether the field is auto_incremented, so we need to get that from the document.
-        field_info.set_primary_key( field_info_document.get_primary_key() );
+        field_info->set_primary_key( field_info_document.get_primary_key() );
 
         //libgda does yet tell us correct default_value information so we need to get that from the document.
-        field_info.set_default_value( field_info_document.get_default_value() );
+        field_info->set_default_value( field_info_document.get_default_value() );
 
         field->set_field_info(field_info);
 
@@ -705,9 +705,9 @@ bool Base_DB::add_standard_groups()
   return true;
 }
 
-Gnome::Gda::Value Base_DB::auto_increment_insert_first_if_necessary(const Glib::ustring& table_name, const Glib::ustring& field_name) const
+Glib::ValueBase Base_DB::auto_increment_insert_first_if_necessary(const Glib::ustring& table_name, const Glib::ustring& field_name) const
 {
-  Gnome::Gda::Value value;
+  Glib::ValueBase value;
 
   //Check that the user is allowd to view and edit this table:
   Privileges table_privs = Privs::get_current_privs(GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME);
@@ -762,14 +762,14 @@ void Base_DB::recalculate_next_auto_increment_value(const Glib::ustring& table_n
   if(datamodel && datamodel->get_n_rows() && datamodel->get_n_columns())
   {
     //Increment it:
-    const Gnome::Gda::Value value_max = datamodel->get_value_at(0, 0);
-    long num_max = Utils::decimal_from_string(value_max.to_string()); //TODO: Is this sensible? Probably not.
+    const Glib::ValueBase value_max = datamodel->get_value_at(0, 0);
+    long num_max = Utils::decimal_from_string(Gnome::Gda::value_to_string(value_max)); //TODO: Is this sensible? Probably not.
     ++num_max;
 
     //Set it in the glom system table:
-    const Gnome::Gda::Value next_value = Conversions::parse_value(num_max);
+    const Glib::ValueBase next_value = Conversions::parse_value(num_max);
     const Glib::ustring sql_query = "UPDATE \"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME "\" SET "
-      "\"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_NEXT_VALUE "\" = " + next_value.to_string() + //TODO: Don't use to_string().
+      "\"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_NEXT_VALUE "\" = " + Gnome::Gda::value_to_string(next_value) + //TODO: Don't use to_string().
       " WHERE \"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME "\" = '" + table_name + "' AND "
              "\"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_FIELD_NAME "\" = '" + field_name + "'";
 
@@ -785,19 +785,19 @@ void Base_DB::recalculate_next_auto_increment_value(const Glib::ustring& table_n
   }
 }
 
-Gnome::Gda::Value Base_DB::get_next_auto_increment_value(const Glib::ustring& table_name, const Glib::ustring& field_name) const
+Glib::ValueBase Base_DB::get_next_auto_increment_value(const Glib::ustring& table_name, const Glib::ustring& field_name) const
 {
-  const Gnome::Gda::Value result = auto_increment_insert_first_if_necessary(table_name, field_name);
+  const Glib::ValueBase result = auto_increment_insert_first_if_necessary(table_name, field_name);
   long num_result = 0;
-  num_result = Utils::decimal_from_string(result.to_string()); //TODO: Is this sensible? Probably not.
+  num_result = Utils::decimal_from_string(Gnome::Gda::value_to_string(result)); //TODO: Is this sensible? Probably not.
 
 
   //Increment the next_value:
   ++num_result;
-  const Gnome::Gda::Value next_value = Conversions::parse_value(num_result);
+  const Glib::ValueBase next_value = Conversions::parse_value(num_result);
 
   const Glib::ustring sql_query = "UPDATE \"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME "\" SET "
-      "\"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_NEXT_VALUE "\" = " + next_value.to_string() +
+      "\"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_NEXT_VALUE "\" = " + Gnome::Gda::value_to_string(next_value) +
       " WHERE \"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME "\" = '" + table_name + "' AND "
             "\""  GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_FIELD_NAME "\" = '" + field_name + "'";
 
@@ -918,8 +918,8 @@ bool Base_DB::create_table_with_default_fields(const Glib::ustring& table_name)
   field_primary_key->set_primary_key();
   field_primary_key->set_auto_increment();
 
-  Gnome::Gda::FieldAttributes field_info = field_primary_key->get_field_info();
-  field_info.set_allow_null(false);
+  Glib::RefPtr<Gnome::Gda::Column> field_info = field_primary_key->get_field_info();
+  field_info->set_allow_null(false);
   field_primary_key->set_field_info(field_info);
 
   field_primary_key->set_glom_type(Field::TYPE_NUMERIC);
@@ -1005,7 +1005,7 @@ bool Base_DB::create_table(const sharedptr<const TableInfo>& table_info, const D
 
     //The field has no gda type, so we set that:
     //This usually comes from the database, but that's a bit strange.
-    Gnome::Gda::FieldAttributes info = field->get_field_info();
+    Glib::RefPtr<Gnome::Gda::Column> info = field->get_field_info();
     info.set_gdatype( Field::get_gda_type_for_glom_type(field->get_glom_type()) );
     field->set_field_info(info); //TODO_Performance
 
@@ -1361,7 +1361,7 @@ bool Base_DB::show_warning_no_records_found(Gtk::Window& transient_for)
   return find_again;
 }
 
-Glib::ustring Base_DB::get_find_where_clause_quick(const Glib::ustring& table_name, const Gnome::Gda::Value& quick_search) const
+Glib::ustring Base_DB::get_find_where_clause_quick(const Glib::ustring& table_name, const Glib::ValueBase& quick_search) const
 {
   Glib::ustring strClause;
 
@@ -1680,7 +1680,7 @@ void Base_DB::calculate_field_in_all_records(const Glib::ustring& table_name, co
   const int rows_count = data_model->get_n_rows();
   for(int row = 0; row < rows_count; ++row)
   {
-    const Gnome::Gda::Value primary_key_value = data_model->get_value_at(0, row);
+    const Glib::ValueBase primary_key_value = data_model->get_value_at(0, row);
     if(!Conversions::value_is_empty(primary_key_value))
     {
       field_in_record.m_key_value = primary_key_value;
@@ -1814,7 +1814,7 @@ void Base_DB::calculate_field(const LayoutFieldInRecord& field_in_record)
 
 }
 
-Base_DB::type_map_fields Base_DB::get_record_field_values_for_calculation(const Glib::ustring& table_name, const sharedptr<const Field> primary_key, const Gnome::Gda::Value& primary_key_value)
+Base_DB::type_map_fields Base_DB::get_record_field_values_for_calculation(const Glib::ustring& table_name, const sharedptr<const Field> primary_key, const Glib::ValueBase& primary_key_value)
 {
   type_map_fields field_values;
 
@@ -1849,11 +1849,11 @@ Base_DB::type_map_fields Base_DB::get_record_field_values_for_calculation(const 
           //There should be only 1 row. Well, there could be more but we will ignore them.
           sharedptr<const Field> field = *iter;
 
-          Gnome::Gda::Value value = data_model->get_value_at(col_index, 0);
+          Glib::ValueBase value = data_model->get_value_at(col_index, 0);
 
           //Never give a NULL-type value to the python calculation for types that don't use them:
           //to prevent errors:
-          if(value.get_value_type() == Gnome::Gda::VALUE_TYPE_NULL)
+          if(G_VALUE_TYPE(value.gobj()) == Gnome::Gda::VALUE_TYPE_NULL)
             value = Conversions::get_empty_value(field->get_glom_type());
 
           field_values[field->get_name()] = value;
@@ -1880,23 +1880,23 @@ Base_DB::type_map_fields Base_DB::get_record_field_values_for_calculation(const 
   return field_values;
 }
 
-void Base_DB::set_entered_field_data(const sharedptr<const LayoutItem_Field>& /* field */, const Gnome::Gda::Value& /* value */)
+void Base_DB::set_entered_field_data(const sharedptr<const LayoutItem_Field>& /* field */, const Glib::ValueBase& /* value */)
 {
   //Override this.
 }
 
 
-void Base_DB::set_entered_field_data(const Gtk::TreeModel::iterator& /* row */, const sharedptr<const LayoutItem_Field>& /* field */, const Gnome::Gda::Value& /* value */)
+void Base_DB::set_entered_field_data(const Gtk::TreeModel::iterator& /* row */, const sharedptr<const LayoutItem_Field>& /* field */, const Glib::ValueBase& /* value */)
 {
   //Override this.
 }
 
-bool Base_DB::set_field_value_in_database(const LayoutFieldInRecord& field_in_record, const Gnome::Gda::Value& field_value, bool use_current_calculations, Gtk::Window* parent_window)
+bool Base_DB::set_field_value_in_database(const LayoutFieldInRecord& field_in_record, const Glib::ValueBase& field_value, bool use_current_calculations, Gtk::Window* parent_window)
 {
   return set_field_value_in_database(field_in_record, Gtk::TreeModel::iterator(), field_value, use_current_calculations, parent_window);
 }
 
-bool Base_DB::set_field_value_in_database(const LayoutFieldInRecord& layoutfield_in_record, const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& field_value, bool use_current_calculations, Gtk::Window* parent_window)
+bool Base_DB::set_field_value_in_database(const LayoutFieldInRecord& layoutfield_in_record, const Gtk::TreeModel::iterator& row, const Glib::ValueBase& field_value, bool use_current_calculations, Gtk::Window* parent_window)
 {
   Document_Glom* document = get_document();
   g_assert(document);
@@ -1961,9 +1961,9 @@ bool Base_DB::set_field_value_in_database(const LayoutFieldInRecord& layoutfield
   return true;
 }
 
-Gnome::Gda::Value Base_DB::get_field_value_in_database(const LayoutFieldInRecord& field_in_record, Gtk::Window* /* parent_window */)
+Glib::ValueBase Base_DB::get_field_value_in_database(const LayoutFieldInRecord& field_in_record, Gtk::Window* /* parent_window */)
 {
-  Gnome::Gda::Value result;  //TODO: Return suitable empty value for the field when failing?
+  Glib::ValueBase result;  //TODO: Return suitable empty value for the field when failing?
 
   //row is invalid, and ignored, for Box_Data_Details.
   if(!(field_in_record.m_field))
@@ -2150,7 +2150,7 @@ Base_DB::type_list_const_field_items Base_DB::get_calculation_fields(const Glib:
 }
 
 
-void Base_DB::do_lookups(const LayoutFieldInRecord& field_in_record, const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& field_value)
+void Base_DB::do_lookups(const LayoutFieldInRecord& field_in_record, const Gtk::TreeModel::iterator& row, const Glib::ValueBase& field_value)
 {
    //Get values for lookup fields, if this field triggers those relationships:
    //TODO_performance: There is a LOT of iterating and copying here.
@@ -2170,9 +2170,9 @@ void Base_DB::do_lookups(const LayoutFieldInRecord& field_in_record, const Gtk::
       sharedptr<const Field> field_source = get_fields_for_table_one_field(relationship->get_to_table(), field_lookup->get_lookup_field());
       if(field_source)
       {
-        const Gnome::Gda::Value value = get_lookup_value(field_in_record.m_table_name, iter->second /* relationship */,  field_source /* the field to look in to get the value */, field_value /* Value of to and from fields */);
+        const Glib::ValueBase value = get_lookup_value(field_in_record.m_table_name, iter->second /* relationship */,  field_source /* the field to look in to get the value */, field_value /* Value of to and from fields */);
 
-        const Gnome::Gda::Value value_converted = Conversions::convert_value(value, layout_item->get_glom_type());
+        const Glib::ValueBase value_converted = Conversions::convert_value(value, layout_item->get_glom_type());
 
         LayoutFieldInRecord field_in_record_to_set(layout_item, field_in_record.m_table_name /* parent table */, field_in_record.m_key, field_in_record.m_key_value);
 
@@ -2234,20 +2234,20 @@ Base_DB::type_list_lookups Base_DB::get_lookup_fields(const Glib::ustring& table
   return result;
 }
 
-void Base_DB::refresh_related_fields(const LayoutFieldInRecord& /* field_in_record_changed */, const Gtk::TreeModel::iterator& /* row */, const Gnome::Gda::Value& /* field_value */)
+void Base_DB::refresh_related_fields(const LayoutFieldInRecord& /* field_in_record_changed */, const Gtk::TreeModel::iterator& /* row */, const Glib::ValueBase& /* field_value */)
 {
   //overridden in Box_Data.
 }
 
-Gnome::Gda::Value Base_DB::get_lookup_value(const Glib::ustring& /* table_name */, const sharedptr<const Relationship>& relationship, const sharedptr<const Field>& source_field, const Gnome::Gda::Value& key_value)
+Glib::ValueBase Base_DB::get_lookup_value(const Glib::ustring& /* table_name */, const sharedptr<const Relationship>& relationship, const sharedptr<const Field>& source_field, const Glib::ValueBase& key_value)
 {
-  Gnome::Gda::Value result;
+  Glib::ValueBase result;
 
   sharedptr<Field> to_key_field = get_fields_for_table_one_field(relationship->get_to_table(), relationship->get_to_field());
   if(to_key_field)
   {
     //Convert the value, in case the from and to fields have different types:
-    const Gnome::Gda::Value value_to_key_field = Conversions::convert_value(key_value, to_key_field->get_glom_type());
+    const Glib::ValueBase value_to_key_field = Conversions::convert_value(key_value, to_key_field->get_glom_type());
 
     Glib::ustring strQuery = "SELECT \"" + relationship->get_to_table() + "\".\"" + source_field->get_name() + "\" FROM \"" +  relationship->get_to_table() + "\"";
     strQuery += " WHERE \"" + to_key_field->get_name() + "\" = " + to_key_field->sql(value_to_key_field);
@@ -2267,7 +2267,7 @@ Gnome::Gda::Value Base_DB::get_lookup_value(const Glib::ustring& /* table_name *
   return result;
 }
 
-bool Base_DB::get_field_value_is_unique(const Glib::ustring& table_name, const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value)
+bool Base_DB::get_field_value_is_unique(const Glib::ustring& table_name, const sharedptr<const LayoutItem_Field>& field, const Glib::ValueBase& value)
 {
   bool result = true;  //Arbitrarily default to saying it's unique if we can't get any result.
 
@@ -2278,7 +2278,7 @@ bool Base_DB::get_field_value_is_unique(const Glib::ustring& table_name, const s
   Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute(strQuery);
   if(data_model)
   {
-    //std::cout << "debug: Base_DB::get_field_value_is_unique(): table_name=" << table_name << ", field name=" << field->get_name() << ", value=" << value.to_string() << ", rows count=" << data_model->get_n_rows() << std::endl;
+    //std::cout << "debug: Base_DB::get_field_value_is_unique(): table_name=" << table_name << ", field name=" << field->get_name() << ", value=" << Gnome::Gda::value_to_string(value) << ", rows count=" << data_model->get_n_rows() << std::endl;
     //The value is unique for this field, if the query returned no existing rows:
 
     result = (data_model->get_n_rows() == 0);
@@ -2291,12 +2291,12 @@ bool Base_DB::get_field_value_is_unique(const Glib::ustring& table_name, const s
   return result;
 }
 
-bool Base_DB::check_entered_value_for_uniqueness(const Glib::ustring& table_name, const sharedptr<const LayoutItem_Field>& layout_field, const Gnome::Gda::Value& field_value, Gtk::Window* parent_window)
+bool Base_DB::check_entered_value_for_uniqueness(const Glib::ustring& table_name, const sharedptr<const LayoutItem_Field>& layout_field, const Glib::ValueBase& field_value, Gtk::Window* parent_window)
 {
   return check_entered_value_for_uniqueness(table_name, Gtk::TreeModel::iterator(), layout_field, field_value, parent_window);
 }
 
-bool Base_DB::check_entered_value_for_uniqueness(const Glib::ustring& table_name, const Gtk::TreeModel::iterator& /* row */,  const sharedptr<const LayoutItem_Field>& layout_field, const Gnome::Gda::Value& field_value, Gtk::Window* parent_window)
+bool Base_DB::check_entered_value_for_uniqueness(const Glib::ustring& table_name, const Gtk::TreeModel::iterator& /* row */,  const sharedptr<const LayoutItem_Field>& layout_field, const Glib::ValueBase& field_value, Gtk::Window* parent_window)
 {
   //Check whether the value meets uniqueness constraints, if any:
   const sharedptr<const Field>& field = layout_field->get_full_field_details();
@@ -2304,7 +2304,7 @@ bool Base_DB::check_entered_value_for_uniqueness(const Glib::ustring& table_name
   {
     if(!get_field_value_is_unique(table_name, layout_field, field_value))
     {
-      //std::cout << "debug Base_DB::check_entered_value_for_uniqueness(): field=" << layout_field->get_name() << ", value is not unique: " << field_value.to_string() << std::endl;
+      //std::cout << "debug Base_DB::check_entered_value_for_uniqueness(): field=" << layout_field->get_name() << ", value is not unique: " << Gnome::Gda::value_to_string(field_value) << std::endl;
 
       //Warn the user and revert the value:
       if(parent_window)
@@ -2452,7 +2452,7 @@ sharedptr<const UsesRelationship> Base_DB::get_portal_navigation_relationship_au
   return sharedptr<UsesRelationship>(); 
 }
 
-bool Base_DB::get_primary_key_is_in_foundset(const FoundSet& found_set, const Gnome::Gda::Value& primary_key_value)
+bool Base_DB::get_primary_key_is_in_foundset(const FoundSet& found_set, const Glib::ValueBase& primary_key_value)
 {
   //TODO_Performance: This is probably called too often, when we should know that the key is in the found set.
   sharedptr<const Field> primary_key = get_field_primary_key_for_table(found_set.m_table_name);

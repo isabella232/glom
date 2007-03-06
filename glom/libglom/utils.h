@@ -50,10 +50,10 @@ typedef std::vector< sharedptr<const LayoutItem_Field> > type_vecConstLayoutFiel
 Glib::ustring build_sql_select_with_where_clause(const Glib::ustring& table_name, const type_vecLayoutFields& fieldsToGet, const Glib::ustring& where_clause = Glib::ustring(), const Glib::ustring& extra_join = Glib::ustring(), const type_sort_clause& sort_clause = type_sort_clause(), const Glib::ustring& extra_group_by = Glib::ustring());
 Glib::ustring build_sql_select_with_where_clause(const Glib::ustring& table_name, const type_vecConstLayoutFields& fieldsToGet, const Glib::ustring& where_clause = Glib::ustring(), const Glib::ustring& extra_join = Glib::ustring(), const type_sort_clause& sort_clause = type_sort_clause(), const Glib::ustring& extra_group_by = Glib::ustring());
 
-Glib::ustring build_sql_select_with_key(const Glib::ustring& table_name, const type_vecLayoutFields& fieldsToGet, const sharedptr<const Field>& key_field, const Gnome::Gda::Value& key_value);
-Glib::ustring build_sql_select_with_key(const Glib::ustring& table_name, const type_vecConstLayoutFields& fieldsToGet, const sharedptr<const Field>& key_field, const Gnome::Gda::Value& key_value);
+Glib::ustring build_sql_select_with_key(const Glib::ustring& table_name, const type_vecLayoutFields& fieldsToGet, const sharedptr<const Field>& key_field, const Glib::ValueBase& key_value);
+Glib::ustring build_sql_select_with_key(const Glib::ustring& table_name, const type_vecConstLayoutFields& fieldsToGet, const sharedptr<const Field>& key_field, const Glib::ValueBase& key_value);
 
-typedef std::list< std::pair<Gnome::Gda::Value, Gnome::Gda::Value> > type_list_values_with_second;
+typedef std::list< std::pair<Glib::ValueBase, Glib::ValueBase> > type_list_values_with_second;
 type_list_values_with_second get_choice_values(const sharedptr<const LayoutItem_Field>& field);
 
 /** Guess an appropriate identifier name based on a human-readable title
@@ -71,7 +71,7 @@ Glib::ustring locale_simplify(const Glib::ustring& locale_id);
  */
 Glib::ustring locale_language_id(const Glib::ustring& locale_id);
 
-Glib::ustring create_local_image_uri(const Gnome::Gda::Value& value);
+Glib::ustring create_local_image_uri(const Glib::ValueBase& value);
 
 Glib::ustring string_from_decimal(guint decimal);
 guint decimal_from_string(const Glib::ustring& str);

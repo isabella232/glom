@@ -85,7 +85,7 @@ void Dialog_ChooseID::setup()
   update_ui_for_stage();
 }
 
-bool Dialog_ChooseID::get_id_chosen(Gnome::Gda::Value& chosen_id) const
+bool Dialog_ChooseID::get_id_chosen(Glib::ValueBase& chosen_id) const
 {
   chosen_id = m_id_chosen;
   return true;
@@ -103,7 +103,7 @@ void Dialog_ChooseID::on_button_quickfind()
   }
   else
   {
-    const Glib::ustring where_clause = get_find_where_clause_quick(m_table_name, Gnome::Gda::Value(criteria));
+    const Glib::ustring where_clause = get_find_where_clause_quick(m_table_name, Glib::ValueBase(criteria));
     on_box_find_criteria(where_clause);
   }
 }
@@ -132,7 +132,7 @@ void Dialog_ChooseID::on_box_find_criteria(const Glib::ustring& where_clause)
   }
 }
 
-void Dialog_ChooseID::on_box_select_selected(const Gnome::Gda::Value& primary_key)
+void Dialog_ChooseID::on_box_select_selected(const Glib::ValueBase& primary_key)
 {
   m_id_chosen = primary_key;
   response(Gtk::RESPONSE_OK); //Close the dialog.

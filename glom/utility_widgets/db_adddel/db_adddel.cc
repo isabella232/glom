@@ -330,9 +330,9 @@ Gtk::TreeModel::iterator DbAddDel::get_item_placeholder()
   return m_refListStore->get_placeholder_row();
 }
 
-Gnome::Gda::Value DbAddDel::get_value(const Gtk::TreeModel::iterator& iter, const sharedptr<const LayoutItem_Field>& layout_item)
+Glib::ValueBase DbAddDel::get_value(const Gtk::TreeModel::iterator& iter, const sharedptr<const LayoutItem_Field>& layout_item)
 {
-  Gnome::Gda::Value value;
+  Glib::ValueBase value;
 
   if(m_refListStore)
   {
@@ -354,7 +354,7 @@ Gnome::Gda::Value DbAddDel::get_value(const Gtk::TreeModel::iterator& iter, cons
   return value;
 }
 
-Gnome::Gda::Value DbAddDel::get_value_key_selected()
+Glib::ValueBase DbAddDel::get_value_key_selected()
 {
   Gtk::TreeModel::iterator iter = get_item_selected();
   if(iter)
@@ -362,10 +362,10 @@ Gnome::Gda::Value DbAddDel::get_value_key_selected()
     return get_value_key(iter);
   }
   else
-    return Gnome::Gda::Value();
+    return Glib::ValueBase();
 }
 
-Gnome::Gda::Value DbAddDel::get_value_selected(const sharedptr<const LayoutItem_Field>& layout_item)
+Glib::ValueBase DbAddDel::get_value_selected(const sharedptr<const LayoutItem_Field>& layout_item)
 {
   return get_value(get_item_selected(), layout_item);
 }
@@ -382,7 +382,7 @@ Gtk::TreeModel::iterator DbAddDel::get_item_selected()
 }
 
 
-Gtk::TreeModel::iterator DbAddDel::get_row(const Gnome::Gda::Value& key)
+Gtk::TreeModel::iterator DbAddDel::get_row(const Glib::ValueBase& key)
 {
   if(!m_refListStore)
     return Gtk::TreeModel::iterator();
@@ -390,7 +390,7 @@ Gtk::TreeModel::iterator DbAddDel::get_row(const Gnome::Gda::Value& key)
   for(Gtk::TreeModel::iterator iter = m_refListStore->children().begin(); iter != m_refListStore->children().end(); ++iter)
   {
     //Gtk::TreeModel::Row row = *iter;
-    const Gnome::Gda::Value& valTemp = get_value_key(iter);
+    const Glib::ValueBase& valTemp = get_value_key(iter);
     if(valTemp == key)
     {
       return iter;
@@ -762,7 +762,7 @@ void DbAddDel::construct_specified_columns()
     return;
   }
 
-  typedef Gtk::TreeModelColumn<Gnome::Gda::Value> type_modelcolumn_value;
+  typedef Gtk::TreeModelColumn<Glib::ValueBase> type_modelcolumn_value;
   typedef std::vector< type_modelcolumn_value* > type_vecModelColumns;
   type_vecModelColumns vecModelColumns(m_ColumnTypes.size(), 0);
 
@@ -958,7 +958,7 @@ bool DbAddDel::refresh_from_database_blank()
   return true;
 }
 
-void DbAddDel::set_value(const Gtk::TreeModel::iterator& iter, const sharedptr<const LayoutItem_Field>& layout_item, const Gnome::Gda::Value& value)
+void DbAddDel::set_value(const Gtk::TreeModel::iterator& iter, const sharedptr<const LayoutItem_Field>& layout_item, const Glib::ValueBase& value)
 {
   //g_warning("DbAddDel::set_value begin");
 
@@ -993,7 +993,7 @@ void DbAddDel::set_value(const Gtk::TreeModel::iterator& iter, const sharedptr<c
   //g_warning("DbAddDel::set_value end");
 }
 
-void DbAddDel::set_value_selected(const sharedptr<const LayoutItem_Field>& layout_item, const Gnome::Gda::Value& value)
+void DbAddDel::set_value_selected(const sharedptr<const LayoutItem_Field>& layout_item, const Glib::ValueBase& value)
 {
   set_value(get_item_selected(), layout_item, value);
 }
@@ -1277,9 +1277,9 @@ DbAddDel::InnerIgnore::~InnerIgnore()
   m_pOuter = false;
 }
 
-Gnome::Gda::Value DbAddDel::treeview_get_key(const Gtk::TreeModel::iterator& row)
+Glib::ValueBase DbAddDel::treeview_get_key(const Gtk::TreeModel::iterator& row)
 {
-  Gnome::Gda::Value value;
+  Glib::ValueBase value;
 
   if(m_refListStore)
   {
@@ -1306,12 +1306,12 @@ void DbAddDel::on_treeview_cell_edited_bool(const Glib::ustring& path_string, in
 
     int tree_model_column_index = data_model_column_index + get_count_hidden_system_columns();
 
-    Gnome::Gda::Value value_old;
+    Glib::ValueBase value_old;
     row.get_value(tree_model_column_index, value_old);
 
-    const bool bValueOld = (value_old.get_value_type() == Gnome::Gda::VALUE_TYPE_BOOLEAN) && value_old.get_bool();
+    const bool bValueOld = (value_old.get_value_type() == G_TYPE_BOOLEAN) && value_old.get_bool();
     bool bValueNew = !bValueOld;
-    Gnome::Gda::Value value_new;
+    Glib::ValueBase value_new;
     value_new.set(bValueNew);
     //Store the user's new value in the model:
     row.set_value(tree_model_column_index, value_new);
@@ -1386,7 +1386,7 @@ void DbAddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const G
 
     const int treemodel_column_index = data_model_column_index + get_count_hidden_system_columns();
 
-    Gnome::Gda::Value valOld;
+    Glib::ValueBase valOld;
     row.get_value(treemodel_column_index, valOld);
 
     //Store the user's new text in the model:
@@ -1425,7 +1425,7 @@ void DbAddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const G
       //Make sure that the entered data is suitable for this field type:
       bool success = false;
 
-      Gnome::Gda::Value value = Conversions::parse_value(field_type, new_text, item_field->get_formatting_used().m_numeric_format, success);
+      Glib::ValueBase value = Conversions::parse_value(field_type, new_text, item_field->get_formatting_used().m_numeric_format, success);
       if(!success)
       {
           //Tell the user and offer to revert or try again:
@@ -1781,13 +1781,13 @@ Gtk::TreeModel::iterator DbAddDel::get_last_row()
   return m_refListStore->get_last_row();
 }
 
-Gnome::Gda::Value DbAddDel::get_value_key(const Gtk::TreeModel::iterator& iter)
+Glib::ValueBase DbAddDel::get_value_key(const Gtk::TreeModel::iterator& iter)
 {
   return treeview_get_key(iter);
 }
 
 
-void DbAddDel::set_value_key(const Gtk::TreeModel::iterator& iter, const Gnome::Gda::Value& value)
+void DbAddDel::set_value_key(const Gtk::TreeModel::iterator& iter, const Glib::ValueBase& value)
 {
   if(iter)
   {
@@ -1898,7 +1898,7 @@ void DbAddDel::treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gt
         {
           Gtk::CellRendererToggle* pDerived = dynamic_cast<Gtk::CellRendererToggle*>(renderer);
           if(pDerived)
-            pDerived->set_active( (value.get_value_type() == Gnome::Gda::VALUE_TYPE_BOOLEAN) && value.get_bool() ); 
+            pDerived->set_active( (G_VALUE_TYPE(value.gobj()) == G_TYPE_BOOLEAN) && value.get_bool() ); 
 
           break;
         }

@@ -44,9 +44,9 @@ Dialog_ChooseDate::~Dialog_ChooseDate()
 {
 }
 
-void Dialog_ChooseDate::set_date_chosen(const Gnome::Gda::Value& value)
+void Dialog_ChooseDate::set_date_chosen(const Glib::ValueBase& value)
 {
-  if(value.get_value_type() == Gnome::Gda::VALUE_TYPE_DATE) //Otherwise GtkCalendar defaults to the current (today's) date.
+  if(G_VALUE_TYPE(value.gobj()) == G_TYPE_DATE) //Otherwise GtkCalendar defaults to the current (today's) date.
   {
     Gnome::Gda::Date date = value.get_date();
 
@@ -59,7 +59,7 @@ void Dialog_ChooseDate::set_date_chosen(const Gnome::Gda::Value& value)
   }
 }
 
-Gnome::Gda::Value Dialog_ChooseDate::get_date_chosen() const
+Glib::ValueBase Dialog_ChooseDate::get_date_chosen() const
 {
   Gnome::Gda::Date date = {0, 0, 0};
   guint year = 0;
@@ -75,7 +75,7 @@ Gnome::Gda::Value Dialog_ChooseDate::get_date_chosen() const
 
   date.day = day;
 
-  return Gnome::Gda::Value(date);
+  return Glib::ValueBase(date);
 }
 
 void Dialog_ChooseDate::on_day_selected_double_click()

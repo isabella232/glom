@@ -1062,7 +1062,7 @@ float Document_Glom::get_node_attribute_value_as_float(const xmlpp::Element* nod
   return result;
 }
 
-void Document_Glom::set_node_attribute_value_as_value(xmlpp::Element* node, const Glib::ustring& strAttributeName, const Gnome::Gda::Value& value,  Field::glom_field_type field_type)
+void Document_Glom::set_node_attribute_value_as_value(xmlpp::Element* node, const Glib::ustring& strAttributeName, const Glib::ValueBase& value,  Field::glom_field_type field_type)
 {
   NumericFormat format_ignored; //Because we use ISO format.
   const Glib::ustring value_as_text = Conversions::get_text_for_gda_value(field_type, value, std::locale() /* Use the C locale */, format_ignored, true /* ISO standard */);
@@ -1070,16 +1070,16 @@ void Document_Glom::set_node_attribute_value_as_value(xmlpp::Element* node, cons
   set_node_attribute_value(node, strAttributeName, value_as_text);
 }
 
-Gnome::Gda::Value Document_Glom::get_node_attribute_value_as_value(const xmlpp::Element* node, const Glib::ustring& strAttributeName, Field::glom_field_type field_type)
+Glib::ValueBase Document_Glom::get_node_attribute_value_as_value(const xmlpp::Element* node, const Glib::ustring& strAttributeName, Field::glom_field_type field_type)
 {
   const Glib::ustring value_string = get_node_attribute_value(node, strAttributeName);
 
   bool success = false;
-  Gnome::Gda::Value  result = Conversions::parse_value(field_type, value_string, success, true /* iso_format */);
+  Glib::ValueBase  result = Conversions::parse_value(field_type, value_string, success, true /* iso_format */);
   if(success)
     return result;
   else 
-    return Gnome::Gda::Value();
+    return Glib::ValueBase();
 }
 
 void Document_Glom::append_newline(xmlpp::Element* parent_node)
@@ -1654,7 +1654,7 @@ void Document_Glom::load_after_layout_item_field_formatting(const xmlpp::Element
               field_type = field_temp->get_glom_type();
           }
 
-          const Gnome::Gda::Value value = get_node_attribute_value_as_value(element, GLOM_ATTRIBUTE_VALUE, field_type);
+          const Glib::ValueBase value = get_node_attribute_value_as_value(element, GLOM_ATTRIBUTE_VALUE, field_type);
           list_values.push_back(value);
         }
       }
@@ -3105,7 +3105,7 @@ void Document_Glom::forget_layout_record_viewed(const Glib::ustring& table_name)
   }
 }
 
-void Document_Glom::set_layout_record_viewed(const Glib::ustring& table_name, const Glib::ustring& layout_name, const Gnome::Gda::Value& primary_key_value)
+void Document_Glom::set_layout_record_viewed(const Glib::ustring& table_name, const Glib::ustring& layout_name, const Glib::ValueBase& primary_key_value)
 {
   type_tables::iterator iterFind = m_tables.find(table_name);
   if(iterFind != m_tables.end())
@@ -3114,7 +3114,7 @@ void Document_Glom::set_layout_record_viewed(const Glib::ustring& table_name, co
   }
 }
 
-Gnome::Gda::Value Document_Glom::get_layout_record_viewed(const Glib::ustring& table_name, const Glib::ustring& layout_name) const
+Glib::ValueBase Document_Glom::get_layout_record_viewed(const Glib::ustring& table_name, const Glib::ustring& layout_name) const
 {
   type_tables::const_iterator iterFind = m_tables.find(table_name);
   if(iterFind != m_tables.end())
@@ -3125,7 +3125,7 @@ Gnome::Gda::Value Document_Glom::get_layout_record_viewed(const Glib::ustring& t
       return iterLayoutKeys->second;
   }
 
-  return Gnome::Gda::Value(); //not found.
+  return Glib::ValueBase(); //not found.
 }
 
 void Document_Glom::set_layout_current(const Glib::ustring& table_name, const Glib::ustring& layout_name)

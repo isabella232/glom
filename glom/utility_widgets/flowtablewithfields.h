@@ -68,10 +68,10 @@ public:
 
   virtual void set_field_editable(const sharedptr<const LayoutItem_Field>& field, bool editable = true);
 
-  virtual Gnome::Gda::Value get_field_value(const sharedptr<const LayoutItem_Field>& field) const;
-  //virtual Gnome::Gda::Value get_field_value(const Glib::ustring& id) const;
-  virtual void set_field_value(const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
-  //virtual void set_field_value(const Glib::ustring& id, const Gnome::Gda::Value& value);
+  virtual Glib::ValueBase get_field_value(const sharedptr<const LayoutItem_Field>& field) const;
+  //virtual Glib::ValueBase get_field_value(const Glib::ustring& id) const;
+  virtual void set_field_value(const sharedptr<const LayoutItem_Field>& field, const Glib::ValueBase& value);
+  //virtual void set_field_value(const Glib::ustring& id, const Glib::ValueBase& value);
 
 
   typedef std::list<Gtk::Widget*> type_list_widgets;
@@ -92,15 +92,15 @@ public:
   //sharedptr<LayoutGroup> get_layout_group();
 
   /** For instance,
-   * void on_flowtable_field_edited(const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
+   * void on_flowtable_field_edited(const sharedptr<const LayoutItem_Field>& field, const Glib::ValueBase& value);
    */
-  typedef sigc::signal<void, const sharedptr<const LayoutItem_Field>&, const Gnome::Gda::Value&> type_signal_field_edited;
+  typedef sigc::signal<void, const sharedptr<const LayoutItem_Field>&, const Glib::ValueBase&> type_signal_field_edited;
   type_signal_field_edited signal_field_edited();
   
   /** For instance,
-   * void on_flowtable_field_open_details_requested(const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
+   * void on_flowtable_field_open_details_requested(const sharedptr<const LayoutItem_Field>& field, const Glib::ValueBase& value);
    */
-  typedef sigc::signal<void, const sharedptr<const LayoutItem_Field>&, const Gnome::Gda::Value&> type_signal_field_open_details_requested;
+  typedef sigc::signal<void, const sharedptr<const LayoutItem_Field>&, const Glib::ValueBase&> type_signal_field_open_details_requested;
   type_signal_field_open_details_requested signal_field_open_details_requested();
 
   /** For instance,
@@ -110,9 +110,9 @@ public:
   type_signal_related_record_changed signal_related_record_changed();
 
   /** For instance,
-   * void on_requested_related_details(const Glib::ustring& table_name, Gnome::Gda::Value primary_key_value);
+   * void on_requested_related_details(const Glib::ustring& table_name, Glib::ValueBase primary_key_value);
    */
-  typedef sigc::signal<void, const Glib::ustring&, Gnome::Gda::Value> type_signal_requested_related_details;
+  typedef sigc::signal<void, const Glib::ustring&, Glib::ValueBase> type_signal_requested_related_details;
   type_signal_requested_related_details signal_requested_related_details();
 
  /** For instance,
@@ -131,14 +131,14 @@ protected:
 
   //int get_suitable_width(Field::glom_field_type field_type);
 
-  void on_entry_edited(const Gnome::Gda::Value& value, sharedptr<const LayoutItem_Field> field);
-  void on_entry_open_details_requested(const Gnome::Gda::Value& value, sharedptr<const LayoutItem_Field> field);
-  void on_flowtable_entry_edited(const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
-  void on_flowtable_entry_open_details_requested(const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value); 
+  void on_entry_edited(const Glib::ValueBase& value, sharedptr<const LayoutItem_Field> field);
+  void on_entry_open_details_requested(const Glib::ValueBase& value, sharedptr<const LayoutItem_Field> field);
+  void on_flowtable_entry_edited(const sharedptr<const LayoutItem_Field>& field, const Glib::ValueBase& value);
+  void on_flowtable_entry_open_details_requested(const sharedptr<const LayoutItem_Field>& field, const Glib::ValueBase& value); 
 
   void on_portal_record_changed(const Glib::ustring& relationship_name);
   void on_flowtable_related_record_changed(const Glib::ustring& relationship_name);
-  void on_flowtable_requested_related_details(const Glib::ustring& table_name, Gnome::Gda::Value primary_key_value);
+  void on_flowtable_requested_related_details(const Glib::ustring& table_name, Glib::ValueBase primary_key_value);
 
   void on_script_button_clicked(const sharedptr<LayoutItem_Button>& layout_item);
 
@@ -147,7 +147,7 @@ protected:
 
   void on_datawidget_layout_item_added(LayoutWidgetBase::enumType item_type, DataWidget* pDataWidget);
 
-  void on_portal_user_requested_details(Gnome::Gda::Value primary_key_value, Box_Data_List_Related* portal_box);
+  void on_portal_user_requested_details(Glib::ValueBase primary_key_value, Box_Data_List_Related* portal_box);
 
   class Info
   {

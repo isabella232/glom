@@ -49,7 +49,7 @@ public:
   bool get_has_custom_choices() const;
   void set_has_custom_choices(bool val = true);
 
-  typedef std::list<Gnome::Gda::Value> type_list_values;
+  typedef std::list<Glib::ValueBase> type_list_values;
   virtual type_list_values get_choices_custom() const;
   virtual void set_choices_custom(const type_list_values& choices);
 

@@ -105,7 +105,7 @@ void Dialog_FieldCalculation::on_button_test()
     for(Document_Glom::type_vecFields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
     {
       const sharedptr<const Field> field = *iter;
-      const Gnome::Gda::Value example_value = Conversions::get_example_value(field->get_glom_type());
+      const Glib::ValueBase example_value = Conversions::get_example_value(field->get_glom_type());
       field_values[field->get_name()] = example_value;
     }
   }
@@ -113,10 +113,10 @@ void Dialog_FieldCalculation::on_button_test()
   //We need the connection when we run the script, so that the script may use it.
   sharedptr<SharedConnection> sharedconnection = connect_to_server(this /* parent window */);
 
-  Gnome::Gda::Value value = glom_evaluate_python_function_implementation(Field::TYPE_TEXT, calculation, field_values, //TODO: Maybe use the field's type here.
+  Glib::ValueBase value = glom_evaluate_python_function_implementation(Field::TYPE_TEXT, calculation, field_values, //TODO: Maybe use the field's type here.
     document, m_table_name, sharedconnection->get_gda_connection());
 
-  Frame_Glom::show_ok_dialog(_("Calculation result"), _("The result of the calculation is:\n") + value.to_string(), *this);
+  Frame_Glom::show_ok_dialog(_("Calculation result"), _("The result of the calculation is:\n") + Gnome::Gda::value_to_string(value), *this);
 
 
   //Show what fields would trigger the recalculation:

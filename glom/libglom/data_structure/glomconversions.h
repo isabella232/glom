@@ -34,17 +34,17 @@ namespace Glom
 namespace Conversions
 {
   ///Get text for display to the user.
-  Glib::ustring get_text_for_gda_value(Field::glom_field_type glom_type, const Gnome::Gda::Value& value, const NumericFormat& numeric_format = NumericFormat());
-  Glib::ustring get_text_for_gda_value(Field::glom_field_type glom_type, const Gnome::Gda::Value& value, const std::locale& locale, const NumericFormat& numeric_format = NumericFormat(), bool iso_format = false);
+  Glib::ustring get_text_for_gda_value(Field::glom_field_type glom_type, const Glib::ValueBase& value, const NumericFormat& numeric_format = NumericFormat());
+  Glib::ustring get_text_for_gda_value(Field::glom_field_type glom_type, const Glib::ValueBase& value, const std::locale& locale, const NumericFormat& numeric_format = NumericFormat(), bool iso_format = false);
 
   Glib::ustring format_time(const tm& tm_data);
   Glib::ustring format_time(const tm& tm_data, const std::locale& locale, bool iso_format = false);
   Glib::ustring format_date(const tm& tm_data);
   Glib::ustring format_date(const tm& tm_data, const std::locale& locale, bool iso_format = false);
 
-  Gnome::Gda::Value parse_value(double number);
-  Gnome::Gda::Value parse_value(Field::glom_field_type glom_type, const Glib::ustring& text, bool& success, bool iso_format = false);
-  Gnome::Gda::Value parse_value(Field::glom_field_type glom_type, const Glib::ustring& text, const NumericFormat& numeric_format, bool& success, bool iso_format = false);
+  Glib::ValueBase parse_value(double number);
+  Glib::ValueBase parse_value(Field::glom_field_type glom_type, const Glib::ustring& text, bool& success, bool iso_format = false);
+  Glib::ValueBase parse_value(Field::glom_field_type glom_type, const Glib::ustring& text, const NumericFormat& numeric_format, bool& success, bool iso_format = false);
 
   tm parse_date(const Glib::ustring& text, bool& success);
   tm parse_date(const Glib::ustring& text, const std::locale& locale, bool& success);
@@ -54,18 +54,18 @@ namespace Conversions
   Glib::ustring format_tm(const tm& tm_data, const std::locale& locale, const char* format);
   //static tm parse_tm(const Glib::ustring& text, const std::locale& locale, char format);
 
-  bool value_is_empty(const Gnome::Gda::Value& value);
-  Gnome::Gda::Value get_empty_value(Field::glom_field_type field_type);
+  bool value_is_empty(const Glib::ValueBase& value);
+  Glib::ValueBase get_empty_value(Field::glom_field_type field_type);
 
-  Gnome::Gda::Value get_example_value(Field::glom_field_type field_type);
+  Glib::ValueBase get_example_value(Field::glom_field_type field_type);
 
   Glib::ustring get_escaped_binary_data(guint8* buffer, size_t buffer_size);
-  Gnome::Gda::Value parse_escaped_binary_data(const Glib::ustring& escaped_data);
+  Glib::ValueBase parse_escaped_binary_data(const Glib::ustring& escaped_data);
 
-  Gnome::Gda::Value convert_value(const Gnome::Gda::Value& value, Field::glom_field_type target_glom_type);
+  Glib::ValueBase convert_value(const Glib::ValueBase& value, Field::glom_field_type target_glom_type);
 
 
-  Glib::RefPtr<Gdk::Pixbuf> get_pixbuf_for_gda_value(const Gnome::Gda::Value& value);
+  Glib::RefPtr<Gdk::Pixbuf> get_pixbuf_for_gda_value(const Glib::ValueBase& value);
 }
 
 //Copied from Postgres's PQunescapeBytea() so I don't have the trouble of finding and linking to the 

@@ -73,7 +73,7 @@ void EntryGlom::check_for_change()
     bool success = false;
 
     sharedptr<const LayoutItem_Field> layout_item = sharedptr<const LayoutItem_Field>::cast_dynamic(get_layout_item());
-    Gnome::Gda::Value value = Conversions::parse_value(m_glom_type, get_text(), layout_item->get_formatting_used().m_numeric_format, success);
+    Glib::ValueBase value = Conversions::parse_value(m_glom_type, get_text(), layout_item->get_formatting_used().m_numeric_format, success);
 
     if(success)
     {
@@ -128,7 +128,7 @@ void EntryGlom::on_insert_text(const Glib::ustring& text, int* position)
   Gtk::Entry::on_insert_text(text, position);
 }
 
-void EntryGlom::set_value(const Gnome::Gda::Value& value)
+void EntryGlom::set_value(const Glib::ValueBase& value)
 {
   sharedptr<const LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::cast_dynamic(get_layout_item());
   if(layout_item)
@@ -148,7 +148,7 @@ void EntryGlom::set_text(const Glib::ustring& text)
   Gtk::Entry::set_text(text);
 }
 
-Gnome::Gda::Value EntryGlom::get_value() const
+Glib::ValueBase EntryGlom::get_value() const
 {
   bool success = false;
 

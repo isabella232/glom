@@ -47,8 +47,8 @@ LayoutItem* LayoutItem_Image::clone() const
 
 bool LayoutItem_Image::operator==(const LayoutItem_Image& src) const
 {
-  bool result = LayoutItem::operator==(src) && 
-                (m_image == src.m_image);
+  bool result = LayoutItem::operator==(src); // && 
+                //(m_image == src.m_image); //TODO.
 
   return result;
 }
@@ -73,12 +73,12 @@ Glib::ustring LayoutItem_Image::get_report_part_id() const
   return "field"; //We reuse this for this node.
 }
 
-Gnome::Gda::Value LayoutItem_Image::get_image() const
+Glib::ValueBase LayoutItem_Image::get_image() const
 {
   return m_image;
 }
 
-void LayoutItem_Image::set_image(const Gnome::Gda::Value& image)
+void LayoutItem_Image::set_image(const Glib::ValueBase& image)
 {
   m_image = image;
 }

@@ -224,8 +224,8 @@ RelatedRecord_tp_as_mapping_getitem(PyObject *self, PyObject *item)
             Glib::RefPtr<Gnome::Gda::DataModel> datamodel = gda_connection->execute_single_command(sql_query);
             if(datamodel && datamodel->get_n_rows())
             {
-              Gnome::Gda::Value value = datamodel->get_value_at(0, 0);
-              //g_warning("RelatedRecord_tp_as_mapping_getitem(): value from datamodel = %s", value.to_string().c_str());
+              Glib::ValueBase value = datamodel->get_value_at(0, 0);
+              //g_warning("RelatedRecord_tp_as_mapping_getitem(): value from datamodel = %s", Gnome::Gda::value_to_string(value).c_str());
 
               //Cache it, in case it's asked-for again.
               (*(self_derived->m_pMap_field_values))[field_name] = value;
@@ -313,8 +313,8 @@ RelatedRecord_generic_aggregate(PyGlomRelatedRecord* self, PyObject *args, PyObj
         Glib::RefPtr<Gnome::Gda::DataModel> datamodel = gda_connection->execute_single_command(sql_query);
         if(datamodel && datamodel->get_n_rows())
         {
-          Gnome::Gda::Value value = datamodel->get_value_at(0, 0);
-          //g_warning("RelatedRecord_generic_aggregate(): value from datamodel = %s", value.to_string().c_str());
+          Glib::ValueBase value = datamodel->get_value_at(0, 0);
+          //g_warning("RelatedRecord_generic_aggregate(): value from datamodel = %s", Gnome::Gda::value_to_string(value).c_str());
 
           //Cache it, in case it's asked-for again.
           (*(self->m_pMap_field_values))[field_name] = value;

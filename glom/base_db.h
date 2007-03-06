@@ -133,11 +133,11 @@ protected:
 
   sharedptr<Field> get_field_primary_key_for_table(const Glib::ustring& table_name) const;
 
-  Glib::ustring get_find_where_clause_quick(const Glib::ustring& table_name, const Gnome::Gda::Value& quick_search) const;
+  Glib::ustring get_find_where_clause_quick(const Glib::ustring& table_name, const Glib::ValueBase& quick_search) const;
 
 
-  virtual void set_entered_field_data(const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value&  value);
-  virtual void set_entered_field_data(const Gtk::TreeModel::iterator& row, const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
+  virtual void set_entered_field_data(const sharedptr<const LayoutItem_Field>& field, const Glib::ValueBase&  value);
+  virtual void set_entered_field_data(const Gtk::TreeModel::iterator& row, const sharedptr<const LayoutItem_Field>& field, const Glib::ValueBase& value);
 
 
   class FieldInRecord
@@ -146,12 +146,12 @@ protected:
     FieldInRecord()
     {}
 
-    FieldInRecord(const Glib::ustring& table_name, const sharedptr<const Field>& field, const sharedptr<const Field>& key, const Gnome::Gda::Value& key_value)
+    FieldInRecord(const Glib::ustring& table_name, const sharedptr<const Field>& field, const sharedptr<const Field>& key, const Glib::ValueBase& key_value)
     : m_table_name(table_name), m_field(field), m_key(key), m_key_value(key_value)
     {
     }
 
-    FieldInRecord(const sharedptr<const LayoutItem_Field>& layout_item, const Glib::ustring& parent_table_name, const sharedptr<const Field>& parent_key, const Gnome::Gda::Value& key_value, const Document_Glom& document)
+    FieldInRecord(const sharedptr<const LayoutItem_Field>& layout_item, const Glib::ustring& parent_table_name, const sharedptr<const Field>& parent_key, const Glib::ValueBase& key_value, const Document_Glom& document)
     : m_key_value(key_value)
     {
       m_field = layout_item->get_full_field_details();
@@ -192,7 +192,7 @@ protected:
 
     //Identify the record:
     sharedptr<const Field> m_key;
-    Gnome::Gda::Value m_key_value;
+    Glib::ValueBase m_key_value;
   };
 
 
@@ -202,7 +202,7 @@ protected:
     LayoutFieldInRecord()
     {}
 
-    LayoutFieldInRecord(const sharedptr<const LayoutItem_Field>& layout_item, const Glib::ustring& parent_table_name, const sharedptr<const Field>& parent_key, const Gnome::Gda::Value& key_value)
+    LayoutFieldInRecord(const sharedptr<const LayoutItem_Field>& layout_item, const Glib::ustring& parent_table_name, const sharedptr<const Field>& parent_key, const Glib::ValueBase& key_value)
     : m_key_value(key_value)
     {
       m_field = layout_item;
@@ -221,7 +221,7 @@ protected:
 
     //Identify the record:
     sharedptr<const Field> m_key;
-    Gnome::Gda::Value m_key_value;
+    Glib::ValueBase m_key_value;
   };
 
   /** Calculate values for fields, set them in the database, and show them in the layout.
@@ -250,12 +250,12 @@ protected:
   void calculate_field_in_all_records(const Glib::ustring& table_name, const sharedptr<const Field>& field);
   void calculate_field_in_all_records(const Glib::ustring& table_name, const sharedptr<const Field>& field, const sharedptr<const Field>& primary_key);
 
-  typedef std::map<Glib::ustring, Gnome::Gda::Value> type_map_fields;
+  typedef std::map<Glib::ustring, Glib::ValueBase> type_map_fields;
   //TODO: Performance: This is massively inefficient:
-  type_map_fields get_record_field_values_for_calculation(const Glib::ustring& table_name, const sharedptr<const Field> primary_key, const Gnome::Gda::Value& primary_key_value);
+  type_map_fields get_record_field_values_for_calculation(const Glib::ustring& table_name, const sharedptr<const Field> primary_key, const Glib::ValueBase& primary_key_value);
 
 
-  void do_lookups(const LayoutFieldInRecord& field_in_record, const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& field_value);
+  void do_lookups(const LayoutFieldInRecord& field_in_record, const Gtk::TreeModel::iterator& row, const Glib::ValueBase& field_value);
 
   typedef std::pair< sharedptr<LayoutItem_Field>, sharedptr<Relationship> > type_pairFieldTrigger;
   typedef std::list<type_pairFieldTrigger> type_list_lookups;
@@ -268,29 +268,29 @@ protected:
 
   /** Get the value of the @a source_field from the @a relationship, using the @a key_value.
    */
-  Gnome::Gda::Value get_lookup_value(const Glib::ustring& table_name, const sharedptr<const Relationship>& relationship, const sharedptr<const Field>& source_field, const Gnome::Gda::Value & key_value);
+  Glib::ValueBase get_lookup_value(const Glib::ustring& table_name, const sharedptr<const Relationship>& relationship, const sharedptr<const Field>& source_field, const Glib::ValueBase & key_value);
 
 
-  virtual void refresh_related_fields(const LayoutFieldInRecord& field_in_record_changed, const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& field_value);
+  virtual void refresh_related_fields(const LayoutFieldInRecord& field_in_record_changed, const Gtk::TreeModel::iterator& row, const Glib::ValueBase& field_value);
 
 
 
-  bool set_field_value_in_database(const LayoutFieldInRecord& field_in_record, const Gnome::Gda::Value& field_value, bool use_current_calculations = false, Gtk::Window* parent_window = 0);
-  bool set_field_value_in_database(const LayoutFieldInRecord& field_in_record, const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& field_value, bool use_current_calculations = false, Gtk::Window* parent_window = 0);
+  bool set_field_value_in_database(const LayoutFieldInRecord& field_in_record, const Glib::ValueBase& field_value, bool use_current_calculations = false, Gtk::Window* parent_window = 0);
+  bool set_field_value_in_database(const LayoutFieldInRecord& field_in_record, const Gtk::TreeModel::iterator& row, const Glib::ValueBase& field_value, bool use_current_calculations = false, Gtk::Window* parent_window = 0);
 
   //Get a single field value from the database.
-  Gnome::Gda::Value get_field_value_in_database(const LayoutFieldInRecord& field_in_record, Gtk::Window* parent_window);
+  Glib::ValueBase get_field_value_in_database(const LayoutFieldInRecord& field_in_record, Gtk::Window* parent_window);
 
 
   SystemPrefs get_database_preferences() const;
   void set_database_preferences(const SystemPrefs& prefs);
 
-  Gnome::Gda::Value auto_increment_insert_first_if_necessary(const Glib::ustring& table_name, const Glib::ustring& field_name) const;
+  Glib::ValueBase auto_increment_insert_first_if_necessary(const Glib::ustring& table_name, const Glib::ustring& field_name) const;
 
   /** Get the next auto-increment value for this primary key, from the glom system table.
    * Add a row for this field in the system table if it does not exist already.
    */
-  Gnome::Gda::Value get_next_auto_increment_value(const Glib::ustring& table_name, const Glib::ustring& field_name) const;
+  Glib::ValueBase get_next_auto_increment_value(const Glib::ustring& table_name, const Glib::ustring& field_name) const;
 
   /** Set the next auto-increment value in the glom system table, by examining all current values.
    * Use this, for instance, after importing rows.
@@ -298,10 +298,10 @@ protected:
    */
   void recalculate_next_auto_increment_value(const Glib::ustring& table_name, const Glib::ustring& field_name) const;
 
-  bool get_field_value_is_unique(const Glib::ustring& table_name, const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
+  bool get_field_value_is_unique(const Glib::ustring& table_name, const sharedptr<const LayoutItem_Field>& field, const Glib::ValueBase& value);
 
-  bool check_entered_value_for_uniqueness(const Glib::ustring& table_name, const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value, Gtk::Window* parent_window);
-  bool check_entered_value_for_uniqueness(const Glib::ustring& table_name, const Gtk::TreeModel::iterator& /* row */,  const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value, Gtk::Window* parent_window);
+  bool check_entered_value_for_uniqueness(const Glib::ustring& table_name, const sharedptr<const LayoutItem_Field>& field, const Glib::ValueBase& value, Gtk::Window* parent_window);
+  bool check_entered_value_for_uniqueness(const Glib::ustring& table_name, const Gtk::TreeModel::iterator& /* row */,  const sharedptr<const LayoutItem_Field>& field, const Glib::ValueBase& value, Gtk::Window* parent_window);
 
   virtual bool fill_from_database();
   virtual void fill_end(); //Call this from the end of fill_from_database() overrides.
@@ -319,7 +319,7 @@ protected:
   sharedptr<const LayoutItem_Field> get_field_is_from_non_hidden_related_record(const sharedptr<const LayoutItem_Portal>& portal) const;
   sharedptr<const LayoutItem_Field> get_field_identifies_non_hidden_related_record(const sharedptr<const LayoutItem_Portal>& portal, sharedptr<const Relationship>& used_in_relationship) const;
 
-  bool get_primary_key_is_in_foundset(const FoundSet& found_set, const Gnome::Gda::Value& primary_key_value);
+  bool get_primary_key_is_in_foundset(const FoundSet& found_set, const Glib::ValueBase& primary_key_value);
 
   static bool get_field_primary_key_index_for_fields(const type_vecFields& fields, guint& field_column);
   static bool get_field_primary_key_index_for_fields(const type_vecLayoutFields& fields, guint& field_column);

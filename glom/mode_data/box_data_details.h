@@ -35,20 +35,20 @@ public:
   Box_Data_Details(bool bWithNavButtons = true);
   virtual ~Box_Data_Details();
 
-  virtual bool init_db_details(const FoundSet& found_set, const Gnome::Gda::Value& primary_key_value);
-  virtual bool refresh_data_from_database_with_primary_key(const Gnome::Gda::Value& primary_key_value);
+  virtual bool init_db_details(const FoundSet& found_set, const Glib::ValueBase& primary_key_value);
+  virtual bool refresh_data_from_database_with_primary_key(const Glib::ValueBase& primary_key_value);
   virtual bool refresh_data_from_database_blank();
 
   virtual void print_layout();
 
-  virtual Gnome::Gda::Value get_primary_key_value() const; //Actual primary key value of this record.
-  virtual Gnome::Gda::Value get_primary_key_value_selected(); //Value in the primary key's cell.
+  virtual Glib::ValueBase get_primary_key_value() const; //Actual primary key value of this record.
+  virtual Glib::ValueBase get_primary_key_value_selected(); //Value in the primary key's cell.
 
-  virtual void set_primary_key_value(const Gtk::TreeModel::iterator& /* row */, const Gnome::Gda::Value& value);
+  virtual void set_primary_key_value(const Gtk::TreeModel::iterator& /* row */, const Glib::ValueBase& value);
 
-  virtual Gnome::Gda::Value get_entered_field_data(const sharedptr<const LayoutItem_Field>& field) const;
-  virtual void set_entered_field_data(const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
-  virtual void set_entered_field_data(const Gtk::TreeModel::iterator& row, const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
+  virtual Glib::ValueBase get_entered_field_data(const sharedptr<const LayoutItem_Field>& field) const;
+  virtual void set_entered_field_data(const sharedptr<const LayoutItem_Field>& field, const Glib::ValueBase& value);
+  virtual void set_entered_field_data(const Gtk::TreeModel::iterator& row, const sharedptr<const LayoutItem_Field>& field, const Glib::ValueBase& value);
 
   //Signals:
   typedef sigc::signal<void> type_signal_void;
@@ -57,13 +57,13 @@ public:
   type_signal_void signal_nav_next();
   type_signal_void signal_nav_last();
 
-  typedef sigc::signal<void, const Gnome::Gda::Value&> type_signal_record_deleted; //arg is PrimaryKey.   //TODO: pass by const ref?
+  typedef sigc::signal<void, const Glib::ValueBase&> type_signal_record_deleted; //arg is PrimaryKey.   //TODO: pass by const ref?
   type_signal_record_deleted signal_record_deleted();
 
    /** For instance,
-    * void on_requested_related_details(const Glib::ustring& table_name, Gnome::Gda::Value primary_key_value);
+    * void on_requested_related_details(const Glib::ustring& table_name, Glib::ValueBase primary_key_value);
     */
-  typedef sigc::signal<void, const Glib::ustring&, Gnome::Gda::Value> type_signal_requested_related_details;
+  typedef sigc::signal<void, const Glib::ustring&, Glib::ValueBase> type_signal_requested_related_details;
   type_signal_requested_related_details signal_requested_related_details();
 
 protected:
@@ -88,22 +88,22 @@ protected:
   virtual void on_flowtable_layout_changed();
 
   //Signal handler: The last 2 args are bind-ed.
-  virtual void on_related_record_added(Gnome::Gda::Value key_value, Glib::ustring strFromKeyName);
+  virtual void on_related_record_added(Glib::ValueBase key_value, Glib::ustring strFromKeyName);
 
   //Signal handler: The last arg is bind-ed.
-  //virtual void on_related_user_requested_details(Gnome::Gda::Value key_value, Glib::ustring table_name);
+  //virtual void on_related_user_requested_details(Glib::ValueBase key_value, Glib::ustring table_name);
 
-  virtual void on_flowtable_field_edited(const sharedptr<const LayoutItem_Field>& id, const Gnome::Gda::Value& value);
-  void on_flowtable_field_open_details_requested(const sharedptr<const LayoutItem_Field>& id, const Gnome::Gda::Value& value);
+  virtual void on_flowtable_field_edited(const sharedptr<const LayoutItem_Field>& id, const Glib::ValueBase& value);
+  void on_flowtable_field_open_details_requested(const sharedptr<const LayoutItem_Field>& id, const Glib::ValueBase& value);
   void on_flowtable_related_record_changed(const Glib::ustring& relationship_name);
-  void on_flowtable_requested_related_details(const Glib::ustring& table_name, Gnome::Gda::Value primary_key_value);
+  void on_flowtable_requested_related_details(const Glib::ustring& table_name, Glib::ValueBase primary_key_value);
 
   void on_flowtable_script_button_clicked(const sharedptr<const LayoutItem_Button>& layout_item);
 
   virtual void recalculate_fields_for_related_records(const Glib::ustring& relationship_name);
 
   sharedptr<Field> m_field_primary_key;
-  Gnome::Gda::Value m_primary_key_value;
+  Glib::ValueBase m_primary_key_value;
 
   //Member widgets:
   Gtk::ScrolledWindow m_ScrolledWindow;

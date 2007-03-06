@@ -103,7 +103,7 @@ void Box_DB_Table_Definition::fill_field_row(const Gtk::TreeModel::iterator& ite
   m_AddDel.set_value(iter, m_colTitle, title);
 
   //Type:
-  Field::glom_field_type fieldType = Field::get_glom_type_for_gda_type(field->get_field_info().get_gdatype()); //Could be TYPE_INVALID if the gda type is not one of ours.
+  Field::glom_field_type fieldType = Field::get_glom_type_for_gda_type(field->get_field_info().get_type()); //Could be TYPE_INVALID if the gda type is not one of ours.
 
   const Glib::ustring strType = Field::get_type_name_ui( fieldType );
   m_AddDel.set_value(iter, m_colType, strType);
@@ -176,8 +176,8 @@ void Box_DB_Table_Definition::on_adddel_add(const Gtk::TreeModel::iterator& row)
       field->set_title( Utils::title_from_string(name) ); //Start with a title that might be useful.
       field->set_glom_type(Field::TYPE_NUMERIC);
 
-      Gnome::Gda::FieldAttributes field_info = field->get_field_info();
-      field_info.set_gdatype( Field::get_gda_type_for_glom_type(Field::TYPE_NUMERIC) );
+      Glib::RefPtr<Gnome::Gda::Column> field_info = field->get_field_info();
+      field_info->set_gdatype( Field::get_gda_type_for_glom_type(Field::TYPE_NUMERIC) );
       field->set_field_info(field_info);
 
       fill_field_row(row, field);
@@ -237,7 +237,7 @@ bool Box_DB_Table_Definition::check_field_change(const sharedptr<const Field>& f
 
   //If we are changing a non-glom type:
   //Refuse to edit field definitions that were not created by glom:
-  if(Field::get_glom_type_for_gda_type( field_old->get_field_info().get_gdatype() )  == Field::TYPE_INVALID)
+  if(Field::get_glom_type_for_gda_type( field_old->get_field_info().get_type() )  == Field::TYPE_INVALID)
   {
     Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Invalid database structure")), true);
     dialog.set_secondary_text(_("This database field was created or edited outside of Glom. It has a data type that is not supported by Glom. Your system administrator may be able to correct this."));
@@ -365,11 +365,11 @@ sharedptr<Field> Box_DB_Table_Definition::get_field_definition(const Gtk::TreeMo
   sharedptr<const Field> field_temp = get_fields_for_table_one_field(m_table_name, strFieldNameBeforeEdit);
   if(field_temp)
   {
-    Gnome::Gda::FieldAttributes fieldInfo = field_temp->get_field_info();
+    Glib::RefPtr<Gnome::Gda::Column> fieldInfo = field_temp->get_field_info();
 
     //Name:
     const Glib::ustring name = m_AddDel.get_value(row, m_colName);
-    fieldInfo.set_name(name);
+    fieldinfo->set_name(name);
 
     //Title:
     const Glib::ustring title = m_AddDel.get_value(row, m_colTitle);
@@ -379,17 +379,17 @@ sharedptr<Field> Box_DB_Table_Definition::get_field_definition(const Gtk::TreeMo
     const Glib::ustring& strType = m_AddDel.get_value(row, m_colType);
 
     const Field::glom_field_type glom_type =  Field::get_type_for_ui_name(strType);
-    Gnome::Gda::ValueType fieldType = Field::get_gda_type_for_glom_type(glom_type);
+    GType fieldType = Field::get_gda_type_for_glom_type(glom_type);
 
     //Unique:
     const bool bUnique = m_AddDel.get_value_as_bool(row, m_colUnique);
-    fieldInfo.set_unique_key(bUnique);
+    fieldinfo->set_unique_key(bUnique);
 
     //Primary Key:
     const bool bPrimaryKey = m_AddDel.get_value_as_bool(row, m_colPrimaryKey);
-    fieldInfo.set_primary_key(bPrimaryKey);
+    fieldinfo->set_primary_key(bPrimaryKey);
 
-    fieldInfo.set_gdatype(fieldType);
+    fieldinfo->set_gdatype(fieldType);
 
     //Put it together:
     fieldResult->set_field_info(fieldInfo);
@@ -545,11 +545,11 @@ void Box_DB_Table_Definition::fill_fields()
 
 sharedptr<Field> Box_DB_Table_Definition::postgres_change_column(const sharedptr<const Field>& field_old, const sharedptr<const Field>& field)
 {
-  const Gnome::Gda::FieldAttributes field_info = field->get_field_info();
-  const Gnome::Gda::FieldAttributes field_info_old = field_old->get_field_info();
+  const Glib::RefPtr<Gnome::Gda::Column> field_info = field->get_field_info();
+  const Glib::RefPtr<Gnome::Gda::Column> field_info_old = field_old->get_field_info();
 
   //If the underlying data type has changed:
-  if( field_info.get_gdatype() != field_info_old.get_gdatype() )
+  if( field_info->get_type() != field_info_old.get_type() )
   {
     postgres_change_column_type(field_old, field); //This will also change everything else at the same time.
     return glom_sharedptr_clone(field);
@@ -576,7 +576,7 @@ void Box_DB_Table_Definition::postgres_change_column_type(const sharedptr<const 
     bool new_column_created = false;
 
     //If the datatype has changed:
-    if(field->get_field_info().get_gdatype() != field_old->get_field_info().get_gdatype())
+    if(field->get_field_info().get_type() != field_old->get_field_info().get_type())
     {
       //We have to create a new table, and move the data across:
       //See http://www.postgresql.org/docs/faqs/FAQ.html#4.4

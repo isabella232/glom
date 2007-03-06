@@ -41,7 +41,7 @@ protected:
   virtual bool fill_from_database(); //override.
   virtual void fill_related(); //override.
 
-  virtual void on_flowtable_field_edited(const sharedptr<const LayoutItem_Field>& id, const Gnome::Gda::Value& value);
+  virtual void on_flowtable_field_edited(const sharedptr<const LayoutItem_Field>& id, const Glib::ValueBase& value);
 
 };
 

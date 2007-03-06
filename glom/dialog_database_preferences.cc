@@ -94,10 +94,10 @@ void Dialog_Database_Preferences::on_treeview_cell_edited_next_value(const Glib:
     const Glib::ustring table_name = row[m_columns.m_col_table];
     const Glib::ustring field_name = row[m_columns.m_col_field];
 
-    const Gnome::Gda::Value next_value = Conversions::parse_value(new_value);
+    const Glib::ValueBase next_value = Conversions::parse_value(new_value);
 
     const Glib::ustring sql_query = "UPDATE \"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME "\" SET "
-        "\"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_NEXT_VALUE "\" = " + next_value.to_string() +
+        "\"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_NEXT_VALUE "\" = " + Gnome::Gda::value_to_string(next_value) +
         " WHERE \"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME "\" = '" + table_name + "' AND "
                "\"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_FIELD_NAME "\" = '" + field_name +"'";
 

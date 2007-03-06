@@ -35,16 +35,16 @@ public:
 
   void refresh_data_from_database_blank();
 
-  virtual Gnome::Gda::Value get_primary_key_value(const Gtk::TreeModel::iterator& row);
-  virtual Gnome::Gda::Value get_primary_key_value_selected();
-  Gnome::Gda::Value get_primary_key_value_first();
+  virtual Glib::ValueBase get_primary_key_value(const Gtk::TreeModel::iterator& row);
+  virtual Glib::ValueBase get_primary_key_value_selected();
+  Glib::ValueBase get_primary_key_value_first();
 
   ///This allows Box_Data::record_new() to set the generated/entered primary key value, needed by Box_Data_List:
-  virtual void set_primary_key_value(const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& value);
+  virtual void set_primary_key_value(const Gtk::TreeModel::iterator& row, const Glib::ValueBase& value);
 
-  virtual Gnome::Gda::Value get_entered_field_data(const sharedptr<const LayoutItem_Field>& field) const;
-  virtual void set_entered_field_data(const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
-  virtual void set_entered_field_data(const Gtk::TreeModel::iterator& row, const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
+  virtual Glib::ValueBase get_entered_field_data(const sharedptr<const LayoutItem_Field>& field) const;
+  virtual void set_entered_field_data(const sharedptr<const LayoutItem_Field>& field, const Glib::ValueBase& value);
+  virtual void set_entered_field_data(const Gtk::TreeModel::iterator& row, const sharedptr<const LayoutItem_Field>& field, const Glib::ValueBase& value);
 
   bool get_showing_multiple_records() const;
 
@@ -54,10 +54,10 @@ public:
   void set_open_button_title(const Glib::ustring& title);
 
   ///Highlight and scroll to the specified record, with primary key value @primary_key_value.
-  void set_primary_key_value_selected(const Gnome::Gda::Value& primary_key_value);
+  void set_primary_key_value_selected(const Glib::ValueBase& primary_key_value);
 
   //Primary Key value:
-  typedef sigc::signal<void, const Gnome::Gda::Value&> type_signal_user_requested_details;
+  typedef sigc::signal<void, const Glib::ValueBase&> type_signal_user_requested_details;
   type_signal_user_requested_details signal_user_requested_details();
 
   //Signal Handlers:
@@ -65,7 +65,7 @@ public:
   virtual void on_details_nav_previous();
   virtual void on_details_nav_next();
   virtual void on_details_nav_last();
-  virtual void on_details_record_deleted(const Gnome::Gda::Value& primary_key_value);
+  virtual void on_details_record_deleted(const Glib::ValueBase& primary_key_value);
 
   void get_record_counts(gulong& total, gulong& found) const;
 
@@ -92,8 +92,8 @@ protected:
   virtual void on_adddel_script_button_clicked(const sharedptr<const LayoutItem_Button>& layout_item, const Gtk::TreeModel::iterator& row);
   virtual bool on_script_button_idle(const Gnome::Gda::Value& primary_key_value);
 
-  virtual void on_record_added(const Gnome::Gda::Value& primary_key_value, const Gtk::TreeModel::iterator& row); //Not a signal handler. To be overridden.
-  virtual void on_record_deleted(const Gnome::Gda::Value& primary_key_value);
+  virtual void on_record_added(const Glib::ValueBase& primary_key_value, const Gtk::TreeModel::iterator& row); //Not a signal handler. To be overridden.
+  virtual void on_record_deleted(const Glib::ValueBase& primary_key_value);
 
   virtual void print_layout();
   virtual void print_layout_group(xmlpp::Element* node_parent, const sharedptr<const LayoutGroup>& group);

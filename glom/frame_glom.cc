@@ -388,7 +388,7 @@ void Frame_Glom::show_table_refresh()
   show_table(m_table_name);
 }
 
-void Frame_Glom::show_table(const Glib::ustring& table_name, const Gnome::Gda::Value& primary_key_value_for_details)
+void Frame_Glom::show_table(const Glib::ustring& table_name, const Glib::ValueBase& primary_key_value_for_details)
 {
   App_Glom* pApp = dynamic_cast<App_Glom*>(get_app_window());
 
@@ -611,7 +611,7 @@ void Frame_Glom::export_data_to_string(Glib::ustring& the_string, const FoundSet
 
         for(guint col_index = 0; col_index < columns_count; ++col_index)
         {
-          const Gnome::Gda::Value value = result->get_value_at(col_index, row_index);
+          const Glib::ValueBase value = result->get_value_at(col_index, row_index);
 
           sharedptr<LayoutItem_Field> layout_item = fieldsSequence[col_index];
           //if(layout_item->m_field.get_glom_type() != Field::TYPE_IMAGE) //This is too much data.
@@ -660,7 +660,7 @@ void Frame_Glom::export_data_to_stream(std::ostream& the_stream, const FoundSet&
 
         for(guint col_index = 0; col_index < columns_count; ++col_index)
         {
-          const Gnome::Gda::Value value = result->get_value_at(col_index, row_index);
+          const Glib::ValueBase value = result->get_value_at(col_index, row_index);
 
           sharedptr<LayoutItem_Field> layout_item = fieldsSequence[col_index];
           //if(layout_item->m_field.get_glom_type() != Field::TYPE_IMAGE) //This is too much data.
@@ -976,7 +976,7 @@ void Frame_Glom::on_button_quickfind()
   }
   else
   {
-    const Glib::ustring where_clause = get_find_where_clause_quick(m_table_name, Gnome::Gda::Value(criteria));
+    const Glib::ustring where_clause = get_find_where_clause_quick(m_table_name, Glib::ValueBase(criteria));
     //std::cout << "Frame_Glom::on_button_quickfind(): where_clause=" << where_clause << std::endl;
     on_notebook_find_criteria(where_clause);
   }
@@ -1065,7 +1065,7 @@ void Frame_Glom::update_table_in_document_from_database()
   //Add any new/changed information from the database to the document
   //The database should never change without the knowledge of the document anyway, so this should be unnecessary.
 
-  //TODO_performance: There are a lot of temporary Field and FieldAttributes instances here, with a lot of string copying.
+  //TODO_performance: There are a lot of temporary Field and Column instances here, with a lot of string copying.
 
   //For instance, changed field details, or new fields, or removed fields.
   typedef Box_DB_Table::type_vecFields type_vecFields;
@@ -1098,7 +1098,7 @@ void Frame_Glom::update_table_in_document_from_database()
         else //if it was found.
         {
           //Compare the information:
-          Gnome::Gda::FieldAttributes field_info_db = field_database->get_field_info();
+          Glib::RefPtr<Gnome::Gda::Column> field_info_db = field_database->get_field_info();
           sharedptr<Field> field_document =  *iterFindDoc;
           if(field_document)
           {
@@ -1824,7 +1824,7 @@ void Frame_Glom::on_dialog_tables_hide()
   }
 }
 
-void Frame_Glom::on_notebook_data_record_details_requested(const Glib::ustring& table_name, Gnome::Gda::Value primary_key_value)
+void Frame_Glom::on_notebook_data_record_details_requested(const Glib::ustring& table_name, Glib::ValueBase primary_key_value)
 {
   show_table(table_name, primary_key_value);
   //m_Notebook_Data.show_details(primary_key_value);

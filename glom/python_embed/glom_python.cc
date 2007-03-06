@@ -70,20 +70,20 @@ void glom_execute_python_function_implementation(const Glib::ustring& func_impl,
   glom_evaluate_python_function_implementation(Field::TYPE_TEXT, func_impl, field_values, pDocument, table_name, opened_connection);
 }
 
-Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field_type result_type, const Glib::ustring& func_impl,
+Glib::ValueBase glom_evaluate_python_function_implementation(Field::glom_field_type result_type, const Glib::ustring& func_impl,
     const type_map_fields& field_values, Document_Glom* pDocument, const Glib::ustring& table_name, const Glib::RefPtr<Gnome::Gda::Connection>& opened_connection)
 {
   //std::cout << "glom_evaluate_python_function_implementation()" << std::endl;
   //for(type_map_fields::const_iterator iter = field_values.begin(); iter != field_values.end(); ++iter)
   //{
-  //  std::cout << "  field_value: name=" << iter->first << ", value=" << iter->second.to_string() << std::endl; 
+  //  std::cout << "  field_value: name=" << iter->first << ", value=" << Gnome::Gda::value_to_string(iter->second) << std::endl; 
   //}
 
   g_assert(result_type != Field::TYPE_INVALID);
 
   //g_warning("glom_evaluate_python_function_implementation: func=%s", func_impl.c_str());
 
-  Gnome::Gda::Value valueResult;
+  Glib::ValueBase valueResult;
 
   Glib::ustring func_def;
 

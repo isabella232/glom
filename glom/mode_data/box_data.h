@@ -104,19 +104,19 @@ protected:
   */
   type_vecLayoutFields get_related_fields(const sharedptr<const LayoutItem_Field>& field) const;
 
-  bool record_delete(const Gnome::Gda::Value& primary_key_value);
+  bool record_delete(const Glib::ValueBase& primary_key_value);
 
   ///This allows record_new() to set the generated/entered primary key value, needed by Box_Data_List:
-  virtual void set_primary_key_value(const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& value);
+  virtual void set_primary_key_value(const Gtk::TreeModel::iterator& row, const Glib::ValueBase& value);
 
   ///New record with all entered field values.
-  Glib::RefPtr<Gnome::Gda::DataModel> record_new(bool use_entered_data = true, const Gnome::Gda::Value& primary_key_value = Gnome::Gda::Value()); 
-  Glib::RefPtr<Gnome::Gda::DataModel> record_new(bool use_entered_data, const Gnome::Gda::Value& primary_key_value, const Gtk::TreeModel::iterator& row);
+  Glib::RefPtr<Gnome::Gda::DataModel> record_new(bool use_entered_data = true, const Glib::ValueBase& primary_key_value = Glib::ValueBase()); 
+  Glib::RefPtr<Gnome::Gda::DataModel> record_new(bool use_entered_data, const Glib::ValueBase& primary_key_value, const Gtk::TreeModel::iterator& row);
 
-  Gnome::Gda::Value generate_next_auto_increment(const Glib::ustring& table_name, const Glib::ustring field_name);
+  Glib::ValueBase generate_next_auto_increment(const Glib::ustring& table_name, const Glib::ustring field_name);
 
   virtual sharedptr<Field> get_field_primary_key() const = 0;
-  virtual Gnome::Gda::Value get_primary_key_value_selected() = 0;
+  virtual Glib::ValueBase get_primary_key_value_selected() = 0;
   //virtual bool get_field(const Glib::ustring& name, sharedptr<Field>& field) const;
 
   bool confirm_delete_record();

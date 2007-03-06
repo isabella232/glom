@@ -139,7 +139,7 @@ void ImageGlom::set_pixbuf(const Glib::RefPtr<Gdk::Pixbuf>& pixbuf)
   scale();
 }
 
-void ImageGlom::set_value(const Gnome::Gda::Value& value)
+void ImageGlom::set_value(const Glib::ValueBase& value)
 {
   Glib::RefPtr<Gdk::Pixbuf> pixbuf = Conversions::get_pixbuf_for_gda_value(value);
   if(pixbuf)
@@ -199,11 +199,11 @@ void ImageGlom::set_value(const Gnome::Gda::Value& value)
   }
 }
 
-Gnome::Gda::Value ImageGlom::get_value() const
+Glib::ValueBase ImageGlom::get_value() const
 {
   //TODO: Return the data from the file that was just chosen.
   //Don't store the original here any longer than necessary,
-  Gnome::Gda::Value result; //TODO: Initialize it as binary.
+  Glib::ValueBase result; //TODO: Initialize it as binary.
 
   if(m_pixbuf_original)
   {

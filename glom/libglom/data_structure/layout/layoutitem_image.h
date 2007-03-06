@@ -23,6 +23,7 @@
 
 #include "layoutitem.h"
 #include <libgdamm/value.h>
+#include <libgda/gda-value.h> //For GDA_TYPE_BINARY. TODO: Remove this.
 
 namespace Glom
 {
@@ -51,18 +52,18 @@ public:
 
   /** Get the image that will be shown on each record.
    */
-  Gnome::Gda::Value get_image() const;
+  Glib::ValueBase get_image() const;
 
   /** Set the image that will be shown on each record.
    */
-  void set_image(const Gnome::Gda::Value& image);
+  void set_image(const Glib::ValueBase& image);
 
   //Saves the image to a temporary file and provides the file URI.
   Glib::ustring create_local_image_uri() const;
 
 protected:
 
-  Gnome::Gda::Value m_image;
+  Glib::ValueBase m_image; //TODO: Use Gnome::Gda::TYPE_BINARY.
 };
 
 } //namespace Glom

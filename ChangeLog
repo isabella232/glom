@@ -1,3 +1,13 @@
+2007-03-06  Armin Burgmeier  <armin@openismus.com>
+
+	* configure.in: Depend on libgdamm-3.0 and libgda-3.0. Also added a
+	AM_CONDITIONAL(HAVE_GNOME_DOC_UTILS, 1), because automake bails out if
+	there is no AM_CONDITIONAL with HAVE_GNOME_DOC_UTILS in it. I don't
+	know why this is/was not required for trunk.
+
+	* Several files: Applied Murray's halfdone patch from #320198. Some
+	hunks were not applied, I did not do any further merging yet.
+
 2007-03-04  Armin Burgmeier  <armin@openismus.com>
 
 	* glom/utilitiy_widgets/db_adddel/db_adddel.h:

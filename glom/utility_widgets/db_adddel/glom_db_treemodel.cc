@@ -293,7 +293,7 @@ GType DbTreeModel::get_column_type_vfunc(int index) const
     return 0;
 }
 
-void DbTreeModel::get_value_vfunc(const TreeModel::iterator& iter, int column, Glib::ValueBase& value) const
+void DbTreeModel::get_value_vfunc(const TreeModel::iterator& iter, int column, Glib::ValueBaseBase& value) const
 {
   if(check_treeiter_validity(iter))
   {
@@ -304,8 +304,8 @@ void DbTreeModel::get_value_vfunc(const TreeModel::iterator& iter, int column, G
       value_specific.init( typeModelColumn::ValueType::value_type() );  //TODO: Is there any way to avoid this step?
 
       //Or, instead of asking the compiler for the TreeModelColumn's ValueType:
-      //Glib::Value< DbValue > value_specific;
-      //value_specific.init( Glib::Value< DbValue >::value_type() ); //TODO: Is there any way to avoid this step?
+      //Glib::ValueBase< DbValue > value_specific;
+      //value_specific.init( Glib::ValueBase< DbValue >::value_type() ); //TODO: Is there any way to avoid this step?
 
       type_datamodel_const_iter dataRowIter = get_datamodel_row_iter_from_tree_row_iter(iter);
       //g_warning("DbTreeModel::get_value_vfunc(): dataRowIter=%d, get_internal_rows_count=%d", dataRowIter, get_internal_rows_count());
@@ -340,7 +340,7 @@ void DbTreeModel::get_value_vfunc(const TreeModel::iterator& iter, int column, G
 
 
         value_specific.set(result); //The compiler would complain if the type was wrong.
-        value.init( Glib::Value< DbValue >::value_type() ); //TODO: Is there any way to avoid this step? Can't it copy the type as well as the value?
+        value.init( Glib::ValueBase< DbValue >::value_type() ); //TODO: Is there any way to avoid this step? Can't it copy the type as well as the value?
         value = value_specific;
       }
     }
@@ -676,7 +676,7 @@ DbTreeModel::iterator DbTreeModel::append()
 }
 
 
-void DbTreeModel::set_value_impl(const iterator& row, int column, const Glib::ValueBase& value)
+void DbTreeModel::set_value_impl(const iterator& row, int column, const Glib::ValueBaseBase& value)
 {
   if(iter_is_valid(row))
   {
@@ -688,7 +688,7 @@ void DbTreeModel::set_value_impl(const iterator& row, int column, const Glib::Va
 
     //Cast it to the specific value type.
     //It can't work with anything else anyway.
-    typedef Glib::Value< DbValue > ValueDbValue;
+    typedef Glib::ValueBase< DbValue > ValueDbValue;
 
     const ValueDbValue* pDbValue = static_cast<const ValueDbValue*>(&value);
     if(!pDbValue)
@@ -897,7 +897,7 @@ void DbTreeModel::get_record_counts(gulong& total, gulong& found) const
       {
         if(datamodel->get_n_rows())
         {
-          Gnome::Gda::Value value = datamodel->get_value_at(0, 0);
+          Glib::ValueBase value = datamodel->get_value_at(0, 0);
           total = (gulong)value.get_bigint(); //I discovered that it's a bigint by trying it.
         }
       }

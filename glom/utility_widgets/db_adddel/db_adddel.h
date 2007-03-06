@@ -72,7 +72,7 @@ public:
   virtual void set_allow_add(bool val = true);
   virtual void set_allow_delete(bool val = true);
 
-  //Gtk::TreeModel::iterator add_item(const Gnome::Gda::Value& valKey); //Return index of new row.
+  //Gtk::TreeModel::iterator add_item(const Glib::ValueBase& valKey); //Return index of new row.
 
   /** Get an iterator to the blank row in which the user should add data for the new row.
    * You can then add the row to your underlying data store when some data has been filled, by handling signal_user_changed.
@@ -81,21 +81,21 @@ public:
 
   void remove_item(const Gtk::TreeModel::iterator& iter);
 
-  Gnome::Gda::Value get_value(const Gtk::TreeModel::iterator& iter, const sharedptr<const LayoutItem_Field>& layout_item);
+  Glib::ValueBase get_value(const Gtk::TreeModel::iterator& iter, const sharedptr<const LayoutItem_Field>& layout_item);
 
   /** Get the row's hidden key
    */
-  Gnome::Gda::Value get_value_key(const Gtk::TreeModel::iterator& iter);
+  Glib::ValueBase get_value_key(const Gtk::TreeModel::iterator& iter);
 
   /** Set the row's hidden key
    */
-  void set_value_key(const Gtk::TreeModel::iterator& iter, const Gnome::Gda::Value& value);
+  void set_value_key(const Gtk::TreeModel::iterator& iter, const Glib::ValueBase& value);
 
   /** @param col A value returned from add_column().
    * @result The value on the selected row.
    */
-  Gnome::Gda::Value get_value_selected(const sharedptr<const LayoutItem_Field>& layout_item);
-  Gnome::Gda::Value get_value_key_selected();
+  Glib::ValueBase get_value_selected(const sharedptr<const LayoutItem_Field>& layout_item);
+  Glib::ValueBase get_value_key_selected();
 
   Gtk::TreeModel::iterator get_item_selected();
 
@@ -115,13 +115,13 @@ public:
    * @param layout_item Describes the column(s) whose values should be changed.
    * @param value The new value.
    */
-  virtual void set_value(const Gtk::TreeModel::iterator& iter, const sharedptr<const LayoutItem_Field>& layout_item, const Gnome::Gda::Value& value);
+  virtual void set_value(const Gtk::TreeModel::iterator& iter, const sharedptr<const LayoutItem_Field>& layout_item, const Glib::ValueBase& value);
 
   /** 
    * @param col A value returned from add_column().
    * @param value The new value.
    */
-  virtual void set_value_selected(const sharedptr<const LayoutItem_Field>& layout_item, const Gnome::Gda::Value& value);
+  virtual void set_value_selected(const sharedptr<const LayoutItem_Field>& layout_item, const Glib::ValueBase& value);
 
   bool get_is_first_row(const Gtk::TreeModel::iterator& iter) const;
   bool get_is_last_row(const Gtk::TreeModel::iterator& iter) const;
@@ -181,7 +181,7 @@ public:
 
   void set_show_column_titles(bool bVal = true);
 
-  Gtk::TreeModel::iterator get_row(const Gnome::Gda::Value& key);
+  Gtk::TreeModel::iterator get_row(const Glib::ValueBase& key);
 
   void finish_editing(); //Closes active edit controls and commits the data to the cell.
   //virtual void reactivate(); //Sheet doesn't seem to update unless a cell is active.
@@ -252,7 +252,7 @@ protected:
   type_list_indexes get_data_model_column_index(const sharedptr<const LayoutItem_Field>& layout_item_field) const;
 
   virtual void setup_menu();
-  virtual Gnome::Gda::Value treeview_get_key(const Gtk::TreeModel::iterator& row);
+  virtual Glib::ValueBase treeview_get_key(const Gtk::TreeModel::iterator& row);
 
   ///Add a blank row, or return the existing blank row if there already is one.
   //virtual Gtk::TreeModel::iterator get_next_available_row_with_add_if_necessary();

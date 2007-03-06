@@ -43,6 +43,7 @@ AM_CONDITIONAL(ENABLE_SK, test "x$enable_scrollkeeper" = "xyes")
 AC_SUBST([ACLOCAL_AMFLAGS], ['-I macros ${ACLOCAL_FLAGS}'])
 
 #For gnome-doc-utils:
+AM_CONDITIONAL(HAVE_GNOME_DOC_UTILS, 1) # automake bails out without it
 GNOME_DOC_INIT([0.9.0])
 
 AC_LANG_CPLUSPLUS

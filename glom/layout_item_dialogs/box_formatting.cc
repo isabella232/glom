@@ -159,7 +159,7 @@ bool Box_Formatting::get_formatting(FieldFormatting& format) const
       if(!text.empty())
       {
         bool success = false;
-        Gnome::Gda::Value value = Conversions::parse_value(m_field->get_glom_type(), text, m_format.m_numeric_format, success);
+        Glib::ValueBase value = Conversions::parse_value(m_field->get_glom_type(), text, m_format.m_numeric_format, success);
 
         if(success)
           list_choice_values.push_back(value);

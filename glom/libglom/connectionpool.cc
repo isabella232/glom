@@ -283,8 +283,8 @@ sharedptr<SharedConnection> ConnectionPool::connect()
             Glib::RefPtr<Gnome::Gda::DataModel> data_model = m_refGdaConnection->execute_single_command("SELECT version()");
             if(data_model && data_model->get_n_rows() && data_model->get_n_columns())
             {
-              Gnome::Gda::Value value = data_model->get_value_at(0, 0);
-              if(value.get_value_type() == Gnome::Gda::VALUE_TYPE_STRING)
+              Glib::ValueBase value = data_model->get_value_at(0, 0);
+              if(G_VALUE_TYPE(value.gobj()) == G_TYPE_STRING)
               {
                 const Glib::ustring version_text = value.get_string();
 

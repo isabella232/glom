@@ -158,19 +158,19 @@ class numpunct_no_thousands_separator: public std::numpunct<char>
 
 } //anonymous namespace
 
-Glib::ustring Conversions::get_text_for_gda_value(Field::glom_field_type glom_type, const Gnome::Gda::Value& value, const NumericFormat& numeric_format)
+Glib::ustring Conversions::get_text_for_gda_value(Field::glom_field_type glom_type, const Glib::ValueBase& value, const NumericFormat& numeric_format)
 {
   return get_text_for_gda_value(glom_type, value, std::locale("") /* the user's current locale */, numeric_format); //Get the current locale.
 }
 
-Glib::ustring Conversions::get_text_for_gda_value(Field::glom_field_type glom_type, const Gnome::Gda::Value& value, const std::locale& locale, const NumericFormat& numeric_format, bool iso_format)
+Glib::ustring Conversions::get_text_for_gda_value(Field::glom_field_type glom_type, const Glib::ValueBase& value, const std::locale& locale, const NumericFormat& numeric_format, bool iso_format)
 {
-  if(value.get_value_type() == Gnome::Gda::VALUE_TYPE_NULL) //The type can be null for any of the actual field types.
+  if(G_VALUE_TYPE(value.gobj()) == Gnome::Gda::VALUE_TYPE_NULL) //The type can be null for any of the actual field types.
   {
     return "";
   }
 
-  if( (glom_type == Field::TYPE_DATE) && (value.get_value_type() == Gnome::Gda::VALUE_TYPE_DATE))
+  if( (glom_type == Field::TYPE_DATE) && (G_VALUE_TYPE(value.gobj()) == G_TYPE_DATE))
   {
     Gnome::Gda::Date gda_date = value.get_date();
 
@@ -190,7 +190,7 @@ Glib::ustring Conversions::get_text_for_gda_value(Field::glom_field_type glom_ty
     return date.format_string("%x"); //%x means "is replaced by the locale's appropriate date representation".
     */
   }
-  else if((glom_type == Field::TYPE_TIME) && (value.get_value_type() == Gnome::Gda::VALUE_TYPE_TIME))
+  else if((glom_type == Field::TYPE_TIME) && (G_VALUE_TYPE(value.gobj()) == Gnome::Gda::VALUE_TYPE_TIME))
   {
     Gnome::Gda::Time gda_time = value.get_time();
 
@@ -204,7 +204,7 @@ Glib::ustring Conversions::get_text_for_gda_value(Field::glom_field_type glom_ty
 
     return format_time(the_c_time, locale, iso_format);
   }
-  else if( (glom_type == Field::TYPE_NUMERIC) && (value.get_value_type() == Gnome::Gda::VALUE_TYPE_NUMERIC))
+  else if( (glom_type == Field::TYPE_NUMERIC) && (G_VALUE_TYPE(value.gobj()) == Gnome::Gda::VALUE_TYPE_NUMERIC))
   {
     const GdaNumeric* gda_numeric = value.get_numeric();
     std::string text_in_c_locale;
@@ -259,11 +259,11 @@ Glib::ustring Conversions::get_text_for_gda_value(Field::glom_field_type glom_ty
   }
   else
   {
-    return value.to_string();
+    return Gnome::Gda::value_to_string(value);
   }
 }
 
-Gnome::Gda::Value Conversions::parse_value(double number)
+Glib::ValueBase Conversions::parse_value(double number)
 {
   //This is just a way to get a NUMERIC Gda::Value from a numeric type:
   //Try to parse the inputted number, according to the current locale.
@@ -284,16 +284,16 @@ Gnome::Gda::Value Conversions::parse_value(double number)
   */
   gda_numeric.number = g_strdup(number_canonical_text.c_str());
 
-  return Gnome::Gda::Value(&gda_numeric);
+  return Glib::ValueBase(&gda_numeric);
 }
 
-Gnome::Gda::Value Conversions::parse_value(Field::glom_field_type glom_type, const Glib::ustring& text, bool& success, bool iso_format)
+Glib::ValueBase Conversions::parse_value(Field::glom_field_type glom_type, const Glib::ustring& text, bool& success, bool iso_format)
 {
   NumericFormat ignore_format;
   return parse_value(glom_type, text, ignore_format, success, iso_format);
 }
 
-Gnome::Gda::Value Conversions::parse_value(Field::glom_field_type glom_type, const Glib::ustring& text, const NumericFormat& numeric_format, bool& success, bool iso_format)
+Glib::ValueBase Conversions::parse_value(Field::glom_field_type glom_type, const Glib::ustring& text, const NumericFormat& numeric_format, bool& success, bool iso_format)
 {
   std::locale the_locale = (iso_format ? std::locale::classic() :  std::locale("") /* The user's current locale */);
 
@@ -303,7 +303,7 @@ Gnome::Gda::Value Conversions::parse_value(Field::glom_field_type glom_type, con
   {
     if( (glom_type == Field::TYPE_DATE) || (glom_type ==  Field::TYPE_TIME) || (glom_type ==  Field::TYPE_NUMERIC) )
     {
-      Gnome::Gda::Value null_value;
+      Glib::ValueBase null_value;
       success = true;
       return null_value;
     }
@@ -318,7 +318,7 @@ Gnome::Gda::Value Conversions::parse_value(Field::glom_field_type glom_type, con
     gda_date.month = the_c_time.tm_mon + 1; //The C month starts at 0.
     gda_date.day = the_c_time.tm_mday; //THe C mday starts at 1.
 
-    return Gnome::Gda::Value(gda_date);
+    return Glib::ValueBase(gda_date);
   }
   else if(glom_type == Field::TYPE_TIME)
   {
@@ -335,7 +335,7 @@ Gnome::Gda::Value Conversions::parse_value(Field::glom_field_type glom_type, con
     gda_time.minute = the_c_time.tm_min;
     gda_time.second = the_c_time.tm_sec;
 
-    return Gnome::Gda::Value(gda_time);
+    return Glib::ValueBase(gda_time);
   }
   else if(glom_type == Field::TYPE_NUMERIC)
   {
@@ -380,18 +380,18 @@ Gnome::Gda::Value Conversions::parse_value(Field::glom_field_type glom_type, con
     gda_numeric.number = g_strdup(number_canonical_text.c_str());
 
     success = true; //Can this ever fail?
-    return Gnome::Gda::Value(&gda_numeric);
+    return Glib::ValueBase(&gda_numeric);
   }
   else if(glom_type == Field::TYPE_BOOLEAN)
   {
     success = true;
-    return Gnome::Gda::Value( (text == "TRUE" ? true : false) ); //TODO: Internationalize this, but it should never be used anyway.
+    return Glib::ValueBase( (text == "TRUE" ? true : false) ); //TODO: Internationalize this, but it should never be used anyway.
   }
   else if(glom_type == Field::TYPE_IMAGE)
   {
     //We assume that the text is the same format that we use in the document when saving examples.
     //(The SQL format).
-    Gnome::Gda::Value result;
+    Glib::ValueBase result;
 
     //libgda currently assumes that this buffer is an already-escaped string.
     //TODO: Unescape the text when libgda has been fixed.
@@ -401,7 +401,7 @@ Gnome::Gda::Value Conversions::parse_value(Field::glom_field_type glom_type, con
   }
 
   success = true;
-  return Gnome::Gda::Value(text);
+  return Glib::ValueBase(text);
 
 }
 
@@ -631,36 +631,36 @@ tm Conversions::parse_tm(const Glib::ustring& text, const std::locale& locale, c
 }
 */
 
-bool Conversions::value_is_empty(const Gnome::Gda::Value& value)
+bool Conversions::value_is_empty(const Glib::ValueBase& value)
 {
-  switch(value.get_value_type())
+  switch(G_VALUE_TYPE(value.gobj()))
   {
     case(Gnome::Gda::VALUE_TYPE_NULL):
       return true;
-    case(Gnome::Gda::VALUE_TYPE_STRING):
+    case(G_TYPE_STRING):
       return value.get_string().empty();
     default:
       return false; //None of the other types can be empty. (An empty numeric, date, or time type shows up as a null.
   }
 }
 
-Gnome::Gda::Value Conversions::get_empty_value(Field::glom_field_type field_type)
+Glib::ValueBase Conversions::get_empty_value(Field::glom_field_type field_type)
 {
   switch(field_type)
   {
     case(Field::TYPE_TEXT):
-      return Gnome::Gda::Value( Glib::ustring() ); //Use an empty string instead of a null for text fields, because the distinction is confusing for users, and gives no advantages.
+      return Glib::ValueBase( Glib::ustring() ); //Use an empty string instead of a null for text fields, because the distinction is confusing for users, and gives no advantages.
     default:
-      return Gnome::Gda::Value(); //A NULL instance, because there is no suitable empty value for numeric, date, or time fields.
+      return Glib::ValueBase(); //A NULL instance, because there is no suitable empty value for numeric, date, or time fields.
   }
 }
 
-Gnome::Gda::Value Conversions::get_example_value(Field::glom_field_type field_type)
+Glib::ValueBase Conversions::get_example_value(Field::glom_field_type field_type)
 {
   switch(field_type)
   {
     case(Field::TYPE_BOOLEAN):
-      return Gnome::Gda::Value(true);
+      return Glib::ValueBase(true);
     case(Field::TYPE_DATE):
     {
       bool success = false;
@@ -672,14 +672,14 @@ Gnome::Gda::Value Conversions::get_example_value(Field::glom_field_type field_ty
       return parse_value(field_type, "1", success, true /* iso_format */);
     }
     case(Field::TYPE_TEXT):
-      return Gnome::Gda::Value( Glib::ustring("example") ); //Use an empty string instead of a null for text fields, because the distinction is confusing for users, and gives no advantages.
+      return Glib::ValueBase( Glib::ustring("example") ); //Use an empty string instead of a null for text fields, because the distinction is confusing for users, and gives no advantages.
     case(Field::TYPE_TIME):
     {
       bool success = false;
       return parse_value(field_type, "01:02", success, true /* iso_format */);
     }
     default:
-      return Gnome::Gda::Value();
+      return Glib::ValueBase();
   }
 }
 
@@ -871,12 +871,12 @@ Glib::ustring Conversions::get_escaped_binary_data(guint8* buffer, size_t buffer
   return result;
 }
 
-Gnome::Gda::Value Conversions::parse_escaped_binary_data(const Glib::ustring& escaped_data)
+Glib::ValueBase Conversions::parse_escaped_binary_data(const Glib::ustring& escaped_data)
 {
   //Hopefully we don't need to use this because Gda does it for us when we read a part of a "SELECT" result into a Gnome::Value.
   //TODO: Performance
 
-  Gnome::Gda::Value result;
+  Glib::ValueBase result;
   size_t buffer_binary_length = 0;
   guchar* buffer_binary =  Glom_PQunescapeBytea((guchar*)escaped_data.c_str(), &buffer_binary_length);
   if(buffer_binary)
@@ -888,9 +888,9 @@ Gnome::Gda::Value Conversions::parse_escaped_binary_data(const Glib::ustring& es
   return result;
 }
 
-Gnome::Gda::Value Conversions::convert_value(const Gnome::Gda::Value& value, Field::glom_field_type target_glom_type)
+Glib::ValueBase Conversions::convert_value(const Glib::ValueBase& value, Field::glom_field_type target_glom_type)
 {
-  const Field::glom_field_type source_glom_type = Field::get_glom_type_for_gda_type(value.get_value_type());
+  const Field::glom_field_type source_glom_type = Field::get_glom_type_for_gda_type(G_VALUE_TYPE(value.gobj()));
   if(source_glom_type == target_glom_type)
     return value; //No conversion necessary.
   else
@@ -903,11 +903,11 @@ Gnome::Gda::Value Conversions::convert_value(const Gnome::Gda::Value& value, Fie
   return value;
 }
 
-Glib::RefPtr<Gdk::Pixbuf> Conversions::get_pixbuf_for_gda_value(const Gnome::Gda::Value& value)
+Glib::RefPtr<Gdk::Pixbuf> Conversions::get_pixbuf_for_gda_value(const Glib::ValueBase& value)
 {
   Glib::RefPtr<Gdk::Pixbuf> result;
 
-  if(value.get_value_type() == Gnome::Gda::VALUE_TYPE_BINARY)
+  if(G_VALUE_TYPE(value.gobj()) == Gnome::Gda::VALUE_TYPE_BINARY)
   {
     glong size = 0;
     const gpointer pData = value.get_binary(size);

@@ -62,7 +62,7 @@ bool Box_DB_Table::refresh_data_from_database()
   return fill_from_database();
 }
 
-Gnome::Gda::Value Box_DB_Table::get_entered_field_data_field_only(const sharedptr<const Field>& field) const
+Glib::ValueBase Box_DB_Table::get_entered_field_data_field_only(const sharedptr<const Field>& field) const
 {
   sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
   layout_item->set_full_field_details(field); 
@@ -70,11 +70,11 @@ Gnome::Gda::Value Box_DB_Table::get_entered_field_data_field_only(const sharedpt
   return get_entered_field_data(layout_item);
 }
 
-Gnome::Gda::Value Box_DB_Table::get_entered_field_data(const sharedptr<const LayoutItem_Field>& /* field */) const
+Glib::ValueBase Box_DB_Table::get_entered_field_data(const sharedptr<const LayoutItem_Field>& /* field */) const
 {
   //Override this to use Field::set_data() too.
 
-  return Gnome::Gda::Value(); //null
+  return Glib::ValueBase(); //null
 }
 
 unsigned long Box_DB_Table::get_last_auto_increment_value(const Glib::RefPtr<Gnome::Gda::DataModel>& data_model, const Glib::ustring& /* field_name */)
@@ -106,7 +106,7 @@ Box_DB_Table::type_vecFields Box_DB_Table::get_fields_for_datamodel(const Glib::
   int columns =  data_model->get_n_columns();
   for(int i = 0; i < columns; ++i)
   {
-    Gnome::Gda::FieldAttributes fieldinfo = data_model->describe_column(i);
+    Glib::RefPtr<Gnome::Gda::Column> fieldinfo = data_model->describe_column(i);
     sharedptr<Field> field(new Field());
     field->set_field_info(fieldinfo); //TODO: Get glom-specific information from document?
     result.push_back( field );
@@ -116,7 +116,7 @@ Box_DB_Table::type_vecFields Box_DB_Table::get_fields_for_datamodel(const Glib::
 }
 */
 
-Glib::ustring Box_DB_Table::postgres_get_field_definition_for_sql(const Gnome::Gda::FieldAttributes& field_info)
+Glib::ustring Box_DB_Table::postgres_get_field_definition_for_sql(const Glib::RefPtr<const Gnome::Gda::Column>& field_info)
 {
   Glib::ustring strResult;
 
@@ -124,7 +124,7 @@ Glib::ustring Box_DB_Table::postgres_get_field_definition_for_sql(const Gnome::G
   Glib::ustring strType = "unknowntype";
 
   //Postgres has a special "serial" datatype. (MySQL uses a numeric type, and has an extra "AUTO_INCREMENT" command)
-  if(false) //disabled for now - see generate_next_auto_increment() //field_info.get_auto_increment())
+  if(false) //disabled for now - see generate_next_auto_increment() //field_info->get_auto_increment())
   {
     strType = "serial";
   }
@@ -136,7 +136,7 @@ Glib::ustring Box_DB_Table::postgres_get_field_definition_for_sql(const Gnome::G
       const FieldTypes* pFieldTypes = pConnectionPool->get_field_types();
       if(pFieldTypes)
       {
-        const Gnome::Gda::ValueType fieldType = field_info.get_gdatype();
+        const GType fieldType = field_info->get_type();
         strType = pFieldTypes->get_string_name_for_gdavaluetype(fieldType);
       }
     }
@@ -188,23 +188,23 @@ Glib::ustring Box_DB_Table::postgres_get_field_definition_for_sql(const Gnome::G
   */
 
   //Unique:
-  if(field_info.get_unique_key())
+  if(field_info->get_unique_key())
     strResult += " UNIQUE";
 
   /* Posgres needs us to do this separately
   //Not Null:
-  if(!(field_info.get_allow_null()))
+  if(!(field_info->get_allow_null()))
     strResult += " NOT NULL";
   */
 
   //Default:
-  Gnome::Gda::Value valueDefault = field_info.get_default_value();
+  Glib::ValueBase valueDefault = field_info->get_default_value();
   const Glib::ustring& strDefault =  valueDefault.to_string();
   if(!strDefault.empty() && strDefault != "NULL")
     strResult += " DEFAULT " + strDefault; //TODO: Quote/Escape it if necessary.
 
   //Primary Key:
-  if(field_info.get_primary_key())
+  if(field_info->get_primary_key())
     strResult += " PRIMARY KEY";
 
   return strResult;

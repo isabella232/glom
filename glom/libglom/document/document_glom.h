@@ -254,9 +254,9 @@ public:
   sharedptr<Report> get_report(const Glib::ustring& table_name, const Glib::ustring& report_name) const;
   void remove_report(const Glib::ustring& table_name, const Glib::ustring& report_name);
 
-  void set_layout_record_viewed(const Glib::ustring& table_name, const Glib::ustring& layout_name, const Gnome::Gda::Value& primary_key_value);
+  void set_layout_record_viewed(const Glib::ustring& table_name, const Glib::ustring& layout_name, const Glib::ValueBase& primary_key_value);
   void forget_layout_record_viewed(const Glib::ustring& table_name);
-  Gnome::Gda::Value get_layout_record_viewed(const Glib::ustring& table_name, const Glib::ustring& layout_name) const;
+  Glib::ValueBase get_layout_record_viewed(const Glib::ustring& table_name, const Glib::ustring& layout_name) const;
 
   void set_layout_current(const Glib::ustring& table_name, const Glib::ustring& layout_name);
   Glib::ustring get_layout_current(const Glib::ustring& table_name) const;
@@ -403,7 +403,7 @@ protected:
     Glib::ustring m_example_rows;
 
     //Per-session, not saved in document:
-    typedef std::map<Glib::ustring, Gnome::Gda::Value> type_map_layout_primarykeys;
+    typedef std::map<Glib::ustring, Glib::ValueBase> type_map_layout_primarykeys;
     type_map_layout_primarykeys m_map_current_record; //The record last viewed in each layout.
 
     Glib::ustring m_layout_current;

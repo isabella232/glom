@@ -134,7 +134,7 @@ protected:
 
   //virtual void set_document(Document_Glom* pDocument); //override
 
-  void show_table(const Glib::ustring& table_name, const Gnome::Gda::Value& primary_key_value_for_details = Gnome::Gda::Value());
+  void show_table(const Glib::ustring& table_name, const Glib::ValueBase& primary_key_value_for_details = Glib::ValueBase());
   void show_table_title();
   void update_table_in_document_from_database();
 
@@ -152,7 +152,7 @@ protected:
   void on_notebook_find_criteria(const Glib::ustring& where_clause);
   void on_button_quickfind();
   void on_button_find_all();
-  void on_notebook_data_record_details_requested(const Glib::ustring& table_name, Gnome::Gda::Value primary_key_value);
+  void on_notebook_data_record_details_requested(const Glib::ustring& table_name, Glib::ValueBase primary_key_value);
   void on_userlevel_changed(AppState::userlevels userlevel);
 
   void on_dialog_add_related_table_response(int response);

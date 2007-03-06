@@ -125,19 +125,19 @@ Box_Data_Details::~Box_Data_Details()
   remove_view(&m_FlowTable);
 }
 
-Gnome::Gda::Value Box_Data_Details::get_primary_key_value() const
+Glib::ValueBase Box_Data_Details::get_primary_key_value() const
 {
   return m_primary_key_value;
 }
 
-void Box_Data_Details::set_primary_key_value(const Gtk::TreeModel::iterator& /* row */, const Gnome::Gda::Value& value)
+void Box_Data_Details::set_primary_key_value(const Gtk::TreeModel::iterator& /* row */, const Glib::ValueBase& value)
 {
   m_primary_key_value = value;
 }
 
-bool Box_Data_Details::init_db_details(const FoundSet& found_set, const Gnome::Gda::Value& primary_key_value)
+bool Box_Data_Details::init_db_details(const FoundSet& found_set, const Glib::ValueBase& primary_key_value)
 {
-  //std::cout << "Box_Data_Details::init_db_details(): primary_key_value.to_string()=" << primary_key_value.to_string() << std::endl;
+  //std::cout << "Box_Data_Details::init_db_details(): Gnome::Gda::value_to_string(primary_key_value)=" << Gnome::Gda::value_to_string(primary_key_value) << std::endl;
 
   m_primary_key_value = primary_key_value;
 
@@ -146,16 +146,16 @@ bool Box_Data_Details::init_db_details(const FoundSet& found_set, const Gnome::G
   return Box_Data::init_db_details(found_set); //Calls create_layout(), then fill_from_database()
 }
 
-bool Box_Data_Details::refresh_data_from_database_with_primary_key(const Gnome::Gda::Value& primary_key_value)
+bool Box_Data_Details::refresh_data_from_database_with_primary_key(const Glib::ValueBase& primary_key_value)
 {
-  //std::cout << "refresh_data_from_database_with_primary_key(): primary_key_value.to_string()=" << primary_key_value.to_string() << std::endl;
+  //std::cout << "refresh_data_from_database_with_primary_key(): Gnome::Gda::value_to_string(primary_key_value)=" << Gnome::Gda::value_to_string(primary_key_value) << std::endl;
   m_primary_key_value = primary_key_value;
   return fill_from_database();
 }
 
 bool Box_Data_Details::refresh_data_from_database_blank()
 {
-  return refresh_data_from_database_with_primary_key( Gnome::Gda::Value() );
+  return refresh_data_from_database_with_primary_key( Glib::ValueBase() );
 }
 
 void Box_Data_Details::create_layout()
@@ -185,7 +185,7 @@ void Box_Data_Details::create_layout()
 
 bool Box_Data_Details::fill_from_database()
 {
-  //std::cout << "Box_Data_Details::fill_from_database(): m_primary_key_value.to_string()=" << m_primary_key_value.to_string() << std::endl;
+  //std::cout << "Box_Data_Details::fill_from_database(): Gnome::Gda::value_to_string(m_primary_key_value)=" << Gnome::Gda::value_to_string(m_primary_key_value) << std::endl;
 
  //Don't try to open a connection if there is no document,
  //for instance, during application destruction.
@@ -272,7 +272,7 @@ bool Box_Data_Details::fill_from_database()
               sharedptr<LayoutItem_Field> layout_item = fieldsToGet[i];
 
               //Field value:
-              Gnome::Gda::Value value;
+              Glib::ValueBase value;
 
               if(!primary_key_is_empty)
                 value = result->get_value_at(i, row_number);
@@ -315,7 +315,7 @@ void Box_Data_Details::on_button_new()
     if(m_field_primary_key && m_field_primary_key->get_auto_increment()) //If the primary key is an auto-increment:
     {
       //Just make a new record, and show it:
-      Gnome::Gda::Value primary_key_value = generate_next_auto_increment(m_table_name, m_field_primary_key->get_name()); //TODO: This should return a Gda::Value
+      Glib::ValueBase primary_key_value = generate_next_auto_increment(m_table_name, m_field_primary_key->get_name()); //TODO: This should return a Gda::Value
 
       record_new(false /* use entered field data */, primary_key_value);
       refresh_data_from_database_with_primary_key(primary_key_value);
@@ -380,22 +380,22 @@ void Box_Data_Details::on_button_nav_last()
     signal_nav_last().emit();
 }
 
-Gnome::Gda::Value Box_Data_Details::get_entered_field_data(const sharedptr<const LayoutItem_Field>& field) const
+Glib::ValueBase Box_Data_Details::get_entered_field_data(const sharedptr<const LayoutItem_Field>& field) const
 {
   return m_FlowTable.get_field_value(field);
 }
 
-void Box_Data_Details::set_entered_field_data(const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value)
+void Box_Data_Details::set_entered_field_data(const sharedptr<const LayoutItem_Field>& field, const Glib::ValueBase& value)
 {
   m_FlowTable.set_field_value(field, value);
 }
 
-void Box_Data_Details::set_entered_field_data(const Gtk::TreeModel::iterator& /* row */, const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value)
+void Box_Data_Details::set_entered_field_data(const Gtk::TreeModel::iterator& /* row */, const sharedptr<const LayoutItem_Field>& field, const Glib::ValueBase& value)
 {
   set_entered_field_data(field, value);
 }
 
-Gnome::Gda::Value Box_Data_Details::get_primary_key_value_selected()
+Glib::ValueBase Box_Data_Details::get_primary_key_value_selected()
 {
   return m_primary_key_value;
 }
@@ -405,7 +405,7 @@ void Box_Data_Details::recalculate_fields_for_related_records(const Glib::ustrin
   m_FieldsCalculationInProgress.clear();
 
   //Check all fields in the parent table:
-  const Gnome::Gda::Value primary_key_value = get_primary_key_value();
+  const Glib::ValueBase primary_key_value = get_primary_key_value();
   for(type_vecFields::iterator iter = m_TableFields.begin(); iter != m_TableFields.end(); ++iter)
   {
     const sharedptr<const Field> field = *iter;
@@ -435,7 +435,7 @@ void Box_Data_Details::recalculate_fields_for_related_records(const Glib::ustrin
    m_FieldsCalculationInProgress.clear();
 }
 
-void Box_Data_Details::on_related_record_added(Gnome::Gda::Value /* strKeyValue */, Glib::ustring /* strFromKeyName */)
+void Box_Data_Details::on_related_record_added(Glib::ValueBase /* strKeyValue */, Glib::ustring /* strFromKeyName */)
 {
   //Prevent deletion of Related boxes.
   //One of them emitted this signal, and is probably still being edited.
@@ -514,7 +514,7 @@ void Box_Data_Details::on_flowtable_layout_changed()
   fill_from_database();
 }
 
-void Box_Data_Details::on_flowtable_requested_related_details(const Glib::ustring& table_name, Gnome::Gda::Value primary_key_value)
+void Box_Data_Details::on_flowtable_requested_related_details(const Glib::ustring& table_name, Glib::ValueBase primary_key_value)
 {
   if(Conversions::value_is_empty(primary_key_value))
     return; //Ignore empty ID fields.
@@ -527,7 +527,7 @@ void Box_Data_Details::on_flowtable_related_record_changed(const Glib::ustring& 
   recalculate_fields_for_related_records(relationship_name);
 }
 
-void Box_Data_Details::on_flowtable_field_open_details_requested(const sharedptr<const LayoutItem_Field>& layout_field, const Gnome::Gda::Value& field_value)
+void Box_Data_Details::on_flowtable_field_open_details_requested(const sharedptr<const LayoutItem_Field>& layout_field, const Glib::ValueBase& field_value)
 {
   if(Conversions::value_is_empty(field_value))
     return; //Ignore empty ID fields.
@@ -570,12 +570,12 @@ void Box_Data_Details::on_flowtable_field_edited(const sharedptr<const LayoutIte
 
   Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
 
-  Gnome::Gda::Value primary_key_value = get_primary_key_value();
+  Glib::ValueBase primary_key_value = get_primary_key_value();
   if(!Conversions::value_is_empty(primary_key_value)) //If there is not a primary key value:
   {
     Glib::ustring table_name;
     sharedptr<Field> primary_key_field;
-    Gnome::Gda::Value primary_key_value;
+    Glib::ValueBase primary_key_value;
 
     if(!layout_field->get_has_relationship_name())
     {
@@ -627,7 +627,7 @@ void Box_Data_Details::on_flowtable_field_edited(const sharedptr<const LayoutIte
     if(!check_entered_value_for_uniqueness(m_table_name, layout_field, field_value, window))
     {
       //Revert to the value in the database:
-      const Gnome::Gda::Value value_old = get_field_value_in_database(field_in_record, window);
+      const Glib::ValueBase value_old = get_field_value_in_database(field_in_record, window);
       set_entered_field_data(layout_field, value_old);
    
       return; 
@@ -694,7 +694,7 @@ void Box_Data_Details::on_flowtable_field_edited(const sharedptr<const LayoutIte
       else
       {
         //Make a new record, and show it:
-        Gnome::Gda::Value primary_key_value = generate_next_auto_increment(m_table_name, m_field_primary_key->get_name());
+        Glib::ValueBase primary_key_value = generate_next_auto_increment(m_table_name, m_field_primary_key->get_name());
 
         record_new(true /* use entered field data */, primary_key_value);
         refresh_data_from_database_with_primary_key(primary_key_value);
@@ -709,7 +709,7 @@ void Box_Data_Details::on_flowtable_field_edited(const sharedptr<const LayoutIte
         if(!check_entered_value_for_uniqueness(m_table_name, layout_field, field_value, window))
         {
           //Revert to a blank value:
-          const Gnome::Gda::Value value_old = Conversions::get_empty_value(layout_field->get_full_field_details()->get_glom_type());
+          const Glib::ValueBase value_old = Conversions::get_empty_value(layout_field->get_full_field_details()->get_glom_type());
           set_entered_field_data(layout_field, value_old);
         }
         else
@@ -764,7 +764,7 @@ void Box_Data_Details::print_layout_group(xmlpp::Element* node_parent, const sha
 
         nodeField->set_attribute("title", pLayoutField->get_title_or_name());
 
-        Gnome::Gda::Value value = m_FlowTable.get_field_value(pLayoutField);
+        Glib::ValueBase value = m_FlowTable.get_field_value(pLayoutField);
         const Glib::ustring text_representation = Conversions::get_text_for_gda_value(pLayoutField->get_glom_type(), value,
           pLayoutField->get_formatting_used().m_numeric_format); //In the current locale.
 

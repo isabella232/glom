@@ -559,7 +559,7 @@ void FlowTableWithFields::remove_field(const Glib::ustring& id)
   } 
 }
 
-void FlowTableWithFields::set_field_value(const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value)
+void FlowTableWithFields::set_field_value(const sharedptr<const LayoutItem_Field>& field, const Glib::ValueBase& value)
 {
   //Set widgets which should show the value of this field:
   type_list_widgets list_widgets = get_field(field);
@@ -579,13 +579,13 @@ void FlowTableWithFields::set_field_value(const sharedptr<const LayoutItem_Field
     Box_Data_List_Related* portal = dynamic_cast<Box_Data_List_Related*>(*iter);
     if(portal)
     {
-      //g_warning("FlowTableWithFields::set_field_value: foreign_key_value=%s", value.to_string().c_str());
+      //g_warning("FlowTableWithFields::set_field_value: foreign_key_value=%s", Gnome::Gda::value_to_string(value).c_str());
       portal->refresh_data_from_database_with_foreign_key(value /* foreign key value */);
     }
   }
 }
 
-Gnome::Gda::Value FlowTableWithFields::get_field_value(const sharedptr<const LayoutItem_Field>& field) const
+Glib::ValueBase FlowTableWithFields::get_field_value(const sharedptr<const LayoutItem_Field>& field) const
 {
   type_list_const_widgets list_widgets = get_field(field);
   if(!list_widgets.empty())
@@ -597,7 +597,7 @@ Gnome::Gda::Value FlowTableWithFields::get_field_value(const sharedptr<const Lay
   }
 
   //g_warning("FlowTableWithFields::get_field_value(): returning null");
-  return Gnome::Gda::Value(); //null.
+  return Glib::ValueBase(); //null.
 }
 
 void FlowTableWithFields::set_field_editable(const sharedptr<const LayoutItem_Field>& field, bool editable)
@@ -801,22 +801,22 @@ void FlowTableWithFields::on_script_button_clicked(const sharedptr< LayoutItem_B
   m_signal_script_button_clicked.emit(layout_item);
 }
 
-void FlowTableWithFields::on_entry_edited(const Gnome::Gda::Value& value, sharedptr<const LayoutItem_Field> field)
+void FlowTableWithFields::on_entry_edited(const Glib::ValueBase& value, sharedptr<const LayoutItem_Field> field)
 {
   m_signal_field_edited.emit(field, value);
 }
 
-void FlowTableWithFields::on_entry_open_details_requested(const Gnome::Gda::Value& value, sharedptr<const LayoutItem_Field> field)
+void FlowTableWithFields::on_entry_open_details_requested(const Glib::ValueBase& value, sharedptr<const LayoutItem_Field> field)
 {
   m_signal_field_open_details_requested.emit(field, value);
 }
 
-void FlowTableWithFields::on_flowtable_entry_edited(const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value)
+void FlowTableWithFields::on_flowtable_entry_edited(const sharedptr<const LayoutItem_Field>& field, const Glib::ValueBase& value)
 {
   m_signal_field_edited.emit(field, value);
 }
 
-void FlowTableWithFields::on_flowtable_entry_open_details_requested(const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value)
+void FlowTableWithFields::on_flowtable_entry_open_details_requested(const sharedptr<const LayoutItem_Field>& field, const Glib::ValueBase& value)
 {
   m_signal_field_open_details_requested.emit(field, value);
 }
@@ -1026,7 +1026,7 @@ void FlowTableWithFields::on_flowtable_related_record_changed(const Glib::ustrin
   signal_related_record_changed().emit(relationship_name);
 }
 
-void FlowTableWithFields::on_portal_user_requested_details(Gnome::Gda::Value primary_key_value, Box_Data_List_Related* portal_box)
+void FlowTableWithFields::on_portal_user_requested_details(Glib::ValueBase primary_key_value, Box_Data_List_Related* portal_box)
 {
   sharedptr<const LayoutItem_Portal> portal = portal_box->get_portal();
   if(!portal)
@@ -1040,7 +1040,7 @@ void FlowTableWithFields::on_portal_user_requested_details(Gnome::Gda::Value pri
   {
     //Try to find a doubly-related table that is not hidden, and open that instead:
     Glib::ustring doubly_related_table_name;
-    Gnome::Gda::Value doubly_related_primary_key;
+    Glib::ValueBase doubly_related_primary_key;
     portal_box->get_suitable_record_to_view_details(primary_key_value, doubly_related_table_name, doubly_related_primary_key);
 
     if(!(doubly_related_table_name.empty()) && !Conversions::value_is_empty(doubly_related_primary_key))
@@ -1052,7 +1052,7 @@ void FlowTableWithFields::on_portal_user_requested_details(Gnome::Gda::Value pri
   }
 }
 
-void FlowTableWithFields::on_flowtable_requested_related_details(const Glib::ustring& table_name, Gnome::Gda::Value primary_key_value)
+void FlowTableWithFields::on_flowtable_requested_related_details(const Glib::ustring& table_name, Glib::ValueBase primary_key_value)
 {
   //Forward it to the parent:
   signal_requested_related_details().emit(table_name, primary_key_value);
