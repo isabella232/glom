@@ -1,3 +1,9 @@
+2007-03-07  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/libglom/connectionpool.cc: Commented-out the use of avahi, because 
+	our use of it seems to be unstable, and it does not do anything useful yet 
+	anyway.
+
 2007-03-06  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/libglom/Makefile.am:

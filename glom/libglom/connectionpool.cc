@@ -862,6 +862,9 @@ bool ConnectionPool::install_postgres(Gtk::Window* parent_window)
  */
 void ConnectionPool::avahi_start_publishing()
 {
+  //This is commented-out for now, until we make it stable.
+
+  /*
   if(m_avahi_publisher)
     return;
 
@@ -869,15 +872,20 @@ void ConnectionPool::avahi_start_publishing()
   const int port = atoi(m_port.c_str());
 
   m_avahi_publisher = new AvahiPublisher(avahi_service_name, "_glom._tcp", port);
+  */
 }
 
 void ConnectionPool::avahi_stop_publishing()
 {
+  //This is commented-out for now, until we make it stable.
+
+  /*
   if(m_avahi_publisher)
   {
     delete m_avahi_publisher;
     m_avahi_publisher = 0;
   }
+  */
 }
 
 
