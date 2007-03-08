@@ -6,12 +6,11 @@
 
 G_BEGIN_DECLS
 
-
 int
-pygda_value_from_pyobject(GdaValue *boxed, PyObject *input);
+pygda_value_from_pyobject(GValue *boxed, PyObject *input);
 
 PyObject *
-pygda_value_as_pyobject(const GdaValue *value, gboolean copy_boxed);
+pygda_value_as_pyobject(const GValue *value, gboolean copy_boxed);
 
 G_END_DECLS
 

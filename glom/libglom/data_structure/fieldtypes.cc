@@ -20,6 +20,7 @@
 
 #include "fieldtypes.h"
 #include <iostream> //For debug output
+#include <libgda/gda-util.h> // For gda_g_type_to_string
 #include <glom/libglom/connectionpool.h>
 
 namespace Glom
@@ -37,7 +38,7 @@ FieldTypes::FieldTypes(const Glib::RefPtr<Gnome::Gda::Connection>& gda_connectio
     DATAMODEL_FIELDS_COL_GDATYPE = 3
   };
   
-  if(gda_connection && gda_connection->is_open())
+  if(gda_connection && gda_connection->is_opened())
   {
     //Read the Types information, so that we can map the string representation of the type (returned by CONNECTION_SCHEMA_FIELDS) to
     //the Gda::ValueType used by Glib::RefPtr<Gnome::Gda::Column>.
@@ -51,24 +52,24 @@ FieldTypes::FieldTypes(const Glib::RefPtr<Gnome::Gda::Connection>& gda_connectio
       int rows = data_model_tables->get_n_rows();
       for(int i = 0; i < rows; ++i)
       {
-        Glib::ValueBase value_name = data_model_tables->get_value_at(DATAMODEL_FIELDS_COL_NAME, i);
+        Gnome::Gda::Value value_name = data_model_tables->get_value_at(DATAMODEL_FIELDS_COL_NAME, i);
 
         //Get the types's string representation:
         Glib::ustring schema_type_string;
-        if(value_name.get_value_type() ==  G_TYPE_STRING)
+        if(value_name.get_value_type() == G_TYPE_STRING)
           schema_type_string = value_name.get_string();
     
         if(!schema_type_string.empty())
         {
-          Glib::ValueBase value_gdatype = data_model_tables->get_value_at(DATAMODEL_FIELDS_COL_GDATYPE, i);
-          if(value_gdatype.get_value_type() ==  Gnome::Gda::VALUE_TYPE_TYPE)
+          Gnome::Gda::Value value_gdatype = data_model_tables->get_value_at(DATAMODEL_FIELDS_COL_GDATYPE, i);
+          if(value_gdatype.get_value_type() == G_TYPE_GTYPE) // TODO: I am not sure whether this is correct since G_TYPE_GTYPE is pretty new in glib
           {
-            GType gdatype = value_gdatype.get_vtype();
+            GType gdatype = value_gdatype.get_g_type();
 
             //Save it for later:
             m_mapSchemaStringsToGdaTypes[schema_type_string] = gdatype;
-            
-            Glib::ustring gdatypestring = g_type_to_string(gdatype); 
+
+            Glib::ustring gdatypestring = gda_g_type_to_string(gdatype); // TODO: What is this actually used for?
             //std::cout << "schema type: " << schema_type_string << " = gdatype " << (guint)gdatype << "(" << gdatypestring << ")" << std::endl;
             
             m_mapGdaTypesToSchemaStrings[gdatype] = schema_type_string; //We save it twice, to just to make searching easier, without using a predicate.
@@ -90,7 +91,7 @@ GType FieldTypes::get_gdavalue_for_schema_type_string(const Glib::ustring& schem
 {
   type_mapSchemaStringsToGdaTypes::const_iterator iterFind = m_mapSchemaStringsToGdaTypes.find(schema_type_string);
   if(iterFind == m_mapSchemaStringsToGdaTypes.end())
-    return Gnome::Gda::VALUE_TYPE_UNKNOWN;
+    return GDA_TYPE_NULL;
   else
     return iterFind->second;
 }
@@ -100,12 +101,12 @@ Glib::ustring FieldTypes::get_string_name_for_gdavaluetype(GType field_type) con
   type_mapGdaTypesToSchemaStrings::const_iterator iterFind = m_mapGdaTypesToSchemaStrings.find(field_type);
   if(iterFind == m_mapGdaTypesToSchemaStrings.end())
   {
-    g_warning("FieldTypes::get_string_name_for_gdavaluetype(): returning unknowntype for field_type=%d", field_type);
+    g_warning("FieldTypes::get_string_name_for_gdavaluetype(): returning unknowntype for field_type=%ld", static_cast<long>(field_type));
 
     g_warning("  possible types are: ");
     for(type_mapGdaTypesToSchemaStrings::const_iterator iter = m_mapGdaTypesToSchemaStrings.begin(); iter != m_mapGdaTypesToSchemaStrings.end(); ++iter)
     {
-      g_warning("    gdatype=%d, sqltype=%s", iter->first, iter->second.c_str());
+      g_warning("    gdatype=%ld, sqltype=%s", static_cast<long>(iter->first), iter->second.c_str());
     }
     
     return "unknowntype";

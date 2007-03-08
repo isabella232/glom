@@ -163,7 +163,7 @@ Related_tp_as_mapping_getitem(PyObject *self, PyObject *item)
           PyGlomRecord::type_map_field_values::const_iterator iterFromKey = self_related->m_record->m_pMap_field_values->find(from_key);
           if(iterFromKey != self_related->m_record->m_pMap_field_values->end())
           {
-            const Glib::ValueBase from_key_value = iterFromKey->second;
+            const Gnome::Gda::Value from_key_value = iterFromKey->second;
 
             //TODO_Performance:
             //Get the full field details so we can sqlize its value:

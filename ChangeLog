@@ -1,3 +1,30 @@
+2007-03-07  Armin Burgmeier  <armin@openismus.com>
+
+	* configure.in: Depend on pygda-3.0.
+
+	* glom/libglom/python_embed/pygdavalue_conversions.h:
+	* glom/libglom/python_embed/pygdavalue_conversions.c: Copied from
+	pygda-3.0.
+
+	* glom/libglom/data_structure/fieldtypes.cc:
+	* glom/libglom/data_structure/field.cc:
+	* glom/libglom/data_structure/field.h:
+	* glom/libglom/data_structure/glomconversions.cc:
+	* glom/libglom/data_structure/layout/layoutitem_image.cc:
+	* glom/libglom/data_structure/layout/layoutitem_image.h:
+	* glom/libglom/data_structure/layout/fieldformatting.h:
+	* glom/libglom/data_structure/glomconversions.h:
+	* glom/libglom/python_embed/py_glom_relatedrecord.cc:
+	* glom/libglom/python_embed/py_glom_record.h:
+	* glom/libglom/python_embed/py_glom_related.cc:
+	* glom/libglom/document/document_glom.cc:
+	* glom/libglom/document/document_glom.h:
+	* glom/utility_widgets/db_adddel/glom_db_treemodel.h: Made these
+	build with the new libgda-3.0 API. Most stuff was replacing
+	Glib::ValueBase by Gnome::Gda::Value.
+
+	* TODO: Added a note about escaping.
+
 2007-03-06  Armin Burgmeier  <armin@openismus.com>
 
 	* configure.in: Depend on libgdamm-3.0 and libgda-3.0. Also added a

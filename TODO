@@ -1,2 +1,2 @@
-
+Probably, escape stuff needs to be fixed in glom/libglom/data_structure/glomconversions.cc and/or glom/libglom/data_structure/field(types).cc because escaping policy changed from libgda 1 to libgda 2.
 

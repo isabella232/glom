@@ -119,10 +119,10 @@ public:
   void set_unique_key(bool val = true);
 
   /// This forwards to the Glib::RefPtr<Gnome::Gda::Column>::get_default_value.
-  Glib::ValueBase get_default_value() const;
+  Gnome::Gda::Value get_default_value() const;
 
   /// This forwards to the Glib::RefPtr<Gnome::Gda::Column>::set_default_value.
-  void set_default_value(const Glib::ValueBase& val);
+  void set_default_value(const Gnome::Gda::Value& value);
 
 
   //TODO_Performance: Lots of code calls this just to call one of its methods:
@@ -153,11 +153,11 @@ public:
 
   /** Escape the value so that it can be used in a SQL command.
    */
-  Glib::ustring sql(const Glib::ValueBase& value) const;
+  Glib::ustring sql(const Gnome::Gda::Value& value) const;
 
   /** Escape the value so that it can be used in a SQL command for a find.
    */
-  Glib::ustring sql_find(const Glib::ValueBase& value) const;
+  Glib::ustring sql_find(const Gnome::Gda::Value& value) const;
 
   /** Get a suitable operator to use when finding records.
    * For instance, == for numbers, or LIKE for text.

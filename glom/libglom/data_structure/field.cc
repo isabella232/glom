@@ -234,11 +234,11 @@ static std::string glom_escape_text(const std::string src)
   }
 }
 
-Glib::ustring Field::sql(const Glib::ValueBase& value) const
+Glib::ustring Field::sql(const Gnome::Gda::Value& value) const
 {
   //g_warning("Field::sql: glom_type=%d", get_glom_type());
 
-  if(Gnome::Gda::value_is_null(value))
+  if(value.is_null())
   {
     switch(get_glom_type())
     {
@@ -275,11 +275,11 @@ Glib::ustring Field::sql(const Glib::ValueBase& value) const
   {
     case(TYPE_TEXT):
     {
-      if(Gnome::Gda::value_is_null(value))
+      if(value.is_null())
         return "''"; //We want to ignore the concept of NULL strings, and deal only with empty strings.
       else
       {
-        str = Gnome::Gda::value_get_string(value);
+        str = value.get_string();
         str = glom_escape_text(str);
       }
 
@@ -303,7 +303,7 @@ Glib::ustring Field::sql(const Glib::ValueBase& value) const
     case(TYPE_BOOLEAN):
     {
       if(G_VALUE_TYPE(value.gobj()) == G_TYPE_BOOLEAN)
-        str = ( Gnome::Gda::value_get_boolean(value) ? "TRUE" : "FALSE" );
+        str = (value.get_boolean() ? "TRUE" : "FALSE" );
       else
         str = "FALSE";
 
@@ -311,12 +311,13 @@ Glib::ustring Field::sql(const Glib::ValueBase& value) const
     }
     case(TYPE_IMAGE):
     {
-      if(G_VALUE_TYPE(value.gobj()) == Gnome::Gda::VALUE_TYPE_BINARY)
+      if(value.get_value_type() == GDA_TYPE_BINARY)
       {
-        const GdaBinary* gdabinary = Gnome::Gda::value_get_binary(value);
-        if(gdabinary && gdabinary->data && gdabinary->buffer_length)
+        long buffer_length;
+        const guchar* buffer = value.get_binary(buffer_length);
+        if(buffer && buffer_length > 0)
         {
-          const std::string escaped_binary_data = std::string((char*)gdabinary.data, gdabinary.buffer_length);
+          const std::string escaped_binary_data = std::string(reinterpret_cast<const gchar*>(buffer), buffer_length);
           //Now escape that text (to convert \ to \\, for instance):
           str = glom_escape_text(escaped_binary_data) /* has quotes */ + "::bytea";
 
@@ -331,7 +332,7 @@ Glib::ustring Field::sql(const Glib::ValueBase& value) const
     }
     default:
     {
-      str = Gnome::Gda::value_to_string(value);
+      str = value.to_string();
       if(str.empty() && (m_glom_type != Field::TYPE_TEXT))
         str = "NULL"; //This has probably been handled in get_text_for_gda_value() anyway.
 
@@ -342,7 +343,7 @@ Glib::ustring Field::sql(const Glib::ValueBase& value) const
   return str;
 }
 
-Glib::ustring Field::sql_find(const Glib::ValueBase& value) const
+Glib::ustring Field::sql_find(const Gnome::Gda::Value& value) const
 {
   switch(get_glom_type())
   {
@@ -350,10 +351,10 @@ Glib::ustring Field::sql_find(const Glib::ValueBase& value) const
     {
       //% means 0 or more characters.
       
-      if(Gnome::Gda::value_is_null(value))
+      if(value.is_null())
         return "''"; //We want to ignore the concept of NULL strings, and deal only with empty strings.
       else
-        return ("'%" + Gnome::Gda::value_to_string(value) + "%'"); //Add single-quotes. Actually escape it.
+        return ("'%" + value.to_string() + "%'"); //Add single-quotes. Actually escape it.
         
       break;
     }
@@ -431,16 +432,14 @@ void Field::set_unique_key(bool val)
   m_field_info->set_unique_key(val);
 }
 
-Glib::ValueBase Field::get_default_value() const
+Gnome::Gda::Value Field::get_default_value() const
 {
-  Glib::ValueBase value;
-  m_field_info->get_default_value(value);
-  return value;
+  return m_field_info->get_default_value();
 }
 
-void Field::set_default_value(const Glib::ValueBase& val)
+void Field::set_default_value(const Gnome::Gda::Value& value)
 {
-  m_field_info->set_default_value(val);
+  m_field_info->set_default_value(value);
 }
 
 Glib::ustring Field::get_sql_type() const
@@ -481,8 +480,7 @@ bool Field::field_info_from_database_is_equal(const Glib::RefPtr<const Gnome::Gd
 
   temp->set_auto_increment( field->get_auto_increment() ); //Don't compare this, because the data is incorrect when libgda reads it from the database.
 
-  Glib::ValueBase value;
-  field->get_default_value(value);
+  Gnome::Gda::Value value = field->get_default_value();
   temp->set_default_value(value); //Don't compare this, because the data is incorrect when libgda reads it from the database.
 
   temp->set_primary_key( field->get_primary_key() ); //Don't compare this, because the data is incorrect when libgda reads it from the database.
@@ -536,20 +534,20 @@ void Field::init_map()
     //Fill maps.
 
     //Ideals:
-    m_map_gda_type_to_glom_type[Gnome::Gda::VALUE_TYPE_NUMERIC] = TYPE_NUMERIC;
+    m_map_gda_type_to_glom_type[GDA_TYPE_NUMERIC] = TYPE_NUMERIC;
     m_map_gda_type_to_glom_type[G_TYPE_INT] = TYPE_NUMERIC; //Only for "serial" (auto-increment) fields.
     m_map_gda_type_to_glom_type[G_TYPE_STRING] = TYPE_TEXT;
-    m_map_gda_type_to_glom_type[Gnome::Gda::VALUE_TYPE_TIME] = TYPE_TIME;
+    m_map_gda_type_to_glom_type[GDA_TYPE_TIME] = TYPE_TIME;
     m_map_gda_type_to_glom_type[G_TYPE_DATE] = TYPE_DATE;
     m_map_gda_type_to_glom_type[G_TYPE_BOOLEAN] = TYPE_BOOLEAN;
-    m_map_gda_type_to_glom_type[Gnome::Gda::VALUE_TYPE_BINARY] = TYPE_IMAGE;
+    m_map_gda_type_to_glom_type[GDA_TYPE_BINARY] = TYPE_IMAGE;
 
-    m_map_glom_type_to_gda_type[TYPE_NUMERIC] = Gnome::Gda::VALUE_TYPE_NUMERIC;
+    m_map_glom_type_to_gda_type[TYPE_NUMERIC] = GDA_TYPE_NUMERIC;
     m_map_glom_type_to_gda_type[TYPE_TEXT] = G_TYPE_STRING;
-    m_map_glom_type_to_gda_type[TYPE_TIME] = Gnome::Gda::VALUE_TYPE_TIME;
+    m_map_glom_type_to_gda_type[TYPE_TIME] = GDA_TYPE_TIME;
     m_map_glom_type_to_gda_type[TYPE_DATE] = G_TYPE_DATE;
     m_map_glom_type_to_gda_type[TYPE_BOOLEAN] = G_TYPE_BOOLEAN;
-    m_map_glom_type_to_gda_type[TYPE_IMAGE] = Gnome::Gda::VALUE_TYPE_BINARY;
+    m_map_glom_type_to_gda_type[TYPE_IMAGE] = GDA_TYPE_BINARY;
 
     m_map_type_names_ui[TYPE_INVALID] = _("Invalid");
     m_map_type_names_ui[TYPE_NUMERIC] = _("Number");

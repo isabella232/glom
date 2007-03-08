@@ -52,18 +52,18 @@ public:
 
   /** Get the image that will be shown on each record.
    */
-  Glib::ValueBase get_image() const;
+  Gnome::Gda::Value get_image() const;
 
   /** Set the image that will be shown on each record.
    */
-  void set_image(const Glib::ValueBase& image);
+  void set_image(const Gnome::Gda::Value& image);
 
   //Saves the image to a temporary file and provides the file URI.
   Glib::ustring create_local_image_uri() const;
 
 protected:
 
-  Glib::ValueBase m_image; //TODO: Use Gnome::Gda::TYPE_BINARY.
+  Gnome::Gda::Value m_image; //TODO: Use Gnome::Gda::TYPE_BINARY.
 };
 
 } //namespace Glom

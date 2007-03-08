@@ -221,10 +221,10 @@ RelatedRecord_tp_as_mapping_getitem(PyObject *self, PyObject *item)
                   std::cout << "Debug: query string could not be converted to std::cout: " << ex.what() << std::endl;
                  }
             }*/
-            Glib::RefPtr<Gnome::Gda::DataModel> datamodel = gda_connection->execute_single_command(sql_query);
+            Glib::RefPtr<Gnome::Gda::DataModel> datamodel = gda_connection->execute_select_command(sql_query);
             if(datamodel && datamodel->get_n_rows())
             {
-              Glib::ValueBase value = datamodel->get_value_at(0, 0);
+              Gnome::Gda::Value value = datamodel->get_value_at(0, 0);
               //g_warning("RelatedRecord_tp_as_mapping_getitem(): value from datamodel = %s", Gnome::Gda::value_to_string(value).c_str());
 
               //Cache it, in case it's asked-for again.
@@ -310,10 +310,10 @@ RelatedRecord_generic_aggregate(PyGlomRelatedRecord* self, PyObject *args, PyObj
           + " WHERE \"" + related_table + "\".\"" + related_key_name + "\" = " + *(self->m_from_key_value_sqlized);
 
         //std::cout << "PyGlomRelatedRecord: Executing:  " << sql_query << std::endl;
-        Glib::RefPtr<Gnome::Gda::DataModel> datamodel = gda_connection->execute_single_command(sql_query);
+        Glib::RefPtr<Gnome::Gda::DataModel> datamodel = gda_connection->execute_select_command(sql_query);
         if(datamodel && datamodel->get_n_rows())
         {
-          Glib::ValueBase value = datamodel->get_value_at(0, 0);
+          Gnome::Gda::Value value = datamodel->get_value_at(0, 0);
           //g_warning("RelatedRecord_generic_aggregate(): value from datamodel = %s", Gnome::Gda::value_to_string(value).c_str());
 
           //Cache it, in case it's asked-for again.

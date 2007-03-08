@@ -73,12 +73,12 @@ Glib::ustring LayoutItem_Image::get_report_part_id() const
   return "field"; //We reuse this for this node.
 }
 
-Glib::ValueBase LayoutItem_Image::get_image() const
+Gnome::Gda::Value LayoutItem_Image::get_image() const
 {
   return m_image;
 }
 
-void LayoutItem_Image::set_image(const Glib::ValueBase& image)
+void LayoutItem_Image::set_image(const Gnome::Gda::Value& image)
 {
   m_image = image;
 }
