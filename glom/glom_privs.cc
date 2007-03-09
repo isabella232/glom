@@ -195,20 +195,39 @@ Privileges Privs::get_table_privileges(const Glib::ustring& group_name, const Gl
     if(!value.is_null())
       access_details = value.get_string();
 
+    //std::cout << "DEBUG: access_details:" << access_details << std::endl;
+
     //Parse the strange postgres permissions format:
+    //For instance, "{murrayc=arwdxt/murrayc,operators=r/murrayc}" (Postgres 8.x)
+    //For instance, "{murrayc=arwdxt/murrayc,group operators=r/murrayc}" (Postgres <8.x)
     const type_vecStrings vecItems = pg_list_separate(access_details);
     for(type_vecStrings::const_iterator iterItems = vecItems.begin(); iterItems != vecItems.end(); ++iterItems)
     {
       Glib::ustring item = *iterItems;
+      //std::cout << "DEBUG: item:" << item << std::endl;
+
       item = Utils::string_trim(item, "\""); //Remove quotes from front and back.
 
+      //std::cout << "DEBUG: item without quotes:" << item << std::endl;
+
       //Find group permissions, ignoring user permissions:
-      const Glib::ustring strgroup = "group ";
+      //We need to find the role by name.
+      // Previous versions of Postgres (8.1, or maybe 7.4) prefixed group names by "group ", 
+      // but that doesn't work for recent versions of Postgres,
+      // probably because the user and group concepts have been combined into "roles".
+      //
+      //const Glib::ustring strgroup = "group ";
+      const Glib::ustring strgroup = group_name + "=";
       Glib::ustring::size_type posFind = item.find(strgroup);
-      if(posFind == 0)
+      //if(posFind == 0)
+      if(posFind != -1)
       {
-        //It is a group permision:
-        item = item.substr(strgroup.size());
+        //It is the needed group permision:
+
+        //Remove the "group " prefix (not needed for Postgres 8.x):
+        //item = item.substr(strgroup.size());
+        item = item.substr(posFind);
+        //std::cout << "DEBUG: user permissions:" << item << std::endl;
 
         //Get the parts before and after the =:
         const type_vecStrings vecParts = Utils::string_separate(item, "=");

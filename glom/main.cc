@@ -97,9 +97,16 @@ main(int argc, char* argv[])
   {
     context.parse(argc, argv);
   }
+  catch(const Glib::OptionError& ex)
+  {
+    std::cout << _("Error while parsing commmand-line options: ") << std::endl << ex.what() << std::endl;
+    std::cout << _("Use --help to see a list of available command-line options.") << std::endl;
+    return 0;
+  }
   catch(const Glib::Error& ex)
   {
-    std::cout << "Exception: " << ex.what() << std::endl;
+    std::cout << "Error: " << ex.what() << std::endl;
+    return 0;
   }
 
 

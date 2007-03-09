@@ -1,3 +1,16 @@
+2007-03-09  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/glom_privs.cc: Privs::get_table_privileges(): Cope with the changed 
+	pg_class.relacl format in Postgres 8.x (8.2, maybe >=8.0), which does not have 
+	the "group " prefix, now that users and groups are both just roles to Postgres.
+	The user/group distinction will remain in the Glom UI, because it is a sensible 
+	way to organise the access rights.
+	This should still be able to cope with earlier versions of Postgres, such as 
+	Postgres 7.4, but I have not tested that myself. 
+
+	* glom/main.cc: Stop when there is a problem parsing the command line options, 
+	and give a hint about using --help.
+
 2007-03-07  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/libglom/connectionpool.cc: Commented-out the use of avahi, because 
