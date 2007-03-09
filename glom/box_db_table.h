@@ -46,10 +46,10 @@ public:
 
 protected:
 
-  //virtual Glib::RefPtr<Gnome::Gda::DataModel> record_new(Glib::ValueBase primary_key_value);
+  //virtual Glib::RefPtr<Gnome::Gda::DataModel> record_new(Gnome::Gda::Value primary_key_value);
 
-  Glib::ValueBase get_entered_field_data_field_only(const sharedptr<const Field>& field) const;
-  virtual Glib::ValueBase get_entered_field_data(const sharedptr<const LayoutItem_Field>& field) const;
+  Gnome::Gda::Value get_entered_field_data_field_only(const sharedptr<const Field>& field) const;
+  virtual Gnome::Gda::Value get_entered_field_data(const sharedptr<const LayoutItem_Field>& field) const;
 
   //static sharedptr<Field> get_field_primary_key(const type_vecFields& fields);
 
@@ -57,7 +57,7 @@ protected:
 
 
   //static type_vecFields get_fields_for_datamodel(const Glib::RefPtr<Gnome::Gda::DataModel>& data_model); 
-  static Glib::ustring postgres_get_field_definition_for_sql(const Glib::RefPtr<Gnome::Gda::Column>& field_info);
+  static Glib::ustring postgres_get_field_definition_for_sql(const Glib::RefPtr<const Gnome::Gda::Column>& field_info);
 
   Glib::ustring m_table_name;
 };

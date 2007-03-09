@@ -120,12 +120,12 @@ void Field::set_field_info(const Glib::RefPtr<Gnome::Gda::Column>& fieldinfo)
   set_glom_type( get_glom_type_for_gda_type(fieldinfo->get_type()) );
 }
 
-Glib::ValueBase Field::get_data() const
+Gnome::Gda::Value Field::get_data() const
 {
   return m_data;
 }
 
-void Field::set_data(const Glib::ValueBase& data)
+void Field::set_data(const Gnome::Gda::Value& data)
 {
   m_data = data;
 }

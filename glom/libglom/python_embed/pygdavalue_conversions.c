@@ -150,7 +150,7 @@ pygda_value_as_pyobject(const GValue *boxed, gboolean copy_boxed)
     } else if (value_type == GDA_TYPE_USHORT) {
         ret = PyInt_FromLong (gda_value_get_ushort ((GValue*)boxed));
     } else if (value_type == G_TYPE_UINT) {
-        ret = PyInt_FromLong (gda_value_get_uint ((GValue*)boxed));
+        ret = PyInt_FromLong (g_value_get_uint ((GValue*)boxed));
     } else {
       g_warning ("G_VALUE_TYPE() returned unknown type %d", value_type);
 

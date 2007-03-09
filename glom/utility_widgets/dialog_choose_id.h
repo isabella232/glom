@@ -41,7 +41,7 @@ public:
 
   virtual bool init_db_details(const Glib::ustring& table_name);
 
-  bool get_id_chosen(Glib::ValueBase& chosen_id) const;
+  bool get_id_chosen(Gnome::Gda::Value& chosen_id) const;
 
   enum enumStage
   {
@@ -57,7 +57,7 @@ protected:
 
   void on_button_quickfind();
   void on_box_find_criteria(const Glib::ustring& where_clause);
-  void on_box_select_selected(const Glib::ValueBase& primary_key);
+  void on_box_select_selected(const Gnome::Gda::Value& primary_key);
 
   Gtk::Label* m_label_table_name;
   Gtk::HBox* m_pBox_QuickFind; //Only show this when in Find mode.
@@ -68,7 +68,7 @@ protected:
   Glib::ustring m_table_name;
 
   Document_Glom* m_document;
-  Glib::ValueBase m_id_chosen;
+  Gnome::Gda::Value m_id_chosen;
 
   Box_Data_Details_Find m_box_find;
   Box_Data_List m_box_select;

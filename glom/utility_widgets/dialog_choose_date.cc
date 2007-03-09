@@ -44,38 +44,34 @@ Dialog_ChooseDate::~Dialog_ChooseDate()
 {
 }
 
-void Dialog_ChooseDate::set_date_chosen(const Glib::ValueBase& value)
+void Dialog_ChooseDate::set_date_chosen(const Gnome::Gda::Value& value)
 {
-  if(G_VALUE_TYPE(value.gobj()) == G_TYPE_DATE) //Otherwise GtkCalendar defaults to the current (today's) date.
+  if(value.get_value_type() == G_TYPE_DATE) //Otherwise GtkCalendar defaults to the current (today's) date.
   {
-    Gnome::Gda::Date date = value.get_date();
+    Glib::Date date = value.get_date();
 
-    guint month = date.month;
+    guint month = static_cast<guint>(date.get_month());
     if(month != 0)
       --month; //Gtk::Calendar months start at 0.
 
-    m_calendar->select_month(month, date.year);
-    m_calendar->select_day(date.day);
+    m_calendar->select_month(month, date.get_year());
+    m_calendar->select_day(date.get_day());
   }
 }
 
-Glib::ValueBase Dialog_ChooseDate::get_date_chosen() const
+Gnome::Gda::Value Dialog_ChooseDate::get_date_chosen() const
 {
-  Gnome::Gda::Date date = {0, 0, 0};
   guint year = 0;
   guint month = 0;
   guint day = 0;
 
   m_calendar->get_date(year, month, day);
-  date.year = year;
 
-  date.month = month + 1; //GtkCalendar months start at 0.
-  if(date.month > 12)
-    date.month = 12;
+  ++ month; //GtkCalendar months start at 0.
+  if(month > 12) month = 12;
 
-  date.day = day;
-
-  return Glib::ValueBase(date);
+  Glib::Date date(day, static_cast<Glib::Date::Month>(month), year);
+  return Gnome::Gda::Value(date);
 }
 
 void Dialog_ChooseDate::on_day_selected_double_click()

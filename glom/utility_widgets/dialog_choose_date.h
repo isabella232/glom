@@ -38,8 +38,8 @@ public:
   Dialog_ChooseDate(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
   virtual ~Dialog_ChooseDate();
 
-  void set_date_chosen(const Glib::ValueBase& value);
-  Glib::ValueBase get_date_chosen() const;
+  void set_date_chosen(const Gnome::Gda::Value& value);
+  Gnome::Gda::Value get_date_chosen() const;
 
 protected:
   void on_day_selected_double_click();

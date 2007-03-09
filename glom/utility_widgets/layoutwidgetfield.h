@@ -32,9 +32,9 @@ public:
   LayoutWidgetField();
   virtual ~LayoutWidgetField();
 
-  virtual void set_value(const Glib::ValueBase& value) = 0;
+  virtual void set_value(const Gnome::Gda::Value& value) = 0;
 
-  virtual Glib::ValueBase get_value() const = 0;
+  virtual Gnome::Gda::Value get_value() const = 0;
 
   /**Whether this widget still has the original entered data, instead of just a representation.
    * For intance, and image widget might only store a preview.

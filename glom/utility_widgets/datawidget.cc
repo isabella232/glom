@@ -262,7 +262,7 @@ DataWidget::type_signal_edited DataWidget::signal_edited()
 }
 
 
-void DataWidget::set_value(const Glib::ValueBase& value)
+void DataWidget::set_value(const Gnome::Gda::Value& value)
 {
   Gtk::Widget* widget = get_data_child_widget();
   LayoutWidgetField* generic_field_widget = dynamic_cast<LayoutWidgetField*>(widget);
@@ -279,15 +279,15 @@ void DataWidget::set_value(const Glib::ValueBase& value)
     if(checkbutton)
     {
       bool bValue = false;
-      if(!Gnome::Gda::value_is_null(value) && G_VALUE_TYPE(value.gobj()) == G_TYPE_BOOLEAN)
-        bValue = value.get_bool();
+      if(!value.is_null() && value.get_value_type() == G_TYPE_BOOLEAN)
+        bValue = value.get_boolean();
 
       checkbutton->set_active( bValue );
     }
   }
 }
 
-Glib::ValueBase DataWidget::get_value() const
+Gnome::Gda::Value DataWidget::get_value() const
 {
   const Gtk::Widget* widget = get_data_child_widget();
   const LayoutWidgetField* generic_field_widget = dynamic_cast<const LayoutWidgetField*>(widget);
@@ -298,10 +298,10 @@ Glib::ValueBase DataWidget::get_value() const
     const Gtk::CheckButton* checkbutton = dynamic_cast<const Gtk::CheckButton*>(widget);
     if(checkbutton)
     {
-      return Glib::ValueBase(checkbutton->get_active());
+      return Gnome::Gda::Value(checkbutton->get_active());
     }
     else
-      return Glib::ValueBase(); //null.
+      return Gnome::Gda::Value(); //null.
   }
 }
 
@@ -326,11 +326,8 @@ int DataWidget::get_suitable_width(const sharedptr<const LayoutItem_Field>& fiel
   {
     case(Field::TYPE_DATE):
     {
-      Gnome::Gda::Date date = {0, 0, 0};
-      date.day = 31;
-      date.month = 12;
-      date.year = 2000;
-      example_text = Conversions::get_text_for_gda_value(field_type, Glib::ValueBase(date));
+      Glib::Date date(31, Glib::Date::Month(12), 2000);
+      example_text = Conversions::get_text_for_gda_value(field_type, Gnome::Gda::Value(date));
       break;
     }
     case(Field::TYPE_TIME):
@@ -339,7 +336,7 @@ int DataWidget::get_suitable_width(const sharedptr<const LayoutItem_Field>& fiel
       time.hour = 24;
       time.minute = 59;
       time.second = 59;
-      example_text = Conversions::get_text_for_gda_value(field_type, Glib::ValueBase(time));
+      example_text = Conversions::get_text_for_gda_value(field_type, Gnome::Gda::Value(time));
       break;
     }
     case(Field::TYPE_NUMERIC):
@@ -680,7 +677,7 @@ const Gtk::Widget* DataWidget::get_data_child_widget() const
 
  void DataWidget::on_button_select_id()
  {
-   Glib::ValueBase chosen_id;
+   Gnome::Gda::Value chosen_id;
    bool chosen = offer_related_record_id_find(chosen_id);
    if(chosen)
    {
@@ -708,7 +705,7 @@ void DataWidget::on_button_choose_date()
       if(response == Gtk::RESPONSE_OK)
       {
         //Get the chosen date
-        const Glib::ValueBase value = dialog->get_date_chosen();
+        const Gnome::Gda::Value value = dialog->get_date_chosen();
         set_value(value);
 
         m_signal_edited.emit(value);
@@ -723,12 +720,12 @@ void DataWidget::on_button_choose_date()
   }
  }
 
- bool DataWidget::offer_related_record_id_find(Glib::ValueBase& chosen_id)
+ bool DataWidget::offer_related_record_id_find(Gnome::Gda::Value& chosen_id)
  {
   bool result = false;
 
   //Initialize output variable:
-  chosen_id = Glib::ValueBase();
+  chosen_id = Gnome::Gda::Value();
 
   try
   {

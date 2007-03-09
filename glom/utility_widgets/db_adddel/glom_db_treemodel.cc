@@ -229,7 +229,7 @@ bool DbTreeModel::refresh_from_database(const FoundSet& found_set)
     }
     try
     {
-      m_gda_datamodel = m_connection->get_gda_connection()->execute_single_command(sql_query);
+      m_gda_datamodel = m_connection->get_gda_connection()->execute_select_command(sql_query);
     }
     catch(const std::exception& ex)
     {
@@ -293,7 +293,7 @@ GType DbTreeModel::get_column_type_vfunc(int index) const
     return 0;
 }
 
-void DbTreeModel::get_value_vfunc(const TreeModel::iterator& iter, int column, Glib::ValueBaseBase& value) const
+void DbTreeModel::get_value_vfunc(const TreeModel::iterator& iter, int column, Glib::ValueBase& value) const
 {
   if(check_treeiter_validity(iter))
   {
@@ -304,8 +304,8 @@ void DbTreeModel::get_value_vfunc(const TreeModel::iterator& iter, int column, G
       value_specific.init( typeModelColumn::ValueType::value_type() );  //TODO: Is there any way to avoid this step?
 
       //Or, instead of asking the compiler for the TreeModelColumn's ValueType:
-      //Glib::ValueBase< DbValue > value_specific;
-      //value_specific.init( Glib::ValueBase< DbValue >::value_type() ); //TODO: Is there any way to avoid this step?
+      //Gnome::Gda::Value< DbValue > value_specific;
+      //value_specific.init( Gnome::Gda::Value< DbValue >::value_type() ); //TODO: Is there any way to avoid this step?
 
       type_datamodel_const_iter dataRowIter = get_datamodel_row_iter_from_tree_row_iter(iter);
       //g_warning("DbTreeModel::get_value_vfunc(): dataRowIter=%d, get_internal_rows_count=%d", dataRowIter, get_internal_rows_count());
@@ -340,7 +340,7 @@ void DbTreeModel::get_value_vfunc(const TreeModel::iterator& iter, int column, G
 
 
         value_specific.set(result); //The compiler would complain if the type was wrong.
-        value.init( Glib::ValueBase< DbValue >::value_type() ); //TODO: Is there any way to avoid this step? Can't it copy the type as well as the value?
+        value.init( Glib::Value< DbValue >::value_type() ); //TODO: Is there any way to avoid this step? Can't it copy the type as well as the value?
         value = value_specific;
       }
     }
@@ -676,7 +676,7 @@ DbTreeModel::iterator DbTreeModel::append()
 }
 
 
-void DbTreeModel::set_value_impl(const iterator& row, int column, const Glib::ValueBaseBase& value)
+void DbTreeModel::set_value_impl(const iterator& row, int column, const Glib::ValueBase& value)
 {
   if(iter_is_valid(row))
   {
@@ -688,7 +688,7 @@ void DbTreeModel::set_value_impl(const iterator& row, int column, const Glib::Va
 
     //Cast it to the specific value type.
     //It can't work with anything else anyway.
-    typedef Glib::ValueBase< DbValue > ValueDbValue;
+    typedef Glib::Value< DbValue > ValueDbValue;
 
     const ValueDbValue* pDbValue = static_cast<const ValueDbValue*>(&value);
     if(!pDbValue)
@@ -891,14 +891,14 @@ void DbTreeModel::get_record_counts(gulong& total, gulong& found) const
       //Ask the database how many records there are in the whole table:
       //TODO: Apparently, this is very slow:
       const Glib::ustring sql_query = "SELECT count(*) FROM \"" + m_found_set.m_table_name + "\"";
-      Glib::RefPtr<Gnome::Gda::DataModel> datamodel = m_connection->get_gda_connection()->execute_single_command(sql_query);
+      Glib::RefPtr<Gnome::Gda::DataModel> datamodel = m_connection->get_gda_connection()->execute_select_command(sql_query);
 
       if(datamodel)
       {
         if(datamodel->get_n_rows())
         {
-          Glib::ValueBase value = datamodel->get_value_at(0, 0);
-          total = (gulong)value.get_bigint(); //I discovered that it's a bigint by trying it.
+          Gnome::Gda::Value value = datamodel->get_value_at(0, 0);
+	  total = (gulong)value.get_int64(); //I discovered that it's a int64 by trying it.
         }
       }
     }

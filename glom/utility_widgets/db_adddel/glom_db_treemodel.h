@@ -37,7 +37,7 @@ class DbTreeModelRow
 public:
   DbTreeModelRow();
 
-  typedef Glib::ValueBase DbValue;
+  typedef Gnome::Gda::Value DbValue;
 
   //Field Values. We store them here after reading them from the database,
   //so that we can change them without changing them in the database immediately.
@@ -121,7 +121,7 @@ protected:
    virtual Gtk::TreeModelFlags get_flags_vfunc() const;
    virtual int get_n_columns_vfunc() const;
    virtual GType get_column_type_vfunc(int index) const;
-   virtual void get_value_vfunc(const TreeModel::iterator& iter, int column, Gnome::Gda::Value& value) const;
+   virtual void get_value_vfunc(const TreeModel::iterator& iter, int column, Glib::ValueBase& value) const;
 
    bool iter_next_vfunc(const iterator& iter, iterator& iter_next) const;
 
@@ -138,7 +138,7 @@ protected:
 
    virtual bool iter_is_valid(const iterator& iter) const;
 
-   virtual void set_value_impl(const iterator& row, int column, const Gnome::Gda::Value& value);
+   virtual void set_value_impl(const iterator& row, int column, const Glib::ValueBase& value);
 
 private:
    typedef DbTreeModelRow typeRow; //X columns, all of type Value.

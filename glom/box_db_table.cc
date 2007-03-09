@@ -62,7 +62,7 @@ bool Box_DB_Table::refresh_data_from_database()
   return fill_from_database();
 }
 
-Glib::ValueBase Box_DB_Table::get_entered_field_data_field_only(const sharedptr<const Field>& field) const
+Gnome::Gda::Value Box_DB_Table::get_entered_field_data_field_only(const sharedptr<const Field>& field) const
 {
   sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
   layout_item->set_full_field_details(field); 
@@ -70,11 +70,11 @@ Glib::ValueBase Box_DB_Table::get_entered_field_data_field_only(const sharedptr<
   return get_entered_field_data(layout_item);
 }
 
-Glib::ValueBase Box_DB_Table::get_entered_field_data(const sharedptr<const LayoutItem_Field>& /* field */) const
+Gnome::Gda::Value Box_DB_Table::get_entered_field_data(const sharedptr<const LayoutItem_Field>& /* field */) const
 {
   //Override this to use Field::set_data() too.
 
-  return Glib::ValueBase(); //null
+  return Gnome::Gda::Value(); //null
 }
 
 unsigned long Box_DB_Table::get_last_auto_increment_value(const Glib::RefPtr<Gnome::Gda::DataModel>& data_model, const Glib::ustring& /* field_name */)
@@ -136,7 +136,7 @@ Glib::ustring Box_DB_Table::postgres_get_field_definition_for_sql(const Glib::Re
       const FieldTypes* pFieldTypes = pConnectionPool->get_field_types();
       if(pFieldTypes)
       {
-        const GType fieldType = field_info->get_type();
+        const GType fieldType = field_info->get_g_type();
         strType = pFieldTypes->get_string_name_for_gdavaluetype(fieldType);
       }
     }
@@ -198,7 +198,7 @@ Glib::ustring Box_DB_Table::postgres_get_field_definition_for_sql(const Glib::Re
   */
 
   //Default:
-  Glib::ValueBase valueDefault = field_info->get_default_value();
+  Gnome::Gda::Value valueDefault = field_info->get_default_value();
   const Glib::ustring& strDefault =  valueDefault.to_string();
   if(!strDefault.empty() && strDefault != "NULL")
     strResult += " DEFAULT " + strDefault; //TODO: Quote/Escape it if necessary.

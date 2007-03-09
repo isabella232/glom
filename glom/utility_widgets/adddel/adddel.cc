@@ -722,7 +722,7 @@ void AddDel::construct_specified_columns()
 }
 
 /*
-void AddDel::set_value(const Gtk::TreeModel::iterator& iter, guint col, const Glib::ValueBase& value)
+void AddDel::set_value(const Gtk::TreeModel::iterator& iter, guint col, const Gnome::Gda::Value& value)
 {
   //Different model columns have different types of data:
   switch(m_ColumnTypes[col].m_style)
@@ -826,7 +826,7 @@ void AddDel::set_value(const Gtk::TreeModel::iterator& iter, guint col, bool bVa
 }
 
 /*
-void AddDel::set_value_selected(guint col, const Glib::ValueBase& value)
+void AddDel::set_value_selected(guint col, const Gnome::Gda::Value& value)
 {
   set_value(get_item_selected(), col, value);
 }
@@ -1202,7 +1202,7 @@ void AddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const Gli
           //Make sure that the entered data is suitable for this field type:
           bool success = false;
           Glib::ustring text = get_value(row, model_column_index);
-          Glib::ValueBase value = Conversions::parse_value(field_type, new_text, success);
+          Gnome::Gda::Value value = Conversions::parse_value(field_type, new_text, success);
           if(!success)
           {
              //Tell the user and offer to revert or try again:
@@ -1617,8 +1617,8 @@ bool AddDel::row_has_duplicates(const Gtk::TreeModel::iterator& iter) const
     {
       Gtk::TreeModel::Row row = *iter;
 
-      //We can't just use ValueBase, because Glib::ValueBaseBase has no operator==, because there is no g_value_equal
-      //Glib::ValueBaseBase value_this_row;
+      //We can't just use Value, because Gnome::Gda::Value has no operator==, because there is no g_value_equal
+      //Gnome::Gda::Value value_this_row;
       //iter->get_value(col, value_this_row);
 
       Glib::ustring value_text;
@@ -1640,8 +1640,8 @@ bool AddDel::row_has_duplicates(const Gtk::TreeModel::iterator& iter) const
         if(iterCheck != iter) //Don't compare the row with itself
         {
           Gtk::TreeModel::Row check_row = *iterCheck;
-          ////Glib::ValueBaseBase has no operator==, because there is no g_value_equal
-          //Glib::ValueBaseBase value_check_row;
+          ////Gnome::Gda::Value has no operator==, because there is no g_value_equal
+          //Gnome::Gda::Value value_check_row;
           //iterCheck->get_value(col, value_check_row);
           //
           //if(value_check_row == value_this_row)

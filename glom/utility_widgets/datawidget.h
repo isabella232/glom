@@ -51,9 +51,9 @@ public:
   //This is not virtual, so you must not use it via Gtk::Entry.
   //virtual void set_text(const Glib::ustring& text); //override
 
-  virtual void set_value(const Glib::ValueBase& value);
+  virtual void set_value(const Gnome::Gda::Value& value);
 
-  virtual Glib::ValueBase get_value() const;
+  virtual Gnome::Gda::Value get_value() const;
 
   virtual void set_editable(bool editable = true);
   virtual void set_viewable(bool viewable = true);
@@ -66,10 +66,10 @@ public:
   Gtk::Widget* get_data_child_widget();
   const Gtk::Widget* get_data_child_widget() const;
 
-  typedef sigc::signal<void, const Glib::ValueBase&> type_signal_edited;
+  typedef sigc::signal<void, const Gnome::Gda::Value&> type_signal_edited;
   type_signal_edited signal_edited();
 
-  typedef sigc::signal<void, const Glib::ValueBase&> type_signal_open_details_requested;
+  typedef sigc::signal<void, const Gnome::Gda::Value&> type_signal_open_details_requested;
   type_signal_open_details_requested signal_open_details_requested();
 
 protected:
@@ -95,7 +95,7 @@ protected:
 
   /** Show a dialog with a Find so that the user can choose an ID value to indicate the related record.
    */
-  bool offer_related_record_id_find(Glib::ValueBase& chosen_id);
+  bool offer_related_record_id_find(Gnome::Gda::Value& chosen_id);
 
   type_signal_edited m_signal_edited;
   type_signal_open_details_requested m_signal_open_details_requested;

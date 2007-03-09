@@ -42,8 +42,8 @@ public:
 
   virtual ~ImageGlom();
 
-  virtual void set_value(const Glib::ValueBase& value);
-  virtual Glib::ValueBase get_value() const;
+  virtual void set_value(const Gnome::Gda::Value& value);
+  virtual Gnome::Gda::Value get_value() const;
   virtual bool get_has_original_data() const;
 
   //Optionally use this instead of set_value(), to avoid creating an unnecessary Value.

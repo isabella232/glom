@@ -388,7 +388,7 @@ void Frame_Glom::show_table_refresh()
   show_table(m_table_name);
 }
 
-void Frame_Glom::show_table(const Glib::ustring& table_name, const Glib::ValueBase& primary_key_value_for_details)
+void Frame_Glom::show_table(const Glib::ustring& table_name, const Gnome::Gda::Value& primary_key_value_for_details)
 {
   App_Glom* pApp = dynamic_cast<App_Glom*>(get_app_window());
 
@@ -611,7 +611,7 @@ void Frame_Glom::export_data_to_string(Glib::ustring& the_string, const FoundSet
 
         for(guint col_index = 0; col_index < columns_count; ++col_index)
         {
-          const Glib::ValueBase value = result->get_value_at(col_index, row_index);
+          const Gnome::Gda::Value value = result->get_value_at(col_index, row_index);
 
           sharedptr<LayoutItem_Field> layout_item = fieldsSequence[col_index];
           //if(layout_item->m_field.get_glom_type() != Field::TYPE_IMAGE) //This is too much data.
@@ -660,7 +660,7 @@ void Frame_Glom::export_data_to_stream(std::ostream& the_stream, const FoundSet&
 
         for(guint col_index = 0; col_index < columns_count; ++col_index)
         {
-          const Glib::ValueBase value = result->get_value_at(col_index, row_index);
+          const Gnome::Gda::Value value = result->get_value_at(col_index, row_index);
 
           sharedptr<LayoutItem_Field> layout_item = fieldsSequence[col_index];
           //if(layout_item->m_field.get_glom_type() != Field::TYPE_IMAGE) //This is too much data.
@@ -976,7 +976,7 @@ void Frame_Glom::on_button_quickfind()
   }
   else
   {
-    const Glib::ustring where_clause = get_find_where_clause_quick(m_table_name, Glib::ValueBase(criteria));
+    const Glib::ustring where_clause = get_find_where_clause_quick(m_table_name, Gnome::Gda::Value(criteria));
     //std::cout << "Frame_Glom::on_button_quickfind(): where_clause=" << where_clause << std::endl;
     on_notebook_find_criteria(where_clause);
   }
@@ -1107,7 +1107,7 @@ void Frame_Glom::update_table_in_document_from_database()
               //The database has different information. We assume that the information in the database is newer.
 
               //Update the field information:
-              field_info_db.set_auto_increment( field_document->get_auto_increment() ); //libgda does not report it from the database properly.
+              field_info_db->set_auto_increment( field_document->get_auto_increment() ); //libgda does not report it from the database properly.
               (*iterFindDoc)->set_field_info( field_info_db );
 
               document_must_to_be_updated = true;
@@ -1661,18 +1661,23 @@ bool Frame_Glom::create_database(const Glib::ustring& database_name, const Glib:
       Glib::RefPtr<Gnome::Gda::Connection> connection = sharedconnection->get_gda_connection();
       if(connection)
       {
-        const bool test = connection->create_database(database_name);
-        if(!test)
-        {
-          //TODO: Discover the cause of the error somehow.
+	try
+	{
+          Glib::RefPtr<Gnome::Gda::Client> client = connection->get_client();
+	  Glib::RefPtr<Gnome::Gda::ServerOperation> op = client->prepare_create_database(database_name, "PostgreSQL");
+	  client->perform_create_database(op);
+	}
+	catch(const Gnome::Gda::ClientError& ex) // TODO: Verify that this throws ClientError
+	{
           //I think a failure here might be caused by installing unstable libgda, which seems to affect stable libgda-1.2.
           //Doing a "make install" in libgda-1.2 seems to fix this:
-          std::cerr << "Frame_Glom::create_database():  Gnome::Gda::Connection::create_database(" << database_name << ") failed." << std::endl;
+          std::cerr << "Frame_Glom::create_database():  Gnome::Gda::Connection::create_database(" << database_name << ") failed: " << ex.what() << std::endl;
 
           //Tell the user:
           Gtk::Dialog* dialog = 0;
           try
           {
+	    // TODO: Tell the user what has gone wrong (ex.what())
             Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_error_create_database");
             refXml->get_widget("dialog_error_create_database", dialog);
             dialog->set_transient_for(*pWindowApp);
@@ -1824,7 +1829,7 @@ void Frame_Glom::on_dialog_tables_hide()
   }
 }
 
-void Frame_Glom::on_notebook_data_record_details_requested(const Glib::ustring& table_name, Glib::ValueBase primary_key_value)
+void Frame_Glom::on_notebook_data_record_details_requested(const Glib::ustring& table_name, Gnome::Gda::Value primary_key_value)
 {
   show_table(table_name, primary_key_value);
   //m_Notebook_Data.show_details(primary_key_value);

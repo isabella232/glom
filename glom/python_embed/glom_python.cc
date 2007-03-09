@@ -70,7 +70,7 @@ void glom_execute_python_function_implementation(const Glib::ustring& func_impl,
   glom_evaluate_python_function_implementation(Field::TYPE_TEXT, func_impl, field_values, pDocument, table_name, opened_connection);
 }
 
-Glib::ValueBase glom_evaluate_python_function_implementation(Field::glom_field_type result_type, const Glib::ustring& func_impl,
+Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field_type result_type, const Glib::ustring& func_impl,
     const type_map_fields& field_values, Document_Glom* pDocument, const Glib::ustring& table_name, const Glib::RefPtr<Gnome::Gda::Connection>& opened_connection)
 {
   //std::cout << "glom_evaluate_python_function_implementation()" << std::endl;
@@ -83,7 +83,7 @@ Glib::ValueBase glom_evaluate_python_function_implementation(Field::glom_field_t
 
   //g_warning("glom_evaluate_python_function_implementation: func=%s", func_impl.c_str());
 
-  Glib::ValueBase valueResult;
+  Gnome::Gda::Value valueResult;
 
   Glib::ustring func_def;
 
@@ -228,9 +228,9 @@ Glib::ValueBase glom_evaluate_python_function_implementation(Field::glom_field_t
           PyGBoxed* pygtkobject = (PyGBoxed*)pyResult;
           if(pygtkobject)
           {
-            GdaValue* cboxed = (GdaValue*)pygtkobject->boxed;
+            GValue* cboxed = (GValue*)pygtkobject->boxed;
             if(cboxed)
-              valueResult = Glib::wrap(cboxed, true /* take_copy */);
+              valueResult = Gnome::Gda::Value(cboxed);
             g_warning("PyGBoxed::boxed is null");
           }
           else

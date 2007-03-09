@@ -88,7 +88,7 @@ void ComboGlomChoicesBase::set_choices(const FieldFormatting::type_list_values& 
     sharedptr<const LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::cast_dynamic(get_layout_item());
     if(layout_item)
     {
-      const Glib::ValueBase value = *iter;
+      const Gnome::Gda::Value value = *iter;
       const Glib::ustring text = Conversions::get_text_for_gda_value(layout_item->get_glom_type(), value, layout_item->get_formatting_used().m_numeric_format);
 
       row[m_Columns.m_col_first] = text;

@@ -35,7 +35,7 @@ Privs::type_vecStrings Privs::get_database_groups()
     const int rows_count = data_model->get_n_rows();
     for(int row = 0; row < rows_count; ++row)
     {
-      const Glib::ValueBase value = data_model->get_value_at(0, row);
+      const Gnome::Gda::Value value = data_model->get_value_at(0, row);
       const Glib::ustring name = value.get_string();
       result.push_back(name);
     }
@@ -58,7 +58,7 @@ Privs::type_vecStrings Privs::get_database_users(const Glib::ustring& group_name
       const int rows_count = data_model->get_n_rows();
       for(int row = 0; row < rows_count; ++row)
       {
-        const Glib::ValueBase value = data_model->get_value_at(0, row);
+        const Gnome::Gda::Value value = data_model->get_value_at(0, row);
         const Glib::ustring name = value.get_string();
         result.push_back(name);
       }
@@ -73,11 +73,11 @@ Privs::type_vecStrings Privs::get_database_users(const Glib::ustring& group_name
       const int rows_count = data_model->get_n_rows();
       for(int row = 0; row < rows_count; ++row)
       {
-        const Glib::ValueBase value = data_model->get_value_at(1, row); //Column 1 is the /* the user list.
+        const Gnome::Gda::Value value = data_model->get_value_at(1, row); //Column 1 is the /* the user list.
         //pg_group is a string, formatted, bizarrely, like so: "{100, 101}".
 
         Glib::ustring group_list;
-        if(!Gnome::Gda::value_is_null(value))
+        if(!value.is_null())
           group_list = value.get_string();
 
         type_vecStrings vecUserIds = pg_list_separate(group_list);
@@ -88,7 +88,7 @@ Privs::type_vecStrings Privs::get_database_users(const Glib::ustring& group_name
           Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute(strQuery);
           if(data_model)
           {
-            const Glib::ValueBase value = data_model->get_value_at(0, 0); 
+            const Gnome::Gda::Value value = data_model->get_value_at(0, 0); 
            result.push_back(value.get_string());
           }
         }
@@ -190,9 +190,9 @@ Privileges Privs::get_table_privileges(const Glib::ustring& group_name, const Gl
   Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute(strQuery);
   if(data_model && data_model->get_n_rows())
   {
-    const Glib::ValueBase value = data_model->get_value_at(0, 0);
+    const Gnome::Gda::Value value = data_model->get_value_at(0, 0);
     Glib::ustring access_details;
-    if(!Gnome::Gda::value_is_null(value))
+    if(!value.is_null())
       access_details = value.get_string();
 
     //Parse the strange postgres permissions format:

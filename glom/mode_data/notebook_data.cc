@@ -65,7 +65,7 @@ Notebook_Data::~Notebook_Data()
   remove_view(&m_Box_Details);
 }
 
-bool Notebook_Data::init_db_details(const FoundSet& found_set, const Glib::ValueBase& primary_key_value_for_details)
+bool Notebook_Data::init_db_details(const FoundSet& found_set, const Gnome::Gda::Value& primary_key_value_for_details)
 {
   m_table_name = found_set.m_table_name;
   //std::cout << "Notebook_Data::init_db_details: table_name=" << m_table_name << std::endl;
@@ -92,7 +92,7 @@ bool Notebook_Data::init_db_details(const FoundSet& found_set, const Glib::Value
     Document_Glom* document = get_document();
     if(document)
     {
-      Glib::ValueBase primary_key_for_details;
+      Gnome::Gda::Value primary_key_for_details;
 
       if(!details_record_specified)
       {
@@ -113,7 +113,7 @@ bool Notebook_Data::init_db_details(const FoundSet& found_set, const Glib::Value
       //then ignore it:
       if(!found_set.m_where_clause.empty() && !get_primary_key_is_in_foundset(found_set, primary_key_for_details))
       {
-        primary_key_for_details = Glib::ValueBase(); //TODO: We set it to empty just so we can test if for empty.
+        primary_key_for_details = Gnome::Gda::Value(); //TODO: We set it to empty just so we can test if for empty.
       }
 
       if(Conversions::value_is_empty(primary_key_for_details))
@@ -182,14 +182,14 @@ FoundSet Notebook_Data::get_found_set() const
   return m_Box_List.get_found_set();
 }
 
-void Notebook_Data::on_list_user_requested_details(const Glib::ValueBase& primary_key_value)
+void Notebook_Data::on_list_user_requested_details(const Gnome::Gda::Value& primary_key_value)
 {
   //std::cout << "Notebook_Data::on_list_user_requested_details" << std::endl;
   m_Box_Details.refresh_data_from_database_with_primary_key(primary_key_value);
   set_current_page(m_iPage_Details);
 }
 
-void Notebook_Data::on_details_user_requested_related_details(const Glib::ustring& table_name, Glib::ValueBase primary_key_value)
+void Notebook_Data::on_details_user_requested_related_details(const Glib::ustring& table_name, Gnome::Gda::Value primary_key_value)
 {
   signal_record_details_requested().emit(table_name, primary_key_value);
 
@@ -270,7 +270,7 @@ Notebook_Data::type_signal_record_details_requested Notebook_Data::signal_record
   return m_signal_record_details_requested;
 }
 
-void Notebook_Data::show_details(const Glib::ValueBase& primary_key_value)
+void Notebook_Data::show_details(const Gnome::Gda::Value& primary_key_value)
 {
   //Reuse this implementation:
   on_list_user_requested_details(primary_key_value);
@@ -295,7 +295,7 @@ void Notebook_Data::on_switch_page_handler(GtkNotebookPage* pPage, guint uiPageN
     //TODO_Performance: This causes double refreshes (with database retrieval) when doing finds. We probably want to distinguish between user page-switches and programmatic page-switches.
     if(box == &m_Box_List)
     {
-      Glib::ValueBase primary_key_selected = m_Box_List.get_primary_key_value_selected();
+      Gnome::Gda::Value primary_key_selected = m_Box_List.get_primary_key_value_selected();
       m_Box_List.refresh_data_from_database();
       m_Box_List.set_primary_key_value_selected(primary_key_selected);
     }

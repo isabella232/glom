@@ -45,7 +45,7 @@ bool Box_Data_Details_Find::init_db_details(const Glib::ustring& table_name)
 {
   FoundSet found_set;
   found_set.m_table_name = table_name;
-  return Box_Data_Details::init_db_details(found_set, Glib::ValueBase());
+  return Box_Data_Details::init_db_details(found_set, Gnome::Gda::Value());
 }
 
 bool Box_Data_Details_Find::fill_from_database()
@@ -95,7 +95,7 @@ void Box_Data_Details_Find::fill_related()
 }
 
 
-void Box_Data_Details_Find::on_flowtable_field_edited(const sharedptr<const LayoutItem_Field>& /* id */, const Glib::ValueBase& /* value */)
+void Box_Data_Details_Find::on_flowtable_field_edited(const sharedptr<const LayoutItem_Field>& /* id */, const Gnome::Gda::Value& /* value */)
 {
   //Don't do anything.
   //This just blocks the method in the base class.

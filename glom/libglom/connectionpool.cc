@@ -243,7 +243,8 @@ sharedptr<SharedConnection> ConnectionPool::connect()
         bool try_another_port = true;
         while(try_another_port)
         { 
-          const Glib::ustring cnc_string_main = "HOST=" + get_host() + ";USER=" + m_user + ";PASSWORD=" + m_password + ";PORT=" + port;
+//          const Glib::ustring cnc_string_main = "HOST=" + get_host() + ";USER=" + m_user + ";PASSWORD=" + m_password + ";PORT=" + port;
+	  const Glib::ustring cnc_string_main = "HOST=" + get_host() + ";PORT=" + port;
 
           Glib::ustring cnc_string = cnc_string_main;
 
@@ -257,7 +258,7 @@ sharedptr<SharedConnection> ConnectionPool::connect()
 
           //*m_refGdaConnection = m_GdaClient->open_connection(m_GdaDataSourceInfo.get_name(), m_GdaDataSourceInfo.get_username(), m_GdaDataSourceInfo.get_password() );
           //m_refGdaConnection.clear(); //Make sure any previous connection is really forgotten.
-          m_refGdaConnection = m_GdaClient->open_connection_from_string("PostgreSQL", cnc_string);
+          m_refGdaConnection = m_GdaClient->open_connection_from_string("PostgreSQL", cnc_string, m_user, m_password);
           if(m_refGdaConnection)
           {
             //g_warning("ConnectionPool: connection opened");
@@ -270,7 +271,7 @@ sharedptr<SharedConnection> ConnectionPool::connect()
               m_pFieldTypes = new FieldTypes(m_refGdaConnection);  
 
             //Enforce ISO formats in the communication:
-            m_refGdaConnection->execute_single_command("SET DATESTYLE = 'ISO'");  
+            m_refGdaConnection->execute_non_select_command("SET DATESTYLE = 'ISO'");  
 
             //Open the database, if one has been specified:
             /* This does not seem to work in libgda's postgres provider, so we specify it in the cnc_string instead:
@@ -280,11 +281,11 @@ sharedptr<SharedConnection> ConnectionPool::connect()
             */
 
             //Get postgres version:
-            Glib::RefPtr<Gnome::Gda::DataModel> data_model = m_refGdaConnection->execute_single_command("SELECT version()");
+            Glib::RefPtr<Gnome::Gda::DataModel> data_model = m_refGdaConnection->execute_select_command("SELECT version()");
             if(data_model && data_model->get_n_rows() && data_model->get_n_columns())
             {
-              Glib::ValueBase value = data_model->get_value_at(0, 0);
-              if(G_VALUE_TYPE(value.gobj()) == G_TYPE_STRING)
+              Gnome::Gda::Value value = data_model->get_value_at(0, 0);
+              if(value.get_value_type() == G_TYPE_STRING)
               {
                 const Glib::ustring version_text = value.get_string();
 
@@ -321,7 +322,7 @@ sharedptr<SharedConnection> ConnectionPool::connect()
               //std::cout << "debug2: connecting: cnc string: " << cnc_string << std::endl;
               std::cout << "Glom: connecting." << std::endl;
 
-              Glib::RefPtr<Gnome::Gda::Connection> gda_connection =  m_GdaClient->open_connection_from_string("PostgreSQL", cnc_string);
+              Glib::RefPtr<Gnome::Gda::Connection> gda_connection = m_GdaClient->open_connection_from_string("PostgreSQL", cnc_string, m_user, m_password);
               if(gda_connection) //If we could connect without specifying the database.
               {
                 bJustDatabaseMissing = true;
@@ -471,8 +472,8 @@ bool ConnectionPool::handle_error(bool cerr_only)
   {
     Glib::RefPtr<Gnome::Gda::Connection> gda_connection = sharedconnection->get_gda_connection();
 
-    typedef std::list< Glib::RefPtr<Gnome::Gda::Error> > type_list_errors;
-    type_list_errors list_errors = gda_connection->get_errors();
+    typedef std::list< Glib::RefPtr<Gnome::Gda::ConnectionEvent> > type_list_errors;
+    type_list_errors list_errors = gda_connection->get_events();
 
     if(!list_errors.empty())
     {

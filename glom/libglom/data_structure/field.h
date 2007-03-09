@@ -133,8 +133,8 @@ public:
   bool field_info_from_database_is_equal(const Glib::RefPtr<const Gnome::Gda::Column>& field);
 
   //These are not used much:
-  Glib::ValueBase get_data() const;
-  void set_data(const Glib::ValueBase& value);
+  Gnome::Gda::Value get_data() const;
+  void set_data(const Gnome::Gda::Value& value);
 
   //Lookup stuff:
   bool get_is_lookup() const;
@@ -224,7 +224,7 @@ protected:
   glom_field_type m_glom_type;
   Glib::RefPtr<Gnome::Gda::Column> m_field_info;
 
-  Glib::ValueBase m_data; //Not used much.
+  Gnome::Gda::Value m_data; //Not used much.
 
   sharedptr<Relationship> m_lookup_relationship;
   Glib::ustring m_strLookupField;

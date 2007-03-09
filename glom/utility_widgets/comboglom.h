@@ -55,11 +55,11 @@ public:
 
   Glib::ustring get_text() const;
 
-  /** Set the text from a Glib::ValueBase.
+  /** Set the text from a Gnome::Gda::Value.
    */
-  virtual void set_value(const Glib::ValueBase& value);
+  virtual void set_value(const Gnome::Gda::Value& value);
 
-  virtual Glib::ValueBase get_value() const;
+  virtual Gnome::Gda::Value get_value() const;
 
 protected:
   void init();
@@ -74,7 +74,7 @@ protected:
 
 
   Glib::ustring m_old_text;
-  //Glib::ValueBase m_value; //The last-stored value. We have this because the displayed value might be unparseable.
+  //Gnome::Gda::Value m_value; //The last-stored value. We have this because the displayed value might be unparseable.
 };
 
 } //namespace Glom

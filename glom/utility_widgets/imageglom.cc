@@ -139,7 +139,7 @@ void ImageGlom::set_pixbuf(const Glib::RefPtr<Gdk::Pixbuf>& pixbuf)
   scale();
 }
 
-void ImageGlom::set_value(const Glib::ValueBase& value)
+void ImageGlom::set_value(const Gnome::Gda::Value& value)
 {
   Glib::RefPtr<Gdk::Pixbuf> pixbuf = Conversions::get_pixbuf_for_gda_value(value);
   if(pixbuf)
@@ -199,11 +199,11 @@ void ImageGlom::set_value(const Glib::ValueBase& value)
   }
 }
 
-Glib::ValueBase ImageGlom::get_value() const
+Gnome::Gda::Value ImageGlom::get_value() const
 {
   //TODO: Return the data from the file that was just chosen.
   //Don't store the original here any longer than necessary,
-  Glib::ValueBase result; //TODO: Initialize it as binary.
+  Gnome::Gda::Value result; //TODO: Initialize it as binary.
 
   if(m_pixbuf_original)
   {
@@ -225,7 +225,7 @@ Glib::ValueBase ImageGlom::get_value() const
       //libgda currently assumes that this buffer is an already-escaped string.
       //TODO: Just use the raw buffer when libgda (in libgda-2.0) has been fixed:
       Glib::ustring binary_escaped = Conversions::get_escaped_binary_data((guint8*)buffer, buffer_size);
-      result.set(binary_escaped.c_str(), binary_escaped.size());
+      result.set(reinterpret_cast<const guchar*>(binary_escaped.c_str()), binary_escaped.size());
 
       g_free(buffer);
       buffer = 0;

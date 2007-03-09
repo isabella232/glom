@@ -190,7 +190,7 @@ void ReportBuilder::report_build_groupby(const FoundSet& found_set_parent, xmlpp
       guint rows_count = datamodel->get_n_rows();
       for(guint row = 0; row < rows_count; ++row)
       {
-        const Glib::ValueBase group_value = datamodel->get_value_at(0 /* col*/, row);
+        const Gnome::Gda::Value group_value = datamodel->get_value_at(0 /* col*/, row);
 
         //Add XML node:
         xmlpp::Element* nodeGroupBy = parent_node.add_child(group_by->get_report_part_id());
@@ -370,7 +370,7 @@ void ReportBuilder::report_build_records_field(const FoundSet& found_set, xmlpp:
   if(vertical)
     nodeField->set_attribute("vertical", "true");
 
-  Glib::ValueBase value;
+  Gnome::Gda::Value value;
   Glib::ustring text_value;
 
   if(!datamodel) //We call this for headers and footers too.
@@ -407,7 +407,7 @@ void ReportBuilder::report_build_records_field(const FoundSet& found_set, xmlpp:
     if(text_value.empty() && sharedptr<const LayoutItem_FieldSummary>::cast_dynamic(field) && (field_type == Field::TYPE_NUMERIC))
     {
       //Use get_text_for_gda_value() instead of "0" so we get the correct numerical formatting:
-      Glib::ValueBase value = Conversions::parse_value(0);
+      Gnome::Gda::Value value = Conversions::parse_value(0);
       text_value = Conversions::get_text_for_gda_value(field_type, value, field->get_formatting_used().m_numeric_format);
     }
 

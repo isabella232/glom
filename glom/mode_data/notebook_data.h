@@ -35,13 +35,13 @@ public:
   virtual ~Notebook_Data();
 
   //Create the layout for the database structure, and fill it with data.
-  virtual bool init_db_details(const FoundSet& found_set, const Glib::ValueBase& primary_key_value_for_details = Glib::ValueBase());
+  virtual bool init_db_details(const FoundSet& found_set, const Gnome::Gda::Value& primary_key_value_for_details = Gnome::Gda::Value());
 
   ///Get the existing where clause, previously supplied to init_db_details().
   FoundSet get_found_set() const;
 
   ///Show the details for a particular record, without affecting the list view:
-  virtual void show_details(const Glib::ValueBase& primary_key_value);
+  virtual void show_details(const Gnome::Gda::Value& primary_key_value);
 
   virtual void select_page_for_find_results(); //Details for 1, List for > 1.
 
@@ -59,7 +59,7 @@ public:
   dataview get_current_view() const;
   void set_current_view(dataview view);
 
-  typedef sigc::signal<void, const Glib::ustring&, Glib::ValueBase> type_signal_record_details_requested;
+  typedef sigc::signal<void, const Glib::ustring&, Gnome::Gda::Value> type_signal_record_details_requested;
   type_signal_record_details_requested signal_record_details_requested();
 
 protected:
@@ -68,8 +68,8 @@ protected:
   void update_records_count();
 
   //Signal handlers:
-  virtual void on_list_user_requested_details(const Glib::ValueBase& primary_key_value);
-  void on_details_user_requested_related_details(const Glib::ustring& table_name, Glib::ValueBase primary_key_value);
+  virtual void on_list_user_requested_details(const Gnome::Gda::Value& primary_key_value);
+  void on_details_user_requested_related_details(const Glib::ustring& table_name, Gnome::Gda::Value primary_key_value);
 
   virtual void on_switch_page_handler(GtkNotebookPage* pPage, guint uiPageNumber);
 

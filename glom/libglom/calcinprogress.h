@@ -32,7 +32,7 @@ public:
   CalcInProgress();
 
   sharedptr<const Field> m_field; 
-  Glib::ValueBase m_value; //If it's been calculated.
+  Gnome::Gda::Value m_value; //If it's been calculated.
   bool m_calc_in_progress;
   bool m_calc_finished;
 };

@@ -82,7 +82,7 @@ Glib::ustring Box_Data::get_find_where_clause() const
   {
     Glib::ustring strClausePart;
 
-    const Glib::ValueBase data = get_entered_field_data(*iter);
+    const Gnome::Gda::Value data = get_entered_field_data(*iter);
 
     if(!Conversions::value_is_empty(data))
     {
@@ -92,7 +92,7 @@ Glib::ustring Box_Data::get_find_where_clause() const
         bool use_this_field = true;
         if(field->get_glom_type() == Field::TYPE_BOOLEAN) //TODO: We need an intermediate state for boolean fields, so that they can be ignored in searches.
         {
-          if(!data.get_bool())
+          if(!data.get_boolean())
             use_this_field = false;
         }
 
@@ -132,17 +132,17 @@ void Box_Data::on_Button_Find()
     signal_find_criteria.emit(where_clause);
 }
 
-Glib::RefPtr<Gnome::Gda::DataModel> Box_Data::record_new(bool use_entered_data, const Glib::ValueBase& primary_key_value)
+Glib::RefPtr<Gnome::Gda::DataModel> Box_Data::record_new(bool use_entered_data, const Gnome::Gda::Value& primary_key_value)
 {
   return record_new(use_entered_data, primary_key_value, Gtk::TreeModel::iterator());
 }
 
-void Box_Data::set_primary_key_value(const Gtk::TreeModel::iterator& /* row */, const Glib::ValueBase& /* value */)
+void Box_Data::set_primary_key_value(const Gtk::TreeModel::iterator& /* row */, const Gnome::Gda::Value& /* value */)
 {
   //Box_Data_List overrides this.
 }
 
-Glib::RefPtr<Gnome::Gda::DataModel> Box_Data::record_new(bool use_entered_data, const Glib::ValueBase& primary_key_value, const Gtk::TreeModel::iterator& row)
+Glib::RefPtr<Gnome::Gda::DataModel> Box_Data::record_new(bool use_entered_data, const Gnome::Gda::Value& primary_key_value, const Gtk::TreeModel::iterator& row)
 {  
   sharedptr<const Field> fieldPrimaryKey = get_field_primary_key();
 
@@ -173,7 +173,7 @@ Glib::RefPtr<Gnome::Gda::DataModel> Box_Data::record_new(bool use_entered_data, 
     sharedptr<LayoutItem_Field> layout_item = *iter;
 
     //If the user did not enter something in this field:
-    Glib::ValueBase value = get_entered_field_data(layout_item);
+    Gnome::Gda::Value value = get_entered_field_data(layout_item);
 
     if(Conversions::value_is_empty(value)) //This deals with empty strings too.
     {
@@ -189,7 +189,7 @@ Glib::RefPtr<Gnome::Gda::DataModel> Box_Data::record_new(bool use_entered_data, 
           //We need the connection when we run the script, so that the script may use it.
           sharedptr<SharedConnection> sharedconnection = connect_to_server(get_app_window());
 
-          const Glib::ValueBase value = glom_evaluate_python_function_implementation(field->get_glom_type(), calculation, field_values, document, m_table_name, sharedconnection->get_gda_connection());
+          const Gnome::Gda::Value value = glom_evaluate_python_function_implementation(field->get_glom_type(), calculation, field_values, document, m_table_name, sharedconnection->get_gda_connection());
           set_entered_field_data(layout_item, value);
         }
 
@@ -198,7 +198,7 @@ Glib::RefPtr<Gnome::Gda::DataModel> Box_Data::record_new(bool use_entered_data, 
         //TODO_Performance: Add has_default_value()?
         if(Conversions::value_is_empty(value))
         {
-          const Glib::ValueBase default_value = field->get_default_value();
+          const Gnome::Gda::Value default_value = field->get_default_value();
           if(!Conversions::value_is_empty(default_value))
           {
             set_entered_field_data(layout_item, default_value);
@@ -225,7 +225,7 @@ Glib::RefPtr<Gnome::Gda::DataModel> Box_Data::record_new(bool use_entered_data, 
       type_map_added::const_iterator iterFind = map_added.find(field_name);
       if(iterFind == map_added.end()) //If it was not added already
       {
-        Glib::ValueBase value;
+        Gnome::Gda::Value value;
 
         const sharedptr<const Field>& field = layout_item->get_full_field_details();
         if(field)
@@ -288,7 +288,7 @@ Glib::RefPtr<Gnome::Gda::DataModel> Box_Data::record_new(bool use_entered_data, 
          sharedptr<const LayoutItem_Field> layout_item = *iter;
          
          //TODO_Performance: We just set this with set_entered_field_data() above. Maybe we could just remember it.
-         const Glib::ValueBase field_value = get_entered_field_data(layout_item);
+         const Gnome::Gda::Value field_value = get_entered_field_data(layout_item);
 
          LayoutFieldInRecord field_in_record(layout_item, m_table_name, fieldPrimaryKey, primary_key_value);
 
@@ -391,7 +391,7 @@ Box_Data::type_vecLayoutFields Box_Data::get_table_fields_to_show(const Glib::us
     return type_vecLayoutFields();
 }
 
-Glib::ValueBase Box_Data::generate_next_auto_increment(const Glib::ustring& table_name, const Glib::ustring field_name)
+Gnome::Gda::Value Box_Data::generate_next_auto_increment(const Glib::ustring& table_name, const Glib::ustring field_name)
 {
   //Get it from the database system table.
   //The developer can change the next value in the Database Preferences
@@ -407,9 +407,9 @@ Glib::ValueBase Box_Data::generate_next_auto_increment(const Glib::ustring& tabl
   else
   {
     //The result should be 1 row with 1 column
-    Glib::ValueBase value = data_model->get_value_at(0, 0);
+    Gnome::Gda::Value value = data_model->get_value_at(0, 0);
 
-    //It's a Glib::ValueBase::TYPE_NUMERIC, but the GdaNumeric struct is not easy to handle, so let's hack around it:
+    //It's a Gnome::Gda::Value::TYPE_NUMERIC, but the GdaNumeric struct is not easy to handle, so let's hack around it:
     //if(value.is_number())
     //  result = value.get_integer();
     //else
@@ -458,7 +458,7 @@ Box_Data::type_vecLayoutFields Box_Data::get_related_fields(const sharedptr<cons
   return result;
 }
 
-void Box_Data::refresh_related_fields(const LayoutFieldInRecord& field_in_record_changed, const Gtk::TreeModel::iterator& row, const Glib::ValueBase& /* field_value */)
+void Box_Data::refresh_related_fields(const LayoutFieldInRecord& field_in_record_changed, const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& /* field_value */)
 {
   if(field_in_record_changed.m_table_name != m_table_name)
     return; //TODO: Handle these too?
@@ -488,7 +488,7 @@ void Box_Data::refresh_related_fields(const LayoutFieldInRecord& field_in_record
         guint cols_count = result->get_n_columns();
         for(guint uiCol = 0; uiCol < cols_count; uiCol++)
         {
-          const Glib::ValueBase value = result->get_value_at(uiCol, 0 /* row */);
+          const Gnome::Gda::Value value = result->get_value_at(uiCol, 0 /* row */);
           sharedptr<LayoutItem_Field> layout_item = *iterFields;
 
           //g_warning("list fill: field_name=%s", iterFields->get_name().c_str());
@@ -593,7 +593,7 @@ void Box_Data::fill_layout_group_field_info(const sharedptr<LayoutGroup>& group,
   }
 }
 
-bool Box_Data::record_delete(const Glib::ValueBase& primary_key_value)
+bool Box_Data::record_delete(const Gnome::Gda::Value& primary_key_value)
 {
 
   sharedptr<Field> field_primary_key = get_field_primary_key();
@@ -624,7 +624,7 @@ g_warning("debug: Box_Data::get_field()");
 }
 */
 
-bool Box_Data::get_related_record_exists(const sharedptr<const Relationship>& relationship, const sharedptr<const Field>& key_field, const Glib::ValueBase& key_value)
+bool Box_Data::get_related_record_exists(const sharedptr<const Relationship>& relationship, const sharedptr<const Field>& key_field, const Gnome::Gda::Value& key_value)
 {
   bool result = false;
 
@@ -648,9 +648,9 @@ bool Box_Data::get_related_record_exists(const sharedptr<const Relationship>& re
   return result;
 }
 
-bool Box_Data::add_related_record_for_field(const sharedptr<const LayoutItem_Field>& layout_item_parent, const sharedptr<const Relationship>& relationship, const sharedptr<const Field>& primary_key_field, const Glib::ValueBase& primary_key_value_provided)
+bool Box_Data::add_related_record_for_field(const sharedptr<const LayoutItem_Field>& layout_item_parent, const sharedptr<const Relationship>& relationship, const sharedptr<const Field>& primary_key_field, const Gnome::Gda::Value& primary_key_value_provided)
 {
-  Glib::ValueBase primary_key_value = primary_key_value_provided;
+  Gnome::Gda::Value primary_key_value = primary_key_value_provided;
 
   const bool related_record_exists = get_related_record_exists(relationship, primary_key_field, primary_key_value);
   if(related_record_exists)
@@ -670,7 +670,7 @@ bool Box_Data::add_related_record_for_field(const sharedptr<const LayoutItem_Fie
       dialog.run();
 
       //Clear the field again, discarding the entered data.
-      set_entered_field_data(layout_item_parent, Glib::ValueBase());
+      set_entered_field_data(layout_item_parent, Gnome::Gda::Value());
 
       return false;
     }
@@ -690,7 +690,7 @@ bool Box_Data::add_related_record_for_field(const sharedptr<const LayoutItem_Fie
         dialog.run();
 
         //Clear the field again, discarding the entered data.
-        set_entered_field_data(layout_item_parent, Glib::ValueBase());
+        set_entered_field_data(layout_item_parent, Gnome::Gda::Value());
 
         return false;
       }
@@ -731,8 +731,8 @@ bool Box_Data::add_related_record_for_field(const sharedptr<const LayoutItem_Fie
               }
               else
               {
-                const Glib::ValueBase parent_primary_key_value = get_primary_key_value_selected();
-                if(Gnome::Gda::value_is_null(parent_primary_key_value))
+                const Gnome::Gda::Value parent_primary_key_value = get_primary_key_value_selected();
+                if(parent_primary_key_value.is_null())
                 {
                   g_warning("Box_Data::add_related_record_for_field(): get_primary_key_value_selected() failed. table = %s", get_table_name().c_str());
                   return false;

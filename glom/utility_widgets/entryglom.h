@@ -46,11 +46,11 @@ public:
   //This is not virtual, so you must not use it via Gtk::Entry.
   void set_text(const Glib::ustring& text); //override
 
-  /** Set the text from a Glib::ValueBase.
+  /** Set the text from a Gnome::Gda::Value.
    */
-  virtual void set_value(const Glib::ValueBase& value);
+  virtual void set_value(const Gnome::Gda::Value& value);
 
-  virtual Glib::ValueBase get_value() const;
+  virtual Gnome::Gda::Value get_value() const;
 
   virtual void set_read_only(bool read_only = true);
 
@@ -72,7 +72,7 @@ protected:
   Glib::ustring m_old_text;
   Field::glom_field_type m_glom_type; //Store the type so we can validate the text accordingly.
 
-  //Glib::ValueBase m_value; //The last-stored value. We have this because the displayed value might be unparseable.
+  //Gnome::Gda::Value m_value; //The last-stored value. We have this because the displayed value might be unparseable.
 };
 
 } //namespace Glom

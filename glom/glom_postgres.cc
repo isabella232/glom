@@ -28,9 +28,9 @@ bool GlomPostgres::postgres_add_column(const Glib::ustring& table_name, const sh
   sharedptr<Field> field_to_add = glom_sharedptr_clone(field);
 
   Glib::RefPtr<Gnome::Gda::Column> field_info = field_to_add->get_field_info();
-  if((field_info->get_type() == Gnome::Gda::VALUE_TYPE_UNKNOWN) || (field_info->get_type() == Gnome::Gda::VALUE_TYPE_NULL))
+  if((field_info->get_type() == G_TYPE_NONE) || (field_info->get_type() == GDA_TYPE_NULL))
   {
-    field_info->set_gdatype( Field::get_gda_type_for_glom_type(field_to_add->get_glom_type()) );
+    field_info->set_g_type( Field::get_gda_type_for_glom_type(field_to_add->get_glom_type()) );
     field_to_add->set_field_info(field_info);
   }
 
@@ -148,8 +148,8 @@ sharedptr<Field> GlomPostgres::postgres_change_column_extras(const Glib::ustring
     }
 
 
-    const Glib::ValueBase default_value = field->get_default_value();
-    const Glib::ValueBase default_value_old = field_old->get_default_value();
+    const Gnome::Gda::Value default_value = field->get_default_value();
+    const Gnome::Gda::Value default_value_old = field_old->get_default_value();
 
     if(!field->get_auto_increment()) //Postgres auto-increment fields have special code as their default values.
     {
