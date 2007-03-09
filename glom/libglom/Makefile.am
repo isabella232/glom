@@ -27,7 +27,7 @@ libglom_la_SOURCES = appstate.h appstate.cc \
                      utils.h utils.cc \
                      sharedptr.h \
                      standard_table_prefs_fields.h \
-                     avahai_publisher.h avahi_publisher.cc
+                     avahi_publisher.h avahi_publisher.cc \
 		     gst-package.h gst-package.c
 
 libglom_la_LDFLAGS = -no-undefined
@@ -45,7 +45,7 @@ test_sharedptr_layoutitem_SOURCES = test_sharedptr_layoutitem.cc
 test_sharedptr_layoutitem_LDADD =  libglom.la \
               $(GLOM_LIBS) -lutil
 
-test_avahi_publisher SOURCES = test_avahi_publisher.cc
+test_avahi_publisher_SOURCES = test_avahi_publisher.cc
 test_avahi_publisher_LDADD =  libglom.la \
               $(GLOM_LIBS) -lutil
                    
