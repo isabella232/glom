@@ -34,6 +34,8 @@ public:
   Dialog_User(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
   virtual ~Dialog_User();
 
+  bool check_password();
+
   /**
    * @param layout "list" or "details"
    * @param document The document, so that the dialog can load the previous layout, and save changes.

@@ -308,7 +308,24 @@ void Dialog_UsersList::on_button_user_new()
   }
 
   dialog->set_transient_for(*this);
-  int response = Glom::Utils::dialog_run_with_help(dialog, "dialog_user");
+  dialog->m_combo_group->set_sensitive(false); //It is being added to the current group, so don't offer a different group.
+ 
+  int response = Gtk::RESPONSE_OK;
+  bool keep_trying = true;
+  while(keep_trying)
+  {
+    response = Glom::Utils::dialog_run_with_help(dialog, "dialog_user");
+
+    //Check the password is acceptable:
+    if(response == Gtk::RESPONSE_OK)
+    {
+      const bool password_ok = dialog->check_password();
+      if(password_ok)
+        keep_trying = false;
+    }
+    else
+      keep_trying = false;
+  }
 
   const Glib::ustring user = dialog->m_entry_user->get_text();
   const Glib::ustring password = dialog->m_entry_password->get_text();
@@ -317,6 +334,7 @@ void Dialog_UsersList::on_button_user_new()
 
   if(response != Gtk::RESPONSE_OK)
     return;
+
 
   if(!user.empty() && !password.empty())
   {
@@ -374,10 +392,25 @@ void Dialog_UsersList::on_button_user_edit()
       dialog->m_combo_group->set_sensitive(false); //TODO: Allow, and handle, changes to this.
 
 
-      int response = dialog->run();
+      int response = Gtk::RESPONSE_OK;
+      bool keep_trying = true;
+      while(keep_trying)
+      {
+        response = Glom::Utils::dialog_run_with_help(dialog, "dialog_user");
+
+        //Check the password is acceptable:
+        if(response == Gtk::RESPONSE_OK)
+        {
+          const bool password_ok = dialog->check_password();
+          if(password_ok)
+            keep_trying = false;
+        }
+        else
+          keep_trying = false;
+      }
 
       const Glib::ustring user = dialog->m_entry_user->get_text();
-      const Glib::ustring password = dialog->m_entry_password->get_text(); //TODO: Check the confirmation.
+      const Glib::ustring password = dialog->m_entry_password->get_text();
 
       delete dialog;
 

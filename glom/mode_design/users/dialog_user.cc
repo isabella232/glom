@@ -19,6 +19,7 @@
  */
 
 #include "dialog_user.h"
+#include <glom/frame_glom.h> //For Frame_Glom::show_ok_dialog().
 //#include <libgnome/gnome-i18n.h>
 #include <glibmm/i18n.h>
 
@@ -40,6 +41,22 @@ Dialog_User::Dialog_User(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glad
 
 Dialog_User::~Dialog_User()
 {
+}
+
+bool Dialog_User::check_password()
+{
+  if(m_entry_password->get_text() != m_entry_password_confirm->get_text())
+  {
+    Frame_Glom::show_ok_dialog(_("Passwords Do Not Match"), _("The entered password does not match the entered password confirmation. Please try again."), *this, Gtk::MESSAGE_ERROR);
+    return false;
+  }
+  else if(m_entry_password->get_text().empty())
+  {
+    Frame_Glom::show_ok_dialog(_("Password Is Empty"), _("Please enter a password this for this user."), *this, Gtk::MESSAGE_ERROR);
+    return false;
+  }
+  else
+    return true;
 }
 
 /*
