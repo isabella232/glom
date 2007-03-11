@@ -249,18 +249,18 @@ sharedptr<SharedConnection> ConnectionPool::connect()
           Glib::ustring cnc_string = cnc_string_main;
 
           if(!m_database.empty())
-            cnc_string += (";DATABASE=" + m_database);
+            cnc_string += (";DB_NAME=" + m_database);
           else
-            cnc_string += (";DATABASE=" + default_database);
+            cnc_string += (";DB_NAME=" + default_database);
 
           //std::cout << "debug: connecting: cnc string: " << cnc_string << std::endl;
           std::cout << std::endl << "Glom: trying to connect on port=" << port << std::endl;
 
           //*m_refGdaConnection = m_GdaClient->open_connection(m_GdaDataSourceInfo.get_name(), m_GdaDataSourceInfo.get_username(), m_GdaDataSourceInfo.get_password() );
           //m_refGdaConnection.clear(); //Make sure any previous connection is really forgotten.
-          m_refGdaConnection = m_GdaClient->open_connection_from_string("PostgreSQL", cnc_string, m_user, m_password);
-          if(m_refGdaConnection)
+          try
           {
+            m_refGdaConnection = m_GdaClient->open_connection_from_string("PostgreSQL", cnc_string, m_user, m_password);
             //g_warning("ConnectionPool: connection opened");
 
             //Remember what port is working:
@@ -305,9 +305,9 @@ sharedptr<SharedConnection> ConnectionPool::connect()
 
             return connect(); //Call this method recursively. This time m_refGdaConnection exists.
           }
-          else
+          catch(const Gnome::Gda::ConnectionError& ex)
           {
-            std::cout << "ConnectionPool::connect() Attempt to connect to database failed on port=" << port << ", database=" << m_database << std::endl;
+            std::cout << "ConnectionPool::connect() Attempt to connect to database failed on port=" << port << ", database=" << m_database << ": " << ex.what() << std::endl;
 
             bool bJustDatabaseMissing = false;
             if(!m_database.empty())
@@ -317,21 +317,22 @@ sharedptr<SharedConnection> ConnectionPool::connect()
               //If the connection failed while looking for a database,
               //then try connecting without the database:
               Glib::ustring cnc_string = cnc_string_main;
-              cnc_string += (";DATABASE=" + default_database);
+              cnc_string += (";DB_NAME=" + default_database);
 
               //std::cout << "debug2: connecting: cnc string: " << cnc_string << std::endl;
               std::cout << "Glom: connecting." << std::endl;
 
-              Glib::RefPtr<Gnome::Gda::Connection> gda_connection = m_GdaClient->open_connection_from_string("PostgreSQL", cnc_string, m_user, m_password);
-              if(gda_connection) //If we could connect without specifying the database.
-              {
+              try
+	      {
+	        //If we could connect without specifying the database.
+                Glib::RefPtr<Gnome::Gda::Connection> gda_connection = m_GdaClient->open_connection_from_string("PostgreSQL", cnc_string, m_user, m_password);
                 bJustDatabaseMissing = true;
                 connection_to_default_database_possible = true;
                 m_port = port;
               }
-              else
+              catch(const Gnome::Gda::ConnectionError& ex)
               {
-                std::cerr << "    ConnectionPool::connect() connection also failed when not specifying database." << std::endl;
+                std::cerr << "    ConnectionPool::connect() connection also failed when not specifying database: " << ex.what() << std::endl;
               }
             }
 

@@ -38,6 +38,7 @@ bool Field::m_maps_inited = false;
 
 Field::Field()
 : m_glom_type(TYPE_INVALID),
+  m_field_info(Gnome::Gda::Column::create()),
   m_visible(true)
 {
   m_translatable_item_type = TRANSLATABLE_TYPE_FIELD;

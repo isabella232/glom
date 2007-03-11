@@ -1,3 +1,13 @@
+2007-03-11  Armin Burgmeier  <armin@openismus.com>
+
+	* glom/libglom/data_structure/field.cc: Create m_field_info in
+	constructor. This was no Glib::RefPtr<> before libgda-3.0 and was
+	therefore default-constructed.
+
+	* glom/libglom/connectionpool.cc: Catch exceptions while establishing
+	database, changed DATABASE= to DB_NAME= in the connection string since
+	this is the new format.
+
 2007-03-09  Armin Burgmeier  <armin@openismus.com>
 
 	* glom/dialog_invalid_data.cc:
