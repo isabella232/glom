@@ -1,3 +1,32 @@
+1.4.0:
+
+What's new since Glom 1.2.0:
+
+* Self-hosting: Databases can now be created in a local directory, without using a 
+  central PostgreSQL server. PostreSQL is still used to host the database on your 
+  local computer. You may, for instance, send an archive of this directory in an email.
+  PostgreSQL is therefore now a non-optional dependency.
+  In future, a client-only version of Glom might be available for embedded devices.
+* Details view:
+  - Related Records: Allow viewing of doubly-related records.
+  - A vertical scrollbar now allows the window to be smaller when necessary 
+  on your screen.
+* List View: Now supports static text items, static pictures, and script buttons, as 
+  the Details view already did.
+* Field Formatting: Allow the user to remove a previously-chosen Also Show field.
+  Bug #365051 from L Davison.
+* Translations: Added Import and Export buttons, so you can use 
+  the standard .po format. (Johannes Schmid)
+* Calculated Fields and Button Scripts: Now uses Python syntax highlighting, via GtkSourceView.
+  (Johannes Schmid, Dodji Seketeli)
+* Added Script Library to the Developer menu, for Python code that should be reused 
+  (via Import) in several scripts.
+* Added --debug_sql commmand-line option, which prints out the generated 
+  SQL commands. (Johannes Schmid)
+* Adapted for the latest Postgres version (and previous versions).
+* Adapted for the latest Python version (and previous versions).
+* Various bug-fixes, some of which are also in the Glom 1.2.x releases.
+
 1.3.12 (unstable, but 1.4.0 will arrive soon)
 
 * Users and Groups UI works with later versions of Postgres.
@@ -88,7 +117,7 @@
 * Avoid relatively rare SQL errors about ambiguous fields and non-existant fields.
 * Start dialog: Attempt to avoid strange line endings.
   Bug #369602 from Javier F. Serrador.
-* Build:Partial cygin build fix.
+* Build:Partial Cygwin build fix.
 
 1.3.1 (unstable):
 
