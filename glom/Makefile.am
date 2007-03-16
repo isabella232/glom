@@ -1,5 +1,4 @@
-SUBDIRS = libglom mode_data mode_design mode_find navigation utility_widgets layout_item_dialogs python_embed reports translation
-# relationships_overview 
+SUBDIRS = libglom mode_data mode_design mode_find navigation utility_widgets layout_item_dialogs python_embed reports translation relationships_overview 
 
 gladedir = $(datadir)/glom/glade/
 glomxsltdir = $(datadir)/glom/xslt/
@@ -58,11 +57,10 @@ glom_LDADD = reports/libreports.a \
              utility_widgets/db_adddel/libutility_widgets_db_adddel.a \
              utility_widgets/libutility_widgets.a \
              translation/libtranslation.a \
+             relationships_overview/librelationshipsoverview.a \
              python_embed/libpython_embed.a \
              $(top_builddir)/glom/libglom/libglom.la \
              $(GLOM_LIBS) $(PYTHON_LDFLAGS) -lutil -lgettextpo
-
-#             relationships_overview/librelationshipsoverview.a
 
              #python_embed/python_module/glom.la
 

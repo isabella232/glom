@@ -33,7 +33,7 @@
 #include <glom/mode_design/script_library/dialog_script_library.h>
 #include <glom/dialog_new_self_hosted_connection.h>
 
-//#define ENABLE_RELATIONSHIPS_OVERVIEW
+#define ENABLE_RELATIONSHIPS_OVERVIEW
 #ifdef ENABLE_RELATIONSHIPS_OVERVIEW
 #include "relationships_overview/dialog_relationships_overview.h"
 #endif
