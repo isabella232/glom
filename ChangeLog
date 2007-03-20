@@ -1,3 +1,12 @@
+2007-03-20  Mathias Hasselmann  <mathias.hasselmann@gmx.de>
+
+	* glom/libglom/connectionpool.cc: Modify the default pg_hba.conf to 
+	allow TCP/IP connections from any host when doing self-hosting. 
+	Previously it had mistakenly only allowed connections from 127.0.0.1 (localhost).
+	Interestingly, not all local computers can be identified as 127.0.0.1  either, 
+	so the connection was failing for some local computers too.
+        (ChangeLog comments from Murray)
+
 2007-03-20  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/libglom/utils.cc:
