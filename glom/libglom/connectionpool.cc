@@ -503,7 +503,16 @@ float ConnectionPool::get_postgres_server_version()
   return m_postgres_server_version;
 }
 
-bool ConnectionPool::directory_exists(const std::string& uri)
+/*
+bool ConnectionPool::directory_exists_filepath(const std::string& filepath)
+{
+  const std::string uri = Glib::filename_to_uri(filepath);
+
+  return directory_exists_uri(uri);
+}
+*/
+
+bool ConnectionPool::directory_exists_uri(const std::string& uri)
 {
   Glib::RefPtr<Gnome::Vfs::Uri> vfsuri = Gnome::Vfs::Uri::create(uri);
   return vfsuri->uri_exists();
@@ -516,7 +525,7 @@ bool ConnectionPool::start_self_hosting()
 
   const std::string dbdir_uri = m_self_hosting_data_uri;
 
-  if(!(directory_exists(dbdir_uri)))
+  if(!(directory_exists_uri(dbdir_uri)))
   {
     std::cerr << "ConnectionPool::create_self_hosting(): The directory could not be found: " << dbdir_uri << std::endl;
     return false;
@@ -527,7 +536,7 @@ bool ConnectionPool::start_self_hosting()
 
   const std::string dbdir_data = Glib::build_filename(dbdir, "data");
   const std::string dbdir_data_uri = Glib::filename_to_uri(dbdir_data);
-  if(!(directory_exists(dbdir_data_uri)))
+  if(!(directory_exists_uri(dbdir_data_uri)))
   {
     std::cerr << "ConnectionPool::create_self_hosting(): The data sub-directory could not be found." << dbdir_data_uri << std::endl;
     return false;
@@ -616,7 +625,7 @@ void ConnectionPool::stop_self_hosting()
 }
 
 
-bool ConnectionPool::create_self_hosting()
+bool ConnectionPool::create_self_hosting(Gtk::Window* parent_window)
 {
   if(m_self_hosting_data_uri.empty())
   {
@@ -627,6 +636,20 @@ bool ConnectionPool::create_self_hosting()
   //Get the filepath of the directory that we should create:
   const std::string dbdir_uri = m_self_hosting_data_uri;
   //std::cout << "debug: dbdir_uri=" << dbdir_uri << std::endl;
+
+  if(directory_exists_uri(dbdir_uri))
+  { 
+    if(parent_window)
+    {
+      Utils::show_ok_dialog(_("Directory Already Exists"), _("There is an existing directory with the same name as the directory that should be created for the new database files. You should specify a different filename to use a new directory instead."), *parent_window, Gtk::MESSAGE_ERROR);
+    }
+    
+    return false;
+  }
+  else
+    std::cout << "DEBUGDEBUGDEBUG: URI does not exist: " << dbdir_uri << std::endl;
+
+
   const std::string dbdir = Glib::filename_from_uri(dbdir_uri);
   //std::cout << "debug: dbdir=" << dbdir << std::endl;
   g_assert(!dbdir.empty());
@@ -638,6 +661,12 @@ bool ConnectionPool::create_self_hosting()
   {
     std::cerr << "Error from g_mkdir_with_parents() while trying to create directory: " << dbdir << std::endl;
     perror("Error from g_mkdir_with_parents");
+
+    if(parent_window)
+    {
+       Utils::show_ok_dialog(_("Could Not Create Directory"), _("There was an error when attempting to create the directory for the new database files."), *parent_window, Gtk::MESSAGE_ERROR);
+    }
+
     return false;
   }
 
@@ -646,6 +675,11 @@ bool ConnectionPool::create_self_hosting()
   mkdir_succeeded = g_mkdir_with_parents(dbdir_config.c_str(), 0770);
   if(mkdir_succeeded == -1)
   {
+    if(parent_window)
+    {
+       Utils::show_ok_dialog(_("Could Not Create Configuration Directory"), _("There was an error when attempting to create the configuration directory for the new database files."), *parent_window, Gtk::MESSAGE_ERROR);
+    }
+
     std::cerr << "Error from g_mkdir_with_parents() while trying to create directory: " << dbdir_config << std::endl;
     perror("Error from g_mkdir_with_parents");
     return false;

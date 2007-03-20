@@ -592,11 +592,27 @@ Glib::ustring App_Glom::ui_file_select_save(const Glib::ustring& old_file_uri) /
           Frame_Glom::show_ok_dialog(_("Database Title missing"), _("You must specify a title for the new database."), *this, Gtk::MESSAGE_ERROR);
 
           try_again = true;
+          continue;
         }
       }
  
       if(!try_again && fileChooser_SaveExtras && m_ui_save_extra_newdb_selfhosted)
       {
+        //Check that the directory does not exist already.
+        //The GtkFileChooser could not check for that because it could not know that we would create a directory based on the filename:
+        //Note that uri has no extension at this point:
+        Glib::RefPtr<Gnome::Vfs::Uri> vfsuri = Gnome::Vfs::Uri::create(uri);
+        if(vfsuri->uri_exists())
+        {
+          ui_warning(_("Directory Already Exists"), _("There is an existing directory with the same name as the directory that should be created for the new database files. You should specify a different filename to use a new directory instead."));
+          try_again = true; //Try again.
+          continue;
+        }
+        else
+        {
+          std::cout << "DEBUG: Directory does not exist:" << uri << std::endl;
+        }
+        
         //Create the directory, so that file creation can succeed later:
         //0770 means "this user and his group can read and write this "executable" (can add child files) directory".
         //The 0 prefix means that this is octal.
@@ -609,7 +625,7 @@ Glib::ustring App_Glom::ui_file_select_save(const Glib::ustring& old_file_uri) /
           std::cerr << "Error during make_directory(): " << ex.what() << std::endl;
         }
 
-        //Add the filename (Note that the caller with add the extension if necessary, so we don't do it here.)
+        //Add the filename (Note that the caller will add the extension if necessary, so we don't do it here.)
         Glib::RefPtr<Gnome::Vfs::Uri> uri_with_ext = Gnome::Vfs::Uri::create(uri_chosen);
         const Glib::ustring filename_part = uri_with_ext->extract_short_name();
 

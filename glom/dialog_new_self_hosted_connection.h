@@ -41,7 +41,7 @@ public:
 
   bool check_password();
 
-  bool create_self_hosted() const;
+  bool create_self_hosted();
 
   virtual void load_from_document(); //override
 

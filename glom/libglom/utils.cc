@@ -818,4 +818,13 @@ void Utils::show_help(const Glib::ustring& id)
    }
 }
 
+
+void Utils::show_ok_dialog(const Glib::ustring& title, const Glib::ustring& message, Gtk::Window& parent, Gtk::MessageType message_type)
+{
+  Gtk::MessageDialog dialog("<b>" + title + "</b>", true /* markup */, message_type, Gtk::BUTTONS_OK);
+  dialog.set_secondary_text(message);
+  dialog.set_transient_for(parent);
+  dialog.run();
+}
+
 } //namespace Glom

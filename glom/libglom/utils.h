@@ -27,6 +27,7 @@
 #include <glom/libglom/data_structure/layout/layoutitem_field.h>
 
 #include <gtkmm/dialog.h>
+#include <gtkmm/messagedialog.h>
 
 namespace Glom
 {
@@ -90,7 +91,10 @@ Glib::ustring string_remove_suffix(const Glib::ustring& str, const Glib::ustring
 
 int dialog_run_with_help(Gtk::Dialog* dialog, const Glib::ustring& id = Glib::ustring());
 
-void show_help (const Glib::ustring& id = Glib::ustring());
+void show_help(const Glib::ustring& id = Glib::ustring());
+
+void show_ok_dialog(const Glib::ustring& title, const Glib::ustring& message, Gtk::Window& parent, Gtk::MessageType message_type);
+
 } //namespace Utils
 
 } //namespace Glom

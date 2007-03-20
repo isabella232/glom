@@ -146,8 +146,9 @@ public:
   void stop_self_hosting();
 
   /** Create new database files, for later use by their own  database server instance.
+   * @param parent_window A parent window to use as the transient window when displaying errors.
    */
-  bool create_self_hosting();
+  bool create_self_hosting(Gtk::Window* parent_window);
 
   //Show the gda error in a dialog.
   static bool handle_error(bool cerr_only = false);
@@ -182,7 +183,8 @@ protected:
 
 protected:
 
-  bool directory_exists(const std::string& uri);
+  //bool directory_exists_filepath(const std::string& filepath);
+  bool directory_exists_uri(const std::string& uri);
 
   typedef std::list<Glib::ustring> type_list_ports;
   type_list_ports m_list_ports; //Network ports on which to try connecting to postgres.
