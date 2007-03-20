@@ -47,7 +47,7 @@ namespace Glom
 # local is for Unix domain socket connections only\n\
 local   all         all                               ident sameuser\n\
 # IPv4 local connections:\n\
-host    all         all         127.0.0.1/32          md5\n\
+host    all         all         0.0.0.0/0          md5\n\
 # IPv6 local connections:\n\
 host    all         all         ::1/128               md5\n"
 
