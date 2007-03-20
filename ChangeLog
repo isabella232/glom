@@ -1,5 +1,11 @@
 2007-03-20  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/frame_glom.cc: connection_request_password_and_choose_new_database_name(): 
+	Do not redeclare response variable, so we do not mistakenly think we failed later. 
+	This is just a fix of the last commit.
+
+2007-03-20  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/dialog_new_self_hosted_connection.cc:
 	* glom/dialog_new_self_hosted_connection.h:
 	* glom/frame_glom.cc:

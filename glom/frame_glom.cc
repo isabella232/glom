@@ -1437,7 +1437,7 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
     add_view(dialog);
 
 
-    int response = Gtk::RESPONSE_OK;
+    response = Gtk::RESPONSE_OK;
     bool keep_trying = true;
     while(keep_trying)
     {
