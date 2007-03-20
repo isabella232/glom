@@ -412,7 +412,7 @@ Base_DB::type_vecFields Base_DB::get_fields_for_table_from_database(const Glib::
       guint rows_count = data_model_fields->get_n_rows();
       while(row < rows_count)
       {
-        Glib::RefPtr<Gnome::Gda::Column> field_info;
+        Glib::RefPtr<Gnome::Gda::Column> field_info = Gnome::Gda::Column::create();
 
         //Get the field name:
         Gnome::Gda::Value value_name = data_model_fields->get_value_at(DATAMODEL_FIELDS_COL_NAME, row);

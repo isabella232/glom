@@ -1,3 +1,10 @@
+2007-03-20  Armin Burgmeier  <armin@openismus.com>
+
+	* glom/base_db.cc: Initialize field_info in
+	get_fields_for_table_from_database() by calling
+	Gnome::Gda::Column::create(). This was also probably no Glib::RefPtr<>
+	before.
+
 2007-03-11  Armin Burgmeier  <armin@openismus.com>
 
 	* glom/libglom/data_structure/field.cc: Create m_field_info in
