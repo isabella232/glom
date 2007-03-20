@@ -608,10 +608,6 @@ Glib::ustring App_Glom::ui_file_select_save(const Glib::ustring& old_file_uri) /
           try_again = true; //Try again.
           continue;
         }
-        else
-        {
-          std::cout << "DEBUG: Directory does not exist:" << uri << std::endl;
-        }
         
         //Create the directory, so that file creation can succeed later:
         //0770 means "this user and his group can read and write this "executable" (can add child files) directory".
