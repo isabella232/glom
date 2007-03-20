@@ -20,6 +20,7 @@
 
 #include "dialog_new_self_hosted_connection.h"
 #include "box_db.h" //For Box_DB::connect_to_server().
+#include <glom/frame_glom.h> //For Frame_Glom::show_ok_dialog
 #include <glibmm/i18n.h>
 
 namespace Glom
@@ -33,6 +34,7 @@ Dialog_NewSelfHostedConnection::Dialog_NewSelfHostedConnection(BaseObjectType* c
 {
   refGlade->get_widget("entry_user", m_entry_user);
   refGlade->get_widget("entry_password", m_entry_password);
+  refGlade->get_widget("entry_password_confirm", m_entry_password_confirm);
 }
 
 Dialog_NewSelfHostedConnection::~Dialog_NewSelfHostedConnection()
@@ -59,7 +61,7 @@ bool Dialog_NewSelfHostedConnection::create_self_hosted() const
       //connection_pool->set_self_hosted() has already been called.
       connection_pool->set_user(m_entry_user->get_text());
       connection_pool->set_password(m_entry_password->get_text());
-      std::cout << "debug: Dialog_NewSelfHostedConnection::create_self_hosted() user=" << m_entry_user->get_text() << ", password=" << m_entry_password->get_text() << std::endl;
+      //std::cout << "debug: Dialog_NewSelfHostedConnection::create_self_hosted() user=" << m_entry_user->get_text() << ", password=" << m_entry_password->get_text() << std::endl;
       const bool created = connection_pool->create_self_hosting();
       if(!created)
         return false;
@@ -93,5 +95,25 @@ void Dialog_NewSelfHostedConnection::load_from_document()
 
 }
 
+bool Dialog_NewSelfHostedConnection::check_password()
+{
+  if(m_entry_user->get_text().empty())
+  {
+    Frame_Glom::show_ok_dialog(_("Username Is Empty"), _("Please enter a login name for the new user."), *this, Gtk::MESSAGE_ERROR);
+    return false;
+  }
+  else if(m_entry_password->get_text() != m_entry_password_confirm->get_text())
+  {
+    Frame_Glom::show_ok_dialog(_("Passwords Do Not Match"), _("The entered password does not match the entered password confirmation. Please try again."), *this, Gtk::MESSAGE_ERROR);
+    return false;
+  }
+  else if(m_entry_password->get_text().empty())
+  {
+    Frame_Glom::show_ok_dialog(_("Password Is Empty"), _("Please enter a password for this user."), *this, Gtk::MESSAGE_ERROR);
+    return false;
+  }
+  else
+    return true;
+}
 
 } //namespace Glom

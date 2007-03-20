@@ -39,6 +39,8 @@ public:
   Dialog_NewSelfHostedConnection(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
   virtual ~Dialog_NewSelfHostedConnection();
 
+  bool check_password();
+
   bool create_self_hosted() const;
 
   virtual void load_from_document(); //override
@@ -47,6 +49,7 @@ public:
 protected:
   Gtk::Entry* m_entry_user;
   Gtk::Entry* m_entry_password;
+  Gtk::Entry* m_entry_password_confirm;
 };
 
 } //namespace Glom

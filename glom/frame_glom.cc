@@ -1435,7 +1435,25 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
     }
 
     add_view(dialog);
-    response = Glom::Utils::dialog_run_with_help(dialog, "dialog_new_self_hosted_connection");
+
+
+    response = Gtk::RESPONSE_OK;
+    bool keep_trying = true;
+    while(keep_trying)
+    {
+      response = Glom::Utils::dialog_run_with_help(dialog, "dialog_new_self_hosted_connection");
+
+      //Check the password is acceptable:
+      if(response == Gtk::RESPONSE_OK)
+      {
+        const bool password_ok = dialog->check_password();
+        if(password_ok)
+          keep_trying = false;
+      }
+      else
+        keep_trying = false;
+    }
+
     dialog->hide();
  
     // Create the requested self-hosting database:
