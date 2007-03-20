@@ -646,9 +646,6 @@ bool ConnectionPool::create_self_hosting(Gtk::Window* parent_window)
     
     return false;
   }
-  else
-    std::cout << "DEBUGDEBUGDEBUG: URI does not exist: " << dbdir_uri << std::endl;
-
 
   const std::string dbdir = Glib::filename_from_uri(dbdir_uri);
   //std::cout << "debug: dbdir=" << dbdir << std::endl;
