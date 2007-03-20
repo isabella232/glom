@@ -958,10 +958,7 @@ Gtk::Window* Frame_Glom::get_app_window()
 
 void Frame_Glom::show_ok_dialog(const Glib::ustring& title, const Glib::ustring& message, Gtk::Window& parent, Gtk::MessageType message_type)
 {
-  Gtk::MessageDialog dialog("<b>" + title + "</b>", true /* markup */, message_type, Gtk::BUTTONS_OK);
-  dialog.set_secondary_text(message);
-  dialog.set_transient_for(parent);
-  dialog.run();
+  Utils::show_ok_dialog(title, message, parent, message_type);
 }
 
 void Frame_Glom::on_button_quickfind()
@@ -1448,10 +1445,13 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
       {
         const bool password_ok = dialog->check_password();
         if(password_ok)
-          keep_trying = false;
+        {
+          keep_trying = false; //Everything is OK.
+        }
       }
       else
-        keep_trying = false;
+        keep_trying = false; //The user cancelled.
+
     }
 
     dialog->hide();
@@ -1460,13 +1460,15 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
     bool created = false;
     if(response == Gtk::RESPONSE_OK)
     {
-      created = dialog->create_self_hosted(); //TODO: Tell the user.
+      created = dialog->create_self_hosted();
       if(created)
       {
         const bool test = connection_pool->start_self_hosting();
         if(!test)
           return false;
       }
+      else
+        return false;
 
       //dialog->create_self_hosted() has already set enough information in the ConnectionPool to allow a connection so we can create the database in the new database cluster:
      
