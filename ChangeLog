@@ -1,3 +1,14 @@
+2007-03-20  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/dialog_new_self_hosted_connection.cc:
+	* glom/dialog_new_self_hosted_connection.h:
+	* glom/frame_glom.cc:
+	* glom/glom.glade:
+	* glom/mode_design/users/dialog_user.cc: Add a password confirm entry to the dialog, 
+	check it, and check that the user name is not empty. As well as being obviously useful, 
+	this will make it more obvious that you are entering a new user/password confirmation, 
+	instead of an existing one.
+
 1.4.1:
 
 2007-03-19  Murray Cumming  <murrayc@murrayc.com>

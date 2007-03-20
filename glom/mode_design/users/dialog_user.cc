@@ -52,7 +52,7 @@ bool Dialog_User::check_password()
   }
   else if(m_entry_password->get_text().empty())
   {
-    Frame_Glom::show_ok_dialog(_("Password Is Empty"), _("Please enter a password this for this user."), *this, Gtk::MESSAGE_ERROR);
+    Frame_Glom::show_ok_dialog(_("Password Is Empty"), _("Please enter a password for this user."), *this, Gtk::MESSAGE_ERROR);
     return false;
   }
   else
