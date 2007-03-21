@@ -24,7 +24,7 @@
 #include <glib/gstdio.h> //For g_remove().
 #include <glom/libglom/spawn_with_feedback.h>
 #include <glom/libglom/utils.h>
-#include <glom/libglom/avahi_publisher.h>
+//#include <glom/libglom/avahi_publisher.h>
 #include <glibmm/i18n.h>
 
 #include <sys/types.h>
