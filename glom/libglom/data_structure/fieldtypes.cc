@@ -62,9 +62,10 @@ FieldTypes::FieldTypes(const Glib::RefPtr<Gnome::Gda::Connection>& gda_connectio
         if(!schema_type_string.empty())
         {
           Gnome::Gda::Value value_gdatype = data_model_tables->get_value_at(DATAMODEL_FIELDS_COL_GDATYPE, i);
-          if(value_gdatype.get_value_type() == G_TYPE_GTYPE) // TODO: I am not sure whether this is correct since G_TYPE_GTYPE is pretty new in glib
+          if(value_gdatype.get_value_type() == G_TYPE_ULONG) // TODO: I think this might change to G_TYPE_GTYPE in a future libgda
           {
-            GType gdatype = value_gdatype.get_g_type();
+	    // TODO: Perhaps we want to add a Gnome::Gda::get_ulong() in libgdamm
+            GType gdatype = static_cast<GType>(g_value_get_ulong(value_gdatype.gobj()));
 
             //Save it for later:
             m_mapSchemaStringsToGdaTypes[schema_type_string] = gdatype;

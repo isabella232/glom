@@ -28,7 +28,7 @@ bool GlomPostgres::postgres_add_column(const Glib::ustring& table_name, const sh
   sharedptr<Field> field_to_add = glom_sharedptr_clone(field);
 
   Glib::RefPtr<Gnome::Gda::Column> field_info = field_to_add->get_field_info();
-  if((field_info->get_type() == G_TYPE_NONE) || (field_info->get_type() == GDA_TYPE_NULL))
+  if((field_info->get_g_type() == G_TYPE_NONE) || (field_info->get_g_type() == GDA_TYPE_NULL))
   {
     field_info->set_g_type( Field::get_gda_type_for_glom_type(field_to_add->get_glom_type()) );
     field_to_add->set_field_info(field_info);

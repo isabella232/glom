@@ -118,7 +118,7 @@ void Field::set_field_info(const Glib::RefPtr<Gnome::Gda::Column>& fieldinfo)
   m_field_info = fieldinfo;
 
   //TODO: Maybe just do this in get_glom_type()?
-  set_glom_type( get_glom_type_for_gda_type(fieldinfo->get_type()) );
+  set_glom_type( get_glom_type_for_gda_type(fieldinfo->get_g_type()) );
 }
 
 Gnome::Gda::Value Field::get_data() const
@@ -460,14 +460,14 @@ Glib::ustring Field::get_sql_type() const
       const FieldTypes* pFieldTypes = pConnectionPool->get_field_types();
       if(pFieldTypes)
       {
-        const GType fieldType = m_field_info->get_type();
+        const GType fieldType = m_field_info->get_g_type();
         strType = pFieldTypes->get_string_name_for_gdavaluetype(fieldType);
       }
     }
 
     if(strType == "unknowntype")
     {
-      g_warning("Field::get_sql_type(): returning unknowntype for field name=%s , glom_type=%d, gda_type=%d", get_name().c_str(), get_glom_type(), (int)m_field_info->get_type());
+      g_warning("Field::get_sql_type(): returning unknowntype for field name=%s , glom_type=%d, gda_type=%d", get_name().c_str(), get_glom_type(), (int)m_field_info->get_g_type());
     }
 
     return strType;

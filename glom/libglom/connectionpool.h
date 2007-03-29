@@ -125,6 +125,7 @@ public:
   void set_database(const Glib::ustring& value);
 
   Glib::ustring get_host() const;
+  Glib::ustring get_port() const;
   Glib::ustring get_user() const;
   Glib::ustring get_password() const;
   Glib::ustring get_database() const;

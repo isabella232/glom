@@ -1,3 +1,29 @@
+2007-03-29  Armin Burgmeier  <armin@openismus.com>
+
+	* glom/libglom/connectionpool.h:
+	* glom/libglom/connectionpool.cc: Added ConnectionPool::get_port().
+
+	* glom/libglom/data_structure/fieldtypes.cc: GTypes are actually
+	stored as G_TYPE_ULONG in the schema.
+
+	* glom/glom_postgres.cc:
+	* glom/libglom/data_structurel/field.cc: Replaced call to
+	m_field_info->get_type() by m_field_info->get_g_type(). The former was
+	used before libgda-3.0, but now calls Glib::Object::get_type because
+	the method we intend to call changed its name to get_g_type().
+
+	* glom/python_glom.cc: Do not import Gda.Value, because it does not
+	exist anymore in pygda-3.0. Convert the value returned by the python
+	function to a Gnome::Gda::Value by calling pygda_value_from_pygobject
+	from pygda.
+
+	* glom/libglom/frame_glom.cc: Do not acquire a connection before
+	creating a new database. This seems not to be required anymore as of
+	libgda-3.0. Creating a new database still sometimes fails because of
+	the source database still being in use, but it also sometimes
+	succeeds. When keeping around that connection it seems to always fail.
+	However, more investigation is required here.
+
 2007-03-20  Armin Burgmeier  <armin@openismus.com>
 
 	* glom/base_db.cc: Initialize field_info in

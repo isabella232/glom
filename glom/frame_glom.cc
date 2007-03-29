@@ -1628,6 +1628,11 @@ bool Frame_Glom::create_database(const Glib::ustring& database_name, const Glib:
   }
   else
   {
+    // If we acquire a connection here, we get a runtime error saying that the
+    // database could not be create because the source database is still in
+    // use. I don't think we need this with libgda-3.0 anyway. armin.
+    // TODO: Cleanup.
+#if 0
     //This must now succeed, because we've already tried it once:
     sharedptr<SharedConnection> sharedconnection;
     try
@@ -1647,9 +1652,15 @@ bool Frame_Glom::create_database(const Glib::ustring& database_name, const Glib:
 
       return false;
     }
+#endif
 
+#if 0
+    std::cout << "Going to sleep" << std::endl;
+    Glib::usleep(2 * 1000 * 1000);
+    std::cout << "Awake" << std::endl;
+#endif
 
-    if(sharedconnection)
+    //if(sharedconnection)
     {
       Gtk::Window* pWindowApp = get_app_window();
       g_assert(pWindowApp);
@@ -1658,16 +1669,50 @@ bool Frame_Glom::create_database(const Glib::ustring& database_name, const Glib:
 
       //std::cout << "Frame_Glom::create_database():  debug: before calling sharedconnection->get_gda_connection." << std::endl;
 
-      Glib::RefPtr<Gnome::Gda::Connection> connection = sharedconnection->get_gda_connection();
-      if(connection)
+      //Glib::RefPtr<Gnome::Gda::Connection> connection = sharedconnection->get_gda_connection();
+      //if(connection)
       {
 	try
 	{
+	  Glib::RefPtr<Gnome::Gda::Client> client = Gnome::Gda::Client::create();
+	  Glib::RefPtr<Gnome::Gda::ServerOperation> op = client->prepare_create_database(database_name, "PostgreSQL");
+	  op->set_value_at("/SERVER_CNX_P/HOST", ConnectionPool::get_instance()->get_host());
+	  op->set_value_at("/SERVER_CNX_P/PORT", ConnectionPool::get_instance()->get_port());
+	  op->set_value_at("/SERVER_CNX_P/ADM_LOGIN", ConnectionPool::get_instance()->get_user());
+	  op->set_value_at("/SERVER_CNX_P/ADM_PASSWORD", ConnectionPool::get_instance()->get_password());
+	  client->perform_create_database(op);
+#if 0
+	  GError* error = NULL;
+	  GdaClient* client = gda_client_new(); //gda_connection_get_client(connection->gobj());
+	  //GdaClient* client = gda_connection_get_client(connection->gobj());
+	  GdaServerOperation* op = gda_client_prepare_create_database(client, database_name.c_str(), "PostgreSQL");
+	  gda_server_operation_set_value_at(op, ConnectionPool::get_instance()->get_host().c_str(), NULL, "/SERVER_CNX_P/HOST");
+	  gda_server_operation_set_value_at(op, ConnectionPool::get_instance()->get_port().c_str(), NULL, "/SERVER_CNX_P/PORT");
+	  gda_server_operation_set_value_at(op, ConnectionPool::get_instance()->get_user().c_str(), NULL, "/SERVER_CNX_P/ADM_LOGIN");
+	  gda_server_operation_set_value_at(op, ConnectionPool::get_instance()->get_password().c_str(), NULL, "/SERVER_CNX_P/ADM_PASSWORD");
+	  gda_client_perform_create_database(client, op, &error);
+	  xmlNodePtr ptr = gda_server_operation_save_data_to_xml(op, NULL);
+	  if(ptr)
+	  {
+	    xmlDocPtr xml = xmlNewDoc(NULL);
+	    xmlDocSetRootElement(xml, ptr);
+	    xmlDocDump(stdout, xml);
+
+	    std::cout << "Host: " << ConnectionPool::get_instance()->get_host() << std::endl;
+	    std::cout << "Port: " << ConnectionPool::get_instance()->get_port() << std::endl;
+	    std::cout << "User: " << ConnectionPool::get_instance()->get_user() << std::endl;
+	    std::cout << "Password: " << ConnectionPool::get_instance()->get_password() << std::endl;
+	  }
+	  if(error != NULL)
+	    throw Glib::Error(error);
+#endif
+#if 0
           Glib::RefPtr<Gnome::Gda::Client> client = connection->get_client();
 	  Glib::RefPtr<Gnome::Gda::ServerOperation> op = client->prepare_create_database(database_name, "PostgreSQL");
 	  client->perform_create_database(op);
+#endif
 	}
-	catch(const Gnome::Gda::ClientError& ex) // TODO: Verify that this throws ClientError
+	catch(const Glib::Exception& ex) // libgda does not set error domain
 	{
           //I think a failure here might be caused by installing unstable libgda, which seems to affect stable libgda-1.2.
           //Doing a "make install" in libgda-1.2 seems to fix this:

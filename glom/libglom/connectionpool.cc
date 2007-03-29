@@ -423,6 +423,11 @@ Glib::ustring ConnectionPool::get_host() const
   return m_host;
 }
 
+Glib::ustring ConnectionPool::get_port() const
+{
+  return m_port;
+}
+
 Glib::ustring ConnectionPool::get_user() const
 {
   return m_user;
