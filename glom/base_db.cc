@@ -193,8 +193,21 @@ Glib::RefPtr<Gnome::Gda::DataModel> Base_DB::query_execute(const Glib::ustring& 
         std::cout << "Debug: query string could not be converted to std::cout: " << ex.what() << std::endl;
       }
     }
-    
-    result = gda_connection->execute_select_command(strQuery);
+
+    // TODO: Several functions call query_execute with non-select queries.
+    // Before libgda-3.0, execute_single_command returned always a datamodel
+    // on success. In case of a successful non-select command, we therefore
+    // create an empty datamodel to return, to make clear that the function
+    // succeeded. Probably, we should introduce another
+    // query_execute_non_select in the long term. 
+    if(strQuery.compare(0, 6, "SELECT") == 0)
+      result = gda_connection->execute_select_command(strQuery);
+    else
+    {
+      if(gda_connection->execute_non_select_command(strQuery) != -1)
+        result = Gnome::Gda::DataModelArray::create(1);
+    }
+
     if(!result)
     {
       std::cerr << "Glom  Base_DB::query_execute(): Error while executing SQL" << std::endl <<
@@ -1030,7 +1043,7 @@ bool Base_DB::create_table(const sharedptr<const TableInfo>& table_info, const D
   //Actually create the table
   try
   {
-    Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute( "CREATE TABLE \"" + table_info->get_name() + "\" (" + sql_fields + ")" );
+    Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute( "CREATE TABLE \"" + table_info->get_name() + "\" (" + sql_fields + ");" );
     if(!data_model)
       table_creation_succeeded = false;
     else

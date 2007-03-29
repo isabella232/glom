@@ -1654,7 +1654,10 @@ bool Frame_Glom::create_database(const Glib::ustring& database_name, const Glib:
     }
 #endif
 
-#if 0
+#if 1
+    // This seems to increase the change that the database creation does not
+    // fail due to the "source database is still in use" error. This might
+    // be subjective, though. armin.
     std::cout << "Going to sleep" << std::endl;
     Glib::usleep(2 * 1000 * 1000);
     std::cout << "Awake" << std::endl;

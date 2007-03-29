@@ -1,5 +1,14 @@
 2007-03-29  Armin Burgmeier  <armin@openismus.com>
 
+	* glom/frame_glom.cc: Added a two seconds sleep because it seems to
+	increase change that the database creation succeeds. This is still no
+	final solution, though.
+
+	* glom/base_db.cc: Return a dummy datamodel if a non-select query is
+	executed successfully.
+
+2007-03-29  Armin Burgmeier  <armin@openismus.com>
+
 	* glom/libglom/connectionpool.h:
 	* glom/libglom/connectionpool.cc: Added ConnectionPool::get_port().
 
