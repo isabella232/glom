@@ -25,7 +25,9 @@ pygda_value_from_pyobject(GValue *boxed, PyObject *input)
      */
 
     if (G_IS_VALUE (boxed)) g_value_unset (boxed);
-    if (PyString_Check (input)) {
+    if (input == Py_None) {
+      /* Leave value uninitialized to represent NULL value */
+    } else if (PyString_Check (input)) {
       const char* text = PyString_AsString (input);
       g_value_init (boxed, G_TYPE_STRING);
       g_value_set_string (boxed, text);

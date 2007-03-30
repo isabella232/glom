@@ -1,3 +1,13 @@
+2007-03-30  Armin Burgmeier  <armin@openismus.com>
+
+	* glom/libglom/data_structure/field.cc: Compare values by
+	operator== instead of Gnome::Gda::value_equal because the latter does
+	not support NULL values.
+
+	* glom/libglom/python_embed/pygdavalue_conversions.c: Updated from
+	pygda, so that an empty result from a python calculation does not
+	crash.
+
 2007-03-29  Armin Burgmeier  <armin@openismus.com>
 
 	* glom/frame_glom.cc: Added a two seconds sleep because it seems to
@@ -37,8 +47,8 @@
 
 	* glom/base_db.cc: Initialize field_info in
 	get_fields_for_table_from_database() by calling
-	Gnome::Gda::Column::create(). This was also probably no Glib::RefPtr<>
-	before.
+	Gnome::Gda::Column::create(). This was also probably not a
+	Glib::RefPtr<> before.
 
 2007-03-11  Armin Burgmeier  <armin@openismus.com>
 

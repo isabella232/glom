@@ -80,7 +80,7 @@ bool Field::operator==(const Field& src) const
   return TranslatableItem::operator==(src)
          && (m_field_info == src.m_field_info)
          && (m_glom_type == src.m_glom_type)
-         && Gnome::Gda::value_equal(m_data, src.m_data)
+         && (m_data == src.m_data)
          && (m_lookup_relationship == src.m_lookup_relationship)
          && (m_strLookupField == src.m_strLookupField)
          && (m_calculation == src.m_calculation)
