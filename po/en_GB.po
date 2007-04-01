@@ -1369,7 +1369,7 @@ msgstr "%X"
 #: ../glom/libglom/data_structure/glomconversions.cc:64
 #, c-format
 msgid "%x"
-msgstr "%x"
+msgstr "%d/%m/%Y"
 
 #: ../glom/libglom/data_structure/translatable_item.cc:282
 msgid "Custom Title"

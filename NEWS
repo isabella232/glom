@@ -1,3 +1,17 @@
+1.4.2:
+
+* Self-Hosting:
+  - Add a password confirmation entry to the dialog that asks for the initial user name and password,
+  and do some checking of the input.
+  (Murray Cumming)
+  - Make the connection work when the hostname is not resolved as 127.0.0.1, which might be a lot of people.
+  (Mathias Hasselmann, Bug #420479)
+  - Warn the user when the new directory would be the same as an existing one.
+  (Murray Cumming, Mathias Hasselmann, Bug #420482)
+  - Do not echo the new username and password to the terminal stdout for debugging.
+  This was conceivably a security problem.
+  (Murray Cumming)
+
 1.4.1:
 
 Minor build fix, needed by some compilers.

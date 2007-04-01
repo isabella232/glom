@@ -26,7 +26,7 @@ libglom_la_SOURCES = appstate.h appstate.cc \
                      spawn_with_feedback.h spawn_with_feedback.cc \
                      utils.h utils.cc \
                      sharedptr.h \
-                     standard_table_prefs_fields.h
+                     standard_table_prefs_fields.h \
 		     gst-package.h gst-package.c
 
 libglom_la_LDFLAGS = -no-undefined
@@ -39,7 +39,8 @@ libglom_la_LIBADD  = document/libdocument.la \
                      $(GLOM_LIBS) $(PYTHON_LDFLAGS) -lutil
 
 
-noinst_PROGRAMS = test_sharedptr_layoutitem test_avahi_publisher
+noinst_PROGRAMS = test_sharedptr_layoutitem
+#noinst_PROGRAMS = test_sharedptr_layoutitem test_avahi_publisher
 test_sharedptr_layoutitem_SOURCES = test_sharedptr_layoutitem.cc
 test_sharedptr_layoutitem_LDADD =  libglom.la \
               $(GLOM_LIBS) -lutil

@@ -1,3 +1,11 @@
+2007-04-01  Murray Cumming  <murrayc@murrayc.com>
+
+	po/en_GB.po: Restore the date printf format that was removed by 
+	David Lodge <dave@cirt.net> on 2006-09-12.
+	This date format translation corrects the parsing and display of 
+	4-digit dates.
+	Bug #425116
+
 2007-03-11  David Lodge <dave@cirt.net>
 
 	* en_GB.po: Updated English (British) translation

@@ -33,7 +33,7 @@
 #include <netinet/in.h> //For sockaddr_in
 
 
-#include "gst-package.h"
+#include <glom/libglom/gst-package.h>
 
 #include "config.h"
 
