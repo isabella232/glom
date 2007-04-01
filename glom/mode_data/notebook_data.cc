@@ -120,12 +120,12 @@ bool Notebook_Data::init_db_details(const FoundSet& found_set, const Gnome::Gda:
       {
         //Make sure that the details view is not empty, if there are any records to show:
         primary_key_for_details = m_Box_List.get_primary_key_value_selected();
-        //std::cout << "debug:  m_Box_List.get_primary_key_value_selected()=" << Gnome::Gda::value_to_string(primary_key_for_details) << std::endl;
+        //std::cout << "debug:  m_Box_List.get_primary_key_value_selected()=" << primary_key_for_details.to_string() << std::endl;
         if(Conversions::value_is_empty(primary_key_for_details))
         {
           //std::cout << "debug: calling list.get_primary_key_value_first()" << std::endl;
           primary_key_for_details = m_Box_List.get_primary_key_value_first();
-          //std::cout << "  debug:  result=" <<  Gnome::Gda::value_to_string(primary_key_for_details) << std::endl;
+          //std::cout << "  debug:  result=" <<  primary_key_for_details.to_string() << std::endl;
         }
       }
 

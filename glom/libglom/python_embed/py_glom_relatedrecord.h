@@ -38,7 +38,7 @@ struct PyGlomRelatedRecord
 public:
   PyObject_HEAD
 
-  //PyObject* m_fields_dict; //Dictionary (map) of field names (string) to field values (Glib::ValueBase).
+  //PyObject* m_fields_dict; //Dictionary (map) of field names (string) to field values (Gnome::Gda::Value).
   PyGObject* m_py_gda_connection; //"derived" from PyObject.
   //PyGlomRecord* m_record_parent;
   Document_Glom* m_document;
@@ -47,7 +47,7 @@ public:
   Glib::ustring* m_from_key_value_sqlized;
 
   //Available, for instance, in python via record["name_first"]
-  typedef std::map<Glib::ustring, Glib::ValueBase> type_map_field_values;
+  typedef std::map<Glib::ustring, Gnome::Gda::Value> type_map_field_values;
   //We use a pointer because python will not run the class/struct's default constructor.
   type_map_field_values* m_pMap_field_values; 
 };

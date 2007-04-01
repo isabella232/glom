@@ -137,7 +137,7 @@ void Box_Data_Details::set_primary_key_value(const Gtk::TreeModel::iterator& /* 
 
 bool Box_Data_Details::init_db_details(const FoundSet& found_set, const Gnome::Gda::Value& primary_key_value)
 {
-  //std::cout << "Box_Data_Details::init_db_details(): Gnome::Gda::value_to_string(primary_key_value)=" << Gnome::Gda::value_to_string(primary_key_value) << std::endl;
+  //std::cout << "Box_Data_Details::init_db_details(): primary_key_value=" << primary_key_value.to_string() << std::endl;
 
   m_primary_key_value = primary_key_value;
 
@@ -148,7 +148,7 @@ bool Box_Data_Details::init_db_details(const FoundSet& found_set, const Gnome::G
 
 bool Box_Data_Details::refresh_data_from_database_with_primary_key(const Gnome::Gda::Value& primary_key_value)
 {
-  //std::cout << "refresh_data_from_database_with_primary_key(): Gnome::Gda::value_to_string(primary_key_value)=" << Gnome::Gda::value_to_string(primary_key_value) << std::endl;
+  //std::cout << "refresh_data_from_database_with_primary_key(): primary_key_value=" << primary_key_value.to_string() << std::endl;
   m_primary_key_value = primary_key_value;
   return fill_from_database();
 }
@@ -185,7 +185,7 @@ void Box_Data_Details::create_layout()
 
 bool Box_Data_Details::fill_from_database()
 {
-  //std::cout << "Box_Data_Details::fill_from_database(): Gnome::Gda::value_to_string(m_primary_key_value)=" << Gnome::Gda::value_to_string(m_primary_key_value) << std::endl;
+  //std::cout << "Box_Data_Details::fill_from_database(): m_primary_key_value=" << m_primary_Key_value.to_string() << std::endl;
 
  //Don't try to open a connection if there is no document,
  //for instance, during application destruction.

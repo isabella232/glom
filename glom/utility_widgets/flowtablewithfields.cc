@@ -579,7 +579,7 @@ void FlowTableWithFields::set_field_value(const sharedptr<const LayoutItem_Field
     Box_Data_List_Related* portal = dynamic_cast<Box_Data_List_Related*>(*iter);
     if(portal)
     {
-      //g_warning("FlowTableWithFields::set_field_value: foreign_key_value=%s", Gnome::Gda::value_to_string(value).c_str());
+      //g_warning("FlowTableWithFields::set_field_value: foreign_key_value=%s", value.to_string().c_str());
       portal->refresh_data_from_database_with_foreign_key(value /* foreign key value */);
     }
   }

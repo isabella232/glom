@@ -77,7 +77,7 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
   //std::cout << "glom_evaluate_python_function_implementation()" << std::endl;
   //for(type_map_fields::const_iterator iter = field_values.begin(); iter != field_values.end(); ++iter)
   //{
-  //  std::cout << "  field_value: name=" << iter->first << ", value=" << Gnome::Gda::value_to_string(iter->second) << std::endl; 
+  //  std::cout << "  field_value: name=" << iter->first << ", value=" << iter->second.to_string() << std::endl; 
   //}
 
   g_assert(result_type != Field::TYPE_INVALID);

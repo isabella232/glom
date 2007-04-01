@@ -413,7 +413,7 @@ void Box_Data_List::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, 
 
       //Update the field in the record (the record with this primary key):
       const Gnome::Gda::Value field_value = m_AddDel.get_value(row, layout_field);
-      //std::cout << "Box_Data_List::on_adddel_user_changed(): field_value = " << Gnome::Gda::value_to_string(field_value) << std::endl;
+      //std::cout << "Box_Data_List::on_adddel_user_changed(): field_value = " << field_value.to_string() << std::endl;
       //const sharedptr<const Field>& field = layout_field->m_field;
       //const Glib::ustring strFieldName = layout_field->get_name();
 
@@ -620,7 +620,7 @@ Gnome::Gda::Value Box_Data_List::get_primary_key_value_first()
       }
       else
       {
-         //std::cout << "Box_Data_List(): get_primary_key_value_first() returning: " << Gnome::Gda::value_to_string(value) << std::endl;
+         //std::cout << "Box_Data_List(): get_primary_key_value_first() returning: " << value.to_string() << std::endl;
         return value;
       }
     }

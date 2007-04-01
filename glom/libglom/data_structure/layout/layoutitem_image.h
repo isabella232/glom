@@ -23,7 +23,6 @@
 
 #include "layoutitem.h"
 #include <libgdamm/value.h>
-#include <libgda/gda-value.h> //For GDA_TYPE_BINARY. TODO: Remove this.
 
 namespace Glom
 {
@@ -63,7 +62,7 @@ public:
 
 protected:
 
-  Gnome::Gda::Value m_image; //TODO: Use Gnome::Gda::TYPE_BINARY.
+  Gnome::Gda::Value m_image;
 };
 
 } //namespace Glom

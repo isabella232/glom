@@ -2292,7 +2292,7 @@ bool Base_DB::get_field_value_is_unique(const Glib::ustring& table_name, const s
   Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute(strQuery);
   if(data_model)
   {
-    //std::cout << "debug: Base_DB::get_field_value_is_unique(): table_name=" << table_name << ", field name=" << field->get_name() << ", value=" << Gnome::Gda::value_to_string(value) << ", rows count=" << data_model->get_n_rows() << std::endl;
+    //std::cout << "debug: Base_DB::get_field_value_is_unique(): table_name=" << table_name << ", field name=" << field->get_name() << ", value=" << value.to_string() << ", rows count=" << data_model->get_n_rows() << std::endl;
     //The value is unique for this field, if the query returned no existing rows:
 
     result = (data_model->get_n_rows() == 0);
@@ -2318,7 +2318,7 @@ bool Base_DB::check_entered_value_for_uniqueness(const Glib::ustring& table_name
   {
     if(!get_field_value_is_unique(table_name, layout_field, field_value))
     {
-      //std::cout << "debug Base_DB::check_entered_value_for_uniqueness(): field=" << layout_field->get_name() << ", value is not unique: " << Gnome::Gda::value_to_string(field_value) << std::endl;
+      //std::cout << "debug Base_DB::check_entered_value_for_uniqueness(): field=" << layout_field->get_name() << ", value is not unique: " << field_value.to_string() << std::endl;
 
       //Warn the user and revert the value:
       if(parent_window)

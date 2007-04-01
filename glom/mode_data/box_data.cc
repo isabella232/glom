@@ -413,7 +413,7 @@ Gnome::Gda::Value Box_Data::generate_next_auto_increment(const Glib::ustring& ta
     //if(value.is_number())
     //  result = value.get_integer();
     //else
-    result = decimal_from_string(Gnome::Gda::value_to_string(value));
+    result = decimal_from_string(value.to_string());
 
     ++result; 
   }
@@ -492,7 +492,7 @@ void Box_Data::refresh_related_fields(const LayoutFieldInRecord& field_in_record
           sharedptr<LayoutItem_Field> layout_item = *iterFields;
 
           //g_warning("list fill: field_name=%s", iterFields->get_name().c_str());
-          //g_warning("  value_as_string=%s", Gnome::Gda::value_to_string(value).c_str());
+          //g_warning("  value_as_string=%s", value.to_string().c_str());
 
           //m_AddDel.set_value(row, layout_item, value);
           set_entered_field_data(row, layout_item, value);

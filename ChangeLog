@@ -1,3 +1,26 @@
+2007-04-01  Armin Burgmeier  <armin@openismus.com>
+
+	* glom/libglom/data_structure/layout/layoutitem_image.cc:
+	* glom/libglom/data_structure/layout/layoutitem_image.h:
+	* glom/libglom/data_structure/layout/fieldformatting.cc:
+	* glom/libglom/python_embed/py_glom_relatedrecord.cc:
+	* glom/libglom/python_embed/py_glom_related.cc:
+	* glom/libglom/python_embed/py_glom_relatedrecord.h:
+	* glom/utility_widgets/db_adddel/glom_db_treemodel.cc:
+	* glom/utility_widgets/adddel/adddel.cc:
+	* glom/utility_widgets/flowtablewithfields.cc:
+	* glom/base_db.cc:
+	* glom/mode_data/notebook_data.cc:
+	* glom/mode_data/box_data_list.cc:
+	* glom/mode_data/box_data_list_related.cc:
+	* glom/mode_data/box_data.cc:
+	* glom/mode_data/box_data_details.cc:
+	* glom/python_embed/glom_python.cc: Some cleanup, mostly reverted
+	(comented-out) calls to Gnome::Gda::value_to_string(foo) to
+	foo.to_string().
+
+	* TODO: Added a note about the database creation issue.
+
 2007-03-30  Armin Burgmeier  <armin@openismus.com>
 
 	* glom/libglom/data_structure/field.cc: Compare values by

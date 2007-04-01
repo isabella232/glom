@@ -1619,6 +1619,7 @@ bool AddDel::row_has_duplicates(const Gtk::TreeModel::iterator& iter) const
 
       //We can't just use Value, because Gnome::Gda::Value has no operator==, because there is no g_value_equal
       //Gnome::Gda::Value value_this_row;
+      //TODO: Actually, Gnome::Gda::Value has an operator==
       //iter->get_value(col, value_this_row);
 
       Glib::ustring value_text;
@@ -1642,6 +1643,7 @@ bool AddDel::row_has_duplicates(const Gtk::TreeModel::iterator& iter) const
           Gtk::TreeModel::Row check_row = *iterCheck;
           ////Gnome::Gda::Value has no operator==, because there is no g_value_equal
           //Gnome::Gda::Value value_check_row;
+          //TODO: Actually, Gnome::Gda::Value has an operator==
           //iterCheck->get_value(col, value_check_row);
           //
           //if(value_check_row == value_this_row)

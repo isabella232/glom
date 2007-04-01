@@ -537,7 +537,7 @@ void Box_Data_List_Related::get_suitable_record_to_view_details(const Gnome::Gda
     table_name = navigation_table_name;
     table_primary_key_value = data_model->get_value_at(0, 0);
 
-    //std::cout << "Box_Data_List_Related::get_suitable_record_to_view_details(): table_primary_key_value=" << Gnome::Gda::value_to_string(table_primary_key_value) << std::endl;
+    //std::cout << "Box_Data_List_Related::get_suitable_record_to_view_details(): table_primary_key_value=" << table_primary_key_value.to_string() << std::endl;
 
     //The value is empty when there there is no record to match the key in the related table:
     //For instance, if an invoice lines record mentions a product id, but the product does not exist in the products table.

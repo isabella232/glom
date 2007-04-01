@@ -57,7 +57,7 @@ bool FieldFormatting::operator==(const FieldFormatting& src) const
 {
   return UsesRelationship::operator==(src) &&
     (m_numeric_format == src.m_numeric_format) &&
-    //TODO: (m_choices_custom_list == src.m_choices_custom_list) &&
+    (m_choices_custom_list == src.m_choices_custom_list) &&
     (m_choices_restricted == src.m_choices_restricted) &&
     (m_choices_custom == src.m_choices_custom) &&
     (m_choices_related == src.m_choices_related) &&

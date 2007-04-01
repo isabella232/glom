@@ -304,8 +304,8 @@ void DbTreeModel::get_value_vfunc(const TreeModel::iterator& iter, int column, G
       value_specific.init( typeModelColumn::ValueType::value_type() );  //TODO: Is there any way to avoid this step?
 
       //Or, instead of asking the compiler for the TreeModelColumn's ValueType:
-      //Gnome::Gda::Value< DbValue > value_specific;
-      //value_specific.init( Gnome::Gda::Value< DbValue >::value_type() ); //TODO: Is there any way to avoid this step?
+      //Glib::Value< DbValue > value_specific;
+      //value_specific.init( Glib::Value< DbValue >::value_type() ); //TODO: Is there any way to avoid this step?
 
       type_datamodel_const_iter dataRowIter = get_datamodel_row_iter_from_tree_row_iter(iter);
       //g_warning("DbTreeModel::get_value_vfunc(): dataRowIter=%d, get_internal_rows_count=%d", dataRowIter, get_internal_rows_count());
