@@ -1,3 +1,14 @@
+2007-04-09  Armin Burgmeier  <armin@openismus.com>
+
+	* glom/frame_glom.cc: Reduced the sleep before creating a database to
+	0.5 seconds instead of 2 seconds which seems to work as well.
+
+	* glom/libglom/data_structure/field.cc:
+	* glom/libglom/data_structure/glomconversions.cc:
+	* glom/utility_widgets/imageglom.cc: Removed manual escaping because
+	libgda should do this for us in libgda-3.0. Don't leak the GError if
+	an error occurs while loading an image.
+
 2007-04-01  Armin Burgmeier  <armin@openismus.com>
 
 	* glom/libglom/data_structure/layout/layoutitem_image.cc:
