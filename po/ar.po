@@ -7,23 +7,22 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Project\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-11-17 21:14+0000\n"
+"POT-Creation-Date: 2007-04-14 18:22+0100\n"
 "PO-Revision-Date: 2006-11-18 00:51+0100\n"
 "Last-Translator: Djihed Afifi <djihed@gmail.com>\n"
 "Language-Team: Arabic <doc@arabeyes.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=6; plural=n == 0 ? 0 : n == 1 ? 1 : n == 2 ? 2 : n >= 3 && n <= 10 ? 3 : n >= 11 && n <= 99 ? 4 : 5;\n"
+"Plural-Forms: nplurals=6; plural=n == 0 ? 0 : n == 1 ? 1 : n == 2 ? 2 : n >= "
+"3 && n <= 10 ? 3 : n >= 11 && n <= 99 ? 4 : 5;\n"
 "X-Poedit-Language: Arabic\n"
 
 #: ../glom.desktop.in.in.h:1
 msgid "A user-friendly database environment."
 msgstr ""
 
-#: ../glom.desktop.in.in.h:2
-#: ../glom/glom.glade.h:143
-#: ../glom/main.cc:118
+#: ../glom.desktop.in.in.h:2 ../glom/glom.glade.h:146 ../glom/main.cc:127
 msgid "Glom"
 msgstr ""
 
@@ -234,496 +233,532 @@ msgstr "مستخدمون"
 
 #: ../glom/glom.glade.h:43
 msgid ""
+"<span weight=\"bold\" size=\"larger\">Add Module</span>\n"
+"\n"
+"What name should this group have?"
+msgstr ""
+
+#: ../glom/glom.glade.h:46
+msgid ""
 "<span weight=\"bold\" size=\"larger\">Add User To Group</span>\n"
 "\n"
 "Which user should be added to this group?"
 msgstr ""
 
-#: ../glom/glom.glade.h:46
+#: ../glom/glom.glade.h:49
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Choose Date</span>\n"
 "\n"
 "Please select a date to enter in this field."
 msgstr ""
 
-#: ../glom/glom.glade.h:49
+#: ../glom/glom.glade.h:52
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Connect to Server</span>\n"
 "\n"
 "Please enter the connection details for your database server."
 msgstr ""
 
-#: ../glom/glom.glade.h:52
+#: ../glom/glom.glade.h:55
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Connection Failed</span>\n"
 "\n"
-"Glom could not connect to the database server. Maybe you entered an incorrect user name or password, or maybe the postgres database server is not running."
-msgstr ""
-
-#: ../glom/glom.glade.h:55
-msgid ""
-"<span weight=\"bold\" size=\"larger\">Copy Translation</span>\n"
-"\n"
-"From what language would you like to copy the translations to use as the start of the current translation?"
+"Glom could not connect to the database server. Maybe you entered an "
+"incorrect user name or password, or maybe the postgres database server is "
+"not running."
 msgstr ""
 
 #: ../glom/glom.glade.h:58
+msgid ""
+"<span weight=\"bold\" size=\"larger\">Copy Translation</span>\n"
+"\n"
+"From what language would you like to copy the translations to use as the "
+"start of the current translation?"
+msgstr ""
+
+#: ../glom/glom.glade.h:61
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Create Group</span>\n"
 "\n"
 "What name should this group have?"
 msgstr ""
 
-#: ../glom/glom.glade.h:61
+#: ../glom/glom.glade.h:64
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Database creation failed</span>\n"
 "\n"
-"Glom could not create the new database. Maybe you do not have the necessary access rights. Please contact your system administrator."
+"Glom could not create the new database. Maybe you do not have the necessary "
+"access rights. Please contact your system administrator."
 msgstr ""
 
-#: ../glom/glom.glade.h:64
+#: ../glom/glom.glade.h:67
+msgid ""
+"<span weight=\"bold\" size=\"larger\">First User</span>\n"
+"\n"
+"Please enter the initial connection details for your new database. You may "
+"add additional users later. Remember to keep this password secret because it "
+"allows access to your data from other computers on the network."
+msgstr ""
+
+#: ../glom/glom.glade.h:70
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Identify Original</span>\n"
 "\n"
 "The language of the original text is currently identified as:"
 msgstr ""
 
-#: ../glom/glom.glade.h:67
+#: ../glom/glom.glade.h:73
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Invalid format</span>\n"
 "\n"
-"The data in the field was not recognized. Please try to correct the data or revert to the previous value. Here is an example of correctly-formatted data for this field.\n"
+"The data in the field was not recognized. Please try to correct the data or "
+"revert to the previous value. Here is an example of correctly-formatted data "
+"for this field.\n"
 msgstr ""
 
-#: ../glom/glom.glade.h:71
+#: ../glom/glom.glade.h:77
 msgid ""
-"<span weight=\"bold\" size=\"larger\">New Database</span>\n"
+"<span weight=\"bold\" size=\"larger\">Open existing document, or create new "
+"document</span>\n"
 "\n"
-"Please choose a human-readable title for the new database. You can change this later in the database properties. It may contan any characters."
-msgstr ""
-
-#: ../glom/glom.glade.h:74
-msgid ""
-"<span weight=\"bold\" size=\"larger\">Open existing document, or create new document</span>\n"
-"\n"
-"Would you like to open an existing document, to connect to an existing database?\n"
+"Would you like to open an existing document, to connect to an existing "
+"database?\n"
 "\n"
 "Or would you like to create a new document, to design a new database?\n"
 msgstr ""
 
-#: ../glom/glom.glade.h:80
+#: ../glom/glom.glade.h:83
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Test Translation</span>\n"
 "\n"
-"Choose a language to use temporarily to test the translations. These translations are normally used automatically when the application is started on a computer that uses the language.\n"
+"Choose a language to use temporarily to test the translations. These "
+"translations are normally used automatically when the application is started "
+"on a computer that uses the language.\n"
 "\n"
-"Note that the standard parts of the Glom user interface, such as menus and dialog windows, will only be translated when you start Glom on a computer that uses that language."
+"Note that the standard parts of the Glom user interface, such as menus and "
+"dialog windows, will only be translated when you start Glom on a computer "
+"that uses that language."
 msgstr ""
 
-#: ../glom/glom.glade.h:85
-#: ../glom/utility_widgets/layoutwidgetbase.cc:41
+#: ../glom/glom.glade.h:88 ../glom/utility_widgets/layoutwidgetbase.cc:41
 #, fuzzy
 msgid "Add Button"
 msgstr "إضافة زر"
 
-#: ../glom/glom.glade.h:86
-#: ../glom/utility_widgets/layoutwidgetbase.cc:39
+#: ../glom/glom.glade.h:89 ../glom/utility_widgets/layoutwidgetbase.cc:39
 #, fuzzy
 msgid "Add Notebook"
 msgstr "إضافة تطبيق"
 
-#: ../glom/glom.glade.h:87
+#: ../glom/glom.glade.h:90
 #, fuzzy
 msgid "Add Related"
 msgstr "إضافة تطبيق"
 
-#: ../glom/glom.glade.h:88
+#: ../glom/glom.glade.h:91
 #, fuzzy
 msgid "Add Related Table"
 msgstr "محوّل جدول الشّجرة الالكترونيّة"
 
-#: ../glom/glom.glade.h:89
-#: ../glom/utility_widgets/layoutwidgetbase.cc:42
+#: ../glom/glom.glade.h:92 ../glom/utility_widgets/layoutwidgetbase.cc:42
 #, fuzzy
 msgid "Add Text"
 msgstr "نص العلامة."
 
-#: ../glom/glom.glade.h:90
+#: ../glom/glom.glade.h:93
 #, fuzzy
 msgid "Add _Group"
 msgstr "_اضف مجموعة..."
 
-#: ../glom/glom.glade.h:91
-msgid "Add a button. Edit the button to define the script that will be run when the button is clicked."
-msgstr ""
-
-#: ../glom/glom.glade.h:92
-msgid "Add a group which can contain other layout items. Use this to group items together, such as fields."
-msgstr ""
-
-#: ../glom/glom.glade.h:93
-msgid "Add a layout item that shows the data from a field in the record, and allows the user to edit that value."
-msgstr ""
-
 #: ../glom/glom.glade.h:94
-msgid "Add a related records portal. This is a list of records in a related table. Remember to edit this layout item to specify the relationship to use, and the  fields to show from the related table."
+msgid ""
+"Add a button. Edit the button to define the script that will be run when the "
+"button is clicked."
 msgstr ""
 
 #: ../glom/glom.glade.h:95
-msgid "Add a tabbed notebook. Each page of the notebook may contain several other layout items, but only one page will be visible at one time."
+msgid ""
+"Add a group which can contain other layout items. Use this to group items "
+"together, such as fields."
 msgstr ""
 
 #: ../glom/glom.glade.h:96
-msgid "Add an image to the layout, such as a logo. The image will be the same for every record viewed. To show an image field from a record, to show different images for each field, use the field layout item."
+msgid ""
+"Add a layout item that shows the data from a field in the record, and allows "
+"the user to edit that value."
 msgstr ""
 
 #: ../glom/glom.glade.h:97
-msgid "Add text to a layout, such as an explanation or a warning. The text will be the same for every record viewed."
+msgid ""
+"Add a related records portal. This is a list of records in a related table. "
+"Remember to edit this layout item to specify the relationship to use, and "
+"the  fields to show from the related table."
 msgstr ""
 
 #: ../glom/glom.glade.h:98
+msgid ""
+"Add a tabbed notebook. Each page of the notebook may contain several other "
+"layout items, but only one page will be visible at one time."
+msgstr ""
+
+#: ../glom/glom.glade.h:99
+msgid ""
+"Add an image to the layout, such as a logo. The image will be the same for "
+"every record viewed. To show an image field from a record, to show different "
+"images for each field, use the field layout item."
+msgstr ""
+
+#: ../glom/glom.glade.h:100
+msgid ""
+"Add text to a layout, such as an explanation or a warning. The text will be "
+"the same for every record viewed."
+msgstr ""
+
+#: ../glom/glom.glade.h:101
 #: ../glom/mode_design/box_db_table_relationships.cc:52
 #, fuzzy
 msgid "Allow Editing"
 msgstr "تحرير اللمحة المختصرة: %s"
 
-#: ../glom/glom.glade.h:99
+#: ../glom/glom.glade.h:102
 #, fuzzy
 msgid "Also show"
 msgstr "اظهار التفاصيل"
 
-#: ../glom/glom.glade.h:100
+#: ../glom/glom.glade.h:103
 #, fuzzy
 msgid "Auto-increment"
 msgstr "زيادة درجية"
 
-#: ../glom/glom.glade.h:101
+#: ../glom/glom.glade.h:104
 #, fuzzy
 msgid "Auto-increment values"
 msgstr "ترقّب اللاعب القيم"
 
-#: ../glom/glom.glade.h:102
+#: ../glom/glom.glade.h:105
 #, fuzzy
 msgid "Automatic:"
 msgstr "<b>آ_لي</b>"
 
-#: ../glom/glom.glade.h:103
+#: ../glom/glom.glade.h:106
 #, fuzzy
 msgid "Border Width (ems)"
 msgstr "عرض الحد حول شارات الألسنة"
 
-#: ../glom/glom.glade.h:104
+#: ../glom/glom.glade.h:107
 #, fuzzy
 msgid "Button Script"
 msgstr "حوا _سكريبت"
 
-#: ../glom/glom.glade.h:105
+#: ../glom/glom.glade.h:108
 #, fuzzy
 msgid "C_onnect"
 msgstr "إِ_تّصل"
 
-#: ../glom/glom.glade.h:106
+#: ../glom/glom.glade.h:109
+#, fuzzy
+msgid "C_reate"
+msgstr "إ_نشاء"
+
+#: ../glom/glom.glade.h:110
 #, fuzzy
 msgid "Calculate Value"
 msgstr "قيمة التحجيم"
 
-#: ../glom/glom.glade.h:107
+#: ../glom/glom.glade.h:111
+msgid "Check"
+msgstr ""
+
+#: ../glom/glom.glade.h:112
 msgid "Choices From Related Records"
 msgstr ""
 
-#: ../glom/glom.glade.h:108
+#: ../glom/glom.glade.h:113
 #, fuzzy
 msgid "Choose Date"
 msgstr "يجب أن تختار تاريخاً."
 
-#: ../glom/glom.glade.h:109
+#: ../glom/glom.glade.h:114
 #, fuzzy
 msgid "Choose User"
 msgstr "بدّل المستخدم"
 
-#: ../glom/glom.glade.h:110
-msgid "Clicking the row button takes the user to the table specified by this relationship:"
+#: ../glom/glom.glade.h:115
+msgid ""
+"Clicking the row button takes the user to the table specified by this "
+"relationship:"
 msgstr ""
 
-#: ../glom/glom.glade.h:111
+#: ../glom/glom.glade.h:116
 #, fuzzy
 msgid "Confirm Password"
-msgstr "تأكيد كلمة المرور:"
+msgstr "تأكيد كلمة السر:"
 
-#: ../glom/glom.glade.h:112
+#: ../glom/glom.glade.h:117
 #, fuzzy
 msgid "Copy From Existing Translation"
 msgstr "نسخ مبدئ من قائمة التطبيقات"
 
-#: ../glom/glom.glade.h:113
-#: ../glom/libglom/document/document_glom.cc:343
+#: ../glom/glom.glade.h:118 ../glom/libglom/document/document_glom.cc:408
 #, fuzzy
 msgid "Country"
 msgstr "كنتري"
 
-#: ../glom/glom.glade.h:114
-#: ../glom/mode_design/users/dialog_groups_list.cc:79
+#: ../glom/glom.glade.h:119 ../glom/mode_design/users/dialog_groups_list.cc:79
 #, fuzzy
 msgid "Create"
 msgstr "إ_نشاء"
 
-#: ../glom/glom.glade.h:115
+#: ../glom/glom.glade.h:120
 #, fuzzy
 msgid "Create Group"
 msgstr "انشيء مجموعة جديدة"
 
-#: ../glom/glom.glade.h:116
-#, fuzzy
-msgid "Creating Glom Database"
-msgstr "تفضيلات قاعدة بيانات القرص المدمج"
-
-#: ../glom/glom.glade.h:117
-msgid "Creating Glom database from example file."
-msgstr ""
-
-#: ../glom/glom.glade.h:118
+#: ../glom/glom.glade.h:121
 #, fuzzy
 msgid "Currency Symbol"
 msgstr "رمز، عملة"
 
-#: ../glom/glom.glade.h:119
+#: ../glom/glom.glade.h:122
 #, fuzzy
 msgid "Custom Choice List"
 msgstr "لائحة كودكات الصوت"
 
-#: ../glom/glom.glade.h:120
-#: ../glom/frame_glom.cc:414
+#: ../glom/glom.glade.h:123 ../glom/frame_glom.cc:421
 #, fuzzy
 msgid "Data"
 msgstr "البيانات الشخصية"
 
-#: ../glom/glom.glade.h:121
+#: ../glom/glom.glade.h:124
 #, fuzzy
 msgid "Database"
 msgstr "قاعدة بيانات"
 
-#: ../glom/glom.glade.h:122
+#: ../glom/glom.glade.h:125
 #, fuzzy
 msgid "Database Preferences"
 msgstr "تفضيلات قاعدة بيانات القرص المدمج"
 
-#: ../glom/glom.glade.h:123
+#: ../glom/glom.glade.h:126
 #, fuzzy
 msgid "Decimal Places"
 msgstr "أماكن في الشبكة"
 
-#: ../glom/glom.glade.h:124
+#: ../glom/glom.glade.h:127
 #, fuzzy
 msgid "Default Formatting"
 msgstr "استراتيجية التهيئة الإفتراضيّة"
 
-#: ../glom/glom.glade.h:125
+#: ../glom/glom.glade.h:128
 #, fuzzy
 msgid "Details Layout"
 msgstr "مخطط القائمة"
 
 #. Add new menu items:
-#: ../glom/glom.glade.h:126
-#: ../glom/mode_design/users/dialog_groups_list.cc:76
+#: ../glom/glom.glade.h:129 ../glom/mode_design/users/dialog_groups_list.cc:76
 #: ../glom/utility_widgets/adddel/adddel.cc:232
 #, fuzzy
 msgid "Edit"
 msgstr "تحرير"
 
-#: ../glom/glom.glade.h:127
+#: ../glom/glom.glade.h:130
 #, fuzzy
 msgid "English"
 msgstr "ا-ص|إنكليزي (الولايات المتّحدة)"
 
-#: ../glom/glom.glade.h:128
-#: ../glom/filechooser_export.cc:37
-#: ../glom/translation/window_translations.cc:502
+#: ../glom/glom.glade.h:131 ../glom/filechooser_export.cc:37
+#: ../glom/translation/window_translations.cc:510
 #, fuzzy
 msgid "Export"
 msgstr "تصدير علامات المواقع"
 
-#: ../glom/glom.glade.h:129
+#: ../glom/glom.glade.h:132
 #, fuzzy
 msgid "Export Format"
 msgstr "تنسيق الفيديو"
 
-#: ../glom/glom.glade.h:130
-#: ../glom/libglom/data_structure/translatable_item.cc:250
+#: ../glom/glom.glade.h:133
+#: ../glom/libglom/data_structure/translatable_item.cc:280
 #: ../glom/libglom/data_structure/layout/layoutitem_field.cc:196
 #: ../glom/dialog_database_preferences.cc:55
 #, fuzzy
 msgid "Field"
 msgstr "الحقل"
 
-#: ../glom/glom.glade.h:131
+#: ../glom/glom.glade.h:134
 #, fuzzy
 msgid "Field Calculation"
 msgstr "حقل ال_قيمة"
 
-#: ../glom/glom.glade.h:132
+#: ../glom/glom.glade.h:135
 #, fuzzy
 msgid "Field Definition"
 msgstr "وصف التعريف"
 
-#: ../glom/glom.glade.h:133
-#: ../glom/mode_design/dialog_fields.cc:36
+#: ../glom/glom.glade.h:136 ../glom/mode_design/dialog_fields.cc:36
 #, fuzzy
 msgid "Field Definitions"
 msgstr "تعريفات الـ Preprocessor"
 
-#: ../glom/glom.glade.h:134
+#: ../glom/glom.glade.h:137
 #, fuzzy
 msgid "Field Layout"
 msgstr "مخطط القائمة"
 
-#: ../glom/glom.glade.h:135
+#: ../glom/glom.glade.h:138
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:70
 #, fuzzy
 msgid "Field Summary"
 msgstr "الملخّص يحتوي على"
 
-#: ../glom/glom.glade.h:136
+#: ../glom/glom.glade.h:139
 #, fuzzy
 msgid "Field:"
 msgstr "الحقل"
 
-#: ../glom/glom.glade.h:137
+#: ../glom/glom.glade.h:140
 #, fuzzy
 msgid "Find All"
 msgstr "نسخ ال_كل"
 
-#: ../glom/glom.glade.h:138
+#: ../glom/glom.glade.h:141
 #, fuzzy
 msgid "Find Related Record"
 msgstr "تسجيل قطع صوتية"
 
-#: ../glom/glom.glade.h:139
+#: ../glom/glom.glade.h:142
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_footer.cc:55
 #, fuzzy
 msgid "Footer"
 msgstr "الهامش:"
 
-#: ../glom/glom.glade.h:140
+#: ../glom/glom.glade.h:143
 #, fuzzy
 msgid "Formatting"
 msgstr "تنسيق"
 
-#: ../glom/glom.glade.h:141
+#: ../glom/glom.glade.h:144
 #, fuzzy
 msgid "Found:"
 msgstr "موجود:"
 
-#: ../glom/glom.glade.h:142
+#: ../glom/glom.glade.h:145
 #, fuzzy
 msgid "From Field:"
 msgstr "حقل _مِن"
 
-#: ../glom/glom.glade.h:144
+#: ../glom/glom.glade.h:147
 #: ../glom/libglom/data_structure/layout/layoutgroup.cc:396
 #, fuzzy
 msgid "Group"
 msgstr "مجموعة"
 
-#: ../glom/glom.glade.h:145
+#: ../glom/glom.glade.h:148
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_groupby.cc:102
 #, fuzzy
 msgid "Group By"
 msgstr "ترتيب حسب الصّندوق"
 
-#: ../glom/glom.glade.h:146
+#: ../glom/glom.glade.h:149
 #, fuzzy
 msgid "Group By - Secondary Fields"
 msgstr "ترتيب حسب هذا الحقل"
 
-#: ../glom/glom.glade.h:147
+#: ../glom/glom.glade.h:150
 #, fuzzy
 msgid "Group By - Sort Fields"
 msgstr "ترتيب حسب هذا الحقل"
 
-#: ../glom/glom.glade.h:148
+#: ../glom/glom.glade.h:151
 #, fuzzy
 msgid "Group Name"
 msgstr "ا_سم المجموعة:"
 
-#: ../glom/glom.glade.h:149
+#: ../glom/glom.glade.h:152
 #, fuzzy
 msgid "Groups"
 msgstr "المجموعات"
 
-#: ../glom/glom.glade.h:150
+#: ../glom/glom.glade.h:153
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_header.cc:55
 #, fuzzy
 msgid "Header"
 msgstr "التّرويسة"
 
-#: ../glom/glom.glade.h:151
+#: ../glom/glom.glade.h:154
 #, fuzzy
 msgid "Height (lines)"
 msgstr "أقصى عدد من السّطور"
 
-#: ../glom/glom.glade.h:152
+#: ../glom/glom.glade.h:155
 #, fuzzy
 msgid "Identify Original"
 msgstr "المراسَل الأصلي:"
 
-#: ../glom/glom.glade.h:153
+#: ../glom/glom.glade.h:156
 #, fuzzy
 msgid "Identify Source"
 msgstr "_مصدر الصفحة"
 
-#: ../glom/glom.glade.h:154
-msgid "If the text is not actually in this language, please choose the correct language."
-msgstr ""
-
-#: ../glom/glom.glade.h:155
-msgid "If this is not selected then a thousands separator will not be used, even if your locale would normally use one. If it is selected then a thousands separator will be used only if your locale normally uses one."
-msgstr ""
-
-#: ../glom/glom.glade.h:156
-msgid "If this is selected then the field value will be shown in a multi-line box with a scrollbar."
-msgstr ""
-
 #: ../glom/glom.glade.h:157
-#: ../glom/translation/window_translations.cc:574
+msgid ""
+"If the text is not actually in this language, please choose the correct "
+"language."
+msgstr ""
+
+#: ../glom/glom.glade.h:158
+msgid ""
+"If this is not selected then a thousands separator will not be used, even if "
+"your locale would normally use one. If it is selected then a thousands "
+"separator will be used only if your locale normally uses one."
+msgstr ""
+
+#: ../glom/glom.glade.h:159
+msgid ""
+"If this is selected then the field value will be shown in a multi-line box "
+"with a scrollbar."
+msgstr ""
+
+#: ../glom/glom.glade.h:160 ../glom/translation/window_translations.cc:587
 #, fuzzy
 msgid "Import"
 msgstr "استيراد"
 
-#: ../glom/glom.glade.h:158
+#: ../glom/glom.glade.h:161
 #, fuzzy
 msgid "Language"
 msgstr "لغة"
 
-#: ../glom/glom.glade.h:159
-#, fuzzy
-msgid "List Layout"
-msgstr "مخطط القائمة"
-
-#: ../glom/glom.glade.h:160
+#: ../glom/glom.glade.h:162
 #, fuzzy
 msgid "Locale"
 msgstr "التشفيرة الحالية (%s)"
 
-#: ../glom/glom.glade.h:161
+#: ../glom/glom.glade.h:163
 #, fuzzy
 msgid "Logo"
 msgstr "الشعار"
 
-#: ../glom/glom.glade.h:162
+#: ../glom/glom.glade.h:164
 msgid "Lookup value when a field changes."
 msgstr ""
 
-#: ../glom/glom.glade.h:163
+#: ../glom/glom.glade.h:165
 #, fuzzy
 msgid "Main"
 msgstr "عمود الأدوات الرّئيسي"
 
-#: ../glom/glom.glade.h:164
+#: ../glom/glom.glade.h:166
 #, fuzzy
 msgid "Mode:"
 msgstr "نمط"
 
-#: ../glom/glom.glade.h:165
+#: ../glom/glom.glade.h:167
+#, fuzzy
+msgid "Module name:"
+msgstr "اسم الموصول"
+
+#: ../glom/glom.glade.h:168
 #, fuzzy
 msgid "Multi-line"
 msgstr "نص متعدد السّطور"
@@ -733,19 +768,14 @@ msgstr "نص متعدد السّطور"
 #. Use set_cell_data_func() to give more control over the cell attributes depending on the row:
 #. Name column:
 #. Append the View columns:
-#. Append the View columns:
-#. Append the View columns:
-#: ../glom/glom.glade.h:166
-#: ../glom/box_reports.cc:90
+#: ../glom/glom.glade.h:169 ../glom/box_reports.cc:90
 #: ../glom/layout_item_dialogs/dialog_groupby_secondaryfields.cc:51
 #: ../glom/layout_item_dialogs/dialog_groupby_sortfields.cc:50
 #: ../glom/layout_item_dialogs/dialog_notebook.cc:46
 #: ../glom/mode_data/dialog_choose_field.cc:51
 #: ../glom/mode_data/dialog_choose_relationship.cc:52
-#: ../glom/mode_data/dialog_layout_details.cc:68
+#: ../glom/mode_data/dialog_layout_details.cc:80
 #: ../glom/mode_data/dialog_layout_export.cc:52
-#: ../glom/mode_data/dialog_layout_list.cc:53
-#: ../glom/mode_data/dialog_layout_list_related.cc:59
 #: ../glom/mode_design/box_db_table_relationships.cc:43
 #: ../glom/mode_design/fields/box_db_table_definition.cc:53
 #: ../glom/mode_design/users/dialog_groups_list.cc:63
@@ -753,372 +783,412 @@ msgstr "نص متعدد السّطور"
 msgid "Name"
 msgstr "اسم"
 
-#: ../glom/glom.glade.h:167
+#: ../glom/glom.glade.h:170
 #, fuzzy
 msgid "Name of new related table:"
 msgstr "الاسم الجديد فراغ."
 
-#: ../glom/glom.glade.h:168
+#: ../glom/glom.glade.h:171
 #, fuzzy
 msgid "Name of new relationship:"
 msgstr "اسم دليل جديد"
 
-#: ../glom/glom.glade.h:169
+#: ../glom/glom.glade.h:172
 #, fuzzy
 msgid "New From Example"
 msgstr "وزّع ورقةً جديدة من الرّزمة"
 
-#: ../glom/glom.glade.h:170
+#: ../glom/glom.glade.h:173
 #, fuzzy
 msgid "No Choices"
 msgstr "لا تاريخ"
 
-#: ../glom/glom.glade.h:171
-#: ../glom/mode_design/dialog_design.cc:54
+#: ../glom/glom.glade.h:174 ../glom/mode_design/dialog_design.cc:54
 #, fuzzy
 msgid "None selected"
 msgstr "اليوم المنتقى (%a %b %d %Y)"
 
-#: ../glom/glom.glade.h:172
-#: ../glom/mode_data/dialog_layout_details.cc:919
+#: ../glom/glom.glade.h:175 ../glom/mode_data/dialog_layout_details.cc:931
 #, fuzzy
 msgid "Notebook Tabs"
 msgstr "عرض الألسنة"
 
-#: ../glom/glom.glade.h:173
+#: ../glom/glom.glade.h:176
 msgid "Organisation"
 msgstr ""
 
-#: ../glom/glom.glade.h:174
+#: ../glom/glom.glade.h:177
 #, fuzzy
 msgid "Password"
 msgstr "كلمة السّر"
 
-#: ../glom/glom.glade.h:175
+#: ../glom/glom.glade.h:178
 #, fuzzy
 msgid "Primary Key"
 msgstr "اتفاق على المفتاح"
 
-#: ../glom/glom.glade.h:176
+#: ../glom/glom.glade.h:179 ../glom/libglom/spawn_with_feedback.cc:134
+msgid "Processing"
+msgstr ""
+
+#: ../glom/glom.glade.h:180
 #, fuzzy
 msgid "Quick Find"
 msgstr "ايجاد التالي"
 
-#: ../glom/glom.glade.h:177
+#: ../glom/glom.glade.h:181
 #, fuzzy
 msgid "Records: "
 msgstr "مزامنة السّجلّات الخاصّة:"
 
-#: ../glom/glom.glade.h:178
-#, fuzzy
-msgid "Related Records Layout"
-msgstr "تصميم الجورجية الروسية"
-
-#: ../glom/glom.glade.h:179
-#: ../glom/libglom/data_structure/translatable_item.cc:254
+#: ../glom/glom.glade.h:182
+#: ../glom/libglom/data_structure/translatable_item.cc:284
 msgid "Relationship"
 msgstr ""
 
-#: ../glom/glom.glade.h:180
-msgid "Remove the item from the layout. If you remove a field layout item, it will not remove the field from the table itself. It just will not be seen on the layout."
+#: ../glom/glom.glade.h:183
+#, fuzzy
+msgid "Relationships Overview"
+msgstr "نظرة عامة عن النافذة"
+
+#: ../glom/glom.glade.h:184
+msgid ""
+"Remove the item from the layout. If you remove a field layout item, it will "
+"not remove the field from the table itself. It just will not be seen on the "
+"layout."
 msgstr ""
 
-#: ../glom/glom.glade.h:181
+#: ../glom/glom.glade.h:185
 #, fuzzy
 msgid "Report Layout"
 msgstr "مخطط القائمة"
 
-#: ../glom/glom.glade.h:182
+#: ../glom/glom.glade.h:186
 msgid "Reports"
 msgstr ""
 
-#: ../glom/glom.glade.h:183
+#: ../glom/glom.glade.h:187
 msgid "Restrict data to these choices"
 msgstr ""
 
-#: ../glom/glom.glade.h:184
+#: ../glom/glom.glade.h:188
 #, fuzzy
 msgid "Revert"
 msgstr "_استرجاع"
 
-#: ../glom/glom.glade.h:185
+#: ../glom/glom.glade.h:189
+msgid "Script name:"
+msgstr ""
+
+#: ../glom/glom.glade.h:190
 #, fuzzy
 msgid "Secondary Fields:"
 msgstr "_حقول الشهادة"
 
-#: ../glom/glom.glade.h:186
-#: ../glom/utility_widgets/imageglom.cc:365
+#: ../glom/glom.glade.h:191 ../glom/utility_widgets/imageglom.cc:365
 #: ../glom/utility_widgets/dialog_choose_id.cc:82
 #, fuzzy
 msgid "Select"
 msgstr "انتقاء"
 
-#: ../glom/glom.glade.h:187
+#: ../glom/glom.glade.h:192
 #, fuzzy
 msgid "Select Field"
 msgstr "حقل ال_قيمة"
 
-#: ../glom/glom.glade.h:188
+#: ../glom/glom.glade.h:193
 #, fuzzy
 msgid "Select Relationship"
 msgstr "إنتقاء ملف"
 
-#: ../glom/glom.glade.h:189
+#: ../glom/glom.glade.h:194
 #, fuzzy
 msgid "Show Related Relationships"
 msgstr "ترويسات متعلقة بالمحور"
 
-#: ../glom/glom.glade.h:190
+#: ../glom/glom.glade.h:195
 #, fuzzy
 msgid "Show Table Title"
 msgstr "اظهار عمود العنوان فقط"
 
-#: ../glom/glom.glade.h:191
+#: ../glom/glom.glade.h:196
+#, fuzzy
+msgid "Show child relationships"
+msgstr "ترويسات متعلقة بالمحور"
+
+#: ../glom/glom.glade.h:197
 #, fuzzy
 msgid "Show hidden tables"
 msgstr "عرض المجلدات المخفية"
 
-#: ../glom/glom.glade.h:192
+#: ../glom/glom.glade.h:198
 #, fuzzy
 msgid "Sort Fields:"
 msgstr "_حقول الشهادة"
 
-#: ../glom/glom.glade.h:193
-msgid "Start a translation for this target locale by copying the strings from another target locale."
+#: ../glom/glom.glade.h:199
+msgid ""
+"Start a translation for this target locale by copying the strings from "
+"another target locale."
 msgstr ""
 
-#: ../glom/glom.glade.h:194
+#: ../glom/glom.glade.h:200
 #, fuzzy
 msgid "State/County"
 msgstr "بتلر المقاطعه"
 
-#: ../glom/glom.glade.h:195
-#: ../glom/libglom/document/document_glom.cc:319
+#: ../glom/glom.glade.h:201 ../glom/libglom/document/document_glom.cc:384
 msgid "Street"
 msgstr ""
 
-#: ../glom/glom.glade.h:196
+#: ../glom/glom.glade.h:202
 #, fuzzy
 msgid "Street (Line 2)"
 msgstr "لف السّطور"
 
-#: ../glom/glom.glade.h:197
+#: ../glom/glom.glade.h:203
 #, fuzzy
 msgid "Summary Type:"
 msgstr "نوع التّنبيه"
 
-#: ../glom/glom.glade.h:198
-#: ../glom/libglom/document/document_glom.cc:301
+#: ../glom/glom.glade.h:204 ../glom/libglom/document/document_glom.cc:366
 #, fuzzy
 msgid "System Name"
 msgstr "اسم الموصول"
 
-#: ../glom/glom.glade.h:199
+#: ../glom/glom.glade.h:205
 #, fuzzy
 msgid "Table:"
 msgstr "جدول"
 
-#: ../glom/glom.glade.h:200
+#: ../glom/glom.glade.h:206
 #, fuzzy
 msgid "Table: "
 msgstr "جدول"
 
-#: ../glom/glom.glade.h:201
+#: ../glom/glom.glade.h:207
 #, fuzzy
 msgid "Test"
 msgstr "إختبار"
 
-#: ../glom/glom.glade.h:202
+#: ../glom/glom.glade.h:208
 #, fuzzy
 msgid "Test Translation"
 msgstr "ترجمة IP"
 
-#: ../glom/glom.glade.h:203
+#: ../glom/glom.glade.h:209
 #, fuzzy
 msgid "Text Object"
 msgstr "مميّز الجسم (%s)"
 
-#: ../glom/glom.glade.h:204
-msgid "The field value will be the return value of the python function, which you implement here."
+#: ../glom/glom.glade.h:210
+msgid ""
+"The field value will be the return value of the python function, which you "
+"implement here."
 msgstr ""
 
-#: ../glom/glom.glade.h:205
+#: ../glom/glom.glade.h:211
 msgid ""
-"This will add a new table and add a relationship that refers to the new  table, as a convenient alternative to doing this in separate steps.\n"
+"These modules will be available to your button scripts and field "
+"calculations via the python import keyword."
+msgstr ""
+
+#: ../glom/glom.glade.h:212
+msgid ""
+"This will add a new table and add a relationship that refers to the new  "
+"table, as a convenient alternative to doing this in separate steps.\n"
 "\n"
-"If a suitable related table already exists then you should instead cancel and just add a relationship."
+"If a suitable related table already exists then you should instead cancel "
+"and just add a relationship."
 msgstr ""
 
 #. Title column:
-#: ../glom/glom.glade.h:208
-#: ../glom/box_reports.cc:94
+#: ../glom/glom.glade.h:215 ../glom/box_reports.cc:94
 #: ../glom/layout_item_dialogs/dialog_notebook.cc:47
 #: ../glom/mode_data/dialog_choose_field.cc:52
-#: ../glom/mode_data/dialog_layout_details.cc:81
+#: ../glom/mode_data/dialog_layout_details.cc:93
 #: ../glom/mode_design/box_db_table_relationships.cc:47
 #: ../glom/mode_design/fields/box_db_table_definition.cc:57
 #: ../glom/navigation/box_tables.cc:119
+#: ../glom/utility_widgets/filechooserdialog.cc:93
 #, fuzzy
 msgid "Title"
 msgstr "العنوان"
 
-#: ../glom/glom.glade.h:209
+#: ../glom/glom.glade.h:216
 #, fuzzy
 msgid "Town"
 msgstr "كيبتاون د.ف. مالان"
 
-#: ../glom/glom.glade.h:210
+#: ../glom/glom.glade.h:217
 #, fuzzy
 msgid "Translations"
 msgstr "ترجمة الإ_سم/التعليق:"
 
-#: ../glom/glom.glade.h:211
+#: ../glom/glom.glade.h:218
 #, fuzzy
 msgid "Triggered by:"
 msgstr "المطورون"
 
-#: ../glom/glom.glade.h:212
+#: ../glom/glom.glade.h:219
 #: ../glom/mode_design/fields/box_db_table_definition.cc:59
 #, fuzzy
 msgid "Type"
 msgstr "النّوع"
 
-#: ../glom/glom.glade.h:213
+#: ../glom/glom.glade.h:220
 #, fuzzy
 msgid "Unique"
 msgstr "الهويّة الفريدة للمُصدر"
 
-#: ../glom/glom.glade.h:214
+#: ../glom/glom.glade.h:221
 #, fuzzy
 msgid "Use 1000s separator"
 msgstr "العرض العمودي للفاصل"
 
-#: ../glom/glom.glade.h:215
+#: ../glom/glom.glade.h:222
 #, fuzzy
 msgid "Use custom formatting"
 msgstr "ا_ستعمل امرا مخصصا"
 
-#: ../glom/glom.glade.h:216
+#: ../glom/glom.glade.h:223
 #, fuzzy
 msgid "Use custom title"
 msgstr "ا_ستعمل امرا مخصصا"
 
-#: ../glom/glom.glade.h:217
+#: ../glom/glom.glade.h:224
 #, fuzzy
 msgid "Use default field title: "
 msgstr "_استخدام تيمة الخط الإفتراضية"
 
-#: ../glom/glom.glade.h:218
+#: ../glom/glom.glade.h:225
 #, fuzzy
 msgid "Use default formatting"
 msgstr "استراتيجية التهيئة الإفتراضيّة"
 
 #. Append the View columns:
-#: ../glom/glom.glade.h:219
-#: ../glom/mode_design/users/dialog_users_list.cc:67
+#: ../glom/glom.glade.h:226 ../glom/mode_design/users/dialog_users_list.cc:67
 #, fuzzy
 msgid "User"
 msgstr "مستخدم"
 
-#: ../glom/glom.glade.h:220
+#: ../glom/glom.glade.h:227
 #, fuzzy
 msgid "User Entry"
 msgstr "إدخال مباشر"
 
-#: ../glom/glom.glade.h:221
+#: ../glom/glom.glade.h:228
 #, fuzzy
 msgid "Users"
 msgstr "مستخدمون"
 
-#: ../glom/glom.glade.h:222
+#: ../glom/glom.glade.h:229
 #, fuzzy
 msgid "Value"
 msgstr "القيمة"
 
-#: ../glom/glom.glade.h:223
-msgid "When the button is clicked it will run the python function which you implement here."
+#: ../glom/glom.glade.h:230
+msgid ""
+"When the button is clicked it will run the python function which you "
+"implement here."
 msgstr ""
 
-#: ../glom/glom.glade.h:224
-msgid "When this is selected you will see extra relationships in the Table list, allowing you to choose fields from relationships in related tables, instead of just regular fields from those related tables."
+#: ../glom/glom.glade.h:231
+msgid ""
+"When this is selected you will see extra relationships in the Table list, "
+"allowing you to choose fields from relationships in related tables, instead "
+"of just regular fields from those related tables."
 msgstr ""
 
-#: ../glom/glom.glade.h:225
+#: ../glom/glom.glade.h:232
 #, fuzzy
 msgid "Zip/Postal Code"
 msgstr "الرمز البريدي:"
 
-#: ../glom/glom.glade.h:226
+#: ../glom/glom.glade.h:233
+#, fuzzy
+msgid "_Confirm Password"
+msgstr "تأكيد كلمة السر:"
+
+#: ../glom/glom.glade.h:234
 #, fuzzy
 msgid "_Host"
 msgstr "مضيف"
 
-#: ../glom/glom.glade.h:227
+#: ../glom/glom.glade.h:235
 #, fuzzy
 msgid "_Password"
-msgstr "كلمة المرور:"
+msgstr "كلمة السر:"
 
-#: ../glom/glom.glade.h:228
+#: ../glom/glom.glade.h:236
 #, fuzzy
 msgid "_User"
 msgstr "الم_ستخدم"
 
-#: ../glom/glom.glade.h:229
+#: ../glom/glom.glade.h:237
 #, fuzzy
 msgid "example data format"
 msgstr "تهيئة توقيع غير مدعومة"
 
-#: ../glom/glom.glade.h:230
+#: ../glom/glom.glade.h:238
 #, fuzzy
 msgid "field name"
 msgstr "إسم الحقل"
 
-#: ../glom/glom.glade.h:231
+#: ../glom/glom.glade.h:239
+msgid "gtk-add"
+msgstr ""
+
+#: ../glom/glom.glade.h:240
+msgid "gtk-remove"
+msgstr ""
+
+#: ../glom/glom.glade.h:241
 #, fuzzy
 msgid "table name"
 msgstr "اسم الموصول"
 
-#: ../glom/glom.glade.h:232
+#: ../glom/glom.glade.h:242
 #, fuzzy
 msgid "table_name"
 msgstr "اسم الموصول"
 
-#: ../glom/glom.glade.h:233
+#: ../glom/glom.glade.h:243
 #, fuzzy
 msgid "the title"
 msgstr "العنوان"
 
-#: ../glom/application.cc:87
+#: ../glom/application.cc:89
 msgid "(C) 2000-2005 Murray Cumming"
 msgstr ""
 
-#: ../glom/application.cc:87
+#: ../glom/application.cc:89
 #, fuzzy
 msgid "A Database GUI"
 msgstr "الواجهة الرسومية لإكيجا"
 
-#: ../glom/application.cc:181
+#: ../glom/application.cc:183
 #, fuzzy
 msgid "_File"
 msgstr "_ملف"
 
-#: ../glom/application.cc:182
+#: ../glom/application.cc:184
 #, fuzzy
 msgid "_Recent Files"
 msgstr "العدد الأقصى للملفّات الحديثة"
 
-#: ../glom/application.cc:190
+#: ../glom/application.cc:192
 #, fuzzy
 msgid "Save As Example"
 msgstr "حفظ الملف كـ"
 
-#: ../glom/application.cc:195
+#: ../glom/application.cc:197
 #, fuzzy
 msgid "_Export"
 msgstr "تصدير علامات المواقع"
 
 #. "Tables" menu:
-#: ../glom/application.cc:245
+#: ../glom/application.cc:247
 msgid "_Tables"
 msgstr ""
 
@@ -1126,192 +1196,260 @@ msgstr ""
 #. m_listDeveloperActions.push_back(action);
 #. m_refActionGroup_Others->add(action,
 #. sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_Navigate_Database) );
-#: ../glom/application.cc:253
+#: ../glom/application.cc:255
 #, fuzzy
 msgid "_Edit Tables"
 msgstr "ت_حرير الخط"
 
-#: ../glom/application.cc:258
+#: ../glom/application.cc:260
 #, fuzzy
 msgid "Add _Related Table"
 msgstr "محوّل جدول الشّجرة الالكترونيّة"
 
 #. "Reports" menu:
-#: ../glom/application.cc:265
+#: ../glom/application.cc:267
 msgid "_Reports"
 msgstr ""
 
-#: ../glom/application.cc:267
+#: ../glom/application.cc:269
 #, fuzzy
 msgid "_Edit Reports"
 msgstr "ت_حرير الخط"
 
 #. "UserLevel" menu:
-#: ../glom/application.cc:273
+#: ../glom/application.cc:275
 #, fuzzy
 msgid "_User Level"
 msgstr "مطلوب مستوى نشاط المستخدم."
 
-#: ../glom/application.cc:276
-#: ../glom/application.cc:298
+#: ../glom/application.cc:278 ../glom/application.cc:300
 #, fuzzy
 msgid "_Developer"
 msgstr "وثائق المطور"
 
-#: ../glom/application.cc:280
+#: ../glom/application.cc:282
 #, fuzzy
 msgid "_Operator"
 msgstr "عملية"
 
 #. "Mode" menu:
-#: ../glom/application.cc:285
+#: ../glom/application.cc:287
 #, fuzzy
 msgid "_Mode"
 msgstr "نمط"
 
 #. We remember this action, so that it can be explicitly activated later.
-#: ../glom/application.cc:290
+#: ../glom/application.cc:292
 msgid "D_ata"
 msgstr ""
 
-#: ../glom/application.cc:294
+#: ../glom/application.cc:296
 #, fuzzy
 msgid "_Find"
 msgstr "_إيجاد"
 
-#: ../glom/application.cc:302
+#: ../glom/application.cc:304
 #, fuzzy
 msgid "_Database Preferences"
 msgstr "تفضيلات قاعدة بيانات القرص المدمج"
 
-#: ../glom/application.cc:307
+#: ../glom/application.cc:309
 #, fuzzy
 msgid "_Fields"
 msgstr "_حقول الشهادة"
 
-#: ../glom/application.cc:311
+#: ../glom/application.cc:313
 #, fuzzy
 msgid "_Relationships Overview"
 msgstr "نظرة عامة عن النافذة"
 
-#: ../glom/application.cc:315
+#: ../glom/application.cc:317
 #, fuzzy
 msgid "_Relationships for this Table"
 msgstr "جدول خيارات Popt"
 
-#: ../glom/application.cc:319
+#: ../glom/application.cc:321
 #, fuzzy
 msgid "_Users"
 msgstr "ال_مستخدمين"
 
-#: ../glom/application.cc:323
+#: ../glom/application.cc:325
 msgid "R_eports"
 msgstr ""
 
-#: ../glom/application.cc:327
+#: ../glom/application.cc:329
+msgid "Script _Library"
+msgstr ""
+
+#: ../glom/application.cc:334
 #, fuzzy
 msgid "_Layout"
 msgstr "<b>مخطط</b>"
 
-#: ../glom/application.cc:331
+#: ../glom/application.cc:338
 #, fuzzy
 msgid "_Test Translation"
 msgstr "ترجمة IP"
 
-#: ../glom/application.cc:335
+#: ../glom/application.cc:342
 #, fuzzy
 msgid "_Translations"
 msgstr "ترجمة الإ_سم/التعليق:"
 
-#: ../glom/application.cc:459
+#: ../glom/application.cc:467 ../glom/application.cc:472
 #, fuzzy
-msgid "Creating from example file."
-msgstr "الملف النواة من البرنامج"
+msgid "Save Document"
+msgstr "انشئ مستندا جديدا في بيئة موجودة لـ gedit"
 
-#: ../glom/application.cc:460
-msgid "To use this example file you must save an editable copy of the file. A new database will also be created on the server."
+#. Warn the user:
+#: ../glom/application.cc:566
+#, fuzzy
+msgid "Read-only File."
+msgstr "المراجع (قراءة فقط)"
+
+#: ../glom/application.cc:566
+msgid ""
+"You may not overwrite the existing file, because you do not have sufficient "
+"access rights."
 msgstr ""
 
-#: ../glom/application.cc:486
+#. Warn the user:
+#: ../glom/application.cc:580
+#, fuzzy
+msgid "Read-only Directory."
+msgstr "المراجع (قراءة فقط)"
+
+#: ../glom/application.cc:580
+msgid ""
+"You may not create a file in this directory, because you do not have "
+"sufficient access rights."
+msgstr ""
+
+#: ../glom/application.cc:592
+msgid "Database Title missing"
+msgstr ""
+
+#: ../glom/application.cc:592
+msgid "You must specify a title for the new database."
+msgstr ""
+
+#: ../glom/application.cc:607 ../glom/libglom/connectionpool.cc:644
+#, fuzzy
+msgid "Directory Already Exists"
+msgstr "الشهادة موجودة مسبقا."
+
+#: ../glom/application.cc:607 ../glom/libglom/connectionpool.cc:644
+msgid ""
+"There is an existing directory with the same name as the directory that "
+"should be created for the new database files. You should specify a different "
+"filename to use a new directory instead."
+msgstr ""
+
+#: ../glom/application.cc:720
+#, fuzzy
+msgid "Creating From Example File"
+msgstr "الملف النواة من البرنامج"
+
+#: ../glom/application.cc:721
+msgid ""
+"To use this example file you must save an editable copy of the file. A new "
+"database will also be created on the server."
+msgstr ""
+
+#: ../glom/application.cc:747
 #, fuzzy
 msgid "Opening Read-Only File."
 msgstr "الملف \"%s\" مفتوح للقراءة فقط."
 
-#: ../glom/application.cc:487
-msgid "This file is read only, so you will not be able to enter Developer mode to make design changes."
+#: ../glom/application.cc:748
+msgid ""
+"This file is read only, so you will not be able to enter Developer mode to "
+"make design changes."
 msgstr ""
 
-#: ../glom/application.cc:490
+#: ../glom/application.cc:751
 msgid "Continue without Developer Mode"
 msgstr ""
 
 #. The connection to the server is OK, but the database is not there yet.
-#: ../glom/application.cc:560
+#: ../glom/application.cc:847
 #, fuzzy
 msgid "Database Not Found On Server"
 msgstr "لم توجد الرزنامة، \"%s\"، على هذا الخادم."
 
-#: ../glom/application.cc:560
-msgid "The database could not be found on the server. Please consult your system administrator."
+#: ../glom/application.cc:847
+msgid ""
+"The database could not be found on the server. Please consult your system "
+"administrator."
 msgstr ""
 
-#: ../glom/application.cc:817
+#: ../glom/application.cc:1090
 #, fuzzy
 msgid "_Contents"
 msgstr "_المحتويات"
 
-#: ../glom/application.cc:817
+#: ../glom/application.cc:1090
 #, fuzzy
 msgid "Help with the application"
 msgstr "افتح ب_تطبيق آخر..."
 
-#: ../glom/application.cc:1219
+#: ../glom/application.cc:1161
+#, fuzzy
+msgid "Creating Glom Database"
+msgstr "تفضيلات قاعدة بيانات القرص المدمج"
+
+#: ../glom/application.cc:1161
+msgid "Creating Glom database from example file."
+msgstr ""
+
+#: ../glom/application.cc:1499
 #, fuzzy
 msgid "Save failed."
 msgstr "فشل في حفظ قاعدة بيانات المستخدم إلى %s"
 
-#: ../glom/application.cc:1219
-msgid "There was an error while saving the file. Your changes have not been saved."
+#: ../glom/application.cc:1499
+msgid ""
+"There was an error while saving the file. Your changes have not been saved."
 msgstr ""
 
-#: ../glom/base_db.cc:155
-#: ../glom/libglom/connectionpool.cc:440
+#: ../glom/base_db.cc:161 ../glom/libglom/connectionpool.cc:486
 #, fuzzy
 msgid "Internal error"
 msgstr "خطأ داخلي"
 
-#: ../glom/base_db.cc:928
-#: ../glom/mode_design/users/dialog_groups_list.cc:67
+#: ../glom/base_db.cc:934 ../glom/mode_design/users/dialog_groups_list.cc:67
 #, fuzzy
 msgid "Description"
 msgstr "الوصف"
 
-#: ../glom/base_db.cc:935
+#: ../glom/base_db.cc:941
 #, fuzzy
 msgid "Comments"
 msgstr "_تعليقات:"
 
-#: ../glom/base_db.cc:1348
+#: ../glom/base_db.cc:1354
 #, fuzzy
 msgid "No Records Found"
 msgstr "لم يُعثر على أي جهاز"
 
-#: ../glom/base_db.cc:1350
+#: ../glom/base_db.cc:1356
 #, fuzzy
 msgid "New Find"
 msgstr "ايجاد التالي"
 
-#: ../glom/base_db.cc:1351
+#: ../glom/base_db.cc:1357
 msgid "Your find criteria did not match any records in the table."
 msgstr ""
 
-#: ../glom/base_db.cc:2305
+#: ../glom/base_db.cc:2311
 #, fuzzy
 msgid "Value Is Not Unique"
 msgstr "\"%s\" ليست قيمة VGA سليمة."
 
-#: ../glom/base_db.cc:2305
-msgid "The field's value must be unique, but a record with this value already exists."
+#: ../glom/base_db.cc:2311
+msgid ""
+"The field's value must be unique, but a record with this value already "
+"exists."
 msgstr ""
 
 #. Don't allow a relationship to be added twice.
@@ -1329,11 +1467,96 @@ msgstr ""
 msgid "Rename Report"
 msgstr "تقرير عن حالة الطقس"
 
-#: ../glom/combobox_relationship.cc:267
-#: ../glom/combobox_relationship.cc:271
+#: ../glom/combobox_relationship.cc:268 ../glom/combobox_relationship.cc:272
 #, fuzzy
 msgid " Via: "
 msgstr "%s (عن طريق lpr)"
+
+#. A special "None" item, allowing the user to do the equivalent of clearing the combobox,
+#. which is not normally possible with the GtkComboBox UI:
+#: ../glom/combobox_fields.cc:174
+msgid "(None)"
+msgstr ""
+
+#. For postgres 8.1, this is "postmaster is running".
+#. For postgres 8.2, this is "server is running".
+#. This is a big hack that we should avoid. murrayc.
+#.
+#. pg_ctl actually seems to return a 0 result code for "is running" and a 1 for not running, at least with Postgres 8.2,
+#. so maybe we can avoid this in future.
+#. Please do test it with your postgres version, using "echo $?" to see the result code of the last command.
+#. TODO: This is not a stable API. Also, watch out for localisation.
+#. The first command does not return, but the second command can check whether it succeeded:
+#: ../glom/libglom/connectionpool.cc:580
+#, fuzzy
+msgid "Starting Database Server"
+msgstr "تفضيلات قاعدة بيانات القرص المدمج"
+
+#: ../glom/libglom/connectionpool.cc:618
+msgid "Stopping Database Server"
+msgstr ""
+
+#: ../glom/libglom/connectionpool.cc:664
+#, fuzzy
+msgid "Could Not Create Directory"
+msgstr "لم يمكن إنشاء ملف الإقفال لـ %s: %s"
+
+#: ../glom/libglom/connectionpool.cc:664
+msgid ""
+"There was an error when attempting to create the directory for the new "
+"database files."
+msgstr ""
+
+#: ../glom/libglom/connectionpool.cc:677
+#, fuzzy
+msgid "Could Not Create Configuration Directory"
+msgstr "لم يمكن إنشاء ملف الإقفال لـ %s: %s"
+
+#: ../glom/libglom/connectionpool.cc:677
+msgid ""
+"There was an error when attempting to create the configuration directory for "
+"the new database files."
+msgstr ""
+
+#. Note that --pwfile takes the password from the first line of a file. It's an alternative to supplying it when prompted on stdin.
+#: ../glom/libglom/connectionpool.cc:712
+#, fuzzy
+msgid "Creating Database Data"
+msgstr "تفضيلات قاعدة بيانات القرص المدمج"
+
+#. Show message to the user about the broken installation:
+#. This is a packaging bug, but it would probably annoy packagers to mention that in the dialog:
+#. Show message to the user about the broken installation:
+#: ../glom/libglom/connectionpool.cc:831 ../glom/libglom/connectionpool.cc:844
+msgid "Incomplete Glom Installation"
+msgstr ""
+
+#. use_markup
+#. modal
+#: ../glom/libglom/connectionpool.cc:832
+msgid ""
+"Your installation of Glom is not complete, because PostgreSQL is not "
+"available on your system. PostgreSQL is needed for self-hosting of Glom "
+"databases.\n"
+"\n"
+"You may now install PostgreSQL to complete the Glom installation."
+msgstr ""
+
+#: ../glom/libglom/connectionpool.cc:834
+msgid "Install PostgreSQL"
+msgstr ""
+
+#. use_markup
+#. modal
+#: ../glom/libglom/connectionpool.cc:845
+msgid ""
+"Your installation of Glom is not complete, because PostgreSQL is not "
+"available on your system. PostgreSQL is needed for self-hosting of Glom "
+"databases.\n"
+"\n"
+"Please report this bug to your vendor, or your system administrator so it "
+"can be corrected."
+msgstr ""
 
 #: ../glom/libglom/data_structure/field.cc:548
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:142
@@ -1348,9 +1571,9 @@ msgid "Number"
 msgstr "الرقم"
 
 #: ../glom/libglom/data_structure/field.cc:550
-#: ../glom/libglom/data_structure/translatable_item.cc:268
+#: ../glom/libglom/data_structure/translatable_item.cc:298
 #: ../glom/libglom/data_structure/layout/layoutitem_text.cc:68
-#: ../glom/mode_data/dialog_layout_details.cc:1119
+#: ../glom/mode_data/dialog_layout_details.cc:1131
 #, fuzzy
 msgid "Text"
 msgstr "النّص"
@@ -1371,9 +1594,9 @@ msgid "Boolean"
 msgstr "منطقي"
 
 #: ../glom/libglom/data_structure/field.cc:554
-#: ../glom/libglom/data_structure/translatable_item.cc:270
+#: ../glom/libglom/data_structure/translatable_item.cc:300
 #: ../glom/libglom/data_structure/layout/layoutitem_image.cc:68
-#: ../glom/mode_data/dialog_layout_details.cc:1126
+#: ../glom/mode_data/dialog_layout_details.cc:1138
 #, fuzzy
 msgid "Image"
 msgstr "صورة"
@@ -1389,23 +1612,23 @@ msgstr ""
 msgid "%x"
 msgstr "%x"
 
-#: ../glom/libglom/data_structure/translatable_item.cc:252
+#: ../glom/libglom/data_structure/translatable_item.cc:282
 #, fuzzy
 msgid "Custom Title"
 msgstr "عنوان ال_صفحة"
 
-#: ../glom/libglom/data_structure/translatable_item.cc:256
+#: ../glom/libglom/data_structure/translatable_item.cc:286
 #, fuzzy
 msgid "Layout Item"
 msgstr "عنصر _جديد"
 
-#: ../glom/libglom/data_structure/translatable_item.cc:258
+#: ../glom/libglom/data_structure/translatable_item.cc:288
 #, fuzzy
 msgid "Report"
 msgstr "تقرير عن حالة الطقس"
 
 #. Tables:
-#: ../glom/libglom/data_structure/translatable_item.cc:260
+#: ../glom/libglom/data_structure/translatable_item.cc:290
 #: ../glom/dialog_database_preferences.cc:54
 #: ../glom/mode_design/box_db_table_relationships.cc:50
 #: ../glom/mode_design/users/dialog_groups_list.cc:70
@@ -1413,26 +1636,25 @@ msgstr "تقرير عن حالة الطقس"
 msgid "Table"
 msgstr "جدول"
 
-#: ../glom/libglom/data_structure/translatable_item.cc:262
+#: ../glom/libglom/data_structure/translatable_item.cc:292
 #, fuzzy
 msgid "Layout Group"
 msgstr "مجموعة الرُّزنامة"
 
-#: ../glom/libglom/data_structure/translatable_item.cc:264
+#: ../glom/libglom/data_structure/translatable_item.cc:294
 #, fuzzy
 msgid "Field Title"
 msgstr "عنوان ال_صفحة"
 
-#: ../glom/libglom/data_structure/translatable_item.cc:266
+#: ../glom/libglom/data_structure/translatable_item.cc:296
 #: ../glom/libglom/data_structure/layout/layoutitem_button.cc:67
-#: ../glom/mode_data/dialog_layout_details.cc:1112
+#: ../glom/mode_data/dialog_layout_details.cc:1124
 #, fuzzy
 msgid "Button"
 msgstr "زر"
 
-#: ../glom/libglom/data_structure/translatable_item.cc:272
-#: ../glom/frame_glom.cc:447
-#: ../glom/translation/window_translations.cc:213
+#: ../glom/libglom/data_structure/translatable_item.cc:302
+#: ../glom/frame_glom.cc:454 ../glom/translation/window_translations.cc:213
 #, fuzzy
 msgid "Unknown"
 msgstr "مجهول"
@@ -1475,43 +1697,43 @@ msgstr "الملخّص"
 msgid "Vertical Group"
 msgstr "مجموعة الرُّزنامة"
 
-#: ../glom/libglom/document/document_glom.cc:270
-#: ../glom/libglom/document/document_glom.cc:288
+#: ../glom/libglom/document/document_glom.cc:335
+#: ../glom/libglom/document/document_glom.cc:353
 #, fuzzy
 msgid "System Preferences"
 msgstr "تفضيلات مراقب النظام"
 
-#: ../glom/libglom/document/document_glom.cc:307
+#: ../glom/libglom/document/document_glom.cc:372
 #, fuzzy
 msgid "Organisation Name"
 msgstr "اسم الموصول"
 
-#: ../glom/libglom/document/document_glom.cc:313
+#: ../glom/libglom/document/document_glom.cc:378
 #, fuzzy
 msgid "Organisation Logo"
 msgstr "صورة الشعار"
 
-#: ../glom/libglom/document/document_glom.cc:325
+#: ../glom/libglom/document/document_glom.cc:390
 #, fuzzy
 msgid "Street (line 2)"
 msgstr "لف السّطور"
 
-#: ../glom/libglom/document/document_glom.cc:331
+#: ../glom/libglom/document/document_glom.cc:396
 #, fuzzy
 msgid "City"
 msgstr "المدينة:"
 
-#: ../glom/libglom/document/document_glom.cc:337
+#: ../glom/libglom/document/document_glom.cc:402
 #, fuzzy
 msgid "State"
 msgstr "الحالة"
 
-#: ../glom/libglom/document/document_glom.cc:349
+#: ../glom/libglom/document/document_glom.cc:414
 #, fuzzy
 msgid "Zip Code"
 msgstr "ال_رّمز البريدي:"
 
-#: ../glom/libglom/utils.cc:802
+#: ../glom/libglom/utils.cc:813
 #, fuzzy
 msgid "Could not display help: "
 msgstr "لم يمكن عرض المساعدة: %s"
@@ -1521,7 +1743,7 @@ msgstr "لم يمكن عرض المساعدة: %s"
 msgid "Next Value"
 msgstr "قيمة التحجيم"
 
-#: ../glom/dialog_connection.cc:129
+#: ../glom/dialog_connection.cc:149
 #, fuzzy
 msgid "Not yet created."
 msgstr "لم تنشأ المحفوظة"
@@ -1538,123 +1760,140 @@ msgstr "تهيئة توقيع غير مدعومة"
 
 #. TODO: Obviously this document should have been deleted when the database-creation was cancelled.
 #. Note that "canceled" is the correct US spelling.
-#: ../glom/frame_glom.cc:375
+#: ../glom/frame_glom.cc:382
 #, fuzzy
 msgid "No table"
 msgstr "جسم الجدول"
 
-#: ../glom/frame_glom.cc:375
+#: ../glom/frame_glom.cc:382
 msgid "This database has no tables yet."
 msgstr ""
 
-#: ../glom/frame_glom.cc:439
+#: ../glom/frame_glom.cc:446
 #, fuzzy
 msgid "Find"
 msgstr "بحث"
 
-#: ../glom/frame_glom.cc:491
+#: ../glom/frame_glom.cc:498
 #, fuzzy
 msgid "Developer mode not available."
 msgstr "محرّر الفئات غير متوفّر."
 
-#: ../glom/frame_glom.cc:492
-msgid "Developer mode is not available. Check that you have sufficient database access rights and that the glom file is not read-only."
+#: ../glom/frame_glom.cc:499
+msgid ""
+"Developer mode is not available. Check that you have sufficient database "
+"access rights and that the glom file is not read-only."
 msgstr ""
 
-#: ../glom/frame_glom.cc:498
+#: ../glom/frame_glom.cc:505
 #, fuzzy
 msgid "Saving in New Document Format"
 msgstr "انشئ مستندا جديدا في بيئة موجودة لـ gedit"
 
-#: ../glom/frame_glom.cc:499
-msgid "The document was created by an earlier version of the application. Making changes to the document will mean that the document cannot be opened by some earlier versions of the application."
+#: ../glom/frame_glom.cc:506
+msgid ""
+"The document was created by an earlier version of the application. Making "
+"changes to the document will mean that the document cannot be opened by some "
+"earlier versions of the application."
 msgstr ""
 
-#: ../glom/frame_glom.cc:502
+#: ../glom/frame_glom.cc:509
 #, fuzzy
 msgid "Continue"
 msgstr "استمر"
 
-#: ../glom/frame_glom.cc:548
+#: ../glom/frame_glom.cc:555
 #, fuzzy
 msgid "Export Not Allowed."
 msgstr "العنصر <%s> غير مسموح به تحت <%s>"
 
-#: ../glom/frame_glom.cc:548
-msgid "You do not have permission to view the data in this table, so you may not export the data."
+#: ../glom/frame_glom.cc:555
+msgid ""
+"You do not have permission to view the data in this table, so you may not "
+"export the data."
 msgstr ""
 
-#: ../glom/frame_glom.cc:574
+#: ../glom/frame_glom.cc:581
 #, fuzzy
 msgid "Could Not Create File."
 msgstr "لم يمكن إنشاء ملف الإقفال لـ %s: %s"
 
-#: ../glom/frame_glom.cc:574
+#: ../glom/frame_glom.cc:581
 #, fuzzy
 msgid "Glom could not create the specified file."
 msgstr "لم يمكن إنشاء ملف الإقفال لـ %s: %s"
 
-#: ../glom/frame_glom.cc:819
+#: ../glom/frame_glom.cc:826
 #, fuzzy
 msgid "Table Exists Already"
 msgstr "الشهادة موجودة مسبقا."
 
-#: ../glom/frame_glom.cc:819
-msgid "A table with this name already exists in the database. Please choose a different table name."
+#: ../glom/frame_glom.cc:826
+msgid ""
+"A table with this name already exists in the database. Please choose a "
+"different table name."
 msgstr ""
 
-#: ../glom/frame_glom.cc:823
+#: ../glom/frame_glom.cc:830
 #, fuzzy
 msgid "Relationship Exists Already"
 msgstr "الشهادة موجودة مسبقا."
 
-#: ../glom/frame_glom.cc:823
-msgid "A relationship with this name already exists for this table. Please choose a different relationship name."
+#: ../glom/frame_glom.cc:830
+msgid ""
+"A relationship with this name already exists for this table. Please choose a "
+"different relationship name."
 msgstr ""
 
-#: ../glom/frame_glom.cc:827
+#: ../glom/frame_glom.cc:834
 #, fuzzy
 msgid "More information needed"
 msgstr "جاري جلب معلومات على %s"
 
-#: ../glom/frame_glom.cc:827
+#: ../glom/frame_glom.cc:834
 msgid "You must specify a field, a table name, and a relationship name."
 msgstr ""
 
-#: ../glom/frame_glom.cc:881
+#: ../glom/frame_glom.cc:888
 #, fuzzy
 msgid "Related Table Created"
 msgstr "لم تنشأ المحفوظة"
 
-#: ../glom/frame_glom.cc:881
+#: ../glom/frame_glom.cc:888
 msgid "The new related table has been created."
 msgstr ""
 
-#: ../glom/frame_glom.cc:965
-#: ../glom/mode_data/box_data.cc:126
+#: ../glom/frame_glom.cc:969 ../glom/mode_data/box_data.cc:126
 #: ../glom/utility_widgets/dialog_choose_id.cc:99
 #, fuzzy
 msgid "No Find Criteria"
 msgstr "تعذّر العثور على '%s'"
 
-#: ../glom/frame_glom.cc:966
-#: ../glom/utility_widgets/dialog_choose_id.cc:100
+#: ../glom/frame_glom.cc:970 ../glom/utility_widgets/dialog_choose_id.cc:100
 msgid "You have not entered any quick find criteria."
 msgstr ""
 
 #. show user level:
-#: ../glom/frame_glom.cc:1024
+#: ../glom/frame_glom.cc:1028
 #, fuzzy
 msgid "Operator"
 msgstr "عملية"
 
-#: ../glom/frame_glom.cc:1026
+#: ../glom/frame_glom.cc:1030
 #, fuzzy
 msgid "Developer"
 msgstr "وثائق المطور"
 
+#: ../glom/frame_glom.cc:1279
+msgid "Not Implemented"
+msgstr ""
+
+#: ../glom/frame_glom.cc:1279
+msgid "This feature is not yet available."
+msgstr ""
+
 #. Show 0 instead of "all" when all of no records are found, to avoid confusion.
-#: ../glom/frame_glom.cc:1753
+#: ../glom/frame_glom.cc:1872
 #, fuzzy
 msgid "All"
 msgstr "الكل"
@@ -1687,8 +1926,18 @@ msgstr "نسخة هذا التّطبيق"
 msgid "Show the generated SQL queries on stdout, for debugging."
 msgstr ""
 
+#: ../glom/main.cc:102
+msgid "Error while parsing commmand-line options: "
+msgstr ""
+
+#: ../glom/main.cc:103
+msgid "Use --help to see a list of available command-line options."
+msgstr ""
+
 #: ../glom/mode_data/box_data.cc:127
-msgid "You have not entered any find criteria. Try entering information in the fields."
+msgid ""
+"You have not entered any find criteria. Try entering information in the "
+"fields."
 msgstr ""
 
 #. Ask user to confirm loss of data:
@@ -1699,145 +1948,156 @@ msgstr "لا قيمة لضبطها للمفتاح: `%s'\n"
 
 #: ../glom/mode_data/box_data.cc:342
 msgid ""
-"This data cannot be stored in the database because you have not provided a primary key.\n"
+"This data cannot be stored in the database because you have not provided a "
+"primary key.\n"
 "Do you really want to discard this data?"
 msgstr ""
 
 #. Warn the user:
 #. TODO: Make the field insensitive until it can receive data, so people never see this dialog.
-#: ../glom/mode_data/box_data.cc:731
+#: ../glom/mode_data/box_data.cc:667
 #, fuzzy
 msgid "Related Record Does Not Exist"
 msgstr "%s: %s غير موجود لكن يجب أن يكون موجودًا."
 
-#: ../glom/mode_data/box_data.cc:732
-msgid "Data may not be entered into this related field, because the related record does not yet exist, and the relationship does not allow automatic creation of new related records."
+#: ../glom/mode_data/box_data.cc:668
+msgid ""
+"Data may not be entered into this related field, because the related record "
+"does not yet exist, and the relationship does not allow automatic creation "
+"of new related records."
 msgstr ""
 
 #. Warn the user:
 #. TODO: Make the field insensitive until it can receive data, so people never see this dialog.
-#: ../glom/mode_data/box_data.cc:750
+#: ../glom/mode_data/box_data.cc:686
 msgid "Related Record Cannot Be Created"
 msgstr ""
 
 #. TODO: This is a very complex error message:
-#: ../glom/mode_data/box_data.cc:752
-msgid "Data may not be entered into this related field, because the related record does not yet exist, and the key in the related record is auto-generated and therefore can not be created with the key value in this record."
+#: ../glom/mode_data/box_data.cc:688
+msgid ""
+"Data may not be entered into this related field, because the related record "
+"does not yet exist, and the key in the related record is auto-generated and "
+"therefore can not be created with the key value in this record."
 msgstr ""
 
 #. Ask the user for confirmation:
-#: ../glom/mode_data/box_data.cc:839
+#: ../glom/mode_data/box_data.cc:775
 #, fuzzy
 msgid "Delete record"
 msgstr "تسجيل صوت"
 
-#: ../glom/mode_data/box_data.cc:840
-msgid "Are you sure that you would like to delete this record? The data in this record will then be permanently lost."
+#: ../glom/mode_data/box_data.cc:776
+msgid ""
+"Are you sure that you would like to delete this record? The data in this "
+"record will then be permanently lost."
 msgstr ""
 
 #. Tell user that a primary key is needed to delete a record:
-#: ../glom/mode_data/box_data_details.cc:342
+#: ../glom/mode_data/box_data_details.cc:338
 #, fuzzy
 msgid "No primary key value."
 msgstr "لا قيمة لضبطها للمفتاح: `%s'\n"
 
-#: ../glom/mode_data/box_data_details.cc:343
+#: ../glom/mode_data/box_data_details.cc:339
 msgid "This record cannot be deleted because there is no primary key."
 msgstr ""
 
 #. Warn user that they can't choose their own primary key:
-#: ../glom/mode_data/box_data_details.cc:699
+#: ../glom/mode_data/box_data_details.cc:689
 msgid "Primary key auto increments"
 msgstr ""
 
-#: ../glom/mode_data/box_data_details.cc:700
+#: ../glom/mode_data/box_data_details.cc:690
 msgid ""
 "The primary key is auto-incremented.\n"
 " You may not enter your own primary key value."
 msgstr ""
 
 #. Add Pages:
-#: ../glom/mode_data/box_data_list.cc:745
-#: ../glom/mode_data/notebook_data.cc:31
-#: ../glom/mode_find/notebook_find.cc:32
+#: ../glom/mode_data/box_data_list.cc:798
+#: ../glom/mode_data/notebook_data.cc:31 ../glom/mode_find/notebook_find.cc:32
 #, fuzzy
 msgid "List"
 msgstr "قائمة"
 
 #. Tell user that they can't do that:
-#: ../glom/mode_data/box_data_list_related.cc:325
+#: ../glom/mode_data/box_data_list_related.cc:351
 msgid "Extra related records not possible."
 msgstr ""
 
-#: ../glom/mode_data/box_data_list_related.cc:326
-msgid "You attempted to add a new related record, but there can only be one related record, because the relationship uses a unique key."
+#: ../glom/mode_data/box_data_list_related.cc:352
+msgid ""
+"You attempted to add a new related record, but there can only be one related "
+"record, because the relationship uses a unique key."
 msgstr ""
 
-#: ../glom/mode_data/box_data_list_related.cc:537
+#: ../glom/mode_data/box_data_list_related.cc:564
 msgid "No Corresponding Record Exists"
 msgstr ""
 
-#: ../glom/mode_data/box_data_list_related.cc:537
-msgid "No record with this value exists. Therefore navigation to the related record is not possible."
+#: ../glom/mode_data/box_data_list_related.cc:564
+msgid ""
+"No record with this value exists. Therefore navigation to the related record "
+"is not possible."
 msgstr ""
 
 #. Columns-count column:
-#: ../glom/mode_data/dialog_layout_details.cc:93
+#: ../glom/mode_data/dialog_layout_details.cc:105
 #, fuzzy
 msgid "Columns Count"
 msgstr "عد الرموز "
 
-#: ../glom/mode_data/dialog_layout_details.cc:664
-#: ../glom/utility_widgets/flowtablewithfields.cc:970
+#: ../glom/mode_data/dialog_layout_details.cc:676
+#: ../glom/utility_widgets/flowtablewithfields.cc:971
 #, fuzzy
 msgid "New Button"
 msgstr "رسم الزّر"
 
-#: ../glom/mode_data/dialog_layout_details.cc:689
+#: ../glom/mode_data/dialog_layout_details.cc:701
 #, fuzzy
 msgid "Text Title"
 msgstr "عنوان ال_صفحة"
 
-#: ../glom/mode_data/dialog_layout_details.cc:714
+#: ../glom/mode_data/dialog_layout_details.cc:726
 #, fuzzy
 msgid "Image Title"
 msgstr "عنوان ال_صفحة"
 
-#: ../glom/mode_data/dialog_layout_details.cc:740
-#: ../glom/utility_widgets/flowtablewithfields.cc:920
+#: ../glom/mode_data/dialog_layout_details.cc:752
+#: ../glom/utility_widgets/flowtablewithfields.cc:921
 msgid "notebook"
 msgstr ""
 
-#: ../glom/mode_data/dialog_layout_details.cc:839
+#: ../glom/mode_data/dialog_layout_details.cc:851
 #, fuzzy
 msgid "group"
 msgstr "مجموعة"
 
-#: ../glom/mode_data/dialog_layout_details.cc:919
+#: ../glom/mode_data/dialog_layout_details.cc:931
 msgid "Add child groups to the notebook to add tabs."
 msgstr ""
 
-#: ../glom/mode_data/dialog_layout_details.cc:1084
+#: ../glom/mode_data/dialog_layout_details.cc:1096
 #, fuzzy
 msgid "Related: "
 msgstr "متعلق"
 
-#: ../glom/mode_data/dialog_layout_details.cc:1101
+#: ../glom/mode_data/dialog_layout_details.cc:1113
 #, fuzzy
 msgid "Field: "
 msgstr "الحقل"
 
-#: ../glom/mode_data/dialog_layout_details.cc:1158
+#: ../glom/mode_data/dialog_layout_details.cc:1170
 msgid "(Notebook)"
 msgstr ""
 
-#: ../glom/mode_data/dialog_layout_list_related.cc:265
+#: ../glom/mode_data/dialog_layout_list_related.cc:215
 msgid "None: No visible tables are specified by the fields."
 msgstr ""
 
 #. Details column:
-#: ../glom/mode_data/notebook_data.cc:34
-#: ../glom/mode_find/notebook_find.cc:35
+#: ../glom/mode_data/notebook_data.cc:34 ../glom/mode_find/notebook_find.cc:35
 #: ../glom/reports/dialog_layout_report.cc:206
 #, fuzzy
 msgid "Details"
@@ -1845,7 +2105,8 @@ msgstr "التفاصيل"
 
 #. Don't allow a relationship to be added twice.
 #: ../glom/mode_design/box_db_table_relationships.cc:45
-msgid "This relationship already exists. Please choose a different relationship name"
+msgid ""
+"This relationship already exists. Please choose a different relationship name"
 msgstr ""
 
 #: ../glom/mode_design/box_db_table_relationships.cc:49
@@ -1879,7 +2140,10 @@ msgid "Recalculation Required"
 msgstr "الدفع مطلوب"
 
 #: ../glom/mode_design/fields/box_db_table_definition.cc:228
-msgid "You have changed the calculation used by this field so Glom must recalculate the value in all records. If the table contains many records then this could take a long time."
+msgid ""
+"You have changed the calculation used by this field so Glom must recalculate "
+"the value in all records. If the table contains many records then this could "
+"take a long time."
 msgstr ""
 
 #: ../glom/mode_design/fields/box_db_table_definition.cc:233
@@ -1892,7 +2156,10 @@ msgid "Invalid database structure"
 msgstr "تفضيلات قاعدة بيانات القرص المدمج"
 
 #: ../glom/mode_design/fields/box_db_table_definition.cc:243
-msgid "This database field was created or edited outside of Glom. It has a data type that is not supported by Glom. Your system administrator may be able to correct this."
+msgid ""
+"This database field was created or edited outside of Glom. It has a data "
+"type that is not supported by Glom. Your system administrator may be able to "
+"correct this."
 msgstr ""
 
 #. Warn the user and refuse to make the change:
@@ -1911,7 +2178,9 @@ msgid "Field contains empty values."
 msgstr "انقل ~a لحقلٍ فارغ"
 
 #: ../glom/mode_design/fields/box_db_table_definition.cc:442
-msgid "The field may not yet be used as a primary key because it contains empty values."
+msgid ""
+"The field may not yet be used as a primary key because it contains empty "
+"values."
 msgstr ""
 
 #: ../glom/mode_design/fields/box_db_table_definition.cc:454
@@ -1919,7 +2188,9 @@ msgid "Field contains non-unique values."
 msgstr ""
 
 #: ../glom/mode_design/fields/box_db_table_definition.cc:454
-msgid "The field may not yet be used as a primary key because it contains values that are not unique."
+msgid ""
+"The field may not yet be used as a primary key because it contains values "
+"that are not unique."
 msgstr ""
 
 #: ../glom/mode_design/fields/dialog_fieldcalculation.cc:119
@@ -1972,12 +2243,21 @@ msgstr "بدّل المستخدم"
 msgid "Are your sure that you wish to delete this user?"
 msgstr ""
 
-#: ../glom/mode_design/users/dialog_users_list.cc:464
+#: ../glom/mode_design/users/dialog_users_list.cc:497
 msgid "Developer group may not be empty."
 msgstr ""
 
-#: ../glom/mode_design/users/dialog_users_list.cc:465
+#: ../glom/mode_design/users/dialog_users_list.cc:498
 msgid "The developer group must contain at least one user."
+msgstr ""
+
+#: ../glom/mode_design/script_library/dialog_script_library.cc:132
+msgid "Remove library script"
+msgstr ""
+
+#: ../glom/mode_design/script_library/dialog_script_library.cc:133
+msgid ""
+"Do you really want to delete this script? This data can not be recovered"
 msgstr ""
 
 #. Append the View columns:
@@ -2015,12 +2295,17 @@ msgid "Table Already Exists"
 msgstr "الشهادة موجودة مسبقا."
 
 #: ../glom/navigation/box_tables.cc:221
-msgid "This table already exists on the database server, though it is not mentioned in the .glom file. This should not happen. Would you like Glom to attempt to use the existing table?"
+msgid ""
+"This table already exists on the database server, though it is not mentioned "
+"in the .glom file. This should not happen. Would you like Glom to attempt to "
+"use the existing table?"
 msgstr ""
 
 #. TODO: Do not show tables that are not in the document.
 #: ../glom/navigation/box_tables.cc:281
-msgid "You cannot delete this table, because there is no information about this table in the document."
+msgid ""
+"You cannot delete this table, because there is no information about this "
+"table in the document."
 msgstr ""
 
 #. Ask the user to confirm:
@@ -2042,7 +2327,9 @@ msgid "Unknown Table"
 msgstr "جسم الجدول"
 
 #: ../glom/navigation/box_tables.cc:327
-msgid "You cannot open this table, because there is no information about this table in the document."
+msgid ""
+"You cannot open this table, because there is no information about this table "
+"in the document."
 msgstr ""
 
 #: ../glom/navigation/box_tables.cc:401
@@ -2089,35 +2376,57 @@ msgstr "   "
 msgid "Layout"
 msgstr "التصميم"
 
-#: ../glom/utility_widgets/db_adddel/db_adddel.cc:1933
+#: ../glom/utility_widgets/db_adddel/db_adddel.cc:1991
 msgid "Right-click to layout, to specify the related fields."
 msgstr ""
 
-#: ../glom/utility_widgets/flowtablewithfields.cc:914
+#: ../glom/utility_widgets/filechooserdialog.cc:71
+#, fuzzy
+msgid "New Database"
+msgstr "قاعدة بيانات"
+
+#. For instance, an extra hint when saving from an example, saying that a new file must be saved.
+#: ../glom/utility_widgets/filechooserdialog.cc:88
+msgid ""
+"Please choose a human-readable title for the new database. You can change "
+"this later in the database properties. It may contain any characters."
+msgstr ""
+
+#: ../glom/utility_widgets/filechooserdialog.cc:101
+msgid "Create database in its own folder, to be hosted by this computer."
+msgstr ""
+
+#: ../glom/utility_widgets/filechooserdialog.cc:105
+msgid ""
+"Create database on an external database server, to be specified in the next "
+"step."
+msgstr ""
+
+#: ../glom/utility_widgets/flowtablewithfields.cc:915
 #, fuzzy
 msgid "New Group"
 msgstr "انشيء مجموعة جديدة"
 
-#: ../glom/utility_widgets/flowtablewithfields.cc:924
+#: ../glom/utility_widgets/flowtablewithfields.cc:925
 msgid "tab1"
 msgstr ""
 
-#: ../glom/utility_widgets/flowtablewithfields.cc:925
+#: ../glom/utility_widgets/flowtablewithfields.cc:926
 #, fuzzy
 msgid "Tab One"
 msgstr "مستوى واحد"
 
-#: ../glom/utility_widgets/flowtablewithfields.cc:969
+#: ../glom/utility_widgets/flowtablewithfields.cc:970
 #, fuzzy
 msgid "button"
 msgstr "زر"
 
-#: ../glom/utility_widgets/flowtablewithfields.cc:976
+#: ../glom/utility_widgets/flowtablewithfields.cc:977
 #, fuzzy
 msgid "text"
 msgstr "نص"
 
-#: ../glom/utility_widgets/flowtablewithfields.cc:977
+#: ../glom/utility_widgets/flowtablewithfields.cc:978
 #, fuzzy
 msgid "New Text"
 msgstr "_إدخل نص جديد"
@@ -2210,15 +2519,27 @@ msgstr ""
 "خطأ GConf:\n"
 "  %s"
 
-#: ../glom/translation/window_translations.cc:493
-#: ../glom/translation/window_translations.cc:565
+#. Show the file-chooser dialog, to select an output .po file:
+#: ../glom/translation/window_translations.cc:501
 #, fuzzy
-msgid "Choose .po file name"
+msgid "Choose .po File Name"
 msgstr "اسم ملف البرنامج المنهار"
 
-#: ../glom/translation/window_translations.cc:497
-#: ../glom/translation/window_translations.cc:569
+#: ../glom/translation/window_translations.cc:505
+#: ../glom/translation/window_translations.cc:582
 #, fuzzy
 msgid "Po files"
 msgstr "كل الملفّات"
 
+#: ../glom/translation/window_translations.cc:578
+#, fuzzy
+msgid "Choose .po file name"
+msgstr "اسم ملف البرنامج المنهار"
+
+#, fuzzy
+#~ msgid "List Layout"
+#~ msgstr "مخطط القائمة"
+
+#, fuzzy
+#~ msgid "Related Records Layout"
+#~ msgstr "تصميم الجورجية الروسية"
