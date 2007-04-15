@@ -1,3 +1,14 @@
+2007-04-10  Armin Burgmeier  <armin@openismus.om>
+
+	* glom/libglom/document/document_glom.cc: Added support for a new
+	example rows format where the value of each field is identified by the
+	field name rather than the field index, to be more robust against
+	changes.
+
+	* glom/libglom/utils.cc (string_separate): For each quoted occurence,
+	do no longer put an empty string in the result vector when
+	ignore_quoted_separator is set.
+
 2007-04-01  Murray Cumming  <murrayc@murrayc.com>
 
 	po/en_GB.po: Restore the date printf format that was removed by 

@@ -432,7 +432,7 @@ Utils::type_list_values_with_second Utils::get_choice_values(const sharedptr<con
       itempair.first = datamodel->get_value_at(0, row);
 
       if(with_second)
-			itempair.second = datamodel->get_value_at(1, row);
+                        itempair.second = datamodel->get_value_at(1, row);
 
       list_values.push_back(itempair);
     }
@@ -657,7 +657,7 @@ Utils::type_vecStrings Utils::string_separate(const Glib::ustring& str, const Gl
           //Which quote, if any, is first:
           Glib::ustring::size_type posFirstQuote = posSingleQuote;
           if( (posDoubleQuote != Glib::ustring::npos) && (posDoubleQuote < posFirstQuote) )
-	    posFirstQuote = posDoubleQuote;
+            posFirstQuote = posDoubleQuote;
 
           //Ignore quotes that are _after_ the separator:
           if( posFirstQuote >= posComma)
@@ -709,10 +709,16 @@ Utils::type_vecStrings Utils::string_separate(const Glib::ustring& str, const Gl
         //Store this item, and start the next item after it:
         item = str.substr(item_start, posComma - item_start);
         //std::cout << "  ITEM. pos_comma=" << posComma << ", ITEM= " << item << std::endl;
-	item_start = posComma + size_separator;
+        item_start = posComma + size_separator;
       }
-      //else
-      //  std::cout << "in quotes." << std::endl;
+      else
+      {
+        //std::cout << "in quotes." << std::endl;
+        // Continue behind separator
+        unprocessed_start = posComma + size_separator;
+        // Do not add this item to the result, because it was quoted.
+        continue;
+      }
      
       unprocessed_start = posComma + size_separator; //The while loops stops when this is empty.
     }

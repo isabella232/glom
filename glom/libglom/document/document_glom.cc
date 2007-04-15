@@ -19,6 +19,7 @@
  */
 
 #include <glom/libglom/document/document_glom.h>
+#include <glom/libglom/utils.h>
 #include <glom/libglom/data_structure/glomconversions.h>
 #include <glom/libglom/data_structure/layout/report_parts/layoutitem_summary.h>
 #include <glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.h>
@@ -122,6 +123,9 @@ namespace Glom
 #define GLOM_ATTRIBUTE_EDITABLE "editable"
 #define GLOM_DEPRECATED_ATTRIBUTE_EXAMPLE_ROWS "example_rows"
 #define GLOM_NODE_EXAMPLE_ROWS "example_rows"
+#define GLOM_NODE_EXAMPLE_ROW "example_row"
+#define GLOM_NODE_VALUE "value"
+#define GLOM_ATTRIBUTE_COLUMN "column"
 #define GLOM_DEPRECATED_ATTRIBUTE_BUTTON_SCRIPT "script"
 #define GLOM_NODE_BUTTON_SCRIPT "script"
 #define GLOM_ATTRIBUTE_SORT_ASCENDING "sort_ascending"
@@ -2059,14 +2063,8 @@ bool Document_Glom::load_after()
 
           doctableinfo.m_info = table_info;
 
-          doctableinfo.m_example_rows = get_child_text_node(nodeTable, GLOM_NODE_EXAMPLE_ROWS);
           doctableinfo.m_overviewx = get_node_attribute_value_as_float(nodeTable, GLOM_ATTRIBUTE_OVERVIEW_X);
           doctableinfo.m_overviewy = get_node_attribute_value_as_float(nodeTable, GLOM_ATTRIBUTE_OVERVIEW_Y);
-
-          if(doctableinfo.m_example_rows.empty()) //Try the deprecated attribute instead
-            doctableinfo.m_example_rows = get_node_attribute_value(nodeTable, GLOM_DEPRECATED_ATTRIBUTE_EXAMPLE_ROWS);
-
-          //std::cout << "  debug: loading: table=" << table_name << ", m_example_rows.size()=" << doctableinfo.m_example_rows.size() << std::endl;
 
           //Translations:
           load_after_translations(nodeTable, *(doctableinfo.m_info));
@@ -2170,6 +2168,69 @@ bool Document_Glom::load_after()
               }
             }
           } //Fields
+
+          // Load Example Rows after fields have been loaded, because they
+	  // need the fields to be able to associate a value to a named field.
+          const xmlpp::Element* nodeExampleRows = get_node_child_named(nodeTable, GLOM_NODE_EXAMPLE_ROWS);
+          if(nodeExampleRows)
+          {
+            //Loop through example_row child nodes:
+            xmlpp::Node::NodeList listExampleRows = nodeExampleRows->get_children(GLOM_NODE_EXAMPLE_ROW);
+            for(xmlpp::Node::NodeList::const_iterator iter = listExampleRows.begin(); iter != listExampleRows.end(); ++ iter)
+            {
+              const xmlpp::Element* nodeChild = dynamic_cast<xmlpp::Element*>(*iter);
+              if(nodeChild)
+              {
+                typedef std::vector<Glib::ustring> type_vecStrings; // TODO: Put this into class declaration?
+                type_vecStrings field_values(doctableinfo.m_fields.size(), "''");
+                //Loop through value child nodes
+                xmlpp::Node::NodeList listNodes = nodeChild->get_children(GLOM_NODE_VALUE);
+                for(xmlpp::Node::NodeList::const_iterator iter = listNodes.begin(); iter != listNodes.end(); ++ iter)
+                {
+                  const xmlpp::Element* nodeChild = dynamic_cast<xmlpp::Element*>(*iter);
+                  if(nodeChild)
+                  {
+                    const xmlpp::Attribute* column_name = nodeChild->get_attribute(GLOM_ATTRIBUTE_COLUMN);
+                    if(column_name)
+                    {
+                      // TODO_Performance: If it's too much rows we could
+                      // consider a map to find the column more quickly.
+                      for(unsigned int i = 0; i < doctableinfo.m_fields.size(); ++ i)
+                      {
+                        if(doctableinfo.m_fields[i]->get_name() == column_name->get_value())
+                        {
+			  if(nodeChild->has_child_text())
+                            field_values[i] = nodeChild->get_child_text()->get_content();
+                          break;
+                        }
+                      }
+                    }
+                  }
+                }
+
+                // Append line to doctableinfo.m_example_rows
+                if(!doctableinfo.m_example_rows.empty())
+                  doctableinfo.m_example_rows += "\n";
+
+                for(type_vecStrings::const_iterator field_iter = field_values.begin(); field_iter != field_values.end(); ++ field_iter)
+                {
+                  if(field_iter != field_values.begin())
+                    doctableinfo.m_example_rows += ",";
+                  doctableinfo.m_example_rows += *field_iter;
+                }
+
+                // TODO_Performance: doctableinfo.m_example_rows should perhaps be a vector or list of strings (a string for each row) instead of one big string
+              }
+            }
+          } // Example Rows
+
+          if(doctableinfo.m_example_rows.empty()) //Try the deprecated format (all rows in a single node) instead
+            doctableinfo.m_example_rows = get_child_text_node(nodeTable, GLOM_NODE_EXAMPLE_ROWS);
+          if(doctableinfo.m_example_rows.empty()) //Try the deprecated attribute instead
+            doctableinfo.m_example_rows = get_node_attribute_value(nodeTable, GLOM_DEPRECATED_ATTRIBUTE_EXAMPLE_ROWS);
+
+          //std::cout << "  debug: loading: table=" << table_name << ", m_example_rows.size()=" << doctableinfo.m_example_rows.size() << std::endl;
+
         } //if(table)
       } //Tables.
 
@@ -2712,7 +2773,28 @@ bool Document_Glom::save_before()
         set_node_attribute_value_as_float(nodeTable, GLOM_ATTRIBUTE_OVERVIEW_Y, doctableinfo.m_overviewy);
         
         if(m_is_example) //The example data is useless to non-example files (and is big):
-          set_child_text_node(nodeTable, GLOM_NODE_EXAMPLE_ROWS, doctableinfo.m_example_rows);
+	{
+	  xmlpp::Element* nodeExampleRows = nodeTable->add_child(GLOM_NODE_EXAMPLE_ROWS);
+          //set_child_text_node(nodeTable, GLOM_NODE_EXAMPLE_ROWS, doctableinfo.m_example_rows);
+	  //TODO: This is merely copied from Base_DB::insert_example_data(). Instead, we should probably save the example rows in a more intelligent manner, like a list of vector of strings instead of just one big string.
+          typedef std::vector<Glib::ustring> type_vecStrings; // TODO: Put this into class declaration?
+	  const type_vecStrings vec_rows = Utils::string_separate(doctableinfo.m_example_rows, "\n", false);
+	  for(type_vecStrings::const_iterator iter = vec_rows.begin(); iter != vec_rows.end(); ++iter)
+	  {
+	    xmlpp::Element* nodeExampleRow = nodeExampleRows->add_child(GLOM_NODE_EXAMPLE_ROW);
+	    const Glib::ustring& row_data = *iter;
+	    if(!row_data.empty())
+	    {
+	      const type_vecStrings vec_values = Utils::string_separate(row_data, ",", true /* ignore , inside quotes */);
+	      for(unsigned int i = 0; i < vec_values.size(); ++i)
+	      {
+	        xmlpp::Element* nodeField = nodeExampleRow->add_child(GLOM_NODE_VALUE);
+		nodeField->set_attribute(GLOM_ATTRIBUTE_COLUMN, doctableinfo.m_fields[i]->get_name());
+		nodeField->add_child_text(vec_values[i]);
+	      } // for each value
+	    } // !row_data.empty
+	  } // for each row
+        } // m_is_example
         //else
           //TODO: doctableinfo.m_example_rows.clear(); //Make sure we are not keeping this in memory unnecessarily.
 
