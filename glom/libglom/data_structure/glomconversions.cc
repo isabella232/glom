@@ -388,15 +388,21 @@ Gnome::Gda::Value Conversions::parse_value(Field::glom_field_type glom_type, con
   }
   else if(glom_type == Field::TYPE_IMAGE)
   {
-    //We assume that the text is the same format that we use in the document when saving examples.
+    //We assume that the text is the same (escaped text) format that we use in the document when saving examples.
     //(The SQL format).
     Gnome::Gda::Value result;
 
-    //libgda currently assumes that this buffer is an already-escaped string.
-    //TODO: Unescape the text when libgda has been fixed.
-    result.set(reinterpret_cast<const guchar*>(text.c_str()), text.size());
-    success = true;
-    return result;
+    size_t buffer_binary_length = 0;
+    guchar* buffer_binary =  Glom_PQunescapeBytea((const guchar*)text.c_str() /* must be null-terminated */, &buffer_binary_length); //freed by us later.
+    if(buffer_binary)
+    {
+      result.set(buffer_binary, buffer_binary_length);
+      success = true;
+
+      free(buffer_binary);
+
+      return result;
+    }
   }
 
   success = true;
@@ -871,23 +877,6 @@ Glib::ustring Conversions::get_escaped_binary_data(guint8* buffer, size_t buffer
   return result;
 }
 
-Gnome::Gda::Value Conversions::parse_escaped_binary_data(const Glib::ustring& escaped_data)
-{
-  //Hopefully we don't need to use this because Gda does it for us when we read a part of a "SELECT" result into a Gnome::Value.
-  //TODO: Performance
-
-  Gnome::Gda::Value result;
-  size_t buffer_binary_length = 0;
-  guchar* buffer_binary =  Glom_PQunescapeBytea((guchar*)escaped_data.c_str(), &buffer_binary_length);
-  if(buffer_binary)
-  {
-    result.set(buffer_binary, buffer_binary_length);
-    free(buffer_binary);
-  }
-
-  return result;
-}
-
 Gnome::Gda::Value Conversions::convert_value(const Gnome::Gda::Value& value, Field::glom_field_type target_glom_type)
 {
   const Field::glom_field_type source_glom_type = Field::get_glom_type_for_gda_type(G_VALUE_TYPE(value.gobj()));
@@ -912,7 +901,7 @@ Glib::RefPtr<Gdk::Pixbuf> Conversions::get_pixbuf_for_gda_value(const Gnome::Gda
     glong buffer_binary_length = 0;
     gconstpointer buffer_binary = value.get_binary(buffer_binary_length);
 
-    /* libgda unescaped pData for us. */
+    /* Note that this is regular binary data, not escaped text representing the binary data: */
     if(buffer_binary && buffer_binary_length)
     {
       //typedef std::list<Gdk::PixbufFormat> type_list_formats;

@@ -1,3 +1,14 @@
+2007-04-22  Murray Cumming  <murrayc@murrayc.com>
+
+	* configure.in: Require libgda-3.0 3.0.0 to encourage people to test with a 
+	version most likely to work.
+	* glom/libglom/data_structure/field.cc:
+	* glom/libglom/data_structure/glomconversions.cc:
+	* glom/libglom/data_structure/glomconversions.h:
+	* glom/libglom/utils.cc: Attempt to do the right thing for binary data, 
+	not unescaping where no longer necessary (since libgda-3.0) and escaping where 
+	now necessary. I still have crashes opening the smallbusiness example though.
+
 2007-04-22  Armin Burgmeier  <armin@openismus.com>
 
 	* glom/libglom/connectionpool.h:
