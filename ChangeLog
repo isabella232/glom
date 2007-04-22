@@ -1,3 +1,13 @@
+2007-04-22  Armin Burgmeier  <armin@openismus.com>
+
+	* glom/libglom/connectionpool.h:
+	* glom/libglom/connectionpool.cc: Removed get_port() function, and
+	added a create_database() function that uses the Gda::Client that the
+	connection pool holds, so we do not need to create an own one.
+
+	* glom/frame_glom.cc: Use the aforementioned function to create the
+	new database.
+
 2007-04-09  Armin Burgmeier  <armin@openismus.com>
 
 	* glom/frame_glom.cc: Reduced the sleep before creating a database to

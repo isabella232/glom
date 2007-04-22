@@ -1667,13 +1667,7 @@ bool Frame_Glom::create_database(const Glib::ustring& database_name, const Glib:
 
     try
     {
-      Glib::RefPtr<Gnome::Gda::Client> client = Gnome::Gda::Client::create();
-      Glib::RefPtr<Gnome::Gda::ServerOperation> op = client->prepare_create_database(database_name, "PostgreSQL");
-      op->set_value_at("/SERVER_CNX_P/HOST", ConnectionPool::get_instance()->get_host());
-      op->set_value_at("/SERVER_CNX_P/PORT", ConnectionPool::get_instance()->get_port());
-      op->set_value_at("/SERVER_CNX_P/ADM_LOGIN", ConnectionPool::get_instance()->get_user());
-      op->set_value_at("/SERVER_CNX_P/ADM_PASSWORD", ConnectionPool::get_instance()->get_password());
-      client->perform_create_database(op);
+      ConnectionPool::get_instance()->create_database(database_name);
     }
     catch(const Glib::Exception& ex) // libgda does not set error domain
     {

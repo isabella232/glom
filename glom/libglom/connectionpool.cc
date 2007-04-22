@@ -389,6 +389,19 @@ void ConnectionPool::set_self_hosted(const std::string& data_uri)
   m_self_hosting_data_uri = data_uri;
 }
 
+void ConnectionPool::create_database(const Glib::ustring& database_name)
+{
+  if(m_GdaClient)
+  {
+    Glib::RefPtr<Gnome::Gda::ServerOperation> op = m_GdaClient->prepare_create_database(database_name, "PostgreSQL");
+    op->set_value_at("/SERVER_CNX_P/HOST", get_host());
+    op->set_value_at("/SERVER_CNX_P/PORT", m_port);
+    op->set_value_at("/SERVER_CNX_P/ADM_LOGIN", get_user());
+    op->set_value_at("/SERVER_CNX_P/ADM_PASSWORD", get_password());
+    m_GdaClient->perform_create_database(op);
+  }
+}
+
 void ConnectionPool::set_host(const Glib::ustring& value)
 {
   if(value != m_host)
@@ -423,10 +436,10 @@ Glib::ustring ConnectionPool::get_host() const
   return m_host;
 }
 
-Glib::ustring ConnectionPool::get_port() const
+/*Glib::ustring ConnectionPool::get_port() const
 {
   return m_port;
-}
+}*/
 
 Glib::ustring ConnectionPool::get_user() const
 {
