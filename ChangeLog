@@ -1,3 +1,14 @@
+2007-04-23  Andreas Nilsson  <nisses.mail@home.se>
+	* icons/16x16/glom.png
+	* icons/16x16/glom.svg
+	* icons/22x22/glom.png
+	* icons/22x22/glom.svg
+	* icons/24x24/glom.png
+	* icons/32x32/glom.png
+	* icons/32x32/glom.svg
+	* icons/48x48/glom.png
+	* icons/scalable/glom.svg: New icons following the tango style guidelines.
+
 2007-04-22  Armin Burgmeier  <armin@openismus.com>
 
 	* glom/application.cc:
