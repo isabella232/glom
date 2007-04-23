@@ -1,4 +1,4 @@
 icondir = $(datadir)/icons/hicolor/48x48/apps
 icon_DATA = glom.png
 
-EXTRA_DIST = $(icon_DATA) glom.svg
+EXTRA_DIST = $(icon_DATA)
