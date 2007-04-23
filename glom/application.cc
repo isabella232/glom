@@ -928,13 +928,27 @@ bool App_Glom::offer_new_or_existing()
   refXml->get_widget("dialog_existing_or_new", dialog);
   dialog->set_transient_for(*this);
 
+  Gtk::RecentChooserWidget* recent_chooser;
+  refXml->get_widget("existing_or_new_recentchooser", recent_chooser);
+
+  Gtk::RecentFilter filter;
+  filter.add_mime_type("application/x-glom");
+  recent_chooser->set_filter(filter);
+
+  recent_chooser->signal_item_activated().connect(sigc::bind(sigc::mem_fun(*dialog, &Gtk::Dialog::response), 1)); // Open
+
   int response_id = dialog->run();
+  Glib::ustring selected_uri = recent_chooser->get_current_uri();
   delete dialog;
   dialog = 0;
 
   if(response_id == 1) //Open
   {
-    on_menu_file_open();
+    // When a recent document was selected, open that one instead.
+    if(selected_uri.empty())
+      on_menu_file_open();
+    else
+      open_document(selected_uri);
 
     //Check that a document was opened:
     Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());

@@ -1,3 +1,15 @@
+2007-04-22  Armin Burgmeier  <armin@openismus.com>
+
+	* glom/application.cc:
+	* glom/glom.glade: Added a RecentChooser widget to the initial dialog
+	that allows to open quickly a recently used file, as requested in 
+	bug #349355.
+
+	* configure.in: Depend on gtkmm-2.10 to make use of the new
+	RecentChooser API in GTK+.
+
+	However, this needs some more work to make it look less awkward. murrayc.
+
 2007-04-10  Armin Burgmeier  <armin@openismus.om>
 
 	* glom/libglom/document/document_glom.cc: Added support for a new
