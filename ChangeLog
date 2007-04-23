@@ -1,4 +1,17 @@
+2007-04-23  Murray Cumming  <murrayc@murrayc.com>
+
+	* configure.in:
+	* icons/16x16/Makefile.am:
+	* icons/22x22/Makefile.am:
+	* icons/24x24/Makefile.am:
+	* icons/32x32/Makefile.am:
+	* icons/48x48/Makefile.am:
+	* icons/Makefile.am:
+	* icons/scalable/Makefile.am: Used build rules like the ones in totem, 
+	to install these icons.
+
 2007-04-23  Andreas Nilsson  <nisses.mail@home.se>
+
 	* icons/16x16/glom.png
 	* icons/16x16/glom.svg
 	* icons/22x22/glom.png
