@@ -1,3 +1,11 @@
+2007-04-23  Armin Burgmeier  <armin@openismus.com>
+
+	* glom/glade.glom: Fixed the dialog so that the recent chooser is
+	below the text and in its own frame.
+
+	* glom/application.cc: Hide the recent chooser when they are no
+	recently used items.
+
 2007-04-23  Murray Cumming  <murrayc@murrayc.com>
 
 	* configure.in:

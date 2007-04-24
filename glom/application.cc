@@ -935,6 +935,11 @@ bool App_Glom::offer_new_or_existing()
   filter.add_mime_type("application/x-glom");
   recent_chooser->set_filter(filter);
 
+  // Hide the recent chooser when they are not any recently used files
+  Gtk::Frame* recent_frame;
+  refXml->get_widget("existing_or_new_recentchooser_frame", recent_frame);
+  if(recent_chooser->get_items().empty()) recent_frame->hide();
+
   recent_chooser->signal_item_activated().connect(sigc::bind(sigc::mem_fun(*dialog, &Gtk::Dialog::response), 1)); // Open
 
   int response_id = dialog->run();
