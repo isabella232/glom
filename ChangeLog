@@ -1,3 +1,8 @@
+2007-05-01  Armin Burgmeier  <armin@openismus.com>
+
+	* glom/application.cc: Do not leak the file chooser dialog in
+	ui_file_select_save().
+
 2007-04-23  Armin Burgmeier  <armin@openismus.com>
 
 	* glom/glade.glom: Fixed the dialog so that the recent chooser is

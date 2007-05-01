@@ -458,18 +458,18 @@ Glib::ustring App_Glom::ui_file_select_save(const Glib::ustring& old_file_uri) /
   //Reimplement this whole function, just so we can use our custom FileChooserDialog class:
   App& app = *this;
 
-  Gtk::FileChooserDialog* fileChooser_Save = 0;
+  std::auto_ptr<Gtk::FileChooserDialog> fileChooser_Save;
   Glom::FileChooserDialog* fileChooser_SaveExtras = 0;
 
   //Create the appropriate dialog, depending on how the caller set m_ui_save_extra_showextras:
   if(m_ui_save_extra_showextras)
   {
     fileChooser_SaveExtras = new Glom::FileChooserDialog(gettext("Save Document"), Gtk::FILE_CHOOSER_ACTION_SAVE);
-    fileChooser_Save = fileChooser_SaveExtras;
+    fileChooser_Save.reset(fileChooser_SaveExtras);
   }
   else
   {
-    fileChooser_Save = new Gtk::FileChooserDialog(gettext("Save Document"), Gtk::FILE_CHOOSER_ACTION_SAVE);
+    fileChooser_Save.reset(new Gtk::FileChooserDialog(gettext("Save Document"), Gtk::FILE_CHOOSER_ACTION_SAVE));
   }
 
 
