@@ -320,7 +320,11 @@ Glib::ustring Field::sql(const Gnome::Gda::Value& value) const
         if(buffer && buffer_length > 0)
         {
           //Get the escaped text that represents the binary data:
-          str = "'" + Conversions::get_escaped_binary_data((guint8*)buffer, buffer_length) + "'::bytea";
+	  const std::string escaped_binary_data = Conversions::get_escaped_binary_data((guint8*)buffer, buffer_length);
+          //Now escape that text (to convert \ to \\, for instance):
+	  //The E prefix indicates ""escape" string constants, which are an extension to the SQL standard"
+          //Otherwise, we get a warning when using large escaped strings:
+          str = "E" + glom_escape_text(escaped_binary_data) /* has quotes */ + "::bytea";
         }
       }
       else

@@ -203,8 +203,8 @@ Gnome::Gda::Value ImageGlom::get_value() const
 {
   //TODO: Return the data from the file that was just chosen.
   //Don't store the original here any longer than necessary,
-  Gnome::Gda::Value result; //TODO: Initialize it as binary.
-
+  Gnome::Gda::Value result;
+  
   if(m_pixbuf_original)
   {
     try
@@ -222,6 +222,7 @@ Gnome::Gda::Value ImageGlom::get_value() const
       //for(int i = 0; i < 10; ++i)
       //  g_warning("%02X (%c), ", (guint8)buffer[i], buffer[i]);
 
+      result.init(GDA_TYPE_BINARY);
       result.set(reinterpret_cast<const guchar*>(buffer), buffer_size);
 
       g_free(buffer);

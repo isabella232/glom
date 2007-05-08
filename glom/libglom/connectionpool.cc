@@ -394,6 +394,7 @@ void ConnectionPool::create_database(const Glib::ustring& database_name)
   if(m_GdaClient)
   {
     Glib::RefPtr<Gnome::Gda::ServerOperation> op = m_GdaClient->prepare_create_database(database_name, "PostgreSQL");
+    g_assert(op);
     op->set_value_at("/SERVER_CNX_P/HOST", get_host());
     op->set_value_at("/SERVER_CNX_P/PORT", m_port);
     op->set_value_at("/SERVER_CNX_P/ADM_LOGIN", get_user());

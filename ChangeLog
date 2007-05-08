@@ -1,3 +1,15 @@
+2007-05-08  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/utility_widgets/imageglom.cc: get_value(): 
+	Initialize the Gda::Value to binary, though that might not be necessary.
+	* glom/libglom/connectionpool.cc: create_database():
+	Check that the Gda operation was created.
+	* glom/libglom/data_structure/field.cc: Field::sql():
+	Escape the binary data string so it has two \ characters instead of one. 
+	Add an E prefix to avoid the warning about extended syntax.
+	This corrects loading images to fields from files, and should make exporting 
+	and save-as-example work.
+
 2007-04-22  Murray Cumming  <murrayc@murrayc.com>
 
 	* configure.in: Require libgda-3.0 3.0.0 to encourage people to test with a 
