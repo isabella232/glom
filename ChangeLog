@@ -1,3 +1,9 @@
+2007-05-08  Armin Burgmeier  <armin@openismus.com>
+
+	* several files: Merged changes from the GLOM_LIBGDA3 branch. Glom now
+	builds against the new libgda and pygda API. See the ChangeLog in that
+	branch for a more detailed view of what has exactly changed.
+
 2007-05-01  Armin Burgmeier  <armin@openismus.com>
 
 	* glom/application.cc: Do not leak the file chooser dialog in

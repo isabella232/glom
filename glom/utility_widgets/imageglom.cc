@@ -203,8 +203,8 @@ Gnome::Gda::Value ImageGlom::get_value() const
 {
   //TODO: Return the data from the file that was just chosen.
   //Don't store the original here any longer than necessary,
-  Gnome::Gda::Value result; //TODO: Initialize it as binary.
-
+  Gnome::Gda::Value result;
+  
   if(m_pixbuf_original)
   {
     try
@@ -222,10 +222,8 @@ Gnome::Gda::Value ImageGlom::get_value() const
       //for(int i = 0; i < 10; ++i)
       //  g_warning("%02X (%c), ", (guint8)buffer[i], buffer[i]);
 
-      //libgda currently assumes that this buffer is an already-escaped string.
-      //TODO: Just use the raw buffer when libgda (in libgda-2.0) has been fixed:
-      Glib::ustring binary_escaped = Conversions::get_escaped_binary_data((guint8*)buffer, buffer_size);
-      result.set(binary_escaped.c_str(), binary_escaped.size());
+      result.init(GDA_TYPE_BINARY);
+      result.set(reinterpret_cast<const guchar*>(buffer), buffer_size);
 
       g_free(buffer);
       buffer = 0;

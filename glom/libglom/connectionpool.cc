@@ -234,23 +234,24 @@ sharedptr<SharedConnection> ConnectionPool::connect()
         bool try_another_port = true;
         while(try_another_port)
         { 
-          const Glib::ustring cnc_string_main = "HOST=" + get_host() + ";USER=" + m_user + ";PASSWORD=" + m_password + ";PORT=" + port;
+//          const Glib::ustring cnc_string_main = "HOST=" + get_host() + ";USER=" + m_user + ";PASSWORD=" + m_password + ";PORT=" + port;
+	  const Glib::ustring cnc_string_main = "HOST=" + get_host() + ";PORT=" + port;
 
           Glib::ustring cnc_string = cnc_string_main;
 
           if(!m_database.empty())
-            cnc_string += (";DATABASE=" + m_database);
+            cnc_string += (";DB_NAME=" + m_database);
           else
-            cnc_string += (";DATABASE=" + default_database);
+            cnc_string += (";DB_NAME=" + default_database);
 
           //std::cout << "debug: connecting: cnc string: " << cnc_string << std::endl;
           std::cout << std::endl << "Glom: trying to connect on port=" << port << std::endl;
 
           //*m_refGdaConnection = m_GdaClient->open_connection(m_GdaDataSourceInfo.get_name(), m_GdaDataSourceInfo.get_username(), m_GdaDataSourceInfo.get_password() );
           //m_refGdaConnection.clear(); //Make sure any previous connection is really forgotten.
-          m_refGdaConnection = m_GdaClient->open_connection_from_string("PostgreSQL", cnc_string);
-          if(m_refGdaConnection)
+          try
           {
+            m_refGdaConnection = m_GdaClient->open_connection_from_string("PostgreSQL", cnc_string, m_user, m_password);
             //g_warning("ConnectionPool: connection opened");
 
             //Remember what port is working:
@@ -261,7 +262,7 @@ sharedptr<SharedConnection> ConnectionPool::connect()
               m_pFieldTypes = new FieldTypes(m_refGdaConnection);  
 
             //Enforce ISO formats in the communication:
-            m_refGdaConnection->execute_single_command("SET DATESTYLE = 'ISO'");  
+            m_refGdaConnection->execute_non_select_command("SET DATESTYLE = 'ISO'");  
 
             //Open the database, if one has been specified:
             /* This does not seem to work in libgda's postgres provider, so we specify it in the cnc_string instead:
@@ -271,11 +272,11 @@ sharedptr<SharedConnection> ConnectionPool::connect()
             */
 
             //Get postgres version:
-            Glib::RefPtr<Gnome::Gda::DataModel> data_model = m_refGdaConnection->execute_single_command("SELECT version()");
+            Glib::RefPtr<Gnome::Gda::DataModel> data_model = m_refGdaConnection->execute_select_command("SELECT version()");
             if(data_model && data_model->get_n_rows() && data_model->get_n_columns())
             {
               Gnome::Gda::Value value = data_model->get_value_at(0, 0);
-              if(value.get_value_type() == Gnome::Gda::VALUE_TYPE_STRING)
+              if(value.get_value_type() == G_TYPE_STRING)
               {
                 const Glib::ustring version_text = value.get_string();
 
@@ -295,9 +296,9 @@ sharedptr<SharedConnection> ConnectionPool::connect()
 
             return connect(); //Call this method recursively. This time m_refGdaConnection exists.
           }
-          else
+          catch(const Gnome::Gda::ConnectionError& ex)
           {
-            std::cout << "ConnectionPool::connect() Attempt to connect to database failed on port=" << port << ", database=" << m_database << std::endl;
+            std::cout << "ConnectionPool::connect() Attempt to connect to database failed on port=" << port << ", database=" << m_database << ": " << ex.what() << std::endl;
 
             bool bJustDatabaseMissing = false;
             if(!m_database.empty())
@@ -307,21 +308,22 @@ sharedptr<SharedConnection> ConnectionPool::connect()
               //If the connection failed while looking for a database,
               //then try connecting without the database:
               Glib::ustring cnc_string = cnc_string_main;
-              cnc_string += (";DATABASE=" + default_database);
+              cnc_string += (";DB_NAME=" + default_database);
 
               //std::cout << "debug2: connecting: cnc string: " << cnc_string << std::endl;
               std::cout << "Glom: connecting." << std::endl;
 
-              Glib::RefPtr<Gnome::Gda::Connection> gda_connection =  m_GdaClient->open_connection_from_string("PostgreSQL", cnc_string);
-              if(gda_connection) //If we could connect without specifying the database.
-              {
+              try
+	      {
+	        //If we could connect without specifying the database.
+                Glib::RefPtr<Gnome::Gda::Connection> gda_connection = m_GdaClient->open_connection_from_string("PostgreSQL", cnc_string, m_user, m_password);
                 bJustDatabaseMissing = true;
                 connection_to_default_database_possible = true;
                 m_port = port;
               }
-              else
+              catch(const Gnome::Gda::ConnectionError& ex)
               {
-                std::cerr << "    ConnectionPool::connect() connection also failed when not specifying database." << std::endl;
+                std::cerr << "    ConnectionPool::connect() connection also failed when not specifying database: " << ex.what() << std::endl;
               }
             }
 
@@ -378,6 +380,20 @@ void ConnectionPool::set_self_hosted(const std::string& data_uri)
   m_self_hosting_data_uri = data_uri;
 }
 
+void ConnectionPool::create_database(const Glib::ustring& database_name)
+{
+  if(m_GdaClient)
+  {
+    Glib::RefPtr<Gnome::Gda::ServerOperation> op = m_GdaClient->prepare_create_database(database_name, "PostgreSQL");
+    g_assert(op);
+    op->set_value_at("/SERVER_CNX_P/HOST", get_host());
+    op->set_value_at("/SERVER_CNX_P/PORT", m_port);
+    op->set_value_at("/SERVER_CNX_P/ADM_LOGIN", get_user());
+    op->set_value_at("/SERVER_CNX_P/ADM_PASSWORD", get_password());
+    m_GdaClient->perform_create_database(op);
+  }
+}
+
 void ConnectionPool::set_host(const Glib::ustring& value)
 {
   if(value != m_host)
@@ -411,6 +427,11 @@ Glib::ustring ConnectionPool::get_host() const
 {
   return m_host;
 }
+
+/*Glib::ustring ConnectionPool::get_port() const
+{
+  return m_port;
+}*/
 
 Glib::ustring ConnectionPool::get_user() const
 {
@@ -462,8 +483,8 @@ bool ConnectionPool::handle_error(bool cerr_only)
   {
     Glib::RefPtr<Gnome::Gda::Connection> gda_connection = sharedconnection->get_gda_connection();
 
-    typedef std::list< Glib::RefPtr<Gnome::Gda::Error> > type_list_errors;
-    type_list_errors list_errors = gda_connection->get_errors();
+    typedef std::list< Glib::RefPtr<Gnome::Gda::ConnectionEvent> > type_list_errors;
+    type_list_errors list_errors = gda_connection->get_events();
 
     if(!list_errors.empty())
     {

@@ -193,8 +193,21 @@ Glib::RefPtr<Gnome::Gda::DataModel> Base_DB::query_execute(const Glib::ustring& 
         std::cout << "Debug: query string could not be converted to std::cout: " << ex.what() << std::endl;
       }
     }
-    
-    result = gda_connection->execute_single_command(strQuery);
+
+    // TODO: Several functions call query_execute with non-select queries.
+    // Before libgda-3.0, execute_single_command returned always a datamodel
+    // on success. In case of a successful non-select command, we therefore
+    // create an empty datamodel to return, to make clear that the function
+    // succeeded. Probably, we should introduce another
+    // query_execute_non_select in the long term. 
+    if(strQuery.compare(0, 6, "SELECT") == 0)
+      result = gda_connection->execute_select_command(strQuery);
+    else
+    {
+      if(gda_connection->execute_non_select_command(strQuery) != -1)
+        result = Gnome::Gda::DataModelArray::create(1);
+    }
+
     if(!result)
     {
       std::cerr << "Glom  Base_DB::query_execute(): Error while executing SQL" << std::endl <<
@@ -255,7 +268,7 @@ Base_DB::type_vecStrings Base_DB::get_table_names_from_database(bool ignore_syst
 
         //Get the table name:
         Glib::ustring table_name;
-        if(value.get_value_type() ==  Gnome::Gda::VALUE_TYPE_STRING)
+        if(G_VALUE_TYPE(value.gobj()) ==  G_TYPE_STRING)
         {
           table_name = value.get_string();
 
@@ -387,9 +400,10 @@ Base_DB::type_vecFields Base_DB::get_fields_for_table_from_database(const Glib::
   {
     Glib::RefPtr<Gnome::Gda::Connection> connection = sharedconnection->get_gda_connection();
 
-    Gnome::Gda::Parameter param_table_name("name", table_name);
-    Gnome::Gda::ParameterList param_list;
-    param_list.add_parameter(param_table_name);
+    Glib::RefPtr<Gnome::Gda::Parameter> param_table_name = Gnome::Gda::Parameter::create("name", table_name);
+    //Gnome::Gda::Parameter param_table_name("name", table_name);
+    Glib::RefPtr<Gnome::Gda::ParameterList> param_list = Gnome::Gda::ParameterList::create();
+    param_list->add_parameter(param_table_name);
 
     Glib::RefPtr<Gnome::Gda::DataModel> data_model_fields = connection->get_schema(Gnome::Gda::CONNECTION_SCHEMA_FIELDS, param_list);
 
@@ -411,22 +425,22 @@ Base_DB::type_vecFields Base_DB::get_fields_for_table_from_database(const Glib::
       guint rows_count = data_model_fields->get_n_rows();
       while(row < rows_count)
       {
-        Gnome::Gda::FieldAttributes field_info;
+        Glib::RefPtr<Gnome::Gda::Column> field_info = Gnome::Gda::Column::create();
 
         //Get the field name:
         Gnome::Gda::Value value_name = data_model_fields->get_value_at(DATAMODEL_FIELDS_COL_NAME, row);
-        if(value_name.get_value_type() ==  Gnome::Gda::VALUE_TYPE_STRING)
+        if(value_name.get_value_type() ==  G_TYPE_STRING)
         {
           if(value_name.get_string().empty())
             g_warning("Base_DB::get_fields_for_table_from_database(): value_name is empty.");
 
-          field_info.set_name( value_name.get_string() ); //TODO: get_string() is a dodgy choice. murrayc.
+          field_info->set_name( value_name.get_string() ); //TODO: get_string() is a dodgy choice. murrayc.
         }
 
         //Get the field type:
-        //This is a string representation of the type, so we need to discover the Gnome::Gda::ValueType for it:
+        //This is a string representation of the type, so we need to discover the GType for it:
         Gnome::Gda::Value value_fieldtype = data_model_fields->get_value_at(DATAMODEL_FIELDS_COL_TYPE, row);
-        if(value_fieldtype.get_value_type() ==  Gnome::Gda::VALUE_TYPE_STRING)
+        if(value_fieldtype.get_value_type() ==  G_TYPE_STRING)
         {
            Glib::ustring schema_type_string = value_fieldtype.get_string();
            if(!schema_type_string.empty())
@@ -435,8 +449,8 @@ Base_DB::type_vecFields Base_DB::get_fields_for_table_from_database(const Glib::
              const FieldTypes* pFieldTypes = connection_pool->get_field_types();
              if(pFieldTypes)
              {
-               Gnome::Gda::ValueType gdatype = pFieldTypes->get_gdavalue_for_schema_type_string(schema_type_string);
-               field_info.set_gdatype(gdatype);
+               GType gdatype = pFieldTypes->get_gdavalue_for_schema_type_string(schema_type_string);
+               field_info->set_g_type(gdatype);
              }
            }
         }
@@ -444,33 +458,33 @@ Base_DB::type_vecFields Base_DB::get_fields_for_table_from_database(const Glib::
         //Get the default value:
         /* libgda does not return this correctly yet. TODO: check bug http://bugzilla.gnome.org/show_bug.cgi?id=143576
         Gnome::Gda::Value value_defaultvalue = data_model_fields->get_value_at(DATAMODEL_FIELDS_COL_DEFAULTVALUE, row);
-        if(value_defaultvalue.get_value_type() ==  Gnome::Gda::VALUE_TYPE_STRING)
-          field_info.set_default_value(value_defaultvalue);
+        if(value_defaultG_VALUE_TYPE(value.gobj()) ==  G_TYPE_STRING)
+          field_info->set_default_value(value_defaultvalue);
         */
 
         //Get whether it can be null:
         Gnome::Gda::Value value_notnull = data_model_fields->get_value_at(DATAMODEL_FIELDS_COL_NOTNULL, row);
-        if(value_notnull.get_value_type() ==  Gnome::Gda::VALUE_TYPE_BOOLEAN)
-          field_info.set_allow_null(value_notnull.get_bool());
+        if(value_notnull.get_value_type() ==  G_TYPE_BOOLEAN)
+          field_info->set_allow_null(value_notnull.get_boolean());
 
 
         //Get whether it is a primary key:
         Gnome::Gda::Value value_primarykey = data_model_fields->get_value_at(DATAMODEL_FIELDS_COL_PRIMARYKEY, row);
-        if(value_primarykey.get_value_type() ==  Gnome::Gda::VALUE_TYPE_BOOLEAN)
-          field_info.set_primary_key( value_primarykey.get_bool() );
+        if(value_primarykey.get_value_type() ==  G_TYPE_BOOLEAN)
+          field_info->set_primary_key( value_primarykey.get_boolean() );
 
         //Get whether it is unique
         Gnome::Gda::Value value_unique = data_model_fields->get_value_at(DATAMODEL_FIELDS_COL_UNIQUEINDEX, row);
-        if(value_unique.get_value_type() ==  Gnome::Gda::VALUE_TYPE_BOOLEAN)
-          field_info.set_unique_key( value_unique.get_bool() );
-        else if(field_info.get_primary_key()) //All primaries keys are unique, so force this.
-          field_info.set_unique_key();
+        if(value_unique.get_value_type() ==  G_TYPE_BOOLEAN)
+          field_info->set_unique_key( value_unique.get_boolean() );
+        else if(field_info->get_primary_key()) //All primaries keys are unique, so force this.
+          field_info->set_unique_key();
 
         //Get whether it is autoincrements
         /* libgda does not provide this yet.
         Gnome::Gda::Value value_autoincrement = data_model_fields->get_value_at(DATAMODEL_FIELDS_COL_AUTOINCREMENT, row);
-        if(value_autoincrement.get_value_type() ==  Gnome::Gda::VALUE_TYPE_BOOLEAN)
-          field_info.set_auto_increment( value_autoincrement.get_bool() );
+        if(value_autoincrement.get_value_type() ==  G_TYPE_BOOLEAN)
+          field_info->set_auto_increment( value_autoincrement.get_bool() );
         */
 
         sharedptr<Field> field(new Field()); //TODO: Get glom-specific information from the document?
@@ -521,19 +535,19 @@ Base_DB::type_vecFields Base_DB::get_fields_for_table(const Glib::ustring& table
 
       if(iterFindDatabase != fieldsDatabase.end() ) //Ignore fields that don't exist in the database anymore.
       {
-        Gnome::Gda::FieldAttributes field_info_document = field->get_field_info();
+        Glib::RefPtr<Gnome::Gda::Column> field_info_document = field->get_field_info();
 
         //Update the Field information that _might_ have changed in the database.
-        Gnome::Gda::FieldAttributes field_info = (*iterFindDatabase)->get_field_info();
+        Glib::RefPtr<Gnome::Gda::Column> field_info = (*iterFindDatabase)->get_field_info();
 
         //libgda does not tell us whether the field is auto_incremented, so we need to get that from the document.
-        field_info.set_auto_increment( field_info_document.get_auto_increment() );
+        field_info->set_auto_increment( field_info_document->get_auto_increment() );
 
         //libgda does not tell us whether the field is auto_incremented, so we need to get that from the document.
-        field_info.set_primary_key( field_info_document.get_primary_key() );
+        field_info->set_primary_key( field_info_document->get_primary_key() );
 
         //libgda does yet tell us correct default_value information so we need to get that from the document.
-        field_info.set_default_value( field_info_document.get_default_value() );
+        field_info->set_default_value( field_info_document->get_default_value() );
 
         field->set_field_info(field_info);
 
@@ -918,8 +932,8 @@ bool Base_DB::create_table_with_default_fields(const Glib::ustring& table_name)
   field_primary_key->set_primary_key();
   field_primary_key->set_auto_increment();
 
-  Gnome::Gda::FieldAttributes field_info = field_primary_key->get_field_info();
-  field_info.set_allow_null(false);
+  Glib::RefPtr<Gnome::Gda::Column> field_info = field_primary_key->get_field_info();
+  field_info->set_allow_null(false);
   field_primary_key->set_field_info(field_info);
 
   field_primary_key->set_glom_type(Field::TYPE_NUMERIC);
@@ -1005,8 +1019,8 @@ bool Base_DB::create_table(const sharedptr<const TableInfo>& table_info, const D
 
     //The field has no gda type, so we set that:
     //This usually comes from the database, but that's a bit strange.
-    Gnome::Gda::FieldAttributes info = field->get_field_info();
-    info.set_gdatype( Field::get_gda_type_for_glom_type(field->get_glom_type()) );
+    Glib::RefPtr<Gnome::Gda::Column> info = field->get_field_info();
+    info->set_g_type( Field::get_gda_type_for_glom_type(field->get_glom_type()) );
     field->set_field_info(info); //TODO_Performance
 
     Glib::ustring sql_field_description = "\"" + field->get_name() + "\" " + field->get_sql_type();
@@ -1029,7 +1043,7 @@ bool Base_DB::create_table(const sharedptr<const TableInfo>& table_info, const D
   //Actually create the table
   try
   {
-    Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute( "CREATE TABLE \"" + table_info->get_name() + "\" (" + sql_fields + ")" );
+    Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute( "CREATE TABLE \"" + table_info->get_name() + "\" (" + sql_fields + ");" );
     if(!data_model)
       table_creation_succeeded = false;
     else
@@ -1853,7 +1867,7 @@ Base_DB::type_map_fields Base_DB::get_record_field_values_for_calculation(const 
 
           //Never give a NULL-type value to the python calculation for types that don't use them:
           //to prevent errors:
-          if(value.get_value_type() == Gnome::Gda::VALUE_TYPE_NULL)
+          if(value.is_null())
             value = Conversions::get_empty_value(field->get_glom_type());
 
           field_values[field->get_name()] = value;

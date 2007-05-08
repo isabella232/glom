@@ -1,2 +1,4 @@
+libgda 3.0:
+  * glom/mode_design/fields/box_db_table_definition.cc:590: There is a Gnome::Gda::TransactionIsolation parameter I have absolutely no clue about. We should either find out what it is supposed to do and/or provide some reasonable default in libgdamm.
 
-
+  * Creating databases (frame_glom.cc, create_database()) sometimes fails due to the source database "template1" already being in use. A two-second-sleep seems to have improved chance that it works, but it is a) still not really reliable and b) a damn hack

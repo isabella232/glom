@@ -42,7 +42,7 @@ public:
   virtual Glib::ustring get_table_name();
 
   //TODO: Put this somewhere more sensible:
-  typedef std::map<Gnome::Gda::ValueType, Glib::ustring> type_map_valuetypes;
+  typedef std::map<GType, Glib::ustring> type_map_valuetypes;
 
 protected:
 
@@ -57,7 +57,7 @@ protected:
 
 
   //static type_vecFields get_fields_for_datamodel(const Glib::RefPtr<Gnome::Gda::DataModel>& data_model); 
-  static Glib::ustring postgres_get_field_definition_for_sql(const Gnome::Gda::FieldAttributes& field_info);
+  static Glib::ustring postgres_get_field_definition_for_sql(const Glib::RefPtr<const Gnome::Gda::Column>& field_info);
 
   Glib::ustring m_table_name;
 };

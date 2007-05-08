@@ -420,7 +420,7 @@ Utils::type_list_values_with_second Utils::get_choice_values(const sharedptr<con
 
 
   //std::cout << "get_choice_values: Executing SQL: " << sql_query << std::endl;
-  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = connection->get_gda_connection()->execute_single_command(sql_query);
+  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = connection->get_gda_connection()->execute_select_command(sql_query);
 
   if(datamodel)
   {
@@ -510,33 +510,24 @@ Glib::ustring Utils::create_local_image_uri(const Gnome::Gda::Value& value)
 
   Glib::ustring result;
 
-  if(value.get_value_type() == Gnome::Gda::VALUE_TYPE_BINARY)
+  if(value.get_value_type() == GDA_TYPE_BINARY)
   {
     glong size = 0;
-    const gpointer pData = value.get_binary(size);
+    gconstpointer pData = value.get_binary(size);
     if(size && pData)
     {
-      //libgda does not currently properly unescape binary data,
-      //so pData is actually a null terminated string, of escaped binary data.
-      //This workaround should be removed when libgda is fixed:
-      //(It is fixed in libgd-2.0 but is unlikely to be fixed in libgda-1.2)
-      size_t buffer_binary_length = 0;
-      guchar* buffer_binary =  Glom_PQunescapeBytea((const guchar*)pData /* must be null-terminated */, &buffer_binary_length); //freed by us later.
-      if(buffer_binary)
+      // Note that this is regular binary data, not escaped text representing the data:
+
+      //Save the image to a temporary file and provide the file URI.
+      char pchExtraNum[10];
+      sprintf(pchExtraNum, "%d", m_temp_image_uri_number);
+      result = ("/tmp/glom_report_image_" + Glib::ustring(pchExtraNum) + ".png");
+      ++m_temp_image_uri_number;
+
+      std::fstream the_stream(result.c_str(), std::ios_base::out | std::ios_base::trunc | std::ios_base::binary);
+      if(the_stream)
       {
-        //Saves the image to a temporary file and provides the file URI.
-        char pchExtraNum[10];
-        sprintf(pchExtraNum, "%d", m_temp_image_uri_number);
-        result = ("/tmp/glom_report_image_" + Glib::ustring(pchExtraNum) + ".png");
-        ++m_temp_image_uri_number;
-
-        std::fstream the_stream(result.c_str(), std::ios_base::out | std::ios_base::trunc | std::ios_base::binary);
-        if(the_stream)
-        {
-          the_stream.write((char*)buffer_binary, buffer_binary_length);
-        }
-
-        free(buffer_binary);
+        the_stream.write((char*)pData, size);
       }
     }
     else

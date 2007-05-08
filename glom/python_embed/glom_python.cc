@@ -20,6 +20,7 @@
 
 //We need to include this before anything else, to avoid redefinitions:
 #include <glom/libglom/python_embed/py_glom_record.h>
+#include <glom/libglom/python_embed/pygdavalue_conversions.h>
 
 #define NO_IMPORT_PYGTK //To avoid a multiple definition in pygtk.
 #include <pygtk/pygtk.h> //For the PyGObject and PyGBoxed struct definitions.
@@ -146,10 +147,13 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
   if(!module_gda)
     g_warning("Could not import python gda module.");
 
+  // Gda.Value does not exist anymore in pygda-3.0
+#if 0
   PyObject* module_gda_dict = PyModule_GetDict(module_gda);
   PyObject* pyTypeGdaValue = PyDict_GetItemString(module_gda_dict, "Value"); //TODO: Unref this?
   if(!pyTypeGdaValue || !PyType_Check(pyTypeGdaValue))
     g_warning("Could not get gda.Value from gda_module.");
+#endif
 
 
   //Create the function definition:
@@ -206,35 +210,16 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
         //Deal with the various possible return types:
         bool object_is_gda_value = false;
 
-        //This is a hack - see below:
-        //if( strcmp(pyResult->ob_type->tp_name, "gda.Value") == 0 )
-        //  object_is_gda_value = true;
+        GValue value = { 0 };
+        const int test = pygda_value_from_pyobject(&value, pyResult);
 
-        //g_warning("debug: pyResult->ob_type->tp_name=%s", pyResult->ob_type->tp_name);
-        //g_warning("debug: pyTypeGdaValue->tp_name=%s", ((PyTypeObject*)pyTypeGdaValue)->tp_name);
+        if(test == 0) //-1 means error.
+	  object_is_gda_value = true;
 
-        const int test = PyType_IsSubtype(pyResult->ob_type, (PyTypeObject*)pyTypeGdaValue);
-        if(test == -1) //-1 means error.
-          HandlePythonError();
-
-        if(test == 1) // 0 means false, -1 means error.
-          object_is_gda_value = true;
-
-        if(object_is_gda_value)
+        if(object_is_gda_value && G_IS_VALUE(&value))
         {
-          //Cast it to the "derived" struct type:
-          //All boxed types are wrapped with PyGBoxed in pygtk, without their own special structs,
-          //and GValue is a boxed-type.
-          PyGBoxed* pygtkobject = (PyGBoxed*)pyResult;
-          if(pygtkobject)
-          {
-            GdaValue* cboxed = (GdaValue*)pygtkobject->boxed;
-            if(cboxed)
-              valueResult = Glib::wrap(cboxed, true /* take_copy */);
-            g_warning("PyGBoxed::boxed is null");
-          }
-          else
-            g_warning("PyGBoxed is null");
+	  valueResult = Gnome::Gda::Value(&value);
+	  g_value_unset(&value);
         }
         else
         {

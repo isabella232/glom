@@ -92,7 +92,7 @@ Glib::ustring Box_Data::get_find_where_clause() const
         bool use_this_field = true;
         if(field->get_glom_type() == Field::TYPE_BOOLEAN) //TODO: We need an intermediate state for boolean fields, so that they can be ignored in searches.
         {
-          if(!data.get_bool())
+          if(!data.get_boolean())
             use_this_field = false;
         }
 

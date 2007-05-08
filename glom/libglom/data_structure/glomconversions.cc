@@ -165,22 +165,23 @@ Glib::ustring Conversions::get_text_for_gda_value(Field::glom_field_type glom_ty
 
 Glib::ustring Conversions::get_text_for_gda_value(Field::glom_field_type glom_type, const Gnome::Gda::Value& value, const std::locale& locale, const NumericFormat& numeric_format, bool iso_format)
 {
-  if(value.get_value_type() == Gnome::Gda::VALUE_TYPE_NULL) //The type can be null for any of the actual field types.
+  if(value.is_null()) //The type can be null for any of the actual field types.
   {
     return "";
   }
 
-  if( (glom_type == Field::TYPE_DATE) && (value.get_value_type() == Gnome::Gda::VALUE_TYPE_DATE))
+  if( (glom_type == Field::TYPE_DATE) && (value.get_value_type() == G_TYPE_DATE))
   {
-    Gnome::Gda::Date gda_date = value.get_date();
+    Glib::Date gda_date = value.get_date();
+    //Gnome::Gda::Date gda_date = value.get_date();
 
     //tm the_c_time = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     tm the_c_time;
     memset(&the_c_time, 0, sizeof(the_c_time));
 
-    the_c_time.tm_year = gda_date.year - 1900; //C years start are the AD year - 1900. So, 01 is 1901.
-    the_c_time.tm_mon = gda_date.month - 1; //C months start at 0.
-    the_c_time.tm_mday = gda_date.day; //starts at 1
+    the_c_time.tm_year = gda_date.get_year() - 1900; //C years start are the AD year - 1900. So, 01 is 1901.
+    the_c_time.tm_mon = gda_date.get_month() - 1; //C months start at 0.
+    the_c_time.tm_mday = gda_date.get_day(); //starts at 1
 
     return format_date(the_c_time, locale, iso_format);
 
@@ -190,7 +191,7 @@ Glib::ustring Conversions::get_text_for_gda_value(Field::glom_field_type glom_ty
     return date.format_string("%x"); //%x means "is replaced by the locale's appropriate date representation".
     */
   }
-  else if((glom_type == Field::TYPE_TIME) && (value.get_value_type() == Gnome::Gda::VALUE_TYPE_TIME))
+  else if((glom_type == Field::TYPE_TIME) && (value.get_value_type() == GDA_TYPE_TIME))
   {
     Gnome::Gda::Time gda_time = value.get_time();
 
@@ -204,7 +205,7 @@ Glib::ustring Conversions::get_text_for_gda_value(Field::glom_field_type glom_ty
 
     return format_time(the_c_time, locale, iso_format);
   }
-  else if( (glom_type == Field::TYPE_NUMERIC) && (value.get_value_type() == Gnome::Gda::VALUE_TYPE_NUMERIC))
+  else if( (glom_type == Field::TYPE_NUMERIC) && (value.get_value_type() == GDA_TYPE_NUMERIC))
   {
     const GdaNumeric* gda_numeric = value.get_numeric();
     std::string text_in_c_locale;
@@ -265,7 +266,7 @@ Glib::ustring Conversions::get_text_for_gda_value(Field::glom_field_type glom_ty
 
 Gnome::Gda::Value Conversions::parse_value(double number)
 {
-  //This is just a way to get a NUMERIC Gda::Value from a numeric type:
+  //This is just a way to get a NUMERIC Gnome::Gda::Value from a numeric type:
   //Try to parse the inputted number, according to the current locale.
 
   GdaNumeric gda_numeric = {0, 0, 0};
@@ -313,10 +314,8 @@ Gnome::Gda::Value Conversions::parse_value(Field::glom_field_type glom_type, con
   {
     tm the_c_time = parse_date(text, the_locale, success);
 
-    Gnome::Gda::Date gda_date = {0, 0, 0};
-    gda_date.year = the_c_time.tm_year + 1900; //The C time starts at 1900.
-    gda_date.month = the_c_time.tm_mon + 1; //The C month starts at 0.
-    gda_date.day = the_c_time.tm_mday; //THe C mday starts at 1.
+    // The C time starts at 1900 and the C month starts at 0.
+    Glib::Date gda_date(the_c_time.tm_mday, static_cast<Glib::Date::Month>(the_c_time.tm_mon + 1), the_c_time.tm_year + 1900);
 
     return Gnome::Gda::Value(gda_date);
   }
@@ -389,15 +388,21 @@ Gnome::Gda::Value Conversions::parse_value(Field::glom_field_type glom_type, con
   }
   else if(glom_type == Field::TYPE_IMAGE)
   {
-    //We assume that the text is the same format that we use in the document when saving examples.
+    //We assume that the text is the same (escaped text) format that we use in the document when saving examples.
     //(The SQL format).
     Gnome::Gda::Value result;
 
-    //libgda currently assumes that this buffer is an already-escaped string.
-    //TODO: Unescape the text when libgda has been fixed.
-    result.set(text.c_str(), text.size());
-    success = true;
-    return result;
+    size_t buffer_binary_length = 0;
+    guchar* buffer_binary =  Glom_PQunescapeBytea((const guchar*)text.c_str() /* must be null-terminated */, &buffer_binary_length); //freed by us later.
+    if(buffer_binary)
+    {
+      result.set(buffer_binary, buffer_binary_length);
+      success = true;
+
+      free(buffer_binary);
+
+      return result;
+    }
   }
 
   success = true;
@@ -633,11 +638,12 @@ tm Conversions::parse_tm(const Glib::ustring& text, const std::locale& locale, c
 
 bool Conversions::value_is_empty(const Gnome::Gda::Value& value)
 {
+  if(value.is_null())
+    return true;
+
   switch(value.get_value_type())
   {
-    case(Gnome::Gda::VALUE_TYPE_NULL):
-      return true;
-    case(Gnome::Gda::VALUE_TYPE_STRING):
+    case(G_TYPE_STRING):
       return value.get_string().empty();
     default:
       return false; //None of the other types can be empty. (An empty numeric, date, or time type shows up as a null.
@@ -871,26 +877,9 @@ Glib::ustring Conversions::get_escaped_binary_data(guint8* buffer, size_t buffer
   return result;
 }
 
-Gnome::Gda::Value Conversions::parse_escaped_binary_data(const Glib::ustring& escaped_data)
-{
-  //Hopefully we don't need to use this because Gda does it for us when we read a part of a "SELECT" result into a Gnome::Value.
-  //TODO: Performance
-
-  Gnome::Gda::Value result;
-  size_t buffer_binary_length = 0;
-  guchar* buffer_binary =  Glom_PQunescapeBytea((guchar*)escaped_data.c_str(), &buffer_binary_length);
-  if(buffer_binary)
-  {
-    result.set(buffer_binary, buffer_binary_length);
-    free(buffer_binary);
-  }
-
-  return result;
-}
-
 Gnome::Gda::Value Conversions::convert_value(const Gnome::Gda::Value& value, Field::glom_field_type target_glom_type)
 {
-  const Field::glom_field_type source_glom_type = Field::get_glom_type_for_gda_type(value.get_value_type());
+  const Field::glom_field_type source_glom_type = Field::get_glom_type_for_gda_type(G_VALUE_TYPE(value.gobj()));
   if(source_glom_type == target_glom_type)
     return value; //No conversion necessary.
   else
@@ -907,74 +896,68 @@ Glib::RefPtr<Gdk::Pixbuf> Conversions::get_pixbuf_for_gda_value(const Gnome::Gda
 {
   Glib::RefPtr<Gdk::Pixbuf> result;
 
-  if(value.get_value_type() == Gnome::Gda::VALUE_TYPE_BINARY)
+  if(value.get_value_type() == GDA_TYPE_BINARY)
   {
-    glong size = 0;
-    const gpointer pData = value.get_binary(size);
-    if(size && pData)
+    glong buffer_binary_length = 0;
+    gconstpointer buffer_binary = value.get_binary(buffer_binary_length);
+
+    /* Note that this is regular binary data, not escaped text representing the binary data: */
+    if(buffer_binary && buffer_binary_length)
     {
-      //libgda does not currently properly unescape binary data,
-      //so pData is actually a null terminated string, of escaped binary data.
-      //This workaround should be removed when libgda is fixed:
-      //(It is fixed in libgd-2.0 but is unlikely to be fixed in libgda-1.2)
-      size_t buffer_binary_length = 0;
-      guchar* buffer_binary =  Glom_PQunescapeBytea((const guchar*)pData /* must be null-terminated */, &buffer_binary_length); //freed by us later.
-      if(buffer_binary)
+      //typedef std::list<Gdk::PixbufFormat> type_list_formats;
+      //const type_list_formats formats = Gdk::Pixbuf::get_formats();
+      //std::cout << "Debug: Supported pixbuf formats:" << std::endl;
+      //for(type_list_formats::const_iterator iter = formats.begin(); iter != formats.end(); ++iter)
+      //{
+      //  std::cout << " name=" << iter->get_name() << ", writable=" << iter->is_writable() << std::endl;
+      //}
+
+      Glib::RefPtr<Gdk::PixbufLoader> refPixbufLoader;
+
+      // PixbufLoader::create() is broken in gtkmm before 2.6.something,
+      // so let's do this in C so it works with all 2.6 versions:
+      GError* error = 0;
+      GdkPixbufLoader* loader = gdk_pixbuf_loader_new_with_type(GLOM_IMAGE_FORMAT, &error);
+      if(!error)
+        refPixbufLoader = Glib::wrap(loader);
+      else
       {
-        //typedef std::list<Gdk::PixbufFormat> type_list_formats;
-        //const type_list_formats formats = Gdk::Pixbuf::get_formats();
-        //std::cout << "Debug: Supported pixbuf formats:" << std::endl;
-        //for(type_list_formats::const_iterator iter = formats.begin(); iter != formats.end(); ++iter)
-        //{
-        //  std::cout << " name=" << iter->get_name() << ", writable=" << iter->is_writable() << std::endl;
-        //}
+        std::cerr << "ImageGlom::set_value(): Error while calling gdk_pixbuf_loader_new_with_type(): " << error->message << std::endl;
+	g_error_free(error);
+      }
 
-        Glib::RefPtr<Gdk::PixbufLoader> refPixbufLoader;
+      /*
+      try
+      {
+        refPixbufLoader = Gdk::PixbufLoader::create(GLOM_IMAGE_FORMAT);
+        g_warning("debug a1");
+      }
+      catch(const Gdk::PixbufError& ex)
+      {
+        refPixbufLoader.clear();
+        g_warning("PixbufLoader::create failed: %s",ex.what().c_str());
+      }
+      */
 
-        // PixbufLoader::create() is broken in gtkmm before 2.6.something,
-        // so let's do this in C so it works with all 2.6 versions:
-        GError* error = 0;
-        GdkPixbufLoader* loader = gdk_pixbuf_loader_new_with_type(GLOM_IMAGE_FORMAT, &error);
-        if(!error)
-          refPixbufLoader = Glib::wrap(loader);
-        else
-          std::cerr << "ImageGlom::set_value(): Error while calling gdk_pixbuf_loader_new_with_type()." << std::endl;
-
-        /*
+      if(refPixbufLoader)
+      {
         try
         {
-          refPixbufLoader = Gdk::PixbufLoader::create(GLOM_IMAGE_FORMAT);
-          g_warning("debug a1");
+          guint8* puiData = (guint8*)buffer_binary;
+
+          //g_warning("ImageGlom::set_value(): debug: from db: ");
+          //for(int i = 0; i < 10; ++i)
+          //  g_warning("%02X (%c), ", (guint8)puiData[i], (char)puiData[i]);
+
+          refPixbufLoader->write(puiData, (glong)buffer_binary_length);
+
+          result = refPixbufLoader->get_pixbuf();
+
+          refPixbufLoader->close(); //This throws if write() threw, so it must be inside the try block.
         }
-        catch(const Gdk::PixbufError& ex)
+        catch(const Glib::Exception& ex)
         {
-          refPixbufLoader.clear();
-          g_warning("PixbufLoader::create failed: %s",ex.what().c_str());
-        }
-        */
-
-        if(refPixbufLoader)
-        {
-          try
-          {
-            guint8* puiData = (guint8*)buffer_binary;
-
-            //g_warning("ImageGlom::set_value(): debug: from db: ");
-            //for(int i = 0; i < 10; ++i)
-            //  g_warning("%02X (%c), ", (guint8)puiData[i], (char)puiData[i]);
-
-            refPixbufLoader->write(puiData, (glong)buffer_binary_length);
-
-            result = refPixbufLoader->get_pixbuf();
-
-            refPixbufLoader->close(); //This throws if write() threw, so it must be inside the try block.
-          }
-          catch(const Glib::Exception& ex)
-          {
-            g_warning("ImageGlom::set_value(): PixbufLoader::write() failed: %s", ex.what().c_str());
-          }
-
-          free(buffer_binary);
+          g_warning("ImageGlom::set_value(): PixbufLoader::write() failed: %s", ex.what().c_str());
         }
       }
 

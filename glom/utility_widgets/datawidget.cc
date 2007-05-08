@@ -279,8 +279,8 @@ void DataWidget::set_value(const Gnome::Gda::Value& value)
     if(checkbutton)
     {
       bool bValue = false;
-      if(!value.is_null() && value.get_value_type() == Gnome::Gda::VALUE_TYPE_BOOLEAN)
-        bValue = value.get_bool();
+      if(!value.is_null() && value.get_value_type() == G_TYPE_BOOLEAN)
+        bValue = value.get_boolean();
 
       checkbutton->set_active( bValue );
     }
@@ -326,10 +326,7 @@ int DataWidget::get_suitable_width(const sharedptr<const LayoutItem_Field>& fiel
   {
     case(Field::TYPE_DATE):
     {
-      Gnome::Gda::Date date = {0, 0, 0};
-      date.day = 31;
-      date.month = 12;
-      date.year = 2000;
+      Glib::Date date(31, Glib::Date::Month(12), 2000);
       example_text = Conversions::get_text_for_gda_value(field_type, Gnome::Gda::Value(date));
       break;
     }

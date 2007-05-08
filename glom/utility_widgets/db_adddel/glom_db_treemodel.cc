@@ -229,7 +229,7 @@ bool DbTreeModel::refresh_from_database(const FoundSet& found_set)
     }
     try
     {
-      m_gda_datamodel = m_connection->get_gda_connection()->execute_single_command(sql_query);
+      m_gda_datamodel = m_connection->get_gda_connection()->execute_select_command(sql_query);
     }
     catch(const std::exception& ex)
     {
@@ -891,14 +891,14 @@ void DbTreeModel::get_record_counts(gulong& total, gulong& found) const
       //Ask the database how many records there are in the whole table:
       //TODO: Apparently, this is very slow:
       const Glib::ustring sql_query = "SELECT count(*) FROM \"" + m_found_set.m_table_name + "\"";
-      Glib::RefPtr<Gnome::Gda::DataModel> datamodel = m_connection->get_gda_connection()->execute_single_command(sql_query);
+      Glib::RefPtr<Gnome::Gda::DataModel> datamodel = m_connection->get_gda_connection()->execute_select_command(sql_query);
 
       if(datamodel)
       {
         if(datamodel->get_n_rows())
         {
           Gnome::Gda::Value value = datamodel->get_value_at(0, 0);
-          total = (gulong)value.get_bigint(); //I discovered that it's a bigint by trying it.
+	  total = (gulong)value.get_int64(); //I discovered that it's a int64 by trying it.
         }
       }
     }

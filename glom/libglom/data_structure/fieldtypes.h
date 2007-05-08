@@ -35,15 +35,15 @@ public:
   FieldTypes(const Glib::RefPtr<Gnome::Gda::Connection>& gda_connection);
   virtual ~FieldTypes();
 
-  Gnome::Gda::ValueType get_gdavalue_for_schema_type_string(const Glib::ustring& schema_type_string) const;
-  Glib::ustring get_string_name_for_gdavaluetype(Gnome::Gda::ValueType field_type) const;
+  GType get_gdavalue_for_schema_type_string(const Glib::ustring& schema_type_string) const;
+  Glib::ustring get_string_name_for_gdavaluetype(GType field_type) const;
   
 protected:
-  typedef std::map<Glib::ustring, Gnome::Gda::ValueType> type_mapSchemaStringsToGdaTypes;
+  typedef std::map<Glib::ustring, GType> type_mapSchemaStringsToGdaTypes;
   type_mapSchemaStringsToGdaTypes m_mapSchemaStringsToGdaTypes;
 
   //Duplicate information, to make searching easier:
-  typedef std::map<Gnome::Gda::ValueType, Glib::ustring> type_mapGdaTypesToSchemaStrings;
+  typedef std::map<GType, Glib::ustring> type_mapGdaTypesToSchemaStrings;
   type_mapGdaTypesToSchemaStrings m_mapGdaTypesToSchemaStrings;
 };
 

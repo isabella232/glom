@@ -94,43 +94,43 @@ public:
   void set_glom_type(glom_field_type fieldtype);
 
 
-  /// This forwards to the Gnome::Gda::FieldAttributes::get_name, so that we can use it in the same predicate template.
+  /// This forwards to the Glib::RefPtr<Gnome::Gda::Column>::get_name, so that we can use it in the same predicate template.
   virtual Glib::ustring get_name() const;
 
-  /// This forwards to the Gnome::Gda::FieldAttributes::set_name, for convenience
+  /// This forwards to the Glib::RefPtr<Gnome::Gda::Column>::set_name, for convenience
   virtual void set_name(const Glib::ustring& value);
 
-  /// This forwards to the Gnome::Gda::FieldAttributes::get_auto_increment.
+  /// This forwards to the Glib::RefPtr<Gnome::Gda::Column>::get_auto_increment.
   bool get_auto_increment() const;
 
-  /// This forwards to the Gnome::Gda::FieldAttributes::set_auto_increment.
+  /// This forwards to the Glib::RefPtr<Gnome::Gda::Column>::set_auto_increment.
   void set_auto_increment(bool val = true);
 
-  /// This forwards to the Gnome::Gda::FieldAttributes::get_primary_key.
+  /// This forwards to the Glib::RefPtr<Gnome::Gda::Column>::get_primary_key.
   bool get_primary_key() const;
 
-  /// This forwards to the Gnome::Gda::FieldAttributes::set_primary_key.
+  /// This forwards to the Glib::RefPtr<Gnome::Gda::Column>::set_primary_key.
   void set_primary_key(bool val = true);
 
-  /// This forwards to the Gnome::Gda::FieldAttributes::get_unique_key.
+  /// This forwards to the Glib::RefPtr<Gnome::Gda::Column>::get_unique_key.
   bool get_unique_key() const;
 
-  /// This forwards to the Gnome::Gda::FieldAttributes::set_unique_key.
+  /// This forwards to the Glib::RefPtr<Gnome::Gda::Column>::set_unique_key.
   void set_unique_key(bool val = true);
 
-  /// This forwards to the Gnome::Gda::FieldAttributes::get_default_value.
+  /// This forwards to the Glib::RefPtr<Gnome::Gda::Column>::get_default_value.
   Gnome::Gda::Value get_default_value() const;
 
-  /// This forwards to the Gnome::Gda::FieldAttributes::set_default_value.
-  void set_default_value(const Gnome::Gda::Value& val);
+  /// This forwards to the Glib::RefPtr<Gnome::Gda::Column>::set_default_value.
+  void set_default_value(const Gnome::Gda::Value& value);
 
 
   //TODO_Performance: Lots of code calls this just to call one of its methods:
-  Gnome::Gda::FieldAttributes get_field_info() const;
-  void set_field_info(const Gnome::Gda::FieldAttributes& fieldInfo);
+  Glib::RefPtr<Gnome::Gda::Column> get_field_info() const;
+  void set_field_info(const Glib::RefPtr<Gnome::Gda::Column>& fieldInfo);
 
   /// Ignores any part of FieldAttributes that libgda does not properly fill.
-  bool field_info_from_database_is_equal(const Gnome::Gda::FieldAttributes& field);
+  bool field_info_from_database_is_equal(const Glib::RefPtr<const Gnome::Gda::Column>& field);
 
   //These are not used much:
   Gnome::Gda::Value get_data() const;
@@ -194,8 +194,8 @@ public:
   /// Get the type from a translated name.
   static glom_field_type get_type_for_ui_name(const Glib::ustring& glom_type);
 
-  static glom_field_type get_glom_type_for_gda_type(Gnome::Gda::ValueType gda_type);
-  static Gnome::Gda::ValueType get_gda_type_for_glom_type(Field::glom_field_type glom_type);
+  static glom_field_type get_glom_type_for_gda_type(GType gda_type);
+  static GType get_gda_type_for_glom_type(Field::glom_field_type glom_type);
 
   static bool get_conversion_possible(glom_field_type field_type_src, glom_field_type field_type_dest);
 
@@ -206,11 +206,11 @@ protected:
   static void init_map();
 
   //The glom type to be used for the gda type:
-  typedef std::map<Gnome::Gda::ValueType, glom_field_type> type_map_gda_type_to_glom_type;
+  typedef std::map<GType, glom_field_type> type_map_gda_type_to_glom_type;
   static type_map_gda_type_to_glom_type m_map_gda_type_to_glom_type;
 
   //The gda type to be used for the glom type:
-  typedef std::map<glom_field_type, Gnome::Gda::ValueType> type_map_glom_type_to_gda_type;
+  typedef std::map<glom_field_type, GType> type_map_glom_type_to_gda_type;
   static type_map_glom_type_to_gda_type m_map_glom_type_to_gda_type;
 
   typedef std::list<glom_field_type> type_list_conversion_targets;
@@ -222,7 +222,7 @@ protected:
   static bool m_maps_inited;
 
   glom_field_type m_glom_type;
-  Gnome::Gda::FieldAttributes m_field_info;
+  Glib::RefPtr<Gnome::Gda::Column> m_field_info;
 
   Gnome::Gda::Value m_data; //Not used much.
 

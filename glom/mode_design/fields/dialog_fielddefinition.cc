@@ -119,7 +119,7 @@ void Dialog_FieldDefinition::set_field(const sharedptr<const Field>& field, cons
   m_table_name = table_name;  //Used for lookup combo boxes.
 
   //Set the Widgets from the field info:
-  //const Gnome::Gda::FieldAttributes& fieldInfo = field->get_field_info();
+  //const Glib::RefPtr<Gnome::Gda::Column>& fieldInfo = field->get_field_info();
 
   m_pEntry_Name->set_text(field->get_name());
   m_pCombo_Type->set_field_type( field->get_glom_type() );
@@ -221,20 +221,20 @@ sharedptr<Field> Dialog_FieldDefinition::get_field() const
 
   //Get the field info from the widgets:
 
-  Gnome::Gda::FieldAttributes fieldInfo = field->get_field_info(); //Preserve previous information.
+  Glib::RefPtr<Gnome::Gda::Column> fieldInfo = field->get_field_info(); //Preserve previous information.
 
-  fieldInfo.set_name(m_pEntry_Name->get_text());
+  fieldInfo->set_name(m_pEntry_Name->get_text());
 
-  fieldInfo.set_gdatype( Field::get_gda_type_for_glom_type( m_pCombo_Type->get_field_type() ) );
+  fieldInfo->set_g_type( Field::get_gda_type_for_glom_type( m_pCombo_Type->get_field_type() ) );
 
-  fieldInfo.set_unique_key(m_pCheck_Unique->get_active());
-  fieldInfo.set_primary_key(m_pCheck_PrimaryKey->get_active());
-  fieldInfo.set_auto_increment(m_pCheck_AutoIncrement->get_active());
+  fieldInfo->set_unique_key(m_pCheck_Unique->get_active());
+  fieldInfo->set_primary_key(m_pCheck_PrimaryKey->get_active());
+  fieldInfo->set_auto_increment(m_pCheck_AutoIncrement->get_active());
 
-  if(!fieldInfo.get_auto_increment()) //Ignore default_values for auto_increment fields - it's just some obscure postgres code.
+  if(!fieldInfo->get_auto_increment()) //Ignore default_values for auto_increment fields - it's just some obscure postgres code.
   {
     //Simple default value:
-    fieldInfo.set_default_value( m_pDataWidget_DefaultValueSimple->get_value() );
+    fieldInfo->set_default_value( m_pDataWidget_DefaultValueSimple->get_value() );
   }
 
   //Lookup:
@@ -254,7 +254,7 @@ sharedptr<Field> Dialog_FieldDefinition::get_field() const
   if(m_pRadio_Calculate)
     field->set_calculation(m_pTextView_Calculation->get_buffer()->get_text());
 
-  Gnome::Gda::FieldAttributes field_info_copy = fieldInfo;
+  Glib::RefPtr<Gnome::Gda::Column> field_info_copy = fieldInfo;
 
   field->set_field_info(fieldInfo);
 

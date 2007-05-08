@@ -27,10 +27,10 @@ bool GlomPostgres::postgres_add_column(const Glib::ustring& table_name, const sh
 {
   sharedptr<Field> field_to_add = glom_sharedptr_clone(field);
 
-  Gnome::Gda::FieldAttributes field_info = field_to_add->get_field_info();
-  if((field_info.get_gdatype() == Gnome::Gda::VALUE_TYPE_UNKNOWN) || (field_info.get_gdatype() == Gnome::Gda::VALUE_TYPE_NULL))
+  Glib::RefPtr<Gnome::Gda::Column> field_info = field_to_add->get_field_info();
+  if((field_info->get_g_type() == G_TYPE_NONE) || (field_info->get_g_type() == GDA_TYPE_NULL))
   {
-    field_info.set_gdatype( Field::get_gda_type_for_glom_type(field_to_add->get_glom_type()) );
+    field_info->set_g_type( Field::get_gda_type_for_glom_type(field_to_add->get_glom_type()) );
     field_to_add->set_field_info(field_info);
   }
 
@@ -49,8 +49,8 @@ bool GlomPostgres::postgres_add_column(const Glib::ustring& table_name, const sh
 
 sharedptr<Field> GlomPostgres::postgres_change_column_extras(const Glib::ustring& table_name, const sharedptr<const Field>& field_old, const sharedptr<const Field>& field, bool set_anyway)
 {
-  //Gnome::Gda::FieldAttributes field_info = field->get_field_info();
-  //Gnome::Gda::FieldAttributes field_info_old = field_old->get_field_info();
+  //Glib::RefPtr<Gnome::Gda::Column> field_info = field->get_field_info();
+  //Glib::RefPtr<Gnome::Gda::Column> field_info_old = field_old->get_field_info();
 
   sharedptr<Field> result = glom_sharedptr_clone(field);
 
@@ -166,7 +166,7 @@ sharedptr<Field> GlomPostgres::postgres_change_column_extras(const Glib::ustring
   }
 
   /* This should have been dealt with by postgres_change_column_type(), because postgres uses a different ("serial") field type for auto-incrementing fields.
-  if(field_info.get_auto_increment() != field_info_old.get_auto_increment())
+  if(field_info->get_auto_increment() != field_info_old.get_auto_increment())
   {
 
   }

@@ -1309,7 +1309,7 @@ void DbAddDel::on_treeview_cell_edited_bool(const Glib::ustring& path_string, in
     Gnome::Gda::Value value_old;
     row.get_value(tree_model_column_index, value_old);
 
-    const bool bValueOld = (value_old.get_value_type() == Gnome::Gda::VALUE_TYPE_BOOLEAN) && value_old.get_bool();
+    const bool bValueOld = (value_old.get_value_type() == G_TYPE_BOOLEAN) && value_old.get_boolean();
     bool bValueNew = !bValueOld;
     Gnome::Gda::Value value_new;
     value_new.set(bValueNew);
@@ -1898,7 +1898,7 @@ void DbAddDel::treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gt
         {
           Gtk::CellRendererToggle* pDerived = dynamic_cast<Gtk::CellRendererToggle*>(renderer);
           if(pDerived)
-            pDerived->set_active( (value.get_value_type() == Gnome::Gda::VALUE_TYPE_BOOLEAN) && value.get_bool() ); 
+            pDerived->set_active( (value.get_value_type() == G_TYPE_BOOLEAN) && value.get_boolean() ); 
 
           break;
         }

@@ -1062,7 +1062,7 @@ void Frame_Glom::update_table_in_document_from_database()
   //Add any new/changed information from the database to the document
   //The database should never change without the knowledge of the document anyway, so this should be unnecessary.
 
-  //TODO_performance: There are a lot of temporary Field and FieldAttributes instances here, with a lot of string copying.
+  //TODO_performance: There are a lot of temporary Field and Column instances here, with a lot of string copying.
 
   //For instance, changed field details, or new fields, or removed fields.
   typedef Box_DB_Table::type_vecFields type_vecFields;
@@ -1095,7 +1095,7 @@ void Frame_Glom::update_table_in_document_from_database()
         else //if it was found.
         {
           //Compare the information:
-          Gnome::Gda::FieldAttributes field_info_db = field_database->get_field_info();
+          Glib::RefPtr<Gnome::Gda::Column> field_info_db = field_database->get_field_info();
           sharedptr<Field> field_document =  *iterFindDoc;
           if(field_document)
           {
@@ -1104,7 +1104,7 @@ void Frame_Glom::update_table_in_document_from_database()
               //The database has different information. We assume that the information in the database is newer.
 
               //Update the field information:
-              field_info_db.set_auto_increment( field_document->get_auto_increment() ); //libgda does not report it from the database properly.
+              field_info_db->set_auto_increment( field_document->get_auto_increment() ); //libgda does not report it from the database properly.
               (*iterFindDoc)->set_field_info( field_info_db );
 
               document_must_to_be_updated = true;
@@ -1648,6 +1648,9 @@ bool Frame_Glom::create_database(const Glib::ustring& database_name, const Glib:
   }
   else
   {
+    // TODO: I don't think this is required anymore since libgda-3.0 because
+    // we do not need a connection to create a database. armin.
+#if 0
     //This must now succeed, because we've already tried it once:
     sharedptr<SharedConnection> sharedconnection;
     try
@@ -1667,52 +1670,55 @@ bool Frame_Glom::create_database(const Glib::ustring& database_name, const Glib:
 
       return false;
     }
+#endif
 
+#if 1
+    // This seems to increase the change that the database creation does not
+    // fail due to the "source database is still in use" error. armin.
+    //std::cout << "Going to sleep" << std::endl;
+    Glib::usleep(500 * 1000);
+    //std::cout << "Awake" << std::endl;
+#endif
 
-    if(sharedconnection)
+    Gtk::Window* pWindowApp = get_app_window();
+    g_assert(pWindowApp);
+
+    Bakery::BusyCursor busycursor(*pWindowApp);
+
+    try
     {
-      Gtk::Window* pWindowApp = get_app_window();
-      g_assert(pWindowApp);
-
-      Bakery::BusyCursor busycursor(*pWindowApp);
-
-      //std::cout << "Frame_Glom::create_database():  debug: before calling sharedconnection->get_gda_connection." << std::endl;
-
-      Glib::RefPtr<Gnome::Gda::Connection> connection = sharedconnection->get_gda_connection();
-      if(connection)
-      {
-        const bool test = connection->create_database(database_name);
-        if(!test)
-        {
-          //TODO: Discover the cause of the error somehow.
-          //I think a failure here might be caused by installing unstable libgda, which seems to affect stable libgda-1.2.
-          //Doing a "make install" in libgda-1.2 seems to fix this:
-          std::cerr << "Frame_Glom::create_database():  Gnome::Gda::Connection::create_database(" << database_name << ") failed." << std::endl;
-
-          //Tell the user:
-          Gtk::Dialog* dialog = 0;
-          try
-          {
-            Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_error_create_database");
-            refXml->get_widget("dialog_error_create_database", dialog);
-            dialog->set_transient_for(*pWindowApp);
-            Glom::Utils::dialog_run_with_help(dialog, "dialog_error_create_database");
-            delete dialog;
-          }
-          catch(const Gnome::Glade::XmlError& ex)
-          {
-            std::cerr << ex.what() << std::endl;
-          }
-
-           return false;
-        }
-
-        //if(result)
-        //{
-        //  std::cout << "Frame_Glom::create_database(): Creation succeeded: database_name=" << database_name << std::endl;
-        //}
-      }
+      ConnectionPool::get_instance()->create_database(database_name);
     }
+    catch(const Glib::Exception& ex) // libgda does not set error domain
+    {
+      //I think a failure here might be caused by installing unstable libgda, which seems to affect stable libgda-1.2.
+      //Doing a "make install" in libgda-1.2 seems to fix this:
+      //TODO: Is this still relevant in libgda-3.0?
+      std::cerr << "Frame_Glom::create_database():  Gnome::Gda::Connection::create_database(" << database_name << ") failed: " << ex.what() << std::endl;
+
+      //Tell the user:
+      Gtk::Dialog* dialog = 0;
+      try
+      {
+         // TODO: Tell the user what has gone wrong (ex.what())
+        Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_error_create_database");
+        refXml->get_widget("dialog_error_create_database", dialog);
+        dialog->set_transient_for(*pWindowApp);
+        Glom::Utils::dialog_run_with_help(dialog, "dialog_error_create_database");
+        delete dialog;
+      }
+      catch(const Gnome::Glade::XmlError& ex)
+      {
+        std::cerr << ex.what() << std::endl;
+      }
+
+       return false;
+    }
+
+    //if(result)
+    //{
+    //  std::cout << "Frame_Glom::create_database(): Creation succeeded: database_name=" << database_name << std::endl;
+    //}
   }
 
   //Connect to the actual database:
