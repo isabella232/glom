@@ -87,7 +87,8 @@ protected:
 
   virtual void on_menu_file_close(); //override.
 
-  virtual Glib::ustring ui_file_select_save(const Glib::ustring& old_file_uri); //override.
+  virtual Glib::ustring ui_file_select_save(const Glib::ustring& old_file_uri); //overriden.
+  virtual void document_history_add(const Glib::ustring& file_uri); //overridden.
 
   virtual void on_userlevel_changed(AppState::userlevels userlevel);
 

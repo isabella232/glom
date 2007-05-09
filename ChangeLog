@@ -1,3 +1,11 @@
+2007-05-09  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/application.cc:
+	* glom/application.h: Override document_history_add from the Bakery App_WithDoc 
+	class, to try (unsuccessfully so far) to prevent adding of example files to 
+	the recent files list.
+	offer_new_or_existing(): Do not shown non-existing recent files.
+
 2007-05-08  Armin Burgmeier  <armin@openismus.com>
 
 	* several files: Merged changes from the GLOM_LIBGDA3 branch. Glom now

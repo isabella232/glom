@@ -928,21 +928,24 @@ bool App_Glom::offer_new_or_existing()
   refXml->get_widget("dialog_existing_or_new", dialog);
   dialog->set_transient_for(*this);
 
-  Gtk::RecentChooserWidget* recent_chooser;
+  Gtk::RecentChooserWidget* recent_chooser = NULL;
   refXml->get_widget("existing_or_new_recentchooser", recent_chooser);
 
   Gtk::RecentFilter filter;
   filter.add_mime_type("application/x-glom");
   recent_chooser->set_filter(filter);
 
+  /* Don't show files that don't exist anymore: */
+  recent_chooser->set_show_not_found(FALSE);
+
   // Hide the recent chooser when they are not any recently used files
-  Gtk::Frame* recent_frame;
+  Gtk::Frame* recent_frame = NULL;
   refXml->get_widget("existing_or_new_recentchooser_frame", recent_frame);
   if(recent_chooser->get_items().empty()) recent_frame->hide();
 
   recent_chooser->signal_item_activated().connect(sigc::bind(sigc::mem_fun(*dialog, &Gtk::Dialog::response), 1)); // Open
 
-  int response_id = dialog->run();
+  const int response_id = dialog->run();
   Glib::ustring selected_uri = recent_chooser->get_current_uri();
   delete dialog;
   dialog = 0;
@@ -1609,6 +1612,25 @@ void App_Glom::on_window_translations_hide()
 App_Glom* App_Glom::get_application()
 {
   return global_application;
+}
+
+void App_Glom::document_history_add(const Glib::ustring& file_uri)
+{
+  // We override this so we can prevent example files from being saved in the recently-used list:
+
+  bool prevent = false;
+  if(file_uri.empty())
+  {
+    // Use the fact that file_uri is actually currently open:
+    // Hopefully this is always true: 
+    Document_Glom *document = dynamic_cast<Document_Glom*>(get_document());
+    if(document)
+	prevent = document->get_is_example_file();
+  }
+
+  // Call the base class:
+  if(!prevent)
+    Bakery::App_WithDoc_Gtk::document_history_add(file_uri);
 }
 
 } //namespace Glom
