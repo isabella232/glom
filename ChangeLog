@@ -1,3 +1,8 @@
+2007-05-10  Murray Cumming  <murrayc@murrayc.com>
+
+	* configure.in: Require libgda 3.0.1, which is the first version that works 
+	enough for Glom.
+
 2007-05-09  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/application.cc:
