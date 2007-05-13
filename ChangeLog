@@ -1,3 +1,13 @@
+2007-05-13  Armin Burgmeier  <armin@openismus.com>
+
+	* glom/glom.glade: Sort most recently used files first.
+
+	* glom/application.h:
+	* glom/appliaction.cc: Added m_example_uri field that stores the URI
+	of the opened example file. This is checked against in
+	document_history_ad() to prevent adding of example files into the
+	recent files list.
+
 2007-05-10  Murray Cumming  <murrayc@murrayc.com>
 
 	* configure.in: Require libgda 3.0.1, which is the first version that works 

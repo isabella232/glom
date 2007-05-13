@@ -127,6 +127,11 @@ protected:
   Glib::ustring m_ui_save_extra_newdb_title;
   bool m_ui_save_extra_newdb_selfhosted;
 
+  // This is set to the URI of an example file that is loaded to be able to
+  // prevent adding it into the recently used resources in
+  // document_history_add().
+  Glib::ustring m_example_uri;
+
 
   bool m_show_sql_debug;
 };

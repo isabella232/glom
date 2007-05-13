@@ -713,6 +713,12 @@ bool App_Glom::on_document_load()
       const bool is_example = pDocument->get_is_example_file();
       if(pDocument->get_is_example_file())
       {
+        // Remember the URI to the example file to be able to prevent
+        // adding the URI to the recently used files in document_history_add.
+        // We want to add the document that is created from the example
+        // instead of the example itself.
+        m_example_uri = pDocument->get_file_uri();
+
         pDocument->set_file_uri(Glib::ustring()); //Prevent it from defaulting to the read-only examples directory when offering saveas.
 
         //m_ui_save_extra_* are used by offer_saveas() if it's not empty:
@@ -722,6 +728,8 @@ bool App_Glom::on_document_load()
         m_ui_save_extra_newdb_title = "TODO";
         m_ui_save_extra_newdb_selfhosted = true;
         offer_saveas();
+        // Note that bakery will try to add the example file itself to the
+        // recently used documents, which is not what we want.
         m_ui_save_extra_message.clear();
         m_ui_save_extra_title.clear();
 
@@ -1619,13 +1627,9 @@ void App_Glom::document_history_add(const Glib::ustring& file_uri)
   // We override this so we can prevent example files from being saved in the recently-used list:
 
   bool prevent = false;
-  if(file_uri.empty())
+  if(!file_uri.empty())
   {
-    // Use the fact that file_uri is actually currently open:
-    // Hopefully this is always true: 
-    Document_Glom *document = dynamic_cast<Document_Glom*>(get_document());
-    if(document)
-	prevent = document->get_is_example_file();
+    prevent = (file_uri == m_example_uri);
   }
 
   // Call the base class:
