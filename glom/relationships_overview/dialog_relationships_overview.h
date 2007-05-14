@@ -29,7 +29,7 @@
 #include <map>
 #include <vector>
 
-#include "relationships_canvas.h"
+//#include "relationships_canvas.h"
 
 namespace Glom
 {

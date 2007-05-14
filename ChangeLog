@@ -1,3 +1,21 @@
+2007-05-14  Armin Burgmeier  <armin@openismus.com>
+
+	* glom/relationships_overview/relationships_canvas.cc:
+	* glom/relationships_overview/relationships_canvas.h:
+	* glom/relationships_overview/relationshipscanvas_tablewidget.cc:
+	* glom/relationships_overview/relationshipscanvas_tablewidget.h:
+	* glom/relationships_overview/table_canvasitem.h:
+	* glom/relationships_overview/table_canvasitem.cc: Removed these files
+	since they are no longer used.
+
+	* glom/relationships_overview/Makfile.am: Removed aforementioned files
+	from build.
+
+	* glom/relationships_overview/dialog_relationships_overview.h:
+	* glom/main.cc: Do not initialize/include libgnomecanvasmm anymore.
+
+	* configure.in: Dropped dependency on libgnomecanvasmm.
+
 2007-05-13  Armin Burgmeier  <armin@openismus.com>
 
 	* glom/glom.glade: Sort most recently used files first.
