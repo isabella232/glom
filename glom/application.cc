@@ -20,8 +20,12 @@
 
 #include "application.h"
 #include <glom/libglom/dialog_progress_creating.h>
+
+#ifndef ENABLE_CLIENT_ONLY
 #include <glom/translation/dialog_change_language.h>
 #include <glom/translation/window_translations.h>
+#endif // !ENABLE_CLIENT_ONLY
+
 #include <glom/utility_widgets/filechooserdialog.h>
 #include <glom/libglom/utils.h>
 #include <libgnome/gnome-help.h> //For gnome_help_display
@@ -44,11 +48,15 @@ App_Glom::App_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml
   type_base(cobject, "Glom"),
   m_pBoxTop(0),
   m_pFrame(0),
+#ifndef ENABLE_CLIENT_ONLY
   m_window_translations(0),
+#endif // !ENABLE_CLIENT_ONLY
   m_menu_tables_ui_merge_id(0),
   m_menu_reports_ui_merge_id(0),
   m_ui_save_extra_showextras(false),
+#ifndef ENABLE_CLIENT_ONLY
   m_ui_save_extra_newdb_selfhosted(false),
+#endif // !ENABLE_CLIENT_ONLY
   m_show_sql_debug(false)
 {
   try
@@ -75,11 +83,13 @@ App_Glom::App_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml
 
 App_Glom::~App_Glom()
 {
+#ifndef ENABLE_CLIENT_ONLY
   if(m_window_translations)
   {
     m_pFrame->remove_view(m_window_translations);
     delete m_window_translations;
   }
+#endif // !ENABLE_CLIENT_ONLY
 }
 
 bool App_Glom::init(const Glib::ustring& document_uri)
@@ -251,8 +261,10 @@ void App_Glom::init_menus()
 //  m_refActionGroup_Others->add(action,
 //                        sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_Navigate_Database) );
 
+  Glib::RefPtr<Gtk::Action> action;
 
-  Glib::RefPtr<Gtk::Action> action = Gtk::Action::create("GlomAction_Menu_EditTables", _("_Edit Tables"));
+#ifndef ENABLE_CLIENT_ONLY
+  action = Gtk::Action::create("GlomAction_Menu_EditTables", _("_Edit Tables"));
   m_refActionGroup_Others->add(action,
                         sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_Tables_EditTables) );
   m_listDeveloperActions.push_back(action);
@@ -261,16 +273,20 @@ void App_Glom::init_menus()
   m_refActionGroup_Others->add(action,
                         sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_Tables_AddRelatedTable) );
   m_listDeveloperActions.push_back(action);
+#endif // !ENABLE_CLIENT_ONLY
 
 
   //"Reports" menu:
   m_refActionGroup_Others->add( Gtk::Action::create("Glom_Menu_Reports", _("_Reports")) );
 
+#ifndef ENABLE_CLIENT_ONLY
   action = Gtk::Action::create("GlomAction_Menu_EditReports", _("_Edit Reports"));
   m_refActionGroup_Others->add(action,
                         sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_Tables_EditReports) );
   m_listDeveloperActions.push_back(action);
+#endif
 
+#ifndef ENABLE_CLIENT_ONLY
   //"UserLevel" menu:
   m_refActionGroup_Others->add(Gtk::Action::create("Glom_Menu_userlevel", _("_User Level")));
   Gtk::RadioAction::Group group_userlevel;
@@ -282,6 +298,7 @@ void App_Glom::init_menus()
   m_action_menu_userlevel_operator =  Gtk::RadioAction::create(group_userlevel, "GlomAction_Menu_userlevel_Operator", _("_Operator"));
   m_refActionGroup_Others->add(m_action_menu_userlevel_operator,
                           sigc::mem_fun(*this, &App_Glom::on_menu_userlevel_operator) );
+#endif // !ENABLE_CLIENT_ONLY
 
   //"Mode" menu:
   action =  Gtk::Action::create("Glom_Menu_Mode", _("_Mode"));
@@ -297,6 +314,7 @@ void App_Glom::init_menus()
   m_refActionGroup_Others->add(m_action_mode_find,  Gtk::AccelKey("<control>F"),
                         sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_Mode_Find) );
 
+#ifndef ENABLE_CLIENT_ONLY
   action = Gtk::Action::create("Glom_Menu_Developer", _("_Developer"));
   m_listDeveloperActions.push_back(action);
   m_refActionGroup_Others->add(action);
@@ -342,6 +360,7 @@ void App_Glom::init_menus()
   action = Gtk::Action::create("GlomAction_Menu_Developer_Translations", _("_Translations"));
   m_listDeveloperActions.push_back(action);
   m_refActionGroup_Others->add(action, sigc::mem_fun(*this, &App_Glom::on_menu_developer_translations));
+#endif // !ENABLE_CLIENT_ONLY
 
   m_refUIManager->insert_action_group(m_refActionGroup_Others);
 
@@ -353,18 +372,23 @@ void App_Glom::init_menus()
     "      <menu action='Glom_Menu_Tables'>"
     "        <placeholder name='Menu_Tables_Dynamic' />"
     "        <separator />"
+#ifndef ENABLE_CLIENT_ONLY
     "        <menuitem action='GlomAction_Menu_EditTables' />"
     "        <menuitem action='GlomAction_Menu_AddRelatedTable' />"
+#endif // !ENABLE_CLIENT_ONLY
     "     </menu>"
     "     <menu action='Glom_Menu_Reports'>"
     "        <placeholder name='Menu_Reports_Dynamic' />"
+#ifndef ENABLE_CLIENT_ONLY
     "        <separator />"
     "        <menuitem action='GlomAction_Menu_EditReports' />"
+#endif // !ENABLE_CLIENT_ONLY
     "     </menu>"
     "      <menu action='Glom_Menu_Mode'>"
     "        <menuitem action='GlomAction_Menu_Mode_Data' />"
     "        <menuitem action='GlomAction_Menu_Mode_Find' />"
     "      </menu>"
+#ifndef ENABLE_CLIENT_ONLY
     "      <menu action='Glom_Menu_userlevel'>"
     "        <menuitem action='GlomAction_Menu_userlevel_Developer' />"
     "        <menuitem action='GlomAction_Menu_userlevel_Operator' />"
@@ -382,6 +406,7 @@ void App_Glom::init_menus()
     "        <menuitem action='GlomAction_Menu_Developer_Translations' />"
     "        <menuitem action='GlomAction_Menu_Developer_ChangeLanguage' />"
     "      </menu>"
+#endif // !ENABLE_CLIENT_ONLY
     "    </placeholder>"
     "  </menubar>"
     "</ui>";
@@ -396,6 +421,7 @@ void App_Glom::init_menus()
   fill_menu_tables();
 }
 
+#ifndef ENABLE_CLIENT_ONLY
 void App_Glom::on_menu_userlevel_developer()
 {
   if(m_pFrame)
@@ -407,6 +433,7 @@ void App_Glom::on_menu_userlevel_operator()
   if(m_pFrame)
     m_pFrame->on_menu_userlevel_Operator(m_action_menu_userlevel_operator);
 }
+#endif // !ENABLE_CLIENT_ONLY
 
 void App_Glom::on_menu_file_close() //override
 {
@@ -504,7 +531,11 @@ Glib::ustring App_Glom::ui_file_select_save(const Glib::ustring& old_file_uri) /
     else
       m_ui_save_extra_newdb_title = Utils::title_from_string( filename ); //Start with something suitable.
 
-    fileChooser_SaveExtras->set_extra_newdb_details(m_ui_save_extra_newdb_title, m_ui_save_extra_newdb_selfhosted); 
+    fileChooser_SaveExtras->set_extra_newdb_title(m_ui_save_extra_newdb_title); 
+
+#ifndef ENABLE_CLIENT_ONLY
+    fileChooser_SaveExtras->set_extra_newdb_self_hosted(m_ui_save_extra_newdb_selfhosted);
+#endif // !ENABLE_CLIENT_ONLY
   }
 
 
@@ -586,7 +617,12 @@ Glib::ustring App_Glom::ui_file_select_save(const Glib::ustring& old_file_uri) /
       if(!try_again && fileChooser_SaveExtras)
       {
         //Get the extra details from the extended save dialog:
-        m_ui_save_extra_newdb_title = fileChooser_SaveExtras->get_extra_newdb_details(m_ui_save_extra_newdb_selfhosted); 
+        m_ui_save_extra_newdb_title = fileChooser_SaveExtras->get_extra_newdb_title();
+
+#ifndef ENABLE_CLIENT_ONLY
+        m_ui_save_extra_newdb_selfhosted = fileChooser_SaveExtras->get_extra_newdb_self_hosted();
+#endif // !ENABLE_CLIENT_ONLY
+
         if(m_ui_save_extra_newdb_title.empty())
         {
           Frame_Glom::show_ok_dialog(_("Database Title missing"), _("You must specify a title for the new database."), *this, Gtk::MESSAGE_ERROR);
@@ -596,6 +632,7 @@ Glib::ustring App_Glom::ui_file_select_save(const Glib::ustring& old_file_uri) /
         }
       }
  
+#ifndef ENABLE_CLIENT_ONLY
       if(!try_again && fileChooser_SaveExtras && m_ui_save_extra_newdb_selfhosted)
       {
         //Check that the directory does not exist already.
@@ -629,7 +666,9 @@ Glib::ustring App_Glom::ui_file_select_save(const Glib::ustring& old_file_uri) /
         Glib::RefPtr<Gnome::Vfs::Uri> uri_whole = vfs_uri->append_string(filename_part);
         return uri_whole->to_string();
       }
-      else if(!try_again)
+#endif // !ENABLE_CLIENT_ONLY
+
+      if(!try_again)
       {
         return uri_chosen;
       }
@@ -641,6 +680,7 @@ Glib::ustring App_Glom::ui_file_select_save(const Glib::ustring& old_file_uri) /
   return Glib::ustring();
 }
 
+#ifndef ENABLE_CLIENT_ONLY
 void App_Glom::stop_self_hosting_of_document_database()
 {
   Document_Glom* pDocument = static_cast<Document_Glom*>(get_document());
@@ -653,6 +693,7 @@ void App_Glom::stop_self_hosting_of_document_database()
     connection_pool->stop_self_hosting();
   }
 }
+#endif // !ENABLE_CLIENT_ONLY
 
 Bakery::App* App_Glom::new_instance() //Override
 {
@@ -694,11 +735,13 @@ bool App_Glom::on_document_load()
   }
   else
   {
+#ifndef ENABLE_CLIENT_ONLY
     //Connect signals:
     pDocument->signal_userlevel_changed().connect( sigc::mem_fun(*this, &App_Glom::on_userlevel_changed) );
 
     //Disable/Enable actions, depending on userlevel:
     pDocument->emit_userlevel_changed();
+#endif // !ENABLE_CLIENT_ONLY
 
     if(pDocument->get_connection_database().empty()) //If it is a new (default) document.
     {
@@ -726,7 +769,9 @@ bool App_Glom::on_document_load()
         m_ui_save_extra_title = _("Creating From Example File");
         m_ui_save_extra_message = _("To use this example file you must save an editable copy of the file. A new database will also be created on the server.");
         m_ui_save_extra_newdb_title = "TODO";
+#ifndef ENABLE_CLIENT_ONLY
         m_ui_save_extra_newdb_selfhosted = true;
+#endif // !ENABLE_CLIENT_ONLY
         offer_saveas();
         // Note that bakery will try to add the example file itself to the
         // recently used documents, which is not what we want.
@@ -735,10 +780,12 @@ bool App_Glom::on_document_load()
 
         //Get the results from the extended save dialog:
         pDocument->set_database_title(m_ui_save_extra_newdb_title);
+#ifndef ENABLE_CLIENT_ONLY
         pDocument->set_connection_is_self_hosted(m_ui_save_extra_newdb_selfhosted);
+        m_ui_save_extra_newdb_selfhosted = false;
+#endif
 
         m_ui_save_extra_newdb_title.clear();
-        m_ui_save_extra_newdb_selfhosted = false;
         m_ui_save_extra_showextras = false;
 
         if(get_operation_cancelled())
@@ -747,6 +794,7 @@ bool App_Glom::on_document_load()
           pDocument->set_is_example_file(false);
       }
 
+#ifndef ENABLE_CLIENT_ONLY
       //Warn about read-only files, because users will otherwise wonder why they can't use Developer mode:
       Document_Glom::userLevelReason reason = Document_Glom::USER_LEVEL_REASON_UNKNOWN;
       const AppState::userlevels userlevel = pDocument->get_userlevel(reason);
@@ -763,6 +811,7 @@ bool App_Glom::on_document_load()
         if(response == Gtk::RESPONSE_CANCEL)
           return false;
       }
+#endif // !ENABLE_CLIENT_ONLY
 
       //Read the connection information from the document:
       ConnectionPool* connection_pool = ConnectionPool::get_instance();
@@ -772,6 +821,7 @@ bool App_Glom::on_document_load()
       {
         //Set the connection details in the ConnectionPool singleton.
         //The ConnectionPool will now use these every time it tries to connect.
+#ifndef ENABLE_CLIENT_ONLY
         if(pDocument->get_connection_is_self_hosted())
         {
           // TODO: sleep, to give postgres time to start?
@@ -788,6 +838,7 @@ bool App_Glom::on_document_load()
         {
           connection_pool->set_self_hosted(std::string());
         }
+#endif // !ENABLE_CLIENT_ONLY
 
         connection_pool->set_host(pDocument->get_connection_server());
         connection_pool->set_user(pDocument->get_connection_user());
@@ -809,9 +860,11 @@ bool App_Glom::on_document_load()
 
           if(!test) //It usually throws an exception instead of returning false.
           {
+#ifndef ENABLE_CLIENT_ONLY
             //Stop self-hosting, if we are doing that:
             std::cout << "debug: calling stop_self_hosting_of_document_database()" << std::endl;
             stop_self_hosting_of_document_database();
+#endif // !ENABLE_CLIENT_ONLY
 
             return false; //Failed. Close the document.
           }
@@ -836,6 +889,11 @@ bool App_Glom::on_document_load()
             }
             else
             {
+              // TODO_clientonly: We need to change to developer mode here for
+              // a short time. This in not very elegant because most of the
+              // code assumes that userlevel can never be DEVELOPER in client
+              // only mode.
+
               //Make sure that the changes (mark as non example, and save the new database name) are really saved:
               //Change the user level temporarily so that save_changes() actually saves:
               const AppState::userlevels user_level = pDocument->get_userlevel();
@@ -893,6 +951,7 @@ void App_Glom::statusbar_clear()
 */
 
 
+#ifndef ENABLE_CLIENT_ONLY
 void App_Glom::on_userlevel_changed(AppState::userlevels /* userlevel */)
 {
   update_userlevel_ui();
@@ -922,6 +981,7 @@ void App_Glom::update_userlevel_ui()
       m_action_menu_userlevel_operator->set_active();
   }
 }
+#endif // !ENABLE_CLIENT_ONLY
 
 Glib::RefPtr<Gtk::UIManager> App_Glom::get_ui_manager()
 {
@@ -952,6 +1012,14 @@ bool App_Glom::offer_new_or_existing()
   if(recent_chooser->get_items().empty()) recent_frame->hide();
 
   recent_chooser->signal_item_activated().connect(sigc::bind(sigc::mem_fun(*dialog, &Gtk::Dialog::response), 1)); // Open
+
+#ifdef ENABLE_CLIENT_ONLY
+  // Don't offer the user to create a new document, because without
+  // developer mode he couldn't do anything useful without it, anyway.
+  Gtk::Button* new_button;
+  refXml->get_widget("existing_or_new_button_new", new_button);
+  new_button->hide();
+#endif
 
   const int response_id = dialog->run();
   Glib::ustring selected_uri = recent_chooser->get_current_uri();
@@ -997,6 +1065,7 @@ bool App_Glom::offer_new_or_existing()
       return offer_new_or_existing();
     }
   }
+#ifndef ENABLE_CLIENT_ONLY
   else if(response_id == 2) //New
   {
     //Each document must have a location, so ask the user for one.
@@ -1004,8 +1073,8 @@ bool App_Glom::offer_new_or_existing()
     Glib::ustring db_title;
 
     m_ui_save_extra_showextras = true; //Offer self-hosting or central hosting, and offer the database title.
-    m_ui_save_extra_newdb_title.clear();
     m_ui_save_extra_newdb_selfhosted = true; /* Default to self-hosting */
+    m_ui_save_extra_newdb_title.clear();
     offer_saveas();
 
     //Check that the document was given a location:
@@ -1090,6 +1159,7 @@ bool App_Glom::offer_new_or_existing()
       return offer_new_or_existing();
     }
   }
+#endif // !ENABLE_CLIENT_ONLY
   else if(response_id == Gtk::RESPONSE_CANCEL)
   {
     return false; //close the window to close the application, because they need to choose a new or existing document.
@@ -1296,7 +1366,8 @@ AppState::userlevels App_Glom::get_userlevel() const
     return document->get_userlevel();
   }
   else
-    return AppState::USERLEVEL_DEVELOPER; //This should never happen.
+    g_assert_not_reached();
+    //return AppState::USERLEVEL_DEVELOPER; //This should never happen.
 }
 
 void App_Glom::add_developer_action(const Glib::RefPtr<Gtk::Action>& refAction)
@@ -1460,7 +1531,10 @@ void App_Glom::on_menu_file_save_as_example()
   m_ui_save_extra_title.clear();
   m_ui_save_extra_message.clear();
   m_ui_save_extra_newdb_title.clear();
+#ifndef ENABLE_CLIENT_ONLY
   m_ui_save_extra_newdb_selfhosted = false;
+#endif // !ENABLE_CLIENT_ONLY
+
   Glib::ustring file_uri = ui_file_select_save(file_uriOld); //Also asks for overwrite confirmation.
   if(!file_uri.empty())
   {
@@ -1556,6 +1630,7 @@ void App_Glom::on_menu_file_save_as_example()
   }
 }
 
+#ifndef ENABLE_CLIENT_ONLY // TODO: Are these useful in operator mode? They probably shouldn't be in the developer menu, then.
 void App_Glom::on_menu_developer_changelanguage()
 {
   Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_change_language");
@@ -1616,6 +1691,7 @@ void App_Glom::on_window_translations_hide()
     m_pFrame->on_developer_dialog_hide();
   }
 }
+#endif // !ENABLE_CLIENT_ONLY
 
 App_Glom* App_Glom::get_application()
 {

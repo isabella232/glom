@@ -28,6 +28,8 @@
 #include <gtkmm/entry.h>
 #include <gtkmm/radiobutton.h>
 
+#include "config.h" // For ENABLE_CLIENT_ONLY
+
 namespace Glom
 {
 
@@ -41,9 +43,16 @@ public:
   virtual ~FileChooserDialog();
 
   void set_extra_message(const Glib::ustring& message);
-  void set_extra_newdb_details(const Glib::ustring& title, bool self_hosted = true);
+  void set_extra_newdb_title(const Glib::ustring& title);
+#ifndef ENABLE_CLIENT_ONLY
+  void set_extra_newdb_self_hosted(bool self_hosted = true);
+#endif // !ENABLE_CLIENT_ONLY
 
-  Glib::ustring get_extra_newdb_details(bool& self_hosted);
+  Glib::ustring get_extra_newdb_title() const;
+
+#ifndef ENABLE_CLIENT_ONLY
+  bool get_extra_newdb_self_hosted() const;
+#endif // !ENABLE_CLIENT_ONLY
 
 protected:
   void create_child_widgets();
@@ -53,8 +62,10 @@ protected:
 
   /* New database details: */
   Gtk::Entry m_entry_title;
+#ifndef ENABLE_CLIENT_ONLY
   Gtk::RadioButton m_radiobutton_server_central;
   Gtk::RadioButton m_radiobutton_server_selfhosted;
+#endif // !ENABLE_CLIENT_ONLY
   Gtk::Button m_button_ok;
 };
 

@@ -30,7 +30,10 @@ namespace Glom
 NotebookGlom::NotebookGlom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& /* refGlade */)
 : Gtk::Notebook(cobject)
 {
+#ifndef ENABLE_CLIENT_ONLY
   setup_menu();
+#endif // !ENABLE_CLIENT_ONLY
+
   init();
 
   //set_size_request(400, -1); //It doesn't seem to demand the space used by its children.
@@ -38,8 +41,11 @@ NotebookGlom::NotebookGlom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Gl
 
 NotebookGlom::NotebookGlom()
 {
+#ifndef ENABLE_CLIENT_ONLY
   setup_menu();
-  init();
+#endif // !ENABLE_CLIENT_ONLY
+
+init();
 
   //set_size_request(400, -1); //It doesn't seem to demand the space used by its children.
 }

@@ -145,7 +145,9 @@ protected:
   /// Remember the layout widget so we can iterate through them later.
   void on_layoutwidget_changed();
 
+#ifndef ENABLE_CLIENT_ONLY
   void on_datawidget_layout_item_added(LayoutWidgetBase::enumType item_type, DataWidget* pDataWidget);
+#endif // !ENABLE_CLIENT_ONLY
 
   void on_portal_user_requested_details(Gnome::Gda::Value primary_key_value, Box_Data_List_Related* portal_box);
 

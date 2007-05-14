@@ -25,7 +25,6 @@
 #include <gtkmm/main.h>
 #include <libgnome/gnome-init.h> // For gnome_program_init().
 #include <libgnomevfsmm/uri.h>
-#include <gtksourceviewmm/init.h>
 #include <glibmm/i18n.h>
 
 
@@ -85,7 +84,6 @@ main(int argc, char* argv[])
   g_thread_init(NULL); //So we can use GMutex.
 
   Gnome::Gda::init("glom", VERSION, argc, argv);
-  gtksourceview::init();
 
   Glib::OptionContext context;
 
@@ -152,11 +150,12 @@ main(int argc, char* argv[])
     //debugging:
     //input_uri = "file:///home/murrayc/cvs/gnome212/glom/examples/example_smallbusiness.glom";
 
-
+#ifndef ENABLE_CLIENT_ONLY
     //Check that PostgreSQL is really available:
     const bool install_complete = Glom::ConnectionPool::check_postgres_is_available_with_warning();
     if(!install_complete)
       return -1; //There is no point in going further because the most useful Glom functionality will not work without Postgres. Only a very cut-down Glom client would be useful without self-hosting.
+#endif // !ENABLE_CLIENT_ONLY
 
 
     // Main app

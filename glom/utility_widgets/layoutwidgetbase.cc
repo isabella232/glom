@@ -26,9 +26,12 @@ namespace Glom
 {
 
 LayoutWidgetBase::LayoutWidgetBase()
+#ifndef ENABLE_CLIENT_ONLY
 : m_pLayoutItem(0),
   m_pMenuPopup(0)
+#endif // !ENABLE_CLIENT_ONLY
 {
+#ifndef ENABLE_CLIENT_ONLY
   m_refActionGroup = Gtk::ActionGroup::create();
 
   m_refActionGroup->add(Gtk::Action::create("ContextMenu", "Context Menu") );
@@ -40,6 +43,7 @@ LayoutWidgetBase::LayoutWidgetBase()
   m_refContextAddGroup =  Gtk::Action::create("ContextAddGroup", _("Add Group"));
   m_refContextAddButton =  Gtk::Action::create("ContextAddButton", _("Add Button"));
   m_refContextAddText =  Gtk::Action::create("ContextAddText", _("Add Text"));
+#endif // !ENABLE_CLIENT_ONLY
 }
 
 LayoutWidgetBase::~LayoutWidgetBase()
@@ -62,6 +66,7 @@ sharedptr<LayoutItem> LayoutWidgetBase::get_layout_item()
   return m_pLayoutItem;
 }
 
+#ifndef ENABLE_CLIENT_ONLY
 void LayoutWidgetBase::setup_menu()
 {
   m_refActionGroup->add(m_refContextLayout,
@@ -163,6 +168,7 @@ void LayoutWidgetBase::on_menupopup_activate_layout_properties()
   //Ask the parent widget to show the layout dialog:
   signal_user_requested_layout_properties().emit();
 }
+#endif // !ENABLE_CLIENT_ONLY
 
 App_Glom* LayoutWidgetBase::get_application() const
 {

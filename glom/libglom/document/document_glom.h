@@ -21,6 +21,8 @@
 #ifndef DOCUMENT_GLOM_H
 #define DOCUMENT_GLOM_H
 
+#include "config.h" // For ENABLE_CLIENT_ONLY
+
 #include <bakery/Document/Document_XML.h>
 #include <bakery/View/View_Composite.h>
 #include <glom/libglom/data_structure/relationship.h>
@@ -95,15 +97,18 @@ public:
 
   static guint get_latest_known_document_format_version();
 
+#ifndef ENABLE_CLIENT_ONLY
   /** When this is set, the postgres database is hosted by the local client,
    *  instead of connecting to an external database server.
    */
   void set_connection_is_self_hosted(bool self_hosted = true);
+#endif // !ENABLE_CLIENT_ONLY
 
   void set_connection_server(const Glib::ustring& strVal);
   void set_connection_user(const Glib::ustring& strVal);
   void set_connection_database(const Glib::ustring& strVal);
 
+#ifndef ENABLE_CLIENT_ONLY
   /** When this returns true, the postgres database should be hosted by the local client,
    *  instead of connecting to an external database server.
    */
@@ -114,6 +119,7 @@ public:
     * This is usually a specifically-named directory at the same level as the .glom file. 
     */   
   std::string get_connection_self_hosted_directory_uri() const;
+#endif // !ENABLE_CLIENT_ONLY
 
   Glib::ustring get_connection_server() const;
   Glib::ustring get_connection_user() const;
@@ -367,7 +373,10 @@ protected:
   AppState m_app_state;
   type_signal_userlevel_changed m_signal_userlevel_changed;
 
+#ifndef ENABLE_CLIENT_ONLY
   bool m_connection_is_self_hosted;
+#endif // !ENABLE_CLIENT_ONLY
+
   Glib::ustring m_connection_server, m_connection_user, m_connection_database;
 
   class LayoutInfo

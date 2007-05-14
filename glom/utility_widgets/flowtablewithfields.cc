@@ -444,8 +444,12 @@ void FlowTableWithFields::add_field_at_position(const sharedptr<LayoutItem_Field
   add(*(info.m_first), *(info.m_second), expand_second);
 
   info.m_second->signal_edited().connect( sigc::bind(sigc::mem_fun(*this, &FlowTableWithFields::on_entry_edited), layoutitem_field)  ); //TODO:  Is it a good idea to bind the LayoutItem? sigc::bind() probably stores a copy at this point.
+
+  // TODO_clientonly: Do we need this signal in client only mode?
+#ifndef ENABLE_CLIENT_ONLY
   info.m_second->signal_layout_item_added().connect( sigc::bind(
     sigc::mem_fun(*this, &FlowTableWithFields::on_datawidget_layout_item_added), info.m_second) );
+#endif // !ENABLE_CLIENT_ONLY
 
   info.m_second->signal_open_details_requested().connect( sigc::bind(sigc::mem_fun(*this, &FlowTableWithFields::on_entry_open_details_requested), layoutitem_field)  );
 
@@ -854,6 +858,7 @@ void FlowTableWithFields::on_layoutwidget_changed()
   signal_layout_changed().emit();
 }
 
+#ifndef ENABLE_CLIENT_ONLY
 void FlowTableWithFields::on_datawidget_layout_item_added(LayoutWidgetBase::enumType item_type, DataWidget* pDataWidget)
 {
   //Get the widget's layout item:
@@ -1012,6 +1017,7 @@ void FlowTableWithFields::on_datawidget_layout_item_added(LayoutWidgetBase::enum
     signal_layout_changed().emit(); //This should result in a complete re-layout.
   }
 }
+#endif // !ENABLE_CLIENT_ONLY
 
 void FlowTableWithFields::on_portal_record_changed(const Glib::ustring& relationship_name)
 {

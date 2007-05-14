@@ -1,5 +1,63 @@
 2007-05-14  Armin Burgmeier  <armin@openismus.com>
 
+	* configure.in:
+	* config.h.in: Added --enable-client-only switch, do not depend on
+	avahi, goocanvas or gtksourceviemm in client only mode.
+
+	* glom/libglom/Makefile.am:
+	* glom/reports/Makefile.am:
+	* glom/mode_data/Makefile.am:
+	* glom/Makefile.am: Exclude some files from being built in client only
+	mode.
+
+	* glom/libglom/connectionpool.h:
+	* glom/libglom/appstate.cc:
+	* glom/libglom/connectionpool.cc:
+	* glom/libglom/document/document_glom.cc:
+	* glom/libglom/document/document_glom.h:
+	* glom/utility_widgets/db_adddel/db_adddel.cc:
+	* glom/utility_widgets/db_adddel/db_adddel.h:
+	* glom/utility_widgets/textviewglom.cc:
+	* glom/utility_widgets/notebookglom.cc:
+	* glom/utility_widgets/comboentryglom.cc:
+	* glom/utility_widgets/imageglom.cc:
+	* glom/utility_widgets/flowtablewithfields.h:
+	* glom/utility_widgets/layoutwidgetbase.cc:
+	* glom/utility_widgets/comboglom.cc:
+	* glom/utility_widgets/entryglom.cc:
+	* glom/utility_widgets/filechooserdialog.h:
+	* glom/utility_widgets/buttonglom.cc:
+	* glom/utility_widgets/labelglom.cc:
+	* glom/utility_widgets/flowtablewithfields.cc:
+	* glom/utility_widgets/datawidget.cc:
+	* glom/utility_widgets/layoutwidgetbase.h:
+	* glom/utility_widgets/datawidget.h:
+	* glom/utility_widgets/filechooserdialog.cc:
+	* glom/frame_glom.cc:
+	* glom/dialog_connection.cc:
+	* glom/base_db.cc:
+	* glom/base_db.h:
+	* glom/main.cc:
+	* glom/mode_data/notebook_data.cc:
+	* glom/mode_data/notebook_data.h:
+	* glom/mode_data/box_data_list.cc:
+	* glom/mode_data/box_data_list_related.cc:
+	* glom/mode_data/box_data_list_related.h:
+	* glom/mode_data/box_data_list.h:
+	* glom/mode_data/box_data.cc:
+	* glom/mode_data/box_data.h:
+	* glom/mode_data/box_data_details.cc:
+	* glom/application.cc:
+	* glom/application.h:
+	* glom/frame_glom.h:
+	* glom/main.cc: #ifdef'ed out developer mode and self-hosting in
+	client only mode.
+
+	* glom/glom.glade: Give the New button in the initial dialog a more
+	meaningful name to be able to hide() it in client only mode.
+
+2007-05-14  Armin Burgmeier  <armin@openismus.com>
+
 	* glom/relationships_overview/relationships_canvas.cc:
 	* glom/relationships_overview/relationships_canvas.h:
 	* glom/relationships_overview/relationshipscanvas_tablewidget.cc:

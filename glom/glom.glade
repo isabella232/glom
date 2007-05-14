@@ -1939,7 +1939,7 @@
 	  </child>
 
 	  <child>
-	    <widget class="GtkButton" id="applybutton1">
+	    <widget class="GtkButton" id="existing_or_new_button_new">
 	      <property name="visible">True</property>
 	      <property name="can_default">True</property>
 	      <property name="can_focus">True</property>

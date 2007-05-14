@@ -21,6 +21,8 @@
 #ifndef BOX_DATA_H
 #define BOX_DATA_H
 
+#include "config.h" // ENABLE_CLIENT_ONLY
+
 #include "../box_db_table.h"
 #include "dialog_layout.h"
 
@@ -57,8 +59,9 @@ public:
 
   virtual bool confirm_discard_unstored_data() const;
 
+#ifndef ENABLE_CLIENT_ONLY
   virtual void show_layout_dialog();
-
+#endif // !ENABLE_CLIENT_ONLY
   Glib::ustring get_layout_name() const;
 
   //Signals:
@@ -72,8 +75,10 @@ public:
   //where_clause.
   sigc::signal<void, Glib::ustring> signal_find_criteria;
 
+#ifndef ENABLE_CLIENT_ONLY
   //g++ 3.4 needs this to be public when used from Box_Data_Details. I'm not sure why. murrayc.
   virtual void on_dialog_layout_hide();
+#endif // !ENABLE_CLIENT_ONLY
 
 protected:
 
@@ -133,7 +138,9 @@ protected:
 
   bool m_bUnstoredData;
 
+#ifndef ENABLE_CLIENT_ONLY
   Dialog_Layout* m_pDialogLayout;
+#endif // !ENABLE_CLIENT_ONLY
   Glib::ustring m_layout_name;
 
   FoundSet m_found_set;

@@ -48,7 +48,10 @@ void ImageGlom::init()
 {
   m_read_only = false;
 
+#ifndef ENABLE_CLIENT_ONLY
   setup_menu();
+#endif // !ENABLE_CLIENT_ONLY
+
   setup_menu_usermode();
 
   m_image.set_size_request(150, 150);
@@ -78,15 +81,18 @@ bool ImageGlom::on_button_press_event(GdkEventButton *event)
   App_Glom* pApp = get_application();
   if(pApp)
   {
+#ifndef ENABLE_CLIENT_ONLY
     pApp->add_developer_action(m_refContextLayout); //So that it can be disabled when not in developer mode.
     pApp->add_developer_action(m_refContextAddField);
     pApp->add_developer_action(m_refContextAddRelatedRecords);
     pApp->add_developer_action(m_refContextAddGroup);
 
     pApp->update_userlevel_ui(); //Update our action's sensitivity.
+#endif // !ENABLE_CLIENT_ONLY
 
     //Only show this popup in developer mode, so operators still see the default GtkEntry context menu.
     //TODO: It would be better to add it somehow to the standard context menu.
+#ifndef ENABLE_CLIENT_ONLY
     if(pApp->get_userlevel() == AppState::USERLEVEL_DEVELOPER)
     {
       if(mods & GDK_BUTTON3_MASK)
@@ -97,7 +103,9 @@ bool ImageGlom::on_button_press_event(GdkEventButton *event)
       }
     }
     else
+#endif // !ENABLE_CLIENT_ONLY
     {
+      // We cannot be in developer mode in client only mode.
       if(mods & GDK_BUTTON3_MASK)
       {
         //Give user choices of actions on this item:

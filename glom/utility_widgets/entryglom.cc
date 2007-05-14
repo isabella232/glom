@@ -38,14 +38,19 @@ EntryGlom::EntryGlom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::X
 : Gtk::Entry(cobject),
   m_glom_type(Field::TYPE_TEXT)
 {
+#ifndef ENABLE_CLIENT_ONLY
   setup_menu();
+#endif // !ENABLE_CLIENT_ONLY
   init();
 }
 
 EntryGlom::EntryGlom(Field::glom_field_type glom_type)
 : m_glom_type(glom_type)
 {
+#ifndef ENABLE_CLIENT_ONLY
   setup_menu();
+#endif // !ENABLE_CLIENT_ONLY
+
   init();
 }
 
@@ -158,6 +163,7 @@ Gnome::Gda::Value EntryGlom::get_value() const
 
 bool EntryGlom::on_button_press_event(GdkEventButton *event)
 {
+#ifndef ENABLE_CLIENT_ONLY
   //Enable/Disable items.
   //We did this earlier, but get_application is more likely to work now:
   App_Glom* pApp = get_application();
@@ -185,6 +191,7 @@ bool EntryGlom::on_button_press_event(GdkEventButton *event)
     }
 
   }
+#endif // !ENABLE_CLIENT_ONLY
 
   return Gtk::Entry::on_button_press_event(event);
 }

@@ -25,6 +25,8 @@
 #include <gtkmm.h>
 #include "../mode_data/treestore_layout.h" //Forthe enum.
 
+#include "config.h" // For ENABLE_CLIENT_ONLY
+
 namespace Glom
 {
 
@@ -54,12 +56,14 @@ public:
   };
 
   //Popup-menu:
+#ifndef ENABLE_CLIENT_ONLY
   virtual void setup_menu();
   virtual void on_menupopup_activate_layout();
   virtual void on_menupopup_activate_layout_properties();
   virtual void on_menupopup_add_item(enumType item);
+#endif // !ENABLE_CLIENT_ONLY
 
-
+  // TODO_clientonly: Do we need these two signals in client only mode?
   typedef sigc::signal<void> type_signal_layout_changed;
   type_signal_layout_changed signal_layout_changed();
 
@@ -88,13 +92,16 @@ protected:
   type_signal_user_requested_layout m_signal_user_requested_layout;
   type_signal_user_requested_layout_properties m_signal_user_requested_layout_properties;
 
+#ifndef ENABLE_CLIENT_ONLY
   Gtk::Menu* m_pMenuPopup;
 
   //TODO_Performance: //Presumably we waste lots of memory by having this in each layout widget. Maybe we can use one shared menu.
   Glib::RefPtr<Gtk::ActionGroup> m_refActionGroup;
   Glib::RefPtr<Gtk::UIManager> m_refUIManager;
-  Glib::RefPtr<Gtk::Action> m_refContextLayout, m_refContextLayoutProperties, m_refContextAddField, m_refContextAddRelatedRecords, m_refContextAddGroup, m_refContextAddNotebook, m_refContextAddButton, m_refContextAddText;
 
+  Glib::RefPtr<Gtk::Action> m_refContextLayout, m_refContextLayoutProperties;
+  Glib::RefPtr<Gtk::Action> m_refContextAddField, m_refContextAddRelatedRecords, m_refContextAddGroup, m_refContextAddNotebook, m_refContextAddButton, m_refContextAddText;
+#endif // !ENABLE_CLIENT_ONLY
 };
 
 } //namespace Glom

@@ -21,22 +21,34 @@
 #include "frame_glom.h"
 #include "application.h"
 #include <glom/libglom/appstate.h>
+
+#ifndef ENABLE_CLIENT_ONLY
 #include "mode_design/users/dialog_groups_list.h"
 #include "dialog_database_preferences.h"
 #include "reports/dialog_layout_report.h"
+#endif // !ENABLE_CLIENT_ONLY
+
 #include <glom/libglom/utils.h>
 #include <glom/libglom/data_structure/glomconversions.h>
 #include <glom/libglom/data_structure/layout/report_parts/layoutitem_summary.h>
 #include <glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.h>
+
 #include <glom/reports/report_builder.h>
+#ifndef ENABLE_CLIENT_ONLY
 #include <glom/mode_design/dialog_add_related_table.h>
 #include <glom/mode_design/script_library/dialog_script_library.h>
-#include <glom/dialog_new_self_hosted_connection.h>
+#endif // !ENABLE_CLIENT_ONLY
 
+#ifndef ENABLE_CLIENT_ONLY
+#include <glom/dialog_new_self_hosted_connection.h>
+#endif // !ENABLE_CLIENT_ONLY
+
+#ifndef ENABLE_CLIENT_ONLY
 #define ENABLE_RELATIONSHIPS_OVERVIEW
 #ifdef ENABLE_RELATIONSHIPS_OVERVIEW
 #include "relationships_overview/dialog_relationships_overview.h"
 #endif
+#endif // !ENABLE_CLIENT_ONLY
 
 #include "filechooser_export.h"
 #include <glom/glom_privs.h>
@@ -61,6 +73,7 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
   m_pLabel_FoundCount(0),
   m_pButton_FindAll(0),
   m_pBox_Mode(0),
+#ifndef ENABLE_CLIENT_ONLY
   m_pBox_Tables(0),
   m_pBox_Reports(0),
   m_pDialog_Tables(0),
@@ -68,9 +81,12 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
   m_pDialog_Fields(0),
   m_pDialog_Relationships(0),
   m_dialog_addrelatedtable(0),
+#endif // !ENABLE_CLIENT_ONLY
   m_pDialogConnection(0),
-  m_pDialogConnectionFailed(0),
-  m_pDialogLayoutReport(0)
+  m_pDialogConnectionFailed(0)
+#ifndef ENABLE_CLIENT_ONLY
+  ,m_pDialogLayoutReport(0)
+#endif // !ENABLE_CLIENT_ONLY
 {
   //Load widgets from glade file:
   refGlade->get_widget("label_name", m_pLabel_Name);
@@ -113,7 +129,7 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
     std::cerr << ex.what() << std::endl;
   }
 
-
+#ifndef ENABLE_CLIENT_ONLY
   try
   {
     Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "box_navigation_tables");
@@ -158,7 +174,9 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
   {
     std::cerr << ex.what() << std::endl;
   }
+#endif // !ENABLE_CLIENT_ONLY
 
+#ifndef ENABLE_CLIENT_ONLY
   try
   {
     Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_design");
@@ -182,13 +200,14 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
   {
     std::cerr << ex.what() << std::endl;
   }
+#endif // !ENABLE_CLIENT_ONLY
 
 
   m_Mode = MODE_None;
   m_Mode_Previous = MODE_None;
 
+#ifndef ENABLE_CLIENT_ONLY
   Gtk::Window* pWindow = get_app_window();
-
   if(pWindow)
     m_pDialog_Tables->set_transient_for(*pWindow);
 
@@ -204,6 +223,7 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
   m_pBox_Reports->show_all();
 
   m_pBox_Reports->signal_selected.connect(sigc::mem_fun(*this, &Frame_Glom::on_box_reports_selected));
+#endif // !ENABLE_CLIENT_ONLY
 
   m_Notebook_Find.signal_find_criteria.connect(sigc::mem_fun(*this, &Frame_Glom::on_notebook_find_criteria));
   m_Notebook_Find.show();
@@ -213,9 +233,11 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
 
   //Fill Composite View:
   //This means that set_document and load/save are delegated to these children:
+#ifndef ENABLE_CLIENT_ONLY
   add_view(m_pBox_Tables);
   add_view(m_pBox_Reports);
   add_view(m_pDialog_Relationships); //Also a composite view.
+#endif // !ENABLE_CLIENT_ONLY
   add_view(m_pDialogConnection); //Also a composite view.
   add_view(&m_Notebook_Data); //Also a composite view.
   add_view(&m_Notebook_Find); //Also a composite view.
@@ -225,16 +247,20 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
 
 Frame_Glom::~Frame_Glom()
 {
+#ifndef ENABLE_CLIENT_ONLY
   remove_view(m_pBox_Tables);
   remove_view(m_pBox_Reports);
+#endif // !ENABLE_CLIENT_ONLY
   remove_view(&m_Notebook_Data); //Also a composite view.
   remove_view(&m_Notebook_Find); //Also a composite view.
 
+#ifndef ENABLE_CLIENT_ONLY
   if(m_pDialog_Tables)
   {
     delete m_pDialog_Tables;
     m_pDialog_Tables = 0;
   }
+#endif // !ENABLE_CLIENT_ONLY
 
   if(m_pDialogConnection)
   {
@@ -249,6 +275,7 @@ Frame_Glom::~Frame_Glom()
     m_pDialogConnectionFailed = 0;
   }
 
+#ifndef ENABLE_CLIENT_ONLY
   if(m_pDialog_Relationships)
   {
     remove_view(m_pDialog_Relationships);
@@ -282,6 +309,7 @@ Frame_Glom::~Frame_Glom()
     delete m_dialog_addrelatedtable;
     m_dialog_addrelatedtable = 0;
   }
+#endif // !ENABLE_CLIENT_ONLY
 }
 
 void Frame_Glom::set_databases_selected(const Glib::ustring& strName)
@@ -296,7 +324,9 @@ void Frame_Glom::set_databases_selected(const Glib::ustring& strName)
 
 void Frame_Glom::on_box_tables_selected(const Glib::ustring& strName)
 {
+#ifndef ENABLE_CLIENT_ONLY
   m_pDialog_Tables->hide(); //cause_close();
+#endif // !ENABLE_CLIENT_ONLY
 
   show_table(strName);
 }
@@ -467,6 +497,7 @@ void Frame_Glom::show_table(const Glib::ustring& table_name, const Gnome::Gda::V
   //show_all();
 }
 
+#ifndef ENABLE_CLIENT_ONLY
 void Frame_Glom::on_menu_userlevel_Developer(const Glib::RefPtr<Gtk::RadioAction>& action, const Glib::RefPtr<Gtk::RadioAction>& operator_action)
 {
   if(action && action->get_active())
@@ -537,7 +568,7 @@ void Frame_Glom::on_menu_userlevel_Operator(const Glib::RefPtr<Gtk::RadioAction>
     }
   }
 }
-
+#endif // !ENABLE_CLIENT_ONLY
 
 void Frame_Glom::on_menu_file_export()
 {
@@ -753,6 +784,7 @@ void Frame_Glom::do_menu_Navigate_Database(bool bUseList)
 }
 */
 
+#ifndef ENABLE_CLIENT_ONLY
 void Frame_Glom::on_menu_Tables_EditReports()
 {
   on_menu_developer_reports();
@@ -895,6 +927,7 @@ void Frame_Glom::on_dialog_add_related_table_request_edit_fields()
   if(m_dialog_addrelatedtable)
     do_menu_developer_fields(*m_dialog_addrelatedtable);
 }
+#endif // !ENABLE_CLIENT_ONLY
 
 void Frame_Glom::do_menu_Navigate_Table(bool open_default)
 {
@@ -904,7 +937,9 @@ void Frame_Glom::do_menu_Navigate_Table(bool open_default)
   }
   else
   {
+#ifndef ENABLE_CLIENT_ONLY
     m_pBox_Tables->init_db_details();
+#endif // !ENABLE_CLIENT_ONLY
 
     Glib::ustring default_table_name;
     if(open_default)
@@ -919,10 +954,15 @@ void Frame_Glom::do_menu_Navigate_Table(bool open_default)
     }
     else
     {
+#ifndef ENABLE_CLIENT_ONLY
       //Let the user choose a table:
       //m_pDialog_Tables->set_policy(false, true, false); //TODO_port
       //m_pDialog_Tables->load_from_document(); //Refresh
       m_pDialog_Tables->show();
+#else
+      // TODO_clientonly: Can this ever happen in client only mode?
+      g_assert_not_reached();
+#endif // !ENABLE_CLIENT_ONLY
     }
   }
 }
@@ -1181,6 +1221,7 @@ void Frame_Glom::load_from_document()
   }
 }
 
+#ifndef ENABLE_CLIENT_ONLY
 void Frame_Glom::on_menu_developer_database_preferences()
 {
   Dialog_Database_Preferences* dialog = 0;
@@ -1370,8 +1411,9 @@ void Frame_Glom::on_menu_developer_script_library()
   remove_view(dialog);
   delete dialog;
 }
+#endif // !ENABLE_CLIENT_ONLY
 
-
+#ifndef ENABLE_CLIENT_ONLY
 void Frame_Glom::on_box_reports_selected(const Glib::ustring& report_name)
 {
   m_pDialog_Reports->hide();
@@ -1383,8 +1425,9 @@ void Frame_Glom::on_box_reports_selected(const Glib::ustring& report_name)
     m_pDialogLayoutReport->show();
   }
 }
+#endif // !ENABLE_CLIENT_ONLY
 
-
+#ifndef ENABLE_CLIENT_ONLY
 void Frame_Glom::on_developer_dialog_hide()
 {
   //The dababase structure might have changed, so refresh the data view:
@@ -1394,6 +1437,7 @@ void Frame_Glom::on_developer_dialog_hide()
   if(m_dialog_addrelatedtable)
     m_dialog_addrelatedtable->set_fields(m_table_name);
 }
+#endif // !ENABLE_CLIENT_ONLY
 
 bool Frame_Glom::connection_request_password_and_choose_new_database_name()
 {
@@ -1401,9 +1445,12 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
   if(!document)
     return false;
 
+#ifndef ENABLE_CLIENT_ONLY
   //Give the ConnectionPool the self-hosted file path, 
   //so that create_self_hosted() can succeed:
   ConnectionPool* connection_pool = ConnectionPool::get_instance();
+
+  // Client only mode does not support self hosting, so there is nothing to do.
   if(connection_pool && document && document->get_connection_is_self_hosted())
   {
     // TODO: sleep, to give postgres time to start?
@@ -1413,10 +1460,12 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
   {
     connection_pool->set_self_hosted(std::string());
   }
+#endif // !ENABLE_CLIENT_ONLY
 
   //Ask either for the existing username and password to use an existing database server,
   //or ask for a new username and password to specify when creating a new self-hosted database.
   int response = 0;
+#ifndef ENABLE_CLIENT_ONLY
   if(document->get_connection_is_self_hosted())
   {
     Dialog_NewSelfHostedConnection* dialog = 0;
@@ -1485,6 +1534,7 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
       return false;
   }
   else
+#endif // !ENABLE_CLIENT_ONLY
   {
     //Ask for connection details:
     m_pDialogConnection->load_from_document(); //Get good defaults.
@@ -1796,6 +1846,7 @@ void Frame_Glom::on_menu_report_selected(const Glib::ustring& report_name)
   report_builder.report_build(found_set, report, get_app_window()); //TODO: Use found set's where_clause.
 }
 
+#ifndef ENABLE_CLIENT_ONLY
 void Frame_Glom::on_dialog_layout_report_hide()
 {
   Document_Glom* document = get_document();
@@ -1815,7 +1866,9 @@ void Frame_Glom::on_dialog_layout_report_hide()
   if(pApp)
     pApp->fill_menu_reports(m_table_name);
 }
+#endif // !ENABLE_CLIENT_ONLY
 
+#ifndef ENABLE_CLIENT_ONLY
 void Frame_Glom::on_dialog_reports_hide()
 {
   //Update the reports menu:
@@ -1849,6 +1902,7 @@ void Frame_Glom::on_dialog_tables_hide()
     }
   }
 }
+#endif // !ENABLE_CLIENT_ONLY
 
 void Frame_Glom::on_notebook_data_record_details_requested(const Glib::ustring& table_name, Gnome::Gda::Value primary_key_value)
 {

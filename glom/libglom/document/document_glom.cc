@@ -175,7 +175,10 @@ namespace Glom
 #define GLOM_RELATIONSHIP_NAME_SYSTEM_PROPERTIES "system_properties"
 
 Document_Glom::Document_Glom()
-: m_connection_is_self_hosted(false),
+:
+#ifndef ENABLE_CLIENT_ONLY
+  m_connection_is_self_hosted(false),
+#endif // !ENABLE_CLIENT_ONLY
   m_block_cache_update(false),
   m_block_modified_set(false),
   m_allow_auto_save(true), //Save all changes immediately, by default.
@@ -209,6 +212,7 @@ Document_Glom::Document_Glom()
 
 Document_Glom::~Document_Glom()
 {
+#ifndef ENABLE_CLIENT_ONLY
   //It would be better to do this in a Application::on_document_closed() virtual method,
   //but that would need an ABI break in Bakery:
   if(get_connection_is_self_hosted())
@@ -219,8 +223,10 @@ Document_Glom::~Document_Glom()
 
     connection_pool->stop_self_hosting();
   }
+#endif // !ENABLE_CLIENT_ONLY
 }
 
+#ifndef ENABLE_CLIENT_ONLY
 bool Document_Glom::get_connection_is_self_hosted() const
 {
   return m_connection_is_self_hosted;
@@ -251,6 +257,7 @@ std::string Document_Glom::get_connection_self_hosted_directory_uri() const
     }
   }
 }
+#endif // !ENABLE_CLIENT_ONLY
 
 Glib::ustring Document_Glom::get_connection_user() const
 {
@@ -276,6 +283,7 @@ void Document_Glom::set_connection_user(const Glib::ustring& strVal)
   }
 }
 
+#ifndef ENABLE_CLIENT_ONLY
 void Document_Glom::set_connection_is_self_hosted(bool self_hosted)
 {
   if(self_hosted != m_connection_is_self_hosted)
@@ -284,6 +292,7 @@ void Document_Glom::set_connection_is_self_hosted(bool self_hosted)
     set_modified();
   }
 }
+#endif // !ENABLE_CLIENT_ONLY
 
 void Document_Glom::set_connection_server(const Glib::ustring& strVal)
 {
@@ -1488,7 +1497,12 @@ AppState::userlevels Document_Glom::get_userlevel(userLevelReason& reason) const
   }
   else if(m_file_uri.empty()) //If it has never been saved then this is a new default document, so the user created it, so the user can be a developer.
   {
+#ifdef ENABLE_CLIENT_ONLY
+    // Client only mode doesn't support developer mode, though.
+    return AppState::USERLEVEL_OPERATOR;
+#else
     return AppState::USERLEVEL_DEVELOPER;
+#endif
   }
   else
   {
@@ -1508,6 +1522,7 @@ void Document_Glom::on_app_state_userlevel_changed(AppState::userlevels userleve
 
 bool Document_Glom::set_userlevel(AppState::userlevels userlevel)
 {
+#ifndef ENABLE_CLIENT_ONLY
   //Prevent incorrect user level:
   if((userlevel == AppState::USERLEVEL_DEVELOPER) && get_read_only())
   {
@@ -1519,6 +1534,7 @@ bool Document_Glom::set_userlevel(AppState::userlevels userlevel)
     return false;
   }
   else
+#endif
   {
     m_app_state.set_userlevel(userlevel);
     return true;
@@ -2035,10 +2051,20 @@ bool Document_Glom::load_after()
       if(nodeConnection)
       {
         //Connection information:
-        m_connection_is_self_hosted = get_node_attribute_value_as_bool(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_SELF_HOSTED);
+        bool self_hosted = get_node_attribute_value_as_bool(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_SELF_HOSTED);
         m_connection_server = get_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_SERVER);
         m_connection_user = get_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_USER);
         m_connection_database = get_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_DATABASE);
+
+#ifdef ENABLE_CLIENT_ONLY
+        if(self_hosted)
+        {
+          std::cerr << "Document_Glom::load_after(): Loading failed because the document needs to be self-hosted, but self-hosting is not supported in client only mode" << std::endl;
+          return false; //TODO: Provide more information so the application (or Bakery) can say exactly why loading failed.
+        }
+#else
+        m_connection_is_self_hosted = self_hosted;
+#endif
       }
 
       //Tables:
@@ -2742,7 +2768,12 @@ bool Document_Glom::save_before()
     set_node_attribute_value(nodeRoot, GLOM_ATTRIBUTE_TRANSLATION_ORIGINAL_LOCALE, m_translation_original_locale);
 
     xmlpp::Element* nodeConnection = get_node_child_named_with_add(nodeRoot, GLOM_NODE_CONNECTION);
+#ifdef ENABLE_CLIENT_ONLY
+    set_node_attribute_value_as_bool(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_SELF_HOSTED, false);
+#else // ENABLE_CLIENT_ONLY
     set_node_attribute_value_as_bool(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_SELF_HOSTED, m_connection_is_self_hosted);
+#endif // !ENABLE_CLIENT_ONLY
+
     set_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_SERVER, m_connection_server);
     set_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_USER, m_connection_user);
     set_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_DATABASE, m_connection_database);
