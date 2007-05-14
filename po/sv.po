@@ -3,14 +3,14 @@
 # Daniel Nylander <po@danielnylander.se>, 2006.
 # Christian Rose <menthos@menthos.com>, 2004, 2005.
 #
-# $Id$
+# $Id: sv.po,v 1.14 2006/11/19 15:56:33 dnylande Exp $
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: glom\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2006-10-20 12:59+0100\n"
-"PO-Revision-Date: 2006-11-19 12:51+0100\n"
+"PO-Revision-Date: 2007-05-14 19:12+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "MIME-Version: 1.0\n"
@@ -45,7 +45,7 @@ msgstr "<b>Adress</b>"
 
 #: ../glom/glom.glade.h:5
 msgid "<b>Available Parts</b>"
-msgstr ""
+msgstr "<b>Tillgängliga delar</b>"
 
 #: ../glom/glom.glade.h:6
 msgid "<b>Choices</b>"
@@ -97,7 +97,7 @@ msgstr "<b>Navigering</b>"
 
 #: ../glom/glom.glade.h:18
 msgid "<b>Notebook Tabs</b>"
-msgstr ""
+msgstr "<b>Flikhäftesflikar</b>"
 
 #: ../glom/glom.glade.h:19
 msgid "<b>Numeric Formatting</b>"
@@ -105,7 +105,7 @@ msgstr "<b>Numerisk formatering</b>"
 
 #: ../glom/glom.glade.h:20
 msgid "<b>Parts</b>"
-msgstr ""
+msgstr "<b>Delar</b>"
 
 #: ../glom/glom.glade.h:21
 msgid "<b>Relationship:</b>"
@@ -326,7 +326,7 @@ msgstr "Lägg till knapp"
 #: ../glom/glom.glade.h:86
 #: ../glom/utility_widgets/layoutwidgetbase.cc:39
 msgid "Add Notebook"
-msgstr ""
+msgstr "Lägg till flikhäfte"
 
 #: ../glom/glom.glade.h:87
 msgid "Add Related"
@@ -412,7 +412,7 @@ msgstr "Beräkna värde"
 
 #: ../glom/glom.glade.h:107
 msgid "Choices From Related Records"
-msgstr ""
+msgstr "Val från relaterade poster"
 
 #: ../glom/glom.glade.h:108
 msgid "Choose Date"
@@ -675,7 +675,7 @@ msgstr "Namn"
 
 #: ../glom/glom.glade.h:165
 msgid "Name of new related table:"
-msgstr ""
+msgstr "Namn på ny relaterad tabell:"
 
 #: ../glom/glom.glade.h:166
 msgid "Name of new relationship:"
@@ -697,7 +697,7 @@ msgstr "Ingen markerad"
 #: ../glom/glom.glade.h:170
 #: ../glom/mode_data/dialog_layout_details.cc:919
 msgid "Notebook Tabs"
-msgstr ""
+msgstr "Flikhäftesflikar"
 
 #: ../glom/glom.glade.h:171
 msgid "Organisation"
@@ -1211,7 +1211,7 @@ msgstr "%X"
 #: ../glom/libglom/data_structure/glomconversions.cc:64
 #, c-format
 msgid "%x"
-msgstr ""
+msgstr "%Y-%m-%d"
 
 #: ../glom/libglom/data_structure/translatable_item.cc:252
 msgid "Custom Title"
@@ -1255,7 +1255,7 @@ msgstr "Okänd"
 
 #: ../glom/libglom/data_structure/layout/layoutitem_notebook.cc:55
 msgid "Notebook"
-msgstr ""
+msgstr "Flikhäfte"
 
 #: ../glom/libglom/data_structure/layout/layoutitem_portal.cc:63
 msgid "Portal"
@@ -1283,7 +1283,7 @@ msgstr "Sammandrag"
 
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_verticalgroup.cc:55
 msgid "Vertical Group"
-msgstr ""
+msgstr "Vertikal grupp"
 
 #: ../glom/libglom/document/document_glom.cc:267
 #: ../glom/libglom/document/document_glom.cc:285
@@ -1439,7 +1439,7 @@ msgstr "Stigande"
 
 #: ../glom/main.cc:54
 msgid "Glom options"
-msgstr ""
+msgstr "Alternativ för Glom"
 
 #: ../glom/main.cc:54
 msgid "Command-line options for glom"
@@ -1567,7 +1567,7 @@ msgstr "Bildtitel"
 #: ../glom/mode_data/dialog_layout_details.cc:740
 #: ../glom/utility_widgets/flowtablewithfields.cc:920
 msgid "notebook"
-msgstr ""
+msgstr "flikhäfte"
 
 #: ../glom/mode_data/dialog_layout_details.cc:839
 msgid "group"
@@ -1575,7 +1575,7 @@ msgstr "grupp"
 
 #: ../glom/mode_data/dialog_layout_details.cc:919
 msgid "Add child groups to the notebook to add tabs."
-msgstr ""
+msgstr "Lägg till barngrupper till flikhäftet för att lägga till flikar."
 
 #: ../glom/mode_data/dialog_layout_details.cc:1084
 msgid "Related: "
@@ -1587,7 +1587,7 @@ msgstr "Fält: "
 
 #: ../glom/mode_data/dialog_layout_details.cc:1158
 msgid "(Notebook)"
-msgstr ""
+msgstr "(Flikhäfte)"
 
 #: ../glom/mode_data/dialog_layout_list_related.cc:265
 msgid "None: No visible tables are specified by the fields."
@@ -1728,7 +1728,7 @@ msgstr "Utvecklargruppen måste innehålla minst en användare."
 #: ../glom/reports/dialog_layout_report.cc:150
 #: ../glom/reports/dialog_layout_report.cc:197
 msgid "Part"
-msgstr ""
+msgstr "Del"
 
 #: ../glom/navigation/box_tables.cc:114
 msgid "Tables"
@@ -1794,7 +1794,7 @@ msgstr "Byt namn på tabell"
 
 #: ../glom/utility_widgets/adddel/adddel.cc:146
 msgid "Duplicate"
-msgstr ""
+msgstr "Duplicera"
 
 #: ../glom/utility_widgets/adddel/adddel.cc:150
 msgid "This item already exists. Please try again."
@@ -1835,7 +1835,7 @@ msgstr "tab1"
 
 #: ../glom/utility_widgets/flowtablewithfields.cc:925
 msgid "Tab One"
-msgstr ""
+msgstr "Flik Ett"
 
 #: ../glom/utility_widgets/flowtablewithfields.cc:969
 msgid "button"
