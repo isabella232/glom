@@ -1,3 +1,8 @@
+2007-05-14  Johannes Schmid <johannes.schmid@openismus.com>
+	
+	* glom/python_embed/glom_python.cc:
+	#361171 - Show Python erros in a dialog
+
 2007-05-14  Armin Burgmeier  <armin@openismus.com>
 
 	* glom/relationships_overview/relationships_canvas.cc:

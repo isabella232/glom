@@ -33,6 +33,9 @@
 #include <glom/libglom/data_structure/glomconversions.h>
 #include <list>
 #include <glib.h> //For g_warning().
+#include <glibmm/i18n.h>
+
+#include <gtkmm/messagedialog.h>
 
 namespace Glom
 {
@@ -60,10 +63,77 @@ std::list<Glib::ustring> ustring_tokenize(const Glib::ustring& msg, const Glib::
   return result;
 }
 
+// Use this for errors not (directly) caused by the user
 void HandlePythonError()
 {
   if(PyErr_Occurred())
     PyErr_Print();
+}
+
+// Show python coding errors of the user
+void ShowTrace()
+{
+  // Python equivilant:
+  // import traceback, sys
+  // return "".join(traceback.format_exception(sys.exc_type,
+  //    sys.exc_value, sys.exc_traceback))
+
+  PyObject *type, *value, *traceback;
+
+  PyErr_Fetch(&type, &value, &traceback);
+  
+  if (!traceback)
+  {
+    std::cerr << "traceback = 0" << std::endl;
+  }
+
+  PyObject *tracebackModule = PyImport_ImportModule("traceback");
+  gchar* chrRetval = 0;
+  if (tracebackModule != NULL)
+  {
+      PyObject* tbList = PyObject_CallMethod(
+          tracebackModule,
+          "format_exception",
+          "OOO",
+          type,
+          value == NULL ? Py_None : value,
+          traceback == NULL ? Py_None : traceback);
+      
+      if (!tbList)
+      {
+        std::cerr << "format_exception failed" << std::endl;
+        return;
+      }
+
+      PyObject* emptyString = PyString_FromString("");
+      PyObject* strRetval = PyObject_CallMethod(emptyString, "join",
+            "O", tbList);
+      if (strRetval)
+        chrRetval = g_strdup(PyString_AsString(strRetval));
+    
+      Py_DECREF(tbList);
+      Py_DECREF(emptyString);
+      Py_DECREF(strRetval);
+      Py_DECREF(tracebackModule);
+    }
+    else
+    {
+        std::cerr << "Unable to import traceback module." << std::endl;
+        
+    }
+
+    Py_DECREF(type);
+    Py_XDECREF(value);
+    Py_XDECREF(traceback);
+  
+  if (chrRetval)
+  {
+    Glib::ustring message = _("Python Error: \n");
+    message += chrRetval;
+    Gtk::MessageDialog dialog(message, false, Gtk::MESSAGE_ERROR);
+    dialog.run();
+  }
+  g_free(chrRetval);
 }
 
 void glom_execute_python_function_implementation(const Glib::ustring& func_impl, const type_map_fields& field_values, Document_Glom* pDocument, const Glib::ustring& table_name, const Glib::RefPtr<Gnome::Gda::Connection>& opened_connection)
@@ -107,14 +177,15 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
 
 
   //Allow the function to import from our script library:
-  const std::vector<Glib::ustring> module_names = pDocument->get_library_module_names();
-  for(std::vector<Glib::ustring>::const_iterator iter = module_names.begin(); iter != module_names.end(); ++iter)
+  if (pDocument)
   {
-    const Glib::ustring name = *iter;
-    const Glib::ustring script = pDocument->get_library_module(name);
-    if(!name.empty() && !script.empty())
+    const std::vector<Glib::ustring> module_names = pDocument->get_library_module_names();
+    for(std::vector<Glib::ustring>::const_iterator iter = module_names.begin(); iter != module_names.end(); ++iter)
     {
-
+      const Glib::ustring name = *iter;
+      const Glib::ustring script = pDocument->get_library_module(name);
+      if(!name.empty() && !script.empty())
+      {
         PyObject* objectCompiled = Py_CompileString(script.c_str(), name.c_str() /* "filename", for debugging info */,  Py_file_input /* "start token" for multiple lines of code. */); //Returns a reference.
   
         if(!objectCompiled)
@@ -123,11 +194,12 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
         PyObject* pObject = PyImport_ExecCodeModule(const_cast<char*>(name.c_str()), objectCompiled); //Returns a reference. //This should make it importable.
 
         if(!pObject)
-          HandlePythonError();
+         HandlePythonError();
 
         Py_DECREF(pObject);
         Py_DECREF(objectCompiled);
         //TODO: When do these stop being importable? Should we unload them somehow later?
+      }
     }
   }
 
@@ -164,16 +236,21 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
     pyValue = 0;
   }
   else
-    HandlePythonError();
+  {
+    ShowTrace();
+  }
 
   //Call the function:
   {
     PyObject* pFunc = PyDict_GetItemString(pDict, func_name.c_str()); //The result is borrowed, so should not be dereferenced.
     if(!pFunc)
+    {
       HandlePythonError();
+    }
 
     if(!PyCallable_Check(pFunc))
     {
+      HandlePythonError();
       g_warning("pFunc is not callable.");
       return valueResult;
     }
@@ -247,10 +324,10 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
                 valueResult = Conversions::parse_value(result_type, pchResult, success, true /* iso_format */);
               }
               else
-                g_warning("pchResult is null");
+                HandlePythonError();
             }
             else
-              g_warning("PyString_Check returned false");
+              HandlePythonError();
           }
         }
 
