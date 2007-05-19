@@ -200,9 +200,12 @@ void App_Glom::init_menus_file()
                         sigc::mem_fun((App_WithDoc&)*this, &App_WithDoc::on_menu_file_open));
 
   Glib::RefPtr<Gtk::Action> action = Gtk::Action::create("BakeryAction_File_SaveAsExample", _("Save As Example"));
-  m_listDeveloperActions.push_back(action); 
+  m_listDeveloperActions.push_back(action);
+
+#ifndef ENABLE_CLIENT_ONLY
   m_refFileActionGroup->add(action,
                         sigc::mem_fun((App_Glom&)*this, &App_Glom::on_menu_file_save_as_example));
+#endif // !ENABLE_CLIENT_ONLY
 
   m_refFileActionGroup->add(Gtk::Action::create("BakeryAction_Menu_File_Export", _("_Export")),
                         sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_file_export));
@@ -227,7 +230,9 @@ void App_Glom::init_menus_file()
     "        <menuitem action='BakeryAction_File_Open' />"
     "        <menu action='BakeryAction_Menu_File_RecentFiles'>"
     "        </menu>"
+#ifndef ENABLE_CLIENT_ONLY
     "        <menuitem action='BakeryAction_File_SaveAsExample' />"
+#endif // !ENABLE_CLIENT_ONLY
     "        <menuitem action='BakeryAction_Menu_File_Export' />"
     "        <separator/>"
     "        <menuitem action='GlomAction_File_Print' />"
@@ -749,13 +754,20 @@ bool App_Glom::on_document_load()
     }
     else
     {
+#ifndef ENABLE_CLIENT_ONLY
       //Prevent saving until we are sure that everything worked.
       //This also stops us from losing the example data as soon as we say the new file (created from the example) is not an example.
       pDocument->set_allow_autosave(false);
+#endif // !ENABLE_CLIENT_ONLY
 
+      // Example files are not supported in client only mode because they
+      // would need to be saved, but saving support is disabled.
+#ifndef ENABLE_CLIENT_ONLY
       const bool is_example = pDocument->get_is_example_file();
+#endif // !ENABLE_CLIENT_ONLY
       if(pDocument->get_is_example_file())
       {
+#ifndef ENABLE_CLIENT_ONLY
         // Remember the URI to the example file to be able to prevent
         // adding the URI to the recently used files in document_history_add.
         // We want to add the document that is created from the example
@@ -769,9 +781,7 @@ bool App_Glom::on_document_load()
         m_ui_save_extra_title = _("Creating From Example File");
         m_ui_save_extra_message = _("To use this example file you must save an editable copy of the file. A new database will also be created on the server.");
         m_ui_save_extra_newdb_title = "TODO";
-#ifndef ENABLE_CLIENT_ONLY
         m_ui_save_extra_newdb_selfhosted = true;
-#endif // !ENABLE_CLIENT_ONLY
         offer_saveas();
         // Note that bakery will try to add the example file itself to the
         // recently used documents, which is not what we want.
@@ -780,10 +790,8 @@ bool App_Glom::on_document_load()
 
         //Get the results from the extended save dialog:
         pDocument->set_database_title(m_ui_save_extra_newdb_title);
-#ifndef ENABLE_CLIENT_ONLY
         pDocument->set_connection_is_self_hosted(m_ui_save_extra_newdb_selfhosted);
         m_ui_save_extra_newdb_selfhosted = false;
-#endif
 
         m_ui_save_extra_newdb_title.clear();
         m_ui_save_extra_showextras = false;
@@ -792,6 +800,12 @@ bool App_Glom::on_document_load()
           return false;
         else
           pDocument->set_is_example_file(false);
+#else // !ENABLE_CLIENT_ONLY
+        // TODO_clientonly: Tell the user that opening example files is
+        // not supported. This could alternatively also be done in
+        // Document_after::load_after, I am not sure which is better.
+        return false;
+#endif // ENABLE_CLIENT_ONLY
       }
 
 #ifndef ENABLE_CLIENT_ONLY
@@ -850,12 +864,14 @@ bool App_Glom::on_document_load()
         try
         {
           bool test = false;
+#ifndef ENABLE_CLIENT_ONLY
           if(is_example)
           {
             //The user has already had the chance to specify a new filename and database name.
             test = m_pFrame->connection_request_password_and_choose_new_database_name();
           }
           else
+#endif // !ENABLE_CLIENT_ONLY
             test = m_pFrame->connection_request_password_and_attempt();
 
           if(!test) //It usually throws an exception instead of returning false.
@@ -869,6 +885,7 @@ bool App_Glom::on_document_load()
             return false; //Failed. Close the document.
           }
 
+#ifndef ENABLE_CLIENT_ONLY
           if(is_example)
           {
             //Create the example database:
@@ -889,11 +906,6 @@ bool App_Glom::on_document_load()
             }
             else
             {
-              // TODO_clientonly: We need to change to developer mode here for
-              // a short time. This in not very elegant because most of the
-              // code assumes that userlevel can never be DEVELOPER in client
-              // only mode.
-
               //Make sure that the changes (mark as non example, and save the new database name) are really saved:
               //Change the user level temporarily so that save_changes() actually saves:
               const AppState::userlevels user_level = pDocument->get_userlevel();
@@ -902,17 +914,20 @@ bool App_Glom::on_document_load()
               pDocument->set_userlevel(user_level); //Change it back.
             }
           }
+#endif // !ENABLE_CLIENT_ONLY
         }
         catch(const ExceptionConnection& ex)
         {
           if(ex.get_failure_type() == ExceptionConnection::FAILURE_NO_DATABASE) //This is the only FAILURE_* type that connection_request_password_and_attempt() throws.
           {
+#ifndef ENABLE_CLIENT_ONLY
             if(!is_example)
             {
               //The connection to the server is OK, but the database is not there yet.
               Frame_Glom::show_ok_dialog(_("Database Not Found On Server"), _("The database could not be found on the server. Please consult your system administrator."), *this, Gtk::MESSAGE_ERROR);
             }
             else
+#endif // !ENABLE_CLIENT_ONLY
               std::cerr << "App_Glom::on_document_load(): unexpected ExceptionConnection when opening example." << std::endl;
           }
           else
@@ -933,7 +948,10 @@ bool App_Glom::on_document_load()
     //List the non-hidden tables in the menu:
     fill_menu_tables();
 
+#ifndef ENABLE_CLIENT_ONLY
     pDocument->set_allow_autosave(true);
+#endif // !ENABLE_CLIENT_ONLY
+
     return true; //Loading of the document into the application succeeded.
   }
 }
@@ -1019,7 +1037,17 @@ bool App_Glom::offer_new_or_existing()
   Gtk::Button* new_button;
   refXml->get_widget("existing_or_new_button_new", new_button);
   new_button->hide();
-#endif
+
+  refXml->get_widget("existing_or_new_button_example", new_button);
+  new_button->hide();
+
+  // Show another label that does not ask whether one wants to create a new
+  // document because that is not possible in client only mode
+  // TODO: Add another text, or simply hide the label?
+  Gtk::Label* label;
+  refXml->get_widget("existing_or_new_label", label);
+  label->set_markup(_("<span weight='bold' size='larger'>Open existing document</span>\n"));
+#endif // ENABLE_CLIENT_ONLY
 
   const int response_id = dialog->run();
   Glib::ustring selected_uri = recent_chooser->get_current_uri();
@@ -1042,6 +1070,7 @@ bool App_Glom::offer_new_or_existing()
       return offer_new_or_existing();
     }
   }
+#ifndef ENABLE_CLIENT_ONLY
   if(response_id == 3) //Open Example
   {
     //Based on on_menu_file_open();
@@ -1065,7 +1094,6 @@ bool App_Glom::offer_new_or_existing()
       return offer_new_or_existing();
     }
   }
-#ifndef ENABLE_CLIENT_ONLY
   else if(response_id == 2) //New
   {
     //Each document must have a location, so ask the user for one.
@@ -1513,6 +1541,7 @@ void App_Glom::fill_menu_reports(const Glib::ustring& table_name)
   }
 }
 
+#ifndef ENABLE_CLIENT_ONLY
 void App_Glom::on_menu_file_save_as_example()
 {
   //Based on the implementation of Bakery::App_WithDoc::on_menu_file_saveas()
@@ -1531,9 +1560,7 @@ void App_Glom::on_menu_file_save_as_example()
   m_ui_save_extra_title.clear();
   m_ui_save_extra_message.clear();
   m_ui_save_extra_newdb_title.clear();
-#ifndef ENABLE_CLIENT_ONLY
   m_ui_save_extra_newdb_selfhosted = false;
-#endif // !ENABLE_CLIENT_ONLY
 
   Glib::ustring file_uri = ui_file_select_save(file_uriOld); //Also asks for overwrite confirmation.
   if(!file_uri.empty())
@@ -1630,7 +1657,6 @@ void App_Glom::on_menu_file_save_as_example()
   }
 }
 
-#ifndef ENABLE_CLIENT_ONLY // TODO: Are these useful in operator mode? They probably shouldn't be in the developer menu, then.
 void App_Glom::on_menu_developer_changelanguage()
 {
   Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_change_language");

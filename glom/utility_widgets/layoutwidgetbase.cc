@@ -175,6 +175,7 @@ App_Glom* LayoutWidgetBase::get_application() const
   return 0; //override to implement.
 }
 
+#ifndef ENABLE_CLIENT_ONLY
 LayoutWidgetBase::type_signal_layout_changed LayoutWidgetBase::signal_layout_changed()
 {
   return m_signal_layout_changed;
@@ -194,6 +195,7 @@ LayoutWidgetBase::type_signal_user_requested_layout_properties LayoutWidgetBase:
 {
   return m_signal_user_requested_layout_properties;
 }
+#endif // !ENABLE_CLIENT_ONLY
 
 void LayoutWidgetBase::set_read_only(bool /* read_only */)
 {

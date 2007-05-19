@@ -181,7 +181,9 @@ Document_Glom::Document_Glom()
 #endif // !ENABLE_CLIENT_ONLY
   m_block_cache_update(false),
   m_block_modified_set(false),
+#ifndef ENABLE_CLIENT_ONLY
   m_allow_auto_save(true), //Save all changes immediately, by default.
+#endif // !ENABLE_CLIENT_ONLY
   m_is_example(false),
   m_parent_window(0)
 {
@@ -970,6 +972,7 @@ void Document_Glom::set_child_text_node(xmlpp::Element* node, const Glib::ustrin
     text_child->set_content(text);
 }
 
+#ifndef ENABLE_CLIENT_ONLY
 void Document_Glom::set_node_attribute_value_as_bool(xmlpp::Element* node, const Glib::ustring& strAttributeName, bool value)
 {
   if(!value && !node->get_attribute(strAttributeName))
@@ -992,6 +995,7 @@ void Document_Glom::set_node_attribute_value_as_decimal(xmlpp::Element* node, co
 
   set_node_attribute_value(node, strAttributeName, sequence_string);
 }
+#endif // !ENABLE_CLIENT_ONLY
 
 void Document_Glom::set_node_attribute_value_as_decimal_double(xmlpp::Element* node, const Glib::ustring& strAttributeName, double value)
 {
@@ -1043,6 +1047,7 @@ double Document_Glom::get_node_attribute_value_as_decimal_double(const xmlpp::El
   return result;
 }
 
+#ifndef ENABLE_CLIENT_ONLY
 void Document_Glom::set_node_attribute_value_as_float(xmlpp::Element* node, const Glib::ustring& strAttributeName, float value)
 {
     if(value == std::numeric_limits<float>::infinity() && !node->get_attribute(strAttributeName))
@@ -1056,6 +1061,7 @@ void Document_Glom::set_node_attribute_value_as_float(xmlpp::Element* node, cons
 
   set_node_attribute_value(node, strAttributeName, sequence_string);
 }
+#endif // !ENABLE_CLIENT_ONLY
 
 float Document_Glom::get_node_attribute_value_as_float(const xmlpp::Element* node, const Glib::ustring& strAttributeName)
 {
@@ -1075,6 +1081,7 @@ float Document_Glom::get_node_attribute_value_as_float(const xmlpp::Element* nod
   return result;
 }
 
+#ifndef ENABLE_CLIENT_ONLY
 void Document_Glom::set_node_attribute_value_as_value(xmlpp::Element* node, const Glib::ustring& strAttributeName, const Gnome::Gda::Value& value,  Field::glom_field_type field_type)
 {
   NumericFormat format_ignored; //Because we use ISO format.
@@ -1082,6 +1089,7 @@ void Document_Glom::set_node_attribute_value_as_value(xmlpp::Element* node, cons
 
   set_node_attribute_value(node, strAttributeName, value_as_text);
 }
+#endif // !ENABLE_CLIENT_ONLY
 
 Gnome::Gda::Value Document_Glom::get_node_attribute_value_as_value(const xmlpp::Element* node, const Glib::ustring& strAttributeName, Field::glom_field_type field_type)
 {
@@ -1573,6 +1581,7 @@ Glib::ustring Document_Glom::get_first_table() const
   return iter->second.m_info->get_name();
 }
 
+#ifndef ENABLE_CLIENT_ONLY
 void Document_Glom::set_allow_autosave(bool value)
 {
   if(m_allow_auto_save == value)
@@ -1634,6 +1643,7 @@ void Document_Glom::set_modified(bool value)
     }
   //}
 }
+#endif // !ENABLE_CLIENT_ONLY
 
 void Document_Glom::load_after_layout_item_field_formatting(const xmlpp::Element* element, FieldFormatting& format, Field::glom_field_type field_type, const Glib::ustring& table_name, const Glib::ustring& field_name)
 {
@@ -2442,6 +2452,7 @@ bool Document_Glom::load_after()
   return result;
 }
 
+#ifndef ENABLE_CLIENT_ONLY
 void Document_Glom::save_before_layout_item_field_formatting(xmlpp::Element* nodeItem, const FieldFormatting& format, Field::glom_field_type field_type)
 {
   //Numeric format:
@@ -3029,6 +3040,7 @@ bool Document_Glom::save_before()
 
   return Bakery::Document_XML::save_before();  
 }
+#endif // !ENABLE_CLIENT_ONLY
 
 Glib::ustring Document_Glom::get_database_title() const
 {

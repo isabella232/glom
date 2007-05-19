@@ -113,7 +113,9 @@ Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
   m_FlowTable.signal_related_record_changed().connect( sigc::mem_fun(*this, &Box_Data_Details::on_flowtable_related_record_changed) );
 
 
+#ifndef ENABLE_CLIENT_ONLY
   m_FlowTable.signal_layout_changed().connect( sigc::mem_fun(*this, &Box_Data_Details::on_flowtable_layout_changed) );
+#endif // !ENABLE_CLIENT_ONLY
 
   m_FlowTable.signal_requested_related_details().connect( sigc::mem_fun(*this, &Box_Data_Details::on_flowtable_requested_related_details) );
 
@@ -497,6 +499,7 @@ Box_Data_Details::type_signal_requested_related_details Box_Data_Details::signal
   return m_signal_requested_related_details;
 }
 
+#ifndef ENABLE_CLIENT_ONLY
 void Box_Data_Details::on_flowtable_layout_changed()
 {
   //Get new layout:
@@ -515,6 +518,7 @@ void Box_Data_Details::on_flowtable_layout_changed()
   //And fill it with data:
   fill_from_database();
 }
+#endif // !ENABLE_CLIENT_ONLY
 
 void Box_Data_Details::on_flowtable_requested_related_details(const Glib::ustring& table_name, Gnome::Gda::Value primary_key_value)
 {

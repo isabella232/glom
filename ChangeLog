@@ -1,3 +1,30 @@
+2007-05-18  Armin Burgmeier  <armin@openismus.com>
+
+	* glom/libglom/document/document_glom.cc:
+	* glom/libglom/document/document_glom.h: Disable possibility to save a
+	document in client only mode.
+
+	* glom/utility_widgets/flowtablewithfields.h:
+	* glom/utility_widgets/layoutwidgetbase.cc:
+	* glom/utility_widgets/flowtablewithfields.cc:
+	* glom/utility_widgets/datawidget.cc:
+	* glom/utility_widgets/layoutwidgetbase.h:
+	* glom/mode_data/box_data_details.cc:
+	* glom/mode_data/box_data_details.h: Removed layout changed signals
+	from client-only build.
+
+	* glom/application.h:
+	* glom/application.cc: Disabled "Save as Example" menu option, do not
+	show "New from Example" and changed label text in the initial dialog.
+
+	* glom/frame_glom.h:
+	* glom/frame_glom.cc: Reenabled tables dialog to be able to choose an
+	initial table after connecting to a database without default table.
+
+	* glom/glom.glade: Give the "New From Example" button in the initial
+	dialog a more meaningful name to be able to hide() it in client only
+	mode.
+
 2007-05-14  Armin Burgmeier  <armin@openismus.com>
 
 	* configure.in:

@@ -74,14 +74,19 @@ public:
   Document_Glom();
   virtual ~Document_Glom();
 
+#ifndef ENABLE_CLIENT_ONLY
   virtual void set_modified(bool value = true);
+#endif // !ENABLE_CLIENT_ONLY
+
   virtual void set_file_uri(const Glib::ustring& file_uri, bool bEnforceFileExtension = false);
 
+#ifndef ENABLE_CLIENT_ONLY
   /** The document usually saves itself when you call set_modified().
    * Pass false to this function to prevent that temporarily.
    * The document will be saved, if necessary, after you call this function with true.
    */
   void set_allow_autosave(bool value = true);
+#endif // !ENABLE_CLIENT_ONLY
 
   bool get_is_example_file() const;
   void set_is_example_file(bool value = true);
@@ -319,22 +324,33 @@ public:
   static sharedptr<Relationship>  create_relationship_system_preferences(const Glib::ustring& table_name);
   static bool get_relationship_is_system_properties(const sharedptr<const Relationship>& relationship);
 
+#ifndef ENABLE_CLIENT_ONLY
   static void set_node_attribute_value_as_decimal(xmlpp::Element* node, const Glib::ustring& strAttributeName, int value);
+#endif // !ENABLE_CLIENT_ONLY
+
+  // This is required by the report builder, so it cannot be disabled
+  // in client only mode
   static void set_node_attribute_value_as_decimal_double(xmlpp::Element* node, const Glib::ustring& strAttributeName, double value);
-
-
 
 protected:
 
   //Overrides:
   virtual bool load_after();
+#ifndef ENABLE_CLIENT_ONLY
   virtual bool save_before();
+#endif // !ENABLE_CLIENT_ONLY
 
   void load_after_layout_group(const xmlpp::Element* node, const Glib::ustring& table_name, const sharedptr<LayoutGroup>& group);
+
+#ifndef ENABLE_CLIENT_ONLY
   void save_before_layout_group(xmlpp::Element* node, const sharedptr<const LayoutGroup>& group);
+#endif // !ENABLE_CLIENT_ONLY
 
   void load_after_sort_by(const xmlpp::Element* node, const Glib::ustring& table_name, LayoutItem_GroupBy::type_list_sort_fields& list_fields);
+
+#ifndef ENABLE_CLIENT_ONLY
   void save_before_sort_by(xmlpp::Element* node, const LayoutItem_GroupBy::type_list_sort_fields& list_fields);
+#endif // !ENABLE_CLIENT_ONLY
 
   void load_after_layout_item_usesrelationship(const xmlpp::Element* element, const Glib::ustring& table_name, const sharedptr<UsesRelationship>& item);
   void load_after_layout_item_field(const xmlpp::Element* element, const Glib::ustring& table_name, const sharedptr<LayoutItem_Field>& item);
@@ -342,6 +358,7 @@ protected:
 
   void load_after_translations(const xmlpp::Element* element, TranslatableItem& item);
 
+#ifndef ENABLE_CLIENT_ONLY
   void save_before_layout_item_usesrelationship(xmlpp::Element* nodeItem, const sharedptr<const UsesRelationship>& item);
   void save_before_layout_item_field(xmlpp::Element* nodeItem, const sharedptr<const LayoutItem_Field>& item);
   void save_before_layout_item_field_formatting(xmlpp::Element* nodeItem, const FieldFormatting& format, Field::glom_field_type field_type);
@@ -349,20 +366,25 @@ protected:
   void save_before_translations(xmlpp::Element* nodeItem, const TranslatableItem& item);
 
   void save_changes();
+#endif // !ENABLE_CLIENT_ONLY
 
   void on_app_state_userlevel_changed(AppState::userlevels userlevel);
 
   void fill_translatable_layout_items(const sharedptr<LayoutGroup>& group, type_list_translatables& the_list);
 
   static bool get_node_attribute_value_as_bool(const xmlpp::Element* node, const Glib::ustring& strAttributeName);
+#ifndef ENABLE_CLIENT_ONLY
   static void set_node_attribute_value_as_bool(xmlpp::Element* node, const Glib::ustring& strAttributeName, bool value = true);
+#endif // !ENABLE_CLIENT_ONLY
 
   static guint get_node_attribute_value_as_decimal(const xmlpp::Element* node, const Glib::ustring& strAttributeName);
   static double get_node_attribute_value_as_decimal_double(const xmlpp::Element* node, const Glib::ustring& strAttributeName);
 
   static float get_node_attribute_value_as_float(const xmlpp::Element* node, const Glib::ustring& strAttributeName);
+#ifndef ENABLE_CLIENT_ONLY
   static void set_node_attribute_value_as_float( xmlpp::Element* node, const Glib::ustring& strAttributeName, float value );
   static void set_node_attribute_value_as_value(xmlpp::Element* node, const Glib::ustring& strAttributeName, const Gnome::Gda::Value& value, Field::glom_field_type field_type);
+#endif // !ENABLE_CLIENT_ONLY
   static Gnome::Gda::Value get_node_attribute_value_as_value(const xmlpp::Element* node, const Glib::ustring& strAttributeName, Field::glom_field_type field_type);
 
   Glib::ustring get_child_text_node(const xmlpp::Element* node, const Glib::ustring& child_node_name) const;
@@ -438,7 +460,9 @@ protected:
 
   bool m_block_cache_update; //For efficiency.
   bool m_block_modified_set;
+#ifndef ENABLE_CLIENT_ONLY
   bool m_allow_auto_save;
+#endif // !ENABLE_CLIENT_ONLY
   bool m_is_example;
   guint m_document_format_version;
 

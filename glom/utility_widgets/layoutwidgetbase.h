@@ -63,7 +63,7 @@ public:
   virtual void on_menupopup_add_item(enumType item);
 #endif // !ENABLE_CLIENT_ONLY
 
-  // TODO_clientonly: Do we need these two signals in client only mode?
+#ifndef ENABLE_CLIENT_ONLY
   typedef sigc::signal<void> type_signal_layout_changed;
   type_signal_layout_changed signal_layout_changed();
 
@@ -77,6 +77,7 @@ public:
   //Allow a child widget to delegate to a parent widget:
   typedef sigc::signal<void> type_signal_user_requested_layout_properties;
   type_signal_user_requested_layout_properties signal_user_requested_layout_properties();
+#endif // !ENABLE_CLIENT_ONLY
 
   virtual void set_read_only(bool read_only = true);
 
@@ -86,13 +87,13 @@ protected:
   sharedptr<LayoutItem> m_pLayoutItem;
   Glib::ustring m_table_name;
 
+#ifndef ENABLE_CLIENT_ONLY
   type_signal_layout_changed m_signal_layout_changed;
   type_signal_layout_item_added m_signal_layout_item_added;
 
   type_signal_user_requested_layout m_signal_user_requested_layout;
   type_signal_user_requested_layout_properties m_signal_user_requested_layout_properties;
 
-#ifndef ENABLE_CLIENT_ONLY
   Gtk::Menu* m_pMenuPopup;
 
   //TODO_Performance: //Presumably we waste lots of memory by having this in each layout widget. Maybe we can use one shared menu.

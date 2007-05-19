@@ -73,10 +73,12 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
   m_pLabel_FoundCount(0),
   m_pButton_FindAll(0),
   m_pBox_Mode(0),
-#ifndef ENABLE_CLIENT_ONLY
   m_pBox_Tables(0),
+#ifndef ENABLE_CLIENT_ONLY
   m_pBox_Reports(0),
+#endif // !ENABLE_CLIENT_ONLY
   m_pDialog_Tables(0),
+#ifndef ENABLE_CLIENT_ONLY
   m_pDialog_Reports(0),
   m_pDialog_Fields(0),
   m_pDialog_Relationships(0),
@@ -129,7 +131,6 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
     std::cerr << ex.what() << std::endl;
   }
 
-#ifndef ENABLE_CLIENT_ONLY
   try
   {
     Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "box_navigation_tables");
@@ -145,6 +146,7 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
     std::cerr << ex.what() << std::endl;
   }
 
+#ifndef ENABLE_CLIENT_ONLY
   try
   {
     Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "box_reports");
@@ -206,7 +208,6 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
   m_Mode = MODE_None;
   m_Mode_Previous = MODE_None;
 
-#ifndef ENABLE_CLIENT_ONLY
   Gtk::Window* pWindow = get_app_window();
   if(pWindow)
     m_pDialog_Tables->set_transient_for(*pWindow);
@@ -218,6 +219,7 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
   //Connect signals:
   m_pBox_Tables->signal_selected.connect(sigc::mem_fun(*this, &Frame_Glom::on_box_tables_selected));
 
+#ifndef ENABLE_CLIENT_ONLY
   m_pDialog_Reports->get_vbox()->pack_start(*m_pBox_Reports);
   m_pDialog_Reports->set_default_size(300, 400);
   m_pBox_Reports->show_all();
@@ -233,8 +235,8 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
 
   //Fill Composite View:
   //This means that set_document and load/save are delegated to these children:
-#ifndef ENABLE_CLIENT_ONLY
   add_view(m_pBox_Tables);
+#ifndef ENABLE_CLIENT_ONLY
   add_view(m_pBox_Reports);
   add_view(m_pDialog_Relationships); //Also a composite view.
 #endif // !ENABLE_CLIENT_ONLY
@@ -247,20 +249,18 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
 
 Frame_Glom::~Frame_Glom()
 {
-#ifndef ENABLE_CLIENT_ONLY
   remove_view(m_pBox_Tables);
+#ifndef ENABLE_CLIENT_ONLY
   remove_view(m_pBox_Reports);
 #endif // !ENABLE_CLIENT_ONLY
   remove_view(&m_Notebook_Data); //Also a composite view.
   remove_view(&m_Notebook_Find); //Also a composite view.
 
-#ifndef ENABLE_CLIENT_ONLY
   if(m_pDialog_Tables)
   {
     delete m_pDialog_Tables;
     m_pDialog_Tables = 0;
   }
-#endif // !ENABLE_CLIENT_ONLY
 
   if(m_pDialogConnection)
   {
@@ -324,9 +324,7 @@ void Frame_Glom::set_databases_selected(const Glib::ustring& strName)
 
 void Frame_Glom::on_box_tables_selected(const Glib::ustring& strName)
 {
-#ifndef ENABLE_CLIENT_ONLY
   m_pDialog_Tables->hide(); //cause_close();
-#endif // !ENABLE_CLIENT_ONLY
 
   show_table(strName);
 }
@@ -937,9 +935,7 @@ void Frame_Glom::do_menu_Navigate_Table(bool open_default)
   }
   else
   {
-#ifndef ENABLE_CLIENT_ONLY
     m_pBox_Tables->init_db_details();
-#endif // !ENABLE_CLIENT_ONLY
 
     Glib::ustring default_table_name;
     if(open_default)
@@ -954,15 +950,10 @@ void Frame_Glom::do_menu_Navigate_Table(bool open_default)
     }
     else
     {
-#ifndef ENABLE_CLIENT_ONLY
       //Let the user choose a table:
       //m_pDialog_Tables->set_policy(false, true, false); //TODO_port
       //m_pDialog_Tables->load_from_document(); //Refresh
       m_pDialog_Tables->show();
-#else
-      // TODO_clientonly: Can this ever happen in client only mode?
-      g_assert_not_reached();
-#endif // !ENABLE_CLIENT_ONLY
     }
   }
 }
@@ -1876,6 +1867,7 @@ void Frame_Glom::on_dialog_reports_hide()
   if(pApp)
     pApp->fill_menu_reports(m_table_name);
 }
+#endif // !ENABLE_CLIENT_ONLY
 
 void Frame_Glom::on_dialog_tables_hide()
 {
@@ -1883,6 +1875,9 @@ void Frame_Glom::on_dialog_tables_hide()
   Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
   if(document)
   {
+    // This is never true in client only mode, so we can as well save the
+    // code size.
+#ifndef ENABLE_CLIENT_ONLY
     if(document->get_userlevel() == AppState::USERLEVEL_DEVELOPER)
     {
       App_Glom* pApp = dynamic_cast<App_Glom*>(get_app_window());
@@ -1900,9 +1895,9 @@ void Frame_Glom::on_dialog_tables_hide()
         show_table(table_name);
       }
     }
+#endif // !ENABLE_CLIENT_ONLY
   }
 }
-#endif // !ENABLE_CLIENT_ONLY
 
 void Frame_Glom::on_notebook_data_record_details_requested(const Glib::ustring& table_name, Gnome::Gda::Value primary_key_value)
 {

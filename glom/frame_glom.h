@@ -113,7 +113,9 @@ public:
   void on_dialog_layout_report_hide();
 
   void on_dialog_reports_hide();
+#endif // !ENABLE_CLIENT_ONLY
   void on_dialog_tables_hide();
+#ifndef ENABLE_CLIENT_ONLY
 
   void on_dialog_add_related_table_request_edit_fields();
 #endif // !ENABLE_CLIENT_ONLY
@@ -199,17 +201,17 @@ protected:
 
   PlaceHolder* m_pBox_Mode; //Contains e.g. design mode notebook.
 
-#ifndef ENABLE_CLIENT_ONLY
   Box_Tables* m_pBox_Tables;
+#ifndef ENABLE_CLIENT_ONLY
   Box_Reports* m_pBox_Reports;
 #endif // !ENABLE_CLIENT_ONLY
 
   Notebook_Data m_Notebook_Data;
   Notebook_Find m_Notebook_Find;
 
-#ifndef ENABLE_CLIENT_ONLY
   //Navigation:
   Dialog_Glom* m_pDialog_Tables;
+#ifndef ENABLE_CLIENT_ONLY
   Dialog_Glom* m_pDialog_Reports;
 #endif // !ENABLE_CLIENT_ONLY
 

@@ -169,7 +169,6 @@ DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ust
   {
     pFieldWidget->signal_edited().connect( sigc::mem_fun(*this, &DataWidget::on_widget_edited)  );
 
-    // TODO_clientonly: Do we really not need them in client only mode?
 #ifndef ENABLE_CLIENT_ONLY
     pFieldWidget->signal_user_requested_layout().connect( sigc::mem_fun(*this, &DataWidget::on_child_user_requested_layout) );
     pFieldWidget->signal_user_requested_layout_properties().connect( sigc::mem_fun(*this, &DataWidget::on_child_user_requested_layout_properties) );

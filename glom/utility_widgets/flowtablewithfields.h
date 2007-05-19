@@ -142,8 +142,10 @@ protected:
 
   void on_script_button_clicked(const sharedptr<LayoutItem_Button>& layout_item);
 
+#ifndef ENABLE_CLIENT_ONLY
   /// Remember the layout widget so we can iterate through them later.
   void on_layoutwidget_changed();
+#endif // !ENABLE_CLIENT_ONLY
 
 #ifndef ENABLE_CLIENT_ONLY
   void on_datawidget_layout_item_added(LayoutWidgetBase::enumType item_type, DataWidget* pDataWidget);

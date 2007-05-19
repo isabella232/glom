@@ -86,9 +86,7 @@ protected:
 #ifndef ENABLE_CLIENT_ONLY
   virtual void on_menu_userlevel_developer();
   virtual void on_menu_userlevel_operator();
-#endif // !ENABLE_CLIENT_ONLY
   virtual void on_menu_file_save_as_example();
-#ifndef ENABLE_CLIENT_ONLY
   virtual void on_menu_developer_changelanguage();
   virtual void on_menu_developer_translations();
   virtual void on_window_translations_hide();
