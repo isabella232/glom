@@ -170,6 +170,14 @@ public:
    */
   static bool install_postgres(Gtk::Window* parent_window);
 
+  /** Check whether the libgda postgres provider is really available, 
+   * so we can connect to postgres servers,
+   * in case the distro package has incorrect dependencies.
+   *
+   * @results True if everything is OK.
+   */
+  static bool check_postgres_gda_client_is_available_with_warning();
+
 protected:
   void on_sharedconnection_finished();
 

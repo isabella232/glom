@@ -909,6 +909,31 @@ bool ConnectionPool::install_postgres(Gtk::Window* parent_window)
 #endif
 }
 
+bool ConnectionPool::check_postgres_gda_client_is_available_with_warning()
+{
+  Glib::RefPtr<Gnome::Gda::Client> gda_client = Gnome::Gda::Client::create();
+  if(gda_client)
+  {
+    //Get the list of providers:
+    typedef std::list<Gnome::Gda::ProviderInfo> type_list_of_provider_info;
+    type_list_of_provider_info providers = Gnome::Gda::Config::get_providers();
+
+    //Examine the information about each Provider:
+    for(type_list_of_provider_info::const_iterator iter = providers.begin(); iter != providers.end(); ++iter)
+    { 
+      const Gnome::Gda::ProviderInfo& info = *iter;
+      if (info.get_id() == "PostgreSQL")
+        return true;
+    }
+  }
+
+  /* The Postgres provider was not found, so warn the user: */
+  Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Incomplete Glom Installation")), true /* use_markup */, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true /* modal */);
+  dialog.set_secondary_text(_("Your installation of Glom is not complete, because the PostgreSQL libgda provider is not available on your system. This provider is needed to access Postgres database servers.\n\nPlease report this bug to your vendor, or your system administrator so it can be corrected."));
+  dialog.run();
+  return false;
+}
+
 
 /** Advertise self-hosting via avahi:
  */

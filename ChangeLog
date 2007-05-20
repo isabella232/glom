@@ -1,3 +1,13 @@
+2007-05-20  Murray Cumming  <murrayc@murrayc.com>
+
+	* configure.in: Check for the pgk-config file of the libgda 
+	postgres providers.
+	* glom/libglom/connectionpool.cc:
+	* glom/libglom/connectionpool.h:
+	* glom/main.cc: Added and used 
+	check_postgres_gda_client_is_available_with_warning() to do 
+	a runtime check for the presence of the libgda postgres provider. 
+
 2007-05-14  Johannes Schmid <johannes.schmid@openismus.com>
 	
 	* glom/python_embed/glom_python.cc:
