@@ -1,3 +1,12 @@
+2007-05-22  Yselkowitz  <yselkowitz@users.sourceforge.net>
+
+	* glom/libglom/Makefile.am:
+	* glom/libglom/connectionpool.cc:
+	Cygwin/Windows fix: Expect the EXEEXT file extension when searching for 
+	postmaster. Bug #440335.
+
+1.4.3:
+
 2007-04-01  Murray Cumming  <murrayc@murrayc.com>
 
 	po/en_GB.po: Restore the date printf format that was removed by 

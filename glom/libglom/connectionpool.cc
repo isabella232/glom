@@ -818,7 +818,8 @@ int ConnectionPool::discover_first_free_port(int start_port, int end_port)
 
 bool ConnectionPool::check_postgres_is_available_with_warning()
 {
-  const std::string binpath = Glib::build_filename(POSTGRES_UTILS_PATH, "postmaster");
+  //EXEEXT is defined in the Makefile.am.
+  const std::string binpath = Glib::build_filename(POSTGRES_UTILS_PATH, "postmaster" EXEEXT);
   const Glib::ustring uri_binpath = Glib::filename_to_uri(binpath);
   if(Bakery::App_WithDoc::file_exists(uri_binpath))
     return true;
