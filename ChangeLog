@@ -1,3 +1,12 @@
+1.5.1 (unstable):
+
+2007-05-22  Yselkowitz  <yselkowitz@users.sourceforge.net>
+
+	* glom/libglom/Makefile.am:
+	* glom/libglom/connectionpool.cc:
+	Cygwin/Windows fix: Expect the EXEEXT file extension when searching for 
+	postmaster. Bug #440335.
+
 2007-05-20  Murray Cumming  <murrayc@murrayc.com>
 
 	* configure.in: Check for the pgk-config file of the libgda 
@@ -11,7 +20,7 @@
 2007-05-14  Johannes Schmid <johannes.schmid@openismus.com>
 	
 	* glom/python_embed/glom_python.cc:
-	#361171 - Show Python erros in a dialog
+	#361171 - Show Python errors in a dialog
 
 2007-05-14  Armin Burgmeier  <armin@openismus.com>
 
