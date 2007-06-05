@@ -1,3 +1,7 @@
+2007-06-05  Ignacio Casal Quinteiro  <nacho.resa@gmail.com>
+
+	* configure.in: Added 'gl' to ALL_LINGUAS.
+
 1.5.1 (unstable):
 
 2007-05-22  Yselkowitz  <yselkowitz@users.sourceforge.net>
