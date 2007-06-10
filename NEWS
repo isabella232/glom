@@ -1,3 +1,11 @@
+1.5.2 (unstable)
+
+* Fixed some crashes during database creation.
+  (partly by depending on the latest libgdamm).
+  (Murray Cumming)
+* Added Galician translation.
+  (Ignacio Casal Quinteiro)
+
 1.5.1 (unstable):
 
 * Ported to libgdamm 3.0 and pygda-3.0 (from gnome-python-extras)

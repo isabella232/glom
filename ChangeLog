@@ -1,3 +1,13 @@
+1.5.2 (unstable):
+
+2007-06-10  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/libglom/spawn_with_feedback.cc: 
+	execute_command_line_on_thread_create(): Do not delete the data 
+	before using it, to avoid a crash.
+	* configure.ac: Depend on the latest versions of libgdamm and libxml++, 
+	which also have fixes for crashes in Glom.
+
 2007-06-05  Ignacio Casal Quinteiro  <nacho.resa@gmail.com>
 
 	* configure.in: Added 'gl' to ALL_LINGUAS.
