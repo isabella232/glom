@@ -1,3 +1,11 @@
+1.4.4:
+
+2007-06-10  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/libglom/spawn_with_feedback.cc: 
+	execute_command_line_on_thread_create(): Do not delete the data 
+	before using it, to avoid a crash.
+
 2007-05-22  Yselkowitz  <yselkowitz@users.sourceforge.net>
 
 	* glom/libglom/Makefile.am:

@@ -1,3 +1,8 @@
+1.4.4:
+
+* Fix a crash when creating a self-hosted database.
+  (Murray Cumming)
+
 1.4.3:
 
 * en_GB (British English) locale: Correct the parsing of 4-digit years in dates again.
