@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glom.HEAD.es\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-04-25 03:58+0100\n"
-"PO-Revision-Date: 2007-05-15 19:19+0200\n"
+"POT-Creation-Date: 2007-05-21 04:04+0100\n"
+"PO-Revision-Date: 2007-06-15 16:32+0200\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Spanish <traductores@es.gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -23,7 +23,7 @@ msgstr ""
 msgid "A user-friendly database environment."
 msgstr "Un entorno de bases de datos amigable."
 
-#: ../glom.desktop.in.in.h:2 ../glom/glom.glade.h:147 ../glom/main.cc:127
+#: ../glom.desktop.in.in.h:2 ../glom/glom.glade.h:147 ../glom/main.cc:126
 msgid "Glom"
 msgstr "Glom"
 
@@ -109,7 +109,7 @@ msgstr "<b>Partes</b>"
 
 #: ../glom/glom.glade.h:21
 msgid "<b>Recently Opened Files:</b>"
-msgstr ""
+msgstr "<b>Archivos abiertos recientemente:<b/>"
 
 #: ../glom/glom.glade.h:22
 msgid "<b>Relationship:</b>"
@@ -802,7 +802,7 @@ msgstr "Clave primaria"
 
 #: ../glom/glom.glade.h:180 ../glom/libglom/spawn_with_feedback.cc:134
 msgid "Processing"
-msgstr ""
+msgstr "Procesando"
 
 #: ../glom/glom.glade.h:181
 msgid "Quick Find"
@@ -855,7 +855,7 @@ msgstr "Nombre del script:"
 msgid "Secondary Fields:"
 msgstr "Campos secundarios:"
 
-#: ../glom/glom.glade.h:192 ../glom/utility_widgets/imageglom.cc:365
+#: ../glom/glom.glade.h:192 ../glom/utility_widgets/imageglom.cc:363
 #: ../glom/utility_widgets/dialog_choose_id.cc:82
 msgid "Select"
 msgstr "Seleccionar"
@@ -1233,7 +1233,7 @@ msgstr "Archivo de sólo lectura."
 msgid ""
 "You may not overwrite the existing file, because you do not have sufficient "
 "access rights."
-msgstr ""
+msgstr "No puedesobreescribir el archivo existente, porque no tiene suficientes permisos de acceso."
 
 #. Warn the user:
 #: ../glom/application.cc:580
@@ -1244,7 +1244,7 @@ msgstr "Directorio de sólo lectura."
 msgid ""
 "You may not create a file in this directory, because you do not have "
 "sufficient access rights."
-msgstr ""
+msgstr "No puedecrear un archivo en este directorio, porque no tiene suficientes permisos de acceso."
 
 #: ../glom/application.cc:592
 msgid "Database Title missing"
@@ -1254,22 +1254,22 @@ msgstr "Falta el título de la base de datos"
 msgid "You must specify a title for the new database."
 msgstr "Debe especificar un título para la nueva base de datos."
 
-#: ../glom/application.cc:607 ../glom/libglom/connectionpool.cc:644
+#: ../glom/application.cc:607 ../glom/libglom/connectionpool.cc:665
 msgid "Directory Already Exists"
 msgstr "El directorio ya existe"
 
-#: ../glom/application.cc:607 ../glom/libglom/connectionpool.cc:644
+#: ../glom/application.cc:607 ../glom/libglom/connectionpool.cc:665
 msgid ""
 "There is an existing directory with the same name as the directory that "
 "should be created for the new database files. You should specify a different "
 "filename to use a new directory instead."
 msgstr ""
 
-#: ../glom/application.cc:720
+#: ../glom/application.cc:726
 msgid "Creating From Example File"
 msgstr "Creando desde un archivo de ejemplo."
 
-#: ../glom/application.cc:721
+#: ../glom/application.cc:727
 msgid ""
 "To use this example file you must save an editable copy of the file. A new "
 "database will also be created on the server."
@@ -1277,11 +1277,11 @@ msgstr ""
 "Para usar este archivo de ejemplo debe guardar una copia editable del "
 "archivo. También se creará una base de datos en el servidor."
 
-#: ../glom/application.cc:747
+#: ../glom/application.cc:755
 msgid "Opening Read-Only File."
 msgstr "Abriendo un archivo de sólo lectura."
 
-#: ../glom/application.cc:748
+#: ../glom/application.cc:756
 msgid ""
 "This file is read only, so you will not be able to enter Developer mode to "
 "make design changes."
@@ -1289,16 +1289,16 @@ msgstr ""
 "Este archivo es de sólo lectura, no podrá entrar en «Modo de desarrollador» "
 "para realizar cambios de diseño."
 
-#: ../glom/application.cc:751
+#: ../glom/application.cc:759
 msgid "Continue without Developer Mode"
 msgstr "Continuar sin el «Modo de desarrollador»"
 
 #. The connection to the server is OK, but the database is not there yet.
-#: ../glom/application.cc:847
+#: ../glom/application.cc:855
 msgid "Database Not Found On Server"
 msgstr "No se encontró la base de datos en el servidor"
 
-#: ../glom/application.cc:847
+#: ../glom/application.cc:855
 msgid ""
 "The database could not be found on the server. Please consult your system "
 "administrator."
@@ -1306,61 +1306,61 @@ msgstr ""
 "No se encontró la base de datos en el servidor. Consulte al administrador "
 "del sistema."
 
-#: ../glom/application.cc:1109
+#: ../glom/application.cc:1120
 msgid "_Contents"
 msgstr "_Contenido"
 
-#: ../glom/application.cc:1109
+#: ../glom/application.cc:1120
 msgid "Help with the application"
 msgstr "Ayuda con la aplicación"
 
-#: ../glom/application.cc:1180
+#: ../glom/application.cc:1191
 msgid "Creating Glom Database"
 msgstr "Crear la base de datos de Glom"
 
-#: ../glom/application.cc:1180
+#: ../glom/application.cc:1191
 msgid "Creating Glom database from example file."
 msgstr "Creando base de datos Glom desde un archivo de ejemplo."
 
-#: ../glom/application.cc:1518
+#: ../glom/application.cc:1529
 msgid "Save failed."
 msgstr "Fallo al guardar."
 
-#: ../glom/application.cc:1518
+#: ../glom/application.cc:1529
 msgid "There was an error while saving the file. Your changes have not been saved."
 msgstr "Ocurrió un error al grabar el archivo. Sus cambios no se han guardado."
 
-#: ../glom/base_db.cc:161 ../glom/libglom/connectionpool.cc:486
+#: ../glom/base_db.cc:161 ../glom/libglom/connectionpool.cc:507
 msgid "Internal error"
 msgstr "Error interno"
 
-#: ../glom/base_db.cc:934 ../glom/mode_design/users/dialog_groups_list.cc:67
+#: ../glom/base_db.cc:948 ../glom/mode_design/users/dialog_groups_list.cc:67
 msgid "Description"
 msgstr "Descripción"
 
-#: ../glom/base_db.cc:941
+#: ../glom/base_db.cc:955
 msgid "Comments"
 msgstr "Comentarios"
 
-#: ../glom/base_db.cc:1354
+#: ../glom/base_db.cc:1368
 msgid "No Records Found"
 msgstr "No se encontró ningún registro"
 
-#: ../glom/base_db.cc:1356
+#: ../glom/base_db.cc:1370
 msgid "New Find"
 msgstr "Nueva búsqueda"
 
-#: ../glom/base_db.cc:1357
+#: ../glom/base_db.cc:1371
 msgid "Your find criteria did not match any records in the table."
 msgstr ""
 "El criterio de búsqueda introducido no coincide con ningún registro de la "
 "tabla."
 
-#: ../glom/base_db.cc:2311
+#: ../glom/base_db.cc:2325
 msgid "Value Is Not Unique"
 msgstr "El valor no es único"
 
-#: ../glom/base_db.cc:2311
+#: ../glom/base_db.cc:2325
 msgid ""
 "The field's value must be unique, but a record with this value already "
 "exists."
@@ -1399,49 +1399,53 @@ msgstr "(Ninguno)"
 #. Please do test it with your postgres version, using "echo $?" to see the result code of the last command.
 #. TODO: This is not a stable API. Also, watch out for localisation.
 #. The first command does not return, but the second command can check whether it succeeded:
-#: ../glom/libglom/connectionpool.cc:580
+#: ../glom/libglom/connectionpool.cc:601
 msgid "Starting Database Server"
 msgstr "Iniciando el servidor de bases de datos"
 
-#: ../glom/libglom/connectionpool.cc:618
+#: ../glom/libglom/connectionpool.cc:639
 msgid "Stopping Database Server"
-msgstr ""
+msgstr "Parando el servidor de bases de datos"
 
-#: ../glom/libglom/connectionpool.cc:664
+#: ../glom/libglom/connectionpool.cc:685
 msgid "Could Not Create Directory"
 msgstr "No se pudo crear el directorio."
 
-#: ../glom/libglom/connectionpool.cc:664
+#: ../glom/libglom/connectionpool.cc:685
 msgid ""
 "There was an error when attempting to create the directory for the new "
 "database files."
-msgstr "Ocurrió un error al intentar crear el directorio para los archivos de la nueva base de datos."
+msgstr ""
+"Ocurrió un error al intentar crear el directorio para los archivos de la "
+"nueva base de datos."
 
-#: ../glom/libglom/connectionpool.cc:677
+#: ../glom/libglom/connectionpool.cc:698
 msgid "Could Not Create Configuration Directory"
 msgstr "No se pudo crear el directorio de configuración"
 
-#: ../glom/libglom/connectionpool.cc:677
+#: ../glom/libglom/connectionpool.cc:698
 msgid ""
 "There was an error when attempting to create the configuration directory for "
 "the new database files."
-msgstr ""
+msgstr "Hubo un error al intentar crear el directorio de configuración para los archivos de la nueva base de datos."
 
 #. Note that --pwfile takes the password from the first line of a file. It's an alternative to supplying it when prompted on stdin.
-#: ../glom/libglom/connectionpool.cc:712
+#: ../glom/libglom/connectionpool.cc:733
 msgid "Creating Database Data"
 msgstr "Creando los datos de la base de datos"
 
 #. Show message to the user about the broken installation:
 #. This is a packaging bug, but it would probably annoy packagers to mention that in the dialog:
 #. Show message to the user about the broken installation:
-#: ../glom/libglom/connectionpool.cc:831 ../glom/libglom/connectionpool.cc:844
+#. The Postgres provider was not found, so warn the user:
+#: ../glom/libglom/connectionpool.cc:852 ../glom/libglom/connectionpool.cc:865
+#: ../glom/libglom/connectionpool.cc:931
 msgid "Incomplete Glom Installation"
 msgstr "La instalación de Glom está incompleta"
 
 #. use_markup
 #. modal
-#: ../glom/libglom/connectionpool.cc:832
+#: ../glom/libglom/connectionpool.cc:853
 msgid ""
 "Your installation of Glom is not complete, because PostgreSQL is not "
 "available on your system. PostgreSQL is needed for self-hosting of Glom "
@@ -1450,13 +1454,13 @@ msgid ""
 "You may now install PostgreSQL to complete the Glom installation."
 msgstr ""
 
-#: ../glom/libglom/connectionpool.cc:834
+#: ../glom/libglom/connectionpool.cc:855
 msgid "Install PostgreSQL"
 msgstr "Instalar PostreSQL"
 
 #. use_markup
 #. modal
-#: ../glom/libglom/connectionpool.cc:845
+#: ../glom/libglom/connectionpool.cc:866
 msgid ""
 "Your installation of Glom is not complete, because PostgreSQL is not "
 "available on your system. PostgreSQL is needed for self-hosting of Glom "
@@ -1466,36 +1470,48 @@ msgid ""
 "can be corrected."
 msgstr ""
 
-#: ../glom/libglom/data_structure/field.cc:548
+#. use_markup
+#. modal
+#: ../glom/libglom/connectionpool.cc:932
+msgid ""
+"Your installation of Glom is not complete, because the PostgreSQL libgda "
+"provider is not available on your system. This provider is needed to access "
+"Postgres database servers.\n"
+"\n"
+"Please report this bug to your vendor, or your system administrator so it "
+"can be corrected."
+msgstr ""
+
+#: ../glom/libglom/data_structure/field.cc:554
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:142
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:150
 msgid "Invalid"
 msgstr "No válido"
 
-#: ../glom/libglom/data_structure/field.cc:549
+#: ../glom/libglom/data_structure/field.cc:555
 msgid "Number"
 msgstr "Número"
 
-#: ../glom/libglom/data_structure/field.cc:550
+#: ../glom/libglom/data_structure/field.cc:556
 #: ../glom/libglom/data_structure/translatable_item.cc:298
 #: ../glom/libglom/data_structure/layout/layoutitem_text.cc:68
 #: ../glom/mode_data/dialog_layout_details.cc:1131
 msgid "Text"
 msgstr "Texto"
 
-#: ../glom/libglom/data_structure/field.cc:551
+#: ../glom/libglom/data_structure/field.cc:557
 msgid "Time"
 msgstr "Hora"
 
-#: ../glom/libglom/data_structure/field.cc:552
+#: ../glom/libglom/data_structure/field.cc:558
 msgid "Date"
 msgstr "Fecha"
 
-#: ../glom/libglom/data_structure/field.cc:553
+#: ../glom/libglom/data_structure/field.cc:559
 msgid "Boolean"
 msgstr "Booleano"
 
-#: ../glom/libglom/data_structure/field.cc:554
+#: ../glom/libglom/data_structure/field.cc:560
 #: ../glom/libglom/data_structure/translatable_item.cc:300
 #: ../glom/libglom/data_structure/layout/layoutitem_image.cc:68
 #: ../glom/mode_data/dialog_layout_details.cc:1138
@@ -1613,7 +1629,7 @@ msgstr "Estado"
 msgid "Zip Code"
 msgstr "Código postal"
 
-#: ../glom/libglom/utils.cc:819
+#: ../glom/libglom/utils.cc:810
 msgid "Could not display help: "
 msgstr "No se pudo mostrar la ayuda: "
 
@@ -1765,7 +1781,7 @@ msgid "This feature is not yet available."
 msgstr "Esta característica aún no está disponible."
 
 #. Show 0 instead of "all" when all of no records are found, to avoid confusion.
-#: ../glom/frame_glom.cc:1872
+#: ../glom/frame_glom.cc:1878
 msgid "All"
 msgstr "Todos"
 
@@ -1773,33 +1789,35 @@ msgstr "Todos"
 msgid "Ascending"
 msgstr "Ascendiente"
 
-#: ../glom/main.cc:54
+#: ../glom/main.cc:53
 msgid "Glom options"
 msgstr "Opciones de Glom"
 
-#: ../glom/main.cc:54
+#: ../glom/main.cc:53
 msgid "Command-line options for glom"
 msgstr "Opciones de línea de comandos de glom"
 
-#: ../glom/main.cc:61
+#: ../glom/main.cc:60
 msgid "The Filename"
 msgstr "El nombre del archivo"
 
-#: ../glom/main.cc:67
+#: ../glom/main.cc:66
 msgid "The version of this application."
 msgstr "La versión de esta aplicación."
 
-#: ../glom/main.cc:72
+#: ../glom/main.cc:71
 msgid "Show the generated SQL queries on stdout, for debugging."
 msgstr "Mostrar las consultas SQL generadas en stdout, para depurar."
 
-#: ../glom/main.cc:102
+#: ../glom/main.cc:101
 msgid "Error while parsing commmand-line options: "
 msgstr "Error al analizar las opciones de la línea de comandos: "
 
-#: ../glom/main.cc:103
+#: ../glom/main.cc:102
 msgid "Use --help to see a list of available command-line options."
-msgstr "Use --help para ver una lista de las opciones disponibles para la línea de comandos."
+msgstr ""
+"Use --help para ver una lista de las opciones disponibles para la línea de "
+"comandos."
 
 #: ../glom/mode_data/box_data.cc:127
 msgid ""
@@ -2255,17 +2273,24 @@ msgstr "Nueva base de datos"
 msgid ""
 "Please choose a human-readable title for the new database. You can change "
 "this later in the database properties. It may contain any characters."
-msgstr "Elija un nombre y un título para la nueva base de datos Puede cambiar estos valores más tarde en las propiedades de la base de datos. Puede contener cualquier carácter."
+msgstr ""
+"Elija un nombre y un título para la nueva base de datos Puede cambiar estos "
+"valores más tarde en las propiedades de la base de datos. Puede contener "
+"cualquier carácter."
 
 #: ../glom/utility_widgets/filechooserdialog.cc:101
 msgid "Create database in its own folder, to be hosted by this computer."
-msgstr "Crear la base de datos en su propia carpeta, para ser hospedad en este equipo."
+msgstr ""
+"Crear la base de datos en su propia carpeta, para ser hospedad en este "
+"equipo."
 
 #: ../glom/utility_widgets/filechooserdialog.cc:105
 msgid ""
 "Create database on an external database server, to be specified in the next "
 "step."
-msgstr "Crear la base de datos en un servidor de base de datos externo, para ser especificado en el siguiente paso."
+msgstr ""
+"Crear la base de datos en un servidor de base de datos externo, para ser "
+"especificado en el siguiente paso."
 
 #: ../glom/utility_widgets/flowtablewithfields.cc:915
 msgid "New Group"
@@ -2291,23 +2316,23 @@ msgstr "texto"
 msgid "New Text"
 msgstr "Texto nuevo"
 
-#: ../glom/utility_widgets/imageglom.cc:356
+#: ../glom/utility_widgets/imageglom.cc:354
 msgid "Choose image"
 msgstr "Elegir una imagen"
 
-#: ../glom/utility_widgets/imageglom.cc:360
+#: ../glom/utility_widgets/imageglom.cc:358
 msgid "Images"
 msgstr "Imágenes"
 
-#: ../glom/utility_widgets/imageglom.cc:392
+#: ../glom/utility_widgets/imageglom.cc:390
 msgid "Image loading failed"
 msgstr "Falló la carga de la imagen"
 
-#: ../glom/utility_widgets/imageglom.cc:392
+#: ../glom/utility_widgets/imageglom.cc:390
 msgid "The image file could not be opened:\n"
 msgstr "El archivo de la imagen no se pudo abrir:\n"
 
-#: ../glom/utility_widgets/imageglom.cc:487
+#: ../glom/utility_widgets/imageglom.cc:485
 msgid "Choose File"
 msgstr "Elegir archivo"
 
