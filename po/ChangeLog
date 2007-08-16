@@ -1,3 +1,7 @@
+2007-08-15  Adam Weinberger  <adamw@gnome.org>
+
+	* POTFILES.in: Added missing files and sorted.
+
 2007-06-26 Pema Geyleg <pema.geyleg@gmail.com>
 
 	* dz.po: Updated dzongkha translation
