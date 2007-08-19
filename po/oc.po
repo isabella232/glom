@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Glom HEAD fr\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-06-07 22:02+0200\n"
-"PO-Revision-Date: 2007-07-29 11:01+0200\n"
+"PO-Revision-Date: 2007-08-19 19:27+0200\n"
 "Last-Translator: Yannig MARCHEGAY (Kokoyaya) <yannig@marchegay.org>\n"
 "Language-Team: Occitan (post 1500) <ubuntu-l10n-oci@lists.ubuntu.com>\n"
 "MIME-Version: 1.0\n"
@@ -308,7 +308,7 @@ msgstr ""
 
 #: ../glom/glom.glade.h:89 ../glom/utility_widgets/layoutwidgetbase.cc:41
 msgid "Add Button"
-msgstr ""
+msgstr "Apondre un boton"
 
 #: ../glom/glom.glade.h:90 ../glom/utility_widgets/layoutwidgetbase.cc:39
 msgid "Add Notebook"
@@ -328,7 +328,7 @@ msgstr ""
 
 #: ../glom/glom.glade.h:94
 msgid "Add _Group"
-msgstr ""
+msgstr "Apondre un _grop"
 
 #: ../glom/glom.glade.h:95
 msgid ""
