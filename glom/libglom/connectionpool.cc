@@ -32,6 +32,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h> //For sockaddr_in
 
+#include <signal.h> //To catch segfaults
 
 #include "gst-package.h"
 
@@ -539,6 +540,26 @@ bool ConnectionPool::directory_exists_uri(const std::string& uri)
   return vfsuri->uri_exists();
 }
 
+static sighandler_t previous_sig_handler = SIG_DFL; /* Arbitrary default */
+
+/* This is a Linux/Unix signal handler, 
+ * so we can respond to a crash.
+ */
+static void on_linux_signal(int signum)
+{
+  ConnectionPool* connection_pool = ConnectionPool::get_instance();
+  if(!connection_pool)
+    return;
+
+  if(signum == SIGSEGV)
+  {
+    connection_pool->stop_self_hosting();
+	
+    //TODO: How can we let GNOME's crash handler still handle this?
+    exit(1);
+  }
+}
+
 bool ConnectionPool::start_self_hosting()
 {
   if(m_self_hosting_active)
@@ -548,7 +569,8 @@ bool ConnectionPool::start_self_hosting()
 
   if(!(directory_exists_uri(dbdir_uri)))
   {
-    std::cerr << "ConnectionPool::create_self_hosting(): The directory could not be found: " << dbdir_uri << std::endl;
+    //TODO: Use a return enum or exception so we can tell the user about this:
+    std::cerr << "ConnectionPool::create_self_hosting(): The data directory could not be found: " << dbdir_uri << std::endl;
     return false;
   }
 
@@ -559,6 +581,7 @@ bool ConnectionPool::start_self_hosting()
   const std::string dbdir_data_uri = Glib::filename_to_uri(dbdir_data);
   if(!(directory_exists_uri(dbdir_data_uri)))
   {
+    //TODO: Use a return enum or exception so we can tell the user about this:
     std::cerr << "ConnectionPool::create_self_hosting(): The data sub-directory could not be found." << dbdir_data_uri << std::endl;
     return false;
   }
@@ -567,6 +590,7 @@ bool ConnectionPool::start_self_hosting()
   const int available_port = discover_first_free_port(PORT_POSTGRESQL_SELF_HOSTED_START, PORT_POSTGRESQL_SELF_HOSTED_END);
   if(available_port == 0)
   {
+    //TODO: Use a return enum or exception so we can tell the user about this:
     std::cerr << "ConnectionPool::create_self_hosting(): No port was available between " << PORT_POSTGRESQL_SELF_HOSTED_START << " and " << PORT_POSTGRESQL_SELF_HOSTED_END << std::endl;
     return false;
   }
@@ -610,6 +634,10 @@ bool ConnectionPool::start_self_hosting()
   //Let clients discover this server via avahi:
   avahi_start_publishing();
 
+  //If we crash while self-hosting (unlikely, hopefully) 
+  //then try to stop the postgres instance instead of leaving it running as an orphan.
+  previous_sig_handler = signal(SIGSEGV, &on_linux_signal);
+
   return true;
 }
 
@@ -641,6 +669,10 @@ void ConnectionPool::stop_self_hosting()
   {
     std::cerr << "Error while attempting to stop self-hosting of the database."  << std::endl;
   }
+
+  //We don't need the segfault handler anymore:
+  signal(SIGSEGV, previous_sig_handler);
+  previous_sig_handler = SIG_DFL; /* Arbitrary default */
 
   m_self_hosting_active = false;
 }
