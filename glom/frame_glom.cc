@@ -1073,7 +1073,7 @@ void Frame_Glom::update_table_in_document_from_database()
   Document_Glom* pDoc = dynamic_cast<const Document_Glom*>(get_document());
   if(pDoc)
   {
-    bool document_must_to_be_updated = false;
+    bool document_must_be_updated = false;
 
     //Get the fields information from the document.
     //and add to, or update Document's list of fields:
@@ -1090,7 +1090,7 @@ void Frame_Glom::update_table_in_document_from_database()
         {
           //Add it
           fieldsDocument.push_back(field_database);
-          document_must_to_be_updated = true;
+          document_must_be_updated = true;
         }
         else //if it was found.
         {
@@ -1099,7 +1099,7 @@ void Frame_Glom::update_table_in_document_from_database()
           sharedptr<Field> field_document =  *iterFindDoc;
           if(field_document)
           {
-            if(field_document->field_info_from_database_is_equal( field_info_db )) //ignores auto_increment because libgda does not report it from the database properly.
+            if(!field_document->field_info_from_database_is_equal( field_info_db )) //ignores auto_increment because libgda does not report it from the database properly.
             {
               //The database has different information. We assume that the information in the database is newer.
 
@@ -1107,7 +1107,7 @@ void Frame_Glom::update_table_in_document_from_database()
               field_info_db->set_auto_increment( field_document->get_auto_increment() ); //libgda does not report it from the database properly.
               (*iterFindDoc)->set_field_info( field_info_db );
 
-              document_must_to_be_updated = true;
+              document_must_be_updated = true;
             }
           }
         }
@@ -1129,11 +1129,11 @@ void Frame_Glom::update_table_in_document_from_database()
       }
       else
       {
-        document_must_to_be_updated = true; //Something changed.
+        document_must_be_updated = true; //Something changed.
       }
     }
 
-    if(document_must_to_be_updated)
+    if(document_must_be_updated)
       pDoc->set_table_fields(m_table_name, fieldsActual);
   }
 }

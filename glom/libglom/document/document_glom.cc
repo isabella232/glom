@@ -1607,6 +1607,17 @@ void Document_Glom::set_modified(bool value)
     return;
   }
 
+  if (get_userlevel() != AppState::USERLEVEL_DEVELOPER)
+  {
+    //Some things can be legitimately changed by the user, 
+    //such as field information from the server,
+    //but only for the duration of the session.
+    //There's no way that save_changes() can work for the user,
+    //so we don't use set_modified().
+    return;
+  }
+
+
   //if(value != get_modified()) //Prevent endless loops
   //{
     Bakery::Document_XML::set_modified(value);

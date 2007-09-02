@@ -1,5 +1,14 @@
 2007-09-03  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/frame_glom.cc: Fix an if, adding a !, stopping us from 
+	updating the fields in the document unnecessarily. This avoid a 
+	warning about unsaved changes when closing, even in operator mode.
+	* glom/libglom/document/document_glom.cc: set_modified(): Do nothing 
+	if the user is not in developer mode, because there are legitimate 
+	times when things can change temporarily in operator mode.
+
+2007-09-03  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/libglom/connectionpool.cc: When the first postgres shutdown 
 	fails (as happens under valgrind, and in bug #420962) try again, 
 	though that seems to fail too.
