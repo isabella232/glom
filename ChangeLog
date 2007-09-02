@@ -1,4 +1,15 @@
-2007-09-02  Murray Cumming  <murrayc@murrayc-desktop>
+2007-09-02  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/libglom/document/document_glom.cc: 
+	save_before_layout_item_field_formatting(),
+	load_after_layout_item_field_formatting(),
+	* glom/utility_widgets/datawidget.cc: constructor:
+	Ignore the multiline formatting options for non-text fields,
+	so that these will not be used for number fields if they were used 
+	before changing the field from text to number.
+	Bug #443360 (Harry Mills)
+
+2007-09-02  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/libglom/connectionpool.cc: start_self_hosting(): Specify a 
 	Linux/Unix SIGSEGV signal handler so we stop postgres when we 

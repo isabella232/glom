@@ -1628,8 +1628,11 @@ void Document_Glom::load_after_layout_item_field_formatting(const xmlpp::Element
   format.m_numeric_format.m_currency_symbol = get_node_attribute_value(element, GLOM_ATTRIBUTE_FORMAT_CURRENCY_SYMBOL);
 
   //Text formatting:
-  format.set_text_format_multiline( get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_FORMAT_TEXT_MULTILINE) );
-  format.set_text_format_multiline_height_lines( get_node_attribute_value_as_decimal(element, GLOM_ATTRIBUTE_FORMAT_TEXT_MULTILINE_HEIGHT_LINES) );
+  if(field_type == Field::TYPE_TEXT)
+  {
+    format.set_text_format_multiline( get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_FORMAT_TEXT_MULTILINE) );
+    format.set_text_format_multiline_height_lines( get_node_attribute_value_as_decimal(element, GLOM_ATTRIBUTE_FORMAT_TEXT_MULTILINE_HEIGHT_LINES) );
+  }
 
   //Choices:
   format.set_choices_restricted( get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_RESTRICTED) );
@@ -2428,8 +2431,11 @@ void Document_Glom::save_before_layout_item_field_formatting(xmlpp::Element* nod
   set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_FORMAT_CHOICES_CUSTOM, format.get_has_custom_choices());
 
   //Text formatting:
-  set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_FORMAT_TEXT_MULTILINE, format.get_text_format_multiline());
-  set_node_attribute_value_as_decimal(nodeItem, GLOM_ATTRIBUTE_FORMAT_TEXT_MULTILINE_HEIGHT_LINES, format.get_text_format_multiline_height_lines());
+  if(field_type == Field::TYPE_TEXT)
+  {
+    set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_FORMAT_TEXT_MULTILINE, format.get_text_format_multiline());
+    set_node_attribute_value_as_decimal(nodeItem, GLOM_ATTRIBUTE_FORMAT_TEXT_MULTILINE_HEIGHT_LINES, format.get_text_format_multiline_height_lines());
+  }
 
   //Choices:
   if(format.get_has_custom_choices())
