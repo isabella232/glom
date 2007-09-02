@@ -1,3 +1,9 @@
+2007-09-03  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/libglom/connectionpool.cc: When the first postgres shutdown 
+	fails (as happens under valgrind, and in bug #420962) try again, 
+	though that seems to fail too.
+
 2007-09-02  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/libglom/document/document_glom.cc: 

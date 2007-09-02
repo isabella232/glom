@@ -667,7 +667,15 @@ void ConnectionPool::stop_self_hosting()
   const bool result = Glom::Spawn::execute_command_line_and_wait(command_postgres_stop, _("Stopping Database Server"));
   if(!result)
   {
-    std::cerr << "Error while attempting to stop self-hosting of the database."  << std::endl;
+    std::cerr << "Error while attempting to stop self-hosting of the database. Trying again."  << std::endl;
+
+    //I've seen it fail when running under valgrind, and there are reports of failures in bug #420962.
+    //Maybe it will help to try again:
+    const bool result = Glom::Spawn::execute_command_line_and_wait(command_postgres_stop, _("Stopping Database Server (retrying)"));
+    if(!result)
+    {
+      std::cerr << "Error while attempting (for a second time) to stop self-hosting of the database."  << std::endl;
+    }
   }
 
   //We don't need the segfault handler anymore:
