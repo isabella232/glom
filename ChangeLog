@@ -1,3 +1,5 @@
+1.5.3:
+
 2007-09-03  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/frame_glom.cc: Fix an if, adding a !, stopping us from 
