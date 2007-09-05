@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glom.HEAD.es\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-16 04:05+0100\n"
-"PO-Revision-Date: 2007-08-18 23:29+0200\n"
+"POT-Creation-Date: 2007-09-03 03:57+0100\n"
+"PO-Revision-Date: 2007-09-05 20:28+0200\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Spanish <traductores@es.gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -182,19 +182,19 @@ msgstr "Falta el título de la base de datos"
 msgid "You must specify a title for the new database."
 msgstr "Debe especificar un título para la nueva base de datos."
 
-#: ../glom/application.cc:607 ../glom/libglom/connectionpool.cc:665
+#: ../glom/application.cc:607 ../glom/libglom/connectionpool.cc:705
 msgid "Directory Already Exists"
 msgstr "El directorio ya existe"
 
-#: ../glom/application.cc:607 ../glom/libglom/connectionpool.cc:665
+#: ../glom/application.cc:607 ../glom/libglom/connectionpool.cc:705
 msgid ""
 "There is an existing directory with the same name as the directory that "
 "should be created for the new database files. You should specify a different "
 "filename to use a new directory instead."
 msgstr ""
-"Existe un directorio con el mismo nombre que el directorio que "
-"debería crearse para los archivos de la base de datos nueva. Debería especificar un nombre "
-"de archivo diferente para usar un nuevo directorio en su lugar."
+"Existe un directorio con el mismo nombre que el directorio que debería "
+"crearse para los archivos de la base de datos nueva. Debería especificar un "
+"nombre de archivo diferente para usar un nuevo directorio en su lugar."
 
 #: ../glom/application.cc:726
 msgid "Creating From Example File"
@@ -261,7 +261,7 @@ msgstr "Fallo al guardar."
 msgid "There was an error while saving the file. Your changes have not been saved."
 msgstr "Ocurrió un error al grabar el archivo. Sus cambios no se han guardado."
 
-#: ../glom/base_db.cc:161 ../glom/libglom/connectionpool.cc:507
+#: ../glom/base_db.cc:161 ../glom/libglom/connectionpool.cc:508
 msgid "Internal error"
 msgstr "Error interno"
 
@@ -837,9 +837,9 @@ msgid ""
 msgstr ""
 "<span weight=\"bold\" size=\"larger\">Primer usuario</span>\n"
 "\n"
-"Introduzca los detalles de la conexión inicial para su base de datos nueva. Puede "
-"añadir usuarios adicionales más tarde. Recuerde mantener la contraseña secreta porque "
-"permite acceso a sus datos desde otros equipos de la red."
+"Introduzca los detalles de la conexión inicial para su base de datos nueva. "
+"Puede añadir usuarios adicionales más tarde. Recuerde mantener la contraseña "
+"secreta porque permite acceso a sus datos desde otros equipos de la red."
 
 #: ../glom/glom.glade.h:71
 msgid ""
@@ -1613,19 +1613,25 @@ msgstr "Ascendiente"
 #. Please do test it with your postgres version, using "echo $?" to see the result code of the last command.
 #. TODO: This is not a stable API. Also, watch out for localisation.
 #. The first command does not return, but the second command can check whether it succeeded:
-#: ../glom/libglom/connectionpool.cc:601
+#: ../glom/libglom/connectionpool.cc:625
 msgid "Starting Database Server"
 msgstr "Iniciando el servidor de bases de datos"
 
-#: ../glom/libglom/connectionpool.cc:639
+#: ../glom/libglom/connectionpool.cc:667
 msgid "Stopping Database Server"
 msgstr "Parando el servidor de bases de datos"
 
-#: ../glom/libglom/connectionpool.cc:685
+#. I've seen it fail when running under valgrind, and there are reports of failures in bug #420962.
+#. Maybe it will help to try again:
+#: ../glom/libglom/connectionpool.cc:674
+msgid "Stopping Database Server (retrying)"
+msgstr "Parando el servidor de bases de datos (reintentando)"
+
+#: ../glom/libglom/connectionpool.cc:725
 msgid "Could Not Create Directory"
 msgstr "No se pudo crear el directorio."
 
-#: ../glom/libglom/connectionpool.cc:685
+#: ../glom/libglom/connectionpool.cc:725
 msgid ""
 "There was an error when attempting to create the directory for the new "
 "database files."
@@ -1633,11 +1639,11 @@ msgstr ""
 "Ocurrió un error al intentar crear el directorio para los archivos de la "
 "nueva base de datos."
 
-#: ../glom/libglom/connectionpool.cc:698
+#: ../glom/libglom/connectionpool.cc:738
 msgid "Could Not Create Configuration Directory"
 msgstr "No se pudo crear el directorio de configuración"
 
-#: ../glom/libglom/connectionpool.cc:698
+#: ../glom/libglom/connectionpool.cc:738
 msgid ""
 "There was an error when attempting to create the configuration directory for "
 "the new database files."
@@ -1646,7 +1652,7 @@ msgstr ""
 "archivos de la nueva base de datos."
 
 #. Note that --pwfile takes the password from the first line of a file. It's an alternative to supplying it when prompted on stdin.
-#: ../glom/libglom/connectionpool.cc:733
+#: ../glom/libglom/connectionpool.cc:773
 msgid "Creating Database Data"
 msgstr "Creando los datos de la base de datos"
 
@@ -1654,14 +1660,14 @@ msgstr "Creando los datos de la base de datos"
 #. This is a packaging bug, but it would probably annoy packagers to mention that in the dialog:
 #. Show message to the user about the broken installation:
 #. The Postgres provider was not found, so warn the user:
-#: ../glom/libglom/connectionpool.cc:853 ../glom/libglom/connectionpool.cc:866
-#: ../glom/libglom/connectionpool.cc:932
+#: ../glom/libglom/connectionpool.cc:893 ../glom/libglom/connectionpool.cc:906
+#: ../glom/libglom/connectionpool.cc:972
 msgid "Incomplete Glom Installation"
 msgstr "La instalación de Glom está incompleta"
 
 #. use_markup
 #. modal
-#: ../glom/libglom/connectionpool.cc:854
+#: ../glom/libglom/connectionpool.cc:894
 msgid ""
 "Your installation of Glom is not complete, because PostgreSQL is not "
 "available on your system. PostgreSQL is needed for self-hosting of Glom "
@@ -1669,19 +1675,19 @@ msgid ""
 "\n"
 "You may now install PostgreSQL to complete the Glom installation."
 msgstr ""
-"Su instalación de Glom no está completa porque PostgreSQL no está "
-"disponible en su sistema. PostgreSQL es necesario para hospedar "
-"las bases de datos de Glom.\n"
+"Su instalación de Glom no está completa porque PostgreSQL no está disponible "
+"en su sistema. PostgreSQL es necesario para hospedar las bases de datos de "
+"Glom.\n"
 "\n"
 "Ahora debe instalar PostgreSQL para completar la instalación de Glom."
 
-#: ../glom/libglom/connectionpool.cc:856
+#: ../glom/libglom/connectionpool.cc:896
 msgid "Install PostgreSQL"
 msgstr "Instalar PostreSQL"
 
 #. use_markup
 #. modal
-#: ../glom/libglom/connectionpool.cc:867
+#: ../glom/libglom/connectionpool.cc:907
 msgid ""
 "Your installation of Glom is not complete, because PostgreSQL is not "
 "available on your system. PostgreSQL is needed for self-hosting of Glom "
@@ -1690,16 +1696,16 @@ msgid ""
 "Please report this bug to your vendor, or your system administrator so it "
 "can be corrected."
 msgstr ""
-"Su instalación de Glom no está completa porque PostgreSQL no está "
-"disponible en su sistema. PostgreSQL es necesario para hospedar"
-"las bases de datos de Glom.\n"
+"Su instalación de Glom no está completa porque PostgreSQL no está disponible "
+"en su sistema. PostgreSQL es necesario para hospedarlas bases de datos de "
+"Glom.\n"
 "\n"
-"Informe de este error a su distribuidor o al administrador de su sistema para "
-"que pueda ser corregido."
+"Informe de este error a su distribuidor o al administrador de su sistema "
+"para que pueda ser corregido."
 
 #. use_markup
 #. modal
-#: ../glom/libglom/connectionpool.cc:933
+#: ../glom/libglom/connectionpool.cc:973
 msgid ""
 "Your installation of Glom is not complete, because the PostgreSQL libgda "
 "provider is not available on your system. This provider is needed to access "
@@ -1708,12 +1714,12 @@ msgid ""
 "Please report this bug to your vendor, or your system administrator so it "
 "can be corrected."
 msgstr ""
-"Su instalación de Glom no está completa porque el proveedor de PostgreSQL libgda "
-"no está disponible en su sistema. Este proveedor es necesario para acceder "
-"a las bases de datos Postgres de los servidores.\n"
+"Su instalación de Glom no está completa porque el proveedor de PostgreSQL "
+"libgda no está disponible en su sistema. Este proveedor es necesario para "
+"acceder a las bases de datos Postgres de los servidores.\n"
 "\n"
-"Informe de este error a su distribuidor o al administrador de su sistema para "
-"que pueda ser corregido."
+"Informe de este error a su distribuidor o al administrador de su sistema "
+"para que pueda ser corregido."
 
 #: ../glom/libglom/data_structure/field.cc:554
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:142
@@ -1855,7 +1861,9 @@ msgstr "No se pudo instalar el paquete"
 
 #: ../glom/libglom/gst-package.c:73
 msgid "The necessary applications to install the package could not be found."
-msgstr "No se pudieron encontrar las aplicaciones necesarias para instalar el paquete."
+msgstr ""
+"No se pudieron encontrar las aplicaciones necesarias para instalar el "
+"paquete."
 
 #: ../glom/libglom/utils.cc:810
 msgid "Could not display help: "
