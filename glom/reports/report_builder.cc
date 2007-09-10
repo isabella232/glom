@@ -544,6 +544,12 @@ void ReportBuilder::report_build(const FoundSet& found_set, const sharedptr<cons
     {
       report_build_records(found_set, *nodeGroupBy, itemsToGet_TopLevel);
     }
+    catch(const Glib::Exception& ex)
+    {
+      //Handle database errors here rather than crashing the whole application:
+      handle_error(ex);
+      return;
+    }
     catch(const std::exception& ex)
     {
       //Handle database errors here rather than crashing the whole application:

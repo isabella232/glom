@@ -156,6 +156,11 @@ bool Box_Data_List::fill_from_database()
 
     fill_end();
   }
+  catch(const Glib::Exception& ex)
+  {
+    handle_error(ex);
+    result = false;
+  }
   catch(const std::exception& ex)
   {
     handle_error(ex);
@@ -442,6 +447,10 @@ void Box_Data_List::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, 
         //Update failed.
         fill_from_database(); //Replace with correct values.
       }
+    }
+    catch(const Glib::Exception& ex)
+    {
+      handle_error(ex);
     }
     catch(const std::exception& ex)
     {

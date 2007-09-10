@@ -1730,6 +1730,11 @@ bool Frame_Glom::create_database(const Glib::ustring& database_name, const Glib:
   {
     sharedconnection = connection_pool->connect();
   }
+  catch(const Glib::Exception& ex)
+  {
+    std::cerr << "Frame_Glom::create_database(): Could not connect to just-created database. exception caught:" << ex.what() << std::endl;
+    return false;
+  }
   catch(const std::exception& ex)
   {
     std::cerr << "Frame_Glom::create_database(): Could not connect to just-created database. exception caught:" << ex.what() << std::endl;

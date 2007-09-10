@@ -1,5 +1,19 @@
 2007-09-10  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/base_db.cc:
+	* glom/base_db.h: Added a handle_error(Glib::Exception) overload.
+	* glom/frame_glom.cc:
+	* glom/main.cc:
+	* glom/mode_data/box_data_details.cc:
+	* glom/mode_data/box_data_list.cc:
+	* glom/mode_design/fields/box_db_table_definition.cc:
+	* glom/reports/report_builder.cc:
+	* glom/utility_widgets/db_adddel/glom_db_treemodel.cc: Catch 
+	Glib::Exceptions as well as std::exception, hopefully allowing us to 
+	catch more errors without crashing.
+
+2007-09-10  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/glom_privs.cc: Fix a warning. std::string::find() returns npos, 
 	not -1 when it fails.
 

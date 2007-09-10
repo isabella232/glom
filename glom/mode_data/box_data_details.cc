@@ -299,6 +299,11 @@ bool Box_Data_Details::fill_from_database()
     fill_end();
 
   }
+  catch(const Glib::Exception& ex)
+  {
+    handle_error(ex);
+    bResult = false;
+  }
   catch(const std::exception& ex)
   {
     handle_error(ex);
@@ -671,6 +676,10 @@ void Box_Data_Details::on_flowtable_field_edited(const sharedptr<const LayoutIte
         */
       }
 
+    }
+    catch(const Glib::Exception& ex)
+    {
+      handle_error(ex);
     }
     catch(const std::exception& ex)
     {

@@ -231,6 +231,10 @@ bool DbTreeModel::refresh_from_database(const FoundSet& found_set)
     {
       m_gda_datamodel = m_connection->get_gda_connection()->execute_select_command(sql_query);
     }
+    catch(const Glib::Exception& ex)
+    {
+      m_gda_datamodel.clear(); //So that it is 0, so we can handle it below.
+    }
     catch(const std::exception& ex)
     {
       m_gda_datamodel.clear(); //So that it is 0, so we can handle it below.

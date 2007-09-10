@@ -328,7 +328,7 @@ protected:
 
   static type_vecStrings util_vecStrings_from_Fields(const type_vecFields& fields);
 
-
+  static void handle_error(const Glib::Exception& ex);
   static void handle_error(const std::exception& ex); //TODO_port: This is probably useless now.
   static bool handle_error();
 

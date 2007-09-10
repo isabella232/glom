@@ -180,6 +180,11 @@ main(int argc, char* argv[])
     else
       delete pApp_Glom;
   }
+  catch(const Glib::Exception& ex)
+  {
+    //If this happens then comment out the try/catch, and let the debugger show the call stack.
+    std::cerr << "Glom: exception: \n  " << ex.what() << std::endl;
+  }
   catch(const std::exception& ex)
   {
     //If this happens then comment out the try/catch, and let the debugger show the call stack.
