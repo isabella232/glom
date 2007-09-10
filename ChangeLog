@@ -1,3 +1,8 @@
+2007-09-10  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/glom_privs.cc: Fix a warning. std::string::find() returns npos, 
+	not -1 when it fails.
+
 1.5.3:
 
 2007-09-03  Murray Cumming  <murrayc@murrayc.com>
