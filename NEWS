@@ -1,3 +1,21 @@
+Changes in 1.6:
+
+glom 1.6 has only minor user-visible changes compared to glom 1.4:
+
+* New relationships Overview diagram, available via the Developers menu.
+* Start dialog now shows recently-opened files.
+* Button scripts and calculated fields now show python errors 
+  and tracebacks in a dialog box.
+* Ported to libgdamm 3.0.
+* Now ignores previously-set multiline text formatting 
+  options for non-text fields,
+  Bug #443360 (Harry Mills)
+
+1.6.0 (stable)
+
+* Depend on latest libgdamm, to fix handling of dates.
+* Slightly improved handling of database server errors.
+
 1.5.3 (unstable)
 
 * Avoid unnecessary unsaved-changes warning dialogs.
