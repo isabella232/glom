@@ -3,13 +3,17 @@ Changes in 1.6:
 glom 1.6 has only minor user-visible changes compared to glom 1.4:
 
 * New relationships Overview diagram, available via the Developers menu.
+  (Rasmus Toftdahl Olesen)
 * Start dialog now shows recently-opened files.
+  (Armin Burgmeier)
 * Button scripts and calculated fields now show python errors 
   and tracebacks in a dialog box.
+  (Johannes Schmid)
 * Ported to libgdamm 3.0.
+  (Murray Cumming, Armin Burgmeier)
 * Now ignores previously-set multiline text formatting 
-  options for non-text fields,
-  Bug #443360 (Harry Mills)
+  options for non-text fields.  Bug #443360 (Harry Mills)
+  (Murray Cumming)
 
 1.6.0 (stable)
 
