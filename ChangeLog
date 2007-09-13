@@ -1,3 +1,14 @@
+2007-09-13  Murray Cumming  <murrayc@murrayc.com>
+
+	* configure.in:
+	* glom/layout_item_dialogs/dialog_buttonscript.cc:
+	* glom/mode_design/fields/dialog_fieldcalculation.cc:
+	* glom/mode_design/script_library/dialog_script_library.cc:
+	Ported to the latest gtksourceviewmm, using the gtksourceview-2.0 
+	API.
+
+This is svn trunk. See also the glom-1-6 branch.
+
 1.6.0:
 
 2007-09-10  Murray Cumming  <murrayc@murrayc.com>

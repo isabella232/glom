@@ -50,7 +50,7 @@ AC_LANG_CPLUSPLUS
 
 # Checks for libraries
 # We need libgnome only for gnome_help_display().:
-PKG_CHECK_MODULES(GLOM, bakery-2.4 >= 2.3.18 gtkmm-2.4 >= 2.10 gthread-2.0 gnome-vfsmm-2.6 >= 2.11.1 libxslt >= 1.1.10 pygda-3.0 pygtk-2.0 >= 2.6.0 libgnome-2.0 >= 2.6.0 iso-codes libgdamm-3.0 >= 2.9.8 libgtksourceviewmm-1.0 libxml++-2.6 >= 2.18.1 libgda-3.0 >= 3.0.1 libgda-postgres-3.0 avahi-glib goocanvas)
+PKG_CHECK_MODULES(GLOM, bakery-2.4 >= 2.3.18 gtkmm-2.4 >= 2.10 gthread-2.0 gnome-vfsmm-2.6 >= 2.11.1 libxslt >= 1.1.10 pygda-3.0 pygtk-2.0 >= 2.6.0 libgnome-2.0 >= 2.6.0 iso-codes libgdamm-3.0 >= 2.9.8 gtksourceviewmm-2.0 libxml++-2.6 >= 2.18.1 libgda-3.0 >= 3.0.1 libgda-postgres-3.0 avahi-glib goocanvas)
 
 GLOM_LIBS+=" --no-undefined"
 AC_SUBST(GLOM_CFLAGS)
