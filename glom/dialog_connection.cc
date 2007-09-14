@@ -63,9 +63,11 @@ sharedptr<SharedConnection> Dialog_Connection::connect_to_server_with_connection
       //std::cout << "debug: Dialog_Connection::connect_to_server_with_connection_settings(): m_database_name=" << m_database_name << std::endl;
       connection_pool->set_database(m_database_name);
 
+#ifndef ENABLE_CLIENT_ONLY
       if(document->get_connection_is_self_hosted())
         connection_pool->set_host("localhost");
       else
+#endif // !ENABLE_CLIENT_ONLY
         connection_pool->set_host(m_entry_host->get_text());
  
       connection_pool->set_user(m_entry_user->get_text());
@@ -99,6 +101,7 @@ void Dialog_Connection::load_from_document()
   Document_Glom* document = get_document();
   if(document)
   {
+#ifndef ENABLE_CLIENT_ONLY
     //Load server and user:
     if(document->get_connection_is_self_hosted())
     {
@@ -106,6 +109,7 @@ void Dialog_Connection::load_from_document()
        m_entry_host->set_sensitive(false);
     }
     else
+#endif // !ENABLE_CLIENT_ONLY
     {
       Glib::ustring host = document->get_connection_server();
       if(host.empty())

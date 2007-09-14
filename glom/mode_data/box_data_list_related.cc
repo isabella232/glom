@@ -29,7 +29,9 @@ namespace Glom
 {
 
 Box_Data_List_Related::Box_Data_List_Related()
+#ifndef ENABLE_CLIENT_ONLY
 : m_pDialogLayoutRelated(0)
+#endif // !ENABLE_CLIENT_ONLY
 {
   set_size_request(400, -1); //An arbitrary default.
 
@@ -52,6 +54,7 @@ Box_Data_List_Related::Box_Data_List_Related()
 
   m_layout_name = "list_related"; //TODO: We need a unique name when 2 portals use the same table.
 
+#ifndef ENABLE_CLIENT_ONLY
   //Delete the dialog from the base class, because we don't use it.
   if(m_pDialogLayout)
   {
@@ -59,7 +62,9 @@ Box_Data_List_Related::Box_Data_List_Related()
     delete m_pDialogLayout;
     m_pDialogLayout = 0;
   }
+#endif // !ENABLE_CLIENT_ONLY
 
+#ifndef ENABLE_CLIENT_ONLY
   Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_data_layout");
   if(refXml)
   {
@@ -73,17 +78,19 @@ Box_Data_List_Related::Box_Data_List_Related()
       m_pDialogLayoutRelated->signal_hide().connect( sigc::mem_fun(*this, &Box_Data::on_dialog_layout_hide) );
     }
   }
-
+#endif // !ENABLE_CLIENT_ONLY
 }
 
 Box_Data_List_Related::~Box_Data_List_Related()
 {
+#ifndef ENABLE_CLIENT_ONLY
   if(m_pDialogLayoutRelated)
   {
     remove_view(m_pDialogLayoutRelated);
     delete m_pDialogLayoutRelated;
     m_pDialogLayoutRelated = 0;
   }
+#endif // !ENABLE_CLIENT_ONLY
 }
 
 void Box_Data_List_Related::enable_buttons()
@@ -389,6 +396,7 @@ Box_Data_List_Related::type_vecLayoutFields Box_Data_List_Related::get_fields_to
   return type_vecLayoutFields();
 }
 
+#ifndef ENABLE_CLIENT_ONLY
 void Box_Data_List_Related::show_layout_dialog()
 {
   if(m_pDialogLayoutRelated)
@@ -397,12 +405,14 @@ void Box_Data_List_Related::show_layout_dialog()
     m_pDialogLayoutRelated->show();
   }
 }
+#endif // !ENABLE_CLIENT_ONLY
 
 Box_Data_List_Related::type_signal_record_changed Box_Data_List_Related::signal_record_changed()
 {
   return m_signal_record_changed;
 }
 
+#ifndef ENABLE_CLIENT_ONLY
 void Box_Data_List_Related::on_dialog_layout_hide()
 {
   m_portal = m_pDialogLayoutRelated->get_portal_layout();
@@ -420,6 +430,7 @@ void Box_Data_List_Related::on_dialog_layout_hide()
     signal_layout_changed().emit(); //TODO: Check whether it has really changed.
   }
 }
+#endif // !ENABLE_CLIENT_ONLY
 
 void Box_Data_List_Related::on_adddel_user_requested_add()
 {

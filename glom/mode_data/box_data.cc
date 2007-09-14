@@ -33,8 +33,10 @@ namespace Glom
 {
 
 Box_Data::Box_Data()
-: m_Button_Find(Gtk::Stock::FIND),
-  m_pDialogLayout(0)
+: m_Button_Find(Gtk::Stock::FIND)
+#ifndef ENABLE_CLIENT_ONLY
+  ,m_pDialogLayout(0)
+#endif // !ENABLE_CLIENT_ONLY
 {
   m_bUnstoredData = false;
 
@@ -44,11 +46,13 @@ Box_Data::Box_Data()
 
 Box_Data::~Box_Data()
 {
+#ifndef ENABLE_CLIENT_ONLY
   if(m_pDialogLayout)
   {
     remove_view(m_pDialogLayout);
     delete m_pDialogLayout;
   }
+#endif // !ENABLE_CLIENT_ONLY
 }
 
 bool Box_Data::init_db_details(const FoundSet& found_set)
@@ -351,6 +355,7 @@ bool Box_Data::confirm_discard_unstored_data() const
   }
 }
 
+#ifndef ENABLE_CLIENT_ONLY
 void Box_Data::show_layout_dialog()
 {
   if(m_pDialogLayout)
@@ -359,7 +364,9 @@ void Box_Data::show_layout_dialog()
     m_pDialogLayout->show();
   }
 }
+#endif // !ENABLE_CLIENT_ONLY
 
+#ifndef ENABLE_CLIENT_ONLY
 void Box_Data::on_dialog_layout_hide()
 {
   //Re-fill view, in case the layout has changed:
@@ -368,6 +375,7 @@ void Box_Data::on_dialog_layout_hide()
   if(ConnectionPool::get_instance()->get_ready_to_connect())
     fill_from_database();
 }
+#endif // !ENABLE_CLIENT_ONLY
 
 Box_Data::type_vecLayoutFields Box_Data::get_fields_to_show() const
 {

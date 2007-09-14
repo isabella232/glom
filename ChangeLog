@@ -1,3 +1,10 @@
+2007-09-14  Armin Burgmeier  <armin@openismus.com>
+
+	* several files: Merged changes from the GLOM_CLIENTONLY branch. This
+	adds an --enable-client-only configure option that disables support
+	for developer mode and self-hosting. See the ChangeLog in the
+	GLOM_CLIENTONLY branch for a detailed list of changes.
+
 2007-09-13  Murray Cumming  <murrayc@murrayc.com>
 
 	* configure.in:

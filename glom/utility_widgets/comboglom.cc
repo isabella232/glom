@@ -37,21 +37,30 @@ namespace Glom
 ComboGlom::ComboGlom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& /* refGlade */)
 : Gtk::ComboBox(cobject)
 {
+#ifndef ENABLE_CLIENT_ONLY
   setup_menu();
+#endif // !ENABLE_CLIENT_ONLY
+
   init();
 }
 
 ComboGlom::ComboGlom()
 : ComboGlomChoicesBase()
 {
+#ifndef ENABLE_CLIENT_ONLY
   setup_menu();
+#endif // !ENABLE_CLIENT_ONLY
+
   init();
 }
 
 ComboGlom::ComboGlom(const sharedptr<LayoutItem_Field>& field_second)
 : ComboGlomChoicesBase(field_second)
 {
+#ifndef ENABLE_CLIENT_ONLY
   setup_menu();
+#endif // !ENABLE_CLIENT_ONLY
+
   init();
 }
 
@@ -171,6 +180,7 @@ bool ComboGlom::on_button_press_event(GdkEventButton *event)
 {
 g_warning("ComboGlom::on_button_press_event()");
 
+#ifndef ENABLE_CLIENT_ONLY
   //Enable/Disable items.
   //We did this earlier, but get_application is more likely to work now:
   App_Glom* pApp = get_application();
@@ -198,6 +208,7 @@ g_warning("ComboGlom::on_button_press_event()");
     }
 
   }
+#endif // !ENABLE_CLIENT_ONLY
 
   return Gtk::ComboBox::on_button_press_event(event);
 }

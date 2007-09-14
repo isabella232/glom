@@ -37,6 +37,7 @@ Box_Data_List::Box_Data_List()
 {
   m_layout_name = "list";
 
+#ifndef ENABLE_CLIENT_ONLY
   Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_data_layout"); //TODO: Use a generic layout dialog?
   if(refXml)
   {
@@ -49,6 +50,7 @@ Box_Data_List::Box_Data_List()
       m_pDialogLayout->signal_hide().connect( sigc::mem_fun(*this, &Box_Data::on_dialog_layout_hide) );
     }
   }
+#endif // !ENABLE_CLIENT_ONLY
 
   //m_strHint = _("When you change the data in a field the database is updated immediately.\n Click [Add] or enter data into the last row to add a new record.\n Leave automatic ID fields empty - they will be filled for you.\nOnly the first 100 records are shown.");
 
@@ -66,7 +68,9 @@ Box_Data_List::Box_Data_List()
   m_AddDel.signal_script_button_clicked().connect(sigc::mem_fun(*this, &Box_Data_List::on_adddel_script_button_clicked));
   m_AddDel.signal_user_reordered_columns().connect(sigc::mem_fun(*this, &Box_Data_List::on_adddel_user_reordered_columns));
 
+#ifndef ENABLE_CLIENT_ONLY
   m_AddDel.signal_user_requested_layout().connect(sigc::mem_fun(*this, &Box_Data_List::on_adddel_user_requested_layout));
+#endif // !ENABLE_CLIENT_ONLY
 
 
   //Groups are not very helpful for a list view:
@@ -231,10 +235,12 @@ void Box_Data_List::on_adddel_user_requested_edit(const Gtk::TreeModel::iterator
   signal_user_requested_details().emit(primary_key_value);
 }
 
+#ifndef ENABLE_CLIENT_ONLY
 void Box_Data_List::on_adddel_user_requested_layout()
 {
   show_layout_dialog();
 }
+#endif // !ENABLE_CLIENT_ONLY
 
 void Box_Data_List::on_adddel_user_requested_delete(const Gtk::TreeModel::iterator& rowStart, const Gtk::TreeModel::iterator&  /* rowEnd TODO */)
 {

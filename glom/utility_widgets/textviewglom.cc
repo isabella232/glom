@@ -49,7 +49,9 @@ TextViewGlom::TextViewGlom(Field::glom_field_type glom_type)
 
 void TextViewGlom::init()
 {
+#ifndef ENABLE_CLIENT_ONLY
   setup_menu();
+#endif // !ENABLE_CLIENT_ONLY
 
   set_shadow_type(Gtk::SHADOW_IN);
 
@@ -171,6 +173,7 @@ Gnome::Gda::Value TextViewGlom::get_value() const
 
 bool TextViewGlom::on_button_press_event(GdkEventButton *event)
 {
+#ifndef ENABLE_CLIENT_ONLY
   //Enable/Disable items.
   //We did this earlier, but get_application is more likely to work now:
   App_Glom* pApp = get_application();
@@ -198,6 +201,7 @@ bool TextViewGlom::on_button_press_event(GdkEventButton *event)
     }
 
   }
+#endif // !ENABLE_CLIENT_ONLY
 
   return Gtk::ScrolledWindow::on_button_press_event(event);
 }

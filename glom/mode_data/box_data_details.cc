@@ -50,6 +50,7 @@ Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
 
   add_view(&m_FlowTable); //Allow this to access the document too.
 
+#ifndef ENABLE_CLIENT_ONLY
   Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_data_layout"); //TODO: Use a generic layout dialog?
   if(refXml)
   {
@@ -62,6 +63,7 @@ Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
       m_pDialogLayout->signal_hide().connect( sigc::mem_fun(static_cast<Box_Data&>(*this), &Box_Data::on_dialog_layout_hide) );
     }
   }
+#endif // !ENABLE_CLIENT_ONLY
 
   m_FlowTable.set_columns_count(1); //Sub-groups will have multiple columns (by default, there is one sub-group, with 2 columns).
   m_FlowTable.set_padding(6);
@@ -111,7 +113,9 @@ Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
   m_FlowTable.signal_related_record_changed().connect( sigc::mem_fun(*this, &Box_Data_Details::on_flowtable_related_record_changed) );
 
 
+#ifndef ENABLE_CLIENT_ONLY
   m_FlowTable.signal_layout_changed().connect( sigc::mem_fun(*this, &Box_Data_Details::on_flowtable_layout_changed) );
+#endif // !ENABLE_CLIENT_ONLY
 
   m_FlowTable.signal_requested_related_details().connect( sigc::mem_fun(*this, &Box_Data_Details::on_flowtable_requested_related_details) );
 
@@ -500,6 +504,7 @@ Box_Data_Details::type_signal_requested_related_details Box_Data_Details::signal
   return m_signal_requested_related_details;
 }
 
+#ifndef ENABLE_CLIENT_ONLY
 void Box_Data_Details::on_flowtable_layout_changed()
 {
   //Get new layout:
@@ -518,6 +523,7 @@ void Box_Data_Details::on_flowtable_layout_changed()
   //And fill it with data:
   fill_from_database();
 }
+#endif // !ENABLE_CLIENT_ONLY
 
 void Box_Data_Details::on_flowtable_requested_related_details(const Glib::ustring& table_name, Gnome::Gda::Value primary_key_value)
 {
@@ -743,7 +749,9 @@ void Box_Data_Details::on_flowtable_field_edited(const sharedptr<const LayoutIte
 
 void Box_Data_Details::on_userlevel_changed(AppState::userlevels user_level)
 {
+#ifndef ENABLE_CLIENT_ONLY
   m_FlowTable.set_design_mode( user_level == AppState::USERLEVEL_DEVELOPER );
+#endif
 }
 
 sharedptr<Field> Box_Data_Details::get_field_primary_key() const

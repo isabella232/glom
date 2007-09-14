@@ -24,6 +24,8 @@
 #include "bakery/bakery.h"
 #include "frame_glom.h"
 
+#include "config.h" // For ENABLE_CLIENT_ONLY
+
 
 namespace Glom
 {
@@ -54,7 +56,10 @@ public:
 
   AppState::userlevels get_userlevel() const;
 
+#ifndef ENABLE_CLIENT_ONLY
   void update_userlevel_ui();
+#endif // !ENABLE_CLIENT_ONLY
+
   void fill_menu_tables();
   void fill_menu_reports(const Glib::ustring& table_name);
 
@@ -78,24 +83,31 @@ protected:
   virtual bool offer_new_or_existing();
 
   virtual void on_menu_help_contents();
+#ifndef ENABLE_CLIENT_ONLY
   virtual void on_menu_userlevel_developer();
   virtual void on_menu_userlevel_operator();
   virtual void on_menu_file_save_as_example();
   virtual void on_menu_developer_changelanguage();
   virtual void on_menu_developer_translations();
   virtual void on_window_translations_hide();
+#endif // !ENABLE_CLIENT_ONLY
 
   virtual void on_menu_file_close(); //override.
 
   virtual Glib::ustring ui_file_select_save(const Glib::ustring& old_file_uri); //overriden.
   virtual void document_history_add(const Glib::ustring& file_uri); //overridden.
 
+#ifndef ENABLE_CLIENT_ONLY
   virtual void on_userlevel_changed(AppState::userlevels userlevel);
+#endif // !ENABLE_CLIENT_ONLY
 
   virtual Bakery::App* new_instance(); //Override
 
   bool recreate_database(bool& user_cancelled); //return indicates success.
+
+#ifndef ENABLE_CLIENT_ONLY
   void stop_self_hosting_of_document_database();
+#endif // !ENABLE_CLIENT_ONLY
 
   static Glib::ustring get_file_uri_without_extension(const Glib::ustring& uri);
 
@@ -108,12 +120,16 @@ protected:
   typedef std::list< Glib::RefPtr<Gtk::Action> > type_listActions; 
   type_listActions m_listDeveloperActions; //Only enabled when in developer mode.
   Glib::RefPtr<Gtk::Action> m_action_mode_data, m_action_mode_find;
+#ifndef ENABLE_CLIENT_ONLY
   Glib::RefPtr<Gtk::RadioAction> m_action_menu_userlevel_developer, m_action_menu_userlevel_operator;
+#endif // !ENABLE_CLIENT_ONLY
 
   Gtk::VBox* m_pBoxTop;
   Frame_Glom* m_pFrame;
 
+#ifndef ENABLE_CLIENT_ONLY
   Window_Translations* m_window_translations;
+#endif // !ENABLE_CLIENT_ONLY
 
   Glib::RefPtr<Gtk::ActionGroup> m_refNavTablesActionGroup, m_refNavReportsActionGroup;
   type_listActions m_listNavTableActions, m_listNavReportActions;
@@ -125,7 +141,9 @@ protected:
   Glib::ustring m_ui_save_extra_message;
 
   Glib::ustring m_ui_save_extra_newdb_title;
+#ifndef ENABLE_CLIENT_ONLY
   bool m_ui_save_extra_newdb_selfhosted;
+#endif // !ENABLE_CLIENT_ONLY
 
   // This is set to the URI of an example file that is loaded to be able to
   // prevent adding it into the recently used resources in

@@ -1,4 +1,8 @@
-SUBDIRS = libglom mode_data mode_design mode_find navigation utility_widgets layout_item_dialogs python_embed reports translation relationships_overview 
+SUBDIRS = libglom mode_data mode_find navigation utility_widgets python_embed reports
+
+if !ENABLE_CLIENT_ONLY
+SUBDIRS += layout_item_dialogs mode_design translation relationships_overview
+endif
 
 gladedir = $(datadir)/glom/glade/
 glomxsltdir = $(datadir)/glom/xslt/
@@ -35,32 +39,47 @@ glom_SOURCES = main.cc \
                combobox_fields.h combobox_fields.cc \
                combobox_relationship.h combobox_relationship.cc \
                dialog_connection.h dialog_connection.cc \
-               dialog_new_self_hosted_connection.h dialog_new_self_hosted_connection.cc \
                dialog_invalid_data.h dialog_invalid_data.cc \
-               dialog_database_preferences.h dialog_database_preferences.cc \
                filechooser_export.h filechooser_export.cc \
                box_reports.h box_reports.cc \
                xsl_utils.h xsl_utils.cc
 
+if !ENABLE_CLIENT_ONLY
+glom_SOURCES += dialog_new_self_hosted_connection.h \
+                dialog_new_self_hosted_connection.cc \
+                dialog_database_preferences.h \
+                dialog_database_preferences.cc
+endif
+
+# Note that the order in which libraries are linked seems to be important.
 glom_LDADD = reports/libreports.a \
              mode_data/libmode_data.a \
-             mode_find/libmode_find.a \
-             mode_design/libmode_design.a \
-             mode_design/fields/libmode_design_fields.a \
-             mode_design/users/libmode_design_users.a \
-             mode_design/script_library/libmode_design_script_library.a \
-             layout_item_dialogs/liblayoutitemdialogs.a \
-             navigation/libnavigation.a \
-             utility_widgets/libutility_widgets.a \
-             utility_widgets/adddel/libutility_widgets_adddel.a \
-             utility_widgets/adddel/eggcolumnchooser/libutility_widgets_adddel_eggcolumnchooserdialog.a \
-             utility_widgets/db_adddel/libutility_widgets_db_adddel.a \
-             utility_widgets/libutility_widgets.a \
-             translation/libtranslation.a \
-             relationships_overview/librelationshipsoverview.a \
-             python_embed/libpython_embed.a \
-             $(top_builddir)/glom/libglom/libglom.la \
-             $(GLOM_LIBS) $(PYTHON_LDFLAGS) -lutil -lgettextpo
+             mode_find/libmode_find.a
+
+if !ENABLE_CLIENT_ONLY
+glom_LDADD += layout_item_dialogs/liblayoutitemdialogs.a \
+              mode_design/libmode_design.a \
+              mode_design/fields/libmode_design_fields.a \
+              mode_design/users/libmode_design_users.a \
+              mode_design/script_library/libmode_design_script_library.a
+endif
+
+glom_LDADD += navigation/libnavigation.a \
+              utility_widgets/libutility_widgets.a \
+              utility_widgets/adddel/libutility_widgets_adddel.a \
+              utility_widgets/adddel/eggcolumnchooser/libutility_widgets_adddel_eggcolumnchooserdialog.a \
+              utility_widgets/db_adddel/libutility_widgets_db_adddel.a \
+              utility_widgets/libutility_widgets.a
+
+if !ENABLE_CLIENT_ONLY
+glom_LDADD += translation/libtranslation.a \
+              relationships_overview/librelationshipsoverview.a
+endif
+
+glom_LDADD += python_embed/libpython_embed.a \
+              $(top_builddir)/glom/libglom/libglom.la \
+              $(GLOM_LIBS) $(PYTHON_LDFLAGS) -lutil -lgettextpo
+
 
              #python_embed/python_module/glom.la
 

@@ -25,6 +25,8 @@
 #include <glom/libglom/sharedptr.h>
 #include <glom/libglom/data_structure/fieldtypes.h>
 
+#include "config.h" // For ENABLE_CLIENT_ONLY
+
 namespace Gtk
 {
   class Window;
@@ -112,10 +114,12 @@ public:
 
   static sharedptr<SharedConnection> get_and_connect();
 
+#ifndef ENABLE_CLIENT_ONLY
   /** This specifies that Glom should start its own database server instance for this database,
    *  using the database files stored at the specified uri.
    */
   void set_self_hosted(const std::string& data_uri);
+#endif // !ENABLE_CLIENT_ONLY
 
   /** Creates a new database.
    */
@@ -141,6 +145,7 @@ public:
    */
   float get_postgres_server_version();
 
+#ifndef ENABLE_CLIENT_ONLY
   /** Start a database server instance for the exisiting database files.
    */
   bool start_self_hosting();
@@ -153,11 +158,12 @@ public:
    * @param parent_window A parent window to use as the transient window when displaying errors.
    */
   bool create_self_hosting(Gtk::Window* parent_window);
+#endif // !ENABLE_CLIENT_ONLY
 
   //Show the gda error in a dialog.
   static bool handle_error(bool cerr_only = false);
 
-
+#ifndef ENABLE_CLIENT_ONLY
   /** Check whether PostgreSQL is really available for self-hosting,
    * in case the distro package has incorrect dependencies.
    *
@@ -169,6 +175,7 @@ public:
    * patch to the implementation.
    */
   static bool install_postgres(Gtk::Window* parent_window);
+#endif // !ENABLE_CLIENT_ONLY
 
   /** Check whether the libgda postgres provider is really available, 
    * so we can connect to postgres servers,
@@ -183,6 +190,7 @@ protected:
 
   static bool create_text_file(const std::string& file_uri, const std::string& contents);
 
+#ifndef ENABLE_CLIENT_ONLY
   /** Examine ports one by one, starting at @a starting_port, in increasing order,
    * and return the first one that is available.
    */
@@ -192,6 +200,7 @@ protected:
    */
   void avahi_start_publishing();
   void avahi_stop_publishing();
+#endif // !ENABLE_CLIENT_ONLY
 
 protected:
 
@@ -204,8 +213,10 @@ protected:
   Glib::RefPtr<Gnome::Gda::Client> m_GdaClient;
   //Gnome::Gda::DataSourceInfo m_GdaDataSourceInfo;
 
+#ifndef ENABLE_CLIENT_ONLY
   bool m_self_hosting_active;
   std::string m_self_hosting_data_uri;
+#endif // !ENABLE_CLIENT_ONLY
 
   Glib::RefPtr<Gnome::Gda::Connection> m_refGdaConnection;
   guint m_sharedconnection_refcount;
@@ -215,7 +226,9 @@ protected:
   float m_postgres_server_version;
 
 public:
+#ifndef ENABLE_CLIENT_ONLY
   AvahiPublisher* m_avahi_publisher;
+#endif // !ENABLE_CLIENT_ONLY
 
 private:
 
