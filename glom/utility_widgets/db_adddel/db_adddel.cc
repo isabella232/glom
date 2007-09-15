@@ -829,23 +829,23 @@ void DbAddDel::construct_specified_columns()
     ++column_index_key;
   }
 
-  if(!key_found)
+  if(key_found)
   {
-    g_warning("DbAddDel::construct_specified_columns(): no primary key field found.");
+    //Create the model from the ColumnRecord:
+    m_refListStore = type_model_store::create(record, m_found_set, fields, column_index_key, m_allow_view);
+  }
+  else
+  {
+    g_warning("%s: no primary key field found.", __FUNCTION__);
     //for(type_model_store::type_vec_fields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
     //{
     //  g_warning("  field: %s", (iter->get_name().c_str());
     //}
 
-    g_assert(key_found); //crash here.
+    m_refListStore = Glib::RefPtr<type_model_store>();
   }
 
-  //Create the model from the ColumnRecord:
-  m_refListStore = type_model_store::create(record, m_found_set, fields, column_index_key, m_allow_view);
-
   m_TreeView.set_model(m_refListStore);
-
-
 
 
   //Remove all View columns:
@@ -1030,7 +1030,6 @@ guint DbAddDel::add_column(const sharedptr<LayoutItem>& layout_item)
     return 0; //TODO: Do something more sensible.
 
   InnerIgnore innerIgnore(this); //Stop on_treeview_columns_changed() from doing anything when it is called just because we add a new column.
-
   
   DbAddDelColumnInfo column_info;
   column_info.m_item = layout_item;
