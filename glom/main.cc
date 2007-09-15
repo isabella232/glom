@@ -25,6 +25,7 @@
 #include <gtkmm/main.h>
 #include <libgnome/gnome-init.h> // For gnome_program_init().
 #include <libgnomevfsmm/uri.h>
+#include <gtksourceviewmm/init.h>
 #include <glibmm/i18n.h>
 
 
@@ -127,6 +128,10 @@ main(int argc, char* argv[])
 
     Gtk::Main mainInstance(argc, argv, context);
     Bakery::init();
+
+#ifndef ENABLE_CLIENT_ONLY
+    gtksourceview::init();
+#endif //ENABLE_CLIENT_ONLY
 
     //Get command-line parameters, if any:
     Glib::ustring input_uri = group.m_arg_filename;

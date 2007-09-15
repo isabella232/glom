@@ -1,5 +1,10 @@
 2007-09-15  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/main.cc: initialize gtksourceviewmm so that the GType is available 
+	to libglade, to avoid a warning (and possibly a crash).
+
+2007-09-15  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/mode_data/box_data_list.cc: create_layout(): Do not try to 
 	add the previously-used primary key if there is no primary key in the 
 	table (for instance, if there are no fields in the table). This avoids 
