@@ -1,3 +1,12 @@
+2007-09-20  Armin Burgmeier  <armin@openismus.com>
+
+	* glom/frame_glom.cc: Load "connection failed" dialog also in client
+	only mode to prevent a crash when that dialog is supposed to be
+	displayed.
+
+	* glom/main.cc: Don't include <gtksourceviewmm/init.h> in client only
+	mode.
+
 2007-09-15  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/main.cc: initialize gtksourceviewmm so that the GType is available 

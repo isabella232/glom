@@ -18,6 +18,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#include "config.h" //For VERSION.
+
 //We use Python for calculated fields.
 #include <Python.h> //Include it before anything else to avoid "_POSIX_C_SOURCE redefined".
 
@@ -25,12 +27,13 @@
 #include <gtkmm/main.h>
 #include <libgnome/gnome-init.h> // For gnome_program_init().
 #include <libgnomevfsmm/uri.h>
+
+#ifndef ENABLE_CLIENT_ONLY
 #include <gtksourceviewmm/init.h>
+#endif // ENABLE_CLIENT_ONLY
 #include <glibmm/i18n.h>
 
 
-
-#include "config.h" //For VERSION.
 
 #include "application.h"
 

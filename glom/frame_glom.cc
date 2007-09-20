@@ -191,6 +191,7 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
   {
     std::cerr << ex.what() << std::endl;
   }
+#endif // !ENABLE_CLIENT_ONLY
 
   try
   {
@@ -202,7 +203,6 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
   {
     std::cerr << ex.what() << std::endl;
   }
-#endif // !ENABLE_CLIENT_ONLY
 
 
   m_Mode = MODE_None;
