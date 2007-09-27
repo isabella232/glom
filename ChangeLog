@@ -1,3 +1,10 @@
+2007-09-27  Armin Burgmeier  <armin@openismus.com>
+
+	* glom/glom.glade: Make the entry_quickfind not activate the default
+	button when pressing enter because glom already connects
+	signal_activate(). When no find criteria was entered, two error
+	dialogs were shown at the same time.
+
 2007-09-20  Armin Burgmeier  <armin@openismus.com>
 
 	* glom/frame_glom.cc: Load "connection failed" dialog also in client
