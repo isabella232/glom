@@ -25,6 +25,7 @@
 #include <glom/libglom/spawn_with_feedback.h>
 #include <glom/libglom/utils.h>
 #include <glom/libglom/avahi_publisher.h>
+#include <libgdamm/connectionevent.h>
 #include <glibmm/i18n.h>
 
 #include <sys/types.h>
@@ -497,11 +498,15 @@ bool ConnectionPool::handle_error(bool cerr_only)
       Glib::ustring error_details;
       for(type_list_errors::iterator iter = list_errors.begin(); iter != list_errors.end(); ++iter)
       {
-        if(iter != list_errors.begin())
-          error_details += "\n"; //Add newline after each error.
+        Glib::RefPtr<Gnome::Gda::ConnectionEvent> event = *iter;
+        if (event && (event->get_event_type() == Gnome::Gda::CONNECTION_EVENT_ERROR))
+        {
+          if(!error_details.empty())
+            error_details += "\n"; //Add newline after each error.
 
-        error_details += (*iter)->get_description();
-        std::cerr << "Internal error (Database): " << error_details << std::endl;
+          error_details += (*iter)->get_description();
+          std::cerr << "Internal error (Database): " << error_details << std::endl;
+        }
       }
 
       //For debugging only:
@@ -521,8 +526,8 @@ bool ConnectionPool::handle_error(bool cerr_only)
     }
   }
 
-   //There was no error. libgda just did not return any data, and has no concept of an empty datamodel.
-   return false;
+  //There was no error. libgda just did not return any data, and has no concept of an empty datamodel.
+  return false;
 }
 
 float ConnectionPool::get_postgres_server_version()

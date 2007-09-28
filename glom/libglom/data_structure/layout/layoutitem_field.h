@@ -98,6 +98,10 @@ public:
    */
   bool is_same_field(const sharedptr<const LayoutItem_Field>& field) const;
 
+  /** Returns, for instance, "mytable"."myfield". 
+   */
+  Glib::ustring get_sql_name(const Glib::ustring& parent_table) const;
+
 protected:
 
   //This is just a cache, filled in by looking at the database structure:

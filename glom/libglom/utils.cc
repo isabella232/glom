@@ -259,27 +259,20 @@ Glib::ustring Utils::build_sql_select_with_where_clause(const Glib::ustring& tab
     if(is_summary)
       one_sql_part += fieldsummary->get_summary_type_sql() + "(";
 
-    one_sql_part += ( "\"" + layout_item->get_sql_table_or_join_alias_name(table_name) + "\"." );
+    one_sql_part += layout_item->get_sql_name(table_name);
 
-    const Glib::ustring name = layout_item->get_name();
-    if(!name.empty())
+    //Close the summary bracket if necessary.
+    if(is_summary)
+      one_sql_part +=  ")";
+
+    //Append it to the big string of fields:
+    if(!one_sql_part.empty())
     {
-      one_sql_part += ("\"" + name + "\"");
+      if(!sql_part_fields.empty())
+        sql_part_fields += ", ";
 
-      //Close the summary bracket if necessary.
-      if(is_summary)
-        one_sql_part +=  ")";
-
-      //Append it to the big string of fields:
-      if(!one_sql_part.empty())
-      {
-        if(!sql_part_fields.empty())
-          sql_part_fields += ", ";
-
-        sql_part_fields += one_sql_part;
-      }
+      sql_part_fields += one_sql_part;
     }
-
   }
 
   if(sql_part_fields.empty())
@@ -432,7 +425,7 @@ Utils::type_list_values_with_second Utils::get_choice_values(const sharedptr<con
       itempair.first = datamodel->get_value_at(0, row);
 
       if(with_second)
-                        itempair.second = datamodel->get_value_at(1, row);
+        itempair.second = datamodel->get_value_at(1, row);
 
       list_values.push_back(itempair);
     }

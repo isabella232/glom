@@ -140,6 +140,8 @@ protected:
 
    virtual void set_value_impl(const iterator& row, int column, const Glib::ValueBase& value);
 
+   int count_rows_returned_by(const Glib::ustring& query);
+
 private:
    typedef DbTreeModelRow typeRow; //X columns, all of type Value.
 
@@ -225,9 +227,11 @@ private:
    //mutable typeListOfRows m_rows;
 
    //Column information:
-   ColumnRecord m_column_record;
+   //ColumnRecord m_column_record;
 
+   //This is useful for users of this model, though this typedef is not used by this class itself:
    typedef Gtk::TreeModelColumn< DbValue > typeModelColumn;
+
    bool m_get_records;
 
    int m_stamp; //When the model's stamp and the TreeIter's stamp are equal, the TreeIter is valid.

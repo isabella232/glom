@@ -49,19 +49,26 @@ void DbTreeModelRow::fill_values_if_necessary(DbTreeModel& model, int row)
 
   if(!m_values_retrieved)
   {
-    if(row < (int)model.m_data_model_rows_count)
+    if((row < (int)model.m_data_model_rows_count) && model.m_gda_datamodel)
     {
-      //It is a row from the database;
-      const int cols_count = model.m_data_model_columns_count;
-      for(int i = 0; i < cols_count; ++i)
-      {
-        m_db_values[i] = model.m_gda_datamodel->get_value_at(i, row);
+      Glib::RefPtr<Gnome::Gda::DataModelIter> iter = model.m_gda_datamodel->create_iter();
+      if(iter) {
+        iter->set_at_row(row);
+
+        //It is a row from the database;
+        const int cols_count = model.m_data_model_columns_count;
+        for(int i = 0; i < cols_count; ++i)
+        {
+          Glib::RefPtr<Gnome::Gda::Parameter> param = iter->get_param_for_column(i);
+          m_db_values[i] = param->get_value();
+        }
+
+        Glib::RefPtr<Gnome::Gda::Parameter> param = iter->get_param_for_column(model.m_column_index_key);
+        m_key = param->get_value();
+
+        m_extra = false;
+        m_removed = false;
       }
-
-      m_key = model.m_gda_datamodel->get_value_at(model.m_column_index_key, row);
-
-      m_extra = false;
-      m_removed = false;
     }
     else
     {
@@ -193,6 +200,50 @@ Glib::RefPtr<DbTreeModel> DbTreeModel::create(const Gtk::TreeModelColumnRecord& 
   return Glib::RefPtr<DbTreeModel>( new DbTreeModel(columns, found_set, column_fields, column_index_key, get_records) );
 }
 
+int DbTreeModel::count_rows_returned_by(const Glib::ustring& sql_query)
+{
+  int result = 0;
+
+  //TODO: Is this inefficient?
+  //Note that the alias is just because the SQL syntax requires it - we get an error if we don't use it.
+  const Glib::ustring query_count = "SELECT COUNT (*) FROM (" + sql_query + ") AS glomarbitraryalias";
+  
+  const App_Glom* app = App_Glom::get_application();
+  if(app && app->get_show_sql_debug())
+  { 
+    try
+    {
+      std::cout << "Debug: count_rows_returned_by():  " << query_count << std::endl;
+    }
+    catch(const Glib::Exception& ex)
+    {
+      std::cout << "Debug: query string could not be converted to std::cout: " << ex.what() << std::endl;
+    }
+  }
+
+  try
+  {
+    Glib::RefPtr<Gnome::Gda::DataModel> datamodel = m_connection->get_gda_connection()->execute_select_command(query_count);
+    if(datamodel && datamodel->get_n_rows() && datamodel->get_n_columns())
+    {
+      Gnome::Gda::Value value = datamodel->get_value_at(0, 0);
+      //This showed me that this contains a gint64: std::cerr << "DEBUG: value type=" << G_VALUE_TYPE_NAME(value.gobj()) << std::endl;
+      result = (int)value.get_int64();
+    }
+  }
+  catch(const Glib::Exception& ex)
+  {
+    std::cerr << "count_rows_returned_by(): exception caught: " << ex.what() << std::endl;
+  }
+  catch(const std::exception& ex)
+  {
+    std::cerr << "count_rows_returned_by(): exception caught: " << ex.what() << std::endl;
+  }
+
+  //std::cout << "DEBUG: count_rows_returned_by(): Returning " << result << std::endl;
+  return result;
+}
+
 bool DbTreeModel::refresh_from_database(const FoundSet& found_set)
 {
   //std::cout << "DbTreeModel::refresh_from_database()" << std::endl;
@@ -229,14 +280,22 @@ bool DbTreeModel::refresh_from_database(const FoundSet& found_set)
     }
     try
     {
-      m_gda_datamodel = m_connection->get_gda_connection()->execute_select_command(sql_query);
+      //Specify the ITER_MODEL_ONLY parameter, so that libgda only gets the rows that we actually use.
+      Glib::RefPtr<Gnome::Gda::ParameterList> params = Gnome::Gda::ParameterList::create();
+      Gnome::Gda::Value value;
+      value.set(true);
+      params->add_parameter("ITER_MODEL_ONLY", value);
+
+      m_gda_datamodel = m_connection->get_gda_connection()->execute_select_command(sql_query, params);
     }
     catch(const Glib::Exception& ex)
     {
+      std::cerr << "DbTreeModel::refresh_from_database(): Glib::Exception caught." << std::endl;
       m_gda_datamodel.clear(); //So that it is 0, so we can handle it below.
     }
     catch(const std::exception& ex)
     {
+      std::cerr << "DbTreeModel::refresh_from_database(): std::exception caught." << std::endl;
       m_gda_datamodel.clear(); //So that it is 0, so we can handle it below.
     }
 
@@ -251,23 +310,22 @@ bool DbTreeModel::refresh_from_database(const FoundSet& found_set)
     }
     else
     {
-      m_data_model_rows_count = m_gda_datamodel->get_n_rows(); //TODO_Performance: This probably gets all the data
+      //This doesn't work with ITER_MODEL_ONLY: const int count = m_gda_datamodel->get_n_rows();
+      //because rows count is -1 until we have iterated to the last row.
+      const int count = count_rows_returned_by(sql_query);
+      if(count < 0)
+      {
+        std::cerr << "DbTreeModel::refresh_from_database(): count is < 0" << std::endl;
+        m_data_model_rows_count = 0;
+      }
+      else
+      {
+        m_data_model_rows_count = count;
+      }
+
+      //std::cout << "  rows count=" << m_data_model_rows_count << std::endl;
 
       m_data_model_columns_count = m_gda_datamodel->get_n_columns();
-
-      /*
-      guint rows_to_get = 100;
-      if(rows_to_get > m_data_model_rows_count)
-        rows_to_get = m_data_model_rows_count;
-
-      for(guint i = 0; i < rows_to_get; ++i)
-      {
-        iterator iter;
-        const bool iter_is_valid = create_iterator(i, iter);
-        if(iter_is_valid)
-          row_inserted(get_path(iter), iter); //Allow the TreeView to respond to the addition.
-      }
-      */
 
       return (m_data_model_rows_count > 0); //false is not really a failure, but the caller needs to know whether the foundset found any records.
     }

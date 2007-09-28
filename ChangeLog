@@ -1,3 +1,23 @@
+2007-09-28  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/libglom/data_structure/layout/layoutitem_field.cc:
+	* glom/libglom/data_structure/layout/layoutitem_field.h: Added get_sql_name(), 
+	to get the fully qualified field name (with the table name and .).
+	* glom/libglom/utils.cc: build_sql_select_with_where_clause(): 
+	Use get_sql_name() instead of building the name here, to simplify that code 
+	slightly.
+
+	* glom/libglom/connectionpool.cc: handle_error(): When getting the text of 
+	errors, ignore any events that are not Gnome::Gda::CONNECTION_EVENT_ERROR, 
+	to avoid showing other irrelevant warnings. This requires the latest libgdamm.
+
+	* glom/utility_widgets/db_adddel/glom_db_treemodel.h: Remove the useless 
+	m_column_record member variable.
+	* glom/utility_widgets/db_adddel/glom_db_treemodel.cc:
+	refresh_from_database(), fill_values_if_necessary(): Create an iter-only 
+	model (needs the latest libgda, glibmm, and rebuilt libgdamm), to 
+	hopefully only get the data that we actually want.
+
 2007-09-27  Armin Burgmeier  <armin@openismus.com>
 
 	* glom/glom.glade: Make the entry_quickfind not activate the default
