@@ -21,7 +21,7 @@
 #ifndef GLOM_UTILITY_WIDGETS_DATAWIDGET_H
 #define GLOM_UTILITY_WIDGETS_DATAWIDGET_H
 
-#include "config.h" // For ENABLE_CLIENT_ONLY
+#include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
 
 #include "placeholder.h"
 #include "layoutwidgetbase.h"
@@ -62,9 +62,9 @@ public:
 
   sharedptr<LayoutItem_Field> offer_field_list(const Glib::ustring& table_name);
   sharedptr<LayoutItem_Field> offer_field_list(const Glib::ustring& table_name, const sharedptr<const LayoutItem_Field>& start_field);
-#ifndef ENABLE_CLIENT_ONLY
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   sharedptr<LayoutItem_Field> offer_field_layout(const sharedptr<const LayoutItem_Field>& start_field);
-#endif // !ENABLE_CLIENT_ONLY
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
   /// Get the actual child widget used to show the data:
   Gtk::Widget* get_data_child_widget();
@@ -81,21 +81,21 @@ protected:
 
   //Overrides of default signal handlers:
   void on_widget_edited(); //From Gtk::Entry, or Gtk::CheckButton.
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   virtual bool on_button_press_event(GdkEventButton* event); //override.
-#ifndef ENABLE_CLIENT_ONLY
   virtual void on_child_user_requested_layout();
   virtual void on_child_user_requested_layout_properties();
   virtual void on_child_layout_item_added(LayoutWidgetBase::enumType item_type);
-#endif // !ENABLE_CLIENT_ONLY
+#endif // !GLOM_ENABLE_CLIENT_ONLY
   void on_button_open_details();
   void on_button_select_id();
   void on_button_choose_date();
 
-#ifndef ENABLE_CLIENT_ONLY
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   virtual void on_menupopup_activate_layout(); //override
   virtual void on_menupopup_activate_layout_properties(); //override
   //virtual void on_menupopup_add_item(LayoutWidgetBase::enumType item);
-#endif // !ENABLE_CLIENT_ONLY
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
   App_Glom* get_application();
 

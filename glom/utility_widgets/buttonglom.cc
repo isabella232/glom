@@ -30,18 +30,18 @@ namespace Glom
 ButtonGlom::ButtonGlom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& /* refGlade */)
 : Gtk::Button(cobject)
 {
-#ifndef ENABLE_CLIENT_ONLY
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   setup_menu();
-#endif // !ENABLE_CLIENT_ONLY
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
   init();
 }
 
 ButtonGlom::ButtonGlom()
 {
-#ifndef ENABLE_CLIENT_ONLY
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   setup_menu();
-#endif // !ENABLE_CLIENT_ONLY
+#endif // !GLOM_ENABLE_CLIENT_ONLY
   init();
 }
 

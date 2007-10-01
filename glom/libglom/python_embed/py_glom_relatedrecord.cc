@@ -193,7 +193,13 @@ RelatedRecord_tp_as_mapping_getitem(PyObject *self, PyObject *item)
         {
           //Try to get the value from the database:
           //const Glib::ustring parent_key_name;
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
           sharedptr<SharedConnection> sharedconnection = ConnectionPool::get_instance()->connect();
+#else
+          std::auto_ptr<ExceptionConnection> conn_error;
+          sharedptr<SharedConnection> sharedconnection = ConnectionPool::get_instance()->connect(conn_error);
+          // Ignore error, sharedconnection presence is checked below
+#endif
           if(sharedconnection)
           {
             Glib::RefPtr<Gnome::Gda::Connection> gda_connection = sharedconnection->get_gda_connection();
@@ -208,20 +214,28 @@ RelatedRecord_tp_as_mapping_getitem(PyObject *self, PyObject *item)
             Glib::ustring sql_query = "SELECT \"" + related_table + "\".\"" + field_name + "\" FROM \"" + related_table + "\""
               + " WHERE \"" + related_table + "\".\"" + related_key_name + "\" = " + *(self_derived->m_from_key_value_sqlized);
 
-             /* TODO: Fix linking problems
-             const App_Glom* app = App_Glom::get_application();
-             if(app && app->get_show_sql_debug())
-             {
-                try
-                {
-                  std::cout << "Debug: query_execute():  " << sql_query << std::endl;
-                }
-                catch(const Glib::Exception& ex)
-                {
-                  std::cout << "Debug: query string could not be converted to std::cout: " << ex.what() << std::endl;
-                 }
+            /* TODO: Fix linking problems
+            const App_Glom* app = App_Glom::get_application();
+            if(app && app->get_show_sql_debug())
+            {
+              try
+              {
+                std::cout << "Debug: query_execute():  " << sql_query << std::endl;
+              }
+              catch(const Glib::Exception& ex)
+              {
+                std::cout << "Debug: query string could not be converted to std::cout: " << ex.what() << std::endl;
+              }
             }*/
+
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+            // TODO: Does this behave well if this throws an exception?
             Glib::RefPtr<Gnome::Gda::DataModel> datamodel = gda_connection->execute_select_command(sql_query);
+#else
+            std::auto_ptr<Glib::Error> error;
+            Glib::RefPtr<Gnome::Gda::DataModel> datamodel = gda_connection->execute_select_command(sql_query, error);
+            // Ignore error, datamodel return value is checked below
+#endif
             if(datamodel && datamodel->get_n_rows())
             {
               Gnome::Gda::Value value = datamodel->get_value_at(0, 0);
@@ -294,7 +308,13 @@ RelatedRecord_generic_aggregate(PyGlomRelatedRecord* self, PyObject *args, PyObj
     {
       //Try to get the value from the database:
       //const Glib::ustring parent_key_name;
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
       sharedptr<SharedConnection> sharedconnection = ConnectionPool::get_instance()->connect();
+#else
+      std::auto_ptr<ExceptionConnection> conn_error;
+      sharedptr<SharedConnection> sharedconnection = ConnectionPool::get_instance()->connect(conn_error);
+      // Ignore error, sharedconnection presence is checked below
+#endif
       if(sharedconnection)
       {
         Glib::RefPtr<Gnome::Gda::Connection> gda_connection = sharedconnection->get_gda_connection();
@@ -310,7 +330,14 @@ RelatedRecord_generic_aggregate(PyGlomRelatedRecord* self, PyObject *args, PyObj
           + " WHERE \"" + related_table + "\".\"" + related_key_name + "\" = " + *(self->m_from_key_value_sqlized);
 
         //std::cout << "PyGlomRelatedRecord: Executing:  " << sql_query << std::endl;
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
         Glib::RefPtr<Gnome::Gda::DataModel> datamodel = gda_connection->execute_select_command(sql_query);
+#else
+	std::auto_ptr<Glib::Error> error;
+        Glib::RefPtr<Gnome::Gda::DataModel> datamodel = gda_connection->execute_select_command(sql_query, error);
+	// Ignore error, the case that the command execution didn't return
+	//  a datamodel is handled below.
+#endif
         if(datamodel && datamodel->get_n_rows())
         {
           Gnome::Gda::Value value = datamodel->get_value_at(0, 0);

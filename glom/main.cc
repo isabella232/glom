@@ -25,15 +25,19 @@
 
 //#include <gnome.h>
 #include <gtkmm/main.h>
+#ifndef GLOM_ENABLE_MAEMO
 #include <libgnome/gnome-init.h> // For gnome_program_init().
+#endif
 #include <libgnomevfsmm/uri.h>
 
-#ifndef ENABLE_CLIENT_ONLY
+#ifndef GLOM_ENABLE_CLIENT_ONLY
 #include <gtksourceviewmm/init.h>
-#endif // ENABLE_CLIENT_ONLY
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 #include <glibmm/i18n.h>
 
-
+#ifdef GLOM_ENABLE_MAEMO
+#include <hildonmm/init.h>
+#endif
 
 #include "application.h"
 
@@ -88,24 +92,50 @@ main(int argc, char* argv[])
   g_thread_init(NULL); //So we can use GMutex.
 
   Gnome::Gda::init("glom", VERSION, argc, argv);
+#ifdef GLOM_ENABLE_MAEMO
+  Hildon::init();
+#endif
 
   Glib::OptionContext context;
 
   Glom::OptionGroup group;
   context.set_main_group(group);
 
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
+#else
+  std::auto_ptr<Glib::Error> error;
+#endif // GLIBMM_EXCEPTIONS_ENABLED
   {
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
     context.parse(argc, argv);
+#else
+    context.parse(argc, argv, error);
+#endif // GLIBMM_EXCEPTIONS_ENABLED
   }
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
   catch(const Glib::OptionError& ex)
+#else
+  if(error.get() != NULL)
+#endif
   {
-    std::cout << _("Error while parsing commmand-line options: ") << std::endl << ex.what() << std::endl;
-    std::cout << _("Use --help to see a list of available command-line options.") << std::endl;
-    return 0;
+#ifndef GLIBMM_EXCEPTIONS_ENABLED
+    const Glib::OptionError* exptr = dynamic_cast<Glib::OptionError*>(error.get());
+    if(exptr)
+    {
+      const Glib::OptionError& ex = *exptr;
+#endif // !GLIBMM_EXCEPTIONS_ENABLED
+      std::cout << _("Error while parsing commmand-line options: ") << std::endl << ex.what() << std::endl;
+      std::cout << _("Use --help to see a list of available command-line options.") << std::endl;
+      return 0;
+#ifndef GLIBMM_EXCEPTIONS_ENABLED
+    }
+    const Glib::Error& ex = *error.get();
+#else
   }
   catch(const Glib::Error& ex)
   {
+#endif
     std::cout << "Error: " << ex.what() << std::endl;
     return 0;
   }
@@ -121,20 +151,24 @@ main(int argc, char* argv[])
   Py_Initialize();
   PySys_SetArgv(argc, argv);
 
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
+#endif
   {
+#ifndef GLOM_ENABLE_MAEMO
     //Initialize gnome_program, so that we can use gnome_help_display().    
     gnome_program_init(PACKAGE, VERSION, LIBGNOME_MODULE, argc, argv,
         GNOME_PARAM_HUMAN_READABLE_NAME, _("Glom"),
         GNOME_PROGRAM_STANDARD_PROPERTIES, NULL);
+#endif
 
 
     Gtk::Main mainInstance(argc, argv, context);
     Bakery::init();
 
-#ifndef ENABLE_CLIENT_ONLY
+#ifndef GLOM_ENABLE_CLIENT_ONLY
     gtksourceview::init();
-#endif //ENABLE_CLIENT_ONLY
+#endif //!GLOM_ENABLE_CLIENT_ONLY
 
     //Get command-line parameters, if any:
     Glib::ustring input_uri = group.m_arg_filename;
@@ -159,12 +193,12 @@ main(int argc, char* argv[])
     //input_uri = "file:///home/murrayc/cvs/gnome212/glom/examples/example_smallbusiness.glom";
 
     bool install_complete;
-#ifndef ENABLE_CLIENT_ONLY
+#ifndef GLOM_ENABLE_CLIENT_ONLY
     //Check that PostgreSQL is really available:
     install_complete = Glom::ConnectionPool::check_postgres_is_available_with_warning();
     if(!install_complete)
       return -1; //There is no point in going further because the most useful Glom functionality will not work without Postgres. Only a very cut-down Glom client would be useful without self-hosting.
-#endif // !ENABLE_CLIENT_ONLY
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
     //Check that the libgda postgres provider is really available:
     install_complete = Glom::ConnectionPool::check_postgres_gda_client_is_available_with_warning();
@@ -172,8 +206,20 @@ main(int argc, char* argv[])
       return -1; //There is no point in going further because Glom would not be able to connect to any Postgres servers.
 
 
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
     // Main app
     Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_main");
+#else
+    std::auto_ptr<Gnome::Glade::XmlError> error;
+    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_main", "", error);
+    if(error.get())
+    {
+      std::cerr << "Glom: exception: \n  " << error->what() << std::endl;
+      return -1;
+    }
+#endif
+
+
     Glom::App_Glom* pApp_Glom = 0;
     refXml->get_widget_derived("window_main", pApp_Glom);
 
@@ -188,6 +234,7 @@ main(int argc, char* argv[])
     else
       delete pApp_Glom;
   }
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
   catch(const Glib::Exception& ex)
   {
     //If this happens then comment out the try/catch, and let the debugger show the call stack.
@@ -198,6 +245,7 @@ main(int argc, char* argv[])
     //If this happens then comment out the try/catch, and let the debugger show the call stack.
     std::cerr << "Glom: exception: \n  " << ex.what() << std::endl;
   }
+#endif // GLIBMM_EXCEPTIONS_ENABLED
 
   //We use python for calculated-fields:
   Py_Finalize();

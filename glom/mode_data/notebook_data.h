@@ -45,9 +45,9 @@ public:
 
   virtual void select_page_for_find_results(); //Details for 1, List for > 1.
 
-#ifndef ENABLE_CLIENT_ONLY
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   virtual void do_menu_developer_layout(); //override
-#endif // !ENABLE_CLIENT_ONLY
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
   virtual void do_menu_file_print(); //override
 

@@ -136,7 +136,13 @@ bool Box_Tables::fill_from_database()
     g_warning("Box_Tables::fill_from_database(): document is null");
 
   //Get the list of tables in the database, from the server:
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
   sharedptr<SharedConnection> sharedconnection = connect_to_server(get_app_window());
+#else
+  std::auto_ptr<ExceptionConnection> error;
+  sharedptr<SharedConnection> sharedconnection = connect_to_server(get_app_window(), error);
+  // Ignore error, sharedconnection presence is checked below
+#endif
   if(sharedconnection)
   {
     m_AddDel.remove_all();

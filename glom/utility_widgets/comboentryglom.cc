@@ -37,9 +37,9 @@ namespace Glom
 ComboEntryGlom::ComboEntryGlom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& /* refGlade */)
 : Gtk::ComboBoxEntry(cobject)
 {
-#ifndef ENABLE_CLIENT_ONLY
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   setup_menu();
-#endif // !ENABLE_CLIENT_ONLY
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
   init();
 }
@@ -47,9 +47,9 @@ ComboEntryGlom::ComboEntryGlom(BaseObjectType* cobject, const Glib::RefPtr<Gnome
 ComboEntryGlom::ComboEntryGlom()
 : ComboGlomChoicesBase()
 {
-#ifndef ENABLE_CLIENT_ONLY
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   setup_menu();
-#endif // !ENABLE_CLIENT_ONLY
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
   init();
 }
@@ -57,9 +57,9 @@ ComboEntryGlom::ComboEntryGlom()
 ComboEntryGlom::ComboEntryGlom(const sharedptr<LayoutItem_Field>& field_second)
 : ComboGlomChoicesBase(field_second)
 {
-#ifndef ENABLE_CLIENT_ONLY
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   setup_menu();
-#endif // !ENABLE_CLIENT_ONLY
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
   init();
 }
@@ -71,9 +71,16 @@ void ComboEntryGlom::init()
   set_text_column(m_Columns.m_col_first);
 
   //We use connect(slot, false) to connect before the default signal handler, because the default signal handler prevents _further_ handling.
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   get_entry()->signal_button_press_event().connect(sigc::mem_fun(*this, &ComboEntryGlom::on_entry_button_press_event), false);
+#endif // GLOM_ENABLE_CLIENT_ONLY
+
   get_entry()->signal_focus_out_event().connect(sigc::mem_fun(*this, &ComboEntryGlom::on_entry_focus_out_event), false);
   get_entry()->signal_activate().connect(sigc::mem_fun(*this, &ComboEntryGlom::on_entry_activate));
+
+#ifndef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
+  signal_changed().connect(sigc::mem_fun(*this, &ComboEntryGlom::on_changed));
+#endif // GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
 
   if(m_with_second)
   {
@@ -83,13 +90,17 @@ void ComboEntryGlom::init()
     //pack_start(m_Columns.m_col_second);
 
     Gtk::CellRenderer* cell_second = Gtk::manage(new Gtk::CellRendererText);
-    cell_second->property_xalign() = 0.0f;
+    cell_second->set_property("xalign", 0.0);
 
     //Use the renderer:
     pack_start(*cell_second);
 
     //Make the renderer render the column:
+#ifdef GLIBMM_PROPERTIES_ENABLED
     add_attribute(cell_second->_property_renderable(), m_Columns.m_col_second);
+#else
+    add_attribute(*cell_second, cell_second->_property_renderable(), m_Columns.m_col_second);
+#endif
   }
 }
 
@@ -209,9 +220,9 @@ Gnome::Gda::Value ComboEntryGlom::get_value() const
   return Conversions::parse_value(layout_item->get_glom_type(), get_entry()->get_text(), layout_item->get_formatting_used().m_numeric_format, success);
 }
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
 bool ComboEntryGlom::on_entry_button_press_event(GdkEventButton *event)
 {
-#ifndef ENABLE_CLIENT_ONLY
   //Enable/Disable items.
   //We did this earlier, but get_application is more likely to work now:
   App_Glom* pApp = get_application();
@@ -239,10 +250,10 @@ bool ComboEntryGlom::on_entry_button_press_event(GdkEventButton *event)
     }
 
   }
-#endif // !ENABLE_CLIENT_ONLY
 
   return false; //We did not handle this event.
 }
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 App_Glom* ComboEntryGlom::get_application()
 {
@@ -254,8 +265,10 @@ App_Glom* ComboEntryGlom::get_application()
 
 void ComboEntryGlom::on_changed()
 {
+#ifdef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
   //Call base class:
   Gtk::ComboBoxEntry::on_changed();
+#endif // GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
 
   //This signal is emitted for every key press, but sometimes it's just to say that the active item has changed to "no active item",
   //if the text is not in the dropdown list:

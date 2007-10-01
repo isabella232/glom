@@ -540,6 +540,11 @@ void ReportBuilder::report_build(const FoundSet& found_set, const sharedptr<cons
   {
     xmlpp::Element* nodeGroupBy = nodeParent->add_child("ungrouped_records");
 
+    // TODO: I am not sure where an exception could be thrown here. It seems
+    // not to be in glom, otherwise the code wouldn't compile with
+    // -fno-exceptions. If it's in a library, it does not seem to take an
+    // additional error paramater for that. armin.
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
     try
     {
       report_build_records(found_set, *nodeGroupBy, itemsToGet_TopLevel);
@@ -556,6 +561,9 @@ void ReportBuilder::report_build(const FoundSet& found_set, const sharedptr<cons
       handle_error(ex);
       return;
     }
+#else
+    report_build_records(found_set, *nodeGroupBy, itemsToGet_TopLevel);
+#endif
   }
 
   GlomXslUtils::transform_and_open(*pDocument, "print_report_to_html.xsl", parent_window);

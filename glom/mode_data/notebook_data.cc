@@ -78,7 +78,13 @@ bool Notebook_Data::init_db_details(const FoundSet& found_set, const Gnome::Gda:
   //Performance optimisation:
   //Keep the connection open during all these operations:
   {
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
     sharedptr<SharedConnection> sharedconnection = connect_to_server(get_app_window());
+#else
+    std::auto_ptr<ExceptionConnection> error;
+    sharedptr<SharedConnection> sharedconnection = connect_to_server(get_app_window(), error);
+    // Ignore error, sharedconnection is not used directly within this function
+#endif
 
     const FoundSet old_found_set = m_Box_List.get_found_set();
     //std::cout << "  old_where_clause=" << old_where_clause << std::endl;
@@ -222,7 +228,7 @@ void Notebook_Data::select_page_for_find_results()
   }
 }
 
-#ifndef ENABLE_CLIENT_ONLY
+#ifndef GLOM_ENABLE_CLIENT_ONLY
 void Notebook_Data::do_menu_developer_layout()
 {
   int iPageCurrent = get_current_page();
@@ -235,7 +241,7 @@ void Notebook_Data::do_menu_developer_layout()
       pBox->show_layout_dialog();
   } 
 }
-#endif // !ENABLE_CLIENT_ONLY
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 void Notebook_Data::do_menu_file_print()
 {

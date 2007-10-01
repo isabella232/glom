@@ -42,7 +42,15 @@ FlowTableWithFields::Info::Info()
 }
 
 FlowTableWithFields::FlowTableWithFields(const Glib::ustring& table_name)
-: m_table_name(table_name)
+:
+#if !defined(GLIBMM_VFUNCS_ENABLED) || !defined(GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED)
+  // This creates a custom GType for us, to override vfuncs and default
+  // signal handlers even with the reduced API (done in flowtable.cc).
+  // TODO: It is necessary to do this in all derived classes which is
+  // rather annoying, though I don't see another possibility at the moment. armin.
+  Glib::ObjectBase("Glom_FlowTable"),
+#endif // !defined(GLIBMM_VFUNCS_ENABLED) || !defined(GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED)
+  m_table_name(table_name)
 {
 }
 
@@ -418,9 +426,8 @@ void FlowTableWithFields::add_field_at_position(const sharedptr<LayoutItem_Field
   info.m_first = label;
   if(label && !label->get_text().empty())
   {
-    label->property_xalign() = 0.0f; //Equivalent to Gtk::ALIGN_LEFT, but we can't use that here.
-    label->property_yalign() = 0.5f; //Equivalent ot Gtk::ALIGN_CENTER, but we can't use that here.; 
-    label->show();
+    label->set_property("xalign", 0.0); //Equivalent to Gtk::ALIGN_LEFT, but we can't use that here.
+    label->set_property("yalign", 0.5); //Equivalent ot Gtk::ALIGN_CENTER, but we can't use that here.; 
 
     label->show();
   }
@@ -433,22 +440,22 @@ void FlowTableWithFields::add_field_at_position(const sharedptr<LayoutItem_Field
   {
     expand_second = true;
     if(label)
-      label->property_yalign() = 0.0f; //Equivalent to Gtk::ALIGN_TOP. Center is neater next to entries, but center is silly next to multi-line text boxes.
+      label->set_property("yalign", 0.0); //Equivalent to Gtk::ALIGN_TOP. Center is neater next to entries, but center is silly next to multi-line text boxes.
   }
   else if(layoutitem_field->get_glom_type() == Field::TYPE_IMAGE)
   {
     if(label)
-      label->property_yalign() = 0.0f; //Equivalent to Gtk::ALIGN_TOP. Center is neater next to entries, but center is silly next to large images.
+      label->set_property("yalign", 0.0); //Equivalent to Gtk::ALIGN_TOP. Center is neater next to entries, but center is silly next to large images.
   }
 
   add(*(info.m_first), *(info.m_second), expand_second);
 
   info.m_second->signal_edited().connect( sigc::bind(sigc::mem_fun(*this, &FlowTableWithFields::on_entry_edited), layoutitem_field)  ); //TODO:  Is it a good idea to bind the LayoutItem? sigc::bind() probably stores a copy at this point.
 
-#ifndef ENABLE_CLIENT_ONLY
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   info.m_second->signal_layout_item_added().connect( sigc::bind(
     sigc::mem_fun(*this, &FlowTableWithFields::on_datawidget_layout_item_added), info.m_second) );
-#endif // !ENABLE_CLIENT_ONLY
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
   info.m_second->signal_open_details_requested().connect( sigc::bind(sigc::mem_fun(*this, &FlowTableWithFields::on_entry_open_details_requested), layoutitem_field)  );
 
@@ -848,20 +855,20 @@ void FlowTableWithFields::add_layoutwidgetbase(LayoutWidgetBase* layout_widget, 
   m_list_layoutwidgets.insert(add_before, layout_widget);
 
   //Handle layout_changed signal:
-#ifndef ENABLE_CLIENT_ONLY
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   layout_widget->signal_layout_changed().connect(sigc::mem_fun(*this, &FlowTableWithFields::on_layoutwidget_changed));
-#endif // !ENABLE_CLIENT_ONLY
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 }
 
-#ifndef ENABLE_CLIENT_ONLY
+#ifndef GLOM_ENABLE_CLIENT_ONLY
 void FlowTableWithFields::on_layoutwidget_changed()
 {
   //Forward the signal to the container:
   signal_layout_changed().emit();
 }
-#endif // !ENABLE_CLIENT_ONLY
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
-#ifndef ENABLE_CLIENT_ONLY
+#ifndef GLOM_ENABLE_CLIENT_ONLY
 void FlowTableWithFields::on_datawidget_layout_item_added(LayoutWidgetBase::enumType item_type, DataWidget* pDataWidget)
 {
   //Get the widget's layout item:
@@ -1020,7 +1027,7 @@ void FlowTableWithFields::on_datawidget_layout_item_added(LayoutWidgetBase::enum
     signal_layout_changed().emit(); //This should result in a complete re-layout.
   }
 }
-#endif // !ENABLE_CLIENT_ONLY
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 void FlowTableWithFields::on_portal_record_changed(const Glib::ustring& relationship_name)
 {

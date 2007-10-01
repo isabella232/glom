@@ -21,6 +21,8 @@
 #ifndef GLOM_UTILITY_WIDGETS_ENTRY_GLOM_H
 #define GLOM_UTILITY_WIDGETS_ENTRY_GLOM_H
 
+#include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
+
 #include <gtkmm.h>
 #include <glom/libglom/data_structure/field.h>
 #include "layoutwidgetfield.h"
@@ -58,6 +60,8 @@ protected:
   void init();
 
   //Overrides of default signal handlers:
+  //Note that these don't override anything when GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
+  //is not defined. These are normal signal handlers then.
   virtual void on_changed(); //From Gtk::Entry.
   virtual void on_activate(); //From Gtk::Entry.
   virtual bool on_focus_out_event(GdkEventFocus* event); //From Gtk::Widget
@@ -65,7 +69,9 @@ protected:
 
   virtual void check_for_change();
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   virtual bool on_button_press_event(GdkEventButton *event); //override
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
   virtual App_Glom* get_application();
 

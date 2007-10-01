@@ -32,7 +32,7 @@ Box_Data_Details_Find::Box_Data_Details_Find()
   //Instead of nav buttons:
   m_HBox.pack_end(m_Button_Find, Gtk::PACK_SHRINK);
 
-  m_Button_Find.property_can_default() = true; //TODO: Make this a real method in gtkmm?
+  g_object_set(m_Button_Find.gobj(), "can-default", TRUE, (gpointer)NULL); //TODO: Make this a real method in gtkmm?
 
   show_all_children();
 }

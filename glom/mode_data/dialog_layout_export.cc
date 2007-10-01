@@ -317,8 +317,9 @@ void Dialog_Layout_Export::on_cell_data_name(Gtk::CellRenderer* renderer, const 
 
       //Indicate that it's a field in another table.
       sharedptr<LayoutItem_Field> item = row[m_ColumnsFields.m_col_layout_item]; //TODO_performance: Reduce copying.
-      renderer_text->property_markup() = item->get_layout_display_name();
-      renderer_text->property_editable() = false; //Names can never be edited.
+
+      //Names can never be edited.
+      g_object_set(renderer_text->gobj(), "markup", item->get_layout_display_name().c_str(), "editable", FALSE, (gpointer)NULL);
     }
   }
 }

@@ -30,7 +30,7 @@ libglom_la_SOURCES = appstate.h appstate.cc \
                      standard_table_prefs_fields.h \
 		     gst-package.h gst-package.c
 
-if !ENABLE_CLIENT_ONLY
+if !GLOM_ENABLE_CLIENT_ONLY
 libglom_la_SOURCES += avahi_publisher.h avahi_publisher.cc
 endif
 
@@ -45,7 +45,7 @@ libglom_la_LIBADD  = document/libdocument.la \
 
 
 noinst_PROGRAMS = test_sharedptr_layoutitem
-if !ENABLE_CLIENT_ONLY
+if !GLOM_ENABLE_CLIENT_ONLY
 noinst_PROGRAMS += test_avahi_publisher
 endif
 

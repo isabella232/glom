@@ -1,10 +1,10 @@
 SUBDIRS = libglom mode_data mode_find navigation utility_widgets python_embed reports
 
-if !ENABLE_CLIENT_ONLY
+if !GLOM_ENABLE_CLIENT_ONLY
 SUBDIRS += layout_item_dialogs mode_design translation relationships_overview
 endif
 
-gladedir = $(datadir)/glom/glade/
+gladedir = $(datadir)/glom/glade
 glomxsltdir = $(datadir)/glom/xslt/
 glom_examples_dir = $(pkgdatadir)/doc/examples/
 glom_icon_dir = $(datadir)/icons/hicolor/48x48/apps
@@ -44,7 +44,7 @@ glom_SOURCES = main.cc \
                box_reports.h box_reports.cc \
                xsl_utils.h xsl_utils.cc
 
-if !ENABLE_CLIENT_ONLY
+if !GLOM_ENABLE_CLIENT_ONLY
 glom_SOURCES += dialog_new_self_hosted_connection.h \
                 dialog_new_self_hosted_connection.cc \
                 dialog_database_preferences.h \
@@ -56,7 +56,7 @@ glom_LDADD = reports/libreports.a \
              mode_data/libmode_data.a \
              mode_find/libmode_find.a
 
-if !ENABLE_CLIENT_ONLY
+if !GLOM_ENABLE_CLIENT_ONLY
 glom_LDADD += layout_item_dialogs/liblayoutitemdialogs.a \
               mode_design/libmode_design.a \
               mode_design/fields/libmode_design_fields.a \
@@ -71,7 +71,7 @@ glom_LDADD += navigation/libnavigation.a \
               utility_widgets/db_adddel/libutility_widgets_db_adddel.a \
               utility_widgets/libutility_widgets.a
 
-if !ENABLE_CLIENT_ONLY
+if !GLOM_ENABLE_CLIENT_ONLY
 glom_LDADD += translation/libtranslation.a \
               relationships_overview/librelationshipsoverview.a
 endif

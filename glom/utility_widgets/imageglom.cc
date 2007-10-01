@@ -48,9 +48,14 @@ void ImageGlom::init()
 {
   m_read_only = false;
 
-#ifndef ENABLE_CLIENT_ONLY
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   setup_menu();
-#endif // !ENABLE_CLIENT_ONLY
+#endif // !GLOM_ENABLE_CLIENT_ONLY
+
+#ifndef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
+  signal_button_press_event().connect(sigc::mem_fun(*this, &ImageGlom::on_button_press_event), false);
+  signal_expose_event().connect(sigc::mem_fun(*this, &ImageGlom::on_expose_event));
+#endif
 
   setup_menu_usermode();
 
@@ -81,18 +86,18 @@ bool ImageGlom::on_button_press_event(GdkEventButton *event)
   App_Glom* pApp = get_application();
   if(pApp)
   {
-#ifndef ENABLE_CLIENT_ONLY
+#ifndef GLOM_ENABLE_CLIENT_ONLY
     pApp->add_developer_action(m_refContextLayout); //So that it can be disabled when not in developer mode.
     pApp->add_developer_action(m_refContextAddField);
     pApp->add_developer_action(m_refContextAddRelatedRecords);
     pApp->add_developer_action(m_refContextAddGroup);
 
     pApp->update_userlevel_ui(); //Update our action's sensitivity.
-#endif // !ENABLE_CLIENT_ONLY
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
     //Only show this popup in developer mode, so operators still see the default GtkEntry context menu.
     //TODO: It would be better to add it somehow to the standard context menu.
-#ifndef ENABLE_CLIENT_ONLY
+#ifndef GLOM_ENABLE_CLIENT_ONLY
     if(pApp->get_userlevel() == AppState::USERLEVEL_DEVELOPER)
     {
       if(mods & GDK_BUTTON3_MASK)
@@ -103,7 +108,7 @@ bool ImageGlom::on_button_press_event(GdkEventButton *event)
       }
     }
     else
-#endif // !ENABLE_CLIENT_ONLY
+#endif // !GLOM_ENABLE_CLIENT_ONLY
     {
       // We cannot be in developer mode in client only mode.
       if(mods & GDK_BUTTON3_MASK)
@@ -123,7 +128,9 @@ bool ImageGlom::on_button_press_event(GdkEventButton *event)
     }
   }
 
+#ifdef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
   return Gtk::EventBox::on_button_press_event(event);
+#endif // GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
 }
 
 App_Glom* ImageGlom::get_application()
@@ -215,7 +222,9 @@ Gnome::Gda::Value ImageGlom::get_value() const
   
   if(m_pixbuf_original)
   {
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
     try
+#endif
     {
       gchar* buffer = 0;
       gsize buffer_size = 0;
@@ -224,22 +233,29 @@ Gnome::Gda::Value ImageGlom::get_value() const
       //list_keys.push_back("quality"); //For jpeg only.
       //list_values.push_back("95");
 
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
       m_pixbuf_original->save_to_buffer(buffer, buffer_size, GLOM_IMAGE_FORMAT, list_keys, list_values); //Always store images as the standard format in the database.
+#else
+      std::auto_ptr<Glib::Error> error;
+      m_pixbuf_original->save_to_buffer(buffer, buffer_size, GLOM_IMAGE_FORMAT, list_keys, list_values, error); //Always store images as the standard format in the database.
+#endif
 
       //g_warning("ImageGlom::get_value(): debug: to db: ");
       //for(int i = 0; i < 10; ++i)
       //  g_warning("%02X (%c), ", (guint8)buffer[i], buffer[i]);
 
-      result.init(GDA_TYPE_BINARY);
+      result.Glib::ValueBase::init(GDA_TYPE_BINARY);
       result.set(reinterpret_cast<const guchar*>(buffer), buffer_size);
 
       g_free(buffer);
       buffer = 0;
     }
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
     catch(const Glib::Exception& /* ex */)
     {
 
     }
+#endif // GLIBMM_EXCEPTIONS_ENABLED
   }
 
   return result;
@@ -247,7 +263,11 @@ Gnome::Gda::Value ImageGlom::get_value() const
 
 bool ImageGlom::on_expose_event(GdkEventExpose* event)
 {
+#ifdef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
   const bool result = Gtk::EventBox::on_expose_event(event);
+#else
+  const bool result = false;
+#endif // GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
   scale();
   return result;
 }
@@ -377,22 +397,41 @@ void ImageGlom::on_menupopup_activate_select_file()
     const std::string filepath = dialog.get_filename();
     if(!filepath.empty())
     {
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
       try
+#else
+      std::auto_ptr<Glib::Error> error;
+#endif // GLIBMM_EXCEPTIONS_ENABLED
       {
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
         m_pixbuf_original = Gdk::Pixbuf::create_from_file(filepath);
-        if(m_pixbuf_original)
+#else
+        m_pixbuf_original = Gdk::Pixbuf::create_from_file(filepath, error);
+        if(error.get() != NULL)
         {
-          m_image.set(m_pixbuf_original); //Load the image.
-          scale();
-          signal_edited().emit();
+#endif // GLIBMM_EXCEPTIONS_ENABLED
+          if(m_pixbuf_original)
+          {
+            m_image.set(m_pixbuf_original); //Load the image.
+            scale();
+            signal_edited().emit();
+          }
+          else
+          {
+            g_warning("ImageGlom::on_menupopup_activate_select_file(): file load failed.");
+          }
+#ifndef GLIBMM_EXCEPTIONS_ENABLED
         }
-        else
-        {
-          g_warning("ImageGlom::on_menupopup_activate_select_file(): file load failed.");
-        }
+#endif // !GLIBMM_EXCEPTIONS_ENABLED
       }
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
       catch(const Glib::Exception& ex)
       {
+#else
+      if(error.get() != NULL)
+      {
+        const Glib::Exception& ex = *error.get();
+#endif
         App_Glom* pApp = get_application();
         if(pApp)
           Frame_Glom::show_ok_dialog(_("Image loading failed"), _("The image file could not be opened:\n") + ex.what(), *pApp, Gtk::MESSAGE_ERROR);
@@ -513,7 +552,11 @@ void ImageGlom::setup_menu_usermode()
 
   //TODO: add_accel_group(m_refUIManager_UserModePopup->get_accel_group());
 
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
+#else
+  std::auto_ptr<Glib::Error> error;
+#endif // GLIBMM_EXCEPTIONS_ENABLED
   {
     Glib::ustring ui_info = 
         "<ui>"
@@ -525,10 +568,20 @@ void ImageGlom::setup_menu_usermode()
         "  </popup>"
         "</ui>";
 
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
     m_refUIManager_UserModePopup->add_ui_from_string(ui_info);
+#else
+    m_refUIManager_UserModePopup->add_ui_from_string(ui_info, error);
+#endif // GLIBMM_EXCEPTIONS_ENABLED
   }
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
   catch(const Glib::Error& ex)
   {
+#else
+  if(error.get() != NULL)
+  {
+    const Glib::Error& ex = *error.get();
+#endif
     std::cerr << "building menus failed: " <<  ex.what();
   }
 

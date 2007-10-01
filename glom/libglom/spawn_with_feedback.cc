@@ -47,6 +47,7 @@ static void execute_command_line_on_thread_create(CommandLineThreadData* data)
 
   int return_status = 0;
 
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
     Glib::spawn_command_line_sync(data->m_command, NULL, NULL, &return_status);
@@ -55,6 +56,11 @@ static void execute_command_line_on_thread_create(CommandLineThreadData* data)
   {
     std::cerr << "Glom:: execute_command_line_on_thread_create() Exception while calling lib::spawn_command_line_sync(): " << ex.what() << std::endl;
   }
+#else
+  // TODO: I guess we can't find out whether this failed.
+  // This might be a glibmm bug.
+  Glib::spawn_command_line_sync(data->m_command, NULL, NULL, &return_status);
+#endif // !GLIBMM_EXCEPTIONS_ENABLED
   
   std::cout << "  debug: in thread: signalling condition" << std::endl; 
 
@@ -126,7 +132,14 @@ static bool pulse_until_thread_finished(Dialog_ProgressCreating& dialog_progress
 
 static Dialog_ProgressCreating* get_and_show_pulse_dialog(const Glib::ustring& message, Gtk::Window* parent_window)
 {
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
   Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_progress");
+#else
+  std::auto_ptr<Gnome::Glade::XmlError> error;
+  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_progress", "", error);
+  if(error.get()) return NULL;
+#endif
+
   if(refXml)
   {
     Dialog_ProgressCreating* dialog_progress = 0;
@@ -177,79 +190,89 @@ bool execute_command_line_and_wait_until_second_command_returns_success(const st
   dialog_progress.reset(dialog_temp);
 
 
+  std::cout << std::endl << "debug: command_line: " << command << std::endl << std::endl;
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
   // Execute the first thread asynchronously (so we don't wait for it):
   try
   {
-    std::cout << std::endl << "debug: command_line: " << command << std::endl << std::endl;
-
     Glib::spawn_command_line_async(command);
   }
   catch(const Glib::SpawnError& ex)
   {
     std::cerr << "Glom::Spawn::pulse_until_second_command_succeed() Exception while calling lib::spawn_command_line_async(): " << ex.what() << std::endl;
   }
+#else
+  // TODO: I guess we can't find out whether this failed.
+  // This might be a glibmm bug.
+  Glib::spawn_command_line_async(command);
+#endif
 
   // Loop, updating the UI, repeatedly trying the second commmand, until the second command succeeds:
   while(true)
   {
     sleep(1); // To stop us calling the second command too often.
 
+    Glib::ustring stored_env_lang;
+    Glib::ustring stored_env_language;
+    if(!success_text.empty())
+    {
+      // If we are going to check the text output of the second command, 
+      // then we should make sure that we get a fairly canonical version of that text,
+      // so we set the LANG for this command.
+      // We have to set LANGUAGE (a GNU extension) as well as LANG, because it 
+      // is probably defined on the system already and that definition would override our LANG:  
+      // (Note that we can not just do "LANG=C;the_command", as on the command line, because g_spawn() does not support that.)
+      std::cout << std::endl << "debug: temporarily setting LANG and LANGUAGE environment variables to \"C\"" << std::endl;
+      stored_env_lang = Glib::getenv("LANG");
+      stored_env_language = Glib::getenv("LANGUAGE");
+      Glib::setenv("LANG", "C", true /* overwrite */);
+      Glib::setenv("LANGUAGE", "C", true /* overwrite */);
+    }
+
+    std::cout << std::endl << "debug: command_line (second): " << second_command << std::endl << std::endl;
+
+    int return_status = 0;
+    std::string stdout_output;
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
     try
     {
-      Glib::ustring stored_env_lang;
-      Glib::ustring stored_env_language;
-      if(!success_text.empty())
-      {
-        // If we are going to check the text output of the second command, 
-        // then we should make sure that we get a fairly canonical version of that text,
-        // so we set the LANG for this command.
-        // We have to set LANGUAGE (a GNU extension) as well as LANG, because it 
-        // is probably defined on the system already and that definition would override our LANG:  
-        // (Note that we can not just do "LANG=C;the_command", as on the command line, because g_spawn() does not support that.)
-        std::cout << std::endl << "debug: temporarily setting LANG and LANGUAGE environment variables to \"C\"" << std::endl;
-        stored_env_lang = Glib::getenv("LANG");
-        stored_env_language = Glib::getenv("LANGUAGE");
-        Glib::setenv("LANG", "C", true /* overwrite */);
-        Glib::setenv("LANGUAGE", "C", true /* overwrite */);
-      }
-
-      std::cout << std::endl << "debug: command_line (second): " << second_command << std::endl << std::endl;
-
-      int return_status = 0;
-      std::string stdout_output;
       Glib::spawn_command_line_sync(second_command, &stdout_output, NULL, &return_status);
-
-      if(!success_text.empty())
-      {
-        // Restore the previous environment variable values:
-        std::cout << std::endl << "debug: restoring the LANG and LANGUAGE environment variables." << std::endl;
-        Glib::setenv("LANG", stored_env_lang, true /* overwrite */);
-        Glib::setenv("LANGUAGE", stored_env_language, true /* overwrite */);
-      }
-
-      if(return_status == 0)
-      {
-        if(success_text.empty()) { //Just check the return code.
-          return true;
-        }
-        else //Check the output too.
-        {
-          std::cout << " debug: output=" << stdout_output << ", waiting for=" << success_text << std::endl;
-          if(stdout_output.find(success_text) != std::string::npos)
-          {
-            sleep(3); //Sleep for a bit more, because I think that pg_ctl sometimes reports success too early.
-            return true;
-          }
-        }
-      }
-      else
-      {
-         std::cout << " debug: second command failed. output=" << stdout_output << std::endl;
-      }
     }
     catch(const Glib::SpawnError& ex)
     {
       std::cerr << "Glom::execute_command_line_and_wait_until_second_command_returns_success() Exception while calling lib::spawn_command_line_sync(): " << ex.what() << std::endl;
+    }
+#else
+    // TODO: I guess we can't find out whether this failed.
+    // This might be a glibmm bug.
+    Glib::spawn_command_line_sync(second_command, &stdout_output, NULL, &return_status);
+#endif
+
+    if(!success_text.empty())
+    {
+      // Restore the previous environment variable values:
+      std::cout << std::endl << "debug: restoring the LANG and LANGUAGE environment variables." << std::endl;
+      Glib::setenv("LANG", stored_env_lang, true /* overwrite */);
+      Glib::setenv("LANGUAGE", stored_env_language, true /* overwrite */);
+    }
+
+    if(return_status == 0)
+    {
+      if(success_text.empty()) //Just check the return code.
+        return true;
+      else //Check the output too.
+      {
+        std::cout << " debug: output=" << stdout_output << ", waiting for=" << success_text << std::endl;
+        if(stdout_output.find(success_text) != std::string::npos)
+        {
+          sleep(3); //Sleep for a bit more, because I think that pg_ctl sometimes reports success too early.
+          return true;
+        }
+      }
+    }
+    else
+    {
+       std::cout << " debug: second command failed. output=" << stdout_output << std::endl;
     }
 
     dialog_progress->pulse();

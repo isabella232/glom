@@ -79,7 +79,13 @@ Gnome::Gda::Value Box_DB_Table::get_entered_field_data(const sharedptr<const Lay
 
 unsigned long Box_DB_Table::get_last_auto_increment_value(const Glib::RefPtr<Gnome::Gda::DataModel>& data_model, const Glib::ustring& /* field_name */)
 {
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
   sharedptr<SharedConnection> sharedconnection = connect_to_server(get_app_window());
+#else
+  std::auto_ptr<ExceptionConnection> error;
+  sharedptr<SharedConnection> sharedconnection = connect_to_server(get_app_window(), error);
+#endif
+
   if(sharedconnection)
   {
     Glib::RefPtr<Gnome::Gda::Connection> connection = sharedconnection->get_gda_connection();

@@ -49,7 +49,8 @@ Notebook_Glom::type_signal_leave_page Notebook_Glom::signal_leave_page()
 void Notebook_Glom::on_switch_page_handler(GtkNotebookPage* pPage, guint uiPageNumber)
 {
   //Call base class:
-  Gtk::Notebook::on_switch_page(pPage, uiPageNumber);
+  //Don't call base class because this is no default signal handler (anymore?)
+  //Gtk::Notebook::on_switch_page(pPage, uiPageNumber);
 
   //Remove the help hint for the previous page:
   Gtk::Window* pApp = get_app_window();

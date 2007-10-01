@@ -18,10 +18,16 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#include "config.h" // For GLOM_ENABLE_MAEMO
+
 #include "dialog_choose_id.h"
 #include <bakery/App/App_Gtk.h> //For util_bold_message().
 //#include <libgnome/gnome-i18n.h>
 #include <glibmm/i18n.h>
+
+#ifdef GLOM_ENABLE_MAEMO
+#include <hildonmm/note.h>
+#endif
 
 
 namespace Glom
@@ -96,9 +102,15 @@ void Dialog_ChooseID::on_button_quickfind()
   const Glib::ustring criteria = m_pEntry_QuickFind->get_text();
   if(criteria.empty())
   {
+    Glib::ustring message = _("You have not entered any quick find criteria.");
+#ifdef GLOM_ENABLE_MAEMO
+    Hildon::Note dialog(Hildon::NOTE_TYPE_INFORMATION, *this, message);
+#else
     Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("No Find Criteria")), true, Gtk::MESSAGE_WARNING );
-    dialog.set_secondary_text(_("You have not entered any quick find criteria."));
+    dialog.set_secondary_text(message);
     dialog.set_transient_for(*this);
+#endif
+
     dialog.run();
   }
   else

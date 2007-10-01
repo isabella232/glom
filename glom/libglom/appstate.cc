@@ -18,7 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include "config.h" // ENABLE_CLIENT_ONLY
+#include "config.h" // GLOM_ENABLE_CLIENT_ONLY
 #include "appstate.h"
 
 
@@ -26,7 +26,7 @@ namespace Glom
 {
 
 AppState::AppState()
-#ifdef ENABLE_CLIENT_ONLY
+#ifdef GLOM_ENABLE_CLIENT_ONLY
 : m_userlevel(USERLEVEL_OPERATOR)
 #else
 : m_userlevel(USERLEVEL_DEVELOPER)

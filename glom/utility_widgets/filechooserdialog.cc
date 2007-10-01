@@ -98,7 +98,7 @@ void FileChooserDialog::create_child_widgets()
   box_label->show();
   vbox->pack_start(*box_label);
 
-#ifndef ENABLE_CLIENT_ONLY
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   m_radiobutton_server_selfhosted.set_label(_("Create database in its own folder, to be hosted by this computer."));
   vbox->pack_start(m_radiobutton_server_selfhosted);
   m_radiobutton_server_selfhosted.show();
@@ -108,7 +108,7 @@ void FileChooserDialog::create_child_widgets()
   m_radiobutton_server_central.set_group(group);
   vbox->pack_start(m_radiobutton_server_central);
   m_radiobutton_server_central.show();
-#endif // !ENABLE_CLIENT_ONLY
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 
   m_extra_widget.pack_start(*frame);
@@ -122,23 +122,23 @@ void FileChooserDialog::set_extra_newdb_title(const Glib::ustring& title)
   m_entry_title.set_text(title);
 }
 
-#ifndef ENABLE_CLIENT_ONLY
+#ifndef GLOM_ENABLE_CLIENT_ONLY
 void FileChooserDialog::set_extra_newdb_self_hosted(bool self_hosted)
 {
   m_radiobutton_server_selfhosted.set_active(self_hosted);
 }
-#endif // !ENABLE_CLIENT_ONLY
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 Glib::ustring FileChooserDialog::get_extra_newdb_title() const
 {
   return m_entry_title.get_text();
 }
 
-#ifndef ENABLE_CLIENT_ONLY
+#ifndef GLOM_ENABLE_CLIENT_ONLY
 bool FileChooserDialog::get_extra_newdb_self_hosted() const
 {
   return m_radiobutton_server_selfhosted.get_active();
 }
-#endif // !ENABLE_CLIENT_ONLY
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 } //namespace Glom
