@@ -25,13 +25,13 @@
 
 //#include <gnome.h>
 #include <gtkmm/main.h>
-#ifndef ENABLE_MAEMO
+#ifndef GLOM_ENABLE_MAEMO
 #include <libgnome/gnome-init.h> // For gnome_program_init().
 #endif
 #include <libgnomevfsmm/uri.h>
 #include <glibmm/i18n.h>
 
-#ifdef ENABLE_MAEMO
+#ifdef GLOM_ENABLE_MAEMO
 #include <hildonmm/init.h>
 #endif
 
@@ -88,7 +88,7 @@ main(int argc, char* argv[])
   g_thread_init(NULL); //So we can use GMutex.
 
   Gnome::Gda::init("glom", VERSION, argc, argv);
-#ifdef ENABLE_MAEMO
+#ifdef GLOM_ENABLE_MAEMO
   Hildon::init();
 #endif
 
@@ -151,7 +151,7 @@ main(int argc, char* argv[])
   try
 #endif
   {
-#ifndef ENABLE_MAEMO
+#ifndef GLOM_ENABLE_MAEMO
     //Initialize gnome_program, so that we can use gnome_help_display().    
     gnome_program_init(PACKAGE, VERSION, LIBGNOME_MODULE, argc, argv,
         GNOME_PARAM_HUMAN_READABLE_NAME, _("Glom"),
@@ -185,12 +185,12 @@ main(int argc, char* argv[])
     //input_uri = "file:///home/murrayc/cvs/gnome212/glom/examples/example_smallbusiness.glom";
 
     bool install_complete;
-#ifndef ENABLE_CLIENT_ONLY
+#ifndef GLOM_ENABLE_CLIENT_ONLY
     //Check that PostgreSQL is really available:
     install_complete = Glom::ConnectionPool::check_postgres_is_available_with_warning();
     if(!install_complete)
       return -1; //There is no point in going further because the most useful Glom functionality will not work without Postgres. Only a very cut-down Glom client would be useful without self-hosting.
-#endif // !ENABLE_CLIENT_ONLY
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
     //Check that the libgda postgres provider is really available:
     install_complete = Glom::ConnectionPool::check_postgres_gda_client_is_available_with_warning();

@@ -18,7 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include "config.h" // For ENABLE_CLIENT_ONLY
+#include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
 
 #include "base_db.h"
 #include "application.h" //App_Glom.
@@ -28,12 +28,12 @@
 #include <glom/libglom/data_structure/glomconversions.h>
 #include "mode_data/dialog_choose_field.h"
 
-//#ifndef ENABLE_CLIENT_ONLY
+//#ifndef GLOM_ENABLE_CLIENT_ONLY
 #include "layout_item_dialogs/dialog_field_layout.h"
 #include "layout_item_dialogs/dialog_notebook.h"
 #include "layout_item_dialogs/dialog_textobject.h"
 #include "layout_item_dialogs/dialog_imageobject.h"
-//#endif // !ENABLE_CLIENT_ONLY
+//#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 //#include "reports/dialog_layout_report.h"
 #include <glom/libglom/utils.h>
@@ -49,7 +49,7 @@
 #include <glibmm/i18n.h>
 //#include <libgnomeui/gnome-app-helper.h>
 
-#ifdef ENABLE_MAEMO
+#ifdef GLOM_ENABLE_MAEMO
 #include <hildonmm/note.h>
 #endif
 
@@ -186,7 +186,7 @@ void Base_DB::handle_error(const std::exception& ex)
 {
   std::cerr << "Internal Error (Base_DB::handle_error()): exception type=" << typeid(ex).name() << ", ex.what()=" << ex.what() << std::endl;
 
-#ifdef ENABLE_MAEMO
+#ifdef GLOM_ENABLE_MAEMO
   Hildon::Note dialog(Hildon::NOTE_TYPE_INFORMATION, ex.what());
 #else
   Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Internal error")), true, Gtk::MESSAGE_WARNING );
@@ -1339,7 +1339,7 @@ sharedptr<LayoutItem_Field> Base_DB::offer_field_list(const sharedptr<const Layo
   return result;
 }
 
-#ifndef ENABLE_CLIENT_ONLY
+#ifndef GLOM_ENABLE_CLIENT_ONLY
 sharedptr<LayoutItem_Field> Base_DB::offer_field_formatting(const sharedptr<const LayoutItem_Field>& start_field, const Glib::ustring& table_name, Gtk::Window* transient_for)
 {
   sharedptr<LayoutItem_Field> result;
@@ -1485,7 +1485,7 @@ sharedptr<LayoutItem_Notebook> Base_DB::offer_notebook(const sharedptr<LayoutIte
 
   return result;
 }
-#endif // !ENABLE_CLIENT_ONLY
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 void Base_DB::fill_full_field_details(const Glib::ustring& parent_table_name, sharedptr<LayoutItem_Field>& layout_item)
 {
@@ -1500,7 +1500,7 @@ bool Base_DB::show_warning_no_records_found(Gtk::Window& transient_for)
 {
   Glib::ustring message = _("Your find criteria did not match any records in the table.");
 
-#ifdef ENABLE_MAEMO
+#ifdef GLOM_ENABLE_MAEMO
   Hildon::Note dialog(Hildon::NOTE_TYPE_CONFIRMATION_BUTTON, transient_for, message);
 #else
   Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("No Records Found")), true, Gtk::MESSAGE_WARNING, Gtk::BUTTONS_NONE);

@@ -18,7 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include "config.h" // For ENABLE_MAEMO
+#include "config.h" // For GLOM_ENABLE_MAEMO
 
 #include "box_data.h"
 #include <glom/libglom/data_structure/glomconversions.h>
@@ -31,7 +31,7 @@
 #include "config.h"
 #include <glibmm/i18n.h>
 
-#ifdef ENABLE_MAEMO
+#ifdef GLOM_ENABLE_MAEMO
 #include <hildonmm/note.h>
 #endif
 
@@ -40,9 +40,9 @@ namespace Glom
 
 Box_Data::Box_Data()
 : m_Button_Find(Gtk::Stock::FIND)
-#ifndef ENABLE_CLIENT_ONLY
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   ,m_pDialogLayout(0)
-#endif // !ENABLE_CLIENT_ONLY
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 {
   m_bUnstoredData = false;
 
@@ -52,13 +52,13 @@ Box_Data::Box_Data()
 
 Box_Data::~Box_Data()
 {
-#ifndef ENABLE_CLIENT_ONLY
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   if(m_pDialogLayout)
   {
     remove_view(m_pDialogLayout);
     delete m_pDialogLayout;
   }
-#endif // !ENABLE_CLIENT_ONLY
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 }
 
 bool Box_Data::init_db_details(const FoundSet& found_set)
@@ -135,7 +135,7 @@ void Box_Data::on_Button_Find()
   {
     Glib::ustring message = _("You have not entered any find criteria. Try entering information in the fields.");
 
-#ifdef ENABLE_MAEMO
+#ifdef GLOM_ENABLE_MAEMO
     Hildon::Note dialog(Hildon::NOTE_TYPE_INFORMATION, *get_app_window(), message);
 #else
     Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("No Find Criteria")), true, Gtk::MESSAGE_WARNING );
@@ -367,7 +367,7 @@ bool Box_Data::confirm_discard_unstored_data() const
   {
     Glib::ustring message = _("This data cannot be stored in the database because you have not provided a primary key.\nDo you really want to discard this data?");
     //Ask user to confirm loss of data:
-#ifdef ENABLE_MAEMO
+#ifdef GLOM_ENABLE_MAEMO
     //Hildon::Note dialog(Hildon::NOTE_TYPE_CONFIRMATION, *get_app_window(), message);
     Hildon::Note dialog(Hildon::NOTE_TYPE_CONFIRMATION, message);
 #else
@@ -385,7 +385,7 @@ bool Box_Data::confirm_discard_unstored_data() const
   }
 }
 
-#ifndef ENABLE_CLIENT_ONLY
+#ifndef GLOM_ENABLE_CLIENT_ONLY
 void Box_Data::show_layout_dialog()
 {
   if(m_pDialogLayout)
@@ -394,9 +394,9 @@ void Box_Data::show_layout_dialog()
     m_pDialogLayout->show();
   }
 }
-#endif // !ENABLE_CLIENT_ONLY
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
-#ifndef ENABLE_CLIENT_ONLY
+#ifndef GLOM_ENABLE_CLIENT_ONLY
 void Box_Data::on_dialog_layout_hide()
 {
   //Re-fill view, in case the layout has changed:
@@ -405,7 +405,7 @@ void Box_Data::on_dialog_layout_hide()
   if(ConnectionPool::get_instance()->get_ready_to_connect())
     fill_from_database();
 }
-#endif // !ENABLE_CLIENT_ONLY
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 Box_Data::type_vecLayoutFields Box_Data::get_fields_to_show() const
 {
@@ -703,7 +703,7 @@ bool Box_Data::add_related_record_for_field(const sharedptr<const LayoutItem_Fie
       //Warn the user:
       //TODO: Make the field insensitive until it can receive data, so people never see this dialog.
       const Glib::ustring message = _("Data may not be entered into this related field, because the related record does not yet exist, and the relationship does not allow automatic creation of new related records.");
-#ifdef ENABLE_MAEMO
+#ifdef GLOM_ENABLE_MAEMO
       Hildon::Note dialog(Hildon::NOTE_TYPE_INFORMATION, *get_app_window(), message);
 #else
       Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Related Record Does Not Exist")), true);
@@ -728,7 +728,7 @@ bool Box_Data::add_related_record_for_field(const sharedptr<const LayoutItem_Fie
         //TODO: Make the field insensitive until it can receive data, so people never see this dialog.
         const Glib::ustring message = _("Data may not be entered into this related field, because the related record does not yet exist, and the key in the related record is auto-generated and therefore can not be created with the key value in this record.");
 
-#ifdef ENABLE_MAEMO
+#ifdef GLOM_ENABLE_MAEMO
         Hildon::Note dialog(Hildon::NOTE_TYPE_INFORMATION, *get_app_window(), message);
 #else
         Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Related Record Cannot Be Created")), true);
@@ -808,7 +808,7 @@ bool Box_Data::add_related_record_for_field(const sharedptr<const LayoutItem_Fie
 void Box_Data::print_layout()
 {
   const Glib::ustring message = "Sorry, this feature has not been implemented yet.";
-#ifdef ENABLE_MAEMO
+#ifdef GLOM_ENABLE_MAEMO
   Hildon::Note dialog(Hildon::NOTE_TYPE_INFORMATION, *get_app_window(), message);
 #else
   Gtk::MessageDialog dialog("<b>Not implemented</b>", true);
@@ -827,7 +827,7 @@ bool Box_Data::confirm_delete_record()
 {
   //Ask the user for confirmation:
   const Glib::ustring message = _("Are you sure that you would like to delete this record? The data in this record will then be permanently lost.");
-#ifdef ENABLE_MAEMO
+#ifdef GLOM_ENABLE_MAEMO
   Hildon::Note dialog(Hildon::NOTE_TYPE_CONFIRMATION_BUTTON, *get_app_window(), message);
 #else
   Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Delete record")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE);

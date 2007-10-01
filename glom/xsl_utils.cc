@@ -18,7 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include "config.h" // For ENABLE_MAEMO
+#include "config.h" // For GLOM_ENABLE_MAEMO
 
 #include "xsl_utils.h"
 #include <glom/libglom/connectionpool.h>
@@ -31,7 +31,7 @@
 #include <libgnomevfsmm.h>
 #include <glibmm/i18n.h>
 
-#ifndef ENABLE_MAEMO
+#ifndef GLOM_ENABLE_MAEMO
 #include <libgnome/gnome-url.h>
 #endif
 
@@ -100,7 +100,7 @@ void GlomXslUtils::transform_and_open(const xmlpp::Document& xml_document, const
   if(parent_window)
     Frame_Glom::show_ok_dialog(_("Report Finished"), _("The report will now be opened in your web browser."), *parent_window, Gtk::MESSAGE_INFO);
 
-#ifdef ENABLE_MAEMO
+#ifdef GLOM_ENABLE_MAEMO
   // TODO_maemo: We don't have libgnome available. A quick search did not yield
   // a similar method in the hildon API. Perhaps we can just use
   //  gnome_vfs_url_show()?

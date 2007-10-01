@@ -125,13 +125,13 @@ DbAddDel::DbAddDel()
 
 DbAddDel::~DbAddDel()
 {
-#ifndef ENABLE_CLIENT_ONLY
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   App_Glom* pApp = get_application();
   if(pApp)
   {
     pApp->remove_developer_action(m_refContextLayout);
   } 
-#endif // !ENABLE_CLIENT_ONLY
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 }
 
 void
@@ -173,13 +173,13 @@ DbAddDel::on_MenuPopup_activate_Edit()
   }
 }
 
-#ifndef ENABLE_CLIENT_ONLY
+#ifndef GLOM_ENABLE_CLIENT_ONLY
 void DbAddDel::on_MenuPopup_activate_layout()
 {
   finish_editing();
   signal_user_requested_layout().emit();
 }
-#endif // !ENABLE_CLIENT_ONLY
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 void DbAddDel::on_MenuPopup_activate_Add()
 {
@@ -236,7 +236,7 @@ void DbAddDel::setup_menu()
     sigc::mem_fun(*this, &DbAddDel::on_MenuPopup_activate_Add) );
   m_refContextAdd->set_sensitive(m_allow_add);
 
-#ifndef ENABLE_CLIENT_ONLY
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   // Don't add ContextLayout in client only mode because it would never
   // be sensitive anyway
   m_refContextLayout =  Gtk::Action::create("ContextLayout", _("Layout"));
@@ -250,7 +250,7 @@ void DbAddDel::setup_menu()
     pApp->add_developer_action(m_refContextLayout); //So that it can be disabled when not in developer mode.
     pApp->update_userlevel_ui(); //Update our action's sensitivity. 
   }
-#endif // !ENABLE_CLIENT_ONLY
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
   m_refUIManager = Gtk::UIManager::create();
 
@@ -268,7 +268,7 @@ void DbAddDel::setup_menu()
         "    <menuitem action='ContextEdit'/>"
         "    <menuitem action='ContextAdd'/>"
         "    <menuitem action='ContextDelete'/>"
-#ifndef ENABLE_CLIENT_ONLY
+#ifndef GLOM_ENABLE_CLIENT_ONLY
         "    <menuitem action='ContextLayout'/>"
 #endif
         "  </popup>"
@@ -307,15 +307,15 @@ void DbAddDel::setup_menu()
     m_refContextDelete->set_sensitive(false);
   }
  
-#ifndef ENABLE_CLIENT_ONLY
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   if(pApp)
     m_refContextLayout->set_sensitive(pApp->get_userlevel() == AppState::USERLEVEL_DEVELOPER);
-#endif // !ENABLE_CLIENT_ONLY
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 }
 
 bool DbAddDel::on_button_press_event_Popup(GdkEventButton *event)
 {
-#ifndef ENABLE_CLIENT_ONLY
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   //Enable/Disable items.
   //We did this earlier, but get_application is more likely to work now:
   App_Glom* pApp = get_application();
@@ -551,7 +551,7 @@ int DbAddDel::get_fixed_cell_height()
     int height = 0;
     refLayout->get_pixel_size(width, height);
 
-#ifdef ENABLE_MAEMO
+#ifdef GLOM_ENABLE_MAEMO
     // TODO_maemo: Again, I have no idea why the discovered value does not
     // fit for maemo. Creating a CellRendererText and asking it for its width
     // does not yield a different result, neither does including a 'g' in the
@@ -893,7 +893,7 @@ void DbAddDel::construct_specified_columns()
     pCellButton->get_size(m_TreeView, x_offset, y_offset, width, height);
 
     m_treeviewcolumn_button->set_sizing(Gtk::TREE_VIEW_COLUMN_FIXED); //Need by fixed-height mode.
-#ifdef ENABLE_MAEMO
+#ifdef GLOM_ENABLE_MAEMO
     // TODO_maemo: In maemo, there are somehow 3 pixels border to the left
     // and to the right of the cell renderer. I don't know where they come
     // from since the xpad property of the cell renderer and the spacing
@@ -1571,12 +1571,12 @@ DbAddDel::type_signal_user_changed DbAddDel::signal_user_changed()
   return m_signal_user_changed;
 }
 
-#ifndef ENABLE_CLIENT_ONLY
+#ifndef GLOM_ENABLE_CLIENT_ONLY
 DbAddDel::type_signal_user_requested_layout DbAddDel::signal_user_requested_layout()
 {
   return m_signal_user_requested_layout;
 }
-#endif // !ENABLE_CLIENT_ONLY
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 DbAddDel::type_signal_user_requested_delete DbAddDel::signal_user_requested_delete()
 {

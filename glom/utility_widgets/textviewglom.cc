@@ -49,9 +49,9 @@ TextViewGlom::TextViewGlom(Field::glom_field_type glom_type)
 
 void TextViewGlom::init()
 {
-#ifndef ENABLE_CLIENT_ONLY
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   setup_menu();
-#endif // !ENABLE_CLIENT_ONLY
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
   set_shadow_type(Gtk::SHADOW_IN);
 
@@ -178,7 +178,7 @@ Gnome::Gda::Value TextViewGlom::get_value() const
   return Conversions::parse_value(m_glom_type, pNonConstThis->m_TextView.get_buffer()->get_text(true), layout_item->get_formatting_used().m_numeric_format, success);
 }
 
-#ifndef ENABLE_CLIENT_ONLY
+#ifndef GLOM_ENABLE_CLIENT_ONLY
 bool TextViewGlom::on_button_press_event(GdkEventButton *event)
 {
   //Enable/Disable items.
@@ -211,7 +211,7 @@ bool TextViewGlom::on_button_press_event(GdkEventButton *event)
 
   return Gtk::ScrolledWindow::on_button_press_event(event);
 }
-#endif // !ENABLE_CLIENT_ONLY
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 App_Glom* TextViewGlom::get_application()
 {

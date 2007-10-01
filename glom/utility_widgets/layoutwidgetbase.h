@@ -25,7 +25,7 @@
 #include <gtkmm.h>
 #include "../mode_data/treestore_layout.h" //Forthe enum.
 
-#include "config.h" // For ENABLE_CLIENT_ONLY
+#include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
 
 namespace Glom
 {
@@ -56,14 +56,14 @@ public:
   };
 
   //Popup-menu:
-#ifndef ENABLE_CLIENT_ONLY
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   virtual void setup_menu();
   virtual void on_menupopup_activate_layout();
   virtual void on_menupopup_activate_layout_properties();
   virtual void on_menupopup_add_item(enumType item);
-#endif // !ENABLE_CLIENT_ONLY
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
-#ifndef ENABLE_CLIENT_ONLY
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   typedef sigc::signal<void> type_signal_layout_changed;
   type_signal_layout_changed signal_layout_changed();
 
@@ -77,7 +77,7 @@ public:
   //Allow a child widget to delegate to a parent widget:
   typedef sigc::signal<void> type_signal_user_requested_layout_properties;
   type_signal_user_requested_layout_properties signal_user_requested_layout_properties();
-#endif // !ENABLE_CLIENT_ONLY
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
   virtual void set_read_only(bool read_only = true);
 
@@ -87,7 +87,7 @@ protected:
   sharedptr<LayoutItem> m_pLayoutItem;
   Glib::ustring m_table_name;
 
-#ifndef ENABLE_CLIENT_ONLY
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   type_signal_layout_changed m_signal_layout_changed;
   type_signal_layout_item_added m_signal_layout_item_added;
 
@@ -102,7 +102,7 @@ protected:
 
   Glib::RefPtr<Gtk::Action> m_refContextLayout, m_refContextLayoutProperties;
   Glib::RefPtr<Gtk::Action> m_refContextAddField, m_refContextAddRelatedRecords, m_refContextAddGroup, m_refContextAddNotebook, m_refContextAddButton, m_refContextAddText;
-#endif // !ENABLE_CLIENT_ONLY
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 };
 
 } //namespace Glom

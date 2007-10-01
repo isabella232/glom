@@ -169,11 +169,11 @@ DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ust
   {
     pFieldWidget->signal_edited().connect( sigc::mem_fun(*this, &DataWidget::on_widget_edited)  );
 
-#ifndef ENABLE_CLIENT_ONLY
+#ifndef GLOM_ENABLE_CLIENT_ONLY
     pFieldWidget->signal_user_requested_layout().connect( sigc::mem_fun(*this, &DataWidget::on_child_user_requested_layout) );
     pFieldWidget->signal_user_requested_layout_properties().connect( sigc::mem_fun(*this, &DataWidget::on_child_user_requested_layout_properties) );
     pFieldWidget->signal_layout_item_added().connect( sigc::mem_fun(*this, &DataWidget::on_child_layout_item_added) );
-#endif // !ENABLE_CLIENT_ONLY
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 
     m_child = dynamic_cast<Gtk::Widget*>(pFieldWidget);
@@ -243,9 +243,9 @@ DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ust
       add(*m_child);
   }
 
-#ifndef ENABLE_CLIENT_ONLY
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   setup_menu();
-#endif // ENABLE_CLIENT_ONLY
+#endif // GLOM_ENABLE_CLIENT_ONLY
 
   set_events(Gdk::BUTTON_PRESS_MASK);
 }
@@ -485,7 +485,7 @@ void DataWidget::setup_menu()
 }
 */
 
-#ifndef ENABLE_CLIENT_ONLY
+#ifndef GLOM_ENABLE_CLIENT_ONLY
 bool DataWidget::on_button_press_event(GdkEventButton *event)
 {
   //g_warning("DataWidget::on_button_press_event_popup");
@@ -519,7 +519,7 @@ bool DataWidget::on_button_press_event(GdkEventButton *event)
 
   return Gtk::EventBox::on_button_press_event(event);
 }
-#endif // !ENABLE_CLIENT_ONLY
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 sharedptr<LayoutItem_Field> DataWidget::offer_field_list(const Glib::ustring& table_name)
 {
@@ -573,7 +573,7 @@ sharedptr<LayoutItem_Field> DataWidget::offer_field_list(const Glib::ustring& ta
   return result;
 }
 
-#ifndef ENABLE_CLIENT_ONLY
+#ifndef GLOM_ENABLE_CLIENT_ONLY
 sharedptr<LayoutItem_Field> DataWidget::offer_field_layout(const sharedptr<const LayoutItem_Field>& start_field)
 {
   sharedptr<LayoutItem_Field> result;
@@ -609,7 +609,7 @@ sharedptr<LayoutItem_Field> DataWidget::offer_field_layout(const sharedptr<const
 
   return result;
 }
-#endif // !ENABLE_CLIENT_ONLY
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 /*
 void DataWidget::on_menupopup_add_item(LayoutWidgetBase::enumType item)
@@ -618,7 +618,7 @@ void DataWidget::on_menupopup_add_item(LayoutWidgetBase::enumType item)
 }
 */
 
-#ifndef ENABLE_CLIENT_ONLY
+#ifndef GLOM_ENABLE_CLIENT_ONLY
 void DataWidget::on_menupopup_activate_layout()
 {
   //finish_editing();
@@ -662,7 +662,7 @@ void DataWidget::on_child_user_requested_layout()
 {
   on_menupopup_activate_layout();
 }
-#endif // !ENABLE_CLIENT_ONLY
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 App_Glom* DataWidget::get_application()
 {
@@ -672,12 +672,12 @@ App_Glom* DataWidget::get_application()
   return dynamic_cast<App_Glom*>(pWindow);
 }
 
-#ifndef ENABLE_CLIENT_ONLY
+#ifndef GLOM_ENABLE_CLIENT_ONLY
 void DataWidget::on_child_layout_item_added(LayoutWidgetBase::enumType item_type)
 {
   signal_layout_item_added().emit(item_type);
 }
-#endif // !ENABLE_CLIENT_ONLY
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 Gtk::Widget* DataWidget::get_data_child_widget()
 {

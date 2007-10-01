@@ -18,7 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include "config.h" // For ENABLE_MAEMO
+#include "config.h" // For GLOM_ENABLE_MAEMO
  
 #include <glom/libglom/connectionpool.h>
 #include <bakery/bakery.h>
@@ -29,7 +29,7 @@
 #include <glom/libglom/avahi_publisher.h>
 #include <glibmm/i18n.h>
 
-#ifdef ENABLE_MAEMO
+#ifdef GLOM_ENABLE_MAEMO
 #include <hildonmm/note.h>
 #endif
 
@@ -129,9 +129,9 @@ ConnectionPool* ConnectionPool::m_instance = 0;
 
 ConnectionPool::ConnectionPool()
 :
-#ifndef ENABLE_CLIENT_ONLY
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   m_self_hosting_active(false),
-#endif // !ENABLE_CLIENT_ONLY
+#endif // !GLOM_ENABLE_CLIENT_ONLY
   m_sharedconnection_refcount(0),
   m_ready_to_connect(false),
   m_pFieldTypes(0)
@@ -449,7 +449,7 @@ sharedptr<SharedConnection> ConnectionPool::connect(std::auto_ptr<ExceptionConne
   return sharedptr<SharedConnection>(0);
 }
 
-#ifndef ENABLE_CLIENT_ONLY
+#ifndef GLOM_ENABLE_CLIENT_ONLY
 void ConnectionPool::set_self_hosted(const std::string& data_uri)
 {
   m_self_hosting_data_uri = data_uri;
@@ -482,7 +482,7 @@ void ConnectionPool::create_database(const Glib::ustring& database_name, std::au
 #endif
   }
 }
-#endif // !ENABLE_CLIENT_ONLY
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 void ConnectionPool::set_host(const Glib::ustring& value)
 {
@@ -600,7 +600,7 @@ bool ConnectionPool::handle_error(bool cerr_only)
 
       if(!cerr_only)
       {
-#ifdef ENABLE_MAEMO
+#ifdef GLOM_ENABLE_MAEMO
         Hildon::Note dialog(Hildon::NOTE_TYPE_INFORMATION, error_details);
 #else
         Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Internal error")), true, Gtk::MESSAGE_WARNING );
@@ -639,7 +639,7 @@ bool ConnectionPool::directory_exists_uri(const std::string& uri)
   return vfsuri->uri_exists();
 }
 
-#ifndef ENABLE_CLIENT_ONLY
+#ifndef GLOM_ENABLE_CLIENT_ONLY
 static sighandler_t previous_sig_handler = SIG_DFL; /* Arbitrary default */
 
 /* This is a Linux/Unix signal handler, 
@@ -880,7 +880,7 @@ bool ConnectionPool::create_self_hosting(Gtk::Window* parent_window)
  
   return result;
 }
-#endif // !ENABLE_CLIENT_ONLY
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 bool ConnectionPool::create_text_file(const std::string& file_uri, const std::string& contents)
 {
@@ -945,7 +945,7 @@ bool ConnectionPool::create_text_file(const std::string& file_uri, const std::st
   return true; //Success. (At doing nothing, because nothing needed to be done.)
 }
 
-#ifndef ENABLE_CLIENT_ONLY
+#ifndef GLOM_ENABLE_CLIENT_ONLY
 int ConnectionPool::discover_first_free_port(int start_port, int end_port)
 {
   //Open a socket so we can try to bind it to a port:
@@ -995,7 +995,7 @@ int ConnectionPool::discover_first_free_port(int start_port, int end_port)
   std::cout << "debug: ConnectionPool::discover_first_free_port(): No port was available." << std::endl;
   return 0;
 }
-#endif // !ENABLE_CLIENT_ONLY
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 // Message to packagers:
 // If your Glom package does not depend on PostgreSQL, for some reason, 
@@ -1006,7 +1006,7 @@ int ConnectionPool::discover_first_free_port(int start_port, int end_port)
 //
 //#define DISTRO_SPECIFIC_POSTGRES_INSTALL_IMPLEMENTED 1
 
-#ifndef ENABLE_CLIENT_ONLY
+#ifndef GLOM_ENABLE_CLIENT_ONLY
 bool ConnectionPool::check_postgres_is_available_with_warning()
 {
   //EXEEXT is defined in the Makefile.am
@@ -1079,7 +1079,7 @@ bool ConnectionPool::install_postgres(Gtk::Window* parent_window)
   return false; //Failed to install postgres because no installation technique was implemented.
 #endif // #if 0
 }
-#endif // !ENABLE_CLIENT_ONLY
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 bool ConnectionPool::check_postgres_gda_client_is_available_with_warning()
 {
@@ -1106,7 +1106,7 @@ bool ConnectionPool::check_postgres_gda_client_is_available_with_warning()
   return false;
 }
 
-#ifndef ENABLE_CLIENT_ONLY
+#ifndef GLOM_ENABLE_CLIENT_ONLY
 /** Advertise self-hosting via avahi:
  */
 void ConnectionPool::avahi_start_publishing()
@@ -1136,7 +1136,7 @@ void ConnectionPool::avahi_stop_publishing()
   }
   */
 }
-#endif // !ENABLE_CLIENT_ONLY
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 
 

@@ -17,7 +17,7 @@ libmode_data_a_SOURCES = box_data.cc box_data.h \
                          dialog_choose_relationship.cc dialog_choose_relationship.h \
                          dialog_layout_export.cc dialog_layout_export.h
 
-if !ENABLE_CLIENT_ONLY
+if !GLOM_ENABLE_CLIENT_ONLY
 libmode_data_a_SOURCES += dialog_layout_list.cc dialog_layout_list.h \
                           dialog_layout_details.cc dialog_layout_details.h \
                           dialog_layout_list_related.cc dialog_layout_list_related.h \

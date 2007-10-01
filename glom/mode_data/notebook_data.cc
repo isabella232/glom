@@ -228,7 +228,7 @@ void Notebook_Data::select_page_for_find_results()
   }
 }
 
-#ifndef ENABLE_CLIENT_ONLY
+#ifndef GLOM_ENABLE_CLIENT_ONLY
 void Notebook_Data::do_menu_developer_layout()
 {
   int iPageCurrent = get_current_page();
@@ -241,7 +241,7 @@ void Notebook_Data::do_menu_developer_layout()
       pBox->show_layout_dialog();
   } 
 }
-#endif // !ENABLE_CLIENT_ONLY
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 void Notebook_Data::do_menu_file_print()
 {

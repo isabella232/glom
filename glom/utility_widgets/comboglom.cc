@@ -37,9 +37,9 @@ namespace Glom
 ComboGlom::ComboGlom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& /* refGlade */)
 : Gtk::ComboBox(cobject)
 {
-#ifndef ENABLE_CLIENT_ONLY
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   setup_menu();
-#endif // !ENABLE_CLIENT_ONLY
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
   init();
 }
@@ -47,9 +47,9 @@ ComboGlom::ComboGlom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::X
 ComboGlom::ComboGlom()
 : ComboGlomChoicesBase()
 {
-#ifndef ENABLE_CLIENT_ONLY
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   setup_menu();
-#endif // !ENABLE_CLIENT_ONLY
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
   init();
 }
@@ -57,9 +57,9 @@ ComboGlom::ComboGlom()
 ComboGlom::ComboGlom(const sharedptr<LayoutItem_Field>& field_second)
 : ComboGlomChoicesBase(field_second)
 {
-#ifndef ENABLE_CLIENT_ONLY
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   setup_menu();
-#endif // !ENABLE_CLIENT_ONLY
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
   init();
 }
@@ -184,7 +184,7 @@ Glib::ustring ComboGlom::get_text() const
   return Glib::ustring();
 }
 
-#ifndef ENABLE_CLIENT_ONLY
+#ifndef GLOM_ENABLE_CLIENT_ONLY
 bool ComboGlom::on_button_press_event(GdkEventButton *event)
 {
 g_warning("ComboGlom::on_button_press_event()");
@@ -219,7 +219,7 @@ g_warning("ComboGlom::on_button_press_event()");
 
   return Gtk::ComboBox::on_button_press_event(event);
 }
-#endif // !ENABLE_CLIENT_ONLY
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 App_Glom* ComboGlom::get_application()
 {

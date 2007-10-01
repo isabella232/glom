@@ -21,7 +21,7 @@
 #ifndef GLOM_UTILITY_WIDGETS_TEXTVIEW_GLOM_H
 #define GLOM_UTILITY_WIDGETS_TEXTVIEW_GLOM_H
 
-#include "config.h" // For ENABLE_CLIENT_ONLY
+#include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
 
 #include <gtkmm.h>
 #include <glom/libglom/data_structure/field.h>
@@ -65,7 +65,7 @@ protected:
 
   virtual void check_for_change();
 
-#ifndef ENABLE_CLIENT_ONLY
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   virtual bool on_button_press_event(GdkEventButton *event); //override
 #endif
 

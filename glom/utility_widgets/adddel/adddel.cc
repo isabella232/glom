@@ -18,7 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include "config.h" // For ENABLE_MAEMO
+#include "config.h" // For GLOM_ENABLE_MAEMO
 
 #include "adddel.h"
 #include <algorithm> //For std::find.
@@ -31,9 +31,9 @@
 #include "bakery/App/App_Gtk.h"
 #include <iostream> //For debug output.
 
-#ifdef ENABLE_MAEMO
+#ifdef GLOM_ENABLE_MAEMO
 #include <hildonmm/note.h>
-#endif // ENABLE_MAEMO
+#endif // GLOM_ENABLE_MAEMO
 
 #include "eggcolumnchooser/eggcolumnchooserdialog.h"
 
@@ -156,7 +156,7 @@ void AddDel::warn_about_duplicate()
   else
     message = m_prevent_duplicates_warning; //Something more specific and helpful.
 
-#ifdef ENABLE_MAEMO
+#ifdef GLOM_ENABLE_MAEMO
   Hildon::Note dialog(Hildon::NOTE_TYPE_INFORMATION, message);
 #else
   Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Duplicate")), true, Gtk::MESSAGE_WARNING, Gtk::BUTTONS_OK);

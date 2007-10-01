@@ -38,18 +38,18 @@ EntryGlom::EntryGlom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::X
 : Gtk::Entry(cobject),
   m_glom_type(Field::TYPE_TEXT)
 {
-#ifndef ENABLE_CLIENT_ONLY
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   setup_menu();
-#endif // !ENABLE_CLIENT_ONLY
+#endif // !GLOM_ENABLE_CLIENT_ONLY
   init();
 }
 
 EntryGlom::EntryGlom(Field::glom_field_type glom_type)
 : m_glom_type(glom_type)
 {
-#ifndef ENABLE_CLIENT_ONLY
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   setup_menu();
-#endif // !ENABLE_CLIENT_ONLY
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
   init();
 }
@@ -178,7 +178,7 @@ Gnome::Gda::Value EntryGlom::get_value() const
   return Conversions::parse_value(m_glom_type, get_text(), layout_item->get_formatting_used().m_numeric_format, success);
 }
 
-#ifndef ENABLE_CLIENT_ONLY
+#ifndef GLOM_ENABLE_CLIENT_ONLY
 bool EntryGlom::on_button_press_event(GdkEventButton *event)
 {
   //Enable/Disable items.
@@ -211,7 +211,7 @@ bool EntryGlom::on_button_press_event(GdkEventButton *event)
 
   return Gtk::Entry::on_button_press_event(event);
 }
-#endif // !ENABLE_CLIENT_ONLY
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 App_Glom* EntryGlom::get_application()
 {

@@ -18,7 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include "config.h" // For ENABLE_MAEMO
+#include "config.h" // For GLOM_ENABLE_MAEMO
 
 #include <glom/libglom/utils.h>
 #include <glom/libglom/connectionpool.h>
@@ -28,12 +28,12 @@
 #include <glibmm/i18n.h>
 #include <gtkmm/messagedialog.h>
 
-#ifndef ENABLE_MAEMO
+#ifndef GLOM_ENABLE_MAEMO
 #include <libgnome/gnome-url.h>
 #include <libgnome/gnome-help.h>
 #endif
 
-#ifdef ENABLE_MAEMO
+#ifdef GLOM_ENABLE_MAEMO
 #include <hildonmm/note.h>
 #endif
 
@@ -827,7 +827,7 @@ void Utils::show_help(const Glib::ustring& id)
    }
 
   // TODO_maemo: Show help on maemo by some other means
-#ifndef ENABLE_MAEMO
+#ifndef GLOM_ENABLE_MAEMO
   if (!gnome_help_display("glom.xml", pId, &err))
   {
      std::string message = std::string(_("Could not display help: ")) + err->message;
@@ -842,7 +842,7 @@ void Utils::show_help(const Glib::ustring& id)
 
 void Utils::show_ok_dialog(const Glib::ustring& title, const Glib::ustring& message, Gtk::Window& parent, Gtk::MessageType message_type)
 {
-#ifdef ENABLE_MAEMO
+#ifdef GLOM_ENABLE_MAEMO
   // TODO_maemo: Map message_type to a senseful stock_id?
   Hildon::Note dialog(Hildon::NOTE_TYPE_INFORMATION, parent, message);
 #else
