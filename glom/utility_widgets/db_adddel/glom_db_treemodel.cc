@@ -944,7 +944,8 @@ void DbTreeModel::get_record_counts(gulong& total, gulong& found) const
 {
   if(m_gda_datamodel)
   {
-    found = (gulong)m_gda_datamodel->get_n_rows();
+    //This doesn't work with iter-only models (it returns -1): found = (gulong)m_gda_datamodel->get_n_rows();
+    found = m_data_model_rows_count;
 
     if(m_found_set.m_where_clause.empty())
       total = found;

@@ -1,3 +1,9 @@
+2007-10-01  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/utility_widgets/db_adddel/glom_db_treemodel.cc: get_record_counts(): 
+	Return the stored record count (from the extra COUNT query), instead of using 
+	DataModel::get_n_rows(), because that returns -1 when using the iter-only model.
+
 2007-09-28  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/libglom/data_structure/layout/layoutitem_field.cc:
