@@ -900,7 +900,8 @@ void DbAddDel::construct_specified_columns()
     // property of treeview column are both zero. armin.
     m_treeviewcolumn_button->set_fixed_width(width + 6);
 #else
-    m_treeviewcolumn_button->set_fixed_width(width);
+    // The same problem seems to occur in the non-maemo version
+    m_treeviewcolumn_button->set_fixed_width(width + 6);
 #endif
     m_treeviewcolumn_button->set_property("visible", true);
 
