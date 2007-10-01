@@ -37,8 +37,12 @@
 #include <libgnomevfsmm.h>
 #include <sstream> //For stringstream.
 #include <glibmm/i18n.h>
-#include <hildon/hildon-window.h>
 
+#ifdef GLOM_ENABLE_MAEMO
+#include <hildon/hildon-window.h>
+#endif // GLOM_ENABLE_MAEMO
+
+#ifdef GLOM_ENABLE_MAEMO
 namespace {
 	HildonWindow* turn_gtk_window_into_hildon_window(GtkWindow* cobject)
 	{
@@ -56,6 +60,7 @@ namespace {
 		return HILDON_WINDOW(window);
 	}
 }
+#endif // GLOM_ENABLE_MAEMO
 
 namespace Glom
 {
@@ -953,7 +958,11 @@ bool App_Glom::on_document_load()
           }
           else
 #endif // !GLOM_ENABLE_CLIENT_ONLY
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+            test = m_pFrame->connection_request_password_and_attempt();
+#else
             test = m_pFrame->connection_request_password_and_attempt(error);
+#endif
 	}
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
         catch(const ExceptionConnection& ex)

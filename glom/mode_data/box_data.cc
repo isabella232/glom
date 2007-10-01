@@ -216,7 +216,7 @@ Glib::RefPtr<Gnome::Gda::DataModel> Box_Data::record_new(bool use_entered_data, 
 
             const Gnome::Gda::Value value = glom_evaluate_python_function_implementation(field->get_glom_type(), calculation, field_values, document, m_table_name, sharedconnection->get_gda_connection());
             set_entered_field_data(layout_item, value);
-#ifndef GLIBMM_EXCEPETIONS_ENABLED
+#ifndef GLIBMM_EXCEPTIONS_ENABLED
           }
 #endif // !GLIBMM_EXCEPTIONS_ENABLED
         }

@@ -1,5 +1,12 @@
 2007-10-01  Armin Burgmeier  <armin@openismus.com>
 
+	* glom/layout_item_dialogs/dialog_field_layout.cc:
+	* glom/libglom/connectionpool.cc:
+	* glom/mode_data/box_data.cc:
+	* glom/application.cc: Fix non-maemo build.
+
+2007-10-01  Armin Burgmeier  <armin@openismus.com>
+
 	* configure.in: Changed clientonly and maemo defines from ENABLE_MAEMO
 	or ENABLE_CLIENT_ONLY to GLOM_ENABLE_MAEMO and
 	GLOM_ENABLE_CLIENT_ONLY, respectively.

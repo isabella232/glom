@@ -272,6 +272,7 @@ sharedptr<SharedConnection> ConnectionPool::connect(std::auto_ptr<ExceptionConne
 
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
           try
+          {
 #else
           std::auto_ptr<Glib::Error> glib_error;
 #endif
@@ -342,13 +343,14 @@ sharedptr<SharedConnection> ConnectionPool::connect(std::auto_ptr<ExceptionConne
             return connect(error); //Call this method recursively. This time m_refGdaConnection exists.
 #endif // GLIBMM_EXCEPTIONS_ENABLED
           }
-#ifndef GLIBMM_EXCEPTIONS_ENABLED
           while(false);
 
+#ifndef GLIBMM_EXCEPTIONS_ENABLED
           if(glib_error.get() != NULL)
           {
             const Glib::Error& ex = *glib_error.get();
 #else
+          }
           catch(const Gnome::Gda::ConnectionError& ex)
           {
 #endif
@@ -433,7 +435,7 @@ sharedptr<SharedConnection> ConnectionPool::connect(std::auto_ptr<ExceptionConne
           std::cout << "  (Connection succeeds, but not to the specific database on port=" << m_port << ", database=" << m_database << std::endl;
         else
               std::cerr << "  (Could not connect even to the default database on any port. database=" << m_database  << std::endl;
-#ifdef GLIBMM_EXCEPTION_ENABLED
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
         throw ExceptionConnection(connection_to_default_database_possible ? ExceptionConnection::FAILURE_NO_DATABASE : ExceptionConnection::FAILURE_NO_SERVER);
 #else
         error.reset(new ExceptionConnection(connection_to_default_database_possible ? ExceptionConnection::FAILURE_NO_DATABASE : ExceptionConnection::FAILURE_NO_SERVER));
