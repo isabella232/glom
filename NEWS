@@ -1,3 +1,82 @@
+Changes in 1.6:
+
+glom 1.6 has only minor user-visible changes compared to glom 1.4:
+
+* New relationships Overview diagram, available via the Developers menu.
+  (Rasmus Toftdahl Olesen)
+* Start dialog now shows recently-opened files.
+  (Armin Burgmeier)
+* Button scripts and calculated fields now show python errors 
+  and tracebacks in a dialog box.
+  (Johannes Schmid)
+* Ported to libgdamm 3.0.
+  (Murray Cumming, Armin Burgmeier)
+* Now ignores previously-set multiline text formatting 
+  options for non-text fields.  Bug #443360 (Harry Mills)
+  (Murray Cumming)
+
+1.6.0 (stable)
+
+* Depend on latest libgdamm, to fix handling of dates.
+* Slightly improved handling of database server errors.
+
+1.5.3 (unstable)
+
+* Avoid unnecessary unsaved-changes warning dialogs.
+  (Murray Cumming)
+* Ignore previously-set multiline text formatting 
+  options for non-text fields,
+  Bug #443360 (Harry Mills)
+  (Murray Cumming)
+
+1.5.2 (unstable)
+
+* Fixed some crashes during database creation.
+  (partly by depending on the latest libgdamm).
+  (Murray Cumming)
+* Added Galician translation.
+  (Ignacio Casal Quinteiro)
+
+1.5.1 (unstable):
+
+* Ported to libgdamm 3.0 and pygda-3.0 (from gnome-python-extras)
+  Expect crashes and strange behaviour at first because might have missed something.
+  But do tell us, so we can fix it.
+  (Armin Burgmeier, Murray Cumming, Openismus)
+* Start dialog: Show a list of recently-opened files, if any.
+  (Armin Burgmeier, Openismus)
+* Enable the relationships overview feature (using goocanvas).
+* Button scripts and calculated fields:
+  Show python errors and tracebacks in a dialog box.
+  (Johannes Schmid, Openismus)
+* Improved icons, in the correct sizes.
+  (Andreas Nilsson)
+* File format: More robust example rows format.
+* Build: Removed unnecessary dependency on libgnomecanvasmm.
+ 
+1.4.3:
+
+* en_GB (British English) locale: Correct the parsing of 4-digit years in dates again.
+  (This was fixed before 1.0 but broken again soon afterwards by a translator.)
+
+1.4.2:
+
+* Self-Hosting:
+  - Add a password confirmation entry to the dialog that asks for the initial user name and password,
+  and do some checking of the input.
+  (Murray Cumming)
+  - Make the connection work when the hostname is not resolved as 127.0.0.1, which might be a lot of people.
+  (Mathias Hasselmann, Bug #420479)
+  - Warn the user when the new directory would be the same as an existing one.
+  (Murray Cumming, Mathias Hasselmann, Bug #420482)
+  - Do not echo the new username and password to the terminal stdout for debugging.
+  This was conceivably a security problem.
+  (Murray Cumming)
+
+1.4.1:
+
+Minor build fix, needed by some compilers.
+
 1.4.0:
 
 What's new since Glom 1.2.0:

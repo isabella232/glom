@@ -172,6 +172,16 @@ sharedptr<SharedConnection> Base_DB::connect_to_server(Gtk::Window* parent_windo
 #endif
 }
 
+void Base_DB::handle_error(const Glib::Exception& ex)
+{
+  std::cerr << "Internal Error (Base_DB::handle_error()): exception type=" << typeid(ex).name() << ", ex.what()=" << ex.what() << std::endl;
+
+  Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Internal error")), true, Gtk::MESSAGE_WARNING );
+  dialog.set_secondary_text(ex.what());
+  //TODO: dialog.set_transient_for(*get_application());
+  dialog.run();
+}
+
 void Base_DB::handle_error(const std::exception& ex)
 {
   std::cerr << "Internal Error (Base_DB::handle_error()): exception type=" << typeid(ex).name() << ", ex.what()=" << ex.what() << std::endl;
@@ -731,6 +741,11 @@ bool Base_DB::add_standard_tables() const
     }
   }
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
+  catch(const Glib::Exception& ex)
+  {
+    std::cerr << "Base_DB::add_standard_tables(): caught exception: " << ex.what() << std::endl;
+    return false;
+  }
   catch(const std::exception& ex)
   {
     std::cerr << "Base_DB::add_standard_tables(): caught exception: " << ex.what() << std::endl;
@@ -951,6 +966,10 @@ SystemPrefs Base_DB::get_database_preferences() const
     }
   }
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
+  catch(const Glib::Exception& ex)
+  {
+    std::cerr << "Base_DB::get_database_preferences(): exception: " << ex.what() << std::endl;
+  }
   catch(const std::exception& ex)
   {
     std::cerr << "Base_DB::get_database_preferences(): exception: " << ex.what() << std::endl;
@@ -994,6 +1013,10 @@ void Base_DB::set_database_preferences(const SystemPrefs& prefs)
       Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute(sql_query);
     }
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
+    catch(const Glib::Exception& ex)
+    {
+      std::cerr << "Base_DB::set_database_preferences(): exception: " << ex.what() << std::endl;
+    }
     catch(const std::exception& ex)
     {
       std::cerr << "Base_DB::set_database_preferences(): exception: " << ex.what() << std::endl;
@@ -2077,6 +2100,11 @@ bool Base_DB::set_field_value_in_database(const LayoutFieldInRecord& layoutfield
       }
     }
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
+    catch(const Glib::Exception& ex)
+    {
+      handle_error(ex);
+      return false;
+    }
     catch(const std::exception& ex)
     {
       handle_error(ex);

@@ -145,6 +145,11 @@ bool Box_DB_Table_Definition::fill_from_database()
 
     result = true;
   }
+  catch(const Glib::Exception& ex)
+  {
+    handle_error(ex);
+    result = false;
+  }
   catch(const std::exception& ex)
   {
     handle_error(ex);
@@ -468,6 +473,19 @@ sharedptr<Field> Box_DB_Table_Definition::change_definition(const sharedptr<cons
   try
   {
     result = postgres_change_column(fieldOld, field);
+  }
+  catch(const Glib::Exception& ex) //In case the database reports an error.
+  {
+    handle_error(ex);
+
+    //Give up. Don't update the document. Hope that we can read the current field properties from the database.
+    fill_fields();
+    //fill_from_database(); //We should not change the database definition in a cell renderer signal handler.
+
+    //Select the same field again:
+    m_AddDel.select_item(field->get_name(), m_colName, false);
+
+    return glom_sharedptr_clone(field); 
   }
   catch(const std::exception& ex) //In case the database reports an error.
   {

@@ -14,6 +14,7 @@ INCLUDES = -I@top_srcdir@/ $(GLOM_CFLAGS) $(PYTHON_INCLUDES) \
            -DSYSCONFDIR=\""$(sysconfdir)"\" \
            -DLIBDIR=\""$(libdir)"\" \
            -DDATADIR=\""$(datadir)"\" \
+           -DEXEEXT=\""$(EXEEXT)"\" \
            -DGLOM_XSLTDIR=\""$(glomxsltdir)/"\" \
            -DGLOM_EXAMPLES_DIR=\""$(glom_examples_dir)"\" \
            -DGLOM_ICON_DIR=\""$(glom_icon_dir)"\"

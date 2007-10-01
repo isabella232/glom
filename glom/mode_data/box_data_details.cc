@@ -223,6 +223,11 @@ bool Box_Data_Details::fill_from_database()
   {
     sharedconnection = connect_to_server(get_app_window());
   }
+  catch(const Glib::Exception& ex)
+  {
+    handle_error(ex);
+    bResult = false;
+  }
   catch(const std::exception& ex)
   {
     handle_error(ex);
@@ -712,6 +717,10 @@ void Box_Data_Details::on_flowtable_field_edited(const sharedptr<const LayoutIte
 
     }
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
+    catch(const Glib::Exception& ex)
+    {
+      handle_error(ex);
+    }
     catch(const std::exception& ex)
     {
       handle_error(ex);

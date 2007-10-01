@@ -150,7 +150,7 @@ DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ust
     }
     else
     {
-      if(field->get_formatting_used().get_text_format_multiline())
+      if((glom_type == Field::TYPE_TEXT) && (field->get_formatting_used().get_text_format_multiline()))
       {
         TextViewGlom* textview = Gtk::manage(new TextViewGlom(glom_type));
         pFieldWidget = textview;
@@ -184,7 +184,7 @@ DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ust
     else
     {
       int height = -1; //auto.
-      if(field->get_formatting_used().get_text_format_multiline())
+      if((glom_type == Field::TYPE_TEXT) && (field->get_formatting_used().get_text_format_multiline()))
       {
         int example_width = 0;
         int example_height = 0;

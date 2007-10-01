@@ -219,8 +219,7 @@ Privileges Privs::get_table_privileges(const Glib::ustring& group_name, const Gl
       //const Glib::ustring strgroup = "group ";
       const Glib::ustring strgroup = group_name + "=";
       Glib::ustring::size_type posFind = item.find(strgroup);
-      //if(posFind == 0)
-      if(posFind != -1)
+      if(posFind != Glib::ustring::npos)
       {
         //It is the needed group permision:
 

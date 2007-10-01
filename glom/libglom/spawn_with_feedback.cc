@@ -62,14 +62,16 @@ static void execute_command_line_on_thread_create(CommandLineThreadData* data)
   Glib::spawn_command_line_sync(data->m_command, NULL, NULL, &return_status);
 #endif // !GLIBMM_EXCEPTIONS_ENABLED
   
-  *(data->m_result) = (return_status == 0);
-  delete data; //Note that this doesn't delete the data pointed to by data->m_result.
-
   std::cout << "  debug: in thread: signalling condition" << std::endl; 
+
+  // TODO: Use WIFEXITED() and WEXITSTATUS()? 
+  *(data->m_result) = (return_status == 0);
 
   data->m_mutex->lock(); //The documentation for g_cond_broadcast() says "It is good practice to lock the same mutex as the waiting threads, while calling this function, though not required."
   data->m_cond->broadcast(); //Allows the caller to continue.
   data->m_mutex->unlock();
+
+  delete data; //Note that this doesn't delete the data pointed to by data->m_result.
 }
 
 static bool pulse_until_thread_finished(Dialog_ProgressCreating& dialog_progress, const std::string& command, const sigc::slot<void, CommandLineThreadData*>& thread_slot)

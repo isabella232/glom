@@ -4,7 +4,7 @@ AC_INIT(glom/main.cc)
 AM_CONFIG_HEADER(config.h)
 
 # Package name and version number:
-AM_INIT_AUTOMAKE(glom, 1.4.0)
+AM_INIT_AUTOMAKE(glom, 1.6.0)
 
 AM_MAINTAINER_MODE
 
@@ -28,10 +28,10 @@ AC_SUBST(GETTEXT_PACKAGE)
 AC_DEFINE_UNQUOTED([GETTEXT_PACKAGE], ["$GETTEXT_PACKAGE"],
 		   [The domain name to use with gettext.])
 
-ALL_LINGUAS="ar ca cs de dz en_CA en_GB es fi fr gu hu it nb ne nl pa pt pt_BR rw sq sv tr vi zh_CN"
+ALL_LINGUAS="ar ca cs de dz en_CA en_GB es fi fr gl gu hu it nb ne nl pa pt pt_BR rw sq sv tr vi zh_CN"
 
 AM_GLIB_GNU_GETTEXT
-IT_PROG_INTLTOOL([0.33.0])
+IT_PROG_INTLTOOL([0.35.0])
 
 AC_ARG_ENABLE([scrollkeeper],
 [AC_HELP_STRING([--disable-scrollkeeper],

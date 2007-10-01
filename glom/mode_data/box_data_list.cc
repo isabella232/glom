@@ -132,6 +132,11 @@ bool Box_Data_List::fill_from_database()
   {
     sharedconnection = connect_to_server(get_app_window());
   }
+  catch(const Glib::Exception& ex)
+  {
+    handle_error(ex);
+    result = false;
+  }
   catch(const std::exception& ex)
   {
     handle_error(ex);
@@ -473,6 +478,10 @@ void Box_Data_List::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, 
       }
     }
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
+    catch(const Glib::Exception& ex)
+    {
+      handle_error(ex);
+    }
     catch(const std::exception& ex)
     {
       handle_error(ex);
@@ -745,7 +754,7 @@ void Box_Data_List::create_layout()
     sharedptr<Field> field_primary_key = get_field_primary_key_for_table(m_table_name);
     if(!field_primary_key)
     {
-      //g_warning("Box_Data_List::create_layout(): primary key not found.");
+      //g_warning("%s: primary key not found.", __FUNCTION__);
     }
     else
     {
@@ -770,12 +779,15 @@ void Box_Data_List::create_layout()
 
     //Add extra possibly-non-visible columns that we need:
     //TODO: Only add it if it is not already there.
-    sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
-    layout_item->set_hidden();
-    layout_item->set_full_field_details(m_AddDel.get_key_field());
-    m_FieldsShown.push_back(layout_item);
+    if(field_primary_key)
+    {
+      sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
+      layout_item->set_hidden();
+      layout_item->set_full_field_details(m_AddDel.get_key_field());
+      m_FieldsShown.push_back(layout_item);
 
-    m_AddDel.add_column(layout_item);
+      m_AddDel.add_column(layout_item);
+    }
 
     m_AddDel.set_found_set(m_found_set);
 

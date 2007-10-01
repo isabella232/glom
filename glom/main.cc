@@ -184,12 +184,18 @@ main(int argc, char* argv[])
     //debugging:
     //input_uri = "file:///home/murrayc/cvs/gnome212/glom/examples/example_smallbusiness.glom";
 
+    bool install_complete;
 #ifndef ENABLE_CLIENT_ONLY
     //Check that PostgreSQL is really available:
-    const bool install_complete = Glom::ConnectionPool::check_postgres_is_available_with_warning();
+    install_complete = Glom::ConnectionPool::check_postgres_is_available_with_warning();
     if(!install_complete)
       return -1; //There is no point in going further because the most useful Glom functionality will not work without Postgres. Only a very cut-down Glom client would be useful without self-hosting.
 #endif // !ENABLE_CLIENT_ONLY
+
+    //Check that the libgda postgres provider is really available:
+    install_complete = Glom::ConnectionPool::check_postgres_gda_client_is_available_with_warning();
+    if(!install_complete)
+      return -1; //There is no point in going further because Glom would not be able to connect to any Postgres servers.
 
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
     // Main app
@@ -220,6 +226,11 @@ main(int argc, char* argv[])
       delete pApp_Glom;
   }
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
+  catch(const Glib::Exception& ex)
+  {
+    //If this happens then comment out the try/catch, and let the debugger show the call stack.
+    std::cerr << "Glom: exception: \n  " << ex.what() << std::endl;
+  }
   catch(const std::exception& ex)
   {
     //If this happens then comment out the try/catch, and let the debugger show the call stack.

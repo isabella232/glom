@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-extras/glom.HEAD.pot\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-03-21 03:46+0000\n"
-"PO-Revision-Date: 2007-03-26 15:28+0530\n"
-"Last-Translator: sonam pelden <sonaa_peldn@yahoo.com>\n"
+"POT-Creation-Date: 2007-05-21 04:04+0100\n"
+"PO-Revision-Date: 2007-06-20 11:53+0530\n"
+"Last-Translator: Dawa pemo <daws_403@hotmail.com>\n"
 "Language-Team: Dzongkha <pgeyleg@dit.gov.bt>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -24,8 +24,8 @@ msgid "A user-friendly database environment."
 msgstr "ལག་ལེན་པ་མཐུན་པའི་གནས་སྡུད་གཞི་རྟེན་གྱི་མཐའ་འཁོར།"
 
 #: ../glom.desktop.in.in.h:2
-#: ../glom/glom.glade.h:146
-#: ../glom/main.cc:127
+#: ../glom/glom.glade.h:147
+#: ../glom/main.cc:126
 msgid "Glom"
 msgstr "གུལུམ་"
 
@@ -110,94 +110,98 @@ msgid "<b>Parts</b>"
 msgstr "<b>ཡན་ལག་ཚུ</b>"
 
 #: ../glom/glom.glade.h:21
+msgid "<b>Recently Opened Files:</b>"
+msgstr "<b>ཕྲལ་ཁམས་ཅིག་ཁར་ ཁ་ཕྱེ་ཏེ་ཡོད་པའི་ ཡིག་སྣོད་ཚུ་:</b>"
+
+#: ../glom/glom.glade.h:22
 msgid "<b>Relationship:</b>"
 msgstr "<b>མཐུན་འབྲེལ:</b>"
 
-#: ../glom/glom.glade.h:22
+#: ../glom/glom.glade.h:23
 msgid "<b>Relationships</b>"
 msgstr "<b>མཐུན་འབྲེལ་ཚུ</b>"
 
-#: ../glom/glom.glade.h:23
+#: ../glom/glom.glade.h:24
 msgid "<b>Report name:</b>"
 msgstr "<b>སྙན་ཞུའི་མིང་:</b>"
 
-#: ../glom/glom.glade.h:24
+#: ../glom/glom.glade.h:25
 msgid "<b>Reports</b>"
 msgstr "<b>སྙན་ཞུ་ཚུ</b>"
 
-#: ../glom/glom.glade.h:25
+#: ../glom/glom.glade.h:26
 msgid "<b>Select Field</b>"
 msgstr "<b>ས་སྒོ་སེལ་འཐུ་འབད</b>"
 
-#: ../glom/glom.glade.h:26
+#: ../glom/glom.glade.h:27
 msgid "<b>Select Relationship</b>"
 msgstr "<b>མཐུན་འབྲེལ་འདི་སེལ་འཐུ་འབད</b>"
 
-#: ../glom/glom.glade.h:27
+#: ../glom/glom.glade.h:28
 msgid "<b>Sort Fields</b>"
 msgstr "<b>ས་སྒོ་ཚུ་དབྱེ་སེལ་འབད</b>"
 
-#: ../glom/glom.glade.h:28
+#: ../glom/glom.glade.h:29
 msgid "<b>Source Language:</b>"
 msgstr "<b>སྐད་ཡིག་འབྱུང་ཁུངས:</b>"
 
-#: ../glom/glom.glade.h:29
+#: ../glom/glom.glade.h:30
 msgid "<b>Summary Field</b>"
 msgstr "<b>ས་སྒོའི་བཅུད་དོན</b>"
 
-#: ../glom/glom.glade.h:30
+#: ../glom/glom.glade.h:31
 msgid "<b>Table Name</b>"
 msgstr "<b>ཐིག་ཁྲམ་གྱི་མིང་</b>"
 
-#: ../glom/glom.glade.h:31
+#: ../glom/glom.glade.h:32
 msgid "<b>Table:</b>"
 msgstr "<b>ཐིག་ཁྲམ:</b>"
 
-#: ../glom/glom.glade.h:32
+#: ../glom/glom.glade.h:33
 msgid "<b>Tables in database</b>"
 msgstr "<b>གནས་སྡུད་གཞི་རྟེན་ནང་ལུ་  ཐིག་ཁྲམ་ཚུ</b>"
 
-#: ../glom/glom.glade.h:33
+#: ../glom/glom.glade.h:34
 msgid "<b>Tables</b>"
 msgstr "<b>ཐིག་ཁྲམ་ཚུ</b>"
 
-#: ../glom/glom.glade.h:34
+#: ../glom/glom.glade.h:35
 msgid "<b>Target Language:</b>"
 msgstr "<b>དམིགས་གཏད་ཀྱི་སྐད་ཡིག:</b>"
 
-#: ../glom/glom.glade.h:35
+#: ../glom/glom.glade.h:36
 msgid "<b>Text Formatting</b>"
 msgstr "<b>ཚིག་ཡིག་རྩ་སྒྲིག</b>"
 
-#: ../glom/glom.glade.h:36
+#: ../glom/glom.glade.h:37
 msgid "<b>Text</b>"
 msgstr "<b>ཚིག་ཡིག</b>"
 
-#: ../glom/glom.glade.h:37
+#: ../glom/glom.glade.h:38
 msgid "<b>Title:</b>"
 msgstr "<b>མགོ་མིང་:</b>"
 
-#: ../glom/glom.glade.h:38
+#: ../glom/glom.glade.h:39
 msgid "<b>Title</b>"
 msgstr "<b>མགོ་མིང་</b>"
 
-#: ../glom/glom.glade.h:39
+#: ../glom/glom.glade.h:40
 msgid "<b>Translations</b>"
 msgstr "<b>སྐད་བསྒྱུར་ཚུ</b>"
 
-#: ../glom/glom.glade.h:40
+#: ../glom/glom.glade.h:41
 msgid "<b>User Level:</b>"
 msgstr "<b>ལག་ལེན་པའི་གནས་རིམ:</b>"
 
-#: ../glom/glom.glade.h:41
+#: ../glom/glom.glade.h:42
 msgid "<b>User</b>"
 msgstr "<b>ལག་ལེན་པ</b>"
 
-#: ../glom/glom.glade.h:42
+#: ../glom/glom.glade.h:43
 msgid "<b>Users</b>"
 msgstr "<b>ལག་ལེན་པ་ཚུ</b>"
 
-#: ../glom/glom.glade.h:43
+#: ../glom/glom.glade.h:44
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Add Module</span>\n"
 "\n"
@@ -207,7 +211,7 @@ msgstr ""
 "\n"
 "སྡེ་ཚན་དེ་ལུ་མིང་ག་ཅི་འོང་དགོཔ་སྨོ?"
 
-#: ../glom/glom.glade.h:46
+#: ../glom/glom.glade.h:47
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Add User To Group</span>\n"
 "\n"
@@ -217,7 +221,7 @@ msgstr ""
 "\n"
 "སྡེ་ཚན་དེ་ལུ་  ལག་ལེན་པ་ག་འདི་ཁ་སྐོང་བརྐྱབ་དགོཔ་སྨོ?"
 
-#: ../glom/glom.glade.h:49
+#: ../glom/glom.glade.h:50
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Choose Date</span>\n"
 "\n"
@@ -227,7 +231,7 @@ msgstr ""
 "\n"
 "ས་སྒོ་འདི་ནང་ཐོ་བཀོད་འབད་ནིའི་དོན་ལུ་  ཚེས་གྲངས་ཅིག་སེལ་འཐུ་འབད་གནང་།"
 
-#: ../glom/glom.glade.h:52
+#: ../glom/glom.glade.h:53
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Connect to Server</span>\n"
 "\n"
@@ -237,7 +241,7 @@ msgstr ""
 "\n"
 "ཁྱོད་རའི་གནས་སྡུད་སར་བར་གྱི་དོན་ལུ་  མཐུད་ལམ་རྒྱས་བཤད་ཚུ་ཐོ་བཀོད་འབད་གནང་།"
 
-#: ../glom/glom.glade.h:55
+#: ../glom/glom.glade.h:56
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Connection Failed</span>\n"
 "\n"
@@ -247,7 +251,7 @@ msgstr ""
 "\n"
 "གུལུམ་འདི་  གནས་སྡུད་གཞི་རྟེན་སར་བར་ལུ་མཐུད་མ་ཚུགས།   ཡང་ན་ཁྱོད་ཀྱིས་  བདེན་མེད་ཀྱི་ལག་ལེན་པའི་མིང་ཡང་ན་  ཆོག་ཡིག་ཐོ་བཀོད་འབད་དེ་ཡོདཔ་འོང་  ཡང་ན་  པོསཊི་གེརེསི་གནས་སྡུད་གཞི་རྟེན་སར་བར་འདི་གཡོག་བཀོལ་མི་བཏུབ་དོ་འོང་།"
 
-#: ../glom/glom.glade.h:58
+#: ../glom/glom.glade.h:59
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Copy Translation</span>\n"
 "\n"
@@ -257,7 +261,7 @@ msgstr ""
 "\n"
 "ད་ལྟོའི་སྐད་བསྒྱུར་གྱི་འགོ་བཙུགས་སྦེ་ལག་ལེན་འཐབ་ནི་ལུ་  ཁྱོད་ཀྱིས་སྐད་ཡིག་ག་སྟེ་ལས་འདྲ་བཤུས་བརྐྱབ་ནི་སྨོ?"
 
-#: ../glom/glom.glade.h:61
+#: ../glom/glom.glade.h:62
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Create Group</span>\n"
 "\n"
@@ -267,7 +271,7 @@ msgstr ""
 "\n"
 "སྡེ་ཚན་འདི་ལུ་མིང་ག་ཅི་འོང་དགོཔ་སྨོ?"
 
-#: ../glom/glom.glade.h:64
+#: ../glom/glom.glade.h:65
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Database creation failed</span>\n"
 "\n"
@@ -277,7 +281,7 @@ msgstr ""
 "\n"
 "གུལུམ་དེ་གིས་  གནས་སྡུད་གཞི་རྟེན་གསརཔ་འདི་གསར་བསྐྲུན་འབད་མ་ཚུགས།  ཡང་ན་ཁྱོད་ལུ་  ཉེར་མཁོ་བའི་འཛུལ་སྤྱོད་འབད་ནིའི་ཐོབ་དབང་མེདཔ་འོང།  ཁྱོད་རའི་རིམ་ལུགས་བདག་སྐྱོང་པ་ལུ་འབྲེལ་བ་འཐབ་གནང་།"
 
-#: ../glom/glom.glade.h:67
+#: ../glom/glom.glade.h:68
 msgid ""
 "<span weight=\"bold\" size=\"larger\">First User</span>\n"
 "\n"
@@ -287,7 +291,7 @@ msgstr ""
 "\n"
 "ཁྱོད་རའི་གནས་སྡུད་གཞི་རྟེན་གསརཔ་གི་དོན་ལུ་  འགོ་ཐོག་འབྲེལ་ལམ་གྱི་རྒྱས་བཤད་འདི་ཐོ་བཀོད་འབད་གནང་།  ཁྱོད་ཀྱིས་ཁ་སྐོང་གི་ལག་ལེན་པ་ཚུ་ཤུལ་མ་ཁ་སྐོང་བརྐྱབ།  ཆོག་ཡིག་འདི་གསང་བའི་ཐོག་ལས་བཞག་དགོཔ་འདི་སེམས་ཁར་ཉེས་དགོ་   ག་ཅི་འབད་ཟེར་བ་ཅིན་  ཡོངས་འབྲེལ་གུ་གློག་རིག་གཞན་མི་ཚུ་ལས་   ཁྱོད་རའི་གནས་སྡུད་ལུ་འཛུལ་སྤྱོད་ཚུ་འོང་བཅུགཔ་ཨིན།"
 
-#: ../glom/glom.glade.h:70
+#: ../glom/glom.glade.h:71
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Identify Original</span>\n"
 "\n"
@@ -297,7 +301,7 @@ msgstr ""
 "\n"
 "ཚིག་ཡིག་ངོ་མའི་སྐད་ཡིག་འདི་  ད་ལྟོ་ངེས་འཛིན་འབད་དོ:"
 
-#: ../glom/glom.glade.h:73
+#: ../glom/glom.glade.h:74
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Invalid format</span>\n"
 "\n"
@@ -307,7 +311,7 @@ msgstr ""
 "\n"
 "ས་སྒོ་ནང་ཡོད་པའི་གནས་སྡུད་འདི་ངོས་འཛིན་མ་འབད་བས།  གནས་སྡུད་འདི་ནོར་བཅོས་འབད་ནི་  ཡང་ན་  ཧེ་མའི་གནས་གོང་ལུ་རྒྱབ་ལོག་ནི་ལུ་འབད་རྩོལ་བསྐྱེད་གནང་།   ནཱ་ལུ་  ས་སྒོ་འདི་གི་དོན་ལུ་བདེན་པ་སྦེ་རྩ་སྒྲིག་འབད་ཡོད་པའི་དཔེ་ཡོདཔ་ཨིན།\n"
 
-#: ../glom/glom.glade.h:77
+#: ../glom/glom.glade.h:78
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Open existing document, or create new document</span>\n"
 "\n"
@@ -321,7 +325,7 @@ msgstr ""
 "\n"
 "ཡང་ན་  གནས་སྡུད་གཞི་རྟེན་གསརཔ་ཅིག་བཀོད་སྒྲིག་འབད་ནི་ལུ་  ཁྱོད་ཀྱིས་ཡིག་ཆ་གསརཔ་ཅིག་གསར་བསྐྲུན་འབད་ནི་ཨིན་ན?\n"
 
-#: ../glom/glom.glade.h:83
+#: ../glom/glom.glade.h:84
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Test Translation</span>\n"
 "\n"
@@ -335,345 +339,345 @@ msgstr ""
 "\n"
 "དཀར་ཆག་དང་ཌའི་ལོག་ཝིན་ཌོསི་ལ་སོགས་པ་  གུལུམ་ལག་ལེན་པའི་ངོས་འདྲ་བ་གི་ཚད་ལྡན་ཆ་ཤས་ཚུ་  སྐད་ཡིག་ལག་ལེན་འཐབ་མི་གློག་རིག་གུ་  ཁྱོད་ཀྱིས་གུལུམ་འགོ་བཙུགསཔ་ད་རྐྱམ་ཅིག་སྐད་བསྒྱུར་འབདཝ་ཨིན་ཟེར་  དྲན་འཛིན་འབད་དགོ།"
 
-#: ../glom/glom.glade.h:88
+#: ../glom/glom.glade.h:89
 #: ../glom/utility_widgets/layoutwidgetbase.cc:41
 msgid "Add Button"
 msgstr "ཨེབ་རྟ་འདི་ཁ་སྐོང་བརྐྱབ་"
 
-#: ../glom/glom.glade.h:89
+#: ../glom/glom.glade.h:90
 #: ../glom/utility_widgets/layoutwidgetbase.cc:39
 msgid "Add Notebook"
 msgstr "འབྲི་དེབ་འདི་ཁ་སྐོང་བརྐྱབ་"
 
-#: ../glom/glom.glade.h:90
+#: ../glom/glom.glade.h:91
 msgid "Add Related"
 msgstr "འབྲེལ་ཡོདཔ་འདི་ཁ་སྐོང་བརྐྱབ་"
 
-#: ../glom/glom.glade.h:91
+#: ../glom/glom.glade.h:92
 msgid "Add Related Table"
 msgstr "འབྲེལ་བ་ཡོད་པའི་ཐིག་ཁྲམ་འདི་ཁ་སྐོང་བརྐྱབ་"
 
-#: ../glom/glom.glade.h:92
+#: ../glom/glom.glade.h:93
 #: ../glom/utility_widgets/layoutwidgetbase.cc:42
 msgid "Add Text"
 msgstr "ཚིག་ཡིག་ཁ་སྐོང་བརྐྱབ་"
 
-#: ../glom/glom.glade.h:93
+#: ../glom/glom.glade.h:94
 msgid "Add _Group"
 msgstr "སྡེ་ཚན་ཁ་སྐོང་བརྐྱབ། (_G)"
 
-#: ../glom/glom.glade.h:94
+#: ../glom/glom.glade.h:95
 msgid "Add a button. Edit the button to define the script that will be run when the button is clicked."
 msgstr "ཨེབ་རྟ་ཅིག་ཁ་སྐོང་བརྐྱབ།  ཨེབ་རྟ་འདི་ཨེབ་གཏང་འབདཝ་ད་  གཡོག་བཀོལ་བཏུབ་པའི་ཡིག་ཚུགས་ངེས་འཛིན་འབད་ནི་ལུ་  ཨེབ་རྟ་འདི་ཞུན་དག་འབད།"
 
-#: ../glom/glom.glade.h:95
+#: ../glom/glom.glade.h:96
 msgid "Add a group which can contain other layout items. Use this to group items together, such as fields."
 msgstr "བཀོད་སྒྲིག་གཞན་མིའི་རྣམ་གྲངས་ཚུ་གནས་ཚུགས་པའི་  སྡེ་ཚན་ཅིག་ཁ་སྐོང་བརྐྱབ།  རྣམ་གྲངས་ཚུ་ཅིག་ཁར་སྡེ་ཚན་བཟོ་ནི་ལུ་  འདི་ལག་ལེན་འཐབ་  དཔེར་ན་  ས་སྒོ་ཚུ་  བཟུམ་ཨིན།"
 
-#: ../glom/glom.glade.h:96
+#: ../glom/glom.glade.h:97
 msgid "Add a layout item that shows the data from a field in the record, and allows the user to edit that value."
 msgstr "ཐོ་འགོད་ནང་ལུ་ས་སྒོ་ཅིག་ལས་གནས་སྡུད་འདི་སྟོན་ནི་དང་  ལག་ལེན་པ་ལུ་གནས་གོང་དེ་ཞུན་དག་འབད་བཅུག་མི་  བཀོད་སྒྲིག་རྣམ་གྲངས་ཅིག་ཁ་སྐོང་བརྐྱབ།"
 
-#: ../glom/glom.glade.h:97
+#: ../glom/glom.glade.h:98
 msgid "Add a related records portal. This is a list of records in a related table. Remember to edit this layout item to specify the relationship to use, and the  fields to show from the related table."
 msgstr "འབྲེལ་བ་ཡོད་པའི་ཐོ་འགོད་སྒོ་ཅིག་ཁ་སྐོང་བརྐྱབ།  འདི་  འབྲེལ་བ་ཡོད་པའི་ཐིག་ཁྲམ་ཅིག་ནང་  ཐོ་འགོད་ཀྱི་ཐོ་ཡིག་ཅིག་ཨིན།  ལག་ལེན་འཐབ་ནི་ཨིན་པའི་མཐུན་འབྲེལ་འདི་གསལ་བཀོད་འབད་ནི་དང་འབྲེལ་བ་ཡོད་པའི་ཐིག་ཁྲམ་ལས་  ས་སྒོ་ཚུ་སྟོན་ནི་ལུ་  བཀོད་སྒྲིག་རྣམ་གྲངས་འདི་ཞུན་དག་འབད་ནི་ལུ་སེམས་ཁར་བཞག།"
 
-#: ../glom/glom.glade.h:98
+#: ../glom/glom.glade.h:99
 msgid "Add a tabbed notebook. Each page of the notebook may contain several other layout items, but only one page will be visible at one time."
 msgstr "འབྲི་དེབ་སྦྱར་སྦྱརཝ་ཅིག་ཁ་སྐོང་བརྐྱབ།  འབྲི་དེབ་ཀྱི་ཤོག་ལེབ་རེ་རེ་གིས་  བཀོད་སྒྲིག་རྣམ་གྲངས་ཚུ་ལེ་ཤ་གནས་ཏེ་འོང་  དེ་འབདཝ་ད་  དུས་ཡུན་ཅིག་ལུ་མཐོང་ཚུགས་པའི་ཤོག་ལེབ་ཅིག་རྐྱངམ་ཅིག་ཡོད།"
 
-#: ../glom/glom.glade.h:99
+#: ../glom/glom.glade.h:100
 msgid "Add an image to the layout, such as a logo. The image will be the same for every record viewed. To show an image field from a record, to show different images for each field, use the field layout item."
 msgstr "ལས་རྟགས་བཟུམ་མའི་བཀོད་སྒྲིག་ལུ་  གཟུགས་བརྙན་ཅིག་ཁ་སྐོང་བརྐྱབ།  གཟུགས་བརྙན་འདི་  མཐོང་ཡོད་པའི་དྲན་ཐོ་ཀྱི་དོན་ལུ་ཅིག་པ་འོངམ་ཨིན།  ཐོ་འགོད་ལས་གཟུགས་བརྙན་ས་སྒོ་སྟོན་ནི་ལུ་  ས་སྒོ་ནི་བཟུམ་ལུ་གཟུག་བརྙན་སོ་སོ་སྟོན་ནི་ལུ་  ས་སྒོའི་བཀོད་སྒྲིག་རྣམ་གྲངས་འདི་ལག་ལེན་འཐབ།"
 
-#: ../glom/glom.glade.h:100
+#: ../glom/glom.glade.h:101
 msgid "Add text to a layout, such as an explanation or a warning. The text will be the same for every record viewed."
 msgstr "གསལ་བཤད་ཡང་ན་ཉེན་བརྡ་བཟུམ་མའི་བཀོད་སྒྲིག་ཅིག་ལུ་  ཚིག་ཡིག་ཁ་སྐོང་བརྐྱབ།  ཚིག་ཡིག་འདི་  མཐོང་ཡོད་པའི་དྲན་ཐོ་རེ་རེ་དང་ལྕོགས་ཐདཔ་སྦེ་འོངམ་ཨིན།"
 
-#: ../glom/glom.glade.h:101
+#: ../glom/glom.glade.h:102
 #: ../glom/mode_design/box_db_table_relationships.cc:52
 msgid "Allow Editing"
 msgstr "ཞུན་དག་འབད་བཅུག་"
 
-#: ../glom/glom.glade.h:102
+#: ../glom/glom.glade.h:103
 msgid "Also show"
 msgstr "གཞན་ཡང་སྟོན་"
 
-#: ../glom/glom.glade.h:103
+#: ../glom/glom.glade.h:104
 msgid "Auto-increment"
 msgstr "རང་བཞིན་- ཡར་འཕར་"
 
-#: ../glom/glom.glade.h:104
+#: ../glom/glom.glade.h:105
 msgid "Auto-increment values"
 msgstr "རང་བཞིན་ཡར་འཕར་གནས་གོང་ཚུ་"
 
-#: ../glom/glom.glade.h:105
+#: ../glom/glom.glade.h:106
 msgid "Automatic:"
 msgstr "རང་བཞིན་:"
 
-#: ../glom/glom.glade.h:106
+#: ../glom/glom.glade.h:107
 msgid "Border Width (ems)"
 msgstr "མཐའ་མཚམས་རྒྱ་ཚད། (ཨི་ཨེམ་ཨེསི་)"
 
-#: ../glom/glom.glade.h:107
+#: ../glom/glom.glade.h:108
 msgid "Button Script"
 msgstr "ཨེབ་རྟའི་ཡིག་ཚུགས་"
 
-#: ../glom/glom.glade.h:108
+#: ../glom/glom.glade.h:109
 msgid "C_onnect"
 msgstr "མཐུད། (_o)"
 
-#: ../glom/glom.glade.h:109
+#: ../glom/glom.glade.h:110
 msgid "C_reate"
 msgstr "གསར་བསྐྲུན་འབད། (_r)"
 
-#: ../glom/glom.glade.h:110
+#: ../glom/glom.glade.h:111
 msgid "Calculate Value"
 msgstr "གནས་གོང་རྩིས་སྟོན་"
 
-#: ../glom/glom.glade.h:111
+#: ../glom/glom.glade.h:112
 msgid "Check"
 msgstr "ཞིབ་དཔྱད་འབད་"
 
-#: ../glom/glom.glade.h:112
+#: ../glom/glom.glade.h:113
 msgid "Choices From Related Records"
 msgstr "འབྲེལ་བ་ཡོད་པའི་དྲན་ཐོ་ཚུ་ལས་  གདམ་ཁ་ཚུ་"
 
-#: ../glom/glom.glade.h:113
+#: ../glom/glom.glade.h:114
 msgid "Choose Date"
 msgstr "ཚེས་གྲངས་གདམ་ཁ་བརྐྱབ་"
 
-#: ../glom/glom.glade.h:114
+#: ../glom/glom.glade.h:115
 msgid "Choose User"
 msgstr "ལག་ལེན་པ་གདམ་ཁ་བརྐྱབ་"
 
-#: ../glom/glom.glade.h:115
+#: ../glom/glom.glade.h:116
 msgid "Clicking the row button takes the user to the table specified by this relationship:"
 msgstr "གྲལ་ཐིག་ཨེབ་རྟ་ཨེབ་གཏང་འབད་མི་དེ་གིས་  ལག་ལེནཔ་འདི་  མཐུན་འབྲེལ་གྱིས་གསལ་བཀོད་འབད་ཡོད་པའི་ཐིག་ཁྲམ་ལུ་བསྐྱལཝ་ཨིན:"
 
-#: ../glom/glom.glade.h:116
+#: ../glom/glom.glade.h:117
 msgid "Confirm Password"
 msgstr "ཆོག་ཡིག་ངེས་དཔྱད་འབད་"
 
-#: ../glom/glom.glade.h:117
+#: ../glom/glom.glade.h:118
 msgid "Copy From Existing Translation"
 msgstr "གནས་ཏེ་ཡོད་པའི་སྐད་བསྒྱུར་ལས་འདྲ་བཤུས་བརྐྱབ་"
 
-#: ../glom/glom.glade.h:118
-#: ../glom/libglom/document/document_glom.cc:408
+#: ../glom/glom.glade.h:119
+#: ../glom/libglom/document/document_glom.cc:412
 msgid "Country"
 msgstr "རྒྱལ་ཁབ་"
 
-#: ../glom/glom.glade.h:119
+#: ../glom/glom.glade.h:120
 #: ../glom/mode_design/users/dialog_groups_list.cc:79
 msgid "Create"
 msgstr "གསར་བསྐྲུན་འབད་"
 
-#: ../glom/glom.glade.h:120
+#: ../glom/glom.glade.h:121
 msgid "Create Group"
 msgstr "སྡེ་ཚན་གསར་བསྐྲུན་འབད་"
 
-#: ../glom/glom.glade.h:121
+#: ../glom/glom.glade.h:122
 msgid "Currency Symbol"
 msgstr "དངུལ་གྱི་བརྡ་མཚོན་"
 
-#: ../glom/glom.glade.h:122
+#: ../glom/glom.glade.h:123
 msgid "Custom Choice List"
 msgstr "སྲོལ་སྒྲིག་གདམ་ཁ་བརྐྱབ་པའི་ཐོ་ཡིག་"
 
-#: ../glom/glom.glade.h:123
+#: ../glom/glom.glade.h:124
 #: ../glom/frame_glom.cc:421
 msgid "Data"
 msgstr "གནས་སྡུད་"
 
-#: ../glom/glom.glade.h:124
+#: ../glom/glom.glade.h:125
 msgid "Database"
 msgstr "གནས་སྡུད་གཞི་རྟེན་"
 
-#: ../glom/glom.glade.h:125
+#: ../glom/glom.glade.h:126
 msgid "Database Preferences"
 msgstr "གནས་སྡུད་གཞི་རྟེན་དགའ་གདམ་ཚུ་"
 
-#: ../glom/glom.glade.h:126
+#: ../glom/glom.glade.h:127
 msgid "Decimal Places"
 msgstr "བཅུ་ཚག་ས་གནས་ཚུ་"
 
-#: ../glom/glom.glade.h:127
+#: ../glom/glom.glade.h:128
 msgid "Default Formatting"
 msgstr "སྔོན་སྒྲིག་རྩ་སྒྲིག་"
 
-#: ../glom/glom.glade.h:128
+#: ../glom/glom.glade.h:129
 msgid "Details Layout"
 msgstr "བཀོད་སྒྲིག་རྒྱས་བཤད་ཚུ་"
 
 #. Add new menu items:
-#: ../glom/glom.glade.h:129
+#: ../glom/glom.glade.h:130
 #: ../glom/mode_design/users/dialog_groups_list.cc:76
 #: ../glom/utility_widgets/adddel/adddel.cc:232
 msgid "Edit"
 msgstr "ཞུན་དག་འབད་"
 
-#: ../glom/glom.glade.h:130
+#: ../glom/glom.glade.h:131
 msgid "English"
 msgstr "ཨིང་ལིཤ་"
 
-#: ../glom/glom.glade.h:131
+#: ../glom/glom.glade.h:132
 #: ../glom/filechooser_export.cc:37
 #: ../glom/translation/window_translations.cc:510
 msgid "Export"
 msgstr "ཕྱིར་འདྲེན་"
 
-#: ../glom/glom.glade.h:132
+#: ../glom/glom.glade.h:133
 msgid "Export Format"
 msgstr "རྩ་སྒྲིག་ཕྱིར་འདྲེན་འབད་"
 
-#: ../glom/glom.glade.h:133
+#: ../glom/glom.glade.h:134
 #: ../glom/libglom/data_structure/translatable_item.cc:280
 #: ../glom/libglom/data_structure/layout/layoutitem_field.cc:196
 #: ../glom/dialog_database_preferences.cc:55
 msgid "Field"
 msgstr "ས་སྒོ་"
 
-#: ../glom/glom.glade.h:134
+#: ../glom/glom.glade.h:135
 msgid "Field Calculation"
 msgstr "ས་སྒོའི་རྩིས་ལས་"
 
-#: ../glom/glom.glade.h:135
+#: ../glom/glom.glade.h:136
 msgid "Field Definition"
 msgstr "ས་སྒོའི་ངེས་ཚིག་"
 
-#: ../glom/glom.glade.h:136
+#: ../glom/glom.glade.h:137
 #: ../glom/mode_design/dialog_fields.cc:36
 msgid "Field Definitions"
 msgstr "ས་སྒོའི་ངེས་ཚིག་ཚུ་"
 
-#: ../glom/glom.glade.h:137
+#: ../glom/glom.glade.h:138
 msgid "Field Layout"
 msgstr "ས་སྒོའི་བཀོད་སྒྲིག་"
 
-#: ../glom/glom.glade.h:138
+#: ../glom/glom.glade.h:139
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:70
 msgid "Field Summary"
 msgstr "ས་སྒོའི་བཅུད་དོན་"
 
-#: ../glom/glom.glade.h:139
+#: ../glom/glom.glade.h:140
 msgid "Field:"
 msgstr "ས་སྒོ:"
 
-#: ../glom/glom.glade.h:140
+#: ../glom/glom.glade.h:141
 msgid "Find All"
 msgstr "ཆ་མཉམ་འཚོལ་"
 
-#: ../glom/glom.glade.h:141
+#: ../glom/glom.glade.h:142
 msgid "Find Related Record"
 msgstr "འབྲེལ་བ་ཡོད་པའི་དྲན་ཐོ་འདི་འཚོལ་"
 
-#: ../glom/glom.glade.h:142
+#: ../glom/glom.glade.h:143
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_footer.cc:55
 msgid "Footer"
 msgstr "མཇུག་ཡིག་"
 
-#: ../glom/glom.glade.h:143
+#: ../glom/glom.glade.h:144
 msgid "Formatting"
 msgstr "རྩ་སྒྲིག་འབད་དོ་"
 
-#: ../glom/glom.glade.h:144
+#: ../glom/glom.glade.h:145
 msgid "Found:"
 msgstr "ཐོབ་ནུག:"
 
-#: ../glom/glom.glade.h:145
+#: ../glom/glom.glade.h:146
 msgid "From Field:"
 msgstr "ས་སྒོ་ལས:"
 
-#: ../glom/glom.glade.h:147
+#: ../glom/glom.glade.h:148
 #: ../glom/libglom/data_structure/layout/layoutgroup.cc:396
 msgid "Group"
 msgstr "སྡེ་ཚན་"
 
-#: ../glom/glom.glade.h:148
+#: ../glom/glom.glade.h:149
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_groupby.cc:102
 msgid "Group By"
 msgstr "སྡེ་ཚན་བཟོ་"
 
-#: ../glom/glom.glade.h:149
+#: ../glom/glom.glade.h:150
 msgid "Group By - Secondary Fields"
 msgstr "གལ་གནད་ཆུང་བའི་ས་སྒོ་ཚུ་-སྡེ་ཚན་བཟོ།"
 
-#: ../glom/glom.glade.h:150
+#: ../glom/glom.glade.h:151
 msgid "Group By - Sort Fields"
 msgstr "ས་སྒོ་ཚུ་དབྱེ་སེལ་འབད་- སྡེ་ཚན་བཟོ་"
 
-#: ../glom/glom.glade.h:151
+#: ../glom/glom.glade.h:152
 msgid "Group Name"
 msgstr "མིང་སྡེ་ཚན་བཟོ་"
 
-#: ../glom/glom.glade.h:152
+#: ../glom/glom.glade.h:153
 msgid "Groups"
 msgstr "སྡེ་ཚན་ཚུ་"
 
-#: ../glom/glom.glade.h:153
+#: ../glom/glom.glade.h:154
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_header.cc:55
 msgid "Header"
 msgstr "མགོ་ཡིག་"
 
-#: ../glom/glom.glade.h:154
+#: ../glom/glom.glade.h:155
 msgid "Height (lines)"
 msgstr "མཐོ་ཚད། (གྲལ་ཐིག་ཚུ་)"
 
-#: ../glom/glom.glade.h:155
+#: ../glom/glom.glade.h:156
 msgid "Identify Original"
 msgstr "ངོ་མ་ངེས་འཛིན་འབད་"
 
-#: ../glom/glom.glade.h:156
+#: ../glom/glom.glade.h:157
 msgid "Identify Source"
 msgstr "འབྱུང་ཁུངས་འདི་ངེས་འཛིན་འབད་"
 
-#: ../glom/glom.glade.h:157
+#: ../glom/glom.glade.h:158
 msgid "If the text is not actually in this language, please choose the correct language."
 msgstr "ཚིག་ཡིག་འདི་སྐད་ཡིག་འདི་ནང་ངོ་མ་འབད་མེད་པ་ཅིན་  སྐད་ཡིག་བདེན་པ་འདི་གདམ་ཁ་བརྐྱབ་གནང་།"
 
-#: ../glom/glom.glade.h:158
+#: ../glom/glom.glade.h:159
 msgid "If this is not selected then a thousands separator will not be used, even if your locale would normally use one. If it is selected then a thousands separator will be used only if your locale normally uses one."
 msgstr "འདི་སེལ་འཐུ་འབད་དེ་མེད་པ་ཅིན་  ཁྱོད་རའི་ལོ་ཀེལ་དེ་གིས་སྤྱིར་གཏང་ཅིག་ལག་ལེན་འཐབ་རུང་  དབྱེ་བྱེད་སྟོང་ཕྲག་ཅིགཔ་ཨི་ལག་ལེན་མི་འཐབ།  འདི་སེལ་འཐུ་འབད་དེ་ཡོད་པ་ཅིན་  དེ་ལས་  ཁྱོད་རའི་ལོ་ཀེལ་དེ་གིས་སྤྱིར་གཏང་གཅིག་ལག་ལེན་འཐབ་རུང་  དབྱེ་བྱེད་སྟོང་ཕྲག་ཅིགཔ་འདི་ལག་ལེན་འཐབ་ཨིན།"
 
-#: ../glom/glom.glade.h:159
+#: ../glom/glom.glade.h:160
 msgid "If this is selected then the field value will be shown in a multi-line box with a scrollbar."
 msgstr "འདི་སེལ་འཐུ་འབད་དེ་ཡོད་པ་ཅིན་  ས་སྒོའི་གནས་གོང་འདི་  སྣ་མང་གྲལ་ཐིག་གི་སྒྲོམ་ནང་ལུ་  བཤུད་ཕྲ་ཅིག་དང་བཅས་སྟོནམ་ཨིན།"
 
-#: ../glom/glom.glade.h:160
+#: ../glom/glom.glade.h:161
 #: ../glom/translation/window_translations.cc:587
 msgid "Import"
 msgstr "ནང་འདྲེན་འབད་"
 
-#: ../glom/glom.glade.h:161
+#: ../glom/glom.glade.h:162
 msgid "Language"
 msgstr "སྐད་ཡིག་"
 
-#: ../glom/glom.glade.h:162
+#: ../glom/glom.glade.h:163
 msgid "Locale"
 msgstr "ལོ་ཀེལ་"
 
-#: ../glom/glom.glade.h:163
+#: ../glom/glom.glade.h:164
 msgid "Logo"
 msgstr "ལས་རྟགས་"
 
-#: ../glom/glom.glade.h:164
+#: ../glom/glom.glade.h:165
 msgid "Lookup value when a field changes."
 msgstr "ས་སྒོ་འདི་བསྒྱུར་བཅོས་འགྱོཝ་ད་  གནས་གོང་བལྟ་བ།"
 
-#: ../glom/glom.glade.h:165
+#: ../glom/glom.glade.h:166
 msgid "Main"
 msgstr "གཙོ་བོ་"
 
-#: ../glom/glom.glade.h:166
+#: ../glom/glom.glade.h:167
 msgid "Mode:"
 msgstr "ཐབས་ལམ:"
 
-#: ../glom/glom.glade.h:167
+#: ../glom/glom.glade.h:168
 msgid "Module name:"
 msgstr "ཚད་གཞིའི་མིང་:"
 
-#: ../glom/glom.glade.h:168
+#: ../glom/glom.glade.h:169
 msgid "Multi-line"
 msgstr "སྣ་མང་གྲལ་ཐིག་"
 
@@ -682,7 +686,7 @@ msgstr "སྣ་མང་གྲལ་ཐིག་"
 #. Use set_cell_data_func() to give more control over the cell attributes depending on the row:
 #. Name column:
 #. Append the View columns:
-#: ../glom/glom.glade.h:169
+#: ../glom/glom.glade.h:170
 #: ../glom/box_reports.cc:90
 #: ../glom/layout_item_dialogs/dialog_groupby_secondaryfields.cc:51
 #: ../glom/layout_item_dialogs/dialog_groupby_sortfields.cc:50
@@ -697,183 +701,183 @@ msgstr "སྣ་མང་གྲལ་ཐིག་"
 msgid "Name"
 msgstr "མིང་"
 
-#: ../glom/glom.glade.h:170
+#: ../glom/glom.glade.h:171
 msgid "Name of new related table:"
 msgstr "འབྲེལ་བ་གསརཔ་ཡོད་པའི་ཐིག་ཁྲམ་གྱི་མིང་:"
 
-#: ../glom/glom.glade.h:171
+#: ../glom/glom.glade.h:172
 msgid "Name of new relationship:"
 msgstr "མཐུན་འབྲེལ་གསརཔ་གི་མིང་:"
 
-#: ../glom/glom.glade.h:172
+#: ../glom/glom.glade.h:173
 msgid "New From Example"
 msgstr "དཔེ་ལས་གསརཔ་"
 
-#: ../glom/glom.glade.h:173
+#: ../glom/glom.glade.h:174
 msgid "No Choices"
 msgstr "གདམ་ཁ་ཚུ་མེད་"
 
-#: ../glom/glom.glade.h:174
+#: ../glom/glom.glade.h:175
 #: ../glom/mode_design/dialog_design.cc:54
 msgid "None selected"
 msgstr "སེལ་འཐུ་མ་འབད་མི་"
 
-#: ../glom/glom.glade.h:175
+#: ../glom/glom.glade.h:176
 #: ../glom/mode_data/dialog_layout_details.cc:931
 msgid "Notebook Tabs"
 msgstr "འབྲི་དེབ་ཀྱི་ཨེབ་ལྡེ་ཚུ་"
 
-#: ../glom/glom.glade.h:176
+#: ../glom/glom.glade.h:177
 msgid "Organisation"
 msgstr "ཚོགས་ལྡེ་"
 
-#: ../glom/glom.glade.h:177
+#: ../glom/glom.glade.h:178
 msgid "Password"
 msgstr "ཆོག་ཡིག་"
 
-#: ../glom/glom.glade.h:178
+#: ../glom/glom.glade.h:179
 msgid "Primary Key"
 msgstr "གཞི་རིམ་ལྡེ་མིག་"
 
-#: ../glom/glom.glade.h:179
+#: ../glom/glom.glade.h:180
 #: ../glom/libglom/spawn_with_feedback.cc:134
 msgid "Processing"
 msgstr "བཟོ་སྦྱོར་གྱི་"
 
-#: ../glom/glom.glade.h:180
+#: ../glom/glom.glade.h:181
 msgid "Quick Find"
 msgstr "མགྱོགས་པར་འཚོལ་"
 
-#: ../glom/glom.glade.h:181
+#: ../glom/glom.glade.h:182
 msgid "Records: "
 msgstr "དྲན་ཐོ་ཚུ:"
 
-#: ../glom/glom.glade.h:182
+#: ../glom/glom.glade.h:183
 #: ../glom/libglom/data_structure/translatable_item.cc:284
 msgid "Relationship"
 msgstr "མཐུན་འབྲེལ་"
 
-#: ../glom/glom.glade.h:183
+#: ../glom/glom.glade.h:184
 msgid "Relationships Overview"
 msgstr "མཐུན་འབྲེལ་ཚུའི་སྤྱི་མཐོང་"
 
-#: ../glom/glom.glade.h:184
+#: ../glom/glom.glade.h:185
 msgid "Remove the item from the layout. If you remove a field layout item, it will not remove the field from the table itself. It just will not be seen on the layout."
 msgstr "རྣམ་གྲངས་འདི་བཀོད་སྒྲིག་ལས་རྩ་བསྐྲད་གཏང་།  ཁྱོད་ཀྱིས་ས་སྒོའི་བཀོད་སྒྲིག་རྣམ་གྲངས་ཅིག་རྩ་བསྐྲད་གཏང་པ་ཅིན་  ས་སྒོ་འདི་ཐིག་ཁྲམ་དེ་ཉིད་ལས་རྩ་བསྐྲད་མི་གཏང་།  འདི་བཀོད་སྒྲིག་གུ་མི་མཐོང་།"
 
-#: ../glom/glom.glade.h:185
+#: ../glom/glom.glade.h:186
 msgid "Report Layout"
 msgstr "བཀོད་སྒྲིག་སྙན་ཞུ་འབད་"
 
-#: ../glom/glom.glade.h:186
+#: ../glom/glom.glade.h:187
 msgid "Reports"
 msgstr "སྙན་ཞུ་ཚུ་"
 
-#: ../glom/glom.glade.h:187
+#: ../glom/glom.glade.h:188
 msgid "Restrict data to these choices"
 msgstr "གདམ་ཁ་དེ་ཚུ་ལུ་  གནས་སྡུད་འདི་བཀག་གདམ་འབད་"
 
-#: ../glom/glom.glade.h:188
+#: ../glom/glom.glade.h:189
 msgid "Revert"
 msgstr "རྒྱབ་ལོག་"
 
-#: ../glom/glom.glade.h:189
+#: ../glom/glom.glade.h:190
 msgid "Script name:"
 msgstr "ཡིག་ཚུགས་ཀྱི་མིང་:"
 
-#: ../glom/glom.glade.h:190
+#: ../glom/glom.glade.h:191
 msgid "Secondary Fields:"
 msgstr "གལ་གནད་ཆུང་བའི་ས་སྒོ་ཚུ:"
 
-#: ../glom/glom.glade.h:191
-#: ../glom/utility_widgets/imageglom.cc:365
+#: ../glom/glom.glade.h:192
+#: ../glom/utility_widgets/imageglom.cc:363
 #: ../glom/utility_widgets/dialog_choose_id.cc:82
 msgid "Select"
 msgstr "སེལ་འཐུ་འབད་"
 
-#: ../glom/glom.glade.h:192
+#: ../glom/glom.glade.h:193
 msgid "Select Field"
 msgstr "ས་སྒོ་སེལ་འཐུ་འབད་"
 
-#: ../glom/glom.glade.h:193
+#: ../glom/glom.glade.h:194
 msgid "Select Relationship"
 msgstr "མཐུན་འབྲེལ་སེལ་འཐུ་འབད་"
 
-#: ../glom/glom.glade.h:194
+#: ../glom/glom.glade.h:195
 msgid "Show Related Relationships"
 msgstr "འབྲེལ་བ་ཡོད་པའི་མཐུན་འབྲེལ་ཚུ་སྟོན་"
 
-#: ../glom/glom.glade.h:195
+#: ../glom/glom.glade.h:196
 msgid "Show Table Title"
 msgstr "ཐིག་ཁྲམ་མགོ་མིང་འདི་སྟོན་"
 
-#: ../glom/glom.glade.h:196
+#: ../glom/glom.glade.h:197
 msgid "Show child relationships"
 msgstr "ཆ་ལག་མཐུན་འབྲེལ་ཚུ་སྟོན་"
 
-#: ../glom/glom.glade.h:197
+#: ../glom/glom.glade.h:198
 msgid "Show hidden tables"
 msgstr "སྦ་བཞག་སྟེ་ཡོད་པའི་ཐིག་ཁྲམ་ཚུ་སྟོན་"
 
-#: ../glom/glom.glade.h:198
+#: ../glom/glom.glade.h:199
 msgid "Sort Fields:"
 msgstr "ས་སྒོ་ཚུ་དབྱེ་སེལ་འབད:"
 
-#: ../glom/glom.glade.h:199
+#: ../glom/glom.glade.h:200
 msgid "Start a translation for this target locale by copying the strings from another target locale."
 msgstr "དམིགས་གཏད་ལོ་ཀེལ་གྱི་དོན་ལུ་སྐད་བསྒྱུར་འདི་  དམིགས་གཏད་ལོ་ཀེལ་གཞན་མི་ཅིག་ལས་  ཡིག་རྒྱུན་འདི་འདྲ་བཤུས་བརྐྱབ་སྟེ་  འགོ་བཙུགས་ད།"
 
-#: ../glom/glom.glade.h:200
+#: ../glom/glom.glade.h:201
 msgid "State/County"
 msgstr "གནས་ལུགས་/རྒྱལ་ཁབ་"
 
-#: ../glom/glom.glade.h:201
-#: ../glom/libglom/document/document_glom.cc:384
+#: ../glom/glom.glade.h:202
+#: ../glom/libglom/document/document_glom.cc:388
 msgid "Street"
 msgstr "ཁྲོམ་ལམ་"
 
-#: ../glom/glom.glade.h:202
+#: ../glom/glom.glade.h:203
 msgid "Street (Line 2)"
 msgstr "ཁྲོམ་ལམ། (གྲལ་ཐིག་ ༢)"
 
-#: ../glom/glom.glade.h:203
+#: ../glom/glom.glade.h:204
 msgid "Summary Type:"
 msgstr "བཅུད་དོན་གྱི་དབྱེ་བ:"
 
-#: ../glom/glom.glade.h:204
-#: ../glom/libglom/document/document_glom.cc:366
+#: ../glom/glom.glade.h:205
+#: ../glom/libglom/document/document_glom.cc:370
 msgid "System Name"
 msgstr "རིམ་ལུགས་ཀྱི་མིང་"
 
-#: ../glom/glom.glade.h:205
+#: ../glom/glom.glade.h:206
 msgid "Table:"
 msgstr "ཐིག་ཁྲམ:"
 
-#: ../glom/glom.glade.h:206
+#: ../glom/glom.glade.h:207
 msgid "Table: "
 msgstr "ཐིག་ཁྲམ:"
 
-#: ../glom/glom.glade.h:207
+#: ../glom/glom.glade.h:208
 msgid "Test"
 msgstr "བརྟག་ཞིབ་"
 
-#: ../glom/glom.glade.h:208
+#: ../glom/glom.glade.h:209
 msgid "Test Translation"
 msgstr "སྐད་བསྒྱུར་འདི་བརྟག་ཞིབ་འབད་"
 
-#: ../glom/glom.glade.h:209
+#: ../glom/glom.glade.h:210
 msgid "Text Object"
 msgstr "ཚིག་ཡིག་གི་དངོས་པོ་"
 
-#: ../glom/glom.glade.h:210
+#: ../glom/glom.glade.h:211
 msgid "The field value will be the return value of the python function, which you implement here."
 msgstr "ས་སྒོའི་གནས་གོང་འདི་  པའི་ཡི་ཐཱོན་ལས་འགན་གྱི་སླར་ལོག་གནས་གོང་འབདཝ་ཨིན་  དེ་ཡང་  ནཱ་ལུ་ཁྱོད་ཀྱིས་བསྟར་སྤྱོད་འབད་ཡོད་འདི་ཨིན།"
 
-#: ../glom/glom.glade.h:211
+#: ../glom/glom.glade.h:212
 msgid "These modules will be available to your button scripts and field calculations via the python import keyword."
 msgstr "ཚད་གཞི་ཚུ་  ཁྱོད་རའི་ཨེབ་རྟ་གི་ཡིག་ཚུགས་ལུ་ཐོབ་ཚུགས་ནི་དང་  པའི་ཡི་ཐཱོན་ནང་འདྲེན་གཙོ་ཚིག་ལས་བརྒྱུད་དེ་  ས་སྒོའི་རྩིས་ལས་ཚུ་ཐོབ་ཚུགས།"
 
-#: ../glom/glom.glade.h:212
+#: ../glom/glom.glade.h:213
 msgid ""
 "This will add a new table and add a relationship that refers to the new  table, as a convenient alternative to doing this in separate steps.\n"
 "\n"
@@ -884,7 +888,7 @@ msgstr ""
 "འོས་འབབ་ཡོད་པའི་འབྲེལ་བའི་ཐིག་ཁྲམ་འདི་ཧེ་མ་ལས་ཡོད་པ་ཅིན་  ཁྱོད་ཀྱིས་  ཆ་མེད་གཏང་ནི་དང་  མཐུན་འབྲེལ་འདི་ཁ་སྐོང་བརྐྱབ་དགོ།"
 
 #. Title column:
-#: ../glom/glom.glade.h:215
+#: ../glom/glom.glade.h:216
 #: ../glom/box_reports.cc:94
 #: ../glom/layout_item_dialogs/dialog_notebook.cc:47
 #: ../glom/mode_data/dialog_choose_field.cc:52
@@ -896,118 +900,118 @@ msgstr ""
 msgid "Title"
 msgstr "མགོ་མིང་"
 
-#: ../glom/glom.glade.h:216
+#: ../glom/glom.glade.h:217
 msgid "Town"
 msgstr "ཁྲོམ་"
 
-#: ../glom/glom.glade.h:217
+#: ../glom/glom.glade.h:218
 msgid "Translations"
 msgstr "སྐད་བསྒྱུར་ཚུ་"
 
-#: ../glom/glom.glade.h:218
+#: ../glom/glom.glade.h:219
 msgid "Triggered by:"
 msgstr "ཐར་རྟ:"
 
-#: ../glom/glom.glade.h:219
+#: ../glom/glom.glade.h:220
 #: ../glom/mode_design/fields/box_db_table_definition.cc:59
 msgid "Type"
 msgstr "དབྱེ་བ་"
 
-#: ../glom/glom.glade.h:220
+#: ../glom/glom.glade.h:221
 msgid "Unique"
 msgstr "མཐུན་མོང་མ་ཡིན་པ་"
 
-#: ../glom/glom.glade.h:221
+#: ../glom/glom.glade.h:222
 msgid "Use 1000s separator"
 msgstr "1000s དབྱེ་བྱེད་འདི་ལག་ལེན་འཐབ་"
 
-#: ../glom/glom.glade.h:222
+#: ../glom/glom.glade.h:223
 msgid "Use custom formatting"
 msgstr "སྲོལ་སྒྲིག་གི་རྩ་སྒྲིག་འདི་ལག་ལེན་འཐབ་"
 
-#: ../glom/glom.glade.h:223
+#: ../glom/glom.glade.h:224
 msgid "Use custom title"
 msgstr "སྲོལ་སྒྲིག་གི་མགོ་མིང་འདི་ལག་ལེན་འཐབ་"
 
-#: ../glom/glom.glade.h:224
+#: ../glom/glom.glade.h:225
 msgid "Use default field title: "
 msgstr "སྔོན་སྒྲིག་ས་སྒོའི་མགོ་མིང་འདི་ལག་ལེན་འཐབ:"
 
-#: ../glom/glom.glade.h:225
+#: ../glom/glom.glade.h:226
 msgid "Use default formatting"
 msgstr "སྔོན་སྒྲིག་གི་རྩ་སྒྲིག་འདི་ལག་ལེན་འཐབ་"
 
 #. Append the View columns:
-#: ../glom/glom.glade.h:226
+#: ../glom/glom.glade.h:227
 #: ../glom/mode_design/users/dialog_users_list.cc:67
 msgid "User"
 msgstr "ལག་ལེན་པ་"
 
-#: ../glom/glom.glade.h:227
+#: ../glom/glom.glade.h:228
 msgid "User Entry"
 msgstr "ཐོ་བཀོད་ལག་ལེན་པ་"
 
-#: ../glom/glom.glade.h:228
+#: ../glom/glom.glade.h:229
 msgid "Users"
 msgstr "ལག་ལེན་པ་ཚུ"
 
-#: ../glom/glom.glade.h:229
+#: ../glom/glom.glade.h:230
 msgid "Value"
 msgstr "གནས་གོང་"
 
-#: ../glom/glom.glade.h:230
+#: ../glom/glom.glade.h:231
 msgid "When the button is clicked it will run the python function which you implement here."
 msgstr "ཨེབ་རྟ་འདི་ཨེབ་གཏང་འབད་བའི་བསྒང་  ཁྱོད་ཀྱིས་ནཱ་ལུ་པ་ཡི་ཐཱོན་ལས་འགན་འདི་གཡོག་བཀོལ་བཏུབ།"
 
-#: ../glom/glom.glade.h:231
+#: ../glom/glom.glade.h:232
 msgid "When this is selected you will see extra relationships in the Table list, allowing you to choose fields from relationships in related tables, instead of just regular fields from those related tables."
 msgstr "འདི་སེལ་འཐུ་འབདཝ་ད་  འབྲེལ་བ་ཡོད་པའི་ཐིག་ཁྲམ་ལས་དུས་རྒྱུན་ས་སྒོ་ཚུ་མེན་པར་  འབྲེལ་བ་ཡོད་འི་ཐིག་ཁྲམ་ནང་གི་མཐུན་འབྲེལ་ཚུ་ལས་  ཁྱོད་ལུ་ས་སྒོ་ཚུ་གདམ་ཁ་བརྐྱབ་བཅུག་མི་  ཐིག་ཁྲམ་ཐོ་ཡིག་ནང་  ཁྱོད་ཀྱིས་མཐུན་འབྲེལ་ཐེབས་ཚུ་མཐོངམ་ཨིན།"
 
-#: ../glom/glom.glade.h:232
+#: ../glom/glom.glade.h:233
 msgid "Zip/Postal Code"
 msgstr "གནས་ཡུལ་/ འགྲེམ་ཨང་"
 
-#: ../glom/glom.glade.h:233
+#: ../glom/glom.glade.h:234
 msgid "_Confirm Password"
 msgstr "ཆོག་ཡིག་ངེས་དཔྱད་འབད། (_C)"
 
-#: ../glom/glom.glade.h:234
+#: ../glom/glom.glade.h:235
 msgid "_Host"
 msgstr "ཧོསཊི། (_H)"
 
-#: ../glom/glom.glade.h:235
+#: ../glom/glom.glade.h:236
 msgid "_Password"
 msgstr "ཆོག་ཡིག། (_P)"
 
-#: ../glom/glom.glade.h:236
+#: ../glom/glom.glade.h:237
 msgid "_User"
 msgstr "ལག་ལེན་པ། (_U)"
 
-#: ../glom/glom.glade.h:237
+#: ../glom/glom.glade.h:238
 msgid "example data format"
 msgstr "དཔེར་ན་ གནས་སྡུད་རྩ་སྒྲིག་"
 
-#: ../glom/glom.glade.h:238
+#: ../glom/glom.glade.h:239
 msgid "field name"
 msgstr "ས་སྒོའི་མིང་"
 
-#: ../glom/glom.glade.h:239
+#: ../glom/glom.glade.h:240
 msgid "gtk-add"
 msgstr "ཇི་ཊི་ཀེ་-ཁ་སྐོང་བརྐྱབ་"
 
-#: ../glom/glom.glade.h:240
+#: ../glom/glom.glade.h:241
 msgid "gtk-remove"
 msgstr "ཇི་ཊི་ཀེ་-རྩ་བསྐྲད་གཏང་"
 
-#: ../glom/glom.glade.h:241
+#: ../glom/glom.glade.h:242
 msgid "table name"
 msgstr "ཐིག་ཁྲམ་གྱི་མིང་"
 
-#: ../glom/glom.glade.h:242
+#: ../glom/glom.glade.h:243
 msgid "table_name"
 msgstr "ཐིག་ཁྲམ་གྱི་མིང་། (_n)"
 
-#: ../glom/glom.glade.h:243
+#: ../glom/glom.glade.h:244
 msgid "the title"
 msgstr "མགོ་མིང་"
 
@@ -1161,99 +1165,99 @@ msgid "You must specify a title for the new database."
 msgstr "གནས་སྡུད་གཞི་རྟེན་གསརཔ་གི་དོན་ལུ་  ཁྱོད་ཀྱིས་མགོ་མིང་གཅིག་གསལ་བཀོད་འབད་དགོ།"
 
 #: ../glom/application.cc:607
-#: ../glom/libglom/connectionpool.cc:644
+#: ../glom/libglom/connectionpool.cc:665
 msgid "Directory Already Exists"
 msgstr "སྣོད་ཐོ་འདི་ཧེ་མ་ལས་རང་གནས་ཏེ་འདུག་"
 
 #: ../glom/application.cc:607
-#: ../glom/libglom/connectionpool.cc:644
+#: ../glom/libglom/connectionpool.cc:665
 msgid "There is an existing directory with the same name as the directory that should be created for the new database files. You should specify a different filename to use a new directory instead."
 msgstr "སྣོད་ཐོ་འདི་གནས་སྡུད་གཞི་རྟེན་ཡིག་སྣོད་གསརཔ་གི་དོན་ལུ་གསར་བསྐྲུན་འབད་དགོ་དོ་བཟུམ་སྦེ་  དེ་ནང་ད་ལྟོ་སྣོད་ཐོ་ཅིག་མིང་གཅིག་པ་ཡོདཔ་ཨིན།  སྣོད་ཐོ་གསརཔ་གཅིག་ལག་ལེན་འཐབ་ནི་ལུ་  ཁྱོད་ཀྱིས་ཡིག་སྣོད་མིང་སོ་སོ་ཅིག་གསལ་བཀོད་འབད།"
 
-#: ../glom/application.cc:720
+#: ../glom/application.cc:726
 msgid "Creating From Example File"
 msgstr "དཔེའི་ཡིག་སྣོད་ལས་  གསར་བསྐྲུན་འབད་དོ་"
 
-#: ../glom/application.cc:721
+#: ../glom/application.cc:727
 msgid "To use this example file you must save an editable copy of the file. A new database will also be created on the server."
 msgstr "དཔེའི་ཡིག་སྣོད་འདི་ལག་ལེན་འཐབ་ནིའི་དོན་ལུ་  ཁྱོད་ཀྱིས་  ཡིག་སྣོད་ཀྱི་འདྲ་བཤུས་ཞུན་དག་འབད་བཏུབ་མི་ཅིག་སྲུང་བཞག་འབད་དགོ།  གནས་སྡུད་གཞི་རྟེན་གསརཔ་ཅིག་  སར་བར་གུ་གསར་བསྐྲུན་འབད་འོང་།"
 
-#: ../glom/application.cc:747
+#: ../glom/application.cc:755
 msgid "Opening Read-Only File."
 msgstr "ལྷག་ཙམ་ཡིག་སྣོད་ཁ་ཕྱེ་དོ།"
 
-#: ../glom/application.cc:748
+#: ../glom/application.cc:756
 msgid "This file is read only, so you will not be able to enter Developer mode to make design changes."
 msgstr "ཡིག་སྣོད་འདི་ལྷག་ཙམ་ཨིན་  དེ་འབདཝ་ལས་  ཁྱོད་ཀྱིས་སྒྲིག་བཀོད་བསྒྱུར་བཅོས་འབད་ནིའི་དོན་ལུ་  ཐབས་ལམ་བཟོ་མི་འདི་ཐོ་བཀོད་འབད་མི་ཚུགས།"
 
-#: ../glom/application.cc:751
+#: ../glom/application.cc:759
 msgid "Continue without Developer Mode"
 msgstr "ཐབས་ལམ་བཟོ་མི་མེད་པར་ འཕྲོ་མཐུད་འབད།"
 
 #. The connection to the server is OK, but the database is not there yet.
-#: ../glom/application.cc:847
+#: ../glom/application.cc:855
 msgid "Database Not Found On Server"
 msgstr "སར་བར་གུ་གནས་སྡུད་གཞི་རྟེན་འདི་འཚོལ་མ་ཐོབ་"
 
-#: ../glom/application.cc:847
+#: ../glom/application.cc:855
 msgid "The database could not be found on the server. Please consult your system administrator."
 msgstr "སར་བར་གུ་གནས་སྡུད་གཞི་རྟེན་འདི་ཐོབ་མ་ཚུགས།  ཁྱོད་རའི་རིམ་ལུགས་བདག་སྐྱོང་པ་ལུ་འདྲི་བསྟུན་འབད་གནང་།"
 
-#: ../glom/application.cc:1090
+#: ../glom/application.cc:1120
 msgid "_Contents"
 msgstr "ནང་དོན་ཚུ། (_C)"
 
-#: ../glom/application.cc:1090
+#: ../glom/application.cc:1120
 msgid "Help with the application"
 msgstr "གློག་རིམ་དང་ཅིག་ཁར་གྲོགས་རམ་འབད་"
 
-#: ../glom/application.cc:1161
+#: ../glom/application.cc:1191
 msgid "Creating Glom Database"
 msgstr "གུལུམ་གནས་སྡུད་གཞི་རྟེན་འདི་གསར་བསྐྲུན་འབད་དོ་"
 
-#: ../glom/application.cc:1161
+#: ../glom/application.cc:1191
 msgid "Creating Glom database from example file."
 msgstr "དཔེའི་ཡིག་སྣོད་ལས་ གུལུམ་གནས་སྡུད་གཞི་རྟེན་འདི་ གསར་བསྐྲུན་འབད་དོ།"
 
-#: ../glom/application.cc:1499
+#: ../glom/application.cc:1529
 msgid "Save failed."
 msgstr "སྲུང་བཞག་འབད་མ་ཚུགས།"
 
-#: ../glom/application.cc:1499
+#: ../glom/application.cc:1529
 msgid "There was an error while saving the file. Your changes have not been saved."
 msgstr "ཡིག་སྣོད་འདི་སྲུང་བཞག་འབདཝ་ད་  འཛོལ་བ་འབྱུང་ནུག།  ཁྱོད་ཀྱི་བསྒྱུར་བཅོས་ཚུ་སྲུང་བཞག་མ་འབད་བས།"
 
 #: ../glom/base_db.cc:161
-#: ../glom/libglom/connectionpool.cc:486
+#: ../glom/libglom/connectionpool.cc:507
 msgid "Internal error"
 msgstr "ནང་འཁོད་ཀྱི་འཛོལ་བ་"
 
-#: ../glom/base_db.cc:934
+#: ../glom/base_db.cc:948
 #: ../glom/mode_design/users/dialog_groups_list.cc:67
 msgid "Description"
 msgstr "འགྲེལ་བཤད་"
 
-#: ../glom/base_db.cc:941
+#: ../glom/base_db.cc:955
 msgid "Comments"
 msgstr "བསམ་བཀོད་ཚུ་"
 
-#: ../glom/base_db.cc:1354
+#: ../glom/base_db.cc:1368
 msgid "No Records Found"
 msgstr "དྲན་ཐོ་ཚུ་མ་ཐོབ་"
 
-#: ../glom/base_db.cc:1356
+#: ../glom/base_db.cc:1370
 msgid "New Find"
 msgstr "གསརཔ་འཚོལ་"
 
-#: ../glom/base_db.cc:1357
+#: ../glom/base_db.cc:1371
 msgid "Your find criteria did not match any records in the table."
 msgstr "ཁྱོད་ཀྱིས་འཚོལ་ཡོད་པའི་ཁྱད་ཚད་དེ་གིས་  ཐིག་ཁྲམ་ནང་ཡོད་པའི་དྲན་ཐོ་ཚུ་དང་མཐུན་སྒྲིག་མིན་འདུག།"
 
-#: ../glom/base_db.cc:2311
+#: ../glom/base_db.cc:2325
 msgid "Value Is Not Unique"
 msgstr "གནས་གོང་འདི་མཐུན་མོང་མ་ཡིན་པ་མེན་པས་"
 
-#: ../glom/base_db.cc:2311
+#: ../glom/base_db.cc:2325
 msgid "The field's value must be unique, but a record with this value already exists."
 msgstr "ས་སྒོའི་གནས་གོང་འདི་  མཐུན་མོང་མ་ཡིན་པ་ཅིག་ཨིནམ་འོང་  དེ་འབདཝ་ད་  གནས་གོང་འདི་དང་ཅིག་ཁར་ཡོད་པའི་དྲན་ཐོ་འདི་  ཧེ་མ་ལས་རང་གནས་ཏེ་འདུག།"
 
@@ -1291,46 +1295,48 @@ msgstr "(ཅི་མེད་)"
 #. Please do test it with your postgres version, using "echo $?" to see the result code of the last command.
 #. TODO: This is not a stable API. Also, watch out for localisation.
 #. The first command does not return, but the second command can check whether it succeeded:
-#: ../glom/libglom/connectionpool.cc:580
+#: ../glom/libglom/connectionpool.cc:601
 msgid "Starting Database Server"
 msgstr "གནས་སྡུད་གཞི་རྟེན་སར་བར་འདི་འགོ་བཙུགས་དོ་"
 
-#: ../glom/libglom/connectionpool.cc:618
+#: ../glom/libglom/connectionpool.cc:639
 msgid "Stopping Database Server"
 msgstr "གནས་སྡུད་གཞི་རྟེན་སར་བར་འདི་བཀག་དོ་"
 
-#: ../glom/libglom/connectionpool.cc:664
+#: ../glom/libglom/connectionpool.cc:685
 msgid "Could Not Create Directory"
 msgstr "སྣོད་ཐོ་་གསར་བསྐྲུན་འབད་མ་ཚུགས།"
 
-#: ../glom/libglom/connectionpool.cc:664
+#: ../glom/libglom/connectionpool.cc:685
 msgid "There was an error when attempting to create the directory for the new database files."
 msgstr "གནས་སྡུད་གཞི་རྟེན་ཡིག་སྣོད་གསརཔར་ཚུ་གི་དོན་ལུ་སྣོད་ཐོ་གསར་བསྐྲུན་འབད་ནི་དཔའ་བཅམ་ད་  དེ་ནང་འཛོལ་བ་འདུག།"
 
-#: ../glom/libglom/connectionpool.cc:677
+#: ../glom/libglom/connectionpool.cc:698
 msgid "Could Not Create Configuration Directory"
 msgstr "རིམ་སྒྲིག་སྣོད་ཐོ་གསར་བསྐྲུན་འབད་མ་ཚུགས་"
 
-#: ../glom/libglom/connectionpool.cc:677
+#: ../glom/libglom/connectionpool.cc:698
 msgid "There was an error when attempting to create the configuration directory for the new database files."
 msgstr "གནས་སྡུད་ཡིག་སྣོད་གསརཔ་ཚུ་གི་དོན་ལུ་  རིམ་སྒྲིག་སྣོད་ཐོ་འདི་གསར་བསྐྲུན་འབད་ནི་ལུ་དཔའ་བཅམ་ད་འཛོལ་བ་བྱུང་ནུག།"
 
 #. Note that --pwfile takes the password from the first line of a file. It's an alternative to supplying it when prompted on stdin.
-#: ../glom/libglom/connectionpool.cc:712
+#: ../glom/libglom/connectionpool.cc:733
 msgid "Creating Database Data"
 msgstr "གནས་སྡུད་གཞི་རྟེན་གནས་སྡུད་འདི་གསར་བསྐྲུན་འབད་དོ་"
 
 #. Show message to the user about the broken installation:
 #. This is a packaging bug, but it would probably annoy packagers to mention that in the dialog:
 #. Show message to the user about the broken installation:
-#: ../glom/libglom/connectionpool.cc:831
-#: ../glom/libglom/connectionpool.cc:844
+#. The Postgres provider was not found, so warn the user:
+#: ../glom/libglom/connectionpool.cc:852
+#: ../glom/libglom/connectionpool.cc:865
+#: ../glom/libglom/connectionpool.cc:931
 msgid "Incomplete Glom Installation"
 msgstr "མཇུག་མ་བསྡུ་བའི་གུལུམ་གཞི་བཙུགས་"
 
 #. use_markup
 #. modal
-#: ../glom/libglom/connectionpool.cc:832
+#: ../glom/libglom/connectionpool.cc:853
 msgid ""
 "Your installation of Glom is not complete, because PostgreSQL is not available on your system. PostgreSQL is needed for self-hosting of Glom databases.\n"
 "\n"
@@ -1340,13 +1346,13 @@ msgstr ""
 "\n"
 "ཁྱོད་ཀྱིས་ད་ གུལུམ་གཞི་བཙུགས་མཇུག་བསྡུ་ནི་ལུ་  པོསཊི་གིརི་ཨེསི་ཀིའུ་ཨེལ་གཞི་བཙུགས་འབད།"
 
-#: ../glom/libglom/connectionpool.cc:834
+#: ../glom/libglom/connectionpool.cc:855
 msgid "Install PostgreSQL"
 msgstr "པོསཊི་གིརི་ཨེསི་ཀིའུ་ཨེལ་འདི་གཞི་བཙུགས་འབད་"
 
 #. use_markup
 #. modal
-#: ../glom/libglom/connectionpool.cc:845
+#: ../glom/libglom/connectionpool.cc:866
 msgid ""
 "Your installation of Glom is not complete, because PostgreSQL is not available on your system. PostgreSQL is needed for self-hosting of Glom databases.\n"
 "\n"
@@ -1356,36 +1362,48 @@ msgstr ""
 "\n"
 "རྐྱེན་འདི་ཁྱོད་རའི་བཙོང་མི་ལུ་ཡང་ན་  ཁྱོད་རའི་རིམ་ལུགས་བདཀ་སྐྱོང་པ་ལུ་སྙན་ཞུ་འབད་བ་ཅིན་  དེ་ནོར་བཅོས་འབད་ཚུགས།"
 
-#: ../glom/libglom/data_structure/field.cc:548
+#. use_markup
+#. modal
+#: ../glom/libglom/connectionpool.cc:932
+msgid ""
+"Your installation of Glom is not complete, because the PostgreSQL libgda provider is not available on your system. This provider is needed to access Postgres database servers.\n"
+"\n"
+"Please report this bug to your vendor, or your system administrator so it can be corrected."
+msgstr ""
+"ཁྱོད་རའི་གུལུམ་གཞི་བཙུགས་འདི་མཇུག་མ་བསྡུ་བས་ ག་ཅི་སྦེ་ཟེར་བ་ཅིན་  པོསཊི་གིརི་ཨེསི་ཀིའུ་ཨེལ་ ལིབ་ཇི་ཌ་ བྱིན་མཁན་དེ་ ཁྱོད་རའི་རིམ་ལུགས་གུར་ཐོབ་མ་ཚུགས། \n"
+"\n"
+"རྐྱེན་འདི་ནོར་བཅོས་འབད་ཚུགས་ནི་གི་དོན་ལུ་ ཁྱོད་རའི་བཙོང་མི་ལུ་ཡང་ན་  ཁྱོད་རའི་རིམ་ལུགས་བདཀ་སྐྱོང་པ་ལུ་ སྙན་ཞུ་འབད།"
+
+#: ../glom/libglom/data_structure/field.cc:554
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:142
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:150
 msgid "Invalid"
 msgstr "ནུས་ཅན་མེདཔ་"
 
-#: ../glom/libglom/data_structure/field.cc:549
+#: ../glom/libglom/data_structure/field.cc:555
 msgid "Number"
 msgstr "ཨང་"
 
-#: ../glom/libglom/data_structure/field.cc:550
+#: ../glom/libglom/data_structure/field.cc:556
 #: ../glom/libglom/data_structure/translatable_item.cc:298
 #: ../glom/libglom/data_structure/layout/layoutitem_text.cc:68
 #: ../glom/mode_data/dialog_layout_details.cc:1131
 msgid "Text"
 msgstr "ཚིག་ཡིག་"
 
-#: ../glom/libglom/data_structure/field.cc:551
+#: ../glom/libglom/data_structure/field.cc:557
 msgid "Time"
 msgstr "དུས་ཡུན་"
 
-#: ../glom/libglom/data_structure/field.cc:552
+#: ../glom/libglom/data_structure/field.cc:558
 msgid "Date"
 msgstr "ཚེས་གྲངས་"
 
-#: ../glom/libglom/data_structure/field.cc:553
+#: ../glom/libglom/data_structure/field.cc:559
 msgid "Boolean"
 msgstr "བུ་ལིན་"
 
-#: ../glom/libglom/data_structure/field.cc:554
+#: ../glom/libglom/data_structure/field.cc:560
 #: ../glom/libglom/data_structure/translatable_item.cc:300
 #: ../glom/libglom/data_structure/layout/layoutitem_image.cc:68
 #: ../glom/mode_data/dialog_layout_details.cc:1138
@@ -1475,36 +1493,36 @@ msgstr "བཅུད་དོན་"
 msgid "Vertical Group"
 msgstr "ཀེར་ཕྲང་གི་སྡེ་ཚན་"
 
-#: ../glom/libglom/document/document_glom.cc:335
-#: ../glom/libglom/document/document_glom.cc:353
+#: ../glom/libglom/document/document_glom.cc:339
+#: ../glom/libglom/document/document_glom.cc:357
 msgid "System Preferences"
 msgstr "རིམ་ལུགས་ཀྱི་དགའ་གདམ་ཚུ་"
 
-#: ../glom/libglom/document/document_glom.cc:372
+#: ../glom/libglom/document/document_glom.cc:376
 msgid "Organisation Name"
 msgstr "ཚོགས་སྡེའི་མིང་"
 
-#: ../glom/libglom/document/document_glom.cc:378
+#: ../glom/libglom/document/document_glom.cc:382
 msgid "Organisation Logo"
 msgstr "ཚོགས་སྡེའི་ལས་རྟགས་"
 
-#: ../glom/libglom/document/document_glom.cc:390
+#: ../glom/libglom/document/document_glom.cc:394
 msgid "Street (line 2)"
 msgstr "ཁྲོམ་ལམ། (གྲལ་ཐིག་ ༢)"
 
-#: ../glom/libglom/document/document_glom.cc:396
+#: ../glom/libglom/document/document_glom.cc:400
 msgid "City"
 msgstr "གྲོང་སྡེ་"
 
-#: ../glom/libglom/document/document_glom.cc:402
+#: ../glom/libglom/document/document_glom.cc:406
 msgid "State"
 msgstr "གནས་ལུགས་"
 
-#: ../glom/libglom/document/document_glom.cc:414
+#: ../glom/libglom/document/document_glom.cc:418
 msgid "Zip Code"
 msgstr "གནས་ཨང་"
 
-#: ../glom/libglom/utils.cc:813
+#: ../glom/libglom/utils.cc:810
 msgid "Could not display help: "
 msgstr "གྲོགས་རམ་འདི་བཀྲམ་སྟོན་འབད་མ་ཚུགས:"
 
@@ -1635,7 +1653,7 @@ msgid "This feature is not yet available."
 msgstr "ཁྱད་རྣམ་འདི་ད་ལྟོ་ཡང་ཐོབ་ཚུགསཔ་མེད།"
 
 #. Show 0 instead of "all" when all of no records are found, to avoid confusion.
-#: ../glom/frame_glom.cc:1872
+#: ../glom/frame_glom.cc:1878
 msgid "All"
 msgstr "ཆ་མཉམ་"
 
@@ -1643,31 +1661,31 @@ msgstr "ཆ་མཉམ་"
 msgid "Ascending"
 msgstr "ཡར་འཛེགས་"
 
-#: ../glom/main.cc:54
+#: ../glom/main.cc:53
 msgid "Glom options"
 msgstr "གུལུམ་གདམ་ཁ་ཚུ་"
 
-#: ../glom/main.cc:54
+#: ../glom/main.cc:53
 msgid "Command-line options for glom"
 msgstr "གུལུམ་གྱི་དོན་ལུ་  བརྡ་བཀོད་-གྲལ་ཐིག་"
 
-#: ../glom/main.cc:61
+#: ../glom/main.cc:60
 msgid "The Filename"
 msgstr "ཡིག་སྣོད་མིང་"
 
-#: ../glom/main.cc:67
+#: ../glom/main.cc:66
 msgid "The version of this application."
 msgstr "གློག་རིམ་འདི་གི་ཐོན་རིམ།"
 
-#: ../glom/main.cc:72
+#: ../glom/main.cc:71
 msgid "Show the generated SQL queries on stdout, for debugging."
 msgstr "རྐྱེན་སེལ་འབད་དོ་ཟེར་མི་གི་དོན་ལུ་  བཟོ་བཏོན་འབད་ཡོད་པའི་ ཨེསི་ཀིའུ་ཨེལ་འདྲི་དཔྱད་ཚུ་  ཨེསི་ཊི་ཌི་ཅའུཊི་གུ་སྟོན།"
 
-#: ../glom/main.cc:102
+#: ../glom/main.cc:101
 msgid "Error while parsing commmand-line options: "
 msgstr "བརྡ་བཀོད་གྲལ་ཐིག་གདམ་ཁ་ཚུ་མིང་དཔྱད་འབདཝ་ད་འཛོལ་བ:"
 
-#: ../glom/main.cc:103
+#: ../glom/main.cc:102
 msgid "Use --help to see a list of available command-line options."
 msgstr "བརྡ་བཀོད་-གྲལ་ཐིག་གདམ་ཁ་ཐོབ་ཚུགསཔ་གི་ཐོ་ཡིག་གཅིག་ལྟ་ནི་ལུ་ --གྲོགས་རམ་ལག་ལེན་འཐབ།"
 
@@ -2092,23 +2110,23 @@ msgstr "ཚིག་ཡིག་"
 msgid "New Text"
 msgstr "ཚིག་ཡིག་གསརཔ་"
 
-#: ../glom/utility_widgets/imageglom.cc:356
+#: ../glom/utility_widgets/imageglom.cc:354
 msgid "Choose image"
 msgstr "གཟུགས་བརྙན་འདི་གདམ་ཁ་བརྐྱབ་"
 
-#: ../glom/utility_widgets/imageglom.cc:360
+#: ../glom/utility_widgets/imageglom.cc:358
 msgid "Images"
 msgstr "གཟུགས་བརྙན་ཚུ་"
 
-#: ../glom/utility_widgets/imageglom.cc:392
+#: ../glom/utility_widgets/imageglom.cc:390
 msgid "Image loading failed"
 msgstr "གཟུགས་བརྙན་སྔོན་གསལ་འབད་མ་ཚུགས་"
 
-#: ../glom/utility_widgets/imageglom.cc:392
+#: ../glom/utility_widgets/imageglom.cc:390
 msgid "The image file could not be opened:\n"
 msgstr "གཟུགས་བརྙན་ཡིག་སྣོད་འདི་  ཁ་ཕྱེ་མ་ཚུགས: \n"
 
-#: ../glom/utility_widgets/imageglom.cc:487
+#: ../glom/utility_widgets/imageglom.cc:485
 msgid "Choose File"
 msgstr "ཡིག་སྣོད་གདམ་ཁ་བརྐྱབ་"
 

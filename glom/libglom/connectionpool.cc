@@ -38,6 +38,8 @@
 #include <sys/socket.h>
 #include <netinet/in.h> //For sockaddr_in
 
+#include <signal.h> //To catch segfaults
+
 #include "gst-package.h"
 
 namespace Glom
@@ -638,6 +640,26 @@ bool ConnectionPool::directory_exists_uri(const std::string& uri)
 }
 
 #ifndef ENABLE_CLIENT_ONLY
+static sighandler_t previous_sig_handler = SIG_DFL; /* Arbitrary default */
+
+/* This is a Linux/Unix signal handler, 
+ * so we can respond to a crash.
+ */
+static void on_linux_signal(int signum)
+{
+  ConnectionPool* connection_pool = ConnectionPool::get_instance();
+  if(!connection_pool)
+    return;
+
+  if(signum == SIGSEGV)
+  {
+    connection_pool->stop_self_hosting();
+	
+    //TODO: How can we let GNOME's crash handler still handle this?
+    exit(1);
+  }
+}
+
 bool ConnectionPool::start_self_hosting()
 {
   if(m_self_hosting_active)
@@ -647,7 +669,8 @@ bool ConnectionPool::start_self_hosting()
 
   if(!(directory_exists_uri(dbdir_uri)))
   {
-    std::cerr << "ConnectionPool::create_self_hosting(): The directory could not be found: " << dbdir_uri << std::endl;
+    //TODO: Use a return enum or exception so we can tell the user about this:
+    std::cerr << "ConnectionPool::create_self_hosting(): The data directory could not be found: " << dbdir_uri << std::endl;
     return false;
   }
 
@@ -658,6 +681,7 @@ bool ConnectionPool::start_self_hosting()
   const std::string dbdir_data_uri = Glib::filename_to_uri(dbdir_data);
   if(!(directory_exists_uri(dbdir_data_uri)))
   {
+    //TODO: Use a return enum or exception so we can tell the user about this:
     std::cerr << "ConnectionPool::create_self_hosting(): The data sub-directory could not be found." << dbdir_data_uri << std::endl;
     return false;
   }
@@ -666,6 +690,7 @@ bool ConnectionPool::start_self_hosting()
   const int available_port = discover_first_free_port(PORT_POSTGRESQL_SELF_HOSTED_START, PORT_POSTGRESQL_SELF_HOSTED_END);
   if(available_port == 0)
   {
+    //TODO: Use a return enum or exception so we can tell the user about this:
     std::cerr << "ConnectionPool::create_self_hosting(): No port was available between " << PORT_POSTGRESQL_SELF_HOSTED_START << " and " << PORT_POSTGRESQL_SELF_HOSTED_END << std::endl;
     return false;
   }
@@ -709,6 +734,10 @@ bool ConnectionPool::start_self_hosting()
   //Let clients discover this server via avahi:
   avahi_start_publishing();
 
+  //If we crash while self-hosting (unlikely, hopefully) 
+  //then try to stop the postgres instance instead of leaving it running as an orphan.
+  previous_sig_handler = signal(SIGSEGV, &on_linux_signal);
+
   return true;
 }
 
@@ -738,8 +767,20 @@ void ConnectionPool::stop_self_hosting()
   const bool result = Glom::Spawn::execute_command_line_and_wait(command_postgres_stop, _("Stopping Database Server"));
   if(!result)
   {
-    std::cerr << "Error while attempting to stop self-hosting of the database."  << std::endl;
+    std::cerr << "Error while attempting to stop self-hosting of the database. Trying again."  << std::endl;
+
+    //I've seen it fail when running under valgrind, and there are reports of failures in bug #420962.
+    //Maybe it will help to try again:
+    const bool result = Glom::Spawn::execute_command_line_and_wait(command_postgres_stop, _("Stopping Database Server (retrying)"));
+    if(!result)
+    {
+      std::cerr << "Error while attempting (for a second time) to stop self-hosting of the database."  << std::endl;
+    }
   }
+
+  //We don't need the segfault handler anymore:
+  signal(SIGSEGV, previous_sig_handler);
+  previous_sig_handler = SIG_DFL; /* Arbitrary default */
 
   m_self_hosting_active = false;
 }
@@ -968,7 +1009,8 @@ int ConnectionPool::discover_first_free_port(int start_port, int end_port)
 #ifndef ENABLE_CLIENT_ONLY
 bool ConnectionPool::check_postgres_is_available_with_warning()
 {
-  const std::string binpath = Glib::build_filename(POSTGRES_UTILS_PATH, "postmaster");
+  //EXEEXT is defined in the Makefile.am
+  const std::string binpath = Glib::build_filename(POSTGRES_UTILS_PATH, "postmaster" EXEEXT);
   const Glib::ustring uri_binpath = Glib::filename_to_uri(binpath);
   if(Bakery::App_WithDoc::file_exists(uri_binpath))
     return true;
@@ -1035,10 +1077,34 @@ bool ConnectionPool::install_postgres(Gtk::Window* parent_window)
   }
 #else
   return false; //Failed to install postgres because no installation technique was implemented.
-#endif
+#endif // #if 0
 }
 #endif // !ENABLE_CLIENT_ONLY
 
+bool ConnectionPool::check_postgres_gda_client_is_available_with_warning()
+{
+  Glib::RefPtr<Gnome::Gda::Client> gda_client = Gnome::Gda::Client::create();
+  if(gda_client)
+  {
+    //Get the list of providers:
+    typedef std::list<Gnome::Gda::ProviderInfo> type_list_of_provider_info;
+    type_list_of_provider_info providers = Gnome::Gda::Config::get_providers();
+
+    //Examine the information about each Provider:
+    for(type_list_of_provider_info::const_iterator iter = providers.begin(); iter != providers.end(); ++iter)
+    { 
+      const Gnome::Gda::ProviderInfo& info = *iter;
+      if (info.get_id() == "PostgreSQL")
+        return true;
+    }
+  }
+
+  /* The Postgres provider was not found, so warn the user: */
+  Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Incomplete Glom Installation")), true /* use_markup */, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true /* modal */);
+  dialog.set_secondary_text(_("Your installation of Glom is not complete, because the PostgreSQL libgda provider is not available on your system. This provider is needed to access Postgres database servers.\n\nPlease report this bug to your vendor, or your system administrator so it can be corrected."));
+  dialog.run();
+  return false;
+}
 
 #ifndef ENABLE_CLIENT_ONLY
 /** Advertise self-hosting via avahi:

@@ -460,25 +460,26 @@ bool DbTreeModel::refresh_from_database(const FoundSet& found_set)
 
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
     try
-#else
-    std::auto_ptr<Glib::Error> error;
-#endif
     {
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
       m_gda_datamodel = m_connection->get_gda_connection()->execute_select_command(sql_query);
-#else
-      m_gda_datamodel = m_connection->get_gda_connection()->execute_select_command(sql_query, error);
-#endif
     }
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-    catch(const std::exception& ex)
-#else
-    if(error.get() != NULL)
-#endif
+    catch(const Glib::Exception& ex)
     {
       m_gda_datamodel.clear(); //So that it is 0, so we can handle it below.
     }
-
+    catch(const std::exception& ex)
+    {
+      m_gda_datamodel.clear(); //So that it is 0, so we can handle it below.
+    }
+#else
+    std::auto_ptr<Glib::Error> error;
+    m_gda_datamodel = m_connection->get_gda_connection()->execute_select_command(sql_query, error);
+    if(error.get())
+    {
+      m_gda_datamodel.clear(); //So that it is 0, so we can handle it below.
+    }
+#endif
+      
     if(!m_gda_datamodel)
     {
       m_data_model_rows_count = 0;
