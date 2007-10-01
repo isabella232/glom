@@ -18,6 +18,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#include "config.h" // For ENABLE_MAEMO
+
 #include "box_data.h"
 #include <glom/libglom/data_structure/glomconversions.h>
 #include <glom/libglom/utils.h>
@@ -28,6 +30,10 @@
 #include <algorithm> //For std::find()
 #include "config.h"
 #include <glibmm/i18n.h>
+
+#ifdef ENABLE_MAEMO
+#include <hildonmm/note.h>
+#endif
 
 namespace Glom
 {
@@ -127,9 +133,15 @@ void Box_Data::on_Button_Find()
   const Glib::ustring where_clause = get_find_where_clause();
   if(where_clause.empty())
   {
+    Glib::ustring message = _("You have not entered any find criteria. Try entering information in the fields.");
+
+#ifdef ENABLE_MAEMO
+    Hildon::Note dialog(Hildon::NOTE_TYPE_INFORMATION, *get_app_window(), message);
+#else
     Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("No Find Criteria")), true, Gtk::MESSAGE_WARNING );
-    dialog.set_secondary_text(_("You have not entered any find criteria. Try entering information in the fields."));
+    dialog.set_secondary_text(message);
     dialog.set_transient_for(*get_app_window());
+#endif
     dialog.run();
   }
   else
@@ -191,10 +203,22 @@ Glib::RefPtr<Gnome::Gda::DataModel> Box_Data::record_new(bool use_entered_data, 
           const type_map_fields field_values = get_record_field_values_for_calculation(m_table_name, fieldPrimaryKey, primary_key_value);
 
           //We need the connection when we run the script, so that the script may use it.
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+          // TODO: Is this function supposed to throw an exception?
           sharedptr<SharedConnection> sharedconnection = connect_to_server(get_app_window());
+#else
+          std::auto_ptr<ExceptionConnection> error;
+          sharedptr<SharedConnection> sharedconnection = connect_to_server(get_app_window(), error);
+          if(error.get() != NULL)
+          {
+            // Don't evaluate function on error
+#endif // GLIBMM_EXCEPTIONS_ENABLED
 
-          const Gnome::Gda::Value value = glom_evaluate_python_function_implementation(field->get_glom_type(), calculation, field_values, document, m_table_name, sharedconnection->get_gda_connection());
-          set_entered_field_data(layout_item, value);
+            const Gnome::Gda::Value value = glom_evaluate_python_function_implementation(field->get_glom_type(), calculation, field_values, document, m_table_name, sharedconnection->get_gda_connection());
+            set_entered_field_data(layout_item, value);
+#ifndef GLIBMM_EXCEPETIONS_ENABLED
+          }
+#endif // !GLIBMM_EXCEPTIONS_ENABLED
         }
 
         //Use default values (These are also specified in postgres as part of the field definition,
@@ -341,9 +365,15 @@ bool Box_Data::confirm_discard_unstored_data() const
 {
   if(get_unstored_data())
   {
+    Glib::ustring message = _("This data cannot be stored in the database because you have not provided a primary key.\nDo you really want to discard this data?");
     //Ask user to confirm loss of data:
+#ifdef ENABLE_MAEMO
+    //Hildon::Note dialog(Hildon::NOTE_TYPE_CONFIRMATION, *get_app_window(), message);
+    Hildon::Note dialog(Hildon::NOTE_TYPE_CONFIRMATION, message);
+#else
     Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("No primary key value")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_OK_CANCEL );
-    dialog.set_secondary_text(_("This data cannot be stored in the database because you have not provided a primary key.\nDo you really want to discard this data?"));
+    dialog.set_secondary_text(message);
+#endif
     //TODO: It needs a const. I wonder if it should. murrayc. dialog.set_transient_for(*get_app_window());
     const int iButton = dialog.run();
 
@@ -672,9 +702,14 @@ bool Box_Data::add_related_record_for_field(const sharedptr<const LayoutItem_Fie
     {
       //Warn the user:
       //TODO: Make the field insensitive until it can receive data, so people never see this dialog.
+      const Glib::ustring message = _("Data may not be entered into this related field, because the related record does not yet exist, and the relationship does not allow automatic creation of new related records.");
+#ifdef ENABLE_MAEMO
+      Hildon::Note dialog(Hildon::NOTE_TYPE_INFORMATION, *get_app_window(), message);
+#else
       Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Related Record Does Not Exist")), true);
-      dialog.set_secondary_text(_("Data may not be entered into this related field, because the related record does not yet exist, and the relationship does not allow automatic creation of new related records."));
+      dialog.set_secondary_text(message);
       dialog.set_transient_for(*get_app_window());
+#endif
       dialog.run();
 
       //Clear the field again, discarding the entered data.
@@ -691,10 +726,16 @@ bool Box_Data::add_related_record_for_field(const sharedptr<const LayoutItem_Fie
       {
         //Warn the user:
         //TODO: Make the field insensitive until it can receive data, so people never see this dialog.
+        const Glib::ustring message = _("Data may not be entered into this related field, because the related record does not yet exist, and the key in the related record is auto-generated and therefore can not be created with the key value in this record.");
+
+#ifdef ENABLE_MAEMO
+        Hildon::Note dialog(Hildon::NOTE_TYPE_INFORMATION, *get_app_window(), message);
+#else
         Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Related Record Cannot Be Created")), true);
         //TODO: This is a very complex error message:
-        dialog.set_secondary_text(_("Data may not be entered into this related field, because the related record does not yet exist, and the key in the related record is auto-generated and therefore can not be created with the key value in this record."));
+        dialog.set_secondary_text(message);
         dialog.set_transient_for(*get_app_window());
+#endif
         dialog.run();
 
         //Clear the field again, discarding the entered data.
@@ -766,9 +807,14 @@ bool Box_Data::add_related_record_for_field(const sharedptr<const LayoutItem_Fie
 
 void Box_Data::print_layout()
 {
+  const Glib::ustring message = "Sorry, this feature has not been implemented yet.";
+#ifdef ENABLE_MAEMO
+  Hildon::Note dialog(Hildon::NOTE_TYPE_INFORMATION, *get_app_window(), message);
+#else
   Gtk::MessageDialog dialog("<b>Not implemented</b>", true);
-  dialog.set_secondary_text("Sorry, this feature has not been implemented yet.");
+  dialog.set_secondary_text(message);
   dialog.set_transient_for(*get_app_window());
+#endif
   dialog.run();
 }
 
@@ -780,9 +826,14 @@ Glib::ustring Box_Data::get_layout_name() const
 bool Box_Data::confirm_delete_record()
 {
   //Ask the user for confirmation:
+  const Glib::ustring message = _("Are you sure that you would like to delete this record? The data in this record will then be permanently lost.");
+#ifdef ENABLE_MAEMO
+  Hildon::Note dialog(Hildon::NOTE_TYPE_CONFIRMATION_BUTTON, *get_app_window(), message);
+#else
   Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Delete record")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE);
-  dialog.set_secondary_text(_("Are you sure that you would like to delete this record? The data in this record will then be permanently lost."));
+  dialog.set_secondary_text(message);
   dialog.set_transient_for(*get_app_window());
+#endif
   dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
   dialog.add_button(Gtk::Stock::DELETE, Gtk::RESPONSE_OK);
 
@@ -794,11 +845,21 @@ void Box_Data::execute_button_script(const sharedptr<const LayoutItem_Button>& l
 {
   const type_map_fields field_values = get_record_field_values_for_calculation(m_table_name, get_field_primary_key(), primary_key_value);
 
- //We need the connection when we run the script, so that the script may use it.
- sharedptr<SharedConnection> sharedconnection = connect_to_server(0 /* parent window */);
+  //We need the connection when we run the script, so that the script may use it.
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+  sharedptr<SharedConnection> sharedconnection = connect_to_server(0 /* parent window */);
+#else
+  std::auto_ptr<ExceptionConnection> error;
+  sharedptr<SharedConnection> sharedconnection = connect_to_server(0 /* parent window */, error);
+  if(error.get() == NULL)
+  {
+#endif // GLIBMM_EXCEPTIONS_ENABLED
 
-  glom_execute_python_function_implementation(layout_item->get_script(), field_values, //TODO: Maybe use the field's type here.
-    get_document(), get_table_name(), sharedconnection->get_gda_connection());
+    glom_execute_python_function_implementation(layout_item->get_script(), field_values, //TODO: Maybe use the field's type here.
+      get_document(), get_table_name(), sharedconnection->get_gda_connection());
+#ifndef GLIBMM_EXCEPTIONS_ENABLED
+  }
+#endif // !GLIBMM_EXCEPTIONS_ENABLED
 }
 
 } //namespace Glom

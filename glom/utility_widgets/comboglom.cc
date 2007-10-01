@@ -70,6 +70,10 @@ void ComboGlom::init()
 
   pack_start(m_Columns.m_col_first);
 
+#ifndef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
+  signal_changed().connect(sigc::mem_fun(*this, &ComboGlom::on_changed));
+#endif // GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
+
   if(m_with_second)
   {
     //We don't use this convenience method, because we want more control over the renderer.
@@ -78,13 +82,17 @@ void ComboGlom::init()
     //pack_start(m_Columns.m_col_second);
 
     Gtk::CellRenderer* cell_second = Gtk::manage(new Gtk::CellRendererText);
-    cell_second->property_xalign() = 0.0f;
+    cell_second->set_property("xalign", 0.0);
 
     //Use the renderer:
     pack_start(*cell_second);
 
     //Make the renderer render the column:
+#ifdef GLIBMM_PROPERTIES_ENABLED
     add_attribute(cell_second->_property_renderable(), m_Columns.m_col_second);
+#else
+    add_attribute(*cell_second, cell_second->_property_renderable(), m_Columns.m_col_second);
+#endif
   }
 
   //if(m_glom_type == Field::TYPE_NUMERIC)
@@ -176,11 +184,11 @@ Glib::ustring ComboGlom::get_text() const
   return Glib::ustring();
 }
 
+#ifndef ENABLE_CLIENT_ONLY
 bool ComboGlom::on_button_press_event(GdkEventButton *event)
 {
 g_warning("ComboGlom::on_button_press_event()");
 
-#ifndef ENABLE_CLIENT_ONLY
   //Enable/Disable items.
   //We did this earlier, but get_application is more likely to work now:
   App_Glom* pApp = get_application();
@@ -208,10 +216,10 @@ g_warning("ComboGlom::on_button_press_event()");
     }
 
   }
-#endif // !ENABLE_CLIENT_ONLY
 
   return Gtk::ComboBox::on_button_press_event(event);
 }
+#endif // !ENABLE_CLIENT_ONLY
 
 App_Glom* ComboGlom::get_application()
 {
@@ -223,8 +231,10 @@ App_Glom* ComboGlom::get_application()
 
 void ComboGlom::on_changed()
 {
+#ifdef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
   //Call base class:
   Gtk::ComboBox::on_changed();
+#endif // GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
 
   //This signal is emitted for every key press, but sometimes it's just to say that the active item has changed to "no active item",
   //if the text is not in the dropdown list:

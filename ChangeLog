@@ -1,3 +1,78 @@
+2007-09-30  Armin Burgmeier  <armin@openismus.com>
+
+	* config.h.in:
+	* configure.in: Added --enable-maemo configure option.
+
+	* glom/glom.glade: Split the label in the connection dialog up into
+	two labels, so the maemo version can hide the bold label and instead
+	putting it into the window title.
+
+	* glom/Makefile.am: Fixed linking order, which seems to be an issue in
+	scratchbox.
+
+	* glom/dialog_invalid_data.cc:
+	* glom/libglom/connectionpool.h:
+	* glom/libglom/utils.cc:
+	* glom/libglom/data_structure/iso_codes.cc:
+	* glom/libglom/data_structure/fieldtypes.cc:
+	* glom/libglom/data_structure/glomconversions.cc:
+	* glom/libglom/spawn_with_feedback.cc:
+	* glom/libglom/python_embed/py_glom_relatedrecord.cc:
+	* glom/libglom/connectionpool.cc:
+	* glom/box_db_table.cc:
+	* glom/utility_widgets/db_adddel/db_adddel_withbuttons.cc:
+	* glom/utility_widgets/db_adddel/db_adddel_withbuttons.h:
+	* glom/utility_widgets/db_adddel/db_adddel.cc:
+	* glom/utility_widgets/db_adddel/glom_db_treemodel.cc:
+	* glom/utility_widgets/db_adddel/cellrenderer_buttonimage.cc:
+	* glom/utility_widgets/db_adddel/glom_db_treemodel.h:
+	* glom/utility_widgets/db_adddel/cellrenderer_buttonimage.h:
+	* glom/utility_widgets/db_adddel/cellrenderer_buttontext.cc:
+	* glom/utility_widgets/db_adddel/cellrenderer_buttontext.h:
+	* glom/utility_widgets/textviewglom.cc:
+	* glom/utility_widgets/comboentryglom.cc:
+	* glom/utility_widgets/imageglom.cc:
+	* glom/utility_widgets/imageglom.h:
+	* glom/utility_widgets/dialog_choose_id.cc:
+	* glom/utility_widgets/comboglom.cc:
+	* glom/utility_widgets/flowtable.cc:
+	* glom/utility_widgets/entryglom.cc:
+	* glom/utility_widgets/flowtable.h:
+	* glom/utility_widgets/adddel/adddel.cc:
+	* glom/utility_widgets/textviewglom.h:
+	* glom/utility_widgets/cellrendererlist.cc:
+	* glom/utility_widgets/comboentryglom.h:
+	* glom/utility_widgets/flowtablewithfields.cc:
+	* glom/utility_widgets/datawidget.cc:
+	* glom/utility_widgets/datawidget.h:
+	* glom/utility_widgets/comboglom.h:
+	* glom/utility_widgets/entryglom.h:
+	* glom/frame_glom.cc:
+	* glom/layout_item_dialogs/dialog_field_layout.cc:
+	* glom/reports/report_builder.cc:
+	* glom/dialog_connection.cc:
+	* glom/base_db.cc:
+	* glom/base_db.h:
+	* glom/main.cc:
+	* glom/xsl_utils.cc:
+	* glom/mode_data/dialog_layout_export.cc:
+	* glom/mode_data/notebook_data.cc:
+	* glom/mode_data/box_data_list.cc:
+	* glom/mode_data/box_data.cc:
+	* glom/mode_data/box_data_details.cc:
+	* glom/combobox_relationship.cc:
+	* glom/combobox_fields.cc:
+	* glom/notebook_glom.cc:
+	* glom/mode_find/box_data_list_find.cc:
+	* glom/mode_find/box_data_details_find.cc:
+	* glom/filechooser_export.cc:
+	* glom/application.cc:
+	* glom/application.h:
+	* glom/frame_glom.h:
+	* glom/navigation/box_tables.cc:
+	* glom/dialog_connection.h: Make these build and work with reduced
+	glibmm API, make use of hildonmm API to replace Gtk::MessageDialog.
+
 2007-05-18  Armin Burgmeier  <armin@openismus.com>
 
 	* glom/libglom/document/document_glom.cc:

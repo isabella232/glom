@@ -42,7 +42,14 @@ FieldTypes::FieldTypes(const Glib::RefPtr<Gnome::Gda::Connection>& gda_connectio
   {
     //Read the Types information, so that we can map the string representation of the type (returned by CONNECTION_SCHEMA_FIELDS) to
     //the Gda::ValueType used by Glib::RefPtr<Gnome::Gda::Column>.
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
     Glib::RefPtr<Gnome::Gda::DataModel> data_model_tables = gda_connection->get_schema(Gnome::Gda::CONNECTION_SCHEMA_TYPES);
+#else
+    std::auto_ptr<Glib::Error> error;
+    Glib::RefPtr<Gnome::Gda::DataModel> data_model_tables = gda_connection->get_schema(Gnome::Gda::CONNECTION_SCHEMA_TYPES, error);
+    // Ignore error here, we do not process data_model_tables if it is NULL
+    // anyway
+#endif // GLIBMM_EXCEPTIONS_ENABLED
     if(data_model_tables && (data_model_tables->get_n_columns() == 0))
     {
       std::cerr << "FieldTypes::FieldTypes(): get_schema(Gnome::Gda::CONNECTION_SCHEMA_TYPES) failed." << std::endl;

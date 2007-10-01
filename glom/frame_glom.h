@@ -137,13 +137,19 @@ public:
   static void show_ok_dialog(const Glib::ustring& title, const Glib::ustring& message, Gtk::Window& parent, Gtk::MessageType message_type = Gtk::MESSAGE_INFO);
 
   //Show the dialog to request the password, and check whether it works.
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
   bool connection_request_password_and_attempt();
+#else
+  bool connection_request_password_and_attempt(std::auto_ptr<ExceptionConnection>& error);
+#endif
 
   //Show the dialog to request the password, and choose an unused database name.
   bool connection_request_password_and_choose_new_database_name();
 
+#ifndef ENABLE_CLIENT_ONLY
   ///Create the database for new documents, showing the Connection dialog
   bool create_database(const Glib::ustring& database_name, const Glib::ustring& title, bool request_password = true);
+#endif // !ENABLE_CLIENT_ONLY
 
   void export_data_to_string(Glib::ustring& the_string, const FoundSet& found_set, const Document_Glom::type_mapLayoutGroupSequence& sequence);
   void export_data_to_stream(std::ostream& the_stream, const FoundSet& found_set, const Document_Glom::type_mapLayoutGroupSequence& sequence);

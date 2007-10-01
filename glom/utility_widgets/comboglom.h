@@ -21,6 +21,8 @@
 #ifndef GLOM_UTILITY_WIDGETS_COMBO_GLOM_H
 #define GLOM_UTILITY_WIDGETS_COMBO_GLOM_H
 
+#include "config.h" // For ENABLE_CLIENT_ONLY
+
 #include <gtkmm.h>
 #include <glom/libglom/data_structure/field.h>
 #include "comboglomchoicesbase.h"
@@ -64,11 +66,15 @@ public:
 protected:
   void init();
 
+  // Note this is a normal signal handlers when compiled without default
+  // signal handlers
   virtual void on_changed(); //From Gtk::ComboBox
 
   virtual void check_for_change();
 
+#ifndef ENABLE_CLIENT_ONLY
   virtual bool on_button_press_event(GdkEventButton *event);
+#endif // !ENABLE_CLIENT_ONLY
 
   virtual App_Glom* get_application();
 

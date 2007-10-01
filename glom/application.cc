@@ -19,6 +19,7 @@
  */
 
 #include "application.h"
+
 #include <glom/libglom/dialog_progress_creating.h>
 
 #ifndef ENABLE_CLIENT_ONLY
@@ -28,14 +29,33 @@
 
 #include <glom/utility_widgets/filechooserdialog.h>
 #include <glom/libglom/utils.h>
-#include <libgnome/gnome-help.h> //For gnome_help_display
+
 #include "config.h" //For VERSION.
+
 #include <cstdio>
 #include <memory> //For std::auto_ptr<>
 #include <libgnomevfsmm.h>
 #include <sstream> //For stringstream.
 #include <glibmm/i18n.h>
+#include <hildon/hildon-window.h>
 
+namespace {
+	HildonWindow* turn_gtk_window_into_hildon_window(GtkWindow* cobject)
+	{
+		GtkWidget* child = cobject->bin.child;
+		g_assert(child);
+
+		g_object_ref(G_OBJECT(child));
+		gtk_container_remove(GTK_CONTAINER(cobject), child);
+
+		GtkWidget* window = hildon_window_new();
+		gtk_container_add(GTK_CONTAINER(window), child);
+		g_object_unref(G_OBJECT(child));
+
+		gtk_widget_destroy(GTK_WIDGET(cobject));
+		return HILDON_WINDOW(window);
+	}
+}
 
 namespace Glom
 {
@@ -44,7 +64,13 @@ namespace Glom
 App_Glom* global_application = NULL;
 
 App_Glom::App_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
-: Gtk::Window(cobject), //It's a virtual base class, so we have to call the specific constructor to prevent the default constructor from being called.
+  // Note cobject is actually a GtkWindow, not a HildonWindow, because the
+  // glade file specified the type as GtkWindow.
+#ifdef ENABLE_MAEMO
+: ParentWindow(turn_gtk_window_into_hildon_window(GTK_WINDOW(cobject))), //It's a virtual base class, so we have to call the specific constructor to prevent the default constructor from being called.
+#else
+: ParentWindow(cobject), //It's a virtual base class, so we have to call the specific constructor to prevent the default constructor from being called.
+#endif
   type_base(cobject, "Glom"),
   m_pBoxTop(0),
   m_pFrame(0),
@@ -59,13 +85,27 @@ App_Glom::App_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml
 #endif // !ENABLE_CLIENT_ONLY
   m_show_sql_debug(false)
 {
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
+#else
+  std::auto_ptr<Glib::Error> error;
+#endif
   {
     //Show the icon in the window manager's window title bar and in the list of running applications:
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
     set_icon_from_file(GLOM_ICON_DIR "/glom.png");
+#else
+    set_icon_from_file(GLOM_ICON_DIR "/glom.png", error);
+#endif
   }
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
   catch(const Glib::Error& ex)
   {
+#else
+  if(error.get() != NULL)
+  {
+    const Glib::Error& ex = *error.get();
+#endif
     std::cerr << "App_Glom::App_Glom(): Could not set icon: " << ex.what() << std::endl;
   } 
 
@@ -140,8 +180,13 @@ void App_Glom::init_layout()
 
   //Add menu bar at the top:
   //These were defined in init_uimanager().
+#ifdef ENABLE_MAEMO
+  Gtk::Menu* pMenu = static_cast<Gtk::Menu*>(m_refUIManager->get_widget("/Bakery_MainMenu"));
+  set_menu(*pMenu);
+#else
   Gtk::MenuBar* pMenuBar = static_cast<Gtk::MenuBar*>(m_refUIManager->get_widget("/Bakery_MainMenu"));
   m_pBoxTop->pack_start(*pMenuBar, Gtk::PACK_SHRINK);
+#endif
 
   //Do not create the toolbar because it doesn't contain anything useful for this app.
   //Gtk::Toolbar* pToolBar = static_cast<Gtk::Toolbar*>(m_refUIManager->get_widget("/Bakery_ToolBar"));
@@ -223,7 +268,11 @@ void App_Glom::init_menus_file()
   //Build part of the menu structure, to be merged in by using the "PH" placeholders:
   static const Glib::ustring ui_description =
     "<ui>"
+#ifdef ENABLE_MAEMO
+    "  <popup name='Bakery_MainMenu'>"
+#else
     "  <menubar name='Bakery_MainMenu'>"
+#endif
     "    <placeholder name='Bakery_MenuPH_File'>"
     "      <menu action='BakeryAction_Menu_File'>"
     "        <menuitem action='BakeryAction_File_New' />"
@@ -240,7 +289,11 @@ void App_Glom::init_menus_file()
     "        <menuitem action='BakeryAction_File_Close' />"
     "      </menu>"
     "    </placeholder>"
+#ifdef ENABLE_MAEMO
+    "  </popup>"
+#else
     "  </menubar>"
+#endif
     "</ui>";
 
   //Add menu:
@@ -372,7 +425,11 @@ void App_Glom::init_menus()
   //Build part of the menu structure, to be merged in by using the "Bakery_MenuPH_Others" placeholder:
   static const Glib::ustring ui_description =
     "<ui>"
+#ifdef ENABLE_MAEMO
+    "  <popup name='Bakery_MainMenu'>"
+#else
     "  <menubar name='Bakery_MainMenu'>"
+#endif
     "    <placeholder name='Bakery_MenuPH_Others'>"
     "      <menu action='Glom_Menu_Tables'>"
     "        <placeholder name='Menu_Tables_Dynamic' />"
@@ -413,7 +470,11 @@ void App_Glom::init_menus()
     "      </menu>"
 #endif // !ENABLE_CLIENT_ONLY
     "    </placeholder>"
+#ifdef ENABLE_MAEMO
+    "  </popup>"
+#else
     "  </menubar>"
+#endif
     "</ui>";
 
 /*  "        <menuitem action='GlomAction_Menu_Developer_RelationshipsOverview' />" */
@@ -451,7 +512,14 @@ static bool uri_is_writable(const Glib::RefPtr<const Gnome::Vfs::Uri>& uri)
   if(!uri)
     return false;
 
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+  // TODO: What if this throws?
   Glib::RefPtr<const Gnome::Vfs::FileInfo> file_info = uri->get_file_info(Gnome::Vfs::FILE_INFO_GET_ACCESS_RIGHTS);
+#else
+  std::auto_ptr<Gnome::Vfs::exception> error;
+  Glib::RefPtr<const Gnome::Vfs::FileInfo> file_info = uri->get_file_info(Gnome::Vfs::FILE_INFO_GET_ACCESS_RIGHTS, error);
+  if(error.get() != NULL) return false;
+#endif
   if(file_info)
   {
     const Gnome::Vfs::FilePermissions permissions = file_info->get_permissions();
@@ -504,8 +572,11 @@ Glib::ustring App_Glom::ui_file_select_save(const Glib::ustring& old_file_uri) /
     fileChooser_Save.reset(new Gtk::FileChooserDialog(gettext("Save Document"), Gtk::FILE_CHOOSER_ACTION_SAVE));
   }
 
-
+#ifndef ENABLE_MAEMO
+  // The maemo version is able to run with gtkmm 2.6
+  // TODO_maemo: This should probably use Hildon FileChooser API
   fileChooser_Save->set_do_overwrite_confirmation(); //Ask the user if the file already exists.
+#endif
 
   Gtk::Window* pWindow = dynamic_cast<Gtk::Window*>(&app);
   if(pWindow)
@@ -702,7 +773,13 @@ void App_Glom::stop_self_hosting_of_document_database()
 
 Bakery::App* App_Glom::new_instance() //Override
 {
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
   Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_main");
+#else
+  std::auto_ptr<Gnome::Glade::XmlError> error;
+  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_main", "", error);
+  if(error.get()) return NULL;
+#endif
   App_Glom* pApp_Glom = 0;
   refXml->get_widget_derived("window_main", pApp_Glom);
 
@@ -861,9 +938,13 @@ bool App_Glom::on_document_load()
         connection_pool->set_ready_to_connect(this); //Box_DB::connect_to_server() will now attempt the connection-> Shared instances of m_Connection will also be usable.
 
         //Attempt to connect to the specified database:
+	bool test = false;
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
         try
+#else
+        std::auto_ptr<ExceptionConnection> error;
+#endif
         {
-          bool test = false;
 #ifndef ENABLE_CLIENT_ONLY
           if(is_example)
           {
@@ -872,52 +953,16 @@ bool App_Glom::on_document_load()
           }
           else
 #endif // !ENABLE_CLIENT_ONLY
-            test = m_pFrame->connection_request_password_and_attempt();
-
-          if(!test) //It usually throws an exception instead of returning false.
-          {
-#ifndef ENABLE_CLIENT_ONLY
-            //Stop self-hosting, if we are doing that:
-            std::cout << "debug: calling stop_self_hosting_of_document_database()" << std::endl;
-            stop_self_hosting_of_document_database();
-#endif // !ENABLE_CLIENT_ONLY
-
-            return false; //Failed. Close the document.
-          }
-
-#ifndef ENABLE_CLIENT_ONLY
-          if(is_example)
-          {
-            //Create the example database:
-            //connection_request_password_and_choose_new_database_name() has already change the database name to a new unused one:
-            bool user_cancelled = false;
-            const bool test = recreate_database(user_cancelled);
-            if(!test)
-            {
-              //If the database was not successfully recreated:
-              if(!user_cancelled)
-              {
-                //Let the user try again.
-                //A warning has already been shown.
-                return offer_new_or_existing();
-              }
-              else
-                return false;
-            }
-            else
-            {
-              //Make sure that the changes (mark as non example, and save the new database name) are really saved:
-              //Change the user level temporarily so that save_changes() actually saves:
-              const AppState::userlevels user_level = pDocument->get_userlevel();
-              pDocument->set_userlevel(AppState::USERLEVEL_DEVELOPER);
-              pDocument->set_modified(true);
-              pDocument->set_userlevel(user_level); //Change it back.
-            }
-          }
-#endif // !ENABLE_CLIENT_ONLY
-        }
+            test = m_pFrame->connection_request_password_and_attempt(error);
+	}
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
         catch(const ExceptionConnection& ex)
         {
+#else
+        if(error.get())
+	{
+          const ExceptionConnection& ex = *error.get();
+#endif
           if(ex.get_failure_type() == ExceptionConnection::FAILURE_NO_DATABASE) //This is the only FAILURE_* type that connection_request_password_and_attempt() throws.
           {
 #ifndef ENABLE_CLIENT_ONLY
@@ -933,11 +978,58 @@ bool App_Glom::on_document_load()
           else
             std::cerr << "App_Glom::on_document_load(): unexpected ExceptionConnection failure type." << std::endl;
         }
+	
+        if(!test) //It usually throws an exception instead of returning false.
+        {
+#ifndef ENABLE_CLIENT_ONLY
+          //Stop self-hosting, if we are doing that:
+          std::cout << "debug: calling stop_self_hosting_of_document_database()" << std::endl;
+          stop_self_hosting_of_document_database();
+#endif // !ENABLE_CLIENT_ONLY
+
+          return false; //Failed. Close the document.
+        }
+
+#ifndef ENABLE_CLIENT_ONLY
+        if(is_example)
+        {
+          //Create the example database:
+          //connection_request_password_and_choose_new_database_name() has already change the database name to a new unused one:
+          bool user_cancelled = false;
+          const bool test = recreate_database(user_cancelled);
+          if(!test)
+          {
+            // TODO: This is dead code, isn't it? We already bail above if
+            // test isn't set. armin.
+
+            //If the database was not successfully recreated:
+            if(!user_cancelled)
+            {
+              //Let the user try again.
+              //A warning has already been shown.
+              return offer_new_or_existing();
+            }
+            else
+              return false;
+          }
+          else
+          {
+            //Make sure that the changes (mark as non example, and save the new database name) are really saved:
+            //Change the user level temporarily so that save_changes() actually saves:
+            const AppState::userlevels user_level = pDocument->get_userlevel();
+            pDocument->set_userlevel(AppState::USERLEVEL_DEVELOPER);
+            pDocument->set_modified(true);
+            pDocument->set_userlevel(user_level); //Change it back.
+          }
+        }
+#endif // !ENABLE_CLIENT_ONLY
 
         //Switch to operator mode when opening new documents:
         pDocument->set_userlevel(AppState::USERLEVEL_OPERATOR);
 
+#ifndef ENABLE_MAEMO
         m_pFrame->show_system_name();
+#endif // !ENABLE_MAEMO
 
         //Open default table, or show list of tables instead:
         m_pFrame->do_menu_Navigate_Table(true /* open the default if there is one */);
@@ -1008,8 +1100,15 @@ Glib::RefPtr<Gtk::UIManager> App_Glom::get_ui_manager()
 
 bool App_Glom::offer_new_or_existing()
 {
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
   //Offer to load an existing document, or start a new one.
   Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_existing_or_new");
+#else
+  std::auto_ptr<Gnome::Glade::XmlError> error;
+  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_existing_or_new", "", error);
+  if(error.get()) return false;
+#endif
+
   Gtk::Dialog* dialog = 0;
   refXml->get_widget("dialog_existing_or_new", dialog);
   dialog->set_transient_for(*this);
@@ -1024,11 +1123,11 @@ bool App_Glom::offer_new_or_existing()
   /* Don't show files that don't exist anymore: */
   recent_chooser->set_show_not_found(FALSE);
 
-  // Hide the recent chooser when they are not any recently used files
   Gtk::Frame* recent_frame = NULL;
   refXml->get_widget("existing_or_new_recentchooser_frame", recent_frame);
-  if(recent_chooser->get_items().empty()) recent_frame->hide();
 
+  // Hide the recent chooser when they are not any recently used files
+  if(recent_chooser->get_items().empty()) recent_frame->hide();
   recent_chooser->signal_item_activated().connect(sigc::bind(sigc::mem_fun(*dialog, &Gtk::Dialog::response), 1)); // Open
 
 #ifdef ENABLE_CLIENT_ONLY
@@ -1049,8 +1148,19 @@ bool App_Glom::offer_new_or_existing()
   label->set_markup(_("<span weight='bold' size='larger'>Open existing document</span>\n"));
 #endif // ENABLE_CLIENT_ONLY
 
+#ifdef ENABLE_MAEMO
+  // Set dialog title to not show <unnamed> (default on maemo for empty title)
+  // Strip of terminating newline.
+  dialog->set_title(label->get_text().substr(0, label->get_text().length()-1));
+  label->hide();
+
+  // This makes the dialog too big in width otherwise
+  recent_chooser->set_size_request(500, -1);
+#endif
+
   const int response_id = dialog->run();
   Glib::ustring selected_uri = recent_chooser->get_current_uri();
+
   delete dialog;
   dialog = 0;
 
@@ -1221,13 +1331,21 @@ void App_Glom::init_menus_help()
   //Build part of the menu structure, to be merged in by using the "PH" plaeholders:
   static const Glib::ustring ui_description =
     "<ui>"
+#ifdef ENABLE_MAEMO
+    "  <popup name='Bakery_MainMenu'>"
+#else
     "  <menubar name='Bakery_MainMenu'>"
+#endif
     "    <placeholder name='Bakery_MenuPH_Help'>"
     "      <menu action='BakeryAction_Menu_Help'>"
     "        <menuitem action='BakeryAction_Help_Contents' />"
     "      </menu>"
     "    </placeholder>"
+#ifdef ENABLE_MAEMO
+    "  </popup>"
+#else
     "  </menubar>"
+#endif
     "</ui>";
 
   //Add menu:
@@ -1239,6 +1357,7 @@ void App_Glom::on_menu_help_contents()
   Glom::Utils::show_help();
 }
 
+#ifndef ENABLE_CLIENT_ONLY
 bool App_Glom::recreate_database(bool& user_cancelled)
 {
   //Create a database, based on the information in the current document:
@@ -1256,22 +1375,47 @@ bool App_Glom::recreate_database(bool& user_cancelled)
     return false;
 
   connection_pool->set_database(db_name);
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
+#else
+  std::auto_ptr<std::exception> error;
+#endif // GLIBMM_EXCEPTIONS_ENABLED
   {
     connection_pool->set_ready_to_connect(); //This has succeeded already.
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
     sharedptr<SharedConnection> sharedconnection = connection_pool->connect();
-    g_warning("App_Glom::recreate_database(): Failed because database exists already.");
+#else
+    sharedptr<SharedConnection> sharedconnection = connection_pool->connect(error);
+    if(error.get() == NULL)
+    {
+#endif // GLIBMM_EXCEPTIONS_ENABLED
+      g_warning("App_Glom::recreate_database(): Failed because database exists already.");
 
-    return false; //Connection to the database succeeded, because no exception was thrown. so the database exists already.
+      return false; //Connection to the database succeeded, because no exception was thrown. so the database exists already.
+#ifndef GLIBMM_EXCEPTIONS_ENABLED
+    }
+#endif // !GLIBMM_EXCEPTIONS_ENABLED
   }
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
   catch(const ExceptionConnection& ex)
   {
-    if(ex.get_failure_type() == ExceptionConnection::FAILURE_NO_SERVER)
+#else
+  if(error.get() != NULL)
+  {
+    const ExceptionConnection* exptr = dynamic_cast<ExceptionConnection*>(error.get());
+    if(exptr)
     {
-      user_cancelled = true; //Eventually, the user will cancel after retrying.
-      g_warning("App_Glom::recreate_database(): Failed because connection to server failed, without specifying a database.");
-      return false;
+      const ExceptionConnection& ex = *exptr;
+#endif // GLIBMM_EXCEPTIONS_ENABLED
+      if(ex.get_failure_type() == ExceptionConnection::FAILURE_NO_SERVER)
+      {
+        user_cancelled = true; //Eventually, the user will cancel after retrying.
+        g_warning("App_Glom::recreate_database(): Failed because connection to server failed, without specifying a database.");
+        return false;
+      }
+#ifndef GLIBMM_EXCEPTIONS_ENABLED
     }
+#endif // !GLIBMM_EXCEPTIONS_ENABLED
 
     //Otherwise continue, because we _expected_ connect() to fail if the db does not exist yet.
   }
@@ -1315,13 +1459,26 @@ bool App_Glom::recreate_database(bool& user_cancelled)
   Bakery::BusyCursor busy_cursor(this);
 
   sharedptr<SharedConnection> sharedconnection;
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
+#endif // GLIBMM_EXCEPTIONS_ENABLED
   {
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
     sharedconnection = connection_pool->connect();
-    connection_pool->set_database(db_name); //The database was successfully created, so specify it when connecting from now on.
+#else
+    sharedconnection = connection_pool->connect(error);
+    if(error.get() == NULL)
+#endif // GLIBMM_EXCEPTIONS_ENABLED
+      connection_pool->set_database(db_name); //The database was successfully created, so specify it when connecting from now on.
   }
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
   catch(const ExceptionConnection& ex)
   {
+#else
+  if(error.get() != NULL)
+  {
+    const std::exception& ex = *error.get();
+#endif // GLIBMM_EXCEPTIONS_ENABLED
     g_warning("App_Glom::recreate_database(): Failed to connect to the newly-created database.");
     return false;
   }
@@ -1385,6 +1542,7 @@ bool App_Glom::recreate_database(bool& user_cancelled)
 
   return true; //All tables created successfully.
 }
+#endif // !ENABLE_CLIENT_ONLY
 
 AppState::userlevels App_Glom::get_userlevel() const
 {
@@ -1398,6 +1556,7 @@ AppState::userlevels App_Glom::get_userlevel() const
     //return AppState::USERLEVEL_DEVELOPER; //This should never happen.
 }
 
+#ifndef ENABLE_CLIENT_ONLY
 void App_Glom::add_developer_action(const Glib::RefPtr<Gtk::Action>& refAction)
 {
   //Prevent it from being added twice:
@@ -1417,6 +1576,7 @@ void App_Glom::remove_developer_action(const Glib::RefPtr<Gtk::Action>& refActio
     }
   }
 }
+#endif // !ENABLE_CLIENT_ONLY
 
 void App_Glom::fill_menu_tables()
 {
@@ -1430,7 +1590,11 @@ void App_Glom::fill_menu_tables()
 
   Glib::ustring ui_description =
     "<ui>"
+#ifdef ENABLE_MAEMO
+    "  <popup name='Bakery_MainMenu'>"
+#else
     "  <menubar name='Bakery_MainMenu'>"
+#endif
     "    <placeholder name='Bakery_MenuPH_Others'>"
     "      <menu action='Glom_Menu_Tables'>"
     "        <placeholder name='Menu_Tables_Dynamic'>";
@@ -1463,16 +1627,34 @@ void App_Glom::fill_menu_tables()
     "     </placeholder>"
     "    </menu>"
     "    </placeholder>"
+#ifdef ENABLE_MAEMO
+    "  </popup>"
+#else
     "  </menubar>"
+#endif
     "</ui>";
 
   //Add menus:
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
+#else
+  std::auto_ptr<Glib::Error> error;
+#endif // GLIBMM_EXCEPTIONS_ENABLED
   {
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
     m_menu_tables_ui_merge_id = m_refUIManager->add_ui_from_string(ui_description);
+#else
+    m_menu_tables_ui_merge_id = m_refUIManager->add_ui_from_string(ui_description, error);
+#endif // GLIBMM_EXCEPTIONS_ENABLED
   }
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
   catch(const Glib::Error& ex)
   {
+#else
+  if(error.get() != NULL)
+  {
+    const Glib::Error& ex = *error.get();
+#endif // GLIBMM_EXCEPTIONS_ENABLED
     std::cerr << " App_Glom::fill_menu_tables(): building menus failed: " <<  ex.what();
   }
 }
@@ -1490,7 +1672,11 @@ void App_Glom::fill_menu_reports(const Glib::ustring& table_name)
 
   Glib::ustring ui_description =
     "<ui>"
+#ifdef ENABLE_MAEMO
+    "  <popup name='Bakery_MainMenu'>"
+#else
     "  <menubar name='Bakery_MainMenu'>"
+#endif
     "    <placeholder name='Bakery_MenuPH_Others'>"
     "     <menu action='Glom_Menu_Reports'>"
     "        <placeholder name='Menu_Reports_Dynamic'>";
@@ -1527,16 +1713,34 @@ void App_Glom::fill_menu_reports(const Glib::ustring& table_name)
     "     </placeholder>"
     "    </menu>"
     "    </placeholder>"
+#ifdef ENABLE_MAEMO
+    "  </popup>"
+#else
     "  </menubar>"
+#endif
     "</ui>";
 
   //Add menus:
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
+#else
+  std::auto_ptr<Glib::Error> error;
+#endif // GLIBMM_EXCEPTIONS_ENABLED
   {
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
     m_menu_reports_ui_merge_id = m_refUIManager->add_ui_from_string(ui_description);
+#else
+    m_menu_reports_ui_merge_id = m_refUIManager->add_ui_from_string(ui_description, error);
+#endif // GLIBMM_EXCEPTIONS_ENABLED
   }
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
   catch(const Glib::Error& ex)
   {
+#else
+  if(error.get() != NULL)
+  {
+    const Glib::Error& ex = *error.get();
+#endif // GLIBMM_EXCEPTIONS_ENABLED
     std::cerr << " App_Glom::fill_menu_reports(): building menus failed: " <<  ex.what();
   }
 }

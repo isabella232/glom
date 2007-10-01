@@ -140,6 +140,23 @@ protected:
 
    virtual void set_value_impl(const iterator& row, int column, const Glib::ValueBase& value);
 
+#ifndef GLIBMM_VFUNCS_ENABLED
+  // These are the hand-coded C vfunc implementations in case the vfuncs API
+  // has been disabled in glibmm.
+  static GtkTreeModelFlags glom_get_flags_impl(GtkTreeModel* model);
+  static gint glom_get_n_columns_impl(GtkTreeModel* model);
+  static GType glom_get_column_type_impl(GtkTreeModel* model, gint index);
+  static void glom_get_value_impl(GtkTreeModel* model, GtkTreeIter* iter, gint column, GValue* value);
+  static gboolean glom_iter_next_impl(GtkTreeModel* model, GtkTreeIter* iter);
+  static gboolean glom_iter_children_impl(GtkTreeModel* model, GtkTreeIter* iter, GtkTreeIter* parent);
+  static gboolean glom_iter_has_child_impl(GtkTreeModel* model, GtkTreeIter* iter);
+  static gint glom_iter_n_children_impl(GtkTreeModel* model, GtkTreeIter* iter);
+  static gboolean glom_iter_nth_child_impl(GtkTreeModel* model, GtkTreeIter* iter, GtkTreeIter* parent, gint n);
+  static gboolean glom_iter_parent_impl(GtkTreeModel* model, GtkTreeIter* iter, GtkTreeIter* child);
+  static GtkTreePath* glom_get_path_impl(GtkTreeModel* model, GtkTreeIter* iter);
+  static gboolean glom_get_iter_impl(GtkTreeModel* model, GtkTreeIter* iter, GtkTreePath* path);
+#endif // !GLIBMM_VUFNCS_ENABLED
+
 private:
    typedef DbTreeModelRow typeRow; //X columns, all of type Value.
 

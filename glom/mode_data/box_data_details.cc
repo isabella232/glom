@@ -72,7 +72,11 @@ Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
 
 
   //m_ScrolledWindow.set_border_width(6);
+#ifdef ENABLE_MAEMO
+  m_ScrolledWindow.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC); /* Allow horizontal scrolling in maemo because the screen is rather small and there might be some database UIs that don't fit horizontally. Such a UI may be concidered non-maemo-friendly, but it can still be fully viewed this way. */
+#else
   m_ScrolledWindow.set_policy(Gtk::POLICY_NEVER, Gtk::POLICY_AUTOMATIC); /* Allow vertical scrolling, but never scroll horizontally. */
+#endif
   m_ScrolledWindow.set_shadow_type(Gtk::SHADOW_NONE); //SHADOW_IN is Recommended by the GNOME HIG, but looks odd.
   pack_start(m_ScrolledWindow);
   m_ScrolledWindow.add(m_FlowTable);
@@ -210,14 +214,33 @@ bool Box_Data_Details::fill_from_database()
     return false;
   }
 
+  //TODO: This should keep the connection open, so we don't need to 
+  //reconnect many times..
+  sharedptr<SharedConnection> sharedconnection;
+
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
+    sharedconnection = connect_to_server(get_app_window());
+  }
+  catch(const std::exception& ex)
+  {
+    handle_error(ex);
+    bResult = false;
+  }
+#else
+  std::auto_ptr<ExceptionConnection> error;
+  sharedconnection = connect_to_server(get_app_window(), error);
+  if(error.get())
+  {
+    handle_error(*error);
+    bResult = false;
+  }
+#endif
 
-    //TODO: This should keep the connection open, so we don't need to 
-    //reconnect many times..
-    sharedptr<SharedConnection> sharedconnection = connect_to_server(get_app_window());
-
-
+  if(sharedconnection)
+  {
+    // TODO: Can this throw?
     bResult = Box_Data::fill_from_database();
 
     m_FieldsShown = get_fields_to_show();
@@ -302,11 +325,6 @@ bool Box_Data_Details::fill_from_database()
 
     fill_end();
 
-  }
-  catch(const std::exception& ex)
-  {
-    handle_error(ex);
-    bResult = false;
   }
 
   return bResult;
@@ -644,10 +662,25 @@ void Box_Data_Details::on_flowtable_field_edited(const sharedptr<const LayoutIte
     m_FlowTable.set_field_value(layout_field, field_value);
 
     //Update the field in the record (the record with this primary key):
-    try
-    {
-      const bool bTest = set_field_value_in_database(field_in_record, field_value, false /* don't use current calculations */, get_app_window());
 
+    bool bTest = false;
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+    try
+#endif // GLIBMM_EXCEPTIONS_ENABLED
+    {
+      bTest = set_field_value_in_database(field_in_record, field_value, false /* don't use current calculations */, get_app_window());
+    }
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+    catch(const std::exception& ex)
+    {
+      handle_error(ex);
+    }
+#endif // GLIBMM_EXCEPTIONS_ENABLED
+
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+    try
+#endif // GLIBMM_EXCEPTIONS_ENABLED
+    {
       if(!bTest)
       {
         //Update failed.
@@ -678,10 +711,12 @@ void Box_Data_Details::on_flowtable_field_edited(const sharedptr<const LayoutIte
       }
 
     }
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
     catch(const std::exception& ex)
     {
       handle_error(ex);
     }
+#endif // GLIBMM_EXCEPTIONS_ENABLED
   }
   else
   {

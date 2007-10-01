@@ -21,6 +21,8 @@
 #ifndef GLOM_UTILITY_WIDGETS_COMBOENTRY_GLOM_H
 #define GLOM_UTILITY_WIDGETS_COMBOENTRY_GLOM_H
 
+#include "config.h" // For ENABLE_CLIENT_ONLY
+
 #include <gtkmm.h>
 #include <glom/libglom/data_structure/field.h>
 #include "comboglomchoicesbase.h"
@@ -65,15 +67,20 @@ protected:
 
 
   //Overrides of default signal handlers:
+  //TODO: Are these really default signal handlers?
   virtual void on_entry_changed(); //From Gtk::Entry.
   virtual void on_entry_activate(); //From Gtk::Entry.
   virtual bool on_entry_focus_out_event(GdkEventFocus* event); //From Gtk::Widget
 
+  // Note that this is a normal signal handler when glibmm was complied
+  // without default signal handlers
   virtual void on_changed(); //From Gtk::ComboBox
 
   virtual void check_for_change();
 
+#ifndef ENABLE_CLIENT_ONLY
   virtual bool on_entry_button_press_event(GdkEventButton *event);
+#endif // !ENABLE_CLIENT_ONLY
 
   virtual App_Glom* get_application();
 

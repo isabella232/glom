@@ -18,6 +18,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#include "config.h" // For ENABLE_MAEMO
+
 #include "adddel.h"
 #include <algorithm> //For std::find.
 #include <glibmm/i18n.h>
@@ -28,6 +30,10 @@
 #include <glom/libglom/utils.h>
 #include "bakery/App/App_Gtk.h"
 #include <iostream> //For debug output.
+
+#ifdef ENABLE_MAEMO
+#include <hildonmm/note.h>
+#endif // ENABLE_MAEMO
 
 #include "eggcolumnchooser/eggcolumnchooserdialog.h"
 
@@ -143,13 +149,20 @@ AddDel::~AddDel()
 
 void AddDel::warn_about_duplicate()
 {
-  Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Duplicate")), true, Gtk::MESSAGE_WARNING, Gtk::BUTTONS_OK);
-  //TODO: dialog.set_transient_for(get_parent_window());
+  Glib::ustring message;
 
   if(m_prevent_duplicates_warning.empty())
-    dialog.set_secondary_text(_("This item already exists. Please try again."));
+    message = _("This item already exists. Please try again.");
   else
-    dialog.set_secondary_text(m_prevent_duplicates_warning); //Something more specific and helpful.
+    message = m_prevent_duplicates_warning; //Something more specific and helpful.
+
+#ifdef ENABLE_MAEMO
+  Hildon::Note dialog(Hildon::NOTE_TYPE_INFORMATION, message);
+#else
+  Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Duplicate")), true, Gtk::MESSAGE_WARNING, Gtk::BUTTONS_OK);
+  dialog.set_secondary_text(message);
+#endif
+  //TODO: dialog.set_transient_for(get_parent_window());
 
   dialog.run();
 }
@@ -660,7 +673,7 @@ void AddDel::construct_specified_columns()
           if(pCellRenderer)
           {
             //Make it editable:
-            pCellRenderer->property_editable() = true;
+	    g_object_set(pCellRenderer->gobj(), "editable", TRUE, (gpointer)NULL);
 
             //Connect to its signal:
             pCellRenderer->signal_edited().connect(
@@ -672,7 +685,7 @@ void AddDel::construct_specified_columns()
            Gtk::CellRendererToggle* pCellRenderer = dynamic_cast<Gtk::CellRendererToggle*>(m_TreeView.get_column_cell_renderer(view_column_index));
            if(pCellRenderer)
            {
-             pCellRenderer->property_activatable() = true;
+             g_object_set(pCellRenderer->gobj(), "activatable", TRUE, (gpointer)NULL);
 
              //Connect to its signal:
              pCellRenderer->signal_toggled().connect(

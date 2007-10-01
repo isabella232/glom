@@ -110,20 +110,33 @@ public:
    *
    * @throws an ExceptionConnection when the connection fails.
    */
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
   sharedptr<SharedConnection> connect();
+#else
+  sharedptr<SharedConnection> connect(std::auto_ptr<ExceptionConnection>& error);
+#endif
 
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
   static sharedptr<SharedConnection> get_and_connect();
+#else
+  static sharedptr<SharedConnection> get_and_connect(std::auto_ptr<ExceptionConnection>& error);
+#endif
 
 #ifndef ENABLE_CLIENT_ONLY
   /** This specifies that Glom should start its own database server instance for this database,
    *  using the database files stored at the specified uri.
    */
   void set_self_hosted(const std::string& data_uri);
-#endif // !ENABLE_CLIENT_ONLY
 
   /** Creates a new database.
    */
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
   void create_database(const Glib::ustring& database_name);
+#else
+  void create_database(const Glib::ustring& database_name, std::auto_ptr<Glib::Error>& error);
+#endif
+  
+#endif // !ENABLE_CLIENT_ONLY
 
   void set_host(const Glib::ustring& value);
   void set_user(const Glib::ustring& value);

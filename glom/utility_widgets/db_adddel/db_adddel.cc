@@ -33,6 +33,7 @@
 //#include "../cellrendererlist.h"
 #include <iostream> //For debug output.
 #include <gtk/gtktreeview.h>
+#include <gtk/gtkstock.h>
 
 namespace Glom
 {
@@ -257,8 +258,10 @@ void DbAddDel::setup_menu()
 
   //TODO: add_accel_group(m_refUIManager->get_accel_group());
 
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
+#endif
     Glib::ustring ui_info = 
         "<ui>"
         "  <popup name='ContextMenu'>"
@@ -271,12 +274,21 @@ void DbAddDel::setup_menu()
         "  </popup>"
         "</ui>";
 
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
     m_refUIManager->add_ui_from_string(ui_info);
   }
   catch(const Glib::Error& ex)
   {
     std::cerr << "building menus failed: " <<  ex.what();
   }
+#else
+  std::auto_ptr<Glib::Error> error;
+  m_refUIManager->add_ui_from_string(ui_info, error);
+  if(error.get() != NULL)
+  {
+    std::cerr << "building menus failed: " << error->what();
+  }
+#endif
 
   //Get the menu:
   m_pMenuPopup = dynamic_cast<Gtk::Menu*>( m_refUIManager->get_widget("/ContextMenu") ); 
@@ -539,7 +551,21 @@ int DbAddDel::get_fixed_cell_height()
     int height = 0;
     refLayout->get_pixel_size(width, height);
 
+#ifdef ENABLE_MAEMO
+    // TODO_maemo: Again, I have no idea why the discovered value does not
+    // fit for maemo. Creating a CellRendererText and asking it for its width
+    // does not yield a different result, neither does including a 'g' in the
+    // example text ('g' is one of the truncated chars when we do not add some
+    // more pixels here).
+    //
+    // I guess the computation above yields the pixels for the default GTK+
+    // font, but not the greater font used on maemo. I don't know how to
+    // specifially ask for that font, though, and why it is not already used
+    // by default. armin.
+    m_fixed_cell_height = height + 12;
+#else
     m_fixed_cell_height = height;
+#endif
     return m_fixed_cell_height;
   }
 }
@@ -610,9 +636,9 @@ Gtk::CellRenderer* DbAddDel::construct_specified_columns_cellrenderer(const shar
 
        Glib::RefPtr<Gdk::Pixbuf> pixbuf = Conversions::get_pixbuf_for_gda_value(item_image->get_image());
        if(pixbuf)
-         pixbuf_renderer->property_pixbuf() = pixbuf;
+         pixbuf_renderer->set_property("pixbuf", pixbuf);
        else
-         pixbuf_renderer->property_stock_id() = Gtk::Stock::MISSING_IMAGE.id; //TODO: Specify stock size?
+         pixbuf_renderer->set_property("stock-id", Gtk::Stock::MISSING_IMAGE);
 
        pCellRenderer = pixbuf_renderer;
      }
@@ -622,7 +648,7 @@ Gtk::CellRenderer* DbAddDel::construct_specified_columns_cellrenderer(const shar
        if(item_text)
        {
          Gtk::CellRendererText* pCellText = Gtk::manage( new Gtk::CellRendererText() );
-         pCellText->property_text() = item_text->get_text();
+	 pCellText->set_property("text", item_text->get_text());
 
          pCellRenderer = pCellText;
        }
@@ -632,7 +658,7 @@ Gtk::CellRenderer* DbAddDel::construct_specified_columns_cellrenderer(const shar
          if(item_button)
          {
            GlomCellRenderer_ButtonText* pCellButton = Gtk::manage( new GlomCellRenderer_ButtonText() );
-           pCellButton->property_text() = item_button->get_title_or_name();
+	   pCellButton->set_property("text", item_button->get_title_or_name());
            //pCellButton->set_fixed_width(50); //Otherwise it doesn't show up. TODO: Discover the width of the contents.
 
            pCellButton->signal_clicked().connect(
@@ -652,7 +678,7 @@ Gtk::CellRenderer* DbAddDel::construct_specified_columns_cellrenderer(const shar
     //Use an ellipze to indicate excessive text, 
     //so that similar values do not look equal, 
     //and to avoid multi-line comments. TODO: Is there a better way to restrict the height? This doesn't actually truncate multilines anyway.
-    pCellRendererText->property_ellipsize() = Pango::ELLIPSIZE_END;
+    g_object_set(pCellRendererText->gobj(), "ellipsize", PANGO_ELLIPSIZE_END, (gpointer)NULL);
 
     //Restrict the height, to prevent multiline text cells,
     //and to allow TreeView performance optimisation:
@@ -662,11 +688,11 @@ Gtk::CellRenderer* DbAddDel::construct_specified_columns_cellrenderer(const shar
     if(item_field) //Only fields can be edited:
     {
       //Make it editable:
-      pCellRendererText->property_editable() = true;
+      pCellRendererText->set_property("editable", true);
 
       //Align numbers to the right: //TODO: Avoid this for ID keys.
       if(item_field->get_glom_type() == Field::TYPE_NUMERIC )
-        pCellRenderer->property_xalign() = 1.0f; //Align right.
+        pCellRendererText->set_property("xalign", 1.0);
 
       //Connect to its signal:
       pCellRendererText->signal_edited().connect(
@@ -738,7 +764,7 @@ Gtk::CellRenderer* DbAddDel::construct_specified_columns_cellrenderer(const shar
     Gtk::CellRendererToggle* pCellRendererToggle = dynamic_cast<Gtk::CellRendererToggle*>(pCellRenderer);
     if(pCellRendererToggle)
     {
-      pCellRendererToggle->property_activatable() = true;
+      pCellRendererToggle->set_property("activatable", true);
 
       if(item_field) //Only fields can be edited:
       {
@@ -862,9 +888,21 @@ void DbAddDel::construct_specified_columns()
     m_treeviewcolumn_button = Gtk::manage(new Gtk::TreeViewColumn());
     m_treeviewcolumn_button->pack_start(*pCellButton);
 
+
+    int x_offset, y_offset, width, height;
+    pCellButton->get_size(m_TreeView, x_offset, y_offset, width, height);
+
     m_treeviewcolumn_button->set_sizing(Gtk::TREE_VIEW_COLUMN_FIXED); //Need by fixed-height mode.
-    m_treeviewcolumn_button->set_fixed_width(25); //Otherwise it doesn't show up. TODO: Discover the width of the contents.
-    m_treeviewcolumn_button->property_visible() = true; //get_allow_view_details();
+#ifdef ENABLE_MAEMO
+    // TODO_maemo: In maemo, there are somehow 3 pixels border to the left
+    // and to the right of the cell renderer. I don't know where they come
+    // from since the xpad property of the cell renderer and the spacing
+    // property of treeview column are both zero. armin.
+    m_treeviewcolumn_button->set_fixed_width(width + 6);
+#else
+    m_treeviewcolumn_button->set_fixed_width(width);
+#endif
+    m_treeviewcolumn_button->set_property("visible", true);
 
     m_TreeView.append_column(*m_treeviewcolumn_button);
 
@@ -1672,9 +1710,7 @@ guint DbAddDel::treeview_append_column(const Glib::ustring& title, Gtk::CellRend
   pViewColumn->signal_clicked().connect(
     sigc::bind( sigc::mem_fun(*this, &DbAddDel::on_treeview_column_clicked), model_column_index) );
 
-
-  pViewColumn->property_width().signal_changed().connect( 
-    sigc::bind( sigc::mem_fun(*this, &DbAddDel::on_treeview_column_resized), model_column_index, pViewColumn) );
+  pViewColumn->connect_property_changed("width", sigc::bind(sigc::mem_fun(*this, &DbAddDel::on_treeview_column_resized), model_column_index, pViewColumn) );
 
   return cols_count;
 }
@@ -1929,7 +1965,7 @@ void DbAddDel::treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gt
             if(pixbuf)
               pixbuf = ImageGlom::scale_keeping_ratio(pixbuf,  get_fixed_cell_height(), pixbuf->get_width());
 
-            pDerived->property_pixbuf() = pixbuf;
+            g_object_set(pDerived->gobj(), "pixbuf", pixbuf->gobj(), (gpointer)NULL);
           }
           else
             g_warning("Field::sql(): glom_type is TYPE_IMAGE but gda type is not VALUE_TYPE_BINARY");
@@ -1944,7 +1980,7 @@ void DbAddDel::treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gt
           {
             const Glib::ustring text = Conversions::get_text_for_gda_value(field->get_glom_type(), value, field->get_formatting_used().m_numeric_format);
             //g_assert(text != "NULL");
-            pDerived->property_text() = text;
+            g_object_set(pDerived->gobj(), "text", text.c_str(), (gpointer)NULL);
           }
 
           break;
@@ -1973,7 +2009,7 @@ void DbAddDel::set_allow_view_details(bool val)
 
   //Hide it if it was visible:
   if(m_treeviewcolumn_button)
-    m_treeviewcolumn_button->property_visible() = get_allow_view_details();
+    g_object_set(m_treeviewcolumn_button->gobj(), "visible", get_allow_view_details() ? TRUE : FALSE, (gpointer)NULL);
 }
 
 bool DbAddDel::get_allow_view_details() const

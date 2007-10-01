@@ -42,7 +42,15 @@ FlowTableWithFields::Info::Info()
 }
 
 FlowTableWithFields::FlowTableWithFields(const Glib::ustring& table_name)
-: m_table_name(table_name)
+:
+#if !defined(GLIBMM_VFUNCS_ENABLED) || !defined(GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED)
+  // This creates a custom GType for us, to override vfuncs and default
+  // signal handlers even with the reduced API (done in flowtable.cc).
+  // TODO: It is necessary to do this in all derived classes which is
+  // rather annoying, though I don't see another possibility at the moment. armin.
+  Glib::ObjectBase("Glom_FlowTable"),
+#endif // !defined(GLIBMM_VFUNCS_ENABLED) || !defined(GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED)
+  m_table_name(table_name)
 {
 }
 
@@ -418,9 +426,8 @@ void FlowTableWithFields::add_field_at_position(const sharedptr<LayoutItem_Field
   info.m_first = label;
   if(label && !label->get_text().empty())
   {
-    label->property_xalign() = 0.0f; //Equivalent to Gtk::ALIGN_LEFT, but we can't use that here.
-    label->property_yalign() = 0.5f; //Equivalent ot Gtk::ALIGN_CENTER, but we can't use that here.; 
-    label->show();
+    label->set_property("xalign", 0.0); //Equivalent to Gtk::ALIGN_LEFT, but we can't use that here.
+    label->set_property("yalign", 0.5); //Equivalent ot Gtk::ALIGN_CENTER, but we can't use that here.; 
 
     label->show();
   }
@@ -433,12 +440,12 @@ void FlowTableWithFields::add_field_at_position(const sharedptr<LayoutItem_Field
   {
     expand_second = true;
     if(label)
-      label->property_yalign() = 0.0f; //Equivalent to Gtk::ALIGN_TOP. Center is neater next to entries, but center is silly next to multi-line text boxes.
+      label->set_property("yalign", 0.0); //Equivalent to Gtk::ALIGN_TOP. Center is neater next to entries, but center is silly next to multi-line text boxes.
   }
   else if(layoutitem_field->get_glom_type() == Field::TYPE_IMAGE)
   {
     if(label)
-      label->property_yalign() = 0.0f; //Equivalent to Gtk::ALIGN_TOP. Center is neater next to entries, but center is silly next to large images.
+      label->set_property("yalign", 0.0); //Equivalent to Gtk::ALIGN_TOP. Center is neater next to entries, but center is silly next to large images.
   }
 
   add(*(info.m_first), *(info.m_second), expand_second);

@@ -100,7 +100,13 @@ Glib::ustring Conversions::format_tm(const tm& tm_data, const std::locale& local
   {
     //Converts from the user's current locale to utf8. I would prefer a generic conversion from any locale,
     // but there is no such function, and it's hard to do because I don't know how to get the encoding name from the std::locale()
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
     text = Glib::locale_to_utf8(text);
+#else
+    std::auto_ptr<Glib::Error> error;
+    text = Glib::locale_to_utf8(text, error);
+    // Ignore error for now
+#endif
   }
 
   return text; //TODO: Use something like Glib::locale_to_utf8()?
@@ -253,7 +259,12 @@ Glib::ustring Conversions::get_text_for_gda_value(Field::glom_field_type glom_ty
     {
       //Converts from the user's current locale to utf8. I would prefer a generic conversion from any locale,
       // but there is no such function, and it's hard to do because I don't know how to get the encoding name from the std::locale()
-      text = Glib::locale_to_utf8(text); 
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+      text = Glib::locale_to_utf8(text);
+#else
+      std::auto_ptr<Glib::Error> error;
+      text = Glib::locale_to_utf8(text, error);
+#endif
     }
 
     return text; //Do something like Glib::locale_to_utf(), but with the specified locale instead of the current locale.
@@ -923,7 +934,7 @@ Glib::RefPtr<Gdk::Pixbuf> Conversions::get_pixbuf_for_gda_value(const Gnome::Gda
       else
       {
         std::cerr << "ImageGlom::set_value(): Error while calling gdk_pixbuf_loader_new_with_type(): " << error->message << std::endl;
-	g_error_free(error);
+        g_error_free(error);
       }
 
       /*
@@ -941,22 +952,38 @@ Glib::RefPtr<Gdk::Pixbuf> Conversions::get_pixbuf_for_gda_value(const Gnome::Gda
 
       if(refPixbufLoader)
       {
+        guint8* puiData = (guint8*)buffer_binary;
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
         try
         {
-          guint8* puiData = (guint8*)buffer_binary;
 
           //g_warning("ImageGlom::set_value(): debug: from db: ");
           //for(int i = 0; i < 10; ++i)
           //  g_warning("%02X (%c), ", (guint8)puiData[i], (char)puiData[i]);
 
           refPixbufLoader->write(puiData, (glong)buffer_binary_length);
-
           result = refPixbufLoader->get_pixbuf();
 
           refPixbufLoader->close(); //This throws if write() threw, so it must be inside the try block.
         }
+#else
+        std::auto_ptr<Glib::Error> error;
+        refPixbufLoader->write(puiData, (glong)buffer_binary_length, error);
+        if(error.get() != NULL)
+        {
+          result = refPixbufLoader->get_pixbuf();
+          refPixbufLoader->close(error);
+        }
+#endif
+
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
         catch(const Glib::Exception& ex)
         {
+#else
+        if(error.get() != NULL)
+        {
+          const Glib::Exception& ex = *error.get();        
+#endif
           g_warning("ImageGlom::set_value(): PixbufLoader::write() failed: %s", ex.what().c_str());
         }
       }

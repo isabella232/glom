@@ -3,6 +3,9 @@
 /* Whether to disable support for self-hosting and developer mode */
 #undef ENABLE_CLIENT_ONLY
 
+/* Whether to enable support for the maemo platform */
+#undef ENABLE_MAEMO
+
 /* always defined to indicate that i18n is enabled */
 #undef ENABLE_NLS
 

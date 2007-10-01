@@ -4,7 +4,7 @@ if !ENABLE_CLIENT_ONLY
 SUBDIRS += layout_item_dialogs mode_design translation relationships_overview
 endif
 
-gladedir = $(datadir)/glom/glade/
+gladedir = $(datadir)/glom/glade
 glomxsltdir = $(datadir)/glom/xslt/
 glom_examples_dir = $(pkgdatadir)/doc/examples/
 glom_icon_dir = $(datadir)/icons/hicolor/48x48/apps

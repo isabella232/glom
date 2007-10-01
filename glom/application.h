@@ -51,8 +51,10 @@ public:
   void set_mode_data();
   void set_mode_find();
 
+#ifndef ENABLE_CLIENT_ONLY
   void add_developer_action(const Glib::RefPtr<Gtk::Action>& refAction);
   void remove_developer_action(const Glib::RefPtr<Gtk::Action>& refAction);
+#endif // !ENABLE_CLIENT_ONLY
 
   AppState::userlevels get_userlevel() const;
 
@@ -103,7 +105,9 @@ protected:
 
   virtual Bakery::App* new_instance(); //Override
 
+#ifndef ENABLE_CLIENT_ONLY
   bool recreate_database(bool& user_cancelled); //return indicates success.
+#endif // !ENABLE_CLIENT_ONLY
 
 #ifndef ENABLE_CLIENT_ONLY
   void stop_self_hosting_of_document_database();

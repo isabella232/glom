@@ -53,7 +53,7 @@ Dialog_FieldLayout::Dialog_FieldLayout(BaseObjectType* cobject, const Glib::RefP
   //Get the formatting stuff:
   try
   {
-    Glib::RefPtr<Gnome::Glade::Xml> refXmlFormatting = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "box_formatting");
+    Glib::RefPtr<Gnome::Glade::Xml>Formatting = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "box_formatting");
     refXmlFormatting->get_widget_derived("box_formatting", m_box_formatting);
   }
   catch(const Gnome::Glade::XmlError& ex)

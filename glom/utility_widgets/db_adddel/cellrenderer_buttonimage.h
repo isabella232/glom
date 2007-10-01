@@ -24,6 +24,7 @@
 #include <gtkmm/cellrendererpixbuf.h>
 #include <gtkmm/treepath.h>
 #include <gtkmm/treemodel.h>
+#include <gtk/gtkcellrenderer.h>
 
 namespace Glom
 {
@@ -38,6 +39,10 @@ public:
   type_signal_clicked signal_clicked();
   
 protected:
+#ifndef GLIBMM_VFUNCS_ENABLED
+  static gboolean activate_impl(GtkCellRenderer* cell, GdkEvent* event, GtkWidget* widget, const gchar* path, GdkRectangle* background_area, GdkRectangle* cell_area, GtkCellRendererState flags);
+#endif
+
   virtual bool activate_vfunc(GdkEvent* event, Gtk::Widget& widget, const Glib::ustring& path, const Gdk::Rectangle& background_area, const Gdk::Rectangle& cell_area, Gtk::CellRendererState flags);
 
   type_signal_clicked m_signal_clicked;

@@ -125,10 +125,30 @@ bool Box_Data_List::fill_from_database()
 
   Bakery::BusyCursor busy_cursor(get_app_window());
 
+  sharedptr<SharedConnection> sharedconnection;
+
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
-    sharedptr<SharedConnection> sharedconnection = connect_to_server(get_app_window());
+    sharedconnection = connect_to_server(get_app_window());
+  }
+  catch(const std::exception& ex)
+  {
+    handle_error(ex);
+    result = false;
+  }
+#else
+  std::auto_ptr<ExceptionConnection> error;
+  sharedconnection = connect_to_server(get_app_window(), error);
+  if(error.get())
+  {
+    handle_error(*error);
+    result = false;
+  }
+#endif
 
+  if(sharedconnection)
+  {
     Box_Data::fill_from_database();
 
     //Field Names:
@@ -159,11 +179,6 @@ bool Box_Data_List::fill_from_database()
     } //privs
 
     fill_end();
-  }
-  catch(const std::exception& ex)
-  {
-    handle_error(ex);
-    result = false;
   }
 
   return result;
@@ -286,7 +301,13 @@ void Box_Data_List::on_adddel_user_added(const Gtk::TreeModel::iterator& row, gu
   //If no primary key value is available yet, then don't add the record yet:
   if(!Conversions::value_is_empty(primary_key_value))
   {
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
     sharedptr<SharedConnection> sharedconnection = connect_to_server(get_app_window()); //Keep it alive while we need the data_model.
+#else
+    std::auto_ptr<ExceptionConnection> error;
+    sharedptr<SharedConnection> sharedconnection = connect_to_server(get_app_window(), error); //Keep it alive while we need the data_model.
+    // Ignore error, sharedconnection presence is checked below
+#endif
     if(sharedconnection)
     {
       sharedptr<LayoutItem_Field> layout_field = sharedptr<LayoutItem_Field>::create();
@@ -365,7 +386,9 @@ void Box_Data_List::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, 
   if(!Conversions::value_is_empty(parent_primary_key_value)) //If the record's primary key is filled in:
   {
     //Just update the record:
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
     try
+#endif // GLIBMM_EXCEPTIONS_ENABLED
     {
       
       Glib::ustring table_name = m_table_name;
@@ -449,10 +472,12 @@ void Box_Data_List::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, 
         fill_from_database(); //Replace with correct values.
       }
     }
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
     catch(const std::exception& ex)
     {
       handle_error(ex);
     }
+#endif // GLIBMM_EXCEPTIONS_ENABLED
   }
   else
   {

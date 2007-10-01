@@ -387,7 +387,7 @@ void DataWidget::set_viewable(bool viewable)
   {
     Gtk::CheckButton* checkbutton = dynamic_cast<Gtk::CheckButton*>(child);
     if(checkbutton)
-      checkbutton->property_inconsistent() = !viewable;
+      checkbutton->set_property("inconsistent", !viewable);
   }
 }
 
@@ -485,11 +485,11 @@ void DataWidget::setup_menu()
 }
 */
 
+#ifndef ENABLE_CLIENT_ONLY
 bool DataWidget::on_button_press_event(GdkEventButton *event)
 {
   //g_warning("DataWidget::on_button_press_event_popup");
 
-#ifndef ENABLE_CLIENT_ONLY
   //Enable/Disable items.
   //We did this earlier, but get_application is more likely to work now:
   App_Glom* pApp = get_application();
@@ -516,10 +516,10 @@ bool DataWidget::on_button_press_event(GdkEventButton *event)
       }
     }
   }
-#endif // !ENABLE_CLIENT_ONLY
 
   return Gtk::EventBox::on_button_press_event(event);
 }
+#endif // !ENABLE_CLIENT_ONLY
 
 sharedptr<LayoutItem_Field> DataWidget::offer_field_list(const Glib::ustring& table_name)
 {
@@ -530,31 +530,44 @@ sharedptr<LayoutItem_Field> DataWidget::offer_field_list(const Glib::ustring& ta
 {
   sharedptr<LayoutItem_Field> result;
 
+  Glib::RefPtr<Gnome::Glade::Xml> refXml;
+
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
-    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_choose_field");
-
-    Dialog_ChooseField* dialog = 0;
-    refXml->get_widget_derived("dialog_choose_field", dialog);
-
-    if(dialog)
-    {
-      dialog->set_document(get_document(), table_name, start_field);
-      dialog->set_transient_for(*get_application());
-      int response = dialog->run();
-      dialog->hide();
-      if(response == Gtk::RESPONSE_OK)
-      {
-        //Get the chosen field:
-        result = dialog->get_field_chosen();
-      }
-
-      delete dialog;
-    }
+    refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_choose_field");
   }
   catch(const Gnome::Glade::XmlError& ex)
   {
     std::cerr << ex.what() << std::endl;
+    return result;
+  }
+#else
+  std::auto_ptr<Gnome::Glade::XmlError> error;
+  refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_choose_field", "", error);
+  if(error.get())
+  {
+    std::cerr << error->what() << std::endl;
+    return result;
+  }
+#endif
+  
+  Dialog_ChooseField* dialog = 0;
+  refXml->get_widget_derived("dialog_choose_field", dialog);
+
+  if(dialog)
+  {
+    dialog->set_document(get_document(), table_name, start_field);
+    dialog->set_transient_for(*get_application());
+    int response = dialog->run();
+    dialog->hide();
+    if(response == Gtk::RESPONSE_OK)
+    {
+      //Get the chosen field:
+      result = dialog->get_field_chosen();
+    }
+
+    delete dialog;
   }
 
   return result;
@@ -698,89 +711,113 @@ const Gtk::Widget* DataWidget::get_data_child_widget() const
  }
 
 void DataWidget::on_button_choose_date()
-{  
+{
+  Glib::RefPtr<Gnome::Glade::Xml> refXml;
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
-    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_choose_date");
-
-    Dialog_ChooseDate* dialog = 0;
-    refXml->get_widget_derived("dialog_choose_date", dialog);
-
-    if(dialog)
-    {
-      dialog->set_transient_for(*get_application());
-      dialog->set_date_chosen(get_value());
-
-      const int response = Glom::Utils::dialog_run_with_help(dialog, "dialog_choose_date");
-      dialog->hide();
-      if(response == Gtk::RESPONSE_OK)
-      {
-        //Get the chosen date
-        const Gnome::Gda::Value value = dialog->get_date_chosen();
-        set_value(value);
-
-        m_signal_edited.emit(value);
-      }
-
-      delete dialog;
-    }
+    refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_choose_date");
   }
   catch(const Gnome::Glade::XmlError& ex)
   {
     std::cerr << ex.what() << std::endl;
+    return;
   }
- }
+#else
+  std::auto_ptr<Gnome::Glade::XmlError> error;
+  refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_choose_date", "", error);
+  if(error.get())
+  {
+    std::cerr << error->what() << std::endl;
+    return;
+  }
+#endif
 
- bool DataWidget::offer_related_record_id_find(Gnome::Gda::Value& chosen_id)
- {
+  Dialog_ChooseDate* dialog = 0;
+  refXml->get_widget_derived("dialog_choose_date", dialog);
+
+  if(dialog)
+  {
+    dialog->set_transient_for(*get_application());
+    dialog->set_date_chosen(get_value());
+
+    const int response = Glom::Utils::dialog_run_with_help(dialog, "dialog_choose_date");
+    dialog->hide();
+    if(response == Gtk::RESPONSE_OK)
+    {
+      //Get the chosen date
+      const Gnome::Gda::Value value = dialog->get_date_chosen();
+      set_value(value);
+
+      m_signal_edited.emit(value);
+    }
+
+    delete dialog;
+  }
+}
+
+bool DataWidget::offer_related_record_id_find(Gnome::Gda::Value& chosen_id)
+{
   bool result = false;
 
   //Initialize output variable:
   chosen_id = Gnome::Gda::Value();
 
+  Glib::RefPtr<Gnome::Glade::Xml> refXml;
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
-    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_find_id");
-
-    Dialog_ChooseID* dialog = 0;
-    refXml->get_widget_derived("dialog_find_id", dialog);
-
-    if(dialog)
-    {
-      //dialog->set_document(get_document(), table_name, field);
-      dialog->set_transient_for(*get_application());
-      add_view(dialog);
-
-      //Discover the related table, in the relationship that uses this ID field:
-      Glib::ustring related_table_name;
-      sharedptr<LayoutItem_Field> layoutField = sharedptr<LayoutItem_Field>::cast_dynamic(get_layout_item());
-      if(layoutField)
-      {
-        sharedptr<Relationship> relationship = get_document()->get_field_used_in_relationship_to_one(m_table_name, layoutField->get_name());
-        if(relationship)
-          related_table_name = relationship->get_to_table();
-      }
-      else
-        g_warning("get_layout_item() was not a LayoutItem_Field");
-
-      dialog->init_db_details(related_table_name);
-
-
-      int response = dialog->run();
-      dialog->hide();
-      if(response == Gtk::RESPONSE_OK)
-      {
-        //Get the chosen field:
-        result = dialog->get_id_chosen(chosen_id);
-      }
-
-      remove_view(dialog);
-      delete dialog;
-    }
+    refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_find_id");
   }
   catch(const Gnome::Glade::XmlError& ex)
   {
     std::cerr << ex.what() << std::endl;
+    return result;
+  }
+#else
+  std::auto_ptr<Gnome::Glade::XmlError> error;
+  refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_find_id", "", error);
+  if(error.get())
+  {
+    std::cerr << error->what() << std::endl;
+    return result;
+  }
+#endif
+
+  Dialog_ChooseID* dialog = 0;
+  refXml->get_widget_derived("dialog_find_id", dialog);
+
+  if(dialog)
+  {
+    //dialog->set_document(get_document(), table_name, field);
+    dialog->set_transient_for(*get_application());
+    add_view(dialog);
+
+    //Discover the related table, in the relationship that uses this ID field:
+    Glib::ustring related_table_name;
+    sharedptr<LayoutItem_Field> layoutField = sharedptr<LayoutItem_Field>::cast_dynamic(get_layout_item());
+    if(layoutField)
+    {
+      sharedptr<Relationship> relationship = get_document()->get_field_used_in_relationship_to_one(m_table_name, layoutField->get_name());
+      if(relationship)
+        related_table_name = relationship->get_to_table();
+    }
+    else
+      g_warning("get_layout_item() was not a LayoutItem_Field");
+
+    dialog->init_db_details(related_table_name);
+
+
+    int response = dialog->run();
+    dialog->hide();
+    if(response == Gtk::RESPONSE_OK)
+    {
+      //Get the chosen field:
+      result = dialog->get_id_chosen(chosen_id);
+    }
+
+    remove_view(dialog);
+    delete dialog;
   }
 
   return result;

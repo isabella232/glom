@@ -78,7 +78,13 @@ bool Notebook_Data::init_db_details(const FoundSet& found_set, const Gnome::Gda:
   //Performance optimisation:
   //Keep the connection open during all these operations:
   {
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
     sharedptr<SharedConnection> sharedconnection = connect_to_server(get_app_window());
+#else
+    std::auto_ptr<ExceptionConnection> error;
+    sharedptr<SharedConnection> sharedconnection = connect_to_server(get_app_window(), error);
+    // Ignore error, sharedconnection is not used directly within this function
+#endif
 
     const FoundSet old_found_set = m_Box_List.get_found_set();
     //std::cout << "  old_where_clause=" << old_where_clause << std::endl;

@@ -18,6 +18,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#include "config.h"
+
 #include "frame_glom.h"
 #include "application.h"
 #include <glom/libglom/appstate.h>
@@ -49,6 +51,10 @@
 #include "relationships_overview/dialog_relationships_overview.h"
 #endif
 #endif // !ENABLE_CLIENT_ONLY
+
+#ifdef ENABLE_MAEMO
+#include <hildonmm/note.h>
+#endif
 
 #include "filechooser_export.h"
 #include <glom/glom_privs.h>
@@ -119,51 +125,98 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
   //m_pLabel_Mode->set_text(_("No database selected.\n Use the Navigation menu, or open a previous Glom document."));
 
   //Load the Glade file and instantiate its widgets to get the dialog stuff:
+#ifndef GLIBMM_EXCEPTIONS_ENABLED
+  std::auto_ptr<Gnome::Glade::XmlError> error;
+#endif
+  Glib::RefPtr<Gnome::Glade::Xml> refXml;
 
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
-    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_connection");
-
-    refXml->get_widget_derived("dialog_connection", m_pDialogConnection);
+    refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_connection");
   }
   catch(const Gnome::Glade::XmlError& ex)
   {
     std::cerr << ex.what() << std::endl;
   }
+#else
+  refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_connection", "", error);
+  if(error.get()) std::cerr << error->what() << std::endl;
+#endif
 
+  if(refXml)
+  {
+    refXml->get_widget_derived("dialog_connection", m_pDialogConnection);
+    refXml.clear();
+  }
+
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
-    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "box_navigation_tables");
+    refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "box_navigation_tables");
+  }
+  catch(const Gnome::Glade::XmlError& ex)
+  {
+    std::cerr << ex.what() << std::endl;
+  }
+#else
+  error.reset(NULL);
+  refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "box_navigation_tables", "", error);
+  if(error.get()) std::cerr << error->what() << std::endl;
+#endif
 
+  if(refXml)
+  {
     refXml->get_widget_derived("box_navigation_tables", m_pBox_Tables);
     m_pDialog_Tables = new Dialog_Glom(m_pBox_Tables);
 
     //Respond to window close:
     m_pDialog_Tables->signal_hide().connect(sigc::mem_fun(*this, &Frame_Glom::on_dialog_tables_hide));
-  }
-  catch(const Gnome::Glade::XmlError& ex)
-  {
-    std::cerr << ex.what() << std::endl;
+    refXml.clear();
   }
 
 #ifndef ENABLE_CLIENT_ONLY
+
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
-    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "box_reports");
-
-    refXml->get_widget_derived("box_reports", m_pBox_Reports);
-    m_pDialog_Reports = new Dialog_Glom(m_pBox_Reports);
-    //add_view(m_pBox_Reports);
+    refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "box_reports");
   }
   catch(const Gnome::Glade::XmlError& ex)
   {
     std::cerr << ex.what() << std::endl;
   }
+#else
+  error.reset(NULL);
+  refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "box_reports", "", error);
+  if(error.get()) std::cerr << error->what() << std::endl;
+#endif
 
+  if(refXml)
+  {
+    refXml->get_widget_derived("box_reports", m_pBox_Reports);
+    m_pDialog_Reports = new Dialog_Glom(m_pBox_Reports);
+    //add_view(m_pBox_Reports);
+    refXml.clear();
+  }
+
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
-    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_report_layout");
+    refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_report_layout");
+  }
+  catch(const Gnome::Glade::XmlError& ex)
+  {
+    std::cerr << ex.what() << std::endl;
+  }
+#else
+  error.reset(NULL);
+  refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_report_layout", "", error);
+  if(error.get()) std::cerr << error->what() << std::endl;
+#endif
 
+  if(refXml)
+  {
     refXml->get_widget_derived("window_report_layout", m_pDialogLayoutReport);
 
     add_view(m_pDialogLayoutReport);
@@ -171,38 +224,55 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
 
     m_pDialog_Reports = new Dialog_Glom(m_pBox_Reports);
     m_pDialog_Reports->signal_hide().connect( sigc::mem_fun(*this, &Frame_Glom::on_dialog_reports_hide) );
+    refXml.clear();
+  }
+
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+  try
+  {
+    refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_design");
   }
   catch(const Gnome::Glade::XmlError& ex)
   {
     std::cerr << ex.what() << std::endl;
   }
-#endif // !ENABLE_CLIENT_ONLY
+#else
+  error.reset(NULL);
+  refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_design", "", error);
+  if(error.get()) std::cerr << error->what() << std::endl;
+#endif
 
-#ifndef ENABLE_CLIENT_ONLY
-  try
+  if(refXml)
   {
-    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_design");
-
     refXml->get_widget_derived("window_design", m_pDialog_Relationships);
     m_pDialog_Relationships->set_title("Relationships");
     m_pDialog_Relationships->signal_hide().connect( sigc::mem_fun(*this, &Frame_Glom::on_developer_dialog_hide));
-  }
-  catch(const Gnome::Glade::XmlError& ex)
-  {
-    std::cerr << ex.what() << std::endl;
-  }
-
-  try
-  {
-    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_error_connection");
-
-    refXml->get_widget("dialog_error_connection", m_pDialogConnectionFailed);
-  }
-  catch(const Gnome::Glade::XmlError& ex)
-  {
-    std::cerr << ex.what() << std::endl;
+    refXml.clear();
   }
 #endif // !ENABLE_CLIENT_ONLY
+
+
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+  try
+  {
+    refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_error_connection");
+
+  }
+  catch(const Gnome::Glade::XmlError& ex)
+  {
+    std::cerr << ex.what() << std::endl;
+  }
+#else
+  error.reset(NULL);
+  refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_error_connection", "", error);
+  if(error.get()) std::cerr << error->what() << std::endl;
+#endif
+
+  if(refXml)
+  {
+    refXml->get_widget("dialog_error_connection", m_pDialogConnectionFailed);
+    refXml.clear();
+  }
 
 
   m_Mode = MODE_None;
@@ -245,6 +315,14 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
   add_view(&m_Notebook_Find); //Also a composite view.
 
   on_userlevel_changed(AppState::USERLEVEL_OPERATOR); //A default to show before a document is created or loaded.
+
+#ifdef ENABLE_MAEMO
+  // Don't show the document name on maemo. The label is on top of the window,
+  // and the document name is already shown in the window title (note that
+  // there is not even a menu between them as in the non-maemo version). This
+  // looks a bit strange and takes unnecessarily vertical screen space.
+  m_pLabel_Name->hide();
+#endif
 }
 
 Frame_Glom::~Frame_Glom()
@@ -319,6 +397,7 @@ void Frame_Glom::set_databases_selected(const Glib::ustring& strName)
   get_document()->set_connection_database(strName);
 
   show_system_name();
+
   do_menu_Navigate_Table(true /* open default */);
 }
 
@@ -997,10 +1076,16 @@ void Frame_Glom::on_button_quickfind()
   const Glib::ustring criteria = m_pEntry_QuickFind->get_text();
   if(criteria.empty())
   {
+    Glib::ustring message(_("You have not entered any quick find criteria."));
+#ifdef ENABLE_MAEMO
+    Hildon::Note note(Hildon::NOTE_TYPE_INFORMATION, *get_app_window(), message);
+    note.run();
+#else
     Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("No Find Criteria")), true, Gtk::MESSAGE_WARNING );
-    dialog.set_secondary_text(_("You have not entered any quick find criteria."));
+    dialog.set_secondary_text(message);
     dialog.set_transient_for(*get_app_window());
     dialog.run();
+#endif
   }
   else
   {
@@ -1084,7 +1169,13 @@ void Frame_Glom::show_table_title()
     else //Use the table name if there is no table title.
       table_label = m_table_name;
 
+#ifdef ENABLE_MAEMO
+    // xx-large is too large on maemo, taking away too much (vertical)
+    // screen estate
+    m_pLabel_Table->set_markup("<b><span size=\"large\">" + table_label + "</span></b>");
+#else
     m_pLabel_Table->set_markup("<b><span size=\"xx-large\">" + table_label + "</span></b>"); //Show the table title in large text, because it's very important to the user.
+#endif
   }
 }
 
@@ -1186,6 +1277,11 @@ void Frame_Glom::set_document(Document_Glom* pDocument)
 
 void Frame_Glom::show_system_name()
 {
+  // Don't show the document name on maemo. The label is on top of the window,
+  // and the document name is already shown in the window title (note that
+  // there is not even a menu between them as in the non-maemo version). This
+  // looks a bit strange and takes unnecessarily vertical screen space.
+#ifndef ENABLE_MAEMO
   const SystemPrefs prefs = get_database_preferences();
   const Glib::ustring org = prefs.m_org_name;
   const Glib::ustring name = prefs.m_name;
@@ -1199,8 +1295,8 @@ void Frame_Glom::show_system_name()
   m_pLabel_Name->set_text ( Bakery::App_Gtk::util_bold_message(system_name) );
   m_pLabel_Name->set_use_markup();
   m_pLabel_Name->show();
+#endif // !ENABLE_MAEMO
 }
-
 
 void Frame_Glom::load_from_document()
 {
@@ -1460,16 +1556,30 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
   if(document->get_connection_is_self_hosted())
   {
     Dialog_NewSelfHostedConnection* dialog = 0;
+    Glib::RefPtr<Gnome::Glade::Xml> refXml;
+
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
     try
     {
-      Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_new_self_hosted_connection");
-
-      refXml->get_widget_derived("dialog_new_self_hosted_connection", dialog);
+      refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_new_self_hosted_connection");
     }
     catch(const Gnome::Glade::XmlError& ex)
     {
       std::cerr << ex.what() << std::endl;
+      return false;
     }
+#else
+    std::auto_ptr<Gnome::Glade::XmlError> error;
+    refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_new_self_hosted_connection", error);
+    if(error.get())
+    {
+      std::cerr << error->what() << std::endl;
+      return false;
+    }
+#endif
+
+    refXml->get_widget_derived("dialog_new_self_hosted_connection", dialog);
+    if(!dialog) return false;
 
     add_view(dialog);
 
@@ -1560,6 +1670,7 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
       m_pDialogConnection->set_database_name(database_name_possible);
       //std::cout << "debug: possible name=" << database_name_possible << std::endl;
 
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
       try
       {
         sharedptr<SharedConnection> sharedconnection = m_pDialogConnection->connect_to_server_with_connection_settings();
@@ -1568,6 +1679,13 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
       }
       catch(const ExceptionConnection& ex)
       {
+#else
+      std::auto_ptr<ExceptionConnection> error;
+      sharedptr<SharedConnection> sharedconnection = m_pDialogConnection->connect_to_server_with_connection_settings(error);
+      if(error.get())
+      {
+        const ExceptionConnection& ex = *error;
+#endif
         //g_warning("Frame_Glom::connection_request_password_and_choose_new_database_name(): caught exception.");
 
         if(ex.get_failure_type() == ExceptionConnection::FAILURE_NO_SERVER)
@@ -1613,7 +1731,11 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
   return false;
 }
 
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
 bool Frame_Glom::connection_request_password_and_attempt()
+#else
+bool Frame_Glom::connection_request_password_and_attempt(std::auto_ptr<ExceptionConnection>& error)
+#endif
 {
   while(true) //Loop until a return
   {
@@ -1625,6 +1747,7 @@ bool Frame_Glom::connection_request_password_and_attempt()
 
     if(response == Gtk::RESPONSE_OK)
     {
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
       try
       {
         //TODO: Remove any previous database setting?
@@ -1633,6 +1756,15 @@ bool Frame_Glom::connection_request_password_and_attempt()
       }
       catch(const ExceptionConnection& ex)
       {
+#else
+      std::auto_ptr<ExceptionConnection> local_error;
+      sharedptr<SharedConnection> sharedconnection = m_pDialogConnection->connect_to_server_with_connection_settings(local_error);
+      if(!local_error.get())
+        return true;
+      else
+      {
+        const ExceptionConnection& ex = *local_error;
+#endif
         g_warning("Frame_Glom::connection_request_password_and_attempt(): caught exception.");
 
         if(ex.get_failure_type() == ExceptionConnection::FAILURE_NO_SERVER)
@@ -1650,7 +1782,11 @@ bool Frame_Glom::connection_request_password_and_attempt()
           g_warning("Frame_Glom::connection_request_password_and_attempt(): rethrowing exception.");
 
           //The connection to the server is OK, but the specified database does not exist:
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
           throw ex; //Pass it on for the caller to handle.
+#else
+	  error = local_error; //Pass it on for the caller to handle.
+#endif
           return false;
         }
       }
@@ -1662,6 +1798,7 @@ bool Frame_Glom::connection_request_password_and_attempt()
   }
 }
 
+#ifndef ENABLE_CLIENT_ONLY
 bool Frame_Glom::create_database(const Glib::ustring& database_name, const Glib::ustring& title, bool request_password)
 {
   //Ask for connection details:
@@ -1812,7 +1949,7 @@ bool Frame_Glom::create_database(const Glib::ustring& database_name, const Glib:
     return false;
   }
 }
-
+#endif // !ENABLE_CLIENT_ONLY
 
 void Frame_Glom::on_menu_report_selected(const Glib::ustring& report_name)
 {

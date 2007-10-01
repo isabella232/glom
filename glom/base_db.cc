@@ -49,6 +49,10 @@
 #include <glibmm/i18n.h>
 //#include <libgnomeui/gnome-app-helper.h>
 
+#ifdef ENABLE_MAEMO
+#include <hildonmm/note.h>
+#endif
+
 #include <sstream> //For stringstream
 
 namespace Glom
@@ -153,20 +157,32 @@ void Base_DB::fill_end()
 }
 
 //static:
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
 sharedptr<SharedConnection> Base_DB::connect_to_server(Gtk::Window* parent_window)
+#else
+sharedptr<SharedConnection> Base_DB::connect_to_server(Gtk::Window* parent_window, std::auto_ptr<ExceptionConnection>& error)
+#endif
 {
   Bakery::BusyCursor busy_cursor(parent_window);
 
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
   return ConnectionPool::get_and_connect();
+#else
+  return ConnectionPool::get_and_connect(error);
+#endif
 }
 
 void Base_DB::handle_error(const std::exception& ex)
 {
   std::cerr << "Internal Error (Base_DB::handle_error()): exception type=" << typeid(ex).name() << ", ex.what()=" << ex.what() << std::endl;
 
+#ifdef ENABLE_MAEMO
+  Hildon::Note dialog(Hildon::NOTE_TYPE_INFORMATION, ex.what());
+#else
   Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Internal error")), true, Gtk::MESSAGE_WARNING );
   dialog.set_secondary_text(ex.what());
   //TODO: dialog.set_transient_for(*get_application());
+#endif
   dialog.run();
 }
 
@@ -182,7 +198,17 @@ Glib::RefPtr<Gnome::Gda::DataModel> Base_DB::query_execute(const Glib::ustring& 
 
   //TODO: Bakery::BusyCursor busy_cursor(get_app_window());
 
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
   sharedptr<SharedConnection> sharedconnection = connect_to_server();
+#else
+  std::auto_ptr<ExceptionConnection> error;
+  sharedptr<SharedConnection> sharedconnection = connect_to_server(0, error);
+  if(error.get())
+  {
+    g_warning("Base_DB::query_execute failed (query was: %s): %s", strQuery.c_str(), error->what());
+    // TODO: Rethrow? 
+  }
+#endif
   if(sharedconnection)
   {
     Glib::RefPtr<Gnome::Gda::Connection> gda_connection = sharedconnection->get_gda_connection();
@@ -190,14 +216,18 @@ Glib::RefPtr<Gnome::Gda::DataModel> Base_DB::query_execute(const Glib::ustring& 
    const App_Glom* app = App_Glom::get_application();
    if(app && app->get_show_sql_debug())
    {
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
       try
       {
+#endif
         std::cout << "Debug: query_execute():  " << strQuery << std::endl;
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
       }
       catch(const Glib::Exception& ex)
       {
         std::cout << "Debug: query string could not be converted to std::cout: " << ex.what() << std::endl;
       }
+#endif
     }
 
     // TODO: Several functions call query_execute with non-select queries.
@@ -207,11 +237,25 @@ Glib::RefPtr<Gnome::Gda::DataModel> Base_DB::query_execute(const Glib::ustring& 
     // succeeded. Probably, we should introduce another
     // query_execute_non_select in the long term. 
     if(strQuery.compare(0, 6, "SELECT") == 0)
+    {
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
       result = gda_connection->execute_select_command(strQuery);
+#else
+      std::auto_ptr<Glib::Error> error;
+      result = gda_connection->execute_select_command(strQuery, error);
+      // Ignore error, empty datamodel is handled below
+#endif
+    }
     else
     {
+      std::auto_ptr<Glib::Error> error;
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
       if(gda_connection->execute_non_select_command(strQuery) != -1)
-        result = Gnome::Gda::DataModelArray::create(1);
+#else
+      if(gda_connection->execute_non_select_command(strQuery, error) != -1)
+        if(error.get() == NULL)
+#endif
+          result = Gnome::Gda::DataModelArray::create(1);
     }
 
     if(!result)
@@ -255,12 +299,23 @@ bool Base_DB::get_table_exists_in_database(const Glib::ustring& table_name) cons
 Base_DB::type_vecStrings Base_DB::get_table_names_from_database(bool ignore_system_tables) const
 {
   type_vecStrings result;
-
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
   sharedptr<SharedConnection> sharedconnection = connect_to_server();
+#else
+  std::auto_ptr<ExceptionConnection> error;
+  sharedptr<SharedConnection> sharedconnection = connect_to_server(0, error);
+  // TODO: Rethrow?
+#endif
   if(sharedconnection)
   {
     Glib::RefPtr<Gnome::Gda::Connection> gda_connection = sharedconnection->get_gda_connection();
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
     Glib::RefPtr<Gnome::Gda::DataModel> data_model_tables = gda_connection->get_schema(Gnome::Gda::CONNECTION_SCHEMA_TABLES);
+#else
+    std::auto_ptr<Glib::Error> error;
+    Glib::RefPtr<Gnome::Gda::DataModel> data_model_tables = gda_connection->get_schema(Gnome::Gda::CONNECTION_SCHEMA_TABLES, error);
+    // Ignore error, data_model_tables presence is checked below
+#endif
     if(data_model_tables && (data_model_tables->get_n_columns() == 0))
     {
       std::cerr << "Base_DB_Table::get_table_names_from_database(): libgda reported 0 tables for the database." << std::endl;
@@ -397,7 +452,14 @@ Base_DB::type_vecFields Base_DB::get_fields_for_table_from_database(const Glib::
 
   //TODO: Bakery::BusyCursor busy_cursor(get_application());
 
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
   sharedptr<SharedConnection> sharedconnection = connect_to_server();
+#else
+  std::auto_ptr<ExceptionConnection> error;
+  sharedptr<SharedConnection> sharedconnection = connect_to_server(0, error);
+  // TODO: Rethrow?
+#endif
+
   if(!sharedconnection)
   {
     g_warning("Base_DB::get_fields_for_table_from_database(): connection failed.");
@@ -411,7 +473,13 @@ Base_DB::type_vecFields Base_DB::get_fields_for_table_from_database(const Glib::
     Glib::RefPtr<Gnome::Gda::ParameterList> param_list = Gnome::Gda::ParameterList::create();
     param_list->add_parameter(param_table_name);
 
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
     Glib::RefPtr<Gnome::Gda::DataModel> data_model_fields = connection->get_schema(Gnome::Gda::CONNECTION_SCHEMA_FIELDS, param_list);
+#else
+    std::auto_ptr<Glib::Error> error;
+    Glib::RefPtr<Gnome::Gda::DataModel> data_model_fields = connection->get_schema(Gnome::Gda::CONNECTION_SCHEMA_FIELDS, param_list, error);
+    // Ignore error, data_model_fields presence is checked below
+#endif
 
     if(!data_model_fields)
     {
@@ -581,7 +649,9 @@ Base_DB::type_vecFields Base_DB::get_fields_for_table(const Glib::ustring& table
 
 bool Base_DB::add_standard_tables() const
 {
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
+#endif // GLIBMM_EXCEPTIONS_ENABLED
   {
     Document_Glom::type_vecFields pref_fields;
     sharedptr<TableInfo> prefs_table_info = Document_Glom::create_table_system_preferences(pref_fields);
@@ -660,11 +730,13 @@ bool Base_DB::add_standard_tables() const
       return false;
     }
   }
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
   catch(const std::exception& ex)
   {
     std::cerr << "Base_DB::add_standard_tables(): caught exception: " << ex.what() << std::endl;
     return false;
   }
+#endif // GLIBMM_EXCEPTIONS_ENABLED
 }
 
 bool Base_DB::add_standard_groups()
@@ -856,7 +928,9 @@ SystemPrefs Base_DB::get_database_preferences() const
       + Glib::ustring(optional_org_logo ? ", \"" GLOM_STANDARD_TABLE_PREFS_TABLE_NAME "\".\"" GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_LOGO "\"" : "") +
       " FROM \"" GLOM_STANDARD_TABLE_PREFS_TABLE_NAME "\"";
 
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
+#endif
   {
     Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute(sql_query);
     if(datamodel && (datamodel->get_n_rows() != 0))
@@ -876,10 +950,12 @@ SystemPrefs Base_DB::get_database_preferences() const
 
     }
   }
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
   catch(const std::exception& ex)
   {
     std::cerr << "Base_DB::get_database_preferences(): exception: " << ex.what() << std::endl;
   }
+#endif // GLIBMM_EXCEPTIONS_ENABLED
 
   return result;
 }
@@ -911,14 +987,18 @@ void Base_DB::set_database_preferences(const SystemPrefs& prefs)
       "\"" GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_POSTCODE "\" = '" + prefs.m_org_address_postcode + "'"
       " WHERE \"" GLOM_STANDARD_TABLE_PREFS_FIELD_ID "\" = 1";
 
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
     try
+#endif // GLIBMM_EXCEPTIONS_ENABLED
     {
       Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute(sql_query);
     }
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
     catch(const std::exception& ex)
     {
       std::cerr << "Base_DB::set_database_preferences(): exception: " << ex.what() << std::endl;
     }
+#endif // GLIBMM_EXCEPTIONS_ENABLED
 
     //Set some information in the document too, so we can use it to recreate the database:
     get_document()->set_database_title(prefs.m_name);
@@ -1123,7 +1203,9 @@ bool Base_DB::insert_example_data(const Glib::ustring& table_name) const
 
   for(type_vecStrings::const_iterator iter = vec_rows.begin(); iter != vec_rows.end(); ++iter)
   {
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
     try
+#endif // GLIBMM_EXCEPTIONS_ENABLED
     {
       //Check that the row contains the correct number of columns.
       //This check will slow this down, but it seems useful:
@@ -1140,9 +1222,14 @@ bool Base_DB::insert_example_data(const Glib::ustring& table_name) const
           {
             const Glib::ustring strQuery = "INSERT INTO \"" + table_name + "\" (" + strNames + ") VALUES (" + row_data + ")";
             //std::cout << "debug: before query: " << strQuery << std::endl;
-            query_execute(strQuery); //TODO: Test result.
-            //std::cout << "debug: after query: " << strQuery << std::endl;
-            insert_succeeded = true;
+            if(query_execute(strQuery))
+              //std::cout << "debug: after query: " << strQuery << std::endl;
+              insert_succeeded = true;
+	    else
+            {
+              insert_succeeded = false;
+              break;
+            }
           }
           else
           {
@@ -1155,6 +1242,7 @@ bool Base_DB::insert_example_data(const Glib::ustring& table_name) const
         }
       }
     }
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
     catch(const ExceptionConnection& ex)
     {
       std::cerr << "debug: Base_DB::insert_example_data(): query_execute() failed: " << ex.what() << std::endl;
@@ -1162,6 +1250,7 @@ bool Base_DB::insert_example_data(const Glib::ustring& table_name) const
       insert_succeeded = false;
       break;
     }
+#endif
   }
 
   for(Document_Glom::type_vecFields::const_iterator iter = vec_fields.begin(); iter != vec_fields.end(); ++iter)
@@ -1182,33 +1271,46 @@ sharedptr<LayoutItem_Field> Base_DB::offer_field_list(const sharedptr<const Layo
 {
   sharedptr<LayoutItem_Field> result;
 
+  Glib::RefPtr<Gnome::Glade::Xml> refXml;
+
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
-    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_choose_field");
-
-    Dialog_ChooseField* dialog = 0;
-    refXml->get_widget_derived("dialog_choose_field", dialog);
-
-    if(dialog)
-    {
-      if(transient_for)
-        dialog->set_transient_for(*transient_for);
-
-      dialog->set_document(get_document(), table_name, start_field);
-      //TODO: dialog->set_transient_for(*get_app_window());
-      const int response = dialog->run();
-      if(response == Gtk::RESPONSE_OK)
-      {
-        //Get the chosen field:
-        result = dialog->get_field_chosen();
-      }
-
-      delete dialog;
-    }
+    refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_choose_field");
   }
   catch(const Gnome::Glade::XmlError& ex)
   {
     std::cerr << ex.what() << std::endl;
+    return result;
+  }
+#else
+  std::auto_ptr<Gnome::Glade::XmlError> error;
+  refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_choose_field", "", error);
+  if(error.get())
+  {
+    std::cerr << error->what() << std::endl;
+    return result;
+  }
+#endif
+
+  Dialog_ChooseField* dialog = 0;
+  refXml->get_widget_derived("dialog_choose_field", dialog);
+
+  if(dialog)
+  {
+    if(transient_for)
+      dialog->set_transient_for(*transient_for);
+
+    dialog->set_document(get_document(), table_name, start_field);
+    //TODO: dialog->set_transient_for(*get_app_window());
+    const int response = dialog->run();
+    if(response == Gtk::RESPONSE_OK)
+    {
+      //Get the chosen field:
+      result = dialog->get_field_chosen();
+    }
+
+    delete dialog;
   }
 
   return result;
@@ -1373,11 +1475,18 @@ void Base_DB::fill_full_field_details(const Glib::ustring& parent_table_name, sh
 //static
 bool Base_DB::show_warning_no_records_found(Gtk::Window& transient_for)
 {
+  Glib::ustring message = _("Your find criteria did not match any records in the table.");
+
+#ifdef ENABLE_MAEMO
+  Hildon::Note dialog(Hildon::NOTE_TYPE_CONFIRMATION_BUTTON, transient_for, message);
+#else
   Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("No Records Found")), true, Gtk::MESSAGE_WARNING, Gtk::BUTTONS_NONE);
+  dialog.set_secondary_text(message);
+  dialog.set_transient_for(transient_for);
+#endif
+
   dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
   dialog.add_button(_("New Find"), Gtk::RESPONSE_OK);
-  dialog.set_secondary_text(_("Your find criteria did not match any records in the table."));
-  dialog.set_transient_for(transient_for);
 
   const bool find_again = (dialog.run() == Gtk::RESPONSE_OK);
   return find_again;
@@ -1806,7 +1915,15 @@ void Base_DB::calculate_field(const LayoutFieldInRecord& field_in_record)
         if(field)
         {
           //We need the connection when we run the script, so that the script may use it.
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
           sharedptr<SharedConnection> sharedconnection = connect_to_server(0 /* parent window */);
+#else
+	  std::auto_ptr<ExceptionConnection> error;
+	  sharedptr<SharedConnection> sharedconnection = connect_to_server(0 /* parent window */, error);
+	  // TODO: Rethrow?
+#endif
+
+	  g_assert(sharedconnection);
 
           refCalcProgress.m_value = glom_evaluate_python_function_implementation(field->get_glom_type(), field->get_calculation(), field_values, get_document(), field_in_record.m_table_name, sharedconnection->get_gda_connection());
 
@@ -1948,7 +2065,9 @@ bool Base_DB::set_field_value_in_database(const LayoutFieldInRecord& layoutfield
 
     //std::cout << "debug: set_field_value_in_database(): " << std::endl << "  " << strQuery << std::endl;
 
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
     try
+#endif
     {
       Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute(strQuery, parent_window);  //TODO: Handle errors
       if(!datamodel)
@@ -1957,11 +2076,13 @@ bool Base_DB::set_field_value_in_database(const LayoutFieldInRecord& layoutfield
         return false; //failed.
       }
     }
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
     catch(const std::exception& ex)
     {
       handle_error(ex);
       return false;
     }
+#endif
 
     //Get-and-set values for lookup fields, if this field triggers those relationships:
     do_lookups(layoutfield_in_record, row, field_value);
