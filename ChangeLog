@@ -1,3 +1,7 @@
+2007-10-02  Murray Cumming  <murrayc@murrayc.com>
+
+	* configure.in: Removed the gl translation, to fix the build, partly.
+
 2007-10-01  Armin Burgmeier  <armin@openismus.com>
 
 	* glom/layout_item_dialogs/dialog_field_layout.cc:
