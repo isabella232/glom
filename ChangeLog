@@ -1,5 +1,11 @@
 2007-10-02  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/libglom/document/document_glom.cc: load_after(), save_before():
+	Initial loading/saving of the print layouts, copy/pasting the code for 
+	reports.
+
+2007-10-02  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/libglom/data_structure/Makefile.am:
 	* glom/libglom/data_structure/print_layout.cc:
 	* glom/libglom/data_structure/print_layout.h: Added this 

@@ -142,6 +142,9 @@ namespace Glom
 #define GLOM_NODE_REPORT_ITEM_GROUPBY_SORTBY "sortby"
 #define GLOM_ATTRIBUTE_LAYOUT_ITEM_FIELDSUMMARY_SUMMARYTYPE "summarytype"
 
+#define GLOM_NODE_PRINT_LAYOUTS "print_layouts"
+#define GLOM_NODE_PRINT_LAYOUT "print_layout"
+
 #define GLOM_NODE_FORMAT "formatting"
 #define GLOM_ATTRIBUTE_FORMAT_THOUSANDS_SEPARATOR "format_thousands_separator"
 #define GLOM_ATTRIBUTE_FORMAT_DECIMAL_PLACES_RESTRICTED "format_decimal_places_restricted"
@@ -2393,6 +2396,57 @@ bool Document_Glom::load_after()
           } //if(nodeReports)
 
 
+          //Print Layouts:
+          const xmlpp::Element* nodePrintLayouts = get_node_child_named(nodeTable, GLOM_NODE_PRINT_LAYOUTS);
+          if(nodeReports)
+          {
+            xmlpp::Node::NodeList listNodes = nodePrintLayouts->get_children(GLOM_NODE_PRINT_LAYOUTS);
+            for(xmlpp::Node::NodeList::iterator iter = listNodes.begin(); iter != listNodes.end(); ++iter)
+            {
+              xmlpp::Element* node = dynamic_cast<xmlpp::Element*>(*iter);
+              if(node)
+              {
+                const Glib::ustring name = get_node_attribute_value(node, GLOM_ATTRIBUTE_NAME);
+                const bool show_table_title = get_node_attribute_value_as_bool(node, GLOM_ATTRIBUTE_REPORT_SHOW_TABLE_TITLE);
+
+                //type_mapLayoutGroupSequence layout_groups;
+
+                sharedptr<PrintLayout> print_layout(new PrintLayout());
+                print_layout->set_name(name);
+                print_layout->set_show_table_title(show_table_title);
+
+		/*
+                const xmlpp::Element* nodeGroups = get_node_child_named(node, GLOM_NODE_DATA_LAYOUT_GROUPS);
+                if(nodeGroups)
+                {
+                  //Look at all its children:
+                  xmlpp::Node::NodeList listNodes = nodeGroups->get_children(GLOM_NODE_DATA_LAYOUT_GROUP);
+                  for(xmlpp::Node::NodeList::iterator iter = listNodes.begin(); iter != listNodes.end(); ++iter)
+                  {
+                    const xmlpp::Element* node = dynamic_cast<const xmlpp::Element*>(*iter);
+                    if(node)
+                    {
+                      sharedptr<LayoutGroup> group = sharedptr<LayoutGroup>::create();
+                      load_after_layout_group(node, table_name, group);
+
+                      //layout_groups[group.m_sequence] = group;
+                      report->m_layout_group = group; //TODO: Get rid of the for loop here.
+
+                      fill_layout_field_details(table_name, report->m_layout_group); //Get full field details from the field names.
+                    }
+                  }
+                }
+                */
+
+                //Translations:
+                load_after_translations(node, *print_layout);
+
+                doctableinfo.m_print_layouts[print_layout->get_name()] = print_layout;
+              }
+            }
+          } //if(nodePrintLayouts)
+
+
           //Groups:
           m_groups.clear();
 
@@ -2985,6 +3039,34 @@ bool Document_Glom::save_before()
           save_before_translations(nodeReport, *report);
 
           append_newline(nodeReports);
+        }
+
+
+        //Print Layouts:
+        xmlpp::Element* nodePrintLayouts = nodeTable->add_child(GLOM_NODE_PRINT_LAYOUTS);
+
+        //Add the groups:
+        for(DocumentTableInfo::type_print_layouts::const_iterator iter = doctableinfo.m_print_layouts.begin(); iter != doctableinfo.m_print_layouts.end(); ++iter)
+        {
+          xmlpp::Element* nodePrintLayout = nodePrintLayouts->add_child(GLOM_NODE_PRINT_LAYOUT);
+
+          sharedptr<const PrintLayout> print_layout = iter->second;
+          nodePrintLayout->set_attribute(GLOM_ATTRIBUTE_NAME, print_layout->get_name());
+          set_node_attribute_value_as_bool(nodePrintLayout, GLOM_ATTRIBUTE_REPORT_SHOW_TABLE_TITLE, print_layout->get_show_table_title());
+
+          /*
+          xmlpp::Element* nodeGroups = nodeReport->add_child(GLOM_NODE_DATA_LAYOUT_GROUPS);
+          if(report->m_layout_group)
+          {
+            save_before_layout_group(nodeGroups, report->m_layout_group);
+            append_newline(nodeGroups);
+          }
+          */
+
+          //Translations:
+          save_before_translations(nodePrintLayout, *print_layout);
+
+          append_newline(nodePrintLayout);
         }
 
         append_newline(nodeTable);
