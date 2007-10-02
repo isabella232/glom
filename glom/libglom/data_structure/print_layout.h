@@ -1,6 +1,6 @@
 /* Glom
  *
- * Copyright (C) 2001-2004 Murray Cumming
+ * Copyright (C) 2007 Murray Cumming
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -18,44 +18,33 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include "report.h"
+#ifndef GLOM_DATASTRUCTURE_PRINT_LAYOUT_H
+#define GLOM_DATASTRUCTURE_PRINT_LAYOUT_H
+
+#include "translatable_item.h"
+#include "layout/report_parts/layoutitem_groupby.h"
+#include <glibmm/ustring.h>
 
 namespace Glom
 {
 
-Report::Report()
-: m_show_table_title(true)
+class PrintLayout : public TranslatableItem
 {
-  m_translatable_item_type = TRANSLATABLE_TYPE_REPORT;
-  m_layout_group = sharedptr<LayoutGroup>::create();
-}
+public:
+  PrintLayout();
+  PrintLayout(const PrintLayout& src);
+  PrintLayout& operator=(const PrintLayout& src);
 
-Report::Report(const Report& src)
-: TranslatableItem(src),
-  m_layout_group(src.m_layout_group),
-  m_show_table_title(src.m_show_table_title)
-{
-}
+  bool get_show_table_title() const;
+  void set_show_table_title(bool show_table_title = true);
 
-Report& Report::operator=(const Report& src)
-{
-  TranslatableItem::operator=(src);
-
-  m_layout_group = src.m_layout_group;
-  m_show_table_title = src.m_show_table_title;
-
-  return *this;
-}
-
-bool Report::get_show_table_title() const
-{
-  return m_show_table_title;
-}
-
-void Report::set_show_table_title(bool show_table_title)
-{
-  m_show_table_title = show_table_title;
-}
+protected:
+  bool m_show_table_title;
+};
 
 } //namespace Glom
+
+#endif //GLOM_DATASTRUCTURE_PRINT_LAYOUT_H
+
+
 

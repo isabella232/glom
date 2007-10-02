@@ -36,6 +36,7 @@
 #include <glom/libglom/data_structure/tableinfo.h>
 #include <glom/libglom/data_structure/groupinfo.h>
 #include <glom/libglom/data_structure/report.h>
+#include <glom/libglom/data_structure/print_layout.h>
 #include "../appstate.h"
 #include <gtkmm/window.h>
 #include <vector>
@@ -265,6 +266,14 @@ public:
   sharedptr<Report> get_report(const Glib::ustring& table_name, const Glib::ustring& report_name) const;
   void remove_report(const Glib::ustring& table_name, const Glib::ustring& report_name);
 
+  //Print Layouts are precisely positioned layouts for printing to a printer:
+  typedef std::list<Glib::ustring> type_listPrintLayouts;
+  type_listPrintLayouts get_print_layout_names(const Glib::ustring& table_name) const;
+  void remove_all_print_layouts(const Glib::ustring& table_name);
+  void set_print_layout(const Glib::ustring& table_name, const sharedptr<PrintLayout>& print_layout);
+  sharedptr<PrintLayout> get_print_layout(const Glib::ustring& table_name, const Glib::ustring& print_layout_name) const;
+  void remove_print_layout(const Glib::ustring& table_name, const Glib::ustring& print_layout_name);
+
   void set_layout_record_viewed(const Glib::ustring& table_name, const Glib::ustring& layout_name, const Gnome::Gda::Value& primary_key_value);
   void forget_layout_record_viewed(const Glib::ustring& table_name);
   Gnome::Gda::Value get_layout_record_viewed(const Glib::ustring& table_name, const Glib::ustring& layout_name) const;
@@ -430,6 +439,9 @@ protected:
 
     typedef std::map< Glib::ustring, sharedptr<Report> > type_reports; //map of report names to reports
     type_reports m_reports;
+
+    typedef std::map< Glib::ustring, sharedptr<PrintLayout> > type_print_layouts; //map of print layout names to print layouts
+    type_print_layouts m_print_layouts;
 
     Glib::ustring m_example_rows;
 

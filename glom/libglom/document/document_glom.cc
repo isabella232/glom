@@ -3192,6 +3192,76 @@ void Document_Glom::remove_report(const Glib::ustring& table_name, const Glib::u
   }
 }
 
+
+Document_Glom::type_listPrintLayouts Document_Glom::get_print_layout_names(const Glib::ustring& table_name) const
+{
+  type_tables::const_iterator iterFind = m_tables.find(table_name);
+  if(iterFind != m_tables.end())
+  {
+    type_listReports result;
+    for(DocumentTableInfo::type_print_layouts::const_iterator iter = iterFind->second.m_print_layouts.begin(); iter != iterFind->second.m_print_layouts.end(); ++iter)
+    {
+      result.push_back(iter->second->get_name());
+    }
+
+    return result;
+  }
+  else
+    return type_listReports(); 
+}
+
+void Document_Glom::remove_all_print_layouts(const Glib::ustring& table_name)
+{
+  type_tables::iterator iterFind = m_tables.find(table_name);
+  if(iterFind != m_tables.end())
+  {
+    iterFind->second.m_print_layouts.clear();
+    set_modified();
+  }
+}
+
+void Document_Glom::set_print_layout(const Glib::ustring& table_name, const sharedptr<PrintLayout>& print_layout)
+{
+  type_tables::iterator iterFind = m_tables.find(table_name);
+  if(iterFind != m_tables.end())
+  {
+    iterFind->second.m_print_layouts[print_layout->get_name()] = print_layout;
+    set_modified();
+  }
+}
+
+sharedptr<PrintLayout> Document_Glom::get_print_layout(const Glib::ustring& table_name, const Glib::ustring& print_layout_name) const
+{
+  type_tables::const_iterator iterFindTable = m_tables.find(table_name);
+  if(iterFindTable != m_tables.end())
+  {
+    DocumentTableInfo::type_print_layouts::const_iterator iterFindPrintLayout = iterFindTable->second.m_print_layouts.find(print_layout_name);
+    if(iterFindPrintLayout != iterFindTable->second.m_print_layouts.end())
+    {
+      return iterFindPrintLayout->second;
+    }
+  }
+
+  return sharedptr<PrintLayout>();
+}
+
+void Document_Glom::remove_print_layout(const Glib::ustring& table_name, const Glib::ustring& print_layout_name)
+{
+  type_tables::iterator iterFindTable = m_tables.find(table_name);
+  if(iterFindTable != m_tables.end())
+  {
+    DocumentTableInfo::type_print_layouts::iterator iterFindPrintLayout = iterFindTable->second.m_print_layouts.find(print_layout_name);
+    if(iterFindPrintLayout != iterFindTable->second.m_print_layouts.end())
+    {
+      iterFindTable->second.m_print_layouts.erase(iterFindPrintLayout);
+
+      set_modified();
+    }
+  }
+}
+
+
+
 bool Document_Glom::get_relationship_is_to_one(const Glib::ustring& table_name, const Glib::ustring& relationship_name) const
 {
   sharedptr<const Relationship> relationship = get_relationship(table_name, relationship_name);

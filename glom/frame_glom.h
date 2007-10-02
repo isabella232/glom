@@ -82,6 +82,7 @@ public:
   void on_menu_Mode_Find();
 
   void on_menu_report_selected(const Glib::ustring& report_name);
+  void on_menu_print_layout_selected(const Glib::ustring& print_layout_name);
 
   //virtual void on_menu_Navigate_Database();
   //virtual void do_menu_Navigate_Database(bool bUseList = true);

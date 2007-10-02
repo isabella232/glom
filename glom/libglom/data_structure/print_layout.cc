@@ -1,6 +1,6 @@
 /* Glom
  *
- * Copyright (C) 2001-2004 Murray Cumming
+ * Copyright (C) 2007 Murray Cumming
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -18,41 +18,38 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include "report.h"
+#include "print_layout.h"
 
 namespace Glom
 {
 
-Report::Report()
+PrintLayout::PrintLayout()
 : m_show_table_title(true)
 {
-  m_translatable_item_type = TRANSLATABLE_TYPE_REPORT;
-  m_layout_group = sharedptr<LayoutGroup>::create();
+  m_translatable_item_type = TRANSLATABLE_TYPE_PRINT_LAYOUT;
 }
 
-Report::Report(const Report& src)
+PrintLayout::PrintLayout(const PrintLayout& src)
 : TranslatableItem(src),
-  m_layout_group(src.m_layout_group),
   m_show_table_title(src.m_show_table_title)
 {
 }
 
-Report& Report::operator=(const Report& src)
+PrintLayout& PrintLayout::operator=(const PrintLayout& src)
 {
   TranslatableItem::operator=(src);
 
-  m_layout_group = src.m_layout_group;
   m_show_table_title = src.m_show_table_title;
 
   return *this;
 }
 
-bool Report::get_show_table_title() const
+bool PrintLayout::get_show_table_title() const
 {
   return m_show_table_title;
 }
 
-void Report::set_show_table_title(bool show_table_title)
+void PrintLayout::set_show_table_title(bool show_table_title)
 {
   m_show_table_title = show_table_title;
 }

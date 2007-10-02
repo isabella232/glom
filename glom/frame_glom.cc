@@ -566,8 +566,9 @@ void Frame_Glom::show_table(const Glib::ustring& table_name, const Gnome::Gda::V
 
   show_table_title();
 
-  //List the reports in the menu:
+  //List the reports and print layouts in the menus:
   pApp->fill_menu_reports(table_name);
+  pApp->fill_menu_print_layouts(table_name);
 
   //show_all();
 }
@@ -1981,6 +1982,32 @@ void Frame_Glom::on_menu_report_selected(const Glib::ustring& report_name)
   report_builder.set_document(document);
   report_builder.report_build(found_set, report, get_app_window()); //TODO: Use found set's where_clause.
 }
+
+void Frame_Glom::on_menu_print_layout_selected(const Glib::ustring& print_layout_name)
+{
+  const Privileges table_privs = Privs::get_current_privs(m_table_name);
+
+  //Don't try to print tables that the user can't view.
+  if(!table_privs.m_view)
+  {
+    //TODO: Warn the user.
+    return;
+  }
+
+  Document_Glom* document = get_document();
+  sharedptr<PrintLayout> print_layout = document->get_print_layout(m_table_name, print_layout_name);
+  if(!print_layout)
+    return;
+
+  std::cout << "TODO: print layout name=" << print_layout_name << std::endl;
+
+  //FoundSet found_set = m_Notebook_Data.get_found_set();
+
+  //ReportBuilder report_builder;
+  //report_builder.set_document(document);
+  //report_builder.report_build(found_set, report, get_app_window()); //TODO: Use found set's where_clause.
+}
+
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 void Frame_Glom::on_dialog_layout_report_hide()

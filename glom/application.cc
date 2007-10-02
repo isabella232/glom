@@ -84,6 +84,7 @@ App_Glom::App_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml
 #endif // !GLOM_ENABLE_CLIENT_ONLY
   m_menu_tables_ui_merge_id(0),
   m_menu_reports_ui_merge_id(0),
+  m_menu_print_layouts_ui_merge_id(0),
   m_ui_save_extra_showextras(false),
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   m_ui_save_extra_newdb_selfhosted(false),
@@ -296,7 +297,10 @@ void App_Glom::init_menus_file()
     "        <separator/>"
     "        <menu action='GlomAction_Menu_File_Print'>"
     "          <menuitem action='GlomAction_File_Print' />"
+    "          <placeholder name='Menu_Reports_Dynamic' />"
+#ifndef GLOM_ENABLE_CLIENT_ONLY
     "          <menuitem action='GlomAction_File_PrintEdit' />"
+#endif //GLOM_ENABLE_CLIENT_ONLY
     "        </menu>"
     "        <separator/>"
     "        <menuitem action='BakeryAction_File_Close' />"
@@ -1761,6 +1765,94 @@ void App_Glom::fill_menu_reports(const Glib::ustring& table_name)
     std::cerr << " App_Glom::fill_menu_reports(): building menus failed: " <<  ex.what();
   }
 }
+
+void App_Glom::fill_menu_print_layouts(const Glib::ustring& table_name)
+{
+  //TODO: This is copy/pasted from fill_menu_print_reports. Can we generalize it?
+
+  //TODO: There must be a better way than building a ui_string like this:
+
+  m_listNavPrintLayoutActions.clear();
+  if(m_menu_print_layouts_ui_merge_id)
+    m_refUIManager->remove_ui(m_menu_print_layouts_ui_merge_id);
+
+  m_refNavPrintLayoutsActionGroup = Gtk::ActionGroup::create("NavPrintLayoutsActions");
+
+  Glib::ustring ui_description =
+    "<ui>"
+#ifdef GLOM_ENABLE_MAEMO
+    "  <popup name='Bakery_MainMenu'>"
+#else
+    "  <menubar name='Bakery_MainMenu'>"
+#endif
+    "    <placeholder name='Bakery_MenuPH_Others'>"
+    "     <menu action='GlomAction_Menu_File_Print'>"
+    "        <placeholder name='Menu_PrintLayouts_Dynamic'>";
+
+  Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
+  const Document_Glom::type_listPrintLayouts tables = document->get_print_layout_names(table_name);
+  for(Document_Glom::type_listPrintLayouts::const_iterator iter = tables.begin(); iter != tables.end(); ++iter)
+  {
+    sharedptr<PrintLayout> print_layout = document->get_print_layout(table_name, *iter);
+    if(print_layout)
+    {
+      const Glib::ustring name = print_layout->get_name();
+      if(!name.empty())
+      {
+        const Glib::ustring action_name = "NavReportAction_" + name;
+
+        ui_description += "<menuitem action='" + action_name + "' />";
+
+        Glib::RefPtr<Gtk::Action> refAction = Gtk::Action::create( action_name, Utils::string_escape_underscores(print_layout->get_title_or_name()));
+        m_refNavReportsActionGroup->add(refAction,
+          sigc::bind( sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_print_layout_selected), print_layout->get_name()) );
+
+        m_listNavReportActions.push_back(refAction);
+
+        //m_refUIManager->add_ui(merge_id, path, table_info->m_title, refAction, UI_MANAGER_MENUITEM);
+      }
+    }
+  }
+
+  m_refUIManager->insert_action_group(m_refNavPrintLayoutsActionGroup);
+
+
+  ui_description +=
+    "     </placeholder>"
+    "    </menu>"
+    "    </placeholder>"
+#ifdef GLOM_ENABLE_MAEMO
+    "  </popup>"
+#else
+    "  </menubar>"
+#endif
+    "</ui>";
+
+  //Add menus:
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+  try
+#else
+  std::auto_ptr<Glib::Error> error;
+#endif // GLIBMM_EXCEPTIONS_ENABLED
+  {
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+    m_menu_print_layouts_ui_merge_id = m_refUIManager->add_ui_from_string(ui_description);
+#else
+    m_menu_print_layouts_ui_merge_id = m_refUIManager->add_ui_from_string(ui_description, error);
+#endif // GLIBMM_EXCEPTIONS_ENABLED
+  }
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+  catch(const Glib::Error& ex)
+  {
+#else
+  if(error.get() != NULL)
+  {
+    const Glib::Error& ex = *error.get();
+#endif // GLIBMM_EXCEPTIONS_ENABLED
+    std::cerr << " App_Glom::fill_menu_reports(): building menus failed: " <<  ex.what();
+  }
+}
+
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 void App_Glom::on_menu_file_save_as_example()

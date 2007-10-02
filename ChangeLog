@@ -1,5 +1,23 @@
 2007-10-02  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/libglom/data_structure/Makefile.am:
+	* glom/libglom/data_structure/print_layout.cc:
+	* glom/libglom/data_structure/print_layout.h: Added this 
+	mostly empty class.
+	* glom/libglom/data_structure/translatable_item.cc:
+	* glom/libglom/data_structure/translatable_item.h: Added a reports type.
+	* glom/libglom/document/document_glom.cc:
+	* glom/libglom/document/document_glom.h: Added data structures 
+	and methods for print layouts, copy/pasting the reports stuff.
+	* glom/application.cc:
+	* glom/application.h:
+	* glom/frame_glom.cc:
+	* glom/frame_glom.h: Use a placeholder, plus a dynamically-generated 
+	UIManager ui string, to create the list of print layouts in the menu, 
+	as already done for reports.
+
+2007-10-02  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/application.cc:
 	* glom/frame_glom.cc:
 	* glom/frame_glom.h: Added a File/Print sub-menu, moving the current 

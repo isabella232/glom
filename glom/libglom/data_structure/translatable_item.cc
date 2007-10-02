@@ -256,6 +256,8 @@ Glib::ustring TranslatableItem::get_translatable_type_name_nontranslated(enumTra
     return "Relationship";
   else if(item_type == TRANSLATABLE_TYPE_RELATIONSHIP)
     return "Layout Item";
+  else if(item_type == TRANSLATABLE_TYPE_PRINT_LAYOUT)
+    return "Print Layout";
   else if(item_type == TRANSLATABLE_TYPE_REPORT)
     return "Report";
   else if(item_type == TRANSLATABLE_TYPE_TABLE)
@@ -284,6 +286,8 @@ Glib::ustring TranslatableItem::get_translatable_type_name(enumTranslatableItemT
     return _("Relationship");
   else if(item_type == TRANSLATABLE_TYPE_RELATIONSHIP)
     return _("Layout Item");
+  else if(item_type == TRANSLATABLE_TYPE_PRINT_LAYOUT)
+    return _("Print Layout");
   else if(item_type == TRANSLATABLE_TYPE_REPORT)
     return _("Report");
   else if(item_type == TRANSLATABLE_TYPE_TABLE)
