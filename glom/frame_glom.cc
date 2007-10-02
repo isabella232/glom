@@ -799,6 +799,11 @@ void Frame_Glom::on_menu_file_print()
    notebook_current->do_menu_file_print();
 }
 
+void Frame_Glom::on_menu_file_print_edit_layouts()
+{
+  std::cout << "TODO" << std::endl;
+}
+
 void Frame_Glom::on_menu_Mode_Data()
 {
   if(set_mode(MODE_Data))

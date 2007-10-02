@@ -1,3 +1,11 @@
+2007-10-02  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/application.cc:
+	* glom/frame_glom.cc:
+	* glom/frame_glom.h: Added a File/Print sub-menu, moving the current 
+	print menu item into it, and adding an Edit Layouts menu item, 
+	which currently does nothing.
+
 2007-10-01  Armin Burgmeier  <armin@openismus.com>
 
 	* several files: Merged changes from the GLOM_CLIENTONLY branch. This

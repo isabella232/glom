@@ -76,6 +76,7 @@ public:
 
   void on_menu_file_export();
   void on_menu_file_print();
+  void on_menu_file_print_edit_layouts();
 
   void on_menu_Mode_Data();
   void on_menu_Mode_Find();

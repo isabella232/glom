@@ -260,8 +260,13 @@ void App_Glom::init_menus_file()
   m_refFileActionGroup->add(Gtk::Action::create("BakeryAction_Menu_File_Export", _("_Export")),
                         sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_file_export));
 
-  m_refFileActionGroup->add(Gtk::Action::create("GlomAction_File_Print", Gtk::Stock::PRINT),
+  m_refFileActionGroup->add(Gtk::Action::create("GlomAction_Menu_File_Print", Gtk::Stock::PRINT));
+  m_refFileActionGroup->add(Gtk::Action::create("GlomAction_File_Print", _("_Standard")),
                         sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_file_print) );
+
+  Glib::RefPtr<Gtk::Action> action_print_edit = Gtk::Action::create("GlomAction_File_PrintEdit", _("_Edit Print Layouts"));
+  m_refFileActionGroup->add(action_print_edit, sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_file_print_edit_layouts));
+  m_listDeveloperActions.push_back(action_print_edit);
 
   m_refFileActionGroup->add(Gtk::Action::create("BakeryAction_File_Close", Gtk::Stock::CLOSE),
                         sigc::mem_fun((App_WithDoc&)*this, &App_WithDoc::on_menu_file_close));
@@ -289,7 +294,10 @@ void App_Glom::init_menus_file()
 #endif // !GLOM_ENABLE_CLIENT_ONLY
     "        <menuitem action='BakeryAction_Menu_File_Export' />"
     "        <separator/>"
-    "        <menuitem action='GlomAction_File_Print' />"
+    "        <menu action='GlomAction_Menu_File_Print'>"
+    "          <menuitem action='GlomAction_File_Print' />"
+    "          <menuitem action='GlomAction_File_PrintEdit' />"
+    "        </menu>"
     "        <separator/>"
     "        <menuitem action='BakeryAction_File_Close' />"
     "      </menu>"
