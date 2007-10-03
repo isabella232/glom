@@ -179,7 +179,7 @@ msgstr "<b>Títol :</b>"
 
 #: ../glom/glom.glade.h:39
 msgid "<b>Title</b>"
-msgstr "<b>Titol</b>"
+msgstr "<b>Títol</b>"
 
 #: ../glom/glom.glade.h:40
 msgid "<b>Translations</b>"
@@ -880,7 +880,7 @@ msgstr ""
 #: ../glom/navigation/box_tables.cc:119
 #: ../glom/utility_widgets/filechooserdialog.cc:93
 msgid "Title"
-msgstr "Titol"
+msgstr "Títol"
 
 #: ../glom/glom.glade.h:217
 msgid "Town"
@@ -926,7 +926,7 @@ msgstr ""
 #. Append the View columns:
 #: ../glom/glom.glade.h:227 ../glom/mode_design/users/dialog_users_list.cc:67
 msgid "User"
-msgstr "Usuari"
+msgstr "Utilizaire"
 
 #: ../glom/glom.glade.h:228
 msgid "User Entry"
@@ -1436,7 +1436,7 @@ msgstr "Rapòrt"
 #: ../glom/mode_design/box_db_table_relationships.cc:50
 #: ../glom/mode_design/users/dialog_groups_list.cc:70
 msgid "Table"
-msgstr "Taula"
+msgstr "Tablèu"
 
 #: ../glom/libglom/data_structure/translatable_item.cc:292
 msgid "Layout Group"
