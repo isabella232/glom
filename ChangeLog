@@ -1,3 +1,12 @@
+1.6.1:
+
+2007-09-27  Armin Burgmeier  <armin@openismus.com>
+
+	* glom/glom.glade: Make the entry_quickfind not activate the default
+	button when pressing enter because glom already connects
+	signal_activate(). When no find criteria was entered, two error
+	dialogs were shown at the same time.
+
 2007-09-15  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/mode_data/box_data_list.cc: create_layout(): Do not try to 
