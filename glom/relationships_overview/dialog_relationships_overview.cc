@@ -27,6 +27,10 @@
 namespace Glom
 {
 
+//static:
+int Dialog_RelationshipsOverview::m_last_size_x = 0;
+int Dialog_RelationshipsOverview::m_last_size_y = 0;
+
 Dialog_RelationshipsOverview::TableView::TableView()
 : x1(0),
   y1(0),
@@ -34,91 +38,6 @@ Dialog_RelationshipsOverview::TableView::TableView()
   y2(0)
 {
 }
-
-bool Dialog_RelationshipsOverview::on_table_group_button_release_event(const Glib::RefPtr<Goocanvas::Item>& target,
-                                                              GdkEventButton* event)
-{
-  m_canvas.pointer_ungrab(target, event->time);
-  m_dragging = false;
-  return true;
-}
-
-bool Dialog_RelationshipsOverview::on_table_group_button_press_event(const Glib::RefPtr<Goocanvas::Item>& target,
-                                                            GdkEventButton* event, const Glib::RefPtr<Goocanvas::Item>& view)
-{
-  
-  
-  switch(event->button)
-  {
-    case 1:
-    {
-      Glib::RefPtr<Goocanvas::Item> item = target;
-      while(item && !item->is_container())
-        item = item->get_parent();
-      
-      item->raise();
-    
-      m_drag_x = event->x;
-      m_drag_y = event->y;
-    
-      Gdk::Cursor fleur(Gdk::FLEUR);
-      m_canvas.pointer_grab(view, Gdk::POINTER_MOTION_MASK | Gdk::BUTTON_RELEASE_MASK,
-                  fleur,
-                  event->time);
-      m_dragging = true;
-      break;
-    }
-    default:
-      break;
-  }
-  
-  return true;
-}
-
-bool Dialog_RelationshipsOverview::on_table_group_motion_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventMotion* event)
-{
-  Glib::RefPtr<Goocanvas::Item> item = target;
-    while(item && !item->is_container())
-      item = item->get_parent();
-    
-  if(item && m_dragging && (event->state & Gdk::BUTTON1_MASK))
-  {
-    double new_x = event->x;
-    double new_y = event->y;
-
-    TableView* tv = m_tables[item];
-    item->translate(new_x - m_drag_x, new_y - m_drag_y);
-    tv->x1 += new_x - m_drag_x;
-    tv->y1 += new_y - m_drag_y;
-    tv->x2 += new_x - m_drag_x;
-    tv->y2 += new_y - m_drag_y;
-      
-    Document_Glom* document = get_document();
-
-    //TODO: Delay this until when we close the window (probably do it in a save_to_document() override),
-    //to prevent us from writing to disk every time something is moved.
-    document->set_table_overview_position(tv->m_table_name, tv->x1, tv->y1);
-    m_modified = true;
-    update_relationships(tv);
-
-    for(TableView::type_vec_tableviews::iterator iter = tv->m_update_on_move.begin(); iter != tv->m_update_on_move.end(); ++iter)
-      update_relationships(*iter);
-  }
-
-  return true;
-}
-
-void Dialog_RelationshipsOverview::on_response(int id)
-{
-  if(m_modified && get_document())
-    get_document()->set_modified();
-    
-  hide();
-}
-
-//static:
-int Dialog_RelationshipsOverview::m_last_size_x = 0;
-int Dialog_RelationshipsOverview::m_last_size_y = 0;
 
 Dialog_RelationshipsOverview::Dialog_RelationshipsOverview(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
   : Gtk::Dialog(cobject),
@@ -138,6 +57,12 @@ Dialog_RelationshipsOverview::Dialog_RelationshipsOverview(BaseObjectType* cobje
     set_size_request(m_last_size_x, m_last_size_y);
   }
 }
+
+Dialog_RelationshipsOverview::~Dialog_RelationshipsOverview()
+{
+  get_size(m_last_size_x, m_last_size_y);
+}
+
 
 void Dialog_RelationshipsOverview::update_model()
 {
@@ -342,14 +267,91 @@ void Dialog_RelationshipsOverview::update_relationships(TableView* table_from)
   }
 }
 
-Dialog_RelationshipsOverview::~Dialog_RelationshipsOverview()
-{
-  get_size(m_last_size_x, m_last_size_y);
-}
-
 void Dialog_RelationshipsOverview::load_from_document()
 {
   update_model();
+}
+
+
+bool Dialog_RelationshipsOverview::on_table_group_button_release_event(const Glib::RefPtr<Goocanvas::Item>& target,
+                                                              GdkEventButton* event)
+{
+  m_canvas.pointer_ungrab(target, event->time);
+  m_dragging = false;
+  return true;
+}
+
+bool Dialog_RelationshipsOverview::on_table_group_button_press_event(const Glib::RefPtr<Goocanvas::Item>& target,
+                                                            GdkEventButton* event, const Glib::RefPtr<Goocanvas::Item>& view)
+{
+  
+  
+  switch(event->button)
+  {
+    case 1:
+    {
+      Glib::RefPtr<Goocanvas::Item> item = target;
+      while(item && !item->is_container())
+        item = item->get_parent();
+      
+      item->raise();
+    
+      m_drag_x = event->x;
+      m_drag_y = event->y;
+    
+      Gdk::Cursor fleur(Gdk::FLEUR);
+      m_canvas.pointer_grab(view, Gdk::POINTER_MOTION_MASK | Gdk::BUTTON_RELEASE_MASK,
+                  fleur,
+                  event->time);
+      m_dragging = true;
+      break;
+    }
+    default:
+      break;
+  }
+  
+  return true;
+}
+
+bool Dialog_RelationshipsOverview::on_table_group_motion_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventMotion* event)
+{
+  Glib::RefPtr<Goocanvas::Item> item = target;
+    while(item && !item->is_container())
+      item = item->get_parent();
+    
+  if(item && m_dragging && (event->state & Gdk::BUTTON1_MASK))
+  {
+    double new_x = event->x;
+    double new_y = event->y;
+
+    TableView* tv = m_tables[item];
+    item->translate(new_x - m_drag_x, new_y - m_drag_y);
+    tv->x1 += new_x - m_drag_x;
+    tv->y1 += new_y - m_drag_y;
+    tv->x2 += new_x - m_drag_x;
+    tv->y2 += new_y - m_drag_y;
+      
+    Document_Glom* document = get_document();
+
+    //TODO: Delay this until when we close the window (probably do it in a save_to_document() override),
+    //to prevent us from writing to disk every time something is moved.
+    document->set_table_overview_position(tv->m_table_name, tv->x1, tv->y1);
+    m_modified = true;
+    update_relationships(tv);
+
+    for(TableView::type_vec_tableviews::iterator iter = tv->m_update_on_move.begin(); iter != tv->m_update_on_move.end(); ++iter)
+      update_relationships(*iter);
+  }
+
+  return true;
+}
+
+void Dialog_RelationshipsOverview::on_response(int id)
+{
+  if(m_modified && get_document())
+    get_document()->set_modified();
+    
+  hide();
 }
 
 } //namespace Glom

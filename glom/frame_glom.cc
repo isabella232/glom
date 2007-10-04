@@ -46,10 +46,7 @@
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-#define ENABLE_RELATIONSHIPS_OVERVIEW
-#ifdef ENABLE_RELATIONSHIPS_OVERVIEW
 #include "relationships_overview/dialog_relationships_overview.h"
-#endif
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
 #ifdef GLOM_ENABLE_MAEMO
@@ -1378,7 +1375,6 @@ void Frame_Glom::do_menu_developer_fields(Gtk::Window& parent)
 
 void Frame_Glom::on_menu_developer_relationships_overview()
 {
-#ifdef ENABLE_RELATIONSHIPS_OVERVIEW
   Dialog_RelationshipsOverview* dialog = 0;
   try
   {
@@ -1401,9 +1397,6 @@ void Frame_Glom::on_menu_developer_relationships_overview()
   {
     std::cerr << ex.what() << std::endl;
   }
-#else
-  show_ok_dialog(_("Not Implemented"), _("This feature is not yet available."), *get_app_window(), Gtk::MESSAGE_WARNING);
-#endif //ENABLE_RELATIONSHIPS_OVERVIEW
 }
 
 
