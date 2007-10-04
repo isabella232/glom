@@ -103,6 +103,10 @@ void Dialog_RelationshipsOverview::update_model()
       TableView* tv = new TableView();
       tv->m_table_name = info->get_name();
 
+      //TODO: This is a workaround, needed to fix a refcount problem. It's not used otherwise.
+      //This shouldn't be necessary, if root keeps a reference to it too.
+      tv->m_group = table_group; 
+
       m_tables[table_group] = tv;
       m_table_names[info->get_name()] = tv;
       

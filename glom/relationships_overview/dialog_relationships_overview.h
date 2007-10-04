@@ -74,6 +74,8 @@ protected:
 
     Glib::ustring m_table_name;
     
+    Glib::RefPtr<Goocanvas::Item> m_group;
+    
     typedef std::vector< Glib::RefPtr<Goocanvas::Item> > type_vec_canvasitems;
     type_vec_canvasitems m_lines;
     
