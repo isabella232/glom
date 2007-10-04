@@ -25,7 +25,7 @@
 #include <gtkmm/dialog.h>
 #include <gtkmm/widget.h>
 #include <libglademm.h>
-#include <goocanvas.h>
+#include <libgoocanvasmm/canvas.h>
 #include <map>
 #include <vector>
 
@@ -40,12 +40,11 @@ class Dialog_RelationshipsOverview
 {
 public:
   Dialog_RelationshipsOverview(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
-
   virtual ~Dialog_RelationshipsOverview();
   
-  bool on_button_press_canvas(GooCanvasItem *view, GooCanvasItem *target, GdkEventButton *event);
-  bool on_button_release_canvas(GooCanvasItem *view, GooCanvasItem *target, GdkEventButton *event);
-  bool on_motion_canvas ( GooCanvasItem *view, GooCanvasItem *target, GdkEventMotion *event );
+  bool on_table_group_button_press_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventButton* event, const Glib::RefPtr<Goocanvas::Item>& view);
+  bool on_table_group_button_release_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventButton* event);
+  bool on_table_group_motion_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventMotion* event);
   
   virtual void load_from_document(); //overridden.
 
@@ -59,17 +58,14 @@ protected:
   bool m_modified;
   bool m_dragging;
   gdouble m_drag_x, m_drag_y;
-  Gtk::Widget *m_canvas;
+  Goocanvas::Canvas m_canvas;
 
-  typedef std::map<GooCanvasItem*, TableView*> type_map_item_tables;
+  typedef std::map<Glib::RefPtr<Goocanvas::Item>, TableView*> type_map_item_tables;
   type_map_item_tables m_tables;
 
   typedef std::map<Glib::ustring, TableView*> type_map_table_names;
   type_map_table_names m_table_names;
   static int m_last_size_x, m_last_size_y;
- 
-  typedef std::map<GooCanvasItem*, TableView*>::iterator TableIterator;
-  typedef std::map< std::pair<TableView*, int>, int >::iterator RelationshipIterator;
 
   class TableView
   {
@@ -78,9 +74,7 @@ protected:
 
     Glib::ustring m_table_name;
     
-    GooCanvasItem* m_group;
-    
-    typedef std::vector<GooCanvasItem*> type_vec_canvasitems;
+    typedef std::vector< Glib::RefPtr<Goocanvas::Item> > type_vec_canvasitems;
     type_vec_canvasitems m_lines;
     
     typedef std::map< std::pair<TableView*, int>, int> type_map_relationships;

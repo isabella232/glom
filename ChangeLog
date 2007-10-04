@@ -1,3 +1,13 @@
+2007-10-04  Murray Cumming  <murrayc@murrayc.com>
+
+	* configure.in: Depend on goocanvasmm.
+	* glom/main.cc: initialize goocanvasmm if not in client-only mode.
+	* glom/relationships_overview/dialog_relationships_overview.cc:
+	* glom/relationships_overview/dialog_relationships_overview.h:
+	Use C++ types as much as possible (often using Glib::wrap() instead of 
+	the goocanvasmm constructors, because they are currently broken), and 
+	generally clean up this code a bit.
+
 2007-10-01  Armin Burgmeier  <armin@openismus.com>
 
 	* several files: Merged changes from the GLOM_CLIENTONLY branch. This

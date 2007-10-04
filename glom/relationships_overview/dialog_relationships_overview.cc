@@ -21,59 +21,30 @@
 #include "dialog_relationships_overview.h"
 #include "../mode_data/dialog_choose_relationship.h"
 #include <glibmm/i18n.h>
+#include <goocanvas.h>
 #include <algorithm>
 
 namespace Glom
 {
 
 Dialog_RelationshipsOverview::TableView::TableView()
-: m_group(0),
-  x1(0),
+: x1(0),
   y1(0),
   x2(0),
   y2(0)
 {
 }
 
-
-
-static bool on_button_press(GooCanvasItem* view,
-                              GooCanvasItem* target,
-                              GdkEventButton* event,
-                              gpointer data)
-{
-  return static_cast<Dialog_RelationshipsOverview*>(data)->on_button_press_canvas(view, target, event);
-}
-  
-static bool on_motion_notify(GooCanvasItem* view,
-                              GooCanvasItem* target,
-                              GdkEventMotion* event,
-                              gpointer data)
-{
-  return static_cast<Dialog_RelationshipsOverview*>(data)->on_motion_canvas(view, target, event);
-}
-  
-static bool on_button_release(GooCanvasItem* view,
-                                GooCanvasItem* target,
-                                GdkEventButton* event,
-                                gpointer data)
-{
-  return static_cast<Dialog_RelationshipsOverview*>(data)->on_button_release_canvas(view, target, event);
-}
-  
-
-bool Dialog_RelationshipsOverview::on_button_release_canvas(GooCanvasItem* view,
-                                                              GooCanvasItem* target,
+bool Dialog_RelationshipsOverview::on_table_group_button_release_event(const Glib::RefPtr<Goocanvas::Item>& target,
                                                               GdkEventButton* event)
 {
-  goo_canvas_pointer_ungrab(GOO_CANVAS(m_canvas->gobj()), target, event->time);
+  m_canvas.pointer_ungrab(target, event->time);
   m_dragging = false;
   return true;
 }
 
-bool Dialog_RelationshipsOverview::on_button_press_canvas(GooCanvasItem* view,
-                                                            GooCanvasItem* target,
-                                                            GdkEventButton* event)
+bool Dialog_RelationshipsOverview::on_table_group_button_press_event(const Glib::RefPtr<Goocanvas::Item>& target,
+                                                            GdkEventButton* event, const Glib::RefPtr<Goocanvas::Item>& view)
 {
   
   
@@ -81,21 +52,19 @@ bool Dialog_RelationshipsOverview::on_button_press_canvas(GooCanvasItem* view,
   {
     case 1:
     {
-      GooCanvasItem* item = target;
-      while(item && !goo_canvas_item_is_container(item))
-        item = goo_canvas_item_get_parent(item);
+      Glib::RefPtr<Goocanvas::Item> item = target;
+      while(item && !item->is_container())
+        item = item->get_parent();
       
-      goo_canvas_item_raise(item, 0);
+      item->raise();
     
       m_drag_x = event->x;
       m_drag_y = event->y;
     
-      GdkCursor* fleur = gdk_cursor_new(GDK_FLEUR);
-      goo_canvas_pointer_grab(GOO_CANVAS(m_canvas->gobj()), view,
-                  static_cast<GdkEventMask>(GDK_POINTER_MOTION_MASK | GDK_BUTTON_RELEASE_MASK),
+      Gdk::Cursor fleur(Gdk::FLEUR);
+      m_canvas.pointer_grab(view, Gdk::POINTER_MOTION_MASK | Gdk::BUTTON_RELEASE_MASK,
                   fleur,
                   event->time);
-      gdk_cursor_unref(fleur);
       m_dragging = true;
       break;
     }
@@ -106,39 +75,34 @@ bool Dialog_RelationshipsOverview::on_button_press_canvas(GooCanvasItem* view,
   return true;
 }
 
-bool Dialog_RelationshipsOverview::on_motion_canvas(GooCanvasItem* view,
-                                                      GooCanvasItem* target,
-                                                      GdkEventMotion* event)
+bool Dialog_RelationshipsOverview::on_table_group_motion_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventMotion* event)
 {
-  if(view)
-  {
-    GooCanvasItem* item = target;
-    while(item && !goo_canvas_item_is_container(item))
-      item = goo_canvas_item_get_parent(item);
+  Glib::RefPtr<Goocanvas::Item> item = target;
+    while(item && !item->is_container())
+      item = item->get_parent();
     
-    if(item && m_dragging && (event->state & GDK_BUTTON1_MASK))
-    {
-      double new_x = event->x;
-      double new_y = event->y;
+  if(item && m_dragging && (event->state & Gdk::BUTTON1_MASK))
+  {
+    double new_x = event->x;
+    double new_y = event->y;
 
-      TableView* tv = m_tables[item];
-      goo_canvas_item_translate(item, new_x - m_drag_x, new_y - m_drag_y);
-      tv->x1 += new_x - m_drag_x;
-      tv->y1 += new_y - m_drag_y;
-      tv->x2 += new_x - m_drag_x;
-      tv->y2 += new_y - m_drag_y;
+    TableView* tv = m_tables[item];
+    item->translate(new_x - m_drag_x, new_y - m_drag_y);
+    tv->x1 += new_x - m_drag_x;
+    tv->y1 += new_y - m_drag_y;
+    tv->x2 += new_x - m_drag_x;
+    tv->y2 += new_y - m_drag_y;
       
-      Document_Glom* document = get_document();
+    Document_Glom* document = get_document();
 
-      //TODO: Delay this until when we close the window (probably do it in a save_to_document() override),
-      //to prevent us from writing to disk every time something is moved.
-      document->set_table_overview_position(tv->m_table_name, tv->x1, tv->y1);
-      m_modified = true;
-      update_relationships(tv);
+    //TODO: Delay this until when we close the window (probably do it in a save_to_document() override),
+    //to prevent us from writing to disk every time something is moved.
+    document->set_table_overview_position(tv->m_table_name, tv->x1, tv->y1);
+    m_modified = true;
+    update_relationships(tv);
 
-      for(TableView::type_vec_tableviews::iterator it = tv->m_update_on_move.begin(); it != tv->m_update_on_move.end(); ++it)
-        update_relationships(*it);
-    }
+    for(TableView::type_vec_tableviews::iterator iter = tv->m_update_on_move.begin(); iter != tv->m_update_on_move.end(); ++iter)
+      update_relationships(*iter);
   }
 
   return true;
@@ -152,6 +116,7 @@ void Dialog_RelationshipsOverview::on_response(int id)
   hide();
 }
 
+//static:
 int Dialog_RelationshipsOverview::m_last_size_x = 0;
 int Dialog_RelationshipsOverview::m_last_size_y = 0;
 
@@ -165,9 +130,8 @@ Dialog_RelationshipsOverview::Dialog_RelationshipsOverview(BaseObjectType* cobje
   Gtk::ScrolledWindow* scrolledwindow_canvas = 0;
   refGlade->get_widget("scrolledwindow_canvas", scrolledwindow_canvas);
   
-  m_canvas = Glib::wrap(goo_canvas_new());
-  scrolledwindow_canvas->add(*m_canvas);
-  m_canvas->show();
+  scrolledwindow_canvas->add(m_canvas);
+  m_canvas.show();
   
   if(m_last_size_x != 0 && m_last_size_y != 0 )
   {
@@ -177,14 +141,12 @@ Dialog_RelationshipsOverview::Dialog_RelationshipsOverview(BaseObjectType* cobje
 
 void Dialog_RelationshipsOverview::update_model()
 {
-  TableView* tv,* tv_to;
-  GooCanvasItem* root,* table_group,* table_rect,* table_text; //,* item;
-  root = goo_canvas_get_root_item(GOO_CANVAS(m_canvas->gobj()));
-  while(goo_canvas_item_get_n_children(root) > 0)
-    goo_canvas_item_remove_child(root, 0);
+  Glib::RefPtr<Goocanvas::Item> root = m_canvas.get_root_item();
+  while(root->get_n_children() > 0)
+    root->remove_child(0);
   
-  for(TableIterator it = m_tables.begin(); it != m_tables.end(); it++)
-    delete it->second;
+  for(type_map_item_tables::iterator iter = m_tables.begin(); iter != m_tables.end(); iter++)
+    delete iter->second;
   
   m_tables.clear();
   m_table_names.clear();
@@ -201,28 +163,27 @@ void Dialog_RelationshipsOverview::update_model()
     Document_Glom::type_vecFields::size_type i, j;
 
     Document_Glom::type_listTableInfo tables = document->get_tables();
-    for(Document_Glom::type_listTableInfo::iterator it = tables.begin(); it != tables.end(); ++it)
+    for(Document_Glom::type_listTableInfo::iterator iter = tables.begin(); iter != tables.end(); ++iter)
     {
-      Document_Glom::type_vecFields fields = document->get_table_fields((*it)->get_name());
+      sharedptr<TableInfo> info = *iter;
 
-      table_group = goo_canvas_group_new(root, 0);
-      g_signal_connect(table_group, "motion_notify_event",
-                  G_CALLBACK(on_motion_notify), static_cast<gpointer>(this));
-      g_signal_connect(table_group, "button_press_event",
-                  (GtkSignalFunc) on_button_press, this);
-      g_signal_connect(table_group, "button_release_event",
-                  (GtkSignalFunc) on_button_release, this);
+      Document_Glom::type_vecFields fields = document->get_table_fields(info->get_name());
+
+      Glib::RefPtr<Goocanvas::Item> table_group = Glib::wrap(goo_canvas_group_new(root->gobj(), 0));
+      table_group->signal_motion_notify_event().connect( sigc::mem_fun(*this, &Dialog_RelationshipsOverview::on_table_group_motion_notify_event));
+      table_group->signal_button_press_event().connect(
+        sigc::bind(sigc::mem_fun(*this, &Dialog_RelationshipsOverview::on_table_group_button_press_event), table_group));
+      table_group->signal_button_release_event().connect(sigc::mem_fun(*this, &Dialog_RelationshipsOverview::on_table_group_button_release_event));
       
-      tv = new TableView();
-      tv->m_table_name = (*it)->get_name();
-      tv->m_group = table_group;
+      TableView* tv = new TableView();
+      tv->m_table_name = info->get_name();
 
       m_tables[table_group] = tv;
-      m_table_names[(*it)->get_name()] = tv;
+      m_table_names[info->get_name()] = tv;
       
       table_height = field_height * (fields.size() + 1);
       Glib::ustring title = "<b>";
-      title += (*it)->get_title_or_name().c_str();
+      title += info->get_title_or_name().c_str();
       title += "</b>";
       
       if(!document->get_table_overview_position(tv->m_table_name, tv->x1, tv->y1))
@@ -236,35 +197,37 @@ void Dialog_RelationshipsOverview::update_model()
       tv->x2 = tv->x1 + table_width;
       tv->y2 = tv->y1 + table_height;
       
-      table_rect = goo_canvas_rect_new(table_group, tv->x1, tv->y1, table_width, table_height,
+      goo_canvas_rect_new(table_group->gobj(), tv->x1, tv->y1, table_width, table_height,
                           "line-width", 2.0, "radius-x", 4.0,
                           "radius-y", 4.0, "stroke-color", "black",
                           "fill-color", "white", 0);
       
-      table_text = goo_canvas_text_new(table_group, title.c_str(),
+      goo_canvas_text_new(table_group->gobj(), title.c_str(),
                           tv->x1 + 5, tv->y1 + 5, table_width - 10,
                           GTK_ANCHOR_NORTH_WEST, "font", "sans 10",
                           "use-markup", true, 0);
-      goo_canvas_polyline_new_line(table_group, tv->x1, tv->y1 + field_height, tv->x1 + table_width,
+      goo_canvas_polyline_new_line(table_group->gobj(), tv->x1, tv->y1 + field_height, tv->x1 + table_width,
                         tv->y1 + field_height, "stroke-color", "black",
                         "line-width", 1.0, 0);
+
       int y = field_height;
-      
-      for(Document_Glom::type_vecFields::iterator it = fields.begin(); it != fields.end(); ++it)
+      for(Document_Glom::type_vecFields::iterator iter = fields.begin(); iter != fields.end(); ++iter)
       {
-        if((*it)->get_primary_key())
+        sharedptr<Field> field = *iter;
+
+        if(field->get_primary_key())
         {
           title = "<u>";
-          title += (*it)->get_title_or_name().c_str();
+          title += field->get_title_or_name().c_str();
           title += "</u>";
-          goo_canvas_text_new(table_group, title.c_str(),
+          goo_canvas_text_new(table_group->gobj(), title.c_str(),
                       tv->x1 + 5, tv->y1 + 5 + y, table_width - 10,
                       GTK_ANCHOR_NORTH_WEST, "font", "sans 10",
                               "use-markup", true, 0);
         }
         else
         {
-          goo_canvas_text_new(table_group, (*it)->get_title_or_name().c_str(),
+          goo_canvas_text_new(table_group->gobj(), field->get_title_or_name().c_str(),
                               tv->x1 + 5, tv->y1 + 5 + y, table_width - 10,
                               GTK_ANCHOR_NORTH_WEST, "font", "sans 10", 0);
         }
@@ -276,22 +239,23 @@ void Dialog_RelationshipsOverview::update_model()
       max_table_height = table_height > max_table_height ? table_height : max_table_height;
     }
     
-    for(Document_Glom::type_listTableInfo::iterator it = tables.begin(); it != tables.end(); ++it)
+    for(Document_Glom::type_listTableInfo::iterator iter = tables.begin(); iter != tables.end(); ++iter)
     {
-      Document_Glom::type_vecRelationships m_relationships = document->get_relationships((*it)->get_name());
-      Document_Glom::type_vecFields fields = document->get_table_fields((*it)->get_name());
+      sharedptr<TableInfo> info = *iter;
+
+      Document_Glom::type_vecRelationships m_relationships = document->get_relationships(info->get_name());
+      Document_Glom::type_vecFields fields = document->get_table_fields(info->get_name());
       Document_Glom::type_vecFields to_fields;
       
-      tv = m_table_names[(*it)->get_name()];
-      for(Document_Glom::type_vecRelationships::iterator rit = m_relationships.begin();
-          rit != m_relationships.end(); rit++)
+      TableView* tv = m_table_names[info->get_name()];
+      for(Document_Glom::type_vecRelationships::iterator rit = m_relationships.begin(); rit != m_relationships.end(); rit++)
       {
         if(document->get_field((*rit)->get_to_table(), (*rit)->get_to_field())->get_primary_key())
         {
           for(i = 0; i < fields.size() && fields[i]->get_name() != (*rit)->get_from_field();
               ++i) {}
           
-          tv_to = m_table_names[(*rit)->get_to_table()];
+          TableView* tv_to = m_table_names[(*rit)->get_to_table()];
           to_fields = document->get_table_fields((*rit)->get_to_table());
           
           for(j = 0; j < to_fields.size() && to_fields[j]->get_name() != (*rit)->get_to_field();
@@ -305,7 +269,7 @@ void Dialog_RelationshipsOverview::update_model()
       update_relationships(tv);
     }
     
-    goo_canvas_set_bounds(GOO_CANVAS(m_canvas->gobj()), 0, 0, sizex, max_table_height);
+    goo_canvas_set_bounds(m_canvas.gobj(), 0, 0, sizex, max_table_height);
     
   }
   else
@@ -316,21 +280,25 @@ void Dialog_RelationshipsOverview::update_model()
 
 void Dialog_RelationshipsOverview::update_relationships(TableView* table_from)
 {
-  GooCanvasItem* root = goo_canvas_get_root_item(GOO_CANVAS(m_canvas->gobj()));
+  Glib::RefPtr<Goocanvas::Item> root = m_canvas.get_root_item();
+  if(!root)
+    return;
 
-  for(TableView::type_vec_canvasitems::iterator it = table_from->m_lines.begin();  it != table_from->m_lines.end(); ++it)
+  for(TableView::type_vec_canvasitems::iterator iter = table_from->m_lines.begin();  iter != table_from->m_lines.end(); ++iter)
   {
-    goo_canvas_item_remove_child(root, goo_canvas_item_find_child(root, *it));
+    Glib::RefPtr<Goocanvas::Item> item = *iter;
+    if(item)
+      root->remove_child(root->find_child(item));
   }
 
   table_from->m_lines.clear();
   
-  for(RelationshipIterator it = table_from->m_relationships.begin();
-      it != table_from->m_relationships.end(); ++it)
+  for(TableView::type_map_relationships::iterator iter = table_from->m_relationships.begin();
+      iter != table_from->m_relationships.end(); ++iter)
   {
     double x_from, y_from, x_to, y_to = 0;
 
-    TableView* table_to = it->first.first;
+    TableView* table_to = iter->first.first;
     if(table_to->x1 - table_from->x1 > 0)
     {
       if(table_to->x1 - table_from->x2 < 0)
@@ -360,24 +328,23 @@ void Dialog_RelationshipsOverview::update_relationships(TableView* table_from)
     
     const int field_height = 20;
  
-    y_from = table_from->y1 + (1.5 + it->second) * field_height;
-    y_to = table_to->y1 + (1.5 + it->first.second) * field_height;
+    y_from = table_from->y1 + (1.5 + iter->second) * field_height;
+    y_to = table_to->y1 + (1.5 + iter->first.second) * field_height;
     
-    table_from->m_lines.push_back( goo_canvas_polyline_new_line (root,
+    table_from->m_lines.push_back( Glib::wrap( goo_canvas_polyline_new_line (root->gobj(),
                                                                   x_from, y_from, x_to, y_to,
                                                                   "line-width", 1.0,
                                                                   "stroke-color", "black",
                                                                   "start-arrow", false,
                                                                   "end-arrow", true,
                                                                   "arrow-width", 10.0,
-                                                                  "arrow-length", 10.0, 0));
+                                                                  "arrow-length", 10.0, 0)));
   }
 }
 
 Dialog_RelationshipsOverview::~Dialog_RelationshipsOverview()
 {
   get_size(m_last_size_x, m_last_size_y);
-  delete m_canvas;
 }
 
 void Dialog_RelationshipsOverview::load_from_document()

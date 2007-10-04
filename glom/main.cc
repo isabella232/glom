@@ -32,6 +32,7 @@
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 #include <gtksourceviewmm/init.h>
+#include <libgoocanvasmm/init.h>
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 #include <glibmm/i18n.h>
 
@@ -168,6 +169,7 @@ main(int argc, char* argv[])
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
     gtksourceview::init();
+    Goocanvas::init(PACKAGE, VERSION, argc, argv ) ;
 #endif //!GLOM_ENABLE_CLIENT_ONLY
 
     //Get command-line parameters, if any:
