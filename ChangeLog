@@ -1,5 +1,11 @@
 2007-10-05  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/relationships_overview/dialog_relationships_overview.h:
+	* glom/relationships_overview/printoperation_relationshipsoverview.
+	cc: scale before printing, because that is how cairo works.
+
+2007-10-05  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/glom.glade:
 	* glom/relationships_overview/Makefile.am:
 	* glom/relationships_overview/dialog_relationships_overview.cc:

@@ -68,7 +68,7 @@ protected:
 
   bool m_modified;
   bool m_dragging;
-  gdouble m_drag_x, m_drag_y;
+  double m_drag_x, m_drag_y;
   Goocanvas::Canvas m_canvas;
 
   typedef std::map<Glib::RefPtr<Goocanvas::Item>, TableView*> type_map_item_tables;
