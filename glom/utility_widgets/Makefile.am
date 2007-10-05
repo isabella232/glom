@@ -33,15 +33,18 @@ libutility_widgets_a_SOURCES = alignment_justified.cc alignment_justified.h \
                                labelglom.h labelglom.cc \
                                dialog_choose_id.cc dialog_choose_id.h \
                                dialog_choose_date.cc dialog_choose_date.h \
-                               filechooserdialog.cc filechooserdialog.h
+                               filechooserdialog.cc filechooserdialog.h \
+                               canvas_editable.cc canvas_editable.h
 
 libutility_widgets_a_LIBADD = adddel/libutility_widgets_adddel.a \
                               db_adddel/libutility_widgets_db_adddel.a
 
 
-noinst_PROGRAMS = test
+noinst_PROGRAMS = test_flowtable test_canvas_editable
 
-test_SOURCES = test_flowtable.cc flowtable.cc flowtable.h
+test_flowtable_SOURCES = test_flowtable.cc flowtable.cc flowtable.h
+test_flowtable_LDADD =  $(GLOM_LIBS)
 
-test_LDADD =  $(GLOM_LIBS)
+test_canvas_editable_SOURCES = test_canvas_editable.cc canvas_editable.cc canvas_editable.h
+test_canvas_editable_LDADD =  $(GLOM_LIBS)
 
