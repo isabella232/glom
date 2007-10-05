@@ -20,8 +20,9 @@
 
 #include "dialog_relationships_overview.h"
 #include "../mode_data/dialog_choose_relationship.h"
-#include <glibmm/i18n.h>
+#include "printoperation_relationshipsoverview.h"
 #include <goocanvas.h>
+#include <glibmm/i18n.h>
 #include <algorithm>
 
 namespace Glom
@@ -41,11 +42,73 @@ Dialog_RelationshipsOverview::TableView::TableView()
 
 Dialog_RelationshipsOverview::Dialog_RelationshipsOverview(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
   : Gtk::Dialog(cobject),
+    m_menu(0),
     m_modified(false),
     m_dragging(false),
     m_drag_x(0),
     m_drag_y(0)
 {
+  //Add a menu:
+  Gtk::VBox* vbox = 0;
+  refGlade->get_widget("vbox_placeholder_menubar", vbox);
+
+  m_refActionGroup = Gtk::ActionGroup::create();
+
+  m_refActionGroup->add(Gtk::Action::create("Overview_MainMenu_File", _("_File")) );
+  m_refActionGroup->add(Gtk::Action::create("Overview_MainMenu_File_Print", Gtk::Stock::PRINT),
+    sigc::mem_fun(*this, &Dialog_RelationshipsOverview::on_menu_file_print) );
+
+  Glib::RefPtr<Gtk::UIManager> m_refUIManager = Gtk::UIManager::create();
+
+  m_refUIManager->insert_action_group(m_refActionGroup);
+
+  #ifdef GLIBMM_EXCEPTIONS_ENABLED
+  try
+  {
+  #endif
+    static const Glib::ustring ui_description =
+    "<ui>"
+#ifdef GLOM_ENABLE_MAEMO
+    "  <popup name='Overview_MainMenu'>"
+#else
+    "  <menubar name='Overview_MainMenu'>"
+#endif
+    "    <menu action='Overview_MainMenu_File'>"
+    "      <menuitem action='Overview_MainMenu_File_Print' />"
+    "    </menu>"
+#ifdef GLOM_ENABLE_MAEMO
+    "  </popup>"
+#else
+    "  </menubar>"
+#endif
+    "</ui>";
+
+  #ifdef GLIBMM_EXCEPTIONS_ENABLED
+    m_refUIManager->add_ui_from_string(ui_description);
+  }
+  catch(const Glib::Error& ex)
+  {
+    std::cerr << "building menus failed: " <<  ex.what();
+  }
+  #else
+  std::auto_ptr<Glib::Error> error;
+  m_refUIManager->add_ui_from_string(ui_info, error);
+  if(error.get() != NULL)
+  {
+    std::cerr << "building menus failed: " << error->what();
+  }
+  #endif
+
+  //Get the menu:
+  m_menu = dynamic_cast<Gtk::MenuBar*>( m_refUIManager->get_widget("/Overview_MainMenu") ); 
+  if(!m_menu)
+    g_warning("menu not found");
+
+  vbox->pack_start(*m_menu, Gtk::PACK_SHRINK);
+  m_menu->show();
+
+
+  //Get the scolled window and add the canvas to it:
   Gtk::ScrolledWindow* scrolledwindow_canvas = 0;
   refGlade->get_widget("scrolledwindow_canvas", scrolledwindow_canvas);
   
@@ -356,6 +419,41 @@ void Dialog_RelationshipsOverview::on_response(int id)
     get_document()->set_modified();
     
   hide();
+}
+
+void Dialog_RelationshipsOverview::on_menu_file_print()
+{
+  print_or_preview(Gtk::PRINT_OPERATION_ACTION_PRINT_DIALOG);
+}
+
+void Dialog_RelationshipsOverview::on_menu_file_save()
+{
+}
+
+void Dialog_RelationshipsOverview::print_or_preview(Gtk::PrintOperationAction print_action)
+{
+  //Create a new PrintOperation with our PageSetup and PrintSettings:
+  //(We use our derived PrintOperation class)
+  Glib::RefPtr<PrintOperationRelationshipsOverview> print = PrintOperationRelationshipsOverview::create();
+  print->set_canvas(&m_canvas);
+
+  print->set_track_print_status();
+  //print->set_default_page_setup(m_refPageSetup);
+  //print->set_print_settings(m_refSettings);
+
+  //print->signal_done().connect(sigc::bind(sigc::mem_fun(*this,
+  //                &ExampleWindow::on_printoperation_done), print));
+
+  try
+  {
+    print->run(print_action /* print or preview */, *this);
+  }
+  catch (const Gtk::PrintError& ex)
+  {
+    //See documentation for exact Gtk::PrintError error codes.
+    std::cerr << "An error occurred while trying to run a print operation:"
+        << ex.what() << std::endl;
+  }
 }
 
 } //namespace Glom

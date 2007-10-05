@@ -24,6 +24,9 @@
 #include <glom/libglom/document/document_glom.h>
 #include <gtkmm/dialog.h>
 #include <gtkmm/widget.h>
+#include <gtkmm/uimanager.h>
+#include <gtkmm/menubar.h>
+#include <gtkmm/printoperation.h>
 #include <libglademm.h>
 #include <libgoocanvasmm/canvas.h>
 #include <map>
@@ -53,8 +56,16 @@ protected:
   
   void update_model();
   void update_relationships(TableView* table_from);
+  void print_or_preview(Gtk::PrintOperationAction print_action);
   void on_response(int id);
+
+  void on_menu_file_print();
+  void on_menu_file_save();
   
+  Glib::RefPtr<Gtk::UIManager> m_refUIManager;
+  Glib::RefPtr<Gtk::ActionGroup> m_refActionGroup;
+  Gtk::MenuBar* m_menu;
+
   bool m_modified;
   bool m_dragging;
   gdouble m_drag_x, m_drag_y;

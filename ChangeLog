@@ -1,3 +1,18 @@
+2007-10-05  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/glom.glade:
+	* glom/relationships_overview/Makefile.am:
+	* glom/relationships_overview/dialog_relationships_overview.cc:
+	* glom/relationships_overview/dialog_relationships_overview.h:
+	* glom/relationships_overview/printoperation_relationshipsoverview.
+	cc:
+	* glom/relationships_overview/printoperation_relationshipsoverview.
+	h: Some basic printing support for the relationships overview 
+        (via a menu item in the dialog, which 
+	is probably bad UI, but I don't like the idea of extra buttons either).
+	It currently does not scale to fit the page, and does not offer 
+	landscape printing.
+
 2007-10-04  Murray Cumming  <murrayc@murrayc.com>
 
 	* configure.in: Depend on goocanvasmm.
