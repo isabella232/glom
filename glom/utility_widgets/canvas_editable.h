@@ -22,6 +22,7 @@
 #define GLOM_UTILITY_WIDGETS_CANVAS_EDITABLE_H
 
 #include <libgoocanvasmm.h>
+#include <map>
 #include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
 
 namespace Glom
@@ -33,7 +34,7 @@ public:
   CanvasEditable();
   virtual ~CanvasEditable();
 
-  void add_item(const Glib::RefPtr<Goocanvas::Item>& item);
+  void add_item(const Glib::RefPtr<Goocanvas::Item>& item, bool resizable = false);
   void remove_all_items();
 
 protected:
@@ -47,6 +48,20 @@ protected:
 
   bool m_dragging;
   double m_drag_x, m_drag_y;
+
+  class ItemInfo
+  {
+  public:
+    //ItemInfo()
+    //ItemInfo(const ItemInfo& src);
+    //ItemInfo& operator=(const ItemInfo& src);
+
+    bool m_resizable;
+  };
+
+  typedef std::map< Glib::RefPtr<Goocanvas::Item>, ItemInfo> type_map_item_info;
+  type_map_item_info m_map_item_info;
+
 };
 
 } //namespace Glom

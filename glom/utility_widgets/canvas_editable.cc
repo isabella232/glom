@@ -19,6 +19,7 @@
  */
 
 #include "canvas_editable.h"
+#include "canvas_group_resizable.h"
 
 namespace Glom
 {
@@ -33,19 +34,34 @@ CanvasEditable::~CanvasEditable()
 {
 }
 
-void CanvasEditable::add_item(const Glib::RefPtr<Goocanvas::Item>& item)
+void CanvasEditable::add_item(const Glib::RefPtr<Goocanvas::Item>& item, bool resizable)
 {
   if(!item)
     return;
 
+  ItemInfo info;
+  info.m_resizable = resizable;
+
   Glib::RefPtr<Goocanvas::Item> root = get_root_item();
+
   Glib::RefPtr<Goocanvas::Group> root_group = Glib::RefPtr<Goocanvas::Group>::cast_dynamic(root);
   if(root_group)
-    root_group->add_child(item);
+  {
+    if(resizable)
+    {
+      Glib::RefPtr<CanvasGroupResizable> resizable = CanvasGroupResizable::create();
+      root_group->add_child(resizable); //We must do this before calling set_child(), so that set_child() can discover the bounds.
+      resizable->set_child(item); //Puts draggable corners and edges around it. 
+    }
+    else
+      root_group->add_child(item);
+  }
 
   item->signal_motion_notify_event().connect(sigc::mem_fun(*this, &CanvasEditable::on_item_motion_notify_event));
   item->signal_button_press_event().connect(sigc::mem_fun(*this, &CanvasEditable::on_item_button_press_event));
   item->signal_button_release_event().connect(sigc::mem_fun(*this, &CanvasEditable::on_item_button_release_event));
+
+  m_map_item_info[item] = info;
 }
 
 void CanvasEditable::remove_all_items()
@@ -72,6 +88,8 @@ bool CanvasEditable::on_item_button_release_event(const Glib::RefPtr<Goocanvas::
   //printf("%s\n", __FUNCTION__);
   pointer_ungrab(target, event->time);
   m_dragging = false;
+
+
   return true;
 }
 

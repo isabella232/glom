@@ -1,3 +1,7 @@
+2007-10-07  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/utility_widgets/canvas_editable.h: More experimentation.
+
 2007-10-05  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/utility_widgets/Makefile.am:
