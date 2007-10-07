@@ -56,7 +56,18 @@ void PrintOperationRelationshipsOverview::on_draw_page(
   double canvas_top = 0;
   double canvas_right = 0;
   double canvas_bottom = 0;
-  m_canvas->get_bounds(canvas_left, canvas_top, canvas_right, canvas_bottom);
+
+  Glib::RefPtr<Goocanvas::Item> root_item = m_canvas->get_root_item();
+  if(!root_item)
+    return;
+
+  Goocanvas::Bounds bounds;
+  root_item->get_bounds(bounds);
+  canvas_left = bounds.get_x1();
+  canvas_right = bounds.get_x2();
+  canvas_top = bounds.get_y1();
+  canvas_bottom = bounds.get_y2();
+
   std::cout << "canvas_left=" << canvas_left << ", canvas_top=" << canvas_top << ", canvas_right=" << canvas_right << ", canvas_bottom=" << canvas_bottom << std::endl;
 
   const double canvas_height = (canvas_bottom - canvas_top);
