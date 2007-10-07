@@ -100,7 +100,7 @@ void CanvasGroupResizable::manipulator_connect_signals(const Glib::RefPtr<Canvas
   //TODO: x and y property notification doesn't seem to work. Investigate that in goocanvas.
   //For now, I added a signal_moved property.
   manipulator->signal_moved().connect(
-    sigc::bind( sigc::mem_fun(*this, &CanvasGroupResizable::on_manipulator_moved), manipulator_id) );
+    sigc::bind( sigc::mem_fun(*this, &CanvasGroupResizable::on_manipulator_moved), manipulator, manipulator_id) );
 
   //manipulator->property_x().signal_changed().connect(
   //  sigc::bind( sigc::mem_fun(*this, &CanvasGroupResizable::on_manipulator_moved), manipulator_id) );
@@ -120,38 +120,65 @@ void CanvasGroupResizable::manipulator_connect_signals(const Glib::RefPtr<Canvas
 }
 
 
-void CanvasGroupResizable::on_manipulator_moved(Manipulators manipulator)
+void CanvasGroupResizable::on_manipulator_moved(const Glib::RefPtr<CanvasRectMovable> manipulator, Manipulators manipulator_id)
 {
   std::cout << "CanvasGroupResizable::on_manipulator_moved(): manipulator=" << manipulator << std::endl;
 
-  Goocanvas::Bounds bounds;
-  m_child->get_bounds(bounds);
-  printf("%s: bounds=%f, %f, %f, %f\n", __FUNCTION__, bounds.get_x1(), bounds.get_x2(), bounds.get_y1(), bounds.get_y2());
+  Goocanvas::Bounds bounds_child;
+  m_child->get_bounds(bounds_child);
+  printf("%s: bounds=%f, %f, %f, %f\n", __FUNCTION__, bounds_child.get_x1(), bounds_child.get_x2(), bounds_child.get_y1(), bounds_child.get_y2());
 
-  double x1 = bounds.get_x1();
-  double x2 = bounds.get_x2();
-  double y1 = bounds.get_y1();
-  double y2 = bounds.get_y2();
-  
-  switch(manipulator)
+  double x1 = bounds_child.get_x1();
+  double x2 = bounds_child.get_x2();
+  double y1 = bounds_child.get_y1();
+  double y2 = bounds_child.get_y2();
+  const double height = y2 - y1;
+  const double width = x2 - x1;
+  printf("%s: height=%f, width=%f\n", __FUNCTION__,  height, width);
+
+  Goocanvas::Bounds bounds_manipulator;
+  manipulator->get_bounds(bounds_manipulator);
+
+  switch(manipulator_id)
   {
     case(MANIPULATOR_CORNER_TOP_LEFT):
-      x1 = m_manipulator_corner_top_left->property_x();
-      y1 = m_manipulator_corner_top_left->property_y();
+    {
+      x1 = bounds_manipulator.get_x1();
+      y1 = bounds_manipulator.get_y1(); 
       std::cout << "  x1 =" << x1 << ", y1=" << y1 << std::endl;
-      std::cout << "    translate: " << x1 - bounds.get_x1() << ", " << y1 - bounds.get_y1() << std::endl;
-      m_child->translate(x1 - bounds.get_x1(), y1 - bounds.get_y1());
+      std::cout << "    translate: " << x1 - bounds_child.get_x1() << ", " << y1 - bounds_child.get_y1() << std::endl;
+     
+      double new_width = x2-x1;
+      double new_height = y2-y1;
+      printf("%s:   new_height=%f, new_width=%f\n", __FUNCTION__,  new_height, new_width);
+
+      m_child->translate(x1 - bounds_child.get_x1(), y1 - bounds_child.get_y1());
+      //m_child->scale(new_width / width, new_height / height);
       break;
+    }
     /*
-    case(MANIPULATOR_CORNER_TOP_LEFT):
-      x1 = m_manipulator_corner_top_left->get_x();
-      y1 = m_manipulator_corner_top_left->get_y();
+    case(MANIPULATOR_CORNER_TOP_RIGHT):
+      x2 = bounds_manipulator.get_x2();
+      y1 = bounds_manipulator.get_y1();
+     
+      m_child->translate(x1 - bounds_child.get_x1(), y1 - bounds_child.get_y1());
+   
       break;
-    case(MANIPULATOR_CORNER_TOP_LEFT):
-      x1 = m_manipulator_corner_top_left->get_x();
-      y1 = m_manipulator_corner_top_left->get_y();
+    */
+    case(MANIPULATOR_CORNER_BOTTOM_LEFT):
+    {
+      double new_x1 = bounds_manipulator.get_x1();
+
+      const double new_height = bounds_manipulator.get_y2() - y1;
+      printf("%s: new_height=%f\n", __FUNCTION__, new_height);
+      const double new_width = x2 - bounds_manipulator.get_x1();
+     
+      m_child->translate(new_x1 - bounds_child.get_x1(), 0);
+      m_child->scale(new_width / width, new_height / height);
       break;
-    case(MANIPULATOR_CORNER_TOP_LEFT):
+    }
+    /*
+    case(MANIPULATOR_CORNER_BOTTOM_RIGHT):
       x1 = m_manipulator_corner_top_left->get_x();
       y1 = m_manipulator_corner_top_left->get_y();
       break;
