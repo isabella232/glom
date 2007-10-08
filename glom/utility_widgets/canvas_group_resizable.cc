@@ -27,6 +27,7 @@ namespace Glom
 {
 
 const double corner_size = 10;
+
 static Glib::RefPtr<CanvasRectMovable> create_corner()
 {
   Glib::RefPtr<CanvasRectMovable> result = CanvasRectMovable::create();
@@ -59,38 +60,52 @@ Glib::RefPtr<CanvasGroupResizable> CanvasGroupResizable::create()
   return Glib::RefPtr<CanvasGroupResizable>(new CanvasGroupResizable());
 }
 
-void CanvasGroupResizable::set_child(const Glib::RefPtr<Goocanvas::Item>& child)
+void CanvasGroupResizable::position_corners()
+{
+  //Note that this only works after the child has been added to the canvas:
+  //Goocanvas::Bounds bounds;
+  //m_child->get_bounds(bounds);
+ 
+  const double x1 = m_child->property_x();
+  const double y1 = m_child->property_y();
+  const double x2 = m_child->property_x() + m_child->property_width();
+  const double y2 = m_child->property_y() + m_child->property_height();
+
+  m_manipulator_corner_top_left->property_x() = x1;
+  m_manipulator_corner_top_left->property_y() = y1;
+
+  m_manipulator_corner_top_right->property_x() = x2 - corner_size;
+  m_manipulator_corner_top_right->property_y() = y1;
+
+  m_manipulator_corner_bottom_left->property_x() = x1;
+  m_manipulator_corner_bottom_left->property_y() = y2 - corner_size;
+
+  m_manipulator_corner_bottom_right->property_x() = x2 - corner_size;
+  m_manipulator_corner_bottom_right->property_y() = y2 - corner_size;
+}
+
+void CanvasGroupResizable::set_child(const Glib::RefPtr<Goocanvas::Rect>& child)
 {
   if(!child)
+    return;
+
+  if(m_child)
     return;
 
   m_child = child;
   add_child(child);
 
-  //Note that this only works after the child has been added to the canvas:
-  Goocanvas::Bounds bounds;
-  child->get_bounds(bounds);
-  printf("%s: bounds=%f, %f, %f, %f\n", __FUNCTION__, bounds.get_x1(), bounds.get_y1(), bounds.get_x2(), bounds.get_y2());
-
-  m_manipulator_corner_top_left->property_x() = bounds.get_x1();
-  m_manipulator_corner_top_left->property_y() = bounds.get_y1();
   add_child(m_manipulator_corner_top_left);
-  manipulator_connect_signals(m_manipulator_corner_top_left, MANIPULATOR_CORNER_TOP_LEFT);
-
-  m_manipulator_corner_top_right->property_x() = bounds.get_x2() - corner_size;
-  m_manipulator_corner_top_right->property_y() = bounds.get_y1();
   add_child(m_manipulator_corner_top_right);
-  manipulator_connect_signals(m_manipulator_corner_top_right, MANIPULATOR_CORNER_TOP_RIGHT);
-
-  m_manipulator_corner_bottom_left->property_x() = bounds.get_x1();
-  m_manipulator_corner_bottom_left->property_y() = bounds.get_y2() - corner_size;
   add_child(m_manipulator_corner_bottom_left);
-  manipulator_connect_signals(m_manipulator_corner_bottom_left, MANIPULATOR_CORNER_BOTTOM_LEFT);
-
-  m_manipulator_corner_bottom_right->property_x() = bounds.get_x2() - corner_size;
-  m_manipulator_corner_bottom_right->property_y() = bounds.get_y2() - corner_size;
   add_child(m_manipulator_corner_bottom_right);
+
+  manipulator_connect_signals(m_manipulator_corner_top_left, MANIPULATOR_CORNER_TOP_LEFT);
+  manipulator_connect_signals(m_manipulator_corner_top_right, MANIPULATOR_CORNER_TOP_RIGHT);
+  manipulator_connect_signals(m_manipulator_corner_bottom_left, MANIPULATOR_CORNER_BOTTOM_LEFT);
   manipulator_connect_signals(m_manipulator_corner_bottom_right, MANIPULATOR_CORNER_BOTTOM_RIGHT);
+
+  position_corners();
 }
 
 void CanvasGroupResizable::manipulator_connect_signals(const Glib::RefPtr<CanvasRectMovable> manipulator, Manipulators manipulator_id)
@@ -122,70 +137,63 @@ void CanvasGroupResizable::manipulator_connect_signals(const Glib::RefPtr<Canvas
 
 void CanvasGroupResizable::on_manipulator_moved(const Glib::RefPtr<CanvasRectMovable> manipulator, Manipulators manipulator_id)
 {
-  std::cout << "CanvasGroupResizable::on_manipulator_moved(): manipulator=" << manipulator << std::endl;
-
-  Goocanvas::Bounds bounds_child;
-  m_child->get_bounds(bounds_child);
-  printf("%s: bounds=%f, %f, %f, %f\n", __FUNCTION__, bounds_child.get_x1(), bounds_child.get_x2(), bounds_child.get_y1(), bounds_child.get_y2());
-
-  double x1 = bounds_child.get_x1();
-  double x2 = bounds_child.get_x2();
-  double y1 = bounds_child.get_y1();
-  double y2 = bounds_child.get_y2();
-  const double height = y2 - y1;
-  const double width = x2 - x1;
-  printf("%s: height=%f, width=%f\n", __FUNCTION__,  height, width);
-
-  Goocanvas::Bounds bounds_manipulator;
-  manipulator->get_bounds(bounds_manipulator);
+  //std::cout << "CanvasGroupResizable::on_manipulator_moved(): manipulator=" << manipulator_id << std::endl;
 
   switch(manipulator_id)
   {
     case(MANIPULATOR_CORNER_TOP_LEFT):
     {
-      x1 = bounds_manipulator.get_x1();
-      y1 = bounds_manipulator.get_y1(); 
-      std::cout << "  x1 =" << x1 << ", y1=" << y1 << std::endl;
-      std::cout << "    translate: " << x1 - bounds_child.get_x1() << ", " << y1 - bounds_child.get_y1() << std::endl;
-     
-      double new_width = x2-x1;
-      double new_height = y2-y1;
-      printf("%s:   new_height=%f, new_width=%f\n", __FUNCTION__,  new_height, new_width);
+      const double new_x = manipulator->property_x();
+      const double new_y = manipulator->property_y();
+      const double new_height = m_child->property_y() + m_child->property_height() - manipulator->property_y();
+      const double new_width = m_child->property_x() + m_child->property_width() - manipulator->property_x();
 
-      m_child->translate(x1 - bounds_child.get_x1(), y1 - bounds_child.get_y1());
-      //m_child->scale(new_width / width, new_height / height);
+      m_child->property_x() = new_x;
+      m_child->property_y() = new_y;
+      m_child->property_width() = new_width;
+      m_child->property_height() = new_height;
+
       break;
     }
-    /*
     case(MANIPULATOR_CORNER_TOP_RIGHT):
-      x2 = bounds_manipulator.get_x2();
-      y1 = bounds_manipulator.get_y1();
-     
-      m_child->translate(x1 - bounds_child.get_x1(), y1 - bounds_child.get_y1());
-   
+    {
+      const double new_y = manipulator->property_y();
+      const double new_height = m_child->property_y() + m_child->property_height() - manipulator->property_y();
+      const double new_width = manipulator->property_x() + corner_size - m_child->property_x();
+
+      m_child->property_y() = new_y;
+      m_child->property_width() = new_width;
+      m_child->property_height() = new_height;
+
       break;
-    */
+    }
     case(MANIPULATOR_CORNER_BOTTOM_LEFT):
     {
-      double new_x1 = bounds_manipulator.get_x1();
+      const double new_x = manipulator->property_x();
+      const double new_height = manipulator->property_y() + corner_size - m_child->property_y();
+      const double new_width = m_child->property_x() + m_child->property_width() - manipulator->property_x();
 
-      const double new_height = bounds_manipulator.get_y2() - y1;
-      printf("%s: new_height=%f\n", __FUNCTION__, new_height);
-      const double new_width = x2 - bounds_manipulator.get_x1();
-     
-      m_child->translate(new_x1 - bounds_child.get_x1(), 0);
-      m_child->scale(new_width / width, new_height / height);
+      m_child->property_x() = new_x;
+      m_child->property_width() = new_width;
+      m_child->property_height() = new_height;
+
       break;
     }
-    /*
     case(MANIPULATOR_CORNER_BOTTOM_RIGHT):
-      x1 = m_manipulator_corner_top_left->get_x();
-      y1 = m_manipulator_corner_top_left->get_y();
+    {
+      const double new_height = manipulator->property_y() + corner_size - m_child->property_y();
+      const double new_width = manipulator->property_x() + corner_size - m_child->property_x();
+
+      m_child->property_width() = new_width;
+      m_child->property_height() = new_height;
+
       break;
-    */
+    }
     default:
       break;
   }
+
+  position_corners();
 }
 
 

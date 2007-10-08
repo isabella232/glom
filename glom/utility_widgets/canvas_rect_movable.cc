@@ -81,6 +81,8 @@ bool CanvasRectMovable::on_button_press_event(const Glib::RefPtr<Goocanvas::Item
 
 bool CanvasRectMovable::on_motion_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventMotion* event)
 {
+  //std::cout << "CanvasRectMovable::on_motion_notify_event()" << std::endl;
+
   Glib::RefPtr<Goocanvas::Item> item = target;
   
   if(item && m_dragging && (event->state & Gdk::BUTTON1_MASK))
@@ -88,8 +90,15 @@ bool CanvasRectMovable::on_motion_notify_event(const Glib::RefPtr<Goocanvas::Ite
     const double new_x = event->x;
     const double new_y = event->y;
     //printf("%s: new_x=%f, new_y=%f\n", __FUNCTION__, new_x, new_y);
-    item->translate(new_x - m_drag_x, new_y - m_drag_y);
-  
+    //item->translate(new_x - m_drag_x, new_y - m_drag_y);
+
+    Glib::RefPtr<Goocanvas::Rect> rect = Glib::RefPtr<Goocanvas::Rect>::cast_dynamic(item);
+    if(rect)
+    {
+      rect->property_x() = new_x;
+      rect->property_y() = new_y;
+    }
+
     m_signal_moved.emit();
   }
 

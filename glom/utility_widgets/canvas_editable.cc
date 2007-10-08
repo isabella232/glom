@@ -34,7 +34,7 @@ CanvasEditable::~CanvasEditable()
 {
 }
 
-void CanvasEditable::add_item(const Glib::RefPtr<Goocanvas::Item>& item, bool resizable)
+void CanvasEditable::add_item(const Glib::RefPtr<Goocanvas::Rect>& item, bool resizable)
 {
   if(!item)
     return;

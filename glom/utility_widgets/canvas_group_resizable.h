@@ -39,7 +39,7 @@ public:
 
   /** This should only be called after this CanvasGroupResizable has already been added to a canvas.
    */
-  void set_child(const Glib::RefPtr<Goocanvas::Item>& child);
+  void set_child(const Glib::RefPtr<Goocanvas::Rect>& child);
 
 protected:
   //virtual bool on_button_press_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventButton* event);
@@ -48,6 +48,7 @@ protected:
 
   enum Manipulators
   {
+    MANIPULATOR_NONE,
     MANIPULATOR_CORNER_TOP_LEFT,
     MANIPULATOR_CORNER_TOP_RIGHT,
     MANIPULATOR_CORNER_BOTTOM_LEFT,
@@ -59,6 +60,7 @@ protected:
   };
 
   void manipulator_connect_signals(const Glib::RefPtr<CanvasRectMovable> manipulator, Manipulators manipulator_id);
+  void position_corners();
 
   void on_manipulator_moved(const Glib::RefPtr<CanvasRectMovable> manipulator, Manipulators manipulator_id);
 
@@ -66,7 +68,7 @@ protected:
   //bool on_manipulator_button_release_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventButton* event, Manipulators manipulator);
   //bool on_manipulator_motion_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventMotion* event, Manipulators manipulator);
 
-  Glib::RefPtr<Goocanvas::Item> m_child;
+  Glib::RefPtr<Goocanvas::Rect> m_child;
 
   Glib::RefPtr<CanvasRectMovable> m_manipulator_corner_top_left, m_manipulator_corner_top_right, m_manipulator_corner_bottom_left, m_manipulator_corner_bottom_right;
 };
