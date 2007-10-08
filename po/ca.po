@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Glom\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-03-16 08:15+0100\n"
+"POT-Creation-Date: 2007-10-08 22:17+0200\n"
 "PO-Revision-Date: 2007-03-16 08:19+0100\n"
 "Last-Translator: Gil Forcada <gilforcada@guifi.net>\n"
 "Language-Team: Catalan <tradgnome@softcatala.org>\n"
@@ -20,12 +20,542 @@ msgstr ""
 
 #: ../glom.desktop.in.in.h:1
 msgid "A user-friendly database environment."
-msgstr "Un entorn de bases de dades fàcil d'usar."
+msgstr "Un entorn de bases de dades fàcil d'utilitzar."
 
-#: ../glom.desktop.in.in.h:2 ../glom/glom.glade.h:146 ../glom/main.cc:127
+#: ../glom.desktop.in.in.h:2 ../glom/glom.glade.h:144 ../glom/main.cc:162
 msgid "Glom"
 msgstr "Glom"
 
+#: ../glom/application.cc:146
+msgid "(C) 2000-2005 Murray Cumming"
+msgstr "© 2000-2005 Murray Cumming"
+
+#: ../glom/application.cc:146
+msgid "A Database GUI"
+msgstr "Una interfície gràfica per a bases de dades"
+
+#: ../glom/application.cc:245
+msgid "_File"
+msgstr "_Fitxer"
+
+#: ../glom/application.cc:246
+msgid "_Recent Files"
+msgstr "Fitxers _recents"
+
+#: ../glom/application.cc:254
+msgid "Save As Example"
+msgstr "Desa com a exemple"
+
+#: ../glom/application.cc:262
+msgid "_Export"
+msgstr "_Exporta"
+
+#. "Tables" menu:
+#: ../glom/application.cc:322
+msgid "_Tables"
+msgstr "_Taules"
+
+#: ../glom/application.cc:332
+msgid "_Edit Tables"
+msgstr "_Edita les taules"
+
+#: ../glom/application.cc:337
+msgid "Add _Related Table"
+msgstr "Afegeix una taula _relacionada"
+
+#. "Reports" menu:
+#: ../glom/application.cc:345
+msgid "_Reports"
+msgstr "_Informes"
+
+#: ../glom/application.cc:348
+msgid "_Edit Reports"
+msgstr "_Edita els informes"
+
+#. "UserLevel" menu:
+#: ../glom/application.cc:356
+msgid "_User Level"
+msgstr "Nivell d'_usuari"
+
+#: ../glom/application.cc:359 ../glom/application.cc:383
+msgid "_Developer"
+msgstr "_Desenvolupador"
+
+#: ../glom/application.cc:363
+msgid "_Operator"
+msgstr "_Operador"
+
+#. "Mode" menu:
+#: ../glom/application.cc:369
+msgid "_Mode"
+msgstr "_Mode"
+
+#. We remember this action, so that it can be explicitly activated later.
+#: ../glom/application.cc:374
+msgid "D_ata"
+msgstr "D_ades"
+
+#: ../glom/application.cc:378
+msgid "_Find"
+msgstr "_Cerca"
+
+#: ../glom/application.cc:387
+msgid "_Database Preferences"
+msgstr "Preferències de la base de _dades"
+
+#: ../glom/application.cc:392
+msgid "_Fields"
+msgstr "C_amps"
+
+#: ../glom/application.cc:396
+msgid "_Relationships Overview"
+msgstr "_Resum de les relacions"
+
+#: ../glom/application.cc:400
+msgid "_Relationships for this Table"
+msgstr "_Relacions d'aquesta taula"
+
+#: ../glom/application.cc:404
+msgid "_Users"
+msgstr "_Usuaris"
+
+#: ../glom/application.cc:408
+msgid "R_eports"
+msgstr "I_nformes"
+
+#: ../glom/application.cc:412
+msgid "Script _Library"
+msgstr "_Biblioteca d'scripts"
+
+#: ../glom/application.cc:417
+msgid "_Layout"
+msgstr "_Disposició"
+
+#: ../glom/application.cc:421
+msgid "_Test Translation"
+msgstr "Prova la _traducció"
+
+#: ../glom/application.cc:425
+msgid "_Translations"
+msgstr "_Traduccions"
+
+#: ../glom/application.cc:574 ../glom/application.cc:579
+msgid "Save Document"
+msgstr "Desa el document"
+
+#. Warn the user:
+#: ../glom/application.cc:680
+msgid "Read-only File."
+msgstr "Fitxer de només lectura."
+
+#: ../glom/application.cc:680
+msgid ""
+"You may not overwrite the existing file, because you do not have sufficient "
+"access rights."
+msgstr ""
+"No podreu sobreescriure el fitxer existent, perquè no teniu els permisos "
+"necessaris."
+
+#. Warn the user:
+#: ../glom/application.cc:694
+msgid "Read-only Directory."
+msgstr "Directori de només lectura."
+
+#: ../glom/application.cc:694
+msgid ""
+"You may not create a file in this directory, because you do not have "
+"sufficient access rights."
+msgstr ""
+"No podreu crear un fitxer en aquest directori, perquè no teniu els permisos "
+"necessaris."
+
+#: ../glom/application.cc:711
+msgid "Database Title missing"
+msgstr "Manca el títol de la base de dades"
+
+#: ../glom/application.cc:711
+msgid "You must specify a title for the new database."
+msgstr "Heu d'indicar un títol per a la base de dades nova."
+
+#: ../glom/application.cc:727 ../glom/libglom/connectionpool.cc:811
+msgid "Directory Already Exists"
+msgstr "Ja existeix el directori"
+
+#: ../glom/application.cc:727 ../glom/libglom/connectionpool.cc:811
+msgid ""
+"There is an existing directory with the same name as the directory that "
+"should be created for the new database files. You should specify a different "
+"filename to use a new directory instead."
+msgstr ""
+"Ja existeix un directori amb el mateix nom que el directori que s'hauria de "
+"crear per als fitxers de la base de dades nova. Hauríeu d'especificar un nom "
+"de fitxer diferent o utilitzar un altre directori."
+
+#: ../glom/application.cc:865
+msgid "Creating From Example File"
+msgstr "S'està creant a partir d'un fitxer d'exemple"
+
+#: ../glom/application.cc:866
+msgid ""
+"To use this example file you must save an editable copy of the file. A new "
+"database will also be created on the server."
+msgstr ""
+"Per a poder utilitzar aquest fitxer d'exemple, cal que en deseu una còpia "
+"editable. També es crearà una base de dades nova al servidor."
+
+#: ../glom/application.cc:901
+msgid "Opening Read-Only File."
+msgstr "S'està obrint un fitxer de només lectura."
+
+#: ../glom/application.cc:902
+msgid ""
+"This file is read only, so you will not be able to enter Developer mode to "
+"make design changes."
+msgstr ""
+"Aquest fitxer és de només lectura, per tant no podreu entrar al mode de "
+"desenvolupador per a fer-hi canvis."
+
+#: ../glom/application.cc:905
+msgid "Continue without Developer Mode"
+msgstr "Continua sense entrar al mode de desenvolupador"
+
+#. The connection to the server is OK, but the database is not there yet.
+#: ../glom/application.cc:983
+msgid "Database Not Found On Server"
+msgstr "No s'ha trobat la base de dades al servidor"
+
+#: ../glom/application.cc:983
+msgid ""
+"The database could not be found on the server. Please consult your system "
+"administrator."
+msgstr ""
+"No s'ha trobat la base de dades al servidor, consulteu l'administrador del "
+"sistema."
+
+#: ../glom/application.cc:1159
+msgid "<span weight='bold' size='larger'>Open existing document</span>\n"
+msgstr "<span weight='bold' size='larger'>Obre un document existent</span>\n"
+
+#: ../glom/application.cc:1339
+msgid "_Contents"
+msgstr "_Continguts"
+
+#: ../glom/application.cc:1339
+msgid "Help with the application"
+msgstr "Ajuda de l'aplicació"
+
+#: ../glom/application.cc:1444
+msgid "Creating Glom Database"
+msgstr "S'està creant una base de dades Glom"
+
+#: ../glom/application.cc:1444
+msgid "Creating Glom database from example file."
+msgstr "S'està creant una base de dades Glom a partir d'un fitxer d'exemple."
+
+#: ../glom/application.cc:1845
+msgid "Save failed."
+msgstr "No s'ha pogut desar."
+
+#: ../glom/application.cc:1845
+msgid ""
+"There was an error while saving the file. Your changes have not been saved."
+msgstr "S'ha produït un error en desar el fitxer. No s'han desat els canvis."
+
+#: ../glom/base_db.cc:179 ../glom/base_db.cc:192
+#: ../glom/libglom/connectionpool.cc:613
+msgid "Internal error"
+msgstr "Error intern"
+
+#: ../glom/base_db.cc:1057 ../glom/mode_design/users/dialog_groups_list.cc:67
+msgid "Description"
+msgstr "Descripció"
+
+#: ../glom/base_db.cc:1064
+msgid "Comments"
+msgstr "Comentaris"
+
+#: ../glom/base_db.cc:1501
+msgid "Your find criteria did not match any records in the table."
+msgstr "El criteri de cerca no ha coincidit amb cap registre de la taula."
+
+#: ../glom/base_db.cc:1506
+msgid "No Records Found"
+msgstr "No s'ha trobat cap registre"
+
+#: ../glom/base_db.cc:1512
+msgid "New Find"
+msgstr "Cerca nova"
+
+#: ../glom/base_db.cc:2482
+msgid "Value Is Not Unique"
+msgstr "El valor no és únic"
+
+#: ../glom/base_db.cc:2482
+msgid ""
+"The field's value must be unique, but a record with this value already "
+"exists."
+msgstr ""
+"El valor del camp ha de ser únic, però ja existeix un registre amb aquest "
+"valor."
+
+#. Append the View columns:
+#. Append the View columns:
+#. Use set_cell_data_func() to give more control over the cell attributes depending on the row:
+#. Name column:
+#. Append the View columns:
+#: ../glom/box_reports.cc:90 ../glom/glom.glade.h:167
+#: ../glom/layout_item_dialogs/dialog_groupby_secondaryfields.cc:51
+#: ../glom/layout_item_dialogs/dialog_groupby_sortfields.cc:50
+#: ../glom/layout_item_dialogs/dialog_notebook.cc:46
+#: ../glom/mode_data/dialog_choose_field.cc:51
+#: ../glom/mode_data/dialog_choose_relationship.cc:52
+#: ../glom/mode_data/dialog_layout_details.cc:80
+#: ../glom/mode_data/dialog_layout_export.cc:52
+#: ../glom/mode_design/box_db_table_relationships.cc:43
+#: ../glom/mode_design/fields/box_db_table_definition.cc:53
+#: ../glom/mode_design/users/dialog_groups_list.cc:63
+msgid "Name"
+msgstr "Nom"
+
+#. Don't allow a relationship to be added twice.
+#: ../glom/box_reports.cc:92
+msgid "This report already exists. Please choose a different report name"
+msgstr "Ja existeix aquest informe. Escolliu un nom d'informe diferent"
+
+#. Title column:
+#: ../glom/box_reports.cc:94 ../glom/glom.glade.h:214
+#: ../glom/layout_item_dialogs/dialog_notebook.cc:47
+#: ../glom/mode_data/dialog_choose_field.cc:52
+#: ../glom/mode_data/dialog_layout_details.cc:93
+#: ../glom/mode_design/box_db_table_relationships.cc:47
+#: ../glom/mode_design/fields/box_db_table_definition.cc:57
+#: ../glom/navigation/box_tables.cc:119
+#: ../glom/utility_widgets/filechooserdialog.cc:93
+msgid "Title"
+msgstr "Títol"
+
+#: ../glom/box_reports.cc:216
+msgid "Are you sure that you want to rename this report?"
+msgstr "Segur que voleu canviar el nom d'aquest informe?"
+
+#. TODO: Show old and new names?
+#: ../glom/box_reports.cc:217
+msgid "Rename Report"
+msgstr "Canvia el nom de l'informe"
+
+#. A special "None" item, allowing the user to do the equivalent of clearing the combobox,
+#. which is not normally possible with the GtkComboBox UI:
+#: ../glom/combobox_fields.cc:175
+msgid "(None)"
+msgstr "(Cap)"
+
+#: ../glom/combobox_relationship.cc:268 ../glom/combobox_relationship.cc:272
+msgid " Via: "
+msgstr " A través de: "
+
+#: ../glom/dialog_connection.cc:180
+msgid "Not yet created."
+msgstr "Encara no s'ha creat."
+
+#. Tables:
+#: ../glom/dialog_database_preferences.cc:54
+#: ../glom/libglom/data_structure/translatable_item.cc:290
+#: ../glom/mode_design/box_db_table_relationships.cc:50
+#: ../glom/mode_design/users/dialog_groups_list.cc:70
+msgid "Table"
+msgstr "Taula"
+
+#: ../glom/dialog_database_preferences.cc:55 ../glom/glom.glade.h:131
+#: ../glom/libglom/data_structure/layout/layoutitem_field.cc:196
+#: ../glom/libglom/data_structure/translatable_item.cc:280
+msgid "Field"
+msgstr "Camp"
+
+#: ../glom/dialog_database_preferences.cc:56
+msgid "Next Value"
+msgstr "Valor següent"
+
+#: ../glom/dialog_new_self_hosted_connection.cc:104
+msgid "Username Is Empty"
+msgstr "El nom d'usuari és buit"
+
+#: ../glom/dialog_new_self_hosted_connection.cc:104
+msgid "Please enter a login name for the new user."
+msgstr "Entreu el nom d'entrada per a l'usuari nou."
+
+#: ../glom/dialog_new_self_hosted_connection.cc:109
+#: ../glom/mode_design/users/dialog_user.cc:50
+msgid "Passwords Do Not Match"
+msgstr "No coincideixen les contrasenyes"
+
+#: ../glom/dialog_new_self_hosted_connection.cc:109
+#: ../glom/mode_design/users/dialog_user.cc:50
+msgid ""
+"The entered password does not match the entered password confirmation. "
+"Please try again."
+msgstr "No coincideixen les contrasenyes introduïdes. Proveu-ho de nou."
+
+#: ../glom/dialog_new_self_hosted_connection.cc:114
+#: ../glom/mode_design/users/dialog_user.cc:55
+msgid "Password Is Empty"
+msgstr "La contrasenya és buida"
+
+#: ../glom/dialog_new_self_hosted_connection.cc:114
+#: ../glom/mode_design/users/dialog_user.cc:55
+msgid "Please enter a password for this user."
+msgstr "Introduïu una contrasenya per a aquest usuari."
+
+#: ../glom/filechooser_export.cc:30
+msgid "Export To File."
+msgstr "Exporta a un fitxer."
+
+#: ../glom/filechooser_export.cc:32
+msgid "Define Data _Format"
+msgstr "Definiu el _format de les dades"
+
+#: ../glom/filechooser_export.cc:37 ../glom/glom.glade.h:129
+#: ../glom/translation/window_translations.cc:510
+msgid "Export"
+msgstr "Exporta"
+
+#. TODO: Obviously this document should have been deleted when the database-creation was cancelled.
+#. Note that "canceled" is the correct US spelling.
+#: ../glom/frame_glom.cc:484
+msgid "No table"
+msgstr "No hi ha cap taula"
+
+#: ../glom/frame_glom.cc:484
+msgid "This database has no tables yet."
+msgstr "Aquesta base de dades encara no té cap taula."
+
+#: ../glom/frame_glom.cc:523 ../glom/glom.glade.h:121
+msgid "Data"
+msgstr "Dades"
+
+#: ../glom/frame_glom.cc:548
+msgid "Find"
+msgstr "Cerca"
+
+#: ../glom/frame_glom.cc:556
+#: ../glom/libglom/data_structure/translatable_item.cc:302
+#: ../glom/translation/window_translations.cc:213
+msgid "Unknown"
+msgstr "Desconegut"
+
+#: ../glom/frame_glom.cc:601
+msgid "Developer mode not available."
+msgstr "No està disponible el mode de desenvolupador."
+
+#: ../glom/frame_glom.cc:602
+msgid ""
+"Developer mode is not available. Check that you have sufficient database "
+"access rights and that the glom file is not read-only."
+msgstr ""
+"No està disponible el mode de desenvolupador. Comproveu que teniu el permís "
+"necessari a la base de dades, i que el fitxer glom no és de només lectura."
+
+#: ../glom/frame_glom.cc:608
+msgid "Saving in New Document Format"
+msgstr "S'està desant en el format de document nou"
+
+#: ../glom/frame_glom.cc:609
+msgid ""
+"The document was created by an earlier version of the application. Making "
+"changes to the document will mean that the document cannot be opened by some "
+"earlier versions of the application."
+msgstr ""
+"El document es va crear amb una versió antiga de l'aplicació. Si feu canvis "
+"al document farà que aquest ja no es pugui obrir amb les versions antigues "
+"de l'aplicació."
+
+#: ../glom/frame_glom.cc:612
+msgid "Continue"
+msgstr "Continua"
+
+#: ../glom/frame_glom.cc:658
+msgid "Export Not Allowed."
+msgstr "No es permet l'exportació."
+
+#: ../glom/frame_glom.cc:658
+msgid ""
+"You do not have permission to view the data in this table, so you may not "
+"export the data."
+msgstr ""
+"No teniu permís per a poder veure les dades d'aquesta taula, per tant no "
+"podreu exportar-les."
+
+#: ../glom/frame_glom.cc:684
+msgid "Could Not Create File."
+msgstr "No s'ha pogut crear el fitxer."
+
+#: ../glom/frame_glom.cc:684
+msgid "Glom could not create the specified file."
+msgstr "El Glom no ha pogut crear el fitxer especificat."
+
+#: ../glom/frame_glom.cc:930
+msgid "Table Exists Already"
+msgstr "Ja existeix la taula"
+
+#: ../glom/frame_glom.cc:930
+msgid ""
+"A table with this name already exists in the database. Please choose a "
+"different table name."
+msgstr ""
+"Ja existeix una taula amb aquest nom a la base de dades. Escolliu un altre "
+"nom."
+
+#: ../glom/frame_glom.cc:934
+msgid "Relationship Exists Already"
+msgstr "Ja existeix la relació"
+
+#: ../glom/frame_glom.cc:934
+msgid ""
+"A relationship with this name already exists for this table. Please choose a "
+"different relationship name."
+msgstr ""
+"Ja existeix una relació amb aquest nom per a aquesta taula. Escolliu un "
+"altre nom."
+
+#: ../glom/frame_glom.cc:938
+msgid "More information needed"
+msgstr "Cal més informació"
+
+#: ../glom/frame_glom.cc:938
+msgid "You must specify a field, a table name, and a relationship name."
+msgstr "Heu d'indicar un camp, una taula i el nom d'una relació."
+
+#: ../glom/frame_glom.cc:992
+msgid "Related Table Created"
+msgstr "S'ha creat la taula relacionada"
+
+#: ../glom/frame_glom.cc:992
+msgid "The new related table has been created."
+msgstr "S'ha creat la taula relacionada nova."
+
+#: ../glom/frame_glom.cc:1074 ../glom/utility_widgets/dialog_choose_id.cc:105
+msgid "You have not entered any quick find criteria."
+msgstr "No heu entrat cap criteri de cerca ràpida."
+
+#: ../glom/frame_glom.cc:1079 ../glom/mode_data/box_data.cc:141
+#: ../glom/utility_widgets/dialog_choose_id.cc:109
+msgid "No Find Criteria"
+msgstr "Cap criteri de cerca"
+
+#. show user level:
+#: ../glom/frame_glom.cc:1139
+msgid "Operator"
+msgstr "Operador"
+
+#: ../glom/frame_glom.cc:1141
+msgid "Developer"
+msgstr "Desenvolupador"
+
+#. Show 0 instead of "all" when all of no records are found, to avoid confusion.
+#: ../glom/frame_glom.cc:2060
+msgid "All"
+msgstr "Tot"
+
+#. namespace Glom
 #: ../glom/glom.glade.h:1
 msgid "0"
 msgstr "0"
@@ -107,44 +637,44 @@ msgid "<b>Parts</b>"
 msgstr "<b>Parts</b>"
 
 #: ../glom/glom.glade.h:21
+msgid "<b>Recently Opened Files:</b>"
+msgstr "<b>Fitxers oberts recentment:</b>"
+
+#: ../glom/glom.glade.h:22
 msgid "<b>Relationship:</b>"
 msgstr "<b>Relació:</b>"
 
-#: ../glom/glom.glade.h:22
+#: ../glom/glom.glade.h:23
 msgid "<b>Relationships</b>"
 msgstr "<b>Relacions</b>"
 
-#: ../glom/glom.glade.h:23
+#: ../glom/glom.glade.h:24
 msgid "<b>Report name:</b>"
 msgstr "<b>Nom de l'informe:</b>"
 
-#: ../glom/glom.glade.h:24
+#: ../glom/glom.glade.h:25
 msgid "<b>Reports</b>"
 msgstr "<b>Informes</b>"
 
-#: ../glom/glom.glade.h:25
-msgid "<b>Select Field</b>"
-msgstr "<b>Seleccioneu els camps</b>"
-
 #: ../glom/glom.glade.h:26
+msgid "<b>Select Field</b>"
+msgstr "<b>Seleccioneu el camp</b>"
+
+#: ../glom/glom.glade.h:27
 msgid "<b>Select Relationship</b>"
 msgstr "<b>Seleccioneu la relació</b>"
 
-#: ../glom/glom.glade.h:27
+#: ../glom/glom.glade.h:28
 msgid "<b>Sort Fields</b>"
 msgstr "<b>Camps d'ordenació</b>"
 
-#: ../glom/glom.glade.h:28
-msgid "<b>Source Language:</b>"
-msgstr "<b>Llenguatge font:</b>"
-
 #: ../glom/glom.glade.h:29
-msgid "<b>Summary Field</b>"
-msgstr "<b>Resum del camp</b>"
+msgid "<b>Source Language:</b>"
+msgstr "<b>Idioma font:</b>"
 
 #: ../glom/glom.glade.h:30
-msgid "<b>Table Name</b>"
-msgstr "<b>Nom de la taula</b>"
+msgid "<b>Summary Field</b>"
+msgstr "<b>Camp de resum</b>"
 
 #: ../glom/glom.glade.h:31
 msgid "<b>Table:</b>"
@@ -160,7 +690,7 @@ msgstr "<b>Taules</b>"
 
 #: ../glom/glom.glade.h:34
 msgid "<b>Target Language:</b>"
-msgstr "<b>Llenguatge de destí:</b>"
+msgstr "<b>Idioma de destí:</b>"
 
 #: ../glom/glom.glade.h:35
 msgid "<b>Text Formatting</b>"
@@ -212,7 +742,7 @@ msgid ""
 msgstr ""
 "<span weight=\"bold\" size=\"larger\">Afegeix un usuari al grup</span>\n"
 "\n"
-"Quin usuari voleu afegir a aquest grup?"
+"Quin usuari voleu afegir-hi?"
 
 #: ../glom/glom.glade.h:49
 msgid ""
@@ -222,19 +752,13 @@ msgid ""
 msgstr ""
 "<span weight=\"bold\" size=\"larger\">Escolliu una data</span>\n"
 "\n"
-"Seleccioneu una data per aquest camp."
+"Seleccioneu una data per a aquest camp."
 
 #: ../glom/glom.glade.h:52
-msgid ""
-"<span weight=\"bold\" size=\"larger\">Connect to Server</span>\n"
-"\n"
-"Please enter the connection details for your database server."
-msgstr ""
-"<span weight=\"bold\" size=\"larger\">Connecta al servidor</span>\n"
-"\n"
-"Entreu els detalls de la connexió del servidor de base de dades."
+msgid "<span weight=\"bold\" size=\"larger\">Connect to Server</span>"
+msgstr "<span weight=\"bold\" size=\"larger\">Connecta a un servidor</span>"
 
-#: ../glom/glom.glade.h:55
+#: ../glom/glom.glade.h:53
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Connection Failed</span>\n"
 "\n"
@@ -245,10 +769,10 @@ msgstr ""
 "<span weight=\"bold\" size=\"larger\">Ha fallat la connexió</span>\n"
 "\n"
 "El Glom no s'ha pogut connectar al servidor de base de dades. Potser heu "
-"entrat un nom d'usuari o contrasenya incorrectes, o el servidor de la base "
+"introduït un nom d'usuari o contrasenya incorrectes o el servidor de la base "
 "de dades postgres no s'està executant."
 
-#: ../glom/glom.glade.h:58
+#: ../glom/glom.glade.h:56
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Copy Translation</span>\n"
 "\n"
@@ -257,10 +781,10 @@ msgid ""
 msgstr ""
 "<span weight=\"bold\" size=\"larger\">Copia la traducció</span>\n"
 "\n"
-"De quin llenguatge voldríeu copiar-ne les traduccions a utilitzar com a "
-"inici de la traducció actual?"
+"De quin idioma voldríeu copiar-ne les traduccions a utilitzar com a inici de "
+"la traducció actual?"
 
-#: ../glom/glom.glade.h:61
+#: ../glom/glom.glade.h:59
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Create Group</span>\n"
 "\n"
@@ -268,9 +792,9 @@ msgid ""
 msgstr ""
 "<span weight=\"bold\" size=\"larger\">Crea un grup</span>\n"
 "\n"
-"Quin nom voleu posar a aquest grup?"
+"Quin nom voleu posar-li?"
 
-#: ../glom/glom.glade.h:64
+#: ../glom/glom.glade.h:62
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Database creation failed</span>\n"
 "\n"
@@ -280,10 +804,10 @@ msgstr ""
 "<span weight=\"bold\" size=\"larger\">Ha fallat la creació de la base de "
 "dades</span>\n"
 "\n"
-"El Glom no ha pogut crear la base de dades. Potser no teniu el permís "
-"d'accés necessari. Contacteu al vostre administrador de sistemes."
+"El Glom no ha pogut crear la base de dades nova. Potser no teniu el permís "
+"d'accés necessari. Contacteu amb l'administrador de sistemes."
 
-#: ../glom/glom.glade.h:67
+#: ../glom/glom.glade.h:65
 msgid ""
 "<span weight=\"bold\" size=\"larger\">First User</span>\n"
 "\n"
@@ -293,12 +817,12 @@ msgid ""
 msgstr ""
 "<span weight=\"bold\" size=\"larger\">Primer usuari</span>\n"
 "\n"
-"Entreu els detalls de la connexió inicial per a la vostra base de dades "
-"nova. Podeu afegir altres usuaris més endavant. Recordeu de mantenir en "
-"secret aquesta contrasenya perquè permet accedir a les vostres dades des "
-"d'altres ordinadors de la xarxa."
+"Introduïu els detalls de la connexió inicial per a la base de dades nova. "
+"Podeu afegir-hi altres usuaris més endavant. Recordeu de guardar en secret "
+"aquesta contrasenya perquè permet accedir a les vostres dades des d'altres "
+"ordinadors de la xarxa."
 
-#: ../glom/glom.glade.h:70
+#: ../glom/glom.glade.h:68
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Identify Original</span>\n"
 "\n"
@@ -306,9 +830,9 @@ msgid ""
 msgstr ""
 "<span weight=\"bold\" size=\"larger\">Identifica l'original</span>\n"
 "\n"
-"El llenguatge original està actualment identificat com a:"
+"L'idioma original està actualment identificat com a:"
 
-#: ../glom/glom.glade.h:73
+#: ../glom/glom.glade.h:71
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Invalid format</span>\n"
 "\n"
@@ -318,11 +842,11 @@ msgid ""
 msgstr ""
 "<span weight=\"bold\" size=\"larger\">El format no és vàlid</span>\n"
 "\n"
-"No s'han pogut reconèixer les dades del camp. Corregiu les dades o revertiu "
-"a les anteriors. Aquí teniu un exemple de dades formatades correctament per "
-"a aquest camp.\n"
+"No s'han pogut reconèixer les dades del camp. Corregiu les dades o torneu-"
+"les a les anteriors. Aquí teniu un exemple de dades formatades correctament "
+"per a aquest camp.\n"
 
-#: ../glom/glom.glade.h:77
+#: ../glom/glom.glade.h:75
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Open existing document, or create new "
 "document</span>\n"
@@ -335,13 +859,12 @@ msgstr ""
 "<span weight=\"bold\" size=\"larger\">Obrir un document existent, o crear-ne "
 "un de nou</span>\n"
 "\n"
-"Voleu obrir un document existent, per a connectar a una base de dades "
+"Voleu obrir un document existent, per a connectar-vos a una base de dades "
 "existent?\n"
 "\n"
 "O voleu crear un document nou, per a dissenyar una base de dades nova?\n"
-"\n"
 
-#: ../glom/glom.glade.h:83
+#: ../glom/glom.glade.h:81
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Test Translation</span>\n"
 "\n"
@@ -355,74 +878,74 @@ msgid ""
 msgstr ""
 "<span weight=\"bold\" size=\"larger\">Prova la traducció</span>\n"
 "\n"
-"Trieu el llenguatge que vulgueu utilitzar temporalment per provar-ne la "
+"Escolliu l'idioma que vulgueu utilitzar temporalment per provar-ne la "
 "traducció. Normalment, aquestes traduccions s'utilitzen automàticament quan "
-"s'inicia l'aplicació en un ordinador que utilitza aquest llenguatge.\n"
+"s'inicia l'aplicació en un ordinador que utilitza aquest idioma.\n"
 "\n"
 "Fixeu-vos que l'interfície d'usuari del Glom, com ara els menús i els "
-"quadres de diàleg, només es veuran traduïdes en ordinadors que utilitzin "
-"aquesta llengua."
+"quadres de diàleg, només es veuran traduïts en ordinadors que utilitzin "
+"aquest idioma."
 
-#: ../glom/glom.glade.h:88 ../glom/utility_widgets/layoutwidgetbase.cc:41
+#: ../glom/glom.glade.h:86 ../glom/utility_widgets/layoutwidgetbase.cc:44
 msgid "Add Button"
 msgstr "Afegeix un botó"
 
-#: ../glom/glom.glade.h:89 ../glom/utility_widgets/layoutwidgetbase.cc:39
+#: ../glom/glom.glade.h:87 ../glom/utility_widgets/layoutwidgetbase.cc:42
 msgid "Add Notebook"
 msgstr "Afegeix una llibreta de notes"
 
-#: ../glom/glom.glade.h:90
+#: ../glom/glom.glade.h:88
 msgid "Add Related"
-msgstr "Afegeix relacionats"
+msgstr "Afegeix els relacionats"
 
-#: ../glom/glom.glade.h:91
+#: ../glom/glom.glade.h:89
 msgid "Add Related Table"
 msgstr "Afegeix una taula relacionada"
 
-#: ../glom/glom.glade.h:92 ../glom/utility_widgets/layoutwidgetbase.cc:42
+#: ../glom/glom.glade.h:90 ../glom/utility_widgets/layoutwidgetbase.cc:45
 msgid "Add Text"
 msgstr "Afegeix text"
 
-#: ../glom/glom.glade.h:93
+#: ../glom/glom.glade.h:91
 msgid "Add _Group"
 msgstr "Afegeix un _grup"
 
-#: ../glom/glom.glade.h:94
+#: ../glom/glom.glade.h:92
 msgid ""
 "Add a button. Edit the button to define the script that will be run when the "
 "button is clicked."
 msgstr ""
-"Afegeix un botó. Editeu el botó per definir l'script que s'executarà quan es "
-"faci clic al botó."
+"Afegeix un botó. Editeu el botó per a definir l'script que s'executarà quan "
+"es faci clic al botó."
 
-#: ../glom/glom.glade.h:95
+#: ../glom/glom.glade.h:93
 msgid ""
 "Add a group which can contain other layout items. Use this to group items "
 "together, such as fields."
 msgstr ""
 "Afegeix un grup que pot contenir altres elements de la disposició. Utilitzeu-"
-"lo per agrupar elements, com ara camps."
+"lo per a agrupar elements, com ara camps."
 
-#: ../glom/glom.glade.h:96
+#: ../glom/glom.glade.h:94
 msgid ""
 "Add a layout item that shows the data from a field in the record, and allows "
 "the user to edit that value."
 msgstr ""
-"Afegeix un element de disposició que mostra les dades d'un camp del "
-"registre, i permet a l'usuari editar-ne el valor."
+"Afegeix un element de disposició que mostra les dades d'un camp del registre "
+"i permet a l'usuari editar-ne el valor."
 
-#: ../glom/glom.glade.h:97
+#: ../glom/glom.glade.h:95
 msgid ""
 "Add a related records portal. This is a list of records in a related table. "
 "Remember to edit this layout item to specify the relationship to use, and "
 "the  fields to show from the related table."
 msgstr ""
 "Afegeix un portal de registres relacionats. Aquesta és una llista de "
-"registres en una taula d'una taula relacionada. Recordeu d'editar aquest "
-"element de disposició per especificar la relació a utilitzar i els camps a "
-"mostrar de la taula relacionada."
+"registres d'una taula relacionada. Recordeu d'editar aquest element de "
+"disposició per a especificar la relació a utilitzar i els camps a mostrar de "
+"la taula relacionada."
 
-#: ../glom/glom.glade.h:98
+#: ../glom/glom.glade.h:96
 msgid ""
 "Add a tabbed notebook. Each page of the notebook may contain several other "
 "layout items, but only one page will be visible at one time."
@@ -431,279 +954,263 @@ msgstr ""
 "notes pot contenir altres elements de disposició, però només es veurà una "
 "pàgina en cada moment."
 
-#: ../glom/glom.glade.h:99
+#: ../glom/glom.glade.h:97
 msgid ""
 "Add an image to the layout, such as a logo. The image will be the same for "
 "every record viewed. To show an image field from a record, to show different "
 "images for each field, use the field layout item."
 msgstr ""
-"Afegeix una imatge a la disposició, com un logotip. La imatge serà la "
-"mateixa per a cada registre visualitzat. Utilitzeu l'element de disposició "
-"de camp per a mostrar un camp d'imatge des d'un registre o per a mostrar "
+"Afegeix una imatge a la disposició, com ara un logotip. Serà la mateixa "
+"imatge per a cada registre visualitzat. Utilitzeu l'element de disposició de "
+"camp per a mostrar un camp d'imatge des d'un registre o per a mostrar "
 "diferents imatges per a cada camp."
 
-#: ../glom/glom.glade.h:100
+#: ../glom/glom.glade.h:98
 msgid ""
 "Add text to a layout, such as an explanation or a warning. The text will be "
 "the same for every record viewed."
 msgstr ""
-"Afegeix un text a la disposició, com una explicació o un avís. Serà el "
+"Afegeix un text a la disposició, com ara una explicació o un avís. Serà el "
 "mateix text per a cada registre visualitzat."
 
-#: ../glom/glom.glade.h:101
+#: ../glom/glom.glade.h:99
 #: ../glom/mode_design/box_db_table_relationships.cc:52
 msgid "Allow Editing"
 msgstr "Permet l'edició"
 
-#: ../glom/glom.glade.h:102
+#: ../glom/glom.glade.h:100
 msgid "Also show"
 msgstr "Mostra també"
 
-#: ../glom/glom.glade.h:103
+#: ../glom/glom.glade.h:101
 msgid "Auto-increment"
 msgstr "Auto-increment"
 
-#: ../glom/glom.glade.h:104
+#: ../glom/glom.glade.h:102
 msgid "Auto-increment values"
 msgstr "Auto-incrementa els valors"
 
-#: ../glom/glom.glade.h:105
+#: ../glom/glom.glade.h:103
 msgid "Automatic:"
 msgstr "Automàtic:"
 
-#: ../glom/glom.glade.h:106
+#: ../glom/glom.glade.h:104
 msgid "Border Width (ems)"
 msgstr "Amplada de la vora (emes)"
 
-#: ../glom/glom.glade.h:107
+#: ../glom/glom.glade.h:105
 msgid "Button Script"
-msgstr "Botó de seqüència"
+msgstr "Botó d'script"
 
-#: ../glom/glom.glade.h:108
+#: ../glom/glom.glade.h:106
 msgid "C_onnect"
 msgstr "C_onnecta"
 
-#: ../glom/glom.glade.h:109
+#: ../glom/glom.glade.h:107
 msgid "C_reate"
 msgstr "C_rea"
 
-#: ../glom/glom.glade.h:110
+#: ../glom/glom.glade.h:108
 msgid "Calculate Value"
 msgstr "Calcula el valor"
 
-#: ../glom/glom.glade.h:111
+#: ../glom/glom.glade.h:109
 msgid "Check"
 msgstr "Comprova"
 
-#: ../glom/glom.glade.h:112
+#: ../glom/glom.glade.h:110
 msgid "Choices From Related Records"
 msgstr "Opcions de registres relacionats"
 
-#: ../glom/glom.glade.h:113
+#: ../glom/glom.glade.h:111
 msgid "Choose Date"
-msgstr "Trieu una data"
+msgstr "Escolliu una data"
 
-#: ../glom/glom.glade.h:114
+#: ../glom/glom.glade.h:112
 msgid "Choose User"
-msgstr "Trieu un usuari"
+msgstr "Escolliu un usuari"
 
-#: ../glom/glom.glade.h:115
+#: ../glom/glom.glade.h:113
 msgid ""
 "Clicking the row button takes the user to the table specified by this "
 "relationship:"
 msgstr ""
-"Fer clic al botó de fila porta l'usuari a la taula especificada per aquesta "
-"relació:"
+"Quan es faci clic al botó de de fila, l'usuari anirà a la taula especificada "
+"per a aquesta relació:"
 
-#: ../glom/glom.glade.h:116
+#: ../glom/glom.glade.h:114
 msgid "Confirm Password"
 msgstr "Confirmeu la contrasenya"
 
-#: ../glom/glom.glade.h:117
+#: ../glom/glom.glade.h:115
 msgid "Copy From Existing Translation"
 msgstr "Copia d'una traducció existent"
 
-#: ../glom/glom.glade.h:118 ../glom/libglom/document/document_glom.cc:408
+#: ../glom/glom.glade.h:116 ../glom/libglom/document/document_glom.cc:423
 msgid "Country"
 msgstr "País"
 
-#: ../glom/glom.glade.h:119 ../glom/mode_design/users/dialog_groups_list.cc:79
+#: ../glom/glom.glade.h:117 ../glom/mode_design/users/dialog_groups_list.cc:79
 msgid "Create"
 msgstr "Crea"
 
-#: ../glom/glom.glade.h:120
+#: ../glom/glom.glade.h:118
 msgid "Create Group"
 msgstr "Crea un grup"
 
-#: ../glom/glom.glade.h:121
+#: ../glom/glom.glade.h:119
 msgid "Currency Symbol"
 msgstr "Símbol de la moneda"
 
-#: ../glom/glom.glade.h:122
+#: ../glom/glom.glade.h:120
 msgid "Custom Choice List"
 msgstr "Llista d'opcions personalitzada"
 
-#: ../glom/glom.glade.h:123 ../glom/frame_glom.cc:421
-msgid "Data"
-msgstr "Dades"
-
-#: ../glom/glom.glade.h:124
+#: ../glom/glom.glade.h:122
 msgid "Database"
 msgstr "Base de dades"
 
-#: ../glom/glom.glade.h:125
+#: ../glom/glom.glade.h:123
 msgid "Database Preferences"
 msgstr "Preferències de la base de dades"
 
-#: ../glom/glom.glade.h:126
+#: ../glom/glom.glade.h:124
 msgid "Decimal Places"
 msgstr "Quantitat de decimals"
 
-#: ../glom/glom.glade.h:127
+#: ../glom/glom.glade.h:125
 msgid "Default Formatting"
-msgstr "Formatat per defecte"
+msgstr "Formatat predeterminat"
 
-#: ../glom/glom.glade.h:128
+#: ../glom/glom.glade.h:126
 msgid "Details Layout"
 msgstr "Disposició dels detalls"
 
 #. Add new menu items:
-#: ../glom/glom.glade.h:129 ../glom/mode_design/users/dialog_groups_list.cc:76
-#: ../glom/utility_widgets/adddel/adddel.cc:232
+#: ../glom/glom.glade.h:127 ../glom/mode_design/users/dialog_groups_list.cc:76
+#: ../glom/utility_widgets/adddel/adddel.cc:245
 msgid "Edit"
 msgstr "Edita"
 
-#: ../glom/glom.glade.h:130
+#: ../glom/glom.glade.h:128
 msgid "English"
 msgstr "Anglès"
 
-#: ../glom/glom.glade.h:131 ../glom/filechooser_export.cc:37
-#: ../glom/translation/window_translations.cc:510
-msgid "Export"
-msgstr "Exporta"
-
-#: ../glom/glom.glade.h:132
+#: ../glom/glom.glade.h:130
 msgid "Export Format"
 msgstr "Format d'exportació"
 
-#: ../glom/glom.glade.h:133
-#: ../glom/libglom/data_structure/translatable_item.cc:280
-#: ../glom/libglom/data_structure/layout/layoutitem_field.cc:196
-#: ../glom/dialog_database_preferences.cc:55
-msgid "Field"
-msgstr "Camp"
-
-#: ../glom/glom.glade.h:134
+#: ../glom/glom.glade.h:132
 msgid "Field Calculation"
 msgstr "Càlcul del camp"
 
-#: ../glom/glom.glade.h:135
+#: ../glom/glom.glade.h:133
 msgid "Field Definition"
 msgstr "Definició del camp"
 
-#: ../glom/glom.glade.h:136 ../glom/mode_design/dialog_fields.cc:36
+#: ../glom/glom.glade.h:134 ../glom/mode_design/dialog_fields.cc:36
 msgid "Field Definitions"
 msgstr "Definicions del camp"
 
-#: ../glom/glom.glade.h:137
+#: ../glom/glom.glade.h:135
 msgid "Field Layout"
-msgstr "Disposició dels camps"
+msgstr "Disposició del camp"
 
-#: ../glom/glom.glade.h:138
+#: ../glom/glom.glade.h:136
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:70
 msgid "Field Summary"
 msgstr "Resum del camp"
 
-#: ../glom/glom.glade.h:139
+#: ../glom/glom.glade.h:137
 msgid "Field:"
 msgstr "Camp:"
 
-#: ../glom/glom.glade.h:140
+#: ../glom/glom.glade.h:138
 msgid "Find All"
 msgstr "Cerca'ls tots"
 
-#: ../glom/glom.glade.h:141
+#: ../glom/glom.glade.h:139
 msgid "Find Related Record"
-msgstr "Cerca registres relacionats"
+msgstr "Cerca els registres relacionats"
 
-#: ../glom/glom.glade.h:142
+#: ../glom/glom.glade.h:140
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_footer.cc:55
 msgid "Footer"
 msgstr "Peu de pàgina"
 
-#: ../glom/glom.glade.h:143
+#: ../glom/glom.glade.h:141
 msgid "Formatting"
 msgstr "Formatació"
 
-#: ../glom/glom.glade.h:144
+#: ../glom/glom.glade.h:142
 msgid "Found:"
 msgstr "S'ha trobat:"
 
-#: ../glom/glom.glade.h:145
+#: ../glom/glom.glade.h:143
 msgid "From Field:"
 msgstr "Del camp:"
 
-#: ../glom/glom.glade.h:147
+#: ../glom/glom.glade.h:145
 #: ../glom/libglom/data_structure/layout/layoutgroup.cc:396
 msgid "Group"
 msgstr "Agrupa"
 
-#: ../glom/glom.glade.h:148
+#: ../glom/glom.glade.h:146
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_groupby.cc:102
 msgid "Group By"
 msgstr "Agrupa per"
 
-#: ../glom/glom.glade.h:149
+#: ../glom/glom.glade.h:147
 msgid "Group By - Secondary Fields"
-msgstr "Agrupa per - Camps secundaris"
+msgstr "Agrupa per - camps secundaris"
 
-#: ../glom/glom.glade.h:150
+#: ../glom/glom.glade.h:148
 msgid "Group By - Sort Fields"
-msgstr "Agrupa per - Camps d'ordenació"
+msgstr "Agrupa per - camps d'ordenació"
 
-#: ../glom/glom.glade.h:151
+#: ../glom/glom.glade.h:149
 msgid "Group Name"
 msgstr "Nom del grup"
 
-#: ../glom/glom.glade.h:152
+#: ../glom/glom.glade.h:150
 msgid "Groups"
 msgstr "Grups"
 
-#: ../glom/glom.glade.h:153
+#: ../glom/glom.glade.h:151
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_header.cc:55
 msgid "Header"
 msgstr "Capçalera"
 
-#: ../glom/glom.glade.h:154
+#: ../glom/glom.glade.h:152
 msgid "Height (lines)"
 msgstr "Alçada (línies)"
 
-#: ../glom/glom.glade.h:155
+#: ../glom/glom.glade.h:153
 msgid "Identify Original"
 msgstr "Identifica l'original"
 
-#: ../glom/glom.glade.h:156
+#: ../glom/glom.glade.h:154
 msgid "Identify Source"
-msgstr "Identifica la de destí"
+msgstr "Identifica la font"
 
-#: ../glom/glom.glade.h:157
+#: ../glom/glom.glade.h:155
 msgid ""
 "If the text is not actually in this language, please choose the correct "
 "language."
-msgstr "Si el text no és en aquesta llengua, escolliu la que sigui correcta."
+msgstr "Si el text no és en aquest idioma, escolliu el correcte."
 
-#: ../glom/glom.glade.h:158
+#: ../glom/glom.glade.h:156
 msgid ""
 "If this is not selected then a thousands separator will not be used, even if "
 "your locale would normally use one. If it is selected then a thousands "
 "separator will be used only if your locale normally uses one."
 msgstr ""
 "Si no se selecciona, no es farà servir el separador de milers, encara que la "
-"vostra localització normalment el faci servir. En canvi, si se selecciona es "
-"farà servir el separador de miler d'acord amb la localització, sempre i quan "
-"aquesta en faci servir cap."
+"vostra localització l'utilitzi normalment. En canvi, si se selecciona es "
+"farà servir el separador de milers d'acord amb la localització, excepte si "
+"no se'n fa servir cap."
 
-#: ../glom/glom.glade.h:159
+#: ../glom/glom.glade.h:157
 msgid ""
 "If this is selected then the field value will be shown in a multi-line box "
 "with a scrollbar."
@@ -711,119 +1218,104 @@ msgstr ""
 "Si està seleccionat llavors el valor del camp es mostrarà en un quadre multi-"
 "línia amb barres de desplaçament."
 
-#: ../glom/glom.glade.h:160 ../glom/translation/window_translations.cc:587
+#: ../glom/glom.glade.h:158 ../glom/translation/window_translations.cc:587
 msgid "Import"
 msgstr "Importa"
 
-#: ../glom/glom.glade.h:161
+#: ../glom/glom.glade.h:159
 msgid "Language"
-msgstr "Llenguatge"
+msgstr "Idioma"
 
-#: ../glom/glom.glade.h:162
+#: ../glom/glom.glade.h:160
 msgid "Locale"
 msgstr "Localització"
 
-#: ../glom/glom.glade.h:163
+#: ../glom/glom.glade.h:161
 msgid "Logo"
 msgstr "Logotip"
 
-#: ../glom/glom.glade.h:164
+#: ../glom/glom.glade.h:162
 msgid "Lookup value when a field changes."
-msgstr "Cerca un valor quan el camp canvia."
+msgstr "Cerca un valor quan canviï un camp."
 
-#: ../glom/glom.glade.h:165
+#: ../glom/glom.glade.h:163
 msgid "Main"
 msgstr "Principal"
 
-#: ../glom/glom.glade.h:166
+#: ../glom/glom.glade.h:164
 msgid "Mode:"
 msgstr "Mode:"
 
-#: ../glom/glom.glade.h:167
+#: ../glom/glom.glade.h:165
 msgid "Module name:"
 msgstr "Nom del mòdul:"
 
-#: ../glom/glom.glade.h:168
+#: ../glom/glom.glade.h:166
 msgid "Multi-line"
 msgstr "Multi-línia"
 
-#. Append the View columns:
-#. Append the View columns:
-#. Use set_cell_data_func() to give more control over the cell attributes depending on the row:
-#. Name column:
-#. Append the View columns:
-#: ../glom/glom.glade.h:169 ../glom/box_reports.cc:90
-#: ../glom/layout_item_dialogs/dialog_groupby_secondaryfields.cc:51
-#: ../glom/layout_item_dialogs/dialog_groupby_sortfields.cc:50
-#: ../glom/layout_item_dialogs/dialog_notebook.cc:46
-#: ../glom/mode_data/dialog_choose_field.cc:51
-#: ../glom/mode_data/dialog_choose_relationship.cc:52
-#: ../glom/mode_data/dialog_layout_details.cc:80
-#: ../glom/mode_data/dialog_layout_export.cc:52
-#: ../glom/mode_design/box_db_table_relationships.cc:43
-#: ../glom/mode_design/fields/box_db_table_definition.cc:53
-#: ../glom/mode_design/users/dialog_groups_list.cc:63
-msgid "Name"
-msgstr "Nom"
-
-#: ../glom/glom.glade.h:170
+#: ../glom/glom.glade.h:168
 msgid "Name of new related table:"
 msgstr "Nom de la taula relacionada nova:"
 
-#: ../glom/glom.glade.h:171
+#: ../glom/glom.glade.h:169
 msgid "Name of new relationship:"
 msgstr "Nom de la relació nova:"
 
-#: ../glom/glom.glade.h:172
+#: ../glom/glom.glade.h:170
 msgid "New From Example"
 msgstr "Nova a partir d'un exemple"
 
-#: ../glom/glom.glade.h:173
+#: ../glom/glom.glade.h:171
 msgid "No Choices"
 msgstr "Cap opció"
 
-#: ../glom/glom.glade.h:174 ../glom/mode_design/dialog_design.cc:54
+#: ../glom/glom.glade.h:172 ../glom/mode_design/dialog_design.cc:54
 msgid "None selected"
 msgstr "Cap de seleccionada"
 
-#: ../glom/glom.glade.h:175 ../glom/mode_data/dialog_layout_details.cc:931
+#: ../glom/glom.glade.h:173 ../glom/mode_data/dialog_layout_details.cc:931
 msgid "Notebook Tabs"
 msgstr "Pestanyes de la llibreta de notes"
 
-#: ../glom/glom.glade.h:176
+#: ../glom/glom.glade.h:174
 msgid "Organisation"
 msgstr "Organització"
 
-#: ../glom/glom.glade.h:177
+#: ../glom/glom.glade.h:175
 msgid "Password"
 msgstr "Contrasenya"
 
-#: ../glom/glom.glade.h:178
+#: ../glom/glom.glade.h:176
+msgid "Please enter the connection details for your database server."
+msgstr "Entreu els detalls de la connexió al servidor de base de dades."
+
+#: ../glom/glom.glade.h:177
 msgid "Primary Key"
 msgstr "Clau primària"
 
-#: ../glom/glom.glade.h:179 ../glom/libglom/spawn_with_feedback.cc:134
+#: ../glom/glom.glade.h:178 ../glom/libglom/spawn_with_feedback.cc:149
 msgid "Processing"
 msgstr "S'està processant"
 
-#: ../glom/glom.glade.h:180
+#: ../glom/glom.glade.h:179
 msgid "Quick Find"
 msgstr "Cerca ràpida"
 
-#: ../glom/glom.glade.h:181
+#: ../glom/glom.glade.h:180
 msgid "Records: "
 msgstr "Registres: "
 
-#: ../glom/glom.glade.h:182
+#: ../glom/glom.glade.h:181
 #: ../glom/libglom/data_structure/translatable_item.cc:284
 msgid "Relationship"
 msgstr "Relació"
 
-#: ../glom/glom.glade.h:183
+#: ../glom/glom.glade.h:182
 msgid "Relationships Overview"
-msgstr "_Resum de les relacions"
+msgstr "Resum de les relacions"
 
-#: ../glom/glom.glade.h:184
+#: ../glom/glom.glade.h:183
 msgid ""
 "Remove the item from the layout. If you remove a field layout item, it will "
 "not remove the field from the table itself. It just will not be seen on the "
@@ -833,64 +1325,64 @@ msgstr ""
 "de camp, no suprimireu el camp de la pròpia taula. No es mostrarà en la "
 "disposició i prou."
 
-#: ../glom/glom.glade.h:185
+#: ../glom/glom.glade.h:184
 msgid "Report Layout"
 msgstr "Disposició de l'informe"
 
-#: ../glom/glom.glade.h:186
+#: ../glom/glom.glade.h:185
 msgid "Reports"
 msgstr "Informes"
 
-#: ../glom/glom.glade.h:187
+#: ../glom/glom.glade.h:186
 msgid "Restrict data to these choices"
 msgstr "Restringeix les dades a aquestes eleccions"
 
-#: ../glom/glom.glade.h:188
+#: ../glom/glom.glade.h:187
 msgid "Revert"
 msgstr "Reverteix"
 
-#: ../glom/glom.glade.h:189
+#: ../glom/glom.glade.h:188
 msgid "Script name:"
 msgstr "Nom de l'script:"
 
-#: ../glom/glom.glade.h:190
+#: ../glom/glom.glade.h:189
 msgid "Secondary Fields:"
 msgstr "Camps secundaris:"
 
-#: ../glom/glom.glade.h:191 ../glom/utility_widgets/imageglom.cc:365
-#: ../glom/utility_widgets/dialog_choose_id.cc:82
+#: ../glom/glom.glade.h:190 ../glom/utility_widgets/dialog_choose_id.cc:88
+#: ../glom/utility_widgets/imageglom.cc:391
 msgid "Select"
 msgstr "Selecciona"
 
-#: ../glom/glom.glade.h:192
+#: ../glom/glom.glade.h:191
 msgid "Select Field"
 msgstr "Selecciona el camp"
 
-#: ../glom/glom.glade.h:193
+#: ../glom/glom.glade.h:192
 msgid "Select Relationship"
 msgstr "Selecciona la relació"
 
-#: ../glom/glom.glade.h:194
+#: ../glom/glom.glade.h:193
 msgid "Show Related Relationships"
-msgstr "Mostra relacions relacionades"
+msgstr "Mostra les relacions relacionades"
 
-#: ../glom/glom.glade.h:195
+#: ../glom/glom.glade.h:194
 msgid "Show Table Title"
 msgstr "Mostra el títol de la taula"
 
-#: ../glom/glom.glade.h:196
+#: ../glom/glom.glade.h:195
 msgid "Show child relationships"
 msgstr "Mostra les relacions filles"
 
-#: ../glom/glom.glade.h:197
+#: ../glom/glom.glade.h:196
 msgid "Show hidden tables"
 msgstr "Mostra taules ocultes"
 
-#: ../glom/glom.glade.h:198
+#: ../glom/glom.glade.h:197
 msgid "Sort Fields:"
 msgstr "Camps d'ordenació:"
 
-#: ../glom/glom.glade.h:199
+#: ../glom/glom.glade.h:198
 msgid ""
 "Start a translation for this target locale by copying the strings from "
 "another target locale."
@@ -898,64 +1390,63 @@ msgstr ""
 "Inicia la traducció d'aquesta localització de destí copiant les cadenes "
 "d'una altra localització de destí."
 
-#: ../glom/glom.glade.h:200
+#: ../glom/glom.glade.h:199
 msgid "State/County"
 msgstr "Estat/País"
 
-#: ../glom/glom.glade.h:201 ../glom/libglom/document/document_glom.cc:384
+#: ../glom/glom.glade.h:200 ../glom/libglom/document/document_glom.cc:399
 msgid "Street"
 msgstr "Carrer"
 
-#: ../glom/glom.glade.h:202
+#: ../glom/glom.glade.h:201
 msgid "Street (Line 2)"
-msgstr "Carrer (2)"
+msgstr "Carrer (2ª línia)"
 
-#: ../glom/glom.glade.h:203
+#: ../glom/glom.glade.h:202
 msgid "Summary Type:"
 msgstr "Tipus de resum:"
 
-#: ../glom/glom.glade.h:204 ../glom/libglom/document/document_glom.cc:366
+#: ../glom/glom.glade.h:203 ../glom/libglom/document/document_glom.cc:381
 msgid "System Name"
 msgstr "Nom del sistema"
 
-#: ../glom/glom.glade.h:205
+#: ../glom/glom.glade.h:204
 msgid "Table:"
 msgstr "Taula:"
 
-#: ../glom/glom.glade.h:206
+#: ../glom/glom.glade.h:205
 msgid "Table: "
-msgstr "Taula:"
+msgstr "Taula: "
 
-#: ../glom/glom.glade.h:207
+#: ../glom/glom.glade.h:206
 msgid "Test"
 msgstr "Prova"
 
-# FIXME (o "traducció de prova"?)
-#: ../glom/glom.glade.h:208
+#: ../glom/glom.glade.h:207
 msgid "Test Translation"
 msgstr "Prova la traducció"
 
-#: ../glom/glom.glade.h:209
+#: ../glom/glom.glade.h:208
 msgid "Text Object"
 msgstr "Objecte de text"
 
-#: ../glom/glom.glade.h:210
+#: ../glom/glom.glade.h:209
 msgid ""
 "The field value will be the return value of the python function, which you "
 "implement here."
 msgstr ""
-"El valor del camp serà el valor retornat per la funció Python, que "
+"El valor del camp serà el valor retornat per la funció de Python, que "
 "implementeu aquí."
 
-#: ../glom/glom.glade.h:211
+#: ../glom/glom.glade.h:210
 msgid ""
 "These modules will be available to your button scripts and field "
 "calculations via the python import keyword."
 msgstr ""
-"Aquests mòduls estaran disponibles per a els seus scripts de botó i càlculs "
-"de camp a través de la paraula clau d'importació de python."
+"Aquests mòduls estaran disponibles per als seus scripts de botó i càlculs de "
+"camp a través de la paraula clau «import» de Python."
 
-#: ../glom/glom.glade.h:212
+#: ../glom/glom.glade.h:211
 msgid ""
 "This will add a new table and add a relationship that refers to the new  "
 "table, as a convenient alternative to doing this in separate steps.\n"
@@ -969,97 +1460,89 @@ msgstr ""
 "Si ja existeix una taula relacionada adequada llavors hauríeu de cancel·lar "
 "i afegir només la relació."
 
-#. Title column:
-#: ../glom/glom.glade.h:215 ../glom/box_reports.cc:94
-#: ../glom/layout_item_dialogs/dialog_notebook.cc:47
-#: ../glom/mode_data/dialog_choose_field.cc:52
-#: ../glom/mode_data/dialog_layout_details.cc:93
-#: ../glom/mode_design/box_db_table_relationships.cc:47
-#: ../glom/mode_design/fields/box_db_table_definition.cc:57
-#: ../glom/navigation/box_tables.cc:119
-#: ../glom/utility_widgets/filechooserdialog.cc:93
-msgid "Title"
-msgstr "Títol"
-
-#: ../glom/glom.glade.h:216
+#: ../glom/glom.glade.h:215
 msgid "Town"
 msgstr "Població"
 
-#: ../glom/glom.glade.h:217
+#: ../glom/glom.glade.h:216
 msgid "Translations"
 msgstr "Traduccions"
 
-#: ../glom/glom.glade.h:218
+#: ../glom/glom.glade.h:217
 msgid "Triggered by:"
 msgstr "Activat per:"
 
-#: ../glom/glom.glade.h:219
+#: ../glom/glom.glade.h:218
 #: ../glom/mode_design/fields/box_db_table_definition.cc:59
 msgid "Type"
 msgstr "Tipus"
 
-#: ../glom/glom.glade.h:220
+#: ../glom/glom.glade.h:219
 msgid "Unique"
 msgstr "Únic"
 
-#: ../glom/glom.glade.h:221
+#: ../glom/glom.glade.h:220
 msgid "Use 1000s separator"
 msgstr "Utilitza el separador de milers"
 
-#: ../glom/glom.glade.h:222
+#: ../glom/glom.glade.h:221
 msgid "Use custom formatting"
 msgstr "Utilitza un formatat personalitzat"
 
-#: ../glom/glom.glade.h:223
+#: ../glom/glom.glade.h:222
 msgid "Use custom title"
 msgstr "Utilitza un títol personalitzat"
 
-#: ../glom/glom.glade.h:224
+#: ../glom/glom.glade.h:223
 msgid "Use default field title: "
-msgstr "Utilitza el títol del camp per defecte: "
+msgstr "Utilitza el títol del camp predeterminat: "
 
-#: ../glom/glom.glade.h:225
+#: ../glom/glom.glade.h:224
 msgid "Use default formatting"
-msgstr "Utilitza el formatat per defecte"
+msgstr "Utilitza el formatat predeterminat"
 
 #. Append the View columns:
-#: ../glom/glom.glade.h:226 ../glom/mode_design/users/dialog_users_list.cc:67
+#: ../glom/glom.glade.h:225 ../glom/mode_design/users/dialog_users_list.cc:67
 msgid "User"
 msgstr "Usuari"
 
-#: ../glom/glom.glade.h:227
+#: ../glom/glom.glade.h:226
 msgid "User Entry"
 msgstr "Entrada d'usuari"
 
-#: ../glom/glom.glade.h:228
+#: ../glom/glom.glade.h:227
 msgid "Users"
 msgstr "Usuaris"
 
-#: ../glom/glom.glade.h:229
+#: ../glom/glom.glade.h:228
 msgid "Value"
 msgstr "Valor"
 
-#: ../glom/glom.glade.h:230
+#: ../glom/glom.glade.h:229
 msgid ""
 "When the button is clicked it will run the python function which you "
 "implement here."
 msgstr ""
-"Quan es premi el botó, s'executarà la funció Python que hàgiu implementat "
+"Quan es premi el botó, s'executarà la funció de Python que hàgiu implementat "
 "aquí."
 
-#: ../glom/glom.glade.h:231
+#: ../glom/glom.glade.h:230
 msgid ""
 "When this is selected you will see extra relationships in the Table list, "
 "allowing you to choose fields from relationships in related tables, instead "
 "of just regular fields from those related tables."
 msgstr ""
-"Quan es seleccioni veureu més relacions en la llista de taula, de manera que "
+"Quan se seleccioni veureu més relacions en la llista de taula, de manera que "
 "us permetrà seleccionar camps de relacions de taules relacionades, enlloc de "
 "només camps regulars d'aquelles taules relacionades."
 
-#: ../glom/glom.glade.h:232
+#: ../glom/glom.glade.h:231
 msgid "Zip/Postal Code"
 msgstr "Codi postal"
+
+#: ../glom/glom.glade.h:232
+msgid "_Confirm Password"
+msgstr "_Confirmeu la contrasenya"
 
 #: ../glom/glom.glade.h:233
 msgid "_Host"
@@ -1101,285 +1584,9 @@ msgstr "nom_taula"
 msgid "the title"
 msgstr "el títol"
 
-#: ../glom/application.cc:89
-msgid "(C) 2000-2005 Murray Cumming"
-msgstr "© 2000-2005 Murray Cumming"
-
-#: ../glom/application.cc:89
-msgid "A Database GUI"
-msgstr "Una interfície gràfica per a bases de dades"
-
-#: ../glom/application.cc:183
-msgid "_File"
-msgstr "_Fitxer"
-
-#: ../glom/application.cc:184
-msgid "_Recent Files"
-msgstr "Fitxers _recents"
-
-#: ../glom/application.cc:192
-msgid "Save As Example"
-msgstr "Desa com a exemple"
-
-#: ../glom/application.cc:197
-msgid "_Export"
-msgstr "_Exporta"
-
-#. "Tables" menu:
-#: ../glom/application.cc:247
-msgid "_Tables"
-msgstr "_Taules"
-
-#. Glib::RefPtr<Gtk::Action> action = Gtk::Action::create("GlomAction_Menu_Navigate_Database", _("_Database"));
-#. m_listDeveloperActions.push_back(action);
-#. m_refActionGroup_Others->add(action,
-#. sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_Navigate_Database) );
-#: ../glom/application.cc:255
-msgid "_Edit Tables"
-msgstr "_Edita taules"
-
-#: ../glom/application.cc:260
-msgid "Add _Related Table"
-msgstr "Afegeix una taula _relacionada"
-
-#. "Reports" menu:
-#: ../glom/application.cc:267
-msgid "_Reports"
-msgstr "_Informes"
-
-#: ../glom/application.cc:269
-msgid "_Edit Reports"
-msgstr "_Edita informes"
-
-#. "UserLevel" menu:
-#: ../glom/application.cc:275
-msgid "_User Level"
-msgstr "Nivell d'_usuari"
-
-#: ../glom/application.cc:278 ../glom/application.cc:300
-msgid "_Developer"
-msgstr "_Desenvolupador"
-
-#: ../glom/application.cc:282
-msgid "_Operator"
-msgstr "_Operador"
-
-#. "Mode" menu:
-#: ../glom/application.cc:287
-msgid "_Mode"
-msgstr "_Mode"
-
-#. We remember this action, so that it can be explicitly activated later.
-#: ../glom/application.cc:292
-msgid "D_ata"
-msgstr "D_ades"
-
-#: ../glom/application.cc:296
-msgid "_Find"
-msgstr "_Cerca"
-
-#: ../glom/application.cc:304
-msgid "_Database Preferences"
-msgstr "Preferències de la base de _dades"
-
-#: ../glom/application.cc:309
-msgid "_Fields"
-msgstr "C_amps"
-
-#: ../glom/application.cc:313
-msgid "_Relationships Overview"
-msgstr "_Resum de les relacions"
-
-#: ../glom/application.cc:317
-msgid "_Relationships for this Table"
-msgstr "_Relacions d'aquesta taula"
-
-#: ../glom/application.cc:321
-msgid "_Users"
-msgstr "_Usuaris"
-
-#: ../glom/application.cc:325
-msgid "R_eports"
-msgstr "I_nformes"
-
-#: ../glom/application.cc:329
-msgid "Script _Library"
-msgstr "_Llibreria d'scripts"
-
-#: ../glom/application.cc:334
-msgid "_Layout"
-msgstr "_Disposició"
-
-#: ../glom/application.cc:338
-msgid "_Test Translation"
-msgstr "Prova la _traducció"
-
-#: ../glom/application.cc:342
-msgid "_Translations"
-msgstr "_Traduccions"
-
-#: ../glom/application.cc:467 ../glom/application.cc:472
-msgid "Save Document"
-msgstr "Desa el document"
-
-#. Warn the user:
-#: ../glom/application.cc:566
-msgid "Read-only File."
-msgstr "Fitxer de només lectura."
-
-#: ../glom/application.cc:566
-msgid ""
-"You may not overwrite the existing file, because you do not have sufficient "
-"access rights."
-msgstr ""
-"No podreu sobreescriure el fitxer existent, perquè no teniu els permisos "
-"necessaris."
-
-#. Warn the user:
-#: ../glom/application.cc:580
-msgid "Read-only Directory."
-msgstr "Directori de només lectura."
-
-#: ../glom/application.cc:580
-msgid ""
-"You may not create a file in this directory, because you do not have "
-"sufficient access rights."
-msgstr ""
-"No podreu crear un fitxer en aquest directori, perquè no teniu els permisos "
-"necessaris."
-
-#: ../glom/application.cc:592
-msgid "Database Title missing"
-msgstr "Manca el títol de la base de dades"
-
-#: ../glom/application.cc:592
-msgid "You must specify a title for the new database."
-msgstr "Heu d'indicar el títol per a la base de dades nova."
-
-#: ../glom/application.cc:708
-msgid "Creating From Example File"
-msgstr "S'està creant a partir d'un fitxer d'exemple"
-
-#: ../glom/application.cc:709
-msgid ""
-"To use this example file you must save an editable copy of the file. A new "
-"database will also be created on the server."
-msgstr ""
-"Per a poder utilitzar aquest fitxer d'exemple, cal que en deseu una còpia "
-"editable. També es crearà una nova base de dades al servidor."
-
-#: ../glom/application.cc:735
-msgid "Opening Read-Only File."
-msgstr "S'està obrint un fitxer de només lectura."
-
-#: ../glom/application.cc:736
-msgid ""
-"This file is read only, so you will not be able to enter Developer mode to "
-"make design changes."
-msgstr ""
-"Aquest fitxer és de només lectura, per tant no podreu entrar al mode de "
-"Desenvolupador per a fer-hi canvis."
-
-#: ../glom/application.cc:739
-msgid "Continue without Developer Mode"
-msgstr "Continua sense entrar al mode de Desenvolupador"
-
-#. The connection to the server is OK, but the database is not there yet.
-#: ../glom/application.cc:835
-msgid "Database Not Found On Server"
-msgstr "No s'ha trobat la base de dades al servidor"
-
-#: ../glom/application.cc:835
-msgid ""
-"The database could not be found on the server. Please consult your system "
-"administrator."
-msgstr ""
-"No s'ha trobat la base de dades al servidor, consulteu l'administrador del "
-"vostre sistema."
-
-#: ../glom/application.cc:1078
-msgid "_Contents"
-msgstr "_Continguts"
-
-#: ../glom/application.cc:1078
-msgid "Help with the application"
-msgstr "Ajuda de l'aplicació"
-
-#: ../glom/application.cc:1149
-msgid "Creating Glom Database"
-msgstr "S'està creant una base de dades Glom"
-
-#: ../glom/application.cc:1149
-msgid "Creating Glom database from example file."
-msgstr "S'està creant una base de dades Glom a partir d'un fitxer d'exemple."
-
-#: ../glom/application.cc:1487
-msgid "Save failed."
-msgstr "No s'ha pogut desar."
-
-#: ../glom/application.cc:1487
-msgid ""
-"There was an error while saving the file. Your changes have not been saved."
-msgstr "S'ha produït un error en desar el fitxer. Els canvis no s'han desat."
-
-#: ../glom/base_db.cc:161 ../glom/libglom/connectionpool.cc:486
-msgid "Internal error"
-msgstr "Error intern"
-
-#: ../glom/base_db.cc:934 ../glom/mode_design/users/dialog_groups_list.cc:67
-msgid "Description"
-msgstr "Descripció"
-
-#: ../glom/base_db.cc:941
-msgid "Comments"
-msgstr "Comentaris"
-
-#: ../glom/base_db.cc:1354
-msgid "No Records Found"
-msgstr "No s'han trobat registres"
-
-#: ../glom/base_db.cc:1356
-msgid "New Find"
-msgstr "Nova cerca"
-
-#: ../glom/base_db.cc:1357
-msgid "Your find criteria did not match any records in the table."
-msgstr "El criteri de cerca no ha coincidit amb cap registre de la taula."
-
-#: ../glom/base_db.cc:2311
-msgid "Value Is Not Unique"
-msgstr "El valor no és únic"
-
-#: ../glom/base_db.cc:2311
-msgid ""
-"The field's value must be unique, but a record with this value already "
-"exists."
-msgstr ""
-"El valor del camp ha de ser únic, ja existeix un registre amb aquest valor."
-
-#. Don't allow a relationship to be added twice.
-#: ../glom/box_reports.cc:92
-msgid "This report already exists. Please choose a different report name"
-msgstr "Ja existeix aquest informe. Escolliu un nom d'informe diferent"
-
-#: ../glom/box_reports.cc:216
-msgid "Are you sure that you want to rename this report?"
-msgstr "Esteu segur de voler canviar el nom d'aquest informe?"
-
-#. TODO: Show old and new names?
-#: ../glom/box_reports.cc:217
-msgid "Rename Report"
-msgstr "Canvia el nom de l'informe"
-
-#: ../glom/combobox_relationship.cc:268 ../glom/combobox_relationship.cc:272
-msgid " Via: "
-msgstr "A través de: "
-
-#. A special "None" item, allowing the user to do the equivalent of clearing the combobox,
-#. which is not normally possible with the GtkComboBox UI:
-#: ../glom/combobox_fields.cc:174
-msgid "(None)"
-msgstr "(Cap)"
+#: ../glom/layout_item_dialogs/dialog_groupby_sortfields.cc:57
+msgid "Ascending"
+msgstr "Ascendent"
 
 #. For postgres 8.1, this is "postmaster is running".
 #. For postgres 8.2, this is "server is running".
@@ -1390,29 +1597,63 @@ msgstr "(Cap)"
 #. Please do test it with your postgres version, using "echo $?" to see the result code of the last command.
 #. TODO: This is not a stable API. Also, watch out for localisation.
 #. The first command does not return, but the second command can check whether it succeeded:
-#: ../glom/libglom/connectionpool.cc:571
+#: ../glom/libglom/connectionpool.cc:732
 msgid "Starting Database Server"
 msgstr "S'està iniciant el servidor de base de dades"
 
-#: ../glom/libglom/connectionpool.cc:609
+#: ../glom/libglom/connectionpool.cc:774
 msgid "Stopping Database Server"
 msgstr "S'està aturant el servidor de base de dades"
 
+#. I've seen it fail when running under valgrind, and there are reports of failures in bug #420962.
+#. Maybe it will help to try again:
+#: ../glom/libglom/connectionpool.cc:781
+msgid "Stopping Database Server (retrying)"
+msgstr ""
+"S'està aturant el servidor de base de dades (s'està tornant a intentar)"
+
+#: ../glom/libglom/connectionpool.cc:831
+msgid "Could Not Create Directory"
+msgstr "No s'ha pogut crear el directori"
+
+#: ../glom/libglom/connectionpool.cc:831
+msgid ""
+"There was an error when attempting to create the directory for the new "
+"database files."
+msgstr ""
+"S'ha produït un error en crear el directori per als fitxers de la base de "
+"dades nova."
+
+#: ../glom/libglom/connectionpool.cc:844
+msgid "Could Not Create Configuration Directory"
+msgstr "No s'ha pogut crear el directori de les configuracions."
+
+#: ../glom/libglom/connectionpool.cc:844
+msgid ""
+"There was an error when attempting to create the configuration directory for "
+"the new database files."
+msgstr ""
+"S'ha produït un error en crear el directori de les configuracions per als "
+"fitxers de la base de dades nova."
+
 #. Note that --pwfile takes the password from the first line of a file. It's an alternative to supplying it when prompted on stdin.
-#: ../glom/libglom/connectionpool.cc:681
+#: ../glom/libglom/connectionpool.cc:879
 msgid "Creating Database Data"
 msgstr "S'està creant les dades de la base de dades"
 
 #. Show message to the user about the broken installation:
 #. This is a packaging bug, but it would probably annoy packagers to mention that in the dialog:
 #. Show message to the user about the broken installation:
-#: ../glom/libglom/connectionpool.cc:800 ../glom/libglom/connectionpool.cc:813
+#. The Postgres provider was not found, so warn the user:
+#: ../glom/libglom/connectionpool.cc:1030
+#: ../glom/libglom/connectionpool.cc:1043
+#: ../glom/libglom/connectionpool.cc:1110
 msgid "Incomplete Glom Installation"
 msgstr "La instal·lació del Glom és incompleta"
 
 #. use_markup
 #. modal
-#: ../glom/libglom/connectionpool.cc:801
+#: ../glom/libglom/connectionpool.cc:1031
 msgid ""
 "Your installation of Glom is not complete, because PostgreSQL is not "
 "available on your system. PostgreSQL is needed for self-hosting of Glom "
@@ -1420,19 +1661,19 @@ msgid ""
 "\n"
 "You may now install PostgreSQL to complete the Glom installation."
 msgstr ""
-"La vostre instal·lació del Glom no està completa, perquè el PostgreSQL no "
-"està disponible en aquest sistema. Es necessita el PostgreSQL per a poder "
+"La instal·lació del Glom no és completa, perquè el PostgreSQL no està "
+"disponible en aquest sistema. Es necessita el PostgreSQL per a poder "
 "hostatjar un mateix les bases de dades del Glom.\n"
 "\n"
-"Hauríeu d'instal·lar el PostreSQL per completar la instal·lació del Glom."
+"Hauríeu d'instal·lar el PostgreSQL per a completar la instal·lació del Glom."
 
-#: ../glom/libglom/connectionpool.cc:803
+#: ../glom/libglom/connectionpool.cc:1033
 msgid "Install PostgreSQL"
 msgstr "Instal·la el PostgreSQL"
 
 #. use_markup
 #. modal
-#: ../glom/libglom/connectionpool.cc:814
+#: ../glom/libglom/connectionpool.cc:1044
 msgid ""
 "Your installation of Glom is not complete, because PostgreSQL is not "
 "available on your system. PostgreSQL is needed for self-hosting of Glom "
@@ -1441,45 +1682,63 @@ msgid ""
 "Please report this bug to your vendor, or your system administrator so it "
 "can be corrected."
 msgstr ""
-"La vostre instal·lació del Glom no està completa, perquè el PostgreSQL no "
-"està disponible en aquest sistema. Es necessita el PostgreSQL per a poder "
+"La instal·lació del Glom no és completa, perquè el PostgreSQL no està "
+"disponible en aquest sistema. Es necessita el PostgreSQL per a poder "
 "hostatjar un mateix les bases de dades del Glom.\n"
 "\n"
-"Informeu d'aquest error al vostre proveïdor, o al vostre administrador del "
-"sistema de manera que es pugui arreglar."
+"Informeu d'aquest error al proveïdor, o a l'administrador del sistema de "
+"manera que es pugui arreglar."
 
-#: ../glom/libglom/data_structure/field.cc:548
+#. use_markup
+#. modal
+#: ../glom/libglom/connectionpool.cc:1111
+msgid ""
+"Your installation of Glom is not complete, because the PostgreSQL libgda "
+"provider is not available on your system. This provider is needed to access "
+"Postgres database servers.\n"
+"\n"
+"Please report this bug to your vendor, or your system administrator so it "
+"can be corrected."
+msgstr ""
+"La instal·lació del Glom no és completa, perquè el proveïdor de libgda de "
+"PostgreSQL no està disponible en aquest sistema. Es necessita el proveïdor "
+"per a poder accedir als servidors de bases de dades PostgreSQL.\n"
+"\n"
+"Informeu d'aquest error al proveïdor, o a l'administrador del sistema de "
+"manera que es pugui arreglar."
+
+#: ../glom/libglom/data_structure/field.cc:554
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:142
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:150
 msgid "Invalid"
 msgstr "Invàlid"
 
-#: ../glom/libglom/data_structure/field.cc:549
+#: ../glom/libglom/data_structure/field.cc:555
 msgid "Number"
 msgstr "Nombre"
 
-#: ../glom/libglom/data_structure/field.cc:550
-#: ../glom/libglom/data_structure/translatable_item.cc:298
+#: ../glom/libglom/data_structure/field.cc:556
 #: ../glom/libglom/data_structure/layout/layoutitem_text.cc:68
+#: ../glom/libglom/data_structure/translatable_item.cc:298
 #: ../glom/mode_data/dialog_layout_details.cc:1131
 msgid "Text"
 msgstr "Text"
 
-#: ../glom/libglom/data_structure/field.cc:551
+#: ../glom/libglom/data_structure/field.cc:557
 msgid "Time"
 msgstr "Temps"
 
-#: ../glom/libglom/data_structure/field.cc:552
+#: ../glom/libglom/data_structure/field.cc:558
 msgid "Date"
 msgstr "Data"
 
-#: ../glom/libglom/data_structure/field.cc:553
+#: ../glom/libglom/data_structure/field.cc:559
 msgid "Boolean"
 msgstr "Booleà"
 
-#: ../glom/libglom/data_structure/field.cc:554
-#: ../glom/libglom/data_structure/translatable_item.cc:300
+#: ../glom/libglom/data_structure/field.cc:560
 #: ../glom/libglom/data_structure/layout/layoutitem_image.cc:68
+#: ../glom/libglom/data_structure/translatable_item.cc:300
 #: ../glom/mode_data/dialog_layout_details.cc:1138
 msgid "Image"
 msgstr "Imatge"
@@ -1495,44 +1754,11 @@ msgstr "%X"
 msgid "%x"
 msgstr "%x"
 
-#: ../glom/libglom/data_structure/translatable_item.cc:282
-msgid "Custom Title"
-msgstr "Títol personalitzat"
-
-#: ../glom/libglom/data_structure/translatable_item.cc:286
-msgid "Layout Item"
-msgstr "Element de la disposició"
-
-#: ../glom/libglom/data_structure/translatable_item.cc:288
-msgid "Report"
-msgstr "Informe"
-
-#. Tables:
-#: ../glom/libglom/data_structure/translatable_item.cc:290
-#: ../glom/dialog_database_preferences.cc:54
-#: ../glom/mode_design/box_db_table_relationships.cc:50
-#: ../glom/mode_design/users/dialog_groups_list.cc:70
-msgid "Table"
-msgstr "Taula"
-
-#: ../glom/libglom/data_structure/translatable_item.cc:292
-msgid "Layout Group"
-msgstr "Grup de disposició"
-
-#: ../glom/libglom/data_structure/translatable_item.cc:294
-msgid "Field Title"
-msgstr "Títol del camp"
-
-#: ../glom/libglom/data_structure/translatable_item.cc:296
 #: ../glom/libglom/data_structure/layout/layoutitem_button.cc:67
+#: ../glom/libglom/data_structure/translatable_item.cc:296
 #: ../glom/mode_data/dialog_layout_details.cc:1124
 msgid "Button"
 msgstr "Botó"
-
-#: ../glom/libglom/data_structure/translatable_item.cc:302
-#: ../glom/frame_glom.cc:454 ../glom/translation/window_translations.cc:213
-msgid "Unknown"
-msgstr "Desconegut"
 
 #: ../glom/libglom/data_structure/layout/layoutitem_notebook.cc:55
 msgid "Notebook"
@@ -1566,237 +1792,106 @@ msgstr "Resum"
 msgid "Vertical Group"
 msgstr "Grup vertical"
 
-#: ../glom/libglom/document/document_glom.cc:335
-#: ../glom/libglom/document/document_glom.cc:353
+#: ../glom/libglom/data_structure/translatable_item.cc:282
+msgid "Custom Title"
+msgstr "Títol personalitzat"
+
+#: ../glom/libglom/data_structure/translatable_item.cc:286
+msgid "Layout Item"
+msgstr "Element de la disposició"
+
+#: ../glom/libglom/data_structure/translatable_item.cc:288
+msgid "Report"
+msgstr "Informe"
+
+#: ../glom/libglom/data_structure/translatable_item.cc:292
+msgid "Layout Group"
+msgstr "Grup de disposició"
+
+#: ../glom/libglom/data_structure/translatable_item.cc:294
+msgid "Field Title"
+msgstr "Títol del camp"
+
+#: ../glom/libglom/document/document_glom.cc:350
+#: ../glom/libglom/document/document_glom.cc:368
 msgid "System Preferences"
 msgstr "Preferències del sistema"
 
-#: ../glom/libglom/document/document_glom.cc:372
+#: ../glom/libglom/document/document_glom.cc:387
 msgid "Organisation Name"
 msgstr "Nom de la organització"
 
-#: ../glom/libglom/document/document_glom.cc:378
+#: ../glom/libglom/document/document_glom.cc:393
 msgid "Organisation Logo"
 msgstr "Logotip de l'organització"
 
-#: ../glom/libglom/document/document_glom.cc:390
+#: ../glom/libglom/document/document_glom.cc:405
 msgid "Street (line 2)"
 msgstr "Carrer (2ª línia)"
 
-#: ../glom/libglom/document/document_glom.cc:396
+#: ../glom/libglom/document/document_glom.cc:411
 msgid "City"
 msgstr "Ciutat"
 
-#: ../glom/libglom/document/document_glom.cc:402
+#: ../glom/libglom/document/document_glom.cc:417
 msgid "State"
 msgstr "Estat"
 
-#: ../glom/libglom/document/document_glom.cc:414
+#: ../glom/libglom/document/document_glom.cc:429
 msgid "Zip Code"
 msgstr "Codi postal"
 
-#: ../glom/libglom/utils.cc:813
+#: ../glom/libglom/gst-package.c:55
+msgid "Could not install package"
+msgstr "No s'ha pogut instal·lar el paquet"
+
+#: ../glom/libglom/gst-package.c:73
+msgid "The necessary applications to install the package could not be found."
+msgstr ""
+"No s'han pogut trobar les aplicacions necessàries per a instal·lar el paquet."
+
+#: ../glom/libglom/utils.cc:826
 msgid "Could not display help: "
 msgstr "No s'ha pogut mostrar l'ajuda: "
 
-#: ../glom/dialog_database_preferences.cc:56
-msgid "Next Value"
-msgstr "Següent valor"
-
-#: ../glom/dialog_connection.cc:149
-msgid "Not yet created."
-msgstr "Encara no s'ha creat."
-
-#: ../glom/filechooser_export.cc:30
-msgid "Export To File."
-msgstr "Exporta a un fitxer."
-
-#: ../glom/filechooser_export.cc:32
-msgid "Define Data _Format"
-msgstr "Defineix el _format de les dades"
-
-#. TODO: Obviously this document should have been deleted when the database-creation was cancelled.
-#. Note that "canceled" is the correct US spelling.
-#: ../glom/frame_glom.cc:382
-msgid "No table"
-msgstr "No hi ha cap taula"
-
-#: ../glom/frame_glom.cc:382
-msgid "This database has no tables yet."
-msgstr "Aquesta base de dades encara no té cap taula."
-
-#: ../glom/frame_glom.cc:446
-msgid "Find"
-msgstr "Cerca"
-
-#: ../glom/frame_glom.cc:498
-msgid "Developer mode not available."
-msgstr "El mode de desenvolupador no està disponible."
-
-#: ../glom/frame_glom.cc:499
-msgid ""
-"Developer mode is not available. Check that you have sufficient database "
-"access rights and that the glom file is not read-only."
-msgstr ""
-"El mode de Desenvolupador no està disponible. Comproveu que teniu el permís "
-"necessari a la base de dades, i que el fitxer glom no és de només lectura."
-
-#: ../glom/frame_glom.cc:505
-msgid "Saving in New Document Format"
-msgstr "S'està desant en el format de document nou"
-
-#: ../glom/frame_glom.cc:506
-msgid ""
-"The document was created by an earlier version of the application. Making "
-"changes to the document will mean that the document cannot be opened by some "
-"earlier versions of the application."
-msgstr ""
-"El document es va crear amb una versió antiga de l'aplicació. Fer canvis al "
-"document voldrà dir que aquest ja no es podrà obrir amb versions antigues de "
-"l'aplicació."
-
-#: ../glom/frame_glom.cc:509
-msgid "Continue"
-msgstr "Continua"
-
-#: ../glom/frame_glom.cc:555
-msgid "Export Not Allowed."
-msgstr "No es permet l'exportació."
-
-#: ../glom/frame_glom.cc:555
-msgid ""
-"You do not have permission to view the data in this table, so you may not "
-"export the data."
-msgstr ""
-"No teniu permís per poder veure les dades d'aquesta taula, per tant no "
-"podreu exportar-les."
-
-#: ../glom/frame_glom.cc:581
-msgid "Could Not Create File."
-msgstr "No s'ha pogut crear el fitxer."
-
-#: ../glom/frame_glom.cc:581
-msgid "Glom could not create the specified file."
-msgstr "El Glom no ha pogut crear el fitxer especificat."
-
-#: ../glom/frame_glom.cc:826
-msgid "Table Exists Already"
-msgstr "La taula ja existeix"
-
-#: ../glom/frame_glom.cc:826
-msgid ""
-"A table with this name already exists in the database. Please choose a "
-"different table name."
-msgstr ""
-"Ja existeix una taula amb aquest nom a la base de dades. Escolliu un nom de "
-"taula diferent."
-
-#: ../glom/frame_glom.cc:830
-msgid "Relationship Exists Already"
-msgstr "La relació ja existeix"
-
-#: ../glom/frame_glom.cc:830
-msgid ""
-"A relationship with this name already exists for this table. Please choose a "
-"different relationship name."
-msgstr ""
-"Ja existeix una relació amb aquest nom per a aquesta taula. Escolliu un nom "
-"de relació diferent."
-
-#: ../glom/frame_glom.cc:834
-msgid "More information needed"
-msgstr "Cal més informació"
-
-#: ../glom/frame_glom.cc:834
-msgid "You must specify a field, a table name, and a relationship name."
-msgstr "Heu d'indicar un camp, una taula, i el nom d'una relació."
-
-#: ../glom/frame_glom.cc:888
-msgid "Related Table Created"
-msgstr "S'ha creat la taula relacionada"
-
-#: ../glom/frame_glom.cc:888
-msgid "The new related table has been created."
-msgstr "S'ha creat la taula relacionada nova."
-
-#: ../glom/frame_glom.cc:972 ../glom/mode_data/box_data.cc:126
-#: ../glom/utility_widgets/dialog_choose_id.cc:99
-msgid "No Find Criteria"
-msgstr "Cap criteri de cerca"
-
-#: ../glom/frame_glom.cc:973 ../glom/utility_widgets/dialog_choose_id.cc:100
-msgid "You have not entered any quick find criteria."
-msgstr "No heu entrat cap criteri de cerca ràpida."
-
-#. show user level:
-#: ../glom/frame_glom.cc:1031
-msgid "Operator"
-msgstr "Operador"
-
-#: ../glom/frame_glom.cc:1033
-msgid "Developer"
-msgstr "Desenvolupador"
-
-#: ../glom/frame_glom.cc:1282
-msgid "Not Implemented"
-msgstr "No està implementat"
-
-#: ../glom/frame_glom.cc:1282
-msgid "This feature is not yet available."
-msgstr "Encara no està disponible aquesta característica."
-
-#. Show 0 instead of "all" when all of no records are found, to avoid confusion.
-#: ../glom/frame_glom.cc:1852
-msgid "All"
-msgstr "Tot"
-
-#: ../glom/layout_item_dialogs/dialog_groupby_sortfields.cc:57
-msgid "Ascending"
-msgstr "Ascendent"
-
-#: ../glom/main.cc:54
+#: ../glom/main.cc:61
 msgid "Glom options"
 msgstr "Opcions del Glom"
 
-#: ../glom/main.cc:54
+#: ../glom/main.cc:61
 msgid "Command-line options for glom"
 msgstr "Opcions de la línia d'ordres del Glom"
 
-#: ../glom/main.cc:61
+#: ../glom/main.cc:68
 msgid "The Filename"
 msgstr "El nom del fitxer"
 
-#: ../glom/main.cc:67
+#: ../glom/main.cc:74
 msgid "The version of this application."
 msgstr "La versió d'aquesta aplicació."
 
-#: ../glom/main.cc:72
+#: ../glom/main.cc:79
 msgid "Show the generated SQL queries on stdout, for debugging."
 msgstr ""
-"Mostra les consultes SQL generades a la sortida estàndard, per depurar."
+"Mostra les consultes SQL generades a la sortida estàndard, per a depurar."
 
-#: ../glom/main.cc:102
+#: ../glom/main.cc:129
 msgid "Error while parsing commmand-line options: "
 msgstr "S'ha produït un error en analizar les opcions de la línia d'ordres: "
 
-#: ../glom/main.cc:103
+#: ../glom/main.cc:130
 msgid "Use --help to see a list of available command-line options."
 msgstr ""
-"Feu servir --help per a mostrar una llista d'opcions disponibles a la línia "
-"d'ordres."
+"Feu servir --help per a mostrar la llista d'opcions disponibles des de la "
+"línia d'ordres."
 
-#: ../glom/mode_data/box_data.cc:127
+#: ../glom/mode_data/box_data.cc:136
 msgid ""
 "You have not entered any find criteria. Try entering information in the "
 "fields."
 msgstr "No heu entrat cap criteri de cerca. Entreu informació en els camps."
 
-#. Ask user to confirm loss of data:
-#: ../glom/mode_data/box_data.cc:341
-msgid "No primary key value"
-msgstr "No hi ha cap valor de clau primària"
-
-#: ../glom/mode_data/box_data.cc:342
+#: ../glom/mode_data/box_data.cc:368
 msgid ""
 "This data cannot be stored in the database because you have not provided a "
 "primary key.\n"
@@ -1804,100 +1899,103 @@ msgid ""
 msgstr ""
 "Aquestes dades no es poden emmagatzemar a la base de dades perquè no heu "
 "proporcionat cap clau primària.\n"
-"Esteu segur de voler descartar aquestes dades?"
+"Segur que voleu descartar aquestes dades?"
+
+#: ../glom/mode_data/box_data.cc:374
+msgid "No primary key value"
+msgstr "No hi ha cap valor de clau primària"
 
 #. Warn the user:
 #. TODO: Make the field insensitive until it can receive data, so people never see this dialog.
-#: ../glom/mode_data/box_data.cc:667
-msgid "Related Record Does Not Exist"
-msgstr "No existeix cap registre relacionat"
-
-#: ../glom/mode_data/box_data.cc:668
+#: ../glom/mode_data/box_data.cc:705
 msgid ""
 "Data may not be entered into this related field, because the related record "
 "does not yet exist, and the relationship does not allow automatic creation "
 "of new related records."
 msgstr ""
-"No es poden entrar dades en aquest camp relacionat, ja que el registre "
-"encara no existeix, i la relació no permet la creació automàtica de "
-"registres relacionats nous."
+"No es poden entrar dades en aquest camp relacionat, ja que encara no "
+"existeix el registre relacionat, i la relació no permet la creació "
+"automàtica de registres relacionats nous."
+
+#: ../glom/mode_data/box_data.cc:709
+msgid "Related Record Does Not Exist"
+msgstr "No existeix cap registre relacionat"
 
 #. Warn the user:
 #. TODO: Make the field insensitive until it can receive data, so people never see this dialog.
-#: ../glom/mode_data/box_data.cc:686
-msgid "Related Record Cannot Be Created"
-msgstr "No es pot crear un registre relacionat"
-
-#. TODO: This is a very complex error message:
-#: ../glom/mode_data/box_data.cc:688
+#: ../glom/mode_data/box_data.cc:729
 msgid ""
 "Data may not be entered into this related field, because the related record "
 "does not yet exist, and the key in the related record is auto-generated and "
 "therefore can not be created with the key value in this record."
 msgstr ""
-"No es poden entrar dades en aquest camp, ja que el registre relacionat "
-"encara no existeix, i la clau en el registre relacionat és auto-generada, i "
+"No es poden entrar dades en aquest camp, ja que encara no existeix el "
+"registre relacionat, i la clau en el registre relacionat és auto-generada, i "
 "per tant no es pot crear amb el valor de la clau d'aquest registre."
 
-#. Ask the user for confirmation:
-#: ../glom/mode_data/box_data.cc:775
-msgid "Delete record"
-msgstr "Suprimeix el registre"
+#: ../glom/mode_data/box_data.cc:734
+msgid "Related Record Cannot Be Created"
+msgstr "No es pot crear el registre relacionat"
 
-#: ../glom/mode_data/box_data.cc:776
+#. Ask the user for confirmation:
+#: ../glom/mode_data/box_data.cc:829
 msgid ""
 "Are you sure that you would like to delete this record? The data in this "
 "record will then be permanently lost."
 msgstr ""
-"Esteu segur de voler suprimir aquest registre? Se'n perdran permanentment "
-"les dades."
+"Segur que voleu suprimir aquest registre? Se'n perdran les dades "
+"permanentment."
+
+#: ../glom/mode_data/box_data.cc:833
+msgid "Delete record"
+msgstr "Suprimeix el registre"
 
 #. Tell user that a primary key is needed to delete a record:
-#: ../glom/mode_data/box_data_details.cc:338
+#: ../glom/mode_data/box_data_details.cc:365
 msgid "No primary key value."
 msgstr "No hi ha cap valor de clau primària."
 
-#: ../glom/mode_data/box_data_details.cc:339
+#: ../glom/mode_data/box_data_details.cc:366
 msgid "This record cannot be deleted because there is no primary key."
-msgstr "Aquest registre no es pot suprimir perquè no hi ha cap clau primària."
+msgstr "No es pot suprimir aquest registre perquè no hi ha cap clau primària."
 
 #. Warn user that they can't choose their own primary key:
-#: ../glom/mode_data/box_data_details.cc:689
+#: ../glom/mode_data/box_data_details.cc:739
 msgid "Primary key auto increments"
 msgstr "La clau primària s'auto-incrementa."
 
-#: ../glom/mode_data/box_data_details.cc:690
+#: ../glom/mode_data/box_data_details.cc:740
 msgid ""
 "The primary key is auto-incremented.\n"
 " You may not enter your own primary key value."
 msgstr ""
 "La clau primària s'auto-incrementa.\n"
-" No podeu entrar la vostra pròpia clau primària."
+" No hauríeu d'entrar la clau primària."
 
 #. Add Pages:
-#: ../glom/mode_data/box_data_list.cc:798
+#: ../glom/mode_data/box_data_list.cc:841
 #: ../glom/mode_data/notebook_data.cc:31 ../glom/mode_find/notebook_find.cc:32
 msgid "List"
 msgstr "Llista"
 
 #. Tell user that they can't do that:
-#: ../glom/mode_data/box_data_list_related.cc:351
+#: ../glom/mode_data/box_data_list_related.cc:358
 msgid "Extra related records not possible."
-msgstr "No es poden definir registres extres relacionats."
+msgstr "No es poden definir registres relacionats extres."
 
-#: ../glom/mode_data/box_data_list_related.cc:352
+#: ../glom/mode_data/box_data_list_related.cc:359
 msgid ""
 "You attempted to add a new related record, but there can only be one related "
 "record, because the relationship uses a unique key."
 msgstr ""
-"Heu intentat crear un registre relacionat nou, però només n'hi pot haver un, "
-"ja que la relació utilitza una clau única."
+"Heu intentat afegir un registre relacionat nou, però només n'hi pot haver "
+"un, ja que la relació utilitza una clau única."
 
-#: ../glom/mode_data/box_data_list_related.cc:564
+#: ../glom/mode_data/box_data_list_related.cc:575
 msgid "No Corresponding Record Exists"
 msgstr "No hi ha registres que coincideixin"
 
-#: ../glom/mode_data/box_data_list_related.cc:564
+#: ../glom/mode_data/box_data_list_related.cc:575
 msgid ""
 "No record with this value exists. Therefore navigation to the related record "
 "is not possible."
@@ -1911,7 +2009,7 @@ msgid "Columns Count"
 msgstr "Comptatge de columnes"
 
 #: ../glom/mode_data/dialog_layout_details.cc:676
-#: ../glom/utility_widgets/flowtablewithfields.cc:971
+#: ../glom/utility_widgets/flowtablewithfields.cc:986
 msgid "New Button"
 msgstr "Botó nou"
 
@@ -1924,7 +2022,7 @@ msgid "Image Title"
 msgstr "Imatge del títol"
 
 #: ../glom/mode_data/dialog_layout_details.cc:752
-#: ../glom/utility_widgets/flowtablewithfields.cc:921
+#: ../glom/utility_widgets/flowtablewithfields.cc:936
 msgid "notebook"
 msgstr "llibreta de notes"
 
@@ -1935,7 +2033,7 @@ msgstr "grup"
 
 #: ../glom/mode_data/dialog_layout_details.cc:931
 msgid "Add child groups to the notebook to add tabs."
-msgstr "Afegeix grups fills a la llibreta de notes per afegir pestanyes."
+msgstr "Afegeix grups fills a la llibreta de notes per a afegir pestanyes."
 
 #: ../glom/mode_data/dialog_layout_details.cc:1096
 msgid "Related: "
@@ -1963,7 +2061,7 @@ msgstr "Detalls"
 #: ../glom/mode_design/box_db_table_relationships.cc:45
 msgid ""
 "This relationship already exists. Please choose a different relationship name"
-msgstr "Ja existeix aquesta relació. Trieu un nom de relació diferent"
+msgstr "Ja existeix aquesta relació. Escolliu un nom de relació diferent"
 
 #: ../glom/mode_design/box_db_table_relationships.cc:49
 msgid "From Field"
@@ -1984,14 +2082,14 @@ msgstr "Relacions"
 #. Don't allow adding of fields that already exist.
 #: ../glom/mode_design/fields/box_db_table_definition.cc:55
 msgid "This field already exists. Please choose a different field name"
-msgstr "Ja existeix aquest camp. Trieu un nom de camp diferent"
+msgstr "Ja existeix aquest camp. Escolliu un nom de camp diferent"
 
 #. TODO: Only show this when there are > 100 records?
-#: ../glom/mode_design/fields/box_db_table_definition.cc:227
+#: ../glom/mode_design/fields/box_db_table_definition.cc:232
 msgid "Recalculation Required"
-msgstr "Cal tornar a calcular"
+msgstr "Cal tornar a recalcular"
 
-#: ../glom/mode_design/fields/box_db_table_definition.cc:228
+#: ../glom/mode_design/fields/box_db_table_definition.cc:233
 msgid ""
 "You have changed the calculation used by this field so Glom must recalculate "
 "the value in all records. If the table contains many records then this could "
@@ -2001,75 +2099,85 @@ msgstr ""
 "recalcular el valor de tots els registres. Pot durar una bona estona si la "
 "taula conté molts registres."
 
-#: ../glom/mode_design/fields/box_db_table_definition.cc:233
+#: ../glom/mode_design/fields/box_db_table_definition.cc:238
 msgid "Recalculate"
 msgstr "Torna a calcular"
 
-#: ../glom/mode_design/fields/box_db_table_definition.cc:242
+#: ../glom/mode_design/fields/box_db_table_definition.cc:247
 msgid "Invalid database structure"
 msgstr "L'estructura de la base de dades no és vàlida"
 
-#: ../glom/mode_design/fields/box_db_table_definition.cc:243
+#: ../glom/mode_design/fields/box_db_table_definition.cc:248
 msgid ""
 "This database field was created or edited outside of Glom. It has a data "
 "type that is not supported by Glom. Your system administrator may be able to "
 "correct this."
 msgstr ""
 "Aquesta base de dades s'ha creat o editat fora del Glom. Conté un tipus de "
-"dades que no està implementat o permès en el Glom. És possible que el vostre "
-"administrador de sistemes pugui corregir aquesta situació."
+"dades que no està implementat pel Glom. És possible que l'administrador de "
+"sistemes pugui corregir aquesta situació."
 
 #. Warn the user and refuse to make the change:
-#: ../glom/mode_design/fields/box_db_table_definition.cc:262
+#: ../glom/mode_design/fields/box_db_table_definition.cc:267
 msgid "Too many primary keys"
 msgstr "Hi ha massa claus primàries"
 
-#: ../glom/mode_design/fields/box_db_table_definition.cc:263
+#: ../glom/mode_design/fields/box_db_table_definition.cc:268
 msgid "You may not specify more than one field as the primary key."
 msgstr "No hauríeu d'especificar més d'un camp com a clau primària."
 
-#: ../glom/mode_design/fields/box_db_table_definition.cc:442
+#: ../glom/mode_design/fields/box_db_table_definition.cc:447
 msgid "Field contains empty values."
 msgstr "El camp conté valors buits."
 
-#: ../glom/mode_design/fields/box_db_table_definition.cc:442
+#: ../glom/mode_design/fields/box_db_table_definition.cc:447
 msgid ""
 "The field may not yet be used as a primary key because it contains empty "
 "values."
 msgstr ""
-"No s'hauria de fer servir encara aquest camp com a clau primària ja que "
-"conté valors buits."
+"No s'hauria de fer servir aquest camp com a clau primària ja que conté "
+"valors buits."
 
-#: ../glom/mode_design/fields/box_db_table_definition.cc:454
+#: ../glom/mode_design/fields/box_db_table_definition.cc:459
 msgid "Field contains non-unique values."
 msgstr "El camp conté valors que no són únics."
 
-#: ../glom/mode_design/fields/box_db_table_definition.cc:454
+#: ../glom/mode_design/fields/box_db_table_definition.cc:459
 msgid ""
 "The field may not yet be used as a primary key because it contains values "
 "that are not unique."
 msgstr ""
-"No s'hauria de fer servir encara aquest camp com a clau primària ja que "
-"conté valors que no són únics."
+"No s'hauria de fer servir aquest camp com a clau primària ja que conté "
+"valors que no són únics."
 
-#: ../glom/mode_design/fields/dialog_fieldcalculation.cc:119
+#: ../glom/mode_design/fields/dialog_fieldcalculation.cc:118
 msgid "Calculation result"
 msgstr "Resultat del càlcul"
 
-#: ../glom/mode_design/fields/dialog_fieldcalculation.cc:119
+#: ../glom/mode_design/fields/dialog_fieldcalculation.cc:118
 msgid "The result of the calculation is:\n"
 msgstr "El resultat del càlcul és:\n"
 
 #: ../glom/mode_design/fields/dialog_fielddefinition.cc:155
 msgid "Default Value"
-msgstr "Valor per defecte"
+msgstr "Valor predeterminat"
+
+#: ../glom/mode_design/script_library/dialog_script_library.cc:131
+msgid "Remove library script"
+msgstr "Suprimeix l'script de la biblioteca"
+
+#: ../glom/mode_design/script_library/dialog_script_library.cc:132
+msgid ""
+"Do you really want to delete this script? This data can not be recovered"
+msgstr ""
+"Segur que voleu suprimir aquest script? No es podran recuperar les dades"
 
 #: ../glom/mode_design/users/dialog_groups_list.cc:73
 msgid "View"
 msgstr "Vista"
 
 #: ../glom/mode_design/users/dialog_groups_list.cc:82
-#: ../glom/utility_widgets/adddel/adddel.cc:238
+#: ../glom/utility_widgets/adddel/adddel.cc:251
 msgid "Delete"
 msgstr "Suprimeix"
 
@@ -2080,7 +2188,7 @@ msgstr "Suprimeix el grup"
 
 #: ../glom/mode_design/users/dialog_groups_list.cc:219
 msgid "Are your sure that you wish to delete this group?"
-msgstr "Esteu segur de voler suprimir aquest grup?"
+msgstr "Segur que voleu suprimir aquest grup?"
 
 #: ../glom/mode_design/users/dialog_groups_list.cc:380
 msgid "Full access."
@@ -2092,7 +2200,7 @@ msgstr "Suprimeix l'usuari"
 
 #: ../glom/mode_design/users/dialog_users_list.cc:228
 msgid "Are your sure that you wish to delete this user?"
-msgstr "Esteu segur de voler suprimir aquest usuari?"
+msgstr "Segur que voleu suprimir aquest usuari?"
 
 #: ../glom/mode_design/users/dialog_users_list.cc:497
 msgid "Developer group may not be empty."
@@ -2100,25 +2208,7 @@ msgstr "El grup de desenvolupadors no pot ser buit."
 
 #: ../glom/mode_design/users/dialog_users_list.cc:498
 msgid "The developer group must contain at least one user."
-msgstr "El grup de desenvolupadors ha de contenir almenys un usuari."
-
-#: ../glom/mode_design/script_library/dialog_script_library.cc:132
-msgid "Remove library script"
-msgstr "Suprimeix l'script de la biblioteca"
-
-#: ../glom/mode_design/script_library/dialog_script_library.cc:133
-msgid ""
-"Do you really want to delete this script? This data can not be recovered"
-msgstr ""
-"N'esteu segur de suprimir aquest script? No es podran recuperar les dades"
-
-#. Append the View columns:
-#. Use set_cell_data_func() to give more control over the cell attributes depending on the row:
-#. Name column:
-#: ../glom/reports/dialog_layout_report.cc:150
-#: ../glom/reports/dialog_layout_report.cc:197
-msgid "Part"
-msgstr "Part"
+msgstr "El grup de desenvolupadors ha de tenir un usuari com a mínim."
 
 #: ../glom/navigation/box_tables.cc:114
 msgid "Tables"
@@ -2127,7 +2217,7 @@ msgstr "Taules"
 #. Prevent two tables with the same name from being added.
 #: ../glom/navigation/box_tables.cc:116
 msgid "This table already exists. Please choose a different table name"
-msgstr "Aquesta taula ja existeix, trieu un altre nom"
+msgstr "Ja existeix aquesta taula, escolliu un altre nom de taula"
 
 #: ../glom/navigation/box_tables.cc:118
 msgid "Hidden"
@@ -2135,14 +2225,14 @@ msgstr "Amagades"
 
 #: ../glom/navigation/box_tables.cc:120
 msgid "Default"
-msgstr "Per defecte"
+msgstr "Predeterminat"
 
 #. Ask the user if they want us to try to cope with this:
-#: ../glom/navigation/box_tables.cc:220
+#: ../glom/navigation/box_tables.cc:226
 msgid "Table Already Exists"
-msgstr "La taula ja existeix"
+msgstr "Ja existeix la taula"
 
-#: ../glom/navigation/box_tables.cc:221
+#: ../glom/navigation/box_tables.cc:227
 msgid ""
 "This table already exists on the database server, though it is not mentioned "
 "in the .glom file. This should not happen. Would you like Glom to attempt to "
@@ -2153,7 +2243,7 @@ msgstr ""
 "Glom intenti utilitzar la taula existent?"
 
 #. TODO: Do not show tables that are not in the document.
-#: ../glom/navigation/box_tables.cc:281
+#: ../glom/navigation/box_tables.cc:287
 msgid ""
 "You cannot delete this table, because there is no information about this "
 "table in the document."
@@ -2162,24 +2252,24 @@ msgstr ""
 "document."
 
 #. Ask the user to confirm:
-#: ../glom/navigation/box_tables.cc:288
+#: ../glom/navigation/box_tables.cc:294
 msgid ""
 "Are you sure that you want to delete this table?\n"
 "Table name: "
 msgstr ""
-"Esteu segur de voler suprimir aquesta taula?\n"
+"Segur que voleu suprimir aquesta taula?\n"
 "Nom de la taula: "
 
-#: ../glom/navigation/box_tables.cc:289
+#: ../glom/navigation/box_tables.cc:295
 msgid "Delete Table"
 msgstr "Suprimeix la taula"
 
 #. TODO: Do not show tables that are not in the document.
-#: ../glom/navigation/box_tables.cc:326
+#: ../glom/navigation/box_tables.cc:332
 msgid "Unknown Table"
 msgstr "Taula desconeguda"
 
-#: ../glom/navigation/box_tables.cc:327
+#: ../glom/navigation/box_tables.cc:333
 msgid ""
 "You cannot open this table, because there is no information about this table "
 "in the document."
@@ -2187,147 +2277,26 @@ msgstr ""
 "No podeu obrir aquesta taula atès que no n'existeix informació en el "
 "document."
 
-#: ../glom/navigation/box_tables.cc:401
+#: ../glom/navigation/box_tables.cc:407
 msgid "Are you sure that you want to rename this table?"
-msgstr "Esteu segur de voler canviar el nom d'aquesta taula?"
+msgstr "Segur que voleu canviar el nom d'aquesta taula?"
 
 #. TODO: Show old and new names?
-#: ../glom/navigation/box_tables.cc:402
+#: ../glom/navigation/box_tables.cc:408
 msgid "Rename Table"
 msgstr "Canvia el nom de la taula"
 
-#: ../glom/utility_widgets/adddel/adddel.cc:146
-msgid "Duplicate"
-msgstr "Duplicat"
+#: ../glom/python_embed/glom_python.cc:131
+msgid "Python Error: \n"
+msgstr "Error del Python: \n"
 
-#: ../glom/utility_widgets/adddel/adddel.cc:150
-msgid "This item already exists. Please try again."
-msgstr "Aquest element ja existeix, proveu-ho de nou."
-
-#: ../glom/utility_widgets/adddel/adddel.cc:245
-msgid "Choose columns"
-msgstr "Trieu les columnes"
-
-#: ../glom/utility_widgets/comboentryglom.cc:114
-msgid "Read-only field."
-msgstr "Camp de només lectura."
-
-#: ../glom/utility_widgets/comboentryglom.cc:114
-msgid "This field may not be edited here."
-msgstr "No s'hauria d'editar aquí aquest camp."
-
-#. Let the user choose a date from a calendar dialog:
-#: ../glom/utility_widgets/datawidget.cc:222
-msgid "..."
-msgstr "..."
-
-#: ../glom/utility_widgets/db_adddel/db_adddel.cc:234
-msgid "Layout"
-msgstr "Disposició"
-
-#: ../glom/utility_widgets/db_adddel/db_adddel.cc:1991
-msgid "Right-click to layout, to specify the related fields."
-msgstr "Feu un clic amb el botó dret, per especificar els camps relacionats."
-
-#: ../glom/utility_widgets/filechooserdialog.cc:71
-msgid "New Database"
-msgstr "Base de dades nova"
-
-#. For instance, an extra hint when saving from an example, saying that a new file must be saved.
-#: ../glom/utility_widgets/filechooserdialog.cc:88
-msgid ""
-"Please choose a human-readable title for the new database. You can change "
-"this later in the database properties. It may contain any characters."
-msgstr ""
-"Trieu un títol llegible per humans per a la base de dades nova. El podreu "
-"canviar després en les propietats de la base de dades. Pot tenir qualsevol "
-"caràcter."
-
-#: ../glom/utility_widgets/filechooserdialog.cc:101
-msgid "Create database in its own folder, to be hosted by this computer."
-msgstr ""
-"Crea la base de dades en el seu propi directori, per a hostatjar-la en "
-"aquest ordinador."
-
-#: ../glom/utility_widgets/filechooserdialog.cc:105
-msgid ""
-"Create database on an external database server, to be specified in the next "
-"step."
-msgstr ""
-"Crea la base de dades en un servidor de base de dades extern, a "
-"s'especificarà en el següent pas."
-
-#: ../glom/utility_widgets/flowtablewithfields.cc:915
-msgid "New Group"
-msgstr "Grup nou"
-
-#: ../glom/utility_widgets/flowtablewithfields.cc:925
-msgid "tab1"
-msgstr "pestanya1"
-
-#: ../glom/utility_widgets/flowtablewithfields.cc:926
-msgid "Tab One"
-msgstr "Primera pestanya"
-
-#: ../glom/utility_widgets/flowtablewithfields.cc:970
-msgid "button"
-msgstr "botó"
-
-#: ../glom/utility_widgets/flowtablewithfields.cc:977
-msgid "text"
-msgstr "text"
-
-#: ../glom/utility_widgets/flowtablewithfields.cc:978
-msgid "New Text"
-msgstr "Nou text"
-
-#: ../glom/utility_widgets/imageglom.cc:356
-msgid "Choose image"
-msgstr "Trieu una imatge"
-
-#: ../glom/utility_widgets/imageglom.cc:360
-msgid "Images"
-msgstr "Imatges"
-
-#: ../glom/utility_widgets/imageglom.cc:392
-msgid "Image loading failed"
-msgstr "Ha fallat en carregar la imatge"
-
-#: ../glom/utility_widgets/imageglom.cc:392
-msgid "The image file could not be opened:\n"
-msgstr "No s'ha pogut obrir el fitxer d'imatge:\n"
-
-#: ../glom/utility_widgets/imageglom.cc:487
-msgid "Choose File"
-msgstr "Trieu un fitxer"
-
-#: ../glom/utility_widgets/layoutwidgetbase.cc:35
-msgid "Choose Field"
-msgstr "Tria el camp"
-
-#: ../glom/utility_widgets/layoutwidgetbase.cc:36
-msgid "Field Layout Properties"
-msgstr "Propietats de la disposició de camps"
-
-#: ../glom/utility_widgets/layoutwidgetbase.cc:37
-msgid "Add Field"
-msgstr "Afegeix un camp"
-
-#: ../glom/utility_widgets/layoutwidgetbase.cc:38
-msgid "Add Related Records"
-msgstr "Afegeix registres relacionats"
-
-#: ../glom/utility_widgets/layoutwidgetbase.cc:40
-msgid "Add Group"
-msgstr "Afegeix un grup"
-
-#: ../glom/xsl_utils.cc:84
-msgid "Report Finished"
-msgstr "S'ha acabat l'informe"
-
-#: ../glom/xsl_utils.cc:84
-msgid "The report will now be opened in your web browser."
-msgstr "S'obrirà l'informe en el vostre navegador web."
+#. Append the View columns:
+#. Use set_cell_data_func() to give more control over the cell attributes depending on the row:
+#. Name column:
+#: ../glom/reports/dialog_layout_report.cc:150
+#: ../glom/reports/dialog_layout_report.cc:197
+msgid "Part"
+msgstr "Part"
 
 #. Append the View columns:
 #: ../glom/translation/window_translations.cc:61
@@ -2354,7 +2323,7 @@ msgstr "Error del gettext: "
 #. Show the file-chooser dialog, to select an output .po file:
 #: ../glom/translation/window_translations.cc:501
 msgid "Choose .po File Name"
-msgstr "Trieu el nom de fitxer del .po"
+msgstr "Escolliu el nom de fitxer del .po"
 
 #: ../glom/translation/window_translations.cc:505
 #: ../glom/translation/window_translations.cc:582
@@ -2363,7 +2332,152 @@ msgstr "Fitxers po"
 
 #: ../glom/translation/window_translations.cc:578
 msgid "Choose .po file name"
-msgstr "Trieu el nom de fitxer del .po"
+msgstr "Escolliu el nom de fitxer del .po"
+
+#: ../glom/utility_widgets/adddel/adddel.cc:155
+msgid "This item already exists. Please try again."
+msgstr "Ja existeix aquest element, proveu-ho de nou."
+
+#: ../glom/utility_widgets/adddel/adddel.cc:162
+msgid "Duplicate"
+msgstr "Duplicat"
+
+#: ../glom/utility_widgets/adddel/adddel.cc:258
+msgid "Choose columns"
+msgstr "Escolliu les columnes"
+
+#: ../glom/utility_widgets/comboentryglom.cc:134
+msgid "Read-only field."
+msgstr "Camp de només lectura."
+
+#: ../glom/utility_widgets/comboentryglom.cc:134
+msgid "This field may not be edited here."
+msgstr "No s'hauria d'editar aquí aquest camp."
+
+#. Let the user choose a date from a calendar dialog:
+#: ../glom/utility_widgets/datawidget.cc:224
+msgid "..."
+msgstr "..."
+
+#. Don't add ContextLayout in client only mode because it would never
+#. be sensitive anyway
+#: ../glom/utility_widgets/db_adddel/db_adddel.cc:242
+msgid "Layout"
+msgstr "Disposició"
+
+#: ../glom/utility_widgets/db_adddel/db_adddel.cc:2043
+msgid "Right-click to layout, to specify the related fields."
+msgstr ""
+"Feu clic amb el botó secundari a la disposició, per a especificar els camps "
+"relacionats."
+
+#: ../glom/utility_widgets/filechooserdialog.cc:71
+msgid "New Database"
+msgstr "Base de dades nova"
+
+#. For instance, an extra hint when saving from an example, saying that a new file must be saved.
+#: ../glom/utility_widgets/filechooserdialog.cc:88
+msgid ""
+"Please choose a human-readable title for the new database. You can change "
+"this later in the database properties. It may contain any characters."
+msgstr ""
+"Escolliu un títol entenedor per a la base de dades nova. El podreu canviar "
+"després en les propietats de la base de dades. Pot tenir qualsevol caràcter."
+
+#: ../glom/utility_widgets/filechooserdialog.cc:102
+msgid "Create database in its own folder, to be hosted by this computer."
+msgstr ""
+"Crea la base de dades en el seu propi directori, per a hostatjar-la en "
+"aquest ordinador."
+
+#: ../glom/utility_widgets/filechooserdialog.cc:106
+msgid ""
+"Create database on an external database server, to be specified in the next "
+"step."
+msgstr ""
+"Crea la base de dades en un servidor de base de dades extern, que "
+"s'especificarà en el pas següent."
+
+#: ../glom/utility_widgets/flowtablewithfields.cc:930
+msgid "New Group"
+msgstr "Grup nou"
+
+#: ../glom/utility_widgets/flowtablewithfields.cc:940
+msgid "tab1"
+msgstr "pestanya1"
+
+#: ../glom/utility_widgets/flowtablewithfields.cc:941
+msgid "Tab One"
+msgstr "Primera pestanya"
+
+#: ../glom/utility_widgets/flowtablewithfields.cc:985
+msgid "button"
+msgstr "botó"
+
+#: ../glom/utility_widgets/flowtablewithfields.cc:992
+msgid "text"
+msgstr "text"
+
+#: ../glom/utility_widgets/flowtablewithfields.cc:993
+msgid "New Text"
+msgstr "Text nou"
+
+#: ../glom/utility_widgets/imageglom.cc:382
+msgid "Choose image"
+msgstr "Escolliu una imatge"
+
+#: ../glom/utility_widgets/imageglom.cc:386
+msgid "Images"
+msgstr "Imatges"
+
+#: ../glom/utility_widgets/imageglom.cc:437
+msgid "Image loading failed"
+msgstr "Ha fallat la càrrega de la imatge"
+
+#: ../glom/utility_widgets/imageglom.cc:437
+msgid "The image file could not be opened:\n"
+msgstr "No s'ha pogut obrir el fitxer d'imatge:\n"
+
+#: ../glom/utility_widgets/imageglom.cc:532
+msgid "Choose File"
+msgstr "Escolliu un fitxer"
+
+#: ../glom/utility_widgets/layoutwidgetbase.cc:38
+msgid "Choose Field"
+msgstr "Escolliu el camp"
+
+#: ../glom/utility_widgets/layoutwidgetbase.cc:39
+msgid "Field Layout Properties"
+msgstr "Propietats de la disposició de camps"
+
+#: ../glom/utility_widgets/layoutwidgetbase.cc:40
+msgid "Add Field"
+msgstr "Afegeix un camp"
+
+#: ../glom/utility_widgets/layoutwidgetbase.cc:41
+msgid "Add Related Records"
+msgstr "Afegeix registres relacionats"
+
+#: ../glom/utility_widgets/layoutwidgetbase.cc:43
+msgid "Add Group"
+msgstr "Afegeix un grup"
+
+#: ../glom/xsl_utils.cc:101
+msgid "Report Finished"
+msgstr "S'ha acabat l'informe"
+
+#: ../glom/xsl_utils.cc:101
+msgid "The report will now be opened in your web browser."
+msgstr "S'obrirà l'informe en el vostre navegador web."
+
+#~ msgid "Not Implemented"
+#~ msgstr "No està implementat"
+
+#~ msgid "This feature is not yet available."
+#~ msgstr "Encara no està disponible aquesta característica."
+
+#~ msgid "<b>Table Name</b>"
+#~ msgstr "<b>Nom de la taula</b>"
 
 #~ msgid "List Layout"
 #~ msgstr "Disposició de la llista"
