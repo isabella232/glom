@@ -1,5 +1,14 @@
 2007-10-08  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/utility_widgets/canvas_group_resizable.cc:
+	* glom/utility_widgets/canvas_group_resizable.h:
+	* glom/utility_widgets/canvas_line_movable.cc:
+	* glom/utility_widgets/canvas_line_movable.h:
+	Allow resizing by dragging the edges. Keep the corners and 
+	edges on top when moving.
+
+2007-10-08  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/utility_widgets/Makefile.am:
 	* glom/utility_widgets/canvas_editable.cc:
 	* glom/utility_widgets/canvas_editable.h:

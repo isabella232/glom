@@ -22,11 +22,14 @@
 #define GLOM_UTILITY_WIDGETS_CANVAS_GROUP_RESIZABLE_H
 
 #include <libgoocanvasmm/group.h>
-#include "canvas_rect_movable.h"
+#include <libgoocanvasmm/rect.h>
 
 
 namespace Glom
 {
+
+class CanvasRectMovable;
+class CanvasLineMovable;
 
 class CanvasGroupResizable : public Goocanvas::Group
 {
@@ -59,21 +62,27 @@ protected:
     MANIPULATOR_EDGE_RIGHT
   };
 
-  void manipulator_connect_signals(const Glib::RefPtr<CanvasRectMovable> manipulator, Manipulators manipulator_id);
-  void position_corners();
+  void manipulator_connect_signals(const Glib::RefPtr<Goocanvas::Item> manipulator, Manipulators manipulator_id);
+  void position_manipulators();
   void set_manipulators_visibility(Goocanvas::ItemVisibility visibility);
 
   bool on_enter_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventCrossing* event);
   bool on_leave_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventCrossing* event);
 
-  void on_manipulator_moved(const Glib::RefPtr<CanvasRectMovable> manipulator, Manipulators manipulator_id);
+  void on_manipulator_corner_moved(const Glib::RefPtr<CanvasRectMovable>& manipulator, Manipulators manipulator_id);
+  void on_manipulator_edge_moved(const Glib::RefPtr<CanvasLineMovable>& manipulator, Manipulators manipulator_id);
 
   //bool on_manipulator_button_press_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventButton* event, Manipulators manipulator);
   //bool on_manipulator_button_release_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventButton* event, Manipulators manipulator);
   //bool on_manipulator_motion_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventMotion* event, Manipulators manipulator);
 
+  static Glib::RefPtr<CanvasRectMovable> create_corner();
+  static Glib::RefPtr<CanvasLineMovable> create_edge();
+  static void set_edge_points(const Glib::RefPtr<Glom::CanvasLineMovable>& line, double x1, double y1, double x2, double y2);
+
   Glib::RefPtr<Goocanvas::Rect> m_child;
   Glib::RefPtr<CanvasRectMovable> m_manipulator_corner_top_left, m_manipulator_corner_top_right, m_manipulator_corner_bottom_left, m_manipulator_corner_bottom_right;
+  Glib::RefPtr<CanvasLineMovable> m_manipulator_edge_top, m_manipulator_edge_bottom, m_manipulator_edge_left, m_manipulator_edge_right;
 
   bool m_dragging;
   double m_drag_start_cursor_x, m_drag_start_cursor_y;

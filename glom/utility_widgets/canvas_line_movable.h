@@ -49,7 +49,8 @@ protected:
   bool on_motion_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventMotion* event);
 
   bool m_dragging;
-  double m_drag_x, m_drag_y;
+  double m_drag_start_cursor_x, m_drag_start_cursor_y;
+  Goocanvas::Points m_drag_start_points;
   Gdk::Cursor m_drag_cursor;
 
   type_signal_moved m_signal_moved;
