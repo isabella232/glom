@@ -43,15 +43,21 @@ public:
   type_signal_moved signal_moved();
 
 protected:
+  void set_cursor(const Gdk::Cursor& cursor);
+  void unset_cursor();
   
   bool on_button_press_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventButton* event);
   bool on_button_release_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventButton* event);
   bool on_motion_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventMotion* event);
 
+  bool on_enter_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventCrossing* event);
+  bool on_leave_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventCrossing* event);
+
   bool m_dragging;
   double m_drag_start_cursor_x, m_drag_start_cursor_y;
   Goocanvas::Points m_drag_start_points;
   Gdk::Cursor m_drag_cursor;
+
 
   type_signal_moved m_signal_moved;
 };

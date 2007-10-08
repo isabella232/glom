@@ -38,6 +38,9 @@ CanvasLineMovable::CanvasLineMovable()
   signal_motion_notify_event().connect(sigc::mem_fun(*this, &CanvasLineMovable::on_motion_notify_event));
   signal_button_press_event().connect(sigc::mem_fun(*this, &CanvasLineMovable::on_button_press_event));
   signal_button_release_event().connect(sigc::mem_fun(*this, &CanvasLineMovable::on_button_release_event));
+
+  signal_enter_notify_event().connect(sigc::mem_fun(*this, &CanvasLineMovable::on_enter_notify_event));
+  signal_leave_notify_event().connect(sigc::mem_fun(*this, &CanvasLineMovable::on_leave_notify_event));
 }
 
 CanvasLineMovable::~CanvasLineMovable()
@@ -133,6 +136,20 @@ bool CanvasLineMovable::on_button_release_event(const Glib::RefPtr<Goocanvas::It
   return true;
 }
 
+bool CanvasLineMovable::on_enter_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventCrossing* event)
+{
+  set_cursor(m_drag_cursor);
+
+  return true;
+}
+
+bool CanvasLineMovable::on_leave_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventCrossing* event)
+{
+  unset_cursor();
+
+  return true;
+}
+
 CanvasLineMovable::type_signal_moved CanvasLineMovable::signal_moved()
 {
   return m_signal_moved;
@@ -148,7 +165,27 @@ void CanvasLineMovable::set_drag_cursor(Gdk::CursorType cursor)
   m_drag_cursor = Gdk::Cursor(cursor);
 }
 
+void CanvasLineMovable::set_cursor(const Gdk::Cursor& cursor)
+{
+   Goocanvas::Canvas* canvas = get_canvas();
+   if(canvas)
+   {
+     Glib::RefPtr<Gdk::Window> window = canvas->get_window();
+     if(window)
+       window->set_cursor(cursor);
+   }
+}
 
+void CanvasLineMovable::unset_cursor()
+{
+   Goocanvas::Canvas* canvas = get_canvas();
+   if(canvas)
+   {
+     Glib::RefPtr<Gdk::Window> window = canvas->get_window();
+     if(window)
+       window->set_cursor();
+   }
+}
 
 
 } //namespace Glom

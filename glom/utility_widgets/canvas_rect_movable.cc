@@ -39,6 +39,9 @@ CanvasRectMovable::CanvasRectMovable()
   signal_motion_notify_event().connect(sigc::mem_fun(*this, &CanvasRectMovable::on_motion_notify_event));
   signal_button_press_event().connect(sigc::mem_fun(*this, &CanvasRectMovable::on_button_press_event));
   signal_button_release_event().connect(sigc::mem_fun(*this, &CanvasRectMovable::on_button_release_event));
+
+  signal_enter_notify_event().connect(sigc::mem_fun(*this, &CanvasRectMovable::on_enter_notify_event));
+  signal_leave_notify_event().connect(sigc::mem_fun(*this, &CanvasRectMovable::on_leave_notify_event));
 }
 
 CanvasRectMovable::~CanvasRectMovable()
@@ -115,6 +118,20 @@ bool CanvasRectMovable::on_motion_notify_event(const Glib::RefPtr<Goocanvas::Ite
   return true;
 }
 
+bool CanvasRectMovable::on_enter_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventCrossing* event)
+{
+  set_cursor(m_drag_cursor);
+
+  return true;
+}
+
+bool CanvasRectMovable::on_leave_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventCrossing* event)
+{
+  unset_cursor();
+
+  return true;
+}
+
 bool CanvasRectMovable::on_button_release_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventButton* event)
 {
   Goocanvas::Canvas* canvas = get_canvas();
@@ -133,16 +150,35 @@ CanvasRectMovable::type_signal_moved CanvasRectMovable::signal_moved()
 
 void CanvasRectMovable::set_drag_cursor(const Gdk::Cursor& cursor)
 {
- m_drag_cursor = cursor;
+  m_drag_cursor = cursor;
 }
 
 void CanvasRectMovable::set_drag_cursor(Gdk::CursorType cursor)
 {
- m_drag_cursor = Gdk::Cursor(cursor);
+  m_drag_cursor = Gdk::Cursor(cursor);
 }
 
+void CanvasRectMovable::set_cursor(const Gdk::Cursor& cursor)
+{
+   Goocanvas::Canvas* canvas = get_canvas();
+   if(canvas)
+   {
+     Glib::RefPtr<Gdk::Window> window = canvas->get_window();
+     if(window)
+       window->set_cursor(cursor);
+   }
+}
 
-
+void CanvasRectMovable::unset_cursor()
+{
+   Goocanvas::Canvas* canvas = get_canvas();
+   if(canvas)
+   {
+     Glib::RefPtr<Gdk::Window> window = canvas->get_window();
+     if(window)
+       window->set_cursor();
+   }
+}
 
 } //namespace Glom
 

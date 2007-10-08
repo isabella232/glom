@@ -1,5 +1,14 @@
 2007-10-08  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/utility_widgets/canvas_line_movable.cc:
+	* glom/utility_widgets/canvas_line_movable.h:
+	* glom/utility_widgets/canvas_rect_movable.cc:
+	* glom/utility_widgets/canvas_rect_movable.h:
+	Show special cursors on roll-over for edges and corners, to show 
+	what will happen when dragging. 
+
+2007-10-08  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/utility_widgets/canvas_group_resizable.cc:
 	* glom/utility_widgets/canvas_group_resizable.h:
 	* glom/utility_widgets/canvas_line_movable.cc:
