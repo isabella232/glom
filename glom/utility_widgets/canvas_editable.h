@@ -34,15 +34,18 @@ public:
   CanvasEditable();
   virtual ~CanvasEditable();
 
-  void add_item(const Glib::RefPtr<Goocanvas::Rect>& item, bool resizable = false);
+  void add_item(const Glib::RefPtr<Goocanvas::Item>& item, bool resizable = false);
   void remove_all_items();
 
 protected:
+  void add_item_line(const Glib::RefPtr<Goocanvas::Path>& item, bool resizable = false);
+  void add_item_rect(const Glib::RefPtr<Goocanvas::Rect>& item, bool resizable = false);
+
+  static Glib::RefPtr<Goocanvas::Item> get_parent_container_or_self(const Glib::RefPtr<Goocanvas::Item>& item);
+
   virtual void on_show_context_menu(guint button, guint32 activate_time);
 
   virtual bool on_item_button_press_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventButton* event);
-
-  static Glib::RefPtr<Goocanvas::Item> get_parent_container_or_self(const Glib::RefPtr<Goocanvas::Item>& item);
 
   bool m_dragging;
   double m_drag_x, m_drag_y;

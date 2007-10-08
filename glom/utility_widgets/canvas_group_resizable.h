@@ -76,7 +76,8 @@ protected:
   Glib::RefPtr<CanvasRectMovable> m_manipulator_corner_top_left, m_manipulator_corner_top_right, m_manipulator_corner_bottom_left, m_manipulator_corner_bottom_right;
 
   bool m_dragging;
-  double m_drag_x, m_drag_y;
+  double m_drag_start_cursor_x, m_drag_start_cursor_y;
+  double m_drag_start_position_x, m_drag_start_position_y;
 };
 
 } //namespace Glom

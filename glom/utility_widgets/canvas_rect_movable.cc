@@ -32,7 +32,8 @@ namespace Glom
 CanvasRectMovable::CanvasRectMovable()
 : Goocanvas::Rect((GooCanvasRect*)goo_canvas_rect_new(NULL, 0.0, 0.0, 0.0, 0.0, NULL)), //TODO: Remove this when goocanvas has been fixed.
   m_dragging(false),
-  m_drag_x(0), m_drag_y(0)
+  m_drag_start_cursor_x(0.0), m_drag_start_cursor_y(0.0),
+  m_drag_start_position_x(0.0), m_drag_start_position_y(0.0)
 {
    //TODO: Remove this when goocanvas is fixed, so the libgoocanvasmm constructor can connect default signal handlers:
   signal_motion_notify_event().connect(sigc::mem_fun(*this, &CanvasRectMovable::on_motion_notify_event));
@@ -62,14 +63,21 @@ bool CanvasRectMovable::on_button_press_event(const Glib::RefPtr<Goocanvas::Item
       
       item->raise();
     
-      m_drag_x = event->x;
-      m_drag_y = event->y;
+      m_drag_start_cursor_x = event->x;
+      m_drag_start_cursor_y = event->y;
+
+      Glib::RefPtr<Goocanvas::Rect> rect = Glib::RefPtr<Goocanvas::Rect>::cast_dynamic(item);
+      if(rect)
+      {
+        m_drag_start_position_x = rect->property_x();
+        m_drag_start_position_y = rect->property_y();
+      }
     
       Goocanvas::Canvas* canvas = get_canvas();
       if(canvas)
       {
         canvas->pointer_grab(item, Gdk::POINTER_MOTION_MASK | Gdk::BUTTON_RELEASE_MASK,
-          m_drag_cursor, event->time);
+         m_drag_cursor, event->time);
       }
 
       m_dragging = true;
@@ -91,16 +99,14 @@ bool CanvasRectMovable::on_motion_notify_event(const Glib::RefPtr<Goocanvas::Ite
   
   if(item && m_dragging && (event->state & Gdk::BUTTON1_MASK))
   {
-    const double new_x = event->x;
-    const double new_y = event->y;
-    //printf("%s: new_x=%f, new_y=%f\n", __FUNCTION__, new_x, new_y);
-    //item->translate(new_x - m_drag_x, new_y - m_drag_y);
+    const double offset_x = event->x - m_drag_start_cursor_x;
+    const double offset_y = event->y - m_drag_start_cursor_y;
 
     Glib::RefPtr<Goocanvas::Rect> rect = Glib::RefPtr<Goocanvas::Rect>::cast_dynamic(item);
     if(rect)
     {
-      rect->property_x() = new_x;
-      rect->property_y() = new_y;
+      rect->property_x() = m_drag_start_position_x + offset_x;
+      rect->property_y() = m_drag_start_position_y + offset_y;
     }
 
     m_signal_moved.emit();
@@ -127,12 +133,12 @@ CanvasRectMovable::type_signal_moved CanvasRectMovable::signal_moved()
 
 void CanvasRectMovable::set_drag_cursor(const Gdk::Cursor& cursor)
 {
-  m_drag_cursor = cursor;
+ m_drag_cursor = cursor;
 }
 
 void CanvasRectMovable::set_drag_cursor(Gdk::CursorType cursor)
 {
-  m_drag_cursor = Gdk::Cursor(cursor);
+ m_drag_cursor = Gdk::Cursor(cursor);
 }
 
 

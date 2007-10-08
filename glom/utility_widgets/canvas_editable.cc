@@ -34,7 +34,44 @@ CanvasEditable::~CanvasEditable()
 {
 }
 
-void CanvasEditable::add_item(const Glib::RefPtr<Goocanvas::Rect>& item, bool resizable)
+void CanvasEditable::add_item(const Glib::RefPtr<Goocanvas::Item>& item, bool resizable)
+{
+  Glib::RefPtr<Goocanvas::Rect> rect = Glib::RefPtr<Goocanvas::Rect>::cast_dynamic(item);
+  if(rect)
+    add_item_rect(rect, resizable);
+  else
+  {
+    Glib::RefPtr<Goocanvas::Path> path = Glib::RefPtr<Goocanvas::Path>::cast_dynamic(item);
+    if(rect)
+      add_item_line(path, resizable);
+    else
+    {
+      Glib::RefPtr<Goocanvas::Item> root = get_root_item();
+
+      Glib::RefPtr<Goocanvas::Group> root_group = Glib::RefPtr<Goocanvas::Group>::cast_dynamic(root);
+      if(root_group)
+      {
+        root_group->add_child(item);
+      }
+    }
+  }
+}
+
+void CanvasEditable::add_item_line(const Glib::RefPtr<Goocanvas::Path>& item, bool resizable)
+{
+  if(!item)
+    return;
+
+  Glib::RefPtr<Goocanvas::Item> root = get_root_item();
+
+  Glib::RefPtr<Goocanvas::Group> root_group = Glib::RefPtr<Goocanvas::Group>::cast_dynamic(root);
+  if(root_group)
+  {
+    root_group->add_child(item);
+  }
+}
+
+void CanvasEditable::add_item_rect(const Glib::RefPtr<Goocanvas::Rect>& item, bool resizable)
 {
   if(!item)
     return;

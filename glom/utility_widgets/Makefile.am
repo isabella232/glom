@@ -35,6 +35,7 @@ libutility_widgets_a_SOURCES = alignment_justified.cc alignment_justified.h \
                                dialog_choose_date.cc dialog_choose_date.h \
                                filechooserdialog.cc filechooserdialog.h \
                                canvas_editable.cc canvas_editable.h \
+                               canvas_line_movable.cc canvas_line_movable.h \
                                canvas_rect_movable.cc canvas_rect_movable.h \
                                canvas_group_resizable.cc canvas_group_resizable.h
 
@@ -47,6 +48,6 @@ noinst_PROGRAMS = test_flowtable test_canvas_editable
 test_flowtable_SOURCES = test_flowtable.cc flowtable.cc flowtable.h
 test_flowtable_LDADD =  $(GLOM_LIBS)
 
-test_canvas_editable_SOURCES = test_canvas_editable.cc canvas_editable.cc canvas_editable.h canvas_group_resizable.cc canvas_group_resizable.h canvas_rect_movable.cc canvas_rect_movable.h
+test_canvas_editable_SOURCES = test_canvas_editable.cc canvas_editable.cc canvas_editable.h canvas_group_resizable.cc canvas_group_resizable.h canvas_rect_movable.cc canvas_rect_movable.h canvas_line_movable.cc canvas_line_movable.h
 test_canvas_editable_LDADD =  $(GLOM_LIBS)
 

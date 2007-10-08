@@ -18,23 +18,23 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef GLOM_UTILITY_WIDGETS_CANVAS_RECT_MOVABLE_H
-#define GLOM_UTILITY_WIDGETS_CANVAS_RECT_MOVABLE_H
+#ifndef GLOM_UTILITY_WIDGETS_CANVAS_LINE_MOVABLE_H
+#define GLOM_UTILITY_WIDGETS_CANVAS_LINE_MOVABLE_H
 
-#include <libgoocanvasmm/rect.h>
+#include <libgoocanvasmm/polyline.h>
 #include <gdkmm/cursor.h>
 
 namespace Glom
 {
 
-class CanvasRectMovable : public Goocanvas::Rect
+class CanvasLineMovable : public Goocanvas::Polyline
 {
 protected:
-  CanvasRectMovable();
-  virtual ~CanvasRectMovable();
+  CanvasLineMovable();
+  virtual ~CanvasLineMovable();
 
 public:
-  static Glib::RefPtr<CanvasRectMovable> create();
+  static Glib::RefPtr<CanvasLineMovable> create();
 
   void set_drag_cursor(Gdk::CursorType cursor);
   void set_drag_cursor(const Gdk::Cursor& cursor);
@@ -49,8 +49,7 @@ protected:
   bool on_motion_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventMotion* event);
 
   bool m_dragging;
-  double m_drag_start_cursor_x, m_drag_start_cursor_y;
-  double m_drag_start_position_x, m_drag_start_position_y;
+  double m_drag_x, m_drag_y;
   Gdk::Cursor m_drag_cursor;
 
   type_signal_moved m_signal_moved;
@@ -58,5 +57,5 @@ protected:
 
 } //namespace Glom
 
-#endif //GLOM_UTILITY_WIDGETS_CANVAS_RECT_MOVABLE_H
+#endif //GLOM_UTILITY_WIDGETS_CANVAS_LINE_MOVABLE_H
 

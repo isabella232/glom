@@ -45,7 +45,8 @@ static Glib::RefPtr<CanvasRectMovable> create_corner()
 CanvasGroupResizable::CanvasGroupResizable()
 : Goocanvas::Group((GooCanvasGroup*)goo_canvas_group_new(NULL, NULL)), //TODO: Remove this when goocanvas has been fixed.
   m_dragging(false),
-  m_drag_x(0.0), m_drag_y(0.0)
+  m_drag_start_cursor_x(0.0), m_drag_start_cursor_y(0.0),
+  m_drag_start_position_x(0.0), m_drag_start_position_y(0.0)
 {
   m_manipulator_corner_top_left = create_corner();
   m_manipulator_corner_top_right = create_corner();
@@ -224,8 +225,15 @@ bool CanvasGroupResizable::on_child_button_press_event(const Glib::RefPtr<Goocan
       
       item->raise();
     
-      m_drag_x = event->x;
-      m_drag_y = event->y;
+      m_drag_start_cursor_x = event->x;
+      m_drag_start_cursor_y = event->y;
+
+      Glib::RefPtr<Goocanvas::Rect> rect = Glib::RefPtr<Goocanvas::Rect>::cast_dynamic(item);
+      if(rect)
+      {
+        m_drag_start_position_x = rect->property_x();
+        m_drag_start_position_y = rect->property_y();
+      }
     
       Goocanvas::Canvas* canvas = get_canvas();
       if(canvas)
@@ -254,16 +262,14 @@ bool CanvasGroupResizable::on_child_motion_notify_event(const Glib::RefPtr<Gooca
   
   if(item && m_dragging && (event->state & Gdk::BUTTON1_MASK))
   {
-    const double new_x = event->x;
-    const double new_y = event->y;
-    //printf("%s: new_x=%f, new_y=%f\n", __FUNCTION__, new_x, new_y);
-    //item->translate(new_x - m_drag_x, new_y - m_drag_y);
+    const double offset_x = event->x - m_drag_start_cursor_x;
+    const double offset_y = event->y - m_drag_start_cursor_y;
 
     Glib::RefPtr<Goocanvas::Rect> rect = Glib::RefPtr<Goocanvas::Rect>::cast_dynamic(item);
     if(rect)
     {
-      rect->property_x() = new_x;
-      rect->property_y() = new_y;
+      rect->property_x() = m_drag_start_position_x + offset_x;
+      rect->property_y() = m_drag_start_position_y + offset_y;
 
       position_corners();
     }

@@ -20,6 +20,7 @@
  
 #include <gtkmm.h>
 #include "canvas_editable.h"
+#include "canvas_line_movable.h"
 #include <goocanvasrect.h>
 #include <iostream>
 
@@ -129,6 +130,15 @@ main(int argc, char* argv[])
   rect2->property_line_width() = 1.0f;
   rect2->property_stroke_color() = "red";
   canvas.add_item(rect2, true /* resizable */);
+
+  Glib::RefPtr<Glom::CanvasLineMovable> line = Glom::CanvasLineMovable::create();
+  double points_coordinates[] = {20.0, 20.0, 100.0, 40.0};
+  Goocanvas::Points points(2, points_coordinates);
+  line->property_points() = points;
+  line->property_fill_color() = "blue"; //This makes the whole area clickable, not just the outline stroke:
+  line->property_line_width() = 3.0f;
+  line->property_stroke_color() = "gray";
+  canvas.add_item(line);
 
   Gtk::Main::run(window);
 
