@@ -22,6 +22,7 @@
 #define GLOM_UTILITY_WIDGETS_CANVAS_RECT_MOVABLE_H
 
 #include <libgoocanvasmm/rect.h>
+#include <gdkmm/cursor.h>
 
 namespace Glom
 {
@@ -35,6 +36,9 @@ protected:
 public:
   static Glib::RefPtr<CanvasRectMovable> create();
 
+  void set_drag_cursor(Gdk::CursorType cursor);
+  void set_drag_cursor(const Gdk::Cursor& cursor);
+
   typedef sigc::signal<void> type_signal_moved;
   type_signal_moved signal_moved();
 
@@ -46,6 +50,7 @@ protected:
 
   bool m_dragging;
   double m_drag_x, m_drag_y;
+  Gdk::Cursor m_drag_cursor;
 
   type_signal_moved m_signal_moved;
 };

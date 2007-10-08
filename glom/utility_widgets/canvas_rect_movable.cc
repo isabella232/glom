@@ -19,6 +19,7 @@
  */
 
 #include "canvas_rect_movable.h"
+#include <libgoocanvasmm/canvas.h>
 #include <goocanvasrect.h>
 #include <goocanvasgroup.h>
 #include <gdkmm/cursor.h>
@@ -49,6 +50,8 @@ Glib::RefPtr<CanvasRectMovable> CanvasRectMovable::create()
 }
 
 
+
+
 bool CanvasRectMovable::on_button_press_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventButton* event)
 {
   switch(event->button)
@@ -62,10 +65,13 @@ bool CanvasRectMovable::on_button_press_event(const Glib::RefPtr<Goocanvas::Item
       m_drag_x = event->x;
       m_drag_y = event->y;
     
-      //Gdk::Cursor fleur(Gdk::FLEUR);
-      //pointer_grab(item, Gdk::POINTER_MOTION_MASK | Gdk::BUTTON_RELEASE_MASK,
-      //            fleur,
-      //            event->time);
+      Goocanvas::Canvas* canvas = get_canvas();
+      if(canvas)
+      {
+        canvas->pointer_grab(item, Gdk::POINTER_MOTION_MASK | Gdk::BUTTON_RELEASE_MASK,
+          m_drag_cursor, event->time);
+      }
+
       m_dragging = true;
       break;
     }
@@ -75,12 +81,10 @@ bool CanvasRectMovable::on_button_press_event(const Glib::RefPtr<Goocanvas::Item
   }
   
   return true;
-
-  return true;
 }
 
 bool CanvasRectMovable::on_motion_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventMotion* event)
-{
+{ 
   //std::cout << "CanvasRectMovable::on_motion_notify_event()" << std::endl;
 
   Glib::RefPtr<Goocanvas::Item> item = target;
@@ -107,7 +111,10 @@ bool CanvasRectMovable::on_motion_notify_event(const Glib::RefPtr<Goocanvas::Ite
 
 bool CanvasRectMovable::on_button_release_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventButton* event)
 {
-  //pointer_ungrab(target, event->time);
+  Goocanvas::Canvas* canvas = get_canvas();
+  if(canvas)
+    canvas->pointer_ungrab(target, event->time);
+
   m_dragging = false;
 
   return true;
@@ -118,6 +125,15 @@ CanvasRectMovable::type_signal_moved CanvasRectMovable::signal_moved()
   return m_signal_moved;
 }
 
+void CanvasRectMovable::set_drag_cursor(const Gdk::Cursor& cursor)
+{
+  m_drag_cursor = cursor;
+}
+
+void CanvasRectMovable::set_drag_cursor(Gdk::CursorType cursor)
+{
+  m_drag_cursor = Gdk::Cursor(cursor);
+}
 
 
 

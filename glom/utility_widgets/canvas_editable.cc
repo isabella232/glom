@@ -57,9 +57,9 @@ void CanvasEditable::add_item(const Glib::RefPtr<Goocanvas::Rect>& item, bool re
       root_group->add_child(item);
   }
 
-  item->signal_motion_notify_event().connect(sigc::mem_fun(*this, &CanvasEditable::on_item_motion_notify_event));
-  item->signal_button_press_event().connect(sigc::mem_fun(*this, &CanvasEditable::on_item_button_press_event));
-  item->signal_button_release_event().connect(sigc::mem_fun(*this, &CanvasEditable::on_item_button_release_event));
+  //item->signal_motion_notify_event().connect(sigc::mem_fun(*this, &CanvasEditable::on_item_motion_notify_event));
+  //item->signal_button_press_event().connect(sigc::mem_fun(*this, &CanvasEditable::on_item_button_press_event));
+  //item->signal_button_release_event().connect(sigc::mem_fun(*this, &CanvasEditable::on_item_button_release_event));
 
   m_map_item_info[item] = info;
 }
@@ -83,37 +83,11 @@ Glib::RefPtr<Goocanvas::Item> CanvasEditable::get_parent_container_or_self(const
   return result;
 }
 
-bool CanvasEditable::on_item_button_release_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventButton* event)
-{
-  //printf("%s\n", __FUNCTION__);
-  pointer_ungrab(target, event->time);
-  m_dragging = false;
-
-
-  return true;
-}
-
 bool CanvasEditable::on_item_button_press_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventButton* event)
 {
   printf("%s: button=%d\n", __FUNCTION__, event->button);
   switch(event->button)
   {
-    case 1:
-    {
-      Glib::RefPtr<Goocanvas::Item> item = get_parent_container_or_self(target);
-      
-      item->raise();
-    
-      m_drag_x = event->x;
-      m_drag_y = event->y;
-    
-      Gdk::Cursor fleur(Gdk::FLEUR);
-      pointer_grab(item, Gdk::POINTER_MOTION_MASK | Gdk::BUTTON_RELEASE_MASK,
-                  fleur,
-                  event->time);
-      m_dragging = true;
-      break;
-    }
     case 3:
     {
       //This method is virtual:
@@ -125,23 +99,6 @@ bool CanvasEditable::on_item_button_press_event(const Glib::RefPtr<Goocanvas::It
       break;
   }
   
-  return true;
-}
-
-bool CanvasEditable::on_item_motion_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventMotion* event)
-{
-  //printf("%s\n", __FUNCTION__);
-
-  Glib::RefPtr<Goocanvas::Item> item = get_parent_container_or_self(target);
-  
-  if(item && m_dragging && (event->state & Gdk::BUTTON1_MASK))
-  {
-    double new_x = event->x;
-    double new_y = event->y;
-
-    item->translate(new_x - m_drag_x, new_y - m_drag_y);
-  }
-
   return true;
 }
 

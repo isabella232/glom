@@ -121,7 +121,7 @@ main(int argc, char* argv[])
   rect->property_fill_color() = "white"; //This makes the whole area clickable, not just the outline stroke:
   rect->property_line_width() = 2.0f;
   rect->property_stroke_color() = "blue";
-  canvas.add_item(rect);
+  canvas.add_item(rect, true /* resizable */);
 
   Glib::RefPtr<Goocanvas::Rect> rect2 = Glib::wrap( (GooCanvasRect*)goo_canvas_rect_new(NULL, 120, 10, 110, 140, NULL) );
 
@@ -129,8 +129,6 @@ main(int argc, char* argv[])
   rect2->property_line_width() = 1.0f;
   rect2->property_stroke_color() = "red";
   canvas.add_item(rect2, true /* resizable */);
-
-  canvas.add_item(rect);
 
   Gtk::Main::run(window);
 

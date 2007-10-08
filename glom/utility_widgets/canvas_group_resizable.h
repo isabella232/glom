@@ -42,9 +42,9 @@ public:
   void set_child(const Glib::RefPtr<Goocanvas::Rect>& child);
 
 protected:
-  //virtual bool on_button_press_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventButton* event);
-  //virtual bool on_button_release_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventButton* event);
-  //virtual bool on_motion_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventMotion* event);
+  virtual bool on_child_button_press_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventButton* event);
+  virtual bool on_child_button_release_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventButton* event);
+  virtual bool on_child_motion_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventMotion* event);
 
   enum Manipulators
   {
@@ -61,6 +61,10 @@ protected:
 
   void manipulator_connect_signals(const Glib::RefPtr<CanvasRectMovable> manipulator, Manipulators manipulator_id);
   void position_corners();
+  void set_manipulators_visibility(Goocanvas::ItemVisibility visibility);
+
+  bool on_enter_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventCrossing* event);
+  bool on_leave_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventCrossing* event);
 
   void on_manipulator_moved(const Glib::RefPtr<CanvasRectMovable> manipulator, Manipulators manipulator_id);
 
@@ -69,8 +73,10 @@ protected:
   //bool on_manipulator_motion_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventMotion* event, Manipulators manipulator);
 
   Glib::RefPtr<Goocanvas::Rect> m_child;
-
   Glib::RefPtr<CanvasRectMovable> m_manipulator_corner_top_left, m_manipulator_corner_top_right, m_manipulator_corner_bottom_left, m_manipulator_corner_bottom_right;
+
+  bool m_dragging;
+  double m_drag_x, m_drag_y;
 };
 
 } //namespace Glom
