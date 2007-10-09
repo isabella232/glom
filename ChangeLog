@@ -1,5 +1,14 @@
 2007-10-09  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/utility_widgets/canvas/canvas_group_resizable.cc:
+	* glom/utility_widgets/canvas/canvas_item_movable.cc:
+	* glom/utility_widgets/canvas/canvas_item_movable.h:
+	* glom/utility_widgets/canvas/test_canvas_editable.cc:
+	Drag movement is now restricted to x or y when holding ctrl when dragging, 
+	as in Inkscape.
+
+2007-10-09  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/utility_widgets/canvas/canvas_editable.cc:
 	* glom/utility_widgets/canvas/canvas_editable.h: Added add_*_rule().
 	* glom/utility_widgets/canvas/canvas_grid.cc:

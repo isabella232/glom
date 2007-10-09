@@ -63,6 +63,10 @@ public:
    */
   void set_grid(const CanvasGrid* grid);
 
+  /** Restrict movement (via dragging) to the x axis or the y axis.
+   */
+  void set_movement_allowed(bool vertical, bool horizontal);
+
 protected:
 
   virtual Goocanvas::Canvas* get_parent_canvas_widget() = 0;
@@ -82,11 +86,14 @@ public:
 
 protected:
   bool m_dragging;
+  bool m_dragging_vertical_only, m_dragging_horizontal_only; //Set by using Ctrl while dragging.
   double m_drag_start_cursor_x, m_drag_start_cursor_y;
   double m_drag_start_position_x, m_drag_start_position_y;
   Gdk::Cursor m_drag_cursor;
 
   const CanvasGrid* m_grid;
+
+  bool m_allow_vertical_movement, m_allow_horizontal_movement;
 
   type_signal_moved m_signal_moved;
 };

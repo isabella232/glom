@@ -142,6 +142,7 @@ main(int argc, char* argv[])
   line->property_points() = points;
   line->property_line_width() = 3.0f;
   line->property_stroke_color() = "gray";
+  line->set_movement_allowed(false, true);
   canvas.add_item(line);
 
   Gtk::Main::run(window);

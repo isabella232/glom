@@ -325,6 +325,9 @@ bool CanvasGroupResizable::on_child_button_press_event(const Glib::RefPtr<Goocan
       
       item->raise();
     
+      m_dragging_horizontal_only = false;
+      m_dragging_vertical_only = false;
+
       m_drag_start_cursor_x = event->x;
       m_drag_start_cursor_y = event->y;
 
@@ -365,12 +368,42 @@ bool CanvasGroupResizable::on_child_motion_notify_event(const Glib::RefPtr<Gooca
     const double offset_x = event->x - m_drag_start_cursor_x;
     const double offset_y = event->y - m_drag_start_cursor_y;
 
+    // Inkscape uses the Ctrl key to restrict movement to horizontal or vertical, 
+    // so let's do that too.
+    if( (event->state & Gdk::CONTROL_MASK) && !m_dragging_vertical_only && !m_dragging_horizontal_only )
+    {
+      //Decide whether to restrict to vertical or horizontal movement:
+      //Whichever has the greatest offset already will be the axis that we restrict movement to.
+      if(offset_x > offset_y)
+      {
+        m_dragging_horizontal_only = true;
+        m_dragging_vertical_only = false;
+      }
+      else
+      {
+        m_dragging_vertical_only = true;
+        m_dragging_horizontal_only = false;
+      }
+    }
+    else if ( !(event->state & Gdk::CONTROL_MASK) && (m_dragging_vertical_only || m_dragging_horizontal_only))
+    {
+      //Ctrl was released, so allow full movement again:
+      m_dragging_vertical_only = false;
+      m_dragging_horizontal_only = false;
+    }
+
     Glib::RefPtr<Goocanvas::Rect> rect = Glib::RefPtr<Goocanvas::Rect>::cast_dynamic(item);
     if(rect)
     {
       double new_x = m_drag_start_position_x + offset_x;
       double new_y = m_drag_start_position_y + offset_y;
       snap_position(new_x, new_y);
+
+      if(!m_allow_vertical_movement || m_dragging_horizontal_only)
+        new_y = m_drag_start_position_y;
+
+      if(!m_allow_horizontal_movement || m_dragging_vertical_only)
+        new_x = m_drag_start_position_x;
 
       rect->property_x() = new_x; 
       rect->property_y() = new_y;
