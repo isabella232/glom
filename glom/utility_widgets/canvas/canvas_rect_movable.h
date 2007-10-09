@@ -52,10 +52,11 @@ public:
 
   virtual void get_xy(double& x, double& y);
   virtual void move(double x, double y);
-  virtual void snap_position(double& x, double& y) const;
 
 protected:
   virtual Goocanvas::Canvas* get_parent_canvas_widget();
+
+  virtual void snap_position(double& x, double& y) const;
 
   //What corner is considered when snapping to a grid while moving:
   Corners m_snap_corner;

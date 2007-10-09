@@ -1,5 +1,14 @@
 2007-10-09  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/utility_widgets/canvas/canvas_editable.cc:
+	* glom/utility_widgets/canvas/canvas_group_resizable.cc:
+	* glom/utility_widgets/canvas/canvas_group_resizable.h:
+	* glom/utility_widgets/canvas/canvas_item_movable.h:
+	* glom/utility_widgets/canvas/canvas_rect_movable.h: All four corners 
+	(the closest one to a grid line) now snap when moving a CanvasGroupResizable.
+
+2007-10-09  Murray Cumming  <murrayc@murrayc.com>
+
 	* configure.in:
 	* glom/Makefile.am:
 	* glom/utility_widgets/Makefile.am:

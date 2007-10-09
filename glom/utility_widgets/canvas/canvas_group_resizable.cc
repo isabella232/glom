@@ -102,9 +102,6 @@ void CanvasGroupResizable::set_child(const Glib::RefPtr<Goocanvas::Rect>& child)
   if(!child)
     return;
 
-  if(m_child)
-    return;
-
   m_child = child;
   add_child(child);
 
@@ -367,8 +364,12 @@ bool CanvasGroupResizable::on_child_motion_notify_event(const Glib::RefPtr<Gooca
     Glib::RefPtr<Goocanvas::Rect> rect = Glib::RefPtr<Goocanvas::Rect>::cast_dynamic(item);
     if(rect)
     {
-      rect->property_x() = m_drag_start_position_x + offset_x;
-      rect->property_y() = m_drag_start_position_y + offset_y;
+      double new_x = m_drag_start_position_x + offset_x;
+      double new_y = m_drag_start_position_y + offset_y;
+      snap_position(new_x, new_y);
+
+      rect->property_x() = new_x; 
+      rect->property_y() = new_y;
 
       position_manipulators();
     }
@@ -480,6 +481,82 @@ void CanvasGroupResizable::move(double x, double y)
   m_child->property_y() = y;
 
   position_manipulators();
+}
+
+void CanvasGroupResizable::snap_position(double& x, double& y) const
+{
+  double offset_x_min = 0;
+  double offset_y_min = 0;
+
+  //Try snapping each corner, to choose the one that snapped closest:
+  for(int i = 0; i < CORNER_COUNT; ++i)
+  {
+    const Corners corner = (Corners)i;
+    double temp_x = x;
+    double temp_y = y;
+    snap_position(corner, temp_x, temp_y);
+    std::cout << "CanvasGroupResizable::snap_position(): x=" << temp_x << ", y=" << temp_y << std::endl;
+
+    const double offset_x = temp_x -x;
+    const double offset_y = temp_y - y;
+    std::cout << "CanvasGroupResizable::snap_position(): offset_x=" << offset_x << ", offset_y=" << offset_y << std::endl;
+
+
+    if(offset_x && ((std::abs(offset_x) < std::abs(offset_x_min)) || !offset_x_min))
+      offset_x_min = offset_x;
+
+    if(offset_y && ((std::abs(offset_y) < std::abs(offset_y_min)) || !offset_y_min))
+      offset_y_min = offset_y;
+  }
+
+  std::cout << "CanvasGroupResizable::snap_position(): offset_x_min=" << offset_x_min << ", offset_y_min=" << offset_y_min << std::endl;
+
+
+  x += offset_x_min;
+  y += offset_y_min;
+}
+
+void CanvasGroupResizable::snap_position(Corners corner, double& x, double& y) const
+{
+  //Choose the offset of the part to snap to the grid:
+  double corner_x_offset = 0;
+  double corner_y_offset = 0;
+  switch(corner)
+  {
+    case CORNER_TOP_LEFT:
+      corner_x_offset = 0;
+      corner_y_offset = 0;
+      break;
+    case CORNER_TOP_RIGHT:
+      corner_x_offset = m_child->property_width();
+      corner_y_offset = 0;
+      break;
+    case CORNER_BOTTOM_LEFT:
+      corner_x_offset = 0;
+      corner_y_offset = m_child->property_height();
+      break;
+    case CORNER_BOTTOM_RIGHT:
+      corner_x_offset = m_child->property_width();
+      corner_y_offset = m_child->property_height();
+      break;
+    default:
+      break;
+  }
+
+  //Snap that point to the grid:
+  const double x_to_snap = x + corner_x_offset;
+  const double y_to_snap = y + corner_y_offset;
+  double corner_x_snapped = x_to_snap;
+  double corner_y_snapped = y_to_snap;
+  CanvasItemMovable::snap_position(corner_x_snapped, corner_y_snapped);
+
+  //Discover what offset the snapping causes:
+  const double snapped_offset_x = corner_x_snapped - x_to_snap;
+  const double snapped_offset_y = corner_y_snapped - y_to_snap;
+
+  //Apply that offset to the regular position:
+  x += snapped_offset_x;
+  y += snapped_offset_y;
 }
 
 Goocanvas::Canvas* CanvasGroupResizable::get_parent_canvas_widget()

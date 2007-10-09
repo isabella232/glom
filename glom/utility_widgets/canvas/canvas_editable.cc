@@ -174,7 +174,6 @@ void CanvasEditable::set_grid_gap(double gap)
   const double height = bottom - top;
 
   const double count_vertical_grid_lines = width / m_grid.m_grid_gap;
-  std::cout << "CanvasEditable::set_grid_gap(): count_vertical_grid_linesx=" << count_vertical_grid_lines << std::endl;
   const double count_horizontal_grid_lines = height / m_grid.m_grid_gap;
   
   for(double i = 0; i < count_vertical_grid_lines; ++i)

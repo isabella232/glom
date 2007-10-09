@@ -50,8 +50,6 @@ public:
    */
   virtual void move(double x, double y) = 0;
 
-  virtual void snap_position(double& x, double& y) const;
-
   void set_drag_cursor(Gdk::CursorType cursor);
   void set_drag_cursor(const Gdk::Cursor& cursor);
 
@@ -68,6 +66,8 @@ public:
 protected:
 
   virtual Goocanvas::Canvas* get_parent_canvas_widget() = 0;
+
+  virtual void snap_position(double& x, double& y) const;
 
   void set_cursor(const Gdk::Cursor& cursor);
   void unset_cursor();

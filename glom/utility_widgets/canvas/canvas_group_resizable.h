@@ -53,6 +53,20 @@ public:
 protected:
   virtual Goocanvas::Canvas* get_parent_canvas_widget();
 
+  virtual void snap_position(double& x, double& y) const;
+
+  enum Corners
+  {
+    CORNER_TOP_LEFT,
+    CORNER_TOP_RIGHT,
+    CORNER_BOTTOM_LEFT,
+    CORNER_BOTTOM_RIGHT,
+    CORNER_COUNT
+  };
+
+  void snap_position(Corners corner, double& x, double& y) const;
+
+
   bool on_enter_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventCrossing* event);
   bool on_leave_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventCrossing* event);
 
