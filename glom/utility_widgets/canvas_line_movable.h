@@ -37,7 +37,7 @@ protected:
   virtual ~CanvasLineMovable();
 
   virtual void get_xy(double& x, double& y);
-  virtual void move(double x_offet, double y_offset);
+  virtual void move(double x, double y);
 
 public:
   static Glib::RefPtr<CanvasLineMovable> create();

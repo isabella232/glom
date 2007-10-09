@@ -123,11 +123,14 @@ void CanvasGroupResizable::set_child(const Glib::RefPtr<Goocanvas::Rect>& child)
   add_child(m_manipulator_edge_left);
   add_child(m_manipulator_edge_right);
 
-  std::cout << "CanvasGroupResizable::set_child(): m_grid=" << m_grid << std::endl;
   m_manipulator_corner_top_left->set_grid(m_grid);
+  m_manipulator_corner_top_left->set_snap_corner(CanvasRectMovable::CORNER_TOP_LEFT);
   m_manipulator_corner_top_right->set_grid(m_grid);
+  m_manipulator_corner_top_right->set_snap_corner(CanvasRectMovable::CORNER_TOP_RIGHT);
   m_manipulator_corner_bottom_left->set_grid(m_grid);
+  m_manipulator_corner_bottom_left->set_snap_corner(CanvasRectMovable::CORNER_BOTTOM_LEFT);
   m_manipulator_corner_bottom_right->set_grid(m_grid);
+  m_manipulator_corner_bottom_right->set_snap_corner(CanvasRectMovable::CORNER_BOTTOM_RIGHT);
 
   m_manipulator_corner_top_left->set_drag_cursor(Gdk::TOP_LEFT_CORNER);
   m_manipulator_corner_top_right->set_drag_cursor(Gdk::TOP_RIGHT_CORNER);

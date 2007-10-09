@@ -93,10 +93,7 @@ bool CanvasItemMovable::on_motion_notify_event(const Glib::RefPtr<Goocanvas::Ite
     double new_x = m_drag_start_position_x + offset_x;
     double new_y = m_drag_start_position_y + offset_y;
 
-    if(m_grid)
-      m_grid->snap_position(new_x, new_y);
-    else
-      std::cout << "m_grid is NULL" << std::endl;
+    snap_position(new_x, new_y);
 
     move(new_x, new_y);
 
@@ -172,6 +169,15 @@ void CanvasItemMovable::unset_cursor()
 void CanvasItemMovable::set_grid(const CanvasGrid* grid)
 {
   m_grid = grid;
+}
+
+void CanvasItemMovable::snap_position(double& x, double& y) const
+{
+  //Override this to snap on a part other than the arbitrary part used by get_xy() and move().
+  //For instance, you may want to snap on the bottom-left corner of a rectangle rather than the top-left.
+
+  if(m_grid)
+    m_grid->snap_position(x, y);
 }
 
 } //namespace Glom

@@ -35,14 +35,30 @@ protected:
   CanvasRectMovable();
   virtual ~CanvasRectMovable();
 
-  virtual void get_xy(double& x, double& y);
-  virtual void move(double x_offet, double y_offset);
-
 public:
   static Glib::RefPtr<CanvasRectMovable> create();
 
+  enum Corners
+  {
+    CORNER_TOP_LEFT,
+    CORNER_TOP_RIGHT,
+    CORNER_BOTTOM_LEFT,
+    CORNER_BOTTOM_RIGHT
+  };
+
+  /** Specify the corner to be considered when snapping to a grid while moving.
+   */
+  void set_snap_corner(Corners corner);
+
+  virtual void get_xy(double& x, double& y);
+  virtual void move(double x, double y);
+  virtual void snap_position(double& x, double& y) const;
+
 protected:
   virtual Goocanvas::Canvas* get_parent_canvas_widget();
+
+  //What corner is considered when snapping to a grid while moving:
+  Corners m_snap_corner;
 };
 
 } //namespace Glom

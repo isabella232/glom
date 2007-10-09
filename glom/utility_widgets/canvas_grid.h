@@ -40,6 +40,9 @@ public:
   /// 0.0 means no grid.
   double m_grid_gap;
 
+  /// How close we have to be to a grid line to snap to it:
+  double m_grid_sensitivity;
+
   typedef std::vector<double> type_vec_double;
 
   /// The x coordinates of any vertical rules:
@@ -50,6 +53,8 @@ public:
 
 protected:
   double snap_position_grid(double a) const;
+
+  bool is_close(double a, double b) const;
 };
 
 } //namespace Glom

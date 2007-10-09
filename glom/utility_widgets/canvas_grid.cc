@@ -37,13 +37,14 @@ inline void division_and_remainder(double a, double b, double& whole, double& re
   whole = (int)(a / b);
 }
 
-inline bool is_close(double a, double b)
+bool CanvasGrid::is_close(double a, double b) const
 {
-  return (std::abs((long)(a - b)) < 5);
+  return (std::abs((long)(a - b)) < m_grid_sensitivity);
 
 }
 CanvasGrid::CanvasGrid()
-: m_grid_gap(0.0)
+: m_grid_gap(0.0),
+  m_grid_sensitivity(5.0)
 {
 }
 

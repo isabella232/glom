@@ -30,7 +30,8 @@ namespace Glom
 
 
 CanvasRectMovable::CanvasRectMovable()
-: Goocanvas::Rect((GooCanvasRect*)goo_canvas_rect_new(NULL, 0.0, 0.0, 0.0, 0.0, NULL)) //TODO: Remove this when goocanvas has been fixed.
+: Goocanvas::Rect((GooCanvasRect*)goo_canvas_rect_new(NULL, 0.0, 0.0, 0.0, 0.0, NULL)), //TODO: Remove this when goocanvas has been fixed.
+  m_snap_corner(CORNER_TOP_LEFT) //arbitrary default.
 {
    //TODO: Remove this when goocanvas is fixed, so the libgoocanvasmm constructor can connect default signal handlers:
   signal_motion_notify_event().connect(sigc::mem_fun(*this, &CanvasItemMovable::on_motion_notify_event));
@@ -62,9 +63,57 @@ void CanvasRectMovable::move(double x, double y)
   property_y() = y;
 }
 
+void CanvasRectMovable::snap_position(double& x, double& y) const
+{
+  //Choose the offset of the part to snap to the grid:
+  double corner_x_offset = 0;
+  double corner_y_offset = 0;
+  switch(m_snap_corner)
+  {
+    case CORNER_TOP_LEFT:
+      corner_x_offset = 0;
+      corner_y_offset = 0;
+      break;
+    case CORNER_TOP_RIGHT:
+      corner_x_offset = property_width();
+      corner_y_offset = 0;
+      break;
+    case CORNER_BOTTOM_LEFT:
+      corner_x_offset = 0;
+      corner_y_offset = property_height();
+      break;
+    case CORNER_BOTTOM_RIGHT:
+      corner_x_offset = property_width();
+      corner_y_offset = property_height();
+      break;
+    default:
+      break;
+  }
+
+  //Snap that point to the grid:
+  const double x_to_snap = x + corner_x_offset;
+  const double y_to_snap = y + corner_y_offset;
+  double corner_x_snapped = x_to_snap;
+  double corner_y_snapped = y_to_snap;
+  CanvasItemMovable::snap_position(corner_x_snapped, corner_y_snapped);
+
+  //Discover what offset the snapping causes:
+  const double snapped_offset_x = corner_x_snapped - x_to_snap;
+  const double snapped_offset_y = corner_y_snapped - y_to_snap;
+
+  //Apply that offset to the regular position:
+  x += snapped_offset_x;
+  y += snapped_offset_y;
+}
+
 Goocanvas::Canvas* CanvasRectMovable::get_parent_canvas_widget()
 {
   return get_canvas();
+}
+
+void CanvasRectMovable::set_snap_corner(Corners corner)
+{
+  m_snap_corner = corner;
 }
 
 } //namespace Glom

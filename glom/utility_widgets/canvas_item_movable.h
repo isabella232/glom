@@ -37,8 +37,20 @@ protected:
 
 public:
 
+  /* Get the position of the item.
+   * For some items, this is an arbitrary part of the item, 
+   * such as the top-left of a rectangle,
+   * or the first point in a line.
+   */
   virtual void get_xy(double& x, double& y) = 0;
-  virtual void move(double x_offet, double y_offset) = 0;
+
+  /** Move the item.
+   * This should be the same arbitrary part of the item that is used by get_xy().
+   * All other parts of the item will move by the same offset.
+   */
+  virtual void move(double x, double y) = 0;
+
+  virtual void snap_position(double& x, double& y) const;
 
   void set_drag_cursor(Gdk::CursorType cursor);
   void set_drag_cursor(const Gdk::Cursor& cursor);
