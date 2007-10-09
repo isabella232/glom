@@ -48,10 +48,14 @@ public:
    */
   void remove_grid();
 
+  void add_vertical_rule(double x);
+  void add_horizontal_rule(double x);
+
 protected:
   void add_item_line(const Glib::RefPtr<Goocanvas::Path>& item, bool resizable = false);
   void add_item_rect(const Glib::RefPtr<Goocanvas::Rect>& item, bool resizable = false);
   void add_item_group(const Glib::RefPtr<Goocanvas::Group>& item);
+  Glib::RefPtr<Goocanvas::Polyline> create_grid_or_rule_line(double x1, double y1, double x2, double y2, bool is_rule = false);
 
   static Glib::RefPtr<Goocanvas::Item> get_parent_container_or_self(const Glib::RefPtr<Goocanvas::Item>& item);
 
@@ -76,7 +80,7 @@ protected:
   type_map_item_info m_map_item_info;
 
   CanvasGrid m_grid;
-  Glib::RefPtr<Goocanvas::Group> m_grid_group;
+  Glib::RefPtr<Goocanvas::Group> m_grid_lines_group, m_grid_rules_group;
 };
 
 } //namespace Glom

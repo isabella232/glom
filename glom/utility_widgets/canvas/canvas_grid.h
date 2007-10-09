@@ -53,6 +53,9 @@ public:
 
 protected:
   double snap_position_grid(double a) const;
+  double snap_position_rules(const type_vec_double& rules, double a) const;
+  double snap_position_rules_x(double x) const;
+  double snap_position_rules_y(double y) const;
 
   bool is_close(double a, double b) const;
 };

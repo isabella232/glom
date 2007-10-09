@@ -116,7 +116,10 @@ main(int argc, char* argv[])
   canvas.show();
   canvas.set_bounds(0, 0, 500, 500);
 
-  canvas.set_grid_gap(20);
+  canvas.add_vertical_rule(73);
+  canvas.add_vertical_rule(103);
+  canvas.add_horizontal_rule(55);
+  canvas.set_grid_gap(40);
 
   //Doesn't work until we fix the goocanvas _new() methods: Glib::RefPtr<Goocanvas::Rect> rect = Glib::wrap( goo_canvas_rect_new()
   //Glib::RefPtr<Goocanvas::Rect> rect  = Goocanvas::Rect::create(10, 10, 110, 110);

@@ -163,11 +163,35 @@ void CanvasEditable::on_show_context_menu(guint button, guint32 activate_time)
   printf("%s\n", __FUNCTION__);
 }
 
+Glib::RefPtr<Goocanvas::Polyline> CanvasEditable::create_grid_or_rule_line(double x1, double y1, double x2, double y2, bool is_rule)
+{
+  Glib::RefPtr<Goocanvas::Polyline> line = 
+      Glib::wrap((GooCanvasPolyline*)goo_canvas_polyline_new_line(NULL, x1, y1, x2, y2, NULL));
+  line->property_line_width() = 1.0f;
+
+  if(is_rule)
+    line->property_stroke_color() = "green";
+  else
+    line->property_stroke_color() = "gray";
+
+  return line;
+}
+
+void CanvasEditable::add_vertical_rule(double x)
+{
+  m_grid.m_rules_x.push_back(x);
+}
+
+void CanvasEditable::add_horizontal_rule(double y)
+{
+  m_grid.m_rules_y.push_back(y);
+}
+
 void CanvasEditable::set_grid_gap(double gap)
 {
   m_grid.m_grid_gap = gap;
 
-  m_grid_group = Goocanvas::Group::create();
+  m_grid_lines_group = Goocanvas::Group::create();
   double left, top, right, bottom = 0;
   get_bounds(left, top, right, bottom);
   const double width = right - left;
@@ -176,33 +200,41 @@ void CanvasEditable::set_grid_gap(double gap)
   const double count_vertical_grid_lines = width / m_grid.m_grid_gap;
   const double count_horizontal_grid_lines = height / m_grid.m_grid_gap;
   
+  //Vertical grid lines:
   for(double i = 0; i < count_vertical_grid_lines; ++i)
   {
     const double x = i * m_grid.m_grid_gap;
    
-    Glib::RefPtr<Goocanvas::Polyline> line = 
-      Glib::wrap((GooCanvasPolyline*)goo_canvas_polyline_new_line(NULL, x, top, x, bottom, NULL));
-    line->property_line_width() = 1.0f;
-    line->property_stroke_color() = "gray";
-    line->lower();
-
-    m_grid_group->add_child(line);
+    Glib::RefPtr<Goocanvas::Polyline> line = create_grid_or_rule_line(x, top, x, bottom);
+    m_grid_lines_group->add_child(line);
   }
 
+  //Horizontal grid lines:
   for(double i = 0; i < count_horizontal_grid_lines; ++i)
   {
     const double y = i * m_grid.m_grid_gap;
 
-    Glib::RefPtr<Goocanvas::Polyline> line = 
-      Glib::wrap((GooCanvasPolyline*)goo_canvas_polyline_new_line(NULL, left, y, right, y, NULL));
-    line->property_line_width() = 1.0f;
-    line->property_stroke_color() = "gray";
-    line->lower();
-
-    m_grid_group->add_child(line);
+    Glib::RefPtr<Goocanvas::Polyline> line = create_grid_or_rule_line(left, y, right, y);
+    m_grid_lines_group->add_child(line);
   }
 
-  add_item_group(m_grid_group);
+  add_item_group(m_grid_lines_group);
+
+  //Vertical rules:
+  for(CanvasGrid::type_vec_double::const_iterator iter = m_grid.m_rules_x.begin(); iter != m_grid.m_rules_x.end(); ++iter)
+  {
+    const double x = *iter;
+    Glib::RefPtr<Goocanvas::Polyline> line = create_grid_or_rule_line(x, top, x, bottom, true);
+    m_grid_lines_group->add_child(line);
+  }
+
+  //Horizontal rules:
+  for(CanvasGrid::type_vec_double::const_iterator iter = m_grid.m_rules_y.begin(); iter != m_grid.m_rules_y.end(); ++iter)
+  {
+    const double y = *iter;
+    Glib::RefPtr<Goocanvas::Polyline> line = create_grid_or_rule_line(left, y, right, y, true);
+    m_grid_lines_group->add_child(line);
+  }
 }
 
 void CanvasEditable::remove_grid()

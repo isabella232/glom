@@ -52,6 +52,37 @@ CanvasGrid::~CanvasGrid()
 {
 }
 
+
+double CanvasGrid::snap_position_rules(const type_vec_double& rules, double a) const
+{
+  double result = a;
+
+  for(type_vec_double::const_iterator iter = rules.begin(); iter != rules.end(); ++iter)
+  {
+    const double rule_a = *iter;
+    if(is_close(a, rule_a))
+    {
+      if(result == a) //Prefer some snap to no snap
+        result = rule_a; 
+      else if(std::abs((long)(a - rule_a)) < std::abs((long)(a - result))) //Use the closest one.
+        result = rule_a;
+    }
+  }
+
+
+  return result;
+}
+
+double CanvasGrid::snap_position_rules_x(double x) const
+{
+  return snap_position_rules(m_rules_x, x);
+}
+
+double CanvasGrid::snap_position_rules_y(double y) const
+{
+  return snap_position_rules(m_rules_y, y);
+}
+
 double CanvasGrid::snap_position_grid(double a) const
 {
   double result = a;
@@ -88,8 +119,39 @@ void CanvasGrid::snap_position(double& x, double& y) const
   //printf("%s: x=%f, y=%f\n", __FUNCTION__, x, y);
   if(m_grid_gap)
   {
-    x = snap_position_grid(x);
-    y = snap_position_grid(y);
+    double offset_x_min = 0;
+    double offset_y_min = 0;
+
+    //Try snapping to the grid:
+    double temp_x = snap_position_grid(x);
+    double temp_y = snap_position_grid(y);
+   
+    double offset_x = temp_x - x;
+    double offset_y = temp_y - y;
+
+    //Use the smallest offset, preferring some offset to no offset:
+    if(offset_x)
+      offset_x_min = offset_x;
+
+    if(offset_y)
+      offset_y_min = offset_y;
+
+    //Try snapping to the rules:
+    temp_x = snap_position_rules_x(x);
+    temp_y = snap_position_rules_y(y);
+
+    offset_x = temp_x - x;
+    offset_y = temp_y - y;
+
+    //Use the smallest offset, preferring some offset to no offset:
+    if(offset_x && ((std::abs((long)offset_x) < std::abs((long)offset_x_min)) || !offset_x_min))
+      offset_x_min = offset_x;
+
+    if(offset_y && ((std::abs((long)offset_y) < std::abs((long)offset_y_min)) || !offset_y_min))
+      offset_y_min = offset_y;
+
+    x += offset_x_min;
+    y += offset_y_min;
   }
 }
 

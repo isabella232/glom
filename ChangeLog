@@ -1,5 +1,14 @@
 2007-10-09  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/utility_widgets/canvas/canvas_editable.cc:
+	* glom/utility_widgets/canvas/canvas_editable.h: Added add_*_rule().
+	* glom/utility_widgets/canvas/canvas_grid.cc:
+	* glom/utility_widgets/canvas/canvas_grid.h: snap_position(): Implement 
+	snapping to rules, when they are closer than grid lines.
+	* glom/utility_widgets/canvas/test_canvas_editable.cc: Added some rules.
+
+2007-10-09  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/utility_widgets/canvas/canvas_group_resizable.cc:
 	set the grid for edge manipulators so that they snap too. Now everything seems 
 	to snap properly to the grid when resizing or moving.
