@@ -116,6 +116,8 @@ main(int argc, char* argv[])
   canvas.show();
   canvas.set_bounds(0, 0, 500, 500);
 
+  canvas.set_grid_gap(20);
+
   //Doesn't work until we fix the goocanvas _new() methods: Glib::RefPtr<Goocanvas::Rect> rect = Glib::wrap( goo_canvas_rect_new()
   //Glib::RefPtr<Goocanvas::Rect> rect  = Goocanvas::Rect::create(10, 10, 110, 110);
   Glib::RefPtr<Goocanvas::Rect> rect = Glib::wrap( (GooCanvasRect*)goo_canvas_rect_new(NULL, 10, 10, 110, 110, NULL) );
@@ -135,7 +137,6 @@ main(int argc, char* argv[])
   double points_coordinates[] = {20.0, 20.0, 100.0, 40.0};
   Goocanvas::Points points(2, points_coordinates);
   line->property_points() = points;
-  line->property_fill_color() = "blue"; //This makes the whole area clickable, not just the outline stroke:
   line->property_line_width() = 3.0f;
   line->property_stroke_color() = "gray";
   canvas.add_item(line);

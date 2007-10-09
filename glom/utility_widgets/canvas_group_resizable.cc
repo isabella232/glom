@@ -123,6 +123,12 @@ void CanvasGroupResizable::set_child(const Glib::RefPtr<Goocanvas::Rect>& child)
   add_child(m_manipulator_edge_left);
   add_child(m_manipulator_edge_right);
 
+  std::cout << "CanvasGroupResizable::set_child(): m_grid=" << m_grid << std::endl;
+  m_manipulator_corner_top_left->set_grid(m_grid);
+  m_manipulator_corner_top_right->set_grid(m_grid);
+  m_manipulator_corner_bottom_left->set_grid(m_grid);
+  m_manipulator_corner_bottom_right->set_grid(m_grid);
+
   m_manipulator_corner_top_left->set_drag_cursor(Gdk::TOP_LEFT_CORNER);
   m_manipulator_corner_top_right->set_drag_cursor(Gdk::TOP_RIGHT_CORNER);
   m_manipulator_corner_bottom_left->set_drag_cursor(Gdk::BOTTOM_LEFT_CORNER);
@@ -411,7 +417,7 @@ void CanvasGroupResizable::set_manipulators_visibility(Goocanvas::ItemVisibility
 
 bool CanvasGroupResizable::on_enter_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventCrossing* event)
 {
-  std::cout << "CanvasGroupResizable::on_enter_notify_event" << std::endl;
+  //std::cout << "CanvasGroupResizable::on_enter_notify_event" << std::endl;
   CanvasItemMovable::on_enter_notify_event(target, event);
 
   set_manipulators_visibility(Goocanvas::CANVAS_ITEM_VISIBLE);
@@ -421,7 +427,7 @@ bool CanvasGroupResizable::on_enter_notify_event(const Glib::RefPtr<Goocanvas::I
 
 bool CanvasGroupResizable::on_leave_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventCrossing* event)
 {
-  std::cout << "CanvasGroupResizable::on_leave_notify_event" << std::endl;
+  //std::cout << "CanvasGroupResizable::on_leave_notify_event" << std::endl;
   CanvasItemMovable::on_leave_notify_event(target, event);
 
   set_manipulators_visibility(Goocanvas::CANVAS_ITEM_INVISIBLE);

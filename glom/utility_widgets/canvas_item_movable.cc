@@ -32,7 +32,8 @@ namespace Glom
 CanvasItemMovable::CanvasItemMovable()
 : m_dragging(false),
   m_drag_start_cursor_x(0.0), m_drag_start_cursor_y(0.0),
-  m_drag_start_position_x(0.0), m_drag_start_position_y(0.0)
+  m_drag_start_position_x(0.0), m_drag_start_position_y(0.0),
+  m_grid(0)
 {
    //TODO: Remove this when goocanvas is fixed, so the libgoocanvasmm constructor can connect default signal handlers:
   /*
@@ -89,7 +90,15 @@ bool CanvasItemMovable::on_motion_notify_event(const Glib::RefPtr<Goocanvas::Ite
     const double offset_x = event->x - m_drag_start_cursor_x;
     const double offset_y = event->y - m_drag_start_cursor_y;
 
-    move(m_drag_start_position_x + offset_x, m_drag_start_position_y + offset_y);
+    double new_x = m_drag_start_position_x + offset_x;
+    double new_y = m_drag_start_position_y + offset_y;
+
+    if(m_grid)
+      m_grid->snap_position(new_x, new_y);
+    else
+      std::cout << "m_grid is NULL" << std::endl;
+
+    move(new_x, new_y);
 
     m_signal_moved.emit();
   }
@@ -158,6 +167,11 @@ void CanvasItemMovable::unset_cursor()
      if(window)
        window->set_cursor();
    }
+}
+
+void CanvasItemMovable::set_grid(const CanvasGrid* grid)
+{
+  m_grid = grid;
 }
 
 } //namespace Glom

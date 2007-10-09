@@ -1,6 +1,20 @@
 2007-10-09  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/utility_widgets/Makefile.am:
+	* glom/utility_widgets/canvas_editable.cc:
+	* glom/utility_widgets/canvas_editable.h:
+	* glom/utility_widgets/canvas_grid.cc:
+	* glom/utility_widgets/canvas_grid.h:
+	* glom/utility_widgets/canvas_group_resizable.cc:
+	* glom/utility_widgets/canvas_item_movable.cc:
+	* glom/utility_widgets/canvas_item_movable.h:
+	* glom/utility_widgets/test_canvas_editable.cc: Implement a visible 
+	grid to which the corners snap when resizing. This only makes sense 
+	so far for the top-left corner.
+
+2007-10-09  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/utility_widgets/Makefile.am:
 	* glom/utility_widgets/canvas_group_resizable.cc:
 	* glom/utility_widgets/canvas_group_resizable.h:
 	* glom/utility_widgets/canvas_item_movable.cc:

@@ -22,6 +22,7 @@
 #define GLOM_UTILITY_WIDGETS_CANVAS_ITEM_MOVABLE_H
 
 #include "canvas_item_movable.h"
+#include "canvas_grid.h"
 #include <libgoocanvasmm/item.h>
 #include <gdkmm/cursor.h>
 
@@ -45,6 +46,13 @@ public:
   typedef sigc::signal<void> type_signal_moved;
   type_signal_moved signal_moved();
 
+  /** Provide information about a grid or rules, 
+   * to which the item should snap when moving:
+   *
+   * @param grid: This must exist for as long as the canvas item.
+   */
+  void set_grid(const CanvasGrid* grid);
+
 protected:
 
   virtual Goocanvas::Canvas* get_parent_canvas_widget() = 0;
@@ -65,6 +73,8 @@ protected:
   double m_drag_start_cursor_x, m_drag_start_cursor_y;
   double m_drag_start_position_x, m_drag_start_position_y;
   Gdk::Cursor m_drag_cursor;
+
+  const CanvasGrid* m_grid;
 
   type_signal_moved m_signal_moved;
 };

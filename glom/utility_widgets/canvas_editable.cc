@@ -20,6 +20,9 @@
 
 #include "canvas_editable.h"
 #include "canvas_group_resizable.h"
+#include "canvas_rect_movable.h"
+#include <math.h>
+#include <iostream>
 
 namespace Glom
 {
@@ -57,6 +60,20 @@ void CanvasEditable::add_item(const Glib::RefPtr<Goocanvas::Item>& item, bool re
   }
 }
 
+void CanvasEditable::add_item_group(const Glib::RefPtr<Goocanvas::Group>& item)
+{
+  if(!item)
+    return;
+
+  Glib::RefPtr<Goocanvas::Item> root = get_root_item();
+
+  Glib::RefPtr<Goocanvas::Group> root_group = Glib::RefPtr<Goocanvas::Group>::cast_dynamic(root);
+  if(root_group)
+  {
+    root_group->add_child(item);
+  }
+}
+
 void CanvasEditable::add_item_line(const Glib::RefPtr<Goocanvas::Path>& item, bool resizable)
 {
   if(!item)
@@ -87,6 +104,8 @@ void CanvasEditable::add_item_rect(const Glib::RefPtr<Goocanvas::Rect>& item, bo
     if(resizable)
     {
       Glib::RefPtr<CanvasGroupResizable> resizable = CanvasGroupResizable::create();
+      resizable->set_grid(&m_grid);
+
       root_group->add_child(resizable); //We must do this before calling set_child(), so that set_child() can discover the bounds.
       resizable->set_child(item); //Puts draggable corners and edges around it. 
     }
@@ -144,6 +163,53 @@ void CanvasEditable::on_show_context_menu(guint button, guint32 activate_time)
   printf("%s\n", __FUNCTION__);
 }
 
+void CanvasEditable::set_grid_gap(double gap)
+{
+  m_grid.m_grid_gap = gap;
+
+  m_grid_group = Goocanvas::Group::create();
+  double left, top, right, bottom = 0;
+  get_bounds(left, top, right, bottom);
+  const double width = right - left;
+  const double height = bottom - top;
+
+  const double count_vertical_grid_lines = width / m_grid.m_grid_gap;
+  std::cout << "CanvasEditable::set_grid_gap(): count_vertical_grid_linesx=" << count_vertical_grid_lines << std::endl;
+  const double count_horizontal_grid_lines = height / m_grid.m_grid_gap;
+  
+  for(double i = 0; i < count_vertical_grid_lines; ++i)
+  {
+    const double x = i * m_grid.m_grid_gap;
+   
+    Glib::RefPtr<Goocanvas::Polyline> line = 
+      Glib::wrap((GooCanvasPolyline*)goo_canvas_polyline_new_line(NULL, x, top, x, bottom, NULL));
+    line->property_line_width() = 1.0f;
+    line->property_stroke_color() = "gray";
+    line->lower();
+
+    m_grid_group->add_child(line);
+  }
+
+  for(double i = 0; i < count_horizontal_grid_lines; ++i)
+  {
+    const double y = i * m_grid.m_grid_gap;
+
+    Glib::RefPtr<Goocanvas::Polyline> line = 
+      Glib::wrap((GooCanvasPolyline*)goo_canvas_polyline_new_line(NULL, left, y, right, y, NULL));
+    line->property_line_width() = 1.0f;
+    line->property_stroke_color() = "gray";
+    line->lower();
+
+    m_grid_group->add_child(line);
+  }
+
+  add_item_group(m_grid_group);
+}
+
+void CanvasEditable::remove_grid()
+{
+  m_grid.m_grid_gap = 0.0;
+}
 
 } //namespace Glom
 
