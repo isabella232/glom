@@ -1,5 +1,11 @@
 2007-10-09  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/utility_widgets/canvas/canvas_group_resizable.cc:
+	set the grid for edge manipulators so that they snap too. Now everything seems 
+	to snap properly to the grid when resizing or moving.
+
+2007-10-09  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/utility_widgets/canvas/canvas_editable.cc:
 	* glom/utility_widgets/canvas/canvas_group_resizable.cc:
 	* glom/utility_widgets/canvas/canvas_group_resizable.h:

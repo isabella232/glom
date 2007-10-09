@@ -128,6 +128,10 @@ void CanvasGroupResizable::set_child(const Glib::RefPtr<Goocanvas::Rect>& child)
   m_manipulator_corner_bottom_left->set_snap_corner(CanvasRectMovable::CORNER_BOTTOM_LEFT);
   m_manipulator_corner_bottom_right->set_grid(m_grid);
   m_manipulator_corner_bottom_right->set_snap_corner(CanvasRectMovable::CORNER_BOTTOM_RIGHT);
+  m_manipulator_edge_top->set_grid(m_grid);
+  m_manipulator_edge_bottom->set_grid(m_grid);
+  m_manipulator_edge_left->set_grid(m_grid);
+  m_manipulator_edge_right->set_grid(m_grid);
 
   m_manipulator_corner_top_left->set_drag_cursor(Gdk::TOP_LEFT_CORNER);
   m_manipulator_corner_top_right->set_drag_cursor(Gdk::TOP_RIGHT_CORNER);
@@ -495,22 +499,17 @@ void CanvasGroupResizable::snap_position(double& x, double& y) const
     double temp_x = x;
     double temp_y = y;
     snap_position(corner, temp_x, temp_y);
-    std::cout << "CanvasGroupResizable::snap_position(): x=" << temp_x << ", y=" << temp_y << std::endl;
 
     const double offset_x = temp_x -x;
     const double offset_y = temp_y - y;
-    std::cout << "CanvasGroupResizable::snap_position(): offset_x=" << offset_x << ", offset_y=" << offset_y << std::endl;
 
-
+    //Use the smallest offset, preferring some offset to no offset:
     if(offset_x && ((std::abs(offset_x) < std::abs(offset_x_min)) || !offset_x_min))
       offset_x_min = offset_x;
 
     if(offset_y && ((std::abs(offset_y) < std::abs(offset_y_min)) || !offset_y_min))
       offset_y_min = offset_y;
   }
-
-  std::cout << "CanvasGroupResizable::snap_position(): offset_x_min=" << offset_x_min << ", offset_y_min=" << offset_y_min << std::endl;
-
 
   x += offset_x_min;
   y += offset_y_min;
