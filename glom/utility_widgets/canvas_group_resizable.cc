@@ -35,10 +35,7 @@ const double manipulator_stroke_width = 2.0;
 const gchar* manipulator_stroke_color = "black";
 
 CanvasGroupResizable::CanvasGroupResizable()
-: Goocanvas::Group((GooCanvasGroup*)goo_canvas_group_new(NULL, NULL)), //TODO: Remove this when goocanvas has been fixed.
-  m_dragging(false),
-  m_drag_start_cursor_x(0.0), m_drag_start_cursor_y(0.0),
-  m_drag_start_position_x(0.0), m_drag_start_position_y(0.0)
+: Goocanvas::Group((GooCanvasGroup*)goo_canvas_group_new(NULL, NULL)) //TODO: Remove this when goocanvas has been fixed.
 {
   m_manipulator_corner_top_left = create_corner();
   m_manipulator_corner_top_right = create_corner();
@@ -403,6 +400,9 @@ bool CanvasGroupResizable::on_manipulator_motion_notify_event(const Glib::RefPtr
 
 void CanvasGroupResizable::set_manipulators_visibility(Goocanvas::ItemVisibility visibility)
 {
+  //TODO: Reenable this when we figure out how to know that we are still in the main box even when we are in resizing corner too.
+  visibility = Goocanvas::CANVAS_ITEM_VISIBLE;
+
   m_manipulator_corner_top_left->property_visibility() = visibility;
   m_manipulator_corner_bottom_left->property_visibility() = visibility;
   m_manipulator_corner_top_right->property_visibility() = visibility;
@@ -411,6 +411,9 @@ void CanvasGroupResizable::set_manipulators_visibility(Goocanvas::ItemVisibility
 
 bool CanvasGroupResizable::on_enter_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventCrossing* event)
 {
+  std::cout << "CanvasGroupResizable::on_enter_notify_event" << std::endl;
+  CanvasItemMovable::on_enter_notify_event(target, event);
+
   set_manipulators_visibility(Goocanvas::CANVAS_ITEM_VISIBLE);
 
   return true;
@@ -418,6 +421,9 @@ bool CanvasGroupResizable::on_enter_notify_event(const Glib::RefPtr<Goocanvas::I
 
 bool CanvasGroupResizable::on_leave_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventCrossing* event)
 {
+  std::cout << "CanvasGroupResizable::on_leave_notify_event" << std::endl;
+  CanvasItemMovable::on_leave_notify_event(target, event);
+
   set_manipulators_visibility(Goocanvas::CANVAS_ITEM_INVISIBLE);
 
   return true;
@@ -453,8 +459,24 @@ void CanvasGroupResizable::set_edge_points(const Glib::RefPtr<Glom::CanvasLineMo
   line->property_points() = points;
 }
 
+void CanvasGroupResizable::get_xy(double& x, double& y)
+{
+  x = m_child->property_x();
+  y = m_child->property_y();
+}
 
+void CanvasGroupResizable::move(double x, double y)
+{
+  m_child->property_x() = x;
+  m_child->property_y() = y;
 
+  position_manipulators();
+}
+
+Goocanvas::Canvas* CanvasGroupResizable::get_parent_canvas_widget()
+{
+  return get_canvas();
+}
 
 } //namespace Glom
 

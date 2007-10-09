@@ -30,17 +30,15 @@ namespace Glom
 
 
 CanvasLineMovable::CanvasLineMovable()
-: Goocanvas::Polyline((GooCanvasPolyline*)goo_canvas_polyline_new_line(NULL, false /* don't close the path */, 0.0, 0.0, 0.0, 0.0, NULL)), //TODO: Remove this when goocanvas has been fixed.
-  m_dragging(false),
-  m_drag_start_cursor_x(0.0), m_drag_start_cursor_y(0.0)
+: Goocanvas::Polyline((GooCanvasPolyline*)goo_canvas_polyline_new_line(NULL, false /* don't close the path */, 0.0, 0.0, 0.0, 0.0, NULL)) //TODO: Remove this when goocanvas has been fixed.
 {
    //TODO: Remove this when goocanvas is fixed, so the libgoocanvasmm constructor can connect default signal handlers:
-  signal_motion_notify_event().connect(sigc::mem_fun(*this, &CanvasLineMovable::on_motion_notify_event));
-  signal_button_press_event().connect(sigc::mem_fun(*this, &CanvasLineMovable::on_button_press_event));
-  signal_button_release_event().connect(sigc::mem_fun(*this, &CanvasLineMovable::on_button_release_event));
+  signal_motion_notify_event().connect(sigc::mem_fun(*this, &CanvasItemMovable::on_motion_notify_event));
+  signal_button_press_event().connect(sigc::mem_fun(*this, &CanvasItemMovable::on_button_press_event));
+  signal_button_release_event().connect(sigc::mem_fun(*this, &CanvasItemMovable::on_button_release_event));
 
-  signal_enter_notify_event().connect(sigc::mem_fun(*this, &CanvasLineMovable::on_enter_notify_event));
-  signal_leave_notify_event().connect(sigc::mem_fun(*this, &CanvasLineMovable::on_leave_notify_event));
+  signal_enter_notify_event().connect(sigc::mem_fun(*this, &CanvasItemMovable::on_enter_notify_event));
+  signal_leave_notify_event().connect(sigc::mem_fun(*this, &CanvasItemMovable::on_leave_notify_event));
 }
 
 CanvasLineMovable::~CanvasLineMovable()
@@ -52,140 +50,42 @@ Glib::RefPtr<CanvasLineMovable> CanvasLineMovable::create()
   return Glib::RefPtr<CanvasLineMovable>(new CanvasLineMovable());
 }
 
-
-bool CanvasLineMovable::on_button_press_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventButton* event)
+void CanvasLineMovable::get_xy(double& x, double& y)
 {
-  //std::cout << "CanvasLineMovable::on_button_press_event()" << std::endl;
+  Goocanvas::Points points = property_points();
+  points.get_coordinate(0, x, y);
+}
 
-  switch(event->button)
+void CanvasLineMovable::move(double x, double y)
+{
+  //Discover the offset:
+  double old_x = 0;
+  double old_y = 0;
+  Goocanvas::Points old_points = property_points();
+  old_points.get_coordinate(0, old_x, old_y);
+
+  const double offset_x = x - old_x;
+  const double offset_y = y - old_y;
+
+  //Apply the offset to all points:
+  const int count = old_points.get_num_points();
+  Goocanvas::Points new_points(count);
+  for(int i = 0; i < count; ++i)
   {
-    case 1:
-    {
-      Glib::RefPtr<Goocanvas::Item> item = target;
-      
-      item->raise();
-    
-      m_drag_start_cursor_x = event->x;
-      m_drag_start_cursor_y = event->y;
-
-      Glib::RefPtr<Goocanvas::Polyline> line = Glib::RefPtr<Goocanvas::Polyline>::cast_dynamic(item);
-      if(line)
-      {
-        m_drag_start_points = line->property_points();
-      }
-    
-      Goocanvas::Canvas* canvas = get_canvas();
-      if(canvas)
-      {
-        canvas->pointer_grab(item, Gdk::POINTER_MOTION_MASK | Gdk::BUTTON_RELEASE_MASK,
-          m_drag_cursor, event->time);
-      }
-
-      m_dragging = true;
-      break;
-    }
-
-    default:
-      break;
+    double this_x = 0;
+    double this_y = 0;
+    old_points.get_coordinate(i, this_x, this_y);
+    new_points.set_coordinate(i, this_x + offset_x, this_y + offset_y);
   }
-  
-  return true;
-}
-
-bool CanvasLineMovable::on_motion_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventMotion* event)
-{ 
-  //std::cout << "CanvasLineMovable::on_motion_notify_event()" << std::endl;
-
-  Glib::RefPtr<Goocanvas::Item> item = target;
-  
-  if(item && m_dragging && (event->state & Gdk::BUTTON1_MASK))
-  {
-    const double offset_x = event->x - m_drag_start_cursor_x;
-    const double offset_y = event->y - m_drag_start_cursor_y;
-
-    Glib::RefPtr<Goocanvas::Polyline> line = Glib::RefPtr<Goocanvas::Polyline>::cast_dynamic(item);
-    if(line)
-    {
-      const int count = m_drag_start_points.get_num_points();
-      Goocanvas::Points new_points(count);
-      for(int i = 0; i < count; ++i)
-      {
-        double x = 0;
-        double y = 0;
-        m_drag_start_points.get_coordinate(i, x, y);
-        new_points.set_coordinate(i, x + offset_x, y + offset_y);
-      }
     
-      line->property_points() = new_points;
-    }
-
-    m_signal_moved.emit();
-  }
-
-  return true;
+  property_points() = new_points;
 }
 
-bool CanvasLineMovable::on_button_release_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventButton* event)
+Goocanvas::Canvas* CanvasLineMovable::get_parent_canvas_widget()
 {
-  Goocanvas::Canvas* canvas = get_canvas();
-  if(canvas)
-    canvas->pointer_ungrab(target, event->time);
-
-  m_dragging = false;
-
-  return true;
+  return get_canvas();
 }
 
-bool CanvasLineMovable::on_enter_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventCrossing* event)
-{
-  set_cursor(m_drag_cursor);
-
-  return true;
-}
-
-bool CanvasLineMovable::on_leave_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventCrossing* event)
-{
-  unset_cursor();
-
-  return true;
-}
-
-CanvasLineMovable::type_signal_moved CanvasLineMovable::signal_moved()
-{
-  return m_signal_moved;
-}
-
-void CanvasLineMovable::set_drag_cursor(const Gdk::Cursor& cursor)
-{
-  m_drag_cursor = cursor;
-}
-
-void CanvasLineMovable::set_drag_cursor(Gdk::CursorType cursor)
-{
-  m_drag_cursor = Gdk::Cursor(cursor);
-}
-
-void CanvasLineMovable::set_cursor(const Gdk::Cursor& cursor)
-{
-   Goocanvas::Canvas* canvas = get_canvas();
-   if(canvas)
-   {
-     Glib::RefPtr<Gdk::Window> window = canvas->get_window();
-     if(window)
-       window->set_cursor(cursor);
-   }
-}
-
-void CanvasLineMovable::unset_cursor()
-{
-   Goocanvas::Canvas* canvas = get_canvas();
-   if(canvas)
-   {
-     Glib::RefPtr<Gdk::Window> window = canvas->get_window();
-     if(window)
-       window->set_cursor();
-   }
-}
 
 
 } //namespace Glom

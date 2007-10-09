@@ -1,3 +1,17 @@
+2007-10-09  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/utility_widgets/Makefile.am:
+	* glom/utility_widgets/canvas_group_resizable.cc:
+	* glom/utility_widgets/canvas_group_resizable.h:
+	* glom/utility_widgets/canvas_item_movable.cc:
+	* glom/utility_widgets/canvas_item_movable.h:
+	* glom/utility_widgets/canvas_line_movable.cc:
+	* glom/utility_widgets/canvas_line_movable.h:
+	* glom/utility_widgets/canvas_rect_movable.cc:
+	* glom/utility_widgets/canvas_rect_movable.h:
+	Move some code and data into a common CanvasItemMovable base class, 
+	with pure virtual methods that the derived classes must implement.
+
 2007-10-08  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/utility_widgets/canvas_line_movable.cc:

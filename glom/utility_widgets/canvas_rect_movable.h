@@ -21,45 +21,28 @@
 #ifndef GLOM_UTILITY_WIDGETS_CANVAS_RECT_MOVABLE_H
 #define GLOM_UTILITY_WIDGETS_CANVAS_RECT_MOVABLE_H
 
+#include "canvas_item_movable.h"
 #include <libgoocanvasmm/rect.h>
-#include <gdkmm/cursor.h>
 
 namespace Glom
 {
 
-class CanvasRectMovable : public Goocanvas::Rect
+class CanvasRectMovable
+  : public Goocanvas::Rect,
+    public CanvasItemMovable
 {
 protected:
   CanvasRectMovable();
   virtual ~CanvasRectMovable();
 
+  virtual void get_xy(double& x, double& y);
+  virtual void move(double x_offet, double y_offset);
+
 public:
   static Glib::RefPtr<CanvasRectMovable> create();
 
-  void set_drag_cursor(Gdk::CursorType cursor);
-  void set_drag_cursor(const Gdk::Cursor& cursor);
-
-  typedef sigc::signal<void> type_signal_moved;
-  type_signal_moved signal_moved();
-
 protected:
-
-  void set_cursor(const Gdk::Cursor& cursor);
-  void unset_cursor();
-  
-  bool on_button_press_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventButton* event);
-  bool on_button_release_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventButton* event);
-  bool on_motion_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventMotion* event);
-
-  bool on_enter_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventCrossing* event);
-  bool on_leave_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventCrossing* event);
-
-  bool m_dragging;
-  double m_drag_start_cursor_x, m_drag_start_cursor_y;
-  double m_drag_start_position_x, m_drag_start_position_y;
-  Gdk::Cursor m_drag_cursor;
-
-  type_signal_moved m_signal_moved;
+  virtual Goocanvas::Canvas* get_parent_canvas_widget();
 };
 
 } //namespace Glom
