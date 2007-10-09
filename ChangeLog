@@ -1,5 +1,13 @@
 2007-10-09  Murray Cumming  <murrayc@murrayc.com>
 
+	* configure.in:
+	* glom/Makefile.am:
+	* glom/utility_widgets/Makefile.am:
+	* glom/utility_widgets/canvas/Move canvas_* into 
+	sub-directory.
+
+2007-10-09  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/utility_widgets/canvas_grid.cc:
 	* glom/utility_widgets/canvas_grid.h: Added snap 
 	sensitivity as a member.
