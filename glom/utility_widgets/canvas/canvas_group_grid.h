@@ -18,21 +18,26 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef GLOM_UTILITY_WIDGETS_CANVAS_GRID_H
-#define GLOM_UTILITY_WIDGETS_CANVAS_GRID_H
+#ifndef GLOM_UTILITY_WIDGETS_CANVAS_GROUP_GRID_H
+#define GLOM_UTILITY_WIDGETS_CANVAS_GROUP_GRID_H
 
+#include <libgoocanvasmm/group.h>
+#include <libgoocanvasmm/polyline.h>
 #include <vector>
 
 
 namespace Glom
 {
 
-class CanvasGrid
+class CanvasGroupGrid : public Goocanvas::Group
 {
-public:
-  CanvasGrid();
-  virtual ~CanvasGrid();
+protected:
+  CanvasGroupGrid();
+  virtual ~CanvasGroupGrid();
 
+public:
+  static Glib::RefPtr<CanvasGroupGrid> create();
+ 
   /** Snap a coordinate position to any nearby grid or rule line, if the coordinate is close enough to one.
    */
   void snap_position(double& x, double& y) const;
@@ -51,16 +56,34 @@ public:
   /// The y coordinates of any horizontal rules:
   type_vec_double m_rules_y;
 
+  /** Set the distance between grid lines, 
+   * used to snap to the grid lines when moving or resizing items.
+   */
+  void set_grid_gap(double gap);
+
+  /** Remove grid lines.
+   * See also remove_rules().
+   */
+  void remove_grid();
+
+  void add_vertical_rule(double x);
+  void add_horizontal_rule(double x);
+
 protected:
+  void create_lines();
+  Glib::RefPtr<Goocanvas::Polyline> create_grid_or_rule_line(double x1, double y1, double x2, double y2, bool is_rule = false);
+
   double snap_position_grid(double a) const;
   double snap_position_rules(const type_vec_double& rules, double a) const;
   double snap_position_rules_x(double x) const;
   double snap_position_rules_y(double y) const;
 
   bool is_close(double a, double b) const;
+
+  Glib::RefPtr<Goocanvas::Group> m_grid_lines_group, m_grid_rules_group;
 };
 
 } //namespace Glom
 
-#endif //GLOM_UTILITY_WIDGETS_CANVAS_GRID_H
+#endif //GLOM_UTILITY_WIDGETS_CANVAS_GROUP_GRID_H
 

@@ -22,7 +22,7 @@
 #define GLOM_UTILITY_WIDGETS_CANVAS_ITEM_MOVABLE_H
 
 #include "canvas_item_movable.h"
-#include "canvas_grid.h"
+#include "canvas_group_grid.h"
 #include <libgoocanvasmm/item.h>
 #include <gdkmm/cursor.h>
 
@@ -61,7 +61,7 @@ public:
    *
    * @param grid: This must exist for as long as the canvas item.
    */
-  void set_grid(const CanvasGrid* grid);
+  void set_grid(const Glib::RefPtr<const CanvasGroupGrid>& grid);
 
   /** Restrict movement (via dragging) to the x axis or the y axis.
    */
@@ -91,7 +91,7 @@ protected:
   double m_drag_start_position_x, m_drag_start_position_y;
   Gdk::Cursor m_drag_cursor;
 
-  const CanvasGrid* m_grid;
+  Glib::RefPtr<const CanvasGroupGrid> m_grid;
 
   bool m_allow_vertical_movement, m_allow_horizontal_movement;
 

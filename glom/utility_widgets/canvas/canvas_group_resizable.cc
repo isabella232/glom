@@ -47,6 +47,8 @@ CanvasGroupResizable::CanvasGroupResizable()
   m_manipulator_edge_left = create_edge();
   m_manipulator_edge_right = create_edge();
 
+  set_drag_cursor(Gdk::FLEUR);
+
   signal_enter_notify_event().connect(sigc::mem_fun(*this, &CanvasGroupResizable::on_enter_notify_event));
   signal_leave_notify_event().connect(sigc::mem_fun(*this, &CanvasGroupResizable::on_leave_notify_event));
 }
@@ -317,113 +319,23 @@ void CanvasGroupResizable::on_manipulator_edge_moved(const Glib::RefPtr<CanvasLi
 
 bool CanvasGroupResizable::on_child_button_press_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventButton* event)
 {
-  switch(event->button)
-  {
-    case 1:
-    {
-      Glib::RefPtr<Goocanvas::Item> item = target;
-      
-      item->raise();
-    
-      m_dragging_horizontal_only = false;
-      m_dragging_vertical_only = false;
-
-      m_drag_start_cursor_x = event->x;
-      m_drag_start_cursor_y = event->y;
-
-      Glib::RefPtr<Goocanvas::Rect> rect = Glib::RefPtr<Goocanvas::Rect>::cast_dynamic(item);
-      if(rect)
-      {
-        m_drag_start_position_x = rect->property_x();
-        m_drag_start_position_y = rect->property_y();
-      }
-    
-      Goocanvas::Canvas* canvas = get_canvas();
-      if(canvas)
-      {
-        Gdk::Cursor cursor(Gdk::FLEUR); //A cross, or a hand.
-        canvas->pointer_grab(item, Gdk::POINTER_MOTION_MASK | Gdk::BUTTON_RELEASE_MASK,
-          cursor, event->time);
-      }
-
-      m_dragging = true;
-      break;
-    }
-
-    default:
-      break;
-  }
-  
-  return true;
+  return CanvasItemMovable::on_button_press_event(target, event);
 }
 
 bool CanvasGroupResizable::on_child_motion_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventMotion* event)
 { 
   //std::cout << "CanvasGroupResizable::on_motion_notify_event()" << std::endl;
 
-  Glib::RefPtr<Goocanvas::Item> item = target;
+  CanvasItemMovable::on_motion_notify_event(target, event);
   
-  if(item && m_dragging && (event->state & Gdk::BUTTON1_MASK))
-  {
-    const double offset_x = event->x - m_drag_start_cursor_x;
-    const double offset_y = event->y - m_drag_start_cursor_y;
-
-    // Inkscape uses the Ctrl key to restrict movement to horizontal or vertical, 
-    // so let's do that too.
-    if( (event->state & Gdk::CONTROL_MASK) && !m_dragging_vertical_only && !m_dragging_horizontal_only )
-    {
-      //Decide whether to restrict to vertical or horizontal movement:
-      //Whichever has the greatest offset already will be the axis that we restrict movement to.
-      if(offset_x > offset_y)
-      {
-        m_dragging_horizontal_only = true;
-        m_dragging_vertical_only = false;
-      }
-      else
-      {
-        m_dragging_vertical_only = true;
-        m_dragging_horizontal_only = false;
-      }
-    }
-    else if ( !(event->state & Gdk::CONTROL_MASK) && (m_dragging_vertical_only || m_dragging_horizontal_only))
-    {
-      //Ctrl was released, so allow full movement again:
-      m_dragging_vertical_only = false;
-      m_dragging_horizontal_only = false;
-    }
-
-    Glib::RefPtr<Goocanvas::Rect> rect = Glib::RefPtr<Goocanvas::Rect>::cast_dynamic(item);
-    if(rect)
-    {
-      double new_x = m_drag_start_position_x + offset_x;
-      double new_y = m_drag_start_position_y + offset_y;
-      snap_position(new_x, new_y);
-
-      if(!m_allow_vertical_movement || m_dragging_horizontal_only)
-        new_y = m_drag_start_position_y;
-
-      if(!m_allow_horizontal_movement || m_dragging_vertical_only)
-        new_x = m_drag_start_position_x;
-
-      rect->property_x() = new_x; 
-      rect->property_y() = new_y;
-
-      position_manipulators();
-    }
-  }
+  position_manipulators();
 
   return true;
 }
 
 bool CanvasGroupResizable::on_child_button_release_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventButton* event)
 {
-  Goocanvas::Canvas* canvas = get_canvas();
-  if(canvas)
-    canvas->pointer_ungrab(target, event->time);
-
-  m_dragging = false;
-
-  return true;
+  return CanvasItemMovable::on_button_release_event(target, event);
 }
 
 

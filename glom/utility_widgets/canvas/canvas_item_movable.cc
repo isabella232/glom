@@ -198,7 +198,7 @@ void CanvasItemMovable::unset_cursor()
    }
 }
 
-void CanvasItemMovable::set_grid(const CanvasGrid* grid)
+void CanvasItemMovable::set_grid(const Glib::RefPtr<const CanvasGroupGrid>& grid)
 {
   m_grid = grid;
 }

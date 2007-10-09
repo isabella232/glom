@@ -1,3 +1,17 @@
+2007-10-10  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/utility_widgets/canvas/Makefile.am:
+	* glom/utility_widgets/canvas/canvas_editable.cc:
+	* glom/utility_widgets/canvas/canvas_editable.h:
+	* glom/utility_widgets/canvas/canvas_grid.cc:
+	* glom/utility_widgets/canvas/canvas_grid.h:
+	* glom/utility_widgets/canvas/canvas_group_grid.cc:
+	* glom/utility_widgets/canvas/canvas_group_grid.h:
+	* glom/utility_widgets/canvas/canvas_group_resizable.cc:
+	* glom/utility_widgets/canvas/canvas_item_movable.cc:
+	* glom/utility_widgets/canvas/canvas_item_movable.h:
+	Make the grid a Goocanvas::Group, to divide the code better.
+
 2007-10-09  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/utility_widgets/canvas/canvas_group_resizable.cc:

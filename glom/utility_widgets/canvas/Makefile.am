@@ -16,7 +16,7 @@ libutility_widgets_canvas_a_SOURCES = \
                                canvas_line_movable.cc canvas_line_movable.h \
                                canvas_rect_movable.cc canvas_rect_movable.h \
                                canvas_group_resizable.cc canvas_group_resizable.h \
-                               canvas_grid.cc canvas_grid.h
+                               canvas_group_grid.cc canvas_group_grid.h
 
 
 #libutility_widgets_canvas_a_LIBADD = 
@@ -24,6 +24,6 @@ libutility_widgets_canvas_a_SOURCES = \
 
 noinst_PROGRAMS =test_canvas_editable
 
-test_canvas_editable_SOURCES = test_canvas_editable.cc canvas_editable.cc canvas_editable.h canvas_group_resizable.cc canvas_group_resizable.h canvas_rect_movable.cc canvas_rect_movable.h canvas_line_movable.cc canvas_line_movable.h canvas_item_movable.cc canvas_item_movable.h canvas_grid.cc canvas_grid.h
+test_canvas_editable_SOURCES = test_canvas_editable.cc canvas_editable.cc canvas_editable.h canvas_group_resizable.cc canvas_group_resizable.h canvas_rect_movable.cc canvas_rect_movable.h canvas_line_movable.cc canvas_line_movable.h canvas_item_movable.cc canvas_item_movable.h canvas_group_grid.cc canvas_group_grid.h
 test_canvas_editable_LDADD =  $(GLOM_LIBS)
 
