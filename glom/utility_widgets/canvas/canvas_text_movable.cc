@@ -18,36 +18,27 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include "canvas_rect_movable.h"
+#include "canvas_text_movable.h"
 #include <libgoocanvasmm/canvas.h>
-#include <goocanvasrect.h>
-#include <goocanvasgroup.h>
-#include <gdkmm/cursor.h>
+#include <goocanvastext.h>
 #include <iostream>
 
 namespace Glom
 {
 
 
-CanvasRectMovable::CanvasRectMovable()
-: Goocanvas::Rect((GooCanvasRect*)goo_canvas_rect_new(NULL, 0.0, 0.0, 0.0, 0.0, NULL)), //TODO: Remove this when goocanvas has been fixed.
+CanvasTextMovable::CanvasTextMovable(const Glib::ustring& string, double x, double y, double width, Gtk::AnchorType anchor)
+: Goocanvas::Text((GooCanvasText*)goo_canvas_text_new(NULL, string.c_str(), x, y, width, (GtkAnchorType)anchor, NULL)), //TODO: Remove this when goocanvas has been fixed.
   m_snap_corner(CORNER_TOP_LEFT) //arbitrary default.
 {
   init();
 }
 
-CanvasRectMovable::CanvasRectMovable(double x, double y, double width, double height)
-: Goocanvas::Rect((GooCanvasRect*)goo_canvas_rect_new(NULL, x, y, width, height, NULL)), //TODO: Remove this when goocanvas has been fixed.
-  m_snap_corner(CORNER_TOP_LEFT) //arbitrary default.
-{
-  init();
-}
-
-CanvasRectMovable::~CanvasRectMovable()
+CanvasTextMovable::~CanvasTextMovable()
 {
 }
 
-void CanvasRectMovable::init()
+void CanvasTextMovable::init()
 {
   //TODO: Remove this when goocanvas is fixed, so the libgoocanvasmm constructor can connect default signal handlers:
   signal_motion_notify_event().connect(sigc::mem_fun(*this, &CanvasItemMovable::on_motion_notify_event));
@@ -58,29 +49,24 @@ void CanvasRectMovable::init()
   signal_leave_notify_event().connect(sigc::mem_fun(*this, &CanvasItemMovable::on_leave_notify_event));
 }
 
-Glib::RefPtr<CanvasRectMovable> CanvasRectMovable::create()
+Glib::RefPtr<CanvasTextMovable> CanvasTextMovable::create(const Glib::ustring& string, double x, double y, double width, Gtk::AnchorType anchor)
 {
-  return Glib::RefPtr<CanvasRectMovable>(new CanvasRectMovable());
+  return Glib::RefPtr<CanvasTextMovable>(new CanvasTextMovable(string, x, y, width, anchor));
 }
 
-Glib::RefPtr<CanvasRectMovable> CanvasRectMovable::create(double x, double y, double width, double height)
-{
-  return Glib::RefPtr<CanvasRectMovable>(new CanvasRectMovable(x, y, width, height));
-}
-
-void CanvasRectMovable::get_xy(double& x, double& y)
+void CanvasTextMovable::get_xy(double& x, double& y)
 {
   x = property_x();
   y = property_y();
 }
 
-void CanvasRectMovable::move(double x, double y)
+void CanvasTextMovable::move(double x, double y)
 {
   property_x() = x;
   property_y() = y;
 }
 
-void CanvasRectMovable::snap_position(double& x, double& y) const
+void CanvasTextMovable::snap_position(double& x, double& y) const
 {
   //Choose the offset of the part to snap to the grid:
   double corner_x_offset = 0;
@@ -97,11 +83,11 @@ void CanvasRectMovable::snap_position(double& x, double& y) const
       break;
     case CORNER_BOTTOM_LEFT:
       corner_x_offset = 0;
-      corner_y_offset = property_height();
+      //corner_y_offset = property_height(); //TODO
       break;
     case CORNER_BOTTOM_RIGHT:
       corner_x_offset = property_width();
-      corner_y_offset = property_height();
+      //corner_y_offset = property_height(); //TODO
       break;
     default:
       break;
@@ -123,12 +109,12 @@ void CanvasRectMovable::snap_position(double& x, double& y) const
   y += snapped_offset_y;
 }
 
-Goocanvas::Canvas* CanvasRectMovable::get_parent_canvas_widget()
+Goocanvas::Canvas* CanvasTextMovable::get_parent_canvas_widget()
 {
   return get_canvas();
 }
 
-void CanvasRectMovable::set_snap_corner(Corners corner)
+void CanvasTextMovable::set_snap_corner(Corners corner)
 {
   m_snap_corner = corner;
 }

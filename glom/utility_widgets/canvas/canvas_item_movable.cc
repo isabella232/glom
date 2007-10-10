@@ -59,6 +59,9 @@ bool CanvasItemMovable::on_button_press_event(const Glib::RefPtr<Goocanvas::Item
   {
     case 1:
     {
+      if(!m_allow_vertical_movement && !m_allow_horizontal_movement)
+        return false; // Not handled. Let it be handled by an item lower in the z order, or a parent group, if any.
+
       Glib::RefPtr<Goocanvas::Item> item = target;
     
       m_drag_start_cursor_x = event->x;
@@ -73,6 +76,7 @@ bool CanvasItemMovable::on_button_press_event(const Glib::RefPtr<Goocanvas::Item
       }
 
       m_dragging = true;
+      return true; /* Handled. */
       break;
     }
 
@@ -80,11 +84,14 @@ bool CanvasItemMovable::on_button_press_event(const Glib::RefPtr<Goocanvas::Item
       break;
   }
   
-  return true;
+  return false; /* Not handled. Pass it to an item lower in the z order, if any. */
 }
 
 bool CanvasItemMovable::on_motion_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventMotion* event)
 { 
+  if(!m_allow_vertical_movement && !m_allow_horizontal_movement)
+    return false; // Not handled. Let it be handled by an item lower in the z order, or a parent group, if any.
+
   Glib::RefPtr<Goocanvas::Item> item = target;
   
   if(item && m_dragging && (event->state & Gdk::BUTTON1_MASK))
@@ -137,6 +144,9 @@ bool CanvasItemMovable::on_motion_notify_event(const Glib::RefPtr<Goocanvas::Ite
 
 bool CanvasItemMovable::on_button_release_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventButton* event)
 {
+  if(!m_allow_vertical_movement && !m_allow_horizontal_movement)
+    return false; // Not handled. Let it be handled by an item lower in the z order, or a parent group, if any.
+
   Goocanvas::Canvas* canvas = get_parent_canvas_widget();
   if(canvas)
     canvas->pointer_ungrab(target, event->time);

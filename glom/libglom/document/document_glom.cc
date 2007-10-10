@@ -2398,7 +2398,7 @@ bool Document_Glom::load_after()
 
           //Print Layouts:
           const xmlpp::Element* nodePrintLayouts = get_node_child_named(nodeTable, GLOM_NODE_PRINT_LAYOUTS);
-          if(nodeReports)
+          if(nodePrintLayouts)
           {
             xmlpp::Node::NodeList listNodes = nodePrintLayouts->get_children(GLOM_NODE_PRINT_LAYOUTS);
             for(xmlpp::Node::NodeList::iterator iter = listNodes.begin(); iter != listNodes.end(); ++iter)

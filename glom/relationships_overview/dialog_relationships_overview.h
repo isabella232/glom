@@ -22,10 +22,16 @@
 #define GLOM_DIALOG_RELATIONSHIPS_OVERVIEW
 
 #include <glom/libglom/document/document_glom.h>
+#include "glom/utility_widgets/canvas/canvas_editable.h"
+#include "canvas_group_dbtable.h"
 #include <gtkmm/dialog.h>
 #include <gtkmm/widget.h>
+#include <gtkmm/uimanager.h>
+#include <gtkmm/menubar.h>
+#include <gtkmm/printoperation.h>
+#include <gtkmm/toggleaction.h>
 #include <libglademm.h>
-#include <goocanvas.h>
+#include <libgoocanvasmm/canvas.h>
 #include <map>
 #include <vector>
 
@@ -40,57 +46,42 @@ class Dialog_RelationshipsOverview
 {
 public:
   Dialog_RelationshipsOverview(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
-
   virtual ~Dialog_RelationshipsOverview();
-  
-  bool on_button_press_canvas(GooCanvasItem *view, GooCanvasItem *target, GdkEventButton *event);
-  bool on_button_release_canvas(GooCanvasItem *view, GooCanvasItem *target, GdkEventButton *event);
-  bool on_motion_canvas ( GooCanvasItem *view, GooCanvasItem *target, GdkEventMotion *event );
   
   virtual void load_from_document(); //overridden.
 
 protected:
   class TableView;
   
-  void update_model();
+  void draw_tables();
+  void draw_lines();
   void update_relationships(TableView* table_from);
+  void print_or_preview(Gtk::PrintOperationAction print_action);
   void on_response(int id);
+
+  void on_menu_file_print();
+  void on_menu_file_save();
+  void on_menu_view_showgrid();
+
+  void on_table_moved(const Glib::RefPtr<CanvasGroupDbTable>& table);
+
+  Glib::RefPtr<CanvasGroupDbTable> get_table_group(const Glib::ustring& table_name);
   
+  Glib::RefPtr<Gtk::UIManager> m_refUIManager;
+  Glib::RefPtr<Gtk::ActionGroup> m_refActionGroup;
+  Glib::RefPtr<Gtk::ToggleAction> m_action_showgrid;
+  Gtk::MenuBar* m_menu;
+
   bool m_modified;
-  bool m_dragging;
-  gdouble m_drag_x, m_drag_y;
-  Gtk::Widget *m_canvas;
+  CanvasEditable m_canvas;
 
-  typedef std::map<GooCanvasItem*, TableView*> type_map_item_tables;
-  type_map_item_tables m_tables;
+  //typedef std::map<Glib::RefPtr<Goocanvas::Item>, TableView*> type_map_item_tables;
+  //type_map_item_tables m_tables;
 
-  typedef std::map<Glib::ustring, TableView*> type_map_table_names;
-  type_map_table_names m_table_names;
   static int m_last_size_x, m_last_size_y;
- 
-  typedef std::map<GooCanvasItem*, TableView*>::iterator TableIterator;
-  typedef std::map< std::pair<TableView*, int>, int >::iterator RelationshipIterator;
 
-  class TableView
-  {
-  public:
-    TableView();
-
-    Glib::ustring m_table_name;
-    
-    GooCanvasItem* m_group;
-    
-    typedef std::vector<GooCanvasItem*> type_vec_canvasitems;
-    type_vec_canvasitems m_lines;
-    
-    typedef std::map< std::pair<TableView*, int>, int> type_map_relationships;
-    type_map_relationships m_relationships;
-
-    typedef std::vector<TableView*> type_vec_tableviews;
-    type_vec_tableviews m_update_on_move;
-    
-    float x1, y1, x2, y2;
-  };
+  Glib::RefPtr<Goocanvas::Group> m_group_tables;
+  Glib::RefPtr<Goocanvas::Group> m_group_lines;
 };
 
 }; //namespace Glom

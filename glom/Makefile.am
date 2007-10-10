@@ -74,7 +74,8 @@ glom_LDADD += navigation/libnavigation.a \
 
 if !GLOM_ENABLE_CLIENT_ONLY
 glom_LDADD += translation/libtranslation.a \
-              relationships_overview/librelationshipsoverview.a
+              relationships_overview/librelationshipsoverview.a \
+              utility_widgets/canvas/libutility_widgets_canvas.a
 endif
 
 glom_LDADD += python_embed/libpython_embed.a \

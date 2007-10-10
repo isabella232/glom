@@ -209,7 +209,12 @@ void CanvasGroupGrid::remove_grid()
 
 void CanvasGroupGrid::create_lines()
 {
-  std::cout << "CanvasGroupGrid::create_lines()" << std::endl;
+  //Remove any existing lines:
+  while(m_grid_lines_group->get_child(0))
+    m_grid_lines_group->remove_child (0);
+
+  while(m_grid_rules_group->get_child(0))
+    m_grid_rules_group->remove_child (0);
 
   //Fill the parent canvas with lines:
   double left, top, right, bottom = 0.0;
@@ -219,7 +224,6 @@ void CanvasGroupGrid::create_lines()
  
   const double width = right - left;
   const double height = bottom - top;
-  std::cout << "CanvasGroupGrid::create_lines(): width=" << width << ", height=" << height << std::endl;
 
   const double count_vertical_grid_lines = width / m_grid_gap;
   const double count_horizontal_grid_lines = height / m_grid_gap;

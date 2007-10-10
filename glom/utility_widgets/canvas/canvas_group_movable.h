@@ -18,41 +18,25 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef GLOM_UTILITY_WIDGETS_CANVAS_RECT_MOVABLE_H
-#define GLOM_UTILITY_WIDGETS_CANVAS_RECT_MOVABLE_H
+#ifndef GLOM_UTILITY_WIDGETS_CANVAS_GROUP_MOVABLE_H
+#define GLOM_UTILITY_WIDGETS_CANVAS_GROUP_MOVABLE_H
 
 #include "canvas_item_movable.h"
-#include <libgoocanvasmm/rect.h>
+#include <libgoocanvasmm/group.h>
 
 namespace Glom
 {
 
-class CanvasRectMovable
-  : public Goocanvas::Rect,
+class CanvasGroupMovable
+  : public Goocanvas::Group,
     public CanvasItemMovable
 {
 protected:
-  CanvasRectMovable();
-  CanvasRectMovable(double x, double y, double width, double height);
-  virtual ~CanvasRectMovable();
-
-  void init();
+  CanvasGroupMovable();
+  virtual ~CanvasGroupMovable();
 
 public:
-  static Glib::RefPtr<CanvasRectMovable> create();
-  static Glib::RefPtr<CanvasRectMovable> create(double x, double y, double width, double height);
-
-  enum Corners
-  {
-    CORNER_TOP_LEFT,
-    CORNER_TOP_RIGHT,
-    CORNER_BOTTOM_LEFT,
-    CORNER_BOTTOM_RIGHT
-  };
-
-  /** Specify the corner to be considered when snapping to a grid while moving.
-   */
-  void set_snap_corner(Corners corner);
+  static Glib::RefPtr<CanvasGroupMovable> create();
 
   virtual void get_xy(double& x, double& y);
   virtual void move(double x, double y);
@@ -62,11 +46,9 @@ protected:
 
   virtual void snap_position(double& x, double& y) const;
 
-  //What corner is considered when snapping to a grid while moving:
-  Corners m_snap_corner;
 };
 
 } //namespace Glom
 
-#endif //GLOM_UTILITY_WIDGETS_CANVAS_RECT_MOVABLE_H
+#endif //GLOM_UTILITY_WIDGETS_CANVAS_GROUP_MOVABLE_H
 

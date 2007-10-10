@@ -3,6 +3,34 @@
 	* glom/utility_widgets/canvas/Makefile.am:
 	* glom/utility_widgets/canvas/canvas_editable.cc:
 	* glom/utility_widgets/canvas/canvas_editable.h:
+	* glom/utility_widgets/canvas/canvas_item_movable.cc:
+	* glom/utility_widgets/canvas/canvas_item_movable.h: 
+	Return false from signal handlers if no movement is allowed, so that 
+	the parent group can handle it instead.
+	* glom/utility_widgets/canvas/canvas_group_movable.cc:
+	* glom/utility_widgets/canvas/canvas_group_movable.h: Added this class. 
+	Its x,y is based on the first child, and all children move when move() is 
+	called.
+	* glom/utility_widgets/canvas/canvas_text_movable.cc:
+	* glom/utility_widgets/canvas/canvas_text_movable.h: Added this class.
+
+	* glom/Makefile.am:
+	* glom/glom.glade:
+	* glom/relationships_overview/Makefile.am:
+	* glom/relationships_overview/canvas_group_dbtable.cc:
+	* glom/relationships_overview/canvas_group_dbtable.h:
+	* glom/relationships_overview/dialog_relationships_overview.cc:
+	* glom/relationships_overview/dialog_relationships_overview.h: Added a View menu, 
+	with a Show Grid option, though that causes crashes for now.
+	Reimplemented this with the new canvas classes, so that we don't have to 
+	implement moving. Used derived classes instead of duplicating information in another 
+	class.
+
+2007-10-10  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/utility_widgets/canvas/Makefile.am:
+	* glom/utility_widgets/canvas/canvas_editable.cc:
+	* glom/utility_widgets/canvas/canvas_editable.h:
 	* glom/utility_widgets/canvas/canvas_grid.cc:
 	* glom/utility_widgets/canvas/canvas_grid.h:
 	* glom/utility_widgets/canvas/canvas_group_grid.cc:

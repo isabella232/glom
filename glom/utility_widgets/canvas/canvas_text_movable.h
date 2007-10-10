@@ -18,29 +18,27 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef GLOM_UTILITY_WIDGETS_CANVAS_RECT_MOVABLE_H
-#define GLOM_UTILITY_WIDGETS_CANVAS_RECT_MOVABLE_H
+#ifndef GLOM_UTILITY_WIDGETS_CANVAS_TEXT_MOVABLE_H
+#define GLOM_UTILITY_WIDGETS_CANVAS_TEXT_MOVABLE_H
 
 #include "canvas_item_movable.h"
-#include <libgoocanvasmm/rect.h>
+#include <libgoocanvasmm/text.h>
 
 namespace Glom
 {
 
-class CanvasRectMovable
-  : public Goocanvas::Rect,
+class CanvasTextMovable
+  : public Goocanvas::Text,
     public CanvasItemMovable
 {
 protected:
-  CanvasRectMovable();
-  CanvasRectMovable(double x, double y, double width, double height);
-  virtual ~CanvasRectMovable();
+  CanvasTextMovable(const Glib::ustring& string = Glib::ustring(), double x = 0.0, double y = 0.0, double width = 0.0, Gtk::AnchorType anchor = Gtk::ANCHOR_NORTH_WEST);
+  virtual ~CanvasTextMovable();
 
   void init();
 
 public:
-  static Glib::RefPtr<CanvasRectMovable> create();
-  static Glib::RefPtr<CanvasRectMovable> create(double x, double y, double width, double height);
+  static Glib::RefPtr<CanvasTextMovable> create(const Glib::ustring& string = Glib::ustring(), double x = 0.0, double y = 0.0, double width = 0.0, Gtk::AnchorType anchor = Gtk::ANCHOR_NORTH_WEST);
 
   enum Corners
   {
@@ -68,5 +66,5 @@ protected:
 
 } //namespace Glom
 
-#endif //GLOM_UTILITY_WIDGETS_CANVAS_RECT_MOVABLE_H
+#endif //GLOM_UTILITY_WIDGETS_CANVAS_TEXT_MOVABLE_H
 

@@ -29,7 +29,7 @@
 namespace Glom
 {
 
-class CanvasItemMovable
+class CanvasItemMovable : virtual public Glib::ObjectBase
 {
 protected:
   CanvasItemMovable();
@@ -63,9 +63,10 @@ public:
    */
   void set_grid(const Glib::RefPtr<const CanvasGroupGrid>& grid);
 
-  /** Restrict movement (via dragging) to the x axis or the y axis.
+  /** Restrict drag movement (via dragging) to the x axis or the y axis,
+   * or prevent all drag movement.
    */
-  void set_movement_allowed(bool vertical, bool horizontal);
+  void set_movement_allowed(bool vertical = true, bool horizontal = true);
 
 protected:
 

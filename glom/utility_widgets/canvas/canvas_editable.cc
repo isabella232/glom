@@ -33,21 +33,6 @@ CanvasEditable::CanvasEditable()
 {
   m_grid = CanvasGroupGrid::create();
   add_item_group(m_grid);
-
-  /*
-  double left = bounds.get_x1();
-  double top = bounds.get_y1();
-  double right = bounds.get_x2();
-  double bottom = bounds.get_y2();
-  get_bounds(left, top, right, bottom);
-
-  Goocanvas::Bounds bounds;
-  bounds.set_x1(left);
-  bounds.set_y1(top);
-  bounds.set_x2(right);
-  bounds.set_y2(bottom);
-  m_grid->set_bounds(bounds);
-  */
 }
 
 CanvasEditable::~CanvasEditable()
