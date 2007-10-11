@@ -61,6 +61,7 @@ protected:
   void on_response(int id);
 
   void on_menu_file_print();
+  void on_menu_file_page_setup();
   void on_menu_file_save();
   void on_menu_view_showgrid();
 
@@ -94,6 +95,10 @@ protected:
   Glib::RefPtr<Gtk::UIManager> m_context_menu_uimanager;
   Glib::RefPtr<Gtk::Action> m_action_edit_fields, m_action_edit_relationships;
   sigc::connection m_connection_edit_fields, m_connection_edit_relationships;
+
+  //Printing:
+  Glib::RefPtr<Gtk::PrintSettings> m_refSettings;
+  Glib::RefPtr<Gtk::PageSetup> m_refPageSetup;
 };
 
 }; //namespace Glom

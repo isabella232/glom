@@ -41,6 +41,9 @@ Dialog_RelationshipsOverview::Dialog_RelationshipsOverview(BaseObjectType* cobje
     m_menu(0),
     m_modified(false)
 {
+  m_refPageSetup = Gtk::PageSetup::create();
+  m_refSettings = Gtk::PrintSettings::create();
+
   //Add a menu:
   Gtk::VBox* vbox = 0;
   refGlade->get_widget("vbox_placeholder_menubar", vbox);
@@ -48,6 +51,8 @@ Dialog_RelationshipsOverview::Dialog_RelationshipsOverview(BaseObjectType* cobje
   m_refActionGroup = Gtk::ActionGroup::create();
 
   m_refActionGroup->add(Gtk::Action::create("Overview_MainMenu_File", _("_File")) );
+  m_refActionGroup->add(Gtk::Action::create("Overview_MainMenu_File_PageSetup", _("Page _Setup")),
+    sigc::mem_fun(*this, &Dialog_RelationshipsOverview::on_menu_file_page_setup) );
   m_refActionGroup->add(Gtk::Action::create("Overview_MainMenu_File_Print", Gtk::Stock::PRINT),
     sigc::mem_fun(*this, &Dialog_RelationshipsOverview::on_menu_file_print) );
 
@@ -72,6 +77,7 @@ Dialog_RelationshipsOverview::Dialog_RelationshipsOverview(BaseObjectType* cobje
     "  <menubar name='Overview_MainMenu'>"
 #endif
     "    <menu action='Overview_MainMenu_File'>"
+    "      <menuitem action='Overview_MainMenu_File_PageSetup' />"
     "      <menuitem action='Overview_MainMenu_File_Print' />"
     "    </menu>"
     "    <menu action='Overview_MainMenu_View'>"
@@ -326,6 +332,17 @@ void Dialog_RelationshipsOverview::on_menu_file_print()
   print_or_preview(Gtk::PRINT_OPERATION_ACTION_PRINT_DIALOG);
 }
 
+void Dialog_RelationshipsOverview::on_menu_file_page_setup()
+{
+  //Show the page setup dialog, asking it to start with the existing settings:
+  Glib::RefPtr<Gtk::PageSetup> new_page_setup =
+      Gtk::run_page_setup_dialog(*this, m_refPageSetup, m_refSettings);
+
+  //Save the chosen page setup dialog for use when printing, previewing, or
+  //showing the page setup dialog again:
+  m_refPageSetup = new_page_setup;
+}
+
 void Dialog_RelationshipsOverview::on_menu_view_showgrid()
 {
   if(m_action_showgrid->get_active())
@@ -352,8 +369,8 @@ void Dialog_RelationshipsOverview::print_or_preview(Gtk::PrintOperationAction pr
   print->set_canvas(&m_canvas);
 
   print->set_track_print_status();
-  //print->set_default_page_setup(m_refPageSetup);
-  //print->set_print_settings(m_refSettings);
+  print->set_default_page_setup(m_refPageSetup);
+  print->set_print_settings(m_refSettings);
 
   //print->signal_done().connect(sigc::bind(sigc::mem_fun(*this,
   //                &ExampleWindow::on_printoperation_done), print));

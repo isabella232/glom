@@ -1,5 +1,12 @@
 2007-10-11  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/relationships_overview/dialog_relationships_overview.cc:
+	* glom/relationships_overview/dialog_relationships_overview.h:
+	Added a page setup dialog, so that users can choose the paper size and 
+	page orientation.
+
+2007-10-11  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/libglom/document/document_glom.cc: remove_field(): Really remove 
 	the field from the document (it has already been removed from the database).
         I am amazed that this has not been noticed before.
