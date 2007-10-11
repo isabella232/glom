@@ -22,6 +22,7 @@
 #include "glom/utility_widgets/canvas/canvas_line_movable.h"
 #include "../mode_data/dialog_choose_relationship.h"
 #include "printoperation_relationshipsoverview.h"
+#include "glom/application.h"
 #include <goocanvas.h>
 #include <glibmm/i18n.h>
 #include <algorithm>
@@ -116,7 +117,7 @@ Dialog_RelationshipsOverview::Dialog_RelationshipsOverview(BaseObjectType* cobje
   
   if(m_last_size_x != 0 && m_last_size_y != 0 )
   {
-    set_size_request(m_last_size_x, m_last_size_y);
+    set_default_size(m_last_size_x, m_last_size_y);
   }
 
   m_group_tables = Goocanvas::Group::create();
@@ -124,6 +125,8 @@ Dialog_RelationshipsOverview::Dialog_RelationshipsOverview(BaseObjectType* cobje
   m_group_lines = Goocanvas::Group::create();
   m_canvas.add_item(m_group_lines);
   m_group_lines->lower(); //Make sure that the lines are below the tables.
+
+  setup_context_menu();
 }
 
 Dialog_RelationshipsOverview::~Dialog_RelationshipsOverview()
@@ -172,7 +175,9 @@ void Dialog_RelationshipsOverview::draw_tables()
       table_group->signal_moved().connect( sigc::bind(
          sigc::mem_fun(*this, &Dialog_RelationshipsOverview::on_table_moved),
          table_group) );
-      
+      table_group->signal_show_context().connect( sigc::bind(
+         sigc::mem_fun(*this, &Dialog_RelationshipsOverview::on_table_show_context),
+         table_group) );
     
       //tv->x2 = tv->x1 + table_width;
       //tv->y2 = tv->y1 + table_height;
@@ -182,7 +187,7 @@ void Dialog_RelationshipsOverview::draw_tables()
       max_table_height = std::max(max_table_height, table_group->get_table_height());
     }
 
-    m_canvas.set_bounds(0, 0, sizex, max_table_height);
+    m_canvas.set_bounds(0, 0, sizex, max_table_height * tables.size());
   }
 }
    
@@ -369,4 +374,94 @@ void Dialog_RelationshipsOverview::on_table_moved(const Glib::RefPtr<CanvasGroup
   draw_lines();
 }
 
+void Dialog_RelationshipsOverview::on_table_show_context(guint button, guint32 activate_time, const Glib::RefPtr<CanvasGroupDbTable>& table)
+{
+  if(m_action_edit_fields)
+  {
+    // Disconnect the previous handler, 
+    // and connect a new one, with the correct table as a bound parameter:
+    m_connection_edit_fields.disconnect();
+    m_connection_edit_fields = m_action_edit_fields->signal_activate().connect( 
+      sigc::bind( sigc::mem_fun(*this, &Dialog_RelationshipsOverview::on_context_menu_edit_fields), table ));
+
+    m_connection_edit_relationships.disconnect();
+    m_connection_edit_relationships = m_action_edit_relationships->signal_activate().connect( 
+      sigc::bind( sigc::mem_fun(*this, &Dialog_RelationshipsOverview::on_context_menu_edit_relationships), table ));
+  }
+
+  if(m_context_menu)
+    m_context_menu->popup(button, activate_time);
+
+}
+
+void Dialog_RelationshipsOverview::setup_context_menu()
+{
+  m_context_menu_action_group = Gtk::ActionGroup::create();
+
+  m_context_menu_action_group->add(Gtk::Action::create("ContextMenu", "Context Menu") );
+
+  m_action_edit_fields = Gtk::Action::create("ContextEditFields", _("Edit _Fields"));
+  m_context_menu_action_group->add(m_action_edit_fields);
+
+  m_action_edit_relationships = Gtk::Action::create("ContextEditRelationships", _("Edit _Relationships"));
+  m_context_menu_action_group->add(m_action_edit_relationships);
+
+  m_context_menu_uimanager = Gtk::UIManager::create();
+  m_context_menu_uimanager->insert_action_group(m_context_menu_action_group);
+
+  #ifdef GLIBMM_EXCEPTIONS_ENABLED
+  try
+  {
+  #endif
+    Glib::ustring ui_info = 
+    "<ui>"
+    "  <popup name='ContextMenu'>"
+    "  <menuitem action='ContextEditFields'/>"
+    "  <menuitem action='ContextEditRelationships'/>"
+    "  </popup>"
+    "</ui>";
+
+  #ifdef GLIBMM_EXCEPTIONS_ENABLED
+    m_context_menu_uimanager->add_ui_from_string(ui_info);
+  }
+  catch(const Glib::Error& ex)
+  {
+    std::cerr << "building menus failed: " <<  ex.what();
+  }
+  #else
+  std::auto_ptr<Glib::Error> error;
+  m_context_menu_uimanager->add_ui_from_string(ui_info, error);
+  if(error.get() != NULL)
+  {
+    std::cerr << "building menus failed: " << error->what();
+  }
+  #endif
+
+  //Get the menu:
+  m_context_menu = dynamic_cast<Gtk::Menu*>( m_context_menu_uimanager->get_widget("/ContextMenu") ); 
+}
+
+void Dialog_RelationshipsOverview::on_context_menu_edit_fields(const Glib::RefPtr<CanvasGroupDbTable>& table)
+{
+  App_Glom* pApp = App_Glom::get_application();
+  if(pApp && table)
+  {
+    pApp->do_menu_developer_fields(*this, table->get_table_name());
+    //draw_tables();
+    //draw_lines();
+  }
+}
+
+void Dialog_RelationshipsOverview::on_context_menu_edit_relationships(const Glib::RefPtr<CanvasGroupDbTable>& table)
+{
+  App_Glom* pApp = App_Glom::get_application();
+  if(pApp && table)
+  {
+    pApp->do_menu_developer_relationships(*this, table->get_table_name());
+    //draw_tables();
+    //draw_lines();
+  }
+}
+
 } //namespace Glom
+

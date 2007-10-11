@@ -141,30 +141,6 @@ Glib::RefPtr<Goocanvas::Item> CanvasEditable::get_parent_container_or_self(const
   return result;
 }
 
-bool CanvasEditable::on_item_button_press_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventButton* event)
-{
-  printf("%s: button=%d\n", __FUNCTION__, event->button);
-  switch(event->button)
-  {
-    case 3:
-    {
-      //This method is virtual:
-      on_show_context_menu(event->button, event->time);
-      break;
-    }
-
-    default:
-      break;
-  }
-  
-  return true;
-}
-
-void CanvasEditable::on_show_context_menu(guint button, guint32 activate_time)
-{
-  printf("%s\n", __FUNCTION__);
-}
-
 void CanvasEditable::add_vertical_rule(double x)
 {
   m_grid->add_vertical_rule(x);

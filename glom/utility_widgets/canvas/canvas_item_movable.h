@@ -56,6 +56,11 @@ public:
   typedef sigc::signal<void> type_signal_moved;
   type_signal_moved signal_moved();
 
+  /** void on_show_context(guint button, guint32 activate_time);
+   */
+  typedef sigc::signal<void, guint, guint32> type_signal_show_context;
+  type_signal_show_context signal_show_context();
+
   /** Provide information about a grid or rules, 
    * to which the item should snap when moving:
    *
@@ -97,6 +102,7 @@ protected:
   bool m_allow_vertical_movement, m_allow_horizontal_movement;
 
   type_signal_moved m_signal_moved;
+  type_signal_show_context m_signal_show_context;
 };
 
 } //namespace Glom

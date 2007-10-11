@@ -32,6 +32,39 @@ public:
   : m_context_menu(0)
   {
     setup_context_menu();
+
+    set_bounds(0, 0, 500, 500);
+
+    add_vertical_rule(73);
+    add_vertical_rule(103);
+    add_horizontal_rule(55);
+    //set_grid_gap(40);
+
+    //Doesn't work until we fix the goocanvas _new() methods: Glib::RefPtr<Goocanvas::Rect> rect = Glib::wrap( goo_canvas_rect_new()
+    //Glib::RefPtr<Goocanvas::Rect> rect    = Goocanvas::Rect::create(10, 10, 110, 110);
+    Glib::RefPtr<Goocanvas::Rect> rect = Glib::wrap( (GooCanvasRect*)goo_canvas_rect_new(NULL, 10, 10, 110, 110, NULL) );
+    rect->property_fill_color() = "white"; //This makes the whole area clickable, not just the outline stroke:
+    rect->property_line_width() = 2.0f;
+    rect->property_stroke_color() = "blue";
+    add_item(rect, true /* resizable */);
+
+    Glib::RefPtr<Goocanvas::Rect> rect2 = Glib::wrap( (GooCanvasRect*)goo_canvas_rect_new(NULL, 120, 10, 110, 140, NULL) );
+
+    rect2->property_fill_color() = "yellow"; //This makes the whole area clickable, not just the outline stroke:
+    rect2->property_line_width() = 1.0f;
+    rect2->property_stroke_color() = "red";
+    add_item(rect2, true /* resizable */);
+
+    Glib::RefPtr<Glom::CanvasLineMovable> line = Glom::CanvasLineMovable::create();
+    double points_coordinates[] = {20.0, 20.0, 100.0, 40.0};
+    Goocanvas::Points points(2, points_coordinates);
+    line->property_points() = points;
+    line->property_line_width() = 3.0f;
+    line->property_stroke_color() = "gray";
+    line->set_movement_allowed(false, true);
+    add_item(line);
+
+    line->signal_show_context().connect( sigc::mem_fun(*this, &MyCanvas::on_show_context_menu) );
   }
 
 protected:
@@ -114,36 +147,7 @@ main(int argc, char* argv[])
   MyCanvas canvas;
   window.add(canvas);
   canvas.show();
-  canvas.set_bounds(0, 0, 500, 500);
-
-  canvas.add_vertical_rule(73);
-  canvas.add_vertical_rule(103);
-  canvas.add_horizontal_rule(55);
-  canvas.set_grid_gap(40);
-
-  //Doesn't work until we fix the goocanvas _new() methods: Glib::RefPtr<Goocanvas::Rect> rect = Glib::wrap( goo_canvas_rect_new()
-  //Glib::RefPtr<Goocanvas::Rect> rect  = Goocanvas::Rect::create(10, 10, 110, 110);
-  Glib::RefPtr<Goocanvas::Rect> rect = Glib::wrap( (GooCanvasRect*)goo_canvas_rect_new(NULL, 10, 10, 110, 110, NULL) );
-  rect->property_fill_color() = "white"; //This makes the whole area clickable, not just the outline stroke:
-  rect->property_line_width() = 2.0f;
-  rect->property_stroke_color() = "blue";
-  canvas.add_item(rect, true /* resizable */);
-
-  Glib::RefPtr<Goocanvas::Rect> rect2 = Glib::wrap( (GooCanvasRect*)goo_canvas_rect_new(NULL, 120, 10, 110, 140, NULL) );
-
-  rect2->property_fill_color() = "yellow"; //This makes the whole area clickable, not just the outline stroke:
-  rect2->property_line_width() = 1.0f;
-  rect2->property_stroke_color() = "red";
-  canvas.add_item(rect2, true /* resizable */);
-
-  Glib::RefPtr<Glom::CanvasLineMovable> line = Glom::CanvasLineMovable::create();
-  double points_coordinates[] = {20.0, 20.0, 100.0, 40.0};
-  Goocanvas::Points points(2, points_coordinates);
-  line->property_points() = points;
-  line->property_line_width() = 3.0f;
-  line->property_stroke_color() = "gray";
-  line->set_movement_allowed(false, true);
-  canvas.add_item(line);
+  
 
   Gtk::Main::run(window);
 

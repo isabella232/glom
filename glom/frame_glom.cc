@@ -28,6 +28,10 @@
 #include "mode_design/users/dialog_groups_list.h"
 #include "dialog_database_preferences.h"
 #include "reports/dialog_layout_report.h"
+#include <glom/mode_design/dialog_add_related_table.h>
+#include <glom/mode_design/script_library/dialog_script_library.h>
+#include <glom/dialog_new_self_hosted_connection.h>
+#include "relationships_overview/dialog_relationships_overview.h"
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
 #include <glom/libglom/utils.h>
@@ -36,21 +40,6 @@
 #include <glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.h>
 
 #include <glom/reports/report_builder.h>
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-#include <glom/mode_design/dialog_add_related_table.h>
-#include <glom/mode_design/script_library/dialog_script_library.h>
-#endif // !GLOM_ENABLE_CLIENT_ONLY
-
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-#include <glom/dialog_new_self_hosted_connection.h>
-#endif // !GLOM_ENABLE_CLIENT_ONLY
-
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-#define ENABLE_RELATIONSHIPS_OVERVIEW
-#ifdef ENABLE_RELATIONSHIPS_OVERVIEW
-#include "relationships_overview/dialog_relationships_overview.h"
-#endif
-#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 #ifdef GLOM_ENABLE_MAEMO
 #include <hildonmm/note.h>
@@ -80,21 +69,18 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
   m_pButton_FindAll(0),
   m_pBox_Mode(0),
   m_pBox_Tables(0),
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-  m_pBox_Reports(0),
-#endif // !GLOM_ENABLE_CLIENT_ONLY
   m_pDialog_Tables(0),
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   m_pDialog_Reports(0),
+  m_pDialogLayoutReport(0),
+  m_pBox_Reports(0),
   m_pDialog_Fields(0),
   m_pDialog_Relationships(0),
   m_dialog_addrelatedtable(0),
+  m_dialog_relationships_overview(0),
 #endif // !GLOM_ENABLE_CLIENT_ONLY
   m_pDialogConnection(0),
   m_pDialogConnectionFailed(0)
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-  ,m_pDialogLayoutReport(0)
-#endif // !GLOM_ENABLE_CLIENT_ONLY
 {
   //Load widgets from glade file:
   refGlade->get_widget("label_name", m_pLabel_Name);
@@ -326,9 +312,7 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
 Frame_Glom::~Frame_Glom()
 {
   remove_view(m_pBox_Tables);
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-  remove_view(m_pBox_Reports);
-#endif // !GLOM_ENABLE_CLIENT_ONLY
+
   remove_view(&m_Notebook_Data); //Also a composite view.
   remove_view(&m_Notebook_Find); //Also a composite view.
 
@@ -352,6 +336,8 @@ Frame_Glom::~Frame_Glom()
   }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
+  remove_view(m_pBox_Reports);
+
   if(m_pDialog_Relationships)
   {
     remove_view(m_pDialog_Relationships);
@@ -384,6 +370,13 @@ Frame_Glom::~Frame_Glom()
     remove_view(m_dialog_addrelatedtable);
     delete m_dialog_addrelatedtable;
     m_dialog_addrelatedtable = 0;
+  }
+
+  if(m_dialog_relationships_overview)
+  {
+    remove_view(m_dialog_relationships_overview);
+    delete m_dialog_relationships_overview;
+    m_dialog_relationships_overview = 0;
   }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 }
@@ -1349,6 +1342,30 @@ void Frame_Glom::on_menu_developer_fields()
 
 }
 
+void Frame_Glom::do_menu_developer_fields(Gtk::Window& parent, const Glib::ustring table_name)
+{
+  if(!m_pDialog_Fields)
+  {
+    try
+    {
+      Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_design");
+
+      refXml->get_widget_derived("window_design", m_pDialog_Fields);
+      m_pDialog_Fields->signal_hide().connect( sigc::mem_fun(*this, &Frame_Glom::on_developer_dialog_hide));
+    }
+    catch(const Gnome::Glade::XmlError& ex)
+    {
+      std::cerr << ex.what() << std::endl;
+    }
+
+    add_view(m_pDialog_Fields);
+  }
+
+  m_pDialog_Fields->set_transient_for(parent);
+  m_pDialog_Fields->init_db_details(table_name);
+  m_pDialog_Fields->show();
+}
+
 void Frame_Glom::do_menu_developer_fields(Gtk::Window& parent)
 {
   //Check that there is a table to show:
@@ -1358,60 +1375,46 @@ void Frame_Glom::do_menu_developer_fields(Gtk::Window& parent)
   }
   else
   {
-    if(!m_pDialog_Fields)
-    {
-       try
-       {
-         Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_design");
-
-         refXml->get_widget_derived("window_design", m_pDialog_Fields);
-         m_pDialog_Fields->signal_hide().connect( sigc::mem_fun(*this, &Frame_Glom::on_developer_dialog_hide));
-       }
-       catch(const Gnome::Glade::XmlError& ex)
-       {
-         std::cerr << ex.what() << std::endl;
-       }
-
-       add_view(m_pDialog_Fields);
-    }
-
-    m_pDialog_Fields->set_transient_for(parent);
-    m_pDialog_Fields->init_db_details(m_table_name);
-    m_pDialog_Fields->show();
+    do_menu_developer_fields(parent, m_table_name);
   }
 }
 
 
 void Frame_Glom::on_menu_developer_relationships_overview()
 {
-#ifdef ENABLE_RELATIONSHIPS_OVERVIEW
-  Dialog_RelationshipsOverview* dialog = 0;
-  try
+  if(!m_dialog_relationships_overview)
   {
-    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_relationships_overview");
-    refXml->get_widget_derived("dialog_relationships_overview", dialog);
-    if(dialog)
+    try
     {
-      dialog->set_transient_for(*(get_app_window()));
-      add_view(dialog);
-      dialog->load_from_document();
-
-      Glom::Utils::dialog_run_with_help(dialog, "dialog_relationships_overview");
-
-      remove_view(dialog);
-      delete dialog;
+      Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_relationships_overview");
+      refXml->get_widget_derived("dialog_relationships_overview", m_dialog_relationships_overview);
+      add_view(m_dialog_relationships_overview);
+    }
+    catch(const Gnome::Glade::XmlError& ex)
+    {
+      std::cerr << ex.what() << std::endl;
     }
   }
 
-  catch(const Gnome::Glade::XmlError& ex)
+  if(m_dialog_relationships_overview)
   {
-    std::cerr << ex.what() << std::endl;
+    m_dialog_relationships_overview->set_transient_for(*(get_app_window()));
+    m_dialog_relationships_overview->load_from_document();
+
+    Glom::Utils::dialog_run_with_help(m_dialog_relationships_overview, "dialog_relationships_overview");
+
+    remove_view(m_dialog_relationships_overview);
+    delete m_dialog_relationships_overview;
+    m_dialog_relationships_overview = 0;
   }
-#else
-  show_ok_dialog(_("Not Implemented"), _("This feature is not yet available."), *get_app_window(), Gtk::MESSAGE_WARNING);
-#endif //ENABLE_RELATIONSHIPS_OVERVIEW
 }
 
+void Frame_Glom::do_menu_developer_relationships(Gtk::Window& parent, const Glib::ustring table_name)
+{
+  m_pDialog_Relationships->set_transient_for(parent);
+  m_pDialog_Relationships->init_db_details(table_name);
+  m_pDialog_Relationships->show();
+}
 
 void Frame_Glom::on_menu_developer_relationships()
 {
@@ -1422,9 +1425,7 @@ void Frame_Glom::on_menu_developer_relationships()
   }
   else
   {
-    m_pDialog_Relationships->set_transient_for(*get_app_window());
-    m_pDialog_Relationships->init_db_details(m_table_name);
-    m_pDialog_Relationships->show();
+    do_menu_developer_relationships(*get_app_window(), m_table_name);
   }
 }
 
@@ -1527,6 +1528,10 @@ void Frame_Glom::on_developer_dialog_hide()
   //TODO: This is a bit of a hack. It's not always useful to do this:
   if(m_dialog_addrelatedtable)
     m_dialog_addrelatedtable->set_fields(m_table_name);
+
+  //Update the display. TODO: Shouldn't this happen automatically via the view?
+  if(m_dialog_relationships_overview)
+    m_dialog_relationships_overview->load_from_document();
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 

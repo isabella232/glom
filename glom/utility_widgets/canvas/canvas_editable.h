@@ -58,10 +58,6 @@ protected:
   
   static Glib::RefPtr<Goocanvas::Item> get_parent_container_or_self(const Glib::RefPtr<Goocanvas::Item>& item);
 
-  virtual void on_show_context_menu(guint button, guint32 activate_time);
-
-  virtual bool on_item_button_press_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventButton* event);
-
   bool m_dragging;
   double m_drag_x, m_drag_y;
 

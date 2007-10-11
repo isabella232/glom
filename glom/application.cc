@@ -2052,6 +2052,16 @@ void App_Glom::document_history_add(const Glib::ustring& file_uri)
     Bakery::App_WithDoc_Gtk::document_history_add(file_uri);
 }
 
+void App_Glom::do_menu_developer_fields(Gtk::Window& parent, const Glib::ustring table_name)
+{
+  m_pFrame->do_menu_developer_fields(parent, table_name);
+}
+
+void App_Glom::do_menu_developer_relationships(Gtk::Window& parent, const Glib::ustring table_name)
+{
+  m_pFrame->do_menu_developer_relationships(parent, table_name);
+}
+
 } //namespace Glom
 
 

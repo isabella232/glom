@@ -55,6 +55,7 @@ protected:
   
   void draw_tables();
   void draw_lines();
+  void setup_context_menu();
   void update_relationships(TableView* table_from);
   void print_or_preview(Gtk::PrintOperationAction print_action);
   void on_response(int id);
@@ -64,6 +65,10 @@ protected:
   void on_menu_view_showgrid();
 
   void on_table_moved(const Glib::RefPtr<CanvasGroupDbTable>& table);
+  void on_table_show_context(guint button, guint32 activate_time, const Glib::RefPtr<CanvasGroupDbTable>& table);
+
+  void on_context_menu_edit_fields(const Glib::RefPtr<CanvasGroupDbTable>& table);
+  void on_context_menu_edit_relationships(const Glib::RefPtr<CanvasGroupDbTable>& table);
 
   Glib::RefPtr<CanvasGroupDbTable> get_table_group(const Glib::ustring& table_name);
   
@@ -82,6 +87,13 @@ protected:
 
   Glib::RefPtr<Goocanvas::Group> m_group_tables;
   Glib::RefPtr<Goocanvas::Group> m_group_lines;
+
+  //Context menu:
+  Gtk::Menu* m_context_menu;
+  Glib::RefPtr<Gtk::ActionGroup> m_context_menu_action_group;
+  Glib::RefPtr<Gtk::UIManager> m_context_menu_uimanager;
+  Glib::RefPtr<Gtk::Action> m_action_edit_fields, m_action_edit_relationships;
+  sigc::connection m_connection_edit_fields, m_connection_edit_relationships;
 };
 
 }; //namespace Glom

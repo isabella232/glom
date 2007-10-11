@@ -66,6 +66,9 @@ public:
   void fill_menu_reports(const Glib::ustring& table_name);
   void fill_menu_print_layouts(const Glib::ustring& table_name);
 
+  void do_menu_developer_fields(Gtk::Window& parent, const Glib::ustring table_name);
+  void do_menu_developer_relationships(Gtk::Window& parent, const Glib::ustring table_name);
+
   ///Whether to show the generated SQL queries on stdout, for debugging.
   bool get_show_sql_debug() const;
 

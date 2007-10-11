@@ -79,10 +79,17 @@ bool CanvasItemMovable::on_button_press_event(const Glib::RefPtr<Goocanvas::Item
       return true; /* Handled. */
       break;
     }
-
+    case 3:
+    {
+      std::cout << "CanvasItemMovable::on_button_press_event(): type=" << typeid(this).name() << std::endl;
+      m_signal_show_context.emit(event->button, event->time);
+      return false; /* Not fully Handled. */
+      break;
+    }
     default:
       break;
   }
+
   
   return false; /* Not handled. Pass it to an item lower in the z order, if any. */
 }
@@ -137,9 +144,11 @@ bool CanvasItemMovable::on_motion_notify_event(const Glib::RefPtr<Goocanvas::Ite
     move(new_x, new_y);
 
     m_signal_moved.emit();
+
+    return true;
   }
 
-  return true;
+  return false;
 }
 
 bool CanvasItemMovable::on_button_release_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventButton* event)
@@ -174,6 +183,11 @@ bool CanvasItemMovable::on_leave_notify_event(const Glib::RefPtr<Goocanvas::Item
 CanvasItemMovable::type_signal_moved CanvasItemMovable::signal_moved()
 {
   return m_signal_moved;
+}
+
+CanvasItemMovable::type_signal_show_context CanvasItemMovable::signal_show_context()
+{
+  return m_signal_show_context;
 }
 
 void CanvasItemMovable::set_drag_cursor(const Gdk::Cursor& cursor)

@@ -51,6 +51,7 @@ namespace Glom
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 class Dialog_Layout_Report;
 class Dialog_AddRelatedTable;
+class Dialog_RelationshipsOverview;
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
 class Frame_Glom :
@@ -100,9 +101,11 @@ public:
 
   void on_menu_developer_fields();
   void do_menu_developer_fields(Gtk::Window& parent);
+  void do_menu_developer_fields(Gtk::Window& parent, const Glib::ustring table_name);
 
   void on_menu_developer_relationships_overview();
   void on_menu_developer_relationships();
+  void do_menu_developer_relationships(Gtk::Window& parent, const Glib::ustring table_name);
   void on_menu_developer_users();
   void on_menu_developer_layout();
   void on_menu_developer_reports();
@@ -210,34 +213,29 @@ protected:
   PlaceHolder* m_pBox_Mode; //Contains e.g. design mode notebook.
 
   Box_Tables* m_pBox_Tables;
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-  Box_Reports* m_pBox_Reports;
-#endif // !GLOM_ENABLE_CLIENT_ONLY
 
   Notebook_Data m_Notebook_Data;
   Notebook_Find m_Notebook_Find;
 
   //Navigation:
   Dialog_Glom* m_pDialog_Tables;
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-  Dialog_Glom* m_pDialog_Reports;
-#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   //Developer:
+  Dialog_Glom* m_pDialog_Reports;
+  Dialog_Layout_Report* m_pDialogLayoutReport;
+  Box_Reports* m_pBox_Reports;
+
   Dialog_Fields* m_pDialog_Fields;
   Dialog_Relationships* m_pDialog_Relationships;
   Dialog_AddRelatedTable* m_dialog_addrelatedtable;
+  Dialog_RelationshipsOverview* m_dialog_relationships_overview;
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   Dialog_Connection* m_pDialogConnection;
   Gtk::Dialog* m_pDialogConnectionFailed;
 
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-  Dialog_Layout_Report* m_pDialogLayoutReport;
-#endif // !GLOM_ENABLE_CLIENT_ONLY
-
-  Box_Data_List_Related m_HackToFixLinkerError; //The implementation of this class does not seem to be in the library unless I do this. murrayc.
+  Box_Data_List_Related m_HackToFixLinkerError; //TODO: Remove this. The implementation of this class does not seem to be in the library unless I do this. murrayc.
 };
 
 } //namespace Glom
