@@ -1,5 +1,18 @@
 2007-10-11  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/libglom/document/document_glom.cc: remove_field(): Really remove 
+	the field from the document (it has already been removed from the database).
+        I am amazed that this has not been noticed before.
+	* glom/relationships_overview/dialog_relationships_overview.cc:
+	draw_lines(): Draw relationships in both directions. 
+	Show the relationship name over the line, with offset so that both names 
+	can be seen if it is in both directions.
+	Draw a horizontal part of the line at the beginning and end, to make it 
+	clearer when the tables are arrange vertically, and generally to provide 
+	more visual cues about which field is meant.
+
+2007-10-11  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/application.cc:
 	* glom/application.h: Make the relationships overview dialog a member 
 	variable, so we can force a reload when a developer dialog (fields or 

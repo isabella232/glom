@@ -20,6 +20,7 @@
 
 #include "dialog_relationships_overview.h"
 #include "glom/utility_widgets/canvas/canvas_line_movable.h"
+#include "glom/utility_widgets/canvas/canvas_text_movable.h"
 #include "../mode_data/dialog_choose_relationship.h"
 #include "printoperation_relationshipsoverview.h"
 #include "glom/application.h"
@@ -196,7 +197,7 @@ void Dialog_RelationshipsOverview::draw_lines()
   //Remove all current items:
   while(m_group_lines->get_n_children() > 0)
     m_group_lines->remove_child(0);
-  
+   
   Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
   if(document)
   { 
@@ -232,7 +233,7 @@ void Dialog_RelationshipsOverview::draw_lines()
         }
 
         //Only primary keys can be to fields:
-        if(document->get_field(relationship->get_to_table(), relationship->get_to_field())->get_primary_key())
+        if(true) //document->get_field(relationship->get_to_table(), relationship->get_to_field())->get_primary_key())
         {
           Glib::RefPtr<CanvasGroupDbTable> group_to = get_table_group(relationship->get_to_table());
 
@@ -249,14 +250,25 @@ void Dialog_RelationshipsOverview::draw_lines()
           }
 
           //Start the line from the right of the from table instead of the left, if the to table is to the right:
+          double extra_line = 0; //An extra horizontal line before the real diagonal line starts. 
           if(to_field_x > from_field_x)
+          {
             from_field_x += group_from->get_table_width();
+            extra_line = 20;
+          }
           else
+          {
             to_field_x += group_to->get_table_width();
+            extra_line = -20;
+          }
  
+          //Create the line:
           Glib::RefPtr<CanvasLineMovable> line = CanvasLineMovable::create();
-          double points_coordinates[] = {from_field_x, from_field_y, to_field_x, to_field_y};
-          Goocanvas::Points points(2, points_coordinates);
+          double points_coordinates[] = {from_field_x, from_field_y,
+            from_field_x + extra_line, from_field_y,
+            to_field_x - extra_line, to_field_y,
+            to_field_x, to_field_y};
+          Goocanvas::Points points(4, points_coordinates);
           line->property_points() = points;
           line->property_stroke_color() = "black";
           line->property_line_width() = 1.0;
@@ -266,6 +278,25 @@ void Dialog_RelationshipsOverview::draw_lines()
           line->property_arrow_length() = 10.0;
           line->set_movement_allowed(false, false); //Don't let the user move this by dragging.
           m_group_lines->add_child(line);
+
+          //Create a text item, showing the name of the relationship on the line:
+          //
+          //Raise or lower the text slightly to make it show above the line when horizontal, 
+          //and to avoid overwriting a relationship in the other direction:
+          //TODO: This is not very clear. Investigate how other systems show this.
+          double y_offset = (from_field_x < to_field_x) ? -10 : +10; 
+          if(from_field_x == to_field_x)
+            y_offset = (from_field_y < to_field_y) ? -10 : +10; 
+
+          const double text_x = (from_field_x + to_field_x) / 2;
+          const double text_y = ((from_field_y + to_field_y) / 2) + y_offset;
+          Glib::RefPtr<CanvasTextMovable> text = CanvasTextMovable::create(relationship->get_title_or_name(),
+            text_x, text_y, -1, //TODO: Calc a suitable width.
+            Gtk::ANCHOR_CENTER);
+          text->property_font() = "sans 10";
+          text->property_use_markup() = true;
+          text->set_movement_allowed(false, false); //Move only as part of the parent group.
+          m_group_lines->add_child(text);
         }
       }
     }

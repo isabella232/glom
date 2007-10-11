@@ -515,7 +515,7 @@ void Document_Glom::remove_relationship(const sharedptr<const Relationship>& rel
     {
       info.m_relationships.erase(iterRel);
 
-      set_modified(true);
+      set_modified();
     }
 
     //Remove relationship from any layouts:
@@ -563,6 +563,21 @@ void Document_Glom::remove_relationship(const sharedptr<const Relationship>& rel
 
 void Document_Glom::remove_field(const Glib::ustring& table_name, const Glib::ustring& field_name)
 {
+  //Remove the field itself:
+  type_tables::iterator iterFindTable = m_tables.find(table_name);
+  if(iterFindTable != m_tables.end())
+  {
+    type_vecFields& vecFields = iterFindTable->second.m_fields;
+    type_vecFields::iterator iterFind = std::find_if( vecFields.begin(), vecFields.end(), predicate_FieldHasName<Field>(field_name) );
+    if(iterFind != vecFields.end()) //If it was found:
+    {
+      //Remove it:
+      vecFields.erase(iterFind);
+
+      set_modified();
+    }
+  }
+
   //Remove any relationships that use this field:
   for(type_tables::iterator iter = m_tables.begin(); iter != m_tables.end(); ++iter)
   {
@@ -624,7 +639,6 @@ void Document_Glom::remove_field(const Glib::ustring& table_name, const Glib::us
       group->remove_field(table_name, field_name);
     }
   }
-
 }
 
 void Document_Glom::remove_table(const Glib::ustring& table_name)
@@ -633,7 +647,7 @@ void Document_Glom::remove_table(const Glib::ustring& table_name)
   if(iter != m_tables.end())
   {
     m_tables.erase(iter);
-    set_modified(true);
+    set_modified();
   }
 
   //Remove any relationships that use this table:
