@@ -1621,7 +1621,9 @@ void DbAddDel::on_treeview_button_press_event(GdkEventButton* event)
     Gtk::TreeView::Column* pColumn = 0;
     int cell_x = 0;
     int cell_y = 0;  
-    bool row_exists = m_TreeView.get_path_at_pos((int)event->x, (int)event->y, path, pColumn, cell_x, cell_y);
+
+    // Make sure to use the non-deprecated const version:
+    bool row_exists = static_cast<const Gtk::TreeView&>(m_TreeView).get_path_at_pos((int)event->x, (int)event->y, path, pColumn, cell_x, cell_y);
 
     //Get the row:
     if(row_exists)

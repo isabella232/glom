@@ -1,3 +1,14 @@
+2007-10-11  Armin Burgmeier  <armin@openismus.com>
+
+	* glom/utility_widgets/db_adddel/db_adddel.cc:
+	* glom/utility_widgets/flowtable.cc:
+	* glom/utility_widgets/adddel/adddel.cc: Don't use deprecated gtkmm
+	API.
+
+	* glom/libglom/connectionpool.cc:
+	(ConnectionPool::check_postgres_gda_with_warning): Use Hildon::Note
+	instead of Gtk::MessageDialog in maemo version.
+
 2007-10-11  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/relationships_overview/dialog_relationships_overview.cc:

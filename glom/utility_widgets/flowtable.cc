@@ -357,7 +357,7 @@ void FlowTable::get_item_requested_width(const FlowTableItem& item, int& first, 
     {
       //Discover how much space this child needs:
       Gtk::Requisition child_requisition_request;
-      first_widget->size_request(child_requisition_request);
+      child_requisition_request = first_widget->size_request();
       first = child_requisition_request.width;
     }
 
@@ -365,7 +365,7 @@ void FlowTable::get_item_requested_width(const FlowTableItem& item, int& first, 
     {
       //Discover how much space this child needs:
       Gtk::Requisition child_requisition_request;
-      second_widget->size_request(child_requisition_request);
+      child_requisition_request = second_widget->size_request();
       second = child_requisition_request.width;
     }
   }
@@ -385,7 +385,7 @@ int FlowTable::get_item_requested_height(const FlowTableItem& item) const
     {
       // Ask the child how much space it needs:
       Gtk::Requisition child_requisition;
-      first->size_request(child_requisition);
+      child_requisition = first->size_request();
 
       max_child_height = child_requisition.height;
     }
@@ -394,7 +394,7 @@ int FlowTable::get_item_requested_height(const FlowTableItem& item) const
     {
       // Ask the child how much space it needs:
       Gtk::Requisition child_requisition;
-      second->size_request(child_requisition);
+      child_requisition = second->size_request();
 
       max_child_height = MAX(max_child_height, child_requisition.height);
     }
@@ -568,7 +568,7 @@ Gtk::Allocation FlowTable::assign_child(Gtk::Widget* widget, int x, int y)
 {
   //Discover how much space this child needs:
   Gtk::Requisition child_requisition_request;
-  widget->size_request(child_requisition_request);  //TODO: This method should be const:
+  child_requisition_request = widget->size_request();
 
   //Give it as much space as it wants:
   return assign_child(widget, x, y, child_requisition_request.width, child_requisition_request.height);
@@ -606,7 +606,7 @@ void FlowTable::get_item_max_width_requested(guint start, guint height, guint& f
     if(child_is_visible(first))
     {
       Gtk::Requisition child_requisition;
-      first->size_request(child_requisition);
+      child_requisition = first->size_request();
 
       if(child_is_visible(second))
       {
@@ -627,7 +627,7 @@ void FlowTable::get_item_max_width_requested(guint start, guint height, guint& f
     if(child_is_visible(second))
     {
       Gtk::Requisition child_requisition;
-      second->size_request(child_requisition);
+      child_requisition = second->size_request();
 
       item_second_width = child_requisition.width;
       //g_warning("item_second_width=%d", item_second_width);
