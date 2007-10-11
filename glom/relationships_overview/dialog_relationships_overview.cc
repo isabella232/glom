@@ -189,18 +189,18 @@ void Dialog_RelationshipsOverview::update_model()
       tv->x2 = tv->x1 + table_width;
       tv->y2 = tv->y1 + table_height;
       
-      goo_canvas_rect_new(table_group->gobj(), tv->x1, tv->y1, table_width, table_height,
+      Glib::RefPtr<Goocanvas::Item> item_temp = Glib::wrap( goo_canvas_rect_new(table_group->gobj(), tv->x1, tv->y1, table_width, table_height,
                           "line-width", 2.0, "radius-x", 4.0,
                           "radius-y", 4.0, "stroke-color", "black",
-                          "fill-color", "white", 0);
+                          "fill-color", "white", 0) );
       
-      goo_canvas_text_new(table_group->gobj(), title.c_str(),
+      item_temp = Glib::wrap( goo_canvas_text_new(table_group->gobj(), title.c_str(),
                           tv->x1 + 5, tv->y1 + 5, table_width - 10,
                           GTK_ANCHOR_NORTH_WEST, "font", "sans 10",
-                          "use-markup", true, 0);
-      goo_canvas_polyline_new_line(table_group->gobj(), tv->x1, tv->y1 + field_height, tv->x1 + table_width,
+                          "use-markup", true, 0) );
+       item_temp = Glib::wrap( goo_canvas_polyline_new_line(table_group->gobj(), tv->x1, tv->y1 + field_height, tv->x1 + table_width,
                         tv->y1 + field_height, "stroke-color", "black",
-                        "line-width", 1.0, 0);
+                        "line-width", 1.0, 0) );
 
       int y = field_height;
       for(Document_Glom::type_vecFields::iterator iter = fields.begin(); iter != fields.end(); ++iter)
@@ -212,16 +212,16 @@ void Dialog_RelationshipsOverview::update_model()
           title = "<u>";
           title += field->get_title_or_name().c_str();
           title += "</u>";
-          goo_canvas_text_new(table_group->gobj(), title.c_str(),
+          Glib::RefPtr<Goocanvas::Item> item_temp = Glib::wrap( goo_canvas_text_new(table_group->gobj(), title.c_str(),
                       tv->x1 + 5, tv->y1 + 5 + y, table_width - 10,
                       GTK_ANCHOR_NORTH_WEST, "font", "sans 10",
-                              "use-markup", true, 0);
+                              "use-markup", true, 0) );
         }
         else
         {
-          goo_canvas_text_new(table_group->gobj(), field->get_title_or_name().c_str(),
+          Glib::RefPtr<Goocanvas::Item> item_temp = Glib::wrap( goo_canvas_text_new(table_group->gobj(), field->get_title_or_name().c_str(),
                               tv->x1 + 5, tv->y1 + 5 + y, table_width - 10,
-                              GTK_ANCHOR_NORTH_WEST, "font", "sans 10", 0);
+                              GTK_ANCHOR_NORTH_WEST, "font", "sans 10", 0) );
         }
         
         y += field_height;

@@ -1,4 +1,11 @@
-2007-10-07  MMurray Cumming  <murrayc@murrayc.com>
+2007-10-11  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/relationships_overview/dialog_relationships_overview.cc:
+	* glom/relationships_overview/printoperation_relationshipsoverview.
+	cc: Fix the build for the latest goocanvasmm API, though all this 
+	code has been reworked in the glom-precise-printouts branch.
+
+2007-10-07  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/relationships_overview/printoperation_relationshipsoverview.
 	cc: Get the bounds of the root item rather than of the whole canvas, 

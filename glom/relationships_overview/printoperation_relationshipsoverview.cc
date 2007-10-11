@@ -61,8 +61,7 @@ void PrintOperationRelationshipsOverview::on_draw_page(
   if(!root_item)
     return;
 
-  Goocanvas::Bounds bounds;
-  root_item->get_bounds(bounds);
+  Goocanvas::Bounds bounds = root_item->get_bounds();
   canvas_left = bounds.get_x1();
   canvas_right = bounds.get_x2();
   canvas_top = bounds.get_y1();
