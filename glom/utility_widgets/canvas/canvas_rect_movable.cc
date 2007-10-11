@@ -31,14 +31,14 @@ namespace Glom
 
 CanvasRectMovable::CanvasRectMovable()
 : Goocanvas::Rect((GooCanvasRect*)goo_canvas_rect_new(NULL, 0.0, 0.0, 0.0, 0.0, NULL)), //TODO: Remove this when goocanvas has been fixed.
-  m_snap_corner(CORNER_TOP_LEFT) //arbitrary default.
+  m_snap_corner(CORNER_ALL)
 {
   init();
 }
 
 CanvasRectMovable::CanvasRectMovable(double x, double y, double width, double height)
 : Goocanvas::Rect((GooCanvasRect*)goo_canvas_rect_new(NULL, x, y, width, height, NULL)), //TODO: Remove this when goocanvas has been fixed.
-  m_snap_corner(CORNER_TOP_LEFT) //arbitrary default.
+  m_snap_corner(CORNER_ALL)
 {
   init();
 }
@@ -80,12 +80,13 @@ void CanvasRectMovable::move(double x, double y)
   property_y() = y;
 }
 
-void CanvasRectMovable::snap_position(double& x, double& y) const
+
+void CanvasRectMovable::snap_position_one_corner(Corners corner, double& x, double& y) const
 {
   //Choose the offset of the part to snap to the grid:
   double corner_x_offset = 0;
   double corner_y_offset = 0;
-  switch(m_snap_corner)
+  switch(corner)
   {
     case CORNER_TOP_LEFT:
       corner_x_offset = 0;
@@ -121,6 +122,42 @@ void CanvasRectMovable::snap_position(double& x, double& y) const
   //Apply that offset to the regular position:
   x += snapped_offset_x;
   y += snapped_offset_y;
+}
+
+void CanvasRectMovable::snap_position_all_corners(double& x, double& y) const
+{
+  double offset_x_min = 0;
+  double offset_y_min = 0;
+
+  //Try snapping each corner, to choose the one that snapped closest:
+  for(int i = CORNER_TOP_LEFT; i < CORNER_COUNT; ++i)
+  {
+    const Corners corner = (Corners)i;
+    double temp_x = x;
+    double temp_y = y;
+    snap_position_one_corner(corner, temp_x, temp_y);
+
+    const double offset_x = temp_x -x;
+    const double offset_y = temp_y - y;
+
+    //Use the smallest offset, preferring some offset to no offset:
+    if(offset_x && ((std::abs(offset_x) < std::abs(offset_x_min)) || !offset_x_min))
+      offset_x_min = offset_x;
+
+    if(offset_y && ((std::abs(offset_y) < std::abs(offset_y_min)) || !offset_y_min))
+      offset_y_min = offset_y;
+  }
+
+  x += offset_x_min;
+  y += offset_y_min;
+}
+
+void CanvasRectMovable::snap_position(double& x, double& y) const
+{
+  if(m_snap_corner == CORNER_ALL)
+    return snap_position_all_corners(x, y);
+  else
+    return snap_position_one_corner(m_snap_corner, x, y);
 }
 
 Goocanvas::Canvas* CanvasRectMovable::get_parent_canvas_widget()

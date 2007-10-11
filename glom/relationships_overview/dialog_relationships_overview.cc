@@ -348,7 +348,7 @@ void Dialog_RelationshipsOverview::on_menu_view_showgrid()
   if(m_action_showgrid->get_active())
   {
     std::cout << "showing" << std::endl;
-    m_canvas.set_grid_gap(20);
+    m_canvas.set_grid_gap(40);
   }
   else
   {

@@ -19,6 +19,10 @@
  */
 
 #include "canvas_item_movable.h"
+#include "canvas_rect_movable.h"
+#include "canvas_text_movable.h"
+#include "canvas_line_movable.h"
+#include "canvas_group_movable.h"
 #include <libgoocanvasmm/canvas.h>
 #include <goocanvasrect.h>
 #include <goocanvasgroup.h>
@@ -240,6 +244,40 @@ void CanvasItemMovable::set_movement_allowed(bool vertical, bool horizontal)
 {
   m_allow_vertical_movement = vertical;
   m_allow_horizontal_movement = horizontal;
+}
+
+//static:
+Glib::RefPtr<CanvasItemMovable> CanvasItemMovable::cast_to_movable(const Glib::RefPtr<Goocanvas::Item>& item)
+{
+  Glib::RefPtr<CanvasItemMovable> movable;
+  if(!item)
+    return movable;
+
+  //We can't cast directly to CanvasItemMovable because each class derives from it separately,
+  //instead of it being a base class of Goocanvas::Item (the common base class):
+  Glib::RefPtr<CanvasRectMovable> rect = Glib::RefPtr<CanvasRectMovable>::cast_dynamic(item);
+  if(rect)
+    movable = Glib::RefPtr<CanvasItemMovable>::cast_dynamic(rect);
+  else
+  {
+    Glib::RefPtr<CanvasLineMovable> line = Glib::RefPtr<CanvasLineMovable>::cast_dynamic(item);
+    if(line)
+      movable = Glib::RefPtr<CanvasItemMovable>::cast_dynamic(line);
+    else
+    {
+      Glib::RefPtr<CanvasTextMovable> text = Glib::RefPtr<CanvasTextMovable>::cast_dynamic(item);
+      if(text)
+        movable = Glib::RefPtr<CanvasItemMovable>::cast_dynamic(text);
+      else
+      {
+        Glib::RefPtr<CanvasGroupMovable> group = Glib::RefPtr<CanvasGroupMovable>::cast_dynamic(item);
+        if(group)
+          movable = Glib::RefPtr<CanvasItemMovable>::cast_dynamic(group);
+      }
+    }
+  }
+
+  return movable;
 }
 
 } //namespace Glom

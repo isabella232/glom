@@ -44,10 +44,12 @@ public:
 
   enum Corners
   {
+    CORNER_ALL, // Snap to all corners.
     CORNER_TOP_LEFT,
     CORNER_TOP_RIGHT,
     CORNER_BOTTOM_LEFT,
-    CORNER_BOTTOM_RIGHT
+    CORNER_BOTTOM_RIGHT,
+    CORNER_COUNT
   };
 
   /** Specify the corner to be considered when snapping to a grid while moving.
@@ -61,6 +63,9 @@ protected:
   virtual Goocanvas::Canvas* get_parent_canvas_widget();
 
   virtual void snap_position(double& x, double& y) const;
+  void snap_position_one_corner(Corners corner, double& x, double& y) const;
+  void snap_position_all_corners(double& x, double& y) const;
+
 
   //What corner is considered when snapping to a grid while moving:
   Corners m_snap_corner;

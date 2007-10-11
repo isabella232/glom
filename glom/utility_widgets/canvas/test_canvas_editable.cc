@@ -21,6 +21,9 @@
 #include <gtkmm.h>
 #include "canvas_editable.h"
 #include "canvas_line_movable.h"
+#include "canvas_rect_movable.h"
+#include "canvas_text_movable.h"
+#include "canvas_group_movable.h"
 #include <goocanvasrect.h>
 #include <iostream>
 
@@ -38,7 +41,7 @@ public:
     add_vertical_rule(73);
     add_vertical_rule(103);
     add_horizontal_rule(55);
-    //set_grid_gap(40);
+    set_grid_gap(40);
 
     //Doesn't work until we fix the goocanvas _new() methods: Glib::RefPtr<Goocanvas::Rect> rect = Glib::wrap( goo_canvas_rect_new()
     //Glib::RefPtr<Goocanvas::Rect> rect    = Goocanvas::Rect::create(10, 10, 110, 110);
@@ -65,6 +68,16 @@ public:
     add_item(line);
 
     line->signal_show_context().connect( sigc::mem_fun(*this, &MyCanvas::on_show_context_menu) );
+
+
+    Glib::RefPtr<Glom::CanvasGroupMovable> group = Glom::CanvasGroupMovable::create();
+    Glib::RefPtr<Glom::CanvasRectMovable> rect_inner = Glom::CanvasRectMovable::create(70, 70, 90, 90);
+    rect_inner->property_fill_color() = "blue"; //This makes the whole area clickable, not just the outline stroke:
+    rect_inner->property_line_width() = 1.0f;
+    rect_inner->property_stroke_color() = "red";
+    rect_inner->set_movement_allowed(false, false); //Move only as part of the parent group.
+    group->add_child(rect_inner);
+    add_item(group);
   }
 
 protected:

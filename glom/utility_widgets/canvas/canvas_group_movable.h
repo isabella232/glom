@@ -40,9 +40,21 @@ public:
 
   virtual void get_xy(double& x, double& y);
   virtual void move(double x, double y);
+  virtual void set_grid(const Glib::RefPtr<const CanvasGroupGrid>& grid);
 
 protected:
   virtual Goocanvas::Canvas* get_parent_canvas_widget();
+
+  enum Corners
+  {
+    CORNER_TOP_LEFT,
+    CORNER_TOP_RIGHT,
+    CORNER_BOTTOM_LEFT,
+    CORNER_BOTTOM_RIGHT,
+    CORNER_COUNT
+  };
+
+  void snap_position_one_corner(Corners corner, double& x, double& y) const;
 
   virtual void snap_position(double& x, double& y) const;
 

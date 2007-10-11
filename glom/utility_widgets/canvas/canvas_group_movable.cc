@@ -52,46 +52,13 @@ Glib::RefPtr<CanvasGroupMovable> CanvasGroupMovable::create()
   return Glib::RefPtr<CanvasGroupMovable>(new CanvasGroupMovable());
 }
 
-static Glib::RefPtr<CanvasItemMovable> cast_to_movable(const Glib::RefPtr<Goocanvas::Item>& item)
-{
-  Glib::RefPtr<CanvasItemMovable> movable;
-  if(!item)
-    return movable;
-
-  //We can't cast directly to CanvasItemMovable because each class derives from it separately,
-  //instead of it being a base class of Goocanvas::Item (the common base class):
-  Glib::RefPtr<CanvasRectMovable> rect = Glib::RefPtr<CanvasRectMovable>::cast_dynamic(item);
-  if(rect)
-    movable = Glib::RefPtr<CanvasItemMovable>::cast_dynamic(rect);
-  else
-  {
-    Glib::RefPtr<CanvasLineMovable> line = Glib::RefPtr<CanvasLineMovable>::cast_dynamic(item);
-    if(line)
-      movable = Glib::RefPtr<CanvasItemMovable>::cast_dynamic(line);
-    else
-    {
-      Glib::RefPtr<CanvasTextMovable> text = Glib::RefPtr<CanvasTextMovable>::cast_dynamic(item);
-      if(text)
-        movable = Glib::RefPtr<CanvasItemMovable>::cast_dynamic(text);
-      else
-      {
-        Glib::RefPtr<CanvasGroupMovable> group = Glib::RefPtr<CanvasGroupMovable>::cast_dynamic(item);
-        if(group)
-          movable = Glib::RefPtr<CanvasItemMovable>::cast_dynamic(group);
-      }
-    }
-  }
-
-  return movable;
-}
-
 void CanvasGroupMovable::get_xy(double& x, double& y)
 {
   Glib::RefPtr<Goocanvas::Item> first_child = get_child(0);
   if(!first_child)
     return;
 
-  Glib::RefPtr<CanvasItemMovable> movable = cast_to_movable(first_child);
+  Glib::RefPtr<CanvasItemMovable> movable = CanvasItemMovable::cast_to_movable(first_child);
   if(movable)
      movable->get_xy(x, y);
 }
@@ -111,7 +78,7 @@ void CanvasGroupMovable::move(double x, double y)
   for(int i = 0; i < count; ++i)
   {
     Glib::RefPtr<Goocanvas::Item> child = get_child(i);
-    Glib::RefPtr<CanvasItemMovable> movable = cast_to_movable(child);
+    Glib::RefPtr<CanvasItemMovable> movable = CanvasItemMovable::cast_to_movable(child);
     if(movable)
     {
       double this_x = 0;
@@ -122,9 +89,101 @@ void CanvasGroupMovable::move(double x, double y)
   }
 }
 
+void CanvasGroupMovable::set_grid(const Glib::RefPtr<const CanvasGroupGrid>& grid)
+{
+  std::cout << "CanvasGroupMovable::set_grid" << std::endl;
+
+  //Call the base class:
+  CanvasItemMovable::set_grid(grid);
+
+  //Apply the grid to all children:
+  const int count = get_n_children();
+  for(int i = 0; i < count; ++i)
+  {
+    Glib::RefPtr<Goocanvas::Item> child = get_child(i);
+    Glib::RefPtr<CanvasItemMovable> movable = CanvasItemMovable::cast_to_movable(child);
+    if(movable)
+    {
+      movable->set_grid(grid);
+    }
+  }
+}
+
+void CanvasGroupMovable::snap_position_one_corner(Corners corner, double& x, double& y) const
+{
+  Goocanvas::Bounds bounds = get_bounds();
+  const double width = std::abs(bounds.get_x2() - bounds.get_x1());
+  const double height = std::abs(bounds.get_y2() - bounds.get_y1());
+
+  //Choose the offset of the part to snap to the grid:
+  double corner_x_offset = 0;
+  double corner_y_offset = 0;
+  switch(corner)
+  {
+    case CORNER_TOP_LEFT:
+      corner_x_offset = 0;
+      corner_y_offset = 0;
+      break;
+    case CORNER_TOP_RIGHT:
+      corner_x_offset = width;
+      corner_y_offset = 0;
+      break;
+    case CORNER_BOTTOM_LEFT:
+      corner_x_offset = 0;
+      corner_y_offset = height;
+      break;
+    case CORNER_BOTTOM_RIGHT:
+      corner_x_offset = width;
+      corner_y_offset = height;
+      break;
+    default:
+      break;
+  }
+
+  //Snap that point to the grid:
+  const double x_to_snap = x + corner_x_offset;
+  const double y_to_snap = y + corner_y_offset;
+  double corner_x_snapped = x_to_snap;
+  double corner_y_snapped = y_to_snap;
+  CanvasItemMovable::snap_position(corner_x_snapped, corner_y_snapped);
+
+  //Discover what offset the snapping causes:
+  const double snapped_offset_x = corner_x_snapped - x_to_snap;
+  const double snapped_offset_y = corner_y_snapped - y_to_snap;
+
+  //Apply that offset to the regular position:
+  x += snapped_offset_x;
+  y += snapped_offset_y;
+}
+
 void CanvasGroupMovable::snap_position(double& x, double& y) const
 {
-  CanvasItemMovable::snap_position(x, y);
+  //std::cout << "CanvasGroupMovable::snap_position" << std::endl;
+
+  double offset_x_min = 0;
+  double offset_y_min = 0;
+
+  //Try snapping each corner, to choose the one that snapped closest:
+  for(int i = CORNER_TOP_LEFT; i < CORNER_COUNT; ++i)
+  {
+    const Corners corner = (Corners)i;
+    double temp_x = x;
+    double temp_y = y;
+    snap_position_one_corner(corner, temp_x, temp_y);
+
+    const double offset_x = temp_x -x;
+    const double offset_y = temp_y - y;
+
+    //Use the smallest offset, preferring some offset to no offset:
+    if(offset_x && ((std::abs(offset_x) < std::abs(offset_x_min)) || !offset_x_min))
+      offset_x_min = offset_x;
+
+    if(offset_y && ((std::abs(offset_y) < std::abs(offset_y_min)) || !offset_y_min))
+      offset_y_min = offset_y;
+  }
+
+  x += offset_x_min;
+  y += offset_y_min;
 }
 
 Goocanvas::Canvas* CanvasGroupMovable::get_parent_canvas_widget()

@@ -66,12 +66,15 @@ public:
    *
    * @param grid: This must exist for as long as the canvas item.
    */
-  void set_grid(const Glib::RefPtr<const CanvasGroupGrid>& grid);
+  virtual void set_grid(const Glib::RefPtr<const CanvasGroupGrid>& grid);
 
   /** Restrict drag movement (via dragging) to the x axis or the y axis,
    * or prevent all drag movement.
    */
   void set_movement_allowed(bool vertical = true, bool horizontal = true);
+
+  ///A convenience function, to avoid repeating a large if/else block.
+  static Glib::RefPtr<CanvasItemMovable> cast_to_movable(const Glib::RefPtr<Goocanvas::Item>& item);
 
 protected:
 

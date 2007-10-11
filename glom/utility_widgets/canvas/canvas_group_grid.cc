@@ -210,11 +210,11 @@ void CanvasGroupGrid::remove_grid()
 void CanvasGroupGrid::create_lines()
 {
   //Remove any existing lines:
-  while(m_grid_lines_group->get_child(0))
-    m_grid_lines_group->remove_child (0);
+  while(m_grid_lines_group && m_grid_lines_group->get_n_children())
+    m_grid_lines_group->remove_child(0);
 
-  while(m_grid_rules_group->get_child(0))
-    m_grid_rules_group->remove_child (0);
+  while(m_grid_rules_group && m_grid_rules_group->get_n_children())
+    m_grid_rules_group->remove_child(0);
 
   //Fill the parent canvas with lines:
   double left, top, right, bottom = 0.0;

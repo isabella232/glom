@@ -60,6 +60,10 @@ void CanvasEditable::add_item(const Glib::RefPtr<Goocanvas::Item>& item, bool re
       }
     }
   }
+
+  Glib::RefPtr<CanvasItemMovable> movable = CanvasItemMovable::cast_to_movable(item);
+  if(movable)
+    movable->set_grid(m_grid);
 }
 
 void CanvasEditable::add_item_group(const Glib::RefPtr<Goocanvas::Group>& item)

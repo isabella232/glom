@@ -1,5 +1,23 @@
 2007-10-11  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/utility_widgets/canvas/canvas_item_movable.cc:
+	* glom/utility_widgets/canvas/canvas_item_movable.h: Made set_grid() 
+	a virtual function.
+	Put a static cast_to_movable() here, for convenience.
+	* glom/utility_widgets/canvas/canvas_group_movable.cc:
+	* glom/utility_widgets/canvas/canvas_group_movable.h: Overrode 
+	set_grid(), to set it in the children too.
+	Allow all four corners to be snapped, using get_bounds() to get 
+	the height and width.
+	* glom/utility_widgets/canvas/canvas_editable.cc: set_grid(): 
+	set the grid on all children that derive from CanvasItemMovable.
+
+	* glom/utility_widgets/canvas/canvas_rect_movable.cc:
+	* glom/utility_widgets/canvas/canvas_rect_movable.h: Default to 
+	snapping all four corners.
+
+2007-10-11  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/relationships_overview/dialog_relationships_overview.cc:
 	* glom/relationships_overview/dialog_relationships_overview.h:
 	Added a page setup dialog, so that users can choose the paper size and 
