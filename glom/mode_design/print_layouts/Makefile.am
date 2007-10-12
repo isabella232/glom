@@ -1,0 +1,11 @@
+SUBDIRS = 
+
+gladedir = $(datadir)/glom/glade/
+
+# We define GLOM_GLADEDIR so that we can get the installed .glade file at runtime.
+# We define PREFIX, SYSCONFDIR, LIBDIR, and DATADIR for the GNOME_PROGRAM_STANDARD_PROPERTIES macro.
+INCLUDES = -I@top_srcdir@/ $(GLOM_CFLAGS) $(PYTHON_INCLUDES) \
+           -DGLOM_GLADEDIR=\""$(gladedir)/"\"
+
+noinst_LIBRARIES = libmode_design_print_layouts.a
+libmode_design_print_layouts_a_SOURCES = box_print_layouts.h box_print_layouts.cc

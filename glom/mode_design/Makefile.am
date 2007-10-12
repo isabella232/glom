@@ -1,4 +1,4 @@
-SUBDIRS = fields script_library users
+SUBDIRS = fields script_library print_layouts users
 
 gladedir = $(datadir)/glom/glade/
 
@@ -16,4 +16,5 @@ libmode_design_a_SOURCES = box_db_table_relationships.cc box_db_table_relationsh
 
 libmode_design_a_LIBADD = fields/libmode_design_fields.a \
                           users/libmode_design_users.a \
+                          print_layouts/libmode_design_print_layouts.a \
                           script_library/libmode_design_script_library.a

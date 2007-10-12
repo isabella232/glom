@@ -357,7 +357,7 @@ void App_Glom::init_menus()
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   action = Gtk::Action::create("GlomAction_Menu_EditReports", _("_Edit Reports"));
   m_refActionGroup_Others->add(action,
-                        sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_Tables_EditReports) );
+                        sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_Reports_EditReports) );
   m_listDeveloperActions.push_back(action);
 #endif
 
@@ -414,6 +414,10 @@ void App_Glom::init_menus()
   action = Gtk::Action::create("GlomAction_Menu_Developer_Users", _("_Users"));
   m_listDeveloperActions.push_back(action);
   m_refActionGroup_Others->add(action, sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_users));
+
+  action = Gtk::Action::create("GlomAction_Menu_Developer_PrintLayouts", _("_Print Layouts")); //TODO: Rename? This looks like an action rather than a noun. It won't actually start printing.
+  m_listDeveloperActions.push_back(action);
+  m_refActionGroup_Others->add(action, sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_print_layouts));
 
   action = Gtk::Action::create("GlomAction_Menu_Developer_Reports", _("R_eports"));
   m_listDeveloperActions.push_back(action);
@@ -473,13 +477,15 @@ void App_Glom::init_menus()
     "        <menuitem action='GlomAction_Menu_userlevel_Operator' />"
     "      </menu>"
     "      <menu action='Glom_Menu_Developer'>"
-    "        <menuitem action='GlomAction_Menu_Developer_Database_Preferences' />"
     "        <menuitem action='GlomAction_Menu_Developer_Fields' />"
     "        <menuitem action='GlomAction_Menu_Developer_Relationships' />"
     "        <menuitem action='GlomAction_Menu_Developer_RelationshipsOverview' />"
     "        <menuitem action='GlomAction_Menu_Developer_Layout' />"
-    "        <menuitem action='GlomAction_Menu_Developer_Users' />"
+    "        <menuitem action='GlomAction_Menu_Developer_PrintLayouts' />"
     "        <menuitem action='GlomAction_Menu_Developer_Reports' />"
+    "        <separator />"
+    "        <menuitem action='GlomAction_Menu_Developer_Database_Preferences' />"
+    "        <menuitem action='GlomAction_Menu_Developer_Users' />"
     "        <menuitem action='GlomAction_Menu_Developer_Script_Library' />"
     "        <separator />"
     "        <menuitem action='GlomAction_Menu_Developer_Translations' />"

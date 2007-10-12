@@ -1,3 +1,19 @@
+2007-10-12  Murray Cumming  <murrayc@murrayc.com>
+
+	* configure.in:
+	* glom/Makefile.am:
+	* glom/application.cc:
+	* glom/box_reports.h:
+	* glom/frame_glom.cc:
+	* glom/frame_glom.h:
+	* glom/glom.glade:
+	* glom/mode_design/Makefile.am:
+	* glom/mode_design/print_layouts/Makefile.am:
+	* glom/mode_design/print_layouts/box_print_layouts.cc:
+	* glom/mode_design/print_layouts/box_print_layouts.h:
+	Added a print-layouts list dialog, to add, remove, and request editing 
+	of print layouts, like the reports dialog.
+
 2007-10-11  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/utility_widgets/canvas/canvas_item_movable.cc:

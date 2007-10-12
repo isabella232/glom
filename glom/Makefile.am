@@ -60,6 +60,7 @@ if !GLOM_ENABLE_CLIENT_ONLY
 glom_LDADD += layout_item_dialogs/liblayoutitemdialogs.a \
               mode_design/libmode_design.a \
               mode_design/fields/libmode_design_fields.a \
+              mode_design/print_layouts/libmode_design_print_layouts.a \
               mode_design/users/libmode_design_users.a \
               mode_design/script_library/libmode_design_script_library.a
 endif

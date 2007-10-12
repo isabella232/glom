@@ -18,25 +18,25 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef BOX_REPORTS_H
-#define BOX_REPORTS_H
+#ifndef BOX_PRINT_LAYOUTS_H
+#define BOX_PRINT_LAYOUTS_H
 
-#include "box_db_table.h"
-#include <glom/libglom/data_structure/report.h>
+#include <glom/box_db_table.h>
+#include <glom/libglom/data_structure/print_layout.h>
 
 namespace Glom
 {
 
-class Box_Reports : public Box_DB_Table
+class Box_Print_Layouts : public Box_DB_Table
 {
 public:
-  Box_Reports(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
-  virtual ~Box_Reports();
+  Box_Print_Layouts(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  virtual ~Box_Print_Layouts();
 
 protected:
   virtual bool fill_from_database(); //override
 
-  virtual void fill_row(const Gtk::TreeModel::iterator& iter, const sharedptr<const Report>& report);
+  virtual void fill_row(const Gtk::TreeModel::iterator& iter, const sharedptr<const PrintLayout>& print_layout);
 
   virtual void save_to_document();
 
@@ -49,7 +49,7 @@ protected:
   virtual void on_userlevel_changed(AppState::userlevels userlevel);
 
   Gtk::Label* m_pLabelFrameTitle;
-  guint m_colReportName;
+  guint m_colName;
   guint m_colTitle;
 
   mutable AddDel_WithButtons m_AddDel; //mutable because its get_ methods aren't const.
@@ -57,5 +57,5 @@ protected:
 
 } //namespace Glom
 
-#endif //BOX_REPORTS_H
+#endif //BOX_PRINT_LAYOUTS_H
 
