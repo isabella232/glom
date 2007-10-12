@@ -8,4 +8,4 @@ INCLUDES = -I@top_srcdir@/ $(GLOM_CFLAGS) $(PYTHON_INCLUDES) \
            -DGLOM_GLADEDIR=\""$(gladedir)/"\"
 
 noinst_LIBRARIES = libmode_design_print_layouts.a
-libmode_design_print_layouts_a_SOURCES = box_print_layouts.h box_print_layouts.cc
+libmode_design_print_layouts_a_SOURCES = box_print_layouts.h box_print_layouts.cc window_print_layout_edit.h window_print_layout_edit.cc

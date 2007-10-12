@@ -1,5 +1,15 @@
 2007-10-12  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/frame_glom.cc:
+	* glom/frame_glom.h:
+	* glom/glom.glade:
+	* glom/mode_design/print_layouts/Makefile.am:
+	* glom/mode_design/print_layouts/window_print_layout_edit.cc:
+	* glom/mode_design/print_layouts/window_print_layout_edit.h:
+	Added the skeleton of a window for editing print layouts.
+
+2007-10-12  Murray Cumming  <murrayc@murrayc.com>
+
 	* configure.in:
 	* glom/Makefile.am:
 	* glom/application.cc:

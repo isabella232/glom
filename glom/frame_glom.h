@@ -49,6 +49,7 @@ namespace Glom
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 class Dialog_Layout_Report;
+class Window_PrintLayout_Edit;
 class Dialog_AddRelatedTable;
 class Dialog_RelationshipsOverview;
 #endif // !GLOM_ENABLE_CLIENT_ONLY
@@ -110,6 +111,7 @@ public:
 
   void on_dialog_layout_report_hide();
   void on_dialog_reports_hide();
+  void on_dialog_layout_print_hide();
   void on_dialog_print_layouts_hide();
   void on_dialog_tables_hide();
 
@@ -218,6 +220,7 @@ protected:
   Box_Reports* m_pBox_Reports;
   
   Dialog_Glom* m_pDialog_PrintLayouts;
+  Window_PrintLayout_Edit* m_pDialogLayoutPrint;
   Box_Print_Layouts* m_pBox_PrintLayouts;
 
   Dialog_Fields* m_pDialog_Fields;

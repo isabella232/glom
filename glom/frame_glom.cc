@@ -28,6 +28,7 @@
 #include "mode_design/users/dialog_groups_list.h"
 #include "dialog_database_preferences.h"
 #include "reports/dialog_layout_report.h"
+#include <glom/mode_design/print_layouts/window_print_layout_edit.h>
 #include <glom/mode_design/dialog_add_related_table.h>
 #include <glom/mode_design/script_library/dialog_script_library.h>
 #include <glom/dialog_new_self_hosted_connection.h>
@@ -128,6 +129,7 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
   m_pDialogLayoutReport(0),
   m_pBox_Reports(0),
   m_pDialog_PrintLayouts(0),
+  m_pDialogLayoutPrint(0),
   m_pBox_PrintLayouts(0),
   m_pDialog_Fields(0),
   m_pDialog_Relationships(0),
@@ -181,6 +183,10 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
 
   get_glade_widget_derived_with_warning("box_print_layouts", m_pBox_PrintLayouts);
   m_pDialog_PrintLayouts = new Dialog_Glom(m_pBox_PrintLayouts);
+
+  get_glade_widget_derived_with_warning("window_print_layout_edit", m_pDialogLayoutPrint);
+  add_view(m_pDialogLayoutPrint);
+  m_pDialogLayoutPrint->signal_hide().connect( sigc::mem_fun(*this, &Frame_Glom::on_dialog_layout_print_hide) );
 
   get_glade_widget_derived_with_warning("window_design", m_pDialog_Relationships);
   m_pDialog_Relationships->set_title("Relationships");
@@ -1460,8 +1466,8 @@ void Frame_Glom::on_box_print_layouts_selected(const Glib::ustring& print_layout
   sharedptr<PrintLayout> print_layout = get_document()->get_print_layout(m_table_name, print_layout_name);
   if(print_layout)
   {
-    //m_pDialogLayoutPrint->set_report(m_table_name, report);
-    //m_pDialogLayoutPrint->show();
+    m_pDialogLayoutPrint->set_print_layout(m_table_name, print_layout);
+    m_pDialogLayoutPrint->show();
   }
 }
 
@@ -1968,7 +1974,7 @@ void Frame_Glom::on_dialog_layout_report_hide()
   {
     const Glib::ustring original_name = m_pDialogLayoutReport->get_original_report_name();
     sharedptr<Report> report = m_pDialogLayoutReport->get_report();
-    if(original_name != report->get_name())
+    if(report && (original_name != report->get_name()))
       document->remove_report(m_table_name, original_name);
 
     document->set_report(m_table_name, report);
@@ -1978,6 +1984,26 @@ void Frame_Glom::on_dialog_layout_report_hide()
   App_Glom* pApp = dynamic_cast<App_Glom*>(get_app_window());
   if(pApp)
     pApp->fill_menu_reports(m_table_name);
+}
+
+void Frame_Glom::on_dialog_layout_print_hide()
+{
+  Document_Glom* document = get_document();
+
+  if(true) //m_pDialogLayoutReport->get_modified())
+  {
+    const Glib::ustring original_name = m_pDialogLayoutPrint->get_original_name();
+    sharedptr<PrintLayout> print_layout = m_pDialogLayoutPrint->get_print_layout();
+    if(print_layout && (original_name != print_layout->get_name()))
+      document->remove_report(m_table_name, original_name);
+
+    document->set_print_layout(m_table_name, print_layout);
+  }
+
+  //Update the reports menu:
+  App_Glom* pApp = dynamic_cast<App_Glom*>(get_app_window());
+  if(pApp)
+    pApp->fill_menu_print_layouts(m_table_name);
 }
 
 void Frame_Glom::on_dialog_reports_hide()
