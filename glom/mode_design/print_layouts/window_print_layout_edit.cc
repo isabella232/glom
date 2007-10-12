@@ -23,6 +23,7 @@
 #include <glom/box_db_table.h>
 //#include <libgnome/gnome-i18n.h>
 #include <bakery/App/App_Gtk.h> //For util_bold_message().
+#include <gtkmm/scrolledwindow.h>
 #include <glibmm/i18n.h>
 
 namespace Glom
@@ -33,7 +34,13 @@ Window_PrintLayout_Edit::Window_PrintLayout_Edit(BaseObjectType* cobject, const 
   m_entry_title(0)
   //m_box(0)
 {
-  //refGlade->get_widget_derived("vbox_placeholder", m_box);
+  refGlade->get_widget_derived("vbox_placeholder", m_box);
+
+  Gtk::ScrolledWindow* scrolled = Gtk::manage(new Gtk::ScrolledWindow());
+  scrolled->add(m_canvas);
+  scrolled->show();
+  m_box->pack_start(*scrolled);
+  m_canvas.show();
 
   //m_label_frame->set_markup( Bakery::App_Gtk::util_bold_message(_("TODO: Print Layout Editor")) );
 

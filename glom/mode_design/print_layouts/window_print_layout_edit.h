@@ -23,6 +23,8 @@
 
 #include <glom/mode_design/dialog_design.h>
 #include <glom/libglom/data_structure/print_layout.h>
+#include <glom/utility_widgets/canvas/canvas_editable.h>
+#include <gtkmm/box.h>
 
 namespace Glom
 {
@@ -54,6 +56,9 @@ protected:
   Gtk::Entry* m_entry_title;
   Gtk::Label* m_label_table_name;
   Gtk::Label* m_label_table_title;
+
+  Gtk::VBox* m_box;
+  CanvasEditable m_canvas;
 };
 
 } //namespace Glom

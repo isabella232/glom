@@ -1,5 +1,13 @@
 2007-10-12  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/application.cc: fill_menu_print_layouts(): Correct the 
+	ui string, so that the print layouts are properly merged into 
+	the File/Print sub-menu.
+	* glom/libglom/document/document_glom.cc: load_after(): 
+	Correct a node name, so that print layouts are really loaded.
+
+2007-10-12  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/frame_glom.cc:
 	* glom/frame_glom.h:
 	* glom/glom.glade:

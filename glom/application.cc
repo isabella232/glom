@@ -297,7 +297,7 @@ void App_Glom::init_menus_file()
     "        <separator/>"
     "        <menu action='GlomAction_Menu_File_Print'>"
     "          <menuitem action='GlomAction_File_Print' />"
-    "          <placeholder name='Menu_Reports_Dynamic' />"
+    "          <placeholder name='Menu_PrintLayouts_Dynamic' />"
 #ifndef GLOM_ENABLE_CLIENT_ONLY
     "          <menuitem action='GlomAction_File_PrintEdit' />"
 #endif //GLOM_ENABLE_CLIENT_ONLY
@@ -1791,9 +1791,10 @@ void App_Glom::fill_menu_print_layouts(const Glib::ustring& table_name)
 #else
     "  <menubar name='Bakery_MainMenu'>"
 #endif
-    "    <placeholder name='Bakery_MenuPH_Others'>"
-    "     <menu action='GlomAction_Menu_File_Print'>"
-    "        <placeholder name='Menu_PrintLayouts_Dynamic'>";
+    "    <placeholder name='Bakery_MenuPH_File'>"
+    "      <menu action='BakeryAction_Menu_File'>"
+    "        <menu action='GlomAction_Menu_File_Print'>"
+    "          <placeholder name='Menu_PrintLayouts_Dynamic'>";
 
   Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
   const Document_Glom::type_listPrintLayouts tables = document->get_print_layout_names(table_name);
@@ -1824,7 +1825,8 @@ void App_Glom::fill_menu_print_layouts(const Glib::ustring& table_name)
 
 
   ui_description +=
-    "     </placeholder>"
+    "       </placeholder>"
+    "      </menu>"
     "    </menu>"
     "    </placeholder>"
 #ifdef GLOM_ENABLE_MAEMO

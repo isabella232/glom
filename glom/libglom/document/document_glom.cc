@@ -2414,7 +2414,7 @@ bool Document_Glom::load_after()
           const xmlpp::Element* nodePrintLayouts = get_node_child_named(nodeTable, GLOM_NODE_PRINT_LAYOUTS);
           if(nodePrintLayouts)
           {
-            xmlpp::Node::NodeList listNodes = nodePrintLayouts->get_children(GLOM_NODE_PRINT_LAYOUTS);
+            xmlpp::Node::NodeList listNodes = nodePrintLayouts->get_children(GLOM_NODE_PRINT_LAYOUT);
             for(xmlpp::Node::NodeList::iterator iter = listNodes.begin(); iter != listNodes.end(); ++iter)
             {
               xmlpp::Element* node = dynamic_cast<xmlpp::Element*>(*iter);
@@ -3053,8 +3053,8 @@ bool Document_Glom::save_before()
           save_before_translations(nodeReport, *report);
 
           append_newline(nodeReports);
+          append_newline(nodeReports);
         }
-
 
         //Print Layouts:
         xmlpp::Element* nodePrintLayouts = nodeTable->add_child(GLOM_NODE_PRINT_LAYOUTS);
@@ -3066,8 +3066,6 @@ bool Document_Glom::save_before()
 
           sharedptr<const PrintLayout> print_layout = iter->second;
           nodePrintLayout->set_attribute(GLOM_ATTRIBUTE_NAME, print_layout->get_name());
-          set_node_attribute_value_as_bool(nodePrintLayout, GLOM_ATTRIBUTE_REPORT_SHOW_TABLE_TITLE, print_layout->get_show_table_title());
-
           /*
           xmlpp::Element* nodeGroups = nodeReport->add_child(GLOM_NODE_DATA_LAYOUT_GROUPS);
           if(report->m_layout_group)
