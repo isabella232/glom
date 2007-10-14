@@ -1,3 +1,7 @@
+2007-10-14  Yannig Marchegay  <yannig@marchegay.org>
+
+	* configure.in: Added 'oc' to ALL_LINGUAS.
+
 2007-10-12  Armin Burgmeier  <armin@openismus.com>
 
 	* glom/libglom/connectionpool.cc: Fixed #ifdef from last commit, it is
