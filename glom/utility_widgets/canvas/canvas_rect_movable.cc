@@ -30,14 +30,14 @@ namespace Glom
 
 
 CanvasRectMovable::CanvasRectMovable()
-: Goocanvas::Rect((GooCanvasRect*)goo_canvas_rect_new(NULL, 0.0, 0.0, 0.0, 0.0, NULL)), //TODO: Remove this when goocanvas has been fixed.
+: Goocanvas::Rect(0.0, 0.0, 0.0, 0.0),
   m_snap_corner(CORNER_ALL)
 {
   init();
 }
 
 CanvasRectMovable::CanvasRectMovable(double x, double y, double width, double height)
-: Goocanvas::Rect((GooCanvasRect*)goo_canvas_rect_new(NULL, x, y, width, height, NULL)), //TODO: Remove this when goocanvas has been fixed.
+: Goocanvas::Rect(x, y, width, height),
   m_snap_corner(CORNER_ALL)
 {
   init();
@@ -49,7 +49,6 @@ CanvasRectMovable::~CanvasRectMovable()
 
 void CanvasRectMovable::init()
 {
-  //TODO: Remove this when goocanvas is fixed, so the libgoocanvasmm constructor can connect default signal handlers:
   signal_motion_notify_event().connect(sigc::mem_fun(*this, &CanvasItemMovable::on_motion_notify_event));
   signal_button_press_event().connect(sigc::mem_fun(*this, &CanvasItemMovable::on_button_press_event));
   signal_button_release_event().connect(sigc::mem_fun(*this, &CanvasItemMovable::on_button_release_event));

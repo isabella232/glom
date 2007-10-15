@@ -32,9 +32,7 @@ namespace Glom
 
 
 CanvasGroupMovable::CanvasGroupMovable()
-: Goocanvas::Group((GooCanvasGroup*)goo_canvas_group_new(NULL, NULL)) //TODO: Remove this when goocanvas has been fixed.
 {
-   //TODO: Remove this when goocanvas is fixed, so the libgoocanvasmm constructor can connect default signal handlers:
   signal_motion_notify_event().connect(sigc::mem_fun(*this, &CanvasItemMovable::on_motion_notify_event));
   signal_button_press_event().connect(sigc::mem_fun(*this, &CanvasItemMovable::on_button_press_event));
   signal_button_release_event().connect(sigc::mem_fun(*this, &CanvasItemMovable::on_button_release_event));

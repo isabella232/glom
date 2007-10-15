@@ -27,8 +27,8 @@ namespace Glom
 {
 
 
-CanvasTextMovable::CanvasTextMovable(const Glib::ustring& string, double x, double y, double width, Gtk::AnchorType anchor)
-: Goocanvas::Text((GooCanvasText*)goo_canvas_text_new(NULL, string.c_str(), x, y, width, (GtkAnchorType)anchor, NULL)), //TODO: Remove this when goocanvas has been fixed.
+CanvasTextMovable::CanvasTextMovable(const Glib::ustring& text, double x, double y, double width, Gtk::AnchorType anchor)
+: Goocanvas::Text(text, x, y, width, anchor), 
   m_snap_corner(CORNER_TOP_LEFT) //arbitrary default.
 {
   init();
@@ -40,7 +40,6 @@ CanvasTextMovable::~CanvasTextMovable()
 
 void CanvasTextMovable::init()
 {
-  //TODO: Remove this when goocanvas is fixed, so the libgoocanvasmm constructor can connect default signal handlers:
   signal_motion_notify_event().connect(sigc::mem_fun(*this, &CanvasItemMovable::on_motion_notify_event));
   signal_button_press_event().connect(sigc::mem_fun(*this, &CanvasItemMovable::on_button_press_event));
   signal_button_release_event().connect(sigc::mem_fun(*this, &CanvasItemMovable::on_button_release_event));

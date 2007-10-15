@@ -21,6 +21,7 @@
 
 #include "window_print_layout_edit.h"
 #include <glom/box_db_table.h>
+#include "canvas_layout_item.h"
 //#include <libgnome/gnome-i18n.h>
 #include <bakery/App/App_Gtk.h> //For util_bold_message().
 #include <gtkmm/scrolledwindow.h>
@@ -229,6 +230,8 @@ void Window_PrintLayout_Edit::on_context_menu_insert_field()
 
 void Window_PrintLayout_Edit::on_context_menu_insert_text()
 {
+  Glib::RefPtr<CanvasLayoutItem> item = CanvasLayoutItem::create();
+  
 }
 
 void Window_PrintLayout_Edit::setup_context_menu()

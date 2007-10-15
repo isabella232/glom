@@ -1,5 +1,20 @@
 2007-10-15  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/mode_design/print_layouts/Makefile.am:
+	* glom/mode_design/print_layouts/canvas_layout_item.cc:
+	* glom/mode_design/print_layouts/canvas_layout_item.h:
+	* glom/mode_design/print_layouts/window_print_layout_edit.cc:
+	* glom/utility_widgets/canvas/canvas_group_grid.cc:
+	* glom/utility_widgets/canvas/canvas_group_movable.cc:
+	* glom/utility_widgets/canvas/canvas_group_resizable.cc:
+	* glom/utility_widgets/canvas/canvas_line_movable.cc:
+	* glom/utility_widgets/canvas/canvas_rect_movable.cc:
+	* glom/utility_widgets/canvas/canvas_text_movable.cc:
+	* glom/utility_widgets/canvas/test_canvas_editable.cc:
+	Use the Goocanvas C++ constructors now that they are fixed.
+
+2007-10-15  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/application.cc:
 	* glom/base_db.cc:
 	* glom/filechooser_export.cc:

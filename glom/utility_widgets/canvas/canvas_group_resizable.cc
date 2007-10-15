@@ -35,7 +35,6 @@ const double manipulator_stroke_width = 2.0;
 const gchar* manipulator_stroke_color = "black";
 
 CanvasGroupResizable::CanvasGroupResizable()
-: Goocanvas::Group((GooCanvasGroup*)goo_canvas_group_new(NULL, NULL)) //TODO: Remove this when goocanvas has been fixed.
 {
   m_manipulator_corner_top_left = create_corner();
   m_manipulator_corner_top_right = create_corner();
@@ -49,8 +48,9 @@ CanvasGroupResizable::CanvasGroupResizable()
 
   set_drag_cursor(Gdk::FLEUR);
 
-  signal_enter_notify_event().connect(sigc::mem_fun(*this, &CanvasGroupResizable::on_enter_notify_event));
-  signal_leave_notify_event().connect(sigc::mem_fun(*this, &CanvasGroupResizable::on_leave_notify_event));
+  //We don't need to connect these, because they are actually overrides of the default signal handlers:
+  //signal_enter_notify_event().connect(sigc::mem_fun(*this, &CanvasGroupResizable::on_enter_notify_event));
+  //signal_leave_notify_event().connect(sigc::mem_fun(*this, &CanvasGroupResizable::on_leave_notify_event));
 }
 
 CanvasGroupResizable::~CanvasGroupResizable()

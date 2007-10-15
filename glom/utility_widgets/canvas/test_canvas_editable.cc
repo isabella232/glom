@@ -45,13 +45,13 @@ public:
 
     //Doesn't work until we fix the goocanvas _new() methods: Glib::RefPtr<Goocanvas::Rect> rect = Glib::wrap( goo_canvas_rect_new()
     //Glib::RefPtr<Goocanvas::Rect> rect    = Goocanvas::Rect::create(10, 10, 110, 110);
-    Glib::RefPtr<Goocanvas::Rect> rect = Glib::wrap( (GooCanvasRect*)goo_canvas_rect_new(NULL, 10, 10, 110, 110, NULL) );
+    Glib::RefPtr<Goocanvas::Rect> rect = Goocanvas::Rect::create(10, 10, 110, 110);
     rect->property_fill_color() = "white"; //This makes the whole area clickable, not just the outline stroke:
     rect->property_line_width() = 2.0f;
     rect->property_stroke_color() = "blue";
     add_item(rect, true /* resizable */);
 
-    Glib::RefPtr<Goocanvas::Rect> rect2 = Glib::wrap( (GooCanvasRect*)goo_canvas_rect_new(NULL, 120, 10, 110, 140, NULL) );
+    Glib::RefPtr<Goocanvas::Rect> rect2 = Goocanvas::Rect::create(120, 10, 110, 140);
 
     rect2->property_fill_color() = "yellow"; //This makes the whole area clickable, not just the outline stroke:
     rect2->property_line_width() = 1.0f;

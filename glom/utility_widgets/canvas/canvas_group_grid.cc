@@ -29,8 +29,7 @@ namespace Glom
 
 
 CanvasGroupGrid::CanvasGroupGrid()
-: Goocanvas::Group((GooCanvasGroup*)goo_canvas_group_new(NULL, NULL)), //TODO: Remove this when goocanvas has been fixed.
-  m_grid_gap(0.0),
+: m_grid_gap(0.0),
   m_grid_sensitivity(5.0)
 {
   m_grid_lines_group = Goocanvas::Group::create();
@@ -171,8 +170,7 @@ void CanvasGroupGrid::snap_position(double& x, double& y) const
 
 Glib::RefPtr<Goocanvas::Polyline> CanvasGroupGrid::create_grid_or_rule_line(double x1, double y1, double x2, double y2, bool is_rule)
 {
-  Glib::RefPtr<Goocanvas::Polyline> line = 
-      Glib::wrap((GooCanvasPolyline*)goo_canvas_polyline_new_line(NULL, x1, y1, x2, y2, NULL));
+  Glib::RefPtr<Goocanvas::Polyline> line = Goocanvas::Polyline::create(x1, y1, x2, y2);
   line->property_line_width() = 1.0f;
 
   if(is_rule)

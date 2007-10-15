@@ -30,9 +30,8 @@ namespace Glom
 
 
 CanvasLineMovable::CanvasLineMovable()
-: Goocanvas::Polyline((GooCanvasPolyline*)goo_canvas_polyline_new_line(NULL, false /* don't close the path */, 0.0, 0.0, 0.0, 0.0, NULL)) //TODO: Remove this when goocanvas has been fixed.
+: Goocanvas::Polyline(0.0, 0.0, 0.0, 0.0)
 {
-   //TODO: Remove this when goocanvas is fixed, so the libgoocanvasmm constructor can connect default signal handlers:
   signal_motion_notify_event().connect(sigc::mem_fun(*this, &CanvasItemMovable::on_motion_notify_event));
   signal_button_press_event().connect(sigc::mem_fun(*this, &CanvasItemMovable::on_button_press_event));
   signal_button_release_event().connect(sigc::mem_fun(*this, &CanvasItemMovable::on_button_release_event));
