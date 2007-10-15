@@ -251,7 +251,7 @@ void Dialog_UsersList::on_button_user_add()
   Dialog_ChooseUser* dialog = 0;
   try
   {
-    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_choose_user");
+    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom_developer.glade", "dialog_choose_user");
 
     refXml->get_widget_derived("dialog_choose_user", dialog);
   }
@@ -298,7 +298,7 @@ void Dialog_UsersList::on_button_user_new()
   Dialog_User* dialog = 0;
   try
   {
-    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_user");
+    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom_developer.glade", "dialog_user");
 
     refXml->get_widget_derived("dialog_user", dialog);
   }
@@ -364,7 +364,7 @@ void Dialog_UsersList::on_button_user_edit()
       Dialog_User* dialog = 0;
       try
       {
-        Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_user");
+        Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom_developer.glade", "dialog_user");
 
         refXml->get_widget_derived("dialog_user", dialog);
       }

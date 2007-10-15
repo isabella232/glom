@@ -124,7 +124,7 @@ void Window_Translations::enable_buttons()
 
 void Window_Translations::on_button_identify()
 {
-  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_translation_identify_original");
+  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom_developer.glade", "dialog_translation_identify_original");
   if(refXml)
   {
     Dialog_IdentifyOriginal* dialog = 0;
@@ -354,7 +354,7 @@ void Window_Translations::on_button_ok()
 
 void Window_Translations::on_button_copy_translation()
 {
-   Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_translation_copy");
+   Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom_developer.glade", "dialog_translation_copy");
   if(refXml)
   {
     Dialog_CopyTranslation* dialog = 0;

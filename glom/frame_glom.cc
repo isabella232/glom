@@ -97,7 +97,7 @@ void get_glade_developer_widget_derived_with_warning(const Glib::ustring& id, T_
   }
 #else
   error.reset(NULL);
-  refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", id, "", error);
+  refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom_developer.glade", id, "", error);
   if(error.get()) std::cerr << error->what() << std::endl;
 #endif
 
@@ -200,21 +200,21 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
   m_pDialog_Tables = new Dialog_Glom(m_pBox_Tables);
   m_pDialog_Tables->signal_hide().connect(sigc::mem_fun(*this, &Frame_Glom::on_dialog_tables_hide));
  
-  get_glade_widget_derived_with_warning("box_reports", m_pBox_Reports);
+  get_glade_developer_widget_derived_with_warning("box_reports", m_pBox_Reports);
   m_pDialog_Reports = new Dialog_Glom(m_pBox_Reports);
 
-  get_glade_widget_derived_with_warning("window_report_layout", m_pDialogLayoutReport);
+  get_glade_developer_widget_derived_with_warning("window_report_layout", m_pDialogLayoutReport);
   add_view(m_pDialogLayoutReport);
   m_pDialogLayoutReport->signal_hide().connect( sigc::mem_fun(*this, &Frame_Glom::on_dialog_layout_report_hide) );
 
-  get_glade_widget_derived_with_warning("box_print_layouts", m_pBox_PrintLayouts);
+  get_glade_developer_widget_derived_with_warning("box_print_layouts", m_pBox_PrintLayouts);
   m_pDialog_PrintLayouts = new Dialog_Glom(m_pBox_PrintLayouts);
 
   get_glade_developer_widget_derived_with_warning("window_print_layout_edit", m_pDialogLayoutPrint);
   add_view(m_pDialogLayoutPrint);
   m_pDialogLayoutPrint->signal_hide().connect( sigc::mem_fun(*this, &Frame_Glom::on_dialog_layout_print_hide) );
 
-  get_glade_widget_derived_with_warning("window_design", m_pDialog_Relationships);
+  get_glade_developer_widget_derived_with_warning("window_design", m_pDialog_Relationships);
   m_pDialog_Relationships->set_title("Relationships");
   m_pDialog_Relationships->signal_hide().connect( sigc::mem_fun(*this, &Frame_Glom::on_developer_dialog_hide));
 
@@ -838,7 +838,7 @@ void Frame_Glom::on_menu_Tables_AddRelatedTable()
 
   try
   {
-    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_add_related_table");
+    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom_developer.glade", "dialog_add_related_table");
 
     refXml->get_widget_derived("dialog_add_related_table", m_dialog_addrelatedtable);
   }
@@ -1267,7 +1267,7 @@ void Frame_Glom::on_menu_developer_database_preferences()
   Dialog_Database_Preferences* dialog = 0;
   try
   {
-    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_database_preferences");
+    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom_developer.glade", "dialog_database_preferences");
     refXml->get_widget_derived("dialog_database_preferences", dialog);
     if(dialog)
     {
@@ -1304,7 +1304,7 @@ void Frame_Glom::do_menu_developer_fields(Gtk::Window& parent, const Glib::ustri
   {
     try
     {
-      Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_design");
+      Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom_developer.glade", "window_design");
 
       refXml->get_widget_derived("window_design", m_pDialog_Fields);
       m_pDialog_Fields->signal_hide().connect( sigc::mem_fun(*this, &Frame_Glom::on_developer_dialog_hide));
@@ -1342,7 +1342,7 @@ void Frame_Glom::on_menu_developer_relationships_overview()
   {
     try
     {
-      Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_relationships_overview");
+      Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom_developer.glade", "dialog_relationships_overview");
       refXml->get_widget_derived("dialog_relationships_overview", m_dialog_relationships_overview);
       add_view(m_dialog_relationships_overview);
     }
@@ -1390,7 +1390,7 @@ void Frame_Glom::on_menu_developer_users()
   Dialog_GroupsList* dialog = 0;
   try
   {
-    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_groups");
+    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom_developer.glade", "window_groups");
 
     refXml->get_widget_derived("window_groups", dialog);
   }
@@ -1460,7 +1460,7 @@ void Frame_Glom::on_menu_developer_print_layouts()
 void Frame_Glom::on_menu_developer_script_library()
 {
   Dialog_ScriptLibrary* dialog = 0;
-  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_script_library");
+  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom_developer.glade", "dialog_script_library");
   refXml->get_widget_derived("dialog_script_library", dialog);
   dialog->set_transient_for(*(get_app_window()));
   add_view(dialog); //Give it access to the document.
@@ -1549,7 +1549,7 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
     try
     {
-      refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_new_self_hosted_connection");
+      refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom_developer.glade", "dialog_new_self_hosted_connection");
     }
     catch(const Gnome::Glade::XmlError& ex)
     {
@@ -1558,7 +1558,7 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
     }
 #else
     std::auto_ptr<Gnome::Glade::XmlError> error;
-    refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_new_self_hosted_connection", error);
+    refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom_developer.glade", "dialog_new_self_hosted_connection", error);
     if(error.get())
     {
       std::cerr << error->what() << std::endl;
@@ -1867,7 +1867,7 @@ bool Frame_Glom::create_database(const Glib::ustring& database_name, const Glib:
       try
       {
          // TODO: Tell the user what has gone wrong (ex.what())
-        Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_error_create_database");
+        Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom_developer.glade", "dialog_error_create_database");
         refXml->get_widget("dialog_error_create_database", dialog);
         dialog->set_transient_for(*pWindowApp);
         Glom::Utils::dialog_run_with_help(dialog, "dialog_error_create_database");

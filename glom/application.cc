@@ -1980,7 +1980,7 @@ void App_Glom::on_menu_file_save_as_example()
 
 void App_Glom::on_menu_developer_changelanguage()
 {
-  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_change_language");
+  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom_developer.glade", "dialog_change_language");
   if(refXml)
   {
     Dialog_ChangeLanguage* dialog = 0;
@@ -2011,7 +2011,7 @@ void App_Glom::on_menu_developer_translations()
 {
   if(!m_window_translations)
   {
-    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_translations");
+    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom_developer.glade", "window_translations");
     refXml->get_widget_derived("window_translations", m_window_translations);
     if(m_window_translations)
     {

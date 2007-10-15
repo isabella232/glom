@@ -1,5 +1,31 @@
 2007-10-15  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/application.cc:
+	* glom/base_db.cc:
+	* glom/filechooser_export.cc:
+	* glom/frame_glom.cc:
+	* glom/glom.glade:
+	* glom/glom_developer.glade:
+	* glom/layout_item_dialogs/dialog_field_layout.cc:
+	* glom/layout_item_dialogs/dialog_group_by.cc:
+	* glom/mode_data/box_data_details.cc:
+	* glom/mode_data/box_data_list.cc:
+	* glom/mode_data/box_data_list_related.cc:
+	* glom/mode_data/dialog_layout_details.cc:
+	* glom/mode_design/fields/box_db_table_definition.cc:
+	* glom/mode_design/fields/dialog_fielddefinition.cc:
+	* glom/mode_design/script_library/dialog_script_library.cc:
+	* glom/mode_design/users/dialog_groups_list.cc:
+	* glom/mode_design/users/dialog_users_list.cc:
+	* glom/reports/dialog_layout_report.cc:
+	* glom/translation/window_translations.cc:
+	* glom/utility_widgets/datawidget.cc:
+	* glom/utility_widgets/flowtablewithfields.cc:
+	Moved all developer dialogs to glom_developer.glade, so that 
+	the client-only version does not need to parse such a big file. 
+
+2007-10-15  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/Makefile.am:
 	* glom/application.cc:
 	* glom/frame_glom.cc:

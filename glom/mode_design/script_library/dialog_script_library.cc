@@ -90,7 +90,7 @@ void Dialog_ScriptLibrary::on_button_add()
   Dialog_NewScript* dialog = 0;
   try
   {
-    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_new_library_script");
+    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom_developer.glade", "dialog_new_library_script");
 
     refXml->get_widget_derived("dialog_new_library_script", dialog);
   }
