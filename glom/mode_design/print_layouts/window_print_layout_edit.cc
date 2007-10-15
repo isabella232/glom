@@ -30,26 +30,98 @@ namespace Glom
 {
 
 Window_PrintLayout_Edit::Window_PrintLayout_Edit(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
-: Dialog_Design(cobject, refGlade),
-  m_entry_title(0)
-  //m_box(0)
+: Gtk::Window(cobject),
+  m_entry_name(0),
+  m_entry_title(0),
+  m_label_table_name(0),
+  m_label_table(0),
+  m_button_close(0),
+  m_box(0)
 {
-  refGlade->get_widget_derived("vbox_placeholder", m_box);
+  refGlade->get_widget("vbox_menu", m_box_menu);
+  refGlade->get_widget("vbox_canvas", m_box_canvas);
+  refGlade->get_widget("vbox_inner", m_box);
+
+  //refGlade->get_widget("label_name", m_label_name);
+  refGlade->get_widget("label_table_name", m_label_table_name);
+  refGlade->get_widget("entry_name", m_entry_name);
+  refGlade->get_widget("entry_title", m_entry_title);
+
+  refGlade->get_widget("button_close", m_button_close);
+  m_button_close->signal_clicked().connect( sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_button_close) );
+
+  init_menu();
 
   Gtk::ScrolledWindow* scrolled = Gtk::manage(new Gtk::ScrolledWindow());
   scrolled->add(m_canvas);
-  scrolled->show();
-  m_box->pack_start(*scrolled);
+  scrolled->show_all();
+  m_box_canvas->pack_start(*scrolled);
   m_canvas.show();
-
-  //m_label_frame->set_markup( Bakery::App_Gtk::util_bold_message(_("TODO: Print Layout Editor")) );
-
 
   //Fill composite view:
   //add_view(m_box);
 
+  setup_context_menu();
+  m_canvas.signal_show_context().connect(sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_canvas_show_context_menu));
+
+
   show_all_children();
 }
+
+void Window_PrintLayout_Edit::init_menu()
+{
+  m_action_group = Gtk::ActionGroup::create();
+  m_action_group->add(Gtk::Action::create("Menu_Edit", Gtk::Stock::EDIT));
+  m_action_group->add(Gtk::Action::create("Action_Menu_File_Edit_Cut", Gtk::Stock::CUT));
+  m_action_group->add(Gtk::Action::create("Action_Menu_File_Edit_Copy", Gtk::Stock::COPY));
+  m_action_group->add(Gtk::Action::create("Action_Menu_File_Edit_Paste", Gtk::Stock::PASTE));
+  m_action_group->add(Gtk::Action::create("Action_Menu_File_Edit_Delete", Gtk::Stock::DELETE));
+
+  m_action_group->add(Gtk::Action::create("Menu_Insert", _("_Insert")));
+  m_action_group->add(Gtk::Action::create("Action_Menu_Insert_Field", _("Insert _Field")),
+                        sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_insert_field) );
+  m_action_group->add(Gtk::Action::create("Action_Menu_Insert_Text", _("Insert _Text")),
+                        sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_insert_text) );
+  m_action_group->add(Gtk::Action::create("Action_Menu_Insert_Image", _("Insert _Image")),
+                        sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_insert_image) );
+
+
+  //Build part of the menu structure, to be merged in by using the "PH" placeholders:
+  static const Glib::ustring ui_description =
+    "<ui>"
+    "  <menubar name='Menubar'>"
+    "      <menu action='Menu_Edit'>"
+    "        <menuitem action='Action_Menu_File_Edit_Cut' />"
+    "        <menuitem action='Action_Menu_File_Edit_Copy' />"
+    "        <menuitem action='Action_Menu_File_Edit_Paste' />"
+    "        <menuitem action='Action_Menu_File_Edit_Delete' />"
+    "        </menu>"
+    "      <menu action='Menu_Insert'>"
+    "        <menuitem action='Action_Menu_Insert_Field' />"
+    "        <menuitem action='Action_Menu_Insert_Text' />"
+    "        <menuitem action='Action_Menu_Insert_Image' />"
+    "        </menu>"
+    "  </menubar>"
+    "</ui>";
+
+  //Add menu:
+  m_uimanager = Gtk::UIManager::create();
+  m_uimanager->insert_action_group(m_action_group);
+  m_uimanager->add_ui_from_string(ui_description);
+
+  //Menubar:
+  Gtk::MenuBar* pMenuBar = static_cast<Gtk::MenuBar*>(m_uimanager->get_widget("/Menubar"));
+  m_box_menu->pack_start(*pMenuBar, Gtk::PACK_SHRINK);
+  pMenuBar->show();
+
+  //TODO: Add a toolbar if it would be useful:
+  //Gtk::Toolbar* pToolBar = static_cast<Gtk::Toolbar*>(m_uimanager->get_widget("/Bakery_ToolBar"));
+  //m_HandleBox_Toolbar.add(*pToolBar);
+  //m_HandleBox_Toolbar.show();
+
+  add_accel_group(m_uimanager->get_accel_group());
+}
+
 
 Window_PrintLayout_Edit::~Window_PrintLayout_Edit()
 {
@@ -58,6 +130,24 @@ Window_PrintLayout_Edit::~Window_PrintLayout_Edit()
 
 bool Window_PrintLayout_Edit::init_db_details(const Glib::ustring& table_name)
 {
+  Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
+  if(!document)
+    return false;
+
+  Glib::ustring table_label = _("None selected");
+
+  //Show the table title (if any) and name:
+  Glib::ustring table_title = document->get_table_title(table_name);
+  if(table_title.empty())
+    table_label = table_name;
+  else
+    table_label = table_title + " (" + table_name + ")";
+
+  if(m_label_table)
+    m_label_table->set_text(table_label);
+
+  return true;
+
 /*
   if(m_box)
   {
@@ -88,10 +178,10 @@ void Window_PrintLayout_Edit::set_print_layout(const Glib::ustring& table_name, 
   //Dialog_Layout::set_document(layout, document, table_name, table_fields);
 
   //Set the table name and title:
-  //m_label_table_name->set_text(table_name);
+  m_label_table_name->set_text(table_name);
 
-  //m_entry_name->set_text(print_layout->get_name()); 
-  //m_entry_title->set_text(print_layout->get_title());
+  m_entry_name->set_text(print_layout->get_name()); 
+  m_entry_title->set_text(print_layout->get_title());
 
   m_modified = false;
 }
@@ -105,10 +195,11 @@ void Window_PrintLayout_Edit::enable_buttons()
 
 sharedptr<PrintLayout> Window_PrintLayout_Edit::get_print_layout()
 {
-/*
+
   m_print_layout->set_name( m_entry_name->get_text() );
   m_print_layout->set_title( m_entry_title->get_text() );
 
+/*
   m_print_layout->m_layout_group->remove_all_items();
 
   m_print_layout->m_layout_group->remove_all_items();
@@ -131,6 +222,98 @@ sharedptr<PrintLayout> Window_PrintLayout_Edit::get_print_layout()
 */
   return m_print_layout;
 }
+
+void Window_PrintLayout_Edit::on_context_menu_insert_field()
+{
+}
+
+void Window_PrintLayout_Edit::on_context_menu_insert_text()
+{
+}
+
+void Window_PrintLayout_Edit::setup_context_menu()
+{
+  m_context_menu_action_group = Gtk::ActionGroup::create();
+
+  m_context_menu_action_group->add(Gtk::Action::create("ContextMenu", "Context Menu") );
+  m_context_menu_action_group->add(Gtk::Action::create("ContextMenuInsert", _("Insert")) );
+
+  Glib::RefPtr<Gtk::Action> action =  Gtk::Action::create("ContextInsertField", _("Field"));
+  m_context_menu_action_group->add(action,
+    sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_context_menu_insert_field) );
+
+  action =  Gtk::Action::create("ContextInsertText", _("Text"));
+  m_context_menu_action_group->add(action,
+    sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_context_menu_insert_text) );
+
+  /*
+  action =  Gtk::Action::create("ContextDelete", Gtk::Stock::DELETE);
+  m_context_menu_action_group->add(action,
+    sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_context_menu_delete) );
+  */
+
+  m_context_menu_uimanager = Gtk::UIManager::create();
+  m_context_menu_uimanager->insert_action_group(m_context_menu_action_group);
+
+  #ifdef GLIBMM_EXCEPTIONS_ENABLED
+  try
+  {
+  #endif
+    Glib::ustring ui_info = 
+      "<ui>"
+      "  <popup name='ContextMenu'>"
+      "    <menu action='ContextMenuInsert'>"
+      "      <menuitem action='ContextInsertField'/>"
+      "      <menuitem action='ContextInsertText'/>"
+      "    </menu>"
+      "  </popup>"
+      "</ui>";
+
+  #ifdef GLIBMM_EXCEPTIONS_ENABLED
+    m_context_menu_uimanager->add_ui_from_string(ui_info);
+  }
+  catch(const Glib::Error& ex)
+  {
+    std::cerr << "building menus failed: " <<  ex.what();
+  }
+  #else
+  std::auto_ptr<Glib::Error> error;
+  m_context_menu_uimanager->add_ui_from_string(ui_info, error);
+  if(error.get() != NULL)
+  {
+    std::cerr << "building menus failed: " << error->what();
+  }
+  #endif
+
+  //Get the menu:
+  m_context_menu = dynamic_cast<Gtk::Menu*>( m_context_menu_uimanager->get_widget("/ContextMenu") ); 
+}
+
+
+void Window_PrintLayout_Edit::on_canvas_show_context_menu(guint button, guint32 activate_time)
+{
+  if(m_context_menu)
+    m_context_menu->popup(button, activate_time);
+}
+
+void Window_PrintLayout_Edit::on_menu_insert_field()
+{
+}
+
+void Window_PrintLayout_Edit::on_menu_insert_text()
+{
+}
+
+void Window_PrintLayout_Edit::on_menu_insert_image()
+{
+}
+
+void Window_PrintLayout_Edit::on_button_close()
+{
+  hide();
+}
+
+
 
 
 } //namespace Glom

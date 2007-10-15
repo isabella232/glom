@@ -82,6 +82,32 @@ void get_glade_widget_derived_with_warning(const Glib::ustring& id, T_Widget*& w
 }
 
 template<class T_Widget>
+void get_glade_developer_widget_derived_with_warning(const Glib::ustring& id, T_Widget*& widget)
+{
+  Glib::RefPtr<Gnome::Glade::Xml> refXml;
+
+  #ifdef GLIBMM_EXCEPTIONS_ENABLED
+  try
+  {
+    refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom_developer.glade", id);
+  }
+  catch(const Gnome::Glade::XmlError& ex)
+  {
+    std::cerr << ex.what() << std::endl;
+  }
+#else
+  error.reset(NULL);
+  refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", id, "", error);
+  if(error.get()) std::cerr << error->what() << std::endl;
+#endif
+
+  if(refXml)
+  {
+    refXml->get_widget_derived(id, widget);
+  }
+}
+
+template<class T_Widget>
 void get_glade_widget_with_warning(const Glib::ustring& id, T_Widget*& widget)
 {
   Glib::RefPtr<Gnome::Glade::Xml> refXml;
@@ -184,7 +210,7 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
   get_glade_widget_derived_with_warning("box_print_layouts", m_pBox_PrintLayouts);
   m_pDialog_PrintLayouts = new Dialog_Glom(m_pBox_PrintLayouts);
 
-  get_glade_widget_derived_with_warning("window_print_layout_edit", m_pDialogLayoutPrint);
+  get_glade_developer_widget_derived_with_warning("window_print_layout_edit", m_pDialogLayoutPrint);
   add_view(m_pDialogLayoutPrint);
   m_pDialogLayoutPrint->signal_hide().connect( sigc::mem_fun(*this, &Frame_Glom::on_dialog_layout_print_hide) );
 
@@ -1452,6 +1478,7 @@ void Frame_Glom::on_box_reports_selected(const Glib::ustring& report_name)
   sharedptr<Report> report = get_document()->get_report(m_table_name, report_name);
   if(report)
   {
+    m_pDialogLayoutReport->set_transient_for(*get_app_window());
     m_pDialogLayoutReport->set_report(m_table_name, report);
     m_pDialogLayoutReport->show();
   }
@@ -1466,6 +1493,7 @@ void Frame_Glom::on_box_print_layouts_selected(const Glib::ustring& print_layout
   sharedptr<PrintLayout> print_layout = get_document()->get_print_layout(m_table_name, print_layout_name);
   if(print_layout)
   {
+    m_pDialogLayoutPrint->set_transient_for(*get_app_window());
     m_pDialogLayoutPrint->set_print_layout(m_table_name, print_layout);
     m_pDialogLayoutPrint->show();
   }

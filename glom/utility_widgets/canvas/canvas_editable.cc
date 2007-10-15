@@ -165,5 +165,10 @@ void CanvasEditable::remove_grid()
   m_grid->remove_grid();
 }
 
+CanvasEditable::type_signal_show_context CanvasEditable::signal_show_context()
+{
+  return m_signal_show_context;
+}
+
 } //namespace Glom
 

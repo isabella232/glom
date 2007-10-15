@@ -106,7 +106,7 @@ glomdata_DATA = glom_document.dtd
 # Install the glade file:
 # The glade prefix of glade_DATA seems to cause it to be installed in <appname>/glade/
 # Because that's how gladedir is defined.
-glade_DATA = glom.glade
+glade_DATA = glom.glade glom_developer.glade
 
 EXTRA_DIST = glom_document.dtd $(glade_DATA)
 

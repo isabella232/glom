@@ -51,6 +51,11 @@ public:
   void add_vertical_rule(double x);
   void add_horizontal_rule(double x);
 
+  /** void on_show_context(guint button, guint32 activate_time);
+   */
+  typedef sigc::signal<void, guint, guint32> type_signal_show_context;
+  type_signal_show_context signal_show_context();
+
 protected:
   void add_item_line(const Glib::RefPtr<Goocanvas::Path>& item, bool resizable = false);
   void add_item_rect(const Glib::RefPtr<Goocanvas::Rect>& item, bool resizable = false);
@@ -75,6 +80,8 @@ protected:
   type_map_item_info m_map_item_info;
 
   Glib::RefPtr<CanvasGroupGrid> m_grid;
+
+  type_signal_show_context m_signal_show_context;
 };
 
 } //namespace Glom

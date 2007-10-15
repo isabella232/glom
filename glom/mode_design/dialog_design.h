@@ -28,6 +28,8 @@
 namespace Glom
 {
 
+/** A dialog with a titled frame, a label for the table title, and a close button.
+ */
 class Dialog_Design
 : public Gtk::Window,
   public View_Composite_Glom

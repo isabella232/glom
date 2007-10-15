@@ -21,15 +21,22 @@
 #ifndef WINDOW_PRINT_LAYOUT_EDIT_H
 #define WINDOW_PRINT_LAYOUT_EDIT_H
 
-#include <glom/mode_design/dialog_design.h>
 #include <glom/libglom/data_structure/print_layout.h>
 #include <glom/utility_widgets/canvas/canvas_editable.h>
+#include <glom/libglom/document/document_glom.h>
+#include <gtkmm/window.h>
+#include <gtkmm/entry.h>
+#include <gtkmm/label.h>
 #include <gtkmm/box.h>
+#include <gtkmm/uimanager.h>
+#include <libglademm/xml.h>
 
 namespace Glom
 {
 
-class Window_PrintLayout_Edit : public Dialog_Design
+class Window_PrintLayout_Edit
+: public Gtk::Window,
+  public View_Composite_Glom
 {
 public:
   Window_PrintLayout_Edit(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
@@ -44,6 +51,18 @@ public:
 protected:
 
   void enable_buttons();
+  void init_menu();
+
+  void on_menu_insert_field();
+  void on_menu_insert_text();
+  void on_menu_insert_image();
+
+  void on_canvas_show_context_menu(guint button, guint32 activate_time);
+  void on_context_menu_insert_field();
+  void on_context_menu_insert_text();
+
+  void on_button_close();
+  void setup_context_menu();
 
   //Box_DB_Table_Definition* m_box;
   Glib::ustring m_name_original;
@@ -55,10 +74,23 @@ protected:
   Gtk::Entry* m_entry_name;
   Gtk::Entry* m_entry_title;
   Gtk::Label* m_label_table_name;
-  Gtk::Label* m_label_table_title;
+  Gtk::Label* m_label_table;
+  //Gtk::Label* m_label_table_title;
+  Gtk::Button* m_button_close;
 
+  Gtk::VBox* m_box_menu;
+  Gtk::VBox* m_box_canvas;
   Gtk::VBox* m_box;
   CanvasEditable m_canvas;
+
+  //Main menu:
+  Glib::RefPtr<Gtk::ActionGroup> m_action_group;
+  Glib::RefPtr<Gtk::UIManager> m_uimanager;
+
+  //Context menu:
+  Gtk::Menu* m_context_menu;
+  Glib::RefPtr<Gtk::ActionGroup> m_context_menu_action_group;
+  Glib::RefPtr<Gtk::UIManager> m_context_menu_uimanager;
 };
 
 } //namespace Glom

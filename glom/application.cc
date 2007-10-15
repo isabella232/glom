@@ -1806,15 +1806,15 @@ void App_Glom::fill_menu_print_layouts(const Glib::ustring& table_name)
       const Glib::ustring name = print_layout->get_name();
       if(!name.empty())
       {
-        const Glib::ustring action_name = "NavReportAction_" + name;
+        const Glib::ustring action_name = "NavPrintLayoutAction_" + name;
 
         ui_description += "<menuitem action='" + action_name + "' />";
 
         Glib::RefPtr<Gtk::Action> refAction = Gtk::Action::create( action_name, Utils::string_escape_underscores(print_layout->get_title_or_name()));
-        m_refNavReportsActionGroup->add(refAction,
+        m_refNavPrintLayoutsActionGroup->add(refAction,
           sigc::bind( sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_print_layout_selected), print_layout->get_name()) );
 
-        m_listNavReportActions.push_back(refAction);
+        m_listNavPrintLayoutActions.push_back(refAction);
 
         //m_refUIManager->add_ui(merge_id, path, table_info->m_title, refAction, UI_MANAGER_MENUITEM);
       }
