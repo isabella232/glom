@@ -35,6 +35,9 @@ protected:
 public:
   static Glib::RefPtr<CanvasLayoutItem> create(const sharedptr<LayoutItem>& layout_item);
 
+  sharedptr<LayoutItem> get_layout_item();
+  void set_layout_item(const sharedptr<LayoutItem>& item);
+
 protected:
   sharedptr<LayoutItem> m_layout_item;
 };

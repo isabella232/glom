@@ -126,8 +126,6 @@ void CanvasEditable::add_item_rect(const Glib::RefPtr<Goocanvas::Rect>& item, bo
   //item->signal_motion_notify_event().connect(sigc::mem_fun(*this, &CanvasEditable::on_item_motion_notify_event));
   //item->signal_button_press_event().connect(sigc::mem_fun(*this, &CanvasEditable::on_item_button_press_event));
   //item->signal_button_release_event().connect(sigc::mem_fun(*this, &CanvasEditable::on_item_button_release_event));
-
-  m_map_item_info[item] = info;
 }
 
 void CanvasEditable::remove_all_items()

@@ -26,7 +26,11 @@ namespace Glom
 LayoutItem::LayoutItem()
 : m_sequence(0),
   m_editable(true),
-  m_display_width(0)
+  m_display_width(0),
+  print_layout_x(0),
+  print_layout_y(0),
+  print_layout_width(0),
+  print_layout_height(0)
 {
   m_translatable_item_type = TRANSLATABLE_TYPE_LAYOUT_ITEM;
 }
@@ -93,6 +97,23 @@ bool LayoutItem::get_display_width(guint& width) const
 void LayoutItem::set_display_width(guint value)
 {
   m_display_width = value;
+}
+
+void LayoutItem::get_print_layout_position(double& x, double& y, double& width, double& height) const
+{
+  x = print_layout_x;
+  y = print_layout_y;
+  width = print_layout_width;
+  height = print_layout_height;
+}
+
+
+void LayoutItem::set_print_layout_position(double x, double y, double width, double height)
+{
+  print_layout_x = x;
+  print_layout_y = y;
+  print_layout_width = width;
+  print_layout_height = height;
 }
 
 } //namespace Glom

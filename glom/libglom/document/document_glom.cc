@@ -169,6 +169,12 @@ namespace Glom
 #define GLOM_ATTRIBUTE_TRANSLATION_LOCALE "loc"
 #define GLOM_ATTRIBUTE_TRANSLATION_VALUE "val"
 
+#define GLOM_NODE_POSITION "position"
+#define GLOM_ATTRIBUTE_POSITION_X "x"
+#define GLOM_ATTRIBUTE_POSITION_Y "y"
+#define GLOM_ATTRIBUTE_POSITION_WIDTH "width"
+#define GLOM_ATTRIBUTE_POSITION_HEIGHT "height"
+
 #define GLOM_NODE_LIBRARY_MODULES "library_modules"
 #define GLOM_NODE_LIBRARY_MODULE "module"
 #define GLOM_ATTRIBUTE_LIBRARY_MODULE_NAME "name"
@@ -1825,7 +1831,7 @@ void Document_Glom::load_after_sort_by(const xmlpp::Element* node, const Glib::u
   }
 }
 
-void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Glib::ustring& table_name, const sharedptr<LayoutGroup>& group)
+void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Glib::ustring& table_name, const sharedptr<LayoutGroup>& group, bool with_print_layout_positions)
 {
   if(!node || !group)
   {
@@ -1851,6 +1857,10 @@ void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Gl
   xmlpp::Node::NodeList listNodes = node->get_children();
   for(xmlpp::Node::NodeList::iterator iter = listNodes.begin(); iter != listNodes.end(); ++iter)
   {
+    sharedptr<LayoutItem> item_added;
+    int item_added_sequence = -1;
+
+    //Create the layout item:
     const xmlpp::Element* element = dynamic_cast<const xmlpp::Element*>(*iter);
     if(element)
     {
@@ -1862,7 +1872,9 @@ void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Gl
         load_after_layout_item_field(element, table_name, item);
 
         item->m_sequence = sequence;
-        group->add_item(item, sequence);
+        item_added_sequence = sequence;
+
+        item_added = item; 
       }
       else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_BUTTON)
       {
@@ -1875,7 +1887,9 @@ void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Gl
         load_after_translations(element, *item);
 
         item->m_sequence = sequence;
-        group->add_item(item, sequence);
+        item_added_sequence = sequence;
+
+        item_added = item; 
       }
       else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_TEXTOBJECT)
       {
@@ -1892,7 +1906,9 @@ void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Gl
         }
 
         item->m_sequence = sequence;
-        group->add_item(item, sequence);
+        item_added_sequence = sequence;
+
+        item_added = item; 
       }
       else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_IMAGEOBJECT)
       {
@@ -1902,7 +1918,9 @@ void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Gl
         item->set_image(get_node_attribute_value_as_value(element, GLOM_ATTRIBUTE_DATA_LAYOUT_IMAGEOBJECT_IMAGE, Field::TYPE_IMAGE));
 
         item->m_sequence = sequence;
-        group->add_item(item, sequence);
+        item_added_sequence = sequence;
+
+        item_added = item; 
       }
       else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_ITEM_FIELDSUMMARY)
       {
@@ -1913,37 +1931,35 @@ void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Gl
         item->set_summary_type_from_sql( get_node_attribute_value(element, GLOM_ATTRIBUTE_LAYOUT_ITEM_FIELDSUMMARY_SUMMARYTYPE) );
 
         item->m_sequence = sequence;
-        group->add_item(item, sequence);
+        item_added_sequence = sequence;
+        item_added = item; 
       }
       else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_ITEM_HEADER)
       {
         sharedptr<LayoutItem_Header> child_group = sharedptr<LayoutItem_Header>::create();
         //Recurse:
-        load_after_layout_group(element, table_name, child_group);
-
-        group->add_item(child_group);
+        load_after_layout_group(element, table_name, child_group, with_print_layout_positions);
+        item_added = child_group; 
       }
       else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_ITEM_FOOTER)
       {
         sharedptr<LayoutItem_Footer> child_group = sharedptr<LayoutItem_Footer>::create();
         //Recurse:
-        load_after_layout_group(element, table_name, child_group);
-
-        group->add_item(child_group);
+        load_after_layout_group(element, table_name, child_group, with_print_layout_positions);
+        item_added = child_group; 
       }
       else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_GROUP)
       {
         sharedptr<LayoutGroup> child_group = sharedptr<LayoutGroup>::create();
         //Recurse:
-        load_after_layout_group(element, table_name, child_group);
-
-        group->add_item(child_group);
+        load_after_layout_group(element, table_name, child_group, with_print_layout_positions);
+        item_added = child_group; 
       }
       else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_NOTEBOOK)
       {
         sharedptr<LayoutItem_Notebook> notebook = sharedptr<LayoutItem_Notebook>::create();
-        load_after_layout_group(element, table_name, notebook);
-        group->add_item(notebook);
+        load_after_layout_group(element, table_name, notebook, with_print_layout_positions);
+        item_added = notebook; 
       }
       else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_PORTAL)
       {
@@ -1971,14 +1987,14 @@ void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Gl
 
         portal->set_navigation_relationship_specific(relationship_navigation_specific_main, relationship_navigation_specific);
 
-        load_after_layout_group(element, portal->get_table_used(table_name), portal);
-        group->add_item(portal);
+        load_after_layout_group(element, portal->get_table_used(table_name), portal, with_print_layout_positions);
+        item_added = portal; 
       }
       else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_ITEM_GROUPBY)
       {
         sharedptr<LayoutItem_GroupBy> child_group = sharedptr<LayoutItem_GroupBy>::create();
         //Recurse:
-        load_after_layout_group(element, table_name, child_group);
+        load_after_layout_group(element, table_name, child_group, with_print_layout_positions);
 
         //Group-By field:
         sharedptr<LayoutItem_Field> field_groupby = sharedptr<LayoutItem_Field>::create();
@@ -2009,31 +2025,43 @@ void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Gl
           xmlpp::Element* elementGroup = get_node_child_named(elementSecondary, GLOM_NODE_DATA_LAYOUT_GROUP);
           if(elementGroup)
           {
-            load_after_layout_group(elementGroup, table_name, child_group->m_group_secondary_fields);
+            load_after_layout_group(elementGroup, table_name, child_group->m_group_secondary_fields, with_print_layout_positions);
             fill_layout_field_details(table_name, child_group->m_group_secondary_fields); //Get full field details from the field names.
           }
         }
 
-        group->add_item(child_group);
+        item_added = child_group; 
       }
       else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_ITEM_VERTICALGROUP)
       {
         sharedptr<LayoutItem_VerticalGroup> child_group = sharedptr<LayoutItem_VerticalGroup>::create();
         //Recurse:
-        load_after_layout_group(element, table_name, child_group);
+        load_after_layout_group(element, table_name, child_group, with_print_layout_positions);
 
-        group->add_item(child_group);
+        item_added = child_group; 
       }
       else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_ITEM_SUMMARY)
       {
         sharedptr<LayoutItem_Summary> child_group = sharedptr<LayoutItem_Summary>::create();
         //Recurse:
-        load_after_layout_group(element, table_name, child_group);
+        load_after_layout_group(element, table_name, child_group, with_print_layout_positions);
 
-        group->add_item(child_group);
+        item_added = child_group; 
       }
     }
-  }
+
+    //Add the new layout item to the group:
+    if(item_added)
+    {
+      if(item_added_sequence != -1)
+        group->add_item(item_added, item_added_sequence);
+      else
+        group->add_item(item_added);
+
+      if(with_print_layout_positions)
+        load_after_print_layout_position(element, item_added);
+    }
+  } //for
 }
 
 void Document_Glom::load_after_translations(const xmlpp::Element* element, TranslatableItem& item)
@@ -2057,6 +2085,22 @@ void Document_Glom::load_after_translations(const xmlpp::Element* element, Trans
         item.set_translation(locale, translation);
       }
     }
+  }
+}
+
+void Document_Glom::load_after_print_layout_position(const xmlpp::Element* nodeItem, const sharedptr<LayoutItem>& item)
+{
+  if(!nodeItem)
+    return;
+
+  const xmlpp::Element* child = get_node_child_named(nodeItem, GLOM_NODE_POSITION);
+  if(child)
+  {
+    const double x = get_node_attribute_value_as_decimal_double(child, GLOM_ATTRIBUTE_POSITION_X);
+    const double y = get_node_attribute_value_as_decimal_double(child, GLOM_ATTRIBUTE_POSITION_Y);
+    const double width = get_node_attribute_value_as_decimal_double(child, GLOM_ATTRIBUTE_POSITION_WIDTH);
+    const double height = get_node_attribute_value_as_decimal_double(child, GLOM_ATTRIBUTE_POSITION_HEIGHT);
+    item->set_print_layout_position(x, y, width, height);
   }
 }
 
@@ -2429,7 +2473,6 @@ bool Document_Glom::load_after()
                 print_layout->set_name(name);
                 print_layout->set_show_table_title(show_table_title);
 
-		/*
                 const xmlpp::Element* nodeGroups = get_node_child_named(node, GLOM_NODE_DATA_LAYOUT_GROUPS);
                 if(nodeGroups)
                 {
@@ -2441,16 +2484,15 @@ bool Document_Glom::load_after()
                     if(node)
                     {
                       sharedptr<LayoutGroup> group = sharedptr<LayoutGroup>::create();
-                      load_after_layout_group(node, table_name, group);
+                      load_after_layout_group(node, table_name, group, true /* load positions too. */);
 
                       //layout_groups[group.m_sequence] = group;
-                      report->m_layout_group = group; //TODO: Get rid of the for loop here.
+                      print_layout->m_layout_group = group; //TODO: Get rid of the for loop here.
 
-                      fill_layout_field_details(table_name, report->m_layout_group); //Get full field details from the field names.
+                      fill_layout_field_details(table_name, print_layout->m_layout_group); //Get full field details from the field names.
                     }
                   }
                 }
-                */
 
                 //Translations:
                 load_after_translations(node, *print_layout);
@@ -2628,7 +2670,7 @@ void Document_Glom::save_before_sort_by(xmlpp::Element* node, const LayoutItem_G
   }
 }
 
-void Document_Glom::save_before_layout_group(xmlpp::Element* node, const sharedptr<const LayoutGroup>& group)
+void Document_Glom::save_before_layout_group(xmlpp::Element* node, const sharedptr<const LayoutGroup>& group, bool with_print_layout_positions)
 {
   if(!node || !group)
     return;
@@ -2659,7 +2701,7 @@ void Document_Glom::save_before_layout_group(xmlpp::Element* node, const sharedp
     if(!group_by->m_group_secondary_fields->m_map_items.empty())
     {
       xmlpp::Element* secondary_fields = child->add_child(GLOM_NODE_DATA_LAYOUT_GROUP_SECONDARYFIELDS);
-      save_before_layout_group(secondary_fields, group_by->m_group_secondary_fields);
+      save_before_layout_group(secondary_fields, group_by->m_group_secondary_fields, with_print_layout_positions);
     }
   }
   else
@@ -2741,6 +2783,10 @@ void Document_Glom::save_before_layout_group(xmlpp::Element* node, const sharedp
   //Translations:
   save_before_translations(child, *group);
 
+  //Print layout position:
+  if(with_print_layout_positions)
+    save_before_print_layout_position(child, group);
+
   //Add the child items:
   LayoutGroup::type_map_const_items items = group->get_items();
   for(LayoutGroup::type_map_const_items::const_iterator iterItems = items.begin(); iterItems != items.end(); ++iterItems)
@@ -2752,7 +2798,7 @@ void Document_Glom::save_before_layout_group(xmlpp::Element* node, const sharedp
     if(child_group) //If it is a group, portal, summary, or groupby.
     {
       //recurse:
-      save_before_layout_group(child, child_group);
+      save_before_layout_group(child, child_group, with_print_layout_positions);
     }
     else
     {
@@ -2810,7 +2856,12 @@ void Document_Glom::save_before_layout_group(xmlpp::Element* node, const sharedp
       }
 
       if(nodeItem)
+      {
         set_node_attribute_value_as_decimal(nodeItem, GLOM_ATTRIBUTE_SEQUENCE, item->m_sequence);
+
+        if(with_print_layout_positions)
+          save_before_print_layout_position(nodeItem, item);
+      }
     }
 
     //g_warning("save_before_layout_group: after child part type=%s", item->get_part_type_name().c_str());
@@ -2837,6 +2888,22 @@ void Document_Glom::save_before_translations(xmlpp::Element* element, const Tran
     set_node_attribute_value(childItem, GLOM_ATTRIBUTE_TRANSLATION_LOCALE, iter->first);
     set_node_attribute_value(childItem, GLOM_ATTRIBUTE_TRANSLATION_VALUE, iter->second);
   }
+}
+
+void Document_Glom::save_before_print_layout_position(xmlpp::Element* nodeItem, const sharedptr<const LayoutItem>& item)
+{
+  xmlpp::Element* child = nodeItem->add_child(GLOM_NODE_POSITION);
+ 
+  double x = 0;
+  double y = 0;
+  double width = 0;
+  double height = 0;
+  item->get_print_layout_position(x, y, width, height);
+
+  set_node_attribute_value_as_decimal_double(child, GLOM_ATTRIBUTE_POSITION_X, x);
+  set_node_attribute_value_as_decimal_double(child, GLOM_ATTRIBUTE_POSITION_Y, y);
+  set_node_attribute_value_as_decimal_double(child, GLOM_ATTRIBUTE_POSITION_WIDTH, width);
+  set_node_attribute_value_as_decimal_double(child, GLOM_ATTRIBUTE_POSITION_HEIGHT, height);
 }
 
 bool Document_Glom::save_before()
@@ -3066,14 +3133,14 @@ bool Document_Glom::save_before()
 
           sharedptr<const PrintLayout> print_layout = iter->second;
           nodePrintLayout->set_attribute(GLOM_ATTRIBUTE_NAME, print_layout->get_name());
-          /*
-          xmlpp::Element* nodeGroups = nodeReport->add_child(GLOM_NODE_DATA_LAYOUT_GROUPS);
-          if(report->m_layout_group)
+          set_node_attribute_value_as_bool(nodePrintLayout, GLOM_ATTRIBUTE_REPORT_SHOW_TABLE_TITLE, print_layout->get_show_table_title());
+
+          xmlpp::Element* nodeGroups = nodePrintLayout->add_child(GLOM_NODE_DATA_LAYOUT_GROUPS);
+          if(print_layout->m_layout_group)
           {
-            save_before_layout_group(nodeGroups, report->m_layout_group);
+            save_before_layout_group(nodeGroups, print_layout->m_layout_group, true /* x,y positions too. */);
             append_newline(nodeGroups);
           }
-          */
 
           //Translations:
           save_before_translations(nodePrintLayout, *print_layout);

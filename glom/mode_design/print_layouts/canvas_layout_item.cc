@@ -61,5 +61,15 @@ Glib::RefPtr<CanvasLayoutItem> CanvasLayoutItem::create(const sharedptr<LayoutIt
   return Glib::RefPtr<CanvasLayoutItem>(new CanvasLayoutItem(layout_item));
 }
 
+sharedptr<LayoutItem> CanvasLayoutItem::get_layout_item()
+{
+  return m_layout_item;
+}
+
+void CanvasLayoutItem::set_layout_item(const sharedptr<LayoutItem>& item)
+{
+  m_layout_item = item;
+}
+
 } //namespace Glom
 

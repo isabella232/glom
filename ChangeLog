@@ -1,5 +1,24 @@
 2007-10-16  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/glom_developer.glade: Don't make the print layout dialog 
+	visible by default.
+	* glom/libglom/data_structure/layout/layoutitem.cc:
+	* glom/libglom/data_structure/layout/layoutitem.h: Added 
+	get/set_print_layout_position(), used only for print layout items.
+	* glom/libglom/document/document_glom.cc:
+	* glom/libglom/document/document_glom.h: load_after_layout_group(), 
+	save_before_layout_group(): Use the new helper functions to 
+	load/save the positions for print layout items.
+	* glom/mode_design/print_layouts/canvas_layout_item.cc:
+	* glom/mode_design/print_layouts/canvas_layout_item.h:
+	* glom/mode_design/print_layouts/canvas_print_layout.cc:
+	* glom/mode_design/print_layouts/canvas_print_layout.h:
+	* glom/mode_design/print_layouts/window_print_layout_edit.cc:
+	Implemented simpe loading/saving of layout item positions, but 
+	not yet recursively.
+
+2007-10-16  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/libglom/data_structure/print_layout.cc:
 	* glom/libglom/data_structure/print_layout.h: Add a group to 
 	contain the child layout items, as the Report class already has.

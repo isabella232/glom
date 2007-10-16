@@ -183,6 +183,7 @@ void Window_PrintLayout_Edit::set_print_layout(const Glib::ustring& table_name, 
 
   m_name_original = print_layout->get_name();
   m_print_layout = sharedptr<PrintLayout>(new PrintLayout(*print_layout)); //Copy it, so we only use the changes when we want to.
+  m_canvas.set_print_layout(table_name, m_print_layout);
   m_table_name = table_name;
 
   //Dialog_Layout::set_document(layout, document, table_name, table_fields);
@@ -205,7 +206,7 @@ void Window_PrintLayout_Edit::enable_buttons()
 
 sharedptr<PrintLayout> Window_PrintLayout_Edit::get_print_layout()
 {
-
+  m_print_layout = m_canvas.get_print_layout();
   m_print_layout->set_name( m_entry_name->get_text() );
   m_print_layout->set_title( m_entry_title->get_text() );
 

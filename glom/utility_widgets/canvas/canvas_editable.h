@@ -76,9 +76,6 @@ protected:
     bool m_resizable;
   };
 
-  typedef std::map< Glib::RefPtr<Goocanvas::Item>, ItemInfo> type_map_item_info;
-  type_map_item_info m_map_item_info;
-
   Glib::RefPtr<CanvasGroupGrid> m_grid;
 
   type_signal_show_context m_signal_show_context;

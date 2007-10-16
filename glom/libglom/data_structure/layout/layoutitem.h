@@ -57,6 +57,12 @@ public:
   bool get_display_width(guint& width) const;
   void set_display_width(guint value);
 
+  /// This is used only for the print layouts.
+  void get_print_layout_position(double& x, double& y, double& width, double& height) const;
+
+  /// This is used only for the print layouts.
+  void set_print_layout_position(double x, double y, double width, double height);
+
   guint m_sequence;
   //bool m_hidden;
 
@@ -66,6 +72,14 @@ protected:
 
   //Not saved in document:
   guint m_display_width; //In pixels.
+
+  // These are used only for the print layouts.
+  // TODO_Performance: Put them in a separate member class that's only instantiated when necessary,
+  // so that we only waste one pointer instead of 4 doubles when we don't need them?
+  double print_layout_x;
+  double print_layout_y;
+  double print_layout_width;
+  double print_layout_height;
 };
 
 } //namespace Glom
