@@ -19,7 +19,7 @@
  */
 
 #include "canvas_line_movable.h"
-#include <libgoocanvasmm/canvas.h>
+#include <goocanvasmm/canvas.h>
 #include <goocanvaspolyline.h>
 #include <goocanvasgroup.h>
 #include <gdkmm/cursor.h>

@@ -19,7 +19,7 @@
  */
 
 #include "canvas_group_grid.h"
-#include <libgoocanvasmm/canvas.h>
+#include <goocanvasmm/canvas.h>
 #include <math.h>
 #include <iostream>
 #include <goocanvasgroup.h>

@@ -23,7 +23,7 @@
 
 #include "canvas_item_movable.h"
 #include "canvas_group_grid.h"
-#include <libgoocanvasmm/item.h>
+#include <goocanvasmm/item.h>
 #include <gdkmm/cursor.h>
 
 namespace Glom

@@ -23,7 +23,7 @@
 
 
 #include "canvas_item_movable.h"
-#include <libgoocanvasmm/polyline.h>
+#include <goocanvasmm/polyline.h>
 
 namespace Glom
 {

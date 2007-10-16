@@ -22,8 +22,8 @@
 #define GLOM_UTILITY_WIDGETS_CANVAS_GROUP_RESIZABLE_H
 
 #include "canvas_item_movable.h"
-#include <libgoocanvasmm/group.h>
-#include <libgoocanvasmm/rect.h>
+#include <goocanvasmm/group.h>
+#include <goocanvasmm/rect.h>
 
 
 namespace Glom

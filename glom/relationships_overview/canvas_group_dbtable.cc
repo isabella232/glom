@@ -22,10 +22,10 @@
 #include "glom/utility_widgets/canvas/canvas_rect_movable.h"
 #include "glom/utility_widgets/canvas/canvas_line_movable.h"
 #include "glom/utility_widgets/canvas/canvas_text_movable.h"
-#include <libgoocanvasmm/canvas.h>
-#include <libgoocanvasmm/rect.h>
-#include <libgoocanvasmm/polyline.h>
-#include <libgoocanvasmm/text.h>
+#include <goocanvasmm/canvas.h>
+#include <goocanvasmm/rect.h>
+#include <goocanvasmm/polyline.h>
+#include <goocanvasmm/text.h>
 #include <math.h>
 #include <iostream>
 #include <goocanvasrect.h>

@@ -31,7 +31,7 @@
 #include <gtkmm/printoperation.h>
 #include <gtkmm/toggleaction.h>
 #include <libglademm.h>
-#include <libgoocanvasmm/canvas.h>
+#include <goocanvasmm/canvas.h>
 #include <map>
 #include <vector>
 

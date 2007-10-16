@@ -1,5 +1,32 @@
 2007-10-16  Murray Cumming  <murrayc@murrayc.com>
 
+	* configure.in:
+	* glom/main.cc:
+	* glom/relationships_overview/canvas_group_dbtable.cc:
+	* glom/relationships_overview/canvas_group_dbtable.h:
+	* glom/relationships_overview/dialog_relationships_overview.h:
+	* glom/relationships_overview/printoperation_relationshipsoverview.
+	h:
+	* glom/utility_widgets/canvas/canvas_editable.h:
+	* glom/utility_widgets/canvas/canvas_group_grid.cc:
+	* glom/utility_widgets/canvas/canvas_group_grid.h:
+	* glom/utility_widgets/canvas/canvas_group_movable.cc:
+	* glom/utility_widgets/canvas/canvas_group_movable.h:
+	* glom/utility_widgets/canvas/canvas_group_resizable.cc:
+	* glom/utility_widgets/canvas/canvas_group_resizable.h:
+	* glom/utility_widgets/canvas/canvas_item_movable.cc:
+	* glom/utility_widgets/canvas/canvas_item_movable.h:
+	* glom/utility_widgets/canvas/canvas_line_movable.cc:
+	* glom/utility_widgets/canvas/canvas_line_movable.h:
+	* glom/utility_widgets/canvas/canvas_rect_movable.cc:
+	* glom/utility_widgets/canvas/canvas_rect_movable.h:
+	* glom/utility_widgets/canvas/canvas_text_movable.cc:
+	* glom/utility_widgets/canvas/canvas_text_movable.h:
+	Use the latest goocanvasmm API, with different pgk-config and 
+	include path.
+
+2007-10-16  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/glom_developer.glade: Don't make the print layout dialog 
 	visible by default.
 	* glom/libglom/data_structure/layout/layoutitem.cc:

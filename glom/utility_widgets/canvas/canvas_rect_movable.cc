@@ -19,7 +19,7 @@
  */
 
 #include "canvas_rect_movable.h"
-#include <libgoocanvasmm/canvas.h>
+#include <goocanvasmm/canvas.h>
 #include <goocanvasrect.h>
 #include <goocanvasgroup.h>
 #include <gdkmm/cursor.h>

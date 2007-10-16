@@ -22,7 +22,7 @@
 #define GLOM_UTILITY_WIDGETS_CANVAS_GROUP_MOVABLE_H
 
 #include "canvas_item_movable.h"
-#include <libgoocanvasmm/group.h>
+#include <goocanvasmm/group.h>
 
 namespace Glom
 {

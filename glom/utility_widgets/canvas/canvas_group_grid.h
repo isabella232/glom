@@ -21,8 +21,8 @@
 #ifndef GLOM_UTILITY_WIDGETS_CANVAS_GROUP_GRID_H
 #define GLOM_UTILITY_WIDGETS_CANVAS_GROUP_GRID_H
 
-#include <libgoocanvasmm/group.h>
-#include <libgoocanvasmm/polyline.h>
+#include <goocanvasmm/group.h>
+#include <goocanvasmm/polyline.h>
 #include <vector>
 
 

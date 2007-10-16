@@ -19,7 +19,7 @@
  */
 
 #include "canvas_text_movable.h"
-#include <libgoocanvasmm/canvas.h>
+#include <goocanvasmm/canvas.h>
 #include <goocanvastext.h>
 #include <iostream>
 

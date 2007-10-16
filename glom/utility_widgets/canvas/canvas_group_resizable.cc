@@ -21,7 +21,7 @@
 #include "canvas_group_resizable.h"
 #include "canvas_rect_movable.h"
 #include "canvas_line_movable.h"
-#include <libgoocanvasmm/canvas.h>
+#include <goocanvasmm/canvas.h>
 #include <goocanvasrect.h>
 #include <goocanvasgroup.h>
 #include <iostream>

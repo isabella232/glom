@@ -18,7 +18,7 @@
 #define GLOM_RELATIONSHIPS_OVERVIEW_PRINT_OPERATION_H
 
 #include <gtkmm.h>
-#include <libgoocanvasmm/canvas.h>
+#include <goocanvasmm/canvas.h>
 #include <vector>
 
 //We derive our own class from PrintOperation,

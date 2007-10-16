@@ -23,7 +23,7 @@
 #include "canvas_text_movable.h"
 #include "canvas_line_movable.h"
 #include "canvas_group_movable.h"
-#include <libgoocanvasmm/canvas.h>
+#include <goocanvasmm/canvas.h>
 #include <goocanvasrect.h>
 #include <goocanvasgroup.h>
 #include <gdkmm/cursor.h>
@@ -41,7 +41,7 @@ CanvasItemMovable::CanvasItemMovable()
   m_grid(0),
   m_allow_vertical_movement(true), m_allow_horizontal_movement(true)
 {
-   //TODO: Remove this when goocanvas is fixed, so the libgoocanvasmm constructor can connect default signal handlers:
+   //TODO: Remove this when goocanvas is fixed, so the goocanvasmm constructor can connect default signal handlers:
   /*
   signal_motion_notify_event().connect(sigc::mem_fun(*this, &CanvasItemMovable::on_motion_notify_event));
   signal_button_press_event().connect(sigc::mem_fun(*this, &CanvasItemMovable::on_button_press_event));

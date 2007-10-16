@@ -21,7 +21,7 @@
 #ifndef GLOM_UTILITY_WIDGETS_CANVAS_EDITABLE_H
 #define GLOM_UTILITY_WIDGETS_CANVAS_EDITABLE_H
 
-#include <libgoocanvasmm.h>
+#include <goocanvasmm.h>
 #include "canvas_group_grid.h"
 #include <map>
 #include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
