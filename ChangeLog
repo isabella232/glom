@@ -1,3 +1,12 @@
+2007-10-16  Murray Cumming  <murrayc@murrayc.com>
+
+	* configure.in:
+	* glom/main.cc:
+	* glom/relationships_overview/dialog_relationships_overview.h:
+	* glom/relationships_overview/printoperation_relationshipsoverview.
+	h: Use the latest goocanvasmm API, with different pgk-config and 
+	include path.
+
 2007-10-14  Yannig Marchegay  <yannig@marchegay.org>
 
 	* configure.in: Added 'oc' to ALL_LINGUAS.

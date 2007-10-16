@@ -32,7 +32,7 @@
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 #include <gtksourceviewmm/init.h>
-#include <libgoocanvasmm/init.h>
+#include <goocanvasmm/init.h>
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 #include <glibmm/i18n.h>
 
