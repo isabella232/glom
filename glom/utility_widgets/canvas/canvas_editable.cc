@@ -109,11 +109,15 @@ void CanvasEditable::add_item_rect(const Glib::RefPtr<Goocanvas::Rect>& item, bo
   {
     if(resizable)
     {
-      Glib::RefPtr<CanvasGroupResizable> resizable = CanvasGroupResizable::create();
-      resizable->set_grid(m_grid);
+      Glib::RefPtr<CanvasItemMovable> movable = Glib::RefPtr<CanvasItemMovable>::cast_dynamic(item);
+      if(movable)
+      {
+        Glib::RefPtr<CanvasGroupResizable> resizable = CanvasGroupResizable::create();
+        resizable->set_grid(m_grid);
 
-      root_group->add_child(resizable); //We must do this before calling set_child(), so that set_child() can discover the bounds.
-      resizable->set_child(item); //Puts draggable corners and edges around it. 
+        root_group->add_child(resizable); //We must do this before calling set_child(), so that set_child() can discover the bounds.
+        resizable->set_child(movable); //Puts draggable corners and edges around it.
+      }
     }
     else
       root_group->add_child(item);

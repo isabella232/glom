@@ -18,38 +18,33 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef GLOM_UTILITY_WIDGETS_CANVAS_LINE_MOVABLE_H
-#define GLOM_UTILITY_WIDGETS_CANVAS_LINE_MOVABLE_H
+#ifndef GLOM_CANVAS_PRINT_LAYOUT_EDIT_H
+#define GLOM_CANVAS_PRINT_LAYOUT_EDIT_H
 
-
-#include "canvas_item_movable.h"
-#include <libgoocanvasmm/polyline.h>
+#include <glom/utility_widgets/canvas/canvas_editable.h>
+#include <glom/libglom/data_structure/print_layout.h>
 
 namespace Glom
 {
 
-class CanvasLineMovable
-  : public Goocanvas::Polyline,
-    public CanvasItemMovable
+/// A canvas that contains CanvasLayoutItem items.
+class Canvas_PrintLayout : public CanvasEditable
 {
-protected:
-  CanvasLineMovable();
-  virtual ~CanvasLineMovable();
-
-  virtual void get_xy(double& x, double& y);
-  virtual void set_xy(double x, double y);
-  virtual void get_width_height(double& width, double& height);
-  virtual void set_width_height(double width, double height);
-
 public:
-  static Glib::RefPtr<CanvasLineMovable> create();
+  Canvas_PrintLayout();
+  virtual ~Canvas_PrintLayout();
+
+  void set_print_layout(const Glib::ustring& table_name, const sharedptr<const PrintLayout>& print_layout);
+  sharedptr<PrintLayout> get_print_layout();
 
 protected:
-  virtual Goocanvas::Canvas* get_parent_canvas_widget();
+  void add_group(const sharedptr<const LayoutGroup>& group);
+  void add_group_children(const sharedptr<const LayoutGroup>& group);
 
+  bool m_modified;
 };
 
 } //namespace Glom
 
-#endif //GLOM_UTILITY_WIDGETS_CANVAS_LINE_MOVABLE_H
+#endif //GLOM_CANVAS_PRINT_LAYOUT_EDIT_H
 

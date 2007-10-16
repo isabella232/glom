@@ -48,7 +48,15 @@ public:
    * This should be the same arbitrary part of the item that is used by get_xy().
    * All other parts of the item will move by the same offset.
    */
-  virtual void move(double x, double y) = 0;
+  virtual void set_xy(double x, double y) = 0;
+
+  /* 
+   */
+  virtual void get_width_height(double& width, double& height) = 0;
+
+  /** 
+   */
+  virtual void set_width_height(double width, double height) = 0;
 
   void set_drag_cursor(Gdk::CursorType cursor);
   void set_drag_cursor(const Gdk::Cursor& cursor);
@@ -75,6 +83,7 @@ public:
 
   ///A convenience function, to avoid repeating a large if/else block.
   static Glib::RefPtr<CanvasItemMovable> cast_to_movable(const Glib::RefPtr<Goocanvas::Item>& item);
+  static Glib::RefPtr<Goocanvas::Item> cast_to_item(const Glib::RefPtr<CanvasItemMovable>& item);
 
 protected:
 

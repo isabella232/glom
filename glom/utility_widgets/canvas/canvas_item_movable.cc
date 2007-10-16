@@ -145,7 +145,7 @@ bool CanvasItemMovable::on_motion_notify_event(const Glib::RefPtr<Goocanvas::Ite
     if(!m_allow_horizontal_movement || m_dragging_vertical_only)
       new_x = m_drag_start_position_x;
 
-    move(new_x, new_y);
+    set_xy(new_x, new_y);
 
     m_signal_moved.emit();
 
@@ -278,6 +278,39 @@ Glib::RefPtr<CanvasItemMovable> CanvasItemMovable::cast_to_movable(const Glib::R
   }
 
   return movable;
+}
+
+//static:
+Glib::RefPtr<Goocanvas::Item> CanvasItemMovable::cast_to_item(const Glib::RefPtr<CanvasItemMovable>& item)
+{
+  Glib::RefPtr<Goocanvas::Item> result;
+  if(!item)
+    return result;
+
+  //We can't cast directly to Item because each class derives from it separately.
+  Glib::RefPtr<CanvasRectMovable> rect = Glib::RefPtr<CanvasRectMovable>::cast_dynamic(item);
+  if(rect)
+    result = Glib::RefPtr<Goocanvas::Item>::cast_dynamic(rect);
+  else
+  {
+    Glib::RefPtr<CanvasLineMovable> line = Glib::RefPtr<CanvasLineMovable>::cast_dynamic(item);
+    if(line)
+      result = Glib::RefPtr<Goocanvas::Item>::cast_dynamic(line);
+    else
+    {
+      Glib::RefPtr<CanvasTextMovable> text = Glib::RefPtr<CanvasTextMovable>::cast_dynamic(item);
+      if(text)
+        result = Glib::RefPtr<Goocanvas::Item>::cast_dynamic(text);
+      else
+      {
+        Glib::RefPtr<CanvasGroupMovable> group = Glib::RefPtr<CanvasGroupMovable>::cast_dynamic(item);
+        if(group)
+          result = Glib::RefPtr<Goocanvas::Item>::cast_dynamic(group);
+      }
+    }
+  }
+
+  return result;
 }
 
 } //namespace Glom

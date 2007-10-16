@@ -61,7 +61,7 @@ void CanvasGroupMovable::get_xy(double& x, double& y)
      movable->get_xy(x, y);
 }
 
-void CanvasGroupMovable::move(double x, double y)
+void CanvasGroupMovable::set_xy(double x, double y)
 {
   //Discover the offset:
   double old_x = 0;
@@ -82,9 +82,31 @@ void CanvasGroupMovable::move(double x, double y)
       double this_x = 0;
       double this_y = 0;
       movable->get_xy(this_x, this_y);
-      movable->move(this_x + offset_x, this_y + offset_y);
+      movable->set_xy(this_x + offset_x, this_y + offset_y);
     }
   }
+}
+
+void CanvasGroupMovable::get_width_height(double& width, double& height)
+{
+  Glib::RefPtr<Goocanvas::Item> first_child = get_child(0);
+  if(!first_child)
+    return;
+
+  Glib::RefPtr<CanvasItemMovable> movable = CanvasItemMovable::cast_to_movable(first_child);
+  if(movable)
+     movable->get_width_height(width, height);
+}
+
+void CanvasGroupMovable::set_width_height(double width, double height)
+{
+  Glib::RefPtr<Goocanvas::Item> first_child = get_child(0);
+  if(!first_child)
+    return;
+
+  Glib::RefPtr<CanvasItemMovable> movable = CanvasItemMovable::cast_to_movable(first_child);
+  if(movable)
+     movable->set_width_height(width, height);
 }
 
 void CanvasGroupMovable::set_grid(const Glib::RefPtr<const CanvasGroupGrid>& grid)

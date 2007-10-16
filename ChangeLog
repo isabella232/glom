@@ -1,3 +1,33 @@
+2007-10-16  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/libglom/data_structure/print_layout.cc:
+	* glom/libglom/data_structure/print_layout.h: Add a group to 
+	contain the child layout items, as the Report class already has.
+	* glom/mode_design/print_layouts/Makefile.am:
+	* glom/mode_design/print_layouts/canvas_print_layout.cc:
+	* glom/mode_design/print_layouts/canvas_print_layout.h: Added 
+	a derived canvas, so we can print a print layout without using 
+	the design dialog. 
+	* glom/mode_design/print_layouts/canvas_layout_item.cc:
+	* glom/mode_design/print_layouts/canvas_layout_item.h:
+	* glom/mode_design/print_layouts/window_print_layout_edit.cc:
+	* glom/mode_design/print_layouts/window_print_layout_edit.h:
+	* glom/utility_widgets/canvas/canvas_item_movable.cc:
+	* glom/utility_widgets/canvas/canvas_item_movable.h: Added set/get_width_height() 
+	so we can set the height and width generically.
+	* glom/utility_widgets/canvas/canvas_editable.cc:
+	* glom/utility_widgets/canvas/canvas_group_movable.cc:
+	* glom/utility_widgets/canvas/canvas_group_movable.h:
+	* glom/utility_widgets/canvas/canvas_group_resizable.cc:
+	* glom/utility_widgets/canvas/canvas_group_resizable.h:
+	* glom/utility_widgets/canvas/canvas_line_movable.cc:
+	* glom/utility_widgets/canvas/canvas_line_movable.h:
+	* glom/utility_widgets/canvas/canvas_rect_movable.cc:
+	* glom/utility_widgets/canvas/canvas_rect_movable.h:
+	* glom/utility_widgets/canvas/canvas_text_movable.cc:
+	* glom/utility_widgets/canvas/canvas_text_movable.h: CanvasGroupResizable 
+	now takes CanvasItemMovables instead of only Rects.
+
 2007-10-15  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/mode_design/print_layouts/Makefile.am:

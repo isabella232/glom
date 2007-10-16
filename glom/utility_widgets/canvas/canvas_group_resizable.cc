@@ -46,73 +46,7 @@ CanvasGroupResizable::CanvasGroupResizable()
   m_manipulator_edge_left = create_edge();
   m_manipulator_edge_right = create_edge();
 
-  set_drag_cursor(Gdk::FLEUR);
-
-  //We don't need to connect these, because they are actually overrides of the default signal handlers:
-  //signal_enter_notify_event().connect(sigc::mem_fun(*this, &CanvasGroupResizable::on_enter_notify_event));
-  //signal_leave_notify_event().connect(sigc::mem_fun(*this, &CanvasGroupResizable::on_leave_notify_event));
-}
-
-CanvasGroupResizable::~CanvasGroupResizable()
-{
-}
-
-Glib::RefPtr<CanvasGroupResizable> CanvasGroupResizable::create()
-{
-  return Glib::RefPtr<CanvasGroupResizable>(new CanvasGroupResizable());
-}
-
-void CanvasGroupResizable::position_manipulators()
-{
-  //Note that this only works after the child has been added to the canvas:
-  //Goocanvas::Bounds bounds;
-  //m_child->get_bounds(bounds);
- 
-  const double x1 = m_child->property_x();
-  const double y1 = m_child->property_y();
-  const double x2 = m_child->property_x() + m_child->property_width();
-  const double y2 = m_child->property_y() + m_child->property_height();
-
-  m_manipulator_corner_top_left->property_x() = x1;
-  m_manipulator_corner_top_left->property_y() = y1;
-  m_manipulator_corner_top_left->raise(m_child);
-
-  m_manipulator_corner_top_right->property_x() = x2 - manipulator_corner_size;
-  m_manipulator_corner_top_right->property_y() = y1;
-  m_manipulator_corner_top_right->raise(m_child);
-
-  m_manipulator_corner_bottom_left->property_x() = x1;
-  m_manipulator_corner_bottom_left->property_y() = y2 - manipulator_corner_size;
-  m_manipulator_corner_bottom_left->raise(m_child);
-
-  m_manipulator_corner_bottom_right->property_x() = x2 - manipulator_corner_size;
-  m_manipulator_corner_bottom_right->property_y() = y2 - manipulator_corner_size;
-  m_manipulator_corner_bottom_right->raise(m_child);
-
-  set_edge_points(m_manipulator_edge_top, x1, y1, x2, y1);
-  m_manipulator_edge_top->raise(m_child);
-  set_edge_points(m_manipulator_edge_bottom, x1, y2, x2, y2);
-  m_manipulator_edge_bottom->raise(m_child);
-  set_edge_points(m_manipulator_edge_left, x1, y1, x1, y2);
-  m_manipulator_edge_left->raise(m_child);
-  set_edge_points(m_manipulator_edge_right, x2, y1, x2, y2);
-  m_manipulator_edge_right->raise(m_child);
-}
-
-void CanvasGroupResizable::set_child(const Glib::RefPtr<Goocanvas::Rect>& child)
-{
-  if(!child)
-    return;
-
-  m_child = child;
-  add_child(child);
-
-  //Allow drag to move:
-  m_child->signal_motion_notify_event().connect(sigc::mem_fun(*this, &CanvasGroupResizable::on_child_motion_notify_event));
-  m_child->signal_button_press_event().connect(sigc::mem_fun(*this, &CanvasGroupResizable::on_child_button_press_event));
-  m_child->signal_button_release_event().connect(sigc::mem_fun(*this, &CanvasGroupResizable::on_child_button_release_event));
-
-  //Manipulators:
+//Manipulators:
   add_child(m_manipulator_corner_top_left);
   add_child(m_manipulator_corner_top_right);
   add_child(m_manipulator_corner_bottom_left);
@@ -152,6 +86,83 @@ void CanvasGroupResizable::set_child(const Glib::RefPtr<Goocanvas::Rect>& child)
   manipulator_connect_signals(m_manipulator_edge_bottom, MANIPULATOR_EDGE_BOTTOM);
   manipulator_connect_signals(m_manipulator_edge_left, MANIPULATOR_EDGE_LEFT);
   manipulator_connect_signals(m_manipulator_edge_right, MANIPULATOR_EDGE_RIGHT);
+
+  set_drag_cursor(Gdk::FLEUR);
+
+  //We don't need to connect these, because they are actually overrides of the default signal handlers:
+  //signal_enter_notify_event().connect(sigc::mem_fun(*this, &CanvasGroupResizable::on_enter_notify_event));
+  //signal_leave_notify_event().connect(sigc::mem_fun(*this, &CanvasGroupResizable::on_leave_notify_event));
+}
+
+CanvasGroupResizable::~CanvasGroupResizable()
+{
+}
+
+Glib::RefPtr<CanvasGroupResizable> CanvasGroupResizable::create()
+{
+  return Glib::RefPtr<CanvasGroupResizable>(new CanvasGroupResizable());
+}
+
+void CanvasGroupResizable::position_manipulators()
+{
+  //Note that this only works after the child has been added to the canvas:
+  //Goocanvas::Bounds bounds;
+  //m_child->get_bounds(bounds);
+ 
+  double x1 = 0;
+  double y1 = 0;
+  m_child->get_xy(x1, y1);
+
+  double child_x = 0;
+  double child_y = 0;
+  m_child->get_xy(child_x, child_y);
+  double child_width = 0;
+  double child_height = 0;
+  m_child->get_width_height(child_width, child_height);
+
+  const double x2 = child_x + child_width;
+  const double y2 = child_y + child_height;
+
+  Glib::RefPtr<Goocanvas::Item> item = CanvasItemMovable::cast_to_item(m_child);
+
+  m_manipulator_corner_top_left->set_xy(x1, y1);
+  m_manipulator_corner_top_left->raise(item);
+
+  m_manipulator_corner_top_right->set_xy(x2 - manipulator_corner_size, y1);
+  m_manipulator_corner_top_right->raise(item);
+
+  m_manipulator_corner_bottom_left->set_xy(x1, y2 - manipulator_corner_size);
+  m_manipulator_corner_bottom_left->raise(item);
+
+  m_manipulator_corner_bottom_right->set_xy(x2 - manipulator_corner_size, y2 - manipulator_corner_size);
+  m_manipulator_corner_bottom_right->raise(item);
+
+  set_edge_points(m_manipulator_edge_top, x1, y1, x2, y1);
+  m_manipulator_edge_top->raise(item);
+  set_edge_points(m_manipulator_edge_bottom, x1, y2, x2, y2);
+  m_manipulator_edge_bottom->raise(item);
+  set_edge_points(m_manipulator_edge_left, x1, y1, x1, y2);
+  m_manipulator_edge_left->raise(item);
+  set_edge_points(m_manipulator_edge_right, x2, y1, x2, y2);
+  m_manipulator_edge_right->raise(item);
+}
+
+void CanvasGroupResizable::set_child(const Glib::RefPtr<CanvasItemMovable>& child)
+{
+  if(!child)
+    return;
+
+  Glib::RefPtr<Goocanvas::Item> item = CanvasItemMovable::cast_to_item(child);
+  if(!item)
+    return;
+
+  m_child = child;
+  add_child(item);
+
+  //Allow drag to move:
+  item->signal_motion_notify_event().connect(sigc::mem_fun(*this, &CanvasGroupResizable::on_child_motion_notify_event));
+  item->signal_button_press_event().connect(sigc::mem_fun(*this, &CanvasGroupResizable::on_child_button_press_event));
+  item->signal_button_release_event().connect(sigc::mem_fun(*this, &CanvasGroupResizable::on_child_button_release_event));
 
   position_manipulators();
 
@@ -201,53 +212,59 @@ void CanvasGroupResizable::on_manipulator_corner_moved(const Glib::RefPtr<Canvas
 {
   //std::cout << "CanvasGroupResizable::on_manipulator_corner_moved(): manipulator=" << manipulator_id << std::endl;
 
+  double manipulator_x = 0;
+  double manipulator_y = 0;
+  manipulator->get_xy(manipulator_x, manipulator_y);
+
+  double child_x = 0;
+  double child_y = 0;
+  m_child->get_xy(child_x, child_y);
+  double child_width = 0;
+  double child_height = 0;
+  m_child->get_width_height(child_width, child_height);
+
   switch(manipulator_id)
   {
     case(MANIPULATOR_CORNER_TOP_LEFT):
     {
-      const double new_x = std::min(manipulator->property_x().get_value(), m_child->property_x() + m_child->property_width());
-      const double new_y = std::min(manipulator->property_y().get_value(), m_child->property_y() + m_child->property_height());
-      const double new_height = std::max(m_child->property_y() + m_child->property_height() - manipulator->property_y(), 0.0);
-      const double new_width = std::max(m_child->property_x() + m_child->property_width() - manipulator->property_x(), 0.0);
+      const double new_x = std::min(manipulator_x, child_x + child_width);
+      const double new_y = std::min(manipulator_y, child_y + child_height);
+      const double new_height = std::max(child_y + child_height - manipulator->property_y(), 0.0);
+      const double new_width = std::max(child_x + child_width - manipulator->property_x(), 0.0);
 
-      m_child->property_x() = new_x;
-      m_child->property_y() = new_y;
-      m_child->property_width() = new_width;
-      m_child->property_height() = new_height;
+      m_child->set_xy(new_x, new_y);
+      m_child->set_width_height(new_width, new_height);
 
       break;
     }
     case(MANIPULATOR_CORNER_TOP_RIGHT):
     {
-      const double new_y = std::min(manipulator->property_y().get_value(), m_child->property_y() + m_child->property_height());
-      const double new_height = std::max(m_child->property_y() + m_child->property_height() - manipulator->property_y(), 0.0);
-      const double new_width = std::max(manipulator->property_x() + manipulator_corner_size - m_child->property_x(), 0.0);
+      const double new_y = std::min(manipulator_y, child_y + child_height);
+      const double new_height = std::max(child_y + child_height - manipulator->property_y(), 0.0);
+      const double new_width = std::max(manipulator->property_x() + manipulator_corner_size - child_x, 0.0);
 
-      m_child->property_y() = new_y;
-      m_child->property_width() = new_width;
-      m_child->property_height() = new_height;
+      m_child->set_xy(child_x, new_y);
+      m_child->set_width_height(new_width, new_height);
 
       break;
     }
     case(MANIPULATOR_CORNER_BOTTOM_LEFT):
     {
-      const double new_x = std::min(manipulator->property_x().get_value(), m_child->property_x() + m_child->property_width());
-      const double new_height = std::max(manipulator->property_y() + manipulator_corner_size - m_child->property_y(), 0.0);
-      const double new_width = std::max(m_child->property_x() + m_child->property_width() - manipulator->property_x(), 0.0);
+      const double new_x = std::min(manipulator_x, child_x + child_width);
+      const double new_height = std::max(manipulator->property_y() + manipulator_corner_size - child_y, 0.0);
+      const double new_width = std::max(child_x + child_width - manipulator->property_x(), 0.0);
 
-      m_child->property_x() = new_x;
-      m_child->property_width() = new_width;
-      m_child->property_height() = new_height;
+      m_child->set_xy(new_x, child_y);
+      m_child->set_width_height(new_width, new_height);
 
       break;
     }
     case(MANIPULATOR_CORNER_BOTTOM_RIGHT):
     {
-      const double new_height = std::max(manipulator->property_y() + manipulator_corner_size - m_child->property_y(), 0.0);
-      const double new_width = std::max(manipulator->property_x() + manipulator_corner_size - m_child->property_x(), 0.0);
+      const double new_height = std::max(manipulator->property_y() + manipulator_corner_size - child_y, 0.0);
+      const double new_width = std::max(manipulator->property_x() + manipulator_corner_size - child_x, 0.0);
 
-      m_child->property_width() = new_width;
-      m_child->property_height() = new_height;
+      m_child->set_width_height(new_width, new_height);
 
       break;
     }
@@ -269,43 +286,50 @@ void CanvasGroupResizable::on_manipulator_edge_moved(const Glib::RefPtr<CanvasLi
   double x2 = 0;
   double y2 = 0;
   points.get_coordinate(1, x2, y2);
+
+  double child_x = 0;
+  double child_y = 0;
+  m_child->get_xy(child_x, child_y);
+  double child_width = 0;
+  double child_height = 0;
+  m_child->get_width_height(child_width, child_height);
   
   switch(manipulator_id)
   {
     case(MANIPULATOR_EDGE_TOP):
     {
       const double new_y = y1;
-      const double new_height = std::max(m_child->property_y() + m_child->property_height() - y1, 0.0);
+      const double new_height = std::max(child_y + child_height - y1, 0.0);
 
-      m_child->property_y() = new_y;
-      m_child->property_height() = new_height;
+      m_child->set_xy(child_x, new_y);
+      m_child->set_width_height(child_width, new_height);
 
       break;
     }
 
     case(MANIPULATOR_EDGE_BOTTOM):
     {
-      const double new_height = std::max(y1 - m_child->property_y(), 0.0);
+      const double new_height = std::max(y1 - child_y, 0.0);
 
-      m_child->property_height() = new_height;
+      m_child->set_width_height(child_width, new_height);
 
       break;
     }
     case(MANIPULATOR_EDGE_LEFT):
     {
       const double new_x = x1;
-      const double new_width = std::max(m_child->property_x() + m_child->property_width() - x1, 0.0);
+      const double new_width = std::max(child_x + child_width - x1, 0.0);
 
-      m_child->property_x() = new_x;
-      m_child->property_width() = new_width;
+      m_child->set_xy(new_x, child_y);
+      m_child->set_width_height(new_width, child_height);
 
       break;
     }
     case(MANIPULATOR_EDGE_RIGHT):
     {
-      const double new_width = std::max(x1 - m_child->property_x(), 0.0);
+      const double new_width = std::max(x1 - child_x, 0.0);
 
-      m_child->property_width() = new_width;
+      m_child->set_width_height(new_width, child_height);
 
       break;
     }
@@ -420,14 +444,24 @@ void CanvasGroupResizable::set_edge_points(const Glib::RefPtr<Glom::CanvasLineMo
 
 void CanvasGroupResizable::get_xy(double& x, double& y)
 {
-  x = m_child->property_x();
-  y = m_child->property_y();
+  m_child->get_xy(x, y);
 }
 
-void CanvasGroupResizable::move(double x, double y)
+void CanvasGroupResizable::set_xy(double x, double y)
 {
-  m_child->property_x() = x;
-  m_child->property_y() = y;
+  m_child->set_xy(x, y);
+
+  position_manipulators();
+}
+
+void CanvasGroupResizable::get_width_height(double& width, double& height)
+{
+  m_child->get_width_height(width, height);
+}
+
+void CanvasGroupResizable::set_width_height(double width, double height)
+{
+  m_child->set_width_height(width, height);
 
   position_manipulators();
 }
@@ -462,6 +496,10 @@ void CanvasGroupResizable::snap_position(double& x, double& y) const
 
 void CanvasGroupResizable::snap_position(Corners corner, double& x, double& y) const
 {
+  double child_width = 0;
+  double child_height = 0;
+  m_child->get_width_height(child_width, child_height);
+
   //Choose the offset of the part to snap to the grid:
   double corner_x_offset = 0;
   double corner_y_offset = 0;
@@ -472,16 +510,16 @@ void CanvasGroupResizable::snap_position(Corners corner, double& x, double& y) c
       corner_y_offset = 0;
       break;
     case CORNER_TOP_RIGHT:
-      corner_x_offset = m_child->property_width();
+      corner_x_offset = child_width;
       corner_y_offset = 0;
       break;
     case CORNER_BOTTOM_LEFT:
       corner_x_offset = 0;
-      corner_y_offset = m_child->property_height();
+      corner_y_offset = child_height;
       break;
     case CORNER_BOTTOM_RIGHT:
-      corner_x_offset = m_child->property_width();
-      corner_y_offset = m_child->property_height();
+      corner_x_offset = child_width;
+      corner_y_offset = child_height;
       break;
     default:
       break;

@@ -45,10 +45,12 @@ public:
 
   /** This should only be called after this CanvasGroupResizable has already been added to a canvas.
    */
-  void set_child(const Glib::RefPtr<Goocanvas::Rect>& child);
+  void set_child(const Glib::RefPtr<CanvasItemMovable>& child);
 
   virtual void get_xy(double& x, double& y);
-  virtual void move(double x_offet, double y_offset);
+  virtual void set_xy(double x_offet, double y_offset);
+  virtual void get_width_height(double& width, double& height);
+  virtual void set_width_height(double width, double height);
 
 protected:
   virtual Goocanvas::Canvas* get_parent_canvas_widget();
@@ -102,7 +104,7 @@ protected:
   static Glib::RefPtr<CanvasLineMovable> create_edge();
   static void set_edge_points(const Glib::RefPtr<Glom::CanvasLineMovable>& line, double x1, double y1, double x2, double y2);
 
-  Glib::RefPtr<Goocanvas::Rect> m_child;
+  Glib::RefPtr<CanvasItemMovable> m_child;
   Glib::RefPtr<CanvasRectMovable> m_manipulator_corner_top_left, m_manipulator_corner_top_right, m_manipulator_corner_bottom_left, m_manipulator_corner_bottom_right;
   Glib::RefPtr<CanvasLineMovable> m_manipulator_edge_top, m_manipulator_edge_bottom, m_manipulator_edge_left, m_manipulator_edge_right;
 };

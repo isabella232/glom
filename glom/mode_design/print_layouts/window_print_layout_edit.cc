@@ -39,6 +39,8 @@ Window_PrintLayout_Edit::Window_PrintLayout_Edit(BaseObjectType* cobject, const 
   m_button_close(0),
   m_box(0)
 {
+  set_default_size(640, 480);
+
   refGlade->get_widget("vbox_menu", m_box_menu);
   refGlade->get_widget("vbox_canvas", m_box_canvas);
   refGlade->get_widget("vbox_inner", m_box);
@@ -86,6 +88,10 @@ void Window_PrintLayout_Edit::init_menu()
   m_action_group->add(Gtk::Action::create("Action_Menu_Insert_Image", _("Insert _Image")),
                         sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_insert_image) );
 
+  m_action_group->add(Gtk::Action::create("Menu_View", _("_View")));
+  m_action_showgrid = Gtk::ToggleAction::create("Action_Menu_View_ShowGrid", _("Show Grid"));
+  m_action_group->add(m_action_showgrid, sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_view_showgrid) );
+
 
   //Build part of the menu structure, to be merged in by using the "PH" placeholders:
   static const Glib::ustring ui_description =
@@ -101,7 +107,10 @@ void Window_PrintLayout_Edit::init_menu()
     "        <menuitem action='Action_Menu_Insert_Field' />"
     "        <menuitem action='Action_Menu_Insert_Text' />"
     "        <menuitem action='Action_Menu_Insert_Image' />"
-    "        </menu>"
+    "      </menu>"
+    "      <menu action='Menu_View'>"
+    "        <menuitem action='Action_Menu_View_ShowGrid' />"
+    "      </menu>"
     "  </menubar>"
     "</ui>";
 
@@ -226,12 +235,12 @@ sharedptr<PrintLayout> Window_PrintLayout_Edit::get_print_layout()
 
 void Window_PrintLayout_Edit::on_context_menu_insert_field()
 {
+  on_menu_insert_field();
 }
 
 void Window_PrintLayout_Edit::on_context_menu_insert_text()
 {
-  Glib::RefPtr<CanvasLayoutItem> item = CanvasLayoutItem::create();
-  
+  on_menu_insert_text();
 }
 
 void Window_PrintLayout_Edit::setup_context_menu()
@@ -301,10 +310,14 @@ void Window_PrintLayout_Edit::on_canvas_show_context_menu(guint button, guint32 
 
 void Window_PrintLayout_Edit::on_menu_insert_field()
 {
+
 }
 
 void Window_PrintLayout_Edit::on_menu_insert_text()
 {
+  sharedptr<LayoutItem_Text> layout_item = sharedptr<LayoutItem_Text>::create();
+  Glib::RefPtr<CanvasLayoutItem> item = CanvasLayoutItem::create(layout_item);
+  m_canvas.add_item(item, true /* resizable */);
 }
 
 void Window_PrintLayout_Edit::on_menu_insert_image()
@@ -316,6 +329,19 @@ void Window_PrintLayout_Edit::on_button_close()
   hide();
 }
 
+void Window_PrintLayout_Edit::on_menu_view_showgrid()
+{
+ if(m_action_showgrid->get_active())
+  {
+    std::cout << "showing" << std::endl;
+    m_canvas.set_grid_gap(40);
+  }
+  else
+  {
+    std::cout << "hiding" << std::endl;
+    m_canvas.remove_grid();
+  }
+}
 
 
 

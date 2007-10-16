@@ -55,7 +55,7 @@ void CanvasLineMovable::get_xy(double& x, double& y)
   points.get_coordinate(0, x, y);
 }
 
-void CanvasLineMovable::move(double x, double y)
+void CanvasLineMovable::set_xy(double x, double y)
 {
   //Discover the offset:
   double old_x = 0;
@@ -80,12 +80,34 @@ void CanvasLineMovable::move(double x, double y)
   property_points() = new_points;
 }
 
+void CanvasLineMovable::get_width_height(double& width, double& height)
+{
+  Goocanvas::Points points = property_points();
+  double x1 = 0;
+  double y1 = 0;
+  points.get_coordinate(0, x1, y1);
+
+  double x2 = 0;
+  double y2 = 0;
+  points.get_coordinate(1, x2, y2);
+
+  width = x2 -x1;
+  height = y2 - y1;
+}
+
+void CanvasLineMovable::set_width_height(double width, double height)
+{
+  Goocanvas::Points points = property_points();
+  double x1 = 0;
+  double y1 = 0;
+  points.get_coordinate(0, x1, y1);
+  points.set_coordinate(1, x1+width, y1+height);
+}
+
 Goocanvas::Canvas* CanvasLineMovable::get_parent_canvas_widget()
 {
   return get_canvas();
 }
-
-
 
 } //namespace Glom
 

@@ -27,10 +27,12 @@ PrintLayout::PrintLayout()
 : m_show_table_title(true)
 {
   m_translatable_item_type = TRANSLATABLE_TYPE_PRINT_LAYOUT;
+  m_layout_group = sharedptr<LayoutGroup>::create();
 }
 
 PrintLayout::PrintLayout(const PrintLayout& src)
 : TranslatableItem(src),
+  m_layout_group(src.m_layout_group),
   m_show_table_title(src.m_show_table_title)
 {
 }
@@ -39,6 +41,7 @@ PrintLayout& PrintLayout::operator=(const PrintLayout& src)
 {
   TranslatableItem::operator=(src);
 
+  m_layout_group = src.m_layout_group;
   m_show_table_title = src.m_show_table_title;
 
   return *this;

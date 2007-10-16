@@ -53,7 +53,9 @@ public:
   void set_snap_corner(Corners corner);
 
   virtual void get_xy(double& x, double& y);
-  virtual void move(double x, double y);
+  virtual void set_xy(double x, double y);
+  virtual void get_width_height(double& width, double& height);
+  virtual void set_width_height(double width, double height);
 
 protected:
   virtual Goocanvas::Canvas* get_parent_canvas_widget();

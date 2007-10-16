@@ -21,18 +21,22 @@
 #ifndef GLOM_MODE_DESIGN_PRINT_LAYOUTS_CANVAS_LAYOUT_ITEM_H
 #define GLOM_MODE_DESIGN_PRINT_LAYOUTS_CANVAS_LAYOUT_ITEM_H
 
-#include <glom/utility_widgets/canvas/canvas_rect_movable.h>
+#include <glom/utility_widgets/canvas/canvas_group_resizable.h>
+#include <glom/libglom/data_structure/layout/layoutitem.h>
 
 namespace Glom
 {
 
-class CanvasLayoutItem : public CanvasRectMovable
+class CanvasLayoutItem : public CanvasGroupResizable
 {
 protected:
-  CanvasLayoutItem();
+  CanvasLayoutItem(const sharedptr<LayoutItem>& layout_item);
 
 public:
-  static Glib::RefPtr<CanvasLayoutItem> create();
+  static Glib::RefPtr<CanvasLayoutItem> create(const sharedptr<LayoutItem>& layout_item);
+
+protected:
+  sharedptr<LayoutItem> m_layout_item;
 };
 
 } //namespace Glom

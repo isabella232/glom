@@ -59,10 +59,22 @@ void CanvasTextMovable::get_xy(double& x, double& y)
   y = property_y();
 }
 
-void CanvasTextMovable::move(double x, double y)
+void CanvasTextMovable::set_xy(double x, double y)
 {
   property_x() = x;
   property_y() = y;
+}
+
+void CanvasTextMovable::get_width_height(double& width, double& height)
+{
+  width = property_width();
+  //height = property_height();
+}
+
+void CanvasTextMovable::set_width_height(double width, double height)
+{
+  property_width() = width;
+  //property_height() = height;
 }
 
 void CanvasTextMovable::snap_position(double& x, double& y) const

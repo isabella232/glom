@@ -39,7 +39,9 @@ public:
   static Glib::RefPtr<CanvasGroupMovable> create();
 
   virtual void get_xy(double& x, double& y);
-  virtual void move(double x, double y);
+  virtual void set_xy(double x, double y);
+  virtual void get_width_height(double& width, double& height);
+  virtual void set_width_height(double width, double height);
   virtual void set_grid(const Glib::RefPtr<const CanvasGroupGrid>& grid);
 
 protected:

@@ -73,12 +73,23 @@ void CanvasRectMovable::get_xy(double& x, double& y)
   y = property_y();
 }
 
-void CanvasRectMovable::move(double x, double y)
+void CanvasRectMovable::set_xy(double x, double y)
 {
   property_x() = x;
   property_y() = y;
 }
 
+void CanvasRectMovable::get_width_height(double& width, double& height)
+{
+  width = property_width();
+  height = property_height();
+}
+
+void CanvasRectMovable::set_width_height(double width, double height)
+{
+  property_height() = height;
+  property_width() = width;
+}
 
 void CanvasRectMovable::snap_position_one_corner(Corners corner, double& x, double& y) const
 {
