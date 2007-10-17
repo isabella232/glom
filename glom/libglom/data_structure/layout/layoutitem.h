@@ -73,13 +73,25 @@ protected:
   //Not saved in document:
   guint m_display_width; //In pixels.
 
+  void instantiate_positions() const;
+
   // These are used only for the print layouts.
-  // TODO_Performance: Put them in a separate member class that's only instantiated when necessary,
-  // so that we only waste one pointer instead of 4 doubles when we don't need them?
-  double print_layout_x;
-  double print_layout_y;
-  double print_layout_width;
-  double print_layout_height;
+  // We put them in a separate member class that's only instantiated when necessary,
+  // so that we only waste one pointer instead of several doubles when we don't need them.
+  class PrintLayoutPosition
+  {
+  public:
+    PrintLayoutPosition();
+    PrintLayoutPosition(const PrintLayoutPosition& src);
+    PrintLayoutPosition& operator=(const PrintLayoutPosition& src);
+
+    double m_x;
+    double m_y;
+    double m_width;
+    double m_height;
+  };
+  
+  mutable PrintLayoutPosition* m_positions;
 };
 
 } //namespace Glom

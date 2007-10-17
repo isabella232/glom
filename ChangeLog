@@ -1,5 +1,14 @@
 2007-10-17  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/libglom/data_structure/layout/layoutitem.cc:
+	* glom/libglom/data_structure/layout/layoutitem.h: Put the coordinates in 
+	an inner class that is not always instantiated, so that we don't waste so much 
+	memory when this is not used.
+	* glom/mode_design/print_layouts/canvas_layout_item.cc: set_layout_item():
+	Remove the previous child.
+
+2007-10-17  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/mode_design/print_layouts/canvas_layout_item.cc:
 	Move code from the constructor to set_layout_item() to create the appropriate 
 	child item, with appropriate default properties.

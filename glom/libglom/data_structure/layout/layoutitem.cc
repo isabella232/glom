@@ -23,14 +23,38 @@
 namespace Glom
 {
 
+LayoutItem::PrintLayoutPosition::PrintLayoutPosition()
+: m_x(0),
+  m_y(0),
+  m_width(0),
+  m_height(0)
+{
+}
+
+LayoutItem::PrintLayoutPosition::PrintLayoutPosition(const LayoutItem::PrintLayoutPosition& src)
+: m_x(src.m_x),
+  m_y(src.m_y),
+  m_width(src.m_width),
+  m_height(src.m_height)
+{
+}
+
+LayoutItem::PrintLayoutPosition& LayoutItem::PrintLayoutPosition::operator=(const LayoutItem::PrintLayoutPosition& src)
+{
+  m_x = src.m_x;
+  m_y = src.m_y;
+  m_width = src.m_width;
+  m_height = src.m_height;
+
+  return *this;
+}
+
+
 LayoutItem::LayoutItem()
 : m_sequence(0),
   m_editable(true),
   m_display_width(0),
-  print_layout_x(0),
-  print_layout_y(0),
-  print_layout_width(0),
-  print_layout_height(0)
+  m_positions(0)
 {
   m_translatable_item_type = TRANSLATABLE_TYPE_LAYOUT_ITEM;
 }
@@ -39,8 +63,11 @@ LayoutItem::LayoutItem(const LayoutItem& src)
 : TranslatableItem(src),
   m_sequence(src.m_sequence),
   m_editable(src.m_editable),
-  m_display_width(src.m_display_width)
+  m_display_width(src.m_display_width),
+  m_positions(0)
 {
+  if(src.m_positions)
+    m_positions = new PrintLayoutPosition(*(src.m_positions));
 }
 
 LayoutItem::~LayoutItem()
@@ -54,6 +81,12 @@ LayoutItem& LayoutItem::operator=(const LayoutItem& src)
   m_sequence = src.m_sequence;
   m_editable = src.m_editable;
   m_display_width = src.m_display_width;
+
+  if(m_positions)
+    delete m_positions;
+
+  if(src.m_positions)
+    m_positions = new PrintLayoutPosition(*(src.m_positions));
 
   return *this;
 }
@@ -101,19 +134,28 @@ void LayoutItem::set_display_width(guint value)
 
 void LayoutItem::get_print_layout_position(double& x, double& y, double& width, double& height) const
 {
-  x = print_layout_x;
-  y = print_layout_y;
-  width = print_layout_width;
-  height = print_layout_height;
-}
+  instantiate_positions();
 
+  x = m_positions->m_x;
+  y = m_positions->m_y;
+  width = m_positions->m_width;
+  height = m_positions->m_height;
+}
 
 void LayoutItem::set_print_layout_position(double x, double y, double width, double height)
 {
-  print_layout_x = x;
-  print_layout_y = y;
-  print_layout_width = width;
-  print_layout_height = height;
+  instantiate_positions();
+
+  m_positions->m_x = x;
+  m_positions->m_y = y;
+  m_positions->m_width = width;
+  m_positions->m_height = height;
+}
+
+void LayoutItem::instantiate_positions() const
+{
+  if(!m_positions)
+    m_positions = new PrintLayoutPosition();
 }
 
 } //namespace Glom

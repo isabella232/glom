@@ -49,6 +49,11 @@ sharedptr<LayoutItem> CanvasLayoutItem::get_layout_item()
 
 void CanvasLayoutItem::set_layout_item(const sharedptr<LayoutItem>& item)
 {
+  //Remove the current child:
+  if(get_n_children())
+    remove_child(0);
+
+  //Add the new child:
   m_layout_item = item;
 
   Glib::RefPtr<CanvasItemMovable> child;
