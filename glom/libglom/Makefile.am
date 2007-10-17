@@ -36,6 +36,11 @@ endif
 
 libglom_la_LDFLAGS = -no-undefined
 
+# Link libglom statically on maemo
+if GLOM_ENABLE_MAEMO
+libglom_la_LDFLAGS += -static
+endif
+
 libglom_la_LIBADD  = document/libdocument.la \
                      data_structure/libdata_structure.la \
                      data_structure/layout/libdata_structure_layout.la \
