@@ -1,3 +1,19 @@
+2007-10-17  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/libglom/data_structure/field.cc:
+	* glom/libglom/data_structure/field.h: Copy constructor: 
+	copy m_field_info instead of sharing one reference-counted instance.
+	get_field_info(): Add a const overload and make the existing one non-const. 
+	This const correctness should prevent us from using the same instance when 
+	we actually want to explicitly take a copy.
+	This errors were probably caused during the port to libgda 3.0, when 
+	Gda::Column became a reference-counted object.
+	* glom/mode_design/fields/box_db_table_definition.cc:
+	get_field_definition(): copy the field_info instead of just reusing the 
+	existing one, to avoid changing the original field_info accidentally.
+
+	These changes make field type changes actually work again in 1.6.
+
 1.6.1:
 
 2007-09-27  Armin Burgmeier  <armin@openismus.com>
