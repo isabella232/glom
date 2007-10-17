@@ -370,7 +370,7 @@ sharedptr<Field> Box_DB_Table_Definition::get_field_definition(const Gtk::TreeMo
   sharedptr<const Field> field_temp = get_fields_for_table_one_field(m_table_name, strFieldNameBeforeEdit);
   if(field_temp)
   {
-    Glib::RefPtr<Gnome::Gda::Column> fieldInfo = field_temp->get_field_info();
+    Glib::RefPtr<Gnome::Gda::Column> fieldInfo = field_temp->get_field_info()->copy();
 
     //Name:
     const Glib::ustring name = m_AddDel.get_value(row, m_colName);
@@ -563,8 +563,8 @@ void Box_DB_Table_Definition::fill_fields()
 
 sharedptr<Field> Box_DB_Table_Definition::postgres_change_column(const sharedptr<const Field>& field_old, const sharedptr<const Field>& field)
 {
-  const Glib::RefPtr<Gnome::Gda::Column> field_info = field->get_field_info();
-  const Glib::RefPtr<Gnome::Gda::Column> field_info_old = field_old->get_field_info();
+  const Glib::RefPtr<const Gnome::Gda::Column> field_info = field->get_field_info();
+  const Glib::RefPtr<const Gnome::Gda::Column> field_info_old = field_old->get_field_info();
 
   //If the underlying data type has changed:
   if(field_info->get_g_type() != field_info_old->get_g_type() )
@@ -708,16 +708,31 @@ void Box_DB_Table_Definition::postgres_change_column_type(const sharedptr<const 
           Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute( "ALTER TABLE \"" + m_table_name + "\" DROP COLUMN \"" +  field_old->get_name() + "\"", get_app_window());
           if(datamodel)
           {
-            datamodel = query_execute( "ALTER TABLE \"" + m_table_name + "\" RENAME COLUMN \"" + fieldTemp->get_name() + "\" TO \"" + field->get_name() + "\"", get_app_window());
-            if(datamodel)
+            const Glib::ustring sql =  "ALTER TABLE \"" + m_table_name + "\" RENAME COLUMN \"" + fieldTemp->get_name() + "\" TO \"" + field->get_name() + "\"";
+            try
             {
-              const bool test = gda_connection->commit_transaction(transaction_name);
-              if(!test)
+              datamodel = query_execute(sql, get_app_window());
+              if(datamodel)
               {
-                handle_error();
+                const bool test = gda_connection->commit_transaction(transaction_name);
+                if(!test)
+                {
+                  std::cerr << "Box_DB_Table_Definition::postgres_change_column_type(): Error while executing SQL:" << std::endl << "  " <<  sql << std::endl;
+                  handle_error();
+                }
+                else
+                  new_column_created = true;
               }
-              else
-                new_column_created = true;
+            }
+            catch(const Glib::Error& ex)
+            {
+              std::cerr << "Box_DB_Table_Definition::postgres_change_column_type(): Glib::Error exception while executing SQL:" << std::endl << "  " <<  sql << std::endl;
+              handle_error(ex);
+            }
+            catch(const std::exception& ex)
+            {
+              std::cerr << "Box_DB_Table_Definition::postgres_change_column_type(): std::exception while executing SQL:" << std::endl << "  " <<  sql << std::endl;
+              handle_error(ex);
             }
           }
         }

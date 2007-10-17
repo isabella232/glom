@@ -60,7 +60,7 @@ Field& Field::operator=(const Field& src)
   TranslatableItem::operator=(src);
 
   m_glom_type = src.m_glom_type;
-  m_field_info = src.m_field_info;
+  m_field_info = src.m_field_info->copy();
   m_data = src.m_data;
 
   m_lookup_relationship = src.m_lookup_relationship;
@@ -78,7 +78,7 @@ Field& Field::operator=(const Field& src)
 bool Field::operator==(const Field& src) const
 {
   return TranslatableItem::operator==(src)
-         && (m_field_info == src.m_field_info)
+         && (m_field_info->equal(src.m_field_info))
          && (m_glom_type == src.m_glom_type)
          && (m_data == src.m_data)
          && (m_lookup_relationship == src.m_lookup_relationship)
@@ -108,7 +108,12 @@ void Field::set_glom_type(glom_field_type fieldtype)
   m_glom_type = fieldtype;
 }
 
-Glib::RefPtr<Gnome::Gda::Column> Field::get_field_info() const
+Glib::RefPtr<Gnome::Gda::Column> Field::get_field_info()
+{
+  return m_field_info;
+}
+
+Glib::RefPtr<const Gnome::Gda::Column> Field::get_field_info() const
 {
   return m_field_info;
 }
@@ -524,6 +529,8 @@ GType Field::get_gda_type_for_glom_type(Field::glom_field_type glom_type)
   {
     g_warning("Field::get_gda_type_for_glom_type(): Returning G_TYPE_NONE for glom_type=%d", glom_type);
   }
+
+  //std::cout << "Field::get_gda_type_for_glom_type(): returning: " << g_type_name(ideal_gda_type) << std::endl;
   
   return ideal_gda_type;
 }
