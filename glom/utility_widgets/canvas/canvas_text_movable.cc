@@ -29,7 +29,8 @@ namespace Glom
 
 CanvasTextMovable::CanvasTextMovable(const Glib::ustring& text, double x, double y, double width, Gtk::AnchorType anchor)
 : Goocanvas::Text(text, x, y, width, anchor), 
-  m_snap_corner(CORNER_TOP_LEFT) //arbitrary default.
+  m_snap_corner(CORNER_TOP_LEFT), //arbitrary default.
+  m_fake_height(0)
 {
   init();
 }
@@ -53,7 +54,7 @@ Glib::RefPtr<CanvasTextMovable> CanvasTextMovable::create(const Glib::ustring& s
   return Glib::RefPtr<CanvasTextMovable>(new CanvasTextMovable(string, x, y, width, anchor));
 }
 
-void CanvasTextMovable::get_xy(double& x, double& y)
+void CanvasTextMovable::get_xy(double& x, double& y) const
 {
   x = property_x();
   y = property_y();
@@ -65,20 +66,42 @@ void CanvasTextMovable::set_xy(double x, double y)
   property_y() = y;
 }
 
-void CanvasTextMovable::get_width_height(double& width, double& height)
+void CanvasTextMovable::get_width_height(double& width, double& height) const
 {
-  width = property_width();
+  //TODO: This only works when it is on a canvas already,
+  //and this is apparently incorrect when the "coordinate space" of the item changes, whatever that means. murrayc.
+  
+  //We don't use this because it's only useful when you force a width, instead of allowing _enough_ width: 
   //height = property_height();
+
+  width = property_width();
+
+  Goocanvas::Bounds bounds = get_bounds();
+ 
+  if(width == -1) //-1 means unlimited.
+    width = bounds.get_x2() - bounds.get_x1();
+
+  if(m_fake_height == 0)
+    height = bounds.get_y2() - bounds.get_y1();
+  else
+    height = m_fake_height;
 }
 
 void CanvasTextMovable::set_width_height(double width, double height)
 {
   property_width() = width;
+
+  //There is no height property:
   //property_height() = height;
+  m_fake_height = height;
 }
 
 void CanvasTextMovable::snap_position(double& x, double& y) const
 {
+  double width = 0;
+  double height = 0;
+  get_width_height(width, height);
+
   //Choose the offset of the part to snap to the grid:
   double corner_x_offset = 0;
   double corner_y_offset = 0;
@@ -94,11 +117,11 @@ void CanvasTextMovable::snap_position(double& x, double& y) const
       break;
     case CORNER_BOTTOM_LEFT:
       corner_x_offset = 0;
-      //corner_y_offset = property_height(); //TODO
+      corner_y_offset = height;
       break;
     case CORNER_BOTTOM_RIGHT:
-      corner_x_offset = property_width();
-      //corner_y_offset = property_height(); //TODO
+      corner_x_offset = width;
+      corner_y_offset = height;
       break;
     default:
       break;

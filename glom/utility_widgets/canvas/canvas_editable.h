@@ -57,9 +57,6 @@ public:
   type_signal_show_context signal_show_context();
 
 protected:
-  void add_item_line(const Glib::RefPtr<Goocanvas::Path>& item, bool resizable = false);
-  void add_item_rect(const Glib::RefPtr<Goocanvas::Rect>& item, bool resizable = false);
-  void add_item_group(const Glib::RefPtr<Goocanvas::Group>& item);
   
   static Glib::RefPtr<Goocanvas::Item> get_parent_container_or_self(const Glib::RefPtr<Goocanvas::Item>& item);
 

@@ -47,9 +47,9 @@ public:
    */
   void set_child(const Glib::RefPtr<CanvasItemMovable>& child);
 
-  virtual void get_xy(double& x, double& y);
+  virtual void get_xy(double& x, double& y) const;
   virtual void set_xy(double x_offet, double y_offset);
-  virtual void get_width_height(double& width, double& height);
+  virtual void get_width_height(double& width, double& height) const;
   virtual void set_width_height(double width, double height);
 
 protected:

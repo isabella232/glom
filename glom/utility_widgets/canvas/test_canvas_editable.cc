@@ -45,14 +45,13 @@ public:
 
     //Doesn't work until we fix the goocanvas _new() methods: Glib::RefPtr<Goocanvas::Rect> rect = Glib::wrap( goo_canvas_rect_new()
     //Glib::RefPtr<Goocanvas::Rect> rect    = Goocanvas::Rect::create(10, 10, 110, 110);
-    Glib::RefPtr<Goocanvas::Rect> rect = Goocanvas::Rect::create(10, 10, 110, 110);
+    Glib::RefPtr<Glom::CanvasRectMovable> rect = Glom::CanvasRectMovable::create(10, 10, 110, 110);
     rect->property_fill_color() = "white"; //This makes the whole area clickable, not just the outline stroke:
     rect->property_line_width() = 2.0f;
     rect->property_stroke_color() = "blue";
     add_item(rect, true /* resizable */);
 
-    Glib::RefPtr<Goocanvas::Rect> rect2 = Goocanvas::Rect::create(120, 10, 110, 140);
-
+    Glib::RefPtr<Glom::CanvasRectMovable> rect2 = Glom::CanvasRectMovable::create(20, 10, 110, 140);
     rect2->property_fill_color() = "yellow"; //This makes the whole area clickable, not just the outline stroke:
     rect2->property_line_width() = 1.0f;
     rect2->property_stroke_color() = "red";
@@ -66,6 +65,10 @@ public:
     line->property_stroke_color() = "gray";
     line->set_movement_allowed(false, true);
     add_item(line);
+
+    Glib::RefPtr<Glom::CanvasTextMovable> text = Glom::CanvasTextMovable::create("some text");
+    text->set_xy(50, 50);
+    add_item(text, true /* resizable */);
 
     line->signal_show_context().connect( sigc::mem_fun(*this, &MyCanvas::on_show_context_menu) );
 

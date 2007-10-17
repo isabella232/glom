@@ -67,7 +67,7 @@ Glib::RefPtr<CanvasRectMovable> CanvasRectMovable::create(double x, double y, do
   return Glib::RefPtr<CanvasRectMovable>(new CanvasRectMovable(x, y, width, height));
 }
 
-void CanvasRectMovable::get_xy(double& x, double& y)
+void CanvasRectMovable::get_xy(double& x, double& y) const
 {
   x = property_x();
   y = property_y();
@@ -79,7 +79,7 @@ void CanvasRectMovable::set_xy(double x, double y)
   property_y() = y;
 }
 
-void CanvasRectMovable::get_width_height(double& width, double& height)
+void CanvasRectMovable::get_width_height(double& width, double& height) const
 {
   width = property_width();
   height = property_height();

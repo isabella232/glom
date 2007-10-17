@@ -56,9 +56,9 @@ public:
    */
   void set_snap_corner(Corners corner);
 
-  virtual void get_xy(double& x, double& y);
+  virtual void get_xy(double& x, double& y) const;
   virtual void set_xy(double x, double y);
-  virtual void get_width_height(double& width, double& height);
+  virtual void get_width_height(double& width, double& height) const;
   virtual void set_width_height(double width, double height);
 
 protected:

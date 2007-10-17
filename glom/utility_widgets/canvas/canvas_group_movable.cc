@@ -50,13 +50,13 @@ Glib::RefPtr<CanvasGroupMovable> CanvasGroupMovable::create()
   return Glib::RefPtr<CanvasGroupMovable>(new CanvasGroupMovable());
 }
 
-void CanvasGroupMovable::get_xy(double& x, double& y)
+void CanvasGroupMovable::get_xy(double& x, double& y) const
 {
-  Glib::RefPtr<Goocanvas::Item> first_child = get_child(0);
+  Glib::RefPtr<const Goocanvas::Item> first_child = get_child(0);
   if(!first_child)
     return;
 
-  Glib::RefPtr<CanvasItemMovable> movable = CanvasItemMovable::cast_to_movable(first_child);
+  Glib::RefPtr<const CanvasItemMovable> movable = CanvasItemMovable::cast_const_to_movable(first_child);
   if(movable)
      movable->get_xy(x, y);
 }
@@ -87,13 +87,13 @@ void CanvasGroupMovable::set_xy(double x, double y)
   }
 }
 
-void CanvasGroupMovable::get_width_height(double& width, double& height)
+void CanvasGroupMovable::get_width_height(double& width, double& height) const
 {
-  Glib::RefPtr<Goocanvas::Item> first_child = get_child(0);
+  Glib::RefPtr<const Goocanvas::Item> first_child = get_child(0);
   if(!first_child)
     return;
 
-  Glib::RefPtr<CanvasItemMovable> movable = CanvasItemMovable::cast_to_movable(first_child);
+  Glib::RefPtr<const CanvasItemMovable> movable = CanvasItemMovable::cast_const_to_movable(first_child);
   if(movable)
      movable->get_width_height(width, height);
 }

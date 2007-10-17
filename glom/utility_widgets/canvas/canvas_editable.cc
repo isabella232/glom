@@ -32,7 +32,7 @@ CanvasEditable::CanvasEditable()
   m_drag_x(0.0), m_drag_y(0.0)
 {
   m_grid = CanvasGroupGrid::create();
-  add_item_group(m_grid);
+  add_item(m_grid);
 }
 
 CanvasEditable::~CanvasEditable()
@@ -41,91 +41,36 @@ CanvasEditable::~CanvasEditable()
 
 void CanvasEditable::add_item(const Glib::RefPtr<Goocanvas::Item>& item, bool resizable)
 {
-  Glib::RefPtr<Goocanvas::Rect> rect = Glib::RefPtr<Goocanvas::Rect>::cast_dynamic(item);
-  if(rect)
-    add_item_rect(rect, resizable);
-  else
-  {
-    Glib::RefPtr<Goocanvas::Path> path = Glib::RefPtr<Goocanvas::Path>::cast_dynamic(item);
-    if(rect)
-      add_item_line(path, resizable);
-    else
-    {
-      Glib::RefPtr<Goocanvas::Item> root = get_root_item();
+  Glib::RefPtr<Goocanvas::Item> root = get_root_item();
+  Glib::RefPtr<Goocanvas::Group> root_group = Glib::RefPtr<Goocanvas::Group>::cast_dynamic(root);
+  if(!root_group)
+    return;
 
-      Glib::RefPtr<Goocanvas::Group> root_group = Glib::RefPtr<Goocanvas::Group>::cast_dynamic(root);
-      if(root_group)
-      {
-        root_group->add_child(item);
-      }
+  bool added = false;
+
+  //Add it inside a manipulatable group, if requested:
+  if(resizable)
+  {
+    Glib::RefPtr<CanvasItemMovable> movable = Glib::RefPtr<CanvasItemMovable>::cast_dynamic(item);
+    if(movable)
+    {
+      Glib::RefPtr<CanvasGroupResizable> resizable = CanvasGroupResizable::create();
+      resizable->set_grid(m_grid);
+
+      root_group->add_child(resizable); //We must do this before calling set_child(), so that set_child() can discover the bounds.
+      resizable->set_child(movable); //Puts draggable corners and edges around it.
+      added = true;
     }
   }
+
+  //Or just add it directly:
+  if(!added)
+    root_group->add_child(item);
+
 
   Glib::RefPtr<CanvasItemMovable> movable = CanvasItemMovable::cast_to_movable(item);
   if(movable)
     movable->set_grid(m_grid);
-}
-
-void CanvasEditable::add_item_group(const Glib::RefPtr<Goocanvas::Group>& item)
-{
-  if(!item)
-    return;
-
-  Glib::RefPtr<Goocanvas::Item> root = get_root_item();
-
-  Glib::RefPtr<Goocanvas::Group> root_group = Glib::RefPtr<Goocanvas::Group>::cast_dynamic(root);
-  if(root_group)
-  {
-    root_group->add_child(item);
-  }
-}
-
-void CanvasEditable::add_item_line(const Glib::RefPtr<Goocanvas::Path>& item, bool resizable)
-{
-  if(!item)
-    return;
-
-  Glib::RefPtr<Goocanvas::Item> root = get_root_item();
-
-  Glib::RefPtr<Goocanvas::Group> root_group = Glib::RefPtr<Goocanvas::Group>::cast_dynamic(root);
-  if(root_group)
-  {
-    root_group->add_child(item);
-  }
-}
-
-void CanvasEditable::add_item_rect(const Glib::RefPtr<Goocanvas::Rect>& item, bool resizable)
-{
-  if(!item)
-    return;
-
-  ItemInfo info;
-  info.m_resizable = resizable;
-
-  Glib::RefPtr<Goocanvas::Item> root = get_root_item();
-
-  Glib::RefPtr<Goocanvas::Group> root_group = Glib::RefPtr<Goocanvas::Group>::cast_dynamic(root);
-  if(root_group)
-  {
-    if(resizable)
-    {
-      Glib::RefPtr<CanvasItemMovable> movable = Glib::RefPtr<CanvasItemMovable>::cast_dynamic(item);
-      if(movable)
-      {
-        Glib::RefPtr<CanvasGroupResizable> resizable = CanvasGroupResizable::create();
-        resizable->set_grid(m_grid);
-
-        root_group->add_child(resizable); //We must do this before calling set_child(), so that set_child() can discover the bounds.
-        resizable->set_child(movable); //Puts draggable corners and edges around it.
-      }
-    }
-    else
-      root_group->add_child(item);
-  }
-
-  //item->signal_motion_notify_event().connect(sigc::mem_fun(*this, &CanvasEditable::on_item_motion_notify_event));
-  //item->signal_button_press_event().connect(sigc::mem_fun(*this, &CanvasEditable::on_item_button_press_event));
-  //item->signal_button_release_event().connect(sigc::mem_fun(*this, &CanvasEditable::on_item_button_release_event));
 }
 
 void CanvasEditable::remove_all_items()

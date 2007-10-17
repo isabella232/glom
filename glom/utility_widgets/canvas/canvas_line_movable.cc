@@ -49,7 +49,7 @@ Glib::RefPtr<CanvasLineMovable> CanvasLineMovable::create()
   return Glib::RefPtr<CanvasLineMovable>(new CanvasLineMovable());
 }
 
-void CanvasLineMovable::get_xy(double& x, double& y)
+void CanvasLineMovable::get_xy(double& x, double& y) const
 {
   Goocanvas::Points points = property_points();
   points.get_coordinate(0, x, y);
@@ -80,7 +80,7 @@ void CanvasLineMovable::set_xy(double x, double y)
   property_points() = new_points;
 }
 
-void CanvasLineMovable::get_width_height(double& width, double& height)
+void CanvasLineMovable::get_width_height(double& width, double& height) const
 {
   Goocanvas::Points points = property_points();
   double x1 = 0;

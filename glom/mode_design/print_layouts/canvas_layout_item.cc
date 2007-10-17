@@ -70,6 +70,7 @@ void CanvasLayoutItem::set_layout_item(const sharedptr<LayoutItem>& item)
     if(image)
     {
       Glib::RefPtr<CanvasRectMovable> canvas_item = CanvasRectMovable::create();
+      canvas_item->property_fill_color() = "white"; //This makes the whole area clickable, not just the outline stroke:
       child = canvas_item;
     }
     else

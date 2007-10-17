@@ -1,5 +1,31 @@
 2007-10-17  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/mode_design/print_layouts/canvas_layout_item.cc:
+	set_layout_item(): Set a white background for rects, so that they 
+	can be dragged. Implement the delete context menu item.
+	* glom/mode_design/print_layouts/canvas_print_layout.cc:
+	* glom/mode_design/print_layouts/canvas_print_layout.h:
+	* glom/utility_widgets/canvas/canvas_editable.cc:
+	* glom/utility_widgets/canvas/canvas_editable.h: Simplify 
+	add_item() so that all objects can have the manipulators.
+	* glom/utility_widgets/canvas/canvas_group_movable.cc:
+	* glom/utility_widgets/canvas/canvas_group_movable.h:
+	* glom/utility_widgets/canvas/canvas_group_resizable.cc:
+	* glom/utility_widgets/canvas/canvas_group_resizable.h:
+	* glom/utility_widgets/canvas/canvas_item_movable.cc:
+	* glom/utility_widgets/canvas/canvas_item_movable.h:
+	* glom/utility_widgets/canvas/canvas_line_movable.cc:
+	* glom/utility_widgets/canvas/canvas_line_movable.h:
+	* glom/utility_widgets/canvas/canvas_rect_movable.cc:
+	* glom/utility_widgets/canvas/canvas_rect_movable.h:
+	Made get_xy() and get_width_height() const.
+	* glom/utility_widgets/canvas/canvas_text_movable.cc:
+	* glom/utility_widgets/canvas/canvas_text_movable.h:
+	Added a fake height just so we can store and retrieve it, 
+	so that the manipulators act normally.
+
+2007-10-17  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/libglom/data_structure/field.cc:
 	* glom/libglom/data_structure/field.h: Copy constructor: 
 	copy m_field_info instead of sharing one reference-counted instance.

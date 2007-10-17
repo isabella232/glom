@@ -42,7 +42,7 @@ public:
    * such as the top-left of a rectangle,
    * or the first point in a line.
    */
-  virtual void get_xy(double& x, double& y) = 0;
+  virtual void get_xy(double& x, double& y) const = 0;
 
   /** Move the item.
    * This should be the same arbitrary part of the item that is used by get_xy().
@@ -52,7 +52,7 @@ public:
 
   /* 
    */
-  virtual void get_width_height(double& width, double& height) = 0;
+  virtual void get_width_height(double& width, double& height) const = 0;
 
   /** 
    */
@@ -83,7 +83,10 @@ public:
 
   ///A convenience function, to avoid repeating a large if/else block.
   static Glib::RefPtr<CanvasItemMovable> cast_to_movable(const Glib::RefPtr<Goocanvas::Item>& item);
+  static Glib::RefPtr<const CanvasItemMovable> cast_const_to_movable(const Glib::RefPtr<const Goocanvas::Item>& item);
+
   static Glib::RefPtr<Goocanvas::Item> cast_to_item(const Glib::RefPtr<CanvasItemMovable>& item);
+  static Glib::RefPtr<const Goocanvas::Item> cast_const_to_item(const Glib::RefPtr<const CanvasItemMovable>& item);
 
 protected:
 

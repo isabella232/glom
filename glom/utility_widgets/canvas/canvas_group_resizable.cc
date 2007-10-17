@@ -29,7 +29,7 @@
 namespace Glom
 {
 
-const double manipulator_corner_size = 10;
+const double manipulator_corner_size = 4;
 const gchar* manipulator_corner_fill_color = "black";
 const double manipulator_stroke_width = 2.0;
 const gchar* manipulator_stroke_color = "black";
@@ -442,7 +442,7 @@ void CanvasGroupResizable::set_edge_points(const Glib::RefPtr<Glom::CanvasLineMo
   line->property_points() = points;
 }
 
-void CanvasGroupResizable::get_xy(double& x, double& y)
+void CanvasGroupResizable::get_xy(double& x, double& y) const
 {
   m_child->get_xy(x, y);
 }
@@ -454,7 +454,7 @@ void CanvasGroupResizable::set_xy(double x, double y)
   position_manipulators();
 }
 
-void CanvasGroupResizable::get_width_height(double& width, double& height)
+void CanvasGroupResizable::get_width_height(double& width, double& height) const
 {
   m_child->get_width_height(width, height);
 }

@@ -281,6 +281,14 @@ Glib::RefPtr<CanvasItemMovable> CanvasItemMovable::cast_to_movable(const Glib::R
 }
 
 //static:
+Glib::RefPtr<const CanvasItemMovable> CanvasItemMovable::cast_const_to_movable(const Glib::RefPtr<const Goocanvas::Item>& item)
+{
+  Glib::RefPtr<Goocanvas::Item> unconst = Glib::RefPtr<Goocanvas::Item>::cast_const(item);
+  return cast_to_movable(unconst);
+}
+
+
+//static:
 Glib::RefPtr<Goocanvas::Item> CanvasItemMovable::cast_to_item(const Glib::RefPtr<CanvasItemMovable>& item)
 {
   Glib::RefPtr<Goocanvas::Item> result;
@@ -311,6 +319,13 @@ Glib::RefPtr<Goocanvas::Item> CanvasItemMovable::cast_to_item(const Glib::RefPtr
   }
 
   return result;
+}
+
+//static:
+Glib::RefPtr<const Goocanvas::Item> CanvasItemMovable::cast_const_to_item(const Glib::RefPtr<const CanvasItemMovable>& item)
+{
+  Glib::RefPtr<CanvasItemMovable> unconst = Glib::RefPtr<CanvasItemMovable>::cast_const(item);
+  return cast_to_item(unconst);
 }
 
 } //namespace Glom

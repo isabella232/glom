@@ -47,8 +47,8 @@ protected:
   void add_layout_group_children(const sharedptr<LayoutGroup>& group);
   void fill_layout_group(const sharedptr<LayoutGroup>& group);
 
-  void on_item_show_context_menu(guint button, guint32 activate_time);
-  void on_context_menu_delete();
+  void on_item_show_context_menu(guint button, guint32 activate_time, const Glib::RefPtr<CanvasLayoutItem>& item);
+  void on_context_menu_delete(const Glib::RefPtr<CanvasLayoutItem>& item);
 
   bool m_modified;
 
@@ -56,6 +56,9 @@ protected:
   Gtk::Menu* m_context_menu;
   Glib::RefPtr<Gtk::ActionGroup> m_context_menu_action_group;
   Glib::RefPtr<Gtk::UIManager> m_context_menu_uimanager;
+
+  Glib::RefPtr<Gtk::Action> m_action_delete;
+  sigc::connection m_connection_delete; 
 };
 
 } //namespace Glom
