@@ -126,7 +126,8 @@ public:
 
 
   //TODO_Performance: Lots of code calls this just to call one of its methods:
-  Glib::RefPtr<Gnome::Gda::Column> get_field_info() const;
+  Glib::RefPtr<Gnome::Gda::Column> get_field_info();
+  Glib::RefPtr<const Gnome::Gda::Column> get_field_info() const;
   void set_field_info(const Glib::RefPtr<Gnome::Gda::Column>& fieldInfo);
 
   /// Ignores any part of FieldAttributes that libgda does not properly fill.
