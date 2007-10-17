@@ -1,3 +1,7 @@
+2007-10-12  Armin Burgmeier  <armin@openismus.com>
+
+	* glom/libglom/connectionpool.cc: Fixed erroneous #ifdef.
+
 2007-10-11  Armin Burgmeier  <armin@openismus.com>
 
 	* glom/utility_widgets/db_adddel/db_adddel.cc:
