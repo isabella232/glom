@@ -21,6 +21,7 @@
 
 #include "canvas_print_layout.h"
 #include <bakery/App/App_Gtk.h> //For util_bold_message().
+#include <gtkmm/stock.h>
 #include <glibmm/i18n.h>
 
 namespace Glom
@@ -29,7 +30,7 @@ namespace Glom
 Canvas_PrintLayout::Canvas_PrintLayout()
 : m_modified(false)
 {
- 
+  setup_context_menu();
 }
 
 Canvas_PrintLayout::~Canvas_PrintLayout()
@@ -42,7 +43,7 @@ void Canvas_PrintLayout::set_print_layout(const Glib::ustring& table_name, const
   m_modified = false;
 
   remove_all_items();
-  add_group_children(print_layout->m_layout_group);
+  add_layout_group_children(print_layout->m_layout_group);
 
   m_modified = false;
 }
@@ -54,23 +55,17 @@ sharedptr<PrintLayout> Canvas_PrintLayout::get_print_layout()
   return result;
 }
 
+/*
 Glib::RefPtr<CanvasLayoutItem> Canvas_PrintLayout::create_canvas_item(const sharedptr<LayoutItem>& item)
 {
   Glib::RefPtr<CanvasLayoutItem> result = CanvasLayoutItem::create(item);
 
-  double x = 0;
-  double y = 0;
-  double width = 0;
-  double height = 0;
-  item->get_print_layout_position(x, y, width, height);
-
-  result->set_xy(x, y);
-  result->set_width_height(width, height);
-
   return result;
 }
+*/
 
-void Canvas_PrintLayout::add_group_children(const sharedptr<LayoutGroup>& group)
+
+void Canvas_PrintLayout::add_layout_group_children(const sharedptr<LayoutGroup>& group)
 {
   for(LayoutGroup::type_map_items::const_iterator iter = group->m_map_items.begin(); iter != group->m_map_items.end(); ++iter)
   {
@@ -78,14 +73,17 @@ void Canvas_PrintLayout::add_group_children(const sharedptr<LayoutGroup>& group)
     sharedptr<LayoutGroup> group = sharedptr<LayoutGroup>::cast_dynamic(item);
     if(group)
     {
-      add_group(group);
+      add_layout_group(group);
     }
     else
     {
-      Glib::RefPtr<CanvasLayoutItem> canvas_item = create_canvas_item(item);
+      Glib::RefPtr<CanvasLayoutItem> canvas_item = CanvasLayoutItem::create(item);
       if(canvas_item)
       {
         add_item(canvas_item);
+
+        //connect signals handlers:
+        canvas_item->signal_show_context().connect(sigc::mem_fun(*this, &Canvas_PrintLayout::on_item_show_context_menu));
       }
     }
   }
@@ -93,11 +91,11 @@ void Canvas_PrintLayout::add_group_children(const sharedptr<LayoutGroup>& group)
   m_modified = true;
 }
 
-void Canvas_PrintLayout::add_group(const sharedptr<LayoutGroup>& group)
+void Canvas_PrintLayout::add_layout_group(const sharedptr<LayoutGroup>& group)
 {
   //row[model_parts->m_columns.m_col_item] = sharedptr<LayoutItem>(static_cast<LayoutItem*>(group->clone()));
 
-  add_group_children(group);
+  add_layout_group_children(group);
 
   m_modified = true;
 }
@@ -123,7 +121,7 @@ void Canvas_PrintLayout::fill_layout_group(const sharedptr<LayoutGroup>& group)
       double width = 0;
       double height = 0;
       canvas_item->get_width_height(width, height);
-      if((width != 0) && (height != 0)) //Avoid bogus items.
+      if((width != 0)) //Allow height to be 0, because text items currently have no height. TODO: && (height != 0)) //Avoid bogus items.
       {
         sharedptr<LayoutItem> layout_item = canvas_item->get_layout_item();
         layout_item->set_print_layout_position(x, y, width, height);
@@ -136,6 +134,71 @@ void Canvas_PrintLayout::fill_layout_group(const sharedptr<LayoutGroup>& group)
   }
 }
 
+
+void Canvas_PrintLayout::setup_context_menu()
+{
+  m_context_menu_action_group = Gtk::ActionGroup::create();
+
+  m_context_menu_action_group->add(Gtk::Action::create("ContextMenu", "Context Menu") );
+
+/*
+  Glib::RefPtr<Gtk::Action> action =  Gtk::Action::create("ContextInsertField", _("Field"));
+  m_context_menu_action_group->add(action,
+    sigc::mem_fun(*this, &Canvas_PrintLayout::on_context_menu_insert_field) );
+
+  action =  Gtk::Action::create("ContextInsertText", _("Text"));
+  m_context_menu_action_group->add(action,
+    sigc::mem_fun(*this, &Canvas_PrintLayout::on_context_menu_insert_text) );
+*/
+
+  Glib::RefPtr<Gtk::Action> action =  Gtk::Action::create("ContextMenuDelete", Gtk::Stock::DELETE);
+  m_context_menu_action_group->add(action,
+    sigc::mem_fun(*this, &Canvas_PrintLayout::on_context_menu_delete) );
+
+  m_context_menu_uimanager = Gtk::UIManager::create();
+  m_context_menu_uimanager->insert_action_group(m_context_menu_action_group);
+
+  #ifdef GLIBMM_EXCEPTIONS_ENABLED
+  try
+  {
+  #endif
+    Glib::ustring ui_info = 
+      "<ui>"
+      "  <popup name='ContextMenu'>"
+      "    <menuitem action='ContextMenuDelete' />"
+      "  </popup>"
+      "</ui>";
+
+  #ifdef GLIBMM_EXCEPTIONS_ENABLED
+    m_context_menu_uimanager->add_ui_from_string(ui_info);
+  }
+  catch(const Glib::Error& ex)
+  {
+    std::cerr << "building menus failed: " <<  ex.what();
+  }
+  #else
+  std::auto_ptr<Glib::Error> error;
+  m_context_menu_uimanager->add_ui_from_string(ui_info, error);
+  if(error.get() != NULL)
+  {
+    std::cerr << "building menus failed: " << error->what();
+  }
+  #endif
+
+  //Get the menu:
+  m_context_menu = dynamic_cast<Gtk::Menu*>( m_context_menu_uimanager->get_widget("/ContextMenu") ); 
+}
+
+
+void Canvas_PrintLayout::on_item_show_context_menu(guint button, guint32 activate_time)
+{
+  if(m_context_menu)
+    m_context_menu->popup(button, activate_time);
+}
+
+void Canvas_PrintLayout::on_context_menu_delete()
+{
+}
 
 
 } //namespace Glom

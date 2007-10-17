@@ -309,20 +309,44 @@ void Window_PrintLayout_Edit::on_canvas_show_context_menu(guint button, guint32 
     m_context_menu->popup(button, activate_time);
 }
 
+void Window_PrintLayout_Edit::set_default_position(const sharedptr<LayoutItem>& item)
+{
+  item->set_print_layout_position(10, 10, 100, 100);
+}
+
 void Window_PrintLayout_Edit::on_menu_insert_field()
 {
+  sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
 
+  // Note to translators: This is the default contents of a text item on a print layout: 
+  set_default_position(layout_item);
+
+  Glib::RefPtr<CanvasLayoutItem> item = CanvasLayoutItem::create(layout_item);
+  m_canvas.add_item(item, true /* resizable */);
 }
 
 void Window_PrintLayout_Edit::on_menu_insert_text()
 {
   sharedptr<LayoutItem_Text> layout_item = sharedptr<LayoutItem_Text>::create();
+
+  // Note to translators: This is the default contents of a text item on a print layout: 
+  layout_item->set_text(_("text"));
+  set_default_position(layout_item);
+
   Glib::RefPtr<CanvasLayoutItem> item = CanvasLayoutItem::create(layout_item);
   m_canvas.add_item(item, true /* resizable */);
 }
 
 void Window_PrintLayout_Edit::on_menu_insert_image()
 {
+  sharedptr<LayoutItem_Image> layout_item = sharedptr<LayoutItem_Image>::create();
+
+  // Note to translators: This is the default contents of a text item on a print layout: 
+  //layout_item->set_text(_("text"));
+  set_default_position(layout_item);
+
+  Glib::RefPtr<CanvasLayoutItem> item = CanvasLayoutItem::create(layout_item);
+  m_canvas.add_item(item, true /* resizable */);
 }
 
 void Window_PrintLayout_Edit::on_button_close()
@@ -343,6 +367,7 @@ void Window_PrintLayout_Edit::on_menu_view_showgrid()
     m_canvas.remove_grid();
   }
 }
+
 
 
 

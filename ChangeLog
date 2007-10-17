@@ -1,3 +1,18 @@
+2007-10-17  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/mode_design/print_layouts/canvas_layout_item.cc:
+	Move code from the constructor to set_layout_item() to create the appropriate 
+	child item, with appropriate default properties.
+	* glom/mode_design/print_layouts/canvas_print_layout.cc:
+	* glom/mode_design/print_layouts/canvas_print_layout.h: Show a context menu when 
+	clicking on items.
+	* glom/mode_design/print_layouts/window_print_layout_edit.cc:
+	* glom/mode_design/print_layouts/window_print_layout_edit.h: Partly implement 
+	adding of text, image, and field items, to show the general idea.
+	
+	GooCanvasText seems to need some work to support what we need, such as discovery 
+	of needed height.
+
 2007-10-16  Murray Cumming  <murrayc@murrayc.com>
 
 	* configure.in:

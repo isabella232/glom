@@ -23,37 +23,18 @@
 #include <glom/utility_widgets/canvas/canvas_text_movable.h>
 #include <glom/utility_widgets/canvas/canvas_line_movable.h>
 #include <glom/utility_widgets/canvas/canvas_group_movable.h>
-
 #include <glom/libglom/data_structure/layout/layoutitem_button.h>
 #include <glom/libglom/data_structure/layout/layoutitem_text.h>
 #include <glom/libglom/data_structure/layout/layoutitem_image.h>
 #include <glom/libglom/data_structure/layout/layoutitem_field.h>
+#include <glibmm/i18n.h>
 
 namespace Glom
 {
 
 CanvasLayoutItem::CanvasLayoutItem(const sharedptr<LayoutItem>& layout_item)
 {
-  m_layout_item = layout_item;
-
-  sharedptr<LayoutItem_Text> text = sharedptr<LayoutItem_Text>::cast_dynamic(layout_item);
-  if(false) //text)
-  {
-    Glib::RefPtr<CanvasTextMovable> canvas_item = CanvasTextMovable::create();
-    canvas_item->property_x() = 10.0;
-    canvas_item->property_y() = 10.0;
-    canvas_item->property_text() = text->get_text();
-    //set_child(canvas_item);
-  }
-  else
-  {
-    Glib::RefPtr<CanvasRectMovable> canvas_item = CanvasRectMovable::create();
-    canvas_item->property_x() = 10.0;
-    canvas_item->property_y() = 10.0;
-    canvas_item->property_height() = 20.0;
-    canvas_item->property_width() = 100.0;
-    set_child(canvas_item);
-  }
+  set_layout_item(layout_item);
 }
 
 Glib::RefPtr<CanvasLayoutItem> CanvasLayoutItem::create(const sharedptr<LayoutItem>& layout_item)
@@ -69,6 +50,59 @@ sharedptr<LayoutItem> CanvasLayoutItem::get_layout_item()
 void CanvasLayoutItem::set_layout_item(const sharedptr<LayoutItem>& item)
 {
   m_layout_item = item;
+
+  Glib::RefPtr<CanvasItemMovable> child;
+  sharedptr<LayoutItem_Text> text = sharedptr<LayoutItem_Text>::cast_dynamic(m_layout_item);
+  if(text)
+  {
+    Glib::RefPtr<CanvasTextMovable> canvas_item = CanvasTextMovable::create();
+    canvas_item->property_text() = text->get_text();
+    child = canvas_item;
+  }
+  else
+  {
+    sharedptr<LayoutItem_Image> image = sharedptr<LayoutItem_Image>::cast_dynamic(m_layout_item);
+    if(image)
+    {
+      Glib::RefPtr<CanvasRectMovable> canvas_item = CanvasRectMovable::create();
+      child = canvas_item;
+    }
+    else
+    {
+      sharedptr<LayoutItem_Field> field = sharedptr<LayoutItem_Field>::cast_dynamic(m_layout_item);
+      if(field)
+      {
+        Glib::RefPtr<CanvasTextMovable> canvas_item = CanvasTextMovable::create();
+
+        Glib::ustring name = field->get_name();
+          if(name.empty())
+            name = _("Choose Field");
+          
+        canvas_item->property_text() = name;
+
+        child = canvas_item;
+      }
+      else
+      {
+        std::cerr << "CanvasLayoutItem::set_layout_item(): Unhandled LayoutItem type." << std::endl;
+      }
+    }
+  }
+
+  if(child)
+  {
+    set_child(child);
+
+    //Set the position and dimensions:
+    double x = 0;
+    double y = 0;
+    double width = 0;
+    double height = 0;
+    item->get_print_layout_position(x, y, width, height);
+
+    child->set_xy(x, y);
+    child->set_width_height(width, height);
+  }
 }
 
 } //namespace Glom

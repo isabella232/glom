@@ -65,6 +65,7 @@ protected:
 
   void on_button_close();
   void setup_context_menu();
+  void set_default_position(const sharedptr<LayoutItem>& item);
 
   //Box_DB_Table_Definition* m_box;
   Glib::ustring m_name_original;
@@ -90,7 +91,7 @@ protected:
   Glib::RefPtr<Gtk::UIManager> m_uimanager;
   Glib::RefPtr<Gtk::ToggleAction> m_action_showgrid;
 
-  //Context menu:
+  //Context menu for clicking on empty space on the canvas:
   Gtk::Menu* m_context_menu;
   Glib::RefPtr<Gtk::ActionGroup> m_context_menu_action_group;
   Glib::RefPtr<Gtk::UIManager> m_context_menu_uimanager;

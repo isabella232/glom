@@ -24,6 +24,8 @@
 #include <glom/utility_widgets/canvas/canvas_editable.h>
 #include <glom/mode_design/print_layouts/canvas_layout_item.h>
 #include <glom/libglom/data_structure/print_layout.h>
+#include <gtkmm/uimanager.h>
+#include <gtkmm/toggleaction.h>
 
 namespace Glom
 {
@@ -39,12 +41,21 @@ public:
   sharedptr<PrintLayout> get_print_layout();
 
 protected:
-  Glib::RefPtr<CanvasLayoutItem> create_canvas_item(const sharedptr<LayoutItem>& item);
-  void add_group(const sharedptr<LayoutGroup>& group);
-  void add_group_children(const sharedptr<LayoutGroup>& group);
+
+  void setup_context_menu();
+  void add_layout_group(const sharedptr<LayoutGroup>& group);
+  void add_layout_group_children(const sharedptr<LayoutGroup>& group);
   void fill_layout_group(const sharedptr<LayoutGroup>& group);
 
+  void on_item_show_context_menu(guint button, guint32 activate_time);
+  void on_context_menu_delete();
+
   bool m_modified;
+
+  //Context menu for existing items:
+  Gtk::Menu* m_context_menu;
+  Glib::RefPtr<Gtk::ActionGroup> m_context_menu_action_group;
+  Glib::RefPtr<Gtk::UIManager> m_context_menu_uimanager;
 };
 
 } //namespace Glom
