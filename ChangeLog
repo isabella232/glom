@@ -1,3 +1,23 @@
+2007-10-18  Armin Burgmeier  <armin@openismus.com>
+
+	* glom/libglom/data_structure/glomconversions.cc: Write data to the
+	pixbuf loader when there was _no_ error opening it, not the other way
+	around.
+
+	* glom/python_embed/glom_python.cc: Don't crash when the glom python
+	module is not found.
+
+	* glom/utility_widgets/datawidget.cc: Use normal size request for
+	date and time fields because they are not large enough otherwise. I
+	think this is the same problem as the one about determining the height
+	of the tree view rows in the list view. We have to add some more
+	pixels than what PangoLayout::get_pixel_size() claims there.
+
+	* glom/utility_widgets/db_adddel/db_adddel.cc: Take the
+	horizontal-separator style property of GtkTreeView into account when
+	determining the size for the "open" icon in the list view. This leads
+	to correct results on non-maemo for me, at least.
+
 2007-10-17  Armin Burgmeier  <armin@openismus.com>
 
 	* glom/libglom/Makefile.am: Link libglom statically on maemo.

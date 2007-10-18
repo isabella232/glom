@@ -80,6 +80,7 @@ DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ust
     m_label.set_alignment(0);
     m_label.show();
   }
+  // Use hildon widgets for date and time on maemo
   else
   {
     m_label.set_label(title);
@@ -206,6 +207,7 @@ DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ust
     const bool field_used_in_relationship_to_one = document->get_field_used_in_relationship_to_one(table_name, field->get_name());
 
     Gtk::HBox* hbox_parent = 0; //Only used if there are extra widgets.
+
     const bool with_extra_widgets = field_used_in_relationship_to_one || (glom_type == Field::TYPE_DATE);
     if(with_extra_widgets)
     {
@@ -329,17 +331,25 @@ int DataWidget::get_suitable_width(const sharedptr<const LayoutItem_Field>& fiel
   {
     case(Field::TYPE_DATE):
     {
+#ifdef GLOM_ENABLE_MAEMO
+      result = -1; // auto, is too small otherwise
+#else
       Glib::Date date(31, Glib::Date::Month(12), 2000);
       example_text = Conversions::get_text_for_gda_value(field_type, Gnome::Gda::Value(date));
+#endif
       break;
     }
     case(Field::TYPE_TIME):
     {
+#ifdef GLOM_ENABLE_MAEMO
+      result = -1; // auto, is too small otherwise
+#else
       Gnome::Gda::Time time = {0, 0, 0, 0};
       time.hour = 24;
       time.minute = 59;
       time.second = 59;
       example_text = Conversions::get_text_for_gda_value(field_type, Gnome::Gda::Value(time));
+#endif
       break;
     }
     case(Field::TYPE_NUMERIC):

@@ -893,15 +893,20 @@ void DbAddDel::construct_specified_columns()
     pCellButton->get_size(m_TreeView, x_offset, y_offset, width, height);
 
     m_treeviewcolumn_button->set_sizing(Gtk::TREE_VIEW_COLUMN_FIXED); //Need by fixed-height mode.
+
 #ifdef GLOM_ENABLE_MAEMO
-    // TODO_maemo: In maemo, there are somehow 3 pixels border to the left
+    // TODO_maemo: In maemo, there are somehow some pixels border to the left
     // and to the right of the cell renderer. I don't know where they come
     // from since the xpad property of the cell renderer and the spacing
     // property of treeview column are both zero. armin.
-    m_treeviewcolumn_button->set_fixed_width(width + 6);
+    m_treeviewcolumn_button->set_fixed_width(width + 8);
 #else
-    // The same problem seems to occur in the non-maemo version
-    m_treeviewcolumn_button->set_fixed_width(width + 6);
+    // TODO: I am not sure whether this is always correct. Perhaps, we also
+    // have to take into account the xpad property of the cell renderer and
+    // the spacing property of the treeviewcolumn.
+    int horizontal_separator;
+    m_TreeView.get_style_property("horizontal-separator", horizontal_separator);
+    m_treeviewcolumn_button->set_fixed_width(width + horizontal_separator*2);
 #endif
     m_treeviewcolumn_button->set_property("visible", true);
 
