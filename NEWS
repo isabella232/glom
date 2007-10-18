@@ -1,3 +1,8 @@
+1.6.2 (stable)
+
+* Field Definition: Changing of field types was broken. Now it works again.
+  (Murray Cumming)
+ 
 1.6.1 (stable);
 
 * Prevent crash when all fields have been deleted from a table, also when 
