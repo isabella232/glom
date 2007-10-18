@@ -1,3 +1,12 @@
+2007-10-18  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/mode_design/fields/dialog_fieldcalculation.cc:
+	* glom/mode_design/fields/dialog_fieldcalculation.h: 
+	on_button_test(): Warn if there is no return statement because it 
+	is easy to forget this for simple calculations.
+	Thanks to Federico Munerotto for showing that this check is 
+	helpful.
+
 2007-10-17  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/mode_design/print_layouts/canvas_layout_item.cc:

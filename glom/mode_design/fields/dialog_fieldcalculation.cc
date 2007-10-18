@@ -91,9 +91,22 @@ sharedptr<Field> Dialog_FieldCalculation::get_field() const
   return field;
 }
 
+bool Dialog_FieldCalculation::check_for_return_statement(const Glib::ustring& calculation)
+{
+  if(calculation.find("return") == Glib::ustring::npos)
+  {
+     Frame_Glom::show_ok_dialog(_("Calculation Error"), _("The calculation does not have a return statement."), *this);
+     return false;
+  }
+  
+  return true;
+}
+
 void Dialog_FieldCalculation::on_button_test()
 {
   const Glib::ustring calculation = m_text_view->get_buffer()->get_text();
+  if(!check_for_return_statement(calculation))
+    return;
 
   type_map_fields field_values;
 
