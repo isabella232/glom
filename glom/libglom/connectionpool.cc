@@ -1106,7 +1106,7 @@ bool ConnectionPool::check_postgres_gda_client_is_available_with_warning()
     }
   }
 
-  Glib::ustring message = _("Your installation of Glom is not complete, because the PostgreSQL libgda provider is not available on your system. This provider is needed to access Postgres database servers.\n\nPlease report this bug to your vendor, or your system administrator so it can be corrected.");
+  const Glib::ustring message = _("Your installation of Glom is not complete, because the PostgreSQL libgda provider is not available on your system. This provider is needed to access Postgres database servers.\n\nPlease report this bug to your vendor, or your system administrator so it can be corrected.");
 #ifndef GLOM_ENABLE_MAEMO
   /* The Postgres provider was not found, so warn the user: */
   Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Incomplete Glom Installation")), true /* use_markup */, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true /* modal */);
@@ -1117,6 +1117,30 @@ bool ConnectionPool::check_postgres_gda_client_is_available_with_warning()
   note.run();
 #endif
   return false;
+}
+
+bool ConnectionPool::check_user_is_not_root()
+{
+  //std::cout << "ConnectionPool::check_user_is_not_root(): geteuid()=" << geteuid() << ", getgid()=" << getgid() << std::endl;
+
+  //This is very linux-specific. We should ifdef this out for other platforms.
+  if(geteuid() == 0)
+  {
+    //Warn the user:
+    const Glib::ustring message = _("You seem to be running Glom as root. Glom may not be run as root.\nPlease login to your system as a normal user.");
+#ifndef GLOM_ENABLE_MAEMO
+    Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Running As Root")), true /* use_markup */, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true /* modal */);
+    dialog.set_secondary_text(message);
+    dialog.run();
+#else
+    Hildon::Note note(Hildon::NOTE_TYPE_INFORMATION, message);
+    note.run();
+#endif
+
+    return false; /* Is root. Bad. */
+  }
+
+  return true; /* Not root. It's OK. */
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY

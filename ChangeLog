@@ -1,5 +1,15 @@
 2007-10-18  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/libglom/connectionpool.cc:
+	* glom/libglom/connectionpool.h: 
+	Added check_user_is_not_root().
+	* glom/main.cc: Do not allow the user to start glom 
+	as root (or sudo) because postgres cannot start as root, 
+	and it is generally a bad idea for a networked application.
+	Thanks to Norman for identifying the problem.
+
+2007-10-18  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/mode_design/fields/dialog_fieldcalculation.cc:
 	* glom/mode_design/fields/dialog_fieldcalculation.h: 
 	on_button_test(): Warn if there is no return statement because it 

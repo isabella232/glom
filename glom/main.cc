@@ -207,6 +207,10 @@ main(int argc, char* argv[])
     if(!install_complete)
       return -1; //There is no point in going further because Glom would not be able to connect to any Postgres servers.
 
+    // Postgres can't be started as root. initdb complains.
+    // So just prevent this in general. It is safer anyway.
+    if(!Glom::ConnectionPool::check_user_is_not_root())
+      return -1;
 
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
     // Main app

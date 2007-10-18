@@ -198,6 +198,11 @@ public:
    */
   static bool check_postgres_gda_client_is_available_with_warning();
 
+  /** Postgres can't be started as root. initdb complains.
+   * So just prevent this in general. It is safer anyway.
+   */
+  static bool check_user_is_not_root();
+
 protected:
   void on_sharedconnection_finished();
 
