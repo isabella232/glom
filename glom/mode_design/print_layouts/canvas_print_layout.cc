@@ -80,19 +80,26 @@ void Canvas_PrintLayout::add_layout_group_children(const sharedptr<LayoutGroup>&
     {
       Glib::RefPtr<CanvasLayoutItem> canvas_item = CanvasLayoutItem::create(item);
       if(canvas_item)
-      {
         add_item(canvas_item);
-
-        //connect signals handlers:
-        canvas_item->signal_show_context().connect(
-          sigc::bind(
-            sigc::mem_fun(*this, &Canvas_PrintLayout::on_item_show_context_menu), 
-            canvas_item) );
-      }
     }
   }
 
   m_modified = true;
+}
+
+void Canvas_PrintLayout::add_item(const Glib::RefPtr<CanvasLayoutItem> item)
+{
+  if(!item)
+    return;
+
+  CanvasEditable::add_item(item);
+
+  //Connect signals handlers:
+  //TODO: Avoid the bind of a RefPtr. It has been known to cause memory/ref-counting problems: 
+  item->signal_show_context().connect(
+    sigc::bind(
+      sigc::mem_fun(*this, &Canvas_PrintLayout::on_item_show_context_menu), 
+      item) );
 }
 
 void Canvas_PrintLayout::add_layout_group(const sharedptr<LayoutGroup>& group)
@@ -206,6 +213,7 @@ void Canvas_PrintLayout::setup_context_menu()
 
 void Canvas_PrintLayout::on_item_show_context_menu(guint button, guint32 activate_time, Glib::RefPtr<CanvasLayoutItem> item)
 {
+  std::cout << "DEBUG: Canvas_PrintLayout::on_item_show_context_menu" << std::endl;
   if(!m_context_menu)
     return;
 

@@ -46,6 +46,9 @@ public:
 
   void set_page_setup(const Glib::RefPtr<Gtk::PageSetup>& page_setup);
   Glib::RefPtr<Gtk::PageSetup> get_page_setup();
+ 
+  //Override:
+  void add_item(const Glib::RefPtr<CanvasLayoutItem> item);
 
 protected:
 

@@ -1,3 +1,10 @@
+2007-10-19  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/mode_design/print_layouts/canvas_print_layout.cc:
+	* glom/mode_design/print_layouts/canvas_print_layout.h: Override add_item() 
+	so that the signals are set for new items too, not just ones loaded from 
+	the document, so that new items have the context menu.
+
 2007-10-18  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/libglom/data_structure/layout/layoutitem.cc:
