@@ -89,12 +89,14 @@ protected:
     MANIPULATOR_EDGE_RIGHT
   };
 
+  Glib::RefPtr<CanvasItemMovable> get_manipulator(Manipulators manipulator_id);
+
   void manipulator_connect_signals(const Glib::RefPtr<Goocanvas::Item> manipulator, Manipulators manipulator_id);
   void position_manipulators();
   void set_manipulators_visibility(Goocanvas::ItemVisibility visibility);
 
-  void on_manipulator_corner_moved(const Glib::RefPtr<CanvasRectMovable>& manipulator, Manipulators manipulator_id);
-  void on_manipulator_edge_moved(const Glib::RefPtr<CanvasLineMovable>& manipulator, Manipulators manipulator_id);
+  void on_manipulator_corner_moved(Manipulators manipulator_id);
+  void on_manipulator_edge_moved(Manipulators manipulator_id);
 
   //bool on_manipulator_button_press_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventButton* event, Manipulators manipulator);
   //bool on_manipulator_button_release_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventButton* event, Manipulators manipulator);

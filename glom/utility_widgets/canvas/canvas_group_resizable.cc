@@ -149,6 +149,7 @@ void CanvasGroupResizable::position_manipulators()
 
 void CanvasGroupResizable::set_child(const Glib::RefPtr<CanvasItemMovable>& child)
 {
+  //std::cout << "DEBUG: CanvasGroupResizable::set_child() start" << std::endl;
   if(!child)
     return;
 
@@ -179,7 +180,7 @@ void CanvasGroupResizable::manipulator_connect_signals(const Glib::RefPtr<Goocan
   if(rect)
   {
     rect->signal_moved().connect(
-      sigc::bind( sigc::mem_fun(*this, &CanvasGroupResizable::on_manipulator_corner_moved), rect, manipulator_id) );
+      sigc::bind( sigc::mem_fun(*this, &CanvasGroupResizable::on_manipulator_corner_moved), manipulator_id) );
   }
   else
   {
@@ -187,7 +188,7 @@ void CanvasGroupResizable::manipulator_connect_signals(const Glib::RefPtr<Goocan
     if(line)
     {
       line->signal_moved().connect(
-        sigc::bind( sigc::mem_fun(*this, &CanvasGroupResizable::on_manipulator_edge_moved), line, manipulator_id) );
+        sigc::bind( sigc::mem_fun(*this, &CanvasGroupResizable::on_manipulator_edge_moved), manipulator_id) );
     }
   }
 
@@ -208,9 +209,43 @@ void CanvasGroupResizable::manipulator_connect_signals(const Glib::RefPtr<Goocan
   //  sigc::bind( sigc::mem_fun(*this, &CanvasGroupResizable::on_manipulator_button_release_event), manipulator_id) );
 }
 
-void CanvasGroupResizable::on_manipulator_corner_moved(const Glib::RefPtr<CanvasRectMovable>& manipulator, Manipulators manipulator_id)
+Glib::RefPtr<CanvasItemMovable> CanvasGroupResizable::get_manipulator(Manipulators manipulator_id)
 {
-  //std::cout << "CanvasGroupResizable::on_manipulator_corner_moved(): manipulator=" << manipulator_id << std::endl;
+  switch(manipulator_id)
+  {
+    case(MANIPULATOR_CORNER_TOP_LEFT):
+      return m_manipulator_corner_top_left;
+    case(MANIPULATOR_CORNER_TOP_RIGHT):
+      return m_manipulator_corner_top_right;
+    case(MANIPULATOR_CORNER_BOTTOM_LEFT):
+      return m_manipulator_corner_bottom_left;
+    case(MANIPULATOR_CORNER_BOTTOM_RIGHT):
+      return m_manipulator_corner_bottom_right;
+    case(MANIPULATOR_EDGE_TOP):
+      return m_manipulator_edge_top;
+    case(MANIPULATOR_EDGE_BOTTOM):
+      return m_manipulator_edge_bottom;
+    case(MANIPULATOR_EDGE_LEFT):
+      return m_manipulator_edge_left;
+    case(MANIPULATOR_EDGE_RIGHT):
+      return m_manipulator_edge_right;
+    default:
+      return Glib::RefPtr<CanvasItemMovable>();
+  }
+}
+
+void CanvasGroupResizable::on_manipulator_corner_moved(Manipulators manipulator_id)
+{
+  Glib::RefPtr<CanvasItemMovable> manipulator_base = get_manipulator(manipulator_id);
+  Glib::RefPtr<CanvasRectMovable> manipulator = Glib::RefPtr<CanvasRectMovable>::cast_dynamic(manipulator_base);
+
+ 
+  if(!m_child)
+   std::cout << "CanvasGroupResizable::on_manipulator_corner_moved()1: m_child is NULL" << std::endl;
+
+
+  if(!m_child || !manipulator)
+    return;
 
   double manipulator_x = 0;
   double manipulator_y = 0;
@@ -275,8 +310,11 @@ void CanvasGroupResizable::on_manipulator_corner_moved(const Glib::RefPtr<Canvas
   position_manipulators();
 }
 
-void CanvasGroupResizable::on_manipulator_edge_moved(const Glib::RefPtr<CanvasLineMovable>& manipulator, Manipulators manipulator_id)
+void CanvasGroupResizable::on_manipulator_edge_moved(Manipulators manipulator_id)
 {
+  Glib::RefPtr<CanvasItemMovable> manipulator_base = get_manipulator(manipulator_id);
+  Glib::RefPtr<CanvasLineMovable> manipulator = Glib::RefPtr<CanvasLineMovable>::cast_dynamic(manipulator_base);
+  
   //std::cout << "CanvasGroupResizable::on_manipulator_edge_moved(): manipulator=" << manipulator_id << std::endl;
 
   Goocanvas::Points points = manipulator->property_points();

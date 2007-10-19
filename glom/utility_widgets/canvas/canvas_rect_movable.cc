@@ -31,6 +31,7 @@ namespace Glom
 
 CanvasRectMovable::CanvasRectMovable()
 : Goocanvas::Rect(0.0, 0.0, 0.0, 0.0),
+  CanvasItemMovable(),
   m_snap_corner(CORNER_ALL)
 {
   init();

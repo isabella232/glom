@@ -31,6 +31,7 @@ class CanvasLayoutItem : public CanvasGroupResizable
 {
 protected:
   CanvasLayoutItem(const sharedptr<LayoutItem>& layout_item);
+  virtual ~CanvasLayoutItem();
 
 public:
   static Glib::RefPtr<CanvasLayoutItem> create(const sharedptr<LayoutItem>& layout_item);

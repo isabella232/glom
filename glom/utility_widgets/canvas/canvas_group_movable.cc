@@ -32,6 +32,7 @@ namespace Glom
 
 
 CanvasGroupMovable::CanvasGroupMovable()
+: CanvasItemMovable()
 {
   signal_motion_notify_event().connect(sigc::mem_fun(*this, &CanvasItemMovable::on_motion_notify_event));
   signal_button_press_event().connect(sigc::mem_fun(*this, &CanvasItemMovable::on_button_press_event));

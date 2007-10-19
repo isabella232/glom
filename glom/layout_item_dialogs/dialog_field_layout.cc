@@ -77,6 +77,13 @@ Dialog_FieldLayout::~Dialog_FieldLayout()
 void Dialog_FieldLayout::set_field(const sharedptr<const LayoutItem_Field>& field, const Glib::ustring& table_name)
 {
   m_layout_item = glom_sharedptr_clone(field);
+
+    double x = 0;
+    double y = 0;
+    double width, height;
+    m_layout_item->get_print_layout_position(x, y, width, height);
+    std::cout << "DEBUGDialog_FieldLayout::set_field(): m_layout_item: x=" << x << std::endl;
+
   m_table_name = table_name;
 
   m_label_field_name->set_text( field->get_layout_display_name() );
@@ -106,6 +113,12 @@ void Dialog_FieldLayout::set_field(const sharedptr<const LayoutItem_Field>& fiel
 
 sharedptr<LayoutItem_Field> Dialog_FieldLayout::get_field_chosen() const
 {
+    double x = 0;
+    double y = 0;
+    double width, height;
+    m_layout_item->get_print_layout_position(x, y, width, height);
+    std::cout << "DEBUGDialog_FieldLayout::get_field_chosen1(): m_layout_item: x=" << x << std::endl;
+
   m_layout_item->set_editable( m_checkbutton_editable->get_active() );
 
   m_layout_item->set_formatting_use_default( !m_radiobutton_custom_formatting->get_active() );
@@ -116,6 +129,14 @@ sharedptr<LayoutItem_Field> Dialog_FieldLayout::get_field_chosen() const
   title_custom->set_title(m_entry_title_custom->get_text());
 
   m_layout_item->set_title_custom(title_custom);
+
+  {
+    double x = 0;
+    double y = 0;
+    double width, height;
+    m_layout_item->get_print_layout_position(x, y, width, height);
+    std::cout << "DEBUGDialog_FieldLayout::get_field_chosen2(): m_layout_item: x=" << x << std::endl;
+  }
 
   return glom_sharedptr_clone(m_layout_item);
 }

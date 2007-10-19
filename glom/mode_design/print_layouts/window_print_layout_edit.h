@@ -54,10 +54,12 @@ protected:
   void enable_buttons();
   void init_menu();
 
+  void on_menu_file_page_setup();
   void on_menu_insert_field();
   void on_menu_insert_text();
   void on_menu_insert_image();
-  void on_menu_view_showgrid();
+  void on_menu_view_show_grid();
+  void on_menu_view_show_rules();
 
   void on_canvas_show_context_menu(guint button, guint32 activate_time);
   void on_context_menu_insert_field();
@@ -89,7 +91,7 @@ protected:
   //Main menu:
   Glib::RefPtr<Gtk::ActionGroup> m_action_group;
   Glib::RefPtr<Gtk::UIManager> m_uimanager;
-  Glib::RefPtr<Gtk::ToggleAction> m_action_showgrid;
+  Glib::RefPtr<Gtk::ToggleAction> m_action_showgrid, m_action_showrules;
 
   //Context menu for clicking on empty space on the canvas:
   Gtk::Menu* m_context_menu;

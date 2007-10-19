@@ -40,6 +40,7 @@ Canvas_PrintLayout::~Canvas_PrintLayout()
 
 void Canvas_PrintLayout::set_print_layout(const Glib::ustring& table_name, const sharedptr<const PrintLayout>& print_layout)
 {
+  m_table_name = table_name;
   m_modified = false;
 
   remove_all_items();
@@ -154,8 +155,17 @@ void Canvas_PrintLayout::setup_context_menu()
     sigc::mem_fun(*this, &Canvas_PrintLayout::on_context_menu_insert_text) );
 */
 
+  m_action_edit =  Gtk::Action::create("ContextMenuEdit", Gtk::Stock::EDIT);
+  m_context_menu_action_group->add(m_action_edit);
+  m_action_formatting =  Gtk::Action::create("ContextMenuFormatting", _("_Formatting"));
+  m_context_menu_action_group->add(m_action_formatting);
   m_action_delete =  Gtk::Action::create("ContextMenuDelete", Gtk::Stock::DELETE);
   m_context_menu_action_group->add(m_action_delete);
+
+  m_action_edit->signal_activate().connect( sigc::mem_fun(*this, &Canvas_PrintLayout::on_context_menu_edit) );
+  m_action_formatting->signal_activate().connect( sigc::mem_fun(*this, &Canvas_PrintLayout::on_context_menu_formatting) );
+  m_action_delete->signal_activate().connect( sigc::mem_fun(*this, &Canvas_PrintLayout::on_context_menu_delete) );
+
 
   m_context_menu_uimanager = Gtk::UIManager::create();
   m_context_menu_uimanager->insert_action_group(m_context_menu_action_group);
@@ -167,6 +177,8 @@ void Canvas_PrintLayout::setup_context_menu()
     Glib::ustring ui_info = 
       "<ui>"
       "  <popup name='ContextMenu'>"
+      "    <menuitem action='ContextMenuEdit' />"
+      "    <menuitem action='ContextMenuFormatting' />"
       "    <menuitem action='ContextMenuDelete' />"
       "  </popup>"
       "</ui>";
@@ -192,24 +204,64 @@ void Canvas_PrintLayout::setup_context_menu()
 }
 
 
-void Canvas_PrintLayout::on_item_show_context_menu(guint button, guint32 activate_time, const Glib::RefPtr<CanvasLayoutItem>& item)
+void Canvas_PrintLayout::on_item_show_context_menu(guint button, guint32 activate_time, Glib::RefPtr<CanvasLayoutItem> item)
 {
   if(!m_context_menu)
     return;
 
-  if(m_connection_delete)
-    m_connection_delete.disconnect();
-
-  m_connection_delete = m_action_delete->signal_activate().connect(
-    sigc::bind( sigc::mem_fun(*this, &Canvas_PrintLayout::on_context_menu_delete), item) );
+  m_context_item = item;
 
   m_context_menu->popup(button, activate_time);
 }
 
-void Canvas_PrintLayout::on_context_menu_delete(const Glib::RefPtr<CanvasLayoutItem>& item)
+void Canvas_PrintLayout::on_context_menu_edit()
 {
-  item->remove();
+  sharedptr<const LayoutItem> layout_item = m_context_item->get_layout_item();
+  sharedptr<const LayoutItem_Field> field = sharedptr<const LayoutItem_Field>::cast_dynamic(layout_item);
+  if(field)
+  {
+    double x = 0;
+    double y = 0;
+    double width, height;
+    field->get_print_layout_position(x, y, width, height);
+    std::cout << "DEBUG before x=" << x << std::endl;
+    Gtk::Window* parent = dynamic_cast<Gtk::Window*>(get_toplevel());
+    sharedptr<LayoutItem_Field> field_chosen = offer_field_list(field, m_table_name, parent);
+    if(field_chosen)
+    {
+      double x = 0;
+      double y = 0;
+      field_chosen->get_print_layout_position(x, y, width, height);
+      std::cout << "DEBUG after x=" << x << std::endl;
+
+      m_context_item->set_layout_item(field_chosen);
+    }
+  }
+
+  m_context_item.clear();
 }
+
+void Canvas_PrintLayout::on_context_menu_formatting()
+{
+ 
+}
+
+void Canvas_PrintLayout::on_context_menu_delete()
+{
+  m_context_item->remove();
+  m_context_item.clear();
+}
+
+void Canvas_PrintLayout::set_page_setup(const Glib::RefPtr<Gtk::PageSetup>& page_setup)
+{
+  m_page_setup = page_setup;
+}
+
+Glib::RefPtr<Gtk::PageSetup> Canvas_PrintLayout::get_page_setup()
+{
+  return m_page_setup;
+}
+
 
 } //namespace Glom
 

@@ -83,7 +83,10 @@ LayoutItem& LayoutItem::operator=(const LayoutItem& src)
   m_display_width = src.m_display_width;
 
   if(m_positions)
+  {
     delete m_positions;
+    m_positions = 0;
+  }
 
   if(src.m_positions)
     m_positions = new PrintLayoutPosition(*(src.m_positions));
@@ -134,16 +137,27 @@ void LayoutItem::set_display_width(guint value)
 
 void LayoutItem::get_print_layout_position(double& x, double& y, double& width, double& height) const
 {
-  instantiate_positions();
-
-  x = m_positions->m_x;
-  y = m_positions->m_y;
-  width = m_positions->m_width;
-  height = m_positions->m_height;
+  if(!m_positions)
+  {
+    x = 0;
+    y = 0;
+    width = 0;
+    height = 0;
+  }
+  else
+  {
+    x = m_positions->m_x;
+    y = m_positions->m_y;
+    width = m_positions->m_width;
+    height = m_positions->m_height;
+  }
 }
 
 void LayoutItem::set_print_layout_position(double x, double y, double width, double height)
 {
+  if(!m_positions && (x == 0) && (y == 0) && (width == 0) && (height == 0))
+    return; //Don't bother instantiating the positions instance if everything is still 0.
+
   instantiate_positions();
 
   m_positions->m_x = x;

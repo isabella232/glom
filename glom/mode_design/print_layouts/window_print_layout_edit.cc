@@ -41,6 +41,8 @@ Window_PrintLayout_Edit::Window_PrintLayout_Edit(BaseObjectType* cobject, const 
 {
   set_default_size(640, 480);
 
+  add_view(&m_canvas);
+
   refGlade->get_widget("vbox_menu", m_box_menu);
   refGlade->get_widget("vbox_canvas", m_box_canvas);
   refGlade->get_widget("vbox_inner", m_box);
@@ -74,11 +76,16 @@ Window_PrintLayout_Edit::Window_PrintLayout_Edit(BaseObjectType* cobject, const 
 void Window_PrintLayout_Edit::init_menu()
 {
   m_action_group = Gtk::ActionGroup::create();
+
+  m_action_group->add(Gtk::Action::create("Menu_File", _("_File")));
+  m_action_group->add(Gtk::Action::create("Action_Menu_File_PageSetup", _("_Page Setup")),
+    sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_file_page_setup));
+
   m_action_group->add(Gtk::Action::create("Menu_Edit", Gtk::Stock::EDIT));
-  m_action_group->add(Gtk::Action::create("Action_Menu_File_Edit_Cut", Gtk::Stock::CUT));
-  m_action_group->add(Gtk::Action::create("Action_Menu_File_Edit_Copy", Gtk::Stock::COPY));
-  m_action_group->add(Gtk::Action::create("Action_Menu_File_Edit_Paste", Gtk::Stock::PASTE));
-  m_action_group->add(Gtk::Action::create("Action_Menu_File_Edit_Delete", Gtk::Stock::DELETE));
+  m_action_group->add(Gtk::Action::create("Action_Menu_Edit_Cut", Gtk::Stock::CUT));
+  m_action_group->add(Gtk::Action::create("Action_Menu_Edit_Copy", Gtk::Stock::COPY));
+  m_action_group->add(Gtk::Action::create("Action_Menu_Edit_Paste", Gtk::Stock::PASTE));
+  m_action_group->add(Gtk::Action::create("Action_Menu_Edit_Delete", Gtk::Stock::DELETE));
 
   m_action_group->add(Gtk::Action::create("Menu_Insert", _("_Insert")));
   m_action_group->add(Gtk::Action::create("Action_Menu_Insert_Field", _("Insert _Field")),
@@ -90,19 +97,24 @@ void Window_PrintLayout_Edit::init_menu()
 
   m_action_group->add(Gtk::Action::create("Menu_View", _("_View")));
   m_action_showgrid = Gtk::ToggleAction::create("Action_Menu_View_ShowGrid", _("Show Grid"));
-  m_action_group->add(m_action_showgrid, sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_view_showgrid) );
+  m_action_group->add(m_action_showgrid, sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_view_show_grid));
+  m_action_showrules = Gtk::ToggleAction::create("Action_Menu_View_ShowRules", _("Show Rules"));
+  m_action_group->add(m_action_showrules, sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_view_show_rules));
 
 
   //Build part of the menu structure, to be merged in by using the "PH" placeholders:
   static const Glib::ustring ui_description =
     "<ui>"
     "  <menubar name='Menubar'>"
+    "      <menu action='Menu_File'>"
+    "        <menuitem action='Action_Menu_File_PageSetup' />"
+    "      </menu>"
     "      <menu action='Menu_Edit'>"
-    "        <menuitem action='Action_Menu_File_Edit_Cut' />"
-    "        <menuitem action='Action_Menu_File_Edit_Copy' />"
-    "        <menuitem action='Action_Menu_File_Edit_Paste' />"
-    "        <menuitem action='Action_Menu_File_Edit_Delete' />"
-    "        </menu>"
+    "        <menuitem action='Action_Menu_Edit_Cut' />"
+    "        <menuitem action='Action_Menu_Edit_Copy' />"
+    "        <menuitem action='Action_Menu_Edit_Paste' />"
+    "        <menuitem action='Action_Menu_Edit_Delete' />"
+    "      </menu>"
     "      <menu action='Menu_Insert'>"
     "        <menuitem action='Action_Menu_Insert_Field' />"
     "        <menuitem action='Action_Menu_Insert_Text' />"
@@ -110,6 +122,7 @@ void Window_PrintLayout_Edit::init_menu()
     "      </menu>"
     "      <menu action='Menu_View'>"
     "        <menuitem action='Action_Menu_View_ShowGrid' />"
+    "        <menuitem action='Action_Menu_View_ShowRules' />"
     "      </menu>"
     "  </menubar>"
     "</ui>";
@@ -135,7 +148,7 @@ void Window_PrintLayout_Edit::init_menu()
 
 Window_PrintLayout_Edit::~Window_PrintLayout_Edit()
 {
-  //remove_view(m_box);
+  remove_view(&m_canvas);
 }
 
 bool Window_PrintLayout_Edit::init_db_details(const Glib::ustring& table_name)
@@ -322,7 +335,7 @@ void Window_PrintLayout_Edit::on_menu_insert_field()
   set_default_position(layout_item);
 
   Glib::RefPtr<CanvasLayoutItem> item = CanvasLayoutItem::create(layout_item);
-  m_canvas.add_item(item, true /* resizable */);
+  m_canvas.add_item(item);
 }
 
 void Window_PrintLayout_Edit::on_menu_insert_text()
@@ -334,19 +347,18 @@ void Window_PrintLayout_Edit::on_menu_insert_text()
   set_default_position(layout_item);
 
   Glib::RefPtr<CanvasLayoutItem> item = CanvasLayoutItem::create(layout_item);
-  m_canvas.add_item(item, true /* resizable */);
+  m_canvas.add_item(item);
 }
 
 void Window_PrintLayout_Edit::on_menu_insert_image()
 {
   sharedptr<LayoutItem_Image> layout_item = sharedptr<LayoutItem_Image>::create();
-
   // Note to translators: This is the default contents of a text item on a print layout: 
   //layout_item->set_text(_("text"));
   set_default_position(layout_item);
 
   Glib::RefPtr<CanvasLayoutItem> item = CanvasLayoutItem::create(layout_item);
-  m_canvas.add_item(item, true /* resizable */);
+  m_canvas.add_item(item);
 }
 
 void Window_PrintLayout_Edit::on_button_close()
@@ -354,12 +366,12 @@ void Window_PrintLayout_Edit::on_button_close()
   hide();
 }
 
-void Window_PrintLayout_Edit::on_menu_view_showgrid()
+void Window_PrintLayout_Edit::on_menu_view_show_grid()
 {
  if(m_action_showgrid->get_active())
   {
     std::cout << "showing" << std::endl;
-    m_canvas.set_grid_gap(40);
+    m_canvas.set_grid_gap(20);
   }
   else
   {
@@ -368,6 +380,23 @@ void Window_PrintLayout_Edit::on_menu_view_showgrid()
   }
 }
 
+void Window_PrintLayout_Edit::on_menu_view_show_rules()
+{
+  //TODO:
+}
+
+void Window_PrintLayout_Edit::on_menu_file_page_setup()
+{
+  Glib::RefPtr<Gtk::PageSetup> page_setup = m_canvas.get_page_setup();
+
+  //Show the page setup dialog, asking it to start with the existing settings:
+  Glib::RefPtr<Gtk::PrintSettings> print_settings = Gtk::PrintSettings::create(); //TODO: Do we really need to get this from the user and store it?
+  page_setup = Gtk::run_page_setup_dialog(*this, page_setup, print_settings);
+
+  //Save the chosen page setup dialog for use when printing, previewing, or
+  //showing the page setup dialog again:
+  m_canvas.set_page_setup(page_setup);
+}
 
 
 

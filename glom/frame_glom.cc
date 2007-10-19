@@ -1998,7 +1998,7 @@ void Frame_Glom::on_dialog_layout_report_hide()
 {
   Document_Glom* document = get_document();
 
-  if(true) //m_pDialogLayoutReport->get_modified())
+  if(document && true) //m_pDialogLayoutReport->get_modified())
   {
     const Glib::ustring original_name = m_pDialogLayoutReport->get_original_report_name();
     sharedptr<Report> report = m_pDialogLayoutReport->get_report();
@@ -2018,7 +2018,7 @@ void Frame_Glom::on_dialog_layout_print_hide()
 {
   Document_Glom* document = get_document();
 
-  if(true) //m_pDialogLayoutReport->get_modified())
+  if(document && true) //m_pDialogLayoutReport->get_modified())
   {
     const Glib::ustring original_name = m_pDialogLayoutPrint->get_original_name();
     sharedptr<PrintLayout> print_layout = m_pDialogLayoutPrint->get_print_layout();

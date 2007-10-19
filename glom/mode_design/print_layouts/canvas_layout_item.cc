@@ -33,8 +33,13 @@ namespace Glom
 {
 
 CanvasLayoutItem::CanvasLayoutItem(const sharedptr<LayoutItem>& layout_item)
+: CanvasGroupResizable()
 {
   set_layout_item(layout_item);
+}
+
+CanvasLayoutItem::~CanvasLayoutItem()
+{
 }
 
 Glib::RefPtr<CanvasLayoutItem> CanvasLayoutItem::create(const sharedptr<LayoutItem>& layout_item)
@@ -97,8 +102,6 @@ void CanvasLayoutItem::set_layout_item(const sharedptr<LayoutItem>& item)
 
   if(child)
   {
-    set_child(child);
-
     //Set the position and dimensions:
     double x = 0;
     double y = 0;
@@ -108,6 +111,11 @@ void CanvasLayoutItem::set_layout_item(const sharedptr<LayoutItem>& item)
 
     child->set_xy(x, y);
     child->set_width_height(width, height);
+
+    //We do this after setting the child dimensions, 
+    //so that the manipulators are correct, 
+    //though it would be nice if the manipulators moved when we repositioned the child explicitly.
+    set_child(child);
   }
 }
 
