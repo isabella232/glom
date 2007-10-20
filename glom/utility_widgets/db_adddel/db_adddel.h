@@ -288,6 +288,12 @@ protected:
   virtual void on_cell_button_clicked(const Gtk::TreeModel::Path& path);
   void on_cell_layout_button_clicked(const Gtk::TreeModel::Path& path, int model_column_index);
 
+  // Don't call it on_style_changed, otherwise we would override a virtual
+  // function from Gtk::Widget. We could indeed do that, but we do it with
+  // a normal signal handler, because we have to do it this way anyway in
+  // case default signal handlers have been disabled in glibmm.
+  void on_self_style_changed(const Glib::RefPtr<Gtk::Style>& style);
+
   bool get_prevent_user_signals() const;
 
   /** @param model_column_index A value returned from add_column().
@@ -411,7 +417,6 @@ protected:
  
   ModelColumnsEmptyHint m_columns_hint;
   Glib::RefPtr<Gtk::ListStore> m_model_hint;
-
 
   int m_fixed_cell_height;
 };

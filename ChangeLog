@@ -1,3 +1,13 @@
+2007-10-20  Armin Burgmeier  <armin@openismus.com>
+
+	* glom/utility_widgets/db_adddel/db_adddel.h:
+	* glom/utility_widgets/db_adddel/db_adddel.cc: Update row and column
+	sizes in response to style changes.
+
+	* glom/utility_widgets/datawidget.h:
+	* glom/utility_widgets/datawidget.cc: Update size request of child in
+	response to style changes.
+
 2007-10-18  Armin Burgmeier  <armin@openismus.com>
 
 	* glom/libglom/data_structure/glomconversions.cc: Write data to the

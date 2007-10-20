@@ -121,6 +121,9 @@ DbAddDel::DbAddDel()
   remove_all_columns(); //set up the default columns.
 
   show_all_children();
+
+  // Adjust sizing when style changed
+  signal_style_changed().connect(sigc::mem_fun(*this, &DbAddDel::on_self_style_changed));
 }
 
 DbAddDel::~DbAddDel()
@@ -551,21 +554,7 @@ int DbAddDel::get_fixed_cell_height()
     int height = 0;
     refLayout->get_pixel_size(width, height);
 
-#ifdef GLOM_ENABLE_MAEMO
-    // TODO_maemo: Again, I have no idea why the discovered value does not
-    // fit for maemo. Creating a CellRendererText and asking it for its width
-    // does not yield a different result, neither does including a 'g' in the
-    // example text ('g' is one of the truncated chars when we do not add some
-    // more pixels here).
-    //
-    // I guess the computation above yields the pixels for the default GTK+
-    // font, but not the greater font used on maemo. I don't know how to
-    // specifially ask for that font, though, and why it is not already used
-    // by default. armin.
-    m_fixed_cell_height = height + 12;
-#else
     m_fixed_cell_height = height;
-#endif
     return m_fixed_cell_height;
   }
 }
@@ -894,20 +883,13 @@ void DbAddDel::construct_specified_columns()
 
     m_treeviewcolumn_button->set_sizing(Gtk::TREE_VIEW_COLUMN_FIXED); //Need by fixed-height mode.
 
-#ifdef GLOM_ENABLE_MAEMO
-    // TODO_maemo: In maemo, there are somehow some pixels border to the left
-    // and to the right of the cell renderer. I don't know where they come
-    // from since the xpad property of the cell renderer and the spacing
-    // property of treeview column are both zero. armin.
-    m_treeviewcolumn_button->set_fixed_width(width + 8);
-#else
     // TODO: I am not sure whether this is always correct. Perhaps, we also
     // have to take into account the xpad property of the cell renderer and
     // the spacing property of the treeviewcolumn.
     int horizontal_separator;
     m_TreeView.get_style_property("horizontal-separator", horizontal_separator);
     m_treeviewcolumn_button->set_fixed_width(width + horizontal_separator*2);
-#endif
+
     m_treeviewcolumn_button->set_property("visible", true);
 
     m_TreeView.append_column(*m_treeviewcolumn_button);
@@ -2033,6 +2015,14 @@ void DbAddDel::on_cell_button_clicked(const Gtk::TreeModel::Path& path)
   }
 
   on_MenuPopup_activate_Edit();
+}
+
+void DbAddDel::on_self_style_changed(const Glib::RefPtr<Gtk::Style>& style)
+{
+  // Reset fixed cell height because the font might have changed due to the new style
+  m_fixed_cell_height = 0;
+  // Reconstruct columns because sizes might have changed
+  construct_specified_columns();
 }
 
 void DbAddDel::set_open_button_title(const Glib::ustring& title)
