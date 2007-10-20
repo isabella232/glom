@@ -49,6 +49,14 @@ LayoutItem::PrintLayoutPosition& LayoutItem::PrintLayoutPosition::operator=(cons
   return *this;
 }
 
+bool LayoutItem::PrintLayoutPosition::operator==(const LayoutItem::PrintLayoutPosition& src) const
+{
+  return (m_x == src.m_x) &&
+         (m_y == src.m_y) &&
+         (m_width == src.m_width) &&
+         (m_height == src.m_height);
+}
+
 
 LayoutItem::LayoutItem()
 : m_sequence(0),
@@ -83,10 +91,8 @@ LayoutItem& LayoutItem::operator=(const LayoutItem& src)
   m_display_width = src.m_display_width;
 
   if(m_positions)
-  {
     delete m_positions;
-    m_positions = 0;
-  }
+  m_positions = 0;
 
   if(src.m_positions)
     m_positions = new PrintLayoutPosition(*(src.m_positions));
@@ -96,10 +102,26 @@ LayoutItem& LayoutItem::operator=(const LayoutItem& src)
 
 bool LayoutItem::operator==(const LayoutItem& src) const
 {
-  return (TranslatableItem::operator==(src)) &&
-         (m_sequence == src.m_sequence) &&
-         (m_editable == src.m_editable) &&
-         (m_display_width == src.m_display_width);  //careful of this - it's not saved in the document.
+  bool equal = (TranslatableItem::operator==(src)) &&
+          (m_sequence == src.m_sequence) &&
+          (m_editable == src.m_editable) &&
+          (m_display_width == src.m_display_width);  //careful of this - it's not saved in the document.
+
+  if(m_positions && src.m_positions)
+  {
+    //compare them:
+    equal = equal && (*m_positions == *(src.m_positions));
+  }
+  else if(!m_positions && !m_positions)
+  {
+    //no change.
+  }
+  else
+  {
+    equal = false;
+  }
+
+  return equal;
 }
 
 bool LayoutItem::get_editable() const

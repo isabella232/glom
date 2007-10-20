@@ -80,6 +80,7 @@ protected:
   Glib::RefPtr<Gtk::ListStore> m_model;
 
   Glib::ustring m_table_name;
+  sharedptr<LayoutItem_Field> m_start_field; //stored so we can preserve extra information that's not changed here.
 
   Document_Glom* m_document;
 };

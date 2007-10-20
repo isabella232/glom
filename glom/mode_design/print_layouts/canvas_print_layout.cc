@@ -222,26 +222,33 @@ void Canvas_PrintLayout::on_item_show_context_menu(guint button, guint32 activat
   m_context_menu->popup(button, activate_time);
 }
 
+void Canvas_PrintLayout::update_layout_position_from_canvas(const sharedptr<LayoutItem> layout_item, const Glib::RefPtr<const CanvasLayoutItem>& canvas_item)
+{
+  if(!layout_item || ~canvas_item)
+    return;
+
+  //Get the actual position:
+  double x = 0;
+  double y = 0;
+  canvas_item->get_xy(x, y);
+  double width = 0;
+  double height = 0;
+  canvas_item->get_width_height(width, height);
+  layout_item->set_print_layout_position(x, y, width, height); 
+}
+
 void Canvas_PrintLayout::on_context_menu_edit()
 {
-  sharedptr<const LayoutItem> layout_item = m_context_item->get_layout_item();
-  sharedptr<const LayoutItem_Field> field = sharedptr<const LayoutItem_Field>::cast_dynamic(layout_item);
+  sharedptr<LayoutItem> layout_item = m_context_item->get_layout_item();
+  sharedptr<LayoutItem_Field> field = sharedptr<LayoutItem_Field>::cast_dynamic(layout_item);
   if(field)
   {
-    double x = 0;
-    double y = 0;
-    double width, height;
-    field->get_print_layout_position(x, y, width, height);
-    std::cout << "DEBUG before x=" << x << std::endl;
+    update_layout_position_from_canvas(field, m_context_item);
+
     Gtk::Window* parent = dynamic_cast<Gtk::Window*>(get_toplevel());
     sharedptr<LayoutItem_Field> field_chosen = offer_field_list(field, m_table_name, parent);
     if(field_chosen)
     {
-      double x = 0;
-      double y = 0;
-      field_chosen->get_print_layout_position(x, y, width, height);
-      std::cout << "DEBUG after x=" << x << std::endl;
-
       m_context_item->set_layout_item(field_chosen);
     }
   }

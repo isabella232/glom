@@ -85,6 +85,8 @@ protected:
     PrintLayoutPosition(const PrintLayoutPosition& src);
     PrintLayoutPosition& operator=(const PrintLayoutPosition& src);
 
+    bool operator==(const PrintLayoutPosition& src) const;
+
     double m_x;
     double m_y;
     double m_width;

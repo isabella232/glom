@@ -1,3 +1,17 @@
+2007-10-20  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/libglom/data_structure/layout/layoutitem.cc:
+	* glom/libglom/data_structure/layout/layoutitem.h: Improved operator= and 
+	operator== to handle the print layout positions.
+	* glom/mode_data/dialog_choose_field.cc:
+	* glom/mode_data/dialog_choose_field.h: Store the initial field, if any, 
+	and use it in get_chosen_field() to preserve print layout positions and 
+	translations.
+	* glom/mode_design/print_layouts/canvas_print_layout.cc:
+	* glom/mode_design/print_layouts/canvas_print_layout.h: on_context_menu_edit():
+	Update the LayoutItem with the real canvas position before offering the 
+	field list, to preserve the real position.
+
 2007-10-19  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/mode_design/print_layouts/canvas_print_layout.cc:

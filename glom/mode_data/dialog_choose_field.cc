@@ -72,6 +72,8 @@ void Dialog_ChooseField::set_document(Document_Glom* document, const Glib::ustri
 {
   set_document(document, table_name);
 
+  m_start_field = glom_sharedptr_clone(field);
+
   //Select the current relationship at the start:
   if(field && field->get_has_relationship_name())
   {
@@ -113,6 +115,7 @@ void Dialog_ChooseField::set_document(Document_Glom* document, const Glib::ustri
 {
   m_document = document;
   m_table_name = table_name;
+  m_start_field.clear();
 
   if(!m_document)
   {
@@ -178,10 +181,6 @@ void Dialog_ChooseField::select_item(const Field& field)
 
 sharedptr<LayoutItem_Field> Dialog_ChooseField::get_field_chosen() const
 {
-  //Don't initialize output argument,
-  //because it might contain other useful data.
-  //TODO: Store a LayoutItem_Field as a member.
-
   sharedptr<LayoutItem_Field> field;
 
   //Field:
@@ -191,7 +190,10 @@ sharedptr<LayoutItem_Field> Dialog_ChooseField::get_field_chosen() const
     Gtk::TreeModel::iterator iter = refTreeSelection->get_selected();
     if(iter)
     {
-      field = sharedptr<LayoutItem_Field>::create(); //TODO_Translation: Preserve existing.
+      if(m_start_field)
+        field = m_start_field; //Start with this, to preserve extra information such as Translations.
+      else
+        field = sharedptr<LayoutItem_Field>::create();
 
       //Relationship:
       //Note that a null relationship means that the parent table was selected instead.
