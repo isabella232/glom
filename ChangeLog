@@ -1,5 +1,19 @@
 2007-10-20  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/Makefile.am:
+	* glom/libglom/data_structure/print_layout.cc:
+	* glom/libglom/data_structure/print_layout.h: Added get/set_page_setup().
+	* glom/libglom/document/document_glom.cc: Load and save the page setup 
+	of the PrintLayout, using the keyfile format that is already supported 
+	by Gtk::PageSetup.
+	* glom/printoperation_printlayout.cc:
+	* glom/printoperation_printlayout.h: New Gtk::PrintOperation for 
+	printing a print layout. Currently not very useful, but it does print.
+	* glom/frame_glom.cc: on_menu_print_layout_selected(): Print the 
+	selected print layout.
+
+2007-10-20  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/libglom/data_structure/layout/layoutitem.cc:
 	* glom/libglom/data_structure/layout/layoutitem.h: Improved operator= and 
 	operator== to handle the print layout positions.

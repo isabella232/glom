@@ -57,5 +57,21 @@ void PrintLayout::set_show_table_title(bool show_table_title)
   m_show_table_title = show_table_title;
 }
 
+void PrintLayout::set_page_setup(const Glib::RefPtr<Gtk::PageSetup>& page_setup)
+{
+  m_page_setup = page_setup;
+}
+
+Glib::RefPtr<Gtk::PageSetup> PrintLayout::get_page_setup()
+{
+  return m_page_setup;
+}
+
+Glib::RefPtr<const Gtk::PageSetup> PrintLayout::get_page_setup() const
+{
+  return m_page_setup;
+}
+
+
 } //namespace Glom
 

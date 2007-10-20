@@ -14,33 +14,33 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#include "printoperation_relationshipsoverview.h"
+#include "printoperation_printlayout.h"
 #include <iostream>
 
 namespace Glom
 {
 
-PrintOperationRelationshipsOverview::PrintOperationRelationshipsOverview()
+PrintOperationPrintLayout::PrintOperationPrintLayout()
 : m_canvas(0)
 {
 }
 
-PrintOperationRelationshipsOverview::~PrintOperationRelationshipsOverview()
+PrintOperationPrintLayout::~PrintOperationPrintLayout()
 {
 }
 
-Glib::RefPtr<PrintOperationRelationshipsOverview> PrintOperationRelationshipsOverview::create()
+Glib::RefPtr<PrintOperationPrintLayout> PrintOperationPrintLayout::create()
 {
-  return Glib::RefPtr<PrintOperationRelationshipsOverview>(new PrintOperationRelationshipsOverview());
+  return Glib::RefPtr<PrintOperationPrintLayout>(new PrintOperationPrintLayout());
 }
 
-void PrintOperationRelationshipsOverview::on_begin_print(
+void PrintOperationPrintLayout::on_begin_print(
         const Glib::RefPtr<Gtk::PrintContext>& print_context)
 {
   set_n_pages(1);
 }
 
-void PrintOperationRelationshipsOverview::on_draw_page(
+void PrintOperationPrintLayout::on_draw_page(
         const Glib::RefPtr<Gtk::PrintContext>& print_context, int page_nr)
 {
   if(!m_canvas)
@@ -94,11 +94,10 @@ void PrintOperationRelationshipsOverview::on_draw_page(
     m_canvas->render(cairo_context);
 }
 
-void PrintOperationRelationshipsOverview::set_canvas(Goocanvas::Canvas* canvas)
+void PrintOperationPrintLayout::set_canvas(Canvas_PrintLayout* canvas)
 {
   m_canvas = canvas;
 }
 
 } //namespace Glom
-
 

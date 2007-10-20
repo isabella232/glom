@@ -35,6 +35,8 @@
 
 #include <glom/libglom/connectionpool.h>
 
+#include <gtk/gtkpagesetup.h> //TODO: Remove this when we can use the C++ constructor.
+
 #include <glibmm/i18n.h>
 //#include "config.h" //To get GLOM_DTD_INSTALL_DIR - dependent on configure prefix.
 #include <algorithm> //For std::find_if().
@@ -174,6 +176,8 @@ namespace Glom
 #define GLOM_ATTRIBUTE_POSITION_Y "y"
 #define GLOM_ATTRIBUTE_POSITION_WIDTH "width"
 #define GLOM_ATTRIBUTE_POSITION_HEIGHT "height"
+
+#define GLOM_NODE_PAGE_SETUP "page_setup" //It's text child is the keyfile for a GtkPageSetup
 
 #define GLOM_NODE_LIBRARY_MODULES "library_modules"
 #define GLOM_NODE_LIBRARY_MODULE "module"
@@ -2467,12 +2471,23 @@ bool Document_Glom::load_after()
                 const Glib::ustring name = get_node_attribute_value(node, GLOM_ATTRIBUTE_NAME);
                 const bool show_table_title = get_node_attribute_value_as_bool(node, GLOM_ATTRIBUTE_REPORT_SHOW_TABLE_TITLE);
 
-                //type_mapLayoutGroupSequence layout_groups;
-
                 sharedptr<PrintLayout> print_layout(new PrintLayout());
                 print_layout->set_name(name);
                 print_layout->set_show_table_title(show_table_title);
 
+                //Page Setup:
+                Glib::RefPtr<Gtk::PageSetup> page_setup;
+                const Glib::ustring key_file_text = get_child_text_node(node, GLOM_NODE_PAGE_SETUP);
+                if(!key_file_text.empty())
+                {
+                  Glib::KeyFile key_file;
+                  key_file.load_from_data(key_file_text);
+                  //TODO: Use this when gtkmm and GTK+ have been fixed: page_setup = Gtk::PageSetup::create(key_file);
+                  page_setup = Glib::wrap(gtk_page_setup_new_from_key_file(key_file.gobj(), NULL, NULL));
+                }
+                print_layout->set_page_setup(page_setup);
+
+                //Layout Groups:
                 const xmlpp::Element* nodeGroups = get_node_child_named(node, GLOM_NODE_DATA_LAYOUT_GROUPS);
                 if(nodeGroups)
                 {
@@ -3134,6 +3149,18 @@ bool Document_Glom::save_before()
           sharedptr<const PrintLayout> print_layout = iter->second;
           nodePrintLayout->set_attribute(GLOM_ATTRIBUTE_NAME, print_layout->get_name());
           set_node_attribute_value_as_bool(nodePrintLayout, GLOM_ATTRIBUTE_REPORT_SHOW_TABLE_TITLE, print_layout->get_show_table_title());
+
+          //Page Setup:
+          Glib::RefPtr<const Gtk::PageSetup> page_setup =  print_layout->get_page_setup();
+          if(page_setup)
+          {
+            Glib::KeyFile key_file;
+            Glib::RefPtr<Gtk::PageSetup> unconst = Glib::RefPtr<Gtk::PageSetup>::cast_const(page_setup); //TODO: Remove this when using gtkmm 2.13/14.
+            unconst->save_to_key_file(key_file);
+
+            xmlpp::Element* child = nodePrintLayout->add_child(GLOM_NODE_PAGE_SETUP);
+            child->add_child_text(key_file.to_data());
+          }
 
           xmlpp::Element* nodeGroups = nodePrintLayout->add_child(GLOM_NODE_DATA_LAYOUT_GROUPS);
           if(print_layout->m_layout_group)

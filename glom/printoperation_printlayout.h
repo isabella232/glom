@@ -14,11 +14,11 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef GLOM_RELATIONSHIPS_OVERVIEW_PRINT_OPERATION_H
-#define GLOM_RELATIONSHIPS_OVERVIEW_PRINT_OPERATION_H
+#ifndef GLOM_PRINT_OPERATION_PRINT_LAYOUT_H
+#define GLOM_PRINT_OPERATION_PRINT_LAYOUT_H
 
-#include <gtkmm.h>
-#include <goocanvasmm/canvas.h>
+#include <glom/mode_design/print_layouts/canvas_print_layout.h>
+#include <gtkmm/printoperation.h>
 #include <vector>
 
 namespace Glom
@@ -26,25 +26,26 @@ namespace Glom
 
 //We derive our own class from PrintOperation,
 //so we can put the actual print implementation here.
-class PrintOperationRelationshipsOverview : public Gtk::PrintOperation
+class PrintOperationPrintLayout : public Gtk::PrintOperation
 {
  public:
-  static Glib::RefPtr<PrintOperationRelationshipsOverview> create();
-  virtual ~PrintOperationRelationshipsOverview();
+  static Glib::RefPtr<PrintOperationPrintLayout> create();
+  virtual ~PrintOperationPrintLayout();
 
-  void set_canvas(Goocanvas::Canvas* canvas);
+  void set_canvas(Canvas_PrintLayout* canvas);
 
  protected:
-  PrintOperationRelationshipsOverview();
+  PrintOperationPrintLayout();
 
   //PrintOperation default signal handler overrides:
   virtual void on_begin_print(const Glib::RefPtr<Gtk::PrintContext>& context);
   virtual void on_draw_page(const Glib::RefPtr<Gtk::PrintContext>& context, int page_nr);
 
   //Not owned by this instance:
-  Goocanvas::Canvas* m_canvas;
+  Canvas_PrintLayout* m_canvas;
 };
 
 } //namespace Glom
 
-#endif // GLOM_RELATIONSHIPS_OVERVIEW_PRINT_OPERATION_H
+
+#endif // GLOM_PRINT_OPERATION_PRINT_LAYOUT_H

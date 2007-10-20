@@ -41,6 +41,7 @@
 #include <glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.h>
 
 #include <glom/reports/report_builder.h>
+#include <glom/printoperation_printlayout.h>
 
 #ifdef GLOM_ENABLE_MAEMO
 #include <hildonmm/note.h>
@@ -1983,13 +1984,33 @@ void Frame_Glom::on_menu_print_layout_selected(const Glib::ustring& print_layout
   if(!print_layout)
     return;
 
-  std::cout << "TODO: print layout name=" << print_layout_name << std::endl;
+  Canvas_PrintLayout canvas;
+  canvas.set_print_layout(m_table_name, print_layout);
 
-  //FoundSet found_set = m_Notebook_Data.get_found_set();
+  //Create a new PrintOperation with our PageSetup and PrintSettings:
+  //(We use our derived PrintOperation class)
+  Glib::RefPtr<PrintOperationPrintLayout> print = PrintOperationPrintLayout::create();
+  print->set_canvas(&canvas);
 
-  //ReportBuilder report_builder;
-  //report_builder.set_document(document);
-  //report_builder.report_build(found_set, report, get_app_window()); //TODO: Use found set's where_clause.
+  print->set_track_print_status();
+  print->set_default_page_setup(print_layout->get_page_setup());
+  //print->set_print_settings(m_refSettings);
+
+  //print->signal_done().connect(sigc::bind(sigc::mem_fun(*this,
+  //                &ExampleWindow::on_printoperation_done), print));
+
+  try
+  {
+    App_Glom* pApp = dynamic_cast<App_Glom*>(get_app_window());
+    if(pApp)
+      print->run(Gtk::PRINT_OPERATION_ACTION_PRINT_DIALOG, *pApp);
+  }
+  catch (const Gtk::PrintError& ex)
+  {
+    //See documentation for exact Gtk::PrintError error codes.
+    std::cerr << "An error occurred while trying to run a print operation:"
+        << ex.what() << std::endl;
+  }
 }
 
 

@@ -42,6 +42,7 @@ glom_SOURCES = main.cc \
                dialog_invalid_data.h dialog_invalid_data.cc \
                filechooser_export.h filechooser_export.cc \
                box_reports.h box_reports.cc \
+               printoperation_printlayout.h printoperation_printlayout.cc \
                xsl_utils.h xsl_utils.cc
 
 if !GLOM_ENABLE_CLIENT_ONLY
