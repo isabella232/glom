@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glom.HEAD.es\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-10-04 12:30+0100\n"
-"PO-Revision-Date: 2007-10-07 15:44+0200\n"
+"POT-Creation-Date: 2007-10-18 14:27+0100\n"
+"PO-Revision-Date: 2007-10-22 13:46+0200\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Spanish <traductores@es.gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -1649,7 +1649,7 @@ msgstr "Creando los datos de la base de datos"
 #. The Postgres provider was not found, so warn the user:
 #: ../glom/libglom/connectionpool.cc:1030
 #: ../glom/libglom/connectionpool.cc:1043
-#: ../glom/libglom/connectionpool.cc:1110
+#: ../glom/libglom/connectionpool.cc:1112
 msgid "Incomplete Glom Installation"
 msgstr "La instalación de Glom está incompleta"
 
@@ -1691,9 +1691,7 @@ msgstr ""
 "Informe de este error a su distribuidor o al administrador de su sistema "
 "para que pueda ser corregido."
 
-#. use_markup
-#. modal
-#: ../glom/libglom/connectionpool.cc:1111
+#: ../glom/libglom/connectionpool.cc:1109
 msgid ""
 "Your installation of Glom is not complete, because the PostgreSQL libgda "
 "provider is not available on your system. This provider is needed to access "
@@ -1709,36 +1707,49 @@ msgstr ""
 "Informe de este error a su distribuidor o al administrador de su sistema "
 "para que pueda ser corregido."
 
-#: ../glom/libglom/data_structure/field.cc:554
+#. Warn the user:
+#: ../glom/libglom/connectionpool.cc:1130
+msgid ""
+"You seem to be running Glom as root. Glom may not be run as root.\n"
+"Please login to your system as a normal user."
+msgstr ""
+"Parece que está ejecutando Glom como superusuario (root). Glom no se puede ejecutar como superusuario.\n"
+"Inicie sesión en su sistema como un usuario normal."
+
+#: ../glom/libglom/connectionpool.cc:1132
+msgid "Running As Root"
+msgstr "Ejecutándose como superusuario"
+
+#: ../glom/libglom/data_structure/field.cc:561
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:142
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:150
 msgid "Invalid"
 msgstr "No válido"
 
-#: ../glom/libglom/data_structure/field.cc:555
+#: ../glom/libglom/data_structure/field.cc:562
 msgid "Number"
 msgstr "Número"
 
-#: ../glom/libglom/data_structure/field.cc:556
+#: ../glom/libglom/data_structure/field.cc:563
 #: ../glom/libglom/data_structure/layout/layoutitem_text.cc:68
 #: ../glom/libglom/data_structure/translatable_item.cc:298
 #: ../glom/mode_data/dialog_layout_details.cc:1131
 msgid "Text"
 msgstr "Texto"
 
-#: ../glom/libglom/data_structure/field.cc:557
+#: ../glom/libglom/data_structure/field.cc:564
 msgid "Time"
 msgstr "Hora"
 
-#: ../glom/libglom/data_structure/field.cc:558
+#: ../glom/libglom/data_structure/field.cc:565
 msgid "Date"
 msgstr "Fecha"
 
-#: ../glom/libglom/data_structure/field.cc:559
+#: ../glom/libglom/data_structure/field.cc:566
 msgid "Boolean"
 msgstr "Booleano"
 
-#: ../glom/libglom/data_structure/field.cc:560
+#: ../glom/libglom/data_structure/field.cc:567
 #: ../glom/libglom/data_structure/layout/layoutitem_image.cc:68
 #: ../glom/libglom/data_structure/translatable_item.cc:300
 #: ../glom/mode_data/dialog_layout_details.cc:1138
@@ -2153,11 +2164,19 @@ msgstr ""
 "El campo aún no puede usarse como clave primaria porque contiene valores que "
 "no son únicos."
 
-#: ../glom/mode_design/fields/dialog_fieldcalculation.cc:118
+#: ../glom/mode_design/fields/dialog_fieldcalculation.cc:98
+msgid "Calculation Error"
+msgstr "Cálculo del error"
+
+#: ../glom/mode_design/fields/dialog_fieldcalculation.cc:98
+msgid "The calculation does not have a return statement."
+msgstr "El cálculo no tiene una sentencia que devolver."
+
+#: ../glom/mode_design/fields/dialog_fieldcalculation.cc:131
 msgid "Calculation result"
 msgstr "Cálculo del resultado"
 
-#: ../glom/mode_design/fields/dialog_fieldcalculation.cc:118
+#: ../glom/mode_design/fields/dialog_fieldcalculation.cc:131
 msgid "The result of the calculation is:\n"
 msgstr "El resultado del cálculo es:\n"
 
@@ -2366,7 +2385,7 @@ msgstr "..."
 msgid "Layout"
 msgstr "Distribución"
 
-#: ../glom/utility_widgets/db_adddel/db_adddel.cc:2043
+#: ../glom/utility_widgets/db_adddel/db_adddel.cc:2045
 msgid "Right-click to layout, to specify the related fields."
 msgstr ""
 "Pulse con el botón derecho en la disposición, para especificar los campos "
