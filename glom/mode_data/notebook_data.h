@@ -39,6 +39,9 @@ public:
 
   ///Get the existing where clause, previously supplied to init_db_details().
   FoundSet get_found_set() const;
+  
+  ///Get the found set for the currently-visible record in the details tab:
+  FoundSet get_found_set_details() const;
 
   ///Show the details for a particular record, without affecting the list view:
   virtual void show_details(const Gnome::Gda::Value& primary_key_value);

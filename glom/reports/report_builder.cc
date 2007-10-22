@@ -298,7 +298,7 @@ void ReportBuilder::report_build_records(const FoundSet& found_set, xmlpp::Eleme
       }
     }
 
-    Glib::ustring sql_query = Utils::build_sql_select_with_where_clause(found_set.m_table_name,
+   Glib::ustring sql_query = Utils::build_sql_select_with_where_clause(found_set.m_table_name,
       fieldsToGet,
       found_set.m_where_clause, Glib::ustring() /* extra_join */, found_set.m_sort_clause);
 
@@ -310,7 +310,7 @@ void ReportBuilder::report_build_records(const FoundSet& found_set, xmlpp::Eleme
     Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute(sql_query);
     if(datamodel)
     {
-      guint rows_count = datamodel->get_n_rows();
+      const guint rows_count = datamodel->get_n_rows();
       if(rows_count > 0)
         records_found = true;
 

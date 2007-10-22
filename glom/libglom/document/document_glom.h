@@ -45,6 +45,7 @@
 namespace Glom
 {
 
+/// Can be used with std::find_if() to find a layout with the same parent_table and layout_name.
 template<class T_Element>
 class predicate_Layout
 {

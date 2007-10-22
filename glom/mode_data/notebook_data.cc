@@ -188,6 +188,12 @@ FoundSet Notebook_Data::get_found_set() const
   return m_Box_List.get_found_set();
 }
 
+FoundSet Notebook_Data::get_found_set_details() const
+{
+  return m_Box_Details.get_found_set();
+}
+  
+
 void Notebook_Data::on_list_user_requested_details(const Gnome::Gda::Value& primary_key_value)
 {
   //std::cout << "Notebook_Data::on_list_user_requested_details" << std::endl;

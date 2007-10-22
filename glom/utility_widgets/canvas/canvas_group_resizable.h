@@ -46,6 +46,12 @@ public:
   /** This should only be called after this CanvasGroupResizable has already been added to a canvas.
    */
   void set_child(const Glib::RefPtr<CanvasItemMovable>& child);
+  
+  /// Get the only child:
+  Glib::RefPtr<CanvasItemMovable> get_child();
+  
+  /// Get the only child:
+  Glib::RefPtr<const CanvasItemMovable> get_child() const;
 
   virtual void get_xy(double& x, double& y) const;
   virtual void set_xy(double x_offet, double y_offset);

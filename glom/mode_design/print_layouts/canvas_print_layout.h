@@ -50,6 +50,8 @@ public:
   //Override:
   void add_item(const Glib::RefPtr<CanvasLayoutItem> item);
 
+  void fill_with_data(const FoundSet& found_set);
+  
 protected:
 
   void setup_context_menu();

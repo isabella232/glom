@@ -21,12 +21,16 @@
 #include "canvas_layout_item.h"
 #include <glom/utility_widgets/canvas/canvas_rect_movable.h>
 #include <glom/utility_widgets/canvas/canvas_text_movable.h>
+#include <glom/utility_widgets/canvas/canvas_image_movable.h>
 #include <glom/utility_widgets/canvas/canvas_line_movable.h>
 #include <glom/utility_widgets/canvas/canvas_group_movable.h>
 #include <glom/libglom/data_structure/layout/layoutitem_button.h>
 #include <glom/libglom/data_structure/layout/layoutitem_text.h>
 #include <glom/libglom/data_structure/layout/layoutitem_image.h>
 #include <glom/libglom/data_structure/layout/layoutitem_field.h>
+#include <glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.h>
+#include <glom/libglom/data_structure/glomconversions.h>
+#include <glom/utility_widgets/imageglom.h> //For ImageGlom::scale_keeping_ratio().
 #include <glibmm/i18n.h>
 
 namespace Glom
@@ -83,15 +87,31 @@ void CanvasLayoutItem::set_layout_item(const sharedptr<LayoutItem>& item)
       sharedptr<LayoutItem_Field> field = sharedptr<LayoutItem_Field>::cast_dynamic(m_layout_item);
       if(field)
       {
-        Glib::RefPtr<CanvasTextMovable> canvas_item = CanvasTextMovable::create();
+        //Create an appropriate canvas item for the field type:
+        if(field->get_glom_type() == Field::TYPE_IMAGE)
+        {
+          Glib::RefPtr<CanvasImageMovable> canvas_item = CanvasImageMovable::create();
 
-        Glib::ustring name = field->get_name();
-          if(name.empty())
-            name = _("Choose Field");
+          //Glib::ustring name = field->get_name();
+          //  if(name.empty())
+          //    name = _("Choose Field");
           
-        canvas_item->property_text() = name;
+          //canvas_item->property_text() = name;
 
-        child = canvas_item;
+          child = canvas_item;
+        }
+        else //text, numbers, date, time, boolean:
+        {
+          Glib::RefPtr<CanvasTextMovable> canvas_item = CanvasTextMovable::create();
+
+          Glib::ustring name = field->get_name();
+            if(name.empty())
+              name = _("Choose Field");
+          
+          canvas_item->property_text() = name;
+
+          child = canvas_item;
+        }
       }
       else
       {
@@ -117,6 +137,73 @@ void CanvasLayoutItem::set_layout_item(const sharedptr<LayoutItem>& item)
     //though it would be nice if the manipulators moved when we repositioned the child explicitly.
     set_child(child);
   }
+}
+
+void CanvasLayoutItem::set_db_data(const Gnome::Gda::Value& value)
+{
+  sharedptr<LayoutItem_Field> field = sharedptr<LayoutItem_Field>::cast_dynamic(m_layout_item);
+  if(!field)
+    return;
+    
+  Glib::RefPtr<CanvasItemMovable> child = get_child();
+  if(!child)
+    return;
+  
+  const Field::glom_field_type field_type = field->get_glom_type();
+  switch(field->get_glom_type())
+  {
+    case(Field::TYPE_TEXT):
+    case(Field::TYPE_NUMERIC):
+    case(Field::TYPE_BOOLEAN):
+    case(Field::TYPE_TIME):
+    case(Field::TYPE_DATE):
+    {
+      Glib::RefPtr<CanvasTextMovable> canvas_item = Glib::RefPtr<CanvasTextMovable>::cast_dynamic(child);
+      if(!canvas_item)
+        return;
+        
+      Glib::ustring text_value = Conversions::get_text_for_gda_value(field_type, value, field->get_formatting_used().m_numeric_format);
+
+      //The Postgres summary functions return NULL when summarising NULL records, but 0 is more sensible:
+      if(text_value.empty() && sharedptr<const LayoutItem_FieldSummary>::cast_dynamic(field) && (field_type == Field::TYPE_NUMERIC))
+      {
+        //Use get_text_for_gda_value() instead of "0" so we get the correct numerical formatting:
+        Gnome::Gda::Value value = Conversions::parse_value(0);
+        text_value = Conversions::get_text_for_gda_value(field_type, value, field->get_formatting_used().m_numeric_format);
+      }
+    
+      canvas_item->property_text() = text_value;
+      break;
+    }
+    case(Field::TYPE_IMAGE):
+    {
+      Glib::RefPtr<CanvasImageMovable> canvas_item = Glib::RefPtr<CanvasImageMovable>::cast_dynamic(child);
+      if(!canvas_item)
+        return;
+        
+      //Get the height of the item (not of the pixbuf),
+      //so we can scale the pixbuf:
+      double width = 0;
+      double height = 0;
+      canvas_item->get_width_height(width, height);
+      
+      Glib::RefPtr<Gdk::Pixbuf> pixbuf = Conversions::get_pixbuf_for_gda_value(value);
+      
+      //Scale the image down to fit the item:
+       //(Just resetting the height and width of the canvas item would crop the image)
+      if(pixbuf)
+        pixbuf = ImageGlom::scale_keeping_ratio(pixbuf, height, width);
+      
+      canvas_item->property_pixbuf() = pixbuf;
+      
+     
+     
+      break;
+    }
+    default:
+      std::cerr << "CanvasLayoutItem::set_db_data(): unhandled field type." << std::endl;
+  }
+        
 }
 
 } //namespace Glom

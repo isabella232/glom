@@ -170,6 +170,17 @@ void CanvasGroupResizable::set_child(const Glib::RefPtr<CanvasItemMovable>& chil
   set_manipulators_visibility(Goocanvas::CANVAS_ITEM_INVISIBLE);
 }
 
+Glib::RefPtr<CanvasItemMovable> CanvasGroupResizable::get_child()
+{
+  return m_child;
+}
+
+  
+Glib::RefPtr<const CanvasItemMovable> CanvasGroupResizable::get_child() const
+{
+  return m_child;
+}
+
 void CanvasGroupResizable::manipulator_connect_signals(const Glib::RefPtr<Goocanvas::Item> manipulator, Manipulators manipulator_id)
 {
   //Respond when the corner rectangles move (they implement their own dragging):

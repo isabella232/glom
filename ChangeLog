@@ -1,3 +1,31 @@
+2007-10-22  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/utility_widgets/canvas/Makefile.am:
+	* glom/utility_widgets/canvas/canvas_image_movable.cc:
+	* glom/utility_widgets/canvas/canvas_image_movable.h:
+	* glom/utility_widgets/canvas/canvas_item_movable.cc:
+	Added an image item.
+	* glom/utility_widgets/canvas/canvas_group_resizable.cc:
+	* glom/utility_widgets/canvas/canvas_group_resizable.h:
+	Added get_child().
+	* glom/mode_design/print_layouts/canvas_layout_item.cc:
+	* glom/mode_design/print_layouts/canvas_layout_item.h:
+	Create an image item for image fields, and text items for 
+	the other field types.
+	Added set_db_data() which changes the item contents to show 
+	real data instead of, for instance, a field name.
+	* glom/mode_design/print_layouts/canvas_print_layout.cc:
+	* glom/mode_design/print_layouts/canvas_print_layout.h:
+	Added fill_with_data().
+	* glom/mode_data/box_data_details.cc: init_db_details(): 
+	Set the m_found_set where_clause from the primary key details 
+	so we can use it later.
+	* glom/mode_data/notebook_data.cc:
+	* glom/mode_data/notebook_data.h: Added get_found_set_details().
+	* glom/frame_glom.cc: on_menu_print_layout_selected(): 
+	Fill the canvas with data before printing, from the currently 
+	viewed details record.
+
 2007-10-23  Murray Cumming  <murrayc@murrayc.com>
 
 	* Merged from the glom-precise-printing branch, because I have 

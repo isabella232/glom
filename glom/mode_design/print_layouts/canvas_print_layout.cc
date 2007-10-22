@@ -277,6 +277,84 @@ Glib::RefPtr<Gtk::PageSetup> Canvas_PrintLayout::get_page_setup()
   return m_page_setup;
 }
 
+void Canvas_PrintLayout::fill_with_data(const FoundSet& found_set)
+{
+  Glib::RefPtr<Goocanvas::Item> root = get_root_item();
+  if(!root)
+    return;
+    
+  //A map of the text representation (e.g. field_name or relationship::field_name) to the index:
+  typedef std::map<Glib::ustring, guint> type_map_layout_fields_index;
+  type_map_layout_fields_index map_fields_index;
+  
+  //Get list of fields to get from the database.
+  Utils::type_vecLayoutFields fieldsToGet;
+  const int count = root->get_n_children();
+  for(int i = 0; i < count; ++i)
+  {
+    Glib::RefPtr<Goocanvas::Item> base_canvas_item = root->get_child(i);
+    Glib::RefPtr<CanvasLayoutItem> canvas_item = Glib::RefPtr<CanvasLayoutItem>::cast_dynamic(base_canvas_item);
+    if(!canvas_item)
+      continue;
+      
+    sharedptr<LayoutItem> layout_item = canvas_item->get_layout_item();
+    if(!layout_item)
+      continue;
+      
+    sharedptr<LayoutItem_Field> layoutitem_field = sharedptr<LayoutItem_Field>::cast_dynamic(layout_item);
+    if(layoutitem_field)
+    {
+      fieldsToGet.push_back(layoutitem_field);
+      
+      //Remember the index so we can use it later, 
+      //to get the data for this column from the query results:
+      map_fields_index[ layoutitem_field->get_layout_display_name() ] = (guint)i;
+    } 
+  }
+
+  Glib::ustring sql_query = Utils::build_sql_select_with_where_clause(found_set.m_table_name,
+    fieldsToGet,
+    found_set.m_where_clause, Glib::ustring() /* extra_join */, found_set.m_sort_clause);
+  sql_query += " LIMIT 1";
+  
+  bool records_found = false;
+  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute(sql_query);
+  if(datamodel)
+  {
+    const guint rows_count = datamodel->get_n_rows();
+    if(rows_count > 0)
+      records_found = true;
+  }
+  
+  if(!records_found)
+    return;
+
+  //Set all the data for the fields in the canvas:
+  for(int i = 0; i < count; ++i)
+  {
+    Glib::RefPtr<Goocanvas::Item> base_canvas_item = root->get_child(i);
+    Glib::RefPtr<CanvasLayoutItem> canvas_item = Glib::RefPtr<CanvasLayoutItem>::cast_dynamic(base_canvas_item);
+    if(!canvas_item)
+      continue;
+      
+    sharedptr<LayoutItem> layout_item = canvas_item->get_layout_item();
+    if(!layout_item)
+      continue;
+      
+    sharedptr<LayoutItem_Field> layoutitem_field = sharedptr<LayoutItem_Field>::cast_dynamic(layout_item);
+    if(layoutitem_field)
+    { 
+      type_map_layout_fields_index::const_iterator iterFind = map_fields_index.find( layoutitem_field->get_layout_display_name() );
+      if(iterFind != map_fields_index.end())
+      {
+        const guint col_index = iterFind->second;
+        const Gnome::Gda::Value value = datamodel->get_value_at(col_index, 0);
+        canvas_item->set_db_data(value);
+      }
+    }
+  }
+}
+
 
 } //namespace Glom
 

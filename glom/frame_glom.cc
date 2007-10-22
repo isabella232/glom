@@ -1998,6 +1998,9 @@ void Frame_Glom::on_menu_print_layout_selected(const Glib::ustring& print_layout
 
   //print->signal_done().connect(sigc::bind(sigc::mem_fun(*this,
   //                &ExampleWindow::on_printoperation_done), print));
+  
+  const FoundSet found_set = m_Notebook_Data.get_found_set_details();
+  canvas.fill_with_data(found_set);
 
   try
   {

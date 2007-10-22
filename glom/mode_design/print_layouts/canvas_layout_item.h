@@ -23,6 +23,7 @@
 
 #include <glom/utility_widgets/canvas/canvas_group_resizable.h>
 #include <glom/libglom/data_structure/layout/layoutitem.h>
+#include <libgdamm/value.h>
 
 namespace Glom
 {
@@ -38,6 +39,9 @@ public:
 
   sharedptr<LayoutItem> get_layout_item();
   void set_layout_item(const sharedptr<LayoutItem>& item);
+  
+  /// Make the canvas item show actual data instead of, for instance, a field name.
+  void set_db_data(const Gnome::Gda::Value& value);
 
 protected:
   sharedptr<LayoutItem> m_layout_item;

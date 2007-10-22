@@ -21,6 +21,7 @@
 #include "canvas_item_movable.h"
 #include "canvas_rect_movable.h"
 #include "canvas_text_movable.h"
+#include "canvas_image_movable.h"
 #include "canvas_line_movable.h"
 #include "canvas_group_movable.h"
 #include <goocanvasmm/canvas.h>
@@ -270,9 +271,15 @@ Glib::RefPtr<CanvasItemMovable> CanvasItemMovable::cast_to_movable(const Glib::R
         movable = Glib::RefPtr<CanvasItemMovable>::cast_dynamic(text);
       else
       {
-        Glib::RefPtr<CanvasGroupMovable> group = Glib::RefPtr<CanvasGroupMovable>::cast_dynamic(item);
-        if(group)
-          movable = Glib::RefPtr<CanvasItemMovable>::cast_dynamic(group);
+        Glib::RefPtr<CanvasImageMovable> image = Glib::RefPtr<CanvasImageMovable>::cast_dynamic(item);
+        if(image)
+          movable = Glib::RefPtr<CanvasItemMovable>::cast_dynamic(image);
+        else
+        {
+          Glib::RefPtr<CanvasGroupMovable> group = Glib::RefPtr<CanvasGroupMovable>::cast_dynamic(item);
+          if(group)
+            movable = Glib::RefPtr<CanvasItemMovable>::cast_dynamic(group);
+        }
       }
     }
   }
@@ -311,9 +318,15 @@ Glib::RefPtr<Goocanvas::Item> CanvasItemMovable::cast_to_item(const Glib::RefPtr
         result = Glib::RefPtr<Goocanvas::Item>::cast_dynamic(text);
       else
       {
-        Glib::RefPtr<CanvasGroupMovable> group = Glib::RefPtr<CanvasGroupMovable>::cast_dynamic(item);
-        if(group)
-          result = Glib::RefPtr<Goocanvas::Item>::cast_dynamic(group);
+        Glib::RefPtr<CanvasImageMovable> image = Glib::RefPtr<CanvasImageMovable>::cast_dynamic(item);
+        if(image)
+          result = Glib::RefPtr<Goocanvas::Item>::cast_dynamic(image);
+        else
+        {
+          Glib::RefPtr<CanvasGroupMovable> group = Glib::RefPtr<CanvasGroupMovable>::cast_dynamic(item);
+          if(group)
+            result = Glib::RefPtr<Goocanvas::Item>::cast_dynamic(group);
+        }
       }
     }
   }
