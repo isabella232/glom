@@ -1,0 +1,242 @@
+/* Glom
+ *
+ * Copyright (C) 2001-2004 Murray Cumming
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public
+ * License along with this program; if not, write to the
+ * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+ * Boston, MA 02111-1307, USA.
+ */
+
+#include "box_print_layouts.h"
+#include <bakery/App/App_Gtk.h> //For util_bold_message().
+#include <glibmm/i18n.h>
+
+namespace Glom
+{
+
+Box_Print_Layouts::Box_Print_Layouts(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
+: Box_DB_Table(cobject, refGlade),
+  m_pLabelFrameTitle(0),
+  m_colName(0),
+  m_colTitle(0)
+{
+  //Get the Glade-instantiated widgets, and connect signal handlers:
+  Gtk::Button* pButtonCancel = 0;
+  refGlade->get_widget("button_cancel", pButtonCancel);
+  set_button_cancel(*pButtonCancel);
+
+  Gtk::Alignment* pAligmentPlaceholder = 0;
+  refGlade->get_widget("alignment_placeholder_adddel", pAligmentPlaceholder);
+  pAligmentPlaceholder->add(m_AddDel);
+
+  //refGlade->get_widget("label_frame_title", m_pLabelFrameTitle);
+
+  m_AddDel.signal_user_added().connect(sigc::mem_fun(*this, &Box_Print_Layouts::on_adddel_Add));
+  m_AddDel.signal_user_requested_delete().connect(sigc::mem_fun(*this, &Box_Print_Layouts::on_adddel_Delete));
+  m_AddDel.signal_user_requested_edit().connect(sigc::mem_fun(*this, &Box_Print_Layouts::on_adddel_Edit));
+  m_AddDel.signal_user_changed().connect(sigc::mem_fun(*this, &Box_Print_Layouts::on_adddel_changed));
+
+  show_all_children();
+}
+
+Box_Print_Layouts::~Box_Print_Layouts()
+{
+}
+
+void Box_Print_Layouts::fill_row(const Gtk::TreeModel::iterator& iter, const sharedptr<const PrintLayout>& item)
+{
+  if(iter)
+  {
+    const Glib::ustring& name = item->get_name();
+    m_AddDel.set_value_key(iter, name);
+    m_AddDel.set_value(iter, m_colName, name);
+    m_AddDel.set_value(iter, m_colTitle, item->get_title());
+  }
+}
+
+bool Box_Print_Layouts::fill_from_database()
+{
+  Bakery::BusyCursor busy_cursor(get_app_window());
+
+  bool result = Box_DB::fill_from_database();
+
+  //Enable/Disable extra widgets:
+  bool developer_mode = (get_userlevel() == AppState::USERLEVEL_DEVELOPER);
+
+  //Developers see more columns, so make it bigger:
+  if(developer_mode)
+    set_size_request(400, -1);
+  else
+    set_size_request(-1, -1);
+
+  m_AddDel.remove_all();
+
+  //Add the columns:
+  m_AddDel.remove_all_columns();
+
+  const bool editable = developer_mode;
+  const bool visible_extras = developer_mode;
+  m_colName = m_AddDel.add_column(_("Name"), AddDelColumnInfo::STYLE_Text, editable, visible_extras);
+  m_AddDel.prevent_duplicates(m_colName); //Don't allow a relationship to be added twice.
+  m_AddDel.set_prevent_duplicates_warning(_("This item already exists. Please choose a different item name"));
+
+  m_colTitle = m_AddDel.add_column(_("Title"), AddDelColumnInfo::STYLE_Text, editable, true);
+
+  //_("Server: ") +  m_strServerName + ", " + 
+  //Glib::ustring strTitle = Glib::ustring("<b>") + _("Tables from Database: ") + get_database_name() + "");
+  //m_pLabelFrameTitle->set_markup(strTitle);
+
+  Document_Glom::type_listPrintLayouts listItems;
+  Document_Glom* document = get_document();
+  if(document)
+  {
+    listItems = document->get_print_layout_names(m_table_name);
+    for(Document_Glom::type_listPrintLayouts::const_iterator iter = listItems.begin(); iter != listItems.end(); ++iter)
+    {
+      sharedptr<PrintLayout> item = document->get_print_layout(m_table_name, *iter);
+      if(item)
+      {
+        Gtk::TreeModel::iterator row = m_AddDel.add_item(item->get_name());
+        fill_row(row, item);
+      }
+    }
+   }
+  else
+    g_warning("Box_Print_Layouts::fill_from_database(): document is null");
+
+  //TODO:
+
+  fill_end();
+
+  m_AddDel.set_allow_add(developer_mode);
+  m_AddDel.set_allow_delete(developer_mode);
+
+  return result;
+}
+
+void Box_Print_Layouts::on_adddel_Add(const Gtk::TreeModel::iterator& row)
+{
+  sharedptr<PrintLayout> item = sharedptr<PrintLayout>::create();
+
+  const Glib::ustring name = m_AddDel.get_value(row, m_colName);
+  if(!name.empty())
+  {
+    item->set_name(name);
+    m_AddDel.set_value_key(row, name);
+
+    get_document()->set_print_layout(m_table_name, item);
+  }
+}
+
+void Box_Print_Layouts::on_adddel_Delete(const Gtk::TreeModel::iterator& rowStart, const Gtk::TreeModel::iterator& /* TODO: rowEnd */)
+{
+  const Glib::ustring name = m_AddDel.get_value_key(rowStart);
+  if(!name.empty())
+  {
+    get_document()->remove_print_layout(m_table_name, name);
+    m_AddDel.remove_item_by_key(name);
+  }
+}
+
+void Box_Print_Layouts::on_adddel_Edit(const Gtk::TreeModel::iterator& row)
+{
+  Glib::ustring name = m_AddDel.get_value_key(row);
+
+  Document_Glom* document = get_document();
+  if(document)
+  {
+     save_to_document();
+
+     //Emit the signal:
+     signal_selected.emit(name);
+  }
+}
+
+void Box_Print_Layouts::save_to_document()
+{
+  if(get_userlevel() == AppState::USERLEVEL_DEVELOPER)
+  {
+    //Add any that are not in the document:
+    Document_Glom::type_listPrintLayouts listItems = get_document()->get_print_layout_names(m_table_name);
+
+    bool modified = false;
+    for(Gtk::TreeModel::iterator iter = m_AddDel.get_model()->children().begin(); iter != m_AddDel.get_model()->children().end(); ++iter)
+    {
+      const Glib::ustring name = m_AddDel.get_value(iter, m_colName);
+
+      if(!name.empty() && std::find(listItems.begin(), listItems.end(), name) == listItems.end())
+      {
+        sharedptr<PrintLayout> item(new PrintLayout());
+        item->set_name(name);
+
+        item->set_title( m_AddDel.get_value(iter, m_colTitle) ); //TODO: Translations: Store the original in the TreeView.
+
+        get_document()->set_print_layout(m_table_name, item);
+        modified = true;
+     }
+    }
+
+    if(modified)
+     get_document()->set_modified(true);
+  }
+}
+
+void Box_Print_Layouts::on_adddel_changed(const Gtk::TreeModel::iterator& row, guint column)
+{
+  if(get_userlevel() == AppState::USERLEVEL_DEVELOPER)
+  {
+    const Glib::ustring name = m_AddDel.get_value_key(row);
+    Document_Glom* document = get_document();
+
+    sharedptr<PrintLayout> item = document->get_print_layout(m_table_name, name);
+    if(item)
+    {
+      if(column == m_colTitle)
+      {
+        item->set_title( m_AddDel.get_value(row, m_colTitle) );
+        //TODO: Unnecessary:
+        document->set_print_layout(m_table_name, item);
+      }
+      else if(column == m_colName)
+      {
+        const Glib::ustring name_new = m_AddDel.get_value(row, m_colName);
+        if(!name.empty() && !name_new.empty())
+        {
+          Glib::ustring strMsg = _("Are you sure that you want to rename this print layout?");  //TODO: Show old and new names?
+          Gtk::MessageDialog dialog(_("Rename Print Layout"));
+          dialog.set_secondary_text(strMsg);
+          const int iButtonClicked = dialog.run();
+
+          //Rename the item:
+          if(iButtonClicked == Gtk::RESPONSE_OK)
+          {
+            m_AddDel.set_value_key(row, name_new);
+
+            document->remove_print_layout(m_table_name, name);
+
+            item->set_name(name_new);
+            document->set_print_layout(m_table_name, item);
+          }
+        }
+      }
+    }
+  }
+}
+
+void Box_Print_Layouts::on_userlevel_changed(AppState::userlevels /* userlevel */)
+{
+  fill_from_database();
+}
+
+} //namespace Glom

@@ -42,6 +42,7 @@ glom_SOURCES = main.cc \
                dialog_invalid_data.h dialog_invalid_data.cc \
                filechooser_export.h filechooser_export.cc \
                box_reports.h box_reports.cc \
+               printoperation_printlayout.h printoperation_printlayout.cc \
                xsl_utils.h xsl_utils.cc
 
 if !GLOM_ENABLE_CLIENT_ONLY
@@ -60,6 +61,7 @@ if !GLOM_ENABLE_CLIENT_ONLY
 glom_LDADD += layout_item_dialogs/liblayoutitemdialogs.a \
               mode_design/libmode_design.a \
               mode_design/fields/libmode_design_fields.a \
+              mode_design/print_layouts/libmode_design_print_layouts.a \
               mode_design/users/libmode_design_users.a \
               mode_design/script_library/libmode_design_script_library.a
 endif
@@ -69,11 +71,13 @@ glom_LDADD += navigation/libnavigation.a \
               utility_widgets/adddel/libutility_widgets_adddel.a \
               utility_widgets/adddel/eggcolumnchooser/libutility_widgets_adddel_eggcolumnchooserdialog.a \
               utility_widgets/db_adddel/libutility_widgets_db_adddel.a \
+              utility_widgets/canvas/libutility_widgets_canvas.a \
               utility_widgets/libutility_widgets.a
 
 if !GLOM_ENABLE_CLIENT_ONLY
 glom_LDADD += translation/libtranslation.a \
-              relationships_overview/librelationshipsoverview.a
+              relationships_overview/librelationshipsoverview.a \
+              utility_widgets/canvas/libutility_widgets_canvas.a
 endif
 
 glom_LDADD += python_embed/libpython_embed.a \
@@ -103,7 +107,7 @@ glomdata_DATA = glom_document.dtd
 # Install the glade file:
 # The glade prefix of glade_DATA seems to cause it to be installed in <appname>/glade/
 # Because that's how gladedir is defined.
-glade_DATA = glom.glade
+glade_DATA = glom.glade glom_developer.glade
 
 EXTRA_DIST = glom_document.dtd $(glade_DATA)
 

@@ -36,6 +36,7 @@
 #include <glom/libglom/data_structure/tableinfo.h>
 #include <glom/libglom/data_structure/groupinfo.h>
 #include <glom/libglom/data_structure/report.h>
+#include <glom/libglom/data_structure/print_layout.h>
 #include "../appstate.h"
 #include <gtkmm/window.h>
 #include <vector>
@@ -265,6 +266,14 @@ public:
   sharedptr<Report> get_report(const Glib::ustring& table_name, const Glib::ustring& report_name) const;
   void remove_report(const Glib::ustring& table_name, const Glib::ustring& report_name);
 
+  //Print Layouts are precisely positioned layouts for printing to a printer:
+  typedef std::list<Glib::ustring> type_listPrintLayouts;
+  type_listPrintLayouts get_print_layout_names(const Glib::ustring& table_name) const;
+  void remove_all_print_layouts(const Glib::ustring& table_name);
+  void set_print_layout(const Glib::ustring& table_name, const sharedptr<PrintLayout>& print_layout);
+  sharedptr<PrintLayout> get_print_layout(const Glib::ustring& table_name, const Glib::ustring& print_layout_name) const;
+  void remove_print_layout(const Glib::ustring& table_name, const Glib::ustring& print_layout_name);
+
   void set_layout_record_viewed(const Glib::ustring& table_name, const Glib::ustring& layout_name, const Gnome::Gda::Value& primary_key_value);
   void forget_layout_record_viewed(const Glib::ustring& table_name);
   Gnome::Gda::Value get_layout_record_viewed(const Glib::ustring& table_name, const Glib::ustring& layout_name) const;
@@ -335,38 +344,31 @@ public:
 protected:
 
   //Overrides:
-  virtual bool load_after();
+
+
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   virtual bool save_before();
-#endif // !GLOM_ENABLE_CLIENT_ONLY
-
-  void load_after_layout_group(const xmlpp::Element* node, const Glib::ustring& table_name, const sharedptr<LayoutGroup>& group);
-
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-  void save_before_layout_group(xmlpp::Element* node, const sharedptr<const LayoutGroup>& group);
-#endif // !GLOM_ENABLE_CLIENT_ONLY
-
-  void load_after_sort_by(const xmlpp::Element* node, const Glib::ustring& table_name, LayoutItem_GroupBy::type_list_sort_fields& list_fields);
-
-#ifndef GLOM_ENABLE_CLIENT_ONLY
+  void save_before_layout_group(xmlpp::Element* node, const sharedptr<const LayoutGroup>& group, bool with_print_layout_positions = false);
   void save_before_sort_by(xmlpp::Element* node, const LayoutItem_GroupBy::type_list_sort_fields& list_fields);
-#endif // !GLOM_ENABLE_CLIENT_ONLY
-
-  void load_after_layout_item_usesrelationship(const xmlpp::Element* element, const Glib::ustring& table_name, const sharedptr<UsesRelationship>& item);
-  void load_after_layout_item_field(const xmlpp::Element* element, const Glib::ustring& table_name, const sharedptr<LayoutItem_Field>& item);
-  void load_after_layout_item_field_formatting(const xmlpp::Element* element, FieldFormatting& format, Field::glom_field_type field_type, const Glib::ustring& table_name, const Glib::ustring& field_name);
-
-  void load_after_translations(const xmlpp::Element* element, TranslatableItem& item);
-
-#ifndef GLOM_ENABLE_CLIENT_ONLY
   void save_before_layout_item_usesrelationship(xmlpp::Element* nodeItem, const sharedptr<const UsesRelationship>& item);
   void save_before_layout_item_field(xmlpp::Element* nodeItem, const sharedptr<const LayoutItem_Field>& item);
   void save_before_layout_item_field_formatting(xmlpp::Element* nodeItem, const FieldFormatting& format, Field::glom_field_type field_type);
 
   void save_before_translations(xmlpp::Element* nodeItem, const TranslatableItem& item);
+  void save_before_print_layout_position(xmlpp::Element* nodeItem, const sharedptr<const LayoutItem>& item);
 
   void save_changes();
 #endif // !GLOM_ENABLE_CLIENT_ONLY
+
+  virtual bool load_after();
+  void load_after_layout_group(const xmlpp::Element* node, const Glib::ustring& table_name, const sharedptr<LayoutGroup>& group, bool with_print_layout_positions = false);
+  void load_after_sort_by(const xmlpp::Element* node, const Glib::ustring& table_name, LayoutItem_GroupBy::type_list_sort_fields& list_fields);
+  void load_after_layout_item_usesrelationship(const xmlpp::Element* element, const Glib::ustring& table_name, const sharedptr<UsesRelationship>& item);
+  void load_after_layout_item_field(const xmlpp::Element* element, const Glib::ustring& table_name, const sharedptr<LayoutItem_Field>& item);
+  void load_after_layout_item_field_formatting(const xmlpp::Element* element, FieldFormatting& format, Field::glom_field_type field_type, const Glib::ustring& table_name, const Glib::ustring& field_name);
+
+  void load_after_translations(const xmlpp::Element* element, TranslatableItem& item);
+  void load_after_print_layout_position(const xmlpp::Element* nodeItem, const sharedptr<LayoutItem>& item);
 
   void on_app_state_userlevel_changed(AppState::userlevels userlevel);
 
@@ -430,6 +432,9 @@ protected:
 
     typedef std::map< Glib::ustring, sharedptr<Report> > type_reports; //map of report names to reports
     type_reports m_reports;
+
+    typedef std::map< Glib::ustring, sharedptr<PrintLayout> > type_print_layouts; //map of print layout names to print layouts
+    type_print_layouts m_print_layouts;
 
     Glib::ustring m_example_rows;
 

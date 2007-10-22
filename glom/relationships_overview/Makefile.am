@@ -6,4 +6,5 @@ INCLUDES = -I@top_srcdir@/ $(GLOM_CFLAGS) \
 
 noinst_LIBRARIES = librelationshipsoverview.a
 librelationshipsoverview_a_SOURCES = dialog_relationships_overview.h dialog_relationships_overview.cc \
-  printoperation_relationshipsoverview.h printoperation_relationshipsoverview.cc
+  printoperation_relationshipsoverview.h printoperation_relationshipsoverview.cc canvas_group_dbtable.h canvas_group_dbtable.cc
+

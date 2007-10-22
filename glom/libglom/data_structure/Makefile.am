@@ -13,6 +13,7 @@ libdata_structure_la_SOURCES = field.h field.cc \
                               numeric_format.h numeric_format.cc \
                               iso_codes.h iso_codes.cc \
                               system_prefs.h system_prefs.cc \
+                              print_layout.h print_layout.cc \
                               report.h report.cc \
                               translatable_item.h translatable_item.cc
 

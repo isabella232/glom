@@ -530,7 +530,7 @@ sharedptr<LayoutItem_Button> Dialog_Layout_Details::offer_button_script_edit(con
 
   try
   {
-    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_button_script");
+    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom_developer.glade", "window_button_script");
 
     Dialog_ButtonScript* dialog = 0;
     refXml->get_widget_derived("window_button_script", dialog);
@@ -565,7 +565,7 @@ sharedptr<LayoutItem_Text> Dialog_Layout_Details::offer_textobject_edit(const sh
 
   try
   {
-    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_textobject");
+    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom_developer.glade", "window_textobject");
 
     Dialog_TextObject* dialog = 0;
     refXml->get_widget_derived("window_textobject", dialog);
@@ -605,7 +605,7 @@ sharedptr<Relationship> Dialog_Layout_Details::offer_relationship_list(const sha
 
   try
   {
-    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_choose_relationship");
+    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom_developer.glade", "dialog_choose_relationship");
 
     Dialog_ChooseRelationship* dialog = 0;
     refXml->get_widget_derived("dialog_choose_relationship", dialog);

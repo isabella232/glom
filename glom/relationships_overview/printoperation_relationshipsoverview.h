@@ -21,6 +21,9 @@
 #include <goocanvasmm/canvas.h>
 #include <vector>
 
+namespace Glom
+{
+
 //We derive our own class from PrintOperation,
 //so we can put the actual print implementation here.
 class PrintOperationRelationshipsOverview : public Gtk::PrintOperation
@@ -41,5 +44,7 @@ class PrintOperationRelationshipsOverview : public Gtk::PrintOperation
   //Not owned by this instance:
   Goocanvas::Canvas* m_canvas;
 };
+
+} //namespace Glom
 
 #endif // GLOM_RELATIONSHIPS_OVERVIEW_PRINT_OPERATION_H

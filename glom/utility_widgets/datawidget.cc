@@ -535,7 +535,7 @@ sharedptr<LayoutItem_Field> DataWidget::offer_field_list(const Glib::ustring& ta
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
-    refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_choose_field");
+    refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom_developer.glade", "dialog_choose_field");
   }
   catch(const Gnome::Glade::XmlError& ex)
   {
@@ -544,7 +544,7 @@ sharedptr<LayoutItem_Field> DataWidget::offer_field_list(const Glib::ustring& ta
   }
 #else
   std::auto_ptr<Gnome::Glade::XmlError> error;
-  refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_choose_field", "", error);
+  refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom_developer.glade", "dialog_choose_field", "", error);
   if(error.get())
   {
     std::cerr << error->what() << std::endl;
@@ -580,7 +580,7 @@ sharedptr<LayoutItem_Field> DataWidget::offer_field_layout(const sharedptr<const
 
   try
   {
-    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_layout_field_properties");
+    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom_developer.glade", "dialog_layout_field_properties");
 
     Dialog_FieldLayout* dialog = 0;
     refXml->get_widget_derived("dialog_layout_field_properties", dialog);
@@ -716,7 +716,7 @@ void DataWidget::on_button_choose_date()
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
-    refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_choose_date");
+    refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom_developer.glade", "dialog_choose_date");
   }
   catch(const Gnome::Glade::XmlError& ex)
   {
@@ -725,7 +725,7 @@ void DataWidget::on_button_choose_date()
   }
 #else
   std::auto_ptr<Gnome::Glade::XmlError> error;
-  refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_choose_date", "", error);
+  refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom_developer.glade", "dialog_choose_date", "", error);
   if(error.get())
   {
     std::cerr << error->what() << std::endl;

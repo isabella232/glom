@@ -58,3 +58,4 @@ void Report::set_show_table_title(bool show_table_title)
 }
 
 } //namespace Glom
+

@@ -84,7 +84,7 @@ Dialog_FieldDefinition::Dialog_FieldDefinition(BaseObjectType* cobject, const Gl
   //Get the formatting stuff:
   try
   {
-    Glib::RefPtr<Gnome::Glade::Xml> refXmlFormatting = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "box_formatting");
+    Glib::RefPtr<Gnome::Glade::Xml> refXmlFormatting = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom_developer.glade", "box_formatting");
     refXmlFormatting->get_widget_derived("box_formatting", m_box_formatting);
   }
   catch(const Gnome::Glade::XmlError& ex)
@@ -200,9 +200,9 @@ void Dialog_FieldDefinition::set_field(const sharedptr<const Field>& field, cons
 
   on_check_lookup_toggled();
 
-   std::cout << "debug: dialog_fielddefinition.c:: m_pTextView_Calculation.gobj() gtype = " << G_OBJECT_TYPE_NAME(m_pTextView_Calculation->gobj()) << std::endl;
+  //std::cout << "debug: dialog_fielddefinition.c:: m_pTextView_Calculation.gobj() gtype = " << G_OBJECT_TYPE_NAME(m_pTextView_Calculation->gobj()) << std::endl;
   m_pTextView_Calculation->get_buffer()->set_text(calculation);
-  std::cout << "  debug: dialog_fielddefinition.c:: after get_buffer()" << std::endl;
+  //std::cout << "  debug: dialog_fielddefinition.c:: after get_buffer()" << std::endl;
 
   m_pEntry_Title->set_text(field->get_title());
 
@@ -367,7 +367,7 @@ void Dialog_FieldDefinition::on_combo_lookup_relationship_changed()
 void Dialog_FieldDefinition::on_button_edit_calculation()
 {
   //TODO: Share a global instance, to make this quicker?
-  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_field_calculation");
+  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom_developer.glade", "window_field_calculation");
   if(refXml)
   {
     Dialog_FieldCalculation* dialog = 0;

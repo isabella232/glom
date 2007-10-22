@@ -49,7 +49,6 @@ protected:
   virtual void on_userlevel_changed(AppState::userlevels userlevel);
 
   Gtk::Label* m_pLabelFrameTitle;
-  Gtk::CheckButton* m_pCheckButtonShowHidden;
   guint m_colReportName;
   guint m_colTitle;
 

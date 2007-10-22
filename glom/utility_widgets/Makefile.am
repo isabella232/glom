@@ -1,6 +1,6 @@
 #INCLUDES = -I@top_srcdir@/ $(GLOM_CFLAGS)
 
-SUBDIRS = adddel db_adddel
+SUBDIRS = adddel db_adddel canvas
 
 gladedir = $(datadir)/glom/glade/
 
@@ -35,13 +35,15 @@ libutility_widgets_a_SOURCES = alignment_justified.cc alignment_justified.h \
                                dialog_choose_date.cc dialog_choose_date.h \
                                filechooserdialog.cc filechooserdialog.h
 
+
 libutility_widgets_a_LIBADD = adddel/libutility_widgets_adddel.a \
-                              db_adddel/libutility_widgets_db_adddel.a
+                              db_adddel/libutility_widgets_db_adddel.a \
+                              canvas/libutility_widgets_canvas.a
 
 
-noinst_PROGRAMS = test
+noinst_PROGRAMS = test_flowtable
 
-test_SOURCES = test_flowtable.cc flowtable.cc flowtable.h
+test_flowtable_SOURCES = test_flowtable.cc flowtable.cc flowtable.h
+test_flowtable_LDADD =  $(GLOM_LIBS)
 
-test_LDADD =  $(GLOM_LIBS)
 

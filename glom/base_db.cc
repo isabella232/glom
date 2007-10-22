@@ -1299,7 +1299,7 @@ sharedptr<LayoutItem_Field> Base_DB::offer_field_list(const sharedptr<const Layo
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
-    refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_choose_field");
+    refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom_developer.glade", "dialog_choose_field");
   }
   catch(const Gnome::Glade::XmlError& ex)
   {
@@ -1308,7 +1308,7 @@ sharedptr<LayoutItem_Field> Base_DB::offer_field_list(const sharedptr<const Layo
   }
 #else
   std::auto_ptr<Gnome::Glade::XmlError> error;
-  refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_choose_field", "", error);
+  refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom_developer.glade", "dialog_choose_field", "", error);
   if(error.get())
   {
     std::cerr << error->what() << std::endl;
@@ -1346,7 +1346,7 @@ sharedptr<LayoutItem_Field> Base_DB::offer_field_formatting(const sharedptr<cons
 
   try
   {
-    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_layout_field_properties");
+    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom_developer.glade", "dialog_layout_field_properties");
 
     Dialog_FieldLayout* dialog = 0;
     refXml->get_widget_derived("dialog_layout_field_properties", dialog);
@@ -1386,7 +1386,7 @@ sharedptr<LayoutItem_Text> Base_DB::offer_textobject(const sharedptr<LayoutItem_
 
   try
   {
-    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_textobject");
+    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom_developer.glade", "window_textobject");
 
     Dialog_TextObject* dialog = 0;
     refXml->get_widget_derived("window_textobject", dialog);
@@ -1421,7 +1421,7 @@ sharedptr<LayoutItem_Image> Base_DB::offer_imageobject(const sharedptr<LayoutIte
 
   try
   {
-    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_imageobject");
+    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom_developer.glade", "window_imageobject");
 
     Dialog_ImageObject* dialog = 0;
     refXml->get_widget_derived("window_imageobject", dialog);

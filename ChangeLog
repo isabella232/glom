@@ -1,3 +1,9 @@
+2007-10-23  Murray Cumming  <murrayc@murrayc.com>
+
+	* Merged from the glom-precise-printing branch, because I have 
+	made most of the large changes, and I want to reduce the number 
+	of branches that we are working on.
+
 2007-10-18  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/libglom/connectionpool.cc:

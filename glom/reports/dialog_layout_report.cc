@@ -682,7 +682,7 @@ sharedptr<Relationship> Dialog_Layout_Report::offer_relationship_list()
 
   try
   {
-    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_choose_relationship");
+    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom_developer.glade", "dialog_choose_relationship");
 
     Dialog_ChooseRelationship* dialog = 0;
     refXml->get_widget_derived("dialog_choose_relationship", dialog);
@@ -819,7 +819,7 @@ void Dialog_Layout_Report::on_button_edit()
       {
         try
         {
-          Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_field_summary");
+          Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom_developer.glade", "dialog_field_summary");
 
           Dialog_FieldSummary* dialog = 0;
           refXml->get_widget_derived("dialog_field_summary", dialog);
@@ -901,7 +901,7 @@ void Dialog_Layout_Report::on_button_edit()
               {
                 try
                 {
-                  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_group_by");
+                  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom_developer.glade", "dialog_group_by");
   
                   Dialog_GroupBy* dialog = 0;
                   refXml->get_widget_derived("dialog_group_by", dialog);

@@ -17,6 +17,9 @@
 #include "printoperation_relationshipsoverview.h"
 #include <iostream>
 
+namespace Glom
+{
+
 PrintOperationRelationshipsOverview::PrintOperationRelationshipsOverview()
 : m_canvas(0)
 {
@@ -95,4 +98,7 @@ void PrintOperationRelationshipsOverview::set_canvas(Goocanvas::Canvas* canvas)
 {
   m_canvas = canvas;
 }
+
+} //namespace Glom
+
 

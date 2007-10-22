@@ -51,7 +51,7 @@ Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
   add_view(&m_FlowTable); //Allow this to access the document too.
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_data_layout"); //TODO: Use a generic layout dialog?
+  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom_developer.glade", "window_data_layout"); //TODO: Use a generic layout dialog?
   if(refXml)
   {
     Dialog_Layout_Details* dialog = 0;

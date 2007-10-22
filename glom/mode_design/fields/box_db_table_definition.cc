@@ -43,7 +43,7 @@ void Box_DB_Table_Definition::init()
 {
   //m_strHint = _("Click [Edit] to edit the field definition in more detail.\nUse the Mode menu to see Data or perform a Find.");
 
-  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_field_definition_edit");
+  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom_developer.glade", "window_field_definition_edit");
   if(refXml)
     refXml->get_widget_derived("window_field_definition_edit", m_pDialog);
 

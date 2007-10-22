@@ -19,8 +19,11 @@
  */
 
 #include "dialog_relationships_overview.h"
+#include "glom/utility_widgets/canvas/canvas_line_movable.h"
+#include "glom/utility_widgets/canvas/canvas_text_movable.h"
 #include "../mode_data/dialog_choose_relationship.h"
 #include "printoperation_relationshipsoverview.h"
+#include "glom/application.h"
 #include <goocanvas.h>
 #include <glibmm/i18n.h>
 #include <algorithm>
@@ -32,22 +35,15 @@ namespace Glom
 int Dialog_RelationshipsOverview::m_last_size_x = 0;
 int Dialog_RelationshipsOverview::m_last_size_y = 0;
 
-Dialog_RelationshipsOverview::TableView::TableView()
-: x1(0),
-  y1(0),
-  x2(0),
-  y2(0)
-{
-}
 
 Dialog_RelationshipsOverview::Dialog_RelationshipsOverview(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
   : Gtk::Dialog(cobject),
     m_menu(0),
-    m_modified(false),
-    m_dragging(false),
-    m_drag_x(0),
-    m_drag_y(0)
+    m_modified(false)
 {
+  m_refPageSetup = Gtk::PageSetup::create();
+  m_refSettings = Gtk::PrintSettings::create();
+
   //Add a menu:
   Gtk::VBox* vbox = 0;
   refGlade->get_widget("vbox_placeholder_menubar", vbox);
@@ -55,8 +51,15 @@ Dialog_RelationshipsOverview::Dialog_RelationshipsOverview(BaseObjectType* cobje
   m_refActionGroup = Gtk::ActionGroup::create();
 
   m_refActionGroup->add(Gtk::Action::create("Overview_MainMenu_File", _("_File")) );
+  m_refActionGroup->add(Gtk::Action::create("Overview_MainMenu_File_PageSetup", _("Page _Setup")),
+    sigc::mem_fun(*this, &Dialog_RelationshipsOverview::on_menu_file_page_setup) );
   m_refActionGroup->add(Gtk::Action::create("Overview_MainMenu_File_Print", Gtk::Stock::PRINT),
     sigc::mem_fun(*this, &Dialog_RelationshipsOverview::on_menu_file_print) );
+
+  m_refActionGroup->add(Gtk::Action::create("Overview_MainMenu_View", _("_View")) );
+  m_action_showgrid = Gtk::ToggleAction::create("Overview_MainMenu_View_Grid", _("Show _Grid"));
+  m_refActionGroup->add(m_action_showgrid,
+    sigc::mem_fun(*this, &Dialog_RelationshipsOverview::on_menu_view_showgrid) );
 
   Glib::RefPtr<Gtk::UIManager> m_refUIManager = Gtk::UIManager::create();
 
@@ -74,7 +77,11 @@ Dialog_RelationshipsOverview::Dialog_RelationshipsOverview(BaseObjectType* cobje
     "  <menubar name='Overview_MainMenu'>"
 #endif
     "    <menu action='Overview_MainMenu_File'>"
+    "      <menuitem action='Overview_MainMenu_File_PageSetup' />"
     "      <menuitem action='Overview_MainMenu_File_Print' />"
+    "    </menu>"
+    "    <menu action='Overview_MainMenu_View'>"
+    "      <menuitem action='Overview_MainMenu_View_Grid' />"
     "    </menu>"
 #ifdef GLOM_ENABLE_MAEMO
     "  </popup>"
@@ -117,8 +124,16 @@ Dialog_RelationshipsOverview::Dialog_RelationshipsOverview(BaseObjectType* cobje
   
   if(m_last_size_x != 0 && m_last_size_y != 0 )
   {
-    set_size_request(m_last_size_x, m_last_size_y);
+    set_default_size(m_last_size_x, m_last_size_y);
   }
+
+  m_group_tables = Goocanvas::Group::create();
+  m_canvas.add_item(m_group_tables);
+  m_group_lines = Goocanvas::Group::create();
+  m_canvas.add_item(m_group_lines);
+  m_group_lines->lower(); //Make sure that the lines are below the tables.
+
+  setup_context_menu();
 }
 
 Dialog_RelationshipsOverview::~Dialog_RelationshipsOverview()
@@ -127,142 +142,170 @@ Dialog_RelationshipsOverview::~Dialog_RelationshipsOverview()
 }
 
 
-void Dialog_RelationshipsOverview::update_model()
+void Dialog_RelationshipsOverview::draw_tables()
 {
-  Glib::RefPtr<Goocanvas::Item> root = m_canvas.get_root_item();
-  while(root->get_n_children() > 0)
-    root->remove_child(0);
-  
-  for(type_map_item_tables::iterator iter = m_tables.begin(); iter != m_tables.end(); iter++)
-    delete iter->second;
-  
-  m_tables.clear();
-  m_table_names.clear();
+  //Remove all current items:
+  while(m_group_tables->get_n_children() > 0)
+    m_group_tables->remove_child(0);
   
   Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
   if(document)
   {
-    int table_height, max_table_height = 0;
-    int sizex = 10;
-    int sizey = 10;
-    const int table_width = 200;
-    const int field_height = 20;
-    
-    Document_Glom::type_vecFields::size_type i, j;
+    double max_table_height = 0;
+    double sizex = 10;
+    double sizey = 10;
 
+    //Create tables canvas items, with lists of fields:
     Document_Glom::type_listTableInfo tables = document->get_tables();
     for(Document_Glom::type_listTableInfo::iterator iter = tables.begin(); iter != tables.end(); ++iter)
     {
       sharedptr<TableInfo> info = *iter;
-
-      Document_Glom::type_vecFields fields = document->get_table_fields(info->get_name());
-
-      Glib::RefPtr<Goocanvas::Item> table_group = Glib::wrap(goo_canvas_group_new(root->gobj(), 0));
-      table_group->signal_motion_notify_event().connect( sigc::mem_fun(*this, &Dialog_RelationshipsOverview::on_table_group_motion_notify_event));
-      table_group->signal_button_press_event().connect(
-        sigc::bind(sigc::mem_fun(*this, &Dialog_RelationshipsOverview::on_table_group_button_press_event), table_group));
-      table_group->signal_button_release_event().connect(sigc::mem_fun(*this, &Dialog_RelationshipsOverview::on_table_group_button_release_event));
-      
-      TableView* tv = new TableView();
-      tv->m_table_name = info->get_name();
-
-      //TODO: This is a workaround, needed to fix a refcount problem. It's not used otherwise.
-      //This shouldn't be necessary, if root keeps a reference to it too.
-      tv->m_group = table_group; 
-
-      m_tables[table_group] = tv;
-      m_table_names[info->get_name()] = tv;
-      
-      table_height = field_height * (fields.size() + 1);
-      Glib::ustring title = "<b>";
-      title += info->get_title_or_name().c_str();
-      title += "</b>";
-      
-      if(!document->get_table_overview_position(tv->m_table_name, tv->x1, tv->y1))
+      const Glib::ustring table_name = info->get_name();
+     
+      float table_x = 0;
+      float table_y = 0;
+      //Get the x and y position from the document:
+      if(!document->get_table_overview_position(table_name, table_x, table_y))
       {
-        tv->x1 = sizex;
-        tv->y1 = sizey;
-        document->set_table_overview_position(tv->m_table_name, tv->x1, tv->y1);
+        table_x = sizex;
+        table_y = sizey;
+        document->set_table_overview_position(table_name, table_x, table_y);
         m_modified = true;
       }
+ 
+      Document_Glom::type_vecFields fields = document->get_table_fields(table_name);
 
-      tv->x2 = tv->x1 + table_width;
-      tv->y2 = tv->y1 + table_height;
-      
-      Glib::RefPtr<Goocanvas::Item> item_temp = Glib::wrap( goo_canvas_rect_new(table_group->gobj(), tv->x1, tv->y1, table_width, table_height,
-                          "line-width", 2.0, "radius-x", 4.0,
-                          "radius-y", 4.0, "stroke-color", "black",
-                          "fill-color", "white", 0) );
-      
-      item_temp = Glib::wrap( goo_canvas_text_new(table_group->gobj(), title.c_str(),
-                          tv->x1 + 5, tv->y1 + 5, table_width - 10,
-                          GTK_ANCHOR_NORTH_WEST, "font", "sans 10",
-                          "use-markup", true, 0) );
-       item_temp = Glib::wrap( goo_canvas_polyline_new_line(table_group->gobj(), tv->x1, tv->y1 + field_height, tv->x1 + table_width,
-                        tv->y1 + field_height, "stroke-color", "black",
-                        "line-width", 1.0, 0) );
+      Glib::RefPtr<CanvasGroupDbTable> table_group = 
+        CanvasGroupDbTable::create(info->get_name(), info->get_title_or_name(), fields, table_x, table_y);
+      m_group_tables->add_child(table_group);
 
-      int y = field_height;
-      for(Document_Glom::type_vecFields::iterator iter = fields.begin(); iter != fields.end(); ++iter)
-      {
-        sharedptr<Field> field = *iter;
-
-        if(field->get_primary_key())
-        {
-          title = "<u>";
-          title += field->get_title_or_name().c_str();
-          title += "</u>";
-          Glib::RefPtr<Goocanvas::Item> item_temp = Glib::wrap( goo_canvas_text_new(table_group->gobj(), title.c_str(),
-                      tv->x1 + 5, tv->y1 + 5 + y, table_width - 10,
-                      GTK_ANCHOR_NORTH_WEST, "font", "sans 10",
-                              "use-markup", true, 0) );
-        }
-        else
-        {
-          Glib::RefPtr<Goocanvas::Item> item_temp = Glib::wrap( goo_canvas_text_new(table_group->gobj(), field->get_title_or_name().c_str(),
-                              tv->x1 + 5, tv->y1 + 5 + y, table_width - 10,
-                              GTK_ANCHOR_NORTH_WEST, "font", "sans 10", 0) );
-        }
-        
-        y += field_height;
-      }
-      
-      sizex += table_width + 10;
-      max_table_height = table_height > max_table_height ? table_height : max_table_height;
-    }
+      table_group->signal_moved().connect( sigc::bind(
+         sigc::mem_fun(*this, &Dialog_RelationshipsOverview::on_table_moved),
+         table_group) );
+      table_group->signal_show_context().connect( sigc::bind(
+         sigc::mem_fun(*this, &Dialog_RelationshipsOverview::on_table_show_context),
+         table_group) );
     
+      //tv->x2 = tv->x1 + table_width;
+      //tv->y2 = tv->y1 + table_height;
+      
+      sizex += table_group->get_table_width() + 10;
+
+      max_table_height = std::max(max_table_height, table_group->get_table_height());
+    }
+
+    m_canvas.set_bounds(0, 0, sizex, max_table_height * tables.size());
+  }
+}
+   
+void Dialog_RelationshipsOverview::draw_lines()
+{
+  //Remove all current items:
+  while(m_group_lines->get_n_children() > 0)
+    m_group_lines->remove_child(0);
+   
+  Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
+  if(document)
+  { 
+    //Create the lines linking tables to show relationships:
+    Document_Glom::type_listTableInfo tables = document->get_tables();
     for(Document_Glom::type_listTableInfo::iterator iter = tables.begin(); iter != tables.end(); ++iter)
     {
       sharedptr<TableInfo> info = *iter;
+      const Glib::ustring table_name = info->get_name();
 
-      Document_Glom::type_vecRelationships m_relationships = document->get_relationships(info->get_name());
-      Document_Glom::type_vecFields fields = document->get_table_fields(info->get_name());
-      Document_Glom::type_vecFields to_fields;
+      Document_Glom::type_vecRelationships m_relationships = document->get_relationships(table_name);
+      Document_Glom::type_vecFields fields = document->get_table_fields(table_name);
       
-      TableView* tv = m_table_names[info->get_name()];
-      for(Document_Glom::type_vecRelationships::iterator rit = m_relationships.begin(); rit != m_relationships.end(); rit++)
+      for(Document_Glom::type_vecRelationships::const_iterator rit = m_relationships.begin(); rit != m_relationships.end(); rit++)
       {
-        if(document->get_field((*rit)->get_to_table(), (*rit)->get_to_field())->get_primary_key())
-        {
-          for(i = 0; i < fields.size() && fields[i]->get_name() != (*rit)->get_from_field();
-              ++i) {}
-          
-          TableView* tv_to = m_table_names[(*rit)->get_to_table()];
-          to_fields = document->get_table_fields((*rit)->get_to_table());
-          
-          for(j = 0; j < to_fields.size() && to_fields[j]->get_name() != (*rit)->get_to_field();
-              ++j) {}
+        sharedptr<const Relationship> relationship = *rit;
+        if(!relationship)
+          continue;
 
-          tv->m_relationships[std::make_pair(tv_to, j)] = i;
-          if(std::find(tv_to->m_update_on_move.begin(), tv_to->m_update_on_move.end(), tv) == tv_to->m_update_on_move.end())
-            tv_to->m_update_on_move.push_back(tv);
+        Glib::RefPtr<CanvasGroupDbTable> group_from = get_table_group(relationship->get_from_table());
+
+        double from_field_x = 0.0;
+        double from_field_y = 0.0;
+
+        if(group_from)
+        {
+          double temp_x = 0.0;
+          double temp_y = 0.0;
+          group_from->get_xy(temp_x, temp_y);
+        
+          from_field_x = temp_x;
+          from_field_y = temp_y + group_from->get_field_y(relationship->get_from_field());
+        }
+
+        //Only primary keys can be to fields:
+        if(true) //document->get_field(relationship->get_to_table(), relationship->get_to_field())->get_primary_key())
+        {
+          Glib::RefPtr<CanvasGroupDbTable> group_to = get_table_group(relationship->get_to_table());
+
+          double to_field_x = 0.0;
+          double to_field_y = 0.0;
+
+          if(group_to)
+          {
+            double temp_x = 0.0;
+            double temp_y = 0.0;
+            group_to->get_xy(temp_x, temp_y);
+            to_field_x = temp_x;
+            to_field_y = temp_y + group_to->get_field_y(relationship->get_to_field());
+          }
+
+          //Start the line from the right of the from table instead of the left, if the to table is to the right:
+          double extra_line = 0; //An extra horizontal line before the real diagonal line starts. 
+          if(to_field_x > from_field_x)
+          {
+            from_field_x += group_from->get_table_width();
+            extra_line = 20;
+          }
+          else
+          {
+            to_field_x += group_to->get_table_width();
+            extra_line = -20;
+          }
+ 
+          //Create the line:
+          Glib::RefPtr<CanvasLineMovable> line = CanvasLineMovable::create();
+          double points_coordinates[] = {from_field_x, from_field_y,
+            from_field_x + extra_line, from_field_y,
+            to_field_x - extra_line, to_field_y,
+            to_field_x, to_field_y};
+          Goocanvas::Points points(4, points_coordinates);
+          line->property_points() = points;
+          line->property_stroke_color() = "black";
+          line->property_line_width() = 1.0;
+          line->property_start_arrow() = false;
+          line->property_end_arrow() = true;
+          line->property_arrow_width() = 10.0;
+          line->property_arrow_length() = 10.0;
+          line->set_movement_allowed(false, false); //Don't let the user move this by dragging.
+          m_group_lines->add_child(line);
+
+          //Create a text item, showing the name of the relationship on the line:
+          //
+          //Raise or lower the text slightly to make it show above the line when horizontal, 
+          //and to avoid overwriting a relationship in the other direction:
+          //TODO: This is not very clear. Investigate how other systems show this.
+          double y_offset = (from_field_x < to_field_x) ? -10 : +10; 
+          if(from_field_x == to_field_x)
+            y_offset = (from_field_y < to_field_y) ? -10 : +10; 
+
+          const double text_x = (from_field_x + to_field_x) / 2;
+          const double text_y = ((from_field_y + to_field_y) / 2) + y_offset;
+          Glib::RefPtr<CanvasTextMovable> text = CanvasTextMovable::create(relationship->get_title_or_name(),
+            text_x, text_y, -1, //TODO: Calc a suitable width.
+            Gtk::ANCHOR_CENTER);
+          text->property_font() = "sans 10";
+          text->property_use_markup() = true;
+          text->set_movement_allowed(false, false); //Move only as part of the parent group.
+          m_group_lines->add_child(text);
         }
       }
-      update_relationships(tv);
     }
-    
-    goo_canvas_set_bounds(m_canvas.gobj(), 0, 0, sizex, max_table_height);
-    
   }
   else
   {
@@ -270,147 +313,10 @@ void Dialog_RelationshipsOverview::update_model()
   }
 }
 
-void Dialog_RelationshipsOverview::update_relationships(TableView* table_from)
-{
-  Glib::RefPtr<Goocanvas::Item> root = m_canvas.get_root_item();
-  if(!root)
-    return;
-
-  for(TableView::type_vec_canvasitems::iterator iter = table_from->m_lines.begin();  iter != table_from->m_lines.end(); ++iter)
-  {
-    Glib::RefPtr<Goocanvas::Item> item = *iter;
-    if(item)
-      root->remove_child(root->find_child(item));
-  }
-
-  table_from->m_lines.clear();
-  
-  for(TableView::type_map_relationships::iterator iter = table_from->m_relationships.begin();
-      iter != table_from->m_relationships.end(); ++iter)
-  {
-    double x_from, y_from, x_to, y_to = 0;
-
-    TableView* table_to = iter->first.first;
-    if(table_to->x1 - table_from->x1 > 0)
-    {
-      if(table_to->x1 - table_from->x2 < 0)
-      {
-        x_from = table_from->x2;
-        x_to = table_to->x2;
-      }
-      else
-      {
-        x_from = table_from->x2;
-        x_to = table_to->x1;
-      }
-    }
-    else
-    {
-      if(table_from->x1 - table_to->x2 < 0)
-      {
-        x_from = table_from->x1;
-        x_to = table_to->x1;
-      }
-      else
-      {
-        x_from = table_from->x1;
-        x_to = table_to->x2;
-      }
-    }
-    
-    const int field_height = 20;
- 
-    y_from = table_from->y1 + (1.5 + iter->second) * field_height;
-    y_to = table_to->y1 + (1.5 + iter->first.second) * field_height;
-    
-    table_from->m_lines.push_back( Glib::wrap( goo_canvas_polyline_new_line (root->gobj(),
-                                                                  x_from, y_from, x_to, y_to,
-                                                                  "line-width", 1.0,
-                                                                  "stroke-color", "black",
-                                                                  "start-arrow", false,
-                                                                  "end-arrow", true,
-                                                                  "arrow-width", 10.0,
-                                                                  "arrow-length", 10.0, 0)));
-  }
-}
-
 void Dialog_RelationshipsOverview::load_from_document()
 {
-  update_model();
-}
-
-
-bool Dialog_RelationshipsOverview::on_table_group_button_release_event(const Glib::RefPtr<Goocanvas::Item>& target,
-                                                              GdkEventButton* event)
-{
-  m_canvas.pointer_ungrab(target, event->time);
-  m_dragging = false;
-  return true;
-}
-
-bool Dialog_RelationshipsOverview::on_table_group_button_press_event(const Glib::RefPtr<Goocanvas::Item>& target,
-                                                            GdkEventButton* event, const Glib::RefPtr<Goocanvas::Item>& view)
-{
-  
-  
-  switch(event->button)
-  {
-    case 1:
-    {
-      Glib::RefPtr<Goocanvas::Item> item = target;
-      while(item && !item->is_container())
-        item = item->get_parent();
-      
-      item->raise();
-    
-      m_drag_x = event->x;
-      m_drag_y = event->y;
-    
-      Gdk::Cursor fleur(Gdk::FLEUR);
-      m_canvas.pointer_grab(view, Gdk::POINTER_MOTION_MASK | Gdk::BUTTON_RELEASE_MASK,
-                  fleur,
-                  event->time);
-      m_dragging = true;
-      break;
-    }
-    default:
-      break;
-  }
-  
-  return true;
-}
-
-bool Dialog_RelationshipsOverview::on_table_group_motion_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventMotion* event)
-{
-  Glib::RefPtr<Goocanvas::Item> item = target;
-    while(item && !item->is_container())
-      item = item->get_parent();
-    
-  if(item && m_dragging && (event->state & Gdk::BUTTON1_MASK))
-  {
-    double new_x = event->x;
-    double new_y = event->y;
-
-    TableView* tv = m_tables[item];
-    item->translate(new_x - m_drag_x, new_y - m_drag_y);
-    tv->x1 += new_x - m_drag_x;
-    tv->y1 += new_y - m_drag_y;
-    tv->x2 += new_x - m_drag_x;
-    tv->y2 += new_y - m_drag_y;
-      
-    Document_Glom* document = get_document();
-
-    //TODO: Delay this until when we close the window (probably do it in a save_to_document() override),
-    //to prevent us from writing to disk every time something is moved.
-    document->set_table_overview_position(tv->m_table_name, tv->x1, tv->y1);
-    m_modified = true;
-    update_relationships(tv);
-
-    for(TableView::type_vec_tableviews::iterator iter = tv->m_update_on_move.begin(); iter != tv->m_update_on_move.end(); ++iter)
-      update_relationships(*iter);
-  }
-
-  return true;
+  draw_tables();
+  draw_lines();
 }
 
 void Dialog_RelationshipsOverview::on_response(int id)
@@ -426,6 +332,31 @@ void Dialog_RelationshipsOverview::on_menu_file_print()
   print_or_preview(Gtk::PRINT_OPERATION_ACTION_PRINT_DIALOG);
 }
 
+void Dialog_RelationshipsOverview::on_menu_file_page_setup()
+{
+  //Show the page setup dialog, asking it to start with the existing settings:
+  Glib::RefPtr<Gtk::PageSetup> new_page_setup =
+      Gtk::run_page_setup_dialog(*this, m_refPageSetup, m_refSettings);
+
+  //Save the chosen page setup dialog for use when printing, previewing, or
+  //showing the page setup dialog again:
+  m_refPageSetup = new_page_setup;
+}
+
+void Dialog_RelationshipsOverview::on_menu_view_showgrid()
+{
+  if(m_action_showgrid->get_active())
+  {
+    std::cout << "showing" << std::endl;
+    m_canvas.set_grid_gap(40);
+  }
+  else
+  {
+    std::cout << "hiding" << std::endl;
+    m_canvas.remove_grid();
+  }
+}
+
 void Dialog_RelationshipsOverview::on_menu_file_save()
 {
 }
@@ -438,8 +369,8 @@ void Dialog_RelationshipsOverview::print_or_preview(Gtk::PrintOperationAction pr
   print->set_canvas(&m_canvas);
 
   print->set_track_print_status();
-  //print->set_default_page_setup(m_refPageSetup);
-  //print->set_print_settings(m_refSettings);
+  print->set_default_page_setup(m_refPageSetup);
+  print->set_print_settings(m_refSettings);
 
   //print->signal_done().connect(sigc::bind(sigc::mem_fun(*this,
   //                &ExampleWindow::on_printoperation_done), print));
@@ -456,4 +387,129 @@ void Dialog_RelationshipsOverview::print_or_preview(Gtk::PrintOperationAction pr
   }
 }
 
+Glib::RefPtr<CanvasGroupDbTable> Dialog_RelationshipsOverview::get_table_group(const Glib::ustring& table_name)
+{
+  const int count = m_group_tables->get_n_children();
+  for(int i = 0; i < count; ++i)
+  {
+    Glib::RefPtr<Goocanvas::Item> item = m_group_tables->get_child(i);
+    Glib::RefPtr<CanvasGroupDbTable> table_item = Glib::RefPtr<CanvasGroupDbTable>::cast_dynamic(item);
+    if(table_item && (table_item->get_table_name() == table_name))
+    {
+      return table_item;
+    }
+
+  }
+
+  return Glib::RefPtr<CanvasGroupDbTable>();
+}
+
+void Dialog_RelationshipsOverview::on_table_moved(const Glib::RefPtr<CanvasGroupDbTable>& table)
+{
+  Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
+  if(document && table)
+  {
+    //Save the new position in the document:
+    double x = 0;
+    double y = 0;
+    table->get_xy(x, y);
+    document->set_table_overview_position(table->get_table_name(), x, y);
+  }
+
+  //It is probably incredibly inefficient to recreate the lines repeatedly while dragging a table, 
+  //but it seems to work OK, and it makes the code much simpler.
+  //If this is a problem, we should just change the start/end coordinates of any lines connected to the moved table.
+  draw_lines();
+}
+
+void Dialog_RelationshipsOverview::on_table_show_context(guint button, guint32 activate_time, const Glib::RefPtr<CanvasGroupDbTable>& table)
+{
+  if(m_action_edit_fields)
+  {
+    // Disconnect the previous handler, 
+    // and connect a new one, with the correct table as a bound parameter:
+    m_connection_edit_fields.disconnect();
+    m_connection_edit_fields = m_action_edit_fields->signal_activate().connect( 
+      sigc::bind( sigc::mem_fun(*this, &Dialog_RelationshipsOverview::on_context_menu_edit_fields), table ));
+
+    m_connection_edit_relationships.disconnect();
+    m_connection_edit_relationships = m_action_edit_relationships->signal_activate().connect( 
+      sigc::bind( sigc::mem_fun(*this, &Dialog_RelationshipsOverview::on_context_menu_edit_relationships), table ));
+  }
+
+  if(m_context_menu)
+    m_context_menu->popup(button, activate_time);
+
+}
+
+void Dialog_RelationshipsOverview::setup_context_menu()
+{
+  m_context_menu_action_group = Gtk::ActionGroup::create();
+
+  m_context_menu_action_group->add(Gtk::Action::create("ContextMenu", "Context Menu") );
+
+  m_action_edit_fields = Gtk::Action::create("ContextEditFields", _("Edit _Fields"));
+  m_context_menu_action_group->add(m_action_edit_fields);
+
+  m_action_edit_relationships = Gtk::Action::create("ContextEditRelationships", _("Edit _Relationships"));
+  m_context_menu_action_group->add(m_action_edit_relationships);
+
+  m_context_menu_uimanager = Gtk::UIManager::create();
+  m_context_menu_uimanager->insert_action_group(m_context_menu_action_group);
+
+  #ifdef GLIBMM_EXCEPTIONS_ENABLED
+  try
+  {
+  #endif
+    Glib::ustring ui_info = 
+    "<ui>"
+    "  <popup name='ContextMenu'>"
+    "  <menuitem action='ContextEditFields'/>"
+    "  <menuitem action='ContextEditRelationships'/>"
+    "  </popup>"
+    "</ui>";
+
+  #ifdef GLIBMM_EXCEPTIONS_ENABLED
+    m_context_menu_uimanager->add_ui_from_string(ui_info);
+  }
+  catch(const Glib::Error& ex)
+  {
+    std::cerr << "building menus failed: " <<  ex.what();
+  }
+  #else
+  std::auto_ptr<Glib::Error> error;
+  m_context_menu_uimanager->add_ui_from_string(ui_info, error);
+  if(error.get() != NULL)
+  {
+    std::cerr << "building menus failed: " << error->what();
+  }
+  #endif
+
+  //Get the menu:
+  m_context_menu = dynamic_cast<Gtk::Menu*>( m_context_menu_uimanager->get_widget("/ContextMenu") ); 
+}
+
+void Dialog_RelationshipsOverview::on_context_menu_edit_fields(const Glib::RefPtr<CanvasGroupDbTable>& table)
+{
+  App_Glom* pApp = App_Glom::get_application();
+  if(pApp && table)
+  {
+    pApp->do_menu_developer_fields(*this, table->get_table_name());
+    //draw_tables();
+    //draw_lines();
+  }
+}
+
+void Dialog_RelationshipsOverview::on_context_menu_edit_relationships(const Glib::RefPtr<CanvasGroupDbTable>& table)
+{
+  App_Glom* pApp = App_Glom::get_application();
+  if(pApp && table)
+  {
+    pApp->do_menu_developer_relationships(*this, table->get_table_name());
+    //draw_tables();
+    //draw_lines();
+  }
+}
+
 } //namespace Glom
+

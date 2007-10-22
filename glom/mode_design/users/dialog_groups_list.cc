@@ -241,7 +241,7 @@ void Dialog_GroupsList::on_button_group_new()
   Dialog_NewGroup* dialog = 0;
   try
   {
-    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_new_group");
+    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom_developer.glade", "dialog_new_group");
 
     refXml->get_widget_derived("dialog_new_group", dialog);
   }
@@ -300,7 +300,7 @@ void Dialog_GroupsList::on_button_group_users()
       Dialog_UsersList* dialog = 0;
       try
       {
-        Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_users");
+        Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom_developer.glade", "window_users");
 
         refXml->get_widget_derived("window_users", dialog);
       }

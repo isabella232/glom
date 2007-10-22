@@ -28,6 +28,11 @@
 #include "mode_design/users/dialog_groups_list.h"
 #include "dialog_database_preferences.h"
 #include "reports/dialog_layout_report.h"
+#include <glom/mode_design/print_layouts/window_print_layout_edit.h>
+#include <glom/mode_design/dialog_add_related_table.h>
+#include <glom/mode_design/script_library/dialog_script_library.h>
+#include <glom/dialog_new_self_hosted_connection.h>
+#include "relationships_overview/dialog_relationships_overview.h"
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
 #include <glom/libglom/utils.h>
@@ -36,18 +41,7 @@
 #include <glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.h>
 
 #include <glom/reports/report_builder.h>
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-#include <glom/mode_design/dialog_add_related_table.h>
-#include <glom/mode_design/script_library/dialog_script_library.h>
-#endif // !GLOM_ENABLE_CLIENT_ONLY
-
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-#include <glom/dialog_new_self_hosted_connection.h>
-#endif // !GLOM_ENABLE_CLIENT_ONLY
-
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-#include "relationships_overview/dialog_relationships_overview.h"
-#endif // !GLOM_ENABLE_CLIENT_ONLY
+#include <glom/printoperation_printlayout.h>
 
 #ifdef GLOM_ENABLE_MAEMO
 #include <hildonmm/note.h>
@@ -61,6 +55,85 @@
 
 namespace Glom
 {
+
+template<class T_Widget>
+void get_glade_widget_derived_with_warning(const Glib::ustring& id, T_Widget*& widget)
+{
+  Glib::RefPtr<Gnome::Glade::Xml> refXml;
+
+  #ifdef GLIBMM_EXCEPTIONS_ENABLED
+  try
+  {
+    refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", id);
+  }
+  catch(const Gnome::Glade::XmlError& ex)
+  {
+    std::cerr << ex.what() << std::endl;
+  }
+#else
+  error.reset(NULL);
+  refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", id, "", error);
+  if(error.get()) std::cerr << error->what() << std::endl;
+#endif
+
+  if(refXml)
+  {
+    refXml->get_widget_derived(id, widget);
+  }
+}
+
+template<class T_Widget>
+void get_glade_developer_widget_derived_with_warning(const Glib::ustring& id, T_Widget*& widget)
+{
+  Glib::RefPtr<Gnome::Glade::Xml> refXml;
+
+  #ifdef GLIBMM_EXCEPTIONS_ENABLED
+  try
+  {
+    refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom_developer.glade", id);
+  }
+  catch(const Gnome::Glade::XmlError& ex)
+  {
+    std::cerr << ex.what() << std::endl;
+  }
+#else
+  error.reset(NULL);
+  refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom_developer.glade", id, "", error);
+  if(error.get()) std::cerr << error->what() << std::endl;
+#endif
+
+  if(refXml)
+  {
+    refXml->get_widget_derived(id, widget);
+  }
+}
+
+template<class T_Widget>
+void get_glade_widget_with_warning(const Glib::ustring& id, T_Widget*& widget)
+{
+  Glib::RefPtr<Gnome::Glade::Xml> refXml;
+
+  #ifdef GLIBMM_EXCEPTIONS_ENABLED
+  try
+  {
+    refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", id);
+  }
+  catch(const Gnome::Glade::XmlError& ex)
+  {
+    std::cerr << ex.what() << std::endl;
+  }
+#else
+  error.reset(NULL);
+  refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", id, "", error);
+  if(error.get()) std::cerr << error->what() << std::endl;
+#endif
+
+  if(refXml)
+  {
+    refXml->get_widget(id, widget);
+  }
+}
+
 
 Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
 : PlaceHolder(cobject, refGlade),
@@ -77,21 +150,21 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
   m_pButton_FindAll(0),
   m_pBox_Mode(0),
   m_pBox_Tables(0),
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-  m_pBox_Reports(0),
-#endif // !GLOM_ENABLE_CLIENT_ONLY
   m_pDialog_Tables(0),
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   m_pDialog_Reports(0),
+  m_pDialogLayoutReport(0),
+  m_pBox_Reports(0),
+  m_pDialog_PrintLayouts(0),
+  m_pDialogLayoutPrint(0),
+  m_pBox_PrintLayouts(0),
   m_pDialog_Fields(0),
   m_pDialog_Relationships(0),
   m_dialog_addrelatedtable(0),
+  m_dialog_relationships_overview(0),
 #endif // !GLOM_ENABLE_CLIENT_ONLY
   m_pDialogConnection(0),
   m_pDialogConnectionFailed(0)
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-  ,m_pDialogLayoutReport(0)
-#endif // !GLOM_ENABLE_CLIENT_ONLY
 {
   //Load widgets from glade file:
   refGlade->get_widget("label_name", m_pLabel_Name);
@@ -122,153 +195,31 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
   //m_pLabel_Mode->set_text(_("No database selected.\n Use the Navigation menu, or open a previous Glom document."));
 
   //Load the Glade file and instantiate its widgets to get the dialog stuff:
-#ifndef GLIBMM_EXCEPTIONS_ENABLED
-  std::auto_ptr<Gnome::Glade::XmlError> error;
-#endif
-  Glib::RefPtr<Gnome::Glade::Xml> refXml;
+  get_glade_widget_derived_with_warning("dialog_connection", m_pDialogConnection);
 
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-  try
-  {
-    refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_connection");
-  }
-  catch(const Gnome::Glade::XmlError& ex)
-  {
-    std::cerr << ex.what() << std::endl;
-  }
-#else
-  refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_connection", "", error);
-  if(error.get()) std::cerr << error->what() << std::endl;
-#endif
+  get_glade_widget_derived_with_warning("box_navigation_tables", m_pBox_Tables);
+  m_pDialog_Tables = new Dialog_Glom(m_pBox_Tables);
+  m_pDialog_Tables->signal_hide().connect(sigc::mem_fun(*this, &Frame_Glom::on_dialog_tables_hide));
+ 
+  get_glade_developer_widget_derived_with_warning("box_reports", m_pBox_Reports);
+  m_pDialog_Reports = new Dialog_Glom(m_pBox_Reports);
 
-  if(refXml)
-  {
-    refXml->get_widget_derived("dialog_connection", m_pDialogConnection);
-    refXml.clear();
-  }
+  get_glade_developer_widget_derived_with_warning("window_report_layout", m_pDialogLayoutReport);
+  add_view(m_pDialogLayoutReport);
+  m_pDialogLayoutReport->signal_hide().connect( sigc::mem_fun(*this, &Frame_Glom::on_dialog_layout_report_hide) );
 
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-  try
-  {
-    refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "box_navigation_tables");
-  }
-  catch(const Gnome::Glade::XmlError& ex)
-  {
-    std::cerr << ex.what() << std::endl;
-  }
-#else
-  error.reset(NULL);
-  refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "box_navigation_tables", "", error);
-  if(error.get()) std::cerr << error->what() << std::endl;
-#endif
+  get_glade_developer_widget_derived_with_warning("box_print_layouts", m_pBox_PrintLayouts);
+  m_pDialog_PrintLayouts = new Dialog_Glom(m_pBox_PrintLayouts);
 
-  if(refXml)
-  {
-    refXml->get_widget_derived("box_navigation_tables", m_pBox_Tables);
-    m_pDialog_Tables = new Dialog_Glom(m_pBox_Tables);
+  get_glade_developer_widget_derived_with_warning("window_print_layout_edit", m_pDialogLayoutPrint);
+  add_view(m_pDialogLayoutPrint);
+  m_pDialogLayoutPrint->signal_hide().connect( sigc::mem_fun(*this, &Frame_Glom::on_dialog_layout_print_hide) );
 
-    //Respond to window close:
-    m_pDialog_Tables->signal_hide().connect(sigc::mem_fun(*this, &Frame_Glom::on_dialog_tables_hide));
-    refXml.clear();
-  }
+  get_glade_developer_widget_derived_with_warning("window_design", m_pDialog_Relationships);
+  m_pDialog_Relationships->set_title("Relationships");
+  m_pDialog_Relationships->signal_hide().connect( sigc::mem_fun(*this, &Frame_Glom::on_developer_dialog_hide));
 
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-  try
-  {
-    refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "box_reports");
-  }
-  catch(const Gnome::Glade::XmlError& ex)
-  {
-    std::cerr << ex.what() << std::endl;
-  }
-#else
-  error.reset(NULL);
-  refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "box_reports", "", error);
-  if(error.get()) std::cerr << error->what() << std::endl;
-#endif
-
-  if(refXml)
-  {
-    refXml->get_widget_derived("box_reports", m_pBox_Reports);
-    m_pDialog_Reports = new Dialog_Glom(m_pBox_Reports);
-    //add_view(m_pBox_Reports);
-    refXml.clear();
-  }
-
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-  try
-  {
-    refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_report_layout");
-  }
-  catch(const Gnome::Glade::XmlError& ex)
-  {
-    std::cerr << ex.what() << std::endl;
-  }
-#else
-  error.reset(NULL);
-  refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_report_layout", "", error);
-  if(error.get()) std::cerr << error->what() << std::endl;
-#endif
-
-  if(refXml)
-  {
-    refXml->get_widget_derived("window_report_layout", m_pDialogLayoutReport);
-
-    add_view(m_pDialogLayoutReport);
-    m_pDialogLayoutReport->signal_hide().connect( sigc::mem_fun(*this, &Frame_Glom::on_dialog_layout_report_hide) );
-
-    m_pDialog_Reports = new Dialog_Glom(m_pBox_Reports);
-    m_pDialog_Reports->signal_hide().connect( sigc::mem_fun(*this, &Frame_Glom::on_dialog_reports_hide) );
-    refXml.clear();
-  }
-
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-  try
-  {
-    refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_design");
-  }
-  catch(const Gnome::Glade::XmlError& ex)
-  {
-    std::cerr << ex.what() << std::endl;
-  }
-#else
-  error.reset(NULL);
-  refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_design", "", error);
-  if(error.get()) std::cerr << error->what() << std::endl;
-#endif
-
-  if(refXml)
-  {
-    refXml->get_widget_derived("window_design", m_pDialog_Relationships);
-    m_pDialog_Relationships->set_title("Relationships");
-    m_pDialog_Relationships->signal_hide().connect( sigc::mem_fun(*this, &Frame_Glom::on_developer_dialog_hide));
-    refXml.clear();
-  }
-#endif // !GLOM_ENABLE_CLIENT_ONLY
-
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-  try
-  {
-    refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_error_connection");
-  }
-  catch(const Gnome::Glade::XmlError& ex)
-  {
-    std::cerr << ex.what() << std::endl;
-  }
-#else
-  error.reset(NULL);
-  refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_error_connection", "", error);
-  if(error.get()) std::cerr << error->what() << std::endl;
-#endif
-
-  if(refXml)
-  {
-    refXml->get_widget("dialog_error_connection", m_pDialogConnectionFailed);
-    refXml.clear();
-  }
-
+  get_glade_widget_with_warning("dialog_error_connection", m_pDialogConnectionFailed);
 
   m_Mode = MODE_None;
   m_Mode_Previous = MODE_None;
@@ -290,6 +241,12 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
   m_pBox_Reports->show_all();
 
   m_pBox_Reports->signal_selected.connect(sigc::mem_fun(*this, &Frame_Glom::on_box_reports_selected));
+  
+  m_pDialog_PrintLayouts->get_vbox()->pack_start(*m_pBox_PrintLayouts);
+  m_pDialog_PrintLayouts->set_default_size(300, 400);
+  m_pBox_PrintLayouts->show_all();
+
+  m_pBox_PrintLayouts->signal_selected.connect(sigc::mem_fun(*this, &Frame_Glom::on_box_print_layouts_selected));
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   m_Notebook_Find.signal_find_criteria.connect(sigc::mem_fun(*this, &Frame_Glom::on_notebook_find_criteria));
@@ -303,6 +260,7 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
   add_view(m_pBox_Tables);
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   add_view(m_pBox_Reports);
+  add_view(m_pBox_PrintLayouts);
   add_view(m_pDialog_Relationships); //Also a composite view.
 #endif // !GLOM_ENABLE_CLIENT_ONLY
   add_view(m_pDialogConnection); //Also a composite view.
@@ -315,7 +273,7 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
   // Don't show the document name on maemo. The label is on top of the window,
   // and the document name is already shown in the window title (note that
   // there is not even a menu between them as in the non-maemo version). This
-  // looks a bit strange and takes unnecessarily vertical screen space.
+  // looks a bit strange and takes vertical screen space.
   m_pLabel_Name->hide();
 #endif
 }
@@ -323,9 +281,7 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
 Frame_Glom::~Frame_Glom()
 {
   remove_view(m_pBox_Tables);
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-  remove_view(m_pBox_Reports);
-#endif // !GLOM_ENABLE_CLIENT_ONLY
+
   remove_view(&m_Notebook_Data); //Also a composite view.
   remove_view(&m_Notebook_Find); //Also a composite view.
 
@@ -349,6 +305,9 @@ Frame_Glom::~Frame_Glom()
   }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
+  remove_view(m_pBox_Reports);
+  remove_view(m_pBox_PrintLayouts);
+
   if(m_pDialog_Relationships)
   {
     remove_view(m_pDialog_Relationships);
@@ -381,6 +340,13 @@ Frame_Glom::~Frame_Glom()
     remove_view(m_dialog_addrelatedtable);
     delete m_dialog_addrelatedtable;
     m_dialog_addrelatedtable = 0;
+  }
+
+  if(m_dialog_relationships_overview)
+  {
+    remove_view(m_dialog_relationships_overview);
+    delete m_dialog_relationships_overview;
+    m_dialog_relationships_overview = 0;
   }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 }
@@ -563,8 +529,9 @@ void Frame_Glom::show_table(const Glib::ustring& table_name, const Gnome::Gda::V
 
   show_table_title();
 
-  //List the reports in the menu:
+  //List the reports and print layouts in the menus:
   pApp->fill_menu_reports(table_name);
+  pApp->fill_menu_print_layouts(table_name);
 
   //show_all();
 }
@@ -796,6 +763,19 @@ void Frame_Glom::on_menu_file_print()
    notebook_current->do_menu_file_print();
 }
 
+void Frame_Glom::on_menu_file_print_edit_layouts()
+{
+  if(get_document()->get_connection_database().empty())
+  {
+    alert_no_table();
+  }
+  else
+  {
+    m_pBox_PrintLayouts->init_db_details(m_table_name);
+    m_pDialog_PrintLayouts->show();
+  }
+}
+
 void Frame_Glom::on_menu_Mode_Data()
 {
   if(set_mode(MODE_Data))
@@ -830,36 +810,15 @@ void Frame_Glom::on_menu_Mode_Find()
   }
 }
 
-/*
-void Frame_Glom::on_menu_Navigate_Database()
-{
-  do_menu_Navigate_Database();
-}
-
-void Frame_Glom::do_menu_Navigate_Database(bool bUseList)
-{
-  m_pBox_Databases->set_use_list(bUseList);
-  m_pBox_Databases->load_from_document();
-
-  //guint dialog_height = 400;
-  bool bAutoShrink = false;
-  if(!bUseList)
-    bAutoShrink = true;
-
-  //m_pDialog_Databases->set_default_size(300, 400);
-
-  //m_pDialog_Databases->set_policy(false, true, bAutoShrink);  //TPDO_port
-  m_pDialog_Databases->show();
-  //m_frame.remove();
-  //m_frame.add(*m_pBox_Databases);
-  //m_frame.show_all();
-}
-*/
-
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-void Frame_Glom::on_menu_Tables_EditReports()
+void Frame_Glom::on_menu_Reports_EditReports()
 {
   on_menu_developer_reports();
+}
+
+void Frame_Glom::on_menu_File_EditPrintLayouts()
+{
+  on_menu_developer_print_layouts();
 }
 
 void Frame_Glom::on_menu_Tables_EditTables()
@@ -880,7 +839,7 @@ void Frame_Glom::on_menu_Tables_AddRelatedTable()
 
   try
   {
-    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_add_related_table");
+    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom_developer.glade", "dialog_add_related_table");
 
     refXml->get_widget_derived("dialog_add_related_table", m_dialog_addrelatedtable);
   }
@@ -1309,7 +1268,7 @@ void Frame_Glom::on_menu_developer_database_preferences()
   Dialog_Database_Preferences* dialog = 0;
   try
   {
-    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_database_preferences");
+    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom_developer.glade", "dialog_database_preferences");
     refXml->get_widget_derived("dialog_database_preferences", dialog);
     if(dialog)
     {
@@ -1340,6 +1299,30 @@ void Frame_Glom::on_menu_developer_fields()
 
 }
 
+void Frame_Glom::do_menu_developer_fields(Gtk::Window& parent, const Glib::ustring table_name)
+{
+  if(!m_pDialog_Fields)
+  {
+    try
+    {
+      Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom_developer.glade", "window_design");
+
+      refXml->get_widget_derived("window_design", m_pDialog_Fields);
+      m_pDialog_Fields->signal_hide().connect( sigc::mem_fun(*this, &Frame_Glom::on_developer_dialog_hide));
+    }
+    catch(const Gnome::Glade::XmlError& ex)
+    {
+      std::cerr << ex.what() << std::endl;
+    }
+
+    add_view(m_pDialog_Fields);
+  }
+
+  m_pDialog_Fields->set_transient_for(parent);
+  m_pDialog_Fields->init_db_details(table_name);
+  m_pDialog_Fields->show();
+}
+
 void Frame_Glom::do_menu_developer_fields(Gtk::Window& parent)
 {
   //Check that there is a table to show:
@@ -1349,56 +1332,46 @@ void Frame_Glom::do_menu_developer_fields(Gtk::Window& parent)
   }
   else
   {
-    if(!m_pDialog_Fields)
-    {
-       try
-       {
-         Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_design");
-
-         refXml->get_widget_derived("window_design", m_pDialog_Fields);
-         m_pDialog_Fields->signal_hide().connect( sigc::mem_fun(*this, &Frame_Glom::on_developer_dialog_hide));
-       }
-       catch(const Gnome::Glade::XmlError& ex)
-       {
-         std::cerr << ex.what() << std::endl;
-       }
-
-       add_view(m_pDialog_Fields);
-    }
-
-    m_pDialog_Fields->set_transient_for(parent);
-    m_pDialog_Fields->init_db_details(m_table_name);
-    m_pDialog_Fields->show();
+    do_menu_developer_fields(parent, m_table_name);
   }
 }
 
 
 void Frame_Glom::on_menu_developer_relationships_overview()
 {
-  Dialog_RelationshipsOverview* dialog = 0;
-  try
+  if(!m_dialog_relationships_overview)
   {
-    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_relationships_overview");
-    refXml->get_widget_derived("dialog_relationships_overview", dialog);
-    if(dialog)
+    try
     {
-      dialog->set_transient_for(*(get_app_window()));
-      add_view(dialog);
-      dialog->load_from_document();
-
-      Glom::Utils::dialog_run_with_help(dialog, "dialog_relationships_overview");
-
-      remove_view(dialog);
-      delete dialog;
+      Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom_developer.glade", "dialog_relationships_overview");
+      refXml->get_widget_derived("dialog_relationships_overview", m_dialog_relationships_overview);
+      add_view(m_dialog_relationships_overview);
+    }
+    catch(const Gnome::Glade::XmlError& ex)
+    {
+      std::cerr << ex.what() << std::endl;
     }
   }
 
-  catch(const Gnome::Glade::XmlError& ex)
+  if(m_dialog_relationships_overview)
   {
-    std::cerr << ex.what() << std::endl;
+    m_dialog_relationships_overview->set_transient_for(*(get_app_window()));
+    m_dialog_relationships_overview->load_from_document();
+
+    Glom::Utils::dialog_run_with_help(m_dialog_relationships_overview, "dialog_relationships_overview");
+
+    remove_view(m_dialog_relationships_overview);
+    delete m_dialog_relationships_overview;
+    m_dialog_relationships_overview = 0;
   }
 }
 
+void Frame_Glom::do_menu_developer_relationships(Gtk::Window& parent, const Glib::ustring table_name)
+{
+  m_pDialog_Relationships->set_transient_for(parent);
+  m_pDialog_Relationships->init_db_details(table_name);
+  m_pDialog_Relationships->show();
+}
 
 void Frame_Glom::on_menu_developer_relationships()
 {
@@ -1409,9 +1382,7 @@ void Frame_Glom::on_menu_developer_relationships()
   }
   else
   {
-    m_pDialog_Relationships->set_transient_for(*get_app_window());
-    m_pDialog_Relationships->init_db_details(m_table_name);
-    m_pDialog_Relationships->show();
+    do_menu_developer_relationships(*get_app_window(), m_table_name);
   }
 }
 
@@ -1420,7 +1391,7 @@ void Frame_Glom::on_menu_developer_users()
   Dialog_GroupsList* dialog = 0;
   try
   {
-    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_groups");
+    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom_developer.glade", "window_groups");
 
     refXml->get_widget_derived("window_groups", dialog);
   }
@@ -1468,18 +1439,29 @@ void Frame_Glom::on_menu_developer_reports()
   }
   else
   {
-    //Gtk::MessageDialog dialog("This is not working yet. It's just some test code."); //TODO: Remove this.
-    //dialog.run();
-
     m_pBox_Reports->init_db_details(m_table_name);
     m_pDialog_Reports->show();
+  }
+}
+
+void Frame_Glom::on_menu_developer_print_layouts()
+{
+  //Check that there is a table to show:
+  if(m_table_name.empty())
+  {
+    alert_no_table(); //TODO: Disable the menu item instead.
+  }
+  else
+  {
+    m_pBox_PrintLayouts->init_db_details(m_table_name);
+    m_pDialog_PrintLayouts->show();
   }
 }
 
 void Frame_Glom::on_menu_developer_script_library()
 {
   Dialog_ScriptLibrary* dialog = 0;
-  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_script_library");
+  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom_developer.glade", "dialog_script_library");
   refXml->get_widget_derived("dialog_script_library", dialog);
   dialog->set_transient_for(*(get_app_window()));
   add_view(dialog); //Give it access to the document.
@@ -1489,9 +1471,7 @@ void Frame_Glom::on_menu_developer_script_library()
   remove_view(dialog);
   delete dialog;
 }
-#endif // !GLOM_ENABLE_CLIENT_ONLY
 
-#ifndef GLOM_ENABLE_CLIENT_ONLY
 void Frame_Glom::on_box_reports_selected(const Glib::ustring& report_name)
 {
   m_pDialog_Reports->hide();
@@ -1499,13 +1479,27 @@ void Frame_Glom::on_box_reports_selected(const Glib::ustring& report_name)
   sharedptr<Report> report = get_document()->get_report(m_table_name, report_name);
   if(report)
   {
+    m_pDialogLayoutReport->set_transient_for(*get_app_window());
     m_pDialogLayoutReport->set_report(m_table_name, report);
     m_pDialogLayoutReport->show();
   }
 }
-#endif // !GLOM_ENABLE_CLIENT_ONLY
 
-#ifndef GLOM_ENABLE_CLIENT_ONLY
+
+
+void Frame_Glom::on_box_print_layouts_selected(const Glib::ustring& print_layout_name)
+{
+  m_pDialog_PrintLayouts->hide();
+
+  sharedptr<PrintLayout> print_layout = get_document()->get_print_layout(m_table_name, print_layout_name);
+  if(print_layout)
+  {
+    m_pDialogLayoutPrint->set_transient_for(*get_app_window());
+    m_pDialogLayoutPrint->set_print_layout(m_table_name, print_layout);
+    m_pDialogLayoutPrint->show();
+  }
+}
+
 void Frame_Glom::on_developer_dialog_hide()
 {
   //The dababase structure might have changed, so refresh the data view:
@@ -1514,6 +1508,10 @@ void Frame_Glom::on_developer_dialog_hide()
   //TODO: This is a bit of a hack. It's not always useful to do this:
   if(m_dialog_addrelatedtable)
     m_dialog_addrelatedtable->set_fields(m_table_name);
+
+  //Update the display. TODO: Shouldn't this happen automatically via the view?
+  if(m_dialog_relationships_overview)
+    m_dialog_relationships_overview->load_from_document();
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
@@ -1552,7 +1550,7 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
     try
     {
-      refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_new_self_hosted_connection");
+      refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom_developer.glade", "dialog_new_self_hosted_connection");
     }
     catch(const Gnome::Glade::XmlError& ex)
     {
@@ -1561,7 +1559,7 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
     }
 #else
     std::auto_ptr<Gnome::Glade::XmlError> error;
-    refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_new_self_hosted_connection", error);
+    refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom_developer.glade", "dialog_new_self_hosted_connection", error);
     if(error.get())
     {
       std::cerr << error->what() << std::endl;
@@ -1870,7 +1868,7 @@ bool Frame_Glom::create_database(const Glib::ustring& database_name, const Glib:
       try
       {
          // TODO: Tell the user what has gone wrong (ex.what())
-        Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_error_create_database");
+        Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom_developer.glade", "dialog_error_create_database");
         refXml->get_widget("dialog_error_create_database", dialog);
         dialog->set_transient_for(*pWindowApp);
         Glom::Utils::dialog_run_with_help(dialog, "dialog_error_create_database");
@@ -1970,16 +1968,62 @@ void Frame_Glom::on_menu_report_selected(const Glib::ustring& report_name)
   report_builder.report_build(found_set, report, get_app_window()); //TODO: Use found set's where_clause.
 }
 
+void Frame_Glom::on_menu_print_layout_selected(const Glib::ustring& print_layout_name)
+{
+  const Privileges table_privs = Privs::get_current_privs(m_table_name);
+
+  //Don't try to print tables that the user can't view.
+  if(!table_privs.m_view)
+  {
+    //TODO: Warn the user.
+    return;
+  }
+
+  Document_Glom* document = get_document();
+  sharedptr<PrintLayout> print_layout = document->get_print_layout(m_table_name, print_layout_name);
+  if(!print_layout)
+    return;
+
+  Canvas_PrintLayout canvas;
+  canvas.set_print_layout(m_table_name, print_layout);
+
+  //Create a new PrintOperation with our PageSetup and PrintSettings:
+  //(We use our derived PrintOperation class)
+  Glib::RefPtr<PrintOperationPrintLayout> print = PrintOperationPrintLayout::create();
+  print->set_canvas(&canvas);
+
+  print->set_track_print_status();
+  print->set_default_page_setup(print_layout->get_page_setup());
+  //print->set_print_settings(m_refSettings);
+
+  //print->signal_done().connect(sigc::bind(sigc::mem_fun(*this,
+  //                &ExampleWindow::on_printoperation_done), print));
+
+  try
+  {
+    App_Glom* pApp = dynamic_cast<App_Glom*>(get_app_window());
+    if(pApp)
+      print->run(Gtk::PRINT_OPERATION_ACTION_PRINT_DIALOG, *pApp);
+  }
+  catch (const Gtk::PrintError& ex)
+  {
+    //See documentation for exact Gtk::PrintError error codes.
+    std::cerr << "An error occurred while trying to run a print operation:"
+        << ex.what() << std::endl;
+  }
+}
+
+
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 void Frame_Glom::on_dialog_layout_report_hide()
 {
   Document_Glom* document = get_document();
 
-  if(true) //m_pDialogLayoutReport->get_modified())
+  if(document && true) //m_pDialogLayoutReport->get_modified())
   {
     const Glib::ustring original_name = m_pDialogLayoutReport->get_original_report_name();
     sharedptr<Report> report = m_pDialogLayoutReport->get_report();
-    if(original_name != report->get_name())
+    if(report && (original_name != report->get_name()))
       document->remove_report(m_table_name, original_name);
 
     document->set_report(m_table_name, report);
@@ -1990,15 +2034,41 @@ void Frame_Glom::on_dialog_layout_report_hide()
   if(pApp)
     pApp->fill_menu_reports(m_table_name);
 }
-#endif // !GLOM_ENABLE_CLIENT_ONLY
 
-#ifndef GLOM_ENABLE_CLIENT_ONLY
+void Frame_Glom::on_dialog_layout_print_hide()
+{
+  Document_Glom* document = get_document();
+
+  if(document && true) //m_pDialogLayoutReport->get_modified())
+  {
+    const Glib::ustring original_name = m_pDialogLayoutPrint->get_original_name();
+    sharedptr<PrintLayout> print_layout = m_pDialogLayoutPrint->get_print_layout();
+    if(print_layout && (original_name != print_layout->get_name()))
+      document->remove_report(m_table_name, original_name);
+
+    document->set_print_layout(m_table_name, print_layout);
+  }
+
+  //Update the reports menu:
+  App_Glom* pApp = dynamic_cast<App_Glom*>(get_app_window());
+  if(pApp)
+    pApp->fill_menu_print_layouts(m_table_name);
+}
+
 void Frame_Glom::on_dialog_reports_hide()
 {
   //Update the reports menu:
   App_Glom* pApp = dynamic_cast<App_Glom*>(get_app_window());
   if(pApp)
     pApp->fill_menu_reports(m_table_name);
+}
+
+void Frame_Glom::on_dialog_print_layouts_hide()
+{
+  //Update the reports menu:
+  App_Glom* pApp = dynamic_cast<App_Glom*>(get_app_window());
+  if(pApp)
+    pApp->fill_menu_print_layouts(m_table_name);
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 

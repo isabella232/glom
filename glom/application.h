@@ -64,6 +64,10 @@ public:
 
   void fill_menu_tables();
   void fill_menu_reports(const Glib::ustring& table_name);
+  void fill_menu_print_layouts(const Glib::ustring& table_name);
+
+  void do_menu_developer_fields(Gtk::Window& parent, const Glib::ustring table_name);
+  void do_menu_developer_relationships(Gtk::Window& parent, const Glib::ustring table_name);
 
   ///Whether to show the generated SQL queries on stdout, for debugging.
   bool get_show_sql_debug() const;
@@ -135,9 +139,9 @@ protected:
   Window_Translations* m_window_translations;
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-  Glib::RefPtr<Gtk::ActionGroup> m_refNavTablesActionGroup, m_refNavReportsActionGroup;
-  type_listActions m_listNavTableActions, m_listNavReportActions;
-  Gtk::UIManager::ui_merge_id m_menu_tables_ui_merge_id, m_menu_reports_ui_merge_id;
+  Glib::RefPtr<Gtk::ActionGroup> m_refNavTablesActionGroup, m_refNavReportsActionGroup, m_refNavPrintLayoutsActionGroup;
+  type_listActions m_listNavTableActions, m_listNavReportActions, m_listNavPrintLayoutActions;
+  Gtk::UIManager::ui_merge_id m_menu_tables_ui_merge_id, m_menu_reports_ui_merge_id, m_menu_print_layouts_ui_merge_id;
 
   //Set these before calling offer_saveas() (which uses ui_file_select_save()), and clear it afterwards.
   bool m_ui_save_extra_showextras;

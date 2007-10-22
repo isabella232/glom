@@ -38,7 +38,7 @@ Box_Data_List::Box_Data_List()
   m_layout_name = "list";
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_data_layout"); //TODO: Use a generic layout dialog?
+  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom_developer.glade", "window_data_layout"); //TODO: Use a generic layout dialog?
   if(refXml)
   {
     Dialog_Layout_List* dialog = 0;
