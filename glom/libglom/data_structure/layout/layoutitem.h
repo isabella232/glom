@@ -63,6 +63,12 @@ public:
   /// This is used only for the print layouts.
   void set_print_layout_position(double x, double y, double width, double height);
 
+  /// This is used only for the print layouts.
+  void set_print_layout_text_size(double points);
+
+  /// This is used only for the print layouts.
+  double get_print_layout_text_size() const;
+
   guint m_sequence;
   //bool m_hidden;
 
@@ -91,6 +97,9 @@ protected:
     double m_y;
     double m_width;
     double m_height;
+
+    //Used only for items that contain text:
+    double m_text_size; //In points.
   };
   
   mutable PrintLayoutPosition* m_positions;

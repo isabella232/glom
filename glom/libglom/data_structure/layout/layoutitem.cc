@@ -27,7 +27,8 @@ LayoutItem::PrintLayoutPosition::PrintLayoutPosition()
 : m_x(0),
   m_y(0),
   m_width(0),
-  m_height(0)
+  m_height(0),
+  m_text_size(0)
 {
 }
 
@@ -35,7 +36,8 @@ LayoutItem::PrintLayoutPosition::PrintLayoutPosition(const LayoutItem::PrintLayo
 : m_x(src.m_x),
   m_y(src.m_y),
   m_width(src.m_width),
-  m_height(src.m_height)
+  m_height(src.m_height),
+  m_text_size(src.m_text_size)
 {
 }
 
@@ -45,6 +47,7 @@ LayoutItem::PrintLayoutPosition& LayoutItem::PrintLayoutPosition::operator=(cons
   m_y = src.m_y;
   m_width = src.m_width;
   m_height = src.m_height;
+  m_text_size = src.m_text_size;
 
   return *this;
 }
@@ -54,7 +57,8 @@ bool LayoutItem::PrintLayoutPosition::operator==(const LayoutItem::PrintLayoutPo
   return (m_x == src.m_x) &&
          (m_y == src.m_y) &&
          (m_width == src.m_width) &&
-         (m_height == src.m_height);
+         (m_height == src.m_height) &&
+         (m_text_size == src.m_text_size);
 }
 
 
@@ -157,6 +161,12 @@ void LayoutItem::set_display_width(guint value)
   m_display_width = value;
 }
 
+void LayoutItem::instantiate_positions() const
+{
+  if(!m_positions)
+    m_positions = new PrintLayoutPosition();
+}
+
 void LayoutItem::get_print_layout_position(double& x, double& y, double& width, double& height) const
 {
   if(!m_positions)
@@ -188,10 +198,22 @@ void LayoutItem::set_print_layout_position(double x, double y, double width, dou
   m_positions->m_height = height;
 }
 
-void LayoutItem::instantiate_positions() const
+void LayoutItem::set_print_layout_text_size(double points)
+{
+  if(!m_positions && (points == 0))
+    return; //Don't bother instantiating the positions instance if everything is still 0.
+ 
+  instantiate_positions();
+
+  m_positions->m_text_size = points;
+}
+
+double LayoutItem::get_print_layout_text_size() const
 {
   if(!m_positions)
-    m_positions = new PrintLayoutPosition();
+    return 0.0;
+  else
+    return m_positions->m_text_size;
 }
 
 } //namespace Glom

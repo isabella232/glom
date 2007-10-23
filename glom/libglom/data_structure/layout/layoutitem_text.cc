@@ -83,5 +83,6 @@ void LayoutItem_Text::set_text(const Glib::ustring& text)
   m_text->set_title(text);
 }
 
+
 } //namespace Glom
 

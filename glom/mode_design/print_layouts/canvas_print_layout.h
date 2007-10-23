@@ -46,6 +46,9 @@ public:
 
   void set_page_setup(const Glib::RefPtr<Gtk::PageSetup>& page_setup);
   Glib::RefPtr<Gtk::PageSetup> get_page_setup();
+
+  void set_zoom_percent(guint percent);
+  guint get_zoom_percent() const;
  
   //Override:
   void add_item(const Glib::RefPtr<CanvasLayoutItem> item);
@@ -78,6 +81,7 @@ protected:
   Glib::RefPtr<CanvasLayoutItem> m_context_item; //The selected item when showing the context menu.,
 
   Glib::RefPtr<Gtk::PageSetup> m_page_setup;
+
 };
 
 } //namespace Glom

@@ -31,7 +31,7 @@ namespace Glom
 
 const double manipulator_corner_size = 4;
 const gchar* manipulator_corner_fill_color = "black";
-const double manipulator_stroke_width = 2.0;
+const double manipulator_stroke_width = 1.0; //mm (assuming that the canvas uses mm.
 const gchar* manipulator_stroke_color = "black";
 
 CanvasGroupResizable::CanvasGroupResizable()

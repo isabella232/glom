@@ -57,10 +57,19 @@ public:
   virtual void get_width_height(double& width, double& height) const;
   virtual void set_width_height(double width, double height);
 
+  /** Use this instead of property_text() (from the base class),
+   * so that the desired points size will be used.
+   */
+  void set_text(const Glib::ustring& text);
+
+  void set_text_size(double points);
+
 protected:
   virtual Goocanvas::Canvas* get_parent_canvas_widget();
 
   virtual void snap_position(double& x, double& y) const;
+
+  void reconstruct_markup();
 
   //What corner is considered when snapping to a grid while moving:
   Corners m_snap_corner;
@@ -68,6 +77,10 @@ protected:
   //Goocanvas does not yet allow us to truncate vertically, and a greater-than-necessary height would have no meaning,
   //but we need to store a height just so that get==set.
   double m_fake_height; 
+
+  //We rememeber this so we can reconstruct the pango markup when the text size changes:
+  Glib::ustring m_text;
+  double m_text_size; //points.
 };
 
 } //namespace Glom

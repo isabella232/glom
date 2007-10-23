@@ -31,6 +31,13 @@ Canvas_PrintLayout::Canvas_PrintLayout()
 : m_modified(false)
 {
   setup_context_menu();
+
+  //Use millimeters, because that's something that is meaningful to the user,
+  //and we can use it with Gtk::PageSetup too:
+  property_units() = Gtk::UNIT_MM;
+
+  Glib::RefPtr<Gtk::PageSetup> page_setup = Gtk::PageSetup::create(); //start with something sensible.
+  set_page_setup(page_setup);
 }
 
 Canvas_PrintLayout::~Canvas_PrintLayout()
@@ -270,6 +277,30 @@ void Canvas_PrintLayout::on_context_menu_delete()
 void Canvas_PrintLayout::set_page_setup(const Glib::RefPtr<Gtk::PageSetup>& page_setup)
 {
   m_page_setup = page_setup;
+  if(!m_page_setup)
+    return;
+
+  //Change the scroll extents to match the page size:
+  Gtk::PaperSize paper_size = m_page_setup->get_paper_size();
+  Goocanvas::Bounds bounds;
+  bounds.set_x1(0);
+  bounds.set_y1(0);
+
+  const Gtk::Unit units = property_units();
+  //std::cout << "Canvas_PrintLayout::set_page_setup(): width=" << paper_size.get_width(units) << ", height=" paper_size.get_height(units) << std::endl;
+
+  if(m_page_setup->get_orientation() == Gtk::PAGE_ORIENTATION_PORTRAIT) //TODO: Handle the reverse orientations too?
+  {
+    bounds.set_x2( paper_size.get_width(units) );
+    bounds.set_y2( paper_size.get_height(units) );
+  }
+  else
+  {
+    bounds.set_y2( paper_size.get_width(units) );
+    bounds.set_x2( paper_size.get_height(units) );
+  }
+
+  set_bounds(bounds);
 }
 
 Glib::RefPtr<Gtk::PageSetup> Canvas_PrintLayout::get_page_setup()
@@ -353,6 +384,23 @@ void Canvas_PrintLayout::fill_with_data(const FoundSet& found_set)
       }
     }
   }
+}
+
+void Canvas_PrintLayout::set_zoom_percent(guint percent)
+{
+  if(percent == 0)
+    return;
+
+  const double scale = (double)percent / 100;
+  if(scale == 0)
+    return;
+
+  set_scale(scale);
+}
+
+guint Canvas_PrintLayout::get_zoom_percent() const
+{
+  return (guint)(get_scale() * (double)100);
 }
 
 

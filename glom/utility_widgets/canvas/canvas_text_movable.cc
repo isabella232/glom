@@ -31,7 +31,8 @@ CanvasTextMovable::CanvasTextMovable(const Glib::ustring& text, double x, double
 : Goocanvas::Text(text, x, y, width, anchor), 
   CanvasItemMovable(),
   m_snap_corner(CORNER_TOP_LEFT), //arbitrary default.
-  m_fake_height(0)
+  m_fake_height(0),
+  m_text_size(9) //A sane default.
 {
   init();
 }
@@ -153,6 +154,45 @@ void CanvasTextMovable::set_snap_corner(Corners corner)
 {
   m_snap_corner = corner;
 }
+
+void CanvasTextMovable::set_text(const Glib::ustring& text)
+{
+  m_text = text;
+  reconstruct_markup();
+}
+
+void CanvasTextMovable::set_text_size(double points)
+{
+  //Don't allow a text size of 0:
+  if(points <= 0)
+    m_text_size = 9;
+  else
+    m_text_size = points;
+
+  reconstruct_markup();
+}
+
+void CanvasTextMovable::reconstruct_markup()
+{
+  const double pango_size = m_text_size * 1024;
+
+  char* markup = 0;
+  if(!m_text.empty())
+    markup = g_strdup_printf("<span size=\"%f\">%s</span>", pango_size, m_text.c_str());
+  
+  property_use_markup() = true;
+
+  if(markup)
+  {
+    property_text() = Glib::ustring(markup); //TODO: Inefficient.
+    g_free(markup);
+  }
+  else
+  {
+    property_text() = Glib::ustring();
+  }
+}
+
 
 } //namespace Glom
 

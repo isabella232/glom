@@ -71,6 +71,7 @@ void CanvasLayoutItem::set_layout_item(const sharedptr<LayoutItem>& item)
   {
     Glib::RefPtr<CanvasTextMovable> canvas_item = CanvasTextMovable::create();
     canvas_item->property_text() = text->get_text();
+    canvas_item->set_text_size( text->get_print_layout_text_size() );
     child = canvas_item;
   }
   else
@@ -103,6 +104,7 @@ void CanvasLayoutItem::set_layout_item(const sharedptr<LayoutItem>& item)
         else //text, numbers, date, time, boolean:
         {
           Glib::RefPtr<CanvasTextMovable> canvas_item = CanvasTextMovable::create();
+          canvas_item->set_text_size( field->get_print_layout_text_size() );
 
           Glib::ustring name = field->get_name();
             if(name.empty())

@@ -60,6 +60,7 @@ protected:
   void on_menu_insert_image();
   void on_menu_view_show_grid();
   void on_menu_view_show_rules();
+  void on_menu_view_zoom(guint percent);
 
   void on_canvas_show_context_menu(guint button, guint32 activate_time);
   void on_context_menu_insert_field();

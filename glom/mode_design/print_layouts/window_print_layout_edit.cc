@@ -58,6 +58,7 @@ Window_PrintLayout_Edit::Window_PrintLayout_Edit(BaseObjectType* cobject, const 
   init_menu();
 
   Gtk::ScrolledWindow* scrolled = Gtk::manage(new Gtk::ScrolledWindow());
+  scrolled->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
   scrolled->add(m_canvas);
   scrolled->show_all();
   m_box_canvas->pack_start(*scrolled);
@@ -68,7 +69,6 @@ Window_PrintLayout_Edit::Window_PrintLayout_Edit(BaseObjectType* cobject, const 
 
   setup_context_menu();
   m_canvas.signal_show_context().connect(sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_canvas_show_context_menu));
-
 
   show_all_children();
 }
@@ -101,6 +101,19 @@ void Window_PrintLayout_Edit::init_menu()
   m_action_showrules = Gtk::ToggleAction::create("Action_Menu_View_ShowRules", _("Show Rules"));
   m_action_group->add(m_action_showrules, sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_view_show_rules));
 
+  Gtk::RadioAction::Group group_zoom;
+  m_action_group->add(Gtk::RadioAction::create(group_zoom, "Action_Menu_View_Zoom200", _("Zoom 200%")),
+   sigc::bind( sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_view_zoom), 200));
+  m_action_group->add(Gtk::RadioAction::create(group_zoom, "Action_Menu_View_Zoom100", Gtk::Stock::ZOOM_100),
+   sigc::bind( sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_view_zoom), 100));
+
+  Glib::RefPtr<Gtk::Action> action_50 = Gtk::RadioAction::create(group_zoom, "Action_Menu_View_Zoom50", _("Zoom 50%"));
+  m_action_group->add(action_50,
+   sigc::bind( sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_view_zoom), 50));
+  action_50->activate();
+
+  m_action_group->add(Gtk::RadioAction::create(group_zoom, "Action_Menu_View_Zoom25", _("Zoom 25%")),
+   sigc::bind( sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_view_zoom), 25));
 
   //Build part of the menu structure, to be merged in by using the "PH" placeholders:
   static const Glib::ustring ui_description =
@@ -123,6 +136,11 @@ void Window_PrintLayout_Edit::init_menu()
     "      <menu action='Menu_View'>"
     "        <menuitem action='Action_Menu_View_ShowGrid' />"
     "        <menuitem action='Action_Menu_View_ShowRules' />"
+    "        <separator />"
+    "        <menuitem action='Action_Menu_View_Zoom200' />"
+    "        <menuitem action='Action_Menu_View_Zoom100' />"
+    "        <menuitem action='Action_Menu_View_Zoom50' />"
+    "        <menuitem action='Action_Menu_View_Zoom25' />"
     "      </menu>"
     "  </menubar>"
     "</ui>";
@@ -383,6 +401,11 @@ void Window_PrintLayout_Edit::on_menu_view_show_grid()
 void Window_PrintLayout_Edit::on_menu_view_show_rules()
 {
   //TODO:
+}
+
+void Window_PrintLayout_Edit::on_menu_view_zoom(guint percent)
+{
+  m_canvas.set_zoom_percent(percent);
 }
 
 void Window_PrintLayout_Edit::on_menu_file_page_setup()
