@@ -283,9 +283,9 @@ void Dialog_ChooseField::on_treeview_selection_changed()
       const Field& field = row[m_ColumnsFields.m_col_field];
       const bool is_numeric = (field.get_glom_type() == Field::TYPE_NUMERIC);
       if(is_numeric)
-        m_frame_numeric_format->show();
+        m_vbox_numeric_format->show();
       else
-        m_frame_numeric_format->hide();
+        m_vbox_numeric_format->hide();
       */
     }
   }

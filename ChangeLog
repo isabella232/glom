@@ -1,5 +1,15 @@
 2007-10-24  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/glom_developer.glade:
+	* glom/layout_item_dialogs/box_formatting.cc:
+	* glom/layout_item_dialogs/box_formatting.h: Put the 
+	numeric, text, and choices sections in a notebook, to 
+	make the dialog smaller and less scary.
+	Add checkboxes so that the user can choose not to use 
+	any special font or colors (to get the defaults).
+
+2007-10-24  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/glom_developer.glade: Added window_text_format.
 	* glom/layout_item_dialogs/box_formatting.cc:
 	* glom/layout_item_dialogs/box_formatting.h:

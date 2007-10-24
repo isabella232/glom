@@ -27,26 +27,38 @@ namespace Glom
 
 Box_Formatting::Box_Formatting(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
 : Gtk::VBox(cobject),
-  m_frame_numeric_format(0),
-  m_frame_text_format(0),
+  m_vbox_numeric_format(0),
+  m_vbox_text_format(0),
   m_checkbox_format_text_multiline(0),
   m_spinbutton_format_text_multiline_height(0),
+  m_checkbox_format_text_font(0),
+  m_fontbutton(0),
+  m_checkbox_format_text_color_foreground(0),
+  m_colorbutton_foreground(0),
+  m_checkbox_format_text_color_background(0),
+  m_colorbutton_background(0),
+  m_radiobutton_choices_custom(0),
+  m_radiobutton_choices_related(0),
+  m_checkbutton_choices_restricted(0),
   m_adddel_choices_custom(0),
   m_col_index_custom_choices(0)
 {
   //Numeric formatting:
-  refGlade->get_widget("frame_numeric_format", m_frame_numeric_format);
+  refGlade->get_widget("vbox_numeric_format", m_vbox_numeric_format);
   refGlade->get_widget("checkbutton_format_thousands", m_checkbox_format_use_thousands);
   refGlade->get_widget("checkbutton_format_use_decimal_places", m_checkbox_format_use_decimal_places);
   refGlade->get_widget("entry_format_decimal_places", m_entry_format_decimal_places);
   refGlade->get_widget_derived("entry_currency_symbol", m_entry_currency_symbol);
 
   //Text formatting:
-  refGlade->get_widget("frame_text_format", m_frame_text_format);
   refGlade->get_widget("checkbutton_format_text_multiline", m_checkbox_format_text_multiline);
+  refGlade->get_widget("vbox_text_format", m_vbox_text_format);
+  refGlade->get_widget("checkbutton_font", m_checkbox_format_text_font);
   refGlade->get_widget("fontbutton", m_fontbutton);
   refGlade->get_widget("colorbutton_foreground", m_colorbutton_foreground);
+  refGlade->get_widget("checkbutton_color_foreground", m_checkbox_format_text_color_foreground);
   refGlade->get_widget("colorbutton_background", m_colorbutton_background);
+  refGlade->get_widget("checkbutton_color_background", m_checkbox_format_text_color_background);
 
   refGlade->get_widget("spinbutton_format_text_multiline_height", m_spinbutton_format_text_multiline_height);
 
@@ -65,6 +77,11 @@ Box_Formatting::Box_Formatting(BaseObjectType* cobject, const Glib::RefPtr<Gnome
   refGlade->get_widget("radiobutton_choices_related", m_radiobutton_choices_related);
 
   m_combo_choices_relationship->signal_changed().connect(sigc::mem_fun(*this, &Box_Formatting::on_combo_choices_relationship_changed));
+
+  m_checkbox_format_text_multiline->signal_toggled().connect( sigc::mem_fun(*this, &Box_Formatting::on_checkbox) );
+  m_checkbox_format_text_font->signal_toggled().connect( sigc::mem_fun(*this, &Box_Formatting::on_checkbox) );
+  m_checkbox_format_text_color_foreground->signal_toggled().connect( sigc::mem_fun(*this, &Box_Formatting::on_checkbox) );
+  m_checkbox_format_text_color_background->signal_toggled().connect( sigc::mem_fun(*this, &Box_Formatting::on_checkbox) );
 
   std::cout << "Box_Formatting::Box_Formatting" << std::endl;
 
@@ -91,13 +108,20 @@ void Box_Formatting::set_formatting(const FieldFormatting& format, const Glib::u
   m_entry_currency_symbol->get_entry()->set_text(format.m_numeric_format.m_currency_symbol);
 
   m_checkbox_format_text_multiline->set_active(format.get_text_format_multiline());
-  m_checkbox_format_text_multiline->signal_toggled().connect( sigc::mem_fun(*this, &Box_Formatting::on_checkbox_text_multiline) );
 
   m_spinbutton_format_text_multiline_height->set_value(format.get_text_format_multiline_height_lines());
 
-  m_fontbutton->set_font_name(format.get_text_format_font());
-  m_colorbutton_foreground->set_color( Gdk::Color(format.get_text_format_color_foreground()) );
-  m_colorbutton_background->set_color( Gdk::Color(format.get_text_format_color_background()) );
+  const Glib::ustring font = format.get_text_format_font();
+  m_checkbox_format_text_font->set_active(!font.empty());
+  m_fontbutton->set_font_name(font);
+
+  const Glib::ustring color_foreground = format.get_text_format_color_foreground();
+  m_checkbox_format_text_color_foreground->set_active(!color_foreground.empty());
+  m_colorbutton_foreground->set_color( Gdk::Color(color_foreground) );
+
+  const Glib::ustring color_background = format.get_text_format_color_background();
+  m_checkbox_format_text_color_background->set_active(!color_background.empty());
+  m_colorbutton_background->set_color( Gdk::Color(color_background) );
 
 
   //Choices:
@@ -135,6 +159,12 @@ void Box_Formatting::set_formatting(const FieldFormatting& format, const Glib::u
   enforce_constraints();
 }
 
+//TODO: Remove this when using gtkmm 2.14, which has Gdk::Color::to_string():
+static Glib::ustring color_to_string(const Gdk::Color& color)
+{
+  return Glib::convert_return_gchar_ptr_to_ustring( gdk_color_to_string(color.gobj()) );
+}
+
 bool Box_Formatting::get_formatting(FieldFormatting& format) const
 {
   //Numeric Formatting:
@@ -149,9 +179,21 @@ bool Box_Formatting::get_formatting(FieldFormatting& format) const
   //Text formatting:
   m_format.set_text_format_multiline(m_checkbox_format_text_multiline->get_active());
   m_format.set_text_format_multiline_height_lines( m_spinbutton_format_text_multiline_height->get_value_as_int() );
-  m_format.set_text_format_font( m_fontbutton->get_font_name() );
-  m_format.set_text_format_color_foreground( gdk_color_to_string (m_colorbutton_foreground->get_color().gobj() ) );
-  m_format.set_text_format_color_background( gdk_color_to_string ( m_colorbutton_background->get_color().gobj() ) );
+
+  Glib::ustring font;
+  if(m_checkbox_format_text_font->get_active())
+    font = m_fontbutton->get_font_name();
+  m_format.set_text_format_font(font);
+
+  Glib::ustring color_foreground;
+  if(m_checkbox_format_text_color_foreground->get_active())
+    color_foreground = color_to_string( m_colorbutton_foreground->get_color() );
+  m_format.set_text_format_color_foreground(color_foreground);
+
+  Glib::ustring color_background;
+  if(m_checkbox_format_text_color_background->get_active())
+    color_background = color_to_string( m_colorbutton_background->get_color() );
+  m_format.set_text_format_color_background(color_background);
 
   //Choices:
   m_format.set_choices_restricted(m_checkbutton_choices_restricted->get_active());
@@ -211,26 +253,30 @@ void Box_Formatting::enforce_constraints()
   //Hide inappropriate UI:
   const bool is_numeric = (m_field->get_glom_type() == Field::TYPE_NUMERIC);
   if(is_numeric)
-    m_frame_numeric_format->show();
+    m_vbox_numeric_format->show();
   else
   {
-    m_frame_numeric_format->hide();
+    m_vbox_numeric_format->hide();
   }
 
   const bool is_text = (m_field->get_glom_type() == Field::TYPE_TEXT);
   if(is_text)
   {
-    m_frame_text_format->show();
+    m_vbox_text_format->show();
 
     //Do not allow the user to specify a text height if it is not going to be multiline:
     const bool text_height_sensitive = m_checkbox_format_text_multiline->get_active();
     m_spinbutton_format_text_multiline_height->set_sensitive(text_height_sensitive);
   }
   else
-    m_frame_text_format->hide();
+    m_vbox_text_format->hide();
+
+  m_fontbutton->set_sensitive( m_checkbox_format_text_font->get_active() );
+  m_colorbutton_foreground->set_sensitive( m_checkbox_format_text_color_foreground->get_active() );
+  m_colorbutton_background->set_sensitive( m_checkbox_format_text_color_background->get_active() );
 }
 
-void Box_Formatting::on_checkbox_text_multiline()
+void Box_Formatting::on_checkbox()
 {
   enforce_constraints();
 }

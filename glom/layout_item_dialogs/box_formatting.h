@@ -51,21 +51,24 @@ public:
 protected:
   //Signal handlers:
   void on_combo_choices_relationship_changed();
-  void on_checkbox_text_multiline();
+  void on_checkbox();
 
   void enforce_constraints();
 
-  Gtk::Frame* m_frame_numeric_format;
+  Gtk::VBox* m_vbox_numeric_format;
   Gtk::CheckButton* m_checkbox_format_use_thousands;
   Gtk::CheckButton* m_checkbox_format_use_decimal_places;
   Gtk::Entry* m_entry_format_decimal_places;
   ComboEntry_Currency* m_entry_currency_symbol;
 
-  Gtk::Frame* m_frame_text_format;
+  Gtk::VBox* m_vbox_text_format;
   Gtk::CheckButton* m_checkbox_format_text_multiline;
   Gtk::SpinButton* m_spinbutton_format_text_multiline_height;
+  Gtk::CheckButton* m_checkbox_format_text_font;
   Gtk::FontButton* m_fontbutton;
+  Gtk::CheckButton* m_checkbox_format_text_color_foreground;
   Gtk::ColorButton* m_colorbutton_foreground;
+  Gtk::CheckButton* m_checkbox_format_text_color_background;
   Gtk::ColorButton* m_colorbutton_background;
 
   Gtk::RadioButton* m_radiobutton_choices_custom;
