@@ -40,6 +40,7 @@ public:
   virtual ~Dialog_TextFormatting();
 
   //Allow direct access, for convenience:  
+  Gtk::VBox* m_box_formatting_placeholder;
   Box_Formatting* m_box_formatting;
 
 protected:

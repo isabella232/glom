@@ -27,31 +27,33 @@ namespace Glom
 
 Dialog_TextFormatting::Dialog_TextFormatting(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
 : Gtk::Window(cobject),
+  m_box_formatting_placeholder(0),
   m_box_formatting(0)
 {
   Gtk::Button* button_close = 0;
   refGlade->get_widget("button_close",  button_close);
   button_close->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_TextFormatting::on_button_close) );
 
-  Gtk::VBox* box_placeholder = 0;
-  refGlade->get_widget_derived("vbox_placeholder", box_placeholder);
+  //Formatting:
+  //Get the place to put the Formatting stuff:
+  refGlade->get_widget("box_formatting_placeholder", m_box_formatting_placeholder);
   
-  //Get the box from the general field formatting dialog,
-  //(to avoid duplicating it in Glade)
+  //Get the formatting stuff:
   try
   {
-    Glib::RefPtr<Gnome::Glade::Xml> refXmlBox = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom_developer.glade", "box_formatting");
-    refXmlBox->get_widget_derived("box_formatting", m_box_formatting);
+    Glib::RefPtr<Gnome::Glade::Xml> refXmlFormatting = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom_developer.glade", "box_formatting");
+    refXmlFormatting->get_widget_derived("box_formatting", m_box_formatting);
   }
   catch(const Gnome::Glade::XmlError& ex)
   {
     std::cerr << ex.what() << std::endl;
   }
 
-  box_placeholder->pack_start(*m_box_formatting);
+  m_box_formatting_placeholder->pack_start(*m_box_formatting);
   add_view(m_box_formatting);
-  m_box_formatting->show();
-  box_placeholder->show();
+  m_box_formatting->hide_choices();
+  m_box_formatting->hide_multiline();
+  m_box_formatting->set_force_show_text_formatting();
 
   set_modal(); //We don't want people to edit the main window while we are changing structure.
 

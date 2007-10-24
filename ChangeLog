@@ -1,5 +1,19 @@
 2007-10-24  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/libglom/document/document_glom.cc: Save the font and color 
+	formatting for all field types, not just text.
+	* glom/layout_item_dialogs/box_formatting.cc:
+	* glom/layout_item_dialogs/box_formatting.h: Added 
+	hide_choices(), hide_multiline(), set_force_show_text_formatting().
+	enforce_constraints(): Show the font and color options for all 
+	field types except booleans, not just text.
+	* glom/mode_design/print_layouts/dialog_text_formatting.cc:
+	* glom/mode_design/print_layouts/dialog_text_formatting.h:
+	Use the new functions to show appropriate options for the print 
+	layout items.
+
+2007-10-24  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/glom_developer.glade:
 	* glom/layout_item_dialogs/box_formatting.cc:
 	* glom/layout_item_dialogs/box_formatting.h: Put the 

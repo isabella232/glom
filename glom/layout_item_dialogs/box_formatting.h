@@ -48,6 +48,13 @@ public:
   virtual void set_formatting(const FieldFormatting& format, const Glib::ustring& table_name, const sharedptr<const Field>& field);
   bool get_formatting(FieldFormatting& format) const;
 
+  //When used for print layout items, 
+  //we hide some stuff:
+  //TODO: Use just one function when we know when they will be used? 
+  void hide_choices();
+  void hide_multiline();
+  void set_force_show_text_formatting();
+
 protected:
   //Signal handlers:
   void on_combo_choices_relationship_changed();
@@ -63,6 +70,7 @@ protected:
 
   Gtk::VBox* m_vbox_text_format;
   Gtk::CheckButton* m_checkbox_format_text_multiline;
+  Gtk::Label* m_label_format_text_multiline_height;
   Gtk::SpinButton* m_spinbutton_format_text_multiline_height;
   Gtk::CheckButton* m_checkbox_format_text_font;
   Gtk::FontButton* m_fontbutton;
@@ -71,6 +79,7 @@ protected:
   Gtk::CheckButton* m_checkbox_format_text_color_background;
   Gtk::ColorButton* m_colorbutton_background;
 
+  Gtk::VBox* m_vbox_choices;
   Gtk::RadioButton* m_radiobutton_choices_custom;
   Gtk::RadioButton* m_radiobutton_choices_related;
   Gtk::CheckButton* m_checkbutton_choices_restricted;
@@ -84,6 +93,10 @@ protected:
 
   Glib::ustring m_table_name;
   sharedptr<const Field> m_field;
+
+  bool m_hide_choices;
+  bool m_hide_multiline;
+  bool m_force_show_text_formatting;
 };
 
 } //namespace Glom

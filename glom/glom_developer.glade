@@ -9608,7 +9608,7 @@ Which user should be added to this group?</property>
       <property name="spacing">6</property>
 
       <child>
-	<widget class="GtkNotebook" id="notebook_text_formatting">
+	<widget class="GtkNotebook" id="notebook_formatting">
 	  <property name="visible">True</property>
 	  <property name="can_focus">True</property>
 	  <property name="show_tabs">True</property>
@@ -9822,7 +9822,7 @@ Which user should be added to this group?</property>
 		  <property name="spacing">6</property>
 
 		  <child>
-		    <widget class="GtkLabel" id="label245">
+		    <widget class="GtkLabel" id="label_format_text_multiline">
 		      <property name="visible">True</property>
 		      <property name="label" translatable="yes">Height (lines)</property>
 		      <property name="use_underline">False</property>
@@ -14230,36 +14230,12 @@ What name should this group have?</property>
         <property name="border_width">12</property>
         <property name="spacing">6</property>
         <child>
-          <widget class="GtkFrame" id="frame2">
-            <property name="visible">True</property>
-            <property name="label_xalign">0</property>
-            <property name="shadow_type">GTK_SHADOW_NONE</property>
-            <child>
-              <widget class="GtkAlignment" id="alignment4">
-                <property name="visible">True</property>
-                <property name="top_padding">6</property>
-                <property name="left_padding">12</property>
-                <child>
-                  <widget class="GtkVBox" id="vbox_placeholder">
+                  <widget class="GtkVBox" id="box_formatting_placeholder">
                     <property name="visible">True</property>
                     <child>
                       <placeholder/>
                     </child>
                   </widget>
-                </child>
-              </widget>
-            </child>
-            <child>
-              <widget class="GtkLabel" id="label_frame_title2">
-                <property name="visible">True</property>
-                <property name="label" translatable="yes">&lt;b&gt;Text Format&lt;/b&gt;</property>
-                <property name="use_markup">True</property>
-              </widget>
-              <packing>
-                <property name="type">label_item</property>
-              </packing>
-            </child>
-          </widget>
         </child>
         <child>
           <widget class="GtkHButtonBox" id="hbuttonbox3">

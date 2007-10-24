@@ -30,6 +30,7 @@ Box_Formatting::Box_Formatting(BaseObjectType* cobject, const Glib::RefPtr<Gnome
   m_vbox_numeric_format(0),
   m_vbox_text_format(0),
   m_checkbox_format_text_multiline(0),
+  m_label_format_text_multiline_height(0),
   m_spinbutton_format_text_multiline_height(0),
   m_checkbox_format_text_font(0),
   m_fontbutton(0),
@@ -37,11 +38,15 @@ Box_Formatting::Box_Formatting(BaseObjectType* cobject, const Glib::RefPtr<Gnome
   m_colorbutton_foreground(0),
   m_checkbox_format_text_color_background(0),
   m_colorbutton_background(0),
+  m_vbox_choices(0),
   m_radiobutton_choices_custom(0),
   m_radiobutton_choices_related(0),
   m_checkbutton_choices_restricted(0),
   m_adddel_choices_custom(0),
-  m_col_index_custom_choices(0)
+  m_col_index_custom_choices(0),
+  m_hide_choices(false),
+  m_hide_multiline(false),
+  m_force_show_text_formatting(false)
 {
   //Numeric formatting:
   refGlade->get_widget("vbox_numeric_format", m_vbox_numeric_format);
@@ -51,8 +56,10 @@ Box_Formatting::Box_Formatting(BaseObjectType* cobject, const Glib::RefPtr<Gnome
   refGlade->get_widget_derived("entry_currency_symbol", m_entry_currency_symbol);
 
   //Text formatting:
-  refGlade->get_widget("checkbutton_format_text_multiline", m_checkbox_format_text_multiline);
   refGlade->get_widget("vbox_text_format", m_vbox_text_format);
+  refGlade->get_widget("checkbutton_format_text_multiline", m_checkbox_format_text_multiline);
+  refGlade->get_widget("label_format_text_multiline", m_label_format_text_multiline_height);
+  refGlade->get_widget("spinbutton_format_text_multiline_height", m_spinbutton_format_text_multiline_height);
   refGlade->get_widget("checkbutton_font", m_checkbox_format_text_font);
   refGlade->get_widget("fontbutton", m_fontbutton);
   refGlade->get_widget("colorbutton_foreground", m_colorbutton_foreground);
@@ -60,8 +67,10 @@ Box_Formatting::Box_Formatting(BaseObjectType* cobject, const Glib::RefPtr<Gnome
   refGlade->get_widget("colorbutton_background", m_colorbutton_background);
   refGlade->get_widget("checkbutton_color_background", m_checkbox_format_text_color_background);
 
-  refGlade->get_widget("spinbutton_format_text_multiline_height", m_spinbutton_format_text_multiline_height);
 
+
+  //Choices:
+  refGlade->get_widget("vbox_choices", m_vbox_choices);
   refGlade->get_widget_derived("adddel_choices", m_adddel_choices_custom);
   m_col_index_custom_choices = m_adddel_choices_custom->add_column("Choices");
   m_adddel_choices_custom->set_allow_add();
@@ -83,13 +92,29 @@ Box_Formatting::Box_Formatting(BaseObjectType* cobject, const Glib::RefPtr<Gnome
   m_checkbox_format_text_color_foreground->signal_toggled().connect( sigc::mem_fun(*this, &Box_Formatting::on_checkbox) );
   m_checkbox_format_text_color_background->signal_toggled().connect( sigc::mem_fun(*this, &Box_Formatting::on_checkbox) );
 
-  std::cout << "Box_Formatting::Box_Formatting" << std::endl;
-
   show_all_children();
 }
 
 Box_Formatting::~Box_Formatting()
 {
+}
+
+void Box_Formatting::hide_choices()
+{
+  m_hide_choices = true;
+  enforce_constraints();
+}
+
+void Box_Formatting::hide_multiline()
+{
+  m_hide_multiline = true;
+  enforce_constraints();
+}
+
+void Box_Formatting::set_force_show_text_formatting()
+{
+  m_force_show_text_formatting = true;
+  enforce_constraints();
 }
 
 void Box_Formatting::set_formatting(const FieldFormatting& format, const Glib::ustring& table_name, const sharedptr<const Field>& field)
@@ -251,18 +276,40 @@ void Box_Formatting::on_combo_choices_relationship_changed()
 void Box_Formatting::enforce_constraints()
 {
   //Hide inappropriate UI:
-  const bool is_numeric = (m_field->get_glom_type() == Field::TYPE_NUMERIC);
+  bool is_numeric = false;
+  if(m_field && (m_field->get_glom_type() == Field::TYPE_NUMERIC))
+    is_numeric = true;
+
   if(is_numeric)
     m_vbox_numeric_format->show();
   else
-  {
     m_vbox_numeric_format->hide();
-  }
 
-  const bool is_text = (m_field->get_glom_type() == Field::TYPE_TEXT);
-  if(is_text)
+
+  bool show_text = false;
+  if(m_field && (m_field->get_glom_type() != Field::TYPE_BOOLEAN)) //TODO: Allow text options when showing booleans as Yes/No on print layouts.
+    show_text = true;
+
+  if(m_force_show_text_formatting)
+    show_text = true;
+
+  if(show_text)
   {
     m_vbox_text_format->show();
+
+    //Hide multiline options for non-text fields:
+    if(m_hide_multiline || (m_field->get_glom_type() != Field::TYPE_TEXT))
+    {
+      m_checkbox_format_text_multiline->hide();
+      m_label_format_text_multiline_height->hide();
+      m_spinbutton_format_text_multiline_height->hide();
+    }
+    else
+    {
+      m_checkbox_format_text_multiline->show();
+      m_label_format_text_multiline_height->hide();
+      m_spinbutton_format_text_multiline_height->show();
+    }
 
     //Do not allow the user to specify a text height if it is not going to be multiline:
     const bool text_height_sensitive = m_checkbox_format_text_multiline->get_active();
@@ -271,9 +318,16 @@ void Box_Formatting::enforce_constraints()
   else
     m_vbox_text_format->hide();
 
+
   m_fontbutton->set_sensitive( m_checkbox_format_text_font->get_active() );
   m_colorbutton_foreground->set_sensitive( m_checkbox_format_text_color_foreground->get_active() );
   m_colorbutton_background->set_sensitive( m_checkbox_format_text_color_background->get_active() );
+
+
+  if(!m_hide_choices)
+    m_vbox_choices->show();
+  else
+    m_vbox_choices->hide();
 }
 
 void Box_Formatting::on_checkbox()
