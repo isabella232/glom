@@ -18,6 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#include <glom/libglom/utils.h>
 #include "adddel_withbuttons.h"
 //#include <libgnome/gnome-i18n.h>
 
@@ -25,7 +26,7 @@ namespace Glom
 {
 
 AddDel_WithButtons::AddDel_WithButtons()
-: m_HBox(false, 6),
+: m_HBox(false, Utils::DEFAULT_SPACING_SMALL),
   m_Button_Add(Gtk::Stock::ADD),
   m_Button_Del(Gtk::Stock::DELETE),
   m_Button_Edit(Gtk::Stock::OPEN)
@@ -35,7 +36,7 @@ AddDel_WithButtons::AddDel_WithButtons()
 
 AddDel_WithButtons::AddDel_WithButtons(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
 : AddDel(cobject, refGlade),
-  m_HBox(false, 6),
+  m_HBox(false, Utils::DEFAULT_SPACING_SMALL),
   m_Button_Add(Gtk::Stock::ADD),
   m_Button_Del(Gtk::Stock::DELETE),
   m_Button_Edit(Gtk::Stock::OPEN)
@@ -45,10 +46,10 @@ AddDel_WithButtons::AddDel_WithButtons(BaseObjectType* cobject, const Glib::RefP
 
 void AddDel_WithButtons::init()
 {
-  m_HBox.set_spacing(6);
-  //m_Button_Add.set_border_width(6);
-  //m_Button_Del.set_border_width(6);
-  //m_Button_Edit.set_border_width(6);
+  m_HBox.set_spacing(Utils::DEFAULT_SPACING_SMALL);
+  //m_Button_Add.set_border_width(Utils::DEFAULT_SPACING_SMALL);
+  //m_Button_Del.set_border_width(Utils::DEFAULT_SPACING_SMALL);
+  //m_Button_Edit.set_border_width(Utils::DEFAULT_SPACING_SMALL);
 
   setup_buttons();
   pack_start(m_HBox, Gtk::PACK_SHRINK);

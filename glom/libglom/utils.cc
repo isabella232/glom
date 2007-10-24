@@ -49,6 +49,14 @@
 
 #include <stack>
 
+#ifdef GLOM_ENABLE_MAEMO
+const unsigned int Glom::Utils::DEFAULT_SPACING_LARGE =  1;
+const unsigned int Glom::Utils::DEFAULT_SPACING_SMALL =  1;
+#else
+const unsigned int Glom::Utils::DEFAULT_SPACING_LARGE = 12;
+const unsigned int Glom::Utils::DEFAULT_SPACING_SMALL =  6;
+#endif
+
 namespace Glom
 {
 

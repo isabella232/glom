@@ -1,3 +1,25 @@
+2007-10-24  Armin Burgmeier  <armin@openismus.com>
+
+	* glom/libglom/utils.h:
+	* glom/libglom/utils.cc: Added DEFAULT_SPACING_SMALL and
+	DEFAULT_SPACING_LARGE. Their values are 6 and 12, normally, but both
+	are 1 in the maemo version so there is less (valuable) space between
+	widgets on maemo.
+
+	* glom/libglom/test_avahi_publisher.cc:
+	* glom/utility_widgets/db_adddel/db_adddel_withbuttons.cc:
+	* glom/utility_widgets/db_adddel/db_adddel.cc:
+	* glom/utility_widgets/adddel/adddel.cc:
+	* glom/utility_widgets/adddel/adddel_withbuttons.cc:
+	* glom/utility_widgets/flowtablewithfields.cc:
+	* glom/utility_widgets/datawidget.cc:
+	* glom/utility_widgets/filechooserdialog.cc:
+	* glom/mode_data/box_data_details.cc:
+	* glom/dialog_glom.cc:
+	* glom/filechooser_export.cc:
+	* glom/box_db.cc: Made use of DEFAULT_SPACING_SMALL and
+	DEFAULT_SPACING_LARGE as appropriate.
+
 2007-10-20  Armin Burgmeier  <armin@openismus.com>
 
 	* glom/utility_widgets/db_adddel/db_adddel.h:

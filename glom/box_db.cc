@@ -29,13 +29,13 @@ namespace Glom
 {
 
 Box_DB::Box_DB()
-: m_Box_Buttons(false, 6),
+: m_Box_Buttons(false, Utils::DEFAULT_SPACING_SMALL),
   m_Button_Cancel(Gtk::Stock::CANCEL)
 {
   //m_pDocument = 0;
 
-  set_border_width(6);
-  set_spacing(6);
+  set_border_width(Utils::DEFAULT_SPACING_SMALL);
+  set_spacing(Utils::DEFAULT_SPACING_SMALL);
 
   //Connect signals:
   m_Button_Cancel.signal_clicked().connect(sigc::mem_fun(*this, &Box_DB::on_Button_Cancel));
@@ -43,13 +43,13 @@ Box_DB::Box_DB()
 
 Box_DB::Box_DB(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& /* refGlade */)
 : Gtk::VBox(cobject),
-  m_Box_Buttons(false, 6),
+  m_Box_Buttons(false, Utils::DEFAULT_SPACING_SMALL),
   m_Button_Cancel(Gtk::Stock::CANCEL)
 {
   //m_pDocument = 0;
 
-  set_border_width(6);
-  set_spacing(6);
+  set_border_width(Utils::DEFAULT_SPACING_SMALL);
+  set_spacing(Utils::DEFAULT_SPACING_SMALL);
 
   //Connect signals:
   m_Button_Cancel.signal_clicked().connect(sigc::mem_fun(*this, &Box_DB::on_Button_Cancel));
@@ -57,7 +57,7 @@ Box_DB::Box_DB(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& /
 
 Box_DB::Box_DB(BaseObjectType* cobject)
 : Gtk::VBox(cobject),
-  m_Box_Buttons(false, 6),
+  m_Box_Buttons(false, Utils::DEFAULT_SPACING_SMALL),
   m_Button_Cancel(Gtk::Stock::CANCEL)
 {
 }

@@ -39,6 +39,9 @@ typedef std::list<type_pair_sort_field> type_sort_clause;
 namespace Utils
 {
 
+extern const unsigned int DEFAULT_SPACING_LARGE;
+extern const unsigned int DEFAULT_SPACING_SMALL;
+
 Glib::ustring trim_whitespace(const Glib::ustring& text);
 
 Glib::ustring string_replace(const Glib::ustring& src, const Glib::ustring search_for, const Glib::ustring& replace_with);

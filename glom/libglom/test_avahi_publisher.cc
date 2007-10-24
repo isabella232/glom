@@ -25,7 +25,7 @@ protected:
 
 
 TestWindow::TestWindow()
-: m_box(false, 6),
+: m_box(false, GLOM_DEFAULT_SPACING),
   m_button_start("Start"),
   m_button_stop("Stop"),
   m_avahi_publisher(0)
