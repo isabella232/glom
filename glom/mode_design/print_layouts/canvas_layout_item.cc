@@ -71,7 +71,6 @@ void CanvasLayoutItem::set_layout_item(const sharedptr<LayoutItem>& item)
   {
     Glib::RefPtr<CanvasTextMovable> canvas_item = CanvasTextMovable::create();
     canvas_item->property_text() = text->get_text();
-    canvas_item->set_text_size( text->get_print_layout_text_size() );
     child = canvas_item;
   }
   else
@@ -104,7 +103,16 @@ void CanvasLayoutItem::set_layout_item(const sharedptr<LayoutItem>& item)
         else //text, numbers, date, time, boolean:
         {
           Glib::RefPtr<CanvasTextMovable> canvas_item = CanvasTextMovable::create();
-          canvas_item->set_text_size( field->get_print_layout_text_size() );
+          canvas_item->set_font( field->m_formatting.get_text_format_font() );
+
+          //TODO: Are these sensible properties? Maybe we need to use markup:
+          const Glib::ustring fg = field->get_formatting_used().get_text_format_color_foreground();
+          if(!fg.empty())
+            canvas_item->property_stroke_color() = fg;
+
+          const Glib::ustring bg = field->get_formatting_used().get_text_format_color_background();
+          if(!bg.empty())
+            canvas_item->property_fill_color() = bg;
 
           Glib::ustring name = field->get_name();
             if(name.empty())

@@ -1,3 +1,37 @@
+2007-10-24  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/glom_developer.glade: Added window_text_format.
+	* glom/layout_item_dialogs/box_formatting.cc:
+	* glom/layout_item_dialogs/box_formatting.h:
+	Added font and color properties.
+	* glom/libglom/data_structure/layout/fieldformatting.cc:
+	* glom/libglom/data_structure/layout/fieldformatting.h:
+	Added get/set for font and foreground/background colors.
+	* glom/libglom/data_structure/layout/layoutitem.cc:
+	* glom/libglom/data_structure/layout/layoutitem.h:
+	Removed get/set_print_layout_text_size() - We use the new 
+	stuff in FieldFormatting instead.
+	* glom/libglom/document/document_glom.cc: Load and save the 
+	new field formatting.
+	* glom/mode_design/print_layouts/Makefile.am:
+	* glom/mode_design/print_layouts/dialog_text_formatting.cc:
+	* glom/mode_design/print_layouts/dialog_text_formatting.h:
+	Added a dialog for text formatting, containing the same 
+	text formatting options as the field properties layout 
+	(via box_formatting.[h|cc] and its glade definition.
+	* glom/mode_design/print_layouts/canvas_layout_item.cc:
+	Use the field formatting to change the font and colors.
+	* glom/utility_widgets/canvas/canvas_text_movable.cc:
+	* glom/utility_widgets/canvas/canvas_text_movable.h: Added 
+	set_font(), and set_text(), so we can build the pango markup.
+	* glom/mode_design/print_layouts/canvas_print_layout.cc:
+	* glom/mode_design/print_layouts/canvas_print_layout.h:
+	on_context_menu_formatting(): Show the font format dialog,
+	though I need to figure out why the inner box is not visible. 
+	* glom/utility_widgets/datawidget.cc: Use the formatting font 
+	and properties here, so weird styles can be used on the on-screen 
+	layout too.
+
 2007-10-23  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/libglom/data_structure/layout/layoutitem.cc:

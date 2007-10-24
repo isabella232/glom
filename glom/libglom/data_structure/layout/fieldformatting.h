@@ -65,6 +65,22 @@ public:
   guint get_text_format_multiline_height_lines() const;
   void set_text_format_multiline_height_lines(guint value);
 
+  /** The font name, as returned from Gtk::FontButton::get_font_name(), 
+   * which may include the size and style.
+   */
+  void set_text_format_font(const Glib::ustring& font_desc);
+
+  /** The font name, as returned from Gtk::FontButton::get_font_name(), 
+   * which may include the size and style.
+   */
+  Glib::ustring get_text_format_font() const;
+
+  void set_text_format_color_foreground(const Glib::ustring& color);
+  Glib::ustring get_text_format_color_foreground() const;
+
+  void set_text_format_color_background(const Glib::ustring& color);
+  Glib::ustring get_text_format_color_background() const;
+
   void change_field_name(const Glib::ustring& table_name, const Glib::ustring& field_name, const Glib::ustring& field_name_new);
 
   NumericFormat m_numeric_format; //Only used for numeric fields.
@@ -78,6 +94,8 @@ protected:
   bool m_text_format_multiline;
   guint m_text_multiline_height_lines; //The height in number of lines of text.
   //Glib::ustring m_text_multiline_width_example; //An example string from which to calculate the width.
+  Glib::ustring m_text_font;
+  Glib::ustring m_text_color_foreground, m_text_color_background;
 
   Glib::ustring m_choices_related_field, m_choices_related_field_second;
 };

@@ -155,6 +155,9 @@ namespace Glom
 
 #define GLOM_ATTRIBUTE_FORMAT_TEXT_MULTILINE "format_text_multiline"
 #define GLOM_ATTRIBUTE_FORMAT_TEXT_MULTILINE_HEIGHT_LINES "format_text_multiline_height_lines"
+#define GLOM_ATTRIBUTE_FORMAT_TEXT_FONT "font"
+#define GLOM_ATTRIBUTE_FORMAT_TEXT_COLOR_FOREGROUND "color_fg"
+#define GLOM_ATTRIBUTE_FORMAT_TEXT_COLOR_BACKGROUND "color_bg"
 
 #define GLOM_ATTRIBUTE_FORMAT_CHOICES_RESTRICTED "choices_restricted"
 #define GLOM_ATTRIBUTE_FORMAT_CHOICES_CUSTOM "choices_custom"
@@ -1691,12 +1694,18 @@ void Document_Glom::load_after_layout_item_field_formatting(const xmlpp::Element
   format.m_numeric_format.m_decimal_places = get_node_attribute_value_as_decimal(element, GLOM_ATTRIBUTE_FORMAT_DECIMAL_PLACES);
   format.m_numeric_format.m_currency_symbol = get_node_attribute_value(element, GLOM_ATTRIBUTE_FORMAT_CURRENCY_SYMBOL);
 
+
   //Text formatting:
   if(field_type == Field::TYPE_TEXT)
   {
     format.set_text_format_multiline( get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_FORMAT_TEXT_MULTILINE) );
     format.set_text_format_multiline_height_lines( get_node_attribute_value_as_decimal(element, GLOM_ATTRIBUTE_FORMAT_TEXT_MULTILINE_HEIGHT_LINES) );
   }
+
+  format.set_text_format_font( get_node_attribute_value (element, GLOM_ATTRIBUTE_FORMAT_TEXT_FONT) );
+  format.set_text_format_color_foreground( get_node_attribute_value (element, GLOM_ATTRIBUTE_FORMAT_TEXT_COLOR_FOREGROUND) );
+  format.set_text_format_color_background( get_node_attribute_value (element, GLOM_ATTRIBUTE_FORMAT_TEXT_COLOR_BACKGROUND) );
+
 
   //Choices:
   format.set_choices_restricted( get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_RESTRICTED) );
@@ -2608,6 +2617,10 @@ void Document_Glom::save_before_layout_item_field_formatting(xmlpp::Element* nod
   {
     set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_FORMAT_TEXT_MULTILINE, format.get_text_format_multiline());
     set_node_attribute_value_as_decimal(nodeItem, GLOM_ATTRIBUTE_FORMAT_TEXT_MULTILINE_HEIGHT_LINES, format.get_text_format_multiline_height_lines());
+
+    set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_FORMAT_TEXT_FONT, format.get_text_format_font());
+    set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_FORMAT_TEXT_COLOR_FOREGROUND, format.get_text_format_color_foreground());
+    set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_FORMAT_TEXT_COLOR_BACKGROUND, format.get_text_format_color_background());
   }
 
   //Choices:

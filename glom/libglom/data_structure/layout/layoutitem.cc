@@ -27,8 +27,7 @@ LayoutItem::PrintLayoutPosition::PrintLayoutPosition()
 : m_x(0),
   m_y(0),
   m_width(0),
-  m_height(0),
-  m_text_size(0)
+  m_height(0)
 {
 }
 
@@ -36,8 +35,7 @@ LayoutItem::PrintLayoutPosition::PrintLayoutPosition(const LayoutItem::PrintLayo
 : m_x(src.m_x),
   m_y(src.m_y),
   m_width(src.m_width),
-  m_height(src.m_height),
-  m_text_size(src.m_text_size)
+  m_height(src.m_height)
 {
 }
 
@@ -47,7 +45,6 @@ LayoutItem::PrintLayoutPosition& LayoutItem::PrintLayoutPosition::operator=(cons
   m_y = src.m_y;
   m_width = src.m_width;
   m_height = src.m_height;
-  m_text_size = src.m_text_size;
 
   return *this;
 }
@@ -57,8 +54,7 @@ bool LayoutItem::PrintLayoutPosition::operator==(const LayoutItem::PrintLayoutPo
   return (m_x == src.m_x) &&
          (m_y == src.m_y) &&
          (m_width == src.m_width) &&
-         (m_height == src.m_height) &&
-         (m_text_size == src.m_text_size);
+         (m_height == src.m_height);
 }
 
 
@@ -109,7 +105,7 @@ bool LayoutItem::operator==(const LayoutItem& src) const
   bool equal = (TranslatableItem::operator==(src)) &&
           (m_sequence == src.m_sequence) &&
           (m_editable == src.m_editable) &&
-          (m_display_width == src.m_display_width);  //careful of this - it's not saved in the document.
+          (m_display_width == src.m_display_width); //careful of this - it's not saved in the document.
 
   if(m_positions && src.m_positions)
   {
@@ -196,24 +192,6 @@ void LayoutItem::set_print_layout_position(double x, double y, double width, dou
   m_positions->m_y = y;
   m_positions->m_width = width;
   m_positions->m_height = height;
-}
-
-void LayoutItem::set_print_layout_text_size(double points)
-{
-  if(!m_positions && (points == 0))
-    return; //Don't bother instantiating the positions instance if everything is still 0.
- 
-  instantiate_positions();
-
-  m_positions->m_text_size = points;
-}
-
-double LayoutItem::get_print_layout_text_size() const
-{
-  if(!m_positions)
-    return 0.0;
-  else
-    return m_positions->m_text_size;
 }
 
 } //namespace Glom

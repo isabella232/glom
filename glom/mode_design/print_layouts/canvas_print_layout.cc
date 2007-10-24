@@ -22,13 +22,15 @@
 #include "canvas_print_layout.h"
 #include <bakery/App/App_Gtk.h> //For util_bold_message().
 #include <gtkmm/stock.h>
+#include <glom/mode_design/print_layouts/dialog_text_formatting.h>
 #include <glibmm/i18n.h>
 
 namespace Glom
 {
 
 Canvas_PrintLayout::Canvas_PrintLayout()
-: m_modified(false)
+: m_modified(false),
+  m_dialog_format(0)
 {
   setup_context_menu();
 
@@ -220,7 +222,6 @@ void Canvas_PrintLayout::setup_context_menu()
 
 void Canvas_PrintLayout::on_item_show_context_menu(guint button, guint32 activate_time, Glib::RefPtr<CanvasLayoutItem> item)
 {
-  std::cout << "DEBUG: Canvas_PrintLayout::on_item_show_context_menu" << std::endl;
   if(!m_context_menu)
     return;
 
@@ -265,13 +266,64 @@ void Canvas_PrintLayout::on_context_menu_edit()
 
 void Canvas_PrintLayout::on_context_menu_formatting()
 {
- 
+  if(!m_context_item)
+    return;
+  
+  sharedptr<LayoutItem> layout_item = m_context_item->get_layout_item();
+  sharedptr<LayoutItem_Field> layout_item_field = sharedptr<LayoutItem_Field>::cast_dynamic(layout_item);
+  if(!layout_item_field)
+    return;
+
+  if(m_dialog_format)
+  {
+     remove_view(m_dialog_format);
+     delete m_dialog_format;
+     m_dialog_format = 0;
+  }
+
+  try
+  {
+    Glib::RefPtr<Gnome::Glade::Xml> refXmlFormatting = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom_developer.glade", "window_text_format");
+    refXmlFormatting->get_widget_derived("window_text_format", m_dialog_format);
+    add_view(m_dialog_format);
+
+    m_dialog_format->signal_hide().connect( sigc::mem_fun(*this, &Canvas_PrintLayout::on_dialog_format_hide) );
+  }
+  catch(const Gnome::Glade::XmlError& ex)
+  {
+    std::cerr << ex.what() << std::endl;
+  }
+
+
+  if(!m_dialog_format)
+    return;
+
+  m_dialog_format->m_box_formatting->set_formatting(layout_item_field->m_formatting, m_table_name, layout_item_field->get_full_field_details());
+
+  m_dialog_format->show();
 }
 
 void Canvas_PrintLayout::on_context_menu_delete()
 {
   m_context_item->remove();
   m_context_item.clear();
+}
+
+void Canvas_PrintLayout::on_dialog_format_hide()
+{
+  if(!m_dialog_format || !m_context_item)
+    return;
+
+  sharedptr<LayoutItem> layout_item = m_context_item->get_layout_item();
+  sharedptr<LayoutItem_Field> layout_item_field = sharedptr<LayoutItem_Field>::cast_dynamic(layout_item);
+  if(!layout_item_field)
+    return;
+
+  m_dialog_format->m_box_formatting->get_formatting(layout_item_field->m_formatting);
+  m_context_item->set_layout_item(layout_item_field); //Redraw the child item with the new formatting.
+
+  delete m_dialog_format;
+  m_dialog_format = 0;
 }
 
 void Canvas_PrintLayout::set_page_setup(const Glib::RefPtr<Gtk::PageSetup>& page_setup)

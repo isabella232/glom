@@ -31,8 +31,7 @@ CanvasTextMovable::CanvasTextMovable(const Glib::ustring& text, double x, double
 : Goocanvas::Text(text, x, y, width, anchor), 
   CanvasItemMovable(),
   m_snap_corner(CORNER_TOP_LEFT), //arbitrary default.
-  m_fake_height(0),
-  m_text_size(9) //A sane default.
+  m_fake_height(0)
 {
   init();
 }
@@ -161,24 +160,24 @@ void CanvasTextMovable::set_text(const Glib::ustring& text)
   reconstruct_markup();
 }
 
-void CanvasTextMovable::set_text_size(double points)
+void CanvasTextMovable::set_font(const Glib::ustring& font)
 {
-  //Don't allow a text size of 0:
-  if(points <= 0)
-    m_text_size = 9;
-  else
-    m_text_size = points;
+  m_font = font;
 
   reconstruct_markup();
 }
 
 void CanvasTextMovable::reconstruct_markup()
 {
-  const double pango_size = m_text_size * 1024;
+  if(m_font.empty())
+  {
+    property_text() = m_text;
+    return;
+  }
 
   char* markup = 0;
   if(!m_text.empty())
-    markup = g_strdup_printf("<span size=\"%f\">%s</span>", pango_size, m_text.c_str());
+    markup = g_strdup_printf("<span font_desc=\"%s\">%s</span>", m_font.c_str(), m_text.c_str());
   
   property_use_markup() = true;
 

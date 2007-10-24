@@ -44,6 +44,9 @@ Box_Formatting::Box_Formatting(BaseObjectType* cobject, const Glib::RefPtr<Gnome
   //Text formatting:
   refGlade->get_widget("frame_text_format", m_frame_text_format);
   refGlade->get_widget("checkbutton_format_text_multiline", m_checkbox_format_text_multiline);
+  refGlade->get_widget("fontbutton", m_fontbutton);
+  refGlade->get_widget("colorbutton_foreground", m_colorbutton_foreground);
+  refGlade->get_widget("colorbutton_background", m_colorbutton_background);
 
   refGlade->get_widget("spinbutton_format_text_multiline_height", m_spinbutton_format_text_multiline_height);
 
@@ -62,6 +65,8 @@ Box_Formatting::Box_Formatting(BaseObjectType* cobject, const Glib::RefPtr<Gnome
   refGlade->get_widget("radiobutton_choices_related", m_radiobutton_choices_related);
 
   m_combo_choices_relationship->signal_changed().connect(sigc::mem_fun(*this, &Box_Formatting::on_combo_choices_relationship_changed));
+
+  std::cout << "Box_Formatting::Box_Formatting" << std::endl;
 
   show_all_children();
 }
@@ -89,6 +94,11 @@ void Box_Formatting::set_formatting(const FieldFormatting& format, const Glib::u
   m_checkbox_format_text_multiline->signal_toggled().connect( sigc::mem_fun(*this, &Box_Formatting::on_checkbox_text_multiline) );
 
   m_spinbutton_format_text_multiline_height->set_value(format.get_text_format_multiline_height_lines());
+
+  m_fontbutton->set_font_name(format.get_text_format_font());
+  m_colorbutton_foreground->set_color( Gdk::Color(format.get_text_format_color_foreground()) );
+  m_colorbutton_background->set_color( Gdk::Color(format.get_text_format_color_background()) );
+
 
   //Choices:
   m_checkbutton_choices_restricted->set_active(format.get_choices_restricted());
@@ -139,6 +149,9 @@ bool Box_Formatting::get_formatting(FieldFormatting& format) const
   //Text formatting:
   m_format.set_text_format_multiline(m_checkbox_format_text_multiline->get_active());
   m_format.set_text_format_multiline_height_lines( m_spinbutton_format_text_multiline_height->get_value_as_int() );
+  m_format.set_text_format_font( m_fontbutton->get_font_name() );
+  m_format.set_text_format_color_foreground( gdk_color_to_string (m_colorbutton_foreground->get_color().gobj() ) );
+  m_format.set_text_format_color_background( gdk_color_to_string ( m_colorbutton_background->get_color().gobj() ) );
 
   //Choices:
   m_format.set_choices_restricted(m_checkbutton_choices_restricted->get_active());

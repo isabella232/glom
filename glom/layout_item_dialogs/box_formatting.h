@@ -64,6 +64,9 @@ protected:
   Gtk::Frame* m_frame_text_format;
   Gtk::CheckButton* m_checkbox_format_text_multiline;
   Gtk::SpinButton* m_spinbutton_format_text_multiline_height;
+  Gtk::FontButton* m_fontbutton;
+  Gtk::ColorButton* m_colorbutton_foreground;
+  Gtk::ColorButton* m_colorbutton_background;
 
   Gtk::RadioButton* m_radiobutton_choices_custom;
   Gtk::RadioButton* m_radiobutton_choices_related;

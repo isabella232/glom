@@ -62,7 +62,10 @@ public:
    */
   void set_text(const Glib::ustring& text);
 
-  void set_text_size(double points);
+  /** The font name, as returned from Gtk::FontButton::get_font_name(), 
+   * which may include the size and style.
+   */
+  void set_font(const Glib::ustring& font);
 
 protected:
   virtual Goocanvas::Canvas* get_parent_canvas_widget();
@@ -80,7 +83,7 @@ protected:
 
   //We rememeber this so we can reconstruct the pango markup when the text size changes:
   Glib::ustring m_text;
-  double m_text_size; //points.
+  Glib::ustring m_font;
 };
 
 } //namespace Glom

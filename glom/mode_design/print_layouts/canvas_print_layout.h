@@ -32,6 +32,8 @@
 namespace Glom
 {
 
+class Dialog_TextFormatting;
+
 /// A canvas that contains CanvasLayoutItem items.
 class Canvas_PrintLayout
  : public CanvasEditable,
@@ -67,6 +69,8 @@ protected:
   void on_context_menu_formatting();
   void on_context_menu_delete();
 
+  void on_dialog_format_hide();
+
   static void update_layout_position_from_canvas(const sharedptr<LayoutItem> layout_item, const Glib::RefPtr<const CanvasLayoutItem>& canvas_item);
 
   Glib::ustring m_table_name;
@@ -82,6 +86,7 @@ protected:
 
   Glib::RefPtr<Gtk::PageSetup> m_page_setup;
 
+  Dialog_TextFormatting* m_dialog_format;
 };
 
 } //namespace Glom

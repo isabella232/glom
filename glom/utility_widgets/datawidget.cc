@@ -161,7 +161,8 @@ DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ust
         pFieldWidget = entry;
       }
 
-      pFieldWidget->set_layout_item( get_layout_item(), table_name); //TODO_Performance: We only need this for the numerical format.
+      if(pFieldWidget)
+        pFieldWidget->set_layout_item( get_layout_item(), table_name); //TODO_Performance: We only need this for the numerical format.
     }
   }
 
@@ -202,6 +203,22 @@ DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ust
 
   if(m_child)
   {
+    //Use the text formatting:
+    const Glib::ustring font_desc = field->get_formatting_used().get_text_format_font();
+    if(!font_desc.empty())
+      m_child->modify_font( Pango::FontDescription(font_desc) );
+
+    //TODO: modify_fg doesn't seem to have any effect on the GtkEntry, and the bg changes the border:
+    /*
+    const Glib::ustring fg = field->get_formatting_used().get_text_format_color_foreground();
+    if(!fg.empty())
+      m_child->modify_fg(Gtk::STATE_NORMAL, Gdk::Color(fg));
+
+    const Glib::ustring bg = field->get_formatting_used().get_text_format_color_background();
+    if(!bg.empty())
+      m_child->modify_bg(Gtk::STATE_NORMAL, Gdk::Color(bg));
+    */
+
     bool child_added = false; //Don't use an extra container unless necessary.
     const bool field_used_in_relationship_to_one = document->get_field_used_in_relationship_to_one(table_name, field->get_name());
 

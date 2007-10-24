@@ -44,6 +44,9 @@ FieldFormatting::FieldFormatting(const FieldFormatting& src)
   m_choices_related(src.m_choices_related),
   m_text_format_multiline(src.m_text_format_multiline),
   m_text_multiline_height_lines(src.m_text_multiline_height_lines),
+  m_text_font(src.m_text_font),
+  m_text_color_foreground(src.m_text_color_foreground),
+  m_text_color_background(src.m_text_color_background),
   m_choices_related_field(src.m_choices_related_field),
   m_choices_related_field_second(src.m_choices_related_field_second)
 {
@@ -64,7 +67,10 @@ bool FieldFormatting::operator==(const FieldFormatting& src) const
     (m_choices_related_field == src.m_choices_related_field) &&
     (m_choices_related_field_second == src.m_choices_related_field_second) &&
     (m_text_format_multiline == src.m_text_format_multiline) &&
-    (m_text_multiline_height_lines == src.m_text_multiline_height_lines);
+    (m_text_multiline_height_lines == src.m_text_multiline_height_lines) &&
+    (m_text_font == src.m_text_font) &&
+    (m_text_color_foreground == src.m_text_color_foreground) &&
+    (m_text_color_background == src.m_text_color_background);
 }
 
 
@@ -83,6 +89,9 @@ FieldFormatting& FieldFormatting::operator=(const FieldFormatting& src)
 
   m_text_format_multiline = src.m_text_format_multiline;
   m_text_multiline_height_lines = src.m_text_multiline_height_lines;
+  m_text_font = src.m_text_font;
+  m_text_color_foreground = src.m_text_color_foreground;
+  m_text_color_background = src.m_text_color_background;
 
 //g_warning("FieldFormatting::operator=: m_choices_related_relationship=%s, src.m_choices_related_relationship=%s", m_choices_related_relationship->c_str(), src.m_choices_related_relationship->c_str());
   return *this;
@@ -110,6 +119,36 @@ void FieldFormatting::set_text_format_multiline_height_lines(guint value)
     value = MULTILINE_TEXT_DEFAULT_HEIGHT_LINES;
 
   m_text_multiline_height_lines = value;
+}
+
+void FieldFormatting::set_text_format_font(const Glib::ustring& font_desc)
+{
+  m_text_font = font_desc;
+}
+
+Glib::ustring FieldFormatting::get_text_format_font() const
+{
+  return m_text_font;
+}
+
+void FieldFormatting::set_text_format_color_foreground(const Glib::ustring& color)
+{
+  m_text_color_foreground = color;
+}
+
+Glib::ustring FieldFormatting::get_text_format_color_foreground() const
+{
+  return m_text_color_foreground;
+}
+
+void FieldFormatting::set_text_format_color_background(const Glib::ustring& color)
+{
+  m_text_color_background = color;
+}
+
+Glib::ustring FieldFormatting::get_text_format_color_background() const
+{
+  return m_text_color_background;
 }
 
 bool FieldFormatting::get_has_choices() const
