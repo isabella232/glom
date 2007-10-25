@@ -181,6 +181,7 @@ void CanvasTextMovable::reconstruct_markup()
   
   property_use_markup() = true;
 
+
   if(markup)
   {
     property_text() = Glib::ustring(markup); //TODO: Inefficient.

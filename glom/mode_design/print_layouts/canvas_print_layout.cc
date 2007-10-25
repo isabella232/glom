@@ -271,7 +271,8 @@ void Canvas_PrintLayout::on_context_menu_formatting()
   
   sharedptr<LayoutItem> layout_item = m_context_item->get_layout_item();
   sharedptr<LayoutItem_Field> layout_item_field = sharedptr<LayoutItem_Field>::cast_dynamic(layout_item);
-  if(!layout_item_field)
+  sharedptr<LayoutItem_Text> layout_item_text = sharedptr<LayoutItem_Text>::cast_dynamic(layout_item);
+  if(!layout_item_field && !layout_item_text)
     return;
 
   if(m_dialog_format)
@@ -298,7 +299,15 @@ void Canvas_PrintLayout::on_context_menu_formatting()
   if(!m_dialog_format)
     return;
 
-  m_dialog_format->m_box_formatting->set_formatting(layout_item_field->m_formatting, m_table_name, layout_item_field->get_full_field_details());
+  //We need an if here, because they have no common base class.
+  //TODO: Maybe they should.
+  FieldFormatting formatting;
+  if(layout_item_field)
+    formatting = layout_item_field->get_formatting_used();
+  else
+    formatting = layout_item_text->get_formatting_used();
+
+  m_dialog_format->m_box_formatting->set_formatting(formatting);
 
   m_dialog_format->show();
 }
@@ -316,11 +325,16 @@ void Canvas_PrintLayout::on_dialog_format_hide()
 
   sharedptr<LayoutItem> layout_item = m_context_item->get_layout_item();
   sharedptr<LayoutItem_Field> layout_item_field = sharedptr<LayoutItem_Field>::cast_dynamic(layout_item);
-  if(!layout_item_field)
+  sharedptr<LayoutItem_Text> layout_item_text = sharedptr<LayoutItem_Text>::cast_dynamic(layout_item);
+  if(!layout_item_field && !layout_item_text)
     return;
 
-  m_dialog_format->m_box_formatting->get_formatting(layout_item_field->m_formatting);
-  m_context_item->set_layout_item(layout_item_field); //Redraw the child item with the new formatting.
+  if(layout_item_field)
+    m_dialog_format->m_box_formatting->get_formatting(layout_item_field->m_formatting);
+  else if(layout_item_text)
+    m_dialog_format->m_box_formatting->get_formatting(layout_item_text->m_formatting);
+
+  m_context_item->set_layout_item(layout_item); //Redraw the child item with the new formatting.
 
   delete m_dialog_format;
   m_dialog_format = 0;

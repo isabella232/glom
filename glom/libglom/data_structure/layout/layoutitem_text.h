@@ -22,6 +22,7 @@
 #define GLOM_DATASTRUCTURE_LAYOUTITEM_TEXT_H
 
 #include "layoutitem.h"
+#include "fieldformatting.h"
 
 namespace Glom
 {
@@ -52,6 +53,11 @@ public:
   void set_text(const Glib::ustring& text);
 
   sharedptr<TranslatableItem> m_text; //Reuse the title concept of this class to give us translatable text.
+
+
+  FieldFormatting m_formatting;
+
+  const FieldFormatting& get_formatting_used() const;
 };
 
 } //namespace Glom

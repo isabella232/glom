@@ -1,3 +1,33 @@
+2007-10-25  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/libglom/data_structure/layout/layoutitem_text.cc:
+	* glom/libglom/data_structure/layout/layoutitem_text.h: 
+	Added m_formatting and get_formatting_used() here, as in 
+	LayoutItem_Field. They should probably share a base class if 
+	this gets silly.
+	* glom/libglom/document/document_glom.cc:
+	* glom/libglom/document/document_glom.h: load and save the 
+	formatting for text items as well as just fields.
+	* glom/layout_item_dialogs/box_formatting.cc:
+	* glom/layout_item_dialogs/box_formatting.h: Added default 
+	arguments for set_formatting() parameters, so we can ignore 
+	stuff that is only relevant to fields.
+	* glom/mode_design/print_layouts/canvas_layout_item.cc:
+	* glom/mode_design/print_layouts/canvas_layout_item.h: 
+	set_layout_item(): Use set_text() rather than property_text(), 
+	so that the markup is constructed. Use markup for text items as well 
+	as fields. 
+	* glom/mode_design/print_layouts/canvas_print_layout.cc:
+	on_context_menu(): Show formatting options for text items as well as 
+	fields.
+	* glom/utility_widgets/layoutwidgetbase.cc: 
+	* glom/utility_widgets/layoutwidgetbase.h: Added the 
+	apply_formatting(widget, formatting) convenience method.
+	* glom/utility_widgets/datawidget.cc: Constructor: Use the 
+	apply_formatting() convenience method.
+	* glom/utility_widgets/flowtablewithfields.cc: add_textobject():
+	Use formatting for text items.
+
 2007-10-24  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/libglom/document/document_glom.cc: Save the font and color 

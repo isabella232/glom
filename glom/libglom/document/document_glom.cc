@@ -1686,14 +1686,16 @@ void Document_Glom::set_modified(bool value)
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-void Document_Glom::load_after_layout_item_field_formatting(const xmlpp::Element* element, FieldFormatting& format, Field::glom_field_type field_type, const Glib::ustring& table_name, const Glib::ustring& field_name)
+void Document_Glom::load_after_layout_item_formatting(const xmlpp::Element* element, FieldFormatting& format, Field::glom_field_type field_type, const Glib::ustring& table_name, const Glib::ustring& field_name)
 {
   //Numeric formatting:
-  format.m_numeric_format.m_use_thousands_separator = get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_FORMAT_THOUSANDS_SEPARATOR);
-  format.m_numeric_format.m_decimal_places_restricted = get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_FORMAT_DECIMAL_PLACES_RESTRICTED);
-  format.m_numeric_format.m_decimal_places = get_node_attribute_value_as_decimal(element, GLOM_ATTRIBUTE_FORMAT_DECIMAL_PLACES);
-  format.m_numeric_format.m_currency_symbol = get_node_attribute_value(element, GLOM_ATTRIBUTE_FORMAT_CURRENCY_SYMBOL);
-
+  if(!field_name.empty())
+  {
+    format.m_numeric_format.m_use_thousands_separator = get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_FORMAT_THOUSANDS_SEPARATOR);
+    format.m_numeric_format.m_decimal_places_restricted = get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_FORMAT_DECIMAL_PLACES_RESTRICTED);
+    format.m_numeric_format.m_decimal_places = get_node_attribute_value_as_decimal(element, GLOM_ATTRIBUTE_FORMAT_DECIMAL_PLACES);
+    format.m_numeric_format.m_currency_symbol = get_node_attribute_value(element, GLOM_ATTRIBUTE_FORMAT_CURRENCY_SYMBOL);
+  }
 
   //Text formatting:
   if(field_type == Field::TYPE_TEXT)
@@ -1708,51 +1710,54 @@ void Document_Glom::load_after_layout_item_field_formatting(const xmlpp::Element
 
 
   //Choices:
-  format.set_choices_restricted( get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_RESTRICTED) );
-  format.set_has_custom_choices( get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_CUSTOM) );
-
-  if(format.get_has_custom_choices())
+  if(!field_name.empty())
   {
-    const xmlpp::Element* nodeChoiceList = get_node_child_named(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_CUSTOM_LIST);
-    if(nodeChoiceList)
+    format.set_choices_restricted( get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_RESTRICTED) );
+    format.set_has_custom_choices( get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_CUSTOM) );
+
+    if(format.get_has_custom_choices())
     {
-      FieldFormatting::type_list_values list_values;
-
-      xmlpp::Node::NodeList listNodesCustomChoices = nodeChoiceList->get_children(GLOM_NODE_FORMAT_CUSTOM_CHOICE);
-      for(xmlpp::Node::NodeList::iterator iter = listNodesCustomChoices.begin(); iter != listNodesCustomChoices.end(); ++iter)
+      const xmlpp::Element* nodeChoiceList = get_node_child_named(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_CUSTOM_LIST);
+      if(nodeChoiceList)
       {
-        const xmlpp::Element* element = dynamic_cast<const xmlpp::Element*>(*iter);
-        if(element)
+        FieldFormatting::type_list_values list_values;
+
+        xmlpp::Node::NodeList listNodesCustomChoices = nodeChoiceList->get_children(GLOM_NODE_FORMAT_CUSTOM_CHOICE);
+        for(xmlpp::Node::NodeList::iterator iter = listNodesCustomChoices.begin(); iter != listNodesCustomChoices.end(); ++iter)
         {
-          if(field_type == Field::TYPE_INVALID)
+          const xmlpp::Element* element = dynamic_cast<const xmlpp::Element*>(*iter);
+          if(element)
           {
-            //Discover the field type, so we can interpret the text as a value.
-            //Not all calling functions know this.
-            //TODO_Performance.
-            sharedptr<const Field> field_temp = get_field(table_name, field_name);
-            if(field_temp)
-              field_type = field_temp->get_glom_type();
+            if(field_type == Field::TYPE_INVALID)
+            {
+              //Discover the field type, so we can interpret the text as a value.
+              //Not all calling functions know this, so they don't all supply the correct value.
+              //TODO_Performance.
+              sharedptr<const Field> field_temp = get_field(table_name, field_name);
+              if(field_temp)
+                field_type = field_temp->get_glom_type();
+            }
+
+            const Gnome::Gda::Value value = get_node_attribute_value_as_value(element, GLOM_ATTRIBUTE_VALUE, field_type);
+            list_values.push_back(value);
           }
-
-          const Gnome::Gda::Value value = get_node_attribute_value_as_value(element, GLOM_ATTRIBUTE_VALUE, field_type);
-          list_values.push_back(value);
         }
+
+        format.set_choices_custom(list_values);
       }
-
-      format.set_choices_custom(list_values);
     }
-  }
 
-  format.set_has_related_choices( get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED) );
+    format.set_has_related_choices( get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED) );
 
-  const Glib::ustring relationship_name = get_node_attribute_value(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_RELATIONSHIP);
-  if(!relationship_name.empty())
-  {
-    sharedptr<Relationship> relationship = get_relationship(table_name, relationship_name);
-    format.set_choices(relationship,
-      get_node_attribute_value(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_FIELD),
-      get_node_attribute_value(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_SECOND) );
-    //Full details are updated in filled-in ().
+    const Glib::ustring relationship_name = get_node_attribute_value(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_RELATIONSHIP);
+    if(!relationship_name.empty())
+    {
+      sharedptr<Relationship> relationship = get_relationship(table_name, relationship_name);
+      format.set_choices(relationship,
+        get_node_attribute_value(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_FIELD),
+        get_node_attribute_value(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_SECOND) );
+      //Full details are updated in filled-in ().
+    }
   }
 }
 
@@ -1799,7 +1804,7 @@ void Document_Glom::load_after_layout_item_field(const xmlpp::Element* element, 
   if(elementFormatting)
   {
     //TODO: Provide the name of the relationship's table if there is a relationship:
-    load_after_layout_item_field_formatting(elementFormatting, item->m_formatting, item->get_glom_type(), table_name, name);
+    load_after_layout_item_formatting(elementFormatting, item->m_formatting, item->get_glom_type(), table_name, name);
   }
 
   item->set_formatting_use_default( get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_DATA_LAYOUT_ITEM_FIELD_USE_DEFAULT_FORMATTING) );
@@ -1909,6 +1914,10 @@ void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Gl
         sharedptr<LayoutItem_Text> item = sharedptr<LayoutItem_Text>::create();
         load_after_translations(element, *item);
 
+        const xmlpp::Element* elementFormatting = get_node_child_named(element, GLOM_NODE_FORMAT);
+        if(elementFormatting)
+          load_after_layout_item_formatting(elementFormatting, item->m_formatting);
+
         //The text can be translated too, so it has its own node:
         const xmlpp::Element* element_text = get_node_child_named(element, GLOM_NODE_DATA_LAYOUT_TEXTOBJECT_TEXT);
         if(element_text)
@@ -1916,6 +1925,7 @@ void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Gl
           sharedptr<TranslatableItem> translatable_text = sharedptr<TranslatableItem>::create();
           load_after_translations(element_text, *translatable_text);
           item->m_text = translatable_text;
+          std::cout << "  DEBUG: text: " << item->m_text->get_title_or_name() << std::endl;
         }
 
         item->m_sequence = sequence;
@@ -2283,7 +2293,7 @@ bool Document_Glom::load_after()
                 //Default Formatting:
                 const xmlpp::Element* elementFormatting = get_node_child_named(nodeChild, GLOM_NODE_FORMAT);
                 if(elementFormatting)
-                  load_after_layout_item_field_formatting(elementFormatting, field->m_default_formatting, field_type_enum, table_name, strName);
+                  load_after_layout_item_formatting(elementFormatting, field->m_default_formatting, field_type_enum, table_name, strName);
 
                 //Translations:
                 load_after_translations(nodeChild, *field);
@@ -2601,16 +2611,19 @@ bool Document_Glom::load_after()
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-void Document_Glom::save_before_layout_item_field_formatting(xmlpp::Element* nodeItem, const FieldFormatting& format, Field::glom_field_type field_type)
+void Document_Glom::save_before_layout_item_formatting(xmlpp::Element* nodeItem, const FieldFormatting& format, Field::glom_field_type field_type)
 {
   //Numeric format:
-  set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_FORMAT_THOUSANDS_SEPARATOR,  format.m_numeric_format.m_use_thousands_separator);
-  set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_FORMAT_DECIMAL_PLACES_RESTRICTED, format.m_numeric_format.m_decimal_places_restricted);
-  set_node_attribute_value_as_decimal(nodeItem, GLOM_ATTRIBUTE_FORMAT_DECIMAL_PLACES, format.m_numeric_format.m_decimal_places);
-  set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_FORMAT_CURRENCY_SYMBOL, format.m_numeric_format.m_currency_symbol);
+  if(field_type != Field::TYPE_INVALID) //These options are only for fields:
+  {
+    set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_FORMAT_THOUSANDS_SEPARATOR,  format.m_numeric_format.m_use_thousands_separator);
+    set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_FORMAT_DECIMAL_PLACES_RESTRICTED, format.m_numeric_format.m_decimal_places_restricted);
+    set_node_attribute_value_as_decimal(nodeItem, GLOM_ATTRIBUTE_FORMAT_DECIMAL_PLACES, format.m_numeric_format.m_decimal_places);
+    set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_FORMAT_CURRENCY_SYMBOL, format.m_numeric_format.m_currency_symbol);
 
-  set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_FORMAT_CHOICES_RESTRICTED, format.get_choices_restricted());
-  set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_FORMAT_CHOICES_CUSTOM, format.get_has_custom_choices());
+    set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_FORMAT_CHOICES_RESTRICTED, format.get_choices_restricted());
+    set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_FORMAT_CHOICES_CUSTOM, format.get_has_custom_choices());
+  }
 
   //Text formatting:
   if(field_type == Field::TYPE_TEXT)
@@ -2624,27 +2637,30 @@ void Document_Glom::save_before_layout_item_field_formatting(xmlpp::Element* nod
   set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_FORMAT_TEXT_COLOR_BACKGROUND, format.get_text_format_color_background());
 
   //Choices:
-  if(format.get_has_custom_choices())
+  if(field_type != Field::TYPE_INVALID)
   {
-    xmlpp::Element* child = nodeItem->add_child(GLOM_ATTRIBUTE_FORMAT_CHOICES_CUSTOM_LIST);
-
-    const FieldFormatting::type_list_values list_values = format.get_choices_custom();
-    for(FieldFormatting::type_list_values::const_iterator iter = list_values.begin(); iter != list_values.end(); ++iter)
+    if(format.get_has_custom_choices())
     {
-      xmlpp::Element* childChoice = child->add_child(GLOM_NODE_FORMAT_CUSTOM_CHOICE);
-      set_node_attribute_value_as_value(childChoice, GLOM_ATTRIBUTE_VALUE, *iter, field_type);
+      xmlpp::Element* child = nodeItem->add_child(GLOM_ATTRIBUTE_FORMAT_CHOICES_CUSTOM_LIST);
+
+      const FieldFormatting::type_list_values list_values = format.get_choices_custom();
+      for(FieldFormatting::type_list_values::const_iterator iter = list_values.begin(); iter != list_values.end(); ++iter)
+      {
+        xmlpp::Element* childChoice = child->add_child(GLOM_NODE_FORMAT_CUSTOM_CHOICE);
+        set_node_attribute_value_as_value(childChoice, GLOM_ATTRIBUTE_VALUE, *iter, field_type);
+      }
     }
+
+    set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED, format.get_has_related_choices() );
+
+    sharedptr<Relationship> choice_relationship;
+    Glib::ustring choice_field, choice_second;
+    format.get_choices(choice_relationship, choice_field, choice_second);
+
+    set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_RELATIONSHIP, glom_get_sharedptr_name(choice_relationship));
+    set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_FIELD, choice_field);
+    set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_SECOND, choice_second);
   }
-
-  set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED, format.get_has_related_choices() );
-
-  sharedptr<Relationship> choice_relationship;
-  Glib::ustring choice_field, choice_second;
-  format.get_choices(choice_relationship, choice_field, choice_second);
-
-  set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_RELATIONSHIP, glom_get_sharedptr_name(choice_relationship));
-  set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_FIELD, choice_field);
-  set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_SECOND, choice_second);
 }
 
 void Document_Glom::save_before_layout_item_usesrelationship(xmlpp::Element* nodeItem, const sharedptr<const UsesRelationship>& item)
@@ -2666,7 +2682,7 @@ void Document_Glom::save_before_layout_item_field(xmlpp::Element* nodeItem, cons
   set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_EDITABLE, field->get_editable());
 
   xmlpp::Element* elementFormat = nodeItem->add_child(GLOM_NODE_FORMAT);
-  save_before_layout_item_field_formatting(elementFormat, field->m_formatting, field->get_glom_type());
+  save_before_layout_item_formatting(elementFormat, field->m_formatting, field->get_glom_type());
 
   set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_DATA_LAYOUT_ITEM_FIELD_USE_DEFAULT_FORMATTING, field->get_formatting_use_default());
 
@@ -2863,6 +2879,9 @@ void Document_Glom::save_before_layout_group(xmlpp::Element* node, const sharedp
             {
               nodeItem = child->add_child(GLOM_NODE_DATA_LAYOUT_TEXTOBJECT);
               save_before_translations(nodeItem, *textobject);
+
+              xmlpp::Element* elementFormat = nodeItem->add_child(GLOM_NODE_FORMAT);
+              save_before_layout_item_formatting(elementFormat, textobject->m_formatting);
 
               //The text is translatable too, so we use a node for it:
               xmlpp::Element* element_text = nodeItem->add_child(GLOM_NODE_DATA_LAYOUT_TEXTOBJECT_TEXT);
@@ -3062,7 +3081,7 @@ bool Document_Glom::save_before()
 
           //Default Formatting:
           xmlpp::Element* elementFormat = elemField->add_child(GLOM_NODE_FORMAT);
-          save_before_layout_item_field_formatting(elementFormat, field->m_default_formatting, field->get_glom_type());
+          save_before_layout_item_formatting(elementFormat, field->m_default_formatting, field->get_glom_type());
 
           //Translations:
           save_before_translations(elemField, *field);

@@ -492,6 +492,8 @@ void FlowTableWithFields::add_textobject_at_position(const sharedptr<LayoutItem_
   LabelGlom* label = Gtk::manage(new LabelGlom(layoutitem_text->get_text(), 0.0 /* xalign */, 0.5 /* yalign */)); //The alignment here seems to be necessary as well (or instead of) the parent Gtk::Alignment.
   label->show();
   alignment_label->add(*label);
+  
+  apply_formatting(*label, layoutitem_text->get_formatting_used());
 
   add_layoutwidgetbase(label, add_before);
   //add_view(button); //So it can get the document.

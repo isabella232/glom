@@ -56,6 +56,26 @@ sharedptr<LayoutItem> CanvasLayoutItem::get_layout_item()
   return m_layout_item;
 }
 
+void CanvasLayoutItem::apply_formatting(const Glib::RefPtr<CanvasTextMovable>& canvas_item, const FieldFormatting& formatting)
+{
+  if(!canvas_item)
+    return;
+
+  Glib::ustring font = formatting.get_text_format_font();
+  if(font.empty())
+    font = "Sans 9";
+   canvas_item->set_font(font);
+
+  //TODO: Are these sensible properties? Maybe we need to use markup:
+  const Glib::ustring fg = formatting.get_text_format_color_foreground();
+  if(!fg.empty())
+    canvas_item->property_stroke_color() = fg;
+
+  const Glib::ustring bg = formatting.get_text_format_color_background();
+  if(!bg.empty())
+  canvas_item->property_fill_color() = bg;
+}
+
 void CanvasLayoutItem::set_layout_item(const sharedptr<LayoutItem>& item)
 {
   //Remove the current child:
@@ -70,7 +90,11 @@ void CanvasLayoutItem::set_layout_item(const sharedptr<LayoutItem>& item)
   if(text)
   {
     Glib::RefPtr<CanvasTextMovable> canvas_item = CanvasTextMovable::create();
-    canvas_item->property_text() = text->get_text();
+
+    const FieldFormatting& formatting = text->get_formatting_used();
+    apply_formatting(canvas_item, formatting);
+
+    canvas_item->set_text(text->get_text());
     child = canvas_item;
   }
   else
@@ -96,29 +120,22 @@ void CanvasLayoutItem::set_layout_item(const sharedptr<LayoutItem>& item)
           //  if(name.empty())
           //    name = _("Choose Field");
           
-          //canvas_item->property_text() = name;
+          //canvas_item->set_text(name);
 
           child = canvas_item;
         }
         else //text, numbers, date, time, boolean:
         {
           Glib::RefPtr<CanvasTextMovable> canvas_item = CanvasTextMovable::create();
-          canvas_item->set_font( field->m_formatting.get_text_format_font() );
-
-          //TODO: Are these sensible properties? Maybe we need to use markup:
-          const Glib::ustring fg = field->get_formatting_used().get_text_format_color_foreground();
-          if(!fg.empty())
-            canvas_item->property_stroke_color() = fg;
-
-          const Glib::ustring bg = field->get_formatting_used().get_text_format_color_background();
-          if(!bg.empty())
-            canvas_item->property_fill_color() = bg;
+         
+          const FieldFormatting& formatting = field->get_formatting_used();
+          apply_formatting(canvas_item, formatting);
 
           Glib::ustring name = field->get_name();
             if(name.empty())
               name = _("Choose Field");
           
-          canvas_item->property_text() = name;
+          canvas_item->set_text(name);
 
           child = canvas_item;
         }
@@ -182,7 +199,7 @@ void CanvasLayoutItem::set_db_data(const Gnome::Gda::Value& value)
         text_value = Conversions::get_text_for_gda_value(field_type, value, field->get_formatting_used().m_numeric_format);
       }
     
-      canvas_item->property_text() = text_value;
+      canvas_item->set_text(text_value);
       break;
     }
     case(Field::TYPE_IMAGE):

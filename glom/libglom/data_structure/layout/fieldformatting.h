@@ -30,6 +30,7 @@
 namespace Glom
 {
 
+//TODO: This should probably be renamed to Formatting, because it is used for static text items too.
 class FieldFormatting : public UsesRelationship //The UsesRelationship base has the relationship for the choices.
 {
 public:

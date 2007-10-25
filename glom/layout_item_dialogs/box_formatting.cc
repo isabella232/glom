@@ -119,9 +119,16 @@ void Box_Formatting::set_force_show_text_formatting()
 
 void Box_Formatting::set_formatting(const FieldFormatting& format, const Glib::ustring& table_name, const sharedptr<const Field>& field)
 {
-  m_format = format;
+  //Used for choices and some extra text formatting:
   m_table_name = table_name;
   m_field = field;
+
+  set_formatting(format);
+}
+
+void Box_Formatting::set_formatting(const FieldFormatting& format)
+{
+  m_format = format;
 
   m_checkbox_format_use_thousands->set_active( format.m_numeric_format.m_use_thousands_separator );
   m_checkbox_format_use_decimal_places->set_active( format.m_numeric_format.m_decimal_places_restricted );
@@ -150,36 +157,39 @@ void Box_Formatting::set_formatting(const FieldFormatting& format, const Glib::u
 
 
   //Choices:
-  m_checkbutton_choices_restricted->set_active(format.get_choices_restricted());
-
-  const Document_Glom* document = get_document();
-
-  //Fill the list of relationships:
-  const Document_Glom::type_vecRelationships vecRelationships = document->get_relationships(m_table_name);
-  m_combo_choices_relationship->set_relationships(vecRelationships);
-
-  sharedptr<Relationship> choices_relationship;
-  Glib::ustring choices_field, choices_field_second;
-  format.get_choices(choices_relationship, choices_field, choices_field_second);
-
-  m_combo_choices_relationship->set_selected_relationship(choices_relationship);
-  on_combo_choices_relationship_changed(); //Fill the combos so we can set their active items.
-  m_combo_choices_field->set_selected_field(choices_field);
-  m_combo_choices_field_second->set_selected_field(choices_field_second);
-
-  //Custom choices:
-  m_adddel_choices_custom->remove_all();
-  FieldFormatting::type_list_values list_choice_values = format.get_choices_custom();
-  for(FieldFormatting::type_list_values::const_iterator iter = list_choice_values.begin(); iter != list_choice_values.end(); ++iter)
+  if(m_field)
   {
-    //Display the value in the choices list as it would be displayed in the format:
-    const Glib::ustring value_text = Conversions::get_text_for_gda_value(field->get_glom_type(), *iter, format.m_numeric_format);
-    Gtk::TreeModel::iterator iter = m_adddel_choices_custom->add_item(value_text);
-    m_adddel_choices_custom->set_value(iter, m_col_index_custom_choices, value_text);
-  }
+    m_checkbutton_choices_restricted->set_active(format.get_choices_restricted());
 
-  m_radiobutton_choices_custom->set_active(format.get_has_custom_choices());
-  m_radiobutton_choices_related->set_active(format.get_has_related_choices());
+    const Document_Glom* document = get_document();
+
+    //Fill the list of relationships:
+    const Document_Glom::type_vecRelationships vecRelationships = document->get_relationships(m_table_name);
+    m_combo_choices_relationship->set_relationships(vecRelationships);
+
+    sharedptr<Relationship> choices_relationship;
+    Glib::ustring choices_field, choices_field_second;
+    format.get_choices(choices_relationship, choices_field, choices_field_second);
+
+    m_combo_choices_relationship->set_selected_relationship(choices_relationship);
+    on_combo_choices_relationship_changed(); //Fill the combos so we can set their active items.
+    m_combo_choices_field->set_selected_field(choices_field);
+    m_combo_choices_field_second->set_selected_field(choices_field_second);
+
+    //Custom choices:
+    m_adddel_choices_custom->remove_all();
+    FieldFormatting::type_list_values list_choice_values = format.get_choices_custom();
+    for(FieldFormatting::type_list_values::const_iterator iter = list_choice_values.begin(); iter != list_choice_values.end(); ++iter)
+    {
+      //Display the value in the choices list as it would be displayed in the format:
+      const Glib::ustring value_text = Conversions::get_text_for_gda_value(m_field->get_glom_type(), *iter, format.m_numeric_format);
+      Gtk::TreeModel::iterator iter = m_adddel_choices_custom->add_item(value_text);
+      m_adddel_choices_custom->set_value(iter, m_col_index_custom_choices, value_text);
+    }
+
+    m_radiobutton_choices_custom->set_active(format.get_has_custom_choices());
+    m_radiobutton_choices_related->set_active(format.get_has_related_choices());
+  }
 
   enforce_constraints();
 }
@@ -221,35 +231,38 @@ bool Box_Formatting::get_formatting(FieldFormatting& format) const
   m_format.set_text_format_color_background(color_background);
 
   //Choices:
-  m_format.set_choices_restricted(m_checkbutton_choices_restricted->get_active());
-
-  sharedptr<Relationship> choices_relationship = m_combo_choices_relationship->get_selected_relationship();
-  m_format.set_choices(choices_relationship,
-    m_combo_choices_field->get_selected_field_name(),
-    m_combo_choices_field_second->get_selected_field_name() );
-
-  //Custom choices:
-  FieldFormatting::type_list_values list_choice_values;
-  Glib::RefPtr<Gtk::TreeModel> choices_model = m_adddel_choices_custom->get_model();
-  if(choices_model)
+  if(m_field)
   {
-    for(Gtk::TreeModel::iterator iter = choices_model->children().begin(); iter != choices_model->children().end(); ++iter)
-    {
-      const Glib::ustring text = m_adddel_choices_custom->get_value(iter, m_col_index_custom_choices);
-      if(!text.empty())
-      {
-        bool success = false;
-        Gnome::Gda::Value value = Conversions::parse_value(m_field->get_glom_type(), text, m_format.m_numeric_format, success);
+    m_format.set_choices_restricted(m_checkbutton_choices_restricted->get_active());
 
-        if(success)
-          list_choice_values.push_back(value);
+    sharedptr<Relationship> choices_relationship = m_combo_choices_relationship->get_selected_relationship();
+    m_format.set_choices(choices_relationship,
+      m_combo_choices_field->get_selected_field_name(),
+      m_combo_choices_field_second->get_selected_field_name() );
+
+    //Custom choices:
+    FieldFormatting::type_list_values list_choice_values;
+    Glib::RefPtr<Gtk::TreeModel> choices_model = m_adddel_choices_custom->get_model();
+    if(choices_model)
+    {
+      for(Gtk::TreeModel::iterator iter = choices_model->children().begin(); iter != choices_model->children().end(); ++iter)
+      {
+        const Glib::ustring text = m_adddel_choices_custom->get_value(iter, m_col_index_custom_choices);
+        if(!text.empty())
+        {
+          bool success = false;
+          Gnome::Gda::Value value = Conversions::parse_value(m_field->get_glom_type(), text, m_format.m_numeric_format, success);
+
+          if(success)
+            list_choice_values.push_back(value);
+        }
       }
     }
-  }
 
-  m_format.set_choices_custom(list_choice_values);
-  m_format.set_has_custom_choices(m_radiobutton_choices_custom->get_active());
-  m_format.set_has_related_choices(m_radiobutton_choices_related->get_active());
+    m_format.set_choices_custom(list_choice_values);
+    m_format.set_has_custom_choices(m_radiobutton_choices_custom->get_active());
+    m_format.set_has_related_choices(m_radiobutton_choices_related->get_active());
+  }
 
   format = m_format;
   return true;
@@ -287,7 +300,7 @@ void Box_Formatting::enforce_constraints()
 
 
   bool show_text = false;
-  if(m_field && (m_field->get_glom_type() != Field::TYPE_BOOLEAN)) //TODO: Allow text options when showing booleans as Yes/No on print layouts.
+  if(m_field && (m_field->get_glom_type() != Field::TYPE_BOOLEAN) && (m_field->get_glom_type() != Field::TYPE_IMAGE)) //TODO: Allow text options when showing booleans as Yes/No on print layouts.
     show_text = true;
 
   if(m_force_show_text_formatting)
@@ -298,7 +311,7 @@ void Box_Formatting::enforce_constraints()
     m_vbox_text_format->show();
 
     //Hide multiline options for non-text fields:
-    if(m_hide_multiline || (m_field->get_glom_type() != Field::TYPE_TEXT))
+    if(m_hide_multiline || !m_field || (m_field->get_glom_type() != Field::TYPE_TEXT))
     {
       m_checkbox_format_text_multiline->hide();
       m_label_format_text_multiline_height->hide();

@@ -84,6 +84,8 @@ public:
 protected:
   virtual App_Glom* get_application() const; // = 0;
 
+  static void apply_formatting(Gtk::Widget& widget, const FieldFormatting& formatting);
+
   sharedptr<LayoutItem> m_pLayoutItem;
   Glib::ustring m_table_name;
 

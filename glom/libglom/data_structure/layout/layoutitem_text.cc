@@ -32,7 +32,8 @@ LayoutItem_Text::LayoutItem_Text()
 
 LayoutItem_Text::LayoutItem_Text(const LayoutItem_Text& src)
 : LayoutItem(src),
-  m_text(src.m_text)
+  m_text(src.m_text),
+  m_formatting(src.m_formatting)
 {
 }
 
@@ -48,7 +49,8 @@ LayoutItem* LayoutItem_Text::clone() const
 bool LayoutItem_Text::operator==(const LayoutItem_Text& src) const
 {
   bool result = LayoutItem::operator==(src) && 
-                (*m_text == *(src.m_text));
+                (*m_text == *(src.m_text)) &&
+                (m_formatting == src.m_formatting);
 
   return result;
 }
@@ -59,6 +61,7 @@ LayoutItem_Text& LayoutItem_Text::operator=(const LayoutItem_Text& src)
   LayoutItem::operator=(src);
 
   m_text = src.m_text;
+  m_formatting = src.m_formatting;
 
   return *this;
 }
@@ -83,6 +86,10 @@ void LayoutItem_Text::set_text(const Glib::ustring& text)
   m_text->set_title(text);
 }
 
+const FieldFormatting& LayoutItem_Text::get_formatting_used() const
+{
+  return m_formatting;
+}
 
 } //namespace Glom
 

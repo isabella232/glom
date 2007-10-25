@@ -28,6 +28,9 @@
 namespace Glom
 {
 
+class CanvasTextMovable;
+class FieldFormatting;
+
 class CanvasLayoutItem : public CanvasGroupResizable
 {
 protected:
@@ -44,6 +47,8 @@ public:
   void set_db_data(const Gnome::Gda::Value& value);
 
 protected:
+  void apply_formatting(const Glib::RefPtr<CanvasTextMovable>& canvas_item, const FieldFormatting& formatting);
+
   sharedptr<LayoutItem> m_layout_item;
 };
 

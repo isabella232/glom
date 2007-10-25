@@ -42,10 +42,15 @@ public:
 
   /**
    * @param format The starting information.
+   */
+  void set_formatting(const FieldFormatting& format);
+  
+  /**
+   * @param format The starting information.
    * @param table_name The field's table.
    * @param The field that will have this formatting, so we know what formatting options to allow.
    */
-  virtual void set_formatting(const FieldFormatting& format, const Glib::ustring& table_name, const sharedptr<const Field>& field);
+  void set_formatting(const FieldFormatting& format, const Glib::ustring& table_name, const sharedptr<const Field>& field);
   bool get_formatting(FieldFormatting& format) const;
 
   //When used for print layout items, 
