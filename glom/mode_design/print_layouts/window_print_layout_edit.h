@@ -30,6 +30,7 @@
 #include <gtkmm/box.h>
 #include <gtkmm/uimanager.h>
 #include <gtkmm/toggleaction.h>
+#include <gtkmm/ruler.h>
 #include <libglademm/xml.h>
 
 namespace Glom
@@ -66,8 +67,12 @@ protected:
   void on_context_menu_insert_field();
   void on_context_menu_insert_text();
 
+  void on_scroll_value_changed();
   void on_button_close();
+
   void setup_context_menu();
+  void set_ruler_sizes();
+
   void set_default_position(const sharedptr<LayoutItem>& item);
 
   //Box_DB_Table_Definition* m_box;
@@ -87,7 +92,11 @@ protected:
   Gtk::VBox* m_box_menu;
   Gtk::VBox* m_box_canvas;
   Gtk::VBox* m_box;
+  Gtk::ScrolledWindow m_scrolled_window;
   Canvas_PrintLayout m_canvas;
+
+  Gtk::VRuler* m_vruler;
+  Gtk::HRuler* m_hruler;
 
   //Main menu:
   Glib::RefPtr<Gtk::ActionGroup> m_action_group;

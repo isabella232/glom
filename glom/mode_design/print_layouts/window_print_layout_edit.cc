@@ -37,7 +37,9 @@ Window_PrintLayout_Edit::Window_PrintLayout_Edit(BaseObjectType* cobject, const 
   m_label_table_name(0),
   m_label_table(0),
   m_button_close(0),
-  m_box(0)
+  m_box(0),
+  m_vruler(0),
+  m_hruler(0)
 {
   set_default_size(640, 480);
 
@@ -52,17 +54,32 @@ Window_PrintLayout_Edit::Window_PrintLayout_Edit(BaseObjectType* cobject, const 
   refGlade->get_widget("entry_name", m_entry_name);
   refGlade->get_widget("entry_title", m_entry_title);
 
+  refGlade->get_widget("vruler", m_vruler);
+  refGlade->get_widget("hruler", m_hruler);
+
+  //I'm not sure what set_metric() does, but using Gtk::CENTIMETERS leads to our max being ignored/used-weirdly. murrayc.
+  m_hruler->set_metric(Gtk::PIXELS);
+  m_vruler->set_metric(Gtk::PIXELS);
+
   refGlade->get_widget("button_close", m_button_close);
   m_button_close->signal_clicked().connect( sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_button_close) );
 
   init_menu();
 
-  Gtk::ScrolledWindow* scrolled = Gtk::manage(new Gtk::ScrolledWindow());
-  scrolled->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
-  scrolled->add(m_canvas);
-  scrolled->show_all();
-  m_box_canvas->pack_start(*scrolled);
+  m_scrolled_window.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
+  m_scrolled_window.add(m_canvas);
+  m_scrolled_window.show_all();
+  m_box_canvas->pack_start(m_scrolled_window);
   m_canvas.show();
+
+  m_scrolled_window.get_hadjustment()->signal_changed().connect(
+    sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_scroll_value_changed) );
+  m_scrolled_window.get_hadjustment()->signal_value_changed().connect(
+    sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_scroll_value_changed) );
+  m_scrolled_window.get_vadjustment()->signal_changed().connect(
+    sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_scroll_value_changed) );
+  m_scrolled_window.get_vadjustment()->signal_value_changed().connect(
+    sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_scroll_value_changed) );
 
   //Fill composite view:
   //add_view(m_box);
@@ -224,6 +241,8 @@ void Window_PrintLayout_Edit::set_print_layout(const Glib::ustring& table_name, 
 
   m_entry_name->set_text(print_layout->get_name()); 
   m_entry_title->set_text(print_layout->get_title());
+
+  set_ruler_sizes();
 
   m_modified = false;
 }
@@ -419,8 +438,44 @@ void Window_PrintLayout_Edit::on_menu_file_page_setup()
   //Save the chosen page setup dialog for use when printing, previewing, or
   //showing the page setup dialog again:
   m_canvas.set_page_setup(page_setup);
+
+  set_ruler_sizes();
 }
 
+void Window_PrintLayout_Edit::set_ruler_sizes()
+{
+  //Note: We should use the page size if we decide not to make the canvas bounds == page size.
+  on_scroll_value_changed();
+
+  /*
+  double x1 = 0;
+  double y1 = 0;
+  double x2 = 0;
+  double y2 = 0;
+  m_canvas.get_bounds(x1, y1, x2, y2);
+
+  m_hruler->set_range(x1, x2, 0, x2);
+  m_vruler->set_range(y1, y2, 0, y2);
+  */
+}
+
+void Window_PrintLayout_Edit::on_scroll_value_changed()
+{
+  double width = m_scrolled_window.get_hadjustment()->get_page_size();
+  double height = m_scrolled_window.get_vadjustment()->get_page_size();
+  double x = m_scrolled_window.get_hadjustment()->get_value();
+  double y = m_scrolled_window.get_vadjustment()->get_value();
+  
+  //This definitely seems to give the correct mm values.
+  //(It understands the canvas units and scale):
+  m_canvas.convert_from_pixels(width, height); 
+  m_canvas.convert_from_pixels(x, y);
+
+  //std::cout << "DEBUG: Calling m_hruler->set_range(" << x << ", " << x + width << ", 0, " <<  x + width << std::endl;
+
+  m_hruler->set_range(x, x + width, 0, x + width);
+  m_vruler->set_range(y, y + height, 0, y + height);
+}
 
 
 } //namespace Glom

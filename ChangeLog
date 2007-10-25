@@ -1,5 +1,15 @@
 2007-10-25  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/glom_developer.glade:
+	* glom/mode_design/print_layouts/window_print_layout_edit.cc:
+	* glom/mode_design/print_layouts/window_print_layout_edit.h:
+	Added rulers around the canvas, which update appropriately, like 
+	in Inkscape.
+	* glom/printoperation_printlayout.cc: Do not scale the context. 
+	Everything should already be exactly correct on the canvas.
+
+2007-10-25  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/libglom/data_structure/layout/layoutitem_text.cc:
 	* glom/libglom/data_structure/layout/layoutitem_text.h: 
 	Added m_formatting and get_formatting_used() here, as in 
