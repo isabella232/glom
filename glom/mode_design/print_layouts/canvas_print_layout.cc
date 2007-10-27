@@ -232,7 +232,7 @@ void Canvas_PrintLayout::on_item_show_context_menu(guint button, guint32 activat
 
 void Canvas_PrintLayout::update_layout_position_from_canvas(const sharedptr<LayoutItem> layout_item, const Glib::RefPtr<const CanvasLayoutItem>& canvas_item)
 {
-  if(!layout_item || ~canvas_item)
+  if(!layout_item || !canvas_item)
     return;
 
   //Get the actual position:

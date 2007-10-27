@@ -1,5 +1,10 @@
 2007-10-28  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/mode_design/print_layouts/canvas_print_layout.cc:
+	Fix a typo so that the positions really are preserved.
+
+2007-10-28  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/glom_developer.glade:
 	* glom/layout_item_dialogs/dialog_textobject.cc:
 	* glom/layout_item_dialogs/dialog_textobject.h:
