@@ -144,7 +144,7 @@ void Canvas_PrintLayout::fill_layout_group(const sharedptr<LayoutGroup>& group)
       if((width != 0)) //Allow height to be 0, because text items currently have no height. TODO: && (height != 0)) //Avoid bogus items.
       {
         sharedptr<LayoutItem> layout_item = canvas_item->get_layout_item();
-        layout_item->set_print_layout_position(x, y, width, height);
+        update_layout_position_from_canvas(layout_item, canvas_item);
 
         group->add_item(layout_item);
       }
@@ -247,17 +247,25 @@ void Canvas_PrintLayout::update_layout_position_from_canvas(const sharedptr<Layo
 
 void Canvas_PrintLayout::on_context_menu_edit()
 {
+  Gtk::Window* parent = dynamic_cast<Gtk::Window*>(get_toplevel());
+
   sharedptr<LayoutItem> layout_item = m_context_item->get_layout_item();
+  update_layout_position_from_canvas(layout_item, m_context_item);
+
   sharedptr<LayoutItem_Field> field = sharedptr<LayoutItem_Field>::cast_dynamic(layout_item);
   if(field)
   {
-    update_layout_position_from_canvas(field, m_context_item);
-
-    Gtk::Window* parent = dynamic_cast<Gtk::Window*>(get_toplevel());
     sharedptr<LayoutItem_Field> field_chosen = offer_field_list(field, m_table_name, parent);
     if(field_chosen)
-    {
       m_context_item->set_layout_item(field_chosen);
+  }
+  else
+  {
+    sharedptr<LayoutItem_Text> text = sharedptr<LayoutItem_Text>::cast_dynamic(layout_item);
+    if(text)
+    {
+      text = Base_DB::offer_textobject(text, parent, false /* don't show title */);
+      m_context_item->set_layout_item(text);
     }
   }
 
@@ -270,6 +278,8 @@ void Canvas_PrintLayout::on_context_menu_formatting()
     return;
   
   sharedptr<LayoutItem> layout_item = m_context_item->get_layout_item();
+  update_layout_position_from_canvas(layout_item, m_context_item);
+
   sharedptr<LayoutItem_Field> layout_item_field = sharedptr<LayoutItem_Field>::cast_dynamic(layout_item);
   sharedptr<LayoutItem_Text> layout_item_text = sharedptr<LayoutItem_Text>::cast_dynamic(layout_item);
   if(!layout_item_field && !layout_item_text)

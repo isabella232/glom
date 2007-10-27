@@ -1,3 +1,21 @@
+2007-10-28  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/glom_developer.glade:
+	* glom/layout_item_dialogs/dialog_textobject.cc:
+	* glom/layout_item_dialogs/dialog_textobject.h:
+	set_textobject(): Added a bool show_title parameter.
+	* glom/base_db.cc:
+	* glom/base_db.h: offer_textobject(): Added a bool show_title 
+	parameter.
+	* glom/mode_design/print_layouts/canvas_print_layout.cc:
+	update the position before showing edit or formatting dialogs, 
+	to avoid losing the position when resetting the layout item.
+
+	* glom/utility_widgets/canvas/canvas_editable.cc:
+	* glom/utility_widgets/canvas/canvas_editable.h: Added an 
+	add_item(item, group) overload, so we can group items together 
+	instead of putting them directly in the root group.
+
 2007-10-27  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/printoperation_printlayout.cc: Call set_unit(), because 

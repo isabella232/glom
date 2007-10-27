@@ -38,10 +38,11 @@ public:
   Dialog_TextObject(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
   virtual ~Dialog_TextObject();
 
-  void set_textobject(const sharedptr<const LayoutItem_Text>& textobject, const Glib::ustring& table_name);
+  void set_textobject(const sharedptr<const LayoutItem_Text>& textobject, const Glib::ustring& table_name, bool show_title = true);
   sharedptr<LayoutItem_Text> get_textobject() const;
 
 protected:
+  Gtk::HBox* m_box_title;
   Gtk::Entry* m_entry_title;
   Gtk::TextView* m_text_view;
 

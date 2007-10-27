@@ -46,6 +46,16 @@ void CanvasEditable::add_item(const Glib::RefPtr<Goocanvas::Item>& item, bool re
   if(!root_group)
     return;
 
+  add_item(item, root_group, resizable);
+}
+
+void CanvasEditable::add_item(const Glib::RefPtr<Goocanvas::Item>& item, const Glib::RefPtr<Goocanvas::Group>& group, bool resizable)
+{
+  if(!group)
+   return;
+
+  std::cout << "CanvasEditable::add_item" << std::endl;
+
   bool added = false;
 
   //Add it inside a manipulatable group, if requested:
@@ -57,7 +67,7 @@ void CanvasEditable::add_item(const Glib::RefPtr<Goocanvas::Item>& item, bool re
       Glib::RefPtr<CanvasGroupResizable> resizable = CanvasGroupResizable::create();
       resizable->set_grid(m_grid);
 
-      root_group->add_child(resizable); //We must do this before calling set_child(), so that set_child() can discover the bounds.
+      group->add_child(resizable); //We must do this before calling set_child(), so that set_child() can discover the bounds.
       resizable->set_child(movable); //Puts draggable corners and edges around it.
       added = true;
     }
@@ -65,7 +75,7 @@ void CanvasEditable::add_item(const Glib::RefPtr<Goocanvas::Item>& item, bool re
 
   //Or just add it directly:
   if(!added)
-    root_group->add_child(item);
+    group->add_child(item);
 
 
   Glib::RefPtr<CanvasItemMovable> movable = CanvasItemMovable::cast_to_movable(item);
@@ -76,9 +86,16 @@ void CanvasEditable::add_item(const Glib::RefPtr<Goocanvas::Item>& item, bool re
 void CanvasEditable::remove_all_items()
 {
   Glib::RefPtr<Goocanvas::Item> root = get_root_item();
-  while(root && root->get_n_children())
-      root->remove_child(0);
+  Glib::RefPtr<Goocanvas::Group> root_group = Glib::RefPtr<Goocanvas::Group>::cast_dynamic(root);
+  remove_all_items(root_group);
 }
+
+void CanvasEditable::remove_all_items(const Glib::RefPtr<Goocanvas::Group>& group)
+{
+  while(group && group->get_n_children())
+      group->remove_child(0);
+}
+
 
 //static:
 Glib::RefPtr<Goocanvas::Item> CanvasEditable::get_parent_container_or_self(const Glib::RefPtr<Goocanvas::Item>& item)

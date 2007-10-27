@@ -1380,7 +1380,7 @@ sharedptr<LayoutItem_Field> Base_DB::offer_field_formatting(const sharedptr<cons
   return result;
 }
 
-sharedptr<LayoutItem_Text> Base_DB::offer_textobject(const sharedptr<LayoutItem_Text>& start_textobject, Gtk::Window* transient_for)
+sharedptr<LayoutItem_Text> Base_DB::offer_textobject(const sharedptr<LayoutItem_Text>& start_textobject, Gtk::Window* transient_for, bool show_title)
 {
   sharedptr<LayoutItem_Text> result;
 
@@ -1395,7 +1395,7 @@ sharedptr<LayoutItem_Text> Base_DB::offer_textobject(const sharedptr<LayoutItem_
       if(transient_for)
         dialog->set_transient_for(*transient_for);
 
-      dialog->set_textobject(start_textobject, Glib::ustring());
+      dialog->set_textobject(start_textobject, Glib::ustring(), show_title);
       int response = Glom::Utils::dialog_run_with_help(dialog, "window_textobject");
       dialog->hide();
       if(response == Gtk::RESPONSE_OK)

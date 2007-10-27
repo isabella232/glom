@@ -30,8 +30,12 @@ namespace Glom
 {
 
 Dialog_TextObject::Dialog_TextObject(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
-: Gtk::Dialog(cobject)
+: Gtk::Dialog(cobject),
+  m_box_title(0),
+  m_entry_title(0),
+  m_text_view(0)
 {
+  refGlade->get_widget("hbox_title",  m_box_title);
   refGlade->get_widget("entry_title",  m_entry_title);
   refGlade->get_widget("textview_text",  m_text_view);
 
@@ -46,7 +50,7 @@ Dialog_TextObject::~Dialog_TextObject()
 {
 }
 
-void Dialog_TextObject::set_textobject(const sharedptr<const LayoutItem_Text>& textobject, const Glib::ustring& table_name)
+void Dialog_TextObject::set_textobject(const sharedptr<const LayoutItem_Text>& textobject, const Glib::ustring& table_name, bool show_title)
 {
   //set_blocked();
 
@@ -55,6 +59,11 @@ void Dialog_TextObject::set_textobject(const sharedptr<const LayoutItem_Text>& t
 
   m_entry_title->set_text(textobject->get_title());
   m_text_view->get_buffer()->set_text( textobject->get_text() );
+
+  if(show_title)
+    m_box_title->show();
+  else
+    m_box_title->hide();
 
   //set_blocked(false);
 

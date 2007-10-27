@@ -36,7 +36,10 @@ public:
   virtual ~CanvasEditable();
 
   void add_item(const Glib::RefPtr<Goocanvas::Item>& item, bool resizable = false);
+  void add_item(const Glib::RefPtr<Goocanvas::Item>& item, const Glib::RefPtr<Goocanvas::Group>& group, bool resizable = false);
+
   void remove_all_items();
+  void remove_all_items(const Glib::RefPtr<Goocanvas::Group>& group);
 
   /** Set the distance between grid lines, 
    * used to snap to the grid lines when moving or resizing items.
