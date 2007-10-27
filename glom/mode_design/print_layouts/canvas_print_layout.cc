@@ -366,6 +366,8 @@ void Canvas_PrintLayout::set_page_setup(const Glib::RefPtr<Gtk::PageSetup>& page
     bounds.set_x2( paper_size.get_height(units) );
   }
 
+  //std::cout << "Canvas_PrintLayout::set_page_setup(): portrait page width=" << paper_size.get_width(units) << std::endl;
+
   set_bounds(bounds);
 }
 

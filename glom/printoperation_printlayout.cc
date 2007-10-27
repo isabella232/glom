@@ -23,6 +23,7 @@ namespace Glom
 PrintOperationPrintLayout::PrintOperationPrintLayout()
 : m_canvas(0)
 {
+  set_unit(Gtk::UNIT_MM);
 }
 
 PrintOperationPrintLayout::~PrintOperationPrintLayout()
@@ -48,6 +49,7 @@ void PrintOperationPrintLayout::on_draw_page(
 
   //Get a Cairo Context, which is used as a drawing board:
   Cairo::RefPtr<Cairo::Context> cairo_context = print_context->get_cairo_context();
+
 
   //Render the canvas onto the cairo context:
   if(m_canvas)

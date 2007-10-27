@@ -64,8 +64,10 @@ public:
 
   /** The font name, as returned from Gtk::FontButton::get_font_name(), 
    * which may include the size and style.
+   * This assumes that the font size is specified in points.
+   * Note that property_font() assumes that the size is in canavs units (usually mm).
    */
-  void set_font(const Glib::ustring& font);
+  void set_font_points(const Glib::ustring& font);
 
 protected:
   virtual Goocanvas::Canvas* get_parent_canvas_widget();

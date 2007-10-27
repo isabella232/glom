@@ -1,3 +1,16 @@
+2007-10-27  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/printoperation_printlayout.cc: Call set_unit(), because 
+	this apparently affects the cairo context that will be provided 
+	to us.
+	* glom/utility_widgets/canvas/canvas_text_movable.cc:
+	* glom/utility_widgets/canvas/canvas_text_movable.h: Rename 
+	set_font() to set_font_points(), and convert from mm to points, 
+	using Pango::FontDescription to manipulate the font_desc string.
+
+	Text is now an appropriate size, though there is plenty of 
+	other weirdness still.
+
 2007-10-25  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/glom_developer.glade:

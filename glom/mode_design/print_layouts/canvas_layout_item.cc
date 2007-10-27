@@ -64,7 +64,7 @@ void CanvasLayoutItem::apply_formatting(const Glib::RefPtr<CanvasTextMovable>& c
   Glib::ustring font = formatting.get_text_format_font();
   if(font.empty())
     font = "Sans 9";
-   canvas_item->set_font(font);
+  canvas_item->set_font_points(font);
 
   //TODO: Are these sensible properties? Maybe we need to use markup:
   const Glib::ustring fg = formatting.get_text_format_color_foreground();
@@ -219,7 +219,7 @@ void CanvasLayoutItem::set_db_data(const Gnome::Gda::Value& value)
       //Scale the image down to fit the item:
        //(Just resetting the height and width of the canvas item would crop the image)
       if(pixbuf)
-        pixbuf = ImageGlom::scale_keeping_ratio(pixbuf, height, width);
+        pixbuf = ImageGlom::scale_keeping_ratio(pixbuf, (int)height, (int)width);
       
       canvas_item->property_pixbuf() = pixbuf;
       
