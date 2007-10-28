@@ -24,6 +24,7 @@ PrintOperationPrintLayout::PrintOperationPrintLayout()
 : m_canvas(0)
 {
   set_unit(Gtk::UNIT_MM);
+  set_use_full_page(true); //Because we show the margins on our canvas.
 }
 
 PrintOperationPrintLayout::~PrintOperationPrintLayout()
@@ -48,6 +49,7 @@ void PrintOperationPrintLayout::on_draw_page(
     return;
 
   //Get a Cairo Context, which is used as a drawing board:
+  m_canvas->hide_page_bounds();
   Cairo::RefPtr<Cairo::Context> cairo_context = print_context->get_cairo_context();
 
 

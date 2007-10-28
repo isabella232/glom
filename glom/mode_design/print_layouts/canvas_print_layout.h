@@ -52,6 +52,10 @@ public:
   void set_zoom_percent(guint percent);
   guint get_zoom_percent() const;
  
+  /** Hide the bounds rectangle and the margin lines:
+   */
+  void hide_page_bounds();
+
   //Override:
   void add_canvas_layout_item(const Glib::RefPtr<CanvasLayoutItem> item);
 
@@ -71,6 +75,7 @@ protected:
 
   void on_dialog_format_hide();
 
+  Glib::RefPtr<Goocanvas::Polyline> create_margin_line(double x1, double y1, double x2, double y2);
   static void update_layout_position_from_canvas(const sharedptr<LayoutItem> layout_item, const Glib::RefPtr<const CanvasLayoutItem>& canvas_item);
 
   Glib::ustring m_table_name;
@@ -80,7 +85,9 @@ protected:
   Glib::RefPtr<Goocanvas::Group> m_items_group;
 
   //A rectangle to show the bounds:
+  Glib::RefPtr<Goocanvas::Group> m_bounds_group; //the page and its margins.
   Glib::RefPtr<Goocanvas::Rect> m_bounds_rect;
+  Glib::RefPtr<Goocanvas::Polyline> m_margin_left, m_margin_right, m_margin_top, m_margin_bottom;
 
   //Context menu for existing items:
   Gtk::Menu* m_context_menu;

@@ -362,6 +362,16 @@ void Canvas_PrintLayout::on_dialog_format_hide()
   m_dialog_format = 0;
 }
 
+Glib::RefPtr<Goocanvas::Polyline> Canvas_PrintLayout::create_margin_line(double x1, double y1, double x2, double y2)
+{
+  Glib::RefPtr<Goocanvas::Polyline> line = 
+    Goocanvas::Polyline::create(x1, y1, x2, y2);
+  line->property_line_width() = 0.5;
+  line->property_stroke_color() = "light gray";
+  m_bounds_group->add_child(line);
+  return line;
+}
+
 void Canvas_PrintLayout::set_page_setup(const Glib::RefPtr<Gtk::PageSetup>& page_setup)
 {
   m_page_setup = page_setup;
@@ -394,18 +404,28 @@ void Canvas_PrintLayout::set_page_setup(const Glib::RefPtr<Gtk::PageSetup>& page
 
   //Show the bounds with a rectangle, because the scrolled window might contain extra empty space.
   property_background_color() = "light gray";
-  if(m_bounds_rect)
+  if(m_bounds_group)
   {
-    m_bounds_rect->remove();
-    m_bounds_rect.clear();
+    m_bounds_group->remove();
+    m_bounds_group.clear();
   }
-  
+
   Glib::RefPtr<Goocanvas::Item> root = get_root_item();
+  m_bounds_group = Goocanvas::Group::create();
+  root->add_child(m_bounds_group);
+  
+ 
   m_bounds_rect = Goocanvas::Rect::create(bounds.get_x1(), bounds.get_y1(), bounds.get_x2(), bounds.get_y2());
   m_bounds_rect->property_fill_color() = "white";
   m_bounds_rect->property_line_width() = 0;
-  root->add_child(m_bounds_rect);
-  m_bounds_rect->lower();
+  m_bounds_group->add_child(m_bounds_rect);
+  m_bounds_group->lower();
+
+  
+  m_margin_left = create_margin_line(page_setup->get_left_margin(units), bounds.get_y1(), page_setup->get_left_margin(units), bounds.get_y2());
+  m_margin_right = create_margin_line(bounds.get_x2() - page_setup->get_right_margin(units), bounds.get_y1(), bounds.get_x2() - page_setup->get_right_margin(units), bounds.get_y2());
+  m_margin_top = create_margin_line(bounds.get_x1(), page_setup->get_top_margin(units), bounds.get_x2(), page_setup->get_top_margin(units));
+  m_margin_bottom = create_margin_line(bounds.get_x1(), bounds.get_y2() - page_setup->get_bottom_margin(units), bounds.get_x2(), bounds.get_y2() - page_setup->get_bottom_margin(units));
 }
 
 Glib::RefPtr<Gtk::PageSetup> Canvas_PrintLayout::get_page_setup()
@@ -506,6 +526,10 @@ guint Canvas_PrintLayout::get_zoom_percent() const
   return (guint)(get_scale() * (double)100);
 }
 
+void Canvas_PrintLayout::hide_page_bounds()
+{
+  m_bounds_group->property_visibility() = Goocanvas::CANVAS_ITEM_HIDDEN;
+}
 
 } //namespace Glom
 
