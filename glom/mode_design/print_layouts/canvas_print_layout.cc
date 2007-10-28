@@ -28,6 +28,13 @@
 namespace Glom
 {
 
+/*
+static bool on_group_button_press_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventButton* event)
+{
+  return true; // Let the child items get the event.
+}
+*/
+
 Canvas_PrintLayout::Canvas_PrintLayout()
 : m_modified(false),
   m_dialog_format(0)
@@ -37,6 +44,13 @@ Canvas_PrintLayout::Canvas_PrintLayout()
   //Use millimeters, because that's something that is meaningful to the user,
   //and we can use it with Gtk::PageSetup too:
   property_units() = Gtk::UNIT_MM;
+
+  m_items_group = Goocanvas::Group::create();
+  //m_items_group->signal_button_press_event().connect( sigc::ptr_fun(&on_group_button_press_event), false );
+  //TODO: How does this have any effect?: m_items_group->property_pointer_events() = Goocanvas::CANVAS_EVENTS_NONE;
+  Glib::RefPtr<Goocanvas::Item> root = get_root_item();
+  if(root)
+    root->add_child(m_items_group);
 
   Glib::RefPtr<Gtk::PageSetup> page_setup = Gtk::PageSetup::create(); //start with something sensible.
   set_page_setup(page_setup);
@@ -52,7 +66,7 @@ void Canvas_PrintLayout::set_print_layout(const Glib::ustring& table_name, const
   m_table_name = table_name;
   m_modified = false;
 
-  remove_all_items();
+  remove_all_items(m_items_group);
   add_layout_group_children(print_layout->m_layout_group);
 
   m_modified = false;
@@ -89,19 +103,20 @@ void Canvas_PrintLayout::add_layout_group_children(const sharedptr<LayoutGroup>&
     {
       Glib::RefPtr<CanvasLayoutItem> canvas_item = CanvasLayoutItem::create(item);
       if(canvas_item)
-        add_item(canvas_item);
+        add_canvas_layout_item(canvas_item);
     }
   }
 
   m_modified = true;
 }
 
-void Canvas_PrintLayout::add_item(const Glib::RefPtr<CanvasLayoutItem> item)
+void Canvas_PrintLayout::add_canvas_layout_item(const Glib::RefPtr<CanvasLayoutItem> item)
 {
   if(!item)
     return;
 
-  CanvasEditable::add_item(item);
+  CanvasEditable::add_item(item, m_items_group);
+  item->raise();
 
   //Connect signals handlers:
   //TODO: Avoid the bind of a RefPtr. It has been known to cause memory/ref-counting problems: 
@@ -109,6 +124,7 @@ void Canvas_PrintLayout::add_item(const Glib::RefPtr<CanvasLayoutItem> item)
     sigc::bind(
       sigc::mem_fun(*this, &Canvas_PrintLayout::on_item_show_context_menu), 
       item) );
+
 }
 
 void Canvas_PrintLayout::add_layout_group(const sharedptr<LayoutGroup>& group)
@@ -123,14 +139,10 @@ void Canvas_PrintLayout::add_layout_group(const sharedptr<LayoutGroup>& group)
 
 void Canvas_PrintLayout::fill_layout_group(const sharedptr<LayoutGroup>& group)
 {
-  Glib::RefPtr<Goocanvas::Item> root = get_root_item();
-  if(!root)
-    return;
-
-  const int count = root->get_n_children();
+  const int count = m_items_group->get_n_children();
   for(int i = 0; i < count; ++i)
   {
-    Glib::RefPtr<Goocanvas::Item> base_canvas_item = root->get_child(i);
+    Glib::RefPtr<Goocanvas::Item> base_canvas_item = m_items_group->get_child(i);
     Glib::RefPtr<CanvasLayoutItem> canvas_item = Glib::RefPtr<CanvasLayoutItem>::cast_dynamic(base_canvas_item);
     if(canvas_item)
     {
@@ -379,6 +391,21 @@ void Canvas_PrintLayout::set_page_setup(const Glib::RefPtr<Gtk::PageSetup>& page
   //std::cout << "Canvas_PrintLayout::set_page_setup(): portrait page width=" << paper_size.get_width(units) << std::endl;
 
   set_bounds(bounds);
+
+  //Show the bounds with a rectangle, because the scrolled window might contain extra empty space.
+  property_background_color() = "light gray";
+  if(m_bounds_rect)
+  {
+    m_bounds_rect->remove();
+    m_bounds_rect.clear();
+  }
+  
+  Glib::RefPtr<Goocanvas::Item> root = get_root_item();
+  m_bounds_rect = Goocanvas::Rect::create(bounds.get_x1(), bounds.get_y1(), bounds.get_x2(), bounds.get_y2());
+  m_bounds_rect->property_fill_color() = "white";
+  m_bounds_rect->property_line_width() = 0;
+  root->add_child(m_bounds_rect);
+  m_bounds_rect->lower();
 }
 
 Glib::RefPtr<Gtk::PageSetup> Canvas_PrintLayout::get_page_setup()
@@ -388,20 +415,16 @@ Glib::RefPtr<Gtk::PageSetup> Canvas_PrintLayout::get_page_setup()
 
 void Canvas_PrintLayout::fill_with_data(const FoundSet& found_set)
 {
-  Glib::RefPtr<Goocanvas::Item> root = get_root_item();
-  if(!root)
-    return;
-    
   //A map of the text representation (e.g. field_name or relationship::field_name) to the index:
   typedef std::map<Glib::ustring, guint> type_map_layout_fields_index;
   type_map_layout_fields_index map_fields_index;
   
   //Get list of fields to get from the database.
   Utils::type_vecLayoutFields fieldsToGet;
-  const int count = root->get_n_children();
+  const int count = m_items_group->get_n_children();
   for(int i = 0; i < count; ++i)
   {
-    Glib::RefPtr<Goocanvas::Item> base_canvas_item = root->get_child(i);
+    Glib::RefPtr<Goocanvas::Item> base_canvas_item = m_items_group->get_child(i);
     Glib::RefPtr<CanvasLayoutItem> canvas_item = Glib::RefPtr<CanvasLayoutItem>::cast_dynamic(base_canvas_item);
     if(!canvas_item)
       continue;
@@ -441,7 +464,7 @@ void Canvas_PrintLayout::fill_with_data(const FoundSet& found_set)
   //Set all the data for the fields in the canvas:
   for(int i = 0; i < count; ++i)
   {
-    Glib::RefPtr<Goocanvas::Item> base_canvas_item = root->get_child(i);
+    Glib::RefPtr<Goocanvas::Item> base_canvas_item = m_items_group->get_child(i);
     Glib::RefPtr<CanvasLayoutItem> canvas_item = Glib::RefPtr<CanvasLayoutItem>::cast_dynamic(base_canvas_item);
     if(!canvas_item)
       continue;

@@ -372,7 +372,7 @@ void Window_PrintLayout_Edit::on_menu_insert_field()
   set_default_position(layout_item);
 
   Glib::RefPtr<CanvasLayoutItem> item = CanvasLayoutItem::create(layout_item);
-  m_canvas.add_item(item);
+  m_canvas.add_canvas_layout_item(item);
 }
 
 void Window_PrintLayout_Edit::on_menu_insert_text()
@@ -384,7 +384,7 @@ void Window_PrintLayout_Edit::on_menu_insert_text()
   set_default_position(layout_item);
 
   Glib::RefPtr<CanvasLayoutItem> item = CanvasLayoutItem::create(layout_item);
-  m_canvas.add_item(item);
+  m_canvas.add_canvas_layout_item(item);
 }
 
 void Window_PrintLayout_Edit::on_menu_insert_image()
@@ -395,7 +395,7 @@ void Window_PrintLayout_Edit::on_menu_insert_image()
   set_default_position(layout_item);
 
   Glib::RefPtr<CanvasLayoutItem> item = CanvasLayoutItem::create(layout_item);
-  m_canvas.add_item(item);
+  m_canvas.add_canvas_layout_item(item);
 }
 
 void Window_PrintLayout_Edit::on_button_close()

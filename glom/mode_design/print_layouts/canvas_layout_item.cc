@@ -93,6 +93,7 @@ void CanvasLayoutItem::set_layout_item(const sharedptr<LayoutItem>& item)
   m_layout_item = item;
 
   Glib::RefPtr<CanvasItemMovable> child;
+  Glib::RefPtr<Goocanvas::Item> child_item;
   sharedptr<LayoutItem_Text> text = sharedptr<LayoutItem_Text>::cast_dynamic(m_layout_item);
   if(text)
   {
@@ -103,6 +104,7 @@ void CanvasLayoutItem::set_layout_item(const sharedptr<LayoutItem>& item)
 
     canvas_item->set_text(text->get_text());
     child = canvas_item;
+    child_item = canvas_item;
   }
   else
   {
@@ -110,8 +112,10 @@ void CanvasLayoutItem::set_layout_item(const sharedptr<LayoutItem>& item)
     if(image)
     {
       Glib::RefPtr<CanvasRectMovable> canvas_item = CanvasRectMovable::create();
-      canvas_item->property_fill_color() = "white"; //This makes the whole area clickable, not just the outline stroke:
+
+      canvas_item->property_fill_color() = "white"; //This makes the whole area clickable, not just the outline stroke.
       child = canvas_item;
+      child_item = canvas_item;
     }
     else
     {
@@ -130,6 +134,7 @@ void CanvasLayoutItem::set_layout_item(const sharedptr<LayoutItem>& item)
           //canvas_item->set_text(name);
 
           child = canvas_item;
+          child_item = canvas_item;
         }
         else //text, numbers, date, time, boolean:
         {
@@ -145,6 +150,7 @@ void CanvasLayoutItem::set_layout_item(const sharedptr<LayoutItem>& item)
           canvas_item->set_text(name);
 
           child = canvas_item;
+          child_item = canvas_item;
         }
       }
       else
@@ -154,8 +160,11 @@ void CanvasLayoutItem::set_layout_item(const sharedptr<LayoutItem>& item)
     }
   }
 
-  if(child)
+  if(child && child_item)
   {
+    child_item->property_pointer_events() = 
+      (Goocanvas::PointerEvents)(Goocanvas::CANVAS_EVENTS_VISIBLE_FILL & GOO_CANVAS_EVENTS_VISIBLE_STROKE);
+      
     //Set the position and dimensions:
     double x = 0;
     double y = 0;

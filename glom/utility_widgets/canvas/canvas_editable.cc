@@ -54,8 +54,6 @@ void CanvasEditable::add_item(const Glib::RefPtr<Goocanvas::Item>& item, const G
   if(!group)
    return;
 
-  std::cout << "CanvasEditable::add_item" << std::endl;
-
   bool added = false;
 
   //Add it inside a manipulatable group, if requested:

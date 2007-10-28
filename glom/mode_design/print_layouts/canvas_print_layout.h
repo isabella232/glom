@@ -53,7 +53,7 @@ public:
   guint get_zoom_percent() const;
  
   //Override:
-  void add_item(const Glib::RefPtr<CanvasLayoutItem> item);
+  void add_canvas_layout_item(const Glib::RefPtr<CanvasLayoutItem> item);
 
   void fill_with_data(const FoundSet& found_set);
   
@@ -75,6 +75,12 @@ protected:
 
   Glib::ustring m_table_name;
   bool m_modified;
+
+  //A group containing the layout items, so we can remove them without removing anything else:
+  Glib::RefPtr<Goocanvas::Group> m_items_group;
+
+  //A rectangle to show the bounds:
+  Glib::RefPtr<Goocanvas::Rect> m_bounds_rect;
 
   //Context menu for existing items:
   Gtk::Menu* m_context_menu;

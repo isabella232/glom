@@ -86,7 +86,6 @@ bool CanvasItemMovable::on_button_press_event(const Glib::RefPtr<Goocanvas::Item
     }
     case 3:
     {
-      //std::cout << "CanvasItemMovable::on_button_press_event(): type=" << typeid(this).name() << std::endl;
       m_signal_show_context.emit(event->button, event->time);
       return false; /* Not fully Handled. */
       break;
@@ -100,7 +99,7 @@ bool CanvasItemMovable::on_button_press_event(const Glib::RefPtr<Goocanvas::Item
 }
 
 bool CanvasItemMovable::on_motion_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventMotion* event)
-{ 
+{
   if(!m_allow_vertical_movement && !m_allow_horizontal_movement)
     return false; // Not handled. Let it be handled by an item lower in the z order, or a parent group, if any.
 

@@ -1,5 +1,15 @@
 2007-10-28  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/utility_widgets/canvas/canvas_editable.cc:
+	* glom/mode_design/print_layouts/canvas_print_layout.cc:
+	* glom/mode_design/print_layouts/canvas_print_layout.h:
+	Add the items to a group, so we can remove them without removing 
+	other canvas items.
+	set_page_setup(): Make the canvas gray and put a white rectangle 
+	on the bottom to show the page bounds.
+
+2007-10-28  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/glom_developer.glade:
 	* glom/base_db.cc: offer_textobject(): Return the starting 
 	text if cancel was clicked, so that cancel doesn't clear the 
