@@ -9796,7 +9796,7 @@ Which user should be added to this group?</property>
 	      </child>
 
 	      <child>
-		<widget class="GtkHBox" id="hbox1206z2">
+		<widget class="GtkHBox" id="hbox_font">
 		  <property name="visible">True</property>
 		  <property name="homogeneous">False</property>
 		  <property name="spacing">6</property>
@@ -9835,6 +9835,7 @@ Which user should be added to this group?</property>
 		      <property name="padding">0</property>
 		      <property name="expand">True</property>
 		      <property name="fill">True</property>
+                      <property name="pack_type">GTK_PACK_END</property>
 		    </packing>
 		  </child>
 		</widget>
@@ -9846,7 +9847,7 @@ Which user should be added to this group?</property>
 	      </child>
 
 	      <child>
-		<widget class="GtkHBox" id="hbox1206z3">
+		<widget class="GtkHBox" id="hbox_color_foreground">
 		  <property name="visible">True</property>
 		  <property name="homogeneous">False</property>
 		  <property name="spacing">6</property>
@@ -9882,6 +9883,7 @@ Which user should be added to this group?</property>
 		      <property name="padding">0</property>
 		      <property name="expand">True</property>
 		      <property name="fill">True</property>
+                      <property name="pack_type">GTK_PACK_END</property>
 		    </packing>
 		  </child>
 		</widget>
@@ -9893,7 +9895,7 @@ Which user should be added to this group?</property>
 	      </child>
 
 	      <child>
-		<widget class="GtkHBox" id="hbox1206z4">
+		<widget class="GtkHBox" id="hbox_color_background">
 		  <property name="visible">True</property>
 		  <property name="homogeneous">False</property>
 		  <property name="spacing">6</property>
@@ -9929,6 +9931,7 @@ Which user should be added to this group?</property>
 		      <property name="padding">0</property>
 		      <property name="expand">True</property>
 		      <property name="fill">True</property>
+                      <property name="pack_type">GTK_PACK_END</property>
 		    </packing>
 		  </child>
 		</widget>

@@ -1382,7 +1382,7 @@ sharedptr<LayoutItem_Field> Base_DB::offer_field_formatting(const sharedptr<cons
 
 sharedptr<LayoutItem_Text> Base_DB::offer_textobject(const sharedptr<LayoutItem_Text>& start_textobject, Gtk::Window* transient_for, bool show_title)
 {
-  sharedptr<LayoutItem_Text> result;
+  sharedptr<LayoutItem_Text> result = start_textobject;
 
   try
   {

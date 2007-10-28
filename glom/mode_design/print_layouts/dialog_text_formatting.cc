@@ -51,9 +51,7 @@ Dialog_TextFormatting::Dialog_TextFormatting(BaseObjectType* cobject, const Glib
 
   m_box_formatting_placeholder->pack_start(*m_box_formatting);
   add_view(m_box_formatting);
-  m_box_formatting->hide_choices();
-  m_box_formatting->hide_multiline();
-  m_box_formatting->set_force_show_text_formatting();
+  m_box_formatting->set_is_for_print_layout();
 
   set_modal(); //We don't want people to edit the main window while we are changing structure.
 

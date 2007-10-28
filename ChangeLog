@@ -1,5 +1,21 @@
 2007-10-28  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/glom_developer.glade:
+	* glom/base_db.cc: offer_textobject(): Return the starting 
+	text if cancel was clicked, so that cancel doesn't clear the 
+	text.
+	* glom/layout_item_dialogs/box_formatting.cc:
+	* glom/layout_item_dialogs/box_formatting.h: Replaced the 
+	3 hide* functions with set_is_for_print_layout().
+	Replace the checkboxes with labels in this case.
+	This is still quite unpleasant but we will eventually have 
+	an editor on the layout window, when selection is implemented.
+	* glom/mode_design/print_layouts/canvas_layout_item.cc:
+	* glom/mode_design/print_layouts/canvas_layout_item.h:
+	Make sure that layout items have a font_desc set by default.
+
+2007-10-28  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/mode_design/print_layouts/canvas_print_layout.cc:
 	Fix a typo so that the positions really are preserved.
 

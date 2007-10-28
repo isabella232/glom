@@ -56,14 +56,21 @@ sharedptr<LayoutItem> CanvasLayoutItem::get_layout_item()
   return m_layout_item;
 }
 
-void CanvasLayoutItem::apply_formatting(const Glib::RefPtr<CanvasTextMovable>& canvas_item, const FieldFormatting& formatting)
+void CanvasLayoutItem::check_and_apply_formatting(const Glib::RefPtr<CanvasTextMovable>& canvas_item, FieldFormatting& formatting)
 {
   if(!canvas_item)
     return;
 
   Glib::ustring font = formatting.get_text_format_font();
   if(font.empty())
-    font = "Sans 9";
+  {
+    font = "Serif 9";
+
+    //Set it in the input parameter,
+    //so that this is the default:
+    formatting.set_text_format_font(font);    
+  }
+
   canvas_item->set_font_points(font);
 
   //TODO: Are these sensible properties? Maybe we need to use markup:
@@ -91,8 +98,8 @@ void CanvasLayoutItem::set_layout_item(const sharedptr<LayoutItem>& item)
   {
     Glib::RefPtr<CanvasTextMovable> canvas_item = CanvasTextMovable::create();
 
-    const FieldFormatting& formatting = text->get_formatting_used();
-    apply_formatting(canvas_item, formatting);
+    FieldFormatting& formatting = text->m_formatting;
+    check_and_apply_formatting(canvas_item, formatting);
 
     canvas_item->set_text(text->get_text());
     child = canvas_item;
@@ -128,8 +135,8 @@ void CanvasLayoutItem::set_layout_item(const sharedptr<LayoutItem>& item)
         {
           Glib::RefPtr<CanvasTextMovable> canvas_item = CanvasTextMovable::create();
          
-          const FieldFormatting& formatting = field->get_formatting_used();
-          apply_formatting(canvas_item, formatting);
+          FieldFormatting& formatting = field->m_formatting;
+          check_and_apply_formatting(canvas_item, formatting);
 
           Glib::ustring name = field->get_name();
             if(name.empty())

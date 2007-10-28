@@ -32,10 +32,13 @@ Box_Formatting::Box_Formatting(BaseObjectType* cobject, const Glib::RefPtr<Gnome
   m_checkbox_format_text_multiline(0),
   m_label_format_text_multiline_height(0),
   m_spinbutton_format_text_multiline_height(0),
+  m_hbox_font(0),
   m_checkbox_format_text_font(0),
   m_fontbutton(0),
+  m_hbox_color_foreground(0),
   m_checkbox_format_text_color_foreground(0),
   m_colorbutton_foreground(0),
+  m_hbox_color_background(0),
   m_checkbox_format_text_color_background(0),
   m_colorbutton_background(0),
   m_vbox_choices(0),
@@ -44,9 +47,7 @@ Box_Formatting::Box_Formatting(BaseObjectType* cobject, const Glib::RefPtr<Gnome
   m_checkbutton_choices_restricted(0),
   m_adddel_choices_custom(0),
   m_col_index_custom_choices(0),
-  m_hide_choices(false),
-  m_hide_multiline(false),
-  m_force_show_text_formatting(false)
+  m_for_print_layout(false)
 {
   //Numeric formatting:
   refGlade->get_widget("vbox_numeric_format", m_vbox_numeric_format);
@@ -60,10 +61,13 @@ Box_Formatting::Box_Formatting(BaseObjectType* cobject, const Glib::RefPtr<Gnome
   refGlade->get_widget("checkbutton_format_text_multiline", m_checkbox_format_text_multiline);
   refGlade->get_widget("label_format_text_multiline", m_label_format_text_multiline_height);
   refGlade->get_widget("spinbutton_format_text_multiline_height", m_spinbutton_format_text_multiline_height);
+  refGlade->get_widget("hbox_font", m_hbox_font);
   refGlade->get_widget("checkbutton_font", m_checkbox_format_text_font);
   refGlade->get_widget("fontbutton", m_fontbutton);
+  refGlade->get_widget("hbox_color_foreground", m_hbox_color_foreground);
   refGlade->get_widget("colorbutton_foreground", m_colorbutton_foreground);
   refGlade->get_widget("checkbutton_color_foreground", m_checkbox_format_text_color_foreground);
+  refGlade->get_widget("hbox_color_background", m_hbox_color_background);
   refGlade->get_widget("colorbutton_background", m_colorbutton_background);
   refGlade->get_widget("checkbutton_color_background", m_checkbox_format_text_color_background);
 
@@ -99,21 +103,21 @@ Box_Formatting::~Box_Formatting()
 {
 }
 
-void Box_Formatting::hide_choices()
+void Box_Formatting::set_is_for_print_layout()
 {
-  m_hide_choices = true;
-  enforce_constraints();
-}
+  m_for_print_layout = true;
 
-void Box_Formatting::hide_multiline()
-{
-  m_hide_multiline = true;
-  enforce_constraints();
-}
+  //Add labels (because we will hide the checkboxes): 
+  Gtk::Label* label = Gtk::manage(new Gtk::Label(_("Font")));
+  label->show();
+  m_hbox_font->pack_start(*label, Gtk::PACK_SHRINK);
+  label = Gtk::manage(new Gtk::Label(_("Foreground Color")));
+  label->show();
+  m_hbox_color_foreground->pack_start(*label, Gtk::PACK_SHRINK);
+  label = Gtk::manage(new Gtk::Label(_("Background Color")));
+  label->show();
+  m_hbox_color_background->pack_start(*label, Gtk::PACK_SHRINK); 
 
-void Box_Formatting::set_force_show_text_formatting()
-{
-  m_force_show_text_formatting = true;
   enforce_constraints();
 }
 
@@ -303,7 +307,7 @@ void Box_Formatting::enforce_constraints()
   if(m_field && (m_field->get_glom_type() != Field::TYPE_BOOLEAN) && (m_field->get_glom_type() != Field::TYPE_IMAGE)) //TODO: Allow text options when showing booleans as Yes/No on print layouts.
     show_text = true;
 
-  if(m_force_show_text_formatting)
+  if(m_for_print_layout)
     show_text = true;
 
   if(show_text)
@@ -311,7 +315,7 @@ void Box_Formatting::enforce_constraints()
     m_vbox_text_format->show();
 
     //Hide multiline options for non-text fields:
-    if(m_hide_multiline || !m_field || (m_field->get_glom_type() != Field::TYPE_TEXT))
+    if(m_for_print_layout || !m_field || (m_field->get_glom_type() != Field::TYPE_TEXT))
     {
       m_checkbox_format_text_multiline->hide();
       m_label_format_text_multiline_height->hide();
@@ -332,12 +336,21 @@ void Box_Formatting::enforce_constraints()
     m_vbox_text_format->hide();
 
 
-  m_fontbutton->set_sensitive( m_checkbox_format_text_font->get_active() );
-  m_colorbutton_foreground->set_sensitive( m_checkbox_format_text_color_foreground->get_active() );
-  m_colorbutton_background->set_sensitive( m_checkbox_format_text_color_background->get_active() );
+  //Hide the checkbuttons (we show labels instead) for print layouts:
+  if(m_for_print_layout)
+  {
+    m_checkbox_format_text_font->hide();
+    m_checkbox_format_text_color_background->hide();
+    m_checkbox_format_text_color_foreground->hide();
+  }
+
+  //Enable UI depending on the checkbutton state:
+  m_fontbutton->set_sensitive( m_for_print_layout || m_checkbox_format_text_font->get_active() );
+  m_colorbutton_foreground->set_sensitive( m_for_print_layout || m_checkbox_format_text_color_foreground->get_active() );
+  m_colorbutton_background->set_sensitive( m_for_print_layout || m_checkbox_format_text_color_background->get_active() );
 
 
-  if(!m_hide_choices)
+  if(!m_for_print_layout)
     m_vbox_choices->show();
   else
     m_vbox_choices->hide();

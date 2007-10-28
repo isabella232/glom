@@ -164,7 +164,7 @@ void CanvasTextMovable::set_font_points(const Glib::ustring& font)
 {
   Glib::ustring font_points = font;
   if(font_points.empty())
-    font_points = "Sans 9";
+    font_points = "Serif 9";
 
   //Convert the size to mm, because GooCanvasText can only understand font sizes in terms of the canvas units,
   //but user will provide the size in points.

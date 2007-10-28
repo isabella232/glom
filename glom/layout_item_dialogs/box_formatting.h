@@ -55,10 +55,7 @@ public:
 
   //When used for print layout items, 
   //we hide some stuff:
-  //TODO: Use just one function when we know when they will be used? 
-  void hide_choices();
-  void hide_multiline();
-  void set_force_show_text_formatting();
+  void set_is_for_print_layout();
 
 protected:
   //Signal handlers:
@@ -77,10 +74,13 @@ protected:
   Gtk::CheckButton* m_checkbox_format_text_multiline;
   Gtk::Label* m_label_format_text_multiline_height;
   Gtk::SpinButton* m_spinbutton_format_text_multiline_height;
+  Gtk::HBox* m_hbox_font;
   Gtk::CheckButton* m_checkbox_format_text_font;
   Gtk::FontButton* m_fontbutton;
+  Gtk::HBox* m_hbox_color_foreground;
   Gtk::CheckButton* m_checkbox_format_text_color_foreground;
   Gtk::ColorButton* m_colorbutton_foreground;
+  Gtk::HBox* m_hbox_color_background;
   Gtk::CheckButton* m_checkbox_format_text_color_background;
   Gtk::ColorButton* m_colorbutton_background;
 
@@ -99,9 +99,9 @@ protected:
   Glib::ustring m_table_name;
   sharedptr<const Field> m_field;
 
-  bool m_hide_choices;
-  bool m_hide_multiline;
-  bool m_force_show_text_formatting;
+  //We show different options when 
+  //showing this on a print layout.
+  bool m_for_print_layout;
 };
 
 } //namespace Glom

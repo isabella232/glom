@@ -313,9 +313,9 @@ void Canvas_PrintLayout::on_context_menu_formatting()
   //TODO: Maybe they should.
   FieldFormatting formatting;
   if(layout_item_field)
-    formatting = layout_item_field->get_formatting_used();
+    formatting = layout_item_field->m_formatting;
   else
-    formatting = layout_item_text->get_formatting_used();
+    formatting = layout_item_text->m_formatting;
 
   m_dialog_format->m_box_formatting->set_formatting(formatting);
 

@@ -47,7 +47,7 @@ public:
   void set_db_data(const Gnome::Gda::Value& value);
 
 protected:
-  void apply_formatting(const Glib::RefPtr<CanvasTextMovable>& canvas_item, const FieldFormatting& formatting);
+  void check_and_apply_formatting(const Glib::RefPtr<CanvasTextMovable>& canvas_item, FieldFormatting& formatting);
 
   sharedptr<LayoutItem> m_layout_item;
 };
