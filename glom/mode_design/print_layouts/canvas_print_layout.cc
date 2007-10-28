@@ -422,6 +422,7 @@ void Canvas_PrintLayout::fill_with_data(const FoundSet& found_set)
   //Get list of fields to get from the database.
   Utils::type_vecLayoutFields fieldsToGet;
   const int count = m_items_group->get_n_children();
+  guint field_i = 0;
   for(int i = 0; i < count; ++i)
   {
     Glib::RefPtr<Goocanvas::Item> base_canvas_item = m_items_group->get_child(i);
@@ -440,7 +441,8 @@ void Canvas_PrintLayout::fill_with_data(const FoundSet& found_set)
       
       //Remember the index so we can use it later, 
       //to get the data for this column from the query results:
-      map_fields_index[ layoutitem_field->get_layout_display_name() ] = (guint)i;
+      map_fields_index[ layoutitem_field->get_layout_display_name() ] = field_i;
+      ++field_i;
     } 
   }
 

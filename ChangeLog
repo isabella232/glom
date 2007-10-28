@@ -1,5 +1,11 @@
 2007-10-28  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/mode_design/print_layouts/canvas_print_layout.cc:
+	fill_with_data(): Use the correct field index, so that the 
+	field data is shown correctly.
+
+2007-10-28  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/utility_widgets/canvas/canvas_editable.cc:
 	* glom/mode_design/print_layouts/canvas_print_layout.cc:
 	* glom/mode_design/print_layouts/canvas_print_layout.h:
