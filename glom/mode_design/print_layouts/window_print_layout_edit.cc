@@ -119,18 +119,21 @@ void Window_PrintLayout_Edit::init_menu()
   m_action_group->add(m_action_showrules, sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_view_show_rules));
 
   Gtk::RadioAction::Group group_zoom;
+  m_action_zoom_fit_page_width = Gtk::RadioAction::create(group_zoom, "Action_Menu_View_ZoomFitPageWidth", _("Fit Page _Width"));
+  m_action_group->add(m_action_zoom_fit_page_width,
+    sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_view_fitpagewidth));
   m_action_group->add(Gtk::RadioAction::create(group_zoom, "Action_Menu_View_Zoom200", _("Zoom 200%")),
-   sigc::bind( sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_view_zoom), 200));
+    sigc::bind( sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_view_zoom), 200));
   m_action_group->add(Gtk::RadioAction::create(group_zoom, "Action_Menu_View_Zoom100", Gtk::Stock::ZOOM_100),
-   sigc::bind( sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_view_zoom), 100));
+    sigc::bind( sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_view_zoom), 100));
 
   Glib::RefPtr<Gtk::Action> action_50 = Gtk::RadioAction::create(group_zoom, "Action_Menu_View_Zoom50", _("Zoom 50%"));
   m_action_group->add(action_50,
-   sigc::bind( sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_view_zoom), 50));
-  action_50->activate();
+    sigc::bind( sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_view_zoom), 50));
+  m_action_zoom_fit_page_width->activate();
 
   m_action_group->add(Gtk::RadioAction::create(group_zoom, "Action_Menu_View_Zoom25", _("Zoom 25%")),
-   sigc::bind( sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_view_zoom), 25));
+    sigc::bind( sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_view_zoom), 25));
 
   //Build part of the menu structure, to be merged in by using the "PH" placeholders:
   static const Glib::ustring ui_description =
@@ -154,6 +157,7 @@ void Window_PrintLayout_Edit::init_menu()
     "        <menuitem action='Action_Menu_View_ShowGrid' />"
     "        <menuitem action='Action_Menu_View_ShowRules' />"
     "        <separator />"
+    "        <menuitem action='Action_Menu_View_ZoomFitPageWidth' />"
     "        <menuitem action='Action_Menu_View_Zoom200' />"
     "        <menuitem action='Action_Menu_View_Zoom100' />"
     "        <menuitem action='Action_Menu_View_Zoom50' />"
@@ -427,6 +431,32 @@ void Window_PrintLayout_Edit::on_menu_view_zoom(guint percent)
   m_canvas.set_zoom_percent(percent);
 }
 
+void Window_PrintLayout_Edit::on_menu_view_fitpagewidth()
+{
+  //Get the canvas size:
+  Goocanvas::Bounds bounds;
+  m_canvas.get_bounds(bounds);
+  
+  double canvas_width_pixels = bounds.get_x2() - bounds.get_x1();
+  double canvas_height_pixels = bounds.get_y2() - bounds.get_y1();
+  m_canvas.convert_to_pixels(canvas_width_pixels, canvas_height_pixels);
+  canvas_width_pixels = canvas_width_pixels / m_canvas.property_scale();
+
+  //Get the viewport size:
+  Gtk::Widget* child = m_scrolled_window.get_child();
+  if(child)
+  {
+    Gtk::Allocation widget_allocation = child->get_allocation();
+    const double viewport_width = widget_allocation.get_width();
+    if(canvas_width_pixels)
+    {
+      //scale the canvas so it fits perfectly in the viewport:
+      const double scale = viewport_width / canvas_width_pixels;
+      m_canvas.set_zoom_percent((guint)(scale * 100));
+    }
+  }
+}
+
 void Window_PrintLayout_Edit::on_menu_file_page_setup()
 {
   Glib::RefPtr<Gtk::PageSetup> page_setup = m_canvas.get_page_setup();
@@ -475,6 +505,17 @@ void Window_PrintLayout_Edit::on_scroll_value_changed()
 
   m_hruler->set_range(x, x + width, 0, x + width);
   m_vruler->set_range(y, y + height, 0, y + height);
+}
+
+bool Window_PrintLayout_Edit::on_configure_event(GdkEventConfigure* event)
+{
+  const bool result = Gtk::Window::on_configure_event(event);
+
+  //If we are in fit-page-width then rescale the canvas:
+  if(m_action_zoom_fit_page_width->get_active())
+    on_menu_view_fitpagewidth();
+
+  return result;
 }
 
 

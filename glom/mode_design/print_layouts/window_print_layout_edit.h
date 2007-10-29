@@ -62,6 +62,7 @@ protected:
   void on_menu_view_show_grid();
   void on_menu_view_show_rules();
   void on_menu_view_zoom(guint percent);
+  void on_menu_view_fitpagewidth();
 
   void on_canvas_show_context_menu(guint button, guint32 activate_time);
   void on_context_menu_insert_field();
@@ -69,6 +70,9 @@ protected:
 
   void on_scroll_value_changed();
   void on_button_close();
+
+  //override:
+  virtual bool on_configure_event(GdkEventConfigure* event);
 
   void setup_context_menu();
   void set_ruler_sizes();
@@ -102,6 +106,7 @@ protected:
   Glib::RefPtr<Gtk::ActionGroup> m_action_group;
   Glib::RefPtr<Gtk::UIManager> m_uimanager;
   Glib::RefPtr<Gtk::ToggleAction> m_action_showgrid, m_action_showrules;
+  Glib::RefPtr<Gtk::ToggleAction> m_action_zoom_fit_page_width;
 
   //Context menu for clicking on empty space on the canvas:
   Gtk::Menu* m_context_menu;

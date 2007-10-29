@@ -51,11 +51,9 @@ public:
     rect->property_stroke_color() = "blue";
     add_item(rect, true /* resizable */);
 
-    Glib::RefPtr<Glom::CanvasRectMovable> rect2 = Glom::CanvasRectMovable::create(20, 10, 110, 140);
-    rect2->property_fill_color() = "yellow"; //This makes the whole area clickable, not just the outline stroke:
-    rect2->property_line_width() = 1.0f;
-    rect2->property_stroke_color() = "red";
-    add_item(rect2, true /* resizable */);
+    Glib::RefPtr<Glom::CanvasTextMovable> text = Glom::CanvasTextMovable::create("yadda yadda");
+    text->set_xy(50, 50);
+    add_item(text, true /* resizable */);
 
     Glib::RefPtr<Glom::CanvasLineMovable> line = Glom::CanvasLineMovable::create();
     double points_coordinates[] = {20.0, 20.0, 100.0, 40.0};
@@ -66,9 +64,6 @@ public:
     line->set_movement_allowed(false, true);
     add_item(line);
 
-    Glib::RefPtr<Glom::CanvasTextMovable> text = Glom::CanvasTextMovable::create("some text");
-    text->set_xy(50, 50);
-    add_item(text, true /* resizable */);
 
     line->signal_show_context().connect( sigc::mem_fun(*this, &MyCanvas::on_show_context_menu) );
 
