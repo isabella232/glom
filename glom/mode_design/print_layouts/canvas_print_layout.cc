@@ -251,7 +251,7 @@ void Canvas_PrintLayout::update_layout_position_from_canvas(const sharedptr<Layo
   double x = 0;
   double y = 0;
   canvas_item->get_xy(x, y);
-  std::cout << "Canvas_PrintLayout::update_layout_position_from_canvas(): x=" << x << std::endl;
+  //std::cout << "Canvas_PrintLayout::update_layout_position_from_canvas(): x=" << x << std::endl;
   double width = 0;
   double height = 0;
   canvas_item->get_width_height(width, height);

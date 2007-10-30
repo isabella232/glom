@@ -363,9 +363,29 @@ void Window_PrintLayout_Edit::on_canvas_show_context_menu(guint button, guint32 
     m_context_menu->popup(button, activate_time);
 }
 
+bool Window_PrintLayout_Edit::get_is_item_at(double x, double y)
+{
+  Glib::RefPtr<Goocanvas::Item> item_hit = m_canvas.get_item_at(x, y, false);
+  if(!item_hit)
+   return false;
+
+  Glib::RefPtr<CanvasLayoutItem> layout_item = Glib::RefPtr<CanvasLayoutItem>::cast_dynamic(item_hit);
+  return layout_item;
+}
+
 void Window_PrintLayout_Edit::set_default_position(const sharedptr<LayoutItem>& item)
 {
-  item->set_print_layout_position(10, 10, 100, 100);
+  double x = 10;
+  double y = 10;
+ 
+  //TODO: This doesn't seem to actually work:
+  while(get_is_item_at(x, y))
+  {
+    x += 10;
+    y += 10;
+  }
+
+  item->set_print_layout_position(x, y, 100, 10);
 }
 
 void Window_PrintLayout_Edit::on_menu_insert_field()

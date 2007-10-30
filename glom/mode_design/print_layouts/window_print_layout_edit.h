@@ -77,6 +77,7 @@ protected:
   void setup_context_menu();
   void set_ruler_sizes();
 
+  bool get_is_item_at(double x, double y);
   void set_default_position(const sharedptr<LayoutItem>& item);
 
   //Box_DB_Table_Definition* m_box;

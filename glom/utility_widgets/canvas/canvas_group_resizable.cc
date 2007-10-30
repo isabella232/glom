@@ -180,7 +180,7 @@ void CanvasGroupResizable::set_child(const Glib::RefPtr<CanvasItemMovable>& chil
   //Remove the previous child, if any:
   if(m_child)
   {
-    Glib::RefPtr<Goocanvas::Item> item = CanvasItemMovable::cast_to_item(child);
+    Glib::RefPtr<Goocanvas::Item> item = CanvasItemMovable::cast_to_item(m_child);
     item->remove();
   }
 

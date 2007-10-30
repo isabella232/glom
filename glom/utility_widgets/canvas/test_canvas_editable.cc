@@ -64,6 +64,10 @@ public:
     resizable->set_width_height(40, 40);
     add_item(resizable, false /* resizable */); //This doesn't seem to work if we use true (a resizable inside a resizable)
 
+    // Test replacement of the child (should remove the old child):
+    Glib::RefPtr<Glom::CanvasTextMovable> resizable_inner2 = Glom::CanvasTextMovable::create("yadda3.1 yadda3.1");
+    resizable->set_child(resizable_inner2);
+
     Glib::RefPtr<Glom::CanvasLineMovable> line = Glom::CanvasLineMovable::create();
     double points_coordinates[] = {20.0, 20.0, 100.0, 40.0};
     Goocanvas::Points points(2, points_coordinates);

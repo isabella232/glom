@@ -1,6 +1,11 @@
 2007-10-30  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/utility_widgets/canvas/canvas_group_resizable.cc:
+	set_child(): Really remove the old item.
+
+2007-10-30  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/utility_widgets/canvas/canvas_group_resizable.cc:
 	* glom/utility_widgets/canvas/canvas_group_resizable.h:
 	Re-enable hiding of the corner and edge manipulators when the 
 	cursor is not over the item. Add a Rect so we can drag and 

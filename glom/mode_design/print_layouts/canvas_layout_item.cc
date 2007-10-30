@@ -181,7 +181,7 @@ void CanvasLayoutItem::set_layout_item(const sharedptr<LayoutItem>& item)
 
     set_xy(x, y);
     set_width_height(width, height);
-    std::cout << "CanvasLayoutItem::set_layout_item(): item x=" << x << std::endl;
+    //std::cout << "CanvasLayoutItem::set_layout_item(): item x=" << x << std::endl;
 
     //Set the child (this removes the previous child):
     set_child(child);
