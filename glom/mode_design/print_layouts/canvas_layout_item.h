@@ -34,13 +34,21 @@ class FieldFormatting;
 class CanvasLayoutItem : public CanvasGroupResizable
 {
 protected:
+  CanvasLayoutItem();
   CanvasLayoutItem(const sharedptr<LayoutItem>& layout_item);
   virtual ~CanvasLayoutItem();
 
 public:
+  static Glib::RefPtr<CanvasLayoutItem> create();
+
+  //Creates a new canvas item, with an appropriate child canvas item,
+  //and sets the position and size of this canvas item to the position in the LayoutItem.
   static Glib::RefPtr<CanvasLayoutItem> create(const sharedptr<LayoutItem>& layout_item);
 
   sharedptr<LayoutItem> get_layout_item();
+
+  //Create an appropriate child canvas item,
+  //and sets the position and size of this canvas item to the position in the LayoutItem.
   void set_layout_item(const sharedptr<LayoutItem>& item);
   
   /// Make the canvas item show actual data instead of, for instance, a field name.

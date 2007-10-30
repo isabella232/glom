@@ -29,13 +29,34 @@
 namespace Glom
 {
 
-const double manipulator_corner_size = 4;
+const double manipulator_corner_size = 2;
 const gchar* manipulator_corner_fill_color = "black";
 const double manipulator_stroke_width = 1.0; //mm (assuming that the canvas uses mm.
 const gchar* manipulator_stroke_color = "black";
 
 CanvasGroupResizable::CanvasGroupResizable()
+: m_x(0), m_y(0), m_width(0), m_height(0)
 {
+  //property_pointer_events() = 
+  //    (Goocanvas::PointerEvents)(Goocanvas::CANVAS_EVENTS_VISIBLE_FILL & GOO_CANVAS_EVENTS_VISIBLE_STROKE);  
+
+  m_rect = Goocanvas::Rect::create(0, 0, 0, 0);
+  m_rect->property_line_width() = 0;
+  m_rect->property_fill_color() = "white";
+  //m_rect->set_movement_allowed(false, false);
+  add_child(m_rect);
+
+  //Allow dragging of the rect to move everything:
+  m_rect->signal_motion_notify_event().connect(sigc::mem_fun(*this, &CanvasGroupResizable::on_child_motion_notify_event));
+  m_rect->signal_button_press_event().connect(sigc::mem_fun(*this, &CanvasGroupResizable::on_child_button_press_event));
+  m_rect->signal_button_release_event().connect(sigc::mem_fun(*this, &CanvasGroupResizable::on_child_button_release_event));
+
+  //m_rect->property_pointer_events() = 
+  //    (Goocanvas::PointerEvents)(Goocanvas::CANVAS_EVENTS_VISIBLE_FILL & GOO_CANVAS_EVENTS_VISIBLE_STROKE);
+   
+  m_rect->signal_enter_notify_event().connect(sigc::mem_fun(*this, &CanvasGroupResizable::on_rect_enter_notify_event), false);
+  m_rect->signal_leave_notify_event().connect(sigc::mem_fun(*this, &CanvasGroupResizable::on_rect_leave_notify_event), false);
+
   m_manipulator_corner_top_left = create_corner();
   m_manipulator_corner_top_right = create_corner();
   m_manipulator_corner_bottom_left = create_corner();
@@ -46,15 +67,17 @@ CanvasGroupResizable::CanvasGroupResizable()
   m_manipulator_edge_left = create_edge();
   m_manipulator_edge_right = create_edge();
 
-//Manipulators:
-  add_child(m_manipulator_corner_top_left);
-  add_child(m_manipulator_corner_top_right);
-  add_child(m_manipulator_corner_bottom_left);
-  add_child(m_manipulator_corner_bottom_right);
-  add_child(m_manipulator_edge_top);
-  add_child(m_manipulator_edge_bottom);
-  add_child(m_manipulator_edge_left);
-  add_child(m_manipulator_edge_right);
+  //Manipulators:
+  m_group_manipulators = Goocanvas::Group::create();
+  m_group_manipulators->add_child(m_manipulator_corner_top_left);
+  m_group_manipulators->add_child(m_manipulator_corner_top_right);
+  m_group_manipulators->add_child(m_manipulator_corner_bottom_left);
+  m_group_manipulators->add_child(m_manipulator_corner_bottom_right);
+  m_group_manipulators->add_child(m_manipulator_edge_top);
+  m_group_manipulators->add_child(m_manipulator_edge_bottom);
+  m_group_manipulators->add_child(m_manipulator_edge_left);
+  m_group_manipulators->add_child(m_manipulator_edge_right);
+  add_child(m_group_manipulators);
 
   m_manipulator_corner_top_left->set_grid(m_grid);
   m_manipulator_corner_top_left->set_snap_corner(CanvasRectMovable::CORNER_TOP_LEFT);
@@ -88,10 +111,6 @@ CanvasGroupResizable::CanvasGroupResizable()
   manipulator_connect_signals(m_manipulator_edge_right, MANIPULATOR_EDGE_RIGHT);
 
   set_drag_cursor(Gdk::FLEUR);
-
-  //We don't need to connect these, because they are actually overrides of the default signal handlers:
-  //signal_enter_notify_event().connect(sigc::mem_fun(*this, &CanvasGroupResizable::on_enter_notify_event));
-  //signal_leave_notify_event().connect(sigc::mem_fun(*this, &CanvasGroupResizable::on_leave_notify_event));
 }
 
 CanvasGroupResizable::~CanvasGroupResizable()
@@ -111,14 +130,23 @@ void CanvasGroupResizable::position_manipulators()
  
   double x1 = 0;
   double y1 = 0;
-  m_child->get_xy(x1, y1);
+  get_xy(x1, y1);
 
   double child_x = 0;
   double child_y = 0;
-  m_child->get_xy(child_x, child_y);
+  get_xy(child_x, child_y);
+  //std::cout << "  CanvasGroupResizable::position_manipulators(): child x=" << child_x << std::endl;
+
   double child_width = 0;
   double child_height = 0;
-  m_child->get_width_height(child_width, child_height);
+  get_width_height(child_width, child_height);
+
+  //Show the size of this item (not always the same as the child size):
+  m_rect->property_x() = child_x;
+  m_rect->property_y() = child_y;
+  m_rect->property_width() = child_width;
+  m_rect->property_height() = child_height;
+  m_rect->property_fill_color() = "white";
 
   const double x2 = child_x + child_width;
   const double y2 = child_y + child_height;
@@ -126,29 +154,36 @@ void CanvasGroupResizable::position_manipulators()
   Glib::RefPtr<Goocanvas::Item> item = CanvasItemMovable::cast_to_item(m_child);
 
   m_manipulator_corner_top_left->set_xy(x1, y1);
-  m_manipulator_corner_top_left->raise(item);
-
   m_manipulator_corner_top_right->set_xy(x2 - manipulator_corner_size, y1);
-  m_manipulator_corner_top_right->raise(item);
-
   m_manipulator_corner_bottom_left->set_xy(x1, y2 - manipulator_corner_size);
-  m_manipulator_corner_bottom_left->raise(item);
-
   m_manipulator_corner_bottom_right->set_xy(x2 - manipulator_corner_size, y2 - manipulator_corner_size);
-  m_manipulator_corner_bottom_right->raise(item);
-
   set_edge_points(m_manipulator_edge_top, x1, y1, x2, y1);
-  m_manipulator_edge_top->raise(item);
   set_edge_points(m_manipulator_edge_bottom, x1, y2, x2, y2);
-  m_manipulator_edge_bottom->raise(item);
   set_edge_points(m_manipulator_edge_left, x1, y1, x1, y2);
-  m_manipulator_edge_left->raise(item);
   set_edge_points(m_manipulator_edge_right, x2, y1, x2, y2);
-  m_manipulator_edge_right->raise(item);
+
+  //Make sure that the bounds rect is below the item,
+  //and the manipulators are above the item (and above the rect):
+  if(item)
+  {
+    m_group_manipulators->raise(item);
+    m_rect->lower(item);
+  }
+  else
+  {
+    m_group_manipulators->raise(m_rect);
+  }
 }
 
 void CanvasGroupResizable::set_child(const Glib::RefPtr<CanvasItemMovable>& child)
 {
+  //Remove the previous child, if any:
+  if(m_child)
+  {
+    Glib::RefPtr<Goocanvas::Item> item = CanvasItemMovable::cast_to_item(child);
+    item->remove();
+  }
+
   //std::cout << "DEBUG: CanvasGroupResizable::set_child() start" << std::endl;
   if(!child)
     return;
@@ -157,13 +192,34 @@ void CanvasGroupResizable::set_child(const Glib::RefPtr<CanvasItemMovable>& chil
   if(!item)
     return;
 
+  //Get any previously-set position
+  //(after we set m_child, this would get the position from the child.)
+  double x = 0;
+  double y = 0;
+  get_xy(x, y);
+  double width = 0;
+  double height = 0;
+  get_width_height(width, height);
+
   m_child = child;
   add_child(item);
+
+  //Do not use the child's own movable behaviour, because we want everything to move together:
+  child->set_movement_allowed(false, false);
 
   //Allow drag to move:
   item->signal_motion_notify_event().connect(sigc::mem_fun(*this, &CanvasGroupResizable::on_child_motion_notify_event));
   item->signal_button_press_event().connect(sigc::mem_fun(*this, &CanvasGroupResizable::on_child_button_press_event));
   item->signal_button_release_event().connect(sigc::mem_fun(*this, &CanvasGroupResizable::on_child_button_release_event));
+
+  item->signal_enter_notify_event().connect(sigc::mem_fun(*this, &CanvasGroupResizable::on_resizer_enter_notify_event), false);
+  item->signal_leave_notify_event().connect(sigc::mem_fun(*this, &CanvasGroupResizable::on_resizer_leave_notify_event), false);
+
+  //Set the child's position to match this parent resizable's position, if any was set:
+  //(Note that the resizable should have its position set to that of the child, 
+  //if that is the position that is wanted. 
+  set_xy(x, y);
+  set_width_height(width, height);
 
   position_manipulators();
 
@@ -202,6 +258,12 @@ void CanvasGroupResizable::manipulator_connect_signals(const Glib::RefPtr<Goocan
         sigc::bind( sigc::mem_fun(*this, &CanvasGroupResizable::on_manipulator_edge_moved), manipulator_id) );
     }
   }
+
+  manipulator->signal_enter_notify_event().connect(
+     sigc::mem_fun(*this, &CanvasGroupResizable::on_manipulator_enter_notify_event), false);
+  manipulator->signal_leave_notify_event().connect(
+     sigc::mem_fun(*this, &CanvasGroupResizable::on_manipulator_leave_notify_event), false);
+
 
   //manipulator->property_x().signal_changed().connect(
   //  sigc::bind( sigc::mem_fun(*this, &CanvasGroupResizable::on_manipulator_moved), manipulator_id) );
@@ -247,15 +309,14 @@ Glib::RefPtr<CanvasItemMovable> CanvasGroupResizable::get_manipulator(Manipulato
 
 void CanvasGroupResizable::on_manipulator_corner_moved(Manipulators manipulator_id)
 {
+  //Make sure that the manipulator is still visibile.
+  //(if the user moves too fast then we get a leave-notify-event on the manipulator, rect, or item):
+  set_manipulators_visibility(Goocanvas::CANVAS_ITEM_VISIBLE);
+
   Glib::RefPtr<CanvasItemMovable> manipulator_base = get_manipulator(manipulator_id);
   Glib::RefPtr<CanvasRectMovable> manipulator = Glib::RefPtr<CanvasRectMovable>::cast_dynamic(manipulator_base);
 
- 
-  if(!m_child)
-   std::cout << "CanvasGroupResizable::on_manipulator_corner_moved()1: m_child is NULL" << std::endl;
-
-
-  if(!m_child || !manipulator)
+  if(!manipulator)
     return;
 
   double manipulator_x = 0;
@@ -264,10 +325,10 @@ void CanvasGroupResizable::on_manipulator_corner_moved(Manipulators manipulator_
 
   double child_x = 0;
   double child_y = 0;
-  m_child->get_xy(child_x, child_y);
+  get_xy(child_x, child_y);
   double child_width = 0;
   double child_height = 0;
-  m_child->get_width_height(child_width, child_height);
+  get_width_height(child_width, child_height);
 
   switch(manipulator_id)
   {
@@ -278,8 +339,8 @@ void CanvasGroupResizable::on_manipulator_corner_moved(Manipulators manipulator_
       const double new_height = std::max(child_y + child_height - manipulator->property_y(), 0.0);
       const double new_width = std::max(child_x + child_width - manipulator->property_x(), 0.0);
 
-      m_child->set_xy(new_x, new_y);
-      m_child->set_width_height(new_width, new_height);
+      set_xy(new_x, new_y);
+      set_width_height(new_width, new_height);
 
       break;
     }
@@ -289,8 +350,8 @@ void CanvasGroupResizable::on_manipulator_corner_moved(Manipulators manipulator_
       const double new_height = std::max(child_y + child_height - manipulator->property_y(), 0.0);
       const double new_width = std::max(manipulator->property_x() + manipulator_corner_size - child_x, 0.0);
 
-      m_child->set_xy(child_x, new_y);
-      m_child->set_width_height(new_width, new_height);
+      set_xy(child_x, new_y);
+      set_width_height(new_width, new_height);
 
       break;
     }
@@ -300,8 +361,8 @@ void CanvasGroupResizable::on_manipulator_corner_moved(Manipulators manipulator_
       const double new_height = std::max(manipulator->property_y() + manipulator_corner_size - child_y, 0.0);
       const double new_width = std::max(child_x + child_width - manipulator->property_x(), 0.0);
 
-      m_child->set_xy(new_x, child_y);
-      m_child->set_width_height(new_width, new_height);
+      set_xy(new_x, child_y);
+      set_width_height(new_width, new_height);
 
       break;
     }
@@ -310,7 +371,7 @@ void CanvasGroupResizable::on_manipulator_corner_moved(Manipulators manipulator_
       const double new_height = std::max(manipulator->property_y() + manipulator_corner_size - child_y, 0.0);
       const double new_width = std::max(manipulator->property_x() + manipulator_corner_size - child_x, 0.0);
 
-      m_child->set_width_height(new_width, new_height);
+      set_width_height(new_width, new_height);
 
       break;
     }
@@ -321,8 +382,26 @@ void CanvasGroupResizable::on_manipulator_corner_moved(Manipulators manipulator_
   position_manipulators();
 }
 
+bool CanvasGroupResizable::on_manipulator_enter_notify_event(const Glib::RefPtr<Goocanvas::Item>& /* target */, GdkEventCrossing* /* event */)
+{
+  m_in_manipulator = true;
+  set_manipulators_visibility(Goocanvas::CANVAS_ITEM_VISIBLE);
+  return false;
+}
+
+bool CanvasGroupResizable::on_manipulator_leave_notify_event(const Glib::RefPtr<Goocanvas::Item>& /* target */, GdkEventCrossing* /* event */t)
+{
+  m_in_manipulator = false;
+  set_manipulators_visibility(Goocanvas::CANVAS_ITEM_INVISIBLE);
+  return false;
+}
+
 void CanvasGroupResizable::on_manipulator_edge_moved(Manipulators manipulator_id)
 {
+  //Make sure that the manipulator is still visibile.
+  //(if the user moves too fast then we get a leave-notify-event on the manipulator, rect, or item):
+  set_manipulators_visibility(Goocanvas::CANVAS_ITEM_VISIBLE);
+
   Glib::RefPtr<CanvasItemMovable> manipulator_base = get_manipulator(manipulator_id);
   Glib::RefPtr<CanvasLineMovable> manipulator = Glib::RefPtr<CanvasLineMovable>::cast_dynamic(manipulator_base);
   
@@ -338,10 +417,10 @@ void CanvasGroupResizable::on_manipulator_edge_moved(Manipulators manipulator_id
 
   double child_x = 0;
   double child_y = 0;
-  m_child->get_xy(child_x, child_y);
+  get_xy(child_x, child_y);
   double child_width = 0;
   double child_height = 0;
-  m_child->get_width_height(child_width, child_height);
+  get_width_height(child_width, child_height);
   
   switch(manipulator_id)
   {
@@ -350,8 +429,8 @@ void CanvasGroupResizable::on_manipulator_edge_moved(Manipulators manipulator_id
       const double new_y = y1;
       const double new_height = std::max(child_y + child_height - y1, 0.0);
 
-      m_child->set_xy(child_x, new_y);
-      m_child->set_width_height(child_width, new_height);
+      set_xy(child_x, new_y);
+      set_width_height(child_width, new_height);
 
       break;
     }
@@ -360,7 +439,7 @@ void CanvasGroupResizable::on_manipulator_edge_moved(Manipulators manipulator_id
     {
       const double new_height = std::max(y1 - child_y, 0.0);
 
-      m_child->set_width_height(child_width, new_height);
+      set_width_height(child_width, new_height);
 
       break;
     }
@@ -369,8 +448,8 @@ void CanvasGroupResizable::on_manipulator_edge_moved(Manipulators manipulator_id
       const double new_x = x1;
       const double new_width = std::max(child_x + child_width - x1, 0.0);
 
-      m_child->set_xy(new_x, child_y);
-      m_child->set_width_height(new_width, child_height);
+      set_xy(new_x, child_y);
+      set_width_height(new_width, child_height);
 
       break;
     }
@@ -378,7 +457,7 @@ void CanvasGroupResizable::on_manipulator_edge_moved(Manipulators manipulator_id
     {
       const double new_width = std::max(x1 - child_x, 0.0);
 
-      m_child->set_width_height(new_width, child_height);
+      set_width_height(new_width, child_height);
 
       break;
     }
@@ -432,18 +511,40 @@ bool CanvasGroupResizable::on_manipulator_motion_notify_event(const Glib::RefPtr
 
 void CanvasGroupResizable::set_manipulators_visibility(Goocanvas::ItemVisibility visibility)
 {
-  //TODO: Reenable this when we figure out how to know that we are still in the main box even when we are in resizing corner too.
-  visibility = Goocanvas::CANVAS_ITEM_VISIBLE;
-
   m_manipulator_corner_top_left->property_visibility() = visibility;
   m_manipulator_corner_bottom_left->property_visibility() = visibility;
   m_manipulator_corner_top_right->property_visibility() = visibility;
   m_manipulator_corner_bottom_right->property_visibility() = visibility;
+  m_manipulator_edge_top->property_visibility() = visibility;
+  m_manipulator_edge_bottom->property_visibility() = visibility;
+  m_manipulator_edge_left->property_visibility() = visibility;
+  m_manipulator_edge_right->property_visibility() = visibility;
 }
 
-bool CanvasGroupResizable::on_enter_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventCrossing* event)
+bool CanvasGroupResizable::on_rect_enter_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventCrossing* event)
 {
-  //std::cout << "CanvasGroupResizable::on_enter_notify_event" << std::endl;
+  //std::cout << "CanvasGroupResizable::on_rect_enter_notify_event" << std::endl;
+  set_manipulators_visibility(Goocanvas::CANVAS_ITEM_VISIBLE);
+
+  return true;
+}
+
+bool CanvasGroupResizable::on_rect_leave_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventCrossing* event)
+{
+  //std::cout << "CanvasGroupResizable::on_rect_leave_notify_event" << std::endl;
+
+  //Glib::RefPtr<CanvasItemMovable> target_movable = CanvasItemMovable::cast_to_movable(target);
+  //Hide the manipulators if we are outside of the main area,
+  //but not just because we are instead inside the manipulator itself:
+  //Doesn't seem useful: if(!m_in_manipulator && (target_movable == m_child))
+  set_manipulators_visibility(Goocanvas::CANVAS_ITEM_INVISIBLE);
+
+
+  return false;
+}
+
+bool CanvasGroupResizable::on_resizer_enter_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventCrossing* event)
+{
   CanvasItemMovable::on_enter_notify_event(target, event);
 
   set_manipulators_visibility(Goocanvas::CANVAS_ITEM_VISIBLE);
@@ -451,14 +552,17 @@ bool CanvasGroupResizable::on_enter_notify_event(const Glib::RefPtr<Goocanvas::I
   return true;
 }
 
-bool CanvasGroupResizable::on_leave_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventCrossing* event)
+bool CanvasGroupResizable::on_resizer_leave_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventCrossing* event)
 {
-  //std::cout << "CanvasGroupResizable::on_leave_notify_event" << std::endl;
   CanvasItemMovable::on_leave_notify_event(target, event);
 
+  //Glib::RefPtr<CanvasItemMovable> target_movable = CanvasItemMovable::cast_to_movable(target);
+  //Hide the manipulators if we are outside of the main area,
+  //but not just because we are instead inside the manipulator itself:
+  //Doesn't seem useful: if(!m_in_manipulator && (target_movable == m_child))
   set_manipulators_visibility(Goocanvas::CANVAS_ITEM_INVISIBLE);
 
-  return true;
+  return false;
 }
 
 
@@ -493,24 +597,47 @@ void CanvasGroupResizable::set_edge_points(const Glib::RefPtr<Glom::CanvasLineMo
 
 void CanvasGroupResizable::get_xy(double& x, double& y) const
 {
-  m_child->get_xy(x, y);
+  if(m_child)
+    m_child->get_xy(x, y);
+  else
+  {
+    x = m_x;
+    y = m_y;
+  }
 }
 
 void CanvasGroupResizable::set_xy(double x, double y)
 {
-  m_child->set_xy(x, y);
+  //std::cout << "CanvasGroupResizable::set_xy(): " << x << ", " << y << std::endl;
+  if(m_child)
+    m_child->set_xy(x, y);
+  
+  //Store them for use when we have a child.
+  m_x = x;
+  m_y = y;
 
   position_manipulators();
 }
 
 void CanvasGroupResizable::get_width_height(double& width, double& height) const
 {
-  m_child->get_width_height(width, height);
+  if(m_child)
+    m_child->get_width_height(width, height);
+  else
+  {
+    width = m_width;
+    height = m_height;
+  }
 }
 
 void CanvasGroupResizable::set_width_height(double width, double height)
 {
-  m_child->set_width_height(width, height);
+  if(m_child)
+    m_child->set_width_height(width, height);
+  
+  //Store them for use when we have a child.
+  m_width = width;
+  m_height = height;
 
   position_manipulators();
 }
@@ -547,7 +674,7 @@ void CanvasGroupResizable::snap_position(Corners corner, double& x, double& y) c
 {
   double child_width = 0;
   double child_height = 0;
-  m_child->get_width_height(child_width, child_height);
+  get_width_height(child_width, child_height);
 
   //Choose the offset of the part to snap to the grid:
   double corner_x_offset = 0;

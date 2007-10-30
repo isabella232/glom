@@ -251,6 +251,7 @@ void Canvas_PrintLayout::update_layout_position_from_canvas(const sharedptr<Layo
   double x = 0;
   double y = 0;
   canvas_item->get_xy(x, y);
+  std::cout << "Canvas_PrintLayout::update_layout_position_from_canvas(): x=" << x << std::endl;
   double width = 0;
   double height = 0;
   canvas_item->get_width_height(width, height);
@@ -419,13 +420,18 @@ void Canvas_PrintLayout::set_page_setup(const Glib::RefPtr<Gtk::PageSetup>& page
   m_bounds_rect->property_fill_color() = "white";
   m_bounds_rect->property_line_width() = 0;
   m_bounds_group->add_child(m_bounds_rect);
-  m_bounds_group->lower();
 
+  //Make sure that the bounds rect is at the bottom, 
+  //and that the grid and margins are just above it:
+  if(m_grid)
+    m_grid->lower();
   
   m_margin_left = create_margin_line(page_setup->get_left_margin(units), bounds.get_y1(), page_setup->get_left_margin(units), bounds.get_y2());
   m_margin_right = create_margin_line(bounds.get_x2() - page_setup->get_right_margin(units), bounds.get_y1(), bounds.get_x2() - page_setup->get_right_margin(units), bounds.get_y2());
   m_margin_top = create_margin_line(bounds.get_x1(), page_setup->get_top_margin(units), bounds.get_x2(), page_setup->get_top_margin(units));
   m_margin_bottom = create_margin_line(bounds.get_x1(), bounds.get_y2() - page_setup->get_bottom_margin(units), bounds.get_x2(), bounds.get_y2() - page_setup->get_bottom_margin(units));
+
+  m_bounds_group->lower();
 }
 
 Glib::RefPtr<Gtk::PageSetup> Canvas_PrintLayout::get_page_setup()
@@ -529,6 +535,19 @@ guint Canvas_PrintLayout::get_zoom_percent() const
 void Canvas_PrintLayout::hide_page_bounds()
 {
   m_bounds_group->property_visibility() = Goocanvas::CANVAS_ITEM_HIDDEN;
+}
+
+void Canvas_PrintLayout::set_grid_gap(double gap)
+{
+  CanvasEditable::set_grid_gap(gap);
+
+  //Make sure that the bounds rect is at the bottom, 
+  //and that the grid and margins are just above it:
+  if(m_grid)
+    m_grid->lower();
+
+  if(m_bounds_group)
+    m_bounds_group->lower();
 }
 
 } //namespace Glom

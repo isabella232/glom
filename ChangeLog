@@ -1,3 +1,26 @@
+2007-10-30  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/utility_widgets/canvas/canvas_group_resizable.cc:
+	* glom/utility_widgets/canvas/canvas_group_resizable.h:
+	Re-enable hiding of the corner and edge manipulators when the 
+	cursor is not over the item. Add a Rect so we can drag and 
+	mouse-over the entire area, not just the part occupied by 
+	the text.
+	Store and use the position even when there is no child yet.
+	set_child(): Ignore the initial position of the child: 
+	set it to that of self. Document that.
+	Put the manipulators in a group, to simplify the code that 
+	ensures their z position.
+	I am gradually more certain that I should have just used 
+	a GooCanvasTable for this.
+
+	* glom/utility_widgets/canvas/canvas_editable.cc:
+	* glom/utility_widgets/canvas/canvas_editable.h:
+	* glom/mode_design/print_layouts/canvas_print_layout.cc:
+	* glom/mode_design/print_layouts/canvas_print_layout.h:
+	Override set_grid_gap() so we can make sure that it is above 
+	our page bounds rect.
+
 2007-10-29  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/mode_design/print_layouts/window_print_layout_edit.cc:

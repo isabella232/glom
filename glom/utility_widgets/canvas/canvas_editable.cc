@@ -65,7 +65,17 @@ void CanvasEditable::add_item(const Glib::RefPtr<Goocanvas::Item>& item, const G
       Glib::RefPtr<CanvasGroupResizable> resizable = CanvasGroupResizable::create();
       resizable->set_grid(m_grid);
 
-      group->add_child(resizable); //We must do this before calling set_child(), so that set_child() can discover the bounds.
+      //Specify the resizable's position, using the child's position:
+      double x = 0;
+      double y = 0;
+      movable->get_xy(x, y);
+      double width = 0;
+      double height = 0;
+      movable->get_width_height(width, height);
+      resizable->set_xy(x, y);
+      resizable->set_width_height(width, height);
+
+      group->add_child(resizable);
       resizable->set_child(movable); //Puts draggable corners and edges around it.
       added = true;
     }

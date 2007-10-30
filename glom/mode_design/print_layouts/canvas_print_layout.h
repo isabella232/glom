@@ -60,6 +60,8 @@ public:
   void add_canvas_layout_item(const Glib::RefPtr<CanvasLayoutItem> item);
 
   void fill_with_data(const FoundSet& found_set);
+
+  virtual void set_grid_gap(double gap = 20.0);
   
 protected:
 

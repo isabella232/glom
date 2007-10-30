@@ -24,6 +24,7 @@
 #include "canvas_rect_movable.h"
 #include "canvas_text_movable.h"
 #include "canvas_group_movable.h"
+#include "canvas_group_resizable.h"
 #include <goocanvasrect.h>
 #include <iostream>
 
@@ -51,9 +52,17 @@ public:
     rect->property_stroke_color() = "blue";
     add_item(rect, true /* resizable */);
 
-    Glib::RefPtr<Glom::CanvasTextMovable> text = Glom::CanvasTextMovable::create("yadda yadda");
-    text->set_xy(50, 50);
+    Glib::RefPtr<Glom::CanvasTextMovable> text = Glom::CanvasTextMovable::create("yadda2 yadda2");
+    text->set_xy(10, 10);
+    text->set_width_height(40, 40);
     add_item(text, true /* resizable */);
+
+    Glib::RefPtr<Glom::CanvasGroupResizable> resizable = Glom::CanvasGroupResizable::create();
+    Glib::RefPtr<Glom::CanvasTextMovable> resizable_inner = Glom::CanvasTextMovable::create("yadda3 yadda3");
+    resizable->set_child(resizable_inner);
+    resizable->set_xy(50, 50);
+    resizable->set_width_height(40, 40);
+    add_item(resizable, false /* resizable */); //This doesn't seem to work if we use true (a resizable inside a resizable)
 
     Glib::RefPtr<Glom::CanvasLineMovable> line = Glom::CanvasLineMovable::create();
     double points_coordinates[] = {20.0, 20.0, 100.0, 40.0};
@@ -76,6 +85,8 @@ public:
     rect_inner->set_movement_allowed(false, false); //Move only as part of the parent group.
     group->add_child(rect_inner);
     add_item(group);
+
+
   }
 
 protected:

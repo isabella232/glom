@@ -44,7 +44,7 @@ public:
   /** Set the distance between grid lines, 
    * used to snap to the grid lines when moving or resizing items.
    */
-  void set_grid_gap(double gap = 20.0);
+  virtual void set_grid_gap(double gap = 20.0);
 
   /** Remove grid lines.
    * See also remove_rules().

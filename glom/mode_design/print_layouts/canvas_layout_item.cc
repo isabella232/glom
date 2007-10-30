@@ -36,14 +36,22 @@
 namespace Glom
 {
 
+CanvasLayoutItem::CanvasLayoutItem()
+{
+}
+
 CanvasLayoutItem::CanvasLayoutItem(const sharedptr<LayoutItem>& layout_item)
-: CanvasGroupResizable()
 {
   set_layout_item(layout_item);
 }
 
 CanvasLayoutItem::~CanvasLayoutItem()
 {
+}
+
+Glib::RefPtr<CanvasLayoutItem> CanvasLayoutItem::create()
+{
+  return Glib::RefPtr<CanvasLayoutItem>(new CanvasLayoutItem());
 }
 
 Glib::RefPtr<CanvasLayoutItem> CanvasLayoutItem::create(const sharedptr<LayoutItem>& layout_item)
@@ -85,10 +93,6 @@ void CanvasLayoutItem::check_and_apply_formatting(const Glib::RefPtr<CanvasTextM
 
 void CanvasLayoutItem::set_layout_item(const sharedptr<LayoutItem>& item)
 {
-  //Remove the current child:
-  if(get_n_children())
-    remove_child(0);
-
   //Add the new child:
   m_layout_item = item;
 
@@ -98,10 +102,12 @@ void CanvasLayoutItem::set_layout_item(const sharedptr<LayoutItem>& item)
   if(text)
   {
     Glib::RefPtr<CanvasTextMovable> canvas_item = CanvasTextMovable::create();
+    canvas_item->property_line_width() = 0;
 
     FieldFormatting& formatting = text->m_formatting;
     check_and_apply_formatting(canvas_item, formatting);
 
+    std::cout << "DEBUG: adding text=" << text->get_text() << std::endl;
     canvas_item->set_text(text->get_text());
     child = canvas_item;
     child_item = canvas_item;
@@ -139,6 +145,7 @@ void CanvasLayoutItem::set_layout_item(const sharedptr<LayoutItem>& item)
         else //text, numbers, date, time, boolean:
         {
           Glib::RefPtr<CanvasTextMovable> canvas_item = CanvasTextMovable::create();
+          canvas_item->property_line_width() = 0;
          
           FieldFormatting& formatting = field->m_formatting;
           check_and_apply_formatting(canvas_item, formatting);
@@ -162,8 +169,8 @@ void CanvasLayoutItem::set_layout_item(const sharedptr<LayoutItem>& item)
 
   if(child && child_item)
   {
-    child_item->property_pointer_events() = 
-      (Goocanvas::PointerEvents)(Goocanvas::CANVAS_EVENTS_VISIBLE_FILL & GOO_CANVAS_EVENTS_VISIBLE_STROKE);
+    //child_item->property_pointer_events() = 
+    //  (Goocanvas::PointerEvents)(Goocanvas::CANVAS_EVENTS_VISIBLE_FILL & GOO_CANVAS_EVENTS_VISIBLE_STROKE);
       
     //Set the position and dimensions:
     double x = 0;
@@ -172,12 +179,11 @@ void CanvasLayoutItem::set_layout_item(const sharedptr<LayoutItem>& item)
     double height = 0;
     item->get_print_layout_position(x, y, width, height);
 
-    child->set_xy(x, y);
-    child->set_width_height(width, height);
+    set_xy(x, y);
+    set_width_height(width, height);
+    std::cout << "CanvasLayoutItem::set_layout_item(): item x=" << x << std::endl;
 
-    //We do this after setting the child dimensions, 
-    //so that the manipulators are correct, 
-    //though it would be nice if the manipulators moved when we repositioned the child explicitly.
+    //Set the child (this removes the previous child):
     set_child(child);
   }
 }
