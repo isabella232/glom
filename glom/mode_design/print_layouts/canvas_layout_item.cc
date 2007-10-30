@@ -107,7 +107,6 @@ void CanvasLayoutItem::set_layout_item(const sharedptr<LayoutItem>& item)
     FieldFormatting& formatting = text->m_formatting;
     check_and_apply_formatting(canvas_item, formatting);
 
-    std::cout << "DEBUG: adding text=" << text->get_text() << std::endl;
     canvas_item->set_text(text->get_text());
     child = canvas_item;
     child_item = canvas_item;
@@ -243,9 +242,8 @@ void CanvasLayoutItem::set_db_data(const Gnome::Gda::Value& value)
       if(pixbuf)
         pixbuf = ImageGlom::scale_keeping_ratio(pixbuf, (int)height, (int)width);
       
-      canvas_item->property_pixbuf() = pixbuf;
-      
-     
+      if(pixbuf) //Remove this if() check when goocanvas has my patch to avoid crashes when this is NULL.
+        canvas_item->property_pixbuf() = pixbuf;
      
       break;
     }

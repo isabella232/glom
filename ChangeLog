@@ -1,5 +1,15 @@
 2007-10-30  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/mode_data/box_data_details.cc:
+	* glom/mode_data/box_data_details.h: Set m_FoundSet 
+	whenever the primary key value is set, so we really print 
+	the layout for the current record.
+	* glom/mode_design/print_layouts/canvas_layout_item.cc:
+	set_db_data(): Avoid triggering a crash in goocanvas 
+	when setting a NULL pixbuf. Patch sent.
+
+2007-10-30  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/utility_widgets/canvas/canvas_group_resizable.cc:
 	set_child(): Really remove the old item.
 

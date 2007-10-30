@@ -141,6 +141,15 @@ Gnome::Gda::Value Box_Data_Details::get_primary_key_value() const
 void Box_Data_Details::set_primary_key_value(const Gtk::TreeModel::iterator& /* row */, const Gnome::Gda::Value& value)
 {
   m_primary_key_value = value;
+  set_found_set_from_primary_key_value();
+  //std::cout << "Box_Data_Details::set_primary_key_value(): m_primary_key_value=" << m_field_primary_key->sql(m_primary_key_value) << std::endl;
+}
+
+void Box_Data_Details::set_found_set_from_primary_key_value()
+{
+  m_found_set.m_where_clause = "\"" + m_table_name + "\".\"" + m_field_primary_key->get_name() + 
+    "\" = " + m_field_primary_key->sql(m_primary_key_value);
+  //std::cout << "  DEBUG: Box_Data_Details::set_primary_key_value(): m_found_set.m_where_clause = " << m_found_set.m_where_clause << std::endl;
 }
 
 bool Box_Data_Details::init_db_details(const FoundSet& found_set, const Gnome::Gda::Value& primary_key_value)
@@ -149,23 +158,20 @@ bool Box_Data_Details::init_db_details(const FoundSet& found_set, const Gnome::G
 
   m_primary_key_value = primary_key_value;
   m_field_primary_key = get_field_primary_key_for_table(found_set.m_table_name);
-
    
   const bool result = Box_Data::init_db_details(found_set); //Calls create_layout(), then fill_from_database()
   
   //This is not used much, but we create it anyway:
   m_found_set = found_set; //Not used much.
-  m_found_set.m_where_clause = "\"" + m_table_name + "\".\"" + m_field_primary_key->get_name() + 
-    "\" = " + m_field_primary_key->sql(m_primary_key_value);
-  //std::cout << "DEBUG: Box_Data_Details::set_primary_key_value(): m_found_set.m_where_clause = " << found_set.m_where_clause << std::endl;
+  set_found_set_from_primary_key_value();
  
   return result;
 }
 
 bool Box_Data_Details::refresh_data_from_database_with_primary_key(const Gnome::Gda::Value& primary_key_value)
 {
-  //std::cout << "refresh_data_from_database_with_primary_key(): primary_key_value=" << primary_key_value.to_string() << std::endl;
   m_primary_key_value = primary_key_value;
+  set_found_set_from_primary_key_value();
   return fill_from_database();
 }
 
@@ -303,7 +309,10 @@ bool Box_Data_Details::fill_from_database()
             if(!primary_key_is_empty)
             {
               if(index_primary_key < cols_count)
+              {
                 m_primary_key_value = result->get_value_at(index_primary_key, row_number);
+                set_found_set_from_primary_key_value();
+              }
             }
 
             //Get field values to show:

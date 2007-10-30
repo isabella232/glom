@@ -74,6 +74,7 @@ protected:
   //virtual void fill_related();
 
   virtual sharedptr<Field> get_field_primary_key() const;
+  void set_found_set_from_primary_key_value();
 
   void print_layout_group(xmlpp::Element* node_parent, const sharedptr<const LayoutGroup>& group);
 
