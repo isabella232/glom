@@ -253,6 +253,7 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
   m_Notebook_Find.show();
 
   m_Notebook_Data.signal_record_details_requested().connect(sigc::mem_fun(*this, &Frame_Glom::on_notebook_data_record_details_requested));
+  m_Notebook_Data.signal_switch_page().connect(sigc::mem_fun(*this, &Frame_Glom::on_notebook_data_switch_page));
   m_Notebook_Data.show();
 
   //Fill Composite View:
@@ -2105,6 +2106,14 @@ void Frame_Glom::on_dialog_tables_hide()
   }
 }
 
+void Frame_Glom::on_notebook_data_switch_page(GtkNotebookPage* /* page */, guint /* page_num */)
+{
+  //Refill this menu, because it depends on whether list or details are visible:
+  App_Glom* pApp = dynamic_cast<App_Glom*>(get_app_window());
+  if(pApp)
+    pApp->fill_menu_print_layouts(m_table_name);
+}
+
 void Frame_Glom::on_notebook_data_record_details_requested(const Glib::ustring& table_name, Gnome::Gda::Value primary_key_value)
 {
   show_table(table_name, primary_key_value);
@@ -2154,6 +2163,11 @@ void Frame_Glom::on_button_find_all()
 {
   //Change the found set to all records:
   show_table(m_table_name);
+}
+
+bool Frame_Glom::get_viewing_details() const
+{
+  return (m_Notebook_Data.get_current_view() == Notebook_Data::DATA_VIEW_Details);
 }
 
 } //namespace Glom

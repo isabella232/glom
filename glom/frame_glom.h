@@ -156,6 +156,9 @@ public:
    */
   void show_table_refresh();
 
+  ///Whether we are viewing the details or list.
+  bool get_viewing_details() const;
+
 protected:
 
   //virtual void set_document(Document_Glom* pDocument); //override
@@ -178,6 +181,7 @@ protected:
   void on_notebook_find_criteria(const Glib::ustring& where_clause);
   void on_button_quickfind();
   void on_button_find_all();
+  void on_notebook_data_switch_page(GtkNotebookPage* page, guint page_num);
   void on_notebook_data_record_details_requested(const Glib::ustring& table_name, Gnome::Gda::Value primary_key_value);
   void on_userlevel_changed(AppState::userlevels userlevel);
 

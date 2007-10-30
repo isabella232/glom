@@ -64,7 +64,7 @@ void Notebook_Glom::on_switch_page_handler(GtkNotebookPage* pPage, guint uiPageN
   m_uiPreviousPage = uiPageNumber; //Remember the current page for next time.
 
   //Load the page as we enter it:
-  Gtk::Widget* pChild  = get_nth_page(uiPageNumber);
+  Gtk::Widget* pChild = get_nth_page(uiPageNumber);
   if(pChild)
   {
     Box_DB* pBox = dynamic_cast<Box_DB*>(pChild);

@@ -1,5 +1,15 @@
 2007-10-30  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/frame_glom.cc:
+	* glom/frame_glom.h: Added bool get_viewing_details().
+	Handled the notebook's page_switch to refresh the 
+	print sub-menu.
+	* glom/application.cc: fill_menu_print_layouts(): 
+	Do not list print layouts if we are viewing the list, 
+	because they are (currently) only for details.
+
+2007-10-30  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/mode_data/box_data_details.cc:
 	* glom/mode_data/box_data_details.h: Set m_FoundSet 
 	whenever the primary key value is set, so we really print 

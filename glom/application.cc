@@ -1784,6 +1784,11 @@ void App_Glom::fill_menu_print_layouts(const Glib::ustring& table_name)
   if(m_menu_print_layouts_ui_merge_id)
     m_refUIManager->remove_ui(m_menu_print_layouts_ui_merge_id);
 
+  //Only fill menu if we are in details mode,
+  //because this feature is not (yet) available for lists:
+  if(!m_pFrame || !m_pFrame->get_viewing_details())
+    return;
+
   m_refNavPrintLayoutsActionGroup = Gtk::ActionGroup::create("NavPrintLayoutsActions");
 
   Glib::ustring ui_description =
