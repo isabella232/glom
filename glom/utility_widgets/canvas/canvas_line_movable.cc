@@ -20,8 +20,6 @@
 
 #include "canvas_line_movable.h"
 #include <goocanvasmm/canvas.h>
-#include <goocanvaspolyline.h>
-#include <goocanvasgroup.h>
 #include <gdkmm/cursor.h>
 #include <iostream>
 
@@ -83,6 +81,8 @@ void CanvasLineMovable::set_xy(double x, double y)
 
 void CanvasLineMovable::get_width_height(double& width, double& height) const
 {
+  //width/height still makes sense for a line
+  //(it can be thought of as a diagonal line between two rectangle corners):
   Goocanvas::Points points = property_points();
   double x1 = 0;
   double y1 = 0;
@@ -94,15 +94,22 @@ void CanvasLineMovable::get_width_height(double& width, double& height) const
 
   width = x2 -x1;
   height = y2 - y1;
+
+  //std::cout << "CanvasLineMovable::get_width_height(): width=" << width << std::endl;
 }
 
 void CanvasLineMovable::set_width_height(double width, double height)
 {
+  //width/height still makes sense for a line
+  //(it can be thought of as a diagonal line between two rectangle corners):
   Goocanvas::Points points = property_points();
   double x1 = 0;
   double y1 = 0;
   points.get_coordinate(0, x1, y1);
   points.set_coordinate(1, x1+width, y1+height);
+  property_points() = points;
+
+  //std::cout << "CanvasLineMovable::set_width_height(): end x=" << x1+width << std::endl;
 }
 
 Goocanvas::Canvas* CanvasLineMovable::get_parent_canvas_widget()

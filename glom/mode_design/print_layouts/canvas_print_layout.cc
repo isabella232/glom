@@ -147,6 +147,7 @@ void Canvas_PrintLayout::fill_layout_group(const sharedptr<LayoutGroup>& group)
     if(canvas_item)
     {
       //Get the actual position:
+      /*
       double x = 0;
       double y = 0;
       canvas_item->get_xy(x, y);
@@ -155,11 +156,12 @@ void Canvas_PrintLayout::fill_layout_group(const sharedptr<LayoutGroup>& group)
       canvas_item->get_width_height(width, height);
       if((width != 0)) //Allow height to be 0, because text items currently have no height. TODO: && (height != 0)) //Avoid bogus items.
       {
+      */
         sharedptr<LayoutItem> layout_item = canvas_item->get_layout_item();
         update_layout_position_from_canvas(layout_item, canvas_item);
 
         group->add_item(layout_item);
-      }
+      //}
     }
 
     //TODO: Recurse.
@@ -252,6 +254,7 @@ void Canvas_PrintLayout::update_layout_position_from_canvas(const sharedptr<Layo
   double y = 0;
   canvas_item->get_xy(x, y);
   //std::cout << "Canvas_PrintLayout::update_layout_position_from_canvas(): x=" << x << std::endl;
+
   double width = 0;
   double height = 0;
   canvas_item->get_width_height(width, height);

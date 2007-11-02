@@ -28,6 +28,7 @@
 #include <glom/libglom/data_structure/layout/layoutitem_text.h>
 #include <glom/libglom/data_structure/layout/layoutitem_image.h>
 #include <glom/libglom/data_structure/layout/layoutitem_field.h>
+#include <glom/libglom/data_structure/layout/layoutitem_line.h>
 #include <glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.h>
 #include <glom/libglom/data_structure/glomconversions.h>
 #include <glom/utility_widgets/imageglom.h> //For ImageGlom::scale_keeping_ratio().
@@ -96,6 +97,8 @@ void CanvasLayoutItem::set_layout_item(const sharedptr<LayoutItem>& item)
   //Add the new child:
   m_layout_item = item;
 
+  sharedptr<LayoutItem_Line> line;
+
   Glib::RefPtr<CanvasItemMovable> child;
   Glib::RefPtr<Goocanvas::Item> child_item;
   sharedptr<LayoutItem_Text> text = sharedptr<LayoutItem_Text>::cast_dynamic(m_layout_item);
@@ -124,44 +127,67 @@ void CanvasLayoutItem::set_layout_item(const sharedptr<LayoutItem>& item)
     }
     else
     {
-      sharedptr<LayoutItem_Field> field = sharedptr<LayoutItem_Field>::cast_dynamic(m_layout_item);
-      if(field)
+      sharedptr<LayoutItem_Line> line = sharedptr<LayoutItem_Line>::cast_dynamic(m_layout_item);
+      if(line)
       {
-        //Create an appropriate canvas item for the field type:
-        if(field->get_glom_type() == Field::TYPE_IMAGE)
-        {
-          Glib::RefPtr<CanvasImageMovable> canvas_item = CanvasImageMovable::create();
+        double start_x = 0;
+        double start_y = 0;
+        double end_x  = 0;
+        double end_y = 0;
+        line->get_coordinates(start_x, start_y, end_x, end_y);
+        
+        Glib::RefPtr<CanvasLineMovable> canvas_item = CanvasLineMovable::create();
+        canvas_item->property_line_width() = 1;
+        canvas_item->property_stroke_color() = "black";
 
-          //Glib::ustring name = field->get_name();
-          //  if(name.empty())
-          //    name = _("Choose Field");
-          
-          //canvas_item->set_text(name);
-
-          child = canvas_item;
-          child_item = canvas_item;
-        }
-        else //text, numbers, date, time, boolean:
-        {
-          Glib::RefPtr<CanvasTextMovable> canvas_item = CanvasTextMovable::create();
-          canvas_item->property_line_width() = 0;
-         
-          FieldFormatting& formatting = field->m_formatting;
-          check_and_apply_formatting(canvas_item, formatting);
-
-          Glib::ustring name = field->get_name();
-            if(name.empty())
-              name = _("Choose Field");
-          
-          canvas_item->set_text(name);
-
-          child = canvas_item;
-          child_item = canvas_item;
-        }
+        Goocanvas::Points points(2);
+        points.set_coordinate(0, start_x, start_y);
+        points.set_coordinate(0, end_x, end_y);
+        canvas_item->property_points() = points;
+        child = canvas_item;
+        child_item = canvas_item;
       }
       else
       {
-        std::cerr << "CanvasLayoutItem::set_layout_item(): Unhandled LayoutItem type." << std::endl;
+        sharedptr<LayoutItem_Field> field = sharedptr<LayoutItem_Field>::cast_dynamic(m_layout_item);
+        if(field)
+        {
+          //Create an appropriate canvas item for the field type:
+          if(field->get_glom_type() == Field::TYPE_IMAGE)
+          {
+            Glib::RefPtr<CanvasImageMovable> canvas_item = CanvasImageMovable::create();
+
+            //Glib::ustring name = field->get_name();
+            //  if(name.empty())
+            //    name = _("Choose Field");
+          
+            //canvas_item->set_text(name);
+
+            child = canvas_item;
+            child_item = canvas_item;
+          }
+          else //text, numbers, date, time, boolean:
+          {
+            Glib::RefPtr<CanvasTextMovable> canvas_item = CanvasTextMovable::create();
+            canvas_item->property_line_width() = 0;
+         
+            FieldFormatting& formatting = field->m_formatting;
+            check_and_apply_formatting(canvas_item, formatting);
+
+            Glib::ustring name = field->get_name();
+            if(name.empty())
+              name = _("Choose Field");
+          
+            canvas_item->set_text(name);
+
+            child = canvas_item;
+            child_item = canvas_item;
+          }
+        }
+        else
+        {
+          std::cerr << "CanvasLayoutItem::set_layout_item(): Unhandled LayoutItem type." << std::endl;
+        }
       }
     }
   }
@@ -171,7 +197,7 @@ void CanvasLayoutItem::set_layout_item(const sharedptr<LayoutItem>& item)
     //child_item->property_pointer_events() = 
     //  (Goocanvas::PointerEvents)(Goocanvas::CANVAS_EVENTS_VISIBLE_FILL & GOO_CANVAS_EVENTS_VISIBLE_STROKE);
       
-    //Set the position and dimensions:
+    //Set the position and dimensions of this group to match the child:
     double x = 0;
     double y = 0;
     double width = 0;

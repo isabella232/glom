@@ -1,3 +1,23 @@
+2007-11-02  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/libglom/data_structure/layout/Makefile.am:
+	* glom/libglom/data_structure/layout/layoutitem_line.cc:
+	* glom/libglom/data_structure/layout/layoutitem_line.h:
+	Added this new layout item, only for print layouts.
+	* glom/libglom/document/document_glom.cc: load and save the 
+	new layout item.
+	* glom/mode_design/print_layouts/canvas_layout_item.cc:
+	set_layout_item(): Handle the new layout item type, creating 
+	a canvas line for it.
+	* glom/mode_design/print_layouts/window_print_layout_edit.cc:
+	* glom/mode_design/print_layouts/window_print_layout_edit.h:
+	Added Insert menu items, to add horizontal and vertical lines.
+	* glom/utility_widgets/canvas/canvas_group_resizable.cc:
+	* glom/utility_widgets/canvas/canvas_group_resizable.h:
+	Create (and handle) different manipulators if the child is a line.
+	* glom/utility_widgets/canvas/canvas_line_movable.cc:
+	set_coordinates(): Set the x/y/width/height too, for generic code.
+
 2007-11-01  Murray Cumming  <murrayc@murrayc.com>
 
 	* po/POTFILES.in: Added new files.

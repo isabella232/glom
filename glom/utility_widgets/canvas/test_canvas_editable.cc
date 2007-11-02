@@ -74,11 +74,18 @@ public:
     line->property_points() = points;
     line->property_line_width() = 3.0f;
     line->property_stroke_color() = "gray";
-    line->set_movement_allowed(false, true);
+    //line->set_movement_allowed(false, true);
     add_item(line);
 
-
     line->signal_show_context().connect( sigc::mem_fun(*this, &MyCanvas::on_show_context_menu) );
+
+    Glib::RefPtr<Glom::CanvasLineMovable> line2 = Glom::CanvasLineMovable::create();
+    double points_coordinatess[] = {120.0, 120.0, 150.0, 150.0};
+    Goocanvas::Points points2(2, points_coordinatess);
+    line2->property_points() = points2;
+    line2->property_line_width() = 2.0f;
+    line2->property_stroke_color() = "green";
+    add_item(line2, true);
 
 
     Glib::RefPtr<Glom::CanvasGroupMovable> group = Glom::CanvasGroupMovable::create();

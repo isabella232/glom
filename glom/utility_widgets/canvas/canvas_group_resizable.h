@@ -37,6 +37,8 @@ class CanvasGroupResizable
     public CanvasItemMovable
 {
 protected:
+  /** @param add_manipulators Derived classes may want to use false here.
+   */
   CanvasGroupResizable();
   virtual ~CanvasGroupResizable();
 
@@ -91,6 +93,8 @@ protected:
   enum Manipulators
   {
     MANIPULATOR_NONE,
+
+    //For rectangles:
     MANIPULATOR_CORNER_TOP_LEFT,
     MANIPULATOR_CORNER_TOP_RIGHT,
     MANIPULATOR_CORNER_BOTTOM_LEFT,
@@ -98,34 +102,52 @@ protected:
     MANIPULATOR_EDGE_TOP,
     MANIPULATOR_EDGE_BOTTOM,
     MANIPULATOR_EDGE_LEFT,
-    MANIPULATOR_EDGE_RIGHT
+    MANIPULATOR_EDGE_RIGHT,
+
+    //For straight lines:
+    MANIPULATOR_START,
+    MANIPULATOR_END
   };
 
   Glib::RefPtr<CanvasItemMovable> get_manipulator(Manipulators manipulator_id);
 
+  void create_manipulators();
+  void create_rect_manipulators();
+  void create_line_manipulators();
+
   void manipulator_connect_signals(const Glib::RefPtr<Goocanvas::Item> manipulator, Manipulators manipulator_id);
   void position_manipulators();
+  void position_rect_manipulators();
+  void position_line_manipulators();
   void set_manipulators_visibility(Goocanvas::ItemVisibility visibility);
 
   void on_manipulator_corner_moved(Manipulators manipulator_id);
   void on_manipulator_edge_moved(Manipulators manipulator_id);
+  void on_manipulator_line_end_moved(Manipulators manipulator_id);
   bool on_manipulator_enter_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventCrossing* event);
   bool on_manipulator_leave_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventCrossing* event);
+
+  bool get_is_line() const;
 
   //bool on_manipulator_button_press_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventButton* event, Manipulators manipulator);
   //bool on_manipulator_button_release_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventButton* event, Manipulators manipulator);
   //bool on_manipulator_motion_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventMotion* event, Manipulators manipulator);
 
-  static Glib::RefPtr<CanvasRectMovable> create_corner();
-  static Glib::RefPtr<CanvasLineMovable> create_edge();
+  static Glib::RefPtr<CanvasRectMovable> create_corner_manipulator();
+  static Glib::RefPtr<CanvasLineMovable> create_edge_manipulator();
   static void set_edge_points(const Glib::RefPtr<Glom::CanvasLineMovable>& line, double x1, double y1, double x2, double y2);
 
   Glib::RefPtr<CanvasItemMovable> m_child;
 
   Glib::RefPtr<Goocanvas::Group> m_group_manipulators; //not including the rect.
+
+  //Manipulators for a rectangle:
   Glib::RefPtr<Goocanvas::Rect> m_rect; //Something to get events on, because m_child might actually be smaller than indicated by our manipulators.
   Glib::RefPtr<CanvasRectMovable> m_manipulator_corner_top_left, m_manipulator_corner_top_right, m_manipulator_corner_bottom_left, m_manipulator_corner_bottom_right;
   Glib::RefPtr<CanvasLineMovable> m_manipulator_edge_top, m_manipulator_edge_bottom, m_manipulator_edge_left, m_manipulator_edge_right;
+
+  //Manipulators for a line:
+  Glib::RefPtr<CanvasRectMovable> m_manipulator_start, m_manipulator_end;
 
   bool m_in_manipulator; //Whether the cursor is in a manipulator.
 

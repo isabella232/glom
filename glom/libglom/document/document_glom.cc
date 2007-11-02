@@ -29,6 +29,7 @@
 #include <glom/libglom/data_structure/layout/layoutitem_button.h>
 #include <glom/libglom/data_structure/layout/layoutitem_text.h>
 #include <glom/libglom/data_structure/layout/layoutitem_image.h>
+#include <glom/libglom/data_structure/layout/layoutitem_line.h>
 #include <glom/libglom/standard_table_prefs_fields.h>
 #include <libgnomevfsmm/uri.h>
 #include <bakery/Utilities/BusyCursor.h>
@@ -72,6 +73,11 @@ namespace Glom
 #define GLOM_NODE_DATA_LAYOUT_TEXTOBJECT_TEXT "text"
 #define GLOM_NODE_DATA_LAYOUT_IMAGEOBJECT "data_layout_image"
 #define GLOM_ATTRIBUTE_DATA_LAYOUT_IMAGEOBJECT_IMAGE "text"
+#define GLOM_NODE_DATA_LAYOUT_LINE "data_layout_line"
+#define GLOM_ATTRIBUTE_DATA_LAYOUT_LINE_START_X "start_x"
+#define GLOM_ATTRIBUTE_DATA_LAYOUT_LINE_START_Y "start_y"
+#define GLOM_ATTRIBUTE_DATA_LAYOUT_LINE_END_X "end_x"
+#define GLOM_ATTRIBUTE_DATA_LAYOUT_LINE_END_Y "end_y"
 #define GLOM_ATTRIBUTE_DATA_LAYOUT_ITEM_FIELD_USE_DEFAULT_FORMATTING "use_default_formatting"
 #define GLOM_NODE_DATA_LAYOUT_ITEM_GROUPBY "data_layout_item_groupby"
 #define GLOM_NODE_DATA_LAYOUT_GROUP_SECONDARYFIELDS "secondary_fields"
@@ -1925,7 +1931,7 @@ void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Gl
           sharedptr<TranslatableItem> translatable_text = sharedptr<TranslatableItem>::create();
           load_after_translations(element_text, *translatable_text);
           item->m_text = translatable_text;
-          std::cout << "  DEBUG: text: " << item->m_text->get_title_or_name() << std::endl;
+          //std::cout << "  DEBUG: text: " << item->m_text->get_title_or_name() << std::endl;
         }
 
         item->m_sequence = sequence;
@@ -1939,6 +1945,22 @@ void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Gl
         load_after_translations(element, *item);
 
         item->set_image(get_node_attribute_value_as_value(element, GLOM_ATTRIBUTE_DATA_LAYOUT_IMAGEOBJECT_IMAGE, Field::TYPE_IMAGE));
+
+        item->m_sequence = sequence;
+        item_added_sequence = sequence;
+
+        item_added = item; 
+      }
+      else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_LINE)
+      {
+        sharedptr<LayoutItem_Line> item = sharedptr<LayoutItem_Line>::create();
+        //Has no translations: load_after_translations(element, *item);
+
+        item->set_coordinates(
+          get_node_attribute_value_as_decimal_double(element, GLOM_ATTRIBUTE_DATA_LAYOUT_LINE_START_X),
+          get_node_attribute_value_as_decimal_double(element, GLOM_ATTRIBUTE_DATA_LAYOUT_LINE_START_Y),
+          get_node_attribute_value_as_decimal_double(element, GLOM_ATTRIBUTE_DATA_LAYOUT_LINE_END_X),
+          get_node_attribute_value_as_decimal_double(element, GLOM_ATTRIBUTE_DATA_LAYOUT_LINE_END_Y) );
 
         item->m_sequence = sequence;
         item_added_sequence = sequence;
@@ -2896,6 +2918,26 @@ void Document_Glom::save_before_layout_group(xmlpp::Element* node, const sharedp
                 save_before_translations(nodeItem, *imageobject);
 
                 set_node_attribute_value_as_value(nodeItem, GLOM_ATTRIBUTE_DATA_LAYOUT_IMAGEOBJECT_IMAGE, imageobject->get_image(), Field::TYPE_IMAGE);
+              }
+              else
+              {
+                sharedptr<const LayoutItem_Line> line = sharedptr<const LayoutItem_Line>::cast_dynamic(item);
+                if(line) //If it is a line
+                {
+                  nodeItem = child->add_child(GLOM_NODE_DATA_LAYOUT_LINE);
+                  //This has no translations: save_before_translations(nodeItem, *line);
+
+                  double start_x = 0;
+                  double start_y = 0;
+                  double end_x = 0;
+                  double end_y = 0;
+                  line->get_coordinates(start_x, start_y, end_x, end_y);
+
+                  set_node_attribute_value_as_decimal_double(nodeItem, GLOM_ATTRIBUTE_DATA_LAYOUT_LINE_START_X, start_x);
+                  set_node_attribute_value_as_decimal_double(nodeItem, GLOM_ATTRIBUTE_DATA_LAYOUT_LINE_START_Y, start_y);
+                  set_node_attribute_value_as_decimal_double(nodeItem, GLOM_ATTRIBUTE_DATA_LAYOUT_LINE_END_X, end_x);
+                  set_node_attribute_value_as_decimal_double(nodeItem, GLOM_ATTRIBUTE_DATA_LAYOUT_LINE_END_Y, end_y);
+                }
               }
             }
           }

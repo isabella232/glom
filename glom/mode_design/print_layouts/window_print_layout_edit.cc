@@ -22,6 +22,7 @@
 #include "window_print_layout_edit.h"
 #include <glom/box_db_table.h>
 #include "canvas_layout_item.h"
+#include <glom/libglom/data_structure/layout/layoutitem_line.h>
 //#include <libgnome/gnome-i18n.h>
 #include <bakery/App/App_Gtk.h> //For util_bold_message().
 #include <gtkmm/scrolledwindow.h>
@@ -111,6 +112,10 @@ void Window_PrintLayout_Edit::init_menu()
                         sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_insert_text) );
   m_action_group->add(Gtk::Action::create("Action_Menu_Insert_Image", _("Insert _Image")),
                         sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_insert_image) );
+  m_action_group->add(Gtk::Action::create("Action_Menu_Insert_LineHorizontal", _("Insert _Horizontal Line")),
+                        sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_insert_line_horizontal) );
+  m_action_group->add(Gtk::Action::create("Action_Menu_Insert_LineVertical", _("Insert _Vertical Line")),
+                        sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_insert_line_vertical) );
 
   m_action_group->add(Gtk::Action::create("Menu_View", _("_View")));
   m_action_showgrid = Gtk::ToggleAction::create("Action_Menu_View_ShowGrid", _("Show Grid"));
@@ -152,6 +157,8 @@ void Window_PrintLayout_Edit::init_menu()
     "        <menuitem action='Action_Menu_Insert_Field' />"
     "        <menuitem action='Action_Menu_Insert_Text' />"
     "        <menuitem action='Action_Menu_Insert_Image' />"
+    "        <menuitem action='Action_Menu_Insert_LineHorizontal' />"
+    "        <menuitem action='Action_Menu_Insert_LineVertical' />"
     "      </menu>"
     "      <menu action='Menu_View'>"
     "        <menuitem action='Action_Menu_View_ShowGrid' />"
@@ -417,6 +424,28 @@ void Window_PrintLayout_Edit::on_menu_insert_image()
   // Note to translators: This is the default contents of a text item on a print layout: 
   //layout_item->set_text(_("text"));
   set_default_position(layout_item);
+
+  Glib::RefPtr<CanvasLayoutItem> item = CanvasLayoutItem::create(layout_item);
+  m_canvas.add_canvas_layout_item(item);
+}
+
+void Window_PrintLayout_Edit::on_menu_insert_line_horizontal()
+{
+  sharedptr<LayoutItem_Line> layout_item = sharedptr<LayoutItem_Line>::create();
+  // Note to translators: This is the default contents of a text item on a print layout: 
+  //layout_item->set_text(_("text"));
+  layout_item->set_coordinates(10, 10, 110, 10);
+
+  Glib::RefPtr<CanvasLayoutItem> item = CanvasLayoutItem::create(layout_item);
+  m_canvas.add_canvas_layout_item(item);
+}
+
+void Window_PrintLayout_Edit::on_menu_insert_line_vertical()
+{
+  sharedptr<LayoutItem_Line> layout_item = sharedptr<LayoutItem_Line>::create();
+  // Note to translators: This is the default contents of a text item on a print layout: 
+  //layout_item->set_text(_("text"));
+  layout_item->set_coordinates(10, 10, 10, 110);
 
   Glib::RefPtr<CanvasLayoutItem> item = CanvasLayoutItem::create(layout_item);
   m_canvas.add_canvas_layout_item(item);

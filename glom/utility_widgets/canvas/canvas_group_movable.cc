@@ -23,7 +23,6 @@
 #include "canvas_line_movable.h"
 #include "canvas_text_movable.h"
 #include <goocanvasmm/canvas.h>
-#include <goocanvasgroup.h>
 #include <gdkmm/cursor.h>
 #include <iostream>
 
