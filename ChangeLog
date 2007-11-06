@@ -1,3 +1,8 @@
+2007-11-06  Armin Burgmeier  <armin@openismus.com>
+
+	* several files: Merged changes from GLOM_CLIENTONLY branch. This
+	polishes up the maemo port a bit.
+
 1.6.2:
 
 2007-10-17  Murray Cumming  <murrayc@murrayc.com>

@@ -80,6 +80,7 @@ DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ust
     m_label.set_alignment(0);
     m_label.show();
   }
+  // Use hildon widgets for date and time on maemo
   else
   {
     m_label.set_label(title);
@@ -169,31 +170,15 @@ DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ust
   {
     pFieldWidget->signal_edited().connect( sigc::mem_fun(*this, &DataWidget::on_widget_edited)  );
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
     pFieldWidget->signal_user_requested_layout().connect( sigc::mem_fun(*this, &DataWidget::on_child_user_requested_layout) );
     pFieldWidget->signal_user_requested_layout_properties().connect( sigc::mem_fun(*this, &DataWidget::on_child_user_requested_layout_properties) );
     pFieldWidget->signal_layout_item_added().connect( sigc::mem_fun(*this, &DataWidget::on_child_layout_item_added) );
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 
     m_child = dynamic_cast<Gtk::Widget*>(pFieldWidget);
-    const int width = get_suitable_width(field);
-
-    if(glom_type == Field::TYPE_IMAGE) //GtkImage widgets default to no size (invisible) if they are empty.
-      m_child->set_size_request(width, width);
-    else
-    {
-      int height = -1; //auto.
-      if((glom_type == Field::TYPE_TEXT) && (field->get_formatting_used().get_text_format_multiline()))
-      {
-        int example_width = 0;
-        int example_height = 0;
-        Glib::RefPtr<Pango::Layout> refLayout = create_pango_layout("example"); //TODO: Use different text, according to the current locale, or allow the user to choose an example?
-        refLayout->get_pixel_size(example_width, example_height);
-        if(example_height > 0)
-          height = example_height * field->get_formatting_used().get_text_format_multiline_height_lines();
-      }
-
-      m_child->set_size_request(width, height);
-    }
+    set_child_size_by_field(field);
 
     m_child->show_all();
   }
@@ -204,11 +189,12 @@ DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ust
     const bool field_used_in_relationship_to_one = document->get_field_used_in_relationship_to_one(table_name, field->get_name());
 
     Gtk::HBox* hbox_parent = 0; //Only used if there are extra widgets.
+
     const bool with_extra_widgets = field_used_in_relationship_to_one || (glom_type == Field::TYPE_DATE);
     if(with_extra_widgets)
     {
       hbox_parent = Gtk::manage( new Gtk::HBox() ); //We put the child (and any extra stuff) in this:
-      hbox_parent->set_spacing(6);
+      hbox_parent->set_spacing(Utils::DEFAULT_SPACING_SMALL);
 
       hbox_parent->pack_start(*m_child);
       add(*hbox_parent);
@@ -241,10 +227,12 @@ DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ust
       add(*m_child);
   }
 
-
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   setup_menu();
+#endif // GLOM_ENABLE_CLIENT_ONLY
 
   set_events(Gdk::BUTTON_PRESS_MASK);
+  signal_style_changed().connect(sigc::mem_fun(*this, &DataWidget::on_self_style_changed));
 }
 
 DataWidget::~DataWidget()
@@ -315,6 +303,30 @@ const Gtk::Label* DataWidget::get_label() const
   return &m_label;
 }
 
+void DataWidget::set_child_size_by_field(const sharedptr<const LayoutItem_Field>& field)
+{
+  const Field::glom_field_type glom_type = field->get_glom_type();
+  const int width = get_suitable_width(field);
+
+  if(glom_type == Field::TYPE_IMAGE) //GtkImage widgets default to no size (invisible) if they are empty.
+    m_child->set_size_request(width, width);
+  else
+  {
+    int height = -1; //auto.
+    if((glom_type == Field::TYPE_TEXT) && (field->get_formatting_used().get_text_format_multiline()))
+    {
+      int example_width = 0;
+      int example_height = 0;
+      Glib::RefPtr<Pango::Layout> refLayout = create_pango_layout("example"); //TODO: Use different text, according to the current locale, or allow the user to choose an example?
+      refLayout->get_pixel_size(example_width, example_height);
+      if(example_height > 0)
+        height = example_height * field->get_formatting_used().get_text_format_multiline_height_lines();
+    }
+
+    m_child->set_size_request(width, height);
+  }
+}
+
 int DataWidget::get_suitable_width(const sharedptr<const LayoutItem_Field>& field_layout)
 {
   int result = 150;
@@ -341,14 +353,22 @@ int DataWidget::get_suitable_width(const sharedptr<const LayoutItem_Field>& fiel
     }
     case(Field::TYPE_NUMERIC):
     {
+#ifdef GLOM_ENABLE_MAEMO
+      example_text = "EUR 9999999";
+#else
       example_text = "EUR 9999999999";
+#endif
       break;
     }
     case(Field::TYPE_TEXT):
     case(Field::TYPE_IMAGE): //Give images the same width as text fields, so they will often line up.
     {
       //if(!field_layout->get_text_format_multiline()) //Use the full width for multi-line text.
+#ifdef GLOM_ENABLE_MAEMO
+        example_text = "AAAAAAAAAAAAAAAA";
+#else
         example_text = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+#endif
       break;
     }
     default:
@@ -384,7 +404,7 @@ void DataWidget::set_viewable(bool viewable)
   {
     Gtk::CheckButton* checkbutton = dynamic_cast<Gtk::CheckButton*>(child);
     if(checkbutton)
-      checkbutton->property_inconsistent() = !viewable;
+      checkbutton->set_property("inconsistent", !viewable);
   }
 }
 
@@ -482,6 +502,7 @@ void DataWidget::setup_menu()
 }
 */
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
 bool DataWidget::on_button_press_event(GdkEventButton *event)
 {
   //g_warning("DataWidget::on_button_press_event_popup");
@@ -515,6 +536,7 @@ bool DataWidget::on_button_press_event(GdkEventButton *event)
 
   return Gtk::EventBox::on_button_press_event(event);
 }
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 sharedptr<LayoutItem_Field> DataWidget::offer_field_list(const Glib::ustring& table_name)
 {
@@ -525,36 +547,50 @@ sharedptr<LayoutItem_Field> DataWidget::offer_field_list(const Glib::ustring& ta
 {
   sharedptr<LayoutItem_Field> result;
 
+  Glib::RefPtr<Gnome::Glade::Xml> refXml;
+
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
-    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_choose_field");
-
-    Dialog_ChooseField* dialog = 0;
-    refXml->get_widget_derived("dialog_choose_field", dialog);
-
-    if(dialog)
-    {
-      dialog->set_document(get_document(), table_name, start_field);
-      dialog->set_transient_for(*get_application());
-      int response = dialog->run();
-      dialog->hide();
-      if(response == Gtk::RESPONSE_OK)
-      {
-        //Get the chosen field:
-        result = dialog->get_field_chosen();
-      }
-
-      delete dialog;
-    }
+    refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_choose_field");
   }
   catch(const Gnome::Glade::XmlError& ex)
   {
     std::cerr << ex.what() << std::endl;
+    return result;
+  }
+#else
+  std::auto_ptr<Gnome::Glade::XmlError> error;
+  refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_choose_field", "", error);
+  if(error.get())
+  {
+    std::cerr << error->what() << std::endl;
+    return result;
+  }
+#endif
+  
+  Dialog_ChooseField* dialog = 0;
+  refXml->get_widget_derived("dialog_choose_field", dialog);
+
+  if(dialog)
+  {
+    dialog->set_document(get_document(), table_name, start_field);
+    dialog->set_transient_for(*get_application());
+    int response = dialog->run();
+    dialog->hide();
+    if(response == Gtk::RESPONSE_OK)
+    {
+      //Get the chosen field:
+      result = dialog->get_field_chosen();
+    }
+
+    delete dialog;
   }
 
   return result;
 }
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
 sharedptr<LayoutItem_Field> DataWidget::offer_field_layout(const sharedptr<const LayoutItem_Field>& start_field)
 {
   sharedptr<LayoutItem_Field> result;
@@ -590,6 +626,7 @@ sharedptr<LayoutItem_Field> DataWidget::offer_field_layout(const sharedptr<const
 
   return result;
 }
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 /*
 void DataWidget::on_menupopup_add_item(LayoutWidgetBase::enumType item)
@@ -598,6 +635,7 @@ void DataWidget::on_menupopup_add_item(LayoutWidgetBase::enumType item)
 }
 */
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
 void DataWidget::on_menupopup_activate_layout()
 {
   //finish_editing();
@@ -641,6 +679,7 @@ void DataWidget::on_child_user_requested_layout()
 {
   on_menupopup_activate_layout();
 }
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 App_Glom* DataWidget::get_application()
 {
@@ -650,10 +689,12 @@ App_Glom* DataWidget::get_application()
   return dynamic_cast<App_Glom*>(pWindow);
 }
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
 void DataWidget::on_child_layout_item_added(LayoutWidgetBase::enumType item_type)
 {
   signal_layout_item_added().emit(item_type);
 }
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 Gtk::Widget* DataWidget::get_data_child_widget()
 {
@@ -687,89 +728,119 @@ const Gtk::Widget* DataWidget::get_data_child_widget() const
  }
 
 void DataWidget::on_button_choose_date()
-{  
+{
+  Glib::RefPtr<Gnome::Glade::Xml> refXml;
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
-    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_choose_date");
-
-    Dialog_ChooseDate* dialog = 0;
-    refXml->get_widget_derived("dialog_choose_date", dialog);
-
-    if(dialog)
-    {
-      dialog->set_transient_for(*get_application());
-      dialog->set_date_chosen(get_value());
-
-      const int response = Glom::Utils::dialog_run_with_help(dialog, "dialog_choose_date");
-      dialog->hide();
-      if(response == Gtk::RESPONSE_OK)
-      {
-        //Get the chosen date
-        const Gnome::Gda::Value value = dialog->get_date_chosen();
-        set_value(value);
-
-        m_signal_edited.emit(value);
-      }
-
-      delete dialog;
-    }
+    refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_choose_date");
   }
   catch(const Gnome::Glade::XmlError& ex)
   {
     std::cerr << ex.what() << std::endl;
+    return;
   }
- }
+#else
+  std::auto_ptr<Gnome::Glade::XmlError> error;
+  refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_choose_date", "", error);
+  if(error.get())
+  {
+    std::cerr << error->what() << std::endl;
+    return;
+  }
+#endif
 
- bool DataWidget::offer_related_record_id_find(Gnome::Gda::Value& chosen_id)
- {
+  Dialog_ChooseDate* dialog = 0;
+  refXml->get_widget_derived("dialog_choose_date", dialog);
+
+  if(dialog)
+  {
+    dialog->set_transient_for(*get_application());
+    dialog->set_date_chosen(get_value());
+
+    const int response = Glom::Utils::dialog_run_with_help(dialog, "dialog_choose_date");
+    dialog->hide();
+    if(response == Gtk::RESPONSE_OK)
+    {
+      //Get the chosen date
+      const Gnome::Gda::Value value = dialog->get_date_chosen();
+      set_value(value);
+
+      m_signal_edited.emit(value);
+    }
+
+    delete dialog;
+  }
+}
+
+void DataWidget::on_self_style_changed(const Glib::RefPtr<Gtk::Style>& style)
+{
+  sharedptr<LayoutItem_Field> layoutField = sharedptr<LayoutItem_Field>::cast_dynamic(get_layout_item());
+  set_child_size_by_field(layoutField);
+}
+
+bool DataWidget::offer_related_record_id_find(Gnome::Gda::Value& chosen_id)
+{
   bool result = false;
 
   //Initialize output variable:
   chosen_id = Gnome::Gda::Value();
 
+  Glib::RefPtr<Gnome::Glade::Xml> refXml;
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
-    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_find_id");
-
-    Dialog_ChooseID* dialog = 0;
-    refXml->get_widget_derived("dialog_find_id", dialog);
-
-    if(dialog)
-    {
-      //dialog->set_document(get_document(), table_name, field);
-      dialog->set_transient_for(*get_application());
-      add_view(dialog);
-
-      //Discover the related table, in the relationship that uses this ID field:
-      Glib::ustring related_table_name;
-      sharedptr<LayoutItem_Field> layoutField = sharedptr<LayoutItem_Field>::cast_dynamic(get_layout_item());
-      if(layoutField)
-      {
-        sharedptr<Relationship> relationship = get_document()->get_field_used_in_relationship_to_one(m_table_name, layoutField->get_name());
-        if(relationship)
-          related_table_name = relationship->get_to_table();
-      }
-      else
-        g_warning("get_layout_item() was not a LayoutItem_Field");
-
-      dialog->init_db_details(related_table_name);
-
-
-      int response = dialog->run();
-      dialog->hide();
-      if(response == Gtk::RESPONSE_OK)
-      {
-        //Get the chosen field:
-        result = dialog->get_id_chosen(chosen_id);
-      }
-
-      remove_view(dialog);
-      delete dialog;
-    }
+    refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_find_id");
   }
   catch(const Gnome::Glade::XmlError& ex)
   {
     std::cerr << ex.what() << std::endl;
+    return result;
+  }
+#else
+  std::auto_ptr<Gnome::Glade::XmlError> error;
+  refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_find_id", "", error);
+  if(error.get())
+  {
+    std::cerr << error->what() << std::endl;
+    return result;
+  }
+#endif
+
+  Dialog_ChooseID* dialog = 0;
+  refXml->get_widget_derived("dialog_find_id", dialog);
+
+  if(dialog)
+  {
+    //dialog->set_document(get_document(), table_name, field);
+    dialog->set_transient_for(*get_application());
+    add_view(dialog);
+
+    //Discover the related table, in the relationship that uses this ID field:
+    Glib::ustring related_table_name;
+    sharedptr<LayoutItem_Field> layoutField = sharedptr<LayoutItem_Field>::cast_dynamic(get_layout_item());
+    if(layoutField)
+    {
+      sharedptr<Relationship> relationship = get_document()->get_field_used_in_relationship_to_one(m_table_name, layoutField->get_name());
+      if(relationship)
+        related_table_name = relationship->get_to_table();
+    }
+    else
+      g_warning("get_layout_item() was not a LayoutItem_Field");
+
+    dialog->init_db_details(related_table_name);
+
+
+    int response = dialog->run();
+    dialog->hide();
+    if(response == Gtk::RESPONSE_OK)
+    {
+      //Get the chosen field:
+      result = dialog->get_id_chosen(chosen_id);
+    }
+
+    remove_view(dialog);
+    delete dialog;
   }
 
   return result;

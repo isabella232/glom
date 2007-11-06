@@ -30,6 +30,210 @@
 namespace Glom
 {
 
+#ifndef GLIBMM_VFUNCS_ENABLED
+  // C vfuncs implementation. Merely copied from gtkmm.
+  GtkTreeModelFlags DbTreeModel::glom_get_flags_impl(GtkTreeModel* model)
+  {
+    Glib::ObjectBase* const obj_base = static_cast<Glib::ObjectBase*>(Glib::ObjectBase::_get_current_wrapper((GObject*)model));
+    if(obj_base)
+    {
+      Glom::DbTreeModel* cpp_model = dynamic_cast<Glom::DbTreeModel*>(obj_base);
+      g_assert(cpp_model);
+      return GtkTreeModelFlags(cpp_model->get_flags_vfunc());
+    }
+    else
+      return GtkTreeModelFlags(0);
+  }
+
+  gint DbTreeModel::glom_get_n_columns_impl(GtkTreeModel* model)
+  {
+    Glib::ObjectBase* const obj_base = static_cast<Glib::ObjectBase*>(Glib::ObjectBase::_get_current_wrapper((GObject*)model));
+    if(obj_base)
+    {
+      Glom::DbTreeModel* cpp_model = dynamic_cast<Glom::DbTreeModel*>(obj_base);
+      g_assert(cpp_model);
+      return cpp_model->get_n_columns_vfunc();
+    }
+    else
+      return 0;
+  }
+  
+  GType DbTreeModel::glom_get_column_type_impl(GtkTreeModel* model, gint index)
+  {
+    Glib::ObjectBase* const obj_base = static_cast<Glib::ObjectBase*>(Glib::ObjectBase::_get_current_wrapper((GObject*)model));
+    if(obj_base)
+    {
+      Glom::DbTreeModel* cpp_model = dynamic_cast<Glom::DbTreeModel*>(obj_base);
+      g_assert(cpp_model);
+      return cpp_model->get_column_type_vfunc(index);
+    }
+    else
+      return G_TYPE_NONE;
+  }
+
+  void DbTreeModel::glom_get_value_impl(GtkTreeModel* model, GtkTreeIter* iter, gint column, GValue* value)
+  {
+    Glib::ObjectBase* const obj_base = static_cast<Glib::ObjectBase*>(Glib::ObjectBase::_get_current_wrapper((GObject*)model));
+    if(obj_base)
+    {
+      Glom::DbTreeModel* cpp_model = dynamic_cast<Glom::DbTreeModel*>(obj_base);
+      g_assert(cpp_model);
+      cpp_model->get_value_vfunc(Gtk::TreeModel::iterator(model, iter), column, *reinterpret_cast<Glib::ValueBase*>(value));
+    }
+  }
+
+  gboolean DbTreeModel::glom_iter_next_impl(GtkTreeModel* model, GtkTreeIter* iter)
+  {
+    Glib::ObjectBase* const obj_base = static_cast<Glib::ObjectBase*>(Glib::ObjectBase::_get_current_wrapper((GObject*)model));
+    if(obj_base)
+    {
+      Glom::DbTreeModel* cpp_model = dynamic_cast<Glom::DbTreeModel*>(obj_base);
+      g_assert(cpp_model);
+
+      TreeModel::iterator iter_input = TreeModel::iterator(model, iter);
+      TreeModel::iterator iter_next(model, iter);
+      gboolean retval = cpp_model->iter_next_vfunc(iter_input, iter_next);
+
+      if(retval) *iter = *(iter_next.gobj());
+      return retval;
+    }
+    else
+      return FALSE;
+  }
+
+  gboolean DbTreeModel::glom_iter_children_impl(GtkTreeModel* model, GtkTreeIter* iter, GtkTreeIter* parent)
+  {
+    Glib::ObjectBase* const obj_base = static_cast<Glib::ObjectBase*>(Glib::ObjectBase::_get_current_wrapper((GObject*)model));
+    if(obj_base)
+    {
+      Glom::DbTreeModel* cpp_model = dynamic_cast<Glom::DbTreeModel*>(obj_base);
+      g_assert(cpp_model);
+
+      TreeModel::iterator iter_out(model, iter);
+      gboolean retval = cpp_model->iter_children_vfunc(TreeModel::iterator(model, parent), iter_out);
+
+      if(retval) *iter = *(iter_out.gobj());
+      return retval;
+    }
+    else
+      return FALSE;
+  }
+
+  gboolean DbTreeModel::glom_iter_has_child_impl(GtkTreeModel* model, GtkTreeIter* iter)
+  {
+    Glib::ObjectBase* const obj_base = static_cast<Glib::ObjectBase*>(Glib::ObjectBase::_get_current_wrapper((GObject*)model));
+    if(obj_base)
+    {
+      Glom::DbTreeModel* cpp_model = dynamic_cast<Glom::DbTreeModel*>(obj_base);
+      g_assert(cpp_model);
+      return cpp_model->iter_has_child_vfunc(TreeModel::iterator(model, iter));
+    }
+    else
+      return FALSE;
+  }
+
+  gint DbTreeModel::glom_iter_n_children_impl(GtkTreeModel* model, GtkTreeIter* iter)
+  {
+    Glib::ObjectBase* const obj_base = static_cast<Glib::ObjectBase*>(Glib::ObjectBase::_get_current_wrapper((GObject*)model));
+    if(obj_base)
+    {
+      Glom::DbTreeModel* cpp_model = dynamic_cast<Glom::DbTreeModel*>(obj_base);
+      g_assert(cpp_model);
+      return cpp_model->iter_n_children_vfunc(TreeModel::iterator(model, iter));
+    }
+    else
+      return 0;
+  }
+
+  gboolean DbTreeModel::glom_iter_nth_child_impl(GtkTreeModel* model, GtkTreeIter* iter, GtkTreeIter* parent, gint n)
+  {
+    Glib::ObjectBase* const obj_base = static_cast<Glib::ObjectBase*>(Glib::ObjectBase::_get_current_wrapper((GObject*)model));
+    if(obj_base)
+    {
+      Glom::DbTreeModel* cpp_model = dynamic_cast<Glom::DbTreeModel*>(obj_base);
+      g_assert(cpp_model);
+
+      TreeModel::iterator iter_out(model, iter);
+      gboolean retval;
+
+      // Deal with this special case, documented in the C docs as:
+      // "As a special case, if @parent is %NULL, then the nth root node is set.":
+      if(!parent)
+        retval = cpp_model->iter_nth_root_child_vfunc(n, iter_out);
+      else
+        retval = cpp_model->iter_nth_child_vfunc(TreeModel::iterator(model, parent), n, iter_out);
+
+      if(retval)
+        *iter = *(iter_out.gobj());
+
+      return retval;
+    }
+    else
+      return FALSE;
+  }
+
+  gboolean DbTreeModel::glom_iter_parent_impl(GtkTreeModel* model, GtkTreeIter* iter, GtkTreeIter* child)
+  {
+    Glib::ObjectBase* const obj_base = static_cast<Glib::ObjectBase*>(Glib::ObjectBase::_get_current_wrapper((GObject*)model));
+    if(obj_base)
+    {
+      Glom::DbTreeModel* cpp_model = dynamic_cast<Glom::DbTreeModel*>(obj_base);
+      g_assert(cpp_model);
+
+      TreeModel::iterator iter_out(model, iter);
+      gboolean retval;
+
+      retval = cpp_model->iter_parent_vfunc(TreeModel::iterator(model, child), iter_out);
+
+      if(retval)
+        *iter = *(iter_out.gobj());
+
+      return retval;
+    }
+    else
+      return FALSE;
+  }
+
+  GtkTreePath* DbTreeModel::glom_get_path_impl(GtkTreeModel* model, GtkTreeIter* iter)
+  {
+    Glib::ObjectBase* const obj_base = static_cast<Glib::ObjectBase*>(Glib::ObjectBase::_get_current_wrapper((GObject*)model));
+    if(obj_base)
+    {
+      Glom::DbTreeModel* cpp_model = dynamic_cast<Glom::DbTreeModel*>(obj_base);
+      g_assert(cpp_model);
+      return cpp_model->get_path_vfunc(TreeModel::iterator(model, iter)).gobj_copy();
+    }
+    else
+      return NULL;
+  }
+
+  gboolean DbTreeModel::glom_get_iter_impl(GtkTreeModel* model, GtkTreeIter* iter, GtkTreePath* path)
+  {
+    Glib::ObjectBase* const obj_base = static_cast<Glib::ObjectBase*>(Glib::ObjectBase::_get_current_wrapper((GObject*)model));
+    if(obj_base)
+    {
+      Glom::DbTreeModel* cpp_model = dynamic_cast<Glom::DbTreeModel*>(obj_base);
+      g_assert(cpp_model);
+
+      gboolean retval;
+      TreeModel::iterator iter_out(model, iter);
+
+      retval = cpp_model->get_iter_vfunc(Gtk::TreePath(path, true), iter_out);
+
+      if(retval)
+        *iter = *(iter_out.gobj());
+
+      return retval;
+    }
+    else
+      return FALSE;
+  }
+#endif // !GLIBMM_VFUNCS_ENABLED
+} // namespace Glom
+
+namespace Glom
+{
+
 DbTreeModelRow::DbTreeModelRow()
 : m_values_retrieved(false),
   m_removed(false),
@@ -170,6 +374,22 @@ DbTreeModel::DbTreeModel(const Gtk::TreeModelColumnRecord& columns, const FoundS
     //GType gtype = G_OBJECT_TYPE(gobj());  //The custom GType created in the Object constructor, from the typeid.
     //Gtk::TreeModel::add_interface( gtype );
 
+#ifndef GLIBMM_VFUNCS_ENABLED
+    GtkTreeModelIface* iface = GTK_TREE_MODEL_GET_IFACE(gobj());
+    iface->get_flags = glom_get_flags_impl;
+    iface->get_n_columns = glom_get_n_columns_impl;
+    iface->get_column_type = glom_get_column_type_impl;
+    iface->get_value = glom_get_value_impl;
+    iface->iter_next = glom_iter_next_impl;
+    iface->iter_children = glom_iter_children_impl;
+    iface->iter_has_child = glom_iter_has_child_impl;
+    iface->iter_n_children = glom_iter_n_children_impl;
+    iface->iter_nth_child = glom_iter_nth_child_impl;
+    iface->iter_parent = glom_iter_parent_impl;
+    iface->get_path = glom_get_path_impl;
+    iface->get_iter = glom_get_iter_impl;
+#endif // !GLIBMM_VFUNCS_ENABLED
+
     m_iface_initialized = true; //Prevent us from calling add_interface() on the same gtype again.
   }
 
@@ -207,7 +427,13 @@ bool DbTreeModel::refresh_from_database(const FoundSet& found_set)
   ConnectionPool* connection_pool = ConnectionPool::get_instance();
   if(connection_pool)
   {
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
      m_connection = connection_pool->connect();
+#else
+     std::auto_ptr<ExceptionConnection> error;
+     m_connection = connection_pool->connect(error);
+     // Ignore error, connection presence is checked below
+#endif // GLIBMM_EXCEPTIONS_ENABLED
   }
 
   if(m_connection && !m_found_set.m_table_name.empty() && m_get_records)
@@ -217,16 +443,22 @@ bool DbTreeModel::refresh_from_database(const FoundSet& found_set)
 
     const App_Glom* app = App_Glom::get_application();
     if(app && app->get_show_sql_debug())
-    { 
+    {
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
       try
       {
+#endif
         std::cout << "Debug: query_execute():  " << sql_query << std::endl;
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
       }
       catch(const Glib::Exception& ex)
       {
         std::cout << "Debug: query string could not be converted to std::cout: " << ex.what() << std::endl;
       }
+#endif
     }
+
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
     try
     {
       m_gda_datamodel = m_connection->get_gda_connection()->execute_select_command(sql_query);
@@ -239,7 +471,15 @@ bool DbTreeModel::refresh_from_database(const FoundSet& found_set)
     {
       m_gda_datamodel.clear(); //So that it is 0, so we can handle it below.
     }
-
+#else
+    std::auto_ptr<Glib::Error> error;
+    m_gda_datamodel = m_connection->get_gda_connection()->execute_select_command(sql_query, error);
+    if(error.get())
+    {
+      m_gda_datamodel.clear(); //So that it is 0, so we can handle it below.
+    }
+#endif
+      
     if(!m_gda_datamodel)
     {
       m_data_model_rows_count = 0;
@@ -895,7 +1135,13 @@ void DbTreeModel::get_record_counts(gulong& total, gulong& found) const
       //Ask the database how many records there are in the whole table:
       //TODO: Apparently, this is very slow:
       const Glib::ustring sql_query = "SELECT count(*) FROM \"" + m_found_set.m_table_name + "\"";
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
       Glib::RefPtr<Gnome::Gda::DataModel> datamodel = m_connection->get_gda_connection()->execute_select_command(sql_query);
+#else
+      std::auto_ptr<Glib::Error> error;
+      Glib::RefPtr<Gnome::Gda::DataModel> datamodel = m_connection->get_gda_connection()->execute_select_command(sql_query, error);
+      // Ignore error, datamodel presence is checked below
+#endif
 
       if(datamodel)
       {

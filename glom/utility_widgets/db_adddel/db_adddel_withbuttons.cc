@@ -25,15 +25,15 @@ namespace Glom
 {
 
 DbAddDel_WithButtons::DbAddDel_WithButtons()
-: m_HBox(false, 6),
+: m_HBox(false, Utils::DEFAULT_SPACING_SMALL),
   m_Button_Add(Gtk::Stock::ADD),
   m_Button_Del(Gtk::Stock::DELETE),
   m_Button_Edit(Gtk::Stock::OPEN)
 {
-  m_HBox.set_spacing(6);
-  //m_Button_Add.set_border_width(6);
-  //m_Button_Del.set_border_width(6);
-  //m_Button_Edit.set_border_width(6);
+  m_HBox.set_spacing(Utils::DEFAULT_SPACING_SMALL);
+  //m_Button_Add.set_border_width(Utils::DEFAULT_SPACING_SMALL);
+  //m_Button_Del.set_border_width(Utils::DEFAULT_SPACING_SMALL);
+  //m_Button_Edit.set_border_width(Utils::DEFAULT_SPACING_SMALL);
 
   setup_buttons();
   pack_start(m_HBox, Gtk::PACK_SHRINK);
@@ -114,9 +114,9 @@ void DbAddDel_WithButtons::setup_buttons()
   m_Button_Del.show();
   m_Button_Add.show();
   
-  m_Button_Edit.property_visible() = allow_edit;
-  m_Button_Del.property_visible() = allow_del;  
-  m_Button_Add.property_visible() = allow_add;
+  m_Button_Edit.set_property("visible", allow_edit);
+  m_Button_Del.set_property("visible", allow_del);
+  m_Button_Add.set_property("visible", allow_add);
   
   if(!m_open_button_title.empty())
     m_Button_Edit.set_label(m_open_button_title);
@@ -124,6 +124,10 @@ void DbAddDel_WithButtons::setup_buttons()
   m_HBox.show();
 }
 
+#ifdef GLIBMM_VFUNCS_ENABLED
+// TODO_maemo: Why is this show_all_vfunc, and not on_show()? Where is the
+// difference? If this was on_show we could just connect to signal_show()
+// when vfuncs and/or default signal handlers are not available.
 void DbAddDel_WithButtons::show_all_vfunc()
 {
   //Call the base class:
@@ -132,6 +136,7 @@ void DbAddDel_WithButtons::show_all_vfunc()
   //Hide some stuff:
   setup_buttons();
 }
+#endif
 
 void DbAddDel_WithButtons::set_allow_view_details(bool val)
 {

@@ -30,6 +30,8 @@
 #include <vector>
 #include <map>
 
+#include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
+
 namespace Glom
 {
 
@@ -212,8 +214,10 @@ public:
   typedef sigc::signal<void, const Gtk::TreeModel::iterator&, const Gtk::TreeModel::iterator&> type_signal_user_requested_delete;
   type_signal_user_requested_delete signal_user_requested_delete();
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   typedef sigc::signal<void> type_signal_user_requested_layout;
   type_signal_user_requested_layout signal_user_requested_layout();
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
   //row number.
   typedef sigc::signal<void, const Gtk::TreeModel::iterator&> type_signal_user_requested_edit;
@@ -271,7 +275,10 @@ protected:
   virtual void on_MenuPopup_activate_Edit();
   virtual void on_MenuPopup_activate_Add();
   virtual void on_MenuPopup_activate_Delete();
+
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   virtual void on_MenuPopup_activate_layout();
+#endif
 
   virtual void on_treeview_button_press_event(GdkEventButton* event);
 
@@ -280,6 +287,12 @@ protected:
   void on_treeview_column_resized(int model_column_index, DbTreeViewColumnGlom* view_column);
   virtual void on_cell_button_clicked(const Gtk::TreeModel::Path& path);
   void on_cell_layout_button_clicked(const Gtk::TreeModel::Path& path, int model_column_index);
+
+  // Don't call it on_style_changed, otherwise we would override a virtual
+  // function from Gtk::Widget. We could indeed do that, but we do it with
+  // a normal signal handler, because we have to do it this way anyway in
+  // case default signal handlers have been disabled in glibmm.
+  void on_self_style_changed(const Glib::RefPtr<Gtk::Style>& style);
 
   bool get_prevent_user_signals() const;
 
@@ -329,7 +342,11 @@ protected:
   Gtk::Menu* m_pMenuPopup;
   Glib::RefPtr<Gtk::ActionGroup> m_refActionGroup;
   Glib::RefPtr<Gtk::UIManager> m_refUIManager;
-  Glib::RefPtr<Gtk::Action> m_refContextEdit, m_refContextAdd, m_refContextDelete, m_refContextLayout;
+  Glib::RefPtr<Gtk::Action> m_refContextEdit, m_refContextAdd, m_refContextDelete;
+
+#ifndef GLOM_ENABLE_CLIENT_ONLY
+  Glib::RefPtr<Gtk::Action> m_refContextLayout;
+#endif
 
   bool m_bAllowUserActions;
 
@@ -355,7 +372,9 @@ protected:
   type_signal_user_requested_delete m_signal_user_requested_delete;
   type_signal_user_requested_edit m_signal_user_requested_edit;
   type_signal_user_requested_add m_signal_user_requested_add;
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   type_signal_user_requested_layout m_signal_user_requested_layout;
+#endif // !GLOM_ENABLE_CLIENT_ONLY
   type_signal_user_activated m_signal_user_activated;
   type_signal_user_reordered_columns m_signal_user_reordered_columns;
   type_signal_script_button_clicked m_signal_script_button_clicked;
@@ -398,7 +417,6 @@ protected:
  
   ModelColumnsEmptyHint m_columns_hint;
   Glib::RefPtr<Gtk::ListStore> m_model_hint;
-
 
   int m_fixed_cell_height;
 };

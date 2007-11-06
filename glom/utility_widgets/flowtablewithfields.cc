@@ -179,7 +179,7 @@ void FlowTableWithFields::add_layout_group_at_position(const sharedptr<LayoutGro
     flow_table->set_table(m_table_name);
 
     flow_table->set_columns_count(group->m_columns_count);
-    flow_table->set_padding(6);
+    flow_table->set_padding(Utils::DEFAULT_SPACING_SMALL);
     flow_table->show();
     alignment->add(*flow_table);
 
@@ -297,7 +297,7 @@ void FlowTableWithFields::add_layout_notebook_at_position(const sharedptr<Layout
         flow_table->set_table(m_table_name);
 
         flow_table->set_columns_count(group->m_columns_count);
-        flow_table->set_padding(6);
+        flow_table->set_padding(Utils::DEFAULT_SPACING_SMALL);
         flow_table->show();
 
         //This doesn't work (probably because we haven't implmented it in our custom container),
@@ -373,7 +373,7 @@ void FlowTableWithFields::add_group(const Glib::ustring& group_name, const Glib:
     FlowTableWithFields* flow_table = Gtk::manage( new FlowTableWithFields() );
 
     flow_table->set_columns_count(1);
-    flow_table->set_padding(6);
+    flow_table->set_padding(Utils::DEFAULT_SPACING_SMALL);
     flow_table->show();
     alignment->add(*flow_table);
 
