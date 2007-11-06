@@ -104,7 +104,7 @@ void AddDel::init()
   set_prevent_user_signals();
   set_ignore_treeview_signals();
 
-  set_spacing(6);
+  set_spacing(Utils::DEFAULT_SPACING_SMALL);
 
   m_bAllowUserActions = true;
 

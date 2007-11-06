@@ -18,6 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#include <glom/libglom/utils.h>
 #include <glom/utility_widgets/filechooserdialog.h>
 #include <gtkmm/alignment.h>
 #include <bakery/App/App_Gtk.h> //For util_bold_message().
@@ -79,7 +80,7 @@ void FileChooserDialog::create_child_widgets()
   frame->add(*alignment);
   frame->show();
 
-  Gtk::VBox* vbox = Gtk::manage(new Gtk::VBox(false, 6));
+  Gtk::VBox* vbox = Gtk::manage(new Gtk::VBox(false, Utils::DEFAULT_SPACING_SMALL));
   alignment->add(*vbox);
   vbox->show();
 
@@ -89,7 +90,7 @@ void FileChooserDialog::create_child_widgets()
   vbox->pack_start(*label_newdb);
   label_newdb->show();
 
-  Gtk::HBox* box_label = Gtk::manage(new Gtk::HBox(false, 6));
+  Gtk::HBox* box_label = Gtk::manage(new Gtk::HBox(false, Utils::DEFAULT_SPACING_SMALL));
   Gtk::Label* label_title = Gtk::manage(new Gtk::Label(_("Title")));
   box_label->pack_start(*label_title, Gtk::PACK_SHRINK);
   label_title->show();

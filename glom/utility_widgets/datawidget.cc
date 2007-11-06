@@ -80,6 +80,7 @@ DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ust
     m_label.set_alignment(0);
     m_label.show();
   }
+  // Use hildon widgets for date and time on maemo
   else
   {
     m_label.set_label(title);
@@ -178,25 +179,7 @@ DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ust
 
 
     m_child = dynamic_cast<Gtk::Widget*>(pFieldWidget);
-    const int width = get_suitable_width(field);
-
-    if(glom_type == Field::TYPE_IMAGE) //GtkImage widgets default to no size (invisible) if they are empty.
-      m_child->set_size_request(width, width);
-    else
-    {
-      int height = -1; //auto.
-      if((glom_type == Field::TYPE_TEXT) && (field->get_formatting_used().get_text_format_multiline()))
-      {
-        int example_width = 0;
-        int example_height = 0;
-        Glib::RefPtr<Pango::Layout> refLayout = create_pango_layout("example"); //TODO: Use different text, according to the current locale, or allow the user to choose an example?
-        refLayout->get_pixel_size(example_width, example_height);
-        if(example_height > 0)
-          height = example_height * field->get_formatting_used().get_text_format_multiline_height_lines();
-      }
-
-      m_child->set_size_request(width, height);
-    }
+    set_child_size_by_field(field);
 
     m_child->show_all();
   }
@@ -210,11 +193,12 @@ DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ust
     const bool field_used_in_relationship_to_one = document->get_field_used_in_relationship_to_one(table_name, field->get_name());
 
     Gtk::HBox* hbox_parent = 0; //Only used if there are extra widgets.
+
     const bool with_extra_widgets = field_used_in_relationship_to_one || (glom_type == Field::TYPE_DATE);
     if(with_extra_widgets)
     {
       hbox_parent = Gtk::manage( new Gtk::HBox() ); //We put the child (and any extra stuff) in this:
-      hbox_parent->set_spacing(6);
+      hbox_parent->set_spacing(Utils::DEFAULT_SPACING_SMALL);
 
       hbox_parent->pack_start(*m_child);
       add(*hbox_parent);
@@ -252,6 +236,7 @@ DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ust
 #endif // GLOM_ENABLE_CLIENT_ONLY
 
   set_events(Gdk::BUTTON_PRESS_MASK);
+  signal_style_changed().connect(sigc::mem_fun(*this, &DataWidget::on_self_style_changed));
 }
 
 DataWidget::~DataWidget()
@@ -322,6 +307,30 @@ const Gtk::Label* DataWidget::get_label() const
   return &m_label;
 }
 
+void DataWidget::set_child_size_by_field(const sharedptr<const LayoutItem_Field>& field)
+{
+  const Field::glom_field_type glom_type = field->get_glom_type();
+  const int width = get_suitable_width(field);
+
+  if(glom_type == Field::TYPE_IMAGE) //GtkImage widgets default to no size (invisible) if they are empty.
+    m_child->set_size_request(width, width);
+  else
+  {
+    int height = -1; //auto.
+    if((glom_type == Field::TYPE_TEXT) && (field->get_formatting_used().get_text_format_multiline()))
+    {
+      int example_width = 0;
+      int example_height = 0;
+      Glib::RefPtr<Pango::Layout> refLayout = create_pango_layout("example"); //TODO: Use different text, according to the current locale, or allow the user to choose an example?
+      refLayout->get_pixel_size(example_width, example_height);
+      if(example_height > 0)
+        height = example_height * field->get_formatting_used().get_text_format_multiline_height_lines();
+    }
+
+    m_child->set_size_request(width, height);
+  }
+}
+
 int DataWidget::get_suitable_width(const sharedptr<const LayoutItem_Field>& field_layout)
 {
   int result = 150;
@@ -348,14 +357,22 @@ int DataWidget::get_suitable_width(const sharedptr<const LayoutItem_Field>& fiel
     }
     case(Field::TYPE_NUMERIC):
     {
+#ifdef GLOM_ENABLE_MAEMO
+      example_text = "EUR 9999999";
+#else
       example_text = "EUR 9999999999";
+#endif
       break;
     }
     case(Field::TYPE_TEXT):
     case(Field::TYPE_IMAGE): //Give images the same width as text fields, so they will often line up.
     {
       //if(!field_layout->get_text_format_multiline()) //Use the full width for multi-line text.
+#ifdef GLOM_ENABLE_MAEMO
+        example_text = "AAAAAAAAAAAAAAAA";
+#else
         example_text = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+#endif
       break;
     }
     default:
@@ -758,6 +775,12 @@ void DataWidget::on_button_choose_date()
 
     delete dialog;
   }
+}
+
+void DataWidget::on_self_style_changed(const Glib::RefPtr<Gtk::Style>& style)
+{
+  sharedptr<LayoutItem_Field> layoutField = sharedptr<LayoutItem_Field>::cast_dynamic(get_layout_item());
+  set_child_size_by_field(layoutField);
 }
 
 bool DataWidget::offer_related_record_id_find(Gnome::Gda::Value& chosen_id)

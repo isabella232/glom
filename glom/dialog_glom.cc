@@ -25,7 +25,7 @@ namespace Glom
 
 Dialog_Glom::Dialog_Glom(Box_DB* pBox)
 {
-  set_border_width(6);
+  set_border_width(Utils::DEFAULT_SPACING_SMALL);
 
   m_pBox = pBox;
 

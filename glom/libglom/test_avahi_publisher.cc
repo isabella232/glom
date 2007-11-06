@@ -1,5 +1,6 @@
 #include <gtkmm.h>
 #include <glom/libglom/avahi_publisher.h>
+#include <glom/libglom/utils.h>
 #include <iostream>
 
 class TestWindow : public Gtk::Window
@@ -25,7 +26,7 @@ protected:
 
 
 TestWindow::TestWindow()
-: m_box(false, 6),
+: m_box(false, Glom::Utils::DEFAULT_SPACING_SMALL),
   m_button_start("Start"),
   m_button_stop("Stop"),
   m_avahi_publisher(0)

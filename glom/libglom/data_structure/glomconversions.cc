@@ -969,7 +969,7 @@ Glib::RefPtr<Gdk::Pixbuf> Conversions::get_pixbuf_for_gda_value(const Gnome::Gda
 #else
         std::auto_ptr<Glib::Error> error;
         refPixbufLoader->write(puiData, (glong)buffer_binary_length, error);
-        if(error.get() != NULL)
+        if(error.get() == NULL)
         {
           result = refPixbufLoader->get_pixbuf();
           refPixbufLoader->close(error);

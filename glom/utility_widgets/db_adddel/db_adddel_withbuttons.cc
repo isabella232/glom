@@ -25,15 +25,15 @@ namespace Glom
 {
 
 DbAddDel_WithButtons::DbAddDel_WithButtons()
-: m_HBox(false, 6),
+: m_HBox(false, Utils::DEFAULT_SPACING_SMALL),
   m_Button_Add(Gtk::Stock::ADD),
   m_Button_Del(Gtk::Stock::DELETE),
   m_Button_Edit(Gtk::Stock::OPEN)
 {
-  m_HBox.set_spacing(6);
-  //m_Button_Add.set_border_width(6);
-  //m_Button_Del.set_border_width(6);
-  //m_Button_Edit.set_border_width(6);
+  m_HBox.set_spacing(Utils::DEFAULT_SPACING_SMALL);
+  //m_Button_Add.set_border_width(Utils::DEFAULT_SPACING_SMALL);
+  //m_Button_Del.set_border_width(Utils::DEFAULT_SPACING_SMALL);
+  //m_Button_Edit.set_border_width(Utils::DEFAULT_SPACING_SMALL);
 
   setup_buttons();
   pack_start(m_HBox, Gtk::PACK_SHRINK);

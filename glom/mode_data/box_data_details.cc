@@ -36,7 +36,7 @@ namespace Glom
 {
 
 Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
-: m_HBox(false, 6),
+: m_HBox(false, Utils::DEFAULT_SPACING_SMALL),
   m_Button_New(Gtk::Stock::ADD),
   m_Button_Del(Gtk::Stock::DELETE),
   m_Button_Nav_First(Gtk::Stock::GOTO_FIRST),
@@ -66,12 +66,12 @@ Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   m_FlowTable.set_columns_count(1); //Sub-groups will have multiple columns (by default, there is one sub-group, with 2 columns).
-  m_FlowTable.set_padding(6);
+  m_FlowTable.set_padding(Utils::DEFAULT_SPACING_SMALL);
 
   //m_strHint = _("When you change the data in a field the database is updated immediately.\n Click [New] to add a new record.\n Leave automatic ID fields empty - they will be filled for you.");
 
 
-  //m_ScrolledWindow.set_border_width(6);
+  //m_ScrolledWindow.set_border_width(Utils::DEFAULT_SPACING_SMALL);
 #ifdef GLOM_ENABLE_MAEMO
   m_ScrolledWindow.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC); /* Allow horizontal scrolling in maemo because the screen is rather small and there might be some database UIs that don't fit horizontally. Such a UI may be concidered non-maemo-friendly, but it can still be fully viewed this way. */
 #else

@@ -20,6 +20,7 @@
 
 #include "filechooser_export.h"
 #include "mode_data/dialog_layout_export.h"
+#include <glom/libglom/utils.h>
 #include <gtkmm/stock.h>
 #include <glibmm/i18n.h>
 
@@ -28,7 +29,7 @@ namespace Glom
 
 FileChooser_Export::FileChooser_Export()
 : Gtk::FileChooserDialog(_("Export To File."), Gtk::FILE_CHOOSER_ACTION_SAVE),
-  m_extra_widget(false, 6),
+  m_extra_widget(false, Utils::DEFAULT_SPACING_SMALL),
   m_button_format(_("Define Data _Format"), true /* use mnenomic */),
   m_pDialogLayout(0),
   m_document(0)

@@ -206,18 +206,27 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
 
   PyObject* module_glom = PyImport_ImportModule("glom");
   if(!module_glom)
+  {
     g_warning("Could not import python glom module.");
+    return valueResult; // don't crash
+  }
 
   PyObject* module_glom_dict = PyModule_GetDict(module_glom);
   //This seems to be different to PyGlomRecord_GetPyType() - we can PyObject_Call() this one to instantiate it.
   PyObject* pyTypeGlomRecord = PyDict_GetItemString(module_glom_dict, "Record"); //TODO: Unref this?
   if(!pyTypeGlomRecord || !PyType_Check(pyTypeGlomRecord))
+  {
     g_warning("Could not get glom.Record from glom_module.");
+    return valueResult; // don't crash
+  }
 
 
   PyObject* module_gda = PyImport_ImportModule("gda");
   if(!module_gda)
+  {
     g_warning("Could not import python gda module.");
+    return valueResult;
+  }
 
   // Gda.Value does not exist anymore in pygda-3.0
 #if 0
