@@ -1,3 +1,7 @@
+2007-11-06  Gabor Kelemen  <kelemeng@gnome.hu>
+
+	* POTFILES.in: Added missing files. Close #492203
+
 2007-11-05  Gabor Kelemen  <kelemeng@gnome.hu>
 
 	* hu.po: Translation updated
