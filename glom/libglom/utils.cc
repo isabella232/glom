@@ -50,12 +50,13 @@
 #include <stack>
 
 #ifdef GLOM_ENABLE_MAEMO
+//We use different spacings on Maemo because the screen is smaller:
 const unsigned int Glom::Utils::DEFAULT_SPACING_LARGE =  1;
 const unsigned int Glom::Utils::DEFAULT_SPACING_SMALL =  1;
 #else
 const unsigned int Glom::Utils::DEFAULT_SPACING_LARGE = 12;
 const unsigned int Glom::Utils::DEFAULT_SPACING_SMALL =  6;
-#endif
+#endif //GLOM_ENABLE_MAEMO
 
 namespace Glom
 {

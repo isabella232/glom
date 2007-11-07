@@ -291,7 +291,7 @@ void DbAddDel::setup_menu()
   {
     std::cerr << "building menus failed: " << error->what();
   }
-#endif
+#endif //GLIBMM_EXCEPTIONS_ENABLED
 
   //Get the menu:
   m_pMenuPopup = dynamic_cast<Gtk::Menu*>( m_refUIManager->get_widget("/ContextMenu") ); 
