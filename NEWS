@@ -1,6 +1,8 @@
 1.6.3 (stable):
 
-* Initial support for the Maemo platform.
+* Initial support for the Maemo platform,
+  with client-only non-developer features.
+  (Armin Burgmeier)
 
 1.6.2 (stable):
 
