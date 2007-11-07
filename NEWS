@@ -1,4 +1,8 @@
-1.6.2 (stable)
+1.6.3 (stable):
+
+* Initial support for the Maemo platform.
+
+1.6.2 (stable):
 
 * Field Definition: Changing of field types was broken. Now it works again.
   (Murray Cumming)
