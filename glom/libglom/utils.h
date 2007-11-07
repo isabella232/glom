@@ -39,7 +39,10 @@ typedef std::list<type_pair_sort_field> type_sort_clause;
 namespace Utils
 {
 
+///A standard widget spacing:
 extern const unsigned int DEFAULT_SPACING_LARGE;
+
+///A standard widget spacing:
 extern const unsigned int DEFAULT_SPACING_SMALL;
 
 Glib::ustring trim_whitespace(const Glib::ustring& text);

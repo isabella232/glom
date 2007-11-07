@@ -432,7 +432,7 @@ bool DbTreeModel::refresh_from_database(const FoundSet& found_set)
 #else
      std::auto_ptr<ExceptionConnection> error;
      m_connection = connection_pool->connect(error);
-     // Ignore error, connection presence is checked below
+     // Ignore error. The connection presence is checked below
 #endif // GLIBMM_EXCEPTIONS_ENABLED
   }
 
@@ -447,7 +447,7 @@ bool DbTreeModel::refresh_from_database(const FoundSet& found_set)
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
       try
       {
-#endif
+#endif //GLIBMM_EXCEPTIONS_ENABLED
         std::cout << "Debug: query_execute():  " << sql_query << std::endl;
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
       }
@@ -455,7 +455,7 @@ bool DbTreeModel::refresh_from_database(const FoundSet& found_set)
       {
         std::cout << "Debug: query string could not be converted to std::cout: " << ex.what() << std::endl;
       }
-#endif
+#endif //GLIBMM_EXCEPTIONS_ENABLED
     }
 
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
@@ -478,7 +478,7 @@ bool DbTreeModel::refresh_from_database(const FoundSet& found_set)
     {
       m_gda_datamodel.clear(); //So that it is 0, so we can handle it below.
     }
-#endif
+#endif //GLIBMM_EXCEPTIONS_ENABLED
       
     if(!m_gda_datamodel)
     {
@@ -1141,7 +1141,7 @@ void DbTreeModel::get_record_counts(gulong& total, gulong& found) const
       std::auto_ptr<Glib::Error> error;
       Glib::RefPtr<Gnome::Gda::DataModel> datamodel = m_connection->get_gda_connection()->execute_select_command(sql_query, error);
       // Ignore error, datamodel presence is checked below
-#endif
+#endif //GLIBMM_EXCEPTIONS_ENABLED
 
       if(datamodel)
       {

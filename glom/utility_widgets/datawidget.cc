@@ -354,6 +354,7 @@ int DataWidget::get_suitable_width(const sharedptr<const LayoutItem_Field>& fiel
     case(Field::TYPE_NUMERIC):
     {
 #ifdef GLOM_ENABLE_MAEMO
+      //Maemo's screen is not so big, so don't be so generous:
       example_text = "EUR 9999999";
 #else
       example_text = "EUR 9999999999";
@@ -365,6 +366,7 @@ int DataWidget::get_suitable_width(const sharedptr<const LayoutItem_Field>& fiel
     {
       //if(!field_layout->get_text_format_multiline()) //Use the full width for multi-line text.
 #ifdef GLOM_ENABLE_MAEMO
+        //Maemo's screen is not so big, so don't be so generous:
         example_text = "AAAAAAAAAAAAAAAA";
 #else
         example_text = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
