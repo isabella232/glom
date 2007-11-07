@@ -19,6 +19,7 @@ libutility_widgets_canvas_a_SOURCES = \
                                canvas_group_resizable.cc canvas_group_resizable.h \
                                canvas_group_grid.cc canvas_group_grid.h \
                                canvas_group_movable.cc canvs_group_movable.h \
+                               canvas_table_movable.cc canvs_table_movable.h \
                                canvas_text_movable.cc canvs_text_movable.h
 
 

@@ -59,6 +59,7 @@ protected:
   void on_menu_insert_field();
   void on_menu_insert_text();
   void on_menu_insert_image();
+  void on_menu_insert_relatedrecords();
   void on_menu_insert_line_horizontal();
   void on_menu_insert_line_vertical();
   void on_menu_view_show_grid();

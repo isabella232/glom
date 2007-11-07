@@ -187,6 +187,8 @@ void CanvasGroupResizable::position_rect_manipulators()
   double child_width = 0;
   double child_height = 0;
   get_width_height(child_width, child_height);
+  //std::cout << "  CanvasGroupResizable::position_manipulators(): child width=" << child_width << std::endl;
+
 
   //Show the size of this item (not always the same as the child size):
   m_rect->property_x() = child_x;
@@ -602,11 +604,11 @@ bool CanvasGroupResizable::on_child_motion_notify_event(const Glib::RefPtr<Gooca
 { 
   //std::cout << "CanvasGroupResizable::on_motion_notify_event()" << std::endl;
 
-  CanvasItemMovable::on_motion_notify_event(target, event);
+  const bool result = CanvasItemMovable::on_motion_notify_event(target, event);
   
   position_manipulators();
 
-  return true;
+  return result;
 }
 
 bool CanvasGroupResizable::on_child_button_release_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventButton* event)
@@ -638,12 +640,13 @@ void CanvasGroupResizable::set_manipulators_visibility(Goocanvas::ItemVisibility
   if(!m_group_manipulators)
     return;
 
+  //For testing: visibility = Goocanvas::CANVAS_ITEM_VISIBLE;
+
   m_group_manipulators->property_visibility() = visibility;
 }
 
 bool CanvasGroupResizable::on_rect_enter_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventCrossing* event)
 {
-  //std::cout << "CanvasGroupResizable::on_rect_enter_notify_event" << std::endl;
   set_manipulators_visibility(Goocanvas::CANVAS_ITEM_VISIBLE);
 
   return true;

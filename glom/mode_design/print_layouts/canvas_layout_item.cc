@@ -24,6 +24,7 @@
 #include <glom/utility_widgets/canvas/canvas_image_movable.h>
 #include <glom/utility_widgets/canvas/canvas_line_movable.h>
 #include <glom/utility_widgets/canvas/canvas_group_movable.h>
+#include <glom/utility_widgets/canvas/canvas_table_movable.h>
 #include <glom/libglom/data_structure/layout/layoutitem_button.h>
 #include <glom/libglom/data_structure/layout/layoutitem_text.h>
 #include <glom/libglom/data_structure/layout/layoutitem_image.h>
@@ -90,6 +91,18 @@ void CanvasLayoutItem::check_and_apply_formatting(const Glib::RefPtr<CanvasTextM
   const Glib::ustring bg = formatting.get_text_format_color_background();
   if(!bg.empty())
   canvas_item->property_fill_color() = bg;
+}
+
+//Just a convenience function until we think of a nice API for goocanvasmm:
+static void portal_add_child( const Glib::RefPtr<Goocanvas::Table>& table, guint row, guint col, const Glib::RefPtr<Goocanvas::Item>& item)
+{
+  table->add_child(item);
+  goo_canvas_item_set_child_properties(GOO_CANVAS_ITEM(table->gobj()), GOO_CANVAS_ITEM(item->gobj()),
+                                       "row", row,
+                                       "column", col,
+                                       "x-fill", TRUE, 
+                                       "x-expand", TRUE, 
+                                       NULL);
 }
 
 void CanvasLayoutItem::set_layout_item(const sharedptr<LayoutItem>& item)
@@ -186,7 +199,31 @@ void CanvasLayoutItem::set_layout_item(const sharedptr<LayoutItem>& item)
         }
         else
         {
-          std::cerr << "CanvasLayoutItem::set_layout_item(): Unhandled LayoutItem type." << std::endl;
+          sharedptr<LayoutItem_Portal> portal = sharedptr<LayoutItem_Portal>::cast_dynamic(m_layout_item);
+          if(portal)
+          {
+            Glib::RefPtr<CanvasTableMovable> canvas_item = CanvasTableMovable::create();
+            //canvas_item->property_line_width() = 0;
+            Glib::RefPtr<CanvasRectMovable> rect1 = CanvasRectMovable::create();
+            rect1->property_fill_color() = "white"; //This makes the whole area clickable, not just the outline stroke.
+            rect1->property_line_width() = 1;
+            rect1->property_stroke_color() = "black";
+            rect1->set_width_height(20, 20);
+            portal_add_child(canvas_item, 0, 0, rect1);
+            Glib::RefPtr<CanvasRectMovable> rect2 = CanvasRectMovable::create();
+            rect2->property_fill_color() = "white"; //This makes the whole area clickable, not just the outline stroke.
+            rect2->property_line_width() = 1;
+            rect2->property_stroke_color() = "black";
+            rect2->set_width_height(30, 30);
+            portal_add_child(canvas_item, 1, 1, rect2);
+
+            child = canvas_item;
+            child_item = canvas_item;
+          }
+          else
+          {
+            std::cerr << "CanvasLayoutItem::set_layout_item(): Unhandled LayoutItem type. part type=" << m_layout_item->get_part_type_name() << std::endl;
+          }
         }
       }
     }

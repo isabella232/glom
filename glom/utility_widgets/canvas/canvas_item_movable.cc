@@ -24,6 +24,7 @@
 #include "canvas_image_movable.h"
 #include "canvas_line_movable.h"
 #include "canvas_group_movable.h"
+#include "canvas_table_movable.h"
 #include <goocanvasmm/canvas.h>
 #include <goocanvasrect.h>
 #include <goocanvasgroup.h>
@@ -81,13 +82,13 @@ bool CanvasItemMovable::on_button_press_event(const Glib::RefPtr<Goocanvas::Item
       }
 
       m_dragging = true;
-      return true; /* Handled. */
+      return true; // Handled.
       break;
     }
     case 3:
     {
       m_signal_show_context.emit(event->button, event->time);
-      return false; /* Not fully Handled. */
+      return false; // Not fully Handled.
       break;
     }
     default:
@@ -95,7 +96,7 @@ bool CanvasItemMovable::on_button_press_event(const Glib::RefPtr<Goocanvas::Item
   }
 
   
-  return false; /* Not handled. Pass it to an item lower in the z order, if any. */
+  return false; // Not handled. Pass it to an item lower in the z order, if any.
 }
 
 bool CanvasItemMovable::on_motion_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventMotion* event)
@@ -149,10 +150,10 @@ bool CanvasItemMovable::on_motion_notify_event(const Glib::RefPtr<Goocanvas::Ite
 
     m_signal_moved.emit();
 
-    return true;
+    return true; //We handled this event.
   }
 
-  return false;
+  return false; //We didn't handle this event.
 }
 
 bool CanvasItemMovable::on_button_release_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventButton* event)
@@ -173,7 +174,7 @@ bool CanvasItemMovable::on_enter_notify_event(const Glib::RefPtr<Goocanvas::Item
 {
   set_cursor(m_drag_cursor);
 
-  return true;
+  return false; //We didn't fully handle this event - let other signal handlers (even for other items) handle it too.
 }
 
 
@@ -181,7 +182,7 @@ bool CanvasItemMovable::on_leave_notify_event(const Glib::RefPtr<Goocanvas::Item
 {
   unset_cursor();
 
-  return true;
+  return false; //We didn't fully handle this event - let other signal handlers (even for other items) handle it too.
 }
 
 CanvasItemMovable::type_signal_moved CanvasItemMovable::signal_moved()
@@ -278,6 +279,12 @@ Glib::RefPtr<CanvasItemMovable> CanvasItemMovable::cast_to_movable(const Glib::R
           Glib::RefPtr<CanvasGroupMovable> group = Glib::RefPtr<CanvasGroupMovable>::cast_dynamic(item);
           if(group)
             movable = Glib::RefPtr<CanvasItemMovable>::cast_dynamic(group);
+          else
+          {
+            Glib::RefPtr<CanvasTableMovable> table = Glib::RefPtr<CanvasTableMovable>::cast_dynamic(item);
+            if(table)
+              movable = Glib::RefPtr<CanvasTableMovable>::cast_dynamic(table);
+          }
         }
       }
     }
@@ -325,6 +332,12 @@ Glib::RefPtr<Goocanvas::Item> CanvasItemMovable::cast_to_item(const Glib::RefPtr
           Glib::RefPtr<CanvasGroupMovable> group = Glib::RefPtr<CanvasGroupMovable>::cast_dynamic(item);
           if(group)
             result = Glib::RefPtr<Goocanvas::Item>::cast_dynamic(group);
+          else
+          {
+            Glib::RefPtr<CanvasTableMovable> table = Glib::RefPtr<CanvasTableMovable>::cast_dynamic(item);
+            if(table)
+              result = Glib::RefPtr<Goocanvas::Item>::cast_dynamic(table);
+          }
         }
       }
     }

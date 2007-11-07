@@ -27,7 +27,8 @@ LayoutItem::PrintLayoutPosition::PrintLayoutPosition()
 : m_x(0),
   m_y(0),
   m_width(0),
-  m_height(0)
+  m_height(0),
+  m_split_across_pages(false)
 {
 }
 
@@ -35,7 +36,8 @@ LayoutItem::PrintLayoutPosition::PrintLayoutPosition(const LayoutItem::PrintLayo
 : m_x(src.m_x),
   m_y(src.m_y),
   m_width(src.m_width),
-  m_height(src.m_height)
+  m_height(src.m_height),
+  m_split_across_pages(src.m_split_across_pages)
 {
 }
 
@@ -45,6 +47,7 @@ LayoutItem::PrintLayoutPosition& LayoutItem::PrintLayoutPosition::operator=(cons
   m_y = src.m_y;
   m_width = src.m_width;
   m_height = src.m_height;
+  m_split_across_pages = src.m_split_across_pages;
 
   return *this;
 }
@@ -54,7 +57,8 @@ bool LayoutItem::PrintLayoutPosition::operator==(const LayoutItem::PrintLayoutPo
   return (m_x == src.m_x) &&
          (m_y == src.m_y) &&
          (m_width == src.m_width) &&
-         (m_height == src.m_height);
+         (m_height == src.m_height) &&
+         (m_split_across_pages == src.m_split_across_pages);
 }
 
 
@@ -192,6 +196,26 @@ void LayoutItem::set_print_layout_position(double x, double y, double width, dou
   m_positions->m_y = y;
   m_positions->m_width = width;
   m_positions->m_height = height;
+}
+
+
+void LayoutItem::set_print_layout_split_across_pages(bool split)
+{
+  if(!m_positions && !split)
+    return; //Don't bother instantiating the positions instance if everything is still 0.
+
+  instantiate_positions();
+
+  m_positions->m_split_across_pages = split;
+}
+
+
+bool LayoutItem::get_print_layout_split_across_pages() const
+{
+  if(!m_positions)
+    return false;
+  else
+    return m_positions->m_split_across_pages;
 }
 
 } //namespace Glom

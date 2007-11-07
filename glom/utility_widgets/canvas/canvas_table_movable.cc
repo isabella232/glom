@@ -18,10 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include "canvas_group_movable.h"
-#include "canvas_rect_movable.h"
-#include "canvas_line_movable.h"
-#include "canvas_text_movable.h"
+#include "canvas_table_movable.h"
 #include <goocanvasmm/canvas.h>
 #include <gdkmm/cursor.h>
 #include <iostream>
@@ -30,8 +27,8 @@ namespace Glom
 {
 
 
-CanvasGroupMovable::CanvasGroupMovable()
-: m_x(0), m_y(0), m_width(0), m_height(0)
+CanvasTableMovable::CanvasTableMovable()
+: m_x(0), m_y(0)
 {
   signal_motion_notify_event().connect(sigc::mem_fun(*this, &CanvasItemMovable::on_motion_notify_event));
   signal_button_press_event().connect(sigc::mem_fun(*this, &CanvasItemMovable::on_button_press_event));
@@ -41,37 +38,34 @@ CanvasGroupMovable::CanvasGroupMovable()
   signal_leave_notify_event().connect(sigc::mem_fun(*this, &CanvasItemMovable::on_leave_notify_event));
 }
 
-CanvasGroupMovable::~CanvasGroupMovable()
+CanvasTableMovable::~CanvasTableMovable()
 {
 }
 
-Glib::RefPtr<CanvasGroupMovable> CanvasGroupMovable::create()
+Glib::RefPtr<CanvasTableMovable> CanvasTableMovable::create()
 {
-  return Glib::RefPtr<CanvasGroupMovable>(new CanvasGroupMovable());
+  return Glib::RefPtr<CanvasTableMovable>(new CanvasTableMovable());
 }
 
-void CanvasGroupMovable::get_xy(double& x, double& y) const
+void CanvasTableMovable::get_xy(double& x, double& y) const
 {
+  x = m_x;
+  y = m_y;
+
+  // Or we could use the child at the top-left:
+  /*
   Glib::RefPtr<const Goocanvas::Item> first_child = get_child(0);
   if(!first_child)
-  {
-    //Just return any x/y that was previously set:
-    x = m_x;
-    y = m_y;
     return;
-  }
 
   Glib::RefPtr<const CanvasItemMovable> movable = CanvasItemMovable::cast_const_to_movable(first_child);
   if(movable)
      movable->get_xy(x, y);
+  */
 }
 
-void CanvasGroupMovable::set_xy(double x, double y)
+void CanvasTableMovable::set_xy(double x, double y)
 {
-  //Store them here, in case we don't have children yet:
-  m_x = x;
-  m_y = y;
-
   //Discover the offset:
   double old_x = 0;
   double old_y = 0;
@@ -80,57 +74,39 @@ void CanvasGroupMovable::set_xy(double x, double y)
   const double offset_x = x - old_x;
   const double offset_y = y - old_y;
 
-  //Apply the offset to all children:
-  const int count = get_n_children();
-  for(int i = 0; i < count; ++i)
+  //Apply the offset:
+  translate(offset_x, offset_y);
+
+  //Remember the position, because GooCanvasTable does not:
+  m_x = x;
+  m_y = y;
+}
+
+void CanvasTableMovable::get_width_height(double& width, double& height) const
+{
+  width = property_width();
+  height = property_height();
+
+  if(width == -1) //Means "default width" - presumably the width demanded by the children. But we don't use that.
+    width = 0;
+
+  if(height == -1) //Means "default height" - presumably the height demanded by the children. But we don't use that.
+    height = 0;
+}
+
+void CanvasTableMovable::set_width_height(double width, double height)
+{
+  if(width == -1)
   {
-    Glib::RefPtr<Goocanvas::Item> child = get_child(i);
-    Glib::RefPtr<CanvasItemMovable> movable = CanvasItemMovable::cast_to_movable(child);
-    if(movable)
-    {
-      double this_x = 0;
-      double this_y = 0;
-      movable->get_xy(this_x, this_y);
-      movable->set_xy(this_x + offset_x, this_y + offset_y);
-    }
-  }
-}
-
-void CanvasGroupMovable::get_width_height(double& width, double& height) const
-{
-  Glib::RefPtr<const Goocanvas::Item> first_child = get_child(0);
-  if(!first_child)
-  {
-    //Just return any width/height that was previously set:
-    width = m_width;
-    height = m_height;
-    return;
+    std::cout << "CanvasTableMovable::set_width_height(): width is -1" << std::endl;
   }
 
-  Glib::RefPtr<const CanvasItemMovable> movable = CanvasItemMovable::cast_const_to_movable(first_child);
-  if(movable)
-     movable->get_width_height(width, height);
+  property_width() = width;
+  property_height() = height;
 }
 
-void CanvasGroupMovable::set_width_height(double width, double height)
+void CanvasTableMovable::set_grid(const Glib::RefPtr<const CanvasGroupGrid>& grid)
 {
-  //Store them here, in case we don't have children yet:
-  m_width = width;
-  m_height = height;
-
-  Glib::RefPtr<Goocanvas::Item> first_child = get_child(0);
-  if(!first_child)
-    return;
-
-  Glib::RefPtr<CanvasItemMovable> movable = CanvasItemMovable::cast_to_movable(first_child);
-  if(movable)
-     movable->set_width_height(width, height);
-}
-
-void CanvasGroupMovable::set_grid(const Glib::RefPtr<const CanvasGroupGrid>& grid)
-{
-  std::cout << "CanvasGroupMovable::set_grid" << std::endl;
-
   //Call the base class:
   CanvasItemMovable::set_grid(grid);
 
@@ -147,7 +123,7 @@ void CanvasGroupMovable::set_grid(const Glib::RefPtr<const CanvasGroupGrid>& gri
   }
 }
 
-void CanvasGroupMovable::snap_position_one_corner(Corners corner, double& x, double& y) const
+void CanvasTableMovable::snap_position_one_corner(Corners corner, double& x, double& y) const
 {
   Goocanvas::Bounds bounds = get_bounds();
   const double width = std::abs(bounds.get_x2() - bounds.get_x1());
@@ -194,9 +170,9 @@ void CanvasGroupMovable::snap_position_one_corner(Corners corner, double& x, dou
   y += snapped_offset_y;
 }
 
-void CanvasGroupMovable::snap_position(double& x, double& y) const
+void CanvasTableMovable::snap_position(double& x, double& y) const
 {
-  //std::cout << "CanvasGroupMovable::snap_position" << std::endl;
+  //std::cout << "CanvasTableMovable::snap_position" << std::endl;
 
   double offset_x_min = 0;
   double offset_y_min = 0;
@@ -224,7 +200,7 @@ void CanvasGroupMovable::snap_position(double& x, double& y) const
   y += offset_y_min;
 }
 
-Goocanvas::Canvas* CanvasGroupMovable::get_parent_canvas_widget()
+Goocanvas::Canvas* CanvasTableMovable::get_parent_canvas_widget()
 {
   return get_canvas();
 }

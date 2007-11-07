@@ -1,3 +1,38 @@
+2007-11-07  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/libglom/data_structure/layout/layoutitem.cc:
+	* glom/libglom/data_structure/layout/layoutitem.h: Added 
+	get/set_print_layout_split_across_pages() for future use.
+
+	* glom/libglom/document/document_glom.cc:
+	* glom/libglom/document/document_glom.h:
+	get/set_node_attribute_value_as_decimal(): Added a default parameter, 
+	defaulting to 0, so we can use other values as defaults to avoid 
+	superfluous attributes.
+	Used this when loading and saving groups, because 1 column is 
+	the default, and 0 is meaningless.
+	
+	* glom/utility_widgets/canvas/canvas_group_movable.cc:
+	* glom/utility_widgets/canvas/canvas_group_movable.h:
+	Store the x and y even before there is a child.
+
+	* glom/utility_widgets/canvas/Makefile.am:
+	* glom/utility_widgets/canvas/canvas_table_movable.cc:
+	* glom/utility_widgets/canvas/canvas_table_movable.h:
+	Added this canvas item.
+	* glom/utility_widgets/canvas/canvas_item_movable.cc:
+	Support the table item in the cast functions.
+	Return false from some signal handlers, so that other objects 
+	can handle them too.
+	* glom/mode_design/print_layouts/canvas_layout_item.cc:
+	set_layout_item(): Create a table canvas item for a portal layout 
+	item, though it is currently just a useless test table.
+	* glom/mode_design/print_layouts/canvas_print_layout.cc:
+	Handle the loading and saving of the portal layout item.
+	* glom/mode_design/print_layouts/window_print_layout_edit.cc:
+	* glom/mode_design/print_layouts/window_print_layout_edit.h:
+	Added an Insert Related Records menu item.
+
 2007-11-06  Armin Burgmeier  <armin@openismus.com>
 
 	* several files: Merged changes from GLOM_CLIENTONLY branch. This

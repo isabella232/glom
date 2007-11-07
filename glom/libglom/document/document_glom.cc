@@ -1018,9 +1018,9 @@ void Document_Glom::set_node_attribute_value_as_bool(xmlpp::Element* node, const
   set_node_attribute_value(node, strAttributeName, strValue);
 }
 
-void Document_Glom::set_node_attribute_value_as_decimal(xmlpp::Element* node, const Glib::ustring& strAttributeName, int value)
+void Document_Glom::set_node_attribute_value_as_decimal(xmlpp::Element* node, const Glib::ustring& strAttributeName, guint value, guint value_default)
 {
-  if(!value && !node->get_attribute(strAttributeName))
+  if((value == value_default) && !node->get_attribute(strAttributeName))
     return; //Use the non-existance of an attribute to mean zero, to save space.
 
   //Get text representation of int:
@@ -1047,9 +1047,9 @@ void Document_Glom::set_node_attribute_value_as_decimal_double(xmlpp::Element* n
   set_node_attribute_value(node, strAttributeName, sequence_string);
 }
 
-guint Document_Glom::get_node_attribute_value_as_decimal(const xmlpp::Element* node, const Glib::ustring& strAttributeName)
+guint Document_Glom::get_node_attribute_value_as_decimal(const xmlpp::Element* node, const Glib::ustring& strAttributeName, guint value_default)
 {
-  guint result = 0;
+  guint result = value_default;
   const Glib::ustring value_string = get_node_attribute_value(node, strAttributeName);
 
   //Get number for string:
@@ -1866,7 +1866,7 @@ void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Gl
   //Get the group details:
   group->set_name( get_node_attribute_value(node, GLOM_ATTRIBUTE_NAME) );
   group->set_title( get_node_attribute_value(node, GLOM_ATTRIBUTE_TITLE) );
-  group->m_columns_count = get_node_attribute_value_as_decimal(node, GLOM_ATTRIBUTE_COLUMNS_COUNT);
+  group->m_columns_count = get_node_attribute_value_as_decimal(node, GLOM_ATTRIBUTE_COLUMNS_COUNT, 1); //default to 1, because 0 is meaningless.
   group->set_border_width( get_node_attribute_value_as_decimal_double(node, GLOM_ATTRIBUTE_BORDER_WIDTH) );
 
   group->m_sequence = get_node_attribute_value_as_decimal(node, GLOM_ATTRIBUTE_SEQUENCE);
@@ -2839,8 +2839,8 @@ void Document_Glom::save_before_layout_group(xmlpp::Element* node, const sharedp
   if(!child)
     return;
 
-  child->set_attribute(GLOM_ATTRIBUTE_NAME, group->get_name());
-  set_node_attribute_value_as_decimal(child, GLOM_ATTRIBUTE_COLUMNS_COUNT, group->m_columns_count);
+  set_node_attribute_value(child, GLOM_ATTRIBUTE_NAME, group->get_name());
+  set_node_attribute_value_as_decimal(child, GLOM_ATTRIBUTE_COLUMNS_COUNT, group->m_columns_count, 1); //Default to 1 because 0 is meaningless.
 
   set_node_attribute_value_as_decimal(child, GLOM_ATTRIBUTE_SEQUENCE, group->m_sequence);
 
@@ -2993,6 +2993,10 @@ void Document_Glom::save_before_print_layout_position(xmlpp::Element* nodeItem, 
   set_node_attribute_value_as_decimal_double(child, GLOM_ATTRIBUTE_POSITION_Y, y);
   set_node_attribute_value_as_decimal_double(child, GLOM_ATTRIBUTE_POSITION_WIDTH, width);
   set_node_attribute_value_as_decimal_double(child, GLOM_ATTRIBUTE_POSITION_HEIGHT, height);
+
+  //Avoid having an empty (or useless) XML element:
+  if(child->get_attributes().empty())
+    nodeItem->remove_child(child);
 }
 
 bool Document_Glom::save_before()
@@ -3072,7 +3076,7 @@ bool Document_Glom::save_before()
 	      for(unsigned int i = 0; i < vec_values.size(); ++i)
 	      {
 	        xmlpp::Element* nodeField = nodeExampleRow->add_child(GLOM_NODE_VALUE);
-		nodeField->set_attribute(GLOM_ATTRIBUTE_COLUMN, doctableinfo.m_fields[i]->get_name());
+		set_node_attribute_value(nodeField, GLOM_ATTRIBUTE_COLUMN, doctableinfo.m_fields[i]->get_name());
 		nodeField->add_child_text(vec_values[i]);
 	      } // for each value
 	    } // !row_data.empty
@@ -3169,8 +3173,8 @@ bool Document_Glom::save_before()
         for(DocumentTableInfo::type_layouts::const_iterator iter = doctableinfo.m_layouts.begin(); iter != doctableinfo.m_layouts.end(); ++iter)
         {
           xmlpp::Element* nodeLayout = nodeDataLayouts->add_child(GLOM_NODE_DATA_LAYOUT);
-          nodeLayout->set_attribute(GLOM_ATTRIBUTE_NAME, iter->m_layout_name);
-          nodeLayout->set_attribute(GLOM_ATTRIBUTE_PARENT_TABLE_NAME, iter->m_parent_table);
+          set_node_attribute_value(nodeLayout, GLOM_ATTRIBUTE_NAME, iter->m_layout_name);
+          set_node_attribute_value(nodeLayout, GLOM_ATTRIBUTE_PARENT_TABLE_NAME, iter->m_parent_table);
 
           xmlpp::Element* nodeGroups = nodeLayout->add_child(GLOM_NODE_DATA_LAYOUT_GROUPS);
 
@@ -3195,7 +3199,7 @@ bool Document_Glom::save_before()
           xmlpp::Element* nodeReport = nodeReports->add_child(GLOM_NODE_REPORT);
 
           sharedptr<const Report> report = iter->second;
-          nodeReport->set_attribute(GLOM_ATTRIBUTE_NAME, report->get_name());
+          set_node_attribute_value(nodeReport, GLOM_ATTRIBUTE_NAME, report->get_name());
           set_node_attribute_value_as_bool(nodeReport, GLOM_ATTRIBUTE_REPORT_SHOW_TABLE_TITLE, report->get_show_table_title());
 
           xmlpp::Element* nodeGroups = nodeReport->add_child(GLOM_NODE_DATA_LAYOUT_GROUPS);
@@ -3221,7 +3225,7 @@ bool Document_Glom::save_before()
           xmlpp::Element* nodePrintLayout = nodePrintLayouts->add_child(GLOM_NODE_PRINT_LAYOUT);
 
           sharedptr<const PrintLayout> print_layout = iter->second;
-          nodePrintLayout->set_attribute(GLOM_ATTRIBUTE_NAME, print_layout->get_name());
+          set_node_attribute_value(nodePrintLayout, GLOM_ATTRIBUTE_NAME, print_layout->get_name());
           set_node_attribute_value_as_bool(nodePrintLayout, GLOM_ATTRIBUTE_REPORT_SHOW_TABLE_TITLE, print_layout->get_show_table_title());
 
           //Page Setup:
@@ -3273,7 +3277,7 @@ bool Document_Glom::save_before()
       const GroupInfo& group_info = iter->second;
 
       xmlpp::Element* nodeGroup = nodeGroups->add_child(GLOM_NODE_GROUP);
-      nodeGroup->set_attribute(GLOM_ATTRIBUTE_NAME, group_info.get_name());
+      set_node_attribute_value(nodeGroup, GLOM_ATTRIBUTE_NAME, group_info.get_name());
       set_node_attribute_value_as_bool(nodeGroup, GLOM_ATTRIBUTE_DEVELOPER, group_info.m_developer);
 
       //The privileges for each table, for this group:

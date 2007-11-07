@@ -27,8 +27,7 @@ namespace Glom
 
 
 CanvasImageMovable::CanvasImageMovable(const Glib::RefPtr<Gdk::Pixbuf>& pixbuf, double x, double y)
-: Goocanvas::Image(pixbuf, x, y), 
-  CanvasItemMovable(),
+: Goocanvas::Image(pixbuf, x, y),
   m_snap_corner(CORNER_TOP_LEFT) //arbitrary default.
 {
   init();

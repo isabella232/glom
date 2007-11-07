@@ -18,25 +18,25 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef GLOM_UTILITY_WIDGETS_CANVAS_GROUP_MOVABLE_H
-#define GLOM_UTILITY_WIDGETS_CANVAS_GROUP_MOVABLE_H
+#ifndef GLOM_UTILITY_WIDGETS_CANVAS_TABLE_MOVABLE_H
+#define GLOM_UTILITY_WIDGETS_CANVAS_TABLE_MOVABLE_H
 
 #include "canvas_item_movable.h"
-#include <goocanvasmm/group.h>
+#include <goocanvasmm/table.h>
 
 namespace Glom
 {
 
-class CanvasGroupMovable
-  : public Goocanvas::Group,
+class CanvasTableMovable
+  : public Goocanvas::Table,
     public CanvasItemMovable
 {
 protected:
-  CanvasGroupMovable();
-  virtual ~CanvasGroupMovable();
+  CanvasTableMovable();
+  virtual ~CanvasTableMovable();
 
 public:
-  static Glib::RefPtr<CanvasGroupMovable> create();
+  static Glib::RefPtr<CanvasTableMovable> create();
 
   virtual void get_xy(double& x, double& y) const;
   virtual void set_xy(double x, double y);
@@ -60,12 +60,11 @@ protected:
 
   virtual void snap_position(double& x, double& y) const;
 
-  //We store the position so that we have something before any children wer added:
-  double m_x, m_y, m_width, m_height;
-
+  //We store the x and y position, because GooCanvasTable does not:
+  double m_x, m_y;
 };
 
 } //namespace Glom
 
-#endif //GLOM_UTILITY_WIDGETS_CANVAS_GROUP_MOVABLE_H
+#endif //GLOM_UTILITY_WIDGETS_CANVAS_TABLE_MOVABLE_H
 

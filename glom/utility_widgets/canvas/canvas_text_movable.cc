@@ -29,7 +29,6 @@ namespace Glom
 
 CanvasTextMovable::CanvasTextMovable(const Glib::ustring& text, double x, double y, double width, Gtk::AnchorType anchor)
 : Goocanvas::Text(text, x, y, width, anchor), 
-  CanvasItemMovable(),
   m_snap_corner(CORNER_TOP_LEFT), //arbitrary default.
   m_fake_height(0)
 {

@@ -335,7 +335,8 @@ public:
   static bool get_relationship_is_system_properties(const sharedptr<const Relationship>& relationship);
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  static void set_node_attribute_value_as_decimal(xmlpp::Element* node, const Glib::ustring& strAttributeName, int value);
+  ///If value is equal to the default then no attribute will be set, to save text space in the XML file.
+  static void set_node_attribute_value_as_decimal(xmlpp::Element* node, const Glib::ustring& strAttributeName, guint value, guint value_default = 0);
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   // This is required by the report builder, so it cannot be disabled
@@ -380,7 +381,8 @@ protected:
   static void set_node_attribute_value_as_bool(xmlpp::Element* node, const Glib::ustring& strAttributeName, bool value = true);
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-  static guint get_node_attribute_value_as_decimal(const xmlpp::Element* node, const Glib::ustring& strAttributeName);
+  /// If the attribute is not there, then the default will be returned.
+  static guint get_node_attribute_value_as_decimal(const xmlpp::Element* node, const Glib::ustring& strAttributeName, guint value_default = 0);
   static double get_node_attribute_value_as_decimal_double(const xmlpp::Element* node, const Glib::ustring& strAttributeName);
 
   static float get_node_attribute_value_as_float(const xmlpp::Element* node, const Glib::ustring& strAttributeName);

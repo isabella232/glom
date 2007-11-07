@@ -63,6 +63,13 @@ public:
   /// This is used only for the print layouts.
   void set_print_layout_position(double x, double y, double width, double height);
 
+  /// This is used only for the print layouts.
+  void set_print_layout_split_across_pages(bool split = true);
+
+  /// This is used only for the print layouts.
+  bool get_print_layout_split_across_pages() const;
+
+
   guint m_sequence;
   //bool m_hidden;
 
@@ -91,6 +98,11 @@ protected:
     double m_y;
     double m_width;
     double m_height;
+
+    //Whether the item should be split if it is too big for the page,
+    //or if the whole item should instead be moved to the next page.
+    //(A split will happen anyway if it is too big for a whole page):
+    bool m_split_across_pages;
   };
   
   mutable PrintLayoutPosition* m_positions;

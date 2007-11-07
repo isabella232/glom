@@ -24,6 +24,7 @@
 #include "canvas_rect_movable.h"
 #include "canvas_text_movable.h"
 #include "canvas_group_movable.h"
+#include "canvas_table_movable.h"
 #include "canvas_group_resizable.h"
 #include <goocanvasrect.h>
 #include <iostream>
@@ -44,25 +45,26 @@ public:
     add_horizontal_rule(55);
     set_grid_gap(40);
 
+/*
     //Doesn't work until we fix the goocanvas _new() methods: Glib::RefPtr<Goocanvas::Rect> rect = Glib::wrap( goo_canvas_rect_new()
     //Glib::RefPtr<Goocanvas::Rect> rect    = Goocanvas::Rect::create(10, 10, 110, 110);
     Glib::RefPtr<Glom::CanvasRectMovable> rect = Glom::CanvasRectMovable::create(10, 10, 110, 110);
     rect->property_fill_color() = "white"; //This makes the whole area clickable, not just the outline stroke:
     rect->property_line_width() = 2.0f;
     rect->property_stroke_color() = "blue";
-    add_item(rect, true /* resizable */);
+    add_item(rect, true);
 
     Glib::RefPtr<Glom::CanvasTextMovable> text = Glom::CanvasTextMovable::create("yadda2 yadda2");
     text->set_xy(10, 10);
     text->set_width_height(40, 40);
-    add_item(text, true /* resizable */);
+    add_item(text, true);
 
     Glib::RefPtr<Glom::CanvasGroupResizable> resizable = Glom::CanvasGroupResizable::create();
     Glib::RefPtr<Glom::CanvasTextMovable> resizable_inner = Glom::CanvasTextMovable::create("yadda3 yadda3");
     resizable->set_child(resizable_inner);
     resizable->set_xy(50, 50);
     resizable->set_width_height(40, 40);
-    add_item(resizable, false /* resizable */); //This doesn't seem to work if we use true (a resizable inside a resizable)
+    add_item(resizable, false); //This doesn't seem to work if we use true (a resizable inside a resizable)
 
     // Test replacement of the child (should remove the old child):
     Glib::RefPtr<Glom::CanvasTextMovable> resizable_inner2 = Glom::CanvasTextMovable::create("yadda3.1 yadda3.1");
@@ -95,8 +97,37 @@ public:
     rect_inner->property_stroke_color() = "red";
     rect_inner->set_movement_allowed(false, false); //Move only as part of the parent group.
     group->add_child(rect_inner);
-    add_item(group);
+    add_item(group, true);
+*/
 
+    Glib::RefPtr<Glom::CanvasTableMovable> table = Glom::CanvasTableMovable::create();
+    table->set_xy(100, 100);
+    table->set_width_height(200, 200);
+    Glib::RefPtr<Glom::CanvasRectMovable> innerrect1 = Glom::CanvasRectMovable::create();
+    innerrect1->property_fill_color() = "white"; //This makes the whole area clickable, not just the outline stroke.
+    innerrect1->property_line_width() = 1;
+    innerrect1->property_stroke_color() = "black";
+    innerrect1->set_width_height(20, 20);
+    table->add_child(innerrect1);
+    goo_canvas_item_set_child_properties(GOO_CANVAS_ITEM(table->gobj()), GOO_CANVAS_ITEM(innerrect1->gobj()),
+                                       "row", 0,
+                                       "column", 0,
+                                       "x-fill", TRUE, 
+                                       "x-expand", TRUE, 
+                                       NULL);
+    Glib::RefPtr<Glom::CanvasRectMovable> innerrect2 = Glom::CanvasRectMovable::create();
+    innerrect2->property_fill_color() = "white"; //This makes the whole area clickable, not just the outline stroke.
+    innerrect2->property_line_width() = 1;
+    innerrect2->property_stroke_color() = "black";
+    innerrect2->set_width_height(30, 30);
+    table->add_child(innerrect2);
+    goo_canvas_item_set_child_properties(GOO_CANVAS_ITEM(table->gobj()), GOO_CANVAS_ITEM(innerrect1->gobj()),
+                                       "row", 0,
+                                       "column", 0,
+                                       "x-fill", TRUE, 
+                                       "x-expand", TRUE, 
+                                       NULL);
+    add_item(table, true);
 
   }
 

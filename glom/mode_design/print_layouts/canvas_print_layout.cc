@@ -91,6 +91,13 @@ Glib::RefPtr<CanvasLayoutItem> Canvas_PrintLayout::create_canvas_item(const shar
 
 void Canvas_PrintLayout::add_layout_group_children(const sharedptr<LayoutGroup>& group)
 {
+  //Add the group item:
+  Glib::RefPtr<CanvasLayoutItem> canvas_item = CanvasLayoutItem::create(group);
+  if(canvas_item)
+    add_canvas_layout_item(canvas_item);
+
+  //Add the group's children.
+  //TODO: Add them inside the group item (when we actually use this code):
   for(LayoutGroup::type_map_items::const_iterator iter = group->m_map_items.begin(); iter != group->m_map_items.end(); ++iter)
   {
     sharedptr<LayoutItem> item = iter->second;

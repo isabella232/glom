@@ -77,6 +77,7 @@ void CanvasEditable::add_item(const Glib::RefPtr<Goocanvas::Item>& item, const G
 
       group->add_child(resizable);
       resizable->set_child(movable); //Puts draggable corners and edges around it.
+
       added = true;
     }
   }
