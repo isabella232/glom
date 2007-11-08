@@ -67,14 +67,12 @@ void Canvas_PrintLayout::set_print_layout(const Glib::ustring& table_name, const
   m_modified = false;
 
   remove_all_items(m_items_group);
-  add_layout_group_children(print_layout->m_layout_group);
+  add_layout_group(print_layout->m_layout_group, true /* is top-level */);
 
   //TODO: Use PageSetup::copy() when we can use gtkmm 2.14:
   Glib::RefPtr<Gtk::PageSetup> page_setup;
   if(print_layout->get_page_setup())
     page_setup = Glib::wrap( gtk_page_setup_copy(const_cast<GtkPageSetup*>(print_layout->get_page_setup()->gobj())) );
-  else
-    std::cout << "DEBUG: Canvas_PrintLayout::set_print_layout(): page_setup was NULL" << std::endl;
 
   set_page_setup(page_setup);
 
@@ -101,12 +99,6 @@ Glib::RefPtr<CanvasLayoutItem> Canvas_PrintLayout::create_canvas_item(const shar
 
 void Canvas_PrintLayout::add_layout_group_children(const sharedptr<LayoutGroup>& group)
 {
-  //Add the group item:
-  Glib::RefPtr<CanvasLayoutItem> canvas_item = CanvasLayoutItem::create(group);
-  if(canvas_item)
-    add_canvas_layout_item(canvas_item);
-
-  //Add the group's children.
   //TODO: Add them inside the group item (when we actually use this code):
   for(LayoutGroup::type_map_items::const_iterator iter = group->m_map_items.begin(); iter != group->m_map_items.end(); ++iter)
   {
@@ -144,10 +136,19 @@ void Canvas_PrintLayout::add_canvas_layout_item(const Glib::RefPtr<CanvasLayoutI
 
 }
 
-void Canvas_PrintLayout::add_layout_group(const sharedptr<LayoutGroup>& group)
+void Canvas_PrintLayout::add_layout_group(const sharedptr<LayoutGroup>& group, bool is_top_level)
 {
   //row[model_parts->m_columns.m_col_item] = sharedptr<LayoutItem>(static_cast<LayoutItem*>(group->clone()));
 
+  //Add the group item:
+  if(!is_top_level)
+  {
+    Glib::RefPtr<CanvasLayoutItem> canvas_item = CanvasLayoutItem::create(group);
+    if(canvas_item)
+      add_canvas_layout_item(canvas_item);
+  }
+
+  //Add the group's children.
   add_layout_group_children(group);
 
   m_modified = true;

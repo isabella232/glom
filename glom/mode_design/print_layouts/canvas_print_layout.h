@@ -66,7 +66,7 @@ public:
 protected:
 
   void setup_context_menu();
-  void add_layout_group(const sharedptr<LayoutGroup>& group);
+  void add_layout_group(const sharedptr<LayoutGroup>& group, bool is_top_level = false);
   void add_layout_group_children(const sharedptr<LayoutGroup>& group);
   void fill_layout_group(const sharedptr<LayoutGroup>& group);
 

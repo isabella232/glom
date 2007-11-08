@@ -1,5 +1,12 @@
 2007-11-08  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/mode_design/print_layouts/canvas_print_layout.cc:
+	* glom/mode_design/print_layouts/canvas_print_layout.h:
+	add_layout_group(): added an is_top_level parameter, so we can 
+	avoid adding a canvas item for the canvas's own layout group.
+
+2007-11-08  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/libglom/data_structure/print_layout.cc: Copy constructor 
 	and operator=(): Copy the page_setup.
 	* glom/mode_design/print_layouts/canvas_print_layout.cc:
