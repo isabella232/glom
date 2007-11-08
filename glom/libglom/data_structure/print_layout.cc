@@ -19,6 +19,7 @@
  */
 
 #include "print_layout.h"
+#include <gtk/gtkpagesetup.h> //For gtk_page_setup_copy().
 
 namespace Glom
 {
@@ -35,6 +36,9 @@ PrintLayout::PrintLayout(const PrintLayout& src)
   m_layout_group(src.m_layout_group),
   m_show_table_title(src.m_show_table_title)
 {
+  //TODO: Use PageSetup::copy() when we can use gtkmm 2.14:
+  if(src.m_page_setup)
+    m_page_setup = Glib::wrap( gtk_page_setup_copy(const_cast<GtkPageSetup*>(src.m_page_setup->gobj())) );
 }
 
 PrintLayout& PrintLayout::operator=(const PrintLayout& src)
@@ -43,6 +47,11 @@ PrintLayout& PrintLayout::operator=(const PrintLayout& src)
 
   m_layout_group = src.m_layout_group;
   m_show_table_title = src.m_show_table_title;
+
+  //TODO: Use PageSetup::copy() when we can use gtkmm 2.14:
+  m_page_setup.clear();
+  if(src.m_page_setup)
+    m_page_setup = Glib::wrap( gtk_page_setup_copy(const_cast<GtkPageSetup*>(src.m_page_setup->gobj())) );
 
   return *this;
 }

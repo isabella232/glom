@@ -69,6 +69,15 @@ void Canvas_PrintLayout::set_print_layout(const Glib::ustring& table_name, const
   remove_all_items(m_items_group);
   add_layout_group_children(print_layout->m_layout_group);
 
+  //TODO: Use PageSetup::copy() when we can use gtkmm 2.14:
+  Glib::RefPtr<Gtk::PageSetup> page_setup;
+  if(print_layout->get_page_setup())
+    page_setup = Glib::wrap( gtk_page_setup_copy(const_cast<GtkPageSetup*>(print_layout->get_page_setup()->gobj())) );
+  else
+    std::cout << "DEBUG: Canvas_PrintLayout::set_print_layout(): page_setup was NULL" << std::endl;
+
+  set_page_setup(page_setup);
+
   m_modified = false;
 }
 
@@ -76,6 +85,7 @@ sharedptr<PrintLayout> Canvas_PrintLayout::get_print_layout()
 {
   sharedptr<PrintLayout> result = sharedptr<PrintLayout>::create();
   fill_layout_group(result->m_layout_group);
+  result->set_page_setup(m_page_setup);
   return result;
 }
 

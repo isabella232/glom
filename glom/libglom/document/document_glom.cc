@@ -3219,7 +3219,7 @@ bool Document_Glom::save_before()
         //Print Layouts:
         xmlpp::Element* nodePrintLayouts = nodeTable->add_child(GLOM_NODE_PRINT_LAYOUTS);
 
-        //Add the groups:
+        //Add the print :
         for(DocumentTableInfo::type_print_layouts::const_iterator iter = doctableinfo.m_print_layouts.begin(); iter != doctableinfo.m_print_layouts.end(); ++iter)
         {
           xmlpp::Element* nodePrintLayout = nodePrintLayouts->add_child(GLOM_NODE_PRINT_LAYOUT);
@@ -3235,7 +3235,7 @@ bool Document_Glom::save_before()
             Glib::KeyFile key_file;
             Glib::RefPtr<Gtk::PageSetup> unconst = Glib::RefPtr<Gtk::PageSetup>::cast_const(page_setup); //TODO: Remove this when using gtkmm 2.13/14.
             unconst->save_to_key_file(key_file);
-
+            
             xmlpp::Element* child = nodePrintLayout->add_child(GLOM_NODE_PAGE_SETUP);
             child->add_child_text(key_file.to_data());
           }

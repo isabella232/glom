@@ -1,5 +1,13 @@
 2007-11-08  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/libglom/data_structure/print_layout.cc: Copy constructor 
+	and operator=(): Copy the page_setup.
+	* glom/mode_design/print_layouts/canvas_print_layout.cc:
+	get_print_layout(), set_print_layout(): Actually load/save the 
+	page setup.
+
+2007-11-08  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/mode_design/print_layouts/canvas_print_layout.cc:
 	fill_with_data(): Don't crash if no fields are on the layout.
 	* glom/printoperation_printlayout.cc:
