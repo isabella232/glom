@@ -1,3 +1,12 @@
+2007-11-08  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/mode_design/print_layouts/canvas_print_layout.cc:
+	fill_with_data(): Don't crash if no fields are on the layout.
+	* glom/printoperation_printlayout.cc:
+	* glom/printoperation_printlayout.h: Handle the paginate 
+	signal, though this probably requires the GTK+ patch in 
+	bug #345345.
+
 2007-11-07  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/libglom/utils.cc:

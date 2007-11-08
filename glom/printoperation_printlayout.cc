@@ -25,6 +25,8 @@ PrintOperationPrintLayout::PrintOperationPrintLayout()
 {
   set_unit(Gtk::UNIT_MM);
   set_use_full_page(true); //Because we show the margins on our canvas.
+
+  set_n_pages(1); //There is always at least one page.
 }
 
 PrintOperationPrintLayout::~PrintOperationPrintLayout()
@@ -39,8 +41,22 @@ Glib::RefPtr<PrintOperationPrintLayout> PrintOperationPrintLayout::create()
 void PrintOperationPrintLayout::on_begin_print(
         const Glib::RefPtr<Gtk::PrintContext>& print_context)
 {
-  set_n_pages(1);
+  //Call base class:
+  Gtk::PrintOperation::on_begin_print(print_context);
 }
+
+bool PrintOperationPrintLayout::on_paginate(const Glib::RefPtr<Gtk::PrintContext>& print_context)
+{
+  std::cout << "PrintOperationPrintLayout::on_paginate" << std::endl;
+
+  set_n_pages(1); //on_draw_page() will be called for any new pages.
+
+  //Call base class:
+  Gtk::PrintOperation::on_paginate(print_context);
+
+  return true; //Pagination has finished. Don't call this again.
+}
+
 
 void PrintOperationPrintLayout::on_draw_page(
         const Glib::RefPtr<Gtk::PrintContext>& print_context, int page_nr)
@@ -56,6 +72,9 @@ void PrintOperationPrintLayout::on_draw_page(
   //Render the canvas onto the cairo context:
   if(m_canvas)
     m_canvas->render(cairo_context);
+
+  //Call base class:
+  Gtk::PrintOperation::on_draw_page(print_context, page_nr);
 }
 
 void PrintOperationPrintLayout::set_canvas(Canvas_PrintLayout* canvas)

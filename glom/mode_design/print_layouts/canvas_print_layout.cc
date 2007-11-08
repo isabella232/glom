@@ -485,10 +485,27 @@ void Canvas_PrintLayout::fill_with_data(const FoundSet& found_set)
   Glib::ustring sql_query = Utils::build_sql_select_with_where_clause(found_set.m_table_name,
     fieldsToGet,
     found_set.m_where_clause, Glib::ustring() /* extra_join */, found_set.m_sort_clause);
-  sql_query += " LIMIT 1";
+
+  if(!sql_query.empty())
+    sql_query += " LIMIT 1";
+  else
+    return;
   
   bool records_found = false;
-  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute(sql_query);
+  Glib::RefPtr<Gnome::Gda::DataModel> datamodel;
+  try
+  {
+    datamodel = query_execute(sql_query);
+  }
+  catch(const Glib::Exception& ex)
+  {
+    std::cout << "Canvas_PrintLayout::fill_with_data: exception: " << ex.what() << std::endl;
+  }
+  catch(const std::exception& ex)
+  {
+    std::cout << "Canvas_PrintLayout::fill_with_data: exception: " << ex.what() << std::endl;
+  }
+
   if(datamodel)
   {
     const guint rows_count = datamodel->get_n_rows();
