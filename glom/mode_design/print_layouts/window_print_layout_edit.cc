@@ -63,10 +63,14 @@ Window_PrintLayout_Edit::Window_PrintLayout_Edit(BaseObjectType* cobject, const 
   m_hruler->set_metric(Gtk::PIXELS);
   m_vruler->set_metric(Gtk::PIXELS);
 
+  refGlade->get_widget("handle_box", m_palette_handle_box);
+
+
   refGlade->get_widget("button_close", m_button_close);
   m_button_close->signal_clicked().connect( sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_button_close) );
 
   init_menu();
+  init_toolbar();
 
   m_scrolled_window.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
   m_scrolled_window.add(m_canvas);
@@ -194,6 +198,56 @@ void Window_PrintLayout_Edit::init_menu()
 
   add_accel_group(m_uimanager->get_accel_group());
 }
+
+void Window_PrintLayout_Edit::init_toolbar()
+{
+  m_toolbar_action_group = Gtk::ActionGroup::create();
+
+  m_toolbar_action_group->add(Gtk::Action::create("Menu_Insert", Gtk::Stock::ADD, _("_Insert")));
+  m_toolbar_action_group->add(Gtk::Action::create("Action_Toolbar_Field", Gtk::Stock::ADD,_("Insert _Field")),
+                        sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_insert_field) );
+  m_toolbar_action_group->add(Gtk::Action::create("Action_Toolbar_Text", Gtk::Stock::ADD,_("Insert _Text")),
+                        sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_insert_text) );
+  m_toolbar_action_group->add(Gtk::Action::create("Action_Toolbar_Image", Gtk::Stock::ADD,_("Insert _Image")),
+                        sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_insert_image) );
+  m_toolbar_action_group->add(Gtk::Action::create("Action_Toolbar_RelatedRecords", Gtk::Stock::ADD,_("Insert _Related Records")),
+                        sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_insert_relatedrecords) );
+  m_toolbar_action_group->add(Gtk::Action::create("Action_Toolbar_LineHorizontal", Gtk::Stock::ADD,_("Insert _Horizontal Line")),
+                        sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_insert_line_horizontal) );
+  m_toolbar_action_group->add(Gtk::Action::create("Action_Toolbar_LineVertical",Gtk::Stock::ADD, _("Insert _Vertical Line")),
+                        sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_insert_line_vertical) );
+
+  //Build part of the menu structure, to be merged in by using the "PH" placeholders:
+  static const Glib::ustring ui_description =
+    "<ui>"
+    "  <toolbar name='Toolbar'>"
+    "      <toolitem action='Action_Toolbar_Field' />"
+    "      <toolitem action='Action_Toolbar_Text' />"
+    "      <toolitem action='Action_Toolbar_Image' />"
+    "      <separator />"
+    "      <toolitem action='Action_Toolbar_LineHorizontal' />"
+    "      <toolitem action='Action_Toolbar_LineVertical' />"
+    "      <separator />"
+    "      <toolitem action='Action_Toolbar_RelatedRecords' />"
+    "  </toolbar>"
+    "</ui>";
+
+  m_toolbar_uimanager = Gtk::UIManager::create();
+  m_toolbar_uimanager->insert_action_group(m_toolbar_action_group);
+  m_toolbar_uimanager->add_ui_from_string(ui_description);
+
+  //Menubar:
+  Gtk::Toolbar* pToolbar = static_cast<Gtk::Toolbar*>(m_toolbar_uimanager->get_widget("/Toolbar"));
+  if(pToolbar)
+  {
+    pToolbar->set_orientation(Gtk::ORIENTATION_VERTICAL);
+    m_palette_handle_box->add(*pToolbar);
+    pToolbar->show();
+  }
+
+  add_accel_group(m_toolbar_uimanager->get_accel_group());
+}
+
 
 
 Window_PrintLayout_Edit::~Window_PrintLayout_Edit()

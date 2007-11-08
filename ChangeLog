@@ -1,5 +1,14 @@
 2007-11-08  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/glom_developer.glade:
+	* glom/mode_design/print_layouts/window_print_layout_edit.cc:
+	* glom/mode_design/print_layouts/window_print_layout_edit.h:
+	Added an undockable vertical toolbar to replace the Insert menu. 
+	It is not very attractive, and it needs to work as a drag source, 
+	rather than being clickable items. 
+
+2007-11-08  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/mode_design/print_layouts/canvas_print_layout.cc:
 	* glom/mode_design/print_layouts/canvas_print_layout.h:
 	add_layout_group(): added an is_top_level parameter, so we can 

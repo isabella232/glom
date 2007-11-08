@@ -54,6 +54,7 @@ protected:
 
   void enable_buttons();
   void init_menu();
+  void init_toolbar();
 
   void on_menu_file_page_setup();
   void on_menu_insert_field();
@@ -112,10 +113,16 @@ protected:
   Glib::RefPtr<Gtk::ToggleAction> m_action_showgrid, m_action_showrules;
   Glib::RefPtr<Gtk::ToggleAction> m_action_zoom_fit_page_width;
 
+  //Toolbar:
+  Glib::RefPtr<Gtk::ActionGroup> m_toolbar_action_group;
+  Glib::RefPtr<Gtk::UIManager> m_toolbar_uimanager;
+  Gtk::HandleBox* m_palette_handle_box;
+
   //Context menu for clicking on empty space on the canvas:
   Gtk::Menu* m_context_menu;
   Glib::RefPtr<Gtk::ActionGroup> m_context_menu_action_group;
   Glib::RefPtr<Gtk::UIManager> m_context_menu_uimanager;
+
 };
 
 } //namespace Glom

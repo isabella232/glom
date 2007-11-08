@@ -3046,7 +3046,7 @@ The data in the field was not recognized. Please try to correct the data or reve
   </child>
 </widget>
 
- <widget class="GtkWindow" id="window_print_layout_edit">
+  <widget class="GtkWindow" id="window_print_layout_edit">
     <property name="title" translatable="yes">Print Layout Editor</property>
     <child>
       <widget class="GtkVBox" id="vbox2">
@@ -3064,54 +3064,23 @@ The data in the field was not recognized. Please try to correct the data or reve
           </packing>
         </child>
         <child>
-          <widget class="GtkVBox" id="vbox_inner">
+          <widget class="GtkHBox" id="hbox_inner">
             <property name="visible">True</property>
-            <property name="border_width">6</property>
+            <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
             <property name="spacing">6</property>
             <child>
-              <widget class="GtkHBox" id="hbox20">
+              <widget class="GtkVBox" id="vbox_inner">
                 <property name="visible">True</property>
+                <property name="border_width">6</property>
                 <property name="spacing">6</property>
                 <child>
-                  <widget class="GtkLabel" id="label207">
-                    <property name="visible">True</property>
-                    <property name="label" translatable="yes">&lt;b&gt;Table:&lt;/b&gt;</property>
-                    <property name="use_markup">True</property>
-                  </widget>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">False</property>
-                  </packing>
-                </child>
-                <child>
-                  <widget class="GtkLabel" id="label_table_name">
-                    <property name="visible">True</property>
-                    <property name="label" translatable="yes">Table Name</property>
-                  </widget>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">False</property>
-                    <property name="position">1</property>
-                  </packing>
-                </child>
-              </widget>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">False</property>
-              </packing>
-            </child>
-            <child>
-              <widget class="GtkHBox" id="hbox17">
-                <property name="visible">True</property>
-                <property name="spacing">6</property>
-                <child>
-                  <widget class="GtkHBox" id="hbox18">
+                  <widget class="GtkHBox" id="hbox20">
                     <property name="visible">True</property>
                     <property name="spacing">6</property>
                     <child>
-                      <widget class="GtkLabel" id="label208">
+                      <widget class="GtkLabel" id="label207">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">&lt;b&gt;Layout name:&lt;/b&gt;</property>
+                        <property name="label" translatable="yes">&lt;b&gt;Table:&lt;/b&gt;</property>
                         <property name="use_markup">True</property>
                       </widget>
                       <packing>
@@ -3120,11 +3089,13 @@ The data in the field was not recognized. Please try to correct the data or reve
                       </packing>
                     </child>
                     <child>
-                      <widget class="GtkEntry" id="entry_name">
+                      <widget class="GtkLabel" id="label_table_name">
                         <property name="visible">True</property>
-                        <property name="can_focus">True</property>
+                        <property name="label" translatable="yes">Table Name</property>
                       </widget>
                       <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
                         <property name="position">1</property>
                       </packing>
                     </child>
@@ -3135,13 +3106,33 @@ The data in the field was not recognized. Please try to correct the data or reve
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkHBox" id="hbox19">
+                  <widget class="GtkHBox" id="hbox17">
                     <property name="visible">True</property>
+                    <property name="spacing">6</property>
                     <child>
-                      <widget class="GtkLabel" id="label209">
+                      <widget class="GtkHBox" id="hbox18">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">&lt;b&gt;Title:&lt;/b&gt;</property>
-                        <property name="use_markup">True</property>
+                        <property name="spacing">6</property>
+                        <child>
+                          <widget class="GtkLabel" id="label208">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes">&lt;b&gt;Layout name:&lt;/b&gt;</property>
+                            <property name="use_markup">True</property>
+                          </widget>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <widget class="GtkEntry" id="entry_name">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                          </widget>
+                          <packing>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
                       </widget>
                       <packing>
                         <property name="expand">False</property>
@@ -3149,9 +3140,28 @@ The data in the field was not recognized. Please try to correct the data or reve
                       </packing>
                     </child>
                     <child>
-                      <widget class="GtkEntry" id="entry_title">
+                      <widget class="GtkHBox" id="hbox19">
                         <property name="visible">True</property>
-                        <property name="can_focus">True</property>
+                        <child>
+                          <widget class="GtkLabel" id="label209">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes">&lt;b&gt;Title:&lt;/b&gt;</property>
+                            <property name="use_markup">True</property>
+                          </widget>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <widget class="GtkEntry" id="entry_title">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                          </widget>
+                          <packing>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
                       </widget>
                       <packing>
                         <property name="position">1</property>
@@ -3159,93 +3169,102 @@ The data in the field was not recognized. Please try to correct the data or reve
                     </child>
                   </widget>
                   <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
                     <property name="position">1</property>
                   </packing>
                 </child>
-              </widget>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">False</property>
-                <property name="position">1</property>
-              </packing>
-            </child>
-            <child>
-              <widget class="GtkTable" id="table1">
-                <property name="visible">True</property>
-                <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                <property name="n_rows">2</property>
-                <property name="n_columns">2</property>
                 <child>
-                  <widget class="GtkVRuler" id="vruler">
+                  <widget class="GtkTable" id="table1">
                     <property name="visible">True</property>
                     <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                    <property name="upper">10</property>
-                    <property name="position">5</property>
-                    <property name="max_size">10</property>
-                    <property name="metric">GTK_CENTIMETERS</property>
-                  </widget>
-                  <packing>
-                    <property name="top_attach">1</property>
-                    <property name="bottom_attach">2</property>
-                    <property name="x_options"></property>
-                  </packing>
-                </child>
-                <child>
-                  <widget class="GtkHRuler" id="hruler">
-                    <property name="visible">True</property>
-                    <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                    <property name="upper">10</property>
-                    <property name="position">5</property>
-                    <property name="max_size">10</property>
-                    <property name="metric">GTK_CENTIMETERS</property>
-                  </widget>
-                  <packing>
-                    <property name="left_attach">1</property>
-                    <property name="right_attach">2</property>
-                    <property name="y_options"></property>
-                  </packing>
-                </child>
-                <child>
-                  <widget class="GtkVBox" id="vbox_canvas">
-                    <property name="visible">True</property>
+                    <property name="n_rows">2</property>
+                    <property name="n_columns">2</property>
                     <child>
                       <placeholder/>
                     </child>
+                    <child>
+                      <widget class="GtkVBox" id="vbox_canvas">
+                        <property name="visible">True</property>
+                        <child>
+                          <placeholder/>
+                        </child>
+                      </widget>
+                      <packing>
+                        <property name="left_attach">1</property>
+                        <property name="right_attach">2</property>
+                        <property name="top_attach">1</property>
+                        <property name="bottom_attach">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <widget class="GtkHRuler" id="hruler">
+                        <property name="visible">True</property>
+                        <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+                        <property name="upper">10</property>
+                        <property name="position">5</property>
+                        <property name="max_size">10</property>
+                        <property name="metric">GTK_CENTIMETERS</property>
+                      </widget>
+                      <packing>
+                        <property name="left_attach">1</property>
+                        <property name="right_attach">2</property>
+                        <property name="y_options">GTK_SHRINK</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <widget class="GtkVRuler" id="vruler">
+                        <property name="visible">True</property>
+                        <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+                        <property name="upper">10</property>
+                        <property name="position">5</property>
+                        <property name="max_size">10</property>
+                        <property name="metric">GTK_CENTIMETERS</property>
+                      </widget>
+                      <packing>
+                        <property name="top_attach">1</property>
+                        <property name="bottom_attach">2</property>
+                        <property name="x_options">GTK_SHRINK</property>
+                      </packing>
+                    </child>
                   </widget>
                   <packing>
-                    <property name="left_attach">1</property>
-                    <property name="right_attach">2</property>
-                    <property name="top_attach">1</property>
-                    <property name="bottom_attach">2</property>
+                    <property name="position">2</property>
                   </packing>
                 </child>
                 <child>
-                  <placeholder/>
+                  <widget class="GtkHButtonBox" id="hbuttonbox43">
+                    <property name="visible">True</property>
+                    <property name="layout_style">GTK_BUTTONBOX_END</property>
+                    <child>
+                      <widget class="GtkButton" id="button_close">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="can_default">True</property>
+                        <property name="label">gtk-close</property>
+                        <property name="use_stock">True</property>
+                        <property name="response_id">0</property>
+                      </widget>
+                    </child>
+                  </widget>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">3</property>
+                  </packing>
                 </child>
               </widget>
-              <packing>
-                <property name="position">2</property>
-              </packing>
             </child>
             <child>
-              <widget class="GtkHButtonBox" id="hbuttonbox43">
+              <widget class="GtkHandleBox" id="handle_box">
                 <property name="visible">True</property>
-                <property name="layout_style">GTK_BUTTONBOX_END</property>
-                <child>
-                  <widget class="GtkButton" id="button_close">
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="can_default">True</property>
-                    <property name="label">gtk-close</property>
-                    <property name="use_stock">True</property>
-                    <property name="response_id">0</property>
-                  </widget>
-                </child>
+                <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+                <property name="handle_position">GTK_POS_RIGHT</property>
+                <property name="snap_edge">GTK_POS_RIGHT</property>
+                <property name="snap_edge_set">True</property>
               </widget>
               <packing>
-                <property name="expand">False</property>
-                <property name="fill">False</property>
-                <property name="position">3</property>
+                <property name="position">1</property>
               </packing>
             </child>
           </widget>
