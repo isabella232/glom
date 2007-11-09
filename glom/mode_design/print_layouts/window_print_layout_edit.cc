@@ -22,6 +22,7 @@
 #include "window_print_layout_edit.h"
 #include <glom/box_db_table.h>
 #include "canvas_layout_item.h"
+#include "action_layout_item.h"
 #include <glom/libglom/data_structure/layout/layoutitem_line.h>
 #include <glom/libglom/data_structure/layout/layoutitem_portal.h>
 //#include <libgnome/gnome-i18n.h>
@@ -32,6 +33,10 @@
 namespace Glom
 {
 
+//TODO: I don't know what this really means. murrayc.
+const int DRAG_DATA_FORMAT = 8; // 8 bits format
+
+
 Window_PrintLayout_Edit::Window_PrintLayout_Edit(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
 : Gtk::Window(cobject),
   m_entry_name(0),
@@ -41,7 +46,10 @@ Window_PrintLayout_Edit::Window_PrintLayout_Edit(BaseObjectType* cobject, const 
   m_button_close(0),
   m_box(0),
   m_vruler(0),
-  m_hruler(0)
+  m_hruler(0),
+  m_toolbar(0),
+  m_drop_x(0), m_drop_y(0),
+  m_context_menu(0)
 {
   set_default_size(640, 480);
 
@@ -69,14 +77,23 @@ Window_PrintLayout_Edit::Window_PrintLayout_Edit(BaseObjectType* cobject, const 
   refGlade->get_widget("button_close", m_button_close);
   m_button_close->signal_clicked().connect( sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_button_close) );
 
-  init_menu();
-  init_toolbar();
-
   m_scrolled_window.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
   m_scrolled_window.add(m_canvas);
   m_scrolled_window.show_all();
   m_box_canvas->pack_start(m_scrolled_window);
   m_canvas.show();
+
+  //Make the canvas a drag-and-drop destination:
+  m_drag_targets.push_back( Gtk::TargetEntry("glom_palette", Gtk::TARGET_SAME_APP) );
+
+  m_canvas.drag_dest_set(m_drag_targets);
+  m_canvas.signal_drag_drop().connect(
+      sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_canvas_drag_drop) );
+  m_canvas.signal_drag_data_received().connect(
+      sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_canvas_drag_data_received) );
+
+  init_menu();
+  init_toolbar();
 
   m_scrolled_window.get_hadjustment()->signal_changed().connect(
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_scroll_value_changed) );
@@ -204,17 +221,29 @@ void Window_PrintLayout_Edit::init_toolbar()
   m_toolbar_action_group = Gtk::ActionGroup::create();
 
   m_toolbar_action_group->add(Gtk::Action::create("Menu_Insert", Gtk::Stock::ADD, _("_Insert")));
-  m_toolbar_action_group->add(Gtk::Action::create("Action_Toolbar_Field", Gtk::Stock::ADD,_("Insert _Field")),
+  Glib::RefPtr<Action_LayoutItem> action = Action_LayoutItem::create("Action_Toolbar_Field", Gtk::Stock::ADD,_("Field"));
+  action->set_layout_item_type(Action_LayoutItem::ITEM_FIELD);
+  m_toolbar_action_group->add(action,
                         sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_insert_field) );
-  m_toolbar_action_group->add(Gtk::Action::create("Action_Toolbar_Text", Gtk::Stock::ADD,_("Insert _Text")),
+  action = Action_LayoutItem::create("Action_Toolbar_Text", Gtk::Stock::ADD,_("Text"));
+  action->set_layout_item_type(Action_LayoutItem::ITEM_TEXT);
+  m_toolbar_action_group->add(action,
                         sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_insert_text) );
-  m_toolbar_action_group->add(Gtk::Action::create("Action_Toolbar_Image", Gtk::Stock::ADD,_("Insert _Image")),
+  action = Action_LayoutItem::create("Action_Toolbar_Image", Gtk::Stock::ADD,_("Image"));
+  action->set_layout_item_type(Action_LayoutItem::ITEM_IMAGE);
+  m_toolbar_action_group->add(action,
                         sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_insert_image) );
-  m_toolbar_action_group->add(Gtk::Action::create("Action_Toolbar_RelatedRecords", Gtk::Stock::ADD,_("Insert _Related Records")),
+  action = Action_LayoutItem::create("Action_Toolbar_RelatedRecords", Gtk::Stock::ADD,_("Related Records"));
+  action->set_layout_item_type(Action_LayoutItem::ITEM_PORTAL);
+  m_toolbar_action_group->add(action,
                         sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_insert_relatedrecords) );
-  m_toolbar_action_group->add(Gtk::Action::create("Action_Toolbar_LineHorizontal", Gtk::Stock::ADD,_("Insert _Horizontal Line")),
+  action = Action_LayoutItem::create("Action_Toolbar_LineHorizontal", Gtk::Stock::ADD,_("Horizontal Line"));
+  action->set_layout_item_type(Action_LayoutItem::ITEM_LINE_HORIZONTAL);
+  m_toolbar_action_group->add(action,
                         sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_insert_line_horizontal) );
-  m_toolbar_action_group->add(Gtk::Action::create("Action_Toolbar_LineVertical",Gtk::Stock::ADD, _("Insert _Vertical Line")),
+  action = Action_LayoutItem::create("Action_Toolbar_LineVertical",Gtk::Stock::ADD, _("Vertical Line"));
+  action->set_layout_item_type(Action_LayoutItem::ITEM_LINE_VERTICAL);
+  m_toolbar_action_group->add(action,
                         sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_insert_line_vertical) );
 
   //Build part of the menu structure, to be merged in by using the "PH" placeholders:
@@ -236,18 +265,178 @@ void Window_PrintLayout_Edit::init_toolbar()
   m_toolbar_uimanager->insert_action_group(m_toolbar_action_group);
   m_toolbar_uimanager->add_ui_from_string(ui_description);
 
-  //Menubar:
-  Gtk::Toolbar* pToolbar = static_cast<Gtk::Toolbar*>(m_toolbar_uimanager->get_widget("/Toolbar"));
-  if(pToolbar)
+  //Toolbar:
+  if(m_toolbar)
+    delete m_toolbar;
+
+  m_toolbar = static_cast<Gtk::Toolbar*>(m_toolbar_uimanager->get_widget("/Toolbar"));
+  if(m_toolbar)
   {
-    pToolbar->set_orientation(Gtk::ORIENTATION_VERTICAL);
-    m_palette_handle_box->add(*pToolbar);
-    pToolbar->show();
+    m_toolbar->set_orientation(Gtk::ORIENTATION_VERTICAL);
+    m_palette_handle_box->add(*m_toolbar);
+    m_toolbar->show();
   }
 
   add_accel_group(m_toolbar_uimanager->get_accel_group());
+
+  make_toolbar_items_draggable();
 }
 
+Glib::RefPtr<Gdk::Pixbuf> Window_PrintLayout_Edit::get_icon_for_toolbar_item(Gtk::ToolItem& item)
+{
+  Glib::RefPtr<Gdk::Pixbuf> result;
+
+  //Set the icon to show when dragging:
+  Glib::RefPtr<Gtk::Action> action = item.get_action();
+  if(!action)
+    return result;
+
+  const Gtk::StockID stock_id = action->property_stock_id();
+  if(!(stock_id.get_string().empty())) //The operator bool() is only in gtkmm 2.14.
+  {
+    result = item.render_icon(stock_id, Gtk::ICON_SIZE_LARGE_TOOLBAR);
+  }
+  else
+  {
+    //TODO: Use this when we can use gtkmm 2.14: Glib::ustring icon_name = action->property_icon_name();
+    gchar* c_icon_name = 0;
+    g_object_get (action->gobj(), "icon-name", &c_icon_name, NULL);
+    Glib::ustring icon_name = Glib::convert_return_gchar_ptr_to_ustring(c_icon_name);
+    c_icon_name = 0;
+
+    Glib::RefPtr<Gdk::Screen> screen = item.get_screen();
+    if(!screen)
+      return result;
+
+    Glib::RefPtr<Gtk::Settings> settings = Gtk::Settings::get_for_screen(screen);
+
+    int width = 0;
+    int height = 0;
+    //TODO: Use this when we can use gtkmm 2.14: Gtk::IconSize::lookup(with, height, settings);
+    if(!gtk_icon_size_lookup_for_settings (settings->gobj(), GTK_ICON_SIZE_LARGE_TOOLBAR, &width, &height))
+    {
+      //An arbitrary default:
+      width = height = 24;
+    }
+
+    Glib::RefPtr<Gtk::IconTheme> icon_theme = Gtk::IconTheme::get_for_screen(screen);
+    if(!icon_theme)
+      return result;
+
+    result = icon_theme->load_icon(icon_name, MIN(width, height), (Gtk::IconLookupFlags)0);
+  }
+
+  return result;
+}
+
+
+void Window_PrintLayout_Edit::make_toolbar_items_draggable()
+{
+  const int count = m_toolbar->get_n_items();
+  for(int i = 0; i < count; ++i)
+  {
+    Gtk::ToolItem* item = m_toolbar->get_nth_item(i);
+    if(!item)
+      continue;
+
+    //Allow this widget to be dragged:
+    item->set_use_drag_window();
+    item->drag_source_set(m_drag_targets, Gdk::BUTTON1_MASK, Gdk::ACTION_COPY);
+
+    //Set the icon to be shown when dragging:
+    Glib::RefPtr<Gdk::Pixbuf> pixbuf = get_icon_for_toolbar_item(*item);
+    if(pixbuf)
+      item->drag_source_set_icon(pixbuf);
+
+    //item->signal_drag_begin().connect(
+    //  sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_toolbar_item_drag_begin) );
+
+    //item->signal_drag_end().connect(
+    //  sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_toolbar_item_drag_end) );
+
+    //Let the item supply some data when the destination asks for it:
+    Glib::RefPtr<Gtk::Action> action = item->get_action();
+    item->signal_drag_data_get().connect(
+      sigc::bind( sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_toolbar_item_drag_data_get), action) );
+  }
+}
+
+/*
+void Window_PrintLayout_Edit::on_toolbar_item_drag_begin(const Glib::RefPtr<Gdk::DragContext>& drag_context)
+{
+  std::cout << "Window_PrintLayout_Edit::on_toolbar_item_drag_begin" << std::endl;
+}
+
+void Window_PrintLayout_Edit::on_toolbar_item_drag_end(const Glib::RefPtr<Gdk::DragContext>& drag_context)
+{
+  std::cout << "Window_PrintLayout_Edit::on_toolbar_item_drag_end" << std::endl;
+}
+*/
+
+void Window_PrintLayout_Edit::on_toolbar_item_drag_data_get(const Glib::RefPtr<Gdk::DragContext>& drag_context, Gtk::SelectionData& selection_data, guint info, guint time, const Glib::RefPtr<Gtk::Action>& action)
+{
+  //std::cout << "Window_PrintLayout_Edit::on_toolbar_item_drag_data_get" << std::endl;
+  
+  Glib::RefPtr<Action_LayoutItem> action_derived = Glib::RefPtr<Action_LayoutItem>::cast_dynamic(action);
+  Action_LayoutItem::enumItems type = action_derived ? action_derived->get_layout_item_type() : Action_LayoutItem::ITEM_INVALID;
+
+  selection_data.set(selection_data.get_target(), DRAG_DATA_FORMAT,
+          (const guchar*)&type,
+          1 /* 1 byte */);
+}
+
+
+bool Window_PrintLayout_Edit::on_canvas_drag_drop(const Glib::RefPtr<Gdk::DragContext>& drag_context, int x, int y, guint timestamp)
+{
+  Glib::ustring target = m_canvas.drag_dest_find_target(drag_context);
+  if(!target.empty())
+  {
+    m_canvas.drag_get_data(drag_context, target, timestamp);
+    return true;
+  }
+
+  return false;
+}
+
+void Window_PrintLayout_Edit::on_canvas_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& drag_context, int x, int y, const Gtk::SelectionData& selection_data, guint info, guint time)
+{
+  //This is called when an item is dropped on the canvas
+  //(after our drag_drop handler has called drag_get_data()): 
+  std::cout << "Window_PrintLayout_Edit::on_canvas_drag_data_received" << std::endl;
+
+  //Discover what toolbar item was dropped:
+  Action_LayoutItem::enumItems item_type = Action_LayoutItem::ITEM_INVALID;
+  if ((selection_data.get_length() >= 0) && (selection_data.get_format() == DRAG_DATA_FORMAT))
+  {
+    const guint8* data = selection_data.get_data();
+    if(data)
+      item_type = (Action_LayoutItem::enumItems)(data[0]);
+  }
+  
+  drag_context->drag_finish(false, false, time);
+
+  //Set the x and y for use by set_default_position():
+  m_drop_x = x;
+  m_drop_y = y;
+
+  //Add the item to the canvas:
+  if(item_type == Action_LayoutItem::ITEM_FIELD)
+    on_menu_insert_field();
+  else if(item_type == Action_LayoutItem::ITEM_TEXT)
+    on_menu_insert_text();
+  else if(item_type == Action_LayoutItem::ITEM_IMAGE)
+    on_menu_insert_image();
+  else if(item_type == Action_LayoutItem::ITEM_LINE_HORIZONTAL)
+    on_menu_insert_line_horizontal();
+  else if(item_type == Action_LayoutItem::ITEM_LINE_VERTICAL)
+    on_menu_insert_line_vertical();
+  else if(item_type == Action_LayoutItem::ITEM_PORTAL)
+    on_menu_insert_relatedrecords();
+
+  //Clear these so they won't affect future calls to set_default_position():
+  m_drop_x = 0;
+  m_drop_y = 0;
+}
 
 
 Window_PrintLayout_Edit::~Window_PrintLayout_Edit()
@@ -438,23 +627,27 @@ bool Window_PrintLayout_Edit::get_is_item_at(double x, double y)
   return layout_item;
 }
 
-void Window_PrintLayout_Edit::set_default_position(const sharedptr<LayoutItem>& item)
+void Window_PrintLayout_Edit::set_default_position(const sharedptr<LayoutItem>& item, int x, int y)
 {
-  double x = 10;
-  double y = 10;
+  std::cout << "Window_PrintLayout_Edit::set_default_position(): x=" << x << ", y=" << y << std::endl;
+
+  double item_x = x;
+  double item_y = y;
+  m_canvas.convert_from_pixels(item_x, item_y);
+  
  
   //TODO: This doesn't seem to actually work:
-  while(get_is_item_at(x, y))
+  while(get_is_item_at(item_x, item_y))
   {
-    x += 10;
-    y += 10;
+    item_x += 10;
+    item_y += 10;
   }
 
   double height = 10;
   if(sharedptr<LayoutItem_Portal>::cast_dynamic(item))
     height = 150;
 
-  item->set_print_layout_position(x, y, 100, height);
+  item->set_print_layout_position(item_x, item_y, 100, height);
 }
 
 void Window_PrintLayout_Edit::on_menu_insert_field()
@@ -462,7 +655,7 @@ void Window_PrintLayout_Edit::on_menu_insert_field()
   sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
 
   // Note to translators: This is the default contents of a text item on a print layout: 
-  set_default_position(layout_item);
+  set_default_position(layout_item, m_drop_x, m_drop_y);
 
   Glib::RefPtr<CanvasLayoutItem> item = CanvasLayoutItem::create(layout_item);
   m_canvas.add_canvas_layout_item(item);
@@ -504,9 +697,13 @@ void Window_PrintLayout_Edit::on_menu_insert_line_horizontal()
 {
   sharedptr<LayoutItem_Line> layout_item = sharedptr<LayoutItem_Line>::create();
 
+  double item_x = m_drop_x;
+  double item_y = m_drop_y;
+  m_canvas.convert_from_pixels(item_x, item_y);
+
   // Note to translators: This is the default contents of a text item on a print layout: 
   //layout_item->set_text(_("text"));
-  layout_item->set_coordinates(10, 10, 110, 10);
+  layout_item->set_coordinates(item_x, item_y, item_x + 100, item_y);
 
   Glib::RefPtr<CanvasLayoutItem> item = CanvasLayoutItem::create(layout_item);
   m_canvas.add_canvas_layout_item(item);
@@ -515,9 +712,14 @@ void Window_PrintLayout_Edit::on_menu_insert_line_horizontal()
 void Window_PrintLayout_Edit::on_menu_insert_line_vertical()
 {
   sharedptr<LayoutItem_Line> layout_item = sharedptr<LayoutItem_Line>::create();
+
+  double item_x = m_drop_x;
+  double item_y = m_drop_y;
+  m_canvas.convert_from_pixels(item_x, item_y);
+
   // Note to translators: This is the default contents of a text item on a print layout: 
   //layout_item->set_text(_("text"));
-  layout_item->set_coordinates(10, 10, 10, 110);
+  layout_item->set_coordinates(item_x, item_y, item_x, item_y + 100);
 
   Glib::RefPtr<CanvasLayoutItem> item = CanvasLayoutItem::create(layout_item);
   m_canvas.add_canvas_layout_item(item);

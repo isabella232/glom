@@ -55,6 +55,7 @@ protected:
   void enable_buttons();
   void init_menu();
   void init_toolbar();
+  void make_toolbar_items_draggable();
 
   void on_menu_file_page_setup();
   void on_menu_insert_field();
@@ -75,14 +76,22 @@ protected:
   void on_scroll_value_changed();
   void on_button_close();
 
+  //void on_toolbar_item_drag_begin(const Glib::RefPtr<Gdk::DragContext>& drag_context);
+  //void on_toolbar_item_drag_end(const Glib::RefPtr<Gdk::DragContext>& drag_context);
+  void on_toolbar_item_drag_data_get(const Glib::RefPtr<Gdk::DragContext>& drag_context, Gtk::SelectionData& selection_data, guint info, guint time, const Glib::RefPtr<Gtk::Action>& action);
+  bool on_canvas_drag_drop(const Glib::RefPtr<Gdk::DragContext>& drag_context, int x, int y, guint timestamp);
+  void on_canvas_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& drag_context, int x, int y, const Gtk::SelectionData& selection_data, guint info, guint time);
+
   //override:
   virtual bool on_configure_event(GdkEventConfigure* event);
+
+  Glib::RefPtr<Gdk::Pixbuf> get_icon_for_toolbar_item(Gtk::ToolItem& item);
 
   void setup_context_menu();
   void set_ruler_sizes();
 
   bool get_is_item_at(double x, double y);
-  void set_default_position(const sharedptr<LayoutItem>& item);
+  void set_default_position(const sharedptr<LayoutItem>& item, int x = 0, int y = 0);
 
   //Box_DB_Table_Definition* m_box;
   Glib::ustring m_name_original;
@@ -114,15 +123,17 @@ protected:
   Glib::RefPtr<Gtk::ToggleAction> m_action_zoom_fit_page_width;
 
   //Toolbar:
+  Gtk::Toolbar* m_toolbar;
   Glib::RefPtr<Gtk::ActionGroup> m_toolbar_action_group;
   Glib::RefPtr<Gtk::UIManager> m_toolbar_uimanager;
   Gtk::HandleBox* m_palette_handle_box;
-
+  std::list<Gtk::TargetEntry> m_drag_targets;
+  int m_drop_x, m_drop_y;
+  
   //Context menu for clicking on empty space on the canvas:
   Gtk::Menu* m_context_menu;
   Glib::RefPtr<Gtk::ActionGroup> m_context_menu_action_group;
   Glib::RefPtr<Gtk::UIManager> m_context_menu_uimanager;
-
 };
 
 } //namespace Glom

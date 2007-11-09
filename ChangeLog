@@ -1,3 +1,14 @@
+2007-11-09  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/mode_design/print_layouts/Makefile.am:
+	* glom/mode_design/print_layouts/action_layout_item.cc:
+	* glom/mode_design/print_layouts/action_layout_item.h:
+	* glom/mode_design/print_layouts/window_print_layout_edit.cc:
+	* glom/mode_design/print_layouts/window_print_layout_edit.h:
+	Added a toolbar whose items can be dragged to the canvas.
+	It is not working perfectly and it is not pretty, but it is a 
+	start.
+
 2007-11-08  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/glom_developer.glade:
