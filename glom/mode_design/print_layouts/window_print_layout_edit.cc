@@ -628,8 +628,6 @@ bool Window_PrintLayout_Edit::get_is_item_at(double x, double y)
 
 void Window_PrintLayout_Edit::set_default_position(const sharedptr<LayoutItem>& item, int x, int y)
 {
-  std::cout << "Window_PrintLayout_Edit::set_default_position(): x=" << x << ", y=" << y << std::endl;
-
   double item_x = x;
   double item_y = y;
   m_canvas.convert_from_pixels(item_x, item_y);
@@ -666,7 +664,9 @@ void Window_PrintLayout_Edit::on_menu_insert_text()
 
   // Note to translators: This is the default contents of a text item on a print layout: 
   layout_item->set_text(_("text"));
-  set_default_position(layout_item);
+  set_default_position(layout_item, m_drop_x, m_drop_y);
+
+  std::cout << "Window_PrintLayout_Edit::on_menu_insert_text(): m_drop_x=" << m_drop_x << std::endl;
 
   Glib::RefPtr<CanvasLayoutItem> item = CanvasLayoutItem::create(layout_item);
   m_canvas.add_canvas_layout_item(item);
@@ -677,7 +677,7 @@ void Window_PrintLayout_Edit::on_menu_insert_image()
   sharedptr<LayoutItem_Image> layout_item = sharedptr<LayoutItem_Image>::create();
   // Note to translators: This is the default contents of a text item on a print layout: 
   //layout_item->set_text(_("text"));
-  set_default_position(layout_item);
+  set_default_position(layout_item, m_drop_x, m_drop_y);
 
   Glib::RefPtr<CanvasLayoutItem> item = CanvasLayoutItem::create(layout_item);
   m_canvas.add_canvas_layout_item(item);
@@ -686,7 +686,7 @@ void Window_PrintLayout_Edit::on_menu_insert_image()
 void Window_PrintLayout_Edit::on_menu_insert_relatedrecords()
 {
   sharedptr<LayoutItem_Portal> layout_item = sharedptr<LayoutItem_Portal>::create();
-  set_default_position(layout_item);
+  set_default_position(layout_item, m_drop_x, m_drop_y);
 
   Glib::RefPtr<CanvasLayoutItem> item = CanvasLayoutItem::create(layout_item);
   m_canvas.add_canvas_layout_item(item);

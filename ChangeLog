@@ -1,5 +1,13 @@
 2007-11-12  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/glom_developer.glade: Make the toolbar pack_end and non-expand 
+	so that it acts as expected.
+	* glom/mode_design/print_layouts/window_print_layout_edit.cc:
+	Call set_default_position() with the drop coordinates, so that all items 
+	are dropped at the correct place.
+
+2007-11-12  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/mode_design/print_layouts/window_print_layout_edit.cc:
 	on_canvas_drag_drop(): Do not call drag_get_data(). It does not seem 
 	necessary - it causes two drops to happen instead of one.
