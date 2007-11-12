@@ -1,5 +1,12 @@
 2007-11-12  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/mode_design/print_layouts/box_print_layouts.cc:
+	on_adddel_changed();
+	* glom/navigation/box_tables.cc: on_adddel_changed(): 
+	Fix the rename confirmation dialog to actually have two buttons. 
+
+2007-11-12  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/mode_design/print_layouts/canvas_print_layout.cc:
 	fill_with_data(): Do not try to get data for fields that were 
 	not yet chosen.

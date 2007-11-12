@@ -214,7 +214,9 @@ void Box_Print_Layouts::on_adddel_changed(const Gtk::TreeModel::iterator& row, g
         if(!name.empty() && !name_new.empty())
         {
           Glib::ustring strMsg = _("Are you sure that you want to rename this print layout?");  //TODO: Show old and new names?
-          Gtk::MessageDialog dialog(_("Rename Print Layout"));
+          Gtk::MessageDialog dialog(_("<b>Rename Print Layout</b>"), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE );
+          dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+          dialog.add_button(_("Rename"), Gtk::RESPONSE_OK);
           dialog.set_secondary_text(strMsg);
           const int iButtonClicked = dialog.run();
 
