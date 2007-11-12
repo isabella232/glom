@@ -391,7 +391,7 @@ bool Window_PrintLayout_Edit::on_canvas_drag_drop(const Glib::RefPtr<Gdk::DragCo
   Glib::ustring target = m_canvas.drag_dest_find_target(drag_context);
   if(!target.empty())
   {
-    m_canvas.drag_get_data(drag_context, target, timestamp);
+    //m_canvas.drag_get_data(drag_context, target, timestamp);
     return true;
   }
 
@@ -402,8 +402,7 @@ void Window_PrintLayout_Edit::on_canvas_drag_data_received(const Glib::RefPtr<Gd
 {
   //This is called when an item is dropped on the canvas
   //(after our drag_drop handler has called drag_get_data()): 
-  std::cout << "Window_PrintLayout_Edit::on_canvas_drag_data_received" << std::endl;
-
+  
   //Discover what toolbar item was dropped:
   Action_LayoutItem::enumItems item_type = Action_LayoutItem::ITEM_INVALID;
   if ((selection_data.get_length() >= 0) && (selection_data.get_format() == DRAG_DATA_FORMAT))
@@ -699,6 +698,7 @@ void Window_PrintLayout_Edit::on_menu_insert_line_horizontal()
 
   double item_x = m_drop_x;
   double item_y = m_drop_y;
+  std::cout << "Window_PrintLayout_Edit::on_menu_insert_line_horizontal" << std::endl;
   m_canvas.convert_from_pixels(item_x, item_y);
 
   // Note to translators: This is the default contents of a text item on a print layout: 

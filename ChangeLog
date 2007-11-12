@@ -1,5 +1,11 @@
 2007-11-12  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/mode_design/print_layouts/window_print_layout_edit.cc:
+	on_canvas_drag_drop(): Do not call drag_get_data(). It does not seem 
+	necessary - it causes two drops to happen instead of one.
+
+2007-11-12  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/mode_design/print_layouts/box_print_layouts.cc:
 	on_adddel_changed();
 	* glom/navigation/box_tables.cc: on_adddel_changed(): 
