@@ -482,7 +482,7 @@ void Canvas_PrintLayout::fill_with_data(const FoundSet& found_set)
       continue;
       
     sharedptr<LayoutItem_Field> layoutitem_field = sharedptr<LayoutItem_Field>::cast_dynamic(layout_item);
-    if(layoutitem_field)
+    if(layoutitem_field && !(layoutitem_field->get_name().empty()))
     {
       fieldsToGet.push_back(layoutitem_field);
       
@@ -492,6 +492,9 @@ void Canvas_PrintLayout::fill_with_data(const FoundSet& found_set)
       ++field_i;
     } 
   }
+
+  if(fieldsToGet.empty())
+    return;
 
   Glib::ustring sql_query = Utils::build_sql_select_with_where_clause(found_set.m_table_name,
     fieldsToGet,

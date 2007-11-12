@@ -1,3 +1,9 @@
+2007-11-12  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/mode_design/print_layouts/canvas_print_layout.cc:
+	fill_with_data(): Do not try to get data for fields that were 
+	not yet chosen.
+
 2007-11-09  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/mode_design/print_layouts/Makefile.am:
