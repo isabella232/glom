@@ -72,11 +72,12 @@ public:
 
   void on_menu_userlevel_Developer(const Glib::RefPtr<Gtk::RadioAction>& action, const Glib::RefPtr<Gtk::RadioAction>& operator_action);
   void on_menu_userlevel_Operator(const Glib::RefPtr<Gtk::RadioAction>& action);
-#endif // !GLOM_ENABLE_CLIENT_ONLY
 
   void on_menu_file_export();
-  void on_menu_file_print();
   void on_menu_file_print_edit_layouts();
+
+#endif // !GLOM_ENABLE_CLIENT_ONLY
+  void on_menu_file_print();
 
   void on_menu_Mode_Data();
   void on_menu_Mode_Find();

@@ -196,58 +196,11 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
 
   //Load the Glade file and instantiate its widgets to get the dialog stuff:
   get_glade_widget_derived_with_warning("dialog_connection", m_pDialogConnection);
-
-  get_glade_widget_derived_with_warning("box_navigation_tables", m_pBox_Tables);
-  m_pDialog_Tables = new Dialog_Glom(m_pBox_Tables);
-  m_pDialog_Tables->signal_hide().connect(sigc::mem_fun(*this, &Frame_Glom::on_dialog_tables_hide));
- 
-  get_glade_developer_widget_derived_with_warning("box_reports", m_pBox_Reports);
-  m_pDialog_Reports = new Dialog_Glom(m_pBox_Reports);
-
-  get_glade_developer_widget_derived_with_warning("window_report_layout", m_pDialogLayoutReport);
-  add_view(m_pDialogLayoutReport);
-  m_pDialogLayoutReport->signal_hide().connect( sigc::mem_fun(*this, &Frame_Glom::on_dialog_layout_report_hide) );
-
-  get_glade_developer_widget_derived_with_warning("box_print_layouts", m_pBox_PrintLayouts);
-  m_pDialog_PrintLayouts = new Dialog_Glom(m_pBox_PrintLayouts);
-
-  get_glade_developer_widget_derived_with_warning("window_print_layout_edit", m_pDialogLayoutPrint);
-  add_view(m_pDialogLayoutPrint);
-  m_pDialogLayoutPrint->signal_hide().connect( sigc::mem_fun(*this, &Frame_Glom::on_dialog_layout_print_hide) );
-
-  get_glade_developer_widget_derived_with_warning("window_design", m_pDialog_Relationships);
-  m_pDialog_Relationships->set_title("Relationships");
-  m_pDialog_Relationships->signal_hide().connect( sigc::mem_fun(*this, &Frame_Glom::on_developer_dialog_hide));
-
   get_glade_widget_with_warning("dialog_error_connection", m_pDialogConnectionFailed);
 
   m_Mode = MODE_None;
   m_Mode_Previous = MODE_None;
 
-  Gtk::Window* pWindow = get_app_window();
-  if(pWindow)
-    m_pDialog_Tables->set_transient_for(*pWindow);
-
-  m_pDialog_Tables->get_vbox()->pack_start(*m_pBox_Tables);
-  m_pDialog_Tables->set_default_size(300, 400);
-  m_pBox_Tables->show_all();
-
-  //Connect signals:
-  m_pBox_Tables->signal_selected.connect(sigc::mem_fun(*this, &Frame_Glom::on_box_tables_selected));
-
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-  m_pDialog_Reports->get_vbox()->pack_start(*m_pBox_Reports);
-  m_pDialog_Reports->set_default_size(300, 400);
-  m_pBox_Reports->show_all();
-
-  m_pBox_Reports->signal_selected.connect(sigc::mem_fun(*this, &Frame_Glom::on_box_reports_selected));
-  
-  m_pDialog_PrintLayouts->get_vbox()->pack_start(*m_pBox_PrintLayouts);
-  m_pDialog_PrintLayouts->set_default_size(300, 400);
-  m_pBox_PrintLayouts->show_all();
-
-  m_pBox_PrintLayouts->signal_selected.connect(sigc::mem_fun(*this, &Frame_Glom::on_box_print_layouts_selected));
-#endif // !GLOM_ENABLE_CLIENT_ONLY
 
   m_Notebook_Find.signal_find_criteria.connect(sigc::mem_fun(*this, &Frame_Glom::on_notebook_find_criteria));
   m_Notebook_Find.show();
@@ -258,12 +211,6 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
 
   //Fill Composite View:
   //This means that set_document and load/save are delegated to these children:
-  add_view(m_pBox_Tables);
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-  add_view(m_pBox_Reports);
-  add_view(m_pBox_PrintLayouts);
-  add_view(m_pDialog_Relationships); //Also a composite view.
-#endif // !GLOM_ENABLE_CLIENT_ONLY
   add_view(m_pDialogConnection); //Also a composite view.
   add_view(&m_Notebook_Data); //Also a composite view.
   add_view(&m_Notebook_Find); //Also a composite view.
@@ -281,7 +228,8 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
 
 Frame_Glom::~Frame_Glom()
 {
-  remove_view(m_pBox_Tables);
+  if(m_pBox_Tables)
+    remove_view(m_pBox_Tables);
 
   remove_view(&m_Notebook_Data); //Also a composite view.
   remove_view(&m_Notebook_Find); //Also a composite view.
@@ -306,8 +254,11 @@ Frame_Glom::~Frame_Glom()
   }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  remove_view(m_pBox_Reports);
-  remove_view(m_pBox_PrintLayouts);
+  if(m_pBox_Reports)
+    remove_view(m_pBox_Reports);
+
+  if(m_pBox_PrintLayouts)
+    remove_view(m_pBox_PrintLayouts);
 
   if(m_pDialog_Relationships)
   {
@@ -327,6 +278,13 @@ Frame_Glom::~Frame_Glom()
     remove_view(m_pDialogLayoutReport);
     delete m_pDialogLayoutReport;
     m_pDialogLayoutReport = 0;
+  }
+
+  if(m_pDialogLayoutPrint)
+  {
+    remove_view(m_pDialogLayoutPrint);
+    delete m_pDialogLayoutPrint;
+    m_pDialogLayoutPrint = 0;
   }
 
   if(m_pDialog_Fields)
@@ -766,15 +724,7 @@ void Frame_Glom::on_menu_file_print()
 
 void Frame_Glom::on_menu_file_print_edit_layouts()
 {
-  if(get_document()->get_connection_database().empty())
-  {
-    alert_no_table();
-  }
-  else
-  {
-    m_pBox_PrintLayouts->init_db_details(m_table_name);
-    m_pDialog_PrintLayouts->show();
-  }
+  on_menu_developer_print_layouts();
 }
 
 void Frame_Glom::on_menu_Mode_Data()
@@ -966,30 +916,47 @@ void Frame_Glom::do_menu_Navigate_Table(bool open_default)
   if(get_document()->get_connection_database().empty())
   {
     alert_no_table();
+    return;
   }
-  else
+
+  Glib::ustring default_table_name;
+  if(open_default)
+    default_table_name = get_document()->get_default_table();
+
+  if(!default_table_name.empty())
   {
-    m_pBox_Tables->init_db_details();
-
-    Glib::ustring default_table_name;
-    if(open_default)
-    {
-      default_table_name = get_document()->get_default_table();
-    }
-
-    if(!default_table_name.empty())
-    {
-      //Show the default table, and let the user navigate to another table manually if he wants:
-      show_table(default_table_name);
-    }
-    else
-    {
-      //Let the user choose a table:
-      //m_pDialog_Tables->set_policy(false, true, false); //TODO_port
-      //m_pDialog_Tables->load_from_document(); //Refresh
-      m_pDialog_Tables->show();
-    }
+    //Show the default table, and let the user navigate to another table manually if he wants:
+    show_table(default_table_name);
+    return;
   }
+  
+  //Create the dialog, if it has not already been created:
+  if(!m_pBox_Tables)
+  {
+    get_glade_widget_derived_with_warning("box_navigation_tables", m_pBox_Tables);
+    m_pDialog_Tables = new Dialog_Glom(m_pBox_Tables);
+    m_pDialog_Tables->signal_hide().connect(sigc::mem_fun(*this, &Frame_Glom::on_dialog_tables_hide));
+
+    Gtk::Window* pWindow = get_app_window();
+    if(pWindow)
+      m_pDialog_Tables->set_transient_for(*pWindow);
+
+    m_pDialog_Tables->get_vbox()->pack_start(*m_pBox_Tables);
+    m_pDialog_Tables->set_default_size(300, 400);
+    m_pBox_Tables->show_all();
+    add_view(m_pBox_Tables);
+
+    //Connect signals:
+    m_pBox_Tables->signal_selected.connect(sigc::mem_fun(*this, &Frame_Glom::on_box_tables_selected));
+  }
+
+    
+  m_pBox_Tables->init_db_details();
+
+  //Let the user choose a table:
+  //m_pDialog_Tables->set_policy(false, true, false); //TODO_port
+  //m_pDialog_Tables->load_from_document(); //Refresh
+  m_pDialog_Tables->show();
 }
 
 const Gtk::Window* Frame_Glom::get_app_window() const
@@ -1342,16 +1309,8 @@ void Frame_Glom::on_menu_developer_relationships_overview()
 {
   if(!m_dialog_relationships_overview)
   {
-    try
-    {
-      Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom_developer.glade", "dialog_relationships_overview");
-      refXml->get_widget_derived("dialog_relationships_overview", m_dialog_relationships_overview);
-      add_view(m_dialog_relationships_overview);
-    }
-    catch(const Gnome::Glade::XmlError& ex)
-    {
-      std::cerr << ex.what() << std::endl;
-    }
+    get_glade_developer_widget_derived_with_warning("dialog_relationships_overview", m_dialog_relationships_overview);
+    add_view(m_dialog_relationships_overview);
   }
 
   if(m_dialog_relationships_overview)
@@ -1369,6 +1328,15 @@ void Frame_Glom::on_menu_developer_relationships_overview()
 
 void Frame_Glom::do_menu_developer_relationships(Gtk::Window& parent, const Glib::ustring table_name)
 {
+  //Create the widget if necessary:
+  if(!m_pDialog_Relationships)
+  {
+    get_glade_developer_widget_derived_with_warning("window_design", m_pDialog_Relationships);
+    m_pDialog_Relationships->set_title("Relationships");
+    m_pDialog_Relationships->signal_hide().connect( sigc::mem_fun(*this, &Frame_Glom::on_developer_dialog_hide));
+    add_view(m_pDialog_Relationships); //Also a composite view.
+  }
+
   m_pDialog_Relationships->set_transient_for(parent);
   m_pDialog_Relationships->init_db_details(table_name);
   m_pDialog_Relationships->show();
@@ -1437,12 +1405,29 @@ void Frame_Glom::on_menu_developer_reports()
   if(m_table_name.empty())
   {
     alert_no_table(); //TODO: Disable the menu item instead.
+    return;
   }
-  else
+  
+  //Create the widget if necessary:
+  if(!m_pBox_Reports)
   {
-    m_pBox_Reports->init_db_details(m_table_name);
-    m_pDialog_Reports->show();
+    get_glade_developer_widget_derived_with_warning("box_reports", m_pBox_Reports);
+    m_pDialog_Reports = new Dialog_Glom(m_pBox_Reports);
+
+    get_glade_developer_widget_derived_with_warning("window_report_layout", m_pDialogLayoutReport);
+    add_view(m_pDialogLayoutReport);
+    m_pDialogLayoutReport->signal_hide().connect( sigc::mem_fun(*this, &Frame_Glom::on_dialog_layout_report_hide) );
+
+    m_pDialog_Reports->get_vbox()->pack_start(*m_pBox_Reports);
+    m_pDialog_Reports->set_default_size(300, 400);
+    m_pBox_Reports->show_all();
+
+    m_pBox_Reports->signal_selected.connect(sigc::mem_fun(*this, &Frame_Glom::on_box_reports_selected));
+    add_view(m_pBox_Reports);
   }
+
+  m_pBox_Reports->init_db_details(m_table_name);
+  m_pDialog_Reports->show();
 }
 
 void Frame_Glom::on_menu_developer_print_layouts()
@@ -1451,12 +1436,25 @@ void Frame_Glom::on_menu_developer_print_layouts()
   if(m_table_name.empty())
   {
     alert_no_table(); //TODO: Disable the menu item instead.
+    return;
   }
-  else
+
+  //Create the widget if necessary:
+  if(!m_pBox_PrintLayouts)
   {
-    m_pBox_PrintLayouts->init_db_details(m_table_name);
-    m_pDialog_PrintLayouts->show();
+    get_glade_developer_widget_derived_with_warning("box_print_layouts", m_pBox_PrintLayouts);
+    m_pDialog_PrintLayouts = new Dialog_Glom(m_pBox_PrintLayouts);
+
+    m_pDialog_PrintLayouts->get_vbox()->pack_start(*m_pBox_PrintLayouts);
+    m_pDialog_PrintLayouts->set_default_size(300, 400);
+    m_pBox_PrintLayouts->show_all();
+    add_view(m_pBox_PrintLayouts);
+
+    m_pBox_PrintLayouts->signal_selected.connect(sigc::mem_fun(*this, &Frame_Glom::on_box_print_layouts_selected));
   }
+  
+  m_pBox_PrintLayouts->init_db_details(m_table_name);
+  m_pDialog_PrintLayouts->show();
 }
 
 void Frame_Glom::on_menu_developer_script_library()
@@ -1490,6 +1488,14 @@ void Frame_Glom::on_box_reports_selected(const Glib::ustring& report_name)
 
 void Frame_Glom::on_box_print_layouts_selected(const Glib::ustring& print_layout_name)
 {
+  //Create the dialog if necessary:
+  if(!m_pDialogLayoutPrint)
+  {
+    get_glade_developer_widget_derived_with_warning("window_print_layout_edit", m_pDialogLayoutPrint);
+    add_view(m_pDialogLayoutPrint);
+    m_pDialogLayoutPrint->signal_hide().connect( sigc::mem_fun(*this, &Frame_Glom::on_dialog_layout_print_hide) );
+  }
+
   m_pDialog_PrintLayouts->hide();
 
   sharedptr<PrintLayout> print_layout = get_document()->get_print_layout(m_table_name, print_layout_name);
