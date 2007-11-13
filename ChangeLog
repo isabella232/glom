@@ -1,5 +1,14 @@
 2007-11-13  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/Makefile.am: Add an extra repeated link line.
+	* glom/frame_glom.h: Remove the horrible extra member 
+	variable hack around that linker strangeness.
+
+	* glom/utility_widgets/canvas/Makefile.am: Correct some filenames to 
+	fix the distcheck.
+
+2007-11-13  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/mode_design/print_layouts/window_print_layout_edit.cc:
 	* glom/mode_design/print_layouts/window_print_layout_edit.h:
 	Handle the drag-motion signal to show a temporary canvas item while dragging. 

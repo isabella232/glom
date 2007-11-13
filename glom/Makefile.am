@@ -82,6 +82,7 @@ endif
 
 glom_LDADD += python_embed/libpython_embed.a \
               $(top_builddir)/glom/libglom/libglom.la \
+              $(top_builddir)/glom/mode_data/libmode_data.a \
               $(GLOM_LIBS) $(PYTHON_LDFLAGS) -lutil -lgettextpo
 
 
