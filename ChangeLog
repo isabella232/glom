@@ -1,5 +1,13 @@
 2007-11-13  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/mode_design/print_layouts/window_print_layout_edit.cc:
+	* glom/mode_design/print_layouts/window_print_layout_edit.h:
+	Handle the drag-motion signal to show a temporary canvas item while dragging. 
+	But this does not work - the cursor is grabbed and no further motion events 
+	occur, so this is partly commented out.
+
+2007-11-13  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/frame_glom.cc:
 	* glom/frame_glom.h: Move dialog creation from the constructor to 
 	where they are first used. This reduces start-up time slightly, and stops 

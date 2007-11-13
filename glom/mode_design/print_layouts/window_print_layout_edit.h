@@ -80,7 +80,8 @@ protected:
   //void on_toolbar_item_drag_end(const Glib::RefPtr<Gdk::DragContext>& drag_context);
   void on_toolbar_item_drag_data_get(const Glib::RefPtr<Gdk::DragContext>& drag_context, Gtk::SelectionData& selection_data, guint info, guint time, const Glib::RefPtr<Gtk::Action>& action);
   bool on_canvas_drag_drop(const Glib::RefPtr<Gdk::DragContext>& drag_context, int x, int y, guint timestamp);
-  void on_canvas_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& drag_context, int x, int y, const Gtk::SelectionData& selection_data, guint info, guint time);
+  bool on_canvas_drag_motion(const Glib::RefPtr<Gdk::DragContext>& drag_context, int x, int y, guint timestamp);
+  void on_canvas_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& drag_context, int x, int y, const Gtk::SelectionData& selection_data, guint info, guint timestamp);
 
   //override:
   virtual bool on_configure_event(GdkEventConfigure* event);
@@ -112,6 +113,10 @@ protected:
   Gtk::VBox* m_box;
   Gtk::ScrolledWindow m_scrolled_window;
   Canvas_PrintLayout m_canvas;
+
+  //A preview of the item being dragged onto the canvas:
+  bool m_drag_preview_requested;
+  Glib::RefPtr<CanvasLayoutItem> m_layout_item_dropping;
 
   Gtk::VRuler* m_vruler;
   Gtk::HRuler* m_hruler;

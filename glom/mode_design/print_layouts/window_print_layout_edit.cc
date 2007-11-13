@@ -45,6 +45,7 @@ Window_PrintLayout_Edit::Window_PrintLayout_Edit(BaseObjectType* cobject, const 
   m_label_table(0),
   m_button_close(0),
   m_box(0),
+  m_drag_preview_requested(false),
   m_vruler(0),
   m_hruler(0),
   m_toolbar(0),
@@ -89,6 +90,8 @@ Window_PrintLayout_Edit::Window_PrintLayout_Edit(BaseObjectType* cobject, const 
   m_canvas.drag_dest_set(m_drag_targets);
   m_canvas.signal_drag_drop().connect(
       sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_canvas_drag_drop) );
+  m_canvas.signal_drag_motion().connect(
+      sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_canvas_drag_motion) );
   m_canvas.signal_drag_data_received().connect(
       sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_canvas_drag_data_received) );
 
@@ -389,52 +392,142 @@ void Window_PrintLayout_Edit::on_toolbar_item_drag_data_get(const Glib::RefPtr<G
 bool Window_PrintLayout_Edit::on_canvas_drag_drop(const Glib::RefPtr<Gdk::DragContext>& drag_context, int x, int y, guint timestamp)
 {
   Glib::ustring target = m_canvas.drag_dest_find_target(drag_context);
-  if(!target.empty())
-  {
-    //m_canvas.drag_get_data(drag_context, target, timestamp);
-    return true;
-  }
+  if(target.empty())
+    return false;
 
-  return false;
+
+  //m_canvas.drag_get_data(drag_context, target, timestamp);
+  return true; //Allow the drop.
 }
 
-void Window_PrintLayout_Edit::on_canvas_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& drag_context, int x, int y, const Gtk::SelectionData& selection_data, guint info, guint time)
+static Action_LayoutItem::enumItems get_item_type_from_selection_data(const Gtk::SelectionData& selection_data)
 {
-  //This is called when an item is dropped on the canvas
-  //(after our drag_drop handler has called drag_get_data()): 
-  
-  //Discover what toolbar item was dropped:
   Action_LayoutItem::enumItems item_type = Action_LayoutItem::ITEM_INVALID;
-  if ((selection_data.get_length() >= 0) && (selection_data.get_format() == DRAG_DATA_FORMAT))
+  if((selection_data.get_length() >= 0) && (selection_data.get_format() == DRAG_DATA_FORMAT))
   {
     const guint8* data = selection_data.get_data();
     if(data)
       item_type = (Action_LayoutItem::enumItems)(data[0]);
   }
+
+  return item_type;
+}
+
+bool Window_PrintLayout_Edit::on_canvas_drag_motion(const Glib::RefPtr<Gdk::DragContext>& drag_context, int x, int y, guint timestamp)
+{
+  Glib::ustring target = m_canvas.drag_dest_find_target(drag_context);
+  if(target.empty())
+    return false;
+
+  m_canvas.drag_highlight();
+
+  //Create the temporary canvas item if necesary:
+  if(!m_layout_item_dropping)
+  {
+    //std::cout << "Window_PrintLayout_Edit::on_canvas_drag_motion(): Calling drag_get_data()" << std::endl;
+
+    //TODO: This stops the drop (or any further motion events) from happening:
+    //We need to examine the SelectionData:
+    //This will cause our drag_data_received callback to be called, with that information:
+    //m_drag_preview_requested = true;
+    //m_canvas.drag_get_data(drag_context, target, timestamp);
+    return true;
+  }
+
+  drag_context->drag_status(Gdk::ACTION_COPY, timestamp);
+
+  //Move the temporary canvas item to the new position:
+  double item_x = x;
+  double item_y = y;
+  m_canvas.convert_from_pixels(item_x, item_y);
+  m_layout_item_dropping->set_xy(item_x, item_y);
+
+  return true; //Allow the drop.
+}
+
+void Window_PrintLayout_Edit::on_canvas_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& drag_context, int x, int y, const Gtk::SelectionData& selection_data, guint info, guint timestamp)
+{
+  //This is called when an item is dropped on the canvas,
+  //or after our drag_motion handler has called drag_get_data()): 
   
-  drag_context->drag_finish(false, false, time);
+  //Discover what toolbar item was dropped:
+  const Action_LayoutItem::enumItems item_type = get_item_type_from_selection_data(selection_data);
+  
+  if(m_drag_preview_requested)
+  {
+    std::cout << "Window_PrintLayout_Edit::on_canvas_drag_data_received" << std::endl;
 
-  //Set the x and y for use by set_default_position():
-  m_drop_x = x;
-  m_drop_y = y;
+    //Create the temporary drag item if necessary:
+    if(!m_layout_item_dropping)
+    {
+      double item_x = x;
+      double item_y = y;
+      m_canvas.convert_from_pixels(item_x, item_y);
 
-  //Add the item to the canvas:
-  if(item_type == Action_LayoutItem::ITEM_FIELD)
-    on_menu_insert_field();
-  else if(item_type == Action_LayoutItem::ITEM_TEXT)
-    on_menu_insert_text();
-  else if(item_type == Action_LayoutItem::ITEM_IMAGE)
-    on_menu_insert_image();
-  else if(item_type == Action_LayoutItem::ITEM_LINE_HORIZONTAL)
-    on_menu_insert_line_horizontal();
-  else if(item_type == Action_LayoutItem::ITEM_LINE_VERTICAL)
-    on_menu_insert_line_vertical();
-  else if(item_type == Action_LayoutItem::ITEM_PORTAL)
-    on_menu_insert_relatedrecords();
+      sharedptr<LayoutItem> layout_item;
+      //Add the item to the canvas:
+      if(item_type == Action_LayoutItem::ITEM_FIELD)
+        layout_item = sharedptr<LayoutItem_Field>::create();
+      else if(item_type == Action_LayoutItem::ITEM_TEXT)
+        layout_item = sharedptr<LayoutItem_Text>::create();
+      else if(item_type == Action_LayoutItem::ITEM_IMAGE)
+        layout_item = sharedptr<LayoutItem_Image>::create();
+      else if(item_type == Action_LayoutItem::ITEM_LINE_HORIZONTAL)
+      {
+        sharedptr<LayoutItem_Line> layout_item_derived = sharedptr<LayoutItem_Line>::create();
+        layout_item_derived->set_coordinates(item_x, item_y, item_x + 100, item_y);
+        layout_item = layout_item_derived;
+      }
+      else if(item_type == Action_LayoutItem::ITEM_LINE_VERTICAL)
+      {
+        sharedptr<LayoutItem_Line> layout_item_derived = sharedptr<LayoutItem_Line>::create();
+        layout_item_derived->set_coordinates(item_x, item_y, item_x, item_y + 100);
+        layout_item = layout_item_derived;
+      }
+      else if(item_type == Action_LayoutItem::ITEM_PORTAL)
+        layout_item = sharedptr<LayoutItem_Portal>::create();
 
-  //Clear these so they won't affect future calls to set_default_position():
-  m_drop_x = 0;
-  m_drop_y = 0;
+      //Show it on the canvas, at the position:
+      if(layout_item)
+      {
+        m_layout_item_dropping = CanvasLayoutItem::create(layout_item);
+        m_canvas.add_canvas_layout_item(m_layout_item_dropping);
+
+        drag_context->drag_status(Gdk::ACTION_COPY, timestamp);
+
+        m_layout_item_dropping->set_xy(item_x, item_y);
+      }
+    }
+
+    m_drag_preview_requested = false;
+  }
+  else
+  {
+    drag_context->drag_finish(false, false, timestamp);
+    m_canvas.drag_unhighlight();
+
+    //Set the x and y for use by set_default_position():
+    m_drop_x = x;
+    m_drop_y = y;
+
+    //Add the item to the canvas:
+    if(item_type == Action_LayoutItem::ITEM_FIELD)
+      on_menu_insert_field();
+    else if(item_type == Action_LayoutItem::ITEM_TEXT)
+      on_menu_insert_text();
+    else if(item_type == Action_LayoutItem::ITEM_IMAGE)
+      on_menu_insert_image();
+    else if(item_type == Action_LayoutItem::ITEM_LINE_HORIZONTAL)
+      on_menu_insert_line_horizontal();
+    else if(item_type == Action_LayoutItem::ITEM_LINE_VERTICAL)
+      on_menu_insert_line_vertical();
+    else if(item_type == Action_LayoutItem::ITEM_PORTAL)
+      on_menu_insert_relatedrecords();
+
+    //Clear these so they won't affect future calls to set_default_position():
+    m_drop_x = 0;
+    m_drop_y = 0;
+  }
 }
 
 
@@ -666,8 +759,6 @@ void Window_PrintLayout_Edit::on_menu_insert_text()
   layout_item->set_text(_("text"));
   set_default_position(layout_item, m_drop_x, m_drop_y);
 
-  std::cout << "Window_PrintLayout_Edit::on_menu_insert_text(): m_drop_x=" << m_drop_x << std::endl;
-
   Glib::RefPtr<CanvasLayoutItem> item = CanvasLayoutItem::create(layout_item);
   m_canvas.add_canvas_layout_item(item);
 }
@@ -698,7 +789,6 @@ void Window_PrintLayout_Edit::on_menu_insert_line_horizontal()
 
   double item_x = m_drop_x;
   double item_y = m_drop_y;
-  std::cout << "Window_PrintLayout_Edit::on_menu_insert_line_horizontal" << std::endl;
   m_canvas.convert_from_pixels(item_x, item_y);
 
   // Note to translators: This is the default contents of a text item on a print layout: 
@@ -732,14 +822,12 @@ void Window_PrintLayout_Edit::on_button_close()
 
 void Window_PrintLayout_Edit::on_menu_view_show_grid()
 {
- if(m_action_showgrid->get_active())
+  if(m_action_showgrid->get_active())
   {
-    std::cout << "showing" << std::endl;
     m_canvas.set_grid_gap(20);
   }
   else
   {
-    std::cout << "hiding" << std::endl;
     m_canvas.remove_grid();
   }
 }
