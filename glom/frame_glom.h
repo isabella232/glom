@@ -196,8 +196,6 @@ protected:
   Gtk::Dialog* m_pDialogConnectionFailed;
 
   Dialog_Layout_Report* m_pDialogLayoutReport;
-
-  Box_Data_List_Related m_HackToFixLinkerError; //The implementation of this class does not seem to be in the library unless I do this. murrayc.
 };
 
 } //namespace Glom

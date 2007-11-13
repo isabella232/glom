@@ -1,3 +1,9 @@
+2007-11-13  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/Makefile.am: Add an extra repeated link line.
+	* glom/frame_glom.h: Remove the horrible extra member 
+	variable hack around that linker strangeness.
+
 1.6.3:
 
 2007-11-07  Murray Cumming  <murrayc@murrayc.com>

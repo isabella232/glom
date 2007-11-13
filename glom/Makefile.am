@@ -59,6 +59,7 @@ glom_LDADD = reports/libreports.a \
              translation/libtranslation.a \
              relationships_overview/librelationshipsoverview.a \
              python_embed/libpython_embed.a \
+             $(top_builddir)/glom/mode_data/libmode_data.a \
              $(top_builddir)/glom/libglom/libglom.la \
              $(GLOM_LIBS) $(PYTHON_LDFLAGS) -lutil -lgettextpo
 
