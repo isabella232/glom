@@ -208,16 +208,15 @@ void LayoutWidgetBase::apply_formatting(Gtk::Widget& widget, const FieldFormatti
   if(!font_desc.empty())
     widget.modify_font( Pango::FontDescription(font_desc) );
 
-  //TODO: modify_fg doesn't seem to have any effect on the GtkEntry, and the bg changes the border:
-  /*
+  // "text" is the text color. "fg" doesn't seem to have any effect:
   const Glib::ustring fg = formatting.get_text_format_color_foreground();
   if(!fg.empty())
-    widget.modify_fg(Gtk::STATE_NORMAL, Gdk::Color(fg));
+    widget.modify_text(Gtk::STATE_NORMAL, Gdk::Color(fg));
 
+  // "base" is the background color. "bg" seems to change the border:
   const Glib::ustring bg = formatting.get_text_format_color_background();
   if(!bg.empty())
-    widget.modify_bg(Gtk::STATE_NORMAL, Gdk::Color(bg));
-  */
+    widget.modify_base(Gtk::STATE_NORMAL, Gdk::Color(bg));
 }
 
 } //namespace Glom
