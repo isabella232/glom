@@ -1156,43 +1156,35 @@ void FlowTableWithFields::on_flowtable_requested_related_details(const Glib::ust
 
 void FlowTableWithFields::on_dnd_add_layout_item(LayoutWidgetBase* above)
 {
-	type_list_layoutwidgets::iterator cur_widget;
+  type_list_layoutwidgets::iterator cur_widget;
   if (above)
-  {
-	  cur_widget = std::find (m_list_layoutwidgets.begin(), m_list_layoutwidgets.end(), above);
-  }
+    cur_widget = std::find (m_list_layoutwidgets.begin(), m_list_layoutwidgets.end(), above);
   else
-  {
     cur_widget = m_list_layoutwidgets.end();
-  }
-  sharedptr<LayoutItem_Field> layout_item_field = DataWidget::offer_field_list(m_table_name,
-																																							 sharedptr<LayoutItem_Field>(),
-																																							 get_document(),
-																																							 App_Glom::get_application());
 
+  sharedptr<LayoutItem_Field> layout_item_field = 
+    DataWidget::offer_field_list(m_table_name, sharedptr<LayoutItem_Field>(), 
+      get_document(), App_Glom::get_application());
   add_layout_item_at_position(layout_item_field, cur_widget);
 	signal_layout_item_added().emit(TYPE_FIELD);
-	signal_layout_changed().emit();	
+	signal_layout_changed().emit();
 }
 
 void FlowTableWithFields::on_dnd_add_layout_group(LayoutWidgetBase* above)
 {
-	type_list_layoutwidgets::iterator cur_widget;
-  if (above)
-  {
-	  cur_widget = std::find (m_list_layoutwidgets.begin(), m_list_layoutwidgets.end(), above);
-  }
+  type_list_layoutwidgets::iterator cur_widget;
+  if(above)
+    cur_widget = std::find(m_list_layoutwidgets.begin(), m_list_layoutwidgets.end(), above);
   else
-  {
     cur_widget = m_list_layoutwidgets.end();
-  }
-	// FIXME: Get a title using a dialog and set a mimimum size because
-	// the layoutgroup does not have any items
+
+  // TODO: Get a title using a dialog and set a mimimum size because
+  // the layoutgroup does not have any items
   sharedptr<LayoutGroup> group(new LayoutGroup());
   group->set_title("test");
   add_layout_group_at_position(group, cur_widget);
-	signal_layout_item_added().emit(TYPE_GROUP);
-	signal_layout_changed().emit();	
+  signal_layout_item_added().emit(TYPE_GROUP);
+  signal_layout_changed().emit();	
 }
 
 void FlowTableWithFields::on_dnd_add_placeholder(LayoutWidgetBase* above)

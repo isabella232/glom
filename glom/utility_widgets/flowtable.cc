@@ -1064,37 +1064,33 @@ bool FlowTable::on_expose_event(GdkEventExpose* event)
 
 bool FlowTable::on_drag_motion(const Glib::RefPtr<Gdk::DragContext>& drag_context, int x, int y, guint time)
 {
-	m_current_dnd_item = dnd_get_item(x, y);
-	LayoutWidgetBase* above = dnd_find_datawidget ();
+  m_current_dnd_item = dnd_get_item(x, y);
+  LayoutWidgetBase* above = dnd_find_datawidget();
 	
-	// above might be 0 here...
-	on_dnd_add_placeholder (above);
+  // above might be 0 here...
+  on_dnd_add_placeholder(above);
   change_dnd_status(true);
   return true;
-
 }
 
 void FlowTable::on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& drag_context, int drag_x, int drag_y, const Gtk::SelectionData& selection_data, guint, guint time)
 {
-	Glib::ustring type = selection_data.get_data_as_string();
-	LayoutWidgetBase* above = dnd_find_datawidget ();
-	if (type == "LayoutItem")
-  {
+  const Glib::ustring type = selection_data.get_data_as_string();
+  LayoutWidgetBase* above = dnd_find_datawidget ();
+  if(type == "LayoutItem")
     on_dnd_add_layout_item(above);
-  }
   else if (type == "LayoutGroup")
-  {
     on_dnd_add_layout_group(above);
-  }
   else
     std::cerr << "Unknown drop type: " << type << std::endl;
+
   change_dnd_status(false);
 }
 
 void FlowTable::on_drag_leave(const Glib::RefPtr<Gdk::DragContext>& drag_context, guint time)
 {
   on_dnd_remove_placeholder();
-	get_window()->invalidate_region(get_window()->get_visible_region());
+  get_window()->invalidate_region(get_window()->get_visible_region());
   change_dnd_status(false);
 }
 
@@ -1102,28 +1098,26 @@ void FlowTable::on_drag_leave(const Glib::RefPtr<Gdk::DragContext>& drag_context
 FlowTable::FlowTableItem*
 FlowTable::dnd_get_item(int drag_x, int drag_y)
 {
-	// The drag position is relativ to the toplevel GdkWindow and not to
-	// the widget position. We fix this here to match the widget position
-	drag_x += get_allocation().get_x();
-	drag_y += get_allocation().get_y();
-	// Check if we are exactly "on" another widget
+  // The drag position is relativ to the toplevel GdkWindow and not to
+  // the widget position. We fix this here to match the widget position
+  drag_x += get_allocation().get_x();
+  drag_y += get_allocation().get_y();
+
+  // Check if we are exactly "on" another widget
   for (std::vector<FlowTableItem>::iterator cur_item = m_children.begin(); cur_item != m_children.end(); 
        cur_item++)
   {
     std::vector<FlowTableItem>::iterator next_item = cur_item;
     next_item++;
     
-    if (!cur_item->m_first)
-			continue;
-    
-    if (next_item == m_children.end())
-    {
-      return 0;
-    }
-    if (!next_item->m_first)
-    {
+    if(!cur_item->m_first)
       continue;
-    }
+    
+    if(next_item == m_children.end())
+      return 0;
+
+    if(!next_item->m_first)
+      continue;
     
     int x = cur_item->m_first_allocation.get_x();   
     int y = cur_item->m_first_allocation.get_y();    
@@ -1136,36 +1130,34 @@ FlowTable::dnd_get_item(int drag_x, int drag_y)
     int next_width = next_item->m_first_allocation.get_width();
 
     
-    if (cur_item->m_second)
+    if(cur_item->m_second)
     {
-    	width += m_padding + cur_item->m_second_allocation.get_width();
-	    height = MAX (height, cur_item->m_second_allocation.get_height());
-    	x = MIN (x, cur_item->m_second_allocation.get_x());
-    	y = MIN (y, cur_item->m_second_allocation.get_y());
+      width += m_padding + cur_item->m_second_allocation.get_width();
+      height = MAX(height, cur_item->m_second_allocation.get_height());
+      x = MIN(x, cur_item->m_second_allocation.get_x());
+      y = MIN(y, cur_item->m_second_allocation.get_y());
     }
-    if (next_item->m_second)
+
+    if(next_item->m_second)
     {
-    	next_width += m_padding + next_item->m_second_allocation.get_width();
-	    next_height = MAX (next_height, next_item->m_second_allocation.get_height());
-    	next_x = MIN (next_x, next_item->m_second_allocation.get_x());
-    	next_y = MIN (next_y, next_item->m_second_allocation.get_y());
+      next_width += m_padding + next_item->m_second_allocation.get_width();
+      next_height = MAX(next_height, next_item->m_second_allocation.get_height());
+      next_x = MIN(next_x, next_item->m_second_allocation.get_x());
+      next_y = MIN(next_y, next_item->m_second_allocation.get_y());
     }
     
-    if (m_columns_count > 1)
+    if(m_columns_count > 1)
     {
       // Check if we are in the correct column
       int column_width = x + width;
-      if (column_width < drag_x)
-      {
+      if(column_width < drag_x)
         continue;
-      }
     }
     
-    if (drag_y < next_y)
-    {
+    if(drag_y < next_y)
       return &(*cur_item);
-    }
   }
+
   std::cout << "Could not find dnd item, taking end" << std::endl;
   return 0;
 }
@@ -1178,28 +1170,27 @@ void FlowTable::change_dnd_status(bool active)
 LayoutWidgetBase* FlowTable::dnd_find_datawidget()
 {
   // Test if we have a datawidget below which we want to add
-	LayoutWidgetBase* above = 0;
-  if (m_current_dnd_item)
+  LayoutWidgetBase* above = 0;
+  if(m_current_dnd_item)
   {
-    if (m_current_dnd_item->m_first)
+    if(m_current_dnd_item->m_first)
     {
       Gtk::Alignment* alignment = dynamic_cast <Gtk::Alignment*>(m_current_dnd_item->m_first);
       if (alignment)
-      {
         above = dynamic_cast<PlaceholderGlom*>(alignment->get_child());
-      }
     }
-    if (!above && m_current_dnd_item->m_first)
-    {
+
+    if(!above && m_current_dnd_item->m_first)
       above = dynamic_cast<LayoutWidgetBase*>(m_current_dnd_item->m_first);
-    }
-    if (!above && m_current_dnd_item->m_second)
+
+    if(!above && m_current_dnd_item->m_second)
     {
       above = dynamic_cast<LayoutWidgetBase*>(m_current_dnd_item->m_second);
       //std::cout << g_type_name (G_OBJECT_TYPE (m_current_dnd_item->m_second->gobj())) << std::endl;
     }
 
-    /*if (!above && item->m_first)
+    /*
+    if (!above && item->m_first)
     {
       // LayoutGroup
       Gtk::Frame* frame = dynamic_cast<Gtk::Frame*>(item->m_first);
@@ -1220,9 +1211,11 @@ LayoutWidgetBase* FlowTable::dnd_find_datawidget()
         }
         std::cout << "above LayoutGroup: " << (above != 0) << std::endl;
       }
-    }*/
+    }
+    */
   }
-	return above;
+
+  return above;
 }
 
 } //namespace Glom

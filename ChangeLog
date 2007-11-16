@@ -1,5 +1,12 @@
 2007-11-16  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/utility_widgets/flowtable.cc:
+	* glom/utility_widgets/flowtable.h:
+	* glom/utility_widgets/flowtablewithfields.cc:
+	More whitespace fixes.
+
+2007-11-16  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/application.cc:
 	* glom/application.h:
 	* glom/utility_widgets/dragbar.cc:

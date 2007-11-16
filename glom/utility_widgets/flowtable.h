@@ -95,7 +95,7 @@ protected:
   virtual void on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& drag_context, int, int, const Gtk::SelectionData& selection_data, guint, guint time);
   virtual void on_dnd_add_layout_item(LayoutWidgetBase* above) = 0;
   virtual void on_dnd_add_layout_group(LayoutWidgetBase* above) = 0;
-	virtual void on_dnd_add_placeholder(LayoutWidgetBase* above) = 0;
+  virtual void on_dnd_add_placeholder(LayoutWidgetBase* above) = 0;
   virtual void on_dnd_remove_placeholder() = 0;
 	
   int get_column_height(guint start_widget, guint widget_count, int& total_width) const;
@@ -122,7 +122,7 @@ protected:
   };
 	
   typedef std::vector<FlowTableItem> type_vecChildren;
-	void insert_before (FlowTableItem& item, Gtk::Widget& before);
+  void insert_before(FlowTableItem& item, Gtk::Widget& before);
 	
   int get_item_requested_height(const FlowTableItem& item) const;
   void get_item_requested_width(const FlowTableItem& item, int& first, int& second) const;
@@ -130,8 +130,8 @@ protected:
   
   FlowTableItem* dnd_get_item(int x, int y);
   void change_dnd_status(bool active = true);
-	LayoutWidgetBase* dnd_find_datawidget();
-	FlowTableItem* m_current_dnd_item;
+  LayoutWidgetBase* dnd_find_datawidget();
+  FlowTableItem* m_current_dnd_item;
 	
   bool m_dnd_in_progress;
   
