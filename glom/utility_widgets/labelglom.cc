@@ -30,20 +30,29 @@ namespace Glom
 LabelGlom::LabelGlom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& /* refGlade */)
 : Gtk::Label(cobject)
 {
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   setup_menu();
+#endif // !GLOM_ENABLE_CLIENT_ONLY
+
   init();
 }
 
 LabelGlom::LabelGlom()
 {
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   setup_menu();
+#endif // !GLOM_ENABLE_CLIENT_ONLY
+
   init();
 }
 
 LabelGlom::LabelGlom(const Glib::ustring& label, float xalign, float yalign, bool mnemonic)
 : Gtk::Label(label, xalign, yalign, mnemonic)
 {
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   setup_menu();
+#endif // !GLOM_ENABLE_CLIENT_ONLY
+
   init();
 }
 

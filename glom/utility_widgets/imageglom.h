@@ -58,10 +58,12 @@ public:
 protected:
   void init();
 
-
+  // Note that these are normal signal handlers when glibmm was compiled
+  // without default signal handler API.
   virtual bool on_expose_event(GdkEventExpose* event);
 
   virtual bool on_button_press_event(GdkEventButton *event);
+
   void on_menupopup_activate_select_file();
   void on_menupopup_activate_copy();
   void on_menupopup_activate_paste();

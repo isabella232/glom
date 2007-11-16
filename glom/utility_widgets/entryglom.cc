@@ -38,14 +38,19 @@ EntryGlom::EntryGlom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::X
 : Gtk::Entry(cobject),
   m_glom_type(Field::TYPE_TEXT)
 {
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   setup_menu();
+#endif // !GLOM_ENABLE_CLIENT_ONLY
   init();
 }
 
 EntryGlom::EntryGlom(Field::glom_field_type glom_type)
 : m_glom_type(glom_type)
 {
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   setup_menu();
+#endif // !GLOM_ENABLE_CLIENT_ONLY
+
   init();
 }
 
@@ -57,6 +62,13 @@ void EntryGlom::init()
 {
   if(m_glom_type == Field::TYPE_NUMERIC)
     set_alignment(1.0); //Align numbers to the right.
+
+#ifndef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
+  signal_focus_out_event().connect(sigc::mem_fun(*this, &EntryGlom::on_focus_out_event));
+  signal_activate().connect(sigc::mem_fun(*this, &EntryGlom::on_activate));
+  signal_changed().connect(sigc::mem_fun(*this, &EntryGlom::on_changed));
+  signal_insert_text().connect(sigc::mem_fun(*this, &EntryGlom::on_insert_text));
+#endif // !GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
 }
 
 void EntryGlom::set_glom_type(Field::glom_field_type glom_type)
@@ -97,7 +109,11 @@ void EntryGlom::check_for_change()
 
 bool EntryGlom::on_focus_out_event(GdkEventFocus* event)
 {
+#ifdef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
   bool result = Gtk::Entry::on_focus_out_event(event);
+#else
+  bool result = false;
+#endif // GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
 
   //The user has finished editing.
   check_for_change();
@@ -107,9 +123,11 @@ bool EntryGlom::on_focus_out_event(GdkEventFocus* event)
 }
 
 void EntryGlom::on_activate()
-{ 
+{
+#ifdef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
   //Call base class:
   Gtk::Entry::on_activate();
+#endif // GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
 
   //The user has finished editing.
   check_for_change();
@@ -119,13 +137,17 @@ void EntryGlom::on_changed()
 {
   //The text is being edited, but the user has not finished yet.
 
+#ifdef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
   //Call base class:
   Gtk::Entry::on_changed();
+#endif // GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
 }
 
 void EntryGlom::on_insert_text(const Glib::ustring& text, int* position)
 {
+#ifdef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
   Gtk::Entry::on_insert_text(text, position);
+#endif // GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
 }
 
 void EntryGlom::set_value(const Gnome::Gda::Value& value)
@@ -156,6 +178,7 @@ Gnome::Gda::Value EntryGlom::get_value() const
   return Conversions::parse_value(m_glom_type, get_text(), layout_item->get_formatting_used().m_numeric_format, success);
 }
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
 bool EntryGlom::on_button_press_event(GdkEventButton *event)
 {
   //Enable/Disable items.
@@ -188,6 +211,7 @@ bool EntryGlom::on_button_press_event(GdkEventButton *event)
 
   return Gtk::Entry::on_button_press_event(event);
 }
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 App_Glom* EntryGlom::get_application()
 {

@@ -21,6 +21,8 @@
 #ifndef BOX_DATA_LIST_H
 #define BOX_DATA_LIST_H
 
+#include "config.h" // GLOM_ENABLE_CLIENT_ONLY
+
 #include "box_data.h"
 #include "../utility_widgets/db_adddel/db_adddel_withbuttons.h"
 
@@ -86,7 +88,9 @@ protected:
   virtual void on_adddel_user_added(const Gtk::TreeModel::iterator& row, guint col_with_first_value);
   virtual void on_adddel_user_reordered_columns();
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   virtual void on_adddel_user_requested_layout();
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
   virtual void on_adddel_user_changed(const Gtk::TreeModel::iterator& row, guint col);
   virtual void on_adddel_script_button_clicked(const sharedptr<const LayoutItem_Button>& layout_item, const Gtk::TreeModel::iterator& row);

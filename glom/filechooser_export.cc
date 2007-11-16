@@ -20,6 +20,7 @@
 
 #include "filechooser_export.h"
 #include "mode_data/dialog_layout_export.h"
+#include <glom/libglom/utils.h>
 #include <gtkmm/stock.h>
 #include <glibmm/i18n.h>
 
@@ -28,7 +29,7 @@ namespace Glom
 
 FileChooser_Export::FileChooser_Export()
 : Gtk::FileChooserDialog(_("Export To File."), Gtk::FILE_CHOOSER_ACTION_SAVE),
-  m_extra_widget(false, 6),
+  m_extra_widget(false, Utils::DEFAULT_SPACING_SMALL),
   m_button_format(_("Define Data _Format"), true /* use mnenomic */),
   m_pDialogLayout(0),
   m_document(0)
@@ -44,7 +45,15 @@ FileChooser_Export::FileChooser_Export()
   set_extra_widget(m_extra_widget);
   m_extra_widget.show();
 
-  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_data_layout_export"); //TODO: Use a generic layout dialog?
+  //TODO: Use a generic layout dialog?
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_data_layout_export");
+#else
+  std::auto_ptr<Gnome::Glade::XmlError> error;
+  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_data_layout_export", "", error);
+  // Ignore error, refXml is checked below
+#endif
+
   if(refXml)
   {
     Dialog_Layout_Export* dialog = 0;

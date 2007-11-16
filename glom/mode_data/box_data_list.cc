@@ -37,6 +37,7 @@ Box_Data_List::Box_Data_List()
 {
   m_layout_name = "list";
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_data_layout"); //TODO: Use a generic layout dialog?
   if(refXml)
   {
@@ -49,6 +50,7 @@ Box_Data_List::Box_Data_List()
       m_pDialogLayout->signal_hide().connect( sigc::mem_fun(*this, &Box_Data::on_dialog_layout_hide) );
     }
   }
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
   //m_strHint = _("When you change the data in a field the database is updated immediately.\n Click [Add] or enter data into the last row to add a new record.\n Leave automatic ID fields empty - they will be filled for you.\nOnly the first 100 records are shown.");
 
@@ -66,7 +68,9 @@ Box_Data_List::Box_Data_List()
   m_AddDel.signal_script_button_clicked().connect(sigc::mem_fun(*this, &Box_Data_List::on_adddel_script_button_clicked));
   m_AddDel.signal_user_reordered_columns().connect(sigc::mem_fun(*this, &Box_Data_List::on_adddel_user_reordered_columns));
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   m_AddDel.signal_user_requested_layout().connect(sigc::mem_fun(*this, &Box_Data_List::on_adddel_user_requested_layout));
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 
   //Groups are not very helpful for a list view:
@@ -121,10 +125,35 @@ bool Box_Data_List::fill_from_database()
 
   Bakery::BusyCursor busy_cursor(get_app_window());
 
+  sharedptr<SharedConnection> sharedconnection;
+
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
-    sharedptr<SharedConnection> sharedconnection = connect_to_server(get_app_window());
+    sharedconnection = connect_to_server(get_app_window());
+  }
+  catch(const Glib::Exception& ex)
+  {
+    handle_error(ex);
+    result = false;
+  }
+  catch(const std::exception& ex)
+  {
+    handle_error(ex);
+    result = false;
+  }
+#else
+  std::auto_ptr<ExceptionConnection> error;
+  sharedconnection = connect_to_server(get_app_window(), error);
+  if(error.get())
+  {
+    handle_error(*error);
+    result = false;
+  }
+#endif
 
+  if(sharedconnection)
+  {
     Box_Data::fill_from_database();
 
     //Field Names:
@@ -155,16 +184,6 @@ bool Box_Data_List::fill_from_database()
     } //privs
 
     fill_end();
-  }
-  catch(const Glib::Exception& ex)
-  {
-    handle_error(ex);
-    result = false;
-  }
-  catch(const std::exception& ex)
-  {
-    handle_error(ex);
-    result = false;
   }
 
   return result;
@@ -231,10 +250,12 @@ void Box_Data_List::on_adddel_user_requested_edit(const Gtk::TreeModel::iterator
   signal_user_requested_details().emit(primary_key_value);
 }
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
 void Box_Data_List::on_adddel_user_requested_layout()
 {
   show_layout_dialog();
 }
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 void Box_Data_List::on_adddel_user_requested_delete(const Gtk::TreeModel::iterator& rowStart, const Gtk::TreeModel::iterator&  /* rowEnd TODO */)
 {
@@ -285,7 +306,13 @@ void Box_Data_List::on_adddel_user_added(const Gtk::TreeModel::iterator& row, gu
   //If no primary key value is available yet, then don't add the record yet:
   if(!Conversions::value_is_empty(primary_key_value))
   {
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
     sharedptr<SharedConnection> sharedconnection = connect_to_server(get_app_window()); //Keep it alive while we need the data_model.
+#else
+    std::auto_ptr<ExceptionConnection> error;
+    sharedptr<SharedConnection> sharedconnection = connect_to_server(get_app_window(), error); //Keep it alive while we need the data_model.
+    // Ignore error, sharedconnection presence is checked below
+#endif
     if(sharedconnection)
     {
       sharedptr<LayoutItem_Field> layout_field = sharedptr<LayoutItem_Field>::create();
@@ -364,7 +391,9 @@ void Box_Data_List::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, 
   if(!Conversions::value_is_empty(parent_primary_key_value)) //If the record's primary key is filled in:
   {
     //Just update the record:
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
     try
+#endif // GLIBMM_EXCEPTIONS_ENABLED
     {
       
       Glib::ustring table_name = m_table_name;
@@ -448,6 +477,7 @@ void Box_Data_List::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, 
         fill_from_database(); //Replace with correct values.
       }
     }
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
     catch(const Glib::Exception& ex)
     {
       handle_error(ex);
@@ -456,6 +486,7 @@ void Box_Data_List::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, 
     {
       handle_error(ex);
     }
+#endif // GLIBMM_EXCEPTIONS_ENABLED
   }
   else
   {

@@ -49,7 +49,9 @@ TextViewGlom::TextViewGlom(Field::glom_field_type glom_type)
 
 void TextViewGlom::init()
 {
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   setup_menu();
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
   set_shadow_type(Gtk::SHADOW_IN);
 
@@ -109,8 +111,15 @@ void TextViewGlom::check_for_change()
 
 bool TextViewGlom::on_textview_focus_out_event(GdkEventFocus* event)
 {
+  // TODO: Does the call below make sense even when compiled with
+  // default signal handlers? This function is a normal signal handler in
+  // any case.
+#ifdef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
   //Call base class:
   bool result = Gtk::ScrolledWindow::on_focus_out_event(event);
+#else
+  bool result = false;
+#endif
 
   //The user has finished editing.
   check_for_change();
@@ -169,6 +178,7 @@ Gnome::Gda::Value TextViewGlom::get_value() const
   return Conversions::parse_value(m_glom_type, pNonConstThis->m_TextView.get_buffer()->get_text(true), layout_item->get_formatting_used().m_numeric_format, success);
 }
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
 bool TextViewGlom::on_button_press_event(GdkEventButton *event)
 {
   //Enable/Disable items.
@@ -201,6 +211,7 @@ bool TextViewGlom::on_button_press_event(GdkEventButton *event)
 
   return Gtk::ScrolledWindow::on_button_press_event(event);
 }
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 App_Glom* TextViewGlom::get_application()
 {

@@ -18,6 +18,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#include "config.h" // For GLOM_ENABLE_MAEMO
+
 #include "xsl_utils.h"
 #include <glom/libglom/connectionpool.h>
 #include <glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.h>
@@ -28,7 +30,11 @@
 //#include <libexslt/exslt.h> //For exsltRegisterAll().
 #include <libgnomevfsmm.h>
 #include <glibmm/i18n.h>
+
+#ifndef GLOM_ENABLE_MAEMO
 #include <libgnome/gnome-url.h>
+#endif
+
 #include <sstream> //For stringstream
 
 #include <iostream>
@@ -56,6 +62,7 @@ void GlomXslUtils::transform_and_open(const xmlpp::Document& xml_document, const
 
   Gnome::Vfs::Handle write_handle;
 
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
     //0660 means "this user and his group can read and write this non-executable file".
@@ -67,7 +74,13 @@ void GlomXslUtils::transform_and_open(const xmlpp::Document& xml_document, const
     // If the operation was not successful, print the error and abort
     return; // print_error(ex, output_uri_string);
   }
+#else
+  std::auto_ptr<Gnome::Vfs::exception> error;
+  write_handle.create(temp_uri, Gnome::Vfs::OPEN_WRITE, false, 0660 /* leading zero means octal */, error);
+  if(error.get()) return;
+#endif
 
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
     //Write the data to the output uri
@@ -78,14 +91,24 @@ void GlomXslUtils::transform_and_open(const xmlpp::Document& xml_document, const
     // If the operation was not successful, print the error and abort
     return; //print_error(ex, output_uri_string);
   }
+#else
+  write_handle.create(temp_uri, Gnome::Vfs::OPEN_WRITE, false, 0660 /* leading zero means octal */, error);
+  if(error.get()) return;
+#endif
 
   //Give the user a clue, in case the web browser opens in the background, for instance in a new tab:
   if(parent_window)
     Frame_Glom::show_ok_dialog(_("Report Finished"), _("The report will now be opened in your web browser."), *parent_window, Gtk::MESSAGE_INFO);
 
+#ifdef GLOM_ENABLE_MAEMO
+  // TODO_maemo: We don't have libgnome available. A quick search did not yield
+  // a similar method in the hildon API. Perhaps we can just use
+  //  gnome_vfs_url_show()?
+#else
   //Use the GNOME browser:
-  GError* error = 0;
-  gnome_url_show(temp_uri.c_str(), &error); //This is in libgnome.
+  GError* gerror = 0; // TODO: This leaks memory if an error occurs. We can pass NULL as error if we are not interested in errors.
+  gnome_url_show(temp_uri.c_str(), &gerror); //This is in libgnome.
+#endif
 }
 
 Glib::ustring GlomXslUtils::xslt_process(const xmlpp::Document& xml_document, const std::string& filepath_xslt)

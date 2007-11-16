@@ -28,10 +28,18 @@ libglom_la_SOURCES = appstate.h appstate.cc \
                      utils.h utils.cc \
                      sharedptr.h \
                      standard_table_prefs_fields.h \
-                     avahi_publisher.h avahi_publisher.cc \
 		     gst-package.h gst-package.c
 
+if !GLOM_ENABLE_CLIENT_ONLY
+libglom_la_SOURCES += avahi_publisher.h avahi_publisher.cc
+endif
+
 libglom_la_LDFLAGS = -no-undefined
+
+# Link libglom statically on maemo
+if GLOM_ENABLE_MAEMO
+libglom_la_LDFLAGS += -static
+endif
 
 libglom_la_LIBADD  = document/libdocument.la \
                      data_structure/libdata_structure.la \
@@ -41,7 +49,11 @@ libglom_la_LIBADD  = document/libdocument.la \
                      $(GLOM_LIBS) $(PYTHON_LDFLAGS) -lutil
 
 
-noinst_PROGRAMS = test_sharedptr_layoutitem test_avahi_publisher
+noinst_PROGRAMS = test_sharedptr_layoutitem
+if !GLOM_ENABLE_CLIENT_ONLY
+noinst_PROGRAMS += test_avahi_publisher
+endif
+
 test_sharedptr_layoutitem_SOURCES = test_sharedptr_layoutitem.cc
 test_sharedptr_layoutitem_LDADD =  libglom.la \
               $(GLOM_LIBS) -lutil

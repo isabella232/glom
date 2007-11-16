@@ -17,6 +17,8 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
+
+#include "config.h" // For GLOM_ENABLE_MAEMO
  
 #include <glom/libglom/connectionpool.h>
 #include <bakery/bakery.h>
@@ -27,6 +29,10 @@
 #include <glom/libglom/avahi_publisher.h>
 #include <glibmm/i18n.h>
 
+#ifdef GLOM_ENABLE_MAEMO
+#include <hildonmm/note.h>
+#endif
+
 #include <sys/types.h>
 #include <sys/socket.h> 
 #include <sys/socket.h>
@@ -35,8 +41,6 @@
 #include <signal.h> //To catch segfaults
 
 #include "gst-package.h"
-
-#include "config.h"
 
 namespace Glom
 {
@@ -124,7 +128,10 @@ void SharedConnection::close()
 ConnectionPool* ConnectionPool::m_instance = 0;
 
 ConnectionPool::ConnectionPool()
-: m_self_hosting_active(false),
+:
+#ifndef GLOM_ENABLE_CLIENT_ONLY
+  m_self_hosting_active(false),
+#endif // !GLOM_ENABLE_CLIENT_ONLY
   m_sharedconnection_refcount(0),
   m_ready_to_connect(false),
   m_pFieldTypes(0)
@@ -171,20 +178,32 @@ void ConnectionPool::set_ready_to_connect(bool val)
 }
 
 //static:
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
 sharedptr<SharedConnection> ConnectionPool::get_and_connect()
+#else
+sharedptr<SharedConnection> ConnectionPool::get_and_connect(std::auto_ptr<ExceptionConnection>& error)
+#endif // GLIBMM_EXCEPTIONS_ENABLED
 {
   sharedptr<SharedConnection> result(0);
 
   ConnectionPool* connection_pool = ConnectionPool::get_instance();
   if(connection_pool)
   {
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
     result = connection_pool->connect();
+#else
+    result = connection_pool->connect(error);
+#endif // GLIBMM_EXCEPTIONS_ENABLED
   }
 
   return result;
 }
 
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
 sharedptr<SharedConnection> ConnectionPool::connect()
+#else
+sharedptr<SharedConnection> ConnectionPool::connect(std::auto_ptr<ExceptionConnection>& error)
+#endif
 {
   if(get_ready_to_connect())
   {
@@ -250,9 +269,22 @@ sharedptr<SharedConnection> ConnectionPool::connect()
 
           //*m_refGdaConnection = m_GdaClient->open_connection(m_GdaDataSourceInfo.get_name(), m_GdaDataSourceInfo.get_username(), m_GdaDataSourceInfo.get_password() );
           //m_refGdaConnection.clear(); //Make sure any previous connection is really forgotten.
+
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
           try
           {
+#else
+          std::auto_ptr<Glib::Error> glib_error;
+#endif
+          // Use do/while without condition so we can easily jump out
+          do
+          {
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
             m_refGdaConnection = m_GdaClient->open_connection_from_string("PostgreSQL", cnc_string, m_user, m_password);
+#else
+            m_refGdaConnection = m_GdaClient->open_connection_from_string("PostgreSQL", cnc_string, m_user, m_password, Gnome::Gda::ConnectionOptions(0), glib_error);
+            if(glib_error.get() != NULL) break;
+#endif
             //g_warning("ConnectionPool: connection opened");
 
             //Remember what port is working:
@@ -263,7 +295,12 @@ sharedptr<SharedConnection> ConnectionPool::connect()
               m_pFieldTypes = new FieldTypes(m_refGdaConnection);  
 
             //Enforce ISO formats in the communication:
-            m_refGdaConnection->execute_non_select_command("SET DATESTYLE = 'ISO'");  
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+            m_refGdaConnection->execute_non_select_command("SET DATESTYLE = 'ISO'");
+#else
+            m_refGdaConnection->execute_non_select_command("SET DATESTYLE = 'ISO'", glib_error);
+            if(glib_error.get() != NULL) break;
+#endif
 
             //Open the database, if one has been specified:
             /* This does not seem to work in libgda's postgres provider, so we specify it in the cnc_string instead:
@@ -272,8 +309,13 @@ sharedptr<SharedConnection> ConnectionPool::connect()
               m_refGdaConnection->change_database(m_database);
             */
 
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
             //Get postgres version:
             Glib::RefPtr<Gnome::Gda::DataModel> data_model = m_refGdaConnection->execute_select_command("SELECT version()");
+#else
+            Glib::RefPtr<Gnome::Gda::DataModel> data_model = m_refGdaConnection->execute_select_command("SELECT version()", glib_error);
+            if(glib_error.get() != NULL) break;
+#endif
             if(data_model && data_model->get_n_rows() && data_model->get_n_columns())
             {
               Gnome::Gda::Value value = data_model->get_value_at(0, 0);
@@ -295,10 +337,23 @@ sharedptr<SharedConnection> ConnectionPool::connect()
 
             std::cout << "  Postgres Server version: " << get_postgres_server_version() << std::endl << std::endl;
 
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
             return connect(); //Call this method recursively. This time m_refGdaConnection exists.
+#else
+            return connect(error); //Call this method recursively. This time m_refGdaConnection exists.
+#endif // GLIBMM_EXCEPTIONS_ENABLED
+          }
+          while(false);
+
+#ifndef GLIBMM_EXCEPTIONS_ENABLED
+          if(glib_error.get() != NULL)
+          {
+            const Glib::Error& ex = *glib_error.get();
+#else
           }
           catch(const Gnome::Gda::ConnectionError& ex)
           {
+#endif
             std::cout << "ConnectionPool::connect() Attempt to connect to database failed on port=" << port << ", database=" << m_database << ": " << ex.what() << std::endl;
 
             bool bJustDatabaseMissing = false;
@@ -314,16 +369,32 @@ sharedptr<SharedConnection> ConnectionPool::connect()
               //std::cout << "debug2: connecting: cnc string: " << cnc_string << std::endl;
               std::cout << "Glom: connecting." << std::endl;
 
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
               try
-	      {
-	        //If we could connect without specifying the database.
+#endif
+              {
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+                //If we could connect without specifying the database.
                 Glib::RefPtr<Gnome::Gda::Connection> gda_connection = m_GdaClient->open_connection_from_string("PostgreSQL", cnc_string, m_user, m_password);
+#else
+                Glib::RefPtr<Gnome::Gda::Connection> gda_connection = m_GdaClient->open_connection_from_string("PostgreSQL", cnc_string, m_user, m_password, Gnome::Gda::ConnectionOptions(0), glib_error);
+                if(glib_error.get() == NULL)
+                {
+#endif
                 bJustDatabaseMissing = true;
                 connection_to_default_database_possible = true;
                 m_port = port;
+#ifndef GLIBMM_EXCEPTIONS_ENABLED
+                }
+              }
+              if(glib_error.get() != NULL)
+              {
+                const Glib::Error& ex = *glib_error.get();
+#else
               }
               catch(const Gnome::Gda::ConnectionError& ex)
               {
+#endif
                 std::cerr << "    ConnectionPool::connect() connection also failed when not specifying database: " << ex.what() << std::endl;
               }
             }
@@ -364,7 +435,11 @@ sharedptr<SharedConnection> ConnectionPool::connect()
           std::cout << "  (Connection succeeds, but not to the specific database on port=" << m_port << ", database=" << m_database << std::endl;
         else
               std::cerr << "  (Could not connect even to the default database on any port. database=" << m_database  << std::endl;
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
         throw ExceptionConnection(connection_to_default_database_possible ? ExceptionConnection::FAILURE_NO_DATABASE : ExceptionConnection::FAILURE_NO_SERVER);
+#else
+        error.reset(new ExceptionConnection(connection_to_default_database_possible ? ExceptionConnection::FAILURE_NO_DATABASE : ExceptionConnection::FAILURE_NO_SERVER));
+#endif
       }
     }
   }
@@ -376,24 +451,40 @@ sharedptr<SharedConnection> ConnectionPool::connect()
   return sharedptr<SharedConnection>(0);
 }
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
 void ConnectionPool::set_self_hosted(const std::string& data_uri)
 {
   m_self_hosting_data_uri = data_uri;
 }
 
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
 void ConnectionPool::create_database(const Glib::ustring& database_name)
+#else
+void ConnectionPool::create_database(const Glib::ustring& database_name, std::auto_ptr<Glib::Error>& error)
+#endif
 {
   if(m_GdaClient)
   {
     Glib::RefPtr<Gnome::Gda::ServerOperation> op = m_GdaClient->prepare_create_database(database_name, "PostgreSQL");
     g_assert(op);
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
     op->set_value_at("/SERVER_CNX_P/HOST", get_host());
     op->set_value_at("/SERVER_CNX_P/PORT", m_port);
     op->set_value_at("/SERVER_CNX_P/ADM_LOGIN", get_user());
     op->set_value_at("/SERVER_CNX_P/ADM_PASSWORD", get_password());
     m_GdaClient->perform_create_database(op);
+#else
+    op->set_value_at("/SERVER_CNX_P/HOST", get_host(), error);
+    op->set_value_at("/SERVER_CNX_P/PORT", m_port, error);
+    op->set_value_at("/SERVER_CNX_P/ADM_LOGIN", get_user(), error);
+    op->set_value_at("/SERVER_CNX_P/ADM_PASSWORD", get_password(), error);
+
+    if(error.get() != NULL)
+      m_GdaClient->perform_create_database(op);
+#endif
   }
 }
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 void ConnectionPool::set_host(const Glib::ustring& value)
 {
@@ -479,7 +570,13 @@ void ConnectionPool::on_sharedconnection_finished()
 //static
 bool ConnectionPool::handle_error(bool cerr_only)
 {
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
   sharedptr<SharedConnection> sharedconnection = get_and_connect();
+#else
+  std::auto_ptr<ExceptionConnection> conn_error;
+  sharedptr<SharedConnection> sharedconnection = get_and_connect(conn_error);
+  // Ignore error, sharedconnection presence is checked below
+#endif
   if(sharedconnection)
   {
     Glib::RefPtr<Gnome::Gda::Connection> gda_connection = sharedconnection->get_gda_connection();
@@ -505,8 +602,12 @@ bool ConnectionPool::handle_error(bool cerr_only)
 
       if(!cerr_only)
       {
+#ifdef GLOM_ENABLE_MAEMO
+        Hildon::Note dialog(Hildon::NOTE_TYPE_INFORMATION, error_details);
+#else
         Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Internal error")), true, Gtk::MESSAGE_WARNING );
         dialog.set_secondary_text(error_details);
+#endif
         //TODO: dialog.set_transient_for(*get_application());
         dialog.run(); //TODO: This segfaults in gtk_window_set_modal() when this method is run a second time, for instance if there are two database errors.
         std::cout << "debug: after Internal Error dialog run()." << std::endl;
@@ -540,6 +641,7 @@ bool ConnectionPool::directory_exists_uri(const std::string& uri)
   return vfsuri->uri_exists();
 }
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
 static sighandler_t previous_sig_handler = SIG_DFL; /* Arbitrary default */
 
 /* This is a Linux/Unix signal handler, 
@@ -781,34 +883,62 @@ bool ConnectionPool::create_self_hosting(Gtk::Window* parent_window)
  
   return result;
 }
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 bool ConnectionPool::create_text_file(const std::string& file_uri, const std::string& contents)
 {
   Gnome::Vfs::Handle write_handle;
 
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
+#else
+  std::auto_ptr<Gnome::Vfs::exception> error;
+#endif
   {
     //0660 means "this user and his group can read and write this non-executable file".
     //The 0 prefix means that this is octal.
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
     write_handle.create(file_uri, Gnome::Vfs::OPEN_WRITE, false, 0660 /* leading zero means octal */);
+#else
+    write_handle.create(file_uri, Gnome::Vfs::OPEN_WRITE, false, 0660 /* leading zero means octal */, error);
+#endif
   }
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
   catch(const Gnome::Vfs::exception& ex)
   {
+#else
+  if(error.get() != NULL)
+  {
+    const Gnome::Vfs::exception& ex = *error.get();
+#endif
     std::cerr << "ConnectionPool::create_text_file(): exception caught during file create: " << ex.what() << std::endl;
 
     // If the operation was not successful, print the error and abort
     return false; // print_error(ex, output_uri_string);
   }
 
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
+#endif
   {
     //Write the data to the output uri
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
     GnomeVFSFileSize bytes_written = write_handle.write(contents.data(), contents.size());
-    if(bytes_written != contents.size())
-      return false;
+#else
+    GnomeVFSFileSize bytes_written = write_handle.write(contents.data(), contents.size(), error);
+    if(error.get() != NULL)
+#endif
+      if(bytes_written != contents.size())
+        return false;
   }
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
   catch(const Gnome::Vfs::exception& ex)
   {
+#else
+  if(error.get() != NULL)
+  {
+    Gnome::Vfs::exception& ex = *error.get();
+#endif
     std::cerr << "ConnectionPool::create_text_file(): exception caught during write: " << ex.what() << std::endl;
 
     // If the operation was not successful, print the error and abort
@@ -818,6 +948,7 @@ bool ConnectionPool::create_text_file(const std::string& file_uri, const std::st
   return true; //Success. (At doing nothing, because nothing needed to be done.)
 }
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
 int ConnectionPool::discover_first_free_port(int start_port, int end_port)
 {
   //Open a socket so we can try to bind it to a port:
@@ -867,6 +998,7 @@ int ConnectionPool::discover_first_free_port(int start_port, int end_port)
   std::cout << "debug: ConnectionPool::discover_first_free_port(): No port was available." << std::endl;
   return 0;
 }
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 // Message to packagers:
 // If your Glom package does not depend on PostgreSQL, for some reason, 
@@ -877,6 +1009,7 @@ int ConnectionPool::discover_first_free_port(int start_port, int end_port)
 //
 //#define DISTRO_SPECIFIC_POSTGRES_INSTALL_IMPLEMENTED 1
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
 bool ConnectionPool::check_postgres_is_available_with_warning()
 {
   //EXEEXT is defined in the Makefile.am
@@ -947,8 +1080,9 @@ bool ConnectionPool::install_postgres(Gtk::Window* parent_window)
   }
 #else
   return false; //Failed to install postgres because no installation technique was implemented.
-#endif
+#endif // #if 0
 }
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 bool ConnectionPool::check_postgres_gda_client_is_available_with_warning()
 {
@@ -968,14 +1102,20 @@ bool ConnectionPool::check_postgres_gda_client_is_available_with_warning()
     }
   }
 
+  Glib::ustring message = _("Your installation of Glom is not complete, because the PostgreSQL libgda provider is not available on your system. This provider is needed to access Postgres database servers.\n\nPlease report this bug to your vendor, or your system administrator so it can be corrected.");
+#ifndef GLOM_ENABLE_MAEMO
   /* The Postgres provider was not found, so warn the user: */
   Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Incomplete Glom Installation")), true /* use_markup */, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true /* modal */);
-  dialog.set_secondary_text(_("Your installation of Glom is not complete, because the PostgreSQL libgda provider is not available on your system. This provider is needed to access Postgres database servers.\n\nPlease report this bug to your vendor, or your system administrator so it can be corrected."));
+  dialog.set_secondary_text(message);
   dialog.run();
+#else
+  Hildon::Note note(Hildon::NOTE_TYPE_INFORMATION, message);
+  note.run();
+#endif
   return false;
 }
 
-
+#ifndef GLOM_ENABLE_CLIENT_ONLY
 /** Advertise self-hosting via avahi:
  */
 void ConnectionPool::avahi_start_publishing()
@@ -1005,6 +1145,7 @@ void ConnectionPool::avahi_stop_publishing()
   }
   */
 }
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 
 

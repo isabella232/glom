@@ -25,6 +25,8 @@
 #include <gtkmm.h>
 #include "../mode_data/treestore_layout.h" //Forthe enum.
 
+#include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
+
 namespace Glom
 {
 
@@ -54,12 +56,14 @@ public:
   };
 
   //Popup-menu:
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   virtual void setup_menu();
   virtual void on_menupopup_activate_layout();
   virtual void on_menupopup_activate_layout_properties();
   virtual void on_menupopup_add_item(enumType item);
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
-
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   typedef sigc::signal<void> type_signal_layout_changed;
   type_signal_layout_changed signal_layout_changed();
 
@@ -73,6 +77,7 @@ public:
   //Allow a child widget to delegate to a parent widget:
   typedef sigc::signal<void> type_signal_user_requested_layout_properties;
   type_signal_user_requested_layout_properties signal_user_requested_layout_properties();
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
   virtual void set_read_only(bool read_only = true);
 
@@ -82,6 +87,7 @@ protected:
   sharedptr<LayoutItem> m_pLayoutItem;
   Glib::ustring m_table_name;
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   type_signal_layout_changed m_signal_layout_changed;
   type_signal_layout_item_added m_signal_layout_item_added;
 
@@ -93,8 +99,10 @@ protected:
   //TODO_Performance: //Presumably we waste lots of memory by having this in each layout widget. Maybe we can use one shared menu.
   Glib::RefPtr<Gtk::ActionGroup> m_refActionGroup;
   Glib::RefPtr<Gtk::UIManager> m_refUIManager;
-  Glib::RefPtr<Gtk::Action> m_refContextLayout, m_refContextLayoutProperties, m_refContextAddField, m_refContextAddRelatedRecords, m_refContextAddGroup, m_refContextAddNotebook, m_refContextAddButton, m_refContextAddText;
 
+  Glib::RefPtr<Gtk::Action> m_refContextLayout, m_refContextLayoutProperties;
+  Glib::RefPtr<Gtk::Action> m_refContextAddField, m_refContextAddRelatedRecords, m_refContextAddGroup, m_refContextAddNotebook, m_refContextAddButton, m_refContextAddText;
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 };
 
 } //namespace Glom

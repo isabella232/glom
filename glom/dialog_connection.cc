@@ -37,13 +37,36 @@ Dialog_Connection::Dialog_Connection(BaseObjectType* cobject, const Glib::RefPtr
   refGlade->get_widget("entry_user", m_entry_user);
   refGlade->get_widget("entry_password", m_entry_password);
   refGlade->get_widget("label_database", m_label_database);
+
+#ifdef GLOM_ENABLE_MAEMO
+  // Make the bold title the window title (which cannot be empty in maemo
+  // because it displays <Untitled window> instead). This also helps to
+  // make the dialog smaller in height, so we save a bit screen space required
+  // by the onscreen keyboard.
+  Gtk::Label* title;
+  Gtk::Label* note;
+
+  refGlade->get_widget("connection_title", title);
+  refGlade->get_widget("connection_note", note);
+
+  set_title(title->get_text());
+  title->hide();
+
+  // Without size request, this label enlarges the dialog significantly,
+  // and the text is still truncated.
+  note->set_size_request(400, -1);
+#endif
 }
 
 Dialog_Connection::~Dialog_Connection()
 {
 }
 
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
 sharedptr<SharedConnection> Dialog_Connection::connect_to_server_with_connection_settings() const
+#else
+sharedptr<SharedConnection> Dialog_Connection::connect_to_server_with_connection_settings(std::auto_ptr<ExceptionConnection>& error) const
+#endif
 {
   //std::cout << "debug: Dialog_Connection::connect_to_server_with_connection_settings()" << std::endl;
 
@@ -63,9 +86,11 @@ sharedptr<SharedConnection> Dialog_Connection::connect_to_server_with_connection
       //std::cout << "debug: Dialog_Connection::connect_to_server_with_connection_settings(): m_database_name=" << m_database_name << std::endl;
       connection_pool->set_database(m_database_name);
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
       if(document->get_connection_is_self_hosted())
         connection_pool->set_host("localhost");
       else
+#endif // !GLOM_ENABLE_CLIENT_ONLY
         connection_pool->set_host(m_entry_host->get_text());
  
       connection_pool->set_user(m_entry_user->get_text());
@@ -78,7 +103,11 @@ sharedptr<SharedConnection> Dialog_Connection::connect_to_server_with_connection
 
     connection_pool->set_ready_to_connect(); //Box_DB::connect_to_server() will now attempt the connection-> Shared instances of m_Connection will also be usable.
 
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
     result = Box_DB::connect_to_server(const_cast<Dialog_Connection*>(this));
+#else
+    result = Box_DB::connect_to_server(const_cast<Dialog_Connection*>(this), error);
+#endif
 
     /*
     if(document)
@@ -99,6 +128,7 @@ void Dialog_Connection::load_from_document()
   Document_Glom* document = get_document();
   if(document)
   {
+#ifndef GLOM_ENABLE_CLIENT_ONLY
     //Load server and user:
     if(document->get_connection_is_self_hosted())
     {
@@ -106,6 +136,7 @@ void Dialog_Connection::load_from_document()
        m_entry_host->set_sensitive(false);
     }
     else
+#endif // !GLOM_ENABLE_CLIENT_ONLY
     {
       Glib::ustring host = document->get_connection_server();
       if(host.empty())

@@ -45,13 +45,17 @@ void c_callback_CellRendererList_on_editing_started(GtkCellRenderer* /* self */,
     //pComboBox->pack_start(pCppSelf->m_model_columns.m_col_extra);
 
     Gtk::CellRenderer* cell_second = Gtk::manage(new Gtk::CellRendererText);
-    cell_second->property_xalign() = 0.0f;
+    cell_second->set_property("xalign", 0.0);
 
     //Use the renderer:
     pComboBox->pack_start(*cell_second);
 
     //Make the renderer render the column:
+#ifdef GLIBMM_PROPERTIES_ENABLED
     pComboBox->add_attribute(cell_second->_property_renderable(), pCppSelf->m_model_columns.m_col_extra);
+#else
+    pComboBox->add_attribute(*cell_second, cell_second->_property_renderable(), pCppSelf->m_model_columns.m_col_extra);
+#endif // GLIBMM_PROPERTIES_ENABLED
 
   }
   else
@@ -67,10 +71,9 @@ CellRendererList::CellRendererList()
   m_use_second(false)
 {
   m_refModel = Gtk::ListStore::create(m_model_columns);
-  property_model() = m_refModel;
-
-  property_text_column() = 0; //This must be a text column, in m_refModel.
-  property_editable() = true; //It would be useless if we couldn't edit it.
+  set_property("model", m_refModel);
+  set_property("text-column", 0); //This must be a text column, in m_refModel.
+  set_property("editable", true); //It would be useless if we couldn't edit it.
 
   //See the comment next to the implementation:
   //signal_editing_started().connect(sigc::mem_fun(*this, &CellRendererList::on_editing_started));
@@ -97,7 +100,7 @@ void CellRendererList::append_list_item(const Glib::ustring& text, const Glib::u
 
 void CellRendererList::set_restrict_values_to_list(bool val)
 {
-  property_has_entry() = !val;
+  set_property("has-entry", static_cast<gboolean>(!val));
 }
 
 /* This is not used because the Gtk::CellRenderer::editing_started() signal currently sends a null cell_editable.

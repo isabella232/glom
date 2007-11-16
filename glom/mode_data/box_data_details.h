@@ -21,6 +21,8 @@
 #ifndef BOX_DATA_DETAILS_H
 #define BOX_DATA_DETAILS_H
 
+#include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
+
 #include "box_data.h"
 //#include "box_data_list_related.h"
 #include "../utility_widgets/placeholder.h"
@@ -85,7 +87,10 @@ protected:
   virtual void on_button_nav_last();
 
   virtual void on_userlevel_changed(AppState::userlevels user_level); //override
+
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   virtual void on_flowtable_layout_changed();
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
   //Signal handler: The last 2 args are bind-ed.
   virtual void on_related_record_added(Gnome::Gda::Value key_value, Glib::ustring strFromKeyName);

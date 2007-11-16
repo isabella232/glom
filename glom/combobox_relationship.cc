@@ -47,7 +47,7 @@ ComboBox_Relationship::ComboBox_Relationship(BaseObjectType* cobject, const Glib
   //Add from field (as hint) column:
   m_renderer_fromfield = Gtk::manage(new Gtk::CellRendererText());
   pack_start(*m_renderer_fromfield);
-  m_renderer_fromfield->property_xalign() = 0.0f;
+  m_renderer_fromfield->set_property("xalign", 0.0f);
   set_cell_data_func(*m_renderer_fromfield, sigc::mem_fun(*this, &ComboBox_Relationship::on_cell_data_fromfield));
 
   set_row_separator_func(sigc::mem_fun(*this, &ComboBox_Relationship::on_row_separator));
@@ -232,14 +232,14 @@ void ComboBox_Relationship::on_cell_data_title(const Gtk::TreeModel::const_itera
       //related relationship:
       sharedptr<Relationship> parent_relationship = (*iterParent)[m_model_columns.m_relationship];
       if(relationship)
-        m_renderer_title->property_text() = parent_relationship->get_title_or_name() + "::" + relationship->get_title_or_name();
+	m_renderer_title->set_property("text", parent_relationship->get_title_or_name() + "::" + relationship->get_title_or_name());
     }
     else
-      m_renderer_title->property_text() = relationship->get_title_or_name();
+      m_renderer_title->set_property("text", relationship->get_title_or_name());
   }
   else if(get_has_parent_table())
   {
-    m_renderer_title->property_text() = (m_extra_table_title.empty() ? m_extra_table_name : m_extra_table_title);
+    m_renderer_title->set_property("text", (m_extra_table_title.empty() ? m_extra_table_name : m_extra_table_title));
   }
   else
   {
@@ -265,15 +265,15 @@ void ComboBox_Relationship::on_cell_data_fromfield(const Gtk::TreeModel::const_i
     {
       sharedptr<Relationship> parent_relationship = (*iterParent)[m_model_columns.m_relationship];
       if(parent_relationship)
-        m_renderer_fromfield->property_text() = _(" Via: ") + parent_relationship->get_title() + "::" + relationship->get_from_field();
+        m_renderer_fromfield->set_property("text", _(" Via: ") + parent_relationship->get_title() + "::" + relationship->get_from_field());
     }
     else
     {
-      m_renderer_fromfield->property_text() = _(" Via: ") + relationship->get_to_field();
+      m_renderer_fromfield->set_property("text", _(" Via: ") + relationship->get_to_field());
     }
   }
   else
-    m_renderer_fromfield->property_text() = Glib::ustring();
+    m_renderer_fromfield->set_property("text", Glib::ustring());
 }
 
 void ComboBox_Relationship::set_display_parent_table(const Glib::ustring& table_name, const Glib::ustring& table_title)

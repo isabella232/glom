@@ -21,6 +21,8 @@
 #ifndef BOX_DATA_LIST_RELATED_H
 #define BOX_DATA_LIST_RELATED_H
 
+#include "config.h" // GLOM_ENABLE_CLIENT_ONLY
+
 #include "box_data_list.h"
 #include "../utility_widgets/layoutwidgetbase.h"
 
@@ -51,7 +53,9 @@ public:
   sharedptr<LayoutItem_Portal> get_portal() const;
   virtual sharedptr<const Field> get_key_field() const;
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   virtual void show_layout_dialog();
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
   sigc::signal<void, Gnome::Gda::Value> signal_record_added;
 
@@ -72,7 +76,10 @@ protected:
   virtual void on_adddel_user_added(const Gtk::TreeModel::iterator& row, guint col_with_first_value); //Override.
   virtual void on_record_added(const Gnome::Gda::Value& primary_key_value, const Gtk::TreeModel::iterator& row); //Override. Not a signal handler.
   virtual void on_record_deleted(const Gnome::Gda::Value& primary_key_value); //override.
+
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   virtual void on_dialog_layout_hide(); //override.
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
   virtual void enable_buttons(); //override
 
@@ -82,7 +89,10 @@ protected:
   Gtk::Frame m_Frame;
   Gtk::Alignment m_Alignment;
   Gtk::Label m_Label;
+
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   Dialog_Layout_List_Related* m_pDialogLayoutRelated;
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
   sharedptr<LayoutItem_Portal> m_portal;
   sharedptr<Field> m_key_field;

@@ -7,11 +7,9 @@ INCLUDES = -I@top_srcdir@/ $(GLOM_CFLAGS) $(PYTHON_INCLUDES) \
                     -DGLOM_XSLTDIR=\""$(glomxsltdir)/"\"
 
 noinst_LIBRARIES = libreports.a
-libreports_a_SOURCES = dialog_layout_report.cc dialog_layout_report.h \
-                       treestore_report_layout.cc treestore_report_layout.h \
-                       report_builder.cc report_builder.h
+libreports_a_SOURCES = report_builder.cc report_builder.h
 
-
-
-
-
+if !GLOM_ENABLE_CLIENT_ONLY
+libreports_a_SOURCES += dialog_layout_report.cc dialog_layout_report.h \
+                        treestore_report_layout.cc treestore_report_layout.h
+endif

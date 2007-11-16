@@ -39,7 +39,11 @@ public:
   Dialog_Connection(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
   virtual ~Dialog_Connection();
 
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
   sharedptr<SharedConnection> connect_to_server_with_connection_settings() const;
+#else
+  sharedptr<SharedConnection> connect_to_server_with_connection_settings(std::auto_ptr<ExceptionConnection>& error) const;
+#endif
 
   virtual void load_from_document(); //override
   

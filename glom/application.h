@@ -24,6 +24,7 @@
 #include "bakery/bakery.h"
 #include "frame_glom.h"
 
+#include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
 
 namespace Glom
 {
@@ -49,12 +50,17 @@ public:
   void set_mode_data();
   void set_mode_find();
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   void add_developer_action(const Glib::RefPtr<Gtk::Action>& refAction);
   void remove_developer_action(const Glib::RefPtr<Gtk::Action>& refAction);
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
   AppState::userlevels get_userlevel() const;
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   void update_userlevel_ui();
+#endif // !GLOM_ENABLE_CLIENT_ONLY
+
   void fill_menu_tables();
   void fill_menu_reports(const Glib::ustring& table_name);
 
@@ -78,24 +84,33 @@ protected:
   virtual bool offer_new_or_existing();
 
   virtual void on_menu_help_contents();
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   virtual void on_menu_userlevel_developer();
   virtual void on_menu_userlevel_operator();
   virtual void on_menu_file_save_as_example();
   virtual void on_menu_developer_changelanguage();
   virtual void on_menu_developer_translations();
   virtual void on_window_translations_hide();
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
   virtual void on_menu_file_close(); //override.
 
   virtual Glib::ustring ui_file_select_save(const Glib::ustring& old_file_uri); //overriden.
   virtual void document_history_add(const Glib::ustring& file_uri); //overridden.
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   virtual void on_userlevel_changed(AppState::userlevels userlevel);
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
   virtual Bakery::App* new_instance(); //Override
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   bool recreate_database(bool& user_cancelled); //return indicates success.
+#endif // !GLOM_ENABLE_CLIENT_ONLY
+
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   void stop_self_hosting_of_document_database();
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
   static Glib::ustring get_file_uri_without_extension(const Glib::ustring& uri);
 
@@ -108,12 +123,16 @@ protected:
   typedef std::list< Glib::RefPtr<Gtk::Action> > type_listActions; 
   type_listActions m_listDeveloperActions; //Only enabled when in developer mode.
   Glib::RefPtr<Gtk::Action> m_action_mode_data, m_action_mode_find;
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   Glib::RefPtr<Gtk::RadioAction> m_action_menu_userlevel_developer, m_action_menu_userlevel_operator;
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
   Gtk::VBox* m_pBoxTop;
   Frame_Glom* m_pFrame;
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   Window_Translations* m_window_translations;
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
   Glib::RefPtr<Gtk::ActionGroup> m_refNavTablesActionGroup, m_refNavReportsActionGroup;
   type_listActions m_listNavTableActions, m_listNavReportActions;
@@ -125,7 +144,9 @@ protected:
   Glib::ustring m_ui_save_extra_message;
 
   Glib::ustring m_ui_save_extra_newdb_title;
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   bool m_ui_save_extra_newdb_selfhosted;
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
   // This is set to the URI of an example file that is loaded to be able to
   // prevent adding it into the recently used resources in

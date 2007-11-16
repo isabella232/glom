@@ -18,6 +18,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#include "config.h" // For GLOM_ENABLE_MAEMO
+
 #include <glom/libglom/utils.h>
 #include <glom/libglom/connectionpool.h>
 #include <glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.h>
@@ -25,8 +27,16 @@
 
 #include <glibmm/i18n.h>
 #include <gtkmm/messagedialog.h>
+
+#ifndef GLOM_ENABLE_MAEMO
 #include <libgnome/gnome-url.h>
 #include <libgnome/gnome-help.h>
+#endif
+
+#ifdef GLOM_ENABLE_MAEMO
+#include <hildonmm/note.h>
+#endif
+
 #include <sstream> //For stringstream
 
 #include <iostream>
@@ -40,13 +50,12 @@
 #include <stack>
 
 #ifdef GLOM_ENABLE_MAEMO
-//We use different spacings on Maemo because the screen is smaller:
 const unsigned int Glom::Utils::DEFAULT_SPACING_LARGE =  1;
 const unsigned int Glom::Utils::DEFAULT_SPACING_SMALL =  1;
 #else
 const unsigned int Glom::Utils::DEFAULT_SPACING_LARGE = 12;
 const unsigned int Glom::Utils::DEFAULT_SPACING_SMALL =  6;
-#endif //GLOM_ENABLE_MAEMO
+#endif
 
 namespace Glom
 {
@@ -425,11 +434,21 @@ Utils::type_list_values_with_second Utils::get_choice_values(const sharedptr<con
 
   //std::cout << "debug: get_choice_values(): query: " << sql_query << std::endl;
   //Connect to database:
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
   sharedptr<SharedConnection> connection = ConnectionPool::get_instance()->connect();
-
+#else
+  std::auto_ptr<ExceptionConnection> conn_error;
+  sharedptr<SharedConnection> connection = ConnectionPool::get_instance()->connect(conn_error);
+  if(conn_error.get() != NULL) return list_values;
+#endif
 
   //std::cout << "get_choice_values: Executing SQL: " << sql_query << std::endl;
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
   Glib::RefPtr<Gnome::Gda::DataModel> datamodel = connection->get_gda_connection()->execute_select_command(sql_query);
+#else
+  std::auto_ptr<Glib::Error> error;
+  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = connection->get_gda_connection()->execute_select_command(sql_query, error);
+#endif
 
   if(datamodel)
   {
@@ -813,7 +832,10 @@ void Utils::show_help(const Glib::ustring& id)
   else
   {
     pId = 0;
-   }   
+   }
+
+  // TODO_maemo: Show help on maemo by some other means
+#ifndef GLOM_ENABLE_MAEMO
   if (!gnome_help_display("glom.xml", pId, &err))
   {
      std::string message = std::string(_("Could not display help: ")) + err->message;
@@ -822,14 +844,20 @@ void Utils::show_help(const Glib::ustring& id)
      delete dialog;
      g_error_free(err);
    }
+#endif
 }
 
 
 void Utils::show_ok_dialog(const Glib::ustring& title, const Glib::ustring& message, Gtk::Window& parent, Gtk::MessageType message_type)
 {
+#ifdef GLOM_ENABLE_MAEMO
+  // TODO_maemo: Map message_type to a senseful stock_id?
+  Hildon::Note dialog(Hildon::NOTE_TYPE_INFORMATION, parent, message);
+#else
   Gtk::MessageDialog dialog("<b>" + title + "</b>", true /* markup */, message_type, Gtk::BUTTONS_OK);
   dialog.set_secondary_text(message);
   dialog.set_transient_for(parent);
+#endif
   dialog.run();
 }
 
