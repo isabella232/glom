@@ -1,3 +1,9 @@
+2007-11-16  Andre Klapper  <a9016009@gmx.de>
+
+	* glom/box_db_table_relationships.cc:
+	* glom/glom_developer.glade: 
+	Added translator comments to fix bug #497188.
+
 2007-11-16  Johannes Schmid <johannes.schmid@openismus.com>
 
 	* glom/application.cc:

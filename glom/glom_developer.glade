@@ -7486,7 +7486,7 @@ Which user should be added to this group?</property>
 			  <child>
 			    <widget class="GtkLabel" id="label238">
 			      <property name="visible">True</property>
-			      <property name="label" translatable="yes">Main</property>
+			      <property name="label" translatable="yes" comments="Translators: The Main part of the report (not the footer or header)">Main</property>
 			      <property name="use_underline">False</property>
 			      <property name="use_markup">False</property>
 			      <property name="justify">GTK_JUSTIFY_LEFT</property>
@@ -12250,7 +12250,7 @@ If a suitable related table already exists then you should instead cancel and ju
 			  <child>
 			    <widget class="GtkLabel" id="label253">
 			      <property name="visible">True</property>
-			      <property name="label" translatable="yes">From Field:</property>
+			      <property name="label" translatable="yes" comments="Translators: FROM as in SQL's FROM">From Field:</property>
 			      <property name="use_underline">False</property>
 			      <property name="use_markup">False</property>
 			      <property name="justify">GTK_JUSTIFY_LEFT</property>
@@ -12660,7 +12660,7 @@ If a suitable related table already exists then you should instead cancel and ju
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="can_default">True</property>
-                    <property name="label" translatable="yes">Check</property>
+                    <property name="label" translatable="yes" comments="Translators: This is the verb">Check</property>
                     <property name="use_underline">True</property>
                   </widget>
                 </child>

@@ -46,6 +46,7 @@ void Box_DB_Table_Relationships::init()
 
   m_colTitle = m_AddDel.add_column(_("Title"));
 
+  //Translators: FROM as in SQL's FROM
   m_colFromField = m_AddDel.add_column(_("From Field"), AddDelColumnInfo::STYLE_Choices);
   m_colToTable = m_AddDel.add_column(_("Table"), AddDelColumnInfo::STYLE_Choices);
   m_colToField = m_AddDel.add_column(_("To Field"), AddDelColumnInfo::STYLE_Choices);
