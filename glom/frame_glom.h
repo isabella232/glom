@@ -37,6 +37,7 @@
 #include "mode_design/print_layouts/box_print_layouts.h"
 #include "mode_design/dialog_fields.h"
 #include "mode_design/dialog_relationships.h"
+#include "utility_widgets/dragbar.h"
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
 #include "dialog_connection.h"
@@ -232,6 +233,8 @@ protected:
   Dialog_Relationships* m_pDialog_Relationships;
   Dialog_AddRelatedTable* m_dialog_addrelatedtable;
   Dialog_RelationshipsOverview* m_dialog_relationships_overview;
+  
+  DragBar* m_pDrag_Bar;
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   Dialog_Connection* m_pDialogConnection;

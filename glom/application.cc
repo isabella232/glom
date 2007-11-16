@@ -80,6 +80,7 @@ App_Glom::App_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml
 #endif
   type_base(cobject, "Glom"),
   m_pBoxTop(0),
+	m_pBoxSidebar(0),
   m_pFrame(0),
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   m_window_translations(0),
@@ -119,6 +120,7 @@ App_Glom::App_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml
 
   //Load widgets from glade file:
   refGlade->get_widget("bakery_vbox", m_pBoxTop);
+  refGlade->get_widget("sidebar_vbox", m_pBoxSidebar);
   refGlade->get_widget_derived("vbox_frame", m_pFrame); //This one is derived. There's a lot happening here.
 
   add_mime_type("application/x-glom"); //TODO: make this actually work - we need to register it properly.
@@ -403,8 +405,8 @@ void App_Glom::init_menus()
 
   action = Gtk::Action::create("GlomAction_Menu_Developer_Fields", _("_Fields"));
   m_listDeveloperActions.push_back(action);  
-  m_refActionGroup_Others->add(action, sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_fields) );
-
+  m_refActionGroup_Others->add(action, sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_fields) );	
+	
   action = Gtk::Action::create("GlomAction_Menu_Developer_RelationshipsOverview", _("_Relationships Overview"));
   m_listDeveloperActions.push_back(action);
   m_refActionGroup_Others->add(action, sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_relationships_overview) );
@@ -2075,6 +2077,16 @@ void App_Glom::do_menu_developer_fields(Gtk::Window& parent, const Glib::ustring
 void App_Glom::do_menu_developer_relationships(Gtk::Window& parent, const Glib::ustring table_name)
 {
   m_pFrame->do_menu_developer_relationships(parent, table_name);
+}
+
+void App_Glom::add_sidebar (SideBar& sidebar)
+{
+	m_pBoxSidebar->pack_start (sidebar);
+}
+
+void App_Glom::remove_sidebar (SideBar& sidebar)
+{
+	m_pBoxSidebar->remove (sidebar);
 }
 
 } //namespace Glom

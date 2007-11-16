@@ -551,6 +551,11 @@ sharedptr<LayoutItem_Field> DataWidget::offer_field_list(const Glib::ustring& ta
 
 sharedptr<LayoutItem_Field> DataWidget::offer_field_list(const Glib::ustring& table_name, const sharedptr<const LayoutItem_Field>& start_field)
 {
+	return offer_field_list (table_name, start_field, get_document(), get_application());
+}
+
+sharedptr<LayoutItem_Field> DataWidget::offer_field_list(const Glib::ustring& table_name, const sharedptr<const LayoutItem_Field>& start_field, Document_Glom* document, App_Glom* app)
+{
   sharedptr<LayoutItem_Field> result;
 
   Glib::RefPtr<Gnome::Glade::Xml> refXml;
@@ -580,8 +585,8 @@ sharedptr<LayoutItem_Field> DataWidget::offer_field_list(const Glib::ustring& ta
 
   if(dialog)
   {
-    dialog->set_document(get_document(), table_name, start_field);
-    dialog->set_transient_for(*get_application());
+    dialog->set_document(document, table_name, start_field);
+    dialog->set_transient_for(*app);
     int response = dialog->run();
     dialog->hide();
     if(response == Gtk::RESPONSE_OK)

@@ -28,6 +28,7 @@
 #include <glom/libglom/data_structure/layout/layoutitem_portal.h>
 #include <glom/libglom/data_structure/layout/layoutitem_button.h>
 #include <glom/libglom/data_structure/layout/layoutitem_text.h>
+#include <glom/libglom/data_structure/layout/layoutitem_placeholder.h>
 #include <glom/libglom/data_structure/field.h>
 #include <glom/libglom/document/document_glom.h>
 #include "../mode_data/box_data_list_related.h"
@@ -65,7 +66,7 @@ public:
 
   virtual void add_layout_item(const sharedptr<LayoutItem>& item);
   virtual void add_layout_group(const sharedptr<LayoutGroup>& group);
-
+	
   virtual void set_field_editable(const sharedptr<const LayoutItem_Field>& field, bool editable = true);
 
   virtual Gnome::Gda::Value get_field_value(const sharedptr<const LayoutItem_Field>& field) const;
@@ -184,6 +185,7 @@ protected:
   void add_button_at_position(const sharedptr<LayoutItem_Button>& layoutitem_button, const Glib::ustring& table_name, const type_list_layoutwidgets::iterator& add_before);
   void add_textobject_at_position(const sharedptr<LayoutItem_Text>& layoutitem_text, const Glib::ustring& table_name, const type_list_layoutwidgets::iterator& add_before);
   void add_imageobject_at_position(const sharedptr<LayoutItem_Image>& layoutitem_image, const Glib::ustring& table_name, const type_list_layoutwidgets::iterator& add_before);
+  void add_placeholder_at_position(const sharedptr<LayoutItem_Placeholder>& layoutitem_image, const Glib::ustring& table_name, const type_list_layoutwidgets::iterator& add_before);
 
   void add_layoutwidgetbase(LayoutWidgetBase* layout_widget);
   void add_layoutwidgetbase(LayoutWidgetBase* layout_widget, const type_list_layoutwidgets::iterator& add_before);
@@ -192,8 +194,17 @@ protected:
   void add_layout_notebook_at_position(const sharedptr<LayoutItem_Notebook>& notebook, const type_list_layoutwidgets::iterator& add_before);
   void add_layout_related_at_position(const sharedptr<LayoutItem_Portal>& portal, const type_list_layoutwidgets::iterator& add_before);
 
+  virtual void on_dnd_add_layout_item(LayoutWidgetBase* above);
+  virtual void on_dnd_add_layout_group(LayoutWidgetBase* above); 
+	virtual void on_dnd_add_placeholder(LayoutWidgetBase* above);
+	virtual void on_dnd_remove_placeholder();
+  
+  sharedptr<LayoutItem_Portal> get_layout_item_from_relation();
+  
   Box_Data_List_Related* create_related(const sharedptr<LayoutItem_Portal>& portal, bool show_title = true);
 
+  Gtk::Alignment* m_placeholder;
+  
   Glib::ustring m_table_name;
 
   type_signal_field_edited m_signal_field_edited;

@@ -22,6 +22,7 @@
 #define GLOM_UTILITYWIDGETS_FLOWTABLE_H
 
 #include <gtkmm.h>
+#include "layoutwidgetbase.h"
 
 namespace Glom
 {
@@ -36,8 +37,10 @@ public:
 
   virtual void add(Gtk::Widget& first, Gtk::Widget& second, bool expand_second = false);
   virtual void add(Gtk::Widget& first, bool expand = false); //override
+  void insert_before(Gtk::Widget& first, Gtk::Widget& second, Gtk::Widget& before, bool expand_second);
+  void insert_before(Gtk::Widget& first, Gtk::Widget& before, bool expand_second);
 
-  virtual void remove(Gtk::Widget& first); //override
+	virtual void remove(Gtk::Widget& first); //override
 
   void set_columns_count(guint value);
 
@@ -86,6 +89,15 @@ protected:
   virtual void on_unrealize();
   virtual bool on_expose_event(GdkEventExpose* event);
 
+  //DND stuff:
+  virtual bool on_drag_motion(const Glib::RefPtr<Gdk::DragContext>& drag_context, int x, int y, guint time);
+  virtual void on_drag_leave(const Glib::RefPtr<Gdk::DragContext>& drag_context, guint time);
+  virtual void on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& drag_context, int, int, const Gtk::SelectionData& selection_data, guint, guint time);
+  virtual void on_dnd_add_layout_item(LayoutWidgetBase* above) = 0;
+  virtual void on_dnd_add_layout_group(LayoutWidgetBase* above) = 0;
+	virtual void on_dnd_add_placeholder(LayoutWidgetBase* above) = 0;
+  virtual void on_dnd_remove_placeholder() = 0;
+	
   int get_column_height(guint start_widget, guint widget_count, int& total_width) const;
 
   /** 
@@ -97,6 +109,7 @@ protected:
   {
   public:
     FlowTableItem();
+    FlowTableItem(Gtk::Widget* first, Gtk::Widget* second);
 
     Gtk::Widget* m_first;
     Gtk::Widget* m_second;
@@ -107,13 +120,26 @@ protected:
     Gtk::Allocation m_first_allocation;
     Gtk::Allocation m_second_allocation;
   };
-
+	
   typedef std::vector<FlowTableItem> type_vecChildren;
-
+	void insert_before (FlowTableItem& item, Gtk::Widget& before);
+	
   int get_item_requested_height(const FlowTableItem& item) const;
   void get_item_requested_width(const FlowTableItem& item, int& first, int& second) const;
   void get_item_max_width_requested(guint start, guint height, guint& first_max_width, guint& second_max_width, guint& singles_max_width, bool& is_last_column) const; //TODO: maybe combine this with code in get_minimum_column_height().
-
+  
+  FlowTableItem* dnd_get_item(int x, int y);
+  void change_dnd_status(bool active = true);
+	LayoutWidgetBase* dnd_find_datawidget();
+	FlowTableItem* m_current_dnd_item;
+	
+  bool m_dnd_in_progress;
+  
+  enum
+  {
+    BELOW = -1
+  };
+  
   bool child_is_visible(const Gtk::Widget* widget) const;
 
   Gtk::Allocation assign_child(Gtk::Widget* widget, int x, int y);

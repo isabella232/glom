@@ -14,5 +14,7 @@ libdata_structure_layout_la_SOURCES = layoutitem.h layoutitem.cc \
                               layoutitem_line.h layoutitem_line.cc \
                               usesrelationship.h usesrelationship.cc \
                               fieldformatting.h fieldformatting.cc \
-                              custom_title.h custom_title.cc
+                              custom_title.h custom_title.cc \
+                              layoutitem_placeholder.h \
+                              layoutitem_placeholder.cc
 

@@ -23,6 +23,7 @@
 
 #include "bakery/bakery.h"
 #include "frame_glom.h"
+#include "utility_widgets/sidebar.h"
 
 #include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
 
@@ -77,6 +78,9 @@ public:
 
   static App_Glom* get_application();
 
+	void add_sidebar (SideBar& sidebar);
+	void remove_sidebar (SideBar& sidebar);
+	
 protected:
   virtual void init_layout(); //override.
   virtual void init_menus_file(); //override.
@@ -133,6 +137,7 @@ protected:
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   Gtk::VBox* m_pBoxTop;
+	Gtk::VBox* m_pBoxSidebar;
   Frame_Glom* m_pFrame;
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY

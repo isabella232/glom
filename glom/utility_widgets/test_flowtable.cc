@@ -19,49 +19,33 @@
  */
  
 #include <gtkmm.h>
-#include "flowtable.h"
+#include "flowtablewithfields.h"
 
+
+#include "dragwindow.h"
+
+void on_drag_data_get_label(const Glib::RefPtr<Gdk::DragContext>&, Gtk::SelectionData& selection_data, guint, guint)
+{
+  selection_data.set(selection_data.get_target(), 8, (const guchar*)"label", 5);
+}
+
+void on_drag_data_get_entry(const Glib::RefPtr<Gdk::DragContext>&, Gtk::SelectionData& selection_data, guint, guint)
+{
+  selection_data.set(selection_data.get_target(), 8, (const guchar*)"entry", 5);
+}
+
+#include "dragwindow.h"
 
 int
 main(int argc, char* argv[])
 {
   Gtk::Main mainInstance(argc, argv);
-
+#if 0
   Gtk::Window window;
   //Gtk::VBox flowtable;
   Glom::FlowTable flowtable;
   flowtable.set_columns_count(2);
-
-  Gtk::Entry button1; //"one");
-  button1.show();
-  button1.set_text("debug");
-
-  Glom::FlowTable inner_table;
-  inner_table.set_padding(20);
-  inner_table.set_design_mode();
-  inner_table.set_columns_count(1);
-  inner_table.show();
-  flowtable.add(inner_table);
-
-  Gtk::Entry button2; button2.set_text("two");
-  inner_table.add(button1, button2);
-  button2.show();
-  button2.set_size_request(40, 40);
-
-  Gtk::Entry button3; button3.set_text("three");
-  button3.show();
-
-  Gtk::Entry button4; button4.set_text("four");
-  inner_table.add(button3, button4);
-  button4.show();
-  button4.set_size_request(20, 30);
-
-  Gtk::Entry button5; button5.set_text("five");
-  button5.show();
-
-  Gtk::Entry button6; button6.set_text("six");
-  inner_table.add(button5, button6);
-  button6.show();
+  flowtable.set_padding(5);
 
   Gtk::Entry button7; button7.set_text("seven");;
   button7.show();
@@ -70,9 +54,9 @@ main(int argc, char* argv[])
   Gtk::Entry button8; button8.set_text("eight");
   flowtable.add(button7, button8);
   button8.show();
-  button8.set_size_request(100, 300);
+  //button8.set_size_request(100, 100);
 
-  Gtk::Entry button9; button9.set_text("nine");;
+  Gtk::Label button9; button9.set_text("nine");;
   button9.show();
   //button7.set_size_request(100, 100);
 
@@ -80,6 +64,11 @@ main(int argc, char* argv[])
   flowtable.add(button9, button10);
   button10.show();
 
+  Gtk::Entry button11; button11.set_text("eleven");
+  Gtk::Entry button12; button11.set_text("eleven");
+  flowtable.add(button11, button12);
+  button11.show(); button12.show();
+  
   window.add(flowtable);
   flowtable.set_design_mode();
   flowtable.show();
@@ -87,8 +76,11 @@ main(int argc, char* argv[])
 
   flowtable.set_padding(20);
 
+  Glom::DragWindow drag_window;
+  drag_window.show();
+  
   Gtk::Main::run(window);
-
+#endif
 
   return 0;
 }
