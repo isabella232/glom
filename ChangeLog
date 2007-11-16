@@ -1,5 +1,14 @@
 2007-11-16  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/utility_widgets/flowtablewithfields.cc:
+	on_dnd_add_layout_item(): Copy/adjust lots of already-ugly 
+	ugly code from on_datawidget_layout_item_added() to update 
+	the group's list of child items, so that the layout is really 
+	saved in the document. 
+	Both these functions need to be improved and partly combined.
+
+2007-11-16  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/utility_widgets/flowtable.cc:
 	* glom/utility_widgets/flowtable.h:
 	* glom/utility_widgets/flowtablewithfields.cc:

@@ -703,6 +703,7 @@ App_Glom* DataWidget::get_application()
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 void DataWidget::on_child_layout_item_added(LayoutWidgetBase::enumType item_type)
 {
+  //Tell the parent widget that this widget wants to add an item:
   signal_layout_item_added().emit(item_type);
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY

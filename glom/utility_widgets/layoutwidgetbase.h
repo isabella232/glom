@@ -65,9 +65,13 @@ public:
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   typedef sigc::signal<void> type_signal_layout_changed;
+
+  /// Signals that the layout has changed, so it should be saved to the document again.
   type_signal_layout_changed signal_layout_changed();
 
   typedef sigc::signal<void, enumType> type_signal_layout_item_added;
+
+  ///Requests the addition of an item:
   type_signal_layout_item_added signal_layout_item_added();
 
   //Allow a child widget to delegate to a parent widget:
@@ -90,7 +94,10 @@ protected:
   Glib::ustring m_table_name;
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
+  /// Signals that the layout has changed, so it should be saved to the document again.
   type_signal_layout_changed m_signal_layout_changed;
+
+  /// Requests the addition of an item.
   type_signal_layout_item_added m_signal_layout_item_added;
 
   type_signal_user_requested_layout m_signal_user_requested_layout;
