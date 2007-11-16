@@ -121,7 +121,7 @@ void Window_PrintLayout_Edit::init_menu()
   m_action_group = Gtk::ActionGroup::create();
 
   m_action_group->add(Gtk::Action::create("Menu_File", _("_File")));
-  m_action_group->add(Gtk::Action::create("Action_Menu_File_PageSetup", _("_Page Setup")),
+  m_action_group->add(Gtk::Action::create("Action_Menu_File_PageSetup", _("Page _Setup")),
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_file_page_setup));
 
   m_action_group->add(Gtk::Action::create("Menu_Edit", Gtk::Stock::EDIT));

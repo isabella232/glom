@@ -52,6 +52,7 @@ LayoutItem_Notebook& LayoutItem_Notebook::operator=(const LayoutItem_Notebook& s
 
 Glib::ustring LayoutItem_Notebook::get_part_type_name() const
 {
+  //Note to translators: "Notebook" means a GtkNotebook-type widget.
   return _("Notebook");
 }
 

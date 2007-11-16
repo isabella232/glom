@@ -12756,7 +12756,7 @@ If a suitable related table already exists then you should instead cancel and ju
                         <property name="yalign">0</property>
                         <property name="label" translatable="yes">&lt;span weight="bold" size="larger"&gt;Add Module&lt;/span&gt;
 
-What name should this group have?</property>
+What name should this module have?</property>
                         <property name="use_markup">True</property>
                         <property name="wrap">True</property>
                         <property name="selectable">True</property>
@@ -13639,7 +13639,7 @@ What name should this group have?</property>
 		      <child>
 			<widget class="GtkButton" id="button_add_related">
 			  <property name="visible">True</property>
-			  <property name="tooltip" translatable="yes">Add a related records portal. This is a list of records in a related table. Remember to edit this layout item to specify the relationship to use, and the  fields to show from the related table.</property>
+			  <property name="tooltip" translatable="yes">Add a related records portal. This is a list of records in a related table. Remember to edit this layout item to specify the relationship to use, and the fields to show from the related table.</property>
 			  <property name="can_default">True</property>
 			  <property name="can_focus">True</property>
 			  <property name="relief">GTK_RELIEF_NORMAL</property>
@@ -13683,7 +13683,7 @@ What name should this group have?</property>
 				  <child>
 				    <widget class="GtkLabel" id="label74">
 				      <property name="visible">True</property>
-				      <property name="label" translatable="yes">Add Related</property>
+				      <property name="label" translatable="yes">Add Related Records</property>
 				      <property name="use_underline">True</property>
 				      <property name="use_markup">False</property>
 				      <property name="justify">GTK_JUSTIFY_LEFT</property>

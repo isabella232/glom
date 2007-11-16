@@ -126,7 +126,7 @@ main(int argc, char* argv[])
     {
       const Glib::OptionError& ex = *exptr;
 #endif // !GLIBMM_EXCEPTIONS_ENABLED
-      std::cout << _("Error while parsing commmand-line options: ") << std::endl << ex.what() << std::endl;
+      std::cout << _("Error while parsing command-line options: ") << std::endl << ex.what() << std::endl;
       std::cout << _("Use --help to see a list of available command-line options.") << std::endl;
       return 0;
 #ifndef GLIBMM_EXCEPTIONS_ENABLED

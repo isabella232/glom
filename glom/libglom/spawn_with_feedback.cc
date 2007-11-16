@@ -207,7 +207,7 @@ bool execute_command_line_and_wait_until_second_command_returns_success(const st
   Glib::spawn_command_line_async(command);
 #endif
 
-  // Loop, updating the UI, repeatedly trying the second commmand, until the second command succeeds:
+  // Loop, updating the UI, repeatedly trying the second command, until the second command succeeds:
   while(true)
   {
     sleep(1); // To stop us calling the second command too often.

@@ -584,7 +584,9 @@ void Window_Translations::on_button_import()
   file_dlg.add_filter(filter);
 
   file_dlg.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
-  file_dlg.add_button(_("Import"), Gtk::RESPONSE_OK);  
+
+  //Note to translators: "Import" here is an action verb - it's a button. 
+  file_dlg.add_button(_("Import"), Gtk::RESPONSE_OK);
   
   int result = file_dlg.run();
   if (result == Gtk::RESPONSE_OK)

@@ -1,5 +1,17 @@
 2007-11-16  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/glom_developer.glade:
+	* glom/libglom/data_structure/layout/layoutitem_notebook.cc:
+	* glom/libglom/spawn_with_feedback.cc:
+	* glom/main.cc:
+	* glom/mode_design/print_layouts/window_print_layout_edit.cc:
+	* glom/translation/window_translations.cc:
+	* glom/utility_widgets/flowtablewithfields.cc:
+	Added translator comments and fixed typos from bug #497188.
+	(Andre Klapper)
+
+2007-11-16  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/utility_widgets/db_adddel/db_adddel.cc:
 	* glom/utility_widgets/db_adddel/db_adddel.h:
 	construct_specified_columns(): Use the font, foreground-color, 

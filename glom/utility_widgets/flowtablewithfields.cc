@@ -939,8 +939,13 @@ void FlowTableWithFields::on_datawidget_layout_item_added(LayoutWidgetBase::enum
 
     //Add an example tab, so that it shows up.
     sharedptr<LayoutGroup> group_tab = sharedptr<LayoutGroup>::create();
+
+    //Note to translators: This is the default name (not seen by most users) for a notebook tab.
     group_tab->set_name(_("tab1"));
+
+    //Note to translators: This is the default label text for a notebook tab.
     group_tab->set_title(_("Tab One"));
+
     layout_item->add_item(group_tab);
 
     layout_item_new = layout_item;
