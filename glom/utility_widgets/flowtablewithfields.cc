@@ -24,16 +24,19 @@
 #include "notebookglom.h"
 #include "imageglom.h"
 #include "labelglom.h"
+#include "placeholder-glom.h"
+#include "../application.h"
 #include <gtkmm/checkbutton.h>
 #include <glom/libglom/data_structure/glomconversions.h>
 #include "../mode_data/box_data_list_related.h"
 #include "../mode_data/dialog_choose_relationship.h"
 #include <bakery/App/App_Gtk.h> //For util_bold_message().
 #include <glibmm/i18n.h>
+#include <glom/libglom/data_structure/layout/layoutitem_placeholder.h>
 
 namespace Glom
 {
-
+  
 FlowTableWithFields::Info::Info()
 : m_first(0),
   m_second(0),
@@ -50,6 +53,7 @@ FlowTableWithFields::FlowTableWithFields(const Glib::ustring& table_name)
   // rather annoying, though I don't see another possibility at the moment. armin.
   Glib::ObjectBase("Glom_FlowTable"),
 #endif // !defined(GLIBMM_VFUNCS_ENABLED) || !defined(GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED)
+	m_placeholder(0),
   m_table_name(table_name)
 {
 }
@@ -141,6 +145,13 @@ void FlowTableWithFields::add_layout_item_at_position(const sharedptr<LayoutItem
               sharedptr<LayoutItem_Image> layout_imageobject = sharedptr<LayoutItem_Image>::cast_dynamic(item);
               if(layout_imageobject)
                 add_imageobject_at_position(layout_imageobject, m_table_name, add_before);
+            	else
+            	{
+            	  sharedptr<LayoutItem_Placeholder> layout_placeholder = 
+            	    sharedptr<LayoutItem_Placeholder>::cast_dynamic(item);
+                if (layout_placeholder)
+                  add_placeholder_at_position(layout_placeholder, m_table_name, add_before);
+              }
             }
           }
         }
@@ -189,7 +200,12 @@ void FlowTableWithFields::add_layout_group_at_position(const sharedptr<LayoutGro
     flow_table->set_columns_count(group->m_columns_count);
     flow_table->set_padding(Utils::DEFAULT_SPACING_SMALL);
     flow_table->show();
-    alignment->add(*flow_table);
+    
+    Gtk::EventBox* event_box = Gtk::manage( new Gtk::EventBox() );
+    event_box->add(*flow_table);
+    event_box->show();
+    
+    alignment->add(*event_box);
 
     LayoutGroup::type_map_items items = group->get_items(); 
     for(LayoutGroup::type_map_items::const_iterator iter = items.begin(); iter != items.end(); ++iter)
@@ -200,7 +216,7 @@ void FlowTableWithFields::add_layout_group_at_position(const sharedptr<LayoutGro
         flow_table->add_layout_item(item);
       }
     }
-
+    
     add(*frame, true /* expand */);
 
     m_sub_flow_tables.push_back(flow_table);
@@ -347,8 +363,11 @@ void FlowTableWithFields::add_layout_notebook_at_position(const sharedptr<Layout
 
   add_layoutwidgetbase(notebook_widget, add_before);
     //add_view(button); //So it can get the document.
-
-  add(*notebook_widget, true /* expand */);
+	Gtk::Widget* widget = dynamic_cast<Gtk::Widget*>(*add_before);
+	if (widget)
+		insert_before (*notebook_widget, *widget, true /* expand */);
+	else
+		add(*notebook_widget, true /* expand */);
 }
 
 /*
@@ -448,7 +467,11 @@ void FlowTableWithFields::add_field_at_position(const sharedptr<LayoutItem_Field
       label->set_property("yalign", 0.0); //Equivalent to Gtk::ALIGN_TOP. Center is neater next to entries, but center is silly next to large images.
   }
 
-  add(*(info.m_first), *(info.m_second), expand_second);
+	Gtk::Widget* widget = dynamic_cast<Gtk::Widget*>(*add_before);
+	if (widget)
+		insert_before (*(info.m_first), *(info.m_second), *widget, expand_second);
+	else
+		add(*(info.m_first), *(info.m_second), expand_second);
 
   info.m_second->signal_edited().connect( sigc::bind(sigc::mem_fun(*this, &FlowTableWithFields::on_entry_edited), layoutitem_field)  ); //TODO:  Is it a good idea to bind the LayoutItem? sigc::bind() probably stores a copy at this point.
 
@@ -479,7 +502,11 @@ void FlowTableWithFields::add_button_at_position(const sharedptr<LayoutItem_Butt
   add_layoutwidgetbase(button, add_before);
   //add_view(button); //So it can get the document.
 
-  add(*button);
+	Gtk::Widget* widget = dynamic_cast<Gtk::Widget*>(*add_before);
+	if (widget)
+		insert_before (*button, *widget, false /* expand */);
+	else
+		add(*button, false /* expand */);
 }
 
 void FlowTableWithFields::add_textobject_at_position(const sharedptr<LayoutItem_Text>& layoutitem_text, const Glib::ustring& /* table_name */, const type_list_layoutwidgets::iterator& add_before)
@@ -500,7 +527,13 @@ void FlowTableWithFields::add_textobject_at_position(const sharedptr<LayoutItem_
 
   const Glib::ustring title = layoutitem_text->get_title();
   if(title.empty())
-    add(*alignment_label, true /* expand */);
+	{
+		Gtk::Widget* widget = dynamic_cast<Gtk::Widget*>(*add_before);
+	  if (widget)
+  	  insert_before (*alignment_label, *widget, true /* expand */);
+  	else
+			add(*alignment_label, true /* expand */);
+	}
   else
   {
     Gtk::Alignment* alignment_title = Gtk::manage(new Gtk::Alignment());
@@ -511,8 +544,32 @@ void FlowTableWithFields::add_textobject_at_position(const sharedptr<LayoutItem_
     title_label->show();
     alignment_title->add(*title_label);
 
-    add(*alignment_title, *alignment_label, true /* expand */);
+		Gtk::Widget* widget = dynamic_cast<Gtk::Widget*>(*add_before);
+	  if (widget)
+  	  insert_before (*alignment_title, *alignment_label, *widget, true /* expand */);
+  	else
+			add(*alignment_title, *alignment_label, true /* expand */);
   }
+}
+
+void FlowTableWithFields::add_placeholder_at_position(const sharedptr<LayoutItem_Placeholder>& layoutitem_placeholder, const Glib::ustring& /* table_name */, const type_list_layoutwidgets::iterator& add_before)
+{
+  //Add the widget:
+  m_placeholder = Gtk::manage(new Gtk::Alignment());
+  m_placeholder->set(Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER);
+  m_placeholder->show();
+	
+	PlaceholderGlom* preview = Gtk::manage (new PlaceholderGlom);
+	preview->show();
+	
+  m_placeholder->add(*preview);
+
+  m_list_layoutwidgets.insert(add_before, preview);
+  Gtk::Widget* widget = dynamic_cast<Gtk::Widget*>(*add_before);
+  if (widget)
+    insert_before (*m_placeholder, *widget, true /* expand */);
+  else
+    add (*m_placeholder, true);
 }
 
 void FlowTableWithFields::add_imageobject_at_position(const sharedptr<LayoutItem_Image>& layoutitem_image, const Glib::ustring& /* table_name */, const type_list_layoutwidgets::iterator& add_before)
@@ -529,19 +586,28 @@ void FlowTableWithFields::add_imageobject_at_position(const sharedptr<LayoutItem
 
   const Glib::ustring title = layoutitem_image->get_title();
   if(title.empty())
-    add(*image, true /* expand */);
+	{
+		Gtk::Widget* widget = dynamic_cast<Gtk::Widget*>(*add_before);
+		if (widget)
+			insert_before (*image, *widget, true /* expand */);
+		else
+			add(*image, true /* expand */);
+	}
   else
   {
     Gtk::Alignment* alignment_title = Gtk::manage(new Gtk::Alignment());
     alignment_title->set(Gtk::ALIGN_RIGHT, Gtk::ALIGN_CENTER);
     alignment_title->show();
 
-    Gtk::Label* title_label = Gtk::manage(new Gtk::Label(title));
-    title_label->show();
-    alignment_title->add(*title_label);
-
-    add(*alignment_title, *image, true /* expand */);
-  }
+		Gtk::Label* title_label = Gtk::manage(new Gtk::Label(title));
+		title_label->show();
+		alignment_title->add(*title_label);
+		Gtk::Widget* widget = dynamic_cast<Gtk::Widget*>(*add_before);
+		if (widget)
+			insert_before (*alignment_title, *image, *widget, true /* expand */);
+		else
+			add(*alignment_title, *image, true /* expand */);
+	}
 }
 
 
@@ -993,7 +1059,7 @@ void FlowTableWithFields::on_datawidget_layout_item_added(LayoutWidgetBase::enum
     layout_item->set_title(_("New Button"));
     layout_item_new = layout_item;
   }
-  else if(item_type == LayoutWidgetBase::TYPE_BUTTON)
+  else if(item_type == LayoutWidgetBase::TYPE_TEXT)
   {
     sharedptr<LayoutItem_Text> layout_item = sharedptr<LayoutItem_Text>::create();
     layout_item->set_name(_("text"));
@@ -1079,6 +1145,124 @@ void FlowTableWithFields::on_flowtable_requested_related_details(const Glib::ust
 {
   //Forward it to the parent:
   signal_requested_related_details().emit(table_name, primary_key_value);
+}
+
+void FlowTableWithFields::on_dnd_add_layout_item(LayoutWidgetBase* above)
+{
+	type_list_layoutwidgets::iterator cur_widget;
+  if (above)
+  {
+	  cur_widget = std::find (m_list_layoutwidgets.begin(), m_list_layoutwidgets.end(), above);
+  }
+  else
+  {
+    cur_widget = m_list_layoutwidgets.end();
+  }
+  sharedptr<LayoutItem_Field> layout_item_field = DataWidget::offer_field_list(m_table_name,
+																																							 sharedptr<LayoutItem_Field>(),
+																																							 get_document(),
+																																							 App_Glom::get_application());
+
+  add_layout_item_at_position(layout_item_field, cur_widget);
+	signal_layout_item_added().emit(TYPE_FIELD);
+	signal_layout_changed().emit();	
+}
+
+void FlowTableWithFields::on_dnd_add_layout_group(LayoutWidgetBase* above)
+{
+	type_list_layoutwidgets::iterator cur_widget;
+  if (above)
+  {
+	  cur_widget = std::find (m_list_layoutwidgets.begin(), m_list_layoutwidgets.end(), above);
+  }
+  else
+  {
+    cur_widget = m_list_layoutwidgets.end();
+  }
+	// FIXME: Get a title using a dialog and set a mimimum size because
+	// the layoutgroup does not have any items
+  sharedptr<LayoutGroup> group(new LayoutGroup());
+  group->set_title("test");
+  add_layout_group_at_position(group, cur_widget);
+	signal_layout_item_added().emit(TYPE_GROUP);
+	signal_layout_changed().emit();	
+}
+
+void FlowTableWithFields::on_dnd_add_placeholder(LayoutWidgetBase* above)
+{
+	type_list_layoutwidgets::iterator cur_widget;
+
+  if (above)
+  {
+	  cur_widget = std::find (m_list_layoutwidgets.begin(), m_list_layoutwidgets.end(), above);
+  }
+  else
+  {
+    cur_widget = m_list_layoutwidgets.end();
+  }
+	Gtk::Alignment* old_placeholder = 0;
+  if (m_placeholder)
+	{
+	  if (dynamic_cast<Glom::PlaceholderGlom*> (*cur_widget))
+		{
+      return;
+		}
+    old_placeholder = m_placeholder;
+	}
+  
+  sharedptr<LayoutItem_Placeholder> placeholder_field(new LayoutItem_Placeholder);
+	add_layout_item_at_position (placeholder_field, cur_widget);
+  
+  if (old_placeholder)
+  {
+    remove (*old_placeholder);
+  }
+}
+
+void FlowTableWithFields::on_dnd_remove_placeholder()
+{
+  if (m_placeholder)
+  {
+		remove (*m_placeholder);
+	}
+	m_placeholder = 0;
+}
+
+sharedptr<LayoutItem_Portal> FlowTableWithFields::get_layout_item_from_relation()
+{
+  sharedptr<LayoutItem_Portal> layout_item(0);
+  try
+  {
+    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_choose_relationship");
+
+    Dialog_ChooseRelationship* dialog = 0;
+    refXml->get_widget_derived("dialog_choose_relationship", dialog);
+
+    if(dialog)
+    {
+      Document_Glom* pDocument = static_cast<Document_Glom*>(get_document());
+      dialog->set_document(pDocument, m_table_name);
+      //TODO: dialog->set_transient_for(*get_app_window());
+      const int response = dialog->run();
+      dialog->hide();
+      if(response == Gtk::RESPONSE_OK)
+      {
+        //Get the chosen relationship:
+        sharedptr<Relationship> relationship  = dialog->get_relationship_chosen();
+        if(relationship)
+        {
+          layout_item = sharedptr<LayoutItem_Portal>::create();
+          layout_item->set_relationship(relationship);
+        }
+      }
+      delete dialog;
+    }
+  }
+  catch(const Gnome::Glade::XmlError& ex)
+  {
+    std::cerr << ex.what() << std::endl;
+  }
+  return layout_item;
 }
 
 } //namespace Glom

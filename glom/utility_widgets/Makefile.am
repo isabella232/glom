@@ -3,10 +3,12 @@
 SUBDIRS = adddel db_adddel canvas
 
 gladedir = $(datadir)/glom/glade/
+glom_icon_dir = $(datadir)/glom/pixmaps
 
 # We define GLOM_GLADEDIR so that we can get the installed .glade file at runtime.
 INCLUDES = -I@top_srcdir@/ $(GLOM_CFLAGS) $(PYTHON_INCLUDES) \
            -DGLOM_GLADEDIR=\""$(gladedir)/"\" \
+           -DGLOM_ICON_DIR=\""$(glom_icon_dir)"\" \
            -DDATADIR=\""$(datadir)"\"
 
 noinst_LIBRARIES = libutility_widgets.a
@@ -33,7 +35,12 @@ libutility_widgets_a_SOURCES = alignment_justified.cc alignment_justified.h \
                                labelglom.h labelglom.cc \
                                dialog_choose_id.cc dialog_choose_id.h \
                                dialog_choose_date.cc dialog_choose_date.h \
-                               filechooserdialog.cc filechooserdialog.h
+                               filechooserdialog.cc filechooserdialog.h \
+                               dragbutton.cc dragbutton.h \
+                               dragbar.cc dragwindow.h \
+                               floweventbox.h floweventbox.cc \
+                               placeholder-glom.h  placeholder-glom.cc \
+                               sidebar.h sidebar.cc
 
 
 libutility_widgets_a_LIBADD = adddel/libutility_widgets_adddel.a \
@@ -41,9 +48,18 @@ libutility_widgets_a_LIBADD = adddel/libutility_widgets_adddel.a \
                               canvas/libutility_widgets_canvas.a
 
 
-noinst_PROGRAMS = test_flowtable
 
-test_flowtable_SOURCES = test_flowtable.cc flowtable.cc flowtable.h
-test_flowtable_LDADD =  $(GLOM_LIBS)
+#noinst_PROGRAMS = test_flowtable
+#test_flowtable_SOURCES = test_flowtable.cc flowtable.cc flowtable.h
+#test_flowtable_LDADD =  $(GLOM_LIBS)
+
+
+
+
+
+
+
+
+
 
 

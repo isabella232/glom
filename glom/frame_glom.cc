@@ -41,6 +41,10 @@
 #include <glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.h>
 
 #include <glom/reports/report_builder.h>
+#ifndef GLOM_ENABLE_CLIENT_ONLY
+#include <glom/mode_design/dialog_add_related_table.h>
+#include <glom/mode_design/script_library/dialog_script_library.h>
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 #include <glom/printoperation_printlayout.h>
 
 #ifdef GLOM_ENABLE_MAEMO
@@ -162,6 +166,7 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
   m_pDialog_Relationships(0),
   m_dialog_addrelatedtable(0),
   m_dialog_relationships_overview(0),
+  m_pDrag_Bar(0),
 #endif // !GLOM_ENABLE_CLIENT_ONLY
   m_pDialogConnection(0),
   m_pDialogConnectionFailed(0)
@@ -539,7 +544,14 @@ void Frame_Glom::on_menu_userlevel_Developer(const Glib::RefPtr<Gtk::RadioAction
         const int response = dialog.run();
         test = (response == Gtk::RESPONSE_OK);
       }
-
+      
+      if (test)
+      {
+        // Show the drag layout toolbar
+        m_pDrag_Bar = new DragBar();
+				App_Glom::get_application ()->add_sidebar (*m_pDrag_Bar);
+				m_pDrag_Bar->show();
+      }
       if(!test)
       {
         //Abort the change of user level:
@@ -563,6 +575,13 @@ void Frame_Glom::on_menu_userlevel_Operator(const Glib::RefPtr<Gtk::RadioAction>
       //Avoid double signals:
       //if(document->get_userlevel() != AppState::USERLEVEL_OPERATOR)
         document->set_userlevel(AppState::USERLEVEL_OPERATOR);
+      
+      if (m_pDrag_Bar)
+      {
+				App_Glom::get_application ()->remove_sidebar (*m_pDrag_Bar);
+        delete m_pDrag_Bar;
+        m_pDrag_Bar = 0;
+      }
     }
   }
 }
@@ -1069,7 +1088,7 @@ void Frame_Glom::on_userlevel_changed(AppState::userlevels userlevel)
 
   if(m_pLabel_userlevel)
     m_pLabel_userlevel->set_text(user_level_name);
-
+  
   show_table_title(); 
 }
 

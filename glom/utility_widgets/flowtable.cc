@@ -19,8 +19,17 @@
  */
  
 #include "flowtable.h"
-#include "gtk/gtkwidget.h"
-#include "gdk/gdktypes.h"
+#include "dragbutton.h"
+#include "entryglom.h"
+#include "labelglom.h"
+#include "buttonglom.h"
+#include "imageglom.h"
+#include "layoutwidgetbase.h"
+#include "placeholder-glom.h"
+#include <gtk/gtkwidget.h>
+#include <gdk/gdktypes.h>
+#include <iostream>
+#include <gdkmm/window.h>
 
 // So we don't need to check for the condition above all the time
 
@@ -247,10 +256,22 @@ namespace Glom
 {
 
 FlowTable::FlowTableItem::FlowTableItem()
-: m_expand_first_full(false),
+: m_first(0),
+  m_second(0),
+  m_expand_first_full(false),
   m_expand_second(false)
 {
 }
+
+FlowTable::FlowTableItem::FlowTableItem(Gtk::Widget* first, Gtk::Widget* second)
+: m_first (first),
+  m_second(second),
+  m_expand_first_full(false),
+  m_expand_second(false)
+{
+ 
+}
+
 
 FlowTable::FlowTable()
 :
@@ -261,6 +282,8 @@ FlowTable::FlowTable()
   // rather annoying, though I don't see another possibility at the moment. armin.
   Glib::ObjectBase("Glom_FlowTable"),
 #endif // !defined(GLIBMM_VFUNCS_ENABLED) || !defined(GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED)
+	m_current_dnd_item(0),
+  m_dnd_in_progress(false),
   m_columns_count(1),
   m_padding(0),
   m_design_mode(false)
@@ -297,6 +320,10 @@ FlowTable::FlowTable()
 
   set_flags(Gtk::NO_WINDOW);
   set_redraw_on_allocate(false);
+  std::list<Gtk::TargetEntry> drag_targets;
+  Gtk::TargetEntry drag_target(DragButton::get_target());
+  drag_targets.push_back(drag_target);
+  drag_dest_set(drag_targets);
 }
 
 FlowTable::~FlowTable()
@@ -312,25 +339,59 @@ void FlowTable::set_design_mode(bool value)
 
 void FlowTable::add(Gtk::Widget& first, Gtk::Widget& second, bool expand_second)
 {
-  FlowTableItem item;
-  item.m_first = &first;
-  item.m_second = &second;
+  FlowTableItem item (&first, &second);
+	
   item.m_expand_second = expand_second; //Expand to fill the width for all of the second item.
   m_children.push_back(item);
-
-  gtk_widget_set_parent(first.gobj(), GTK_WIDGET(gobj()));
-  gtk_widget_set_parent(second.gobj(), GTK_WIDGET(gobj()));
+  gtk_widget_set_parent(GTK_WIDGET (item.m_first->gobj()), GTK_WIDGET(gobj()));
+  gtk_widget_set_parent(GTK_WIDGET (item.m_second->gobj()), GTK_WIDGET(gobj()));
 }
 
 void FlowTable::add(Gtk::Widget& first, bool expand)
 {
-  FlowTableItem item;
-  item.m_first = &first;
+  FlowTableItem item(&first, 0);
   item.m_expand_first_full = expand; //Expand to fill the width for first and second.
-  item.m_second = 0;
   m_children.push_back(item);
+  gtk_widget_set_parent(GTK_WIDGET (item.m_first->gobj()), GTK_WIDGET(gobj()));
+}
 
-  gtk_widget_set_parent(first.gobj(), GTK_WIDGET(gobj()));
+void FlowTable::insert_before(Gtk::Widget& first, Gtk::Widget& before, bool expand_second)
+{
+	FlowTableItem item(&first, 0);
+	item.m_expand_second = expand_second;
+	insert_before (item, before);
+}
+
+void FlowTable::insert_before(Gtk::Widget& first, Gtk::Widget& second, Gtk::Widget& before, bool expand_second)
+{
+	FlowTableItem item(&first, &second);
+	item.m_expand_second = expand_second;
+	insert_before (item, before);
+}
+
+void FlowTable::insert_before(FlowTableItem& item, Gtk::Widget& before)
+{
+  bool found = false;
+  std::vector<FlowTableItem>::iterator pos;
+  for (pos = m_children.begin(); pos != m_children.end(); pos++)
+  {
+      if (((*pos).m_first && (*pos).m_first->gobj() == before.gobj()) || ((*pos).m_second && (*pos).m_second->gobj() == before.gobj()))
+      {
+        found = true;
+        break;
+      }
+  }
+ 
+  gtk_widget_set_parent(GTK_WIDGET (item.m_first->gobj()), GTK_WIDGET(gobj()));
+	if (item.m_second)
+	  gtk_widget_set_parent(GTK_WIDGET (item.m_second->gobj()), GTK_WIDGET(gobj()));	
+  if (pos == m_children.end())
+  {
+    std::cout << "Only end found" << std::endl;
+    m_children.push_back(item);
+  } else {
+    m_children.insert(pos, item);
+  }
 }
 
 void FlowTable::set_columns_count(guint value)
@@ -816,12 +877,10 @@ GtkType FlowTable::child_type_vfunc() const
 
 void FlowTable::on_add(Gtk::Widget* child)
 {
-  FlowTableItem item;
-  item.m_first = child;
-  item.m_second = 0;
+  FlowTableItem item(child, 0);
   m_children.push_back(item);
   
-  gtk_widget_set_parent(child->gobj(), GTK_WIDGET(gobj()));
+  gtk_widget_set_parent(GTK_WIDGET (item.m_first->gobj()), GTK_WIDGET(gobj()));
 
   //This is protected, but should be public: child.set_parent(*this);
 
@@ -842,7 +901,7 @@ void FlowTable::on_remove(Gtk::Widget* child)
       if(item.m_first == child)
       {
             //g_warning("FlowTable::on_remove unparenting first");
-        gtk_widget_unparent(item.m_first->gobj()); //This is protected, but should be public: child.unparent();
+        gtk_widget_unparent(GTK_WIDGET (item.m_first->gobj())); //This is protected, but should be public: child.unparent();
         item.m_first = 0;
 
        if(visible)
@@ -852,7 +911,7 @@ void FlowTable::on_remove(Gtk::Widget* child)
       if(item.m_second == child)
       {
         //g_warning("FlowTable::on_remove unparenting second");
-        gtk_widget_unparent(item.m_second->gobj()); //This is protected, but should be public: child.unparent();
+        gtk_widget_unparent(GTK_WIDGET (item.m_second->gobj())); //This is protected, but should be public: child.unparent();
         item.m_second = 0;
 
         if(visible)
@@ -925,7 +984,7 @@ void FlowTable::remove_all()
       if(widget->is_managed_())
         widget->reference();
 
-      gtk_widget_unparent(widget->gobj());
+      gtk_widget_unparent(GTK_WIDGET (iter->m_first->gobj()));
     }
 
     if(iter->m_second)
@@ -935,7 +994,7 @@ void FlowTable::remove_all()
       if(widget->is_managed_())
         widget->reference();
 
-      gtk_widget_unparent(widget->gobj());
+      gtk_widget_unparent(GTK_WIDGET (iter->m_second->gobj()));
     }
 
   }
@@ -976,21 +1035,11 @@ bool FlowTable::on_expose_event(GdkEventExpose* event)
 {
   if(m_design_mode)
   {
-    m_refGdkWindow = get_window();
+    //m_refGdkWindow = get_window();
     if(m_refGdkWindow)
     {
       m_refGC = Gdk::GC::create(m_refGdkWindow);
       m_refGC->set_line_attributes(1 /* width */, Gdk::LINE_ON_OFF_DASH, Gdk::CAP_NOT_LAST, Gdk::JOIN_MITER);
-
-      //Glib::RefPtr<Gdk::Colormap> colormap = get_default_colormap();
-      //Gdk::Color color_blue("blue");
-      //Gdk::Color color_red("red");
-      //colormap->alloc_color(color_blue);
-      //colormap->alloc_color(color_red);
-
-      //m_refGdkWindow->set_background( color_red );
-      //m_refGdkWindow->clear();
-      //m_refGC->set_foreground( color_blue );
 
       for(type_vecLines::iterator iter = m_lines_horizontal.begin(); iter != m_lines_horizontal.end(); ++iter)
       {
@@ -1004,7 +1053,6 @@ bool FlowTable::on_expose_event(GdkEventExpose* event)
       }
     }
   }
-
 #ifdef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
   return Gtk::Container::on_expose_event(event);
 #else
@@ -1012,6 +1060,169 @@ bool FlowTable::on_expose_event(GdkEventExpose* event)
     return GTK_WIDGET_CLASS(parent_class)->expose_event(GTK_WIDGET(gobj()), event);
   return true;
 #endif
+}
+
+bool FlowTable::on_drag_motion(const Glib::RefPtr<Gdk::DragContext>& drag_context, int x, int y, guint time)
+{
+	m_current_dnd_item = dnd_get_item(x, y);
+	LayoutWidgetBase* above = dnd_find_datawidget ();
+	
+	// above might be 0 here...
+	on_dnd_add_placeholder (above);
+  change_dnd_status(true);
+  return true;
+
+}
+
+void FlowTable::on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& drag_context, int drag_x, int drag_y, const Gtk::SelectionData& selection_data, guint, guint time)
+{
+	Glib::ustring type = selection_data.get_data_as_string();
+	LayoutWidgetBase* above = dnd_find_datawidget ();
+	if (type == "LayoutItem")
+  {
+    on_dnd_add_layout_item(above);
+  }
+  else if (type == "LayoutGroup")
+  {
+    on_dnd_add_layout_group(above);
+  }
+  else
+    std::cerr << "Unknown drop type: " << type << std::endl;
+  change_dnd_status(false);
+}
+
+void FlowTable::on_drag_leave(const Glib::RefPtr<Gdk::DragContext>& drag_context, guint time)
+{
+  on_dnd_remove_placeholder();
+	get_window()->invalidate_region(get_window()->get_visible_region());
+  change_dnd_status(false);
+}
+
+// Calculate the nearest FlowTableItem below the current drag position
+FlowTable::FlowTableItem*
+FlowTable::dnd_get_item(int drag_x, int drag_y)
+{
+	// The drag position is relativ to the toplevel GdkWindow and not to
+	// the widget position. We fix this here to match the widget position
+	drag_x += get_allocation().get_x();
+	drag_y += get_allocation().get_y();
+	// Check if we are exactly "on" another widget
+  for (std::vector<FlowTableItem>::iterator cur_item = m_children.begin(); cur_item != m_children.end(); 
+       cur_item++)
+  {
+    std::vector<FlowTableItem>::iterator next_item = cur_item;
+    next_item++;
+    
+    if (!cur_item->m_first)
+			continue;
+    
+    if (next_item == m_children.end())
+    {
+      return 0;
+    }
+    if (!next_item->m_first)
+    {
+      continue;
+    }
+    
+    int x = cur_item->m_first_allocation.get_x();   
+    int y = cur_item->m_first_allocation.get_y();    
+    int height = cur_item->m_first_allocation.get_height();
+    int width = cur_item->m_first_allocation.get_width();
+    
+    int next_x = next_item->m_first_allocation.get_x();   
+    int next_y = next_item->m_first_allocation.get_y();    
+    int next_height = next_item->m_first_allocation.get_height();
+    int next_width = next_item->m_first_allocation.get_width();
+
+    
+    if (cur_item->m_second)
+    {
+    	width += m_padding + cur_item->m_second_allocation.get_width();
+	    height = MAX (height, cur_item->m_second_allocation.get_height());
+    	x = MIN (x, cur_item->m_second_allocation.get_x());
+    	y = MIN (y, cur_item->m_second_allocation.get_y());
+    }
+    if (next_item->m_second)
+    {
+    	next_width += m_padding + next_item->m_second_allocation.get_width();
+	    next_height = MAX (next_height, next_item->m_second_allocation.get_height());
+    	next_x = MIN (next_x, next_item->m_second_allocation.get_x());
+    	next_y = MIN (next_y, next_item->m_second_allocation.get_y());
+    }
+    
+    if (m_columns_count > 1)
+    {
+      // Check if we are in the correct column
+      int column_width = x + width;
+      if (column_width < drag_x)
+      {
+        continue;
+      }
+    }
+    
+    if (drag_y < next_y)
+    {
+      return &(*cur_item);
+    }
+  }
+  std::cout << "Could not find dnd item, taking end" << std::endl;
+  return 0;
+}
+
+void FlowTable::change_dnd_status(bool active)
+{
+  m_dnd_in_progress = active;
+}
+
+LayoutWidgetBase* FlowTable::dnd_find_datawidget()
+{
+  // Test if we have a datawidget below which we want to add
+	LayoutWidgetBase* above = 0;
+  if (m_current_dnd_item)
+  {
+    if (m_current_dnd_item->m_first)
+    {
+      Gtk::Alignment* alignment = dynamic_cast <Gtk::Alignment*>(m_current_dnd_item->m_first);
+      if (alignment)
+      {
+        above = dynamic_cast<PlaceholderGlom*>(alignment->get_child());
+      }
+    }
+    if (!above && m_current_dnd_item->m_first)
+    {
+      above = dynamic_cast<LayoutWidgetBase*>(m_current_dnd_item->m_first);
+    }
+    if (!above && m_current_dnd_item->m_second)
+    {
+      above = dynamic_cast<LayoutWidgetBase*>(m_current_dnd_item->m_second);
+      //std::cout << g_type_name (G_OBJECT_TYPE (m_current_dnd_item->m_second->gobj())) << std::endl;
+    }
+
+    /*if (!above && item->m_first)
+    {
+      // LayoutGroup
+      Gtk::Frame* frame = dynamic_cast<Gtk::Frame*>(item->m_first);
+      if (frame)
+      {
+        std::cout << "Frame:" << dynamic_cast<Gtk::Label*>(frame->get_label_widget())->get_text() 
+          << std::endl;
+        Gtk::Alignment* alignment = dynamic_cast<Gtk::Alignment*>(frame->get_child());
+        if (alignment)
+        {
+          std::cout << "Alignment" << std::endl;
+          Gtk::EventBox* eventbox = dynamic_cast<Gtk::EventBox*>(alignment->get_child());
+          if (eventbox)
+          {
+            above = dynamic_cast<LayoutWidgetBase*>(eventbox->get_child());
+            std::cout << "Eventbox!" << std::endl;
+          }
+        }
+        std::cout << "above LayoutGroup: " << (above != 0) << std::endl;
+      }
+    }*/
+  }
+	return above;
 }
 
 } //namespace Glom
