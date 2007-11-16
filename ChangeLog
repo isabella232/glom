@@ -1,5 +1,12 @@
 2007-11-16  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/utility_widgets/db_adddel/db_adddel.cc:
+	* glom/utility_widgets/db_adddel/db_adddel.h:
+	construct_specified_columns(): Use the font, foreground-color, 
+	and background-color settings for the list view too.
+
+2007-11-16  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/utility_widgets/layoutwidgetbase.cc:
 	apply_formatting(): Use the correct widget color 
 	properties to really set the foreground text color and 

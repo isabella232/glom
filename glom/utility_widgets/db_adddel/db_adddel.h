@@ -316,6 +316,8 @@ protected:
 
   App_Glom* get_application();
 
+  static void apply_formatting(Gtk::CellRenderer* renderer, const FieldFormatting& formatting);
+
   typedef Gtk::VBox type_base;
 
   //Member widgets:

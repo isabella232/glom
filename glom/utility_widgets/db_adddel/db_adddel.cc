@@ -613,6 +613,11 @@ Gtk::CellRenderer* DbAddDel::construct_specified_columns_cellrenderer(const shar
         break;
       }
     } //switch
+
+    //Set font and colors:
+    const FieldFormatting& formatting = item_field->get_formatting_used();
+    if(pCellRenderer)
+      apply_formatting(pCellRenderer, formatting);
   }
   else
   {
@@ -773,6 +778,26 @@ Gtk::CellRenderer* DbAddDel::construct_specified_columns_cellrenderer(const shar
   }
 
   return pCellRenderer;
+}
+
+void DbAddDel::apply_formatting(Gtk::CellRenderer* renderer, const FieldFormatting& formatting)
+{
+  Gtk::CellRendererText* text_renderer = dynamic_cast<Gtk::CellRendererText*>(renderer);
+  if(!text_renderer)
+    return;
+
+  //Use the text formatting:
+  const Glib::ustring font_desc = formatting.get_text_format_font();
+  if(!font_desc.empty())
+    text_renderer->property_font() = font_desc;
+
+  const Glib::ustring fg = formatting.get_text_format_color_foreground();
+  if(!fg.empty())
+    text_renderer->property_foreground() = fg;
+
+  const Glib::ustring bg = formatting.get_text_format_color_background();
+  if(!bg.empty())
+    text_renderer->property_background() = bg;
 }
 
 void DbAddDel::construct_specified_columns()

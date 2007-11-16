@@ -1,3 +1,8 @@
+Changes in 1.8 (future):
+
+* Custom font, foreground color and background color for fields.
+  (Murray Cumming)
+
 Changes in 1.6:
 
 glom 1.6 has only minor user-visible changes compared to glom 1.4:
