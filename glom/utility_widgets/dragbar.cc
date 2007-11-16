@@ -38,8 +38,8 @@ DragBar::DragBar()
   DragButton* drag_item = Gtk::manage(new DragButton(*image_item, "LayoutItem"));
   DragButton* drag_group = Gtk::manage(new DragButton(*image_group, "LayoutGroup"));  
   
-	add_button (*drag_item);
-	add_button (*drag_group);
+  add_button (*drag_item);
+  add_button (*drag_group);
 	
   show_all_children();
 }
@@ -50,3 +50,4 @@ DragBar::~DragBar()
 }
 
 } // namespace Glom
+

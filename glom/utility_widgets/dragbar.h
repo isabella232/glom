@@ -32,12 +32,12 @@ namespace Glom
 
 class DragBar : public SideBar
 {
-  public:
-    DragBar();
-    ~DragBar();
+public:
+  DragBar();
+   ~DragBar();
 
 };
 
-}
+} //namespace Glom
 
 #endif // GLOM_UTILITY_WIDGETS_DRAGBAR_H

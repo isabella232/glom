@@ -25,10 +25,10 @@ namespace Glom
 
 SideBar::SideBar()
 { 
-	set_snap_edge (Gtk::POS_LEFT);
-	set_handle_position (Gtk::POS_TOP);
-	
-  add (m_box);
+  set_snap_edge(Gtk::POS_LEFT);
+  set_handle_position(Gtk::POS_TOP);
+  
+  add(m_box);
   show_all_children();
 }
 
@@ -39,13 +39,14 @@ SideBar::~SideBar()
 
 void SideBar::add_button(Gtk::Button& button)
 {
-	button.set_relief (Gtk::RELIEF_HALF);
-	m_box.pack_start (button, false, false, 0);
+  button.set_relief(Gtk::RELIEF_HALF);
+  m_box.pack_start(button, false, false, 0);
 }
 
 void SideBar::remove_button(Gtk::Button& button)
 {
-	m_box.remove (button);	
+  m_box.remove(button);  
 }
 
 } // namespace Glom
+

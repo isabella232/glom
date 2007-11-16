@@ -551,7 +551,7 @@ sharedptr<LayoutItem_Field> DataWidget::offer_field_list(const Glib::ustring& ta
 
 sharedptr<LayoutItem_Field> DataWidget::offer_field_list(const Glib::ustring& table_name, const sharedptr<const LayoutItem_Field>& start_field)
 {
-	return offer_field_list (table_name, start_field, get_document(), get_application());
+  return offer_field_list (table_name, start_field, get_document(), get_application());
 }
 
 sharedptr<LayoutItem_Field> DataWidget::offer_field_list(const Glib::ustring& table_name, const sharedptr<const LayoutItem_Field>& start_field, Document_Glom* document, App_Glom* app)

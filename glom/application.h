@@ -76,10 +76,10 @@ public:
   ///Whether to show the generated SQL queries on stdout, for debugging.
   void set_show_sql_debug(bool val = true);
 
-  static App_Glom* get_application();
+  void add_sidebar(SideBar& sidebar);
+  void remove_sidebar(SideBar& sidebar);
 
-	void add_sidebar (SideBar& sidebar);
-	void remove_sidebar (SideBar& sidebar);
+  static App_Glom* get_application();
 	
 protected:
   virtual void init_layout(); //override.

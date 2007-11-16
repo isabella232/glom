@@ -31,17 +31,17 @@ namespace Glom
 
 class SideBar : public Gtk::HandleBox
 {
-  public:
-    SideBar();
-    ~SideBar();
+public:
+  SideBar();
+  ~SideBar();
     
-    void add_button (Gtk::Button& button);
-    void remove_button (Gtk::Button& button);
+  void add_button(Gtk::Button& button);
+  void remove_button(Gtk::Button& button);
   
-  private:
-    Gtk::VBox m_box;
+private:
+  Gtk::VBox m_box;
 };
 
-}
+} //namespace Glom
 
 #endif // GLOM_UTILITY_WIDGETS_SIDEBAR_H

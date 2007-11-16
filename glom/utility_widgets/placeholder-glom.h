@@ -49,3 +49,4 @@ protected:
 } // namespace Glom
 
 #endif // GLOM_UTILITY_WIDGETS_PLACEHOLDER_GLOM_H_
+

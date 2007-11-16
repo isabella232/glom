@@ -17,9 +17,9 @@
  * 
  * You should have received a copy of the GNU General Public License
  * along with glom.  If not, write to:
- * 	The Free Software Foundation, Inc.,
- * 	51 Franklin Street, Fifth Floor
- * 	Boston, MA  02110-1301, USA.
+ *   The Free Software Foundation, Inc.,
+ *   51 Franklin Street, Fifth Floor
+ *   Boston, MA  02110-1301, USA.
  */
 
 #ifndef _LAYOUTITEM_PLACEHOLDER_H_
@@ -33,20 +33,20 @@ namespace Glom
 class LayoutItem_Placeholder: public LayoutItem 
 {
 public:
-	LayoutItem_Placeholder();
-	~LayoutItem_Placeholder();
-	
-	LayoutItem_Placeholder(const LayoutItem_Placeholder& src);
-	
-	/** Create a new copied instance.
-	* This allows us to deep-copy a list of LayoutItems.
-	*/
-	virtual LayoutItem* clone() const;
-	
-	virtual Glib::ustring get_part_type_name() const;
-	virtual Glib::ustring get_report_part_id() const;
-	
-	bool operator==(const LayoutItem_Placeholder* src) const;
+  LayoutItem_Placeholder();
+  ~LayoutItem_Placeholder();
+  
+  LayoutItem_Placeholder(const LayoutItem_Placeholder& src);
+  
+  /** Create a new copied instance.
+  * This allows us to deep-copy a list of LayoutItems.
+  */
+  virtual LayoutItem* clone() const;
+  
+  virtual Glib::ustring get_part_type_name() const;
+  virtual Glib::ustring get_report_part_id() const;
+  
+  bool operator==(const LayoutItem_Placeholder* src) const;
 protected:
 
 private:

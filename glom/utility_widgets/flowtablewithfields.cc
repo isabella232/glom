@@ -53,7 +53,7 @@ FlowTableWithFields::FlowTableWithFields(const Glib::ustring& table_name)
   // rather annoying, though I don't see another possibility at the moment. armin.
   Glib::ObjectBase("Glom_FlowTable"),
 #endif // !defined(GLIBMM_VFUNCS_ENABLED) || !defined(GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED)
-	m_placeholder(0),
+  m_placeholder(0),
   m_table_name(table_name)
 {
 }
@@ -145,11 +145,11 @@ void FlowTableWithFields::add_layout_item_at_position(const sharedptr<LayoutItem
               sharedptr<LayoutItem_Image> layout_imageobject = sharedptr<LayoutItem_Image>::cast_dynamic(item);
               if(layout_imageobject)
                 add_imageobject_at_position(layout_imageobject, m_table_name, add_before);
-            	else
-            	{
-            	  sharedptr<LayoutItem_Placeholder> layout_placeholder = 
-            	    sharedptr<LayoutItem_Placeholder>::cast_dynamic(item);
-                if (layout_placeholder)
+              else
+              {
+                sharedptr<LayoutItem_Placeholder> layout_placeholder = 
+                  sharedptr<LayoutItem_Placeholder>::cast_dynamic(item);
+                if(layout_placeholder)
                   add_placeholder_at_position(layout_placeholder, m_table_name, add_before);
               }
             }
@@ -554,22 +554,29 @@ void FlowTableWithFields::add_textobject_at_position(const sharedptr<LayoutItem_
 
 void FlowTableWithFields::add_placeholder_at_position(const sharedptr<LayoutItem_Placeholder>& layoutitem_placeholder, const Glib::ustring& /* table_name */, const type_list_layoutwidgets::iterator& add_before)
 {
+  //Delete any existing placeholder (there can be only one):
+  if(m_placeholder)
+  {
+    delete m_placeholder;
+    m_placeholder = 0;
+  }
+  
   //Add the widget:
   m_placeholder = Gtk::manage(new Gtk::Alignment());
   m_placeholder->set(Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER);
   m_placeholder->show();
 	
-	PlaceholderGlom* preview = Gtk::manage (new PlaceholderGlom);
-	preview->show();
+  PlaceholderGlom* preview = Gtk::manage (new PlaceholderGlom);
+  preview->show();
 	
   m_placeholder->add(*preview);
 
   m_list_layoutwidgets.insert(add_before, preview);
   Gtk::Widget* widget = dynamic_cast<Gtk::Widget*>(*add_before);
   if (widget)
-    insert_before (*m_placeholder, *widget, true /* expand */);
+    insert_before(*m_placeholder, *widget, true /* expand */);
   else
-    add (*m_placeholder, true);
+    add(*m_placeholder, true);
 }
 
 void FlowTableWithFields::add_imageobject_at_position(const sharedptr<LayoutItem_Image>& layoutitem_image, const Glib::ustring& /* table_name */, const type_list_layoutwidgets::iterator& add_before)
@@ -1190,42 +1197,35 @@ void FlowTableWithFields::on_dnd_add_layout_group(LayoutWidgetBase* above)
 
 void FlowTableWithFields::on_dnd_add_placeholder(LayoutWidgetBase* above)
 {
-	type_list_layoutwidgets::iterator cur_widget;
+  type_list_layoutwidgets::iterator cur_widget;
 
-  if (above)
-  {
-	  cur_widget = std::find (m_list_layoutwidgets.begin(), m_list_layoutwidgets.end(), above);
-  }
+  if(above)
+    cur_widget = std::find (m_list_layoutwidgets.begin(), m_list_layoutwidgets.end(), above);
   else
-  {
     cur_widget = m_list_layoutwidgets.end();
-  }
-	Gtk::Alignment* old_placeholder = 0;
-  if (m_placeholder)
-	{
-	  if (dynamic_cast<Glom::PlaceholderGlom*> (*cur_widget))
-		{
+
+  Gtk::Alignment* old_placeholder = 0;
+  if(m_placeholder)
+  {
+    if(dynamic_cast<Glom::PlaceholderGlom*>(*cur_widget))
       return;
-		}
+
     old_placeholder = m_placeholder;
-	}
+  }
   
   sharedptr<LayoutItem_Placeholder> placeholder_field(new LayoutItem_Placeholder);
 	add_layout_item_at_position (placeholder_field, cur_widget);
   
-  if (old_placeholder)
-  {
-    remove (*old_placeholder);
-  }
+  if(old_placeholder)
+    remove(*old_placeholder);
 }
 
 void FlowTableWithFields::on_dnd_remove_placeholder()
 {
-  if (m_placeholder)
-  {
-		remove (*m_placeholder);
-	}
-	m_placeholder = 0;
+  if(m_placeholder)
+    remove(*m_placeholder);
+
+  m_placeholder = 0;
 }
 
 sharedptr<LayoutItem_Portal> FlowTableWithFields::get_layout_item_from_relation()

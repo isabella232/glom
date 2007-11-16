@@ -43,23 +43,26 @@
 #endif // GLOM_ENABLE_MAEMO
 
 #ifdef GLOM_ENABLE_MAEMO
-namespace {
-	HildonWindow* turn_gtk_window_into_hildon_window(GtkWindow* cobject)
-	{
-		GtkWidget* child = cobject->bin.child;
-		g_assert(child);
+namespace //anonymous namespace
+{
 
-		g_object_ref(G_OBJECT(child));
-		gtk_container_remove(GTK_CONTAINER(cobject), child);
+HildonWindow* turn_gtk_window_into_hildon_window(GtkWindow* cobject)
+{
+  GtkWidget* child = cobject->bin.child;
+  g_assert(child);
 
-		GtkWidget* window = hildon_window_new();
-		gtk_container_add(GTK_CONTAINER(window), child);
-		g_object_unref(G_OBJECT(child));
+  g_object_ref(G_OBJECT(child));
+  gtk_container_remove(GTK_CONTAINER(cobject), child);
 
-		gtk_widget_destroy(GTK_WIDGET(cobject));
-		return HILDON_WINDOW(window);
-	}
+  GtkWidget* window = hildon_window_new();
+  gtk_container_add(GTK_CONTAINER(window), child);
+  g_object_unref(G_OBJECT(child));
+
+  gtk_widget_destroy(GTK_WIDGET(cobject));
+  return HILDON_WINDOW(window);
 }
+
+} //anonymous namespace
 #endif // GLOM_ENABLE_MAEMO
 
 namespace Glom
@@ -80,7 +83,7 @@ App_Glom::App_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml
 #endif
   type_base(cobject, "Glom"),
   m_pBoxTop(0),
-	m_pBoxSidebar(0),
+  m_pBoxSidebar(0),
   m_pFrame(0),
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   m_window_translations(0),
@@ -405,8 +408,8 @@ void App_Glom::init_menus()
 
   action = Gtk::Action::create("GlomAction_Menu_Developer_Fields", _("_Fields"));
   m_listDeveloperActions.push_back(action);  
-  m_refActionGroup_Others->add(action, sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_fields) );	
-	
+  m_refActionGroup_Others->add(action, sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_fields) );
+
   action = Gtk::Action::create("GlomAction_Menu_Developer_RelationshipsOverview", _("_Relationships Overview"));
   m_listDeveloperActions.push_back(action);
   m_refActionGroup_Others->add(action, sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_relationships_overview) );
@@ -965,7 +968,7 @@ bool App_Glom::on_document_load()
         connection_pool->set_ready_to_connect(this); //Box_DB::connect_to_server() will now attempt the connection-> Shared instances of m_Connection will also be usable.
 
         //Attempt to connect to the specified database:
-	bool test = false;
+        bool test = false;
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
         try
 #else
@@ -985,13 +988,13 @@ bool App_Glom::on_document_load()
 #else
             test = m_pFrame->connection_request_password_and_attempt(error);
 #endif
-	}
+        }
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
         catch(const ExceptionConnection& ex)
         {
 #else
         if(error.get())
-	{
+        {
           const ExceptionConnection& ex = *error.get();
 #endif
           if(ex.get_failure_type() == ExceptionConnection::FAILURE_NO_DATABASE) //This is the only FAILURE_* type that connection_request_password_and_attempt() throws.
@@ -1009,7 +1012,7 @@ bool App_Glom::on_document_load()
           else
             std::cerr << "App_Glom::on_document_load(): unexpected ExceptionConnection failure type." << std::endl;
         }
-	
+
         if(!test) //It usually throws an exception instead of returning false.
         {
 #ifndef GLOM_ENABLE_CLIENT_ONLY
@@ -2079,14 +2082,14 @@ void App_Glom::do_menu_developer_relationships(Gtk::Window& parent, const Glib::
   m_pFrame->do_menu_developer_relationships(parent, table_name);
 }
 
-void App_Glom::add_sidebar (SideBar& sidebar)
+void App_Glom::add_sidebar(SideBar& sidebar)
 {
-	m_pBoxSidebar->pack_start (sidebar);
+  m_pBoxSidebar->pack_start (sidebar);
 }
 
-void App_Glom::remove_sidebar (SideBar& sidebar)
+void App_Glom::remove_sidebar(SideBar& sidebar)
 {
-	m_pBoxSidebar->remove (sidebar);
+  m_pBoxSidebar->remove (sidebar);
 }
 
 } //namespace Glom
