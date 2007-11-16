@@ -38,7 +38,6 @@ libutility_widgets_a_SOURCES = alignment_justified.cc alignment_justified.h \
                                filechooserdialog.cc filechooserdialog.h \
                                dragbutton.cc dragbutton.h \
                                dragbar.cc dragwindow.h \
-                               floweventbox.h floweventbox.cc \
                                placeholder-glom.h  placeholder-glom.cc \
                                sidebar.h sidebar.cc
 
@@ -46,7 +45,6 @@ libutility_widgets_a_SOURCES = alignment_justified.cc alignment_justified.h \
 libutility_widgets_a_LIBADD = adddel/libutility_widgets_adddel.a \
                               db_adddel/libutility_widgets_db_adddel.a \
                               canvas/libutility_widgets_canvas.a
-
 
 
 #noinst_PROGRAMS = test_flowtable

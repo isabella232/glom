@@ -32,6 +32,7 @@ glom/libglom/data_structure/layout/layoutitem_field.cc
 glom/libglom/data_structure/layout/layoutitem_image.cc
 glom/libglom/data_structure/layout/layoutitem_line.cc
 glom/libglom/data_structure/layout/layoutitem_notebook.cc
+glom/libglom/data_structure/layout/layoutitem_placeholder.cc
 glom/libglom/data_structure/layout/layoutitem_portal.cc
 glom/libglom/data_structure/layout/layoutitem_text.cc
 glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc
