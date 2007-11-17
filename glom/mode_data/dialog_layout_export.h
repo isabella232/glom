@@ -38,9 +38,9 @@ public:
    * @param table_name The table name.
    * @param table_fields: The actual fields in the table, in case the document does not yet know about them all.
    */
-  virtual void set_layout_groups(Document_Glom::type_mapLayoutGroupSequence& mapGroups, Document_Glom* document, const Glib::ustring& table_name);
+  virtual void set_layout_groups(Document_Glom::type_list_layout_groups& mapGroups, Document_Glom* document, const Glib::ustring& table_name);
 
-  void get_layout_groups(Document_Glom::type_mapLayoutGroupSequence& layout_groups) const;
+  void get_layout_groups(Document_Glom::type_list_layout_groups& layout_groups) const;
 
 protected:
 

@@ -195,11 +195,11 @@ void Box_Data_Details::create_layout()
     m_FlowTable.set_table(m_table_name); //This allows portals to get full Relationship information
 
     //This map of layout groups will also contain the field information from the database:
-    Document_Glom::type_mapLayoutGroupSequence layout_groups = get_data_layout_groups(m_layout_name);
+    Document_Glom::type_list_layout_groups layout_groups = get_data_layout_groups(m_layout_name);
 
-    for(Document_Glom::type_mapLayoutGroupSequence::const_iterator iter = layout_groups.begin(); iter != layout_groups.end(); ++iter)
+    for(Document_Glom::type_list_layout_groups::const_iterator iter = layout_groups.begin(); iter != layout_groups.end(); ++iter)
     {
-      m_FlowTable.add_layout_group(iter->second);
+      m_FlowTable.add_layout_group(*iter);
     }
   }
 
@@ -543,7 +543,7 @@ Box_Data_Details::type_signal_requested_related_details Box_Data_Details::signal
 void Box_Data_Details::on_flowtable_layout_changed()
 {
   //Get new layout:
-  //Document_Glom::type_mapLayoutGroupSequence layout_groups;
+  //Document_Glom::type_list_layout_groups layout_groups;
   //m_FlowTable.get_layout_groups(layout_groups);
 
   //Store it in the document:
@@ -816,10 +816,10 @@ void Box_Data_Details::print_layout_group(xmlpp::Element* node_parent, const sha
   xmlpp::Element* nodeChildGroup = node_parent->add_child("group");
   nodeChildGroup->set_attribute("title", group->get_title());
 
-  LayoutGroup::type_map_const_items items = group->get_items();
-  for(LayoutGroup::type_map_const_items::const_iterator iter = items.begin(); iter != items.end(); ++iter)
+  LayoutGroup::type_list_const_items items = group->get_items();
+  for(LayoutGroup::type_list_const_items::const_iterator iter = items.begin(); iter != items.end(); ++iter)
   {
-    sharedptr<const LayoutItem> layout_item = iter->second;
+    sharedptr<const LayoutItem> layout_item = *iter;
 
     sharedptr<const LayoutGroup> pLayoutGroup = sharedptr<const LayoutGroup>::cast_dynamic(layout_item);
     if(pLayoutGroup)
@@ -896,10 +896,10 @@ void Box_Data_Details::print_layout()
     //The groups:
     xmlpp::Element* nodeParent = nodeRoot;
 
-    Document_Glom::type_mapLayoutGroupSequence layout_groups = get_data_layout_groups(m_layout_name);
-    for(Document_Glom::type_mapLayoutGroupSequence::const_iterator iter = layout_groups.begin(); iter != layout_groups.end(); ++iter)
+    Document_Glom::type_list_layout_groups layout_groups = get_data_layout_groups(m_layout_name);
+    for(Document_Glom::type_list_layout_groups::const_iterator iter = layout_groups.begin(); iter != layout_groups.end(); ++iter)
     {
-      sharedptr<const LayoutGroup> layout_group = iter->second;
+      sharedptr<const LayoutGroup> layout_group = *iter;
       print_layout_group(nodeParent, layout_group);
     }
 

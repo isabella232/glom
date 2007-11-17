@@ -254,10 +254,10 @@ void Dialog_Layout_Details::add_group(const Gtk::TreeModel::iterator& parent, co
     rowGroup[m_model_items->m_columns.m_col_layout_item] = group_inserted;
 
     //Add the child items: (TODO_Performance: The child items are ignored/wasted because we clone them again.)
-    LayoutGroup::type_map_const_items items = group->get_items();
-    for(LayoutGroup::type_map_const_items::const_iterator iter = items.begin(); iter != items.end(); ++iter)
+    LayoutGroup::type_list_const_items items = group->get_items();
+    for(LayoutGroup::type_list_const_items::const_iterator iter = items.begin(); iter != items.end(); ++iter)
     {
-      sharedptr<const LayoutItem> item = iter->second;
+      sharedptr<const LayoutItem> item = *iter;
 
       sharedptr<const LayoutItem_Portal> portal = sharedptr<const LayoutItem_Portal>::cast_dynamic(item);
       if(portal) //If it is a portal
@@ -292,7 +292,6 @@ void Dialog_Layout_Details::set_document(const Glib::ustring& layout, Document_G
 
   Dialog_Layout::set_document(layout, document, table_name, table_fields);
 
-
   //Update the tree models from the document
   if(document)
   {
@@ -300,29 +299,25 @@ void Dialog_Layout_Details::set_document(const Glib::ustring& layout, Document_G
     m_label_table_name->set_text(table_name);
     m_entry_table_title->set_text( document->get_table_title(table_name) );
 
-    Document_Glom::type_mapLayoutGroupSequence mapGroups = document->get_data_layout_groups_plus_new_fields(layout, m_table_name);
-    document->fill_layout_field_details(m_table_name, mapGroups); //Update with full field information.
+    Document_Glom::type_list_layout_groups list_groups = document->get_data_layout_groups_plus_new_fields(layout, m_table_name);
+    document->fill_layout_field_details(m_table_name, list_groups); //Update with full field information.
 
     //If no information is stored in the document, then start with something:
 
-    if(mapGroups.empty())
+    if(list_groups.empty())
     {
       sharedptr<LayoutGroup> group = sharedptr<LayoutGroup>::create();
       group->set_name("main");
       group->m_columns_count = 2;
 
-      guint field_sequence = 1; //0 means no sequence
       for(type_vecLayoutFields::const_iterator iter = table_fields.begin(); iter != table_fields.end(); ++iter)
       {
         sharedptr<LayoutItem_Field> item = *iter;
-        item->m_sequence = field_sequence;
 
-        group->add_item(item, field_sequence);
-
-        ++field_sequence;
+        group->add_item(item);
       }
 
-      mapGroups[1] = group;
+      list_groups[1] = group;
     }
 
     //Show the field layout
@@ -330,11 +325,9 @@ void Dialog_Layout_Details::set_document(const Glib::ustring& layout, Document_G
 
     m_model_items->clear();
 
-    //guint field_sequence = 1; //0 means no sequence
-    //guint group_sequence = 1; //0 means no sequence
-    for(Document_Glom::type_mapLayoutGroupSequence::const_iterator iter = mapGroups.begin(); iter != mapGroups.end(); ++iter)
+    for(Document_Glom::type_list_layout_groups::const_iterator iter = list_groups.begin(); iter != list_groups.end(); ++iter)
     {
-      sharedptr<const LayoutGroup> group = iter->second;
+      sharedptr<const LayoutGroup> group = *iter;
       sharedptr<const LayoutGroup> portal = sharedptr<const LayoutItem_Portal>::cast_dynamic(group);
       if(group && !portal)
         add_group(Gtk::TreeModel::iterator() /* null == top-level */, group);
@@ -1035,11 +1028,9 @@ void Dialog_Layout_Details::save_to_document()
     m_model_items->fill_sequences();
 
     //Get the groups and their fields:
-    Document_Glom::type_mapLayoutGroupSequence mapGroups;
-    guint group_sequence = 1; //0 means no sequence
+    Document_Glom::type_list_layout_groups list_groups;
 
     //Add the layout items:
-    //guint field_sequence = 1; //0 means no sequence
     for(Gtk::TreeModel::iterator iterFields = m_model_items->children().begin(); iterFields != m_model_items->children().end(); ++iterFields)
     {
       Gtk::TreeModel::Row row = *iterFields;
@@ -1050,17 +1041,15 @@ void Dialog_Layout_Details::save_to_document()
       if(layout_group && !layout_portal) //There may be top-level groups, but no top-level fields, because the fields must be in a group (so that they are in columns)
       {
         sharedptr<LayoutGroup> group = sharedptr<LayoutGroup>::create();
-        group->m_sequence = group_sequence;
         fill_group(iterFields, group);
 
-        mapGroups[group_sequence] = group;
-        ++group_sequence;
+        list_groups.push_back(group);
       }
     }
 
     if(document)
     {
-      document->set_data_layout_groups(m_layout_name, m_table_name, mapGroups);
+      document->set_data_layout_groups(m_layout_name, m_table_name, list_groups);
       m_modified = false;
     }
   }

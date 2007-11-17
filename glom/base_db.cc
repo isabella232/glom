@@ -1647,10 +1647,10 @@ void Base_DB::get_table_fields_to_show_for_sequence_add_group(const Glib::ustrin
 {
   //g_warning("Box_Data::get_table_fields_to_show_for_sequence_add_group(): table_name=%s, all_db_fields.size()=%d, group->name=%s", table_name.c_str(), all_db_fields.size(), group->get_name().c_str());
 
-  LayoutGroup::type_map_items items = group->get_items();
-  for(LayoutGroup::type_map_items::iterator iterItems = items.begin(); iterItems != items.end(); ++iterItems)
+  LayoutGroup::type_list_items items = group->get_items();
+  for(LayoutGroup::type_list_items::iterator iterItems = items.begin(); iterItems != items.end(); ++iterItems)
   {
-    sharedptr<LayoutItem> item = iterItems->second;
+    sharedptr<LayoutItem> item = *iterItems;
 
     sharedptr<LayoutItem_Field> item_field = sharedptr<LayoutItem_Field>::cast_dynamic(item);
     if(item_field)
@@ -1721,7 +1721,7 @@ void Base_DB::get_table_fields_to_show_for_sequence_add_group(const Glib::ustrin
   }
 }
 
-Base_DB::type_vecLayoutFields Base_DB::get_table_fields_to_show_for_sequence(const Glib::ustring& table_name, const Document_Glom::type_mapLayoutGroupSequence& mapGroupSequence) const
+Base_DB::type_vecLayoutFields Base_DB::get_table_fields_to_show_for_sequence(const Glib::ustring& table_name, const Document_Glom::type_list_layout_groups& mapGroupSequence) const
 {
   //Get field definitions from the database, with corrections from the document:
   type_vecFields all_fields = get_fields_for_table(table_name);
@@ -1783,9 +1783,9 @@ Base_DB::type_vecLayoutFields Base_DB::get_table_fields_to_show_for_sequence(con
       type_vecFields vecFieldsInDocument = pDoc->get_table_fields(table_name);
 
       //We will show the fields that the document says we should:
-      for(Document_Glom::type_mapLayoutGroupSequence::const_iterator iter = mapGroupSequence.begin(); iter != mapGroupSequence.end(); ++iter)
+      for(Document_Glom::type_list_layout_groups::const_iterator iter = mapGroupSequence.begin(); iter != mapGroupSequence.end(); ++iter)
       {
-        sharedptr<LayoutGroup> group = iter->second;
+        sharedptr<LayoutGroup> group = *iter;
 
         if(true) //!group->m_hidden)
         {
@@ -2517,10 +2517,10 @@ sharedptr<const LayoutItem_Field> Base_DB::get_field_is_from_non_hidden_related_
 
   const Glib::ustring parent_table_name = portal->get_table_used(Glib::ustring() /* parent table - not relevant */); 
 
-  LayoutItem_Portal::type_map_const_items items = portal->get_items(); 
-  for(LayoutItem_Portal::type_map_const_items::const_iterator iter = items.begin(); iter != items.end(); ++iter)
+  LayoutItem_Portal::type_list_const_items items = portal->get_items(); 
+  for(LayoutItem_Portal::type_list_const_items::const_iterator iter = items.begin(); iter != items.end(); ++iter)
   {
-    sharedptr<const LayoutItem_Field> field = sharedptr<const LayoutItem_Field>::cast_dynamic(iter->second);
+    sharedptr<const LayoutItem_Field> field = sharedptr<const LayoutItem_Field>::cast_dynamic(*iter);
     if(field)
     {
       if(field->get_has_relationship_name())
@@ -2547,10 +2547,10 @@ sharedptr<const LayoutItem_Field> Base_DB::get_field_identifies_non_hidden_relat
 
   const Glib::ustring parent_table_name = portal->get_table_used(Glib::ustring() /* parent table - not relevant */);
 
-  LayoutItem_Portal::type_map_const_items items = portal->get_items(); 
-  for(LayoutItem_Portal::type_map_const_items::const_iterator iter = items.begin(); iter != items.end(); ++iter)
+  LayoutItem_Portal::type_list_const_items items = portal->get_items(); 
+  for(LayoutItem_Portal::type_list_const_items::const_iterator iter = items.begin(); iter != items.end(); ++iter)
   {
-    sharedptr<const LayoutItem_Field> field = sharedptr<const LayoutItem_Field>::cast_dynamic(iter->second);
+    sharedptr<const LayoutItem_Field> field = sharedptr<const LayoutItem_Field>::cast_dynamic(*iter);
     if(field && !(field->get_has_relationship_name()))
     {
       sharedptr<Relationship> relationship = document->get_field_used_in_relationship_to_one(parent_table_name, field->get_name());

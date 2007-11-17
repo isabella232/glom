@@ -1,3 +1,53 @@
+2007-11-17  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/libglom/data_structure/layout/layoutgroup.cc:
+	* glom/libglom/data_structure/layout/layoutgroup.h:
+	Remove add_item(item, sequence). Added add_item(item, item at position);
+        Removed remove_item(). Removed m_sequence.
+	Use a vector of items instead of a map.
+	* glom/libglom/document/document_glom.cc:
+	* glom/libglom/document/document_glom.h: Do not load or save the 
+	layout item sequence number. Just use the sequence in the XML file.
+
+	* glom/application.cc:
+	* glom/base_db.cc:
+	* glom/base_db.h:
+	* glom/filechooser_export.cc:
+	* glom/filechooser_export.h:
+	* glom/frame_glom.cc:
+	* glom/frame_glom.h:
+	* glom/layout_item_dialogs/dialog_group_by.cc:
+	* glom/layout_item_dialogs/dialog_groupby_secondaryfields.cc:
+	* glom/layout_item_dialogs/dialog_groupby_secondaryfields.h:
+	* glom/layout_item_dialogs/dialog_groupby_sortfields.cc:
+	* glom/layout_item_dialogs/dialog_notebook.cc:
+	* glom/libglom/data_structure/layout/layoutitem.cc:
+	* glom/libglom/data_structure/layout/layoutitem.h:
+	* glom/libglom/data_structure/layout/layoutitem_portal.cc:
+	* glom/libglom/sharedptr.h:
+	* glom/libglom/test_sharedptr_layoutitem.cc:
+	* glom/mode_data/box_data.cc:
+	* glom/mode_data/box_data.h:
+	* glom/mode_data/box_data_details.cc:
+	* glom/mode_data/box_data_list.cc:
+	* glom/mode_data/box_data_list.h:
+	* glom/mode_data/box_data_list_related.cc:
+	* glom/mode_data/box_data_list_related.h:
+	* glom/mode_data/dialog_layout_details.cc:
+	* glom/mode_data/dialog_layout_export.cc:
+	* glom/mode_data/dialog_layout_export.h:
+	* glom/mode_data/dialog_layout_list_related.cc:
+	* glom/mode_design/print_layouts/canvas_print_layout.cc:
+	* glom/mode_design/users/dialog_groups_list.cc:
+	* glom/mode_design/users/dialog_user.cc:
+	* glom/mode_design/users/dialog_users_list.cc:
+	* glom/reports/dialog_layout_report.cc:
+	* glom/reports/report_builder.cc:
+	* glom/utility_widgets/flowtablewithfields.cc:
+	* glom/utility_widgets/flowtablewithfields.h:
+	Adapt to the new LayoutGroup API. This is now much simpler - we don't have 
+	to worry about the sequence number of keeping the two copies of it in sync.
+
 2007-11-16  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/utility_widgets/flowtablewithfields.cc:

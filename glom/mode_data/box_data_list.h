@@ -73,7 +73,7 @@ public:
 
 protected:
   virtual void create_layout(); //override
-  virtual Document_Glom::type_mapLayoutGroupSequence create_layout_get_layout(); //overriden in Box_Data_List_Related.
+  virtual Document_Glom::type_list_layout_groups create_layout_get_layout(); //overriden in Box_Data_List_Related.
   void create_layout_add_group(const sharedptr<LayoutGroup>& layout_group);
   virtual bool fill_from_database(); //override.
   virtual void enable_buttons();

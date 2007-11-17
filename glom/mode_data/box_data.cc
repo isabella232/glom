@@ -422,7 +422,7 @@ Box_Data::type_vecLayoutFields Box_Data::get_table_fields_to_show(const Glib::us
   const Document_Glom* pDoc = dynamic_cast<const Document_Glom*>(get_document());
   if(pDoc)
   {
-    Document_Glom::type_mapLayoutGroupSequence mapGroupSequence =  pDoc->get_data_layout_groups_plus_new_fields(m_layout_name, table_name);
+    Document_Glom::type_list_layout_groups mapGroupSequence =  pDoc->get_data_layout_groups_plus_new_fields(m_layout_name, table_name);
     return get_table_fields_to_show_for_sequence(table_name, mapGroupSequence);
   }
   else
@@ -545,9 +545,9 @@ void Box_Data::refresh_related_fields(const LayoutFieldInRecord& field_in_record
   }
 }
 
-Document_Glom::type_mapLayoutGroupSequence Box_Data::get_data_layout_groups(const Glib::ustring& layout)
+Document_Glom::type_list_layout_groups Box_Data::get_data_layout_groups(const Glib::ustring& layout)
 {
-  Document_Glom::type_mapLayoutGroupSequence layout_groups;
+  Document_Glom::type_list_layout_groups layout_groups;
 
   Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
   if(document)
@@ -560,12 +560,12 @@ Document_Glom::type_mapLayoutGroupSequence Box_Data::get_data_layout_groups(cons
       const Privileges table_privs = Privs::get_current_privs(m_table_name);
 
       //Fill in the field information for the fields mentioned in the layout:
-      for(Document_Glom::type_mapLayoutGroupSequence::iterator iterGroups = layout_groups.begin(); iterGroups != layout_groups.end(); ++iterGroups)
+      for(Document_Glom::type_list_layout_groups::iterator iterGroups = layout_groups.begin(); iterGroups != layout_groups.end(); ++iterGroups)
       {
-        fill_layout_group_field_info(iterGroups->second, table_privs);
+        fill_layout_group_field_info(*iterGroups, table_privs);
 
         //std::cout << "debug: Box_Data::get_data_layout_groups: " << std::endl;
-        //iterGroups->second->debug();
+        //*iterGroups->debug();
       }
     }
   }
@@ -580,10 +580,10 @@ void Box_Data::fill_layout_group_field_info(const sharedptr<LayoutGroup>& group,
 
   const Document_Glom* document = get_document();
 
-  LayoutGroup::type_map_items items = group->get_items();
-  for(LayoutGroup::type_map_items::iterator iter = items.begin(); iter != items.end(); ++iter)
+  LayoutGroup::type_list_items items = group->get_items();
+  for(LayoutGroup::type_list_items::iterator iter = items.begin(); iter != items.end(); ++iter)
   {
-    sharedptr<LayoutItem> item = iter->second;
+    sharedptr<LayoutItem> item = *iter;
     sharedptr<LayoutItem_Field> item_field = sharedptr<LayoutItem_Field>::cast_dynamic(item);
     if(item_field) //If is a field rather than some other layout item
     {

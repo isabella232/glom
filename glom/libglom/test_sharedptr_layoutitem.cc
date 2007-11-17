@@ -59,10 +59,10 @@ main(int argc, char* argv[])
 
     group = Glom::glom_sharedptr_clone(group); //Test cloning.
 
-    Glom::LayoutGroup::type_map_items items = group->get_items();
-    for(Glom::LayoutGroup::type_map_items::iterator iter = items.begin(); iter != items.end(); ++iter)
+    Glom::LayoutGroup::type_list_items items = group->get_items();
+    for(Glom::LayoutGroup::type_list_items::iterator iter = items.begin(); iter != items.end(); ++iter)
     {
-      Glom::sharedptr<Glom::LayoutItem> item = iter->second;
+      Glom::sharedptr<Glom::LayoutItem> item = *iter;
       std::cout << "group item refcount = " << *(item._get_refcount()) << std::endl; //Should be 3 (1 in the group, 1 in the map from get_items(), 1 for item).
 
       Glom::sharedptr<Glom::LayoutItem_Field> item_casted = Glom::sharedptr<Glom::LayoutItem_Field>::cast_dynamic(item);

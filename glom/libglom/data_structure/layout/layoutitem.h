@@ -69,8 +69,6 @@ public:
   /// This is used only for the print layouts.
   bool get_print_layout_split_across_pages() const;
 
-
-  guint m_sequence;
   //bool m_hidden;
 
 protected:

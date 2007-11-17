@@ -207,10 +207,10 @@ void FlowTableWithFields::add_layout_group_at_position(const sharedptr<LayoutGro
     
     alignment->add(*event_box);
 
-    LayoutGroup::type_map_items items = group->get_items(); 
-    for(LayoutGroup::type_map_items::const_iterator iter = items.begin(); iter != items.end(); ++iter)
+    LayoutGroup::type_list_items items = group->get_items(); 
+    for(LayoutGroup::type_list_items::const_iterator iter = items.begin(); iter != items.end(); ++iter)
     {
-      sharedptr<LayoutItem> item = iter->second;
+      sharedptr<LayoutItem> item = *iter;
       if(item)
       {
         flow_table->add_layout_item(item);
@@ -286,9 +286,9 @@ void FlowTableWithFields::add_layout_notebook_at_position(const sharedptr<Layout
 
   notebook_widget->show();
 
-  for(LayoutGroup::type_map_items::iterator iter = notebook->m_map_items.begin(); iter != notebook->m_map_items.end(); ++iter)
+  for(LayoutGroup::type_list_items::iterator iter = notebook->m_list_items.begin(); iter != notebook->m_list_items.end(); ++iter)
   {
-    sharedptr<LayoutGroup> group = sharedptr<LayoutGroup>::cast_dynamic(iter->second);
+    sharedptr<LayoutGroup> group = sharedptr<LayoutGroup>::cast_dynamic(*iter);
     if(group)
     {
       Gtk::Label* tab_label = Gtk::manage(new Gtk::Label());
@@ -335,10 +335,10 @@ void FlowTableWithFields::add_layout_notebook_at_position(const sharedptr<Layout
         notebook_widget->append_page(*alignment, *tab_label);
 
         //Add child items:
-        LayoutGroup::type_map_items items = group->get_items(); 
-        for(LayoutGroup::type_map_items::const_iterator iter = items.begin(); iter != items.end(); ++iter)
+        LayoutGroup::type_list_items items = group->get_items(); 
+        for(LayoutGroup::type_list_items::const_iterator iter = items.begin(); iter != items.end(); ++iter)
         {
-          sharedptr<LayoutItem> item = iter->second;
+          sharedptr<LayoutItem> item = *iter;
           if(item)
           {
             flow_table->add_layout_item(item);
@@ -409,7 +409,7 @@ void FlowTableWithFields::add_group(const Glib::ustring& group_name, const Glib:
       //Gtk::Entry* debug = Gtk::manage(new Gtk::Entry() );
       //flow_table->add(*debug);
       //debug->show();
-      flow_table->add_field(iter->second);
+      flow_table->add_field(*iter);
     }
 
     add(*frame);
@@ -968,28 +968,6 @@ void FlowTableWithFields::on_datawidget_layout_item_added(LayoutWidgetBase::enum
     return;
   }
 
-  //Get the position of the selected item in its group:
-  int position = -1;
-  LayoutGroup::type_map_items& map_items = layout_group->m_map_items;
-  for(LayoutGroup::type_map_items::const_iterator iter = map_items.begin(); iter != map_items.end(); ++iter)
-  {
-    sharedptr<const LayoutItem> item = iter->second;
-    if(item && (item.obj() == layout_item.obj()))
-    {
-      position = iter->first;
- 
-      //std::cout << "debug: position found = " << position << ", name=" << iter->second->get_name() << std::endl;
-
-      break;
-    }
-  }
-
-  if(position == -1)
-  {
-    std::cerr << "FlowTableWithFields::on_datawidget_layout_item_added(): can't find layout_item in layout_group." << std::endl;
-    return;
-  }
-
   
   //Create/Choose the new layout item:
   sharedptr<LayoutItem> layout_item_new;
@@ -1080,31 +1058,7 @@ void FlowTableWithFields::on_datawidget_layout_item_added(LayoutWidgetBase::enum
 
   if(layout_item_new)
   {
-    //Move the subsequent items forwards:
-    LayoutGroup::type_map_items::iterator iterPos = map_items.find(position);
-    if(iterPos == map_items.end())
-    {
-      std::cerr << "FlowTableWithFields::on_datawidget_layout_item_added(): Can not find iter for layout_item in layout_group with found position." << std::endl;
-      return;
-    }
-
-    //Increase the sequence position of all the items after this item:
-    LayoutGroup::type_map_items::iterator iterBeforeEnd = map_items.end();
-    --iterBeforeEnd;
-    for(LayoutGroup::type_map_items::iterator iter = iterBeforeEnd; iter != iterPos; --iter)
-    {
-      const int position_next = iter->first + 1;
-      iter->second->m_sequence = position_next;
-      map_items[position_next] = iter->second;  
-      iter->second = sharedptr<LayoutItem>();
-    }
-
-    //This position is now free for us to insert something:
-    const int position_new = position + 1;
-    //std::cout << "debug: position_new=" << position_new << std::endl;  
-
-    layout_item_new->m_sequence = position_new;
-    map_items[position_new] = layout_item_new;
+    layout_group->add_item(layout_item_new, layout_item);
   
     //We have changed the structure itself in the document, because we are using the same structure via sharedptr.
     //So we just tell the parent widgets to rebuild the layout from the document:
@@ -1160,22 +1114,24 @@ void FlowTableWithFields::on_flowtable_requested_related_details(const Glib::ust
 
 void FlowTableWithFields::on_dnd_add_layout_item(LayoutWidgetBase* above)
 {
-  type_list_layoutwidgets::iterator cur_widget;
-  if(above)
-    cur_widget = std::find (m_list_layoutwidgets.begin(), m_list_layoutwidgets.end(), above);
-  else
-    cur_widget = m_list_layoutwidgets.end();
-
+  //Ask the user to choose the layout item:
   sharedptr<LayoutItem_Field> layout_item_field = 
     DataWidget::offer_field_list(m_table_name, sharedptr<LayoutItem_Field>(), 
       get_document(), App_Glom::get_application());
   if(!layout_item_field)
     return;
 
+  //Add a widget for this layout item, after the "above" item:
+  type_list_layoutwidgets::iterator cur_widget;
+  if(above)
+    cur_widget = std::find (m_list_layoutwidgets.begin(), m_list_layoutwidgets.end(), above);
+  else
+    cur_widget = m_list_layoutwidgets.end();
+
   add_layout_item_at_position(layout_item_field, cur_widget);
 
 
-  //Get the group that the widget's layout item is in:
+  //Get the layout group that the "above" widget's layout item is in:
   sharedptr<LayoutGroup> layout_group = sharedptr<LayoutGroup>::cast_dynamic(get_layout_item());
   if(!layout_group)
   {
@@ -1183,61 +1139,10 @@ void FlowTableWithFields::on_dnd_add_layout_item(LayoutWidgetBase* above)
     return;
   }
 
-
-  //Get the position of the selected item in its group:
-  sharedptr<LayoutItem> layout_item_current;
-  if(cur_widget != m_list_layoutwidgets.end())
-  {
-    LayoutWidgetBase* widget = *cur_widget;
-    if(widget)
-    {
-       layout_item_current = widget->get_layout_item();
-    }
-  }
-
-  int position = 0;
-
-  if(layout_item_current)
-  {
-    LayoutGroup::type_map_items& map_items = layout_group->m_map_items;
-    for(LayoutGroup::type_map_items::const_iterator iter = map_items.begin(); iter != map_items.end(); ++iter)
-    {
-      sharedptr<const LayoutItem> item = iter->second;
-      if(item && (item.obj() == layout_item_current.obj()))
-      {
-        position = iter->first;
-
-        break;
-      }
-    }
-  }
-
-
-  //Move the subsequent items forwards:
-  LayoutGroup::type_map_items& map_items = layout_group->m_map_items;
-  LayoutGroup::type_map_items::iterator iterPos = map_items.find(position);
-  if(iterPos == map_items.end())
-  {
-    std::cerr << "FlowTableWithFields::on_datawidget_layout_item_added(): Can not find iter for layout_item in layout_group with found position." << std::endl;
-    return;
-  }
-
-  //Increase the sequence position of all the items after this item:
-  LayoutGroup::type_map_items::iterator iterBeforeEnd = map_items.end();
-  --iterBeforeEnd;
-  for(LayoutGroup::type_map_items::iterator iter = iterBeforeEnd; iter != iterPos; --iter)
-  {
-    const int position_next = iter->first + 1;
-    iter->second->m_sequence = position_next;
-    map_items[position_next] = iter->second;  
-    iter->second = sharedptr<LayoutItem>();
-  }
-
-
-  //Get the position of the selected item in its group:
-  const int position_new = position; // + 1;
-  layout_item_field->m_sequence = position_new;
-  map_items[position_new] = layout_item_field;
+  if(above)
+    layout_group->add_item(layout_item_field, above->get_layout_item());
+  else
+    layout_group->add_item(layout_item_field);
 
   //Tell the parent to tell the document to save the layout:
   signal_layout_changed().emit();

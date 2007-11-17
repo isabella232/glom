@@ -100,9 +100,9 @@ Glib::RefPtr<CanvasLayoutItem> Canvas_PrintLayout::create_canvas_item(const shar
 void Canvas_PrintLayout::add_layout_group_children(const sharedptr<LayoutGroup>& group)
 {
   //TODO: Add them inside the group item (when we actually use this code):
-  for(LayoutGroup::type_map_items::const_iterator iter = group->m_map_items.begin(); iter != group->m_map_items.end(); ++iter)
+  for(LayoutGroup::type_list_items::const_iterator iter = group->m_list_items.begin(); iter != group->m_list_items.end(); ++iter)
   {
-    sharedptr<LayoutItem> item = iter->second;
+    sharedptr<LayoutItem> item = *iter;
     sharedptr<LayoutGroup> group = sharedptr<LayoutGroup>::cast_dynamic(item);
     if(group)
     {

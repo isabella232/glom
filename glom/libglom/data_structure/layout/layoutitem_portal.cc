@@ -72,9 +72,9 @@ void LayoutItem_Portal::change_related_field_item_name(const Glib::ustring& tabl
 void LayoutItem_Portal::change_field_item_name(const Glib::ustring& table_name, const Glib::ustring& field_name, const Glib::ustring& field_name_new)
 {
   //Look at each item:
-  for(LayoutGroup::type_map_items::iterator iterItem = m_map_items.begin(); iterItem != m_map_items.end(); ++iterItem)
+  for(LayoutGroup::type_list_items::iterator iterItem = m_list_items.begin(); iterItem != m_list_items.end(); ++iterItem)
   {
-    sharedptr<LayoutItem> item = iterItem->second;
+    sharedptr<LayoutItem> item = *iterItem;
     sharedptr<LayoutItem_Field> field_item = sharedptr<LayoutItem_Field>::cast_dynamic(item);
     if(field_item)
     {

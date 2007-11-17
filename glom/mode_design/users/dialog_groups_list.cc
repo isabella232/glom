@@ -128,7 +128,7 @@ void Dialog_GroupsList::set_document(const Glib::ustring& layout, Document_Glom*
     m_label_table_name->set_text(table_name);
     m_entry_table_title->set_text( document->get_table_title(table_name) );
 
-    Document_Glom::type_mapLayoutGroupSequence mapGroups = document->get_data_layout_groups_plus_new_fields(layout, m_table_name);
+    Document_Glom::type_list_layout_groups mapGroups = document->get_data_layout_groups_plus_new_fields(layout, m_table_name);
 
     //If no information is stored in the document, then start with something:
 
@@ -142,9 +142,8 @@ void Dialog_GroupsList::set_document(const Glib::ustring& layout, Document_Glom*
       for(type_vecLayoutFields::const_iterator iter = table_fields.begin(); iter != table_fields.end(); ++iter)
       {
         LayoutItem_Field item = *iter;
-        item.m_sequence = field_sequence;
 
-        group.add_item(item, field_sequence);
+        group.add_item(item);
 
         ++field_sequence;
       }
@@ -157,9 +156,7 @@ void Dialog_GroupsList::set_document(const Glib::ustring& layout, Document_Glom*
 
     m_model_groups->clear();
 
-    //guint field_sequence = 1; //0 means no sequence
-    //guint group_sequence = 1; //0 means no sequence
-    for(Document_Glom::type_mapLayoutGroupSequence::const_iterator iter = mapGroups.begin(); iter != mapGroups.end(); ++iter)
+    for(Document_Glom::type_list_layout_groups::const_iterator iter = mapGroups.begin(); iter != mapGroups.end(); ++iter)
     {
       sharedptr<const LayoutGroup> group = iter->second;
 

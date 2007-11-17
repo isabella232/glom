@@ -36,8 +36,8 @@ public:
   virtual ~Dialog_GroupBy_SecondaryFields();
 
 
-  void set_fields(const Glib::ustring& table_name, const LayoutGroup::type_map_items& table_fields);
-  LayoutGroup::type_map_items get_fields() const;
+  void set_fields(const Glib::ustring& table_name, const LayoutGroup::type_list_items& table_fields);
+  LayoutGroup::type_list_items get_fields() const;
 
 protected:
 

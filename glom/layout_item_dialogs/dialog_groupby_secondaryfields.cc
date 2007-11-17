@@ -96,7 +96,7 @@ Dialog_GroupBy_SecondaryFields::~Dialog_GroupBy_SecondaryFields()
 {
 }
 
-void Dialog_GroupBy_SecondaryFields::set_fields(const Glib::ustring& table_name, const LayoutGroup::type_map_items& fields)
+void Dialog_GroupBy_SecondaryFields::set_fields(const Glib::ustring& table_name, const LayoutGroup::type_list_items& fields)
 {
   m_modified = false;
   m_table_name = table_name;
@@ -115,9 +115,9 @@ void Dialog_GroupBy_SecondaryFields::set_fields(const Glib::ustring& table_name,
 
     m_model_fields->clear();
     guint field_sequence = 0;
-    for(LayoutGroup::type_map_items::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
+    for(LayoutGroup::type_list_items::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
     {
-      sharedptr<const LayoutItem_Field> item = sharedptr<const LayoutItem_Field>::cast_dynamic(iter->second);
+      sharedptr<const LayoutItem_Field> item = sharedptr<const LayoutItem_Field>::cast_dynamic(*iter);
 
       Gtk::TreeModel::iterator iterTree = m_model_fields->append();
       Gtk::TreeModel::Row row = *iterTree;
@@ -185,9 +185,9 @@ void Dialog_GroupBy_SecondaryFields::on_button_field_down()
   move_treeview_selection_down(m_treeview_fields, m_ColumnsFields.m_col_sequence);
 }
 
-LayoutGroup::type_map_items Dialog_GroupBy_SecondaryFields::get_fields() const
+LayoutGroup::type_list_items Dialog_GroupBy_SecondaryFields::get_fields() const
 {
-  LayoutGroup::type_map_items result;
+  LayoutGroup::type_list_items result;
 
   guint field_sequence = 1; //0 means no sequence
   for(Gtk::TreeModel::iterator iterFields = m_model_fields->children().begin(); iterFields != m_model_fields->children().end(); ++iterFields)
@@ -199,7 +199,6 @@ LayoutGroup::type_map_items Dialog_GroupBy_SecondaryFields::get_fields() const
     if(!field_name.empty())
     {
       sharedptr<LayoutItem_Field> field_copy = glom_sharedptr_clone(item);
-      field_copy->m_sequence = field_sequence;
 
       result[field_sequence] = field_copy; 
 

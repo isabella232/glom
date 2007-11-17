@@ -126,7 +126,7 @@ void Dialog_Layout_List_Related::update_ui(bool including_relationship_list)
     sharedptr<LayoutItem_Portal> portal_temp = m_portal;
     m_combo_relationship->set_selected_relationship(m_portal->get_relationship(), m_portal->get_related_relationship()); 
 
-    Document_Glom::type_mapLayoutGroupSequence mapGroups;
+    Document_Glom::type_list_layout_groups mapGroups;
     mapGroups[0] = m_portal;
     document->fill_layout_field_details(related_table_name, mapGroups); //Update with full field information.
 
@@ -135,17 +135,15 @@ void Dialog_Layout_List_Related::update_ui(bool including_relationship_list)
 
     m_model_items->clear();
 
-    //guint field_sequence = 1; //0 means no sequence
-    //guint group_sequence = 1; //0 means no sequence
-    for(Document_Glom::type_mapLayoutGroupSequence::const_iterator iter = mapGroups.begin(); iter != mapGroups.end(); ++iter)
+    for(Document_Glom::type_list_layout_groups::const_iterator iter = mapGroups.begin(); iter != mapGroups.end(); ++iter)
     {
-      sharedptr<const LayoutGroup> group = iter->second;
+      sharedptr<const LayoutGroup> group = *iter;
       sharedptr<const LayoutGroup> portal = sharedptr<const LayoutItem_Portal>::cast_dynamic(group);
-      if(group && portal)
+      if(portal)
       {
-        for(LayoutGroup::type_map_items::const_iterator iterInner = group->m_map_items.begin(); iterInner != group->m_map_items.end(); ++iterInner)
+        for(LayoutGroup::type_list_items::const_iterator iterInner = group->m_list_items.begin(); iterInner != group->m_list_items.end(); ++iterInner)
         {
-          sharedptr<const LayoutItem> item = iterInner->second;
+          sharedptr<const LayoutItem> item = *iterInner;
           sharedptr<const LayoutGroup> groupInner = sharedptr<const LayoutGroup>::cast_dynamic(item);
 
           if(groupInner)
@@ -229,7 +227,7 @@ void Dialog_Layout_List_Related::save_to_document()
     //Get the data from the TreeView and store it in the document:
 
     //Get the groups and their fields:
-    Document_Glom::type_mapLayoutGroupSequence mapGroups;
+    Document_Glom::type_list_layout_groups mapGroups;
 
     //Add the fields to the portal:
     //The code that created this dialog must read m_portal back out again.
@@ -244,9 +242,7 @@ void Dialog_Layout_List_Related::save_to_document()
       const Glib::ustring field_name = item->get_name();
       if(!field_name.empty())
       {
-        item->m_sequence = field_sequence;
-
-        m_portal->add_item(item, field_sequence); //Add it to the group:
+        m_portal->add_item(item); //Add it to the group:
 
         ++field_sequence;
       }

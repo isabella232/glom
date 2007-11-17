@@ -63,8 +63,7 @@ bool LayoutItem::PrintLayoutPosition::operator==(const LayoutItem::PrintLayoutPo
 
 
 LayoutItem::LayoutItem()
-: m_sequence(0),
-  m_editable(true),
+: m_editable(true),
   m_display_width(0),
   m_positions(0)
 {
@@ -73,7 +72,6 @@ LayoutItem::LayoutItem()
 
 LayoutItem::LayoutItem(const LayoutItem& src)
 : TranslatableItem(src),
-  m_sequence(src.m_sequence),
   m_editable(src.m_editable),
   m_display_width(src.m_display_width),
   m_positions(0)
@@ -90,7 +88,6 @@ LayoutItem& LayoutItem::operator=(const LayoutItem& src)
 {
   TranslatableItem::operator=(src);
 
-  m_sequence = src.m_sequence;
   m_editable = src.m_editable;
   m_display_width = src.m_display_width;
 
@@ -107,7 +104,6 @@ LayoutItem& LayoutItem::operator=(const LayoutItem& src)
 bool LayoutItem::operator==(const LayoutItem& src) const
 {
   bool equal = (TranslatableItem::operator==(src)) &&
-          (m_sequence == src.m_sequence) &&
           (m_editable == src.m_editable) &&
           (m_display_width == src.m_display_width); //careful of this - it's not saved in the document.
 

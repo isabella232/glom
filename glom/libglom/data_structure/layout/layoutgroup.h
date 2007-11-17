@@ -22,7 +22,7 @@
 #define GLOM_DATASTRUCTURE_LAYOUTGROUP_H
 
 #include "layoutitem_field.h"
-#include <map>
+#include <list>
 
 namespace Glom
 {
@@ -42,10 +42,16 @@ public:
 
   bool has_field(const Glib::ustring& field_name) const;
 
-  sharedptr<LayoutItem> add_item(const sharedptr<LayoutItem>& item);
-  sharedptr<LayoutItem> add_item(const sharedptr<LayoutItem>& item, guint sequence);
-//  void add_item(const LayoutGroup& item);
-//  void add_item(const LayoutGroup& item, guint sequence);
+  /** Add the item to the end of the list.
+   * @param item The item to add.
+   */
+  void add_item(const sharedptr<LayoutItem>& item);
+
+  /** Add the item after the specified existing item.
+   * @param item The item to add.
+   * @param position The item after which the item should be added. 
+   */
+  void add_item(const sharedptr<LayoutItem>& item, const sharedptr<const LayoutItem>& position);
 
   /** Remove any instance of the field (from the current table) from the layout.
    */
@@ -74,22 +80,20 @@ public:
 
   guint m_columns_count;
 
-  typedef std::map<int, sharedptr<LayoutItem> > type_map_items;
-  type_map_items get_items();
+  typedef std::vector< sharedptr<LayoutItem> > type_list_items;
+  type_list_items get_items();
 
-  typedef std::map<int, sharedptr<const LayoutItem> > type_map_const_items;
-  type_map_const_items get_items() const;
+  typedef std::vector< sharedptr<const LayoutItem> > type_list_const_items;
+  type_list_const_items get_items() const;
 
   virtual Glib::ustring get_part_type_name() const;
   virtual Glib::ustring get_report_part_id() const;
 
 //Allow more efficient access: protected:
 
-  type_map_items m_map_items;
+  type_list_items m_list_items;
 
 protected:
-
-  void remove_item(guint sequence);
 
   double m_border_width; //For use on reports.
 };

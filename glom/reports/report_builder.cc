@@ -47,9 +47,9 @@ void ReportBuilder::report_build_headerfooter(const FoundSet& found_set, xmlpp::
 
   //Add child parts:
   type_vecLayoutItems itemsToGet;
-  for(LayoutGroup::type_map_items::iterator iterChildren = group->m_map_items.begin(); iterChildren != group->m_map_items.end(); ++iterChildren)
+  for(LayoutGroup::type_list_items::iterator iterChildren = group->m_list_items.begin(); iterChildren != group->m_list_items.end(); ++iterChildren)
   {
-    sharedptr<LayoutItem> item = iterChildren->second;
+    sharedptr<LayoutItem> item = *iterChildren;
 
     sharedptr<LayoutItem_Text> item_text = sharedptr<LayoutItem_Text>::cast_dynamic(item);
     if(item_text)
@@ -94,9 +94,9 @@ void ReportBuilder::report_build_summary(const FoundSet& found_set, xmlpp::Eleme
 
   //Get fields
   type_vecLayoutItems itemsToGet;
-  for(LayoutGroup::type_map_items::iterator iterChildren = summary->m_map_items.begin(); iterChildren != summary->m_map_items.end(); ++iterChildren)
+  for(LayoutGroup::type_list_items::iterator iterChildren = summary->m_list_items.begin(); iterChildren != summary->m_list_items.end(); ++iterChildren)
   {
-    sharedptr<LayoutItem> item = iterChildren->second;
+    sharedptr<LayoutItem> item = *iterChildren;
 
     sharedptr<LayoutItem_GroupBy> pGroupBy = sharedptr<LayoutItem_GroupBy>::cast_dynamic(item);
     if(pGroupBy)
@@ -132,9 +132,9 @@ void ReportBuilder::report_build_groupby_children(const FoundSet& found_set, xml
 {
   //Get data and add child rows:
   type_vecLayoutItems itemsToGet;
-  for(LayoutGroup::type_map_items::iterator iterChildren = group_by->m_map_items.begin(); iterChildren != group_by->m_map_items.end(); ++iterChildren)
+  for(LayoutGroup::type_list_items::iterator iterChildren = group_by->m_list_items.begin(); iterChildren != group_by->m_list_items.end(); ++iterChildren)
   {
-    sharedptr<LayoutItem> item = iterChildren->second;
+    sharedptr<LayoutItem> item = *iterChildren;
 
     sharedptr<LayoutItem_GroupBy> pGroupBy = sharedptr<LayoutItem_GroupBy>::cast_dynamic(item);
     if(pGroupBy)
@@ -208,14 +208,14 @@ void ReportBuilder::report_build_groupby(const FoundSet& found_set_parent, xmlpp
         found_set_records.m_where_clause = where_clause;
 
         //Secondary fields. For instance, the Contact Name, in addition to the Contact ID that we group by.
-        if(!(group_by->m_group_secondary_fields->m_map_items.empty()))
+        if(!(group_by->m_group_secondary_fields->m_list_items.empty()))
         {
           xmlpp::Element* nodeSecondaryFields = nodeGroupBy->add_child("secondary_fields");
 
           type_vecLayoutItems itemsToGet;
-          for(LayoutGroup::type_map_items::iterator iterChildren = group_by->m_group_secondary_fields->m_map_items.begin(); iterChildren != group_by->m_group_secondary_fields->m_map_items.end(); ++iterChildren)
+          for(LayoutGroup::type_list_items::iterator iterChildren = group_by->m_group_secondary_fields->m_list_items.begin(); iterChildren != group_by->m_group_secondary_fields->m_list_items.end(); ++iterChildren)
           {
-            sharedptr<LayoutItem> item = iterChildren->second;
+            sharedptr<LayoutItem> item = *iterChildren;
             itemsToGet.push_back( glom_sharedptr_clone(item) );
           }
 
@@ -242,9 +242,9 @@ void ReportBuilder::report_build_groupby(const FoundSet& found_set_parent, xmlpp
 
 void ReportBuilder::report_build_records_get_fields(const FoundSet& found_set, const sharedptr<LayoutGroup>& group, type_vecLayoutFields& items)
 {
-  for(LayoutGroup::type_map_items::iterator iterChildren = group->m_map_items.begin(); iterChildren != group->m_map_items.end(); ++iterChildren)
+  for(LayoutGroup::type_list_items::iterator iterChildren = group->m_list_items.begin(); iterChildren != group->m_list_items.end(); ++iterChildren)
   {
-    sharedptr<LayoutItem> item = iterChildren->second;
+    sharedptr<LayoutItem> item = *iterChildren;
 
     sharedptr<LayoutItem_VerticalGroup> pVerticalGroup = sharedptr<LayoutItem_VerticalGroup>::cast_dynamic(item);
     if(pVerticalGroup)
@@ -441,9 +441,9 @@ void ReportBuilder::report_build_records_vertical_group(const FoundSet& found_se
 {
   xmlpp::Element* nodeGroupVertical = parentNode.add_child(group->get_report_part_id());
 
-  for(LayoutGroup::type_map_items::iterator iterChildren = group->m_map_items.begin(); iterChildren != group->m_map_items.end(); ++iterChildren)
+  for(LayoutGroup::type_list_items::iterator iterChildren = group->m_list_items.begin(); iterChildren != group->m_list_items.end(); ++iterChildren)
   {
-    sharedptr<LayoutItem> item = iterChildren->second;
+    sharedptr<LayoutItem> item = *iterChildren;
 
     sharedptr<LayoutItem_VerticalGroup> pVerticalGroup = sharedptr<LayoutItem_VerticalGroup>::cast_dynamic(item);
     if(pVerticalGroup)
@@ -500,9 +500,9 @@ void ReportBuilder::report_build(const FoundSet& found_set, const sharedptr<cons
 
   type_vecLayoutItems itemsToGet_TopLevel;
 
-  for(LayoutGroup::type_map_items::const_iterator iter = report->m_layout_group->m_map_items.begin(); iter != report->m_layout_group->m_map_items.end(); ++iter)
+  for(LayoutGroup::type_list_items::const_iterator iter = report->m_layout_group->m_list_items.begin(); iter != report->m_layout_group->m_list_items.end(); ++iter)
   {
-    sharedptr<LayoutItem> pPart = iter->second;
+    sharedptr<LayoutItem> pPart = *iter;
 
     //The Group, and the details for each record in the group:
     sharedptr<LayoutItem_GroupBy> pGroupBy = sharedptr<LayoutItem_GroupBy>::cast_dynamic(pPart);

@@ -38,10 +38,10 @@ LayoutGroup::LayoutGroup(const LayoutGroup& src)
   m_border_width(src.m_border_width)
 {
   //Deep copy of the items map:
-  for(type_map_items::const_iterator iter = src.m_map_items.begin(); iter != src.m_map_items.end(); ++iter)
+  for(type_list_items::const_iterator iter = src.m_list_items.begin(); iter != src.m_list_items.end(); ++iter)
   {
-    if(iter->second)
-      m_map_items[iter->first] = glom_sharedptr_clone(iter->second);
+    if(*iter)
+      m_list_items.push_back( glom_sharedptr_clone(*iter) );
   }
 }
 
@@ -53,7 +53,7 @@ LayoutGroup::~LayoutGroup()
 void LayoutGroup::remove_all_items()
 {
   //Delete the items:
-  m_map_items.clear();
+  m_list_items.clear();
 }
 
 LayoutItem* LayoutGroup::clone() const
@@ -74,10 +74,10 @@ LayoutGroup& LayoutGroup::operator=(const LayoutGroup& src)
 
     //Deep copy of the items map:
     remove_all_items();
-    for(type_map_items::const_iterator iter = src.m_map_items.begin(); iter != src.m_map_items.end(); ++iter)
+    for(type_list_items::const_iterator iter = src.m_list_items.begin(); iter != src.m_list_items.end(); ++iter)
     {
-      if(iter->second)
-        m_map_items[iter->first] = glom_sharedptr_clone(iter->second);
+      if(*iter)
+        m_list_items.push_back( glom_sharedptr_clone(*iter) );
     }
   }
 
@@ -86,9 +86,9 @@ LayoutGroup& LayoutGroup::operator=(const LayoutGroup& src)
 
 bool LayoutGroup::has_field(const Glib::ustring& field_name) const
 {
-  for(type_map_items::const_iterator iter = m_map_items.begin(); iter != m_map_items.end(); ++iter)
+  for(type_list_items::const_iterator iter = m_list_items.begin(); iter != m_list_items.end(); ++iter)
   {
-    sharedptr<LayoutItem> item = iter->second;
+    sharedptr<LayoutItem> item = *iter;
     sharedptr<LayoutItem_Field> field_item = sharedptr<LayoutItem_Field>::cast_dynamic(item);
     if(field_item)
     {
@@ -110,89 +110,39 @@ bool LayoutGroup::has_field(const Glib::ustring& field_name) const
   return false;
 }
 
-sharedptr<LayoutItem> LayoutGroup::add_item(const sharedptr<LayoutItem>& item)
+void LayoutGroup::add_item(const sharedptr<LayoutItem>& item)
 {
-  //Get next available sequence:
-  guint sequence = 0;
-   if(!m_map_items.empty())
-     sequence = m_map_items.rbegin()->first;
-
-  ++sequence;
-
-  return add_item(item, sequence);
+  m_list_items.push_back(item);
 }
 
-sharedptr<LayoutItem> LayoutGroup::add_item(const sharedptr<LayoutItem>& item, guint sequence)
+void LayoutGroup::add_item(const sharedptr<LayoutItem>& item, const sharedptr<const LayoutItem>& position)
 {
-  sharedptr<LayoutItem> result;
+  //Find the position of the item.
+  sharedptr<LayoutItem> unconst = sharedptr<LayoutItem>::cast_const(position);
+  type_list_items::iterator iter = std::find(m_list_items.begin(), m_list_items.end(), unconst);
+  if(iter == m_list_items.end())
+    return; //position isn't an item already in the list.
 
-  if(item)
-  {
-  /*
-    if(m_map_items.find(sequence) != m_map_items.end())
-    {
-      g_warning("LayoutGroup::add_item(item, sequence): Replacing item: item.name = %s, sequence=%d", item.get_name().c_str(), sequence);
-    }
-  */
-
-    //Delete any existing item at this position:
-    remove_item(sequence);
-
-    //Add the new item:
-    result = item;
-    m_map_items[sequence] = result;
-    m_map_items[sequence]->m_sequence = sequence;
-  }
-
-  return result;
+  //std::vector::insert() adds before rather than after:
+  ++iter;
+ 
+  m_list_items.insert(iter, item);
 }
 
-void LayoutGroup::remove_item(guint sequence)
+LayoutGroup::type_list_items LayoutGroup::get_items()
 {
-  //Delete any existing item at this position:
-  type_map_items::iterator iterFind = m_map_items.find(sequence);
-  if(iterFind != m_map_items.end())
-  {
-    m_map_items.erase(iterFind);
-  }
+  return m_list_items;
 }
 
-/*
-void LayoutGroup::add_item(const LayoutGroup& item)
-{
-  //Get next available sequence:
-  guint sequence = 0;
-   if(!m_map_items.empty())
-     sequence = m_map_items.rbegin()->first;
-  ++sequence;
-
-  add_item(item, sequence);
-}
-
-void LayoutGroup::add_item(const LayoutGroup& item, guint sequence)
-{
-  //Delete any existing item at this position:
-  remove_item(sequence);
-
-  //Add the new item:
-  m_map_items[sequence] = new LayoutGroup(item);
-  m_map_items[sequence]->m_sequence = sequence;
-}
-*/
-LayoutGroup::type_map_items LayoutGroup::get_items()
-{
-  return m_map_items;
-}
-
-LayoutGroup::type_map_const_items LayoutGroup::get_items() const
+LayoutGroup::type_list_const_items LayoutGroup::get_items() const
 {
   //Get a const map from the non-const map:
   //TODO_Performance: Surely we should not need to copy the structure just to constize it?
-  type_map_const_items result;
+  type_list_const_items result;
 
-  for(type_map_items::const_iterator iter = m_map_items.begin(); iter != m_map_items.end(); ++iter)
+  for(type_list_items::const_iterator iter = m_list_items.begin(); iter != m_list_items.end(); ++iter)
   {
-    result[iter->first] = iter->second;
+    result.push_back(*iter);
   }
 
   return result;
@@ -200,10 +150,10 @@ LayoutGroup::type_map_const_items LayoutGroup::get_items() const
 
 void LayoutGroup::remove_relationship(const sharedptr<const Relationship>& relationship)
 {
-  LayoutGroup::type_map_items::iterator iterItem = m_map_items.begin();
-  while(iterItem != m_map_items.end())
+  LayoutGroup::type_list_items::iterator iterItem = m_list_items.begin();
+  while(iterItem != m_list_items.end())
   {
-    sharedptr<LayoutItem> item = iterItem->second;
+    sharedptr<LayoutItem> item = *iterItem;
     sharedptr<UsesRelationship> uses_rel = sharedptr<UsesRelationship>::cast_dynamic(item);
     if(uses_rel)
     {
@@ -211,8 +161,8 @@ void LayoutGroup::remove_relationship(const sharedptr<const Relationship>& relat
       {
         if(*(uses_rel->get_relationship()) == *relationship) //TODO_Performance: Slow if there are lots of translations.
         {
-          m_map_items.erase(iterItem);
-          iterItem = m_map_items.begin(); //Start again, because we changed the container.AddDel 
+          m_list_items.erase(iterItem);
+          iterItem = m_list_items.begin(); //Start again, because we changed the container.AddDel 
           continue;
         }
       }
@@ -229,10 +179,10 @@ void LayoutGroup::remove_relationship(const sharedptr<const Relationship>& relat
 void LayoutGroup::remove_field(const Glib::ustring& field_name)
 {
   //Look at each item:
-  LayoutGroup::type_map_items::iterator iterItem = m_map_items.begin();
-  while(iterItem != m_map_items.end())
+  LayoutGroup::type_list_items::iterator iterItem = m_list_items.begin();
+  while(iterItem != m_list_items.end())
   {
-    sharedptr<LayoutItem> item = iterItem->second;
+    sharedptr<LayoutItem> item = *iterItem;
     sharedptr<LayoutItem_Field> field_item = sharedptr<LayoutItem_Field>::cast_dynamic(item);
     if(field_item)
     {
@@ -240,8 +190,8 @@ void LayoutGroup::remove_field(const Glib::ustring& field_name)
       {
         if(field_item->get_name() == field_name)
         {
-          m_map_items.erase(iterItem);
-          iterItem = m_map_items.begin(); //Start again, because we changed the container.AddDel 
+          m_list_items.erase(iterItem);
+          iterItem = m_list_items.begin(); //Start again, because we changed the container.AddDel 
           continue;
         }
       }
@@ -264,10 +214,10 @@ void LayoutGroup::remove_field(const Glib::ustring& field_name)
 void LayoutGroup::remove_field(const Glib::ustring& table_name, const Glib::ustring& field_name)
 {
   //Look at each item:
-  LayoutGroup::type_map_items::iterator iterItem = m_map_items.begin();
-  while(iterItem != m_map_items.end())
+  LayoutGroup::type_list_items::iterator iterItem = m_list_items.begin();
+  while(iterItem != m_list_items.end())
   {
-    sharedptr<LayoutItem> item = iterItem->second;
+    sharedptr<LayoutItem> item = *iterItem;
     sharedptr<LayoutItem_Field> field_item = sharedptr<LayoutItem_Field>::cast_dynamic(item);
     if(field_item)
     {
@@ -275,8 +225,8 @@ void LayoutGroup::remove_field(const Glib::ustring& table_name, const Glib::ustr
       {
         if(field_item->get_name() == field_name)
         {
-          m_map_items.erase(iterItem);
-          iterItem = m_map_items.begin(); //Start again, because we changed the container.AddDel 
+          m_list_items.erase(iterItem);
+          iterItem = m_list_items.begin(); //Start again, because we changed the container.AddDel 
           continue;
         }
       }
@@ -295,9 +245,9 @@ void LayoutGroup::remove_field(const Glib::ustring& table_name, const Glib::ustr
 void LayoutGroup::change_related_field_item_name(const Glib::ustring& table_name, const Glib::ustring& field_name, const Glib::ustring& field_name_new)
 {
   //Look at each item:
-  for(LayoutGroup::type_map_items::iterator iterItem = m_map_items.begin(); iterItem != m_map_items.end(); ++iterItem)
+  for(LayoutGroup::type_list_items::iterator iterItem = m_list_items.begin(); iterItem != m_list_items.end(); ++iterItem)
   {
-    sharedptr<LayoutItem> item = iterItem->second;
+    sharedptr<LayoutItem> item = *iterItem;
     sharedptr<LayoutItem_Field> field_item = sharedptr<LayoutItem_Field>::cast_dynamic(item);
     if(field_item)
     {
@@ -326,9 +276,9 @@ void LayoutGroup::change_related_field_item_name(const Glib::ustring& table_name
 void LayoutGroup::change_field_item_name(const Glib::ustring& table_name, const Glib::ustring& field_name, const Glib::ustring& field_name_new)
 {
   //Look at each item:
-  for(LayoutGroup::type_map_items::iterator iterItem = m_map_items.begin(); iterItem != m_map_items.end(); ++iterItem)
+  for(LayoutGroup::type_list_items::iterator iterItem = m_list_items.begin(); iterItem != m_list_items.end(); ++iterItem)
   {
-    sharedptr<LayoutItem> item = iterItem->second;
+    sharedptr<LayoutItem> item = *iterItem;
     sharedptr<LayoutItem_Field> field_item = sharedptr<LayoutItem_Field>::cast_dynamic(item);
     if(field_item)
     {
@@ -365,9 +315,9 @@ void LayoutGroup::change_field_item_name(const Glib::ustring& table_name, const 
 void LayoutGroup::change_relationship_name(const Glib::ustring& table_name, const Glib::ustring& name, const Glib::ustring& name_new)
 {
   //Look at each item:
-  for(LayoutGroup::type_map_items::iterator iterItem = m_map_items.begin(); iterItem != m_map_items.end(); ++iterItem)
+  for(LayoutGroup::type_list_items::iterator iterItem = m_list_items.begin(); iterItem != m_list_items.end(); ++iterItem)
   {
-    LayoutItem_Field* field_item = dynamic_cast<LayoutItem_Field*>(iterItem->second);
+    LayoutItem_Field* field_item = dynamic_cast<LayoutItem_Field*>(*iterItem);
     if(field_item)
     {
       if(field_item->get_has_relationship_name())
@@ -382,7 +332,7 @@ void LayoutGroup::change_relationship_name(const Glib::ustring& table_name, cons
     }
     else
     {
-      LayoutGroup* sub_group = dynamic_cast<LayoutGroup*>(iterItem->second);
+      LayoutGroup* sub_group = dynamic_cast<LayoutGroup*>(*iterItem);
       if(sub_group)
         sub_group->change_relationship_name(table_name, name, name_new);
     }
@@ -403,7 +353,7 @@ Glib::ustring LayoutGroup::get_report_part_id() const
 
 guint LayoutGroup::get_items_count() const
 {
-  return m_map_items.size();
+  return m_list_items.size();
 }
 
 /*
@@ -414,14 +364,14 @@ void LayoutGroup::debug(guint level) const
 
   std::cout << "LayoutGroup::debug() level =" << level << std::endl;
 
-  for(type_map_items::const_iterator iter = m_map_items.begin(); iter != m_map_items.end(); ++iter)
+  for(type_list_items::const_iterator iter = m_list_items.begin(); iter != m_list_items.end(); ++iter)
   {
-    sharedptr<LayoutGroup> group = sharedptr<LayoutGroup>::cast_dynamic(iter->second);
+    sharedptr<LayoutGroup> group = sharedptr<LayoutGroup>::cast_dynamic(*iter);
     if(group)
       group->debug(level + 1);
     else
     {
-      sharedptr<LayoutItem_Field> field = sharedptr<LayoutItem_Field>::cast_dynamic(iter->second);
+      sharedptr<LayoutItem_Field> field = sharedptr<LayoutItem_Field>::cast_dynamic(*iter);
       if(field)
       {
         for(int i = 0; i < level; ++i)

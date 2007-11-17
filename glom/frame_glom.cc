@@ -591,7 +591,7 @@ void Frame_Glom::on_menu_file_export()
 {
   //Start with a sequence based on the Details view:
   //The user can changed this by clicking the button in the FileChooser:
-  Document_Glom::type_mapLayoutGroupSequence mapGroupSequence =  get_document()->get_data_layout_groups_plus_new_fields("details", m_table_name);
+  Document_Glom::type_list_layout_groups mapGroupSequence =  get_document()->get_data_layout_groups_plus_new_fields("details", m_table_name);
 
   Gtk::Window* pWindowApp = get_app_window();
   g_assert(pWindowApp);
@@ -633,7 +633,7 @@ void Frame_Glom::on_menu_file_export()
   export_data_to_stream(the_stream, found_set, mapGroupSequence);
 }
 
-void Frame_Glom::export_data_to_string(Glib::ustring& the_string, const FoundSet& found_set, const Document_Glom::type_mapLayoutGroupSequence& sequence)
+void Frame_Glom::export_data_to_string(Glib::ustring& the_string, const FoundSet& found_set, const Document_Glom::type_list_layout_groups& sequence)
 {
   type_vecLayoutFields fieldsSequence = get_table_fields_to_show_for_sequence(found_set.m_table_name, sequence);
 
@@ -682,7 +682,7 @@ void Frame_Glom::export_data_to_string(Glib::ustring& the_string, const FoundSet
   }
 }
 
-void Frame_Glom::export_data_to_stream(std::ostream& the_stream, const FoundSet& found_set, const Document_Glom::type_mapLayoutGroupSequence& sequence)
+void Frame_Glom::export_data_to_stream(std::ostream& the_stream, const FoundSet& found_set, const Document_Glom::type_list_layout_groups& sequence)
 {
   type_vecLayoutFields fieldsSequence = get_table_fields_to_show_for_sequence(found_set.m_table_name, sequence);
 

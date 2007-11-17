@@ -272,9 +272,9 @@ void Dialog_Layout_Report::fill_group_children(const sharedptr<LayoutGroup>& gro
 
 void Dialog_Layout_Report::add_group_children(const Glib::RefPtr<type_model>& model_parts, const Gtk::TreeModel::iterator& parent, const sharedptr<const LayoutGroup>& group)
 {
-  for(LayoutGroup::type_map_items::const_iterator iter = group->m_map_items.begin(); iter != group->m_map_items.end(); ++iter)
+  for(LayoutGroup::type_list_items::const_iterator iter = group->m_list_items.begin(); iter != group->m_list_items.end(); ++iter)
   {
-    sharedptr<const LayoutItem> item = iter->second;
+    sharedptr<const LayoutItem> item = *iter;
     sharedptr<const LayoutGroup> group = sharedptr<const LayoutGroup>::cast_dynamic(item);
     if(group)
     {
@@ -947,48 +947,6 @@ void Dialog_Layout_Report::on_button_edit()
 void Dialog_Layout_Report::save_to_document()
 {
   Dialog_Layout::save_to_document();
-
-/*
-  if(m_modified)
-  {
-    //Set the table name and title:
-    Document_Glom* document = get_document();
-    //if(document)
-    //  document->set_table_title( m_table_name, m_entry_table_title->get_text() );
-
-    //Get the data from the TreeView and store it in the document:
-
-    //Fill the sequences:
-    //(This model is not sorted - we need to set the sequence numbers based on the order).
-    //m_model_parts_main->fill_sequences();
-
-    //Get the groups and their fields:
-    Document_Glom::type_mapLayoutGroupSequence mapGroups;
-    guint group_sequence = 1; //0 means no sequence
-
-    //Add the layout items:
-    //guint field_sequence = 1; //0 means no sequence
-    for(Gtk::TreeModel::iterator iterFields = m_model_parts_main->children().begin(); iterFields != m_model_parts_main->children().end(); ++iterFields)
-    {
-      //Gtk::TreeModel::Row row = *iterFields;
-      //if(row[m_columns_parts->m_columns.m_col_type] == TreeStore_Layout::TYPE_GROUP) //There may be top-level groups, but no top-level fields, because the fields must be in a group (so that they are in columns)
-      {
-        LayoutGroup group;
-        group->m_sequence = group_sequence;
-        fill_group(iterFields, group);
-
-        mapGroups[group_sequence] = group;
-        ++group_sequence;
-      }
-    }
-
-    if(document)
-    {
-      document->set_data_layout_groups(m_layout_name, m_table_name, mapGroups);
-      m_modified = false;
-    }
-  }
-*/
 }
 
 void Dialog_Layout_Report::on_treeview_available_parts_selection_changed()

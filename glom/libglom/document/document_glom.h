@@ -175,25 +175,25 @@ public:
   void remove_field(const Glib::ustring& table_name, const Glib::ustring& field_name);
 
 
-  typedef std::map<guint, sharedptr<LayoutGroup> > type_mapLayoutGroupSequence;
-  type_mapLayoutGroupSequence get_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name) const;
+  typedef std::vector< sharedptr<LayoutGroup> > type_list_layout_groups;
+  type_list_layout_groups get_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name) const;
 
-  void set_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name, const type_mapLayoutGroupSequence& groups);
+  void set_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name, const type_list_layout_groups& groups);
 
   /**
    * @para The layout_name, such as "details", "list".
    * @para parent_table_name The name of the table on whose layout the layout appears.
    */
-  type_mapLayoutGroupSequence get_data_layout_groups_plus_new_fields(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name) const;
+  type_list_layout_groups get_data_layout_groups_plus_new_fields(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name) const;
 
-  type_mapLayoutGroupSequence get_data_layout_groups_default(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name) const;
+  type_list_layout_groups get_data_layout_groups_default(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name) const;
 
   typedef std::list< sharedptr<TranslatableItem> > type_list_translatables;
   type_list_translatables get_translatable_layout_items(const Glib::ustring& table_name);
   type_list_translatables get_translatable_report_items(const Glib::ustring& table_name, const Glib::ustring& report_title);
 
   void fill_layout_field_details(const Glib::ustring& parent_table_name, const sharedptr<LayoutGroup>& layout_group) const;
-  void fill_layout_field_details(const Glib::ustring& parent_table_name, type_mapLayoutGroupSequence& sequence) const;
+  void fill_layout_field_details(const Glib::ustring& parent_table_name, type_list_layout_groups& groups) const;
 
 
 
@@ -412,7 +412,7 @@ protected:
     Glib::ustring m_layout_name;
     Glib::ustring m_parent_table;
 
-    type_mapLayoutGroupSequence m_layout_groups;
+    type_list_layout_groups m_layout_groups;
   };
 
   class DocumentTableInfo

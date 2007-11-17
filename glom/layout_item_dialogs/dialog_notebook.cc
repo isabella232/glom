@@ -89,9 +89,9 @@ void Dialog_Notebook::set_notebook(const sharedptr<const LayoutItem_Notebook>& s
   //Document_Glom* document = get_document();
 
   guint sequence = 1;
-  for(LayoutGroup::type_map_items::const_iterator iter = start_notebook->m_map_items.begin(); iter != start_notebook->m_map_items.end(); ++iter)
+  for(LayoutGroup::type_list_items::const_iterator iter = start_notebook->m_list_items.begin(); iter != start_notebook->m_list_items.end(); ++iter)
   {
-    sharedptr<const LayoutGroup> item = sharedptr<const LayoutGroup>::cast_dynamic(iter->second);
+    sharedptr<const LayoutGroup> item = sharedptr<const LayoutGroup>::cast_dynamic(*iter);
     if(item)
     {
       Gtk::TreeModel::iterator iterTree = m_model->append();

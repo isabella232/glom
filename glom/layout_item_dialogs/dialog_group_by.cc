@@ -171,14 +171,14 @@ void Dialog_GroupBy::on_button_secondary_fields()
 
   if(m_dialog_choose_secondary_fields)
   {
-    m_dialog_choose_secondary_fields->set_fields(m_table_name, m_layout_item->m_group_secondary_fields->m_map_items);
+    m_dialog_choose_secondary_fields->set_fields(m_table_name, m_layout_item->m_group_secondary_fields->m_list_items);
 
     const int response = Glom::Utils::dialog_run_with_help(m_dialog_choose_secondary_fields, "dialog_groupby_secondary_fields");
     m_dialog_choose_secondary_fields->hide();
     if(response == Gtk::RESPONSE_OK && m_dialog_choose_secondary_fields->get_modified())
     {
       m_layout_item->m_group_secondary_fields->remove_all_items(); //Free the existing member items.
-      m_layout_item->m_group_secondary_fields->m_map_items = m_dialog_choose_secondary_fields->get_fields();
+      m_layout_item->m_group_secondary_fields->m_list_items = m_dialog_choose_secondary_fields->get_fields();
     }
   }
 
@@ -221,13 +221,16 @@ void Dialog_GroupBy::update_labels()
   Glib::ustring text_secondary_fields;
   if(m_layout_item->m_group_secondary_fields)
   {
-    const LayoutGroup::type_map_items& map_items = m_layout_item->m_group_secondary_fields->m_map_items;
-    for(LayoutGroup::type_map_items::const_iterator iter = map_items.begin(); iter != map_items.end(); ++iter)
+    const LayoutGroup::type_list_items& map_items = m_layout_item->m_group_secondary_fields->m_list_items;
+    for(LayoutGroup::type_list_items::const_iterator iter = map_items.begin(); iter != map_items.end(); ++iter)
     {
-      if(!text_secondary_fields.empty())
-        text_secondary_fields += ", ";
+      if(*iter)
+      {
+        if(!text_secondary_fields.empty())
+          text_secondary_fields += ", ";
 
-      text_secondary_fields += iter->second->get_layout_display_name();
+        text_secondary_fields += (*iter)->get_layout_display_name();
+      }
     }
   }
 

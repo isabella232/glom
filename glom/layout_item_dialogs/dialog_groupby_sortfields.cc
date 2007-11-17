@@ -197,7 +197,6 @@ LayoutItem_GroupBy::type_list_sort_fields Dialog_GroupBy_SortFields::get_fields(
     if(!field_name.empty())
     {
       sharedptr<LayoutItem_Field> field_copy = glom_sharedptr_clone(item);
-      field_copy->m_sequence = field_sequence;
 
       const bool ascending = row[m_ColumnsFields.m_col_ascending];
       result.push_back( LayoutItem_GroupBy::type_pair_sort_field(field_copy, ascending) );

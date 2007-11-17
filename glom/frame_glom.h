@@ -151,8 +151,8 @@ public:
   bool create_database(const Glib::ustring& database_name, const Glib::ustring& title, bool request_password = true);
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-  void export_data_to_string(Glib::ustring& the_string, const FoundSet& found_set, const Document_Glom::type_mapLayoutGroupSequence& sequence);
-  void export_data_to_stream(std::ostream& the_stream, const FoundSet& found_set, const Document_Glom::type_mapLayoutGroupSequence& sequence);
+  void export_data_to_string(Glib::ustring& the_string, const FoundSet& found_set, const Document_Glom::type_list_layout_groups& sequence);
+  void export_data_to_stream(std::ostream& the_stream, const FoundSet& found_set, const Document_Glom::type_list_layout_groups& sequence);
 
   /** Show the table again. For instance, if the document has changed, or we want to display it differently.
    */

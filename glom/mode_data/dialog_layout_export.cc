@@ -94,7 +94,7 @@ Dialog_Layout_Export::~Dialog_Layout_Export()
 {
 }
 
-void Dialog_Layout_Export::set_layout_groups(Document_Glom::type_mapLayoutGroupSequence& mapGroups, Document_Glom* document, const Glib::ustring& table_name)
+void Dialog_Layout_Export::set_layout_groups(Document_Glom::type_list_layout_groups& mapGroups, Document_Glom* document, const Glib::ustring& table_name)
 {
   Base_DB::set_document(document);
 
@@ -123,9 +123,7 @@ void Dialog_Layout_Export::set_layout_groups(Document_Glom::type_mapLayoutGroupS
       for(type_vecLayoutFields::const_iterator iter = table_fields.begin(); iter != table_fields.end(); ++iter)
       {
         LayoutItem_Field item = *(*iter);
-        item.m_sequence = field_sequence;
-
-        group->add_item(item, field_sequence);
+        group->add_item(item);
 
         ++field_sequence;
       }
@@ -140,15 +138,17 @@ void Dialog_Layout_Export::set_layout_groups(Document_Glom::type_mapLayoutGroupS
     m_model_fields->clear();
 
     guint field_sequence = 1; //0 means no sequence
-    for(Document_Glom::type_mapLayoutGroupSequence::const_iterator iter = mapGroups.begin(); iter != mapGroups.end(); ++iter)
+    for(Document_Glom::type_list_layout_groups::const_iterator iter = mapGroups.begin(); iter != mapGroups.end(); ++iter)
     {
-      sharedptr<const LayoutGroup> group = iter->second;
+      sharedptr<const LayoutGroup> group = *iter;
+      if(!group)
+        continue;
 
       //Add the group's fields:
-      LayoutGroup::type_map_const_items items = group->get_items();
-      for(LayoutGroup::type_map_const_items::const_iterator iter = items.begin(); iter != items.end(); ++iter)
+      LayoutGroup::type_list_const_items items = group->get_items();
+      for(LayoutGroup::type_list_const_items::const_iterator iter = items.begin(); iter != items.end(); ++iter)
       {
-        sharedptr<const LayoutItem_Field> item = sharedptr<const LayoutItem_Field>::cast_dynamic(iter->second); 
+        sharedptr<const LayoutItem_Field> item = sharedptr<const LayoutItem_Field>::cast_dynamic(*iter); 
         if(item)
         {
           Gtk::TreeModel::iterator iterTree = m_model_fields->append();
@@ -219,17 +219,16 @@ void Dialog_Layout_Export::on_button_field_down()
   move_treeview_selection_down(m_treeview_fields, m_ColumnsFields.m_col_sequence);
 }
 
-void Dialog_Layout_Export::get_layout_groups(Document_Glom::type_mapLayoutGroupSequence& layout_groups) const
+void Dialog_Layout_Export::get_layout_groups(Document_Glom::type_list_layout_groups& layout_groups) const
 {
   //Get the data from the TreeView and store it in the document:
 
   //Get the groups and their fields:
-  Document_Glom::type_mapLayoutGroupSequence mapGroups;
+  Document_Glom::type_list_layout_groups mapGroups;
 
   //Add the fields to the one group:
   sharedptr<LayoutGroup> others = sharedptr<LayoutGroup>::create();
   others->set_name("main");
-  others->m_sequence = 1;
 
   guint field_sequence = 1; //0 means no sequence
   for(Gtk::TreeModel::iterator iterFields = m_model_fields->children().begin(); iterFields != m_model_fields->children().end(); ++iterFields)
@@ -240,9 +239,7 @@ void Dialog_Layout_Export::get_layout_groups(Document_Glom::type_mapLayoutGroupS
     const Glib::ustring field_name = item->get_name();
     if(!field_name.empty())
     {
-      item->m_sequence = field_sequence;
-
-      others->add_item(item, field_sequence); //Add it to the group:
+      others->add_item(item); //Add it to the group:
 
       ++field_sequence;
     }
