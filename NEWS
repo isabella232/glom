@@ -1,3 +1,9 @@
+1.6.4 (stable):
+
+* Really support Maemo
+  (an svn merge failed before).
+  (Armin Burgmeier)
+
 1.6.3 (stable):
 
 * Initial support for the Maemo platform,
