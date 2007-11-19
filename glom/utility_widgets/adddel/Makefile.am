@@ -1,6 +1,6 @@
 SUBDIRS = eggcolumnchooser
 
-INCLUDES = -I@top_srcdir@/ $(GLOM_CFLAGS)
+AM_CPPFLAGS = -I@top_srcdir@/ $(GLOM_CFLAGS)
 
 noinst_LIBRARIES = libutility_widgets_adddel.a
 libutility_widgets_adddel_a_SOURCES = adddel.cc adddel.h adddel_withbuttons.cc adddel_withbuttons.h \

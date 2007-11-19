@@ -1,5 +1,35 @@
 2007-11-19  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/Makefile.am:
+	* glom/layout_item_dialogs/Makefile.am:
+	* glom/libglom/Makefile.am:
+	* glom/libglom/data_structure/Makefile.am:
+	* glom/libglom/data_structure/layout/Makefile.am:
+	* glom/libglom/data_structure/layout/report_parts/Makefile.am:
+	* glom/libglom/document/Makefile.am:
+	* glom/libglom/python_embed/Makefile.am:
+	* glom/mode_data/Makefile.am:
+	* glom/mode_design/Makefile.am:
+	* glom/mode_design/fields/Makefile.am:
+	* glom/mode_design/print_layouts/Makefile.am:
+	* glom/mode_design/script_library/Makefile.am:
+	* glom/mode_design/users/Makefile.am:
+	* glom/mode_find/Makefile.am:
+	* glom/navigation/Makefile.am:
+	* glom/python_embed/Makefile.am:
+	* glom/python_embed/python_module/Makefile.am:
+	* glom/relationships_overview/Makefile.am:
+	* glom/reports/Makefile.am:
+	* glom/translation/Makefile.am:
+	* glom/utility_widgets/Makefile.am:
+	* glom/utility_widgets/adddel/Makefile.am:
+	* glom/utility_widgets/adddel/eggcolumnchooser/Makefile.am:
+	* glom/utility_widgets/canvas/Makefile.am:
+	* glom/utility_widgets/db_adddel/Makefile.am:
+	Use AM_CPPFLAGS instead of the deprecated INCLUDES.
+
+2007-11-19  Murray Cumming  <murrayc@murrayc.com>
+
 	* configure.in: Depend on the latest Bakery.
 
 2007-11-17  Murray Cumming  <murrayc@murrayc.com>

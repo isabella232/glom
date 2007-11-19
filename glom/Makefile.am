@@ -9,9 +9,12 @@ glomxsltdir = $(datadir)/glom/xslt/
 glom_examples_dir = $(pkgdatadir)/doc/examples/
 glom_icon_dir = $(datadir)/icons/hicolor/48x48/apps
 
+bin_PROGRAMS = glom
+noinst_PROGRAMS = test_pyembed
+
 # We define GLOM_GLADEDIR so that we can get the installed .glade file at runtime.
 # We define PREFIX, SYSCONFDIR, LIBDIR, and DATADIR for the GNOME_PROGRAM_STANDARD_PROPERTIES macro.
-INCLUDES = -I@top_srcdir@/ $(GLOM_CFLAGS) $(PYTHON_INCLUDES) \
+AM_CPPFLAGS = -I@top_srcdir@/ $(GLOM_CFLAGS) $(PYTHON_INCLUDES) \
            -DGLOM_GLADEDIR=\""$(gladedir)/"\" \
            -DLOCALEDIR=\""$(datadir)/locale"\" \
            -DPREFIX=\""$(prefix)"\" \
@@ -21,10 +24,6 @@ INCLUDES = -I@top_srcdir@/ $(GLOM_CFLAGS) $(PYTHON_INCLUDES) \
            -DGLOM_XSLTDIR=\""$(glomxsltdir)/"\" \
            -DGLOM_EXAMPLES_DIR=\""$(glom_examples_dir)"\" \
            -DGLOM_ICON_DIR=\""$(glom_icon_dir)"\"
-
-bin_PROGRAMS = glom
-noinst_PROGRAMS = test_pyembed
-
 
 glom_SOURCES = main.cc \
                application.cc application.h \

@@ -1,6 +1,6 @@
 SUBDIRS = report_parts
 
-INCLUDES = -I@top_srcdir@/ $(GLOM_CFLAGS)
+AM_CPPFLAGS = -I@top_srcdir@/ $(GLOM_CFLAGS)
 
 noinst_LTLIBRARIES = libdata_structure_layout.la
 libdata_structure_layout_la_SOURCES = layoutitem.h layoutitem.cc \

@@ -1,4 +1,4 @@
-#INCLUDES = -I@top_srcdir@/ $(GLOM_CFLAGS)
+#AM_CPPFLAGS = -I@top_srcdir@/ $(GLOM_CFLAGS)
 
 SUBDIRS = adddel db_adddel canvas
 
@@ -6,7 +6,7 @@ gladedir = $(datadir)/glom/glade/
 glom_icon_dir = $(datadir)/glom/pixmaps
 
 # We define GLOM_GLADEDIR so that we can get the installed .glade file at runtime.
-INCLUDES = -I@top_srcdir@/ $(GLOM_CFLAGS) $(PYTHON_INCLUDES) \
+AM_CPPFLAGS = -I@top_srcdir@/ $(GLOM_CFLAGS) $(PYTHON_INCLUDES) \
            -DGLOM_GLADEDIR=\""$(gladedir)/"\" \
            -DGLOM_ICON_DIR=\""$(glom_icon_dir)"\" \
            -DDATADIR=\""$(datadir)"\"
