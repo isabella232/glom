@@ -1,21 +1,25 @@
+# Translation of oc.po to Occitan
+# translation of oc.po to Occitan
 # Occitan translation of Glom.
 # Copyright (C) 2004,2007 Free Software Foundation, Inc.
 # This file is distributed under the same license as the Glom package.
 #
 # Yannig MARCHEGAY (yannig@marchegay.org) - 2006-2007
 #
+# Yannig Marchegay (Kokoyaya) <yannig@marchegay.org>, 2007.
 msgid ""
 msgstr ""
-"Project-Id-Version: Glom HEAD fr\n"
+"Project-Id-Version: oc\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-10-13 17:47+0200\n"
-"PO-Revision-Date: 2007-08-19 19:27+0200\n"
-"Last-Translator: Yannig MARCHEGAY (Kokoyaya) <yannig@marchegay.org>\n"
-"Language-Team: Occitan (post 1500) <ubuntu-l10n-oci@lists.ubuntu.com>\n"
+"PO-Revision-Date: 2007-11-20 14:34+0100\n"
+"Last-Translator: Yannig Marchegay (Kokoyaya) <yannig@marchegay.org>\n"
+"Language-Team: Occitan <ubuntu-l10n-oci@lists.ubuntu.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: KBabel 1.11.4\n"
 
 #: ../glom.desktop.in.in.h:1
 msgid "A user-friendly database environment."
@@ -39,7 +43,7 @@ msgstr "_Fichièr"
 
 #: ../glom/application.cc:246
 msgid "_Recent Files"
-msgstr ""
+msgstr "Fichièrs _recents"
 
 #: ../glom/application.cc:254
 msgid "Save As Example"
@@ -116,7 +120,7 @@ msgstr ""
 
 #: ../glom/application.cc:404
 msgid "_Users"
-msgstr ""
+msgstr "_Utilizaires"
 
 #: ../glom/application.cc:408
 msgid "R_eports"
@@ -240,12 +244,13 @@ msgstr ""
 
 #: ../glom/application.cc:1845
 msgid "Save failed."
-msgstr ""
+msgstr "L'enregistrament a pas capitat."
 
 #: ../glom/application.cc:1845
-msgid ""
-"There was an error while saving the file. Your changes have not been saved."
+msgid "There was an error while saving the file. Your changes have not been saved."
 msgstr ""
+"I a agut un problema al moment d'enregistrar lo fichièr. Las modificacions "
+"son pas estadas enregistradas."
 
 #: ../glom/base_db.cc:179 ../glom/base_db.cc:192
 #: ../glom/libglom/connectionpool.cc:613
@@ -381,9 +386,8 @@ msgstr ""
 
 #: ../glom/dialog_new_self_hosted_connection.cc:114
 #: ../glom/mode_design/users/dialog_user.cc:55
-#, fuzzy
 msgid "Password Is Empty"
-msgstr "Mot de pas"
+msgstr ""
 
 #: ../glom/dialog_new_self_hosted_connection.cc:114
 #: ../glom/mode_design/users/dialog_user.cc:55
@@ -672,7 +676,7 @@ msgstr ""
 
 #: ../glom/glom.glade.h:36
 msgid "<b>Text</b>"
-msgstr ""
+msgstr "<b>Tèxt</b>"
 
 #: ../glom/glom.glade.h:37
 msgid "<b>Title:</b>"
@@ -1422,7 +1426,7 @@ msgstr ""
 
 #: ../glom/glom.glade.h:234
 msgid "_Password"
-msgstr ""
+msgstr "Mot de _pas :"
 
 #: ../glom/glom.glade.h:235
 msgid "_User"
@@ -1442,7 +1446,7 @@ msgstr ""
 
 #: ../glom/glom.glade.h:239
 msgid "gtk-remove"
-msgstr ""
+msgstr "gtk-remove"
 
 #: ../glom/glom.glade.h:240
 msgid "table name"
@@ -1632,7 +1636,7 @@ msgstr "Mejana"
 
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:148
 msgid "Count"
-msgstr "Comptar"
+msgstr "Contar"
 
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_summary.cc:61
 msgid "Summary"
@@ -1887,8 +1891,7 @@ msgstr "Detalhs"
 
 #. Don't allow a relationship to be added twice.
 #: ../glom/mode_design/box_db_table_relationships.cc:45
-msgid ""
-"This relationship already exists. Please choose a different relationship name"
+msgid "This relationship already exists. Please choose a different relationship name"
 msgstr ""
 
 #: ../glom/mode_design/box_db_table_relationships.cc:49
@@ -1985,8 +1988,7 @@ msgid "Remove library script"
 msgstr ""
 
 #: ../glom/mode_design/script_library/dialog_script_library.cc:132
-msgid ""
-"Do you really want to delete this script? This data can not be recovered"
+msgid "Do you really want to delete this script? This data can not be recovered"
 msgstr ""
 
 #: ../glom/mode_design/users/dialog_groups_list.cc:73
@@ -2029,7 +2031,7 @@ msgstr ""
 
 #: ../glom/navigation/box_tables.cc:114
 msgid "Tables"
-msgstr "Taulas"
+msgstr "Tablèus"
 
 #. Prevent two tables with the same name from being added.
 #: ../glom/navigation/box_tables.cc:116
@@ -2269,3 +2271,4 @@ msgstr ""
 #: ../glom/xsl_utils.cc:101
 msgid "The report will now be opened in your web browser."
 msgstr ""
+
