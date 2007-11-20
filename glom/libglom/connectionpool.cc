@@ -26,8 +26,9 @@
 #include <glib/gstdio.h> //For g_remove().
 #include <glom/libglom/spawn_with_feedback.h>
 #include <glom/libglom/utils.h>
-#include <glom/libglom/avahi_publisher.h>
 #include <libgdamm/connectionevent.h>
+#include <libepc/publisher.h>
+#include <libepc/enums.h>
 #include <glibmm/i18n.h>
 
 #ifdef GLOM_ENABLE_MAEMO
@@ -42,6 +43,9 @@
 #include <signal.h> //To catch segfaults
 
 #include "gst-package.h"
+
+
+static EpcProtocol publish_protocol = EPC_PROTOCOL_HTTPS;
 
 namespace Glom
 {
@@ -132,10 +136,12 @@ ConnectionPool::ConnectionPool()
 :
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   m_self_hosting_active(false),
+  m_epc_publisher(0),
 #endif // !GLOM_ENABLE_CLIENT_ONLY
   m_sharedconnection_refcount(0),
   m_ready_to_connect(false),
-  m_pFieldTypes(0)
+  m_pFieldTypes(0),
+  m_postgres_server_version(0)
 {
   m_list_ports.push_back("5432"); //Ubuntu Breezy seems to default to this for Postgres 7.4, and this is probably the default for most postgres installations, including Fedora.
 
@@ -1148,33 +1154,22 @@ bool ConnectionPool::check_user_is_not_root()
  */
 void ConnectionPool::avahi_start_publishing()
 {
-  //This is commented-out for now, until we make it stable.
-
-  /*
-  if(m_avahi_publisher)
+  if(m_epc_publisher)
     return;
 
-  const Glib::ustring avahi_service_name = "glom_selfhosted_" + get_database();
-  const int port = atoi(m_port.c_str());
-
-  m_avahi_publisher = new AvahiPublisher(avahi_service_name, "_glom._tcp", port);
-  */
+  m_epc_publisher = epc_publisher_new("Glom", "glom", NULL);
+  epc_publisher_set_protocol(m_epc_publisher, publish_protocol);
+  epc_publisher_run_async(m_epc_publisher);
 }
 
 void ConnectionPool::avahi_stop_publishing()
 {
-  //This is commented-out for now, until we make it stable.
+  if(!m_epc_publisher)
+    return;
 
-  /*
-  if(m_avahi_publisher)
-  {
-    delete m_avahi_publisher;
-    m_avahi_publisher = 0;
-  }
-  */
+  epc_publisher_quit(m_epc_publisher);
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
-
 
 
 } //namespace Glom

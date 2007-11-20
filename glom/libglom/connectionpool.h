@@ -27,6 +27,12 @@
 
 #include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
 
+//Avoid including the header here:
+extern "C"
+{
+typedef struct _EpcPublisher EpcPublisher;
+}
+
 namespace Gtk
 {
   class Window;
@@ -127,6 +133,7 @@ public:
    *  using the database files stored at the specified uri.
    */
   void set_self_hosted(const std::string& data_uri);
+#endif //GLOM_ENABLE_CLIENT_ONLY
 
   /** Creates a new database.
    */
@@ -135,8 +142,6 @@ public:
 #else
   void create_database(const Glib::ustring& database_name, std::auto_ptr<Glib::Error>& error);
 #endif
-  
-#endif // !GLOM_ENABLE_CLIENT_ONLY
 
   void set_host(const Glib::ustring& value);
   void set_user(const Glib::ustring& value);
@@ -234,6 +239,8 @@ protected:
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   bool m_self_hosting_active;
   std::string m_self_hosting_data_uri;
+
+  EpcPublisher* m_epc_publisher;
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   Glib::RefPtr<Gnome::Gda::Connection> m_refGdaConnection;
@@ -242,11 +249,6 @@ protected:
   Glib::ustring m_host, m_user, m_password, m_database, m_port;
   FieldTypes* m_pFieldTypes;
   float m_postgres_server_version;
-
-public:
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-  AvahiPublisher* m_avahi_publisher;
-#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 private:
 

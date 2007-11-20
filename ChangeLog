@@ -1,3 +1,15 @@
+2007-11-20  Murray Cumming  <murrayc@murrayc.com>
+
+	* configure.in:
+	* glom/libglom/Makefile.am:
+	* glom/libglom/avahi_publisher.cc:
+	* glom/libglom/avahi_publisher.h: Remove this.
+	* glom/libglom/connectionpool.cc:
+	* glom/libglom/connectionpool.h: Replace the old 
+	AvahiPublisher with use of libepc.
+	As before, it currently just advertizes the service, 
+	but soon it will publish the .glom file.
+
 2007-11-19  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/Makefile.am:

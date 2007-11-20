@@ -30,10 +30,6 @@ libglom_la_SOURCES = appstate.h appstate.cc \
                      standard_table_prefs_fields.h \
 		     gst-package.h gst-package.c
 
-if !GLOM_ENABLE_CLIENT_ONLY
-libglom_la_SOURCES += avahi_publisher.h avahi_publisher.cc
-endif
-
 libglom_la_LDFLAGS = -no-undefined
 
 libglom_la_LIBADD  = document/libdocument.la \
@@ -45,15 +41,9 @@ libglom_la_LIBADD  = document/libdocument.la \
 
 
 noinst_PROGRAMS = test_sharedptr_layoutitem
-if !GLOM_ENABLE_CLIENT_ONLY
-noinst_PROGRAMS += test_avahi_publisher
-endif
 
 test_sharedptr_layoutitem_SOURCES = test_sharedptr_layoutitem.cc
 test_sharedptr_layoutitem_LDADD =  libglom.la \
               $(GLOM_LIBS) -lutil
 
-test_avahi_publisher_SOURCES = test_avahi_publisher.cc
-test_avahi_publisher_LDADD =  libglom.la \
-              $(GLOM_LIBS) -lutil
                    
