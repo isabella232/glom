@@ -27,7 +27,7 @@
 #include <glom/translation/window_translations.h>
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-#include <glom/utility_widgets/filechooserdialog.h>
+#include <glom/utility_widgets/filechooserdialog_saveextras.h>
 #include <glom/libglom/utils.h>
 
 #include "config.h" //For VERSION.
@@ -583,18 +583,19 @@ Glib::ustring App_Glom::get_file_uri_without_extension(const Glib::ustring& uri)
   }
 }
 
+//TODO: This isn't needed for client-only mode.
 Glib::ustring App_Glom::ui_file_select_save(const Glib::ustring& old_file_uri) //override
 {
   //Reimplement this whole function, just so we can use our custom FileChooserDialog class:
   App& app = *this;
 
   std::auto_ptr<Gtk::FileChooserDialog> fileChooser_Save;
-  Glom::FileChooserDialog* fileChooser_SaveExtras = 0;
+  Glom::FileChooserDialog_SaveExtras* fileChooser_SaveExtras = 0;
 
   //Create the appropriate dialog, depending on how the caller set m_ui_save_extra_showextras:
   if(m_ui_save_extra_showextras)
   {
-    fileChooser_SaveExtras = new Glom::FileChooserDialog(gettext("Save Document"), Gtk::FILE_CHOOSER_ACTION_SAVE);
+    fileChooser_SaveExtras = new Glom::FileChooserDialog_SaveExtras(gettext("Save Document"), Gtk::FILE_CHOOSER_ACTION_SAVE);
     fileChooser_Save.reset(fileChooser_SaveExtras);
   }
   else
@@ -602,11 +603,8 @@ Glib::ustring App_Glom::ui_file_select_save(const Glib::ustring& old_file_uri) /
     fileChooser_Save.reset(new Gtk::FileChooserDialog(gettext("Save Document"), Gtk::FILE_CHOOSER_ACTION_SAVE));
   }
 
-#ifndef GLOM_ENABLE_MAEMO
-  // The maemo version is able to run with gtkmm 2.6
   // TODO_maemo: This should probably use Hildon FileChooser API
   fileChooser_Save->set_do_overwrite_confirmation(); //Ask the user if the file already exists.
-#endif
 
   Gtk::Window* pWindow = dynamic_cast<Gtk::Window*>(&app);
   if(pWindow)

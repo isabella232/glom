@@ -35,7 +35,7 @@ libutility_widgets_a_SOURCES = alignment_justified.cc alignment_justified.h \
                                labelglom.h labelglom.cc \
                                dialog_choose_id.cc dialog_choose_id.h \
                                dialog_choose_date.cc dialog_choose_date.h \
-                               filechooserdialog.cc filechooserdialog.h \
+                               filechooserdialog_saveextras.cc filechooserdialog_saveextras.h \
                                dragbutton.cc dragbutton.h \
                                dragbar.cc dragwindow.h \
                                placeholder-glom.h  placeholder-glom.cc \

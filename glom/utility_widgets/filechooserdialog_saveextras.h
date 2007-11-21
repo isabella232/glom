@@ -18,8 +18,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef GLOM_UTILITY_WIDGETS_FILECHOOSERDIALOG_GLOM_H
-#define GLOM_UTILITY_WIDGETS_FILECHOOSERDIALOG_GLOM_H
+#ifndef GLOM_UTILITY_WIDGETS_FILECHOOSERDIALOG_SAVEEXTRAS_H
+#define GLOM_UTILITY_WIDGETS_FILECHOOSERDIALOG_SAVEEXTRAS_H
 
 #include <gtkmm/filechooserdialog.h>
 #include <gtkmm/label.h>
@@ -33,14 +33,14 @@
 namespace Glom
 {
 
-class FileChooserDialog : public Gtk::FileChooserDialog
+class FileChooserDialog_SaveExtras : public Gtk::FileChooserDialog
 {
 public:
-  FileChooserDialog(const Glib::ustring& title, Gtk::FileChooserAction action, const Glib::ustring& backend);
-  FileChooserDialog(Gtk::Window& parent, const Glib::ustring& title, Gtk::FileChooserAction action, const Glib::ustring& backend);
-  FileChooserDialog (const Glib::ustring& title, Gtk::FileChooserAction action = Gtk::FILE_CHOOSER_ACTION_OPEN);
-  FileChooserDialog (Gtk::Window& parent, const Glib::ustring& title, Gtk::FileChooserAction action = Gtk::FILE_CHOOSER_ACTION_OPEN);
-  virtual ~FileChooserDialog();
+  FileChooserDialog_SaveExtras(const Glib::ustring& title, Gtk::FileChooserAction action, const Glib::ustring& backend);
+  FileChooserDialog_SaveExtras(Gtk::Window& parent, const Glib::ustring& title, Gtk::FileChooserAction action, const Glib::ustring& backend);
+  FileChooserDialog_SaveExtras(const Glib::ustring& title, Gtk::FileChooserAction action = Gtk::FILE_CHOOSER_ACTION_OPEN);
+  FileChooserDialog_SaveExtras(Gtk::Window& parent, const Glib::ustring& title, Gtk::FileChooserAction action = Gtk::FILE_CHOOSER_ACTION_OPEN);
+  virtual ~FileChooserDialog_SaveExtras();
 
   void set_extra_message(const Glib::ustring& message);
   void set_extra_newdb_title(const Glib::ustring& title);

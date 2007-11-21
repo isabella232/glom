@@ -1,3 +1,13 @@
+2007-11-21  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/application.cc:
+	* glom/utility_widgets/Makefile.am:
+	* glom/utility_widgets/filechooserdialog.cc:
+	* glom/utility_widgets/filechooserdialog.h: Rename this to:
+	* glom/utility_widgets/filechooserdialog_saveextras.cc:
+	* glom/utility_widgets/filechooserdialog_saveextras.h:
+	because I want to add another custom one for loading.
+
 2007-11-20  Murray Cumming  <murrayc@murrayc.com>
 
 	* configure.in:

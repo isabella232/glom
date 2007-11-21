@@ -18,8 +18,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#include <glom/utility_widgets/filechooserdialog_saveextras.h>
 #include <glom/libglom/utils.h>
-#include <glom/utility_widgets/filechooserdialog.h>
 #include <gtkmm/alignment.h>
 #include <bakery/App/App_Gtk.h> //For util_bold_message().
 #include <glibmm/i18n.h>
@@ -27,41 +27,41 @@
 namespace Glom
 {
 
-FileChooserDialog::FileChooserDialog(const Glib::ustring& title, Gtk::FileChooserAction action, const Glib::ustring& backend)
+FileChooserDialog_SaveExtras::FileChooserDialog_SaveExtras(const Glib::ustring& title, Gtk::FileChooserAction action, const Glib::ustring& backend)
 : Gtk::FileChooserDialog(title, action, backend)
 {
   create_child_widgets();
 }
 
-FileChooserDialog::FileChooserDialog(Gtk::Window& parent, const Glib::ustring& title, Gtk::FileChooserAction action, const Glib::ustring& backend)
+FileChooserDialog_SaveExtras::FileChooserDialog_SaveExtras(Gtk::Window& parent, const Glib::ustring& title, Gtk::FileChooserAction action, const Glib::ustring& backend)
 : Gtk::FileChooserDialog(parent, title, action, backend)
 {
   create_child_widgets();
 }
 
-FileChooserDialog::FileChooserDialog (const Glib::ustring& title, Gtk::FileChooserAction action)
+FileChooserDialog_SaveExtras::FileChooserDialog_SaveExtras (const Glib::ustring& title, Gtk::FileChooserAction action)
 : Gtk::FileChooserDialog(title, action)
 {
   create_child_widgets();
 }
 
-FileChooserDialog::FileChooserDialog (Gtk::Window& parent, const Glib::ustring& title, Gtk::FileChooserAction action)
+FileChooserDialog_SaveExtras::FileChooserDialog_SaveExtras (Gtk::Window& parent, const Glib::ustring& title, Gtk::FileChooserAction action)
 : Gtk::FileChooserDialog(parent, title, action)
 {
   create_child_widgets();
 }
 
-FileChooserDialog::~FileChooserDialog()
+FileChooserDialog_SaveExtras::~FileChooserDialog_SaveExtras()
 {
 }
 
 
-void FileChooserDialog::set_extra_message(const Glib::ustring& message)
+void FileChooserDialog_SaveExtras::set_extra_message(const Glib::ustring& message)
 {
   m_label_extra_message.set_text(message);
 }
 
-void FileChooserDialog::create_child_widgets()
+void FileChooserDialog_SaveExtras::create_child_widgets()
 {
   //m_extra_widget.pack_start(m_label_extra_message);
   m_label_extra_message.set_alignment(0.0f, 0.5f);
@@ -118,25 +118,25 @@ void FileChooserDialog::create_child_widgets()
   m_extra_widget.show();
 }
 
-void FileChooserDialog::set_extra_newdb_title(const Glib::ustring& title)
+void FileChooserDialog_SaveExtras::set_extra_newdb_title(const Glib::ustring& title)
 {
   m_entry_title.set_text(title);
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-void FileChooserDialog::set_extra_newdb_self_hosted(bool self_hosted)
+void FileChooserDialog_SaveExtras::set_extra_newdb_self_hosted(bool self_hosted)
 {
   m_radiobutton_server_selfhosted.set_active(self_hosted);
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-Glib::ustring FileChooserDialog::get_extra_newdb_title() const
+Glib::ustring FileChooserDialog_SaveExtras::get_extra_newdb_title() const
 {
   return m_entry_title.get_text();
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-bool FileChooserDialog::get_extra_newdb_self_hosted() const
+bool FileChooserDialog_SaveExtras::get_extra_newdb_self_hosted() const
 {
   return m_radiobutton_server_selfhosted.get_active();
 }

@@ -379,7 +379,7 @@ void ImageGlom::on_menupopup_activate_select_file()
   if(m_read_only)
     return;
 
-  Gtk::FileChooserDialog dialog(_("Choose image"), Gtk::FILE_CHOOSER_ACTION_OPEN);
+  Gtk::FileChooserDialog dialog(_("Choose Image"), Gtk::FILE_CHOOSER_ACTION_OPEN);
 
   //Get image formats only:
   Gtk::FileFilter filter;

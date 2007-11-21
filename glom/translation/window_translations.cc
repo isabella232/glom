@@ -575,7 +575,7 @@ void Window_Translations::on_button_import()
   if (setjmp(jump) != 0)
     return;
 
-  Gtk::FileChooserDialog file_dlg(_("Choose .po file name"), Gtk::FILE_CHOOSER_ACTION_OPEN);
+  Gtk::FileChooserDialog file_dlg(_("Choose .po File Name"), Gtk::FILE_CHOOSER_ACTION_OPEN);
   
   // Only po files
   Gtk::FileFilter filter;
