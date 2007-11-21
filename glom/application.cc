@@ -558,6 +558,9 @@ Glib::ustring App_Glom::get_file_uri_without_extension(const Glib::ustring& uri)
   }
 }
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
+
+
 Glib::ustring App_Glom::ui_file_select_save(const Glib::ustring& old_file_uri) //override
 {
   //Reimplement this whole function, just so we can use our custom FileChooserDialog class:
@@ -761,7 +764,6 @@ Glib::ustring App_Glom::ui_file_select_save(const Glib::ustring& old_file_uri) /
   return Glib::ustring();
 }
 
-#ifndef GLOM_ENABLE_CLIENT_ONLY
 void App_Glom::stop_self_hosting_of_document_database()
 {
   Document_Glom* pDocument = static_cast<Document_Glom*>(get_document());

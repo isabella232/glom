@@ -1,3 +1,11 @@
+2007-11-21  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/application.cc:
+	* glom/application.h:
+	* glom/utility_widgets/Makefile.am:
+	Don't build or use the custom save dialog in client-only 
+	mode, because that code is never used.
+
 2007-11-19  Murray Cumming  <murrayc@murrayc.com>
 
 	* configure.in: Depend on the latest Bakery version.
