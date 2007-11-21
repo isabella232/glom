@@ -1,6 +1,14 @@
 2007-11-21  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/application.cc:
+	* glom/application.h: Rearrange code to reduce the number of 
+	ifdefs.
+	* glom/utility_widgets/Makefile.am: Do not build 
+	filechooserdialog_saveextras.[h|cc] in client-only mode.
+
+2007-11-21  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/application.cc:
 	* glom/utility_widgets/Makefile.am:
 	* glom/utility_widgets/filechooserdialog.cc:
 	* glom/utility_widgets/filechooserdialog.h: Rename this to:

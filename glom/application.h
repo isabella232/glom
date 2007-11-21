@@ -55,13 +55,11 @@ public:
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   void add_developer_action(const Glib::RefPtr<Gtk::Action>& refAction);
   void remove_developer_action(const Glib::RefPtr<Gtk::Action>& refAction);
+
+  void update_userlevel_ui();
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   AppState::userlevels get_userlevel() const;
-
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-  void update_userlevel_ui();
-#endif // !GLOM_ENABLE_CLIENT_ONLY
 
   void fill_menu_tables();
   void fill_menu_reports(const Glib::ustring& table_name);
@@ -100,26 +98,18 @@ protected:
   virtual void on_menu_developer_changelanguage();
   virtual void on_menu_developer_translations();
   virtual void on_window_translations_hide();
+
+  virtual Glib::ustring ui_file_select_save(const Glib::ustring& old_file_uri); //overridden.
+  virtual void on_userlevel_changed(AppState::userlevels userlevel);
+
+  bool recreate_database(bool& user_cancelled); //return indicates success.
+  void stop_self_hosting_of_document_database();
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   virtual void on_menu_file_close(); //override.
-
-  virtual Glib::ustring ui_file_select_save(const Glib::ustring& old_file_uri); //overriden.
   virtual void document_history_add(const Glib::ustring& file_uri); //overridden.
 
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-  virtual void on_userlevel_changed(AppState::userlevels userlevel);
-#endif // !GLOM_ENABLE_CLIENT_ONLY
-
   virtual Bakery::App* new_instance(); //Override
-
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-  bool recreate_database(bool& user_cancelled); //return indicates success.
-#endif // !GLOM_ENABLE_CLIENT_ONLY
-
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-  void stop_self_hosting_of_document_database();
-#endif // !GLOM_ENABLE_CLIENT_ONLY
 
   static Glib::ustring get_file_uri_without_extension(const Glib::ustring& uri);
 
@@ -137,7 +127,7 @@ protected:
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   Gtk::VBox* m_pBoxTop;
-	Gtk::VBox* m_pBoxSidebar;
+  Gtk::VBox* m_pBoxSidebar;
   Frame_Glom* m_pFrame;
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
@@ -148,13 +138,14 @@ protected:
   type_listActions m_listNavTableActions, m_listNavReportActions, m_listNavPrintLayoutActions;
   Gtk::UIManager::ui_merge_id m_menu_tables_ui_merge_id, m_menu_reports_ui_merge_id, m_menu_print_layouts_ui_merge_id;
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   //Set these before calling offer_saveas() (which uses ui_file_select_save()), and clear it afterwards.
   bool m_ui_save_extra_showextras;
   Glib::ustring m_ui_save_extra_title;
   Glib::ustring m_ui_save_extra_message;
 
   Glib::ustring m_ui_save_extra_newdb_title;
-#ifndef GLOM_ENABLE_CLIENT_ONLY
+
   bool m_ui_save_extra_newdb_selfhosted;
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 

@@ -583,222 +583,6 @@ Glib::ustring App_Glom::get_file_uri_without_extension(const Glib::ustring& uri)
   }
 }
 
-//TODO: This isn't needed for client-only mode.
-Glib::ustring App_Glom::ui_file_select_save(const Glib::ustring& old_file_uri) //override
-{
-  //Reimplement this whole function, just so we can use our custom FileChooserDialog class:
-  App& app = *this;
-
-  std::auto_ptr<Gtk::FileChooserDialog> fileChooser_Save;
-  Glom::FileChooserDialog_SaveExtras* fileChooser_SaveExtras = 0;
-
-  //Create the appropriate dialog, depending on how the caller set m_ui_save_extra_showextras:
-  if(m_ui_save_extra_showextras)
-  {
-    fileChooser_SaveExtras = new Glom::FileChooserDialog_SaveExtras(gettext("Save Document"), Gtk::FILE_CHOOSER_ACTION_SAVE);
-    fileChooser_Save.reset(fileChooser_SaveExtras);
-  }
-  else
-  {
-    fileChooser_Save.reset(new Gtk::FileChooserDialog(gettext("Save Document"), Gtk::FILE_CHOOSER_ACTION_SAVE));
-  }
-
-  // TODO_maemo: This should probably use Hildon FileChooser API
-  fileChooser_Save->set_do_overwrite_confirmation(); //Ask the user if the file already exists.
-
-  Gtk::Window* pWindow = dynamic_cast<Gtk::Window*>(&app);
-  if(pWindow)
-    fileChooser_Save->set_transient_for(*pWindow);
-
-  fileChooser_Save->add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
-  fileChooser_Save->add_button(Gtk::Stock::SAVE, Gtk::RESPONSE_OK);
-
-  fileChooser_Save->set_default_response(Gtk::RESPONSE_OK);
-
-  //This is the reason that we override this method:
-  if(!m_ui_save_extra_title.empty())
-    fileChooser_Save->set_title(m_ui_save_extra_title);
-
-  if(fileChooser_SaveExtras)
-  {
-    fileChooser_SaveExtras->set_extra_message(m_ui_save_extra_message);
-    
-
-    //Start with something suitable:
-    Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
-    g_assert(document);
-    const Glib::ustring filename = document->get_name(); //Get the filename without the path and extension.
-
-    //Avoid ".". TODO: Find out why it happens:
-    if(filename == ".")
-      m_ui_save_extra_newdb_title = Glib::ustring();
-    else
-      m_ui_save_extra_newdb_title = Utils::title_from_string( filename ); //Start with something suitable.
-
-    fileChooser_SaveExtras->set_extra_newdb_title(m_ui_save_extra_newdb_title); 
-
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-    fileChooser_SaveExtras->set_extra_newdb_self_hosted(m_ui_save_extra_newdb_selfhosted);
-#endif // !GLOM_ENABLE_CLIENT_ONLY
-  }
-
-
-  //Make the save dialog show the existing filename, if any:
-  if(!old_file_uri.empty())
-  {
-    //Just start with the parent folder,
-    //instead of the whole name, to avoid overwriting:
-    Glib::RefPtr<Gnome::Vfs::Uri> vfs_uri = Gnome::Vfs::Uri::create(old_file_uri);
-    if(vfs_uri)
-    {
-      Glib::ustring uri_parent = vfs_uri->extract_dirname();
-      fileChooser_Save->set_uri(uri_parent);
-    }
-  }
-
-
-  //bool tried_once_already = false;
-
-  bool try_again = true;
-  while(try_again)
-  {
-    try_again = false;
-
-    //Work around bug #330680 "GtkFileChooserDialog is too small when shown a second time.":
-    //(Commented-out because the workaround doesn't work)
-    /*
-    if(tried_once_already)
-    {
-      fileChooser_Save->set_default_size(-1, 600); 
-    }
-    else
-      tried_once_already = true;
-    */
-
-    const int response_id = fileChooser_Save->run();
-    fileChooser_Save->hide();
-    if(response_id != Gtk::RESPONSE_CANCEL)
-    {
-      const Glib::ustring uri_chosen = fileChooser_Save->get_uri();
-
-      //Change the URI, to put the file (and its data folder) in a folder:
-      const Glib::ustring uri = get_file_uri_without_extension(uri_chosen);
-
-      //Check whether the file exists, and that we have rights to it:
-      Glib::RefPtr<Gnome::Vfs::Uri> vfs_uri = Gnome::Vfs::Uri::create(uri);
-      if(!vfs_uri)
-        return Glib::ustring(); //Failure.
-
-
-      //If the file exists (the FileChooser offers a "replace?" dialog, so this is not possible.):
-      if(App_WithDoc::file_exists(uri))
-      {
-        //Check whether we have rights to the file to change it:
-        //Really, GtkFileChooser should do this for us.
-        if(!uri_is_writable(vfs_uri))
-        {
-           //Warn the user:
-           ui_warning(gettext("Read-only File."), gettext("You may not overwrite the existing file, because you do not have sufficient access rights."));
-           try_again = true; //Try again.
-           continue;
-        }
-      }
-
-      //Check whether we have rights to the directory, to create a new file in it:
-      //Really, GtkFileChooser should do this for us.
-      Glib::RefPtr<const Gnome::Vfs::Uri> vfs_uri_parent = vfs_uri->get_parent();
-      if(vfs_uri_parent)
-      {
-        if(!uri_is_writable(vfs_uri_parent))
-        {
-          //Warn the user:
-           ui_warning(gettext("Read-only Directory."), gettext("You may not create a file in this directory, because you do not have sufficient access rights."));
-           try_again = true; //Try again.
-           continue;
-        }
-      }
-
-      if(!try_again && fileChooser_SaveExtras)
-      {
-        //Get the extra details from the extended save dialog:
-        m_ui_save_extra_newdb_title = fileChooser_SaveExtras->get_extra_newdb_title();
-
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-        m_ui_save_extra_newdb_selfhosted = fileChooser_SaveExtras->get_extra_newdb_self_hosted();
-#endif // !GLOM_ENABLE_CLIENT_ONLY
-
-        if(m_ui_save_extra_newdb_title.empty())
-        {
-          Frame_Glom::show_ok_dialog(_("Database Title missing"), _("You must specify a title for the new database."), *this, Gtk::MESSAGE_ERROR);
-
-          try_again = true;
-          continue;
-        }
-      }
- 
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-      if(!try_again && fileChooser_SaveExtras && m_ui_save_extra_newdb_selfhosted)
-      {
-        //Check that the directory does not exist already.
-        //The GtkFileChooser could not check for that because it could not know that we would create a directory based on the filename:
-        //Note that uri has no extension at this point:
-        Glib::RefPtr<Gnome::Vfs::Uri> vfsuri = Gnome::Vfs::Uri::create(uri);
-        if(vfsuri->uri_exists())
-        {
-          ui_warning(_("Directory Already Exists"), _("There is an existing directory with the same name as the directory that should be created for the new database files. You should specify a different filename to use a new directory instead."));
-          try_again = true; //Try again.
-          continue;
-        }
-        
-        //Create the directory, so that file creation can succeed later:
-        //0770 means "this user and his group can read and write this "executable" (can add child files) directory".
-        //The 0 prefix means that this is octal.
-        try
-        {
-          Gnome::Vfs::Handle::make_directory(uri, 0770 /* leading zero means octal */);
-        }
-        catch(const Gnome::Vfs::exception&  ex)
-        {
-          std::cerr << "Error during make_directory(): " << ex.what() << std::endl;
-        }
-
-        //Add the filename (Note that the caller will add the extension if necessary, so we don't do it here.)
-        Glib::RefPtr<Gnome::Vfs::Uri> uri_with_ext = Gnome::Vfs::Uri::create(uri_chosen);
-        const Glib::ustring filename_part = uri_with_ext->extract_short_name();
-
-        //Add the filename part to the newly-created directory:
-        Glib::RefPtr<Gnome::Vfs::Uri> uri_whole = vfs_uri->append_string(filename_part);
-        return uri_whole->to_string();
-      }
-#endif // !GLOM_ENABLE_CLIENT_ONLY
-
-      if(!try_again)
-      {
-        return uri_chosen;
-      }
-    }
-    else
-      return Glib::ustring(); //The user cancelled.
-  }
-
-  return Glib::ustring();
-}
-
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-void App_Glom::stop_self_hosting_of_document_database()
-{
-  Document_Glom* pDocument = static_cast<Document_Glom*>(get_document());
-  if(pDocument && pDocument->get_connection_is_self_hosted())
-  {
-    ConnectionPool* connection_pool = ConnectionPool::get_instance();
-    if(!connection_pool)
-      return;
-
-    connection_pool->stop_self_hosting();
-  }
-}
-#endif // !GLOM_ENABLE_CLIENT_ONLY
-
 Bakery::App* App_Glom::new_instance() //Override
 {
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
@@ -1985,6 +1769,219 @@ void App_Glom::on_menu_file_save_as_example()
   else
   {
     cancel_close_or_exit();
+  }
+}
+
+Glib::ustring App_Glom::ui_file_select_save(const Glib::ustring& old_file_uri) //override
+{
+  //Reimplement this whole function, just so we can use our custom FileChooserDialog class:
+  App& app = *this;
+
+  std::auto_ptr<Gtk::FileChooserDialog> fileChooser_Save;
+  Glom::FileChooserDialog_SaveExtras* fileChooser_SaveExtras = 0;
+
+  //Create the appropriate dialog, depending on how the caller set m_ui_save_extra_showextras:
+  if(m_ui_save_extra_showextras)
+  {
+    fileChooser_SaveExtras = new Glom::FileChooserDialog_SaveExtras(gettext("Save Document"), Gtk::FILE_CHOOSER_ACTION_SAVE);
+    fileChooser_Save.reset(fileChooser_SaveExtras);
+  }
+  else
+  {
+    fileChooser_Save.reset(new Gtk::FileChooserDialog(gettext("Save Document"), Gtk::FILE_CHOOSER_ACTION_SAVE));
+  }
+
+  // TODO_maemo: This should probably use Hildon FileChooser API
+  fileChooser_Save->set_do_overwrite_confirmation(); //Ask the user if the file already exists.
+
+  Gtk::Window* pWindow = dynamic_cast<Gtk::Window*>(&app);
+  if(pWindow)
+    fileChooser_Save->set_transient_for(*pWindow);
+
+  fileChooser_Save->add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+  fileChooser_Save->add_button(Gtk::Stock::SAVE, Gtk::RESPONSE_OK);
+
+  fileChooser_Save->set_default_response(Gtk::RESPONSE_OK);
+
+  //This is the reason that we override this method:
+  if(!m_ui_save_extra_title.empty())
+    fileChooser_Save->set_title(m_ui_save_extra_title);
+
+  if(fileChooser_SaveExtras)
+  {
+    fileChooser_SaveExtras->set_extra_message(m_ui_save_extra_message);
+    
+
+    //Start with something suitable:
+    Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
+    g_assert(document);
+    const Glib::ustring filename = document->get_name(); //Get the filename without the path and extension.
+
+    //Avoid ".". TODO: Find out why it happens:
+    if(filename == ".")
+      m_ui_save_extra_newdb_title = Glib::ustring();
+    else
+      m_ui_save_extra_newdb_title = Utils::title_from_string( filename ); //Start with something suitable.
+
+    fileChooser_SaveExtras->set_extra_newdb_title(m_ui_save_extra_newdb_title); 
+
+#ifndef GLOM_ENABLE_CLIENT_ONLY
+    fileChooser_SaveExtras->set_extra_newdb_self_hosted(m_ui_save_extra_newdb_selfhosted);
+#endif // !GLOM_ENABLE_CLIENT_ONLY
+  }
+
+
+  //Make the save dialog show the existing filename, if any:
+  if(!old_file_uri.empty())
+  {
+    //Just start with the parent folder,
+    //instead of the whole name, to avoid overwriting:
+    Glib::RefPtr<Gnome::Vfs::Uri> vfs_uri = Gnome::Vfs::Uri::create(old_file_uri);
+    if(vfs_uri)
+    {
+      Glib::ustring uri_parent = vfs_uri->extract_dirname();
+      fileChooser_Save->set_uri(uri_parent);
+    }
+  }
+
+
+  //bool tried_once_already = false;
+
+  bool try_again = true;
+  while(try_again)
+  {
+    try_again = false;
+
+    //Work around bug #330680 "GtkFileChooserDialog is too small when shown a second time.":
+    //(Commented-out because the workaround doesn't work)
+    /*
+    if(tried_once_already)
+    {
+      fileChooser_Save->set_default_size(-1, 600); 
+    }
+    else
+      tried_once_already = true;
+    */
+
+    const int response_id = fileChooser_Save->run();
+    fileChooser_Save->hide();
+    if(response_id != Gtk::RESPONSE_CANCEL)
+    {
+      const Glib::ustring uri_chosen = fileChooser_Save->get_uri();
+
+      //Change the URI, to put the file (and its data folder) in a folder:
+      const Glib::ustring uri = get_file_uri_without_extension(uri_chosen);
+
+      //Check whether the file exists, and that we have rights to it:
+      Glib::RefPtr<Gnome::Vfs::Uri> vfs_uri = Gnome::Vfs::Uri::create(uri);
+      if(!vfs_uri)
+        return Glib::ustring(); //Failure.
+
+
+      //If the file exists (the FileChooser offers a "replace?" dialog, so this is not possible.):
+      if(App_WithDoc::file_exists(uri))
+      {
+        //Check whether we have rights to the file to change it:
+        //Really, GtkFileChooser should do this for us.
+        if(!uri_is_writable(vfs_uri))
+        {
+           //Warn the user:
+           ui_warning(gettext("Read-only File."), gettext("You may not overwrite the existing file, because you do not have sufficient access rights."));
+           try_again = true; //Try again.
+           continue;
+        }
+      }
+
+      //Check whether we have rights to the directory, to create a new file in it:
+      //Really, GtkFileChooser should do this for us.
+      Glib::RefPtr<const Gnome::Vfs::Uri> vfs_uri_parent = vfs_uri->get_parent();
+      if(vfs_uri_parent)
+      {
+        if(!uri_is_writable(vfs_uri_parent))
+        {
+          //Warn the user:
+           ui_warning(gettext("Read-only Directory."), gettext("You may not create a file in this directory, because you do not have sufficient access rights."));
+           try_again = true; //Try again.
+           continue;
+        }
+      }
+
+      if(!try_again && fileChooser_SaveExtras)
+      {
+        //Get the extra details from the extended save dialog:
+        m_ui_save_extra_newdb_title = fileChooser_SaveExtras->get_extra_newdb_title();
+
+#ifndef GLOM_ENABLE_CLIENT_ONLY
+        m_ui_save_extra_newdb_selfhosted = fileChooser_SaveExtras->get_extra_newdb_self_hosted();
+#endif // !GLOM_ENABLE_CLIENT_ONLY
+
+        if(m_ui_save_extra_newdb_title.empty())
+        {
+          Frame_Glom::show_ok_dialog(_("Database Title missing"), _("You must specify a title for the new database."), *this, Gtk::MESSAGE_ERROR);
+
+          try_again = true;
+          continue;
+        }
+      }
+ 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
+      if(!try_again && fileChooser_SaveExtras && m_ui_save_extra_newdb_selfhosted)
+      {
+        //Check that the directory does not exist already.
+        //The GtkFileChooser could not check for that because it could not know that we would create a directory based on the filename:
+        //Note that uri has no extension at this point:
+        Glib::RefPtr<Gnome::Vfs::Uri> vfsuri = Gnome::Vfs::Uri::create(uri);
+        if(vfsuri->uri_exists())
+        {
+          ui_warning(_("Directory Already Exists"), _("There is an existing directory with the same name as the directory that should be created for the new database files. You should specify a different filename to use a new directory instead."));
+          try_again = true; //Try again.
+          continue;
+        }
+        
+        //Create the directory, so that file creation can succeed later:
+        //0770 means "this user and his group can read and write this "executable" (can add child files) directory".
+        //The 0 prefix means that this is octal.
+        try
+        {
+          Gnome::Vfs::Handle::make_directory(uri, 0770 /* leading zero means octal */);
+        }
+        catch(const Gnome::Vfs::exception&  ex)
+        {
+          std::cerr << "Error during make_directory(): " << ex.what() << std::endl;
+        }
+
+        //Add the filename (Note that the caller will add the extension if necessary, so we don't do it here.)
+        Glib::RefPtr<Gnome::Vfs::Uri> uri_with_ext = Gnome::Vfs::Uri::create(uri_chosen);
+        const Glib::ustring filename_part = uri_with_ext->extract_short_name();
+
+        //Add the filename part to the newly-created directory:
+        Glib::RefPtr<Gnome::Vfs::Uri> uri_whole = vfs_uri->append_string(filename_part);
+        return uri_whole->to_string();
+      }
+#endif // !GLOM_ENABLE_CLIENT_ONLY
+
+      if(!try_again)
+      {
+        return uri_chosen;
+      }
+    }
+    else
+      return Glib::ustring(); //The user cancelled.
+  }
+
+  return Glib::ustring();
+}
+
+void App_Glom::stop_self_hosting_of_document_database()
+{
+  Document_Glom* pDocument = static_cast<Document_Glom*>(get_document());
+  if(pDocument && pDocument->get_connection_is_self_hosted())
+  {
+    ConnectionPool* connection_pool = ConnectionPool::get_instance();
+    if(!connection_pool)
+      return;
+
+    connection_pool->stop_self_hosting();
   }
 }
 

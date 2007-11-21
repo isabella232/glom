@@ -34,12 +34,15 @@ libutility_widgets_a_SOURCES = alignment_justified.cc alignment_justified.h \
                                imageglom.h imageglom.cc \
                                labelglom.h labelglom.cc \
                                dialog_choose_id.cc dialog_choose_id.h \
-                               dialog_choose_date.cc dialog_choose_date.h \
-                               filechooserdialog_saveextras.cc filechooserdialog_saveextras.h \
-                               dragbutton.cc dragbutton.h \
-                               dragbar.cc dragwindow.h \
-                               placeholder-glom.h  placeholder-glom.cc \
-                               sidebar.h sidebar.cc
+                               dialog_choose_date.cc dialog_choose_date.h
+
+if !GLOM_ENABLE_CLIENT_ONLY
+libutility_widgets_a_SOURCES += filechooserdialog_saveextras.cc filechooserdialog_saveextras.h \
+                                dragbutton.cc dragbutton.h \
+                                dragbar.cc dragwindow.h \
+                                placeholder-glom.h  placeholder-glom.cc \
+                                sidebar.h sidebar.cc
+endif
 
 
 libutility_widgets_a_LIBADD = adddel/libutility_widgets_adddel.a \
