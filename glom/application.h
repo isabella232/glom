@@ -102,10 +102,31 @@ protected:
   virtual Glib::ustring ui_file_select_save(const Glib::ustring& old_file_uri); //overridden.
   virtual void on_userlevel_changed(AppState::userlevels userlevel);
 
+  Document_Glom* on_connection_pool_get_document();
+
   bool recreate_database(bool& user_cancelled); //return indicates success.
   void stop_self_hosting_of_document_database();
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
+  class BrowsedServer
+  {
+  public:
+    BrowsedServer();
+    BrowsedServer(const BrowsedServer& src);
+    BrowsedServer& operator=(const BrowsedServer& src);
+
+    int m_port;
+    std::string m_host;
+    std::string m_service_type;
+  };
+
+  /** Offer a file chooser dialog, with a Browse Network button.
+   * @param browsed This will be set to true if the user chose a networked glom instance to open.
+   * @browsed_server This will be filled with the server details if browsed was set to true.
+   */
+  Glib::ustring ui_file_select_open_with_browse(bool& browsed, BrowsedServer& browsed_server, const Glib::ustring& starting_folder_uri = Glib::ustring());
+
+  virtual void on_menu_file_open(); //overridden.
   virtual void on_menu_file_close(); //override.
   virtual void document_history_add(const Glib::ustring& file_uri); //overridden.
 

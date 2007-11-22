@@ -25,9 +25,9 @@
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 #include <glom/translation/dialog_change_language.h>
 #include <glom/translation/window_translations.h>
+#include <glom/utility_widgets/filechooserdialog_saveextras.h>
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-#include <glom/utility_widgets/filechooserdialog_saveextras.h>
 #include <glom/libglom/utils.h>
 
 #include "config.h" //For VERSION.
@@ -41,6 +41,10 @@
 #ifdef GLOM_ENABLE_MAEMO
 #include <hildon/hildon-window.h>
 #endif // GLOM_ENABLE_MAEMO
+
+#include <libepc/consumer.h>
+#include <avahi-ui/avahi-ui.h>
+#include <gtk/gtkstock.h> /* For use with the avahi-ui dialog. */
 
 #ifdef GLOM_ENABLE_MAEMO
 namespace //anonymous namespace
@@ -67,6 +71,29 @@ HildonWindow* turn_gtk_window_into_hildon_window(GtkWindow* cobject)
 
 namespace Glom
 {
+
+static const int GLOM_RESPONSE_BROWSE_NETWORK = 1;
+
+App_Glom::BrowsedServer::BrowsedServer()
+: m_port(0)
+{
+}
+
+App_Glom::BrowsedServer::BrowsedServer(const App_Glom::BrowsedServer& src)
+: m_port(src.m_port),
+  m_host(src.m_host),
+  m_service_type(src.m_service_type)
+{
+}
+
+App_Glom::BrowsedServer& App_Glom::BrowsedServer::operator=(const App_Glom::BrowsedServer& src)
+{
+  m_port = m_port;
+  m_host = src.m_host;
+  m_service_type = src.m_service_type;
+  return *this;
+}
+
 
 // Global application variable
 App_Glom* global_application = NULL;
@@ -531,6 +558,51 @@ void App_Glom::on_menu_userlevel_operator()
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
+//We override this so we can show the custom FileChooserDialog with the Browse Network button:
+void App_Glom::on_menu_file_open()
+{
+  //Display File Open dialog and respond to choice:
+
+  //Bring document window to front, to make it clear which document is being changed:
+  ui_bring_to_front();
+
+  //Ask user to choose file to open:
+  bool browsed = false;
+  BrowsedServer browsed_server;
+  Glib::ustring file_uri = ui_file_select_open_with_browse(browsed, browsed_server);
+  if(!file_uri.empty() && !browsed)
+    open_document(file_uri);
+  else if(browsed)
+  {
+    //Open the document supplied by the other glom instance on the network:
+    EpcConsumer* consumer = epc_consumer_new(epc_service_type_get_protocol(browsed_server.m_service_type.c_str()), browsed_server.m_host.c_str(), browsed_server.m_port);
+    gsize length = 0;
+    GError *error = NULL;
+    gchar *document_contents = epc_consumer_lookup(consumer, "document", &length, &error);
+    if(error)
+    {
+      std::cout << "Error when calling epc_consumer_lookup(): " << std::endl << "  " << error->message << std::endl;
+      g_error_free(error);
+      error = NULL;
+    }
+
+    std::cout << "DEBUG: received document: " << document_contents << std::endl;
+    if(document_contents && length)
+      open_document_from_data((const guchar*)document_contents, length);
+    
+    g_free(document_contents);
+
+    Document_Glom* document = get_document();
+    if(!document)
+      return;
+
+    //Stop the document from being self-hosted (it's already hosted by the other networked Glom instance):
+    document->set_connection_is_self_hosted(false);
+
+    //TODO: Cope with the networked document saying that it is using a postgres server on "localhost".
+  }
+}
+
 void App_Glom::on_menu_file_close() //override
 {
   // Call the base class implementation:
@@ -732,6 +804,7 @@ bool App_Glom::on_document_load()
 
           if(!is_example) /* It will be started later, after we have asked for the initial db name/title and created the files.*/
           {
+            connection_pool->set_get_document_func( sigc::mem_fun(*this, &App_Glom::on_connection_pool_get_document) );
             const bool test = connection_pool->start_self_hosting(); //Stopped in on_menu_file_close().
             if(!test)
               return false;
@@ -922,7 +995,8 @@ bool App_Glom::offer_new_or_existing()
 #else
   std::auto_ptr<Gnome::Glade::XmlError> error;
   Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_existing_or_new", "", error);
-  if(error.get()) return false;
+  if(error.get())
+    return false;
 #endif
 
   Gtk::Dialog* dialog = 0;
@@ -947,8 +1021,8 @@ bool App_Glom::offer_new_or_existing()
   recent_chooser->signal_item_activated().connect(sigc::bind(sigc::mem_fun(*dialog, &Gtk::Dialog::response), 1)); // Open
 
 #ifdef GLOM_ENABLE_CLIENT_ONLY
-  // Don't offer the user to create a new document, because without
-  // developer mode he couldn't do anything useful without it, anyway.
+  // Don't offer the user the chance to create a new document, because without
+  // developer mode he couldn't do anything useful with it, anyway.
   Gtk::Button* new_button;
   refXml->get_widget("existing_or_new_button_new", new_button);
   new_button->hide();
@@ -959,18 +1033,18 @@ bool App_Glom::offer_new_or_existing()
   // Show another label that does not ask whether one wants to create a new
   // document because that is not possible in client only mode
   // TODO: Add another text, or simply hide the label?
-  Gtk::Label* label;
+  Gtk::Label* label = 0;
   refXml->get_widget("existing_or_new_label", label);
   label->set_markup(_("<span weight='bold' size='larger'>Open existing document</span>\n"));
 #endif // GLOM_ENABLE_CLIENT_ONLY
 
 #ifdef GLOM_ENABLE_MAEMO
   // Set dialog title to not show <unnamed> (default on maemo for empty title)
-  // Strip of terminating newline.
-  dialog->set_title(label->get_text().substr(0, label->get_text().length()-1));
+  // Strip terminating newline.
+  dialog->set_title(label->get_text().substr(0, label->get_text().length()-1)); //TODO: Make this more robust.
   label->hide();
 
-  // This makes the dialog too big in width otherwise
+  // Stop the dialog from being too wide:
   recent_chooser->set_size_request(500, -1);
 #endif
 
@@ -1772,6 +1846,84 @@ void App_Glom::on_menu_file_save_as_example()
   }
 }
 
+//This is replaced (not overridden) so we can use our custom FileChooserDialog:
+Glib::ustring App_Glom::ui_file_select_open_with_browse(bool& browsed, BrowsedServer& browsed_server, const Glib::ustring& starting_folder_uri)
+{
+  //Initialize output parameter:
+  browsed = false;
+
+  Gtk::Window* pWindow = this;
+
+#ifdef GLOM_ENABLE_MAEMO
+  //TODO: Put the browse button on the initial dialog for Maemo, 
+  //because Hildon::FileChooserDialog does not allow extra widgets.
+  Hildon::FileChooserDialog fileChooser_Open(Gtk::FILE_CHOOSER_ACTION_OPEN));
+#else
+  Gtk::FileChooserDialog fileChooser_Open(gettext("Open Document"), Gtk::FILE_CHOOSER_ACTION_OPEN);
+  fileChooser_Open.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+  fileChooser_Open.add_button(("Browse Network"), GLOM_RESPONSE_BROWSE_NETWORK);
+  fileChooser_Open.add_button(Gtk::Stock::OPEN, Gtk::RESPONSE_OK);
+  fileChooser_Open.set_default_response(Gtk::RESPONSE_OK);
+#endif // GLOM_ENABLE_MAEMO
+
+  if(pWindow)
+    fileChooser_Open.set_transient_for(*pWindow);
+
+  if(!starting_folder_uri.empty())
+    fileChooser_Open.set_current_folder_uri(starting_folder_uri);
+
+  const int response_id = fileChooser_Open.run();
+  std::cout << "debug: after chooser run" << std::endl;
+  fileChooser_Open.hide();
+  if(response_id != Gtk::RESPONSE_CANCEL)
+  {
+    if(response_id == GLOM_RESPONSE_BROWSE_NETWORK)
+    {
+      std::cout << "debug: browsed" << std::endl;
+
+      // Show Avahi's stock dialog for choosing a publisher service:
+      AuiServiceDialog* dialog = AUI_SERVICE_DIALOG (aui_service_dialog_new(_("Choose a running Glom database"), GTK_WINDOW(gobj()),
+        GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+        GTK_STOCK_CONNECT, GTK_RESPONSE_ACCEPT,
+        NULL));
+
+      //Browse for the same service type as advertized in Glom::ConnectionPool:
+      gchar* service_type = epc_service_type_new (EPC_PROTOCOL_HTTPS, "glom");
+      aui_service_dialog_set_browse_service_types(dialog, service_type, service_type, NULL);
+      g_free(service_type);
+      service_type = NULL;
+
+      #ifdef HAVE_AVAHI_UI_0_6_22
+      // Setup pretty service names:
+      aui_service_dialog_set_service_type_name(AUI_SERVICE_DIALOG (dialog), service_type, "Glom");
+      #endif
+
+      const int response = gtk_dialog_run(GTK_DIALOG(dialog));
+      if(response == GTK_RESPONSE_ACCEPT)
+      {
+        //Tell the caller that a networked document should be used instead:
+        browsed = true;
+        browsed_server.m_port = aui_service_dialog_get_port(dialog);
+
+        const gchar *host = aui_service_dialog_get_host_name(dialog);
+        browsed_server.m_host = host ? host : std::string();
+
+        const gchar *service_type = aui_service_dialog_get_service_type(dialog);
+        browsed_server.m_service_type = service_type ? service_type : std::string();
+      }
+
+      gtk_widget_destroy(GTK_WIDGET(dialog));
+      dialog = NULL;
+    }
+    else
+    {
+      return fileChooser_Open.get_uri();
+    }
+  }
+
+  return Glib::ustring();
+}
+
 Glib::ustring App_Glom::ui_file_select_save(const Glib::ustring& old_file_uri) //override
 {
   //Reimplement this whole function, just so we can use our custom FileChooserDialog class:
@@ -2085,6 +2237,11 @@ void App_Glom::add_sidebar(SideBar& sidebar)
 void App_Glom::remove_sidebar(SideBar& sidebar)
 {
   m_pBoxSidebar->remove (sidebar);
+}
+
+Document_Glom* App_Glom::on_connection_pool_get_document()
+{
+  return dynamic_cast<Document_Glom*>(get_document());
 }
 
 } //namespace Glom

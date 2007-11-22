@@ -21,6 +21,7 @@
 #include "config.h" // For GLOM_ENABLE_MAEMO
  
 #include <glom/libglom/connectionpool.h>
+#include <glom/libglom/document/document_glom.h>
 #include <bakery/bakery.h>
 #include <libgnomevfsmm.h>
 #include <glib/gstdio.h> //For g_remove().
@@ -28,7 +29,6 @@
 #include <glom/libglom/utils.h>
 #include <libgdamm/connectionevent.h>
 #include <libepc/publisher.h>
-#include <libepc/enums.h>
 #include <glibmm/i18n.h>
 
 #ifdef GLOM_ENABLE_MAEMO
@@ -1150,6 +1150,31 @@ bool ConnectionPool::check_user_is_not_root()
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
+
+
+//static
+EpcContents* ConnectionPool::on_publisher_document_requested(EpcPublisher* publisher, const gchar* key, gpointer user_data)
+{
+  Glom::ConnectionPool* connection_pool = static_cast<Glom::ConnectionPool*>(user_data);
+  if(!connection_pool)
+    return 0;
+
+  if(!connection_pool->m_slot_get_document)
+  {
+    std::cerr << "Glom ConnectionPool: on_publisher_document_requested(): m_slot_get_document is null." << std::endl;
+    return 0;
+  }
+
+  const Document_Glom* document = connection_pool->m_slot_get_document();
+  if(!document)
+    return 0;
+
+  const Glib::ustring contents = document->get_contents();
+  //std::cout << "DEBUG: ConnectionPool::on_publisher_document_requested(): returning: " << std::endl << "  " << contents << std::endl;
+  return epc_contents_new ("text/plain", (void*)contents.c_str(), contents.bytes());
+}
+
+
 /** Advertise self-hosting via avahi:
  */
 void ConnectionPool::avahi_start_publishing()
@@ -1157,8 +1182,11 @@ void ConnectionPool::avahi_start_publishing()
   if(m_epc_publisher)
     return;
 
+  //Publish the document contents over HTTPS (discoverable via avahi):
   m_epc_publisher = epc_publisher_new("Glom", "glom", NULL);
   epc_publisher_set_protocol(m_epc_publisher, publish_protocol);
+  epc_publisher_add_handler(m_epc_publisher, "document", on_publisher_document_requested, this /* user_data */, NULL);
+      
   epc_publisher_run_async(m_epc_publisher);
 }
 
@@ -1168,7 +1196,15 @@ void ConnectionPool::avahi_stop_publishing()
     return;
 
   epc_publisher_quit(m_epc_publisher);
+  g_object_unref(m_epc_publisher);
+  m_epc_publisher = NULL;
 }
+
+void ConnectionPool::set_get_document_func(const SlotGetDocument& slot)
+{
+  m_slot_get_document = slot;
+}
+
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
 

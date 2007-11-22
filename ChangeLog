@@ -1,3 +1,24 @@
+2007-11-22  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/libglom/connectionpool.cc:
+	* glom/libglom/connectionpool.h: Added set_get_document_func().
+	This avoids us having to link to the application (not in libglom) 
+	to get the document from it.
+	avahi_start_publishing(): Publish the document contents via a 
+	callback, though this needs a change in libepc to copy the data.
+
+	* configure.in: Depend on avahi-ui, so we can show the 
+	browse dialog.
+	* glom/application.cc:
+	* glom/application.h:
+	Added ui_file_select_open_with_browse() which adds a browse 
+	network button to the file chooser dialog and then gets the server 
+	details after asking the user to browse.
+	on_menu_file_open(): Use ui_file_select_open_with_browse() instead 
+	of regular ui_file_select_open(). Use the new 
+	Bakery::App_WithDoc::open_document_from_data() if opening over the 
+	network.
+
 2007-11-21  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/application.cc:

@@ -31,6 +31,7 @@
 extern "C"
 {
 typedef struct _EpcPublisher EpcPublisher;
+typedef struct _EpcContents EpcContents;
 }
 
 namespace Gtk
@@ -89,6 +90,8 @@ protected:
 
   type_signal_finished m_signal_finished;
 };
+
+class Document_Glom;
 
 /** This is a singleton.
  * Use get_instance().
@@ -176,12 +179,16 @@ public:
    * @param parent_window A parent window to use as the transient window when displaying errors.
    */
   bool create_self_hosting(Gtk::Window* parent_window);
-#endif // !GLOM_ENABLE_CLIENT_ONLY
 
-  //Show the gda error in a dialog.
-  static bool handle_error(bool cerr_only = false);
+  /** Specify a callback that the ConnectionPool can call to get a pointer to the document.
+   * This callback avoids Connection having to link to App_Glom,
+   * and avoids us worrying about whether a previously-set document (via a set_document() method) is still valid.
+   */ 
+  typedef sigc::slot<Document_Glom*> SlotGetDocument; 
+  void set_get_document_func(const SlotGetDocument& slot);
 
-#ifndef GLOM_ENABLE_CLIENT_ONLY
+  static EpcContents* on_publisher_document_requested (EpcPublisher* publisher, const gchar* key, gpointer user_data);
+
   /** Check whether PostgreSQL is really available for self-hosting,
    * in case the distro package has incorrect dependencies.
    *
@@ -194,6 +201,9 @@ public:
    */
   static bool install_postgres(Gtk::Window* parent_window);
 #endif // !GLOM_ENABLE_CLIENT_ONLY
+
+  //Show the gda error in a dialog.
+  static bool handle_error(bool cerr_only = false);
 
   /** Check whether the libgda postgres provider is really available, 
    * so we can connect to postgres servers,
@@ -254,6 +264,7 @@ private:
 
   static ConnectionPool* m_instance;
 
+  SlotGetDocument m_slot_get_document;
 };
 
 } //namespace Glom

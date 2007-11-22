@@ -66,7 +66,6 @@ protected:
   Gtk::RadioButton m_radiobutton_server_central;
   Gtk::RadioButton m_radiobutton_server_selfhosted;
 #endif // !GLOM_ENABLE_CLIENT_ONLY
-  Gtk::Button m_button_ok;
 };
 
 } //namespace Glom
