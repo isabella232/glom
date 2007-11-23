@@ -616,7 +616,11 @@ void App_Glom::on_menu_file_open()
       //(that would require changes to the original document).
       Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
       if(document)
+      {
         document->set_opened_from_browse();
+        document->set_userlevel(AppState::USERLEVEL_OPERATOR); //TODO: This should happen automatically.
+        update_userlevel_ui();
+      }
     }
   }
 }

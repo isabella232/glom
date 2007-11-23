@@ -508,7 +508,6 @@ void Frame_Glom::on_menu_userlevel_Developer(const Glib::RefPtr<Gtk::RadioAction
     Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
     if(document)
     {
-
       //Check whether the current user has developer privileges:
       const ConnectionPool* connection_pool = ConnectionPool::get_instance();
       bool test = Privs::get_user_is_in_group(connection_pool->get_user(), GLOM_STANDARD_GROUP_NAME_DEVELOPER);
@@ -529,10 +528,21 @@ void Frame_Glom::on_menu_userlevel_Developer(const Glib::RefPtr<Gtk::RadioAction
       //If this was not possible then revert the menu:
       if(!test)
       {
-        Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Developer mode not available.")), true, Gtk::MESSAGE_WARNING);
-        dialog.set_secondary_text(_("Developer mode is not available. Check that you have sufficient database access rights and that the glom file is not read-only."));
-        dialog.set_transient_for(*get_app_window());
-        dialog.run();
+        if(document->get_opened_from_browse())
+        {
+          //TODO: Obviously this could be possible but it would require a network protocol and some work:
+          Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Developer Mode Not Available.")), true, Gtk::MESSAGE_WARNING);
+          dialog.set_secondary_text(_("Developer mode is not available because the file was opened over the network from a running Glom. Only the original file may be edited."));
+          dialog.set_transient_for(*get_app_window());
+          dialog.run();
+        }
+        else
+        {
+          Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Developer Mode Not Available")), true, Gtk::MESSAGE_WARNING);
+          dialog.set_secondary_text(_("Developer mode is not available. Check that you have sufficient database access rights and that the glom file is not read-only."));
+          dialog.set_transient_for(*get_app_window());
+          dialog.run();
+        }
       }
       else if(document->get_document_format_version() < Document_Glom::get_latest_known_document_format_version())
       {

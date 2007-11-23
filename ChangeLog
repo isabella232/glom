@@ -1,4 +1,16 @@
 2007-11-23  Murray Cumming  <murrayc@murrayc.com>
+ 
+	* glom/libglom/document/document_glom.cc:
+	* glom/libglom/document/document_glom.h: get/set_userlevel(): Do not 
+	allow developer mode if the document was opened over the network via browse.
+	That would require writing of the original document. That is a feature for the 
+	future maybe.
+	* glom/frame_glom.cc: on_menu_userlevel_Developer(): Warn when trying to 
+	enter developer mode.
+	* glom/application.cc: When opening from browse, explicitly set the user 
+	level to operator and update the UI, though I feel this should be automatic.
+
+2007-11-23  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/libglom/document/document_glom.cc:
 	* glom/libglom/document/document_glom.h: Added get/set_opened_from_browse().

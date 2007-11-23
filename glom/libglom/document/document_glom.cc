@@ -1539,10 +1539,15 @@ AppState::userlevels Document_Glom::get_userlevel(userLevelReason& reason) const
     reason = USER_LEVEL_REASON_FILE_READ_ONLY;
     return AppState::USERLEVEL_OPERATOR; //A read-only document cannot be changed, so there's no point in being in developer mode. This is one way to control the user level on purpose.
   }
+  else if(get_opened_from_browse())
+  {
+    reason = USER_LEVEL_REASON_OPENED_FROM_BROWSE;
+    return AppState::USERLEVEL_OPERATOR; //Developer mode would require changes to the original document.
+  }
   else if(m_file_uri.empty()) //If it has never been saved then this is a new default document, so the user created it, so the user can be a developer.
   {
 #ifdef GLOM_ENABLE_CLIENT_ONLY
-    // Client only mode doesn't support developer mode, though.
+    // Client only mode doesn't support developer mode:
     return AppState::USERLEVEL_OPERATOR;
 #else
     return AppState::USERLEVEL_DEVELOPER;
@@ -1566,6 +1571,7 @@ void Document_Glom::on_app_state_userlevel_changed(AppState::userlevels userleve
 
 bool Document_Glom::set_userlevel(AppState::userlevels userlevel)
 {
+  std::cout << "debug: Document_Glom::set_userlevel(): " << userlevel << std::endl;
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   //Prevent incorrect user level:
   if((userlevel == AppState::USERLEVEL_DEVELOPER) && get_read_only())
@@ -1577,7 +1583,11 @@ bool Document_Glom::set_userlevel(AppState::userlevels userlevel)
     m_app_state.set_userlevel(AppState::USERLEVEL_OPERATOR);
     return false;
   }
-  else
+  else if(get_opened_from_browse())
+  {
+    m_app_state.set_userlevel(AppState::USERLEVEL_OPERATOR);
+    return false;
+  }
 #endif
   {
     m_app_state.set_userlevel(userlevel);
@@ -3810,6 +3820,11 @@ Glib::ustring Document_Glom::build_and_get_contents() const
 void Document_Glom::set_opened_from_browse(bool val)
 {
   m_opened_from_browse = val;
+
+  //This should stop developer mode from being possible,
+  //because we don't have access to the document:
+  if(!val)
+    m_app_state.set_userlevel(AppState::USERLEVEL_OPERATOR);
 }
 
 bool Document_Glom::get_opened_from_browse() const
