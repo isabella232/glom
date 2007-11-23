@@ -1,5 +1,10 @@
 2007-11-23  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/application.cc: Fix the double free, but for some reason it shows the initial 
+	dialog again.
+
+2007-11-23  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/libglom/document/document_glom.cc:
 	* glom/libglom/document/document_glom.h: Added save_and_get_content(), 
 	so I can manipulate a temporary copy of the document and then load it properly.

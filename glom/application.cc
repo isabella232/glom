@@ -604,13 +604,12 @@ void App_Glom::on_menu_file_open()
       }
 
       g_free(document_contents);
+      document_contents = 0;
 
       //TODO_Performance: Horribly inefficient, but happens rarely:
       const Glib::ustring temp_document_contents = document_temp.build_and_get_contents();
       open_document_from_data((const guchar*)temp_document_contents.c_str(), temp_document_contents.bytes());
     }
-    
-    g_free(document_contents);
   }
 }
 
