@@ -1151,6 +1151,16 @@ bool ConnectionPool::check_user_is_not_root()
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 
+Document_Glom* ConnectionPool::get_document()
+{
+  if(!m_slot_get_document)
+  {
+    std::cerr << "Glom ConnectionPool::get_document(): m_slot_get_document is null." << std::endl;
+    return 0;
+  }
+
+  return m_slot_get_document();
+}
 
 //static
 EpcContents* ConnectionPool::on_publisher_document_requested(EpcPublisher* publisher, const gchar* key, gpointer user_data)
@@ -1159,19 +1169,13 @@ EpcContents* ConnectionPool::on_publisher_document_requested(EpcPublisher* publi
   if(!connection_pool)
     return 0;
 
-  if(!connection_pool->m_slot_get_document)
-  {
-    std::cerr << "Glom ConnectionPool: on_publisher_document_requested(): m_slot_get_document is null." << std::endl;
-    return 0;
-  }
-
-  const Document_Glom* document = connection_pool->m_slot_get_document();
+  const Document_Glom* document = connection_pool->get_document();
   if(!document)
     return 0;
 
   const Glib::ustring contents = document->get_contents();
   //std::cout << "DEBUG: ConnectionPool::on_publisher_document_requested(): returning: " << std::endl << "  " << contents << std::endl;
-  return epc_contents_new ("text/plain", (void*)contents.c_str(), contents.bytes());
+  return epc_contents_new_dup ("text/plain", (void*)contents.c_str(), -1);
 }
 
 
@@ -1183,11 +1187,21 @@ void ConnectionPool::avahi_start_publishing()
     return;
 
   //Publish the document contents over HTTPS (discoverable via avahi):
-  m_epc_publisher = epc_publisher_new("Glom", "glom", NULL);
+  const Document_Glom* document = get_document();
+  if(!document)
+    return;
+
+  m_epc_publisher = epc_publisher_new(document->get_database_title().c_str(), "glom", NULL);
   epc_publisher_set_protocol(m_epc_publisher, publish_protocol);
   epc_publisher_add_handler(m_epc_publisher, "document", on_publisher_document_requested, this /* user_data */, NULL);
       
-  epc_publisher_run_async(m_epc_publisher);
+  GError* error = 0;
+  epc_publisher_run_async(m_epc_publisher, &error);
+  if(error)
+  {
+    std::cout << "Glom: ConnectionPool::avahi_start_publishing(): Error while running epc_publisher_run_async: " << error->message << std::endl;
+    g_clear_error(&error);
+  }
 }
 
 void ConnectionPool::avahi_stop_publishing()

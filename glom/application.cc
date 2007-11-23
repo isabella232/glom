@@ -578,12 +578,11 @@ void App_Glom::on_menu_file_open()
     EpcConsumer* consumer = epc_consumer_new(epc_service_type_get_protocol(browsed_server.m_service_type.c_str()), browsed_server.m_host.c_str(), browsed_server.m_port);
     gsize length = 0;
     GError *error = NULL;
-    gchar *document_contents = epc_consumer_lookup(consumer, "document", &length, &error);
+    gchar *document_contents = (gchar*)epc_consumer_lookup(consumer, "document", &length, &error);
     if(error)
     {
       std::cout << "Error when calling epc_consumer_lookup(): " << std::endl << "  " << error->message << std::endl;
-      g_error_free(error);
-      error = NULL;
+      g_clear_error(&error);
     }
 
     std::cout << "DEBUG: received document: " << document_contents << std::endl;
@@ -592,7 +591,7 @@ void App_Glom::on_menu_file_open()
     
     g_free(document_contents);
 
-    Document_Glom* document = get_document();
+    Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
     if(!document)
       return;
 
@@ -1889,14 +1888,12 @@ Glib::ustring App_Glom::ui_file_select_open_with_browse(bool& browsed, BrowsedSe
 
       //Browse for the same service type as advertized in Glom::ConnectionPool:
       gchar* service_type = epc_service_type_new (EPC_PROTOCOL_HTTPS, "glom");
-      aui_service_dialog_set_browse_service_types(dialog, service_type, service_type, NULL);
+      aui_service_dialog_set_browse_service_types(dialog, service_type, NULL);
       g_free(service_type);
       service_type = NULL;
 
-      #ifdef HAVE_AVAHI_UI_0_6_22
-      // Setup pretty service names:
-      aui_service_dialog_set_service_type_name(AUI_SERVICE_DIALOG (dialog), service_type, "Glom");
-      #endif
+      //This is not needed because the type column is hidden when there is just one type:
+      //aui_service_dialog_set_service_type_name(AUI_SERVICE_DIALOG (dialog), service_type, "Glom");
 
       const int response = gtk_dialog_run(GTK_DIALOG(dialog));
       if(response == GTK_RESPONSE_ACCEPT)

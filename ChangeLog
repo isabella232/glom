@@ -1,3 +1,13 @@
+2007-11-23  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/application.cc: Don't provide the service type twice to 
+	aui_service_dialog_set_browse_service_types(), so we don't get 
+	an unnecessary type column.
+	* glom/libglom/connectionpool.cc:
+	* glom/libglom/connectionpool.h: avahi_start_publishing(): 
+	Mention the document name in the published service name, to make 
+	browsing more sensible.
+
 2007-11-22  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/libglom/connectionpool.cc:

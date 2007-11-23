@@ -229,6 +229,8 @@ protected:
    */
   static int discover_first_free_port(int start_port, int end_port);
 
+  Document_Glom* get_document();
+
   /** Advertize self-hosting via avahi:
    */
   void avahi_start_publishing();
