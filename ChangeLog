@@ -1,5 +1,13 @@
 2007-11-23  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/libglom/document/document_glom.cc:
+	* glom/libglom/document/document_glom.h: Added get/set_opened_from_browse().
+	* glom/application.cc: on_menu_file_open(): Use set_opened_from_browse().
+	offer_new_or_existing(): Check get_opened_from_browse() so we don't think it 
+	failed just because there is no URI, so we don't offer the window again.
+
+2007-11-23  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/application.cc: Fix the double free, but for some reason it shows the initial 
 	dialog again.
 

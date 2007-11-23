@@ -82,6 +82,12 @@ public:
 
   virtual void set_file_uri(const Glib::ustring& file_uri, bool bEnforceFileExtension = false);
 
+  /** Whether the document was opened from another networked glom instance, 
+   * instead of via a URI.
+   */
+  void set_opened_from_browse(bool val = true);
+  bool get_opened_from_browse() const;
+
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   /** The document usually saves itself when you call set_modified().
    * Pass false to this function to prevent that temporarily.
@@ -476,7 +482,9 @@ protected:
   bool m_is_example;
   guint m_document_format_version;
 
-  Gtk::Window* m_parent_window; //Needed by BusyCursor.(gtype_0)
+  bool m_opened_from_browse;
+
+  Gtk::Window* m_parent_window; //Needed by BusyCursor.
 };
 
 //The base View for this document;

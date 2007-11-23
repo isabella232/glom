@@ -206,6 +206,7 @@ Document_Glom::Document_Glom()
   m_allow_auto_save(true), //Save all changes immediately, by default.
 #endif // !GLOM_ENABLE_CLIENT_ONLY
   m_is_example(false),
+  m_opened_from_browse(false),
   m_parent_window(0)
 {
   m_document_format_version = get_latest_known_document_format_version(); //Default to this for new documents.
@@ -3805,6 +3806,17 @@ Glib::ustring Document_Glom::build_and_get_contents() const
   unconst->save_before(); //This is the part of the Document_XML overrides that sets the contents string from the XML tree.
   return get_contents();
 }
+
+void Document_Glom::set_opened_from_browse(bool val)
+{
+  m_opened_from_browse = val;
+}
+
+bool Document_Glom::get_opened_from_browse() const
+{
+  return m_opened_from_browse;
+}
+
 
 } //namespace Glom
 

@@ -609,6 +609,14 @@ void App_Glom::on_menu_file_open()
       //TODO_Performance: Horribly inefficient, but happens rarely:
       const Glib::ustring temp_document_contents = document_temp.build_and_get_contents();
       open_document_from_data((const guchar*)temp_document_contents.c_str(), temp_document_contents.bytes());
+
+      //Mark the document as opened-from-browse 
+      //so we don't think that opening has failed because it has no URI,
+      //and to stop us from allowing developer mode
+      //(that would require changes to the original document).
+      Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
+      if(document)
+        document->set_opened_from_browse();
     }
   }
 }
@@ -1074,7 +1082,7 @@ bool App_Glom::offer_new_or_existing()
 
     //Check that a document was opened:
     Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
-    if(document->get_file_uri().empty())
+    if(document->get_file_uri().empty() && !(document->get_opened_from_browse()))
     {
       //Ask again:
       return offer_new_or_existing();
