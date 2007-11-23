@@ -539,11 +539,13 @@ void ReportBuilder::report_build(const FoundSet& found_set, const sharedptr<cons
   if(!itemsToGet_TopLevel.empty())
   {
     xmlpp::Element* nodeGroupBy = nodeParent->add_child("ungrouped_records");
-
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
     try
+#endif
     {
       report_build_records(found_set, *nodeGroupBy, itemsToGet_TopLevel);
     }
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
     catch(const Glib::Exception& ex)
     {
       //Handle database errors here rather than crashing the whole application:
@@ -556,6 +558,7 @@ void ReportBuilder::report_build(const FoundSet& found_set, const sharedptr<cons
       handle_error(ex);
       return;
     }
+#endif
   }
 
   GlomXslUtils::transform_and_open(*pDocument, "print_report_to_html.xsl", parent_window);

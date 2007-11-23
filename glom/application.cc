@@ -84,8 +84,8 @@ App_Glom::App_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml
 #endif // !GLOM_ENABLE_CLIENT_ONLY
   m_menu_tables_ui_merge_id(0),
   m_menu_reports_ui_merge_id(0),
+#ifndef GLOM_ENABLE_CLIENT_ONLY  
   m_ui_save_extra_showextras(false),
-#ifndef GLOM_ENABLE_CLIENT_ONLY
   m_ui_save_extra_newdb_selfhosted(false),
 #endif // !GLOM_ENABLE_CLIENT_ONLY
   m_show_sql_debug(false)
