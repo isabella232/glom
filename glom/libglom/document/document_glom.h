@@ -316,7 +316,7 @@ public:
    */
   AppState::userlevels get_userlevel(userLevelReason& reason) const;
 
-   AppState::userlevels get_userlevel() const;
+  AppState::userlevels get_userlevel() const;
 
   /** This is transitory information, not saved to disk.
    */
@@ -328,6 +328,8 @@ public:
   void emit_userlevel_changed();
 
   void set_parent_window(Gtk::Window* window);
+
+  Glib::ustring build_and_get_contents() const;
 
   static sharedptr<TableInfo> create_table_system_preferences();
   static sharedptr<TableInfo> create_table_system_preferences(type_vecFields& fields);

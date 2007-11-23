@@ -585,20 +585,32 @@ void App_Glom::on_menu_file_open()
       g_clear_error(&error);
     }
 
-    std::cout << "DEBUG: received document: " << document_contents << std::endl;
+    //std::cout << "DEBUG: received document: " << document_contents << std::endl;
     if(document_contents && length)
-      open_document_from_data((const guchar*)document_contents, length);
+    {
+      //Create a temporary Document instance, so we can manipulate the data:
+      Document_Glom document_temp;
+      const bool loaded = document_temp.load_from_data((const guchar*)document_contents, length);
+      if(loaded)
+      {
+        //Stop the document from being self-hosted (it's already hosted by the other networked Glom instance):
+        document_temp.set_connection_is_self_hosted(false);
+
+        //TODO: Cope with the networked document saying that it is using a postgres server on "localhost".
+      }
+      else
+      {
+        std::cerr << "Could not parse the document that was retrieved over the network." << std::endl;
+      }
+
+      g_free(document_contents);
+
+      //TODO_Performance: Horribly inefficient, but happens rarely:
+      const Glib::ustring temp_document_contents = document_temp.build_and_get_contents();
+      open_document_from_data((const guchar*)temp_document_contents.c_str(), temp_document_contents.bytes());
+    }
     
     g_free(document_contents);
-
-    Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
-    if(!document)
-      return;
-
-    //Stop the document from being self-hosted (it's already hosted by the other networked Glom instance):
-    document->set_connection_is_self_hosted(false);
-
-    //TODO: Cope with the networked document saying that it is using a postgres server on "localhost".
   }
 }
 

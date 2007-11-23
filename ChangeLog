@@ -1,5 +1,16 @@
 2007-11-23  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/libglom/document/document_glom.cc:
+	* glom/libglom/document/document_glom.h: Added save_and_get_content(), 
+	so I can manipulate a temporary copy of the document and then load it properly.
+	* glom/application.cc:
+	on_menu_file_open(): When openeing a browsed document, use a temporary instance 
+	of the document class (incredibly inefficiently) to mark the document as 
+	not self-hosted. This now actually opens the file, but then it crashes with a 
+	double free warning.
+
+2007-11-23  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/application.cc: Don't provide the service type twice to 
 	aui_service_dialog_set_browse_service_types(), so we don't get 
 	an unnecessary type column.

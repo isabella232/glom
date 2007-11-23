@@ -3797,7 +3797,14 @@ void Document_Glom::remove_library_module(const Glib::ustring& name)
   }
 }
 
+Glib::ustring Document_Glom::build_and_get_contents() const
+{
+  //save_before() probably should be const because it doesn't change much of the external behaviour:
+  Document_Glom* unconst = const_cast<Document_Glom*>(this);
 
+  unconst->save_before(); //This is the part of the Document_XML overrides that sets the contents string from the XML tree.
+  return get_contents();
+}
 
 } //namespace Glom
 
