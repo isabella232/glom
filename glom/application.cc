@@ -1895,14 +1895,11 @@ Glib::ustring App_Glom::ui_file_select_open_with_browse(bool& browsed, BrowsedSe
     fileChooser_Open.set_current_folder_uri(starting_folder_uri);
 
   const int response_id = fileChooser_Open.run();
-  std::cout << "debug: after chooser run" << std::endl;
   fileChooser_Open.hide();
   if(response_id != Gtk::RESPONSE_CANCEL)
   {
     if(response_id == GLOM_RESPONSE_BROWSE_NETWORK)
     {
-      std::cout << "debug: browsed" << std::endl;
-
       // Show Avahi's stock dialog for choosing a publisher service:
       AuiServiceDialog* dialog = AUI_SERVICE_DIALOG (aui_service_dialog_new(_("Choose a running Glom database"), GTK_WINDOW(gobj()),
         GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
