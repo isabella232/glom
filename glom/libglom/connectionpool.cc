@@ -1179,6 +1179,23 @@ EpcContents* ConnectionPool::on_publisher_document_requested(EpcPublisher* publi
 }
 
 
+
+
+//static
+gboolean ConnectionPool::on_publisher_document_authentication(EpcAuthContext* context, const gchar* user_name, gpointer user_data)
+{
+  // Check if the username/password are correct:
+
+  //TODO: We need the full password so we can attempt a connection to postgres.
+  return true;
+/*
+  return
+    NULL != user_name &&
+    g_str_equal (user_name, g_get_user_name ()) &&
+    epc_auth_context_check_password (context, user_data);
+*/
+}
+
 /** Advertise self-hosting via avahi:
  */
 void ConnectionPool::avahi_start_publishing()
@@ -1193,6 +1210,7 @@ void ConnectionPool::avahi_start_publishing()
 
   m_epc_publisher = epc_publisher_new(document->get_database_title().c_str(), "glom", NULL);
   epc_publisher_set_protocol(m_epc_publisher, publish_protocol);
+  epc_publisher_set_auth_handler(m_epc_publisher, "document", on_publisher_document_authentication, this /* user_data */, NULL);
   epc_publisher_add_handler(m_epc_publisher, "document", on_publisher_document_requested, this /* user_data */, NULL);
       
   GError* error = 0;

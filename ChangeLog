@@ -1,3 +1,9 @@
+2007-11-25  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/libglom/connectionpool.cc:
+	* glom/libglom/connectionpool.h: Connected an authentication handler for the 
+	publisher, but it needs the full password to try a postgres connection.
+
 2007-11-23  Murray Cumming  <murrayc@murrayc.com>
  
 	* glom/libglom/document/document_glom.cc:

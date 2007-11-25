@@ -32,6 +32,7 @@ extern "C"
 {
 typedef struct _EpcPublisher EpcPublisher;
 typedef struct _EpcContents EpcContents;
+typedef struct _EpcAuthContext EpcAuthContext;
 }
 
 namespace Gtk
@@ -188,6 +189,7 @@ public:
   void set_get_document_func(const SlotGetDocument& slot);
 
   static EpcContents* on_publisher_document_requested (EpcPublisher* publisher, const gchar* key, gpointer user_data);
+  static gboolean on_publisher_document_authentication(EpcAuthContext* context, const gchar* user_name, gpointer user_data);
 
   /** Check whether PostgreSQL is really available for self-hosting,
    * in case the distro package has incorrect dependencies.
