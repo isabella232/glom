@@ -148,12 +148,18 @@ public:
 #endif
 
   void set_host(const Glib::ustring& value);
+
+  /** 0 means any port
+   * Other ports will be tried if the specified port fails.
+   */
+  void set_port(int port);
+
   void set_user(const Glib::ustring& value);
   void set_password(const Glib::ustring& value);
   void set_database(const Glib::ustring& value);
 
   Glib::ustring get_host() const;
-  //Glib::ustring get_port() const;
+  int get_port() const;
   Glib::ustring get_user() const;
   Glib::ustring get_password() const;
   Glib::ustring get_database() const;
@@ -260,7 +266,8 @@ protected:
   Glib::RefPtr<Gnome::Gda::Connection> m_refGdaConnection;
   guint m_sharedconnection_refcount;
   bool m_ready_to_connect;
-  Glib::ustring m_host, m_user, m_password, m_database, m_port;
+  Glib::ustring m_host, m_user, m_password, m_database;
+  int m_port;
   FieldTypes* m_pFieldTypes;
   float m_postgres_server_version;
 

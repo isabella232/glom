@@ -95,6 +95,10 @@ sharedptr<SharedConnection> Dialog_Connection::connect_to_server_with_connection
  
       connection_pool->set_user(m_entry_user->get_text());
       connection_pool->set_password(m_entry_password->get_text());
+
+      //Start with the same port as last time the document was used:
+      connection_pool->set_port(document->get_connection_port());
+
       //if(document)
       //{
       //  connection_pool->set_database(document->get_connection_database());
@@ -108,6 +112,15 @@ sharedptr<SharedConnection> Dialog_Connection::connect_to_server_with_connection
 #else
     result = Box_DB::connect_to_server(const_cast<Dialog_Connection*>(this), error);
 #endif
+
+    if(document)
+    {
+      //Remember the port, 
+      //to make opening faster next time,
+      //and so we can tell connecting clients (using browse network) what port to use:
+      Document_Glom* unconst = const_cast<Document_Glom*>(document);
+      unconst->set_connection_port( connection_pool->get_port() );
+    }
 
     /*
     if(document)

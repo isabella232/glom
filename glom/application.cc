@@ -638,11 +638,8 @@ void App_Glom::open_browsed_document(const BrowsedServer& server)
 
           //Warn the user that the username and password were not accepted:
           dialog->set_transient_for(*this);
-          const int response = Glom::Utils::dialog_run_with_help(dialog, "dialog_error_connection"); //TODO: Maybe the help is not appropriate here.
+          Glom::Utils::dialog_run_with_help(dialog, "dialog_error_connection"); //TODO: Maybe the help is not appropriate here.
           delete dialog;
-
-          if(response != Gtk::RESPONSE_OK)
-            keep_trying = false; //The user cancelled.
         }
       }
       else

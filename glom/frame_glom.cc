@@ -1639,12 +1639,7 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
         {
           //Warn the user, and let him try again:
           m_pDialogConnectionFailed->set_transient_for(*get_app_window());
-          int response = Glom::Utils::dialog_run_with_help(m_pDialogConnectionFailed, "dialog_error_connection");
-          m_pDialogConnectionFailed->hide();
-
-          //TODO: Combine these into one dialog.
-          if(response != Gtk::RESPONSE_OK)
-            return false; //The user cancelled.
+          Glom::Utils::dialog_run_with_help(m_pDialogConnectionFailed, "dialog_error_connection");
 
           response = Glom::Utils::dialog_run_with_help(m_pDialogConnection, "dialog_connection");
           m_pDialogConnection->hide();
@@ -1730,11 +1725,8 @@ bool Frame_Glom::connection_request_password_and_attempt(const Glib::ustring kno
         {
           //Warn the user, and let him try again:
           m_pDialogConnectionFailed->set_transient_for(*get_app_window());
-          int response = Glom::Utils::dialog_run_with_help(m_pDialogConnectionFailed, "dialog_error_connection");
+          Glom::Utils::dialog_run_with_help(m_pDialogConnectionFailed, "dialog_error_connection");
           m_pDialogConnectionFailed->hide();
-
-          if(response != Gtk::RESPONSE_OK)
-            return false; //The user cancelled.
         }
         else
         {

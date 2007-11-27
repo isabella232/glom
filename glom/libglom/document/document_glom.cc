@@ -49,6 +49,7 @@ namespace Glom
 #define GLOM_NODE_CONNECTION "connection"
 #define GLOM_ATTRIBUTE_CONNECTION_SELF_HOSTED "self_hosted"
 #define GLOM_ATTRIBUTE_CONNECTION_SERVER "server"
+#define GLOM_ATTRIBUTE_CONNECTION_PORT "port"
 #define GLOM_ATTRIBUTE_CONNECTION_USER "user"
 #define GLOM_ATTRIBUTE_CONNECTION_DATABASE "database"
 
@@ -200,6 +201,7 @@ Document_Glom::Document_Glom()
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   m_connection_is_self_hosted(false),
 #endif // !GLOM_ENABLE_CLIENT_ONLY
+  m_connection_port(0),
   m_block_cache_update(false),
   m_block_modified_set(false),
 #ifndef GLOM_ENABLE_CLIENT_ONLY
@@ -298,6 +300,11 @@ Glib::ustring Document_Glom::get_connection_database() const
   return m_connection_database;
 }
 
+int Document_Glom::get_connection_port() const
+{
+  return m_connection_port;
+}
+
 void Document_Glom::set_connection_user(const Glib::ustring& strVal)
 {
   if(strVal != m_connection_user)
@@ -332,6 +339,15 @@ void Document_Glom::set_connection_database(const Glib::ustring& strVal)
   if(strVal != m_connection_database)
   {
     m_connection_database = strVal;
+    set_modified();
+  }
+}
+
+void Document_Glom::set_connection_port(int port_number)
+{
+  if(port_number != m_connection_port)
+  {
+    m_connection_port = port_number;
     set_modified();
   }
 }
@@ -2164,6 +2180,7 @@ bool Document_Glom::load_after()
         //Connection information:
         bool self_hosted = get_node_attribute_value_as_bool(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_SELF_HOSTED);
         m_connection_server = get_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_SERVER);
+        m_connection_port = get_node_attribute_value_as_decimal(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_PORT);
         m_connection_user = get_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_USER);
         m_connection_database = get_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_DATABASE);
 
@@ -3004,6 +3021,7 @@ bool Document_Glom::save_before()
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
     set_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_SERVER, m_connection_server);
+    set_node_attribute_value_as_decimal(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_PORT, m_connection_port);
     set_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_USER, m_connection_user);
     set_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_DATABASE, m_connection_database);
     append_newline(nodeRoot);

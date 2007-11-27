@@ -1,5 +1,15 @@
 2007-11-27  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/libglom/connectionpool.cc:
+	* glom/libglom/connectionpool.h: Added get/set_port().
+	Store the port after it has been used successfully.
+	* glom/libglom/document/document_glom.cc:
+	* glom/libglom/document/document_glom.h: Added get/set_connection_port(), 
+	so we can try to use the same port as last time, to save time, and to 
+	avoid connecting to some other postgres server on the same host.
+
+2007-11-27  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/dialog_connection.cc:
 	* glom/dialog_connection.h: Added set_connect_to_browsed(), which dims the 
 	host name.

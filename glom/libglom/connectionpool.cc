@@ -140,6 +140,7 @@ ConnectionPool::ConnectionPool()
 #endif // !GLOM_ENABLE_CLIENT_ONLY
   m_sharedconnection_refcount(0),
   m_ready_to_connect(false),
+  m_port(0), 
   m_pFieldTypes(0),
   m_postgres_server_version(0)
 {
@@ -206,6 +207,17 @@ sharedptr<SharedConnection> ConnectionPool::get_and_connect(std::auto_ptr<Except
   return result;
 }
 
+static Glib::ustring port_as_string(int port_num)
+{
+  Glib::ustring result;
+  char* cresult = g_strdup_printf("%d", port_num);
+  if(cresult)
+    result = cresult;
+  g_free(cresult);
+
+  return result;
+}
+
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
 sharedptr<SharedConnection> ConnectionPool::connect()
 #else
@@ -248,7 +260,7 @@ sharedptr<SharedConnection> ConnectionPool::connect(std::auto_ptr<ExceptionConne
         type_list_ports::const_iterator iter_port = m_list_ports.begin();
 
         //Start with the remembered-as-working port:
-        Glib::ustring port = m_port;
+        Glib::ustring port = port_as_string(m_port);
 
         //If no port is known to work, start with the first possible port:
         bool trying_remembered_port = true;
@@ -296,7 +308,7 @@ sharedptr<SharedConnection> ConnectionPool::connect(std::auto_ptr<ExceptionConne
             //g_warning("ConnectionPool: connection opened");
 
             //Remember what port is working:
-            m_port = port;
+            m_port = atoi(port.c_str());
 
             //Create the fieldtypes member if it has not already been done:
             if(!m_pFieldTypes)
@@ -392,7 +404,7 @@ sharedptr<SharedConnection> ConnectionPool::connect(std::auto_ptr<ExceptionConne
 #endif
                 bJustDatabaseMissing = true;
                 connection_to_default_database_possible = true;
-                m_port = port;
+                m_port = atoi(port.c_str());
 #ifndef GLIBMM_EXCEPTIONS_ENABLED
                 }
               }
@@ -479,13 +491,13 @@ void ConnectionPool::create_database(const Glib::ustring& database_name, std::au
     g_assert(op);
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
     op->set_value_at("/SERVER_CNX_P/HOST", get_host());
-    op->set_value_at("/SERVER_CNX_P/PORT", m_port);
+    op->set_value_at("/SERVER_CNX_P/PORT", port_as_string(m_port));
     op->set_value_at("/SERVER_CNX_P/ADM_LOGIN", get_user());
     op->set_value_at("/SERVER_CNX_P/ADM_PASSWORD", get_password());
     m_GdaClient->perform_create_database(op);
 #else
     op->set_value_at("/SERVER_CNX_P/HOST", get_host(), error);
-    op->set_value_at("/SERVER_CNX_P/PORT", m_port, error);
+    op->set_value_at("/SERVER_CNX_P/PORT", port_as_string(m_port), error);
     op->set_value_at("/SERVER_CNX_P/ADM_LOGIN", get_user(), error);
     op->set_value_at("/SERVER_CNX_P/ADM_PASSWORD", get_password(), error);
 
@@ -501,7 +513,7 @@ void ConnectionPool::set_host(const Glib::ustring& value)
   if(value != m_host)
   {
     m_host = value;  
-    m_port = Glib::ustring(); /* Force us to try all ports again when connecting for the first time, then remember the working port again. */
+    m_port = 0; // Force us to try all ports again when connecting for the first time, then remember the working port again.
   }
 }
 
@@ -513,6 +525,11 @@ void ConnectionPool::set_user(const Glib::ustring& value)
   }
 
   m_user = value;
+}
+
+void ConnectionPool::set_port(int port)
+{
+  m_port = port;
 }
 
 void ConnectionPool::set_password(const Glib::ustring& value)
@@ -530,10 +547,10 @@ Glib::ustring ConnectionPool::get_host() const
   return m_host;
 }
 
-/*Glib::ustring ConnectionPool::get_port() const
+int ConnectionPool::get_port() const
 {
   return m_port;
-}*/
+}
 
 Glib::ustring ConnectionPool::get_user() const
 {
@@ -744,7 +761,7 @@ bool ConnectionPool::start_self_hosting()
     std::cerr << "Error while attempting to self-host a database." << std::endl;
   }
 
-  m_port = port_as_text;
+  m_port = available_port; //Remember it for later.
   m_self_hosting_active = true;
 
   //Let clients discover this server via avahi:
@@ -995,12 +1012,12 @@ int ConnectionPool::discover_first_free_port(int start_port, int end_port)
     {
       close(fd);
 
-      std::cout << "debug: ConnectionPool::discover_first_free_port(): Found: returning " << port_to_try << std::endl;
+      //std::cout << "debug: ConnectionPool::discover_first_free_port(): Found: returning " << port_to_try << std::endl;
       return port_to_try;
     }
     else
     {
-      std::cout << "debug: ConnectionPool::discover_first_free_port(): port in use: " << port_to_try << std::endl;
+      //std::cout << "debug: ConnectionPool::discover_first_free_port(): port in use: " << port_to_try << std::endl;
     }
 
     ++port_to_try;
@@ -1008,7 +1025,7 @@ int ConnectionPool::discover_first_free_port(int start_port, int end_port)
 
   close(fd);
 
-  std::cout << "debug: ConnectionPool::discover_first_free_port(): No port was available." << std::endl;
+  std::cerr << "debug: ConnectionPool::discover_first_free_port(): No port was available." << std::endl;
   return 0;
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
@@ -1205,6 +1222,7 @@ gboolean ConnectionPool::on_publisher_document_authentication(EpcAuthContext* co
   temp_pool.set_database( connection_pool->get_database() );
   temp_pool.set_user(user_name);
   temp_pool.set_password(password);
+  temp_pool.set_port( connection_pool->get_port() );
   temp_pool.set_ready_to_connect();
 
   try

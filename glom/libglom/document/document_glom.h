@@ -120,6 +120,7 @@ public:
   void set_connection_server(const Glib::ustring& strVal);
   void set_connection_user(const Glib::ustring& strVal);
   void set_connection_database(const Glib::ustring& strVal);
+  void set_connection_port(int port_number);
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   /** When this returns true, the postgres database should be hosted by the local client,
@@ -137,6 +138,7 @@ public:
   Glib::ustring get_connection_server() const;
   Glib::ustring get_connection_user() const;
   Glib::ustring get_connection_database() const;
+  int get_connection_port() const;
 
   /** Set the language/locale used by original titles.
    * Title translations are translations of the text in this language.
@@ -414,6 +416,7 @@ protected:
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   Glib::ustring m_connection_server, m_connection_user, m_connection_database;
+  int m_connection_port; //0 means any port. Ignored when self-hosting (which may use a different port each time).
 
   class LayoutInfo
   {
