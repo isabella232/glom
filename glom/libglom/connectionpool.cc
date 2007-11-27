@@ -290,7 +290,8 @@ sharedptr<SharedConnection> ConnectionPool::connect(std::auto_ptr<ExceptionConne
             m_refGdaConnection = m_GdaClient->open_connection_from_string("PostgreSQL", cnc_string, m_user, m_password);
 #else
             m_refGdaConnection = m_GdaClient->open_connection_from_string("PostgreSQL", cnc_string, m_user, m_password, Gnome::Gda::ConnectionOptions(0), glib_error);
-            if(glib_error.get() != NULL) break;
+            if(glib_error.get())
+              break;
 #endif
             //g_warning("ConnectionPool: connection opened");
 
@@ -306,7 +307,8 @@ sharedptr<SharedConnection> ConnectionPool::connect(std::auto_ptr<ExceptionConne
             m_refGdaConnection->execute_non_select_command("SET DATESTYLE = 'ISO'");
 #else
             m_refGdaConnection->execute_non_select_command("SET DATESTYLE = 'ISO'", glib_error);
-            if(glib_error.get() != NULL) break;
+            if(glib_error.get())
+              break;
 #endif
 
             //Open the database, if one has been specified:
@@ -353,7 +355,7 @@ sharedptr<SharedConnection> ConnectionPool::connect(std::auto_ptr<ExceptionConne
           while(false);
 
 #ifndef GLIBMM_EXCEPTIONS_ENABLED
-          if(glib_error.get() != NULL)
+          if(glib_error.get())
           {
             const Glib::Error& ex = *glib_error.get();
 #else
@@ -394,7 +396,7 @@ sharedptr<SharedConnection> ConnectionPool::connect(std::auto_ptr<ExceptionConne
 #ifndef GLIBMM_EXCEPTIONS_ENABLED
                 }
               }
-              if(glib_error.get() != NULL)
+              if(glib_error.get())
               {
                 const Glib::Error& ex = *glib_error.get();
 #else
@@ -441,7 +443,8 @@ sharedptr<SharedConnection> ConnectionPool::connect(std::auto_ptr<ExceptionConne
         if(connection_to_default_database_possible)
           std::cout << "  (Connection succeeds, but not to the specific database on port=" << m_port << ", database=" << m_database << std::endl;
         else
-              std::cerr << "  (Could not connect even to the default database on any port. database=" << m_database  << std::endl;
+          std::cerr << "  (Could not connect even to the default database on any port. database=" << m_database  << std::endl;
+
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
         throw ExceptionConnection(connection_to_default_database_possible ? ExceptionConnection::FAILURE_NO_DATABASE : ExceptionConnection::FAILURE_NO_SERVER);
 #else
@@ -1184,16 +1187,45 @@ EpcContents* ConnectionPool::on_publisher_document_requested(EpcPublisher* publi
 //static
 gboolean ConnectionPool::on_publisher_document_authentication(EpcAuthContext* context, const gchar* user_name, gpointer user_data)
 {
-  // Check if the username/password are correct:
+  g_return_val_if_fail(context, FALSE);
 
-  //TODO: We need the full password so we can attempt a connection to postgres.
-  return true;
-/*
-  return
-    NULL != user_name &&
-    g_str_equal (user_name, g_get_user_name ()) &&
-    epc_auth_context_check_password (context, user_data);
-*/
+  ConnectionPool* connection_pool = (ConnectionPool*)(user_data);
+  g_return_val_if_fail(connection_pool, FALSE);
+
+  // Check if the username/password are correct:
+  const gchar* password = epc_auth_context_get_password(context);
+  g_return_val_if_fail(password, FALSE); //TODO: This seems to happen once before this callback is called again properly.
+
+  //std::cout << "ConnectionPool::on_publisher_document_authentication(): username=" << user_name << ", password=" << password << std::endl;
+
+ 
+  //Attempt a connection with this username/password:
+  ConnectionPool temp_pool;
+  temp_pool.set_host( connection_pool->get_host() );
+  temp_pool.set_database( connection_pool->get_database() );
+  temp_pool.set_user(user_name);
+  temp_pool.set_password(password);
+  temp_pool.set_ready_to_connect();
+
+  try
+  {
+    sharedptr<SharedConnection> connection = temp_pool.connect();
+    if(connection)
+    {
+      //std::cout << "ConnectionPool::on_publisher_document_authentication(): succeeded." << std::endl;
+      return true; //Succeeded.
+    }
+    else
+    {
+      //std::cout << "ConnectionPool::on_publisher_document_authentication(): failed." << std::endl;
+      return false; //Failed.
+    }
+  }
+  catch(...)
+  {
+     //std::cout << "ConnectionPool::on_publisher_document_authentication(): failed with exception" << std::endl;
+     return false; //Failed.
+  }
 }
 
 /** Advertise self-hosting via avahi:
@@ -1210,8 +1242,14 @@ void ConnectionPool::avahi_start_publishing()
 
   m_epc_publisher = epc_publisher_new(document->get_database_title().c_str(), "glom", NULL);
   epc_publisher_set_protocol(m_epc_publisher, publish_protocol);
-  epc_publisher_set_auth_handler(m_epc_publisher, "document", on_publisher_document_authentication, this /* user_data */, NULL);
+  
   epc_publisher_add_handler(m_epc_publisher, "document", on_publisher_document_requested, this /* user_data */, NULL);
+
+  //Password-protect the document,
+  //because the document's structure could be considered as a business secret:
+  epc_publisher_set_auth_flags(m_epc_publisher, EPC_AUTH_PASSWORD_TEXT_NEEDED);
+  epc_publisher_set_auth_handler(m_epc_publisher, "document", on_publisher_document_authentication, this /* user_data */, NULL);
+
       
   GError* error = 0;
   epc_publisher_run_async(m_epc_publisher, &error);

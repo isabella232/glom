@@ -29,6 +29,7 @@
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
 #include <glom/libglom/utils.h>
+#include <glom/libglom/glade_utils.h>
 
 #include "config.h" //For VERSION.
 
@@ -43,6 +44,7 @@
 #endif // GLOM_ENABLE_MAEMO
 
 #include <libepc/consumer.h>
+#include <libsoup/soup-status.h>
 #include <avahi-ui/avahi-ui.h>
 #include <gtk/gtkstock.h> /* For use with the avahi-ui dialog. */
 
@@ -558,6 +560,114 @@ void App_Glom::on_menu_userlevel_operator()
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
+void App_Glom::open_browsed_document(const BrowsedServer& server)
+{
+  gsize length = 0;
+  gchar *document_contents = 0;
+
+  bool keep_trying = true;
+  while(keep_trying)
+  {
+    //Request a password to attempt retrieval of the document over the network:
+    Dialog_Connection* dialog_connection = 0;
+    //Load the Glade file and instantiate its widgets to get the dialog stuff:
+    Utils::get_glade_widget_derived_with_warning("dialog_connection", dialog_connection);
+    dialog_connection->set_transient_for(*this);
+    dialog_connection->set_database_name("Browsed"); //TODO: Use published name.
+    const int response = Glom::Utils::dialog_run_with_help(dialog_connection, "dialog_connection");
+    dialog_connection->hide();
+    if(response != Gtk::RESPONSE_OK)
+      keep_trying = false;
+    else
+    {
+      //Open the document supplied by the other glom instance on the network:
+      EpcConsumer* consumer = epc_consumer_new(epc_service_type_get_protocol(server.m_service_type.c_str()), server.m_host.c_str(), server.m_port);
+
+      Glib::ustring username, password;
+      dialog_connection->get_username_and_password(username, password);
+      epc_consumer_set_username(consumer, username.c_str());
+      epc_consumer_set_password(consumer, password.c_str());
+
+      GError *error = NULL;
+      document_contents = (gchar*)epc_consumer_lookup(consumer, "document", &length, &error);
+      if(error)
+      {
+        std::cout << "Error when calling epc_consumer_lookup(): " << std::endl << "  " << error->message << std::endl;
+        const int error_code = error->code;
+        g_clear_error(&error);
+
+        if(error_code == SOUP_STATUS_FORBIDDEN)
+        {
+          Gtk::Dialog* dialog = 0;
+          Utils::get_glade_widget_with_warning("dialog_error_connection", dialog);
+
+          //Warn the user that the username and password were not accepted:
+          dialog->set_transient_for(*this);
+          const int response = Glom::Utils::dialog_run_with_help(dialog, "dialog_error_connection"); //TODO: Maybe the help is not appropriate here.
+          delete dialog;
+
+          if(response != Gtk::RESPONSE_OK)
+            keep_trying = false; //The user cancelled.
+        }
+      }
+      else
+      {
+        //Store the username and password (now known to be correct) temporarily,
+        //so we can use them when connecting directly to the database later:
+        //(We can't just put them in the temp document instance, because these are not saved to disk.)
+        m_temp_username = username;
+        m_temp_password = password;
+
+        keep_trying = false; //Finished.
+      }
+    }
+
+    delete dialog_connection;
+    dialog_connection = NULL;
+
+  }
+
+
+  if(document_contents && length)
+  {
+    //Create a temporary Document instance, so we can manipulate the data:
+    Document_Glom document_temp;
+    const bool loaded = document_temp.load_from_data((const guchar*)document_contents, length);
+    if(loaded)
+    {
+      //Stop the document from being self-hosted (it's already hosted by the other networked Glom instance):
+      document_temp.set_connection_is_self_hosted(false);
+
+      //TODO: Cope with the networked document saying that it is using a postgres server on "localhost".
+    }
+    else
+    {
+      std::cerr << "Could not parse the document that was retrieved over the network." << std::endl;
+    }
+
+    g_free(document_contents);
+    document_contents = 0;
+
+    //TODO_Performance: Horribly inefficient, but happens rarely:
+    const Glib::ustring temp_document_contents = document_temp.build_and_get_contents();
+
+    //This loads the document and connects to the database (using m_temp_username and m_temp_password):
+    open_document_from_data((const guchar*)temp_document_contents.c_str(), temp_document_contents.bytes());
+
+    //Mark the document as opened-from-browse 
+    //so we don't think that opening has failed because it has no URI,
+    //and to stop us from allowing developer mode
+    //(that would require changes to the original document).
+    Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
+    if(document)
+    {
+      document->set_opened_from_browse();
+      document->set_userlevel(AppState::USERLEVEL_OPERATOR); //TODO: This should happen automatically.
+      update_userlevel_ui();
+    }
+  }
+}
+
 //We override this so we can show the custom FileChooserDialog with the Browse Network button:
 void App_Glom::on_menu_file_open()
 {
@@ -573,56 +683,7 @@ void App_Glom::on_menu_file_open()
   if(!file_uri.empty() && !browsed)
     open_document(file_uri);
   else if(browsed)
-  {
-    //Open the document supplied by the other glom instance on the network:
-    EpcConsumer* consumer = epc_consumer_new(epc_service_type_get_protocol(browsed_server.m_service_type.c_str()), browsed_server.m_host.c_str(), browsed_server.m_port);
-    gsize length = 0;
-    GError *error = NULL;
-    gchar *document_contents = (gchar*)epc_consumer_lookup(consumer, "document", &length, &error);
-    if(error)
-    {
-      std::cout << "Error when calling epc_consumer_lookup(): " << std::endl << "  " << error->message << std::endl;
-      g_clear_error(&error);
-    }
-
-    //std::cout << "DEBUG: received document: " << document_contents << std::endl;
-    if(document_contents && length)
-    {
-      //Create a temporary Document instance, so we can manipulate the data:
-      Document_Glom document_temp;
-      const bool loaded = document_temp.load_from_data((const guchar*)document_contents, length);
-      if(loaded)
-      {
-        //Stop the document from being self-hosted (it's already hosted by the other networked Glom instance):
-        document_temp.set_connection_is_self_hosted(false);
-
-        //TODO: Cope with the networked document saying that it is using a postgres server on "localhost".
-      }
-      else
-      {
-        std::cerr << "Could not parse the document that was retrieved over the network." << std::endl;
-      }
-
-      g_free(document_contents);
-      document_contents = 0;
-
-      //TODO_Performance: Horribly inefficient, but happens rarely:
-      const Glib::ustring temp_document_contents = document_temp.build_and_get_contents();
-      open_document_from_data((const guchar*)temp_document_contents.c_str(), temp_document_contents.bytes());
-
-      //Mark the document as opened-from-browse 
-      //so we don't think that opening has failed because it has no URI,
-      //and to stop us from allowing developer mode
-      //(that would require changes to the original document).
-      Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
-      if(document)
-      {
-        document->set_opened_from_browse();
-        document->set_userlevel(AppState::USERLEVEL_OPERATOR); //TODO: This should happen automatically.
-        update_userlevel_ui();
-      }
-    }
-  }
+    open_browsed_document(browsed_server);
 }
 
 void App_Glom::on_menu_file_close() //override
@@ -860,11 +921,16 @@ bool App_Glom::on_document_load()
           }
           else
 #endif // !GLOM_ENABLE_CLIENT_ONLY
+            //Ask for the username/password and connect:
+            //Note that m_temp_username and m_temp_password are set if 
+            //we already asked for them when getting the document over the network: 
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
-            test = m_pFrame->connection_request_password_and_attempt();
+            test = m_pFrame->connection_request_password_and_attempt(m_temp_username, m_temp_password);
 #else
-            test = m_pFrame->connection_request_password_and_attempt(error);
+            test = m_pFrame->connection_request_password_and_attempt(m_temp_username, m_temp_password, error);
 #endif
+            m_temp_username = Glib::ustring();
+            m_temp_password = Glib::ustring();
         }
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
         catch(const ExceptionConnection& ex)

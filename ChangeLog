@@ -1,5 +1,31 @@
 2007-11-27  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/libglom/connectionpool.cc:
+	on_publisher_document_authentication(): Try to connect to the database 
+	with the username/password, so we know whether they are correct.
+
+	* glom/dialog_connection.cc:
+	* glom/dialog_connection.h: Added set_username() and 
+	set_password(), so we can reuse this code to connect, 
+	even without showing the dialog.
+	* glom/application.cc:
+	* glom/application.h: open_browsed_document(): 
+	Ask for the usernmame and password before trying to 
+	get the document over the network. Store the 
+	username and password temporarily so we do not need 
+	to ask the user again in on_document_load().  
+	* glom/frame_glom.cc:
+	* glom/frame_glom.h: connection_request_password_and_attempt(): 
+	Added known_username and known_password string parameters, and do not 
+	show the dialog if they are known already.
+	This seems to work.
+
+	* glom/libglom/Makefile.am:
+	* glom/libglom/glade_utils.h: Added this and moved the 
+	glade_* convenience templates into it.
+
+2007-11-27  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/libglom/data_structure/glomconversions.cc:
 	convert_value(): Deal with gint values specially, because 
 	we usually really do want to convert gints to GdaNumerics, 

@@ -25,7 +25,7 @@ libglom_la_SOURCES = appstate.h appstate.cc \
                      connectionpool.h connectionpool.cc \
                      dialog_progress_creating.h dialog_progress_creating.cc \
                      spawn_with_feedback.h spawn_with_feedback.cc \
-                     utils.h utils.cc \
+                     utils.h utils.cc glade_utils.h \
                      sharedptr.h \
                      standard_table_prefs_fields.h \
 		     gst-package.h gst-package.c

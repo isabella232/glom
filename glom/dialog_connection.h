@@ -45,6 +45,10 @@ public:
   sharedptr<SharedConnection> connect_to_server_with_connection_settings(std::auto_ptr<ExceptionConnection>& error) const;
 #endif
 
+  void set_username(const Glib::ustring& username);
+  void set_password(const Glib::ustring& password);
+  void get_username_and_password(Glib::ustring& user, Glib::ustring& password) const;
+
   virtual void load_from_document(); //override
   
   void set_self_hosted_user_and_password(const Glib::ustring& username, const Glib::ustring& password);

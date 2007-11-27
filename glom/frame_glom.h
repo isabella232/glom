@@ -138,9 +138,9 @@ public:
 
   //Show the dialog to request the password, and check whether it works.
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
-  bool connection_request_password_and_attempt();
+  bool connection_request_password_and_attempt(const Glib::ustring known_username = Glib::ustring(), const Glib::ustring& known_password = Glib::ustring());
 #else
-  bool connection_request_password_and_attempt(std::auto_ptr<ExceptionConnection>& error);
+  bool connection_request_password_and_attempt(const Glib::ustring known_username = Glib::ustring(), const Glib::ustring& known_password = Glib::ustring(), std::auto_ptr<ExceptionConnection>& error);
 #endif
 
   //Show the dialog to request the password, and choose an unused database name.

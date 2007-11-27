@@ -273,6 +273,11 @@ Glib::ustring Conversions::get_text_for_gda_value(Field::glom_field_type glom_ty
   {
      return value.get_string();
   }
+  else if (glom_type == Field::TYPE_IMAGE)
+  {
+    std::cerr << "Conversions::get_text_for_gda_value(): Unexpected image field type" << std::endl;
+    return value.to_string();
+  }
   else
   {
     std::cerr << "Conversions::get_text_for_gda_value(): Unexpected glom field type: " << glom_type << std::endl;

@@ -169,7 +169,17 @@ void Dialog_Connection::load_from_document()
 
 void Dialog_Connection::set_self_hosted_user_and_password(const Glib::ustring& user, const Glib::ustring& password)
 {
+  set_username(user);
+  set_password(password);
+}
+
+void Dialog_Connection::set_username(const Glib::ustring& user)
+{
   m_entry_user->set_text(user);
+}
+
+void Dialog_Connection::set_password(const Glib::ustring& password)
+{
   m_entry_password->set_text(password);
 }
 
@@ -180,6 +190,12 @@ void Dialog_Connection::set_database_name(const Glib::ustring& name)
     m_label_database->set_text(_("Not yet created."));
   else
     m_label_database->set_text(name);
+}
+
+void Dialog_Connection::get_username_and_password(Glib::ustring& username, Glib::ustring& password) const
+{
+  username = m_entry_user->get_text();
+  password = m_entry_password->get_text();
 }
 
 } //namespace Glom

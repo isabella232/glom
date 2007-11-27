@@ -132,6 +132,7 @@ protected:
 
   virtual Bakery::App* new_instance(); //Override
 
+  void open_browsed_document(const BrowsedServer& server);
   static Glib::ustring get_file_uri_without_extension(const Glib::ustring& uri);
 
   typedef Bakery::App_WithDoc_Gtk type_base;
@@ -175,6 +176,10 @@ protected:
   // document_history_add().
   Glib::ustring m_example_uri;
 
+  //A temporary store for the username/password if 
+  //we already asked for them when getting the document over the network,
+  //so we can use them again when connecting directly to the database:
+  Glib::ustring m_temp_username, m_temp_password;
 
   bool m_show_sql_debug;
 };
