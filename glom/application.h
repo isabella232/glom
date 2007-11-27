@@ -88,19 +88,19 @@ protected:
   virtual void init_create_document(); //override
   virtual bool on_document_load(); //override.
 
-  virtual bool offer_new_or_existing();
+  bool offer_new_or_existing();
 
-  virtual void on_menu_help_contents();
+  void on_menu_help_contents();
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  virtual void on_menu_userlevel_developer();
-  virtual void on_menu_userlevel_operator();
-  virtual void on_menu_file_save_as_example();
-  virtual void on_menu_developer_changelanguage();
-  virtual void on_menu_developer_translations();
-  virtual void on_window_translations_hide();
+  void on_menu_userlevel_developer();
+  void on_menu_userlevel_operator();
+  void on_menu_file_save_as_example();
+  void on_menu_developer_changelanguage();
+  void on_menu_developer_translations();
+  void on_window_translations_hide();
 
   virtual Glib::ustring ui_file_select_save(const Glib::ustring& old_file_uri); //overridden.
-  virtual void on_userlevel_changed(AppState::userlevels userlevel);
+  void on_userlevel_changed(AppState::userlevels userlevel);
 
   Document_Glom* on_connection_pool_get_document();
 

@@ -631,8 +631,11 @@ void App_Glom::open_browsed_document(const BrowsedServer& server)
         const int error_code = error->code;
         g_clear_error(&error);
 
-        if(error_code == SOUP_STATUS_FORBIDDEN)
+        if(error_code == SOUP_STATUS_FORBIDDEN ||
+           error_code == SOUP_STATUS_UNAUTHORIZED)
         {
+          //std::cout << "   SOUP_STATUS_FORBIDDEN or SOUP_STATUS_UNAUTHORIZED" << std::endl;
+        
           Gtk::Dialog* dialog = 0;
           Utils::get_glade_widget_with_warning("dialog_error_connection", dialog);
 
@@ -673,12 +676,8 @@ void App_Glom::open_browsed_document(const BrowsedServer& server)
       //If the publisher thinks that it's using a postgres database on localhost, 
       //then we need to use a host name that means the same thing from the client's PC:
       const Glib::ustring host = document_temp.get_connection_server();
-      if(host == "localhost")
-      {
+      if(hostname_is_localhost(host))
         document_temp.set_connection_server(server.m_host);
-      }
-
-      //TODO: Cope with the networked document saying that it is using a postgres server on "localhost".
     }
     else
     {

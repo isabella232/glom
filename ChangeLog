@@ -1,5 +1,12 @@
 2007-11-27  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/application.cc: open_browsed_document(): Check for 
+	SOUP_STATUS_UNAUTHORIZED as well as SOUP_STATUS_FORBIDDEN because I 
+	have started getting this.
+	* glom/application.h: Remove some unnecessary virtuals from methods.
+
+2007-11-27  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/libglom/connectionpool.cc:
 	* glom/libglom/connectionpool.h: Added get/set_port().
 	Store the port after it has been used successfully.
