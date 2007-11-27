@@ -916,6 +916,8 @@ bool App_Glom::on_document_load()
         return false; //Impossible anyway.
       else
       {
+        int port_used = 0;
+
         //Set the connection details in the ConnectionPool singleton.
         //The ConnectionPool will now use these every time it tries to connect.
 #ifndef GLOM_ENABLE_CLIENT_ONLY
@@ -930,6 +932,8 @@ bool App_Glom::on_document_load()
             const bool test = connection_pool->start_self_hosting(); //Stopped in on_menu_file_close().
             if(!test)
               return false;
+
+            port_used = connection_pool->get_port();
           }
         }
         else
@@ -941,6 +945,7 @@ bool App_Glom::on_document_load()
         connection_pool->set_host(pDocument->get_connection_server());
         connection_pool->set_user(pDocument->get_connection_user());
         connection_pool->set_database(pDocument->get_connection_database());
+        connection_pool->set_port(port_used); //To make sure that we open the just-started self-hosted postgres server instead of any other postgres running on the same host.
 
         connection_pool->set_ready_to_connect(this); //Box_DB::connect_to_server() will now attempt the connection-> Shared instances of m_Connection will also be usable.
 

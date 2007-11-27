@@ -1,5 +1,13 @@
 2007-11-27  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/application.cc: on_document_load(): When starting self-hosting, 
+	remember the port used and specify it again when connecting to the self-hosted 
+	postgres database, to avoid connecting to another postgres server running on 
+	the same machine which happens to have the same database name in it.
+	Confused the hell out of me.
+
+2007-11-27  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/application.cc: open_browsed_document(): Check for 
 	SOUP_STATUS_UNAUTHORIZED as well as SOUP_STATUS_FORBIDDEN because I 
 	have started getting this.
