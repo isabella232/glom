@@ -1,3 +1,18 @@
+2007-11-27  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/libglom/data_structure/glomconversions.cc:
+	convert_value(): Deal with gint values specially, because 
+	we usually really do want to convert gints to GdaNumerics, 
+	though we do use gints for some serial keys.
+        (I think, but maybe not anymore.)
+	* glom/python_embed/glom_python.cc:
+	glom_evaluate_python_function_implementation(): Make sure that 
+	the we return an appropriate value type, by calling 
+	convert_value(), because pygda_value_from_pyobject() would not 
+	necessarily return exactly what we want.
+	This seems to fix bug #499459 (Perriman) so that numeric 
+	calculations do not cause SQL errors in non-English locales.
+
 2007-11-23  Johannes Schmid <johannes.schmid@openismus.com>
 
 	* glom/application.cc:
