@@ -48,6 +48,8 @@
 #include <avahi-ui/avahi-ui.h>
 #include <gtk/gtkstock.h> /* For use with the avahi-ui dialog. */
 
+#include <netdb.h> //For gethostbyname().
+
 #ifdef GLOM_ENABLE_MAEMO
 namespace //anonymous namespace
 {
@@ -560,6 +562,34 @@ void App_Glom::on_menu_userlevel_operator()
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
+static bool hostname_is_localhost(const Glib::ustring& hostname)
+{
+  if(hostname.empty())
+    return false;
+
+  //Quick short cut:
+  if(hostname == "localhost")
+    return true;
+  else if (hostname == "localhost.localdomain")
+    return true;
+  else if (hostname == "127.0.0.1") //Standard IP address for localhost.
+    return true;
+
+  //TODO: Is there some way to compare hostents?
+  /*
+  hostent* a = gethostbyname("localhost");
+  hostent* b = gethostbyname(hostname.c_str());
+  if(!a || !b)
+  {
+    return a == b;
+  }
+
+  //TODO: return are_equal(a, b);
+  */
+
+  return true;
+}
+
 void App_Glom::open_browsed_document(const BrowsedServer& server)
 {
   gsize length = 0;
@@ -637,6 +667,14 @@ void App_Glom::open_browsed_document(const BrowsedServer& server)
     {
       //Stop the document from being self-hosted (it's already hosted by the other networked Glom instance):
       document_temp.set_connection_is_self_hosted(false);
+
+      //If the publisher thinks that it's using a postgres database on localhost, 
+      //then we need to use a host name that means the same thing from the client's PC:
+      const Glib::ustring host = document_temp.get_connection_server();
+      if(host == "localhost")
+      {
+        document_temp.set_connection_server(server.m_host);
+      }
 
       //TODO: Cope with the networked document saying that it is using a postgres server on "localhost".
     }

@@ -1,5 +1,11 @@
 2007-11-27  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/application.cc: open_browsed_document(): Replace the host name 
+	if it is localhost, because our localhost is not the same as the localhost of 
+	the publisher.
+
+2007-11-27  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/libglom/connectionpool.cc:
 	on_publisher_document_authentication(): Try to connect to the database 
 	with the username/password, so we know whether they are correct.
