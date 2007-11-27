@@ -305,6 +305,10 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
         if(object_is_gda_value && G_IS_VALUE(&value))
         {
 	  valueResult = Gnome::Gda::Value(&value);
+          //Make sure that the value is of the expected Gda type:
+          //TODO_Performance:
+          valueResult = Glom::Conversions::convert_value(valueResult, result_type);
+          //std::cout << "DEBUG: glom_evaluate_python_function_implementation(): valueResult Gda type=" << g_type_name(valueResult.get_value_type()) << std::endl;
 	  g_value_unset(&value);
         }
         else
@@ -315,12 +319,15 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
           //instead of returning 0.
           if(pyResult == Py_None) //Direct comparison is possible and recommended, because there is only one pyNone object.
           {
+ 
             //The result should be an appropriate empty value for this field type:
             valueResult = Conversions::get_empty_value(result_type);
+            //std::cout << "DEBUG: glom_evaluate_python_function_implementation(): empty value Gda type=" << g_type_name(valueResult.get_value_type()) << std::endl;
           }
           else
           {
             //TODO: Handle numeric/date/time types:
+            //(though I don't think this code is ever reached. murrayc)
 
             //Treat this as a string or something that can be converted to a string:
             PyObject* pyObjectResult = PyObject_Str(pyResult);
@@ -331,6 +338,8 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
               {
                 bool success = false;
                 valueResult = Conversions::parse_value(result_type, pchResult, success, true /* iso_format */);
+                std::cout << "DEBUG: glom_evaluate_python_function_implementation(): parsed value Gda type=" << g_type_name(valueResult.get_value_type()) << std::endl;
+ 
               }
               else
                 HandlePythonError();

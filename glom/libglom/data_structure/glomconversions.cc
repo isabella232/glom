@@ -269,8 +269,13 @@ Glib::ustring Conversions::get_text_for_gda_value(Field::glom_field_type glom_ty
 
     return text; //Do something like Glib::locale_to_utf(), but with the specified locale instead of the current locale.
   }
+  else if (glom_type == Field::TYPE_TEXT)
+  {
+     return value.get_string();
+  }
   else
   {
+    std::cerr << "Conversions::get_text_for_gda_value(): Unexpected glom field type: " << glom_type << std::endl;
     return value.to_string();
   }
 }
@@ -890,7 +895,17 @@ Glib::ustring Conversions::get_escaped_binary_data(guint8* buffer, size_t buffer
 
 Gnome::Gda::Value Conversions::convert_value(const Gnome::Gda::Value& value, Field::glom_field_type target_glom_type)
 {
-  const Field::glom_field_type source_glom_type = Field::get_glom_type_for_gda_type(G_VALUE_TYPE(value.gobj()));
+  const GType gvalue_type = value.get_value_type();
+
+  //A special case (only used for serial keys)
+  //Always convert these.
+  if(gvalue_type == G_TYPE_INT)
+  {
+    const gint num = value.get_int();
+    return parse_value(num);
+  }
+
+  const Field::glom_field_type source_glom_type = Field::get_glom_type_for_gda_type(gvalue_type);
   if(source_glom_type == target_glom_type)
     return value; //No conversion necessary.
   else
