@@ -83,10 +83,12 @@ App_Glom::BrowsedServer::BrowsedServer()
 {
 }
 
+/*
 App_Glom::BrowsedServer::BrowsedServer(const App_Glom::BrowsedServer& src)
 : m_port(src.m_port),
   m_host(src.m_host),
   m_service_type(src.m_service_type)
+  m_service_name(src.m_service_name)
 {
 }
 
@@ -95,8 +97,10 @@ App_Glom::BrowsedServer& App_Glom::BrowsedServer::operator=(const App_Glom::Brow
   m_port = m_port;
   m_host = src.m_host;
   m_service_type = src.m_service_type;
+  m_service_name = src.m_service_name;
   return *this;
 }
+*/
 
 
 // Global application variable
@@ -603,7 +607,8 @@ void App_Glom::open_browsed_document(const BrowsedServer& server)
     //Load the Glade file and instantiate its widgets to get the dialog stuff:
     Utils::get_glade_widget_derived_with_warning("dialog_connection", dialog_connection);
     dialog_connection->set_transient_for(*this);
-    dialog_connection->set_database_name("Browsed"); //TODO: Use published name.
+    dialog_connection->set_connect_to_browsed();
+    dialog_connection->set_database_name(server.m_service_name);
     const int response = Glom::Utils::dialog_run_with_help(dialog_connection, "dialog_connection");
     dialog_connection->hide();
     if(response != Gtk::RESPONSE_OK)
@@ -2031,6 +2036,9 @@ Glib::ustring App_Glom::ui_file_select_open_with_browse(bool& browsed, BrowsedSe
 
         const gchar *service_type = aui_service_dialog_get_service_type(dialog);
         browsed_server.m_service_type = service_type ? service_type : std::string();
+
+        const gchar *service_name = aui_service_dialog_get_service_name(dialog);
+        browsed_server.m_service_name = service_name ? service_name : Glib::ustring();
       }
 
       gtk_widget_destroy(GTK_WIDGET(dialog));

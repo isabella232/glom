@@ -45,6 +45,9 @@ public:
   sharedptr<SharedConnection> connect_to_server_with_connection_settings(std::auto_ptr<ExceptionConnection>& error) const;
 #endif
 
+  ///Disable irrelevant fields:
+  void set_connect_to_browsed();
+
   void set_username(const Glib::ustring& username);
   void set_password(const Glib::ustring& password);
   void get_username_and_password(Glib::ustring& user, Glib::ustring& password) const;

@@ -1,5 +1,14 @@
 2007-11-27  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/dialog_connection.cc:
+	* glom/dialog_connection.h: Added set_connect_to_browsed(), which dims the 
+	host name.
+	* glom/application.cc:
+	* glom/application.h: ui_file_select_open_with_browse(): Store the service name 
+	(the database name) and show it in the connection dialog in open_browsed_document().
+
+2007-11-27  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/application.cc: open_browsed_document(): Replace the host name 
 	if it is localhost, because our localhost is not the same as the localhost of 
 	the publisher.

@@ -167,6 +167,12 @@ void Dialog_Connection::load_from_document()
 
 }
 
+///Disable irrelevant fields:
+void Dialog_Connection::set_connect_to_browsed()
+{
+  m_entry_host->set_sensitive(false);
+}
+
 void Dialog_Connection::set_self_hosted_user_and_password(const Glib::ustring& user, const Glib::ustring& password)
 {
   set_username(user);

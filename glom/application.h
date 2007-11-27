@@ -112,12 +112,17 @@ protected:
   {
   public:
     BrowsedServer();
+
+  private:
+    //Prevent these:
     BrowsedServer(const BrowsedServer& src);
     BrowsedServer& operator=(const BrowsedServer& src);
 
+  public:
     int m_port;
     std::string m_host;
     std::string m_service_type;
+    Glib::ustring m_service_name;
   };
 
   /** Offer a file chooser dialog, with a Browse Network button.
